@@ -13,6 +13,8 @@ sub DESTROY{}
 our $log = 'OpenSRF::Utils::Logger';
 
 sub send_request {
+	my $self = shift;
+	my $client = shift;
 
 	my $method_name = shift;
 	my @params = @_;
@@ -71,12 +73,19 @@ sub send_request {
 
 	}
 }
+__PACKAGE__->register_method( method => 'send_request', api_name => '_send_request' );
 
 __PACKAGE__->register_method( method => 'add_1', api_name => 'add' );
 sub add_1 {
 	my $self = shift;
 	my $client = shift;
 	my @args = @_;
+
+	my $meth = $self->method_lookup('_send_request');
+	my $result = $meth->run('add',@args);
+
+	return $result;
+	
 	return send_request( "add", @args );
 }
 
@@ -85,6 +94,12 @@ sub sub_1 {
 	my $self = shift;
 	my $client = shift;
 	my @args = @_;
+
+	my $meth = $self->method_lookup('_send_request');
+	my $result = $meth->run('sub',@args);
+
+	return $result;
+	
 	return send_request( "sub", @args );
 }
 
@@ -93,6 +108,12 @@ sub mult_1 {
 	my $self = shift;
 	my $client = shift;
 	my @args = @_;
+
+	my $meth = $self->method_lookup('_send_request');
+	my $result = $meth->run('mult',@args);
+
+	return $result;
+	
 	return send_request( "mult", @args );
 }
 
@@ -101,6 +122,12 @@ sub div_1 {
 	my $self = shift;
 	my $client = shift;
 	my @args = @_;
+
+	my $meth = $self->method_lookup('_send_request');
+	my $result = $meth->run('div',@args);
+
+	return $result;
+	
 	return send_request( "div", @args );
 }
 
