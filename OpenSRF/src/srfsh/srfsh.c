@@ -1,8 +1,8 @@
 #include "opensrf/transport_client.h"
+#include "opensrf/generic_utils.h"
+#include <time.h>
 
-#define SRFSH_SERVER "elroy"
 #define SRFSH_PORT 5222
-#define SRFSH_USER "admin"
 #define COMMAND_BUFSIZE 12
 
 
@@ -11,6 +11,7 @@ transport_client* client = NULL;
 
 int parse_request( char* request );
 int handle_router( char* words[] );
+int handle_time( char* words[] );
 int parse_error( char* words[] );
 int router_query_servers( char* server );
 int srfsh_client_connect();
@@ -19,13 +20,16 @@ void print_help();
 int main( int argc, char* argv[] ) {
 
 
+	if( argc < 4 ) 
+		fatal_handler( "usage: %s <jabbersever> <username> <password>", argv[0] );
+		
 	char request[256];
 	memset(request, 0, 256);
 	printf(prompt);
 
-	client = client_init( SRFSH_SERVER , SRFSH_PORT );
-	if( ! client_connect( client, SRFSH_USER, "asdfjkjk", "srfsh", 5 ) ) {
-		fprintf(stderr, "Unable to connect to jabber server 'elroy' as 'admin'\n");
+	client = client_init( argv[1], SRFSH_PORT );
+	if( ! client_connect( client, argv[2], argv[3], "srfsh", 5 ) ) {
+		fprintf(stderr, "Unable to connect to jabber server '%s' as '%s'\n", argv[1], argv[2]);
 		fprintf(stderr, "Most queries will be futile...\n" );
 	}
 
@@ -105,6 +109,9 @@ int parse_request( char* request ) {
 	if( !strcmp(words[0],"router") ) 
 		ret_val = handle_router( words );
 
+	if( !strcmp(words[0],"time") ) 
+		ret_val = handle_time( words );
+
 	if(!ret_val)
 		return parse_error( words );
 
@@ -134,6 +141,29 @@ int handle_router( char* words[] ) {
 		return 0;
 	}
 	return 0;
+}
+
+int handle_time( char* words[] ) {
+
+	if( ! words[1] ) {
+
+		char buf[25];
+		memset(buf,0,25);
+		get_timestamp(buf);
+		printf( "%s\n", buf );
+		return 1;
+	}
+
+	if( words[1] ) {
+		time_t epoch = (time_t)atoi( words[1] );
+		char* localtime = strdup( ctime( &epoch ) );
+		printf( "%s => %s", words[1], localtime );
+		free(localtime);
+		return 1;
+	}
+
+	return 0;
+
 }
 
 		
@@ -180,7 +210,8 @@ void print_help() {
 			"Commands:\n"
 			"---------------------------------------------------------------------------------\n"
 			"router query servers <server1 [, server2, ...]>\n"
-			"router register <class>\n"
+			"time\n"					
+			"time <timestamp>\n"	
 			"---------------------------------------------------------------------------------\n"
 			);
 
