@@ -451,7 +451,7 @@ int print_help() {
 			"router query servers <server1 [, server2, ...]>\n"
 			"	- Returns stats on connected services\n"
 			"\n"
-			"reqeust <service> <method> [ <json formatted string of params> ]\n"
+			"request <service> <method> [ <json formatted string of params> ]\n"
 			"	- Anything passed in will be wrapped in a json array,\n"
 			"		so add commas if there is more than one param\n"
 			"\n"
