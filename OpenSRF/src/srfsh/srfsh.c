@@ -199,7 +199,7 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 		return 0;
 
 	json* params = NULL;
-	if( buffer != NULL || buffer->n_used > 0 ) 
+	if( buffer != NULL && buffer->n_used > 0 ) 
 		params = json_tokener_parse(buffer->buf);
 
 	osrf_app_session* session = osrf_app_client_session_init(server);
