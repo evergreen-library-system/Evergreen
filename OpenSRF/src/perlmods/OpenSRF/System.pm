@@ -48,7 +48,7 @@ $SIG{INT} = sub { instance()->killall(); };
 
 $SIG{HUP} = sub{ instance()->hupall(); };
 
-#$SIG{CHLD} = \&process_automation;
+$SIG{CHLD} = \&process_automation;
 
 
 # Go ahead and set the config
@@ -229,6 +229,8 @@ sub process_automation {
 			delete $self->pid_hash->{$pid};
 
 			my $newpid =  OpenSRF::Utils::safe_fork();
+
+			OpenSRF::Utils::Logger->debug( "Relaunching $method", ERROR );
 			_log( "Relaunching => $method" );
 
 			if( $newpid ) {
@@ -353,7 +355,7 @@ sub hupall {
 
 sub _log {
 	my $string = shift;
-	OpenSRF::Utils::Logger->debug( $string );
+	OpenSRF::Utils::Logger->debug( $string, DEBUG );
 	print $string . "\n";
 }
 
