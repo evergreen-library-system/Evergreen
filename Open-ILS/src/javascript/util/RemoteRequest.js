@@ -9,6 +9,9 @@ function RemoteRequest( service, method ) {
 	this.xmlhttp	= false;
 	this.name		= null;
 
+	/* give us the ability to ignore responses from cancelled searches */
+	this.cancelled = false; 
+
 	this.type		= "POST"; /* default */
 
 	var i = 2;
@@ -59,7 +62,8 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 	this.callback = callback;
 	this.xmlhttp.onreadystatechange = function() {
 		if( obj.readyState == 4 ) {
-			callback(object);
+			if(!this.cancelled)
+				callback(object);
 		}
 	}
 }
@@ -93,7 +97,8 @@ RemoteRequest.prototype.send = function(blocking) {
 				'application/x-www-form-urlencoded');
 	}
 
-	this.xmlhttp.send( data );
+	if(!this.cancelled)
+		this.xmlhttp.send( data );
 }
 
 RemoteRequest.prototype.getText = function() {
