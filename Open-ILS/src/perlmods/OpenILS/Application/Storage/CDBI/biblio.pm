@@ -11,7 +11,7 @@ use base qw/biblio/;
 
 biblio::record_entry->table( 'biblio_record_entry' );
 biblio::record_entry->columns( All => qw/id tcn_source tcn_value creator
-					 editor create_date edit_date
+					 editor create_date edit_date item_type
 					 source active deleted last_xact_id/ );
 
 #-------------------------------------------------------------------------------

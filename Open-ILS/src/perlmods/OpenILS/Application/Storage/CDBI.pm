@@ -314,10 +314,11 @@ sub import {
 	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
 	
 	# should we have just one field entry per class for each record???? (xslt vs xpath)
-	#biblio::record_entry->has_a( title_field_entries => 'metabib::title_field_entry' );
-	#biblio::record_entry->has_a( author_field_entries => 'metabib::author_field_entry' );
-	#biblio::record_entry->has_a( subject_field_entries => 'metabib::subject_field_entry' );
-	#biblio::record_entry->has_a( keyword_field_entries => 'metabib::keyword_field_entry' );
+	#biblio::record_entry->has_a( item_type => 'config::item_type_map' );
+	biblio::record_entry->has_many( title_field_entries => 'metabib::title_field_entry' );
+	biblio::record_entry->has_many( author_field_entries => 'metabib::author_field_entry' );
+	biblio::record_entry->has_many( subject_field_entries => 'metabib::subject_field_entry' );
+	biblio::record_entry->has_many( keyword_field_entries => 'metabib::keyword_field_entry' );
 	#-------------------------------------------------------------------------------
 	biblio::record_node->has_a( owner_doc => 'biblio::record_entry' );
 	#biblio::record_node->has_a(
@@ -330,18 +331,18 @@ sub import {
 	metabib::full_rec->has_a( record => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
 	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
-	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source_record'] );
+	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source'] );
 	#-------------------------------------------------------------------------------
-	metabib::title_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source_record'] );
+	metabib::title_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source'] );
 	metabib::title_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
-	metabib::author_field_entry->has_many( source_records => [ 'metabib::author_field_entry_source_map' => 'source_record'] );
+	metabib::author_field_entry->has_many( source_records => [ 'metabib::author_field_entry_source_map' => 'source'] );
 	metabib::author_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
-	metabib::subject_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source_record'] );
+	metabib::subject_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source'] );
 	metabib::subject_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
-	metabib::keyword_field_entry->has_many( source_records => [ 'metabib::keyword_field_entry_source_map' => 'source_record'] );
+	metabib::keyword_field_entry->has_many( source_records => [ 'metabib::keyword_field_entry_source_map' => 'source'] );
 	metabib::keyword_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
 	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
@@ -350,21 +351,21 @@ sub import {
 
 
 	# should we have just one field entry per class for each record???? (xslt vs xpath)
-	metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
-	metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	metabib::title_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
+	#metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
+	#metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#metabib::title_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
-	metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
-	metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	metabib::subject_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
+	#metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
+	#metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#metabib::subject_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
-	metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
-	metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	metabib::author_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
+	#metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
+	#metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#metabib::author_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
-	metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
-	metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	metabib::keyword_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
+	#metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
+	#metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#metabib::keyword_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
 	$VERSION = 1;
 }

@@ -1,6 +1,7 @@
 package OpenILS::Application::Storage::Publisher;
 use base qw/OpenILS::Application::Storage/;
 our $VERSION = 1;
+my $pg = 'OpenILS::Application::Storage::Driver::Pg';
 
 use OpenSRF::EX qw/:try/;;
 use OpenSRF::Utils::Logger;
@@ -100,6 +101,42 @@ sub update_node {
 	my $cdbi = $self->{cdbi};
 
 	return $cdbi->update($node);
+}
+
+sub mass_delete {
+	my $self = shift;
+	my $client = shift;
+	my $search = shift;
+
+	my $where = 'WHERE ';
+
+	my $cdbi = $self->{cdbi};
+	my $table = $cdbi->table;
+
+	my @keys = sort keys %$search;
+	
+	my @wheres;
+	for my $col ( @keys ) {
+		push @wheres, "$col = ?";
+	}
+	$where .= join ' AND ', @wheres;
+
+	my $delete = "DELETE FROM $table $where";
+
+	$log->debug("Performing MASS deletion : $delete",DEBUG);
+
+	my $dbh = $cdbi->db_Main;
+	my $success = 1;
+	try {
+		my $sth = $dbh->prepare($delete);
+		$sth->execute( map { "$_" } @$search{@keys} );
+		$sth->finish;
+		$log->debug("MASS Delete succeeded",DEBUG);
+	} catch Error with {
+		$log->debug("MASS Delete FAILED : ".shift(),DEBUG);
+		$success = 0;
+	};
+	return $success;
 }
 
 sub delete_node {
@@ -256,6 +293,16 @@ for my $fmclass ( Fieldmapper->classes ) {
 		__PACKAGE__->register_method(
 			api_name	=> $api_prefix.'.batch.delete',
 			method		=> 'batch_call',
+			api_level	=> 1,
+			cdbi		=> $cdbi,
+		);
+	}
+
+	# Create the search-based mass delete method
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.mass_delete' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.mass_delete',
+			method		=> 'mass_delete',
 			api_level	=> 1,
 			cdbi		=> $cdbi,
 		);

@@ -12,6 +12,7 @@ use OpenILS::Application::Storage::FTS;
 
 # Suck in the method publishing modules
 use OpenILS::Application::Storage::Publisher;
+use OpenILS::Application::Storage::WORM;
 
 # the easy way to get to the logger...
 my $log = "OpenSRF::Utils::Logger";
@@ -31,7 +32,11 @@ sub initialize {
 	$log->debug("Attempting to load $driver ...", DEBUG);
 
 	eval "use $driver;";
-	throw OpenILS::EX::PANIC ( "Can't load $driver!  :  $@" ) if ($@);
+	if ($@) {
+		$log->debug( "Can't load $driver!  :  $@", ERROR );
+		$log->error( "Can't load $driver!  :  $@");
+		throw OpenILS::EX::PANIC ( "Can't load $driver!  :  $@" );
+	}
 
 	$log->debug("$driver loaded successfully", DEBUG);
 

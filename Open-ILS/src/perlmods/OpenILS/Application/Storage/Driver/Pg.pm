@@ -90,6 +90,8 @@
 	my $log = 'OpenSRF::Utils::Logger';
 
 	__PACKAGE__->set_sql( retrieve_limited => 'SELECT * FROM __TABLE__ ORDER BY id LIMIT ?' );
+	__PACKAGE__->set_sql( copy_start => 'COPY %s (%s) FROM STDIN;' );
+	__PACKAGE__->set_sql( copy_end => '\.' );
 
 	my $master_db;
 	my @slave_dbs;
@@ -289,6 +291,7 @@
 	sub pg_commit_xaction {
 		my $self = shift;
 
+		my $xact_id = $pg->current_xact_id;
 
 		try {
 			$log->debug("Committing trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
@@ -358,6 +361,39 @@
 		api_level	=> 1,
 		argc		=> 0,
 	);
+
+	sub copy_create {
+		my $self = shift;
+		my $client = shift;
+		my @fm_nodes = @_;
+
+		warn 'Inside copy_create...';
+
+		return undef unless ($pg->current_xact_session);
+
+		my $cdbi = $self->{cdbi};
+
+		my $pri = $cdbi->columns('Primary');
+
+		my @cols = grep {$_ ne $pri} $cdbi->columns('All');
+
+		my $col_list = join ',', @cols;
+
+		$log->debug('Starting COPY import for '.$cdbi->table, DEBUG);
+		$cdbi->sql_copy_start($cdbi->table, $col_list)->execute;
+
+		my $dbh = $cdbi->db_Main;
+		for my $node ( @fm_nodes ) {
+			next unless ($node);
+			my $line = join("\t", map { defined($node->$_()) ? $node->$_() : '\N' } @cols);
+			$log->debug("COPY line: [$line]",DEBUG);
+			$dbh->func($line."\n", 'putline');
+		}
+
+		$dbh->func('endcopy');
+
+		return scalar(@fm_nodes);
+	}
 
 }
 
@@ -458,6 +494,14 @@
 #		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
 #	);
 
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.metabib.title_field_entry.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::title_field_entry',
+	);
+
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
@@ -466,6 +510,14 @@
 	metabib::author_field_entry->table( 'metabib.author_field_entry' );
 	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
 	metabib::author_field_entry->columns( 'FTS' => 'index_vector' );
+
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.metabib.author_field_entry.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::author_field_entry',
+	);
 
 	#-------------------------------------------------------------------------------
 
@@ -476,6 +528,14 @@
 	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
 	metabib::subject_field_entry->columns( 'FTS' => 'index_vector' );
 
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.metabib.subject_field_entry.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::subject_field_entry',
+	);
+
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
@@ -485,40 +545,48 @@
 	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
 	metabib::keyword_field_entry->columns( 'FTS' => 'index_vector' );
 
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::title_field_entry_source_map;
-
-	metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map' );
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::author_field_entry_source_map;
-
-	metabib::author_field_entry_source_map->table( 'metabib.author_field_entry_source_map' );
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.metabib.keyword_field_entry.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::keyword_field_entry',
+	);
 
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
-	package metabib::subject_field_entry_source_map;
+	#package metabib::title_field_entry_source_map;
 
-	metabib::subject_field_entry_source_map->table( 'metabib.subject_field_entry_source_map' );
+	#metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	#package metabib::author_field_entry_source_map;
+
+	#metabib::author_field_entry_source_map->table( 'metabib.author_field_entry_source_map' );
 
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
-	package metabib::keyword_field_entry_source_map;
+	#package metabib::subject_field_entry_source_map;
 
-	metabib::keyword_field_entry_source_map->table( 'metabib.keyword_field_entry_source_map' );
+	#metabib::subject_field_entry_source_map->table( 'metabib.subject_field_entry_source_map' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	#package metabib::keyword_field_entry_source_map;
+
+	#metabib::keyword_field_entry_source_map->table( 'metabib.keyword_field_entry_source_map' );
 
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
 	package metabib::metarecord_source_map;
 
-	metabib::metarecord_source_map->table( 'metabib.full_rec' );
+	metabib::metarecord_source_map->table( 'metabib.metarecord_source_map' );
 
 	#-------------------------------------------------------------------------------
 
@@ -528,6 +596,15 @@
 	metabib::full_rec->table( 'metabib.full_rec' );
 	metabib::full_rec->sequence( 'metabib.full_rec_id_seq' );
 	metabib::full_rec->columns( 'FTS' => 'index_vector' );
+
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.metabib.full_rec.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::full_rec',
+	);
+
 
 	#-------------------------------------------------------------------------------
 }
