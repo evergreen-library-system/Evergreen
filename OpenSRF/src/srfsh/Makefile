@@ -12,6 +12,7 @@ srfsh: lib
 	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) srfsh.c -o $@
 
 lib: 
+	make -C ../libstack
 	make -C ../libtransport
 	make -C ../utils
 
