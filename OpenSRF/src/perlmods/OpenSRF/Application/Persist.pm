@@ -160,14 +160,14 @@ __PACKAGE__->register_method(
 sub _sweep_expired_slots {
 	return if (shift());
 
-	my @expired_slots = $dbh->selectcol_arrayref(<<"	SQL", {}, time() );
+	my $expired_slots = $dbh->selectcol_arrayref(<<"	SQL", {}, time() );
 		SELECT id FROM store_expire WHERE (atime + expire_interval) <= ?;
 	SQL
 
-	return unless (@expired_slots);
+	return unless ($expired_slots);
 
-	$dbh->do('DELETE FROM storage WHERE name_id IN ('.join(',', map { '?' } @expired_slots).');', {}, @expired_slots);
-	for my $id (@expired_slots) {
+	$dbh->do('DELETE FROM storage WHERE name_id IN ('.join(',', map { '?' } @$expired_slots).');', {}, @$expired_slots);
+	for my $id (@$expired_slots) {
 		_flush_by_name(_get_id_name($id), 1);
 	}
 }
@@ -231,7 +231,7 @@ sub _get_name_id {
 	};
 
 
-	my $name_id = $dbh->selectcol_arrayref("SELECT id FROM store_name WHERE name = ?;", {}, $name);
+	my $name_id = $dbh->selectrow_arrayref("SELECT id FROM store_name WHERE name = ?;", {}, $name);
 
 	if (!ref($name_id) || !defined($name_id->[0])) {
 		throw OpenSRF::EX::WARN ("Slot name [$name] does not exist!");
@@ -249,8 +249,11 @@ sub destroy_store {
 	my $name_id = _get_name_id($name);
 
 	$dbh->do("DELETE FROM storage WHERE name_id = ?;", {}, $name_id);
-	_flush_by_name($name);
+	$dbh->do("DELETE FROM store_name WHERE id = ?;", {}, $name_id);
+	$dbh->do("DELETE FROM store_expire WHERE id = ?;", {}, $name_id);
+	_sweep_expired_slots();
 
+	return 1;
 }
 __PACKAGE__->register_method(
 	api_name => 'opensrf.persist.slot.destroy',
