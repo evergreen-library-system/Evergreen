@@ -5,6 +5,7 @@ use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::Logger qw(:level);
+use OpenILS::Utils::Fieldmapper;
 
 # memcache handle
 my $cache_handle;
@@ -93,6 +94,7 @@ sub initialize {
 sub init_authenticate {
 	my( $self, $client, $username ) = @_;
 	my $seed = md5_hex( time() . $$ . rand() . $username );
+	# cache login seed for 300 seconds (lower in production?) 
 	$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 300 );
 	return $seed;
 }
@@ -120,7 +122,7 @@ sub complete_authenticate {
 		throw OpenSRF::EX::ERROR ("No user for $username");
 	}
 
-	$password = $user->{passwd};
+	$password = $user->passwd();
 	if(!$password) {
 		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
 	}
