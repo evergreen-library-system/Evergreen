@@ -64,6 +64,29 @@ This service should be loaded at system startup.
 	}
 
 }
+
+sub DESTROY {
+	my $self = shift;
+
+	my $routers = $self->{routers}; #store for destroy
+	my $router_name = $self->{router_name};
+
+	unless($router_name and $routers) {
+		return;
+	}
+
+	my @targets;
+	for my $router (@$routers) {
+		push @targets, "$router_name\@$router/router";
+	}
+
+	for my $router (@targets) {
+		if($self->tcp_connected()) {
+			$self->send( to => $router, body => "registering", 
+				router_command => "unregister" , router_class => $self->{app} );
+		}
+	}
+}
 	
 sub listen {
 	my $self = shift;
@@ -75,6 +98,9 @@ sub listen {
 		my $conf = OpenSRF::Utils::Config->current;
 		my $router_name = $conf->bootstrap->router_name;
 		my $routers = $conf->bootstrap->domains;
+
+		$self->{routers} = $routers; #store for destroy
+		$self->{router_name} = $router_name;
 	
 		unless($router_name and $routers) {
 			throw OpenSRF::EX::Config 
