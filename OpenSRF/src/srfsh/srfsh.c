@@ -205,7 +205,7 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 	osrf_app_session* session = osrf_app_client_session_init(server);
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
-	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
+	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
 
 	if(!omsg) 
 		printf("Received no data from server\n");
@@ -214,12 +214,15 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 	while(omsg) {
 		if(omsg->result_content) 
 			printf( "Received Data: %s\n",json_object_to_json_string(omsg->result_content) );
+		osrf_message_free(omsg);
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 	}
 
 
 	if( osrf_app_session_request_complete( session, req_id ))
 		printf("[Request Completed Successfully]\n");
+
+	osrf_app_session_disconnect( session );
 
 	return 1;
 
