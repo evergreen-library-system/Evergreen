@@ -91,33 +91,33 @@ sub nodeset_to_xml {
 	for my $node ( @$nodeset ) {
 		my $xml;
 
-		if ( $node->{type} == XML_ELEMENT_NODE ) {
+		if ( $node->{node_type} == XML_ELEMENT_NODE ) {
 
 			$xml = $doc->createElement( $node->{name} );
 
-			$xml->setNodeName($seen_ns{$node->{ns}} . ':' . $xml->nodeName) if ($node->{ns} and $seen_ns{$node->{ns}});
+			$xml->setNodeName($seen_ns{$node->{namespace_uri}} . ':' . $xml->nodeName) if ($node->{namespace_uri} and $seen_ns{$node->{namespace_uri}});
 
-		} elsif ( $node->{type} == XML_TEXT_NODE ) {
+		} elsif ( $node->{node_type} == XML_TEXT_NODE ) {
 			$xml = $doc->createTextNode( $node->{value} );
 			
-		} elsif ( $node->{type} == XML_COMMENT_NODE ) {
+		} elsif ( $node->{node_type} == XML_COMMENT_NODE ) {
 			$xml = $doc->createComment( $node->{value} );
 			
-		} elsif ( $node->{type} == XML_NAMESPACE_DECL ) {
-			if ($self->nodeset->[$node->{parent}]->{ns} eq $node->{value}) {
-				$_xmllist[$node->{parent}]->setNamespace($node->{value}, $node->{name}, 1);
+		} elsif ( $node->{node_type} == XML_NAMESPACE_DECL ) {
+			if ($self->nodeset->[$node->{parent_node_id}]->{namespace_uri} eq $node->{value}) {
+				$_xmllist[$node->{parent_node_id}]->setNamespace($node->{value}, $node->{name}, 1);
 			} else {
-				$_xmllist[$node->{parent}]->setNamespace($node->{value}, $node->{name}, 0);
+				$_xmllist[$node->{parent_node_id}]->setNamespace($node->{value}, $node->{name}, 0);
 			}
 			$seen_ns{$node->{value}} = $node->{name};
 			next;
 
-		} elsif ( $node->{type} == XML_ATTRIBUTE_NODE ) {
+		} elsif ( $node->{node_type} == XML_ATTRIBUTE_NODE ) {
 
-			if ($node->{ns}) {
-				$_xmllist[$node->{parent}]->setAttributeNS($node->{ns}, $node->{name}, $node->{value});
+			if ($node->{namespace_uri}) {
+				$_xmllist[$node->{parent_node_id}]->setAttributeNS($node->{namespace_uri}, $node->{name}, $node->{value});
 			} else {
-				$_xmllist[$node->{parent}]->setAttribute($node->{name}, $node->{value});
+				$_xmllist[$node->{parent_node_id}]->setAttribute($node->{name}, $node->{value});
 			}
 
 			next;
@@ -125,10 +125,10 @@ sub nodeset_to_xml {
 			next;
 		}
 
-		$_xmllist[$node->{id}] = $xml;
+		$_xmllist[$node->{intra_doc_id}] = $xml;
 
-		if (defined $node->{parent}) {
-			$_xmllist[$node->{parent}]->addChild($xml);
+		if (defined $node->{parent_node_id}) {
+			$_xmllist[$node->{parent_node_id}]->addChild($xml);
 		}
 	}
 
@@ -153,12 +153,12 @@ sub _xml_to_nodeset {
 	$self->{next_id} = 0;
 
 	push @{$self->{nodelist}}, { 
-		id	=> 0,
-		parent	=> undef,
-		name	=> $node->localname,
-		value	=> undef,
-		type	=> $node->nodeType,
-		ns	=> $node->namespaceURI
+		intra_doc_id	=> 0,
+		parent_node_id	=> undef,
+		name		=> $node->localname,
+		value		=> undef,
+		node_type	=> $node->nodeType,
+		namespace_uri	=> $node->namespaceURI
 	};
 
 	$self->_nodeset_recurse( $node, 0);
@@ -177,12 +177,12 @@ sub _nodeset_recurse {
 		my $type = $kid->nodeType;
 
 		push @{$self->{nodelist}}, { 
-			id			=> ++$self->{next_id},
-			parent	=> $parent, 
+			intra_doc_id	=> ++$self->{next_id},
+			parent_node_id	=> $parent, 
 			name		=> $kid->localname,
 			value		=> _grab_content( $kid, $type ),
-			type		=> $type,
-			ns			=> ($type != 18 ? $kid->namespaceURI : undef )
+			node_type	=> $type,
+			namespace_uri	=> ($type != 18 ? $kid->namespaceURI : undef )
 		};
 
 		return if ($type == 3);
