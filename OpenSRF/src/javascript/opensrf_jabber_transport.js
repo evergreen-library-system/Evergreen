@@ -288,8 +288,18 @@ jabber_socket.prototype.tcp_recv = function( timeout ) {
 
 		did_receive = true;
 		while( count > 0 ) { 
+			new Logger().transport(
+				"before process data", Logger.DEBUG );
+
 			this.process_data( this.instream.read( count ) );
+
+			new Logger().transport(
+				"after process data", Logger.DEBUG );
+
 			count = this.instream.available();
+
+			new Logger().transport(
+				"received " + count + " bytes" , Logger.DEBUG );
 		}
 
 	} else { 
@@ -345,18 +355,23 @@ jabber_socket.prototype.recv = function( timeout ) {
 	now = new Date().getTime();
 	then = now;
 
+	var first_pass = true;
 	while( ((now-then) <= timeout) ) {
 		
-		if( this.buffer.length == 0 ) {
+		if( this.buffer.length == 0  || !first_pass ) {
 			if( ! this.tcp_recv( timeout ) ) {
 				return null;
 			}
 		}
+		first_pass = false;
 
 		//new Logger().transport( "\n\nTCP Buffer Before: \n" + this.buffer, Logger.DEBUG );
 
 		var buf = this.buffer;
 		this.buffer = "";
+
+		new Logger().transport( "CURRENT BUFFER\n" + buf,
+			Logger.DEBUG );
 
 		buf = buf.replace( /\n/g, '' ); // remove pesky newlines
 
@@ -387,9 +402,11 @@ jabber_socket.prototype.recv = function( timeout ) {
 				process_iq_data( msg_xml );
 				return;
 
+			} else {
+				this.buffer = buf;
 			}
-		}
 
+		} 
 		now = new Date().getTime();
 	}
 
