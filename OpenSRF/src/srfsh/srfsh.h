@@ -60,6 +60,5 @@ void sig_int_handler( int s );
 int load_history();
 int handle_math( char* words[] );
 int do_math( int count, int style );
-
-
+int handle_introspect(char* words[]);
 

@@ -167,6 +167,9 @@ int parse_request( char* request ) {
 	else if (!strcmp(words[0],"math_bench"))
 		ret_val = handle_math(words);
 
+	else if (!strcmp(words[0],"introspect"))
+		ret_val = handle_introspect(words);
+
 	else if (words[0][0] == '!')
 		ret_val = handle_exec( words );
 
@@ -176,6 +179,22 @@ int parse_request( char* request ) {
 	return 1;
 
 }
+
+
+int handle_introspect(char* words[]) {
+
+	if(words[1]) {
+		fprintf(stderr, "--> %s\n", words[1]);
+		char buf[256];
+		memset(buf,0,256);
+		sprintf( buf, "request %s opensrf.system.method.all", words[1] );
+		return parse_request( buf );
+	}
+
+	return 0;
+}
+
+
 
 int handle_set( char* words[]) {
 
@@ -501,19 +520,27 @@ int print_help() {
 			"set <variable> <value> - set a srfsh variable (e.g. set pretty_print true )\n"
 			"print <variable>		- Displays the value of a srfsh variable\n"
 			"---------------------------------------------------------------------------------\n"
+
 			"router query servers <server1 [, server2, ...]>\n"
 			"	- Returns stats on connected services\n"
+			"\n"
 			"\n"
 			"request <service> <method> [ <json formatted string of params> ]\n"
 			"	- Anything passed in will be wrapped in a json array,\n"
 			"		so add commas if there is more than one param\n"
 			"\n"
+			"\n"
 			"relay <service> <method>\n"
 			"	- Performs the requested query using the last received result as the param\n"
+			"\n"
 			"\n"
 			"math_bench <num_batches> [0|1|2]\n"
 			"	- 0 means don't reconnect, 1 means reconnect after each batch of 4, and\n"
 			"		 2 means reconnect after every request\n"
+			"\n"
+			"introspect <service>\n"
+			"	- prints the API for the service\n"
+			"\n"
 			"---------------------------------------------------------------------------------\n"
 			"Note: long output is piped through 'less'.  To search in 'less', type: /<search>\n"
 			"---------------------------------------------------------------------------------\n"
