@@ -1,6 +1,6 @@
 package Fieldmapper;
 use JSON;
-use vars qw/$fieldmap @class_list/;
+use vars qw/$fieldmap @class_name_list/;
 
 $fieldmap = 
 {
@@ -86,11 +86,11 @@ sub new {
 	my $self = shift;
 	my $value = shift;
 	$value = [] unless (defined $value);
-	return bless $value => $self->class;
+	return bless $value => $self->class_name;
 }
 
 sub javascript {
-	my $class = shift;
+	my $class_name = shift;
 	return 'var fieldmap = ' . JSON->perl2JSON($fieldmap) . ';'
 }
 
@@ -100,15 +100,15 @@ sub AUTOLOAD {
 	my $obj = shift;
 	my $value = shift;
 	(my $field = $AUTOLOAD) =~ s/^.*://o;
-	my $class = $obj->class;
+	my $class_name = $obj->class_name;
 
-	die "No field by the name $field in $class!"
-		unless (exists $$fieldmap{$class}{fields}{$field});
+	die "No field by the name $field in $class_name!"
+		unless (exists $$fieldmap{$class_name}{fields}{$field});
 
-	my $pos = $$fieldmap{$class}{fields}{$field}{position};
+	my $pos = $$fieldmap{$class_name}{fields}{$field}{position};
 
 	{	no strict 'subs';
-		*{$obj->class."::$field"} = sub {
+		*{$obj->class_name."::$field"} = sub {
 			my $self = shift;
 			my $new_val = shift;
 			$self->[$pos] = $new_val if (defined $new_val);
@@ -119,15 +119,15 @@ sub AUTOLOAD {
 	return $obj->$field($value);
 }
 
-sub class {
-	my $class = shift;
-	return ref($class) || $class;
+sub class_name {
+	my $class_name = shift;
+	return ref($class_name) || $class_name;
 }
 
 sub real_fields {
 	my $self = shift;
-	my $class = $self->class;
-	my $fields = $$fieldmap{$class}{fields};
+	my $class_name = $self->class_name;
+	my $fields = $$fieldmap{$class_name}{fields};
 
 	my @f = grep {
 			!$$fields{$_}{virtual}
@@ -138,12 +138,12 @@ sub real_fields {
 
 sub api_level {
 	my $self = shift;
-	return $fieldmap->{$self->class}->{api_level};
+	return $fieldmap->{$self->class_name}->{api_level};
 }
 
 sub json_hint {
 	my $self = shift;
-	return $fieldmap->{$self->class}->{hint};
+	return $fieldmap->{$self->class_name}->{hint};
 }
 
 
@@ -156,7 +156,7 @@ for my $pkg ( keys %$fieldmap ) {
 		use base 'Fieldmapper';
 	PERL
 
-	push @class_list, $pkg;
+	push @class_name_list, $pkg;
 
 	JSON->register_class_hint(
 		hint => $pkg->json_hint,
