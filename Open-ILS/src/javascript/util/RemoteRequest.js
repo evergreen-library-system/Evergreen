@@ -119,7 +119,7 @@ RemoteRequest.prototype.getResultObject = function() {
 		throw new EXCommunication(obj.err_msg); 
 	}
 
-	if( obj[0] && !obj[1] ) 
+	if( obj[0] != null && obj[1] == null ) 
 		return obj[0];
 
 	return obj;
