@@ -27,24 +27,20 @@ char* tabs(int count);
 int main( int argc, char* argv[] ) {
 
 
-	if( argc < 5 ) 
-		fatal_handler( "usage: %s <jabbersever> <username> <password> <config_file>", argv[0] );
+	if( argc < 2 ) 
+		fatal_handler( "usage: %s <config_file>", argv[0] );
 		
-	config_reader_init( "opensrf", argv[4] );	
+	config_reader_init( "opensrf", argv[1] );	
 
 	char request[256];
 	memset(request, 0, 256);
 	printf(prompt);
 
-	client = client_init( argv[1], SRFSH_PORT, 0 );
-	if( ! client_connect( client, argv[2], argv[3], "srfsh", 5, AUTH_DIGEST ) ) {
-		fprintf(stderr, "Unable to connect to jabber server '%s' as '%s'\n", argv[1], argv[2]);
-		fprintf(stderr, "Most queries will be futile...\n" );
-	}
-
 	if( ! osrf_system_bootstrap_client("srfsh.xml") ) 
 		fprintf( stderr, "Unable to bootstrap client for requests\n");
 
+
+	client = osrf_system_get_transport_client();
 
 	while( fgets( request, 255, stdin) ) {
 
@@ -85,7 +81,7 @@ int main( int argc, char* argv[] ) {
 		free(req_copy);
 	}
 
-	fprintf(stderr, "Exiting...\n[Ignore Segfault]\n");
+	fprintf(stderr, "Exiting...\n[Ignore Segfault :)]\n");
 
 	config_reader_free();	
 	log_free();
