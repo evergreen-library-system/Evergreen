@@ -1,0 +1,651 @@
+<html>
+	<head>
+		<title>OpenSRF Persistance Application API-Namespace</title>
+		<style><!--
+
+			* {		font-family: sans-serif;
+					font-size: 13pt;
+			}
+
+			.sectionhead {  border: solid black 1px;
+					background-color: #333333;
+					font-weight: bold;
+					color: white;
+					text-align: center;
+					padding: 5px;
+					margin: 5px;
+			}
+
+			.section {      border: solid black 1px;
+					background-color: lightgray;
+					color: black;
+					padding: 5px;
+					margin: 5px;
+					margin-bottom: 15px;
+			}
+
+			.listheader {	font-weight: bold;
+					margin-top: 15px
+			}
+			
+			.value {	font-style: italic;
+					margin-top: 5px;
+					margin-left: 20px;
+			}
+
+			.description {	margin-top: 0px;
+					margin-left: 30px;
+			}
+
+			//-->
+		</style>
+
+	</head>
+	<body>
+		<center>
+			<h2>OpenSRF Persistance Application API-Namespace</h2>
+			<hr width="90%">
+		</center>
+
+		<div style="margin: 30px;">
+			The Persistance Application provides other OpenSRF Applications with a standard API for
+			sharing and caching data.  These data are stored in Slots, and there are three basic
+			interfaces for interacting with Slots:  QUEUEs, STACKs and OBJECTs.
+		</div>
+
+		<ul>
+			<li> <h3>General Persistance Slot methods</h3>
+
+			Methods used to create, set up and destroy slots.  
+			<br><br>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.slot.create( slot_name )</div>
+
+				Creates a Persistance Slot.
+
+				<div class="listheader">Parameters:</div>
+				<div class="value">slot_name (optional)</div>
+				<div class="description">
+					The name of the Persistance Slot to create.  If a name is not specified
+					then the Slot is given a generic, unique name.  Automatically named Slots
+					are destroyed as soon as they are empty.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The name of the Slot that was created.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.slot.create_expirable( slot_name, expire_interval )</div>
+
+				Creates a Persistance Slot that is automatically destroyed after the specified interval.
+
+				<div class="listheader">Parameters:</div>
+				<div class="value">slot_name</div>
+				<div class="description">The name of the Persistance Slot to create.</div>
+				<div class="value">expire_interval</div>
+				<div class="description">
+					An interval describing how long to wait after an access has
+					occured on the Slot before automatically destroying it.  The interval
+					can be specified using a fairly complex, human readable format, or as
+					a number of seconds.  For example:
+					<ul>
+						<li> 1 day, 2 hours and 35 minutes </li>
+						<li> +2h </li>
+						<li> 1 week </li>
+						<li> 300 </li>
+					</ul>
+
+					A setting of 0 (zero) disables automatic expiration for a Slot.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The name of the Slot that was created.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.slot.set_expire( slot_name, expire_interval )</div>
+
+				Sets or disables the expiration interval on an existing Persistance Slot.
+
+				<div class="listheader">Parameters:</div>
+				<div class="value">slot_name</div>
+				<div class="description">The name of the Persistance Slot to update.</div>
+				<div class="value">expire_interval</div>
+				<div class="description">
+					An interval describing how long to wait after an access has
+					occured on the Slot before automatically destroying it.  The interval
+					can be specified using a fairly complex, human readable format, or as
+					a number of seconds.  For example:
+					<ul>
+						<li> 1 day, 2 hours and 35 minutes </li>
+						<li> +2h </li>
+						<li> 1 week </li>
+						<li> 300 </li>
+					</ul>
+
+					A setting of 0 (zero) disables automatic expiration for a Slot.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The number of seconds the requested interval represents.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.slot.destroy( slot_name )</div>
+
+				Destroys a Persistance Slot.
+
+				<div class="listheader">Parameters:</div>
+				<div class="value">slot_name</div>
+				<div class="description">The name of the Persistance Slot to destroy.</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The name of the Slot that was destroyed.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<br>
+			</li>
+
+			<li> <h3>QUEUE API-Namespace Slot methods</h3>
+
+			Uses the Slot in FIFO mode, pushing values onto one end an pulling them off the other.
+			The QUEUE API-Namespace is useful for creating an ordered message passing access point.
+
+			<br><br>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.push( slot_name, object )</div>
+
+				Adds an object to a Slot in FIFO order.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">The name of the Persistance Slot to use for storing the object.</div>
+
+				<div class="value">object</div>
+				<div class="description">The object that should be pushed onto the front of the QUEUE.</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The name of the Slot that was used.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.pop( slot_name )</div>
+
+				Removes and returns the next value in a QUEUE type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which an object should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The next object on the QUEUE Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.peek( slot_name )</div>
+
+				Returns the next value in a QUEUE type Slot <u>without</u> removing it.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which an object should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The next object on the QUEUE Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.peek.all( slot_name )</div>
+
+				Returns all values in a QUEUE type Slot <u>without</u> removing them.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which the objects should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					A stream of all objects on the QUEUE Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.peek.all.atomic( slot_name )</div>
+
+				Returns all values in a QUEUE type Slot <u>without</u> removing them.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which the objects should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					A single array of all objects on the QUEUE Slot, or an empty
+					array if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.length( slot_name )</div>
+
+				Returns the number of objects in the QUEUE type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot in question.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The number of objects in the Persistance Slot.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.queue.size( slot_name )</div>
+
+				Returns the number bytes taken up by the JSON encoded version of
+				the objects in the QUEUE type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot in question.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The space, in bytes, used by the JSON encoded
+					objects in the Persistance Slot.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<br>
+			</li>
+
+			<li> <h3>STACK style Slot methods</h3>
+
+			Uses the Slot in FILO mode, pushing and pulling objects at the same end of a list.
+			The STACK API-Namespace is useful for creating a global Application context stack.
+
+			<br><br>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.push( slot_name, object )</div>
+
+				Adds an object to a Slot in FILO order.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">The name of the Persistance Slot to use for storing the object.</div>
+
+				<div class="value">object</div>
+				<div class="description">The object that should be pushed onto the front of the STACK.</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The name of the Slot that was used.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.pop( slot_name )</div>
+
+				Removes and returns the next value in a STACK type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which an object should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The next object on the STACK Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.peek( slot_name )</div>
+
+				Returns the next value in a STACK type Slot <u>without</u> removing it.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which an object should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The next object on the STACK Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.peek.all( slot_name )</div>
+
+				Returns all values in a STACK type Slot <u>without</u> removing them.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which the objects should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					A stream of all objects on the STACK Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.peek.all.atomic( slot_name )</div>
+
+				Returns all values in a STACK type Slot <u>without</u> removing them.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which the objects should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					A single array of all objects on the STACK Slot, or an empty
+					array if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.depth( slot_name )</div>
+
+				Returns the number of objects in the STACK type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot in question.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The number of objects in the Persistance Slot.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.stack.size( slot_name )</div>
+
+				Returns the number bytes taken up by the JSON encoded version of
+				the objects in the STACK type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot in question.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The space, in bytes, used by the JSON encoded
+					objects in the Persistance Slot.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<br>
+			</li>
+
+			<li> <h3>OBJECT style Slot methods</h3>
+
+			Uses the Slot in Single Object mode, storing a single object in the Slot.
+
+			<br><br>
+
+			The OBJECT API-Namespace is useful for globally caching unique objects.
+
+			<br><br>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.object.set( slot_name, object )</div>
+
+				Sets the value of a Slot.  If the Slot has been used in STACK or QUEUE
+				mode and <b>opensrf.persist.object.set</b> is called then all objects currently
+				in the Slot will be lost.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">The name of the Persistance Slot to use for storing the object.</div>
+
+				<div class="value">object</div>
+				<div class="description">The object that should be set as the one object in the Slot.</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">The name of the Slot that was used.</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.object.get( slot_name )</div>
+
+				Removes and returns the value in an OBJECT type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which the object should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The object in the OBJECT Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.object.peek( slot_name )</div>
+
+				Returns the value in an OBJECT type Slot <u>without</u> removing it.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot from which the object should be retrieved.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The object on the OBJECT Slot, or an empty
+					(NULL) result if the Slot is empty.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			<div class="section">
+				<div class="sectionhead">opensrf.persist.object.size( slot_name )</div>
+
+				Returns the number bytes taken up by the JSON encoded version of
+				the object in the OBJECT type Slot.
+
+				<div class="listheader">Parameters:</div>
+
+				<div class="value">slot_name</div>
+				<div class="description">
+					The name of the Persistance Slot in question.
+				</div>
+
+
+				<div class="listheader">Returns:</div>
+				
+				<div class="value">Success</div>
+				<div class="description">
+					The space, in bytes, used by the JSON encoded
+					object in the Persistance Slot.
+				</div>
+
+				<div class="value">Failure</div>
+				<div class="description">An empty (NULL) result.</div>
+			</div>
+
+			</li>
+		</ul>
+	</body>
+</html>
