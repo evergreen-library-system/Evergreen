@@ -1,9 +1,7 @@
 package OpenILS::Application::Storage::CDBI;
-use vars qw/@ISA/;
-use Class::DBI;
 use base qw/Class::DBI/;
+use Class::DBI;
 
-use OpenILS::Utils::Fieldmapper;
 
 our $VERSION = 1;
 
@@ -13,6 +11,8 @@ use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::metabib;
+
+use OpenILS::Utils::Fieldmapper;
 
 sub child_init {
 	my $self = shift;
@@ -213,87 +213,88 @@ sub modify_from_fieldmapper {
 
 
 
+sub import {
+	#-------------------------------------------------------------------------------
+	actor::user->has_a( home_ou => 'actor::org_unit' );
+	#actor::org_unit->has_a( address => 'actor::address' );
+	#-------------------------------------------------------------------------------
+	actor::org_unit->has_many( users => 'actor::user' );
+	actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
+	actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
+	#actor::org_unit->has_a( address => 'actor::address' );
+	#-------------------------------------------------------------------------------
 
-#-------------------------------------------------------------------------------
-actor::user->has_a( home_ou => 'actor::org_unit' );
-#actor::org_unit->has_a( address => 'actor::address' );
-#-------------------------------------------------------------------------------
-actor::org_unit->has_many( users => 'actor::user' );
-actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
-actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
-#actor::org_unit->has_a( address => 'actor::address' );
-#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	asset::copy->has_a( call_number => 'asset::call_number' );
+	#asset::copy->might_have( metadata => 'asset::copy_metadata' );
+	#-------------------------------------------------------------------------------
+	#asset::copy_metadata->might_have( copy => 'asset::copy' );
+	asset::copy_metadata->has_a( circulating_location => 'actor::org_unit');
+	asset::copy_metadata->has_a( hold_radius => 'actor::org_unit_type');
+	#-------------------------------------------------------------------------------
+	asset::call_number->has_a( record => 'biblio::record_entry' );
+	asset::call_number->has_many( copies => 'asset::copy' );
+	#-------------------------------------------------------------------------------
+	
 
-#-------------------------------------------------------------------------------
-asset::copy->has_a( call_number => 'asset::call_number' );
-#asset::copy->might_have( metadata => 'asset::copy_metadata' );
-#-------------------------------------------------------------------------------
-#asset::copy_metadata->might_have( copy => 'asset::copy' );
-asset::copy_metadata->has_a( circulating_location => 'actor::org_unit');
-asset::copy_metadata->has_a( hold_radius => 'actor::org_unit_type');
-#-------------------------------------------------------------------------------
-asset::call_number->has_a( record => 'biblio::record_entry' );
-asset::call_number->has_many( copies => 'asset::copy' );
-#-------------------------------------------------------------------------------
-
-
-#-------------------------------------------------------------------------------
-biblio::record_note->has_a( record => 'biblio::record_entry' );
-#-------------------------------------------------------------------------------
-biblio::record_entry->has_a( creator => 'actor::user' );
-biblio::record_entry->has_a( editor => 'actor::user' );
-biblio::record_entry->might_have( mods_entry => 'biblio::record_mods' => qw/mods/ );
-biblio::record_entry->has_many( notes => 'biblio::record_note' );
-biblio::record_entry->has_many( nodes => 'biblio::record_node', { order_by => 'intra_doc_id' } );
-biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
-
-# should we have just one field entry per class for each record???? (xslt vs xpath)
-#biblio::record_entry->has_a( title_field_entries => 'metabib::title_field_entry' );
-#biblio::record_entry->has_a( author_field_entries => 'metabib::author_field_entry' );
-#biblio::record_entry->has_a( subject_field_entries => 'metabib::subject_field_entry' );
-#biblio::record_entry->has_a( keyword_field_entries => 'metabib::keyword_field_entry' );
-#-------------------------------------------------------------------------------
-biblio::record_node->has_a( owner_doc => 'biblio::record_entry' );
-#biblio::record_node->has_a(
-#	parent_node	=> 'biblio::record_node::subnode',
-#	inflate		=> sub { return biblio::record_node::subnode::_load(@_) }
-#);
-#-------------------------------------------------------------------------------
-
-#-------------------------------------------------------------------------------
-metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
-metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source_record'] );
-#-------------------------------------------------------------------------------
-metabib::title_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source_record'] );
-#metabib::title_field_entry->has_a( field => 'config::metabib_field_map' );
-#-------------------------------------------------------------------------------
-metabib::author_field_entry->has_many( source_records => [ 'metabib::author_field_entry_source_map' => 'source_record'] );
-#metabib::author_field_entry->has_a( field => 'config::metabib_field_map' );
-#-------------------------------------------------------------------------------
-metabib::subject_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source_record'] );
-#metabib::subject_field_entry->has_a( field => 'config::metabib_field_map' );
-#-------------------------------------------------------------------------------
-metabib::keyword_field_entry->has_many( source_records => [ 'metabib::keyword_field_entry_source_map' => 'source_record'] );
-#metabib::keyword_field_entry->has_a( field => 'config::metabib_field_map' );
-#-------------------------------------------------------------------------------
-metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
-metabib::metarecord_source_map->has_a( source_record => 'biblio::record_entry' );
-#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	biblio::record_note->has_a( record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	biblio::record_entry->has_a( creator => 'actor::user' );
+	biblio::record_entry->has_a( editor => 'actor::user' );
+	biblio::record_entry->might_have( mods_entry => 'biblio::record_mods' => qw/mods/ );
+	biblio::record_entry->has_many( notes => 'biblio::record_note' );
+	biblio::record_entry->has_many( nodes => 'biblio::record_node', { order_by => 'intra_doc_id' } );
+	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
+	
+	# should we have just one field entry per class for each record???? (xslt vs xpath)
+	#biblio::record_entry->has_a( title_field_entries => 'metabib::title_field_entry' );
+	#biblio::record_entry->has_a( author_field_entries => 'metabib::author_field_entry' );
+	#biblio::record_entry->has_a( subject_field_entries => 'metabib::subject_field_entry' );
+	#biblio::record_entry->has_a( keyword_field_entries => 'metabib::keyword_field_entry' );
+	#-------------------------------------------------------------------------------
+	biblio::record_node->has_a( owner_doc => 'biblio::record_entry' );
+	#biblio::record_node->has_a(
+	#	parent_node	=> 'biblio::record_node::subnode',
+	#	inflate		=> sub { return biblio::record_node::subnode::_load(@_) }
+	#);
+	#-------------------------------------------------------------------------------
+	
+	#-------------------------------------------------------------------------------
+	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
+	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source_record'] );
+	#-------------------------------------------------------------------------------
+	metabib::title_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source_record'] );
+	metabib::title_field_entry->has_a( field => 'config::metabib_field' );
+	#-------------------------------------------------------------------------------
+	metabib::author_field_entry->has_many( source_records => [ 'metabib::author_field_entry_source_map' => 'source_record'] );
+	metabib::author_field_entry->has_a( field => 'config::metabib_field' );
+	#-------------------------------------------------------------------------------
+	metabib::subject_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source_record'] );
+	metabib::subject_field_entry->has_a( field => 'config::metabib_field' );
+	#-------------------------------------------------------------------------------
+	metabib::keyword_field_entry->has_many( source_records => [ 'metabib::keyword_field_entry_source_map' => 'source_record'] );
+	metabib::keyword_field_entry->has_a( field => 'config::metabib_field' );
+	#-------------------------------------------------------------------------------
+	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
+	metabib::metarecord_source_map->has_a( source_record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
 
 
-# should we have just one field entry per class for each record???? (xslt vs xpath)
-metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
-metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-#-------------------------------------------------------------------------------
-metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
-metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-#-------------------------------------------------------------------------------
-metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
-metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-#-------------------------------------------------------------------------------
-metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
-metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-#-------------------------------------------------------------------------------
+	# should we have just one field entry per class for each record???? (xslt vs xpath)
+	metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
+	metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
+	metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
+	metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
+	metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+}
 
 
 1;
