@@ -1,6 +1,6 @@
 CC				= gcc
 LIB_DIR		= ../../lib 
-CC_OPTS		= -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include 
+CC_OPTS		= -fPIC -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include 
 EXE_LD_OPTS = -L $(LIB_DIR) -lreadline -lxml2 -lopensrf_transport -lopensrf_stack -ljson -lncurses -lmd5
 
 all: srfsh

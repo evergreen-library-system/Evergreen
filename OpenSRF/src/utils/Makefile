@@ -1,6 +1,6 @@
 CC				= gcc
 LIB_DIR		= ../../lib
-CC_OPTS		= -Wall -O2  -I ../../include 
+CC_OPTS		= -fPIC -Wall -O2  -I ../../include 
 EXE_LD_OPTS = -L $(LIB_DIR) 
 
 all: util 
