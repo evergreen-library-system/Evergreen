@@ -19,7 +19,7 @@ void get_timestamp( char buf_36chars[]) {
 double get_timestamp_millis() {
 	struct timeb t;
 	ftime(&t);
-	double time	= ( (int)t.time	+ ( ((float)t.millitm) / 1000 ) );
+	double time	= ( (int)t.time	+ ( ((double)t.millitm) / 1000 ) );
 	return time;
 }
 	

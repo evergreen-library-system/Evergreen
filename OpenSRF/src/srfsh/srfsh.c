@@ -361,7 +361,7 @@ int send_request( char* server,
 		printf("Request Completed Successfully\n");
 
 
-	printf("Request Time in seconds: %f\n", end - start );
+	printf("Request Time in seconds: %.3f\n", end - start );
 	printf("------------------------------------\n");
 
 	osrf_app_session_request_finish( session, req_id );
