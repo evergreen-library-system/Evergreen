@@ -2,9 +2,7 @@ package OpenILS::Application::WORM;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
-use OpenSRF::EX qw(:try);
-
-use OpenSRF::Application;
+use OpenSRF::EX qw/:try/;
 
 use OpenILS::Utils::FlatXML;
 use OpenILS::Utils::Fieldmapper;
@@ -26,14 +24,11 @@ use open qw/:utf8/;
 
 
 sub child_init {
-
-	try {
-		OpenSRF::Application->method_lookup( "blah" );
-
-	} catch Error with { 
-		warn "Child Init Failed: " . shift() . "\n";
-	};
-
+	#try {
+	#	__PACKAGE__->method_lookup('i.do.not.exist');
+	#} catch Error with {
+	#	warn shift();
+	#};
 }
 
 
@@ -97,18 +92,58 @@ my $xpathset = {
 # --------------------------------------------------------------------------------
 
 __PACKAGE__->register_method( 
-		api_name => "open-ils.worm.wormize",
-		method	=> "wormize",
-		api_level	=> 1,
-		argc	=> 1,
-		stream => 0,
-		);
+	api_name	=> "open-ils.worm.wormize",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
 
 sub wormize {
 
 	my( $self, $client, $docid ) = @_;
 
-	my $st_ses = OpenSRF::AppSession->create('open-ils.storage');
+	# step -1: grab the doc from storage
+	my $meth = $self->method_lookup('open-ils.storage.biblio.record_marc.retrieve');
+	my ($marc) = $meth->run($docid);
+	return $self->wormize_marc( $client, $docid, $marc->marc );
+}
+
+
+__PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.wormize.marc",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
+
+my $get_old_fr;
+my $rm_old_fr;
+sub wormize_marc {
+	my( $self, $client, $docid, $xml) = @_;
+
+	# step 0: turn the doc into marcxml and mods
+	my $marcdoc = $parser->parse_string($xml);
+
+
+	# step 1: build the KOHA rows
+	my @ns_list = _marcxml_to_full_rows( $marcdoc );
+	$_->record( $docid ) for (@ns_list);
+
+
+	$get_old_fr = $self->method_lookup( 'open-ils.storage.metabib.full_rec.search.record')
+		unless ($get_old_fr);
+	$rm_old_fr = $self->method_lookup( 'open-ils.storage.metabib.full_rec.batch.delete')
+		unless ($rm_old_fr);
+
+	my ($old_fr) = $get_old_fr->run( $docid );
+	if (@$old_fr) {
+		my ($res) = $rm_old_fr->run( @$old_fr );
+		throw OpenSRF::EX::PANIC ("Couldn't remove old metabib::full_rec entries!")
+			unless ($res);
+	}
+
+	# step 1.1: start the WORM transaction
+	my $st_ses = $client->session->create('open-ils.storage');
 	throw OpenSRF::EX::PANIC ("WORM can't connect to the open-is.storage server!")
 		if (!$st_ses->connect);
 
@@ -122,41 +157,15 @@ sub wormize {
 		unless ($resp->content);
 
 
-	# step -1: grab the doc from storage
-	my $marc_req = $st_ses->request('open-ils.storage.biblio.record_marc.retrieve', $docid);
-	$marc_req->wait_complete;
-
-	$resp = $marc_req->recv;
-	unless (UNIVERSAL::can($resp, 'content')) {
-		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
-		$rb->wait_complete;
-		throw OpenSRF::EX::PANIC ("Couldn't run .record_marc.retrieve! -- $resp")
-	}
-	unless ($resp->content) {
-		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
-		$rb->wait_complete;
-		throw OpenSRF::EX::PANIC ("Couldn't find doc for docid $docid failed! -- ".$resp->content)
-	}
-
-	$marc_req->finish();
 
 
-	my $marcxml = $resp->content->marc;
-
-	# step 0: turn the doc into marcxml and mods
-	if(!$marcxml) { throw OpenSRF::EX::PANIC ("Can't build XML from nodeset for $docid'"); }
-	my $marcdoc = $parser->parse_string($marcxml);
-
-
-	# step 1: build the KOHA rows
-	my @ns_list = _marcxml_to_full_rows( $marcdoc );
-	$_->record( $docid ) for (@ns_list);
-
+	# step 1.2: insert the KOHA style data
 	my $fr_req = $st_ses->request( 'open-ils.storage.metabib.full_rec.batch.create', @ns_list );
 	$fr_req->wait_complete;
 
 	$resp = $fr_req->recv;
 
+	my $rb;
 	unless (UNIVERSAL::can($resp, 'content')) {
 		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
 		$rb->wait_complete;
@@ -197,7 +206,7 @@ sub wormize {
 
 	my $mods = $mods_sheet->transform($marcdoc);
 
-	# step 2;
+	# step 2: get the MODS based metadata
 	for my $class (keys %$xpathset) {
 		for my $type(keys %{$xpathset->{$class}}) {
 			my $value = _get_field_value( $mods, $xpathset->{$class}->{$type} );
