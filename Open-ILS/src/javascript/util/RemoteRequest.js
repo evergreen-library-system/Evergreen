@@ -109,9 +109,6 @@ RemoteRequest.prototype.getText = function() {
 RemoteRequest.prototype.getResultObject = function() {
 	var obj = JSON2js( this.xmlhttp.responseText );
 
-	debug("Request " + this.param_string + 
-			"\nReceived\n" + this.xmlhttp.responseText);
-
 	if(obj == null) {
 		alert("received null response");
 		return null;
@@ -121,6 +118,9 @@ RemoteRequest.prototype.getResultObject = function() {
 		alert("Something's Wrong: " + js2JSON(obj));
 		throw new EXCommunication(obj.err_msg); 
 	}
+
+	if( obj[0] && !obj[1] ) 
+		return obj[0];
 
 	return obj;
 }
