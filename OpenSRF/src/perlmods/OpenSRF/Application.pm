@@ -219,9 +219,12 @@ sub register_method {
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
 	$args{package} = $app;                
-	$args{object_hint} ||= '';                
 	$args{server_class} = server_class();
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
+
+	unless ($args{object_hint}) {
+		($args{object_hint} = $args{package}) =~ s/::/_/go;
+	}
 
 	JSON->register_class_hint( name => $args{package}, hint => $args{object_hint}, type => "hash" );
 

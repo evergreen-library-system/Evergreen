@@ -124,7 +124,7 @@ sub load_bootstrap_config {
 
 	OpenSRF::Utils::Config->load( config_file => $bootstrap_config_file );
 
-	JSON->register_class_hint( name => "OpenSRF::Application", hint => "", type => "hash" );
+	JSON->register_class_hint( name => "OpenSRF::Application", hint => "method", type => "hash" );
 
 	OpenSRF::Transport->message_envelope(  "OpenSRF::Transport::SlimJabber::MessageWrapper" );
 	OpenSRF::Transport::PeerHandle->set_peer_client(  "OpenSRF::Transport::SlimJabber::PeerConnection" );
