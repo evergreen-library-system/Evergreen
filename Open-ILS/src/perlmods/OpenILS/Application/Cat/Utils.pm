@@ -2,18 +2,7 @@ package OpenILS::Application::Cat::Utils;
 use strict; use warnings;
 use OpenILS::Utils::Fieldmapper;
 
-=head blah
-use constant INTRA_DOC	=> 2;
-use constant parent_node		=> 3;
-use constant TYPE			=> 4;
-use constant NAME			=> 5;
-use constant VALUE		=> 6;
-use constant CHILDREN	=> 7;
-use constant ALTERED		=> 8;
-use constant DELETED		=> 9;
-=cut
-
-
+# ---------------------------------------------------------------------------
 # Converts an XML nodeset into a tree
 sub nodeset2tree {
 	my($class, $nodeset) = @_;
@@ -25,13 +14,16 @@ sub nodeset2tree {
 		next unless $child;
 
 		if( defined($child->parent_node) ) {
-			my $parent = Fieldmapper::biblio::record_node->new($nodeset->[$child->parent_node]);
-			$parent->children( [ $parent->children(), $child ]);
+			my $parent = $nodeset->[$child->parent_node];
+			$parent->children( 
+					[ @{$parent->children() ? $parent->children() : [] }, $child ]);
 		}
 	}
 	return $nodeset->[0];
 }
 
+# ---------------------------------------------------------------------------
+# Converts a tree into an xml nodeset
 
 my @_nodelist = ();
 sub tree2nodeset {
@@ -69,6 +61,10 @@ sub tree2nodeset {
 	$node->children(undef);
 	return \@_nodelist;
 }
+
+# ---------------------------------------------------------------------------
+# Walks a nodeset and checks for insert, update, and delete and makes 
+# appropriate db calls
 
 sub commit_nodeset {
 	my($self, $nodeset) = @_;
@@ -121,4 +117,18 @@ sub _deletenode {
 	return 1;
 }
  
+# ---------------------------------------------------------------------------
+
+
+sub nodeset_to_mods_nodeset {
+
+
+}
+
+
+
+
+
+
+
 1;
