@@ -1,17 +1,27 @@
 package OpenILS::Application::Search;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
+use JSON;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Cache;
+
 
 use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Web;
+
+use OpenILS::Application::AppUtils;
 
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 
 # Houses generic search utilites 
+
+sub child_init {
+	OpenILS::Application::SearchCache->child_init();
+}
 
 
 
@@ -38,7 +48,7 @@ sub biblio_search_marc {
 	$request->wait_complete();
 
 	warn "Calling recv\n";
-	my $response = $request->recv();
+	my $response = $request->recv(20);
 
 	warn "out of recv\n";
 	if($response and UNIVERSAL::isa($response,"OpenSRF::EX")) {
@@ -264,6 +274,56 @@ sub record_id_to_mods {
 	$session->disconnect();
 
 	return $mods_obj;
+}
+
+
+package OpenILS::Application::SearchCache;
+use strict; use warnings;
+
+my $cache_handle;
+
+sub child_init {
+
+	warn "initing searchcache child\n";
+
+	my $config_client = OpenSRF::Utils::SettingsClient->new();
+	my $memcache_servers = 
+		$config_client->config_value( 
+				"apps","open-ils.search", "app_settings","memcache" );
+
+	warn "1\n";
+
+	if( !$memcache_servers ) {
+		throw OpenSRF::EX::Config ("
+				No Memcache servers specified for open-ils.search!");
+	}
+
+	warn "2\n";
+	if(!ref($memcache_servers)) {
+		$memcache_servers = [$memcache_servers];
+	}
+	warn "3\n";
+	use Data::Dumper;
+	warn Dumper $memcache_servers;
+	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.search", 0, $memcache_servers );
+	warn "after init\n";
+}
+
+sub new {return bless({},shift());}
+
+sub put_cache {
+	my($self, $key, $data, $timeout) = @_;
+	warn "putting into cache $key\n";
+	return undef unless( $key and $data );
+	$timeout ||= 30;
+	$cache_handle->put_cache( "_open-ils.search_$key", JSON->perl2JSON($data), $timeout );
+}
+
+sub get_cache {
+	my( $self, $key ) = @_;
+	my $json =  $cache_handle->get_cache("_open-ils.search_$key");
+	warn "retrieving from cache $key\n  =>>>  $json";
+	return JSON->JSON2perl($json);
 }
 
 

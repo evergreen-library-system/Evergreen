@@ -1,6 +1,8 @@
 package OpenILS::Application::Search::StaffClient;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
+use Digest::MD5 qw(md5_hex);
+use OpenILS::Application::Search;
 
 # Searches specific to the staff client code
 
@@ -164,6 +166,21 @@ sub cat_biblio_search_class_id {
 
 	my $search_hash;
 
+	my $cache_key = md5_hex( $org_id . $class . $sort . $string );
+	my $id_array = OpenILS::Application::SearchCache->get_cache($cache_key);
+
+	if(ref($id_array)) {
+		warn "Return search from cache\n";
+		my $size = @$id_array;
+		my @ids;
+		my $x = 0;
+		for my $i (@$id_array) {
+			if($x++ > 200){last;}
+			push @ids, $i;
+		}
+		return { count => $size, ids => \@ids };
+	}
+
 	my $method = $self->method_lookup("open-ils.search.biblio.marc");
 	if(!$method) {
 		throw OpenSRF::EX::PANIC 
@@ -173,9 +190,20 @@ sub cat_biblio_search_class_id {
 	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
 
 	my @ids;
-	for my $i (@$records) { push @ids, $i->[0]; }
+	my @cache_ids;
 
-	return \@ids;
+	# add some sanity checking
+	my $x=0; # Here we're limiting by 200
+	for my $i (@$records) { 
+		if($x++ < 200 ){
+			push @ids, $i->[0]; 
+		}
+		push @cache_ids, $i->[0]; 
+	}
+	my $size = @$records;
+	OpenILS::Application::SearchCache->put_cache( $cache_key, \@cache_ids, $size );
+
+	return { count =>$size, ids => \@ids };
 
 }
 
