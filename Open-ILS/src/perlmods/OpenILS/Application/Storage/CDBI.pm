@@ -30,7 +30,6 @@ biblio::record_note->has_a( record => 'biblio::record_entry' );
 biblio::record_entry->has_many( notes => 'biblio::record_note' );
 biblio::record_entry->has_many( nodes => 'biblio::record_node', { order_by => 'intra_doc_id' } );
 biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
-biblio::record_entry->has_a( metarecord => 'metabib::metarecord' );
 
 # should we have just one field entry per class for each record???? (xslt vs xpath)
 #biblio::record_entry->has_a( title_field_entries => 'metabib::title_field_entry' );

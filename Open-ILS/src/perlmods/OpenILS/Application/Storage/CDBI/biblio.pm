@@ -10,8 +10,8 @@ use base qw/biblio/;
 #use OpenILS::Application::Storage::CDBI::asset;
 
 biblio::record_entry->table( 'biblio_record_entry' );
-biblio::record_entry->columns( All => qw/id tcn_source tcn_value metarecord
-					 creator editor create_date edit_date
+biblio::record_entry->columns( All => qw/id tcn_source tcn_value creator
+					 editor create_date edit_date
 					 source active deleted/ );
 
 #-------------------------------------------------------------------------------
