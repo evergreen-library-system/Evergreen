@@ -160,6 +160,21 @@ __PACKAGE__->register_method(
 	argc => 2,
 );
 
+sub find_slot {
+	my $self = shift;
+	my $client = shift;
+	my $slot = shift;
+
+	my $sid = _get_name_id($slot);
+	return $slot if ($sid);
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.slot.find',
+	method => 'find_slot',
+	argc => 2,
+);
+
 sub get_expire_interval {
 	my $self = shift;
 	my $client = shift;
