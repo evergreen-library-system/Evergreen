@@ -29,8 +29,8 @@ try {
 	throw OpenSRF::EX::PANIC ("I can't connect to the storage server!")
 		if (!$st_server->connect);
 
-	throw OpenSRF::EX::PANIC ("I can't connect to the worm server!")
-		if ($wormize && !$worm_server->connect);
+#	throw OpenSRF::EX::PANIC ("I can't connect to the worm server!")
+#		if ($wormize && !$worm_server->connect);
 
 } catch Error with {
 	die shift;
@@ -132,9 +132,10 @@ while ( my $xml = <> ) {
 		die $r unless (UNIVERSAL::can($r, 'content'));
 		die "Couldn't commit transaction!" unless ($r->content);
 
-		if ($wormize) {
-			$worm_server->request( 'open-ils.worm.wormize', $new_id,);
-		}
+#		if ($wormize) {
+#			$worm_server->full_request( 'open-ils.worm.wormize', $new_id,);
+#			#$worm_server->disconnect;
+#		}
 
 	}
 }
