@@ -55,7 +55,7 @@ $SIG{INT} = sub { instance()->killall(); };
 
 $SIG{HUP} = sub{ instance()->hupall(); };
 
-#$SIG{CHLD} = \&process_automation;
+$SIG{CHLD} = \&process_automation;
 
 
 { 
@@ -270,7 +270,7 @@ sub process_automation {
 			if( $newpid ) {
 				$self->pid_hash( $newpid, $method );
 			}
-			else { $0 = $method; eval $method; exit; }
+			else { eval $method; exit; }
 		}
 	}
 
@@ -291,7 +291,6 @@ sub launch_settings {
 	}
 	else {
 		my $apname = "settings";
-		$apname =~ tr/[a-z]/[A-Z]/;
 		$0 = "OpenSRF App ($apname)";
 		eval _unixserver( "settings" );
 		if($@) { die "$@\n"; }
@@ -313,8 +312,7 @@ sub launch_settings_listener {
 	}
 	else {
 		my $apname = $app;
-		$apname =~ tr/[a-z]/[A-Z]/;
-		$0 = "Listener ($apname)";
+		$0 = "OpenSRF listener ($apname)";
 		eval _listener( $app );
 		exit;
 	}
@@ -339,7 +337,6 @@ sub launch_unix {
 		}
 		else {
 			my $apname = $app;
-			$apname =~ tr/[a-z]/[A-Z]/;
 			$0 = "OpenSRF App ($apname)";
 			eval _unixserver( $app );
 			exit;
@@ -366,9 +363,7 @@ sub launch_listener {
 		}
 		else {
 			my $apname = $app;
-			$apname =~ tr/[a-z]/[A-Z]/;
 			$0 = "Listener ($apname)";
-			warn "Launching Listener with command:\n " . _listener($app) . "\n";
 			eval _listener( $app );
 			exit;
 		}

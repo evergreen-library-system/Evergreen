@@ -137,6 +137,8 @@ sub serve {
 
 	my $app = $self->app();
 
+	$0 = "OpenSRF master ($app)";
+
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	$logger->transport("Max Req: " . $client->config_value("apps", $app, "unix_config", "max_requests" ), INFO );
 
@@ -201,12 +203,12 @@ sub child_finish_hook {
 
 sub child_init_hook { 
 
-	$0 = "$0_child";
+	$0 =~ s/master/drone/g;
 
 	my $self = shift;
 
-	$logger->transport( 
-			"Creating PeerHandle from UnixServer child_init_hook", INTERNAL );
+#	$logger->transport( 
+#			"Creating PeerHandle from UnixServer child_init_hook", INTERNAL );
 	OpenSRF::Transport::PeerHandle->construct( $self->app() );
 	$logger->transport( "PeerHandle Created from UnixServer child_init_hook", INTERNAL );
 

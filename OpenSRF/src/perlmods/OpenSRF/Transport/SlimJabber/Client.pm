@@ -523,7 +523,8 @@ sub process {
 
 	unless( $self->{_socket}->connected ) {
 		OpenSRF::EX::JabberDisconnected->throw( 
-		  "This JabberClient instance is no longer connected to the server", ERROR );
+		  "This JabberClient instance is no longer connected to the server " . 
+		  $self->username . " : " . $self->resource, ERROR );
 	}
 
 	my $val = $self->timed_read( $timeout );

@@ -8,6 +8,11 @@ use OpenSRF::EX qw/:try/;
 use strict;
 use warnings;
 
+
+sub child_init {
+	OpenSRF::Application->method_lookup("opensrf.nunya");
+}
+
 sub DESTROY{}
 
 our $log = 'OpenSRF::Utils::Logger';

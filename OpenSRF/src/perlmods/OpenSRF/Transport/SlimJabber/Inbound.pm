@@ -112,19 +112,18 @@ sub listen {
 			
 	$logger->transport( $self->{app} . " going into listen loop", INFO );
 	while(1) {
-		my $sock = $self->unix_sock();
-		my $socket = IO::Socket::UNIX->new( Peer => $sock  );
 	
-		throw OpenSRF::EX::Socket( "Unable to connect to UnixServer: socket-file: $sock \n :=> $! " )
-			unless ($socket->connected);
-
+		my $sock = $self->unix_sock();
 		my $o = $self->process( -1 );
 
 		if( ! defined( $o ) ) {
 			throw OpenSRF::EX::Jabber( "Listen Loop failed at 'process()'" );
 		}
-		print $socket $o;
 
+		my $socket = IO::Socket::UNIX->new( Peer => $sock  );
+		throw OpenSRF::EX::Socket( "Unable to connect to UnixServer: socket-file: $sock \n :=> $! " )
+			unless ($socket->connected);
+		print $socket $o;
 		$socket->close;
 
 	}
