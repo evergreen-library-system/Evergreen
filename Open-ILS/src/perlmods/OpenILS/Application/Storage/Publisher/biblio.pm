@@ -186,12 +186,20 @@ sub get_record_nodeset {
 		
 		my $rec = biblio::record_entry->retrieve($id);
 		$client->respond( $self->_cdbi_list2AoH( $rec->nodes ) ) if ($rec);
+
+		last if ($self->api_name !~ /list/o);
 	}
 	return undef;
 }
 __PACKAGE__->register_method(
 	method		=> 'get_record_nodeset',
 	api_name	=> 'open-ils.storage.biblio.record_entry.nodeset.retrieve',
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	method		=> 'get_record_nodeset',
+	api_name	=> 'open-ils.storage.biblio.record_entry.nodeset.retrieve.list',
 	api_level	=> 1,
 	argc		=> 1,
 	stream		=> 1,
