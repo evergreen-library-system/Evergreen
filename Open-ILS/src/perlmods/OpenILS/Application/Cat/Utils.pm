@@ -38,21 +38,19 @@ sub nodeset2tree {
 # ---------------------------------------------------------------------------
 # Converts a tree into an xml nodeset
 
-my @_nodelist = ();
+#my @_nodelist = ();
 sub tree2nodeset {
-	my($self, $node) = @_;
+	my($self, $node, $newnodes) = @_;
 
-	if((ref($node) eq "ARRAY")) {
+	if((ref($node) ne "Fieldmapper::biblio::record_node")) {
 		$node = Fieldmapper::biblio::record_node->new($node);
 	}
 
-	return \@_nodelist unless $node;
+	return $newnodes unless $node;
 
-	if(!defined($node->parent_node)) {
-		@_nodelist = ();
-	}
+	if(!$newnodes) { $newnodes = []; }
 
-	push( @_nodelist, $node );
+	push( @$newnodes, $node );
 
 	if( $node->children() ) {
 
@@ -66,12 +64,12 @@ sub tree2nodeset {
 				$child->ischanged(1); #just to be sure
 			}
 	
-			$self->tree2nodeset( $child );
+			$self->tree2nodeset( $child, $newnodes );
 		}
 	}
 
-	$node->children(undef);
-	return \@_nodelist;
+	$node->children([]); #we don't need them hanging around
+	return $newnodes;
 }
 
 # ---------------------------------------------------------------------------
@@ -81,23 +79,34 @@ sub tree2nodeset {
 sub commit_nodeset {
 	my($self, $nodeset) = @_;
 
+	my @_deleted = ();
+	my @_added = ();
+	my @_altered = ();
+
 	my $size = @$nodeset;
 	my $offset = 0;
 
+
 	for my $index (0..$size) {
+
 
 		my $pos = $index + $offset;
 		my $node = $nodeset->[$index];
 		next unless $node;
 
+
 		if($node->isdeleted()) {
 			$offset--;
+			warn "Deleting Node " . $node->intra_doc_id() . "\n";
+			push @_deleted, $node;
 			return undef unless _deletenode($node);
 			next;
 		}
 
 		if($node->isnew()) {
 			$node->intra_doc_id($pos);
+			warn "Adding Node $pos\n";
+			push @_added, $node;
 			return undef unless _addnode($node);
 			next;
 		}
@@ -106,12 +115,20 @@ sub commit_nodeset {
 				and $node->intra_doc_id() != $pos) ||
 			 $node->ischanged() ) {
 
+			warn "Updating Node " . $node->intra_doc_id() . " to $pos\n";
+
 			$node->intra_doc_id($pos);
+			push @_altered, $node;
 			return undef unless _updatenode($node);
 			next;
 		}
 	}
-	return 1;
+
+	my $a = @_added;
+	my $d = @_deleted;
+	my $al = @_altered;
+	my $hash = { added => $a, deleted => $d, updated =>  $al };
+	return $hash;
 }
 
 # send deletes, updates, then adds
