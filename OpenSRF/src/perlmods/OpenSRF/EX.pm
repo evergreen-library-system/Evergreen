@@ -56,6 +56,9 @@ sub throw() {
 		$self = $self->new( @_ );
 	}
 
+	warn "Throwing Exception:\n\n" . $self->stringify() . "\n\n";
+		
+
 	if(		$self->class->isa( "OpenSRF::EX::INFO" )	||
 				$self->class->isa( "OpenSRF::EX::NOTICE" ) ||
 				$self->class->isa( "OpenSRF::EX::WARN" ) ) {
