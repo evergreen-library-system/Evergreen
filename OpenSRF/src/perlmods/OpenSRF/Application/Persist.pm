@@ -116,7 +116,7 @@ sub create_expirable_store {
 	my $time = shift || $default_expire_time;
 
 	try {
-		$name = $self->method_lookup( 'opensrf.persist.slot.create' )->run( $name );
+		($name) = $self->method_lookup( 'opensrf.persist.slot.create' )->run( $name );
 		return undef unless $name;
 
 		$self->method_lookup('opensrf.persist.slot.set_expire')->run($name, $time);
