@@ -1,5 +1,5 @@
 package OpenSRF::Application;
-use vars qw/$_app $log @_METHODS $thunk//;
+use vars qw/$_app $log @_METHODS $thunk $server_class/;
 
 use base qw/OpenSRF/;
 use OpenSRF::AppSession;
@@ -9,7 +9,9 @@ use OpenSRF::Utils::Logger qw/:level/;
 use Data::Dumper;
 use Time::HiRes qw/time/;
 use OpenSRF::EX qw/:try/;
-use OpenSRF::UnixServer;  # to get the server class from UnixServer::App
+#use OpenSRF::UnixServer;  # to get the server class from UnixServer::App
+
+sub DESTROY{};
 
 use strict;
 use warnings;
@@ -18,6 +20,14 @@ $log = 'OpenSRF::Utils::Logger';
 
 our $in_request = 0;
 our @pending_requests;
+
+sub server_class {
+	my $class = shift;
+	if($class) {
+		$server_class = $class;
+	}
+	return $server_class;
+}
 
 sub thunk {
 	my $self = shift;
@@ -203,8 +213,9 @@ sub register_method {
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
         $args{package} ||= $app;                
-	$args{api_name} ||= UnixServer->app() . '.' . $args{method};
-	$args{server_class} ||= UnixServer->app();
+	$args{server_class} = server_class();
+	$args{api_name} ||= $args{server_class} . '.' . $args{method};
+	$args{code} ||= \&{$app . '::' . $args{method}};
 
 	$_METHODS[$args{api_level}]{$args{api_name}} = bless \%args => $app;
 
@@ -212,7 +223,7 @@ sub register_method {
 		stream => 0,
 		api_name => $args{api_name}.'.atomic',
 		method => 'make_stream_atomic'
-	) if ($stream);
+	) if ($args{stream});
 }
 
 sub retrieve_remote_apis {
@@ -278,7 +289,7 @@ sub method_lookup {
 	my $class = ref($self) || $self;
 
 	$log->debug("Lookup of [$method] by [$class]", DEBUG);
-	$log->debug("Available methods\n".Dumper(\%_METHODS), INTERNAL);
+	$log->debug("Available methods\n".Dumper(\@_METHODS), INTERNAL);
 
 	my $meth;
 	if (__PACKAGE__->thunk) {
