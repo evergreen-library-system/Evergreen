@@ -282,7 +282,7 @@ sub introspect {
 	my $client = shift;
 
 	for my $api_level ( 1 .. $#_METHODS ) {
-		$client->respond( $_METHODS[$api_level] );
+		$client->respond( { $api_level => $_METHODS[$api_level] } );
 	}
 
 	return undef;
