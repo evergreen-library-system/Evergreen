@@ -937,11 +937,65 @@ osrf_message* router_registrar_process_app_request(
 			cur_class = cur_class->next;
 		}
 
-		//if( json_object_array_length(result_content) < 1 ) 
-		//	result_content = NULL;
+	} else if(!strcmp(omsg->method_name,"opensrf.router.info.stats")) {
+
+		/* we have a server_class array which holds an array of node_objects.
+			each node_object contains an array of stats
+			*/
+
+		debug_handler("Processing opensrf.router.info.stats request");
+
+		result_content = json_object_new_object();
+		server_class_node* cur_class = router->server_class_list;
+
+		while( cur_class != NULL ) {
+
+			server_node* start_node = cur_class->current_server_node;
+			server_node* cur_node = start_node;
+			if( cur_node == NULL ) continue; 
+
+			json* server_object = json_object_new_object();
+
+			do {
+
+				json* node_stats_array = json_object_new_array();
+
+				json* json_reg_time = json_object_new_object();
+				json_object_object_add( json_reg_time, "reg_time", 
+						json_object_new_int((int)cur_node->reg_time));
+				json_object_array_add(  node_stats_array, json_reg_time );
+
+				json* json_upd_time = json_object_new_object();
+				json_object_object_add( json_upd_time, "upd_time", 
+						json_object_new_int((int)cur_node->upd_time));
+				json_object_array_add( node_stats_array, json_upd_time );
+
+				json* json_la_time = json_object_new_object();
+				json_object_object_add( json_la_time, "la_time", 
+						json_object_new_int((int)cur_node->la_time));
+				json_object_array_add( node_stats_array, json_la_time );
+
+				json* json_serve_count = json_object_new_object();
+				json_object_object_add( json_serve_count, "serve_count", 
+						json_object_new_int((int)cur_node->serve_count));
+				json_object_array_add( node_stats_array, json_serve_count );
+
+				json_object_object_add( server_object, cur_node->remote_id, node_stats_array );
+
+				cur_node = cur_node->next;
+	
+			} while( cur_node != start_node );
+
+			json_object_object_add( 
+					result_content, cur_class->server_class, server_object ); 
+	
+			cur_class = cur_class->next;
+	
+		}
 
 	}
-
+	
+	
 	if( result_content == NULL ) 
 		return NULL;
 
