@@ -41,8 +41,11 @@ sub register_class_hint {
 	my $class = shift;
 	my %args = @_;
 
-	$_class_map{$args{hint}} = \%args;
-	$_class_map{$args{name}} = \%args;
+	$args{hint_re} = qr/(?:\b$args{hint})\b/;
+	$args{class_re} = qr/(?:\b$args{name})\b/;
+
+	$_class_map{hints}{$args{hint}} = \%args;
+	$_class_map{classes}{$args{name}} = \%args;
 }
 JSON->register_class_hint(
 	name => 'JSON::object_unknown',
@@ -72,7 +75,7 @@ sub _JSON_regex {
 
 sub _json_hint_to_class {
 	my $hint = shift;
-	return $_class_map{$hint}{name} if (exists $_class_map{$hint});
+	return $_class_map{hints}{$hint}{name} if (exists $_class_map{hints}{$hint});
 	return 'JSON::object_unknown';
 }
 
@@ -85,9 +88,24 @@ sub JSON2perl {
 	# Replace with code...
 	s/"(?:(?:\\[\"])|[^\"])*"/ shift(\@strings) /sog;
 
-	# handle class blessings
-	s/\/\*--\s*S\w*?\s+\w+\s*--\*\// bless(/sog;
-	s/\/\*--\s*E\w*?\s+(\w+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
+	if (1) {
+		# handle class blessings
+		s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
+		s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
+	} else {
+		warn $_."\n\n";
+		my $string = $_;
+		for my $hint (values %{$_class_map{hints}}) {
+			$string =~ s/\/\*--\s*S\w*?\s+$$hint{hint_re}\s*--\*\// bless(/sog;
+			$string =~ s/\/\*--\s*E\w*?\s+$$hint{hint_re}\s*--\*\// => "$$hint{name}") /sog;
+			warn $$hint{name}."\n\n";
+			warn '   '.$string."\n\n";
+		}
+		$_ = $string;
+		s/\/\*--\s*\w+\s+\S+\s*--\*\///sog;
+		warn $_."\n\n";
+	}
+
 	s/\b(-?\d+\.?\d*)/ do { JSON::number::new($1) } /sog;
 
 	# Change javascript stuff to perl...
@@ -125,7 +143,7 @@ sub old_JSON2perl {
 			next;
 		} elsif ($element =~ /^\/\*--\s*S\w*?\s+(\w+)\s*--\*\/$/) {
 			my $hint = $1;
-			if (exists $_class_map{$hint}) {
+			if (exists $_class_map{hints}{$hint}) {
 				$casts[$casting_depth] = $hint;
 				$output .= ' bless(';
 			}
@@ -141,8 +159,8 @@ sub old_JSON2perl {
 			$casting_depth--;
 			my $hint = $casts[$casting_depth];
 			$casts[$casting_depth] = undef;
-			if (defined $hint and exists $_class_map{$hint}) {
-				$output .= $element . ',"'. $_class_map{$hint}{name} . '")';
+			if (defined $hint and exists $_class_map{hints}{$hint}) {
+				$output .= $element . ',"'. $_class_map{hints}{$hint}{name} . '")';
 				next;
 			}
 		} elsif ($element eq ':') {
@@ -170,16 +188,16 @@ sub perl2JSON {
 		$output = 'null';
 	} elsif (ref($perl) and ref($perl) =~ /^JSON/) {
 		$output .= $perl;
-	} elsif ( ref($perl) && exists($_class_map{ref($perl)}) ) {
-		$output .= '/*--S '.$_class_map{ref($perl)}{hint}.'--*/';
-		if (lc($_class_map{ref($perl)}{type}) eq 'hash') {
+	} elsif ( ref($perl) && exists($_class_map{classes}{ref($perl)}) ) {
+		$output .= '/*--S '.$_class_map{classes}{ref($perl)}{hint}.'--*/';
+		if (lc($_class_map{classes}{ref($perl)}{type}) eq 'hash') {
 			my %hash =  %$perl;
 			$output .= perl2JSON(undef,\%hash);
-		} elsif (lc($_class_map{ref($perl)}{type}) eq 'array') {
+		} elsif (lc($_class_map{classes}{ref($perl)}{type}) eq 'array') {
 			my @array =  @$perl;
 			$output .= perl2JSON(undef,\@array);
 		}
-		$output .= '/*--E '.$_class_map{ref($perl)}{hint}.'--*/';
+		$output .= '/*--E '.$_class_map{classes}{ref($perl)}{hint}.'--*/';
 	} elsif (ref($perl) and ref($perl) =~ /HASH/) {
 		$output .= '{';
 		my $c = 0;
@@ -223,20 +241,20 @@ sub perl2prettyJSON {
 		$output = 'null';
 	} elsif (ref($perl) and ref($perl) =~ /^JSON/) {
 		$output .= $perl;
-	} elsif ( ref($perl) && exists($_class_map{ref($perl)}) ) {
+	} elsif ( ref($perl) && exists($_class_map{classes}{ref($perl)}) ) {
 		$depth++;
 		$output .= "\n";
 		$output .= "   "x$depth;
-		$output .= '/*--S '.$_class_map{ref($perl)}{hint}."--*/ ";
-		if (lc($_class_map{ref($perl)}{type}) eq 'hash') {
+		$output .= '/*--S '.$_class_map{classes}{ref($perl)}{hint}."--*/ ";
+		if (lc($_class_map{classes}{ref($perl)}{type}) eq 'hash') {
 			my %hash =  %$perl;
 			$output .= perl2prettyJSON(\%hash,undef,1);
-		} elsif (lc($_class_map{ref($perl)}{type}) eq 'array') {
+		} elsif (lc($_class_map{classes}{ref($perl)}{type}) eq 'array') {
 			my @array =  @$perl;
 			$output .= perl2prettyJSON(\@array,undef,1);
 		}
 		#$output .= "   "x$depth;
-		$output .= ' /*--E '.$_class_map{ref($perl)}{hint}.'--*/';
+		$output .= ' /*--E '.$_class_map{classes}{ref($perl)}{hint}.'--*/';
 		$depth--;
 	} elsif (ref($perl) and ref($perl) =~ /HASH/) {
 		#$depth++;
