@@ -43,7 +43,7 @@ __PACKAGE__->register_method(
 
 sub cat_biblio_search_tcn {
 
-	my( $self, $client, $tcn ) = @_;
+	my( $self, $client, $org_id, $tcn ) = @_;
 
 	$tcn =~ s/.*?(\w+)\s*$/$1/o;
 	warn "Searching TCN $tcn\n";
@@ -66,7 +66,16 @@ sub cat_biblio_search_tcn {
 		push @ids, $record->id;
 	}
 
-	return _records_to_mods( @ids );
+
+	my $record_list = _records_to_mods( @ids );
+
+	for my $rec (@$record_list) {
+		$client->respond($rec);
+	}
+#return _records_to_mods( @ids );
+
+
+#	return undef;
 
 }
 
@@ -79,7 +88,12 @@ __PACKAGE__->register_method(
 
 sub cat_biblio_search_class {
 
-	my( $self, $client, $class, $sort, $string ) = @_;
+	my( $self, $client, $org_id, $class, $sort, $string ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("Not enough args to open-ils.search.cat.biblio.class")
+			unless( defined($org_id) and $class and $sort and $string );
+
 
 	my $search_hash;
 
@@ -93,10 +107,122 @@ sub cat_biblio_search_class {
 
 	my @ids;
 	for my $i (@$records) { push @ids, $i->[0]; }
-	return _records_to_mods(@ids);
+
+	my $mods_list = _records_to_mods( @ids );
+
+	# ---------------------------------------------------------------
+	# append copy count information to the mods objects
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	my $request = $session->request(
+		"open-ils.storage.biblio.record_copy_count.batch",  $org_id, @ids );
+
+	for my $id (@ids) {
+
+		warn "receiving copy counts for doc $id\n";
+
+		my $response = $request->recv();
+		next unless $response;
+
+		if( $response and UNIVERSAL::isa($response, "Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $count = $response->content;
+		my $mods_obj = undef;
+		for my $m (@$mods_list) {
+			$mods_obj = $m if ($m->{doc_id} == $id)
+		}
+		if($mods_obj) {
+			$mods_obj->{copy_count} = $count;
+		}
+
+		$client->respond( $mods_obj );
+
+	}	
+	$request->finish();
+
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+	# ---------------------------------------------------------------
+
+#	return $mods_list;
+
+	return undef;
 
 }
 
+
+__PACKAGE__->register_method(
+	method	=> "cat_biblio_search_class_stream",
+	api_name	=> "open-ils.search.cat.biblio.class.stream",
+	argc		=> 3, 
+	note		=> "Searches biblio information by search class",
+);
+
+sub cat_biblio_search_class_stream {
+
+	my( $self, $client, $org_id, $class, $sort, $string ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("Not enough args to open-ils.search.cat.biblio.class")
+			unless( defined($org_id) and $class and $sort and $string );
+
+
+	my $search_hash;
+
+	my $method = $self->method_lookup("open-ils.search.biblio.marc");
+	if(!$method) {
+		throw OpenSRF::EX::PANIC 
+			("Can't lookup method 'open-ils.search.biblio.marc'");
+	}
+
+	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
+
+	my @ids;
+	for my $i (@$records) { push @ids, $i->[0]; }
+
+	my $mods_list = _records_to_mods( @ids );
+
+	# ---------------------------------------------------------------
+	# append copy count information to the mods objects
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	my $request = $session->request(
+		"open-ils.storage.biblio.record_copy_count.batch",  $org_id, @ids );
+
+	for my $id (@ids) {
+
+		warn "receiving copy counts for doc $id\n";
+
+		my $response = $request->recv();
+		next unless $response;
+
+		if( $response and UNIVERSAL::isa($response, "Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $count = $response->content;
+		my $mods_obj = undef;
+		for my $m (@$mods_list) {
+			$mods_obj = $m if ($m->{doc_id} == $id)
+		}
+		if($mods_obj) {
+			$mods_obj->{copy_count} = $count;
+		}
+
+		$client->respond( $mods_obj );
+
+	}	
+	$request->finish();
+
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+	# ---------------------------------------------------------------
+
+}
 
 
 __PACKAGE__->register_method(
@@ -136,14 +262,100 @@ sub biblio_search_marc {
 __PACKAGE__->register_method(
 	method	=> "get_org_tree",
 	api_name	=> "open-ils.search.actor.org_tree.retrieve",
-	argc		=> 0, 
+	argc		=> 1, 
 	note		=> "Returns the entire org tree structure",
 );
 
 sub get_org_tree {
-	my( $self, $client ) = @_;
+
+	my( $self, $client, $user_session ) = @_;
+
+	if( $user_session ) {
+
+		my $user_obj = 
+			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+
+		
+		my $session = OpenSRF::AppSession->create("open-ils.storage");
+		my $request = $session->request( 
+				"open-ils.storage.actor.org_unit.retrieve", $user_obj->home_ou );
+		my $response = $request->recv();
+
+		if(!$response) { 
+			throw OpenSRF::EX::ERROR (
+					"No response from storage for org_unit retrieve");
+		}
+		if(UNIVERSAL::isa($response,"Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $home_ou = $response->content;
+
+		# XXX grab descendants and build org tree from them
+=head asdf
+		my $request = $session->request( 
+				"open-ils.storage.actor.org_unit_descendants" );
+		my $response = $request->recv();
+		if(!$response) { 
+			throw OpenSRF::EX::ERROR (
+					"No response from storage for org_unit retrieve");
+		}
+		if(UNIVERSAL::isa($response,"Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $descendants = $response->content;
+=cut
+
+		$session->disconnect();
+		$session->kill_me();
+
+		return $home_ou;
+	}
+
 	return OpenILS::Application::AppUtils->get_org_tree();
 }
+
+
+
+__PACKAGE__->register_method(
+	method	=> "copy_count_by_org_unit",
+	api_name	=> "open-ils.search.copy_count_by_location",
+	argc		=> 1, 
+	note		=> "Searches biblio information by marc tag",
+);
+
+sub copy_count_by_org_unit {
+	my( $self, $client, $org_id, @record_ids ) = @_;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $request = $session->request(
+		"open-ils.storage.biblio.record_copy_count.batch",  $org_id, @record_ids );
+
+	for my $id (@record_ids) {
+
+		my $response = $request->recv();
+		next unless $response;
+
+		if( $response and UNIVERSAL::isa($response, "Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $count = $response->content;
+		$client->respond( { record => $id, count => $count } );
+	}
+
+	$request->finish();
+	$session->disconnect();
+	$session->kill_me();
+	return undef;
+}
+
+
+
+
+
+
 
 
 # ---------------------------------------------------------------------------

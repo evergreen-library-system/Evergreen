@@ -287,7 +287,8 @@ sub _get_field_value {
 		for my $child (@children) {
 
 			# add the childs content to the growing buffer
-			next if ($string =~ $child->textContent);  # uniquify the values
+			my $content = quotemeta($child->textContent);
+			next if ($string =~ /$content/);  # uniquify the values
 			$string .= $child->textContent . " ";
 		}
 		if( ! @children ) {

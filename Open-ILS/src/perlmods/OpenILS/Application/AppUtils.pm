@@ -125,6 +125,10 @@ sub simple_scalar_request {
 	return $value;
 }
 
+
+
+
+
 sub get_org_tree {
 
 	my $self = shift;
@@ -132,24 +136,36 @@ sub get_org_tree {
 	my $orglist = $self->simple_scalar_request( 
 			"open-ils.storage", "open-ils.storage.actor.org_unit_list" );
 
+	return $self->build_org_tree($orglist);
 
-	$orglist = [ sort { $a->id <=> $b->id } @$orglist ]; 
+}
 
-	for my $org (@$orglist) {
+
+sub build_org_tree {
+
+	my( $self, $orglist ) = @_;
+
+	return $orglist unless ( 
+			ref($orglist) and @$orglist > 1 );
+
+	my @list = sort { $a->ou_type <=> $b->ou_type } @$orglist;
+
+	for my $org (@list) {
 		next unless ($org and defined($org->parent_ou));
-		my $parent = $orglist->[$org->parent_ou - 1];
+		my ($parent) = grep { $_->id == $org->parent_ou } @list;
 		next unless $parent;
 		$parent->children([]) unless defined($parent->children); 
 		push( @{$parent->children}, $org );
 	}
 
-	return $self->tree_child_sorter( $orglist->[0] );
+	return $self->tree_child_sorter( $list[0] );
+
 }
 
 sub tree_child_sorter {
 	my($self, $tree) = @_;
 			
-	return unless $tree->children;
+	return $tree unless ($tree and $tree->children);
 
 	$tree->children(
 			[ sort { $a->name cmp $b->name } @{$tree->children} ] );

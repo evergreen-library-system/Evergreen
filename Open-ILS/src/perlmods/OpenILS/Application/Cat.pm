@@ -538,11 +538,26 @@ sub create_copies {
 		$copy->creator( $user_obj->id );
 	}
 
-	my $result = 
-		OpenILS::Application::AppUtils->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.asset.copy.batch.create", @copies );
+	my $session = OpenILS::Application::AppUtils->start_db_session;
+	my $request = $session->request( 
+			"open-ils.storage.asset.copy.batch.create", @copies );
 
-	return $result;
+	my $result = $request->recv();
+
+	if(!$result) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw OpenSRF::EX::ERROR 
+			("No response from storage on copy.batch.create");
+	}
+
+	if(UNIVERSAL::isa($result, "Error")) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw $result ($result->stringify);
+	}
+
+	OpenILS::Application::AppUtils->commit_db_session($session);
+	return $result->content;
+
 }
 
 
@@ -564,11 +579,26 @@ sub edit_copies {
 		$copy->editor( $user_obj->id );
 	}
 
-	my $result = 
-		OpenILS::Application::AppUtils->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.asset.copy.batch.update", @copies );
+	my $session = OpenILS::Application::AppUtils->start_db_session;
+	my $request = $session->request( 
+			"open-ils.storage.asset.copy.batch.update", @copies );
 
-	return $result;
+	my $result = $request->recv();
+
+	if(!$result) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw OpenSRF::EX::ERROR 
+			("No response from storage on copy.batch.update");
+	}
+
+	if(UNIVERSAL::isa($result, "Error")) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw $result ($result->stringify);
+	}
+
+	OpenILS::Application::AppUtils->commit_db_session($session);
+	return $result->content;
+
 }
 
 
@@ -591,11 +621,27 @@ sub delete_copies {
 		$copy->editor( $user_obj->id );
 	}
 
-	my $result = 
-		OpenILS::Application::AppUtils->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.asset.copy.batch.update", @copies );
 
-	return $result;
+	my $session = OpenILS::Application::AppUtils->start_db_session;
+	my $request = $session->request( 
+			"open-ils.storage.asset.copy.batch.update", @copies );
+
+	my $result = $request->recv();
+
+	if(!$result) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw OpenSRF::EX::ERROR 
+			("No response from storage on copy.batch.delete");
+	}
+
+	if(UNIVERSAL::isa($result, "Error")) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw $result ($result->stringify);
+	}
+
+	OpenILS::Application::AppUtils->commit_db_session($session);
+	return $result->content;
+
 }
 
 1;
