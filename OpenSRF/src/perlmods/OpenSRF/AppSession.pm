@@ -5,8 +5,9 @@ use OpenSRF::DomainObject::oilsMessage;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::Transport::PeerHandle;
-use OpenSRF::Utils::Config;
 use OpenSRF::Utils::Logger qw(:level);
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Config;
 use OpenSRF::EX;
 use OpenSRF;
 use Exporter;
@@ -97,12 +98,8 @@ sub server_build {
 
 	return undef unless ($sess_id and $remote_id and $service);
 
-	my $conf = OpenSRF::Utils::Config->current;
+	my $config_client = OpenSRF::Utils::SettingsClient->new();
 	
-	if( ! $conf ) { 
-		OpenSRF::EX::Config->throw( "No suitable config found" ); 
-	}
-
 	if ( my $thingy = $class->find($sess_id) ) {
 		$thingy->remote_id( $remote_id );
 		$logger->debug( "AppSession returning existing session $sess_id", DEBUG );
@@ -119,7 +116,8 @@ sub server_build {
 	}
 
 
-	my $max_requests = $conf->$service->max_requests;
+	#my $max_requests = $conf->$service->max_requests;
+	my $max_requests	= $config_client->config_value("apps",$service,"max_requests");
 	$logger->debug( "Max Requests for $service is $max_requests", INTERNAL );# if $max_requests;
 
 	$logger->transport( "AppSession creating new session: $sess_id", INTERNAL );
@@ -194,20 +192,30 @@ sub create {
 	
 	#my $auth = OpenSRF::DOM::Element::userAuth->new( %auth_args );
 
-	my $conf = OpenSRF::Utils::Config->current;
-
-	if( ! $conf ) { 
-		OpenSRF::EX::Config->throw( "No suitable config found" ); 
-	}
+	my $config_client = OpenSRF::Utils::SettingsClient->new();
 
 	my $sess_id = time . rand( $$ );
 	while ( $class->find($sess_id) ) {
 		$sess_id = time . rand( $$ );
 	}
 
-	my $r_id = $conf->$app->transport_target ||
-			die("No remote id for $app!");
+	my $r_id;
+	my $conf = OpenSRF::Utils::Config->current;
+	if(!$conf) { die("No transport target for $app!"); }
+	$r_id = $conf->targets->$app->[0] || #just the first for now...
+				die("No transport target for $app!");
 
+=head lasdf
+	} else {
+		my $targets =  $config_client->config_value("apps",$app,"transport_targets", "transport_target");
+		if( !ref($targets) ) { $targets = [ $targets ]; }
+
+		# XXX for now, just use the first
+			$r_id = $targets->[0] ||
+				die("No transport target for $app!");
+	}
+=cut
+	
 	my $peer_handle = OpenSRF::Transport::PeerHandle->retrieve("client"); 
 	if( ! $peer_handle ) {
 		$peer_handle = OpenSRF::Transport::PeerHandle->retrieve("system_client");
@@ -281,7 +289,23 @@ sub connect {
 	$self->state(CONNECTING);
 	$self->send('CONNECT', "");
 
-	my $time_remaining = OpenSRF::Utils::Config->current->client->connect_timeout;
+	# if we want to connect to settings, we may not have 
+	# any data for the settings client to work with...
+	# just using a default for now XXX
+
+	my $time_remaining = 5;
+	
+=head blah
+	my $client = OpenSRF::Utils::SettingsClient->new();
+	my $trans = $client->config_value("client_connection","transport_host");
+
+	if(!ref($trans)) {
+		$time_remaining = $trans->{connect_timeout};
+	} else {
+		# XXX for now, just use the first
+		$time_remaining = $trans->[0]->{connect_timeout};
+	}
+=cut
 
 	while ( $self->state != CONNECTED  and $time_remaining > 0 ) {
 		my $starttime = time;
@@ -431,7 +455,7 @@ sub send {
 				$logger->debug( "Unable to connect to remote service in AppSession::send()", ERROR );
 				return undef;
 			}
-			if( $v and $v->can("class") and $v->class->isa( "OpenSRF::EX" ) ) {
+			if( ref($v) and $v->can("class") and $v->class->isa( "OpenSRF::EX" ) ) {
 				return $v;
 			}
 		}
@@ -795,7 +819,7 @@ sub respond {
 	my $msg = shift;
 
 	my $response;
-	if (ref($msg) && $msg->can('getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
+	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
 		$response = $msg;
 	} else {
 		$response = new OpenSRF::DomainObject::oilsResult;
@@ -810,7 +834,7 @@ sub respond_complete {
 	my $msg = shift;
 
 	my $response;
-	if (ref($msg) && $msg->can('getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
+	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
 		$response = $msg;
 	} else {
 		$response = new OpenSRF::DomainObject::oilsResult;
