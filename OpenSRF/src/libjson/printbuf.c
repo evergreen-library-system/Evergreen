@@ -55,7 +55,15 @@ int printbuf_memappend(struct printbuf *p, char *buf, int size)
     p->size = new_size;
     p->buf = t;
   }
-  memcpy(p->buf + p->bpos, buf, size);
+
+	char* tmp = strdup(p->buf);
+	memset( p->buf, 0, p->size);
+   memcpy( p->buf, tmp, strlen(tmp));
+	memcpy(p->buf + p->bpos, buf, size);
+   free(tmp);
+
+  
+//  memcpy(p->buf + p->bpos, buf, size);
   p->bpos += size;
   p->buf[p->bpos]= '\0';
   return size;
