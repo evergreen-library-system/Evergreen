@@ -292,11 +292,13 @@ void print_help() {
 			"---------------------------------------------------------------------------------\n"
 			"Commands:\n"
 			"---------------------------------------------------------------------------------\n"
+			"help			- Display this message\n"
 			"last			- Re-performs the last command\n"
 			"time			- Prints the current time\n"					
 			"time <timestamp>	- Formats seconds since epoch into readable format\n"	
 			"---------------------------------------------------------------------------------\n"
 			"router query servers <server1 [, server2, ...]>\n"
+			"reqeust <service> <method> [ <json formatted string of params as an array> ]\n"
 			"---------------------------------------------------------------------------------\n"
 			);
 
