@@ -49,6 +49,7 @@ sub register_class_hint {
 }
 JSON->register_class_hint(
 	name => 'JSON::object_unknown',
+	hint => 'DUNNO',
 	type => 'hash',
 );
 
@@ -88,31 +89,31 @@ sub JSON2perl {
 	# Replace with code...
 	s/"(?:(?:\\[\"])|[^\"])*"/ shift(\@strings) /sog;
 
-	if (1) {
+	s/:/ => /sog;
+
+	if (0) {
 		# handle class blessings
 		s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
 		s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
 	} else {
-		warn $_."\n\n";
 		my $string = $_;
 		for my $hint (values %{$_class_map{hints}}) {
 			$string =~ s/\/\*--\s*S\w*?\s+$$hint{hint_re}\s*--\*\// bless(/sog;
 			$string =~ s/\/\*--\s*E\w*?\s+$$hint{hint_re}\s*--\*\// => "$$hint{name}") /sog;
-			warn $$hint{name}."\n\n";
-			warn '   '.$string."\n\n";
 		}
 		$_ = $string;
 		s/\/\*--\s*\w+\s+\S+\s*--\*\///sog;
-		warn $_."\n\n";
 	}
 
-	s/\b(-?\d+\.?\d*)/ do { JSON::number::new($1) } /sog;
+
+	s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
+
 
 	# Change javascript stuff to perl...
 	s/null/ undef /sog;
-	s/:/ => /sog;
 	s/true/ bless( {}, "JSON::bool::true") /sog;
 	s/false/ bless( {}, "JSON::bool::false") /sog;
+
 
 	my $ret;
 	return eval '$ret = '.$_;
