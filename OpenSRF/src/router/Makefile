@@ -7,6 +7,8 @@ LD_OPTS = -lxml2
 LP=../libtransport
 LIB_SOURCES = $(LP)/generic_utils.c $(LP)/transport_socket.c $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c
 
+all: router
+
 # The router is compiled as a static binary because of some 
 # necessary #defines that would break the library
 router: 
