@@ -7,6 +7,7 @@
 
 
 char* prompt = "srfsh# ";
+char* last_request;
 transport_client* client = NULL;
 
 int parse_request( char* request );
@@ -27,8 +28,8 @@ int main( int argc, char* argv[] ) {
 	memset(request, 0, 256);
 	printf(prompt);
 
-	client = client_init( argv[1], SRFSH_PORT );
-	if( ! client_connect( client, argv[2], argv[3], "srfsh", 5 ) ) {
+	client = client_init( argv[1], SRFSH_PORT, 0 );
+	if( ! client_connect( client, argv[2], argv[3], "srfsh", 5, AUTH_DIGEST ) ) {
 		fprintf(stderr, "Unable to connect to jabber server '%s' as '%s'\n", argv[1], argv[2]);
 		fprintf(stderr, "Most queries will be futile...\n" );
 	}
@@ -45,6 +46,14 @@ int main( int argc, char* argv[] ) {
 			break; 
 		}
 
+		if(!strcmp(request,"last")) {
+			memset(request,0,256);
+			strcpy(request, last_request);
+			printf("%s\n", request);
+		} else {
+			free(last_request);
+			last_request = strdup(request);
+		}
 
 		if( !strcmp(request, "help") || !strcmp(request,"?")) 
 			print_help();
@@ -91,8 +100,10 @@ int parse_request( char* request ) {
 	int i = 0;
 	char* words[COMMAND_BUFSIZE]; 
 	memset(words,0,COMMAND_BUFSIZE);
+	//char* req = strdup(request);
+	char* req = request;
 
-	char* cur_tok = strtok( request, " " );
+	char* cur_tok = strtok( req, " " );
 
 	if( cur_tok == NULL )
 		return 0;
@@ -101,6 +112,8 @@ int parse_request( char* request ) {
 		words[i++] = cur_tok;
 		cur_tok = strtok( NULL, " " );
 	}
+
+	//free(req);
 
 	// not sure why (strtok?), but this is necessary
 	memset( words + i, 0, COMMAND_BUFSIZE - i );
@@ -209,9 +222,11 @@ void print_help() {
 			"---------------------------------------------------------------------------------\n"
 			"Commands:\n"
 			"---------------------------------------------------------------------------------\n"
+			"last			- Re-performs the last command\n"
+			"time			- Prints the current time\n"					
+			"time <timestamp>	- Formats seconds since epoch into readable format\n"	
+			"---------------------------------------------------------------------------------\n"
 			"router query servers <server1 [, server2, ...]>\n"
-			"time\n"					
-			"time <timestamp>\n"	
 			"---------------------------------------------------------------------------------\n"
 			);
 
