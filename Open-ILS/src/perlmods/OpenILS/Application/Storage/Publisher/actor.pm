@@ -88,6 +88,7 @@ sub delete_record_entry {
         my $user = shift;
 
         my $rec = actor::user->delete($user);
+	return 0 unless ($rec);
         return 1;
 }
 __PACKAGE__->register_method(
