@@ -19,6 +19,9 @@ char* prompt = "srfsh# ";
 
 int child_dead = 0;
 
+/* true if we're pretty printing json results */
+int pretty_print = 0;
+
 /* our jabber connection */
 transport_client* client = NULL; 
 
@@ -31,6 +34,8 @@ int handle_router( char* words[] );
 int handle_time( char* words[] );
 int handle_request( char* words[], int relay );
 int handle_exec(char* words[]);
+int handle_set( char* words[]);
+int handle_print( char* words[]);
 int send_request( char* server, 
 		char* method, growing_buffer* buffer, int relay );
 int parse_error( char* words[] );
@@ -83,8 +88,8 @@ int main( int argc, char* argv[] ) {
 
 		char* req_copy = strdup(request);
 
-		if(parse_request( req_copy ) ) 
-			add_history(request);
+		parse_request( req_copy ); 
+		add_history(request);
 
 		free(request);
 		free(req_copy);
@@ -166,6 +171,12 @@ int parse_request( char* request ) {
 	else if (!strcmp(words[0],"help"))
 		ret_val = print_help();
 
+	else if (!strcmp(words[0],"set"))
+		ret_val = handle_set(words);
+
+	else if (!strcmp(words[0],"print"))
+		ret_val = handle_print(words);
+
 	else if (words[0][0] == '!')
 		ret_val = handle_exec( words );
 
@@ -176,6 +187,49 @@ int parse_request( char* request ) {
 
 }
 
+int handle_set( char* words[]) {
+
+	char* variable;
+	if( (variable=words[1]) ) {
+
+		char* val;
+		if( (val=words[2]) ) {
+
+			if(!strcmp(variable,"pretty_print")) {
+				if(!strcmp(val,"true")) {
+					pretty_print = 1;
+					printf("pretty_print = true\n");
+					return 1;
+				} 
+				if(!strcmp(val,"false")) {
+					pretty_print = 0;
+					printf("pretty_print = false\n");
+					return 1;
+				} 
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+int handle_print( char* words[]) {
+
+	char* variable;
+	if( (variable=words[1]) ) {
+		if(!strcmp(variable,"pretty_print")) {
+			if(pretty_print) {
+				printf("pretty_print = true\n");
+				return 1;
+			} else {
+				printf("pretty_print = false\n");
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
 
 int handle_router( char* words[] ) {
 
@@ -267,10 +321,15 @@ int send_request( char* server,
 		if( buffer != NULL && buffer->n_used > 0 ) 
 			params = json_tokener_parse(buffer->buf);
 	} else {
-		if(!last_result->result_content) 
-			warning_handler("Calling 'relay' on empty result");
-		else
-			params = last_result->result_content;
+		if(!last_result->result_content) { 
+			warning_handler("We're not going to call 'relay' on empty result");
+			return 1;
+		}
+		else {
+			json* arr = json_object_new_array();
+			json_object_array_add( arr, last_result->result_content );
+			params = arr;
+		}
 	}
 
 	osrf_app_session* session = osrf_app_client_session_init(server);
@@ -281,10 +340,6 @@ int send_request( char* server,
 		return 1;
 	}
 
-	//char* string2 = json_printer( params );
-	//json* object = json_tokener_parse( string2 );
-	//free(string2);
-
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
@@ -294,15 +349,23 @@ int send_request( char* server,
 	
 	
 	while(omsg) {
+
 		if(omsg->result_content) {
+
 			osrf_message_free(last_result);
 			last_result = omsg;
 
-			char* content = json_printer( omsg->result_content );
-			printf( "\nReceived Data: %s\n",content );
-			free(content);
-		}
-		else {
+			if( pretty_print ) {
+				char* content = json_printer( omsg->result_content );
+				printf( "\nReceived Data: %s\n",content );
+				free(content);
+			} else {
+				printf( "\nReceived Data: %s\n",
+					json_object_to_json_string(omsg->result_content));
+			}
+
+		} else {
+
 			printf( "\nReceived Exception:\nName: %s\nStatus: "
 					"%s\nStatusCode %d\n", omsg->status_name, 
 					omsg->status_text, omsg->status_code );
@@ -402,6 +465,8 @@ int print_help() {
 			"!<command> [args] - Forks and runs the given command in the shell\n"
 			"time			- Prints the current time\n"					
 			"time <timestamp>	- Formats seconds since epoch into readable format\n"	
+			"set <variable> <value> - set a srfsh variable (e.g. set pretty_print true )\n"
+			"print <variable>		- Displays the value of a srfsh variable\n"
 			"---------------------------------------------------------------------------------\n"
 			"router query servers <server1 [, server2, ...]>\n"
 			"	- Returns stats on connected services\n"
@@ -409,6 +474,9 @@ int print_help() {
 			"reqeust <service> <method> [ <json formatted string of params> ]\n"
 			"	- Anything passed in will be wrapped in a json array,\n"
 			"		so add commas if there is more than one param\n"
+			"\n"
+			"relay <service> <method>\n"
+			"	- Performs the requested query using the last received result as the param\n"
 			"---------------------------------------------------------------------------------\n"
 			);
 
