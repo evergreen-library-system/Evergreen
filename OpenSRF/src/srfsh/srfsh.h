@@ -15,7 +15,7 @@
 
 
 #define SRFSH_PORT 5222
-#define COMMAND_BUFSIZE 12
+#define COMMAND_BUFSIZE 256 
 
 
 /* shell prompt */
