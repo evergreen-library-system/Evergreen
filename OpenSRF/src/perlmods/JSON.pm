@@ -219,7 +219,6 @@ sub perl2JSON {
 		$output .= perl2JSON(undef,$perl);
 	} else {
 		$perl =~ s{\\}{\\\\}sgo;
-		$perl =~ s{\/}{\\\/}sgo;
 		$perl =~ s/"/\\"/sgo;
 		$perl =~ s/\t/\\t/sgo;
 		$perl =~ s/\f/\\f/sgo;
