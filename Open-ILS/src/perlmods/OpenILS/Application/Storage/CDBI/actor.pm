@@ -9,10 +9,10 @@ package actor::user;
 use base qw/actor/;
 
 __PACKAGE__->table( 'actor_usr' );
-__PACKAGE__->columns( All => qw/id userid username email prefix first_given_name
+__PACKAGE__->columns( All => qw/id usrid usrname email prefix first_given_name
 				second_given_name family_name suffix address
 				home_ou gender dob active master_account
-				super_user usergoup passwd/ );
+				super_user usrgoup passwd/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_unit_type;
