@@ -2,10 +2,6 @@ package OpenILS::Application::Storage::CDBI;
 use base qw/Class::DBI/;
 use Class::DBI;
 
-
-our $VERSION = 1;
-
-
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::asset;
@@ -15,11 +11,13 @@ use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger;
 
+our $VERSION;
 my $log = 'OpenSRF::Utils::Logger';
 
 sub child_init {
 	my $self = shift;
 
+	$log->debug("Creating ImaDBI Querys", DEBUG);
 	__PACKAGE__->set_sql( 'OILSFastSearch', <<"	SQL", 'Main');
 		SELECT	%s
 		  FROM	%s
@@ -33,6 +31,7 @@ sub child_init {
 		  ORDER BY %s
 	SQL
 
+	$log->debug("Calling Driver child_init", DEBUG);
 	$self->SUPER::child_init(@_);
 
 }
@@ -187,7 +186,8 @@ sub update {
 	}
 
 	$log->debug("Calling Class::DBI->update on modified object $self", DEBUG);
-	return $self->SUPER::update;
+	return $self->SUPER::update if ($self->is_changed);
+	return 0;
 }
 
 sub modify_from_fieldmapper {
@@ -223,7 +223,7 @@ sub modify_from_fieldmapper {
 	if ($class->find_column( 'last_xact_id' ) and $obj->is_changed) {
 		my $xact_id = $obj->current_xact_id;
 		throw Error unless ($xact_id);
-		$hash{last_xact_id} = $xact_id;
+		$obj->last_xact_id( $xact_id );
 	} else {
 		$obj->autoupdate($au)
 	}
@@ -234,6 +234,7 @@ sub modify_from_fieldmapper {
 
 
 sub import {
+	return if ($VERSION);
 	#-------------------------------------------------------------------------------
 	actor::user->has_a( home_ou => 'actor::org_unit' );
 	#actor::org_unit->has_a( address => 'actor::address' );
@@ -314,6 +315,7 @@ sub import {
 	metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
 	metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
+	$VERSION = 1;
 }
 
 

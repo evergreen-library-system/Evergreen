@@ -22,7 +22,17 @@ $log = 'OpenSRF::Utils::Logger';
 our $in_request = 0;
 our @pending_requests;
 
+sub package {
+	my $self = shift;
+	return $self->{api_name};
+}
+
 sub api_name {
+	my $self = shift;
+	return $self->{api_name};
+}
+
+sub api_level {
 	my $self = shift;
 	return $self->{api_name};
 }
@@ -207,6 +217,13 @@ sub handler {
 	return 1;
 }
 
+sub is_registered {
+	my $self = shift;
+	my $api_name = shift;
+	my $api_level = shift || 1;
+	return exists($_METHODS[$api_level]{$api_name});
+}
+
 sub register_method {
 	my $self = shift;
 	my $app = ref($self) || $self;
@@ -309,7 +326,7 @@ sub method_lookup {
 	my $no_remote = shift || 0;
 
 	# this instead of " || 1;" above to allow api_level 0
-	$proto = 1 unless (defined $proto);
+	$proto = $self->api_level unless (defined $proto);
 
 	my $class = ref($self) || $self;
 

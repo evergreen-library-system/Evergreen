@@ -40,12 +40,15 @@ sub initialize {
 
 sub child_init {
 
-	my $conf = OpenSRF::Utils::SettingsClient->new;
-
-	OpenSRF::Application->method_lookup('crappola');
-
 	$log->debug('Running child_init for ' . __PACKAGE__ . '...', DEBUG);
 
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+
+	# XXX -- this died... router down?
+	#$log->debug('Prepopulating method_lookup cache', DEBUG);
+	#OpenSRF::Application->method_lookup('crappola');
+
+	$log->debug('Calling the Driver child_init', DEBUG);
 	OpenILS::Application::Storage::CDBI->child_init(
 		$conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'database')
 	);

@@ -7,7 +7,7 @@ use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
 
-use vars qw/$fieldmap @class_name_list $VERSION/;
+use vars qw/$fieldmap $VERSION/;
 
 _init();
 
@@ -18,6 +18,11 @@ _init();
 #
 # ... adjusted for your CVS sandbox, of course.
 #
+
+sub classes {
+	return () unless (defined $fieldmap);
+	return keys %$fieldmap;
+}
 
 sub _init {
 	return if (defined $fieldmap);
@@ -50,8 +55,6 @@ sub _init {
 			package $pkg;
 			use base 'Fieldmapper';
 		PERL
-
-		push @class_name_list, $pkg;
 
 		$$fieldmapp{$pkg}{cdbi} = $cdbi;
 

@@ -175,7 +175,6 @@ sub handler {
 	} else {
 		$log->debug("Request was handled internally", DEBUG);
 	}
-	$log->debug("Returning to ".join('::',(caller)[0,3]), DEBUG);
 
 	return 1;
 
