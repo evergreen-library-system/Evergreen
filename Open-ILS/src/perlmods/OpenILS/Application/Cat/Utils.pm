@@ -21,8 +21,8 @@ sub nodeset2tree {
 	my $size = @$nodeset;
 	for my $index (0..$size) {
 
-		my $child = 
-			Fieldmapper::biblio::record_node->new($nodeset->[$index]);
+		my $child = $nodeset->[$index];
+		next unless $child;
 
 		if( defined($child->parent_node) ) {
 			my $parent = Fieldmapper::biblio::record_node->new($nodeset->[$child->parent_node]);
@@ -41,7 +41,7 @@ sub tree2nodeset {
 		$node = Fieldmapper::biblio::record_node->new($node);
 	}
 
-	if(!$node) { return \@_nodelist; }
+	return \@_nodelist unless $node;
 
 	if(!defined($node->parent_node)) {
 		@_nodelist = ();
@@ -53,6 +53,7 @@ sub tree2nodeset {
 
 		for my $child (@{ $node->children() }) {
 
+			next unless $child;
 			$child = 
 				Fieldmapper::biblio::record_node->new($child);
 	
@@ -81,7 +82,6 @@ sub commit_nodeset {
 		my $pos = $index + $offset;
 		my $node = $nodeset->[$index];
 		next unless $node;
-		$node = Fieldmapper::biblio::record_node->new($node);
 
 		if($node->isdeleted()) {
 			$offset--;
