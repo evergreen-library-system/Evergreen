@@ -37,7 +37,7 @@ CREATE TABLE biblio.record_mods (
 CREATE TABLE biblio.record_marc (
 	id		BIGINT	PRIMARY KEY,
 	marc		TEXT	NOT NULL,
-	last_xact_id	TEXT		NOT NULL
+	last_xact_id	TEXT	NOT NULL
 );
 
 /*
