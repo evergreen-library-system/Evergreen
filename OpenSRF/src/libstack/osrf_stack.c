@@ -26,10 +26,14 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 		return 0;
 	}
 
+	debug_handler("Session [%s] found, building message", msg->thread );
+
 	osrf_app_session_set_remote( session, msg->sender );
 	osrf_message* arr[OSRF_MAX_MSGS_PER_PACKET];
 	memset(arr, 0, OSRF_MAX_MSGS_PER_PACKET );
 	int num_msgs = osrf_message_from_xml( msg->body, arr );
+
+	debug_handler( "We received %d messages from %s", num_msgs, msg->sender );
 
 	/* XXX ERROR CHECKING, BAD XML, ETC... */
 	int i;
@@ -88,18 +92,6 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 				osrf_app_session_reset_remote( session );
 				session->state = OSRF_SESSION_DISCONNECTED;
 				osrf_app_session_request_resend( session, msg->thread_trace );
-				return NULL;
-
-			case OSRF_STATUS_INTERNALSERVERERROR: /*XXX we need to propogate these... */
-				/*
-				new_msg = osrf_message_init( RESULT, msg->thread_trace, msg->protocol );
-				osrf_message_set_status_info( new_msg, 
-						msg->status_name, msg->status_text, msg->status_code );
-				osrf_message_set_result_content( new_msg, json_object_new_string("HELP") );
-				warning_handler( "Received an INTERNAL SERVER ERROR from the server for tt %d", 
-						msg->thread_trace);
-				return new_msg;
-				*/
 				return NULL;
 
 			case OSRF_STATUS_TIMEOUT:
