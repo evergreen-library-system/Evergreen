@@ -94,32 +94,10 @@ my $xpathset = {
 
 # --------------------------------------------------------------------------------
 
-__PACKAGE__->register_method( 
-	api_name	=> "open-ils.worm.wormize",
-	method		=> "wormize",
-	api_level	=> 1,
-	argc		=> 1,
-);
-
-sub wormize {
-
-	my( $self, $client, $docid ) = @_;
-
-	# step -1: grab the doc from storage
-	my $meth = $self->method_lookup('open-ils.storage.biblio.record_marc.retrieve');
-	my ($marc) = $meth->run($docid);
-	return undef unless ($marc);
-	return $self->wormize_marc( $client, $docid, $marc->marc );
-}
-
-
-__PACKAGE__->register_method( 
-	api_name	=> "open-ils.worm.wormize.marc",
-	method		=> "wormize",
-	api_level	=> 1,
-	argc		=> 1,
-);
-
+my $begin;
+my $commit;
+my $rollback;
+my $lookup;
 my $rm_old_fr;
 my $rm_old_tr;
 my $rm_old_ar;
@@ -129,28 +107,31 @@ my $rm_old_kr;
 my $fr_create;
 my $create = {};
 
-my $begin;
-my $commit;
-my $rollback;
 
-sub wormize_marc {
-	my( $self, $client, $docid, $xml) = @_;
+sub wormize {
 
+	my $self = shift;
+	my $client = shift;
+	my @docids = @_;
+
+	$begin = $self->method_lookup( 'open-ils.storage.transaction.begin')
+		unless ($begin);
+	$commit = $self->method_lookup( 'open-ils.storage.transaction.commit')
+		unless ($commit);
+	$rollback = $self->method_lookup( 'open-ils.storage.transaction.rollback')
+		unless ($rollback);
+	$lookup = $self->method_lookup('open-ils.storage.biblio.record_marc.batch.retrieve')
+		unless ($lookup);
 	$rm_old_fr = $self->method_lookup( 'open-ils.storage.metabib.full_rec.mass_delete')
 		unless ($rm_old_fr);
-
 	$rm_old_tr = $self->method_lookup( 'open-ils.storage.metabib.title_field_entry.mass_delete')
 		unless ($rm_old_tr);
-
 	$rm_old_ar = $self->method_lookup( 'open-ils.storage.metabib.author_field_entry.mass_delete')
 		unless ($rm_old_ar);
-
 	$rm_old_sr = $self->method_lookup( 'open-ils.storage.metabib.subject_field_entry.mass_delete')
 		unless ($rm_old_sr);
-
 	$rm_old_kr = $self->method_lookup( 'open-ils.storage.metabib.keyword_field_entry.mass_delete')
 		unless ($rm_old_kr);
-
 	$fr_create = $self->method_lookup( 'open-ils.storage.metabib.full_rec.batch.create')
 		unless ($fr_create);
 	$$create{title} = $self->method_lookup( 'open-ils.storage.metabib.title_field_entry.batch.create')
@@ -162,96 +143,99 @@ sub wormize_marc {
 	$$create{keyword} = $self->method_lookup( 'open-ils.storage.metabib.keyword_field_entry.batch.create')
 		unless ($$create{keyword});
 
-	$begin = $self->method_lookup( 'open-ils.storage.transaction.begin')
-		unless ($begin);
-	$commit = $self->method_lookup( 'open-ils.storage.transaction.commit')
-		unless ($commit);
-	$rollback = $self->method_lookup( 'open-ils.storage.transaction.rollback')
-		unless ($rollback);
 
+	try {
+		my ($r) = $begin->run($client);
+		unless (defined $r and $r) {
+			$rollback->run;
+			throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!")
+		}
+	} catch Error with {
+		throw OpenSRF::EX::PANIC ("WoRM Couldn't BEGIN transaction!")
+	};
 
-	my ($br) = $begin->run($client);
-	unless (defined $br) {
-		$rollback->run;
-		throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!")
+	my @ns_list;
+	my @mods_data;
+	my $ret = 0;
+	for my $marc ( $lookup->run(@docids) ) {
+		# step -1: grab the doc from storage
+		next unless ($marc);
+
+		my $xml = $marc->marc;
+		my $docid = $marc->id;
+		my $marcdoc = $parser->parse_string($xml);
+
+		push @mods_data, { $docid => $self->modsdoc_to_values( $mods_sheet->transform($marcdoc) ) };
+
+		# step 2: build the KOHA rows
+		my @tmp_list = _marcxml_to_full_rows( $marcdoc );
+		$_->record( $docid ) for (@tmp_list);
+		push @ns_list, @tmp_list;
+
+		$ret++;
+
+		last unless ($self->api_name =~ /batch$/o);
 	}
 
-	# step 0: turn the doc into marcxml and delete old entries
-	my $marcdoc = $parser->parse_string($xml);
-
-	my ($res) = $rm_old_fr->run( { record => $docid } );
-	throw OpenSRF::EX::PANIC ("Couldn't remove old metabib::full_rec entries!")
-		unless (defined $res);
-
-	undef $res;
-	($res) = $rm_old_tr->run( { source => $docid } );
-	throw OpenSRF::EX::PANIC ("Couldn't remove old metabib::title_field_entry entries!")
-		unless (defined $res);
-
-	undef $res;
-	($res) = $rm_old_ar->run( { source => $docid } );
-	throw OpenSRF::EX::PANIC ("Couldn't remove old metabib::author_field_entry entries!")
-		unless (defined $res);
-
-	undef $res;
-	($res) = $rm_old_sr->run( { source => $docid } );
-	throw OpenSRF::EX::PANIC ("Couldn't remove old metabib::subject_field_entry entries!")
-		unless (defined $res);
-
-	undef $res;
-	($res) = $rm_old_kr->run( { source => $docid } );
-	throw OpenSRF::EX::PANIC ("Couldn't remove old metabib::keyword_field_entry entries!")
-		unless (defined $res);
-
-	# step 2: build the KOHA rows
-	my @ns_list = _marcxml_to_full_rows( $marcdoc );
-	$_->record( $docid ) for (@ns_list);
-
+	$rm_old_fr->run( { record => \@docids } );
+	$rm_old_tr->run( { source => \@docids } );
+	$rm_old_ar->run( { source => \@docids } );
+	$rm_old_sr->run( { source => \@docids } );
+	$rm_old_kr->run( { source => \@docids } );
 
 	my ($fr) = $fr_create->run(@ns_list);
 	unless (defined $fr) {
-		$rollback->run;
 		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.metabib.full_rec.batch.create!")
 	}
 
-	# step 4: get the MODS based metadata
-	my $data = $self->modsdoc_to_values( $mods_sheet->transform($marcdoc) );
-
 	# step 5: insert the new metadata
-	for my $class ( keys %$data ) {
-			
-		my $fm_constructor = "Fieldmapper::metabib::${class}_field_entry";
+	for my $class ( qw/title author subject keyword/ ) {
 		my @md_list = ();
-		for my $row ( keys %{ $$data{$class} } ) {
-			next unless (exists $$data{$class}{$row});
-			next unless ($$data{$class}{$row});
-			my $fm_obj = $fm_constructor->new;
-			$fm_obj->value( $$data{$class}{$row} );
-			$fm_obj->source( $docid );
+		for my $doc ( @mods_data ) {
+			my ($did) = keys %$doc;
+			my ($data) = values %$doc;
 
-			# XXX This needs to be a real thing once the xpath is in the DB
-			$fm_obj->field( 1 );
+			my $fm_constructor = "Fieldmapper::metabib::${class}_field_entry";
+			for my $row ( keys %{ $$data{$class} } ) {
+				next unless (exists $$data{$class}{$row});
+				next unless ($$data{$class}{$row});
+				my $fm_obj = $fm_constructor->new;
+				$fm_obj->value( $$data{$class}{$row} );
+				$fm_obj->source( $did );
 
-			push @md_list, $fm_obj;
+				# XXX This needs to be a real thing once the xpath is in the DB
+				$fm_obj->field( 1 );
+
+				push @md_list, $fm_obj;
+			}
 		}
 			
 		my ($cr) = $$create{$class}->run(@md_list);
 		unless (defined $cr) {
-			$rollback->run;
 			throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.metabib.${class}_field_entry.batch.create!")
 		}
 	}
 
 	my ($c) = $commit->run;
-	unless (defined $c) {
+	unless (defined $c and $c) {
 		$rollback->run;
 		throw OpenSRF::EX::PANIC ("Couldn't COMMIT changes!")
 	}
 
-	return 1;
-
+	return $ret;
 }
-
+__PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.wormize",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.wormize.batch",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
 
 
 # --------------------------------------------------------------------------------

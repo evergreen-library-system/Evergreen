@@ -115,9 +115,16 @@ sub mass_delete {
 
 	my @keys = sort keys %$search;
 	
+	my @binds;
 	my @wheres;
 	for my $col ( @keys ) {
-		push @wheres, "$col = ?";
+		if (ref($$search{$col}) and ref($$search{$col}) =~ /ARRAY/o) {
+			push @wheres, "$col IN (" . join(',', map { '?' } @{ $$search{$col} }) . ')';
+			push @binds, map { "$_" } @{ $$search{$col} };
+		} else {
+			push @wheres, "$col = ?";
+			push @binds, $$search{$col};
+		}
 	}
 	$where .= join ' AND ', @wheres;
 
@@ -129,7 +136,7 @@ sub mass_delete {
 	my $success = 1;
 	try {
 		my $sth = $dbh->prepare($delete);
-		$sth->execute( map { "$_" } @$search{@keys} );
+		$sth->execute( @binds );
 		$sth->finish;
 		$log->debug("MASS Delete succeeded",DEBUG);
 	} catch Error with {

@@ -223,7 +223,7 @@
 			} else {
 				$log->debug("Rolling back old NON-autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
 				$self->pg_rollback_xaction($client);
-				return new OpenSRF::DomainObject::oilsException (
+				throw OpenSRF::DomainObject::oilsException->new(
 						statusCode => 500,
 						status => "Previous transaction rolled back!",
 				);
@@ -243,7 +243,7 @@
 		} catch Error with {
 			my $e = shift;
 			$log->debug("Failed to begin a new trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
-			return $e;
+			throw $e;
 		};
 
 
