@@ -221,6 +221,7 @@ sub create {
 			   state       => DISCONNECTED,#since we're init'ing
 			   session_id  => $sess_id,
 			   remote_id   => $r_id,
+			   api_level   => 1,
 			   orig_remote_id   => $r_id,
 				peer_handle => $peer_handle,
 				session_threadTrace => 0,
@@ -229,6 +230,10 @@ sub create {
 	$self->client_cache();
 	$_CACHE{$sess_id} = $self;
 	return $self->find_client( $app );
+}
+
+sub api_level {
+	return shift()->{api_level};
 }
 
 sub app {
@@ -264,10 +269,13 @@ sub connect {
 	return $self if ( ref( $self ) and  $self->state && $self->state == CONNECTED  );
 
 	my $app = shift;
+	my $api_level = shift;
+	$api_level = 1 unless (defined $api_level)
 
 	$self = $class->create($app, @_) if (!ref($self));
 	return undef unless ($self);
 
+	$self->{api_level} = $api_level
 
 	$self->reset;
 	$self->state(CONNECTING);
@@ -404,7 +412,7 @@ sub send {
 			}
 		}
 	
-		$msg->api_level(1);
+		$msg->api_level($self->api_level);
 		$msg->payload($payload) if $payload;
 	
 		$doc->documentElement->appendChild( $msg );
