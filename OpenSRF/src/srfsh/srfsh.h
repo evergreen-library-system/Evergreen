@@ -23,7 +23,7 @@ char* history_file = NULL;
 int child_dead = 0;
 
 /* true if we're pretty printing json results */
-int pretty_print = 0;
+int pretty_print = 1;
 
 /* our jabber connection */
 transport_client* client = NULL; 
@@ -33,8 +33,14 @@ osrf_message* last_result = NULL;
 
 /* functions */
 int parse_request( char* request );
+
+/* handles router requests */
 int handle_router( char* words[] );
+
+/* utility method for print time data */
 int handle_time( char* words[] );
+
+/* handles app level requests */
 int handle_request( char* words[], int relay );
 int handle_exec(char* words[]);
 int handle_set( char* words[]);
