@@ -31,6 +31,10 @@ osrf_app_request* _osrf_app_request_init(
 /** Frees memory used by an app_request object */
 void _osrf_app_request_free( osrf_app_request * req ){
 	if( req == NULL ) return;
+
+	if( req->payload ) {
+		osrf_message_free( req->payload );
+	}
 	/*
 	osrf_message* cur_msg = req->result;
 	while( cur_msg != NULL ) {
@@ -40,6 +44,7 @@ void _osrf_app_request_free( osrf_app_request * req ){
 	}
 	osrf_message_free( req->payload );
 	*/
+
 	free( req );
 }
 

@@ -51,6 +51,15 @@ int osrf_system_bootstrap_client( char* config_file ) {
 	return 0;
 }
 
+int osrf_system_shutdown() {
+	config_reader_free();
+	log_free();
+	client_disconnect( global_client );
+	client_free( global_client );
+	global_client = NULL;
+	return 1;
+}
+
 
 
 

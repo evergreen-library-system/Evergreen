@@ -41,6 +41,8 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 		osrf_stack_message_handler( session, arr[i] );
 	}
 
+	message_free( msg );
+
 	return 1;
 }
 
