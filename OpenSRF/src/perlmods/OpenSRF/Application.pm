@@ -353,7 +353,7 @@ sub run {
 		};
 
 		my $remote_req = $session->request( $self->{api_name}, @_ );
-		while (my $remote_resp = $remote_req->recv) {
+		while (my $remote_resp = $remote_req->recv->content) {
 			$req->respond( $remote_resp );
 		}
 		return $req->responses;
