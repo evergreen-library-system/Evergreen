@@ -153,6 +153,7 @@ sub service { return shift()->{service}; }
 sub continue_request {
 	my $self = shift;
 	$self->{'requests'}++;
+	return 1 if (!$self->{'max_requests'});
 	return $self->{'requests'} <= $self->{'max_requests'} ? 1 : 0;
 }
 
