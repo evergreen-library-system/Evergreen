@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::Publisher::biblio;
 use base qw/OpenILS::Application::Storage/;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::CDBI::biblio;
+use OpenILS::Utils::Fieldmapper;
 
 sub create_record_node {
 	my $self = shift;
@@ -254,7 +255,7 @@ sub get_record_nodeset {
 		
 		$sth->execute($id);
 
-		$client->respond( $sth->fetchall_arrayref );
+		$client->respond( [map { Fieldmapper::biblio::record_node->new( $_ ) } @{$sth->fetchall_arrayref}] );
 
 		$sth->finish;
 		

@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::Publisher::actor;
 use base qw/OpenILS::Application::Storage/;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
+use OpenILS::Utils::Fieldmapper;
 
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -20,7 +21,17 @@ sub get_user_record {
 		($rec) = actor::user->search( usrname => $id) if ($self->api_name =~/username/o);
 		($rec) = actor::user->search( usrid => $id) if ($self->api_name =~/userid/o);
 
-		$client->respond( $self->_cdbi2Hash( $rec ) ) if ($rec);
+		if ($rec) {
+
+			my $user = Fieldmapper::actor::user->new;
+
+			for my $field (Fieldmapper::actor::user->real_fields) {
+				$user->$field($rec->$field);
+			}
+
+			$client->respond( $user );
+
+		}
 
 		last if ($self->api_name !~ /list$/o);
 	}
