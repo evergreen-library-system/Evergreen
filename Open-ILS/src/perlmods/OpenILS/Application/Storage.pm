@@ -48,7 +48,11 @@ sub child_init {
 		$conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'database')
 	);
 	
-	return 1 if (OpenILS::Application::Storage::CDBI->db_Main());
+
+	if (OpenILS::Application::Storage::CDBI->db_Main()) {
+		$log->debug("Success initializing driver!", DEBUG);
+		return 1;
+	}
 	return 0;
 }
 
@@ -56,28 +60,11 @@ sub begin_xaction {
 	my $self = shift;
 	my $client = shift;
 
-	my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
-
-	$client->session->register_callback( disconnect => sub { shift()->session_data('dbh')->commit; } )
-		if ($self->api_name =~ /autocommit$/o);
-
-	$client->session->register_callback( death => sub { shift()->session_data('dbh')->rollback; } );
-
-	$client->session->session_data( dbh => $dbh );
-		
-	$dbh->begin_work;
-
-	return 1;
+	return OpenILS::Application::Storage::CDBI->db_Main->begin_work;
 }
 __PACKAGE__->register_method(
 	method		=> 'begin_xaction',
 	api_name	=> 'open-ils.storage.transaction.begin',
-	api_level	=> 1,
-	argc		=> 0,
-);
-__PACKAGE__->register_method(
-	method		=> 'begin_xaction',
-	api_name	=> 'open-ils.storage.transaction.begin.autocommit',
 	api_level	=> 1,
 	argc		=> 0,
 );
@@ -86,11 +73,7 @@ sub commit_xaction {
 	my $self = shift;
 	my $client = shift;
 
-	try {
-		$client->session->session_data('dbh')->commit;
-	} catch Error with {
-		$client->session->session_data('dbh')->rollback;
-	};
+	return OpenILS::Application::Storage::CDBI->db_Main->commit;
 }
 __PACKAGE__->register_method(
 	method		=> 'commit_xaction',
@@ -102,7 +85,7 @@ sub rollback_xaction {
 	my $self = shift;
 	my $client = shift;
 
-	$client->session->session_data('dbh')->rollback;
+	return OpenILS::Application::Storage::CDBI->db_Main->rollback;
 }
 __PACKAGE__->register_method(
 	method		=> 'rollback_xaction',

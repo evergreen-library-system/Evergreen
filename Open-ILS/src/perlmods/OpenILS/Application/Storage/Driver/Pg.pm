@@ -57,8 +57,10 @@
   # The dirver MUST be a subclass of Class::DBI and OpenILS::Application::Storage.
 	#-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::Driver::Pg;
-	use base qw/Class::DBI OpenILS::Application::Storage/;
+	use Class::DBI::Replication;
+	use base qw/Class::DBI::Replication OpenILS::Application::Storage/;
 	use DBI;
+	use OpenSRF::EX qw/:try/;
 	use OpenSRF::Utils::Logger qw/:level/;
 	my $log = 'OpenSRF::Utils::Logger';
 
@@ -69,14 +71,7 @@
 		my $self = shift;
 		$_db_params = shift;
 
-		$log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
-	}
-
-	my $_dbh;
-	sub db_Main {	
-		my $self = shift;
-
-		return $_dbh if (defined $_dbh and $_dbh->ping);
+		$_db_params = [ $_db_params ] unless (ref($_db_params) eq 'ARRAY');
 
 		my %attrs = (	%{$self->_default_attributes},
 				RootClass => 'DBIx::ContextualFetch',
@@ -90,17 +85,21 @@
 				ChopBlanks => 1,
 		);
 
-		$log->debug(" Default connect info for this DB is:\n\t".join("\n\t",map { "$_\t==> $$_db_params{$_}" } keys %$_db_params), INTERNAL);
-		$log->debug(" Default attributes for this DB connection are:\n\t".join("\n\t",map { "$_\t==> $attrs{$_}" } keys %attrs), INTERNAL);
+		my ($master,@slaves);
+		for my $db (@$_db_params) {
+			if ($db->{type} eq 'master') {
+				__PACKAGE__->set_master("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
+			}
+			push @slaves, ["dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs];
+		}
 
-		$_dbh = DBI->connect( "dbi:Pg:host=$$_db_params{host};dbname=$$_db_params{db}",$$_db_params{user},$$_db_params{pw}, \%attrs );
-		$_dbh->do("SET CLIENT_ENCODING TO 'SQL_ASCII';");
+		__PACKAGE__->set_slaves(@slaves);
 
-		return $_dbh;
+		$log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
 	}
 
 	sub quote {
-		return $_dbh->quote(@_)
+		return __PACKAGE->db_Main->quote(@_)
 	}
 
 	sub tsearch2_trigger {
@@ -114,6 +113,68 @@
 			)
 		);
 	}
+
+	my $_xact_session;
+	sub db_Slaves {	
+		my $self = shift;
+
+		if ($_xact_session && OpenSRF::AppSession->find($_xact_session)) {
+			return $self->db_Main;
+		}
+
+		return $self->SUPER::db_Slaves
+	}
+
+	sub pg_begin_xaction {
+		my $self = shift;
+		my $client = shift;
+
+		$_xact_session = $client->session->session_id;
+
+		$client->session->register_callback( disconnect => sub { __PACKAGE__->commit_xaction($client); } )
+			if ($self->api_name =~ /autocommit$/o);
+
+		$client->session->register_callback( death => sub { __PACKAGE__->rollback_xaction($client); } );
+
+		return $self->begin_xaction;
+	}
+	__PACKAGE__->register_method(
+		method		=> 'pg_begin_xaction',
+		api_name	=> 'open-ils.storage.transaction.begin',
+		api_level	=> 1,
+		argc		=> 0,
+	);
+	__PACKAGE__->register_method(
+		method		=> 'pg_begin_xaction',
+		api_name	=> 'open-ils.storage.transaction.begin.autocommit',
+		api_level	=> 1,
+		argc		=> 0,
+	);
+
+	sub pg_commit_xaction {
+
+		$_xact_session = undef;
+		return $self->commit_xaction(@_);
+	}
+	__PACKAGE__->register_method(
+		method		=> 'pg_commit_xaction',
+		api_name	=> 'open-ils.storage.transaction.commit',
+		api_level	=> 1,
+		argc		=> 0,
+	);
+
+	sub pg_rollback_xaction {
+
+		$_xact_session = undef;
+		return $self->rollback_xaction(@_);
+	}
+	__PACKAGE__->register_method(
+		method		=> 'pg_rollback_xaction',
+		api_name	=> 'open-ils.storage.transaction.rollback',
+		api_level	=> 1,
+		argc		=> 0,
+	);
+
 }
 
 {
@@ -175,6 +236,7 @@
 	metabib::title_field_entry->table( 'metabib.title_field_entry' );
 	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
 	metabib::title_field_entry->columns( Primary => qw/id/ );
+	metabib::title_field_entry->columns( Essential => qw/id/ );
 	metabib::title_field_entry->columns( Others => qw/field index_vector/ );
 	metabib::title_field_entry->columns( TEMP => qw/value/ );
 
@@ -193,6 +255,7 @@
 	metabib::author_field_entry->table( 'metabib.author_field_entry' );
 	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
 	metabib::author_field_entry->columns( Primary => qw/id/ );
+	metabib::author_field_entry->columns( Essential => qw/id/ );
 	metabib::author_field_entry->columns( Others => qw/field index_vector/ );
 	metabib::author_field_entry->columns( TEMP => qw/value/ );
 
@@ -211,6 +274,7 @@
 	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
 	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
 	metabib::subject_field_entry->columns( Primary => qw/id/ );
+	metabib::subject_field_entry->columns( Essential => qw/id/ );
 	metabib::subject_field_entry->columns( Others => qw/field index_vector/ );
 	metabib::subject_field_entry->columns( TEMP => qw/value/ );
 
@@ -229,6 +293,7 @@
 	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
 	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
 	metabib::keyword_field_entry->columns( Primary => qw/id/ );
+	metabib::keyword_field_entry->columns( Essential => qw/id/ );
 	metabib::keyword_field_entry->columns( Others => qw/field index_vector/ );
 	metabib::keyword_field_entry->columns( TEMP => qw/value/ );
 
