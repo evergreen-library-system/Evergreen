@@ -83,6 +83,10 @@ sub JSON2perl {
 	my $class = shift;
 	local $_ = shift;
 
+	s/(?<!\\)\$/\\\$/gmo; # fixup $ for later
+	s/(?<!\\)\@/\\\@/gmo; # fixup @ for later
+	s/(?<!\\)\%/\\\%/gmo; # fixup % for later
+
 	# Convert JSON Unicode...
 	s/\\u(\d{4})/chr(hex($1))/esog;
 
@@ -122,6 +126,7 @@ sub old_JSON2perl {
 
 	$json =~ s/(?<!\\)\$/\\\$/gmo; # fixup $ for later
 	$json =~ s/(?<!\\)\@/\\\@/gmo; # fixup @ for later
+	$json =~ s/(?<!\\)\%/\\\%/gmo; # fixup % for later
 
 	my @casts;
 	my $casting_depth = 0;
