@@ -12,6 +12,7 @@ use OpenSRF::Utils::Cache;
 #use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Web;
 use OpenILS::Application::Search::Biblio;
+use OpenILS::Application::Search::Z3950;
 
 use OpenILS::Application::AppUtils;
 
@@ -66,7 +67,7 @@ sub get_org_tree {
 		
 		my $session = OpenSRF::AppSession->create("open-ils.storage");
 		my $request = $session->request( 
-				"open-ils.storage.actor.org_unit.retrieve", $user_obj->home_ou );
+				"open-ils.storage.direct.actor.org_unit.retrieve", $user_obj->home_ou );
 		my $response = $request->recv();
 
 		if(!$response) { 
@@ -113,7 +114,7 @@ sub get_sub_org_tree {
 		
 		my $session = OpenSRF::AppSession->create("open-ils.storage");
 		my $request = $session->request( 
-				"open-ils.storage.actor.org_unit.retrieve", $user_obj->home_ou );
+				"open-ils.storage.direct.actor.org_unit.retrieve", $user_obj->home_ou );
 		my $response = $request->recv();
 
 		if(!$response) { 
