@@ -1,22 +1,22 @@
-package OpenILS;
+package OpenSRF;
 use strict;
 use Error;
 use vars qw/$VERSION $AUTOLOAD/;
 $VERSION = do { my @r=(q$Revision$=~/\d+/g); sprintf "%d."."%02d"x$#r,@r };
 
-=head1 OpenILS
+=head1 OpenSRF
 
 =cut
 
 =head2 Overview
 
- Top level class for OpenILS perl modules.
+ Top level class for OpenSRF perl modules.
 
 =cut
 
 # Exception base classes
 #use Exception::Class
-#	( OpenILSException => { fields => [ 'errno' ] });
+#	( OpenSRFException => { fields => [ 'errno' ] });
 #push @Exception::Class::ISA, 'Error';
 
 =head3 AUTOLOAD()
@@ -68,8 +68,6 @@ sub alert_abstract() {
 	die " * Call to abstract method $method at $file, line $line";
 }
 
-sub class {
-	return scalar(caller);
-}
+sub class { return scalar(caller); }
 
 1;

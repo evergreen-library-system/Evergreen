@@ -66,12 +66,7 @@ sub _attr_get_set {
 	my $self = shift;
 	my $part = shift;
 
-	$logger->debug( "DomainObject:_attr_get_set: ". $self->toString, INTERNAL );
-
 	my $node = $self->attrNode($part);
-
-	$logger->debug( "DomainObject:_attr_get_set " . $node->toString(), INTERNAL ) if ($node);
-
 
 	if (defined(my $new_value = shift)) {
 		if (defined $node) {

@@ -16,7 +16,7 @@ OpenSRF::Transport::SlimJabber::Client
 Home-brewed slimmed down jabber connection agent. Supports SSL connections
 with a config file options:
 
-  transport->server->port # the ssl port
+  transport->server->sslport # the ssl port
   transport->server->ssl  # is this ssl?
 
 =cut
@@ -58,14 +58,20 @@ sub new {
 
 	my $conf = OpenSRF::Utils::Config->current;
 
-	my $host			= $conf->transport->server->primary;
+	my $host;
+
 	my $port			= $conf->transport->server->port;
 	my $username	= $params{'username'}	|| return undef;
 	my $resource	= $params{'resource'}	|| return undef;
 	my $password	= $params{'password'}	|| return undef;
 
-	my $jid = "$username\@$host\/$resource";
+	if( $params{host} ) {
+		$host		= $params{host};
+	} else { 
+		$host	= $conf->transport->server->system_primary;
+	}
 
+	my $jid = "$username\@$host\/$resource";
 
 	my $self = bless {} => $class;
 
@@ -501,7 +507,7 @@ sub initialize {
 
 sub construct {
 	my( $class, $app ) = @_;
-	$logger->transport("Constructing new Jabber connection for $app", INTERNAL );
+	$logger->transport("Constructing new Jabber connection for $app, my class $class", INTERNAL );
 	$class->peer_handle( 
 			$class->new( $app )->initialize() );
 }

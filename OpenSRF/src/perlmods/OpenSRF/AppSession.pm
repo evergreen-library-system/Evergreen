@@ -209,6 +209,11 @@ sub create {
 	my $r_id = $conf->$app->transport_target ||
 			die("No remote id for $app!");
 
+	my $peer_handle = OpenSRF::Transport::PeerHandle->retrieve("client"); 
+	if( ! $peer_handle ) {
+		$peer_handle = OpenSRF::Transport::PeerHandle->retrieve("system_client");
+	}
+
 	my $self = bless { app_name    => $app,
 				#client_auth => $auth,
 			   #recv_queue  => [],
@@ -218,8 +223,7 @@ sub create {
 			   session_id  => $sess_id,
 			   remote_id   => $r_id,
 			   orig_remote_id   => $r_id,
-				# peer_handle => OpenSRF::Transport::PeerHandle->retrieve($app),
-				peer_handle => OpenSRF::Transport::PeerHandle->retrieve("client"),
+				peer_handle => $peer_handle,
 				session_threadTrace => 0,
 			 } => $class;
 
@@ -253,6 +257,11 @@ sub connect {
 	my $self = shift;
 	my $class = ref($self) || $self;
 
+	if ( ref( $self ) and  $self->state && $self->state == CONNECTED  ) {
+		$logger->transport("ABC AppSession already connected", DEBUG );
+	} else {
+		$logger->transport("ABC AppSession not connected, connecting..", DEBUG );
+	}
 	return $self if ( ref( $self ) and  $self->state && $self->state == CONNECTED  );
 
 	my $app = shift;
@@ -281,6 +290,9 @@ sub connect {
 
 sub finish {
 	my $self = shift;
+	if( ! $self->session_id ) {
+		return 0;
+	}
 	#$self->disconnect if ($self->endpoint == CLIENT);
 	for my $ses ( @_CLIENT_CACHE ) {
 		if ($ses->[2]->session_id eq $self->session_id) {
@@ -758,7 +770,9 @@ sub resend {
 	my $self = shift;
 	OpenSRF::Utils::Logger->debug(
 		"I'm resending the request for threadTrace ". $self->threadTrace, DEBUG);
-	OpenSRF::Utils::Logger->debug($self->payload->toString,INTERNAL);
+	if($self->payload) {
+		OpenSRF::Utils::Logger->debug($self->payload->toString,INTERNAL);
+	}
 	return $self->session->send('REQUEST', $self->payload, $self->threadTrace );
 }
 

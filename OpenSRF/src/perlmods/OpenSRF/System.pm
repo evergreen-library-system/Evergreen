@@ -10,7 +10,7 @@ use OpenSRF::Utils::LogServer;
 use OpenSRF::DOM;
 use OpenSRF::EX qw/:try/;
 use POSIX ":sys_wait_h";
-use OpenSRF::Utils::Config;
+use OpenSRF::Utils::Config; 
 use strict;
 
 =head2 Name/Description
@@ -61,8 +61,6 @@ sub set_config {
 
 	my $config = OpenSRF::Utils::Config->load( 
 		config_file => "/pines/conf/opensrf.conf" );
-
-	warn "Setting config " . $config->transport->implementation ."\n";
 
 	if( ! $config ) { throw OpenSRF::EX::Config "System could not load config"; }
 
@@ -194,7 +192,14 @@ sub bootstrap_client {
 	my $self = __PACKAGE__->instance();
 	my $config = OpenSRF::Utils::Config->current;
 
-	my $app = "client";
+	my $client_type = shift;
+	my $app;
+
+	if( defined($client_type) and $client_type ) {
+		$app = $client_type;
+	} else {
+		$app = "client";
+	}
 
 	OpenSRF::Transport::PeerHandle->construct( $app );
 

@@ -74,7 +74,6 @@ sub send_request {
 		$e->throw();
 	}; 
 
-	$log->error("response is $resp");
 	if ( defined($resp) and $resp and $resp->class->isa('OpenSRF::DomainObject::oilsResult') ){ 
 
 		$log->debug( "Math server returned " . $resp->toString(1), INTERNAL );

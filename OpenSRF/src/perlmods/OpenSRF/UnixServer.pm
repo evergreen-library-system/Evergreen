@@ -149,7 +149,7 @@ sub child_init_hook {
 	$logger->transport( 
 			"Creating PeerHandle from UnixServer child_init_hook", INTERNAL );
 	OpenSRF::Transport::PeerHandle->construct( $self->app() );
-	my $peer_handle = OpenSRF::System::bootstrap_client();
+	my $peer_handle = OpenSRF::System::bootstrap_client("system_client");
 	OpenSRF::Application->application_implementation->child_init
 		if (OpenSRF::Application->application_implementation->can('child_init'));
 	return $peer_handle;

@@ -43,7 +43,11 @@ sub AUTOLOAD {
 		return $self->$meth(@args);
 	} catch Error with {
 		my $e = shift;
-		OpenSRF::Utils::Logger->error( $@ . $e);
+		if( $e ) {
+			OpenSRF::Utils::Logger->error( $@ . $e);
+		} else {
+			OpenSRF::Utils::Logger->error( $@ );
+		}
 		die $@;
 	};
 

@@ -334,7 +334,9 @@ sub do_client {
 		$self->payload->throw();
 	}
 
-	$log->debug("Passing to OpenSRF::Application::handler()\n" . $self->payload->toString(1), INTERNAL);
+	if( $self->payload ) {
+		$log->debug("Passing to OpenSRF::Application::handler()\n" . $self->payload->toString(1), INTERNAL);
+	}
 	$log->debug("oilsMessage passing to Application: " . $self->type." : ".$session->remote_id, INFO );
 
 	return 1;

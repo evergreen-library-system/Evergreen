@@ -29,7 +29,7 @@ sub retrieve {
 	my( $class, $app ) = @_;
 	my @keys = keys %apps_hash;
 	OpenSRF::Utils::Logger->transport( 
-			"Requesting peer for $app and we have @keys", INTERNAL );
+			"Requesting peer for $app and we have @keys", INFO );
 	return $apps_hash{$app};
 }
 
@@ -47,15 +47,23 @@ sub new {
 	my $username	= $config->transport->users->$app;
 	my $password	= $config->transport->auth->password;
 	my $resource	= $config->env->hostname . "_$$";
+	my $server;
+
+	my $host;
+	if( $app eq "client" ) {
+		$host = $config->transport->server->client_primary;
+	} else {
+		$host = "";
+	}
 
 	OpenSRF::EX::Config->throw( "JPeer could not load all necesarry values from config" )
 		unless ( $username and $password and $resource );
-
 
 	my $self = __PACKAGE__->SUPER::new( 
 		username		=> $username,
 		resource		=> $resource,
 		password		=> $password,
+		host			=> $host,
 		);	
 					
 	bless( $self, $class );
