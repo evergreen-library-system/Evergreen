@@ -6,7 +6,16 @@ osrf_message* _do_server( osrf_app_session*, osrf_message* );
 int osrf_stack_process( transport_client* client, int timeout ) {
 	transport_message* msg = client_recv( client, timeout );
 	if(msg == NULL) return 0;
-	return osrf_stack_transport_handler( msg );
+	int status = osrf_stack_transport_handler( msg );
+
+	/* see if there are multiple message to be received */
+	while(1) {
+		transport_message* m = client_recv( client, 0 );
+		if(m) status = osrf_stack_transport_handler( m );
+		else break;
+	}
+
+	return status;
 }
 
 

@@ -167,7 +167,8 @@ void _osrf_app_session_push_session( osrf_app_session* session ) {
 	}
 
 	osrf_app_session* ptr = app_session_cache;
-	debug_handler( "Pushing [%s] onto global session cache", session->session_id );
+	debug_handler( "Pushing [%s] [%s] onto global session cache", 
+			session->remote_service, session->session_id );
 	while( ptr != NULL ) {
 		if( !strcmp(ptr->session_id, session->session_id) )
 			return;
@@ -236,6 +237,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 	session->request_queue = NULL;
 	session->remote_id = strdup(target_buf);
 	session->orig_remote_id = strdup(session->remote_id);
+	session->remote_service = strdup(remote_service);
 
 	/* build a chunky, random session id */
 	char id[256];
@@ -244,7 +246,8 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	sprintf(id, "%lf.%d%d", get_timestamp_millis(), (int)time(NULL), getpid());
 	session->session_id = strdup(id);
-	debug_handler( "Building a new client session with id [%s]", session->session_id );
+	debug_handler( "Building a new client session with id [%s] [%s]", 
+			session->remote_service, session->session_id );
 
 	session->thread_trace = 0;
 	session->state = OSRF_SESSION_DISCONNECTED;
@@ -261,7 +264,6 @@ osrf_app_session* osrf_app_server_session_init(
 	if(session)
 		return session;
 
-	debug_handler( "Building a new server session with id [%s]", session_id );
 
 	session = safe_malloc(sizeof(osrf_app_session));	
 
@@ -274,6 +276,10 @@ osrf_app_session* osrf_app_server_session_init(
 	session->remote_id = strdup(remote_id);
 	session->orig_remote_id = strdup(remote_id);
 	session->session_id = strdup(session_id);
+	session->remote_service = strdup(remote_service);
+
+	debug_handler( "Building a new server session [%s] with id [%s]", 
+			session->remote_service,  session_id );
 
 	session->thread_trace = 0;
 	session->state = OSRF_SESSION_DISCONNECTED;
@@ -295,6 +301,7 @@ void _osrf_app_session_free( osrf_app_session* session ){
 	free(session->remote_id);
 	free(session->orig_remote_id);
 	free(session->session_id);
+	free(session->remote_service);
 	free(session);
 }
 
@@ -320,8 +327,8 @@ void _osrf_app_session_push_request( osrf_app_session* session, osrf_app_request
 	if(session == NULL || req == NULL)
 		return;
 
-	debug_handler( "Pushing [%d] onto requeust queue for session [%s]",
-			req->request_id, session->session_id );
+	debug_handler( "Pushing [%d] onto requeust queue for session [%s] [%s]",
+			req->request_id, session->remote_service, session->session_id );
 
 	if(session->request_queue == NULL) 
 		session->request_queue = req;
@@ -342,8 +349,8 @@ void _osrf_app_session_remove_request( osrf_app_session* session, osrf_app_reque
 	if(session->request_queue == NULL)
 		return;
 
-	debug_handler("Removing request [%d] from session [%s]",
-			req->request_id, session->session_id );
+	debug_handler("Removing request [%d] from session [%s] [%s]",
+			req->request_id, session->remote_service, session->session_id );
 	osrf_app_request* first = session->request_queue;
 	if(first->request_id == req->request_id) {
 		if(first->next == NULL) { /* only one in the list */
@@ -408,8 +415,8 @@ void osrf_app_session_reset_remote( osrf_app_session* session ){
 		return;
 
 	free(session->remote_id);
-	debug_handler( "App Session [%s] resetting remote id to %s",
-			session->session_id, session->orig_remote_id );
+	debug_handler( "App Session [%s] [%s] resetting remote id to %s",
+			session->remote_service, session->session_id, session->orig_remote_id );
 
 	session->remote_id = strdup(session->orig_remote_id);
 }
@@ -483,7 +490,6 @@ int osrf_app_session_connect(osrf_app_session* session){
 
 	while( session->state != OSRF_SESSION_CONNECTED && remaining >= 0 ) {
 		osrf_app_session_queue_wait( session, remaining );
-		debug_handler("In connect while with state: %x, %d [%s]", session, session->state, session->session_id );
 		remaining -= (int) (time(NULL) - start);
 	}
 
@@ -538,10 +544,14 @@ int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
 
 	char* xml =  osrf_message_to_xml(msg);
 
+	debug_handler("[%s] [%s] Remote Id: %s", 
+			session->remote_service, session->session_id, session->remote_id );
+
 	transport_message* t_msg = message_init( 
 			xml, "", session->session_id, session->remote_id, NULL );
 
-	debug_handler("Sending XML:\n%s", xml );
+	debug_handler("Session [%s] [%s]  sending to %s \nXML:\n%s", 
+			session->remote_service, session->session_id, t_msg->recipient, xml );
 	ret_val = client_send_message( session->transport_handle, t_msg );
 	free(xml);
 	message_free( t_msg );
@@ -568,7 +578,8 @@ int osrf_app_session_queue_wait( osrf_app_session* session, int timeout ){
 void osrf_app_session_destroy ( osrf_app_session* session ){
 	if(session == NULL) return;
 
-	debug_handler( "AppSession [%s] destroying self and deleting requests", session->session_id );
+	debug_handler( "AppSession [%s] [%s] destroying self and deleting requests", 
+			session->remote_service, session->session_id );
 	if(session->type == OSRF_SESSION_CLIENT 
 			&& session->state != OSRF_SESSION_DISCONNECTED ) { /* disconnect if we're a client */
 		osrf_message* dis_msg = osrf_message_init( DISCONNECT, session->thread_trace, 1 );
@@ -577,7 +588,8 @@ void osrf_app_session_destroy ( osrf_app_session* session ){
 	}
 	//session->state = OSRF_SESSION_DISCONNECTED;
 	_osrf_app_session_remove_session(session->session_id);
-	debug_handler("AppSession [%s] removed from cache", session->session_id );
+	debug_handler("AppSession [%s] [%s] removed from cache", 
+			session->remote_service, session->session_id );
 
 	osrf_app_request* req;
 	while( session->request_queue != NULL ) {
