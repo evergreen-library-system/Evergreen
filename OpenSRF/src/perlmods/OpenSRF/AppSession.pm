@@ -819,6 +819,24 @@ sub respond_complete {
 }
 
 
+package OpenSRF::AppSubrequest;
+
+sub respond {
+	my $self = shift;
+	my $resp = shift;
+	push @{$$self{resp}}, $resp;
+}
+
+sub new {
+	return bless({resp => []}, 'OpenSRF::AppSubrequest');
+}
+
+sub responses { @{$_[0]->{resp}} }
+
+sub status {}
+
+
+
 1;
 
 

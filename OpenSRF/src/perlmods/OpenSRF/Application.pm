@@ -213,7 +213,20 @@ sub method_lookup {
 
 sub run {
 	my $self = shift;
-	$self->{code}->($self, @_);
+	my $req = shift;
+
+	unless ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppRequest') ) {
+		unshift @_, $req;
+		$req = OpenSRF::AppSubrequest->new;
+	}
+
+	my $resp = $self->{code}->($self, $req, @_);
+
+	if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
+		return $req->responses;
+	}
+
+	return $resp;
 }
 
 1;
