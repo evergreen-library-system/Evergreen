@@ -121,6 +121,7 @@ int tcp_send( transport_socket* sock_obj, const char* data ){
 	// ------------------------------------------------------------------
 	// Send the data down the TCP pipe
 	// ------------------------------------------------------------------
+	debug_handler( "Sending Data At %f Seconds", get_timestamp_millis() );
 	if( send( sock_obj->sock_fd, data, strlen(data), 0 ) < 0 ) {
 		fatal_handler( "tcp_send(): Error sending data" );
 		return 0;
@@ -209,6 +210,7 @@ int tcp_wait( transport_socket* sock_obj, int timeout ){
 
 #else // read everything we can
 
+	debug_handler( "Receiving Data At %f Seconds", get_timestamp_millis() );
 	while( (n = recv(sock_fd, buf, BUFSIZE-1, 0) ) > 0 ) {
 		//printf("\nReceived:  %s\n", buf);
 		sock_obj->data_received_callback( sock_obj->user_data, buf );
