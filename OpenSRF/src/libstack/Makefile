@@ -27,4 +27,4 @@ libopensrf_transport:
 	make -C ../libtransport
 
 clean:
-	/bin/rm -f *.o sys_client client
+	/bin/rm -f *.o sys_client client $(LIB_DIR)/libopensrf_stack.so
