@@ -3,6 +3,7 @@
 	IF method; "method='$method'"; END;
 	IF class; "class='$class'"; END;
 	IF name; "name='$name'"; END;
+	IF action; "action='$action'"; END;
 	">";
 	content;
 	"</form>"

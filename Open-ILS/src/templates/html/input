@@ -7,6 +7,8 @@
 		IF value;		" value='" _ value _ "'"; END; 
 		IF id;			" id='" _ id _ "'"; END; 
 		IF size;			" size='" _ size _ "'"; END; 
+		IF onkeypress;			" onkeypress='" _ onkeypress _ "'"; END; 
+		IF onkeydown;			" onkeydown='" _ onkeydown _ "'"; END; 
 		IF checked;		" checked='checked'"; END; 
 		IF onclick;		" onclick='" _ onclick _ "'"; END; 
 		IF ! content;	"/"; END;

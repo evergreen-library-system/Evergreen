@@ -8,6 +8,7 @@
 	IF onmouseover; " onmouseover='" _ onmouseover _ "'"; END;
 	IF onmouseout; " onmouseout='" _ onmouseout _ "'"; END;
 	IF class; " class='" _ class _ "'"; END;
+	IF id; " id='" _ id _ "'"; END;
 
 	IF text OR content; 
 		">";
