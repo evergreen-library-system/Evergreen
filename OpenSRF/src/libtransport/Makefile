@@ -3,7 +3,7 @@
 
 CC = gcc
 LIB_DIR=../../lib
-CC_OPTS = -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include #-I /home/erickson/cc/libxml2-2.6.16
+CC_OPTS = -fPIC -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include #-I /home/erickson/cc/libxml2-2.6.16
 EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport 
 LIB_SOURCES = generic_utils.c transport_socket.c transport_session.c transport_message.c transport_client.c sha.c
 

@@ -1,6 +1,6 @@
 # $Id$
 
-CFLAGS		+= -g -O2 -Wall -std=gnu99 -D_GNU_SOURCE -D_REENTRANT -I ../../include
+CFLAGS		+= -g -O2 -Wall -std=gnu99 -D_GNU_SOURCE -D_REENTRANT -I ../../include -fPIC
 LDFLAGS		+= -shared -W1 
 LIB_DIR		= ../../lib
 LDLIBS		+= -L . -ljson -L $(LIB_DIR)
