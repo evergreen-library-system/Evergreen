@@ -56,6 +56,9 @@ sub cat_biblio_search_tcn {
 
 	my( $self, $client, $tcn ) = @_;
 
+	$tcn =~ s/.*?(\w+)\s*$/$1/o;
+	warn "Searching TCN $tcn\n";
+
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
 			"open-ils.storage.biblio.record_entry.search.tcn_value", $tcn );
