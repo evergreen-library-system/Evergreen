@@ -67,6 +67,7 @@ sub process_request {
 	my $data; my $d;
 	while( $d = <STDIN> ) { $data .= $d; }
 
+	my $orig = $0;
 	$0 = "$0*";
 
 
@@ -126,7 +127,7 @@ sub process_request {
 	$logger->transport( "Timed out, disconnected, or auth failed", INFO );
 	$app_session->kill_me;
 
-	$0 =~ s/\*//g;
+	$0 =~ $orig;
 
 		
 }
@@ -165,6 +166,7 @@ sub serve {
 	close F;
 
 	$self->run( 'conf_file' => $file );
+	unlink($file);
 
 }
 
