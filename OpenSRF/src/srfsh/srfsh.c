@@ -515,6 +515,9 @@ int print_help() {
 			"	- 0 means don't reconnect, 1 means reconnect after each batch of 4, and\n"
 			"		 2 means reconnect after every request\n"
 			"---------------------------------------------------------------------------------\n"
+			"Note: long output is piped through 'less'.  To search in 'less', type: /<search>\n"
+			"---------------------------------------------------------------------------------\n"
+			"\n"
 			);
 
 	return 1;
