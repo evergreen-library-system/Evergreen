@@ -1,5 +1,6 @@
-var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
+//var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
 //var XML_HTTP_URL = "https://localhost:10444/method/";
+var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
 
 /* Request object */
 function RemoteRequest( service, method ) {
@@ -12,7 +13,8 @@ function RemoteRequest( service, method ) {
 	/* give us the ability to ignore responses from cancelled searches */
 	this.cancelled = false; 
 
-	this.type		= "POST"; /* default */
+	//this.type		= "POST"; /* default */
+	this.type		= "GET"; /* default */
 
 	var i = 2;
 	this.params = ""; 
@@ -107,7 +109,20 @@ RemoteRequest.prototype.getText = function() {
 
 RemoteRequest.prototype.getResultObject = function() {
 	var obj = JSON2js( this.xmlhttp.responseText );
-	if(obj && obj.is_err) { throw new EXCommunication(obj.err_msg); }
+
+	debug("Request " + this.param_string + 
+			"\nReceived\n" + this.xmlhttp.responseText);
+
+	if(obj == null) {
+		alert("received null response");
+		return null;
+	}
+
+	if(obj && obj.is_err) { 
+		alert("Something's Wrong: " + js2JSON(obj));
+		throw new EXCommunication(obj.err_msg); 
+	}
+
 	return obj;
 }
 
