@@ -183,18 +183,76 @@ sub pop_queue {
 	my $name_id = _get_name_id($name);
 
 	my $value = $dbh->selectrow_arrayref('SELECT id, value FROM storage WHERE name_id = ? ORDER BY id ASC LIMIT 1;', {}, $name_id);
-	$dbh->do('DELETE FROM storage WHERE id = ?;',{}, $value->[0]);
+	$dbh->do('DELETE FROM storage WHERE id = ?;',{}, $value->[0]) unless ($self->api_name =~ /peek$/);
 
 	_flush_by_name($name);
 
 	return JSON->JSON2perl( $value->[1] );
 }
 __PACKAGE__->register_method(
+	api_name => 'opensrf.persist.queue.peek',
+	method => 'pop_queue',
+	argc => 1,
+);
+__PACKAGE__->register_method(
 	api_name => 'opensrf.persist.queue.pop',
 	method => 'pop_queue',
 	argc => 1,
 );
 
+
+sub store_size {
+	my $self = shift;
+	my $client = shift;
+
+	my $name = shift or do {
+		throw OpenSRF::EX::WARN ("No queue name specified!");
+	};
+	my $name_id = _get_name_id($name);
+
+	my $value = $dbh->selectrow_arrayref('SELECT SUM(LENGTH(value)) FROM storage WHERE name_id = ?;', {}, $name_id);
+
+	return JSON->JSON2perl( $value->[0] );
+}
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.queue.size',
+	method => 'shift_stack',
+	argc => 1,
+);
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.stack.size',
+	method => 'shift_stack',
+	argc => 1,
+);
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.object.size',
+	method => 'shift_stack',
+	argc => 1,
+);
+
+sub store_depth {
+	my $self = shift;
+	my $client = shift;
+
+	my $name = shift or do {
+		throw OpenSRF::EX::WARN ("No queue name specified!");
+	};
+	my $name_id = _get_name_id($name);
+
+	my $value = $dbh->selectrow_arrayref('SELECT COUNT(*) FROM storage WHERE name_id = ?;', {}, $name_id);
+
+	return JSON->JSON2perl( $value->[0] );
+}
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.queue.length',
+	method => 'shift_stack',
+	argc => 1,
+);
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.stack.depth',
+	method => 'shift_stack',
+	argc => 1,
+);
 
 sub shift_stack {
 	my $self = shift;
@@ -206,12 +264,17 @@ sub shift_stack {
 	my $name_id = _get_name_id($name);
 
 	my $value = $dbh->selectrow_arrayref('SELECT id, value FROM storage WHERE name_id = ? ORDER BY id DESC LIMIT 1;', {}, $name_id);
-	$dbh->do('DELETE FROM storage WHERE id = ?;',{}, $value->[0]);
+	$dbh->do('DELETE FROM storage WHERE id = ?;',{}, $value->[0]) unless ($self->api_name =~ /peek$/);
 
 	_flush_by_name($name);
 
 	return JSON->JSON2perl( $value->[1] );
 }
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.stack.peek',
+	method => 'shift_stack',
+	argc => 1,
+);
 __PACKAGE__->register_method(
 	api_name => 'opensrf.persist.stack.pop',
 	method => 'shift_stack',
@@ -229,12 +292,17 @@ sub get_object {
 	my $name_id = _get_name_id($name);
 
 	my $value = $dbh->selectrow_arrayref('SELECT name_id, value FROM storage WHERE name_id = ? ORDER BY id DESC LIMIT 1;', {}, $name_id);
-	$dbh->do('DELETE FROM storage WHERE name_id = ?',{}, $value->[0]);
+	$dbh->do('DELETE FROM storage WHERE name_id = ?',{}, $value->[0]) unless ($self->api_name =~ /peek$/);
 
 	_flush_by_name($name);
 
 	return JSON->JSON2perl( $value->[1] );
 }
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.object.peek',
+	method => 'shift_stack',
+	argc => 1,
+);
 __PACKAGE__->register_method(
 	api_name => 'opensrf.persist.object.get',
 	method => 'shift_stack',
