@@ -79,6 +79,8 @@ var i, o, u, v;
 			}
 			return 'null';
 		case 'unknown':
+		case 'number':
+			return arg;
 		case 'undefined':
 		case 'function':
 			return u;
