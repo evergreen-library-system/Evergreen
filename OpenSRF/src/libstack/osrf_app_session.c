@@ -461,6 +461,11 @@ int osrf_app_session_connect(osrf_app_session* session){
 	if(session == NULL)
 		return 0;
 
+	if(session->state == OSRF_SESSION_CONNECTED) {
+		debug_handler("Already Connected, returning");
+		return 1;
+	}
+
 	int timeout = 5; /* XXX CONFIG VALUE */
 
 	debug_handler( "AppSession connecting to %s", session->remote_id );
