@@ -97,28 +97,25 @@ sub wormize {
 	my( $self, $client, $docid ) = @_;
 
 	# step -1: grab the doc from storage
-	my $name = "open-ils.storage.biblio.record_entry.nodeset.retrieve";
+	my $name = "open-ils.storage.biblio.record_marc.retrieve";
 	my $method = $self->method_lookup( $name ); 
 	if(!$method) { throw OpenSRF::EX::PANIC ("Can't locate method $name"); }
-	my ($nodeset) = $method->run( $docid );
-	if(!$nodeset) { throw OpenSRF::EX::ERROR ("Do MARC document found with id $docid");}
-
+	my ($marcxml) = $method->run( $docid );
 
 	# step 0: turn the doc into marcxml and mods
-	my $marcxml	= $xml_util->nodeset_to_xml( $nodeset );
 	if(!$marcxml) { throw OpenSRF::EX::PANIC ("Can't build XML from nodeset for $docid'"); }
-	$marcxml = $parser->parse_string($marcxml->toString()); #bad, but good
-	my $mods = $mods_sheet->transform($marcxml);
+	my $marcdoc = $parser->parse_string($marcxml->marc);
+	my $mods = $mods_sheet->transform($marcdoc);
 
 
-	# step 1: build the rows
-	my $full_rows = _marcxml_to_full_rows( $marcxml );
+	# step 1: build the KOHA rows
+	my $full_rows = _marcxml_to_full_rows( $marcdoc );
+
 
 	# step 2;
 	for my $class (keys %$xpathset) {
 		for my $type(keys %{$xpathset->{$class}}) {
 			my $value = _get_field_value( $mods, $xpathset->{$class}->{$type} );
-			print " $class : $type \t=> $value\n\n"
 		}
 	}
 
@@ -154,6 +151,7 @@ sub _marcxml_to_full_rows {
 }
 
 sub _get_field_value {
+
 	my( $mods, $xpath ) = @_;
 
 	my $string = "";
@@ -177,6 +175,20 @@ sub _get_field_value {
 		}
 	}
 	return $string;
+}
+
+
+sub modsdoc_to_values {
+	my( $self, $mods ) = @_;
+	my $data = {};
+	for my $class (keys %$xpathset) {
+		$data->{$class} = {};
+		for my $type(keys %{$xpathset->{$class}}) {
+			my $value = _get_field_value( $mods, $xpathset->{$class}->{$type} );
+			$data->{$class}->{$type} = $value;
+		}
+	}
+	return $data;
 }
 
 
