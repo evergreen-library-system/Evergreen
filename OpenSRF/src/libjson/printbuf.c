@@ -30,23 +30,13 @@ struct printbuf* printbuf_new()
 {
   struct printbuf *p;
 
-  //if(!(p = calloc(1, sizeof(struct printbuf)))) return NULL;
-
-  size_t len = sizeof(struct printbuf);
-  p = (struct printbuf*) malloc(len);
-  if(!p) return NULL;
-  memset( p, 0, len );
-
+  if(!(p = calloc(1, sizeof(struct printbuf)))) return NULL;
   p->size = 32;
   p->bpos = 0;
-
-  if(!(p->buf = (char*) malloc(p->size))) {
+  if(!(p->buf = malloc(p->size))) {
     free(p);
     return NULL;
   }
-
-  memset(p->buf, 0, p->size);
-
   return p;
 }
 
@@ -65,15 +55,7 @@ int printbuf_memappend(struct printbuf *p, char *buf, int size)
     p->size = new_size;
     p->buf = t;
   }
-
-	char* tmp = strdup(p->buf);
-	memset( p->buf, 0, p->size);
-   memcpy( p->buf, tmp, strlen(tmp));
-	memcpy(p->buf + p->bpos, buf, size);
-   free(tmp);
-
-  
-//  memcpy(p->buf + p->bpos, buf, size);
+  memcpy(p->buf + p->bpos, buf, size);
   p->bpos += size;
   p->buf[p->bpos]= '\0';
   return size;

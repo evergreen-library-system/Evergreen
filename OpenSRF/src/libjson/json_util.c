@@ -7,12 +7,17 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "bits.h"
-#include "debug.h"
-#include "printbuf.h"
-#include "json_object.h"
-#include "json_tokener.h"
-#include "json_util.h"
+#include "libjson/json_util.h"
+#include "libjson/json_tokener.h"
+#include "libjson/bits.h"
+#include "libjson/debug.h"
+#include "libjson/printbuf.h"
+#include "libjson/linkhash.h"
+#include "libjson/arraylist.h"
+#include "libjson/json_object.h"
+#include "libjson/ossupport.h"
+#include "libjson/json_object_private.h"
+
 
 
 struct json_object* json_object_from_file(char *filename)

@@ -25,6 +25,7 @@
 #include "libjson/linkhash.h"
 #include "libjson/arraylist.h"
 #include "libjson/json_object.h"
+#include "libjson/ossupport.h"
 #include "libjson/json_object_private.h"
 
 
@@ -91,7 +92,7 @@ static int json_escape_str(struct printbuf *pb, char *str)
     case '\n':
     case '\r':
     case '\t':
-	 case '"':
+    case '"':
       if(pos - start_offset > 0)
 	printbuf_memappend(pb, str + start_offset, pos - start_offset);
       if(c == '\b') printbuf_memappend(pb, "\\b", 2);

@@ -21,12 +21,16 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "libjson/json_tokener.h"
 #include "libjson/bits.h"
 #include "libjson/debug.h"
 #include "libjson/printbuf.h"
+#include "libjson/linkhash.h"
 #include "libjson/arraylist.h"
 #include "libjson/json_object.h"
-#include "libjson/json_tokener.h"
+#include "libjson/ossupport.h"
+#include "libjson/json_object_private.h"
+
 
 
 static struct json_object* json_tokener_do_parse(struct json_tokener *this);
@@ -50,9 +54,8 @@ static struct json_object* json_tokener_do_parse(struct json_tokener *this)
   enum json_tokener_error err = json_tokener_success;
   struct json_object *current = NULL, *obj;
   char *obj_field_name = NULL;
-  char quote_char = 0;
-  int deemed_double = 0; 
-  int start_offset = 0;
+  char quote_char;
+  int deemed_double, start_offset;
 
   state = json_tokener_state_eatws;
   saved_state = json_tokener_state_start;
@@ -197,6 +200,7 @@ static struct json_object* json_tokener_do_parse(struct json_tokener *this)
       switch(c) {
       case '"':
       case '\\':
+      case '/':
 	printbuf_memappend(this->pb, this->source + start_offset,
 			   this->pos - start_offset - 1);
 	start_offset = this->pos++;
