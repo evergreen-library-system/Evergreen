@@ -1,61 +1,3 @@
-use Class::DBI;
-
-package Class::DBI;
-
-{
-	no warnings;
-	no strict;
-	sub _do_search {
-		my ($proto, $search_type, @args) = @_;
-		my $class = ref $proto || $proto;
-		
-		@args = %{ $args[0] } if ref $args[0] eq "HASH";
-
-		my (@cols, @vals);
-		my $search_opts = @args % 2 ? pop @args : {};
-
-		$search_opts->{offset} = int($search_opts->{page}) * int($search_opts->{page_size})  if ($search_opts->{page_size});
-		$search_opts->{_placeholder} ||= '?';
-
-		while (my ($col, $val) = splice @args, 0, 2) {
-			my $column = $class->find_column($col)
-				|| (List::Util::first { $_->accessor eq $col } $class->columns)
-				|| $class->_croak("$col is not a column of $class");
-
-			push @cols, $column;
-			push @vals, $class->_deflated_column($column, $val);
-		}
-
-		my $frag = join " AND ",
-		map defined($vals[$_]) ? "$cols[$_] $search_type $$search_opts{_placeholder}" : "$cols[$_] IS NULL",
-			0 .. $#cols;
-
-		$frag .= " ORDER BY $search_opts->{order_by}"
-			if $search_opts->{order_by};
-		$frag .= " LIMIT $search_opts->{limit}"
-			if $search_opts->{limit};
-		$frag .= " OFFSET $search_opts->{offset}"
-			if ($search_opts->{limit} && defined($search_opts->{offset}));
-
-		return $class->sth_to_objects($class->sql_Retrieve($frag),
-			[ grep defined, @vals ]);
-	}
-}
-
-sub search_fti {
-	my $self = shift;
-	my @args = @_;
-	if (ref($args[-1]) eq 'HASH') {
-		$args[-1]->{_placeholder} = "to_tsquery('default',?)";
-	} else {
-		push @args, {_placeholder => "to_tsquery('default',?)"};
-	}
-	$self->_do_search("@@"  => @args);
-}
-
-
-
-#-------------------------------------------------------------------------------
 package OpenILS::Application::Storage;
 use OpenSRF::Application;
 use base qw/OpenSRF::Application/;
@@ -70,17 +12,20 @@ sub DESTROY {};
 our $_db_driver;
 our $_db_params;
 
+sub driver {
+	return $_db_driver;
+}
 
 sub initialize {
 	return $_db_driver if (defined $_db_driver);
-	my $conf = OpenSRF::Utils::SettingsClieng->new;
+	my $conf = OpenSRF::Utils::SettingsClient->new;
 
 	$log->debug('Initializing ' . __PACKAGE__ . '...', DEBUG);
 
 	my $driver = $conf->get_value( apps => storage => app_settings => databases => 'driver');
 	my $_db_params = $conf->get_value( apps => storage => app_settings => databases => 'database');
 
-	$_db_driver = "OpenILS::App::Storage::$driver";
+	$_db_driver = "OpenILS::App::Storage::Driver::$driver";
 
 
 	eval "use $_db_driver;";
@@ -134,7 +79,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method		=> 'getBiblioFieldMaps',
 	api_name	=> 'open-ils.storage.config.metarecord_field.list.by_class',
-	argc		=> 0,
+	argc		=> 1,
 );
 
 
