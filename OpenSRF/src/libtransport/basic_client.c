@@ -1,10 +1,11 @@
 #include "opensrf/transport_client.h"
+#include "signal.h"
 
-/**
-  * Simple jabber client
-  */
-
-
+pid_t pid;
+void sig_int( int sig ) {
+	fprintf(stderr, "Killing child %d\n", pid );
+	kill( pid, SIGKILL );
+}
 
 /* connects and registers with the router */
 int main( int argc, char** argv ) {
@@ -23,8 +24,9 @@ int main( int argc, char** argv ) {
 	 else  
 		fatal_handler( "NOT Connected...\n" ); 
 	
-	if( fork() ) {
+	if( (pid=fork()) ) { /* parent */
 
+		signal(SIGINT, sig_int);
 		fprintf(stderr, "Listener: %d\n", getpid() );	
 		char buf[300];
 		memset(buf, 0, 300);
@@ -46,6 +48,8 @@ int main( int argc, char** argv ) {
 			printf("\n=> ");
 			memset(buf, 0, 300);
 		}
+		fprintf(stderr, "Killing child %d\n", pid );
+		kill( pid, SIGKILL );
 		return 0;
 
 	} else {
@@ -56,7 +60,8 @@ int main( int argc, char** argv ) {
 		while( (recv=client_recv( client, -1)) ) {
 			if( recv->is_error )
 				fprintf( stderr, "\nReceived Error\t: ------------------\nFrom:\t\t"
-					"%s\nRouterFrom:\t%s\nBody:\t\t%s\nType %s\nCode %d\n=> ", recv->sender, recv->router_from, recv->body, recv->error_type, recv->error_code );
+					"%s\nRouterFrom:\t%s\nBody:\t\t%s\nType %s\nCode %d\n=> ", 
+					recv->sender, recv->router_from, recv->body, recv->error_type, recv->error_code );
 			else
 				fprintf( stderr, "\nReceived\t: ------------------\nFrom:\t\t"
 					"%s\nRouterFrom:\t%s\nBody:\t\t%s\n=> ", recv->sender, recv->router_from, recv->body );
