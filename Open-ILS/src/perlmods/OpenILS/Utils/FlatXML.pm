@@ -8,7 +8,12 @@ my $_val_mask = 1 << XML_ATTRIBUTE_NODE | 1 << XML_NAMESPACE_DECL;
 
 my $parser = XML::LibXML->new();
 $parser->keep_blanks(0);
-sub new { return bless({},shift()); }
+sub new {
+	my $class = shift;
+	my %args = @_;
+	$class = ref($class) || $class;
+	return bless(\%args,$class);
+}
 
 sub xml {
 	my $self = shift;
