@@ -401,11 +401,11 @@ sub introspect {
 
 	$method = undef if ($self->{api_name} =~ /all$/o);
 
-	for my $api_level ( 1 .. $#_METHODS ) {
+	for my $api_level ( reverse(1 .. $#_METHODS) ) {
 		for my $api_name ( sort keys %{$_METHODS[$api_level]} ) {
 			if (!$_METHODS[$api_level]{$api_name}{remote}) {
 				if (defined($method)) {
-					if ($api_name =~ /$method/) {
+					if ($api_name eq $method) {
 						$client->respond( $_METHODS[$api_level]{$api_name} );
 					}
 				} else {
