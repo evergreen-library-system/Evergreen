@@ -55,7 +55,7 @@ CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
 	depth		INT	NOT NULL,
-	parent		INT	REFERENCES actor.org_unit_type (id),
+	parent		INT,
 	can_have_users	BOOL	NOT NULL DEFAULT TRUE
 );
 
@@ -66,8 +66,8 @@ INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( '
 
 CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
-	parent_ou	INT	REFERENCES actor.org_unit (id),
-	ou_type		INT	NOT NULL REFERENCES actor.org_unit_type (id),
+	parent_ou	INT,
+	ou_type		INT	NOT NULL,
 	address		INT	NOT NULL,
 	name1		TEXT	NOT NULL,
 	name2		TEXT
@@ -75,8 +75,8 @@ CREATE TABLE actor.org_unit (
 
 CREATE TABLE actor.usr_access_entry (
 	id		BIGSERIAL	PRIMARY KEY,
-	usr		INT		REFERENCES actor.usr (id),
-	org_unit	INT		REFERENCES actor.org_unit (id),
+	usr		INT,
+	org_unit	INT,
 	CONSTRAINT usr_once_per_ou UNIQUE (usr,org_unit)
 );
 
@@ -84,7 +84,7 @@ CREATE TABLE actor.usr_access_entry (
 CREATE TABLE actor.perm_group (
 	id	SERIAL	PRIMARY KEY,
 	name	TEXT	NOT NULL,
-	ou_type	INT	REFERENCES actor.org_unit_type (id)
+	ou_type	INT,
 );
 
 CREATE TABLE actor.permission (
@@ -94,21 +94,21 @@ CREATE TABLE actor.permission (
 );
 
 CREATE TABLE actor.perm_group_permission_map (
-	permission	INT	REFERENCES actor.permission (id) ON DELETE CASCADE,
-	perm_group	INT	REFERENCES actor.perm_group (id) ON DELETE CASCADE,
+	permission	INT,
+	perm_group	INT,
 	CONSTRAINT perm_once_per_group PRIMARY KEY (permission, perm_group)
 );
 
 CREATE TABLE actor.perm_group_usr_map (
-	usr		INT	REFERENCES actor.usr (id) ON DELETE CASCADE,
-	perm_group	INT	REFERENCES actor.perm_group (id) ON DELETE CASCADE,
+	usr		INT,
+	perm_group	INT,
 	CONSTRAINT usr_once_per_group PRIMARY KEY (usr, perm_group)
 );
 
 CREATE TABLE actor.usr_address (
 	id		SERIAL	PRIMARY KEY,
 	valid		BOOL	NOT NULL DEFAULT TRUE,
-	usr		INT	REFERENCES actor.usr (id) ON DELETE RESTRICT,
+	usr		INT,
 	street1		TEXT	NOT NULL,
 	street2		TEXT,
 	county		TEXT	NOT NULL,
@@ -116,8 +116,5 @@ CREATE TABLE actor.usr_address (
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL
 );
-
-ALTER TABLE actor.usr ADD CONSTRAINT usr_address_fkey FOREIGN KEY ( address ) REFERENCES actor.usr_address (id) ON DELETE RESTRICT;
-ALTER TABLE actor.usr ADD CONSTRAINT usr_home_ou_fkey FOREIGN KEY ( home_ou ) REFERENCES actor.org_unit (id) ON DELETE RESTRICT;
 
 COMMIT;
