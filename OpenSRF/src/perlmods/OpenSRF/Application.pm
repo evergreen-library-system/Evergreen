@@ -212,7 +212,7 @@ sub register_method {
 	$args{api_level} ||= 1;
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
-   $args{package} = $app;                
+	$args{package} = $app;                
 	$args{server_class} = server_class();
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
 
@@ -237,8 +237,9 @@ sub retrieve_remote_apis {
 		return undef unless ($session->state == $session->CONNECTED);
 	};
 
-	my $req = $session->request( 'opensrf.settings.xpath.get' );
+	my $req = $session->request( 'opensrf.settings.xpath.get', '//activeapps/appname' );
 	my $list = $req->recv->content;
+
 	$req->finish;
 	$session->finish;
 	$session->disconnect;
@@ -255,25 +256,29 @@ sub populate_remote_method_cache {
 
 	my $session = AppSession->create($class);
 	try {
-		$session->connect;
+		$session->connect or OpenSRF::EX::WARN->throw("Connection to $class timed out");
+
+		my $req = $session->request( 'opensrf.system.method.all' );
+
+		while (my $method = $req->recv) {
+			next if (UNIVERSAL::isa($method, 'Error'));
+
+			$method = $method->content;
+			next if ( exists($_METHODS[$$method{api_level}]) &&
+				exists($_METHODS[$$method{api_level}]{$$method{api_name}}) );
+			$method->{remote} = 1;
+			$_METHODS[$$method{api_level}]{$$method{api_name}} = $method;
+		}
+
+		$req->finish;
+		$session->finish;
+		$session->disconnect;
+
 	} catch Error with {
 		my $e = shift;
 		$log->debug( "Remote subrequest returned an error:\n". $e );
 		return undef;
-	} finally {
-		return undef unless ($session->state == $session->CONNECTED);
 	};
-
-	my $req = $session->request( 'opensrf.settings.xpath.get' );
-
-	while (my $method = $req->recv->content) {
-		$method->{remote} = 1;
-		$_METHODS[$$method{api_level}]{$$method{api_name}} = $method;
-	}
-
-	$req->finish;
-	$session->finish;
-	$session->disconnect;
 }
 
 sub method_lookup {             
@@ -306,9 +311,9 @@ sub method_lookup {
 	if (defined $meth) {
 		$log->debug("Looks like we found [$method]!", DEBUG);
 		$log->debug("Method object is ".Dumper($meth), INTERNAL);
-	} elsif (0 and !$no_recurse) {
+	} elsif (!$no_recurse) {
 		retrieve_remote_apis();
-		$self->method_lookup($method,$proto,1);
+		$meth = $self->method_lookup($method,$proto,1);
 	}
 
 	return $meth;
@@ -342,20 +347,18 @@ sub run {
 	} else {
 		my $session = AppSession->create($self->{server_class});
 		try {
-			$session->connect;
+			$session->connect or OpenSRF::EX::WARN->throw("Connection to [$$self{server_class}] timed out");
+			my $remote_req = $session->request( $self->{api_name}, @_ );
+			while (my $remote_resp = $remote_req->recv->content) {
+				$req->respond( $remote_resp );
+			}
+			return $req->responses;
+
 		} catch Error with {
 			my $e = shift;
 			$log->debug( "Remote subrequest returned an error:\n". $e );
 			return undef;
-		} finally {
-			return undef unless ($session->state == $session->CONNECTED);
 		};
-
-		my $remote_req = $session->request( $self->{api_name}, @_ );
-		while (my $remote_resp = $remote_req->recv->content) {
-			$req->respond( $remote_resp );
-		}
-		return $req->responses;
 	}
 	# huh? how'd we get here...
 	return undef;
@@ -364,9 +367,22 @@ sub run {
 sub introspect {
 	my $self = shift;
 	my $client = shift;
+	my $method = shift;
+
+	$method = undef if ($self->{api_name} =~ /all$/o);
 
 	for my $api_level ( 1 .. $#_METHODS ) {
-		$client->respond( { $api_level => $_METHODS[$api_level] } );
+		for my $api_name ( sort keys %{$_METHODS[$api_level]} ) {
+			if (!$_METHODS[$api_level]{$api_name}{remote}) {
+				if (defined($method)) {
+					if ($api_name =~ /$method/) {
+						$client->respond( $_METHODS[$api_level]{$api_name} );
+					}
+				} else {
+					$client->respond( $_METHODS[$api_level]{$api_name} );
+				}
+			}
+		}
 	}
 
 	return undef;
@@ -374,7 +390,14 @@ sub introspect {
 __PACKAGE__->register_method(
 	stream => 1,
 	method => 'introspect',
-	api_name => 'opensrf.system.method_list'
+	api_name => 'opensrf.system.method.all'
+);
+
+__PACKAGE__->register_method(
+	stream => 1,
+	method => 'introspect',
+	argc => 1,
+	api_name => 'opensrf.system.method'
 );
 
 sub make_stream_atomic {
