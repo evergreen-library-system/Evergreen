@@ -84,8 +84,6 @@ sub JSON2perl {
 	# Convert JSON Unicode...
 	s/\\u(\d{4})/chr(hex($1))/esog;
 
-	warn $_;
-
 	# Grab strings...
 	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
 
