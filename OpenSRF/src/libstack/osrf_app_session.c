@@ -292,6 +292,7 @@ void _osrf_app_session_free( osrf_app_session* session ){
 	
 	free(session->remote_id);
 	free(session->orig_remote_id);
+	free(session->session_id);
 	free(session);
 }
 

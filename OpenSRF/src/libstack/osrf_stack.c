@@ -58,6 +58,8 @@ int osrf_stack_message_handler( osrf_app_session* session, osrf_message* msg ) {
 
 	if(ret_msg)
 		osrf_stack_application_handler( session, ret_msg );
+	else
+		osrf_message_free(msg);
 
 	return 1;
 
