@@ -247,82 +247,108 @@ sub record_id_to_mods {
 
 	my $mods_list = _records_to_mods( $id );
 	my $mods_obj = $mods_list->[0];
+	my $cmethod = $self->method_lookup(
+			"open-ils.search.biblio.record.copy_count");
+	my ($count) = $cmethod->run($org_id, $id);
+	$mods_obj->{copy_count} = $count;
 
-	# --------------------------------------------------------------- # append copy count information to the mods objects
+	return $mods_obj;
+}
+
+
+
+# Returns the number of copies attached to a record based on org location
+__PACKAGE__->register_method(
+	method	=> "record_id_to_copy_count",
+	api_name	=> "open-ils.search.biblio.record.copy_count",
+	argc		=> 2, 
+	note		=> "Provide ID, we provide the copy count"
+);
+
+sub record_id_to_copy_count {
+	my( $self, $client, $org_id, $record_id ) = @_;
+
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	warn "mods retrieve $id\n";
-
+	warn "mods retrieve $record_id\n";
 	my $request = $session->request(
-		"open-ils.storage.biblio.record_copy_count",  $org_id, $id );
-	warn "mods retrieve wait $id\n";
+		"open-ils.storage.biblio.record_copy_count",  $org_id, $record_id );
+
+	warn "mods retrieve wait $record_id\n";
 	$request->wait_complete;
-	warn "mods retrieve recv $id\n";
+
+	warn "mods retrieve recv $record_id\n";
 	my $response = $request->recv();
 	return undef unless $response;
-	warn "mods retrieve after recv $id\n";
+
+	warn "mods retrieve after recv $record_id\n";
 
 	if( $response and UNIVERSAL::isa($response, "Error")) {
 		throw $response ($response->stringify);
 	}
 
 	my $count = $response->content;
-	$mods_obj->{copy_count} = $count;
 
 	$request->finish();
 	$session->finish();
 	$session->disconnect();
 
-	return $mods_obj;
+	return $count;
 }
+
+
+
 
 
 package OpenILS::Application::SearchCache;
 use strict; use warnings;
 
 my $cache_handle;
+my $max_timeout;
 
 sub child_init {
-
-	warn "initing searchcache child\n";
 
 	my $config_client = OpenSRF::Utils::SettingsClient->new();
 	my $memcache_servers = 
 		$config_client->config_value( 
 				"apps","open-ils.search", "app_settings","memcache" );
 
-	warn "1\n";
-
 	if( !$memcache_servers ) {
 		throw OpenSRF::EX::Config ("
 				No Memcache servers specified for open-ils.search!");
 	}
 
-	warn "2\n";
 	if(!ref($memcache_servers)) {
 		$memcache_servers = [$memcache_servers];
 	}
-	warn "3\n";
-	use Data::Dumper;
-	warn Dumper $memcache_servers;
 	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.search", 0, $memcache_servers );
-	warn "after init\n";
+	$max_timeout = $config_client->config_value( 
+			"apps", "open-ils.search", "app_settings", "max_cache_time" );
+
+	if(ref($max_timeout) eq "ARRAY") {
+		$max_timeout = $max_timeout->[0];
+	}
+
 }
 
 sub new {return bless({},shift());}
 
 sub put_cache {
 	my($self, $key, $data, $timeout) = @_;
-	warn "putting into cache $key\n";
 	return undef unless( $key and $data );
-	$timeout ||= 30;
+
+	$timeout ||= $max_timeout;
+	$timeout = ($timeout <= $max_timeout) ? $timeout : $max_timeout;
+
+	warn "putting $key into cache for $timeout seconds\n";
 	$cache_handle->put_cache( "_open-ils.search_$key", JSON->perl2JSON($data), $timeout );
 }
 
 sub get_cache {
 	my( $self, $key ) = @_;
 	my $json =  $cache_handle->get_cache("_open-ils.search_$key");
-	warn "retrieving from cache $key\n  =>>>  $json";
+	if($json) {
+		warn "retrieving from cache $key\n  =>>>  $json";
+	}
 	return JSON->JSON2perl($json);
 }
 
