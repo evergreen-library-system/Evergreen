@@ -16,8 +16,10 @@ var ismoz = false;
 if(reg.exec(navigator.userAgent)) 
 	ismoz = true;
 
+var DEBUG = false;
+
 function debug(message) {
-	if(ismoz)
+	if(ismoz && DEBUG)
 		dump("Debug: " + message + "\n" );
 }
 
