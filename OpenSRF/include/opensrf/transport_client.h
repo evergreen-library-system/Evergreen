@@ -1,9 +1,5 @@
-#include "transport_session.h"
+#include "opensrf/transport_session.h"
 #include <time.h>
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 #ifndef TRANSPORT_CLIENT_H
 #define TRANSPORT_CLIENT_H

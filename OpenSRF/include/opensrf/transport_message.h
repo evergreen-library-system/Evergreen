@@ -1,6 +1,6 @@
 #include "libxml.h"
 
-#include "generic_utils.h"
+#include "opensrf/generic_utils.h"
 
 #include <string.h>
 #include <libxml/globals.h>
@@ -9,10 +9,6 @@
 #include <libxml/tree.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 #ifndef TRANSPORT_MESSAGE_H
 #define TRANSPORT_MESSAGE_H

@@ -4,9 +4,9 @@
 // logic ensues.
 // ---------------------------------------------------------------------------------
 #include "libxml.h"
-#include "transport_socket.h"
-#include "transport_message.h"
-#include "generic_utils.h"
+#include "opensrf/transport_socket.h"
+#include "opensrf/transport_message.h"
+#include "opensrf/generic_utils.h"
 
 #include <string.h>
 #include <libxml/globals.h>
@@ -29,10 +29,6 @@
 #define JABBER_THREAD_BUFSIZE		64	
 #define JABBER_JID_BUFSIZE			64	
 #define JABBER_STATUS_BUFSIZE		16 
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 // ---------------------------------------------------------------------------------
 // Takes data from the socket handler and pushes it directly into the push parser

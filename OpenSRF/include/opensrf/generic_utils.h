@@ -10,11 +10,6 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/tree.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
-
 #ifndef GENERIC_UTILS_H
 #define GENERIC_UTILS_H
 

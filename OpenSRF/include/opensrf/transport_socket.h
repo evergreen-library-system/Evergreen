@@ -1,4 +1,4 @@
-#include "generic_utils.h"
+#include "opensrf/generic_utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,10 +24,6 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#endif
-
-#ifdef DMALLOC
-#include "dmalloc.h"
 #endif
 
 #ifndef TRANSPORT_SOCKET_H
