@@ -46,7 +46,30 @@ sub commit_db_session {
 # throws an exception on error.
 # ---------------------------------------------------------------------------
 sub check_user_session {
+
 	my( $self, $user_session ) = @_;
+	my $session = OpenSRF::AppSession->create( "open-ils.auth" );
+	my $request = $session->request("open-ils.auth.session.retrieve", $user_session );
+	my $response = $request->recv();
+	if($response) {
+		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
+	}
+	if($response->isa("OpenSRF::EX")) {
+		throw $response ($response->stringify);
+	}
+
+	my $user = $response->content;
+	if(!$user ) {
+		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
+	}
+
+	$session->disconnect();
+	$session->kill_me();
+
+	return $user;
+
+
+=head blah
 	my $method = $self->method_lookup("open-ils.auth.session.retrieve");
 	if(!$method) {
 		throw OpenSRF::EX::PANIC ("Can't locate method 'open-ils.auth.session.retrieve'" );
@@ -56,8 +79,8 @@ sub check_user_session {
 	if(!$user ) {
 		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
 	}
-
 	return $user;
+=cut
 	
 }
 
