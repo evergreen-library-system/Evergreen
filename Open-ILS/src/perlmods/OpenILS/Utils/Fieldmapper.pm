@@ -1,6 +1,14 @@
 package Fieldmapper;
 use JSON;
-use vars qw/$fieldmap @class_name_list/;
+use Data::Dumper;
+use OpenILS::Application::Storage::CDBI::actor;
+use OpenILS::Application::Storage::CDBI::biblio;
+use OpenILS::Application::Storage::CDBI::config;
+use OpenILS::Application::Storage::CDBI::metabib;
+
+use vars qw/$fieldmap @class_name_list $VERSION/;
+
+_init();
 
 #
 # To dump the Javascript version of the fieldmapper struct use the command:
@@ -10,129 +18,62 @@ use vars qw/$fieldmap @class_name_list/;
 # ... adjusted for your CVS sandbox, of course.
 #
 
-$fieldmap = 
-{
-	'Fieldmapper::metabib::metarecord' =>
+sub _init {
+	return if (defined $fieldmap);
+
+	$fieldmap = 
 	{
-		hint		=> 'cbs1',
-		api_level	=> 1,
-		fields		=>
-		{
-			id		=> { position =>  0, virtual => 0 },
-			fingerprint	=> { position =>  1, virtual => 0 },
-			master_record	=> { position =>  2, virtual => 0 },
-			mods		=> { position =>  3, virtual => 0 },
+		'Fieldmapper::actor::user'			=> { hint => 'au'   },
+		'Fieldmapper::actor::org_unit'			=> { hint => 'aou'  },
+		'Fieldmapper::actor::org_unit_type'		=> { hint => 'aout' },
+		'Fieldmapper::biblio::record_node'		=> { hint => 'brn'  },
+		'Fieldmapper::biblio::record_entry'		=> { hint => 'bre'  },
+		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
+		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
+		'Fieldmapper::metabib::metarecord'		=> { hint => 'mmr'  },
+		'Fieldmapper::metabib::title_field_entry'	=> { hint => 'mmr'  },
+		'Fieldmapper::metabib::author_field_entry'	=> { hint => 'mmr'  },
+		'Fieldmapper::metabib::subject_field_entry'	=> { hint => 'mmr'  },
+		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mmr'  },
+		'Fieldmapper::metabib::full_rec'		=> { hint => 'mmr'  },
+	};
 
-			isnew		=> { position =>  4, virtual => 1 },
-			ischanged	=> { position =>  5, virtual => 1 },
-			isdeleted	=> { position =>  6, virtual => 1 },
-		},
-	},
+	#-------------------------------------------------------------------------------
+	# Now comes the evil!  Generate classes
 
-	'Fieldmapper::config::bib_source' =>
-	{
-		hint		=> 'cbs1',
-		api_level	=> 1,
-		fields		=>
-		{
-			id	=> { position =>  0, virtual => 0 },
-			quality	=> { position =>  1, virtual => 0 },
-			source	=> { position =>  2, virtual => 0 },
-		},
-	},
+	for my $pkg ( keys %$fieldmap ) {
+		(my $cdbi = $pkg) =~ s/^Fieldmapper:://o;
 
-	'Fieldmapper::config::metabib_field' =>
-	{
-		hint		=> 'cmf1',
-		api_level	=> 1,
-		fields		=>
-		{
-			id	=> { position =>  0, virtual => 0 },
-			class	=> { position =>  1, virtual => 0 },
-			name	=> { position =>  2, virtual => 0 },
-			xpath	=> { position =>  3, virtual => 0 },
-		},
-	},
+		eval <<"		PERL";
+			package $pkg;
+			use base 'Fieldmapper';
+		PERL
 
-	'Fieldmapper::biblio::record_node' =>
-	{
-		hint		=> 'brn1',
-		api_level	=> 1,
-		fields		=>
-		{
-			id		=> { position =>  0, virtual => 0 },
-			owner_doc	=> { position =>  1, virtual => 0 },
-			intra_doc_id	=> { position =>  2, virtual => 0 },
-			parent_node	=> { position =>  3, virtual => 0 },
-			node_type	=> { position =>  4, virtual => 0 },
-			namespace_uri	=> { position =>  5, virtual => 0 },
-			name		=> { position =>  6, virtual => 0 },
-			value		=> { position =>  7, virtual => 0 },
-			last_xact_id	=> { position =>  8, virtual => 0 },
+		push @class_name_list, $pkg;
 
-			isnew		=> { position =>  9, virtual => 1 },
-			ischanged	=> { position => 10, virtual => 1 },
-			isdeleted	=> { position => 11, virtual => 1 },
-			children	=> { position => 12, virtual => 1 },
-		},
-	},
+		$$fieldmapp{$pkg}{cdbi} = $cdbi;
 
-	'Fieldmapper::biblio::record_entry' =>
-	{
-		hint		=> 'bre1',
-		api_level	=> 1,
-		fields		=>
-		{
-			id		=> { position =>  0, virtual => 0 },
-			tcn_source	=> { position =>  1, virtual => 0 },
-			tcn_value	=> { position =>  2, virtual => 0 },
-			creator		=> { position =>  3, virtual => 0 },
-			editor		=> { position =>  4, virtual => 0 },
-			create_date	=> { position =>  5, virtual => 0 },
-			edit_date	=> { position =>  6, virtual => 0 },
-			source		=> { position =>  7, virtual => 0 },
-			active		=> { position =>  8, virtual => 0 },
-			deleted		=> { position =>  9, virtual => 0 },
-			last_xact_id	=> { position => 10, virtual => 0 },
+		my $pos = 0;
+		for my $vfield ( qw/isnew ischanged isdeleted/ ) {
+			$$fieldmap{$pkg}{fields}{$vfield} = { position => $pos, virtual => 1 };
+			$pos++;
+		}
 
-			isnew		=> { position => 11, virtual => 1 },
-			ischanged	=> { position => 12, virtual => 1 },
-			isdeleted	=> { position => 13, virtual => 1 },
-		},
-	},
+		for my $col ( $cdbi->columns('All') ) {
+			$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
+			$pos++;
+		}
 
-	'Fieldmapper::actor::user' =>
-	{
-		hint		=> 'au1',
-		api_level	=> 1,
-		fields		=>
-		{
-			id			=> { position =>  0, virtual => 0 },
-			usrid			=> { position =>  1, virtual => 0 },
-			usrname			=> { position =>  2, virtual => 0 },
-			email			=> { position =>  3, virtual => 0 },
-			prefix			=> { position =>  4, virtual => 0 },
-			first_given_name	=> { position =>  5, virtual => 0 },
-			second_given_name	=> { position =>  6, virtual => 0 },
-			family_name		=> { position =>  7, virtual => 0 },
-			suffix			=> { position =>  8, virtual => 0 },
-			address			=> { position =>  9, virtual => 0 },
-			home_ou			=> { position => 10, virtual => 0 },
-			gender			=> { position => 11, virtual => 0 },
-			dob			=> { position => 12, virtual => 0 },
-			active			=> { position => 13, virtual => 0 },
-			master_acount		=> { position => 14, virtual => 0 },
-			super_user		=> { position => 15, virtual => 0 },
-			usrgroup		=> { position => 16, virtual => 0 },
-			passwd			=> { position => 17, virtual => 0 },
-			last_xact_id		=> { position => 18, virtual => 0 },
+		JSON->register_class_hint(
+			hint => $pkg->json_hint,
+			name => $pkg,
+			type => 'array',
+		);
 
-			isnew			=> { position => 19, virtual => 1 },
-			ischanged		=> { position => 20, virtual => 1 },
-			isdeleted		=> { position => 21, virtual => 1 },
-		},
-	},
-};
+	}
+
+	print Fieldmapper->javascript() if ($ENV{GEN_JS});
+}
 
 sub new {
 	my $self = shift;
@@ -193,30 +134,15 @@ sub api_level {
 	return $fieldmap->{$self->class_name}->{api_level};
 }
 
+sub api_level {
+	my $self = shift;
+	return $fieldmap->{$self->class_name}->{api_level};
+}
+
 sub json_hint {
 	my $self = shift;
 	return $fieldmap->{$self->class_name}->{hint};
 }
 
-
-#-------------------------------------------------------------------------------
-# Now comes the evil!  Generate classes
-
-for my $pkg ( keys %$fieldmap ) {
-	eval <<"	PERL";
-		package $pkg;
-		use base 'Fieldmapper';
-	PERL
-
-	push @class_name_list, $pkg;
-
-	JSON->register_class_hint(
-		hint => $pkg->json_hint,
-		name => $pkg,
-		type => 'array',
-	);
-
-}
-print Fieldmapper->javascript() if ($ENV{GEN_JS});
 
 1;

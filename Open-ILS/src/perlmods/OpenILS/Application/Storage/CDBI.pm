@@ -8,6 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 our $VERSION = 1;
 
 
+use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;

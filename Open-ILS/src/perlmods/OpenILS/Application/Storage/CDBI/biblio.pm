@@ -49,6 +49,7 @@ use base qw/biblio/;
 biblio::record_mods->table( 'biblio_record_mods' );
 biblio::record_mods->columns( All => qw/id mods/ );
 biblio::record_note->columns( Stringify => qw/mods/ );
+#biblio::record_note->is_a( id => qw/biblio::record_entry/ );
 
 #-------------------------------------------------------------------------------
 package biblio::record_note;
@@ -58,6 +59,7 @@ biblio::record_note->table( 'biblio_record_note' );
 biblio::record_note->columns( All => qw/id record value creator
 					editor create_date edit_date/ );
 biblio::record_note->columns( Stringify => qw/value/ );
+#biblio::record_note->is_a( record => qw/biblio::record_entry/ );
 
 #-------------------------------------------------------------------------------
 
