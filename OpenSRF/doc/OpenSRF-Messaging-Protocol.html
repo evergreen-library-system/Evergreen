@@ -1,0 +1,318 @@
+<html>
+
+	<head>
+
+		<title> OILS Messaging </title>
+
+	</head>
+
+	<body>
+
+
+		<h1> Abstract </h1>
+
+		<p>
+
+		The OILS messaging system works on two different primary layers: the transport layer and the
+		application layer.  The transport layer manages virtual connections between client and server,
+		while the application layer manages user/application level messages.  
+
+		All messages must declare which protocol version they are requesting.  The current protocol level
+		is 1.
+
+		<h1> Transport Layer </h1>
+
+		<p>
+		There are currently three types of messages in the transport layer: <b>CONNECT, STATUS, </b> and
+		<b>DISCONNECT</b>.    
+		
+		<p>
+		<b>STATUS</b> message provide general information to the transport layer are used in different 
+		ways throughout the system.  They are sent primarily by the server in response to client requests.  
+		Each message comes with 
+		a status and statusCode.  The actual status part of the STATUS message is just a helpful message (mostly for debugging).  The 
+		statusCode is an integer representing the exact status this message represents.  The status codes
+		are modeled after HTTP status codes.  Currently used codes consist of the following:
+
+		<b> <pre style="border: solid thin blue; margin: 2% 10% 2% 10%; padding-left: 50px">
+		100	STATUS_CONTINUE
+		200	STATUS_OK	
+		205	STATUS_COMPLETE
+		307	STATUS_REDIRECTED
+		400	STATUS_BADREQUEST
+		403	STATUS_FORBIDDEN
+		404	STATUS_NOTFOUND
+		408	STATUS_TIMEOUT
+		417	STATUS_EXPFAILED
+		</pre> </b>
+
+		<p>
+		This list is likely to change at least a little.
+
+
+		<p>
+		The <b>CONNECT</b> message initiates the virtual connection for a client and expects a <b>STATUS</b>
+		in return.  If the connection is successful, the statusCode for the <b>STATUS</b> message shall be
+		<b>STATUS_OK</b>.  If the authentication fails or if there is not actual authentication information
+		within the message, the statusCode for the returned message shall be <b>STATUS_FORBIDDEN</b>.  
+
+		<p>
+		If at any point the client sends a non-connect message to the server when the client is not connected or the 
+		connection has timed out, the <b>STATUS</b> that is returned shall have statusCode <b>STATUS_EXPFAILED</b>.
+		
+		<p>
+		The <b>DISCONNECT</b> message is sent by the client to the server to end the virtual session.  The server
+		shall not respond to any disconnect messages.
+	
+		
+		<h1> Message Layer </h1>
+
+		<p>
+		There are currently two types of message layer messages: <b>REQUEST</b> and <b>RESULT</b>.  <b>REQUEST</b>
+		messages represent application layer requests made by a client and <b>RESULT</b> messages are the servers 
+		response to such <b>REQUEST</b>'s.
+		
+		<p>
+		By design, all <b>CONNECT</b> and <b>REQUEST</b> messages sent by a client will be acknowledged by one or 
+		more responses from the server.  This is much like the SYN-ACK philosophy of TCP, however different in many 
+		ways.  The only guarantees made by the server are 1. you will know that we received your request and 2. you 
+		will know the final outcome of your request.  It is the responsibility of the actual application to send 
+		the requested application data (e.g. RESULT messages, intermediate STATUS messages).
+		
+		
+		<p>
+		The server responses are matched to client requests by a <b>threadTrace</b>.  A threadTrace is simply a 
+		number and all application layer messages and STATUS messages are required to have one.  (Note that the 
+		threadTrace contained within a STATUS message sent in response to a CONNECT will be ignored).  Currently, 
+		there is no restriction on the number other than it shall be unique within a given virtual connection.  
+		When the server receives a <b>REQUEST</b> message, it extracts the <b>threadTrace</b> from the message 
+		and all responses to that request will contain the same <b>threadTrace</b>.
+		
+		<p>
+		As mentioned above, every <b>CONNECT</b> message will be acknowledged by a single 
+		<b>STATUS</b> message.  <b>REQUEST</b>'s are a little more complex, however.  A <b>REQUEST</b> 
+		will receive one or more <b>RESULT</b>'s if the <b>REQUEST</b> warrants such a response.  A <b>REQUEST</b>
+		may even receive one or more intermediate <b>STATUS</b>'s (e.g. <b>STATUS_CONTINUE</b>).  (Consult the 
+		documentation on the application request the client is requesting for more information on the number and 
+		type of responses to that request).  All <b>REQUEST</b>'s, however, regardless of other response types,
+		shall receieve as the last response a <b>STATUS</b> message with statusCode <b>STATUS_COMPLETE</b>.  This
+		allows the client to wait for REQUEST "completeness" as opposed to waiting on or calculating individual 
+		responses.
+
+
+		<h1> Client Pseudocode </h1>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+send CONNECT
+
+msg = recv()
+
+if ( msg.statusCode == STATUS_OK ) 
+
+	OK. continue
+
+if ( msg.statusCode == STATUS_FORBIDDEN ) 
+
+	handle authentication failure and attempt another connect if requested
+
+while ( more requests ) {
+
+	/* you may send multiple requests before processing any responses.  For the sake
+		of this example, we will only walk through a single client request */
+
+	send REQUEST with threadTrace X 
+
+	while ( response = recv ) { 
+
+		if (  response.threadTrace != X ) 
+
+			continue/ignore
+
+		if ( response.type == STATUS )
+		
+			if (  response.statusCode == STATUS_TIMEOUT		or
+					response.statusCode == STATUS_REDIRECTED	or
+					response.statusCode == STATUS_EXPFAILED)
+
+				resend the the request with threadTrace X because it was not honored.
+
+			if ( response.statusCode == STATUS_COMPLETE ) 
+
+				the request is now complete, nothing more to be done with this request
+				break out of loop
+	
+		if ( response.typ == RESULT )
+
+			pass result to the application layer for processing
+
+	} // receiving
+
+} // sending
+
+
+		</pre>
+
+		<br>
+		<h1> Server Pseudocode </h1>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+while( message = recv() ) {
+
+	if( message.type != CONNECT )
+
+		return a STATUS with statusCode STATUS_EXPFAILED
+		start loop over
+
+	if ( message.type == CONNECT and server is unable to authenticate the client )
+
+		return a STATUS with statusCode STATUS_FORBIDDEN
+		start loop over
+
+	if ( message.type == CONNECT and server is able to authenticate user )
+
+		return STATUS with statusCode STATUS_OK and continue
+
+	while ( msg = recv() and virtual session is active ) {
+
+
+		if ( msg.type == REQUEST )
+
+			Record the threadTrace.  Pass the REQUEST to the application layer for processing.
+			When the application layer has completed processing, respond to the client
+			with a STATUS message with statusCode STATUS_COMPLETE and threadTrace matching
+			the threadTrace of the REQUEST.  Once the final STATUS_COMPLETE message is sent,
+			the session is over.  Return to outer server loop. 
+
+			/* Note: during REQUEST processing by the application layer, the application may 
+				opt to send RESULT and/or STATUS messages to the client.  The server side
+				transport mechanism is not concerned with these messages.  The server only 
+				needs to be notified when the REQUEST has been sucessfully completed. */
+
+		if( message.type == DISCONNECT )
+
+			Virtual session has ended. Return to outer loop.
+
+
+	} // Sessin loop
+
+} // Main server loop
+
+
+
+		</pre>
+
+
+		<br>
+		<h1> XML Examples</h1>
+		<br>
+
+
+		<h2> Protocol Element </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObjectAttr value="1" name="protocol"/>
+
+		</pre>
+
+		<h2> threadTrace Element </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObjectAttr value="1" name="threadTrace"/>
+
+		</pre>
+
+		<h2> Type element </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:userAuth hashseed="237" secret="89dd8c65300d4af126cf467779ff1820" username="bill"/>
+
+		</pre>
+
+		<h2> CONNECT Message </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObjectAttr value="CONNECT" name="type"/>
+	&lt;oils:userAuth hashseed="237" secret="89dd8c65300d4af126cf467779ff1820" username="bill"/>
+	&lt;oils:domainObjectAttr value="1" name="threadTrace"/>
+	&lt;oils:domainObjectAttr value="1" name="protocol"/>
+&lt;/oils:domainObject>
+
+		</pre>
+
+
+		<h2> DISCONNECT Message </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObject name="oilsMessage">
+	&lt;oils:domainObjectAttr value="DISCONNECT" name="type"/>
+	&lt;oils:domainObjectAttr value="0" name="threadTrace"/>
+	&lt;oils:domainObjectAttr value="1" name="protocol"/>
+&lt;/oils:domainObject>
+
+		</pre>
+
+		<h2> STATUS Message </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObject name="oilsMessage">
+	&lt;oils:domainObjectAttr value="STATUS" name="type"/>
+	&lt;oils:domainObjectAttr value="0" name="threadTrace"/>
+	&lt;oils:domainObjectAttr value="1" name="protocol"/>
+	&lt;oils:domainObject name="oilsConnectStatus">
+		&lt;oils:domainObjectAttr value="Connection Successful" name="status"/>
+		&lt;oils:domainObjectAttr value="200" name="statusCode"/>
+	&lt;/oils:domainObject>
+&lt;/oils:domainObject>
+
+		</pre>
+
+		<h2> REQUEST Message </h2>
+
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObject name="oilsMessage">
+	&lt;oils:domainObjectAttr value="REQUEST" name="type"/>
+	&lt;oils:domainObjectAttr value="4" name="threadTrace"/>
+	&lt;oils:domainObjectAttr value="1" name="protocol"/>
+	&lt;oils:domainObject name="oilsMethod">
+		&lt;oils:domainObjectAttr value="mult" name="method"/>
+		&lt;oils:params>
+			&lt;oils:param>1</oils:param>
+			&lt;oils:param>2</oils:param>
+		&lt;/oils:params>
+	&lt;/oils:domainObject>
+&lt;/oils:domainObject>
+
+		</pre>
+
+		<h2> RESULT Message </h2>
+		
+		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
+
+&lt;oils:domainObject name="oilsMessage">
+	&lt;oils:domainObjectAttr value="RESULT" name="type"/>
+	&lt;oils:domainObjectAttr value="4" name="threadTrace"/>
+	&lt;oils:domainObjectAttr value="1" name="protocol"/>
+	&lt;oils:domainObject name="oilsResult">
+		&lt;oils:domainObjectAttr value="OK" name="status"/>
+		&lt;oils:domainObjectAttr value="200" name="statusCode"/>
+		&lt;oils:domainObject name="oilsScalar">2&lt;/oils:domainObject>
+	&lt;/oils:domainObject>
+&lt;/oils:domainObject>
+
+		</pre>
+		
+
+	</body>
+
+</html>
+
+

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# 
+#  Simple rc script for controlling the system
+#  Only works on linux because of 'ps' syntax
+#
+
+
+case $1 in 
+	"start")
+		perl -MOpenILS::System -e 'OpenILS::System->bootstrap()' & 
+		sleep 2;
+		$0 status;
+		echo;
+		;;
+	"stop")
+		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
+		if [ -z $PID ]; then
+			echo "OpenILS System is not running";
+			exit;
+		fi
+		echo "Killing System...$PID";
+		kill -s INT $PID;
+		echo "Done";
+		;;
+	"status")
+		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
+		if [ -z $PID ]; then
+			echo "OpenILS System is not running";
+			exit 0;
+		fi
+		echo "OpenILS System is running";
+		exit 1;
+		;;
+	"restart")
+		$0 stop;
+		$0 start;
+		;;
+	*)
+		echo "usage: system.sh [start|stop|restart|status]";
+		;;
+esac
+
+

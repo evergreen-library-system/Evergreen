@@ -1,0 +1,50 @@
+#!/usr/bin/perl -w
+
+# Pulls the jabber users from the oils/jabber config files
+# and populates the mysql db for the jabber server with the users
+
+use DBI;
+use strict;
+use OpenILS::Utils::Config qw( /pines/conf/oils.conf );
+my $config = OpenILS::Utils::Config->current;
+
+if( @ARGV < 2 ) {
+	print "usage: perl jcreate.pl dbhost dbuser dbpass\n";
+	exit;
+}
+
+
+my $host = $ARGV[0];
+my $user	= $ARGV[1];
+my $pass = $ARGV[2];
+
+my $connection = DBI->connect( "DBI:mysql:jabberd2:$host", $user, $pass )
+	or die "Cannot connect to db: $! \n";
+
+my $jpass = $config->transport->auth->password;
+my $realm = $config->transport->server->primary;
+
+# Delete all users
+my $clean = "delete from authreg;";
+my $sth = $connection->prepare( $clean );
+$sth->execute();
+
+my @users = keys %{$config->transport->users};
+
+# Grab each user from the config and push them into mysql
+for my $user (@users) {
+	if( ! $user or $user eq "__id" or $user eq "__sub") { next; }
+	print "Inserting $user:  ";
+
+	my $sql = "insert into authreg (username, realm, password) values " .
+		"('$user', '$realm', '$jpass');";
+
+	print "[$sql]\n"; 
+
+	$sth = $connection->prepare( $sql );
+	$sth->execute();
+
+}
+
+$sth->finish();
+
