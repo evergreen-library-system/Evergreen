@@ -194,7 +194,7 @@ sub do_server {
 
 	
 	if ($mtype eq 'DISCONNECT') {
-		$session->state( $session->DISCONNECTED );
+		$session->disconnect;
 		$session->kill_me;
 		return 0;
 	}
