@@ -84,7 +84,7 @@ sub put_cache {
 	my($self, $key, $value, $expiretime ) = @_;
 	return undef unless( $key and $value );
 
-	_load_methods();
+	if($self->{persist}){ _load_methods(); }
 
 	$expiretime ||= $max_persist_time;
 
@@ -99,6 +99,8 @@ sub put_cache {
 			($slot) = $persist_slot_find->run("_CACHEVAL_$key");
 			if(!defined($slot)) {
 				throw OpenSRF::EX::ERROR ("Unable to create cache slot $key in persist server" );
+			} else {
+				#XXX destroy the slot and rebuild it to prevent DOS
 			}
 		}
 
@@ -115,7 +117,7 @@ sub put_cache {
 sub delete_cache {
 	my( $self, $key ) = @_;
 	if(!$key) { return undef; }
-	_load_methods();
+	if($self->{persist}){ _load_methods(); }
 	$self->{memcache}->delete($key);
 	if( $self->{persist} ) {
 		$persist_destroy_slot->run("_CACHEVAL_$key");
@@ -129,7 +131,7 @@ sub get_cache {
 	my $val = $self->{memcache}->get( $key );
 	return $val if defined($val);
 
-	_load_methods();
+	if($self->{persist}){ _load_methods(); }
 
 	# if not in memcache but we are persisting, the put it into memcache
 	if( $self->{"persist"} ) {
