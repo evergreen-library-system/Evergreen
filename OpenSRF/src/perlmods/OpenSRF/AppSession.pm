@@ -882,7 +882,7 @@ package OpenSRF::AppSubrequest;
 sub respond {
 	my $self = shift;
 	my $resp = shift;
-	push @{$$self{resp}}, $resp;
+	push @{$$self{resp}}, $resp if (defined $resp);
 }
 
 sub new {

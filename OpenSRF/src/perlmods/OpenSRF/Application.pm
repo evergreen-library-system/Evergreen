@@ -9,6 +9,7 @@ use OpenSRF::Utils::Logger qw/:level/;
 use Data::Dumper;
 use Time::HiRes qw/time/;
 use OpenSRF::EX qw/:try/;
+use Carp;
 #use OpenSRF::UnixServer;  # to get the server class from UnixServer::App
 
 sub DESTROY{};
@@ -139,7 +140,7 @@ sub handler {
 					OpenSRF::DomainObject::oilsMethodException->new(
 							statusCode	=> STATUS_INTERNALSERVERERROR(),
 							status		=> " *** Call to [$method_name] failed for session ".
-									   "[$sess_id], thread trace [".$appreq->threadTrace."]:\n".$e
+									   "[$sess_id], thread trace [".$appreq->threadTrace."]:\n$e"
 					)
 				);
 			};
@@ -358,11 +359,21 @@ sub run {
 
 	if (!$self->{remote}) {
 		my $code ||= \&{$self->{package} . '::' . $self->{method}};
-		$resp = $code->($self, $req, @params);
+		$log->debug("Created coderef [$code] for $$self{package}::$$self{method}",DEBUG);
+		try {
+			$resp = $code->($self, $req, @params);
+		} catch Error with {
+			my $e = shift;
+			$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n".Carp::longmess(), ERROR);
+			die $e;
+		};
+
+		$log->debug("Coderef for [$$self{package}::$$self{method}] has been run", DEBUG);
 
 		if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
+			$log->debug("A SubRequest object is responding", DEBUG);
 			$req->respond($resp) if (defined $resp);
-			$log->debug("A SubRequest object is responding " . join(" ",$req->responses), DEBUG);
+			$log->debug("... Responding with : " . join(" ",$req->responses), DEBUG);
 			return $req->responses;
 		} else {
 			$log->debug("A top level Request object is responding $resp", DEBUG);
@@ -402,7 +413,7 @@ sub introspect {
 	my $client = shift;
 	my $method = shift;
 
-	$method = undef if ($self->{api_name} =~ /all$/o);
+	$method = undef if ($self->api_name =~ /all$/o);
 
 	for my $api_level ( reverse(1 .. $#_METHODS) ) {
 		for my $api_name ( sort keys %{$_METHODS[$api_level]} ) {
@@ -412,7 +423,9 @@ sub introspect {
 						$client->respond( $_METHODS[$api_level]{$api_name} );
 					}
 				} else {
+					$log->debug( "Returning definition for method [$api_name]", INTERNAL );
 					$client->respond( $_METHODS[$api_level]{$api_name} );
+					$log->debug( "responed with definition for method [$api_name]", INTERNAL );
 				}
 			}
 		}
