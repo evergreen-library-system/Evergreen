@@ -6,13 +6,15 @@
 // returns a built and allocated transport_session object.
 // This codes does no network activity, only memory initilization
 // ---------------------------------------------------------------------------------
-transport_session* init_transport(  char* server, int port, void* user_data ) {
+transport_session* init_transport(  char* server, int port, void* user_data, int component ) {
 
 	/* create the session struct */
 	transport_session* session = 
 		(transport_session*) safe_malloc( sizeof(transport_session) );
 
 	session->user_data = user_data;
+
+	session->component = component;
 
 	/* initialize the data buffers */
 	session->body_buffer			= buffer_init( JABBER_BODY_BUFSIZE );
@@ -22,8 +24,9 @@ transport_session* init_transport(  char* server, int port, void* user_data ) {
 	session->status_buffer		= buffer_init( JABBER_STATUS_BUFSIZE );
 	session->recipient_buffer	= buffer_init( JABBER_JID_BUFSIZE );
 	session->message_error_type = buffer_init( JABBER_JID_BUFSIZE );
+	session->session_id			= buffer_init( 64 ); 
 
-	/* for OILS extensions */
+	/* for OpenSRF extensions */
 	session->router_to_buffer		= buffer_init( JABBER_JID_BUFSIZE );
 	session->router_from_buffer	= buffer_init( JABBER_JID_BUFSIZE );
 	session->router_class_buffer	= buffer_init( JABBER_JID_BUFSIZE );
@@ -35,7 +38,8 @@ transport_session* init_transport(  char* server, int port, void* user_data ) {
 			session->thread_buffer	== NULL || session->from_buffer		 == NULL	||
 			session->status_buffer	== NULL || session->recipient_buffer == NULL ||
 			session->router_to_buffer	== NULL || session->router_from_buffer	 == NULL ||
-			session->router_class_buffer == NULL || session->router_command_buffer == NULL ) { 
+			session->router_class_buffer == NULL || session->router_command_buffer == NULL ||
+			session->session_id == NULL ) { 
 
 		fatal_handler( "init_transport(): buffer_init returned NULL" );
 		return 0;
@@ -88,6 +92,7 @@ int session_free( transport_session* session ) {
 	buffer_free(session->router_from_buffer);
 	buffer_free(session->router_class_buffer);
 	buffer_free(session->router_command_buffer);
+	buffer_free(session->session_id);
 
 
 	free( session );
@@ -158,42 +163,88 @@ int session_connect( transport_session* session,
 			return 0;
 	}
 
-	/* the first Jabber connect stanza */
-	size1 = 100 + strlen( server );
-	char stanza1[ size1 ]; 
-	memset( stanza1, 0, size1 );
-	sprintf( stanza1, 
-			"<stream:stream to='%s' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>",
-			server );
-	
-	/* the second jabber connect stanza including login info*/
-	/* currently, we only support plain text login */
-	size2 = 150 + strlen( username ) + strlen(password) + strlen(resource);
-	char stanza2[ size2 ];
-	memset( stanza2, 0, size2 );
+	if( session->component ) {
 
-	sprintf( stanza2, 
-			"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><password>%s</password><resource>%s</resource></query></iq>",
-			username, password, resource );
+		/* the first Jabber connect stanza */
+		char* our_hostname = getenv("HOSTNAME");
+		size1 = 150 + strlen( server );
+		char stanza1[ size1 ]; 
+		memset( stanza1, 0, size1 );
+		sprintf( stanza1, 
+				"<stream:stream version='1.0' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:component:accept' to='%s' from='%s' xml:lang='en'>",
+				username, our_hostname );
 
-	/* send the first stanze */
-	session->state_machine->connecting = CONNECTING_1;
-	if( ! tcp_send( session->sock_obj, stanza1 ) ) {
-		warning_handler("error sending");
-		return 0;
-	}
-
-	/* wait for reply */
-	tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
-
-	/* server acknowledges our existence, now see if we can login */
-	if( session->state_machine->connecting == CONNECTING_2 ) {
-		if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+		/* send the first stanze */
+		session->state_machine->connecting = CONNECTING_1;
+		if( ! tcp_send( session->sock_obj, stanza1 ) ) {
 			warning_handler("error sending");
 			return 0;
 		}
-	}
+	
+		/* wait for reply */
+		tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+	
+		/* server acknowledges our existence, now see if we can login */
+		if( session->state_machine->connecting == CONNECTING_2 ) {
+	
+			int ss = session->session_id->n_used + strlen(password) + 5;
+			char hashstuff[ss];
+			memset(hashstuff,0,ss);
+			sprintf( hashstuff, "%s%s", session->session_id->buf, password );
 
+			char* hash = shahash( hashstuff );
+			size2 = 100 + strlen( hash );
+			char stanza2[ size2 ];
+			memset( stanza2, 0, size2 );
+			sprintf( stanza2, "<handshake>%s</handshake>", hash );
+	
+			if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+				warning_handler("error sending");
+				return 0;
+			}
+		}
+
+	} else { /* we're not a component */
+
+		/* the first Jabber connect stanza */
+		size1 = 100 + strlen( server );
+		char stanza1[ size1 ]; 
+		memset( stanza1, 0, size1 );
+		sprintf( stanza1, 
+				"<stream:stream to='%s' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>",
+			server );
+	
+		/* the second jabber connect stanza including login info*/
+		/* currently, we only support plain text login */
+		size2 = 150 + strlen( username ) + strlen(password) + strlen(resource);
+		char stanza2[ size2 ];
+		memset( stanza2, 0, size2 );
+	
+		sprintf( stanza2, 
+				"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><password>%s</password><resource>%s</resource></query></iq>",
+				username, password, resource );
+
+
+		/* send the first stanze */
+		session->state_machine->connecting = CONNECTING_1;
+		if( ! tcp_send( session->sock_obj, stanza1 ) ) {
+			warning_handler("error sending");
+			return 0;
+		}
+	
+		/* wait for reply */
+		tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+	
+		/* server acknowledges our existence, now see if we can login */
+		if( session->state_machine->connecting == CONNECTING_2 ) {
+			if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+				warning_handler("error sending");
+				return 0;
+			}
+		}
+
+	} // not component
+	
 	/* wait for reply */
 	tcp_wait( session->sock_obj, connect_timeout );
 
@@ -281,8 +332,16 @@ void startElementHandler(
 	if( strcmp( name, "stream:stream" ) == 0 ) {
 		if( ses->state_machine->connecting == CONNECTING_1 ) {
 			ses->state_machine->connecting = CONNECTING_2;
+			buffer_add( ses->session_id, get_xml_attr(atts, "id") );
 		}
 	}
+
+	if( strcmp( name, "handshake" ) == 0 ) {
+		ses->state_machine->connected = 1;
+		ses->state_machine->connecting = 0;
+		return;
+	}
+
 
 	if( strcmp( name, "error" ) == 0 ) {
 		ses->state_machine->in_message_error = 1;
@@ -429,6 +488,7 @@ int reset_session_buffers( transport_session* ses ) {
 	buffer_reset( ses->router_class_buffer );
 	buffer_reset( ses->router_command_buffer );
 	buffer_reset( ses->message_error_type );
+	buffer_reset( ses->session_id );
 
 	return 1;
 }

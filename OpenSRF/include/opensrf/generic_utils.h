@@ -13,6 +13,7 @@
 #ifndef GENERIC_UTILS_H
 #define GENERIC_UTILS_H
 
+#define equals(a,b) !strcmp(a,b) 
 
 /** Malloc's, checks for NULL, clears all memory bits and 
   * returns the pointer

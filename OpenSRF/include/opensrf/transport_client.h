@@ -36,7 +36,7 @@ typedef struct transport_client_struct transport_client;
 // The user must call client_free(client) when finished with the allocated
 // object.
 // ---------------------------------------------------------------------------
-transport_client* client_init( char* server, int port );
+transport_client* client_init( char* server, int port, int component );
 
 // ---------------------------------------------------------------------------
 // Connects to the Jabber server with the provided information. Returns 1 on

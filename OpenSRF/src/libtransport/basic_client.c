@@ -16,10 +16,10 @@ int main( int argc, char** argv ) {
 	}
 
 	transport_message* send;
-	transport_client* client = client_init( argv[2], 5222 );
+	transport_client* client = client_init( argv[2], 5222, 0 );
 
 	// try to connect, allow 15 second connect timeout 
-	if( client_connect( client, argv[1], "asdfjkjk", argv[3], 15 ) ) 
+	if( client_connect( client, argv[1], "jkjkasdf", argv[3], 15 ) ) 
 		info_handler("Connected...\n");
 	 else  
 		fatal_handler( "NOT Connected...\n" ); 

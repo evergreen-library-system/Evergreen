@@ -7,6 +7,8 @@
 #include "opensrf/transport_message.h"
 #include "opensrf/generic_utils.h"
 
+#include "sha.h"
+
 #include <string.h>
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
@@ -140,6 +142,7 @@ struct transport_session_struct {
 	growing_buffer* recipient_buffer;
 	growing_buffer* status_buffer;
 	growing_buffer* message_error_type;
+	growing_buffer* session_id;
 	int message_error_code;
 
 	/* for OILS extenstions */
@@ -156,6 +159,8 @@ struct transport_session_struct {
 	 */
 	void* user_data;
 
+	int component; /* true if we're a component */
+
 	/* the Jabber message callback */
 	void (*message_callback) ( void* user_data, transport_message* msg );
 	//void (iq_callback) ( void* user_data, transport_iq_message* iq );
@@ -167,7 +172,7 @@ typedef struct transport_session_struct transport_session;
 // Allocates and initializes the necessary transport session
 // data structures.
 // ------------------------------------------------------------------
-transport_session* init_transport(  char* server, int port, void* user_data );
+transport_session* init_transport( char* server, int port, void* user_data, int component );
 
 // ------------------------------------------------------------------
 // Returns the value of the given XML attribute

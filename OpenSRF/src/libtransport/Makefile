@@ -5,11 +5,14 @@ CC = gcc
 LIB_DIR=../../lib
 CC_OPTS = -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include #-I /home/erickson/cc/libxml2-2.6.16
 EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport 
-LIB_SOURCES = generic_utils.c transport_socket.c transport_session.c transport_message.c transport_client.c
+LIB_SOURCES = generic_utils.c transport_socket.c transport_session.c transport_message.c transport_client.c sha.c
 
-TARGETS=generic_utils.o transport_socket.o transport_message.o transport_session.o transport_client.o 
+TARGETS=generic_utils.o transport_socket.o transport_message.o transport_session.o transport_client.o  sha.o
 
-all: basic_client
+all: basic_client component
+
+component: lib
+	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) component.c -o $@
 
 basic_client: lib
 	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) basic_client.c -o $@

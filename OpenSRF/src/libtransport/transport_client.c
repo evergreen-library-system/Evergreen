@@ -45,7 +45,7 @@ int main( int argc, char** argv ) {
 */
 
 
-transport_client* client_init( char* server, int port ) {
+transport_client* client_init( char* server, int port, int component ) {
 
 	if(server == NULL) return NULL;
 
@@ -58,7 +58,7 @@ transport_client* client_init( char* server, int port ) {
 	client->m_list = (transport_message_list*) safe_malloc( l_size );
 
 	client->m_list->type = MESSAGE_LIST_HEAD;
-	client->session = init_transport( server, port, client );
+	client->session = init_transport( server, port, client, component );
 
 
 	if(client->session == NULL) {
