@@ -104,10 +104,10 @@ sub nodeset_to_xml {
 			$xml = $doc->createComment( $node->{value} );
 			
 		} elsif ( $node->{node_type} == XML_NAMESPACE_DECL ) {
-			if ($self->nodeset->[$node->{parent_node_id}]->{namespace_uri} eq $node->{value}) {
-				$_xmllist[$node->{parent_node_id}]->setNamespace($node->{value}, $node->{name}, 1);
+			if ($self->nodeset->[$node->{parent_node}]->{namespace_uri} eq $node->{value}) {
+				$_xmllist[$node->{parent_node}]->setNamespace($node->{value}, $node->{name}, 1);
 			} else {
-				$_xmllist[$node->{parent_node_id}]->setNamespace($node->{value}, $node->{name}, 0);
+				$_xmllist[$node->{parent_node}]->setNamespace($node->{value}, $node->{name}, 0);
 			}
 			$seen_ns{$node->{value}} = $node->{name};
 			next;
@@ -115,9 +115,9 @@ sub nodeset_to_xml {
 		} elsif ( $node->{node_type} == XML_ATTRIBUTE_NODE ) {
 
 			if ($node->{namespace_uri}) {
-				$_xmllist[$node->{parent_node_id}]->setAttributeNS($node->{namespace_uri}, $node->{name}, $node->{value});
+				$_xmllist[$node->{parent_node}]->setAttributeNS($node->{namespace_uri}, $node->{name}, $node->{value});
 			} else {
-				$_xmllist[$node->{parent_node_id}]->setAttribute($node->{name}, $node->{value});
+				$_xmllist[$node->{parent_node}]->setAttribute($node->{name}, $node->{value});
 			}
 
 			next;
@@ -127,8 +127,8 @@ sub nodeset_to_xml {
 
 		$_xmllist[$node->{intra_doc_id}] = $xml;
 
-		if (defined $node->{parent_node_id}) {
-			$_xmllist[$node->{parent_node_id}]->addChild($xml);
+		if (defined $node->{parent_node}) {
+			$_xmllist[$node->{parent_node}]->addChild($xml);
 		}
 	}
 
@@ -154,7 +154,7 @@ sub _xml_to_nodeset {
 
 	push @{$self->{nodelist}}, { 
 		intra_doc_id	=> 0,
-		parent_node_id	=> undef,
+		parent_node	=> undef,
 		name		=> $node->localname,
 		value		=> undef,
 		node_type	=> $node->nodeType,
@@ -178,7 +178,7 @@ sub _nodeset_recurse {
 
 		push @{$self->{nodelist}}, { 
 			intra_doc_id	=> ++$self->{next_id},
-			parent_node_id	=> $parent, 
+			parent_node	=> $parent, 
 			name		=> $kid->localname,
 			value		=> _grab_content( $kid, $type ),
 			node_type	=> $type,

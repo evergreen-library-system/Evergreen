@@ -1,11 +1,14 @@
 #!/usr/bin/perl -w
 use strict;
+use lib '../../perlmods/';
+use lib '../../../../OpenSRF/src/perlmods/';
 use OpenSRF::EX qw/:try/;
 use OpenSRF::System;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::FlatXML;
 use Time::HiRes;
 use Getopt::Long;
+use Data::Dumper;
 
 my ($config, $userid, $sourceid, $wormize) = ('/pines/conf/bootstrap.conf', 1, 2);
 
@@ -17,36 +20,50 @@ GetOptions (
 );
 
 OpenSRF::System->bootstrap_client( config_file => $config );
-my $st_server = OpenSRF::AppSession->new( 'storage' );
-my $worm_server = OpenSRF::AppSession->new( 'worm' ) if ($wormize);
+my $st_server = OpenSRF::AppSession->create( 'storage' );
+my $worm_server = OpenSRF::AppSession->create( 'worm' ) if ($wormize);
 
 try {
-	$st_server->connect;
-	$worm_server->connect if ($wormize);
+
 	throw OpenSRF::EX::PANIC ("I can't connect to the storage server!")
-		unless ($st_server->connected);
+		if (!$st_server->connect);
+
+	throw OpenSRF::EX::PANIC ("I can't connect to the worm server!")
+		if ($wormize && !$worm_server->connect);
+
 } catch Error with {
 	die shift;
 };
 
 
-while ( my $ns = OpenILS::Utils::FlatXML->new( xml => <STDIN> ) ) {
+while ( my $xml = <> ) {
+	chomp $xml;
+
+	my $ns = OpenILS::Utils::FlatXML->new( xml => $xml );
+
+	next unless ($ns->xml);
 
 	my $doc = $ns->xml_to_doc;
 	my $tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"]' );
-	
+
+	warn "Adding record for TCN $tcn\n";
+
+	$ns->xml_to_nodeset;
+	#next;
+
 	my $req = $st_server->request(
 		'open-ils.storage.biblio.record_entry.create',
-			creator		=> $userid,
+		{	creator		=> $userid,
 			editor		=> $userid,
 			source		=> $sourceid,
 			tcn_value	=> $tcn,
+		},
 	);
 
 	$req->wait_complete;
 
 	my $resp = $req->recv;
-	unless( $resp->content ) {
+	unless( $resp && $resp->can('content') ) {
 		throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn]!! -- $resp");
 	}
 
@@ -55,19 +72,19 @@ while ( my $ns = OpenILS::Utils::FlatXML->new( xml => <STDIN> ) ) {
 	$req->finish;
 
 	if ($new_id) {
-		my $nodeset = $ns->xml_to_nodeset;
+		my $nodeset = $ns->nodeset;
 		
 		$_->{owner_doc} = $new_id for (@$nodeset);
 		
 		$req = $st_server->request(
-			'open-ils.storage.record_node.batch.create',
+			'open-ils.storage.biblio.record_node.batch.create',
 			@$nodeset,
 		);
 
 		$req->wait_complete;
 
 		$resp = $req->recv;
-		unless( $resp->content ) {
+		unless( $resp && $resp->can('content') ) {
 			throw OpenSRF::EX::ERROR
 				("Failed to create record_nodes for TCN [$tcn]!! -- $resp");
 		}

@@ -24,18 +24,18 @@ sub initialize {
 
 	$log->debug('Initializing ' . __PACKAGE__ . '...', DEBUG);
 
-	my $driver = "OpenILS::App::Storage::Driver::".
+	my $driver = "OpenILS::Application::Storage::Driver::".
 		$conf->config_value( apps => storage => app_settings => databases => 'driver');
 
 
+	$log->debug("Attempting to load $driver ...", DEBUG);
+
 	eval "use $driver;";
-	throw OpenILS::EX::Config ( "Can't load $driver!  :  $@" ) if ($@);
+	throw OpenILS::EX::PANIC ( "Can't load $driver!  :  $@" ) if ($@);
+
+	$log->debug("$driver loaded successfully", DEBUG);
 
 	@OpenILS::Application::Storage::CDBI::ISA = ( $driver );
-
-	OpenILS::Application::Storage::CDBI->initialize if ($driver->can('initialize'));
-
-
 }
 
 sub child_init {

@@ -59,8 +59,8 @@
 	package OpenILS::Application::Storage::Driver::Pg;
 	use base qw/Class::DBI OpenILS::Application::Storage/;
 	use DBI;
-	use DBD::Pg;
 	use OpenSRF::Utils::Logger qw/:level/;
+	my $log = 'OpenSRF::Utils::Logger';
 
 	__PACKAGE__->set_sql( retrieve_limited => 'SELECT * FROM __TABLE__ ORDER BY id LIMIT ?' );
 
@@ -68,6 +68,8 @@
 	sub child_init {
 		my $self = shift;
 		$_db_params = shift;
+
+		$log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
 	}
 
 	my $_dbh;
@@ -88,9 +90,10 @@
 				ChopBlanks => 1,
 		);
 
+		$log->debug(" Default connect info for this DB is:\n\t".join("\n\t",map { "$_\t==> $$_db_params{$_}" } keys %$_db_params), INTERNAL);
 		$log->debug(" Default attributes for this DB connection are:\n\t".join("\n\t",map { "$_\t==> $attrs{$_}" } keys %attrs), INTERNAL);
 
-		$_dbh = DBI->connect( "dbi:Pg:host=$$_db_params{host};dbname=$$_db_params{database}",$$_db_params{user},$$_db_params{pw}, \%attrs );
+		$_dbh = DBI->connect( "dbi:Pg:host=$$_db_params{host};dbname=$$_db_params{db}",$$_db_params{user},$$_db_params{pw}, \%attrs );
 		$_dbh->do("SET CLIENT_ENCODING TO 'SQL_ASCII';");
 
 		return $_dbh;
@@ -117,44 +120,44 @@
 	#---------------------------------------------------------------------
 	package asset::call_number;
 	
-	__PACKAGE__->table( 'asset.call_number' );
-	__PACKAGE__->sequence( 'asset.call_number_id_seq' );
+	asset::call_number->table( 'asset.call_number' );
+	asset::call_number->sequence( 'asset.call_number_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package asset::copy;
 	
-	__PACKAGE__->table( 'asset.copy' );
-	__PACKAGE__->sequence( 'asset.copy_id_seq' );
+	asset::copy->table( 'asset.copy' );
+	asset::copy->sequence( 'asset.copy_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package biblio::record_entry;
 	
-	__PACKAGE__->table( 'biblio.record_entry' );
-	__PACKAGE__->sequence( 'biblio.record_entry_id_seq' );
-	
+	biblio::record_entry->table( 'biblio.record_entry' );
+	biblio::record_entry->sequence( 'biblio.record_entry_id_seq' );
+
 	#---------------------------------------------------------------------
 	package biblio::record_node;
 	
-	__PACKAGE__->table( 'biblio.record_data' );
-	__PACKAGE__->sequence( 'biblio.record_data_id_seq' );
+	biblio::record_node->table( 'biblio.record_data' );
+	biblio::record_node->sequence( 'biblio.record_data_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package biblio::record_note;
 	
-	__PACKAGE__->table( 'biblio.record_note' );
-	__PACKAGE__->sequence( 'biblio.record_note_id_seq' );
+	biblio::record_note->table( 'biblio.record_note' );
+	biblio::record_note->sequence( 'biblio.record_note_id_seq' );
 	
 	#---------------------------------------------------------------------
-	package actor::usr;
+	package actor::user;
 	
-	__PACKAGE__->table( 'actor.usr' );
-	__PACKAGE__->sequence( 'actor.usr_id_seq' );
+	actor::user->table( 'actor.usr' );
+	actor::user->sequence( 'actor.usr_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package actor::org_unit_type;
 	
-	__PACKAGE__->table( 'actor.org_unit_type' );
-	__PACKAGE__->sequence( 'actor.org_unit_type_id_seq' );
+	actor::org_unit_type->table( 'actor.org_unit_type' );
+	actor::org_unit_type->sequence( 'actor.org_unit_type_id_seq' );
 	
 	#---------------------------------------------------------------------
 	

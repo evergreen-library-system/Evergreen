@@ -41,30 +41,30 @@ biblio::record_node->has_a(
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
-metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
+#metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
 #-------------------------------------------------------------------------------
-metabib::title_field_entry->has_a( field => 'config::metabib_field_map' );
+#metabib::title_field_entry->has_a( field => 'config::metabib_field_map' );
 #-------------------------------------------------------------------------------
-metabib::author_field_entry->has_a( field => 'config::metabib_field_map' );
+#metabib::author_field_entry->has_a( field => 'config::metabib_field_map' );
 #-------------------------------------------------------------------------------
-metabib::subject_field_entry->has_a( field => 'config::metabib_field_map' );
+#metabib::subject_field_entry->has_a( field => 'config::metabib_field_map' );
 #-------------------------------------------------------------------------------
-metabib::keyword_field_entry->has_a( field => 'config::metabib_field_map' );
+#metabib::keyword_field_entry->has_a( field => 'config::metabib_field_map' );
 #-------------------------------------------------------------------------------
 
 
 # should we have just one field entry per class for each record???? (xslt vs xpath)
-metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
-metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+#metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
+#metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
 #-------------------------------------------------------------------------------
-metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
-metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+#metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
+#metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
 #-------------------------------------------------------------------------------
-metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
-metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+#metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
+#metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
 #-------------------------------------------------------------------------------
-metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
-metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+#metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
+#metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
 #-------------------------------------------------------------------------------
 
 
