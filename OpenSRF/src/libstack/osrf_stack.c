@@ -39,6 +39,27 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 	/* XXX ERROR CHECKING, BAD XML, ETC... */
 	int i;
 	for( i = 0; i != num_msgs; i++ ) {
+
+
+		/* if we've received a jabber layer error message (probably talking to 
+			someone who no longer exists) and we're not talking to the original
+			remote id for this server, consider it a redirect and pass it up */
+		if(msg->is_error) {
+			warning_handler( "Received Jabber layer error message" ); 
+
+			if(strcmp(session->remote_id,session->orig_remote_id)) {
+				warning_handler( "Treating jabber error as redirect for tt [%d] "
+					"and session [%s]", arr[i]->thread_trace, session->session_id );
+
+				arr[i]->m_type = STATUS;
+				arr[i]->status_code = OSRF_STATUS_REDIRECTED;
+
+			} else {
+				warning_handler(" * Jabber Error is for top level remote id [%s], no one "
+						"to send my message too!!!", session->remote_id );
+			}
+		}
+
 		osrf_stack_message_handler( session, arr[i] );
 	}
 
