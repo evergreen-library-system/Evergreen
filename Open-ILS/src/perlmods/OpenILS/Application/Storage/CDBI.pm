@@ -281,15 +281,21 @@ sub import {
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
+	asset::copy_note->has_a( owning_copy => 'asset::copy' );
+	#-------------------------------------------------------------------------------
 	asset::copy->has_a( call_number => 'asset::call_number' );
+	asset::copy->has_many( notes => 'asset::copy_note' );
+	asset::copy->has_a( creator => 'actor::user' );
+	asset::copy->has_a( editor => 'actor::user' );
 	#asset::copy->might_have( metadata => 'asset::copy_metadata' );
 	#-------------------------------------------------------------------------------
-	#asset::copy_metadata->might_have( copy => 'asset::copy' );
-	asset::copy_metadata->has_a( circulating_location => 'actor::org_unit');
-	asset::copy_metadata->has_a( hold_radius => 'actor::org_unit_type');
+	asset::call_number_note->has_a( owning_call_number => 'asset::call_number' );
 	#-------------------------------------------------------------------------------
 	asset::call_number->has_a( record => 'biblio::record_entry' );
 	asset::call_number->has_many( copies => 'asset::copy' );
+	asset::call_number->has_many( notes => 'asset::call_number_note' );
+	asset::call_number->has_a( creator => 'actor::user' );
+	asset::call_number->has_a( editor => 'actor::user' );
 	#-------------------------------------------------------------------------------
 	
 

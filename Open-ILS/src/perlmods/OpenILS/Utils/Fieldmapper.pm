@@ -66,6 +66,11 @@ sub _init {
 		'Fieldmapper::metabib::subject_field_entry'	=> { hint => 'msfe' },
 		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mkfe' },
 		'Fieldmapper::metabib::full_rec'		=> { hint => 'mfr'  },
+
+		'Fieldmapper::asset::copy'			=> { hint => 'acp'  },
+		'Fieldmapper::asset::copy_note'			=> { hint => 'acpn' },
+		'Fieldmapper::asset::call_number'		=> { hint => 'acn'  },
+		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn' },
 	};
 
 	#-------------------------------------------------------------------------------

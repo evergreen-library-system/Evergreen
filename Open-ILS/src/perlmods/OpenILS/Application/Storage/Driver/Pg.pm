@@ -363,6 +363,18 @@
 
 {
 	#---------------------------------------------------------------------
+	package asset::call_number_note;
+	
+	asset::call_number->table( 'asset.call_number_note' );
+	asset::call_number->sequence( 'asset.call_number_note_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package asset::copy_note;
+	
+	asset::copy->table( 'asset.copy_note' );
+	asset::copy->sequence( 'asset.copy_note_id_seq' );
+
+	#---------------------------------------------------------------------
 	package asset::call_number;
 	
 	asset::call_number->table( 'asset.call_number' );
