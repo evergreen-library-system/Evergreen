@@ -12,13 +12,16 @@ use base qw/OpenSRF::Application/;
 # on sucess, returns the created session, on failure throws ERROR exception
 # ---------------------------------------------------------------------------
 sub start_db_session {
+
 	my $self = shift;
 	my $session = OpenSRF::AppSession->connect( "open-ils.storage" );
 	my $trans_req = $session->request( "open-ils.storage.transaction.begin" );
+
 	my $trans_resp = $trans_req->recv();
 	if(ref($trans_resp) and $trans_resp->isa("Error")) { throw $trans_resp; }
 	if( ! $trans_resp->content() ) {
-		throw OpenSRF::ERROR ("Unable to Begin Transaction with database" );
+		throw OpenSRF::ERROR 
+			("Unable to Begin Transaction with database" );
 	}
 	$trans_req->finish();
 	return $session;
@@ -95,6 +98,69 @@ sub check_user_session {
 	
 }
 
+# generic simple request returning a scalar value
+sub simple_scalar_request {
+	my($self, $service, $method, @params) = @_;
+
+	my $session = OpenSRF::AppSession->create( $service );
+	my $request = $session->request( $method, @params );
+	my $response = $request->recv();
+
+	if(!$response) {
+		throw OpenSRF::EX::ERROR 
+			("No response from $service for method $method with params @params" );
+	}
+
+	if($response->isa("Error")) {
+		throw $response ("Call to $service for method $method with params @params" . 
+				"\n failed with exception: " . $response->stringify );
+	}
+
+	my $value = $response->content;
+
+	$request->finish();
+	$session->disconnect();
+	$session->kill_me();
+
+	return $value;
+}
+
+sub get_org_tree {
+
+	my $self = shift;
+
+	my $orglist = $self->simple_scalar_request( 
+			"open-ils.storage", "open-ils.storage.actor.org_unit_list" );
+
+
+	$orglist = [ sort { $a->id <=> $b->id } @$orglist ]; 
+
+	for my $org (@$orglist) {
+		next unless ($org and defined($org->parent_ou));
+		my $parent = $orglist->[$org->parent_ou - 1];
+		next unless $parent;
+		$parent->children([]) unless defined($parent->children); 
+		push( @{$parent->children}, $org );
+	}
+
+	return $self->tree_child_sorter( $orglist->[0] );
+}
+
+sub tree_child_sorter {
+	my($self, $tree) = @_;
+			
+	return unless $tree->children;
+
+	$tree->children(
+			[ sort { $a->name cmp $b->name } @{$tree->children} ] );
+
+	for my $child (@{$tree->children}) {
+		$self->tree_child_sorter( $child );
+	}
+
+	return $tree;
+}
+	
 
 
 1;

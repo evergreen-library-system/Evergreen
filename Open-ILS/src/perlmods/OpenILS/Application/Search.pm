@@ -78,15 +78,10 @@ __PACKAGE__->register_method(
 );
 
 sub cat_biblio_search_class {
+
 	my( $self, $client, $class, $sort, $string ) = @_;
 
-	warn "Starting search " . time() . "\n";
-	
 	my $search_hash;
-
-	warn "Searching $class, $sort, $string\n";
-	
-	warn "Looking up method: "  . time() . "\n";
 
 	my $method = $self->method_lookup("open-ils.search.biblio.marc");
 	if(!$method) {
@@ -94,16 +89,10 @@ sub cat_biblio_search_class {
 			("Can't lookup method 'open-ils.search.biblio.marc'");
 	}
 
-	warn "Running: "  . time() . "\n";
-
 	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
 
 	my @ids;
-
 	for my $i (@$records) { push @ids, $i->[0]; }
-
-	warn "Found Id's: @ids " . time() . "\n";
-
 	return _records_to_mods(@ids);
 
 }
@@ -145,13 +134,16 @@ sub biblio_search_marc {
 
 
 __PACKAGE__->register_method(
-	method	=> "search_copies_by_id_and_location",
-	api_name	=> "open-ils.search.asset.copy.search",
-	argc		=> 1, 
-	note		=> "Searches biblio information by marc tag",
+	method	=> "get_org_tree",
+	api_name	=> "open-ils.search.actor.org_tree.retrieve",
+	argc		=> 0, 
+	note		=> "Returns the entire org tree structure",
 );
 
-
+sub get_org_tree {
+	my( $self, $client ) = @_;
+	return OpenILS::Application::AppUtils->get_org_tree();
+}
 
 
 # ---------------------------------------------------------------------------

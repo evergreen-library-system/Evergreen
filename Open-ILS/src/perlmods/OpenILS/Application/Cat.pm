@@ -129,17 +129,13 @@ sub biblio_record_tree_commit {
 	}
 	$req->finish();
 
-
 	OpenILS::Application::AppUtils->commit_db_session( $session );
 
-	my $method = $self->method_lookup( 
-			"open-ils.cat.biblio.record.tree.retrieve" );
+	$nodeset = OpenILS::Utils::FlatXML->new()->xmldoc_to_nodeset($marcxml);
+	$tree = $utils->nodeset2tree($nodeset->nodeset);
+	$tree->owner_doc($docid);
 
-	my ($ans) = $method->run( $docid );
-
-	warn "Finished updating, returning tree to client";
-	$client->respond_complete($ans);
-
+	$client->respond_complete($tree);
 
 
 
@@ -149,7 +145,7 @@ sub biblio_record_tree_commit {
 
 	my $success = 0;
 	my $wresp;
-	for(0..1) {
+	for(0..9) {
 
 		my $wreq = $wses->request( 
 				"open-ils.worm.wormize.marc", $docid, $marcxml->toString );
@@ -224,7 +220,7 @@ sub biblio_record_record_metadata {
 		my $creator = $record_entry->creator;
 		my $editor	= $record_entry->editor;
 
-		($creator, $editor) = _get_userid_by_id($creator, $editor) || ("","");
+		($creator, $editor) = _get_userid_by_id($creator, $editor);
 
 		$record_entry->creator( $creator );
 		$record_entry->editor( $editor );
@@ -248,7 +244,7 @@ sub _get_userid_by_id {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-		"open-ils.storage.actor.user.batch.retrieve", @ids );
+		"open-ils.storage.actor.user.batch.retrieve.atomic", @ids );
 
 	my $response = $request->recv();
 	if(!$response) { return undef; }
@@ -259,7 +255,7 @@ sub _get_userid_by_id {
 
 	for my $u (@{$response->content}) {
 		next unless ref($u);
-		push @users, $u->usrid;
+		push @users, $u->usrname;
 	}
 
 	$request->finish;
@@ -364,7 +360,7 @@ sub _update_record_metadata {
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
-	api_name	=> "open-ils.cat.asset.copy.retrieve",
+	api_name	=> "open-ils.cat.asset.copy_tree.retrieve",
 	argc		=> 2,  #(user_session, record_id)
 	note		=> <<TEXT
 	Returns the copies for a given bib record and for the users home library
@@ -373,24 +369,24 @@ TEXT
 
 sub retrieve_copies {
 
-	my( $self, $client, $user_session, $docid ) = @_;
+	my( $self, $client, $user_session, $docid, $home_ou ) = @_;
 
 	$docid = "$docid";
 
-	use Data::Dumper;
+	#my $results = [];
 
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-
-	warn "user session is ok\n";
-	warn "Home Lib: " . $user_obj->home_ou . "\n";
+	if(!$home_ou) {
+		my $user_obj = 
+			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+			$home_ou = $user_obj->home_ou;
+	}
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	
 	# ------------------------------------------------------
 	# grab the short name of the library location
 	my $request = $session->request( 
-			"open-ils.storage.actor.org_unit.retrieve", $user_obj->home_ou );
+			"open-ils.storage.actor.org_unit.retrieve", $home_ou );
 
 	my $org_unit = $request->recv();
 	if(!$org_unit) {
@@ -399,7 +395,6 @@ sub retrieve_copies {
 	}
 	if($org_unit->isa("Error")) { throw $org_unit ($org_unit->stringify);}
 	my $location = $org_unit->content->shortname;
-	warn "found location $location\n";
 	$request->finish();
 	# ------------------------------------------------------
 
@@ -408,9 +403,7 @@ sub retrieve_copies {
 	# grab all the volumes for the given record and location
 	my $search_hash = { record => $docid, owning_lib => $location };
 
-	warn "Using search hash: " . Dumper( $search_hash );
 
-	warn "searching call_numbers for $docid and $location\n";
 
 	$request = $session->request( 
 			"open-ils.storage.asset.call_number.search", $search_hash );
@@ -419,44 +412,190 @@ sub retrieve_copies {
 	my @volume_ids;
 
 	while( $volume = $request->recv() ) {
+
 		if($volume->isa("Error")) { 
 			throw $volume ($volume->stringify);}
+
 		$volume = $volume->content;
-		warn "pusing onto volume ids: " . $volume->id . "\n";
-		push @volume_ids, $volume->id;
+		
+		warn "Grabbing copies for volume: " . $volume->id . "\n";
+		my $copies = 
+			OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
+				"open-ils.storage.asset.copy.search.call_number", $volume->id );
+
+		$volume->copies($copies);
+
+		$client->respond( $volume );
+
+		#push @$results, $volume;
+
 	}
+
 	$request->finish();
-	# ------------------------------------------------------
-
-
-	# ------------------------------------------------------
-	# grab all of the copies for the given call_numbers
-	warn "grabbing copies for @volume_ids\n";
-	my $copy_req = $session->request(
-			"open-ils.storage.asset.copy.search.call_number", @volume_ids );
-
-	my $copies = $copy_req->recv(); 
-
-	if(!$copies) {
-		throw OpenSRF::EX::ERROR ("no response from storage for copy search");
-	}
-
-	if($copies->isa("Error")) {
-		throw $copies ($copies->stringify);
-	}
-
-	warn "received data from copy search:\n";
-	warn Dumper $copies->content;
-
 	$session->finish();
 	$session->disconnect();
 	$session->kill_me();
 
-	return $copies->content;
+	return undef;
+	#return $results;
 	
 }
 
 
 
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_copies_global",
+	api_name	=> "open-ils.cat.asset.copy_tree.global.retrieve",
+	argc		=> 2,  #(user_session, record_id)
+	note		=> <<TEXT
+	Returns all volumes and attached copies for a given bib record
+TEXT
+);
+
+sub retrieve_copies_global {
+
+	my( $self, $client, $user_session, $docid ) = @_;
+
+	$docid = "$docid";
+
+	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+
+	# ------------------------------------------------------
+	# grab all the volumes for the given record and location
+	my $request = $session->request( 
+			"open-ils.storage.asset.call_number.search.record", $docid );
+
+	my $volumes = $request->recv();
+
+		
+	if($volumes->isa("Error")) { 
+		throw $volumes ($volumes->stringify);}
+
+	$volumes = $volumes->content;
+
+	$request->finish();
+
+	my $vol_hash = {};
+
+	my @volume_ids;
+	for my $volume (@$volumes) {
+		$vol_hash->{$volume->id} = $volume;
+	}
+
+	my @ii = keys %$vol_hash;
+	warn "Searching volumes @ii\n";
+		
+	$request = $session->request( 
+			"open-ils.storage.asset.copy.search.call_number", keys %$vol_hash );
+	
+	while( my $copylist = $request->recv ) {
+		
+		if(UNIVERSAL::isa( $copylist, "Error")) {
+			throw $copylist ($copylist->stringify);
+		}
+
+		warn "received copy list " . time() . "\n";
+		$copylist = $copylist->content;
+
+		my $vol;
+		for my $copy (@$copylist) {
+			$vol = $vol_hash->{$copy->call_number} unless $vol;
+			$vol->copies([]) unless $vol->copies();
+			push @{$vol->copies}, $copy;
+		}
+		$client->respond( $vol );
+	}
+
+
+
+	$request->finish();
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+
+	return undef;
+	
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "create_copies",
+	api_name	=> "open-ils.cat.asset.copy.batch.create",
+	argc		=> 2,  #(user_session, record_id)
+	note		=> "Adds the given copies to the database"
+);
+
+sub create_copies {
+	my( $self, $client, $user_session, @copies ) = @_;
+
+	my $user_obj = 
+		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+
+	for my $copy (@copies) {
+		$copy->editor( $user_obj->id );
+		$copy->creator( $user_obj->id );
+	}
+
+	my $result = 
+		OpenILS::Application::AppUtils->simple_scalar_request( 
+			"open-ils.storage", "open-ils.storage.asset.copy.batch.create", @copies );
+
+	return $result;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "edit_copies",
+	api_name	=> "open-ils.cat.asset.copy.batch.update",
+	argc		=> 2,  #(user_session, record_id)
+	note		=> "Updates the given copies",
+);
+
+
+sub edit_copies {
+	my( $self, $client, $user_session, @copies ) = @_;
+
+	my $user_obj = 
+		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+
+	for my $copy (@copies) {
+		$copy->editor( $user_obj->id );
+	}
+
+	my $result = 
+		OpenILS::Application::AppUtils->simple_scalar_request( 
+			"open-ils.storage", "open-ils.storage.asset.copy.batch.update", @copies );
+
+	return $result;
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "delete_copies",
+	api_name	=> "open-ils.cat.asset.copy.batch.delete",
+	argc		=> 2,  #(user_session, record_id)
+	note		=> "Removes the given copies from the database",
+);
+
+
+sub delete_copies {
+	my( $self, $client, $user_session, @copies ) = @_;
+
+	my $user_obj = 
+		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+
+	for my $copy (@copies) {
+		$copy->editor( $user_obj->id );
+	}
+
+	my $result = 
+		OpenILS::Application::AppUtils->simple_scalar_request( 
+			"open-ils.storage", "open-ils.storage.asset.copy.batch.update", @copies );
+
+	return $result;
+}
 
 1;
