@@ -148,7 +148,9 @@ sub build_org_tree {
 	return $orglist unless ( 
 			ref($orglist) and @$orglist > 1 );
 
-	my @list = sort { $a->ou_type <=> $b->ou_type } @$orglist;
+	my @list = sort { 
+		$a->ou_type <=> $b->ou_type ||
+		$a->name cmp $b->name } @$orglist;
 
 	for my $org (@list) {
 		next unless ($org and defined($org->parent_ou));
@@ -158,24 +160,10 @@ sub build_org_tree {
 		push( @{$parent->children}, $org );
 	}
 
-	return $self->tree_child_sorter( $list[0] );
+	return $list[0];
 
 }
 
-sub tree_child_sorter {
-	my($self, $tree) = @_;
-			
-	return $tree unless ($tree and $tree->children);
-
-	$tree->children(
-			[ sort { $a->name cmp $b->name } @{$tree->children} ] );
-
-	for my $child (@{$tree->children}) {
-		$self->tree_child_sorter( $child );
-	}
-
-	return $tree;
-}
 	
 
 
