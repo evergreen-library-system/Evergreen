@@ -234,7 +234,7 @@ sub interval_to_seconds {
         my $interval = shift || $self;
 
         $interval =~ s/and/,/g;
-        $interval =~ s/,//g;
+        $interval =~ s/,/ /g;
 
         my $amount = 0;
         while ($interval =~ /\s*\+?\s*(\d+)\s*(\w{1})\w*\s*/g) {
