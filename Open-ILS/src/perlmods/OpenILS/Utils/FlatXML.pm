@@ -12,7 +12,12 @@ my $parser = XML::LibXML->new();
 $parser->keep_blanks(0);
 sub new {
 	my $class = shift;
-	my %args = @_;
+	my %args = (	nodeset	=> [],
+			xml	=> undef,
+			xmlfile	=> undef,
+			doc	=> undef,
+			@_,
+	);
 	$class = ref($class) || $class;
 	return bless(\%args,$class);
 }
@@ -62,7 +67,7 @@ sub xmldoc_to_nodeset {
 
 sub nodeset {
 	my $self = shift;
-	return $self->{nodelist};
+	return $self->{nodeset};
 }
 
 sub xmlfile_to_nodeset {
@@ -89,15 +94,13 @@ sub xmlfile_to_doc {
 sub nodeset_to_xml {
 	my $self = shift;
 	my $nodeset = shift;
-	$nodeset ||= $self->nodeset;
-	$self->{nodelist} = $nodeset;
 
 	my $doc = XML::LibXML::Document->new;
 
 	my %seen_ns;
 	
 	my @_xmllist;
-	for my $node ( @$nodeset ) {
+	for my $node ( @{$self->nodeset} ) {
 		my $xml;
 
 		$node = Fieldmapper::biblio::record_node->new($node);
@@ -161,7 +164,7 @@ sub _xml_to_nodeset {
 
 	$self->{next_id} = 0;
 
-	push @{$self->{nodelist}}, _make_node_entry( 0, undef, 
+	push @{$self->nodeset}, _make_node_entry( 0, undef, 
 			$node->localname, undef, $node->nodeType, $node->namespaceURI );
 
 	$self->_nodeset_recurse( $node, 0);
@@ -194,7 +197,7 @@ sub _nodeset_recurse {
 
 		my $type = $kid->nodeType;
 
-		push @{$self->{nodelist}}, _make_node_entry( ++$self->{next_id}, $parent,
+		push @{$self->nodeset}, _make_node_entry( ++$self->{next_id}, $parent,
 			$kid->localname, _grab_content( $kid, $type ), 
 			$type, ($type != 18 ? $kid->namespaceURI : undef ));
 
