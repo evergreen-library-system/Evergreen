@@ -21,6 +21,8 @@ int parse_error( char* words[] );
 int router_query_servers( char* server );
 int srfsh_client_connect();
 void print_help();
+char* json_printer( json* object );
+char* tabs(int count);
 
 int main( int argc, char* argv[] ) {
 
@@ -231,8 +233,11 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 	
 	
 	while(omsg) {
-		if(omsg->result_content) 
-			printf( "Received Data: %s\n",json_object_to_json_string(omsg->result_content) );
+		if(omsg->result_content) {
+			char* content = json_printer( omsg->result_content );
+			printf( "Received Data: %s\n",content );
+			free(content);
+		}
 		else
 			printf( "Received Message but no result data\n");
 
@@ -332,5 +337,96 @@ void print_help() {
 			"	- Anything passed in will be wrapped in a json array\n"
 			"---------------------------------------------------------------------------------\n"
 			);
+
+}
+
+
+
+char* tabs(int count) {
+	growing_buffer* buf = buffer_init(24);
+	int i;
+	for(i=0;i!=count;i++)
+		buffer_add(buf, "   ");
+
+	char* final = buffer_data( buf );
+	buffer_free( buf );
+	return final;
+}
+
+char* json_printer( json* object ) {
+
+	if(object == NULL)
+		return NULL;
+	char* string = json_object_to_json_string(object);
+
+	growing_buffer* buf = buffer_init(64);
+	int i;
+	int tab_var = 0;
+	for(i=0; i!= strlen(string); i++) {
+
+		if( string[i] == '{' ) {
+
+			buffer_add(buf, "\n");
+			char* tab = tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			buffer_add( buf, "{");
+			tab_var++;
+			buffer_add( buf, "\n" );	
+			tab = tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == '[' ) {
+
+			buffer_add(buf, "\n");
+			char* tab = tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			buffer_add( buf, "[");
+			tab_var++;
+			buffer_add( buf, "\n" );	
+			tab = tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == '}' ) {
+
+			tab_var--;
+			buffer_add(buf, "\n");
+			char* tab = tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			buffer_add( buf, "}");
+			buffer_add( buf, "\n" );	
+			tab = tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == ']' ) {
+
+			tab_var--;
+			buffer_add(buf, "\n");
+			char* tab = tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			buffer_add( buf, "]");
+			buffer_add( buf, "\n" );	
+			tab = tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else {
+			char b[2];
+			b[0] = string[i];
+			b[1] = '\0';
+			buffer_add( buf, b ); 
+		}
+
+	}
+
+	char* result = buffer_data(buf);
+	buffer_free(buf);
+	return result;
 
 }
