@@ -99,7 +99,9 @@ while ( $xml .= <STDIN> ) {
 		$barcode =~ s/\\/\\\\/og;
 		$label =~ s/\\/\\\\/og;
 		$price =~ s/\$//og;
-		$price ||= '0.00';
+		if ($price !~ /^\s*\d{1,6}\.\d{2}\s*$/o) {
+			$price = '0.00';
+		}
 
 		unless (exists($$cn_map{"$rec_id/$owning_lib/$label"})) {
 			$$cn_map{"$rec_id/$owning_lib/$label"} = $cn_id;
