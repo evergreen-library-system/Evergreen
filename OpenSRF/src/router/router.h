@@ -242,8 +242,8 @@ int remove_server_class( transport_router_registrar* router, server_class_node* 
 
 int router_registrar_handle_app_request( transport_router_registrar*, transport_message* msg );
 
-osrf_message* router_registrar_process_app_request( 
-		transport_router_registrar* , osrf_message* omsg );
+osrf_message** router_registrar_process_app_request( 
+		transport_router_registrar* , osrf_message* omsg, int* num_responses );
 
 
 // ----------------------------------------------------------------------
