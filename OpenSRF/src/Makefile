@@ -3,7 +3,10 @@
 #
 
 
-all: router srfsh
+all: prep router srfsh
+
+prep:
+	if [ ! -d ../lib ];then mkdir ../lib; fi;
 
 install: 
 	make -C srfsh install
