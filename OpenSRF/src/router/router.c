@@ -211,13 +211,11 @@ void listen_loop( transport_router_registrar* router ) {
 			/* cycle through the children and find any whose fd's are ready for reading */
 			server_class_node* cur_node = router->server_class_list;
 			while( cur_node != NULL ) {
-				info_handler("searching child activity" );
 				int cur_fd = cur_node->jabber->t_client->session->sock_obj->sock_fd;
 
 				if( FD_ISSET(cur_fd, &listen_set) ) {
 					++num_handled;
 					FD_CLR(cur_fd,&listen_set);
-					info_handler( "found active child %s", cur_node->server_class );
 
 					cur_msg = client_recv( cur_node->jabber->t_client, 1 );
 					info_handler( "%s received from %s", cur_node->server_class, cur_msg->sender );
@@ -256,7 +254,7 @@ void listen_loop( transport_router_registrar* router ) {
 /* determine where to route top level messages */
 int router_registrar_handle_msg( transport_router_registrar* router_registrar, transport_message* msg ) {
 
-	info_handler( "Received class: %s : command %s:  body: %s", msg->router_class, msg->router_command, msg->body );
+	info_handler( "Received class: %s : command %s ", msg->router_class, msg->router_command );
 
 	if( router_registrar == NULL || msg == NULL ) { return 0; }
 
@@ -592,7 +590,7 @@ int  server_class_handle_msg( transport_router_registrar* router,
 		return -1;
 	}
 
-	info_handler( "[%s] Received from %s to \n%s", 
+	info_handler( "[%s] Received \nfrom: %s \nto: %s", 
 			s_node->server_class, msg->sender, msg->recipient );
 
 	if( msg->is_error ) {
@@ -661,7 +659,8 @@ int  server_class_handle_msg( transport_router_registrar* router,
 	message_set_router_info( new_msg, msg->sender, NULL, NULL, NULL, 0 );
 
 	info_handler( "[%s] Routing message from [%s]\nto [%s]", s_node->server_class, msg->sender, new_msg->recipient );
-	info_handler( "New Message Details: sender:%s recipient: %s", new_msg->sender, new_msg->recipient );
+	//info_handler( "New Message Details: sender:%s recipient: %s \nbody: %s", 
+	//		new_msg->sender, new_msg->recipient, new_msg->body );
 
 	message_free( s_node->current_server_node->last_sent );
 	s_node->current_server_node->last_sent = msg;
