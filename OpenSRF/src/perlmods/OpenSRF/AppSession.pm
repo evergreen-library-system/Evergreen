@@ -125,7 +125,8 @@ sub server_build {
 	my $self = bless { recv_queue  => [],
 			   request_queue  => [],
 			   requests  => 0,
-			   death_callbacks  => [],
+			   session_data  => {},
+			   callbacks  => { death => [], disconnect => [] },
 			   endpoint    => SERVER,
 			   state       => CONNECTING, 
 			   session_id  => $sess_id,
@@ -137,6 +138,14 @@ sub server_build {
 			 } => $class;
 
 	return $_CACHE{$sess_id} = $self;
+}
+
+sub session_data {
+	my $self = shift;
+	my ($name, $datum) = @_;
+
+	$self->{session_data}->{$name} = $datum if (defined $datum);
+	return $self->{session_data}->{$name};
 }
 
 sub service { return shift()->{service}; }
@@ -340,10 +349,11 @@ sub finish {
 	}
 }
 
-sub register_death_callback {
+sub register_callback {
 	my $self = shift;
+	my $type = shift;
 	my $cb = shift;
-	push @{ $self->{death_callbacks} }, $cb;
+	push @{ $self->{callbacks}{$type} }, $cb;
 }
 
 sub kill_me {
@@ -351,7 +361,7 @@ sub kill_me {
 	if( ! $self->session_id ) { return 0; }
 
 	# run each 'kill_me' callback;
-	for my $sub (@{$self->{death_callbacks}}) {
+	for my $sub (@{$self->{callbacks}{death}}) {
 		$sub->($self);
 	}
 
@@ -373,6 +383,11 @@ sub disconnect {
 		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);;
 		$self->state( DISCONNECTED ); 
 	}
+	# run each 'disconnect' callback;
+	for my $sub (@{$self->{callbacks}{disconnect}}) {
+		$sub->($self);
+	}
+
 	$self->reset;
 }
 
@@ -872,7 +887,7 @@ sub respond_complete {
 sub register_death_callback {
 	my $self = shift;
 	my $cb = shift;
-	$self->session->register_death_callback( $cb );
+	$self->session->register_callback( death => $cb );
 }
 
 package OpenSRF::AppSubrequest;
