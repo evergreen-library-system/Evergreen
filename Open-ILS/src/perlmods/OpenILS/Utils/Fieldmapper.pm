@@ -2,6 +2,14 @@ package Fieldmapper;
 use JSON;
 use vars qw/$fieldmap @class_name_list/;
 
+#
+# To dump the Javascript version of the fieldmapper struct use the command:
+#
+#	PERL5LIB=~/cvs/ILS/OpenSRF/src/perlmods/:~/cvs/ILS/Open-ILS/src/perlmods/ GEN_JS=1 perl -MOpenILS::Utils::Fieldmapper -e 'print "\n";'
+#
+# ... adjusted for your CVS sandbox, of course.
+#
+
 $fieldmap = 
 {
 	'Fieldmapper::metabib::metarecord' =>
@@ -60,11 +68,12 @@ $fieldmap =
 			namespace_uri	=> { position =>  5, virtual => 0 },
 			name		=> { position =>  6, virtual => 0 },
 			value		=> { position =>  7, virtual => 0 },
+			last_xact_id	=> { position =>  8, virtual => 0 },
 
-			isnew		=> { position =>  8, virtual => 1 },
-			ischanged	=> { position =>  9, virtual => 1 },
-			isdeleted	=> { position => 10, virtual => 1 },
-			children	=> { position => 11, virtual => 1 },
+			isnew		=> { position =>  9, virtual => 1 },
+			ischanged	=> { position => 10, virtual => 1 },
+			isdeleted	=> { position => 11, virtual => 1 },
+			children	=> { position => 12, virtual => 1 },
 		},
 	},
 
@@ -84,10 +93,11 @@ $fieldmap =
 			source		=> { position =>  7, virtual => 0 },
 			active		=> { position =>  8, virtual => 0 },
 			deleted		=> { position =>  9, virtual => 0 },
+			last_xact_id	=> { position => 10, virtual => 0 },
 
-			isnew		=> { position => 10, virtual => 1 },
-			ischanged	=> { position => 11, virtual => 1 },
-			isdeleted	=> { position => 12, virtual => 1 },
+			isnew		=> { position => 11, virtual => 1 },
+			ischanged	=> { position => 12, virtual => 1 },
+			isdeleted	=> { position => 13, virtual => 1 },
 		},
 	},
 
@@ -115,10 +125,11 @@ $fieldmap =
 			super_user		=> { position => 15, virtual => 0 },
 			usrgroup		=> { position => 16, virtual => 0 },
 			passwd			=> { position => 17, virtual => 0 },
+			last_xact_id		=> { position => 18, virtual => 0 },
 
-			isnew			=> { position => 18, virtual => 1 },
-			ischanged		=> { position => 19, virtual => 1 },
-			isdeleted		=> { position => 20, virtual => 1 },
+			isnew			=> { position => 19, virtual => 1 },
+			ischanged		=> { position => 20, virtual => 1 },
+			isdeleted		=> { position => 21, virtual => 1 },
 		},
 	},
 };
