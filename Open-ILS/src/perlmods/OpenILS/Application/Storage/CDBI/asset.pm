@@ -26,7 +26,7 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_copy_metadata' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/checkout_status ciruclating_location hold_radius/ );
+__PACKAGE__->columns( Others => qw/checkout_status circulating_location hold_radius/ );
 
 #-------------------------------------------------------------------------------
 1;
