@@ -3,6 +3,7 @@
 #include "opensrf/osrf_message.h"
 #include "opensrf/osrf_app_session.h"
 #include <time.h>
+#include <sys/timeb.h>
 
 #include <signal.h>
 
@@ -56,7 +57,8 @@ char* tabs(int count);
 void sig_child_handler( int s );
 
 int load_history();
-
+int handle_math( char* words[] );
+int do_math( int count, int style );
 
 
 

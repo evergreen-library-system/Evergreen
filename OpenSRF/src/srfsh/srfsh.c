@@ -44,7 +44,7 @@ int main( int argc, char* argv[] ) {
 		char* req_copy = strdup(request);
 
 		parse_request( req_copy ); 
-		if( request && strlen(request) > 2 ) {
+		if( request && strlen(request) > 1 ) {
 			add_history(request);
 		}
 
@@ -155,6 +155,9 @@ int parse_request( char* request ) {
 
 	else if (!strcmp(words[0],"print"))
 		ret_val = handle_print(words);
+
+	else if (!strcmp(words[0],"math_bench"))
+		ret_val = handle_math(words);
 
 	else if (words[0][0] == '!')
 		ret_val = handle_exec( words );
@@ -352,7 +355,7 @@ int send_request( char* server,
 				buffer_add( resp_buffer, "\n" );
 				free(content);
 			} else {
-				char* content = json_object_to_json_string(omsg->result_content);
+				char* content = json_object_get_string(omsg->result_content);
 					buffer_add( resp_buffer, "\nReceived Data:" ); 
 					buffer_add( resp_buffer, content );
 					buffer_add( resp_buffer, "\n" );
@@ -483,6 +486,10 @@ int print_help() {
 			"\n"
 			"relay <service> <method>\n"
 			"	- Performs the requested query using the last received result as the param\n"
+			"\n"
+			"math_bench <num_batches> [0|1|2]\n"
+			"	- 0 means don't reconnect, 1 means reconnect after each batch of 4, and\n"
+			"		 2 means reconnect after every request\n"
 			"---------------------------------------------------------------------------------\n"
 			);
 
@@ -506,7 +513,7 @@ char* json_printer( json* object ) {
 
 	if(object == NULL)
 		return NULL;
-	char* string = json_object_to_json_string(object);
+	char* string = json_object_get_string(object);
 
 	growing_buffer* buf = buffer_init(64);
 	int i;
@@ -567,16 +574,11 @@ char* json_printer( json* object ) {
 
 		} else if( string[i] == ',' ) {
 
-//			tab_var--;
-//			buffer_add(buf, "\n");
 			buffer_add( buf, ",");
 			buffer_add( buf, "\n" );	
 			char* tab = tabs(tab_var);
 			buffer_add(buf, tab);
 			free(tab);
-//			tab = tabs(tab_var);
-//			buffer_add( buf, tab );	
-//			free(tab);
 
 		} else {
 
@@ -592,4 +594,100 @@ char* json_printer( json* object ) {
 	buffer_free(buf);
 	return result;
 
+}
+
+int handle_math( char* words[] ) {
+	if( words[1] && words[2] ) 
+		return do_math( atoi(words[1]), atoi(words[2]) );
+	return 0;
+}
+
+
+int do_math( int count, int style ) {
+
+	osrf_app_session* session = osrf_app_client_session_init(  "opensrf.math" );
+
+	json* params = json_object_new_array();
+	json_object_array_add(params, json_object_new_string("1"));
+	json_object_array_add(params, json_object_new_string("2"));
+
+	char* methods[] = { "add", "sub", "mult", "div" };
+	char* answers[] = { "3", "-1", "2", "0.500000" };
+
+	float times[ count * 4 ];
+	memset(times,0,count*4);
+
+	int k;
+	for(k=0;k!=100;k++) {
+		if(!(k%10)) 
+			fprintf(stderr,"|");
+		else
+			fprintf(stderr,".");
+	}
+
+	fprintf(stderr,"\n\n");
+
+	int running = 0;
+	int i;
+	for(i=0; i!= count; i++) {
+
+		int j;
+		for(j=0; j != 4; j++) {
+
+			++running;
+			struct timeb t1;
+			struct timeb t2;
+
+			ftime(&t1);
+			int req_id = osrf_app_session_make_request( session, params, methods[j], 1 );
+			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
+			ftime(&t2);
+
+			double start	= ( (int)t1.time	+ ( ((float)t1.millitm) / 1000 ) );
+			double end		= ( (int)t2.time	+ ( ((float)t2.millitm) / 1000 ) );
+
+			times[(4*i) + j] = end - start;
+
+			if(omsg) {
+	
+				if(omsg->result_content) {
+					//char* jsn = json_object_to_json_string(omsg->result_content);
+					char* jsn = json_object_get_string( omsg->result_content );
+					//if(jsn == answers[j])
+					if(!strcmp(jsn, answers[j]))
+						fprintf(stderr, "+");
+					else
+						//fprintf(stderr, "|");
+						fprintf(stderr, "\n![%s] - should be %s\n", jsn, answers[j] );
+				}
+
+				osrf_message_free(omsg);
+		
+			} else { fprintf( stderr, "\nempty message for tt: %d\n", req_id ); }
+
+			osrf_app_session_request_finish( session, req_id );
+
+			if(style == 2)
+				osrf_app_session_disconnect( session );
+
+			if(!(running%100))
+				fprintf(stderr,"\n");
+		}
+
+		if(style==1)
+			osrf_app_session_disconnect( session );
+	}
+
+	osrf_app_session_destroy( session );
+	json_object_put( params );
+
+	int c;
+	float total = 0;
+	for(c=0; c!= count*4; c++) 
+		total += times[c];
+
+	float avg = total / (count*4); 
+	fprintf(stderr, "\n      Average round trip time: %f\n", avg );
+
+	return 1;
 }
