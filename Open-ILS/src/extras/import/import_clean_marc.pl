@@ -108,7 +108,7 @@ while ( my $xml = <> ) {
 			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got no new ID !! -- ".$resp->toString);
 		}
 	} catch Error with {
-	warn "  !!> Rolling back transaction\n";
+		warn "  !!> Rolling back transaction\n".shift();
 		$xact = $st_server->request( 'open-ils.storage.transaction.rollback' );
 		$xact->wait_complete;
 		$xact = undef;
