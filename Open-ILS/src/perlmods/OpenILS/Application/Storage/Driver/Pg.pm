@@ -102,7 +102,7 @@
 	}
 
 	sub quote {
-		return __PACKAGE->db_Slaves->quote(@_)
+		return __PACKAGE__->db_Slaves->quote(@_)
 	}
 
 	sub tsearch2_trigger {
@@ -118,26 +118,40 @@
 	}
 
 	my $_xact_session;
+	sub current_xact_session {
+		my $self = shift;
+		my $ses = shift;
+		$_xact_session = $ses if (defined $ses);
+		return $_xact_session;
+	}
+
 	sub db_Slaves {	
 		my $self = shift;
 
-		if ($_xact_session && OpenSRF::AppSession->find($_xact_session)) {
+		if ($self->current_xact_session && OpenSRF::AppSession->find($self->current_xact_session)) {
 			return $self->db_Main;
 		}
 
-		return $self->SUPER::db_Slaves
+		return $self->_pick_slaves->($self, @_);
+		return $self->SUPER::db_Slaves;
 	}
+
+}
+
+
+{
+	package OpenILS::Application::Storage;
 
 	sub pg_begin_xaction {
 		my $self = shift;
 		my $client = shift;
 
-		$_xact_session = $client->session->session_id;
+		OpenILS::Application::Storage::Driver::Pg->current_xact_session( $client->session->session_id );
 
-		$client->session->register_callback( disconnect => sub { __PACKAGE__->commit_xaction($client); } )
+		$client->session->register_callback( disconnect => sub { __PACKAGE__->pg_commit_xaction($client); } )
 			if ($self->api_name =~ /autocommit$/o);
 
-		$client->session->register_callback( death => sub { __PACKAGE__->rollback_xaction($client); } );
+		$client->session->register_callback( death => sub { __PACKAGE__->pg_rollback_xaction($client); } );
 
 		return $self->begin_xaction;
 	}
@@ -156,7 +170,7 @@
 
 	sub pg_commit_xaction {
 
-		$_xact_session = undef;
+		OpenILS::Application::Storage::Driver::Pg->current_xact_session( 0 );
 		return $self->commit_xaction(@_);
 	}
 	__PACKAGE__->register_method(
@@ -168,7 +182,7 @@
 
 	sub pg_rollback_xaction {
 
-		$_xact_session = undef;
+		OpenILS::Application::Storage::Driver::Pg->current_xact_session( 0 );
 		return $self->rollback_xaction(@_);
 	}
 	__PACKAGE__->register_method(
@@ -256,9 +270,6 @@
 
 	metabib::author_field_entry->table( 'metabib.author_field_entry' );
 	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
-	metabib::author_field_entry->columns( Primary => qw/id/ );
-	metabib::author_field_entry->columns( Essential => qw/id/ );
-	metabib::author_field_entry->columns( Others => qw/field value index_vector/ );
 
 	metabib::author_field_entry->add_trigger(
 		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
