@@ -16,7 +16,7 @@ $host_config = undef;
 my $we_cache = 1;
 sub set_cache {
 	my($self, $val) = @_;
-	if($val) { $we_cache = 1; }
+	if(defined($val)) { $we_cache = $val; }
 }
 
 
