@@ -131,40 +131,24 @@ sub biblio_record_tree_commit {
 	}
 	$req->finish();
 
-	OpenILS::Application::AppUtils->commit_db_session( $session );
-
-	$nodeset = OpenILS::Utils::FlatXML->new()->xmldoc_to_nodeset($marcxml);
-	$tree = $utils->nodeset2tree($nodeset->nodeset);
-	$tree->owner_doc($docid);
-
-	$client->respond_complete($tree);
-
-
-
 	# Send the doc to the wormer for wormizing
 	warn "Starting worm session\n";
-	my $wses = OpenSRF::AppSession->create("open-ils.worm");
 
 	my $success = 0;
 	my $wresp;
-	for(0..9) {
 
-		my $wreq = $wses->request( 
-				"open-ils.worm.wormize.marc", $docid, $marcxml->toString );
-		warn "Calling worm receive\n";
+	my $wreq = $session->request( "open-ils.worm.wormize", $docid );
+	warn "Calling worm receive\n";
 
-		$wreq->wait_complete;
-		$wresp = $wreq->recv();
+	$wreq->wait_complete;
+	$wresp = $wreq->recv();
 
-		if( $wresp && $wresp->can("content") and $wresp->content ) {
-			$success = 1;
-			$wreq->finish();
-			last;
-		}
-
-		warn "Looping in worm call\n";
-		$wreq->finish();
+	if( ref($wresp) && 
+			UNIVERSAL::can($wresp,"content") and $wresp->content ) {
+		$success = 1;
 	}
+
+	$wreq->finish();
 
 	if( !$success ) {
 
@@ -174,16 +158,17 @@ sub biblio_record_tree_commit {
 			throw $wresp ($wresp->stringify);
 		}
 
-		$wses->disconnect;
-		$wses->kill_me;
-
 		OpenILS::Application::AppUtils->rollback_db_session($session);
-
 		throw OpenSRF::EX::ERROR ("Wormizing Failed for $docid" );
 	}
 
-	$wses->disconnect;
-	$wses->kill_me;
+	OpenILS::Application::AppUtils->commit_db_session( $session );
+
+	$nodeset = OpenILS::Utils::FlatXML->new()->xmldoc_to_nodeset($marcxml);
+	$tree = $utils->nodeset2tree($nodeset->nodeset);
+	$tree->owner_doc($docid);
+
+	$client->respond_complete($tree);
 
 	warn "Done wormizing\n";
 

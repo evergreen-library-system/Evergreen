@@ -68,7 +68,7 @@ TEXT
 # -------------------------------------------------------------
 # connect to the memcache server
 # -------------------------------------------------------------
-sub initialize {
+sub child_init {
 
 	my $config_client = OpenSRF::Utils::SettingsClient->new();
 	my $memcache_servers = 

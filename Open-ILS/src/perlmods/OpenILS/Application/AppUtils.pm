@@ -129,21 +129,43 @@ sub simple_scalar_request {
 
 
 
+my $orglist = undef;
+my $org_typelist = undef;
+my $org_typelist_hash = {};
+
 sub get_org_tree {
 
 	my $self = shift;
 
-	my $orglist = $self->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.direct.actor.org_unit_list" );
+	if(!$orglist) {
+		$orglist = $self->simple_scalar_request( 
+			"open-ils.storage", "open-ils.storage.direct.actor.org_unit.retrieve.all" );
+	}
 
-	return $self->build_org_tree($orglist);
+	if( ! $org_typelist ) {
+		$org_typelist = $self->simple_scalar_request( 
+			"open-ils.storage", "open-ils.storage.direct.actor.org_unit_type.retrieve.all" );
+		$self->build_org_type( $org_typelist );
+	}
+
+	return $self->build_org_tree($orglist, $org_typelist);
 
 }
+
+sub build_org_type { 
+	my($self, $org_typelist)  = @_;
+	for my $type (@$org_typelist) {
+		$org_typelist_hash->{$type->id()} = $type;
+	}
+}
+
 
 
 sub build_org_tree {
 
-	my( $self, $orglist ) = @_;
+	my( $self, $orglist, $org_typelist ) = @_;
+
+
 
 	return $orglist unless ( 
 			ref($orglist) and @$orglist > 1 );
@@ -154,6 +176,11 @@ sub build_org_tree {
 
 	for my $org (@list) {
 		next unless ($org and defined($org->parent_ou));
+
+		if(!ref($org->ou_type())) {
+			$org->ou_type( $org_typelist_hash->{$org->ou_type()});
+		}
+
 		my ($parent) = grep { $_->id == $org->parent_ou } @list;
 		next unless $parent;
 		$parent->children([]) unless defined($parent->children); 

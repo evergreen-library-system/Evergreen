@@ -31,7 +31,7 @@ sub biblio_search_marc {
 
 	warn "Sending biblio marc request\n";
 	my $request = $session->request( 
-			"open-ils.storage.metabib.full_rec.search_fts.index_vector", 
+			"open-ils.storage.direct.metabib.full_rec.search_fts.index_vector", 
 			$search_hash, $string );
 
 	warn "Waiting complete\n";
@@ -76,7 +76,7 @@ sub _records_to_mods {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request(
-			"open-ils.storage.biblio.record_marc.batch.retrieve",  @ids );
+			"open-ils.storage.direct.biblio.record_marc.batch.retrieve",  @ids );
 
 	my $last_content = undef;
 
@@ -150,7 +150,11 @@ __PACKAGE__->register_method(
 
 # converts a record into a mods object with NO copy counts attached
 sub record_id_to_mods_slim {
+
 	my( $self, $client, $id ) = @_;
+	warn "Retrieving MODS object for record $id\n";
+	return undef unless(defined $id);
+
 	my $mods_list = _records_to_mods( $id );
 	my $mods_obj = $mods_list->[0];
 	return $mods_obj;
@@ -169,18 +173,20 @@ sub record_id_to_copy_count {
 	my( $self, $client, $org_id, $record_id ) = @_;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	warn "mods retrieve $record_id\n";
-	my $request = $session->request(
-		"open-ils.storage.biblio.record_copy_count",  $org_id, $record_id );
+	warn "copy_count retrieve $record_id\n";
+	return undef unless(defined $record_id);
 
-	warn "mods retrieve wait $record_id\n";
+	my $request = $session->request(
+		"open-ils.storage.direct.biblio.record_copy_count",  $org_id, $record_id );
+
+	warn "copy_count wait $record_id\n";
 	$request->wait_complete;
 
-	warn "mods retrieve recv $record_id\n";
+	warn "copy_count recv $record_id\n";
 	my $response = $request->recv();
 	return undef unless $response;
 
-	warn "mods retrieve after recv $record_id\n";
+	warn "copy_count after recv $record_id\n";
 
 	if( $response and UNIVERSAL::isa($response, "Error")) {
 		throw $response ($response->stringify);
@@ -231,20 +237,22 @@ __PACKAGE__->register_method(
 
 sub cat_biblio_search_tcn {
 
-	my( $self, $client, $org_id, $tcn ) = @_;
+	my( $self, $client, $tcn ) = @_;
 
 	$tcn =~ s/.*?(\w+)\s*$/$1/o;
 	warn "Searching TCN $tcn\n";
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-			"open-ils.storage.biblio.record_entry.search.tcn_value", $tcn );
+			"open-ils.storage.direct.biblio.record_entry.search.tcn_value", $tcn );
+	warn "tcn going into recv\n";
 	my $response = $request->recv();
 
 
 	unless ($response) { return []; }
 
-	if($response->isa("OpenSRF::EX")) {
+	if(UNIVERSAL::isa($response,"OpenSRF::EX")) {
+		warn "Received exception for tcn search\n";
 		throw $response ($response->stringify);
 	}
 
@@ -253,6 +261,8 @@ sub cat_biblio_search_tcn {
 	for my $record (@$record_entry) {
 		push @ids, $record->id;
 	}
+
+	warn "received ID's for tcn search @ids\n";
 
 
 	my $record_list = _records_to_mods( @ids );
@@ -302,7 +312,7 @@ sub cat_biblio_search_class {
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
 	my $request = $session->request(
-		"open-ils.storage.biblio.record_copy_count.batch",  $org_id, @ids );
+		"open-ils.storage.direct.biblio.record_copy_count.batch",  $org_id, @ids );
 
 	for my $id (@ids) {
 
@@ -348,32 +358,32 @@ __PACKAGE__->register_method(
 
 sub cat_biblio_search_class_id {
 
-	my( $self, $client, $org_id, $class, $sort, $string ) = @_;
+	my( $self, $client, $org_id, $class, $string, $limit, $offset ) = @_;
+
+	$offset	||= 0;
+	$limit	||= 100;
+	$limit -= 1;
+
 
 	$string = OpenILS::Application::Search->filter_search($string);
 	if(!$string) { return undef; }
 
-	warn "Searching cat.biblio.class.id $string\n";
+	warn "Searching cat.biblio.class.id string: $string offset: $offset limit: $limit\n";
 
 	throw OpenSRF::EX::InvalidArg 
 		("Not enough args to open-ils.search.cat.biblio.class")
-			unless( defined($org_id) and $class and $sort and $string );
+			unless( defined($org_id) and $class and $string );
 
 
 	my $search_hash;
 
-	my $cache_key = md5_hex( $org_id . $class . $sort . $string );
+	my $cache_key = md5_hex( $org_id . $class . $string );
 	my $id_array = OpenILS::Application::SearchCache->get_cache($cache_key);
 
 	if(ref($id_array)) {
 		warn "Return search from cache\n";
 		my $size = @$id_array;
-		my @ids;
-		my $x = 0;
-		for my $i (@$id_array) {
-			if($x++ > 200){last;}
-			push @ids, $i;
-		}
+		my @ids = @$id_array[ $offset..($offset+$limit) ];
 		warn "Returning cat.biblio.class.id $string\n";
 		return { count => $size, ids => \@ids };
 	}
@@ -386,17 +396,10 @@ sub cat_biblio_search_class_id {
 
 	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
 
-	my @ids;
 	my @cache_ids;
 
-	# add some sanity checking
-	my $x=0; # Here we're limiting by 200
-	for my $i (@$records) { 
-		if($x++ < 200 ){
-			push @ids, $i->[0]; 
-		}
-		push @cache_ids, $i->[0]; 
-	}
+	for my $i (@$records) { push @cache_ids, $i->[0]; }
+	my @ids = @cache_ids[ $offset..($offset+$limit) ];
 	my $size = @$records;
 
 	OpenILS::Application::SearchCache->put_cache( 
