@@ -183,14 +183,14 @@ int tcp_wait( transport_socket* sock_obj, int timeout ){
 		// If timeout is -1, there is no timeout passed to the call to select
 		// ------------------------------------------------------------------
 		if( (retval = select( sock_fd + 1 , &read_set, NULL, NULL, NULL)) == -1 ) {
-			warning_handler( "Call to select failed" );
+			warning_handler( "Call to select interrupted" );
 			return 0;
 		}
 
 	} else if( timeout != 0 ) { /* timeout of 0 means don't block */
 
 		if( (retval = select( sock_fd + 1 , &read_set, NULL, NULL, &tv)) == -1 ) {
-			warning_handler( "Call to select failed" );
+			warning_handler( "Call to select interrupted" );
 			return 0;
 		}
 	}
