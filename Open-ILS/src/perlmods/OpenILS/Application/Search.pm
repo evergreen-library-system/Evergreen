@@ -45,6 +45,61 @@ my $cat_search_hash =  {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "cat_biblio_search_tcn",
+	api_name	=> "open-ils.search.cat.biblio.tcn",
+	argc		=> 3, 
+	note		=> "Searches biblio information by search class",
+);
+
+sub cat_biblio_search_tcn {
+
+	my( $self, $client, $tcn ) = @_;
+
+	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+	my $request = $session->request( 
+			"open-ils.storage.biblio.record_entry.search.tcn_value", $tcn );
+	my $response = $request->recv();
+
+
+	unless ($response) { return undef; }
+
+	if($response->isa("OpenSRF::EX")) {
+		warn $response->stringify();
+		throw $response ($response->stringify);
+	}
+
+
+	my $record_entry = $response->content;
+	$record_entry = $record_entry->[0];
+	$request->finish();
+
+	$request = $session->request(
+		"open-ils.storage.biblio.record_marc.retrieve",  $record_entry->id() );
+	$response = $request->recv();
+
+	unless ($response) { return undef; }
+
+	if($response->isa("OpenSRF::EX")) {
+		warn $response->stringify();
+		throw $response ($response->stringify);
+	}
+
+	my $marcxml = $response->content;
+
+	my $u = OpenILS::Application::Cat::Utils->new();
+	$u->start_mods_batch( $marcxml->marc );
+	my $mods = $u->finish_mods_batch();
+	$mods->{doc_id} = $marcxml->id();
+
+
+	$request->finish();
+	$session->disconnect;
+	$session->kill_me;
+
+	return $mods;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_class",
@@ -71,8 +126,6 @@ sub cat_biblio_search_class {
 		throw OpenSRF::EX::PANIC 
 			("Can't lookup method 'open-ils.search.biblio.marc'");
 	}
-
-	use Data::Dumper;
 
 	warn "Running: "  . time() . "\n";
 
@@ -112,7 +165,9 @@ sub cat_biblio_search_class {
 			push @results, $mods;
 		}
 
-		if($response and $response->isa("OpenSRF::EX")) {
+		next unless $response;
+
+		if($response->isa("OpenSRF::EX")) {
 			throw $response ($response->stringify);
 		}
 
@@ -157,7 +212,7 @@ sub biblio_search_marc {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request( 
-			"open-ils.storage.metabib.full_rec.search.fts", $search_hash, $string );
+			"open-ils.storage.metabib.full_rec.search_fts.index_vector", $search_hash, $string );
 
 	my $response = $request->recv();
 	if($response and $response->isa("OpenSRF::EX")) {
