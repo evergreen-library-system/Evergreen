@@ -1,3 +1,4 @@
+use strict; use warnings;
 package OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::SettingsParser;
 use OpenSRF::System;
@@ -17,6 +18,9 @@ $host_config = undef;
 sub config_value {
 	my($self,@keys) = @_;
 
+
+	my $bsconfig = OpenSRF::Utils::Config->current;
+	my $host = $bsconfig->env->hostname;
 	if(!$host_config) { grab_host_config($host); }
 	if(!$host_config) {
 		throw OpenSRF::EX::Config ("Unable to retrieve host config for $host" );
@@ -46,6 +50,7 @@ sub grab_host_config {
 
 	my $host = shift;
 
+	warn "Grabbing Host config for $host\n";
 	OpenSRF::System::bootstrap_client("system_client");
 	$session = OpenSRF::AppSession->create( "settings" ) unless $session;
 	my $bsconfig = OpenSRF::Utils::Config->current;
