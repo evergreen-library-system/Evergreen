@@ -241,9 +241,11 @@ sub get_record_nodeset {
 	my @ids = @_;
 
 	my $table = biblio::record_node->table;
+	my @fields = Fieldmapper::biblio::record_node->real_fields;
+	my $field_list = join ',', @fields;
 
 	my $sth = biblio::record_node->db_Main->prepare_cached(<<"	SQL");
-		SELECT	id, owner_doc, intra_doc_id, parent_node, node_type, name, value
+		SELECT	$field_list
 		  FROM	$table
 		  WHERE	owner_doc = ?
 		  ORDER BY intra_doc_id;
@@ -255,18 +257,21 @@ sub get_record_nodeset {
 		
 		$sth->execute($id);
 
-		$client->respond( [map { Fieldmapper::biblio::record_node->new( $_ ) } @{$sth->fetchall_arrayref}] );
 
+		my @nodeset;
+		while (my $data = $sth->fetchrow_arrayref) {
+			my $n = new Fieldmapper::biblio::record_node;
+			my $index = 0;
+			for my $f ( @fields ) {
+				$n->$f( $$data[$index] );
+				$index++;
+			}
+			push @nodeset, $n;
+		}
 		$sth->finish;
-		
-#		$client->respond(
-#			$self->_cdbi_list2AoH(
-#				biblio::record_node->search(
-#					owner_doc => "$id", { order_by => 'intra_doc_id' }
-#				)
-#			)
-#		);
 
+		$client->respond( \@nodeset );
+		
 		last if ($self->api_name !~ /list/o);
 	}
 	return undef;
