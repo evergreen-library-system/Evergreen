@@ -10,6 +10,7 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE TABLE biblio.record_entry (
 	id		BIGSERIAL	PRIMARY KEY,
+	fingerprint	TEXT,
 	tcn_source	TEXT		NOT NULL DEFAULT 'AUTOGEN',
 	tcn_value	TEXT		NOT NULL DEFAULT biblio.next_autogen_tcn_value(),
 	creator		INT		NOT NULL DEFAULT 1,
@@ -25,37 +26,11 @@ CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_source,tcn_value) WHERE deleted IS FALSE;
 
-/*
- * We'll do MODS in the middle tier.
- *
-CREATE TABLE biblio.record_mods (
-	id	BIGINT	PRIMARY KEY,
-	mods	TEXT	NOT NULL
-);
-*/
-
 CREATE TABLE biblio.record_marc (
 	id		BIGINT	PRIMARY KEY,
 	marc		TEXT	NOT NULL,
 	last_xact_id	TEXT	NOT NULL
 );
-
-/*
- * Old xml table -- holds FlatXML nodesets
- *
-CREATE TABLE biblio.record_data (
-	id		BIGSERIAL	PRIMARY KEY,
-	owner_doc	BIGINT		NOT NULL,
-	intra_doc_id	INT		NOT NULL,
-	parent_node	INT,
-	node_type	INT		NOT NULL,
-	namespace_uri	TEXT,
-	name		TEXT,
-	value		TEXT,
-	last_xact_id	TEXT		NOT NULL DEFAULT 'none',
-	CONSTRAINT unique_doc_and_id UNIQUE (owner_doc,intra_doc_id)
-);
-*/
 
 CREATE TABLE biblio.record_note (
 	id		BIGSERIAL	PRIMARY KEY,

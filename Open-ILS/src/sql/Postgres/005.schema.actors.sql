@@ -5,8 +5,9 @@ CREATE SCHEMA actor;
 
 CREATE TABLE actor.usr (
 	id			SERIAL	PRIMARY KEY,
-	usrid			TEXT	NOT NULL UNIQUE, -- barcode
-	usrname			TEXT	NOT NULL UNIQUE,
+	card			INT	UNIQUE, -- active card
+	usrid			TEXT	NOT NULL UNIQUE,
+	usrname		TEXT	NOT NULL UNIQUE,
 	email			TEXT	CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
 	passwd			TEXT	NOT NULL,
 	prefix			TEXT,
@@ -53,22 +54,56 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
-	VALUES ( 'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
+INSERT INTO actor.usr ( card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
+	VALUES ( 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
+
+CREATE TABLE actor.stat_cat (
+	id		SERIAL  PRIMARY KEY,
+	owner		INT     NOT NULL, -- actor.org_unit.id
+	name		TEXT    NOT NULL,
+	opac_visible	BOOL NOT NULL DEFAULT FALSE,
+	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
+);
+
+CREATE TABLE actor.stat_cat_entry (
+	id	SERIAL  PRIMARY KEY,
+	owner	INT     NOT NULL, -- actor.org_unit.id
+	value	TEXT    NOT NULL,
+	CONSTRAINT sce_once_per_owner UNIQUE (owner,value)
+);
+
+CREATE TABLE actor.stat_cat_entry_usr_map (
+	id		BIGSERIAL       PRIMARY KEY,
+	stat_cat_entry	INT             NOT NULL, -- needs ON DELETE CASCADE
+	target_usr	BIGINT          NOT NULL, -- needs ON DELETE CASCADE
+	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat_entry)
+);
+
+CREATE TABLE actor.card (
+	id	SERIAL	PRIMARY KEY,
+	usr	INT,
+	barcode	TEXT	NOT NULL UNIQUE,
+	active	BOOL	NOT NULL DEFAULT TRUE
+);
+CREATE INDEX actor_card_usr_idx ON actor.card (usr);
+
+INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
+
 
 CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
 	depth		INT	NOT NULL,
 	parent		INT,
+	can_have_vols	BOOL	NOT NULL DEFAULT TRUE,
 	can_have_users	BOOL	NOT NULL DEFAULT TRUE
 );
 
 -- The PINES levels
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Consortium', 0, NULL, FALSE );
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'System', 1, 1, FALSE );
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Branch', 2, 2, TRUE );
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Sub-lib', 5, 3, TRUE );
+INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium', 0, NULL, FALSE, FALSE );
+INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'System', 1, 1, FALSE, FALSE );
+INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Branch', 2, 2 );
+INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Sub-lib', 5, 3 );
 
 CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
@@ -82,20 +117,23 @@ CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);
 CREATE INDEX actor_org_unit_address_idx ON actor.org_unit (address);
 
--- Some PINES test libraries
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'PINES', 'Georgia PINES Consortium');
 
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'ARL', 'Athens Regional Library System');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-ATH', 'Athens-Clark County Library');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-BOG', 'Bogart Branch Library');
 
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'MGRL', 'Middle Georgia Regional Library System');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-RC', 'Rocky Creek Branch Library');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-WA', 'Washington Memorial Library');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 4, 'MGRL-MM', 'Bookmobile');
-
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'HOU', 'Houston County Library System');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'HOU-WR', 'Nola Brantley Memorial Library');
+-- Some PINES test libraries
+-- XXX use lib_splitter.pl to do this
+-- 
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'ARL', 'Athens Regional Library System');
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-ATH', 'Athens-Clark County Library');
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-BOG', 'Bogart Branch Library');
+-- 
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'MGRL', 'Middle Georgia Regional Library System');
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-RC', 'Rocky Creek Branch Library');
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-WA', 'Washington Memorial Library');
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 4, 'MGRL-MM', 'Bookmobile');
+-- 
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'HOU', 'Houston County Library System');
+-- INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'HOU-WR', 'Nola Brantley Memorial Library');
 
 CREATE TABLE actor.usr_access_entry (
 	id		BIGSERIAL	PRIMARY KEY,

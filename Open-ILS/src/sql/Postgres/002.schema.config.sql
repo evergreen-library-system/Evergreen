@@ -22,25 +22,31 @@ CREATE TABLE config.metabib_field (
 	xpath		TEXT	NOT NULL
 );
 
-CREATE TABLE config.item_type_map (
-	typeid		TEXT	PRIMARY KEY,
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'abbreviated', $$//mods:mods/mods:titleInfo[mods:title and (@type='abreviated')]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'translated', $$//mods:mods/mods:titleInfo[mods:title and (@type='translated')]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'uniform', $$//mods:mods/mods:titleInfo[mods:title and (@type='uniform')]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'proper', $$//mods:mods/mods:titleInfo[mods:title and not (@type)]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'corporate', $$//mods:mods/mods:name[@type='corporate']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'personal', $$//mods:mods/mods:name[@type='personal']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'conference', $$//mods:mods/mods:name[@type='conference']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'other', $$//mods:mods/mods:name[@type='personal']/mods:namePart[not(../mods:role)]$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'geographic', $$//mods:mods/mods:subject/mods:geographic$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'name', $$//mods:mods/mods:subject/mods:name$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'temporal', $$//mods:mods/mods:subject/mods:temporal$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'topic', $$//mods:mods/mods:subject/mods:topic$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */
+
+CREATE TABLE config.identification_type (
+	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE
 );
 
-INSERT INTO config.item_type_map (typeid,name) VALUES ('a','Language material');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('c','Notated music');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('d','Manuscript notated music');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('e','Cartographic material');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('f','Manuscript cartographic material');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('g','Projected medium');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('i','Nonmusical sound recording');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('j','Musical sound recording');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('k','Two-dimensional nonprojectable graphic');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('m','Computer file');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('o','Kit');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('p','Mixed material');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('r','Three-dimensional artifact or naturally occurring object');
-INSERT INTO config.item_type_map (typeid,name) VALUES ('t','Manuscript language material');
+INSERT INTO config.identification_type ( name ) VALUES ( 'Drivers Licence' );
+INSERT INTO config.identification_type ( name ) VALUES ( 'Voter Card' );
+INSERT INTO config.identification_type ( name ) VALUES ( 'Two Utility Bills' );
+INSERT INTO config.identification_type ( name ) VALUES ( 'State ID' );
+INSERT INTO config.identification_type ( name ) VALUES ( 'SSN' );
 
 
 COMMIT;

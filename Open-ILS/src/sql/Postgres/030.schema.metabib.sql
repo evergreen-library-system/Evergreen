@@ -58,6 +58,35 @@ CREATE TRIGGER metabib_keyword_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.keyword_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
 
+CREATE TABLE metabib.rec_descriptor (
+	id		BIGSERIAL PRIMARY KEY,
+	record		BIGINT,
+	item_type	TEXT,
+	item_form	TEXT,
+	bib_level	TEXT,
+	control_type	TEXT,
+	char_encoding	TEXT,
+	enc_level	TEXT,
+	cat_form	TEXT,
+	pub_status	TEXT,
+	item_lang	TEXT,
+	audience	TEXT
+);
+/* We may not need these...
+
+CREATE INDEX metabib_rec_descriptor_item_type_idx ON metabib.rec_descriptor (item_type);
+CREATE INDEX metabib_rec_descriptor_item_form_idx ON metabib.rec_descriptor (item_form);
+CREATE INDEX metabib_rec_descriptor_bib_level_idx ON metabib.rec_descriptor (bib_level);
+CREATE INDEX metabib_rec_descriptor_control_type_idx ON metabib.rec_descriptor (control_type);
+CREATE INDEX metabib_rec_descriptor_char_encoding_idx ON metabib.rec_descriptor (char_encoding);
+CREATE INDEX metabib_rec_descriptor_enc_level_idx ON metabib.rec_descriptor (enc_level);
+CREATE INDEX metabib_rec_descriptor_cat_form_idx ON metabib.rec_descriptor (cat_form);
+CREATE INDEX metabib_rec_descriptor_pub_status_idx ON metabib.rec_descriptor (pub_status);
+CREATE INDEX metabib_rec_descriptor_item_lang_idx ON metabib.rec_descriptor (item_lang);
+CREATE INDEX metabib_rec_descriptor_audience_idx ON metabib.rec_descriptor (audience);
+
+*/
+
 
 CREATE TABLE metabib.full_rec (
 	id		BIGSERIAL	PRIMARY KEY,

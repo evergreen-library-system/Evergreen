@@ -6,6 +6,7 @@ psql -U $1 -d $2 -f 010.schema.biblio.sql
 psql -U $1 -d $2 -f 020.schema.functions.sql
 psql -U $1 -d $2 -f 030.schema.metabib.sql
 psql -U $1 -d $2 -f 040.schema.asset.sql
+psql -U $1 -d $2 -f 090.schema.action.sql
 
 #psql -U $1 -d $2 -f 805.fkeys.actors.sql
 #psql -U $1 -d $2 -f 810.fkeys.biblio.sql
