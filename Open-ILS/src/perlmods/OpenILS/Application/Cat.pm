@@ -53,8 +53,10 @@ __PACKAGE__->register_method(
 
 sub biblio_record_tree_commit {
 	my( $self, $client, $tree ) = @_;
+	new Fieldmapper::biblio::record_node ($tree);
 	my $nodeset = $utils->tree2nodeset($tree);
-	return $utils->commit_nodeset( $nodeset );
+	my $hash = $utils->commit_nodeset( $nodeset );
+	return $hash 
 }
 
 

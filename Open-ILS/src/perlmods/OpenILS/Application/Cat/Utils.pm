@@ -22,6 +22,7 @@ sub new {
 
 # ---------------------------------------------------------------------------
 # Converts an XML nodeset into a tree
+# This method expects a blessed Fieldmapper::biblio::record_node object 
 sub nodeset2tree {
 	my($class, $nodeset) = @_;
 
@@ -29,6 +30,8 @@ sub nodeset2tree {
 		next unless ($child and defined($child->parent_node));
 		my $parent = $nodeset->[$child->parent_node];
 		$parent->children([]) unless defined($parent->children); 
+		$child->isnew(0);
+		$child->isdeleted(0);
 		push( @{$parent->children}, $child );
 	}
 
@@ -37,14 +40,10 @@ sub nodeset2tree {
 
 # ---------------------------------------------------------------------------
 # Converts a tree into an xml nodeset
+# This method expects a blessed Fieldmapper::biblio::record_node object 
 
-#my @_nodelist = ();
 sub tree2nodeset {
 	my($self, $node, $newnodes) = @_;
-
-	if((ref($node) ne "Fieldmapper::biblio::record_node")) {
-		$node = Fieldmapper::biblio::record_node->new($node);
-	}
 
 	return $newnodes unless $node;
 
@@ -56,8 +55,7 @@ sub tree2nodeset {
 
 		for my $child (@{ $node->children() }) {
 
-			$child =	 
-				Fieldmapper::biblio::record_node->new($child);
+			new Fieldmapper::biblio::record_node ($child);
 	
 			if(!defined($child->parent_node)) {
 				$child->parent_node($node->intra_doc_id);
@@ -75,7 +73,7 @@ sub tree2nodeset {
 # ---------------------------------------------------------------------------
 # Walks a nodeset and checks for insert, update, and delete and makes 
 # appropriate db calls
-
+# This method expects a blessed Fieldmapper::biblio::record_node object 
 sub commit_nodeset {
 	my($self, $nodeset) = @_;
 
@@ -99,7 +97,6 @@ sub commit_nodeset {
 			$offset--;
 			warn "Deleting Node " . $node->intra_doc_id() . "\n";
 			push @_deleted, $node;
-			return undef unless _deletenode($node);
 			next;
 		}
 
@@ -107,7 +104,6 @@ sub commit_nodeset {
 			$node->intra_doc_id($pos);
 			warn "Adding Node $pos\n";
 			push @_added, $node;
-			return undef unless _addnode($node);
 			next;
 		}
 
@@ -119,36 +115,20 @@ sub commit_nodeset {
 
 			$node->intra_doc_id($pos);
 			push @_altered, $node;
-			return undef unless _updatenode($node);
 			next;
 		}
 	}
 
-	my $a = @_added;
 	my $d = @_deleted;
 	my $al = @_altered;
+	my $a = @_added;
+
+	# iterate through each list and send updates to the db
+
 	my $hash = { added => $a, deleted => $d, updated =>  $al };
 	return $hash;
 }
 
-# send deletes, updates, then adds
-
-sub _updatenode {
-	my $node = shift;
-	return 1;
-}
-
-sub _addnode {
-	my $node = shift;
-	return 1;
-}
-
-sub _deletenode {
-	my $node = shift;
-	return 1;
-}
- 
-# ---------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------
