@@ -1,6 +1,7 @@
 package OpenSRF::Transport;
 use strict; use warnings;
 use base 'OpenSRF';
+use Time::HiRes qw/time/;
 use OpenSRF::DOM;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::Logger qw(:level);
@@ -75,6 +76,7 @@ the handler method on the message document.
 =cut
 
 sub handler {
+	my $start_time = time();
 	my( $class, $service, $data ) = @_;
 
 	$logger->transport( "Transport handler() received $data", INTERNAL );
@@ -142,6 +144,7 @@ sub handler {
 		}
 	}
 
+
 	# cycle through and pass each oilsMessage contained in the message
 	# up to the message layer for processing.
 	for my $msg ($doc->documentElement->childNodes) {
@@ -185,6 +188,7 @@ sub handler {
 
 	}
 
+	$logger->debug(sprintf("Message processing duration: %.3fs",(time() - $start_time)), DEBUG);
 
 	return $app_session;
 }

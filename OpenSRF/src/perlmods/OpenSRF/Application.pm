@@ -415,6 +415,7 @@ sub run {
 				$req->respond( $remote_resp->content );
 			}
 			$remote_req->finish();
+			$session->disconnect();
 			$session->finish();
 
 		} catch Error with {
