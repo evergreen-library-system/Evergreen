@@ -20,8 +20,8 @@ GetOptions (
 );
 
 OpenSRF::System->bootstrap_client( config_file => $config );
-my $st_server = OpenSRF::AppSession->create( 'storage' );
-my $worm_server = OpenSRF::AppSession->create( 'worm' ) if ($wormize);
+my $st_server = OpenSRF::AppSession->create( 'open-ils.storage' );
+my $worm_server = OpenSRF::AppSession->create( 'open-ils.worm' ) if ($wormize);
 
 try {
 
