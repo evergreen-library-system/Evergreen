@@ -225,11 +225,12 @@ __PACKAGE__->register_method(
 sub create_record_nodeset {
 	my $self = shift;
 	my $client = shift;
+	my @nodes = @_;
 
 	my $method = $self->method_lookup('open-ils.storage.biblio.record_node.create');
 
 	my @success;
-	while ( my $node = shift(@_) ) {
+	while ( my $node = shift(@nodes) ) {
 		my ($res) = $method->run( $node );
 		push @success, $res if ($res);
 	}
