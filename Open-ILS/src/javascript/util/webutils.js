@@ -8,6 +8,19 @@ function grabCharCode( evt ) {
 	}
 }
 
+
+
+
+var reg = /Mozilla/;
+var ismoz = false;
+if(reg.exec(navigator.userAgent)) 
+	ismoz = true;
+
+function debug(message) {
+	if(ismoz)
+		dump("Debug: " + message + "\n" );
+}
+
 		
 
 
