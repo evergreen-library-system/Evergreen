@@ -203,6 +203,7 @@ sub register_method {
 	$args{stream} ||= 0;
         $args{package} ||= $app;                
 	$args{api_name} ||= UnixServer->app() . '.' . $args{method};
+	$args{server_class} ||= UnixServer->app();
 	$args{code} ||= \&{$app . '::' . $args{method}};
 
 	$_METHODS[$args{api_level}]{$args{api_name}} = bless \%args => $app;
