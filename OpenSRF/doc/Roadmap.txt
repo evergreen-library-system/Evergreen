@@ -26,7 +26,7 @@ Open-ILS change over time, as they are certain to...
 
 	* Partial implementation of a BROADCAST mode for addressing all
 	  Servers of a particular Class on one Router
-	* Distributed version of the Object Persistance Application
+	* Distributed version of the Object Persistence Application
 
 # Version 0.5 (July/August 2005)
 

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>OpenSRF Persistance Application API-Namespace</title>
+		<title>OpenSRF Persistence Application API-Namespace</title>
 		<style><!--
 
 			* {		font-family: sans-serif;
@@ -43,18 +43,18 @@
 	</head>
 	<body>
 		<center>
-			<h2>OpenSRF Persistance Application API-Namespace</h2>
+			<h2>OpenSRF Persistence Application API-Namespace</h2>
 			<hr width="90%">
 		</center>
 
 		<div style="margin: 30px;">
-			The Persistance Application provides other OpenSRF Applications with a standard API for
+			The Persistence Application provides other OpenSRF Applications with a standard API for
 			sharing and caching data.  These data are stored in Slots, and there are three basic
 			interfaces for interacting with Slots:  QUEUEs, STACKs and OBJECTs.
 		</div>
 
 		<ul>
-			<li> <h3>General Persistance Slot methods</h3>
+			<li> <h3>General Persistence Slot methods</h3>
 
 			Methods used to create, set up and destroy slots.  
 			<br><br>
@@ -62,12 +62,12 @@
 			<div class="section">
 				<div class="sectionhead">opensrf.persist.slot.create( slot_name )</div>
 
-				Creates a Persistance Slot.
+				Creates a Persistence Slot.
 
 				<div class="listheader">Parameters:</div>
 				<div class="value">slot_name (optional)</div>
 				<div class="description">
-					The name of the Persistance Slot to create.  If a name is not specified
+					The name of the Persistence Slot to create.  If a name is not specified
 					then the Slot is given a generic, unique name.  Automatically named Slots
 					are destroyed as soon as they are empty.
 				</div>
@@ -85,11 +85,11 @@
 			<div class="section">
 				<div class="sectionhead">opensrf.persist.slot.create_expirable( slot_name, expire_interval )</div>
 
-				Creates a Persistance Slot that is automatically destroyed after the specified interval.
+				Creates a Persistence Slot that is automatically destroyed after the specified interval.
 
 				<div class="listheader">Parameters:</div>
 				<div class="value">slot_name</div>
-				<div class="description">The name of the Persistance Slot to create.</div>
+				<div class="description">The name of the Persistence Slot to create.</div>
 				<div class="value">expire_interval</div>
 				<div class="description">
 					An interval describing how long to wait after an access has
@@ -119,11 +119,11 @@
 			<div class="section">
 				<div class="sectionhead">opensrf.persist.slot.set_expire( slot_name, expire_interval )</div>
 
-				Sets or disables the expiration interval on an existing Persistance Slot.
+				Sets or disables the expiration interval on an existing Persistence Slot.
 
 				<div class="listheader">Parameters:</div>
 				<div class="value">slot_name</div>
-				<div class="description">The name of the Persistance Slot to update.</div>
+				<div class="description">The name of the Persistence Slot to update.</div>
 				<div class="value">expire_interval</div>
 				<div class="description">
 					An interval describing how long to wait after an access has
@@ -153,11 +153,11 @@
 			<div class="section">
 				<div class="sectionhead">opensrf.persist.slot.destroy( slot_name )</div>
 
-				Destroys a Persistance Slot.
+				Destroys a Persistence Slot.
 
 				<div class="listheader">Parameters:</div>
 				<div class="value">slot_name</div>
-				<div class="description">The name of the Persistance Slot to destroy.</div>
+				<div class="description">The name of the Persistence Slot to destroy.</div>
 
 
 				<div class="listheader">Returns:</div>
@@ -187,7 +187,7 @@
 				<div class="listheader">Parameters:</div>
 
 				<div class="value">slot_name</div>
-				<div class="description">The name of the Persistance Slot to use for storing the object.</div>
+				<div class="description">The name of the Persistence Slot to use for storing the object.</div>
 
 				<div class="value">object</div>
 				<div class="description">The object that should be pushed onto the front of the QUEUE.</div>
@@ -211,7 +211,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which an object should be retrieved.
+					The name of the Persistence Slot from which an object should be retrieved.
 				</div>
 
 
@@ -236,7 +236,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which an object should be retrieved.
+					The name of the Persistence Slot from which an object should be retrieved.
 				</div>
 
 
@@ -261,7 +261,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which the objects should be retrieved.
+					The name of the Persistence Slot from which the objects should be retrieved.
 				</div>
 
 
@@ -286,7 +286,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which the objects should be retrieved.
+					The name of the Persistence Slot from which the objects should be retrieved.
 				</div>
 
 
@@ -311,14 +311,14 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot in question.
+					The name of the Persistence Slot in question.
 				</div>
 
 
 				<div class="listheader">Returns:</div>
 				
 				<div class="value">Success</div>
-				<div class="description">The number of objects in the Persistance Slot.</div>
+				<div class="description">The number of objects in the Persistence Slot.</div>
 
 				<div class="value">Failure</div>
 				<div class="description">An empty (NULL) result.</div>
@@ -334,7 +334,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot in question.
+					The name of the Persistence Slot in question.
 				</div>
 
 
@@ -343,7 +343,7 @@
 				<div class="value">Success</div>
 				<div class="description">
 					The space, in bytes, used by the JSON encoded
-					objects in the Persistance Slot.
+					objects in the Persistence Slot.
 				</div>
 
 				<div class="value">Failure</div>
@@ -368,7 +368,7 @@
 				<div class="listheader">Parameters:</div>
 
 				<div class="value">slot_name</div>
-				<div class="description">The name of the Persistance Slot to use for storing the object.</div>
+				<div class="description">The name of the Persistence Slot to use for storing the object.</div>
 
 				<div class="value">object</div>
 				<div class="description">The object that should be pushed onto the front of the STACK.</div>
@@ -392,7 +392,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which an object should be retrieved.
+					The name of the Persistence Slot from which an object should be retrieved.
 				</div>
 
 
@@ -417,7 +417,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which an object should be retrieved.
+					The name of the Persistence Slot from which an object should be retrieved.
 				</div>
 
 
@@ -442,7 +442,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which the objects should be retrieved.
+					The name of the Persistence Slot from which the objects should be retrieved.
 				</div>
 
 
@@ -467,7 +467,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which the objects should be retrieved.
+					The name of the Persistence Slot from which the objects should be retrieved.
 				</div>
 
 
@@ -492,14 +492,14 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot in question.
+					The name of the Persistence Slot in question.
 				</div>
 
 
 				<div class="listheader">Returns:</div>
 				
 				<div class="value">Success</div>
-				<div class="description">The number of objects in the Persistance Slot.</div>
+				<div class="description">The number of objects in the Persistence Slot.</div>
 
 				<div class="value">Failure</div>
 				<div class="description">An empty (NULL) result.</div>
@@ -515,7 +515,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot in question.
+					The name of the Persistence Slot in question.
 				</div>
 
 
@@ -524,7 +524,7 @@
 				<div class="value">Success</div>
 				<div class="description">
 					The space, in bytes, used by the JSON encoded
-					objects in the Persistance Slot.
+					objects in the Persistence Slot.
 				</div>
 
 				<div class="value">Failure</div>
@@ -554,7 +554,7 @@
 				<div class="listheader">Parameters:</div>
 
 				<div class="value">slot_name</div>
-				<div class="description">The name of the Persistance Slot to use for storing the object.</div>
+				<div class="description">The name of the Persistence Slot to use for storing the object.</div>
 
 				<div class="value">object</div>
 				<div class="description">The object that should be set as the one object in the Slot.</div>
@@ -578,7 +578,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which the object should be retrieved.
+					The name of the Persistence Slot from which the object should be retrieved.
 				</div>
 
 
@@ -603,7 +603,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot from which the object should be retrieved.
+					The name of the Persistence Slot from which the object should be retrieved.
 				</div>
 
 
@@ -629,7 +629,7 @@
 
 				<div class="value">slot_name</div>
 				<div class="description">
-					The name of the Persistance Slot in question.
+					The name of the Persistence Slot in question.
 				</div>
 
 
@@ -638,7 +638,7 @@
 				<div class="value">Success</div>
 				<div class="description">
 					The space, in bytes, used by the JSON encoded
-					object in the Persistance Slot.
+					object in the Persistence Slot.
 				</div>
 
 				<div class="value">Failure</div>
