@@ -160,7 +160,7 @@ int _init_log() {
 		//fprintf( stderr, "No config file specified" );
 	}
 
-	char* log_level_str = config_value( "//router/log/level");
+	char* log_level_str = config_value( "//log/level");
 	if( log_level_str == NULL ) {
 	//	fprintf( stderr, "No log level specified" );
 		return 0;
@@ -169,7 +169,7 @@ int _init_log() {
 	free(log_level_str);
 
 	/* see if we have a log file yet */
-	char* f = config_value("//router/log/file");
+	char* f = config_value("//log/file");
 
 	if( f == NULL ) {
 		// fprintf( stderr, "No log file specified" );

@@ -9,11 +9,10 @@ LIB_SOURCES = generic_utils.c transport_socket.c transport_session.c transport_m
 
 TARGETS=generic_utils.o transport_socket.o transport_message.o transport_session.o transport_client.o 
 
+all: basic_client
+
 basic_client: lib
 	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) basic_client.c -o $@
-
-test: lib
-	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) test.c -o $@
 
 
 # --- Libs -----------------------------------------------
