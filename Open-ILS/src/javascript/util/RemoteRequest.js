@@ -1,5 +1,5 @@
-//var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
-var XML_HTTP_URL = "https://localhost:10444/method/";
+var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
+//var XML_HTTP_URL = "https://localhost:10444/method/";
 
 /* Request object */
 function RemoteRequest( service, method ) {
