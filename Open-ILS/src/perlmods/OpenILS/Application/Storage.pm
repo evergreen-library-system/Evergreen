@@ -81,6 +81,8 @@ sub commit_xaction {
 __PACKAGE__->register_method(
 	method		=> 'commit_xaction',
 	api_name	=> 'open-ils.storage.transaction.commit',
+	api_level	=> 1,
+	argc		=> 0,
 );
 
 
@@ -94,6 +96,8 @@ sub rollback_xaction {
 __PACKAGE__->register_method(
 	method		=> 'rollback_xaction',
 	api_name	=> 'open-ils.storage.transaction.rollback',
+	api_level	=> 1,
+	argc		=> 0,
 );
 
 

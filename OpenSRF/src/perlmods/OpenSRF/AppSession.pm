@@ -126,7 +126,7 @@ sub server_build {
 			   request_queue  => [],
 			   requests  => 0,
 			   session_data  => {},
-			   callbacks  => { death => [], disconnect => [] },
+			   callbacks  => {},
 			   endpoint    => SERVER,
 			   state       => CONNECTING, 
 			   session_id  => $sess_id,
@@ -336,20 +336,35 @@ sub finish {
 	}
 }
 
+sub unregister_callback {
+	my $self = shift;
+	my $type = shift;
+	my $cb = shift;
+	if (exists $self->{callbacks}{$type}) {
+		delete $self->{callbacks}{$type}{$cb};
+		return $cb;
+	}
+	return undef;
+}
+
 sub register_callback {
 	my $self = shift;
 	my $type = shift;
 	my $cb = shift;
-	push @{ $self->{callbacks}{$type} }, $cb;
+	my $cb_key = "$cb";
+	$self->{callbacks}{$type}{$cb_key} = $cb;
+	return $cb_key;
 }
 
 sub kill_me {
 	my $self = shift;
 	if( ! $self->session_id ) { return 0; }
 
-	# run each 'kill_me' callback;
-	for my $sub (@{$self->{callbacks}{death}}) {
-		$sub->($self);
+	# run each 'death' callback;
+	if (exists $self->{callbacks}{death}) {
+		for my $sub (values %{$self->{callbacks}{death}}) {
+			$sub->($self);
+		}
 	}
 
 	$self->disconnect;
@@ -371,8 +386,10 @@ sub disconnect {
 		$self->state( DISCONNECTED ); 
 	}
 	# run each 'disconnect' callback;
-	for my $sub (@{$self->{callbacks}{disconnect}}) {
-		$sub->($self);
+	if (exists $self->{callbacks}{disconnect}) {
+		for my $sub (values %{$self->{callbacks}{disconnect}}) {
+			$sub->($self);
+		}
 	}
 
 	$self->reset;

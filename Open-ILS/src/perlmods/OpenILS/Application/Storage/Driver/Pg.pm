@@ -60,10 +60,11 @@
   # OpenILS::Application::Storage.
   #-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::Driver::Pg;
-	use Class::DBI::Replication;
+	use Class::DBI;
 	use base qw/Class::DBI OpenILS::Application::Storage/;
 	use DBI;
 	use OpenSRF::EX qw/:try/;
+	use OpenSRF::DomainObject::oilsResponse;
 	use OpenSRF::Utils::Logger qw/:level/;
 	my $log = 'OpenSRF::Utils::Logger';
 
@@ -94,11 +95,13 @@
 
 		my $master = shift @$_db_params;
 		$master_db = DBI->connect("dbi:Pg:host=$$master{host};dbname=$$master{db}",$$master{user},$$master{pw}, \%attrs);
+		$master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
 
 		$log->debug("Connected to MASTER db at $$master{host}", INTERNAL);
 		
 		for my $db (@$_db_params) {
 			push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
+			$slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});
 		}
 
 		$log->debug("All is well on the western front", INTERNAL);
@@ -128,11 +131,43 @@
 	}
 
 	my $_xact_session;
+
 	sub current_xact_session {
 		my $self = shift;
+		if (defined($_xact_session)) {
+			return $_xact_session;
+		}
+		return undef;
+	}
+
+	sub current_xact_is_auto {
+		my $self = shift;
+		return $_xact_session->session_data(autocommit => shift());
+	}
+
+	sub current_xact_id {
+		my $self = shift;
+		if (defined($_xact_session) and ref($_xact_session)) {
+			return $_xact_session->session_id;
+		}
+		return undef;
+	}
+
+	sub set_xact_session {
+		my $self = shift;
 		my $ses = shift;
-		$_xact_session = $ses if (defined $ses);
+		if (!defined($ses)) {
+			return undef;
+		}
+		$_xact_session = $ses;
 		return $_xact_session;
+	}
+
+	sub unset_xact_session {
+		my $self = shift;
+		my $ses = $_xact_session;
+		undef $_xact_session;
+		return $ses;
 	}
 
 }
@@ -140,19 +175,71 @@
 
 {
 	package OpenILS::Application::Storage;
+	use OpenSRF::Utils::Logger;
+	my $log = 'OpenSRF::Utils::Logger';
+
+	my $pg = 'OpenILS::Application::Storage::Driver::Pg';
 
 	sub pg_begin_xaction {
 		my $self = shift;
 		my $client = shift;
 
-		OpenILS::Application::Storage::Driver::Pg->current_xact_session( $client->session->session_id );
+		if (my $old_xact = $pg->current_xact_session) {
+			if ($pg->current_xact_is_auto) {
+				$log->debug("Commiting old autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
+				OpenILS::Application::Storage::CDBI->db_Main->commit;
+			} else {
+				$log->debug("Rolling back old NON-autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
+				__PACKAGE__->pg_rollback_xaction($client);
+				return new OpenSRF::DomainObject::oilsException (
+						statusCode => 500,
+						status => "Previous transaction rolled back!",
+				);
+			}
+		}
+		
+		$pg->set_xact_session( $client->session );
+		my $xact_id = $pg->current_xact_id;
 
-		$client->session->register_callback( disconnect => sub { __PACKAGE__->pg_commit_xaction($client); } )
-			if ($self->api_name =~ /autocommit$/o);
+		$log->debug("Beginning a new trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
 
-		$client->session->register_callback( death => sub { __PACKAGE__->pg_rollback_xaction($client); } );
+		my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+		
+		try {
+			$dbh->begin_work;
 
-		return $self->begin_xaction;
+		} catch Error with {
+			my $e = shift;
+			$log->debug("Failed to begin a new trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+			return $e;
+		};
+
+
+		my $death_cb = $client->session->register_callback(
+			death => sub {
+				__PACKAGE__->pg_rollback_xaction;
+			}
+		);
+
+		$log->debug("Registered 'death' callback [$death_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+
+		$client->session->session_data( death_cb => $death_cb );
+
+		if ($self->api_name =~ /autocommit$/o) {
+			$pg->current_xact_is_auto(1);
+			my $dc_cb = $client->session->register_callback(
+				disconnect => sub {
+					my $ses = shift;
+					$ses->unregister_callback($death_cb);
+					__PACKAGE__->pg_commit_xaction;
+				}
+			);
+			$log->debug("Registered 'disconnect' callback [$dc_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+			$client->session->session_data( disconnect_cb => $dc_cb );
+		}
+
+		return 1;
+
 	}
 	__PACKAGE__->register_method(
 		method		=> 'pg_begin_xaction',
@@ -168,9 +255,34 @@
 	);
 
 	sub pg_commit_xaction {
+		my $self = shift;
 
-		OpenILS::Application::Storage::Driver::Pg->current_xact_session( 0 );
-		return $self->commit_xaction(@_);
+
+		try {
+			$log->debug("Committing trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+			$dbh->commit;
+
+		} catch Error with {
+			my $e = shift;
+			$log->debug("Failed to commit trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+			return 0;
+		};
+		
+		$pg->current_xact_session->unregister_callback(
+			$pg->current_xact_session->session_data( 'death_cb' )
+		);
+
+		if ($pg->current_xact_is_auto) {
+			$pg->current_xact_session->unregister_callback(
+				$pg->current_xact_session->session_data( 'disconnect_cb' )
+			);
+		}
+
+		$pg->unset_xact_session;
+
+		return 1;
+		
 	}
 	__PACKAGE__->register_method(
 		method		=> 'pg_commit_xaction',
@@ -180,9 +292,33 @@
 	);
 
 	sub pg_rollback_xaction {
+		my $self = shift;
 
-		OpenILS::Application::Storage::Driver::Pg->current_xact_session( 0 );
-		return $self->rollback_xaction(@_);
+		my $xact_id = $pg->current_xact_id;
+		try {
+			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+			$log->debug("Rolling back a trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+			$dbh->rollback;
+
+		} catch Error with {
+			my $e = shift;
+			$log->debug("Failed to roll back trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+			return 0;
+		};
+	
+		$pg->current_xact_session->unregister_callback(
+			$pg->current_xact_session->session_data( 'death_cb' )
+		);
+
+		if ($pg->current_xact_is_auto) {
+			$pg->current_xact_session->unregister_callback(
+				$pg->current_xact_session->session_data( 'disconnect_cb' )
+			);
+		}
+
+		$pg->unset_xact_session;
+
+		return 1;
 	}
 	__PACKAGE__->register_method(
 		method		=> 'pg_rollback_xaction',
