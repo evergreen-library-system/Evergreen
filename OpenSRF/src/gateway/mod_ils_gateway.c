@@ -21,6 +21,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
   */
 #include "httpd.h"
 #include "http_config.h"
+#include "http_core.h"
+#include "http_protocol.h"
+#include "apr_compat.h"
+#include "apr_strings.h"
 
 
 
@@ -76,8 +80,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	/* verify we are connected */
 	if(!osrf_system_get_transport_client()) {
-		fprintf(stderr,"Bootstrap Failed, no transport client");
-		fflush(stderr);
+		fatal_handler("Bootstrap Failed, no transport client");
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
@@ -92,8 +95,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		ap_setup_client_block(r,REQUEST_CHUNKED_DECHUNK);
 
 		if(! ap_should_client_block(r)) {
-			fprintf(stderr, "No Post Body\n");
-			fflush(stderr);
+			warning_handler("No Post Body");
 		}
 
 		char body[1024];
@@ -120,8 +122,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 
 	if( ! arg || !arg[0] ) { /* we received no request */
-		fprintf(stderr,"No Args\n");
-		fflush(stderr);
+		warning_handler("No Args");
 		return OK;
 	}
 
@@ -131,12 +132,11 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	
 	char* argcopy = (char*) apr_pstrdup(p, arg);
 
-
 	params = json_object_new_array();;
 	while( argcopy && (val = ap_getword(p, &argcopy, '&'))) {
 
 		key = ap_getword(r->pool,&val, '=');
-			if(!key || !key[0])
+		if(!key || !key[0])
 			break;
 
 		ap_unescape_url((char*)key);
@@ -152,9 +152,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			json_object_array_add( params, json_tokener_parse(val));
 	}
 
-	fprintf(stderr, "Performing(%d):  service %s | method %s | \nparams %s\n\n",
+	debug_handler("Performing(%d):  service %s | method %s | \nparams %s\n\n",
 			getpid(), service, method, json_object_to_json_string(params));
-	fflush(stderr);
 
 	osrf_app_session* session = osrf_app_client_session_init(service);
 
@@ -183,12 +182,12 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 		if( omsg->result_string ) {
 			buffer_add(result_data, omsg->result_string);
+			debug_handler( "Received Response: %s", omsg->result_string );
 			buffer_add( result_data, ",");
 
 		} else {
 
-			fprintf(stderr,"*** Looks like we got an exception\n" );
-			fflush(stderr);
+			warning_handler("*** Looks like we got an exception\n" );
 
 			/* build the exception information */
 			growing_buffer* exc_buffer = buffer_init(256);
