@@ -1,4 +1,4 @@
-#include "transport_message.h"
+#include "opensrf/transport_message.h"
 
 
 // ---------------------------------------------------------------------------------

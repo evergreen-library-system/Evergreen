@@ -1,4 +1,4 @@
-#include "generic_utils.h"
+#include "opensrf/generic_utils.h"
 #include <stdio.h>
 #include "pthread.h"
 

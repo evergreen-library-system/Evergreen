@@ -1,12 +1,8 @@
-#include "transport_client.h"
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
+#include "opensrf/transport_client.h"
 
 /**
   * Simple jabber client
   */
-
 
 
 
