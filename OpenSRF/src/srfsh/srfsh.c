@@ -301,8 +301,8 @@ int send_request( char* server,
 		if( buffer != NULL && buffer->n_used > 0 ) 
 			params = json_tokener_parse(buffer->buf);
 	} else {
-		if(!last_result->result_content) { 
-			warning_handler("We're not going to call 'relay' on empty result");
+		if(!last_result || ! last_result->result_content) { 
+			printf("We're not going to call 'relay' with no result params\n");
 			return 1;
 		}
 		else {
