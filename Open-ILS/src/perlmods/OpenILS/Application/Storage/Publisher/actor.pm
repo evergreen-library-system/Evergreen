@@ -9,9 +9,6 @@ my $log = 'OpenSRF::Utils::Logger';
 sub org_unit_list {
 	my $self = shift;
 	my $client = shift;
-	my $id = shift;
-
-	return undef unless ($id);
 
 	my $select =<<"	SQL";
 	SELECT	*
@@ -20,7 +17,7 @@ sub org_unit_list {
 	SQL
 
 	my $sth = actor::org_unit->db_Main->prepare_cached($select);
-	$sth->execute($id);
+	$sth->execute;
 
 	my @fms;
 	push @fms, $_->to_fieldmapper for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
