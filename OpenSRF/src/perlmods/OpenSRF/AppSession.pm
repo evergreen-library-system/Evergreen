@@ -193,20 +193,6 @@ sub get_app_targets {
 	}
 
 	return @targets;
-
-=head comment
-	if( $app eq "settings" ) { # we have to load from the bootstrap config file
-
-		if(!$conf) { die("No transport target for $app!"); }
-		$targets = $conf->targets->$app || die("No transport target for $app!");
-
-	} else {
-		$targets =  $config_client->config_value("apps",$app,"transport_targets", "router_target");
-		if( !ref($targets) ) { $targets = [ $targets ]; }
-	}
-
-	return @$targets;
-=cut
 }
 
 # When we're a client and we want to connect to a remote service
