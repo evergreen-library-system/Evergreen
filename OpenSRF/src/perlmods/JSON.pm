@@ -93,7 +93,8 @@ sub JSON2perl {
 	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
 
 	# Replace with code...
-	s/"(?:(?:\\[\"])|[^\"])*"/ shift(\@strings) /sog;
+	#s/"(?:(?:\\[\"])|[^\"])*"/ do{ \$t = '"'.shift(\@strings).'"'; eval \$t;} /sog;
+	s/"(?:(?:\\[\"])|[^\"]*)"/ eval { shift(\@strings) } /sog;
 
 	# Perlify hash notation
 	s/:/ => /sog;
