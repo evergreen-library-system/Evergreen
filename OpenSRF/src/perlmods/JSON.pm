@@ -1,3 +1,5 @@
+package JSON::object_unknown;
+
 package JSON::number;
 sub new {
 	my $class = shift;
@@ -42,6 +44,10 @@ sub register_class_hint {
 	$_class_map{$args{hint}} = \%args;
 	$_class_map{$args{name}} = \%args;
 }
+JSON->register_class_hint(
+	name => 'JSON::object_unknown',
+	type => 'hash',
+);
 
 sub _JSON_regex {
 	my $string = shift;
@@ -64,25 +70,32 @@ sub _JSON_regex {
 	return ($string,$1);
 }
 
+sub _json_hint_to_class {
+	my $hint = shift;
+	return $_class_map{$hint}{name} if (exists $_class_map{$hint});
+	return 'JSON::object_unknown';
+}
+
 sub JSON2perl {
 	my $class = shift;
 	local $_ = shift;
 
 	# Grab strings...
-	my @strings = /(?:"((?:(?:\\[\"])|[^\"])*)")/sog;
+	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
 	# Replace with code...
-	s/(?:"(?:(?:\\[\"])|[^\"])*")/ shift(\@strings) /sog;
+	s/"(?:(?:\\[\"])|[^\"])*"/ shift(\@strings) /sog;
 
 	# handle class blessings
 	s/\/\*--\s*S\w*?\s+\w+\s*--\*\// bless(/sog;
-	s/\/\*--\s*E\w*?\s+(\w+)\s*--\*\// , "$_class_map{$1}{name}") /sog;
+	s/\/\*--\s*E\w*?\s+(\w+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
+	s/\b(-?\d+\.?\d*)/ do { JSON::number::new($1) } /sog;
 
 	# Change javascript stuff to perl...
 	s/null/ undef /sog;
-	#s/(true|false)/ bless( {}, "JSON::bool::$1") /sog;
+	s/:/ => /sog;
 	s/true/ bless( {}, "JSON::bool::true") /sog;
 	s/false/ bless( {}, "JSON::bool::false") /sog;
-	s/\b(-?\d+\.?\d*)/ do { JSON::number::new($1) } /sog;
+
 	
 	return eval $_;
 }
