@@ -282,7 +282,7 @@ sub do_client {
 		# This should be changed to check the type of response (is it a connectException?, etc.)
 	}
 
-	if( $self->payload->class->isa( "OpenSRF::EX" ) ) { 
+	if( $self->payload and $self->payload->class->isa( "OpenSRF::EX" ) ) { 
 		$self->payload->throw();
 	}
 
