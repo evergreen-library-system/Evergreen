@@ -21,6 +21,11 @@ $log = 'OpenSRF::Utils::Logger';
 our $in_request = 0;
 our @pending_requests;
 
+sub api_name {
+	my $self = shift;
+	return $self->{api_name};
+}
+
 sub server_class {
 	my $class = shift;
 	if($class) {
