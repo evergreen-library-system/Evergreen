@@ -35,7 +35,8 @@ int main( int argc, char* argv[] ) {
 	char* con_timeout		= config_value("//router/transport/connect_timeout" );
 	char* max_retries		= config_value("//router/transport/max_reconnect_attempts" );
 
-	fprintf(stderr, "%s %s %s %s", server, port, username, password );
+	fprintf(stderr, "Router connecting as \nserver: %s \nport: %s \nuser:%s \nresource:%s\n", 
+			server, port, username, router_resource );
 
 	int iport			= atoi( port );
 	int con_itimeout	= atoi( con_timeout );
@@ -70,10 +71,11 @@ int main( int argc, char* argv[] ) {
 		/* connect to jabber */
 		if( router_registrar_connect( router_registrar ) )  {
 			info_handler( "Connected..." );
+			fprintf(stderr, "- Connected -\n");
 			counter = 0;
 			listen_loop( router_registrar );
 		} else  
-			warning_handler( "Could not connect to Jabber" );
+			fatal_handler( "Could not connect to Jabber Server" );
 
 		/* this should never happen */
 		warning_handler( "Jabber server probably went away, attempting reconnect" );
@@ -656,9 +658,10 @@ int  server_class_handle_msg( transport_router_registrar* router,
 		message_init(	msg->body, msg->subject, msg->thread, 
 				s_node->current_server_node->remote_id, msg->sender );
 
-	message_set_router_info( new_msg, NULL, msg->sender, NULL, NULL, 0 );
+	message_set_router_info( new_msg, msg->sender, NULL, NULL, NULL, 0 );
 
-	info_handler( "[%s] Routing message from [%s]\nto [%s]", s_node->server_class, new_msg->sender, new_msg->recipient );
+	info_handler( "[%s] Routing message from [%s]\nto [%s]", s_node->server_class, msg->sender, new_msg->recipient );
+	info_handler( "New Message Details: sender:%s recipient: %s", new_msg->sender, new_msg->recipient );
 
 	message_free( s_node->current_server_node->last_sent );
 	s_node->current_server_node->last_sent = msg;
