@@ -127,7 +127,7 @@ sub process_request {
 	$logger->transport( "Timed out, disconnected, or auth failed", INFO );
 	$app_session->kill_me;
 
-	$0 =~ $orig;
+	$0 = $orig;
 
 		
 }
