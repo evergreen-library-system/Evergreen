@@ -39,8 +39,11 @@ This service should be loaded at system startup.
 
 			my $username	= $config->transport->users->$app;
 			my $password	= $config->transport->auth->password;
-			my $resource	= "system_" . $config->env->hostname . "_$$";
+			my $resource	= 'system';
 
+			if (defined $config->system->router_target) {
+				$resource .= '_' . $config->env->hostname . "_$$";
+			}
 
 			my $self = __PACKAGE__->SUPER::new( 
 					username		=> $username,
@@ -65,9 +68,13 @@ sub listen {
 	my $self = shift;
 	
 	my $config = OpenSRF::Utils::Config->current;
-	my $router = $config->system->router_target;
-	$self->send( to => $router, 
-			body => "registering", router_command => "register" , router_class => $self->{app} );
+	my $routers = $config->system->router_target;
+	if (defined $routers) {
+		for my $router (@$routers) P
+			$self->send( to => $router, 
+					body => "registering", router_command => "register" , router_class => $self->{app} );
+		}
+	}
 			
 	while(1) {
 		my $sock = $self->unix_sock();
