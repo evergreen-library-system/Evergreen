@@ -54,7 +54,7 @@
   # DBI driver that they are wrapping, or provide a 'quote()' method that calls
   # the DBD::xxx::quote() method on FTI's behalf.
   #
-  # The dirver MUST be a subclass of Class::DBI.
+  # The dirver MUST be a subclass of Class::DBI and OpenILS::Application::Storage.
 	#-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::Driver::Pg;
 	use base qw/Class::DBI OpenILS::Application::Storage/;
@@ -90,7 +90,7 @@
 
 		$log->debug(" Default attributes for this DB connection are:\n\t".join("\n\t",map { "$_\t==> $attrs{$_}" } keys %attrs), INTERNAL);
 
-		$_dbh = DBI->connect( "dbi:Pg:host=$_db_params{host};dbname=$_db_params{database}",$_db_params{user},$_db_params{pw}, \%attrs );
+		$_dbh = DBI->connect( "dbi:Pg:host=$$_db_params{host};dbname=$$_db_params{database}",$$_db_params{user},$$_db_params{pw}, \%attrs );
 		$_dbh->do("SET CLIENT_ENCODING TO 'SQL_ASCII';");
 
 		return $_dbh;
@@ -98,6 +98,18 @@
 
 	sub quote {
 		return $_dbh->quote(@_)
+	}
+
+	sub tsearch2_trigger {
+		my $self = shift;
+		return unless ($self->value);
+		$self->index_vector(
+			$self->db_Main->selectrow_array(
+				"SELECT to_tsvector('default',?);",
+				{},
+				$self->value
+			)
+		);
 	}
 }
 
@@ -146,6 +158,109 @@
 	
 	#---------------------------------------------------------------------
 	
+	#-------------------------------------------------------------------------------
+	package metabib::metarecord;
+
+	metabib::metarecord->table( 'metabib.metarecord' );
+	metabib::metarecord->sequence( 'metabib.metarecord_id_seq' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::title_field_entry;
+
+	metabib::title_field_entry->table( 'metabib.title_field_entry' );
+	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
+	metabib::title_field_entry->columns( Primary => qw/id/ );
+	metabib::title_field_entry->columns( Others => qw/field index_vector/ );
+	metabib::title_field_entry->columns( TEMP => qw/value/ );
+
+	metabib::title_field_entry->add_trigger(
+		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+	metabib::title_field_entry->add_trigger(
+		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::author_field_entry;
+
+	metabib::author_field_entry->table( 'metabib.author_field_entry' );
+	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
+	metabib::author_field_entry->columns( Primary => qw/id/ );
+	metabib::author_field_entry->columns( Others => qw/field index_vector/ );
+	metabib::author_field_entry->columns( TEMP => qw/value/ );
+
+	metabib::author_field_entry->add_trigger(
+		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+	metabib::author_field_entry->add_trigger(
+		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::subject_field_entry;
+
+	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
+	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
+	metabib::subject_field_entry->columns( Primary => qw/id/ );
+	metabib::subject_field_entry->columns( Others => qw/field index_vector/ );
+	metabib::subject_field_entry->columns( TEMP => qw/value/ );
+
+	metabib::subject_field_entry->add_trigger(
+		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+	metabib::subject_field_entry->add_trigger(
+		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::keyword_field_entry;
+
+	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
+	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
+	metabib::keyword_field_entry->columns( Primary => qw/id/ );
+	metabib::keyword_field_entry->columns( Others => qw/field index_vector/ );
+	metabib::keyword_field_entry->columns( TEMP => qw/value/ );
+
+	metabib::keyword_field_entry->add_trigger(
+		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+	metabib::keyword_field_entry->add_trigger(
+		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+	);
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::title_field_entry_source_map;
+
+	metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map' );
+	metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map_id_seq' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::author_field_entry_source_map;
+
+	metabib::author_field_entry_source_map->table( 'metabib.author_field_entry_source_map' );
+	metabib::author_field_entry_source_map->sequence( 'metabib.author_field_entry_source_map_id_seq' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::subject_field_entry_source_map;
+
+	metabib::subject_field_entry_source_map->table( 'metabib.subject_field_entry_source_map' );
+	metabib::subject_field_entry_source_map->sequence( 'metabib.subject_field_entry_source_map_id_seq' );
+
+	#-------------------------------------------------------------------------------
 }
 
 1;
