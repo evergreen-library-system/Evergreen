@@ -108,6 +108,9 @@ struct transport_router_registrar_struct {
 	/* our top level connection to the jabber server */
 	jabber_connect* jabber; 
 
+	/* true if we connect to jabber as a jabber component */
+	int component;
+
 
 };
 typedef struct transport_router_registrar_struct transport_router_registrar;
@@ -124,7 +127,7 @@ typedef struct transport_router_registrar_struct transport_router_registrar;
 // ----------------------------------------------------------------------
 transport_router_registrar* router_registrar_init( char* server, 
 		int port, char* username, char* password, char* resource, 
-		int client_timeout, int connect_timeout );
+		int client_timeout, int connect_timeout, int component );
 
 // ----------------------------------------------------------------------
 // Connects the top level router_registrar object to the Jabber server.
@@ -143,7 +146,7 @@ int j_connect( jabber_connect* jabber );
 // ----------------------------------------------------------------------
 jabber_connect* jabber_connect_init( char* server, 
 		int port, char* username, char* password, 
-		char* resource, int connect_timeout );
+		char* resource, int connect_timeout, int component );
 
 // ----------------------------------------------------------------------
 // Allocates and initializes a server class instance.  This will be

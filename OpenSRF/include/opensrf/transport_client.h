@@ -43,7 +43,8 @@ transport_client* client_init( char* server, int port, int component );
 // success, 0 otherwise.
 // ---------------------------------------------------------------------------
 int client_connect( transport_client* client, 
-		char* username, char* password, char* resource, int connect_timeout );
+		char* username, char* password, char* resource, 
+		int connect_timeout, enum TRANSPORT_AUTH_TYPE auth_type );
 
 int client_disconnect( transport_client* client );
 

@@ -131,7 +131,8 @@ int session_send_msg(
 
 /* connects to server and connects to jabber */
 int session_connect( transport_session* session, 
-		const char* username, const char* password, const char* resource, int connect_timeout ) {
+		const char* username, const char* password, 
+		const char* resource, int connect_timeout, enum TRANSPORT_AUTH_TYPE auth_type ) {
 
 	int size1 = 0;
 	int size2 = 0;
@@ -214,16 +215,6 @@ int session_connect( transport_session* session,
 				"<stream:stream to='%s' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>",
 			server );
 	
-		/* the second jabber connect stanza including login info*/
-		/* currently, we only support plain text login */
-		size2 = 150 + strlen( username ) + strlen(password) + strlen(resource);
-		char stanza2[ size2 ];
-		memset( stanza2, 0, size2 );
-	
-		sprintf( stanza2, 
-				"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><password>%s</password><resource>%s</resource></query></iq>",
-				username, password, resource );
-
 
 		/* send the first stanze */
 		session->state_machine->connecting = CONNECTING_1;
@@ -231,23 +222,87 @@ int session_connect( transport_session* session,
 			warning_handler("error sending");
 			return 0;
 		}
-	
+
+
 		/* wait for reply */
 		tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+
+		if( auth_type == AUTH_PLAIN ) {
+
+			/* the second jabber connect stanza including login info*/
+			size2 = 150 + strlen( username ) + strlen(password) + strlen(resource);
+			char stanza2[ size2 ];
+			memset( stanza2, 0, size2 );
+		
+			sprintf( stanza2, 
+					"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><password>%s</password><resource>%s</resource></query></iq>",
+					username, password, resource );
 	
-		/* server acknowledges our existence, now see if we can login */
-		if( session->state_machine->connecting == CONNECTING_2 ) {
-			if( ! tcp_send( session->sock_obj, stanza2 )  ) {
-				warning_handler("error sending");
-				return 0;
+
+		/*
+		<iq type='set' id='auth2'>
+			<query xmlns='jabber:iq:auth'>
+				<username>bill</username>
+			   <digest>48fc78be9ec8f86d8ce1c39c320c97c21d62334d</digest>
+				<resource>globe</resource>
+			</query>
+		</iq>
+		*/
+	
+	
+			/* server acknowledges our existence, now see if we can login */
+			if( session->state_machine->connecting == CONNECTING_2 ) {
+				if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+					warning_handler("error sending");
+					return 0;
+				}
 			}
+
+		} else if( auth_type == AUTH_DIGEST ) {
+
+			int ss = session->session_id->n_used + strlen(password) + 5;
+			char hashstuff[ss];
+			memset(hashstuff,0,ss);
+			sprintf( hashstuff, "%s%s", session->session_id->buf, password );
+
+			char* hash = shahash( hashstuff );
+
+			/* the second jabber connect stanza including login info*/
+			size2 = 150 + strlen( hash ) + strlen(password) + strlen(resource);
+			char stanza2[ size2 ];
+			memset( stanza2, 0, size2 );
+		
+			sprintf( stanza2, 
+					"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><digest>%s</digest><resource>%s</resource></query></iq>",
+					username, hash, resource );
+	
+
+		/*
+		<iq type='set' id='auth2'>
+			<query xmlns='jabber:iq:auth'>
+				<username>bill</username>
+			   <digest>48fc78be9ec8f86d8ce1c39c320c97c21d62334d</digest>
+				<resource>globe</resource>
+			</query>
+		</iq>
+		*/
+	
+	
+			/* server acknowledges our existence, now see if we can login */
+			if( session->state_machine->connecting == CONNECTING_2 ) {
+				if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+					warning_handler("error sending");
+					return 0;
+				}
+			}
+
 		}
 
 	} // not component
-	
+
+
 	/* wait for reply */
 	tcp_wait( session->sock_obj, connect_timeout );
-
 
 	if( session->state_machine->connected ) {
 		/* yar! */

@@ -26,4 +26,4 @@ lib:
 
 
 clean:
-	/bin/rm -f *.o $(LIB_DIR)/libopensrf_transport.so basic_client
+	/bin/rm -f *.o $(LIB_DIR)/libopensrf_transport.so basic_client component

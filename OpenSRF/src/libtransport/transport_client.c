@@ -71,9 +71,11 @@ transport_client* client_init( char* server, int port, int component ) {
 }
 
 int client_connect( transport_client* client, 
-		char* username, char* password, char* resource, int connect_timeout ) {
+		char* username, char* password, char* resource, 
+		int connect_timeout, enum TRANSPORT_AUTH_TYPE  auth_type ) {
 	if(client == NULL) return 0; 
-	return session_connect( client->session, username, password, resource, connect_timeout );
+	return session_connect( client->session, username, 
+			password, resource, connect_timeout, auth_type );
 }
 
 int client_disconnect( transport_client* client ) {

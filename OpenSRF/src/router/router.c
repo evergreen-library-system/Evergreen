@@ -34,6 +34,7 @@ int main( int argc, char* argv[] ) {
 	router_resource		= config_value("//router/transport/resource");
 	char* con_timeout		= config_value("//router/transport/connect_timeout" );
 	char* max_retries		= config_value("//router/transport/max_reconnect_attempts" );
+	char* component		= config_value("//router/component" );
 
 	fprintf(stderr, "Router connecting as \nserver: %s \nport: %s \nuser:%s \nresource:%s\n", 
 			server, port, username, router_resource );
@@ -41,6 +42,10 @@ int main( int argc, char* argv[] ) {
 	int iport			= atoi( port );
 	int con_itimeout	= atoi( con_timeout );
 	int max_retries_	= atoi(max_retries);
+	int icomponent = 0;
+	if(component) 
+		icomponent = atoi(component);
+
 
 	if( iport < 1 ) { 
 		fatal_handler( "Port is negative or 0" );
@@ -50,7 +55,7 @@ int main( int argc, char* argv[] ) {
 
 	/* build the router_registrar */
 	transport_router_registrar* router_registrar = 
-		router_registrar_init( server, iport, username, password, router_resource, 0, con_itimeout ); 
+		router_registrar_init( server, iport, username, password, router_resource, 0, con_itimeout, icomponent ); 
 
 	routt = router_registrar;
 
@@ -92,7 +97,7 @@ int main( int argc, char* argv[] ) {
 
 transport_router_registrar* router_registrar_init( char* server, 
 		int port, char* username, char* password, 
-		char* resource, int client_timeout, int con_timeout ) {
+		char* resource, int client_timeout, int con_timeout, int component ) {
 
 	if( server == NULL ) { return NULL; }
 	
@@ -101,13 +106,13 @@ transport_router_registrar* router_registrar_init( char* server,
 	transport_router_registrar* router_registrar = (transport_router_registrar*) safe_malloc( size );
 
 	router_registrar->client_timeout	= client_timeout;
-	router_registrar->jabber = jabber_connect_init( server, port, username, password, resource, con_timeout );
+	router_registrar->jabber = jabber_connect_init( server, port, username, password, resource, con_timeout, component );
 	return router_registrar;
 
 }
 
 jabber_connect* jabber_connect_init( char* server, 
-		int port, char* username, char* password, char* resource, int connect_timeout ) {
+		int port, char* username, char* password, char* resource, int connect_timeout, int component ) {
 
 	size_t len = sizeof(jabber_connect);
 	jabber_connect* jabber = (jabber_connect*) safe_malloc( len );
@@ -127,7 +132,7 @@ jabber_connect* jabber_connect_init( char* server,
 	}
 
 	/* build the transport client */
-	jabber->t_client = client_init( jabber->server, jabber->port );
+	jabber->t_client = client_init( jabber->server, jabber->port, component );
 
 	return jabber;
 }
@@ -141,7 +146,8 @@ int router_registrar_connect( transport_router_registrar* router ) {
 int j_connect( jabber_connect* jabber ) {
 	if( jabber == NULL ) { return 0; }
 	return client_connect( jabber->t_client, 
-			jabber->username, jabber->password, jabber->resource, jabber->connect_timeout );
+			jabber->username, jabber->password, jabber->resource, 
+			jabber->connect_timeout, AUTH_DIGEST );
 }
 
 int fill_fd_set( transport_router_registrar* router, fd_set* set ) {
@@ -523,7 +529,7 @@ server_class_node* init_server_class(
 
 	node->jabber = jabber_connect_init( router->jabber->server,
 			router->jabber->port, router->jabber->username, 
-			router->jabber->password, server_class, router->jabber->connect_timeout );
+			router->jabber->password, server_class, router->jabber->connect_timeout, router->component );
 
 
 
@@ -707,20 +713,19 @@ int router_return_server_info(
 
 		do {
 
-			char buf[36];
-			memset(buf,0, 36);
-
-			char* localtime = strdup( ctime( &(cur_node->la_time) ) );
-			strcpy( buf, localtime );
-			buf[ strlen(localtime)-1] = '\0'; // remove newline
-			free(localtime);
-
-			buffer_add( buffer, buf );
-			buffer_add( buffer, " | ");
-
 			char tbuf[124];
 			memset(tbuf,0,124);
-			sprintf( tbuf, "%d", cur_node->la_time );	
+			sprintf( tbuf, "%d", (int)cur_node->reg_time );	
+			buffer_add( buffer, tbuf );
+			buffer_add( buffer, " | ");
+
+			memset(tbuf,0,124);
+			sprintf( tbuf, "%d", (int)cur_node->upd_time );	
+			buffer_add( buffer, tbuf );
+			buffer_add( buffer, " | ");
+
+			memset(tbuf,0,124);
+			sprintf( tbuf, "%d", (int)cur_node->la_time );	
 			buffer_add( buffer, tbuf );
 			buffer_add( buffer, " | ");
 
@@ -729,7 +734,7 @@ int router_return_server_info(
 			memset(sbuf,0,64);
 			sprintf(sbuf,"%d",cur_node->serve_count);
 
-			buffer_add( buffer, "serve_count: " ); 
+			buffer_add( buffer, "#" ); 
 			buffer_add( buffer, sbuf ); 
 			buffer_add( buffer, " | ");
 

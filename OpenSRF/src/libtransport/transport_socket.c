@@ -116,7 +116,7 @@ int tcp_send( transport_socket* sock_obj, const char* data ){
 		return 0;
 	}
 
-	//fprintf( stderr, "TCP Sending: \n%s\n", data );
+	fprintf( stderr, "TCP Sending: \n%s\n", data );
 
 	// ------------------------------------------------------------------
 	// Send the data down the TCP pipe
@@ -210,7 +210,7 @@ int tcp_wait( transport_socket* sock_obj, int timeout ){
 #else // read everything we can
 
 	while( (n = recv(sock_fd, buf, BUFSIZE-1, 0) ) > 0 ) {
-		//printf("\nReceived:  %s\n", buf);
+		printf("\nReceived:  %s\n", buf);
 		sock_obj->data_received_callback( sock_obj->user_data, buf );
 		memset( &buf, 0, BUFSIZE );
 	}

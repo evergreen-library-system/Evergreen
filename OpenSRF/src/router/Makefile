@@ -5,7 +5,7 @@ CC = gcc
 CC_OPTS = -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include
 LD_OPTS = -lxml2
 LP=../libtransport
-LIB_SOURCES = $(LP)/generic_utils.c $(LP)/transport_socket.c $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c
+LIB_SOURCES = $(LP)/generic_utils.c $(LP)/transport_socket.c $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c $(LP)/sha.c
 
 all: router router_query
 

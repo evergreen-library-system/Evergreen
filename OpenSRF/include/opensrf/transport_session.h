@@ -122,6 +122,9 @@ struct jabber_state_machine_struct {
 };
 typedef struct jabber_state_machine_struct jabber_machine;
 
+
+enum TRANSPORT_AUTH_TYPE { AUTH_PLAIN, AUTH_DIGEST };
+
 // ---------------------------------------------------------------------------------
 // Transport session.  This maintains all the various parts of a session
 // ---------------------------------------------------------------------------------
@@ -208,7 +211,9 @@ int session_free( transport_session* session );
 // seconds before failing
 // ------------------------------------------------------------------
 int session_connect( transport_session* session, 
-		const char* username, const char* password, const char* resource, int connect_timeout );
+		const char* username, const char* password, 
+		const char* resource, int connect_timeout, 
+		enum TRANSPORT_AUTH_TYPE auth_type );
 
 int session_disconnect( transport_session* session );
 
