@@ -231,9 +231,9 @@ sub register_method {
 }
 
 sub retrieve_remote_apis {
-	my $session = OpenSRF::AppSession->create('settings');
+	my $session = OpenSRF::AppSession->create('router');
 	try {
-		$session->connect or OpenSRF::EX::WARN->throw("Connection to settings timed out");
+		$session->connect or OpenSRF::EX::WARN->throw("Connection to router timed out");
 	} catch Error with {
 		my $e = shift;
 		$log->debug( "Remote subrequest returned an error:\n". $e );
@@ -242,7 +242,7 @@ sub retrieve_remote_apis {
 		return undef unless ($session->state == $session->CONNECTED);
 	};
 
-	my $req = $session->request( 'opensrf.settings.xpath.get', '//activeapps/appname' );
+	my $req = $session->request( 'opensrf.router.info.class.list' );
 	my $list = $req->recv;
 
 	if( UNIVERSAL::isa($list,"Error") ) {
