@@ -258,6 +258,22 @@ int router_registrar_handle_msg( transport_router_registrar* router_registrar, t
 
 	if( router_registrar == NULL || msg == NULL ) { return 0; }
 
+	// user issued a ruoter query
+	/* a query command has router_command="query" and the actual query type
+		is the content of the message */
+	if( !strcmp(msg->router_command,"query")) {
+		info_handler( "Router received query command" );
+
+		// user issues a servers query
+		if( !strcmp(msg->body, "servers")) {
+
+			info_handler( "Router received servers query command" );
+			router_return_server_info( router_registrar, msg );
+			return 1;
+		}
+	}
+
+
 	info_handler("Looking for server_class_node %s...",msg->router_class);
 	server_class_node* active_class_node = find_server_class( router_registrar, msg->router_class );
 
@@ -671,10 +687,65 @@ int  server_class_handle_msg( transport_router_registrar* router,
 		message_free( new_msg ); // XXX
 		return 1;
 	}
-	info_handler( "message sent" );
 	message_free( new_msg ); // XXX
 
 	return 0;
+}
+
+
+int router_return_server_info( 
+		transport_router_registrar* router, transport_message* msg ) {
+
+	server_class_node* cur_class = router->server_class_list;
+	growing_buffer* buffer = buffer_init(1024);
+
+	while( cur_class != NULL ) {
+
+		server_node* start_node = cur_class->current_server_node;
+		server_node* cur_node = start_node;
+		if( cur_node == NULL ) continue; 
+
+		do {
+
+			char buf[36];
+			memset(buf,0, 36);
+
+			char* localtime = strdup( ctime( &(cur_node->la_time) ) );
+			strcpy( buf, localtime );
+			buf[ strlen(localtime)-1] = '\0'; // remove newline
+			free(localtime);
+
+			buffer_add( buffer, buf );
+			buffer_add( buffer, " |  ");
+
+
+			buffer_add( buffer, cur_class->server_class );
+			buffer_add( buffer, "\t| ");
+			buffer_add( buffer, cur_node->remote_id );
+
+			buffer_add( buffer, "\n" );
+			cur_node = cur_node->next;
+
+		} while( cur_node != start_node );
+
+		cur_class = cur_class->next;
+
+	}
+
+	info_handler( "Router returning servers query command: %s", buffer->buf );
+
+	transport_message* new_msg; 
+
+	if( buffer->buf == NULL || strlen(buffer->buf) == 0 )
+		new_msg = message_init( "0", NULL, NULL, msg->sender, NULL );
+	else
+		new_msg = message_init( buffer->buf, NULL, NULL, msg->sender, NULL );
+
+	client_send_message( router->jabber->t_client, new_msg );
+	message_free( new_msg );
+
+	return 1;
+
 }
 
 int router_registrar_free( transport_router_registrar* router_registrar ) {

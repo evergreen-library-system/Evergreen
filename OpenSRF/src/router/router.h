@@ -224,6 +224,8 @@ int fill_fd_set( transport_router_registrar* router, fd_set* set );
 void listen_loop( transport_router_registrar* router );
 
 
+int router_return_server_info( transport_router_registrar* router, transport_message* msg );
+
 int remove_server_class( transport_router_registrar* router, server_class_node* class );
 // ----------------------------------------------------------------------
 // Adds a handler for the SIGUSR1 that we send to wake all the 
