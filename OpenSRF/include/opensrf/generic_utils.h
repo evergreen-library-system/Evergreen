@@ -13,6 +13,12 @@
 #ifndef GENERIC_UTILS_H
 #define GENERIC_UTILS_H
 
+#define LOG_ERROR 1
+#define LOG_WARNING 2
+#define LOG_INFO 3
+#define LOG_DEBUG 4
+
+
 #define equals(a,b) !strcmp(a,b) 
 
 /** Malloc's, checks for NULL, clears all memory bits and 
@@ -46,7 +52,7 @@ int buffer_free( growing_buffer* gb );
 void log_free(); 
 
 // Utility method
-void get_timestamp( char buf_25chars[]);
+void get_timestamp( char buf_36chars[]);
 
 // ---------------------------------------------------------------------------------
 // Error handling interface.
@@ -57,21 +63,31 @@ void warning_handler( char* message, ... );
 void info_handler( char* message, ... );
 void debug_handler( char* message, ... );
 
+/** If we return 0 either the log level is less than LOG_ERROR  
+  * or we could not open the log file
+  */
+int log_init( int log_level, char* log_file );
+
 // ---------------------------------------------------------------------------------
 // Config file module
 // ---------------------------------------------------------------------------------
 struct config_reader_struct {
 	xmlDocPtr config_doc;
 	xmlXPathContextPtr xpathCx;
+	char* name;
+	struct config_reader_struct* next;
 };
 typedef struct config_reader_struct config_reader;
 config_reader* conf_reader;
 
-void config_reader_init( char* config_file );
+//void config_reader_init( char* config_file );
+void config_reader_init( char* name, char* config_file );
 
 void config_reader_free();
 
 // allocastes a char*. FREE me.
-char* config_value( const char* xpath_query, ... );
+//char* config_value( const char* xpath_query, ... );
+char* config_value( const char* config_name, const char* xp_query, ... );
+//char* config_value( config_reader* reader, const char* xp_query, ... );
 
 #endif

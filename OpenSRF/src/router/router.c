@@ -24,23 +24,32 @@ int main( int argc, char* argv[] ) {
 		exit(0);
 	}
 
-	char b[256];
-	memset(b,0,256);
-	jid_get_domain( "client@elroy/test", b );
-	fprintf(stderr, "Domain %s\n", b );
-
-	config_reader_init( argv[1] );	
+	config_reader_init( "opensrf.router", argv[1] );	
 	if( conf_reader == NULL ) fatal_handler( "main(): Config is NULL" ); 
 
 	/* laod the config options */
-	char* server			= config_value("//router/transport/server");
-	char* port				= config_value("//router/transport/port");
-	char* username			= config_value("//router/transport/username");
-	char* password			= config_value("//router/transport/password");
-	router_resource		= config_value("//router/transport/resource");
-	char* con_timeout		= config_value("//router/transport/connect_timeout" );
-	char* max_retries		= config_value("//router/transport/max_reconnect_attempts" );
-	char* component		= config_value("//router/component" );
+	char* server			= config_value("opensrf.router", "//router/transport/server");
+	char* port				= config_value("opensrf.router", "//router/transport/port");
+	char* username			= config_value("opensrf.router", "//router/transport/username");
+	char* password			= config_value("opensrf.router", "//router/transport/password");
+	router_resource		= config_value("opensrf.router", "//router/transport/resource");
+	char* con_timeout		= config_value("opensrf.router", "//router/transport/connect_timeout" );
+	char* max_retries		= config_value("opensrf.router", "//router/transport/max_reconnect_attempts" );
+	char* component		= config_value("opensrf.router", "//router/component" );
+
+
+	/* set up the logger */
+	char* level = config_value("opensrf.router","//log/level");
+	char* log_file = config_value("opensrf.router","//log/file");
+	int llevel = atoi(level);
+	fprintf(stderr, "Level %d; file %s\n", llevel, log_file );
+
+	if(!log_init( llevel, log_file )) 
+		fprintf(stderr, "Unable to init logging, going to stderr...\n" );
+
+
+	free(level);
+	free(log_file);
 
 	fprintf(stderr, "Router connecting as \nserver: %s \nport: %s \nuser:%s \nresource:%s\n", 
 			server, port, username, router_resource );
@@ -129,7 +138,7 @@ void _build_trusted_sites( transport_router_registrar* router ) {
 
 	int i = 0;
 	while( ++i ) {
-		char* server = config_value("//router/trusted_domains/server%d", i );
+		char* server = config_value("opensrf.router","//router/trusted_domains/server%d", i );
 		if(server == NULL)
 			break;
 		
@@ -138,7 +147,7 @@ void _build_trusted_sites( transport_router_registrar* router ) {
 
 	i = 0;
 	while( ++i ) {
-		char* client = config_value( "//router/trusted_domains/client%d", i );
+		char* client = config_value( "opensrf.router","//router/trusted_domains/client%d", i );
 		if(client == NULL)
 			break;
 		router->trusted_clients[i-1] = client;

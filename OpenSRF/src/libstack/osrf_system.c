@@ -1,51 +1,56 @@
 #include "opensrf/osrf_system.h"
 
+transport_client* global_client;
 
-int osrf_system_bootstrap_client() {
+transport_client* osrf_system_get_transport_client() {
+	return global_client;
+}
+
+int osrf_system_bootstrap_client( char* config_file ) {
+	if( config_file == NULL )
+		fatal_handler("No Config File Specified\n" );
+
+	config_reader_init( "opensrf.bootstrap", config_file );	
+	char* log_file		= config_value( "opensrf.bootstrap", "//logs/client" );
+	char* log_level	= config_value( "opensrf.bootstrap", "//bootstrap/debug" );
+	char* domain		= config_value( "opensrf.bootstrap", "//bootstrap/domains/domain1" ); /* just the first for now */
+	char* username		= config_value( "opensrf.bootstrap", "//bootstrap/username" );
+	char* password		= config_value( "opensrf.bootstrap", "//bootstrap/passwd" );
+	char* port			= config_value( "opensrf.bootstrap", "//bootstrap/port" );
+	int llevel = 0;
+	int iport = atoi(port);
+
+	if			(!strcmp(log_level, "ERROR"))	llevel = LOG_ERROR;
+	else if	(!strcmp(log_level, "WARN"))	llevel = LOG_WARNING;
+	else if	(!strcmp(log_level, "INFO"))	llevel = LOG_INFO;
+	else if	(!strcmp(log_level, "DEBUG"))	llevel = LOG_DEBUG;
+
+	log_init( llevel, log_file );
+
 	// XXX config values 
-	transport_client* client = client_init( "judy", 5222, 0 );
+	transport_client* client = client_init( domain, iport, 0 );
 	char buf[256];
 	memset(buf,0,256);
 	char* host = getenv("HOSTNAME");
 	sprintf(buf, "client_%s_%d", host, getpid() );
 
-	if(client_connect( client, "who","hello_you", buf, 10, AUTH_DIGEST )) {
-		/* push ourselves into the client cache */
-		osrf_system_push_transport_client( client, "client" );
-		return 1;
+	if(client_connect( client, username, password, buf, 10, AUTH_DIGEST )) {
+		global_client = client;
 	}
+
+	free(log_level);
+	free(log_file);
+	free(domain);
+	free(username);
+	free(password);
+	free(port);
+
+	if(global_client)
+		return 1;
 
 	return 0;
 }
 
-// -----------------------------------------------------------------------------
-// Some client caching utility methods
-transport_client_cache* client_cache;
 
-void osrf_system_push_transport_client( transport_client* client, char* service ) {
-	if(client == NULL || service == NULL) return;
-	transport_client_cache* new = (transport_client_cache*) safe_malloc(sizeof(transport_client_cache));
-	new->service = strdup(service);
-	new->client = client;
-	if(client_cache == NULL) 
-		client_cache = new;
-	else {
-		transport_client_cache* tmp = client_cache->next;
-		client_cache = new;
-		new->next = tmp;
-	}
-}
-
-transport_client* osrf_system_get_transport_client( char* service ) {
-	if(service == NULL) return NULL;
-	transport_client_cache* cur = client_cache;
-	while(cur != NULL) {
-		if( !strcmp(cur->service, service)) 
-			return cur->client;
-		cur = cur->next;
-	}
-	return NULL;
-}
-// -----------------------------------------------------------------------------
 
 

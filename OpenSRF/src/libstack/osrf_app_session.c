@@ -87,6 +87,21 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 	while( remaining >= 0 ) {
 		/* tell the session to wait for stuff */
 		debug_handler( "In app_request receive with remaining time [%d]", (int) remaining );
+
+		osrf_app_session_queue_wait( req->session, 0 );
+
+		if( req->result != NULL ) { /* if we received anything */
+			/* pop off the first message in the list */
+			debug_handler( "app_request_recv received a message, returning it");
+			osrf_message* ret_msg = req->result;
+			osrf_message* tmp_msg = ret_msg->next;
+			req->result = tmp_msg;
+			return ret_msg;
+		}
+
+		if( req->complete )
+			return NULL;
+
 		osrf_app_session_queue_wait( req->session, (int) remaining );
 
 		if( req->result != NULL ) { /* if we received anything */
@@ -193,13 +208,22 @@ void _osrf_app_session_remove_session( char* session_id ) {
 osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 	osrf_app_session* session = safe_malloc(sizeof(osrf_app_session));	
 
-	session->transport_handle = osrf_system_get_transport_client( "client" );
+	session->transport_handle = osrf_system_get_transport_client();
 	if( session->transport_handle == NULL ) {
 		warning_handler("No transport client for service 'client'");
 		return NULL;
 	}
+
+	char target_buf[512];
+	memset(target_buf,0,512);
+	char* domain	= config_value( "opensrf.bootstrap", "//bootstrap/domains/domain1" ); /* just the first for now */
+	char* router_name = config_value( "opensrf.bootstrap", "//bootstrap/router_name" );
+	sprintf( target_buf, "%s@%s/%s",  router_name, domain, remote_service );
+	free(domain);
+	free(router_name);
+
 	session->request_queue = NULL;
-	session->remote_id = strdup("router@judy/math");  /*XXX config value */
+	session->remote_id = strdup(target_buf);
 	session->orig_remote_id = strdup(session->remote_id);
 
 	/* build a chunky, random session id */
@@ -229,7 +253,7 @@ osrf_app_session* osrf_app_server_session_init(
 
 	session = safe_malloc(sizeof(osrf_app_session));	
 
-	session->transport_handle = osrf_system_get_transport_client( our_app  );
+	session->transport_handle = osrf_system_get_transport_client();
 	if( session->transport_handle == NULL ) {
 		warning_handler("No transport client for service '%s'", our_app );
 		return NULL;

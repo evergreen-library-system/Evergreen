@@ -3,20 +3,10 @@
 #include "pthread.h"
 #include <sys/timeb.h>
 
-int _init_log();
-
-int balance = 0;
-
-#define LOG_ERROR 1
-#define LOG_WARNING 2
-#define LOG_INFO 3
-#define LOG_DEBUG 4
-
 void get_timestamp( char buf_36chars[]) {
 
 	struct timeb tb;
 	ftime(&tb);
-	//time_t epoch = time(NULL);	
 	char* localtime = strdup( ctime( &(tb.time) ) );
 	char mil[4];
 	memset(mil,0,4);
@@ -43,6 +33,7 @@ inline void* safe_malloc( int size ) {
 
 static FILE* log_file = NULL;
 static int log_level = -1;
+static int logging = 0;
 pthread_mutex_t mutex;
 
 void log_free() { if( log_file != NULL ) fclose(log_file ); }
@@ -55,7 +46,7 @@ void fatal_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 
-	if( _init_log() ) {
+	if( logging ) {
 
 		if( log_level < LOG_ERROR )
 			return;
@@ -91,7 +82,7 @@ void warning_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 	
-	if( _init_log() ) {
+	if(logging) {
 
 		if( log_level < LOG_WARNING )
 			return;
@@ -126,7 +117,7 @@ void info_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 
-	if( _init_log() ) {
+	if(logging) {
 
 		if( log_level < LOG_INFO )
 			return;
@@ -162,7 +153,7 @@ void debug_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 	
-	if( _init_log() ) {
+	if(logging) {
 
 		if( log_level < LOG_DEBUG )
 			return;
@@ -190,48 +181,24 @@ void debug_handler( char* msg, ... ) {
 }
 
 
-
-int _init_log() {
-
-	if( log_level != -1 )
-		return 1;
+int log_init( int llevel, char* lfile ) {
 
 
-	pthread_mutex_init( &(mutex), NULL );
-
-	/* load the log level setting if we haven't already */
-
-	if( conf_reader == NULL ) {
-		return 0;
-		//fprintf( stderr, "No config file specified" );
-	}
-
-	char* log_level_str = config_value( "//log/level");
-	if( log_level_str == NULL ) {
-	//	fprintf( stderr, "No log level specified" );
-		return 0;
-	}
-	log_level = atoi(log_level_str);
-	free(log_level_str);
-
-	/* see if we have a log file yet */
-	char* f = config_value("//log/file");
-
-	if( f == NULL ) {
-		// fprintf( stderr, "No log file specified" );
+	if( llevel < 1 ) {
+		logging = 0;
 		return 0;
 	}
 
-	log_file = fopen( f, "a" );
+	log_level = llevel;
+	log_file = fopen( lfile, "a" );
 	if( log_file == NULL ) {
-		fprintf( stderr, "Unable to open log file %s for appending\n", f );
+		fprintf( stderr, "Unable to open log file %s for appending\n", lfile );
 		return 0;
 	}
-	free(f);
+	logging = 1;
 	return 1;
-				
-}
 
+}
 
 
 // ---------------------------------------------------------------------------------
@@ -320,6 +287,7 @@ char* buffer_data( growing_buffer *gb) {
 // Allocate and build the conf_reader.  This only has to happen once in a given
 // system.  Repeated calls are ignored.
 // ---------------------------------------------------------------------------------
+/*
 void config_reader_init( char* config_file ) {
 	if( conf_reader == NULL ) {
 
@@ -339,11 +307,54 @@ void config_reader_init( char* config_file ) {
 		}
 	}
 }
+*/
 
-char* config_value( const char* xp_query, ... ) {
+void config_reader_init( char* name, char* config_file ) {
+
+	if( name == NULL || config_file == NULL || strlen(config_file) == 0 ) {
+		fatal_handler( "config_reader_init(): No config file specified" );
+		return;
+	}
+
+	config_reader* reader = 
+		(config_reader*) safe_malloc(sizeof(config_reader));
+
+	reader->config_doc = xmlParseFile( config_file ); 
+	reader->xpathCx = xmlXPathNewContext( reader->config_doc );
+	reader->name = strdup(name);
+	reader->next = NULL;
+
+	if( reader->xpathCx == NULL ) {
+		fprintf( stderr, "config_reader_init(): Unable to create xpath context\n");
+		return;
+	}
+
+	if( conf_reader == NULL ) {
+		conf_reader = reader;
+	} else {
+		config_reader* tmp = conf_reader;
+		conf_reader = reader;
+		reader->next = tmp;
+	}
+}
+
+
+char* config_value( const char* config_name, const char* xp_query, ... ) {
 
 	if( conf_reader == NULL || xp_query == NULL ) {
 		fatal_handler( "config_value(): NULL conf_reader or NULL param(s)" );
+		return NULL;
+	}
+
+	config_reader* reader = conf_reader;
+	while( reader != NULL ) {
+		if( !strcmp(reader->name, config_name)) 
+			break;
+		reader = reader->next;
+	}
+
+	if( reader == NULL ) {
+		fprintf(stderr, "No Config file with name %s\n", config_name );
 		return NULL;
 	}
 
@@ -362,7 +373,7 @@ char* config_value( const char* xp_query, ... ) {
 	memset( alert_buffer, 0, len );
 
 	// build the xpath object
-	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression( BAD_CAST xpath_query, conf_reader->xpathCx );
+	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression( BAD_CAST xpath_query, reader->xpathCx );
 
 	if( xpathObj == NULL ) {
 		sprintf( alert_buffer, "Could not build xpath object: %s", xpath_query );
@@ -430,9 +441,12 @@ char* config_value( const char* xp_query, ... ) {
 
 
 void config_reader_free() {
-	if( conf_reader == NULL ) { return; }
-	xmlXPathFreeContext( conf_reader->xpathCx );
-	xmlFreeDoc( conf_reader->config_doc );
-	free( conf_reader );
-	conf_reader = NULL;
+	while( conf_reader != NULL ) {
+		xmlXPathFreeContext( conf_reader->xpathCx );
+		xmlFreeDoc( conf_reader->config_doc );
+		free(conf_reader->name );
+		config_reader* tmp = conf_reader->next;
+		free( conf_reader );
+		conf_reader = tmp;
+	}
 }

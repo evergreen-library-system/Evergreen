@@ -1,5 +1,7 @@
 #include "opensrf/transport_client.h"
 #include "opensrf/generic_utils.h"
+#include "opensrf/osrf_message.h"
+#include "opensrf/osrf_app_session.h"
 #include <time.h>
 
 #define SRFSH_PORT 5222
@@ -13,6 +15,8 @@ transport_client* client = NULL;
 int parse_request( char* request );
 int handle_router( char* words[] );
 int handle_time( char* words[] );
+int handle_request( char* words[] );
+int send_request( char* server, char* method, growing_buffer* buffer );
 int parse_error( char* words[] );
 int router_query_servers( char* server );
 int srfsh_client_connect();
@@ -21,9 +25,11 @@ void print_help();
 int main( int argc, char* argv[] ) {
 
 
-	if( argc < 4 ) 
-		fatal_handler( "usage: %s <jabbersever> <username> <password>", argv[0] );
+	if( argc < 5 ) 
+		fatal_handler( "usage: %s <jabbersever> <username> <password> <config_file>", argv[0] );
 		
+	config_reader_init( "opensrf", argv[4] );	
+
 	char request[256];
 	memset(request, 0, 256);
 	printf(prompt);
@@ -33,6 +39,9 @@ int main( int argc, char* argv[] ) {
 		fprintf(stderr, "Unable to connect to jabber server '%s' as '%s'\n", argv[1], argv[2]);
 		fprintf(stderr, "Most queries will be futile...\n" );
 	}
+
+	if( ! osrf_system_bootstrap_client("srfsh.xml") ) 
+		fprintf( stderr, "Unable to bootstrap client for requests\n");
 
 
 	while( fgets( request, 255, stdin) ) {
@@ -65,6 +74,10 @@ int main( int argc, char* argv[] ) {
 	}
 
 	fprintf(stderr, "Exiting...\n[Ignore Segfault]\n");
+
+	config_reader_free();	
+	log_free();
+
 	return 0;
 }
 
@@ -122,8 +135,11 @@ int parse_request( char* request ) {
 	if( !strcmp(words[0],"router") ) 
 		ret_val = handle_router( words );
 
-	if( !strcmp(words[0],"time") ) 
+	else if( !strcmp(words[0],"time") ) 
 		ret_val = handle_time( words );
+
+	else if (!strcmp(words[0],"request"))
+		ret_val = handle_request( words );
 
 	if(!ret_val)
 		return parse_error( words );
@@ -156,12 +172,66 @@ int handle_router( char* words[] ) {
 	return 0;
 }
 
+int handle_request( char* words[] ) {
+
+	if(!client)
+		return 1;
+
+	if(words[1]) {
+		char* server = words[1];
+		char* method = words[2];
+		int i;
+		growing_buffer* buffer = buffer_init(128);
+
+		for(i = 3; words[i] != NULL; i++ ) {
+			buffer_add( buffer, words[i] );
+			buffer_add(buffer, " ");
+		}
+
+		return send_request( server, method, buffer );
+	} 
+
+	return 0;
+}
+
+int send_request( char* server, char* method, growing_buffer* buffer ) {
+	if( server == NULL || method == NULL )
+		return 0;
+
+	json* params = NULL;
+	if( buffer != NULL || buffer->n_used > 0 ) 
+		params = json_tokener_parse(buffer->buf);
+
+	osrf_app_session* session = osrf_app_client_session_init(server);
+	int req_id = osrf_app_session_make_request( session, params, method, 1 );
+
+	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
+
+	if(!omsg) 
+		printf("Received no data from server\n");
+	
+	
+	while(omsg) {
+		if(omsg->result_content) 
+			printf( "Received Data: %s\n",json_object_to_json_string(omsg->result_content) );
+		omsg = osrf_app_session_request_recv( session, req_id, 5 );
+	}
+
+
+	if( osrf_app_session_request_complete( session, req_id ))
+		printf("[Request Completed Successfully]\n");
+
+	return 1;
+
+
+}
+
 int handle_time( char* words[] ) {
 
 	if( ! words[1] ) {
 
-		char buf[25];
-		memset(buf,0,25);
+		char buf[36];
+		memset(buf,0,36);
 		get_timestamp(buf);
 		printf( "%s\n", buf );
 		return 1;

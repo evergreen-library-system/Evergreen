@@ -8,8 +8,8 @@ CC = gcc
 all: lib 
 #client sys_client
 
-#sys_client: sys_client.c lib 
-#	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o sys_client.c -o sys_client
+sys_client: sys_client.c lib 
+	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o sys_client.c -o sys_client
 
 #client: client.c lib 
 #	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o client.c -o client

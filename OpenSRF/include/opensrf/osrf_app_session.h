@@ -92,7 +92,7 @@ int osrf_app_session_make_request(
 void osrf_app_session_set_complete( osrf_app_session* session, int request_id );
 
 /** Returns true if the given request is complete */
-int osrf_app_session_complete( osrf_app_session* session, int request_id );
+int osrf_app_session_request_complete( osrf_app_session* session, int request_id );
 
 /** Does a recv call on the given request */
 osrf_message* osrf_app_session_request_recv( 
