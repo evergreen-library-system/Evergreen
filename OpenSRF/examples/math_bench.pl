@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
-use OpenSRF::System;
-use OpenSRF::DOM::Element::userAuth;
+use OpenSRF::System qw(/pines/conf/client.conf);
 use OpenSRF::Utils::Config;
+use OpenSRF::Utils::SettingsClient;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsPrimitive;
 use Time::HiRes qw/time/;
@@ -30,8 +30,7 @@ warn "PID: $$\n";
 my $config = OpenSRF::Utils::Config->current;
 OpenSRF::System::bootstrap_client();
 
-my $session = OpenSRF::AppSession->create( 
-		"math", username => 'math_bench', secret => '12345' );
+my $session = OpenSRF::AppSession->create( "math" );
 
 try {
 	if( ! ($session->connect()) ) { die "Connect timed out\n"; }
