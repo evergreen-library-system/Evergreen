@@ -1,5 +1,5 @@
 package OpenSRF::App::Client;
-use base 'OpenSRF';
+use base 'OpenSRF::Application';
 use OpenSRF::Utils::Logger qw/:level/;
 
 
