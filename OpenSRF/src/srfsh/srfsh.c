@@ -1,58 +1,10 @@
-#include "opensrf/transport_client.h"
-#include "opensrf/generic_utils.h"
-#include "opensrf/osrf_message.h"
-#include "opensrf/osrf_app_session.h"
-#include <time.h>
-
-#include <signal.h>
-
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
-
-#define SRFSH_PORT 5222
-#define COMMAND_BUFSIZE 12
-
-/* shell prompt */
-char* prompt = "srfsh# "; 
-
-int child_dead = 0;
-
-/* true if we're pretty printing json results */
-int pretty_print = 0;
-
-/* our jabber connection */
-transport_client* client = NULL; 
-
-/* the last result we received */
-osrf_message* last_result = NULL;
-
-/* functions */
-int parse_request( char* request );
-int handle_router( char* words[] );
-int handle_time( char* words[] );
-int handle_request( char* words[], int relay );
-int handle_exec(char* words[]);
-int handle_set( char* words[]);
-int handle_print( char* words[]);
-int send_request( char* server, 
-		char* method, growing_buffer* buffer, int relay );
-int parse_error( char* words[] );
-int router_query_servers( char* server );
-int srfsh_client_connect();
-int print_help();
-char* json_printer( json* object );
-char* tabs(int count);
-/* --------- */
-void sig_child_handler( int s );
-
-
+#include "srfsh.h"
 
 
 int main( int argc, char* argv[] ) {
 
 
+	/* --------------------------------------------- */
 	if( argc < 2 ) {
 
 		/* see if they have a .srfsh.xml in their home directory */
@@ -75,6 +27,8 @@ int main( int argc, char* argv[] ) {
 		if( ! osrf_system_bootstrap_client(argv[1]) ) 
 			fatal_handler( "Unable to bootstrap client for requests");
 	}
+	/* --------------------------------------------- */
+
 
 	client = osrf_system_get_transport_client();
 
@@ -126,7 +80,7 @@ int parse_error( char* words[] ) {
 	if( ! buffer || strlen(buffer) < 1 ) 
 		printf("\n");
 
-	fprintf( stderr, "Command Incomplete or Not Recognized: %s\n", buffer );
+	fprintf( stderr, "???: %s\n", buffer );
 	return 0;
 
 }
