@@ -387,7 +387,10 @@ sub run {
 			$resp = $code->($self, $req, @params);
 		} catch Error with {
 			my $e = shift;
-			$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n".Carp::longmess(), ERROR);
+			warn "Caught Error in Application: $e\n";
+			if( ref($self) eq 'HASH') {
+				$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n", ERROR);
+			}
 			die $e;
 		};
 
