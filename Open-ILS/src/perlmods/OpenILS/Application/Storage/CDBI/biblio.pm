@@ -43,13 +43,22 @@ biblio::record_node->columns( All => qw/id owner_doc intra_doc_id
 
 
 #-------------------------------------------------------------------------------
+package biblio::record_marc;
+use base qw/biblio/;
+
+biblio::record_marc->table( 'biblio_record_marc' );
+biblio::record_marc->columns( All => qw/id marc/ );
+#biblio::record_marc->columns( Stringify => qw/marc/ );
+#biblio::record_marc->is_a( id => qw/biblio::record_entry/ );
+
+#-------------------------------------------------------------------------------
 package biblio::record_mods;
 use base qw/biblio/;
 
 biblio::record_mods->table( 'biblio_record_mods' );
 biblio::record_mods->columns( All => qw/id mods/ );
-biblio::record_note->columns( Stringify => qw/mods/ );
-#biblio::record_note->is_a( id => qw/biblio::record_entry/ );
+#biblio::record_mods->columns( Stringify => qw/mods/ );
+#biblio::record_mods->is_a( id => qw/biblio::record_entry/ );
 
 #-------------------------------------------------------------------------------
 package biblio::record_note;
@@ -58,7 +67,7 @@ use base qw/biblio/;
 biblio::record_note->table( 'biblio_record_note' );
 biblio::record_note->columns( All => qw/id record value creator
 					editor create_date edit_date/ );
-biblio::record_note->columns( Stringify => qw/value/ );
+#biblio::record_note->columns( Stringify => qw/value/ );
 #biblio::record_note->is_a( record => qw/biblio::record_entry/ );
 
 #-------------------------------------------------------------------------------

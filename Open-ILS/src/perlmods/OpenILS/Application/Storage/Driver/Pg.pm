@@ -237,7 +237,9 @@
 				}
 			);
 			$log->debug("Registered 'disconnect' callback [$dc_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
-			$client->session->session_data( disconnect_cb => $dc_cb );
+			if ($client and $client->session) {
+				$client->session->session_data( disconnect_cb => $dc_cb );
+			}
 		}
 
 		return 1;
@@ -356,6 +358,12 @@
 	biblio::record_node->table( 'biblio.record_data' );
 	biblio::record_node->sequence( 'biblio.record_data_id_seq' );
 	
+	#---------------------------------------------------------------------
+	package biblio::record_marc;
+	
+	biblio::record_marc->table( 'biblio.record_marc' );
+	biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
+
 	#---------------------------------------------------------------------
 	package biblio::record_mods;
 	

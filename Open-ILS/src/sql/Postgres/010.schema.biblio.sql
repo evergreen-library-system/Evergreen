@@ -21,14 +21,19 @@ CREATE TABLE biblio.record_entry (
 	source		INT,
 	last_xact_id	TEXT		NOT NULL DEFAULT 'none'
 );
-CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_note ( creator );
-CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_note ( editor );
-CREATE UNIQUE INDEX biblio_record_unique_tcn ON (tcn_source,tcn_value) WHERE deleted IS FALSE;
+CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
+CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
+CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_source,tcn_value) WHERE deleted IS FALSE;
 
 CREATE TABLE biblio.record_mods (
 	id	BIGINT	PRIMARY KEY,
 	mods	TEXT	NOT NULL
-)
+);
+
+CREATE TABLE biblio.record_marc (
+	id	BIGINT	PRIMARY KEY,
+	marc	TEXT	NOT NULL
+);
 
 CREATE TABLE biblio.record_data (
 	id		BIGSERIAL	PRIMARY KEY,

@@ -85,17 +85,17 @@ CREATE INDEX actor_org_unit_address_idx ON actor.org_unit (address);
 -- Some PINES test libraries
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'PINES', 'Georgia PINES Consortium');
 
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 2, 'ARL', 'Athens Regional Library System');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-ATH', 'Athens-Clark County Library');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-BOG', 'Bogart Branch Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'ARL', 'Athens Regional Library System');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-ATH', 'Athens-Clark County Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-BOG', 'Bogart Branch Library');
 
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 2, 'MGRL', 'Middle Georgia Regional Library System');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-RC', 'Rocky Creek Branch Library');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-WA', 'Washington Memorial Library');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 4, 'MGRL-MM', 'Bookmobile');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'MGRL', 'Middle Georgia Regional Library System');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-RC', 'Rocky Creek Branch Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-WA', 'Washington Memorial Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 4, 'MGRL-MM', 'Bookmobile');
 
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 2, 'HOU', 'Houston County Library System');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'HOU-WR', 'Nola Brantley Memorial Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 2, 'HOU', 'Houston County Library System');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (currval('actor.org_unit_id_seq'::TEXT), 3, 'HOU-WR', 'Nola Brantley Memorial Library');
 
 CREATE TABLE actor.usr_access_entry (
 	id		BIGSERIAL	PRIMARY KEY,

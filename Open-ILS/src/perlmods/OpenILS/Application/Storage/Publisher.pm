@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::Publisher;
 use base qw/OpenILS::Application::Storage/;
 our $VERSION = 1;
 
+use OpenSRF::EX qw/:try/;;
 use OpenSRF::Utils::Logger;
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -20,6 +21,25 @@ use OpenILS::Application::Storage::Publisher::biblio;
 use OpenILS::Application::Storage::Publisher::config;
 use OpenILS::Application::Storage::Publisher::metabib;
 
+sub retrieve_node {
+	my $self = shift;
+	my $client = shift;
+	my @ids = @_;
+
+	my $cdbi = $self->{cdbi};
+
+	for my $id ( @ids ) {
+		next unless ($id);
+
+		my ($rec) = $cdbi->fast_fieldmapper($id);
+		$client->respond( $rec ) if ($rec);
+
+		last if ($self->api_name !~ /list/o);
+	}
+	return undef;
+}
+
+
 sub create_node {
 	my $self = shift;
 	my $client = shift;
@@ -30,7 +50,7 @@ sub create_node {
 	my $success;
 	try {
 		my $rec = $cdbi->create($node);
-		$success = $rec->id;
+		$success = 1 if ($rec);
 	} catch Error with {
 		$success = 0;
 	};
@@ -57,7 +77,7 @@ sub delete_node {
 
 	my $success = 1;
 	try {
-		$cdbi->delete($node);
+		$success = $cdbi->delete($node);
 	} catch Error with {
 		$success = 0;
 	};
@@ -94,6 +114,26 @@ for my $fmclass ( Fieldmapper->classes ) {
 	(my $api_class = $cdbi) =~ s/::/./go;
 	my $registration_class = __PACKAGE__ . "::$class";
 	my $api_prefix = 'open-ils.storage.'.$api_class;
+
+	# Create the retrieve method
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.retrieve' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.retrieve',
+			method		=> 'retrieve_node',
+			api_level	=> 1,
+			cdbi		=> $cdbi,
+		);
+	}
+
+	# Create the batch retrieve method
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.retrieve' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.batch.retrieve',
+			method		=> 'batch_call',
+			api_level	=> 1,
+			cdbi		=> $cdbi,
+		);
+	}
 
 	# Create the create method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.create' ) ) {

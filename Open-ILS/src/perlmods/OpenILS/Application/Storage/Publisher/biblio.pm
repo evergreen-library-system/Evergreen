@@ -131,19 +131,19 @@ sub get_record_entry {
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'get_record_entry',
-	api_name	=> 'open-ils.storage.biblio.record_entry.retrieve',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_record_entry',
-	api_name	=> 'open-ils.storage.biblio.record_entry.retrieve.list',
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'get_record_entry',
+#	api_name	=> 'open-ils.storage.biblio.record_entry.retrieve',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+#	method		=> 'get_record_entry',
+#	api_name	=> 'open-ils.storage.biblio.record_entry.retrieve.list',
+#	api_level	=> 1,
+#	argc		=> 1,
+#	stream		=> 1,
+#);
 
 sub create_record_node {
 	my $self = shift;

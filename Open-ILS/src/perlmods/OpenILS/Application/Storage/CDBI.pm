@@ -158,19 +158,25 @@ sub delete {
 	my $self = shift;
 	my $arg = shift;
 
+	my $class = ref($self) || $self;
+
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		$self = $self->retrieve($arg);
+		unless (defined $self) {
+			$log->debug("ARG! Couldn't retrieve record ".$arg->id, DEBUG);
+			throw OpenSRF::EX::WARN ("ARG! Couldn't retrieve record ");
+		}
 	}
 
 	if ($class->find_column( 'last_xact_id' )) {
 		my $xact_id = $self->current_xact_id;
 		throw Error unless ($xact_id);
-		$self->last_xact_id( $self->current_xact_id );
-		$self->update;
+		$self->last_xact_id( $class->current_xact_id );
+		$self->SUPER::update;
 	}
 
 	$self->SUPER::delete;
-	return $arg;
+	return 1;
 }
 
 sub update {
@@ -261,9 +267,14 @@ sub import {
 	#-------------------------------------------------------------------------------
 	biblio::record_note->has_a( record => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
+	biblio::record_mods->is_a( id => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	biblio::record_marc->is_a( id => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
 	biblio::record_entry->has_a( creator => 'actor::user' );
 	biblio::record_entry->has_a( editor => 'actor::user' );
 	biblio::record_entry->might_have( mods_entry => 'biblio::record_mods' => qw/mods/ );
+	biblio::record_entry->might_have( marc_entry => 'biblio::record_marc' => qw/marc/ );
 	biblio::record_entry->has_many( notes => 'biblio::record_note' );
 	biblio::record_entry->has_many( nodes => 'biblio::record_node', { order_by => 'intra_doc_id' } );
 	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );

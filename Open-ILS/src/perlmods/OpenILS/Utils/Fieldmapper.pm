@@ -35,6 +35,8 @@ sub _init {
 		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
 								     proto_fields	=> { children => 1 } },
 		'Fieldmapper::biblio::record_entry'		=> { hint => 'bre'  },
+		'Fieldmapper::biblio::record_mods'		=> { hint => 'brm'  },
+		'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
 		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
 		'Fieldmapper::metabib::metarecord'		=> { hint => 'mmr'  },

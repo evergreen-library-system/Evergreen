@@ -87,13 +87,17 @@ while ( my $xml = <> ) {
 
 		if ($new_id) {
 
-			$ns->xml_to_nodeset;
-			my $nodeset = $ns->nodeset;
-			$_->owner_doc( $new_id ) for (@$nodeset);
+			#$ns->xml_to_nodeset;
+			#my $nodeset = $ns->nodeset;
+			#$_->owner_doc( $new_id ) for (@$nodeset);
+
+			my $rec = new Fieldmapper::biblio::record_marc;
+			$rec->id( $new_id );
+			$rec->marc( $ns->xml );
 		
 			$req = $st_server->request(
-				'open-ils.storage.biblio.record_node.batch.create',
-				@$nodeset,
+				'open-ils.storage.biblio.record_marc.create',
+				$rec,
 			);
 
 			$req->wait_complete;
