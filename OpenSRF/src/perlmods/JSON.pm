@@ -14,7 +14,7 @@ use overload ( '*' => sub { int($_[0]) * int($_[1]) } );
 use overload ( '/' => sub { int($_[0]) / int($_[1]) } );
 use overload ( '%' => sub { int($_[0]) % int($_[1]) } );
 use overload ( '**' => sub { int($_[0]) ** int($_[1]) } );
-use overload ( 'neg' => sub { neg(int($_[0])) } );
+use overload ( 'neg' => sub { -int($_[0]) } );
 
 sub toString { defined($_[1]) ? ${$_[1]} : ${$_[0]} }
 
@@ -40,9 +40,6 @@ use vars qw/%_class_map/;
 sub register_class_hint {
 	my $class = shift;
 	my %args = @_;
-
-	$args{hint_re} = qr/(?:\b$args{hint})\b/;
-	$args{class_re} = qr/(?:\b$args{name})\b/;
 
 	$_class_map{hints}{$args{hint}} = \%args;
 	$_class_map{classes}{$args{name}} = \%args;
@@ -97,13 +94,13 @@ sub JSON2perl {
 		s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
 	} else {
 		#why don't I work?!?!
-		my $string = $_;
-		for my $hint (values %{$_class_map{hints}}) {
-			$string =~ s/\/\*--\s*S\w*?\s+$$hint{hint_re}\s*--\*\// bless(/sog;
-			$string =~ s/\/\*--\s*E\w*?\s+$$hint{hint_re}\s*--\*\// => "$$hint{name}") /sog;
-		}
-		$_ = $string;
-		s/\/\*--\s*\w+\s+\S+\s*--\*\///sog;
+		#my $string = $_;
+		#for my $hint (values %{$_class_map{hints}}) {
+		#	$string =~ s/\/\*--\s*S\w*?\s+$$hint{hint_re}\s*--\*\// bless(/sog;
+		#	$string =~ s/\/\*--\s*E\w*?\s+$$hint{hint_re}\s*--\*\// => "$$hint{name}") /sog;
+		#}
+		#$_ = $string;
+		#s/\/\*--\s*\w+\s+\S+\s*--\*\///sog;
 	}
 
 
