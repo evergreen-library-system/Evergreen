@@ -4,6 +4,48 @@ use vars qw/$fieldmap @class_name_list/;
 
 $fieldmap = 
 {
+	'Fieldmapper::metabib::metarecord' =>
+	{
+		hint		=> 'cbs1',
+		api_level	=> 1,
+		fields		=>
+		{
+			id		=> { position =>  0, virtual => 0 },
+			fingerprint	=> { position =>  1, virtual => 0 },
+			master_record	=> { position =>  2, virtual => 0 },
+			mods		=> { position =>  3, virtual => 0 },
+
+			isnew		=> { position =>  4, virtual => 1 },
+			ischanged	=> { position =>  5, virtual => 1 },
+			isdeleted	=> { position =>  6, virtual => 1 },
+		},
+	},
+
+	'Fieldmapper::config::bib_source' =>
+	{
+		hint		=> 'cbs1',
+		api_level	=> 1,
+		fields		=>
+		{
+			id	=> { position =>  0, virtual => 0 },
+			quality	=> { position =>  1, virtual => 0 },
+			source	=> { position =>  2, virtual => 0 },
+		},
+	},
+
+	'Fieldmapper::config::metabib_field' =>
+	{
+		hint		=> 'cmf1',
+		api_level	=> 1,
+		fields		=>
+		{
+			id	=> { position =>  0, virtual => 0 },
+			class	=> { position =>  1, virtual => 0 },
+			name	=> { position =>  2, virtual => 0 },
+			xpath	=> { position =>  3, virtual => 0 },
+		},
+	},
+
 	'Fieldmapper::biblio::record_node' =>
 	{
 		hint		=> 'brn1',
@@ -35,18 +77,17 @@ $fieldmap =
 			id		=> { position =>  0, virtual => 0 },
 			tcn_source	=> { position =>  1, virtual => 0 },
 			tcn_value	=> { position =>  2, virtual => 0 },
-			metarecord	=> { position =>  3, virtual => 0 },
-			creator		=> { position =>  4, virtual => 0 },
-			editor		=> { position =>  5, virtual => 0 },
-			create_date	=> { position =>  6, virtual => 0 },
-			edit_date	=> { position =>  7, virtual => 0 },
-			source		=> { position =>  8, virtual => 0 },
-			active		=> { position =>  9, virtual => 0 },
-			deleted		=> { position => 10, virtual => 0 },
+			creator		=> { position =>  3, virtual => 0 },
+			editor		=> { position =>  4, virtual => 0 },
+			create_date	=> { position =>  5, virtual => 0 },
+			edit_date	=> { position =>  6, virtual => 0 },
+			source		=> { position =>  7, virtual => 0 },
+			active		=> { position =>  8, virtual => 0 },
+			deleted		=> { position =>  9, virtual => 0 },
 
-			isnew		=> { position => 11, virtual => 1 },
-			ischanged	=> { position => 12, virtual => 1 },
-			isdeleted	=> { position => 13, virtual => 1 },
+			isnew		=> { position => 10, virtual => 1 },
+			ischanged	=> { position => 11, virtual => 1 },
+			isdeleted	=> { position => 12, virtual => 1 },
 		},
 	},
 
