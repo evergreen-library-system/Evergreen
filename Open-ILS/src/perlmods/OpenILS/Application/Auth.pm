@@ -11,7 +11,6 @@ use OpenILS::Utils::Fieldmapper;
 my $cache_handle;
 
 
-
 # -------------------------------------------------------------
 # Methods
 # -------------------------------------------------------------
@@ -81,7 +80,7 @@ sub initialize {
 	if(!ref($memcache_servers)) {
 		$memcache_servers = [$memcache_servers];
 	}
-	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.auth", 1, $memcache_servers );
+	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.auth", 0, $memcache_servers );
 }
 
 
@@ -94,7 +93,6 @@ sub initialize {
 sub init_authenticate {
 	my( $self, $client, $username ) = @_;
 	my $seed = md5_hex( time() . $$ . rand() . $username );
-	# cache login seed for 300 seconds (lower in production?) 
 	$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 300 );
 	return $seed;
 }
@@ -110,18 +108,35 @@ sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash ) = @_;
 
 	my $name = "open-ils.storage.actor.user.search.username";
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $request = $session->request( $name, $username );
+	my $response = $request->recv();
+	if( $response and $response->isa("OpenSRF::EX") ) {
+		throw $response ($response->stringify);
+	}
+
+	my $user = $response->content;
+	$session->disconnect();
+	$session->kill_me();
+
+	
+=head
+
 	my $method = $self->method_lookup( $name );
 
-	my $password = undef;
 	if(!$method) {
 		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
 	}
 
 	my ($user) = $method->run($username);
+=cut
+
 	if(!$user) {
 		throw OpenSRF::EX::ERROR ("No user for $username");
 	}
 
+	my $password = undef;
 	$password = $user->passwd();
 	if(!$password) {
 		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
