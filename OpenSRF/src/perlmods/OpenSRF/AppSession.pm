@@ -118,7 +118,7 @@ sub server_build {
 
 	#my $max_requests = $conf->$service->max_requests;
 	my $max_requests	= $config_client->config_value("apps",$service,"max_requests");
-	$logger->debug( "Max Requests for $service is $max_requests", INTERNAL );# if $max_requests;
+	$logger->debug( "Max Requests for $service is $max_requests", INTERNAL ) if (defined $max_requests);
 
 	$logger->transport( "AppSession creating new session: $sess_id", INTERNAL );
 

@@ -62,7 +62,7 @@ sub handler {
 	my ($self, $session, $app_msg) = @_;
 
 	if( ! $app_msg ) {
-		return 0;  # error?
+		return 1;  # error?
 	}
 
 	$log->debug( "In Application::handler()", DEBUG );
@@ -379,7 +379,7 @@ sub run {
 			$log->debug("... Responding with : " . join(" ",$req->responses), DEBUG);
 			return $req->responses;
 		} else {
-			$log->debug("A top level Request object is responding $resp", DEBUG);
+			$log->debug("A top level Request object is responding $resp", DEBUG) if (defined $resp);
 			return $resp;
 		}
 	} else {

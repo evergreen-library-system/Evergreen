@@ -96,14 +96,14 @@ sub process_request {
 	my $keepalive = $client->config_value("apps", $self->app(), "keepalive");
 
 	my $req_counter = 0;
-	while( $app_session->state and $app_session->state != $app_session->DISCONNECTED() and
+	while( $app_session and $app_session->state and $app_session->state != $app_session->DISCONNECTED() and
 			$app_session->find( $app_session->session_id ) ) {
 		
 
 		my $before = time;
-		$logger->transport( "UnixServer calling queue_wait $keepalive", INTERNAL );
+		$logger->debug( "UnixServer calling queue_wait $keepalive", INTERNAL );
 		$app_session->queue_wait( $keepalive );
-		$logger->transport( "after queue wait $keepalive", INTERNAL );
+		$logger->debug( "after queue wait $keepalive", INTERNAL );
 		my $after = time;
 
 		if( ($after - $before) >= $keepalive ) { 
@@ -119,13 +119,12 @@ sub process_request {
 	}
 
 	my $x = 0;
-	while( 1 ) {
-		$logger->transport( "Looping on zombies " . $x++ , DEBUG);
-		last unless ( $app_session->queue_wait(0));
+	while( $app_session && $app_session->queue_wait(0) ) {
+		$logger->debug( "Looping on zombies " . $x++ , DEBUG);
 	}
 
-	$logger->transport( "Timed out, disconnected, or auth failed", INFO );
-	$app_session->kill_me;
+	$logger->debug( "Timed out, disconnected, or auth failed", INFO );
+	$app_session->kill_me if ($app_session);
 
 	$0 = $orig;
 
@@ -206,6 +205,18 @@ sub child_finish_hook {
 sub child_init_hook { 
 
 	$0 =~ s/master/drone/g;
+
+	if ($ENV{OPENSRF_PROFILE}) {
+		my $file = $0;
+		$file =~ s/\W/_/go;
+		eval "use Devel::Profiler output_file => '/tmp/profiler_$file.out', buffer_size => 0;";
+		if ($@) {
+			$logger->debug("Could not load Devel::Profiler: $@",ERROR);
+		} else {
+			$0 .= ' [PROFILING]';
+			$logger->debug("Running under Devel::Profiler", INFO);
+		}
+	}
 
 	my $self = shift;
 

@@ -160,7 +160,6 @@ sub handler {
 	$log->debug("endpoint => [".$session->endpoint."]", DEBUG);
 	$log->debug("OpenSRF::AppSession->SERVER => [".$session->SERVER()."]", DEBUG);
 
-	$log->debug("Before ALL", DEBUG);
 
 	my $val;
 	if ( $session->endpoint == $session->SERVER() ) {
@@ -171,8 +170,12 @@ sub handler {
 	}
 
 	if( $val ) {
+		$log->debug("Passing request up to OpenSRF::Application", DEBUG);
 		return OpenSRF::Application->handler($session, $self->payload);
+	} else {
+		$log->debug("Request was handled internally", DEBUG);
 	}
+	$log->debug("Returning to ".join('::',(caller)[0,3]), DEBUG);
 
 	return 1;
 

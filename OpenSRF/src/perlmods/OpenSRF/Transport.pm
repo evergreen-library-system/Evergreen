@@ -162,6 +162,8 @@ sub handler {
 
 				if( ! $msg->handler( $app_session ) ) { return 0; }
 
+				$logger->debug("Successfully handled message", DEBUG);
+
 			} catch Error with {
 
 				my $e = shift;
@@ -177,6 +179,7 @@ sub handler {
 		} else { 
 
 			if( ! $msg->handler( $app_session ) ) { return 0; } 
+			$logger->debug("Successfully handled message", DEBUG);
 
 		}
 
