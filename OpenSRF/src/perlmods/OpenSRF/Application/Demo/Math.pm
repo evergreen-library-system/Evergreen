@@ -3,7 +3,7 @@ use base qw/OpenSRF::Application/;
 use OpenSRF::Application;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::DomainObject::oilsResponse;
-use OpenSRF::DomainObject::oilsPrimitive;
+#use OpenSRF::DomainObject::oilsPrimitive;
 use OpenSRF::EX qw/:try/;
 use strict;
 use warnings;
@@ -11,30 +11,6 @@ use warnings;
 sub DESTROY{}
 
 our $log = 'OpenSRF::Utils::Logger';
-
-#sub method_lookup {
-#
-#	my( $class, $method_name, $method_proto ) = @_;
-#
-#	if( $method_name eq "add" ) {
-#		return \&add;
-#	}
-
-#	if( $method_name eq "sub" ) {
-#		return \&sub;
-#	}
-#
-#	if( $method_name eq "mult" ) {
-#		return \&mult;
-#	}
-#
-#	if( $method_name eq "div" ) {
-#		return \&div;
-#	}
-
-#	return undef;
-#
-#}
 
 sub send_request {
 
@@ -92,31 +68,33 @@ sub send_request {
 	}
 }
 
-
-sub add_1_action { 1 };
+__PACKAGE__->register_method( method => 'add_1', api_name => 'add' );
 sub add_1 {
-
+	my $self = shift;
 	my $client = shift;
 	my @args = @_;
 	return send_request( "add", @args );
 }
 
-sub sub_1_action { 1 };
+__PACKAGE__->register_method( method => 'sub_1', api_name => 'sub' );
 sub sub_1 {
+	my $self = shift;
 	my $client = shift;
 	my @args = @_;
 	return send_request( "sub", @args );
 }
 
-sub mult_1_action { 1 };
+__PACKAGE__->register_method( method => 'mult_1', api_name => 'mult' );
 sub mult_1 {
+	my $self = shift;
 	my $client = shift;
 	my @args = @_;
 	return send_request( "mult", @args );
 }
 
-sub div_1_action { 1 };
+__PACKAGE__->register_method( method => 'div_1', api_name => 'div' );
 sub div_1 {
+	my $self = shift;
 	my $client = shift;
 	my @args = @_;
 	return send_request( "div", @args );

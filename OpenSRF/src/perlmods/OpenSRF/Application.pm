@@ -196,9 +196,6 @@ sub method_lookup {
 	my $method = shift;
 	my $proto = shift;
 
-	my $super_lookup = $self->SUPER::method_lookup($method,$proto);
-	return $super_lookup if (ref $super_lookup);
-
 	my $class = ref($self) || $self;
 
 	$log->debug("Specialized lookup of [$method] in [$class]", INTERNAL);
