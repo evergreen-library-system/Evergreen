@@ -9,7 +9,6 @@ use OpenILS::Utils::Fieldmapper;
 
 my $utils = "OpenILS::Application::Cat::Utils";
 
-
 sub child_init {
 	OpenSRF::Application->method_lookup( "blah" );
 }
@@ -25,10 +24,8 @@ __PACKAGE__->register_method(
 sub biblio_record_tree_retrieve {
 	my( $self, $client, $recordid ) = @_;
 
-	warn "Starting Retrieve: " . time() . "\n";
 	my $name = "open-ils.storage.biblio.record_entry.nodeset.retrieve";
 	my $method = $self->method_lookup($name);
-	warn "Looked Up Method: " . time() . "\n";
 
 	unless($method) {
 		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
@@ -41,10 +38,7 @@ sub biblio_record_tree_retrieve {
 	}
 
 	return undef unless $nodes;
-
-	warn "Starting Tree Builder: " . time() . "\n";
 	my $tree = $utils->nodeset2tree( $nodes );
-	warn "Returning Tree: " . time() . "\n";
 	return $tree;
 }
 
