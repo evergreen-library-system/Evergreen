@@ -150,7 +150,6 @@ int main (int argc, char **argv) {
 					yaz_marc_debug(mt, verbose);
 
 					while (1) {
-						counter++;
 						int len;
 						char *result;
 						int rlen;
@@ -183,6 +182,7 @@ int main (int argc, char **argv) {
 		
 
 
+						counter++;
 						if(!prune) {
 
 							fwrite (result, rlen, 1, stdout);
@@ -257,7 +257,7 @@ int main (int argc, char **argv) {
 		exit (1);
 	}
 
-	fprintf(stderr, "\nProcessed %d Records\n", counter - 1 );
+	fprintf(stderr, "\nProcessed %d Records\n", counter );
 	exit (0);
 }
 
