@@ -167,7 +167,9 @@ oilsMethod.prototype._getParamsNode = function() {
 /** Returns an array of param objects  */
 oilsMethod.prototype.getParams = function() {
 	var node = this._getParamsNode();
-	if(node != null ) { return JSON2js( node->textContent ); }
+	if(node != null ) { 
+		return JSON2js( node.textContent ); 
+	}
 }
 
 
