@@ -108,6 +108,7 @@ sub wormize {
 		unless (UNIVERSAL::can($resp, 'content'));
 	throw OpenSRF::EX::PANIC ("Transaction creation failed! -- ".$resp->content)
 		unless ($resp->content);
+	$xact_req->finish();
 
 
 	# step -1: grab the doc from storage
@@ -126,13 +127,14 @@ sub wormize {
 		throw OpenSRF::EX::PANIC ("Couldn't find doc for docid $docid failed! -- ".$resp->content)
 	}
 
+	$marc_req->finish();
+
 
 	my $marcxml = $resp->content->marc;
 
 	# step 0: turn the doc into marcxml and mods
 	if(!$marcxml) { throw OpenSRF::EX::PANIC ("Can't build XML from nodeset for $docid'"); }
-	my $marcdoc = $parser->parse_string($marcxml->marc);
-	#my $mods = $mods_sheet->transform($marcdoc);
+	my $marcdoc = $parser->parse_string($marcxml);
 
 
 	# step 1: build the KOHA rows
@@ -155,6 +157,8 @@ sub wormize {
 		throw OpenSRF::EX::PANIC ("Didn't create any full_rec entries! -- ".$resp->content)
 	}
 
+	$fr_req->finish();
+
 	# That's all for now!
 	my $commit_req = $st_ses->request( 'open-ils.storage.trasaction.commit' );
 	$commit_req->wait_complete;
@@ -172,7 +176,15 @@ sub wormize {
 		throw OpenSRF::EX::PANIC ("Transaction commit failed! -- ".$resp->content)
 	}
 
+	$commit_req->finish();
+
+	$st_ses->finish();
+	$st_ses->disconnect();
+	$st_ses->kill_me();
+
 	return 1;
+
+	my $mods = $mods_sheet->transform($marcdoc);
 
 	# step 2;
 	for my $class (keys %$xpathset) {
@@ -204,10 +216,10 @@ sub _marcxml_to_full_rows {
 		$ns->tag( 'LDR' );
 		$ns->value( $tagline->textContent );
 
-		push @ns_list, Fieldmapper::metabib::full_rec;
+		push @ns_list, $ns;
 	}
 
-	for my $tagline ( (@{$root->getChildrenByTagName("controlfield")},  ) {
+	for my $tagline ( @{$root->getChildrenByTagName("controlfield")} ) {
 		next unless $tagline;
 
 		my $ns = new Fieldmapper::metabib::full_rec;
@@ -215,7 +227,7 @@ sub _marcxml_to_full_rows {
 		$ns->tag( $tagline->getAttribute( "tag" ) );
 		$ns->value( $tagline->textContent );
 
-		push @ns_list, Fieldmapper::metabib::full_rec;
+		push @ns_list, $ns;
 	}
 
 	for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
@@ -232,7 +244,7 @@ sub _marcxml_to_full_rows {
 			$ns->subfield( $data->getAttribute( "code" ) );
 			$ns->value( $data->textContent );
 
-			push @ns_list, Fieldmapper::metabib::full_rec;
+			push @ns_list, $ns;
 		}
 	}
 	return @ns_list;
