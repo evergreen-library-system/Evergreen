@@ -25,7 +25,7 @@ sub initialize {
 	$log->debug('Initializing ' . __PACKAGE__ . '...', DEBUG);
 
 	my $driver = "OpenILS::Application::Storage::Driver::".
-		$conf->config_value( apps => storage => app_settings => databases => 'driver');
+		$conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'driver');
 
 
 	$log->debug("Attempting to load $driver ...", DEBUG);
@@ -45,7 +45,7 @@ sub child_init {
 	$log->debug('Running child_init for ' . __PACKAGE__ . '...', DEBUG);
 
 	OpenILS::Application::Storage::CDBI->child_init(
-		$conf->config_value( apps => storage => app_settings => databases => 'database')
+		$conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'database')
 	);
 	
 	return 1 if (OpenILS::Application::Storage::CDBI->db_Main());
@@ -56,13 +56,13 @@ sub child_init {
 sub _cdbi2Hash {
 	my $self = shift;
 	my $obj = shift;
-	return { map { ( $_ => $obj->$_ ) } $obj->columns };
+	return { map { ( $_ => $obj->$_ ) } ($obj->columns('All')) };
 }
 
 sub _cdbi_list2AoH {
 	my $self = shift;
 	my @objs = @_;
-	return [ map { _cdbi2oilsHash($_) } @objs ];
+	return [ map { $self->_cdbi2Hash($_) } @objs ];
 }
 
 1;
