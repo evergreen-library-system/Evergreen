@@ -270,12 +270,12 @@ sub connect {
 
 	my $app = shift;
 	my $api_level = shift;
-	$api_level = 1 unless (defined $api_level)
+	$api_level = 1 unless (defined $api_level);
 
 	$self = $class->create($app, @_) if (!ref($self));
 	return undef unless ($self);
 
-	$self->{api_level} = $api_level
+	$self->{api_level} = $api_level;
 
 	$self->reset;
 	$self->state(CONNECTING);
