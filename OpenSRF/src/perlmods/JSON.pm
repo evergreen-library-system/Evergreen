@@ -43,7 +43,51 @@ sub register_class_hint {
 	$_class_map{$args{name}} = \%args;
 }
 
+sub _JSON_regex {
+	my $string = shift;
+
+	$string =~ s/^\s* ( 
+			   {				| # start object
+			   \[				| # start array
+			   -?\d+\.?\d*			| # number literal
+			   "(?:(?:\\[\"])|[^\"])*"	| # string literal
+			   (?:\/\*.+?\*\/)		| # C comment
+			   true				| # bool true
+			   false			| # bool false
+			   null				| # undef()
+			   :				| # object key-value sep
+			   ,				| # list sep
+			   \]				| # array end
+			   }				  # object end
+			)
+		 \s*//sox;
+	return ($string,$1);
+}
+
 sub JSON2perl {
+	my $class = shift;
+	local $_ = shift;
+
+	# Grab strings...
+	my @strings = /(?:"((?:(?:\\[\"])|[^\"])*)")/sog;
+	# Replace with code...
+	s/(?:"(?:(?:\\[\"])|[^\"])*")/ shift(\@strings) /sog;
+
+	# handle class blessings
+	s/\/\*--\s*S\w*?\s+\w+\s*--\*\// bless(/sog;
+	s/\/\*--\s*E\w*?\s+(\w+)\s*--\*\// , "$_class_map{$1}{name}") /sog;
+
+	# Change javascript stuff to perl...
+	s/null/ undef /sog;
+	#s/(true|false)/ bless( {}, "JSON::bool::$1") /sog;
+	s/true/ bless( {}, "JSON::bool::true") /sog;
+	s/false/ bless( {}, "JSON::bool::false") /sog;
+	s/\b(-?\d+\.?\d*)/ do { JSON::number::new($1) } /sog;
+	
+	return eval $_;
+}
+
+sub old_JSON2perl {
 	my ($class, $json) = @_;
 
 	if (!defined($json)) {
@@ -57,23 +101,11 @@ sub JSON2perl {
 	my @casts;
 	my $casting_depth = 0;
 	my $current_cast;
+	my $element;
 	my $output = '';
-	while ($json =~ s/^\s* ( 
-				   {				| # start object
-				   \[				| # start array
-				   -?\d+\.?\d*			| # number literal
-				   "(?:(?:\\[\"])|[^\"])*"	| # string literal
-				   (?:\/\*.+?\*\/)		| # C comment
-				   true				| # bool true
-				   false			| # bool false
-				   null				| # undef()
-				   :				| # object key-value sep
-				   ,				| # list sep
-				   \]				| # array end
-				   }				  # object end
-				)
-			 \s*//sox) {
-		my $element = $1;
+	while (($json,$element) = _JSON_regex($json)) {
+
+		last unless ($element);
 
 		if ($element eq 'null') {
 			$output .= ' undef() ';
