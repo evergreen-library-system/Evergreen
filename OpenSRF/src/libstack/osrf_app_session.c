@@ -367,7 +367,9 @@ int osrf_app_session_request_complete( osrf_app_session* session, int request_id
 	if(session == NULL)
 		return 0;
 	osrf_app_request* req = _osrf_app_session_get_request( session, request_id );
-	return req->complete;
+	if(req)
+		return req->complete;
+	return 0;
 }
 
 /** Returns the app_request with the given request_id (request_id) */
