@@ -204,6 +204,7 @@ sub _sweep_expired_slots {
 	return unless ($expired_slots);
 
 	$dbh->do('DELETE FROM storage WHERE name_id IN ('.join(',', map { '?' } @$expired_slots).');', {}, @$expired_slots);
+	$dbh->do('DELETE FROM store_expire WHERE id IN ('.join(',', map { '?' } @$expired_slots).');', {}, @$expired_slots);
 	for my $id (@$expired_slots) {
 		_flush_by_name(_get_id_name($id), 1);
 	}
