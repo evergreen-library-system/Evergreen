@@ -126,9 +126,12 @@ sub class {
 
 sub real_fields {
 	my $self = shift;
+	my $class = $self->class;
+	my $fields = $$fieldmap{$class}{fields};
+
 	my @f = grep {
-			!$$fieldmap{$self->class}{fields}{$_}{virtual}
-		} keys %{$$fieldmap{$self->class}{fields}};
+			!$$fields{$_}{virtual}
+		} sort {$$fields{$a}{position} <=> $$fields{$b}{position}} keys %$fields;
 
 	return @f;
 }
