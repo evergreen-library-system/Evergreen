@@ -21,7 +21,9 @@ CREATE TABLE actor.usr (
 	active			BOOL	NOT NULL DEFAULT TRUE,
 	master_account		BOOL	NOT NULL DEFAULT FALSE,
 	super_user		BOOL	NOT NULL DEFAULT FALSE,
-	usrgoup			SERIAL	NOT NULL
+	usrgoup			SERIAL	NOT NULL,
+	last_xact_id		TEXT	NOT NULL DEFAULT 'none'
+
 );
 
 CREATE FUNCTION actor.crypt_pw_insert () RETURNS TRIGGER AS $$

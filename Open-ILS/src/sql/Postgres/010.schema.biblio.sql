@@ -19,6 +19,7 @@ CREATE TABLE biblio.record_entry (
 	active		BOOL		NOT NULL DEFAULT TRUE,
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
 	source		INT,
+	last_xact_id	TEXT		NOT NULL DEFAULT 'none',
 	CONSTRAINT unique_tcn UNIQUE (tcn_source,tcn_value)
 );
 
@@ -31,6 +32,7 @@ CREATE TABLE biblio.record_data (
 	namespace_uri	TEXT,
 	name		TEXT,
 	value		TEXT,
+	last_xact_id	TEXT		NOT NULL DEFAULT 'none',
 	CONSTRAINT unique_doc_and_id UNIQUE (owner_doc,intra_doc_id)
 );
 
