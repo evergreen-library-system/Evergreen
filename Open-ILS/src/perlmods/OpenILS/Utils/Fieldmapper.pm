@@ -159,11 +159,6 @@ sub api_level {
 	return $fieldmap->{$self->class_name}->{api_level};
 }
 
-sub api_level {
-	my $self = shift;
-	return $fieldmap->{$self->class_name}->{api_level};
-}
-
 sub json_hint {
 	my $self = shift;
 	return $fieldmap->{$self->class_name}->{hint};
