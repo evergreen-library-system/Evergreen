@@ -1,7 +1,7 @@
 #include "srfsh.h"
 
-
 int main( int argc, char* argv[] ) {
+
 
 
 	/* --------------------------------------------- */
@@ -331,6 +331,11 @@ int send_request( char* server,
 		printf("\nReceived no data from server\n");
 	
 	
+	signal(SIGPIPE, SIG_IGN);
+
+	FILE* less = popen( "less -EX", "w");
+	if( less == NULL ) { less = stdout; }
+
 	while(omsg) {
 
 		if(omsg->result_content) {
@@ -340,16 +345,16 @@ int send_request( char* server,
 
 			if( pretty_print ) {
 				char* content = json_printer( omsg->result_content );
-				printf( "\nReceived Data: %s\n",content );
+				fprintf( less, "\nReceived Data: %s\n",content );
 				free(content);
 			} else {
-				printf( "\nReceived Data: %s\n",
+				fprintf( less, "\nReceived Data: %s\n",
 					json_object_to_json_string(omsg->result_content));
 			}
 
 		} else {
 
-			printf( "\nReceived Exception:\nName: %s\nStatus: "
+			fprintf( less, "\nReceived Exception:\nName: %s\nStatus: "
 					"%s\nStatusCode %d\n", omsg->status_name, 
 					omsg->status_text, omsg->status_code );
 		}
@@ -357,19 +362,22 @@ int send_request( char* server,
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 	}
 
+
 	double end = get_timestamp_millis();
 
-	printf("\n------------------------------------\n");
+	fprintf( less, "\n------------------------------------\n");
 	if( osrf_app_session_request_complete( session, req_id ))
-		printf("Request Completed Successfully\n");
+		fprintf(less, "Request Completed Successfully\n");
 
 
-	printf("Request Time in seconds: %.3f\n", end - start );
-	printf("------------------------------------\n");
+	fprintf(less, "Request Time in seconds: %.3f\n", end - start );
+	fprintf(less, "------------------------------------\n");
 
 	osrf_app_session_request_finish( session, req_id );
 	osrf_app_session_disconnect( session );
 	osrf_app_session_destroy( session );
+
+	pclose(less); 
 
 	return 1;
 
