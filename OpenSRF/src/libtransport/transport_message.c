@@ -33,6 +33,135 @@ transport_message* message_init( char* body,
 	return msg;
 }
 
+
+transport_message* new_message_from_xml( const char* msg_xml ) {
+
+	if( msg_xml == NULL || strlen(msg_xml) < 1 )
+		return NULL;
+
+	transport_message* new_msg = 
+		(transport_message*) safe_malloc( sizeof(transport_message) );
+
+	xmlKeepBlanksDefault(0);
+	xmlDocPtr msg_doc = xmlReadDoc( BAD_CAST msg_xml, NULL, NULL, 0 );
+	xmlNodePtr root = xmlDocGetRootElement(msg_doc);
+
+	xmlChar* sender	= xmlGetProp(root, BAD_CAST "from");
+	xmlChar* recipient	= xmlGetProp(root, BAD_CAST "to");
+	xmlChar* subject		= xmlGetProp(root, BAD_CAST "subject");
+	xmlChar* thread		= xmlGetProp( root, BAD_CAST "thread" );
+	xmlChar* router_from	= xmlGetProp( root, BAD_CAST "router_from" );
+	xmlChar* router_to	= xmlGetProp( root, BAD_CAST "router_to" );
+	xmlChar* router_class= xmlGetProp( root, BAD_CAST "router_class" );
+	xmlChar* broadcast	= xmlGetProp( root, BAD_CAST "broadcast" );
+
+	if( sender ) {
+		new_msg->sender		= strdup((char*)sender);
+		xmlFree(sender);
+	}
+	if( recipient ) {
+		new_msg->recipient	= strdup((char*)recipient);
+		xmlFree(recipient);
+	}
+	if(subject){
+		new_msg->subject		= strdup((char*)subject);
+		xmlFree(subject);
+	}
+	if(thread) {
+		new_msg->thread		= strdup((char*)thread);
+		xmlFree(thread);
+	}
+	if(router_from) {
+		new_msg->router_from	= strdup((char*)router_from);
+		xmlFree(router_from);
+	}
+	if(router_to) {
+		new_msg->router_to	= strdup((char*)router_to);
+		xmlFree(router_to);
+	}
+	if(router_class) {
+		new_msg->router_class = strdup((char*)router_class);
+		xmlFree(router_class);
+	}
+	if(broadcast) {
+		if(strcmp(broadcast,"0") )
+			new_msg->broadcast	= 1;
+		xmlFree(broadcast);
+	}
+
+	xmlNodePtr search_node = root->children;
+	while( search_node != NULL ) {
+
+		if( ! strcmp( (char*) search_node->name, "thread" ) ) {
+			if( search_node->children && search_node->children->content ) 
+				new_msg->thread = strdup( (char*) search_node->children->content );
+		}
+
+		if( ! strcmp( (char*) search_node->name, "subject" ) ) {
+			if( search_node->children && search_node->children->content )
+				new_msg->subject = strdup( (char*) search_node->children->content );
+		}
+
+		if( ! strcmp( (char*) search_node->name, "body" ) ) {
+			if( search_node->children && search_node->children->content )
+				new_msg->body = strdup((char*) search_node->children->content );
+		}
+
+		search_node = search_node->next;
+	}
+
+	if( new_msg->thread == NULL ) 
+		new_msg->thread = strdup("");
+	if( new_msg->subject == NULL )
+		new_msg->subject = strdup("");
+	if( new_msg->body == NULL )
+		new_msg->body = strdup("");
+
+	int			bufsize;
+	xmlChar*		xmlbuf;
+	char*			encoded_body;
+
+	xmlDocDumpFormatMemory( msg_doc, &xmlbuf, &bufsize, 0 );
+	encoded_body = strdup( (char*) xmlbuf );
+
+	if( encoded_body == NULL ) 
+		fatal_handler("message_to_xml(): Out of Memory");
+
+	xmlFree(xmlbuf);
+	xmlFreeDoc(msg_doc);
+	xmlCleanupParser();
+
+	/*** remove the XML declaration */
+	int len = strlen(encoded_body);
+	char tmp[len];
+	memset( tmp, 0, len );
+	int i;
+	int found_at = 0;
+
+	/* when we reach the first >, take everything after it */
+	for( i = 0; i!= len; i++ ) {
+		if( encoded_body[i] == 62) { /* ascii > */
+
+			/* found_at holds the starting index of the rest of the doc*/
+			found_at = i + 1; 
+			break;
+		}
+	}
+
+	if( found_at ) {
+		/* move the shortened doc into the tmp buffer */
+		strncpy( tmp, encoded_body + found_at, len - found_at );
+		/* move the tmp buffer back into the allocated space */
+		memset( encoded_body, 0, len );
+		strcpy( encoded_body, tmp );
+	}
+
+	new_msg->msg_xml = encoded_body;
+	return new_msg;
+
+}
+
+
 void message_set_router_info( transport_message* msg, char* router_from,
 		char* router_to, char* router_class, char* router_command, int broadcast_enabled ) {
 
@@ -162,7 +291,6 @@ char* message_to_xml( const transport_message* msg ) {
 
 
 	/*** remove the XML declaration */
-
 	int len = strlen(encoded_body);
 	char tmp[len];
 	memset( tmp, 0, len );
