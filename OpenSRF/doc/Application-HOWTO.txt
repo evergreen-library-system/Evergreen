@@ -1,0 +1,95 @@
+OpenSRF Application development API
+-----------------------------------
+
+OpenSRF offers a very simple Application development API to users of the
+framework.  All that is required is to create a Perl module that subclasses
+the OpenSRF::Application package and register it's methods with the
+Method Dispatcher framework.
+
+Each method executes in the OpenSRF::Application namespace as an instance of
+the custom Application.  There are some instance methods on this object which
+can be used by the method to alter the behavior or response that the method
+sends to the client:
+
+  $self->api_name  # returns the name of the method as called by the client
+
+  $self->method    # returns the actual perl name of the sub implementing the
+                   # method
+
+  my $meth = $self->method_lookup( 'api_name' )
+                   # constructs a new instance object implementing another
+                   # method in the same Application package as a subrequest
+
+  my ($subresult) = $meth->run( @params )
+                   # runs the subrequest method and returns the array of
+		   # results
+
+
+The method is also handed an OpenSRF::AppRequest object that has been
+constructed for the client request that generated the call to the method.
+This OpenSRF::AppRequest object is used to communicate back to the client,
+passing status messages or streaming response packets.
+
+All that is required to register an Application with OpenSRF is to place a
+setting in the configuration file that names the module that implements the
+new Application, and to add the new Application's symbolic name to the list of
+servers that should be started by OpenSRF.
+
+   Example Application
+   -------------------
+
+  # Perl module and package implementing an math server.
+  package MyMathServer;
+  use OpenSRF::Application;
+  use base 'OpenSRF::Application';
+
+  sub do_math {
+     my $self = shift;    # instance of MyMathServer
+     
+     my $client = shift;  # instance of OpenSRF::AppRequest connected
+                          # to the client
+     
+     my $left_side = shift;
+     my $op = shift;
+     my $right_side = shift;
+     
+     return eval "$left_side $op $right_side";
+  }
+
+  __PACKAGE__->register_method(
+     api_name => 'useless.do_math',
+     argc => 3,
+     method => 'do_math'
+  );
+
+  1;
+
+
+  
+  # Another Perl module and package implementing a square-root server on top
+  # of the previous math server
+  package MySquareRootServer;
+  use OpenSRF::Application;
+  use base 'OpenSRF::Application';
+  use MyMathServer;
+
+  sub sqrt_math {
+     my $self = shift;    # instance of MySquareRootServer
+     
+     my $client = shift;  # instance of OpenSRF::AppRequest connected
+                          # to the client
+     
+     my $math_method = $self->method_lookup('useless.do_math');
+     my ($result) = $math_method->run( @_ );
+     
+     return sqrt( $result );
+  }
+
+  __PACKAGE__->register_method(
+     api_name => 'simple.sqrt',
+     argc => 3,
+     method => 'sqrt_math'
+  );
+
+  1;
+
