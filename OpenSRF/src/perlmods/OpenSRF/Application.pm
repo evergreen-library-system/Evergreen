@@ -218,8 +218,11 @@ sub register_method {
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
 	$args{package} = $app;                
+	$args{object_hint} ||= '';                
 	$args{server_class} = server_class();
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
+
+	JSON->register_class_hint( name => $args{package}, hint => $args{object_hint}, type => "hash" );
 
 	$_METHODS[$args{api_level}]{$args{api_name}} = bless \%args => $app;
 
