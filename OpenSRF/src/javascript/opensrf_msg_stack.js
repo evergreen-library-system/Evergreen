@@ -154,8 +154,10 @@ Message.handler = function( session, msg ) {
 
 			case oilsResponse.STATUS_COMPLETE + "": {
 				var req = session.get_request(tt);
-				if( req ) { req.set_complete(); }
-				new Logger().debug( " * Request completed: " + tt, Logger.INFO );
+				if( req ) { 
+					req.set_complete(); 
+					new Logger().debug( " * Request completed: " + tt, Logger.INFO );
+				}
 				return;
 			}
 
@@ -183,7 +185,7 @@ Message.reset_session = function( session, thread_trace, message ) {
 	session.set_state( AppSession.DISCONNECTED );
 	session.reset_remote();
 	var req = session.get_request( thread_trace );
-	if( req && !req.complete ) { session.push_resend( req ); }
+	if( req && !req.complete() ) { session.push_resend( req ); }
 	new Logger().debug( " * " + message + " : " + thread_trace, Logger.INFO );
 }
 
