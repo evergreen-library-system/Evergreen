@@ -31,10 +31,22 @@ char* tabs(int count);
 
 int main( int argc, char* argv[] ) {
 
-	if( argc < 2 ) 
-		fatal_handler( "usage: %s <config_file>", argv[0] );
-		
-	config_reader_init( "opensrf", argv[1] );	
+	if( argc < 2 ) {
+
+		/* see if they have a .srfsh.xml in their home directory */
+		char* home = getenv("HOME");
+		int l = strlen(home) + 36;
+		char fbuf[l];
+		memset(fbuf, 0, l);
+		sprintf(fbuf,"%s/.srfsh.xml",home);
+		if(!access(fbuf, F_OK))
+			config_reader_init( "opensrf", fbuf );	
+		else
+			fatal_handler( "No Config file found at %s and none specified. "
+					"\nusage: %s <config_file>", fbuf, argv[0] );
+	} else {
+		config_reader_init( "opensrf", argv[1] );	
+	}
 
 	if( ! osrf_system_bootstrap_client("srfsh.xml") ) 
 		fprintf( stderr, "Unable to bootstrap client for requests\n");
@@ -312,8 +324,10 @@ int print_help() {
 			"---------------------------------------------------------------------------------\n"
 			"router query servers <server1 [, server2, ...]>\n"
 			"	- Returns stats on connected services\n"
+			"\n"
 			"reqeust <service> <method> [ <json formatted string of params> ]\n"
-			"	- Anything passed in will be wrapped in a json array\n"
+			"	- Anything passed in will be wrapped in a json array,\n"
+			"		so add commas if there is more than one param\n"
 			"---------------------------------------------------------------------------------\n"
 			);
 
