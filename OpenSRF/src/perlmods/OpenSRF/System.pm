@@ -331,6 +331,7 @@ sub launch_unix {
 	my( $self, $apps ) = @_;
 
 	foreach my $app ( @$apps ) {
+		next unless $app;
 
 		if( $app eq "settings" ) { next; }
 
