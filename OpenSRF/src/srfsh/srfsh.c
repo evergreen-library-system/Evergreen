@@ -550,7 +550,21 @@ char* json_printer( json* object ) {
 			buffer_add( buf, tab );	
 			free(tab);
 
+		} else if( string[i] == ',' ) {
+
+//			tab_var--;
+//			buffer_add(buf, "\n");
+			buffer_add( buf, ",");
+			buffer_add( buf, "\n" );	
+			char* tab = tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+//			tab = tabs(tab_var);
+//			buffer_add( buf, tab );	
+//			free(tab);
+
 		} else {
+
 			char b[2];
 			b[0] = string[i];
 			b[1] = '\0';
