@@ -13,6 +13,7 @@ use POSIX ":sys_wait_h";
 use OpenSRF::Utils::Config; 
 use OpenSRF::Utils::SettingsParser;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Application;
 use Net::Server::PreFork;
 use strict;
 
@@ -129,6 +130,7 @@ sub load_bootstrap_config {
 	OpenSRF::Transport->message_envelope(  "OpenSRF::Transport::SlimJabber::MessageWrapper" );
 	OpenSRF::Transport::PeerHandle->set_peer_client(  "OpenSRF::Transport::SlimJabber::PeerConnection" );
 	OpenSRF::Transport::Listener->set_listener( "OpenSRF::Transport::SlimJabber::Inbound" );
+	OpenSRF::Application->server_class('client');
 }
 
 sub bootstrap {
