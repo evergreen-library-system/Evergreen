@@ -52,6 +52,60 @@ sub child_init {
 	return 0;
 }
 
+sub begin_xaction {
+	my $self = shift;
+	my $client = shift;
+
+	my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+
+	$client->session->registger_callback( disconnect => sub { $dbh->commit; } )
+		if ($self->api_name =~ /autocommit$/o);
+
+	$client->session->registger_callback( death => sub { $dbh->rollback; } );
+		
+	$dbh->begin_work;
+	return 1;
+}
+__PACKAGE__->register_method(
+	method		=> 'begin_xaction',
+	api_name	=> 'open-ils.storage.transaction.begin',
+	api_level	=> 1,
+	argc		=> 0,
+);
+__PACKAGE__->register_method(
+	method		=> 'begin_xaction',
+	api_name	=> 'open-ils.storage.transaction.begin.autocommit',
+	api_level	=> 1,
+	argc		=> 0,
+);
+
+sub commit_xaction {
+	my $self = shift;
+	my $client = shift;
+
+	try {
+		$client->session->session_data('dbh')->commit;
+	} catch Error with {
+		$client->session->session_data('dbh')->rollback;
+	};
+}
+__PACKAGE__->register_method(
+	method		=> 'commit_xaction',
+	api_name	=> 'open-ils.storage.transaction.commit',
+);
+
+
+sub rollback_xaction {
+	my $self = shift;
+	my $client = shift;
+
+	$client->session->session_data('dbh')->rollback;
+}
+__PACKAGE__->register_method(
+	method		=> 'rollback_xaction',
+	api_name	=> 'open-ils.storage.transaction.rollback',
+);
+
 
 sub _cdbi2Hash {
 	my $self = shift;
