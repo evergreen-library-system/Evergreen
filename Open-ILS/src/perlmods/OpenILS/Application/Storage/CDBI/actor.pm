@@ -13,7 +13,7 @@ __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Others => qw/id usrid usrname email prefix first_given_name
 				second_given_name family_name suffix address
 				home_ou gender dob active master_account
-				super_user usrgoup passwd/ );
+				super_user usrgroup passwd/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_unit_type;
