@@ -25,9 +25,33 @@ sub org_unit_list {
 	return \@fms;
 }
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.direct.actor.org_unit_list',
+	api_name	=> 'open-ils.storage.direct.actor.org_unit.retrieve.all',
 	api_level	=> 1,
 	method		=> 'org_unit_list',
+);
+
+sub org_unit_type_list {
+	my $self = shift;
+	my $client = shift;
+
+	my $select =<<"	SQL";
+	SELECT	*
+	  FROM	actor.org_unit_type
+	  ORDER BY depth, name;
+	SQL
+
+	my $sth = actor::org_unit_type->db_Main->prepare_cached($select);
+	$sth->execute;
+
+	my @fms;
+	push @fms, $_->to_fieldmapper for ( map { actor::org_unit_type->construct($_) } $sth->fetchall_hash );
+
+	return \@fms;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.direct.actor.org_unit_type.retrieve.all',
+	api_level	=> 1,
+	method		=> 'org_unit_type_list',
 );
 
 sub org_unit_descendants {
@@ -55,7 +79,7 @@ sub org_unit_descendants {
 	return \@fms;
 }
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.direct.actor.org_unit_descendants',
+	api_name	=> 'open-ils.storage.actor.org_unit.descendants',
 	api_level	=> 1,
 	method		=> 'org_unit_descendants',
 );
