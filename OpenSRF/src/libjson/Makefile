@@ -2,8 +2,8 @@
 
 CFLAGS		+= -g -O2 -Wall -std=gnu99 -D_GNU_SOURCE -D_REENTRANT -I ../../include
 LDFLAGS		+= -shared -W1 
-LDLIBS		+= -L . -ljson 
 LIB_DIR		= ../../lib
+LDLIBS		+= -L . -ljson -L $(LIB_DIR)
 
 LIB_OBJS 	= debug.o \
 		  linkhash.o \
