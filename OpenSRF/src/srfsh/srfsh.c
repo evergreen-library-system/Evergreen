@@ -232,8 +232,11 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 			printf( "\nReceived Data: %s\n",content );
 			free(content);
 		}
-		else
-			printf( "\nReceived Message but no result data\n");
+		else {
+			printf( "\nReceived Exception:\nName: %s\nStatus: "
+					"%s\nStatusCode %d\n", omsg->status_name, 
+					omsg->status_text, omsg->status_code );
+		}
 
 		osrf_message_free(omsg);
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );

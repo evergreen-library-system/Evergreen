@@ -42,6 +42,8 @@ struct osrf_message_struct {
 	char* status_text;
 	int status_code;
 
+	int is_exception;
+
 	/* if we're a RESULT */
 	json* result_content;
 

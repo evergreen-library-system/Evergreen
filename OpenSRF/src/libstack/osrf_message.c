@@ -98,6 +98,7 @@ osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protoco
 	msg->thread_trace = thread_trace;
 	msg->protocol = protocol;
 	msg->next = NULL;
+	msg->is_exception = 0;
 
 	return msg;
 }
@@ -123,9 +124,8 @@ void osrf_message_set_status_info(
 	if( msg == NULL )
 		fatal_handler( "Bad params to osrf_message_set_status_info()" );
 
-	if( msg->m_type == STATUS ) 
-		if( status_name != NULL ) 
-			msg->status_name = strdup( status_name );
+	if( status_name != NULL ) 
+		msg->status_name = strdup( status_name );
 
 	if( status_text != NULL )
 		msg->status_text = strdup( status_text );
@@ -426,7 +426,7 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 				name = xmlGetProp( cur_node, BAD_CAST "name");
 	
 				if(name) {
-	
+
 					if( !strcmp(name,"oilsMethod") ) {
 	
 						xmlNodePtr meth_node = cur_node->children;
@@ -442,8 +442,8 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 							}
 	
 							if( !strcmp((char*)meth_node->name,"params" ) && meth_node->children->content ) 
-								new_msg->params = json_object_new_string( meth_node->children->content );
-								//new_msg->params = json_tokener_parse(ng(json_params));
+								//new_msg->params = json_object_new_string( meth_node->children->content );
+								new_msg->params = json_tokener_parse(meth_node->children->content);
 	
 							meth_node = meth_node->next;
 						}
@@ -488,7 +488,9 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 						}
 					}
 					
-					if( new_msg->m_type == STATUS ) { new_msg->status_name = strdup(name); }
+					if( new_msg->m_type == STATUS ) 
+						new_msg->status_name = strdup(name); 
+
 					xmlFree(name);
 				}
 			}

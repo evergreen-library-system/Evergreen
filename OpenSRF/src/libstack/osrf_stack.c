@@ -21,8 +21,10 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 
 	osrf_app_session* session = osrf_app_session_find_session( msg->thread );
 
-	if( session == NULL )  /* we must be a server, build a new session */
-		fatal_handler( "Server sessions not implemented yet ..." );
+	if( session == NULL ) {  /* we must be a server, build a new session */
+		info_handler( "Server sessions not implemented yet ..." );
+		return 0;
+	}
 
 	osrf_app_session_set_remote( session, msg->sender );
 	osrf_message* arr[OSRF_MAX_MSGS_PER_PACKET];
@@ -42,14 +44,14 @@ int osrf_stack_message_handler( osrf_app_session* session, osrf_message* msg ) {
 	if(session == NULL || msg == NULL)
 		return 0;
 
-	osrf_message* ret_msg;
+	osrf_message* ret_msg = NULL;
 	if( session->type ==  OSRF_SESSION_CLIENT )
 		 ret_msg = _do_client( session, msg );
 	else
 		ret_msg= _do_server( session, msg );
 
 	if(ret_msg)
-		osrf_stack_application_handler( session, msg );
+		osrf_stack_application_handler( session, ret_msg );
 
 	return 1;
 
@@ -62,7 +64,7 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 	if(session == NULL || msg == NULL)
 		return NULL;
 
-	//osrf_message* new_msg;
+	osrf_message* new_msg;
 
 	if( msg->m_type == STATUS ) {
 		
@@ -108,7 +110,16 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 
 
 			default:
-				warning_handler("We don't know what to do with the provided message code: %d", msg->status_code );
+				new_msg = osrf_message_init( RESULT, msg->thread_trace, msg->protocol );
+				osrf_message_set_status_info( new_msg, 
+						msg->status_name, msg->status_text, msg->status_code );
+				warning_handler("The stack doesn't know what to do with " 
+						"the provided message code: %d, name %s. Passing UP.", 
+						msg->status_code, msg->status_name );
+				new_msg->is_exception = 1;
+				osrf_app_session_set_complete( session, msg->thread_trace );
+				osrf_message_free(msg);
+				return new_msg;
 		}
 
 		return NULL;
