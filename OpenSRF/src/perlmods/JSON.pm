@@ -1,5 +1,3 @@
-package JSON::object_unknown;
-
 package JSON::number;
 sub new {
 	my $class = shift;
@@ -44,11 +42,6 @@ sub register_class_hint {
 	$_class_map{hints}{$args{hint}} = \%args;
 	$_class_map{classes}{$args{name}} = \%args;
 }
-JSON->register_class_hint(
-	name => 'JSON::object_unknown',
-	hint => 'DUNNO',
-	type => 'hash',
-);
 
 sub _JSON_regex {
 	my $string = shift;
@@ -72,9 +65,17 @@ sub _JSON_regex {
 }
 
 sub _json_hint_to_class {
+	my $type = shift;
 	my $hint = shift;
+
 	return $_class_map{hints}{$hint}{name} if (exists $_class_map{hints}{$hint});
-	return 'JSON::object_unknown';
+	
+	$type = 'hash' if ($type eq '}');
+	$type = 'array' if ($type eq ']');
+
+	JSON->register_class_hint(name => $hint, hint => $hint, type => $type);
+
+	return $hint;
 }
 
 sub JSON2perl {
@@ -83,6 +84,10 @@ sub JSON2perl {
 
 	# Convert JSON Unicode...
 	s/\\u(\d{4})/chr(hex($1))/esog;
+
+	# handle class blessings
+	s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
+	s/(\]|\}|")\s*\/\*--\s*E\w*?\s+(\S+)\s*--\*\//$1 => _json_hint_to_class("$1", "$2")) /sog;
 
 	# Grab strings...
 	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
@@ -93,12 +98,8 @@ sub JSON2perl {
 	# Perlify hash notation
 	s/:/ => /sog;
 
-	# handle class blessings
-	s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
-	s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
-
+	# Do numbers...
 	s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
-
 
 	# Change javascript stuff to perl...
 	s/null/ undef /sog;
@@ -209,6 +210,11 @@ sub perl2JSON {
 			$c++;
 		}
 		$output .= ']';
+	} elsif (ref($perl) and ("$perl" =~ /^([^=]+)=(\w+)/o)) {
+		my $type = $2;
+		my $name = $1;
+		JSON->register_class_hint(name => $name, hint => $name, type => lc($type));
+		$output .= perl2JSON(undef,$perl);
 	} else {
 		$perl =~ s/\\/\\\\/sgo;
 		$perl =~ s/"/\\"/sgo;
@@ -279,6 +285,11 @@ sub perl2prettyJSON {
 		$output .= "\n";
 		$output .= "   "x$depth;
 		$output .= "]";
+	} elsif (ref($perl) and "$perl" =~ /^([^=]+)=(\w{4,5})\(0x/) {
+		my $type = $2;
+		my $name = $1;
+		register_class_hint(undef, name => $name, hint => $name, type => lc($type));
+		$output .= perl2prettyJSON(undef,$perl);
 	} else {
 		$perl =~ s/\\/\\\\/sgo;
 		$perl =~ s/"/\\"/sgo;
