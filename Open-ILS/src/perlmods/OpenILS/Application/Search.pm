@@ -9,8 +9,9 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
 
 
-use OpenILS::Application::Search::StaffClient;
+#use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Web;
+use OpenILS::Application::Search::Biblio;
 
 use OpenILS::Application::AppUtils;
 
@@ -23,53 +24,28 @@ sub child_init {
 	OpenILS::Application::SearchCache->child_init();
 }
 
+sub filter_search {
+	my($self, $string) = @_;
 
+	$string =~ s/\s+the\s+//i;
+	$string =~ s/\s+an\s+//i;
+	$string =~ s/\s+a\s+//i;
 
-__PACKAGE__->register_method(
-	method	=> "biblio_search_marc",
-	api_name	=> "open-ils.search.biblio.marc",
-	argc		=> 1, 
-	note		=> "Searches biblio information by marc tag",
-);
+	$string =~ s/^the\s+//i;
+	$string =~ s/^an\s+//i;
+	$string =~ s/^a\s+//i;
 
-sub biblio_search_marc {
+	$string =~ s/\s+the$//i;
+	$string =~ s/\s+an$//i;
+	$string =~ s/\s+a$//i;
 
-	my( $self, $client, $search_hash, $string ) = @_;
+	$string =~ s/^the$//i;
+	$string =~ s/^an$//i;
+	$string =~ s/^a$//i;
 
-	warn "Building biblio marc session\n";
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	warn "Sending biblio marc request\n";
-	my $request = $session->request( 
-			"open-ils.storage.metabib.full_rec.search_fts.index_vector", 
-			$search_hash, $string );
-
-	warn "Waiting complete\n";
-	$request->wait_complete();
-
-	warn "Calling recv\n";
-	my $response = $request->recv(20);
-
-	warn "out of recv\n";
-	if($response and UNIVERSAL::isa($response,"OpenSRF::EX")) {
-		throw $response ($response->stringify);
-	}
-
-
-	my $data = [];
-	if($response and UNIVERSAL::can($response,"content")) {
-		$data = $response->content;
-	}
-	warn "finishing request\n";
-
-	$request->finish();
-	$session->finish();
-	$session->disconnect();
-
-	return $data;
-
-}
-
+	warn "Cleansed string to: $string\n";
+	return $string;
+}	
 
 
 __PACKAGE__->register_method(
@@ -178,122 +154,6 @@ sub get_sub_org_tree {
 
 
 
-
-# ---------------------------------------------------------------------------
-# takes a list of record id's and turns the docs into friendly 
-# mods structures. Creates one MODS structure for each doc id.
-# ---------------------------------------------------------------------------
-sub _records_to_mods {
-	my @ids = @_;
-	
-	my @results;
-	my @marcxml_objs;
-
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $request = $session->request(
-			"open-ils.storage.biblio.record_marc.batch.retrieve",  @ids );
-
-	my $last_content = undef;
-
-	while( my $response = $request->recv() ) {
-
-		if( $last_content ) {
-			my $u = OpenILS::Utils::ModsParser->new();
-			$u->start_mods_batch( $last_content->marc );
-			my $mods = $u->finish_mods_batch();
-			$mods->{doc_id} = $last_content->id();
-			warn "Turning doc " . $mods->{doc_id} . " into MODS\n";
-			$last_content = undef;
-			push @results, $mods;
-		}
-
-		next unless $response;
-
-		if($response->isa("OpenSRF::EX")) {
-			throw $response ($response->stringify);
-		}
-
-		$last_content = $response->content;
-
-	}
-
-	if( $last_content ) {
-		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch( $last_content->marc );
-		my $mods = $u->finish_mods_batch();
-		$mods->{doc_id} = $last_content->id();
-		push @results, $mods;
-	}
-
-	$request->finish();
-	$session->finish();
-	$session->disconnect();
-
-	return \@results;
-
-}
-
-__PACKAGE__->register_method(
-	method	=> "record_id_to_mods",
-	api_name	=> "open-ils.search.biblio.record.mods.retrieve",
-	argc		=> 1, 
-	note		=> "Provide ID, we provide the mods"
-);
-
-# converts a record into a mods object with copy counts attached
-sub record_id_to_mods {
-
-	my( $self, $client, $org_id, $id ) = @_;
-
-	my $mods_list = _records_to_mods( $id );
-	my $mods_obj = $mods_list->[0];
-	my $cmethod = $self->method_lookup(
-			"open-ils.search.biblio.record.copy_count");
-	my ($count) = $cmethod->run($org_id, $id);
-	$mods_obj->{copy_count} = $count;
-
-	return $mods_obj;
-}
-
-
-
-# Returns the number of copies attached to a record based on org location
-__PACKAGE__->register_method(
-	method	=> "record_id_to_copy_count",
-	api_name	=> "open-ils.search.biblio.record.copy_count",
-	argc		=> 2, 
-	note		=> "Provide ID, we provide the copy count"
-);
-
-sub record_id_to_copy_count {
-	my( $self, $client, $org_id, $record_id ) = @_;
-
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	warn "mods retrieve $record_id\n";
-	my $request = $session->request(
-		"open-ils.storage.biblio.record_copy_count",  $org_id, $record_id );
-
-	warn "mods retrieve wait $record_id\n";
-	$request->wait_complete;
-
-	warn "mods retrieve recv $record_id\n";
-	my $response = $request->recv();
-	return undef unless $response;
-
-	warn "mods retrieve after recv $record_id\n";
-
-	if( $response and UNIVERSAL::isa($response, "Error")) {
-		throw $response ($response->stringify);
-	}
-
-	my $count = $response->content;
-
-	$request->finish();
-	$session->finish();
-	$session->disconnect();
-
-	return $count;
-}
 
 
 
