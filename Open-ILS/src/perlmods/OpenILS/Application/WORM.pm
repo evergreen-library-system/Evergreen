@@ -96,21 +96,83 @@ sub wormize {
 
 	my( $self, $client, $docid ) = @_;
 
+	my $st_ses = $client->session->create('open-ils.storage');
+	throw OpenSRF::EX::PANIC ("WORM can't connect to the open-is.storage server!")
+		if (!$st_ses->connect);
+
+	my $xact_req = $st_ses->request('open-ils.storage.transaction.begin');
+	$xact_req->wait_complete;
+
+	my $resp = $xact_req->recv;
+	throw OpenSRF::EX::PANIC ("Couldn't start a transaction! -- $resp")
+		unless (UNIVERSAL::can($resp, 'content'));
+	throw OpenSRF::EX::PANIC ("Transaction creation failed! -- ".$resp->content)
+		unless ($resp->content);
+
+
 	# step -1: grab the doc from storage
-	my $name = "open-ils.storage.biblio.record_marc.retrieve";
-	my $method = $self->method_lookup( $name ); 
-	if(!$method) { throw OpenSRF::EX::PANIC ("Can't locate method $name"); }
-	my ($marcxml) = $method->run( $docid );
+	my $marc_req = $st_ses->request('open-ils.storage.biblio.record_marc.retrieve', $docid);
+	$marc_req->wait_complete;
+
+	$resp = $marc_req->recv;
+	unless (UNIVERSAL::can($resp, 'content')) {
+		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		$rb->wait_complete;
+		throw OpenSRF::EX::PANIC ("Couldn't run .record_marc.retrieve! -- $resp")
+	}
+	unless ($resp->content) {
+		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		$rb->wait_complete;
+		throw OpenSRF::EX::PANIC ("Couldn't find doc for docid $docid failed! -- ".$resp->content)
+	}
+
+
+	my $marcxml = $resp->content->marc;
 
 	# step 0: turn the doc into marcxml and mods
 	if(!$marcxml) { throw OpenSRF::EX::PANIC ("Can't build XML from nodeset for $docid'"); }
 	my $marcdoc = $parser->parse_string($marcxml->marc);
-	my $mods = $mods_sheet->transform($marcdoc);
+	#my $mods = $mods_sheet->transform($marcdoc);
 
 
 	# step 1: build the KOHA rows
-	my $full_rows = _marcxml_to_full_rows( $marcdoc );
+	my @ns_list = _marcxml_to_full_rows( $marcdoc );
+	$_->record = $docid for (@ns_list);
 
+	my $fr_req = $st_ses->request( 'open-ils.storage.metabib.full_rec.batch.create', @ns_list );
+	$fr_req->wait_complete;
+
+	$resp = $fr_req->recv;
+
+	unless (UNIVERSAL::can($resp, 'content')) {
+		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		$rb->wait_complete;
+		throw OpenSRF::EX::PANIC ("Couldn't run .full_rec.batch.create! -- $resp")
+	}
+	unless ($resp->content) {
+		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		$rb->wait_complete;
+		throw OpenSRF::EX::PANIC ("Didn't create any full_rec entries! -- ".$resp->content)
+	}
+
+	# That's all for now!
+	my $commit_req = $st_ses->request( 'open-ils.storage.trasaction.commit' );
+	$commit_req->wait_complete;
+
+	$resp = $commit_req->recv;
+
+	unless (UNIVERSAL::can($resp, 'content')) {
+		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		$rb->wait_complete;
+		throw OpenSRF::EX::PANIC ("Error commiting transaction! -- $resp")
+	}
+	unless ($resp->content) {
+		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		$rb->wait_complete;
+		throw OpenSRF::EX::PANIC ("Transaction commit failed! -- ".$resp->content)
+	}
+
+	return 1;
 
 	# step 2;
 	for my $class (keys %$xpathset) {
@@ -130,24 +192,50 @@ sub _marcxml_to_full_rows {
 
 	my $marcxml = shift;
 
-	my @full_marc_rows;
+	my @ns_list;
+	
 	my $root = $marcxml->documentElement;
 
-	for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
-
+	for my $tagline ( @{$root->getChildrenByTagName("leader")} ) {
 		next unless $tagline;
-		my $tag	= $tagline->getAttribute( "tag" );
-		my $ind1 = $tagline->getAttribute( "ind1" );
-		my $ind2 = $tagline->getAttribute( "ind2" );
-	
+
+		my $ns = new Fieldmapper::metabib::full_rec;
+
+		$ns->tag( 'LDR' );
+		$ns->value( $tagline->textContent );
+
+		push @ns_list, Fieldmapper::metabib::full_rec;
+	}
+
+	for my $tagline ( (@{$root->getChildrenByTagName("controlfield")},  ) {
+		next unless $tagline;
+
+		my $ns = new Fieldmapper::metabib::full_rec;
+
+		$ns->tag( $tagline->getAttribute( "tag" ) );
+		$ns->value( $tagline->textContent );
+
+		push @ns_list, Fieldmapper::metabib::full_rec;
+	}
+
+	for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
+		next unless $tagline;
+
 		for my $data ( @{$tagline->getChildrenByTagName("subfield")} ) {
-			next unless $data;
-			my $code		= $data->getAttribute( "code" );
-			my $content = $data->textContent;
-			push @full_marc_rows, [ $tag, $ind1, $ind2, $code, $content ]; #fieldmapper
+			next unless $tagline;
+
+			my $ns = new Fieldmapper::metabib::full_rec;
+
+			$ns->tag( $tagline->getAttribute( "tag" ) );
+			$ns->ind1( $tagline->getAttribute( "ind1" ) );
+			$ns->ind2( $tagline->getAttribute( "ind2" ) );
+			$ns->subfield( $data->getAttribute( "code" ) );
+			$ns->value( $data->textContent );
+
+			push @ns_list, Fieldmapper::metabib::full_rec;
 		}
 	}
-	return \@full_marc_rows;
+	return @ns_list;
 }
 
 sub _get_field_value {
