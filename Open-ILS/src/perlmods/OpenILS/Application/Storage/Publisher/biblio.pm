@@ -21,30 +21,30 @@ sub create_record_entry {
 
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'create_record_entry',
-	api_name	=> 'open-ils.storage.biblio.record_entry.create',
-	api_level	=> 1,
-	argc		=> 2,
-	note		=> <<TEXT,
-
-Params should be passed as a hash ref! 
-Required fields are:
-
-	creator
-	editor
-
-Please at least try to fill in:
-
-	tcn_source
-	tcn_value
-	metarecord
-	source
-	active
-
-TEXT
-
-);
+#__PACKAGE__->register_method(
+	#method		=> 'create_record_entry',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.create',
+	#api_level	=> 1,
+	#argc		=> 2,
+	#note		=> <<TEXT,
+#
+#Params should be passed as a hash ref! 
+#Required fields are:
+#
+	#creator
+	#editor
+#
+#Please at least try to fill in:
+#
+	#tcn_source
+	#tcn_value
+	#metarecord
+	#source
+	#active
+#
+#TEXT
+#
+#);
 
 sub update_record_entry {
 	my $self = shift;
@@ -60,13 +60,13 @@ sub update_record_entry {
 
 	return $success;
 }
-__PACKAGE__->register_method(
-	method		=> 'update_record_entry',
-	api_name	=> 'open-ils.storage.biblio.record_entry.update',
-	api_level	=> 1,
-	argc		=> 1,
-);
-
+#__PACKAGE__->register_method(
+	#method		=> 'update_record_entry',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.update',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#
 sub delete_record_entry {
 	my $self = shift;
 	my $client = shift;
@@ -76,13 +76,13 @@ sub delete_record_entry {
 	return 0 unless ($rec);
 	return 1;
 }
-__PACKAGE__->register_method(
-	method		=> 'delete_record_entry',
-	api_name	=> 'open-ils.storage.biblio.record_entry.delete',
-	api_level	=> 1,
-	argc		=> 1,
-);
-
+#__PACKAGE__->register_method(
+	#method		=> 'delete_record_entry',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.delete',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#
 sub search_record_entry_one_field {
 	my $self = shift;
 	my $client = shift;
@@ -101,20 +101,20 @@ sub search_record_entry_one_field {
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'search_record_entry_one_field',
-	api_name	=> 'open-ils.storage.biblio.record_entry.search.tcn_value',
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'search_record_entry_one_field',
-	api_name	=> 'open-ils.storage.biblio.record_entry.search.tcn_value.list',
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);
+#__PACKAGE__->register_method(
+	#method		=> 'search_record_entry_one_field',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.search.tcn_value',
+	#api_level	=> 1,
+	#argc		=> 1,
+	#stream		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'search_record_entry_one_field',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.search.tcn_value.list',
+	#api_level	=> 1,
+	#argc		=> 1,
+	#stream		=> 1,
+#);
 
 sub get_record_entry {
 	my $self = shift;
@@ -218,19 +218,19 @@ sub get_record_node {
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'get_record_node',
-	api_name	=> 'open-ils.storage.biblio.record_node.retrieve',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_record_node',
-	api_name	=> 'open-ils.storage.biblio.record_node.retrieve.list',
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);
+#__PACKAGE__->register_method(
+	#method		=> 'get_record_node',
+	#api_name	=> 'open-ils.storage.biblio.record_node.retrieve',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_record_node',
+	#api_name	=> 'open-ils.storage.biblio.record_node.retrieve.list',
+	#api_level	=> 1,
+	##argc		=> 1,
+	#stream		=> 1,
+#);
 
 sub create_record_nodeset {
 	my $self = shift;
@@ -320,19 +320,19 @@ sub get_record_nodeset {
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'get_record_nodeset',
-	api_name	=> 'open-ils.storage.biblio.record_entry.nodeset.retrieve',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_record_nodeset',
-	api_name	=> 'open-ils.storage.biblio.record_entry.nodeset.retrieve.list',
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);
-
+#__PACKAGE__->register_method(
+	#method		=> 'get_record_nodeset',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.nodeset.retrieve',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_record_nodeset',
+	#api_name	=> 'open-ils.storage.biblio.record_entry.nodeset.retrieve.list',
+	#api_level	=> 1,
+	#argc		=> 1,
+	#stream		=> 1,
+#);
+#
 
 1;

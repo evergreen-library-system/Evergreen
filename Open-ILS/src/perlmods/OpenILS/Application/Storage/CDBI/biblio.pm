@@ -47,7 +47,7 @@ package biblio::record_marc;
 use base qw/biblio/;
 
 biblio::record_marc->table( 'biblio_record_marc' );
-biblio::record_marc->columns( All => qw/id marc/ );
+biblio::record_marc->columns( All => qw/id marc last_xact_id/ );
 #biblio::record_marc->columns( Stringify => qw/marc/ );
 #biblio::record_marc->is_a( id => qw/biblio::record_entry/ );
 

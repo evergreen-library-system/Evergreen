@@ -21,10 +21,13 @@ sub decompose {
 	$term =~ s/^\s*\b(.+)\b\s*$/$1/o;
 	$term =~ s/^(?:an?|the)\b(.*)/$1/o;
 
-	OpenILS::Utils::Logger->debug("Stripped search term string is [$term]",DEBUG);
+	$log->debug("Stripped search term string is [$term]",DEBUG);
 
 	my @words = $term =~ /\b((?<!!)\w+)\b/go;
 	my @nots = $term =~ /\b(?<=!)(\w+)\b/go;
+
+	$log->debug("Stripped words are[".join(', ',@words)."]",DEBUG);
+	$log->debug("Stripped nots are[".join(', ',@nots)."]",DEBUG);
 
 	my @parts;
 	while ($term =~ s/ ("+) (.*?) ((?<!\\)"){1} //x) {
@@ -58,6 +61,11 @@ sub decompose {
 sub fts_query_not {
 	my $self = shift;
 	return wantarray ? @{ $self->{fts_query_not} } : $self->{fts_query_not};
+}
+
+sub fts_rank {
+	my $self = shift;
+	return wantarray ? @{ $self->{fts_rank} } : $self->{fts_rank};
 }
 
 sub fts_query {

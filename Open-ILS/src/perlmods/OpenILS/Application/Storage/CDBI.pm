@@ -77,7 +77,8 @@ sub fast_fieldmapper {
 	my $class = ref($self) || $self;
 	my $fm_class = 'Fieldmapper::'.$class;
 	my @fms;
-	for my $hash ($self->fast_flesh_sth(@_)->fetchall_hash) {
+	$log->debug("fast_fieldmapper() ==> Retrieving $fm_class", INTERNAL);
+	for my $hash ($self->fast_flesh_sth(map {"$_"} @_)->fetchall_hash) {
 		my $fm = $fm_class->new;
 		for my $field ( keys %$hash ) {
 			$fm->$field( $$hash{$field} );
@@ -122,6 +123,8 @@ sub create {
 	my $self = shift;
 	my $arg = shift;
 
+	$log->debug("\$arg is $arg (".ref($arg).")",DEBUG);
+
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		return $self->create_from_fieldmapper($arg,@_);
 	}
@@ -133,6 +136,8 @@ sub create_from_fieldmapper {
 	my $obj = shift;
 	my $fm = shift;
 	my @params = @_;
+
+	$log->debug("Creating node of type ".ref($fm), DEBUG);
 
 	my $class = ref($obj) || $obj;
 
@@ -293,6 +298,8 @@ sub import {
 	#-------------------------------------------------------------------------------
 	
 	#-------------------------------------------------------------------------------
+	metabib::full_rec->has_a( record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
 	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
 	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source_record'] );
 	#-------------------------------------------------------------------------------
@@ -316,15 +323,19 @@ sub import {
 	# should we have just one field entry per class for each record???? (xslt vs xpath)
 	metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
 	metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	metabib::title_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
 	metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
 	metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	metabib::subject_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
 	metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
 	metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	metabib::author_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
 	metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
 	metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
+	metabib::keyword_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
 	#-------------------------------------------------------------------------------
 	$VERSION = 1;
 }

@@ -14,13 +14,13 @@ my $xml_util	= OpenILS::Utils::FlatXML->new();
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
-my $xslt_doc	=	$parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
+my $xslt_doc	=	$parser->parse_file( "/home/miker/cvs/OpenILS/app_server/stylesheets/MARC21slim2MODS.xsl" );
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 
 use open qw/:utf8/;
 
 sub child_init {
-	__PACKAGE__->method_lookup('i.do.not.exist');
+	#__PACKAGE__->method_lookup('i.do.not.exist');
 }
 
 
@@ -108,6 +108,7 @@ sub wormize {
 		unless (UNIVERSAL::can($resp, 'content'));
 	throw OpenSRF::EX::PANIC ("Transaction creation failed! -- ".$resp->content)
 		unless ($resp->content);
+
 	$xact_req->finish();
 
 
@@ -139,7 +140,7 @@ sub wormize {
 
 	# step 1: build the KOHA rows
 	my @ns_list = _marcxml_to_full_rows( $marcdoc );
-	$_->record = $docid for (@ns_list);
+	$_->record( $docid ) for (@ns_list);
 
 	my $fr_req = $st_ses->request( 'open-ils.storage.metabib.full_rec.batch.create', @ns_list );
 	$fr_req->wait_complete;
@@ -160,27 +161,26 @@ sub wormize {
 	$fr_req->finish();
 
 	# That's all for now!
-	my $commit_req = $st_ses->request( 'open-ils.storage.trasaction.commit' );
+	my $commit_req = $st_ses->request( 'open-ils.storage.transaction.commit' );
 	$commit_req->wait_complete;
 
 	$resp = $commit_req->recv;
 
 	unless (UNIVERSAL::can($resp, 'content')) {
-		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		my $rb = $st_ses->request('open-ils.storage.transaction.rollback');
 		$rb->wait_complete;
 		throw OpenSRF::EX::PANIC ("Error commiting transaction! -- $resp")
 	}
 	unless ($resp->content) {
-		my $rb = $st_ses->request('open-ils.storage.biblio.transaction.rollback');
+		my $rb = $st_ses->request('open-ils.storage.transaction.rollback');
 		$rb->wait_complete;
 		throw OpenSRF::EX::PANIC ("Transaction commit failed! -- ".$resp->content)
 	}
 
 	$commit_req->finish();
 
-	$st_ses->finish();
 	$st_ses->disconnect();
-	$st_ses->kill_me();
+	$st_ses->finish();
 
 	return 1;
 

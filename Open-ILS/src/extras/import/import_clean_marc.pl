@@ -40,6 +40,8 @@ try {
 while ( my $xml = <> ) {
 	chomp $xml;
 
+	my $new_id;
+
 	my $ns = OpenILS::Utils::FlatXML->new( xml => $xml );
 
 	next unless ($ns->xml);
@@ -81,7 +83,7 @@ while ( my $xml = <> ) {
 			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got an exception!! -- ".$resp->toString);
 		}
 
-		my $new_id = $resp->content;
+		$new_id = $resp->content;
 		warn "    (new record_entry id is $new_id)\n";
 
 		$req->finish;
@@ -106,13 +108,6 @@ while ( my $xml = <> ) {
 			}
 
 
-			if ($wormize) {
-				my $worm_req = $worm_server->request(
-					'open-ils.worm.record_data.digest',
-					$new_id,
-				);
-			}
-
 			$req->finish;
 		} else {
 			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got no new ID !! -- ".$resp->toString);
@@ -136,6 +131,10 @@ while ( my $xml = <> ) {
 		my $r = $xact->recv;
 		die $r unless (UNIVERSAL::can($r, 'content'));
 		die "Couldn't commit transaction!" unless ($r->content);
+
+		if ($wormize) {
+			$worm_server->request( 'open-ils.worm.wormize', $new_id,);
+		}
 
 	}
 }

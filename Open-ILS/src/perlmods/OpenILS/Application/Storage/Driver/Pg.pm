@@ -34,11 +34,13 @@
 
 		my $newterm = join('&', $self->words);
 
-		if ($self->nots) {
+		if (@{$self->nots}) {
 			$newterm = '('.$newterm.')&('. join('|', $self->nots) . ')';
 		}
 
-		$newterm = OpenILS::Application::Storage->driver->quote($newterm);
+		$log->debug("Compiled term is [$newterm]", DEBUG);
+		$newterm = OpenILS::Application::Storage::Driver::Pg->quote($newterm);
+		$log->debug("Quoted term is [$newterm]", DEBUG);
 
 		$self->{fts_query} = ["to_tsquery('default',$newterm)"];
 		$self->{fts_query_nots} = [];
@@ -46,6 +48,22 @@
 
 		return $self;
 	}
+
+	sub sql_where_clause {
+		my $self = shift;
+		my $column = shift;
+		my @output;
+	
+		my @ranks;
+		for my $fts ( $self->fts_query ) {
+			push @output, join(' ', $column, $self->{fts_op}, $fts);
+			push @ranks, "rank($column, $fts)";
+		}
+		$self->{fts_rank} = \@ranks;
+	
+		return join(' AND ', @output);
+	}
+
 }
 
 
@@ -117,7 +135,8 @@
 	}
 
 	sub quote {
-		return __PACKAGE__->db_Main->quote(@_)
+		my $self = shift;
+		return $self->db_Main->quote(@_)
 	}
 
 #	sub tsearch2_trigger {
@@ -409,6 +428,7 @@
 
 	metabib::title_field_entry->table( 'metabib.title_field_entry' );
 	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
+	metabib::title_field_entry->columns( 'FTS' => 'index_vector' );
 
 #	metabib::title_field_entry->add_trigger(
 #		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
@@ -424,6 +444,7 @@
 
 	metabib::author_field_entry->table( 'metabib.author_field_entry' );
 	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
+	metabib::author_field_entry->columns( 'FTS' => 'index_vector' );
 
 	#-------------------------------------------------------------------------------
 
@@ -432,6 +453,7 @@
 
 	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
 	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
+	metabib::subject_field_entry->columns( 'FTS' => 'index_vector' );
 
 	#-------------------------------------------------------------------------------
 
@@ -440,6 +462,7 @@
 
 	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
 	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
+	metabib::keyword_field_entry->columns( 'FTS' => 'index_vector' );
 
 	#-------------------------------------------------------------------------------
 
@@ -483,6 +506,7 @@
 
 	metabib::full_rec->table( 'metabib.full_rec' );
 	metabib::full_rec->sequence( 'metabib.full_rec_id_seq' );
+	metabib::full_rec->columns( 'FTS' => 'index_vector' );
 
 	#-------------------------------------------------------------------------------
 }

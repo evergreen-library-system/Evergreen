@@ -50,7 +50,7 @@ sub create_node {
 	my $success;
 	try {
 		my $rec = $cdbi->create($node);
-		$success = 1 if ($rec);
+		$success = $rec->id if ($rec);
 	} catch Error with {
 		$success = 0;
 	};

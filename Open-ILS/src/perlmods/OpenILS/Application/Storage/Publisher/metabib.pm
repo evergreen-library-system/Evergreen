@@ -3,202 +3,53 @@ use base qw/OpenILS::Application::Storage/;
 use vars qw/$VERSION/;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::CDBI::metabib;
+use OpenILS::Application::Storage::FTS;
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::Logger;
+
+my $log = 'OpenSRF::Utils::Logger';
 
 $VERSION = 1;
 
-sub create_full_rec {
+
+sub search_full_rec {
 	my $self = shift;
 	my $client = shift;
-	my $metadata = shift;
+	my $limiters = shift;
+	my $term = shift;
 
-	try {
-		my $rec = metabib::full_rec->create($metadata);
-		$client->respond( $rec->id );
-	} catch Error with {
-		$client->respond( 0 );
-	};
+	my ($fts_col) = metabib::full_rec->columns('FTS');
+	my $table = metabib::full_rec->table;
 
-	return undef;
-}
-__PACKAGE__->register_method(
-	method		=> 'create_full_rec',
-	api_name	=> 'open-ils.storage.metabib.full_rec.create',
-	api_level	=> 1,
-	argc		=> 2,
-	note		=><<TEXT
-Method to create a "full_rec" (Koha) nodeset in the DB.
-0|new->id = open-ils.storage.metabib.full_rec.create ( Fieldmapper::metabib::full_rec );
-TEXT
+	my $fts = OpenILS::Application::Storage::FTS->compile($term);
 
-);
+	my $fts_where = $fts->sql_where_clause($fts_col);
+	my @fts_ranks = $fts->fts_rank;
 
-sub update_full_rec {
-	my $self = shift;
-	my $client = shift;
-	my $entry = shift;
-	
-	try {
-		metabib::full_rec->update($entry);
-	} catch Error with {
-		return 0;
-	};
-	return 1;
-}
-__PACKAGE__->register_method(
-	method		=> 'update_full_rec',
-	api_name	=> 'open-ils.storage.metabib.full_rec.update',
-	api_level	=> 1,
-	argc		=> 1,
-);
+	my $rank = join(' + ', @fts_ranks);
 
-sub delete_full_rec {
-	my $self = shift;
-	my $client = shift;
-	my $entry = shift;
-	
-	try {
-		metabib::full_rec->delete($entry);
-	} catch Error with {
-		return 0;
-	};
-	return 1;
-}
-__PACKAGE__->register_method(
-	method		=> 'delete_full_rec',
-	api_name	=> 'open-ils.storage.metabib.full_rec.delete',
-	api_level	=> 1,
-	argc		=> 1,
-);
-
-sub get_full_rec {
-	my $self = shift;
-	my $client = shift;
-	my @ids = @_;
-
-	for my $id ( @ids ) {
-		next unless ($id);
-		
-		my ($rec) = metabib::full_rec->fast_fieldmapper($id);
-		$client->respond( $rec ) if ($rec);
-
-		last if ($self->api_name !~ /list/o);
+	my @binds;
+	my @wheres;
+	for my $limit (@$limiters) {
+		push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
+		push @binds, $$limit{tag}, $$limit{subfield};
+ 		$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
 	}
-	return undef;
+	my $where = join(' OR ', @wheres);
+
+	my $select = "SELECT record, sum($rank) FROM $table WHERE $where GROUP BY 1 ORDER BY 2 DESC;";
+
+	$log->debug("Search SQL :: [$select]",DEBUG);
+
+	my $recs = metabib::full_rec->db_Main->selectall_arrayref($select, {}, @binds);
+	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
+	return $recs;
+
 }
 __PACKAGE__->register_method(
-	method		=> 'get_full_rec',
-	api_name	=> 'open-ils.storage.metabib.full_rec.retrieve',
+	api_name	=> 'open-ils.storage.metabib.full_rec.search.fts',
+	method		=> 'search_full_rec',
 	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_full_rec',
-	api_name	=> 'open-ils.storage.metabib.full_rec.retrieve.list',
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);
-
-
-sub create_record_nodeset {
-	my $self = shift;
-	my $client = shift;
-	my @nodes = @_;
-
-	my $method = $self->method_lookup('open-ils.storage.metabib.record_node.create');
-
-	my @success;
-	while ( my $node = shift(@nodes) ) {
-		my ($res) = $method->run( $node );
-		push @success, $res if ($res);
-	}
-	
-	my $insert_total = 0;
-	$insert_total += $_ for (@success);
-
-	return $insert_total;
-}
-__PACKAGE__->register_method(
-	method		=> 'create_record_nodeset',
-	api_name	=> 'open-ils.storage.metabib.record_node.batch.create',
-	api_level	=> 1,
-	argc		=> 1,
-);
-
-sub update_record_nodeset {
-	my $self = shift;
-	my $client = shift;
-
-	my $method = $self->method_lookup('open-ils.storage.metabib.record_node.update');
-
-	my @success;
-	while ( my $node = shift(@_) ) {
-		my ($res) = $method->run( $node );
-		push @success, $res if ($res);
-	}
-
-	my $update_total = 0;
-	$update_total += $_ for (@success);
-	
-	return $update_total;
-}
-__PACKAGE__->register_method(
-	method		=> 'create_record_nodeset',
-	api_name	=> 'open-ils.storage.metabib.record_node.batch.update',
-	api_level	=> 1,
-	argc		=> 1,
-);
-
-sub delete_record_nodeset {
-	my $self = shift;
-	my $client = shift;
-
-	my $method = $self->method_lookup('open-ils.storage.metabib.record_node.delete');
-
-	my @success;
-	while ( my $node = shift(@_) ) {
-		my ($res) = $method->run( $node );
-		push @success, $res if ($res);
-	}
-
-	my $delete_total = 0;
-	$delete_total += $_ for (@success);
-	
-	return $delete_total;
-}
-__PACKAGE__->register_method(
-	method		=> 'create_record_nodeset',
-	api_name	=> 'open-ils.storage.metabib.record_node.batch.delete',
-	api_level	=> 1,
-	argc		=> 1,
-);
-
-sub get_record_nodeset {
-	my $self = shift;
-	my $client = shift;
-	my @ids = @_;
-
-	for my $id ( @ids ) {
-		next unless ($id);
-		
-		$client->respond( [metabib::record_node->fast_fieldmapper( owner_doc => "$id", {order_by => 'intra_doc_id'} )] );
-		
-		last if ($self->api_name !~ /list/o);
-	}
-	return undef;
-}
-__PACKAGE__->register_method(
-	method		=> 'get_record_nodeset',
-	api_name	=> 'open-ils.storage.metabib.full_rec.nodeset.retrieve',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_record_nodeset',
-	api_name	=> 'open-ils.storage.metabib.full_rec.nodeset.retrieve.list',
-	api_level	=> 1,
-	argc		=> 1,
 	stream		=> 1,
 );
 

@@ -334,7 +334,7 @@ sub method_lookup {
 	my $class = ref($self) || $self;
 
 	$log->debug("Lookup of [$method] by [$class] in api_level [$proto]", DEBUG);
-	$log->debug("Available methods\n".Dumper(\@_METHODS), INTERNAL);
+	#$log->debug("Available methods\n".Dumper(\@_METHODS), INTERNAL);
 
 	my $meth;
 	if (__PACKAGE__->thunk) {
