@@ -255,7 +255,7 @@ sub get_record_nodeset {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		$sth->execute($id);
+		$sth->execute("$id");
 
 
 		my @nodeset;
