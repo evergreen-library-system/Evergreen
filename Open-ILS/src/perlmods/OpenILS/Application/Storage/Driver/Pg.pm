@@ -431,8 +431,8 @@
 	#---------------------------------------------------------------------
 	package actor::org_unit;
 	
-	actor::org_unit_type->table( 'actor.org_unit' );
-	actor::org_unit_type->sequence( 'actor.org_unit_id_seq' );
+	actor::org_unit->table( 'actor.org_unit' );
+	actor::org_unit->sequence( 'actor.org_unit_id_seq' );
 
 	#---------------------------------------------------------------------
 

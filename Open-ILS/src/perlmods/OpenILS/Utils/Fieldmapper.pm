@@ -49,7 +49,8 @@ sub _init {
 	{
 		'Fieldmapper::actor::user'			=> { hint => 'au'   },
 		'Fieldmapper::actor::org_unit'			=> { hint => 'aou'  },
-		'Fieldmapper::actor::org_unit_type'		=> { hint => 'aout' },
+		'Fieldmapper::actor::org_unit_type'		=> { hint 		=> 'aout',
+								     proto_fields	=> { children => 1 } },
 		
 		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
 								     proto_fields	=> { children => 1 } },

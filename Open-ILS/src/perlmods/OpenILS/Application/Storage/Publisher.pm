@@ -57,17 +57,20 @@ sub search {
 sub search_one_field {
 	my $self = shift;
 	my $client = shift;
-	my $term = shift;
+	my @terms = @_;
 
 	(my $search_type = $self->api_name) =~ s/.*\.(search[^.]*).*/$1/o;
 	(my $col = $self->api_name) =~ s/.*\.$search_type\.([^.]+).*/$1/;
 	my $cdbi = $self->{cdbi};
-	$log->debug("Searching $cdbi for $col using type $search_type, value '$term'",DEBUG);
 
 	my $like = 0;
 	$like = 1 if ($search_type =~ /like$/o);
 
-	return [ $cdbi->fast_fieldmapper($term,$col,$like) ];
+	for my $term (@terms) {
+		$log->debug("Searching $cdbi for $col using type $search_type, value '$term'",DEBUG);
+		$client->respond( [ $cdbi->fast_fieldmapper($term,$col,$like) ] );
+	}
+	return undef;
 }
 
 
