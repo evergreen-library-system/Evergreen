@@ -4,6 +4,11 @@
 #include "opensrf/osrf_app_session.h"
 #include <time.h>
 
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+
 #define SRFSH_PORT 5222
 #define COMMAND_BUFSIZE 12
 
@@ -20,72 +25,43 @@ int send_request( char* server, char* method, growing_buffer* buffer );
 int parse_error( char* words[] );
 int router_query_servers( char* server );
 int srfsh_client_connect();
-void print_help();
+int print_help();
 char* json_printer( json* object );
 char* tabs(int count);
 
 int main( int argc, char* argv[] ) {
-
 
 	if( argc < 2 ) 
 		fatal_handler( "usage: %s <config_file>", argv[0] );
 		
 	config_reader_init( "opensrf", argv[1] );	
 
-	char request[256];
-	memset(request, 0, 256);
-	printf(prompt);
-
 	if( ! osrf_system_bootstrap_client("srfsh.xml") ) 
 		fprintf( stderr, "Unable to bootstrap client for requests\n");
 
-
 	client = osrf_system_get_transport_client();
 
-	while( fgets( request, 255, stdin) ) {
+	char* request;
+	while((request=readline(prompt))) {
 
-		// remove newline
-		request[strlen(request)-1] = '\0';
-
-		if( !strcmp(request, "exit") || !strcmp(request,"quit")) { 
-			client_disconnect( client );
-			client_free( client );	
+		if( !strcmp(request, "exit") || !strcmp(request,"quit")) 
 			break; 
-		}
-
-		if(!strcmp(request,"last")) {
-			if(last_request) {
-				memset(request,0,256);
-				strcpy(request, last_request);
-				printf("%s\n", request);
-			} else {
-				printf(prompt);
-				continue;
-			}
-		}
 
 		char* req_copy = strdup(request);
 
-		if( !strcmp(request, "help") || !strcmp(request,"?")) 
-			print_help();
-		else {
-			if(parse_request( req_copy ) && strcmp(request,"last") ) {
-				free(last_request);
-				last_request = strdup(request);
-			}
-		}
+		if(parse_request( req_copy ) ) 
+			add_history(request);
 
-
-		printf(prompt);
-		memset(request, 0, 300);
+		free(request);
 		free(req_copy);
 	}
 
-	fprintf(stderr, "Exiting...\n[Ignore Segfault :)]\n");
-
+	free(request);
+	client_disconnect( client );
+	client_free( client );	
 	config_reader_free();	
 	log_free();
-
+		
 	return 0;
 }
 
@@ -148,6 +124,9 @@ int parse_request( char* request ) {
 
 	else if (!strcmp(words[0],"request"))
 		ret_val = handle_request( words );
+
+	else if (!strcmp(words[0],"help"))
+		return print_help();
 
 	if(!ret_val)
 		return parse_error( words );
@@ -316,7 +295,7 @@ int router_query_servers( char* router_server ) {
 	return 1;
 }
 		
-void print_help() {
+int print_help() {
 
 	printf(
 			"---------------------------------------------------------------------------------\n"
@@ -334,6 +313,7 @@ void print_help() {
 			"---------------------------------------------------------------------------------\n"
 			);
 
+	return 1;
 }
 
 
