@@ -98,6 +98,9 @@ DomainObject.newFromNode = function( node ) {
 		case "oilsMethodException":
 			return new oilsMethodException().replaceNode( node );
 
+		case "oilsBrokenSession":
+			return new oilsBrokenSession().replaceNode( node );
+
 		case "oilsScalar":
 			return new oilsScalar().replaceNode( node );
 
@@ -487,6 +490,17 @@ oilsMethodException.prototype.baseClass = oilsException.prototype.constructor;
 function oilsMethodException( status, statusCode ) {
 	if( status && statusCode ) {
 		this._initResponse( "oilsMethodException", status, statusCode );
+	}
+}
+
+oilsBrokenSession.prototype = new oilsException();
+oilsBrokenSession.prototype.constructor = oilsBrokenSession;
+oilsBrokenSession.prototype.baseClass = oilsException.prototype.constructor;
+
+/** broken session exception */
+function oilsBrokenSession( status, statusCode ) {
+	if( status && statusCode ) {
+		this._initResponse( "oilsBrokenSession", status, statusCode );
 	}
 }
 
