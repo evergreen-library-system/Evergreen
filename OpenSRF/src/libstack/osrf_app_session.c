@@ -31,6 +31,7 @@ osrf_app_request* _osrf_app_request_init(
 /** Frees memory used by an app_request object */
 void _osrf_app_request_free( osrf_app_request * req ){
 	if( req == NULL ) return;
+	/*
 	osrf_message* cur_msg = req->result;
 	while( cur_msg != NULL ) {
 		osrf_message* next_msg = cur_msg->next;
@@ -38,6 +39,7 @@ void _osrf_app_request_free( osrf_app_request * req ){
 		cur_msg = next_msg;
 	}
 	osrf_message_free( req->payload );
+	*/
 	free( req );
 }
 
@@ -459,8 +461,9 @@ int osrf_app_session_connect(osrf_app_session* session){
 	osrf_message* con_msg = osrf_message_init( CONNECT, session->thread_trace, 1 );
 	osrf_app_session_reset_remote( session );
 	session->state = OSRF_SESSION_CONNECTING;
-	if(!_osrf_app_session_send( session, con_msg ) )
-		return 0;
+	int ret = _osrf_app_session_send( session, con_msg );
+	osrf_message_free(con_msg);
+	if(!ret)	return 0;
 
 	time_t start = time(NULL);	
 	time_t remaining = (time_t) timeout;

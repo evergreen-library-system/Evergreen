@@ -144,7 +144,7 @@ void osrf_message_set_result_content( osrf_message* msg, json* result_content ) 
 
 void osrf_message_free( osrf_message* msg ) {
 	if( msg == NULL )
-		warning_handler( "Trying to delete NULL osrf_message" );
+		return;
 
 	if( msg->status_name != NULL )
 		free(msg->status_name);
