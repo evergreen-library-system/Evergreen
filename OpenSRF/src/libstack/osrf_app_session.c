@@ -11,7 +11,7 @@ osrf_app_session* app_session_cache;
 // Request API
 // --------------------------------------------------------------------------
 
-/** Allocations and initializes a new app_request object */
+/** Allocation and initializes a new app_request object */
 osrf_app_request* _osrf_app_request_init( 
 		osrf_app_session* session, osrf_message* msg ) {
 
@@ -124,8 +124,11 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 /** Resend this requests original request message */
 int _osrf_app_request_resend( osrf_app_request* req ) {
 	if(req == NULL) return 0;
-	debug_handler( "Resending request [%d]", req->request_id );
-	return _osrf_app_session_send( req->session, req->payload );
+	if(!req->complete) {
+		debug_handler( "Resending request [%d]", req->request_id );
+		return _osrf_app_session_send( req->session, req->payload );
+	}
+	return 1;
 }
 
 

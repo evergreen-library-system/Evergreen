@@ -222,7 +222,8 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 			break;
 
 		case DISCONNECT:
-			xmlSetProp( type_node, BAD_CAST "type", "DISCONNECT" );
+			xmlSetProp( type_node, BAD_CAST "name", BAD_CAST "type" );
+			xmlSetProp( type_node, BAD_CAST "value", BAD_CAST "DISCONNECT" );
 			break;
 
 		case STATUS:
