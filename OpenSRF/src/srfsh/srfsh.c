@@ -4,6 +4,8 @@
 #include "opensrf/osrf_app_session.h"
 #include <time.h>
 
+#include <signal.h>
+
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -15,15 +17,22 @@
 /* shell prompt */
 char* prompt = "srfsh# "; 
 
+int child_dead = 0;
+
 /* our jabber connection */
 transport_client* client = NULL; 
+
+/* the last result we received */
+osrf_message* last_result = NULL;
 
 /* functions */
 int parse_request( char* request );
 int handle_router( char* words[] );
 int handle_time( char* words[] );
-int handle_request( char* words[] );
-int send_request( char* server, char* method, growing_buffer* buffer );
+int handle_request( char* words[], int relay );
+int handle_exec(char* words[]);
+int send_request( char* server, 
+		char* method, growing_buffer* buffer, int relay );
 int parse_error( char* words[] );
 int router_query_servers( char* server );
 int srfsh_client_connect();
@@ -31,9 +40,13 @@ int print_help();
 char* json_printer( json* object );
 char* tabs(int count);
 /* --------- */
+void sig_child_handler( int s );
+
+
 
 
 int main( int argc, char* argv[] ) {
+
 
 	if( argc < 2 ) {
 
@@ -86,6 +99,9 @@ int main( int argc, char* argv[] ) {
 	return 0;
 }
 
+void sig_child_handler( int s ) {
+	child_dead = 1;
+}
 
 int parse_error( char* words[] ) {
 
@@ -142,10 +158,16 @@ int parse_request( char* request ) {
 		ret_val = handle_time( words );
 
 	else if (!strcmp(words[0],"request"))
-		ret_val = handle_request( words );
+		ret_val = handle_request( words, 0 );
+
+	else if (!strcmp(words[0],"relay"))
+		ret_val = handle_request( words, 1 );
 
 	else if (!strcmp(words[0],"help"))
-		return print_help();
+		ret_val = print_help();
+
+	else if (words[0][0] == '!')
+		ret_val = handle_exec( words );
 
 	if(!ret_val)
 		return parse_error( words );
@@ -178,7 +200,38 @@ int handle_router( char* words[] ) {
 	return 0;
 }
 
-int handle_request( char* words[] ) {
+
+int handle_exec(char* words[]) {
+
+	int len = strlen(words[0]);
+	char command[len];
+	memset(command,0,len);
+
+	int i; /* chop out the ! */
+	for( i=1; i!= len; i++) {
+		command[i-1] = words[0][i];
+	}
+
+	free(words[0]);
+	words[0] = strdup(command);
+	signal(SIGCHLD,sig_child_handler);
+	if(fork()) {
+		while(1) {
+			sleep(100);
+			if(child_dead) {
+				signal(SIGCHLD,sig_child_handler);
+				child_dead = 0;
+				break;
+			}
+		}
+	} else {
+		execvp( words[0], words );
+	}
+	return 1;
+}
+
+
+int handle_request( char* words[], int relay ) {
 
 	if(!client)
 		return 1;
@@ -187,28 +240,38 @@ int handle_request( char* words[] ) {
 		char* server = words[1];
 		char* method = words[2];
 		int i;
-		growing_buffer* buffer = buffer_init(128);
-
-		buffer_add(buffer, "[");
-		for(i = 3; words[i] != NULL; i++ ) {
-			buffer_add( buffer, words[i] );
-			buffer_add(buffer, " ");
+		growing_buffer* buffer = NULL;
+		if(!relay) {
+			buffer = buffer_init(128);
+			buffer_add(buffer, "[");
+			for(i = 3; words[i] != NULL; i++ ) {
+				buffer_add( buffer, words[i] );
+				buffer_add(buffer, " ");
+			}
+			buffer_add(buffer, "]");
 		}
-		buffer_add(buffer, "]");
 
-		return send_request( server, method, buffer );
+		return send_request( server, method, buffer, relay );
 	} 
 
 	return 0;
 }
 
-int send_request( char* server, char* method, growing_buffer* buffer ) {
+int send_request( char* server, 
+		char* method, growing_buffer* buffer, int relay ) {
 	if( server == NULL || method == NULL )
 		return 0;
 
 	json* params = NULL;
-	if( buffer != NULL && buffer->n_used > 0 ) 
-		params = json_tokener_parse(buffer->buf);
+	if( !relay ) {
+		if( buffer != NULL && buffer->n_used > 0 ) 
+			params = json_tokener_parse(buffer->buf);
+	} else {
+		if(!last_result->result_content) 
+			warning_handler("Calling 'relay' on empty result");
+		else
+			params = last_result->result_content;
+	}
 
 	osrf_app_session* session = osrf_app_client_session_init(server);
 	double start = get_timestamp_millis();
@@ -217,6 +280,10 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 		warning_handler( "Unable to connect to remote service %s\n", server );
 		return 1;
 	}
+
+	//char* string2 = json_printer( params );
+	//json* object = json_tokener_parse( string2 );
+	//free(string2);
 
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
@@ -228,6 +295,9 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 	
 	while(omsg) {
 		if(omsg->result_content) {
+			osrf_message_free(last_result);
+			last_result = omsg;
+
 			char* content = json_printer( omsg->result_content );
 			printf( "\nReceived Data: %s\n",content );
 			free(content);
@@ -238,7 +308,6 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 					omsg->status_text, omsg->status_code );
 		}
 
-		osrf_message_free(omsg);
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 	}
 
@@ -303,8 +372,10 @@ int router_query_servers( char* router_server ) {
 	message_free( send );
 
 	transport_message* recv = client_recv( client, -1 );
-	if( recv == NULL )
+	if( recv == NULL ) {
 		fprintf(stderr, "NULL message received from router\n");
+		return 1;
+	}
 	
 	printf( 
 			"---------------------------------------------------------------------------------\n"
@@ -328,7 +399,7 @@ int print_help() {
 			"Commands:\n"
 			"---------------------------------------------------------------------------------\n"
 			"help			- Display this message\n"
-			"last			- Re-performs the last command\n"
+			"!<command> [args] - Forks and runs the given command in the shell\n"
 			"time			- Prints the current time\n"					
 			"time <timestamp>	- Formats seconds since epoch into readable format\n"	
 			"---------------------------------------------------------------------------------\n"
