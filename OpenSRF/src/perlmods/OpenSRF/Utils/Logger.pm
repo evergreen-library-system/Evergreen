@@ -122,17 +122,16 @@ my $known_logs = [
 
 		if( defined($config) ) { 
 
-			$global_llevel =  $config->system->debug; 
-			$port = $config->system->log_port;
-			$proto = $config->system->log_proto;
-			$peer = $config->system->log_server;
-			$remote_logging = $config->system->remote_log;
+			$global_llevel =  $config->bootstrap->debug; 
+			$port = "";
+			$proto = "";
+			$peer = "";
+			$remote_logging = 0;
 
 			{
 				no strict "refs";
 				$global_llevel = &{$global_llevel};
 			}
-			#$trace_active = $config->system->trace;
 			build_file_hash();
 		}
 
@@ -145,10 +144,10 @@ my $known_logs = [
 
 sub build_file_hash { 
 	$file_hash = {};
-	# XXX This breaks Config encapsulation and should be cleaned.
-	foreach my $log ( grep { !($_ =~ /__id/) } (keys %{$config->logs}) ) {
-		$file_hash->{$log} = $config->logs->$log;
-	}
+	my $path = $config->bootstrap->log_dir;
+	$file_hash->{"error"} = join("/",$path,$config->logs->error);
+	$file_hash->{"transport"} = join("/",$path,$config->logs->transport);
+	$file_hash->{"debug"} = join("/",$path,$config->logs->debug);
 }
 
 # ---------------------------------------------------------

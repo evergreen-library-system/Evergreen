@@ -3,10 +3,10 @@ use strict; use warnings;
 use base 'OpenSRF';
 use OpenSRF::DOM;
 use OpenSRF::AppSession;
-use OpenSRF::Utils::Config;
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::EX qw/:try/;
+use OpenSRF::Transport::SlimJabber::MessageWrapper;
 
 #------------------ 
 # --- These must be implemented by all Transport subclasses
@@ -80,7 +80,7 @@ sub handler {
 	$logger->transport( "Transport handler() received $data", INTERNAL );
 
 	# pass data to the message envelope 
-	my $helper = $class->message_envelope->new( $data );
+	my $helper = OpenSRF::Transport::SlimJabber::MessageWrapper->new( $data );
 
 	# Extract message information
 	my $remote_id	= $helper->get_remote_id();
@@ -121,7 +121,7 @@ sub handler {
 		my $res = OpenSRF::DomainObject::oilsXMLParseError->new( status => "XML Parse Error --- $body" );
 
 		$app_session->status($res);
-		$app_session->kill_me;
+		#$app_session->kill_me;
 		return 1;
 	}
 
