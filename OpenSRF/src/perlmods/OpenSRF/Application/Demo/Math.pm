@@ -19,17 +19,15 @@ sub send_request {
 
 	my $method_name = shift;
 	my @params = @_;
-		
 
-	my $method = $self->method_lookup( "dbmath.$method_name" );
-	my ($resp) = $method->run( @params );
+	my $session = OpenSRF::AppSession->create( "opensrf.dbmath" );
+	my $request = $session->request( "dbmath.$method_name", @params );
+	my $response = $request->recv();
+	if(!$response) { return undef; }
+	if($response->isa("Error")) {throw $response ($response->stringify);}
+	$session->finish();
 
-	if(!defined($resp)) {
-		throw OpenSRF::EX::ERROR ("Did not receive expected data from MathDB\n" . $resp);
-	}
-
-	$log->debug( "MathDB server returned " . $resp, INTERNAL );
-	return $resp;
+	return $response->content;
 
 }
 __PACKAGE__->register_method( method => 'send_request', api_name => '_send_request' );
