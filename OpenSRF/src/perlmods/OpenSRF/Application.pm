@@ -5,7 +5,7 @@ use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::Utils::Logger qw/:level/;
 use Time::HiRes qw/time/;
-use vars qw/$_app $log/;
+use vars qw/$_app $log %_METHODS/;
 use OpenSRF::EX qw/:try/;
 use strict;
 use warnings;
@@ -59,17 +59,6 @@ sub handler {
 			$session->status( OpenSRF::DomainObject::oilsMethodException->new() );
 			return 1;
 		}
-
-		#if ( $session->client_auth->username || $session->client_auth->userid ) {
-		#	unless ( $coderef->is_action ) {
-		#		$session->status(
-		#			OpenSRF::DomainObject::oilsMethodException->new(
-		#					statusCode => STATUS_NOTALLOWED(),
-		#					status => "User cannot use [$method_name]" ) );
-		#		return 1;
-		#	}
-		#}
-			
 
 		$log->debug( " (we got coderef $coderef", DEBUG);
 
@@ -187,36 +176,43 @@ sub handler {
 	return 1;
 }
 
-sub method_lookup {
+sub register_method {
+	my $self = shift;
+	my $app = ref($self) || $self;
+	my %args = @_;
+
+	throw OpenSRF::DomainObject::oilsMethodException unless ($args{method});
+	
+	$args{protocol} ||= 1;
+	$args{api_name} ||= $app . '.' . $args{method};
+	$args{code} ||= \&{$app . '::' . $args{method}};
+	
+	$_METHODS{$args{api_name}} = bless \%args => $app;
+}
+
+
+sub method_lookup {             
 	my $self = shift;
 	my $method = shift;
 	my $proto = shift;
 
+	my $super_lookup = $self->SUPER::method_lookup($method,$proto);
+	return $super_lookup if (ref $super_lookup);
+
 	my $class = ref($self) || $self;
 
-	$log->debug("Looking up [$method] in [$self]", INTERNAL);
-	
-	my $obj = bless {} => $self;
-	if (my $coderef = $self->can("${method}_${proto}")) {
-		$$obj{code} = $coderef;
-		$$obj{name} = "${method}_${proto}";
-		return $obj;
-	}
-	return undef;
+	$log->debug("Specialized lookup of [$method] in [$class]", INTERNAL);
+
+	if (exists $_METHODS{$method}) {
+		return $_METHODS{$method} if ($_METHODS{$method}{protocol} == $proto);
+	}               
+
+	return undef; 
 }
 
 sub run {
 	my $self = shift;
-	$self->{code}->(@_);
+	$self->{code}->($self, @_);
 }
-
-sub is_action {
-	my $self = shift;
-	if (my $can = $self->can($self->{name} . '_action')) {
-		return $can->();
-	}
-	return 0;
-}
-
 
 1;
