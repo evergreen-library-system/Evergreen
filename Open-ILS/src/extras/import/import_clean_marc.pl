@@ -1,146 +1,96 @@
 #!/usr/bin/perl -w
 use strict;
-use lib '../../perlmods/';
-use lib '../../../../OpenSRF/src/perlmods/';
-use OpenSRF::EX qw/:try/;
-use OpenSRF::System;
-use OpenSRF::Utils::SettingsClient;
-use OpenILS::Utils::FlatXML;
-use OpenILS::Utils::Fieldmapper;
-use Time::HiRes;
+use XML::LibXML;
+use Time::HiRes qw/time/;
 use Getopt::Long;
 use Data::Dumper;
+use Error qw/:try/;
+use open qw/:utf8/;
 
-my ($config, $userid, $sourceid, $wormize) = ('/pines/conf/bootstrap.conf', 1, 2);
+$|=1;
+
+my ($userid, $sourceid, $rec_id, $entry_file, $marc_file, $map_file) = (1, 2, 1, 'record_entry.sql','record_marc.sql','record_id_map.pl');
 
 GetOptions (	
-	"file=s"	=> \$config,
-	"wormize"	=> \$wormize,
-	"sourceid"	=> \$sourceid,
-	"userid=i"	=> \$userid,
+	"sourceid"		=> \$sourceid,
+	"entry_file=s"		=> \$entry_file,
+	"marc_file=s"		=> \$marc_file,
+	"tcn_map_file=s"	=> \$map_file,
+	"userid=i"		=> \$userid,
+	"first=i"		=> \$rec_id,
 );
 
-OpenSRF::System->bootstrap_client( config_file => $config );
-my $st_server = OpenSRF::AppSession->create( 'open-ils.storage' );
-my $worm_server = OpenSRF::AppSession->create( 'open-ils.worm' ) if ($wormize);
+my $tcn_map;
 
-try {
+open RE, ">$entry_file" or die "Can't open $entry_file!  $!\n";
+open RM, ">$marc_file" or die "Can't open $marc_file!  $!\n";
 
-	throw OpenSRF::EX::PANIC ("I can't connect to the storage server!")
-		if (!$st_server->connect);
+print RE <<SQL;
+SET CLIENT_ENCODING TO 'UNICODE';
+COPY biblio.record_entry (id,editor,creator,source,tcn_value,last_xact_id) FROM STDIN;
+SQL
 
-#	throw OpenSRF::EX::PANIC ("I can't connect to the worm server!")
-#		if ($wormize && !$worm_server->connect);
+print RM <<SQL;
+SET CLIENT_ENCODING TO 'UNICODE';
+COPY biblio.record_marc (id,marc,last_xact_id) FROM STDIN;
+SQL
 
-} catch Error with {
-	die shift;
-};
+my $xact_id = time;
 
+my $parser = XML::LibXML->new;
 
-while ( my $xml = <> ) {
+my $xml = '';
+while ( $xml .= <STDIN> ) {
 	chomp $xml;
+	next unless $xml;
 
-	my $new_id;
-
-	my $ns = OpenILS::Utils::FlatXML->new( xml => $xml );
-
-	next unless ($ns->xml);
-
-	my $doc = $ns->xml_to_doc;
-	my $tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"]' );
-
-	$tcn =~ s/^.*?(\w+)$/$1/go;
-
-	warn "Adding record for TCN $tcn\n";
-
-	#$ns->xml_to_nodeset;
-	#next;
-
-	warn "  ==> Starting transaction...\n";
-
-	my $xact = $st_server->request( 'open-ils.storage.transaction.begin' );
-	$xact->wait_complete;
-
-	my $r = $xact->recv;
-	die $r unless (UNIVERSAL::can($r, 'content'));
-	die "Couldn't start transaction!" unless ($r);
-	
-	warn "  ==> Transaction ".$xact->session->session_id." started\n";
-
+	my $tcn;
+	my $success = 0;
 	try {
-		my $fe = new Fieldmapper::biblio::record_entry;
-		$fe->editor( $userid );
-		$fe->creator( $userid );
-		$fe->source( $sourceid );
-		$fe->tcn_value( $tcn );
-
-		my $req = $st_server->request( 'open-ils.storage.biblio.record_entry.create' => $fe );
-
-		$req->wait_complete;
-
-		my $resp = $req->recv;
-		unless( $resp && $resp->can('content') ) {
-			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got an exception!! -- ".$resp->toString);
-		}
-
-		$new_id = $resp->content;
-		warn "    (new record_entry id is $new_id)\n";
-
-		$req->finish;
-
-		if ($new_id) {
-
-			#$ns->xml_to_nodeset;
-			#my $nodeset = $ns->nodeset;
-			#$_->owner_doc( $new_id ) for (@$nodeset);
-
-			my $rec = new Fieldmapper::biblio::record_marc;
-			$rec->id( $new_id );
-			$rec->marc( $xml );
-
-			$req = $st_server->request( 'open-ils.storage.biblio.record_marc.create', $rec );
-
-			$req->wait_complete;
-
-			$resp = $req->recv;
-			unless( $resp && $resp->can('content') ) {
-				throw OpenSRF::EX::ERROR ("Failed to create record_nodes for TCN [$tcn].  Got an exception!! -- $resp");
-			}
-
-
-			$req->finish;
-		} else {
-			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got no new ID !! -- ".$resp->toString);
-		}
+		my $doc = $parser->parse_string($xml);;
+		$tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"][1]' );
+		$success = 1;
 	} catch Error with {
-		warn "  !!> Rolling back transaction\n".shift();
-		$xact = $st_server->request( 'open-ils.storage.transaction.rollback' );
-		$xact->wait_complete;
+		my $e = shift;
+		warn $e;
+		warn $xml;
+	};	
+	next unless $success;
 
-		die $r unless (UNIVERSAL::can($r, 'content'));
-		die "Couldn't rollback transaction!" unless ($r->content);
+	$xml =~ s/\\/\\\\/go;
+	$xml =~ s/\t/\\t/go;
 
-		$xact = undef;
-	};
-
-	if ($xact) {
-		warn "  ==>Commiting addition of $tcn\n";
-		$xact = $st_server->request( 'open-ils.storage.transaction.commit' );
-		$xact->wait_complete;
-
-		my $r = $xact->recv;
-		die $r unless (UNIVERSAL::can($r, 'content'));
-		die "Couldn't commit transaction!" unless ($r->content);
-
-#		if ($wormize) {
-#			$worm_server->full_request( 'open-ils.worm.wormize', $new_id,);
-#			#$worm_server->disconnect;
-#		}
-
+	$tcn =~ s/^.*?(\w+)\s*$/$1/go;
+	
+	unless ($tcn) {
+		warn "\nNo TCN found for rec # $rec_id\n";
+		$xml = '';
+		$rec_id++;
+		next;
 	}
+
+	if (exists($$tcn_map{$tcn})) {
+		warn "\n !! TCN $tcn already exists!\n";
+		$xml = '';
+		next;
+	}
+
+	print ".";
+	$$tcn_map{$tcn} = $rec_id;
+
+	print RE join("\t", ($rec_id,$userid,$userid,$sourceid,$tcn,$xact_id))."\n";
+	print RM join("\t", ($rec_id,$xml,$xact_id))."\n";
+
+	$rec_id++;
+	$xml = '';
 }
 
+print RE "\\.\n";
+print RE "SELECT setval('biblio.record_entry_id_seq'::TEXT, $rec_id);\n";
+print RM "\\.\n";
 
+open MAP, ">$map_file" or die "Can't open $map_file!  $!\n";
+print MAP Data::Dumper->Dump([$tcn_map],['tcn_map']);
 
 
 
