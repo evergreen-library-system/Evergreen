@@ -21,6 +21,16 @@ case $1 in
 		$0 status;
 		echo;
 		;;
+	"startprofile")
+		if [ -z $2 ]; then
+			usage;
+			exit;
+		fi		
+		OPENSRF_PROFILE=1 perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
+		sleep 2;
+		$0 status;
+		echo;
+		;;
 	"stop")
 		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
 		if [ -z $PID ]; then
