@@ -154,75 +154,7 @@ sub cat_biblio_search_class {
 }
 
 
-__PACKAGE__->register_method(
-	method	=> "cat_biblio_search_class_stream",
-	api_name	=> "open-ils.search.cat.biblio.class.stream",
-	argc		=> 3, 
-	note		=> "Searches biblio information by search class",
-);
 
-sub cat_biblio_search_class_stream {
-
-	my( $self, $client, $org_id, $class, $sort, $string ) = @_;
-
-	throw OpenSRF::EX::InvalidArg 
-		("Not enough args to open-ils.search.cat.biblio.class")
-			unless( defined($org_id) and $class and $sort and $string );
-
-
-	my $search_hash;
-
-	my $method = $self->method_lookup("open-ils.search.biblio.marc");
-	if(!$method) {
-		throw OpenSRF::EX::PANIC 
-			("Can't lookup method 'open-ils.search.biblio.marc'");
-	}
-
-	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
-
-	my @ids;
-	for my $i (@$records) { push @ids, $i->[0]; }
-
-	my $mods_list = _records_to_mods( @ids );
-
-	# ---------------------------------------------------------------
-	# append copy count information to the mods objects
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	my $request = $session->request(
-		"open-ils.storage.biblio.record_copy_count.batch",  $org_id, @ids );
-
-	for my $id (@ids) {
-
-		warn "receiving copy counts for doc $id\n";
-
-		my $response = $request->recv();
-		next unless $response;
-
-		if( $response and UNIVERSAL::isa($response, "Error")) {
-			throw $response ($response->stringify);
-		}
-
-		my $count = $response->content;
-		my $mods_obj = undef;
-		for my $m (@$mods_list) {
-			$mods_obj = $m if ($m->{doc_id} == $id)
-		}
-		if($mods_obj) {
-			$mods_obj->{copy_count} = $count;
-		}
-
-		$client->respond( $mods_obj );
-
-	}	
-	$request->finish();
-
-	$session->finish();
-	$session->disconnect();
-	$session->kill_me();
-	# ---------------------------------------------------------------
-
-}
 
 
 __PACKAGE__->register_method(

@@ -34,6 +34,7 @@ sub biblio_record_tree_retrieve {
 	my $name = "open-ils.storage.biblio.record_marc.retrieve";
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( $name, $recordid );
+	$request->wait_complete;
 	my $response = $request->recv();
 	warn "got response from storage in retrieve for $recordid\n";
 
@@ -121,6 +122,7 @@ sub biblio_record_tree_commit {
 	warn "Sending updated doc $docid to db\n";
 	my $req = $session->request( "open-ils.storage.biblio.record_marc.update", $biblio );
 
+	$req->wait_complete;
 	my $status = $req->recv();
 	if( !$status || $status->isa("Error") || ! $status->content) {
 		OpenILS::Application::AppUtils->rollback_db_session($session);
@@ -150,6 +152,8 @@ sub biblio_record_tree_commit {
 		my $wreq = $wses->request( 
 				"open-ils.worm.wormize.marc", $docid, $marcxml->toString );
 		warn "Calling worm receive\n";
+
+		$wreq->wait_complete;
 		$wresp = $wreq->recv();
 
 		if( $wresp && $wresp->can("content") and $wresp->content ) {
@@ -229,8 +233,9 @@ sub biblio_record_record_metadata {
 
 	}
 
+	$request->finish;
 	$session->disconnect();
-	$session->kill_me();
+	$session->finish();
 
 	return $results;
 
@@ -246,8 +251,9 @@ sub _get_userid_by_id {
 	my $request = $session->request( 
 		"open-ils.storage.actor.user.batch.retrieve.atomic", @ids );
 
+	$request->wait_complete;
 	my $response = $request->recv();
-	if(!$response) { return undef; }
+	if(!$request->complete) { return undef; }
 
 	if($response->isa("Error")){
 		throw $response ($response);
@@ -276,10 +282,13 @@ sub _get_id_by_userid {
 	my $request = $session->request( 
 		"open-ils.storage.actor.user.search.usrid", @users );
 
+	$request->wait_complete;
 	my $response = $request->recv();
-	if(!$response) { return undef; }
+	if(!$request->complete) { 
+		throw OpenSRF::EX::ERROR ("no response from storage on user retrieve");
+	}
 
-	if($response->isa("Error")){
+	if(UNIVERSAL::isa( $response, "Error")){
 		throw $response ($response);
 	}
 
@@ -313,6 +322,7 @@ sub _update_record_metadata {
 		my $user_session = OpenSRF::AppSession->create("open-ils.storage");
 		my $user_request = $user_session->request( 
 			"open-ils.storage.biblio.record_entry.retrieve", $docid );
+		$user_request->wait_complete;
 		my $meta = $user_request->recv();
 
 		if(!$meta) {
@@ -523,22 +533,12 @@ sub retrieve_copies_global {
 
 __PACKAGE__->register_method(
 	method	=> "generic_edit_copies_volumes",
-	api_name	=> "open-ils.cat.asset.volume.batch.create",
-);
-
-__PACKAGE__->register_method(
-	method	=> "generic_edit_copies_volumes",
 	api_name	=> "open-ils.cat.asset.volume.batch.update",
 );
 
 __PACKAGE__->register_method(
 	method	=> "generic_edit_copies_volumes",
 	api_name	=> "open-ils.cat.asset.volume.batch.delete",
-);
-
-__PACKAGE__->register_method(
-	method	=> "generic_edit_copies_volumes",
-	api_name	=> "open-ils.cat.asset.copy.batch.create",
 );
 
 __PACKAGE__->register_method(
@@ -554,7 +554,7 @@ __PACKAGE__->register_method(
 
 sub generic_edit_copies_volumes {
 
-	my( $self, $client, $user_session, @items ) = @_;
+	my( $self, $client, $user_session, $items ) = @_;
 
 	my $method = $self->api_name;
 	warn "received api name $method\n";
@@ -562,13 +562,16 @@ sub generic_edit_copies_volumes {
 	warn "our method is $method\n";
 
 	use Data::Dumper;
-	warn Dumper \@items;
+	warn Dumper $items;
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 	
 	warn "updating editor info\n";
-	for my $item (@items) {
+
+	for my $item (@$items) {
+
+		next unless $item;
 
 		if( $method =~ /copy/ ) {
 			new Fieldmapper::asset::copy($item);
@@ -576,19 +579,15 @@ sub generic_edit_copies_volumes {
 			new Fieldmapper::asset::call_number($item);
 		}
 
-		next unless $item;
 		$item->editor( $user_obj->id );
-		if( $method =~ /create/ ) {
-			$item->creator( $user_obj->id );
-		}
 	}
 
 	my $session = OpenILS::Application::AppUtils->start_db_session;
-	my $request = $session->request( $method, @items );
+	my $request = $session->request( $method, @$items );
 
 	my $result = $request->recv();
 
-	if(!$result) {
+	if(!$request->complete) {
 		OpenILS::Application::AppUtils->rollback_db_session($session);
 		throw OpenSRF::EX::ERROR 
 			("No response from storage on $method");
@@ -635,6 +634,12 @@ sub volume_tree_add {
 
 
 
+		my $new_copy_list = $volume->copies;
+		my $id;
+
+		warn "Searching for volume with ".$volume->owning_lib . " " .
+			$volume->label . " " . $volume->record . "\n";
+
 		my $cn_req = $session->request( 
 				'open-ils.storage.asset.call_number.search' =>
 		      {       owning_lib      => $volume->owning_lib,
@@ -642,54 +647,67 @@ sub volume_tree_add {
 		              record          => $volume->record,
 				}); 
 
+		$cn_req->wait_complete;
 		my $cn = $cn_req->recv();
-		#XXX errors...
-		my $vs = $cn->content;
-
-		warn "Searched Volume\n";
-		warn Dumper $vs;
+		
+		if(!$cn_req->complete) {
+			throw OpenSRF::EX::ERROR ("Error searching volumes on storage");
+		}
 
 		$cn_req->finish();
 
-		my $new_copy_list = $volume->copies;
+		if($cn) {
 
-		if( $vs ) {
-			$volume = $vs;
+			if(UNIVERSAL::isa($cn,"Error")) {
+				throw $cn ($cn->stringify);
+			}
+
+			$volume = $cn->content;
+			$id = $volume->id;
+			$volume->editor( $user_obj->id );
+
 		} else {
+
 			$volume->creator( $user_obj->id );
-		}
+			$volume->editor( $user_obj->id );
 
-		my $id;
+			warn "Attempting to create a new volume:\n";
 
-		$volume->editor( $user_obj->id );
-
-		if(!$vs) {
-
+			warn Dumper $volume;
 
 			my $request = $session->request( 
 				"open-ils.storage.asset.call_number.create", $volume );
+
+			warn "0\n";
 			my $response = $request->recv();
 
-			if(!$response) { 
+			warn "1\n";
+			if(!$request->complete) { 
 				OpenILS::Application::AppUtils->rollback_db_session($session);
 				throw OpenSRF::EX::ERROR 
 					("No response from storage on call_number.create");
 			}
 		
+			warn "2\n";
 			if(UNIVERSAL::isa($response, "Error")) {
 				OpenILS::Application::AppUtils->rollback_db_session($session);
 				throw $response ($response->stringify);
 			}
 
 			$id = $response->content;
+
+			warn "3\n";
+			if( $id == 0 ) {
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw OpenSRF::EX::ERROR (" * -> Error creating new volume");
+			}
+
 			$request->finish();
 	
 			warn "received new volume id: $id\n";
 
-		} else {
-			$id = $volume->id;
-			warn "found volume\n";
 		}
+
 
 		for my $copy (@{$new_copy_list}) {
 
@@ -738,13 +756,89 @@ sub volume_tree_add {
 	warn "committing volume tree add db session\n";
 	OpenILS::Application::AppUtils->commit_db_session($session);
 
-	$session->disconnect();
-	$session->kill_me();
-
 	return scalar(@$volumes);
 
 }
 
+
+
+__PACKAGE__->register_method(
+	method	=> "volume_tree_delete",
+	api_name	=> "open-ils.cat.asset.volume.tree.batch.delete",
+);
+
+sub volume_tree_delete {
+
+
+	my( $self, $client, $user_session, $volumes ) = @_;
+	return undef unless $volumes;
+
+	my $user_obj = 
+		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+
+	my $session = OpenILS::Application::AppUtils->start_db_session;
+
+	for my $volume (@$volumes) {
+
+		$volume->editor($user_obj->id);
+
+		new Fieldmapper::asset::call_number($volume);
+
+		for my $copy (@{$volume->copies}) {
+
+			new Fieldmapper::asset::copy($copy);
+
+			$copy->editor( $user_obj->id );
+
+			warn "Deleting copy " . $copy->id . " from db\n";
+
+			my $req = $session->request(
+					"open-ils.storage.asset.copy.delete", $copy );
+
+			my $resp = $req->recv();
+
+			if( !$req->complete ) {
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw OpenSRF::EX::ERROR (
+						"No response from storage on copy delete");
+			}
+	
+			if(UNIVERSAL::isa($resp, "Error")) {
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw $resp ($resp->stringify);
+			}
+			
+			$req->finish();
+		}
+
+		warn "Deleting volume " . $volume->id . " from database\n";
+
+		my $vol_req = $session->request(
+				"open-ils.storage.asset.call_number.delete", $volume );
+		my $vol_resp = $vol_req;
+
+		if(!$vol_req->complete) {
+			OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw OpenSRF::EX::ERROR 
+					("No response from storage on volume delete");
+		}
+
+		if( $vol_resp and UNIVERSAL::isa($vol_resp, "Error")) {
+			OpenILS::Application::AppUtils->rollback_db_session($session);
+			throw $vol_resp ($vol_resp->stringify);
+		}
+
+		$vol_req->finish();
+
+	}
+
+	warn "committing delete volume tree add db session\n";
+
+	OpenILS::Application::AppUtils->commit_db_session($session);
+
+	return scalar(@$volumes);
+
+}
 
 
 
