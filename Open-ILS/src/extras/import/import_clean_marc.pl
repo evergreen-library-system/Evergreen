@@ -6,6 +6,7 @@ use OpenSRF::EX qw/:try/;
 use OpenSRF::System;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::FlatXML;
+use OpenILS::Utils::Fieldmapper;
 use Time::HiRes;
 use Getopt::Long;
 use Data::Dumper;
@@ -46,26 +47,32 @@ while ( my $xml = <> ) {
 	my $doc = $ns->xml_to_doc;
 	my $tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"]' );
 
-	$tcn =~ s/.*?(\w+)$/$1/go;
+	$tcn =~ s/^.*?(\w+)$/$1/go;
 
 	warn "Adding record for TCN $tcn\n";
 
 	#$ns->xml_to_nodeset;
 	#next;
 
+	warn "  ==> Starting transaction...\n";
+
 	my $xact = $st_server->request( 'open-ils.storage.transaction.begin' );
 	$xact->wait_complete;
-	warn "  ==> Starting transaction\n";
+
+	my $r = $xact->recv;
+	die $r unless (UNIVERSAL::can($r, 'content'));
+	die "Couldn't start transaction!" unless ($r);
+	
+	warn "  ==> Transaction ".$xact->session->session_id." started\n";
 
 	try {
-		my $req = $st_server->request(
-			'open-ils.storage.biblio.record_entry.create',
-			{	creator		=> $userid,
-				editor		=> $userid,
-				source		=> $sourceid,
-				tcn_value	=> $tcn,
-			},
-		);
+		my $fe = new Fieldmapper::biblio::record_entry;
+		$fe->editor( $userid );
+		$fe->creator( $userid );
+		$fe->source( $sourceid );
+		$fe->tcn_value( $tcn );
+
+		my $req = $st_server->request( 'open-ils.storage.biblio.record_entry.create' => $fe );
 
 		$req->wait_complete;
 
@@ -79,9 +86,10 @@ while ( my $xml = <> ) {
 		$req->finish;
 
 		if ($new_id) {
-			my $nodeset = $ns->xml_to_nodeset;
-		
-			$_->{owner_doc} = $new_id for (@$nodeset);
+
+			$ns->xml_to_nodeset;
+			my $nodeset = $ns->nodeset;
+			$_->owner_doc( $new_id ) for (@$nodeset);
 		
 			$req = $st_server->request(
 				'open-ils.storage.biblio.record_node.batch.create',
@@ -111,6 +119,10 @@ while ( my $xml = <> ) {
 		warn "  !!> Rolling back transaction\n".shift();
 		$xact = $st_server->request( 'open-ils.storage.transaction.rollback' );
 		$xact->wait_complete;
+
+		die $r unless (UNIVERSAL::can($r, 'content'));
+		die "Couldn't rollback transaction!" unless ($r->content);
+
 		$xact = undef;
 	};
 
@@ -118,6 +130,11 @@ while ( my $xml = <> ) {
 		warn "  ==>Commiting addition of $tcn\n";
 		$xact = $st_server->request( 'open-ils.storage.transaction.commit' );
 		$xact->wait_complete;
+
+		my $r = $xact->recv;
+		die $r unless (UNIVERSAL::can($r, 'content'));
+		die "Couldn't commit transaction!" unless ($r->content);
+
 	}
 }
 
