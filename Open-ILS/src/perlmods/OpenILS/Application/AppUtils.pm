@@ -39,7 +39,17 @@ sub commit_db_session {
 	$session->kill_me();
 }
 
+sub rollback_db_session {
+	my( $self, $session ) = @_;
 
+	my $req = $session->request("open-ils.storage.transaction.rollback");
+	my $resp = $req->recv();
+	if(ref($resp) and $resp->isa("Error")) { throw $resp; }
+
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+}
 
 # ---------------------------------------------------------------------------
 # Checks to see if a user is logged in.  Returns the user record on success,
@@ -48,18 +58,21 @@ sub commit_db_session {
 sub check_user_session {
 
 	my( $self, $user_session ) = @_;
+
 	my $session = OpenSRF::AppSession->create( "open-ils.auth" );
 	my $request = $session->request("open-ils.auth.session.retrieve", $user_session );
 	my $response = $request->recv();
-	if($response) {
+
+	if(!$response) {
 		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
 	}
+
 	if($response->isa("OpenSRF::EX")) {
 		throw $response ($response->stringify);
 	}
 
 	my $user = $response->content;
-	if(!$user ) {
+	if(!$user) {
 		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
 	}
 
@@ -68,19 +81,6 @@ sub check_user_session {
 
 	return $user;
 
-
-=head blah
-	my $method = $self->method_lookup("open-ils.auth.session.retrieve");
-	if(!$method) {
-		throw OpenSRF::EX::PANIC ("Can't locate method 'open-ils.auth.session.retrieve'" );
-	}
-
-	my ($user) = $method->run( $user_session );
-	if(!$user ) {
-		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
-	}
-	return $user;
-=cut
 	
 }
 
