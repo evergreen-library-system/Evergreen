@@ -213,6 +213,11 @@ sub bootstrap {
 
 	_log( " * System is ready..." );
 
+	sleep 1;
+	my $ps = `ps ax | grep " Open" | grep -v grep | sort -r -k5`;
+
+	print "\n --- PS --- \n$ps --- PS ---\n\n";
+
 	while( 1 ) { sleep; }
 	exit;
 }
@@ -363,7 +368,7 @@ sub launch_listener {
 		}
 		else {
 			my $apname = $app;
-			$0 = "Listener ($apname)";
+			$0 = "OpenSRF listener ($apname)";
 			eval _listener( $app );
 			exit;
 		}

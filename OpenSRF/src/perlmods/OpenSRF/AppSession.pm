@@ -166,12 +166,27 @@ sub last_sent_type {
 sub get_app_targets {
 	my $app = shift;
 
-	my $targets;
-	my $config_client = OpenSRF::Utils::SettingsClient->new();
+#	my $config_client = OpenSRF::Utils::SettingsClient->new();
 
+	my $conf = OpenSRF::Utils::Config->current;
+	my $router_name = $conf->bootstrap->router_name;
+	my $routers = $conf->bootstrap->domains;
+
+	unless($router_name and $routers) {
+		throw OpenSRF::EX::Config 
+			("Missing router config information 'router_name' and 'routers'");
+	}
+
+	my @targets;
+	for my $router (@$routers) {
+		push @targets, "$router_name\@$router/$app";
+	}
+
+	return @targets;
+
+=head comment
 	if( $app eq "settings" ) { # we have to load from the bootstrap config file
 
-		my $conf = OpenSRF::Utils::Config->current;
 		if(!$conf) { die("No transport target for $app!"); }
 		$targets = $conf->targets->$app || die("No transport target for $app!");
 
@@ -181,6 +196,7 @@ sub get_app_targets {
 	}
 
 	return @$targets;
+=cut
 }
 
 # When we're a client and we want to connect to a remote service

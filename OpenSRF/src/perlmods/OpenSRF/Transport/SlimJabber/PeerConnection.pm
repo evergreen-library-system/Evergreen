@@ -30,7 +30,7 @@ sub retrieve {
 	my( $class, $app ) = @_;
 	return $_singleton_connection;
 #	my @keys = keys %apps_hash;
-#OpenSRF::Utils::Logger->transport( 
+#	OpenSRF::Utils::Logger->transport( 
 #			"Requesting peer for $app and we have @keys", INFO );
 #	return $apps_hash{$app};
 }
@@ -50,35 +50,22 @@ sub new {
 		throw OpenSRF::EX::Config( "No suitable config found for PeerConnection" );
 	}
 
-	my $trans_list = $config->bootstrap->transport;
-	unless( $trans_list && $trans_list->[0] ) {
-		throw OpenSRF::EX::Config ("Peer Connection needs transport info");
-	}
+	my $conf			= OpenSRF::Utils::Config->current;
+	my $domains = $conf->bootstrap->domains;
+	my $h = $conf->env->hostname;
 
-	# For now we just use the first in the list...
-	my $trans		= $trans_list->[0];
+	my $username	= $conf->bootstrap->username;
+	my $password	= $conf->bootstrap->passwd;
+	my $port			= $conf->bootstrap->port;
+	my $resource	= "${app}_drone_at_$h";
+	my $host			= $domains->[0]; # XXX for now...
 
-	my $username;
-	if( $app eq "system_client" ) {
-		$username	= $config->$trans->username;
-	} else {
-		$username = $app;
-	}
+	if( $app eq "client" ) { $resource = "client_at_$h"; }
 
-
-
-	my $password	= $config->$trans->password;
-	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->password, INTERNAL );
-	my $h = $config->env->hostname;
-	my $resource	= $h;
-	my $server		= $config->$trans->server;
-	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->server, INTERNAL );
-	my $port			= $config->$trans->port;
-	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->port, INTERNAL );
 
 
 	OpenSRF::EX::Config->throw( "JPeer could not load all necesarry values from config" )
-		unless ( $username and $password and $resource and $server and $port );
+		unless ( $username and $password and $resource and $host and $port );
 
 	OpenSRF::Utils::Logger->transport( "Built Peer with", INTERNAL );
 
@@ -86,7 +73,7 @@ sub new {
 		username		=> $username,
 		resource		=> $resource,
 		password		=> $password,
-		host			=> $server,
+		host			=> $host,
 		port			=> $port,
 		);	
 					
@@ -102,19 +89,14 @@ sub new {
 }
 
 sub process {
+
 	my $self = shift;
 	my $val = $self->SUPER::process(@_);
 	return 0 unless $val;
+
 	OpenSRF::Utils::Logger->transport( "Calling transport handler for ".$self->app." with: $val", INTERNAL );
 	my $t;
-#try {
 	$t = OpenSRF::Transport->handler($self->app, $val);
-
-#	} catch OpenSRF::EX with {
-#		my $e = shift;
-#		$e->throw();
-
-#	} catch Error with { return undef; }
 
 	return $t;
 }

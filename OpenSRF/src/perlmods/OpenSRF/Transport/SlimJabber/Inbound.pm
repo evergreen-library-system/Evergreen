@@ -32,28 +32,14 @@ This service should be loaded at system startup.
 		$class = ref( $class ) || $class;
 		if( ! $instance ) {
 
-			my $client = OpenSRF::Utils::SettingsClient->new();
+			my $conf = OpenSRF::Utils::Config->current;
+			my $domains = $conf->bootstrap->domains;
 
-			my $transport_info = $client->config_value(
-					"apps", $app, "transport_hosts", "transport_host" );
-
-			if( !ref($transport_info) eq "ARRAY" ) {
-				$transport_info = [$transport_info];
-			}
-
-
-			# XXX for now, we just try the first host...
-
-			my $username = $transport_info->[0]->{username};
-			my $password	= $transport_info->[0]->{password};
-			my $resource	= 'system';
-			my $host			= $transport_info->[0]->{host};
-			my $port			= $transport_info->[0]->{port};
-
-			if (defined $client->config_value("router_targets")) {
-				my $h = OpenSRF::Utils::Config->current->env->hostname;
-				$resource .= "_$h";
-			}
+			my $username	= $conf->bootstrap->username;
+			my $password	= $conf->bootstrap->passwd;
+			my $port			= $conf->bootstrap->port;
+			my $host			= $domains->[0]; # XXX for now...
+			my $resource	= $app . '_listener_at_' . $conf->env->hostname;
 
 			OpenSRF::Utils::Logger->transport("Inbound as $username, $password, $resource, $host, $port\n", INTERNAL );
 
@@ -67,6 +53,7 @@ This service should be loaded at system startup.
 
 			$self->{app} = $app;
 					
+			my $client = OpenSRF::Utils::SettingsClient->new();
 			my $f = $client->config_value("dirs", "sock");
 			$unix_sock = join( "/", $f, 
 					$client->config_value("apps", $app, "unix_config", "unix_sock" ));
@@ -81,27 +68,32 @@ This service should be loaded at system startup.
 sub listen {
 	my $self = shift;
 	
-	my $client = OpenSRF::Utils::SettingsClient->new();
 	my $routers;
+
 	try {
 
-		$routers = $client->config_value("router_targets","router_target");
-		$logger->transport( $self->{app} . " connecting to router $routers", INFO ); 
-
-		if (defined $routers) {
-			if( !ref($routers) || !(ref($routers) eq "ARRAY") ) {
-				$routers = [$routers];
-			}
-
-
-			for my $router (@$routers) {
-				$logger->transport( $self->{app} . " connecting to router $router", INFO ); 
-				$self->send( to => $router, 
-						body => "registering", router_command => "register" , router_class => $self->{app} );
-			}
-			$logger->transport( $self->{app} . " :routers connected", INFO ); 
-
+		my $conf = OpenSRF::Utils::Config->current;
+		my $router_name = $conf->bootstrap->router_name;
+		my $routers = $conf->bootstrap->domains;
+	
+		unless($router_name and $routers) {
+			throw OpenSRF::EX::Config 
+				("Missing router config information 'router_name' and 'routers'");
 		}
+	
+		my @targets;
+		for my $router (@$routers) {
+			push @targets, "$router_name\@$router/router";
+		}
+
+		for my $router (@targets) {
+			$logger->transport( $self->{app} . " connecting to router $router", INFO ); 
+			$self->send( to => $router, 
+					body => "registering", router_command => "register" , router_class => $self->{app} );
+		}
+		$logger->transport( $self->{app} . " :routers connected", INFO ); 
+
+		
 	} catch OpenSRF::EX::Config with {
 		$logger->transport( $self->{app} . ": No routers defined" , WARN ); 
 		# no routers defined
