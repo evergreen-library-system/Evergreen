@@ -20,7 +20,6 @@ sub set_cache {
 }
 
 
-
 # ------------------------------------
 # utility method for grabbing config info
 sub config_value {
@@ -95,8 +94,9 @@ sub grab_host_config {
 
 	$host_config = $resp->content();
 	$req->finish();
-	$session->finish;
 	$session->disconnect();
+	$session->finish;
+	$session->kill_me();
 }
 
 
