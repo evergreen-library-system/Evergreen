@@ -5,7 +5,14 @@ sub new {
 	return bless \$x => __PACKAGE__;
 }
 use overload ( '""' => \&toString );
-use overload ( '0+' => sub { ${$_[0]} } );
+use overload ( '0+' => sub { $_[0]->toString } );
+use overload ( '+' => sub { int($_[0]) + int($_[1]) } );
+use overload ( '-' => sub { int($_[0]) - int($_[1]) } );
+use overload ( '*' => sub { int($_[0]) * int($_[1]) } );
+use overload ( '/' => sub { int($_[0]) / int($_[1]) } );
+use overload ( '%' => sub { int($_[0]) % int($_[1]) } );
+use overload ( '**' => sub { int($_[0]) ** int($_[1]) } );
+use overload ( 'neg' => sub { neg(int($_[0])) } );
 
 sub toString { defined($_[1]) ? ${$_[1]} : ${$_[0]} }
 
