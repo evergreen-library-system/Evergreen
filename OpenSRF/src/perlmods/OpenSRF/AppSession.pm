@@ -125,6 +125,7 @@ sub server_build {
 	my $self = bless { recv_queue  => [],
 			   request_queue  => [],
 			   requests  => 0,
+			   death_callbacks  => [],
 			   endpoint    => SERVER,
 			   state       => CONNECTING, 
 			   session_id  => $sess_id,
@@ -323,9 +324,21 @@ sub finish {
 	}
 }
 
+sub register_death_callback {
+	my $self = shift;
+	my $cb = shift;
+	push @{ $self->{death_callbacks} }, $cb;
+}
+
 sub kill_me {
 	my $self = shift;
 	if( ! $self->session_id ) { return 0; }
+
+	# run each 'kill_me' callback;
+	for my $sub (@{$self->{death_callbacks}}) {
+		$sub->($self);
+	}
+
 	$self->disconnect;
 	$logger->transport( "AppSession killing self: " . $self->session_id(), DEBUG );
 	my @a;
@@ -840,6 +853,11 @@ sub respond_complete {
 
 }
 
+sub register_death_callback {
+	my $self = shift;
+	my $cb = shift;
+	$self->session->register_death_callback( $cb );
+}
 
 package OpenSRF::AppSubrequest;
 
