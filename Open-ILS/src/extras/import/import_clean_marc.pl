@@ -82,6 +82,7 @@ while ( my $xml = <> ) {
 		}
 
 		my $new_id = $resp->content;
+		warn "    (new record_entry id is $new_id)\n";
 
 		$req->finish;
 
@@ -93,12 +94,9 @@ while ( my $xml = <> ) {
 
 			my $rec = new Fieldmapper::biblio::record_marc;
 			$rec->id( $new_id );
-			$rec->marc( $ns->xml );
-		
-			$req = $st_server->request(
-				'open-ils.storage.biblio.record_marc.create',
-				$rec,
-			);
+			$rec->marc( $xml );
+
+			$req = $st_server->request( 'open-ils.storage.biblio.record_marc.create', $rec );
 
 			$req->wait_complete;
 

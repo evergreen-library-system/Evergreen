@@ -89,12 +89,13 @@ sub JSON2perl {
 	s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
 	s/(\]|\}|")\s*\/\*--\s*E\w*?\s+(\S+)\s*--\*\//$1 => _json_hint_to_class("$1", "$2")) /sog;
 
+	my $re = qr/((?<!\\)"(?>(?<=\\)"|[^"])*(?<!\\)")/;
 	# Grab strings...
-	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
+	my @strings = /$re/sog;
 
 	# Replace with code...
 	#s/"(?:(?:\\[\"])|[^\"])*"/ do{ \$t = '"'.shift(\@strings).'"'; eval \$t;} /sog;
-	s/"(?:(?:\\[\"])|[^\"]*)"/ eval { shift(\@strings) } /sog;
+	s/$re/ eval shift(\@strings) /sog;
 
 	# Perlify hash notation
 	s/:/ => /sog;
@@ -106,7 +107,6 @@ sub JSON2perl {
 	s/null/ undef /sog;
 	s/true/ bless( {}, "JSON::bool::true") /sog;
 	s/false/ bless( {}, "JSON::bool::false") /sog;
-
 
 	my $ret;
 	return eval '$ret = '.$_;
@@ -217,7 +217,8 @@ sub perl2JSON {
 		JSON->register_class_hint(name => $name, hint => $name, type => lc($type));
 		$output .= perl2JSON(undef,$perl);
 	} else {
-		$perl =~ s/\\/\\\\/sgo;
+		$perl =~ s{\\}{\\\\}sgo;
+		$perl =~ s{\/}{\\\/}sgo;
 		$perl =~ s/"/\\"/sgo;
 		$perl =~ s/\t/\\t/sgo;
 		$perl =~ s/\f/\\f/sgo;
