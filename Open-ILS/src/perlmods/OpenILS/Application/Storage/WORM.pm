@@ -152,6 +152,7 @@ sub fingerprint_mods {
 			}
 		}
 		if ($fp_string) {
+			$fp_string =~ s/\W+//gso;
 			$log->debug("Fingerprint is [$fp_string]", INFO);;
 			return $fp_string;
 		}
