@@ -1,6 +1,8 @@
 //var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
-//var XML_HTTP_URL = "https://localhost:10444/method/";
 var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
+
+//var XML_HTTP_URL = "https://localhost:10444/method/";
+//var XML_HTTP_URL = "https://localhost:10444/gateway";
 
 /* Request object */
 function RemoteRequest( service, method ) {
@@ -13,8 +15,7 @@ function RemoteRequest( service, method ) {
 	/* give us the ability to ignore responses from cancelled searches */
 	this.cancelled = false; 
 
-	//this.type		= "POST"; /* default */
-	this.type		= "GET"; /* default */
+	this.type		= "POST"; /* default */
 
 	var i = 2;
 	this.params = ""; 
@@ -51,8 +52,6 @@ function RemoteRequest( service, method ) {
 		alert("NEEDS NEWER JAVASCRIPT for XMLHTTPRequest()");
 		return null;
 	}
-
-	var object = this;
 
 }
 
