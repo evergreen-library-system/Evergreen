@@ -1,16 +1,22 @@
 package OpenILS::Application::Cat::Utils;
 use strict; use warnings;
+use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use XML::LibXML;
 use XML::LibXSLT;
 use OpenSRF::Utils::SettingsParser;
 use OpenILS::Utils::FlatXML;
+use OpenILS::Application::WORM;
 
+my $utils = OpenILS::Application::Cat::Utils->new();
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
 my $xslt_doc	=	$parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+
+my $isbn_xpath = "//mods:mods/mods:identifier[\@type='isbn']";
+my $resource_xpath = "//mods:mods/mods:typeOfResource";
 
 
 sub new {
@@ -62,8 +68,7 @@ sub tree2nodeset {
 			new Fieldmapper::biblio::record_node ($child);
 	
 			if(!defined($child->parent_node)) {
-				$child->parent_node($node->intra_doc_id);
-				$child->ischanged(1); #just to be sure
+				$child->parent_node($node->intra_doc_id); $child->ischanged(1); #just to be sure
 			}
 	
 			$self->tree2nodeset( $child, $newnodes );
@@ -89,68 +94,47 @@ sub clean_nodeset {
 	return \@newnodes;
 }
 
-# on sucess, returns the created session, on failure throws ERROR exception
-sub start_db_session {
-	my $self = shift;
-	my $session = OpenSRF::AppSession->connect( "open-ils.storage" );
-	my $trans_req = $session->request( "open-ils.storage.transaction.begin" );
-	my $trans_resp = $trans_req->recv();
-	if(ref($trans_resp) and $trans_resp->isa("Error")) { throw $trans_resp; }
-	if( ! $trans_resp->content() ) {
-		throw OpenSRF::ERROR ("Unable to Begin Transaction with database" );
-	}
-	$trans_req->finish();
-	return $session;
-}
-
-# commits and destroys the session
-sub commit_db_session {
-	my( $self, $session ) = @_;
-
-	my $req = $session->request( "open-ils.storage.transaction.commit" );
-	my $resp = $req->recv();
-	if(ref($resp) and $resp->isa("Error")) { throw $resp; }
-
-	$session->finish();
-	$session->disconnect();
-	$session->kill_me();
-}
-
 
 
 
 # ---------------------------------------------------------------------------
 # Grabs the data 'we want' from the MODS doc and returns it in hash form
 # ---------------------------------------------------------------------------
-sub mods_perl_to_mods_slim {
+sub mods_values_to_mods_slim {
 	my( $self, $modsperl ) = @_;
 
 	my $title = "";
 	my $author = "";
+	my $subject = [];
 
-	my $tmp = $modsperl->{titleInfo};
-	if($tmp) { 
-		if(ref($tmp) eq "ARRAY" ) {
-			$tmp = $tmp->[0];
+	my $tmp = $modsperl->{title};
+
+	if(!$tmp) { $title = ""; }
+	else {
+		($title = $tmp->{proper}) ||
+		($title = $tmp->{translated}) ||
+		($title = $tmp->{abbreviated}) ||
+		($title = $tmp->{uniform});
+	}
+
+	$tmp = $modsperl->{author};
+	if(!$tmp) { $author = ""; }
+	else {
+		($author = $tmp->{personal}) ||
+		($author = $tmp->{other}) ||
+		($author = $tmp->{corporate}) ||
+		($author = $tmp->{conference}); 
+	}
+
+	$tmp = $modsperl->{subject};
+	if(!$tmp) { $subject = []; } 
+	else {
+		for my $key( keys %{$tmp}) {
+			push(@$subject, $tmp->{$key}) if $tmp->{$key};
 		}
-		$title = $tmp->{title};
-	}
-	if( $title and ref($title) eq "ARRAY" ) {
-		$title = $title->[0];
 	}
 
-	$tmp = $modsperl->{name};
-	if($tmp) { 
-		if(ref($tmp) eq "ARRAY" ) {
-			$tmp = $tmp->[0];
-		}
-		$author = $tmp->{namePart}; 
-	}
-	if($author and ref($author) eq "ARRAY") {
-		$author = $author->[0];
-	}
-
-	return { "title" => $title, "author" => $author };
+	return { title => $title, author => $author, subject => $subject };
 
 }
 
@@ -167,9 +151,20 @@ sub _marcxml_to_perl {
 # ---------------------------------------------------------------------------
 # Initializes a MARC -> Unified MODS batch process
 # ---------------------------------------------------------------------------
-sub start_mods_batch {
+sub _start_mods_batch {
 	my( $self, $master_doc ) = @_;
 	$self->{master_doc} = $self->_marcxml_to_perl( $master_doc );
+}
+
+sub start_mods_batch {
+	my( $self, $master_doc ) = @_;
+	my $xmldoc = $parser->parse_string( $master_doc );
+	my $mods = $mods_sheet->transform($xmldoc);
+	$self->{master_doc} = OpenILS::Application::WORM->modsdoc_to_values( $mods );
+	$self->{master_doc} = $utils->mods_values_to_mods_slim( $self->{master_doc} );
+	$self->{master_doc}->{isbn} = OpenILS::Application::WORM::_get_field_value( $mods, $isbn_xpath );
+	$self->{master_doc}->{type_of_resource} = 
+		[ OpenILS::Application::WORM::_get_field_value( $mods, $resource_xpath ) ];
 }
 
 # ---------------------------------------------------------------------------
@@ -177,11 +172,25 @@ sub start_mods_batch {
 # ---------------------------------------------------------------------------
 sub push_mods_batch {
 	my( $self, $marcxml ) = @_;
-	my $xmlperl = $self->_marcxml_to_perl( $marcxml );
+
+	my $xmldoc = $parser->parse_string($marcxml);
+	my $mods = $mods_sheet->transform($xmldoc);
+	my $xmlperl = OpenILS::Application::WORM->modsdoc_to_values( $mods );
+	$xmlperl = $utils->mods_values_to_mods_slim( $xmlperl );
+
 	for my $subject( @{$xmlperl->{subject}} ) {
 		push @{$self->{master_doc}->{subject}}, $subject;
 	}
+
+	push( @{$self->{master_doc}->{type_of_resource}}, 
+		OpenILS::Application::WORM::_get_field_value( $mods, $resource_xpath ));
+
+	if(!($self->{master_doc}->{isbn}) ) {
+		$self->{master_doc}->{isbn} = 
+			OpenILS::Application::WORM::_get_field_value( $mods, $isbn_xpath );
+	}
 }
+
 
 # ---------------------------------------------------------------------------
 # Completes a MARC -> Unified MODS batch process and returns the perl hash
@@ -192,8 +201,6 @@ sub finish_mods_batch {
 	$self->{master_doc} = undef;
 	return $perl
 }
-
-
 
 
 1;

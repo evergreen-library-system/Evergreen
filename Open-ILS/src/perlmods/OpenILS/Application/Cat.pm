@@ -1,5 +1,6 @@
 use strict; use warnings;
 package OpenILS::Application::Cat;
+use OpenILS::Application::AppUtils;
 use OpenSRF::Application;
 use OpenILS::Application::Cat::Utils;
 use base qw/OpenSRF::Application/;
@@ -27,6 +28,7 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_record_tree_retrieve {
+
 	my( $self, $client, $recordid ) = @_;
 
 	warn "In retrieve " . time() . "\n";
@@ -46,8 +48,6 @@ sub biblio_record_tree_retrieve {
 	}
 
 	return undef unless $marcxml;
-#use Data::Dumper;
-#	warn $marcxml->marc;
 
 	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marcxml->marc ); 
 	my $tree = $utils->nodeset2tree( $nodes->nodeset );
@@ -56,20 +56,20 @@ sub biblio_record_tree_retrieve {
 	return $tree;
 }
 
-
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_commit",
 	api_name	=> "open-ils.cat.biblio.record.tree.commit",
-	argc		=> 1, 
+	argc		=> 2, #(session_id, biblio_tree ) 
 	note		=> "Walks the tree and commits any changed nodes " .
 					"adds any new nodes, and deletes any deleted nodes",
 );
 
-
 sub biblio_record_tree_commit {
 
-	my( $self, $client, $tree ) = @_;
+	my( $self, $user_session, $client, $tree ) = @_;
 	new Fieldmapper::biblio::record_node ($tree);
+
+	$self->OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 
 	# capture the doc id
 	my $docid = $tree->owner_doc();
@@ -78,9 +78,6 @@ sub biblio_record_tree_commit {
 	my $nodeset = $utils->tree2nodeset($tree);
 	$nodeset = $utils->clean_nodeset( $nodeset );
 
-	use Data::Dumper;
-	warn Dumper $nodeset;
-	
 	if(!defined($docid)) { # be sure
 		for my $node (@$nodeset) {
 			$docid = $node->owner_doc();
@@ -95,41 +92,26 @@ sub biblio_record_tree_commit {
 	$biblio->id( $docid );
 	$biblio->marc( $marcxml->toString() );
 
-	use Data::Dumper;
-	warn "Biblio Object\n";
-	warn Dumper $biblio;
-
 	my $session = $utils->start_db_session();
 
 	warn "Sending updated doc $docid to db\n";
-	my $req = $session->request( 
-		"open-ils.storage.biblio.record_marc.update", $biblio );
+	my $req = $session->request( "open-ils.storage.biblio.record_marc.update", $biblio );
 
 	my $status = $req->recv();
 	if(ref($status) and $status->isa("Error")) { 
-		warn " +++++++ Document Update Failed";
-		warn $status->stringify() . "\n";
 		throw $status (" +++++++ Document Update Failed " . $status->stringify() ) ; 
 	}
+
 	$utils->commit_db_session( $session );
-	warn "Update Successful\n";
-
-
-	# commit the altered nodeset nodes to the db
-	#my $hash = $utils->commit_nodeset( $nodeset );
-	# retrieve the altered tree back from the db and return it
-
 
 	my $method = $self->method_lookup( "open-ils.cat.biblio.record.tree.retrieve" );
+
 	if(!$method) {
 		throw OpenSRF::EX::PANIC 
 			("Unable to find method open-ils.cat.biblio.record.tree.retrieve");
 	}
 	my ($ans) = $method->run( $docid );
-	warn "=================================================================\n";
-	warn "=================================================================\n";
-	use Data::Dumper;
-	warn Dumper $ans;
+
 	return $ans;
 }
 
@@ -137,13 +119,14 @@ __PACKAGE__->register_method(
 	method	=> "biblio_mods_slim_retrieve",
 	api_name	=> "open-ils.cat.biblio.mods.slim.retrieve",
 	argc		=> 1, 
-	note		=> "Returns the displayable data from the MODS record with a given ID",
+	note		=> "Returns the displayable data from the MODS record with a given IDs " .
+		"The first ID provided is considered the 'master' document, which means that " .
+		"it's author, subject, etc. will be used.  Subjects are gathered from all docs."
 );
 
 sub biblio_mods_slim_retrieve {
-	my( $self, $client, $recordid ) = @_;
+	my( $self, $client, @recordids ) = @_;
 
-	#my $name = "open-ils.storage.biblio.record_entry.nodeset.retrieve";
 	my $name = "open-ils.storage.biblio.record_marc.retrieve";
 	my $method = $self->method_lookup($name);
 
@@ -151,19 +134,27 @@ sub biblio_mods_slim_retrieve {
 		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
 	}
 
-	# grab the marc record
-	my ($marcxml) = $method->run($recordid);
-	if(!$marcxml) { warn "Nothing from storage"; return undef; }
+	my $u = $utils->new();
+	my $start = 1;
 
-	if(UNIVERSAL::isa($marcxml,"OpenSRF::EX")) {
-		throw $marcxml ($marcxml->stringify());;
+	for my $id (@recordids) {
+		my ($marcxml) = $method->run($id);
+		if(!$marcxml) { warn "Nothing from storage"; return undef; }
+
+		if(UNIVERSAL::isa($marcxml,"OpenSRF::EX")) {
+			throw $marcxml ($marcxml->stringify());;
+		}
+
+		if($start) {
+			$u->start_mods_batch( $marcxml->marc );
+			$start = 0;
+		} else {
+			$u->push_mods_batch( $marcxml->marc );
+		}
 	}
 
-	my $u = $utils->new();
-	$u->start_mods_batch( $marcxml->marc );
-
 	my $mods = $u->finish_mods_batch();
-	return $u->mods_perl_to_mods_slim( $mods );
+	return $mods;
 
 }
 
