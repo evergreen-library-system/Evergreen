@@ -89,7 +89,9 @@ int main( int argc, char* argv[] ) {
 		char* req_copy = strdup(request);
 
 		parse_request( req_copy ); 
-		add_history(request);
+		if( request && strlen(request) > 2 ) {
+			add_history(request);
+		}
 
 		free(request);
 		free(req_copy);
@@ -280,6 +282,7 @@ int handle_exec(char* words[]) {
 		}
 	} else {
 		execvp( words[0], words );
+		exit(0);
 	}
 	return 1;
 }
