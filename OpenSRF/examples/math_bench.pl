@@ -27,7 +27,7 @@ unless( $count ) {
 warn "PID: $$\n";
 
 OpenSRF::System->bootstrap_client();
-my $session = OpenSRF::AppSession->create( "math" );
+my $session = OpenSRF::AppSession->create( "opensrf.math" );
 
 try {
 	if( ! ($session->connect()) ) { die "Connect timed out\n"; }
