@@ -59,8 +59,6 @@ sub fast_flesh_sth {
 	my $fm_class = 'Fieldmapper::'.$class;
 	my $field_list = join ',', $class->columns('All');
 	
-	warn " !!-> field list for OILSFastOrderedSearch is '$field_list'";
-
 	my $sth = $class->sql_OILSFastOrderedSearch( $field_list, $class->table, $field, $order->{order_by});
 	$sth->execute($value);
 	return $sth;
