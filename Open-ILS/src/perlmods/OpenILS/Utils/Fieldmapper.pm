@@ -96,7 +96,7 @@ sub javascript {
 	
 	my $output = <<"	JS";
 
-function $js_class (thing) { var new = thing; if (!new) { new = []; } return new; }
+function $js_class (thing) { var new_thing = thing; if (!new_thing) { new_thing = []; } return new_thing; }
   $js_class.prototype.class_name = function () { return "$js_class"; }
 	JS
 
