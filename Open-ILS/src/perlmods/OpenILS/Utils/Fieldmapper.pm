@@ -55,7 +55,8 @@ sub _init {
 		
 		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
 								     proto_fields	=> { children => 1 } },
-		'Fieldmapper::biblio::record_entry'		=> { hint => 'bre'  },
+		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
+								     proto_fields	=> { call_numbers => 1 } },
 		'Fieldmapper::biblio::record_mods'		=> { hint => 'brm'  },
 		'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  },
 
@@ -71,7 +72,8 @@ sub _init {
 
 		'Fieldmapper::asset::copy'			=> { hint => 'acp'  },
 		'Fieldmapper::asset::copy_note'			=> { hint => 'acpn' },
-		'Fieldmapper::asset::call_number'		=> { hint => 'acn'  },
+		'Fieldmapper::asset::call_number'		=> { hint		=> 'acn',
+								     proto_fields	=> { copies => 1 } },
 		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn' },
 	};
 
