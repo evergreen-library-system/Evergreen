@@ -4,6 +4,8 @@ use OpenSRF::Application;
 use OpenILS::Application::Cat::Utils;
 use base qw/OpenSRF::Application/;
 
+my $utils = "OpenILS::Application::Cat::Utils";
+
 
 
 
@@ -25,9 +27,30 @@ sub record_tree_retrieve {
 	}
 
 	my ($nodes) = $method->run($recordid);
+
+	if(UNIVERSAL::isa($nodes,"OpenSRF::EX")) {
+		throw $nodes;
+	}
+
 	return undef unless $nodes;
 
-	return OpenILS::Application::Cat::Utils->nodeset2tree( $nodes );
+	return $utils->nodeset2tree( $nodes );
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "record_tree_commit",
+	api_name	=> "open-ils.cat.record.tree.commit",
+	argc		=> 1, 
+	note		=> "Walks the tree and commits any changed nodes " .
+					"adds any new nodes, and deletes any deleted nodes",
+);
+
+sub record_tree_commit {
+	my( $self, $client, $tree ) = @_;
+	my $nodeset = $utils->tree2nodeset($tree);
+	$utils->commit_nodeset( $nodeset );
+	return $nodeset;
 }
 
 
