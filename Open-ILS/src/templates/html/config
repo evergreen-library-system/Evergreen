@@ -1,0 +1,12 @@
+[%  USE HTML;
+    html = { 
+        dtd = '-//W3C//DTD HTML 3.2 Final//EN'
+
+	# plus various other HTML element/attributes
+        # body = {
+	#     bgcolor = '#ffffff'
+	# }
+	# etc...
+    };
+-%]
+

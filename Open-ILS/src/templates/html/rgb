@@ -1,0 +1,76 @@
+[%# html/rgb: define 'rgb' containing RGB triples for various colours -%]
+[%  rgb = {
+	# the mono crowd
+	black  => '#000000'  
+	grey25 => '#404040'
+	grey50 => '#808080'
+	grey75 => '#c0c0c0'
+	white  => '#ffffff'
+
+	red    => '#ff0000'  
+	red25  => '#400000'
+	red50  => '#800000'
+	red75  => '#c00000'
+
+	green   => '#00ff00'  
+	green25 => '#004000'
+	green50 => '#008000'
+	green75 => '#00c000'
+
+	blue    => '#0000ff'  
+	blue25  => '#000040'
+	blue50  => '#000080'
+	blue75  => '#0000c0'
+
+	# v0.01 cols follow
+	# reds
+	blood   => '#800000'
+	scarlet => '#c04040'
+	rose    => '#f08080'
+	orange  => '#fe7202'
+
+	# greens
+	leaf   => '#006400'
+	bud    => '#66aa66'
+	mint   => '#aaffaa'
+
+	# blues
+	navy   => '#202080'
+	marine => '#0066cc'
+	aqua   => '#3399cc'
+	sky    => '#66ccff'
+
+	# lavender blues
+	purple  => '#404080'
+	mauve   => '#6666cc'
+	lilac   => '#9797ff'
+
+    }
+
+    # sets of dark/mid/light colours
+    rgb.shade.grey = {
+	dark   => rgb.grey25,
+	mid    => rgb.grey50,
+	light  => rgb.grey75,
+    }
+    rgb.shade.red = {
+	dark   => rgb.red25,
+	mid    => rgb.red50,
+	light  => rgb.red75,
+    }
+    rgb.shade.green = {
+	dark   => rgb.green25,
+	mid    => rgb.green50,
+	light  => rgb.green75,
+    }
+    rgb.shade.blue = {
+	dark   => rgb.blue25,
+	mid    => rgb.blue50,
+	light  => rgb.blue75,
+    }
+    rgb.shade.lavender = {
+	dark   => rgb.purple,
+	mid    => rgb.mauve,
+	light  => rgb.lilac,
+    }
+-%]

@@ -1,0 +1,28 @@
+[%# html/edgebar: a single row table with an edged outline
+  # ARGS: 
+  #	edge	    # edge colour (default: black, '#000000')
+  #	fill	    # fill colour (default: white, '#ffffff')
+  #     border      # border width (default: 2)
+  #     content     # bar content
+  #	+ other args as per html/bar
+-%]
+[% DEFAULT
+     edge   = '#000000'
+     fill   = '#ffffff'
+     border = 2 
+-%]
+[% WRAPPER html/box
+     col   = edge
+     pad   = border
+    border = 0
+     space = 0 ;
+   inwidth = width ? '100%' : '' ;
+   WRAPPER html/bar
+     col   = fill 
+     space = 0 
+    border = 0
+     width = inwidth ;
+   content ;
+   END ;
+   END
+%]

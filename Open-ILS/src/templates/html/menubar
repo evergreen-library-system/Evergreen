@@ -1,0 +1,17 @@
+[%# menubar: create 2 cell edgebox with content on left and menu on right
+  # ARGS:
+  #	edge	    #  edge colour
+  #	fill        # fill colour
+  #	border	    # border (edge) width
+  #     content     # menu bar content (e.g. title text)
+  #     menu        # structure for menu items, as per html/menu
+-%]
+[% DEFAULT content = '&nbsp;' -%]
+[% WRAPPER html/edgebar -%]
+<td>
+[% content %]
+</td>
+<td align="right">
+&nbsp;[% INCLUDE html/menu -%]
+</td>
+[%- END %]

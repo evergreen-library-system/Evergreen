@@ -1,0 +1,22 @@
+[%# ARGS
+-%]
+
+
+[% "<a href='" _ href _ "'";
+
+	IF onsubmit; " onsubmit='" _ onsubmit _ "'"; END;
+	IF onmouseover; " onmouseover='" _ onmouseover _ "'"; END;
+	IF onmouseout; " onmouseout='" _ onmouseout _ "'"; END;
+	IF class; " class='" _ class _ "'"; END;
+
+	IF text OR content; 
+		">";
+		text; 
+		" ";
+		content;
+		"</a>\n";
+	ELSE;
+		"/>\n";
+	END;
+
+%]

@@ -1,0 +1,19 @@
+[%# html/js
+  #
+  # ARGS:
+  #   - content             # javascript content
+-%]
+
+[%
+
+	"<script language='javascript'";
+
+		IF src; " src='" _ src _ "'";END;
+
+	"/><!--\n";
+
+	content;
+
+	"\n//--></script>";
+%]
+

@@ -1,0 +1,15 @@
+
+[%
+
+	"<select";
+		IF name;			" name='" _ name _ "'"; END; 
+		IF id;	" id='" _ id _ "'"; END;
+		IF ! content;	"/"; END;
+	">";
+	IF content;
+		content;
+		"</select>";
+	END;
+
+%]
+

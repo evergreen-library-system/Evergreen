@@ -1,0 +1,9 @@
+[%# html/edgebox: a single row, single cell table with an edge
+  # ARGS:
+  #     content     # box content
+  #     + other args as per html/edgebar and html/cell
+-%]
+[% WRAPPER html/edgebar + html/cell %]
+[% content %]
+[% END %]
+

@@ -1,0 +1,9 @@
+[%
+	"\n<form ";
+	IF method; "method='$method'"; END;
+	IF class; "class='$class'"; END;
+	IF name; "name='$name'"; END;
+	">";
+	content;
+	"</form>"
+%]

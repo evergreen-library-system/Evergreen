@@ -1,0 +1,11 @@
+[%# html/page: <!DOCTYPE ...> and <html>...</html> element wrapper
+  #
+  # ARGS:
+  #   - html.dtd            # Document Type Definition
+  #   - content             # html content
+-%]
+[% DEFAULT html.dtd = '-//W3C//DTD HTML 3.2 Final//EN' -%]
+<!DOCTYPE HTML PUBLIC "[% html.dtd %]">
+<html>
+[% PROCESS html/head + html/body %]
+</html>

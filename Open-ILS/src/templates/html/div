@@ -1,0 +1,13 @@
+[%
+	"<div";
+
+	IF class;			" class='"			_ class _ "'";			END;
+	IF id;				" id='"				_ id _ "'";				END;
+	IF valign;				" valign='"				_ valign _ "'";				END;
+	IF visibility;		" visibility='"	_ visibility _ "'";	END;
+
+	">";
+	content;
+	"</div>";
+%]
+

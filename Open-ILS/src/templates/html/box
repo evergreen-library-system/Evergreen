@@ -1,0 +1,10 @@
+[%# html/bar: table containing a single row and a single cell
+  # ARGS:
+  #	as per html/table, html/row and html/cell
+-%]
+[% WRAPPER html/table;
+    WRAPPER html/row + html/cell width='' col='';
+     content;
+    END;
+   END;
+%]

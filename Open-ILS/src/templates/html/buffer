@@ -1,0 +1,23 @@
+[%
+
+	# --------------------------------------------------------	
+	# Inserts whitespace into a page.
+	# 'size' is the number of lines to output
+	# --------------------------------------------------------
+
+	IF size;
+
+		x=0;
+
+		WHILE x < size;
+			"<br/>";
+			x = x + 1;
+		END;
+
+	ELSE;
+
+		"<br/>";
+	END	
+%]
+
+		

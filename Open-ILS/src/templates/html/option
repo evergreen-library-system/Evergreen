@@ -1,0 +1,14 @@
+[%
+
+	"<option";
+		IF value;	" value='" _ value _ "'"; END; 
+		IF id;		" id='" _ id _ "'"; END;
+		IF ! content;	"/"; END;
+	">";
+	IF content;
+		content;
+		"</option>";
+	END;
+
+%]
+

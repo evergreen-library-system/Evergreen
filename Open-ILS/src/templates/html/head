@@ -1,0 +1,28 @@
+[%# html/head: <head>...</head> element for HTML pages
+  #
+  # ARGS:
+  #   - html.head.title	    # page title
+  #   - html.head.meta      # hash of metadata  
+  #   - html.headers        # additional HTML headers
+  # TODO:
+  #   - various other header items are not currently handled, 
+  #     e.g. base, xbase, target, script, noscript, etc., but
+  #     you can set 'html.headers' as a general work-around
+  #     to put extra stuff in the <head>...</head> element
+-%]
+[%	
+	"<head>";
+
+	IF title;
+		"<title>" _ title _ "</title>";
+	END;
+
+	FOREACH item = html.head.meta;
+		"<meta name='$item.key' content='$item.value'>";
+	END;
+	html.headers;
+	content;
+	"</head>";
+
+%]
+

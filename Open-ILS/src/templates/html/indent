@@ -1,0 +1,9 @@
+[%# html/indent: an indented box
+  # ARGS:
+  #	width	    # width of table (default: 95%)
+  #     + other args as per html/box
+-%]
+<div align="right">
+[% DEFAULT width="95%" -%]
+[% INCLUDE html/box %]
+</div>
