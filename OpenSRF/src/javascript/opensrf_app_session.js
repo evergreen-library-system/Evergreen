@@ -94,7 +94,7 @@ AppRequest.prototype.recv = function( /*int*/ timeout ) {
 		return this.recv_queue.shift();
 	}
 
-	//if( this.complete ) { return null; }
+	if( this.is_complete ) { return null; }
 
 	if( timeout == null ) {
 		timeout = AppRequest.DEF_RECV_TIMEOUT;
