@@ -8,7 +8,7 @@
 
 case $1 in 
 	"start")
-		perl -MOpenILS::System -e 'OpenILS::System->bootstrap()' & 
+		perl -MOpenSRF::System -e 'OpenSRF::System->bootstrap()' & 
 		sleep 2;
 		$0 status;
 		echo;
@@ -16,7 +16,7 @@ case $1 in
 	"stop")
 		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
 		if [ -z $PID ]; then
-			echo "OpenILS System is not running";
+			echo "OpenSRF System is not running";
 			exit;
 		fi
 		echo "Killing System...$PID";
@@ -26,10 +26,10 @@ case $1 in
 	"status")
 		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
 		if [ -z $PID ]; then
-			echo "OpenILS System is not running";
+			echo "OpenSRF System is not running";
 			exit 0;
 		fi
-		echo "OpenILS System is running";
+		echo "OpenSRF System is running";
 		exit 1;
 		;;
 	"restart")
