@@ -55,8 +55,7 @@ sub find_client {
 
 sub transport_connected {
 	my $self = shift;
-	if( ! exists $self->{peer_handle} || 
-					! $self->{peer_handle} ) {
+	if( ! exists $self->{peer_handle} || ! $self->{peer_handle} ) {
 		return 0;
 	}
 	return $self->{peer_handle}->tcp_connected();
@@ -174,7 +173,7 @@ sub create {
 	$class = ref($class) || $class;
 
 	my $app = shift;
-	my %auth_args = @_;
+	#my %auth_args = @_;
 
 
 #	unless ( $app &&
@@ -405,7 +404,7 @@ sub send {
 			}
 		}
 	
-		$msg->protocol(1);
+		$msg->api_level(1);
 		$msg->payload($payload) if $payload;
 	
 		$doc->documentElement->appendChild( $msg );
@@ -517,17 +516,17 @@ sub last_message_type {
 	return $old_last_message_type;
 }
 
-sub last_message_protocol {
+sub last_message_api_level {
 	my $self = shift;
-	my $new_last_message_protocol = shift;
+	my $new_last_message_api_level = shift;
 
-	my $old_last_message_protocol = $self->{last_message_protocol};
-	if (defined $new_last_message_protocol) {
-		$self->{last_message_protocol} = $new_last_message_protocol;
-		return $new_last_message_protocol unless ($old_last_message_protocol);
+	my $old_last_message_api_level = $self->{last_message_api_level};
+	if (defined $new_last_message_api_level) {
+		$self->{last_message_api_level} = $new_last_message_api_level;
+		return $new_last_message_api_level unless ($old_last_message_api_level);
 	}
 
-	return $old_last_message_protocol;
+	return $old_last_message_api_level;
 }
 
 sub remote_id {

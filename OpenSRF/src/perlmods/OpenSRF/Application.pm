@@ -1,4 +1,6 @@
 package OpenSRF::Application;
+use vars qw/$_app $log @_METHODS $thunk//;
+
 use base qw/OpenSRF/;
 use OpenSRF::AppSession;
 use OpenSRF::DomainObject::oilsMethod;
@@ -6,8 +8,9 @@ use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::Utils::Logger qw/:level/;
 use Data::Dumper;
 use Time::HiRes qw/time/;
-use vars qw/$_app $log %_METHODS/;
 use OpenSRF::EX qw/:try/;
+use OpenSRF::UnixServer;  # to get the server class from UnixServer::App
+
 use strict;
 use warnings;
 
@@ -15,6 +18,13 @@ $log = 'OpenSRF::Utils::Logger';
 
 our $in_request = 0;
 our @pending_requests;
+
+sub thunk {
+	my $self = shift;
+	my $flag = shift;
+	$thunk = $flag if (defined $flag);
+	return $thunk;
+}
 
 sub application_implementation {
 	my $self = shift;
@@ -55,7 +65,7 @@ sub handler {
 		my $method_name = $app_msg->method;
 		$log->debug( " * Looking up $method_name inside $app", DEBUG);
 
-		my $method_proto = $session->last_message_protocol;
+		my $method_proto = $session->last_message_api_level;
 		$log->debug( " * Method API Level [$method_proto]", DEBUG);
 
 		my $coderef = $app->method_lookup( $method_name, $method_proto );
@@ -176,7 +186,7 @@ sub handler {
 	}
 
 	$session->last_message_type('');
-	$session->last_message_protocol('');
+	$session->last_message_api_level('');
 
 	return 1;
 }
@@ -186,34 +196,58 @@ sub register_method {
 	my $app = ref($self) || $self;
 	my %args = @_;
 
+
 	throw OpenSRF::DomainObject::oilsMethodException unless ($args{method});
-	
-	$args{protocol} ||= 1;
-	$args{api_name} ||= $app . '.' . $args{method};
+
+	$args{api_level} ||= 1;
+	$args{stream} ||= 0;
+        $args{package} ||= $app;                
+	$args{api_name} ||= UnixServer->app() . '.' . $args{method};
 	$args{code} ||= \&{$app . '::' . $args{method}};
-	
-	$_METHODS{$args{api_name}} = bless \%args => $app;
+
+	$_METHODS[$args{api_level}]{$args{api_name}} = bless \%args => $app;
+
+	__PACKAGE__->register_method(
+		stream => 0,
+		api_name => $args{api_name}.'.atomic',
+		method => 'make_stream_atomic'
+	) if ($stream);
 }
 
 
 sub method_lookup {             
 	my $self = shift;
 	my $method = shift;
-	my $proto = shift || 1;
+	my $proto = shift;
+
+	# this instead of " || 1;" above to allow api_level 0
+	$proto = 1 unless (defined $proto);
 
 	my $class = ref($self) || $self;
 
-	$log->debug("Specialized lookup of [$method] in [$class]", DEBUG);
+	$log->debug("Lookup of [$method] by [$class]", DEBUG);
 	$log->debug("Available methods\n".Dumper(\%_METHODS), INTERNAL);
 
-	if (exists $_METHODS{$method}) {
-		$log->debug("Looks like we found [$method]", DEBUG);
-		my $meth = $_METHODS{$method} if ($_METHODS{$method}{protocol} == $proto);
-		$log->debug("Method object is ".Dumper($meth), INTERNAL);
-		return $meth;
-	}               
+	my $meth;
+	if (__PACKAGE__->thunk) {
+		for my $p ( reverse(1 .. $proto) ) {
+			if (exists $_METHODS[$p]{$method}) {
+				$meth = $_METHODS[$p]{$method};
+			}
+		}
+	} else {
+		if (exists $_METHODS[$proto]{$method}) {
+			$meth = $_METHODS[$proto]{$method};
+		}
+	}
 
-	return undef; 
+	if (defined $meth) {
+		$log->debug("Looks like we found [$method]!", DEBUG);
+		$log->debug("Method object is ".Dumper($meth), INTERNAL);
+	}
+
+	return $meth;
+
 }
 
 sub run {
@@ -242,5 +276,36 @@ sub run {
 
 	return $resp;
 }
+
+sub introspect {
+	my $self = shift;
+	my $client = shift;
+
+	for my $api_level ( 1 .. $#_METHODS ) {
+		$client->respond( $_METHODS[$api_level] );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	stream => 1,
+	method => 'introspect',
+	api_name => 'opensrf.system.method_list'
+);
+
+sub make_stream_atomic {
+	my $self = shift;
+	my $req = shift;
+	my @args = @_;
+
+	(my $m_name = $self->api_name) =~ s/\.atomic$//o;
+	my @results = $self->method_lookup($m_name)->run(@args);
+
+	if (@results == 1) {
+		return $results[0];
+	}
+	return \@results;
+}
+
 
 1;

@@ -49,11 +49,11 @@ sub type {
 	return $self->_attr_get_set( type => shift );
 }
 
-=head2 OpenSRF::DomainObject::oilsMessage->protocol( [$new_protocol_number] )
+=head2 OpenSRF::DomainObject::oilsMessage->api_level( [$new_api_level] )
 
 =over 4
 
-Used to specify the protocol of message.  Currently, only protocol C<1> is
+Used to specify the api_level of message.  Currently, only api_level C<1> is
 supported.  This will be used to check that messages are well-formed, and as
 a hint to the Application as to which version of a method should fulfill a
 REQUEST message.
@@ -62,9 +62,9 @@ REQUEST message.
 
 =cut
 
-sub protocol {
+sub api_level {
 	my $self = shift;
-	return $self->_attr_get_set( protocol => shift );
+	return $self->_attr_get_set( api_level => shift );
 }
 
 =head2 OpenSRF::DomainObject::oilsMessage->threadTrace( [$new_threadTrace] );
@@ -175,14 +175,14 @@ sub handler {
 	my $session = shift;
 
 	my $mtype = $self->type;
-	my $protocol = $self->protocol || 1;;
+	my $api_level = $self->api_level || 1;;
 	my $tT = $self->threadTrace;
 
 	$session->last_message_type($mtype);
-	$session->last_message_protocol($protocol);
+	$session->last_message_api_level($api_level);
 	$session->last_threadTrace($tT);
 
-	$log->debug(" Received protocol => [$protocol], MType => [$mtype], ".
+	$log->debug(" Received api_level => [$api_level], MType => [$mtype], ".
 			"from [".$session->remote_id."], threadTrace[".$self->threadTrace."]", INFO);
 	$log->debug("endpoint => [".$session->endpoint."]", DEBUG);
 	$log->debug("OpenSRF::AppSession->SERVER => [".$session->SERVER()."]", DEBUG);
@@ -191,10 +191,10 @@ sub handler {
 
 	my $val;
 	if ( $session->endpoint == $session->SERVER() ) {
-		$val = $self->do_server( $session, $mtype, $protocol, $tT );
+		$val = $self->do_server( $session, $mtype, $api_level, $tT );
 
 	} elsif ($session->endpoint == $session->CLIENT()) {
-		$val = $self->do_client( $session, $mtype, $protocol, $tT );
+		$val = $self->do_client( $session, $mtype, $api_level, $tT );
 	}
 
 	if( $val ) {
@@ -211,7 +211,7 @@ sub handler {
 
 # !!! Returning 0 means that we don't want to pass ourselves up to the message layer !!!
 sub do_server {
-	my( $self, $session, $mtype, $protocol, $tT ) = @_;
+	my( $self, $session, $mtype, $api_level, $tT ) = @_;
 
 	# A Server should never receive STATUS messages.  If so, we drop them.
 	# This is to keep STATUS's from dead client sessions from creating new server
@@ -283,7 +283,7 @@ sub do_server {
 # up to the application layer.  return 0 otherwise.
 sub do_client {
 
-	my( $self, $session , $mtype, $protocol, $tT) = @_;
+	my( $self, $session , $mtype, $api_level, $tT) = @_;
 
 
 	if ($mtype eq 'STATUS') {
