@@ -8,11 +8,13 @@ int osrf_system_bootstrap_client() {
 	memset(buf,0,256);
 	char* host = getenv("HOSTNAME");
 	sprintf(buf, "client_%s_%d", host, getpid() );
-	if(client_connect( client, "system_client","jkjkasdf", buf, 10, AUTH_DIGEST )) {
+
+	if(client_connect( client, "who","hello_you", buf, 10, AUTH_DIGEST )) {
 		/* push ourselves into the client cache */
 		osrf_system_push_transport_client( client, "client" );
 		return 1;
 	}
+
 	return 0;
 }
 
