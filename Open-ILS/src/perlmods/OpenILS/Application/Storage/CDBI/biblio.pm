@@ -12,7 +12,7 @@ use base qw/biblio/;
 biblio::record_entry->table( 'biblio_record_entry' );
 biblio::record_entry->columns( All => qw/id tcn_source tcn_value metarecord
 					 creator editor create_date edit_date
-					 source active deleted source/ );
+					 source active deleted/ );
 
 #-------------------------------------------------------------------------------
 package biblio::record_node::subnode;

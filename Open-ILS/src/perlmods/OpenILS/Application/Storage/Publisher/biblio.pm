@@ -242,7 +242,10 @@ sub get_record_nodeset {
 	my $table = biblio::record_node->table;
 
 	my $sth = biblio::record_node->db_Main->prepare_cached(<<"	SQL");
-		SELECT * FROM $table WHERE owner_doc = ? ORDER BY intra_doc_id;
+		SELECT	id, owner_doc, intra_doc_id, parent_node, node_type, name, value
+		  FROM	$table
+		  WHERE	owner_doc = ?
+		  ORDER BY intra_doc_id;
 	SQL
 
 
@@ -251,12 +254,7 @@ sub get_record_nodeset {
 		
 		$sth->execute($id);
 
-		my @rows;
-
-		while (my $hr = $sth->fetchrow_hashref) {
-			push @rows, $hr;
-		}
-		$client->respond( \@rows );
+		$client->respond( $sth->fetchall_arrayref );
 
 		$sth->finish;
 		

@@ -60,6 +60,7 @@ sub begin_xaction {
 	my $self = shift;
 	my $client = shift;
 
+	$log->debug(" XACT --> 'BEGIN'ing transaction for session ".$client->session->session_id,DEBUG);
 	return OpenILS::Application::Storage::CDBI->db_Main->begin_work;
 }
 __PACKAGE__->register_method(
@@ -73,6 +74,7 @@ sub commit_xaction {
 	my $self = shift;
 	my $client = shift;
 
+	$log->debug(" XACT --> 'COMMIT'ing transaction for session ".$client->session->session_id,DEBUG);
 	return OpenILS::Application::Storage::CDBI->db_Main->commit;
 }
 __PACKAGE__->register_method(
@@ -85,6 +87,7 @@ sub rollback_xaction {
 	my $self = shift;
 	my $client = shift;
 
+	$log->debug(" XACT --> 'ROLLBACK'ing transaction for session ".$client->session->session_id,DEBUG);
 	return OpenILS::Application::Storage::CDBI->db_Main->rollback;
 }
 __PACKAGE__->register_method(

@@ -49,13 +49,16 @@
 }
 
 
-{ # The driver package itself just needs a db_Main method for Class::DBI to call.
-  # any other fixups can go in here too... Also, the drivers should subclass the
+{ # The driver package itself just needs a db_Main method (or db_Slaves if
+  #Class::DBI::Replication is in use) for Class::DBI to call.
+  #
+  # Any other fixups can go in here too... Also, the drivers should subclass the
   # DBI driver that they are wrapping, or provide a 'quote()' method that calls
   # the DBD::xxx::quote() method on FTI's behalf.
   #
-  # The dirver MUST be a subclass of Class::DBI and OpenILS::Application::Storage.
-	#-------------------------------------------------------------------------------
+  # The dirver MUST be a subclass of Class::DBI(::Replication) and
+  # OpenILS::Application::Storage.
+  #-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::Driver::Pg;
 	use Class::DBI::Replication;
 	use base qw/Class::DBI::Replication OpenILS::Application::Storage/;
@@ -99,14 +102,14 @@
 	}
 
 	sub quote {
-		return __PACKAGE->db_Main->quote(@_)
+		return __PACKAGE->db_Slaves->quote(@_)
 	}
 
 	sub tsearch2_trigger {
 		my $self = shift;
 		return unless ($self->value);
 		$self->index_vector(
-			$self->db_Main->selectrow_array(
+			$self->db_Slaves->selectrow_array(
 				"SELECT to_tsvector('default',?);",
 				{},
 				$self->value
@@ -237,8 +240,7 @@
 	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
 	metabib::title_field_entry->columns( Primary => qw/id/ );
 	metabib::title_field_entry->columns( Essential => qw/id/ );
-	metabib::title_field_entry->columns( Others => qw/field index_vector/ );
-	metabib::title_field_entry->columns( TEMP => qw/value/ );
+	metabib::title_field_entry->columns( Others => qw/field value index_vector/ );
 
 	metabib::title_field_entry->add_trigger(
 		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
@@ -256,8 +258,7 @@
 	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
 	metabib::author_field_entry->columns( Primary => qw/id/ );
 	metabib::author_field_entry->columns( Essential => qw/id/ );
-	metabib::author_field_entry->columns( Others => qw/field index_vector/ );
-	metabib::author_field_entry->columns( TEMP => qw/value/ );
+	metabib::author_field_entry->columns( Others => qw/field value index_vector/ );
 
 	metabib::author_field_entry->add_trigger(
 		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
@@ -273,10 +274,6 @@
 
 	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
 	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
-	metabib::subject_field_entry->columns( Primary => qw/id/ );
-	metabib::subject_field_entry->columns( Essential => qw/id/ );
-	metabib::subject_field_entry->columns( Others => qw/field index_vector/ );
-	metabib::subject_field_entry->columns( TEMP => qw/value/ );
 
 	metabib::subject_field_entry->add_trigger(
 		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
@@ -292,10 +289,6 @@
 
 	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
 	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
-	metabib::keyword_field_entry->columns( Primary => qw/id/ );
-	metabib::keyword_field_entry->columns( Essential => qw/id/ );
-	metabib::keyword_field_entry->columns( Others => qw/field index_vector/ );
-	metabib::keyword_field_entry->columns( TEMP => qw/value/ );
 
 	metabib::keyword_field_entry->add_trigger(
 		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
