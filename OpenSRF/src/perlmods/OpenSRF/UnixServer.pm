@@ -173,7 +173,7 @@ sub configure_hook {
 	my $app = $self->app;
 
 	# boot a client
-	OpenSRF::System::bootstrap_client( client_name => "system_client" );
+	OpenSRF::System->bootstrap_client( client_name => "system_client" );
 
 	$logger->debug( "Setting application implementaion for $app", DEBUG );
 	my $client = OpenSRF::Utils::SettingsClient->new();

@@ -26,7 +26,7 @@ unless( $count ) {
 
 warn "PID: $$\n";
 
-OpenSRF::System::bootstrap_client();
+OpenSRF::System->bootstrap_client();
 my $session = OpenSRF::AppSession->create( "math" );
 
 try {

@@ -55,7 +55,7 @@ $SIG{INT} = sub { instance()->killall(); };
 
 $SIG{HUP} = sub{ instance()->hupall(); };
 
-$SIG{CHLD} = \&process_automation;
+#$SIG{CHLD} = \&process_automation;
 
 
 { 
@@ -228,6 +228,7 @@ sub bootstrap {
 # Bootstraps a single client connection.  
 
 sub bootstrap_client {
+	my $self = shift;
 
 	my %params = @_;
 
