@@ -92,13 +92,13 @@ sub commit_nodeset {
 
 		if($node->isdeleted()) {
 			$offset--;
-			return 0 unless _deletenode($node);
+			return undef unless _deletenode($node);
 			next;
 		}
 
 		if($node->isnew()) {
 			$node->intra_doc_id($pos);
-			return 0 unless _addnode($node);
+			return undef unless _addnode($node);
 			next;
 		}
 
@@ -107,7 +107,7 @@ sub commit_nodeset {
 			 $node->ischanged() ) {
 
 			$node->intra_doc_id($pos);
-			return 0 unless _updatenode($node);
+			return undef unless _updatenode($node);
 			next;
 		}
 	}
@@ -145,7 +145,7 @@ sub _nodeset_to_perl {
 		OpenILS::Utils::FlatXML->new()->nodeset_to_xml( $nodeset );
 
 	# Evil, but for some reason necessary
-	$xmldoc = XML::LibXML->new()->parse_string( $xmldoc->toString() );
+	$xmldoc = $parser->parse_string( $xmldoc->toString() );
 	return $self->marcxml_doc_to_mods_perl($xmldoc);
 }
 

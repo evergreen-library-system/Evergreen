@@ -54,8 +54,7 @@ __PACKAGE__->register_method(
 sub biblio_record_tree_commit {
 	my( $self, $client, $tree ) = @_;
 	my $nodeset = $utils->tree2nodeset($tree);
-	$utils->commit_nodeset( $nodeset );
-	return $nodeset;
+	return $utils->commit_nodeset( $nodeset );
 }
 
 
