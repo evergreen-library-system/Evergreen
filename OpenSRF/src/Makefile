@@ -1,8 +1,9 @@
 # TOP level 'src' makefile for OpenSRF
+#
+#
 
 
-all: router
-
+all: router srfsh
 
 transport:
 	make -C libtransport
@@ -15,6 +16,9 @@ stack: json transport
 
 router: stack  
 	make -C router
+
+srfsh: stack
+	make -C srfsh
 
 
 clean:
