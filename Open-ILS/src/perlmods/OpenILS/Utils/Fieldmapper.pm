@@ -107,6 +107,18 @@ sub AUTOLOAD {
 	(my $field = $AUTOLOAD) =~ s/^.*://o;
 	my $class_name = $obj->class_name;
 
+
+	if ($field =~ /^clear_/o) {
+		{	no strict 'subs';
+			*{$obj->class_name."::clear_$field"} = sub {
+				my $self = shift;
+				$self->[$pos] = undef;
+				return 1;
+			};
+		}
+		return $obj->$field();
+	}
+
 	die "No field by the name $field in $class_name!"
 		unless (exists $$fieldmap{$class_name}{fields}{$field});
 
@@ -120,7 +132,6 @@ sub AUTOLOAD {
 			return $self->[$pos];
 		};
 	}
-
 	return $obj->$field($value);
 }
 
