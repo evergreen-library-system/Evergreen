@@ -16,7 +16,7 @@ sub initialize {
 
 	$sc = OpenSRF::Utils::SettingsClient->new;
 
-	my $dbfile = $sc->config_value( apps => persist => app_settings => 'dbfile');
+	my $dbfile = $sc->config_value( apps => 'opensrf.persist' => app_settings => 'dbfile');
 	unless ($dbfile) {
 		throw OpenSRF::EX::PANIC ("Can't find my dbfile for SQLite!");
 	}
@@ -53,10 +53,10 @@ sub initialize {
 sub child_init {
 	my $sc = OpenSRF::Utils::SettingsClient->new;
 
-	$default_expire_time = $sc->config_value( apps => persist => app_settings => 'default_expire_time' );
+	$default_expire_time = $sc->config_value( apps => 'opensrf.persist' => app_settings => 'default_expire_time' );
 	$default_expire_time ||= 300;
 
-	my $dbfile = $sc->config_value( apps => persist => app_settings => 'dbfile');
+	my $dbfile = $sc->config_value( apps => 'opensrf.persist' => app_settings => 'dbfile');
 	unless ($dbfile) {
 		throw OpenSRF::EX::PANIC ("Can't find my dbfile for SQLite!");
 	}
