@@ -2,11 +2,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-
+#define ROUTER_MAX_MSGS_PER_PACKET 12
 char* router_resource;
 transport_router_registrar* routt;
-
 void _build_trusted_sites( transport_router_registrar* router );
+
 
 void sig_hup_handler( int a ) { 
 	router_registrar_free( routt );	
@@ -329,6 +329,10 @@ int router_registrar_handle_msg( transport_router_registrar* router_registrar, t
 	info_handler( "Received class: %s : command %s ", msg->router_class, msg->router_command );
 
 	if( router_registrar == NULL || msg == NULL ) { return 0; }
+
+	if( msg->router_command == NULL || !strcmp(msg->router_command,"") ) {
+		return router_registrar_handle_app_request( router_registrar, msg );
+	}
 
 	// user issued a ruoter query
 	/* a query command has router_command="query" and the actual query type
@@ -833,6 +837,114 @@ int router_return_server_info(
 	return 1;
 
 }
+
+int router_registrar_handle_app_request( 
+		transport_router_registrar* router, transport_message* msg ) {
+
+	osrf_message* arr[ROUTER_MAX_MSGS_PER_PACKET];
+	memset(arr, 0, ROUTER_MAX_MSGS_PER_PACKET );
+	int num_msgs = osrf_message_from_xml( msg->body, arr );
+
+	int i;
+	for( i = 0; i != num_msgs; i++ ) {
+
+		osrf_message* omsg = arr[i];
+		osrf_message* success;
+
+		char* newxml =  osrf_message_to_xml(omsg);
+		debug_handler( "Received potential app request from client:\n%s\n", newxml ); 
+		free(newxml);
+
+		if(omsg->m_type == CONNECT) {
+
+			success = osrf_message_init( 
+					STATUS, omsg->thread_trace, omsg->protocol );
+
+			osrf_message_set_status_info( 
+					success, "oilsConnectStatus", "Connection Successful", OSRF_STATUS_OK );
+
+		} else if( omsg->m_type == REQUEST ) {
+
+			success = router_registrar_process_app_request( router, omsg );
+			
+		} else if(omsg->m_type == DISCONNECT) { 
+			success = NULL;
+
+		} else {
+
+			success = osrf_message_init( 
+					STATUS, omsg->thread_trace, omsg->protocol );
+			osrf_message_set_status_info( 
+					success, "oilsMethodException", "Method Not Found", OSRF_STATUS_NOTFOUND );
+		}
+
+
+		/* now send our new message back */
+		if(success) {
+
+			char* xml =  osrf_message_to_xml(success);
+			debug_handler( "Sending XML to client app request:\n%s\n", xml );
+			transport_message* return_m = message_init( 
+				xml, "", msg->thread, msg->sender, "" );
+
+
+			client_send_message(router->jabber->t_client, return_m);
+
+			free(xml);
+			osrf_message_free(success);
+		} 
+
+	}
+
+	return 1;
+
+}
+
+
+
+osrf_message* router_registrar_process_app_request( 
+		transport_router_registrar* router, osrf_message* omsg ) {
+
+
+	if( omsg->method_name == NULL )
+		return NULL;
+
+	json* result_content = NULL;
+
+	debug_handler( "Received method from client: %s", omsg->method_name );
+
+	if(!strcmp(omsg->method_name,"router.info.class.list")) {
+
+		debug_handler("Processing router.info.class.list request");
+
+		result_content = json_object_new_array();
+		server_class_node* cur_class = router->server_class_list;
+		while( cur_class != NULL ) {
+
+			debug_handler("Adding %s to request list", cur_class->server_class);
+
+			json_object_array_add(
+					result_content, json_object_new_string(cur_class->server_class));
+			cur_class = cur_class->next;
+		}
+		if( json_object_array_length(result_content) < 1 ) 
+			result_content = NULL;
+
+	}
+
+	if( result_content == NULL ) 
+		return NULL;
+
+	osrf_message* success = osrf_message_init(
+		RESULT, omsg->thread_trace, omsg->protocol );
+	osrf_message_set_result_content( success, result_content );
+	json_object_put(result_content);
+
+	return success;
+}
+
+
+
 
 int router_registrar_free( transport_router_registrar* router_registrar ) {
 	if( router_registrar == NULL ) return 0;

@@ -1,5 +1,7 @@
 #include "opensrf/transport_client.h"
 #include "opensrf/transport_message.h"
+#include "opensrf/osrf_message.h"
+
 #include <time.h>
 #include <sys/select.h>
 
@@ -93,6 +95,7 @@ struct server_class_node_struct {
 };
 typedef struct server_class_node_struct server_class_node;
 
+
 // ----------------------------------------------------------------------
 // Top level router_registrar object.  Maintains the list of 
 // server_class_nodes and the top level router jabber connection.
@@ -119,8 +122,6 @@ struct transport_router_registrar_struct {
 
 };
 typedef struct transport_router_registrar_struct transport_router_registrar;
-
-
 
 
 // ----------------------------------------------------------------------
@@ -235,6 +236,15 @@ void listen_loop( transport_router_registrar* router );
 int router_return_server_info( transport_router_registrar* router, transport_message* msg );
 
 int remove_server_class( transport_router_registrar* router, server_class_node* class );
+
+
+
+int router_registrar_handle_app_request( transport_router_registrar*, transport_message* msg );
+
+osrf_message* router_registrar_process_app_request( 
+		transport_router_registrar* , osrf_message* omsg );
+
+
 // ----------------------------------------------------------------------
 // Adds a handler for the SIGUSR1 that we send to wake all the 
 // listening threads.
