@@ -30,13 +30,23 @@ struct printbuf* printbuf_new()
 {
   struct printbuf *p;
 
-  if(!(p = calloc(1, sizeof(struct printbuf)))) return NULL;
+  //if(!(p = calloc(1, sizeof(struct printbuf)))) return NULL;
+
+  size_t len = sizeof(struct printbuf);
+  p = (struct printbuf*) malloc(len);
+  if(!p) return NULL;
+  memset( p, 0, len );
+
   p->size = 32;
   p->bpos = 0;
-  if(!(p->buf = malloc(p->size))) {
+
+  if(!(p->buf = (char*) malloc(p->size))) {
     free(p);
     return NULL;
   }
+
+  memset(p->buf, 0, p->size);
+
   return p;
 }
 
