@@ -173,7 +173,7 @@ sub serve {
 		"port $port\npid_file $pid_file\nlog_level 3\n";
 
 	open F, "> $file" or die "Can't open $file : $!";
-   print F $file_string;
+	print F $file_string;
 	close F;
 
 	$self->run( 'conf_file' => $file );
@@ -214,10 +214,9 @@ sub child_init_hook {
 	OpenSRF::Transport::PeerHandle->construct( $self->app() );
 	$logger->transport( "PeerHandle Created from UnixServer child_init_hook", INTERNAL );
 
-	my $peer_handle = OpenSRF::System::bootstrap_client("system_client");
 	OpenSRF::Application->application_implementation->child_init
 		if (OpenSRF::Application->application_implementation->can('child_init'));
-	return $peer_handle;
+	return OpenSRF::Transport::PeerHandle->retrieve;
 
 }
 

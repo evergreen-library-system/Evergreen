@@ -24,12 +24,14 @@ Subclasses OpenSRF::Transport::SlimJabber::Client.
 =cut
 
 our %apps_hash;
+our $_singleton_connection;
 
 sub retrieve { 
 	my( $class, $app ) = @_;
 	my @keys = keys %apps_hash;
 	OpenSRF::Utils::Logger->transport( 
 			"Requesting peer for $app and we have @keys", INFO );
+	return $_singleton_connection;
 	return $apps_hash{$app};
 }
 
@@ -38,6 +40,10 @@ sub retrieve {
 # !! In here we use the bootstrap config ....
 sub new {
 	my( $class, $app ) = @_;
+
+	my $peer_con = $class->retrieve;
+	return $peer_con if ($peer_con and $peer_con->tcp_connected);
+
 	my $config = OpenSRF::Utils::Config->current;
 
 	if( ! $config ) {
@@ -64,7 +70,7 @@ sub new {
 	my $password	= $config->$trans->password;
 	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->password, INTERNAL );
 	my $h = $config->env->hostname;
-	my $resource	= "$h" . "_$$";
+	my $resource	= $h;
 	my $server		= $config->$trans->server;
 	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->server, INTERNAL );
 	my $port			= $config->$trans->port;
@@ -88,7 +94,10 @@ sub new {
 
 	$self->app($app);
 
+	$_singleton_connection = $self;
 	$apps_hash{$app} = $self;
+
+	return $_singleton_connection;
 	return $apps_hash{$app};
 }
 

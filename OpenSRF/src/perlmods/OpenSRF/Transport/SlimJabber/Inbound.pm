@@ -52,7 +52,7 @@ This service should be loaded at system startup.
 
 			if (defined $client->config_value("router_targets")) {
 				my $h = OpenSRF::Utils::Config->current->env->hostname;
-				$resource .= "_$h" . "_$$";
+				$resource .= "_$h";
 			}
 
 			OpenSRF::Utils::Logger->transport("Inbound as $username, $password, $resource, $host, $port\n", INTERNAL );

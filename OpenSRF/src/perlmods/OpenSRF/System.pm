@@ -162,6 +162,7 @@ sub bootstrap {
 	my $server_type = $client->config_value("server_type");
 	$server_type ||= "basic";
 
+	OpenSRF::Transport::PeerHandle->retrieve->disconnect;
 
 	if(  $server_type eq "prefork" ) { 
 		$server_type = "Net::Server::PreFork"; 

@@ -24,12 +24,17 @@ my $logger = "OpenSRF::Utils::Logger";
 
 sub DESTROY{
 	my $self = shift;
+	$self->disconnect;
+}
+
+sub disconnect{
+	my $self = shift;
 	my $socket = $self->{_socket};
 	if( $socket and $socket->connected() ) {
 		print $socket "</stream:stream>";
 		close( $socket );
 	}
-};
+}
 
 
 =head2 new()
@@ -439,7 +444,7 @@ sub initialize {
 <query xmlns='jabber:iq:auth'>
 <username>$username</username>
 <password>$password</password>
-<resource>$resource</resource>
+<resource>${resource}_$$</resource>
 </query>
 </iq>
 	XML
