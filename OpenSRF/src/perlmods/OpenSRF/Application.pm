@@ -119,7 +119,7 @@ sub handler {
 				my $time = sprintf '%.3f', time() - $start;
 				$log->debug( "Method duration for {$method_name -> ".join(', ', @args)."}:  ". $time, DEBUG );
 				if( ref( $resp ) ) {
-					$log->debug( "Calling respond_complete: ". $resp->toString(), INTERNAL );
+					#$log->debug( "Calling respond_complete: ". $resp->toString(), INTERNAL );
 					$appreq->respond_complete( $resp );
 				} else {
 				        $appreq->status( OpenSRF::DomainObject::oilsConnectStatus->new(
@@ -212,10 +212,9 @@ sub register_method {
 	$args{api_level} ||= 1;
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
-        $args{package} ||= $app;                
+   $args{package} = $app;                
 	$args{server_class} = server_class();
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
-	$args{code} ||= \&{$app . '::' . $args{method}};
 
 	$_METHODS[$args{api_level}]{$args{api_name}} = bless \%args => $app;
 
@@ -330,7 +329,7 @@ sub run {
 	}
 
 	if (!$self->{remote}) {
-		my $code ||= \&{$server_class . '::' . $self->{method}};
+		my $code ||= \&{$self->{package} . '::' . $self->{method}};
 		$resp = $code->($self, $req, @_);
 
 		if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
