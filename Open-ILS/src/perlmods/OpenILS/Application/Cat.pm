@@ -125,11 +125,12 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_mods_slim_retrieve {
+
 	my( $self, $client, @recordids ) = @_;
 
 	my $name = "open-ils.storage.biblio.record_marc.retrieve";
+	warn "looking up  record_marc retrieve " . time() . "\n";
 	my $method = $self->method_lookup($name);
-
 	unless($method) {
 		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
 	}
@@ -137,8 +138,49 @@ sub biblio_mods_slim_retrieve {
 	my $u = $utils->new();
 	my $start = 1;
 
+
+=head new way, fix me
+
+	my $last_xml	= undef;
+	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+
+	# grab, process, wait, etc...
 	for my $id (@recordids) {
+		
+		my $req = $session->request( $name, $id );
+		if($last_xml) {
+			if($start) {
+				$u->start_mods_batch( $last_xml->marc );
+				$start = 0;
+			} else {
+				$u->push_mods_batch( $last_xml->marc );
+			}
+			$last_xml = undef;
+		}
+		$req->wait_complete;
+		$last_xml = $req->recv;
+		if(UNIVERSAL::isa($last_xml,"OpenSRF::EX")) {
+			throw $last_xml ($last_xml->stringify());;
+		}
+		$req->finish();
+		$last_xml = $last_xml->content;
+	}
+
+	if($last_xml) { #grab the last one
+		$u->push_mods_batch( $last_xml->marc );
+	}
+
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+
+=cut
+
+
+	for my $id (@recordids) {
+
 		my ($marcxml) = $method->run($id);
+		warn "retrieved marcxml at " . time() . "\n";
 		if(!$marcxml) { warn "Nothing from storage"; return undef; }
 
 		if(UNIVERSAL::isa($marcxml,"OpenSRF::EX")) {
@@ -153,11 +195,31 @@ sub biblio_mods_slim_retrieve {
 		}
 	}
 
+	warn "returning mods batch " . time . "\n";
 	my $mods = $u->finish_mods_batch();
 	return $mods;
 
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "marc_test",
+	api_name	=> "open-ils.cat.biblio.record.tree.retrieve.test",
+	argc		=> 1, 
+	note		=> "Returns the tree associated with the nodeset of the given doc id"
+);
+
+
+sub marc_test {
+
+	my( $self, $client ) = @_;
+	my $doc	= XML::LibXML->new()->parse_file( "/pines/ilsmods/Application/Cat/test_rec.xml" );
+	my $marcxml = $doc->toString();
+	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marcxml ); 
+	my $tree = $utils->nodeset2tree( $nodes->nodeset );
+	$tree->owner_doc( 999999 );
+	return $tree;
+
+}
 
 1;
