@@ -204,31 +204,35 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
 
 	if(!omsg) 
-		printf("Received no data from server\n");
+		printf("\nReceived no data from server\n");
 	
 	
 	while(omsg) {
 		if(omsg->result_content) {
 			char* content = json_printer( omsg->result_content );
-			printf( "Received Data: %s\n",content );
+			printf( "\nReceived Data: %s\n",content );
 			free(content);
 		}
 		else
-			printf( "Received Message but no result data\n");
+			printf( "\nReceived Message but no result data\n");
 
 		osrf_message_free(omsg);
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 	}
 
-
-	if( osrf_app_session_request_complete( session, req_id ))
-		printf("[Request Completed Successfully]\n");
-
 	double end = get_timestamp_millis();
 
-	printf("Request Time in seconds: %f\n", end - start );
+	printf("\n------------------------------------\n");
+	if( osrf_app_session_request_complete( session, req_id ))
+		printf("Request Completed Successfully\n");
 
+
+	printf("Request Time in seconds: %f\n", end - start );
+	printf("------------------------------------\n");
+
+	osrf_app_session_request_finish( session, req_id );
 	osrf_app_session_disconnect( session );
+	osrf_app_session_destroy( session );
 
 	return 1;
 
