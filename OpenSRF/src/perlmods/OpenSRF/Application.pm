@@ -4,6 +4,7 @@ use OpenSRF::AppSession;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::Utils::Logger qw/:level/;
+use Data::Dumper;
 use Time::HiRes qw/time/;
 use vars qw/$_app $log %_METHODS/;
 use OpenSRF::EX qw/:try/;
@@ -198,14 +199,18 @@ sub register_method {
 sub method_lookup {             
 	my $self = shift;
 	my $method = shift;
-	my $proto = shift;
+	my $proto = shift || 1;
 
 	my $class = ref($self) || $self;
 
-	$log->debug("Specialized lookup of [$method] in [$class]", INTERNAL);
+	$log->debug("Specialized lookup of [$method] in [$class]", DEBUG);
+	$log->debug("Available methods\n".Dumper(\%_METHODS), INTERNAL);
 
 	if (exists $_METHODS{$method}) {
-		return $_METHODS{$method} if ($_METHODS{$method}{protocol} == $proto);
+		$log->debug("Looks like we found [$method]", DEBUG);
+		my $meth = $_METHODS{$method} if ($_METHODS{$method}{protocol} == $proto);
+		$log->debug("Method object is ".Dumper($meth), INTERNAL);
+		return $meth;
 	}               
 
 	return undef; 
@@ -215,15 +220,24 @@ sub run {
 	my $self = shift;
 	my $req = shift;
 
-	unless ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppRequest') ) {
+	if ( !ref($req) || !UNIVERSAL::isa($req, 'OpenSRF::AppRequest') ) {
+		$log->debug("Creating a SubRequest object", DEBUG);
 		unshift @_, $req;
 		$req = OpenSRF::AppSubrequest->new;
+	} else {
+		$log->debug("This is a top level request", DEBUG);
 	}
 
 	my $resp = $self->{code}->($self, $req, @_);
 
 	if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
+		$req->respond($resp) if ($resp);
+		for my $r ( $req->responses ) {
+			$log->debug("A SubRequest object is responding with $r", DEBUG);
+		}
 		return $req->responses;
+	} else {
+		$log->debug("A top level Request object is responding $resp", DEBUG);
 	}
 
 	return $resp;

@@ -82,7 +82,7 @@ sub add_1 {
 	my @args = @_;
 
 	my $meth = $self->method_lookup('_send_request');
-	my $result = $meth->run('add',@args);
+	my ($result) = $meth->run('add',@args);
 
 	return $result;
 	
@@ -96,7 +96,7 @@ sub sub_1 {
 	my @args = @_;
 
 	my $meth = $self->method_lookup('_send_request');
-	my $result = $meth->run('sub',@args);
+	my ($result) = $meth->run('sub',@args);
 
 	return $result;
 	
@@ -110,7 +110,7 @@ sub mult_1 {
 	my @args = @_;
 
 	my $meth = $self->method_lookup('_send_request');
-	my $result = $meth->run('mult',@args);
+	my ($result) = $meth->run('mult',@args);
 
 	return $result;
 	
@@ -124,7 +124,7 @@ sub div_1 {
 	my @args = @_;
 
 	my $meth = $self->method_lookup('_send_request');
-	my $result = $meth->run('div',@args);
+	my ($result) = $meth->run('div',@args);
 
 	return $result;
 	
