@@ -307,12 +307,7 @@ sub method_lookup {
 	if (defined $meth) {
 		$log->debug("Looks like we found [$method]!", DEBUG);
 		$log->debug("Method object is ".Dumper($meth), INTERNAL);
-	} elsif (!$no_recurse) {
-
-		# XXX Remvoe this to activate the magic!
-		return $meth;
-		# XXX Remvoe this to activate the magic!
-		
+	} elsif (0 and !$no_recurse) {
 		retrieve_remote_apis();
 		$self->method_lookup($method,$proto,1);
 	}
