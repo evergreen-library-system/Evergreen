@@ -1,0 +1,45 @@
+[%
+
+# ------------------------------------------------------------------
+# Circ Matrix
+#
+# Objects:
+#	patron
+#	copy
+#		loan_duration
+#	circlib
+#		shortname
+#
+# Constants:
+#	copy_types.*
+#	
+# ------------------------------------------------------------------
+
+# ------------------------------------------------------------------
+# Macros for simpler syntax
+
+MACRO jump(n) PROCESS $n;
+MACRO policy(p)  PROCESS policy_block val=p;
+BLOCK policy_block; val; STOP; END; 
+
+# ------------------------------------------------------------------
+
+
+
+IF circlib.shortname == 'ARL-ATH'; jump('ARL_ATH'); END;
+policy('pines_global_duration_policy_default'); 
+
+
+BLOCK ARL_ATH;
+	IF copy.type == copy_types.book AND copy.loan_duration == 1; policy('my_ath_policy'); END;
+	IF copy.type == copy_types.audio AND copy.loan_duration == 2; policy('my_other_ath_policy'); END;
+END;
+	
+
+BLOCK BTRL;
+	IF copy.type == copy_types.dvd; policy('my_btrl_audio_policy'); END;
+END;
+
+
+
+%]
