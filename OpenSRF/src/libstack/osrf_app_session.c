@@ -216,6 +216,7 @@ void _osrf_app_session_remove_session( char* session_id ) {
 /** Allocates a initializes a new app_session */
 
 osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
+
 	osrf_app_session* session = safe_malloc(sizeof(osrf_app_session));	
 
 	session->transport_handle = osrf_system_get_transport_client();
@@ -239,8 +240,9 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 	/* build a chunky, random session id */
 	char id[256];
 	memset(id,0,256);
-	srand((int)time(NULL));
-	sprintf(id, "%d.%d%d", rand(), (int)time(NULL), getpid());
+	//srand((int)time(NULL));
+
+	sprintf(id, "%lf.%d%d", get_timestamp_millis(), (int)time(NULL), getpid());
 	session->session_id = strdup(id);
 	debug_handler( "Building a new client session with id [%s]", session->session_id );
 
@@ -476,8 +478,12 @@ int osrf_app_session_connect(osrf_app_session* session){
 
 	while( session->state != OSRF_SESSION_CONNECTED && remaining >= 0 ) {
 		osrf_app_session_queue_wait( session, remaining );
+		debug_handler("In connect while with state: %x, %d [%s]", session, session->state, session->session_id );
 		remaining -= (int) (time(NULL) - start);
 	}
+
+	if(session->state == OSRF_SESSION_CONNECTED)
+		debug_handler(" * Connected Successfully");
 
 	if(session->state != OSRF_SESSION_CONNECTED)
 		return 0;

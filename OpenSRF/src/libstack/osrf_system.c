@@ -7,16 +7,19 @@ transport_client* osrf_system_get_transport_client() {
 }
 
 int osrf_system_bootstrap_client( char* config_file ) {
+
 	if( config_file == NULL )
 		fatal_handler("No Config File Specified\n" );
 
 	config_reader_init( "opensrf.bootstrap", config_file );	
+
 	char* log_file		= config_value( "opensrf.bootstrap", "//logs/client" );
 	char* log_level	= config_value( "opensrf.bootstrap", "//bootstrap/debug" );
 	char* domain		= config_value( "opensrf.bootstrap", "//bootstrap/domains/domain1" ); /* just the first for now */
 	char* username		= config_value( "opensrf.bootstrap", "//bootstrap/username" );
 	char* password		= config_value( "opensrf.bootstrap", "//bootstrap/passwd" );
 	char* port			= config_value( "opensrf.bootstrap", "//bootstrap/port" );
+
 	int llevel = 0;
 	int iport = atoi(port);
 

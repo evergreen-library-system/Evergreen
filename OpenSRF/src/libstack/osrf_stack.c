@@ -22,8 +22,9 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 	osrf_app_session* session = osrf_app_session_find_session( msg->thread );
 
 	if( session == NULL ) {  /* we must be a server, build a new session */
-		info_handler( "Server sessions not implemented yet ..." );
-		return 0;
+		info_handler( "Received message for nonexistant session. Dropping..." );
+		message_free( msg );
+		return 1;
 	}
 
 	debug_handler("Session [%s] found, building message", msg->thread );
@@ -79,7 +80,9 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 		switch( msg->status_code ) {
 
 			case OSRF_STATUS_OK:
+				debug_handler("We connected successfully");
 				session->state = OSRF_SESSION_CONNECTED;
+				debug_handler( "State: %x => %s => %d", session, session->session_id, session->state );
 				return NULL;
 
 			case OSRF_STATUS_COMPLETE:
