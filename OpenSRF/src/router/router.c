@@ -529,6 +529,7 @@ int remove_server_class( transport_router_registrar* router, server_class_node* 
 
 	transport_message * msg = NULL;
 	while ( (msg = client_recv(class->jabber->t_client, 0)) != NULL ) {
+		debug_handler( "Looping on messages to dead class" );
 		server_class_handle_msg(router, class, msg);
 		message_free(msg);
 	}
@@ -537,6 +538,7 @@ int remove_server_class( transport_router_registrar* router, server_class_node* 
 	class->server_class = NULL;
 
 	find_server_class( router, router_resource ); /* find deletes for us */
+	debug_handler( "Successfuly called 'find_server_class' on class to delete" );
 
 	if( router->server_class_list == NULL ) 
 		return 0;
@@ -596,6 +598,7 @@ server_class_node * find_server_class ( transport_router_registrar * router, con
 		class = class->next;
 	}
 
+	debug_handler( "Returning NULL from find_server_class()" );
 	return NULL;
 }
 
@@ -687,6 +690,7 @@ int  server_class_handle_msg( transport_router_registrar* router,
 		message_free( msg );
 
 		remove_server_class( router, s_node );
+		debug_handler( "Successfully removed server class" ); 
 
 		return -1;
 	}
