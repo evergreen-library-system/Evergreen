@@ -1,16 +1,16 @@
-package OpenILS::DomainObject::oilsScalar;
-use base 'OpenILS::DomainObject';
-use OpenILS::DomainObject;
+package OpenSRF::DomainObject::oilsScalar;
+use base 'OpenSRF::DomainObject';
+use OpenSRF::DomainObject;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsScalar
+OpenSRF::DomainObject::oilsScalar
 
 =head1 SYNOPSIS
 
-  use OpenILS::DomainObject::oilsScalar;
+  use OpenSRF::DomainObject::oilsScalar;
 
-  my $text = OpenILS::DomainObject::oilsScalar->new( 'a string or number' );
+  my $text = OpenSRF::DomainObject::oilsScalar->new( 'a string or number' );
   $text->value( 'replacement value' );
   print "$text"; # stringify
 
@@ -27,7 +27,7 @@ OpenILS::DomainObject::oilsScalar
     Or, using the TIE interface:
 
   my $scalar;
-  my $real_object = tie($scalar, 'OpenILS::DomainObject::oilsScalar', "a string to store...");
+  my $real_object = tie($scalar, 'OpenSRF::DomainObject::oilsScalar', "a string to store...");
 
   $scalar = "a new string";
   print $scalar . "\n";
@@ -35,7 +35,7 @@ OpenILS::DomainObject::oilsScalar
 
 =head1 METHODS
 
-=head2 OpenILS::DomainObject::oilsScalar->value( [$new_value] )
+=head2 OpenSRF::DomainObject::oilsScalar->value( [$new_value] )
 
 =over 4
 
@@ -87,7 +87,7 @@ sub value {
 	if ( defined $value ) {
 		$self->removeChild($_) for ($self->childNodes);
 		if (ref($value) && $value->isa('XML::LibXML::Node')) {
-			#throw OpenILS::EX::NotADomainObject
+			#throw OpenSRF::EX::NotADomainObject
 			#	unless ($value->nodeName =~ /^oils:domainObject/o);
 			$self->appendChild($value);
 		} elsif (defined $value) {
@@ -111,18 +111,18 @@ sub value {
 sub FETCH { $_[0]->value }
 sub STORE { $_[0]->value($_[1]) }
 
-package OpenILS::DomainObject::oilsPair;
-use base 'OpenILS::DomainObject::oilsScalar';
+package OpenSRF::DomainObject::oilsPair;
+use base 'OpenSRF::DomainObject::oilsScalar';
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsPair
+OpenSRF::DomainObject::oilsPair
 
 =head1 SYNOPSIS
 
-  use OpenILS::DomainObject::oilsPair;
+  use OpenSRF::DomainObject::oilsPair;
 
-  my $pair = OpenILS::DomainObject::oilsPair->new( 'key_for_pair' => 'a string or number' );
+  my $pair = OpenSRF::DomainObject::oilsPair->new( 'key_for_pair' => 'a string or number' );
 
   $pair->key( 'replacement key' );
   $pair->value( 'replacement value' );
@@ -148,7 +148,7 @@ hash-type domain objects.
 
 =head1 METHODS
 
-=head2 OpenILS::DomainObject::oilsPair->value( [$new_value] )
+=head2 OpenSRF::DomainObject::oilsPair->value( [$new_value] )
 
 =over 4
 
@@ -157,7 +157,7 @@ as a build attribute as well as added to a prebuilt oilsPair object.
 
 =back
 
-=head2 OpenILS::DomainObject::oilsPair->key( [$new_key] )
+=head2 OpenSRF::DomainObject::oilsPair->key( [$new_key] )
 
 =over 4
 
@@ -192,19 +192,19 @@ sub key {
 	return $self->getAttribute( 'key' );
 }
 
-package OpenILS::DomainObjectCollection::oilsArray;
-use base qw/OpenILS::DomainObjectCollection Tie::Array/;
-use OpenILS::DomainObjectCollection;
+package OpenSRF::DomainObjectCollection::oilsArray;
+use base qw/OpenSRF::DomainObjectCollection Tie::Array/;
+use OpenSRF::DomainObjectCollection;
 
 =head1 NAME
 
-OpenILS::DomainObjectCollection::oilsArray
+OpenSRF::DomainObjectCollection::oilsArray
 
 =head1 SYNOPSIS
 
-  use OpenILS::DomainObject::oilsPrimitive;
+  use OpenSRF::DomainObject::oilsPrimitive;
 
-  my $collection = OpenILS::DomainObjectCollection::oilsArray->new( $domain_object, $another_domain_object, ...);
+  my $collection = OpenSRF::DomainObjectCollection::oilsArray->new( $domain_object, $another_domain_object, ...);
 
   $collection->push( 'appended value' );
   $collection->unshift( 'prepended vaule' );
@@ -218,12 +218,12 @@ OpenILS::DomainObjectCollection::oilsArray
     Or, using the TIE interface:
 
   my @array;
-  my $real_object = tie(@array, 'OpenILS::DomainObjectCollection::oilsArray', $domain, $objects, 'to', $store);
+  my $real_object = tie(@array, 'OpenSRF::DomainObjectCollection::oilsArray', $domain, $objects, 'to', $store);
 
       or to tie an existing $collection object
 
   my @array;
-  tie(@array, 'OpenILS::DomainObjectCollection::oilsArray', $collection);
+  tie(@array, 'OpenSRF::DomainObjectCollection::oilsArray', $collection);
 
       or even....
 
@@ -231,7 +231,7 @@ OpenILS::DomainObjectCollection::oilsArray
   tie(@array, ref($collection), $collection);
 
 
-  $array[2] = $DomainObject; # replaces 'to' (which is now an OpenILS::DomainObject::oilsScalar) above
+  $array[2] = $DomainObject; # replaces 'to' (which is now an OpenSRF::DomainObject::oilsScalar) above
   delete( $array[3] ); # removes '$store' above.
   my $size = scalar( @array );
 
@@ -246,11 +246,11 @@ be stored in the array.
 
 =head1 METHODS
 
-=head2 OpenILS::DomainObjectCollection::oilsArray->list()
+=head2 OpenSRF::DomainObjectCollection::oilsArray->list()
 
 =over 4
 
-Returns the array of 'OpenILS::DomainObject's that this collection contains.
+Returns the array of 'OpenSRF::DomainObject's that this collection contains.
 
 =back
 
@@ -301,7 +301,7 @@ sub STORE {
 	my $self = CORE::shift;
 	my ($index, $value) = @_;
 
-	$value = OpenILS::DomainObject::oilsScalar->new($value)
+	$value = OpenSRF::DomainObject::oilsScalar->new($value)
 		unless ( ref $value and $value->nodeName =~ /^oils:domainObject/o );
 
 	$self->_expand($index) unless ($self->EXISTS($index));
@@ -373,7 +373,7 @@ sub _expand {
 	my $count = CORE::shift;
 	my $size = $self->FETCHSIZE;
 	for ($size..$count) {
-		$self->SUPER::push( new OpenILS::DomainObject::oilsScalar );
+		$self->SUPER::push( new OpenSRF::DomainObject::oilsScalar );
 	}
 }
 
@@ -415,18 +415,18 @@ sub DELETE {
 	return $self->removeChild( ($self->childNodes)[$index] );
 }
 
-package OpenILS::DomainObjectCollection::oilsHash;
-use base qw/OpenILS::DomainObjectCollection Tie::Hash/;
+package OpenSRF::DomainObjectCollection::oilsHash;
+use base qw/OpenSRF::DomainObjectCollection Tie::Hash/;
 
 =head1 NAME
 
-OpenILS::DomainObjectCollection::oilsHash
+OpenSRF::DomainObjectCollection::oilsHash
 
 =head1 SYNOPSIS
 
-  use OpenILS::DomainObject::oilsPrimitive;
+  use OpenSRF::DomainObject::oilsPrimitive;
 
-  my $collection = OpenILS::DomainObjectCollection::oilsHash->new( key1 => $domain_object, key2 => $another_domain_object, ...);
+  my $collection = OpenSRF::DomainObjectCollection::oilsHash->new( key1 => $domain_object, key2 => $another_domain_object, ...);
 
   $collection->set( key =>'value' );
   my $value = $collection->find( $key );
@@ -437,12 +437,12 @@ OpenILS::DomainObjectCollection::oilsHash
     Or, using the TIE interface:
 
   my %hash;
-  my $real_object = tie(%hash, 'OpenILS::DomainObjectCollection::oilsHash', domain => $objects, to => $store);
+  my $real_object = tie(%hash, 'OpenSRF::DomainObjectCollection::oilsHash', domain => $objects, to => $store);
 
       or to tie an existing $collection object
 
   my %hash;
-  tie(%hash, 'OpenILS::DomainObjectCollection::oilsHash', $collection);
+  tie(%hash, 'OpenSRF::DomainObjectCollection::oilsHash', $collection);
 
       or even....
 
@@ -538,7 +538,7 @@ sub set {
 	my $node = $self->find_node($key);
 
 	return $node->value( $value ) if (defined $node);
-	return $self->appendChild( OpenILS::DomainObject::oilsPair->new($key => $value) );
+	return $self->appendChild( OpenSRF::DomainObject::oilsPair->new($key => $value) );
 }
 
 sub _accessor {
@@ -614,10 +614,10 @@ sub NEXTKEY {
 	}
 }
 
-package OpenILS::DomainObject::oilsHash;
-use base qw/OpenILS::DomainObjectCollection::oilsHash/;
+package OpenSRF::DomainObject::oilsHash;
+use base qw/OpenSRF::DomainObjectCollection::oilsHash/;
 
-package OpenILS::DomainObject::oilsArray;
-use base qw/OpenILS::DomainObjectCollection::oilsArray/;
+package OpenSRF::DomainObject::oilsArray;
+use base qw/OpenSRF::DomainObjectCollection::oilsArray/;
 
 1;

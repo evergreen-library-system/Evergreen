@@ -1,9 +1,9 @@
-package OpenILS::DomainObject::oilsResponse;
+package OpenSRF::DomainObject::oilsResponse;
 use vars qw/@EXPORT_OK %EXPORT_TAGS/;
 use Exporter;
 use JSON;
-use base qw/OpenILS::DomainObject Exporter/;
-use OpenILS::Utils::Logger qw/:level/;
+use base qw/OpenSRF::DomainObject Exporter/;
+use OpenSRF::Utils::Logger qw/:level/;
 
 BEGIN {
 @EXPORT_OK = qw/STATUS_CONTINUE STATUS_OK STATUS_ACCEPTED
@@ -26,13 +26,13 @@ BEGIN {
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsResponse
+OpenSRF::DomainObject::oilsResponse
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
 
-my $resp = OpenILS::DomainObject::oilsResponse->new;
+my $resp = OpenSRF::DomainObject::oilsResponse->new;
 
 $resp->status( 'a status message' );
 
@@ -42,7 +42,7 @@ $client->respond( $resp );
 
 =head1 ABSTRACT
 
-OpenILS::DomainObject::oilsResponse implements the base class for all Application
+OpenSRF::DomainObject::oilsResponse implements the base class for all Application
 layer messages send between the client and server.
 
 =cut
@@ -67,7 +67,7 @@ sub STATUS_INTERNALSERVERERROR	{ return 500 }
 sub STATUS_NOTIMPLEMENTED			{ return 501 }
 sub STATUS_VERSIONNOTSUPPORTED	{ return 505 }
 
-my $log = 'OpenILS::Utils::Logger';
+my $log = 'OpenSRF::Utils::Logger';
 
 sub new {
 	my $class = shift;
@@ -98,29 +98,29 @@ sub statusCode {
 
 
 
-package OpenILS::DomainObject::oilsStatus;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use base 'OpenILS::DomainObject::oilsResponse';
+package OpenSRF::DomainObject::oilsStatus;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use base 'OpenSRF::DomainObject::oilsResponse';
 use vars qw/$status $statusCode/;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsException
+OpenSRF::DomainObject::oilsException
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsResponse;
 
 ...
 
 # something happens.
 
-$client->status( OpenILS::DomainObject::oilsStatus->new );
+$client->status( OpenSRF::DomainObject::oilsStatus->new );
 
 =head1 ABSTRACT
 
 The base class for Status messages sent between client and server.  This
-is implemented on top of the C<OpenILS::DomainObject::oilsResponse> class, and 
+is implemented on top of the C<OpenSRF::DomainObject::oilsResponse> class, and 
 sets the default B<status> to C<Status> and B<statusCode> to C<STATUS_OK>.
 
 =cut
@@ -128,34 +128,34 @@ sets the default B<status> to C<Status> and B<statusCode> to C<STATUS_OK>.
 $status = 'Status';
 $statusCode = STATUS_OK;
 
-package OpenILS::DomainObject::oilsConnectStatus;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use base 'OpenILS::DomainObject::oilsStatus';
+package OpenSRF::DomainObject::oilsConnectStatus;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use base 'OpenSRF::DomainObject::oilsStatus';
 use vars qw/$status $statusCode/;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsConnectStatus
+OpenSRF::DomainObject::oilsConnectStatus
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsResponse;
 
 ...
 
 # something happens.
 
-$client->status( new OpenILS::DomainObject::oilsConnectStatus );
+$client->status( new OpenSRF::DomainObject::oilsConnectStatus );
 
 =head1 ABSTRACT
 
 The class for Stati relating to the connection status of a session.  This
-is implemented on top of the C<OpenILS::DomainObject::oilsStatus> class, and 
+is implemented on top of the C<OpenSRF::DomainObject::oilsStatus> class, and 
 sets the default B<status> to C<Connection Successful> and B<statusCode> to C<STATUS_OK>.
 
 =head1 SEE ALSO
 
-B<OpenILS::DomainObject::oilsStatus>
+B<OpenSRF::DomainObject::oilsStatus>
 
 =cut
 
@@ -170,10 +170,10 @@ $statusCode = STATUS_OK;
 
 
 
-package OpenILS::DomainObject::oilsResult;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::DomainObject::oilsPrimitive;
-use base 'OpenILS::DomainObject::oilsResponse';
+package OpenSRF::DomainObject::oilsResult;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::DomainObject::oilsPrimitive;
+use base 'OpenSRF::DomainObject::oilsResponse';
 use vars qw/$status $statusCode/;
 
 
@@ -182,15 +182,15 @@ $statusCode = STATUS_OK;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsResult
+OpenSRF::DomainObject::oilsResult
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsResponse;
 
  .... do stuff, create $object ...
 
-my $res = OpenILS::DomainObject::oilsResult->new;
+my $res = OpenSRF::DomainObject::oilsResult->new;
 
 $res->content($object)
 
@@ -199,12 +199,12 @@ $session->respond( $res );
 =head1 ABSTRACT
 
 This is the base class for encapuslating RESULT messages send from the server
-to a client.  It is a subclass of B<OpenILS::DomainObject::oilsResponse>, and
+to a client.  It is a subclass of B<OpenSRF::DomainObject::oilsResponse>, and
 sets B<status> to C<OK> and B<statusCode> to C<STATUS_OK>.
 
 =head1 METHODS
 
-=head2 OpenILS::DomainObject::oilsMessage->content( [$new_content] )
+=head2 OpenSRF::DomainObject::oilsMessage->content( [$new_content] )
 
 =over 4
 
@@ -222,7 +222,7 @@ sub content {
 	my ($content) = $self->getChildrenByTagName('oils:domainObject');
 
 	if ($new_content) {
-		$new_content = OpenILS::DomainObject::oilsScalar->new( JSON->perl2JSON( $new_content ) );
+		$new_content = OpenSRF::DomainObject::oilsScalar->new( JSON->perl2JSON( $new_content ) );
 
 		$self->removeChild($content) if ($content);
 		$self->appendChild($new_content);
@@ -236,7 +236,7 @@ sub content {
 
 =head1 SEE ALSO
 
-B<OpenILS::DomainObject::oilsResponse>
+B<OpenSRF::DomainObject::oilsResponse>
 
 =cut
 
@@ -248,10 +248,10 @@ B<OpenILS::DomainObject::oilsResponse>
 
 
 
-package OpenILS::DomainObject::oilsException;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::EX;
-use base qw/OpenILS::EX OpenILS::DomainObject::oilsResponse/;
+package OpenSRF::DomainObject::oilsException;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::EX;
+use base qw/OpenSRF::EX OpenSRF::DomainObject::oilsResponse/;
 use vars qw/$status $statusCode/;
 use Error;
 
@@ -262,28 +262,28 @@ sub message {
 
 sub new {
 	my $class = shift;
-	return $class->OpenILS::DomainObject::oilsResponse::new( @_ );
+	return $class->OpenSRF::DomainObject::oilsResponse::new( @_ );
 }
 
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsException
+OpenSRF::DomainObject::oilsException
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsResponse;
 
 ...
 
 # something breaks.
 
-$client->send( 'ERROR', OpenILS::DomainObject::oilsException->new( status => "ARRRRRRG!" ) );
+$client->send( 'ERROR', OpenSRF::DomainObject::oilsException->new( status => "ARRRRRRG!" ) );
 
 =head1 ABSTRACT
 
 The base class for Exception messages sent between client and server.  This
-is implemented on top of the C<OpenILS::DomainObject::oilsResponse> class, and 
+is implemented on top of the C<OpenSRF::DomainObject::oilsResponse> class, and 
 sets the default B<status> to C<Exception occured> and B<statusCode> to C<STATUS_BADREQUEST>.
 
 =cut
@@ -291,35 +291,35 @@ sets the default B<status> to C<Exception occured> and B<statusCode> to C<STATUS
 $status = 'Exception occured';
 $statusCode = STATUS_INTERNALSERVERERROR;
 
-package OpenILS::DomainObject::oilsConnectException;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::EX;
-use base qw/OpenILS::DomainObject::oilsException OpenILS::EX::ERROR/;
+package OpenSRF::DomainObject::oilsConnectException;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::EX;
+use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsConnectException
+OpenSRF::DomainObject::oilsConnectException
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsResponse;
 
 ...
 
 # something breaks while connecting.
 
-$client->send( 'ERROR', new OpenILS::DomainObject::oilsConnectException );
+$client->send( 'ERROR', new OpenSRF::DomainObject::oilsConnectException );
 
 =head1 ABSTRACT
 
 The class for Exceptions that occur durring the B<CONNECT> phase of a session.  This
-is implemented on top of the C<OpenILS::DomainObject::oilsException> class, and 
+is implemented on top of the C<OpenSRF::DomainObject::oilsException> class, and 
 sets the default B<status> to C<Connect Request Failed> and B<statusCode> to C<STATUS_FORBIDDEN>.
 
 =head1 SEE ALSO
 
-B<OpenILS::DomainObject::oilsException>
+B<OpenSRF::DomainObject::oilsException>
 
 =cut
 
@@ -327,35 +327,35 @@ B<OpenILS::DomainObject::oilsException>
 $status = 'Connect Request Failed';
 $statusCode = STATUS_FORBIDDEN;
 
-package OpenILS::DomainObject::oilsMethodException;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use base 'OpenILS::DomainObject::oilsException';
+package OpenSRF::DomainObject::oilsMethodException;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use base 'OpenSRF::DomainObject::oilsException';
 use vars qw/$status $statusCode/;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsMehtodException
+OpenSRF::DomainObject::oilsMehtodException
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsResponse;
 
 ...
 
 # something breaks while looking up or starting
 # a method call.
 
-$client->send( 'ERROR', new OpenILS::DomainObject::oilsMethodException );
+$client->send( 'ERROR', new OpenSRF::DomainObject::oilsMethodException );
 
 =head1 ABSTRACT
 
 The class for Exceptions that occur durring the B<CONNECT> phase of a session.  This
-is implemented on top of the C<OpenILS::DomainObject::oilsException> class, and 
+is implemented on top of the C<OpenSRF::DomainObject::oilsException> class, and 
 sets the default B<status> to C<Connect Request Failed> and B<statusCode> to C<STATUS_NOTFOUND>.
 
 =head1 SEE ALSO
 
-B<OpenILS::DomainObject::oilsException>
+B<OpenSRF::DomainObject::oilsException>
 
 =cut
 
@@ -365,9 +365,9 @@ $statusCode = STATUS_NOTFOUND;
 
 # -------------------------------------------
 
-package OpenILS::DomainObject::oilsServerError;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use base 'OpenILS::DomainObject::oilsException';
+package OpenSRF::DomainObject::oilsServerError;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use base 'OpenSRF::DomainObject::oilsException';
 use vars qw/$status $statusCode/;
 
 $status = 'Internal Server Error';
@@ -379,26 +379,26 @@ $statusCode = STATUS_INTERNALSERVERERROR;
 
 
 
-package OpenILS::DomainObject::oilsBrokenSession;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::EX;
-use base qw/OpenILS::DomainObject::oilsException OpenILS::EX::ERROR/;
+package OpenSRF::DomainObject::oilsBrokenSession;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::EX;
+use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
 $status = "Request on Disconnected Session";
 $statusCode = STATUS_EXPFAILED;
 
-package OpenILS::DomainObject::oilsXMLParseError;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::EX;
-use base qw/OpenILS::DomainObject::oilsException OpenILS::EX::ERROR/;
+package OpenSRF::DomainObject::oilsXMLParseError;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::EX;
+use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
 $status = "XML Parse Error";
 $statusCode = STATUS_EXPFAILED;
 
-package OpenILS::DomainObject::oilsAuthException;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::EX;
-use base qw/OpenILS::DomainObject::oilsException OpenILS::EX::ERROR/;
+package OpenSRF::DomainObject::oilsAuthException;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::EX;
+use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
 $status = "Authentication Failure";
 $statusCode = STATUS_FORBIDDEN;

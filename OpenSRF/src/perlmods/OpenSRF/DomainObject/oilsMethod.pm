@@ -1,18 +1,18 @@
-package OpenILS::DomainObject::oilsMethod;
-use OpenILS::DOM::Element::params;
-use OpenILS::DOM::Element::param;
+package OpenSRF::DomainObject::oilsMethod;
+use OpenSRF::DOM::Element::params;
+use OpenSRF::DOM::Element::param;
 use JSON;
-use base 'OpenILS::DomainObject';
+use base 'OpenSRF::DomainObject';
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsMethod
+OpenSRF::DomainObject::oilsMethod
 
 =head1 SYNOPSIS
 
-use OpenILS::DomainObject::oilsMethod;
+use OpenSRF::DomainObject::oilsMethod;
 
-my $method = OpenILS::DomainObject::oilsMethod->new( method => 'search' );
+my $method = OpenSRF::DomainObject::oilsMethod->new( method => 'search' );
 
 $method->return_type( 'mods' );
 
@@ -22,7 +22,7 @@ $client->send( 'REQUEST', $method );
 
 =head1 METHODS
 
-=head2 OpenILS::DomainObject::oilsMethod->method( [$new_method_name] )
+=head2 OpenSRF::DomainObject::oilsMethod->method( [$new_method_name] )
 
 =over 4
 
@@ -39,7 +39,7 @@ sub method {
 	return $self->_attr_get_set( method => shift );
 }
 
-=head2 OpenILS::DomainObject::oilsMethod->return_type( [$new_return_type] )
+=head2 OpenSRF::DomainObject::oilsMethod->return_type( [$new_return_type] )
 
 =over 4
 
@@ -59,7 +59,7 @@ sub return_type {
 	return $self->_attr_get_set( return_type => shift );
 }
 
-=head2 OpenILS::DomainObject::oilsMethod->params( [@new_params] )
+=head2 OpenSRF::DomainObject::oilsMethod->params( [@new_params] )
 
 =over 4
 
@@ -82,9 +82,9 @@ sub params {
 
 		$self->removeChild($old_params) if ($old_params);
 
-		my $params = OpenILS::DOM::Element::params->new;
+		my $params = OpenSRF::DOM::Element::params->new;
 		$self->appendChild($params);
-		$params->appendTextNode( JSON->perl2JSON( \@args );
+		$params->appendTextNode( JSON->perl2JSON( \@args ) );
 
 		$old_params = $params unless ($old_params);
 	}

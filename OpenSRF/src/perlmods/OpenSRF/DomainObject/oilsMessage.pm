@@ -1,20 +1,20 @@
-package OpenILS::DomainObject::oilsMessage;
-use base 'OpenILS::DomainObject';
-use OpenILS::AppSession;
-use OpenILS::DomainObject::oilsResponse qw/:status/;
-use OpenILS::Utils::Logger qw/:level/;
+package OpenSRF::DomainObject::oilsMessage;
+use base 'OpenSRF::DomainObject';
+use OpenSRF::AppSession;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use OpenSRF::Utils::Logger qw/:level/;
 use warnings; use strict;
-use OpenILS::EX qw/:try/;
+use OpenSRF::EX qw/:try/;
 
 =head1 NAME
 
-OpenILS::DomainObject::oilsMessage
+OpenSRF::DomainObject::oilsMessage
 
 =head1
 
-use OpenILS::DomainObject::oilsMessage;
+use OpenSRF::DomainObject::oilsMessage;
 
-my $msg = OpenILS::DomainObject::oilsMessage->new( type => 'CONNECT' );
+my $msg = OpenSRF::DomainObject::oilsMessage->new( type => 'CONNECT' );
 
 $msg->userAuth( $userAuth_element );
 
@@ -22,18 +22,18 @@ $msg->payload( $domain_object );
 
 =head1 ABSTRACT
 
-OpenILS::DomainObject::oilsMessage is used internally to wrap data sent
+OpenSRF::DomainObject::oilsMessage is used internally to wrap data sent
 between client and server.  It provides the structure needed to authenticate
 session data, and also provides the logic needed to unwrap session data and 
 pass this information along to the Application Layer.
 
 =cut
 
-my $log = 'OpenILS::Utils::Logger';
+my $log = 'OpenSRF::Utils::Logger';
 
 =head1 METHODS
 
-=head2 OpenILS::DomainObject::oilsMessage->type( [$new_type] )
+=head2 OpenSRF::DomainObject::oilsMessage->type( [$new_type] )
 
 =over 4
 
@@ -49,7 +49,7 @@ sub type {
 	return $self->_attr_get_set( type => shift );
 }
 
-=head2 OpenILS::DomainObject::oilsMessage->protocol( [$new_protocol_number] )
+=head2 OpenSRF::DomainObject::oilsMessage->protocol( [$new_protocol_number] )
 
 =over 4
 
@@ -67,7 +67,7 @@ sub protocol {
 	return $self->_attr_get_set( protocol => shift );
 }
 
-=head2 OpenILS::DomainObject::oilsMessage->threadTrace( [$new_threadTrace] );
+=head2 OpenSRF::DomainObject::oilsMessage->threadTrace( [$new_threadTrace] );
 
 =over 4
 
@@ -83,7 +83,7 @@ sub threadTrace {
 	return $self->_attr_get_set( threadTrace => shift );
 }
 
-=head2 OpenILS::DomainObject::oilsMessage->update_threadTrace
+=head2 OpenSRF::DomainObject::oilsMessage->update_threadTrace
 
 =over 4
 
@@ -108,7 +108,7 @@ sub update_threadTrace {
 	return $tT;
 }
 
-=head2 OpenILS::DomainObject::oilsMessage->payload( [$new_payload] )
+=head2 OpenSRF::DomainObject::oilsMessage->payload( [$new_payload] )
 
 =over 4
 
@@ -131,10 +131,10 @@ sub payload {
 		return $new_pl unless ($payload);
 	}
 
-	return OpenILS::DOM::upcast($payload)->upcast if ($payload);
+	return OpenSRF::DOM::upcast($payload)->upcast if ($payload);
 }
 
-=head2 OpenILS::DomainObject::oilsMessage->userAuth( [$new_userAuth_element] )
+=head2 OpenSRF::DomainObject::oilsMessage->userAuth( [$new_userAuth_element] )
 
 =over 4
 
@@ -159,7 +159,7 @@ sub userAuth {
 	return $ua;
 }
 
-=head2 OpenILS::DomainObject::oilsMessage->handler( $session_id )
+=head2 OpenSRF::DomainObject::oilsMessage->handler( $session_id )
 
 =over 4
 
@@ -185,7 +185,7 @@ sub handler {
 	$log->debug(" Received protocol => [$protocol], MType => [$mtype], ".
 			"from [".$session->remote_id."], threadTrace[".$self->threadTrace."]", INFO);
 	$log->debug("endpoint => [".$session->endpoint."]", DEBUG);
-	$log->debug("OpenILS::AppSession->SERVER => [".$session->SERVER()."]", DEBUG);
+	$log->debug("OpenSRF::AppSession->SERVER => [".$session->SERVER()."]", DEBUG);
 
 	$log->debug("Before ALL", DEBUG);
 
@@ -198,7 +198,7 @@ sub handler {
 	}
 
 	if( $val ) {
-		return OpenILS::Application->handler($session, $self->payload);
+		return OpenSRF::Application->handler($session, $self->payload);
 	}
 
 	return 1;
@@ -232,7 +232,7 @@ sub do_server {
 		unless ($mtype eq 'CONNECT') {
 			$log->error("Connection seems to be mangled: Got $mtype instead of CONNECT");
 
-			my $res = OpenILS::DomainObject::oilsBrokenSession->new(
+			my $res = OpenSRF::DomainObject::oilsBrokenSession->new(
 					status => "Connection seems to be mangled: Got $mtype instead of CONNECT",
 			);
 
@@ -244,7 +244,7 @@ sub do_server {
 		
 		#unless ($self->userAuth ) {
 		#	$log->debug( "No Authentication information was provided with the initial packet", ERROR );
-		#	my $res = OpenILS::DomainObject::oilsConnectException->new(
+		#	my $res = OpenSRF::DomainObject::oilsConnectException->new(
 		#			status => "No Authentication info was provided with initial message" );
 		#	$session->status($res);
 		#	$session->kill_me;
@@ -252,7 +252,7 @@ sub do_server {
 		#}
 
 		#unless( $self->userAuth->authenticate( $session ) ) {
-		#	my $res = OpenILS::DomainObject::oilsAuthException->new(
+		#	my $res = OpenSRF::DomainObject::oilsAuthException->new(
 		#		status => "Authentication Failed for " . $self->userAuth->getAttribute('username') );
 		#	$session->status($res) if $res;
 		#	$session->kill_me;
@@ -263,7 +263,7 @@ sub do_server {
 
 		$log->debug("We're a server and the user is authenticated",DEBUG);
 
-		my $res = OpenILS::DomainObject::oilsConnectStatus->new;
+		my $res = OpenSRF::DomainObject::oilsConnectStatus->new;
 		$session->status($res);
 		$session->state( $session->CONNECTED );
 
@@ -330,11 +330,11 @@ sub do_client {
 		# This should be changed to check the type of response (is it a connectException?, etc.)
 	}
 
-	if( $self->payload->class->isa( "OpenILS::EX" ) ) { 
+	if( $self->payload->class->isa( "OpenSRF::EX" ) ) { 
 		$self->payload->throw();
 	}
 
-	$log->debug("Passing to OpenILS::Application::handler()\n" . $self->payload->toString(1), INTERNAL);
+	$log->debug("Passing to OpenSRF::Application::handler()\n" . $self->payload->toString(1), INTERNAL);
 	$log->debug("oilsMessage passing to Application: " . $self->type." : ".$session->remote_id, INFO );
 
 	return 1;

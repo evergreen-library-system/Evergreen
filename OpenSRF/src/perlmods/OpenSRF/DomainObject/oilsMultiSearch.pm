@@ -1,10 +1,10 @@
-package OpenILS::DomainObjectCollection::oilsMultiSearch;
-use OpenILS::DomainObjectCollection;
-use OpenILS::DomainObject::oilsPrimitive;
-use OpenILS::DomainObject::oilsSearch;
-use OpenILS::DOM::Element::searchCriteria;
-use OpenILS::DOM::Element::searchCriterium;
-use base 'OpenILS::DomainObjectCollection::oilsHash';
+package OpenSRF::DomainObjectCollection::oilsMultiSearch;
+use OpenSRF::DomainObjectCollection;
+use OpenSRF::DomainObject::oilsPrimitive;
+use OpenSRF::DomainObject::oilsSearch;
+use OpenSRF::DOM::Element::searchCriteria;
+use OpenSRF::DOM::Element::searchCriterium;
+use base 'OpenSRF::DomainObjectCollection::oilsHash';
 
 sub new {
 	my $class = shift;
@@ -14,14 +14,14 @@ sub new {
 
 	my $self = $class->SUPER::new;
 
-	tie my %hash, 'OpenILS::DomainObjectCollection::oilsHash', $self;
+	tie my %hash, 'OpenSRF::DomainObjectCollection::oilsHash', $self;
 
 	$self->set( bind_count	=> 1 );
-	$self->set( searches	=> new OpenILS::DomainObjectCollection::oilsHash );
-	$self->set( relators	=> new OpenILS::DomainObjectCollection::oilsArray );
-	$self->set( fields	=> new OpenILS::DomainObjectCollection::oilsArray );
-	$self->set( group_by	=> new OpenILS::DomainObjectCollection::oilsArray );
-	$self->set( order_by	=> new OpenILS::DomainObjectCollection::oilsArray );
+	$self->set( searches	=> new OpenSRF::DomainObjectCollection::oilsHash );
+	$self->set( relators	=> new OpenSRF::DomainObjectCollection::oilsArray );
+	$self->set( fields	=> new OpenSRF::DomainObjectCollection::oilsArray );
+	$self->set( group_by	=> new OpenSRF::DomainObjectCollection::oilsArray );
+	$self->set( order_by	=> new OpenSRF::DomainObjectCollection::oilsArray );
 	
 	return $self;
 }
@@ -32,16 +32,16 @@ sub add_subsearch {
 	my $search = shift;
 	my $relator = shift;
 	
-	$search = OpenILS::DomainObject::oilsSearch->new($search) if (ref($search) eq 'ARRAY');
+	$search = OpenSRF::DomainObject::oilsSearch->new($search) if (ref($search) eq 'ARRAY');
 
 	$self->searches->set( $alias => $search );
 	
 	if ($self->searches->size > 1) {
-		throw OpenILS::EX::InvalidArg ('You need to pass a relator searchCriterium')
+		throw OpenSRF::EX::InvalidArg ('You need to pass a relator searchCriterium')
 			unless (defined $relator);
 	}
 
-	$relator = OpenILS::DOM::Element::searchCriterium->new( @$relator )
+	$relator = OpenSRF::DOM::Element::searchCriterium->new( @$relator )
 		if (ref($relator) eq 'ARRAY');
 
 	$self->relators->push( $relator ) if (defined $relator);
@@ -61,7 +61,7 @@ sub fields {
 	my $self = shift;
 	my @parts = @_;
 	if (@parts) {
-		$self->set( fields => OpenILS::DomainObjectCollection::oilsArray->new(@_) );
+		$self->set( fields => OpenSRF::DomainObjectCollection::oilsArray->new(@_) );
 	}
 	return $self->_accessor('fields')->list;
 }
@@ -90,7 +90,7 @@ sub order_by {
 	my $self = shift;
 	my @parts = @_;
 	if (@parts) {
-		$self->set( order_by => OpenILS::DomainObjectCollection::oilsArray->new(@_) );
+		$self->set( order_by => OpenSRF::DomainObjectCollection::oilsArray->new(@_) );
 	}
 	return $self->_accessor('order_by')->list;
 }
@@ -99,7 +99,7 @@ sub group_by {
 	my $self = shift;
 	my @parts = @_;
 	if (@parts) {
-		$self->set( group_by => OpenILS::DomainObjectCollection::oilsArray->new(@_) );
+		$self->set( group_by => OpenSRF::DomainObjectCollection::oilsArray->new(@_) );
 	}
 	return $self->_accessor('group_by')->list;
 }
@@ -181,6 +181,6 @@ sub toSQL {
 }
 
 #this is just to allow DomainObject to "upcast" nicely
-package OpenILS::DomainObject::oilsMultiSearch;
-use base OpenILS::DomainObjectCollection::oilsMultiSearch;
+package OpenSRF::DomainObject::oilsMultiSearch;
+use base OpenSRF::DomainObjectCollection::oilsMultiSearch;
 1;

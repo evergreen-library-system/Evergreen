@@ -1,8 +1,8 @@
-package OpenILS::DomainObject::oilsSearch;
-use OpenILS::DomainObject;
-use OpenILS::DomainObject::oilsPrimitive;
-use OpenILS::DOM::Element::searchCriteria;
-use base 'OpenILS::DomainObject';
+package OpenSRF::DomainObject::oilsSearch;
+use OpenSRF::DomainObject;
+use OpenSRF::DomainObject::oilsPrimitive;
+use OpenSRF::DOM::Element::searchCriteria;
+use base 'OpenSRF::DomainObject';
 
 sub new {
 	my $class = shift;
@@ -18,7 +18,7 @@ sub new {
 			$self->$part( $args{$part} );
 			next;
 		}
-		$self->criteria( OpenILS::DOM::Element::searchCriteria->new( @{$args{$part}} ) );
+		$self->criteria( OpenSRF::DOM::Element::searchCriteria->new( @{$args{$part}} ) );
 	}
 	return $self;
 }
@@ -40,7 +40,7 @@ sub fields {
 	my ($old_fields) = $self->getChildrenByTagName("oils:domainObjectCollection");
 	
 	if ($new_fields_ref) {
-		my $do = OpenILS::DomainObjectCollection::oilsArray->new( @$new_fields_ref );
+		my $do = OpenSRF::DomainObjectCollection::oilsArray->new( @$new_fields_ref );
 		if (defined $old_fields) {
 			$old_fields->replaceNode($do);
 		} else {
@@ -73,7 +73,7 @@ sub criteria {
 
 	if (@_) {
 		unshift @_, $new_crit;
-		$new_crit = OpenILS::DOM::Element::searchCriteria->new(@_);
+		$new_crit = OpenSRF::DOM::Element::searchCriteria->new(@_);
 	}
 
 	my ($old_crit) = $self->getChildrenByTagName("oils:searchCriteria");
