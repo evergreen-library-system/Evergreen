@@ -78,7 +78,7 @@ sub handler {
 		my $method_proto = $session->last_message_api_level;
 		$log->debug( " * Method API Level [$method_proto]", DEBUG);
 
-		my $coderef = $app->method_lookup( $method_name, $method_proto );
+		my $coderef = $app->method_lookup( $method_name, $method_proto, 1, 1 );
 
 		unless ($coderef) {
 			$session->status( OpenSRF::DomainObject::oilsMethodException->new() );
@@ -118,7 +118,7 @@ sub handler {
 				$resp = $coderef->run( $appreq, @args); 
 				my $time = sprintf '%.3f', time() - $start;
 				$log->debug( "Method duration for {$method_name -> ".join(', ', @args)."}:  ". $time, DEBUG );
-				if( ref( $resp ) ) {
+				if( defined( $resp ) ) {
 					#$log->debug( "Calling respond_complete: ". $resp->toString(), INTERNAL );
 					$appreq->respond_complete( $resp );
 				} else {
@@ -226,9 +226,9 @@ sub register_method {
 }
 
 sub retrieve_remote_apis {
-	my $session = AppSession->create('settings');
+	my $session = OpenSRF::AppSession->create('settings');
 	try {
-		$session->connect;
+		$session->connect or OpenSRF::EX::WARN->throw("Connection to settings timed out");
 	} catch Error with {
 		my $e = shift;
 		$log->debug( "Remote subrequest returned an error:\n". $e );
@@ -238,15 +238,22 @@ sub retrieve_remote_apis {
 	};
 
 	my $req = $session->request( 'opensrf.settings.xpath.get', '//activeapps/appname' );
-	my $list = $req->recv->content;
+	my $list = $req->recv;
+
+	if( UNIVERSAL::isa($list,"Error") ) {
+		throw $list;
+	}
+
+	my $content = $list->content;
 
 	$req->finish;
 	$session->finish;
 	$session->disconnect;
 
-	my %u_list = map { ($_ => 1) } @$list;
+	my %u_list = map { ($_ => 1) } @$content;
 
 	for my $class ( keys %u_list ) {
+		next if($class eq $server_class);
 		populate_remote_method_cache($class);
 	}
 }
@@ -254,7 +261,7 @@ sub retrieve_remote_apis {
 sub populate_remote_method_cache {
 	my $class = shift;
 
-	my $session = AppSession->create($class);
+	my $session = OpenSRF::AppSession->create($class);
 	try {
 		$session->connect or OpenSRF::EX::WARN->throw("Connection to $class timed out");
 
@@ -267,6 +274,7 @@ sub populate_remote_method_cache {
 			next if ( exists($_METHODS[$$method{api_level}]) &&
 				exists($_METHODS[$$method{api_level}]{$$method{api_name}}) );
 			$method->{remote} = 1;
+			bless($method, __PACKAGE__ );
 			$_METHODS[$$method{api_level}]{$$method{api_name}} = $method;
 		}
 
@@ -286,6 +294,7 @@ sub method_lookup {
 	my $method = shift;
 	my $proto = shift;
 	my $no_recurse = shift || 0;
+	my $no_remote = shift || 0;
 
 	# this instead of " || 1;" above to allow api_level 0
 	$proto = 1 unless (defined $proto);
@@ -311,6 +320,11 @@ sub method_lookup {
 	if (defined $meth) {
 		$log->debug("Looks like we found [$method]!", DEBUG);
 		$log->debug("Method object is ".Dumper($meth), INTERNAL);
+		if($no_remote and $meth->{remote}) {
+			$log->debug("OH CRAP We're not supposed to return remote methods", WARN);
+			return undef;
+		}
+
 	} elsif (!$no_recurse) {
 		retrieve_remote_apis();
 		$meth = $self->method_lookup($method,$proto,1);
@@ -324,10 +338,11 @@ sub run {
 	my $req = shift;
 
 	my $resp;
+	my @params = @_;
 
 	if ( !UNIVERSAL::isa($req, 'OpenSRF::AppRequest') ) {
 		$log->debug("Creating a SubRequest object", DEBUG);
-		unshift @_, $req;
+		unshift @params, $req;
 		$req = OpenSRF::AppSubrequest->new;
 	} else {
 		$log->debug("This is a top level request", DEBUG);
@@ -335,30 +350,40 @@ sub run {
 
 	if (!$self->{remote}) {
 		my $code ||= \&{$self->{package} . '::' . $self->{method}};
-		$resp = $code->($self, $req, @_);
+		$resp = $code->($self, $req, @params);
 
 		if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
 			$req->respond($resp) if (defined $resp);
+			$log->debug("A SubRequest object is responding " . join(" ",$req->responses), DEBUG);
 			return $req->responses;
 		} else {
 			$log->debug("A top level Request object is responding $resp", DEBUG);
 			return $resp;
 		}
 	} else {
-		my $session = AppSession->create($self->{server_class});
+		my $session = OpenSRF::AppSession->create($self->{server_class});
 		try {
 			$session->connect or OpenSRF::EX::WARN->throw("Connection to [$$self{server_class}] timed out");
-			my $remote_req = $session->request( $self->{api_name}, @_ );
-			while (my $remote_resp = $remote_req->recv->content) {
-				$req->respond( $remote_resp );
+			my $remote_req = $session->request( $self->{api_name}, @params );
+			while (my $remote_resp = $remote_req->recv) {
+				OpenSRF::Utils::Logger->debug("Remote Subrequest Received " . $remote_resp, INTERNAL );
+				if( UNIVERSAL::isa($remote_resp,"Error") ) {
+					throw $remote_resp;
+				}
+				$req->respond( $remote_resp->content );
 			}
-			return $req->responses;
+			$remote_req->finish();
+			$session->finish();
 
 		} catch Error with {
 			my $e = shift;
 			$log->debug( "Remote subrequest returned an error:\n". $e );
 			return undef;
 		};
+
+		$log->debug( "Remote Subrequest Responses " . join(" ", $req->responses), INTERNAL );
+
+		return $req->responses;
 	}
 	# huh? how'd we get here...
 	return undef;

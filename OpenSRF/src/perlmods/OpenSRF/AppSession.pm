@@ -179,7 +179,6 @@ sub get_app_targets {
 		if( !ref($targets) ) { $targets = [ $targets ]; }
 	}
 
-	warn "Returning Targets @$targets\n";
 	return @$targets;
 }
 

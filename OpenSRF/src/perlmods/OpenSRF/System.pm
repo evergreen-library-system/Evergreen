@@ -13,6 +13,7 @@ use POSIX ":sys_wait_h";
 use OpenSRF::Utils::Config; 
 use OpenSRF::Utils::SettingsParser;
 use OpenSRF::Utils::SettingsClient;
+use Net::Server::PreFork;
 use strict;
 
 my $bootstrap_config_file;
@@ -108,6 +109,8 @@ sub load_bootstrap_config {
 	}
 
 	OpenSRF::Utils::Config->load( config_file => $bootstrap_config_file );
+
+	JSON->register_class_hint( name => "OpenSRF::Application", hint => "", type => "hash" );
 
 	OpenSRF::Transport->message_envelope(  "OpenSRF::Transport::SlimJabber::MessageWrapper" );
 	OpenSRF::Transport::PeerHandle->set_peer_client(  "OpenSRF::Transport::SlimJabber::PeerConnection" );
@@ -262,8 +265,7 @@ sub launch_settings {
 
 	#	XXX the $self like this and pid automation will not work with this setup....
 	my($self) = @_;
-	use Net::Server::Single;
-	@OpenSRF::UnixServer::ISA = qw(OpenSRF Net::Server::Single);
+	@OpenSRF::UnixServer::ISA = qw(OpenSRF Net::Server::PreFork);
 
 	my $pid = OpenSRF::Utils::safe_fork();
 	if( $pid ) {

@@ -18,6 +18,7 @@ sub get_host_config {
 __PACKAGE__->register_method( method => 'xpath_get', api_name => 'opensrf.settings.xpath.get' );
 sub xpath_get {
 	my($self, $client, $xpath) = @_;
+	warn "*************** Received XPATH $xpath\n";
 	return  OpenSRF::Utils::SettingsParser->new()->_get_all( $xpath );
 }
 

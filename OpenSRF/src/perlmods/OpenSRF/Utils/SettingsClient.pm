@@ -56,10 +56,11 @@ sub grab_host_config {
 	my $bsconfig = OpenSRF::Utils::Config->current;
 
 	my $resp;
+	my $req;
 	try {
 
 		if( ! ($session->connect()) ) {die "Settings Connect timed out\n";}
-		my $req = $session->request( "opensrf.settings.host_config.get", $host );
+		$req = $session->request( "opensrf.settings.host_config.get", $host );
 		$resp = $req->recv( timeout => 10 );
 
 	} catch OpenSRF::EX with {
@@ -79,6 +80,9 @@ sub grab_host_config {
 	}
 
 	$host_config = $resp->content();
+	$req->finish();
+	$session->finish;
+	$session->disconnect();
 }
 
 

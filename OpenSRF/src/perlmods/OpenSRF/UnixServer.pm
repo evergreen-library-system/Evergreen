@@ -9,6 +9,7 @@ use OpenSRF::AppSession;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::System;
 use OpenSRF::Utils::SettingsClient;
+use JSON;
 use vars qw/@ISA $app/;
 use Carp;
 
@@ -188,10 +189,11 @@ sub configure_hook {
 	my $imp = $client->config_value("apps", $app, "implementation");
 	OpenSRF::Application::server_class($app);
 	OpenSRF::Application->application_implementation( $imp );
+	JSON->register_class_hint( name => $imp, hint => $app, type => "hash" );
 	OpenSRF::Application->application_implementation->initialize()
 		if (OpenSRF::Application->application_implementation->can('initialize'));
 
-	if( $client->config_value("server_type") !~ /fork/i || $app eq "settings" ) {
+	if( $client->config_value("server_type") !~ /fork/i  ) {
 		$self->child_init_hook();
 	}
 

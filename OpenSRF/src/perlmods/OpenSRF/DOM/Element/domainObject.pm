@@ -4,7 +4,7 @@ use base 'OpenSRF::DOM::Element';
 use OpenSRF::DOM;
 use OpenSRF::DOM::Element::domainObjectAttr;
 use OpenSRF::Utils::Logger qw(:level);
-use OpenSRF::EX;
+use OpenSRF::EX qw(:try);
 use Carp;
 #use OpenSRF::DomainObject::oilsPrimitive;
 #use OpenSRF::DomainObject::oilsResponse;
