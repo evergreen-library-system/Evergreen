@@ -927,8 +927,9 @@ osrf_message* router_registrar_process_app_request(
 					result_content, json_object_new_string(cur_class->server_class));
 			cur_class = cur_class->next;
 		}
-		if( json_object_array_length(result_content) < 1 ) 
-			result_content = NULL;
+
+		//if( json_object_array_length(result_content) < 1 ) 
+		//	result_content = NULL;
 
 	}
 
