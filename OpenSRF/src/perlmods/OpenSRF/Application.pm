@@ -24,16 +24,19 @@ our @pending_requests;
 
 sub package {
 	my $self = shift;
+	return 1 unless ref($self);
 	return $self->{package};
 }
 
 sub api_name {
 	my $self = shift;
+	return 1 unless ref($self);
 	return $self->{api_name};
 }
 
 sub api_level {
 	my $self = shift;
+	return 1 unless ref($self);
 	return $self->{api_level};
 }
 
@@ -175,7 +178,7 @@ sub handler {
 					my $start = time;
 					my $response = $aref->[2]->run( $aref->[0], @{$aref->[1]} );
 					my $time = sprintf '%.3f', time - $start;
-					$log->debug( "Method duration for {[".$aref->[2]->name." -> ".join(', ',@{$aref->[1]}).'}:  '.$time, DEBUG );
+					$log->debug( "Method duration for {[".$aref->[2]->api_name." -> ".join(', ',@{$aref->[1]}).'}:  '.$time, DEBUG );
 
 					$appreq = $aref->[0];	
 					if( ref( $response ) ) {
@@ -192,7 +195,7 @@ sub handler {
 					$session->status(
 						OpenSRF::DomainObject::oilsMethodException->new(
 								statusCode => STATUS_INTERNALSERVERERROR(),
-								status => "Call to [".$aref->[2]->name."] faild:  ".$e->{-text}
+								status => "Call to [".$aref->[2]->api_name."] faild:  ".$e->{-text}
 						)
 					);
 				};
