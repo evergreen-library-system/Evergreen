@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+
+<oils_config>
+
+	<!-- General system settings -->
+
+	<system>
+		<hostname>myhostname</hostname>
+
+		<!-- log_level
+			Levels run between 0 and 3.  O is no logging.  3 is full debug output -->
+		<log_level>0</log_level>
+
+		<!--  stdout_log
+			When set to 0, no stdout logging is done, when set to 1, all logging
+			goes to both stdout as well as their destined log file, if set to
+			2, the messages only go to stdout.  -->
+		<stdout_log>0</stdout_log>
+	</system>
+
+
+	<!-- Log files -->
+
+	<logs>
+		<debug>debug.log</debug>
+		<transport>transport.log</transport>
+		<error>error.log</error>
+	</logs>
+
+	<!-- Remote services -->
+
+	<remote_service>
+		<math>router@localhost/math</math>
+		<mathdb>router@localhost/mathdb</mathdb>
+		<storage>router@localhost/storage</storage>
+	</remote_service>
+	
+	<!-- Transport -->
+
+	<transport>
+		<transport_impl>jabber_connection</transport_impl>
+
+		<!-- connect_timeout doubles as both the low level transport timeout
+			as well as the app connection timeout -->
+		<connect_timeout>15</connect_timeout>
+		<username>math_user</username>
+		<password>math_user_password</password>
+		<primary>localhost</primary>
+		<port>5222</port>
+		<ssl>0</ssl>
+	</transport>
+
+</oils_config>

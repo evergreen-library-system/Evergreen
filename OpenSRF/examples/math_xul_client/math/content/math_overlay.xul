@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://math/skin/math.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://math/locale/math.dtd">
+<overlay id="math_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<vbox id="main_vbox" flex="1">
+	<label value="&math.title;" />
+	<textbox id="num1" />
+	<textbox id="num2" />
+	<grid flex="1" class="test_class">
+		<columns>
+			<column />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<button label="&math.add;" oncommand="execute('add');"/>
+				<button label="&math.sub;" oncommand="execute('sub');"/>
+			</row>
+			<row>
+				<button label="&math.mul;" oncommand="execute('mult');"/>
+				<button label="&math.div;" oncommand="execute('div');"/>
+			</row>
+		</rows>
+	</grid>
+	<label id="answer" value="" />
+	<button label="&math.quit;" oncommand="quit();"/>
+</vbox>
+
+</overlay>

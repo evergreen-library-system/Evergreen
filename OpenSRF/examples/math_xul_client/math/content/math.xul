@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- Test Application: Math -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://math/skin/math.css" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE window SYSTEM "chrome://math/locale/math.dtd">
+
+<window id="math_win" title="&math.title;" orient="vertical" style="overflow: auto"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://math/content/math_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "math";</script>
+	<script src="OpenSRF/JSON.js" />
+	<script src="OpenSRF/md5.js" />
+	<script src="OpenSRF/opensrf_utils.js" />
+	<script src="OpenSRF/opensrf_config.js" />
+	<script src="OpenSRF/opensrf_dom_element.js" />
+	<script src="OpenSRF/opensrf_domain_object.js" />
+	<script src="OpenSRF/opensrf_transport.js" />
+	<script src="OpenSRF/opensrf_jabber_transport.js" />
+	<script src="OpenSRF/opensrf_msg_stack.js" />
+	<script src="OpenSRF/opensrf_app_session.js" />
+
+	<!-- The logic for this app -->
+	<script src="math_app.js" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<vbox id="main_vbox" class="test_class">
+	</vbox>
+
+</window>
+
