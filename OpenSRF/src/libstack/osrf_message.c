@@ -104,10 +104,14 @@ osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protoco
 
 
 void osrf_message_set_request_info( osrf_message* msg, char* method_name, json* json_params ) {
-	if( msg == NULL || method_name == NULL || json_params == NULL )
+	if( msg == NULL || method_name == NULL )
 		fatal_handler( "Bad params to osrf_message_set_request_params()" );
 
-	msg->params = json_tokener_parse(json_object_to_json_string(json_params));
+	if( json_params != NULL )
+		msg->params = json_tokener_parse(json_object_to_json_string(json_params));
+	else
+		msg->params = json_tokener_parse("[]");
+
 	msg->method_name = strdup( method_name );
 }
 
