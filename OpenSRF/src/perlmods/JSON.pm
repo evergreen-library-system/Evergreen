@@ -81,11 +81,10 @@ sub JSON2perl {
 	my $class = shift;
 	local $_ = shift;
 
-	# remove C++ comments
-	s/\/\/.+$//sgmo;
-
 	# Convert JSON Unicode...
 	s/\\u(\d{4})/chr(hex($1))/esog;
+
+	warn $_;
 
 	# Grab strings...
 	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
@@ -107,6 +106,7 @@ sub JSON2perl {
 	s/null/ undef /sog;
 	s/true/ bless( {}, "JSON::bool::true") /sog;
 	s/false/ bless( {}, "JSON::bool::false") /sog;
+
 
 	my $ret;
 	return eval '$ret = '.$_;
