@@ -238,10 +238,8 @@ sub bootstrap_client {
 	my $app = $params{client_name} || "client";
 
 
-	my $self = __PACKAGE__->instance();
 	load_bootstrap_config();
 	OpenSRF::Utils::Logger::set_config();
-
 	OpenSRF::Transport::PeerHandle->construct( $app );
 
 }
