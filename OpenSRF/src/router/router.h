@@ -1,10 +1,10 @@
-#include "transport_client.h"
-#include "transport_message.h"
+#include "opensrf/transport_client.h"
+#include "opensrf/transport_message.h"
 #include <time.h>
 #include <sys/select.h>
 
-#ifndef TRANSPORT_ROUTER_H
-#define TRANSPORT_ROUTER_H
+#ifndef ROUTER_H
+#define ROUTER_H
 
 // ----------------------------------------------------------------------
 // Jabber router_registrar/load balancer.  There is a top level linked list of 
