@@ -109,7 +109,7 @@ sub init_authenticate {
 sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash ) = @_;
 
-	my $name = "open-ils.storage.actor.user.retrieve.username";
+	my $name = "open-ils.storage.actor.user.search.username";
 	my $method = $self->method_lookup( $name );
 
 	my $password = undef;
