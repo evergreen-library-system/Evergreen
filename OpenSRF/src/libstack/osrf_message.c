@@ -480,7 +480,7 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 								xmlChar* r_name = xmlGetProp( result_nodes, BAD_CAST "name" );
 								if(r_name) {
 									if( !strcmp((char*)r_name,"oilsScalar") && result_nodes->children->content ) 
-										new_msg->result_content = json_object_new_string( result_nodes->children->content );
+										new_msg->result_content = json_tokener_parse(result_nodes->children->content);
 									xmlFree(r_name);
 								}
 							}
