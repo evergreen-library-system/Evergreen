@@ -5,6 +5,9 @@ EXE_LD_OPTS = -L $(LIB_DIR) -lreadline -lxml2 -lopensrf_transport -lopensrf_stac
 
 all: srfsh
 
+install: srfsh
+	cp srfsh ../../bin
+
 srfsh: lib
 	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) srfsh.c -o $@
 

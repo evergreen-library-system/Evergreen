@@ -8,16 +8,9 @@ LP=../libtransport
 LIB_SOURCES = $(LP)/generic_utils.c $(LP)/transport_socket.c $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c $(LP)/sha.c
 
 all: router 
-#router_query router_register
+install: router
+	cp router ../../bin
 
-#router_register: router_register.c
-#	$(CC) $(CC_OPTS) -L ../../lib -lopensrf_transport -lxml2 router_register.c -o router_register
-
-#router_query: router_query.c
-#	$(CC) $(CC_OPTS) -L ../../lib -lopensrf_transport -lxml2 router_query.c -o router_query
-
-# The router is compiled as a static binary because of some 
-# necessary #defines that would break the library
 router:  router.c $(LIB_SOURCES)
 	$(CC) $(LD_OPTS) -D_ROUTER $(CC_OPTS)	$(LIB_SOURCES) router.c -o $@ 
 

@@ -5,6 +5,10 @@
 
 all: router srfsh
 
+install: 
+	make -C srfsh install
+	make -C router install
+
 transport:
 	make -C libtransport
 
