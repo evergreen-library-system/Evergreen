@@ -12,11 +12,13 @@
 #define SRFSH_PORT 5222
 #define COMMAND_BUFSIZE 12
 
+/* shell prompt */
+char* prompt = "srfsh# "; 
 
-char* prompt = "srfsh# ";
-char* last_request;
-transport_client* client = NULL;
+/* our jabber connection */
+transport_client* client = NULL; 
 
+/* functions */
 int parse_request( char* request );
 int handle_router( char* words[] );
 int handle_time( char* words[] );
@@ -28,6 +30,8 @@ int srfsh_client_connect();
 int print_help();
 char* json_printer( json* object );
 char* tabs(int count);
+/* --------- */
+
 
 int main( int argc, char* argv[] ) {
 
@@ -39,20 +43,25 @@ int main( int argc, char* argv[] ) {
 		char fbuf[l];
 		memset(fbuf, 0, l);
 		sprintf(fbuf,"%s/.srfsh.xml",home);
-		if(!access(fbuf, F_OK))
-			config_reader_init( "opensrf", fbuf );	
-		else
+
+		if(!access(fbuf, F_OK)) {
+			if( ! osrf_system_bootstrap_client(fbuf) ) 
+				fatal_handler( "Unable to bootstrap client for requests");
+
+		} else {
 			fatal_handler( "No Config file found at %s and none specified. "
 					"\nusage: %s <config_file>", fbuf, argv[0] );
-	} else {
-		config_reader_init( "opensrf", argv[1] );	
-	}
+		}
 
-	if( ! osrf_system_bootstrap_client("srfsh.xml") ) 
-		fprintf( stderr, "Unable to bootstrap client for requests\n");
+	} else {
+		if( ! osrf_system_bootstrap_client(argv[1]) ) 
+			fatal_handler( "Unable to bootstrap client for requests");
+	}
 
 	client = osrf_system_get_transport_client();
 
+
+	/* main process loop */
 	char* request;
 	while((request=readline(prompt))) {
 
@@ -109,7 +118,6 @@ int parse_request( char* request ) {
 	int i = 0;
 	char* words[COMMAND_BUFSIZE]; 
 	memset(words,0,COMMAND_BUFSIZE);
-	//char* req = strdup(request);
 	char* req = request;
 
 	char* cur_tok = strtok( req, " " );
@@ -122,7 +130,6 @@ int parse_request( char* request ) {
 		cur_tok = strtok( NULL, " " );
 	}
 
-	//free(req);
 
 	// not sure why (strtok?), but this is necessary
 	memset( words + i, 0, COMMAND_BUFSIZE - i );
