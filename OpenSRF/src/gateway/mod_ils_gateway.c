@@ -55,6 +55,39 @@ typedef struct session_list_struct session_list;
 /* the global session cache */
 static session_list* the_list = NULL;
 
+static void del_session( char* service ) {
+	if(!service || ! the_list)
+		return;
+	
+	debug_handler("In del_sesion for %s", service );
+	session_list* prev = the_list;
+	session_list* item = prev->next;
+
+	if(!strcmp(prev->service, service)) {
+		info_handler("Removing gateway session for %s", service );
+		the_list = item;
+		osrf_app_session_destroy(prev->session);
+		free(prev);
+		return;
+	}
+
+	while(item) {
+		if( !strcmp(item->service, service)) {
+			info_handler("Removing gateway session for %s", service );
+			prev->next = item->next;
+			osrf_app_session_destroy(item->session);
+			free(item);
+			return;
+		}
+		prev = item;
+		item = item->next;
+	}
+
+	warning_handler("Attempt to remove gateway session "
+			"that does not exist: %s", service );
+
+}
+
 /* find a session in the list */
 /* if(update) we add 1 to the serve_count */
 static osrf_app_session* find_session( char* service, int update ) {
@@ -67,9 +100,12 @@ static osrf_app_session* find_session( char* service, int update ) {
 				if( item->serve_count++ > 20 ) {
 					debug_handler("Disconnected session on 20 requests => %s", service);
 					osrf_app_session_disconnect(item->session);
-					item->serve_count = 0;
+					del_session(service);
+					return NULL;
+					//item->serve_count = 0;
 				}
 			}
+			debug_handler("Found session for %s in gateway cache", service);
 			return item->session;
 		}
 
@@ -209,7 +245,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			json_object_array_add( params, json_tokener_parse(val));
 	}
 
-	debug_handler("Performing(%d):  service %s | method %s | \nparams %s\n\n",
+	info_handler("Performing(%d):  service %s | method %s | \nparams %s\n\n",
 			getpid(), service, method, json_object_to_json_string(params));
 
 	osrf_app_session* session = find_session(service,1);
@@ -250,7 +286,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 		} else {
 
-			warning_handler("*** Looks like we got an exception\n" );
 
 			/* build the exception information */
 			growing_buffer* exc_buffer = buffer_init(256);
@@ -269,6 +304,10 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			json_object_object_add( exception, "is_err", json_object_new_int(1));
 			json_object_object_add( exception, 
 					"err_msg", json_object_new_string(exc_buffer->buf));
+
+			warning_handler("*** Looks like we got a "
+					"server exception\n%s", exc_buffer->buf );
+
 			buffer_free(exc_buffer);
 			osrf_message_free(omsg);
 			break;
@@ -304,8 +343,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	} 
 
 	osrf_app_session_request_finish( session, req_id );
-	//osrf_app_session_disconnect( session );
-	//osrf_app_session_destroy(session); //need to test removing this
 
 	return OK;
 
