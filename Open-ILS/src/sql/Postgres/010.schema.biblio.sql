@@ -19,7 +19,7 @@ CREATE TABLE biblio.record_entry (
 	edit_date	TIMESTAMP	NOT NULL DEFAULT now(),
 	active		BOOL		NOT NULL DEFAULT TRUE,
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
-	source		INT		NOT NULL REFERENCES config.bib_source (id),
+	source		INT		REFERENCES config.bib_source (id),
 	CONSTRAINT unique_tcn UNIQUE (tcn_source,tcn_value)
 );
 

@@ -20,6 +20,7 @@ CREATE TABLE actor.usr (
 	dob			DATE	NOT NULL,
 	active			BOOL	NOT NULL DEFAULT TRUE,
 	master_account		BOOL	NOT NULL DEFAULT FALSE,
+	super_user		BOOL	NOT NULL DEFAULT FALSE,
 	usrgoup			SERIAL	NOT NULL
 );
 
@@ -47,8 +48,8 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	BEFORE INSERT ON actor.usr FOR EACH ROW
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
-INSERT INTO actor.usr ( usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account )
-	VALUES ( 'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE );
+INSERT INTO actor.usr ( usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
+	VALUES ( 'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
 
 CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
