@@ -17,7 +17,7 @@ case $1 in
 			exit;
 		fi		
 		perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
-		sleep 2;
+		sleep 5;
 		$0 status;
 		echo;
 		;;
@@ -27,7 +27,7 @@ case $1 in
 			exit;
 		fi		
 		OPENSRF_PROFILE=1 perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
-		sleep 2;
+		sleep 5;
 		$0 status;
 		echo;
 		;;
