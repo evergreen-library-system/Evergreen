@@ -1059,8 +1059,14 @@ osrf_message** router_registrar_process_app_request(
 		json_object_object_add(content2, "server_class", json_object_new_string("router"));
 		json_object_object_add(content2, "stream", json_object_new_string("0"));
 
-		result_array = safe_malloc(2*sizeof(osrf_message*));
-		*num_responses = 2;
+		json* content3 = json_object_new_object();
+		json_object_object_add(content3, "api_level", json_object_new_string("1"));
+		json_object_object_add(content3, "api_name", json_object_new_string("opensrf.system.method.all"));
+		json_object_object_add(content3, "server_class", json_object_new_string("router"));
+		json_object_object_add(content3, "stream", json_object_new_string("1"));
+
+		result_array = safe_malloc(3*sizeof(osrf_message*));
+		*num_responses = 3;
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
@@ -1071,6 +1077,12 @@ osrf_message** router_registrar_process_app_request(
 			RESULT, omsg->thread_trace, omsg->protocol );
 		osrf_message_set_result_content( result_array[1], content2 );
 		json_object_put(content2);
+
+		result_array[2] = osrf_message_init(
+			RESULT, omsg->thread_trace, omsg->protocol );
+		osrf_message_set_result_content( result_array[1], content3 );
+		json_object_put(content3);
+
 
 	}
 	
