@@ -1,12 +1,12 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
-use OpenILS::System;
-use OpenILS::DOM::Element::userAuth;
-use OpenILS::Utils::Config;
-use OpenILS::DomainObject::oilsMethod;
-use OpenILS::DomainObject::oilsPrimitive;
+use OpenSRF::System;
+use OpenSRF::DOM::Element::userAuth;
+use OpenSRF::Utils::Config;
+use OpenSRF::DomainObject::oilsMethod;
+use OpenSRF::DomainObject::oilsPrimitive;
 use Time::HiRes qw/time/;
-use OpenILS::EX qw/:try/;
+use OpenSRF::EX qw/:try/;
 
 $| = 1;
 
@@ -27,16 +27,16 @@ unless( $count ) {
 
 warn "PID: $$\n";
 
-my $config = OpenILS::Utils::Config->current;
-OpenILS::System->bootstrap_client();
+my $config = OpenSRF::Utils::Config->current;
+OpenSRF::System::bootstrap_client();
 
-my $session = OpenILS::AppSession->create( 
+my $session = OpenSRF::AppSession->create( 
 		"math", username => 'math_bench', secret => '12345' );
 
 try {
 	if( ! ($session->connect()) ) { die "Connect timed out\n"; }
 
-} catch OpenILS::EX with {
+} catch OpenSRF::EX with {
 	my $e = shift;
 	warn "Connection Failed *\n";
 	die $e;
@@ -56,7 +56,7 @@ my $c = 0;
 for my $scale ( 1..$count ) {
 	for my $mname ( keys %vals ) {
 
-		my $method = OpenILS::DomainObject::oilsMethod->new( method => $mname );
+		my $method = OpenSRF::DomainObject::oilsMethod->new( method => $mname );
 		$method->params( 1,2 );
 
 		my $req;
@@ -69,7 +69,7 @@ for my $scale ( 1..$count ) {
 			$resp = $req->recv( timeout => 10 );
 			push @times, time() - $starttime;
 
-		} catch OpenILS::EX with {
+		} catch OpenSRF::EX with {
 			my $e = shift;
 			die "ERROR\n $e";
 
@@ -81,8 +81,10 @@ for my $scale ( 1..$count ) {
 
 		if( ! $req->complete ) { warn "\nIncomplete\n"; }
 
+		if( UNIVERSAL::isa( $resp, "OpenSRF::EX" ) ) {
+			print "-" x 50 . "\nReceived Error " . $resp . "\n" . "-" x 50 . "\n";
 
-		if ( $resp ) {
+		} elsif( $resp ) {
 
 			my $ret = $resp->content();
 			if( "$ret" eq $vals{$mname} ) { print "+"; }
@@ -92,6 +94,7 @@ for my $scale ( 1..$count ) {
 		} else { print "*NADA*";	}
 
 		$req->finish();
+		$session->disconnect();
 		$c++;
 
 	}
