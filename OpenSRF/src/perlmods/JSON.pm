@@ -81,28 +81,24 @@ sub JSON2perl {
 	my $class = shift;
 	local $_ = shift;
 
+	# remove C++ comments
+	s/\/\/.+$//sgmo;
+
+	# Convert JSON Unicode...
+	s/\\u(\d{4})/chr(hex($1))/esog;
+
 	# Grab strings...
 	my @strings = /"((?:(?:\\[\"])|[^\"])*)"/sog;
+
 	# Replace with code...
 	s/"(?:(?:\\[\"])|[^\"])*"/ shift(\@strings) /sog;
 
+	# Perlify hash notation
 	s/:/ => /sog;
 
-	if (1) {
-		# handle class blessings
-		s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
-		s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
-	} else {
-		#why don't I work?!?!
-		#my $string = $_;
-		#for my $hint (values %{$_class_map{hints}}) {
-		#	$string =~ s/\/\*--\s*S\w*?\s+$$hint{hint_re}\s*--\*\// bless(/sog;
-		#	$string =~ s/\/\*--\s*E\w*?\s+$$hint{hint_re}\s*--\*\// => "$$hint{name}") /sog;
-		#}
-		#$_ = $string;
-		#s/\/\*--\s*\w+\s+\S+\s*--\*\///sog;
-	}
-
+	# handle class blessings
+	s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
+	s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
 
 	s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
 
@@ -111,7 +107,6 @@ sub JSON2perl {
 	s/null/ undef /sog;
 	s/true/ bless( {}, "JSON::bool::true") /sog;
 	s/false/ bless( {}, "JSON::bool::false") /sog;
-
 
 	my $ret;
 	return eval '$ret = '.$_;
@@ -124,7 +119,6 @@ sub old_JSON2perl {
 		return undef;
 	}
 
-	#$json =~ s/\/\/.+$//gmo; # remove C++ comments
 	$json =~ s/(?<!\\)\$/\\\$/gmo; # fixup $ for later
 	$json =~ s/(?<!\\)\@/\\\@/gmo; # fixup @ for later
 
@@ -224,6 +218,7 @@ sub perl2JSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
+		$perl =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
 		$output = '"'.$perl.'"';
 	}
 
@@ -237,8 +232,10 @@ sub perl2prettyJSON {
 
 	my $output = '';
 	if (!defined($perl)) {
-		$output = 'null';
+		$output = "   "x$depth unless($nospace);
+		$output .= 'null';
 	} elsif (ref($perl) and ref($perl) =~ /^JSON/) {
+		$output = "   "x$depth unless($nospace);
 		$output .= $perl;
 	} elsif ( ref($perl) && exists($_class_map{classes}{ref($perl)}) ) {
 		$depth++;
@@ -252,11 +249,9 @@ sub perl2prettyJSON {
 			my @array =  @$perl;
 			$output .= perl2prettyJSON(\@array,undef,1);
 		}
-		#$output .= "   "x$depth;
 		$output .= ' /*--E '.$_class_map{classes}{ref($perl)}{hint}.'--*/';
 		$depth--;
 	} elsif (ref($perl) and ref($perl) =~ /HASH/) {
-		#$depth++;
 		$output .= "   "x$depth unless ($nospace);
 		$output .= "{\n";
 		my $c = 0;
@@ -271,9 +266,7 @@ sub perl2prettyJSON {
 		$output .= "\n";
 		$output .= "   "x$depth;
 		$output .= '}';
-		#$depth--;
 	} elsif (ref($perl) and ref($perl) =~ /ARRAY/) {
-		#$depth++;
 		$output .= "   "x$depth unless ($nospace);
 		$output .= "[\n";
 		my $c = 0;
@@ -288,7 +281,6 @@ sub perl2prettyJSON {
 		$output .= "\n";
 		$output .= "   "x$depth;
 		$output .= "]";
-		#$depth--;
 	} else {
 		$perl =~ s/\\/\\\\/sgo;
 		$perl =~ s/"/\\"/sgo;
@@ -296,6 +288,7 @@ sub perl2prettyJSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
+		$perl =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
 		$output .= "   "x$depth unless($nospace);
 		$output .= '"'.$perl.'"';
 	}
