@@ -94,6 +94,7 @@ sub xmlfile_to_doc {
 sub nodeset_to_xml {
 	my $self = shift;
 	my $nodeset = shift;
+	$self->{nodeset} = $nodeset if $nodeset;
 
 	my $doc = XML::LibXML::Document->new;
 
