@@ -11,7 +11,7 @@ use OpenILS::Utils::Fieldmapper;
 
 my $utils = "OpenILS::Application::Cat::Utils";
 
-sub child_init {
+sub _child_init {
 	try {
 		OpenSRF::Application->method_lookup( "blah" );
 	} catch Error with { 
@@ -31,45 +31,60 @@ sub biblio_record_tree_retrieve {
 
 	my( $self, $client, $recordid ) = @_;
 
-	warn "In retrieve " . time() . "\n";
 	my $name = "open-ils.storage.biblio.record_marc.retrieve";
-	my $method = $self->method_lookup($name);
+	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+	my $request = $session->request( $name, $recordid );
+	my $response = $request->recv();
+	warn "got response from storage in retrieve for $recordid\n";
 
-	unless($method) {
-		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
+	if(!$response) { 
+		throw OpenSRF::EX::ERROR ("No record in database with id $recordid");
 	}
 
-	my ($marcxml) = $method->run($recordid);
-	warn "After marxml retrieve " . time() . "\n";
-
-
-	if(UNIVERSAL::isa($marcxml,"OpenSRF::EX")) {
-		throw $marcxml;
+	if( $response->isa("OpenSRF::EX")) {
+		throw $response ($response->stringify);
 	}
 
-	return undef unless $marcxml;
+	warn "grabbing content in retrieve\n";
+	my $marcxml = $response->content;
 
+	use Data::Dumper;
+	warn "MARCXML OBJECT\n";
+	warn Dumper $marcxml;
+
+	if(!$marcxml) {
+		throw OpenSRF::EX::ERROR 
+			("No record in database with id $recordid");
+	}
+
+	warn "building nodes\n";
 	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marcxml->marc ); 
+	warn "building tree\n";
 	my $tree = $utils->nodeset2tree( $nodes->nodeset );
+	warn "setting owner doc\n";
 	$tree->owner_doc( $marcxml->id() );
-	warn "Returning Tree " . time() . "\n";
+	warn "returning from retrieve for $recordid\n-------------------------------------\n";
 	return $tree;
 }
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_commit",
 	api_name	=> "open-ils.cat.biblio.record.tree.commit",
-	argc		=> 2, #(session_id, biblio_tree ) 
+	argc		=> 3, #(session_id, biblio_tree ) 
 	note		=> "Walks the tree and commits any changed nodes " .
 					"adds any new nodes, and deletes any deleted nodes",
 );
 
 sub biblio_record_tree_commit {
 
-	my( $self, $user_session, $client, $tree ) = @_;
+	my( $self, $client, $user_session,  $tree ) = @_;
 	new Fieldmapper::biblio::record_node ($tree);
 
-	$self->OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+	throw OpenSRF::EX::InvalidArg 
+		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
+		unless ( $user_session and $client and $tree );
+
+	OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 
 	# capture the doc id
 	my $docid = $tree->owner_doc();
@@ -90,9 +105,10 @@ sub biblio_record_tree_commit {
 
 	my $biblio =  Fieldmapper::biblio::record_marc->new();
 	$biblio->id( $docid );
+
 	$biblio->marc( $marcxml->toString() );
 
-	my $session = $utils->start_db_session();
+	my $session = OpenILS::Application::AppUtils->start_db_session();
 
 	warn "Sending updated doc $docid to db\n";
 	my $req = $session->request( "open-ils.storage.biblio.record_marc.update", $biblio );
@@ -102,7 +118,7 @@ sub biblio_record_tree_commit {
 		throw $status (" +++++++ Document Update Failed " . $status->stringify() ) ; 
 	}
 
-	$utils->commit_db_session( $session );
+	OpenILS::Application::AppUtils->commit_db_session( $session );
 
 	my $method = $self->method_lookup( "open-ils.cat.biblio.record.tree.retrieve" );
 
@@ -198,27 +214,6 @@ sub biblio_mods_slim_retrieve {
 	warn "returning mods batch " . time . "\n";
 	my $mods = $u->finish_mods_batch();
 	return $mods;
-
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "marc_test",
-	api_name	=> "open-ils.cat.biblio.record.tree.retrieve.test",
-	argc		=> 1, 
-	note		=> "Returns the tree associated with the nodeset of the given doc id"
-);
-
-
-sub marc_test {
-
-	my( $self, $client ) = @_;
-	my $doc	= XML::LibXML->new()->parse_file( "/pines/ilsmods/Application/Cat/test_rec.xml" );
-	my $marcxml = $doc->toString();
-	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marcxml ); 
-	my $tree = $utils->nodeset2tree( $nodes->nodeset );
-	$tree->owner_doc( 999999 );
-	return $tree;
 
 }
 
