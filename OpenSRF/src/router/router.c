@@ -913,9 +913,9 @@ osrf_message* router_registrar_process_app_request(
 
 	debug_handler( "Received method from client: %s", omsg->method_name );
 
-	if(!strcmp(omsg->method_name,"router.info.class.list")) {
+	if(!strcmp(omsg->method_name,"opensrf.router.info.class.list")) {
 
-		debug_handler("Processing router.info.class.list request");
+		debug_handler("Processing opensrf.router.info.class.list request");
 
 		result_content = json_object_new_array();
 		server_class_node* cur_class = router->server_class_list;
