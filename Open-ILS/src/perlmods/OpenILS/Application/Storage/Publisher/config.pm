@@ -26,21 +26,21 @@ sub getBiblioFieldMaps {
 		}
 	}
 }	
-__PACKAGE__->register_method(
-	method		=> 'getBiblioFieldMaps',
-	api_name	=> 'open-ils.storage.config.metarecord_field',
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'getBiblioFieldMaps',
-	api_name	=> 'open-ils.storage.config.metarecord_field.all',
-	argc		=> 0,
-);
-__PACKAGE__->register_method(
-	method		=> 'getBiblioFieldMaps',
-	api_name	=> 'open-ils.storage.config.metarecord_field.list.by_class',
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'getBiblioFieldMaps',
+#	api_name	=> 'open-ils.storage.config.metarecord_field',
+#	argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+#	method		=> 'getBiblioFieldMaps',
+#	api_name	=> 'open-ils.storage.config.metarecord_field.all',
+#	argc		=> 0,
+#);
+#__PACKAGE__->register_method(
+#	method		=> 'getBiblioFieldMaps',
+#	api_name	=> 'open-ils.storage.config.metarecord_field.list.by_class',
+#	argc		=> 1,
+#);
 
 
 sub getBiblioFieldMapClasses {
@@ -61,22 +61,22 @@ sub getBiblioFieldMapClasses {
 		return undef;
 	}
 }	
-__PACKAGE__->register_method(
-	method		=> 'getBiblioFieldMapClasses',
-	api_name	=> 'open-ils.storage.config.metarecord_field_class',
-	argc		=> 1,
-);
-
-__PACKAGE__->register_method(
-	method		=> 'getBiblioFieldMapClasses',
-	api_name	=> 'open-ils.storage.config.metarecord_field_class.list',
-	argc		=> 1,
-	stream		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'getBiblioFieldMapClasses',
-	api_name	=> 'open-ils.storage.config.metarecord_field_class.all',
-	argc		=> 0,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'getBiblioFieldMapClasses',
+#	api_name	=> 'open-ils.storage.config.metarecord_field_class',
+#	argc		=> 1,
+#);
+#
+#__PACKAGE__->register_method(
+#	method		=> 'getBiblioFieldMapClasses',
+#	api_name	=> 'open-ils.storage.config.metarecord_field_class.list',
+#	argc		=> 1,
+#	stream		=> 1,
+#);
+#__PACKAGE__->register_method(
+#	method		=> 'getBiblioFieldMapClasses',
+#	api_name	=> 'open-ils.storage.config.metarecord_field_class.all',
+#	argc		=> 0,
+#);
 
 1;

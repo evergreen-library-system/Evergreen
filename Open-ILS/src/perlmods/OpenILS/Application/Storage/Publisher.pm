@@ -34,9 +34,25 @@ sub retrieve_node {
 		my ($rec) = $cdbi->fast_fieldmapper($id);
 		$client->respond( $rec ) if ($rec);
 
-		last if ($self->api_name !~ /list/o);
+		last if ($self->api_name !~ /batch/o);
 	}
 	return undef;
+}
+
+sub search {
+	my $self = shift;
+	my $client = shift;
+	my $term = shift;
+
+	(my $search_type = $self->api_name) =~ s/.*\.(search[^.]*).*/$1/o;
+	(my $col = $self->api_name) =~ s/.*\.$search_type\.([^.]+).*/$1/;
+	my $cdbi = $self->{cdbi};
+	$log->debug("Searching $cdbi for $col using type $search_type, value '$term'",DEBUG);
+
+	my $like = 0;
+	$like = 1 if ($search_type =~ /like$/o);
+
+	return [ $cdbi->fast_fieldmapper($term,$col,$like) ];
 }
 
 
@@ -129,11 +145,32 @@ for my $fmclass ( Fieldmapper->classes ) {
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.retrieve' ) ) {
 		__PACKAGE__->register_method(
 			api_name	=> $api_prefix.'.batch.retrieve',
-			method		=> 'batch_call',
+			method		=> 'retrieve_node',
 			api_level	=> 1,
+			stream		=> 1,
 			cdbi		=> $cdbi,
 		);
 	}
+
+	for my $field ($fmclass->real_fields) {
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search.'.$field,
+				method		=> 'search',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search_like.'.$field,
+				method		=> 'search',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
+	}
+
 
 	# Create the create method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.create' ) ) {

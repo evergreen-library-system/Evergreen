@@ -45,23 +45,26 @@
 		$self->{fts_query} = ["to_tsquery('default',$newterm)"];
 		$self->{fts_query_nots} = [];
 		$self->{fts_op} = '@@';
+		$self->{text_col} = shift;
+		$self->{fts_col} = shift;
 
 		return $self;
 	}
 
 	sub sql_where_clause {
 		my $self = shift;
-		my $column = shift;
+		my $column = $self->fts_col;
 		my @output;
 	
 		my @ranks;
 		for my $fts ( $self->fts_query ) {
-			push @output, join(' ', $column, $self->{fts_op}, $fts);
+			push @output, join(' ', $self->fts_col, $self->{fts_op}, $fts);
 			push @ranks, "rank($column, $fts)";
 		}
 		$self->{fts_rank} = \@ranks;
 	
-		return join(' AND ', @output);
+		my $phrase_match = $self->sql_exact_phrase_match();
+		return join(' AND ', @output) . $phrase_match;
 	}
 
 }
@@ -163,7 +166,13 @@
 
 	sub current_xact_is_auto {
 		my $self = shift;
-		return $_xact_session->session_data(autocommit => shift());
+		my $auto = shift;
+		if (defined($_xact_session) and ref($_xact_session)) {
+			if (defined $auto) {
+				$_xact_session->session_data(autocommit => $auto);
+			}
+			return $_xact_session->session_data('autocommit'); 
+		}
 	}
 
 	sub current_xact_id {
@@ -251,7 +260,7 @@
 			my $dc_cb = $client->session->register_callback(
 				disconnect => sub {
 					my $ses = shift;
-					$ses->unregister_callback($death_cb);
+					$ses->unregister_callback(death => $death_cb);
 					__PACKAGE__->pg_commit_xaction;
 				}
 			);
@@ -292,12 +301,12 @@
 			return 0;
 		};
 		
-		$pg->current_xact_session->unregister_callback(
+		$pg->current_xact_session->unregister_callback( death => 
 			$pg->current_xact_session->session_data( 'death_cb' )
-		);
+		) if ($pg->current_xact_session);
 
 		if ($pg->current_xact_is_auto) {
-			$pg->current_xact_session->unregister_callback(
+			$pg->current_xact_session->unregister_callback( disconnect => 
 				$pg->current_xact_session->session_data( 'disconnect_cb' )
 			);
 		}
@@ -329,12 +338,12 @@
 			return 0;
 		};
 	
-		$pg->current_xact_session->unregister_callback(
+		$pg->current_xact_session->unregister_callback( death =>
 			$pg->current_xact_session->session_data( 'death_cb' )
-		);
+		) if ($pg->current_xact_session);
 
 		if ($pg->current_xact_is_auto) {
-			$pg->current_xact_session->unregister_callback(
+			$pg->current_xact_session->unregister_callback( disconnect =>
 				$pg->current_xact_session->session_data( 'disconnect_cb' )
 			);
 		}

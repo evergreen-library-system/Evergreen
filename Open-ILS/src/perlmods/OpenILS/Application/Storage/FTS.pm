@@ -5,8 +5,27 @@ my $log = 'OpenSRF::Utils::Logger';
 package OpenILS::Application::Storage::FTS;
 use OpenSRF::Utils::Logger qw/:level/;
 
-sub compile {
-	die "You must override me somewhere!";
+sub default_compile {
+
+	$log->debug("You must override me somewhere, or I will make searching really slow!!!!",ERROR);;
+
+	my $self = shift;
+	my $term = shift;
+
+	$self = ref($self) || $self;
+	$self = bless {} => $self;
+
+	$self->decompose($term);
+
+	for my $part ( $self->words, $self->phrases ) {
+		$part = OpenILS::Application::Storage::CDBI->quote($part);
+		push @{ $self->{ fts_query } },   "'\%$part\%'";
+	}
+
+	for my $part ( $self->nots ) {
+		$part = OpenILS::Application::Storage::CDBI->quote($part);
+		push @{ $self->{ fts_query_not } },   "'\%$part\%'";
+	}
 }
 
 sub decompose {
@@ -30,7 +49,7 @@ sub decompose {
 	$log->debug("Stripped nots are[".join(', ',@nots)."]",DEBUG);
 
 	my @parts;
-	while ($term =~ s/ ("+) (.*?) ((?<!\\)"){1} //x) {
+	while ($term =~ s/ ((?<!\\)"{1}) (.*?) ((?<!\\)"){1} //x) {
 		my $part = $2;
 		$part =~ s/^\s*//o;
 		$part =~ s/\s*$//o;
@@ -39,17 +58,7 @@ sub decompose {
 	}
 
 	$self->{ fts_op } = 'ILIKE';
-
-	for my $part ( @words, @parts ) {
-		$part = OpenILS::Application::Storage::CDBI->quote($part);
-		push @{ $self->{ fts_query } },   "'\%$part\%'";
-	}
-
-	for my $part ( @nots ) {
-		$part = OpenILS::Application::Storage::CDBI->quote($part);
-		push @{ $self->{ fts_query_not } },   "'\%$part\%'";
-	}
-
+	$self->{ fts_col } = $self->{ text_col } = 'value';
 	$self->{ raw } = $term;
 	$self->{ words } = \@words;
 	$self->{ nots } = \@nots;
@@ -78,6 +87,16 @@ sub raw {
 	return $self->{raw};
 }
 
+sub fts_col {
+	my $self = shift;
+	return $self->{fts_col};
+}
+
+sub text_col {
+	my $self = shift;
+	return $self->{text_col};
+}
+
 sub phrases {
 	my $self = shift;
 	return wantarray ? @{ $self->{phrases} } : $self->{phrases};
@@ -95,7 +114,7 @@ sub nots {
 
 sub sql_exact_phrase_match {
 	my $self = shift;
-	my $column = shift;
+	my $column = $self->text_col;
 	my $output = '';
 	for my $phrase ( $self->phrases ) {
 		$phrase =~ s/%/\\%/go;
@@ -110,8 +129,9 @@ sub sql_exact_phrase_match {
 
 sub sql_exact_word_bump {
 	my $self = shift;
-	my $column = shift;
 	my $bump = shift || '0.1';
+
+	my $column = $self->text_col;
 	my $output = '';
 	for my $word ( $self->words ) {
 		$word =~ s/%/\\%/go;
@@ -126,18 +146,18 @@ sub sql_exact_word_bump {
 
 sub sql_where_clause {
 	my $self = shift;
-	my $column = shift;
 	my @output;
 
 	for my $fts ( $self->fts_query ) {
-		push @output, join(' ', $column, $self->{fts_op}, $fts);
+		push @output, join(' ', $self->fts_col, $self->{fts_op}, $fts);
 	}
 
-	for my $fts ( $self->fts_query_nots ) {
-		push @output, 'NOT (' . join(' ', $column, $self->{fts_op}, $fts) . ')';
+	for my $fts ( $self->fts_query_not ) {
+		push @output, 'NOT (' . join(' ', $self->fts_col, $self->{fts_op}, $fts) . ')';
 	}
 
-	return join(' AND ', @output);
+	my $phrase_match = $self->sql_exact_phrase_match();
+	return join(' AND ', @output); 
 }
 
 #-------------------------------------------------------------------------------

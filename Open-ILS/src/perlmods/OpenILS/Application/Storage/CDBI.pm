@@ -24,6 +24,13 @@ sub child_init {
 		  WHERE	%s = ?
 	SQL
 
+	__PACKAGE__->set_sql( 'OILSFastOrderedSearchLike', <<"	SQL", 'Main');
+		SELECT	%s
+		  FROM	%s
+		  WHERE	%s ~ ?
+		  ORDER BY %s
+	SQL
+
 	__PACKAGE__->set_sql( 'OILSFastOrderedSearch', <<"	SQL", 'Main');
 		SELECT	%s
 		  FROM	%s
@@ -43,14 +50,15 @@ sub fast_flesh_sth {
 	my $field = shift;
 	my $value = shift;
 	my $order = shift;
+	my $like = shift;
+
 
 	if (!(defined($order) and ref($order) and ref($order) eq 'HASH')) {
-		if (defined($value) and ref($order) and ref($order) eq 'HASH') {
+		if (defined($value) and ref($value) and ref($value) eq 'HASH') {
 			$order = $value;
-			$value = $field;
-			$field = $class->primary_column;
+			$value = undef;
 		} else {
-			$order = { order_by => 'id' }
+			$order = { order_by => $class->columns('Primary') }
 		}
 	}
 
@@ -59,10 +67,23 @@ sub fast_flesh_sth {
 		$field = $class->primary_column;
 	}
 
+	unless (defined $field) {
+		$field = $class->primary_column;
+	}
+
+	unless ($order->{order_by}) {
+		$order = { order_by => $class->columns('Primary') }
+	}
+
 	my $fm_class = 'Fieldmapper::'.$class;
 	my $field_list = join ',', $class->columns('All');
 	
-	my $sth = $class->sql_OILSFastOrderedSearch( $field_list, $class->table, $field, $order->{order_by});
+	my $sth;
+	if (!$like) {
+		$sth = $class->sql_OILSFastOrderedSearch( $field_list, $class->table, $field, $order->{order_by});
+	} else {
+		$sth = $class->sql_OILSFastOrderedSearchLike( $field_list, $class->table, $field, $order->{order_by});
+	}
 	$sth->execute($value);
 	return $sth;
 }
@@ -74,13 +95,16 @@ sub fast_flesh {
 
 sub fast_fieldmapper {
 	my $self = shift;
+	my $id = shift;
+	my $col = shift;
+	my $like = shift;
 	my $class = ref($self) || $self;
 	my $fm_class = 'Fieldmapper::'.$class;
 	my @fms;
 	$log->debug("fast_fieldmapper() ==> Retrieving $fm_class", INTERNAL);
-	for my $hash ($self->fast_flesh_sth(map {"$_"} @_)->fetchall_hash) {
+	for my $hash ($self->fast_flesh_sth( $col, "$id", { order_by => $col }, $like )->fetchall_hash) {
 		my $fm = $fm_class->new;
-		for my $field ( keys %$hash ) {
+		for my $field ( $fm_class->real_fields ) {
 			$fm->$field( $$hash{$field} );
 		}
 		push @fms, $fm;

@@ -1,6 +1,11 @@
 package Fieldmapper;
 use JSON;
 use Data::Dumper;
+use base 'OpenSRF::Application';
+
+use OpenSRF::Utils::Logger;
+my $log = 'OpenSRF::Utils::Logger';
+
 use OpenILS::Application::Storage::CDBI;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::biblio;
@@ -10,6 +15,19 @@ use OpenILS::Application::Storage::CDBI::metabib;
 use vars qw/$fieldmap $VERSION/;
 
 _init();
+
+sub publish_fieldmapper {
+	my ($self,$client,$class) = @_;
+
+	return $fieldmap unless (defined $class);
+	return undef unless (exists($$fieldmap{$class}));
+	return {$class => $$fieldmap{$class}};
+}
+__PACKAGE__->register_method(
+	api_name	=> 'opensrf.open-ils.system.fieldmapper',
+	api_level	=> 1,
+	method		=> 'publish_fieldmapper',
+);
 
 #
 # To dump the Javascript version of the fieldmapper struct use the command:
@@ -61,7 +79,7 @@ sub _init {
 			use base 'Fieldmapper';
 		PERL
 
-		$$fieldmapp{$pkg}{cdbi} = $cdbi;
+		$$fieldmap{$pkg}{cdbi} = $cdbi;
 
 		my $pos = 0;
 		for my $vfield ( qw/isnew ischanged isdeleted/ ) {

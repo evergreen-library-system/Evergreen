@@ -21,9 +21,9 @@ sub search_full_rec {
 	my ($fts_col) = metabib::full_rec->columns('FTS');
 	my $table = metabib::full_rec->table;
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term);
+	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value','index_vector');
 
-	my $fts_where = $fts->sql_where_clause($fts_col);
+	my $fts_where = $fts->sql_where_clause();
 	my @fts_ranks = $fts->fts_rank;
 
 	my $rank = join(' + ', @fts_ranks);
@@ -47,7 +47,13 @@ sub search_full_rec {
 
 }
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.full_rec.search.fts',
+	api_name	=> 'open-ils.storage.metabib.full_rec.search_fts.value',
+	method		=> 'search_full_rec',
+	api_level	=> 1,
+	stream		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.metabib.full_rec.search_fts.index_vector',
 	method		=> 'search_full_rec',
 	api_level	=> 1,
 	stream		=> 1,

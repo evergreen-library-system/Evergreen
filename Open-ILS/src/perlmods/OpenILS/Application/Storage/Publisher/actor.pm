@@ -27,44 +27,44 @@ sub get_user_record {
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'get_user_record',
-	api_name	=> 'open-ils.storage.actor.user.retrieve',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_user_record',
-	api_name	=> 'open-ils.storage.actor.user.search.username',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_user_record',
-	api_name	=> 'open-ils.storage.actor.user.search.userid',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_user_record',
-	api_name	=> 'open-ils.storage.actor.user.retrieve.list',
-	api_level	=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_user_record',
-	api_name	=> 'open-ils.storage.actor.user.search.username.list',
-	api_level	=> 1,
-	stream		=> 1,
-	argc		=> 1,
-);
-__PACKAGE__->register_method(
-	method		=> 'get_user_record',
-	api_name	=> 'open-ils.storage.actor.user.search.userid.list',
-	api_level	=> 1,
-	stream		=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+	#method		=> 'get_user_record',
+	#api_name	=> 'open-ils.storage.actor.user.retrieve',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_user_record',
+	#api_name	=> 'open-ils.storage.actor.user.search.username',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_user_record',
+	#api_name	=> 'open-ils.storage.actor.user.search.userid',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_user_record',
+	#api_name	=> 'open-ils.storage.actor.user.retrieve.list',
+	#api_level	=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_user_record',
+	#api_name	=> 'open-ils.storage.actor.user.search.username.list',
+	#api_level	=> 1,
+	#stream		=> 1,
+	#argc		=> 1,
+#);
+#__PACKAGE__->register_method(
+	#method		=> 'get_user_record',
+	#api_name	=> 'open-ils.storage.actor.user.search.userid.list',
+	#api_level	=> 1,
+	#stream		=> 1,
+	#argc		=> 1,
+#);
 
 sub update_user_record {
         my $self = shift;
@@ -75,12 +75,12 @@ sub update_user_record {
         return 0 unless ($rec);
         return 1;
 }
-__PACKAGE__->register_method(
-        method          => 'update_user_record',
-        api_name        => 'open-ils.storage.actor.user.update',
-        api_level       => 1,
-        argc            => 1,
-);
+#__PACKAGE__->register_method(
+        #method          => 'update_user_record',
+        #api_name        => 'open-ils.storage.actor.user.update',
+        #api_level       => 1,
+        #argc            => 1,
+#);
 
 sub delete_record_entry {
         my $self = shift;
@@ -91,11 +91,11 @@ sub delete_record_entry {
 	return 0 unless ($rec);
         return 1;
 }
-__PACKAGE__->register_method(
-        method          => 'delete_user_record',
-        api_name        => 'open-ils.storage.actor.user.delete',
-        api_level       => 1,
-        argc            => 1,
-);
+#__PACKAGE__->register_method(
+        #method          => 'delete_user_record',
+        #api_name        => 'open-ils.storage.actor.user.delete',
+        #api_level       => 1,
+        #argc            => 1,
+#);
 
 1;
