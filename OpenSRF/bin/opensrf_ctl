@@ -5,10 +5,18 @@
 #  Only works on linux because of 'ps' syntax
 #
 
+usage() {
+	echo "usage: system.sh [start|stop|restart|status] <boostrap_config (on start and restart)>";
+}
+
 
 case $1 in 
 	"start")
-		perl -MOpenSRF::System -e 'OpenSRF::System->bootstrap()' & 
+		if [ -z $2 ]; then
+			usage;
+			exit;
+		fi		
+		perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
 		sleep 2;
 		$0 status;
 		echo;
@@ -33,11 +41,15 @@ case $1 in
 		exit 1;
 		;;
 	"restart")
+		if [ -z $2 ]; then
+			usage;
+			exit;
+		fi		
 		$0 stop;
-		$0 start;
+		$0 start $2;
 		;;
 	*)
-		echo "usage: system.sh [start|stop|restart|status]";
+		usage;
 		;;
 esac
 
