@@ -22,8 +22,8 @@ function Cast (obj, class_constructor) {
 }
 
 function JSON2js (json) {
-	json = String(json).replace( /\/\*--\s*S\w*?\s*?\s+\w+\s*--\*\//g, 'Cast(');
-	json = String(json).replace( /\/\*--\s*E\w*?\s*?\s+(\w+)\s*--\*\//g, ', "$1")');
+	//json = String(json).replace( /\/\*--\s*S\w*?\s*?\s+\w+\s*--\*\//g, 'Cast(');
+	//json = String(json).replace( /\/\*--\s*E\w*?\s*?\s+(\w+)\s*--\*\//g, ', "$1")');
 	var obj;
 	if (json != '') {
 		eval( 'obj = ' + json );
