@@ -8,7 +8,6 @@ use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::metabib;
 
-use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger;
 
 our $VERSION;
