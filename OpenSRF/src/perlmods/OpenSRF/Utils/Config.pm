@@ -87,7 +87,7 @@ push @ISA, qw/OpenSRF::Utils/;
 
 use FileHandle;
 use OpenSRF::Utils (':common');  
-use OpenSRF::Utils::Log (':levels');
+use OpenSRF::Utils::Logger;
 
 #use overload '""' => \&OpenSRF::Utils::Config::dump_ini;
 
