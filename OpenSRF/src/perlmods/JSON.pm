@@ -40,7 +40,7 @@ sub JSON2perl {
 	my ($class, $json) = @_;
 	$json ||= $class;
 
-	$json =~ s/\/\/.+$//gmo; # remove C++ comments
+	#$json =~ s/\/\/.+$//gmo; # remove C++ comments
 	$json =~ s/(?<!\\)\$/\\\$/gmo; # fixup $ for later
 	$json =~ s/(?<!\\)\@/\\\@/gmo; # fixup @ for later
 
