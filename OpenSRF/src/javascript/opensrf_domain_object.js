@@ -462,7 +462,8 @@ oilsResult.prototype.getContent = function() {
 		if( node.nodeName == "oils:domainObject"					||
 				node.nodeName == "oils:domainObjectCollection" ) {
 
-			return DomainObject.newFromNode( node );
+			//return DomainObject.newFromNode( node );
+			return JSON2js( node.textContent );
 		}
 		node = nodes.item(++x);
 	}
