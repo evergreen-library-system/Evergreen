@@ -58,10 +58,10 @@ sub begin_xaction {
 
 	my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
 
-	$client->session->registger_callback( disconnect => sub { shift()->session_data('dbh')->commit; } )
+	$client->session->register_callback( disconnect => sub { shift()->session_data('dbh')->commit; } )
 		if ($self->api_name =~ /autocommit$/o);
 
-	$client->session->registger_callback( death => sub { shift()->session_data('dbh')->rollback; } );
+	$client->session->register_callback( death => sub { shift()->session_data('dbh')->rollback; } );
 
 	$client->session->session_data( dbh => $dbh );
 		

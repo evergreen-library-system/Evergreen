@@ -1,5 +1,6 @@
 package OpenILS::Application::Storage::Publisher::biblio;
 use base qw/OpenILS::Application::Storage/;
+use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::CDBI::biblio;
 
 sub create_record_node {
@@ -7,8 +8,14 @@ sub create_record_node {
 	my $client = shift;
 	my $node = shift;;
 
-	my $n = biblio::record_node->create($node);
-	return $n->id;
+	try {
+		my $n = biblio::record_node->create($node);
+		$client->respond( $n->id );
+	} catch Error with {
+		$client->respond( 0 );
+	};
+
+	return undef;
 }
 __PACKAGE__->register_method(
 	method		=> 'create_record_node',
@@ -29,8 +36,14 @@ sub update_record_node {
 		$n->$field( $$node{$field} );
 	}
 
-	$n->update;
-	return $n->id;
+	try {
+		$n->update;
+		$client->respond( $n->id );
+	} catch Error with {
+		$client->respond( 0 );
+	};
+
+	return undef;
 }
 __PACKAGE__->register_method(
 	method		=> 'update_record_node',
@@ -44,13 +57,48 @@ sub create_record_nodeset {
 	my $self = shift;
 	my $client = shift;
 
-	my $method = $self->method_lookup('open-ils.storage.biblio.record_node.create');
+	# COPY version... not working yet
+	if (0) {
+	
+		my $dbh = biblio::record_node->db_Main;
+		my @cols = grep { $_ ne biblio::record_node->primary } biblio::record_node->columns('All');
 
-	my @ids;
-	while ( my $node = shift(@_) ) {
-		$client->respond( $method->run( $node ) );
+		$dbh->do('COPY '. biblio::record_node->table .' ('.join(',',@cols).')'.' FROM STDIN');
+
+		while ( my $node = shift(@_) ) {
+			my @parts;
+			for my $col (@cols) {
+				my $part;
+				if ($part = $node->{$col}) {
+					push @parts, $dbh->quote($part);
+				} else {
+					push @parts, '\N';
+				}
+			}
+			return 0 unless ($dbh->func(join("\t", map {s/^'(.*)'$/$1/o} @parts)."\n", 'putline'));
+		}
+		$dbh->func('\.', 'putline');
+		return 1;
+	} else {
+		# INSERT version, works but slow
+
+		my $method = $self->method_lookup('open-ils.storage.biblio.record_node.create');
+
+		my @ids;
+		my $total = scalar(@ids);
+		my @success;
+
+		while ( my $node = shift(@_) ) {
+			my ($res) = $method->run( $node );
+			push @success, $res if ($res);
+		}
+	
+		if ($total == scalar(@success)) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
-	return undef;
 }
 __PACKAGE__->register_method(
 	method		=> 'create_record_nodeset',
@@ -64,8 +112,14 @@ sub create_record_entry {
 	my $client = shift;
 	my $metadata = shift;
 
-	my $rec = biblio::record_entry->create($metadata);
-	return $rec->id;
+	try {
+		my $rec = biblio::record_entry->create($metadata);
+		$client->respond( $rec->id );
+	} catch Error with {
+		$client->respond( 0 );
+	};
+
+	return undef;
 }
 __PACKAGE__->register_method(
 	method		=> 'create_record_entry',
@@ -104,8 +158,14 @@ sub update_record_entry {
 		$rec->$field( $$node{$field} );
 	}
 
-	$rec->update;
-	return $rec->id;
+	try {
+		$rec->update;
+		$client->respond( $rec->id );
+	} catech Error with {
+		$client->respond( 0 );
+	};
+
+	return undef;
 }
 __PACKAGE__->register_method(
 	method		=> 'update_record_node',

@@ -69,7 +69,7 @@ while ( my $xml = <> ) {
 
 		my $resp = $req->recv;
 		unless( $resp && $resp->can('content') ) {
-			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn]!! -- $resp");
+			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got an exception!! -- ".$resp->toString);
 		}
 
 		my $new_id = $resp->content;
@@ -90,8 +90,7 @@ while ( my $xml = <> ) {
 
 			$resp = $req->recv;
 			unless( $resp && $resp->can('content') ) {
-				throw OpenSRF::EX::ERROR
-					("Failed to create record_nodes for TCN [$tcn]!! -- $resp");
+				throw OpenSRF::EX::ERROR ("Failed to create record_nodes for TCN [$tcn].  Got an exception!! -- $resp");
 			}
 
 
@@ -104,7 +103,7 @@ while ( my $xml = <> ) {
 
 			$req->finish;
 		} else {
-			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn]!! -- $resp");
+			throw OpenSRF::EX::ERROR ("Failed to create record for TCN [$tcn].  Got no new ID !! -- ".$resp->toString);
 		}
 	} catch Error with {
 	warn "  !!> Rolling back transaction\n";
