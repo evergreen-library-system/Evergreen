@@ -4,6 +4,7 @@ use OpenSRF::Application;
 use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
+use OpenSRF::Utils::Logger qw(:level);
 
 # memcache handle
 my $cache_handle;
@@ -37,6 +38,25 @@ correct for the given username, a session id is returned,
 if not, "0" is returned
 TEXT
 );
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_session",
+	api_name	=> "open-ils.auth.session.retrieve",
+	argc		=> 1, #( sessionid )
+	note		=> <<TEXT,
+Pass in a sessionid and this returns the username associated with it
+TEXT
+);
+
+__PACKAGE__->register_method(
+	method	=> "delete_session",
+	api_name	=> "open-ils.auth.session.delete",
+	argc		=> 1, #( sessionid )
+	note		=> <<TEXT,
+Pass in a sessionid and this delete it from the cache 
+TEXT
+);
+
 
 # -------------------------------------------------------------
 # Implementation
@@ -73,24 +93,37 @@ sub initialize {
 sub init_authenticate {
 	my( $self, $client, $username ) = @_;
 	my $seed = md5_hex( time() . $$ . rand() . $username );
-	$cache_handle->set( "_open-ils_seed_$username", $seed, 30 );
+	$cache_handle->set( "_open-ils_seed_$username", $seed, 300 );
 	return $seed;
 }
 
 # -------------------------------------------------------------
 # The temporary hash is removed from memcache.  
-# If this user has already been authenticated (there is a 
-# session id in memcache), then their session id is returned.
-# otherwise we retrieve the password from storage and verify
+# We retrieve the password from storage and verify
 # their password hash against our re-hashed version of the 
-# password.
+# password. If all goes well, we return the session id. 
+# Otherwise, we return "0"
 # -------------------------------------------------------------
 sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash ) = @_;
-	my $password = "12345"; #XXX retrieve password from db
-	my $ses = $cache_handle->get($username);
 
-	return $ses if (defined($ses) and $ses);
+	my $name = "open-ils.storage.actor.user.retrieve.username";
+	my $method = $self->method_lookup( $name );
+
+	my $password = undef;
+	if(!$method) {
+		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
+	}
+
+	my ($user) = $method->run($username);
+	if(!$user) {
+		throw OpenSRF::EX::ERROR ("No user for $username");
+	}
+
+	$password = $user->{passwd};
+	if(!$password) {
+		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
+	}
 
 	my $current_seed = $cache_handle->get("_open-ils_seed_$username");
 
@@ -103,17 +136,26 @@ sub complete_authenticate {
 	$cache_handle->delete( "_open-ils_seed_$username" );
 
 	if( $hash eq $passwdhash ) {
-		my $session_id = md5_hex( time() . $$ . rand() );
-		$cache_handle->set( $username, $session_id, 28800 );
+
+		my $session_id = md5_hex( time() . $$ . rand() ); 
 		$cache_handle->set( $session_id, $username, 28800 );
 		return $session_id;
+
 	} else {
+
 		return 0;
 	}
 }
 
+sub retrieve_session {
+	my( $self, $client, $sessionid ) = @_;
+	return $cache_handle->get($sessionid);
+}
 
-
+sub delete_session {
+	my( $self, $client, $sessionid ) = @_;
+	return $cache_handle->delete($sessionid);
+}
 
 
 1;
