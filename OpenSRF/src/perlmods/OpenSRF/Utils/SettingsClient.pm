@@ -45,6 +45,9 @@ sub config_value {
 	# call out to settings server when necessary....
 	try {
 		for my $key (@keys) {
+			if(!defined($hash)){
+				return undef;
+			}
 			$hash = $hash->{$key};
 		}
 
