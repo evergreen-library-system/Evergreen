@@ -292,6 +292,7 @@ void listen_loop( transport_router_registrar* router ) {
 			/* cycle through the children and find any whose fd's are ready for reading */
 			server_class_node* cur_node = router->server_class_list;
 			while( cur_node != NULL ) {
+				debug_handler( "Checking File Descriptor" );
 				int cur_fd = cur_node->jabber->t_client->session->sock_obj->sock_fd;
 
 				if( FD_ISSET(cur_fd, &listen_set) ) {
@@ -310,9 +311,11 @@ void listen_loop( transport_router_registrar* router ) {
 					} else if( handle_ret == 0 ) {
 						/* delete and continue */
 						warning_handler( "server_class_handle_msg() returned 0" );
-						server_class_node* tmp_node = cur_node->next;
+						//server_class_node* tmp_node = cur_node->next;
 						remove_server_class( router, cur_node );	
-						cur_node = tmp_node;
+						debug_handler( "Removed Server Class" );
+						cur_node = router->server_class_list; /*start over*/
+						//cur_node = tmp_node;
 						continue;
 					} 
 
@@ -423,8 +426,10 @@ int router_registrar_handle_msg( transport_router_registrar* router_registrar, t
 
 	} else if( strcmp( msg->router_command, "unregister") == 0 ) {
 
-		if( ! unregister_server_node( active_class_node, msg->sender ) )
+		if( ! unregister_server_node( active_class_node, msg->sender ) ) {
 			remove_server_class( router_registrar, active_class_node );
+			debug_handler( "Removed server class after final unregister");
+		}
 
 	} else {
 		warning_handler( "router_register_handler_msg(): Bad Command [%s] for class [%s]",
@@ -530,10 +535,16 @@ int remove_server_class( transport_router_registrar* router, server_class_node* 
 	transport_message * msg = NULL;
 	while ( (msg = client_recv(class->jabber->t_client, 0)) != NULL ) {
 		debug_handler( "Looping on messages to dead class" );
-		server_class_handle_msg(router, class, msg);
+		if( server_class_handle_msg(router, class, msg) < 0 ) {
+		  debug_handler( "This class was freed by a recursive call, exiting 'remove_server_class'");
+		  //message_free(msg); - this will be freed by server_class_handle_msg
+		  debug_handler( "Message Freed");
+		  return -1;
+		}
 		message_free(msg);
 	}
 	
+
 	free( class->server_class );
 	class->server_class = NULL;
 
@@ -1107,6 +1118,7 @@ int router_registrar_free( transport_router_registrar* router_registrar ) {
 	/* free the server_class list XXX */
 	while( router_registrar->server_class_list != NULL ) {
 		remove_server_class(router_registrar, router_registrar->server_class_list);
+		debug_handler( "Removed server classes in registrar free");
 	}
 
 	transport_router_registrar* router = router_registrar;
