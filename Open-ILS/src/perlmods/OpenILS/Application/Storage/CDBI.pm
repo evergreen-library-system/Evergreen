@@ -3,12 +3,195 @@ use vars qw/@ISA/;
 use Class::DBI;
 use base qw/Class::DBI/;
 
+use OpenILS::Utils::Fieldmapper;
+
 our $VERSION = 1;
+
 
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::metabib;
+
+sub child_init {
+	my $self = shift;
+
+	__PACKAGE__->set_sql( 'OILSFastSearch', <<"	SQL", 'Main');
+		SELECT	%s
+		  FROM	%s
+		  WHERE	%s = ?
+	SQL
+
+	__PACKAGE__->set_sql( 'OILSFastOrderedSearch', <<"	SQL", 'Main');
+		SELECT	%s
+		  FROM	%s
+		  WHERE	%s = ?
+		  ORDER BY %s
+	SQL
+
+	$self->SUPER::child_init(@_);
+
+}
+
+sub fast_flesh_sth {
+	my $class = shift;
+	$class = ref($class) || $class;
+
+	my $field = shift;
+	my $value = shift;
+	my $order = shift;
+
+	if (!(defined($order) and ref($order) and ref($order) eq 'HASH')) {
+		if (defined($value) and ref($order) and ref($order) eq 'HASH') {
+			$order = $value;
+			$value = $field;
+			$field = $class->primary_column;
+		} else {
+			$order = { order_by => 'id' }
+		}
+	}
+
+	unless (defined $value) {
+		$value = $field;
+		$field = $class->primary_column;
+	}
+
+	my $fm_class = 'Fieldmapper::'.$class;
+	my $field_list = join ',', $class->columns('All');
+	
+	warn " !!-> field list for OILSFastOrderedSearch is '$field_list'";
+
+	my $sth = $class->sql_OILSFastOrderedSearch( $field_list, $class->table, $field, $order->{order_by});
+	$sth->execute($value);
+	return $sth;
+}
+
+sub fast_flesh {
+	my $self = shift;
+	return map $class->construct($_), $self->fast_flesh_sth(@_)->fetchall_hash;
+}
+
+sub fast_fieldmapper {
+	my $self = shift;
+	my $class = ref($self) || $self;
+	my $fm_class = 'Fieldmapper::'.$class;
+	my @fms;
+	for my $hash ($self->fast_flesh_sth(@_)->fetchall_hash) {
+		my $fm = $fm_class->new;
+		for my $field ( keys %$hash ) {
+			$fm->$field( $$hash{$field} );
+		}
+		push @fms, $fm;
+	}
+	return @fms;
+}
+
+sub retrieve {
+	my $self = shift;
+	my $arg = shift;
+	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+		$arg = $arg->id;
+	}
+	return $self->SUPER::retrieve("$arg");
+}
+
+sub to_fieldmapper {
+	my $obj = shift;
+	my $class = ref($obj) || $obj;
+
+	my $fm_class = 'Fieldmapper::'.$class;
+	my $fm = $fm_class->new;
+
+	if (ref($obj)) {
+		for my $field ( $fm->real_fields ) {
+			$fm->$field( $obj->$field );
+		}
+	}
+
+	return $fm;
+}
+
+sub create {
+	my $self = shift;
+	my $arg = shift;
+
+	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+		return $self->create_from_fieldmapper($arg,@_);
+	}
+
+	return $self->SUPER::create($arg,@_);
+}
+
+sub create_from_fieldmapper {
+	my $obj = shift;
+	my $fm = shift;
+	my @params = @_;
+
+	my $class = ref($obj) || $obj;
+
+	if (ref $fm) {
+		my %hash = map { defined $fm->$_ ?
+					($_ => $fm->$_) :
+					()
+				} $fm->real_fields;
+		return $class->create( \%hash, @params );
+	} else {
+		return undef;
+	}
+}
+
+sub update {
+	my $self = shift;
+	my $arg = shift;
+
+	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+		$self = $self->modify_from_fieldmapper($arg);
+	}
+
+	$self->SUPER::update;
+	return $self;
+}
+
+sub delete {
+	my $self = shift;
+	my $arg = shift;
+
+	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+		$self = $self->retrieve($arg);
+	}
+
+	$self->SUPER::delete;
+	return $arg;
+}
+
+sub modify_from_fieldmapper {
+	my $obj = shift;
+	my $fm = shift;
+
+	my $class = ref($obj) || $obj;
+
+	if (!ref($obj)) {
+		$obj = $class->retieve($fm);
+		return undef unless ($obj);
+	}
+
+	my %hash = map { defined $fm->$_ ?
+				($_ => $fm->$_) :
+				()
+			} $fm->real_fields;
+
+	my $au = $obj->autoupdate;
+	$obj->autoupdate(0);
+	
+	for my $field ( keys %hash ) {
+		$obj->$field( $hash{$field} );
+	}
+
+	$obj->autoupdate($au);
+
+	return $obj;
+}
+
 
 
 #-------------------------------------------------------------------------------

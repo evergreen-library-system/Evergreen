@@ -1,18 +1,19 @@
 package OpenILS::Application::Storage::Publisher::biblio;
 use base qw/OpenILS::Application::Storage/;
+use vars qw/$VERSION/;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Utils::Fieldmapper;
+
+$VERSION = 1;
 
 sub create_record_entry {
 	my $self = shift;
 	my $client = shift;
 	my $metadata = shift;
 
-	my %hash = map { ( $_ => $metadata->$_) } Fieldmapper::biblio::record_entry->real_fields;
-
 	try {
-		my $rec = biblio::record_entry->create(\%hash);
+		my $rec = biblio::record_entry->create($metadata);
 		$client->respond( $rec->id );
 	} catch Error with {
 		$client->respond( 0 );
@@ -50,19 +51,8 @@ sub update_record_entry {
 	my $client = shift;
 	my $entry = shift;
 	
-	my $rec = biblio::record_entry->retrieve(''.$entry->id);
+	my $rec = biblio::record_entry->update($entry);
 	return 0 unless ($rec);
-
-	$rec->autoupdate(0);
-
-	for my $field ( Fieldmapper::biblio::record_entry->real_fields ) {
-		$rec->$field( $entry->$field );
-	}
-
-	return 0 unless ($rec->is_changed);
-
-	$rec->update;
-
 	return 1;
 }
 __PACKAGE__->register_method(
@@ -77,10 +67,8 @@ sub delete_record_entry {
 	my $client = shift;
 	my $entry = shift;
 	
-	my $rec = biblio::record_entry->retrieve(''.$entry->id);
+	my $rec = biblio::record_entry->delete($entry);
 	return 0 unless ($rec);
-
-	$rec->delete;
 	return 1;
 }
 __PACKAGE__->register_method(
@@ -95,18 +83,13 @@ sub search_record_entry_one_field {
 	my $client = shift;
 	my @ids = @_;
 
-	(my $search_field = $self->api_name) =~ s/^.*retrieve\.([^\.]+).*?$/$1/o;
+	(my $search_field = $self->api_name) =~ s/^.*\.search\.([^\.]+).*?$/$1/o;
 
-	my @fields = Fieldmapper::biblio::record_entry->real_fields;
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $fm = new Fieldmapper::biblio::record_entry;
 		for my $rec ( biblio::record_entry->search($search_field => "$id") ) {
-			for my $f (@fields) {
-				$fm->$f( $rec->$f );
-			}
-			$client->respond( $fm ) if ($rec);
+			$client->respond( $rec->to_fieldmapper ) if ($rec);
 		}
 
 		last if ($self->api_name !~ /list/o);
@@ -133,16 +116,11 @@ sub get_record_entry {
 	my $client = shift;
 	my @ids = @_;
 
-	my @fields = Fieldmapper::biblio::record_entry->real_fields;
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $fm = new Fieldmapper::biblio::record_entry;
-		my $rec = biblio::record_entry->retrieve("$id");
-		for my $f (@fields) {
-			$fm->$f( $rec->$f );
-		}
-		$client->respond( $fm ) if ($rec);
+		my $rec = biblio::record_entry->retrieve($id);
+		$client->respond( $rec->to_fieldmapper ) if ($rec);
 
 		last if ($self->api_name !~ /list/o);
 	}
@@ -167,10 +145,8 @@ sub create_record_node {
 	my $client = shift;
 	my $node = shift;;
 
-	my %hash = map { ( $_ => $node->$_) } Fieldmapper::biblio::record_node->real_fields;
-
 	try {
-		my $n = biblio::record_node->create(\%hash);
+		my $n = biblio::record_node->create($node);
 		$client->respond( $n->id );
 	} catch Error with {
 		$client->respond( 0 );
@@ -190,17 +166,8 @@ sub update_record_node {
 	my $client = shift;
 	my $node = shift;;
 
-	
-	my $n = biblio::record_node->retrieve(''.$node->id);
+	my $n = biblio::record_node->update($node);
 	return 0 unless ($n);
-
-	$n->autoupdate(0);
-
-	for my $field ( Fieldmapper::biblio::record_node->real_fields ) {
-		$n->$field( $node->$field );
-	}
-
-	$n->update;
 	return 1;
 }
 __PACKAGE__->register_method(
@@ -215,11 +182,8 @@ sub delete_record_node {
 	my $client = shift;
 	my $node = shift;
 	
-	my $rec = biblio::record_node->retrieve(''.$node->id);
+	my $rec = biblio::record_node->delete($node);
 	return 0 unless ($rec);
-
-	$rec->delete;
-
 	return 1;
 }
 __PACKAGE__->register_method(
@@ -237,8 +201,8 @@ sub get_record_node {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $rec = biblio::record_node->retrieve("$id");
-		$client->respond( $self->_cdbi2Hash( $rec ) ) if ($rec);
+		my $rec = biblio::record_node->retrieve($id);
+		$client->respond( $rec->to_fieldmapper ) if ($rec);
 
 		last if ($self->api_name !~ /list/o);
 	}
@@ -335,37 +299,10 @@ sub get_record_nodeset {
 	my $client = shift;
 	my @ids = @_;
 
-	my $table = biblio::record_node->table;
-	my @fields = Fieldmapper::biblio::record_node->real_fields;
-	my $field_list = join ',', @fields;
-
-	my $sth = biblio::record_node->db_Main->prepare_cached(<<"	SQL");
-		SELECT	$field_list
-		  FROM	$table
-		  WHERE	owner_doc = ?
-		  ORDER BY intra_doc_id;
-	SQL
-
-
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		$sth->execute("$id");
-
-
-		my @nodeset;
-		while (my $data = $sth->fetchrow_arrayref) {
-			my $n = new Fieldmapper::biblio::record_node;
-			my $index = 0;
-			for my $f ( @fields ) {
-				$n->$f( $$data[$index] );
-				$index++;
-			}
-			push @nodeset, $n;
-		}
-		$sth->finish;
-
-		$client->respond( \@nodeset );
+		$client->respond( [biblio::record_node->fast_fieldmapper( owner_doc => "$id", {order_by => 'intra_doc_id'} )] );
 		
 		last if ($self->api_name !~ /list/o);
 	}
