@@ -61,7 +61,7 @@
   #-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::Driver::Pg;
 	use Class::DBI::Replication;
-	use base qw/Class::DBI::Replication OpenILS::Application::Storage/;
+	use base qw/Class::DBI OpenILS::Application::Storage/;
 	use DBI;
 	use OpenSRF::EX qw/:try/;
 	use OpenSRF::Utils::Logger qw/:level/;
@@ -69,10 +69,14 @@
 
 	__PACKAGE__->set_sql( retrieve_limited => 'SELECT * FROM __TABLE__ ORDER BY id LIMIT ?' );
 
+	my $master_db;
+	my @slave_dbs;
 	my $_db_params;
 	sub child_init {
 		my $self = shift;
 		$_db_params = shift;
+
+		$log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
 
 		$_db_params = [ $_db_params ] unless (ref($_db_params) eq 'ARRAY');
 
@@ -88,21 +92,27 @@
 				ChopBlanks => 1,
 		);
 
-		my ($master,@slaves);
+		my $master = shift @$_db_params;
+		$master_db = DBI->connect("dbi:Pg:host=$$master{host};dbname=$$master{db}",$$master{user},$$master{pw}, \%attrs);
+
+		$log->debug("Connected to MASTER db at $$master{host}", INTERNAL);
+		
 		for my $db (@$_db_params) {
-			if ($db->{type} eq 'master') {
-				__PACKAGE__->set_master("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
-			}
-			push @slaves, ["dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs];
+			push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
 		}
 
-		__PACKAGE__->set_slaves(@slaves);
+		$log->debug("All is well on the western front", INTERNAL);
+	}
 
-		$log->debug("Running child_init inside ".__PACKAGE__, INTERNAL);
+	sub db_Main {
+		my $self = shift;
+		return $master_db if ($self->current_xact_session);
+		return $master_db unless (@slave_dbs);
+		return ($master_db, @slave_dbs)[rand(scalar(@slave_dbs))];
 	}
 
 	sub quote {
-		return __PACKAGE__->db_Slaves->quote(@_)
+		return __PACKAGE__->db_Main->quote(@_)
 	}
 
 	sub tsearch2_trigger {
@@ -123,17 +133,6 @@
 		my $ses = shift;
 		$_xact_session = $ses if (defined $ses);
 		return $_xact_session;
-	}
-
-	sub db_Slaves {	
-		my $self = shift;
-
-		if ($self->current_xact_session && OpenSRF::AppSession->find($self->current_xact_session)) {
-			return $self->db_Main;
-		}
-
-		return $self->_pick_slaves->($self, @_);
-		return $self->SUPER::db_Slaves;
 	}
 
 }
