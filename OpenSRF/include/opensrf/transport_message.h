@@ -1,5 +1,3 @@
-#include "libxml.h"
-
 #include "opensrf/generic_utils.h"
 
 #include <string.h>
@@ -43,6 +41,8 @@ typedef struct transport_message_struct transport_message;
 // ---------------------------------------------------------------------------------
 transport_message* message_init( char* body, char* subject, 
 		char* thread, char* recipient, char* sender );
+
+transport_message* new_message_from_xml( const char* msg_xml );
 
 
 void message_set_router_info( transport_message* msg, char* router_from,

@@ -3,7 +3,6 @@
 // a SAX push parser as it arrives.  When key Jabber documetn elements are met, 
 // logic ensues.
 // ---------------------------------------------------------------------------------
-#include "libxml.h"
 #include "opensrf/transport_socket.h"
 #include "opensrf/transport_message.h"
 #include "opensrf/generic_utils.h"
