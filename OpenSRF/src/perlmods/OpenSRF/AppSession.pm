@@ -381,6 +381,7 @@ sub kill_me {
 
 sub disconnect {
 	my $self = shift;
+	return unless $self;
 	unless( $self->state == DISCONNECTED ) {
 		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);;
 		$self->state( DISCONNECTED ); 
@@ -398,6 +399,7 @@ sub disconnect {
 sub request {
 	my $self = shift;
 	my $meth = shift;
+	return unless $self;
 
 	my $method;
 	if (!ref $meth) {
@@ -416,6 +418,8 @@ sub send {
 	my $self = shift;
 	my @payload_list = @_; # this is a Domain Object
 
+
+	return unless ($self and $self->{peer_handle});
 
 	$logger->debug( "In send", INTERNAL );
 	
@@ -711,7 +715,7 @@ sub flush_resend {
 	my $self = shift;
 	$logger->debug( "Resending..." . @_RESEND_QUEUE, DEBUG );
 	while ( my $req = shift @OpenSRF::AppSession::_RESEND_QUEUE ) {
-		$req->resend;
+		$req->resend unless $req->complete;
 	}
 }
 
@@ -739,6 +743,7 @@ sub _print_queue {
 
 sub status {
 	my $self = shift;
+	return unless $self;
 	$self->send( 'STATUS', @_ );
 }
 
@@ -777,7 +782,9 @@ sub queue_size {
 }
 	
 sub send {
-	shift()->session->send(@_);
+	my $self = shift;
+	return unless ($self and $self->session);
+	$self->session->send(@_);
 }
 
 sub finish {
@@ -839,6 +846,7 @@ sub payload { return shift()->{payload}; }
 
 sub resend {
 	my $self = shift;
+	return unless ($self and $self->session);
 	OpenSRF::Utils::Logger->debug(
 		"I'm resending the request for threadTrace ". $self->threadTrace, DEBUG);
 	if($self->payload) {
@@ -850,12 +858,14 @@ sub resend {
 sub status {
 	my $self = shift;
 	my $msg = shift;
+	return unless ($self and $self->session);
 	$self->session->send( 'STATUS',$msg, $self->threadTrace );
 }
 
 sub respond {
 	my $self = shift;
 	my $msg = shift;
+	return unless ($self and $self->session);
 
 	my $response;
 	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
@@ -884,6 +894,7 @@ sub respond_complete {
 		statusCode => STATUS_COMPLETE(),
 		status => 'Request Complete' );
 
+	return unless ($self and $self->session);
 	$self->session->send( 'RESULT' => $response, 'STATUS' => $stat, $self->threadTrace);
 
 }
