@@ -21,7 +21,7 @@ CREATE TABLE actor.usr (
 	active			BOOL	NOT NULL DEFAULT TRUE,
 	master_account		BOOL	NOT NULL DEFAULT FALSE,
 	super_user		BOOL	NOT NULL DEFAULT FALSE,
-	usrgoup			SERIAL	NOT NULL,
+	usrgroup		SERIAL	NOT NULL,
 	last_xact_id		TEXT	NOT NULL DEFAULT 'none'
 
 );

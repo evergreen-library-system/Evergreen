@@ -32,19 +32,22 @@ sub _init {
 		'Fieldmapper::actor::user'			=> { hint => 'au'   },
 		'Fieldmapper::actor::org_unit'			=> { hint => 'aou'  },
 		'Fieldmapper::actor::org_unit_type'		=> { hint => 'aout' },
+		
 		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
 								     proto_fields	=> { children => 1 } },
 		'Fieldmapper::biblio::record_entry'		=> { hint => 'bre'  },
 		'Fieldmapper::biblio::record_mods'		=> { hint => 'brm'  },
 		'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  },
+
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
 		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
+
 		'Fieldmapper::metabib::metarecord'		=> { hint => 'mmr'  },
-		'Fieldmapper::metabib::title_field_entry'	=> { hint => 'mmr'  },
-		'Fieldmapper::metabib::author_field_entry'	=> { hint => 'mmr'  },
-		'Fieldmapper::metabib::subject_field_entry'	=> { hint => 'mmr'  },
-		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mmr'  },
-		'Fieldmapper::metabib::full_rec'		=> { hint => 'mmr'  },
+		'Fieldmapper::metabib::title_field_entry'	=> { hint => 'mtfe' },
+		'Fieldmapper::metabib::author_field_entry'	=> { hint => 'mafe' },
+		'Fieldmapper::metabib::subject_field_entry'	=> { hint => 'msfe' },
+		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mkfe' },
+		'Fieldmapper::metabib::full_rec'		=> { hint => 'mfr'  },
 	};
 
 	#-------------------------------------------------------------------------------
