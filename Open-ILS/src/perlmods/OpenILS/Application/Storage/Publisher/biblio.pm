@@ -88,8 +88,8 @@ sub search_record_entry_one_field {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		for my $rec ( biblio::record_entry->search($search_field => "$id") ) {
-			$client->respond( $rec->to_fieldmapper ) if ($rec);
+		for my $rec ( biblio::record_entry->fast_fieldmapper($search_field => "$id") ) {
+			$client->respond( $rec ) if ($rec);
 		}
 
 		last if ($self->api_name !~ /list/o);
@@ -119,8 +119,8 @@ sub get_record_entry {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $rec = biblio::record_entry->retrieve($id);
-		$client->respond( $rec->to_fieldmapper ) if ($rec);
+		my ($rec) = biblio::record_entry->fast_fieldmapper($id);
+		$client->respond( $rec ) if ($rec);
 
 		last if ($self->api_name !~ /list/o);
 	}
@@ -201,8 +201,8 @@ sub get_record_node {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $rec = biblio::record_node->retrieve($id);
-		$client->respond( $rec->to_fieldmapper ) if ($rec);
+		my ($rec) = biblio::record_node->fast_fieldmapper($id);
+		$client->respond( $rec ) if ($rec);
 
 		last if ($self->api_name !~ /list/o);
 	}

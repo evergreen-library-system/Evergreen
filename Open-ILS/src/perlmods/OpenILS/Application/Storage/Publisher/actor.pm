@@ -11,32 +11,17 @@ sub get_user_record {
 	my $client = shift;
 	my @ids = @_;
 
+	my $search_field = 'id';
+	$search_field = 'usrname' if ($self->api_name =~/userid/o);
+	$search_field = 'usrname' if ($self->api_name =~/username/o);
+
 	for my $id ( @ids ) {
 		next unless ($id);
 		
 		$log->debug("Searching for $id using ".$self->api_name, DEBUG);
 
-		my $rec;
-
-		if ($self->api_name =~/username/o) {
-			($rec) = actor::user->search( usrname => "$id");
-		} elsif ($self->api_name =~/userid/o) {
-			($rec) = actor::user->search( usrid => "$id");
-		} else {
-			$rec = actor::user->retrieve("$id");
-		}
-
-		if ($rec) {
-
-			my $user = Fieldmapper::actor::user->new;
-
-			for my $field (Fieldmapper::actor::user->real_fields) {
-				$user->$field($rec->$field);
-			}
-
-			$client->respond( $user );
-
-		}
+		my ($rec) = actor::user->fast_fieldmapper($search_field => "$id");
+		$client->respond( $rec ) if ($rec);
 
 		last if ($self->api_name !~ /list$/o);
 	}
@@ -86,19 +71,8 @@ sub update_user_record {
         my $client = shift;
         my $user = shift;
 
-        my $rec = actor::user->retrieve(''.$user->id);
+        my $rec = actor::user->update($user);
         return 0 unless ($rec);
-
-        $rec->autoupdate(0);
-
-        for my $field ( Fieldmapper::actor::user->real_fields ) {
-                $rec->$field( $user->$field );
-        }
-
-        return 0 unless ($rec->is_changed);
-
-        $rec->update;
-
         return 1;
 }
 __PACKAGE__->register_method(
@@ -113,10 +87,7 @@ sub delete_record_entry {
         my $client = shift;
         my $user = shift;
 
-        my $rec = actor::user->retrieve(''.$user->id);
-        return 0 unless ($rec);
-
-        $rec->delete;
+        my $rec = actor::user->delete($user);
         return 1;
 }
 __PACKAGE__->register_method(
