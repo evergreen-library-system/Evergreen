@@ -381,16 +381,17 @@ sub kill_me {
 
 sub disconnect {
 	my $self = shift;
-	return unless $self;
-	unless( $self->state == DISCONNECTED ) {
-		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);;
-		$self->state( DISCONNECTED ); 
-	}
+
 	# run each 'disconnect' callback;
 	if (exists $self->{callbacks}{disconnect}) {
 		for my $sub (values %{$self->{callbacks}{disconnect}}) {
 			$sub->($self);
 		}
+	}
+
+	unless( $self->state == DISCONNECTED ) {
+		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);;
+		$self->state( DISCONNECTED ); 
 	}
 
 	$self->reset;
@@ -413,6 +414,21 @@ sub request {
 	$self->send('REQUEST',$method);
 }
 
+sub full_request {
+	my $self = shift;
+	my $meth = shift;
+
+	my $method;
+	if (!ref $meth) {
+		$method = new OpenSRF::DomainObject::oilsMethod ( method => $meth );
+	} else {
+		$method = $meth;
+	}
+	
+	$method->params( @_ );
+
+	$self->send(CONNECT => '', REQUEST => $method, DISCONNECT => '');
+}
 
 sub send {
 	my $self = shift;
@@ -445,7 +461,7 @@ sub send {
 
 		if ($msg_type eq 'DISCONNECT' ) {
 			$disconnect++;
-			if( $self->state == DISCONNECTED) {
+			if( $self->state == DISCONNECTED && !$connecting) {
 				next;
 			}
 		}
@@ -503,7 +519,6 @@ sub send {
 			}
 		}
 	} 
-
 	$logger->debug( "AppSession sending doc: " . $doc->toString(), INTERNAL );
 
 
@@ -511,6 +526,10 @@ sub send {
 					to     => $self->remote_id,
 				   thread => $self->session_id,
 				   body   => $doc->toString );
+
+	if( $disconnect) {
+		$self->state( DISCONNECTED );
+	}
 
 	return $self->app_request( $tT );
 }
