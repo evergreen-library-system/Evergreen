@@ -201,10 +201,10 @@ sub register_method {
 
 	$args{api_level} ||= 1;
 	$args{stream} ||= 0;
+	$args{remote} ||= 0;
         $args{package} ||= $app;                
 	$args{api_name} ||= UnixServer->app() . '.' . $args{method};
 	$args{server_class} ||= UnixServer->app();
-	$args{code} ||= \&{$app . '::' . $args{method}};
 
 	$_METHODS[$args{api_level}]{$args{api_name}} = bless \%args => $app;
 
@@ -215,11 +215,62 @@ sub register_method {
 	) if ($stream);
 }
 
+sub retrieve_remote_apis {
+	my $session = AppSession->create('settings');
+	try {
+		$session->connect;
+	} catch ERROR with {
+		my $e = shift;
+		$log->debug( "Remote subrequest returned an error:\n". $e );
+		return undef;
+	} finally {
+		return undef unless ($session->state == $session->CONNECTED);
+	}
+
+	my $req = $session->request( 'opensrf.settings.xpath.get' );
+	my $list = $req->recv->content;
+	$req->finish;
+	$session->finish;
+	$session->disconnect;
+
+	my %u_list = map { ($_ => 1) } @$list;
+
+	for my $class ( keys %u_list ) {
+		populate_remote_method_cache($class);
+	}
+}
+
+sub populate_remote_method_cache {
+	my $class = shift;
+
+	my $session = AppSession->create($class);
+	try {
+		$session->connect;
+	} catch ERROR with {
+		my $e = shift;
+		$log->debug( "Remote subrequest returned an error:\n". $e );
+		return undef;
+	} finally {
+		return undef unless ($session->state == $session->CONNECTED);
+	}
+
+	my $req = $session->request( 'opensrf.settings.xpath.get' );
+
+	while (my $method = $req->recv->content) {
+		$method->{remote} = 1;
+		$_METHODS[$$method{api_level}]{$$method{api_name}} = $method;
+	}
+
+	$req->finish;
+	$session->finish;
+	$session->disconnect;
+}
 
 sub method_lookup {             
 	my $self = shift;
 	my $method = shift;
 	my $proto = shift;
+	my $no_recurse = shift || 0;
 
 	# this instead of " || 1;" above to allow api_level 0
 	$proto = 1 unless (defined $proto);
@@ -245,17 +296,26 @@ sub method_lookup {
 	if (defined $meth) {
 		$log->debug("Looks like we found [$method]!", DEBUG);
 		$log->debug("Method object is ".Dumper($meth), INTERNAL);
+	} elsif (!$no_recurse) {
+
+		# XXX Remvoe this to activate the magic!
+		return $meth;
+		# XXX Remvoe this to activate the magic!
+		
+		retrieve_remote_apis();
+		$self->method_lookup($method,$proto,1);
 	}
 
 	return $meth;
-
 }
 
 sub run {
 	my $self = shift;
 	my $req = shift;
 
-	if ( !ref($req) || !UNIVERSAL::isa($req, 'OpenSRF::AppRequest') ) {
+	my $resp;
+
+	if ( !UNIVERSAL::isa($req, 'OpenSRF::AppRequest') ) {
 		$log->debug("Creating a SubRequest object", DEBUG);
 		unshift @_, $req;
 		$req = OpenSRF::AppSubrequest->new;
@@ -263,19 +323,37 @@ sub run {
 		$log->debug("This is a top level request", DEBUG);
 	}
 
-	my $resp = $self->{code}->($self, $req, @_);
+	if (!$self->{remote}) {
+		my $code ||= \&{$app . '::' . $self->{method}};
+		$resp = $code->($self, $req, @_);
 
-	if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
-		$req->respond($resp) if ($resp);
-		for my $r ( $req->responses ) {
-			$log->debug("A SubRequest object is responding with $r", DEBUG);
+		if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
+			$req->respond($resp) if (defined $resp);
+			return $req->responses;
+		} else {
+			$log->debug("A top level Request object is responding $resp", DEBUG);
+			return $resp;
+		}
+	} else {
+		my $session = AppSession->create($self->{server_class});
+		try {
+			$session->connect;
+		} catch ERROR with {
+			my $e = shift;
+			$log->debug( "Remote subrequest returned an error:\n". $e );
+			return undef;
+		} finally {
+			return undef unless ($session->state == $session->CONNECTED);
+		}
+
+		my $remote_req = $session->request( $self->{api_name}, @_ );
+		while (my $remote_resp = $remote_req->recv) {
+			$req->respond( $remote_resp );
 		}
 		return $req->responses;
-	} else {
-		$log->debug("A top level Request object is responding $resp", DEBUG);
 	}
-
-	return $resp;
+	# huh? how'd we get here...
+	return undef;
 }
 
 sub introspect {
