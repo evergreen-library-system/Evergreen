@@ -16,8 +16,6 @@ use OpenSRF::DomainObject::oilsMessage;
 
 my $msg = OpenSRF::DomainObject::oilsMessage->new( type => 'CONNECT' );
 
-$msg->userAuth( $userAuth_element );
-
 $msg->payload( $domain_object );
 
 =head1 ABSTRACT
@@ -134,31 +132,6 @@ sub payload {
 	return OpenSRF::DOM::upcast($payload)->upcast if ($payload);
 }
 
-=head2 OpenSRF::DomainObject::oilsMessage->userAuth( [$new_userAuth_element] )
-
-=over 4
-
-Sets or gets the userAuth element for this message.  This is used internally by the
-session object.
-
-=back
-
-=cut
-
-sub userAuth {
-	my $self = shift;
-	my $new_ua = shift;
-
-	my ($ua) = $self->getChildrenByTagName('oils:userAuth');
-	if ($new_ua) {
-		$ua = $self->removeChild($ua) if ($ua);
-		$self->appendChild($new_ua);
-		return $new_ua unless ($ua);
-	}
-
-	return $ua;
-}
-
 =head2 OpenSRF::DomainObject::oilsMessage->handler( $session_id )
 
 =over 4
@@ -242,27 +215,6 @@ sub do_server {
 
 		}
 		
-		#unless ($self->userAuth ) {
-		#	$log->debug( "No Authentication information was provided with the initial packet", ERROR );
-		#	my $res = OpenSRF::DomainObject::oilsConnectException->new(
-		#			status => "No Authentication info was provided with initial message" );
-		#	$session->status($res);
-		#	$session->kill_me;
-		#	return 0;
-		#}
-
-		#unless( $self->userAuth->authenticate( $session ) ) {
-		#	my $res = OpenSRF::DomainObject::oilsAuthException->new(
-		#		status => "Authentication Failed for " . $self->userAuth->getAttribute('username') );
-		#	$session->status($res) if $res;
-		#	$session->kill_me;
-		#	return 0;
-		#}
-
-		#$session->client_auth( $self->userAuth );
-
-		$log->debug("We're a server and the user is authenticated",DEBUG);
-
 		my $res = OpenSRF::DomainObject::oilsConnectStatus->new;
 		$session->status($res);
 		$session->state( $session->CONNECTED );
