@@ -48,7 +48,8 @@ sub _init {
 	$fieldmap = 
 	{
 		'Fieldmapper::actor::user'			=> { hint => 'au'   },
-		'Fieldmapper::actor::org_unit'			=> { hint => 'aou'  },
+		'Fieldmapper::actor::org_unit'			=> { hint 		=> 'aou',
+								     proto_fields	=> { children => 1 } },
 		'Fieldmapper::actor::org_unit_type'		=> { hint 		=> 'aout',
 								     proto_fields	=> { children => 1 } },
 		
