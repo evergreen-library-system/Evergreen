@@ -66,8 +66,8 @@ CREATE TABLE asset.call_number (
 	editor		BIGINT				NOT NULL,
 	edit_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	record		bigint,
-	label		text,
-	owning_lib	text
+	label		TEXT,
+	owning_lib	INT
 );
 
 CREATE TABLE asset.call_number_note (
