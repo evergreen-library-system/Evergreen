@@ -91,11 +91,12 @@ sub JSON2perl {
 
 	s/:/ => /sog;
 
-	if (0) {
+	if (1) {
 		# handle class blessings
 		s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
 		s/\/\*--\s*E\w*?\s+(\S+)\s*--\*\// => _json_hint_to_class("$1")) /sog;
 	} else {
+		#why don't I work?!?!
 		my $string = $_;
 		for my $hint (values %{$_class_map{hints}}) {
 			$string =~ s/\/\*--\s*S\w*?\s+$$hint{hint_re}\s*--\*\// bless(/sog;
