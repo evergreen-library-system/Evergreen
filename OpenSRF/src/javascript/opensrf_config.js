@@ -13,7 +13,7 @@ function get_config_file() {
 		getService( Components.interfaces.nsIProperties );
 
 	chromeDir = dirService.get( "AChrom",  Components.interfaces.nsIFile );
-	chromeDir.append("evergreen");
+	chromeDir.append(myPackageDir);
 	chromeDir.append("content");
 	chromeDir.append("conf");
 	chromeDir.append("client_config.xml");
@@ -178,7 +178,7 @@ Logger.get_log_file = function( log_name ) {
 		getService( Components.interfaces.nsIProperties );
 
 	logFile = dirService.get( "AChrom",  Components.interfaces.nsIFile );
-	logFile.append("evergreen");
+	logFile.append(myPackageDir);
 	logFile.append("content");
 	logFile.append("log");
 	logFile.append( log_name );
