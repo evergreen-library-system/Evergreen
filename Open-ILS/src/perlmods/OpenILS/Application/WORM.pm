@@ -109,8 +109,6 @@ sub wormize {
 	throw OpenSRF::EX::PANIC ("Transaction creation failed! -- ".$resp->content)
 		unless ($resp->content);
 
-	$xact_req->finish();
-
 
 	# step -1: grab the doc from storage
 	my $marc_req = $st_ses->request('open-ils.storage.biblio.record_marc.retrieve', $docid);
@@ -178,6 +176,7 @@ sub wormize {
 	}
 
 	$commit_req->finish();
+	$xact_req->finish();
 
 	$st_ses->disconnect();
 	$st_ses->finish();
