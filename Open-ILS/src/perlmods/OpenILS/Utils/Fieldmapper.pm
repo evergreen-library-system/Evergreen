@@ -8,6 +8,8 @@ my $log = 'OpenSRF::Utils::Logger';
 
 use OpenILS::Application::Storage::CDBI;
 use OpenILS::Application::Storage::CDBI::actor;
+use OpenILS::Application::Storage::CDBI::action;
+use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
@@ -47,19 +49,42 @@ sub _init {
 
 	$fieldmap = 
 	{
-		'Fieldmapper::actor::user'			=> { hint => 'au'   },
+		'Fieldmapper::action::survey'			=> { hint		=> 'asv',
+								     proto_fields	=> { questions	=> 1,
+								     			     responses	=> 1 } },
+		'Fieldmapper::action::survey_question'		=> { hint		=> 'asvq',
+								     proto_fields	=> { answers	=> 1,
+								     			     responses	=> 1 } },
+		'Fieldmapper::action::survey_answer'		=> { hint		=> 'asva',
+								     proto_fields	=> { responses => 1 } },
+		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
+		'Fieldmapper::actor::user'			=> { hint => 'au'    },
+		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'asc',
+								     proto_fields	=> { entries => 1 } },
+		'Fieldmapper::actor::stat_cat_entry'		=> { hint => 'asce'    },
+		'Fieldmapper::actor::stat_cat_entry_user_map'	=> { hint => 'ascecm'  },
 		'Fieldmapper::actor::org_unit'			=> { hint 		=> 'aou',
 								     proto_fields	=> { children => 1 } },
 		'Fieldmapper::actor::org_unit_type'		=> { hint 		=> 'aout',
 								     proto_fields	=> { children => 1 } },
 		
 		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
-								     proto_fields	=> { children => 1 } },
+								     virtual		=> 1,
+								     proto_fields	=> { children		=> 1,
+								     			     id			=> 1,
+								     			     owner_doc		=> 1,
+								     			     intra_doc_id	=> 1,
+								     			     parent_node	=> 1,
+								     			     node_type		=> 1,
+								     			     namepsace_uri	=> 1,
+								     			     name		=> 1,
+								     			     value		=> 1,
+											   } },
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
 								     proto_fields	=> { call_numbers => 1 } },
-		'Fieldmapper::biblio::record_mods'		=> { hint => 'brm'  },
 		'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  },
 
+		'Fieldmapper::config::identification_type'	=> { hint => 'cit'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
 		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
 
@@ -69,12 +94,18 @@ sub _init {
 		'Fieldmapper::metabib::subject_field_entry'	=> { hint => 'msfe' },
 		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mkfe' },
 		'Fieldmapper::metabib::full_rec'		=> { hint => 'mfr'  },
+		'Fieldmapper::metabib::record_descriptor'	=> { hint => 'mrd'  },
 
-		'Fieldmapper::asset::copy'			=> { hint => 'acp'  },
-		'Fieldmapper::asset::copy_note'			=> { hint => 'acpn' },
+		'Fieldmapper::asset::copy'			=> { hint 		=> 'acp',
+								     proto_fields	=> { stat_cat_entries => 1 } },
+		'Fieldmapper::asset::stat_cat'			=> { hint 		=> 'asc',
+								     proto_fields	=> { entries => 1 } },
+		'Fieldmapper::asset::stat_cat_entry'		=> { hint => 'asce'    },
+		'Fieldmapper::asset::stat_cat_entry_copy_map'	=> { hint => 'ascecm'  },
+		'Fieldmapper::asset::copy_note'			=> { hint => 'acpn'    },
 		'Fieldmapper::asset::call_number'		=> { hint		=> 'acn',
 								     proto_fields	=> { copies => 1 } },
-		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn' },
+		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn'    },
 	};
 
 	#-------------------------------------------------------------------------------
@@ -103,9 +134,11 @@ sub _init {
 			}
 		}
 
-		for my $col ( $cdbi->columns('All') ) {
-			$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
-			$pos++;
+		unless ( $$fieldmap{$pkg}{virtual} ) {
+			for my $col ( $cdbi->columns('All') ) {
+				$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
+				$pos++;
+			}
 		}
 
 		JSON->register_class_hint(
@@ -116,7 +149,7 @@ sub _init {
 
 	}
 
-	print Fieldmapper->javascript() if ($ENV{GEN_JS});
+	#print Fieldmapper->javascript() if ($ENV{GEN_JS});
 }
 
 sub new {
