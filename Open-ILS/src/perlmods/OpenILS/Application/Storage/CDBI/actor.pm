@@ -13,7 +13,7 @@ __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Others => qw/id usrid usrname email prefix first_given_name
 				second_given_name family_name suffix address
 				home_ou gender dob active master_account
-				super_user usrgroup passwd/ );
+				super_user usrgroup passwd last_xact_id/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_unit_type;
@@ -26,6 +26,11 @@ __PACKAGE__->columns( Others => qw/name depth parent can_have_users/);
 #-------------------------------------------------------------------------------
 package actor::org_unit;
 use base qw/actor/;
+
+__PACKAGE__->table( 'actor_org_unit' );
+__PACKAGE__->columns( Primary => qw/id/);
+__PACKAGE__->columns( Others => qw/parent_ou ou_type address shortname name/);
+
 #-------------------------------------------------------------------------------
 package actor::user_access_entry;
 use base qw/actor/;

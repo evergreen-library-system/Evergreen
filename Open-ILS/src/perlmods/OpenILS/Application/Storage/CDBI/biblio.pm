@@ -12,7 +12,7 @@ use base qw/biblio/;
 biblio::record_entry->table( 'biblio_record_entry' );
 biblio::record_entry->columns( All => qw/id tcn_source tcn_value creator
 					 editor create_date edit_date
-					 source active deleted/ );
+					 source active deleted last_xact_id/ );
 
 #-------------------------------------------------------------------------------
 package biblio::record_node::subnode;
@@ -32,7 +32,7 @@ use base qw/biblio/;
 biblio::record_node->table( 'biblio_record_data' );
 biblio::record_node->columns( All => qw/id owner_doc intra_doc_id
 					parent_node node_type
-					namespace_uri name value/ );
+					namespace_uri name value last_xact_id/ );
 
 #biblio::record_node->has_a(
 #	parent_node	=> 'biblio::record_node::subnode',
@@ -41,6 +41,14 @@ biblio::record_node->columns( All => qw/id owner_doc intra_doc_id
 #			},
 #);
 
+
+#-------------------------------------------------------------------------------
+package biblio::record_mods;
+use base qw/biblio/;
+
+biblio::record_mods->table( 'biblio_record_mods' );
+biblio::record_mods->columns( All => qw/id mods/ );
+biblio::record_note->columns( Stringify => qw/mods/ );
 
 #-------------------------------------------------------------------------------
 package biblio::record_note;

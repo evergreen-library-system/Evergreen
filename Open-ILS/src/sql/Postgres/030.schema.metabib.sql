@@ -71,39 +71,39 @@ CREATE TRIGGER metabib_full_rec_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
 
 CREATE TABLE metabib.title_field_entry_source_map (
-	id		BIGSERIAL	PRIMARY KEY,
-	metarecord	BIGINT		NOT NULL,
-	field_entry	BIGINT		NOT NULL UNIQUE,
+	field_entry	BIGINT		NOT NULL,
 	source_record	BIGINT		NOT NULL
 );
-CREATE INDEX metabib_title_field_entry_source_map_metarecord_idx ON metabib.title_field_entry_source_map (metarecord);
 CREATE INDEX metabib_title_field_entry_source_map_source_record_idx ON metabib.title_field_entry_source_map (source_record);
+CREATE INDEX metabib_title_field_entry_source_map_field_entry_idx ON metabib.title_field_entry_source_map (field_entry);
 
 CREATE TABLE metabib.author_field_entry_source_map (
-	id		BIGSERIAL	PRIMARY KEY,
-	metarecord	BIGINT		NOT NULL,
-	field_entry	BIGINT		NOT NULL UNIQUE,
+	field_entry	BIGINT		NOT NULL,
 	source_record	BIGINT		NOT NULL
 );
-CREATE INDEX metabib_author_field_entry_source_map_metarecord_idx ON metabib.author_field_entry_source_map (metarecord);
-CREATE INDEX metabib_author_field_entry_source_map_source_record_idx ON metabib.author_field_entry_source_map (metarecord);
+CREATE INDEX metabib_author_field_entry_source_map_source_record_idx ON metabib.author_field_entry_source_map (source_record);
+CREATE INDEX metabib_author_field_entry_source_map_field_entry_idx ON metabib.author_field_entry_source_map (field_entry);
 
 CREATE TABLE metabib.subject_field_entry_source_map (
-	id		BIGSERIAL	PRIMARY KEY,
-	metarecord	BIGINT		NOT NULL,
-	field_entry	BIGINT		NOT NULL UNIQUE,
+	field_entry	BIGINT		NOT NULL,
 	source_record	BIGINT		NOT NULL
 );
-CREATE INDEX metabib_subject_field_entry_source_map_metarecord_idx ON metabib.subject_field_entry_source_map (metarecord);
-CREATE INDEX metabib_subject_field_entry_source_map_source_record_idx ON metabib.subject_field_entry_source_map (metarecord);
+CREATE INDEX metabib_subject_field_entry_source_map_source_record_idx ON metabib.subject_field_entry_source_map (source_record);
+CREATE INDEX metabib_subject_field_entry_source_map_field_entry_idx ON metabib.subject_field_entry_source_map (field_entry);
 
 CREATE TABLE metabib.keyword_field_entry_source_map (
-	id		BIGSERIAL	PRIMARY KEY,
-	metarecord	BIGINT		NOT NULL,
-	field_entry	BIGINT		NOT NULL UNIQUE,
+	field_entry	BIGINT		NOT NULL,
 	source_record	BIGINT		NOT NULL
 );
-CREATE INDEX metabib_keyword_field_entry_source_map_metarecord_idx ON metabib.keyword_field_entry_source_map (metarecord);
 CREATE INDEX metabib_keyword_field_entry_source_map_source_record_idx ON metabib.keyword_field_entry_source_map (source_record);
+CREATE INDEX metabib_keyword_field_entry_source_map_field_entry_idx ON metabib.keyword_field_entry_source_map (field_entry);
+
+CREATE TABLE metabib.metarecord_source_map (
+	metarecord	BIGINT		NOT NULL,
+	source_record	BIGINT		NOT NULL
+);
+CREATE INDEX metabib_metarecord_source_map_metarecord_idx ON metabib.metarecord_source_map (metarecord);
+CREATE INDEX metabib_metarecord_source_map_source_record_idx ON metabib.metarecord_source_map (source_record);
+
 
 COMMIT;

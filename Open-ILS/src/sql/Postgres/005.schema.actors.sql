@@ -25,6 +25,8 @@ CREATE TABLE actor.usr (
 	last_xact_id		TEXT	NOT NULL DEFAULT 'none'
 
 );
+CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
+CREATE INDEX actor_usr_address_idx ON actor.usr (address);
 
 CREATE FUNCTION actor.crypt_pw_insert () RETURNS TRIGGER AS $$
 	BEGIN
@@ -50,6 +52,7 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	BEFORE INSERT ON actor.usr FOR EACH ROW
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
+-- Just so that there is a user...
 INSERT INTO actor.usr ( usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
 	VALUES ( 'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
 
@@ -61,19 +64,38 @@ CREATE TABLE actor.org_unit_type (
 	can_have_users	BOOL	NOT NULL DEFAULT TRUE
 );
 
+-- The PINES levels
 INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Consortium', 0, NULL, FALSE );
 INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'System', 1, 1, FALSE );
 INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Branch', 2, 2, TRUE );
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Sub-lib', 3, 3, TRUE );
+INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users) VALUES ( 'Sub-lib', 5, 3, TRUE );
 
 CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
 	parent_ou	INT,
 	ou_type		INT	NOT NULL,
-	address		INT	NOT NULL,
-	name1		TEXT	NOT NULL,
-	name2		TEXT
+	address		INT,
+	shortname	TEXT	NOT NULL,
+	name		TEXT
 );
+CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
+CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);
+CREATE INDEX actor_org_unit_address_idx ON actor.org_unit (address);
+
+-- Some PINES test libraries
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'PINES', 'Georgia PINES Consortium');
+
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 2, 'ARL', 'Athens Regional Library System');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-ATH', 'Athens-Clark County Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'ARL-BOG', 'Bogart Branch Library');
+
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 2, 'MGRL', 'Middle Georgia Regional Library System');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-RC', 'Rocky Creek Branch Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'MGRL-WA', 'Washington Memorial Library');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 4, 'MGRL-MM', 'Bookmobile');
+
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 2, 'HOU', 'Houston County Library System');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (curval('actor.org_unit_id_seq'::TEXT), 3, 'HOU-WR', 'Nola Brantley Memorial Library');
 
 CREATE TABLE actor.usr_access_entry (
 	id		BIGSERIAL	PRIMARY KEY,

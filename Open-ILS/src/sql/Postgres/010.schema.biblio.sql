@@ -19,10 +19,16 @@ CREATE TABLE biblio.record_entry (
 	active		BOOL		NOT NULL DEFAULT TRUE,
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
 	source		INT,
-	mods		TEXT,
-	last_xact_id	TEXT		NOT NULL DEFAULT 'none',
-	CONSTRAINT unique_tcn UNIQUE (tcn_source,tcn_value)
+	last_xact_id	TEXT		NOT NULL DEFAULT 'none'
 );
+CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_note ( creator );
+CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_note ( editor );
+CREATE UNIQUE INDEX biblio_record_unique_tcn ON (tcn_source,tcn_value) WHERE deleted IS FALSE;
+
+CREATE TABLE biblio.record_mods (
+	id	BIGINT	PRIMARY KEY,
+	mods	TEXT	NOT NULL
+)
 
 CREATE TABLE biblio.record_data (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -46,5 +52,8 @@ CREATE TABLE biblio.record_note (
 	create_date	TIMESTAMP	NOT NULL DEFAULT now(),
 	edit_date	TIMESTAMP	NOT NULL DEFAULT now()
 );
+CREATE INDEX biblio_record_note_record_idx ON biblio.record_note ( record );
+CREATE INDEX biblio_record_note_creator_idx ON biblio.record_note ( creator );
+CREATE INDEX biblio_record_note_editor_idx ON biblio.record_note ( editor );
 
 COMMIT;

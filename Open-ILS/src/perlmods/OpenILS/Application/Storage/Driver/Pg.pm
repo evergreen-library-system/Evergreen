@@ -97,11 +97,13 @@
 		$master_db = DBI->connect("dbi:Pg:host=$$master{host};dbname=$$master{db}",$$master{user},$$master{pw}, \%attrs);
 		$master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
 
-		$log->debug("Connected to MASTER db at $$master{host}", INTERNAL);
+		$log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
 		
 		for my $db (@$_db_params) {
 			push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
 			$slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});
+
+			$log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
 		}
 
 		$log->debug("All is well on the western front", INTERNAL);
@@ -118,17 +120,17 @@
 		return __PACKAGE__->db_Main->quote(@_)
 	}
 
-	sub tsearch2_trigger {
-		my $self = shift;
-		return unless ($self->value);
-		$self->index_vector(
-			$self->db_Slaves->selectrow_array(
-				"SELECT to_tsvector('default',?);",
-				{},
-				$self->value
-			)
-		);
-	}
+#	sub tsearch2_trigger {
+#		my $self = shift;
+#		return unless ($self->value);
+#		$self->index_vector(
+#			$self->db_Slaves->selectrow_array(
+#				"SELECT to_tsvector('default',?);",
+#				{},
+#				$self->value
+#			)
+#		);
+#	}
 
 	my $_xact_session;
 
@@ -355,6 +357,12 @@
 	biblio::record_node->sequence( 'biblio.record_data_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package biblio::record_mods;
+	
+	biblio::record_mods->table( 'biblio.record_mods' );
+	biblio::record_mods->sequence( 'biblio.record_mods_id_seq' );
+
+	#---------------------------------------------------------------------
 	package biblio::record_note;
 	
 	biblio::record_note->table( 'biblio.record_note' );
@@ -371,9 +379,15 @@
 	
 	actor::org_unit_type->table( 'actor.org_unit_type' );
 	actor::org_unit_type->sequence( 'actor.org_unit_type_id_seq' );
-	
+
 	#---------------------------------------------------------------------
+	package actor::org_unit;
 	
+	actor::org_unit_type->table( 'actor.org_unit' );
+	actor::org_unit_type->sequence( 'actor.org_unit_id_seq' );
+
+	#---------------------------------------------------------------------
+
 	#-------------------------------------------------------------------------------
 	package metabib::metarecord;
 
@@ -387,16 +401,13 @@
 
 	metabib::title_field_entry->table( 'metabib.title_field_entry' );
 	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
-	metabib::title_field_entry->columns( Primary => qw/id/ );
-	metabib::title_field_entry->columns( Essential => qw/id/ );
-	metabib::title_field_entry->columns( Others => qw/field value index_vector/ );
 
-	metabib::title_field_entry->add_trigger(
-		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
-	metabib::title_field_entry->add_trigger(
-		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
+#	metabib::title_field_entry->add_trigger(
+#		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+#	);
+#	metabib::title_field_entry->add_trigger(
+#		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+#	);
 
 	#-------------------------------------------------------------------------------
 
@@ -406,13 +417,6 @@
 	metabib::author_field_entry->table( 'metabib.author_field_entry' );
 	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
 
-	metabib::author_field_entry->add_trigger(
-		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
-	metabib::author_field_entry->add_trigger(
-		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
-
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
@@ -420,13 +424,6 @@
 
 	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
 	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
-
-	metabib::subject_field_entry->add_trigger(
-		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
-	metabib::subject_field_entry->add_trigger(
-		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
 
 	#-------------------------------------------------------------------------------
 
@@ -436,20 +433,12 @@
 	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
 	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
 
-	metabib::keyword_field_entry->add_trigger(
-		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
-	metabib::keyword_field_entry->add_trigger(
-		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
-	);
-
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
 	package metabib::title_field_entry_source_map;
 
 	metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map' );
-	metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map_id_seq' );
 
 	#-------------------------------------------------------------------------------
 
@@ -457,7 +446,6 @@
 	package metabib::author_field_entry_source_map;
 
 	metabib::author_field_entry_source_map->table( 'metabib.author_field_entry_source_map' );
-	metabib::author_field_entry_source_map->sequence( 'metabib.author_field_entry_source_map_id_seq' );
 
 	#-------------------------------------------------------------------------------
 
@@ -465,7 +453,28 @@
 	package metabib::subject_field_entry_source_map;
 
 	metabib::subject_field_entry_source_map->table( 'metabib.subject_field_entry_source_map' );
-	metabib::subject_field_entry_source_map->sequence( 'metabib.subject_field_entry_source_map_id_seq' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::keyword_field_entry_source_map;
+
+	metabib::keyword_field_entry_source_map->table( 'metabib.keyword_field_entry_source_map' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::metarecord_source_map;
+
+	metabib::metarecord_source_map->table( 'metabib.full_rec' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	package metabib::full_rec;
+
+	metabib::full_rec->table( 'metabib.full_rec' );
+	metabib::full_rec->sequence( 'metabib.full_rec_id_seq' );
 
 	#-------------------------------------------------------------------------------
 }
