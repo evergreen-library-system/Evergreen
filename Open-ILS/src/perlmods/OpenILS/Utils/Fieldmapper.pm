@@ -110,7 +110,7 @@ sub AUTOLOAD {
 
 	if ($field =~ /^clear_/o) {
 		{	no strict 'subs';
-			*{$obj->class_name."::clear_$field"} = sub {
+			*{$obj->class_name."::$field"} = sub {
 				my $self = shift;
 				$self->[$pos] = undef;
 				return 1;
