@@ -25,33 +25,27 @@ sub DESTROY {}
 my %caches;
 
 
+# return a named cache if it exists
 sub current { 
-
 	my ( $class, $c_type )  = @_;
 	return undef unless $c_type;
-
 	return $caches{$c_type} if exists $caches{$c_type};
 	return $caches{$c_type} = $class->new( $c_type );
-
 }
 
 
+# create a new named memcache object.
 sub new {
 
-	my( $class, $c_type ) = @_;
-	return undef unless $c_type;
+	my( $class, $cache_type, $servers ) = @_;
+	return undef unless $cache_type;
 
-	return $caches{$c_type} if exists $caches{$c_type};
+	return $caches{$cache_type} if exists $caches{$cache_type};
 
 	$class = ref( $class ) || $class;
-
-	my $config = OpenSRF::Utils::Config->current;
-	my $cache_servers = $config->mem_cache->$c_type;
-
-	my $instance = Cache::Memcached->new( { servers => $cache_servers } ); 
-
+	my $instance = Cache::Memcached->new( { servers => $servers } ); 
+	$caches{$cache_type} = $instance;
 	return bless( $instance, $class );
-
 }
 
 
