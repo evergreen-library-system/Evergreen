@@ -48,7 +48,7 @@ sub child_init {
 		$conf->config_value( apps => storage => app_settings => databases => 'database')
 	);
 	
-	return 1 if ($_db_driver->db_Main());
+	return 1 if (OpenILS::Application::Storage::CDBI->db_Main());
 	return 0;
 }
 
