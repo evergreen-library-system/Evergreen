@@ -39,7 +39,7 @@ function js2JSON(arg) {
 
 			if(arg) {
 
-				if (arg._isfieldmapper) {
+				if (arg._isfieldmapper) { /* magi-c-ast for fieldmapper objects */
 					return "/*--S acp*/" + js2JSON(arg.array) + "/*--E acp*/";
 
 				} else {
@@ -69,16 +69,10 @@ function js2JSON(arg) {
 								o += js2JSON(i) + ':' + v;
 							}
 						}
-						var obj_start = '{';
-						var obj_end = '}';
-						try {
-							if ( arg.class_name() ) {
-								obj_start = '/*--S ' + arg.class_name() + '--*/{';
-								obj_end   = '}/*--E ' + arg.class_name() + '--*/';
-							}
-						} catch( E ) {}
-						o = obj_start + o + obj_end;
+
+						o = '{' + o + '}';
 						return o;
+
 					} else {
 						return;
 					}
