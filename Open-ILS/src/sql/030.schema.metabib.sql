@@ -1,5 +1,6 @@
-BEGIN;
 DROP SCHEMA metabib CASCADE;
+
+BEGIN;
 CREATE SCHEMA metabib;
 
 CREATE TABLE metabib.metarecord (
