@@ -1,7 +1,8 @@
 package OpenSRF::Transport::Listener;
 use base 'OpenSRF';
 use OpenSRF::Utils::Logger qw(:level);
-
+use OpenSRF::Transport::SlimJabber::Inbound;
+use base 'OpenSRF::Transport::SlimJabber::Inbound';
 
 =head1 Description
 
@@ -29,6 +30,7 @@ superclass and it will be pushed onto @ISA.
 
 sub set_listener {
 	my( $class, $listener ) = @_;
+	OpenSRF::Utils::Logger->transport("Loading Listener $listener", INFO );
 	if( $listener ) {
 		eval "use $listener;";
 		if( $@ ) {

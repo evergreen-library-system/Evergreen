@@ -1,9 +1,10 @@
 package OpenSRF::Transport::SlimJabber::Inbound;
 use strict;use warnings;
 use base qw/OpenSRF::Transport::SlimJabber::Client/;
-use OpenSRF::EX;
-use OpenSRF::Utils::Config; 
+use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:level);
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Config;
 
 my $logger = "OpenSRF::Utils::Logger";
 
@@ -30,32 +31,45 @@ This service should be loaded at system startup.
 		my( $class, $app ) = @_;
 		$class = ref( $class ) || $class;
 		if( ! $instance ) {
-			my $app_state = $app . "_inbound";
-			my $config = OpenSRF::Utils::Config->current;
 
-			if( ! $config ) {
-				throw OpenSRF::EX::Jabber( "No suitable config found" );
+			my $client = OpenSRF::Utils::SettingsClient->new();
+
+			my $transport_info = $client->config_value(
+					"apps", $app, "transport_hosts", "transport_host" );
+
+			if( !ref($transport_info) eq "ARRAY" ) {
+				$transport_info = [$transport_info];
 			}
 
-			my $username	= $config->transport->users->$app;
-			my $password	= $config->transport->auth->password;
+
+			# XXX for now, we just try the first host...
+
+			my $username = $transport_info->[0]->{username};
+			my $password	= $transport_info->[0]->{password};
 			my $resource	= 'system';
+			my $host			= $transport_info->[0]->{host};
+			my $port			= $transport_info->[0]->{port};
 
-			if (defined $config->system->router_target) {
-				$resource .= '_' . $config->env->hostname . "_$$";
+			if (defined $client->config_value("router_targets")) {
+				my $h = OpenSRF::Utils::Config->current->env->hostname;
+				$resource .= "_$h" . "_$$";
 			}
+
+			OpenSRF::Utils::Logger->transport("Inbound as $username, $password, $resource, $host, $port\n", INTERNAL );
 
 			my $self = __PACKAGE__->SUPER::new( 
 					username		=> $username,
 					resource		=> $resource,
 					password		=> $password,
+					host			=> $host,
+					port			=> $port,
 					);
 
 			$self->{app} = $app;
 					
-					
-			my $f = $config->dirs->sock_dir;
-			$unix_sock = join( "/", $f, $config->unix_sock->$app );
+			my $f = $client->config_value("dirs", "sock");
+			$unix_sock = join( "/", $f, 
+					$client->config_value("apps", $app, "unix_config", "unix_sock" ));
 			bless( $self, $class );
 			$instance = $self;
 		}
@@ -67,15 +81,36 @@ This service should be loaded at system startup.
 sub listen {
 	my $self = shift;
 	
-	my $config = OpenSRF::Utils::Config->current;
-	my $routers = $config->system->router_target;
-	if (defined $routers) {
-		for my $router (@$routers) {
-			$self->send( to => $router, 
-					body => "registering", router_command => "register" , router_class => $self->{app} );
+	my $client = OpenSRF::Utils::SettingsClient->new();
+	my $routers;
+	try {
+
+		$routers = $client->config_value("router_targets","router_target");
+		$logger->transport( $self->{app} . " connecting to router $routers", INFO ); 
+
+		if (defined $routers) {
+			if( !ref($routers) || !(ref($routers) eq "ARRAY") ) {
+				$routers = [$routers];
+			}
+
+
+			for my $router (@$routers) {
+				$logger->transport( $self->{app} . " connecting to router $router", INFO ); 
+				$self->send( to => $router, 
+						body => "registering", router_command => "register" , router_class => $self->{app} );
+			}
+			$logger->transport( $self->{app} . " :routers connected", INFO ); 
+
 		}
-	}
+	} catch OpenSRF::EX::Config with {
+		$logger->transport( $self->{app} . ": No routers defined" , WARN ); 
+		# no routers defined
+	};
+
+
+	
 			
+	$logger->transport( $self->{app} . " going into listen loop", INFO );
 	while(1) {
 		my $sock = $self->unix_sock();
 		my $socket = IO::Socket::UNIX->new( Peer => $sock  );

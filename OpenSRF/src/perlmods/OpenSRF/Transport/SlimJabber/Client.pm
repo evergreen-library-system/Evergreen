@@ -1,7 +1,6 @@
 package OpenSRF::Transport::SlimJabber::Client;
 use strict; use warnings;
 use OpenSRF::EX;
-#use Net::Jabber qw( Client );
 use base qw( OpenSRF );
 use OpenSRF::Utils::Logger qw(:level);
 use Time::HiRes qw(ualarm);
@@ -56,20 +55,11 @@ sub new {
 
 	$class = ref( $class ) || $class;
 
-	my $conf = OpenSRF::Utils::Config->current;
-
-	my $host;
-
-	my $port			= $conf->transport->server->port;
+	my $port			= $params{'port'}			|| return undef;
 	my $username	= $params{'username'}	|| return undef;
 	my $resource	= $params{'resource'}	|| return undef;
 	my $password	= $params{'password'}	|| return undef;
-
-	if( $params{host} ) {
-		$host		= $params{host};
-	} else { 
-		$host	= $conf->transport->server->system_primary;
-	}
+	my $host			= $params{'host'}			|| return undef;
 
 	my $jid = "$username\@$host\/$resource";
 
@@ -407,7 +397,13 @@ sub send {
 			"JabberClient Sending message to $to with thread $thread and body: \n$body", INTERNAL );
 
 	my $soc = $self->{_socket};
+	unless( $soc and $soc->connected ) {
+		throw OpenSRF::EX::Jabber ("No longer connected to jabber server");
+	}
 	print $soc $msg->toString;
+
+	$logger->transport( 
+			"JabberClient Sent message to $to with thread $thread and body: \n$body", INTERNAL );
 }
 
 
@@ -452,10 +448,11 @@ sub initialize {
 	# --- 5 tries to connect to the jabber server
 	my $socket;
 	for(1..5) {
-		$logger->transport( "$jid: Attempting to connect to server... (Try # $_)", WARN );
+		$logger->transport( "$jid: Attempting to connect to server...$host:$port (Try # $_)", WARN );
 		$socket = IO::Socket::INET->new( PeerHost => $host,
 						 PeerPort => $port,
 						 Proto    => 'tcp' );
+		$logger->transport( "$jid: $_ connect attempt to $host:$port", WARN );
 		last if ( $socket and $socket->connected );
 		sleep 3;
 	}

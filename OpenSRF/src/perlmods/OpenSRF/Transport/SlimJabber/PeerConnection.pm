@@ -35,35 +35,53 @@ sub retrieve {
 
 
 
+# !! In here we use the bootstrap config ....
 sub new {
 	my( $class, $app ) = @_;
 	my $config = OpenSRF::Utils::Config->current;
 
 	if( ! $config ) {
-		throw OpenSRF::EX::Config( "No suitable config found" );
+		throw OpenSRF::EX::Config( "No suitable config found for PeerConnection" );
 	}
 
-	my $app_stat	= $app . "_peer";
-	my $username	= $config->transport->users->$app;
-	my $password	= $config->transport->auth->password;
-	my $resource	= $config->env->hostname . "_$$";
-	my $server;
+	my $trans_list = $config->bootstrap->transport;
+	unless( $trans_list && $trans_list->[0] ) {
+		throw OpenSRF::EX::Config ("Peer Connection needs transport info");
+	}
 
-	my $host;
-	if( $app eq "client" ) {
-		$host = $config->transport->server->client_primary;
+	# For now we just use the first in the list...
+	my $trans		= $trans_list->[0];
+
+	my $username;
+	if( $app eq "system_client" ) {
+		$username	= $config->$trans->username;
 	} else {
-		$host = "";
+		$username = $app;
 	}
+
+
+
+	my $password	= $config->$trans->password;
+	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->password, INTERNAL );
+	my $h = $config->env->hostname;
+	my $resource	= "$h" . "_$$";
+	my $server		= $config->$trans->server;
+	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->server, INTERNAL );
+	my $port			= $config->$trans->port;
+	OpenSRF::Utils::Logger->transport( "Building Peer with " .$config->$trans->port, INTERNAL );
+
 
 	OpenSRF::EX::Config->throw( "JPeer could not load all necesarry values from config" )
-		unless ( $username and $password and $resource );
+		unless ( $username and $password and $resource and $server and $port );
+
+	OpenSRF::Utils::Logger->transport( "Built Peer with", INTERNAL );
 
 	my $self = __PACKAGE__->SUPER::new( 
 		username		=> $username,
 		resource		=> $resource,
 		password		=> $password,
-		host			=> $host,
+		host			=> $server,
+		port			=> $port,
 		);	
 					
 	bless( $self, $class );
