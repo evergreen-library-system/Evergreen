@@ -1,6 +1,7 @@
 #include "opensrf/generic_utils.h"
 #include <stdio.h>
 #include "pthread.h"
+#include <sys/timeb.h>
 
 int _init_log();
 
@@ -11,11 +12,18 @@ int balance = 0;
 #define LOG_INFO 3
 #define LOG_DEBUG 4
 
-void get_timestamp( char buf_25chars[]) {
-	time_t epoch = time(NULL);	
-	char* localtime = strdup( ctime( &epoch ) );
-	strcpy( buf_25chars, localtime );
-	buf_25chars[ strlen(localtime)-1] = '\0'; // remove newline
+void get_timestamp( char buf_36chars[]) {
+
+	struct timeb tb;
+	ftime(&tb);
+	//time_t epoch = time(NULL);	
+	char* localtime = strdup( ctime( &(tb.time) ) );
+	char mil[4];
+	memset(mil,0,4);
+	sprintf(mil," (%d)",tb.millitm);
+	strcpy( buf_36chars, localtime );
+	buf_36chars[ strlen(localtime)-1] = '\0'; // remove newline
+	strcat(buf_36chars,mil);
 	free(localtime);
 }
 
@@ -41,8 +49,8 @@ void log_free() { if( log_file != NULL ) fclose(log_file ); }
 
 void fatal_handler( char* msg, ... ) {
 		
-	char buf[25];
-	memset( buf, 0, 25 );
+	char buf[36];
+	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;
@@ -77,8 +85,8 @@ void fatal_handler( char* msg, ... ) {
 
 void warning_handler( char* msg, ... ) {
 
-	char buf[25];
-	memset( buf, 0, 25 );
+	char buf[36];
+	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;
@@ -112,8 +120,8 @@ void warning_handler( char* msg, ... ) {
 
 void info_handler( char* msg, ... ) {
 
-	char buf[25];
-	memset( buf, 0, 25 );
+	char buf[36];
+	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;
@@ -148,8 +156,8 @@ void info_handler( char* msg, ... ) {
 
 void debug_handler( char* msg, ... ) {
 
-	char buf[25];
-	memset( buf, 0, 25 );
+	char buf[36];
+	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;

@@ -5,13 +5,14 @@ LIB_TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o
 EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport  -lopensrf_stack -ljson
 CC = gcc
 
-all: client sys_client
+all: lib 
+#client sys_client
 
-sys_client: sys_client.c lib 
-	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o sys_client.c -o sys_client
+#sys_client: sys_client.c lib 
+#	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o sys_client.c -o sys_client
 
-client: client.c lib 
-	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o client.c -o client
+#client: client.c lib 
+#	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) *.o client.c -o client
 	
 # ----------------------------------------------------------------
 
