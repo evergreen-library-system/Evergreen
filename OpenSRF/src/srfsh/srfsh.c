@@ -279,6 +279,9 @@ int handle_request( char* words[], int relay ) {
 			buffer = buffer_init(128);
 			buffer_add(buffer, "[");
 			for(i = 3; words[i] != NULL; i++ ) {
+				/* removes trailing semicolon if user accidentally enters it */
+				if( words[i][strlen(words[i])-1] == ';' )
+					words[i][strlen(words[i])-1] = '\0';
 				buffer_add( buffer, words[i] );
 				buffer_add(buffer, " ");
 			}
