@@ -754,6 +754,7 @@ sub threadTrace {
 sub push_queue {
 	my $self = shift;
 	my $resp = shift;
+	if( !$resp ) { return 0; }
 	push @{ $self->{recv_queue} }, $resp;
 	OpenSRF::Utils::Logger->debug( "AppRequest pushed ".$resp->toString(), INTERNAL );
 }

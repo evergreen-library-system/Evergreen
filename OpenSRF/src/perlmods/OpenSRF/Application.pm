@@ -34,6 +34,10 @@ sub application_implementation {
 sub handler {
 	my ($self, $session, $app_msg) = @_;
 
+	if( ! $app_msg ) {
+		return 0;  # error?
+	}
+
 	$log->debug( "In Application::handler()", DEBUG );
 
 	my $app = $self->application_implementation;

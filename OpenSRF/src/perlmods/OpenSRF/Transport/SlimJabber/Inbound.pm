@@ -70,7 +70,7 @@ sub listen {
 	my $config = OpenSRF::Utils::Config->current;
 	my $routers = $config->system->router_target;
 	if (defined $routers) {
-		for my $router (@$routers) P
+		for my $router (@$routers) {
 			$self->send( to => $router, 
 					body => "registering", router_command => "register" , router_class => $self->{app} );
 		}

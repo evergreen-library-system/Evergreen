@@ -60,6 +60,8 @@ sub process_request {
 	my $data; my $d;
 	while( $d = <STDIN> ) { $data .= $d; }
 
+	$0 = "$0*";
+
 
 	if( ! $data or ! defined( $data ) or $data eq "" ) {
 		throw OpenSRF::EX::Socket(
@@ -110,6 +112,9 @@ sub process_request {
 
 	$logger->transport( "Timed out, disconnected, or auth failed", INFO );
 	$app_session->kill_me;
+
+	$0 =~ s/\*//g;
+
 		
 }
 

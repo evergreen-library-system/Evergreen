@@ -132,7 +132,7 @@ sub bootstrap {
 	$server_type ||= "basic";
 
 	if(  $server_type eq "prefork" ) { 
-		$server_type = "Net::Server::PreForkSimple"; 
+		$server_type = "Net::Server::PreFork"; 
 	} else { 
 		$server_type = "Net::Server::Single"; 
 	}
@@ -259,7 +259,7 @@ sub launch_unix {
 		else {
 			my $apname = $app;
 			$apname =~ tr/[a-z]/[A-Z]/;
-			$0 = "Unix Server ($apname)";
+			$0 = "OpenSRF App ($apname)";
 			eval _unixserver( $app );
 			exit;
 		}

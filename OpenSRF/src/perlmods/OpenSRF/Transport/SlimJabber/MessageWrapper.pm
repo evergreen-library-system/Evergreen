@@ -25,7 +25,10 @@ sub new {
 
 sub toString {
 	my $self = shift;
-	return $self->{msg_node}->toString(@_);
+	if( $self->{msg_node} ) {
+		return $self->{msg_node}->toString(@_);
+	}
+	return "";
 }
 
 sub get_body {
