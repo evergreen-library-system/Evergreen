@@ -526,6 +526,7 @@ int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
 
 	debug_handler("Sending XML:\n%s", xml );
 	ret_val = client_send_message( session->transport_handle, t_msg );
+	free(xml);
 	message_free( t_msg );
 
 	return ret_val; 
