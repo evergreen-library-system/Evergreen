@@ -1,5 +1,7 @@
 #include "srfsh.h"
 
+int caught_sigint = 0;
+
 int main( int argc, char* argv[] ) {
 
 
@@ -36,6 +38,7 @@ int main( int argc, char* argv[] ) {
 
 	/* main process loop */
 	char* request;
+	signal(SIGINT,sig_int_handler);
 	while((request=readline(prompt))) {
 
 		if( !strcmp(request, "exit") || !strcmp(request,"quit")) 
@@ -67,6 +70,11 @@ void sig_child_handler( int s ) {
 	child_dead = 1;
 }
 
+void sig_int_handler( int s ) {
+	printf("\n");
+	caught_sigint = 1;
+	signal(SIGINT,sig_int_handler);
+}
 
 int load_history() {
 
@@ -328,7 +336,15 @@ int send_request( char* server,
 	double start = get_timestamp_millis();
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
+	if( caught_sigint ) 
+		caught_sigint = 0;
+
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
+
+	if( caught_sigint ) {
+		caught_sigint = 0;
+		return 1;
+	}
 
 	if(!omsg) 
 		printf("\nReceived no data from server\n");
@@ -374,7 +390,15 @@ int send_request( char* server,
 			buffer_add( resp_buffer, code );
 		}
 
+		if( caught_sigint ) 
+			caught_sigint = 0;
+
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
+
+		if( caught_sigint ) {
+			caught_sigint = 0;
+			return 1;
+		}
 	}
 
 
@@ -640,7 +664,17 @@ int do_math( int count, int style ) {
 
 			ftime(&t1);
 			int req_id = osrf_app_session_make_request( session, params, methods[j], 1 );
+
+			if( caught_sigint ) 
+				caught_sigint = 0;
+
 			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
+
+			if( caught_sigint )  {
+				caught_sigint = 0;
+				return 1;
+			}
+
 			ftime(&t2);
 
 			double start	= ( (int)t1.time	+ ( ((float)t1.millitm) / 1000 ) );
@@ -651,13 +685,10 @@ int do_math( int count, int style ) {
 			if(omsg) {
 	
 				if(omsg->result_content) {
-					//char* jsn = json_object_to_json_string(omsg->result_content);
 					char* jsn = json_object_get_string( omsg->result_content );
-					//if(jsn == answers[j])
 					if(!strcmp(jsn, answers[j]))
 						fprintf(stderr, "+");
 					else
-						//fprintf(stderr, "|");
 						fprintf(stderr, "\n![%s] - should be %s\n", jsn, answers[j] );
 				}
 

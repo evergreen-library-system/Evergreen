@@ -55,6 +55,7 @@ int print_help();
 char* json_printer( json* object );
 char* tabs(int count);
 void sig_child_handler( int s );
+void sig_int_handler( int s );
 
 int load_history();
 int handle_math( char* words[] );
