@@ -63,7 +63,11 @@ sub send_request {
 		else{ $log->debug( "Math received empty value", ERROR ); }
 		$req->finish;
 		$session->finish;
-		throw OpenSRF::EX::ERROR ("Did not receive expected data from MathDB");
+		if( $resp ) {
+			throw OpenSRF::EX::ERROR ("Did not receive expected data from MathDB\n" . $resp);
+		} else {
+			throw OpenSRF::EX::ERROR ("Received no data from MathDB");
+		}
 
 	}
 }
