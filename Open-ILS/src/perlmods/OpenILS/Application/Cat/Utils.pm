@@ -13,7 +13,6 @@ my $xslt_doc	=	$parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 
 
-
 sub new {
 	my($class) = @_;
 	$class = ref($class) || $class;
@@ -27,7 +26,6 @@ sub new {
 sub nodeset2tree {
 	my($class, $nodeset) = @_;
 
-	#	my $x = 0;
 	for my $child (@$nodeset) {
 		next unless ($child and defined($child->parent_node));
 		my $parent = $nodeset->[$child->parent_node];
@@ -37,7 +35,6 @@ sub nodeset2tree {
 		$parent->children([]) unless defined($parent->children); 
 		$child->isnew(0);
 		$child->isdeleted(0);
-		#$child->intra_doc_id($x++);
 		push( @{$parent->children}, $child );
 	}
 
@@ -77,16 +74,8 @@ sub tree2nodeset {
 	return $newnodes;
 }
 
-sub update_children_parents {
-	my($self, $node)  = @_;
-	if( $node->children ) {
-		for my $child( @{$node->children()} ) {
-			$child->parent_node( $node->intra_doc_id() );
-		}
-	}
-}
 
-
+# Removes any deleted nodes from the tree
 sub clean_nodeset {
 
 	my($self, $nodeset) = @_;
@@ -99,133 +88,6 @@ sub clean_nodeset {
 
 	return \@newnodes;
 }
-
-
-# ---------------------------------------------------------------------------
-# Walks a nodeset and checks for insert, update, and delete and makes 
-# appropriate db calls
-# This method expects a blessed Fieldmapper::biblio::record_node object 
-=head comment
-sub clean_nodeset {
-	my($self, $nodeset) = @_;
-
-	my @_deleted = ();
-#my @_added = ();
-#	my @_altered = ();
-
-	my $size = @$nodeset;
-	my $offset = 0;
-#	my $doc_id = undef;
-
-	for my $index (0..$size) {
-
-		my $pos = $index + $offset;
-		my $node = $nodeset->[$index];
-		next unless $node;
-		
-#	if( !defined($doc_id) ) {
-#			$doc_id = $node->owner_doc;
-#		}
-
-		if($node->isdeleted()) {
-			$offset--;
-			warn "Deleting Node " . $node->intra_doc_id() . "\n";
-			push @_deleted, $node;
-			next;
-		}
-	}
-
-}
-
-		if($node->isnew()) {
-			$node->intra_doc_id($pos);
-			warn "Adding Node $pos\n";
-			$node->owner_doc($doc_id);
-			$node->clear_id();
-			push @_added, $node;
-			next;
-		}
-
-		if(	($node->intra_doc_id() 
-				and $node->intra_doc_id() != $pos) ||
-			 $node->ischanged() ) {
-
-			warn "Updating Node " . $node->intra_doc_id() . " to $pos\n";
-
-			$node->intra_doc_id($pos);
-			$self->update_children_parents( $node );
-			push @_altered, $node;
-			next;
-		}
-
-
-	my $d;
-	my $al;
-	my $added_stuff;
-	my $status;
-
-	warn "Building db session\n";
-	my $session = $self->start_db_session();
-
-	my $szz = @_deleted;
-	warn "Deleting $szz\n";
-
-	if(@_deleted) {
-		warn "Sending deletes to db\n";
-		my $del_req = $session->request( 
-				"open-ils.storage.biblio.record_node.batch.delete", @_deleted );
-		$status = $del_req->recv();
-		if(ref($status) and $status->isa("Error")) { 
-			warn " +++++++ Node Delete Failed in Cat";
-			throw $status ("Node Delete Failed in Cat") ; 
-		}
-		warn "Delete Successful\n";
-		$d = $status->content(); 
-	}
-
-	$szz = @_altered;
-	warn "Updating $szz\n";
-
-	if( @_altered ) {
-		warn "Sending updates to db\n";
-		@_altered = sort { $a->id <=> $b->id } @_altered;
-		my $alt_req = $session->request( 
-			"open-ils.storage.biblio.record_node.batch.update", @_altered );
-		$status = $alt_req->recv();
-		if(ref($status) and $status->isa("Error")) { 
-			warn " +++++++ Node Update Failed in Cat";
-			throw $status ("Node Update Failed in Cat"); 
-		}
-		warn "Update Successful\n";
-		$al = $status->content(); 
-	}
-
-	$szz = @_added;
-	warn "Adding $szz\n";
-
-	if(@_added) {
-		warn "Sending adds to db\n";
-		my $add_req = $session->request( 
-				"open-ils.storage.biblio.record_node.batch.create", @_added );
-		$status = $add_req->recv();
-		if(ref($status) and $status->isa("Error")) { 
-			warn " +++++++ Node Create Failed in Cat";
-			throw $status ("Node Create Failed in Cat"); 
-		}
-		$added_stuff = $status->content(); 
-		warn "Add successful\n";
-	}
-
-	warn "done updating records\n";
-	$self->commit_db_session( $session );
-
-	my $hash = { added => $added_stuff, deleted => $d, updated =>  $al };
-	use Data::Dumper;
-	warn Dumper $hash;
-
-	return $hash;
-}
-=cut
 
 # on sucess, returns the created session, on failure throws ERROR exception
 sub start_db_session {
@@ -255,15 +117,36 @@ sub commit_db_session {
 }
 
 
+
+
+# ---------------------------------------------------------------------------
+# Grabs the data 'we want' from the MODS doc and returns it in hash form
+# ---------------------------------------------------------------------------
 sub mods_perl_to_mods_slim {
 	my( $self, $modsperl ) = @_;
 
-	use Data::Dumper;
-	warn Dumper $modsperl;
+	my $title = "";
+	my $author = "";
 
-	my $title = $modsperl->{titleInfo}->{title};
-	my $author	= $modsperl->{name}->{namePart};
-	if(ref($author) eq "ARRAY") {
+	my $tmp = $modsperl->{titleInfo};
+	if($tmp) { 
+		if(ref($tmp) eq "ARRAY" ) {
+			$tmp = $tmp->[0];
+		}
+		$title = $tmp->{title};
+	}
+	if( $title and ref($title) eq "ARRAY" ) {
+		$title = $title->[0];
+	}
+
+	$tmp = $modsperl->{name};
+	if($tmp) { 
+		if(ref($tmp) eq "ARRAY" ) {
+			$tmp = $tmp->[0];
+		}
+		$author = $tmp->{namePart}; 
+	}
+	if($author and ref($author) eq "ARRAY") {
 		$author = $author->[0];
 	}
 
@@ -271,21 +154,12 @@ sub mods_perl_to_mods_slim {
 
 }
 
-
-
-# ---------------------------------------------------------------------------
-# Utility method for turning a nodes_array ($nodelist->nodelist) into
-# a perl structure
-# ---------------------------------------------------------------------------
-sub _nodeset_to_perl {
-	my($self, $nodeset) = @_;
-	return undef unless ($nodeset);
-	my $xmldoc = 
-		OpenILS::Utils::FlatXML->new()->nodeset_to_xml($nodeset);
-
-	# Evil, but for some reason necessary
-	$xmldoc = $parser->parse_string( $xmldoc->toString() );
-	my $perl = $self->marcxml_doc_to_mods_perl($xmldoc);
+sub _marcxml_to_perl {
+	my($self, $marcxml) = @_;
+	my $xmldoc = $parser->parse_string( $marcxml );
+	my $mods = $mods_sheet->transform($xmldoc);
+	my $perl = OpenSRF::Utils::SettingsParser::XML2perl( $mods->documentElement );
+	return $perl->{mods} if exists($perl->{mods});
 	return $perl;
 }
 
@@ -295,7 +169,18 @@ sub _nodeset_to_perl {
 # ---------------------------------------------------------------------------
 sub start_mods_batch {
 	my( $self, $master_doc ) = @_;
-	$self->{master_doc} = $self->_nodeset_to_perl( $master_doc );
+	$self->{master_doc} = $self->_marcxml_to_perl( $master_doc );
+}
+
+# ---------------------------------------------------------------------------
+# Takes a MARCXML string an adds it to the growing MODS doc
+# ---------------------------------------------------------------------------
+sub push_mods_batch {
+	my( $self, $marcxml ) = @_;
+	my $xmlperl = $self->_marcxml_to_perl( $marcxml );
+	for my $subject( @{$xmlperl->{subject}} ) {
+		push @{$self->{master_doc}->{subject}}, $subject;
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -307,64 +192,6 @@ sub finish_mods_batch {
 	$self->{master_doc} = undef;
 	return $perl
 }
-
-# ---------------------------------------------------------------------------
-# Pushes a marcxml nodeset into the current MODS batch
-# ---------------------------------------------------------------------------
-sub mods_push_nodeset {
-	my( $self, $nodeset ) = @_;
-	my $xmlperl	= $self->_nodeset_to_perl( $nodeset );
-	for my $subject( @{$xmlperl->{subject}} ) {
-		push @{$self->{master_doc}->{subject}}, $subject;
-	}
-}
-
-
-
-# ---------------------------------------------------------------------------
-# Transforms a MARC21SLIM XML document into a MODS formatted perl hash
-# ---------------------------------------------------------------------------
-sub marcxml_doc_to_mods_perl {
-	my( $self, $marcxml_doc ) = @_;
-	my $mods = $mods_sheet->transform($marcxml_doc);
-	my $perl = OpenSRF::Utils::SettingsParser::XML2perl( $mods->documentElement );
-	return $perl->{mods} if exists($perl->{mods});
-	return $perl;
-}
-
-
-
-# ---------------------------------------------------------------------------
-# Transforms a set of marcxml nodesets into a unified MODS perl hash.  The
-# first doc is assumed to be the 'master'
-# ---------------------------------------------------------------------------
-sub marcxml_nodeset_list_to_mods_perl {
-	my( $self, $nodeset_list ) = @_;
-	my $master = $self->_nodeset_to_perl( shift(@$nodeset_list) );
-	my $first;
-	for my $nodes (@$nodeset_list) {
-		my $xmlperl	= $self->_nodeset_to_perl( $nodes );
-		for my $subject( @{$xmlperl->{subject}} ) {
-			push @{$master->{subject}}, $subject;
-		}
-	}
-	return $master;
-}
-
-
-
-# not really sure if we'll ever need this one...
-sub marcxml_doc_to_mods_nodeset {
-	my( $self, $marcxml_doc ) = @_;
-	my $mods = $mods_sheet->transform($marcxml_doc);
-	my $u = OpenILS::Utils::FlatXML->new();
-	my $nodeset = $u->xmldoc_to_nodeset( $mods );
-	return $nodeset->nodeset if $nodeset;
-	return undef;
-}
-
-
-
 
 
 

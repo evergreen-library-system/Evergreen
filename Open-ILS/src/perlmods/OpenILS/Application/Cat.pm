@@ -143,22 +143,24 @@ __PACKAGE__->register_method(
 sub biblio_mods_slim_retrieve {
 	my( $self, $client, $recordid ) = @_;
 
-	my $name = "open-ils.storage.biblio.record_entry.nodeset.retrieve";
+	#my $name = "open-ils.storage.biblio.record_entry.nodeset.retrieve";
+	my $name = "open-ils.storage.biblio.record_marc.retrieve";
 	my $method = $self->method_lookup($name);
 
 	unless($method) {
 		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
 	}
 
-	my ($nodes) = $method->run($recordid);
-	if(!$nodes) { warn "NOthing from storage"; return undef; }
+	# grab the marc record
+	my ($marcxml) = $method->run($recordid);
+	if(!$marcxml) { warn "Nothing from storage"; return undef; }
 
-	if(UNIVERSAL::isa($nodes,"OpenSRF::EX")) {
-		throw $nodes;
+	if(UNIVERSAL::isa($marcxml,"OpenSRF::EX")) {
+		throw $marcxml ($marcxml->stringify());;
 	}
 
 	my $u = $utils->new();
-	$u->start_mods_batch( $nodes );
+	$u->start_mods_batch( $marcxml->marc );
 
 	my $mods = $u->finish_mods_batch();
 	return $u->mods_perl_to_mods_slim( $mods );
