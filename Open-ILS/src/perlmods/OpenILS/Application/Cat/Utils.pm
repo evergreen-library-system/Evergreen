@@ -6,11 +6,19 @@ use XML::LibXSLT;
 use OpenSRF::Utils::SettingsParser;
 
 
-
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
 my $xslt_doc	=	$parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+
+
+
+sub new {
+	my($class) = @_;
+	$class = ref($class) || $class;
+	return bless( {}, $class );
+}
+
 
 # ---------------------------------------------------------------------------
 # Converts an XML nodeset into a tree
@@ -126,32 +134,86 @@ sub _deletenode {
 # ---------------------------------------------------------------------------
 
 
-sub marcxml_doc_to_perl {
-	my( $self, $marcxml_doc ) = @_;
-	return undef unless $marcxml_doc;
-	return OpenSRF::Utils::SettingsParser::XML2perl( $marcxml_doc->documentElement );
+# ---------------------------------------------------------------------------
+# Utility method for turning a nodes_array ($nodelist->nodelist) into
+# a perl structure
+# ---------------------------------------------------------------------------
+sub _nodeset_to_perl {
+	my($self, $nodeset) = @_;
+	return undef unless ($nodeset);
+	my $xmldoc = 
+		OpenILS::Utils::FlatXML->new()->nodeset_to_xml( $nodeset );
+
+	# Evil, but for some reason necessary
+	$xmldoc = XML::LibXML->new()->parse_string( $xmldoc->toString() );
+	return $self->marcxml_doc_to_mods_perl($xmldoc);
 }
 
 
+# ---------------------------------------------------------------------------
+# Initializes a MARC -> Unified MODS batch process
+# ---------------------------------------------------------------------------
+sub start_mods_batch {
+	my( $self, $master_doc ) = @_;
+	$self->{master_doc} = $self->_nodeset_to_perl( $master_doc->nodeset );
+}
+
+# ---------------------------------------------------------------------------
+# Completes a MARC -> Unified MODS batch process and returns the perl hash
+# ---------------------------------------------------------------------------
+sub finish_mods_batch {
+	my $self = shift;
+	my $perl = $self->{master_doc};
+	$self->{master_doc} = undef;
+	return $perl
+}
+
+# ---------------------------------------------------------------------------
+# Pushes a marcxml nodeset into the current MODS batch
+# ---------------------------------------------------------------------------
+sub mods_push_nodeset {
+	my( $self, $nodeset ) = @_;
+	my $xmlperl	= $self->_nodeset_to_perl( $nodeset->nodeset );
+	for my $subject( @{$xmlperl->{subject}} ) {
+		push @{$self->{master_doc}->{subject}}, $subject;
+	}
+}
+
+
+
+# ---------------------------------------------------------------------------
+# Transforms a MARC21SLIM XML document into a MODS formatted perl hash
+# ---------------------------------------------------------------------------
 sub marcxml_doc_to_mods_perl {
 	my( $self, $marcxml_doc ) = @_;
-
-	print  "DOC:\n" . $marcxml_doc->toString(1) . "\n";
 	my $mods = $mods_sheet->transform($marcxml_doc);
-	print "MODS:\n " . $mods->toString(1). "\n";
-	print "-------------------------------------------\n";
-
 	my $perl = OpenSRF::Utils::SettingsParser::XML2perl( $mods->documentElement );
 	return $perl->{mods} if $perl;
 	return undef;
 }
 
-sub marcxml_nodeset_to_doc {
-	my( $self, $nodes ) = @_;
-	my $u = OpenILS::Utils::FlatXML->new();
-	return $u->nodeset_to_xml( $nodes );
+
+
+# ---------------------------------------------------------------------------
+# Transforms a set of marcxml nodesets into a unified MODS perl hash.  The
+# first doc is assumed to be the 'master'
+# ---------------------------------------------------------------------------
+sub marcxml_nodeset_list_to_mods_perl {
+	my( $self, $nodeset_list ) = @_;
+	my $master = $self->_nodeset_to_perl( shift(@$nodeset_list) );
+	my $first;
+	for my $nodes (@$nodeset_list) {
+		my $xmlperl	= $self->_nodeset_to_perl( $nodes );
+		for my $subject( @{$xmlperl->{subject}} ) {
+			push @{$master->{subject}}, $subject;
+		}
+	}
+	return $master;
 }
 
+
+
+# not really sure if we'll ever need this one...
 sub marcxml_doc_to_mods_nodeset {
 	my( $self, $marcxml_doc ) = @_;
 	my $mods = $mods_sheet->transform($marcxml_doc);
