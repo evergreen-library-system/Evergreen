@@ -140,8 +140,6 @@ sub complete_authenticate {
 
 	my $user = $user_list->[0];
 	
-	use Data::Dumper;
-	warn Dumper $user;
 
 	if(!$user or !ref($user) ) {
 		throw OpenSRF::EX::ERROR ("No user for $username");

@@ -48,22 +48,20 @@ sub biblio_record_tree_retrieve {
 	warn "grabbing content in retrieve\n";
 	my $marcxml = $response->content;
 
-	use Data::Dumper;
-	warn "MARCXML OBJECT\n";
-	warn Dumper $marcxml;
-
 	if(!$marcxml) {
 		throw OpenSRF::EX::ERROR 
 			("No record in database with id $recordid");
 	}
 
-	warn "building nodes\n";
+	$request->finish();
+	$session->disconnect();
+	$session->kill_me();
+
 	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marcxml->marc ); 
-	warn "building tree\n";
 	my $tree = $utils->nodeset2tree( $nodes->nodeset );
-	warn "setting owner doc\n";
 	$tree->owner_doc( $marcxml->id() );
-	warn "returning from retrieve for $recordid\n-------------------------------------\n";
+
+	
 	return $tree;
 }
 
@@ -216,5 +214,87 @@ sub biblio_mods_slim_retrieve {
 	return $mods;
 
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_record_record_metadata",
+	api_name	=> "open-ils.cat.biblio.record.metadata.retrieve",
+	argc		=> 1, #(session_id, biblio_tree ) 
+	note		=> "Walks the tree and commits any changed nodes " .
+					"adds any new nodes, and deletes any deleted nodes",
+);
+
+sub biblio_record_record_metadata {
+	my( $self, $client, @ids ) = @_;
+
+	if(!@ids){return undef;}
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $request = $session->request( 
+			"open-ils.storage.biblio.record_entry.batch.retrieve", @ids );
+
+	my $results = [];
+
+	while( my $response = $request->recv() ) {
+
+		if(!$response) {
+			throw OpenSRF::EX::ERROR ("No Response from Storage");
+		}
+		if($response->isa("Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $record_entry = $response->content;
+
+		my $creator = $record_entry->creator;
+		my $editor	= $record_entry->editor;
+
+		my $info_session = OpenSRF::AppSession->create("open-ils.storage");
+
+		# grab the creator's name
+		my $creator_req = $info_session->request( 
+			"open-ils.storage.actor.user.retrieve", $creator );
+		my $creator_resp = $creator_req->recv();
+		if(!$creator_resp) { $creator = ""; }
+		if($creator_resp->isa("Error")){
+			throw $creator_resp ($creator_resp);
+		}
+		$creator = $creator_resp->content;
+		if($creator) {
+			$creator = $creator->usrid;
+		} else { $creator = ""; }
+
+		my $editor_req = $info_session->request( 
+			"open-ils.storage.actor.user.retrieve", $editor );
+		my $editor_resp = $editor_req->recv();
+		if(!$editor_resp) { $editor = ""; }
+		if($editor_resp->isa("Error")){
+			throw $editor_resp ($editor_resp);
+		}
+		$editor = $editor_resp->content;
+		if($editor) {
+			$editor = $editor->usrid;
+		} else { $editor = ""; }
+
+
+		$info_session->disconnect();
+		$info_session->kill_me();
+
+		$record_entry->creator( $creator );
+		$record_entry->editor( $editor );
+
+		push @$results, $record_entry;
+
+	}
+
+	$session->disconnect();
+	$session->kill_me();
+
+	return $results;
+
+}
+
+
+
 
 1;

@@ -1,23 +1,14 @@
 package OpenILS::Application::Search;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
+
 use OpenILS::Utils::Fieldmapper;
 use Time::HiRes qw(time);
 use OpenILS::Application::Cat::Utils;
 
 use OpenSRF::EX qw(:try);
 
-sub _child_init {
-
-	try {
-		OpenSRF::Application->method_lookup( "blah" );
-
-	} catch Error with { 
-		warn "Child Init Failed: " . shift() . "\n";
-	};
-
-}
-
+# used for cat search classes
 my $cat_search_hash =  {
 
 	author => [ 
@@ -43,8 +34,6 @@ my $cat_search_hash =  {
 };
 
 
-
-
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_tcn",
 	api_name	=> "open-ils.search.cat.biblio.tcn",
@@ -65,44 +54,21 @@ sub cat_biblio_search_tcn {
 	my $response = $request->recv();
 
 
-	unless ($response) { return undef; }
+	unless ($response) { return []; }
 
 	if($response->isa("OpenSRF::EX")) {
-		warn $response->stringify();
 		throw $response ($response->stringify);
 	}
-
 
 	my $record_entry = $response->content;
-	$record_entry = $record_entry->[0];
-	$request->finish();
-
-	$request = $session->request(
-		"open-ils.storage.biblio.record_marc.retrieve",  $record_entry->id() );
-	$response = $request->recv();
-
-	unless ($response) { return undef; }
-
-	if($response->isa("OpenSRF::EX")) {
-		warn $response->stringify();
-		throw $response ($response->stringify);
+	my @ids;
+	for my $record (@$record_entry) {
+		push @ids, $record->id;
 	}
 
-	my $marcxml = $response->content;
+	return _records_to_mods( @ids );
 
-	my $u = OpenILS::Application::Cat::Utils->new();
-	$u->start_mods_batch( $marcxml->marc );
-	my $mods = $u->finish_mods_batch();
-	$mods->{doc_id} = $marcxml->id();
-
-
-	$request->finish();
-	$session->disconnect;
-	$session->kill_me;
-
-	return $mods;
 }
-
 
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_class",
@@ -113,8 +79,6 @@ __PACKAGE__->register_method(
 
 sub cat_biblio_search_class {
 	my( $self, $client, $class, $sort, $string ) = @_;
-
-	# sort = title, author, pubdate
 
 	warn "Starting search " . time() . "\n";
 	
@@ -136,67 +100,11 @@ sub cat_biblio_search_class {
 
 	my @ids;
 
-	for my $i (@$records) {
-		push @ids, $i->[0];
-	}
+	for my $i (@$records) { push @ids, $i->[0]; }
 
-	warn "Found Id's: @ids\n";
-	warn "Search For Id's complete, fixing: "  . time() . "\n";
+	warn "Found Id's: @ids " . time() . "\n";
 
-	my @results = ();
-
-	my @marcxml_objs;
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $request = $session->request(
-			"open-ils.storage.biblio.record_marc.batch.retrieve",  @ids );
-
-
-	my $last_content = undef;
-
-	while( my $response = $request->recv() ) {
-
-		warn "Received record from storage " . time() . "\n";
-
-		if( $last_content ) {
-			my $u = OpenILS::Application::Cat::Utils->new();
-			$u->start_mods_batch( $last_content->marc );
-			my $mods = $u->finish_mods_batch();
-			$mods->{doc_id} = $last_content->id();
-			warn "Processed mods " . time() . "\n";
-			#$client->respond( $mods );
-			$last_content = undef;
-			push @results, $mods;
-		}
-
-		next unless $response;
-
-		if($response->isa("OpenSRF::EX")) {
-			throw $response ($response->stringify);
-		}
-
-		$last_content = $response->content;
-
-	}
-
-	if( $last_content ) {
-		my $u = OpenILS::Application::Cat::Utils->new();
-		$u->start_mods_batch( $last_content->marc );
-		my $mods = $u->finish_mods_batch();
-		$mods->{doc_id} = $last_content->id();
-		warn "Processed mods " . time() . "\n";
-		#$client->respond( $mods );
-		push @results, $mods;
-	}
-
-
-	$client->respond( \@results );
-	
-	$request->finish();
-	$session->finish();
-	$session->disconnect();
-	$session->kill_me();
-	
-	return undef;
+	return _records_to_mods(@ids);
 
 }
 
@@ -230,6 +138,66 @@ sub biblio_search_marc {
 	$session->kill_me();
 
 	return $data;
+
+}
+
+
+
+
+
+
+# ---------------------------------------------------------------------------
+# takes a list of record id's and turns the docs into friendly 
+# mods structures.
+# ---------------------------------------------------------------------------
+sub _records_to_mods {
+	my @ids = @_;
+	
+	my @results;
+	my @marcxml_objs;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $request = $session->request(
+			"open-ils.storage.biblio.record_marc.batch.retrieve",  @ids );
+
+	my $last_content = undef;
+
+	while( my $response = $request->recv() ) {
+
+		if( $last_content ) {
+			my $u = OpenILS::Application::Cat::Utils->new();
+			$u->start_mods_batch( $last_content->marc );
+			my $mods = $u->finish_mods_batch();
+			$mods->{doc_id} = $last_content->id();
+			warn "Turning doc " . $mods->{doc_id} . " into MODS\n";
+			$last_content = undef;
+			push @results, $mods;
+		}
+
+		next unless $response;
+
+		if($response->isa("OpenSRF::EX")) {
+			throw $response ($response->stringify);
+		}
+
+		$last_content = $response->content;
+
+	}
+
+	if( $last_content ) {
+		my $u = OpenILS::Application::Cat::Utils->new();
+		$u->start_mods_batch( $last_content->marc );
+		my $mods = $u->finish_mods_batch();
+		$mods->{doc_id} = $last_content->id();
+		push @results, $mods;
+	}
+
+	$request->finish();
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+
+	return \@results;
 
 }
 

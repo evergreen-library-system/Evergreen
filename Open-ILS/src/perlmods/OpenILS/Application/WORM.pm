@@ -2,6 +2,10 @@ package OpenILS::Application::WORM;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
+use OpenSRF::EX qw(:try);
+
+use OpenSRF::Application;
+
 use OpenILS::Utils::FlatXML;
 use OpenILS::Utils::Fieldmapper;
 use JSON;
@@ -14,15 +18,23 @@ my $xml_util	= OpenILS::Utils::FlatXML->new();
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
-my $xslt_doc	=	$parser->parse_file( "/home/miker/cvs/OpenILS/app_server/stylesheets/MARC21slim2MODS.xsl" );
+#my $xslt_doc	=	$parser->parse_file( "/home/miker/cvs/OpenILS/app_server/stylesheets/MARC21slim2MODS.xsl" );
+my $xslt_doc	= $parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 
 use open qw/:utf8/;
 
-sub child_init {
-	#__PACKAGE__->method_lookup('i.do.not.exist');
-}
 
+sub child_init {
+
+	try {
+		OpenSRF::Application->method_lookup( "blah" );
+
+	} catch Error with { 
+		warn "Child Init Failed: " . shift() . "\n";
+	};
+
+}
 
 
 # get me from the database
@@ -96,7 +108,7 @@ sub wormize {
 
 	my( $self, $client, $docid ) = @_;
 
-	my $st_ses = $client->session->create('open-ils.storage');
+	my $st_ses = OpenSRF::AppSession->create('open-ils.storage');
 	throw OpenSRF::EX::PANIC ("WORM can't connect to the open-is.storage server!")
 		if (!$st_ses->connect);
 
