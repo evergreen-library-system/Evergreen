@@ -101,7 +101,9 @@ RemoteRequest.prototype.getText = function() {
 }
 
 RemoteRequest.prototype.getResultObject = function() {
-	return JSON2js( this.xmlhttp.responseText );
+	var obj = JSON2js( this.xmlhttp.responseText );
+	if(obj && obj.is_err) { throw new EXCommunication(obj.err_msg); }
+	return obj;
 }
 
 RemoteRequest.prototype.addParam = function(param) {
