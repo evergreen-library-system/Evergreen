@@ -110,28 +110,18 @@ sub complete_authenticate {
 
 	my $name = "open-ils.storage.actor.user.search.usrname";
 
-	use Data::Dumper;
-	warn "Completing Authentication\n";
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	warn "session built\n";
 	my $request = $session->request( $name, $username );
-	warn "made request\n";
 	my $response = $request->recv();
 
-	warn "called receive\n";
-	warn Dumper $response;
-
 	if( $response and $response->isa("OpenSRF::EX") ) {
-		warn "Throwing " . $response->stringify . "\n";
 		throw $response ($response->stringify . "\n");
 	}
 
-	warn "getting user\n";
-
 	my $user_list = $response->content;
 
+	$request->finish();
 	$session->disconnect();
-	$session->kill_me();
 
 	unless(ref($user_list)) {
 		throw OpenSRF::EX::ERROR 
@@ -146,7 +136,7 @@ sub complete_authenticate {
 	}
 
 	my $password = $user->passwd();
-	warn "Got password $password\n";
+
 	if(!$password) {
 		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
 	}
@@ -175,7 +165,12 @@ sub complete_authenticate {
 
 sub retrieve_session {
 	my( $self, $client, $sessionid ) = @_;
-	return $cache_handle->get_cache($sessionid);
+	my $user =  $cache_handle->get_cache($sessionid);
+	if(!$user) {
+		warn "No User returned from retrieve_session $sessionid\n";
+	}
+	if($user) {$user->clear_password();}
+	return $user;
 }
 
 sub delete_session {
