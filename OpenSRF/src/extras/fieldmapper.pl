@@ -32,9 +32,8 @@ function $short_name(array) {
 	else { this.array = []; }
 }
 
-$short_name.prototype._is_array = function() {
-	return true;
-}
+$short_name.classname = "$short_name";
+
 JS
 
 for my $field (keys %{$map->{$object}->{fields}}) {
