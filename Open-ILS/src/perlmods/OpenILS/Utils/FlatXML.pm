@@ -10,47 +10,87 @@ my $parser = XML::LibXML->new();
 $parser->keep_blanks(0);
 sub new { return bless({},shift()); }
 
+sub xml {
+	my $self = shift;
+	my $xml = shift;
+	if ($xml) {
+		$self->{xml} = $xml;
+	}
+	return $self->{xml};
+}
+
+sub xmlfile {
+	my $self = shift;
+	my $xml = shift;
+	if ($xml) {
+		$self->{xmlfile} = $xml;
+	}
+	return $self->{xmlfile};
+}
+
 sub xml_to_doc {
 	my($self, $xml) = @_;
-	return $parser->parse_string( $xml );
+	my $doc = $self->{doc};
+	unless ($doc) {
+		$xml ||= $self->{xml};
+		$doc = $self->{doc} = $parser->parse_string( $xml );
+	}
+	return $doc;
 }
 
 sub xml_to_nodeset {
 	my($self, $xml) = @_;
-	return $self->_xml_to_nodeset(  $self->xml_to_doc( $xml ) );
+	$xml ||= $self->xml;
+	$self->xml_to_doc( $xml );
+	my $nodeset = $self->_xml_to_nodeset;
+	return $self;
+}
+
+sub nodeset {
+	my $self = shift;
+	return $self->{nodelist};
 }
 
 sub xmlfile_to_nodeset {
 	my($self, $xmlfile) = @_;
-	return $self->_xml_to_nodeset(  $self->xmlfile_to_doc( $xmlfile ) );
+	$self->xmlfile( $xmlfile );
+	$self->xmlfile_to_doc;
+	return $self->xml_to_nodeset;
+}
+
+sub doc {
+	my $self = shift;
+	return $self->{doc};
 }
 
 sub xmlfile_to_doc {
 	my($self, $xmlfile) = @_;
-	return $parser->parse_file( $xmlfile );
+	$xmlfile ||= $self->xmlfile;
+	my $doc = $self->{doc};
+	unless ($doc) {
+		$doc = $self->{doc} = $parser->parse_file( $xmlfile );
+	}
+	return $doc;
 }
 
 sub nodeset_to_xml {
 	my $self = shift;
 	my $nodeset = shift;
+	$nodeset ||= $self->nodeset;
 
 	my $doc = XML::LibXML::Document->new;
 
 	my %seen_ns;
 	
 	my @_xmllist;
-	for my $node ( @{ $$nodeset{doclist} } ) {
+	for my $node ( @$nodeset ) {
 		my $xml;
 
 		if ( $node->{type} == XML_ELEMENT_NODE ) {
 
 			$xml = $doc->createElement( $node->{name} );
 
-			if ($node->{ns}) {
-				my ($ns) = grep { $node->{ns} eq $_->{uri} } @{ $$nodeset{nslist} };
-				$xml->setNamespace($ns->{uri}, $ns->{prefix}, 1) if ($ns->{prefix} || !$seen_ns{$ns->{uri}});
-				$seen_ns{$ns->{uri}}++;
-			}
+			$xml->setNodeName($seen_ns{$node->{ns}} . ':' . $xml->nodeName) if ($node->{ns} and $seen_ns{$node->{ns}});
 
 		} elsif ( $node->{type} == XML_TEXT_NODE ) {
 			$xml = $doc->createTextNode( $node->{value} );
@@ -58,15 +98,25 @@ sub nodeset_to_xml {
 		} elsif ( $node->{type} == XML_COMMENT_NODE ) {
 			$xml = $doc->createComment( $node->{value} );
 			
+		} elsif ( $node->{type} == XML_NAMESPACE_DECL ) {
+			if ($self->nodeset->[$node->{parent}]->{ns} eq $node->{value}) {
+				$_xmllist[$node->{parent}]->setNamespace($node->{value}, $node->{name}, 1);
+			} else {
+				$_xmllist[$node->{parent}]->setNamespace($node->{value}, $node->{name}, 0);
+			}
+			$seen_ns{$node->{value}} = $node->{name};
+			next;
+
 		} elsif ( $node->{type} == XML_ATTRIBUTE_NODE ) {
 
 			if ($node->{ns}) {
-				my ($ns) = grep { $node->{ns} eq $_->{uri} } @{ $$nodeset{nslist} };
-				$_xmllist[$node->{parent}]->setAttributeNS($ns->{uri}, $node->{name}, $node->{value});
+				$_xmllist[$node->{parent}]->setAttributeNS($node->{ns}, $node->{name}, $node->{value});
 			} else {
 				$_xmllist[$node->{parent}]->setAttribute($node->{name}, $node->{value});
 			}
 
+			next;
+		} else {
 			next;
 		}
 
@@ -84,50 +134,31 @@ sub nodeset_to_xml {
 
 # --------------------------------------------------------------
 # -- Builds a list of nodes from a given xml doc
-my @nodeset = ();
-my @nslist = ();
-my $next_id = 0;
 sub _xml_to_nodeset {
 
 	my($self, $doc) = @_;
 
+	$doc ||= $self->doc;
 	return undef unless($doc);
+
 	my $node = $doc->documentElement;
 	return undef unless($node);
 
-	_grab_namespaces($node);
 
-	push @nodeset, { 
-		id			=> 0,
+	$self->{next_id} = 0;
+
+	push @{$self->{nodelist}}, { 
+		id	=> 0,
 		parent	=> undef,
-		name		=> $node->localname,
-		value		=> undef,
-		type		=> $node->nodeType,
-		ns			=> $node->namespaceURI
+		name	=> $node->localname,
+		value	=> undef,
+		type	=> $node->nodeType,
+		ns	=> $node->namespaceURI
 	};
 
 	$self->_nodeset_recurse( $node, 0);
 
-	# clear out the global variables
-	my @tmp = @nodeset;
-	my @tmpnslist = @nslist;
-	@nodeset = ();
-	@nslist = ();
-	$next_id = 0;
-
-	return  { doclist => [@tmp], nslist => [@tmpnslist] };
-}
-
-sub _grab_namespaces {
-	my $node = shift;
-	# add to the ns list if not alread there
-	for my $ns ($node->getNamespaces) {
-		if (my ($existing_ns) = grep { $_->{uri} eq $ns->value } @nslist) {
-			$existing_ns->{prefix} = $ns->localname;
-			next;
-		}
-		push @nslist, { prefix => $ns->localname, uri => $ns->value };
-	}
+	return  $self;
 }
 
 sub _nodeset_recurse {
@@ -135,24 +166,22 @@ sub _nodeset_recurse {
 	my( $self, $node, $parent) = @_;
 	return undef unless($node && $node->nodeType == 1);
 
-	_grab_namespaces($node);
 
-	for my $kid ( ($node->attributes, $node->childNodes) ) {
-		next if ($kid->nodeType == 18);
+	for my $kid ( ($node->getNamespaces, $node->attributes, $node->childNodes) ) {
 
 		my $type = $kid->nodeType;
 
-		push @nodeset, { 
-			id			=> ++$next_id,
+		push @{$self->{nodelist}}, { 
+			id			=> ++$self->{next_id},
 			parent	=> $parent, 
 			name		=> $kid->localname,
 			value		=> _grab_content( $kid, $type ),
 			type		=> $type,
-			ns			=> $kid->namespaceURI
+			ns			=> ($type != 18 ? $kid->namespaceURI : undef )
 		};
 
 		return if ($type == 3);
-		$self->_nodeset_recurse( $kid, $next_id);
+		$self->_nodeset_recurse( $kid, $self->{next_id});
 	}
 }
 
