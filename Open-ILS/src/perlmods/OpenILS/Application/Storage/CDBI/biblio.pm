@@ -34,12 +34,12 @@ biblio::record_node->columns( All => qw/id owner_doc intra_doc_id
 					parent_node node_type
 					namespace_uri name value/ );
 
-biblio::record_node->has_a(
-	parent_node	=> 'biblio::record_node::subnode',
-	inflate		=> sub {
-				return biblio::record_node::subnode::_load(@_)
-			},
-);
+#biblio::record_node->has_a(
+#	parent_node	=> 'biblio::record_node::subnode',
+#	inflate		=> sub {
+#				return biblio::record_node::subnode::_load(@_)
+#			},
+#);
 
 
 #-------------------------------------------------------------------------------

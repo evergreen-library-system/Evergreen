@@ -34,10 +34,10 @@ biblio::record_entry->has_a( metarecord => 'metabib::metarecord' );
 #biblio::record_entry->has_a( keyword_field_entries => 'metabib::keyword_field_entry' );
 #-------------------------------------------------------------------------------
 biblio::record_node->has_a( owner_doc => 'biblio::record_entry' );
-biblio::record_node->has_a(
-	parent_node	=> 'biblio::record_node::subnode',
-	inflate		=> sub { return biblio::record_node::subnode::_load(@_) }
-);
+#biblio::record_node->has_a(
+#	parent_node	=> 'biblio::record_node::subnode',
+#	inflate		=> sub { return biblio::record_node::subnode::_load(@_) }
+#);
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
