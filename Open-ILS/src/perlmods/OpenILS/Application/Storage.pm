@@ -6,7 +6,7 @@ use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::Logger qw/:level/;
 
 # Pull this in so we can adjust it's @ISA
-use OpenILS::Application::Storage::CDBI;
+use OpenILS::Application::Storage::CDBI (1);
 
 use OpenILS::Application::Storage::FTS;
 

@@ -83,6 +83,13 @@ metabib::metarecord_source_map->table( 'metabib_metarecord_source_map' );
 metabib::metarecord_source_map->columns( Primary => qw/metarecord source_record/ );
 
 #-------------------------------------------------------------------------------
+package metabib::isource_metarecord_map;
+use base qw/metabib/;
+
+metabib::metarecord_source_map->table( 'metabib_metarecord_source_map' );
+metabib::metarecord_source_map->columns( Primary => qw/metarecord source_record/ );
+
+#-------------------------------------------------------------------------------
 package metabib::full_rec;
 use base qw/metabib/;
 

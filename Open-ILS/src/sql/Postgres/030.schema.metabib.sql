@@ -72,6 +72,7 @@ CREATE TRIGGER metabib_full_rec_fti_trigger
 
 CREATE TABLE metabib.title_field_entry_source_map (
 	field_entry	BIGINT		NOT NULL,
+	metarecord	BIGINT		NOT NULL,
 	source_record	BIGINT		NOT NULL
 );
 CREATE INDEX metabib_title_field_entry_source_map_source_record_idx ON metabib.title_field_entry_source_map (source_record);

@@ -13,6 +13,9 @@ use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::metabib;
 
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::Logger;
+
+my $log = 'OpenSRF::Utils::Logger';
 
 sub child_init {
 	my $self = shift;
@@ -91,7 +94,13 @@ sub retrieve {
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		$arg = $arg->id;
 	}
-	return $self->SUPER::retrieve("$arg");
+	$log->debug("Retrieving $self with $arg", INTERNAL);
+	my $rec =  $self->SUPER::retrieve("$arg");
+	unless ($rec) {
+		$log->debug("Could not retrieve $self with $arg!", DEBUG);
+		return undef;
+	}
+	return $rec;
 }
 
 sub to_fieldmapper {
@@ -146,18 +155,6 @@ sub create_from_fieldmapper {
 	}
 }
 
-sub update {
-	my $self = shift;
-	my $arg = shift;
-
-	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
-		$self = $self->modify_from_fieldmapper($arg);
-	}
-
-	$self->SUPER::update;
-	return $self;
-}
-
 sub delete {
 	my $self = shift;
 	my $arg = shift;
@@ -177,15 +174,37 @@ sub delete {
 	return $arg;
 }
 
+sub update {
+	my $self = shift;
+	my $arg = shift;
+
+	$log->debug("Attempting to update using $arg", DEBUG) if ($arg);
+
+	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+		$self = $self->modify_from_fieldmapper($arg);
+		$log->debug("Modification of $self seems to have failed....", DEBUG);
+		return undef unless (defined $self);
+	}
+
+	$log->debug("Calling Class::DBI->update on modified object $self", DEBUG);
+	return $self->SUPER::update;
+}
+
 sub modify_from_fieldmapper {
 	my $obj = shift;
 	my $fm = shift;
 
+	$log->debug("Modifying object using fieldmapper", DEBUG);
+
 	my $class = ref($obj) || $obj;
 
 	if (!ref($obj)) {
-		$obj = $class->retieve($fm);
-		return undef unless ($obj);
+		$obj = $class->retrieve($fm);
+		unless ($obj) {
+			$log->debug("Rretrieve using $fm (".$fm->id.") failed!", ERROR);
+			throw OpenSRF::EX::WARN ("No $class with id of ".$fm->id."!!");
+		}
+
 	}
 
 	my %hash = map { defined $fm->$_ ?
@@ -193,20 +212,21 @@ sub modify_from_fieldmapper {
 				()
 			} $fm->real_fields;
 
-	if ($class->find_column( 'last_xact_id' )) {
-		my $xact_id = $obj->current_xact_id;
-		throw Error unless ($xact_id);
-		$hash{last_xact_id} = $xact_id;
-	}
-
 	my $au = $obj->autoupdate;
 	$obj->autoupdate(0);
 	
 	for my $field ( keys %hash ) {
-		$obj->$field( $hash{$field} );
+		$obj->$field( $hash{$field} ) if ($obj->$field ne $hash{$field});
+		$log->debug("Setting field $field on $obj to $hash{$field}",INTERNAL);
 	}
 
-	$obj->autoupdate($au);
+	if ($class->find_column( 'last_xact_id' ) and $obj->is_changed) {
+		my $xact_id = $obj->current_xact_id;
+		throw Error unless ($xact_id);
+		$hash{last_xact_id} = $xact_id;
+	} else {
+		$obj->autoupdate($au)
+	}
 
 	return $obj;
 }

@@ -189,10 +189,10 @@
 		if (my $old_xact = $pg->current_xact_session) {
 			if ($pg->current_xact_is_auto) {
 				$log->debug("Commiting old autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
-				OpenILS::Application::Storage::CDBI->db_Main->commit;
+				$self->pg_commit_xaction($client);
 			} else {
 				$log->debug("Rolling back old NON-autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
-				__PACKAGE__->pg_rollback_xaction($client);
+				$self->pg_rollback_xaction($client);
 				return new OpenSRF::DomainObject::oilsException (
 						statusCode => 500,
 						status => "Previous transaction rolled back!",

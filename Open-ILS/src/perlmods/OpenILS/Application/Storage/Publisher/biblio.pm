@@ -51,9 +51,14 @@ sub update_record_entry {
 	my $client = shift;
 	my $entry = shift;
 	
-	my $rec = biblio::record_entry->update($entry);
-	return 0 unless ($rec);
-	return 1;
+	my $success = 1;
+	try {
+		$success = biblio::record_entry->update($entry);
+	} catch Error with {
+		$success = 0;
+	};
+
+	return $success;
 }
 __PACKAGE__->register_method(
 	method		=> 'update_record_entry',
@@ -166,9 +171,14 @@ sub update_record_node {
 	my $client = shift;
 	my $node = shift;;
 
-	my $n = biblio::record_node->update($node);
-	return 0 unless ($n);
-	return 1;
+	my $success = 1;
+	try {
+		$success = biblio::record_node->update($node);
+	} catch Error with {
+		$success = 0;
+	};
+
+	return $success;
 }
 __PACKAGE__->register_method(
 	method		=> 'update_record_node',
@@ -232,7 +242,7 @@ sub create_record_nodeset {
 	my @success;
 	while ( my $node = shift(@nodes) ) {
 		my ($res) = $method->run( $node );
-		push @success, $res if ($res);
+		push(@success, $res) if ($res >= 0);
 	}
 	
 	my $insert_total = 0;
@@ -250,22 +260,23 @@ __PACKAGE__->register_method(
 sub update_record_nodeset {
 	my $self = shift;
 	my $client = shift;
+	my @stuff = @_;
 
 	my $method = $self->method_lookup('open-ils.storage.biblio.record_node.update');
 
 	my @success;
-	while ( my $node = shift(@_) ) {
+	while ( my $node = shift(@stuff) ) {
 		my ($res) = $method->run( $node );
-		push @success, $res if ($res);
+		push(@success, $res) if ($res >= 0);
 	}
 
-	my $update_total = 0;
+	my $update_total;
 	$update_total += $_ for (@success);
 	
 	return $update_total;
 }
 __PACKAGE__->register_method(
-	method		=> 'create_record_nodeset',
+	method		=> 'update_record_nodeset',
 	api_name	=> 'open-ils.storage.biblio.record_node.batch.update',
 	api_level	=> 1,
 	argc		=> 1,
@@ -280,7 +291,7 @@ sub delete_record_nodeset {
 	my @success;
 	while ( my $node = shift(@_) ) {
 		my ($res) = $method->run( $node );
-		push @success, $res if ($res);
+		push(@success, $res) if ($res >= 0);
 	}
 
 	my $delete_total = 0;
@@ -289,7 +300,7 @@ sub delete_record_nodeset {
 	return $delete_total;
 }
 __PACKAGE__->register_method(
-	method		=> 'create_record_nodeset',
+	method		=> 'delete_record_nodeset',
 	api_name	=> 'open-ils.storage.biblio.record_node.batch.delete',
 	api_level	=> 1,
 	argc		=> 1,
