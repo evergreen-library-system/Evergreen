@@ -162,6 +162,27 @@ sub last_sent_type {
 	return $self->{'last_sent_type'};
 }
 
+sub get_app_targets {
+	my $app = shift;
+
+	my $targets;
+	my $config_client = OpenSRF::Utils::SettingsClient->new();
+
+	if( $app eq "settings" ) { # we have to load from the bootstrap config file
+
+		my $conf = OpenSRF::Utils::Config->current;
+		if(!$conf) { die("No transport target for $app!"); }
+		$targets = $conf->targets->$app || die("No transport target for $app!");
+
+	} else {
+		$targets =  $config_client->config_value("apps",$app,"transport_targets", "router_target");
+		if( !ref($targets) ) { $targets = [ $targets ]; }
+	}
+
+	warn "Returning Targets @$targets\n";
+	return @$targets;
+}
+
 # When we're a client and we want to connect to a remote service
 # create( $app, username => $user, secret => $passwd );
 #    OR
@@ -171,15 +192,6 @@ sub create {
 	$class = ref($class) || $class;
 
 	my $app = shift;
-	#my %auth_args = @_;
-
-
-#	unless ( $app &&
-#		 exists($auth_args{secret}) &&
-#		 ( exists($auth_args{username}) ||
-#		   exists($auth_args{sysname}) ) ) {
-#		throw OpenSRF::EX::User ( 'Insufficient authentication information for session creation');
-#	}
 
 	if( my $thingy = OpenSRF::AppSession->find_client( $app ) ) {
 			$logger->debug( "AppSession returning existing client session for $app", DEBUG );
@@ -189,32 +201,13 @@ sub create {
 	}
 
 
-	
-	#my $auth = OpenSRF::DOM::Element::userAuth->new( %auth_args );
-
-	my $config_client = OpenSRF::Utils::SettingsClient->new();
-
 	my $sess_id = time . rand( $$ );
 	while ( $class->find($sess_id) ) {
 		$sess_id = time . rand( $$ );
 	}
 
-	my $r_id;
+	my ($r_id) = get_app_targets($app);
 
-	if( $app eq "settings" ) {
-		my $conf = OpenSRF::Utils::Config->current;
-		if(!$conf) { die("No transport target for $app!"); }
-		$r_id = $conf->targets->$app->[0] || #just the first for now...
-				die("No transport target for $app!");
-	} else {
-		my $targets =  $config_client->config_value("apps",$app,"transport_targets", "router_target");
-		if( !ref($targets) ) { $targets = [ $targets ]; }
-
-		# XXX for now, just use the first
-			$r_id = $targets->[0] ||
-				die("No transport target for $app!");
-	}
-	
 	my $peer_handle = OpenSRF::Transport::PeerHandle->retrieve("client"); 
 	if( ! $peer_handle ) {
 		$peer_handle = OpenSRF::Transport::PeerHandle->retrieve("system_client");
