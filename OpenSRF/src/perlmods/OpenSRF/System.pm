@@ -229,18 +229,17 @@ sub bootstrap {
 
 sub bootstrap_client {
 
+	my %params = @_;
+
+	$bootstrap_config_file = 
+		$params{config_file} || $bootstrap_config_file;
+
+	my $app = $params{client_name} || "client";
+
+
 	my $self = __PACKAGE__->instance();
 	load_bootstrap_config();
 	OpenSRF::Utils::Logger::set_config();
-
-	my $client_type = shift;
-	my $app;
-
-	if( defined($client_type) and $client_type ) {
-		$app = $client_type;
-	} else {
-		$app = "client";
-	}
 
 	OpenSRF::Transport::PeerHandle->construct( $app );
 
