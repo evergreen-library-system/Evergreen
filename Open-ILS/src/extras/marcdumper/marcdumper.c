@@ -192,30 +192,18 @@ int main (int argc, char **argv) {
 
 							xmlDocPtr doc = xmlParseMemory(result, rlen);
 
-							if (!doc) {
-								fprintf(stderr, "xmLParseMemory failed\n");
-								continue;
+							if (doc) {
+								prune_doc( doc, prune );
+								char* marc = _xml_to_string(doc);
+								fprintf(stdout, "%s", marc);
+
+								free(marc);
+								xmlFreeDoc(doc);
+
+							} else {
+
+								fprintf(stderr, "xmLParseMemory failed for record %d\n", counter);
 							}
-
-							//	xmlDocPtr doc_copy = xmlCopyDoc( doc, 1 );
-							//char* holdings_expr = "/*/*[(local-name()='datafield' and "
-							//	"(@tag!='035' and @tag!='999')) or local-name()!='datafield']";
-
-							//char* marc_expr = "//*[@tag=\"999\"]";
-
-							prune_doc( doc, prune );
-							//prune_doc( doc_copy, holdings_expr );
-
-							char* marc = _xml_to_string(doc);
-							//char* holdings = _xml_to_string(doc_copy);
-
-							fprintf(stdout, "%s", marc);
-							//fprintf(stderr, "%s", holdings);
-
-							free(marc);
-							//free(holdings);
-							xmlFreeDoc(doc);
-							//xmlFreeDoc(doc_copy);
 
 						}
 
@@ -294,7 +282,11 @@ void prune_doc( xmlDocPtr doc, char* xpath ) {
 		xmlNodePtr cur_node = (xmlNodePtr) object->nodesetval->nodeTab[i];
 		xmlUnlinkNode( cur_node );
 		xmlFreeNode( cur_node );
+		object->nodesetval->nodeTab[i] = NULL;
 	}
+
+	xmlXPathFreeObject(object);
+   xmlXPathFreeContext(xpathctx); 	
 
 	/* remove all comments and PI nodes */
 	xmlNodePtr cur = doc->children;
@@ -306,8 +298,6 @@ void prune_doc( xmlDocPtr doc, char* xpath ) {
 		cur = cur->next;
 	}
 
-	xmlXPathFreeObject(object);
-   xmlXPathFreeContext(xpathctx); 	
 
 }
 
