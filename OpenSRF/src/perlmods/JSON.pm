@@ -13,6 +13,7 @@ use overload ( '/' => sub { int($_[0]) / int($_[1]) } );
 use overload ( '%' => sub { int($_[0]) % int($_[1]) } );
 use overload ( '**' => sub { int($_[0]) ** int($_[1]) } );
 use overload ( 'neg' => sub { -int($_[0]) } );
+use overload ( '==' => sub { int($_[0]->toString) == int($_[1])} );
 
 sub toString { defined($_[1]) ? ${$_[1]} : ${$_[0]} }
 
