@@ -9,6 +9,7 @@ int balance = 0;
 #define LOG_ERROR 1
 #define LOG_WARNING 2
 #define LOG_INFO 3
+#define LOG_DEBUG 4
 
 void get_timestamp( char buf_25chars[]) {
 	time_t epoch = time(NULL);	
@@ -143,6 +144,43 @@ void info_handler( char* msg, ... ) {
 
 	}
 }
+
+
+void debug_handler( char* msg, ... ) {
+
+	char buf[25];
+	memset( buf, 0, 25 );
+	get_timestamp( buf );
+	pid_t  pid = getpid();
+	va_list args;
+	
+	if( _init_log() ) {
+
+		if( log_level < LOG_DEBUG )
+			return;
+
+		pthread_mutex_lock( &(mutex) );
+		fprintf( log_file, "[%s %d] [%s] ", buf, pid, "DEBG" );
+	
+		va_start(args, msg);
+		vfprintf(log_file, msg, args);
+		va_end(args);
+	
+		fprintf(log_file, "\n");
+		fflush( log_file );
+		pthread_mutex_unlock( &(mutex) );
+
+	} else {
+
+		fprintf( stderr, "[%s %d] [%s] ", buf, pid, "DEBG" );
+		va_start(args, msg);
+		vfprintf(stderr, msg, args);
+		va_end(args);
+		fprintf( stderr, "\n" );
+	}
+
+}
+
 
 
 int _init_log() {
@@ -297,7 +335,7 @@ void config_reader_init( char* config_file ) {
 char* config_value( const char* xp_query, ... ) {
 
 	if( conf_reader == NULL || xp_query == NULL ) {
-		fatal_handler( "config_value(): NULL param(s)" );
+		fatal_handler( "config_value(): NULL conf_reader or NULL param(s)" );
 		return NULL;
 	}
 
@@ -374,7 +412,7 @@ char* config_value( const char* xp_query, ... ) {
 	}
 
 	char* value = strdup(val);
-	if( value == NULL ) { fatal_handler( "config_value(): Out of Memory!" ); }
+	if( value == NULL ) { warning_handler( "config_value(): Empty config value or Out of Memory!" ); }
 
 	// Free XPATH structures
 	if( xpathObj != NULL ) xmlXPathFreeObject( xpathObj );

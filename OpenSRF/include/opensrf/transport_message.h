@@ -85,6 +85,10 @@ void jid_get_username( const char* jid, char buf[] );
 // ---------------------------------------------------------------------------------
 void jid_get_resource( const char* jid, char buf[] );
 
+/** Puts the domain portion of the given jid into the pre-allocated buffer */
+void jid_get_domain( const char* jid, char buf[] );
+
 void set_msg_error( transport_message*, char* error_type, int error_code);
+
 
 #endif

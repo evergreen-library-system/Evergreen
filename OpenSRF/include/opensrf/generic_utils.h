@@ -55,6 +55,7 @@ void get_timestamp( char buf_25chars[]);
 void fatal_handler( char* message, ...);
 void warning_handler( char* message, ... );
 void info_handler( char* message, ... );
+void debug_handler( char* message, ... );
 
 // ---------------------------------------------------------------------------------
 // Config file module

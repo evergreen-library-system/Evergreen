@@ -6,6 +6,8 @@
 #ifndef ROUTER_H
 #define ROUTER_H
 
+#define ROUTER_MAX_TRUSTED 256
+
 // ----------------------------------------------------------------------
 // Jabber router_registrar/load balancer.  There is a top level linked list of 
 // server_class_nodes.  A server class represents the a cluster of Jabber
@@ -110,6 +112,9 @@ struct transport_router_registrar_struct {
 
 	/* true if we connect to jabber as a jabber component */
 	int component;
+
+	char** trusted_servers;
+	char** trusted_clients;
 
 
 };

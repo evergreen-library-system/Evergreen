@@ -6,6 +6,8 @@
 char* router_resource;
 transport_router_registrar* routt;
 
+void _build_trusted_sites( transport_router_registrar* router );
+
 void sig_hup_handler( int a ) { 
 	router_registrar_free( routt );	
 	config_reader_free();	
@@ -22,6 +24,10 @@ int main( int argc, char* argv[] ) {
 		exit(0);
 	}
 
+	char b[256];
+	memset(b,0,256);
+	jid_get_domain( "client@elroy/test", b );
+	fprintf(stderr, "Domain %s\n", b );
 
 	config_reader_init( argv[1] );	
 	if( conf_reader == NULL ) fatal_handler( "main(): Config is NULL" ); 
@@ -45,7 +51,6 @@ int main( int argc, char* argv[] ) {
 	int icomponent = 0;
 	if(component) 
 		icomponent = atoi(component);
-
 
 	if( iport < 1 ) { 
 		fatal_handler( "Port is negative or 0" );
@@ -107,9 +112,44 @@ transport_router_registrar* router_registrar_init( char* server,
 
 	router_registrar->client_timeout	= client_timeout;
 	router_registrar->jabber = jabber_connect_init( server, port, username, password, resource, con_timeout, component );
+	_build_trusted_sites( router_registrar );
+	info_handler( "Trusted stuff %s, %s, %s", router_registrar->trusted_servers[0], 
+		router_registrar->trusted_clients[0], router_registrar->trusted_clients[1] );
 	return router_registrar;
 
 }
+
+void _build_trusted_sites( transport_router_registrar* router ) {
+
+	router->trusted_servers = (char**) safe_malloc(sizeof(char**));
+	router->trusted_clients = (char**) safe_malloc(sizeof(char**));
+
+	*(router->trusted_servers) = (char*) safe_malloc(ROUTER_MAX_TRUSTED);
+	*(router->trusted_clients) = (char*) safe_malloc(ROUTER_MAX_TRUSTED);
+
+	int i = 0;
+	while( ++i ) {
+		char* server = config_value("//router/trusted_domains/server%d", i );
+		if(server == NULL)
+			break;
+		
+		router->trusted_servers[i-1] = server;
+	}
+
+	i = 0;
+	while( ++i ) {
+		char* client = config_value( "//router/trusted_domains/client%d", i );
+		if(client == NULL)
+			break;
+		router->trusted_clients[i-1] = client;
+	}
+
+	if( router->trusted_servers[0] == NULL ||
+			router->trusted_clients[0] == NULL )
+
+		fatal_handler( "You must specify at least one trusted server and client in the config file");
+}
+
 
 jabber_connect* jabber_connect_init( char* server, 
 		int port, char* username, char* password, char* resource, int connect_timeout, int component ) {
@@ -208,7 +248,33 @@ void listen_loop( transport_router_registrar* router ) {
 			
 			if( FD_ISSET( router_fd, &listen_set ) ) {
 				cur_msg = client_recv( router->jabber->t_client, 1 );
-				router_registrar_handle_msg( router, cur_msg );
+
+				/* We only process a message if we have some trusted servers and the current
+					message came from one of those servers */
+				if(router->trusted_servers && router->trusted_servers[0]) {
+					int i = 0;
+					int found = 0;
+
+					char server_buf[256];
+					memset(server_buf,0,256);
+					jid_get_domain( cur_msg->sender, server_buf );
+					info_handler("Received top level message from %s", server_buf );
+
+					while(1) {
+						if(router->trusted_servers[i] == NULL)
+							break;
+						if(!strcmp(router->trusted_servers[i], server_buf)) {
+							found = 1;
+							break;
+						}
+						i++;
+					}
+					if(found)
+						router_registrar_handle_msg( router, cur_msg );
+					else
+						warning_handler( "Received top level message from unpriveleged sender %s", cur_msg->sender );
+				}
+
 				message_free( cur_msg );
 				if( ++num_handled == select_ret ) 
 					continue;
@@ -775,6 +841,23 @@ int router_registrar_free( transport_router_registrar* router_registrar ) {
 	/* free the server_class list XXX */
 	while( router_registrar->server_class_list != NULL ) {
 		remove_server_class(router_registrar, router_registrar->server_class_list);
+	}
+
+	transport_router_registrar* router = router_registrar;
+
+	int i = 0;
+	
+	while(1) {
+
+		if( router->trusted_servers[i] == NULL &&
+				router->trusted_clients[i] == NULL )
+			break;
+
+		if(router->trusted_servers[i] != NULL)
+			free(router->trusted_servers[i]);
+		if(router->trusted_clients[i] != NULL)
+			free(router->trusted_clients[i]);
+		i++;
 	}
 
 	free( router_registrar );

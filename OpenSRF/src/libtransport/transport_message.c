@@ -363,6 +363,22 @@ void jid_get_resource( const char* jid, char buf[])  {
 	}
 }
 
+void jid_get_domain( const char* jid, char buf[] ) {
+	if(jid == NULL) return;
+	int len = strlen(jid);
+	int i;
+	int index1 = 0; 
+	int index2 = 0;
+	for( i = 0; i!= len; i++ ) {
+		if(jid[i] == 64) /* ascii @ */
+			index1 = i + 1;
+		else if(jid[i] == 47) /* ascii / */
+			index2 = i;
+	}
+	if( index1 > 0 && index2 > 0 && index2 > index1 )
+		memcpy( buf, jid + index1, index2 - index1 );
+}
+
 void set_msg_error( transport_message* msg, char* type, int err_code ) {
 
 	if( type != NULL && strlen( type ) > 0 ) {
