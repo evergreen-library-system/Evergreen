@@ -716,11 +716,26 @@ int router_return_server_info(
 			free(localtime);
 
 			buffer_add( buffer, buf );
-			buffer_add( buffer, " |  ");
+			buffer_add( buffer, " | ");
 
+			char tbuf[124];
+			memset(tbuf,0,124);
+			sprintf( tbuf, "%d", cur_node->la_time );	
+			buffer_add( buffer, tbuf );
+			buffer_add( buffer, " | ");
+
+
+			char sbuf[64];
+			memset(sbuf,0,64);
+			sprintf(sbuf,"%d",cur_node->serve_count);
+
+			buffer_add( buffer, "serve_count: " ); 
+			buffer_add( buffer, sbuf ); 
+			buffer_add( buffer, " | ");
 
 			buffer_add( buffer, cur_class->server_class );
-			buffer_add( buffer, "\t| ");
+			buffer_add( buffer, " | ");
+
 			buffer_add( buffer, cur_node->remote_id );
 
 			buffer_add( buffer, "\n" );
