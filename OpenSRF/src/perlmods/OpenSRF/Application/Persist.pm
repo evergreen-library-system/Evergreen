@@ -160,6 +160,24 @@ __PACKAGE__->register_method(
 	argc => 2,
 );
 
+sub get_expire_interval {
+	my $self = shift;
+	my $client = shift;
+	my $slot = shift;
+
+	my $sid = _get_name_id($slot);
+	my ($int) = $dbh->selectrow_array('SELECT expire_interval FROM store_expire WHERE id = ?;',{},$sid);
+	return undef unless ($int);
+
+	my ($future) = $dbh->selectrow_array('SELECT atime + expire_interval FROM store_expire WHERE id = ?;',{},$sid);
+	return $future - time();
+}
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.slot.get_expire',
+	method => 'get_expire_interval',
+	argc => 2,
+);
+
 
 sub _sweep_expired_slots {
 	return if (shift());
