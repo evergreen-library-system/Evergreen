@@ -239,16 +239,34 @@ sub get_record_nodeset {
 	my $client = shift;
 	my @ids = @_;
 
+	my $table = biblio::record_node->table;
+
+	my $sth = biblio::record_node->db_Main->prepare_cached(<<"	SQL");
+		SELECT * FROM $table WHERE owner_doc = ? ORDER BY intra_doc_id;
+	SQL
+
+
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		$client->respond(
-			$self->_cdbi_list2AoH(
-				biblio::record_node->search(
-					owner_doc => "$id", { order_by => 'intra_doc_id' }
-				)
-			)
-		);
+		$sth->execute($id);
+
+		my @rows;
+
+		while (my $hr = $sth->fetchrow_hashref) {
+			push @rows, $hr;
+		}
+		$client->respond( \@rows );
+
+		$sth->finish;
+		
+#		$client->respond(
+#			$self->_cdbi_list2AoH(
+#				biblio::record_node->search(
+#					owner_doc => "$id", { order_by => 'intra_doc_id' }
+#				)
+#			)
+#		);
 
 		last if ($self->api_name !~ /list/o);
 	}
