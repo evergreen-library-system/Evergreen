@@ -1,9 +1,9 @@
-use OpenILS::Utils::Logger qw/:level/;
-my $log = 'OpenILS::Utils::Logger';
+use OpenSRF::Utils::Logger qw/:level/;
+my $log = 'OpenSRF::Utils::Logger';
 
 #-------------------------------------------------------------------------------
 package OpenILS::Application::Storage::FTS;
-use OpenILS::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/:level/;
 
 sub compile {
 	die "You must override me somewhere!";
@@ -38,13 +38,13 @@ sub decompose {
 	$self->{ fts_op } = 'ILIKE';
 
 	for my $part ( @words, @parts ) {
-		$part = OpenILS::Application::Storage->driver->quote($part);
-		push @{ $self->{ fts_query },   "'\%$part\%'";
+		$part = OpenILS::Application::Storage::CDBI->quote($part);
+		push @{ $self->{ fts_query } },   "'\%$part\%'";
 	}
 
 	for my $part ( @nots ) {
-		$part = OpenILS::Application::Storage->driver->quote($part);
-		push @{ $self->{ fts_query_not },   "'\%$part\%'";
+		$part = OpenILS::Application::Storage::CDBI->quote($part);
+		push @{ $self->{ fts_query_not } },   "'\%$part\%'";
 	}
 
 	$self->{ raw } = $term;
