@@ -92,20 +92,20 @@ sub put_cache {
 
 	if($self->{"persist"}) {
 
-		my ($slot) = $persist_add_slot->run($key, $expiretime . "s");
+		my ($slot) = $persist_add_slot->run("_CACHEVAL_$key", $expiretime . "s");
 
 		if(!$slot) {
 			# slot may already exist
-			($slot) = $persist_slot_find->run($key);
+			($slot) = $persist_slot_find->run("_CACHEVAL_$key");
 			if(!defined($slot)) {
 				throw OpenSRF::EX::ERROR ("Unable to create cache slot $key in persist server" );
 			}
 		}
 
-		($slot) = $persist_push_stack->run($slot, $value);
+		($slot) = $persist_push_stack->run("_CACHEVAL_$slot", $value);
 
 		if(!$slot) {
-			throw OpenSRF::EX::ERROR ("Unable to push data onto stack in persist slot $key" );
+			throw OpenSRF::EX::ERROR ("Unable to push data onto stack in persist slot _CACHEVAL_$key" );
 		}
 	}
 
@@ -118,7 +118,7 @@ sub delete_cache {
 	_load_methods();
 	$self->{memcache}->delete($key);
 	if( $self->{persist} ) {
-		$persist_destroy_slot->run($key);
+		$persist_destroy_slot->run("_CACHEVAL_$key");
 	}
 	return $key; 
 }
@@ -133,9 +133,9 @@ sub get_cache {
 
 	# if not in memcache but we are persisting, the put it into memcache
 	if( $self->{"persist"} ) {
-		$val = $persist_peek_stack->( $key );
+		$val = $persist_peek_stack->( "_CACHEVAL_$key" );
 		if(defined($val)) {
-			my ($expire) = $persist_slot_get_expire->run($key);
+			my ($expire) = $persist_slot_get_expire->run("_CACHEVAL_$key");
 			if($expire)	{
 				$self->{memcache}->set( $key, $val, $expire);
 			} else {
