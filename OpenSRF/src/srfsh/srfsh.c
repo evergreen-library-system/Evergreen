@@ -14,7 +14,7 @@ int main( int argc, char* argv[] ) {
 		memset(fbuf, 0, l);
 		sprintf(fbuf,"%s/.srfsh.xml",home);
 
-		if(!access(fbuf, F_OK)) {
+		if(!access(fbuf, R_OK)) {
 			if( ! osrf_system_bootstrap_client(fbuf) ) 
 				fatal_handler( "Unable to bootstrap client for requests");
 
@@ -78,7 +78,7 @@ int load_history() {
 	sprintf(fbuf,"%s/.srfsh_history",home);
 	history_file = strdup(fbuf);
 
-	if(!access(history_file, F_OK)) {
+	if(!access(history_file, W_OK | R_OK )) {
 		//set_history_length(999);
 		history_length = 999;
 		read_history(history_file);
