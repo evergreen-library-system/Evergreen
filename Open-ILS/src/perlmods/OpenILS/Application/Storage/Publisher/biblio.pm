@@ -29,7 +29,7 @@ sub update_record_node {
 	my $client = shift;
 	my $node = shift;;
 
-	my $n = biblio::record_node->retrieve($$node{id});
+	my $n = biblio::record_node->retrieve("$$node{id}");
 	return undef unless ($n);
 
 	for my $field ( keys %$node ) {
@@ -151,7 +151,7 @@ sub update_record_entry {
 	my $client = shift;
 	my $entry = shift;
 
-	my $rec = biblio::record_entry->retrieve($$entry{id});
+	my $rec = biblio::record_entry->retrieve("$$entry{id}");
 	return undef unless ($rec);
 
 	for my $field ( keys %$node ) {
@@ -184,7 +184,7 @@ sub get_record_entry {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $rec = biblio::record_entry->retrieve($id);
+		my $rec = biblio::record_entry->retrieve("$id");
 		$client->respond( $self->_cdbi2Hash( $rec ) ) if ($rec);
 
 		last if ($self->api_name !~ /list/o);
@@ -213,7 +213,7 @@ sub get_record_node {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $rec = biblio::record_node->retrieve($id);
+		my $rec = biblio::record_node->retrieve("$id");
 		$client->respond( $self->_cdbi2Hash( $rec ) ) if ($rec);
 
 		last if ($self->api_name !~ /list/o);
@@ -245,7 +245,7 @@ sub get_record_nodeset {
 		$client->respond(
 			$self->_cdbi_list2AoH(
 				biblio::record_node->search(
-					owner_doc => $id, { order_by => 'intra_doc_id' }
+					owner_doc => "$id", { order_by => 'intra_doc_id' }
 				)
 			)
 		);
