@@ -1,6 +1,6 @@
 package OpenSRF::AppSession;
 use OpenSRF::DOM;
-use OpenSRF::DOM::Element::userAuth;
+#use OpenSRF::DOM::Element::userAuth;
 use OpenSRF::DomainObject::oilsMessage;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
@@ -177,12 +177,12 @@ sub create {
 	my %auth_args = @_;
 
 
-	unless ( $app &&
-		 exists($auth_args{secret}) &&
-		 ( exists($auth_args{username}) ||
-		   exists($auth_args{sysname}) ) ) {
-		throw OpenSRF::EX::User ( 'Insufficient authentication information for session creation');
-	}
+#	unless ( $app &&
+#		 exists($auth_args{secret}) &&
+#		 ( exists($auth_args{username}) ||
+#		   exists($auth_args{sysname}) ) ) {
+#		throw OpenSRF::EX::User ( 'Insufficient authentication information for session creation');
+#	}
 
 	if( my $thingy = OpenSRF::AppSession->find_client( $app ) ) {
 			$logger->debug( "AppSession returning existing client session for $app", DEBUG );
@@ -193,7 +193,7 @@ sub create {
 
 
 	
-	my $auth = OpenSRF::DOM::Element::userAuth->new( %auth_args );
+	#my $auth = OpenSRF::DOM::Element::userAuth->new( %auth_args );
 
 	my $conf = OpenSRF::Utils::Config->current;
 
@@ -210,7 +210,7 @@ sub create {
 			die("No remote id for $app!");
 
 	my $self = bless { app_name    => $app,
-			   client_auth => $auth,
+				#client_auth => $auth,
 			   #recv_queue  => [],
 			   request_queue  => [],
 			   endpoint    => CLIENT,
@@ -334,6 +334,7 @@ sub send {
 	my $self = shift;
 	my @payload_list = @_; # this is a Domain Object
 
+
 	$logger->debug( "In send", INTERNAL );
 	
 	my $tT;
@@ -377,7 +378,7 @@ sub send {
 		$msg->type($msg_type);
 		$logger->debug( "AppSession after adding type" . $msg->toString(), INTERNAL );
 	
-		$msg->userAuth($self->client_auth) if ($self->endpoint == CLIENT && $msg_type eq 'CONNECT');
+		#$msg->userAuth($self->client_auth) if ($self->endpoint == CLIENT && $msg_type eq 'CONNECT');
 	
 		no warnings;
 		$msg->threadTrace( $tT || int($self->session_threadTrace) || int($self->last_threadTrace) );
@@ -411,7 +412,7 @@ sub send {
 				$logger->debug( "Unable to connect to remote service in AppSession::send()", ERROR );
 				return undef;
 			}
-			if( $v and $v->class->isa( "OpenSRF::EX" ) ) {
+			if( $v and $v->can("class") and $v->class->isa( "OpenSRF::EX" ) ) {
 				return $v;
 			}
 		}
@@ -531,6 +532,7 @@ sub remote_id {
 }
 
 sub client_auth {
+	return undef;
 	my $self = shift;
 	my $new_ua = shift;
 
@@ -771,11 +773,11 @@ sub respond {
 	my $msg = shift;
 
 	my $response;
-	if (!ref($msg) || ($msg->can('getAttribute') && $msg->getAttribute('name') !~ /oilsResult/)) {
+	if (ref($msg) && $msg->can('getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
+		$response = $msg;
+	} else {
 		$response = new OpenSRF::DomainObject::oilsResult;
 		$response->content($msg);
-	} else {
-		$response = $msg;
 	}
 
 	$self->session->send('RESULT', $response, $self->threadTrace);
@@ -786,11 +788,11 @@ sub respond_complete {
 	my $msg = shift;
 
 	my $response;
-	if (!ref($msg) || ($msg->can('getAttribute') && $msg->getAttribute('name') !~ /oilsResult/)) {
+	if (ref($msg) && $msg->can('getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
+		$response = $msg;
+	} else {
 		$response = new OpenSRF::DomainObject::oilsResult;
 		$response->content($msg);
-	} else {
-		$response = $msg;
 	}
 
 	my $stat = OpenSRF::DomainObject::oilsConnectStatus->new(

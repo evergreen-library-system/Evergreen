@@ -2,7 +2,7 @@ package OpenSRF::Transport::SlimJabber::Inbound;
 use strict;use warnings;
 use base qw/OpenSRF::Transport::SlimJabber::Client/;
 use OpenSRF::EX;
-use OpenSRF::Utils::Config;
+use OpenSRF::Utils::Config; 
 use OpenSRF::Utils::Logger qw(:level);
 
 my $logger = "OpenSRF::Utils::Logger";

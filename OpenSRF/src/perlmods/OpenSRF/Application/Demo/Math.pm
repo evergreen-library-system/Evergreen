@@ -1,15 +1,16 @@
-package OpenILS::App::Math;
-use base qw/OpenILS::Application/;
-use OpenILS::Application;
-use OpenILS::Utils::Logger qw/:level/;
-use OpenILS::DomainObject::oilsResponse;
-use OpenILS::EX qw/:try/;
+package OpenSRF::Application::Demo::Math;
+use base qw/OpenSRF::Application/;
+use OpenSRF::Application;
+use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::DomainObject::oilsResponse;
+use OpenSRF::DomainObject::oilsPrimitive;
+use OpenSRF::EX qw/:try/;
 use strict;
 use warnings;
 
 sub DESTROY{}
 
-our $log = 'OpenILS::Utils::Logger';
+our $log = 'OpenSRF::Utils::Logger';
 
 #sub method_lookup {
 #
@@ -41,12 +42,12 @@ sub send_request {
 	my @params = @_;
 
 	$log->debug( "Creating a client environment", DEBUG );
-	my $session = OpenILS::AppSession->create( 
+	my $session = OpenSRF::AppSession->create( 
 			"dbmath", sysname => 'math', secret => '12345' );
 
 	$log->debug( "Sending request to math server", INTERNAL );
 	
-	my $method = OpenILS::DomainObject::oilsMethod->new( method => $method_name );
+	my $method = OpenSRF::DomainObject::oilsMethod->new( method => $method_name );
 	
 	$method->params( @params );
 	
@@ -61,20 +62,20 @@ sub send_request {
 			my $vv = $session->connect();
 			if($vv) { last; }
 			if( $nn and !$vv ) {
-				throw OpenILS::EX::CRITICAL ("DBMath connect attempt timed out");
+				throw OpenSRF::EX::CRITICAL ("DBMath connect attempt timed out");
 			}
 		}
 
 		$req = $session->request( $method );
 		$resp = $req->recv(10); 
 
-	} catch OpenILS::DomainObject::oilsAuthException with { 
+	} catch OpenSRF::DomainObject::oilsAuthException with { 
 		my $e = shift;
 		$e->throw();
 	}; 
 
 	$log->error("response is $resp");
-	if ( defined($resp) and $resp and $resp->class->isa('OpenILS::DomainObject::oilsResult') ){ 
+	if ( defined($resp) and $resp and $resp->class->isa('OpenSRF::DomainObject::oilsResult') ){ 
 
 		$log->debug( "Math server returned " . $resp->toString(1), INTERNAL );
 		$req->finish;
@@ -87,7 +88,7 @@ sub send_request {
 		else{ $log->debug( "Math received empty value", ERROR ); }
 		$req->finish;
 		$session->finish;
-		throw OpenILS::EX::ERROR ("Did not receive expected data from MathDB");
+		throw OpenSRF::EX::ERROR ("Did not receive expected data from MathDB");
 
 	}
 }

@@ -10,6 +10,7 @@ use OpenSRF::Utils::LogServer;
 use OpenSRF::DOM;
 use OpenSRF::EX qw/:try/;
 use POSIX ":sys_wait_h";
+use OpenSRF::Utils::Config;
 use strict;
 
 =head2 Name/Description
@@ -59,7 +60,9 @@ set_config();
 sub set_config {
 
 	my $config = OpenSRF::Utils::Config->load( 
-		config_file => "/pines/conf/oils.conf" );
+		config_file => "/pines/conf/opensrf.conf" );
+
+	warn "Setting config " . $config->transport->implementation ."\n";
 
 	if( ! $config ) { throw OpenSRF::EX::Config "System could not load config"; }
 
@@ -76,10 +79,6 @@ sub set_config {
 
 
 }
-
-
-
-
 
 
 # ----------------------------------------------
