@@ -19,12 +19,11 @@ __PACKAGE__->register_method(
 	method	=> "init_authenticate",
 	api_name	=> "open-ils.auth.authenticate.init",
 	argc		=> 1, #(username) 
-	note		=> <<TEXT,
-		Generates a random seed and returns it.  The client
-		must then perform md5_hex( \$seed . \$password ) and use that
-		as the passwordhash to open-ils.auth.authenticate.complete
+	note		=>	<<TEXT,
+Generates a random seed and returns it.  The client
+must then perform md5_hex( \$seed . \$password ) and use that
+as the passwordhash to open-ils.auth.authenticate.complete
 TEXT
-
 );
 
 __PACKAGE__->register_method(
@@ -32,12 +31,11 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.auth.authenticate.complete",
 	argc		=> 2, #( barcode, passwdhash )
 	note		=> <<TEXT,
-		Client provides the username and passwordhash (see 
-		open-ils.auth.authenticate.init).  If their password hash is 
-		correct for the given username, a session id is returned, 
-		if not, "0" is returned
+Client provides the username and passwordhash (see 
+open-ils.auth.authenticate.init).  If their password hash is 
+correct for the given username, a session id is returned, 
+if not, "0" is returned
 TEXT
-
 );
 
 # -------------------------------------------------------------
