@@ -5,7 +5,7 @@ use OpenSRF::Utils::Config;
 use Digest::MD5 qw/md5_hex/;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsResponse;
-use OpenSRF::App::Auth;
+#use OpenSRF::App::Auth;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::Cache;
 
