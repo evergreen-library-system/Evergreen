@@ -5,6 +5,8 @@
 #include <time.h>
 #include <sys/timeb.h>
 
+#include "md5.h"
+
 #include <signal.h>
 
 #include <stdio.h>
@@ -22,6 +24,8 @@ char* prompt = "srfsh# ";
 char* history_file = NULL;
 
 int child_dead = 0;
+
+char* login_session = NULL;
 
 /* true if we're pretty printing json results */
 int pretty_print = 1;
@@ -61,4 +65,5 @@ int load_history();
 int handle_math( char* words[] );
 int do_math( int count, int style );
 int handle_introspect(char* words[]);
-
+int handle_login( char* words[]);
+char* md5sum( char* text ); 

@@ -170,6 +170,9 @@ int parse_request( char* request ) {
 	else if (!strcmp(words[0],"introspect"))
 		ret_val = handle_introspect(words);
 
+	else if (!strcmp(words[0],"login"))
+		ret_val = handle_login(words);
+
 	else if (words[0][0] == '!')
 		ret_val = handle_exec( words );
 
@@ -194,6 +197,85 @@ int handle_introspect(char* words[]) {
 	return 0;
 }
 
+
+int handle_login( char* words[]) {
+
+	if( words[1] && words[2]) {
+
+		char* username = words[1];
+		char* password = words[2];
+
+		char buf[256];
+		memset(buf,0,256);
+
+		char buf2[256];
+		memset(buf2,0,256);
+
+		sprintf( buf, 
+				"request open-ils.auth open-ils.auth.authenticate.init \"%s\"", username );
+		parse_request(buf); 
+
+		char* hash = json_object_get_string( last_result->result_content );
+
+		char* pass_buf = md5sum(password);
+
+		printf("passowrd after %s\n", pass_buf );
+
+		char both_buf[256];
+		memset(both_buf,0,256);
+		sprintf(both_buf,"%s%s",hash, pass_buf);
+
+		char* mess_buf = md5sum(both_buf);
+
+		printf("sending %s\n", mess_buf );
+
+		sprintf( buf2,
+				"request open-ils.auth open-ils.auth.authenticate.complete \"%s\", \"%s\"", 
+				username, mess_buf );
+
+		free(pass_buf);
+		free(mess_buf);
+
+		parse_request( buf2 );
+
+		login_session = json_object_get_string( last_result->result_content );
+
+		printf("Login Session: %s\n", login_session );
+		
+		return 1;
+
+	}
+
+	return 0;
+}
+
+char* md5sum( char* text ) {
+
+	struct md5_ctx ctx;
+	unsigned char digest[16];
+
+	MD5_start (&ctx);
+
+	int i;
+	for ( i=0 ; i != strlen(text) ; i++ )
+		MD5_feed (&ctx, text[i]);
+
+	MD5_stop (&ctx, digest);
+
+	char buf[16];
+	memset(buf,0,16);
+
+	char final[256];
+	memset(final,0,256);
+
+	for ( i=0 ; i<16 ; i++ ) {
+		sprintf(buf, "%02x", digest[i]);
+		strcat( final, buf );
+	}
+
+	return strdup(final);
+
+}
 
 
 int handle_set( char* words[]) {
@@ -236,6 +318,12 @@ int handle_print( char* words[]) {
 				return 1;
 			}
 		}
+
+		if(!strcmp(variable,"login")) {
+			printf("login session = %s\n", login_session );
+			return 1;
+		}
+
 	}
 	return 0;
 }
@@ -385,13 +473,13 @@ int send_request( char* server,
 
 			if( pretty_print ) {
 				char* content = json_printer( omsg->result_content );
-				buffer_add( resp_buffer, "\nReceived Data:" ); 
+				buffer_add( resp_buffer, "\nReceived Data: " ); 
 				buffer_add( resp_buffer, content );
 				buffer_add( resp_buffer, "\n" );
 				free(content);
 			} else {
 				char* content = json_object_get_string(omsg->result_content);
-					buffer_add( resp_buffer, "\nReceived Data:" ); 
+					buffer_add( resp_buffer, "\nReceived Data: " ); 
 					buffer_add( resp_buffer, content );
 					buffer_add( resp_buffer, "\n" );
 			}
@@ -541,7 +629,16 @@ int print_help() {
 			"introspect <service>\n"
 			"	- prints the API for the service\n"
 			"\n"
+			"\n"
 			"---------------------------------------------------------------------------------\n"
+			" Commands for Open-ILS\n"
+			"---------------------------------------------------------------------------------\n"
+			"login <username> <password>\n"
+			"	-	Logs into the 'server' and displays the session id\n"
+			"	- To view the session id later, enter: print login\n"
+			"---------------------------------------------------------------------------------\n"
+			"\n"
+			"\n"
 			"Note: long output is piped through 'less'.  To search in 'less', type: /<search>\n"
 			"---------------------------------------------------------------------------------\n"
 			"\n"
