@@ -42,6 +42,21 @@ sub retrieve_node {
 sub search {
 	my $self = shift;
 	my $client = shift;
+	my $searches = shift;
+
+	my $cdbi = $self->{cdbi};
+
+	$log->debug("Searching $cdbi for { ".join(',', map { "$_ => $$searches{$_}" } keys %$searches).' }',DEBUG);
+
+	for my $obj ($cdbi->search($searches)) {
+		$client->respond( $obj->to_fieldmapper );
+	}
+	return undef;
+}
+
+sub search_one_field {
+	my $self = shift;
+	my $client = shift;
 	my $term = shift;
 
 	(my $search_type = $self->api_name) =~ s/.*\.(search[^.]*).*/$1/o;
@@ -131,6 +146,17 @@ for my $fmclass ( Fieldmapper->classes ) {
 	my $registration_class = __PACKAGE__ . "::$class";
 	my $api_prefix = 'open-ils.storage.'.$api_class;
 
+	# Create the search method
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.search' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.search',
+			method		=> 'search',
+			api_level	=> 1,
+			stream		=> 1,
+			cdbi		=> $cdbi,
+		);
+	}
+
 	# Create the retrieve method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.retrieve' ) ) {
 		__PACKAGE__->register_method(
@@ -156,7 +182,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
 			__PACKAGE__->register_method(
 				api_name	=> $api_prefix.'.search.'.$field,
-				method		=> 'search',
+				method		=> 'search_one_field',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
 			);
@@ -164,7 +190,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
 			__PACKAGE__->register_method(
 				api_name	=> $api_prefix.'.search_like.'.$field,
-				method		=> 'search',
+				method		=> 'search_one_field',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
 			);
