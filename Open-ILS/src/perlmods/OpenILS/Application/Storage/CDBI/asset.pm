@@ -9,14 +9,24 @@ package asset::call_number;
 use base qw/asset/;
 
 __PACKAGE__->table( 'asset_call_number' );
-__PACKAGE__->columns( All => qw/id record label/ );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/record label/ );
 
 #-------------------------------------------------------------------------------
 package asset::copy;
 use base qw/asset/;
 
 __PACKAGE__->table( 'asset_copy' );
-__PACKAGE__->columns( All => qw/id call_number barcode/ );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/call_number barcode/ );
+
+#-------------------------------------------------------------------------------
+package asset::copy_metadata;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_copy_metadata' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/checkout_status ciruclating_location hold_radius/ );
 
 #-------------------------------------------------------------------------------
 1;

@@ -13,6 +13,11 @@ use OpenILS::Application::Storage::CDBI::metabib;
 
 #-------------------------------------------------------------------------------
 asset::copy->has_a( call_number => 'asset::call_number' );
+asset::copy->might_have( metadata => 'asset::copy_metadata' );
+#-------------------------------------------------------------------------------
+asset::copy_metadata->might_have( copy => 'asset::copy' );
+#asset::copy_metadata->has_a( ciruclating_location => 'actor::org_unit');
+#asset::copy_metadata->has_a( hold_radius => 'actor::org_unit_type');
 #-------------------------------------------------------------------------------
 asset::call_number->has_a( record => 'biblio::record_entry' );
 asset::call_number->has_many( copies => 'asset::copy' );
