@@ -316,13 +316,13 @@ int send_request( char* server,
 	}
 
 	osrf_app_session* session = osrf_app_client_session_init(server);
-	double start = get_timestamp_millis();
 
 	if(!osrf_app_session_connect(session)) {
 		warning_handler( "Unable to connect to remote service %s\n", server );
 		return 1;
 	}
 
+	double start = get_timestamp_millis();
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
@@ -336,6 +336,8 @@ int send_request( char* server,
 	FILE* less = popen( "less -EX", "w");
 	if( less == NULL ) { less = stdout; }
 
+	growing_buffer* resp_buffer = buffer_init(4096);
+
 	while(omsg) {
 
 		if(omsg->result_content) {
@@ -345,18 +347,28 @@ int send_request( char* server,
 
 			if( pretty_print ) {
 				char* content = json_printer( omsg->result_content );
-				fprintf( less, "\nReceived Data: %s\n",content );
+				buffer_add( resp_buffer, "\nReceived Data:" ); 
+				buffer_add( resp_buffer, content );
+				buffer_add( resp_buffer, "\n" );
 				free(content);
 			} else {
-				fprintf( less, "\nReceived Data: %s\n",
-					json_object_to_json_string(omsg->result_content));
+				char* content = json_object_to_json_string(omsg->result_content);
+					buffer_add( resp_buffer, "\nReceived Data:" ); 
+					buffer_add( resp_buffer, content );
+					buffer_add( resp_buffer, "\n" );
 			}
 
 		} else {
 
-			fprintf( less, "\nReceived Exception:\nName: %s\nStatus: "
-					"%s\nStatusCode %d\n", omsg->status_name, 
-					omsg->status_text, omsg->status_code );
+			buffer_add( resp_buffer, "\nReceived Exception:\nName: " );
+			buffer_add( resp_buffer, omsg->status_name );
+			buffer_add( resp_buffer, "\nStatus: " );
+			buffer_add( resp_buffer, omsg->status_text );
+			buffer_add( resp_buffer, "\nStatus: " );
+			char code[16];
+			memset(code, 0, 16);
+			sprintf( code, "%d", omsg->status_code );
+			buffer_add( resp_buffer, code );
 		}
 
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
@@ -365,6 +377,8 @@ int send_request( char* server,
 
 	double end = get_timestamp_millis();
 
+	fprintf( less, resp_buffer->buf );
+	buffer_free( resp_buffer );
 	fprintf( less, "\n------------------------------------\n");
 	if( osrf_app_session_request_complete( session, req_id ))
 		fprintf(less, "Request Completed Successfully\n");
@@ -373,11 +387,12 @@ int send_request( char* server,
 	fprintf(less, "Request Time in seconds: %.3f\n", end - start );
 	fprintf(less, "------------------------------------\n");
 
+	pclose(less); 
+
 	osrf_app_session_request_finish( session, req_id );
 	osrf_app_session_disconnect( session );
 	osrf_app_session_destroy( session );
 
-	pclose(less); 
 
 	return 1;
 
