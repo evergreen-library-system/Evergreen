@@ -80,7 +80,7 @@ sub initialize {
 	if(!ref($memcache_servers)) {
 		$memcache_servers = [$memcache_servers];
 	}
-	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.auth", $memcache_servers );
+	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.auth", 1, $memcache_servers );
 }
 
 
@@ -93,7 +93,7 @@ sub initialize {
 sub init_authenticate {
 	my( $self, $client, $username ) = @_;
 	my $seed = md5_hex( time() . $$ . rand() . $username );
-	$cache_handle->set( "_open-ils_seed_$username", $seed, 300 );
+	$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 300 );
 	return $seed;
 }
 
@@ -125,7 +125,8 @@ sub complete_authenticate {
 		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
 	}
 
-	my $current_seed = $cache_handle->get("_open-ils_seed_$username");
+	my $current_seed = $cache_handle->get_cache("_open-ils_seed_$username");
+	$cache_handle->delete_cache( "_open-ils_seed_$username" );
 
 	unless($current_seed) {
 		throw OpenILS::EX::User 
@@ -133,12 +134,11 @@ sub complete_authenticate {
 	}
 
 	my $hash = md5_hex($current_seed . $password);
-	$cache_handle->delete( "_open-ils_seed_$username" );
 
 	if( $hash eq $passwdhash ) {
 
 		my $session_id = md5_hex( time() . $$ . rand() ); 
-		$cache_handle->set( $session_id, $username, 28800 );
+		$cache_handle->put_cache( $session_id, $username, 28800 );
 		return $session_id;
 
 	} else {
@@ -149,12 +149,12 @@ sub complete_authenticate {
 
 sub retrieve_session {
 	my( $self, $client, $sessionid ) = @_;
-	return $cache_handle->get($sessionid);
+	return $cache_handle->get_cache($sessionid);
 }
 
 sub delete_session {
 	my( $self, $client, $sessionid ) = @_;
-	return $cache_handle->delete($sessionid);
+	return $cache_handle->delete_cache($sessionid);
 }
 
 
