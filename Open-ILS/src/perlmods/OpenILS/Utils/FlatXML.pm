@@ -53,6 +53,13 @@ sub xml_to_nodeset {
 	return $self;
 }
 
+sub xmldoc_to_nodeset {
+	my($self, $doc) = @_;
+	$self->{doc} = $doc if $doc;
+	my $nodeset = $self->_xml_to_nodeset;
+	return $self;
+}
+
 sub nodeset {
 	my $self = shift;
 	return $self->{nodelist};
@@ -83,6 +90,7 @@ sub nodeset_to_xml {
 	my $self = shift;
 	my $nodeset = shift;
 	$nodeset ||= $self->nodeset;
+	$self->{nodelist} = $nodeset;
 
 	my $doc = XML::LibXML::Document->new;
 
