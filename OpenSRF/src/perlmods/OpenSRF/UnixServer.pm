@@ -152,20 +152,6 @@ sub serve {
 	my $pid_file =	join("/", $client->config_value("dirs", "pid"),
 				$client->config_value("apps", $app, "unix_config", "unix_pid" ));
 
-
-
-=head
-	$self->{server}->{min_severs} = $min_servers;
-	$self->{server}->{max_severs} = $max_servers;
-	$self->{server}->{min_spare_severs} = $min_spare;
-	$self->{server}->{max_spare_servers} = $max_spare;
-	$self->{server}->{max_request} = $max_requests;
-	$self->{server}->{log_file} = $log_file;
-	$self->{server}->{pid_file} = $pid_file;
-	$self->{server}->{log_level} = 4;
-	$self->{server}->{proto} = "unix";
-=cut
-
 	my $file = "/tmp/" . time . rand( $$ ) . "_$$";
 	my $file_string = "min_servers $min_servers\nmax_servers $max_servers\n" .
 		"min_spare_servers $min_spare\nmax_spare_servers $max_spare\n" .
@@ -184,6 +170,9 @@ sub configure_hook {
 	my $self = shift;
 	my $app = $self->app;
 
+	# boot a client
+	OpenSRF::System::bootstrap_client("system_client");
+
 	$logger->debug( "Setting application implementaion for $app", DEBUG );
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	my $imp = $client->config_value("apps", $app, "implementation");
@@ -197,6 +186,11 @@ sub configure_hook {
 		$self->child_init_hook();
 	}
 
+	my $con = OpenSRF::Transport::PeerHandle->retrieve;
+	if($con) {
+		$con->disconnect;
+	}
+
 	return OpenSRF::Application->application_implementation;
 }
 
@@ -206,6 +200,8 @@ sub child_finish_hook {
 }
 
 sub child_init_hook { 
+
+	$0 = "$0_child";
 
 	my $self = shift;
 

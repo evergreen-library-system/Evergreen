@@ -13,6 +13,14 @@ sub new {return bless({},shift());}
 my $session;
 $host_config = undef;
 
+my $we_cache = 1;
+sub set_cache {
+	my($self, $val) = @_;
+	if($val) { $we_cache = 1; }
+}
+
+
+
 # ------------------------------------
 # utility method for grabbing config info
 sub config_value {
@@ -21,7 +29,13 @@ sub config_value {
 
 	my $bsconfig = OpenSRF::Utils::Config->current;
 	my $host = $bsconfig->env->hostname;
-	if(!$host_config) { grab_host_config($host); }
+
+	if($we_cache) {
+		if(!$host_config) { grab_host_config($host); }
+	} else {
+		grab_host_config($host);
+	}
+
 	if(!$host_config) {
 		throw OpenSRF::EX::Config ("Unable to retrieve host config for $host" );
 	}
