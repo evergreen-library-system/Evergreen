@@ -180,18 +180,26 @@ package Class::DBI;
 		$search_opts->{offset} = int($search_opts->{page}) * int($search_opts->{page_size})  if ($search_opts->{page_size});
 		$search_opts->{_placeholder} ||= '?';
 
+		my @frags;
 		while (my ($col, $val) = splice @args, 0, 2) {
 			my $column = $class->find_column($col)
 				|| (List::Util::first { $_->accessor eq $col } $class->columns)
 				|| $class->_croak("$col is not a column of $class");
 
-			push @cols, $column;
-			push @vals, $class->_deflated_column($column, $val);
+			if (!defined($val)) {
+				push @frags, "$col IS NULL";
+			} elsif (ref($val) and ref($val) eq 'ARRAY') {
+				push @frags, "$col IN (".join(',',map{'?'}@$val).")";
+				for my $v (@$val) {
+					push @vals, ''.$class->_deflated_column($column, $v);
+				}
+			} else {
+				push @frags, "$cols[$_] $search_type $$search_opts{_placeholder}";
+				push @vals, $class->_deflated_column($column, $val);
+			}
 		}
 
-		my $frag = join " AND ",
-		map defined($vals[$_]) ? "$cols[$_] $search_type $$search_opts{_placeholder}" : "$cols[$_] IS NULL",
-			0 .. $#cols;
+		my $frag = join " AND ", @frags;
 
 		$frag .= " ORDER BY $search_opts->{order_by}"
 			if $search_opts->{order_by};
@@ -200,8 +208,7 @@ package Class::DBI;
 		$frag .= " OFFSET $search_opts->{offset}"
 			if ($search_opts->{limit} && defined($search_opts->{offset}));
 
-		return $class->sth_to_objects($class->sql_Retrieve($frag),
-			[ grep defined, @vals ]);
+		return $class->sth_to_objects($class->sql_Retrieve($frag), \@vals);
 	}
 }
 
