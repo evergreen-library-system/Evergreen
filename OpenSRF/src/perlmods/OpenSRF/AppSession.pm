@@ -200,21 +200,20 @@ sub create {
 	}
 
 	my $r_id;
-	my $conf = OpenSRF::Utils::Config->current;
-	if(!$conf) { die("No transport target for $app!"); }
-	$r_id = $conf->targets->$app->[0] || #just the first for now...
-				die("No transport target for $app!");
 
-=head lasdf
+	if( $app eq "settings" ) {
+		my $conf = OpenSRF::Utils::Config->current;
+		if(!$conf) { die("No transport target for $app!"); }
+		$r_id = $conf->targets->$app->[0] || #just the first for now...
+				die("No transport target for $app!");
 	} else {
-		my $targets =  $config_client->config_value("apps",$app,"transport_targets", "transport_target");
+		my $targets =  $config_client->config_value("apps",$app,"transport_targets", "router_target");
 		if( !ref($targets) ) { $targets = [ $targets ]; }
 
 		# XXX for now, just use the first
 			$r_id = $targets->[0] ||
 				die("No transport target for $app!");
 	}
-=cut
 	
 	my $peer_handle = OpenSRF::Transport::PeerHandle->retrieve("client"); 
 	if( ! $peer_handle ) {
