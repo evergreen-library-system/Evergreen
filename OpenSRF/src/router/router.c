@@ -858,7 +858,9 @@ int router_registrar_handle_app_request(
 	for( i = 0; i != num_msgs; i++ ) {
 
 		osrf_message* omsg = arr[i];
-		osrf_message* success;
+		osrf_message* success = NULL;
+		osrf_message** result = NULL;
+		int num_responses;
 
 		char* newxml =  osrf_message_to_xml(omsg);
 		debug_handler( "Received potential app request from client:\n%s\n", newxml ); 
@@ -874,7 +876,7 @@ int router_registrar_handle_app_request(
 
 		} else if( omsg->m_type == REQUEST ) {
 
-			success = router_registrar_process_app_request( router, omsg );
+			result = router_registrar_process_app_request( router, omsg, &num_responses );
 			
 		} else if(omsg->m_type == DISCONNECT) { 
 			success = NULL;
@@ -901,7 +903,35 @@ int router_registrar_handle_app_request(
 
 			free(xml);
 			osrf_message_free(success);
-		} 
+		} else if(result) {
+			int i;
+
+			for(i=0; i!= num_responses; i++){
+				char* xml =  osrf_message_to_xml(result[i]);
+				debug_handler( "Sending XML to client app request:\n%s\n", xml );
+				transport_message* return_m = message_init( 
+					xml, "", msg->thread, msg->sender, "" );
+
+
+				client_send_message(router->jabber->t_client, return_m);
+
+				free(xml);
+				osrf_message_free(result[i]);
+			}
+
+			osrf_message* complete = osrf_message_init(
+				STATUS, result[i-1]->thread_trace, result[i-1]->protocol );
+			osrf_message_set_status_info( complete, 
+					"oilsConnectStatus", "Request Complete", OSRF_STATUS_COMPLETE );
+			char* complete_xml = osrf_message_to_xml(complete);
+			transport_message* complete_m = message_init( 
+					complete_xml, "", msg->thread, msg->sender, "" );
+			client_send_message(router->jabber->t_client, complete_m);
+			free(complete_xml);
+			osrf_message_free(complete);
+			free(result);
+
+		}
 
 	}
 
@@ -911,18 +941,21 @@ int router_registrar_handle_app_request(
 
 
 
-osrf_message* router_registrar_process_app_request( 
-		transport_router_registrar* router, osrf_message* omsg ) {
+osrf_message** router_registrar_process_app_request( 
+		transport_router_registrar* router, osrf_message* omsg, int* num_responses ) {
 
 
 	if( omsg->method_name == NULL )
 		return NULL;
 
-	json* result_content = NULL;
+	osrf_message** result_array = NULL;
+
 
 	debug_handler( "Received method from client: %s", omsg->method_name );
 
 	if(!strcmp(omsg->method_name,"opensrf.router.info.class.list")) {
+
+		json* result_content = NULL;
 
 		debug_handler("Processing opensrf.router.info.class.list request");
 
@@ -936,6 +969,14 @@ osrf_message* router_registrar_process_app_request(
 					result_content, json_object_new_string(cur_class->server_class));
 			cur_class = cur_class->next;
 		}
+		result_array = safe_malloc(sizeof(osrf_message*));
+		*num_responses = 1;
+
+		result_array[0] = osrf_message_init(
+			RESULT, omsg->thread_trace, omsg->protocol );
+		osrf_message_set_result_content( result_array[0], result_content );
+		json_object_put(result_content);
+
 
 	} else if(!strcmp(omsg->method_name,"opensrf.router.info.stats")) {
 
@@ -945,6 +986,7 @@ osrf_message* router_registrar_process_app_request(
 
 		debug_handler("Processing opensrf.router.info.stats request");
 
+		json* result_content = NULL;
 		result_content = json_object_new_object();
 		server_class_node* cur_class = router->server_class_list;
 
@@ -990,21 +1032,53 @@ osrf_message* router_registrar_process_app_request(
 					result_content, cur_class->server_class, server_object ); 
 	
 			cur_class = cur_class->next;
-	
+
+				
 		}
+
+		result_array = safe_malloc(sizeof(osrf_message*));
+		*num_responses = 1;
+
+		result_array[0] = osrf_message_init(
+			RESULT, omsg->thread_trace, omsg->protocol );
+		osrf_message_set_result_content( result_array[0], result_content );
+		json_object_put(result_content);
+
+
+	} else if(!strcmp(omsg->method_name,"opensrf.system.method.all")) {
+
+		json* content = json_object_new_object();
+		json_object_object_add(content, "api_level", json_object_new_string("1"));
+		json_object_object_add(content, "api_name", json_object_new_string("opensrf.router.info.class.list"));
+		json_object_object_add(content, "server_class", json_object_new_string("router"));
+		json_object_object_add(content, "stream", json_object_new_string("0"));
+
+		json* content2 = json_object_new_object();
+		json_object_object_add(content2, "api_level", json_object_new_string("1"));
+		json_object_object_add(content2, "api_name", json_object_new_string("opensrf.router.info.stats"));
+		json_object_object_add(content2, "server_class", json_object_new_string("router"));
+		json_object_object_add(content2, "stream", json_object_new_string("0"));
+
+		result_array = safe_malloc(2*sizeof(osrf_message*));
+		*num_responses = 2;
+
+		result_array[0] = osrf_message_init(
+			RESULT, omsg->thread_trace, omsg->protocol );
+		osrf_message_set_result_content( result_array[0], content );
+		json_object_put(content);
+
+		result_array[1] = osrf_message_init(
+			RESULT, omsg->thread_trace, omsg->protocol );
+		osrf_message_set_result_content( result_array[1], content2 );
+		json_object_put(content2);
 
 	}
 	
 	
-	if( result_content == NULL ) 
+	if( result_array == NULL || result_array[0] == NULL ) 
 		return NULL;
 
-	osrf_message* success = osrf_message_init(
-		RESULT, omsg->thread_trace, omsg->protocol );
-	osrf_message_set_result_content( success, result_content );
-	json_object_put(result_content);
-
-	return success;
+	return result_array;
 }
 
 
