@@ -102,7 +102,7 @@ sub put_cache {
 			}
 		}
 
-		($slot) = $persist_push_stack->run("_CACHEVAL_$slot", $value);
+		($slot) = $persist_push_stack->run("_CACHEVAL_$key", $value);
 
 		if(!$slot) {
 			throw OpenSRF::EX::ERROR ("Unable to push data onto stack in persist slot _CACHEVAL_$key" );
