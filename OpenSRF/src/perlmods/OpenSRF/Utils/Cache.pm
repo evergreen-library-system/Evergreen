@@ -3,6 +3,7 @@ use strict; use warnings;
 use base qw/Cache::Memcached OpenSRF/;
 use Cache::Memcached;
 use OpenSRF::Utils::Config;
+use OpenSRF::EX qw(:try);
 
 
 =head OpenSRF::Utils::Cache
@@ -22,7 +23,28 @@ my $val = $cache->get( "key1" );
 =cut
 
 sub DESTROY {}
+
 my %caches;
+
+# ------------------------------------------------------
+# Persist methods and method names
+# ------------------------------------------------------
+my $persist_add_slot; 
+my $persist_push_stack;
+my $persist_peek_stack;
+my $persist_destroy_slot;
+my $persist_slot_get_expire;
+my $persist_slot_find;
+
+my $max_persist_time					= 86400;
+my $persist_add_slot_name			= "opensrf.persist.slot.create_expirable";
+my $persist_push_stack_name		= "opensrf.persist.stack.push";
+my $persist_peek_stack_name		= "opensrf.persist.stack.peek";
+my $persist_destroy_slot_name		= "opensrf.persist.slot.destroy";
+my $persist_slot_get_expire_name = "opensrf.persist.slot.get_expire";
+my $persist_slot_find_name			= "opensrf.persist.slot.find";;
+
+# ------------------------------------------------------
 
 
 # return a named cache if it exists
@@ -37,21 +59,151 @@ sub current {
 # create a new named memcache object.
 sub new {
 
-	my( $class, $cache_type, $servers ) = @_;
+	my( $class, $cache_type, $persist, $servers ) = @_;
 	return undef unless $cache_type;
+	return $caches{$cache_type} 
+		if exists $caches{$cache_type};
 
-	return $caches{$cache_type} if exists $caches{$cache_type};
 
 	$class = ref( $class ) || $class;
-	my $instance = Cache::Memcached->new( { servers => $servers } ); 
-	$caches{$cache_type} = $instance;
-	return bless( $instance, $class );
+	my $self = {};
+	$self->{persist} = $persist || 0;
+	$self->{memcache} = Cache::Memcached->new( { servers => $servers } ); 
+	if(!$self->{memcache}) {
+		throw OpenSRF::EX::PANIC ("Unable to create a new memcache object for $cache_type");
+	}
+
+	bless($self, $class);
+	$caches{$cache_type} = $self;
+	return $self;
 }
 
 
+
+sub put_cache {
+	my($self, $key, $value, $expiretime ) = @_;
+	return undef unless( $key and $value );
+
+	_load_methods();
+
+	$expiretime ||= $max_persist_time;
+
+	$self->{memcache}->set( $key, $value, $expiretime );
+
+	if($self->{"persist"}) {
+
+		my ($slot) = $persist_add_slot->run($key, $expiretime . "s");
+
+		if(!$slot) {
+			# slot may already exist
+			($slot) = $persist_slot_find->run($key);
+			if(!defined($slot)) {
+				throw OpenSRF::EX::ERROR ("Unable to create cache slot $key in persist server" );
+			}
+		}
+
+		($slot) = $persist_push_stack->run($slot, $value);
+
+		if(!$slot) {
+			throw OpenSRF::EX::ERROR ("Unable to push data onto stack in persist slot $key" );
+		}
+	}
+
+	return $key;
+}
+
+sub delete_cache {
+	my( $self, $key ) = @_;
+	if(!$key) { return undef; }
+	_load_methods();
+	$self->{memcache}->delete($key);
+	if( $self->{persist} ) {
+		$persist_destroy_slot->run($key);
+	}
+	return $key; 
+}
+
+sub get_cache {
+	my($self, $key ) = @_;
+
+	my $val = $self->{memcache}->get( $key );
+	return $val if defined($val);
+
+	_load_methods();
+
+	# if not in memcache but we are persisting, the put it into memcache
+	if( $self->{"persist"} ) {
+		$val = $persist_peek_stack->( $key );
+		if(defined($val)) {
+			my ($expire) = $persist_slot_get_expire->run($key);
+			if($expire)	{
+				$self->{memcache}->set( $key, $val, $expire);
+			} else {
+				$self->{memcache}->set( $key, $val, $max_persist_time);
+			}
+			return $val;
+		} 
+	}
+	return undef;
+} 
+
+
+
+
+sub _load_methods {
+
+	if(!$persist_add_slot) {
+		$persist_add_slot = 
+			OpenSRF::Application->method_lookup($persist_add_slot_name);
+		if(!ref($persist_add_slot)) {
+			throw OpenSRF::EX::PANIC ("Unable to retrieve method $persist_add_slot_name");
+		}
+	}
+
+	if(!$persist_push_stack) {
+		$persist_push_stack = 
+			OpenSRF::Application->method_lookup($persist_push_stack_name);
+		if(!ref($persist_push_stack)) {
+			throw OpenSRF::EX::PANIC ("Unable to retrieve method $persist_push_stack_name");
+		}
+	}
+
+	if(!$persist_peek_stack) {
+		$persist_peek_stack = 
+			OpenSRF::Application->method_lookup($persist_peek_stack_name);
+		if(!ref($persist_peek_stack)) {
+			throw OpenSRF::EX::PANIC ("Unable to retrieve method $persist_peek_stack_name");
+		}
+	}
+
+	if(!$persist_destroy_slot) {
+		$persist_destroy_slot = 
+			OpenSRF::Application->method_lookup($persist_destroy_slot_name);
+		if(!ref($persist_destroy_slot)) {
+			throw OpenSRF::EX::PANIC ("Unable to retrieve method $persist_destroy_slot_name");
+		}
+	}
+	if(!$persist_slot_get_expire) {
+		$persist_slot_get_expire = 
+			OpenSRF::Application->method_lookup($persist_slot_get_expire_name);
+		if(!ref($persist_slot_get_expire)) {
+			throw OpenSRF::EX::PANIC ("Unable to retrieve method $persist_slot_get_expire_name");
+		}
+	}
+	if(!$persist_slot_find) {
+		$persist_slot_find = 
+			OpenSRF::Application->method_lookup($persist_slot_find_name);
+		if(!ref($persist_slot_find)) {
+			throw OpenSRF::EX::PANIC ("Unable to retrieve method $persist_slot_find_name");
+		}
+	}
+}
+
+
+
+
+
+
+
 1;
-
-
-
-
 
