@@ -177,8 +177,12 @@ AppSession.delete_session = function(session_id) {
 /** Builds a new session.
   * @param remote_service The remote service we want to make REQUEST's of
   */
-function AppSession( username, password, remote_service ) {
+function AppSession( remote_service ) {
 
+	if (arguments.length == 3) {
+		// it used to be AppSession( username, password, remote_service )
+		remote_service = arguments[2];
+	}
 
 	/** Our logger object */
 	this.logger = new Logger();
@@ -189,7 +193,7 @@ function AppSession( username, password, remote_service ) {
 	/** Our session id */
 	this.session_id = new Date().getTime() + "" + random_num;
 
-	this.auth = new userAuth( username, password );
+	//this.auth = new userAuth( username, password );
 
 	/** Our AppRequest queue */
 	this.request_queue = new Array();
@@ -459,11 +463,7 @@ AppSession.prototype.send = function( msg_type, thread_trace, payload ) {
 	this.queue_wait(0);
 
 	var msg;
-	if( msg_type == oilsMessage.CONNECT ) {
-		msg = new oilsMessage( msg_type, AppSession.PROTOCOL, this.auth );
-	} else {
-		msg = new oilsMessage( msg_type, AppSession.PROTOCOL );
-	}
+	msg = new oilsMessage( msg_type, AppSession.PROTOCOL );
 
 	msg.setThreadTrace( thread_trace );
 

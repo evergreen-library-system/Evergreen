@@ -200,7 +200,7 @@ oilsMessage.prototype.constructor = oilsMessage;
 oilsMessage.prototype.baseClass = DomainObject.prototype.constructor;
 
 /** Core XML object for message passing */
-function oilsMessage( type, protocol, user_auth ) {
+function oilsMessage( type, protocol ) {
 
 	if( !( type && protocol) ) { 
 		type = oilsMessage.CONNECT; 
@@ -221,7 +221,8 @@ function oilsMessage( type, protocol, user_auth ) {
 	this.add( new domainObjectAttr( "threadTrace", 0 ) );
 	this.add( new domainObjectAttr( "protocol", protocol ) );	
 
-	if( user_auth ) { this.add( user_auth ); }
+	// user_auth used to be a parameter for oilsMessage
+	//if( user_auth ) { this.add( user_auth ); }
 
 }
 
