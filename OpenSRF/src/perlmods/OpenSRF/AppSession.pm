@@ -843,27 +843,5 @@ sub responses { @{$_[0]->{resp}} }
 sub status {}
 
 
-
 1;
-
-
-__END__
-
-[client]
-interval:connect_timeout = 2 seconds
-
-[servers]
-subsection:StorageServer = Storage_config
-
-[Storage_config]
-#transport = xmlrpc
-#transport_target = http://open-ils.org/RPC2/services/Storage
-
-transport = jabber
-transport_target = Storage@open-ils.org/SERVICE_RECEIVER
-method_class = OpenSRF::App::Storage::PGStore;
-
-
-
-
 
