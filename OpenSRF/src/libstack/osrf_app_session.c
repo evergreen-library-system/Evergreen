@@ -400,7 +400,7 @@ void osrf_app_session_reset_remote( osrf_app_session* session ){
 		return;
 
 	free(session->remote_id);
-	debug_handler( "App Session [%s] resetting remote it to %s",
+	debug_handler( "App Session [%s] resetting remote id to %s",
 			session->session_id, session->orig_remote_id );
 
 	session->remote_id = strdup(session->orig_remote_id);
@@ -551,10 +551,11 @@ void osrf_app_session_destroy ( osrf_app_session* session ){
 	if(session == NULL) return;
 
 	debug_handler( "AppSession [%s] destroying self and deleting requests", session->session_id );
-	if(session->type == OSRF_SESSION_CLIENT) { /* disconnect if we're a client */
+	if(session->type == OSRF_SESSION_CLIENT 
+			&& session->state != OSRF_SESSION_DISCONNECTED ) { /* disconnect if we're a client */
 		osrf_message* dis_msg = osrf_message_init( DISCONNECT, session->thread_trace, 1 );
 		_osrf_app_session_send( session, dis_msg ); 
-		//osrf_app_session_reset_remote( session );
+		osrf_message_free(dis_msg);
 	}
 	//session->state = OSRF_SESSION_DISCONNECTED;
 	_osrf_app_session_remove_session(session->session_id);
