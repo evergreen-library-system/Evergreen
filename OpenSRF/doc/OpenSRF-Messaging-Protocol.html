@@ -13,7 +13,7 @@
 
 		<p>
 
-		The OILS messaging system works on two different primary layers: the transport layer and the
+		The OpenSRF messaging system works on two different primary layers: the transport layer and the
 		application layer.  The transport layer manages virtual connections between client and server,
 		while the application layer manages user/application level messages.  
 
@@ -27,10 +27,11 @@
 		<b>DISCONNECT</b>.    
 		
 		<p>
-		<b>STATUS</b> message provide general information to the transport layer are used in different 
+		<b>STATUS</b> messages provide general information to the transport layer and are used in different 
 		ways throughout the system.  They are sent primarily by the server in response to client requests.  
 		Each message comes with 
-		a status and statusCode.  The actual status part of the STATUS message is just a helpful message (mostly for debugging).  The 
+		a status and statusCode.  The actual status part of the STATUS message is just a helpful message 
+		(mostly for debugging).  The 
 		statusCode is an integer representing the exact status this message represents.  The status codes
 		are modeled after HTTP status codes.  Currently used codes consist of the following:
 
@@ -40,7 +41,6 @@
 		205	STATUS_COMPLETE
 		307	STATUS_REDIRECTED
 		400	STATUS_BADREQUEST
-		403	STATUS_FORBIDDEN
 		404	STATUS_NOTFOUND
 		408	STATUS_TIMEOUT
 		417	STATUS_EXPFAILED
@@ -53,8 +53,7 @@
 		<p>
 		The <b>CONNECT</b> message initiates the virtual connection for a client and expects a <b>STATUS</b>
 		in return.  If the connection is successful, the statusCode for the <b>STATUS</b> message shall be
-		<b>STATUS_OK</b>.  If the authentication fails or if there is not actual authentication information
-		within the message, the statusCode for the returned message shall be <b>STATUS_FORBIDDEN</b>.  
+		<b>STATUS_OK</b>.  
 
 		<p>
 		If at any point the client sends a non-connect message to the server when the client is not connected or the 
@@ -112,10 +111,6 @@ if ( msg.statusCode == STATUS_OK )
 
 	OK. continue
 
-if ( msg.statusCode == STATUS_FORBIDDEN ) 
-
-	handle authentication failure and attempt another connect if requested
-
 while ( more requests ) {
 
 	/* you may send multiple requests before processing any responses.  For the sake
@@ -165,12 +160,7 @@ while( message = recv() ) {
 		return a STATUS with statusCode STATUS_EXPFAILED
 		start loop over
 
-	if ( message.type == CONNECT and server is unable to authenticate the client )
-
-		return a STATUS with statusCode STATUS_FORBIDDEN
-		start loop over
-
-	if ( message.type == CONNECT and server is able to authenticate user )
+	if ( message.type == CONNECT )
 
 		return STATUS with statusCode STATUS_OK and continue
 
@@ -225,20 +215,12 @@ while( message = recv() ) {
 
 		</pre>
 
-		<h2> Type element </h2>
-
-		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
-
-&lt;oils:userAuth hashseed="237" secret="89dd8c65300d4af126cf467779ff1820" username="bill"/>
-
-		</pre>
-
 		<h2> CONNECT Message </h2>
 
 		<pre style="border: solid thin blue; margin: 0% 10% 0% 10%; padding-left: 50px">
 
-&lt;oils:domainObjectAttr value="CONNECT" name="type"/>
-	&lt;oils:userAuth hashseed="237" secret="89dd8c65300d4af126cf467779ff1820" username="bill"/>
+&lt;oils:domainObject name="oilsMessage">
+	&lt;oils:domainObjectAttr value="CONNECT" name="type"/>
 	&lt;oils:domainObjectAttr value="1" name="threadTrace"/>
 	&lt;oils:domainObjectAttr value="1" name="protocol"/>
 &lt;/oils:domainObject>
@@ -284,10 +266,7 @@ while( message = recv() ) {
 	&lt;oils:domainObjectAttr value="1" name="protocol"/>
 	&lt;oils:domainObject name="oilsMethod">
 		&lt;oils:domainObjectAttr value="mult" name="method"/>
-		&lt;oils:params>
-			&lt;oils:param>1</oils:param>
-			&lt;oils:param>2</oils:param>
-		&lt;/oils:params>
+		&lt;oils:params>[1, 2]&lt;/oils:params>
 	&lt;/oils:domainObject>
 &lt;/oils:domainObject>
 
