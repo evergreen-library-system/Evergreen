@@ -11,7 +11,15 @@ use OpenSRF::DOM;
 use OpenSRF::EX qw/:try/;
 use POSIX ":sys_wait_h";
 use OpenSRF::Utils::Config; 
+use OpenSRF::Utils::SettingsParser;
+use OpenSRF::Utils::SettingsClient;
 use strict;
+
+my $bootstrap_config_file;
+sub import {
+	my( $self, $config ) = @_;
+	$bootstrap_config_file = $config;
+}
 
 =head2 Name/Description
 
@@ -38,8 +46,6 @@ returned on subsequent calls to new().
 
 $| = 1;
 
-sub APPS { return qw( opac ); } #circ cat storage ); }
-
 sub DESTROY {}
 
 # ----------------------------------------------
@@ -48,38 +54,8 @@ $SIG{INT} = sub { instance()->killall(); };
 
 $SIG{HUP} = sub{ instance()->hupall(); };
 
-$SIG{CHLD} = \&process_automation;
+#$SIG{CHLD} = \&process_automation;
 
-
-# Go ahead and set the config
-
-set_config();
-
-# ----------------------------------------------
-# Set config options
-sub set_config {
-
-	my $config = OpenSRF::Utils::Config->load( 
-		config_file => "/pines/conf/opensrf.conf" );
-
-	if( ! $config ) { throw OpenSRF::EX::Config "System could not load config"; }
-
-	my $tran = $config->transport->implementation;
-
-	eval "use $tran;";
-	if( $@ ) {
-		throw OpenSRF::EX::PANIC ("Cannot find transport implementation: $@" );
-	}
-
-	OpenSRF::Transport->message_envelope( $tran->get_msg_envelope );
-	OpenSRF::Transport::PeerHandle->set_peer_client( $tran->get_peer_client );
-	OpenSRF::Transport::Listener->set_listener( $tran->get_listener );
-
-
-}
-
-
-# ----------------------------------------------
 
 { 
 	# --- 
@@ -107,7 +83,7 @@ sub set_config {
 
 sub _unixserver {
 	my( $app ) = @_;
-	return "OpenSRF::UnixServer->new( '$app' )->serve()";
+	return "OpenSRF::UnixServer->new( '$app')->serve()";
 }
 
 sub _listener {
@@ -115,21 +91,74 @@ sub _listener {
 	return "OpenSRF::Transport::Listener->new( '$app' )->initialize()->listen()";
 }
 
-#sub _shell { return "OpenSRF::Shell->listen()"; }
-
 
 # ----------------------------------------------
 # Boot up the system
 
+sub load_bootstrap_config {
+
+	if(OpenSRF::Utils::Config->current) {
+		return;
+	}
+
+	warn "Loading $bootstrap_config_file\n";
+	if(!$bootstrap_config_file) {
+		die "Please provide a bootstrap config file to OpenSRF::System!\n" . 
+			"use OpenSRF::System qw(/path/to/bootstrap_config);";
+	}
+
+	OpenSRF::Utils::Config->load( config_file => $bootstrap_config_file );
+
+	OpenSRF::Transport->message_envelope(  "OpenSRF::Transport::SlimJabber::MessageWrapper" );
+	OpenSRF::Transport::PeerHandle->set_peer_client(  "OpenSRF::Transport::SlimJabber::PeerConnection" );
+	OpenSRF::Transport::Listener->set_listener( "OpenSRF::Transport::SlimJabber::Inbound" );
+}
+
 sub bootstrap {
 
 	my $self = __PACKAGE__->instance();
+	load_bootstrap_config();
+	OpenSRF::Utils::Logger::set_config();
+	my $bsconfig = OpenSRF::Utils::Config->current;
 
-	my $config = OpenSRF::Utils::Config->current;
+	# Start a process group and make me the captain
+	setpgrp( 0, 0 ); 
+	$0 = "System";
 
-	my $apps = $config->system->apps;
-	my $server_type = $config->system->server_type;
+	# -----------------------------------------------
+	# Launch the settings sever if necessary...
+	my $are_settings_server = 0;
+	if( (my $cfile = $bsconfig->bootstrap->settings_config) ) {
+		my $parser = OpenSRF::Utils::SettingsParser->new();
+
+		# since we're (probably) the settings server, we can go ahead and load the real config file
+		$parser->initialize( $cfile );
+		$OpenSRF::Utils::SettingsClient::host_config = 
+			$parser->get_server_config($bsconfig->env->hostname);
+
+		my $client = OpenSRF::Utils::SettingsClient->new();
+		my $apps = $client->config_value("activeapps", "appname");
+		if(!ref($apps) eq "ARRAY") { $apps = [$apps]; }
+
+		for my $app (@$apps) {
+			# verify we are a settings server and launch 
+			if( $app eq "settings" ) {
+				$are_settings_server = 1;
+				$self->launch_settings();
+				sleep 1;
+				$self->launch_settings_listener();
+				last;
+			} 
+		}
+	}
+
+	# Launch everything else
+	my $client = OpenSRF::Utils::SettingsClient->new();
+	my $apps = $client->config_value("activeapps", "appname" );
+	if(!ref($apps)) { $apps = [$apps]; }
+	my $server_type = $client->config_value("server_type");
 	$server_type ||= "basic";
+
 
 	if(  $server_type eq "prefork" ) { 
 		$server_type = "Net::Server::PreFork"; 
@@ -148,11 +177,6 @@ sub bootstrap {
 	push @OpenSRF::UnixServer::ISA, $server_type;
 
 	_log( " * System boostrap" );
-
-	# Start a process group and make me the captain
-	setpgrp( 0, 0 ); 
-
-	$0 = "System";
 	
 	# --- Boot the Unix servers
 	$self->launch_unix($apps);
@@ -164,25 +188,13 @@ sub bootstrap {
 
 	_sleep();
 
-	# --- Start the system shell
-#if ($config->system->shell) {
-#		eval " 
-#			use OpenSRF::Shell;
-#			$self->launch_shell() if ($config->system->shell);
-#		";
-#
-#		if ($@) {
-#			warn "ARRRGGG! Can't start the shell...";
-#		}
-#	}
-
-	# --- Now we wait for our brood to perish
 	_log( " * System is ready..." );
+
 	while( 1 ) { sleep; }
 	exit;
 }
-
-
+	
+	
 
 # ----------------------------------------------
 # Bootstraps a single client connection.  
@@ -190,7 +202,8 @@ sub bootstrap {
 sub bootstrap_client {
 
 	my $self = __PACKAGE__->instance();
-	my $config = OpenSRF::Utils::Config->current;
+	load_bootstrap_config();
+	OpenSRF::Utils::Logger::set_config();
 
 	my $client_type = shift;
 	my $app;
@@ -244,6 +257,50 @@ sub process_automation {
 }
 
 
+
+sub launch_settings {
+
+	#	XXX the $self like this and pid automation will not work with this setup....
+	my($self) = @_;
+	use Net::Server::Single;
+	@OpenSRF::UnixServer::ISA = qw(OpenSRF Net::Server::Single);
+
+	my $pid = OpenSRF::Utils::safe_fork();
+	if( $pid ) {
+		$self->pid_hash( $pid , "launch_settings()" );
+	}
+	else {
+		my $apname = "settings";
+		$apname =~ tr/[a-z]/[A-Z]/;
+		$0 = "OpenSRF App ($apname)";
+		eval _unixserver( "settings" );
+		if($@) { die "$@\n"; }
+		exit;
+	}
+
+	@OpenSRF::UnixServer::ISA = qw(OpenSRF);
+
+}
+
+
+sub launch_settings_listener {
+
+	my $self = shift;
+	my $app = "settings";
+	my $pid = OpenSRF::Utils::safe_fork();
+	if ( $pid ) {
+		$self->pid_hash( $pid , _listener( $app ) );
+	}
+	else {
+		my $apname = $app;
+		$apname =~ tr/[a-z]/[A-Z]/;
+		$0 = "Listener ($apname)";
+		eval _listener( $app );
+		exit;
+	}
+
+}
+
 # ----------------------------------------------
 # Launch the Unix Servers
 
@@ -251,6 +308,8 @@ sub launch_unix {
 	my( $self, $apps ) = @_;
 
 	foreach my $app ( @$apps ) {
+
+		if( $app eq "settings" ) { next; }
 
 		_log( " * Starting UnixServer for $app..." );
 
@@ -276,6 +335,8 @@ sub launch_listener {
 	my( $self, $apps ) = @_;
 
 	foreach my $app ( @$apps ) {
+
+		if( $app eq "settings" ) { next; }
 
 		_log( " * Starting Listener for $app..." );
 
@@ -355,7 +416,7 @@ sub hupall {
 
 sub _log {
 	my $string = shift;
-	OpenSRF::Utils::Logger->debug( $string, DEBUG );
+	OpenSRF::Utils::Logger->debug( $string, INFO );
 	print $string . "\n";
 }
 
