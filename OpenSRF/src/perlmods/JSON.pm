@@ -96,8 +96,8 @@ sub JSON2perl {
 	s/true/ bless( {}, "JSON::bool::true") /sog;
 	s/false/ bless( {}, "JSON::bool::false") /sog;
 
-	
-	return eval $_;
+	my $ret;
+	return eval '$ret = '.$_;
 }
 
 sub old_JSON2perl {
