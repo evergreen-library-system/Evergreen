@@ -4,9 +4,7 @@ var undefined;
 function Cast (obj, class_constructor) {
 	try {
 		if (eval(class_constructor + '["_isfieldmapper"]')) {
-			debug("Casting object to class " + class_constructor + "\n");
 			obj = eval("new " + class_constructor + "(obj)");
-			debug("My Classname: " + obj.classname);
 		}
 	} catch( E ) {
 		alert( E + "\n");
@@ -19,8 +17,6 @@ function JSON2js (json) {
 
 	json = String(json).replace( /\/\*--\s*S\w*?\s*?\s+\w+\s*--\*\//g, 'Cast(');
 	json = String(json).replace( /\/\*--\s*E\w*?\s*?\s+(\w+)\s*--\*\//g, ', "$1")');
-
-	debug("=======================\n" + json);
 
 	var obj;
 	if (json != '') {
@@ -37,8 +33,6 @@ function JSON2js (json) {
 
 function js2JSON(arg) {
 	var i, o, u, v;
-
-	debug( "Running js2JSON on " + arg );
 
 	switch (typeof arg) {
 		case 'object':
