@@ -56,21 +56,31 @@ int main( int argc, char* argv[] ) {
 		}
 
 		if(!strcmp(request,"last")) {
-			memset(request,0,256);
-			strcpy(request, last_request);
-			printf("%s\n", request);
-		} else {
-			free(last_request);
-			last_request = strdup(request);
+			if(last_request) {
+				memset(request,0,256);
+				strcpy(request, last_request);
+				printf("%s\n", request);
+			} else {
+				printf(prompt);
+				continue;
+			}
 		}
+
+		char* req_copy = strdup(request);
 
 		if( !strcmp(request, "help") || !strcmp(request,"?")) 
 			print_help();
-		else 
-			parse_request( request );
+		else {
+			if(parse_request( req_copy ) && strcmp(request,"last") ) {
+				free(last_request);
+				last_request = strdup(request);
+			}
+		}
+
 
 		printf(prompt);
 		memset(request, 0, 300);
+		free(req_copy);
 	}
 
 	fprintf(stderr, "Exiting...\n[Ignore Segfault]\n");
@@ -183,10 +193,12 @@ int handle_request( char* words[] ) {
 		int i;
 		growing_buffer* buffer = buffer_init(128);
 
+		buffer_add(buffer, "[");
 		for(i = 3; words[i] != NULL; i++ ) {
 			buffer_add( buffer, words[i] );
 			buffer_add(buffer, " ");
 		}
+		buffer_add(buffer, "]");
 
 		return send_request( server, method, buffer );
 	} 
@@ -203,6 +215,13 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 		params = json_tokener_parse(buffer->buf);
 
 	osrf_app_session* session = osrf_app_client_session_init(server);
+	double start = get_timestamp_millis();
+
+	if(!osrf_app_session_connect(session)) {
+		warning_handler( "Unable to connect to remote service %s\n", server );
+		return 1;
+	}
+
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
@@ -214,6 +233,9 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 	while(omsg) {
 		if(omsg->result_content) 
 			printf( "Received Data: %s\n",json_object_to_json_string(omsg->result_content) );
+		else
+			printf( "Received Message but no result data\n");
+
 		osrf_message_free(omsg);
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 	}
@@ -221,6 +243,10 @@ int send_request( char* server, char* method, growing_buffer* buffer ) {
 
 	if( osrf_app_session_request_complete( session, req_id ))
 		printf("[Request Completed Successfully]\n");
+
+	double end = get_timestamp_millis();
+
+	printf("Request Time in seconds: %f\n", end - start );
 
 	osrf_app_session_disconnect( session );
 
@@ -301,7 +327,9 @@ void print_help() {
 			"time <timestamp>	- Formats seconds since epoch into readable format\n"	
 			"---------------------------------------------------------------------------------\n"
 			"router query servers <server1 [, server2, ...]>\n"
-			"reqeust <service> <method> [ <json formatted string of params as an array> ]\n"
+			"	- Returns stats on connected services\n"
+			"reqeust <service> <method> [ <json formatted string of params> ]\n"
+			"	- Anything passed in will be wrapped in a json array\n"
 			"---------------------------------------------------------------------------------\n"
 			);
 

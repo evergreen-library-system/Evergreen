@@ -53,6 +53,7 @@ void log_free();
 
 // Utility method
 void get_timestamp( char buf_36chars[]);
+double get_timestamp_millis();
 
 // ---------------------------------------------------------------------------------
 // Error handling interface.
