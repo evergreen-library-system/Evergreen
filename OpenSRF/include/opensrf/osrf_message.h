@@ -47,6 +47,9 @@ struct osrf_message_struct {
 	/* if we're a RESULT */
 	json* result_content;
 
+	/* unparsed json string */
+	char* result_string;
+
 	/* if we're a REQUEST */
 	char* method_name;
 	json* params;

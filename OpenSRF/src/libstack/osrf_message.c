@@ -1,96 +1,6 @@
 #include "opensrf/osrf_message.h"
 
 
-
-/*
-int main() {
-
-	char* x = "<oils:root xmlns:oils='http://open-ils.org/xml/namespaces/oils_v1'><oils:domainObject name='oilsMessage'><oils:domainObjectAttr value='STATUS' name='type'/><oils:domainObjectAttr value='12' name='threadTrace'/><oils:domainObject name='oilsMethodException'><oils:domainObjectAttr value=' *** Call to [div] failed for session [1351200643.110915057523738], thread trace [12]:&#10;JabberDisconnected Exception &#10;This JabberClient instance is no longer connected to the server' name='status'/><oils:domainObjectAttr value='500' name='statusCode'/></oils:domainObject></oils:domainObject></oils:root>";
-	*/
-
-	/*
-	char* x = "<oils:root xmlns:oils='http://open-ils.org/xml/namespaces/oils_v1'>"
-				"<oils:domainObject name='oilsMessage'>"
-				"<oils:domainObjectAttr value='STATUS' name='type'/>"
-				"<oils:domainObjectAttr value='1' name='threadTrace'/>"
-				"<oils:domainObject name='oilsConnectStatus'>"
-				"<oils:domainObjectAttr value='Connection Successful' name='status'/>"
-				"<oils:domainObjectAttr value='200' name='statusCode'/>"
-				"</oils:domainObject></oils:domainObject>"
-
-				"<oils:domainObject name='oilsMessage'>"
-				"<oils:domainObjectAttr value='STATUS' name='type'/>"
-				"<oils:domainObjectAttr value='1' name='threadTrace'/>"
-				"<oils:domainObject name='oilsConnectStatus'>"
-				"<oils:domainObjectAttr value='Request Complete' name='status'/>"
-				"<oils:domainObjectAttr value='205' name='statusCode'/>"
-				"</oils:domainObject></oils:domainObject>"
-				
-				"</oils:root>";
-				*/
-
-/*
-	osrf_message* arr[4];
-	memset(arr, 0, 4);
-	int ret = osrf_message_from_xml( x, arr );
-	fprintf(stderr, "RET: %d\n", ret );
-	if(ret<=0)
-		fatal_handler( "none parsed" );
-
-	osrf_message* xml_msg = arr[0];
-	printf("Message name: %s\nstatus %s, \nstatusCode %d\n", xml_msg->status_name, xml_msg->status_text, xml_msg->status_code );
-
-//	xml_msg = arr[1];
-//	printf("Message 2 status %s, statusCode %d\n", xml_msg->status_text, xml_msg->status_code );
-
-
-	return 0;
-}
-*/
-
-
-
-	/*
-	osrf_message* msg = osrf_message_init( STATUS, 1, 1 );
-//	osrf_message* msg = osrf_message_init( CONNECT, 1, 1 );
-	//osrf_message* msg = osrf_message_init( REQUEST, 1, 1 );
-	osrf_message_set_status_info( msg, "oilsConnectStatus", "Connection Succsesful", 200 );
-
-	json* params = json_object_new_array();
-	json_object_array_add(params, json_object_new_int(1));
-	json_object_array_add(params, json_object_new_int(2));
-
-	osrf_message_set_request_info( msg, "add", params );
-	//osrf_message_set_result_content( msg, params );
-	json_object_put( params );
-
-	char* xml =  osrf_message_to_xml( msg );
-	printf( "\n\nMessage as XML\n%s", xml );
-
-	osrf_message* xml_msg = osrf_message_from_xml( xml );
-
-	printf( "Message stuff \n\ntype %d"
-			"\nthread_trace %d \nprotocol %d "
-			"\nstatus_name %s"
-			"\nstatus_text %s\nstatus_code %d" 
-			"\nresult_content %s \nparams %s"
-			"\n", xml_msg->m_type, 
-			xml_msg->thread_trace, xml_msg->protocol, xml_msg->status_name, 
-			xml_msg->status_text, xml_msg->status_code, 
-			json_object_to_json_string( xml_msg->result_content),
-			json_object_to_json_string(xml_msg->params) 
-			);
-
-
-	free(xml);
-	osrf_message_free( msg );
-	osrf_message_free( xml_msg );
-	return 0;
-	
-}
-*/
-
-
 osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protocol ) {
 
 	osrf_message* msg = safe_malloc(sizeof(osrf_message));
@@ -137,7 +47,9 @@ void osrf_message_set_status_info(
 void osrf_message_set_result_content( osrf_message* msg, json* result_content ) {
 	if( msg == NULL )
 		fatal_handler( "Bad params to osrf_message_set_result_content()" );
-	msg->result_content = json_tokener_parse(json_object_to_json_string(result_content));
+	msg->result_string =	strdup(json_object_to_json_string(result_content));
+	debug_handler("Setting result_string to %s\n", msg->result_string );
+	msg->result_content = json_tokener_parse(msg->result_string);
 }
 
 
@@ -154,6 +66,9 @@ void osrf_message_free( osrf_message* msg ) {
 
 	if( msg->result_content != NULL )
 		json_object_put( msg->result_content );
+
+	if( msg->result_string != NULL )
+		free( msg->result_string);
 
 	if( msg->method_name != NULL )
 		free(msg->method_name);
@@ -288,7 +203,7 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 			xmlSetProp( status_code_node, BAD_CAST "value", BAD_CAST stc);
 
 			content_node = xmlNewChild( result_node, NULL, 
-					BAD_CAST "domainObject", BAD_CAST json_object_to_json_string( msg->result_content ) );
+					BAD_CAST "domainObject", BAD_CAST msg->result_string );
 			xmlSetProp( content_node, BAD_CAST "name", BAD_CAST "oilsScalar" );
 
 			break;
@@ -479,8 +394,10 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 							if(!strcmp(result_nodes->name,"domainObject")) {
 								xmlChar* r_name = xmlGetProp( result_nodes, BAD_CAST "name" );
 								if(r_name) {
-									if( !strcmp((char*)r_name,"oilsScalar") && result_nodes->children->content ) 
+									if( !strcmp((char*)r_name,"oilsScalar") && result_nodes->children->content ) {
+										new_msg->result_string = strdup(result_nodes->children->content);
 										new_msg->result_content = json_tokener_parse(result_nodes->children->content);
+									}
 									xmlFree(r_name);
 								}
 							}
