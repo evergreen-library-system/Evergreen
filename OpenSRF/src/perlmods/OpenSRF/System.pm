@@ -227,6 +227,8 @@ sub bootstrap {
 # ----------------------------------------------
 # Bootstraps a single client connection.  
 
+# named params are 'config_file' and 'client_name'
+#
 sub bootstrap_client {
 	my $self = shift;
 
@@ -294,7 +296,7 @@ sub launch_settings {
 	}
 	else {
 		my $apname = "settings";
-		$0 = "OpenSRF App ($apname)";
+		#$0 = "OpenSRF App [$apname]";
 		eval _unixserver( "settings" );
 		if($@) { die "$@\n"; }
 		exit;
@@ -315,7 +317,7 @@ sub launch_settings_listener {
 	}
 	else {
 		my $apname = $app;
-		$0 = "OpenSRF listener ($apname)";
+		$0 = "OpenSRF listener [$apname]";
 		eval _listener( $app );
 		exit;
 	}
@@ -367,7 +369,7 @@ sub launch_listener {
 		}
 		else {
 			my $apname = $app;
-			$0 = "OpenSRF listener ($apname)";
+			$0 = "OpenSRF listener [$apname]";
 			eval _listener( $app );
 			exit;
 		}

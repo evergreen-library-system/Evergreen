@@ -137,7 +137,7 @@ sub serve {
 
 	my $app = $self->app();
 
-	$0 = "OpenSRF master ($app)";
+	$0 = "OpenSRF master [$app]";
 
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	$logger->transport("Max Req: " . $client->config_value("apps", $app, "unix_config", "max_requests" ), INFO );
