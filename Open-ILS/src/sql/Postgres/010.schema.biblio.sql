@@ -19,6 +19,7 @@ CREATE TABLE biblio.record_entry (
 	active		BOOL		NOT NULL DEFAULT TRUE,
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
 	source		INT,
+	mods		TEXT,
 	last_xact_id	TEXT		NOT NULL DEFAULT 'none',
 	CONSTRAINT unique_tcn UNIQUE (tcn_source,tcn_value)
 );

@@ -16,10 +16,10 @@ INSERT INTO config.bib_source (quality, source)
 	VALUES (10, 'System Local');
 
 CREATE TABLE config.metabib_field (
-	id	SERIAL	PRIMARY KEY,
-	class	TEXT	CHECK (lower(field_class) IN ('title','author','subject','keyword'))
-	name	TEXT	UNIQUE NOT NULL,
-	xpath	TEXT	NOT NULL
+	id		SERIAL	PRIMARY KEY,
+	field_class	TEXT	CHECK (lower(field_class) IN ('title','author','subject','keyword')),
+	name		TEXT	UNIQUE NOT NULL,
+	xpath		TEXT	NOT NULL
 );
 
 COMMIT;

@@ -86,7 +86,7 @@ CREATE TABLE actor.usr_access_entry (
 CREATE TABLE actor.perm_group (
 	id	SERIAL	PRIMARY KEY,
 	name	TEXT	NOT NULL,
-	ou_type	INT,
+	ou_type	INT
 );
 
 CREATE TABLE actor.permission (
