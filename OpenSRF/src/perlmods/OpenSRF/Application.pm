@@ -230,13 +230,13 @@ sub retrieve_remote_apis {
 	my $session = AppSession->create('settings');
 	try {
 		$session->connect;
-	} catch ERROR with {
+	} catch Error with {
 		my $e = shift;
 		$log->debug( "Remote subrequest returned an error:\n". $e );
 		return undef;
 	} finally {
 		return undef unless ($session->state == $session->CONNECTED);
-	}
+	};
 
 	my $req = $session->request( 'opensrf.settings.xpath.get' );
 	my $list = $req->recv->content;
@@ -257,13 +257,13 @@ sub populate_remote_method_cache {
 	my $session = AppSession->create($class);
 	try {
 		$session->connect;
-	} catch ERROR with {
+	} catch Error with {
 		my $e = shift;
 		$log->debug( "Remote subrequest returned an error:\n". $e );
 		return undef;
 	} finally {
 		return undef unless ($session->state == $session->CONNECTED);
-	}
+	};
 
 	my $req = $session->request( 'opensrf.settings.xpath.get' );
 
@@ -335,7 +335,7 @@ sub run {
 	}
 
 	if (!$self->{remote}) {
-		my $code ||= \&{$app . '::' . $self->{method}};
+		my $code ||= \&{$server_class . '::' . $self->{method}};
 		$resp = $code->($self, $req, @_);
 
 		if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
@@ -349,13 +349,13 @@ sub run {
 		my $session = AppSession->create($self->{server_class});
 		try {
 			$session->connect;
-		} catch ERROR with {
+		} catch Error with {
 			my $e = shift;
 			$log->debug( "Remote subrequest returned an error:\n". $e );
 			return undef;
 		} finally {
 			return undef unless ($session->state == $session->CONNECTED);
-		}
+		};
 
 		my $remote_req = $session->request( $self->{api_name}, @_ );
 		while (my $remote_resp = $remote_req->recv) {
