@@ -32,7 +32,18 @@ sub commit_db_session {
 
 	my $req = $session->request( "open-ils.storage.transaction.commit" );
 	my $resp = $req->recv();
-	if(ref($resp) and $resp->isa("Error")) { throw $resp; }
+
+	if(!$resp) {
+		throw OpenSRF::EX::ERROR ("Unable to commit db session");
+	}
+
+	if(ref($resp) and $resp->isa("Error")) { 
+		throw $resp ($resp->stringify); 
+	}
+
+	if(!$resp->content) {
+		throw OpenSRF::EX::ERROR ("Unable to commit db session");
+	}
 
 	$session->finish();
 	$session->disconnect();

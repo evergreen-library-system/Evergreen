@@ -82,14 +82,14 @@ sub biblio_record_tree_commit {
 	my( $self, $client, $user_session,  $tree ) = @_;
 	new Fieldmapper::biblio::record_node ($tree);
 
+	use Data::Dumper;
+
 	throw OpenSRF::EX::InvalidArg 
 		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
 		unless ( $user_session and $client and $tree );
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-
-	$client->respond("keepalive");
 
 	# capture the doc id
 	my $docid = $tree->owner_doc();
@@ -117,8 +117,6 @@ sub biblio_record_tree_commit {
 
 	my $x = _update_record_metadata( $session, { user => $user_obj, docid => $docid } );
 	OpenILS::Application::AppUtils->rollback_db_session($session) unless $x;
-	$client->respond("keepalive");
-
 
 	warn "Sending updated doc $docid to db\n";
 	my $req = $session->request( "open-ils.storage.biblio.record_marc.update", $biblio );
@@ -130,7 +128,21 @@ sub biblio_record_tree_commit {
 		throw OpenSRF::EX::ERROR ("Error updating biblio record");
 	}
 	$req->finish();
-	
+
+
+	OpenILS::Application::AppUtils->commit_db_session( $session );
+
+	my $method = $self->method_lookup( 
+			"open-ils.cat.biblio.record.tree.retrieve" );
+
+	my ($ans) = $method->run( $docid );
+
+	warn "Finished updating, returning tree to client";
+	$client->respond_complete($ans);
+
+
+
+
 	# Send the doc to the wormer for wormizing
 	warn "Starting worm session\n";
 	my $wses = OpenSRF::AppSession->create("open-ils.worm");
@@ -141,6 +153,7 @@ sub biblio_record_tree_commit {
 
 		my $wreq = $wses->request( 
 				"open-ils.worm.wormize.marc", $docid, $marcxml->toString );
+		warn "Calling worm receive\n";
 		$wresp = $wreq->recv();
 
 		if( $wresp && $wresp->can("content") and $wresp->content ) {
@@ -155,10 +168,9 @@ sub biblio_record_tree_commit {
 
 	if( !$success ) {
 
-
+		warn "wormizing failed, rolling back\n";
 		if($wresp and $wresp->isa("Error") ) {
-			$wses->disconnect;
-			$wses->kill_me;
+			OpenILS::Application::AppUtils->rollback_db_session($session);
 			throw $wresp ($wresp->stringify);
 		}
 
@@ -167,29 +179,14 @@ sub biblio_record_tree_commit {
 
 		OpenILS::Application::AppUtils->rollback_db_session($session);
 
-		return undef;
+		throw OpenSRF::EX::ERROR ("Wormizing Failed for $docid" );
 	}
-
-
-	$client->respond("keepalive");
 
 	$wses->disconnect;
 	$wses->kill_me;
 
-	warn "committing db session\n";
-	OpenILS::Application::AppUtils->commit_db_session( $session );
+	warn "Done wormizing\n";
 
-	my $method = $self->method_lookup( "open-ils.cat.biblio.record.tree.retrieve" );
-
-	if(!$method) {
-		throw OpenSRF::EX::PANIC 
-			("Unable to find method open-ils.cat.biblio.record.tree.retrieve"); }
-
-	my ($ans) = $method->run( $docid );
-
-	warn "Returning from commit\n";
-
-	return $ans;
 }
 
 
@@ -358,9 +355,106 @@ sub _update_record_metadata {
 	}
 
 	warn "committing metarecord update\n";
+
 	return 1;
 }
 
+
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_copies",
+	api_name	=> "open-ils.cat.asset.copy.retrieve",
+	argc		=> 2,  #(user_session, record_id)
+	note		=> <<TEXT
+	Returns the copies for a given bib record and for the users home library
+TEXT
+);
+
+sub retrieve_copies {
+
+	my( $self, $client, $user_session, $docid ) = @_;
+
+	$docid = "$docid";
+
+	use Data::Dumper;
+
+	my $user_obj = 
+		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+
+	warn "user session is ok\n";
+	warn "Home Lib: " . $user_obj->home_ou . "\n";
+
+	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+	
+	# ------------------------------------------------------
+	# grab the short name of the library location
+	my $request = $session->request( 
+			"open-ils.storage.actor.org_unit.retrieve", $user_obj->home_ou );
+
+	my $org_unit = $request->recv();
+	if(!$org_unit) {
+		throw OpenSRF::EX::ERROR 
+			("No response from storage for org unit search");
+	}
+	if($org_unit->isa("Error")) { throw $org_unit ($org_unit->stringify);}
+	my $location = $org_unit->content->shortname;
+	warn "found location $location\n";
+	$request->finish();
+	# ------------------------------------------------------
+
+
+	# ------------------------------------------------------
+	# grab all the volumes for the given record and location
+	my $search_hash = { record => $docid, owning_lib => $location };
+
+	warn "Using search hash: " . Dumper( $search_hash );
+
+	warn "searching call_numbers for $docid and $location\n";
+
+	$request = $session->request( 
+			"open-ils.storage.asset.call_number.search", $search_hash );
+
+	my $volume;
+	my @volume_ids;
+
+	while( $volume = $request->recv() ) {
+		if($volume->isa("Error")) { 
+			throw $volume ($volume->stringify);}
+		$volume = $volume->content;
+		warn "pusing onto volume ids: " . $volume->id . "\n";
+		push @volume_ids, $volume->id;
+	}
+	$request->finish();
+	# ------------------------------------------------------
+
+
+	# ------------------------------------------------------
+	# grab all of the copies for the given call_numbers
+	warn "grabbing copies for @volume_ids\n";
+	my $copy_req = $session->request(
+			"open-ils.storage.asset.copy.search.call_number", @volume_ids );
+
+	my $copies = $copy_req->recv(); 
+
+	if(!$copies) {
+		throw OpenSRF::EX::ERROR ("no response from storage for copy search");
+	}
+
+	if($copies->isa("Error")) {
+		throw $copies ($copies->stringify);
+	}
+
+	warn "received data from copy search:\n";
+	warn Dumper $copies->content;
+
+	$session->finish();
+	$session->disconnect();
+	$session->kill_me();
+
+	return $copies->content;
+	
+}
 
 
 

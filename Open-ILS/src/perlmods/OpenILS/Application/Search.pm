@@ -144,6 +144,14 @@ sub biblio_search_marc {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "search_copies_by_id_and_location",
+	api_name	=> "open-ils.search.asset.copy.search",
+	argc		=> 1, 
+	note		=> "Searches biblio information by marc tag",
+);
+
+
 
 
 # ---------------------------------------------------------------------------
