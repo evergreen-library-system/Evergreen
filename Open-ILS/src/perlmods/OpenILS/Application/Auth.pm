@@ -94,7 +94,7 @@ sub initialize {
 sub init_authenticate {
 	my( $self, $client, $username ) = @_;
 	my $seed = md5_hex( time() . $$ . rand() . $username );
-	$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 300 );
+	$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 30 );
 	return $seed;
 }
 
@@ -164,7 +164,7 @@ sub complete_authenticate {
 	if( $hash eq $passwdhash ) {
 
 		my $session_id = md5_hex( time() . $$ . rand() ); 
-		$cache_handle->put_cache( $session_id, $user, 28800 );
+		$cache_handle->put_cache( $session_id, $user, 3600 );
 		return $session_id;
 
 	} else {
