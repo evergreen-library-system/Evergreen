@@ -89,6 +89,20 @@ sub _unixserver {
 
 sub _listener {
 	my( $app ) = @_;
+
+=head
+	my $service = $app;
+	my $username = $app;
+	my $password = "jkjkasdf";
+	my $jserver = "elroy";
+	my $port = "5222";
+	my $hostname = "elroy.pls-hq.org";
+	my $unix_file = "/pines/var/sock/$app" . "_unix.sock";
+	my $router = 'router\@elroy/router'; 
+	return "exec(\"/pines/cvs/ILS/OpenSRF/src/forker/oils_inbound $service $username " .
+		"$password $jserver $port $hostname $unix_file $router\")";
+=cut
+
 	return "OpenSRF::Transport::Listener->new( '$app' )->initialize()->listen()";
 }
 
@@ -162,7 +176,12 @@ sub bootstrap {
 	my $server_type = $client->config_value("server_type");
 	$server_type ||= "basic";
 
-	OpenSRF::Transport::PeerHandle->retrieve->disconnect;
+	my $con = OpenSRF::Transport::PeerHandle->retrieve;
+	if($con) {
+		$con->disconnect;
+	}
+
+
 
 	if(  $server_type eq "prefork" ) { 
 		$server_type = "Net::Server::PreFork"; 
@@ -223,10 +242,8 @@ sub bootstrap_client {
 }
 
 sub bootstrap_logger {
-
 	$0 = "Log Server";
 	OpenSRF::Utils::LogServer->serve();
-
 }
 
 
@@ -351,6 +368,7 @@ sub launch_listener {
 			my $apname = $app;
 			$apname =~ tr/[a-z]/[A-Z]/;
 			$0 = "Listener ($apname)";
+			warn "Launching Listener with command:\n " . _listener($app) . "\n";
 			eval _listener( $app );
 			exit;
 		}

@@ -28,11 +28,11 @@ our $_singleton_connection;
 
 sub retrieve { 
 	my( $class, $app ) = @_;
-	my @keys = keys %apps_hash;
-	OpenSRF::Utils::Logger->transport( 
-			"Requesting peer for $app and we have @keys", INFO );
 	return $_singleton_connection;
-	return $apps_hash{$app};
+#	my @keys = keys %apps_hash;
+#OpenSRF::Utils::Logger->transport( 
+#			"Requesting peer for $app and we have @keys", INFO );
+#	return $apps_hash{$app};
 }
 
 
