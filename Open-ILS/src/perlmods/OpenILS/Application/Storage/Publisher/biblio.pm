@@ -159,12 +159,12 @@ sub create_record_node {
 
 	return undef;
 }
-__PACKAGE__->register_method(
-	method		=> 'create_record_node',
-	api_name	=> 'open-ils.storage.biblio.record_node.create',
-	api_level	=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'create_record_node',
+#	api_name	=> 'open-ils.storage.biblio.record_node.create',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
 
 sub update_record_node {
 	my $self = shift;
@@ -180,12 +180,12 @@ sub update_record_node {
 
 	return $success;
 }
-__PACKAGE__->register_method(
-	method		=> 'update_record_node',
-	api_name	=> 'open-ils.storage.biblio.record_node.update',
-	api_level	=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'update_record_node',
+#	api_name	=> 'open-ils.storage.biblio.record_node.update',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
 
 sub delete_record_node {
 	my $self = shift;
@@ -196,12 +196,12 @@ sub delete_record_node {
 	return 0 unless ($rec);
 	return 1;
 }
-__PACKAGE__->register_method(
-	method		=> 'delete_record_node',
-	api_name	=> 'open-ils.storage.biblio.record_node.delete',
-	api_level	=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'delete_record_node',
+#	api_name	=> 'open-ils.storage.biblio.record_node.delete',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
 
 sub get_record_node {
 	my $self = shift;
@@ -250,12 +250,12 @@ sub create_record_nodeset {
 
 	return $insert_total;
 }
-__PACKAGE__->register_method(
-	method		=> 'create_record_nodeset',
-	api_name	=> 'open-ils.storage.biblio.record_node.batch.create',
-	api_level	=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'create_record_nodeset',
+#	api_name	=> 'open-ils.storage.biblio.record_node.batch.create',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
 
 sub update_record_nodeset {
 	my $self = shift;
@@ -275,12 +275,12 @@ sub update_record_nodeset {
 	
 	return $update_total;
 }
-__PACKAGE__->register_method(
-	method		=> 'update_record_nodeset',
-	api_name	=> 'open-ils.storage.biblio.record_node.batch.update',
-	api_level	=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'update_record_nodeset',
+#	api_name	=> 'open-ils.storage.biblio.record_node.batch.update',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
 
 sub delete_record_nodeset {
 	my $self = shift;
@@ -299,12 +299,12 @@ sub delete_record_nodeset {
 	
 	return $delete_total;
 }
-__PACKAGE__->register_method(
-	method		=> 'delete_record_nodeset',
-	api_name	=> 'open-ils.storage.biblio.record_node.batch.delete',
-	api_level	=> 1,
-	argc		=> 1,
-);
+#__PACKAGE__->register_method(
+#	method		=> 'delete_record_nodeset',
+#	api_name	=> 'open-ils.storage.biblio.record_node.batch.delete',
+#	api_level	=> 1,
+#	argc		=> 1,
+#);
 
 sub get_record_nodeset {
 	my $self = shift;

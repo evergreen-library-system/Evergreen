@@ -24,7 +24,7 @@ our @pending_requests;
 
 sub package {
 	my $self = shift;
-	return $self->{api_name};
+	return $self->{package};
 }
 
 sub api_name {
@@ -34,7 +34,7 @@ sub api_name {
 
 sub api_level {
 	my $self = shift;
-	return $self->{api_name};
+	return $self->{api_level};
 }
 
 sub server_class {
@@ -330,7 +330,7 @@ sub method_lookup {
 
 	my $class = ref($self) || $self;
 
-	$log->debug("Lookup of [$method] by [$class]", DEBUG);
+	$log->debug("Lookup of [$method] by [$class] in api_level [$proto]", DEBUG);
 	$log->debug("Available methods\n".Dumper(\@_METHODS), INTERNAL);
 
 	my $meth;
