@@ -4,6 +4,9 @@ use strict; use warnings;
 
 use OpenSRF::EX qw/:try/;
 
+use OpenSRF::Utils::Logger qw/:level/;
+my $log = 'OpenSRF::Utils::Logger';
+
 use OpenILS::Utils::FlatXML;
 use OpenILS::Utils::Fieldmapper;
 use JSON;
@@ -22,74 +25,143 @@ my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 
 use open qw/:utf8/;
 
+my $xpathset = {};
 
 sub child_init {
-	#try {
-	#	__PACKAGE__->method_lookup('i.do.not.exist');
-	#} catch Error with {
-	#	warn shift();
-	#};
+	my $meth = __PACKAGE__->method_lookup('open-ils.storage.direct.config.metabib_field.all');
+	for my $f ($meth->run) {
+		$xpathset->{ $f->field_class }->{ $f->name }->{xpath} = $f->xpath;
+		$xpathset->{ $f->field_class }->{ $f->name }->{id} = $f->id;
+		$log->debug("Loaded XPath from DB: ".$f->field_class." => ".$f->name." : ".$f->xpath, DEBUG);
+	}
 }
 
+# --------------------------------------------------------------------------------
+# Fingerprinting
 
-# get me from the database
-my $xpathset = {
+my @fp_mods_xpath = (
+	'//mods:mods/mods:typeOfResource[text()="text"]' => [
+			title	=> {
+					xpath	=> [
+							'//mods:mods/mods:titleInfo[mods:title and (@type="uniform")]',
+							'//mods:mods/mods:titleInfo[mods:title and (@type="translated")]',
+							'//mods:mods/mods:titleInfo[mods:title and (@type="alternative")]',
+							'//mods:mods/mods:titleInfo[mods:title and not(@type)]',
+					],
+					fixup	=> '
+							do {
+								$text = lc($text);
+								$text =~ s/\s+/ /sgo;
+								$text =~ s/^\s*(.+)\s*$/$1/sgo;
+								$text =~ s/\b(?:the|an?)\b//sgo;
+								$text =~ s/\[.[^\]]+\]//sgo;
+								$text =~ s/\s*[;\/\.]*$//sgo;
+							};
+					',
+			},
+			author	=> {
+					xpath	=> [
+							'//mods:mods/mods:name[mods:role/mods:text/text()="creator" and @type="personal"]/mods:namePart',
+							'//mods:mods/mods:name[mods:role/mods:text/text()="creator"]/mods:namePart',
+					],
+					fixup	=> '
+							do {
+								$text = lc($text);
+								$text =~ s/\s+/ /sgo;
+								$text =~ s/^\s*(.+)\s*$/$1/sgo;
+								($text) = split ",", $text;
+							};
+					',
+			},
+	],
 
-	title => {
+	'//mods:mods/mods:relatedItem[@type!="host"]' => [
+			title	=> {
+					xpath	=> [
+							'//mods:mods/mods:relatedItem/mods:titleInfo[mods:title and (@type="uniform")]',
+							'//mods:mods/mods:relatedItem/mods:titleInfo[mods:title and (@type="translated")]',
+							'//mods:mods/mods:relatedItem/mods:titleInfo[mods:title and (@type="alternative")]',
+							'//mods:mods/mods:relatedItem/mods:titleInfo[mods:title and not(@type)]',
+							'//mods:mods/mods:titleInfo[mods:title and (@type="uniform")]',
+							'//mods:mods/mods:titleInfo[mods:title and (@type="translated")]',
+							'//mods:mods/mods:titleInfo[mods:title and (@type="alternative")]',
+							'//mods:mods/mods:titleInfo[mods:title and not(@type)]',
+					],
+					fixup	=> '
+							do {
+								$text = lc($text);
+								$text =~ s/\s+/ /sgo;
+								$text =~ s/^\s*(.+)\s*$/$1/sgo;
+								$text =~ s/\b(?:the|an?)\b//sgo;
+								$text =~ s/\[.[^\]]+\]//sgo;
+								$text =~ s/\s*[;\/\.]*$//sgo;
+							};
+					',
+			},
+			author	=> {
+					xpath	=> [
+							'//mods:mods/mods:relatedItem/mods:name[mods:role/mods:text/text()="creator" and @type="personal"]/mods:namePart',
+							'//mods:mods/mods:relatedItem/mods:name[mods:role/mods:text/text()="creator"]/mods:namePart',
+							'//mods:mods/mods:name[mods:role/mods:text/text()="creator" and @type="personal"]/mods:namePart',
+							'//mods:mods/mods:name[mods:role/mods:text/text()="creator"]/mods:namePart',
+					],
+					fixup	=> '
+							do {
+								$text = lc($text);
+								$text =~ s/\s+/ /sgo;
+								$text =~ s/^\s*(.+)\s*$/$1/sgo;
+								($text) = split ",", $text;
+							};
+					',
+			},
+	],
 
-		abbreviated => 
-			"//mods:mods/mods:titleInfo[mods:title and (\@type='abreviated')]",
+);
 
-		translated =>
-			"//mods:mods/mods:titleInfo[mods:title and (\@type='translated')]",
+push @fp_mods_xpath, '//mods:mods/mods:titleInfo' => $fp_mods_xpath[1];
 
-		uniform =>
-			"//mods:mods/mods:titleInfo[mods:title and (\@type='uniform')]",
+sub fingerprint_mods {
+	my $mods = shift;
 
-		proper =>
-			"//mods:mods/mods:titleInfo[mods:title and not (\@type)]",
-	},
+	my $fp_string = '';
 
-	author => {
+	my $match_index = 0;
+	my $block_index = 1;
+	while ( my $match_xpath = $fp_mods_xpath[$match_index] ) {
+		if ( my @nodes = $mods->findnodes( $match_xpath ) ) {
 
-		corporate => 
-			"//mods:mods/mods:name[\@type='corporate']/mods:namePart".
-				"[../mods:role/mods:text[text()='creator']][1]",
+			my $block_name_index = 0;
+			my $block_value_index = 1;
+			my $block = $fp_mods_xpath[$block_index];
+			while ( my $part = $$block[$block_value_index] ) {
+				my $text;
+				for my $xpath ( @{ $part->{xpath} } ) {
+					$text = $mods->findvalue( $xpath );
+					last if ($text);
+				}
 
-		personal => 
-			"//mods:mods/mods:name[\@type='personal']/mods:namePart".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				$log->debug("Found fingerprint text using $$block[$block_name_index] : [$text]", DEBUG);
 
-		conference => 
-			"//mods:mods/mods:name[\@type='conference']/mods:namePart".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				if ($text) {
+					eval $$part{fixup};
+					$fp_string .= $text;
+				}
 
-		other => 
-			"//mods:mods/mods:name[\@type='personal']/mods:namePart",
-	},
+				$block_name_index += 2;
+				$block_value_index += 2;
+			}
+		}
+		if ($fp_string) {
+			$log->debug("Fingerprint is [$fp_string]", INFO);;
+			return $fp_string;
+		}
 
-	subject => {
+		$match_index += 2;
+		$block_index += 2;
+	}
+	return undef;
+}
 
-		geographic => 
-			"//mods:mods/mods:subject/mods:geographic",
-
-		name => 
-			"//mods:mods/mods:subject/mods:name",
-
-		temporal => 
-			"//mods:mods/mods:subject/mods:temporal",
-
-		topic => 
-			"//mods:mods/mods:subject/mods:topic",
-
-		genre => 
-			"//mods:mods/mods:genre",
-
-	},
-
-	keyword => { keyword => "//mods:mods/*[not(local-name()='originInfo')]", },
-
-};
 
 
 # --------------------------------------------------------------------------------
@@ -98,6 +170,9 @@ my $begin;
 my $commit;
 my $rollback;
 my $lookup;
+my $fetch_entry;
+my $update_entry;
+my $rm_old_rd;
 my $rm_old_fr;
 my $rm_old_tr;
 my $rm_old_ar;
@@ -105,8 +180,21 @@ my $rm_old_sr;
 my $rm_old_kr;
 
 my $fr_create;
+my $rd_create;
 my $create = {};
 
+my %descriptor_code = (
+	item_type => 'substr($ldr,6,1)',
+	item_form => '(substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/) ? substr($oo8,29,1) : substr($oo8,23,1)',
+	bib_level => 'substr($ldr,7,1)',
+	control_type => 'substr($ldr,8,1)',
+	char_encoding => 'substr($ldr,9,1)',
+	enc_level => 'substr($ldr,17,1)',
+	cat_form => 'substr($ldr,18,1)',
+	pub_status => 'substr($ldr,5,1)',
+	item_lang => 'substr($oo8,35,3)',
+	audience => 'substr($oo8,22,1)',
+);
 
 sub wormize {
 
@@ -120,27 +208,35 @@ sub wormize {
 		unless ($commit);
 	$rollback = $self->method_lookup( 'open-ils.storage.transaction.rollback')
 		unless ($rollback);
-	$lookup = $self->method_lookup('open-ils.storage.biblio.record_marc.batch.retrieve')
+	$lookup = $self->method_lookup('open-ils.storage.direct.biblio.record_marc.batch.retrieve')
 		unless ($lookup);
-	$rm_old_fr = $self->method_lookup( 'open-ils.storage.metabib.full_rec.mass_delete')
+	$fetch_entry = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.retrieve')
+		unless ($update_entry);
+	$update_entry = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.batch.update')
+		unless ($update_entry);
+	$rm_old_rd = $self->method_lookup( 'open-ils.storage.direct.metabib.record_descriptor.mass_delete')
+		unless ($rm_old_rd);
+	$rm_old_fr = $self->method_lookup( 'open-ils.storage.direct.metabib.full_rec.mass_delete')
 		unless ($rm_old_fr);
-	$rm_old_tr = $self->method_lookup( 'open-ils.storage.metabib.title_field_entry.mass_delete')
+	$rm_old_tr = $self->method_lookup( 'open-ils.storage.direct.metabib.title_field_entry.mass_delete')
 		unless ($rm_old_tr);
-	$rm_old_ar = $self->method_lookup( 'open-ils.storage.metabib.author_field_entry.mass_delete')
+	$rm_old_ar = $self->method_lookup( 'open-ils.storage.direct.metabib.author_field_entry.mass_delete')
 		unless ($rm_old_ar);
-	$rm_old_sr = $self->method_lookup( 'open-ils.storage.metabib.subject_field_entry.mass_delete')
+	$rm_old_sr = $self->method_lookup( 'open-ils.storage.direct.metabib.subject_field_entry.mass_delete')
 		unless ($rm_old_sr);
-	$rm_old_kr = $self->method_lookup( 'open-ils.storage.metabib.keyword_field_entry.mass_delete')
+	$rm_old_kr = $self->method_lookup( 'open-ils.storage.direct.metabib.keyword_field_entry.mass_delete')
 		unless ($rm_old_kr);
-	$fr_create = $self->method_lookup( 'open-ils.storage.metabib.full_rec.batch.create')
+	$rd_create = $self->method_lookup( 'open-ils.storage.direct.metabib.record_descriptor.batch.create')
+		unless ($rd_create);
+	$fr_create = $self->method_lookup( 'open-ils.storage.direct.metabib.full_rec.batch.create')
 		unless ($fr_create);
-	$$create{title} = $self->method_lookup( 'open-ils.storage.metabib.title_field_entry.batch.create')
+	$$create{title} = $self->method_lookup( 'open-ils.storage.direct.metabib.title_field_entry.batch.create')
 		unless ($$create{title});
-	$$create{author} = $self->method_lookup( 'open-ils.storage.metabib.author_field_entry.batch.create')
+	$$create{author} = $self->method_lookup( 'open-ils.storage.direct.metabib.author_field_entry.batch.create')
 		unless ($$create{author});
-	$$create{subject} = $self->method_lookup( 'open-ils.storage.metabib.subject_field_entry.batch.create')
+	$$create{subject} = $self->method_lookup( 'open-ils.storage.direct.metabib.subject_field_entry.batch.create')
 		unless ($$create{subject});
-	$$create{keyword} = $self->method_lookup( 'open-ils.storage.metabib.keyword_field_entry.batch.create')
+	$$create{keyword} = $self->method_lookup( 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create')
 		unless ($$create{keyword});
 
 
@@ -154,6 +250,8 @@ sub wormize {
 		throw OpenSRF::EX::PANIC ("WoRM Couldn't BEGIN transaction!")
 	};
 
+	my @entry_list;
+	my @rd_list;
 	my @ns_list;
 	my @mods_data;
 	my $ret = 0;
@@ -164,8 +262,26 @@ sub wormize {
 		my $xml = $marc->marc;
 		my $docid = $marc->id;
 		my $marcdoc = $parser->parse_string($xml);
+		my $modsdoc = $mods_sheet->transform($marcdoc);
 
-		push @mods_data, { $docid => $self->modsdoc_to_values( $mods_sheet->transform($marcdoc) ) };
+		my $mods = $modsdoc->documentElement;
+		$mods->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+
+		my ($entry) = $fetch_entry->run($docid);
+		$entry->fingerprint( fingerprint_mods( $mods ) );
+		push @entry_list, $entry;
+
+		my $ldr = $marcdoc->documentElement->getChildrenByTagName('leader')->pop->textContent;
+		my $oo8 = $marcdoc->documentElement->findvalue('//*[local-name()="controlfield" and @tag="008"]');
+
+		my $rd_obj = Fieldmapper::metabib::record_descriptor->new;
+		for my $rd_field ( keys %descriptor_code ) {
+			$rd_obj->$rd_field( eval "$descriptor_code{$rd_field};" );
+		}
+		$rd_obj->record( $docid );
+		push @rd_list, $rd_obj;
+
+		push @mods_data, { $docid => $self->modsdoc_to_values( $mods ) };
 
 		# step 2: build the KOHA rows
 		my @tmp_list = _marcxml_to_full_rows( $marcdoc );
@@ -177,15 +293,26 @@ sub wormize {
 		last unless ($self->api_name =~ /batch$/o);
 	}
 
+	$rm_old_rd->run( { record => \@docids } );
 	$rm_old_fr->run( { record => \@docids } );
 	$rm_old_tr->run( { source => \@docids } );
 	$rm_old_ar->run( { source => \@docids } );
 	$rm_old_sr->run( { source => \@docids } );
 	$rm_old_kr->run( { source => \@docids } );
 
+	my ($re) = $update_entry->run(@entry_list);
+	unless (defined $re) {
+		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.biblio.record_entry.batch.update!")
+	}
+
+	my ($rd) = $rd_create->run(@rd_list);
+	unless (defined $rd) {
+		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.record_descriptor.batch.create!")
+	}
+
 	my ($fr) = $fr_create->run(@ns_list);
 	unless (defined $fr) {
-		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.metabib.full_rec.batch.create!")
+		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.full_rec.batch.create!")
 	}
 
 	# step 5: insert the new metadata
@@ -198,13 +325,12 @@ sub wormize {
 			my $fm_constructor = "Fieldmapper::metabib::${class}_field_entry";
 			for my $row ( keys %{ $$data{$class} } ) {
 				next unless (exists $$data{$class}{$row});
-				next unless ($$data{$class}{$row});
+				next unless ($$data{$class}{$row}{value});
 				my $fm_obj = $fm_constructor->new;
-				$fm_obj->value( $$data{$class}{$row} );
+				$fm_obj->value( $$data{$class}{$row}{value} );
+				$fm_obj->field( $$data{$class}{$row}{field_id} );
 				$fm_obj->source( $did );
-
-				# XXX This needs to be a real thing once the xpath is in the DB
-				$fm_obj->field( 1 );
+				$log->debug("$class entry: ".$fm_obj->source." => ".$fm_obj->field." : ".$fm_obj->value, DEBUG);
 
 				push @md_list, $fm_obj;
 			}
@@ -212,7 +338,7 @@ sub wormize {
 			
 		my ($cr) = $$create{$class}->run(@md_list);
 		unless (defined $cr) {
-			throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.metabib.${class}_field_entry.batch.create!")
+			throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.${class}_field_entry.batch.create!")
 		}
 	}
 
@@ -278,14 +404,18 @@ sub _marcxml_to_full_rows {
 	for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
 		next unless $tagline;
 
-		for my $data ( @{$tagline->getChildrenByTagName("subfield")} ) {
-			next unless $tagline;
+		my $tag = $tagline->getAttribute( "tag" );
+		my $ind1 = $tagline->getAttribute( "ind1" );
+		my $ind2 = $tagline->getAttribute( "ind2" );
+
+		for my $data ( $tagline->childNodes ) {
+			next unless $data;
 
 			my $ns = new Fieldmapper::metabib::full_rec;
 
-			$ns->tag( $tagline->getAttribute( "tag" ) );
-			$ns->ind1( $tagline->getAttribute( "ind1" ) );
-			$ns->ind2( $tagline->getAttribute( "ind2" ) );
+			$ns->tag( $tag );
+			$ns->ind1( $ind1 );
+			$ns->ind2( $ind2 );
 			$ns->subfield( $data->getAttribute( "code" ) );
 			my $val = $data->textContent;
 			$val =~ s/(\pM)//gso;
@@ -299,11 +429,9 @@ sub _marcxml_to_full_rows {
 
 sub _get_field_value {
 
-	my( $mods, $xpath ) = @_;
+	my( $root, $xpath ) = @_;
 
 	my $string = "";
-	my $root = $mods->documentElement;
-	$root->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
 
 	# grab the set of matching nodes
 	my @nodes = $root->findnodes( $xpath );
@@ -332,9 +460,10 @@ sub modsdoc_to_values {
 	my $data = {};
 	for my $class (keys %$xpathset) {
 		$data->{$class} = {};
-		for my $type(keys %{$xpathset->{$class}}) {
-			my $value = _get_field_value( $mods, $xpathset->{$class}->{$type} );
-			$data->{$class}->{$type} = $value;
+		for my $type (keys %{$xpathset->{$class}}) {
+			$data->{$class}->{$type} = {};
+			$data->{$class}->{$type}->{value} = _get_field_value( $mods, $xpathset->{$class}->{$type}->{xpath} );
+			$data->{$class}->{$type}->{field_id} = $xpathset->{$class}->{$type}->{id};
 		}
 	}
 	return $data;

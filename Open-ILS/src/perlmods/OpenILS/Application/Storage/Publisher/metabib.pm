@@ -47,13 +47,13 @@ sub search_full_rec {
 
 }
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.full_rec.search_fts.value',
+	api_name	=> 'open-ils.storage.direct.metabib.full_rec.search_fts.value',
 	method		=> 'search_full_rec',
 	api_level	=> 1,
 	stream		=> 1,
 );
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.full_rec.search_fts.index_vector',
+	api_name	=> 'open-ils.storage.direct.metabib.full_rec.search_fts.index_vector',
 	method		=> 'search_full_rec',
 	api_level	=> 1,
 	stream		=> 1,

@@ -16,7 +16,7 @@ __PACKAGE__->columns( Others => qw/record label creator create_date editor edit_
 package asset::call_number_note;
 use base qw/asset/;
 
-__PACKAGE__->table( 'asset_call_number' );
+__PACKAGE__->table( 'asset_call_number_note' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Others => qw/owning_call_number title creator create_date value/ );
 
@@ -27,9 +27,33 @@ use base qw/asset/;
 __PACKAGE__->table( 'asset_copy' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Others => qw/call_number barcode creator create_date editor
-				   edit_date copy_number status home_lib loan_duration
+				   edit_date copy_number available loan_duration
 				   fine_level circulate deposit price ref opac_visible
-				   genre audience shelving_loc deposit_amount/ );
+				   circ_as_type circ_modifier deposit_amount/ );
+
+#-------------------------------------------------------------------------------
+package asset::stat_cat;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_stat_cat' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/owner name opac_visible/ );
+
+#-------------------------------------------------------------------------------
+package asset::stat_cat_entry;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_stat_cat_entry' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/owner value/ );
+
+#-------------------------------------------------------------------------------
+package asset::stat_cat_entry_copy_map;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_stat_cat_entry_copy_map' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/stat_cat stat_cat_entry owning_copy/ );
 
 #-------------------------------------------------------------------------------
 package asset::copy_note;

@@ -134,7 +134,7 @@ sub get_org_tree {
 	my $self = shift;
 
 	my $orglist = $self->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.actor.org_unit_list" );
+			"open-ils.storage", "open-ils.storage.direct.actor.org_unit_list" );
 
 	return $self->build_org_tree($orglist);
 

@@ -32,6 +32,38 @@ __PACKAGE__->columns( Primary => qw/id/);
 __PACKAGE__->columns( Others => qw/parent_ou ou_type address shortname name/);
 
 #-------------------------------------------------------------------------------
+package actor::stat_cat;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_stat_cat' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/owner name opac_visible/ );
+
+#-------------------------------------------------------------------------------
+package actor::stat_cat_entry;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_stat_cat_entry' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/owner value/ );
+
+#-------------------------------------------------------------------------------
+package actor::stat_cat_entry_user_map;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_stat_cat_entry_usr_map' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/stat_cat_entry target_user/ );
+
+#-------------------------------------------------------------------------------
+package actor::card;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_card' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Others => qw/usr barcode active/ );
+
+#-------------------------------------------------------------------------------
 package actor::user_access_entry;
 use base qw/actor/;
 #-------------------------------------------------------------------------------

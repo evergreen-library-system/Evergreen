@@ -108,7 +108,7 @@ sub init_authenticate {
 sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash ) = @_;
 
-	my $name = "open-ils.storage.actor.user.search.usrname";
+	my $name = "open-ils.storage.direct.actor.user.search.usrname";
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request( $name, $username );

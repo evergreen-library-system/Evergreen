@@ -48,38 +48,6 @@ metabib::keyword_field_entry->columns( Primary => qw/id/ );
 metabib::keyword_field_entry->columns( Others => qw/field value source/ );
 
 #-------------------------------------------------------------------------------
-#package metabib::title_field_entry_source_map;
-#use base qw/metabib/;
-#
-#metabib::title_field_entry_source_map->table( 'metabib_title_field_entry_source_map' );
-#metabib::title_field_entry_source_map->columns( Primary => qw/id/ );
-#metabib::title_field_entry_source_map->columns( Others => qw/field_entry metarecord source_record/ );
-#
-#-------------------------------------------------------------------------------
-#package metabib::author_field_entry_source_map;
-#use base qw/metabib/;
-#
-#metabib::author_field_entry_source_map->table( 'metabib_author_field_entry_source_map' );
-#metabib::author_field_entry_source_map->columns( Primary => qw/id/ );
-#metabib::author_field_entry_source_map->columns( Others => qw/field_entry metarecord source_record/ );
-#
-#-------------------------------------------------------------------------------
-#package metabib::subject_field_entry_source_map;
-#use base qw/metabib/;
-#
-#metabib::subject_field_entry_source_map->table( 'metabib_subject_field_entry_source_map' );
-#metabib::subject_field_entry_source_map->columns( Primary => qw/id/ );
-#metabib::subject_field_entry_source_map->columns( Others => qw/field_entry metarecord source_record/ );
-#
-#-------------------------------------------------------------------------------
-#package metabib::keyword_field_entry_source_map;
-#use base qw/metabib/;
-#
-#metabib::keyword_field_entry_source_map->table( 'metabib_keyword_field_entry_source_map' );
-#metabib::keyword_field_entry_source_map->columns( Primary => qw/id/ );
-#metabib::keyword_field_entry_source_map->columns( Others => qw/field_entry metarecord source_record/ );
-#
-#-------------------------------------------------------------------------------
 package metabib::metarecord_source_map;
 use base qw/metabib/;
 
@@ -94,6 +62,17 @@ use base qw/metabib/;
 metabib::full_rec->table( 'metabib_full_rec' );
 metabib::full_rec->columns( Primary => qw/id/ );
 metabib::full_rec->columns( Others => qw/record tag ind1 ind2 subfield value/ );
+
+#-------------------------------------------------------------------------------
+package metabib::record_descriptor;
+use base qw/metabib/;
+#use OpenILS::Application::Storage::CDBI::asset;
+
+metabib::record_descriptor->table( 'metabib_rec_descriptor' );
+metabib::record_descriptor->columns( Primary => qw/id/ );
+metabib::record_descriptor->columns( Others => qw/record item_type item_form bib_level
+					 control_type char_encoding enc_level
+					 cat_form pub_status item_lang audience/ );
 
 #-------------------------------------------------------------------------------
 

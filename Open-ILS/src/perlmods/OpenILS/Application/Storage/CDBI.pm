@@ -271,12 +271,29 @@ sub import {
 	return if ($VERSION);
 	#-------------------------------------------------------------------------------
 	actor::user->has_a( home_ou => 'actor::org_unit' );
-	#actor::org_unit->has_a( address => 'actor::address' );
+	actor::user->has_many( survey_responses => 'action::survey_response' );
 	#-------------------------------------------------------------------------------
 	actor::org_unit->has_many( users => 'actor::user' );
 	actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
 	actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
 	#actor::org_unit->has_a( address => 'actor::address' );
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
+	action::survey_response->has_a( usr => 'actor::user' );
+	action::survey_response->has_a( survey => 'action::survey' );
+	action::survey_response->has_a( question => 'action::survey_question' );
+	action::survey_response->has_a( answer => 'action::survey_answer' );
+	#-------------------------------------------------------------------------------
+	action::survey->has_many( questions => 'action::survey_question' );
+	action::survey->has_many( responses => 'action::survey_response' );
+	#-------------------------------------------------------------------------------
+	action::survey_question->has_a( survey => 'action::survey' );
+	action::survey_question->has_many( answers => 'action::survey_answer' );
+	action::survey_question->has_many( responses => 'action::survey_response' );
+	#-------------------------------------------------------------------------------
+	action::survey_answer->has_a( question => 'action::survey' );
+	action::survey_answer->has_many( responses => 'action::survey_response' );
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
@@ -286,7 +303,6 @@ sub import {
 	asset::copy->has_many( notes => 'asset::copy_note' );
 	asset::copy->has_a( creator => 'actor::user' );
 	asset::copy->has_a( editor => 'actor::user' );
-	#asset::copy->might_have( metadata => 'asset::copy_metadata' );
 	#-------------------------------------------------------------------------------
 	asset::call_number_note->has_a( owning_call_number => 'asset::call_number' );
 	#-------------------------------------------------------------------------------
@@ -301,52 +317,46 @@ sub import {
 	#-------------------------------------------------------------------------------
 	biblio::record_note->has_a( record => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
-	biblio::record_mods->is_a( id => 'biblio::record_entry' );
-	#-------------------------------------------------------------------------------
 	biblio::record_marc->is_a( id => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
 	biblio::record_entry->has_a( creator => 'actor::user' );
 	biblio::record_entry->has_a( editor => 'actor::user' );
-	biblio::record_entry->might_have( mods_entry => 'biblio::record_mods' => qw/mods/ );
 	biblio::record_entry->might_have( marc_entry => 'biblio::record_marc' => qw/marc/ );
+	biblio::record_entry->has_many( record_descriptor => 'metabib::record_descriptor' );
 	biblio::record_entry->has_many( notes => 'biblio::record_note' );
-	biblio::record_entry->has_many( nodes => 'biblio::record_node', { order_by => 'intra_doc_id' } );
 	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
 	
 	# should we have just one field entry per class for each record???? (xslt vs xpath)
-	#biblio::record_entry->has_a( item_type => 'config::item_type_map' );
+	biblio::record_entry->has_many( full_record_entries => 'metabib::full_rec' );
 	biblio::record_entry->has_many( title_field_entries => 'metabib::title_field_entry' );
 	biblio::record_entry->has_many( author_field_entries => 'metabib::author_field_entry' );
 	biblio::record_entry->has_many( subject_field_entries => 'metabib::subject_field_entry' );
 	biblio::record_entry->has_many( keyword_field_entries => 'metabib::keyword_field_entry' );
 	#-------------------------------------------------------------------------------
-	biblio::record_node->has_a( owner_doc => 'biblio::record_entry' );
-	#biblio::record_node->has_a(
-	#	parent_node	=> 'biblio::record_node::subnode',
-	#	inflate		=> sub { return biblio::record_node::subnode::_load(@_) }
-	#);
-	#-------------------------------------------------------------------------------
-	
-	#-------------------------------------------------------------------------------
-	metabib::full_rec->has_a( record => 'biblio::record_entry' );
+
+
 	#-------------------------------------------------------------------------------
 	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
 	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source'] );
 	#-------------------------------------------------------------------------------
-	metabib::title_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source'] );
+	metabib::record_descriptor->has_a( record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	metabib::full_rec->has_a( record => 'biblio::record_entry' );
+	#-------------------------------------------------------------------------------
+	metabib::title_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::title_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
-	metabib::author_field_entry->has_many( source_records => [ 'metabib::author_field_entry_source_map' => 'source'] );
+	metabib::author_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::author_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
-	metabib::subject_field_entry->has_many( source_records => [ 'metabib::title_field_entry_source_map' => 'source'] );
+	metabib::subject_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::subject_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
-	metabib::keyword_field_entry->has_many( source_records => [ 'metabib::keyword_field_entry_source_map' => 'source'] );
+	metabib::keyword_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::keyword_field_entry->has_a( field => 'config::metabib_field' );
 	#-------------------------------------------------------------------------------
 	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
-	metabib::metarecord_source_map->has_a( source_record => 'biblio::record_entry' );
+	metabib::metarecord_source_map->has_a( source => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
 
 

@@ -31,7 +31,7 @@ sub biblio_record_tree_retrieve {
 
 	my( $self, $client, $recordid ) = @_;
 
-	my $name = "open-ils.storage.biblio.record_marc.retrieve";
+	my $name = "open-ils.storage.direct.biblio.record_marc.retrieve";
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( $name, $recordid );
 	$request->wait_complete;
@@ -120,7 +120,7 @@ sub biblio_record_tree_commit {
 	OpenILS::Application::AppUtils->rollback_db_session($session) unless $x;
 
 	warn "Sending updated doc $docid to db\n";
-	my $req = $session->request( "open-ils.storage.biblio.record_marc.update", $biblio );
+	my $req = $session->request( "open-ils.storage.direct.biblio.record_marc.update", $biblio );
 
 	$req->wait_complete;
 	my $status = $req->recv();
@@ -206,7 +206,7 @@ sub biblio_record_record_metadata {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request( 
-			"open-ils.storage.biblio.record_entry.batch.retrieve", @ids );
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", @ids );
 
 	my $results = [];
 
@@ -249,7 +249,7 @@ sub _get_userid_by_id {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-		"open-ils.storage.actor.user.batch.retrieve.atomic", @ids );
+		"open-ils.storage.direct.actor.user.batch.retrieve.atomic", @ids );
 
 	$request->wait_complete;
 	my $response = $request->recv();
@@ -271,7 +271,7 @@ sub _get_userid_by_id {
 	return @users;
 }
 
-# open-ils.storage.actor.user.search.usrid
+# open-ils.storage.direct.actor.user.search.usrid
 
 sub _get_id_by_userid {
 
@@ -280,7 +280,7 @@ sub _get_id_by_userid {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-		"open-ils.storage.actor.user.search.usrid", @users );
+		"open-ils.storage.direct.actor.user.search.usrid", @users );
 
 	$request->wait_complete;
 	my $response = $request->recv();
@@ -321,7 +321,7 @@ sub _update_record_metadata {
 		# grab the meta information  and update it
 		my $user_session = OpenSRF::AppSession->create("open-ils.storage");
 		my $user_request = $user_session->request( 
-			"open-ils.storage.biblio.record_entry.retrieve", $docid );
+			"open-ils.storage.direct.biblio.record_entry.retrieve", $docid );
 		$user_request->wait_complete;
 		my $meta = $user_request->recv();
 
@@ -345,7 +345,7 @@ sub _update_record_metadata {
 		warn "Grabbed the record, updating and moving on\n";
 
 		my $request = $session->request( 
-			"open-ils.storage.biblio.record_entry.update", $meta );
+			"open-ils.storage.direct.biblio.record_entry.update", $meta );
 
 		my $response = $request->recv();
 		if(!$response) { 
@@ -396,7 +396,7 @@ sub retrieve_copies {
 	# ------------------------------------------------------
 	# grab the short name of the library location
 	my $request = $session->request( 
-			"open-ils.storage.actor.org_unit.retrieve", $home_ou );
+			"open-ils.storage.direct.actor.org_unit.retrieve", $home_ou );
 
 	my $org_unit = $request->recv();
 	if(!$org_unit) {
@@ -416,7 +416,7 @@ sub retrieve_copies {
 
 
 	$request = $session->request( 
-			"open-ils.storage.asset.call_number.search", $search_hash );
+			"open-ils.storage.direct.asset.call_number.search", $search_hash );
 
 	my $volume;
 	my @volume_ids;
@@ -431,7 +431,7 @@ sub retrieve_copies {
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
 		my $copies = 
 			OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-				"open-ils.storage.asset.copy.search.call_number", $volume->id );
+				"open-ils.storage.direct.asset.copy.search.call_number", $volume->id );
 
 		$volume->copies($copies);
 
@@ -474,7 +474,7 @@ sub retrieve_copies_global {
 	# ------------------------------------------------------
 	# grab all the volumes for the given record and location
 	my $request = $session->request( 
-			"open-ils.storage.asset.call_number.search.record", $docid );
+			"open-ils.storage.direct.asset.call_number.search.record", $docid );
 
 	my $volumes = $request->recv();
 
@@ -497,7 +497,7 @@ sub retrieve_copies_global {
 	warn "Searching volumes @ii\n";
 		
 	$request = $session->request( 
-			"open-ils.storage.asset.copy.search.call_number", keys %$vol_hash );
+			"open-ils.storage.direct.asset.copy.search.call_number", keys %$vol_hash );
 	
 	while( my $copylist = $request->recv ) {
 		
@@ -641,7 +641,7 @@ sub volume_tree_add {
 			$volume->label . " " . $volume->record . "\n";
 
 		my $cn_req = $session->request( 
-				'open-ils.storage.asset.call_number.search' =>
+				'open-ils.storage.direct.asset.call_number.search' =>
 		      {       owning_lib      => $volume->owning_lib,
 		              label           => $volume->label,
 		              record          => $volume->record,
@@ -676,7 +676,7 @@ sub volume_tree_add {
 			warn Dumper $volume;
 
 			my $request = $session->request( 
-				"open-ils.storage.asset.call_number.create", $volume );
+				"open-ils.storage.direct.asset.call_number.create", $volume );
 
 			warn "0\n";
 			my $response = $request->recv();
@@ -722,7 +722,7 @@ sub volume_tree_add {
 			warn Dumper $copy;
 
 			my $req = $session->request(
-					"open-ils.storage.asset.copy.create", $copy );
+					"open-ils.storage.direct.asset.copy.create", $copy );
 			my $resp = $req->recv();
 
 			if(!$resp || ! ref($resp) ) { 
@@ -793,7 +793,7 @@ sub volume_tree_delete {
 			warn "Deleting copy " . $copy->id . " from db\n";
 
 			my $req = $session->request(
-					"open-ils.storage.asset.copy.delete", $copy );
+					"open-ils.storage.direct.asset.copy.delete", $copy );
 
 			my $resp = $req->recv();
 
@@ -814,7 +814,7 @@ sub volume_tree_delete {
 		warn "Deleting volume " . $volume->id . " from database\n";
 
 		my $vol_req = $session->request(
-				"open-ils.storage.asset.call_number.delete", $volume );
+				"open-ils.storage.direct.asset.call_number.delete", $volume );
 		my $vol_resp = $vol_req;
 
 		if(!$vol_req->complete) {

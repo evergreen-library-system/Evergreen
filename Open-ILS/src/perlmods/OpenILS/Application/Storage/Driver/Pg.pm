@@ -379,7 +379,7 @@
 
 		my $col_list = join ',', @cols;
 
-		$log->debug('Starting COPY import for '.$cdbi->table, DEBUG);
+		$log->debug('Starting COPY import for '.$cdbi->table." ($col_list)", DEBUG);
 		$cdbi->sql_copy_start($cdbi->table, $col_list)->execute;
 
 		my $dbh = $cdbi->db_Main;
@@ -398,6 +398,48 @@
 }
 
 {
+	#---------------------------------------------------------------------
+	package action::survey;
+	
+	action::survey->table( 'action.survey' );
+	action::survey->sequence( 'action.survey_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package action::survey_question;
+	
+	action::survey_question->table( 'action.survey_question' );
+	action::survey_question->sequence( 'action.survey_question_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package action::survey_answer;
+	
+	action::survey_answer->table( 'action.survey_answer' );
+	action::survey_answer->sequence( 'action.survey_answer_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package action::survey_response;
+	
+	action::survey_response->table( 'action.survey_response' );
+	action::survey_response->sequence( 'action.survey_response_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::metabib_field;
+	
+	config::metabib_field->table( 'config.metabib_field' );
+	config::metabib_field->sequence( 'config.metabib_field_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::bib_source;
+	
+	config::bib_source->table( 'config.bib_source' );
+	config::bib_source->sequence( 'config.bib_source_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::identification_type;
+	
+	config::identification_type->table( 'config.identification_type' );
+	config::identification_type->sequence( 'config.identification_type_id_seq' );
+	
 	#---------------------------------------------------------------------
 	package asset::call_number_note;
 	
@@ -421,6 +463,24 @@
 	
 	asset::copy->table( 'asset.copy' );
 	asset::copy->sequence( 'asset.copy_id_seq' );
+
+	#---------------------------------------------------------------------
+	package asset::stat_cat;
+	
+	asset::stat_cat->table( 'asset.stat_cat' );
+	asset::stat_cat->sequence( 'asset.stat_cat_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package asset::stat_cat_entry;
+	
+	asset::stat_cat_entry->table( 'asset.stat_cat_entry' );
+	asset::stat_cat_entry->sequence( 'asset.stat_cat_entry_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package asset::stat_cat_entry_copy_map;
+	
+	asset::stat_cat_entry_copy_map->table( 'asset.stat_cat_entry_copy_map' );
+	asset::stat_cat_entry_copy_map->sequence( 'asset.stat_cat_entry_copy_map_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package biblio::record_entry;
@@ -429,22 +489,10 @@
 	biblio::record_entry->sequence( 'biblio.record_entry_id_seq' );
 
 	#---------------------------------------------------------------------
-	package biblio::record_node;
-	
-	biblio::record_node->table( 'biblio.record_data' );
-	biblio::record_node->sequence( 'biblio.record_data_id_seq' );
-	
-	#---------------------------------------------------------------------
 	package biblio::record_marc;
 	
 	biblio::record_marc->table( 'biblio.record_marc' );
 	biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
-
-	#---------------------------------------------------------------------
-	package biblio::record_mods;
-	
-	biblio::record_mods->table( 'biblio.record_mods' );
-	biblio::record_mods->sequence( 'biblio.record_mods_id_seq' );
 
 	#---------------------------------------------------------------------
 	package biblio::record_note;
@@ -471,6 +519,31 @@
 	actor::org_unit->sequence( 'actor.org_unit_id_seq' );
 
 	#---------------------------------------------------------------------
+	package actor::stat_cat;
+	
+	actor::stat_cat->table( 'actor.stat_cat' );
+	actor::stat_cat->sequence( 'actor.stat_cat_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package actor::stat_cat_entry;
+	
+	actor::stat_cat_entry->table( 'actor.stat_cat_entry' );
+	actor::stat_cat_entry->sequence( 'actor.stat_cat_entry_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package actor::stat_cat_entry_user_map;
+	
+	actor::stat_cat_entry_user_map->table( 'actor.stat_cat_entry_copy_map' );
+	actor::stat_cat_entry_user_map->sequence( 'actor.stat_cat_entry_usr_map_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package actor::card;
+	
+	actor::card->table( 'actor.card' );
+	actor::card->sequence( 'actor.card_id_seq' );
+	
+
+	#---------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
 	package metabib::metarecord;
@@ -495,7 +568,7 @@
 #	);
 
 	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.metabib.title_field_entry.batch.create',
+		api_name	=> 'open-ils.storage.direct.metabib.title_field_entry.batch.create',
 		method		=> 'copy_create',
 		api_level	=> 1,
 		'package'	=> 'OpenILS::Application::Storage',
@@ -512,7 +585,7 @@
 	metabib::author_field_entry->columns( 'FTS' => 'index_vector' );
 
 	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.metabib.author_field_entry.batch.create',
+		api_name	=> 'open-ils.storage.direct.metabib.author_field_entry.batch.create',
 		method		=> 'copy_create',
 		api_level	=> 1,
 		'package'	=> 'OpenILS::Application::Storage',
@@ -529,7 +602,7 @@
 	metabib::subject_field_entry->columns( 'FTS' => 'index_vector' );
 
 	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.metabib.subject_field_entry.batch.create',
+		api_name	=> 'open-ils.storage.direct.metabib.subject_field_entry.batch.create',
 		method		=> 'copy_create',
 		api_level	=> 1,
 		'package'	=> 'OpenILS::Application::Storage',
@@ -546,7 +619,7 @@
 	metabib::keyword_field_entry->columns( 'FTS' => 'index_vector' );
 
 	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.metabib.keyword_field_entry.batch.create',
+		api_name	=> 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create',
 		method		=> 'copy_create',
 		api_level	=> 1,
 		'package'	=> 'OpenILS::Application::Storage',
@@ -589,6 +662,21 @@
 	metabib::metarecord_source_map->table( 'metabib.metarecord_source_map' );
 
 	#-------------------------------------------------------------------------------
+	package metabib::record_descriptor;
+
+	metabib::record_descriptor->table( 'metabib.rec_descriptor' );
+	metabib::record_descriptor->sequence( 'metabib.rec_descriptor_id_seq' );
+
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.direct.metabib.record_descriptor.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::record_descriptor',
+	);
+
+	#-------------------------------------------------------------------------------
+
 
 	#-------------------------------------------------------------------------------
 	package metabib::full_rec;
@@ -598,7 +686,7 @@
 	metabib::full_rec->columns( 'FTS' => 'index_vector' );
 
 	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.metabib.full_rec.batch.create',
+		api_name	=> 'open-ils.storage.direct.metabib.full_rec.batch.create',
 		method		=> 'copy_create',
 		api_level	=> 1,
 		'package'	=> 'OpenILS::Application::Storage',

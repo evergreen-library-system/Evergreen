@@ -1,7 +1,6 @@
 package OpenILS::Application::Storage::Publisher;
 use base qw/OpenILS::Application::Storage/;
 our $VERSION = 1;
-my $pg = 'OpenILS::Application::Storage::Driver::Pg';
 
 use OpenSRF::EX qw/:try/;;
 use OpenSRF::Utils::Logger;
@@ -17,7 +16,8 @@ use OpenILS::Application::Storage::CDBI;
 #use OpenILS::Application::Storage::CDBI::metabib;
 
 use OpenILS::Application::Storage::Publisher::actor;
-#use OpenILS::Application::Storage::Publisher::asset;
+use OpenILS::Application::Storage::Publisher::action;
+use OpenILS::Application::Storage::Publisher::asset;
 use OpenILS::Application::Storage::Publisher::biblio;
 use OpenILS::Application::Storage::Publisher::config;
 use OpenILS::Application::Storage::Publisher::metabib;
@@ -191,7 +191,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 	(my $class = $cdbi) =~ s/::.*//o;
 	(my $api_class = $cdbi) =~ s/::/./go;
 	my $registration_class = __PACKAGE__ . "::$class";
-	my $api_prefix = 'open-ils.storage.'.$api_class;
+	my $api_prefix = 'open-ils.storage.direct.'.$api_class;
 
 	# Create the search method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.search' ) ) {

@@ -59,6 +59,7 @@ sub child_init {
 	);
 
 	if (OpenILS::Application::Storage::CDBI->db_Main()) {
+		OpenILS::Application::Storage::WORM->child_init();
 		$log->debug("Success initializing driver!", DEBUG);
 		return 1;
 	}
