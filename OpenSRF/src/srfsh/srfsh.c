@@ -1,7 +1,5 @@
 #include "srfsh.h"
 
-int caught_sigint = 0;
-
 int main( int argc, char* argv[] ) {
 
 
@@ -38,7 +36,7 @@ int main( int argc, char* argv[] ) {
 
 	/* main process loop */
 	char* request;
-	signal(SIGINT,sig_int_handler);
+	//signal(SIGINT,sig_int_handler);
 	while((request=readline(prompt))) {
 
 		if( !strcmp(request, "exit") || !strcmp(request,"quit")) 
@@ -70,11 +68,13 @@ void sig_child_handler( int s ) {
 	child_dead = 1;
 }
 
+/*
 void sig_int_handler( int s ) {
 	printf("\n");
 	caught_sigint = 1;
 	signal(SIGINT,sig_int_handler);
 }
+*/
 
 int load_history() {
 
@@ -219,15 +219,11 @@ int handle_login( char* words[]) {
 
 		char* pass_buf = md5sum(password);
 
-		printf("passowrd after %s\n", pass_buf );
-
 		char both_buf[256];
 		memset(both_buf,0,256);
 		sprintf(both_buf,"%s%s",hash, pass_buf);
 
 		char* mess_buf = md5sum(both_buf);
-
-		printf("sending %s\n", mess_buf );
 
 		sprintf( buf2,
 				"request open-ils.auth open-ils.auth.authenticate.complete \"%s\", \"%s\"", 
@@ -238,7 +234,7 @@ int handle_login( char* words[]) {
 
 		parse_request( buf2 );
 
-		login_session = json_object_get_string( last_result->result_content );
+		login_session = strdup(json_object_get_string( last_result->result_content ));
 
 		printf("Login Session: %s\n", login_session );
 		
@@ -443,15 +439,9 @@ int send_request( char* server,
 	double start = get_timestamp_millis();
 	int req_id = osrf_app_session_make_request( session, params, method, 1 );
 
-	if( caught_sigint ) 
-		caught_sigint = 0;
 
-	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 8 );
+	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 12 );
 
-	if( caught_sigint ) {
-		caught_sigint = 0;
-		return 1;
-	}
 
 	if(!omsg) 
 		printf("\nReceived no data from server\n");
@@ -497,15 +487,9 @@ int send_request( char* server,
 			buffer_add( resp_buffer, code );
 		}
 
-		if( caught_sigint ) 
-			caught_sigint = 0;
 
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 
-		if( caught_sigint ) {
-			caught_sigint = 0;
-			return 1;
-		}
 	}
 
 
@@ -792,15 +776,8 @@ int do_math( int count, int style ) {
 			ftime(&t1);
 			int req_id = osrf_app_session_make_request( session, params, methods[j], 1 );
 
-			if( caught_sigint ) 
-				caught_sigint = 0;
 
 			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
-
-			if( caught_sigint )  {
-				caught_sigint = 0;
-				return 1;
-			}
 
 			ftime(&t2);
 
