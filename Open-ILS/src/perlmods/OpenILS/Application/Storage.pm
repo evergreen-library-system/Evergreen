@@ -42,12 +42,13 @@ sub child_init {
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 
+	OpenSRF::Application->method_lookup('crappola');
+
 	$log->debug('Running child_init for ' . __PACKAGE__ . '...', DEBUG);
 
 	OpenILS::Application::Storage::CDBI->child_init(
 		$conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'database')
 	);
-	
 
 	if (OpenILS::Application::Storage::CDBI->db_Main()) {
 		$log->debug("Success initializing driver!", DEBUG);
