@@ -46,8 +46,6 @@ sub create_record_nodeset {
 
 	my $method = $self->method_lookup('open-ils.storage.biblio.record_node.create');
 
-	local biblio::record_node->db_Main->{AutoCommit} = 0;
-
 	my @ids;
 	while ( my $node = shift(@_) ) {
 		$client->respond( $method->run( $node ) );
