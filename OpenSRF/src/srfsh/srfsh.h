@@ -18,6 +18,8 @@
 /* shell prompt */
 char* prompt = "srfsh# "; 
 
+char* history_file = NULL;
+
 int child_dead = 0;
 
 /* true if we're pretty printing json results */
@@ -47,6 +49,7 @@ char* json_printer( json* object );
 char* tabs(int count);
 void sig_child_handler( int s );
 
+int load_history();
 
 
 

@@ -28,6 +28,7 @@ int main( int argc, char* argv[] ) {
 			fatal_handler( "Unable to bootstrap client for requests");
 	}
 	/* --------------------------------------------- */
+	load_history();
 
 
 	client = osrf_system_get_transport_client();
@@ -51,6 +52,8 @@ int main( int argc, char* argv[] ) {
 		free(req_copy);
 	}
 
+	if(history_file != NULL )
+		write_history(history_file);
 	free(request);
 	client_disconnect( client );
 	client_free( client );	
@@ -63,6 +66,26 @@ int main( int argc, char* argv[] ) {
 void sig_child_handler( int s ) {
 	child_dead = 1;
 }
+
+
+int load_history() {
+
+	char* home = getenv("HOME");
+	int l = strlen(home) + 24;
+	char fbuf[l];
+
+	memset(fbuf, 0, l);
+	sprintf(fbuf,"%s/.srfsh_history",home);
+	history_file = strdup(fbuf);
+
+	if(!access(history_file, F_OK)) {
+		//set_history_length(999);
+		history_length = 999;
+		read_history(history_file);
+	}
+	return 1;
+}
+
 
 int parse_error( char* words[] ) {
 
