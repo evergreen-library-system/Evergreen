@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
 use OpenSRF::System qw(/pines/conf/client.conf);
-use OpenSRF::Utils::Config;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsPrimitive;
@@ -27,9 +26,7 @@ unless( $count ) {
 
 warn "PID: $$\n";
 
-my $config = OpenSRF::Utils::Config->current;
 OpenSRF::System::bootstrap_client();
-
 my $session = OpenSRF::AppSession->create( "math" );
 
 try {
@@ -55,16 +52,13 @@ my $c = 0;
 for my $scale ( 1..$count ) {
 	for my $mname ( keys %vals ) {
 
-		my $method = OpenSRF::DomainObject::oilsMethod->new( method => $mname );
-		$method->params( 1,2 );
-
 		my $req;
 		my $resp;
 		my $starttime;
 		try {
 
 			$starttime = time();
-			$req = $session->request( $method );
+			$req = $session->request( $mname, 1, 2 );
 			$resp = $req->recv( timeout => 10 );
 			push @times, time() - $starttime;
 
