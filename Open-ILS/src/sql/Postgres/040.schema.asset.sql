@@ -18,7 +18,8 @@ CREATE TABLE asset.copy (
 	loan_duration	text, -- 2
 	fine_level	text, -- 2
 	circulate	text, --
-	deposit		text, -- 0.00
+	deposit		text, -- 0
+	deposit_amount	text, -- 0.00
 	price		text,
 	ref		text, -- 0
 	opac_visible	text, -- 1

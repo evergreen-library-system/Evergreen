@@ -26,13 +26,16 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_copy' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/call_number barcode creator create_date editor edit_date copy_number status home_lib loan_duration fine_level circulate deposit price ref opac_visible genre audience shelving_loc/ );
+__PACKAGE__->columns( Others => qw/call_number barcode creator create_date editor
+				   edit_date copy_number status home_lib loan_duration
+				   fine_level circulate deposit price ref opac_visible
+				   genre audience shelving_loc deposit_amount/ );
 
 #-------------------------------------------------------------------------------
 package asset::copy_note;
 use base qw/asset/;
 
-__PACKAGE__->table( 'asset_call_number' );
+__PACKAGE__->table( 'asset_copy_note' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Others => qw/owning_copy title creator create_date value/ );
 
