@@ -6,6 +6,7 @@ use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::Logger qw(:level);
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::EX qw(:try);
 
 # memcache handle
 my $cache_handle;
@@ -107,37 +108,47 @@ sub init_authenticate {
 sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash ) = @_;
 
-	my $name = "open-ils.storage.actor.user.search.username";
+	my $name = "open-ils.storage.actor.user.search.usrname";
 
+	use Data::Dumper;
+	warn "Completing Authentication\n";
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	warn "session built\n";
 	my $request = $session->request( $name, $username );
+	warn "made request\n";
 	my $response = $request->recv();
+
+	warn "called receive\n";
+	warn Dumper $response;
+
 	if( $response and $response->isa("OpenSRF::EX") ) {
-		throw $response ($response->stringify);
+		warn "Throwing " . $response->stringify . "\n";
+		throw $response ($response->stringify . "\n");
 	}
 
-	my $user = $response->content;
+	warn "getting user\n";
+
+	my $user_list = $response->content;
+
 	$session->disconnect();
 	$session->kill_me();
 
-	
-=head
-
-	my $method = $self->method_lookup( $name );
-
-	if(!$method) {
-		throw OpenSRF::EX::PANIC ("Could not lookup method $name");
+	unless(ref($user_list)) {
+		throw OpenSRF::EX::ERROR 
+			("No user info returned from storage for $username");
 	}
 
-	my ($user) = $method->run($username);
-=cut
+	my $user = $user_list->[0];
+	
+	use Data::Dumper;
+	warn Dumper $user;
 
-	if(!$user) {
+	if(!$user or !ref($user) ) {
 		throw OpenSRF::EX::ERROR ("No user for $username");
 	}
 
-	my $password = undef;
-	$password = $user->passwd();
+	my $password = $user->passwd();
+	warn "Got password $password\n";
 	if(!$password) {
 		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
 	}
@@ -146,7 +157,7 @@ sub complete_authenticate {
 	$cache_handle->delete_cache( "_open-ils_seed_$username" );
 
 	unless($current_seed) {
-		throw OpenILS::EX::User 
+		throw OpenSRF::EX::User 
 			("User must call open-ils.auth.init_authenticate first (or respond faster)");
 	}
 
