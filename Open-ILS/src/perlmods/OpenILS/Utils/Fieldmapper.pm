@@ -91,23 +91,10 @@ sub new {
 
 sub javascript {
 	my $class = shift;
-	$class = $class->class;
-	my $js_class = $class->json_hint;
-	
-	my $output = <<"	JS";
-
-function $js_class (thing) { var new_thing = thing; if (!new_thing) { new_thing = []; } return new_thing; }
-  $js_class.prototype.class_name = function () { return "$js_class"; }
-	JS
-
-	for my $field ( sort keys %{$$fieldmap{$class}{fields}} ) {
-		my $pos = $$fieldmap{$class}{fields}{$field}{position};
-		$output .= <<"		JS";
-  $js_class.prototype.$field = function (arg) { if (arg) { this[$pos] = arg; } return this[$pos]; }
-		JS
-	}
-	return $output;
+	return 'var fieldmap = ' . JSON->perl2JSON($fieldmap) . ';'
 }
+
+sub DESTROY {}
 
 sub AUTOLOAD {
 	my $obj = shift;
@@ -138,7 +125,7 @@ sub class {
 }
 
 sub real_fields {
-	my $class = shift;
+	my $self = shift;
 	my @f = grep {
 			!$$fieldmap{$self->class}{fields}{$_}{virtual}
 		} keys %{$$fieldmap{$self->class}{fields}};
@@ -174,7 +161,7 @@ for my $pkg ( keys %$fieldmap ) {
 		type => 'array',
 	);
 
-	print $pkg->javascript if ($ENV{GEN_JS});
 }
+print Fieldmapper->javascript() if ($ENV{GEN_JS});
 
 1;
