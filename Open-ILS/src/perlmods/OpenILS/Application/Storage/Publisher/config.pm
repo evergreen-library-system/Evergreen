@@ -2,6 +2,10 @@ package OpenILS::Application::Storage::Publisher::config;
 use base qw/OpenILS::Application::Storage/;
 use OpenILS::Application::Storage::CDBI::config;
 
+#	XXX	XXX	XXX	XXX	XXX	XXX	XXX
+#		THIS IS NOT RIGHT! PLEASE UPDATE!!
+#	XXX	XXX	XXX	XXX	XXX	XXX	XXX
+
 sub getBiblioFieldMaps {
 	my $self = shift;
 	my $client = shift;
