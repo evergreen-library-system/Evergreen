@@ -520,75 +520,78 @@ sub retrieve_copies_global {
 
 
 
+
 __PACKAGE__->register_method(
-	method	=> "create_copies",
+	method	=> "generic_edit_copies_volumes",
+	api_name	=> "open-ils.cat.asset.volume.batch.create",
+);
+
+__PACKAGE__->register_method(
+	method	=> "generic_edit_copies_volumes",
+	api_name	=> "open-ils.cat.asset.volume.batch.update",
+);
+
+__PACKAGE__->register_method(
+	method	=> "generic_edit_copies_volumes",
+	api_name	=> "open-ils.cat.asset.volume.batch.delete",
+);
+
+__PACKAGE__->register_method(
+	method	=> "generic_edit_copies_volumes",
 	api_name	=> "open-ils.cat.asset.copy.batch.create",
-	argc		=> 2,  #(user_session, record_id)
-	note		=> "Adds the given copies to the database"
 );
 
-sub create_copies {
-	my( $self, $client, $user_session, @copies ) = @_;
-
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-
-	for my $copy (@copies) {
-		$copy->editor( $user_obj->id );
-		$copy->creator( $user_obj->id );
-	}
-
-	my $session = OpenILS::Application::AppUtils->start_db_session;
-	my $request = $session->request( 
-			"open-ils.storage.asset.copy.batch.create", @copies );
-
-	my $result = $request->recv();
-
-	if(!$result) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		throw OpenSRF::EX::ERROR 
-			("No response from storage on copy.batch.create");
-	}
-
-	if(UNIVERSAL::isa($result, "Error")) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		throw $result ($result->stringify);
-	}
-
-	OpenILS::Application::AppUtils->commit_db_session($session);
-	return $result->content;
-
-}
-
-
 __PACKAGE__->register_method(
-	method	=> "edit_copies",
+	method	=> "generic_edit_copies_volumes",
 	api_name	=> "open-ils.cat.asset.copy.batch.update",
-	argc		=> 2,  #(user_session, record_id)
-	note		=> "Updates the given copies",
+);
+
+__PACKAGE__->register_method(
+	method	=> "generic_edit_copies_volumes",
+	api_name	=> "open-ils.cat.asset.copy.batch.delete",
 );
 
 
-sub edit_copies {
-	my( $self, $client, $user_session, @copies ) = @_;
+sub generic_edit_copies_volumes {
+
+	my( $self, $client, $user_session, @items ) = @_;
+
+	my $method = $self->api_name;
+	warn "received api name $method\n";
+	$method =~ s/open-ils\.cat/open-ils\.storage/og;
+	warn "our method is $method\n";
+
+	use Data::Dumper;
+	warn Dumper \@items;
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+	
+	warn "updating editor info\n";
+	for my $item (@items) {
 
-	for my $copy (@copies) {
-		$copy->editor( $user_obj->id );
+		if( $method =~ /copy/ ) {
+			new Fieldmapper::asset::copy($item);
+		} else {
+			new Fieldmapper::asset::call_number($item);
+		}
+
+		next unless $item;
+		$item->editor( $user_obj->id );
+		if( $method =~ /create/ ) {
+			$item->creator( $user_obj->id );
+		}
 	}
 
 	my $session = OpenILS::Application::AppUtils->start_db_session;
-	my $request = $session->request( 
-			"open-ils.storage.asset.copy.batch.update", @copies );
+	my $request = $session->request( $method, @items );
 
 	my $result = $request->recv();
 
 	if(!$result) {
 		OpenILS::Application::AppUtils->rollback_db_session($session);
 		throw OpenSRF::EX::ERROR 
-			("No response from storage on copy.batch.update");
+			("No response from storage on $method");
 	}
 
 	if(UNIVERSAL::isa($result, "Error")) {
@@ -597,51 +600,154 @@ sub edit_copies {
 	}
 
 	OpenILS::Application::AppUtils->commit_db_session($session);
+
+	warn "looks like we succeeded\n";
 	return $result->content;
-
 }
-
 
 
 __PACKAGE__->register_method(
-	method	=> "delete_copies",
-	api_name	=> "open-ils.cat.asset.copy.batch.delete",
-	argc		=> 2,  #(user_session, record_id)
-	note		=> "Removes the given copies from the database",
+	method	=> "volume_tree_add",
+	api_name	=> "open-ils.cat.asset.volume.tree.batch.add",
 );
 
+sub volume_tree_add {
 
-sub delete_copies {
-	my( $self, $client, $user_session, @copies ) = @_;
+	my( $self, $client, $user_session, $volumes ) = @_;
+	return undef unless $volumes;
+
+	use Data::Dumper;
+	warn "Volumes:\n";
+	warn Dumper $volumes;
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 
-	for my $copy (@copies) {
-		$copy->editor( $user_obj->id );
-	}
-
+	warn "volume_tree_add creating new db session\n";
 
 	my $session = OpenILS::Application::AppUtils->start_db_session;
-	my $request = $session->request( 
-			"open-ils.storage.asset.copy.batch.update", @copies );
 
-	my $result = $request->recv();
+	for my $volume (@$volumes) {
 
-	if(!$result) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		throw OpenSRF::EX::ERROR 
-			("No response from storage on copy.batch.delete");
+		new Fieldmapper::asset::call_number($volume);
+
+		warn "Looping on volumes\n";
+
+
+
+		my $cn_req = $session->request( 
+				'open-ils.storage.asset.call_number.search' =>
+		      {       owning_lib      => $volume->owning_lib,
+		              label           => $volume->label,
+		              record          => $volume->record,
+				}); 
+
+		my $cn = $cn_req->recv();
+		#XXX errors...
+		my $vs = $cn->content;
+
+		warn "Searched Volume\n";
+		warn Dumper $vs;
+
+		$cn_req->finish();
+
+		my $new_copy_list = $volume->copies;
+
+		if( $vs ) {
+			$volume = $vs;
+		} else {
+			$volume->creator( $user_obj->id );
+		}
+
+		my $id;
+
+		$volume->editor( $user_obj->id );
+
+		if(!$vs) {
+
+
+			my $request = $session->request( 
+				"open-ils.storage.asset.call_number.create", $volume );
+			my $response = $request->recv();
+
+			if(!$response) { 
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw OpenSRF::EX::ERROR 
+					("No response from storage on call_number.create");
+			}
+		
+			if(UNIVERSAL::isa($response, "Error")) {
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw $response ($response->stringify);
+			}
+
+			$id = $response->content;
+			$request->finish();
+	
+			warn "received new volume id: $id\n";
+
+		} else {
+			$id = $volume->id;
+			warn "found volume\n";
+		}
+
+		for my $copy (@{$new_copy_list}) {
+
+			new Fieldmapper::asset::copy($copy);
+
+			warn "adding a copy for volume $id\n";
+
+			$copy->call_number($id);
+			$copy->creator( $user_obj->id );
+			$copy->editor( $user_obj->id );
+
+			warn Dumper $copy;
+
+			my $req = $session->request(
+					"open-ils.storage.asset.copy.create", $copy );
+			my $resp = $req->recv();
+
+			if(!$resp || ! ref($resp) ) { 
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw OpenSRF::EX::ERROR 
+					("No response from storage on call_number.create");
+			}
+	
+			if(UNIVERSAL::isa($resp, "Error")) {
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw $resp ($resp->stringify);
+			}
+			
+			my $cid = $resp->content;
+
+			if(!$cid) {
+				OpenILS::Application::AppUtils->rollback_db_session($session);
+				throw OpenSRF::EX::ERROR ("Error adding copy to volume $id" );
+			}
+
+			warn "got new copy id $cid\n";
+
+			$req->finish();
+		}
+
+		warn "completed adding copies for $id\n";
+
+
 	}
 
-	if(UNIVERSAL::isa($result, "Error")) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		throw $result ($result->stringify);
-	}
-
+	warn "committing volume tree add db session\n";
 	OpenILS::Application::AppUtils->commit_db_session($session);
-	return $result->content;
+
+	$session->disconnect();
+	$session->kill_me();
+
+	return scalar(@$volumes);
 
 }
+
+
+
+
+
 
 1;
