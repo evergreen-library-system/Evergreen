@@ -221,7 +221,7 @@ sub content {
 
 	my ($content) = $self->getChildrenByTagName('oils:domainObject');
 
-	if ($new_content) {
+	if (defined $new_content) {
 		$new_content = OpenSRF::DomainObject::oilsScalar->new( JSON->perl2JSON( $new_content ) );
 
 		$self->removeChild($content) if ($content);
