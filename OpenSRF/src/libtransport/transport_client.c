@@ -147,7 +147,6 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 			remaining -= (int) (time(NULL) - start);
 		}
 
-		info_handler("It took %d reads to grab this messag", counter);
 	}
 
 	/* again, see if there are any messages in the message queue */

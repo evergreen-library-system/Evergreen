@@ -165,10 +165,26 @@ transport_message* new_message_from_xml( const char* msg_xml ) {
 void message_set_router_info( transport_message* msg, char* router_from,
 		char* router_to, char* router_class, char* router_command, int broadcast_enabled ) {
 
-	msg->router_from		= strdup(router_from);
-	msg->router_to			= strdup(router_to);
-	msg->router_class		= strdup(router_class);
-	msg->router_command	= strdup(router_command);
+	if(router_from)
+		msg->router_from		= strdup(router_from);
+	else
+		msg->router_from		= strdup("");
+
+	if(router_to)
+		msg->router_to			= strdup(router_to);
+	else
+		msg->router_to			= strdup("");
+
+	if(router_class)
+		msg->router_class		= strdup(router_class);
+	else 
+		msg->router_class		= strdup("");
+	
+	if(router_command)
+		msg->router_command	= strdup(router_command);
+	else
+		msg->router_command	= strdup("");
+
 	msg->broadcast = broadcast_enabled;
 
 	if( msg->router_from == NULL || msg->router_to == NULL ||

@@ -12,6 +12,10 @@ TARGETS=generic_utils.o transport_socket.o transport_message.o transport_session
 basic_client: lib
 	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) basic_client.c -o $@
 
+test: lib
+	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) test.c -o $@
+
+
 # --- Libs -----------------------------------------------
 	
 lib: 
