@@ -1,6 +1,7 @@
 package Fieldmapper;
 use JSON;
 use Data::Dumper;
+use OpenILS::Application::Storage::CDBI;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
@@ -26,7 +27,8 @@ sub _init {
 		'Fieldmapper::actor::user'			=> { hint => 'au'   },
 		'Fieldmapper::actor::org_unit'			=> { hint => 'aou'  },
 		'Fieldmapper::actor::org_unit_type'		=> { hint => 'aout' },
-		'Fieldmapper::biblio::record_node'		=> { hint => 'brn'  },
+		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
+								     proto_fields	=> { children => 1 } },
 		'Fieldmapper::biblio::record_entry'		=> { hint => 'bre'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
 		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
@@ -57,6 +59,13 @@ sub _init {
 		for my $vfield ( qw/isnew ischanged isdeleted/ ) {
 			$$fieldmap{$pkg}{fields}{$vfield} = { position => $pos, virtual => 1 };
 			$pos++;
+		}
+
+		if (exists $$fieldmap{$pkg}{proto_fields}) {
+			for my $pfield ( keys %{ $$fieldmap{$pkg}{proto_fields} } ) {
+				$$fieldmap{$pkg}{fields}{$pfield} = { position => $pos, virtual => $$fieldmap{$pkg}{proto_fields}{$pfield} };
+				$pos++;
+			}
 		}
 
 		for my $col ( $cdbi->columns('All') ) {
