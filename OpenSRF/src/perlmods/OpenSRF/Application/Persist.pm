@@ -201,6 +201,38 @@ __PACKAGE__->register_method(
 );
 
 
+sub peek_slot {
+	my $self = shift;
+	my $client = shift;
+
+	my $name = shift or do {
+		throw OpenSRF::EX::WARN ("No slot name specified!");
+	};
+	my $name_id = _get_name_id($name);
+
+	my $order = 'ASC';
+	$order = 'DESC' if ($self->api_name =~ /stack/o);
+	
+	my $values = $dbh->selectall_arrayref("SELECT value FROM storage WHERE name_id = ? ORDER BY id $order;", {}, $name_id);
+
+	$client->respond( JSON->JSON2perl( $_->[0] ) ) for (@$values);
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.queue.peek.all',
+	method => 'peek_slot',
+	argc => 1,
+	stream => 1,
+);
+__PACKAGE__->register_method(
+	api_name => 'opensrf.persist.stack.peek.all',
+	method => 'peek_slot',
+	argc => 1,
+	stream => 1,
+);
+
+
 sub store_size {
 	my $self = shift;
 	my $client = shift;
