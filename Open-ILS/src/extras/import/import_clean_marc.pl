@@ -46,9 +46,11 @@ while ( my $xml = <> ) {
 	my $doc = $ns->xml_to_doc;
 	my $tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"]' );
 
+	$tcn =~ s/.*?(\w+)$/$1/go;
+
 	warn "Adding record for TCN $tcn\n";
 
-	$ns->xml_to_nodeset;
+	#$ns->xml_to_nodeset;
 	#next;
 
 	my $xact = $st_server->request( 'open-ils.storage.transaction.begin' );
@@ -77,7 +79,7 @@ while ( my $xml = <> ) {
 		$req->finish;
 
 		if ($new_id) {
-			my $nodeset = $ns->nodeset;
+			my $nodeset = $ns->xml_to_nodeset;
 		
 			$_->{owner_doc} = $new_id for (@$nodeset);
 		
