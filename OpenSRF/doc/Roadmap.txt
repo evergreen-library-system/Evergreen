@@ -1,0 +1,51 @@
+Roadmap for OpenSRF === The high points as of Febuary 2005
+----------------------------------------------------------
+
+We will attempt to keep this file up to date as requirements for
+Open-ILS change over time, as they are certain to...
+
+==========
+
+# Version 0.1 (January 2005) -- Evolving CVS version ... stay tuned
+	
+	* Session failure recovery
+	* Initial specification for Application API
+	* Basic Application support
+	* Sub-requests within one Application
+
+# Version 0.2 (Febuary/March 2005) -- First full release as a package
+
+	* Centralized Application configuration management
+	* Automatic cross-server API discovery
+	* Transparent remote server sub-requests
+	* Object Persistence Application implementing Stacks, Queues
+	  and Object Stores based on SQLite
+
+# Version 0.3 (March/April 2005) -- Version for use in the Alpha
+                                    release of Open-ILS
+
+	* Partial implementation of a BROADCAST mode for addressing all
+	  Servers of a particular Class on one Router
+	* Distributed version of the Object Persistance Application
+
+# Version 0.5 (July/August 2005)
+
+	* Full implementation of a BROADCAST mode for addressing all
+	  Servers of any number of Classes on any number of Routers
+	* Client side use of transparent API discovery; the client
+	  libraries will automatically discover and use the correct
+	  Server for any valid method request
+
+# Version 0.7 (October/November 2005)
+
+	* Basic inter-server session migration support in addition
+	  to session failure recovery due to server failure
+
+# Version 0.9 (Some time in 2006)
+
+	* Built in distributed transaction support.
+
+# Version 1.0 (in the future)
+
+	* Who knows?
+
