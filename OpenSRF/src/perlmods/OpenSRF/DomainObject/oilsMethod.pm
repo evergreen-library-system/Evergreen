@@ -1,6 +1,6 @@
 package OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DOM::Element::params;
-use OpenSRF::DOM::Element::param;
+#use OpenSRF::DOM::Element::param;
 use JSON;
 use base 'OpenSRF::DomainObject';
 
