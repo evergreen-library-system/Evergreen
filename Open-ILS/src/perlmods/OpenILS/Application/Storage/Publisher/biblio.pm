@@ -184,8 +184,13 @@ sub get_record_nodeset {
 	for my $id ( @ids ) {
 		next unless ($id);
 		
-		my $rec = biblio::record_entry->retrieve($id);
-		$client->respond( $self->_cdbi_list2AoH( $rec->nodes ) ) if ($rec);
+		$client->respond(
+			$self->_cdbi_list2AoH(
+				biblio::record_node->search(
+					owner_doc => $id, { order_by => 'intra_doc_id' }
+				)
+			)
+		);
 
 		last if ($self->api_name !~ /list/o);
 	}
