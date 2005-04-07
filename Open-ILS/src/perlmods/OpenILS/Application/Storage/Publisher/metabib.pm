@@ -5,7 +5,10 @@ use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::FTS;
 use OpenILS::Utils::Fieldmapper;
-use OpenSRF::Utils::Logger;
+use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Cache;
+use Data::Dumper;
+use Digest::MD5 qw/md5_hex/;
 
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -17,6 +20,10 @@ sub search_full_rec {
 	my $client = shift;
 	my $limiters = shift;
 	my $term = shift;
+	my $window = shift;
+	$window = 100 unless (defined $window);
+
+	my $cache_key = md5_hex(Dump($limiters).$term);
 
 	my ($fts_col) = metabib::full_rec->columns('FTS');
 	my $table = metabib::full_rec->table;
@@ -43,7 +50,12 @@ sub search_full_rec {
 
 	my $recs = metabib::full_rec->db_Main->selectall_arrayref($select, {}, @binds);
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
-	return $recs;
+
+	$client->respond( [ @$recs[0 .. $window - 1] ] );
+
+	OpenSRF::Utils::Cache->new->put_cache( $recs );
+
+	return undef;
 
 }
 __PACKAGE__->register_method(
@@ -65,11 +77,18 @@ sub search_class_fts {
 	my $term = shift;
 	my $ou = shift;
 	my $ou_type = shift;
+	my $window = shift;
+	$window = 100 unless (defined $window);
+	
+
+	(my $class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
+	my $cache_key = md5_hex($class.$term.$ou.$ou_type);
+
+	$log->debug("Cache key for $class search of '$term' at ($ou,$ou_type) will be $cache_key", DEBUG);
 
 	my $descendants = defined($ou_type) ?
 				"actor.org_unit_descendants($ou, $ou_type)" :
 				"actor.org_unit_descendants($ou)";
-		
 
 	my $class = $self->{cdbi};
 	my $table = $class->table;
@@ -81,14 +100,16 @@ sub search_class_fts {
 
 	my $rank = join(' + ', @fts_ranks);
 
-	# XXX test an "EXISTS version of descendant checking...
 	my $select = <<"	SQL";
-		SELECT	m.metarecord, sum($rank)/count(distinct m.source)
-	  	  FROM	$table f
-			JOIN metabib.metarecord_source_map m ON (m.source = f.source)
-			JOIN asset.call_number cn ON (cn.record = m.source)
-			JOIN $descendants d ON (cn.owning_lib = d.id)
+		SELECT	m.metarecord, sum($rank)/count(m.source)
+	  	  FROM	$table f,
+			metabib.metarecord_source_map m,
+			asset.call_number cn,
+			$descendants d
 	  	  WHERE	$fts_where
+		  	AND m.source = f.source
+			AND cn.record = m.source
+			AND cn.owning_lib = d.id
 	  	  GROUP BY 1
 	  	  ORDER BY 2 DESC;
 	SQL
@@ -99,7 +120,11 @@ sub search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	return $recs;
+	$client->respond( [ @$recs[0 .. $window - 1] ] );
+
+	OpenSRF::Utils::Cache->new->put_cache( $recs );
+
+	return undef;
 
 }
 __PACKAGE__->register_method(
@@ -153,11 +178,14 @@ sub search_class_fts_count {
 	# XXX test an "EXISTS version of descendant checking...
 	my $select = <<"	SQL";
 		SELECT	count(distinct  m.metarecord)
-	  	  FROM	$table f
-			JOIN metabib.metarecord_source_map m ON (m.source = f.source)
-			JOIN asset.call_number cn ON (cn.record = m.source)
-			JOIN $descendants d ON (cn.owning_lib = d.id)
-	  	  WHERE	$fts_where;
+	  	  FROM	$table f,
+			metabib.metarecord_source_map m,
+			asset.call_number cn,
+			$descendants d
+	  	  WHERE	$fts_where
+		  	AND m.source = f.source
+			AND cn.record = m.source
+			AND cn.owning_lib = d.id;
 	SQL
 
 	$log->debug("Field Search Count SQL :: [$select]",DEBUG);

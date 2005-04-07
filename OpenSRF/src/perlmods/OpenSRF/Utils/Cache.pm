@@ -3,7 +3,9 @@ use strict; use warnings;
 use base qw/Cache::Memcached OpenSRF/;
 use Cache::Memcached;
 use OpenSRF::Utils::Config;
+use OpenSRF::Utils::SettingsClient;
 use OpenSRF::EX qw(:try);
+use JSON;
 
 
 =head OpenSRF::Utils::Cache
@@ -59,13 +61,18 @@ sub current {
 # create a new named memcache object.
 sub new {
 
-	my( $class, $cache_type, $persist, $servers ) = @_;
-	return undef unless $cache_type;
-	return $caches{$cache_type} 
-		if exists $caches{$cache_type};
-
-
+	my( $class, $cache_type, $persist ) = @_;
+	$cache_type ||= 'global';
 	$class = ref( $class ) || $class;
+
+	return $caches{$cache_type} 
+		if (defined $caches{$cache_type});
+
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+	my $servers = $conf->config_value( cache => $cache_type => servers => 'server' );
+	my $expire_time = $conf->config_value( cache => $cache_type => servers => 'max_cache_time' );
+
+
 	my $self = {};
 	$self->{persist} = $persist || 0;
 	$self->{memcache} = Cache::Memcached->new( { servers => $servers } ); 
@@ -82,7 +89,9 @@ sub new {
 
 sub put_cache {
 	my($self, $key, $value, $expiretime ) = @_;
-	return undef unless( $key and $value );
+	return undef unless( defined $key and defined $value );
+
+	$value = JSON->perl2JSON($value);
 
 	if($self->{persist}){ _load_methods(); }
 
@@ -143,7 +152,7 @@ sub get_cache {
 			} else {
 				$self->{memcache}->set( $key, $val, $max_persist_time);
 			}
-			return $val;
+			return JSON->JSON2perl($val);
 		} 
 	}
 	return undef;
