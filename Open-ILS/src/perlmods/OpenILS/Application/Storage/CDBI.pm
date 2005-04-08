@@ -4,9 +4,11 @@ use Class::DBI;
 
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::actor;
+use OpenILS::Application::Storage::CDBI::action;
 use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::metabib;
+use OpenILS::Application::Storage::CDBI::money;
 
 use OpenSRF::Utils::Logger;
 
@@ -358,6 +360,36 @@ sub import {
 	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
 	metabib::metarecord_source_map->has_a( source => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
+
+	action::circulation->has_a( usr => 'actor::user' );
+	action::circulation->has_a( target_copy => 'asset::copy' );
+
+	#-------------------------------------------------------------------------------
+
+	money::billable_transaction->has_a( usr => 'actor::user' );
+	money::billable_transaction->has_many( billings => 'money::billing' );
+	money::billable_transaction->has_many( payments => 'money::payment' );
+
+	money::billing->has_a( transaction => 'money::billable_transaction' );
+	money::payment->has_a( transaction => 'money::billable_transaction' );
+
+	money::cash_payment->has_a( transaction => 'money::billable_transaction' );
+	money::cash_payment->has_a( accepting_usr => 'actor::user' );
+
+	money::check_payment->has_a( transaction => 'money::billable_transaction' );
+	money::check_payment->has_a( accepting_usr => 'actor::user' );
+
+	money::credit_card_payment->has_a( transaction => 'money::billable_transaction' );
+	money::credit_card_payment->has_a( accepting_usr => 'actor::user' );
+
+	money::forgive_payment->has_a( transaction => 'money::billable_transaction' );
+	money::forgive_payment->has_a( accepting_usr => 'actor::user' );
+
+	money::work_payment->has_a( transaction => 'money::billable_transaction' );
+	money::work_payment->has_a( accepting_usr => 'actor::user' );
+
+	money::credit_payment->has_a( transaction => 'money::billable_transaction' );
+	money::credit_payment->has_a( accepting_usr => 'actor::user' );
 
 
 	# should we have just one field entry per class for each record???? (xslt vs xpath)

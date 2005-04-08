@@ -30,6 +30,11 @@ CREATE AGGREGATE public.agg_tsvector (
 	stype	 = tsvector
 );
 
+CREATE FUNCTION tableoid2name ( oid ) RETURNS TEXT AS $$
+	BEGIN
+		RETURN $1::regclass;
+	END;
+$$ language 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT ) RETURNS SETOF actor.org_unit AS $$

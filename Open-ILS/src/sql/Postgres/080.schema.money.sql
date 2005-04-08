@@ -17,16 +17,16 @@ CREATE TABLE money.billing (
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
 	amount		NUMERIC(6,2)			NOT NULL,
 	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	billing_note	TEXT
+	note		TEXT
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
 
 CREATE TABLE money.payment (
 	id		BIGSERIAL			PRIMARY KEY,
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
-	amount_paid	NUMERIC(6,2)			NOT NULL,
+	amount		NUMERIC(6,2)			NOT NULL,
 	payment_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	payment_note	TEXT
+	note		TEXT
 );
 CREATE INDEX m_p_xact_idx ON money.payment (xact);
 

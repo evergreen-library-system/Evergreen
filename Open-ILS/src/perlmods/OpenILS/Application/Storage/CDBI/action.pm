@@ -35,5 +35,16 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/usr survey question answer answer_date effective_date/);
 #-------------------------------------------------------------------------------
 
+package action::circulation;
+use base qw/action/;
+__PACKAGE__->table('action_circulation');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
+				     duration renewal_remaining fine_amount
+				     max_fines fine_interval/);
+__PACKAGE__->columns(Others => qw/note stop_fines xact_finish/);
+
+#-------------------------------------------------------------------------------
+
 1;
 

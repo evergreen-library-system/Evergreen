@@ -13,6 +13,7 @@ use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
+use OpenILS::Application::Storage::CDBI::money;
 
 use vars qw/$fieldmap $VERSION/;
 
@@ -58,6 +59,7 @@ sub _init {
 		'Fieldmapper::action::survey_answer'		=> { hint		=> 'asva',
 								     proto_fields	=> { responses => 1 } },
 		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
+		'Fieldmapper::action::circulation'		=> { hint		=> 'ac'    },
 		'Fieldmapper::actor::user'			=> { hint => 'au'    },
 		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'asc',
 								     proto_fields	=> { entries => 1 } },
@@ -148,8 +150,6 @@ sub _init {
 		);
 
 	}
-
-	#print Fieldmapper->javascript() if ($ENV{GEN_JS});
 }
 
 sub new {
@@ -157,11 +157,6 @@ sub new {
 	my $value = shift;
 	$value = [] unless (defined $value);
 	return bless $value => $self->class_name;
-}
-
-sub javascript {
-	my $class_name = shift;
-	return 'var fieldmap = ' . JSON->perl2JSON($fieldmap) . ';'
 }
 
 sub DESTROY {}
