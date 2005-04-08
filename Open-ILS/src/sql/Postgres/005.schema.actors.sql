@@ -4,26 +4,28 @@ BEGIN;
 CREATE SCHEMA actor;
 
 CREATE TABLE actor.usr (
-	id			SERIAL	PRIMARY KEY,
-	card			INT	UNIQUE, -- active card
-	usrid			TEXT	NOT NULL UNIQUE,
-	usrname		TEXT	NOT NULL UNIQUE,
-	email			TEXT	CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
-	passwd			TEXT	NOT NULL,
+	id			SERIAL		PRIMARY KEY,
+	card			INT		UNIQUE, -- active card
+	usrid			TEXT		NOT NULL UNIQUE,
+	usrname			TEXT		NOT NULL UNIQUE,
+	email			TEXT		CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
+	passwd			TEXT		NOT NULL,
 	prefix			TEXT,
-	first_given_name	TEXT	NOT NULL,
+	first_given_name	TEXT		NOT NULL,
 	second_given_name	TEXT,
-	family_name		TEXT	NOT NULL,
+	family_name		TEXT		NOT NULL,
 	suffix			TEXT,
 	address			INT,
 	home_ou			INT,
-	gender			CHAR(1) NOT NULL CHECK ( LOWER(gender) IN ('m','f') ),
-	dob			DATE	NOT NULL,
-	active			BOOL	NOT NULL DEFAULT TRUE,
-	master_account		BOOL	NOT NULL DEFAULT FALSE,
-	super_user		BOOL	NOT NULL DEFAULT FALSE,
-	usrgroup		SERIAL	NOT NULL,
-	last_xact_id		TEXT	NOT NULL DEFAULT 'none'
+	gender			CHAR(1) 	NOT NULL CHECK ( LOWER(gender) IN ('m','f') ),
+	dob			DATE		NOT NULL,
+	active			BOOL		NOT NULL DEFAULT TRUE,
+	master_account		BOOL		NOT NULL DEFAULT FALSE,
+	super_user		BOOL		NOT NULL DEFAULT FALSE,
+	usrgroup		SERIAL		NOT NULL,
+	claims_returned_count	INT		NOT NULL DEFAULT 0,
+	credit_forward_balance	NUMERIC(6,2)	NOT NULL DEFAULT 0.00,
+	last_xact_id		TEXT		NOT NULL DEFAULT 'none'
 
 );
 CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
