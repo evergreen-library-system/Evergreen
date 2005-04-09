@@ -1,5 +1,7 @@
 #include "opensrf/osrf_message.h"
 
+/* default to true */
+int parse_json = 1;
 
 osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protocol ) {
 
@@ -9,8 +11,14 @@ osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protoco
 	msg->protocol = protocol;
 	msg->next = NULL;
 	msg->is_exception = 0;
+	msg->parse_json = parse_json;
 
 	return msg;
+}
+
+
+void osrf_message_set_json_parse( int ibool ) {
+	parse_json = ibool;
 }
 
 
@@ -44,12 +52,17 @@ void osrf_message_set_status_info(
 }
 
 
-void osrf_message_set_result_content( osrf_message* msg, json* result_content ) {
-	if( msg == NULL )
-		fatal_handler( "Bad params to osrf_message_set_result_content()" );
-	msg->result_string =	strdup(json_object_to_json_string(result_content));
+void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
+	if( msg == NULL || json_string == NULL)
+		warning_handler( "Bad params to osrf_message_set_result_content()" );
+
+	msg->result_string =	strdup(json_string);
 	debug_handler("Setting result_string to %s\n", msg->result_string );
-	msg->result_content = json_tokener_parse(msg->result_string);
+
+	debug_handler( "Message Parse JSON is set to: %d",  msg->parse_json );
+
+	if(msg->parse_json)
+		msg->result_content = json_tokener_parse(msg->result_string);
 }
 
 
@@ -289,6 +302,7 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 
 		xmlNodePtr cur_node = message_node->children;
 		osrf_message* new_msg = safe_malloc(sizeof(osrf_message));
+		new_msg->parse_json = parse_json;
 	
 
 		while( cur_node ) {
@@ -395,8 +409,7 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 								xmlChar* r_name = xmlGetProp( result_nodes, BAD_CAST "name" );
 								if(r_name) {
 									if( !strcmp((char*)r_name,"oilsScalar") && result_nodes->children->content ) {
-										new_msg->result_string = strdup(result_nodes->children->content);
-										new_msg->result_content = json_tokener_parse(result_nodes->children->content);
+										osrf_message_set_result_content( new_msg, result_nodes->children->content);
 									}
 									xmlFree(r_name);
 								}

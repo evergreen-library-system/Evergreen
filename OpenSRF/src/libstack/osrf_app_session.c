@@ -65,6 +65,7 @@ void osrf_app_session_request_finish(
 		osrf_app_session* session, int req_id ){
 
 	if(session == NULL) return;
+	debug_handler("Finishing request %d", req_id );
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	if(req == NULL) return;
 	_osrf_app_session_remove_request( req->session, req );
@@ -83,9 +84,9 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 	if( req->result != NULL ) {
 		debug_handler("app_request receive already has a message, returning it");
 		/* pop off the first message in the list */
-		osrf_message* tmp_msg = req->result->next;
-		req->result = tmp_msg;
-		return req->result;
+		osrf_message* tmp_msg = req->result;
+		req->result = req->result->next;
+		return tmp_msg;
 	}
 
 	time_t start = time(NULL);	
@@ -125,6 +126,7 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 		remaining -= (int) (time(NULL) - start);
 	}
 
+	debug_handler("Returning NULL from app_request_recv after timeout");
 	return NULL;
 }
 
@@ -447,8 +449,6 @@ int osrf_app_session_push_queue(
 		return 0;
 	}
 
-	debug_handler( "The first request in the request queue has tt [%d]", req->request_id );
-
 	while( req != NULL ) {
 		if(req->request_id == msg->thread_trace) {
 			debug_handler( "Found app_request for tt [%d]", msg->thread_trace );
@@ -523,6 +523,7 @@ int osrf_app_session_disconnect( osrf_app_session* session){
 }
 
 int osrf_app_session_request_resend( osrf_app_session* session, int req_id ) {
+	debug_handler("In reqeust resend searching for resend-able messages");
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	return _osrf_app_request_resend( req );
 }
@@ -605,6 +606,7 @@ osrf_message* osrf_app_session_request_recv(
 		osrf_app_session* session, int req_id, int timeout ) {
 	if(req_id < 0 || session == NULL)
 		return NULL;
+	debug_handler("somebody callled recv");
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	return _osrf_app_request_recv( req, timeout );
 }

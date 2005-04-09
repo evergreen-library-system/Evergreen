@@ -6,13 +6,19 @@ osrf_message* _do_server( osrf_app_session*, osrf_message* );
 int osrf_stack_process( transport_client* client, int timeout ) {
 	transport_message* msg = client_recv( client, timeout );
 	if(msg == NULL) return 0;
+	debug_handler( "Received message from transport code from %s", msg->sender );
 	int status = osrf_stack_transport_handler( msg );
 
 	/* see if there are multiple message to be received */
 	while(1) {
 		transport_message* m = client_recv( client, 0 );
-		if(m) status = osrf_stack_transport_handler( m );
-		else break;
+		if(m) {
+			debug_handler( "Received additional message from transport code from %s", msg->sender );
+			status = osrf_stack_transport_handler( m );
+		} else  {
+			debug_handler( "osrf_stack_process returning with only 1 received message" );
+			break;
+		}
 	}
 
 	return status;
