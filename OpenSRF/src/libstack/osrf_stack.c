@@ -13,7 +13,7 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 	while(1) {
 		transport_message* m = client_recv( client, 0 );
 		if(m) {
-			debug_handler( "Received additional message from transport code from %s", msg->sender );
+			debug_handler( "Received additional message from transport code");
 			status = osrf_stack_transport_handler( m );
 		} else  {
 			debug_handler( "osrf_stack_process returning with only 1 received message" );
@@ -76,9 +76,12 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 		}
 
 		osrf_stack_message_handler( session, arr[i] );
+		debug_handler("transport layer: message_handler returned, do we have more?");
 	}
 
+	debug_handler("transport layer: no more messages to process in this batch");
 	message_free( msg );
+	debug_handler("after msg delete");
 
 	return 1;
 }
