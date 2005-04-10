@@ -10,7 +10,7 @@ use base qw/metabib/;
 
 metabib::metarecord->table( 'metabib_metarecord' );
 metabib::metarecord->columns( Primary => qw/id/ );
-metabib::metarecord->columns( Others => qw/fingerprint master_record mods/ );
+metabib::metarecord->columns( Others => qw/fingerprint master_record/ );
 
 #-------------------------------------------------------------------------------
 package metabib::title_field_entry;

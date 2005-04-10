@@ -97,6 +97,7 @@ sub _init {
 		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mkfe' },
 		'Fieldmapper::metabib::full_rec'		=> { hint => 'mfr'  },
 		'Fieldmapper::metabib::record_descriptor'	=> { hint => 'mrd'  },
+		'Fieldmapper::metabib::metarecord_source_map'	=> { hint => 'mmrsm'},
 
 		'Fieldmapper::asset::copy'			=> { hint 		=> 'acp',
 								     proto_fields	=> { stat_cat_entries => 1 } },
