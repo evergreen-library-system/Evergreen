@@ -209,7 +209,7 @@ sub wormize {
 		unless ($commit);
 	$rollback = $self->method_lookup( 'open-ils.storage.transaction.rollback')
 		unless ($rollback);
-	$lookup = $self->method_lookup('open-ils.storage.direct.biblio.record_marc.batch.retrieve')
+	$lookup = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.batch.retrieve')
 		unless ($lookup);
 	$fetch_entry = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.retrieve')
 		unless ($update_entry);

@@ -489,11 +489,11 @@
 	biblio::record_entry->sequence( 'biblio.record_entry_id_seq' );
 
 	#---------------------------------------------------------------------
-	package biblio::record_marc;
-	
-	biblio::record_marc->table( 'biblio.record_marc' );
-	biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
-
+	#package biblio::record_marc;
+	#
+	#biblio::record_marc->table( 'biblio.record_marc' );
+	#biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
+	#
 	#---------------------------------------------------------------------
 	package biblio::record_note;
 	

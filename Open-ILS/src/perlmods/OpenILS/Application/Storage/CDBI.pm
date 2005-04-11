@@ -319,11 +319,8 @@ sub import {
 	#-------------------------------------------------------------------------------
 	biblio::record_note->has_a( record => 'biblio::record_entry' );
 	#-------------------------------------------------------------------------------
-	biblio::record_marc->is_a( id => 'biblio::record_entry' );
-	#-------------------------------------------------------------------------------
 	biblio::record_entry->has_a( creator => 'actor::user' );
 	biblio::record_entry->has_a( editor => 'actor::user' );
-	biblio::record_entry->might_have( marc_entry => 'biblio::record_marc' => qw/marc/ );
 	biblio::record_entry->has_many( record_descriptor => 'metabib::record_descriptor' );
 	biblio::record_entry->has_many( notes => 'biblio::record_note' );
 	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );

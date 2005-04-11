@@ -84,7 +84,10 @@ sub _init {
 											   } },
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
 								     proto_fields	=> { call_numbers => 1 } },
-		'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  },
+		#'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  }, # now it's inside record_entry
+
+		'Fieldmapper::money::cash_payment'		=> { hint => 'mcp'  },
+		'Fieldmapper::money::billing'			=> { hint => 'mb'  },
 
 		'Fieldmapper::config::identification_type'	=> { hint => 'cit'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },

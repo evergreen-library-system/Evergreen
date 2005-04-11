@@ -13,7 +13,7 @@ biblio::record_entry->table( 'biblio_record_entry' );
 biblio::record_entry->columns( Primary		=> 'id' );
 biblio::record_entry->columns( Essential	=> qw/tcn_source tcn_value creator editor
 						      create_date edit_date source active
-						      deleted last_xact_id/ );
+						      deleted marc last_xact_id/ );
 biblio::record_entry->columns( Others		=> qw/fingerprint/ );
 
 #-------------------------------------------------------------------------------
@@ -45,11 +45,11 @@ biblio::record_entry->columns( Others		=> qw/fingerprint/ );
 
 
 #-------------------------------------------------------------------------------
-package biblio::record_marc;
-use base qw/biblio/;
+#package biblio::record_marc;
+#use base qw/biblio/;
 
-biblio::record_marc->table( 'biblio_record_marc' );
-biblio::record_marc->columns( All => qw/id marc last_xact_id/ );
+#biblio::record_marc->table( 'biblio_record_marc' );
+#biblio::record_marc->columns( All => qw/id marc last_xact_id/ );
 #biblio::record_marc->columns( Stringify => qw/marc/ );
 #biblio::record_marc->is_a( id => qw/biblio::record_entry/ );
 
