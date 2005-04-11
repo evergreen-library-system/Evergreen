@@ -45,7 +45,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define MODULE_NAME "ils_gateway_module"
 
 struct session_list_struct {
-	char* service;
+	//char* service;
 	osrf_app_session* session;
 	struct session_list_struct* next;
 	int serve_count;
@@ -63,7 +63,7 @@ static void del_session( char* service ) {
 	session_list* prev = the_list;
 	session_list* item = prev->next;
 
-	if(!strcmp(prev->service, service)) {
+	if(!strcmp(prev->session->remote_service, service)) {
 		info_handler("Removing gateway session for %s", service );
 		the_list = item;
 		osrf_app_session_destroy(prev->session);
@@ -72,7 +72,7 @@ static void del_session( char* service ) {
 	}
 
 	while(item) {
-		if( !strcmp(item->service, service)) {
+		if( !strcmp(item->session->remote_service, service)) {
 			info_handler("Removing gateway session for %s", service );
 			prev->next = item->next;
 			osrf_app_session_destroy(item->session);
@@ -95,7 +95,7 @@ static osrf_app_session* find_session( char* service, int update ) {
 	session_list* item = the_list;
 	while(item) {
 
-		if(!strcmp(item->service,service)) {
+		if(!strcmp(item->session->remote_service,service)) {
 			if(update) { 
 				if( item->serve_count++ > 20 ) {
 					debug_handler("Disconnected session on 20 requests => %s", service);
@@ -126,7 +126,7 @@ static void add_session( char* service, osrf_app_session* session ) {
 
 	session_list* new_item = (session_list*) safe_malloc(sizeof(session_list));
 	new_item->session = session;
-	new_item->service = service;
+	//new_item->service = service;
 	new_item->serve_count = 0;
 
 	if(the_list) {
@@ -142,6 +142,9 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 	if( ! osrf_system_bootstrap_client( 
 		"/pines/cvs/ILS/OpenSRF/src/gateway/gateway.xml") ) { /* config option */
 	}
+
+	/* we don't want to waste time parsing json that we're not going to look at*/
+	osrf_message_set_json_parse(0);
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);
 }
@@ -255,6 +258,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		session = osrf_app_client_session_init(service);
 		add_session(service, session);
 	}
+
+	debug_handler("MOD session service: %s", session->remote_service );
 
 
 	/* connect to the remote service */
