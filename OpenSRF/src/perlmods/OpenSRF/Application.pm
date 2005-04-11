@@ -147,7 +147,9 @@ sub handler {
 				}
 			} catch Error with {
 				my $e = shift;
-				$e = $e->{-text} || $e->message if (ref $e);
+				if(UNIVERSAL::isa($e,"Error")) {
+					$e = $e->stringify();
+				} 
 				my $sess_id = $session->session_id;
 				$session->status(
 					OpenSRF::DomainObject::oilsMethodException->new(
@@ -192,10 +194,13 @@ sub handler {
 					$log->debug( "Executed: " . $appreq->threadTrace, DEBUG );
 				} catch Error with {
 					my $e = shift;
+					if(UNIVERSAL::isa($e,"Error")) {
+						$e = $e->stringify();
+					}
 					$session->status(
 						OpenSRF::DomainObject::oilsMethodException->new(
 								statusCode => STATUS_INTERNALSERVERERROR(),
-								status => "Call to [".$aref->[2]->api_name."] faild:  ".$e->{-text}
+								status => "Call to [".$aref->[2]->api_name."] faild:  $e"
 						)
 					);
 				};
@@ -383,16 +388,29 @@ sub run {
 	if (!$self->{remote}) {
 		my $code ||= \&{$self->{package} . '::' . $self->{method}};
 		$log->debug("Created coderef [$code] for $$self{package}::$$self{method}",DEBUG);
+		my $err = undef;
+
 		try {
 			$resp = $code->($self, $req, @params);
+
 		} catch Error with {
 			my $e = shift;
+			$err = $e;
 			warn "Caught Error in Application: $e\n";
 			if( ref($self) eq 'HASH') {
+				warn $self;
 				$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n", ERROR);
 			}
-			die $e;
 		};
+
+		if($err) {
+			if(UNIVERSAL::isa($err,"Error")) { 
+				throw $err ($err->stringify); 
+			} else {
+				die $err; 
+			}
+		}
+
 
 		$log->debug("Coderef for [$$self{package}::$$self{method}] has been run", DEBUG);
 
