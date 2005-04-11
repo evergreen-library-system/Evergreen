@@ -57,18 +57,30 @@ CREATE TABLE money.bnm_payment (
 ) INHERITS (money.payment);
 
 CREATE TABLE money.forgive_payment () INHERITS (money.bnm_payment);
+CREATE INDEX money_forgive_payment_xact_idx ON money.forgive_payment (xact);
+CREATE INDEX money_forgive_payment_accepting_usr_idx ON money.forgive_payment (accepting_usr);
+
 CREATE TABLE money.work_payment () INHERITS (money.bnm_payment);
+CREATE INDEX money_work_payment_xact_idx ON money.work_payment (xact);
+CREATE INDEX money_work_payment_accepting_usr_idx ON money.work_payment (accepting_usr);
+
 CREATE TABLE money.credit_payment () INHERITS (money.bnm_payment);
+CREATE INDEX money_credit_payment_xact_idx ON money.credit_payment (xact);
+CREATE INDEX money_credit_payment_accepting_usr_idx ON money.credit_payment (accepting_usr);
 
 CREATE TABLE money.bnm_desk_payment (
 	cash_drawer	TEXT	NOT NULL
 ) INHERITS (money.bnm_payment);
 
 CREATE TABLE money.cash_payment () INHERITS (money.bnm_desk_payment);
+CREATE INDEX money_cash_payment_xact_idx ON money.cash_payment (xact);
+CREATE INDEX money_cash_payment_accepting_usr_idx ON money.cash_payment (accepting_usr);
 
 CREATE TABLE money.check_payment (
 	check_number	TEXT	NOT NULL
 ) INHERITS (money.bnm_desk_payment);
+CREATE INDEX money_check_payment_xact_idx ON money.check_payment (xact);
+CREATE INDEX money_check_payment_accepting_usr_idx ON money.check_payment (accepting_usr);
 
 CREATE TABLE money.credit_card_payment (
 	cc_type		TEXT	NOT NULL,
@@ -77,6 +89,8 @@ CREATE TABLE money.credit_card_payment (
 	expire_year	INT	NOT NULL,
 	approval_code	TEXT	NOT NULL
 ) INHERITS (money.bnm_desk_payment);
+CREATE INDEX money_credit_card_payment_xact_idx ON money.credit_card_payment (xact);
+CREATE INDEX money_credit_card_payment_accepting_usr_idx ON money.credit_card_payment (accepting_usr);
 
 
 COMMIT;

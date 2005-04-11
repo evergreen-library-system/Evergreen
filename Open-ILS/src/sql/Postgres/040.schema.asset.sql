@@ -5,25 +5,26 @@ BEGIN;
 CREATE SCHEMA asset;
 
 CREATE TABLE asset.copy (
-	id		BIGSERIAL PRIMARY KEY,
+	id		BIGSERIAL			PRIMARY KEY,
 	creator		BIGINT				NOT NULL,
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	editor		BIGINT				NOT NULL,
 	edit_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
-	barcode		TEXT,
-	call_number	BIGINT,
+	barcode		TEXT				UNIQUE NOT NULL,
+	call_number	BIGINT				NOT NULL,
 	copy_number	INT,
-	available	BOOL NOT NULL DEFAULT TRUE, -- was STATUS
-	loan_duration	INT,
-	fine_level	INT,
-	circulate	BOOL NOT NULL DEFAULT TRUE,
-	deposit		BOOL NOT NULL DEFAULT FALSE,
-	deposit_amount	NUMERIC(6,2) NOT NULL DEFAULT 0.00,
-	price		NUMERIC(8,2) NOT NULL DEFAULT 0.00,
-	ref		BOOL NOT NULL DEFAULT FALSE,
+	holdable	BOOL				NOT NULL DEFAULT TRUE,
+	available	BOOL				NOT NULL DEFAULT TRUE, -- was STATUS
+	loan_duration	INT				NOT NULL CHECK ( loan_duration IN (1,2,3) ),
+	fine_level	INT				NOT NULL CHECK ( fine_level IN (1,2,3) ),
+	circulate	BOOL				NOT NULL DEFAULT TRUE,
+	deposit		BOOL				NOT NULL DEFAULT FALSE,
+	deposit_amount	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
+	price		NUMERIC(8,2)			NOT NULL DEFAULT 0.00,
+	ref		BOOL				NOT NULL DEFAULT FALSE,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,
-	opac_visible	BOOL NOT NULL DEFAULT TRUE
+	opac_visible	BOOL				NOT NULL DEFAULT TRUE
 );
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 
@@ -65,10 +66,14 @@ CREATE TABLE asset.call_number (
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	editor		BIGINT				NOT NULL,
 	edit_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
-	record		bigint,
-	label		TEXT,
-	owning_lib	INT
+	record		bigint				NOT NULL,
+	label		TEXT				NOT NULL,
+	owning_lib	INT				NOT NULL,
+	CONSTRAINT asset_call_number_label_once_per_lib UNIQUE (owning_lib, label)
 );
+CREATE INDEX asset_call_number_record_idx ON asset.call_number (record);
+CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
+CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
 
 CREATE TABLE asset.call_number_note (
 	id		BIGSERIAL			PRIMARY KEY,

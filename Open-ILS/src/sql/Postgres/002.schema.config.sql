@@ -9,11 +9,8 @@ CREATE TABLE config.bib_source (
 	source	TEXT	NOT NULL UNIQUE
 );
 
-INSERT INTO config.bib_source (quality, source)
-	VALUES (90, 'OcLC');
-
-INSERT INTO config.bib_source (quality, source)
-	VALUES (10, 'System Local');
+INSERT INTO config.bib_source (quality, source) VALUES (90, 'OcLC');
+INSERT INTO config.bib_source (quality, source) VALUES (10, 'System Local');
 
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
@@ -48,5 +45,34 @@ INSERT INTO config.identification_type ( name ) VALUES ( 'Two Utility Bills' );
 INSERT INTO config.identification_type ( name ) VALUES ( 'State ID' );
 INSERT INTO config.identification_type ( name ) VALUES ( 'SSN' );
 
+CREATE TABLE config.rule_circ_duration (
+	id			SERIAL		PRIMARY KEY,
+	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	extended_duration	INTERVAL	NOT NULL,
+	normal_duration		INTERVAL	NOT NULL,
+	short_duration		INTERVAL	NOT NULL,
+	max_renewals		INT		NOT NULL
+);
+
+CREATE TABLE config.rule_max_fine (
+	id	SERIAL		PRIMARY KEY,
+	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	amount	NUMERIC(6,2)	NOT NULL
+);
+
+CREATE TABLE config.rule_recuring_fine (
+	id		SERIAL		PRIMARY KEY,
+	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	high_amount	NUMERIC(6,2)	NOT NULL
+	normal_amount	NUMERIC(6,2)	NOT NULL
+	low_amount	NUMERIC(6,2)	NOT NULL
+);
+
+CREATE TABLE config.rule_age_hold_protect (
+	id	SERIAL		PRIMARY KEY,
+	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	age	INTERVAL	NOT NULL,
+	radius	INT		NOT NULL
+);
 
 COMMIT;

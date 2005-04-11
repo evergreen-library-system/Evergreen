@@ -15,22 +15,17 @@ CREATE TABLE biblio.record_entry (
 	tcn_value	TEXT		NOT NULL DEFAULT biblio.next_autogen_tcn_value(),
 	creator		INT		NOT NULL DEFAULT 1,
 	editor		INT		NOT NULL DEFAULT 1,
-	create_date	TIMESTAMP	NOT NULL DEFAULT now(),
-	edit_date	TIMESTAMP	NOT NULL DEFAULT now(),
+	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
+	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	active		BOOL		NOT NULL DEFAULT TRUE,
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
 	source		INT,
+	marc		TEXT		NOT NULL,
 	last_xact_id	TEXT		NOT NULL
 );
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_source,tcn_value) WHERE deleted IS FALSE;
-
-CREATE TABLE biblio.record_marc (
-	id		BIGINT	PRIMARY KEY,
-	marc		TEXT	NOT NULL,
-	last_xact_id	TEXT	NOT NULL
-);
 
 CREATE TABLE biblio.record_note (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -38,8 +33,8 @@ CREATE TABLE biblio.record_note (
 	value		TEXT		NOT NULL,
 	creator		INT		NOT NULL DEFAULT 1,
 	editor		INT		NOT NULL DEFAULT 1,
-	create_date	TIMESTAMP	NOT NULL DEFAULT now(),
-	edit_date	TIMESTAMP	NOT NULL DEFAULT now()
+	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
+	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now()
 );
 CREATE INDEX biblio_record_note_record_idx ON biblio.record_note ( record );
 CREATE INDEX biblio_record_note_creator_idx ON biblio.record_note ( creator );

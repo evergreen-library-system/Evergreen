@@ -48,13 +48,17 @@ CREATE TRIGGER action_survey_response_answer_date_fixup_tgr
 CREATE TABLE action.circulation (
 	target_copy		BIGINT		NOT NULL, -- asset.copy.id
 	circ_lib		INT		NOT NULL, -- actor.org_unit.id
+	duration_rule		TEXT		NOT NULL, -- name of "circ duration" rule
 	duration		INTERVAL	NOT NULL, -- derived from "circ duration" rule
 	renewal_remaining	INT		NOT NULL, -- derived from "circ duration" rule
-	fine_amount		NUMERIC(6,2)	NOT NULL, -- derived from "circ fine" rule
-	max_fines		NUMERIC(6,2)	NOT NULL, -- derived from "circ fine" rule
+	recuring_fine_rule	TEXT		NOT NULL, -- name of "circ fine" rule
+	recuring_fine		NUMERIC(6,2)	NOT NULL, -- derived from "circ fine" rule
+	max_fine_rule		TEXT		NOT NULL, -- name of "max fine" rule
+	max_fine		NUMERIC(6,2)	NOT NULL, -- derived from "max fine" rule
 	fine_interval		INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
 	stop_fines		TEXT		CHECK (finish_reason IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES'))
 ) INHERITS (money.billable_xact);
+CREATE INDEX circ_xact_idx ON action.circulation (xact);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 
 
