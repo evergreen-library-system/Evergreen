@@ -8,7 +8,8 @@ CREATE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $c
 BEGIN
 	EXECUTE $$
 			CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
-				audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+				audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
+				audit_action	CHAR(1)				NOT NULL,
 				LIKE $$ || sch || $$.$$ || tbl || $$
 			);
 	$$;
@@ -18,19 +19,15 @@ BEGIN
 			RETURNS TRIGGER AS $func$
 			BEGIN
 				INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history
-					(NOW(),OLD.*);
-				RETURN NEW;
+					SELECT now(), SUBSTR(TG_OP,1,1), OLD.*;
+				RETURN NULL;
 			END;
 			$func$ LANGUAGE 'plpgsql';
 	$$;
 
 	EXECUTE $$
 			CREATE TRIGGER audit_$$ || sch || $$_$$ || tbl || $$_update_trigger
-				AFTER UPDATE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
-				EXECUTE PROCEDURE auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ();
-
-			CREATE TRIGGER audit_$$ || sch || $$_$$ || tbl || $$_delete_trigger
-				BEFORE DELETE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
+				AFTER UPDATE OR DELETE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
 				EXECUTE PROCEDURE auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ();
 	$$;
 	RETURN TRUE;
