@@ -66,6 +66,8 @@ sub biblio_record_tree_retrieve {
 	$tree->owner_doc( $marcxml->id() );
 
 	warn "returning tree\n";
+	#use Data::Dumper;
+	#warn Dumper $tree;
 
 	return $tree;
 }

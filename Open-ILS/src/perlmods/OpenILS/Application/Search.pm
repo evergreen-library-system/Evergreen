@@ -85,7 +85,11 @@ sub get_org_tree {
 		return $home_ou;
 	}
 
-	return OpenILS::Application::AppUtils->get_org_tree();
+	warn "Getting ORG Tree\n";
+	my $org_tree = OpenILS::Application::AppUtils->get_org_tree();
+	warn "Returning Org Tree\n";
+
+	return $org_tree;
 }
 
 

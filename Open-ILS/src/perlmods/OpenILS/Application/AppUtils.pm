@@ -1,7 +1,10 @@
 package OpenILS::Application::AppUtils;
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
+use OpenSRF::Utils::Cache;
 
+
+my $cache_client = OpenSRF::Utils::Cache->new( "global", 0 );
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -104,23 +107,33 @@ sub simple_scalar_request {
 
 	my $session = OpenSRF::AppSession->create( $service );
 	my $request = $session->request( $method, @params );
-	my $response = $request->recv();
+	my $response = $request->recv(30);
 
-	if(!$response) {
-		throw OpenSRF::EX::ERROR 
-			("No response from $service for method $method with params @params" );
+	$request->wait_complete;
+
+	if(!$request->complete) {
+		throw $response ("Call to $service for method $method with params @params" . 
+				"\n did not complete successfully");
 	}
 
-	if($response->isa("Error")) {
+	if(!$response) {
+		warn "No response from $service for method $method with params @params";
+	}
+
+	if($response and $response->isa("Error")) {
 		throw $response ("Call to $service for method $method with params @params" . 
 				"\n failed with exception: " . $response->stringify );
 	}
 
-	my $value = $response->content;
 
 	$request->finish();
+	$session->finish();
 	$session->disconnect();
-	$session->kill_me();
+
+	my $value;
+
+	if($response) { $value = $response->content; }
+	else { $value = undef; }
 
 	return $value;
 }
@@ -129,26 +142,38 @@ sub simple_scalar_request {
 
 
 
-my $orglist = undef;
-my $org_typelist = undef;
-my $org_typelist_hash = {};
+my $tree						= undef;
+my $orglist					= undef;
+my $org_typelist			= undef;
+my $org_typelist_hash	= {};
 
 sub get_org_tree {
 
 	my $self = shift;
+	if($tree) { return $tree; }
+
+	# see if it's in the cache
+	$tree = $cache_client->get_cache('orgtree');
+	if($tree) { return $tree; }
 
 	if(!$orglist) {
+		warn "Retrieving Org Tree\n";
 		$orglist = $self->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.direct.actor.org_unit.retrieve.all" );
+			"open-ils.storage", 
+			"open-ils.storage.direct.actor.org_unit.retrieve.all" );
 	}
 
 	if( ! $org_typelist ) {
+		warn "Retrieving org types\n";
 		$org_typelist = $self->simple_scalar_request( 
-			"open-ils.storage", "open-ils.storage.direct.actor.org_unit_type.retrieve.all" );
+			"open-ils.storage", 
+			"open-ils.storage.direct.actor.org_unit_type.retrieve.all" );
 		$self->build_org_type( $org_typelist );
 	}
 
-	return $self->build_org_tree($orglist, $org_typelist);
+	$tree = $self->build_org_tree($orglist, $org_typelist);
+	$cache_client->put_cache($tree);
+	return $tree;
 
 }
 
@@ -175,11 +200,14 @@ sub build_org_tree {
 		$a->name cmp $b->name } @$orglist;
 
 	for my $org (@list) {
-		next unless ($org and defined($org->parent_ou));
+
+		next unless ($org);
 
 		if(!ref($org->ou_type())) {
 			$org->ou_type( $org_typelist_hash->{$org->ou_type()});
 		}
+
+		next unless (defined($org->parent_ou));
 
 		my ($parent) = grep { $_->id == $org->parent_ou } @list;
 		next unless $parent;

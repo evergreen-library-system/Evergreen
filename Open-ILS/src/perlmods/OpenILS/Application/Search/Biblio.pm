@@ -225,17 +225,21 @@ my $cat_search_hash =  {
 		{ tag => "035", subfield => "_" },
 	],
 
+	isbn	=> [
+		{ tag => "020", subfield => "a" },
+	],
+
 };
 
 
 __PACKAGE__->register_method(
-	method	=> "cat_biblio_search_tcn",
-	api_name	=> "open-ils.search.cat.biblio.tcn",
+	method	=> "biblio_search_tcn",
+	api_name	=> "open-ils.search.biblio.tcn",
 	argc		=> 3, 
-	note		=> "Searches biblio information by search class",
+	note		=> "Retrieve a record by TCN",
 );
 
-sub cat_biblio_search_tcn {
+sub biblio_search_tcn {
 
 	my( $self, $client, $tcn ) = @_;
 
@@ -264,16 +268,73 @@ sub cat_biblio_search_tcn {
 
 	warn "received ID's for tcn search @ids\n";
 
-
-	my $record_list = _records_to_mods( @ids );
-
-	for my $rec (@$record_list) {
-		$client->respond($rec);
-	}
-
-	return undef;
+	my $size = @ids;
+	return { count => $size, ids => \@ids };
 
 }
+
+
+# --------------------------------------------------------------------------------
+# ISBN
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_isbn",
+	api_name	=> "open-ils.search.biblio.isbn",
+);
+
+sub biblio_search_isbn { 
+	my( $self, $client, $isbn ) = @_;
+	throw OpenSRF::EX::InvalidArg 
+
+		("biblio_search_isbn needs an ISBN to search")
+			unless defined $isbn;
+
+	warn "biblio search for ISBN $isbn\n";
+	my $method = $self->method_lookup("open-ils.search.biblio.marc");
+	my ($records) = $method->run( $cat_search_hash->{isbn}, $isbn );
+	my @ids;
+	for my $i (@$records) { 
+		if( ref($i) and defined($i->[0])) { 
+			push @ids, $i->[0]; 
+		}
+	}
+
+	my $size = @ids;
+	return { count => $size, ids => \@ids };
+}
+
+# XXX make me work
+__PACKAGE__->register_method(
+	method	=> "biblio_search_barcode",
+	api_name	=> "open-ils.search.biblio.barcode",
+);
+
+sub biblio_search_barcode { 
+	my( $self, $client, $barcode ) = @_;
+	throw OpenSRF::EX::InvalidArg 
+
+		("biblio_search_barcode needs an ISBN to search")
+			unless defined $barcode;
+
+	warn "biblio search for ISBN $barcode\n";
+	my $records = OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.storage", "open-ils.storage.direct.asset.copy.search.barcode",
+			$barcode );
+
+	my @ids;
+	for my $i (@$records) { 
+		if( ref($i) and defined($i->[0])) { 
+			push @ids, $i->[0]; 
+		}
+	}
+
+	my $size = @ids;
+	return { count => $size, ids => \@ids };
+}
+
+
+
+# --------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_class",
@@ -398,7 +459,12 @@ sub cat_biblio_search_class_id {
 
 	my @cache_ids;
 
-	for my $i (@$records) { push @cache_ids, $i->[0]; }
+	for my $i (@$records) { 
+		if(defined($i->[0])) {
+			push @cache_ids, $i->[0]; 
+		}
+	}
+
 	my @ids = @cache_ids[ $offset..($offset+$limit) ];
 	my $size = @$records;
 
@@ -407,6 +473,220 @@ sub cat_biblio_search_class_id {
 
 	warn "Returning cat.biblio.class.id $string\n";
 	return { count =>$size, ids => \@ids };
+
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class",
+	api_name	=> "open-ils.search.biblio.class",
+	argc		=> 3, 
+	note		=> "Searches biblio information by search class and returns the IDs",
+);
+
+sub biblio_search_class {
+
+	my( $self, $client, $class, $string, $org_id, $org_type, $limit, $offset ) = @_;
+
+	$offset		||= 0;
+	$limit		= 100 unless defined($limit and $limit > 0 );
+	$org_id	 	= "1" unless defined($org_id); # xxx
+	$org_type	= 0	unless defined($org_type);
+
+
+	warn "Searching biblio.class.id string: $string offset: $offset limit: $limit\n";
+
+	$string = OpenILS::Application::Search->filter_search($string);
+	if(!$string) { return undef; }
+
+	if( !defined($org_id) or !$class or !$string ) {
+		warn "not enbough args to metarecord searcn\n";
+		throw OpenSRF::EX::InvalidArg 
+			("Not enough args to open-ils.search.cat.biblio.class")
+	}
+
+	$class =~ s/\s+//g;
+
+	if( ($class ne "title") and ($class ne "author") and 
+		($class ne "subject") and ($class ne "keyword") ) {
+		warn "Invalid search class: $class\n";
+		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
+	}
+
+	# grab the mr id's from storage
+
+	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord_count";
+	warn "Performing count method $method\n";
+	my $session = OpenSRF::AppSession->create('open-ils.storage');
+	my $request = $session->request( $method, $string, $org_id, $org_type );
+	my $response = $request->recv();
+
+	if(UNIVERSAL::isa($response, "OpenSRF::EX")) {
+		throw $response ($response->stringify);
+	}
+
+	my $count = $response->content;
+	warn "Received count $count\n";
+
+	# XXX check count size and respond accordingly
+
+	$request->finish();
+	warn "performing mr search\n";
+	$request = $session->request(	
+		"open-ils.storage.metabib.$class.search_fts.metarecord",
+		$string, $org_id, $org_type, $limit );
+
+	warn "a\n";
+	$response = $request->recv();
+
+	if(UNIVERSAL::isa($response, "OpenSRF::EX")) {
+		warn "Recieved Exception from storage: " . $response->stringify . "\n";
+		$response->{'msg'} = $response->stringify();
+		throw $response ($response->stringify);
+	}
+
+	warn "b\n";
+
+	my $records = $response->content;
+
+	my @all_ids;
+
+	for my $i (@$records) { 
+		if(defined($i->[0])) {
+			push @all_ids, $i->[0]; 
+		}
+	}
+
+	my @ids = @all_ids[ $offset..($offset+$limit) ];
+	@ids = grep { defined($_) } @ids;
+	#my $size = @$records;
+
+	$request->finish();
+	$session->finish();
+	$session->disconnect();
+
+	warn "Returning biblio.class $string\n";
+	return { count =>$count, ids => \@ids };
+
+}
+
+
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_to_modsbatch",
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve",
+);
+
+sub biblio_mrid_to_modsbatch {
+	my( $self, $client, $mrid ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("search.biblio.metarecord_to_mods requires mr id")
+			unless defined( $mrid );
+
+	warn "Creating mods batch for metarecord $mrid\n";
+	my $id_hash = biblio_mrid_to_record_ids( undef, undef,  $mrid );
+	my @ids = @{$id_hash->{ids}};
+
+	if(@ids < 1) { return undef; }
+
+	# grab the master record...
+
+	my $master_id = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
+			"open-ils.storage.direct.metabib.metarecord.search.master_record", $mrid );
+
+	$master_id = $master_id->[0]; # there should only be one
+
+	use Data::Dumper;
+	warn "Master Record: " . Dumper($master_id);
+
+	if (!ref($master_id) or !defined($master_id->id())) {
+		warn "No Master Record Found, using first found id\n";
+		$master_id = shift @ids;
+	} else {
+		$master_id = $master_id->id();
+	}
+
+	warn "Master ID is $master_id\n";
+
+	# grab the master record to start the mods batch 
+
+	my $record = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
+			"open-ils.storage.direct.biblio.record_marc.retrieve", $master_id );
+
+	if(!$record) {
+		throw OpenSRF::EX::ERROR 
+			("No record returned with id $master_id");
+	}
+
+	my $u = OpenILS::Utils::ModsParser->new();
+	$u->start_mods_batch( $record->marc );
+	my $main_doc_id = $record->id();
+
+	@ids = grep { $_ ne $master_id } @ids;
+
+	warn "NON-Master IDs are @ids\n";
+
+	# now we have to collect all of the marc objects and push them into a mods batch
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $request = $session->request(
+			"open-ils.storage.direct.biblio.record_marc.batch.retrieve",  @ids );
+
+	while( my $response = $request->recv() ) {
+
+		next unless $response;
+		if(UNIVERSAL::isa( $response,"OpenSRF::EX")) {
+			throw $response ($response->stringify);
+		}
+
+		my $content = $response->content;
+
+		if( $content ) {
+			$u->push_mods_batch( $content->marc );
+		}
+	}
+
+	my $mods = $u->finish_mods_batch();
+	$mods->{doc_id} = $main_doc_id;
+
+	$request->finish();
+	$session->finish();
+	$session->disconnect();
+
+	return $mods;
+
+}
+
+
+
+# converts a mr id into a list of record ids
+
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_to_record_ids",
+	api_name	=> "open-ils.search.biblio.metarecord_to_records",
+);
+
+sub biblio_mrid_to_record_ids {
+	my( $self, $client, $mrid ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("search.biblio.metarecord_to_record_ids requires mr id")
+			unless defined( $mrid );
+
+	warn "Searching for record for MR $mrid\n";
+
+	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
+			"open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord", $mrid );
+
+	my @ids;
+	for my $map (@$mrmaps) { push @ids, $map->source(); }
+
+	warn "Recovered id's [@ids] for mr $mrid\n";
+
+	my $size = @ids;
+
+	return { count => $size, ids => \@ids };
 
 }
 
