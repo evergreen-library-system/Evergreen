@@ -58,8 +58,8 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
-	VALUES ( 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
+INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
+	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
 
 CREATE TABLE actor.usr_class (
 	id		SERIAL	PRIMARY KEY,
@@ -90,7 +90,7 @@ CREATE TABLE actor.stat_cat_entry_usr_map (
 	target_usr	INT		NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
 	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat_entry)
 );
-CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (usr);
+CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (target_usr);
 
 CREATE TABLE actor.card (
 	id	SERIAL	PRIMARY KEY,
@@ -111,7 +111,7 @@ CREATE TABLE actor.org_unit_type (
 	can_have_vols	BOOL	NOT NULL DEFAULT TRUE,
 	can_have_users	BOOL	NOT NULL DEFAULT TRUE
 );
-CREATE INDEX actor_org_unit_type_parent_idx ON actor.org_unit (parent);
+CREATE INDEX actor_org_unit_type_parent_idx ON actor.org_unit_type (parent);
 
 -- The PINES levels
 INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium', 0, NULL, FALSE, FALSE );
@@ -123,7 +123,7 @@ CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
 	parent_ou	INT	REFERENCES actor.org_unit (id),
 	ou_type		INT	NOT NULL REFERENCES actor.org_unit_type (id),
-	address		INT	REFERENCES actor.org_address (id),
+	address		INT,
 	shortname	TEXT	NOT NULL,
 	name		TEXT	NOT NULL
 );
@@ -157,14 +157,14 @@ CREATE TABLE actor.perm_group_permission_map (
 	id		SERIAL	PRIMARY KEY,
 	permission	INT	NOT NULL REFERENCES actor.permission (id),
 	perm_group	INT	NOT NULL REFERENCES actor.perm_group (id),
-	CONSTRAINT perm_once_per_group PRIMARY KEY (permission, perm_group)
+	CONSTRAINT perm_once_per_group UNIQUE (permission, perm_group)
 );
 
 CREATE TABLE actor.perm_group_usr_map (
 	id		BIGSERIAL	PRIMARY KEY,
 	usr		INT		NOT NULL REFERENCES actor.usr (id),
 	perm_group	INT		NOT NULL REFERENCES actor.perm_group (id),
-	CONSTRAINT usr_once_per_group PRIMARY KEY (usr, perm_group)
+	CONSTRAINT usr_once_per_group UNIQUE (usr, perm_group)
 );
 
 CREATE TABLE actor.usr_address (

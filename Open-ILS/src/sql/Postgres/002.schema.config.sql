@@ -63,8 +63,8 @@ CREATE TABLE config.rule_max_fine (
 CREATE TABLE config.rule_recuring_fine (
 	id		SERIAL		PRIMARY KEY,
 	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
-	high_amount	NUMERIC(6,2)	NOT NULL
-	normal_amount	NUMERIC(6,2)	NOT NULL
+	high_amount	NUMERIC(6,2)	NOT NULL,
+	normal_amount	NUMERIC(6,2)	NOT NULL,
 	low_amount	NUMERIC(6,2)	NOT NULL
 );
 

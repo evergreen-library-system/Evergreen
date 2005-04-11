@@ -56,9 +56,8 @@ CREATE TABLE action.circulation (
 	max_fine_rule		TEXT		NOT NULL, -- name of "max fine" rule
 	max_fine		NUMERIC(6,2)	NOT NULL, -- derived from "max fine" rule
 	fine_interval		INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
-	stop_fines		TEXT		CHECK (finish_reason IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES'))
+	stop_fines		TEXT		CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES'))
 ) INHERITS (money.billable_xact);
-CREATE INDEX circ_xact_idx ON action.circulation (xact);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 
 

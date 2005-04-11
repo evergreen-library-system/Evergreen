@@ -6,11 +6,8 @@ psql -U $1 -d $2 -f 010.schema.biblio.sql
 psql -U $1 -d $2 -f 020.schema.functions.sql
 psql -U $1 -d $2 -f 030.schema.metabib.sql
 psql -U $1 -d $2 -f 040.schema.asset.sql
+psql -U $1 -d $2 -f 080.schema.money.sql
 psql -U $1 -d $2 -f 090.schema.action.sql
 
-#psql -U $1 -d $2 -f 805.fkeys.actors.sql
-#psql -U $1 -d $2 -f 810.fkeys.biblio.sql
-#psql -U $1 -d $2 -f 830.fkeys.metabib.sql
-#psql -U $1 -d $2 -f 840.fkeys.asset.sql
-
-#psql -U $1 -d $2 -f 910.audit.biblio.sql
+psql -U $1 -d $2 -f 800.fkeys.sql
+psql -U $1 -d $2 -f 900.audit-tables.sql

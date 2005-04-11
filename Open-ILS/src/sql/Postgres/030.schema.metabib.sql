@@ -6,7 +6,8 @@ CREATE SCHEMA metabib;
 CREATE TABLE metabib.metarecord (
 	id		BIGSERIAL	PRIMARY KEY,
 	fingerprint	TEXT		NOT NULL,
-	master_record	BIGINT
+	master_record	BIGINT,
+	mods		TEXT
 );
 CREATE INDEX metabib_metarecord_master_record_idx ON metabib.metarecord (master_record);
 CREATE INDEX metabib_metarecord_fingerprint_idx ON metabib.metarecord (fingerprint);

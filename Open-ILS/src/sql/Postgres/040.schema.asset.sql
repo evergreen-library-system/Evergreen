@@ -69,7 +69,7 @@ CREATE TABLE asset.call_number (
 	record		bigint				NOT NULL,
 	label		TEXT				NOT NULL,
 	owning_lib	INT				NOT NULL,
-	CONSTRAINT asset_call_number_label_once_per_lib UNIQUE (owning_lib, label)
+	CONSTRAINT asset_call_number_label_once_per_lib UNIQUE (record, owning_lib, label)
 );
 CREATE INDEX asset_call_number_record_idx ON asset.call_number (record);
 CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
