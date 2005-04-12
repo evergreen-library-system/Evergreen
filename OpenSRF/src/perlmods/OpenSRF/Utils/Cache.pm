@@ -72,6 +72,10 @@ sub new {
 	my $servers = $conf->config_value( cache => $cache_type => servers => 'server' );
 	my $expire_time = $conf->config_value( cache => $cache_type => 'max_cache_time' );
 
+	if(!ref($servers)){
+		$servers = [ $servers ];
+	}
+
 	my $self = {};
 	$self->{persist} = $persist || 0;
 	$self->{memcache} = Cache::Memcached->new( { servers => $servers } ); 
