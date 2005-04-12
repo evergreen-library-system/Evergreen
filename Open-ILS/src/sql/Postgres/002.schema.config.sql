@@ -46,12 +46,12 @@ INSERT INTO config.identification_type ( name ) VALUES ( 'State ID' );
 INSERT INTO config.identification_type ( name ) VALUES ( 'SSN' );
 
 CREATE TABLE config.rule_circ_duration (
-	id			SERIAL		PRIMARY KEY,
-	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
-	extended_duration	INTERVAL	NOT NULL,
-	normal_duration		INTERVAL	NOT NULL,
-	short_duration		INTERVAL	NOT NULL,
-	max_renewals		INT		NOT NULL
+	id		SERIAL		PRIMARY KEY,
+	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	extended	INTERVAL	NOT NULL,
+	normal		INTERVAL	NOT NULL,
+	short		INTERVAL	NOT NULL,
+	max_renewals	INT		NOT NULL
 );
 
 CREATE TABLE config.rule_max_fine (
@@ -61,11 +61,11 @@ CREATE TABLE config.rule_max_fine (
 );
 
 CREATE TABLE config.rule_recuring_fine (
-	id		SERIAL		PRIMARY KEY,
-	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
-	high_amount	NUMERIC(6,2)	NOT NULL,
-	normal_amount	NUMERIC(6,2)	NOT NULL,
-	low_amount	NUMERIC(6,2)	NOT NULL
+	id	SERIAL		PRIMARY KEY,
+	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	high	NUMERIC(6,2)	NOT NULL,
+	normal	NUMERIC(6,2)	NOT NULL,
+	low	NUMERIC(6,2)	NOT NULL
 );
 
 CREATE TABLE config.rule_age_hold_protect (

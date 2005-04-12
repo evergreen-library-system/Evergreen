@@ -367,8 +367,6 @@
 		my $client = shift;
 		my @fm_nodes = @_;
 
-		warn 'Inside copy_create...';
-
 		return undef unless ($pg->current_xact_session);
 
 		my $cdbi = $self->{cdbi};
@@ -551,6 +549,15 @@
 	metabib::metarecord->table( 'metabib.metarecord' );
 	metabib::metarecord->sequence( 'metabib.metarecord_id_seq' );
 
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.direct.metabib.metarecord.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::metarecord',
+	);
+
+
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
@@ -660,6 +667,14 @@
 	package metabib::metarecord_source_map;
 
 	metabib::metarecord_source_map->table( 'metabib.metarecord_source_map' );
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.direct.metabib.metarecord_source_map.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::metarecord_source_map',
+	);
+
 
 	#-------------------------------------------------------------------------------
 	package metabib::record_descriptor;

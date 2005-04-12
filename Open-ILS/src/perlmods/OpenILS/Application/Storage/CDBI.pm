@@ -2,15 +2,16 @@ package OpenILS::Application::Storage::CDBI;
 use base qw/Class::DBI/;
 use Class::DBI;
 
-use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::action;
 use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::biblio;
+use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::CDBI::money;
 
 use OpenSRF::Utils::Logger;
+use OpenSRF::EX qw/:try/;
 
 our $VERSION;
 my $log = 'OpenSRF::Utils::Logger';
@@ -120,11 +121,13 @@ sub retrieve {
 		$arg = $arg->id;
 	}
 	$log->debug("Retrieving $self with $arg", INTERNAL);
-	my $rec =  $self->SUPER::retrieve("$arg");
-	unless ($rec) {
-		$log->debug("Could not retrieve $self with $arg!", DEBUG);
+	my $rec;
+	try {
+		$rec = $self->SUPER::retrieve("$arg");
+	} catch Error with {
+		$log->debug("Could not retrieve $self with $arg! -- ".shift(), DEBUG);
 		return undef;
-	}
+	};
 	return $rec;
 }
 
@@ -165,12 +168,13 @@ sub create_from_fieldmapper {
 	$log->debug("Creating node of type ".ref($fm), DEBUG);
 
 	my $class = ref($obj) || $obj;
+	my $primary = $class->primary_column;
 
 	if (ref $fm) {
 		my %hash = map { defined $fm->$_ ?
 					($_ => $fm->$_) :
 					()
-				} $fm->real_fields;
+				} grep { $_ ne $primary } $class->columns('All');
 
 		if ($class->find_column( 'last_xact_id' )) {
 			my $xact_id = $class->current_xact_id;
@@ -237,10 +241,9 @@ sub modify_from_fieldmapper {
 	if (!ref($obj)) {
 		$obj = $class->retrieve($fm);
 		unless ($obj) {
-			$log->debug("Rretrieve using $fm (".$fm->id.") failed!", ERROR);
+			$log->debug("Retrieve of $class using $fm (".$fm->id.") failed! -- ".shift(), ERROR);
 			throw OpenSRF::EX::WARN ("No $class with id of ".$fm->id."!!");
 		}
-
 	}
 
 	my %hash = map { defined $fm->$_ ?
@@ -271,6 +274,7 @@ sub modify_from_fieldmapper {
 
 sub import {
 	return if ($VERSION);
+
 	#-------------------------------------------------------------------------------
 	actor::user->has_a( home_ou => 'actor::org_unit' );
 	actor::user->has_many( survey_responses => 'action::survey_response' );

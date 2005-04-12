@@ -18,17 +18,28 @@ $VERSION = 1;
 sub search_full_rec {
 	my $self = shift;
 	my $client = shift;
-	my $limiters = shift;
-	my $term = shift;
-	my $window = shift;
-	$window = 100 unless (defined $window);
 
-	my $cache_key = md5_hex(Dump($limiters).$term);
+	my %args = @_;
+	
+	my $term = $args{term};
+	my $limiters = $args{restrict};
+	my $limit = $args{limit} || 100;
+	my $offset = $args{offset} || 0;
 
-	my ($fts_col) = metabib::full_rec->columns('FTS');
-	my $table = metabib::full_rec->table;
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value','index_vector');
+	my $cache_key = md5_hex(Dumper($limiters).$term);
+
+	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
+	return [ @$cached_recs[$offset .. $limit - 1] ] if (defined $cached_recs);
+
+	my ($index_col) = metabib::full_rec->columns('FTS');
+	$index_col ||= 'value';
+	my $search_table = metabib::full_rec->table;
+
+	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
+	my $asset_call_number_table = asset::call_number->table;
+
+	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
 
 	my $fts_where = $fts->sql_where_clause();
 	my @fts_ranks = $fts->fts_rank;
@@ -44,16 +55,16 @@ sub search_full_rec {
 	}
 	my $where = join(' OR ', @wheres);
 
-	my $select = "SELECT record, sum($rank) FROM $table WHERE $where GROUP BY 1 ORDER BY 2 DESC;";
+	my $select = "SELECT record, sum($rank) FROM $search_table WHERE $where GROUP BY 1 ORDER BY 2 DESC;";
 
 	$log->debug("Search SQL :: [$select]",DEBUG);
 
 	my $recs = metabib::full_rec->db_Main->selectall_arrayref($select, {}, @binds);
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond( [ @$recs[0 .. $window - 1] ] );
+	$client->respond_complete( [ @$recs[0 .. $window - 1] ] );
 
-	OpenSRF::Utils::Cache->new->put_cache( $recs );
+	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
 
 	return undef;
 
@@ -71,29 +82,42 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 );
 
+
+# XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub search_class_fts {
 	my $self = shift;
 	my $client = shift;
-	my $term = shift;
-	my $ou = shift;
-	my $ou_type = shift;
-	my $window = shift;
-	$window = 100 unless (defined $window);
+	my %args = @_;
 	
+	my $term = $args{term};
+	my $ou = $args{org_unit};
+	my $ou_type = $args{depth};
+	my $limit = $args{limit} || 100;
+	my $offset = $args{offset} || 0;
 
-	(my $class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
-	my $cache_key = md5_hex($class.$term.$ou.$ou_type);
 
-	$log->debug("Cache key for $class search of '$term' at ($ou,$ou_type) will be $cache_key", DEBUG);
+	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
+	my $cache_key = md5_hex($search_class.$term.$ou.$ou_type);
+
+	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
+	return [ @$cached_recs[$offset .. $limit - 1] ] if (defined $cached_recs);
+
+	$log->debug("Cache key for $search_class search of '$term' at ($ou,$ou_type) will be $cache_key", DEBUG);
 
 	my $descendants = defined($ou_type) ?
 				"actor.org_unit_descendants($ou, $ou_type)" :
 				"actor.org_unit_descendants($ou)";
 
 	my $class = $self->{cdbi};
-	my $table = $class->table;
+	my $search_table = $class->table;
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value','index_vector');
+	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
+	my $asset_call_number_table = asset::call_number->table;
+
+	my ($index_col) = $class->columns('FTS');
+	$index_col ||= 'value';
+
+	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value', "$index_col");
 
 	my $fts_where = $fts->sql_where_clause;
 	my @fts_ranks = $fts->fts_rank;
@@ -102,9 +126,9 @@ sub search_class_fts {
 
 	my $select = <<"	SQL";
 		SELECT	m.metarecord, sum($rank)/count(m.source)
-	  	  FROM	$table f,
-			metabib.metarecord_source_map m,
-			asset.call_number cn,
+	  	  FROM	$search_table f,
+			$metabib_metarecord_source_map_table m,
+			$asset_call_number_table cn,
 			$descendants d
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
@@ -120,9 +144,9 @@ sub search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond( [ @$recs[0 .. $window - 1] ] );
+	$client->respond_complete( [ @$recs[$offset .. $limit - 1] ] );
 
-	OpenSRF::Utils::Cache->new->put_cache( $recs );
+	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
 
 	return undef;
 
@@ -156,31 +180,48 @@ __PACKAGE__->register_method(
 	cdbi		=> 'metabib::keyword_field_entry',
 );
 
+# XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub search_class_fts_count {
 	my $self = shift;
 	my $client = shift;
-	my $term = shift;
-	my $ou = shift;
-	my $ou_type = shift;
+	my %args = @_;
+	
+	my $term = $args{term};
+	my $ou = $args{org_unit};
+	my $ou_type = $args{depth};
+	my $limit = $args{limit} || 100;
+	my $offset = $args{offset} || 0;
 
 	my $descendants = defined($ou_type) ?
 				"actor.org_unit_descendants($ou, $ou_type)" :
 				"actor.org_unit_descendants($ou)";
 		
 
-	my $class = $self->{cdbi};
-	my $table = $class->table;
+	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
+	my $cache_key = md5_hex($search_class.$term.$ou.$ou_type.'_COUNT_');
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value','index_vector');
+	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
+	return $cached_recs if (defined $cached_recs);
+
+	my $class = $self->{cdbi};
+	my $search_table = $class->table;
+
+	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
+	my $asset_call_number_table = asset::call_number->table;
+
+	my ($index_col) = $class->columns('FTS');
+	$index_col ||= 'value';
+
+	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
 
 	my $fts_where = $fts->sql_where_clause;
 
 	# XXX test an "EXISTS version of descendant checking...
 	my $select = <<"	SQL";
 		SELECT	count(distinct  m.metarecord)
-	  	  FROM	$table f,
-			metabib.metarecord_source_map m,
-			asset.call_number cn,
+	  	  FROM	$search_table f,
+			$metabib_metarecord_source_map_table m,
+			$asset_call_number_table cn,
 			$descendants d
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
@@ -193,6 +234,8 @@ sub search_class_fts_count {
 	my $recs = $class->db_Main->selectrow_arrayref($select)->[0];
 	
 	$log->debug("Count Search yielded $recs results.",DEBUG);
+
+	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
 
 	return $recs;
 

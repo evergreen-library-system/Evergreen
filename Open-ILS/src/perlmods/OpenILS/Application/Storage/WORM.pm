@@ -56,6 +56,7 @@ my @fp_mods_xpath = (
 								$text =~ s/\b(?:the|an?)\b//sgo;
 								$text =~ s/\[.[^\]]+\]//sgo;
 								$text =~ s/\s*[;\/\.]*$//sgo;
+								$text =~ s/\pM+//gso;
 							};
 					',
 			},
@@ -69,7 +70,8 @@ my @fp_mods_xpath = (
 								$text = lc($text);
 								$text =~ s/\s+/ /sgo;
 								$text =~ s/^\s*(.+)\s*$/$1/sgo;
-								($text) = split ",", $text;
+								$text =~ s/,?\s+.*$//sgo;
+								$text =~ s/\pM+//gso;
 							};
 					',
 			},
@@ -95,6 +97,7 @@ my @fp_mods_xpath = (
 								$text =~ s/\b(?:the|an?)\b//sgo;
 								$text =~ s/\[.[^\]]+\]//sgo;
 								$text =~ s/\s*[;\/\.]*$//sgo;
+								$text =~ s/\pM+//gso;
 							};
 					',
 			},
@@ -110,7 +113,8 @@ my @fp_mods_xpath = (
 								$text = lc($text);
 								$text =~ s/\s+/ /sgo;
 								$text =~ s/^\s*(.+)\s*$/$1/sgo;
-								($text) = split ",", $text;
+								$text =~ s/,?\s+.*$//sgo;
+								$text =~ s/\pM+//gso;
 							};
 					',
 			},
@@ -171,9 +175,13 @@ my $begin;
 my $commit;
 my $rollback;
 my $lookup;
-my $fetch_entry;
 my $update_entry;
+my $mr_lookup;
+my $mr_create;
+my $create_source_map;
+my $sm_lookup;
 my $rm_old_rd;
+my $rm_old_sm;
 my $rm_old_fr;
 my $rm_old_tr;
 my $rm_old_ar;
@@ -209,12 +217,20 @@ sub wormize {
 		unless ($commit);
 	$rollback = $self->method_lookup( 'open-ils.storage.transaction.rollback')
 		unless ($rollback);
+	$sm_lookup = $self->method_lookup('open-ils.storage.direct.metabib.metarecord_source_map.search.source')
+		unless ($sm_lookup);
+	$mr_lookup = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.search.fingerprint')
+		unless ($mr_lookup);
+	$mr_create = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.create')
+		unless ($mr_create);
+	$create_source_map = $self->method_lookup('open-ils.storage.direct.metabib.metarecord_source_map.batch.create')
+		unless ($create_source_map);
 	$lookup = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.batch.retrieve')
 		unless ($lookup);
-	$fetch_entry = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.retrieve')
-		unless ($update_entry);
 	$update_entry = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.batch.update')
 		unless ($update_entry);
+	$rm_old_sm = $self->method_lookup( 'open-ils.storage.direct.metabib.metarecord_source_map.mass_delete')
+		unless ($rm_old_sm);
 	$rm_old_rd = $self->method_lookup( 'open-ils.storage.direct.metabib.record_descriptor.mass_delete')
 		unless ($rm_old_rd);
 	$rm_old_fr = $self->method_lookup( 'open-ils.storage.direct.metabib.full_rec.mass_delete')
@@ -251,26 +267,45 @@ sub wormize {
 		throw OpenSRF::EX::PANIC ("WoRM Couldn't BEGIN transaction!")
 	};
 
+	my @source_maps;
 	my @entry_list;
 	my @rd_list;
 	my @ns_list;
 	my @mods_data;
 	my $ret = 0;
-	for my $marc ( $lookup->run(@docids) ) {
+	for my $entry ( $lookup->run(@docids) ) {
 		# step -1: grab the doc from storage
-		next unless ($marc);
+		next unless ($entry);
 
-		my $xml = $marc->marc;
-		my $docid = $marc->id;
+		my $xml = $entry->marc;
+		my $docid = $entry->id;
 		my $marcdoc = $parser->parse_string($xml);
 		my $modsdoc = $mods_sheet->transform($marcdoc);
 
 		my $mods = $modsdoc->documentElement;
 		$mods->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
 
-		my ($entry) = $fetch_entry->run($docid);
 		$entry->fingerprint( fingerprint_mods( $mods ) );
 		push @entry_list, $entry;
+
+		my ($mr) = $mr_lookup->run( $entry->fingerprint );
+		if (!@$mr) {
+			$mr = new Fieldmapper::metabib::metarecord;
+			$mr->fingerprint( $entry->fingerprint );
+			$mr->master_record( $entry->id );
+			my ($new_mr) = $mr_create->run($mr);
+			$mr->id($new_mr);
+			unless (defined $mr) {
+				throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord.create!")
+			}
+		} else {
+			$mr = $$mr[0];
+		}
+
+		my $sm = new Fieldmapper::metabib::metarecord_source_map;
+		$sm->metarecord( $mr->id );
+		$sm->source( $entry->id );
+		push @source_maps, $sm;
 
 		my $ldr = $marcdoc->documentElement->getChildrenByTagName('leader')->pop->textContent;
 		my $oo8 = $marcdoc->documentElement->findvalue('//*[local-name()="controlfield" and @tag="008"]');
@@ -296,10 +331,16 @@ sub wormize {
 
 	$rm_old_rd->run( { record => \@docids } );
 	$rm_old_fr->run( { record => \@docids } );
+	$rm_old_sm->run( { source => \@docids } );
 	$rm_old_tr->run( { source => \@docids } );
 	$rm_old_ar->run( { source => \@docids } );
 	$rm_old_sr->run( { source => \@docids } );
 	$rm_old_kr->run( { source => \@docids } );
+
+	my ($sm) = $create_source_map->run(@source_maps);
+	unless (defined $sm) {
+		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord_source_map.batch.create!")
+	}
 
 	my ($re) = $update_entry->run(@entry_list);
 	unless (defined $re) {

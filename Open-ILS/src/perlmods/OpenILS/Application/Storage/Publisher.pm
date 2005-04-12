@@ -7,7 +7,7 @@ use OpenSRF::Utils::Logger;
 my $log = 'OpenSRF::Utils::Logger';
 
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Application::Storage::CDBI;
+#use OpenILS::Application::Storage::CDBI;
 
 #use OpenILS::Application::Storage::CDBI::actor;
 #use OpenILS::Application::Storage::CDBI::asset;

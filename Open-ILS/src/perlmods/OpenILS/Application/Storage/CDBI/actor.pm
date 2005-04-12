@@ -10,10 +10,12 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_usr' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/id usrid usrname email prefix first_given_name
-				second_given_name family_name suffix address
+__PACKAGE__->columns( Essential => qw/usrid usrname email first_given_name
+				second_given_name family_name address
 				home_ou gender dob active master_account
-				super_user usrgroup passwd last_xact_id/ );
+				ident_type ident_value super_user usrgroup
+				passwd last_xact_id/ );
+__PACKAGE__->columns( Others => qw/prefix suffix address/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_unit_type;
@@ -21,7 +23,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit_type' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Others => qw/name depth parent can_have_users/);
+__PACKAGE__->columns( Essential => qw/name depth parent can_have_users/);
 
 #-------------------------------------------------------------------------------
 package actor::org_unit;
@@ -29,7 +31,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Others => qw/parent_ou ou_type address shortname name/);
+__PACKAGE__->columns( Essential => qw/parent_ou ou_type address shortname name/);
 
 #-------------------------------------------------------------------------------
 package actor::stat_cat;
@@ -37,7 +39,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/owner name opac_visible/ );
+__PACKAGE__->columns( Essential => qw/owner name opac_visible/ );
 
 #-------------------------------------------------------------------------------
 package actor::stat_cat_entry;
@@ -45,7 +47,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat_entry' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/owner value/ );
+__PACKAGE__->columns( Essential => qw/owner value/ );
 
 #-------------------------------------------------------------------------------
 package actor::stat_cat_entry_user_map;
@@ -53,7 +55,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat_entry_usr_map' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/stat_cat_entry target_user/ );
+__PACKAGE__->columns( Essential => qw/stat_cat_entry target_user/ );
 
 #-------------------------------------------------------------------------------
 package actor::card;
@@ -61,7 +63,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_card' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Others => qw/usr barcode active/ );
+__PACKAGE__->columns( Essential => qw/usr barcode active/ );
 
 #-------------------------------------------------------------------------------
 package actor::user_access_entry;

@@ -7,12 +7,8 @@ use OpenSRF::Utils::Logger qw/:level/;
 
 # Pull this in so we can adjust it's @ISA
 use OpenILS::Application::Storage::CDBI (1);
-
 use OpenILS::Application::Storage::FTS;
 
-# Suck in the method publishing modules
-use OpenILS::Application::Storage::Publisher;
-use OpenILS::Application::Storage::WORM;
 
 # the easy way to get to the logger...
 my $log = "OpenSRF::Utils::Logger";
@@ -40,7 +36,11 @@ sub initialize {
 
 	$log->debug("$driver loaded successfully", DEBUG);
 
+	# Suck in the method publishing modules
 	@OpenILS::Application::Storage::CDBI::ISA = ( $driver );
+
+	eval 'use OpenILS::Application::Storage::Publisher;';
+	eval 'use OpenILS::Application::Storage::WORM;';
 }
 
 sub child_init {
@@ -48,10 +48,6 @@ sub child_init {
 	$log->debug('Running child_init for ' . __PACKAGE__ . '...', DEBUG);
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
-
-	# XXX -- this died... router down?
-	#$log->debug('Prepopulating method_lookup cache', DEBUG);
-	#OpenSRF::Application->method_lookup('crappola');
 
 	$log->debug('Calling the Driver child_init', DEBUG);
 	OpenILS::Application::Storage::CDBI->child_init(

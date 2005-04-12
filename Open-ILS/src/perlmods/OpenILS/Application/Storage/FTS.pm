@@ -5,7 +5,7 @@ my $log = 'OpenSRF::Utils::Logger';
 package OpenILS::Application::Storage::FTS;
 use OpenSRF::Utils::Logger qw/:level/;
 
-sub default_compile {
+sub compile {
 
 	$log->debug("You must override me somewhere, or I will make searching really slow!!!!",ERROR);;
 
@@ -194,7 +194,7 @@ package Class::DBI;
 					push @vals, ''.$class->_deflated_column($column, $v);
 				}
 			} else {
-				push @frags, "$cols[$_] $search_type $$search_opts{_placeholder}";
+				push @frags, "$col $search_type $$search_opts{_placeholder}";
 				push @vals, $class->_deflated_column($column, $val);
 			}
 		}

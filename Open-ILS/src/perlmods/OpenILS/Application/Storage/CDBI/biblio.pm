@@ -7,7 +7,6 @@ use base qw/OpenILS::Application::Storage::CDBI/;
 #-------------------------------------------------------------------------------
 package biblio::record_entry;
 use base qw/biblio/;
-#use OpenILS::Application::Storage::CDBI::asset;
 
 biblio::record_entry->table( 'biblio_record_entry' );
 biblio::record_entry->columns( Primary		=> 'id' );

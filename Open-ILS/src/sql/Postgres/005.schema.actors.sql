@@ -11,6 +11,8 @@ CREATE TABLE actor.usr (
 	usrname			TEXT		NOT NULL UNIQUE,
 	email			TEXT		CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
 	passwd			TEXT		NOT NULL,
+	ident_type		INT		NOT NULL REFERENCES config.identifcation_type (id),
+	ident_value		TEXT		NOT NULL,
 	prefix			TEXT,
 	first_given_name	TEXT		NOT NULL,
 	second_given_name	TEXT,
@@ -58,8 +60,12 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user )
-	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE );
+INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
+	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE, 1, 'identification' );
+INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
+	VALUES ( 3, 1,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
+	VALUES ( 3, 1,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 
 CREATE TABLE actor.usr_class (
 	id		SERIAL	PRIMARY KEY,
