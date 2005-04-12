@@ -1,9 +1,12 @@
 /* dynamically determine the XMLHTTPRequest server based on 
 	where the client is coming from.  Good for SSH tunneling, etc. */
+/*
 var _url = "https://" + globalRootURL;
 if(globalPort != "443")
 	_url = _url + ":" + globalPort;
 var XML_HTTP_URL = _url + "/gateway";
+*/
+var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
 
 
 /* Request object */
