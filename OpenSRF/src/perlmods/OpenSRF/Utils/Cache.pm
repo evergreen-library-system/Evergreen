@@ -70,8 +70,7 @@ sub new {
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	my $servers = $conf->config_value( cache => $cache_type => servers => 'server' );
-	my $expire_time = $conf->config_value( cache => $cache_type => servers => 'max_cache_time' );
-
+	my $expire_time = $conf->config_value( cache => $cache_type => 'max_cache_time' );
 
 	my $self = {};
 	$self->{persist} = $persist || 0;
@@ -97,7 +96,8 @@ sub put_cache {
 
 	$expiretime ||= $max_persist_time;
 
-	$self->{memcache}->set( $key, $value, $expiretime );
+	$self->{memcache}->set( $key, $value, $expiretime ) ||
+		throw OpenSRF::EX::ERROR ("Unable to store $key => $value in memcached server" );;
 
 	if($self->{"persist"}) {
 
