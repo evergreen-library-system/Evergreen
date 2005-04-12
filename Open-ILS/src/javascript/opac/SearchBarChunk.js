@@ -1,0 +1,103 @@
+var globalSearchBarChunk = null;
+
+function SearchBarChunk() {
+
+	if(globalSearchBarChunk != null) {
+		return globalSearchBarChunk;
+	}
+
+	/* this links */
+	this.search_link		= document.getElementById("adv_search_link");
+	this.login_link		= document.getElementById("login_link");
+	this.my_opac_link		= document.getElementById("my_opac_link");
+	this.about_link		= document.getElementById("about_link");
+	this.logout_link		= document.getElementById("logout_link");
+
+	/* divs for the links */
+	this.adv_search_link_div	= document.getElementById("adv_search_link_div");
+	this.my_opac_link_div		= document.getElementById("my_opac_link_div");
+	this.about_link_div			= document.getElementById("about_link_div");
+	this.login_div					= document.getElementById("login_div");
+	this.logout_div				= document.getElementById("logout_div");
+
+
+
+	this.session = UserSession.instance();
+
+	this.reset();
+	globalSearchBarChunk = this;
+}
+
+SearchBarChunk.prototype.reset = function() {
+
+	
+	var red_func = function() {this.className = "color_red";};
+	var blue_func = function() {this.className = "color_blue";};
+
+	var activeclass = "choice_activated";
+	remove_css_class(this.adv_search_link_div, activeclass);
+	remove_css_class(this.login_div,				 activeclass);
+	remove_css_class(this.logout_div, 			 activeclass);
+	remove_css_class(this.about_link_div, 		 activeclass);
+	remove_css_class(this.my_opac_link_div, 	 activeclass);
+
+	switch(globalPageTarget) {
+
+		case "advanced_search":
+			add_css_class(this.adv_search_link_div, activeclass);
+			break;
+
+		case "login":
+			add_css_class(this.login_div,	activeclass);
+			break;
+
+		case "logout":
+			add_css_class(this.logout_div, activeclass);
+			break;
+
+		case "about":
+			add_css_class(this.about_link_div, activeclass);
+			break;
+
+		case "my_opac":
+			add_css_class(this.my_opac_link_div, activeclass);
+			break;
+	}
+
+
+	this.search_link.className		= "color_red";
+	this.search_link.onmouseout	= red_func;
+	this.search_link.onmouseover	= blue_func; 
+
+	this.login_link.className		= "color_red";
+	this.login_link.onmouseout		= red_func;
+	this.login_link.onmouseover	= blue_func;
+
+	this.logout_link.className		= "color_red";
+	this.logout_link.onmouseout	= red_func;
+	this.logout_link.onmouseover	= blue_func;
+
+	this.my_opac_link.className	= "color_red";
+	this.my_opac_link.onmouseout	= red_func;
+	this.my_opac_link.onmouseover	= blue_func;
+
+	this.about_link.className		= "color_red";
+	this.about_link.onmouseout		= red_func;
+	this.about_link.onmouseover	= blue_func;
+
+	if( this.session.connected ) {
+
+		this.login_div.style.visibility		= "hidden";
+		this.login_div.style.display			= "none";
+		this.logout_div.style.visibility		= "visible";
+		this.logout_div.style.display			= "block";
+
+	} else { 
+
+		this.login_div.style.visibility		= "visible";
+		this.login_div.style.display			= "block";
+		this.logout_div.style.visibility		= "hidden";
+		this.logout_div.style.display			= "none";
+
+	}
+}
