@@ -30,7 +30,11 @@ sub search_full_rec {
 	my $cache_key = md5_hex(Dumper($limiters).$term);
 
 	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
-	return [ @$cached_recs[$offset .. $limit - 1] ] if (defined $cached_recs);
+	if (defined $cached_recs) {
+		$log->debug("Found ".scalar(@$cached_recs)." records in the cache", INFO);
+		$log->debug("Values from cache: ".join(', ', @$cached_recs), INTERNAL);
+		return [ @$cached_recs[$offset .. int($offset + $limit - 1)] ];
+	}
 
 	my ($index_col) = metabib::full_rec->columns('FTS');
 	$index_col ||= 'value';
@@ -62,7 +66,7 @@ sub search_full_rec {
 	my $recs = metabib::full_rec->db_Main->selectall_arrayref($select, {}, @binds);
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond_complete( [ @$recs[0 .. $window - 1] ] );
+	$client->respond_complete( [ @$recs[$offset .. int($offset + $limit - 1)] ] );
 
 	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
 
@@ -100,7 +104,12 @@ sub search_class_fts {
 	my $cache_key = md5_hex($search_class.$term.$ou.$ou_type);
 
 	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
-	return [ @$cached_recs[$offset .. $limit - 1] ] if (defined $cached_recs);
+	if (defined $cached_recs && @$cached_recs) {
+		$log->debug("Found ".scalar(@$cached_recs)." records in the cache", INFO);
+		$log->debug("Values from cache: ".join(', ', @$cached_recs), INTERNAL);
+		return [ @$cached_recs[$offset .. int($offset + $limit - 1)] ];
+	}
+
 
 	$log->debug("Cache key for $search_class search of '$term' at ($ou,$ou_type) will be $cache_key", DEBUG);
 
@@ -144,7 +153,7 @@ sub search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond_complete( [ @$recs[$offset .. $limit - 1] ] );
+	$client->respond_complete( [ @$recs[$offset .. int($offset + $limit - 1)] ] );
 
 	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
 

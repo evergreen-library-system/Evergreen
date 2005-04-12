@@ -63,9 +63,9 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
 	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE, 1, 'identification' );
 INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 3, 1,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+	VALUES ( 3, 2,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 3, 1,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+	VALUES ( 3, 3,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 
 CREATE TABLE actor.usr_class (
 	id		SERIAL	PRIMARY KEY,
@@ -107,6 +107,8 @@ CREATE TABLE actor.card (
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
 
 INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
+INSERT INTO actor.card (usr, barcode) VALUES (2,'101010101010102');
+INSERT INTO actor.card (usr, barcode) VALUES (3,'101010101010103');
 
 
 CREATE TABLE actor.org_unit_type (

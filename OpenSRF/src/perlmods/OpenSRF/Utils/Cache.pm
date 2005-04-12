@@ -1,12 +1,14 @@
 package OpenSRF::Utils::Cache;
 use strict; use warnings;
-use base qw/Cache::Memcached OpenSRF/;
+use base qw/OpenSRF/;
 use Cache::Memcached;
+use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils::Config;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::EX qw(:try);
 use JSON;
 
+my $log = 'OpenSRF::Utils::Logger';
 
 =head OpenSRF::Utils::Cache
 
@@ -101,7 +103,9 @@ sub put_cache {
 	$expiretime ||= $max_persist_time;
 
 	$self->{memcache}->set( $key, $value, $expiretime ) ||
-		throw OpenSRF::EX::ERROR ("Unable to store $key => $value in memcached server" );;
+		throw OpenSRF::EX::ERROR ("Unable to store $key => $value in memcached server" );
+
+	$log->debug("Stored $key => $value in memcached server", INTERNAL);
 
 	if($self->{"persist"}) {
 
@@ -142,7 +146,7 @@ sub get_cache {
 	my($self, $key ) = @_;
 
 	my $val = $self->{memcache}->get( $key );
-	return $val if defined($val);
+	return JSON->JSON2perl($val) if defined($val);
 
 	if($self->{persist}){ _load_methods(); }
 
