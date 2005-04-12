@@ -10,10 +10,16 @@
 
 		IF src; " src='" _ src _ "'";END;
 
-	"/><!--\n";
+	IF content;
 
-	content;
+		"><!--\n";
+		content;
+		"\n//--></script>";
 
-	"\n//--></script>";
+	ELSE;
+		"></script>";
+	END;
+
+
 %]
 

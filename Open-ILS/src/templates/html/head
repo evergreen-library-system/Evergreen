@@ -11,7 +11,7 @@
   #     to put extra stuff in the <head>...</head> element
 -%]
 [%	
-	"<head>";
+	"<head>\n";
 
 	IF title;
 		"<title>" _ title _ "</title>";

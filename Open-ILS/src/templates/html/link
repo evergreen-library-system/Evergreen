@@ -6,13 +6,12 @@
 
 	IF rel; " rel='" _ rel _ "'"; END;
 	IF type; " type='" _ type _ "'"; END;
+	">";
 
 	IF text; 
-		">";
 		text; 
-		"</link>\n";
-	ELSE;
-		"/>\n";
 	END;
+
+	"</link>\n";
 
 %]
