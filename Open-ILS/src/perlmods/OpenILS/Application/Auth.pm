@@ -7,6 +7,7 @@ use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::Logger qw(:level);
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::EX qw(:try);
+use OpenILS::Application::AppUtils;
 
 # memcache handle
 my $cache_handle;
@@ -69,21 +70,8 @@ TEXT
 # connect to the memcache server
 # -------------------------------------------------------------
 sub child_init {
-
-	my $config_client = OpenSRF::Utils::SettingsClient->new();
-	my $memcache_servers = 
-		$config_client->config_value( "apps","open-ils.auth", "app_settings","memcache" );
-
-	if( !$memcache_servers ) {
-		throw OpenSRF::EX::Config ("No Memcache servers specified for open-ils.auth!");
-	}
-
-	if(!ref($memcache_servers)) {
-		$memcache_servers = [$memcache_servers];
-	}
-	$cache_handle = OpenSRF::Utils::Cache->new( "open-ils.auth", 0, $memcache_servers );
+	$cache_handle = OpenSRF::Utils::Cache->new('global');
 }
-
 
 
 # -------------------------------------------------------------
@@ -95,6 +83,7 @@ sub init_authenticate {
 	my( $self, $client, $username ) = @_;
 	my $seed = md5_hex( time() . $$ . rand() . $username );
 	$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 30 );
+	warn "init happened with seed $seed\n";
 	return $seed;
 }
 
@@ -110,18 +99,8 @@ sub complete_authenticate {
 
 	my $name = "open-ils.storage.direct.actor.user.search.usrname";
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $request = $session->request( $name, $username );
-	my $response = $request->recv();
-
-	if( $response and $response->isa("OpenSRF::EX") ) {
-		throw $response ($response->stringify . "\n");
-	}
-
-	my $user_list = $response->content;
-
-	$request->finish();
-	$session->disconnect();
+	my $user_list = OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.storage", $name, $username );
 
 	unless(ref($user_list)) {
 		throw OpenSRF::EX::ERROR 
