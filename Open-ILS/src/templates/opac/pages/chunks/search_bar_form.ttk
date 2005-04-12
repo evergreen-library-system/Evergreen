@@ -1,0 +1,35 @@
+[%	
+	# our text map
+	tm = global.textmap.opac.search_bar;
+
+	space(1);
+	space(1);
+
+	input( type='hidden', name='target', value='mr_result');
+	input(id='mr_search_query',  name='mr_search_query',  
+			type='textarea', size='24');
+
+	space(1);
+
+	WRAPPER html/select name='mr_search_type' id='mr_search_type';
+		option(value='title',	selected='selected', content=tm.title);
+		option(value='author',	content=tm.author);
+		option(value='subject', content=tm.subject);
+		option(value='keyword', content=tm.keyword);
+	END;
+
+	space(1);
+
+	IF js_only; 
+		input(type='button' id='mr_js_search_button' value=tm.search );
+	ELSE;
+		input(type='submit' id='mr_search_button' value=tm.search onclick='
+				var search_query		= document.getElementById("mr_search_query").value;
+				var search_type		= document.getElementById("mr_search_type").value;
+				location.href="?target=mr_result&mr_search_type=" + 
+				search_type + "&mr_search_query=" + encodeURIComponent(search_query); 
+				');
+	END;
+
+%]
+

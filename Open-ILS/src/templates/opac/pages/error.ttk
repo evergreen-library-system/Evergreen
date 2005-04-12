@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+	<head>
+		<title>Evergreen Error</title>
+	</head>
+	<body bgcolor='red'>
+		<marquee direction='right'><h1>AHHHHHHHHHHH!!!!!!!!!!!</h1></marquee>
+		<marquee direction='left' scrolldelay='100'><h1>AHHHHHHHHHHH!!!!!!!!!!!</h1></marquee>
+		<marquee direction='right' scrolldelay='200'><h1>AHHHHHHHHHHH!!!!!!!!!!!</h1></marquee>
+		<marquee direction='left' scrolldelay='100'><h1>AHHHHHHHHHHH!!!!!!!!!!!</h1></marquee>
+		<marquee direction='right'><h1>AHHHHHHHHHHH!!!!!!!!!!!</h1></marquee>
+		<br/>
+		<br/>
+		<h2>[%error%]</h2>
+	</body>
+</html>

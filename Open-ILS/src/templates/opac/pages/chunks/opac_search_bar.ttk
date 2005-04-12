@@ -1,0 +1,94 @@
+[%
+	# ---------------------------------------------------------------------------------		
+	# OPAC Search bar that appears at the top of each page
+	# Submission of the search calls the 'mr_basic_search()' function which expects a
+	# table called 'mr_results_table' to be available for population.
+	#
+	# if the 'js_only' variable is set to true, then the search form will do all of
+	# the work locally (javascript) instead of reloading the current page 
+	# --------------------------------------------------------------------------------- 
+	
+	# grab the textmap info for this page
+	tm = global.textmap.opac.search_bar;
+
+		WRAPPER html/div id='opac_search_bar_box';
+
+		WRAPPER html/table border='0' width='100%';
+			WRAPPER html/row;
+
+				WRAPPER html/cell  valign='middle' align='left';
+
+					INCLUDE opac/pages/chunks/search_bar_form.ttk js_only=$js_only;
+
+#					IF js_only;
+#						INCLUDE opac/pages/chunks/js_search_bar_form.ttk;
+#					ELSE;
+#						INCLUDE opac/pages/chunks/form_search_bar_form.ttk;
+#					END;
+
+
+				
+				END;
+
+				WRAPPER html/cell  align='center';
+					WRAPPER html/div class="text_link_div" id='adv_search_link_div';
+						anchor( id='adv_search_link',  href='?target=advanced_search', text = tm.advanced );
+					END;
+				END;
+
+				WRAPPER html/cell  align='center';
+					WRAPPER html/div class='text_link_div' id='login_div';
+						anchor( id='login_link',  href='?target=login', text = tm.login );
+					END;
+					WRAPPER html/div class='text_link_div' id='logout_div';
+						anchor( id='logout_link',  href='?target=logout', text = tm.logout );
+					END;
+				END;
+
+				WRAPPER html/cell  align='center';
+					WRAPPER html/div class='text_link_div' id='my_opac_link_div';
+						anchor( id='my_opac_link',  href='?target=my_opac', text = tm.my_opac );
+					END;
+				END;
+
+
+				WRAPPER html/cell  align='center';
+					WRAPPER html/div class='text_link_div' id='about_link_div';
+						anchor( id='about_link', href='?target=about', text = tm.about );
+					END;
+				END;
+
+
+				WRAPPER html/cell valign='bottom' align='right';
+					WRAPPER html/div id='small_logo_div';
+						img(src = "/images/small_logo.jpg", border="0", width='45', height='45');
+#						WRAPPER html/table;
+
+							# for whatever reason, i have to shove a small 
+							# row/cell above the pic to make it line up
+							#row(content = cell());
+
+#							WRAPPER html/row;
+#								WRAPPER html/cell valign='bottom';
+#									WRAPPER html/anchor href=global.config.root_url;
+#										img(src = "/images/small_logo.jpg", border="0", width='45', height='45');
+#									END; # - anchor
+#								END; # - cell
+#							END; # - row
+#
+#						END; # - table
+					END; # - div
+				END; # - cell	
+
+				cell( content = space(2) );
+
+			END; # - row
+		END; # - table
+	END; # - div
+
+%]
+
+
+
+
+		

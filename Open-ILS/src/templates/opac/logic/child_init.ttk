@@ -1,0 +1,30 @@
+[%
+
+	# --------------------------------------------------------------------------------- 
+	# Any code  here is run on Apache child process init.  Variables created that need
+	# to live longer than this template must be added to the global cache:	
+	# websession.add_cache( $key, $value );
+	# --------------------------------------------------------------------------------- 
+
+	# --------------------------------------------------------------------------------- 
+	# Bring in the config variables
+	# --------------------------------------------------------------------------------- 
+	PROCESS "opac/conf/config.ttk";
+	
+	# --------------------------------------------------------------------------------- 
+	# Connect to transport
+	# --------------------------------------------------------------------------------- 
+
+	IF ! global.config.bootstrap;
+		THROW PANIC "No Bootstrap Config Found in Config";
+	END;
+
+	USE websession = WebSession(); 
+	x = websession.bootstrap_client(global.config.bootstrap) 
+
+	# --------------------------------------------------------------------------------- 
+	# Load any necessary config info from storage, etc.
+	# --------------------------------------------------------------------------------- 
+
+%]
+

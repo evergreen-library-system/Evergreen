@@ -1,0 +1,59 @@
+[%
+
+	#--------------------------------------------------------------------------------- 
+	# Top Level Web Config File 
+	#--------------------------------------------------------------------------------- 
+
+
+	# ---------------------------------------------------------------------------------		
+	# Bootstrap config file
+	# --------------------------------------------------------------------------------- 
+	global.config.bootstrap			= "/pines/conf/web_bootstrap.conf";
+
+	global.config.root_url			= "/opac/";
+
+	# --------------------------------------------------------------------------------- 
+	# User session timeout.  * This will need to match (or be shorter than) the 
+	# session timeout provided by the web auth server
+	# --------------------------------------------------------------------------------- 
+	global.config.session_timeout	= 14; #days 
+	
+	# --------------------------------------------------------------------------------- 
+	# Apps
+	# --------------------------------------------------------------------------------- 
+	global.config.app.math			= "opensrf.math";
+	global.config.app.auth			= "open-ils.auth";
+	global.config.app.opac			= "open-ils.opac";
+	global.config.app.storage		= "open-ils.storage";
+	global.config.app.cat			= "open-ils.cat";
+	global.config.app.search		= "open-ils.search";
+
+
+
+	# --------------------------------------------------------------------------------- 
+	# Potentially useful macros
+	# --------------------------------------------------------------------------------- 
+	MACRO html			WRAPPER html/html;				content;	END;
+	MACRO head			WRAPPER head/head;				content;	END;
+	MACRO body			WRAPPER html/body;				content;	END;
+	MACRO table			WRAPPER html/table;				content;	END;
+	MACRO row			WRAPPER html/row;					content;	END;
+	MACRO cell			WRAPPER html/cell;				content;	END;
+	MACRO form			WRAPPER html/form;				content;	END;
+	MACRO input			WRAPPER html/input;				content;	END;
+	MACRO option		WRAPPER html/option;				content;	END;
+	MACRO lines(n)		WRAPPER html/buffer	size=n;				END;
+	MACRO concat		WRAPPER html/concat;							END;
+	MACRO img			WRAPPER html/img;								END;
+	MACRO space(n)		WRAPPER html/space;	size=n;				END;
+	MACRO link			WRAPPER html/link;							END;
+	MACRO anchor		WRAPPER html/anchor;							END;
+	MACRO js				WRAPPER html/js;					content;	END;
+	MACRO hr				WRAPPER html/hr;								END;
+	MACRO b(n)			WRAPPER html/bold;	text=n;				END;
+	MACRO h(n,t)		WRAPPER html/h			size=n	text=t;	END;
+	MACRO center		WRAPPER html/center;				content;	END;
+	MACRO box			WRAPPER html/div;					content;	END;
+
+%]
+

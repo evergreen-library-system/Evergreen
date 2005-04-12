@@ -1,0 +1,33 @@
+[%
+
+	target = cgi.param("target");	
+
+	IF ! target;
+		INCLUDE opac/pages/opac_start.ttk;
+
+	ELSIF target == "mr_result";
+		INCLUDE opac/pages/mr_result.ttk;
+
+	ELSIF target == "record_result";
+		INCLUDE opac/pages/record_result.ttk;
+
+	ELSIF target == "about";
+		INCLUDE opac/pages/about.ttk;
+
+	ELSIF target == "my_opac";
+		INCLUDE opac/pages/my_opac.ttk;
+
+	ELSIF target == "login";
+		INCLUDE opac/pages/login.ttk;
+
+	ELSIF target == "logout";
+		INCLUDE opac/pages/logout.ttk;
+
+	ELSIF target == "advanced_search";
+		INCLUDE opac/pages/advanced_search.ttk;
+
+	END;
+
+%]
+
+

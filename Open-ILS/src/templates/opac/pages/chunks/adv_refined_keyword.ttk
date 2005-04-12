@@ -1,0 +1,49 @@
+[%
+
+	WRAPPER html/div id='adv_refined_search_div' class='adv_search_chunk_box';
+
+		WRAPPER html/div class='adv_search_header';
+			"Refined Keyword Search";;
+		END;
+
+		WRAPPER html/table width='100%';
+
+			row(content = cell(content = lines(1)));
+
+			WRAPPER html/row;
+				cell(align='left' , width="25%" content= "Find results with all words:");
+				cell(align='left' , content=input(type='text' size='34' id='adv_all_words'));
+			END;
+
+			row(content = cell(content = lines(1)));
+
+			WRAPPER html/row;
+				cell(align='left' content= "Find results with the exact phrase:");
+				cell(align='left' content=input(type='text' size='34' id='adv_exact_words'));
+			END;
+
+			row(content = cell(content = lines(1)));
+
+			WRAPPER html/row;
+				cell(align='left' content= "Find results with none of these words:");
+				cell(align='left' content=input(type='text' size='34' id='adv_none_words'));
+			END;
+
+
+			row(content = cell(content = lines(1)));
+
+						row(content = cell(content = lines(2)));
+
+			WRAPPER html/row;
+				WRAPPER html/cell colspan='4';
+					WRAPPER html/center;
+						input( type='submit', value='Search', onclick='alert("hi");');
+					END;
+				END;
+			END;
+
+		END; # table 
+
+	END; # div
+
+%]

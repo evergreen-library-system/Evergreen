@@ -1,0 +1,63 @@
+[%
+
+	# --------------------------------------------------------------------------------- 
+	# This page will display a list of metarecord search results
+	# --------------------------------------------------------------------------------- 
+	tm = global.textmap.opac.mr_result;
+
+	WRAPPER html/html;
+
+		WRAPPER html/head title=tm.basic_search.page_title;
+			INCLUDE opac/pages/chunks/cgi_js_params.ttk;	
+			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+		END;
+
+
+		WRAPPER html/body onload='
+			globalInit();
+			globalPage.string = "' _ cgi.param("mr_search_query") _ '";
+			globalPage.stype	= "' _ cgi.param("mr_search_type") _ '";
+			if( globalPage.string && globalPage.stype ) 
+					globalPage.doSearch();
+			';
+
+			INCLUDE opac/pages/chunks/opac_search_bar.ttk js_only="1";
+
+			lines(1);
+
+			# --------------------------------------------------------------------------------- 
+			# Here we start the top level table for the record results
+			# --------------------------------------------------------------------------------- 
+
+			WRAPPER html/table class='hit_count_box';
+				row( content = 
+					cell(class='hit_count_words_box', content="Hits") _
+					cell(class='hit_count_count_box', id='hit_count_count_box'));
+			END;
+
+			lines(2);
+
+
+			# --------------------------------------------------------------------------------- 
+			# search results are spit out into this table
+			# --------------------------------------------------------------------------------- 
+			#box(class='record_result_box', id='record_result_box');
+			table(class='record_result_box', id='record_result_box'); 
+
+			# --------------------------------------------------------------------------------- 
+			# Sidebar stuff, subjects, authors, etc.
+			# --------------------------------------------------------------------------------- 
+			WRAPPER html/div class='record_sidebar_box';
+				box( id='subject_sidebar_box' );
+				box( id='author_sidebar_box' );
+			END;
+
+			INCLUDE opac/pages/chunks/next_prev_box.ttk;
+
+		
+		END; # body
+
+	END; # html
+
+%]
+

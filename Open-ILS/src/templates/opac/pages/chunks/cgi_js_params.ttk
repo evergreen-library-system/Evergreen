@@ -1,0 +1,14 @@
+[%
+	# --------------------------------------------------------------------------------- 
+	# Gather all of the CGI params and put them into a global variable paramObj
+	# --------------------------------------------------------------------------------- 
+
+	WRAPPER html/js;
+		'var paramObj = new Object();';
+		FOR pname IN cgi.param();
+			'paramObj["'; pname; '"] = "'; cgi.param(pname); '";'; "\n";
+		END;
+	END;
+
+%]
+

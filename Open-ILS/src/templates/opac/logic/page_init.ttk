@@ -1,0 +1,36 @@
+[%
+
+	# --------------------------------------------------------------------------------- 
+	# Any code that is included here will be run just before any pages are started
+	# --------------------------------------------------------------------------------- 
+
+	USE cgi;
+
+	# --------------------------------------------------------------------------------- 
+	# Bring in the config variables
+	# --------------------------------------------------------------------------------- 
+	PROCESS "opac/conf/config.ttk";
+
+	# --------------------------------------------------------------------------------- 
+	# Bring in the localized text
+	# --------------------------------------------------------------------------------- 
+	PROCESS "opac/conf/textmap_en_us.ttk";
+	
+	# --------------------------------------------------------------------------------- 
+	# Build a global WebSession object 
+	# --------------------------------------------------------------------------------- 
+	USE websession = WebSession(); 
+	global.websession = websession;
+
+
+	# --------------------------------------------------------------------------------- 
+	# We have to log in to the server in order to have a session id.  For now, we log
+	# in as a guest.
+	# --------------------------------------------------------------------------------- 
+
+
+	#session = global.websession.init_app_session( global.config.app.auth );
+	#req = session.request( method, sclass, "title", sstring ); 
+
+%]
+

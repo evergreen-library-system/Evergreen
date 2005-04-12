@@ -1,0 +1,36 @@
+
+[%
+	tm = global.textmap.opac.login;
+
+	WRAPPER html/html;
+
+		WRAPPER html/head title=tm.basic_search.page_title;
+			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+		END;
+
+		WRAPPER html/body onload='
+			globalInit();
+			globalPage.logout_success_msg = "<b>' _ tm.logout_success _ '</b>";
+			globalPage.doLogout();
+			';
+
+			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
+
+			lines(3);
+
+			WRAPPER html/center;
+				WRAPPER html/table width='100%';
+					WRAPPER html/row;
+						cell(align='middle', id='logout_msg');
+					END;
+				END;
+			END; # - center
+		END; # - body
+	END; # - html
+
+%]
+
+
+
+
+		

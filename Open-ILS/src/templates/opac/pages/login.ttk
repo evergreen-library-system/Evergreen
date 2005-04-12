@@ -1,0 +1,66 @@
+
+[%
+	tm = global.textmap.opac.login;
+
+	WRAPPER html/html;
+
+		WRAPPER html/head title=tm.basic_search.page_title;
+			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+		END;
+
+		WRAPPER html/body onload='
+			globalInit();
+			globalPage.session.exp_days = "' _ global.config.session_timeout _ '";
+			globalPage.login_success_msg = "<b>' _ tm.success _ '</b>";
+			globalPage.login_failure_msg = "<b>' _ tm.failure _ '</b>";
+			';
+
+			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
+
+			lines(3);
+
+			WRAPPER html/center;
+
+				WRAPPER html/table width='100%';
+
+					WRAPPER html/row;
+						cell(width='42%', align='right', content = tm.username);
+						cell(width='3%');
+						cell(width='55%', align='left',
+								content = input( type='textarea', id='login_username', name='username', size='16' ));
+					END;
+
+					row(content = cell(colspan='3', content = lines(2)));
+
+					WRAPPER html/row;
+						cell(width='42%', align='right', content = tm.password);
+						cell( width='3%');
+						cell(width='55%', align='left',
+								content = input( type='password', id='login_password', name='password', size='16' ));
+					END;
+				END;
+
+				lines(1);
+
+				WRAPPER html/table id='login_result' width='100%';
+					WRAPPER html/row;
+						WRAPPER html/cell align='center';
+							input( type='submit', id='login_button', value=tm.login ); # xxx Login
+						END;
+					
+					row(content = cell(content = lines(2)));
+					row(content = cell( width='100%', align='center', id = 'login_result_text'));
+
+					END;
+
+				END; # - table
+			END; # - center
+		END; # - body
+	END; # - html
+
+%]
+
+
+
+
+		

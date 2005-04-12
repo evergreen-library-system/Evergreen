@@ -1,0 +1,27 @@
+
+[%
+	tm = global.textmap.opac;
+
+	WRAPPER html/html;
+
+		WRAPPER html/head title=tm.basic_search.page_title;
+			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+		END;
+
+		WRAPPER html/body onload='globalInit();';
+
+			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
+
+			lines(1);
+
+			" My OPAC goes here<br/>";
+	
+		END; # - body
+	END; # - html
+
+%]
+
+
+
+
+		

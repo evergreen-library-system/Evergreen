@@ -1,0 +1,14 @@
+[%
+	WRAPPER html/div class='adv_search_chunk_box';
+
+		box(class='adv_search_header', content="Change Location?");
+		box(class='big_line_div');
+
+		WRAPPER html/select name='adv_search_location' id='adv_search_location';
+			option(value='choose',	content="Load Me From DB", selected='selected');
+		END;
+
+		box(class='big_line_div');
+	END;
+
+%]
