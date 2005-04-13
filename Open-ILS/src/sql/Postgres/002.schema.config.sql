@@ -12,6 +12,15 @@ CREATE TABLE config.bib_source (
 INSERT INTO config.bib_source (quality, source) VALUES (90, 'OcLC');
 INSERT INTO config.bib_source (quality, source) VALUES (10, 'System Local');
 
+CREATE TABLE config.standing (
+	id		SERIAL	PRIMARY KEY,
+	value		TEXT	NOT NULL UNIQUE
+);
+
+INSERT INTO config.standing (value) VALUES ('Good');
+INSERT INTO config.standing (value) VALUES ('Barred');
+INSERT INTO config.standing (value) VALUES ('Blocked');
+
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
 	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword')),

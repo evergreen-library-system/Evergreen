@@ -14,8 +14,17 @@ __PACKAGE__->columns( Essential => qw/usrid usrname email first_given_name
 				second_given_name family_name address
 				home_ou gender dob active master_account
 				ident_type ident_value super_user usrgroup
-				passwd card last_xact_id/ );
-__PACKAGE__->columns( Others => qw/prefix suffix address alert_message/ );
+				passwd card last_xact_id standing class/ );
+__PACKAGE__->columns( Others => qw/prefix suffix address alert_message
+				   day_phone evening_phone other_phone/ );
+
+#-------------------------------------------------------------------------------
+package actor::user_class;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_user_class' );
+__PACKAGE__->columns( Primary => qw/id/);
+__PACKAGE__->columns( Essential => qw/name/);
 
 #-------------------------------------------------------------------------------
 package actor::org_unit_type;
@@ -23,7 +32,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit_type' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Essential => qw/name depth parent can_have_users/);
+__PACKAGE__->columns( Essential => qw/name depth parent can_have_vols can_have_users/);
 
 #-------------------------------------------------------------------------------
 package actor::org_unit;

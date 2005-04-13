@@ -211,6 +211,11 @@ sub wormize {
 	my $client = shift;
 	my @docids = @_;
 
+	my $no_map = 0;
+	if ($self->api_name =~ /no_map/o) {
+		$no_map = 1;
+	}
+
 	$begin = $self->method_lookup( 'open-ils.storage.transaction.begin')
 		unless ($begin);
 	$commit = $self->method_lookup( 'open-ils.storage.transaction.commit')
@@ -288,24 +293,26 @@ sub wormize {
 		$entry->fingerprint( fingerprint_mods( $mods ) );
 		push @entry_list, $entry;
 
-		my ($mr) = $mr_lookup->run( $entry->fingerprint );
-		if (!@$mr) {
-			$mr = new Fieldmapper::metabib::metarecord;
-			$mr->fingerprint( $entry->fingerprint );
-			$mr->master_record( $entry->id );
-			my ($new_mr) = $mr_create->run($mr);
-			$mr->id($new_mr);
-			unless (defined $mr) {
-				throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord.create!")
+		unless ($no_map) {
+			my ($mr) = $mr_lookup->run( $entry->fingerprint );
+			if (!@$mr) {
+				$mr = new Fieldmapper::metabib::metarecord;
+				$mr->fingerprint( $entry->fingerprint );
+				$mr->master_record( $entry->id );
+				my ($new_mr) = $mr_create->run($mr);
+				$mr->id($new_mr);
+				unless (defined $mr) {
+					throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord.create!")
+				}
+			} else {
+				$mr = $$mr[0];
 			}
-		} else {
-			$mr = $$mr[0];
-		}
 
-		my $sm = new Fieldmapper::metabib::metarecord_source_map;
-		$sm->metarecord( $mr->id );
-		$sm->source( $entry->id );
-		push @source_maps, $sm;
+			my $sm = new Fieldmapper::metabib::metarecord_source_map;
+			$sm->metarecord( $mr->id );
+			$sm->source( $entry->id );
+			push @source_maps, $sm;
+		}
 
 		my $ldr = $marcdoc->documentElement->getChildrenByTagName('leader')->pop->textContent;
 		my $oo8 = $marcdoc->documentElement->findvalue('//*[local-name()="controlfield" and @tag="008"]');
@@ -331,15 +338,17 @@ sub wormize {
 
 	$rm_old_rd->run( { record => \@docids } );
 	$rm_old_fr->run( { record => \@docids } );
-	$rm_old_sm->run( { source => \@docids } );
+	$rm_old_sm->run( { source => \@docids } ) unless ($no_map);
 	$rm_old_tr->run( { source => \@docids } );
 	$rm_old_ar->run( { source => \@docids } );
 	$rm_old_sr->run( { source => \@docids } );
 	$rm_old_kr->run( { source => \@docids } );
 
-	my ($sm) = $create_source_map->run(@source_maps);
-	unless (defined $sm) {
-		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord_source_map.batch.create!")
+	unless ($no_map) {
+		my ($sm) = $create_source_map->run(@source_maps);
+		unless (defined $sm) {
+			throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord_source_map.batch.create!")
+		}
 	}
 
 	my ($re) = $update_entry->run(@entry_list);
@@ -399,7 +408,19 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );
 __PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.wormize.no_map",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method( 
 	api_name	=> "open-ils.worm.wormize.batch",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.wormize.no_map.batch",
 	method		=> "wormize",
 	api_level	=> 1,
 	argc		=> 1,

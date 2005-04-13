@@ -421,6 +421,12 @@
 	action::survey_response->sequence( 'action.survey_response_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package config::standing;
+	
+	config::standing->table( 'config.standing' );
+	config::standing->sequence( 'config.standing_id_seq' );
+	
+	#---------------------------------------------------------------------
 	package config::metabib_field;
 	
 	config::metabib_field->table( 'config.metabib_field' );
@@ -503,6 +509,12 @@
 	
 	actor::user->table( 'actor.usr' );
 	actor::user->sequence( 'actor.usr_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package actor::user_class;
+	
+	actor::user_class->table( 'actor.usr_class' );
+	actor::user_class->sequence( 'actor.usr_class_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package actor::org_unit_type;
