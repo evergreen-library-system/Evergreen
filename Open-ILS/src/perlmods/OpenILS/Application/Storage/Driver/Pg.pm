@@ -511,10 +511,10 @@
 	actor::user->sequence( 'actor.usr_id_seq' );
 	
 	#---------------------------------------------------------------------
-	package actor::user_class;
+	package actor::profile;
 	
-	actor::user_class->table( 'actor.usr_class' );
-	actor::user_class->sequence( 'actor.usr_class_id_seq' );
+	actor::profile->table( 'actor.profile' );
+	actor::profile->sequence( 'actor.profile_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package actor::org_unit_type;

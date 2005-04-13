@@ -61,7 +61,7 @@ sub _init {
 		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
 		'Fieldmapper::action::circulation'		=> { hint		=> 'ac'    },
 		'Fieldmapper::actor::user'			=> { hint => 'au'    },
-		'Fieldmapper::actor::user_class'		=> { hint => 'auc'    },
+		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },
 		'Fieldmapper::actor::card'			=> { hint => 'ac'    },
 		'Fieldmapper::config::standing'			=> { hint => 'cst'    },
 		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'asc',

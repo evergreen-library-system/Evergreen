@@ -6,7 +6,7 @@ CREATE SCHEMA actor;
 CREATE TABLE actor.usr (
 	id			SERIAL		PRIMARY KEY,
 	card			INT		UNIQUE, -- active card
-	class			INT		NOT NULL, -- patron class
+	profile			INT		NOT NULL, -- patron profile
 	usrid			TEXT		NOT NULL UNIQUE,
 	usrname			TEXT		NOT NULL UNIQUE,
 	email			TEXT		CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
@@ -65,20 +65,20 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
+INSERT INTO actor.usr ( profile, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
 	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE, 1, 'identification' );
-INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
+INSERT INTO actor.usr ( profile, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
 	VALUES ( 2, 2,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
-INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
+INSERT INTO actor.usr ( profile, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
 	VALUES ( 1, 3,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 
-CREATE TABLE actor.usr_class (
+CREATE TABLE actor.profile (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE
 );
-INSERT INTO actor.usr_class (name) VALUES ('ADULT');
-INSERT INTO actor.usr_class (name) VALUES ('JUVENILE');
-INSERT INTO actor.usr_class (name) VALUES ('STAFF');
+INSERT INTO actor.profile (name) VALUES ('ADULT');
+INSERT INTO actor.profile (name) VALUES ('JUVENILE');
+INSERT INTO actor.profile (name) VALUES ('STAFF');
 
 CREATE TABLE actor.stat_cat (
 	id		SERIAL  PRIMARY KEY,
