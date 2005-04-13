@@ -11,13 +11,17 @@ CREATE TABLE actor.usr (
 	usrname			TEXT		NOT NULL UNIQUE,
 	email			TEXT		CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
 	passwd			TEXT		NOT NULL,
-	ident_type		INT		NOT NULL REFERENCES config.identifcation_type (id),
+	standing		INT		NOT NULL DEFAULT 1 REFERENCES config.standing (id),
+	ident_type		INT		NOT NULL REFERENCES config.identification_type (id),
 	ident_value		TEXT		NOT NULL,
 	prefix			TEXT,
 	first_given_name	TEXT		NOT NULL,
 	second_given_name	TEXT,
 	family_name		TEXT		NOT NULL,
 	suffix			TEXT,
+	day_phone		TEXT,
+	evening_phone		TEXT,
+	other_phone		TEXT,
 	address			INT,
 	home_ou			INT,
 	gender			CHAR(1) 	NOT NULL CHECK ( LOWER(gender) IN ('m','f') ),
@@ -64,9 +68,9 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
 	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE, 1, 'identification' );
 INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 3, 2,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+	VALUES ( 2, 2,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 INSERT INTO actor.usr ( class, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 3, 3,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+	VALUES ( 1, 3,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 
 CREATE TABLE actor.usr_class (
 	id		SERIAL	PRIMARY KEY,
