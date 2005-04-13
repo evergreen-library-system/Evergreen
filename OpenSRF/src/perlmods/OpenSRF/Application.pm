@@ -184,7 +184,7 @@ sub handler {
 
 					$appreq = $aref->[0];	
 					if( ref( $response ) ) {
-						$log->debug( "Calling respond_complete: ". $response->toString(), INTERNAL );
+						#$log->debug( "Calling respond_complete: ". $response->toString(), INTERNAL );
 						$appreq->respond_complete( $response );
 					} else {
 					        $appreq->status( OpenSRF::DomainObject::oilsConnectStatus->new(
@@ -397,6 +397,11 @@ sub run {
 			my $e = shift;
 			$err = $e;
 			warn "Caught Error in Application: $e\n";
+
+			if( UNIVERSAL::isa($e,"Error")) {
+				warn "Exception is:\n " . $e->stringify() . "\n";
+			}
+
 			if( ref($self) eq 'HASH') {
 				warn $self;
 				$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n", ERROR);
