@@ -27,7 +27,6 @@ sub register_method {
 	__PACKAGE__->SUPER::register_method( %args );
 
 	if (exists($dup_args{cachable}) and $dup_args{cachable}) {
-		warn "Attempting to register cachable version of $dup_args{api_name}\n";
 		(my $name = $dup_args{api_name}) =~ s/^open-ils\.storage/open-ils.storage.cachable/o;
 		if ($name ne $dup_args{api_name}) {
 			$dup_args{real_api_name} = $dup_args{api_name};
@@ -35,7 +34,6 @@ sub register_method {
 			$dup_args{api_name} = $name;
 			$dup_args{package} = __PACKAGE__;
 			__PACKAGE__->SUPER::register_method( %dup_args );
-			warn "Registering cachable version of $dup_args{api_name} as $name\n";
 		}
 	}
 }
