@@ -15,7 +15,7 @@ __PACKAGE__->columns( Essential => qw/usrid usrname email first_given_name
 				home_ou gender dob active master_account
 				ident_type ident_value super_user usrgroup
 				passwd last_xact_id/ );
-__PACKAGE__->columns( Others => qw/prefix suffix address/ );
+__PACKAGE__->columns( Others => qw/prefix suffix address alert_message/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_unit_type;
