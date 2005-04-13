@@ -1,5 +1,5 @@
 package OpenILS::Application::Storage::Publisher::metabib;
-use base qw/OpenILS::Application::Storage/;
+use base qw/OpenILS::Application::Storage::Publisher/;
 use vars qw/$VERSION/;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::CDBI::metabib;
@@ -23,25 +23,10 @@ sub search_full_rec {
 	
 	my $term = $args{term};
 	my $limiters = $args{restrict};
-	my $limit = $args{limit} || 100;
-	my $offset = $args{offset} || 0;
-
-
-	my $cache_key = md5_hex(Dumper($limiters).$term);
-
-	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
-	if (defined $cached_recs) {
-		$log->debug("Found ".scalar(@$cached_recs)." records in the cache", INFO);
-		$log->debug("Values from cache: ".join(', ', @$cached_recs), INTERNAL);
-		return [ @$cached_recs[$offset .. int($offset + $limit - 1)] ];
-	}
 
 	my ($index_col) = metabib::full_rec->columns('FTS');
 	$index_col ||= 'value';
 	my $search_table = metabib::full_rec->table;
-
-	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
-	my $asset_call_number_table = asset::call_number->table;
 
 	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
 
@@ -66,24 +51,22 @@ sub search_full_rec {
 	my $recs = metabib::full_rec->db_Main->selectall_arrayref($select, {}, @binds);
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond_complete( [ @$recs[$offset .. int($offset + $limit - 1)] ] );
-
-	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
-
+	$client->respond($_) for (@$recs);
 	return undef;
-
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.direct.metabib.full_rec.search_fts.value',
 	method		=> 'search_full_rec',
 	api_level	=> 1,
 	stream		=> 1,
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.direct.metabib.full_rec.search_fts.index_vector',
 	method		=> 'search_full_rec',
 	api_level	=> 1,
 	stream		=> 1,
+	cachable	=> 1,
 );
 
 
@@ -96,22 +79,7 @@ sub search_class_fts {
 	my $term = $args{term};
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
-	my $limit = $args{limit} || 100;
-	my $offset = $args{offset} || 0;
 
-
-	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
-	my $cache_key = md5_hex($search_class.$term.$ou.$ou_type);
-
-	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
-	if (defined $cached_recs && @$cached_recs) {
-		$log->debug("Found ".scalar(@$cached_recs)." records in the cache", INFO);
-		$log->debug("Values from cache: ".join(', ', @$cached_recs), INTERNAL);
-		return [ @$cached_recs[$offset .. int($offset + $limit - 1)] ];
-	}
-
-
-	$log->debug("Cache key for $search_class search of '$term' at ($ou,$ou_type) will be $cache_key", DEBUG);
 
 	my $descendants = defined($ou_type) ?
 				"actor.org_unit_descendants($ou, $ou_type)" :
@@ -153,12 +121,8 @@ sub search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond_complete( [ @$recs[$offset .. int($offset + $limit - 1)] ] );
-
-	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
-
+	$client->respond($_) for (@$recs);
 	return undef;
-
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.title.search_fts.metarecord',
@@ -166,6 +130,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::title_field_entry',
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.author.search_fts.metarecord',
@@ -173,6 +138,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::author_field_entry',
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.subject.search_fts.metarecord',
@@ -180,6 +146,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::subject_field_entry',
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.keyword.search_fts.metarecord',
@@ -187,6 +154,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::keyword_field_entry',
+	cachable	=> 1,
 );
 
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
@@ -255,6 +223,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::title_field_entry',
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.author.search_fts.metarecord_count',
@@ -262,6 +231,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::author_field_entry',
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.subject.search_fts.metarecord_count',
@@ -269,6 +239,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::subject_field_entry',
+	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.keyword.search_fts.metarecord_count',
@@ -276,6 +247,7 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cdbi		=> 'metabib::keyword_field_entry',
+	cachable	=> 1,
 );
 
 1;

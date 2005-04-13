@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::Publisher;
 use base qw/OpenILS::Application::Storage/;
 our $VERSION = 1;
 
+use Data::Dumper;
 use OpenSRF::EX qw/:try/;;
 use OpenSRF::Utils::Logger;
 my $log = 'OpenSRF::Utils::Logger';
@@ -15,12 +16,79 @@ use OpenILS::Utils::Fieldmapper;
 #use OpenILS::Application::Storage::CDBI::config;
 #use OpenILS::Application::Storage::CDBI::metabib;
 
-use OpenILS::Application::Storage::Publisher::actor;
-use OpenILS::Application::Storage::Publisher::action;
-use OpenILS::Application::Storage::Publisher::asset;
-use OpenILS::Application::Storage::Publisher::biblio;
-use OpenILS::Application::Storage::Publisher::config;
-use OpenILS::Application::Storage::Publisher::metabib;
+sub register_method {
+	my $class = shift;
+	my %args = @_;
+	my %dup_args = %args;
+
+	$class = ref($class) || $class;
+
+	$args{package} ||= $class;
+	__PACKAGE__->SUPER::register_method( %args );
+
+	if (exists($dup_args{cachable}) and $dup_args{cachable}) {
+		warn "Attempting to register cachable version of $dup_args{api_name}\n";
+		(my $name = $dup_args{api_name}) =~ s/^open-ils\.storage/open-ils.storage.cachable/o;
+		if ($name ne $dup_args{api_name}) {
+			$dup_args{real_api_name} = $dup_args{api_name};
+			$dup_args{method} = 'cachable_wrapper';
+			$dup_args{api_name} = $name;
+			$dup_args{package} = __PACKAGE__;
+			__PACKAGE__->SUPER::register_method( %dup_args );
+			warn "Registering cachable version of $dup_args{api_name} as $name\n";
+		}
+	}
+}
+
+sub cachable_wrapper {
+	my $self = shift;
+	my $client = shift;
+	my @args = @_;
+
+	my %cache_args = (
+		limit	=> 100,
+		offset	=> 0,
+		timeout	=> 300,
+	);
+
+	my @real_args;
+	my $key_string = $self->api_name;
+	for (my $ind = 0; $ind < scalar(@args); $ind++) {
+		if (	"$args[$ind]" eq 'limit' ||
+			"$args[$ind]" eq 'offset' ||
+			"$args[$ind]" eq 'timeout' ) {
+
+			my $key_ind = $ind;
+			$ind++;
+			my $value_ind = $ind;
+			$cache_args{$args[$key_ind]} = $args[$value_ind];
+			$log->debug("Cache limiter value for $args[$key_ind] is $args[$value_ind]", DEBUG);
+			next;
+		}
+		$key_string .= $args[$ind];
+		push @real_args, $args[$ind];
+	}
+
+	my $cache_key = md5_hex($key_string);
+
+	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
+	if (defined $cached_res) {
+		$log->debug("Found ".scalar(@$cached_res)." records in the cache", INFO);
+		$log->debug("Values from cache: ".join(', ', @$cached_res), INTERNAL);
+        	$client->respond( $_ ) for ( grep { defined } @$cached_res[$cache_args{offset} .. int($cache_args{offset} + $cache_args{limit} - 1)] );
+		return undef;
+	}
+
+	my $method = $self->method_lookup($self->{real_api_name});
+	my @res = $method->run(@real_args);
+
+
+        $client->respond( $_ ) for ( grep { defined } @res[$cache_args{offset} .. int($cache_args{offset} + $cache_args{limit} - 1)] );
+
+        OpenSRF::Utils::Cache->new->put_cache( $cache_key => \@res => $cach_args{timeout});
+
+	return undef;
+}
 
 sub retrieve_node {
 	my $self = shift;
@@ -186,6 +254,15 @@ sub batch_call {
 	return $insert_total;
 }
 
+eval '
+use OpenILS::Application::Storage::Publisher::actor;
+use OpenILS::Application::Storage::Publisher::action;
+use OpenILS::Application::Storage::Publisher::asset;
+use OpenILS::Application::Storage::Publisher::biblio;
+use OpenILS::Application::Storage::Publisher::config;
+use OpenILS::Application::Storage::Publisher::metabib;
+';
+
 for my $fmclass ( Fieldmapper->classes ) {
 	(my $cdbi = $fmclass) =~ s/^Fieldmapper:://o;
 	(my $class = $cdbi) =~ s/::.*//o;
@@ -201,6 +278,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 			api_level	=> 1,
 			stream		=> 1,
 			cdbi		=> $cdbi,
+			cachable	=> 1,
 		);
 	}
 
@@ -211,6 +289,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 			method		=> 'retrieve_node',
 			api_level	=> 1,
 			cdbi		=> $cdbi,
+			cachable	=> 1,
 		);
 	}
 
@@ -222,6 +301,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 			api_level	=> 1,
 			stream		=> 1,
 			cdbi		=> $cdbi,
+			cachable	=> 1,
 		);
 	}
 
@@ -232,6 +312,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 				method		=> 'search_one_field',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				cachable	=> 1,
 			);
 		}
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
@@ -240,6 +321,7 @@ for my $fmclass ( Fieldmapper->classes ) {
 				method		=> 'search_one_field',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				cachable	=> 1,
 			);
 		}
 	}

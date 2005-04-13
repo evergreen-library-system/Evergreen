@@ -243,7 +243,7 @@ sub register_method {
 	$args{api_level} ||= 1;
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
-	$args{package} = $app;                
+	$args{package} ||= $app;                
 	$args{server_class} = server_class();
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
 

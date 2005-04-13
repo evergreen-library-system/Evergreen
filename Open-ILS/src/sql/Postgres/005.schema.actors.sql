@@ -29,6 +29,7 @@ CREATE TABLE actor.usr (
 	claims_returned_count	INT		NOT NULL DEFAULT 0,
 	credit_forward_balance	NUMERIC(6,2)	NOT NULL DEFAULT 0.00,
 	last_xact_id		TEXT		NOT NULL DEFAULT 'none',
+	alert_message		TEXT,
 	create_date		DATE		NOT NULL DEFAULT now()::DATE,
 	expire_date		DATE		NOT NULL DEFAULT (now() + '3 years'::INTERVAL)::DATE
 );
