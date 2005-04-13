@@ -9,6 +9,8 @@ use OpenSRF::Utils::SettingsClient;
 
 use OpenILS::Application::AppUtils;
 
+use JSON;
+
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
@@ -31,8 +33,9 @@ sub biblio_search_marc {
 
 	warn "Sending biblio marc request\n";
 	my $request = $session->request( 
-			"open-ils.storage.direct.metabib.full_rec.search_fts.index_vector", 
-			$search_hash, $string );
+			"open-ils.storage.cachable.direct.metabib.full_rec.search_fts.index_vector", 
+			restrict => $search_hash, 
+			term		=> $string );
 
 	warn "Waiting complete\n";
 	$request->wait_complete();
@@ -62,8 +65,6 @@ sub biblio_search_marc {
 
 
 
-
-
 # ---------------------------------------------------------------------------
 # takes a list of record id's and turns the docs into friendly 
 # mods structures. Creates one MODS structure for each doc id.
@@ -76,7 +77,7 @@ sub _records_to_mods {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request(
-			"open-ils.storage.direct.biblio.record_marc.batch.retrieve",  @ids );
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve",  @ids );
 
 	my $last_content = undef;
 
@@ -486,21 +487,24 @@ __PACKAGE__->register_method(
 
 sub biblio_search_class {
 
-	my( $self, $client, $class, $string, $org_id, $org_type, $limit, $offset ) = @_;
+	my( $self, $client, $class, $string, 
+			$org_id, $org_type, $limit, $offset ) = @_;
+
+	warn "$org_id : $org_type : $limit :  $offset\n";
 
 	$offset		||= 0;
 	$limit		= 100 unless defined($limit and $limit > 0 );
 	$org_id	 	= "1" unless defined($org_id); # xxx
 	$org_type	= 0	unless defined($org_type);
 
-
+	warn "$org_id : $org_type : $limit :  $offset\n";
 	warn "Searching biblio.class.id string: $string offset: $offset limit: $limit\n";
 
 	$string = OpenILS::Application::Search->filter_search($string);
 	if(!$string) { return undef; }
 
 	if( !defined($org_id) or !$class or !$string ) {
-		warn "not enbough args to metarecord searcn\n";
+		warn "not enbough args to metarecord search\n";
 		throw OpenSRF::EX::InvalidArg 
 			("Not enough args to open-ils.search.cat.biblio.class")
 	}
@@ -515,10 +519,15 @@ sub biblio_search_class {
 
 	# grab the mr id's from storage
 
-	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord_count";
+	my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord_count";
 	warn "Performing count method $method\n";
 	my $session = OpenSRF::AppSession->create('open-ils.storage');
-	my $request = $session->request( $method, $string, $org_id, $org_type );
+
+	my $request = $session->request( $method, 
+			term => $string, 
+			org_unit => $org_id, 
+			depth =>$org_type );
+
 	my $response = $request->recv();
 
 	if(UNIVERSAL::isa($response, "OpenSRF::EX")) {
@@ -527,14 +536,18 @@ sub biblio_search_class {
 
 	my $count = $response->content;
 	warn "Received count $count\n";
-
 	# XXX check count size and respond accordingly
 
 	$request->finish();
 	warn "performing mr search\n";
 	$request = $session->request(	
-		"open-ils.storage.metabib.$class.search_fts.metarecord",
-		$string, $org_id, $org_type, $limit );
+		"open-ils.storage.cachable.metabib.$class.search_fts.metarecord",
+		term		=> $string, 
+		org_unit => $org_id, 
+		depth		=> $org_type, 
+		limit		=> $limit,
+		offset	=> $offset,
+		);
 
 	warn "a\n";
 	$response = $request->recv();
@@ -557,9 +570,9 @@ sub biblio_search_class {
 		}
 	}
 
-	my @ids = @all_ids[ $offset..($offset+$limit) ];
+	#my @ids = @all_ids[ $offset..($offset+$limit) ];
+	my @ids = @all_ids;
 	@ids = grep { defined($_) } @ids;
-	#my $size = @$records;
 
 	$request->finish();
 	$session->finish();
@@ -585,35 +598,34 @@ sub biblio_mrid_to_modsbatch {
 		("search.biblio.metarecord_to_mods requires mr id")
 			unless defined( $mrid );
 
+
+	my $metarecord = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
+			"open-ils.storage.direct.metabib.metarecord.retrieve", $mrid );
+	my $master_id = $metarecord->master_record();
+
+
+	# check for existing mods
+	if($metarecord->mods()){
+		warn "We already have mods for " . $metarecord->id . "\n";
+		return JSON->JSON2perl($metarecord->mods());
+	}
+
+
+
 	warn "Creating mods batch for metarecord $mrid\n";
 	my $id_hash = biblio_mrid_to_record_ids( undef, undef,  $mrid );
 	my @ids = @{$id_hash->{ids}};
 
+	warn "IDS @ids\n";
+
 	if(@ids < 1) { return undef; }
 
-	# grab the master record...
-
-	my $master_id = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-			"open-ils.storage.direct.metabib.metarecord.search.master_record", $mrid );
-
-	$master_id = $master_id->[0]; # there should only be one
-
-	use Data::Dumper;
-	warn "Master Record: " . Dumper($master_id);
-
-	if (!ref($master_id) or !defined($master_id->id())) {
-		warn "No Master Record Found, using first found id\n";
-		$master_id = shift @ids;
-	} else {
-		$master_id = $master_id->id();
-	}
 
 	warn "Master ID is $master_id\n";
-
 	# grab the master record to start the mods batch 
 
 	my $record = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-			"open-ils.storage.direct.biblio.record_marc.retrieve", $master_id );
+			"open-ils.storage.direct.biblio.record_entry.retrieve", $master_id );
 
 	if(!$record) {
 		throw OpenSRF::EX::ERROR 
@@ -631,7 +643,7 @@ sub biblio_mrid_to_modsbatch {
 	# now we have to collect all of the marc objects and push them into a mods batch
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request(
-			"open-ils.storage.direct.biblio.record_marc.batch.retrieve",  @ids );
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve",  @ids );
 
 	while( my $response = $request->recv() ) {
 
@@ -648,13 +660,24 @@ sub biblio_mrid_to_modsbatch {
 	}
 
 	my $mods = $u->finish_mods_batch();
-	$mods->{doc_id} = $main_doc_id;
-
+	$mods->{doc_id} = $mrid;
 	$request->finish();
+
+	$client->respond_complete($mods);
+
+	$metarecord->mods(JSON->perl2JSON($mods));
+
+	my $req = $session->request( 
+			"open-ils.storage.direct.metabib.metarecord.update", 
+			$metarecord );
+	$req->wait_complete;
+	my $resp = $req->recv;
+	throw $req->failed if $req->failed;
+
 	$session->finish();
 	$session->disconnect();
 
-	return $mods;
+	return undef;
 
 }
 
@@ -685,6 +708,7 @@ sub biblio_mrid_to_record_ids {
 	warn "Recovered id's [@ids] for mr $mrid\n";
 
 	my $size = @ids;
+	warn "Size: $size\n";
 
 	return { count => $size, ids => \@ids };
 
