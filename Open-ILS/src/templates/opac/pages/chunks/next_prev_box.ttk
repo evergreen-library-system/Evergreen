@@ -3,13 +3,13 @@
 	WRAPPER html/div class='record_next_prev_links_box' id='record_next_prev_links_box';
 
 		WRAPPER html/div class='next_prev_link_div' id='record_prev_button';
-			anchor(text="Prev", href="javascript:void(0)", onclick="globalPage.prev();");
+			anchor(text="Prev", href="javascript:globalPage.prev()");
 		END;
 
 		box(id='space_link');
 
 		WRAPPER html/div class='next_prev_link_div' id='record_next_button';
-			anchor(text="Next", href="javascript:void(0)", onclick="globalPage.next();");
+			anchor(text="Next", href="javascript:globalPage.next()");
 		END;
 
 	END;

@@ -52,7 +52,6 @@ function globalInit() {
 				"globalInit requires a valid page target: " + page_name );
 
 	globalPage.init();
-
 }
 
 

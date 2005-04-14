@@ -6,12 +6,17 @@ RecordResultPage.baseClass					= AbstractRecordResultPage.constructor;
 
 /* constructor for our singleton object */
 function RecordResultPage() {
-	if( globalRecordResultPage != null ) 
-		return globalRecordResultPage;
 
-	this.searchBarForm = new SearchBarFormChunk();
-	this.init();
+	debug("in RecordResultPage()");
+
+	if( globalRecordResultPage != null ) {
+		debug("globalRecordResultPage already exists: " + 
+				globalRecordResultPage.toString() );
+		return globalRecordResultPage;
+	}
 	globalRecordResultPage = this;
+	this.resetSearch();
+	debug("Built a new RecordResultPage()");
 }
 
 
@@ -24,6 +29,18 @@ RecordResultPage.instance = function() {
 	return new RecordResultPage();
 }
 
+RecordResultPage.prototype.next = function() {
+	paramObj.__page = parseInt(paramObj.__page) + 1;
+	var paramArray = build_param_array();
+	url_redirect( paramArray ) 
+}
+
+
+RecordResultPage.prototype.prev = function() {
+	paramObj.__page = parseInt(paramObj.__page) - 1;
+	var paramArray = build_param_array();
+	url_redirect( paramArray ) 
+}
 
 
 RecordResultPage.prototype.mkLink = function(id, type, value) {
@@ -51,35 +68,67 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 			throw new EXArg("Unknown link type: " + type );
 	}
 
-	debug("Returning HREF for link: " + href );
-
 	return href;
 
 }
 
+RecordResultPage.prototype.toString = function() {
 
+	return "\nRecordResultPage:\n"	+
+		"page: "						+ this.page + "\n" +
+		"searchOffset: "			+ this.searchOffset + "\n" +
+		"recordIDs: "				+ this.recordIDs + "\n" +
+		"hitCount: "				+ this.hitCount + "\n" +
+		"hitsPerPage: "			+ this.hitsPerPage + "\n";
+
+}
+
+
+RecordResultPage.prototype.isNewSearch = function() {
+	if(this.page == 0)
+		return true;
+	return false;
+
+}
 
 /* performs a new search */
 RecordResultPage.prototype.doSearch = function() {
 
 	debug( "Key Value Array \n" + js2JSON( paramObj ) );
 
-	this.reset();
+	this.page			= parseInt(paramObj.__page);
+	this.searchOffset = this.page * this.hitsPerPage;
 
-	if( paramObj.mrid != null ) {
-		this.mrSearch(paramObj.mrid);
+
+	if(this.isNewSearch()) {
+		debug("RecordResultPage resetting search..");
+		this.resetSearch();
+	}
+
+	/* is is just a call to next/prev? */
+	if( this.recordIDs && this.recordIDs[this.searchOffset] != null &&
+		this.recordIDs[this.searchOffset + this.hitsPerPage] != null ) {
+		/* we already have all of the IDS */
+		debug("We alread have the required mr ids for the search: [" + this.string + "]");
+		this.collectRecords();
 		return;
 	}
 
-	if( paramObj.search == "global" ) {
 
-		if( paramObj.tcn != null ) {
-			this.globalSearch("tcn", paramObj.tcn);
+	if( paramObj.__mrid != null ) {
+		this.mrSearch(paramObj.__mrid);
+		return;
+	}
+
+	if( paramObj.__search == "global" ) {
+
+		if( paramObj.__tcn != null ) {
+			this.globalSearch("tcn", paramObj.__tcn);
 			return;
 		}
 
-		if( paramObj.isbn != null ) {
-			this.globalSearch("isbn", paramObj.isbn);
+		if( paramObj.__isbn != null ) {
+			this.globalSearch("isbn", paramObj.__isbn);
 			return;
 		}
 	}
@@ -145,6 +194,11 @@ RecordResultPage.prototype.collectRecords = function() {
 
 	var i = this.searchOffset;
 
+	var hit_box = getById("hit_count_count_box");
+	debug("Adding Hit Count: " + this.hitCount );
+	hit_box.appendChild(
+		document.createTextNode(parseInt(this.hitCount)));
+
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];
 
@@ -158,23 +212,13 @@ RecordResultPage.prototype.collectRecords = function() {
 		request.search_id = i;
 		request.page_id	= parseInt(i) - parseInt(this.searchOffset);
 
-		var hit_box = document.getElementById("hit_count_count_box");
-		//hit_box.innerHTML = this.hitCount;
-		hit_box.appendChild(
-				document.createTextNode(this.hitCount));
-
 		/* define the callback for when we receive the record */
 		var obj = this;
 		request.setCompleteCallback(
 			function(req) {
-			//	try {
-					var record = req.getResultObject();
-					obj.displayRecord( record, req.search_id, req.page_id );
-					obj.doCopyCount( record, req.search_id, req.page_id );
-			//	} catch(E) { 
-					//alert("Doc Retrieval Error:\n" + E); 
-			//		debug(" !!! Doc Retrieval Error:\n" + E); 
-		//		}
+				var record = req.getResultObject();
+				obj.displayRecord( record, req.search_id, req.page_id );
+				obj.doCopyCount( record, req.search_id, req.page_id );
 			}
 		);
 
@@ -185,7 +229,7 @@ RecordResultPage.prototype.collectRecords = function() {
 
 RecordResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
-	var copy_box	= document.getElementById("record_result_copy_count_box_" + page_id );
+	var copy_box	= getById("record_result_copy_count_box_" + page_id );
 
 	/* kick off the copy count search */
 	var copy_request = new RemoteRequest( "open-ils.search",

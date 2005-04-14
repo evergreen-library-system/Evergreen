@@ -2,27 +2,28 @@ var globalSearchBarChunk = null;
 
 function SearchBarChunk() {
 
-	if(globalSearchBarChunk != null) {
-		return globalSearchBarChunk;
-	}
+	debug("In SearchBarChunk()");
+
+	this.searchBarForm = new SearchBarFormChunk();
 
 	/* this links */
-	this.search_link		= document.getElementById("adv_search_link");
-	this.login_link		= document.getElementById("login_link");
-	this.my_opac_link		= document.getElementById("my_opac_link");
-	this.about_link		= document.getElementById("about_link");
-	this.logout_link		= document.getElementById("logout_link");
+	this.search_link		= getById("adv_search_link");
+	this.login_link		= getById("login_link");
+	this.my_opac_link		= getById("my_opac_link");
+	this.about_link		= getById("about_link");
+	this.logout_link		= getById("logout_link");
 
 	/* divs for the links */
-	this.adv_search_link_div	= document.getElementById("adv_search_link_div");
-	this.my_opac_link_div		= document.getElementById("my_opac_link_div");
-	this.about_link_div			= document.getElementById("about_link_div");
-	this.login_div					= document.getElementById("login_div");
-	this.logout_div				= document.getElementById("logout_div");
+	this.adv_search_link_div	= getById("adv_search_link_div");
+	this.my_opac_link_div		= getById("my_opac_link_div");
+	this.about_link_div			= getById("about_link_div");
+	this.login_div					= getById("login_div");
+	this.logout_div				= getById("logout_div");
 
-
-
-	this.session = UserSession.instance();
+	if(globalSearchBarChunk == null)
+		this.session = UserSession.instance();
+	else
+		this.session = globalSearchBarChunk.session;
 
 	this.reset();
 	globalSearchBarChunk = this;

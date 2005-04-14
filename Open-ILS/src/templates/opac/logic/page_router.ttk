@@ -3,10 +3,16 @@
 	target = cgi.param("target");	
 
 	IF ! target;
+		INCLUDE opac/pages/main.ttk;
+
+	ELSIF target == "start";
 		INCLUDE opac/pages/opac_start.ttk;
 
 	ELSIF target == "mr_result";
-		INCLUDE opac/pages/mr_result.ttk;
+		INCLUDE opac/pages/record_result.ttk;
+
+	ELSIF target == "search_bar";
+		INCLUDE opac/pages/search_bar.ttk;
 
 	ELSIF target == "record_result";
 		INCLUDE opac/pages/record_result.ttk;

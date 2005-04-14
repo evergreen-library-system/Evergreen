@@ -1,6 +1,7 @@
 [%
 
 	url	= cgi.server_name();
+	port	= cgi.server_port();
 	target = cgi.param("target");	
 
 	# --------------------------------------------------------------------------------- 
@@ -9,6 +10,29 @@
 	link(rel="stylesheet", href="/css/opac_main.css", type="text/css");
 	link(rel="stylesheet", href="/css/record_result.css", type="text/css");
 	link(rel="stylesheet", href="/css/adv_search.css", type="text/css");
+	link(rel="stylesheet", href="/css/search_bar.css", type="text/css");
+
+	js( content='
+			var static = parent.static_window;
+			static.globalPageTarget = "' _ target _ '";
+
+			if(!static.globalPageTarget)
+				static.globalPageTarget = "start";
+
+			function pageInit() {
+				while(!static.globalInit){alert("hi");}
+				alert(static.globalPageTarget);
+				static.globalInit();
+			}
+
+			
+			' 
+			
+			);
+
+%]
+
+[%#
 
 	# --------------------------------------------------------------------------------- 
 	# All the javascript files we migh need
@@ -21,6 +45,7 @@
 	js( content = '
 		var globalPageTarget		= "' _ target _ '"; 
 		var globalRootURL			= "' _ url _ '"; 
+		var globalPort				= "' _ port _ '"; 
 		var globalRootPath		= "/opac/";
 	'); 
 

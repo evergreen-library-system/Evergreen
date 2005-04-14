@@ -6,11 +6,16 @@ MRResultPage.baseClass					= AbstractRecordResultPage.constructor;
 
 /* constructor for our singleton object */
 function MRResultPage() {
-	if( globalMRResultPage != null ) 
-		return globalMRResultPage;
+	debug("MRResultPage()");
+	this.searchBar = new SearchBarChunk();
 
-	this.searchBarForm = new SearchBarFormChunk();
-	this.init();
+	if( globalMRResultPage != null ) {
+		debug("MRResultPage() exists, returning");
+		return globalMRResultPage;
+	}
+
+	//this.progressBar = new ProgressBar(getById('progress_bar'));
+	this.resetSearch();
 	globalMRResultPage = this;
 }
 
@@ -24,25 +29,44 @@ MRResultPage.instance = function() {
 	return new MRResultPage();
 }
 
+MRResultPage.prototype.next = function() {
+	url_redirect( [ 
+			"target",				"mr_result",
+			"mr_search_type",		this.stype,
+			"mr_search_query",	this.string,
+			"page",					this.page + 1	
+			] );
+}
+
+
+MRResultPage.prototype.prev = function() {
+	if(this.page == 0 ) return;
+	url_redirect( [ 
+			"target",				"mr_result",
+			"mr_search_type",		this.stype,
+			"mr_search_query",	this.string,
+			"page",					this.page - 1	
+			] );
+}
+
+
 MRResultPage.prototype.mkLink = function(id, type, value) {
 
 	var href;
-
-	//value = value.replace( /\s+/g,"&nbsp;" );
 
 	switch(type) {
 
 		case "title":
 			href = document.createElement("a");
 			add_css_class(href,"record_result_title_link");
-			href.setAttribute("href","?target=record_result&mrid=" + id );
+			href.setAttribute("href","?target=record_result&page=0&mrid=" + id );
 			href.appendChild(document.createTextNode(value));
 			break;
 
 		case "author":
 			href = document.createElement("a");
 			add_css_class(href,"record_result_author_link");
-			href.setAttribute("href","?target=mr_result&mr_search_type=author&mr_search_query=" +
+			href.setAttribute("href","?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
 					      encodeURIComponent(value));
 			href.appendChild(document.createTextNode(value));
 			break;
@@ -51,28 +75,46 @@ MRResultPage.prototype.mkLink = function(id, type, value) {
 			throw new EXArg("Unknown link type: " + type );
 	}
 
-	debug("Returning HREF for link: " + href );
-
 	return href;
 }
 
 
 
 /* performs a new search */
-MRResultPage.prototype.doSearch = function(search_continue) {
+MRResultPage.prototype.doSearch = function() {
 
-	//open-ils.search.biblio.class class, term, 
-	this.reset();
-	if(!search_continue)
+
+	var string			= paramObj.__mr_search_query;
+	var stype			= paramObj.__mr_search_type;
+	if(!stype || !string) return;
+
+	/* see if this is a new search */
+	if( string != this.string || stype != this.stype )
 		this.resetSearch();
 
+	this.stype			= stype;
+	this.string			= string;
+	this.page			= parseInt(paramObj.__page);
+	this.searchOffset = this.page * this.hitsPerPage;
+
+	//this.progressBar.progressStart();
+
+	this.resetPage();
+
+	if( this.recordIDs && this.recordIDs[this.searchOffset] != null &&
+		this.recordIDs[this.searchOffset + this.hitsPerPage] != null ) {
+		/* we already have all of the IDS */
+		debug("We alread have the required mr ids for the search: [" + this.string + "]");
+		this.collectRecords();
+		return;
+	}
+		
 	debug("MRResultPage doSearch() with type: " 
 			+ this.stype + " and search [" + this.string + "]"
 			+ " and offset " + this.searchOffset );
 
 	var request = new RemoteRequest( 
-			"open-ils.search", 
-			"open-ils.search.biblio.class", 
+			"open-ils.search", "open-ils.search.biblio.class", 
 			this.stype, this.string, "1", "0", "100", this.searchOffset );
 
 	var obj = this;
@@ -110,7 +152,7 @@ MRResultPage.prototype.collectRecords = function() {
 
 		debug("Collecting metarecord for id " + id + " and search_id " + i);
 
-		var hit_box = document.getElementById("hit_count_count_box");
+		var hit_box = getById("hit_count_count_box");
 		hit_box.innerHTML = this.hitCount;
 
 		/* define the callback for when we receive the record */
@@ -134,7 +176,7 @@ MRResultPage.prototype.collectRecords = function() {
 
 MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
-	var copy_box	= document.getElementById("record_result_copy_count_box_" + page_id );
+	var copy_box	= getById("record_result_copy_count_box_" + page_id );
 
 	/* kick off the copy count search */
 	var copy_request = new RemoteRequest( "open-ils.search",

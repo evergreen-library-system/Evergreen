@@ -8,6 +8,38 @@ function grabCharCode( evt ) {
 	}
 }
 
+function getById(id) {
+
+	var obj = document.getElementById(id);
+
+	if(obj != null) return obj;
+
+	if(globalAppFrame) {
+		obj = globalAppFrame.document.getElementById(id);
+	}
+
+	return obj;
+}
+
+
+
+function normalize(val) {
+	var newVal = '';
+	val = val.split(' ');
+	for(var c=0; c < val.length; c++) {
+		var string = val[c];
+
+		for(var x = 0; x != string.length; x++) {
+			if(x==0)
+				newVal += string.charAt(x).toUpperCase();
+			else
+				newVal += string.charAt(x).toLowerCase();
+		}
+		if(c < (val.length-1)) newVal += " ";
+	}
+	return newVal;
+}
+
 var orgTree = null;
 function grabOrgTree() {
 
@@ -174,9 +206,9 @@ function fixDate(date) {
 
 // -----------------------------------------------------------------------
 
-function ProgressBar( div_id, color, interval ) {
+var globalProgressBar = null;
+function ProgressBar( div, color, interval ) {
 
-	alert("hello");
 	this.progressEnd			= 9;				
 
 	if( color != null)
@@ -187,52 +219,53 @@ function ProgressBar( div_id, color, interval ) {
 	if(interval != null)
 		this.progressInterval	= interval;
 	else
-		this.progressInterval	= 200;	
+		this.progressInterval	= 50;	
 
-	this.progressAt = progressEnd;
+	this.progressAt = this.progressEnd;
 	this.progressTimer;
 
-	var location = document.getElementById(div_id);
-	location.innerHTML = "";
 	for( var x = 0; x!= this.progressEnd; x++ ) {
-		location.innerHTML += "<span id='progress" + x + "'>Here&nbsp;</span>";
+		var newdiv = document.createElement("span");
+		newdiv.id = "progress" + x;
+		newdiv.appendChild(document.createTextNode("   "));
+		div.appendChild(newdiv);
 	}
+	globalProgressBar = this;
 }
 
 ProgressBar.prototype.progressStart = function() {
-	alert("hello");
 	this.progressUpdate();
 }
 
 ProgressBar.prototype.progressClear = function() {
-	for (var i = 1; i <= this.progressEnd; i++) 
-		document.getElementById('progress'+i).style.backgroundColor = 'transparent';
+	for (var i = 0; i < this.progressEnd; i++) {
+		getById('progress' + i).style.backgroundColor = 'transparent';
+	}
 	progressAt = 0;
 }
 
 ProgressBar.prototype.progressUpdate = function() {
+	debug(" -3-3-3-3- Updating Progress Bar");
 	this.progressAt++;
 	if (this.progressAt > this.progressEnd) 
 		this.progressClear();
 	else 
-		document.getElementById('progress'+progressAt).style.backgroundColor = this.progressColor;
-	this.progressTimer = setTimeout('progressUpdate()',this.progressInterval);
+		getById('progress'+progressAt).style.backgroundColor = this.progressColor;
+	this.progressTimer = setTimeout('globalProgressBar.progressUpdate()', this.progressInterval);
+	debug("Timer is set at " + this.progressInterval);
 }
 
 ProgressBar.prototype.progressStop = function() {
-	this.clearTimeout(this.progressTimer);
+	clearTimeout(this.progressTimer);
 	this.progressClear();
 }
-
-//progressUpdate();		// start progress bar
-
 
 function add_css_class(w,c) {
 	var e;
 	if (typeof(w) == 'object') {
 		e = w;
 	} else {
-		e = document.getElementById(w);
+		e = getById(w);
 	}
 	var css_class_string = e.className;
 	var css_class_array;
@@ -255,12 +288,10 @@ function remove_css_class(w,c) {
 	if(w==null)
 		return;
 
-	debug("css: " + typeof(w))
-
 	if (typeof(w) == 'object') {
 		e = w;
 	} else {
-		e = document.getElementById(w);
+		e = getById(w);
 	}
 	var css_class_string = '';
 
@@ -298,11 +329,13 @@ function url_redirect(key_value_array) {
 				"AdvancedSearchPage.redirect has invalid args" );
 	}
 
-	//var fullpath = globalRootURL + globalRootPath;
-	var fullpath = "";
+	var fullpath = globalRootPath;
 	var x = 0;
 
+	debug("Redirecting...");
+
 	for( var x = 0; x!= key_value_array.length; x++ ) {
+		debug("Checking key_value_array " + x + " : " + key_value_array[x] );
 		if( x == 0 )
 			fullpath += "?" + encodeURIComponent(key_value_array[x]);
 		else {
@@ -314,7 +347,27 @@ function url_redirect(key_value_array) {
 	}
 
 	debug("Redirecting to " + fullpath );
-	location.href = fullpath;
+	globalAppFrame.location.href = fullpath;
 
 }
 	
+
+
+/* 
+	the paramObj contains cgi params as object attributes 
+	-> paramObj.__paramName
+	paramName is the name of the parameter.  the '__' is there to
+	differentiate the paramName from other object attributes.
+	*/
+function build_param_array() {
+	var paramArray = new Array();
+	for( var p in paramObj ) {
+		if( p.substr(0,2) == "__" ) {
+			var name = p.substr(2,p.length - 1);
+			paramArray.push(name)
+			paramArray.push(paramObj[p])
+		}
+	}
+	return paramArray;
+}
+

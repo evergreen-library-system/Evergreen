@@ -5,7 +5,9 @@ AbstractRecordResultPage.baseClass					= Page.constructor;
 
 
 /* constructor for our singleton object */
-function AbstractRecordResultPage() { }
+function AbstractRecordResultPage() {
+
+}
 
 
 /* initialize all of the UI components and set up data structures */
@@ -14,61 +16,26 @@ AbstractRecordResultPage.prototype.init = function() {
 	debug( "Initing an AbstractRecordResultPage" );
 
 	/* included page chunks */
-	//this.searchBarForm = new JSSearchBarFormChunk();
-	this.searchBar		= new SearchBarChunk();
+	this.searchBar			= new SearchBarChunk();
 
 	/* UI objects */
-	this.buttonsBox		= document.getElementById("record_next_prev_links_box");
-	this.prevButton		= document.getElementById("record_prev_button");
-	this.nextButton		= document.getElementById("record_next_button");
-	this.recordBox			= document.getElementById("record_result_box");
+	this.buttonsBox		= getById("record_next_prev_links_box");
+	this.prevButton		= getById("record_prev_button");
+	this.nextButton		= getById("record_next_button");
+	this.recordBox			= getById("record_result_box");
 
+	this.subBox				= getById("record_subject_sidebar_box");
+	this.authBox			= getById("record_author_sidebar_box");
 
-	this.collectedSubjects	= new Array();		/* subjects attached to the current batch of records */
-	this.collectedAuthors	= new Array();		/* subjects attached to the current batch of records */
-	this.requestBatch			= new Array();		/* current batch of RemoteRequest objects */
-	this.recordIDs				= new Array();		/* this set of ids for this search */
-	this.hitCount				= 0;					/* hits for the current search */
-	this.searchOffset			= 0;					/* the offset for the search display */
-	this.hitsPerPage			= 10;					/* how many hits are displayed per page */
+	this.hitsPerPage		= 10;					/* how many hits are displayed per page */
+	this.resetPage();
 	
 }
 
 
-AbstractRecordResultPage.prototype.next = function() {
-	this.searchOffset += parseInt(this.hitsPerPage);
-	debug("Set searchOffset to " + this.searchOffset );
-
-	/* see if we need to retrieve them */
-	if( this.recordIDs[this.searchOffset] != null &&
-		this.recordIDs[this.searchOffset - this.hitsPerPage] != null ) {
-		debug("Not Calling Search");
-		this.reset();
-		this.collectRecords();
-	} else {
-		this.doSearch(true);
-	}
-
-}
-
-AbstractRecordResultPage.prototype.prev = function() {
-	this.searchOffset -= this.hitsPerPage;
-
-
-	if( this.recordIDs[this.searchOffset] != null &&
-		this.recordIDs[this.searchOffset + this.hitsPerPage] != null ) {
-		this.reset();
-		this.collectRecords();
-	} else {
-		this.doSearch(true);
-	}
-}
-
-
-
 
 /** Resets data structures for a new search */
-AbstractRecordResultPage.prototype.reset = function() {
+AbstractRecordResultPage.prototype.resetPage = function() {
 
 	while(this.recordBox.rows.length > 0)
 		this.recordBox.deleteRow(-1);
@@ -76,15 +43,30 @@ AbstractRecordResultPage.prototype.reset = function() {
 	this.prevButton.style.visibility = "hidden";
 	this.nextButton.style.visibility = "hidden";
 	this.buttonsBox.style.visibility = "hidden";
+
+	this.subBox.innerHTML				= "";
+	this.authBox.innerHTML				= "";
+	this.subBox.style.visibility		= "hidden";
+	this.authBox.style.visibility		= "hidden";
+
+	this.collectedSubjects				= new Array();
+	this.collectedAuthors				= new Array();
 }
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
-	this.recordIDS = new Array();
+	this.recordIDS				= new Array();
+	this.collectedSubjects	= new Array();		/* subjects attached to the current batch of records */
+	this.collectedAuthors	= new Array();		/* subjects attached to the current batch of records */
+	this.requestBatch			= new Array();		/* current batch of RemoteRequest objects */
+	this.recordIDs				= new Array();		/* this set of ids for this search */
+	this.hitCount				= 0;					/* hits for the current search */
+	this.searchOffset			= 0;					/* the offset for the search display */
+
 }
 
 AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 
-	this.hitCount = result.count;
+	this.hitCount = parseInt(result.count);
 
 	/* gather all of the ID's */
 	for( var i in result.ids ) {
@@ -103,8 +85,10 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, page_id ) {
 
 	result_row = new RecordResultRow(page_id);
+
 	var row = table_row_find_or_create(
 			this.recordBox, parseInt(page_id) * 3 );
+
 	row.appendChild(result_row.obj);
 
 	/* this is for our row of XUL buttons.  If no buttons are necessary, this just acts as
@@ -122,10 +106,10 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 
 
 
-	var title_box	= document.getElementById("record_result_title_box_" + page_id );
-	var author_box = document.getElementById("record_result_author_box_" + page_id );
-	var row			= document.getElementById("record_result_row_box_" + page_id );
-	var xul			= document.getElementById("record_result_xul_button_box_" + page_id );
+	var title_box	= getById("record_result_title_box_" + page_id );
+	var author_box = getById("record_result_author_box_" + page_id );
+	var row			= getById("record_result_row_box_" + page_id );
+	var xul			= getById("record_result_xul_button_box_" + page_id );
 
 
 	debug("displayRecord " + record.doc_id );
@@ -145,11 +129,13 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 		record.title = record.title.substr(0,tlength);
 		record.title += "...";
 	}
+	record.title = normalize(record.title);
 
 	if(record.author.length > tlength) {
 		record.author = record.author.substr(0,tlength);
 		record.author += "...";
 	}
+	record.author = normalize(record.author);
 
 	title_box.appendChild( document.createTextNode(
 				(parseInt(search_id) + 1)  + ".   "));
@@ -165,17 +151,70 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 	add_css_class(row, classname);
 
 
-	/* after loading the last record, contine building the page */
-	debug( "Pageid : " + page_id + " hitsperpage: " + this.hitsPerPage );
-
-	if( page_id  == (this.hitsPerPage - 1)) {
-
-		/* do we need next/prev buttons */
-		this.buttonsBox.style.visibility = "visible";
-		if( this.searchOffset < (parseInt(this.hitCount) - this.hitsPerPage)) 
-			this.nextButton.style.visibility = "visible";
-		if(this.searchOffset > 0) 
-			this.prevButton.style.visibility = "visible";
+	/* now grab the record authors and subjects */
+	this.collectedAuthors[record.author] = true;	
+	var arr = record.subject;
+	for( var sub in arr ) {
+		var s = normalize(arr[sub]);
+		if( this.collectedSubjects[s])
+			this.collectedSubjects[s] += 1;
+		else
+			this.collectedSubjects[s] = 1;
 	}
 
+	/* after loading the last record, contine building the page */
+
+	if( (page_id  == ((parseInt(this.hitCount) - 1 ) + parseInt(this.searchOffset))) ||
+			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
+		this.finalizePage();
+}
+
+AbstractRecordResultPage.prototype.finalizePage = function() {
+	/* sort the arrays */
+	this.collectedSubjects.sort();
+	this.collectedAuthors.sort();
+
+	this.subBox.style.visibility = "visible";
+	this.authBox.style.visibility = "visible";
+
+	var counter = 0;
+
+	for(var sub in this.collectedSubjects) {
+		if(counter++ > 10)
+			break;
+		var href = document.createElement("a");
+		add_css_class(href,"record_result_sidebar_link");
+		href.setAttribute("href","?target=mr_result&mr_search_type=subject&page=0&mr_search_query=" +
+				      encodeURIComponent(sub));
+		href.appendChild(document.createTextNode(sub));
+		this.subBox.appendChild(href);
+		this.subBox.appendChild(new LineDiv().obj);
+	}
+
+	counter = 0;
+	for(var auth in this.collectedAuthors) {
+		if(counter++ > 10)
+			break;
+		var href = document.createElement("a");
+		add_css_class(href,"record_result_sidebar_link");
+		href.setAttribute("href","?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
+				      encodeURIComponent(auth));
+		href.appendChild(document.createTextNode(auth));
+		this.authBox.appendChild(href);
+		this.authBox.appendChild(new LineDiv().obj);
+	}
+
+	/* do we need next/prev buttons */
+	this.buttonsBox.style.visibility = "visible";
+	if( this.searchOffset < (parseInt(this.hitCount) - this.hitsPerPage)) 
+		this.nextButton.style.visibility = "visible";
+	if(this.searchOffset > 0) 
+		this.prevButton.style.visibility = "visible";
+
+	/*
+	if( this.progressBar ) 
+		this.progressBar.progressStop();
+		*/
+
+	/* now add the subjects */
 }

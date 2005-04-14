@@ -6,11 +6,14 @@ function RecordResultRow(id) {
 	var table	= document.createElement("table");
 	var tbody	= document.createElement("tbody");
 
+	add_css_class(table,"record_result_row_table");
+
 	var toptd	= document.createElement("td");
 	var td1		= document.createElement("td");
 	var td2		= document.createElement("td");
 	var td3		= document.createElement("td");
 	var td4		= document.createElement("td");
+	var td5		= document.createElement("td");
 
 	td1.id = "record_result_row_box_" + id;
 	add_css_class( td1, "record_result_row_box");
@@ -43,19 +46,19 @@ RecordResultRow.prototype.toString = function() {
 	return this.obj.string;
 }
 
-
 function LineDiv(type) {
+	this.obj  = document.createElement("div");
 	if( type == "small")
-		this.string = "<div class='small_line_div'></div>";
+		add_css_class(this.obj,"small_line_div");
 	else {
 		if( type == "big") {
-			this.string = "<div class='big_line_div'></div>";
+		add_css_class(this.obj,"big_line_div");
 		} else 
-			this.string = "<div class='line_div'></div>";
+			add_css_class(this.obj,"line_div");
 	}
 }
 
 LineDiv.prototype.toString = function() {
-	return this.string;
+	return this.obj.toString();
 }
 

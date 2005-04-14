@@ -7,13 +7,13 @@
 
 	WRAPPER html/html;
 
-		WRAPPER html/head title=tm.basic_search.page_title;
-			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+		WRAPPER html/head title="Record Result Page";
+			INCLUDE opac/pages/chunks/css_includes.ttk;
 		END;
 
 
-		WRAPPER html/body onload='globalInit(); globalPage.doSearch();';
-		
+		WRAPPER html/body onload='pageInit(); globalPage.doSearch();';
+
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
 
 			lines(1);
@@ -40,11 +40,19 @@
 			# --------------------------------------------------------------------------------- 
 			# Sidebar stuff, subjects, authors, etc.
 			# --------------------------------------------------------------------------------- 
-			WRAPPER html/div class='record_sidebar_box';
-				box( id='subject_sidebar_box' );
-				box( id='author_sidebar_box' );
+
+			WRAPPER html/div class='record_sidebar_wrapper_box';
+				WRAPPER html/table class='record_sidebar_box';
+					row(content=cell(content=box(valign='top', id='record_subject_sidebar_box')));
+					row(content=cell(content=lines(1)));
+					row(content=cell(content=box(valign='top', id='record_author_sidebar_box')));
+				END;
 			END;
 
+
+
+			INCLUDE opac/pages/chunks/next_prev_box.ttk;
+		
 		END; # body
 
 	END; # html

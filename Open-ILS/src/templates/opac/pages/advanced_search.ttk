@@ -4,11 +4,11 @@
 
 	WRAPPER html/html;
 
-		WRAPPER html/head title=tm.basic_search.page_title;
-			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+		WRAPPER html/head title="Advanced Search";
+			INCLUDE opac/pages/chunks/css_includes.ttk;
 		END;
 
-		WRAPPER html/body onload='globalInit();';
+		WRAPPER html/body onload='pageInit();';
 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
 

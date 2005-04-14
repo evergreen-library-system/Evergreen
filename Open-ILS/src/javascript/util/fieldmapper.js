@@ -14,13 +14,13 @@ FieldmapperException.toString = function() {
 
 
 //  ----------------------------------------------------------------
-// Class: acp
+// Class: cit
 //  ----------------------------------------------------------------
 
 
-function acp(array) {
+function cit(array) {
 
-	this.classname = "acp";
+	this.classname = "cit";
 	this._isfieldmapper = true;
 
 	if(array) { 
@@ -35,454 +35,86 @@ function acp(array) {
 
 }
 
-acp._isfieldmapper = true;
+cit._isfieldmapper = true;
 
 
-acp.prototype.call_number = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
+cit.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
 }
-acp.prototype.edit_date = function(new_value) {
+cit.prototype.name = function(new_value) {
 	if(new_value) { this.array[3] = new_value; }
 	return this.array[3];
 }
-acp.prototype.creator = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
+cit.prototype.id = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
 }
-acp.prototype.fine_level = function(new_value) {
+cit.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+cit.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: asvq
+//  ----------------------------------------------------------------
+
+
+function asvq(array) {
+
+	this.classname = "asvq";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+asvq._isfieldmapper = true;
+
+
+asvq.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+asvq.prototype.question = function(new_value) {
 	if(new_value) { this.array[5] = new_value; }
 	return this.array[5];
 }
-acp.prototype.status = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
+asvq.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
 }
-acp.prototype.circulate = function(new_value) {
+asvq.prototype.survey = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+asvq.prototype.responses = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+asvq.prototype.id = function(new_value) {
 	if(new_value) { this.array[7] = new_value; }
 	return this.array[7];
 }
-acp.prototype.audience = function(new_value) {
-	if(new_value) { this.array[9] = new_value; }
-	return this.array[9];
-}
-acp.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-acp.prototype.editor = function(new_value) {
-	if(new_value) { this.array[10] = new_value; }
-	return this.array[10];
-}
-acp.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-acp.prototype.id = function(new_value) {
-	if(new_value) { this.array[11] = new_value; }
-	return this.array[11];
-}
-acp.prototype.isdeleted = function(new_value) {
+asvq.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
 	return this.array[2];
 }
-acp.prototype.deposit = function(new_value) {
-	if(new_value) { this.array[12] = new_value; }
-	return this.array[12];
-}
-acp.prototype.loan_duration = function(new_value) {
-	if(new_value) { this.array[13] = new_value; }
-	return this.array[13];
-}
-acp.prototype.shelving_loc = function(new_value) {
-	if(new_value) { this.array[14] = new_value; }
-	return this.array[14];
-}
-acp.prototype.ref = function(new_value) {
-	if(new_value) { this.array[15] = new_value; }
-	return this.array[15];
-}
-acp.prototype.create_date = function(new_value) {
-	if(new_value) { this.array[16] = new_value; }
-	return this.array[16];
-}
-acp.prototype.barcode = function(new_value) {
-	if(new_value) { this.array[17] = new_value; }
-	return this.array[17];
-}
-acp.prototype.genre = function(new_value) {
-	if(new_value) { this.array[19] = new_value; }
-	return this.array[19];
-}
-acp.prototype.deposit_amount = function(new_value) {
-	if(new_value) { this.array[18] = new_value; }
-	return this.array[18];
-}
-acp.prototype.copy_number = function(new_value) {
-	if(new_value) { this.array[21] = new_value; }
-	return this.array[21];
-}
-acp.prototype.opac_visible = function(new_value) {
-	if(new_value) { this.array[20] = new_value; }
-	return this.array[20];
-}
-acp.prototype.price = function(new_value) {
-	if(new_value) { this.array[23] = new_value; }
-	return this.array[23];
-}
-acp.prototype.home_lib = function(new_value) {
-	if(new_value) { this.array[22] = new_value; }
-	return this.array[22];
-}
-
-//  ----------------------------------------------------------------
-// Class: au
-//  ----------------------------------------------------------------
-
-
-function au(array) {
-
-	this.classname = "au";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-au._isfieldmapper = true;
-
-
-au.prototype.usrgroup = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-au.prototype.usrname = function(new_value) {
+asvq.prototype.answers = function(new_value) {
 	if(new_value) { this.array[4] = new_value; }
 	return this.array[4];
-}
-au.prototype.super_user = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-au.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-au.prototype.family_name = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-au.prototype.email = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
-}
-au.prototype.first_given_name = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-au.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-au.prototype.suffix = function(new_value) {
-	if(new_value) { this.array[9] = new_value; }
-	return this.array[9];
-}
-au.prototype.address = function(new_value) {
-	if(new_value) { this.array[11] = new_value; }
-	return this.array[11];
-}
-au.prototype.id = function(new_value) {
-	if(new_value) { this.array[10] = new_value; }
-	return this.array[10];
-}
-au.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-au.prototype.gender = function(new_value) {
-	if(new_value) { this.array[12] = new_value; }
-	return this.array[12];
-}
-au.prototype.active = function(new_value) {
-	if(new_value) { this.array[13] = new_value; }
-	return this.array[13];
-}
-au.prototype.home_ou = function(new_value) {
-	if(new_value) { this.array[14] = new_value; }
-	return this.array[14];
-}
-au.prototype.last_xact_id = function(new_value) {
-	if(new_value) { this.array[15] = new_value; }
-	return this.array[15];
-}
-au.prototype.dob = function(new_value) {
-	if(new_value) { this.array[17] = new_value; }
-	return this.array[17];
-}
-au.prototype.passwd = function(new_value) {
-	if(new_value) { this.array[16] = new_value; }
-	return this.array[16];
-}
-au.prototype.second_given_name = function(new_value) {
-	if(new_value) { this.array[18] = new_value; }
-	return this.array[18];
-}
-au.prototype.master_account = function(new_value) {
-	if(new_value) { this.array[19] = new_value; }
-	return this.array[19];
-}
-au.prototype.usrid = function(new_value) {
-	if(new_value) { this.array[21] = new_value; }
-	return this.array[21];
-}
-au.prototype.prefix = function(new_value) {
-	if(new_value) { this.array[20] = new_value; }
-	return this.array[20];
-}
-
-//  ----------------------------------------------------------------
-// Class: acpn
-//  ----------------------------------------------------------------
-
-
-function acpn(array) {
-
-	this.classname = "acpn";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-acpn._isfieldmapper = true;
-
-
-acpn.prototype.creator = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-acpn.prototype.value = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-acpn.prototype.create_date = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-acpn.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-acpn.prototype.owning_copy = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-acpn.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-acpn.prototype.id = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-acpn.prototype.title = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
-}
-acpn.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-
-//  ----------------------------------------------------------------
-// Class: mfr
-//  ----------------------------------------------------------------
-
-
-function mfr(array) {
-
-	this.classname = "mfr";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-mfr._isfieldmapper = true;
-
-
-mfr.prototype.value = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-mfr.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-mfr.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-mfr.prototype.ind1 = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-mfr.prototype.record = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-mfr.prototype.ind2 = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-mfr.prototype.id = function(new_value) {
-	if(new_value) { this.array[9] = new_value; }
-	return this.array[9];
-}
-mfr.prototype.tag = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-mfr.prototype.subfield = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
-}
-mfr.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-
-//  ----------------------------------------------------------------
-// Class: mmr
-//  ----------------------------------------------------------------
-
-
-function mmr(array) {
-
-	this.classname = "mmr";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-mmr._isfieldmapper = true;
-
-
-mmr.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-mmr.prototype.mods = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-mmr.prototype.id = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-mmr.prototype.fingerprint = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-mmr.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-mmr.prototype.master_record = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-mmr.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-
-//  ----------------------------------------------------------------
-// Class: mkfe
-//  ----------------------------------------------------------------
-
-
-function mkfe(array) {
-
-	this.classname = "mkfe";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-mkfe._isfieldmapper = true;
-
-
-mkfe.prototype.source = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-mkfe.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-mkfe.prototype.value = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-mkfe.prototype.id = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-mkfe.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-mkfe.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-mkfe.prototype.field = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
 }
 
 //  ----------------------------------------------------------------
@@ -540,13 +172,13 @@ mafe.prototype.field = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
-// Class: mtfe
+// Class: asvr
 //  ----------------------------------------------------------------
 
 
-function mtfe(array) {
+function asvr(array) {
 
-	this.classname = "mtfe";
+	this.classname = "asvr";
 	this._isfieldmapper = true;
 
 	if(array) { 
@@ -561,36 +193,48 @@ function mtfe(array) {
 
 }
 
-mtfe._isfieldmapper = true;
+asvr._isfieldmapper = true;
 
 
-mtfe.prototype.source = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-mtfe.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-mtfe.prototype.value = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-mtfe.prototype.id = function(new_value) {
+asvr.prototype.answer = function(new_value) {
 	if(new_value) { this.array[5] = new_value; }
 	return this.array[5];
 }
-mtfe.prototype.isnew = function(new_value) {
+asvr.prototype.isnew = function(new_value) {
 	if(new_value) { this.array[0] = new_value; }
 	return this.array[0];
 }
-mtfe.prototype.isdeleted = function(new_value) {
+asvr.prototype.question = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+asvr.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asvr.prototype.survey = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+asvr.prototype.answer_date = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+asvr.prototype.id = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+asvr.prototype.usr = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+asvr.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
 	return this.array[2];
 }
-mtfe.prototype.field = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
+asvr.prototype.effective_date = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
 }
 
 //  ----------------------------------------------------------------
@@ -622,13 +266,17 @@ aout.prototype.parent = function(new_value) {
 	if(new_value) { this.array[4] = new_value; }
 	return this.array[4];
 }
-aout.prototype.name = function(new_value) {
+aout.prototype.can_have_vols = function(new_value) {
 	if(new_value) { this.array[5] = new_value; }
 	return this.array[5];
 }
-aout.prototype.can_have_users = function(new_value) {
+aout.prototype.name = function(new_value) {
 	if(new_value) { this.array[6] = new_value; }
 	return this.array[6];
+}
+aout.prototype.can_have_users = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
 }
 aout.prototype.children = function(new_value) {
 	if(new_value) { this.array[3] = new_value; }
@@ -639,16 +287,16 @@ aout.prototype.isnew = function(new_value) {
 	return this.array[0];
 }
 aout.prototype.depth = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
 }
 aout.prototype.ischanged = function(new_value) {
 	if(new_value) { this.array[1] = new_value; }
 	return this.array[1];
 }
 aout.prototype.id = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
 }
 aout.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
@@ -706,13 +354,13 @@ cbs.prototype.isdeleted = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
-// Class: acnn
+// Class: asce
 //  ----------------------------------------------------------------
 
 
-function acnn(array) {
+function asce(array) {
 
-	this.classname = "acnn";
+	this.classname = "asce";
 	this._isfieldmapper = true;
 
 	if(array) { 
@@ -727,166 +375,30 @@ function acnn(array) {
 
 }
 
-acnn._isfieldmapper = true;
+asce._isfieldmapper = true;
 
 
-acnn.prototype.owning_call_number = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-acnn.prototype.creator = function(new_value) {
+asce.prototype.owner = function(new_value) {
 	if(new_value) { this.array[3] = new_value; }
 	return this.array[3];
 }
-acnn.prototype.value = function(new_value) {
+asce.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asce.prototype.value = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+asce.prototype.id = function(new_value) {
 	if(new_value) { this.array[5] = new_value; }
 	return this.array[5];
 }
-acnn.prototype.create_date = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-acnn.prototype.isnew = function(new_value) {
+asce.prototype.isnew = function(new_value) {
 	if(new_value) { this.array[0] = new_value; }
 	return this.array[0];
 }
-acnn.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-acnn.prototype.id = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-acnn.prototype.title = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
-}
-acnn.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-
-//  ----------------------------------------------------------------
-// Class: brm
-//  ----------------------------------------------------------------
-
-
-function brm(array) {
-
-	this.classname = "brm";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-brm._isfieldmapper = true;
-
-
-brm.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-brm.prototype.mods = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-brm.prototype.id = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-brm.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-brm.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-
-//  ----------------------------------------------------------------
-// Class: brn
-//  ----------------------------------------------------------------
-
-
-function brn(array) {
-
-	this.classname = "brn";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-brn._isfieldmapper = true;
-
-
-brn.prototype.node_type = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-brn.prototype.value = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-brn.prototype.name = function(new_value) {
-	if(new_value) { this.array[9] = new_value; }
-	return this.array[9];
-}
-brn.prototype.children = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-brn.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-brn.prototype.namespace_uri = function(new_value) {
-	if(new_value) { this.array[11] = new_value; }
-	return this.array[11];
-}
-brn.prototype.last_xact_id = function(new_value) {
-	if(new_value) { this.array[12] = new_value; }
-	return this.array[12];
-}
-brn.prototype.intra_doc_id = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-brn.prototype.owner_doc = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-brn.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-brn.prototype.parent_node = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
-}
-brn.prototype.id = function(new_value) {
-	if(new_value) { this.array[10] = new_value; }
-	return this.array[10];
-}
-brn.prototype.isdeleted = function(new_value) {
+asce.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
 	return this.array[2];
 }
@@ -1020,6 +532,1584 @@ acn.prototype.isdeleted = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
+// Class: cst
+//  ----------------------------------------------------------------
+
+
+function cst(array) {
+
+	this.classname = "cst";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+cst._isfieldmapper = true;
+
+
+cst.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+cst.prototype.value = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+cst.prototype.id = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+cst.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+cst.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: bre
+//  ----------------------------------------------------------------
+
+
+function bre(array) {
+
+	this.classname = "bre";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+bre._isfieldmapper = true;
+
+
+bre.prototype.source = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+bre.prototype.edit_date = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+bre.prototype.call_numbers = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+bre.prototype.tcn_value = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+bre.prototype.creator = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+bre.prototype.active = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+bre.prototype.create_date = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+bre.prototype.deleted = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+bre.prototype.fingerprint = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+bre.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+bre.prototype.last_xact_id = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+bre.prototype.marc = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+bre.prototype.editor = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+bre.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+bre.prototype.id = function(new_value) {
+	if(new_value) { this.array[15] = new_value; }
+	return this.array[15];
+}
+bre.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+bre.prototype.tcn_source = function(new_value) {
+	if(new_value) { this.array[16] = new_value; }
+	return this.array[16];
+}
+
+//  ----------------------------------------------------------------
+// Class: msfe
+//  ----------------------------------------------------------------
+
+
+function msfe(array) {
+
+	this.classname = "msfe";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+msfe._isfieldmapper = true;
+
+
+msfe.prototype.source = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+msfe.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+msfe.prototype.value = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+msfe.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+msfe.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+msfe.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+msfe.prototype.field = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+
+//  ----------------------------------------------------------------
+// Class: au
+//  ----------------------------------------------------------------
+
+
+function au(array) {
+
+	this.classname = "au";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+au._isfieldmapper = true;
+
+
+au.prototype.profile = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+au.prototype.usrgroup = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+au.prototype.alert_message = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+au.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+au.prototype.email = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+au.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+au.prototype.suffix = function(new_value) {
+	if(new_value) { this.array[16] = new_value; }
+	return this.array[16];
+}
+au.prototype.id = function(new_value) {
+	if(new_value) { this.array[18] = new_value; }
+	return this.array[18];
+}
+au.prototype.address = function(new_value) {
+	if(new_value) { this.array[17] = new_value; }
+	return this.array[17];
+}
+au.prototype.ident_value = function(new_value) {
+	if(new_value) { this.array[20] = new_value; }
+	return this.array[20];
+}
+au.prototype.active = function(new_value) {
+	if(new_value) { this.array[22] = new_value; }
+	return this.array[22];
+}
+au.prototype.home_ou = function(new_value) {
+	if(new_value) { this.array[23] = new_value; }
+	return this.array[23];
+}
+au.prototype.last_xact_id = function(new_value) {
+	if(new_value) { this.array[24] = new_value; }
+	return this.array[24];
+}
+au.prototype.dob = function(new_value) {
+	if(new_value) { this.array[26] = new_value; }
+	return this.array[26];
+}
+au.prototype.card = function(new_value) {
+	if(new_value) { this.array[30] = new_value; }
+	return this.array[30];
+}
+au.prototype.day_phone = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+au.prototype.usrname = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+au.prototype.super_user = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+au.prototype.family_name = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+au.prototype.claims_returned_count = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+au.prototype.first_given_name = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+au.prototype.standing = function(new_value) {
+	if(new_value) { this.array[15] = new_value; }
+	return this.array[15];
+}
+au.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+au.prototype.gender = function(new_value) {
+	if(new_value) { this.array[19] = new_value; }
+	return this.array[19];
+}
+au.prototype.ident_type = function(new_value) {
+	if(new_value) { this.array[21] = new_value; }
+	return this.array[21];
+}
+au.prototype.other_phone = function(new_value) {
+	if(new_value) { this.array[25] = new_value; }
+	return this.array[25];
+}
+au.prototype.passwd = function(new_value) {
+	if(new_value) { this.array[27] = new_value; }
+	return this.array[27];
+}
+au.prototype.evening_phone = function(new_value) {
+	if(new_value) { this.array[28] = new_value; }
+	return this.array[28];
+}
+au.prototype.second_given_name = function(new_value) {
+	if(new_value) { this.array[29] = new_value; }
+	return this.array[29];
+}
+au.prototype.addresses = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+au.prototype.cards = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+au.prototype.master_account = function(new_value) {
+	if(new_value) { this.array[31] = new_value; }
+	return this.array[31];
+}
+au.prototype.prefix = function(new_value) {
+	if(new_value) { this.array[32] = new_value; }
+	return this.array[32];
+}
+au.prototype.usrid = function(new_value) {
+	if(new_value) { this.array[33] = new_value; }
+	return this.array[33];
+}
+
+//  ----------------------------------------------------------------
+// Class: acp
+//  ----------------------------------------------------------------
+
+
+function acp(array) {
+
+	this.classname = "acp";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+acp._isfieldmapper = true;
+
+
+acp.prototype.call_number = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+acp.prototype.edit_date = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+acp.prototype.creator = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+acp.prototype.fine_level = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+acp.prototype.circulate = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+acp.prototype.circ_as_type = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+acp.prototype.stat_cat_entries = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+acp.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+acp.prototype.editor = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+acp.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+acp.prototype.id = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+acp.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+acp.prototype.available = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+acp.prototype.deposit = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+acp.prototype.loan_duration = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+acp.prototype.ref = function(new_value) {
+	if(new_value) { this.array[15] = new_value; }
+	return this.array[15];
+}
+acp.prototype.create_date = function(new_value) {
+	if(new_value) { this.array[16] = new_value; }
+	return this.array[16];
+}
+acp.prototype.barcode = function(new_value) {
+	if(new_value) { this.array[17] = new_value; }
+	return this.array[17];
+}
+acp.prototype.deposit_amount = function(new_value) {
+	if(new_value) { this.array[18] = new_value; }
+	return this.array[18];
+}
+acp.prototype.opac_visible = function(new_value) {
+	if(new_value) { this.array[20] = new_value; }
+	return this.array[20];
+}
+acp.prototype.copy_number = function(new_value) {
+	if(new_value) { this.array[19] = new_value; }
+	return this.array[19];
+}
+acp.prototype.price = function(new_value) {
+	if(new_value) { this.array[21] = new_value; }
+	return this.array[21];
+}
+acp.prototype.circ_modifier = function(new_value) {
+	if(new_value) { this.array[22] = new_value; }
+	return this.array[22];
+}
+
+//  ----------------------------------------------------------------
+// Class: acpn
+//  ----------------------------------------------------------------
+
+
+function acpn(array) {
+
+	this.classname = "acpn";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+acpn._isfieldmapper = true;
+
+
+acpn.prototype.creator = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+acpn.prototype.value = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+acpn.prototype.create_date = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+acpn.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+acpn.prototype.owning_copy = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+acpn.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+acpn.prototype.id = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+acpn.prototype.title = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+acpn.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: mmr
+//  ----------------------------------------------------------------
+
+
+function mmr(array) {
+
+	this.classname = "mmr";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mmr._isfieldmapper = true;
+
+
+mmr.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mmr.prototype.mods = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mmr.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mmr.prototype.fingerprint = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mmr.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mmr.prototype.master_record = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+mmr.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: mfr
+//  ----------------------------------------------------------------
+
+
+function mfr(array) {
+
+	this.classname = "mfr";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mfr._isfieldmapper = true;
+
+
+mfr.prototype.value = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mfr.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mfr.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mfr.prototype.ind1 = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mfr.prototype.record = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mfr.prototype.ind2 = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+mfr.prototype.id = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+mfr.prototype.tag = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+mfr.prototype.subfield = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+mfr.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: mkfe
+//  ----------------------------------------------------------------
+
+
+function mkfe(array) {
+
+	this.classname = "mkfe";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mkfe._isfieldmapper = true;
+
+
+mkfe.prototype.source = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mkfe.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mkfe.prototype.value = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mkfe.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mkfe.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mkfe.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+mkfe.prototype.field = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+
+//  ----------------------------------------------------------------
+// Class: mmrsm
+//  ----------------------------------------------------------------
+
+
+function mmrsm(array) {
+
+	this.classname = "mmrsm";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mmrsm._isfieldmapper = true;
+
+
+mmrsm.prototype.source = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mmrsm.prototype.metarecord = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mmrsm.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mmrsm.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mmrsm.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mmrsm.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: ap
+//  ----------------------------------------------------------------
+
+
+function ap(array) {
+
+	this.classname = "ap";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+ap._isfieldmapper = true;
+
+
+ap.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+ap.prototype.name = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+ap.prototype.id = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+ap.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+ap.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: asva
+//  ----------------------------------------------------------------
+
+
+function asva(array) {
+
+	this.classname = "asva";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+asva._isfieldmapper = true;
+
+
+asva.prototype.question = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+asva.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asva.prototype.answer = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+asva.prototype.id = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+asva.prototype.responses = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+asva.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+asva.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: mcp
+//  ----------------------------------------------------------------
+
+
+function mcp(array) {
+
+	this.classname = "mcp";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mcp._isfieldmapper = true;
+
+
+mcp.prototype.accepting_usr = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mcp.prototype.xact = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mcp.prototype.amount_collected = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+mcp.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mcp.prototype.payment_ts = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+mcp.prototype.note = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+mcp.prototype.amount = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mcp.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mcp.prototype.cash_drawer = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+mcp.prototype.id = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+mcp.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: ascecm
+//  ----------------------------------------------------------------
+
+
+function ascecm(array) {
+
+	this.classname = "ascecm";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+ascecm._isfieldmapper = true;
+
+
+ascecm.prototype.stat_cat_entry = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+ascecm.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+ascecm.prototype.target_user = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+ascecm.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+ascecm.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+ascecm.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: mtfe
+//  ----------------------------------------------------------------
+
+
+function mtfe(array) {
+
+	this.classname = "mtfe";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mtfe._isfieldmapper = true;
+
+
+mtfe.prototype.source = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mtfe.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mtfe.prototype.value = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mtfe.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mtfe.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mtfe.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+mtfe.prototype.field = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+
+//  ----------------------------------------------------------------
+// Class: mrd
+//  ----------------------------------------------------------------
+
+
+function mrd(array) {
+
+	this.classname = "mrd";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mrd._isfieldmapper = true;
+
+
+mrd.prototype.item_type = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mrd.prototype.pub_status = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mrd.prototype.control_type = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+mrd.prototype.audience = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mrd.prototype.char_encoding = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+mrd.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mrd.prototype.enc_level = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+mrd.prototype.item_form = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+mrd.prototype.item_lang = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+mrd.prototype.record = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+mrd.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mrd.prototype.cat_form = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+mrd.prototype.id = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+mrd.prototype.bib_level = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+mrd.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: acnn
+//  ----------------------------------------------------------------
+
+
+function acnn(array) {
+
+	this.classname = "acnn";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+acnn._isfieldmapper = true;
+
+
+acnn.prototype.owning_call_number = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+acnn.prototype.creator = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+acnn.prototype.value = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+acnn.prototype.create_date = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+acnn.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+acnn.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+acnn.prototype.id = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+acnn.prototype.title = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+acnn.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: ac
+//  ----------------------------------------------------------------
+
+
+function ac(array) {
+
+	this.classname = "ac";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+ac._isfieldmapper = true;
+
+
+ac.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+ac.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+ac.prototype.fine_interval = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+ac.prototype.id = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+ac.prototype.target_copy = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+ac.prototype.usr = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+ac.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+ac.prototype.xact_start = function(new_value) {
+	if(new_value) { this.array[15] = new_value; }
+	return this.array[15];
+}
+ac.prototype.duration = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+ac.prototype.note = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+ac.prototype.fine_amount = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+ac.prototype.stop_fines = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+ac.prototype.renewal_remaining = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+ac.prototype.xact_finish = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+ac.prototype.max_fines = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+ac.prototype.circ_lib = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+
+//  ----------------------------------------------------------------
+// Class: brn
+//  ----------------------------------------------------------------
+
+
+function brn(array) {
+
+	this.classname = "brn";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+brn._isfieldmapper = true;
+
+
+brn.prototype.node_type = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+brn.prototype.value = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+brn.prototype.name = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+brn.prototype.children = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+brn.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+brn.prototype.intra_doc_id = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+brn.prototype.owner_doc = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+brn.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+brn.prototype.parent_node = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+brn.prototype.id = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+brn.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+brn.prototype.namepsace_uri = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+
+//  ----------------------------------------------------------------
+// Class: ascecm
+//  ----------------------------------------------------------------
+
+
+function ascecm(array) {
+
+	this.classname = "ascecm";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+ascecm._isfieldmapper = true;
+
+
+ascecm.prototype.owning_copy = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+ascecm.prototype.stat_cat_entry = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+ascecm.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+ascecm.prototype.stat_cat = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+ascecm.prototype.id = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+ascecm.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+ascecm.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: asce
+//  ----------------------------------------------------------------
+
+
+function asce(array) {
+
+	this.classname = "asce";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+asce._isfieldmapper = true;
+
+
+asce.prototype.owner = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+asce.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asce.prototype.value = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+asce.prototype.id = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+asce.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+asce.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: asv
+//  ----------------------------------------------------------------
+
+
+function asv(array) {
+
+	this.classname = "asv";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+asv._isfieldmapper = true;
+
+
+asv.prototype.opac = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+asv.prototype.name = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+asv.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+asv.prototype.usr_summary = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+asv.prototype.questions = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+asv.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asv.prototype.end_date = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+asv.prototype.id = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+asv.prototype.responses = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+asv.prototype.start_date = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+asv.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: mb
+//  ----------------------------------------------------------------
+
+
+function mb(array) {
+
+	this.classname = "mb";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mb._isfieldmapper = true;
+
+
+mb.prototype.amount = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mb.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mb.prototype.billing_ts = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mb.prototype.xact = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mb.prototype.id = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+mb.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mb.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+mb.prototype.note = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+
+//  ----------------------------------------------------------------
 // Class: aou
 //  ----------------------------------------------------------------
 
@@ -1086,13 +2176,13 @@ aou.prototype.isdeleted = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
-// Class: bre
+// Class: asc
 //  ----------------------------------------------------------------
 
 
-function bre(array) {
+function asc(array) {
 
-	this.classname = "bre";
+	this.classname = "asc";
 	this._isfieldmapper = true;
 
 	if(array) { 
@@ -1107,82 +2197,50 @@ function bre(array) {
 
 }
 
-bre._isfieldmapper = true;
+asc._isfieldmapper = true;
 
 
-bre.prototype.edit_date = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-bre.prototype.item_type = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-bre.prototype.source = function(new_value) {
+asc.prototype.owner = function(new_value) {
 	if(new_value) { this.array[4] = new_value; }
 	return this.array[4];
 }
-bre.prototype.call_numbers = function(new_value) {
+asc.prototype.entries = function(new_value) {
 	if(new_value) { this.array[3] = new_value; }
 	return this.array[3];
 }
-bre.prototype.tcn_value = function(new_value) {
+asc.prototype.name = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+asc.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+asc.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asc.prototype.opac_visible = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+asc.prototype.id = function(new_value) {
 	if(new_value) { this.array[7] = new_value; }
 	return this.array[7];
 }
-bre.prototype.creator = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-bre.prototype.create_date = function(new_value) {
-	if(new_value) { this.array[10] = new_value; }
-	return this.array[10];
-}
-bre.prototype.active = function(new_value) {
-	if(new_value) { this.array[9] = new_value; }
-	return this.array[9];
-}
-bre.prototype.deleted = function(new_value) {
-	if(new_value) { this.array[11] = new_value; }
-	return this.array[11];
-}
-bre.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-bre.prototype.last_xact_id = function(new_value) {
-	if(new_value) { this.array[12] = new_value; }
-	return this.array[12];
-}
-bre.prototype.editor = function(new_value) {
-	if(new_value) { this.array[13] = new_value; }
-	return this.array[13];
-}
-bre.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-bre.prototype.id = function(new_value) {
-	if(new_value) { this.array[14] = new_value; }
-	return this.array[14];
-}
-bre.prototype.isdeleted = function(new_value) {
+asc.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
 	return this.array[2];
 }
-bre.prototype.tcn_source = function(new_value) {
-	if(new_value) { this.array[15] = new_value; }
-	return this.array[15];
-}
 
 //  ----------------------------------------------------------------
-// Class: brx
+// Class: ac
 //  ----------------------------------------------------------------
 
 
-function brx(array) {
+function ac(array) {
 
-	this.classname = "brx";
+	this.classname = "ac";
 	this._isfieldmapper = true;
 
 	if(array) { 
@@ -1197,84 +2255,92 @@ function brx(array) {
 
 }
 
-brx._isfieldmapper = true;
+ac._isfieldmapper = true;
 
 
-brx.prototype.marc = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-brx.prototype.ischanged = function(new_value) {
+ac.prototype.ischanged = function(new_value) {
 	if(new_value) { this.array[1] = new_value; }
 	return this.array[1];
 }
-brx.prototype.id = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-brx.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-brx.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-brx.prototype.last_xact_id = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-
-//  ----------------------------------------------------------------
-// Class: msfe
-//  ----------------------------------------------------------------
-
-
-function msfe(array) {
-
-	this.classname = "msfe";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-msfe._isfieldmapper = true;
-
-
-msfe.prototype.source = function(new_value) {
+ac.prototype.active = function(new_value) {
 	if(new_value) { this.array[3] = new_value; }
 	return this.array[3];
 }
-msfe.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-msfe.prototype.value = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-msfe.prototype.id = function(new_value) {
+ac.prototype.id = function(new_value) {
 	if(new_value) { this.array[5] = new_value; }
 	return this.array[5];
 }
-msfe.prototype.isnew = function(new_value) {
+ac.prototype.barcode = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+ac.prototype.isnew = function(new_value) {
 	if(new_value) { this.array[0] = new_value; }
 	return this.array[0];
 }
-msfe.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-msfe.prototype.field = function(new_value) {
+ac.prototype.usr = function(new_value) {
 	if(new_value) { this.array[6] = new_value; }
 	return this.array[6];
+}
+ac.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: asc
+//  ----------------------------------------------------------------
+
+
+function asc(array) {
+
+	this.classname = "asc";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+asc._isfieldmapper = true;
+
+
+asc.prototype.owner = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+asc.prototype.entries = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+asc.prototype.name = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+asc.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+asc.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+asc.prototype.opac_visible = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+asc.prototype.id = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+asc.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
 }

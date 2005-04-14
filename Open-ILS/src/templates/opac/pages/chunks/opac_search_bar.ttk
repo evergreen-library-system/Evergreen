@@ -17,17 +17,10 @@
 			WRAPPER html/row;
 
 				WRAPPER html/cell  valign='middle' align='left';
+					INCLUDE opac/pages/chunks/search_bar_form.ttk;
+				END;
 
-					INCLUDE opac/pages/chunks/search_bar_form.ttk js_only=$js_only;
-
-#					IF js_only;
-#						INCLUDE opac/pages/chunks/js_search_bar_form.ttk;
-#					ELSE;
-#						INCLUDE opac/pages/chunks/form_search_bar_form.ttk;
-#					END;
-
-
-				
+				WRAPPER html/cell  id='progress_bar' align='center';
 				END;
 
 				WRAPPER html/cell  align='center';
@@ -61,22 +54,9 @@
 
 				WRAPPER html/cell valign='bottom' align='right';
 					WRAPPER html/div id='small_logo_div';
-						img(src = "/images/small_logo.jpg", border="0", width='45', height='45');
-#						WRAPPER html/table;
-
-							# for whatever reason, i have to shove a small 
-							# row/cell above the pic to make it line up
-							#row(content = cell());
-
-#							WRAPPER html/row;
-#								WRAPPER html/cell valign='bottom';
-#									WRAPPER html/anchor href=global.config.root_url;
-#										img(src = "/images/small_logo.jpg", border="0", width='45', height='45');
-#									END; # - anchor
-#								END; # - cell
-#							END; # - row
-#
-#						END; # - table
+						WRAPPER html/anchor href=global.config.root_url;
+							img(src = "/images/small_logo.jpg", border="0", width='30', height='30');
+						END; # - anchor
 					END; # - div
 				END; # - cell	
 

@@ -10,11 +10,13 @@ var globalOPACStartPage = null;
 
 function OPACStartPage() {
 
-	if( globalOPACStartPage ) 
-		return globalOPACStartPage; 
-
-	this.searchBarForm	= new SearchBarFormChunk();
+	debug("In OPACStartPage()");
 	this.searchBar			= new SearchBarChunk();
+
+	if( globalOPACStartPage ) {
+		return globalOPACStartPage; 
+	}
+
 	globalOPACStartPage = this;
 }
 

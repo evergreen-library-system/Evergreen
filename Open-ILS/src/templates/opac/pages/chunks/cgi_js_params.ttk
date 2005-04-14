@@ -4,9 +4,9 @@
 	# --------------------------------------------------------------------------------- 
 
 	WRAPPER html/js;
-		'var paramObj = new Object();';
+		'parent.paramObj = new Object();';
 		FOR pname IN cgi.param();
-			'paramObj["'; pname; '"] = "'; cgi.param(pname); '";'; "\n";
+			'parent.paramObj["'; pname; '"] = "'; cgi.param(pname); '";'; "\n";
 		END;
 	END;
 

@@ -55,5 +55,15 @@
 	MACRO center		WRAPPER html/center;				content;	END;
 	MACRO box			WRAPPER html/div;					content;	END;
 
+	MACRO cellbox		WRAPPER html/cell;
+		WRAPPER html/div; content; END;
+	END;
+
+	MACRO rowbox(i,c,text)		WRAPPER html/row;
+		WRAPPER html/cell;
+			WRAPPER html/div; id=_id; class=_class; text; END;
+		END;
+	END;
+
 %]
 
