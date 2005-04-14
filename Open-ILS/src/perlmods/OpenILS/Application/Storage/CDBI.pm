@@ -13,7 +13,7 @@ use OpenILS::Application::Storage::CDBI::money;
 use OpenSRF::Utils::Logger;
 use OpenSRF::EX qw/:try/;
 
-our $VERSION;
+our $VERSION = undef;
 my $log = 'OpenSRF::Utils::Logger';
 
 sub child_init {
@@ -272,146 +272,129 @@ sub modify_from_fieldmapper {
 
 
 
-sub import {
-	return if ($VERSION);
-
 	#-------------------------------------------------------------------------------
 	actor::user->has_a( home_ou => 'actor::org_unit' );
-	actor::user->has_many( survey_responses => 'action::survey_response' );
-	#-------------------------------------------------------------------------------
-	actor::org_unit->has_many( users => 'actor::user' );
+	actor::user->has_a( card => 'actor::card' );
+	actor::user->has_a( standing => 'config::standing' );
+	actor::user->has_a( profile => 'actor::profile' );
+	actor::user->has_a( address => 'actor::user_address' );
+	actor::user->has_a( ident_type => 'config::identification_type' );
+
+	actor::user_address->has_a( usr => 'actor::user' );
+	
+	actor::card->has_a( usr => 'actor::user' );
+	
 	actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
 	actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
-	#actor::org_unit->has_a( address => 'actor::address' );
-	#-------------------------------------------------------------------------------
+	#actor::org_unit->has_a( address => 'actor::org_address' );
 
-	#-------------------------------------------------------------------------------
 	action::survey_response->has_a( usr => 'actor::user' );
 	action::survey_response->has_a( survey => 'action::survey' );
 	action::survey_response->has_a( question => 'action::survey_question' );
 	action::survey_response->has_a( answer => 'action::survey_answer' );
-	#-------------------------------------------------------------------------------
-	action::survey->has_many( questions => 'action::survey_question' );
-	action::survey->has_many( responses => 'action::survey_response' );
-	#-------------------------------------------------------------------------------
-	action::survey_question->has_a( survey => 'action::survey' );
-	action::survey_question->has_many( answers => 'action::survey_answer' );
-	action::survey_question->has_many( responses => 'action::survey_response' );
-	#-------------------------------------------------------------------------------
-	action::survey_answer->has_a( question => 'action::survey' );
-	action::survey_answer->has_many( responses => 'action::survey_response' );
-	#-------------------------------------------------------------------------------
 
-	#-------------------------------------------------------------------------------
+	action::survey_question->has_a( survey => 'action::survey' );
+
+	action::survey_answer->has_a( question => 'action::survey' );
+
 	asset::copy_note->has_a( owning_copy => 'asset::copy' );
-	#-------------------------------------------------------------------------------
+
 	asset::copy->has_a( call_number => 'asset::call_number' );
-	asset::copy->has_many( notes => 'asset::copy_note' );
 	asset::copy->has_a( creator => 'actor::user' );
 	asset::copy->has_a( editor => 'actor::user' );
-	#-------------------------------------------------------------------------------
+
 	asset::call_number_note->has_a( owning_call_number => 'asset::call_number' );
-	#-------------------------------------------------------------------------------
+
 	asset::call_number->has_a( record => 'biblio::record_entry' );
-	asset::call_number->has_many( copies => 'asset::copy' );
-	asset::call_number->has_many( notes => 'asset::call_number_note' );
 	asset::call_number->has_a( creator => 'actor::user' );
 	asset::call_number->has_a( editor => 'actor::user' );
-	#-------------------------------------------------------------------------------
-	
 
-	#-------------------------------------------------------------------------------
 	biblio::record_note->has_a( record => 'biblio::record_entry' );
-	#-------------------------------------------------------------------------------
+	
 	biblio::record_entry->has_a( creator => 'actor::user' );
 	biblio::record_entry->has_a( editor => 'actor::user' );
+	
+	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
+	
+	metabib::record_descriptor->has_a( record => 'biblio::record_entry' );
+	
+	metabib::full_rec->has_a( record => 'biblio::record_entry' );
+	
+	metabib::title_field_entry->has_a( source => 'biblio::record_entry' );
+	metabib::title_field_entry->has_a( field => 'config::metabib_field' );
+	
+	metabib::author_field_entry->has_a( source => 'biblio::record_entry' );
+	metabib::author_field_entry->has_a( field => 'config::metabib_field' );
+	
+	metabib::subject_field_entry->has_a( source => 'biblio::record_entry' );
+	metabib::subject_field_entry->has_a( field => 'config::metabib_field' );
+	
+	metabib::keyword_field_entry->has_a( source => 'biblio::record_entry' );
+	metabib::keyword_field_entry->has_a( field => 'config::metabib_field' );
+	
+	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
+	metabib::metarecord_source_map->has_a( source => 'biblio::record_entry' );
+
+	action::circulation->has_a( usr => 'actor::user' );
+	action::circulation->has_a( target_copy => 'asset::copy' );
+	action::circulation->has_a( circ_lib => 'actor::org_unit' );
+
+	money::billable_transaction->has_a( usr => 'actor::user' );
+	
+	
+	#-------------------------------------------------------------------------------
+	actor::user->has_many( survey_responses => 'action::survey_response' );
+	actor::user->has_many( addresses => 'actor::user_address' );
+	actor::user->has_many( cards => 'actor::card' );
+
+	actor::org_unit->has_many( users => 'actor::user' );
+	actor::profile->has_many( users => 'actor::user' );
+
+	action::survey->has_many( questions => 'action::survey_question' );
+	action::survey->has_many( responses => 'action::survey_response' );
+	
+	action::survey_question->has_many( answers => 'action::survey_answer' );
+	action::survey_question->has_many( responses => 'action::survey_response' );
+
+	action::survey_answer->has_many( responses => 'action::survey_response' );
+
+	asset::copy->has_many( notes => 'asset::copy_note' );
+	asset::call_number->has_many( copies => 'asset::copy' );
+	asset::call_number->has_many( notes => 'asset::call_number_note' );
+
 	biblio::record_entry->has_many( record_descriptor => 'metabib::record_descriptor' );
 	biblio::record_entry->has_many( notes => 'biblio::record_note' );
 	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
-	
-	# should we have just one field entry per class for each record???? (xslt vs xpath)
 	biblio::record_entry->has_many( full_record_entries => 'metabib::full_rec' );
 	biblio::record_entry->has_many( title_field_entries => 'metabib::title_field_entry' );
 	biblio::record_entry->has_many( author_field_entries => 'metabib::author_field_entry' );
 	biblio::record_entry->has_many( subject_field_entries => 'metabib::subject_field_entry' );
 	biblio::record_entry->has_many( keyword_field_entries => 'metabib::keyword_field_entry' );
-	#-------------------------------------------------------------------------------
 
-
-	#-------------------------------------------------------------------------------
-	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
 	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source'] );
-	#-------------------------------------------------------------------------------
-	metabib::record_descriptor->has_a( record => 'biblio::record_entry' );
-	#-------------------------------------------------------------------------------
-	metabib::full_rec->has_a( record => 'biblio::record_entry' );
-	#-------------------------------------------------------------------------------
-	metabib::title_field_entry->has_a( source => 'biblio::record_entry' );
-	metabib::title_field_entry->has_a( field => 'config::metabib_field' );
-	#-------------------------------------------------------------------------------
-	metabib::author_field_entry->has_a( source => 'biblio::record_entry' );
-	metabib::author_field_entry->has_a( field => 'config::metabib_field' );
-	#-------------------------------------------------------------------------------
-	metabib::subject_field_entry->has_a( source => 'biblio::record_entry' );
-	metabib::subject_field_entry->has_a( field => 'config::metabib_field' );
-	#-------------------------------------------------------------------------------
-	metabib::keyword_field_entry->has_a( source => 'biblio::record_entry' );
-	metabib::keyword_field_entry->has_a( field => 'config::metabib_field' );
-	#-------------------------------------------------------------------------------
-	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
-	metabib::metarecord_source_map->has_a( source => 'biblio::record_entry' );
-	#-------------------------------------------------------------------------------
 
-	action::circulation->has_a( usr => 'actor::user' );
-	action::circulation->has_a( target_copy => 'asset::copy' );
-
-	#-------------------------------------------------------------------------------
-
-	money::billable_transaction->has_a( usr => 'actor::user' );
 	money::billable_transaction->has_many( billings => 'money::billing' );
 	money::billable_transaction->has_many( payments => 'money::payment' );
 
-	money::billing->has_a( transaction => 'money::billable_transaction' );
-	money::payment->has_a( transaction => 'money::billable_transaction' );
+	money::billing->has_a( xact => 'money::billable_transaction' );
+	money::payment->has_a( xact => 'money::billable_transaction' );
 
-	money::cash_payment->has_a( transaction => 'money::billable_transaction' );
+	money::cash_payment->has_a( xact => 'money::billable_transaction' );
 	money::cash_payment->has_a( accepting_usr => 'actor::user' );
 
-	money::check_payment->has_a( transaction => 'money::billable_transaction' );
+	money::check_payment->has_a( xact => 'money::billable_transaction' );
 	money::check_payment->has_a( accepting_usr => 'actor::user' );
 
-	money::credit_card_payment->has_a( transaction => 'money::billable_transaction' );
+	money::credit_card_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_card_payment->has_a( accepting_usr => 'actor::user' );
 
-	money::forgive_payment->has_a( transaction => 'money::billable_transaction' );
+	money::forgive_payment->has_a( xact => 'money::billable_transaction' );
 	money::forgive_payment->has_a( accepting_usr => 'actor::user' );
 
-	money::work_payment->has_a( transaction => 'money::billable_transaction' );
+	money::work_payment->has_a( xact => 'money::billable_transaction' );
 	money::work_payment->has_a( accepting_usr => 'actor::user' );
 
-	money::credit_payment->has_a( transaction => 'money::billable_transaction' );
+	money::credit_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_payment->has_a( accepting_usr => 'actor::user' );
-
-
-	# should we have just one field entry per class for each record???? (xslt vs xpath)
-	#metabib::title_field_entry_source_map->has_a( field_entry => 'metabib::title_field_entry' );
-	#metabib::title_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	#metabib::title_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
-	#-------------------------------------------------------------------------------
-	#metabib::subject_field_entry_source_map->has_a( field_entry => 'metabib::subject_field_entry' );
-	#metabib::subject_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	#metabib::subject_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
-	#-------------------------------------------------------------------------------
-	#metabib::author_field_entry_source_map->has_a( field_entry => 'metabib::author_field_entry' );
-	#metabib::author_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	#metabib::author_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
-	#-------------------------------------------------------------------------------
-	#metabib::keyword_field_entry_source_map->has_a( field_entry => 'metabib::keyword_field_entry' );
-	#metabib::keyword_field_entry_source_map->has_a( source_record => 'biblio::record_entry' );
-	#metabib::keyword_field_entry_source_map->has_a( metarecord => 'metabib::metarecord' );
-	#-------------------------------------------------------------------------------
-	$VERSION = 1;
-}
-
 
 1;

@@ -177,6 +177,7 @@ my $rollback;
 my $lookup;
 my $update_entry;
 my $mr_lookup;
+my $mr_update;
 my $mr_create;
 my $create_source_map;
 my $sm_lookup;
@@ -226,6 +227,8 @@ sub wormize {
 		unless ($sm_lookup);
 	$mr_lookup = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.search.fingerprint')
 		unless ($mr_lookup);
+	$mr_update = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.batch.update')
+		unless ($mr_update);
 	$mr_create = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.create')
 		unless ($mr_create);
 	$create_source_map = $self->method_lookup('open-ils.storage.direct.metabib.metarecord_source_map.batch.create')
@@ -274,6 +277,7 @@ sub wormize {
 
 	my @source_maps;
 	my @entry_list;
+	my @mr_list;
 	my @rd_list;
 	my @ns_list;
 	my @mods_data;
@@ -306,6 +310,8 @@ sub wormize {
 				}
 			} else {
 				$mr = $$mr[0];
+				$mr->mods('');
+				push @mr_list, $mr;
 			}
 
 			my $sm = new Fieldmapper::metabib::metarecord_source_map;
@@ -348,6 +354,10 @@ sub wormize {
 		my ($sm) = $create_source_map->run(@source_maps);
 		unless (defined $sm) {
 			throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord_source_map.batch.create!")
+		}
+		my ($mr) = $mr_update->run(@mr_list);
+		unless (defined $mr) {
+			throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord.batch.update!")
 		}
 	}
 

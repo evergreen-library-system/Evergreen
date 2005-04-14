@@ -504,9 +504,6 @@ sub make_stream_atomic {
 	(my $m_name = $self->api_name) =~ s/\.atomic$//o;
 	my @results = $self->method_lookup($m_name)->run(@args);
 
-	if (@results == 1) {
-		return $results[0];
-	}
 	return \@results;
 }
 

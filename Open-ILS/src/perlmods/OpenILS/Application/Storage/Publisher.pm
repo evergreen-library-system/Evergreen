@@ -2,7 +2,7 @@ package OpenILS::Application::Storage::Publisher;
 use base qw/OpenILS::Application::Storage/;
 our $VERSION = 1;
 
-use Data::Dumper;
+use Digest::MD5 qw/md5_hex/;
 use OpenSRF::EX qw/:try/;;
 use OpenSRF::Utils::Logger;
 my $log = 'OpenSRF::Utils::Logger';
@@ -60,14 +60,16 @@ sub cachable_wrapper {
 			$ind++;
 			my $value_ind = $ind;
 			$cache_args{$args[$key_ind]} = $args[$value_ind];
-			$log->debug("Cache limiter value for $args[$key_ind] is $args[$value_ind]", DEBUG);
+			$log->debug("Cache limiter value for $args[$key_ind] is $args[$value_ind]", INTERNAL);
 			next;
 		}
 		$key_string .= $args[$ind];
+		$log->debug("Partial cache key value is $args[$ind]", INTERNAL);
 		push @real_args, $args[$ind];
 	}
 
 	my $cache_key = md5_hex($key_string);
+	$log->debug("Key string for cache lookup is $key_string -> $cache_key", DEBUG);
 
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
 	if (defined $cached_res) {
@@ -83,7 +85,7 @@ sub cachable_wrapper {
 
         $client->respond( $_ ) for ( grep { defined } @res[$cache_args{offset} .. int($cache_args{offset} + $cache_args{limit} - 1)] );
 
-        OpenSRF::Utils::Cache->new->put_cache( $cache_key => \@res => $cach_args{timeout});
+        OpenSRF::Utils::Cache->new->put_cache( $cache_key => \@res => $cache_args{timeout});
 
 	return undef;
 }
