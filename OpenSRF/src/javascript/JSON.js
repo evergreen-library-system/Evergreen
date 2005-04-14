@@ -40,7 +40,7 @@ function js2JSON(arg) {
 			if(arg) {
 
 				if (arg._isfieldmapper) { /* magi-c-ast for fieldmapper objects */
-					return "/*--S" + arg.classname + "--*/" + js2JSON(arg.array) + "/*--E" + arg.classname + "--*/";
+					return "/*--S " + arg.classname + "--*/" + js2JSON(arg.array) + "/*--E " + arg.classname + "--*/";
 
 				} else {
 
