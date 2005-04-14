@@ -1,19 +1,23 @@
+
 function RecordResultRow(id) {
+
 	if(id==null)
 		throw new EXArg( "RecordResultRow required ID" );
 
-	//var docfrag = document.createDocumentFragment();
-	var table	= document.createElement("table");
-	var tbody	= document.createElement("tbody");
+	//var frag		= document.createDocumentFragment();
+
+	var table	= createAppElement("table");
+	var tbody	= createAppElement("tbody");
+
 
 	add_css_class(table,"record_result_row_table");
 
-	var toptd	= document.createElement("td");
-	var td1		= document.createElement("td");
-	var td2		= document.createElement("td");
-	var td3		= document.createElement("td");
-	var td4		= document.createElement("td");
-	var td5		= document.createElement("td");
+	var toptd	= createAppElement("td");
+	var td1		= createAppElement("td");
+	var td2		= createAppElement("td");
+	var td3		= createAppElement("td");
+	var td4		= createAppElement("td");
+	var td5		= createAppElement("td");
 
 	td1.id = "record_result_row_box_" + id;
 	add_css_class( td1, "record_result_row_box");
@@ -27,8 +31,8 @@ function RecordResultRow(id) {
 	td4.id = "record_result_author_box_" + id;
 	add_css_class(td3, "record_result_author_box");
 
-	var row1		= document.createElement("tr");
-	var row2		= document.createElement("tr");
+	var row1		= createAppElement("tr");
+	var row2		= createAppElement("tr");
 
 	row1.appendChild(td2);
 	row1.appendChild(td3);
@@ -42,12 +46,18 @@ function RecordResultRow(id) {
 
 }
 
+function addResultRow(row) {
+	td1 = row.appendChild( createAppElement("TD") );
+}
+
+
+
 RecordResultRow.prototype.toString = function() {
 	return this.obj.string;
 }
 
 function LineDiv(type) {
-	this.obj  = document.createElement("div");
+	this.obj  = createAppElement("div");
 	if( type == "small")
 		add_css_class(this.obj,"small_line_div");
 	else {

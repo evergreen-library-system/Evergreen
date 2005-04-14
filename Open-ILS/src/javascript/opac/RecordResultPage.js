@@ -50,18 +50,18 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 	switch(type) {
 
 		case "title":
-			href = document.createElement("a");
+			href = createAppElement("a");
 			add_css_class(href,"record_result_title_link");
 			href.setAttribute("href","?target=record_result&mrid=" + id );
-			href.appendChild(document.createTextNode(value));
+			href.appendChild(createAppTextNode(value));
 			break;
 
 		case "author":
-			href = document.createElement("a");
+			href = createAppElement("a");
 			add_css_class(href,"record_result_author_link");
 			href.setAttribute("href","?target=mr_result&mr_search_type=author&mr_search_query=" +
 					      encodeURIComponent(value));
-			href.appendChild(document.createTextNode(value));
+			href.appendChild(createAppTextNode(value));
 			break;
 
 		default:
@@ -197,7 +197,7 @@ RecordResultPage.prototype.collectRecords = function() {
 	var hit_box = getById("hit_count_count_box");
 	debug("Adding Hit Count: " + this.hitCount );
 	hit_box.appendChild(
-		document.createTextNode(parseInt(this.hitCount)));
+		createAppTextNode(parseInt(this.hitCount)));
 
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];
@@ -247,7 +247,7 @@ RecordResultPage.prototype.doCopyCount = function( record, search_id, page_id ) 
 			try {	
 				//copy_box.innerHTML = req.getResultObject();	
 				copy_box.appendChild(
-					document.createTextNode(req.getResultObject()));	
+					createAppTextNode(req.getResultObject()));	
 			} catch(E) { 
 				alert("Copy Count Retrieval Error:\n" + E ); 
 			}

@@ -5,11 +5,11 @@
 	WRAPPER html/html;
 
 		WRAPPER html/head title=tm.basic_search.page_title;
-			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+			INCLUDE opac/pages/chunks/css_includes.ttk;
 		END;
 
 		WRAPPER html/body onload='
-			globalInit();
+			pageInit();
 			globalPage.session.exp_days = "' _ global.config.session_timeout _ '";
 			globalPage.login_success_msg = "<b>' _ tm.success _ '</b>";
 			globalPage.login_failure_msg = "<b>' _ tm.failure _ '</b>";

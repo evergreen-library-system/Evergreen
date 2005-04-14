@@ -5,11 +5,11 @@
 	WRAPPER html/html;
 
 		WRAPPER html/head title=tm.basic_search.page_title;
-			INCLUDE opac/pages/chunks/css_js_includes.ttk;
+			INCLUDE opac/pages/chunks/css_includes.ttk;
 		END;
 
 		WRAPPER html/body onload='
-			globalInit();
+			pageInit();
 			globalPage.logout_success_msg = "<b>' _ tm.logout_success _ '</b>";
 			globalPage.doLogout();
 			';

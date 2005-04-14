@@ -27,9 +27,16 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.subBox				= getById("record_subject_sidebar_box");
 	this.authBox			= getById("record_author_sidebar_box");
 
-	this.hitsPerPage		= 10;					/* how many hits are displayed per page */
+	this.hitsPerPage		= 10;	 /* how many hits are displayed per page */
 	this.resetPage();
-	
+
+	/*
+	var tab = this.recordBox;
+	var tr = globalAppFrame.createAppElement("tr");
+	var cell = tr.appendChild(globalAppFrame.createAppElement("td"));
+	tab.appendChild(tr);
+	alert(tab.innerHTML);
+	*/
 }
 
 
@@ -84,12 +91,19 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 	*/
 AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, page_id ) {
 
-	result_row = new RecordResultRow(page_id);
 
-	var row = table_row_find_or_create(
+	var title_row = table_row_find_or_create(
 			this.recordBox, parseInt(page_id) * 3 );
 
-	row.appendChild(result_row.obj);
+	var result_row_stuff = new RecordResultRow(page_id, title_row);
+	//appendChild( title_row, result_row_stuff.obj );
+	title_row.appendChild( result_row_stuff.obj );
+
+	
+	//addResultRow(title_row);
+
+
+	//alert( title_row.innerHTML );
 
 	/* this is for our row of XUL buttons.  If no buttons are necessary, this just acts as
 		a blank row for visual spacing */
@@ -104,12 +118,17 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 	add_css_class( xul_cell, "xul" );
 	xul_cell.id = "record_result_xul_button_box_" + page_id;
 
-
-
 	var title_box	= getById("record_result_title_box_" + page_id );
 	var author_box = getById("record_result_author_box_" + page_id );
 	var row			= getById("record_result_row_box_" + page_id );
 	var xul			= getById("record_result_xul_button_box_" + page_id );
+
+	if(!title_box)
+		alert("No title box");
+
+	if(!author_box)
+		alert("no author box");
+
 
 
 	debug("displayRecord " + record.doc_id );
@@ -137,18 +156,18 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 	}
 	record.author = normalize(record.author);
 
-	title_box.appendChild( document.createTextNode(
-				(parseInt(search_id) + 1)  + ".   "));
-	title_box.appendChild( 
-		this.mkLink(record.doc_id, "title", record.title));
 
-	author_box.appendChild(
-		this.mkLink(record.doc_id, "author", record.author));
+	title_box.appendChild(createAppTextNode((parseInt(search_id) + 1)  + ".   "));
+	title_box.appendChild(this.mkLink(record.doc_id, "title", record.title));
+	author_box.appendChild(this.mkLink(record.doc_id, "author", record.author));
 
 	var classname = "result_even";
 	if((page_id%2) != 0) 
 		classname = "result_odd";
+
+	debug("Row: " +  row);
 	add_css_class(row, classname);
+
 
 
 	/* now grab the record authors and subjects */
@@ -182,26 +201,27 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	for(var sub in this.collectedSubjects) {
 		if(counter++ > 10)
 			break;
-		var href = document.createElement("a");
+		var href = createAppElement("a");
 		add_css_class(href,"record_result_sidebar_link");
 		href.setAttribute("href","?target=mr_result&mr_search_type=subject&page=0&mr_search_query=" +
 				      encodeURIComponent(sub));
-		href.appendChild(document.createTextNode(sub));
+		href.appendChild(createAppTextNode(sub));
 		this.subBox.appendChild(href);
-		this.subBox.appendChild(new LineDiv().obj);
+		//this.subBox.appendChild(new LineDiv("big").obj);
+		this.subBox.innerHTML += "<br/>";
 	}
 
 	counter = 0;
 	for(var auth in this.collectedAuthors) {
 		if(counter++ > 10)
 			break;
-		var href = document.createElement("a");
+		var href = createAppElement("a");
 		add_css_class(href,"record_result_sidebar_link");
 		href.setAttribute("href","?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
 				      encodeURIComponent(auth));
-		href.appendChild(document.createTextNode(auth));
+		href.appendChild(createAppTextNode(auth));
 		this.authBox.appendChild(href);
-		this.authBox.appendChild(new LineDiv().obj);
+		//this.authBox.appendChild(new LineDiv("small").obj);
 	}
 
 	/* do we need next/prev buttons */

@@ -6,7 +6,6 @@
 
 		WRAPPER html/head title=tm.basic_search.page_title;
 			INCLUDE opac/pages/chunks/css_includes.ttk;
-			#INCLUDE opac/pages/chunks/js_includes.ttk;
 		END;
 
 		WRAPPER html/body onload='pageInit();';

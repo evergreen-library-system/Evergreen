@@ -36,7 +36,8 @@
 	MACRO html			WRAPPER html/html;				content;	END;
 	MACRO head			WRAPPER head/head;				content;	END;
 	MACRO body			WRAPPER html/body;				content;	END;
-	MACRO table			WRAPPER html/table;				content;	END;
+	#MACRO table			WRAPPER html/table;				'<tbody><tr style="display:none"></tr>' _ content _ "</tbody>";	END;
+	MACRO table			WRAPPER html/table;				content; END;
 	MACRO row			WRAPPER html/row;					content;	END;
 	MACRO cell			WRAPPER html/cell;				content;	END;
 	MACRO form			WRAPPER html/form;				content;	END;

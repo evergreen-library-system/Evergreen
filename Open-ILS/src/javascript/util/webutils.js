@@ -1,3 +1,19 @@
+function appendChild( obj, child ) {
+	if(!obj || ! child) 
+		throw "Need args to appendChild";
+
+	try {
+		obj.appendChild(child);
+	} catch(E) {
+		obj.children[ obj.children.length ] = child;
+		//obj.childNodes = obj.children;
+		for( var c in obj.children ) {
+			//obj.childNodes[c] = obj.children[c];
+			//obj.appendChild(obj.children[c]);
+		}
+	}
+}
+
 function grabCharCode( evt ) {
 	evt = (evt) ? evt : ((window.event) ? event : null); /* for mozilla and IE */
 	if( evt ) {
@@ -19,6 +35,14 @@ function getById(id) {
 	}
 
 	return obj;
+}
+
+function createAppElement(name) {
+	return globalAppFrame.document.createElement(name);
+}
+
+function createAppTextNode(text) {
+	return globalAppFrame.document.createTextNode(text);
 }
 
 
@@ -83,23 +107,30 @@ function table_row_find_or_create( table, index ) {
 			"params.  table: " + table + " index: " + index + "\n";
 	}
 
+	var tbody = table.getElementsByTagName("tbody")[0];
+
+	if(tbody == null)
+		tbody = table.appendChild(createAppElement("tbody"));
+
+
 	if(table.rows[index] != null)
 		return table.rows[index];
 
-	for( var x = 0; x!= index; x++ ) {
+	var row;
+	for( var x = 0; x <= index; x++ ) {
 		if(table.rows[x] == null) {
-			//var row = document.createElement("tr");
+			row = tbody.appendChild(createAppElement("tr"));
+			//row = table.appendChild(document.createElement("tr"));
+			//row = document.createElement("tr");
+			//var tbody = table.getElementsByTagName("tbody")[0];
+			//debug(tbody);
+			//tbody.appendChild(row);
 			//table.childNodes[x] = row;
 			//table.rows[x] = row;
-			table.insertRow(x);
+			//row = table.insertRow(x);
 		}
 	}
-
-	//var row = document.createElement("tr");
-	//table.childNodes[index] = row;
-	//table.rows[index] = row;
-	//return row;
-	return table.insertRow(index);
+	return row;
 }
 
 /* finds or builds the requested cell,  adding any intermediate cells along the way */
@@ -225,7 +256,7 @@ function ProgressBar( div, color, interval ) {
 	this.progressTimer;
 
 	for( var x = 0; x!= this.progressEnd; x++ ) {
-		var newdiv = document.createElement("span");
+		var newdiv = createAppElement("span");
 		newdiv.id = "progress" + x;
 		newdiv.appendChild(document.createTextNode("   "));
 		div.appendChild(newdiv);
