@@ -67,7 +67,17 @@ sub begin_xaction {
 	my $client = shift;
 
 	$log->debug(" XACT --> 'BEGIN'ing transaction for session ".$client->session->session_id,DEBUG);
-	return OpenILS::Application::Storage::CDBI->db_Main->begin_work;
+	try {
+		OpenILS::Application::Storage::CDBI->db_Main->begin_work;
+		$client->session->session_data( xact_id => $client->session->session_id );
+	} catch Error with {
+		throw OpenSRF::DomainObject::oilsException->new(
+			statusCode => 500,
+			status => "Could not BEGIN transaction!",
+		);
+	};
+	return 1;
+
 }
 __PACKAGE__->register_method(
 	method		=> 'begin_xaction',
@@ -80,8 +90,16 @@ sub commit_xaction {
 	my $self = shift;
 	my $client = shift;
 
-	$log->debug(" XACT --> 'COMMIT'ing transaction for session ".$client->session->session_id,DEBUG);
-	return OpenILS::Application::Storage::CDBI->db_Main->commit;
+	try {
+		OpenILS::Application::Storage::CDBI->db_Main->commit;
+		$client->session->session_data( xact_id => '' );
+	} catch Error with {
+		throw OpenSRF::DomainObject::oilsException->new(
+			statusCode => 500,
+			status => "Could not COMMIT  transaction!",
+		);
+	};
+	return 1;
 }
 __PACKAGE__->register_method(
 	method		=> 'commit_xaction',
@@ -91,11 +109,25 @@ __PACKAGE__->register_method(
 );
 
 
+sub current_xact {
+	my $self = shift;
+	my $client = shift;
+
+	return $client->session->session_data( 'xact_id' );
+}
+__PACKAGE__->register_method(
+	method		=> 'current_xact',
+	api_name	=> 'open-ils.storage.transaction.current',
+	api_level	=> 1,
+	argc		=> 0,
+);
+
 sub rollback_xaction {
 	my $self = shift;
 	my $client = shift;
 
 	$log->debug(" XACT --> 'ROLLBACK'ing transaction for session ".$client->session->session_id,DEBUG);
+	$client->session->session_data( xact_id => '' );
 	return OpenILS::Application::Storage::CDBI->db_Main->rollback;
 }
 __PACKAGE__->register_method(

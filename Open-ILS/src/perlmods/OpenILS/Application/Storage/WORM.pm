@@ -171,6 +171,7 @@ sub fingerprint_mods {
 
 # --------------------------------------------------------------------------------
 
+my $in_xact;
 my $begin;
 my $commit;
 my $rollback;
@@ -217,6 +218,8 @@ sub wormize {
 		$no_map = 1;
 	}
 
+	$in_xact = $self->method_lookup( 'open-ils.storage.transaction.current')
+		unless ($in_xact);
 	$begin = $self->method_lookup( 'open-ils.storage.transaction.begin')
 		unless ($begin);
 	$commit = $self->method_lookup( 'open-ils.storage.transaction.commit')
@@ -265,11 +268,14 @@ sub wormize {
 		unless ($$create{keyword});
 
 
+	my ($outer_xact) = $in_xact->run;
 	try {
-		my ($r) = $begin->run($client);
-		unless (defined $r and $r) {
-			$rollback->run;
-			throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!")
+		unless ($outer_xact) {
+			my ($r) = $begin->run($client);
+			unless (defined $r and $r) {
+				$rollback->run;
+				throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!")
+			}
 		}
 	} catch Error with {
 		throw OpenSRF::EX::PANIC ("WoRM Couldn't BEGIN transaction!")
@@ -403,10 +409,12 @@ sub wormize {
 		}
 	}
 
-	my ($c) = $commit->run;
-	unless (defined $c and $c) {
-		$rollback->run;
-		throw OpenSRF::EX::PANIC ("Couldn't COMMIT changes!")
+	unless ($outer_xact) {
+		my ($c) = $commit->run;
+		unless (defined $c and $c) {
+			$rollback->run;
+			throw OpenSRF::EX::PANIC ("Couldn't COMMIT changes!")
+		}
 	}
 
 	return $ret;

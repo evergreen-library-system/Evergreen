@@ -212,6 +212,20 @@
 
 	my $pg = 'OpenILS::Application::Storage::Driver::Pg';
 
+
+	sub current_xact {
+		my $self = shift;
+		my $client = shift;
+		return $pg->current_xact_id;
+	}
+	__PACKAGE__->register_method(
+		method		=> 'current_xact',
+		api_name	=> 'open-ils.storage.transaction.current',
+		api_level	=> 1,
+		argc		=> 0,
+	);
+
+
 	sub pg_begin_xaction {
 		my $self = shift;
 		my $client = shift;
