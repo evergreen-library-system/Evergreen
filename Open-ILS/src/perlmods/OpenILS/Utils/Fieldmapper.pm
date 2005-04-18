@@ -87,6 +87,23 @@ sub _init {
 								     			     name		=> 1,
 								     			     value		=> 1,
 											   } },
+
+		'Fieldmapper::metabib::virtual_record'		=> { hint		=> 'mvr',
+								     virtual		=> 1,
+								     proto_fields	=> { title		=> 1,
+											     author	        => 1,
+								     			     doc_id	 	=> 1,
+								     			     doc_type		=> 1,
+								     			     isbn	 	=> 1,
+								     			     pubdate		=> 1,
+								     			     puslisher	    	=> 1,
+								     			     tcn		=> 1,
+								     			     subject		=> 1,
+								     			     types_of_resource	=> 1,
+								     			     call_numbers	=> 1,
+											     copy_count	        => 1,
+											   } },
+
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
 								     proto_fields	=> { call_numbers => 1 } },
 		#'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  }, # now it's inside record_entry
