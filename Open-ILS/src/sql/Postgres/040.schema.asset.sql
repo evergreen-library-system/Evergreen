@@ -6,6 +6,7 @@ CREATE SCHEMA asset;
 
 CREATE TABLE asset.copy (
 	id		BIGSERIAL			PRIMARY KEY,
+	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id),
 	creator		BIGINT				NOT NULL,
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	editor		BIGINT				NOT NULL,
@@ -27,6 +28,39 @@ CREATE TABLE asset.copy (
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE
 );
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
+
+CREATE TABLE asset.copy_transparency (
+	id		SERIAL		PRIMARY KEY,
+	name		TEXT		NOT NULL,
+	owner		INT		NOT NULL REFERENCES actor.org_unit (id),
+	circ_lib	INT		REFERENCES actor.org_unit (id),
+	holdable	BOOL,
+	loan_duration	INT		CHECK ( loan_duration IN (1,2,3) ),
+	fine_level	INT		CHECK ( fine_level IN (1,2,3) ),
+	circulate	BOOL,
+	deposit		BOOL,
+	deposit_amount	NUMERIC(6,2),
+	ref		BOOL,
+	circ_modifier	TEXT,
+	circ_as_type	TEXT,
+	opac_visible	BOOL
+	CONSTRAINT scte_name_once_per_lib UNIQUE (owner,name)
+);
+
+CREATE TABLE asset.copy_tranparency_map (
+	id		BIGSERIAL	PRIMARY KEY,
+	tansparency	INT	NOT NULL REFERENCES asset.copy_transparency (id),
+	target_copy	INT	NOT NULL UNIQUE REFERENCES asset.copy (id)
+);
+CREATE INDEX cp_tr_cp_idx ON asset.copy_tranparency_map (tansparency);
+
+CREATE TABLE asset.stat_cat_entry_transparency_map (
+	id			BIGSERIAL	PRIMARY KEY,
+	stat_cat		INT		NOT NULL, -- needs ON DELETE CASCADE
+	stat_cat_entry		INT		NOT NULL, -- needs ON DELETE CASCADE
+	owning_transparency	INT		NOT NULL, -- needs ON DELETE CASCADE
+	CONSTRAINT scte_once_per_trans UNIQUE (owning_transparency,stat_cat)
+);
 
 CREATE TABLE asset.stat_cat (
 	id		SERIAL	PRIMARY KEY,
