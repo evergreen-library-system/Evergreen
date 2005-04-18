@@ -98,7 +98,7 @@ sub _init {
 								     			     doc_type		=> 1,
 								     			     isbn	 	=> 1,
 								     			     pubdate		=> 1,
-								     			     puslisher	    	=> 1,
+								     			     publisher	    	=> 1,
 								     			     tcn		=> 1,
 								     			     subject		=> 1,
 								     			     types_of_resource	=> 1,
