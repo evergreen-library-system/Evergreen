@@ -5,6 +5,7 @@ use OpenSRF::EX qw/:try/;
 use XML::LibXML;
 use XML::LibXSLT;
 use Time::HiRes qw(time);
+use OpenILS::Utils::Fieldmapper;
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
@@ -68,7 +69,7 @@ sub get_field_value {
 
 	my( $self, $mods, $xpath ) = @_;
 
-	my $string = "";
+	my @string;
 	my $root = $mods->documentElement;
 	$root->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
 
@@ -82,14 +83,13 @@ sub get_field_value {
 
 			# add the childs content to the growing buffer
 			my $content = quotemeta($child->textContent);
-			next if ($string =~ /$content/);  # uniquify the values ! don't de-dup for the WORM!
-			$string .= $child->textContent . " ";
+			push(@string, $child->textContent );
 		}
 		if( ! @children ) {
-			$string .= $value->textContent . " ";
+			push(@string, $value->textContent );
 		}
 	}
-	return $string;
+	return @string;
 }
 
 
@@ -99,8 +99,12 @@ sub modsdoc_to_values {
 	for my $class (keys %$xpathset) {
 		$data->{$class} = {};
 		for my $type(keys %{$xpathset->{$class}}) {
-			my $value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
-			$data->{$class}->{$type} = $value;
+			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
+			if( $class eq "subject" ) {
+				push( @{$data->{$class}->{$type}},  @value );
+			} else {
+				$data->{$class}->{$type} = $value[0];
+			}
 		}
 	}
 	return $data;
@@ -141,7 +145,7 @@ sub mods_values_to_mods_slim {
 	if(!$tmp) { $subject = []; } 
 	else {
 		for my $key( keys %{$tmp}) {
-			push(@$subject, $tmp->{$key}) if $tmp->{$key};
+			push(@$subject, @{$tmp->{$key}}) if ($tmp->{$key});
 		}
 	}
 
@@ -165,19 +169,19 @@ sub start_mods_batch {
 	$self->{master_doc} = $self->modsdoc_to_values( $mods );
 	$self->{master_doc} = $self->mods_values_to_mods_slim( $self->{master_doc} );
 
-	$self->{master_doc}->{isbn} = 
+	($self->{master_doc}->{isbn}) = 
 		$self->get_field_value( $mods, $isbn_xpath );
 
 	$self->{master_doc}->{type_of_resource} = 
 		[ $self->get_field_value( $mods, $resource_xpath ) ];
 
-	$self->{master_doc}->{tcn} = 
+	($self->{master_doc}->{tcn}) = 
 		$self->get_field_value( $mods, $tcn_xpath );
 
-	$self->{master_doc}->{pubdate} = 
+	($self->{master_doc}->{pubdate}) = 
 		$self->get_field_value( $mods, $pub_xpath );
 
-	$self->{master_doc}->{publisher} = 
+	($self->{master_doc}->{publisher}) = 
 		$self->get_field_value( $mods, $publisher_xpath );
 
 }
@@ -202,7 +206,7 @@ sub push_mods_batch {
 		$self->get_field_value( $mods, $resource_xpath ));
 
 	if(!($self->{master_doc}->{isbn}) ) {
-		$self->{master_doc}->{isbn} = 
+		($self->{master_doc}->{isbn}) = 
 			$self->get_field_value( $mods, $isbn_xpath );
 	}
 }
@@ -211,11 +215,33 @@ sub push_mods_batch {
 # ---------------------------------------------------------------------------
 # Completes a MARC -> Unified MODS batch process and returns the perl hash
 # ---------------------------------------------------------------------------
+sub init_virtual_record {
+	my $record = new Fieldmapper::metabib::virtual_record;
+	$record->subject([]);
+	$record->types_of_resource([]);
+	$record->call_numbers([]);
+	return $record;
+}
+
 sub finish_mods_batch {
 	my $self = shift;
 	my $perl = $self->{master_doc};
+	my $record = init_virtual_record();
+
+	# turn the hash into a fieldmapper object
+	$record->title($perl->{title});
+	$record->author($perl->{author});
+	$record->doc_id($perl->{doc_id});
+	$record->isbn($perl->{isbn});
+	$record->pubdate($perl->{pubdate});
+	$record->publisher($perl->{publisher});
+	$record->tcn($perl->{tcn});
+	$record->subject($perl->{subject});
+	$record->types_of_resource($perl->{types_of_resource});
+
 	$self->{master_doc} = undef;
-	return $perl
+	#return $perl
+	return $record;
 }
 
 
