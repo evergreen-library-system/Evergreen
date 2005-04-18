@@ -187,6 +187,11 @@ sub new {
 	return bless $value => $self->class_name;
 }
 
+sub decast {
+	my $self = shift;
+	return [ @$self ];
+}
+
 sub DESTROY {}
 
 sub AUTOLOAD {
