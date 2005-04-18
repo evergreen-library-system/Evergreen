@@ -63,6 +63,8 @@ sub _init {
 		'Fieldmapper::actor::user'			=> { hint		=> 'au',
 								     proto_fields	=> { cards	=> 1,
 								     			     addresses	=> 1 } },
+		'Fieldmapper::actor::user_address'		=> { hint => 'aua'    },
+		'Fieldmapper::actor::org_address'		=> { hint => 'aoa'    },
 		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },
 		'Fieldmapper::actor::card'			=> { hint => 'ac'    },
 		'Fieldmapper::config::standing'			=> { hint => 'cst'   },

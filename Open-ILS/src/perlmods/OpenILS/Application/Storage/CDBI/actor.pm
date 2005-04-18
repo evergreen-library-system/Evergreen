@@ -99,6 +99,15 @@ __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
 				      county state country post_code/ );
 
 #-------------------------------------------------------------------------------
+package actor::org_address;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_card' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
+				      county state country post_code/ );
+
+#-------------------------------------------------------------------------------
 package actor::profile;
 use base qw/actor/;
 
