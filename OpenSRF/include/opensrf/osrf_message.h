@@ -34,6 +34,8 @@ struct osrf_message_struct {
 	enum M_TYPE m_type;
 	int thread_trace;
 	int protocol;
+
+	int parse_json;
 	
 	/* if we're a STATUS message */
 	char* status_name;
@@ -65,7 +67,7 @@ typedef struct osrf_message_struct osrf_message;
 osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protocol );
 void osrf_message_set_request_info( osrf_message*, char* param_name, json* params );
 void osrf_message_set_status_info( osrf_message*, char* status_name, char* status_text, int status_code );
-void osrf_message_set_result_content( osrf_message*, json* result_content );
+void osrf_message_set_result_content( osrf_message*, char* json_string );
 void osrf_message_free( osrf_message* );
 char* osrf_message_to_xml( osrf_message* );
 /** Pushes any message retreived from the xml into the 'msgs' array.
@@ -73,6 +75,10 @@ char* osrf_message_to_xml( osrf_message* );
   * Returns the number of message that are in the buffer.
   */
 int osrf_message_from_xml( char* xml, osrf_message* msgs[] );
+
+/* decides whether all message automatically parse incoming json data */
+/* to change a single message, set msg->parse_json accordingly */
+void osrf_message_set_json_parse( int bool );
 
 
 

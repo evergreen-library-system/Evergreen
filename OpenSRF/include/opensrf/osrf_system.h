@@ -7,5 +7,6 @@
 int osrf_system_bootstrap_client(); 
 transport_client* osrf_system_get_transport_client();
 
+int osrf_system_shutdown(); 
 
 #endif
