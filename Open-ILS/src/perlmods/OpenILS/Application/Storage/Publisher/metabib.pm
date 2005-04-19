@@ -36,14 +36,24 @@ sub metarecord_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?)
-			) AS count
+			) AS count,
+			sum(
+				(SELECT count(cp.id)
+				  FROM  $sm_table r
+					JOIN $cn_table cn ON (cn.record = r.source)
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+					JOIN $descendants a ON (cp.circ_lib = a.id)
+				  WHERE r.metarecord = ?
+				  	AND cp.available IS TRUE)
+			) AS available
+
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)
 		  GROUP BY 1,2
 	SQL
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
-	$sth->execute(''.$args{metarecord}, ''.$args{org_unit});
+	$sth->execute(''.$args{metarecord}, ''.$args{metarecord}, ''.$args{org_unit});
 	while ( my $row = $sth->fetchrow_hashref ) {
 		$client->respond( $row );
 	}

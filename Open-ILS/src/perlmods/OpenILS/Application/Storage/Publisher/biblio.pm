@@ -29,14 +29,22 @@ sub record_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE cn.record = ?)
-			) AS count
+			) AS count,
+			sum(
+				(SELECT count(cp.id)
+				  FROM  $cn_table cn
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+					JOIN $descendants a ON (cp.circ_lib = a.id)
+				  WHERE cn.record = ?
+				  	AND cp.available IS TRUE)
+			) AS available
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)
 		  GROUP BY 1,2
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
-	$sth->execute(''.$args{record}, ''.$args{org_unit});
+	$sth->execute(''.$args{record}, ''.$args{record}, ''.$args{org_unit});
 	while ( my $row = $sth->fetchrow_hashref ) {
 		$client->respond( $row );
 	}

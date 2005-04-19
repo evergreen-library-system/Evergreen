@@ -11,12 +11,12 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_usr' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/usrid usrname email first_given_name
-				second_given_name family_name address claims_returned_count
-				home_ou gender dob active master_account
-				ident_type ident_value super_user usrgroup
-				passwd card last_xact_id standing profile/ );
-__PACKAGE__->columns( Others => qw/prefix suffix address alert_message
-				   day_phone evening_phone other_phone/ );
+				second_given_name family_name billing_address
+				claims_returned_count home_ou gender dob
+				active master_account ident_type ident_value
+				super_user usrgroup passwd card last_xact_id
+				standing profile prefix suffix alert_message
+				day_phone evening_phone other_phone mailing_address/ );
 
 #-------------------------------------------------------------------------------
 package actor::profile;

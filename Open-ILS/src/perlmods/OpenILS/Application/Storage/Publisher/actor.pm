@@ -107,7 +107,8 @@ sub flesh_user {
 	my $profile = $usr->profile;
 	my $ident_type = $usr->ident_type;
 		
-	my $address = $usr->address;
+	my $maddress = $usr->mailing_address;
+	my $baddress = $usr->billing_address;
 	my $card = $usr->card;
 
 	my @addresses = $usr->addresses;
@@ -119,7 +120,8 @@ sub flesh_user {
 	$usr_fm->ident_type( $ident_type->to_fieldmapper );
 
 	$usr_fm->card( $card->to_fieldmapper );
-	$usr_fm->address( $address->to_fieldmapper ) if ($address);
+	$usr_fm->mailing_address( $maddress->to_fieldmapper ) if ($maddress);
+	$usr_fm->billing_address( $baddress->to_fieldmapper ) if ($baddress);
 
 	$usr_fm->cards( [ map { $_->to_fieldmapper } @cards ] );
 	$usr_fm->addresses( [ map { $_->to_fieldmapper } @addresses ] );
