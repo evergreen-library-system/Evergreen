@@ -2,7 +2,6 @@ package OpenILS::Application::Storage::Publisher::metabib;
 use base qw/OpenILS::Application::Storage::Publisher/;
 use vars qw/$VERSION/;
 use OpenSRF::EX qw/:try/;
-use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::FTS;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/:level/;
@@ -14,6 +13,49 @@ my $log = 'OpenSRF::Utils::Logger';
 
 $VERSION = 1;
 
+sub metarecord_copy_count {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;
+
+	my $sm_table = metabib::metarecord_source_map->table;
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+	my $out_table = actor::org_unit_type->table;
+	my $descendants = "actor.org_unit_descendants(u.id)";
+	my $ancestors = "actor.org_unit_ancestors(?)";
+
+	my $sql = <<"	SQL";
+		SELECT	t.depth,
+			u.id AS org_unit,
+			sum(
+				(SELECT count(cp.id)
+				  FROM  $sm_table r
+					JOIN $cn_table cn ON (cn.record = r.source)
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+					JOIN $descendants a ON (cp.circ_lib = a.id)
+				  WHERE r.metarecord = ?)
+			) AS count
+		  FROM  $ancestors u
+			JOIN $out_table t ON (u.ou_type = t.id)
+		  GROUP BY 1,2
+	SQL
+
+	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
+	$sth->execute(''.$args{metarecord}, ''.$args{org_unit});
+	while ( my $row = $sth->fetchrow_hashref ) {
+		$client->respond( $row );
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.metabib.metarecord.copy_count',
+	method		=> 'metarecord_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
 
 sub search_full_rec {
 	my $self = shift;

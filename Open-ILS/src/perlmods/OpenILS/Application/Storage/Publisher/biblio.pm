@@ -8,6 +8,51 @@ use OpenILS::Utils::Fieldmapper;
 
 $VERSION = 1;
 
+sub record_copy_count {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;
+
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+	my $out_table = actor::org_unit_type->table;
+	my $descendants = "actor.org_unit_descendants(u.id)";
+	my $ancestors = "actor.org_unit_ancestors(?)";
+
+	my $sql = <<"	SQL";
+		SELECT	t.depth,
+			u.id AS org_unit,
+			sum(
+				(SELECT count(cp.id)
+				  FROM  $cn_table cn
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+					JOIN $descendants a ON (cp.circ_lib = a.id)
+				  WHERE cn.record = ?)
+			) AS count
+		  FROM  $ancestors u
+			JOIN $out_table t ON (u.ou_type = t.id)
+		  GROUP BY 1,2
+	SQL
+
+	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
+	$sth->execute(''.$args{record}, ''.$args{org_unit});
+	while ( my $row = $sth->fetchrow_hashref ) {
+		$client->respond( $row );
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.copy_count',
+	method		=> 'record_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+
+=comment Old version
+
 my $org_unit_lookup;
 sub record_copy_count {
 	my $self = shift;
@@ -40,12 +85,11 @@ sub record_copy_count {
 	my $cn_table = asset::call_number->table;
 
 	my $select =<<"	SQL";
-		SELECT	cn.record as record, count(cp.*) as copies
+		SELECT	count(cp.*) as copies
 		  FROM	$cn_table cn
 			JOIN $cp_table cp ON (cp.call_number = cn.id)
 		  WHERE	cn.owning_lib LIKE ? AND
 		  	cn.record IN ($rec_list)
-		  GROUP BY cn.record
 	SQL
 
 	my $sth = asset::copy->db_Main->prepare_cached($select);
@@ -70,5 +114,7 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 	stream		=> 1,
 );
+
+=cut
 
 1;

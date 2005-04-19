@@ -4,17 +4,11 @@ our $VERSION = 1;
 
 use Digest::MD5 qw/md5_hex/;
 use OpenSRF::EX qw/:try/;;
-use OpenSRF::Utils::Logger;
+use OpenSRF::Utils::Logger qw/:level/;
+use OpenILS::Utils::Fieldmapper;
+
 my $log = 'OpenSRF::Utils::Logger';
 
-use OpenILS::Utils::Fieldmapper;
-#use OpenILS::Application::Storage::CDBI;
-
-#use OpenILS::Application::Storage::CDBI::actor;
-#use OpenILS::Application::Storage::CDBI::asset;
-#use OpenILS::Application::Storage::CDBI::biblio;
-#use OpenILS::Application::Storage::CDBI::config;
-#use OpenILS::Application::Storage::CDBI::metabib;
 
 sub register_method {
 	my $class = shift;
@@ -263,7 +257,9 @@ use OpenILS::Application::Storage::Publisher::config;
 use OpenILS::Application::Storage::Publisher::metabib;
 ';
 
-for my $fmclass ( Fieldmapper->classes ) {
+for my $fmclass ( (Fieldmapper->classes) ) {
+	$log->debug("Generating methods for Fieldmapper class $fmclass", DEBUG);
+
 	(my $cdbi = $fmclass) =~ s/^Fieldmapper:://o;
 	(my $class = $cdbi) =~ s/::.*//o;
 	(my $api_class = $cdbi) =~ s/::/./go;
@@ -305,24 +301,26 @@ for my $fmclass ( Fieldmapper->classes ) {
 		);
 	}
 
-	for my $field ($fmclass->real_fields) {
-		unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
-			__PACKAGE__->register_method(
-				api_name	=> $api_prefix.'.search.'.$field,
-				method		=> 'search_one_field',
-				api_level	=> 1,
-				cdbi		=> $cdbi,
-				cachable	=> 1,
-			);
-		}
-		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
-			__PACKAGE__->register_method(
-				api_name	=> $api_prefix.'.search_like.'.$field,
-				method		=> 'search_one_field',
-				api_level	=> 1,
-				cdbi		=> $cdbi,
-				cachable	=> 1,
-			);
+	unless ($fmclass->is_virtual) {
+		for my $field ($fmclass->real_fields) {
+			unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
+				__PACKAGE__->register_method(
+					api_name	=> $api_prefix.'.search.'.$field,
+					method		=> 'search_one_field',
+					api_level	=> 1,
+					cdbi		=> $cdbi,
+					cachable	=> 1,
+				);
+			}
+			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
+				__PACKAGE__->register_method(
+					api_name	=> $api_prefix.'.search_like.'.$field,
+					method		=> 'search_one_field',
+					api_level	=> 1,
+					cdbi		=> $cdbi,
+					cachable	=> 1,
+				);
+			}
 		}
 	}
 

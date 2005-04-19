@@ -41,12 +41,13 @@ __PACKAGE__->register_method(
 #
 
 sub classes {
+	$log->debug("classes: ".join(' -- ', keys %$fieldmap), DEBUG);
 	return () unless (defined $fieldmap);
 	return keys %$fieldmap;
 }
 
 sub _init {
-	return if (defined $fieldmap);
+	return if (keys %$fieldmap);
 
 	$fieldmap = 
 	{
@@ -141,7 +142,8 @@ sub _init {
 	#-------------------------------------------------------------------------------
 	# Now comes the evil!  Generate classes
 
-	for my $pkg ( keys %$fieldmap ) {
+	for my $pkg ( __PACKAGE__->classes ) {
+		$log->debug("Generating FM class for $pkg", DEBUG);
 		(my $cdbi = $pkg) =~ s/^Fieldmapper:://o;
 
 		eval <<"		PERL";
@@ -248,6 +250,12 @@ sub real_fields {
 sub api_level {
 	my $self = shift;
 	return $fieldmap->{$self->class_name}->{api_level};
+}
+
+
+sub is_virtual {
+	my $self = shift;
+	return $fieldmap->{$self->class_name}->{virtual};
 }
 
 sub json_hint {
