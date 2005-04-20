@@ -161,7 +161,7 @@ sub bootstrap {
 
 		for my $app (@$apps) {
 			# verify we are a settings server and launch 
-			if( $app eq "settings" ) {
+			if( $app eq "opensrf.settings" ) {
 				$are_settings_server = 1;
 				$self->launch_settings();
 				sleep 1;
@@ -299,9 +299,9 @@ sub launch_settings {
 		$self->pid_hash( $pid , "launch_settings()" );
 	}
 	else {
-		my $apname = "settings";
+		my $apname = "opensrf.settings";
 		#$0 = "OpenSRF App [$apname]";
-		eval _unixserver( "settings" );
+		eval _unixserver( $apname );
 		if($@) { die "$@\n"; }
 		exit;
 	}
@@ -314,7 +314,7 @@ sub launch_settings {
 sub launch_settings_listener {
 
 	my $self = shift;
-	my $app = "settings";
+	my $app = "opensrf.settings";
 	my $pid = OpenSRF::Utils::safe_fork();
 	if ( $pid ) {
 		$self->pid_hash( $pid , _listener( $app ) );
@@ -337,7 +337,7 @@ sub launch_unix {
 	foreach my $app ( @$apps ) {
 		next unless $app;
 
-		if( $app eq "settings" ) { next; }
+		if( $app eq "opensrf.settings" ) { next; }
 
 		_log( " * Starting UnixServer for $app..." );
 
@@ -363,7 +363,7 @@ sub launch_listener {
 
 	foreach my $app ( @$apps ) {
 
-		if( $app eq "settings" ) { next; }
+		if( $app eq "opensrf.settings" ) { next; }
 
 		_log( " * Starting Listener for $app..." );
 
