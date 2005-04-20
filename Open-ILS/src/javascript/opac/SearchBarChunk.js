@@ -25,7 +25,7 @@ function SearchBarChunk() {
 	else
 		this.session = globalSearchBarChunk.session;
 
-	this.reset();
+	//this.reset();
 	globalSearchBarChunk = this;
 }
 
@@ -88,12 +88,14 @@ SearchBarChunk.prototype.reset = function() {
 
 	if( this.session.connected ) {
 
+		debug(" ****** session is connected");
 		this.login_div.style.visibility		= "hidden";
 		this.login_div.style.display			= "none";
 		this.logout_div.style.visibility		= "visible";
 		this.logout_div.style.display			= "block";
 
 	} else { 
+		debug(" ****** session is not connected");
 
 		this.login_div.style.visibility		= "visible";
 		this.login_div.style.display			= "block";

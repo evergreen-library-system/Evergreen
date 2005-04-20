@@ -4,7 +4,7 @@ var globalSearchBarFormChunk = null;
 
 function SearchBarFormChunk() {
 	this.init();
-	this.resetPage();
+	//this.resetPage();
 	globalSearchBarFormChunk = this;
 }
 
@@ -14,6 +14,7 @@ SearchBarFormChunk.prototype.init = function() {
 	this.search_query			= getById("mr_search_query");
 	this.search_type			= getById("mr_search_type");
 	this.search_button		= getById("mr_search_button");
+	this.searchRange			= getById("search_range_select");
 }
 
 SearchBarFormChunk.prototype.resetPage = function() {
@@ -30,6 +31,16 @@ SearchBarFormChunk.prototype.resetPage = function() {
 		this.search_type.value = paramObj.__mr_search_type;
 
 	try{ this.search_query.focus(); } catch(E) {}
+
+	for( var index in globalOrgTypes ) {
+		var otype = globalOrgTypes[index]
+		var select =  new Option(otype.name(), otype.depth());
+
+		if( otype.depth() == globalSearchDepth )
+			select.selected = true;
+
+		this.searchRange.options[index] = select;
+	}
 
 }
 	

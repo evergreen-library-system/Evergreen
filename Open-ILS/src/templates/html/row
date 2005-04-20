@@ -8,6 +8,7 @@
 
 <tr
     [%- IF col     %] bgcolor="[% col %]"[%     END %]
+    [%- IF id     %] id="[% id %]"[%     END %]
     [%- IF align   %] align="[% align %]"[%     END %]
     [%- IF valign  %] valign="[% valign %]"[%   END %]>
 [%- content -%]

@@ -7,7 +7,7 @@ MRResultPage.baseClass					= AbstractRecordResultPage.constructor;
 /* constructor for our singleton object */
 function MRResultPage() {
 	debug("MRResultPage()");
-	this.searchBar = new SearchBarChunk();
+	//this.searchBar = new SearchBarChunk();
 
 	if( globalMRResultPage != null ) {
 		debug("MRResultPage() exists, returning");
@@ -88,34 +88,67 @@ MRResultPage.prototype.doSearch = function() {
 	var stype			= paramObj.__mr_search_type;
 	if(!stype || !string) return;
 
-	/* see if this is a new search */
-	if( string != this.string || stype != this.stype )
-		this.resetSearch();
+	var orgunit;
+	if(globalSelectedLocation) 
+		orgunit = globalSelectedLocation;
+	else orgunit = globalLocation;
 
-	this.stype			= stype;
-	this.string			= string;
-	this.page			= parseInt(paramObj.__page);
-	this.searchOffset = this.page * this.hitsPerPage;
+	if(this.searchDepth == null)
+		this.searchDepth = globalSearchDepth;
+
+	debug("Current search depth: " + globalSearchDepth);
+	debug("My search depth: " + this.searchDepth);
+
+	/* see if this is a new search */
+	if(	string != this.string				|| 
+			stype != this.stype					||
+			this.searchLocation != orgunit	||
+			this.searchDepth != globalSearchDepth ) {
+
+		this.resetSearch();
+		this.searchDepth = globalSearchDepth;
+	}
+
+	this.searchLocation	= orgunit;
+	this.stype				= stype;
+	this.string				= string;
+	this.page				= parseInt(paramObj.__page);
+	this.searchOffset		= this.page * this.hitsPerPage;
+
 
 	//this.progressBar.progressStart();
 
 	this.resetPage();
 
-	if( this.recordIDs && this.recordIDs[this.searchOffset] != null &&
-		this.recordIDs[this.searchOffset + this.hitsPerPage] != null ) {
-		/* we already have all of the IDS */
-		debug("We alread have the required mr ids for the search: [" + this.string + "]");
-		this.collectRecords();
-		return;
+	var offset = parseInt(this.searchOffset);
+	var hitspp	= parseInt(this.hitsPerPage);
+
+	/* is this just a call to next/prev? */
+	if( this.recordIDs && this.recordIDs[offset] != null )  {
+		debug("We have the first part of the ID's");
+		if( this.recordIDs[offset + (hitspp -1 )] != null  ||
+				this.recordIDs[this.hitCount - 1] != null ) {
+			/* we already have all of the IDS */
+			debug("We alread have the required mr " + 
+					"ids for the search: [" + this.string + "]");
+			this.collectRecords();
+			return;
+		}
 	}
-		
+
+
 	debug("MRResultPage doSearch() with type: " 
 			+ this.stype + " and search [" + this.string + "]"
 			+ " and offset " + this.searchOffset );
 
+
+
 	var request = new RemoteRequest( 
 			"open-ils.search", "open-ils.search.biblio.class", 
-			this.stype, this.string, "1", "0", "100", this.searchOffset );
+			this.stype, this.string, 
+			this.searchLocation.id(), 
+			this.searchDepth, "50", this.searchOffset );
+
 
 	var obj = this;
 	request.setCompleteCallback(
@@ -137,6 +170,11 @@ MRResultPage.prototype.collectRecords = function() {
 
 	var i = this.searchOffset;
 
+	var hcell = getById("hit_count_cell");
+	hcell.innerHTML = "Hits";
+	hcell.innerHTML += "&nbsp;&nbsp;";
+	hcell.innerHTML += this.hitCount;
+
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];
 
@@ -152,8 +190,6 @@ MRResultPage.prototype.collectRecords = function() {
 
 		debug("Collecting metarecord for id " + id + " and search_id " + i);
 
-		var hit_box = getById("hit_count_count_box");
-		hit_box.innerHTML = this.hitCount;
 
 		/* define the callback for when we receive the record */
 		var obj = this;
@@ -162,7 +198,7 @@ MRResultPage.prototype.collectRecords = function() {
 				//try {
 					var record = req.getResultObject();
 					obj.displayRecord( record, req.search_id, req.page_id );
-					/*obj.doCopyCount( record, req.search_id, req.page_id ); */
+					obj.doCopyCount( record, req.search_id, req.page_id );
 				//} catch(E) { 
 				//	alert("Doc Retrieval Error:\n" + E); 
 				//}
@@ -180,13 +216,13 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
 	/* kick off the copy count search */
 	var copy_request = new RemoteRequest( "open-ils.search",
-		"open-ils.search.biblio.metarecord.copy_count", 1, record.doc_id );
+		"open-ils.search.biblio.metarecord.copy_count", 1, record.doc_id() );
 	this.requestBatch.push(copy_request);
 
 	copy_request.search_id = search_id;
 	copy_request.name = "copy_request_" + (search_id+this.searchOffset);
 
-	debug("Sending copy request " + search_id + ":" + record.doc_id );
+	debug("Sending copy request " + search_id + ":" + record.doc_id() );
 
 	var obj = this;
 	copy_request.setCompleteCallback( 
@@ -204,3 +240,35 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
 
 
+MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
+
+	var copy_box	= getById("record_result_copy_count_box_" + page_id );
+
+	/* kick off the copy count search */
+	var orgunit = globalSelectedLocation;
+	if(!orgunit) orgunit = globalLocation;
+
+	var copy_request = new RemoteRequest( "open-ils.search",
+		"open-ils.search.biblio.metarecord.copy_count",
+		orgunit.id(), record.doc_id() );
+
+	this.requestBatch.push(copy_request);
+
+	copy_request.search_id = search_id;
+	copy_request.name = "copy_request_" + (search_id+this.searchOffset);
+
+	debug("Sending copy request " + search_id + ":" + record.doc_id() );
+
+	var obj = this;
+	copy_request.setCompleteCallback( 
+		function(req) {
+			try {	
+				obj.displayCopyCounts(req.getResultObject(), search_id, page_id );
+			} catch(E) { 
+				alert("Copy Count Retrieval Error:\n" + E ); 
+			}
+		}
+	);
+
+	copy_request.send();
+}

@@ -12,6 +12,7 @@
 		END;
 
 
+
 		WRAPPER html/body onload='pageInit(); globalPage.doSearch();';
 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
@@ -22,35 +23,51 @@
 			# Here we start the top level table for the record results
 			# --------------------------------------------------------------------------------- 
 
-			WRAPPER html/table class='hit_count_box';
-				row( content = 
-					cell(class='hit_count_words_box', content="Hits") _
-					cell(class='hit_count_count_box', id='hit_count_count_box'));
-			END;
+			INCLUDE opac/pages/chunks/status_bar.ttk;
 
-			lines(2);
+			lines(1);
+
+			INCLUDE opac/pages/chunks/org_tree.ttk;
 
 
 			# --------------------------------------------------------------------------------- 
 			# search results are spit out into this table
 			# --------------------------------------------------------------------------------- 
-			table(class='record_result_box', id='record_result_box'); 
+			WRAPPER html/table class='big_ol_box' id='big_ol_box';
 
-			# --------------------------------------------------------------------------------- 
-			# Sidebar stuff, subjects, authors, etc.
-			# --------------------------------------------------------------------------------- 
 
-			WRAPPER html/div class='record_sidebar_wrapper_box';
-				WRAPPER html/table class='record_sidebar_box';
-					row(content=cell(content=box(valign='top', id='record_subject_sidebar_box')));
-					row(content=cell(content=lines(1)));
-					row(content=cell(content=box(valign='top', id='record_author_sidebar_box')));
+				WRAPPER html/row;
+
+					WRAPPER html/cell class='record_result_cell' width="100%";
+						WRAPPER html/table class='record_result_box', id='record_result_box'; 
+							WRAPPER html/thead class='record_result_thead'; 
+								WRAPPER html/row id='record_result_thead_row';
+									cell(); 
+									cell(id='hit_count_cell', class='hit_count_cell'); 
+								END;
+							END;
+						END;
+
+					END;
+
+
+					WRAPPER html/cell id='record_sidebar_cell' valign="top";
+						WRAPPER html/div class='record_sidebar_wrapper_box record_sidebar_wrapper_visible';
+							INCLUDE opac/pages/chunks/sidebar.ttk 
+								label="Relevant Subjects" type = "subject";
+							lines(1);
+							INCLUDE opac/pages/chunks/sidebar.ttk 
+								label="Relevant Authors" type = "author";
+						END;
+					END;
+
 				END;
+
+				
 			END;
 
-
-
-			INCLUDE opac/pages/chunks/next_prev_box.ttk;
+			lines(1);
+			INCLUDE opac/pages/chunks/next_prev_box.ttk count=1;
 		
 		END; # body
 

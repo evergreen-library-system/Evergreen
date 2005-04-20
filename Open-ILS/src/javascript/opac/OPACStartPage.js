@@ -27,3 +27,8 @@ OPACStartPage.prototype.instance = function() {
 	return new OPACStartPage();
 }
 
+OPACStartPage.prototype.init = function() {
+	this.searchBar.reset();
+	globalSearchBarFormChunk.resetPage();
+}
+

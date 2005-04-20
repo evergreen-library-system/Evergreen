@@ -32,7 +32,6 @@
 
 			row(content = cell(content = lines(1)));
 
-						row(content = cell(content = lines(2)));
 
 			WRAPPER html/row;
 				WRAPPER html/cell colspan='4';

@@ -64,24 +64,7 @@ function normalize(val) {
 	return newVal;
 }
 
-var orgTree = null;
-function grabOrgTree() {
 
-	if( orgTree == null ) {
-		debug("Grabbing orgTree");
-
-		/* go ahead and grab the org tree asynchrously. */
-		var request = new RemoteRequest( "open-ils.search", 
-			"open-ils.search.actor.org_tree.retrieve" );
-		var func = function(req) {
-			orgTree = req.getResultObject();
-			debug("orgTree Loaded!");
-		}
-
-		request.setCompleteCallback(func);
-		request.send();
-	}
-}
 
 
 var reg = /Mozilla/;
@@ -218,10 +201,16 @@ function getCookie(name) {
 
 function deleteCookie(name, path, domain) {
 	if (getCookie(name)) {
+		var string = name + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+		debug("Delete cookie string: "+ string );
+		document.cookie = string;
+		debug("Delete Cookie: " + document.cookie );
+		/*
 		document.cookie = name + "=" +
 		((path) ? "; path=" + path : "") +
 		((domain) ? "; domain=" + domain : "") +
 		"; expires=Thu, 01-Jan-70 00:00:01 GMT";
+		*/
 	}
 }
 
@@ -402,3 +391,108 @@ function build_param_array() {
 	return paramArray;
 }
 
+
+var evtCache = new Object();
+function EventListener(bool_callback, done_callback, name, usr_object) {
+	this.bool_callback = bool_callback;
+	this.done_callback = done_callback;
+	this.interval = 100;
+	this.obj = usr_object;
+	this.complete = false;
+	evtCache["___" + name] = this;
+}
+
+
+//EventListener.prototype.poll = function() {
+function eventPoll(name) {
+	var obj = evtCache["___" + name];
+	if(obj == null)
+		throw "No Listener by that name";
+
+	obj.complete = obj.bool_callback(obj.obj);
+	if(obj.complete)
+		obj.done_callback(obj.obj);
+	else {
+		debug("Setting timeout for next poll..");
+		setTimeout("eventPoll('" + name + "')", obj.interval );
+	}
+}
+
+	
+
+
+function swapClass(obj, class1, class2 ) {
+	if( obj.className.indexOf(class1) != -1 ) {
+		remove_css_class(obj, class1);
+		add_css_class(obj,class2);
+	} else {
+		remove_css_class(obj, class2);
+		add_css_class(obj,class1);
+	}
+}
+
+
+
+
+
+
+function findPosX(obj)
+{
+		var curleft = 0;
+			if (obj.offsetParent)
+					{
+								while (obj.offsetParent)
+											{
+															curleft += obj.offsetLeft
+																			obj = obj.offsetParent;
+																	}
+									}
+				else if (obj.x)
+							curleft += obj.x;
+					return curleft;
+}
+
+function findPosY(obj)
+{
+		var curtop = 0;
+			if (obj.offsetParent)
+					{
+								while (obj.offsetParent)
+											{
+															curtop += obj.offsetTop
+																			obj = obj.offsetParent;
+																	}
+									}
+				else if (obj.y)
+							curtop += obj.y;
+					return curtop;
+}
+
+
+
+function getObjectHeight(obj)  {
+	    var elem = obj;
+		     var result = 0;
+			      if (elem.offsetHeight) {
+						        result = elem.offsetHeight;
+								      } else if (elem.clip && elem.clip.height) {
+											        result = elem.clip.height;
+													      } else if (elem.style && elem.style.pixelHeight) {
+																        result = elem.style.pixelHeight;
+																		      }
+					    return parseInt(result);
+}
+
+
+function getObjectWidth(obj)  {
+	    var elem = obj;
+		     var result = 0;
+			      if (elem.offsetWidth) {
+						        result = elem.offsetWidth;
+								      } else if (elem.clip && elem.clip.width) {
+											        result = elem.clip.width;
+													      } else if (elem.style && elem.style.pixelWidth) {
+																        result = elem.style.pixelWidth;
+																		      }
+					    return parseInt(result);
+}

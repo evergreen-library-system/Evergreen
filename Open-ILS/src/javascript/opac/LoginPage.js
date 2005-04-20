@@ -14,15 +14,15 @@ function LoginPage() {
 
 	this.searchBarForm	= new SearchBarFormChunk();
 	this.searchBar			= new SearchBarChunk();
-	this.login_button		= document.getElementById("login_button");
+	this.login_button		= getById("login_button");
 
 	this.login_button.onclick = loginShuffle;
 
-	this.username		= document.getElementById("login_username");
-	this.password		= document.getElementById("login_password");
-	this.result_field = document.getElementById("login_result_text");
+	this.username		= getById("login_username");
+	this.password		= getById("login_password");
+	this.result_field = getById("login_result_text");
 
-	this.username.focus();
+	try {this.username.focus();} catch(E) {}
 	this.username.onkeydown = loginOnEnter;
 	this.password.onkeydown = loginOnEnter;
 	
@@ -34,10 +34,18 @@ function LoginPage() {
 	globalLoginPage = this;
 }
 
+LoginPage.prototype.init = function() {
+	this.searchBar.reset();
+}
+
+
 
 function loginShuffle() {
 	var obj = globalLoginPage;
-	if( UserSession.instance().login( obj.username.value, obj.password.value )) {
+	var ses = UserSession.instance();
+	if( ses.login( obj.username.value, obj.password.value )) {
+		/* now grab the org_unit associated with this user */
+		ses.grabOrgUnit();
 		obj.result_field.innerHTML = obj.login_success_msg;
 		obj.searchBar.reset();
 	} else {
@@ -49,7 +57,6 @@ function loginOnEnter(evt) {
 	var code = grabCharCode(evt); 
 	if(code==13||code==3) { loginShuffle(); }
 }
-
 
 
 

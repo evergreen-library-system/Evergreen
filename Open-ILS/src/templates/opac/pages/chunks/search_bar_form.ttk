@@ -21,10 +21,22 @@
 		END;
 	
 		space(1);
-	
 		input(type='submit', id='mr_search_button', 
 				value=tm.search, onclick='alert("help");' );
 
+		space(1);
+#		input( type='submit', value="Location", 
+#				onclick='
+#				var evt = event;
+#				evt = (evt) ? evt : ((window.event) ? event : null);
+#				var target = (evt.target) ? evt.target : evt.srcElement;
+#				if(evt)
+#					globalPage.locationTree.toggle(target);'
+#		); 
+#
+#		WRAPPER html/select name='search_range_select' id='search_range_select'; END;
+
+		
 	END;
 
 %]

@@ -43,13 +43,6 @@
 			END;
 
 			row(content = cell(content = lines(1)));
-	
-			WRAPPER html/row;
-				cell(align='left' width="25%" content= "Publication Year");
-				cell(align='left' content=input(type='text' size='4' id='adv_search_pubyear'));
-			END;
-
-			row(content = cell(content = lines(1)));
 
 		END;
 

@@ -4,20 +4,17 @@ function RecordResultRow(id) {
 	if(id==null)
 		throw new EXArg( "RecordResultRow required ID" );
 
-	//var frag		= document.createDocumentFragment();
-
 	var table	= createAppElement("table");
+	table.setAttribute("border","1");
 	var tbody	= createAppElement("tbody");
-
+	var thead	= createAppElement("thead");
 
 	add_css_class(table,"record_result_row_table");
 
 	var toptd	= createAppElement("td");
 	var td1		= createAppElement("td");
 	var td2		= createAppElement("td");
-	var td3		= createAppElement("td");
 	var td4		= createAppElement("td");
-	var td5		= createAppElement("td");
 
 	td1.id = "record_result_row_box_" + id;
 	add_css_class( td1, "record_result_row_box");
@@ -25,20 +22,18 @@ function RecordResultRow(id) {
 	td2.id = "record_result_title_box_" + id;
 	add_css_class( td2, "record_result_title_box");
 
-	td3.id = "record_result_copy_count_box_" + id;
-	add_css_class( td3, "record_result_copy_count_box");
-
 	td4.id = "record_result_author_box_" + id;
-	add_css_class(td3, "record_result_author_box");
+	add_css_class(td4, "record_result_author_box");
 
 	var row1		= createAppElement("tr");
 	var row2		= createAppElement("tr");
+	row2.id = "record_result_author_row_" + id;
 
 	row1.appendChild(td2);
-	row1.appendChild(td3);
 	row2.appendChild(td4);
 	tbody.appendChild(row1);
 	tbody.appendChild(row2);
+	table.appendChild(thead);
 	table.appendChild(tbody);
 	td1.appendChild(table);
 

@@ -21,7 +21,6 @@ LogoutPage.prototype.doLogout = function() {
 
 	deleteCookie("ils_uname");
 	deleteCookie("ils_ses");
-	this.session.connected = false;
 
 	if( this.session.session_id ) {
 		var request = new RemoteRequest( "open-ils.auth",
@@ -33,10 +32,9 @@ LogoutPage.prototype.doLogout = function() {
 		}
 	}
 
-	this.session_id = null;
-	this.username	= null;
+	this.session.destroy();
 
-	var message = document.getElementById("logout_msg");
+	var message = getById("logout_msg");
 	message.innerHTML = this.logout_success_msg;
 	this.searchBar.reset();
 

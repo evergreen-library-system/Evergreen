@@ -11,6 +11,8 @@
 		WRAPPER html/body onload='pageInit();';
 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
+			lines(1);
+			INCLUDE opac/pages/chunks/status_bar.ttk;
 
 			lines(1);
 			box(id='adv_search_main_header', content="Advanced Search");
@@ -18,18 +20,9 @@
 
 
 			WRAPPER html/div class='adv_search_left_box';
-
 				WRAPPER html/div class='adv_search_quick_box';
 					INCLUDE opac/pages/chunks/adv_global_search.ttk;
 				END;
-
-				box(class='big_line_div');
-				box(class='big_line_div');
-
-				WRAPPER html/div class='adv_search_quick_box';
-					INCLUDE opac/pages/chunks/adv_location.ttk;
-				END;
-
 			END; # left box
 
 			box(class='vert_div');

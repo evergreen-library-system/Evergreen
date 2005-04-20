@@ -1,6 +1,15 @@
 /* */
 
-var globalPage = null;
+var globalPage						= null; /* the current top level page object */
+var globalUser						= null; /* the user session */
+var globalOrgTreeWidget			= null;
+var globalLocation				= null;
+var globalOrgTreeWidgetBox		= null;
+var globalSelectedLocation		= null;
+var globalSearchDepth			= null;
+
+var loaded = false;
+
 
 function globalInit() {
 
@@ -51,7 +60,23 @@ function globalInit() {
 		throw new EXArg(
 				"globalInit requires a valid page target: " + page_name );
 
+	if(!loaded) {
+		globalLocation = globalOrgTree;
+		globalOrgTreeWidget = new LocationTree(globalOrgTree);
+		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
+		globalUser = UserSession.instance();
+		globalUser.verifySession();
+		loaded = true;
+	}
+
 	globalPage.init();
+	globalPage.setLocDisplay();
+	globalPage.locationTree = globalOrgTreeWidget;
+//	setTimeout("renderTree()", 5 );
+
+	if( globalSearchBarFormChunk != null)
+		globalSearchBarFormChunk.resetPage();
+
 }
 
 

@@ -35,3 +35,13 @@ EXAbstract.baseClass					= EX.prototype.constructor;
 function EXAbstract(message) {
 	this.init("EXAbstract: " + message);
 }
+
+
+
+EXLogic.prototype					= new EX();
+EXLogic.prototype.constructor	= EXLogic;
+EXLogic.baseClass					= EX.prototype.constructor;
+
+function EXLogic(message) {
+	this.init("EXLogic: " + message);
+}

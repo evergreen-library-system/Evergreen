@@ -726,168 +726,6 @@ msfe.prototype.field = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
-// Class: au
-//  ----------------------------------------------------------------
-
-
-function au(array) {
-
-	this.classname = "au";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-au._isfieldmapper = true;
-
-
-au.prototype.profile = function(new_value) {
-	if(new_value) { this.array[5] = new_value; }
-	return this.array[5];
-}
-au.prototype.usrgroup = function(new_value) {
-	if(new_value) { this.array[6] = new_value; }
-	return this.array[6];
-}
-au.prototype.alert_message = function(new_value) {
-	if(new_value) { this.array[9] = new_value; }
-	return this.array[9];
-}
-au.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-au.prototype.email = function(new_value) {
-	if(new_value) { this.array[14] = new_value; }
-	return this.array[14];
-}
-au.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-au.prototype.suffix = function(new_value) {
-	if(new_value) { this.array[16] = new_value; }
-	return this.array[16];
-}
-au.prototype.id = function(new_value) {
-	if(new_value) { this.array[18] = new_value; }
-	return this.array[18];
-}
-au.prototype.address = function(new_value) {
-	if(new_value) { this.array[17] = new_value; }
-	return this.array[17];
-}
-au.prototype.ident_value = function(new_value) {
-	if(new_value) { this.array[20] = new_value; }
-	return this.array[20];
-}
-au.prototype.active = function(new_value) {
-	if(new_value) { this.array[22] = new_value; }
-	return this.array[22];
-}
-au.prototype.home_ou = function(new_value) {
-	if(new_value) { this.array[23] = new_value; }
-	return this.array[23];
-}
-au.prototype.last_xact_id = function(new_value) {
-	if(new_value) { this.array[24] = new_value; }
-	return this.array[24];
-}
-au.prototype.dob = function(new_value) {
-	if(new_value) { this.array[26] = new_value; }
-	return this.array[26];
-}
-au.prototype.card = function(new_value) {
-	if(new_value) { this.array[30] = new_value; }
-	return this.array[30];
-}
-au.prototype.day_phone = function(new_value) {
-	if(new_value) { this.array[7] = new_value; }
-	return this.array[7];
-}
-au.prototype.usrname = function(new_value) {
-	if(new_value) { this.array[8] = new_value; }
-	return this.array[8];
-}
-au.prototype.super_user = function(new_value) {
-	if(new_value) { this.array[10] = new_value; }
-	return this.array[10];
-}
-au.prototype.family_name = function(new_value) {
-	if(new_value) { this.array[11] = new_value; }
-	return this.array[11];
-}
-au.prototype.claims_returned_count = function(new_value) {
-	if(new_value) { this.array[12] = new_value; }
-	return this.array[12];
-}
-au.prototype.first_given_name = function(new_value) {
-	if(new_value) { this.array[13] = new_value; }
-	return this.array[13];
-}
-au.prototype.standing = function(new_value) {
-	if(new_value) { this.array[15] = new_value; }
-	return this.array[15];
-}
-au.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-au.prototype.gender = function(new_value) {
-	if(new_value) { this.array[19] = new_value; }
-	return this.array[19];
-}
-au.prototype.ident_type = function(new_value) {
-	if(new_value) { this.array[21] = new_value; }
-	return this.array[21];
-}
-au.prototype.other_phone = function(new_value) {
-	if(new_value) { this.array[25] = new_value; }
-	return this.array[25];
-}
-au.prototype.passwd = function(new_value) {
-	if(new_value) { this.array[27] = new_value; }
-	return this.array[27];
-}
-au.prototype.evening_phone = function(new_value) {
-	if(new_value) { this.array[28] = new_value; }
-	return this.array[28];
-}
-au.prototype.second_given_name = function(new_value) {
-	if(new_value) { this.array[29] = new_value; }
-	return this.array[29];
-}
-au.prototype.addresses = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-au.prototype.cards = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-au.prototype.master_account = function(new_value) {
-	if(new_value) { this.array[31] = new_value; }
-	return this.array[31];
-}
-au.prototype.prefix = function(new_value) {
-	if(new_value) { this.array[32] = new_value; }
-	return this.array[32];
-}
-au.prototype.usrid = function(new_value) {
-	if(new_value) { this.array[33] = new_value; }
-	return this.array[33];
-}
-
-//  ----------------------------------------------------------------
 // Class: acp
 //  ----------------------------------------------------------------
 
@@ -988,11 +826,11 @@ acp.prototype.deposit_amount = function(new_value) {
 	if(new_value) { this.array[18] = new_value; }
 	return this.array[18];
 }
-acp.prototype.opac_visible = function(new_value) {
+acp.prototype.copy_number = function(new_value) {
 	if(new_value) { this.array[20] = new_value; }
 	return this.array[20];
 }
-acp.prototype.copy_number = function(new_value) {
+acp.prototype.opac_visible = function(new_value) {
 	if(new_value) { this.array[19] = new_value; }
 	return this.array[19];
 }
@@ -1003,6 +841,176 @@ acp.prototype.price = function(new_value) {
 acp.prototype.circ_modifier = function(new_value) {
 	if(new_value) { this.array[22] = new_value; }
 	return this.array[22];
+}
+acp.prototype.circ_lib = function(new_value) {
+	if(new_value) { this.array[23] = new_value; }
+	return this.array[23];
+}
+
+//  ----------------------------------------------------------------
+// Class: au
+//  ----------------------------------------------------------------
+
+
+function au(array) {
+
+	this.classname = "au";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+au._isfieldmapper = true;
+
+
+au.prototype.profile = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+au.prototype.billing_address = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+au.prototype.usrgroup = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+au.prototype.alert_message = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+au.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+au.prototype.email = function(new_value) {
+	if(new_value) { this.array[15] = new_value; }
+	return this.array[15];
+}
+au.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+au.prototype.suffix = function(new_value) {
+	if(new_value) { this.array[17] = new_value; }
+	return this.array[17];
+}
+au.prototype.id = function(new_value) {
+	if(new_value) { this.array[18] = new_value; }
+	return this.array[18];
+}
+au.prototype.ident_value = function(new_value) {
+	if(new_value) { this.array[21] = new_value; }
+	return this.array[21];
+}
+au.prototype.active = function(new_value) {
+	if(new_value) { this.array[23] = new_value; }
+	return this.array[23];
+}
+au.prototype.home_ou = function(new_value) {
+	if(new_value) { this.array[24] = new_value; }
+	return this.array[24];
+}
+au.prototype.last_xact_id = function(new_value) {
+	if(new_value) { this.array[25] = new_value; }
+	return this.array[25];
+}
+au.prototype.dob = function(new_value) {
+	if(new_value) { this.array[28] = new_value; }
+	return this.array[28];
+}
+au.prototype.card = function(new_value) {
+	if(new_value) { this.array[30] = new_value; }
+	return this.array[30];
+}
+au.prototype.day_phone = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+au.prototype.usrname = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+au.prototype.super_user = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+au.prototype.claims_returned_count = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+au.prototype.family_name = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+au.prototype.standing = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+au.prototype.first_given_name = function(new_value) {
+	if(new_value) { this.array[16] = new_value; }
+	return this.array[16];
+}
+au.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+au.prototype.gender = function(new_value) {
+	if(new_value) { this.array[19] = new_value; }
+	return this.array[19];
+}
+au.prototype.ident_type = function(new_value) {
+	if(new_value) { this.array[20] = new_value; }
+	return this.array[20];
+}
+au.prototype.mailing_address = function(new_value) {
+	if(new_value) { this.array[22] = new_value; }
+	return this.array[22];
+}
+au.prototype.other_phone = function(new_value) {
+	if(new_value) { this.array[26] = new_value; }
+	return this.array[26];
+}
+au.prototype.passwd = function(new_value) {
+	if(new_value) { this.array[27] = new_value; }
+	return this.array[27];
+}
+au.prototype.evening_phone = function(new_value) {
+	if(new_value) { this.array[29] = new_value; }
+	return this.array[29];
+}
+au.prototype.second_given_name = function(new_value) {
+	if(new_value) { this.array[31] = new_value; }
+	return this.array[31];
+}
+au.prototype.addresses = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+au.prototype.cards = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+au.prototype.master_account = function(new_value) {
+	if(new_value) { this.array[32] = new_value; }
+	return this.array[32];
+}
+au.prototype.usrid = function(new_value) {
+	if(new_value) { this.array[34] = new_value; }
+	return this.array[34];
+}
+au.prototype.prefix = function(new_value) {
+	if(new_value) { this.array[33] = new_value; }
+	return this.array[33];
 }
 
 //  ----------------------------------------------------------------
@@ -1292,52 +1300,6 @@ mmrsm.prototype.isdeleted = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
-// Class: ap
-//  ----------------------------------------------------------------
-
-
-function ap(array) {
-
-	this.classname = "ap";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-ap._isfieldmapper = true;
-
-
-ap.prototype.ischanged = function(new_value) {
-	if(new_value) { this.array[1] = new_value; }
-	return this.array[1];
-}
-ap.prototype.name = function(new_value) {
-	if(new_value) { this.array[3] = new_value; }
-	return this.array[3];
-}
-ap.prototype.id = function(new_value) {
-	if(new_value) { this.array[4] = new_value; }
-	return this.array[4];
-}
-ap.prototype.isnew = function(new_value) {
-	if(new_value) { this.array[0] = new_value; }
-	return this.array[0];
-}
-ap.prototype.isdeleted = function(new_value) {
-	if(new_value) { this.array[2] = new_value; }
-	return this.array[2];
-}
-
-//  ----------------------------------------------------------------
 // Class: asva
 //  ----------------------------------------------------------------
 
@@ -1387,6 +1349,52 @@ asva.prototype.isnew = function(new_value) {
 	return this.array[0];
 }
 asva.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: ap
+//  ----------------------------------------------------------------
+
+
+function ap(array) {
+
+	this.classname = "ap";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+ap._isfieldmapper = true;
+
+
+ap.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+ap.prototype.name = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+ap.prototype.id = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+ap.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+ap.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
 	return this.array[2];
 }
@@ -1652,6 +1660,88 @@ mrd.prototype.isdeleted = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
+// Class: aua
+//  ----------------------------------------------------------------
+
+
+function aua(array) {
+
+	this.classname = "aua";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+aua._isfieldmapper = true;
+
+
+aua.prototype.country = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+aua.prototype.post_code = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+aua.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+aua.prototype.street1 = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+aua.prototype.valid = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+aua.prototype.state = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+aua.prototype.city = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+aua.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+aua.prototype.street2 = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+aua.prototype.county = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+aua.prototype.id = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+aua.prototype.usr = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+aua.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+aua.prototype.address_type = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+
+//  ----------------------------------------------------------------
 // Class: acnn
 //  ----------------------------------------------------------------
 
@@ -1878,6 +1968,92 @@ brn.prototype.namepsace_uri = function(new_value) {
 }
 
 //  ----------------------------------------------------------------
+// Class: mvr
+//  ----------------------------------------------------------------
+
+
+function mvr(array) {
+
+	this.classname = "mvr";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+mvr._isfieldmapper = true;
+
+
+mvr.prototype.types_of_resource = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+mvr.prototype.call_numbers = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+mvr.prototype.pubdate = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+mvr.prototype.subject = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+mvr.prototype.doc_id = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+mvr.prototype.author = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+mvr.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+mvr.prototype.doc_type = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+mvr.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+mvr.prototype.copy_count = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+mvr.prototype.isbn = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+mvr.prototype.title = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+mvr.prototype.tcn = function(new_value) {
+	if(new_value) { this.array[14] = new_value; }
+	return this.array[14];
+}
+mvr.prototype.publisher = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
+}
+mvr.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
 // Class: ascecm
 //  ----------------------------------------------------------------
 
@@ -1979,6 +2155,88 @@ asce.prototype.isnew = function(new_value) {
 asce.prototype.isdeleted = function(new_value) {
 	if(new_value) { this.array[2] = new_value; }
 	return this.array[2];
+}
+
+//  ----------------------------------------------------------------
+// Class: aoa
+//  ----------------------------------------------------------------
+
+
+function aoa(array) {
+
+	this.classname = "aoa";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+aoa._isfieldmapper = true;
+
+
+aoa.prototype.country = function(new_value) {
+	if(new_value) { this.array[3] = new_value; }
+	return this.array[3];
+}
+aoa.prototype.post_code = function(new_value) {
+	if(new_value) { this.array[4] = new_value; }
+	return this.array[4];
+}
+aoa.prototype.isnew = function(new_value) {
+	if(new_value) { this.array[0] = new_value; }
+	return this.array[0];
+}
+aoa.prototype.street1 = function(new_value) {
+	if(new_value) { this.array[5] = new_value; }
+	return this.array[5];
+}
+aoa.prototype.valid = function(new_value) {
+	if(new_value) { this.array[7] = new_value; }
+	return this.array[7];
+}
+aoa.prototype.state = function(new_value) {
+	if(new_value) { this.array[6] = new_value; }
+	return this.array[6];
+}
+aoa.prototype.city = function(new_value) {
+	if(new_value) { this.array[8] = new_value; }
+	return this.array[8];
+}
+aoa.prototype.ischanged = function(new_value) {
+	if(new_value) { this.array[1] = new_value; }
+	return this.array[1];
+}
+aoa.prototype.street2 = function(new_value) {
+	if(new_value) { this.array[9] = new_value; }
+	return this.array[9];
+}
+aoa.prototype.county = function(new_value) {
+	if(new_value) { this.array[11] = new_value; }
+	return this.array[11];
+}
+aoa.prototype.id = function(new_value) {
+	if(new_value) { this.array[10] = new_value; }
+	return this.array[10];
+}
+aoa.prototype.usr = function(new_value) {
+	if(new_value) { this.array[12] = new_value; }
+	return this.array[12];
+}
+aoa.prototype.isdeleted = function(new_value) {
+	if(new_value) { this.array[2] = new_value; }
+	return this.array[2];
+}
+aoa.prototype.address_type = function(new_value) {
+	if(new_value) { this.array[13] = new_value; }
+	return this.array[13];
 }
 
 //  ----------------------------------------------------------------

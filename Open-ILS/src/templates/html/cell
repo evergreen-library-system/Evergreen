@@ -16,6 +16,8 @@
     [%- IF  align %] align="[% align %]"[% END %]
     [%- IF  class %] class="[% class %]"[% END %]
     [%- IF  id %] id="[% id %]"[% END %]
-    [%- IF  valign %] valign="[% valign %]"[% END %]>
+    [%- IF  valign %] valign="[% valign %]"[% END %]
+    [%- IF  nowrap %] nowrap="[% nowrap %]"[% END %]
+    [%- IF  style %] style="[% style %]"[% END %]>
 [%- content -%]
 </td>

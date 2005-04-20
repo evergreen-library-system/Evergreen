@@ -1,14 +1,14 @@
 [%
 
-	WRAPPER html/div class='record_next_prev_links_box' id='record_next_prev_links_box';
+	WRAPPER html/div class='record_next_prev_links_box' id="record_next_prev_links_box_$count";
 
-		WRAPPER html/div class='next_prev_link_div' id='record_prev_button';
+		WRAPPER html/div class='record_prev_button' id="record_prev_button_$count";
 			anchor(text="Prev", href="javascript:globalPage.prev()");
 		END;
 
 		box(id='space_link');
 
-		WRAPPER html/div class='next_prev_link_div' id='record_next_button';
+		WRAPPER html/div class='record_next_button' id="record_next_button_$count";
 			anchor(text="Next", href="javascript:globalPage.next()");
 		END;
 

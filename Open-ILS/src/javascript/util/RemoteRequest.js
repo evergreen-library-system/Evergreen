@@ -6,6 +6,7 @@ if(globalPort != "443")
 	_url = _url + ":" + globalPort;
 var XML_HTTP_URL = _url + "/gateway";
 */
+
 var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
 
 
@@ -111,9 +112,14 @@ RemoteRequest.prototype.getText = function() {
 	return this.xmlhttp.responseText;
 }
 
+RemoteRequest.prototype.isReady = function() {
+	debug( "Request state is " + this.xmlhttp.readyState );
+	return this.xmlhttp.readyState == 4;
+}
+
+
 RemoteRequest.prototype.getResultObject = function() {
 	var obj = JSON2js( this.xmlhttp.responseText );
-
 	if(obj == null) {
 		debug("received null response");
 		return null;

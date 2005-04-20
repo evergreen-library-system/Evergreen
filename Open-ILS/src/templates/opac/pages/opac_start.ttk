@@ -11,14 +11,10 @@
 		WRAPPER html/body onload='pageInit();';
 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-
-			lines(2);
-
-				"Big PINES Logo? <br/><br/>";
-				"New Additions to this library? <br/><br/>";
-				"What's popular? <br/><br/>";
-
-				"<div id='mr_title_div_0'>";
+			lines(1);
+			INCLUDE opac/pages/chunks/status_bar.ttk;
+			lines(1);
+			INCLUDE opac/pages/chunks/org_tree.ttk;
 
 		END; # - body
 	END; # - html

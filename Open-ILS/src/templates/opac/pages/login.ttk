@@ -16,6 +16,8 @@
 			';
 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
+			lines(1);
+			INCLUDE opac/pages/chunks/status_bar.ttk;
 
 			lines(3);
 
