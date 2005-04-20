@@ -202,7 +202,10 @@ sub AUTOLOAD {
 	(my $field = $AUTOLOAD) =~ s/^.*://o;
 	my $class_name = $obj->class_name;
 
-	my $pos = $$fieldmap{$class_name}{fields}{$field}{position};
+	my $fpos = $field;
+	$fpos  =~ s/^clear_//og ;
+
+	my $pos = $$fieldmap{$class_name}{fields}{$fpos}{position};
 
 	if ($field =~ /^clear_/o) {
 		{	no strict 'subs';
