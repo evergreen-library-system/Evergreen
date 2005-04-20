@@ -23,7 +23,7 @@ function JSON2js (json) {
 		try {
 			eval( 'obj = ' + json );
 		} catch(E) {
-			debug("Error building JSON object with string " + json );
+			debug("Error building JSON object with string " + E + "\nString:\n" + json );
 			return null;
 		}
 	}
@@ -40,7 +40,7 @@ function js2JSON(arg) {
 			if(arg) {
 
 				if (arg._isfieldmapper) { /* magi-c-ast for fieldmapper objects */
-					return "/*--S " + arg.classname + "--*/" + js2JSON(arg.array) + "/*--E " + arg.classname + "--*/";
+					return "/*--S " + arg.classname + " --*/" + js2JSON(arg.array) + "/*--E " + arg.classname + " --*/";
 
 				} else {
 
