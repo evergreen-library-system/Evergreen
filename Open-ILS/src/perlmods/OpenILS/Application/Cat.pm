@@ -31,7 +31,7 @@ sub biblio_record_tree_retrieve {
 
 	my( $self, $client, $recordid ) = @_;
 
-	my $name = "open-ils.storage.direct.biblio.record_marc.retrieve";
+	my $name = "open-ils.storage.direct.biblio.record_entry.retrieve";
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( $name, $recordid );
 	$request->wait_complete;
@@ -96,6 +96,15 @@ sub biblio_record_tree_commit {
 
 	# capture the doc id
 	my $docid = $tree->owner_doc();
+	my $session = OpenILS::Application::AppUtils->start_db_session();
+
+	warn "Retrieving biblio record from storage for update\n";
+
+	my $req1 = $session->request('open-ils.storage',
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", $docid );
+	if(UNIVERSAL::usa($req1,"Error")) { throw $req1 ($req1->stringify);}
+	my $biblio = $req1->content;
+
 
 	# turn the tree into a nodeset
 	my $nodeset = $utils->tree2nodeset($tree);
@@ -111,18 +120,18 @@ sub biblio_record_tree_commit {
 	# turn the nodeset into a doc
 	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml( $nodeset );
 
-	my $biblio =  Fieldmapper::biblio::record_marc->new();
-	$biblio->id( $docid );
+	#my $biblio =  Fieldmapper::biblio::record_marc->new();
+	#$biblio->id( $docid );
+
 	$biblio->marc( $marcxml->toString() );
 
 	warn "Starting db session\n";
-	my $session = OpenILS::Application::AppUtils->start_db_session();
 
 	my $x = _update_record_metadata( $session, { user => $user_obj, docid => $docid } );
 	OpenILS::Application::AppUtils->rollback_db_session($session) unless $x;
 
 	warn "Sending updated doc $docid to db\n";
-	my $req = $session->request( "open-ils.storage.direct.biblio.record_marc.update", $biblio );
+	my $req = $session->request( "open-ils.storage.direct.biblio.record_entry.update", $biblio );
 
 	$req->wait_complete;
 	my $status = $req->recv();
