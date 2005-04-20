@@ -176,8 +176,6 @@ sub last_sent_type {
 sub get_app_targets {
 	my $app = shift;
 
-#	my $config_client = OpenSRF::Utils::SettingsClient->new();
-
 	my $conf = OpenSRF::Utils::Config->current;
 	my $router_name = $conf->bootstrap->router_name;
 	my $routers = $conf->bootstrap->domains;
@@ -272,6 +270,7 @@ sub reset {
 sub connect {
 	my $self = shift;
 	my $class = ref($self) || $self;
+
 
 	if ( ref( $self ) and  $self->state && $self->state == CONNECTED  ) {
 		$logger->transport("ABC AppSession already connected", DEBUG );
@@ -851,8 +850,18 @@ sub push_queue {
 	my $self = shift;
 	my $resp = shift;
 	if( !$resp ) { return 0; }
+	if( UNIVERSAL::isa($resp, "Error")) {
+		$self->{failed} = $resp;
+		$self->complete(1);
+		#return; eventually...
+	}
 	push @{ $self->{recv_queue} }, $resp;
 	OpenSRF::Utils::Logger->debug( "AppRequest pushed ".$resp->toString(), INTERNAL );
+}
+
+sub failed {
+	my $self = shift;
+	return $self->{failed};
 }
 
 sub queue_wait {
@@ -866,6 +875,7 @@ sub payload { return shift()->{payload}; }
 sub resend {
 	my $self = shift;
 	return unless ($self and $self->session);
+	return if $self->complete;
 	OpenSRF::Utils::Logger->debug(
 		"I'm resending the request for threadTrace ". $self->threadTrace, DEBUG);
 	if($self->payload) {
@@ -923,6 +933,26 @@ sub register_death_callback {
 	my $cb = shift;
 	$self->session->register_callback( death => $cb );
 }
+
+
+# utility method.  checks to see of the request failed.
+# if so, throws an OpenSRF::EX::ERROR. if everything is
+# ok, it returns the content of the request
+sub gather {
+	my $self = shift;
+	my $finish = shift;
+	$self->wait_complete;
+	my $resp = $self->recv;
+	if( $self->failed() ) { 
+		throw OpenSRF::EX::ERROR
+			($self->failed()->stringify());
+	}
+	if(!$resp) { return undef; }
+	my $content = $resp->content;
+	if($finish) { $self->finish();}
+	return $content;
+}
+
 
 package OpenSRF::AppSubrequest;
 
