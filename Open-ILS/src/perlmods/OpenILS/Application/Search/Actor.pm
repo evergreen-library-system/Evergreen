@@ -32,14 +32,131 @@ sub actor_user_retrieve_by_barcode {
 	my($self, $client, $barcode) = @_;
 	warn "Searching for user with barcode $barcode\n";
 
-	my $user = OpenILS::Application::AppUtils->simple_scalar_request(
-			'open-ils.storage', 
-			'open-ils.storage.fleshed.actor.user.search.barcode.atomic',
-			$barcode,
-			);
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
-	return $user->[0];
+	# find the card with the given barcode
+	my $creq	= $session->request(
+			"open-ils.storage.direct.actor.card.search.barcode",
+			$barcode );
+	my $card = $creq->gather(1);
+	$card = $card->[0];
+
+	# grab the user with the given card
+	my $ureq = $session->request(
+			"open-ils.storage.direct.actor.user.retrieve",
+			$card->usr());
+	my $user = $ureq->gather(1);
+
+	# grab the cards
+	my $cards_req = $session->request(
+			"open-ils.storage.direct.actor.card.search.usr",
+			$user->id() );
+	$user->cards( $cards_req->gather(1) );
+
+	my $add_req = $session->request(
+			"open-ils.storage.direct.actor.user_address.search.usr",
+			$user->id() );
+	$user->addresses( $add_req->gather(1) );
+
+	return $user;
 
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "get_org_tree",
+	api_name	=> "open-ils.search.actor.org_tree.retrieve",
+	argc		=> 1, 
+	note		=> "Returns the entire org tree structure",
+);
+
+sub get_org_tree {
+
+	my( $self, $client, $user_session ) = @_;
+
+	if( $user_session ) { # keep for now for backwards compatibility
+
+		my $user_obj = 
+			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+		
+		my $session = OpenSRF::AppSession->create("open-ils.storage");
+		my $request = $session->request( 
+				"open-ils.storage.direct.actor.org_unit.retrieve", $user_obj->home_ou );
+		my $response = $request->recv();
+
+		if(!$response) { 
+			throw OpenSRF::EX::ERROR (
+					"No response from storage for org_unit retrieve");
+		}
+		if(UNIVERSAL::isa($response,"Error")) {
+			throw $response ($response->stringify);
+		}
+
+		my $home_ou = $response->content;
+		$request->finish();
+		$session->disconnect();
+
+		return $home_ou;
+	}
+
+	warn "Getting ORG Tree\n";
+	my $org_tree = OpenILS::Application::AppUtils->get_org_tree();
+	warn "Returning Org Tree\n";
+
+	return $org_tree;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "get_org_tree_slim",
+	api_name	=> "open-ils.search.actor.org_tree.slim.retrieve",
+	argc		=> 1, 
+	note		=> "Returns the entire org tree structure",
+);
+
+sub get_org_tree_slim {
+
+	my( $self, $client, $user_session ) = @_;
+
+	warn "Getting ORG Tree\n";
+	my $org_tree = OpenILS::Application::AppUtils->get_slim_org_tree();
+	warn "Returning Org Tree\n";
+
+	return $org_tree;
+}
+
+
+
+
+
+
+__PACKAGE__->register_method(
+	method	=> "get_org_types",
+	api_name	=> "open-ils.search.actor.org_types.retrieve",
+);
+
+sub get_org_types {
+	my($self, $client) = @_;
+
+	 my $org_typelist = OpenILS::Application::AppUtils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.actor.org_unit_type.retrieve.all" );
+
+	 return $org_typelist;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "get_user_profiles",
+	api_name	=> "open-ils.search.actor.user.profiles",
+);
+
+sub get_user_profiles {
+	return OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.actor.profile.batch.retrieve.atomic",
+			( "1", "2", "3" ) );
+}
+
 
 1;

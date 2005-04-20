@@ -167,40 +167,35 @@ sub record_id_to_mods_slim {
 __PACKAGE__->register_method(
 	method	=> "record_id_to_copy_count",
 	api_name	=> "open-ils.search.biblio.record.copy_count",
-	argc		=> 2, 
-	note		=> "Provide ID, we provide the copy count"
 );
 
+__PACKAGE__->register_method(
+	method	=> "record_id_to_copy_count",
+	api_name	=> "open-ils.search.biblio.metarecord.copy_count",
+);
 sub record_id_to_copy_count {
 	my( $self, $client, $org_id, $record_id ) = @_;
+
+	my $method = "open-ils.storage.biblio.record_entry.copy_count.atomic";
+	my $key = "record";
+	if($self->api_name =~ /metarecord/) {
+		$method = "open-ils.storage.metabib.metarecord.copy_count.atomic";
+		$key = "metarecord";
+	}
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	warn "copy_count retrieve $record_id\n";
 	return undef unless(defined $record_id);
 
 	my $request = $session->request(
-		"open-ils.storage.direct.biblio.record_copy_count",  $org_id, $record_id );
+		$method, org_unit => $org_id => $key => $record_id );
 
 	warn "copy_count wait $record_id\n";
-	$request->wait_complete;
 
-	warn "copy_count recv $record_id\n";
-	my $response = $request->recv();
-	return undef unless $response;
-
-	warn "copy_count after recv $record_id\n";
-
-	if( $response and UNIVERSAL::isa($response, "Error")) {
-		throw $response ($response->stringify);
-	}
-
-	my $count = $response->content;
-
-	$request->finish();
-	$session->finish();
+	my $count = $request->gather(1);
 	$session->disconnect();
+	return [ sort { $a->{depth} <=> $b->{depth} } @$count ];
 
-	return $count;
 }
 
 
@@ -579,7 +574,7 @@ sub biblio_search_class {
 	warn "performing mr search\n";
 	$request = $session->request(	
 		#"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
-		"open-ils.storage.metabib.$class.search_fts.metarecord.atomic",
+		"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
 		term		=> $string, 
 		org_unit => $org_id, 
 		depth		=> $org_type, 
@@ -658,6 +653,8 @@ sub biblio_mrid_to_modsbatch {
 	if($metarecord->mods()){
 		warn "We already have mods for " . $metarecord->id . "\n";
 		my $perl = JSON->JSON2perl($metarecord->mods());
+		use Data::Dumper;
+		warn Dumper $perl;
 		return Fieldmapper::metabib::virtual_record->new($perl);
 	}
 
@@ -681,6 +678,7 @@ sub biblio_mrid_to_modsbatch {
 	}
 
 	my $u = OpenILS::Utils::ModsParser->new();
+	warn "marc:\n" . $record->marc;
 	$u->start_mods_batch( $record->marc );
 	my $main_doc_id = $record->id();
 

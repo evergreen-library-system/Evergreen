@@ -12,6 +12,7 @@ use OpenSRF::Utils::Cache;
 #use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Web;
 use OpenILS::Application::Search::Biblio;
+use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
 
 use OpenILS::Application::AppUtils;
@@ -47,50 +48,6 @@ sub filter_search {
 	warn "Cleansed string to: $string\n";
 	return $string;
 }	
-
-
-__PACKAGE__->register_method(
-	method	=> "get_org_tree",
-	api_name	=> "open-ils.search.actor.org_tree.retrieve",
-	argc		=> 1, 
-	note		=> "Returns the entire org tree structure",
-);
-
-sub get_org_tree {
-
-	my( $self, $client, $user_session ) = @_;
-
-	if( $user_session ) { # keep for now for backwards compatibility
-
-		my $user_obj = 
-			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-		
-		my $session = OpenSRF::AppSession->create("open-ils.storage");
-		my $request = $session->request( 
-				"open-ils.storage.direct.actor.org_unit.retrieve", $user_obj->home_ou );
-		my $response = $request->recv();
-
-		if(!$response) { 
-			throw OpenSRF::EX::ERROR (
-					"No response from storage for org_unit retrieve");
-		}
-		if(UNIVERSAL::isa($response,"Error")) {
-			throw $response ($response->stringify);
-		}
-
-		my $home_ou = $response->content;
-		$request->finish();
-		$session->disconnect();
-
-		return $home_ou;
-	}
-
-	warn "Getting ORG Tree\n";
-	my $org_tree = OpenILS::Application::AppUtils->get_org_tree();
-	warn "Returning Org Tree\n";
-
-	return $org_tree;
-}
 
 
 
