@@ -5,6 +5,7 @@ use OpenSRF::Utils::Cache;
 
 
 my $cache_client = OpenSRF::Utils::Cache->new( "global", 0 );
+#my $cache_client;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -21,7 +22,7 @@ sub start_db_session {
 	my $trans_req = $session->request( "open-ils.storage.transaction.begin" );
 
 	my $trans_resp = $trans_req->recv();
-	if(ref($trans_resp) and $trans_resp->isa("Error")) { throw $trans_resp; }
+	if(ref($trans_resp) and UNIVERSAL::isa($trans_resp,"Error")) { throw $trans_resp; }
 	if( ! $trans_resp->content() ) {
 		throw OpenSRF::ERROR 
 			("Unable to Begin Transaction with database" );
@@ -43,7 +44,7 @@ sub commit_db_session {
 		throw OpenSRF::EX::ERROR ("Unable to commit db session");
 	}
 
-	if(ref($resp) and $resp->isa("Error")) { 
+	if(UNIVERSAL::isa($resp,"Error")) { 
 		throw $resp ($resp->stringify); 
 	}
 
@@ -61,7 +62,7 @@ sub rollback_db_session {
 
 	my $req = $session->request("open-ils.storage.transaction.rollback");
 	my $resp = $req->recv();
-	if(ref($resp) and $resp->isa("Error")) { throw $resp; }
+	if(UNIVERSAL::isa($resp,"Error")) { throw $resp;  }
 
 	$session->finish();
 	$session->disconnect();
@@ -120,7 +121,7 @@ sub simple_scalar_request {
 		warn "No response from $service for method $method with params @params";
 	}
 
-	if($response and $response->isa("Error")) {
+	if(UNIVERSAL::isa($response,"Error")) {
 		throw $response ("Call to $service for method $method with params @params" . 
 				"\n failed with exception: " . $response->stringify );
 	}
@@ -168,14 +169,38 @@ sub get_org_tree {
 		$org_typelist = $self->simple_scalar_request( 
 			"open-ils.storage", 
 			"open-ils.storage.direct.actor.org_unit_type.retrieve.all" );
-		$self->build_org_type( $org_typelist );
+		$self->build_org_type($org_typelist);
 	}
 
-	$tree = $self->build_org_tree($orglist, $org_typelist);
-	$cache_client->put_cache($tree);
+	$tree = $self->build_org_tree($orglist,1);
+	$cache_client->put_cache('orgtree', $tree);
 	return $tree;
 
 }
+
+my $slimtree = undef;
+sub get_slim_org_tree {
+
+	my $self = shift;
+	if($slimtree) { return $slimtree; }
+
+	# see if it's in the cache
+	$slimtree = $cache_client->get_cache('slimorgtree');
+	if($slimtree) { return $slimtree; }
+
+	if(!$orglist) {
+		warn "Retrieving Org Tree\n";
+		$orglist = $self->simple_scalar_request( 
+			"open-ils.storage", 
+			"open-ils.storage.direct.actor.org_unit.retrieve.all" );
+	}
+
+	$slimtree = $self->build_org_tree($orglist);
+	$cache_client->put_cache('slimorgtree', $slimtree);
+	return $slimtree;
+
+}
+
 
 sub build_org_type { 
 	my($self, $org_typelist)  = @_;
@@ -188,7 +213,7 @@ sub build_org_type {
 
 sub build_org_tree {
 
-	my( $self, $orglist, $org_typelist ) = @_;
+	my( $self, $orglist, $add_types ) = @_;
 
 
 
@@ -203,7 +228,7 @@ sub build_org_tree {
 
 		next unless ($org);
 
-		if(!ref($org->ou_type())) {
+		if(!ref($org->ou_type()) and $add_types) {
 			$org->ou_type( $org_typelist_hash->{$org->ou_type()});
 		}
 
@@ -220,6 +245,80 @@ sub build_org_tree {
 }
 
 	
+sub start_long_request {
+
+	my($self, $service, $method, @params) = @_;
+
+	my $session = OpenSRF::AppSession->create( $service );
+	my $request = $session->request( $method, @params );
+	my $response = $request->recv(30);
+
+	$request->wait_complete;
+
+	if(!$request->complete) {
+		throw $response ("Call to $service for method $method with params @params" . 
+				"\n did not complete successfully");
+	}
+
+	if(!$response) {
+		warn "No response from $service for method $method with params @params";
+	}
+
+	if($response and UNIVERSAL::isa($response,"Error")) {
+		throw $response ("Call to $service for method $method with params @params" . 
+				"\n failed with exception: " . $response->stringify );
+	}
+
+	$request->finish();
+
+	my $value;
+
+	if($response) { $value = $response->content; }
+	else { $value = undef; }
+
+	return [ $session, $value ];
+}
+
+sub long_request {
+
+	my($self, $session, $service, $method, @params) = @_;
+
+	my $request = $session->request( $method, @params );
+	my $response = $request->recv(30);
+
+	$request->wait_complete;
+
+	if(!$request->complete) {
+		throw $response ("Call to $service for method $method with params @params" . 
+				"\n did not complete successfully");
+	}
+
+	if(!$response) {
+		warn "No response from $service for method $method with params @params";
+	}
+
+	if($response and UNIVERSAL::isa($response,"Error")) {
+		throw $response ("Call to $service for method $method with params @params" . 
+				"\n failed with exception: " . $response->stringify );
+	}
+
+	$request->finish();
+
+	my $value;
+
+	if($response) { $value = $response->content; }
+	else { $value = undef; }
+
+	return $value;
+}
+
+sub finish_long_request {
+	my($self, $session) = @_;
+	if($session) {
+		$session->finish();
+		$session->disconnect();
+	}
+}
 
 
 1;
