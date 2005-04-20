@@ -32,11 +32,11 @@ int main( int argc, char* argv[] ) {
 
 
 	client = osrf_system_get_transport_client();
+	osrf_message_set_json_parse(1);
 
 
 	/* main process loop */
 	char* request;
-	//signal(SIGINT,sig_int_handler);
 	while((request=readline(prompt))) {
 
 		if( !strcmp(request, "exit") || !strcmp(request,"quit")) 
@@ -461,18 +461,17 @@ int send_request( char* server,
 			osrf_message_free(last_result);
 			last_result = omsg;
 
-			if( pretty_print ) {
-				char* content = json_printer( omsg->result_content );
-				buffer_add( resp_buffer, "\nReceived Data: " ); 
-				buffer_add( resp_buffer, content );
-				buffer_add( resp_buffer, "\n" );
-				free(content);
-			} else {
-				char* content = json_object_get_string(omsg->result_content);
-					buffer_add( resp_buffer, "\nReceived Data: " ); 
-					buffer_add( resp_buffer, content );
-					buffer_add( resp_buffer, "\n" );
-			}
+			char* content;
+
+			if( pretty_print ) 
+				content = json_printer( omsg->result_content );
+			else
+				content = json_object_get_string(omsg->result_content);
+
+			buffer_add( resp_buffer, "\nReceived Data: " ); 
+			buffer_add( resp_buffer, content );
+			buffer_add( resp_buffer, "\n" );
+			free(content);
 
 		} else {
 
@@ -491,7 +490,6 @@ int send_request( char* server,
 		omsg = osrf_app_session_request_recv( session, req_id, 5 );
 
 	}
-
 
 	double end = get_timestamp_millis();
 
