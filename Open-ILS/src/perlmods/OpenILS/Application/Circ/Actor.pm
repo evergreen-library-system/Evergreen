@@ -25,27 +25,41 @@ sub update_patron {
 	my( $self, $client, $patron ) = @_;
 
 	my $session = $apputils->start_db_session();
-	my $new_patron = _clone_patron($patron);
+	my $err = undef;
 
-	_d($new_patron);
+
+	# $new_patron is the patron in progress.  $patron is the original patron
+	# passed in with the method.  new_patron will change as the components
+	# of patron are added/updated.
 
 	try {
 
+		my $new_patron;
+
 		# create/update the patron first so we can use his id
-		$new_patron = _add_update_patron($patron, $new_patron, $session);
-		$new_patron = _add_update_addresses($patron, $new_patron, $session);
-		_d($new_patron);
-		$new_patron = _add_update_cards($patron, $new_patron, $session);
-		_d($new_patron);
+		if( $self->api_name =~ /create/ ) {
+			$new_patron = _add_patron($session, _clone_patron($patron));
+		} else { 
+			$new_patron = $patron; 
+		}
+
+		$new_patron = _add_update_addresses($session, $patron, $new_patron);
+		$new_patron = _add_update_cards($session, $patron, $new_patron);
+
+		# re-update the patron if anything has happened to him during this process
+		$new_patron = _update_patron($session, $new_patron);
 		$apputils->commit_db_session($session);
 
 	} catch Error with { 
 		my $e = shift;
-		warn " -*- Failure adding user: \n$e\n";
+		$err =  "-*- Failure adding user: $e";
 		$apputils->rollback_db_session($session);
+		warn $e;
 	};
 
 	warn "Patron Update/Create complete\n";
+
+	if($err) { throw OpenSRF::EX::ERROR ($err); }
 
 	return 1;
 }
@@ -72,61 +86,63 @@ sub _clone_patron {
 	$new_patron->clear_card();
 	$new_patron->clear_cards();
 	$new_patron->clear_id();
+	$new_patron->clear_isnew();
+	$new_patron->clear_changed();
+	$new_patron->clear_deleted();
 
 	return $new_patron;
 }
 
 
-sub _add_update_patron {
-	my $patron		= shift;
-	my $new_patron	= shift;
+sub _add_patron {
 	my $session		= shift;
+	my $patron		= shift;
 
-	if($patron->isnew()) {
-		warn Dumper $new_patron;
-		my $req = $session->request(
-			"open-ils.storage.direct.actor.user.create",$new_patron);
-		my $id = $req->gather(1);
-		if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new user"); }
-		warn "Created new patron with id $id\n";
-		$new_patron->id($id);
+	my $req = $session->request(
+		"open-ils.storage.direct.actor.user.create",$patron);
+	my $id = $req->gather(1);
+	if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new user"); }
+	warn "Created new patron with id $id\n";
+	$patron->id($id);
 
-	} elsif( $patron->ischanged() ) {
+	return $patron;
+}
 
+
+sub _update_patron {
+	my( $session, $patron) = @_;
+
+	my $req = $session->request(
+		"open-ils.storage.direct.actor.user.update",$patron );
+	my $status = $req->gather(1);
+	if(!$status) { 
+		throw new OpenSRF::EX::ERROR 
+			("Unknown error updating patron"); 
 	}
-	return $new_patron;
+	return $patron;
 }
 
 
 sub _add_update_addresses {
+	my $session = shift;
 	my $patron = shift;
 	my $new_patron = shift;
-	my $session = shift;
-	my @complete = ();
 
-	#my @addresses = @{$patron->addresses()};
-	#$patron->addresses([]);
-
-	my $current_id;
+	my $current_id; # id of the address before creation
 
 	for my $address (@{$patron->addresses()}) {
-		next if ( grep { $_->street1() eq 
-				$address->street1() } @complete );
 
 		$address->usr($new_patron->id());
 
 		if(ref($address) and $address->isnew()) {
-			warn "Adding new address at street " . $address->street1();
+			warn "Adding new address at street " . $address->street1() . "\n";
 
 			$current_id = $address->id();
 			$address->clear_id();
 
-			warn "Adding new address: " . Dumper($address);
-			warn "User id: " . $address->usr() . "\n";
-
 			# put the address into the database
 			my $req = $session->request(
-				"open-ils.storage.direct.actor.org_address.create",
+				"open-ils.storage.direct.actor.user_address.create",
 				$address );
 
 			#update the id
@@ -137,20 +153,14 @@ sub _add_update_addresses {
 
 			# update all the necessary id's
 			$address->id( $id );
-			if( $patron->billing_address() ) {
-				if( $patron->billing_address->id() == $current_id ) {
-					$new_patron->billing_address($id);
-				}
-			} else {
-				#patron has not billing address
+			if( $patron->billing_address() == $current_id ) {
+				$new_patron->billing_address($id);
+				$new_patron->ischanged(1);
 			}
 
-			if( ref($patron->mailing_address()) ) {
-				if( $patron->mailing_address()->id() == $current_id ) {
-					$new_patron->mailing_address($id);
-				}
-			} else {
-				# patron does not have a billing address
+			if( $patron->mailing_address() == $current_id ) {
+				$new_patron->mailing_address($id);
+				$new_patron->ischanged(1);
 			}
 
 		} elsif( ref($address) and $address->ischanged() ) {
@@ -164,18 +174,41 @@ sub _add_update_addresses {
 
 
 sub _add_update_cards {
-	my $patron = shift;
-	my $session = shift;
 
+	my $session = shift;
+	my $patron = shift;
+	my $new_patron = shift;
+
+	my $virtual_id; #id of the card before creation
 	for my $card (@{$patron->cards()}) {
 
 		if(ref($card) and $card->isnew()) {
-			# create the card
+
+			$virtual_id = $card->id();
+			warn "Adding card with barcode " . $card->barcode() . "\n";
+			$card->usr($new_patron->id());
+			$card->clear_id();
+
+			my $req = $session->request(
+				"open-ils.storage.direct.actor.card.create",
+				$card );
+
+			my $id = $req->gather(1);
+			warn "Created patron card with id $id\n";
+
+			if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new user card"); }
+			if($patron->card() == $virtual_id) {
+				$new_patron->card($id);
+				$new_patron->ischanged(1);
+			}
+
 		} elsif( ref($card) and $card->ischanged() ) {
-			#update the card
+
+
+
 		}
 	}
-	return $patron;
+	return $new_patron;
 }
 
 
