@@ -14,6 +14,10 @@ CREATE TABLE actor.usr (
 	standing		INT		NOT NULL DEFAULT 1 REFERENCES config.standing (id),
 	ident_type		INT		NOT NULL REFERENCES config.identification_type (id),
 	ident_value		TEXT		NOT NULL,
+	ident_type2		INT		REFERENCES config.identification_type (id),
+	ident_value2		TEXT,
+	net_access_level	INT		NOT NULL DEFAULT 1 REFERENCES config.net_access_level (id),
+	photo_url		TEXT,
 	prefix			TEXT,
 	first_given_name	TEXT		NOT NULL,
 	second_given_name	TEXT,
@@ -39,7 +43,8 @@ CREATE TABLE actor.usr (
 	expire_date		DATE		NOT NULL DEFAULT (now() + '3 years'::INTERVAL)::DATE
 );
 CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
-CREATE INDEX actor_usr_address_idx ON actor.usr (address);
+CREATE INDEX actor_usr_mailing_address_idx ON actor.usr (mailing_address);
+CREATE INDEX actor_usr_billing_address_idx ON actor.usr (billing_address);
 
 CREATE FUNCTION actor.crypt_pw_insert () RETURNS TRIGGER AS $$
 	BEGIN
@@ -98,9 +103,10 @@ CREATE TABLE actor.stat_cat_entry (
 
 CREATE TABLE actor.stat_cat_entry_usr_map (
 	id		BIGSERIAL	PRIMARY KEY,
-	stat_cat_entry	INT		NOT NULL REFERENCES actor.stat_cat_entry (id) ON DELETE CASCADE,
+	stat_cat_entry	TEXT		NOT NULL,
+	stat_cat	INT		NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE,
 	target_usr	INT		NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
-	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat_entry)
+	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat)
 );
 CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (target_usr);
 
@@ -146,7 +152,10 @@ CREATE TABLE actor.org_unit (
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);
-CREATE INDEX actor_org_unit_address_idx ON actor.org_unit (address);
+CREATE INDEX actor_org_unit_ill_address_idx ON actor.org_unit (ill_address);
+CREATE INDEX actor_org_unit_billing_address_idx ON actor.org_unit (billing_address);
+CREATE INDEX actor_org_unit_mailing_address_idx ON actor.org_unit (mailing_address);
+CREATE INDEX actor_org_unit_holds_address_idx ON actor.org_unit (holds_address);
 
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'PINES', 'Georgia PINES Consortium');
 

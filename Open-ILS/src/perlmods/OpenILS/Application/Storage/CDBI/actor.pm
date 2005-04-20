@@ -14,6 +14,8 @@ __PACKAGE__->columns( Essential => qw/usrid usrname email first_given_name
 				second_given_name family_name billing_address
 				claims_returned_count home_ou gender dob
 				active master_account ident_type ident_value
+				ident_type2 ident_value2 net_access_level
+				photo_url create_date expire_date
 				super_user usrgroup passwd card last_xact_id
 				standing profile prefix suffix alert_message
 				day_phone evening_phone other_phone mailing_address/ );
@@ -65,7 +67,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat_entry_usr_map' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/stat_cat_entry target_user/ );
+__PACKAGE__->columns( Essential => qw/stat_cat stat_cat_entry target_user/ );
 
 #-------------------------------------------------------------------------------
 package actor::card;
@@ -112,7 +114,7 @@ __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
 package actor::profile;
 use base qw/actor/;
 
-__PACKAGE__->table( 'actor_card' );
+__PACKAGE__->table( 'actor_profile' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/name/ );
 

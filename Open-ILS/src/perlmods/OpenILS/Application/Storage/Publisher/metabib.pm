@@ -44,7 +44,7 @@ sub metarecord_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
-				  	AND cp.available IS TRUE)
+				  	AND cp.status = 0)
 			) AS available
 
 		  FROM  $ancestors u

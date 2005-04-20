@@ -5,6 +5,14 @@ our $VERSION = 1;
 package asset;
 use base qw/OpenILS::Application::Storage::CDBI/;
 #-------------------------------------------------------------------------------
+package asset::copy_location;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_copy_location' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/name owning_lib holdable opac_visible circulate/ );
+
+#-------------------------------------------------------------------------------
 package asset::call_number;
 use base qw/asset/;
 
@@ -27,9 +35,9 @@ use base qw/asset/;
 __PACKAGE__->table( 'asset_copy' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date editor
-				   edit_date copy_number available loan_duration circ_lib
+				   edit_date copy_number status loan_duration circ_lib
 				   fine_level circulate deposit price ref opac_visible
-				   circ_as_type circ_modifier deposit_amount/ );
+				   circ_as_type circ_modifier deposit_amount location/ );
 
 #-------------------------------------------------------------------------------
 package asset::stat_cat;

@@ -1,31 +1,35 @@
 BEGIN;
 
-ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_class_fkey FOREIGN KEY (class) REFERENCES actor.usr_class (id);
-ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_address_fkey FOREIGN KEY (address) REFERENCES actor.usr_address (id);
-ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_home_ou_fkey FOREIGN KEY (home_ou) REFERENCES actor.org_unit (id);
+ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_profile_fkey FOREIGN KEY (profile) REFERENCES actor.profile (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_billining_address_fkey FOREIGN KEY (billing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_home_ou_fkey FOREIGN KEY (home_ou) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
         
-ALTER TABLE actor.stat_cat ADD CONSTRAINT actor_stat_cat_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id);
+ALTER TABLE actor.stat_cat ADD CONSTRAINT actor_stat_cat_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE actor.stat_cat_entry ADD CONSTRAINT actor_stat_cat_entry_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id);
+ALTER TABLE actor.stat_cat_entry ADD CONSTRAINT actor_stat_cat_entry_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_address_fkey FOREIGN KEY (address) REFERENCES actor.org_address (id);
+ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_billing_address_fkey FOREIGN KEY (billing_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_holds_address_fkey FOREIGN KEY (holds_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_ill_address_fkey FOREIGN KEY (ill_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE;
-ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id);
-ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id);
+ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id);
-ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id);
+ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE metabib.metarecord ADD CONSTRAINT metabib_metarecord_master_record_fkey FOREIGN KEY (master_record) REFERENCES biblio.record_entry (id);
+ALTER TABLE metabib.metarecord ADD CONSTRAINT metabib_metarecord_master_record_fkey FOREIGN KEY (master_record) REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE metabib.title_field_entry ADD CONSTRAINT metabib_title_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id);
-ALTER TABLE metabib.title_field_entry ADD CONSTRAINT metabib_title_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id);
+ALTER TABLE metabib.title_field_entry ADD CONSTRAINT metabib_title_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE metabib.title_field_entry ADD CONSTRAINT metabib_title_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE metabib.author_field_entry ADD CONSTRAINT metabib_author_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id);
-ALTER TABLE metabib.author_field_entry ADD CONSTRAINT metabib_author_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id);
+ALTER TABLE metabib.author_field_entry ADD CONSTRAINT metabib_author_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE metabib.author_field_entry ADD CONSTRAINT metabib_author_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE metabib.subject_field_entry ADD CONSTRAINT metabib_subject_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id);
+ALTER TABLE metabib.subject_field_entry ADD CONSTRAINT metabib_subject_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE metabib.subject_field_entry ADD CONSTRAINT metabib_subject_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id);
 
 ALTER TABLE metabib.keyword_field_entry ADD CONSTRAINT metabib_keyword_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id);

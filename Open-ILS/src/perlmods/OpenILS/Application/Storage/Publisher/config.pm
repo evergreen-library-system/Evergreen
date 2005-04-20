@@ -1,6 +1,6 @@
 package OpenILS::Application::Storage::Publisher::config;
 use base qw/OpenILS::Application::Storage/;
-use OpenILS::Application::Storage::CDBI::config;
+#use OpenILS::Application::Storage::CDBI::config;
 
 
 sub metabib_field_all {

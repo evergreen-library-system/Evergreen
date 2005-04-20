@@ -1,6 +1,6 @@
 package OpenILS::Application::Storage::Publisher::actor;
 use base qw/OpenILS::Application::Storage/;
-use OpenILS::Application::Storage::CDBI::actor;
+#use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Utils::Fieldmapper;
 
@@ -17,18 +17,19 @@ sub user_by_barcode {
 
 		next unless $card;
 
-		my $usr_fm = flesh_user( $card->usr );
-		$client->respond( $usr_fm );
+		$client->respond( $card->usr->to_fieldmapper);
 	}
 	return undef;
 }
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.fleshed.actor.user.search.barcode',
+	api_name	=> 'open-ils.storage.direct.actor.user.search.barcode',
 	api_level	=> 1,
 	method		=> 'user_by_barcode',
 	stream		=> 1,
 	cachable	=> 1,
 );
+
+=comment not gonna use it...
 
 sub fleshed_search {
 	my $self = shift;
@@ -128,6 +129,8 @@ sub flesh_user {
 
 	return $usr_fm;
 }
+
+=cut
 
 sub org_unit_list {
 	my $self = shift;

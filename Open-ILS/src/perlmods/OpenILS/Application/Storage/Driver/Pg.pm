@@ -435,6 +435,18 @@
 	action::survey_response->sequence( 'action.survey_response_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package config::copy_status;
+	
+	config::standing->table( 'config.copy_status' );
+	config::standing->sequence( 'config.copy_status_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::net_access_level;
+	
+	config::standing->table( 'config.net_access_level' );
+	config::standing->sequence( 'config.net_access_level_id_seq' );
+	
+	#---------------------------------------------------------------------
 	package config::standing;
 	
 	config::standing->table( 'config.standing' );
@@ -476,6 +488,12 @@
 	asset::call_number->table( 'asset.call_number' );
 	asset::call_number->sequence( 'asset.call_number_id_seq' );
 	
+	#---------------------------------------------------------------------
+	package asset::copy_location;
+	
+	asset::copy->table( 'asset.copy_location' );
+	asset::copy->sequence( 'asset.copy_location_id_seq' );
+
 	#---------------------------------------------------------------------
 	package asset::copy;
 	
@@ -571,7 +589,6 @@
 	
 	actor::card->table( 'actor.card' );
 	actor::card->sequence( 'actor.card_id_seq' );
-	
 
 	#---------------------------------------------------------------------
 

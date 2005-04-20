@@ -84,4 +84,31 @@ CREATE TABLE config.rule_age_hold_protect (
 	radius	INT		NOT NULL
 );
 
+CREATE TABLE config.copy_status (
+	id	SERIAL		PRIMARY KEY,
+	name	TEXT		NOT NULL UNIQUE
+);
+INSERT INTO config.copy_status (id,name) VALUES (0,'Available');
+INSERT INTO config.copy_status (name) VALUES ('Checked out');
+INSERT INTO config.copy_status (name) VALUES ('Bindery');
+INSERT INTO config.copy_status (name) VALUES ('Lost');
+INSERT INTO config.copy_status (name) VALUES ('Missing');
+INSERT INTO config.copy_status (name) VALUES ('In process');
+INSERT INTO config.copy_status (name) VALUES ('In transit');
+INSERT INTO config.copy_status (name) VALUES ('Reshelving');
+INSERT INTO config.copy_status (name) VALUES ('On holds shelf');
+INSERT INTO config.copy_status (name) VALUES ('On order');
+INSERT INTO config.copy_status (name) VALUES ('ILL');
+INSERT INTO config.copy_status (name) VALUES ('Cataloging');
+INSERT INTO config.copy_status (name) VALUES ('Reserves');
+INSERT INTO config.copy_status (name) VALUES ('Discard/Weed');
+
+CREATE TABLE config.net_access_level (
+	id	SERIAL		PRIMARY KEY,
+	name	TEXT		NOT NULL UNIQUE
+);
+INSERT INTO config.net_access_level (name) VALUES ('Restricted');
+INSERT INTO config.net_access_level (name) VALUES ('Full');
+INSERT INTO config.net_access_level (name) VALUES ('None');
+
 COMMIT;

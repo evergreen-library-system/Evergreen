@@ -280,6 +280,8 @@ sub modify_from_fieldmapper {
 	actor::user->has_a( mailing_address => 'actor::user_address' );
 	actor::user->has_a( billing_address => 'actor::user_address' );
 	actor::user->has_a( ident_type => 'config::identification_type' );
+	actor::user->has_a( ident_type2 => 'config::identification_type' );
+	actor::user->has_a( net_access_level => 'config::net_access_level' );
 
 	actor::user_address->has_a( usr => 'actor::user' );
 	
@@ -303,6 +305,8 @@ sub modify_from_fieldmapper {
 	asset::copy->has_a( call_number => 'asset::call_number' );
 	asset::copy->has_a( creator => 'actor::user' );
 	asset::copy->has_a( editor => 'actor::user' );
+	asset::copy->has_a( status => 'config::copy_status' );
+	asset::copy->has_a( location => 'asset::copy_location' );
 
 	asset::call_number_note->has_a( owning_call_number => 'asset::call_number' );
 

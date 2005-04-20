@@ -4,9 +4,19 @@ BEGIN;
 
 CREATE SCHEMA asset;
 
+CREATE TABLE asset.copy_location (
+	id		SERIAL	PRIMARY KEY,
+	name		TEXT	NOT NULL,
+	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id),
+	holdable	BOOL	NOT NULL DEFAULT TRUE,
+	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
+	circulate	BOOL	NOT NULL DEFAULT TRUE
+);
+INSERT INTO asset.copy_location (name,owning_lib) VALUES ('Stacks',1);
+
 CREATE TABLE asset.copy (
 	id		BIGSERIAL			PRIMARY KEY,
-	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id),
+	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	creator		BIGINT				NOT NULL,
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	editor		BIGINT				NOT NULL,
@@ -15,7 +25,8 @@ CREATE TABLE asset.copy (
 	call_number	BIGINT				NOT NULL,
 	copy_number	INT,
 	holdable	BOOL				NOT NULL DEFAULT TRUE,
-	available	BOOL				NOT NULL DEFAULT TRUE, -- was STATUS
+	status		INT				NOT NULL DEFAULT 0 REFERENCES config.copy_status (id) DEFERRABLE INITIALLY DEFERRED,
+	location	INT				NOT NULL DEFAULT 1 REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED,
 	loan_duration	INT				NOT NULL CHECK ( loan_duration IN (1,2,3) ),
 	fine_level	INT				NOT NULL CHECK ( fine_level IN (1,2,3) ),
 	circulate	BOOL				NOT NULL DEFAULT TRUE,
@@ -28,6 +39,7 @@ CREATE TABLE asset.copy (
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE
 );
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
+CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number) WHERE status = 0;
 
 CREATE TABLE asset.copy_transparency (
 	id		SERIAL		PRIMARY KEY,
@@ -43,7 +55,7 @@ CREATE TABLE asset.copy_transparency (
 	ref		BOOL,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,
-	opac_visible	BOOL
+	opac_visible	BOOL,
 	CONSTRAINT scte_name_once_per_lib UNIQUE (owner,name)
 );
 

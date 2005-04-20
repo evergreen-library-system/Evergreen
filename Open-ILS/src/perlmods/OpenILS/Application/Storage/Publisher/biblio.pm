@@ -2,8 +2,8 @@ package OpenILS::Application::Storage::Publisher::biblio;
 use base qw/OpenILS::Application::Storage/;
 use vars qw/$VERSION/;
 use OpenSRF::EX qw/:try/;
-use OpenILS::Application::Storage::CDBI::biblio;
-use OpenILS::Application::Storage::CDBI::asset;
+#use OpenILS::Application::Storage::CDBI::biblio;
+#use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Utils::Fieldmapper;
 
 $VERSION = 1;
@@ -36,7 +36,7 @@ sub record_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE cn.record = ?
-				  	AND cp.available IS TRUE)
+				  	AND cp.status = 0)
 			) AS available
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)
