@@ -171,8 +171,7 @@ sub handler {
 
 				my $e = shift;
 				my $res = OpenSRF::DomainObject::oilsServerError->new();
-				$res->status( $res->status . "\n" . $e->text );
-				$logger->error($res->stringify);
+				$res->status( $res->status . "\n$e");
 				$app_session->status($res) if $res;
 				$app_session->kill_me;
 				return 0;
