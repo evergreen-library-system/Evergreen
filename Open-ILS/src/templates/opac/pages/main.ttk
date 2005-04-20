@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<script language='javascript' src='/js/util/web_fieldmapper.js'></script>
+		<script language='javascript' src='/js/util/JSON.js'></script>
+		<script language='javascript' src='/js/util/RemoteRequest.js'></script>
+		<script language='javascript' src='/js/util/UserSession.js'></script>
+		<script language='javascript' src='/js/util/md5.js'></script>
+		<script language='javascript' src='/js/util/webutils.js'></script>
+		<script language='javascript' src='/js/util/ils_utils.js'></script>
+		<script language='javascript' src='/js/util/ex.js'></script>
+		
+		<script language='javascript' src='/js/opac/SearchBarFormChunk.js'></script>
+		<script language='javascript' src='/js/opac/SearchBarChunk.js'></script>
+		<script language='javascript' src='/js/opac/HTMLChunks.js'></script>
+		<script language='javascript' src='/js/opac/XULEvents.js'></script>
+		<script language='javascript' src='/js/opac/Page.js'></script>
+		<script language='javascript' src='/js/opac/AbstractRecordResultPage.js'></script>
+		<script language='javascript' src='/js/opac/MRResultPage.js'></script>
+		<script language='javascript' src='/js/opac/RecordResultPage.js'></script>
+		<script language='javascript' src='/js/opac/LoginPage.js'></script>
+		
+		<script language='javascript' src='/js/opac/LogoutPage.js'></script>
+		<script language='javascript' src='/js/opac/AboutPage.js'></script>
+		<script language='javascript' src='/js/opac/AdvancedSearchPage.js'></script>
+		<script language='javascript' src='/js/opac/MyOPACPage.js'></script>
+		<script language='javascript' src='/js/opac/OPACStartPage.js'></script>
+		<script language='javascript' src='/js/opac/LocationTree.js'></script>
+		<script language='javascript' src='/js/opac/GlobalInit.js'></script>
+		<script language='javascript' src='/js/util/OrgTree.js'></script>
+		<script language='javascript' src='/js/opac/GlobalInit.js'></script>
+
+		<script language='javascript' src='/js/widgets/xtree/xtree.js'></script>
+		<!-- leave both globalinit's... for some reason necessary --> 
+
+		<frameset cols='100%'>
+
+			<frame
+				style			= "border:none; border:0px;" 
+				frameborder	= '0' 
+				height		= '100%'
+				width			= '100%' 
+				name			= 'appframe' 
+				id				= 'appframe' 
+				src			= '/opac/?target=start'
+			/>	
+
+		</frameset>
+	
+	</head>
+
+
+</html>
+
+

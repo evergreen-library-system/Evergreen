@@ -1,0 +1,13 @@
+[%
+
+	"<col";
+	
+	IF width; " width='" _ width _ "'"; END;
+	IF class; " class='" _ class _ "'"; END;
+	IF id; " id='" _ id _ "'"; END;
+	IF style; " style='" _ style _ "'"; END;
+	
+	">";
+	IF content; content; END;
+	"</col>";
+%]

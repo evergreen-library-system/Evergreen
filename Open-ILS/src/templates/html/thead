@@ -1,0 +1,13 @@
+[%# thead: an empty and orphaned HTML table thead, <thead> . . . </thead>
+  # ARGS:
+  #     col         # background colour (default: none)
+  #     valign      # vertical alignment (default: none)
+  #     align       # horizontal alignment (default: none)
+  #     content     # box content
+-%]
+
+<thead
+    [%- IF id  %] id="[% id %]"[%   END %]
+    [%- IF class  %] class="[% class %]"[%   END %]>
+[%- content -%]
+</thead>

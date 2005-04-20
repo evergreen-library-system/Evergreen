@@ -1,0 +1,51 @@
+[%	
+	url	= cgi.server_name();
+	port	= cgi.server_port();
+	target = cgi.param("target");	
+
+	IF !target; target = "start"; END;
+
+	# --------------------------------------------------------------------------------- 
+	# push the cgi params into the javascript
+	# --------------------------------------------------------------------------------- 
+	WRAPPER html/js;
+		'parent.paramObj = new Object();';
+		FOR pname IN cgi.param();
+			'parent.paramObj["__' _  pname _ '"] = decodeURIComponent("'; cgi.param(pname); '");'; "\n";
+		END;
+	END;
+
+	# --------------------------------------------------------------------------------- 
+	# Load up the necessary global variables
+	# --------------------------------------------------------------------------------- 
+	WRAPPER html/js;
+		'
+		var globalPage;
+		var globalAppFrame;
+		var webFXTreeHandler = parent.webFXTreeHandler;
+		var logicNode; 
+
+		function pageInit() {
+
+			if(parent) { /* if we are inside an iframe */
+
+				logicNode = parent;
+				parent.globalAppFrame		= parent.frames["appframe"];
+
+				if(parent.globalAppFrame) {
+					parent.globalRootURL		= "'_ url _'";
+					parent.globalRootPath	= "/opac/";
+					parent.globalPort			= "'_ port _'";
+					parent.globalPageTarget	= "'_ target _'";
+					parent.globalInit();
+				}
+			}
+
+			globalAppFrame = window;
+			globalPage = parent.globalPage;
+		}
+		';
+	END;
+
+%]
+
