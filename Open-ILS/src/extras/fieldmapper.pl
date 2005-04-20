@@ -8,7 +8,7 @@ my $map = $Fieldmapper::fieldmap;
 # if a true value is provided, we generate the web (light) version of the fieldmapper
 my $web = $ARGV[0];
 # List of classes needed by the opac
-my @web_hints = ("mvr","aou","aout");
+my @web_hints = ("mvr", "au", "aou","aout");
 
 print <<JS;
 
