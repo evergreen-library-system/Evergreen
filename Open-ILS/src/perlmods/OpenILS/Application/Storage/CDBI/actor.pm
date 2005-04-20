@@ -40,7 +40,8 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Essential => qw/parent_ou ou_type address shortname name/);
+__PACKAGE__->columns( Essential => qw/parent_ou ou_type mailing_address billing_address
+				ill_address holds_address shortname name/);
 
 #-------------------------------------------------------------------------------
 package actor::stat_cat;

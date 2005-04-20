@@ -22,7 +22,8 @@ CREATE TABLE actor.usr (
 	day_phone		TEXT,
 	evening_phone		TEXT,
 	other_phone		TEXT,
-	address			INT,
+	mailing_address		INT,
+	billing_address		INT,
 	home_ou			INT,
 	gender			CHAR(1) 	NOT NULL CHECK ( LOWER(gender) IN ('m','f') ),
 	dob			DATE		NOT NULL,
@@ -136,7 +137,10 @@ CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
 	parent_ou	INT	REFERENCES actor.org_unit (id),
 	ou_type		INT	NOT NULL REFERENCES actor.org_unit_type (id),
-	address		INT,
+	ill_address	INT,
+	holds_address	INT,
+	mailing_address	INT,
+	billing_address	INT,
 	shortname	TEXT	NOT NULL,
 	name		TEXT	NOT NULL
 );
