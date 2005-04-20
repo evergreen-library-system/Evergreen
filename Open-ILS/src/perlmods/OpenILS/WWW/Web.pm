@@ -15,11 +15,11 @@ use Template qw(:template);
 use OpenSRF::EX qw(:try);
 use OpenSRF::System;
 
-my $main_ttk = "opac/page_router.ttk";
-my $error_ttk = "opac/error.ttk";
-my $init_ttk = "opac/page_init.ttk";
+my $main_ttk = "opac/logic/page_router.ttk";
+my $error_ttk = "opac/pages/error.ttk";
+my $init_ttk = "opac/logic/page_init.ttk";
 my $bootstrap = "/pines/conf/bootstrap.conf";
-my $child_init_ttk = "opac/child_init.ttk";
+my $child_init_ttk = "opac/logic/child_init.ttk";
 
 my $includes = [  
 				'/pines/cvs/ILS/Open-ILS/src/templates'
