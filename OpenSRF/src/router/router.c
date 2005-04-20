@@ -989,7 +989,8 @@ osrf_message** router_registrar_process_app_request(
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[0], result_content );
+		osrf_message_set_result_content( result_array[0], 
+				json_object_to_json_string(result_content) );
 		json_object_put(result_content);
 
 
@@ -1056,7 +1057,8 @@ osrf_message** router_registrar_process_app_request(
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[0], result_content );
+		osrf_message_set_result_content( result_array[0], 
+				json_object_to_json_string(result_content) );
 		json_object_put(result_content);
 
 
@@ -1085,17 +1087,17 @@ osrf_message** router_registrar_process_app_request(
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[0], content );
+		osrf_message_set_result_content( result_array[0], json_object_to_json_string(content) );
 		json_object_put(content);
 
 		result_array[1] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[1], content2 );
+		osrf_message_set_result_content( result_array[1], json_object_to_json_string(content2) );
 		json_object_put(content2);
 
 		result_array[2] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[1], content3 );
+		osrf_message_set_result_content( result_array[1], json_object_to_json_string(content3) );
 		json_object_put(content3);
 
 
