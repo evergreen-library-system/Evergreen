@@ -22,16 +22,39 @@ use constant MAX_SESSION_REQUESTS => 20;
 
 sub handler {
 
+	use Data::Dumper;
+
+
 	my $apache = shift;
 	my $cgi = CGI->new( $apache );
+
+	print "Content-type: text/plain; charset=utf-8\n\n";
+	#print $cgi->header;
+
+	my @p = $cgi->param();
+	warn "Params: " . Dumper(\@p);
 
 	my $method = $cgi->param("method");
 	my $service = $cgi->param("service");
 
-	my @a = $cgi->param();
+	my $err = undef;
+
+	if( ! $service || ! $method ) {
+		$err = { 
+			is_err	=> 1, 
+			err_msg	=> "Service name and method name required to fulfil request",
+		};
+	}
+
+	if($err) {
+		print  JSON->perl2JSON($err);
+		return Apache::OK;
+	}
 
 	my @param_array;
 	my %param_hash;
+
+	warn "here\n";
 
 	if(defined($cgi->param("__param"))) {
 		for my $param ( $cgi->param("__param")) {
@@ -39,12 +62,11 @@ sub handler {
 		}
 	} else {
 		for my $param ($cgi->param()) {
-			$param_hash{$param} = $cgi->param($param)
+			$param_hash{$param} = JSON->JSON2perl($cgi->param($param))
 				unless( $param eq "method" or $param eq "service" );
 		}
 	}
 
-	print "Content-type: text/plain; charset=utf-8\n\n";
 
 	if( @param_array ) {
 		perform_method($service, $method, @param_array);
@@ -52,17 +74,12 @@ sub handler {
 		perform_method($service, $method, %param_hash);
 	}
 
-	use Data::Dumper;
-	warn JSON->perl2JSON( \@param_array );
-	warn "===============\n";
-	warn Dumper \@param_array;
-
 	return Apache::OK;
 }
 
 sub child_init_handler {
 	OpenSRF::System->bootstrap_client( 
-			config_file => "/pines/conf/bootstrap.conf" );
+		config_file => "/pines/conf/web_bootstrap.conf" );
 }
 
 
@@ -99,7 +116,13 @@ sub perform_method {
 		
 		if( UNIVERSAL::isa( $response, "Error" )) {
 			warn "Received exception: " . $response->stringify . "\n";
-			print  JSON->perl2JSON($response->stringify);
+			my $err = { 
+				is_err	=> 1, 
+				err_msg	=> "Error Completing Request:\n " . 
+					"Service: $service \nMethod: $method \nParams: @params \n" .
+					$response->stringify() . "\n",
+			};
+			print JSON->perl2JSON($err);
 			$request->finish();
 			return 0;
 		}
@@ -110,14 +133,23 @@ sub perform_method {
 
 
 	if(!$request->complete) { 
-		warn "<b>ERROR Completing Request</b>"; 
-		print JSON->perl2JSON("<b>ERROR Completing Request</b>"); 
+		warn "ERROR Completing Request"; 
+		my $err = { 
+			is_err	=> 1, 
+			err_msg	=> "Error Completing Request:\n ".
+				"Service: $service \nMethod: $method \nParams: @params \n" .
+				"request->complete test failed in OpenILS::Web::Method\n" 
+		};
+		print JSON->perl2JSON($err); 
 		$request->finish();
 		return 0;
 	}
 
 	$request->finish();
 	$session->finish();
+
+	warn "Results: \n";
+	warn Dumper \@results;
 
 	print JSON->perl2JSON( \@results );
 
