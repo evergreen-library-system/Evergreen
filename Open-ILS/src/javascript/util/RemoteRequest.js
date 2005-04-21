@@ -7,7 +7,8 @@ if(globalPort != "443")
 var XML_HTTP_URL = _url + "/gateway";
 */
 
-var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
+//var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
+var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
 
 
 /* Request object */
