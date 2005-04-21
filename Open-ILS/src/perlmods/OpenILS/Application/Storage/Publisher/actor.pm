@@ -197,7 +197,7 @@ sub org_unit_descendants {
 	SQL
 
 	my $sth = actor::org_unit->db_Main->prepare_cached($select);
-	$sth->execute($id);
+	$sth->execute(''.$id);
 
 	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
 
