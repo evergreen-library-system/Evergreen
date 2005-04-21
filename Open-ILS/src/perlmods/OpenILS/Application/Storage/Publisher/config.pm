@@ -20,6 +20,23 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 );
 
+sub standing_all {
+	my $self = shift;
+	my $client = shift;
+
+	for my $rec ( config::standing->retrieve_all ) {
+		$client->respond( $rec->to_fieldmapper );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'standing_all',
+	api_name	=> 'open-ils.storage.direct.config.standing.retrieve.all',
+	argc		=> 0,
+	stream		=> 1,
+);
+
 sub ident_type_all {
 	my $self = shift;
 	my $client = shift;
