@@ -96,7 +96,7 @@ use base qw/actor/;
 package actor::user_address;
 use base qw/actor/;
 
-__PACKAGE__->table( 'actor_card' );
+__PACKAGE__->table( 'actor_usr_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
 				      city county state country post_code/ );
@@ -105,7 +105,7 @@ __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
 package actor::org_address;
 use base qw/actor/;
 
-__PACKAGE__->table( 'actor_card' );
+__PACKAGE__->table( 'actor_org_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
 				      city county state country post_code/ );

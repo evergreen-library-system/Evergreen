@@ -28,7 +28,7 @@ use open qw/:utf8/;
 my $xpathset = {};
 
 sub child_init {
-	my $meth = __PACKAGE__->method_lookup('open-ils.storage.direct.config.metabib_field.all');
+	my $meth = __PACKAGE__->method_lookup('open-ils.storage.direct.config.metabib_field.retrieve.all');
 	for my $f ($meth->run) {
 		$xpathset->{ $f->field_class }->{ $f->name }->{xpath} = $f->xpath;
 		$xpathset->{ $f->field_class }->{ $f->name }->{id} = $f->id;

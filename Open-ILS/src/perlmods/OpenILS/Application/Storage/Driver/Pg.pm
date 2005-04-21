@@ -547,6 +547,12 @@
 	
 	actor::user_address->table( 'actor.usr_address' );
 	actor::user_address->sequence( 'actor.usr_address_id_seq' );
+
+	#---------------------------------------------------------------------
+	package actor::org_address;
+	
+	actor::org_address->table( 'actor.org_address' );
+	actor::org_address->sequence( 'actor.org_address_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package actor::profile;

@@ -145,14 +145,14 @@ sub org_unit_list {
 	my $sth = actor::org_unit->db_Main->prepare_cached($select);
 	$sth->execute;
 
-	my @fms;
-	push @fms, $_->to_fieldmapper for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
+	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
 
-	return \@fms;
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.direct.actor.org_unit.retrieve.all',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'org_unit_list',
 );
 
@@ -169,14 +169,14 @@ sub org_unit_type_list {
 	my $sth = actor::org_unit_type->db_Main->prepare_cached($select);
 	$sth->execute;
 
-	my @fms;
-	push @fms, $_->to_fieldmapper for ( map { actor::org_unit_type->construct($_) } $sth->fetchall_hash );
+	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit_type->construct($_) } $sth->fetchall_hash );
 
-	return \@fms;
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.direct.actor.org_unit_type.retrieve.all',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'org_unit_type_list',
 );
 
@@ -199,15 +199,32 @@ sub org_unit_descendants {
 	my $sth = actor::org_unit->db_Main->prepare_cached($select);
 	$sth->execute($id);
 
-	my @fms;
-	push @fms, $_->to_fieldmapper for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
+	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
 
-	return \@fms;
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.org_unit.descendants',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'org_unit_descendants',
+);
+
+sub profile_all {
+	my $self = shift;
+	my $client = shift;
+
+	for my $rec ( actor::profile->retrieve_all ) {
+		$client->respond( $rec->to_fieldmapper );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'profile_all',
+	api_name	=> 'open-ils.storage.direct.actor.profile.retrieve.all',
+	argc            => 0,
+	stream          => 1,
 );
 
 

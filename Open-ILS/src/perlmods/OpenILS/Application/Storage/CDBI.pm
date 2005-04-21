@@ -247,7 +247,7 @@ sub modify_from_fieldmapper {
 	}
 
 	my %hash = map { defined $fm->$_ ?
-				($_ => $fm->$_) :
+				($_ => ''.$fm->$_) :
 				()
 			} $fm->real_fields;
 
