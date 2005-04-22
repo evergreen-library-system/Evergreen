@@ -1,0 +1,117 @@
+body {
+	font-size: small;
+}
+
+.text_link_div {
+	font-size: small;
+	padding: 2px;
+}
+
+div {
+	font-size: small;
+	/*border: 1px solid black;  */
+}
+
+.text {
+	font-size: small;
+}
+
+td {
+	font-size: small;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+
+a:hover {
+	color: blue;
+	text-decoration: underline;
+	/*background: #FFC;*/
+}
+
+
+table { border-collapse: collapse; }
+
+.hidden { visibility:hidden; display:none; }
+
+.visible { visibility:visible; display:inline; }
+
+
+.vert_div { width: 5%; height: 100%;  float: left;}
+
+/* generic blank line */
+.line_div { width: 100%; height: 5px; }
+.small_line_div { width: 100%; height: 2px; }
+.big_line_div { width: 100%; height: 10px; }
+
+.color_red	{ color: #603; }
+.color_blue { color: darkblue; }
+
+ 
+
+/*.mr_result_row_a { background: #CCF; } */
+
+.next_prev_table_div {
+	-moz-border-radius: 25px;
+	background: #603;
+	width: 100%;
+	position: absolute;
+	bottom: 10px;
+}
+
+
+.next_last_buttons {
+	-moz-border-radius: 25px;
+	background: #CCF;
+   position: relative;  
+	color: #603;
+   width: 50%; 
+}
+
+
+
+
+.choice_activated { background: #FEE; }
+
+
+/*
+#mr_main_div { width: 100% ; font-size: small;}
+
+#mr_results_div { width:80%; float: left; }
+
+#mr_sidebar_div { width: 20%; float: right; padding-left: 10px; }
+
+#next_prev_table_div { width: 80%; } 
+
+#mr_prev_button { float: left; text-align: center; width: 25%; }
+
+#mr_next_button { float: right; text-align: center; width: 25%; }
+*/
+
+.status_bar {
+	background: #CCF;
+	width: 100%;
+	right: 0px;
+	left: 0px;
+}
+
+
+
+.hide_me {
+	visibility: hidden;
+	display: none;
+}
+
+.show_me {
+	visibility: visible;
+	display: block;
+}
+

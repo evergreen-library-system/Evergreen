@@ -1,0 +1,188 @@
+/* ----------------------------------------------------------- */
+/* Result Page Enclosures */
+
+.xul {
+	background: #669;
+}
+
+
+/* main wrapper box */
+#record_result_top_box { 
+	width: 99%; 
+	height: 80%;
+	border: 3px solid green;
+}
+
+
+/* hit count box */
+/*
+.hit_count_box {
+	-moz-border-radius: 16px; 
+	width:100%; 
+	height: 3%;
+	float: left;
+	background: #CCF; 
+	vertical-align: middle; 
+	text-align: center;
+}
+*/
+
+
+/*
+.hit_count_words_box { 
+	width:				5%;
+	height:				99%; 
+	float:				left; 
+	vertical-align:	middle; 
+	text-align:			center
+}
+*/
+
+/*
+.hit_count_count_box { 
+	width:	5%; 
+	height:	99%;
+	float:	left; 
+	vertical-align: middle; 
+	text-align: center
+}
+*/
+
+/* we hold the title, author info rows*/
+#record_result_box { 
+	width: 100%;
+}
+
+.big_ol_box {
+	width: 100%;
+			 /*
+	visibility: hidden;
+	display: none;
+	*/
+}
+
+.record_result_cell { vertical-align: top;}
+
+/* we hold a single title, author, etc. */
+.record_result_row_box { width: 100%;}
+.record_result_row_table{ width: 100%; }
+
+/* we hold a title, copy count */
+.record_result_title_row_box	{ width: 100%;}
+.record_result_title_box		{ width: 90%; }
+.record_result_copy_count_box { width: 8%;}
+
+.record_result_xul_button_box { 
+	width: 100%;	
+	text-align: left;
+}
+
+/* we hold the author */
+.record_result_author_box		{ 
+	width: 100%; 
+	text-align: left; 
+	vertical-align:top;
+	padding-left: 20px;
+}
+
+/* style the odd and even results */
+.result_odd {}
+.result_even { background: #CCF; border: 2px solid #CCF; }
+
+.record_sidebar_wrapper_box { 
+	width: 150px;
+	margin-left: 10px;
+}
+
+.record_sidebar_box { 
+	margin-left: 10px;
+	padding: 2px;
+}
+
+
+.record_sidebar_content_box {
+	/*-moz-border-radius: 10px;*/
+	border: 2px dashed #99C;
+	font-size: 95%;
+	padding: 2px;
+	visibility: hidden;
+}
+
+.sidebar_label {
+	/*border: 1px solid #99C;*/
+	background: #FCC;
+}
+
+
+.record_next_prev_links_box {
+	width: 100%;
+	-moz-border-radius: 10px;
+	visibility: hidden;
+}
+
+.record_prev_button {
+	-moz-border-radius: 10px;
+	background: #99C;
+	width: 32%;
+	float: left;
+	text-align: center;
+	border: 2px solid #666666;
+	visibility: hidden;
+}
+
+
+.record_next_button {
+	-moz-border-radius: 10px;
+	background: #99C;
+	width: 32%;
+	float: right;
+	text-align: center;
+	border: 2px solid grey;
+	visibility: hidden;
+}
+
+
+/*
+#space_link {
+	width: 32%;
+	float: left;
+}
+*/
+
+.record_sidebar_wrapper_visible {
+	visibility: visible;
+	display: block;
+}
+
+.record_sidebar_wrapper_hidden {
+	visibility: hidden;
+	display: none;
+}
+
+.hit_count_cell { 
+	padding-left: 10px;
+}
+
+.copy_count_cell {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.record_result_thead_header{ 
+	padding: 5px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.record_context_menu_box {
+	background: #FFF;
+	border: 1px solid black;
+	border-style: outset;
+	font-weight: bold;
+	width: 100px;
+	z-index: 2;
+	position:absolute;
+	top: 100px;
+	left: 200px;
+}
+

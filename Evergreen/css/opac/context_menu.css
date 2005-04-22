@@ -1,0 +1,21 @@
+.context_menu {
+	width: 200px;
+	border: 2px solid black;
+	border-style: outset;
+	z-index: 23;
+	background: #FFD;
+	vertical-align: top;
+	text-align: center;
+}
+
+.context_menu_item {
+	font-weight: bold;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.context_menu_item_hover {
+	background: #F66;
+	text-decoration: underline;
+}
+
