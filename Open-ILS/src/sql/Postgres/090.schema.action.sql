@@ -7,7 +7,7 @@ CREATE SCHEMA action;
 CREATE TABLE action.survey (
 	id		SERIAL	PRIMARY KEY,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
-	name		TEXT	NOT NULL UNIQUE,
+	name		TEXT	NOT NULL,
 	description	TEXT	NOT NULL,
 	start_date	DATE	NOT NULL DEFAULT NOW(),
 	end_date	DATE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
@@ -15,17 +15,18 @@ CREATE TABLE action.survey (
 	opac		BOOL	NOT NULL DEFAULT FALSE,
 	required	BOOL	NOT NULL DEFAULT FALSE
 );
+CREATE UNIQUE INDEX asv_once_per_owner_idx ON action.survey (owner,name);
 
 CREATE TABLE action.survey_question (
 	id		SERIAL	PRIMARY KEY,
 	survey		INT	NOT NULL REFERENCES action.survey,
-	question	TEXT	NOT NULL UNIQUE
+	question	TEXT	NOT NULL
 );
 
 CREATE TABLE action.survey_answer (
 	id		SERIAL	PRIMARY KEY,
 	question	INT	NOT NULL REFERENCES action.survey_question,
-	answer		TEXT	NOT NULL UNIQUE
+	answer		TEXT	NOT NULL
 );
 
 CREATE TABLE action.survey_response (
@@ -39,7 +40,7 @@ CREATE TABLE action.survey_response (
 );
 CREATE OR REPLACE FUNCTION action.survey_response_answer_date_fixup () RETURNS TRIGGER AS '
 BEGIN
-	NEW.anser_date := NOW()::DATE;
+	NEW.answer_date := NOW()::DATE;
 	RETURN NEW;
 END;
 ' LANGUAGE 'plpgsql';
