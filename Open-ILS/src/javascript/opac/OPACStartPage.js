@@ -30,5 +30,11 @@ OPACStartPage.prototype.instance = function() {
 OPACStartPage.prototype.init = function() {
 	this.searchBar.reset();
 	globalSearchBarFormChunk.resetPage();
+	/*
+	var menu = globalMenuManager.buildMenu("record_result_row","record_result_row_1");
+	globalAppFrame.document.body.appendChild(menu.getNode());
+	getById('help').setAttribute("oncontextmenu",  
+		"logicNode.globalMenuManager.getMenu('record_result_row_1').toggle(); return false;");
+		*/
 }
 

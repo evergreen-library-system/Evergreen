@@ -7,6 +7,7 @@ var globalLocation				= null;
 var globalOrgTreeWidgetBox		= null;
 var globalSelectedLocation		= null;
 var globalSearchDepth			= null;
+var globalMenuManager			= null;
 
 var loaded = false;
 
@@ -66,12 +67,20 @@ function globalInit() {
 		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
 		globalUser = UserSession.instance();
 		globalUser.verifySession();
+		globalMenuManager = new ContextMenuManager();
 		loaded = true;
+	}
+
+	/* hide all context menus on body click */
+	getDocument().body.onclick = function() {
+			globalMenuManager.hideAll(); 
 	}
 
 	globalPage.init();
 	globalPage.setLocDisplay();
 	globalPage.locationTree = globalOrgTreeWidget;
+	
+	
 //	setTimeout("renderTree()", 5 );
 
 	if( globalSearchBarFormChunk != null)

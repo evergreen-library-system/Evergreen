@@ -49,6 +49,14 @@ MRResultPage.prototype.prev = function() {
 			] );
 }
 
+MRResultPage.prototype.addMenuItems = function(menu, record) {
+	menu.addItem("View Metarecord Details", 
+			function() { alert(record.doc_id()); });
+	menu.getItems()[0].addIcon("/images/icon1.png");
+
+	xulEvtMRResultDisplayed( menu, record );
+}
+
 
 MRResultPage.prototype.mkLink = function(id, type, value) {
 

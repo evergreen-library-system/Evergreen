@@ -1,6 +1,7 @@
+var xulEvtMRResultDisplayed = function( menu, record ) {
+	debug("dummy xul function called for metarecord " + record.doc_id());
+}
 
-/* sits next to record results */
-var xulEvtRecordResultButton = function( 
-		globalPageTarget, div, record, search_id, page_id) {
-	remove_css_class( div, "xul" );
+var xulEvtRecordResultDisplayed = function( menu, record ) {
+	debug("dummy xul function called for record " + record.doc_id());
 }

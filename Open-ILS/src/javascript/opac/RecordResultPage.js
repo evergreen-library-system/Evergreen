@@ -42,6 +42,13 @@ RecordResultPage.prototype.prev = function() {
 	url_redirect( paramArray ) 
 }
 
+RecordResultPage.prototype.addMenuItems = function(menu, record) {
+	menu.addItem("View MARC", 
+			function() { alert(record.doc_id()); });
+
+	xulEvtRecordResultDisplayed( menu, record );
+}
+
 
 RecordResultPage.prototype.mkLink = function(id, type, value) {
 

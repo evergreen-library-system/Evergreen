@@ -19,10 +19,6 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.searchBar			= new SearchBarChunk();
 
 	/* UI objects */
-//	this.buttonsBox0		= getById("record_next_prev_links_box_0");
-//	this.prevButton0		= getById("record_prev_button_0");
-//	this.nextButton0		= getById("record_next_button_0");
-
 	this.buttonsBox		= getById("record_next_prev_links_box_1");
 	this.prevButton		= getById("record_prev_button_1");
 	this.nextButton		= getById("record_next_button_1");
@@ -42,13 +38,6 @@ AbstractRecordResultPage.prototype.init = function() {
 
 	this.bigOlBox			= getById("big_ol_box");
 
-	/*
-	var tab = this.recordBox;
-	var tr = globalAppFrame.createAppElement("tr");
-	var cell = tr.appendChild(globalAppFrame.createAppElement("td"));
-	tab.appendChild(tr);
-	alert(tab.innerHTML);
-	*/
 }
 
 
@@ -118,7 +107,24 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 /* search_id is where we are in the recordID's array.  page_id is where we 
 	are in relation to the current page [ 0 .. hitsPerPage ]
 	*/
-AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, page_id ) {
+function menu() {
+	alert('swapping'); 
+	swapClass(getById('record_context_menu'), 'hide_me', 'show_me' );
+	return true;
+}
+
+
+function recordRowContextHandler(evt) {
+	if(!getAppWindow().event) { getAppWindow().event = evt; };
+	var win = getAppWindow();
+	globalMenuManager.toggle(target.id);
+	return false;
+}
+
+
+
+AbstractRecordResultPage.prototype.displayRecord = 
+	function( record, search_id, page_id ) {
 
 
 	var id = parseInt(page_id);
@@ -128,18 +134,19 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 	author_row.id = "record_result_author_row_" + id;
 	title_row.id = "record_result_title_row_" + id;
 
+	/* build the appropriate context node for this result */
+	var menu = globalMenuManager.buildMenu(
+		"record_result_row","record_result_row_" + page_id );
+	this.addMenuItems( menu, record );
+	globalMenuManager.setContext(title_row, menu);
+	globalMenuManager.setContext(author_row, menu);
+	getDocument().body.appendChild(menu.getNode());
+	/* ------------------------------------ */
+
+
 	var isbn = record.isbn();
 	if(isbn) isbn = isbn.replace(/\s+/,"");
 	else isbn = "";
-
-	/*
-	var string = "<td rowspan='2'>" +
-		"<img height='60' width='45' src='http://images.amazon.com/images/P/"
-	      + isbn + ".01.MZZZZZZZ.jpg'>" +
-			"</td>";
-	title_row.innerHTML = string;
-	*/
-
 
 	var pic_cell = title_row.insertCell(0);
 	pic_cell.setAttribute("rowspan","2");
@@ -166,11 +173,13 @@ AbstractRecordResultPage.prototype.displayRecord = function( record, search_id, 
 	if(!author_cell)
 		alert("no author box");
 
+	/*
 	try {
 		xulEvtRecordResultButton( globalPageTarget, xul, record, search_id, page_id );
 	} catch(E) {
 		debug("xul function error: " + E );
 	}
+	*/
 
 	debug( "Displaying record title: " + record.title() + " author: " + record.author() );
 
@@ -282,7 +291,25 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 		*/
 
 	/* now add the subjects */
+
+	this.surveyBox = getById("record_survey_sidebar_box");
+	this.surveyBox.style.visibility = "visible";
+	var ses = UserSession.instance().getSessionId();
+	if(ses) {
+		var surveys = Survey.retrieveAll(ses);
+		for( var i in surveys ) {
+			bc(this.surveyBox,surveys[i]);
+		}
+	}
 }
+
+
+function bc(box, survey) {
+	var name = survey.getName();
+	survey.setAction( function() { alert("Submitted Survey: " + name); } );
+	box.appendChild( survey.getNode() );
+}
+
 
 AbstractRecordResultPage.prototype.displayCopyCounts = 
 	function(copy_counts, search_id, page_id) {
