@@ -1,21 +1,5 @@
 /* */
 
-
-/*
-function SurveyAnswer(answer) {
-	debug("Creating a new survey answer " + answer.answer() );
-	this.answer = answer;
-	this.node = createAppElement("div");
-	add_css_class(this.node, "survey_answer");
-	this.node.appendChild(
-		createAppTextNode(answer.answer()) );
-}
-
-SurveyAnswer.prototype.getNode = function() {
-	return this.node;
-}
-*/
-
 function SurveyQuestion(question) {
 	debug("Creating new survey question " + question.question() );
 	this.question = question;
@@ -33,7 +17,6 @@ function SurveyQuestion(question) {
 	this.selector.value = "survey_question_" + question.id();
 	this.node.appendChild(this.selector);
 }
-
 
 
 SurveyQuestion.prototype.getNode = function() {
@@ -143,3 +126,6 @@ Survey.retrieveAll = function(user_session) {
 	}
 	return surveys;
 }
+
+
+
