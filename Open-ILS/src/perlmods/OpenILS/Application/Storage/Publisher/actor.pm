@@ -180,24 +180,68 @@ __PACKAGE__->register_method(
 	method		=> 'org_unit_type_list',
 );
 
-sub org_unit_descendants {
+sub org_unit_full_path {
 	my $self = shift;
 	my $client = shift;
 	my $id = shift;
 
 	return undef unless ($id);
 
-	my $select =<<"	SQL";
-	SELECT	a.*
-	  FROM	connectby('actor.org_unit','id','parent_ou','name',?,'100','.')
-	  		as t(keyid text, parent_keyid text, level int, branch text,pos int),
-		actor.org_unit a
-	  WHERE	t.keyid = a.id
-	  ORDER BY t.pos;
-	SQL
+	my $func = 'actor.org_unit_full_path(?)';
 
-	my $sth = actor::org_unit->db_Main->prepare_cached($select);
+	my $sth = actor::org_unit->db_Main->prepare_cached("SELECT * FROM $func");
 	$sth->execute(''.$id);
+
+	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.org_unit.full_path',
+	api_level	=> 1,
+	stream		=> 1,
+	method		=> 'org_unit_full_path',
+);
+
+sub org_unit_ancestors {
+	my $self = shift;
+	my $client = shift;
+	my $id = shift;
+
+	return undef unless ($id);
+
+	my $func = 'actor.org_unit_ancestors(?)';
+
+	my $sth = actor::org_unit->db_Main->prepare_cached("SELECT * FROM $func");
+	$sth->execute(''.$id);
+
+	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.org_unit.ancestors',
+	api_level	=> 1,
+	stream		=> 1,
+	method		=> 'org_unit_ancestors',
+);
+
+sub org_unit_descendants {
+	my $self = shift;
+	my $client = shift;
+	my $id = shift;
+	my $depth = shift;
+
+	return undef unless ($id);
+
+	my $func = 'actor.org_unit_descendants(?)';
+	if (defined $depth) {
+		$func = 'actor.org_unit_descendants(?,?)';
+	}
+
+	my $sth = actor::org_unit->db_Main->prepare_cached("SELECT * FROM $func");
+	$sth->execute(''.$id, ''.$depth) if (defined $depth);
+	$sth->execute(''.$id) unless (defined $depth);
 
 	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
 

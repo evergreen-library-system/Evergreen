@@ -68,3 +68,11 @@ CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT,INT ) RETURNS SETOF 
 	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
 $$ LANGUAGE SQL STABLE;
 
+CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT ) RETURNS SETOF actor.org_unit AS '
+	SELECT	*
+	  FROM	actor.org_unit_ancestors($1)
+			UNION
+	SELECT	*
+	  FROM	actor.org_unit_descendants($1);
+' LANGUAGE SQL STABLE;
+

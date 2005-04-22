@@ -6,11 +6,14 @@ CREATE SCHEMA action;
 
 CREATE TABLE action.survey (
 	id		SERIAL	PRIMARY KEY,
+	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
 	name		TEXT	NOT NULL UNIQUE,
+	description	TEXT	NOT NULL,
 	start_date	DATE	NOT NULL DEFAULT NOW(),
 	end_date	DATE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
 	usr_summary	BOOL	NOT NULL DEFAULT FALSE,
-	opac		BOOL	NOT NULL DEFAULT FALSE
+	opac		BOOL	NOT NULL DEFAULT FALSE,
+	required	BOOL	NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE action.survey_question (
@@ -34,12 +37,12 @@ CREATE TABLE action.survey_response (
 	answer_date	DATE,
 	effective_date	DATE		NOT NULL DEFAULT NOW()::DATE
 );
-CREATE FUNCTION action.survey_response_answer_date_fixup () RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION action.survey_response_answer_date_fixup () RETURNS TRIGGER AS '
 BEGIN
 	NEW.anser_date := NOW()::DATE;
 	RETURN NEW;
 END;
-$$ LANGUAGE 'plpgsql';
+' LANGUAGE 'plpgsql';
 CREATE TRIGGER action_survey_response_answer_date_fixup_tgr
 	BEFORE INSERT ON action.survey_response
 	FOR EACH ROW
