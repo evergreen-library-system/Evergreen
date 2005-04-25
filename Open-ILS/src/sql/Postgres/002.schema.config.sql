@@ -70,11 +70,12 @@ CREATE TABLE config.rule_max_fine (
 );
 
 CREATE TABLE config.rule_recuring_fine (
-	id	SERIAL		PRIMARY KEY,
-	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
-	high	NUMERIC(6,2)	NOT NULL,
-	normal	NUMERIC(6,2)	NOT NULL,
-	low	NUMERIC(6,2)	NOT NULL
+	id			SERIAL		PRIMARY KEY,
+	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	high			NUMERIC(6,2)	NOT NULL,
+	normal			NUMERIC(6,2)	NOT NULL,
+	low			NUMERIC(6,2)	NOT NULL,
+	recurance_interval	INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL
 );
 
 CREATE TABLE config.rule_age_hold_protect (
