@@ -167,7 +167,7 @@ sub _init {
 		}
 
 		unless ( $$fieldmap{$pkg}{virtual} ) {
-			for my $col ( $cdbi->columns('All') ) {
+			for my $col ( sort $cdbi->columns('All') ) {
 				$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
 				$pos++;
 			}
