@@ -13,6 +13,7 @@ CREATE TABLE action.survey (
 	end_date	DATE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
 	usr_summary	BOOL	NOT NULL DEFAULT FALSE,
 	opac		BOOL	NOT NULL DEFAULT FALSE,
+	poll		BOOL	NOT NULL DEFAULT FALSE,
 	required	BOOL	NOT NULL DEFAULT FALSE
 );
 CREATE UNIQUE INDEX asv_once_per_owner_idx ON action.survey (owner,name);
