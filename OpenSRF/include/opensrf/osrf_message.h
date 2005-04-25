@@ -1,5 +1,6 @@
 #include "libjson/json.h"
 #include "opensrf/generic_utils.h"
+#include "opensrf/string_array.h"
 
 #ifndef osrf_message_h
 #define osrf_message_h
@@ -29,13 +30,16 @@
 
 enum M_TYPE { CONNECT, REQUEST, RESULT, STATUS, DISCONNECT };
 
+#define OSRF_MAX_PARAMS								128;
+
 struct osrf_message_struct {
 
 	enum M_TYPE m_type;
 	int thread_trace;
 	int protocol;
 
-	int parse_json;
+	int parse_json_result;
+	int parse_json_params;
 	
 	/* if we're a STATUS message */
 	char* status_name;
@@ -60,6 +64,9 @@ struct osrf_message_struct {
 		we won't touch this variable */
 	struct osrf_message_struct* next;
 
+	string_array* parray;
+	char* full_param_string;
+
 };
 typedef struct osrf_message_struct osrf_message;
 
@@ -78,7 +85,13 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] );
 
 /* decides whether all message automatically parse incoming json data */
 /* to change a single message, set msg->parse_json accordingly */
-void osrf_message_set_json_parse( int bool );
+//void osrf_message_set_json_parse( int bool );
+
+void osrf_message_set_json_parse_result( int ibool );
+void osrf_message_set_json_parse_params( int ibool );
+	
+
+void osrf_message_add_param( osrf_message*, char* param_string );
 
 
 

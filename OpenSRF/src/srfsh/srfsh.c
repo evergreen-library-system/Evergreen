@@ -32,7 +32,8 @@ int main( int argc, char* argv[] ) {
 
 
 	client = osrf_system_get_transport_client();
-	osrf_message_set_json_parse(1);
+	//osrf_message_set_json_parse_result(1);
+	//osrf_message_set_json_parse_result(1);
 
 
 	/* main process loop */
@@ -437,10 +438,11 @@ int send_request( char* server,
 	}
 
 	double start = get_timestamp_millis();
-	int req_id = osrf_app_session_make_request( session, params, method, 1 );
+	int req_id = osrf_app_session_make_request( session, params, method, 1, NULL );
 
 
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 12 );
+	debug_handler("srfsh0");
 
 
 	if(!omsg) 
@@ -458,6 +460,7 @@ int send_request( char* server,
 
 		if(omsg->result_content) {
 
+			debug_handler("srfsh1");
 			osrf_message_free(last_result);
 			last_result = omsg;
 
@@ -467,6 +470,8 @@ int send_request( char* server,
 				content = json_printer( omsg->result_content );
 			else
 				content = json_object_get_string(omsg->result_content);
+
+			debug_handler("srfsh2");
 
 			buffer_add( resp_buffer, "\nReceived Data: " ); 
 			buffer_add( resp_buffer, content );
@@ -772,7 +777,7 @@ int do_math( int count, int style ) {
 			struct timeb t2;
 
 			ftime(&t1);
-			int req_id = osrf_app_session_make_request( session, params, methods[j], 1 );
+			int req_id = osrf_app_session_make_request( session, params, methods[j], 1, NULL );
 
 
 			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );

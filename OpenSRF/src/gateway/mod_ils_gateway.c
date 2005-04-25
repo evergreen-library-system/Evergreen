@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "opensrf/generic_utils.h"
 #include "opensrf/osrf_message.h"
 #include "opensrf/osrf_app_session.h"
+#include "opensrf/string_array.h"
 #include "md5.h"
 
 /*
@@ -144,7 +145,8 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 	}
 
 	/* we don't want to waste time parsing json that we're not going to look at*/
-	osrf_message_set_json_parse(0);
+	osrf_message_set_json_parse_result(0);
+	osrf_message_set_json_parse_params(0);
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);
 }
@@ -163,8 +165,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* service					= NULL;	/* service to connect to */
 	char* method					= NULL;	/* method to perform */
 
-	json* params					= NULL;	/* method parameters */ 
 	json* exception				= NULL; /* returned in error conditions */
+	string_array* sarray			= init_string_array(12); /* method parameters */
 
 	growing_buffer* buffer		= NULL;	/* POST data */
 	growing_buffer* tmp_buf		= NULL;	/* temp buffer */
@@ -228,7 +230,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	
 	char* argcopy = (char*) apr_pstrdup(p, arg);
 
-	params = json_object_new_array();;
 	while( argcopy && (val = ap_getword(p, &argcopy, '&'))) {
 
 		key = ap_getword(r->pool,&val, '=');
@@ -245,11 +246,17 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			method = val;
 
 		if(!strcmp(key,"__param"))
-			json_object_array_add( params, json_tokener_parse(val));
+			string_array_add(sarray, val);
+
 	}
 
-	info_handler("Performing(%d):  service %s | method %s | \nparams %s\n\n",
-			getpid(), service, method, json_object_to_json_string(params));
+	info_handler("Performing(%d):  service %s | method %s | \n",
+			getpid(), service, method );
+
+	int k;
+	for( k = 0; k!= sarray->size; k++ ) {
+		info_handler( "param %s", string_array_get_string(sarray,k));
+	}
 
 	osrf_app_session* session = find_session(service,1);
 
@@ -274,8 +281,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		return OK;
 	}
 
-	int req_id = osrf_app_session_make_request( session, params, method, 1 );
-	json_object_put(params);
+	int req_id = osrf_app_session_make_request( session, NULL, method, 1, sarray );
+	string_array_destroy(sarray);
 
 	osrf_message* omsg = NULL;
 

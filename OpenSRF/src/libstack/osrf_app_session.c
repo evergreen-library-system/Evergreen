@@ -309,11 +309,22 @@ void _osrf_app_session_free( osrf_app_session* session ){
 
 
 int osrf_app_session_make_request( 
-		osrf_app_session* session, json* params, char* method_name, int protocol ) {
+		osrf_app_session* session, json* params, 
+		char* method_name, int protocol, string_array* param_strings ) {
 	if(session == NULL) return -1;
 
 	osrf_message* req_msg = osrf_message_init( REQUEST, ++(session->thread_trace), protocol );
 	osrf_message_set_request_info( req_msg,  method_name, params );
+
+	/* if we're not parsing the json, shove the strings in manually */
+	if(!req_msg->parse_json_params && param_strings) {
+		int i;
+		for(i = 0; i!= param_strings->size ; i++ ) {
+			osrf_message_add_param(req_msg,
+				string_array_get_string(param_strings,i));
+		}
+	}
+
 	osrf_app_request* req = _osrf_app_request_init( session, req_msg );
 	if(!_osrf_app_session_send( session, req_msg ) ) {
 		warning_handler( "Error sending request message [%d]", session->thread_trace );

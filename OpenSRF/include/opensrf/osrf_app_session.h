@@ -3,6 +3,7 @@
 #include "opensrf/generic_utils.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
+#include "opensrf/string_array.h"
 
 #ifndef OSRF_APP_SESSION
 #define OSRF_APP_SESSION
@@ -86,7 +87,8 @@ osrf_app_session* osrf_app_session_find_session( char* session_id );
   * requeset.
   */
 int osrf_app_session_make_request( 
-		osrf_app_session* session, json* params, char* method_name, int protocol );
+		osrf_app_session* session, json* params, 
+		char* method_name, int protocol, string_array* arr );
 
 /** Sets the given request to complete state */
 void osrf_app_session_set_complete( osrf_app_session* session, int request_id );
