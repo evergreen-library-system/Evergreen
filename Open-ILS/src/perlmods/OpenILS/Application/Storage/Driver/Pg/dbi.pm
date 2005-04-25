@@ -28,6 +28,30 @@
 	
 	config::standing->table( 'config.copy_status' );
 	config::standing->sequence( 'config.copy_status_id_seq' );
+
+	#---------------------------------------------------------------------
+	package config::rules::circ_duration;
+	
+	config::rules::circ_duration->table( 'config.rule_circ_duration' );
+	config::rules::circ_duration->sequence( 'config.rule_circ_duration_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::rules::age_hold_protect;
+	
+	config::rules::age_hold_protect->table( 'config.rule_age_hold_protect' );
+	config::rules::age_hold_protect->sequence( 'config.rule_age_hold_protect_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::rules::max_fine;
+	
+	config::rules::max_fine->table( 'config.rule_max_fine' );
+	config::rules::max_fine->sequence( 'config.rule_max_fine_id_seq' );
+	
+	#---------------------------------------------------------------------
+	package config::rules::recuring_fine;
+	
+	config::rules::recuring_fine->table( 'config.rule_recuring_fine' );
+	config::rules::recuring_fine->sequence( 'config.rule_recuring_fine_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package config::net_access_level;

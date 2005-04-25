@@ -52,7 +52,7 @@ package config::rules::recuring_fine;
 use base qw/config/;
 __PACKAGE__->table('config_rule_recuring_fine');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name high normal low/);
+__PACKAGE__->columns(Essential => qw/name high normal low recurance_interval/);
 #-------------------------------------------------------------------------------
 
 package config::rules::age_hold_protect;

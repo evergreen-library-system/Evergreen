@@ -287,6 +287,8 @@ sub modify_from_fieldmapper {
 	
 	actor::card->has_a( usr => 'actor::user' );
 	
+	config::rules::age_hold_protect->has_a( radius => 'actor::org_unit_type' );
+	
 	actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
 	actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
 	#actor::org_unit->has_a( address => 'actor::org_address' );
