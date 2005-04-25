@@ -35,6 +35,7 @@ void _osrf_app_request_free( osrf_app_request * req ){
 	if( req->payload ) {
 		osrf_message_free( req->payload );
 	}
+
 	/*
 	osrf_message* cur_msg = req->result;
 	while( cur_msg != NULL ) {
@@ -46,6 +47,7 @@ void _osrf_app_request_free( osrf_app_request * req ){
 	*/
 
 	free( req );
+	debug_handler("after request free");
 }
 
 /** Pushes the given message onto the list of 'responses' to this request */
@@ -364,22 +366,26 @@ void _osrf_app_session_remove_request( osrf_app_session* session, osrf_app_reque
 
 	debug_handler("Removing request [%d] from session [%s] [%s]",
 			req->request_id, session->remote_service, session->session_id );
+
 	osrf_app_request* first = session->request_queue;
 	if(first->request_id == req->request_id) {
-		if(first->next == NULL) { /* only one in the list */
+		session->request_queue = first->next;
+		return;
+		/*
+		if(first->next == NULL) { 
 			session->request_queue = NULL;
 		} else {
 			osrf_app_request* tmp = first->next;
 			session->request_queue = tmp;
 		}
+		*/
 	}
 
 	osrf_app_request* lead = first->next;
 
 	while( lead != NULL ) {
 		if(lead->request_id == req->request_id) {
-			osrf_app_request* tmp = lead->next;
-			first->next = tmp;
+			first->next = lead->next;
 			return;
 		}
 		first = lead;

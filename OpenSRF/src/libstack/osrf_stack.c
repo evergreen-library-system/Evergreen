@@ -4,7 +4,9 @@ osrf_message* _do_client( osrf_app_session*, osrf_message* );
 osrf_message* _do_server( osrf_app_session*, osrf_message* );
 
 int osrf_stack_process( transport_client* client, int timeout ) {
+	debug_handler("osrf_stack_process going into client_recv");
 	transport_message* msg = client_recv( client, timeout );
+	debug_handler("osrf_stack_process after client_recv");
 	if(msg == NULL) return 0;
 	debug_handler( "Received message from transport code from %s", msg->sender );
 	int status = osrf_stack_transport_handler( msg );

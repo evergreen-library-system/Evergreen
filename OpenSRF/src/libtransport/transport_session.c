@@ -318,7 +318,9 @@ int session_connect( transport_session* session,
 void grab_incoming( void * session, char* data ) {
 	transport_session* ses = (transport_session*) session;
 	if( ! ses ) { return; }
+	debug_handler("Parsing incoming XML chunk");
 	xmlParseChunk(ses->parser_ctxt, data, strlen(data), 0);
+	debug_handler("Completed parsing incoming XML chunk");
 }
 
 
@@ -327,6 +329,8 @@ void startElementHandler(
 
 	transport_session* ses = (transport_session*) session;
 	if( ! ses ) { return; }
+
+	debug_handler("transport_session: startElementHandler");
 
 	
 	if( strcmp( name, "message" ) == 0 ) {
@@ -445,6 +449,8 @@ void endElementHandler( void *session, const xmlChar *name) {
 	transport_session* ses = (transport_session*) session;
 	if( ! ses ) { return; }
 
+	debug_handler("transport_session: endElementHandler");
+
 	if( strcmp( name, "message" ) == 0 ) {
 
 		/* pass off the message info the callback */
@@ -559,6 +565,8 @@ void characterHandler(
 	memset( data, 0, len+1 );
 	strncpy( data, (char*) ch, len );
 	data[len] = 0;
+
+	debug_handler("transport_session: characterElementHandler");
 
 	//printf( "Handling characters: %s\n", data );
 	transport_session* ses = (transport_session*) session;

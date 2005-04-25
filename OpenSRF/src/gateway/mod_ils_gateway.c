@@ -210,13 +210,17 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			buffer_add(tmp_buf,arg);
 			buffer_add(tmp_buf,buffer->buf);
 			arg = (char*) apr_pstrdup(p, tmp_buf->buf);
+	//		arg = buffer_data(tmp_buf);;
 			buffer_free(tmp_buf);
 		} else {
 			arg = (char*) apr_pstrdup(p, buffer->buf);
+	//		arg = buffer_data(buffer);
 		}
 		buffer_free(buffer);
 
 	} 
+
+	debug_handler("params args are %s", arg);
 
 
 	if( ! arg || !arg[0] ) { /* we received no request */
@@ -230,9 +234,11 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	
 	char* argcopy = (char*) apr_pstrdup(p, arg);
 
-	while( argcopy && (val = ap_getword(p, &argcopy, '&'))) {
+	while( argcopy && (val = ap_getword(p, (const char**) &argcopy, '&'))) {
 
-		key = ap_getword(r->pool,&val, '=');
+		//const char* val2 = val;
+
+		key = ap_getword(r->pool, (const char**) &val, '=');
 		if(!key || !key[0])
 			break;
 
@@ -355,6 +361,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	} 
 
 	osrf_app_session_request_finish( session, req_id );
+	debug_handler("gateway process message successfully");
 
 	return OK;
 
