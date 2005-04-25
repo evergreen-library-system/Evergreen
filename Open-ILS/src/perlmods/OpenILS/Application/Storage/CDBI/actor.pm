@@ -10,7 +10,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_usr' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/usrid usrname email first_given_name
+__PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				second_given_name family_name billing_address
 				claims_returned_count home_ou gender dob
 				active master_account ident_type ident_value
