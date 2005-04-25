@@ -1,14 +1,7 @@
-/* dynamically determine the XMLHTTPRequest server based on 
-	where the client is coming from.  Good for SSH tunneling, etc. */
-/*
-var _url = "https://" + globalRootURL;
-if(globalPort != "443")
-	_url = _url + ":" + globalPort;
-var XML_HTTP_URL = _url + "/gateway";
-*/
 
 //var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
-var XML_HTTP_URL = "https://spacely.georgialibraries.org/method/";
+var XML_HTTP_URL = "http://spacely.georgialibraries.org/method/";
+var XML_HTTPS_URL = "https://spacely.georgialibraries.org/method/";
 
 
 /* Request object */
@@ -33,7 +26,6 @@ function RemoteRequest( service, method ) {
 
 	if(!this.params) { this.params = ""; }
 	this.param_string = "service=" + service + "&method=" + method + this.params;
-	this.url = XML_HTTP_URL;
 
 	if( ! this.type || ! this.service || ! this.method ) {
 		alert( "ERROR IN REQUEST PARAMS");
@@ -62,6 +54,10 @@ function RemoteRequest( service, method ) {
 
 }
 
+RemoteRequest.prototype.setSecure = function(bool) {
+	this.secure = bool;
+}
+
 /* define the callback we use when this request has received
 	all of its data */
 RemoteRequest.prototype.setCompleteCallback = function(callback) {
@@ -85,7 +81,13 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
   */
 RemoteRequest.prototype.send = function(blocking) {
 
-	var url = this.url;
+	var url;
+
+	if(this.secure)
+		url = XML_HTTPS_URL;
+	else
+		url = XML_HTTP_URL;
+
 	var data = null;
 
 	if( this.type == 'GET' ) { 
