@@ -1,74 +1,74 @@
-{ # Based on the change to Class::DBI in OpenILS::Application::Storage.  This will
-  # allow us to use TSearch2 via a simple cdbi "search" interface.
-	#-------------------------------------------------------------------------------
-	use Class::DBI;
-	package Class::DBI;
-
-	sub search_fti {
-		my $self = shift;
-		my @args = @_;
-		if (ref($args[-1]) eq 'HASH') {
-			$args[-1]->{_placeholder} = "to_tsquery('default',?)";
-		} else {
-			push @args, {_placeholder => "to_tsquery('default',?)"};
-		}
-		$self->_do_search("@@"  => @args);
-	}
-}
-
-{ # Every driver needs to provide a 'compile()' method to OpenILS::Application::Storage::FTS.
-  # If that driver wants to support FTI, that is...
-	#-------------------------------------------------------------------------------
-	package OpenILS::Application::Storage::FTS;
-	use OpenSRF::Utils::Logger qw/:level/;
-	my $log = 'OpenSRF::Utils::Logger';
-
-	sub compile {
-		my $self = shift;
-		my $term = shift;
-
-		$self = ref($self) || $self;
-		$self = bless {} => $self;
-
-		$self->decompose($term);
-
-		my $newterm = join('&', $self->words);
-
-		if (@{$self->nots}) {
-			$newterm = '('.$newterm.')&('. join('|', $self->nots) . ')';
-		}
-
-		$log->debug("Compiled term is [$newterm]", DEBUG);
-		$newterm = OpenILS::Application::Storage::Driver::Pg->quote($newterm);
-		$log->debug("Quoted term is [$newterm]", DEBUG);
-
-		$self->{fts_query} = ["to_tsquery('default',$newterm)"];
-		$self->{fts_query_nots} = [];
-		$self->{fts_op} = '@@';
-		$self->{text_col} = shift;
-		$self->{fts_col} = shift;
-
-		return $self;
-	}
-
-	sub sql_where_clause {
-		my $self = shift;
-		my $column = $self->fts_col;
-		my @output;
-	
-		my @ranks;
-		for my $fts ( $self->fts_query ) {
-			push @output, join(' ', $self->fts_col, $self->{fts_op}, $fts);
-			push @ranks, "rank($column, $fts)";
-		}
-		$self->{fts_rank} = \@ranks;
-	
-		my $phrase_match = $self->sql_exact_phrase_match();
-		return join(' AND ', @output) . $phrase_match;
-	}
-
-}
-
+#{ # Based on the change to Class::DBI in OpenILS::Application::Storage.  This will
+#  # allow us to use TSearch2 via a simple cdbi "search" interface.
+#	#-------------------------------------------------------------------------------
+#	use Class::DBI;
+#	package Class::DBI;
+#
+#	sub search_fti {
+#		my $self = shift;
+#		my @args = @_;
+#		if (ref($args[-1]) eq 'HASH') {
+#			$args[-1]->{_placeholder} = "to_tsquery('default',?)";
+#		} else {
+#			push @args, {_placeholder => "to_tsquery('default',?)"};
+#		}
+#		$self->_do_search("@@"  => @args);
+#	}
+#}
+#
+#{ # Every driver needs to provide a 'compile()' method to OpenILS::Application::Storage::FTS.
+#  # If that driver wants to support FTI, that is...
+#	#-------------------------------------------------------------------------------
+#	package OpenILS::Application::Storage::FTS;
+#	use OpenSRF::Utils::Logger qw/:level/;
+#	my $log = 'OpenSRF::Utils::Logger';
+#
+#	sub compile {
+#		my $self = shift;
+#		my $term = shift;
+#
+#		$self = ref($self) || $self;
+#		$self = bless {} => $self;
+#
+#		$self->decompose($term);
+#
+#		my $newterm = join('&', $self->words);
+#
+#		if (@{$self->nots}) {
+#			$newterm = '('.$newterm.')&('. join('|', $self->nots) . ')';
+#		}
+#
+#		$log->debug("Compiled term is [$newterm]", DEBUG);
+#		$newterm = OpenILS::Application::Storage::Driver::Pg->quote($newterm);
+#		$log->debug("Quoted term is [$newterm]", DEBUG);
+#
+#		$self->{fts_query} = ["to_tsquery('default',$newterm)"];
+#		$self->{fts_query_nots} = [];
+#		$self->{fts_op} = '@@';
+#		$self->{text_col} = shift;
+#		$self->{fts_col} = shift;
+#
+#		return $self;
+#	}
+#
+#	sub sql_where_clause {
+#		my $self = shift;
+#		my $column = $self->fts_col;
+#		my @output;
+#	
+#		my @ranks;
+#		for my $fts ( $self->fts_query ) {
+#			push @output, join(' ', $self->fts_col, $self->{fts_op}, $fts);
+#			push @ranks, "rank($column, $fts)";
+#		}
+#		$self->{fts_rank} = \@ranks;
+#	
+#		my $phrase_match = $self->sql_exact_phrase_match();
+#		return join(' AND ', @output) . $phrase_match;
+#	}
+#
+#}
+#
 
 { # The driver package itself just needs a db_Main method (or db_Slaves if
   #Class::DBI::Replication is in use) for Class::DBI to call.
@@ -81,6 +81,10 @@
   # OpenILS::Application::Storage.
   #-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::Driver::Pg;
+	use OpenILS::Application::Storage::Driver::Pg::cdbi;
+	use OpenILS::Application::Storage::Driver::Pg::fts;
+	use OpenILS::Application::Storage::Driver::Pg::storage;
+	use OpenILS::Application::Storage::Driver::Pg::dbi;
 	use Class::DBI;
 	use base qw/Class::DBI OpenILS::Application::Storage/;
 	use DBI;
@@ -204,567 +208,569 @@
 
 }
 
-
-{
-	package OpenILS::Application::Storage;
-	use OpenSRF::Utils::Logger;
-	my $log = 'OpenSRF::Utils::Logger';
-
-	my $pg = 'OpenILS::Application::Storage::Driver::Pg';
-
-
-	sub current_xact {
-		my $self = shift;
-		my $client = shift;
-		return $pg->current_xact_id;
-	}
-	__PACKAGE__->register_method(
-		method		=> 'current_xact',
-		api_name	=> 'open-ils.storage.transaction.current',
-		api_level	=> 1,
-		argc		=> 0,
-	);
-
-
-	sub pg_begin_xaction {
-		my $self = shift;
-		my $client = shift;
-
-		if (my $old_xact = $pg->current_xact_session) {
-			if ($pg->current_xact_is_auto) {
-				$log->debug("Commiting old autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
-				$self->pg_commit_xaction($client);
-			} else {
-				$log->debug("Rolling back old NON-autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
-				$self->pg_rollback_xaction($client);
-				throw OpenSRF::DomainObject::oilsException->new(
-						statusCode => 500,
-						status => "Previous transaction rolled back!",
-				);
-			}
-		}
-		
-		$pg->set_xact_session( $client->session );
-		my $xact_id = $pg->current_xact_id;
-
-		$log->debug("Beginning a new trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
-
-		my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
-		
-		try {
-			$dbh->begin_work;
-
-		} catch Error with {
-			my $e = shift;
-			$log->debug("Failed to begin a new trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
-			throw $e;
-		};
-
-
-		my $death_cb = $client->session->register_callback(
-			death => sub {
-				__PACKAGE__->pg_rollback_xaction;
-			}
-		);
-
-		$log->debug("Registered 'death' callback [$death_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
-
-		$client->session->session_data( death_cb => $death_cb );
-
-		if ($self->api_name =~ /autocommit$/o) {
-			$pg->current_xact_is_auto(1);
-			my $dc_cb = $client->session->register_callback(
-				disconnect => sub {
-					my $ses = shift;
-					$ses->unregister_callback(death => $death_cb);
-					__PACKAGE__->pg_commit_xaction;
-				}
-			);
-			$log->debug("Registered 'disconnect' callback [$dc_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
-			if ($client and $client->session) {
-				$client->session->session_data( disconnect_cb => $dc_cb );
-			}
-		}
-
-		return 1;
-
-	}
-	__PACKAGE__->register_method(
-		method		=> 'pg_begin_xaction',
-		api_name	=> 'open-ils.storage.transaction.begin',
-		api_level	=> 1,
-		argc		=> 0,
-	);
-	__PACKAGE__->register_method(
-		method		=> 'pg_begin_xaction',
-		api_name	=> 'open-ils.storage.transaction.begin.autocommit',
-		api_level	=> 1,
-		argc		=> 0,
-	);
-
-	sub pg_commit_xaction {
-		my $self = shift;
-
-		my $xact_id = $pg->current_xact_id;
-
-		try {
-			$log->debug("Committing trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
-			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
-			$dbh->commit;
-
-		} catch Error with {
-			my $e = shift;
-			$log->debug("Failed to commit trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
-			return 0;
-		};
-		
-		$pg->current_xact_session->unregister_callback( death => 
-			$pg->current_xact_session->session_data( 'death_cb' )
-		) if ($pg->current_xact_session);
-
-		if ($pg->current_xact_is_auto) {
-			$pg->current_xact_session->unregister_callback( disconnect => 
-				$pg->current_xact_session->session_data( 'disconnect_cb' )
-			);
-		}
-
-		$pg->unset_xact_session;
-
-		return 1;
-		
-	}
-	__PACKAGE__->register_method(
-		method		=> 'pg_commit_xaction',
-		api_name	=> 'open-ils.storage.transaction.commit',
-		api_level	=> 1,
-		argc		=> 0,
-	);
-
-	sub pg_rollback_xaction {
-		my $self = shift;
-
-		my $xact_id = $pg->current_xact_id;
-		try {
-			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
-			$log->debug("Rolling back a trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
-			$dbh->rollback;
-
-		} catch Error with {
-			my $e = shift;
-			$log->debug("Failed to roll back trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
-			return 0;
-		};
-	
-		$pg->current_xact_session->unregister_callback( death =>
-			$pg->current_xact_session->session_data( 'death_cb' )
-		) if ($pg->current_xact_session);
-
-		if ($pg->current_xact_is_auto) {
-			$pg->current_xact_session->unregister_callback( disconnect =>
-				$pg->current_xact_session->session_data( 'disconnect_cb' )
-			);
-		}
-
-		$pg->unset_xact_session;
-
-		return 1;
-	}
-	__PACKAGE__->register_method(
-		method		=> 'pg_rollback_xaction',
-		api_name	=> 'open-ils.storage.transaction.rollback',
-		api_level	=> 1,
-		argc		=> 0,
-	);
-
-	sub copy_create {
-		my $self = shift;
-		my $client = shift;
-		my @fm_nodes = @_;
-
-		return undef unless ($pg->current_xact_session);
-
-		my $cdbi = $self->{cdbi};
-
-		my $pri = $cdbi->columns('Primary');
-
-		my @cols = grep {$_ ne $pri} $cdbi->columns('All');
-
-		my $col_list = join ',', @cols;
-
-		$log->debug('Starting COPY import for '.$cdbi->table." ($col_list)", DEBUG);
-		$cdbi->sql_copy_start($cdbi->table, $col_list)->execute;
-
-		my $dbh = $cdbi->db_Main;
-		for my $node ( @fm_nodes ) {
-			next unless ($node);
-			my $line = join("\t", map { defined($node->$_()) ? $node->$_() : '\N' } @cols);
-			$log->debug("COPY line: [$line]",DEBUG);
-			$dbh->func($line."\n", 'putline');
-		}
-
-		$dbh->func('endcopy');
-
-		return scalar(@fm_nodes);
-	}
-
-}
-
-{
-	#---------------------------------------------------------------------
-	package action::survey;
-	
-	action::survey->table( 'action.survey' );
-	action::survey->sequence( 'action.survey_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package action::survey_question;
-	
-	action::survey_question->table( 'action.survey_question' );
-	action::survey_question->sequence( 'action.survey_question_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package action::survey_answer;
-	
-	action::survey_answer->table( 'action.survey_answer' );
-	action::survey_answer->sequence( 'action.survey_answer_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package action::survey_response;
-	
-	action::survey_response->table( 'action.survey_response' );
-	action::survey_response->sequence( 'action.survey_response_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package config::copy_status;
-	
-	config::standing->table( 'config.copy_status' );
-	config::standing->sequence( 'config.copy_status_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package config::net_access_level;
-	
-	config::standing->table( 'config.net_access_level' );
-	config::standing->sequence( 'config.net_access_level_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package config::standing;
-	
-	config::standing->table( 'config.standing' );
-	config::standing->sequence( 'config.standing_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package config::metabib_field;
-	
-	config::metabib_field->table( 'config.metabib_field' );
-	config::metabib_field->sequence( 'config.metabib_field_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package config::bib_source;
-	
-	config::bib_source->table( 'config.bib_source' );
-	config::bib_source->sequence( 'config.bib_source_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package config::identification_type;
-	
-	config::identification_type->table( 'config.identification_type' );
-	config::identification_type->sequence( 'config.identification_type_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package asset::call_number_note;
-	
-	asset::call_number->table( 'asset.call_number_note' );
-	asset::call_number->sequence( 'asset.call_number_note_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package asset::copy_note;
-	
-	asset::copy->table( 'asset.copy_note' );
-	asset::copy->sequence( 'asset.copy_note_id_seq' );
-
-	#---------------------------------------------------------------------
-	package asset::call_number;
-	
-	asset::call_number->table( 'asset.call_number' );
-	asset::call_number->sequence( 'asset.call_number_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package asset::copy_location;
-	
-	asset::copy->table( 'asset.copy_location' );
-	asset::copy->sequence( 'asset.copy_location_id_seq' );
-
-	#---------------------------------------------------------------------
-	package asset::copy;
-	
-	asset::copy->table( 'asset.copy' );
-	asset::copy->sequence( 'asset.copy_id_seq' );
-
-	#---------------------------------------------------------------------
-	package asset::stat_cat;
-	
-	asset::stat_cat->table( 'asset.stat_cat' );
-	asset::stat_cat->sequence( 'asset.stat_cat_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package asset::stat_cat_entry;
-	
-	asset::stat_cat_entry->table( 'asset.stat_cat_entry' );
-	asset::stat_cat_entry->sequence( 'asset.stat_cat_entry_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package asset::stat_cat_entry_copy_map;
-	
-	asset::stat_cat_entry_copy_map->table( 'asset.stat_cat_entry_copy_map' );
-	asset::stat_cat_entry_copy_map->sequence( 'asset.stat_cat_entry_copy_map_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package biblio::record_entry;
-	
-	biblio::record_entry->table( 'biblio.record_entry' );
-	biblio::record_entry->sequence( 'biblio.record_entry_id_seq' );
-
-	#---------------------------------------------------------------------
-	#package biblio::record_marc;
-	#
-	#biblio::record_marc->table( 'biblio.record_marc' );
-	#biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
-	#
-	#---------------------------------------------------------------------
-	package biblio::record_note;
-	
-	biblio::record_note->table( 'biblio.record_note' );
-	biblio::record_note->sequence( 'biblio.record_note_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package actor::user;
-	
-	actor::user->table( 'actor.usr' );
-	actor::user->sequence( 'actor.usr_id_seq' );
-
-	#---------------------------------------------------------------------
-	package actor::user_address;
-	
-	actor::user_address->table( 'actor.usr_address' );
-	actor::user_address->sequence( 'actor.usr_address_id_seq' );
-
-	#---------------------------------------------------------------------
-	package actor::org_address;
-	
-	actor::org_address->table( 'actor.org_address' );
-	actor::org_address->sequence( 'actor.org_address_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package actor::profile;
-	
-	actor::profile->table( 'actor.profile' );
-	actor::profile->sequence( 'actor.profile_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package actor::org_unit_type;
-	
-	actor::org_unit_type->table( 'actor.org_unit_type' );
-	actor::org_unit_type->sequence( 'actor.org_unit_type_id_seq' );
-
-	#---------------------------------------------------------------------
-	package actor::org_unit;
-	
-	actor::org_unit->table( 'actor.org_unit' );
-	actor::org_unit->sequence( 'actor.org_unit_id_seq' );
-
-	#---------------------------------------------------------------------
-	package actor::stat_cat;
-	
-	actor::stat_cat->table( 'actor.stat_cat' );
-	actor::stat_cat->sequence( 'actor.stat_cat_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package actor::stat_cat_entry;
-	
-	actor::stat_cat_entry->table( 'actor.stat_cat_entry' );
-	actor::stat_cat_entry->sequence( 'actor.stat_cat_entry_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package actor::stat_cat_entry_user_map;
-	
-	actor::stat_cat_entry_user_map->table( 'actor.stat_cat_entry_copy_map' );
-	actor::stat_cat_entry_user_map->sequence( 'actor.stat_cat_entry_usr_map_id_seq' );
-	
-	#---------------------------------------------------------------------
-	package actor::card;
-	
-	actor::card->table( 'actor.card' );
-	actor::card->sequence( 'actor.card_id_seq' );
-
-	#---------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::metarecord;
-
-	metabib::metarecord->table( 'metabib.metarecord' );
-	metabib::metarecord->sequence( 'metabib.metarecord_id_seq' );
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.metarecord.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::metarecord',
-	);
-
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::title_field_entry;
-
-	metabib::title_field_entry->table( 'metabib.title_field_entry' );
-	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
-	metabib::title_field_entry->columns( 'FTS' => 'index_vector' );
-
-#	metabib::title_field_entry->add_trigger(
-#		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+#
+#{
+#	package OpenILS::Application::Storage;
+#	use OpenSRF::Utils::Logger;
+#	my $log = 'OpenSRF::Utils::Logger';
+#
+#	my $pg = 'OpenILS::Application::Storage::Driver::Pg';
+#
+#
+#	sub current_xact {
+#		my $self = shift;
+#		my $client = shift;
+#		return $pg->current_xact_id;
+#	}
+#	__PACKAGE__->register_method(
+#		method		=> 'current_xact',
+#		api_name	=> 'open-ils.storage.transaction.current',
+#		api_level	=> 1,
+#		argc		=> 0,
 #	);
-#	metabib::title_field_entry->add_trigger(
-#		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+#
+#
+#	sub pg_begin_xaction {
+#		my $self = shift;
+#		my $client = shift;
+#
+#		if (my $old_xact = $pg->current_xact_session) {
+#			if ($pg->current_xact_is_auto) {
+#				$log->debug("Commiting old autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
+#				$self->pg_commit_xaction($client);
+#			} else {
+#				$log->debug("Rolling back old NON-autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
+#				$self->pg_rollback_xaction($client);
+#				throw OpenSRF::DomainObject::oilsException->new(
+#						statusCode => 500,
+#						status => "Previous transaction rolled back!",
+#				);
+#			}
+#		}
+#		
+#		$pg->set_xact_session( $client->session );
+#		my $xact_id = $pg->current_xact_id;
+#
+#		$log->debug("Beginning a new trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+#
+#		my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+#		
+#		try {
+#			$dbh->begin_work;
+#
+#		} catch Error with {
+#			my $e = shift;
+#			$log->debug("Failed to begin a new trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+#			throw $e;
+#		};
+#
+#
+#		my $death_cb = $client->session->register_callback(
+#			death => sub {
+#				__PACKAGE__->pg_rollback_xaction;
+#			}
+#		);
+#
+#		$log->debug("Registered 'death' callback [$death_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+#
+#		$client->session->session_data( death_cb => $death_cb );
+#
+#		if ($self->api_name =~ /autocommit$/o) {
+#			$pg->current_xact_is_auto(1);
+#			my $dc_cb = $client->session->register_callback(
+#				disconnect => sub {
+#					my $ses = shift;
+#					$ses->unregister_callback(death => $death_cb);
+#					__PACKAGE__->pg_commit_xaction;
+#				}
+#			);
+#			$log->debug("Registered 'disconnect' callback [$dc_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+#			if ($client and $client->session) {
+#				$client->session->session_data( disconnect_cb => $dc_cb );
+#			}
+#		}
+#
+#		return 1;
+#
+#	}
+#	__PACKAGE__->register_method(
+#		method		=> 'pg_begin_xaction',
+#		api_name	=> 'open-ils.storage.transaction.begin',
+#		api_level	=> 1,
+#		argc		=> 0,
 #	);
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.title_field_entry.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::title_field_entry',
-	);
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::author_field_entry;
-
-	metabib::author_field_entry->table( 'metabib.author_field_entry' );
-	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
-	metabib::author_field_entry->columns( 'FTS' => 'index_vector' );
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.author_field_entry.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::author_field_entry',
-	);
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::subject_field_entry;
-
-	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
-	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
-	metabib::subject_field_entry->columns( 'FTS' => 'index_vector' );
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.subject_field_entry.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::subject_field_entry',
-	);
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::keyword_field_entry;
-
-	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
-	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
-	metabib::keyword_field_entry->columns( 'FTS' => 'index_vector' );
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::keyword_field_entry',
-	);
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	#package metabib::title_field_entry_source_map;
-
-	#metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map' );
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	#package metabib::author_field_entry_source_map;
-
-	#metabib::author_field_entry_source_map->table( 'metabib.author_field_entry_source_map' );
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	#package metabib::subject_field_entry_source_map;
-
-	#metabib::subject_field_entry_source_map->table( 'metabib.subject_field_entry_source_map' );
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	#package metabib::keyword_field_entry_source_map;
-
-	#metabib::keyword_field_entry_source_map->table( 'metabib.keyword_field_entry_source_map' );
-
-	#-------------------------------------------------------------------------------
-
-	#-------------------------------------------------------------------------------
-	package metabib::metarecord_source_map;
-
-	metabib::metarecord_source_map->table( 'metabib.metarecord_source_map' );
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.metarecord_source_map.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::metarecord_source_map',
-	);
-
-
-	#-------------------------------------------------------------------------------
-	package metabib::record_descriptor;
-
-	metabib::record_descriptor->table( 'metabib.rec_descriptor' );
-	metabib::record_descriptor->sequence( 'metabib.rec_descriptor_id_seq' );
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.record_descriptor.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::record_descriptor',
-	);
-
-	#-------------------------------------------------------------------------------
-
-
-	#-------------------------------------------------------------------------------
-	package metabib::full_rec;
-
-	metabib::full_rec->table( 'metabib.full_rec' );
-	metabib::full_rec->sequence( 'metabib.full_rec_id_seq' );
-	metabib::full_rec->columns( 'FTS' => 'index_vector' );
-
-	OpenILS::Application::Storage->register_method(
-		api_name	=> 'open-ils.storage.direct.metabib.full_rec.batch.create',
-		method		=> 'copy_create',
-		api_level	=> 1,
-		'package'	=> 'OpenILS::Application::Storage',
-		cdbi		=> 'metabib::full_rec',
-	);
-
-
-	#-------------------------------------------------------------------------------
-}
+#	__PACKAGE__->register_method(
+#		method		=> 'pg_begin_xaction',
+#		api_name	=> 'open-ils.storage.transaction.begin.autocommit',
+#		api_level	=> 1,
+#		argc		=> 0,
+#	);
+#
+#	sub pg_commit_xaction {
+#		my $self = shift;
+#
+#		my $xact_id = $pg->current_xact_id;
+#
+#		try {
+#			$log->debug("Committing trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+#			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+#			$dbh->commit;
+#
+#		} catch Error with {
+#			my $e = shift;
+#			$log->debug("Failed to commit trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+#			return 0;
+#		};
+#		
+#		$pg->current_xact_session->unregister_callback( death => 
+#			$pg->current_xact_session->session_data( 'death_cb' )
+#		) if ($pg->current_xact_session);
+#
+#		if ($pg->current_xact_is_auto) {
+#			$pg->current_xact_session->unregister_callback( disconnect => 
+#				$pg->current_xact_session->session_data( 'disconnect_cb' )
+#			);
+#		}
+#
+#		$pg->unset_xact_session;
+#
+#		return 1;
+#		
+#	}
+#	__PACKAGE__->register_method(
+#		method		=> 'pg_commit_xaction',
+#		api_name	=> 'open-ils.storage.transaction.commit',
+#		api_level	=> 1,
+#		argc		=> 0,
+#	);
+#
+#	sub pg_rollback_xaction {
+#		my $self = shift;
+#
+#		my $xact_id = $pg->current_xact_id;
+#		try {
+#			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+#			$log->debug("Rolling back a trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+#			$dbh->rollback;
+#
+#		} catch Error with {
+#			my $e = shift;
+#			$log->debug("Failed to roll back trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+#			return 0;
+#		};
+#	
+#		$pg->current_xact_session->unregister_callback( death =>
+#			$pg->current_xact_session->session_data( 'death_cb' )
+#		) if ($pg->current_xact_session);
+#
+#		if ($pg->current_xact_is_auto) {
+#			$pg->current_xact_session->unregister_callback( disconnect =>
+#				$pg->current_xact_session->session_data( 'disconnect_cb' )
+#			);
+#		}
+#
+#		$pg->unset_xact_session;
+#
+#		return 1;
+#	}
+#	__PACKAGE__->register_method(
+#		method		=> 'pg_rollback_xaction',
+#		api_name	=> 'open-ils.storage.transaction.rollback',
+#		api_level	=> 1,
+#		argc		=> 0,
+#	);
+#
+#	sub copy_create {
+#		my $self = shift;
+#		my $client = shift;
+#		my @fm_nodes = @_;
+#
+#		return undef unless ($pg->current_xact_session);
+#
+#		my $cdbi = $self->{cdbi};
+#
+#		my $pri = $cdbi->columns('Primary');
+#
+#		my @cols = grep {$_ ne $pri} $cdbi->columns('All');
+#
+#		my $col_list = join ',', @cols;
+#
+#		$log->debug('Starting COPY import for '.$cdbi->table." ($col_list)", DEBUG);
+#		$cdbi->sql_copy_start($cdbi->table, $col_list)->execute;
+#
+#		my $dbh = $cdbi->db_Main;
+#		for my $node ( @fm_nodes ) {
+#			next unless ($node);
+#			my $line = join("\t", map { defined($node->$_()) ? $node->$_() : '\N' } @cols);
+#			$log->debug("COPY line: [$line]",DEBUG);
+#			$dbh->func($line."\n", 'putline');
+#		}
+#
+#		$dbh->func('endcopy');
+#
+#		return scalar(@fm_nodes);
+#	}
+#
+#}
+#
+#
+#{
+#	#---------------------------------------------------------------------
+#	package action::survey;
+#	
+#	action::survey->table( 'action.survey' );
+#	action::survey->sequence( 'action.survey_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package action::survey_question;
+#	
+#	action::survey_question->table( 'action.survey_question' );
+#	action::survey_question->sequence( 'action.survey_question_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package action::survey_answer;
+#	
+#	action::survey_answer->table( 'action.survey_answer' );
+#	action::survey_answer->sequence( 'action.survey_answer_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package action::survey_response;
+#	
+#	action::survey_response->table( 'action.survey_response' );
+#	action::survey_response->sequence( 'action.survey_response_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package config::copy_status;
+#	
+#	config::standing->table( 'config.copy_status' );
+#	config::standing->sequence( 'config.copy_status_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package config::net_access_level;
+#	
+#	config::standing->table( 'config.net_access_level' );
+#	config::standing->sequence( 'config.net_access_level_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package config::standing;
+#	
+#	config::standing->table( 'config.standing' );
+#	config::standing->sequence( 'config.standing_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package config::metabib_field;
+#	
+#	config::metabib_field->table( 'config.metabib_field' );
+#	config::metabib_field->sequence( 'config.metabib_field_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package config::bib_source;
+#	
+#	config::bib_source->table( 'config.bib_source' );
+#	config::bib_source->sequence( 'config.bib_source_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package config::identification_type;
+#	
+#	config::identification_type->table( 'config.identification_type' );
+#	config::identification_type->sequence( 'config.identification_type_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package asset::call_number_note;
+#	
+#	asset::call_number->table( 'asset.call_number_note' );
+#	asset::call_number->sequence( 'asset.call_number_note_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package asset::copy_note;
+#	
+#	asset::copy->table( 'asset.copy_note' );
+#	asset::copy->sequence( 'asset.copy_note_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package asset::call_number;
+#	
+#	asset::call_number->table( 'asset.call_number' );
+#	asset::call_number->sequence( 'asset.call_number_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package asset::copy_location;
+#	
+#	asset::copy->table( 'asset.copy_location' );
+#	asset::copy->sequence( 'asset.copy_location_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package asset::copy;
+#	
+#	asset::copy->table( 'asset.copy' );
+#	asset::copy->sequence( 'asset.copy_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package asset::stat_cat;
+#	
+#	asset::stat_cat->table( 'asset.stat_cat' );
+#	asset::stat_cat->sequence( 'asset.stat_cat_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package asset::stat_cat_entry;
+#	
+#	asset::stat_cat_entry->table( 'asset.stat_cat_entry' );
+#	asset::stat_cat_entry->sequence( 'asset.stat_cat_entry_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package asset::stat_cat_entry_copy_map;
+#	
+#	asset::stat_cat_entry_copy_map->table( 'asset.stat_cat_entry_copy_map' );
+#	asset::stat_cat_entry_copy_map->sequence( 'asset.stat_cat_entry_copy_map_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package biblio::record_entry;
+#	
+#	biblio::record_entry->table( 'biblio.record_entry' );
+#	biblio::record_entry->sequence( 'biblio.record_entry_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	#package biblio::record_marc;
+#	#
+#	#biblio::record_marc->table( 'biblio.record_marc' );
+#	#biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
+#	#
+#	#---------------------------------------------------------------------
+#	package biblio::record_note;
+#	
+#	biblio::record_note->table( 'biblio.record_note' );
+#	biblio::record_note->sequence( 'biblio.record_note_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package actor::user;
+#	
+#	actor::user->table( 'actor.usr' );
+#	actor::user->sequence( 'actor.usr_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package actor::user_address;
+#	
+#	actor::user_address->table( 'actor.usr_address' );
+#	actor::user_address->sequence( 'actor.usr_address_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package actor::org_address;
+#	
+#	actor::org_address->table( 'actor.org_address' );
+#	actor::org_address->sequence( 'actor.org_address_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package actor::profile;
+#	
+#	actor::profile->table( 'actor.profile' );
+#	actor::profile->sequence( 'actor.profile_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package actor::org_unit_type;
+#	
+#	actor::org_unit_type->table( 'actor.org_unit_type' );
+#	actor::org_unit_type->sequence( 'actor.org_unit_type_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package actor::org_unit;
+#	
+#	actor::org_unit->table( 'actor.org_unit' );
+#	actor::org_unit->sequence( 'actor.org_unit_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#	package actor::stat_cat;
+#	
+#	actor::stat_cat->table( 'actor.stat_cat' );
+#	actor::stat_cat->sequence( 'actor.stat_cat_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package actor::stat_cat_entry;
+#	
+#	actor::stat_cat_entry->table( 'actor.stat_cat_entry' );
+#	actor::stat_cat_entry->sequence( 'actor.stat_cat_entry_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package actor::stat_cat_entry_user_map;
+#	
+#	actor::stat_cat_entry_user_map->table( 'actor.stat_cat_entry_copy_map' );
+#	actor::stat_cat_entry_user_map->sequence( 'actor.stat_cat_entry_usr_map_id_seq' );
+#	
+#	#---------------------------------------------------------------------
+#	package actor::card;
+#	
+#	actor::card->table( 'actor.card' );
+#	actor::card->sequence( 'actor.card_id_seq' );
+#
+#	#---------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::metarecord;
+#
+#	metabib::metarecord->table( 'metabib.metarecord' );
+#	metabib::metarecord->sequence( 'metabib.metarecord_id_seq' );
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.metarecord.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::metarecord',
+#	);
+#
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::title_field_entry;
+#
+#	metabib::title_field_entry->table( 'metabib.title_field_entry' );
+#	metabib::title_field_entry->sequence( 'metabib.title_field_entry_id_seq' );
+#	metabib::title_field_entry->columns( 'FTS' => 'index_vector' );
+#
+##	metabib::title_field_entry->add_trigger(
+##		before_create => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+##	);
+##	metabib::title_field_entry->add_trigger(
+##		before_update => \&OpenILS::Application::Storage::Driver::Pg::tsearch2_trigger
+##	);
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.title_field_entry.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::title_field_entry',
+#	);
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::author_field_entry;
+#
+#	metabib::author_field_entry->table( 'metabib.author_field_entry' );
+#	metabib::author_field_entry->sequence( 'metabib.author_field_entry_id_seq' );
+#	metabib::author_field_entry->columns( 'FTS' => 'index_vector' );
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.author_field_entry.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::author_field_entry',
+#	);
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::subject_field_entry;
+#
+#	metabib::subject_field_entry->table( 'metabib.subject_field_entry' );
+#	metabib::subject_field_entry->sequence( 'metabib.subject_field_entry_id_seq' );
+#	metabib::subject_field_entry->columns( 'FTS' => 'index_vector' );
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.subject_field_entry.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::subject_field_entry',
+#	);
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::keyword_field_entry;
+#
+#	metabib::keyword_field_entry->table( 'metabib.keyword_field_entry' );
+#	metabib::keyword_field_entry->sequence( 'metabib.keyword_field_entry_id_seq' );
+#	metabib::keyword_field_entry->columns( 'FTS' => 'index_vector' );
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::keyword_field_entry',
+#	);
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	#package metabib::title_field_entry_source_map;
+#
+#	#metabib::title_field_entry_source_map->table( 'metabib.title_field_entry_source_map' );
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	#package metabib::author_field_entry_source_map;
+#
+#	#metabib::author_field_entry_source_map->table( 'metabib.author_field_entry_source_map' );
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	#package metabib::subject_field_entry_source_map;
+#
+#	#metabib::subject_field_entry_source_map->table( 'metabib.subject_field_entry_source_map' );
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	#package metabib::keyword_field_entry_source_map;
+#
+#	#metabib::keyword_field_entry_source_map->table( 'metabib.keyword_field_entry_source_map' );
+#
+#	#-------------------------------------------------------------------------------
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::metarecord_source_map;
+#
+#	metabib::metarecord_source_map->table( 'metabib.metarecord_source_map' );
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.metarecord_source_map.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::metarecord_source_map',
+#	);
+#
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::record_descriptor;
+#
+#	metabib::record_descriptor->table( 'metabib.rec_descriptor' );
+#	metabib::record_descriptor->sequence( 'metabib.rec_descriptor_id_seq' );
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.record_descriptor.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::record_descriptor',
+#	);
+#
+#	#-------------------------------------------------------------------------------
+#
+#
+#	#-------------------------------------------------------------------------------
+#	package metabib::full_rec;
+#
+#	metabib::full_rec->table( 'metabib.full_rec' );
+#	metabib::full_rec->sequence( 'metabib.full_rec_id_seq' );
+#	metabib::full_rec->columns( 'FTS' => 'index_vector' );
+#
+#	OpenILS::Application::Storage->register_method(
+#		api_name	=> 'open-ils.storage.direct.metabib.full_rec.batch.create',
+#		method		=> 'copy_create',
+#		api_level	=> 1,
+#		'package'	=> 'OpenILS::Application::Storage',
+#		cdbi		=> 'metabib::full_rec',
+#	);
+#
+#
+#	#-------------------------------------------------------------------------------
+#}
+#
 
 1;

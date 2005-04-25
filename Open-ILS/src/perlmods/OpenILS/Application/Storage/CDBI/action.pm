@@ -10,7 +10,8 @@ package action::survey;
 use base qw/action/;
 __PACKAGE__->table('action_survey');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name description owner start_date end_date usr_summary opac required/);
+__PACKAGE__->columns(Essential => qw/name description owner start_date
+				     end_date usr_summary opac poll required/);
 #-------------------------------------------------------------------------------
 
 package action::survey_question;
