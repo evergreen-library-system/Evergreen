@@ -69,6 +69,7 @@ sub _init {
 		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },
 		'Fieldmapper::actor::card'			=> { hint => 'ac'    },
 		'Fieldmapper::config::standing'			=> { hint => 'cst'   },
+		'Fieldmapper::config::copy_status'		=> { hint => 'ccs'   },
 		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'asc',
 								     proto_fields	=> { entries => 1 } },
 		'Fieldmapper::actor::stat_cat_entry'		=> { hint => 'asce'    },
