@@ -263,6 +263,7 @@ sub register_method {
 }
 
 sub retrieve_remote_apis {
+	my $method = shift;
 	my $session = OpenSRF::AppSession->create('router');
 	try {
 		$session->connect or OpenSRF::EX::WARN->throw("Connection to router timed out");
@@ -291,18 +292,22 @@ sub retrieve_remote_apis {
 
 	for my $class ( keys %u_list ) {
 		next if($class eq $server_class);
-		populate_remote_method_cache($class);
+		populate_remote_method_cache($class, $method);
 	}
 }
 
 sub populate_remote_method_cache {
 	my $class = shift;
+	my $meth = shift;
 
 	my $session = OpenSRF::AppSession->create($class);
 	try {
 		$session->connect or OpenSRF::EX::WARN->throw("Connection to $class timed out");
 
-		my $req = $session->request( 'opensrf.system.method.all' );
+		my $call = 'opensrf.system.method.all' unless (defined $meth);
+		$call = 'opensrf.system.method' if (defined $meth);
+
+		my $req = $session->request( $call, $meth );
 
 		while (my $method = $req->recv) {
 			next if (UNIVERSAL::isa($method, 'Error'));
@@ -363,7 +368,7 @@ sub method_lookup {
 		}
 
 	} elsif (!$no_recurse) {
-		retrieve_remote_apis();
+		retrieve_remote_apis($method);
 		$meth = $self->method_lookup($method,$proto,1);
 	}
 
