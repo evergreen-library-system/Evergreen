@@ -41,9 +41,10 @@ use base qw/action/;
 __PACKAGE__->table('action_circulation');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
-				     duration renewal_remaining fine_amount
-				     max_fines fine_interval/);
-__PACKAGE__->columns(Others => qw/note stop_fines xact_finish/);
+				     duration duration_rule renewal_remaining
+				     recuring_fine_rule recuring_fine stop_fines
+				     max_fine max_fine_rule fine_interval
+				     stop_fines xact_finish/);
 
 #-------------------------------------------------------------------------------
 
