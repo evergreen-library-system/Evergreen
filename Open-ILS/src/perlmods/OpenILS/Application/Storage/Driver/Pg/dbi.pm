@@ -26,8 +26,8 @@
 	#---------------------------------------------------------------------
 	package config::copy_status;
 	
-	config::standing->table( 'config.copy_status' );
-	config::standing->sequence( 'config.copy_status_id_seq' );
+	config::copy_status->table( 'config.copy_status' );
+	config::copy_status->sequence( 'config.copy_status_id_seq' );
 
 	#---------------------------------------------------------------------
 	package config::rules::circ_duration;
@@ -104,8 +104,8 @@
 	#---------------------------------------------------------------------
 	package asset::copy_location;
 	
-	asset::copy->table( 'asset.copy_location' );
-	asset::copy->sequence( 'asset.copy_location_id_seq' );
+	asset::copy_location->table( 'asset.copy_location' );
+	asset::copy_location->sequence( 'asset.copy_location_id_seq' );
 
 	#---------------------------------------------------------------------
 	package asset::copy;

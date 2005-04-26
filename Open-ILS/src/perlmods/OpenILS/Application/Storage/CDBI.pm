@@ -309,6 +309,7 @@ sub modify_from_fieldmapper {
 	asset::copy->has_a( editor => 'actor::user' );
 	asset::copy->has_a( status => 'config::copy_status' );
 	asset::copy->has_a( location => 'asset::copy_location' );
+	asset::copy->has_a( circ_lib => 'actor::org_unit' );
 
 	asset::call_number_note->has_a( owning_call_number => 'asset::call_number' );
 

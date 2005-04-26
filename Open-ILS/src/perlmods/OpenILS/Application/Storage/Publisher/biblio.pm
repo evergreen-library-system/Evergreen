@@ -73,12 +73,17 @@ sub record_by_copy {
 		  WHERE	cp.id = ?
 	SQL
 
-	return biblio::record_entry->retrieve( $r )->to_fieldmapper;
+	my $rec = biblio::record_entry->retrieve( $r );
+	my $r_fm = $rec->to_fieldmapper;
+	$r_fm->fixed_fields( $rec->record_descriptor->next->to_fieldmapper );
+
+	return $r_fm;
 }
 __PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.biblio.record_entry.retrieve_by_copy',
+	api_name	=> 'open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy',
 	method		=> 'record_by_copy',
 	api_level	=> 1,
+	cachable	=> 1,
 );
 
 

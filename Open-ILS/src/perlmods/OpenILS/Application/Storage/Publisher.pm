@@ -95,9 +95,10 @@ sub retrieve_node {
 		next unless ($id);
 
 		my ($rec) = $cdbi->fast_fieldmapper($id);
-		$client->respond( $rec ) if ($rec);
-
-		last if ($self->api_name !~ /batch/o);
+		if ($self->api_name !~ /batch/o) {
+			return $rec if ($rec);
+		}
+		$client->respond($rec);
 	}
 	return undef;
 }
@@ -131,6 +132,9 @@ sub search_one_field {
 
 	for my $term (@terms) {
 		$log->debug("Searching $cdbi for $col using type $search_type, value '$term'",DEBUG);
+		if (@terms == 1) {
+			return [ $cdbi->fast_fieldmapper($term,$col,$like) ];
+		}
 		$client->respond( [ $cdbi->fast_fieldmapper($term,$col,$like) ] );
 	}
 	return undef;

@@ -65,7 +65,7 @@ sub config_status_all {
 	return undef;
 }
 __PACKAGE__->register_method(
-	method		=> 'ident_type_all',
+	method		=> 'config_status_all',
 	api_name	=> 'open-ils.storage.direct.config.copy_status.retrieve.all',
 	argc		=> 0,
 	stream		=> 1,
