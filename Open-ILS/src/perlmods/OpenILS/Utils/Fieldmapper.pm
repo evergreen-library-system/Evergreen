@@ -109,7 +109,8 @@ sub _init {
 											   } },
 
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
-								     proto_fields	=> { call_numbers => 1 } },
+								     proto_fields	=> { call_numbers => 1,
+								     			     fixed_fields => 1 } },
 		#'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  }, # now it's inside record_entry
 
 		'Fieldmapper::money::cash_payment'		=> { hint => 'mcp'  },
