@@ -57,12 +57,15 @@ function Survey(survey, onclick ) {
 		this.addQuestion( survey.questions()[i] );
 	}
 
+	this.buttonDiv	= createAppElement("div");
+	add_css_class( this.buttonDiv, "survey_button");
 	this.button = createAppElement("input");
 	this.button.setAttribute("type", "submit");
 	this.button.value = "Submit Survey";
 	if(onclick)
 		this.button.onclick = onclick;
-	this.node.appendChild(this.button);
+	this.buttonDiv.appendChild(this.button);
+	this.node.appendChild(this.buttonDiv);
 }
 
 Survey.prototype.setAction = function(onclick) {
@@ -94,10 +97,48 @@ Survey.prototype.addQuestion = function(question) {
 	this.qList.appendChild(item); 
 }
 
-Survey.retrieveRequired = function(user_session) {
+/* Global survey retrieval functions.  In each case, if recvCallback
+	is not null, the retrieval will be asynchronous and will
+	call recvCallback(survey) on each survey retrieved.  Otherwise
+	an array of surveys is returned.
+	*/
+
+Survey.retrieveRandom = function(user_session, recvCallback) {
 	var request = new RemoteRequest(
 			"open-ils.circ",
-			"open-ils.circ.survey.required.retrieve",
+			"open-ils.circ.survey.retrieve.all",
+			user_session );
+	if( recvCallback ) {
+
+		debug("Retrieving random survey asynchronously");
+		var c = function(req) {
+			var surveys = req.getResultObject();
+			var s = surveys[2];
+			debug("Retrieved survey " + s.name() );
+			recvCallback(new Survey(s));
+		}
+		request.setCompleteCallback(c);
+		request.send();
+
+	} else {
+
+		request.send(true);
+		var surveys = new Array();
+		var results = request.getResultObject();
+		for(var index in results) {
+			var s = results[index];
+			debug("Retrieved survey " + s.name());
+			surveys.push(new Survey(s));
+		}
+		return surveys;
+	}
+}
+
+
+Survey.retrieveAll = function(user_session, recvCallback) {
+	var request = new RemoteRequest(
+			"open-ils.circ",
+			"open-ils.circ.survey.retrieve.all",
 			user_session );
 	request.send(true);
 	var surveys = new Array();
@@ -111,7 +152,7 @@ Survey.retrieveRequired = function(user_session) {
 }
 
 
-Survey.retrieveAll = function(user_session) {
+Survey.retrieveRequired = function(user_session, recvCallback) {
 	var request = new RemoteRequest(
 			"open-ils.circ",
 			"open-ils.circ.survey.retrieve.all",
