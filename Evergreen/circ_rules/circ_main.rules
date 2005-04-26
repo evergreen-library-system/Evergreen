@@ -1,0 +1,62 @@
+[%
+
+
+	# ------------------------------------------------------------------
+	# Macros for simpler syntax
+	# ------------------------------------------------------------------
+	MACRO jump(n)		PROCESS "$n";
+	MACRO policy(p)	PROCESS policy_block val=p;
+	BLOCK policy_block; val; STOP; END; 
+
+	MACRO ret(status,text) PROCESS ret_block s=status t=text;
+
+	BLOCK ret_block;
+		result.0 = s;
+		result.1 = t;
+		"Circ Template Result: "; result.0; " "; result.1; 
+		STOP;
+	END;
+
+
+
+	# ------------------------------------------------------------------
+	# These are passed in to every script
+	# ------------------------------------------------------------------
+	#	Objects		: Methods  
+	# -------------------
+	#	patron		:
+	#	copy			: 
+	#	circlib		: 
+	#	standings	: 
+	#	title			:
+	# ------------------------------------------------------------------
+
+	# ------------------------------------------------------------------
+	# Constants
+	# ------------------------------------------------------------------
+	OK							= 0;
+	COPY_ISREF				= 2;
+	COPY_NOCIRC				= 3;
+	COPY_UNAVAIL			= 4;
+	COPY_LOCATION			= 5;
+
+	PATRON_STANDING		= 10;
+	PATRON_FINE				= 11;
+	PATRON_CHARGE_COUNT	= 12;
+
+
+
+	# ------------------------------------------------------------------
+	# Run the rules files
+	# ------------------------------------------------------------------
+	PROCESS "$run_block"
+		patron			= circ_objects.patron 
+		copy				= circ_objects.copy
+		circlib			= circ_objects.copy.circlib() 
+		title				= circ_objects.title
+		standings		= circ_objects.standings;
+
+
+%]
+
+

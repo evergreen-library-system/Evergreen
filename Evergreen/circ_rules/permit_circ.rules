@@ -1,0 +1,39 @@
+[%
+
+# ------------------------------------------------------------------
+# Permissibility script.  
+# ------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------
+# Patron checks
+# ------------------------------------------------------------------
+
+IF patron.standing != "Good";
+	ret(PATRON_STANDING, "Patron not in good standing: ${patron.standing}"); END;
+
+
+# ------------------------------------------------------------------
+# Copy checks
+# ------------------------------------------------------------------
+
+IF ! copy.circulate;	
+	ret(COPY_NOCIRC, "Copy is not allowed to circulate"); END; 
+
+IF copy.status != "Available";         
+	ret(COPY_UNAVAIL, "Copy is unavailable: ${copy.status}"); END;
+
+IF !copy.location.circulate;		
+	ret(COPY_LOCATION, "Copy location not allowed to curculate"); END;
+
+IF copy.ref; 
+	ret(COPY_ISREF, "Copy is reference material"); END;
+
+
+
+
+
+
+ret(OK,"Allowed");
+
+%]
