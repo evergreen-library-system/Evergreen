@@ -41,7 +41,6 @@ __PACKAGE__->register_method(
 #
 
 sub classes {
-	$log->debug("classes: ".join(' -- ', keys %$fieldmap), DEBUG);
 	return () unless (defined $fieldmap);
 	return keys %$fieldmap;
 }
@@ -145,7 +144,6 @@ sub _init {
 	# Now comes the evil!  Generate classes
 
 	for my $pkg ( __PACKAGE__->classes ) {
-		$log->debug("Generating FM class for $pkg", DEBUG);
 		(my $cdbi = $pkg) =~ s/^Fieldmapper:://o;
 
 		eval <<"		PERL";
