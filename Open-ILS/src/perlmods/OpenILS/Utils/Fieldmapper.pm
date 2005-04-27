@@ -59,7 +59,7 @@ sub _init {
 		'Fieldmapper::action::survey_answer'		=> { hint		=> 'asva',
 								     proto_fields	=> { responses => 1 } },
 		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
-		'Fieldmapper::action::circulation'		=> { hint		=> 'ac'    },
+		'Fieldmapper::action::circulation'		=> { hint		=> 'circ'    },
 		'Fieldmapper::actor::user'			=> { hint		=> 'au',
 								     proto_fields	=> { cards	=> 1,
 								     			     addresses	=> 1 } },
