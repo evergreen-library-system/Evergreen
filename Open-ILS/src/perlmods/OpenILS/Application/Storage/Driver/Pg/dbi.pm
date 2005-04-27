@@ -3,7 +3,7 @@
 	package action::circulation;
 	
 	action::circulation->table( 'action.circulation' );
-	action::circulation->sequence( 'action.circulation_id_seq' );
+	action::circulation->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
 	package action::survey;
@@ -62,8 +62,8 @@
 	#---------------------------------------------------------------------
 	package config::net_access_level;
 	
-	config::standing->table( 'config.net_access_level' );
-	config::standing->sequence( 'config.net_access_level_id_seq' );
+	config::net_access_level->table( 'config.net_access_level' );
+	config::net_access_level->sequence( 'config.net_access_level_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package config::standing;
