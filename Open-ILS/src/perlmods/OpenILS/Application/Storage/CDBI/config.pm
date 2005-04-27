@@ -38,7 +38,7 @@ package config::rules::circ_duration;
 use base qw/config/;
 __PACKAGE__->table('config_rule_circ_duration');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name extended normal short max_renewals/);
+__PACKAGE__->columns(Essential => qw/name extended normal shrt max_renewals/);
 #-------------------------------------------------------------------------------
 
 package config::rules::max_fine;

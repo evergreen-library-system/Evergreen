@@ -59,7 +59,7 @@ CREATE TABLE config.rule_circ_duration (
 	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
 	extended	INTERVAL	NOT NULL,
 	normal		INTERVAL	NOT NULL,
-	short		INTERVAL	NOT NULL,
+	shrt		INTERVAL	NOT NULL,
 	max_renewals	INT		NOT NULL
 );
 
