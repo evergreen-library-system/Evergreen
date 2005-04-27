@@ -118,6 +118,9 @@ sub _init {
 		'Fieldmapper::config::identification_type'	=> { hint => 'cit'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
 		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
+		'Fieldmapper::config::rules::recuring_fine'	=> { hint => 'crrf'  },
+		'Fieldmapper::config::rules::circ_duration'	=> { hint => 'crcd'  },
+		'Fieldmapper::config::rules::max_fine'		=> { hint => 'crmf'  },
 
 		'Fieldmapper::metabib::metarecord'		=> { hint => 'mmr'  },
 		'Fieldmapper::metabib::title_field_entry'	=> { hint => 'mtfe' },
@@ -135,6 +138,7 @@ sub _init {
 		'Fieldmapper::asset::stat_cat_entry'		=> { hint => 'asce'    },
 		'Fieldmapper::asset::stat_cat_entry_copy_map'	=> { hint => 'ascecm'  },
 		'Fieldmapper::asset::copy_note'			=> { hint => 'acpn'    },
+		'Fieldmapper::asset::copy_location'		=> { hint => 'acpl'    },
 		'Fieldmapper::asset::call_number'		=> { hint		=> 'acn',
 								     proto_fields	=> { copies => 1 } },
 		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn'    },

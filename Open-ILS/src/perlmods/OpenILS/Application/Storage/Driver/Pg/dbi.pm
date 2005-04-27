@@ -1,5 +1,11 @@
 {
 	#---------------------------------------------------------------------
+	package action::circulation;
+	
+	action::circulation->table( 'action.circulation' );
+	action::circulation->sequence( 'action.circulation_id_seq' );
+
+	#---------------------------------------------------------------------
 	package action::survey;
 	
 	action::survey->table( 'action.survey' );
