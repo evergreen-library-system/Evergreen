@@ -35,6 +35,7 @@ my $circ_objects = {};
 my $copy_statuses;
 my $patron_standings;
 my $patron_profiles;
+my $shelving_locations;
 
 # template stash
 my $stash;
@@ -182,11 +183,11 @@ sub run_script {
 
 __PACKAGE__->register_method(
 	method	=> "permit_circ",
-	api_name	=> "open-ils.circ.permit_circ",
+	api_name	=> "open-ils.circ.permit_checkout",
 );
 
 sub permit_circ {
-	my( $self, $client, $barcode, $user_id, $outstanding_count ) = @_;
+	my( $self, $client, $user_session, $barcode, $user_id, $outstanding_count ) = @_;
 
 	$outstanding_count ||= 0;
 
@@ -224,11 +225,11 @@ sub permit_circ {
 
 __PACKAGE__->register_method(
 	method	=> "circulate",
-	api_name	=> "open-ils.circ.circulate",
+	api_name	=> "open-ils.circ.checkout.barcode",
 );
 
 sub circulate {
-	my( $self, $client, $barcode, $patron ) = @_;
+	my( $self, $client, $user_session, $barcode, $patron ) = @_;
 
 
 	my $session = $apputils->start_db_session();
@@ -401,48 +402,85 @@ __PACKAGE__->register_method(
 );
 
 sub checkin {
-	my( $self, $client, $barcode ) = @_;
+	my( $self, $user_session, $client, $barcode ) = @_;
 
-	my $session = $apputils->start_db_session();
+	my $err;
+	my $copy;
 
-	warn "retrieving copy for checkin\n";
+	try {
+		my $session = $apputils->start_db_session();
+	
+		warn "retrieving copy for checkin\n";
 
-	my $copy_req = $session->request(
-		"open-ils.storage.direct.asset.copy.search.barcode", 
-		$barcode );
-	my $copy = $copy_req->gather(1)->[0];
-	$copy->status(0);
+		if(!$shelving_locations) {
+			my $sh_req = $session->request(
+				"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
+			$shelving_locations = $sh_req->gather(1);
+			$shelving_locations = 
+				{ map { (''.$_->id => $_->name) } @$shelving_locations };
+		}
+	
+		my $copy_req = $session->request(
+			"open-ils.storage.direct.asset.copy.search.barcode", 
+			$barcode );
+		$copy = $copy_req->gather(1)->[0];
+		$copy->status(0);
+	
+		# find circ's where the transaction is still open for the
+		# given copy.  should only be one.
+		warn "Retrieving circ for checking\n";
+		my $circ_req = $session->request(
+			"open-ils.storage.direct.action.circulation.search.atomic",
+			{ target_copy => $copy->id, xact_finish => undef } );
+	
+		my $circ = $circ_req->gather(1)->[0];
+	
+		if(!$circ) {
+			$err = "No circulation exists for the given barcode";
 
-	warn "Retrieving circ for checking\n";
-	my $circ_req = $session->request(
-		"open-ils.storage.direct.action.circulation.search.atomic",
-		{ target_copy => $copy->id, xact_finish => undef } );
+		} else {
+	
+			warn "Checking in circ ". $circ->id . "\n";
+		
+			$circ->stop_fines("CHECKIN");
+			$circ->xact_finish("now");
+		
+			my $cp_up = $session->request(
+				"open-ils.storage.direct.asset.copy.update",
+				$copy );
+			$cp_up->gather(1);
+		
+			my $ci_up = $session->request(
+				"open-ils.storage.direct.action.circulation.update",
+				$circ );
+			$ci_up->gather(1);
+		
+			$apputils->commit_db_session($session);
+		
+			warn "Checkin succeeded\n";
+		}
+	
+	} catch Error with {
+		my $e = shift;
+		$err = "Error checking in: $e";
+	};
+	
+	if($err) {
+		return { record => undef, status => -1, text => $err };
 
-	my $circ = $circ_req->gather(1)->[0];
+	} else {
 
-	if(!$circ) {
-		throw OpenSRF::EX::ERROR
-			("No circulation exists for the given barcode");
+		my $record = $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
+			$copy->id() );
+
+		my $u = OpenILS::Utils::ModsParser->new();
+		$u->start_mods_batch( $record->marc() );
+		my $mods = $u->finish_mods_batch();
+		return { record => $mods, status => 0, text => "OK", 
+			route_to => $shelving_locations->{$copy->location} };
 	}
-
-	warn "Checking in circ ". $circ->id . "\n";
-
-	$circ->stop_fines("CHECKIN");
-	$circ->xact_finish("now");
-
-	my $cp_up = $session->request(
-		"open-ils.storage.direct.asset.copy.update",
-		$copy );
-	$cp_up->gather(1);
-
-	my $ci_up = $session->request(
-		"open-ils.storage.direct.action.circulation.update",
-		$circ );
-	$ci_up->gather(1);
-
-	$apputils->commit_db_session($session);
-
-	warn "Checkin succeeded\n";
 
 	return 1;
 
