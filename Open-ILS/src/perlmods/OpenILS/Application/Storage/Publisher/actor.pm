@@ -14,9 +14,10 @@ sub user_by_barcode {
 	return undef unless @barcodes;
 
 	for my $card ( actor::card->search( { barcode => @barcodes } ) ) {
-
 		next unless $card;
-
+		if (@barcodes == 1) {
+			return $card->usr->to_fieldmapper;
+		}
 		$client->respond( $card->usr->to_fieldmapper);
 	}
 	return undef;

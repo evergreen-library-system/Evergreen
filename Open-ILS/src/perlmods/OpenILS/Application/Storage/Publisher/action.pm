@@ -6,16 +6,44 @@ use base qw/OpenILS::Application::Storage/;
 #
 #my $log = 'OpenSRF::Utils::Logger';
 
+sub patron_circ_summary {
+	my $self = shift;
+	my $client = shift;
+	my $id = ''.shift();
+
+	return undef unless ($id);
+	my $c_table = action::circulation->table;
+	my $b_table = money::billing->table;
+
+	my $select = <<"	SQL";
+		SELECT	COUNT(DISTINCT c.id), SUM( COALESCE(b.amount,0) )
+		  FROM	$c_table c
+		  	LEFT OUTER JOIN $b_table b ON (c.id = b.xact)
+		  WHERE	c.usr = ?
+		  	AND c.xact_finish IS NULL
+			AND c.stop_fines NOT IN ('CLAIMSRETURNED','LOST')
+	SQL
+
+	return action::survey->db_Main->selectrow_arrayref($select, {}, $id);
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.circulation.patron_summary',
+	api_level       => 1,
+	method          => 'patron_circ_summary',
+);
+
+#XXX Fix stored proc calls
 sub find_local_surveys {
 	my $self = shift;
 	my $client = shift;
 	my $ou = ''.shift();
 
 	return undef unless ($ou);
+	my $s_table = action::survey->table;
 
 	my $select = <<"	SQL";
 		SELECT	s.*
-		  FROM	action.survey s
+		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
 		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
 	SQL
@@ -34,16 +62,18 @@ __PACKAGE__->register_method(
 	method          => 'find_local_surveys',
 );
 
+#XXX Fix stored proc calls
 sub find_opac_surveys {
 	my $self = shift;
 	my $client = shift;
 	my $ou = ''.shift();
 
 	return undef unless ($ou);
+	my $s_table = action::survey->table;
 
 	my $select = <<"	SQL";
 		SELECT	s.*
-		  FROM	action.survey s
+		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
 		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
 		  	AND s.opac IS TRUE;
@@ -69,10 +99,11 @@ sub find_optional_surveys {
 	my $ou = ''.shift();
 
 	return undef unless ($ou);
+	my $s_table = action::survey->table;
 
 	my $select = <<"	SQL";
 		SELECT	s.*
-		  FROM	action.survey s
+		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
 		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
 		  	AND s.required IS FALSE;
@@ -98,10 +129,11 @@ sub find_required_surveys {
 	my $ou = ''.shift();
 
 	return undef unless ($ou);
+	my $s_table = action::survey->table;
 
 	my $select = <<"	SQL";
 		SELECT	s.*
-		  FROM	action.survey s
+		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
 		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
 		  	AND s.required IS TRUE;
@@ -127,10 +159,11 @@ sub find_usr_summary_surveys {
 	my $ou = ''.shift();
 
 	return undef unless ($ou);
+	my $s_table = action::survey->table;
 
 	my $select = <<"	SQL";
 		SELECT	s.*
-		  FROM	action.survey s
+		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
 		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
 		  	AND s.usr_summary IS TRUE;

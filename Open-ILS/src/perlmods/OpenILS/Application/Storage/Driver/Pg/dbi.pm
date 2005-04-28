@@ -1,5 +1,11 @@
 {
 	#---------------------------------------------------------------------
+	package money::billing;
+	
+	money::billing->table( 'money.billing' );
+	money::billing->sequence( 'money.billing_id_seq' );
+
+	#---------------------------------------------------------------------
 	package action::circulation;
 	
 	action::circulation->table( 'action.circulation' );
