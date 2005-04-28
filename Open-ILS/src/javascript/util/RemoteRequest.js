@@ -1,7 +1,8 @@
 
 //var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
-var XML_HTTP_URL = "http://spacely.georgialibraries.org/method/";
-var XML_HTTPS_URL = "https://spacely.georgialibraries.org/method/";
+//var XML_HTTP_URL = "http://spacely.georgialibraries.org/method/";
+var XML_HTTP_URL = "http://spacely.georgialibraries.org/gateway";
+var XML_HTTPS_URL = "https://spacely.georgialibraries.org/gateway";
 
 
 /* Request object */
@@ -109,6 +110,8 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	if(!this.cancelled)
 		this.xmlhttp.send( data );
+
+	return this;
 }
 
 RemoteRequest.prototype.getText = function() {
