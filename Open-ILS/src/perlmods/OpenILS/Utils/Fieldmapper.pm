@@ -156,8 +156,6 @@ sub _init {
 			use base 'Fieldmapper';
 		PERL
 
-		$$fieldmap{$pkg}{cdbi} = $cdbi;
-
 		my $pos = 0;
 		for my $vfield ( qw/isnew ischanged isdeleted/ ) {
 			$$fieldmap{$pkg}{fields}{$vfield} = { position => $pos, virtual => 1 };
@@ -165,13 +163,14 @@ sub _init {
 		}
 
 		if (exists $$fieldmap{$pkg}{proto_fields}) {
-			for my $pfield ( keys %{ $$fieldmap{$pkg}{proto_fields} } ) {
+			for my $pfield ( sort keys %{ $$fieldmap{$pkg}{proto_fields} } ) {
 				$$fieldmap{$pkg}{fields}{$pfield} = { position => $pos, virtual => $$fieldmap{$pkg}{proto_fields}{$pfield} };
 				$pos++;
 			}
 		}
 
 		unless ( $$fieldmap{$pkg}{virtual} ) {
+			$$fieldmap{$pkg}{cdbi} = $cdbi;
 			for my $col ( sort $cdbi->columns('All') ) {
 				$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
 				$pos++;

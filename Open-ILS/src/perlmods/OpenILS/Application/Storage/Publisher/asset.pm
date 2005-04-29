@@ -6,6 +6,23 @@ use base qw/OpenILS::Application::Storage/;
 #
 #my $log = 'OpenSRF::Utils::Logger';
 
+sub asset_copy_location_all {
+	my $self = shift;
+	my $client = shift;
+
+	for my $rec ( asset::copy_location->retrieve_all ) {
+		$client->respond( $rec->to_fieldmapper );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'asset_copy_location_all',
+	api_name	=> 'open-ils.storage.direct.asset.copy_location.retrieve.all',
+	argc		=> 0,
+	stream		=> 1,
+);
+
 sub fleshed_copy {
 	my $self = shift;
 	my $client = shift;
