@@ -87,7 +87,7 @@ sub _init {
 								     			     intra_doc_id	=> 1,
 								     			     parent_node	=> 1,
 								     			     node_type		=> 1,
-								     			     namepsace_uri	=> 1,
+								     			     namespace_uri	=> 1,
 								     			     name		=> 1,
 								     			     value		=> 1,
 											   } },
