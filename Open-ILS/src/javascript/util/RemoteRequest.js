@@ -125,7 +125,8 @@ RemoteRequest.prototype.isReady = function() {
 
 
 RemoteRequest.prototype.getResultObject = function() {
-	var obj = JSON2js( this.xmlhttp.responseText );
+	var text = this.xmlhttp.responseText;
+	var obj = JSON2js(text);
 	if(obj == null) {
 		debug("received null response");
 		return null;
@@ -143,5 +144,6 @@ RemoteRequest.prototype.getResultObject = function() {
 }
 
 RemoteRequest.prototype.addParam = function(param) {
-	this.param_string += "&__param=" + escape(js2JSON(param));
+	var string = encodeURIComponent(js2JSON(param));
+	this.param_string += "&__param=" + string;
 }
