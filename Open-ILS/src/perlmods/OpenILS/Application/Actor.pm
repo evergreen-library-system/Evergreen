@@ -410,11 +410,15 @@ __PACKAGE__->register_method(
 	method	=> "get_user_profiles",
 	api_name	=> "open-ils.actor.user.profiles.retrieve",
 );
+
+my $user_profiles;
 sub get_user_profiles {
-	return OpenILS::Application::AppUtils->simple_scalar_request(
+	return $user_profiles if $user_profiles;
+
+	return $user_profiles = 
+		$apputils->simple_scalar_request(
 			"open-ils.storage",
-			"open-ils.storage.direct.actor.profile.retrieve.all.atomic",
-			( "1", "2", "3" ) );
+			"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
 }
 
 
@@ -423,10 +427,13 @@ __PACKAGE__->register_method(
 	method	=> "get_user_ident_types",
 	api_name	=> "open-ils.actor.user.ident_types.retrieve",
 );
+my $ident_types;
 sub get_user_ident_types {
-	return OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.config.identification_type.retrieve.all.atomic" );
+	return $ident_types if $ident_types;
+	return $ident_types = 
+		$apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.config.identification_type.retrieve.all.atomic" );
 }
 
 
@@ -548,8 +555,11 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.standings.retrieve"
 );
 
+my $user_standings;
 sub get_standings {
-	return $apputils->simple_scalar_request(
+	return $user_standings if $user_standings;
+	return $user_standings = 
+		$apputils->simple_scalar_request(
 			"open-ils.storage",
 			"open-ils.storage.direct.config.standing.retrieve.all.atomic" );
 }
