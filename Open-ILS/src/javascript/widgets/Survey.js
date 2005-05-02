@@ -49,9 +49,19 @@ function SurveyAnswer(answer,poll) {
 	this.answer = answer;
 
 	if(poll) {
-		this.node = createAppElement("input");
-		this.node.setAttribute("type", "radio");
-		this.node.value = answer.id();
+
+		if(IE) {
+			this.node = createAppElement(
+				"<input name='answer_" + answer.id() + "' type='radio' value='" + answer.id() + "'></input>" );
+		} else {
+
+			this.node = createAppElement("input");
+			this.node.type = "radio";
+			this.node.setAttribute("type", "radio");
+			this.node.setAttribute("name", "survey_answer_" + answer.id());
+			this.node.setAttribute("value", answer.id());
+		}
+
 	} else {
 		this.node = new Option( answer.answer(), answer.id() );
 	}
