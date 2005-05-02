@@ -11,14 +11,6 @@ use OpenILS::Utils::Fieldmapper;
 
 my $utils = "OpenILS::Application::Cat::Utils";
 
-sub _child_init {
-	try {
-		OpenSRF::Application->method_lookup( "blah" );
-	} catch Error with { 
-		warn "Child Init Failed: " . shift() . "\n";
-	};
-}
-
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_retrieve",
@@ -34,27 +26,13 @@ sub biblio_record_tree_retrieve {
 	my $name = "open-ils.storage.direct.biblio.record_entry.retrieve";
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( $name, $recordid );
-	$request->wait_complete;
-	my $response = $request->recv();
-	warn "got response from storage in retrieve for $recordid\n";
-
-	if(!$response) { 
-		throw OpenSRF::EX::ERROR ("No record in database with id $recordid");
-	}
-
-	if( $response->isa("OpenSRF::EX")) {
-		throw $response ($response->stringify);
-	}
-
-	warn "grabbing content in retrieve\n";
-	my $marcxml = $response->content;
+	my $marcxml = $request->gather(1);
 
 	if(!$marcxml) {
 		throw OpenSRF::EX::ERROR 
 			("No record in database with id $recordid");
 	}
 
-	$request->finish();
 	$session->disconnect();
 	$session->kill_me();
 
@@ -66,8 +44,6 @@ sub biblio_record_tree_retrieve {
 	$tree->owner_doc( $marcxml->id() );
 
 	warn "returning tree\n";
-	#use Data::Dumper;
-	#warn Dumper $tree;
 
 	return $tree;
 }
@@ -89,7 +65,7 @@ sub biblio_record_tree_commit {
 
 	throw OpenSRF::EX::InvalidArg 
 		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
-		unless ( $user_session and $client and $tree );
+		unless ( $user_session and $tree );
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
@@ -100,10 +76,12 @@ sub biblio_record_tree_commit {
 
 	warn "Retrieving biblio record from storage for update\n";
 
-	my $req1 = $session->request('open-ils.storage',
-			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", $docid );
-	if(UNIVERSAL::usa($req1,"Error")) { throw $req1 ($req1->stringify);}
-	my $biblio = $req1->content;
+	my $req1 = $session->request(
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", 
+			$docid );
+	my $biblio = $req1->gather(1);
+
+	warn "retrieved doc $docid\n";
 
 
 	# turn the tree into a nodeset
@@ -119,9 +97,6 @@ sub biblio_record_tree_commit {
 
 	# turn the nodeset into a doc
 	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml( $nodeset );
-
-	#my $biblio =  Fieldmapper::biblio::record_marc->new();
-	#$biblio->id( $docid );
 
 	$biblio->marc( $marcxml->toString() );
 
@@ -149,29 +124,18 @@ sub biblio_record_tree_commit {
 	my $wresp;
 
 	my $wreq = $session->request( "open-ils.worm.wormize", $docid );
-	warn "Calling worm receive\n";
 
-	$wreq->wait_complete;
-	$wresp = $wreq->recv();
+	try {
+		$wreq->gather(1);
 
-	if( ref($wresp) && 
-			UNIVERSAL::can($wresp,"content") and $wresp->content ) {
-		$success = 1;
-	}
-
-	$wreq->finish();
-
-	if( !$success ) {
-
+	} catch Error with {
+		my $e = shift;
 		warn "wormizing failed, rolling back\n";
-		if($wresp and $wresp->isa("Error") ) {
-			OpenILS::Application::AppUtils->rollback_db_session($session);
-			throw $wresp ($wresp->stringify);
-		}
-
 		OpenILS::Application::AppUtils->rollback_db_session($session);
+
+		if($e) { throw $e ($e); }
 		throw OpenSRF::EX::ERROR ("Wormizing Failed for $docid" );
-	}
+	};
 
 	OpenILS::Application::AppUtils->commit_db_session( $session );
 
@@ -276,7 +240,7 @@ sub _get_id_by_userid {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-		"open-ils.storage.direct.actor.user.search.usrid", @users );
+		"open-ils.storage.direct.actor.user.search.usrname", @users );
 
 	$request->wait_complete;
 	my $response = $request->recv();
@@ -313,47 +277,21 @@ sub _update_record_metadata {
 
 		warn "Updating metata for doc $docid\n";
 
-		# ----------------------------------------
-		# grab the meta information  and update it
-		my $user_session = OpenSRF::AppSession->create("open-ils.storage");
-		my $user_request = $user_session->request( 
+		my $request = $session->request( 
 			"open-ils.storage.direct.biblio.record_entry.retrieve", $docid );
-		$user_request->wait_complete;
-		my $meta = $user_request->recv();
+		my $record = $request->gather(1);
 
-		if(!$meta) {
-			throw OpenSRF::EX::ERROR ("No meta info returned for biblio $docid");
-		}
-		if($meta->isa("Error")) {
-			throw $meta ($meta->stringify);
-		}
+		warn "retrieved record\n";
+		my ($id) = _get_id_by_userid($user_obj->usrname);
 
-		$meta = $meta->content;
-		my ($id) = _get_id_by_userid($user_obj->usrid);
 		warn "got $id from _get_id_by_userid\n";
-		$meta->editor($id);
-
-		$user_request->finish;
-		$user_session->disconnect;
-		$user_session->kill_me;
-		# -------------------------------------
+		$record->editor($id);
 		
 		warn "Grabbed the record, updating and moving on\n";
 
-		my $request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.update", $meta );
-
-		my $response = $request->recv();
-		if(!$response) { 
-			throw OpenSRF::EX::ERROR 
-				("Error commit record metadata for " . $meta->id);
-		}
-
-		if($response->isa("Error")){ 
-			throw $response ($response->stringify); 
-		}
-
-		$request->finish;
+		$request = $session->request( 
+			"open-ils.storage.direct.biblio.record_entry.update", $record );
+		$request->gather(1);
 	}
 
 	warn "committing metarecord update\n";
@@ -443,7 +381,6 @@ sub retrieve_copies {
 	$session->kill_me();
 
 	return undef;
-	#return $results;
 	
 }
 
@@ -501,7 +438,6 @@ sub retrieve_copies_global {
 			throw $copylist ($copylist->stringify);
 		}
 
-		warn "received copy list " . time() . "\n";
 		$copylist = $copylist->content;
 
 		my $vol;
@@ -553,12 +489,8 @@ sub generic_edit_copies_volumes {
 	my( $self, $client, $user_session, $items ) = @_;
 
 	my $method = $self->api_name;
-	warn "received api name $method\n";
 	$method =~ s/open-ils\.cat/open-ils\.storage/og;
 	warn "our method is $method\n";
-
-	use Data::Dumper;
-	warn Dumper $items;
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
@@ -674,17 +606,14 @@ sub volume_tree_add {
 			my $request = $session->request( 
 				"open-ils.storage.direct.asset.call_number.create", $volume );
 
-			warn "0\n";
 			my $response = $request->recv();
 
-			warn "1\n";
 			if(!$request->complete) { 
 				OpenILS::Application::AppUtils->rollback_db_session($session);
 				throw OpenSRF::EX::ERROR 
 					("No response from storage on call_number.create");
 			}
 		
-			warn "2\n";
 			if(UNIVERSAL::isa($response, "Error")) {
 				OpenILS::Application::AppUtils->rollback_db_session($session);
 				throw $response ($response->stringify);
@@ -692,7 +621,6 @@ sub volume_tree_add {
 
 			$id = $response->content;
 
-			warn "3\n";
 			if( $id == 0 ) {
 				OpenILS::Application::AppUtils->rollback_db_session($session);
 				throw OpenSRF::EX::ERROR (" * -> Error creating new volume");
