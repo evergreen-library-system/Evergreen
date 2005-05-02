@@ -1,9 +1,5 @@
 
-//var XML_HTTP_URL = "https://spacely.georgialibraries.org/gateway";
-//var XML_HTTP_URL = "http://spacely.georgialibraries.org/method/";
-var XML_HTTP_URL = "http://spacely.georgialibraries.org/gateway";
-var XML_HTTPS_URL = "https://spacely.georgialibraries.org/gateway";
-
+var XML_HTTP_GATEWAY = "gateway";
 
 /* Request object */
 function RemoteRequest( service, method ) {
@@ -55,10 +51,6 @@ function RemoteRequest( service, method ) {
 
 }
 
-RemoteRequest.prototype.setSecure = function(bool) {
-	this.secure = bool;
-}
-
 /* define the callback we use when this request has received
 	all of its data */
 RemoteRequest.prototype.setCompleteCallback = function(callback) {
@@ -77,17 +69,13 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
   * By default, all calls are asynchronous.  if 'blocking' is
   * set to true, then the call will block until a response
   * is received.  If blocking, callbacks will not be called.
-  * In other, you can assume the data is avaiable as soon as the
+  * In other words, you can assume the data is avaiable as soon as the
   * send call returns. 
   */
 RemoteRequest.prototype.send = function(blocking) {
 
-	var url;
-
-	if(this.secure)
-		url = XML_HTTPS_URL;
-	else
-		url = XML_HTTP_URL;
+	/* determine the xmlhttp server dynamically */
+	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
 	var data = null;
 
@@ -126,6 +114,7 @@ RemoteRequest.prototype.isReady = function() {
 
 RemoteRequest.prototype.getResultObject = function() {
 	var text = this.xmlhttp.responseText;
+	debug("Received text from request " + text );
 	var obj = JSON2js(text);
 	if(obj == null) {
 		debug("received null response");
