@@ -44,10 +44,6 @@
 	height: 16px;
 }
 .webfx-tree-item a.selected {
-	/*
-	color: selectedtext;
-	background: selected;
-	*/
 	color: red;
 	background: #CCF;
 }

@@ -13,41 +13,6 @@
 	border: 3px solid green;
 }
 
-
-/* hit count box */
-/*
-.hit_count_box {
-	-moz-border-radius: 16px; 
-	width:100%; 
-	height: 3%;
-	float: left;
-	background: #CCF; 
-	vertical-align: middle; 
-	text-align: center;
-}
-*/
-
-
-/*
-.hit_count_words_box { 
-	width:				5%;
-	height:				99%; 
-	float:				left; 
-	vertical-align:	middle; 
-	text-align:			center
-}
-*/
-
-/*
-.hit_count_count_box { 
-	width:	5%; 
-	height:	99%;
-	float:	left; 
-	vertical-align: middle; 
-	text-align: center
-}
-*/
-
 /* we hold the title, author info rows*/
 #record_result_box { 
 	width: 100%;
@@ -55,13 +20,12 @@
 
 .big_ol_box {
 	width: 100%;
-			 /*
-	visibility: hidden;
-	display: none;
-	*/
 }
 
-.record_result_cell { vertical-align: top;}
+.record_result_cell { 
+	vertical-align: top;
+	width: 100%;
+}
 
 /* we hold a single title, author, etc. */
 .record_result_row_box { width: 100%;}
@@ -90,9 +54,15 @@
 .result_even { background: #CCF; border: 2px solid #CCF; }
 
 .record_sidebar_wrapper_box { 
-	width: 150px;
+	width: 200px;
 	margin-left: 10px;
 }
+
+/*
+.record_sidebar_cell {
+	width: 30%;
+}
+*/
 
 .record_sidebar_box { 
 	margin-left: 10px;
@@ -105,11 +75,9 @@
 	border: 2px dashed #99C;
 	font-size: 95%;
 	padding: 2px;
-	visibility: hidden;
 }
 
 .sidebar_label {
-	/*border: 1px solid #99C;*/
 	background: #FCC;
 }
 
@@ -117,7 +85,6 @@
 .record_next_prev_links_box {
 	width: 100%;
 	-moz-border-radius: 10px;
-	visibility: hidden;
 }
 
 .record_prev_button {
@@ -127,7 +94,6 @@
 	float: left;
 	text-align: center;
 	border: 2px solid #666666;
-	visibility: hidden;
 }
 
 
@@ -138,16 +104,8 @@
 	float: right;
 	text-align: center;
 	border: 2px solid grey;
-	visibility: hidden;
 }
 
-
-/*
-#space_link {
-	width: 32%;
-	float: left;
-}
-*/
 
 .record_sidebar_wrapper_visible {
 	visibility: visible;
@@ -185,4 +143,22 @@
 	top: 100px;
 	left: 200px;
 }
+
+.sidebar_box {
+/*width: 400px;*/
+}
+
+
+.relevance_box {
+	width: 43px;
+	border: 1px solid black;
+	height: 5px;
+}
+
+.relevance {
+	height: 100%;
+	background: green;
+	font-size: .1em;
+}
+
 

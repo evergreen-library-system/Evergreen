@@ -1,17 +1,59 @@
-function appendChild( obj, child ) {
-	if(!obj || ! child) 
-		throw "Need args to appendChild";
 
-	try {
-		obj.appendChild(child);
-	} catch(E) {
-		obj.children[ obj.children.length ] = child;
-		//obj.childNodes = obj.children;
-		for( var c in obj.children ) {
-			//obj.childNodes[c] = obj.children[c];
-			//obj.appendChild(obj.children[c]);
-		}
+var isMac
+var NS;
+var NS4;
+var NS6;
+var IE;
+var IE4;
+var IE4mac;
+var IE4plus;
+var IE5;
+var IE5plus;
+var IE6;
+var IEMajor;
+var ver4;
+
+function detect_browser() {       
+
+	isMac = (navigator.appVersion.indexOf("Mac")!=-1) ? true : false;
+	NS = (navigator.appName == "Netscape") ? true : false;
+	NS4 = (document.layers) ? true : false;
+	IE = (navigator.appName == "Microsoft Internet Explorer") ? true : false;
+	IEmac = ((document.all)&&(isMac)) ? true : false;
+	IE4plus = (document.all) ? true : false;
+	IE4 = ((document.all)&&(navigator.appVersion.indexOf("MSIE 4.")!=-1)) ? true : false;
+	IE5 = ((document.all)&&(navigator.appVersion.indexOf("MSIE 5.")!=-1)) ? true : false;
+	IE6 = ((document.all)&&(navigator.appVersion.indexOf("MSIE 6.")!=-1)) ? true : false;
+	ver4 = (NS4 || IE4plus) ? true : false;
+	NS6 = (!document.layers) && (navigator.userAgent.indexOf('Netscape')!=-1)?true:false;
+
+	IE5plus = IE5 || IE6;
+	IEMajor = 0;
+
+	if (IE4plus) {
+		var start = navigator.appVersion.indexOf("MSIE");
+		var end = navigator.appVersion.indexOf(".",start);
+		IEMajor = parseInt(navigator.appVersion.substring(start+5,end));
+		IE5plus = (IEMajor>=5) ? true : false;
 	}
+}
+
+detect_browser();
+
+
+
+
+
+function hideMe(obj) {
+	if(!obj)  return;
+	add_css_class( obj, "hide_me");
+	remove_css_class( obj, "show_me");
+}
+
+function showMe(obj) {
+	if(!obj)  return;
+	add_css_class( obj, "show_me");
+	remove_css_class( obj, "hide_me");
 }
 
 function grabCharCode( evt ) {
@@ -27,22 +69,29 @@ function grabCharCode( evt ) {
 function getById(id) {
 
 	var obj = document.getElementById(id);
-
 	if(obj != null) return obj;
 
-	if(globalAppFrame) {
-		obj = globalAppFrame.document.getElementById(id);
+	try {
+		if(globalAppFrame) {
+			obj = globalAppFrame.document.getElementById(id);
+		}
+	} catch(E) {
+		alert("We need a globalAppFrame to function");
 	}
 
 	return obj;
 }
 
 function createAppElement(name) {
-	return globalAppFrame.document.createElement(name);
+	if(globalAppFrame)
+		return globalAppFrame.document.createElement(name);
+	return document.createElement(name);
 }
 
 function createAppTextNode(text) {
-	return globalAppFrame.document.createTextNode(text);
+	if(globalAppFrame)
+		return globalAppFrame.document.createTextNode(text);
+	return document.createTextNode(text);
 }
 
 
@@ -77,7 +126,7 @@ var DEBUG = true;
 function debug(message) {
 	if(DEBUG) {
 		try {
-			dump(" -|*|- Debug: " + message + "\n" );
+			dump(" -|*|- Debug: " + message + "\n");
 		} catch(E) {}
 	}
 }
@@ -496,3 +545,44 @@ function getObjectWidth(obj)  {
 																		      }
 					    return parseInt(result);
 }
+
+
+
+function getAppWindow() {
+	if( globalAppFrame)
+		return globalAppFrame.window;
+	return window;
+}
+
+function getDocument() {
+	if(globalAppFrame)
+		return globalAppFrame.document;
+	return document;
+}
+
+/* returns [x, y] coords of the mouse */
+function getMousePos(e) {
+
+	var posx = 0;
+	var posy = 0;
+	if (!e) e = getAppWindow().event;
+	if (e.pageX || e.pageY) {
+		posx = e.pageX;
+		posy = e.pageY;
+	}
+	else if (e.clientX || e.clientY) {
+		posx = e.clientX + getDocument().body.scrollLeft;
+		posy = e.clientY + getDocument().body.scrollTop;
+	}
+
+	return [ posx, posy ];
+}
+
+function buildFunction(string) {
+	return eval("new Function(" + string + ")");
+}
+
+
+
+
+

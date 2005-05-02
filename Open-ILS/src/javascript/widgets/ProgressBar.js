@@ -1,8 +1,3 @@
-function createAppElement(obj) {
-	return document.createElement(obj);
-}
-
-
 function ProgressBar(size,interval) {
 
 	if(interval == null) interval = 100;
@@ -17,9 +12,14 @@ function ProgressBar(size,interval) {
 	this.current	= 0;
 	this.timeoutId;
 
+	this.percentDiv = createAppElement("div");
+	add_css_class(this.percentDiv, "progress_percent");
+
+	var divWidth = 100 / parseInt(size);
 	for( i = 0; i!= size; i++ ) {
 		var div = createAppElement("div");
 		div.className = "progress_bar_chunk";
+		div.style.width = "" + divWidth + "%";
 		this.div.appendChild(div);
 	}
 }
@@ -33,17 +33,7 @@ ProgressBar.prototype.getNode = function() {
 }
 
 ProgressBar.prototype.next = function() {
-	if( this.current == this.size ) {
-		for( var i in this.div.childNodes ) {
-			this.div.childNodes[i].className = "progress_bar_chunk";
-		}
-		this.current = 0;
-	} else {
-		var node = this.div.childNodes[this.current];
-		node.className = "progress_bar_chunk_active";
-		this.current = parseInt(this.current) + 1;
-	}
-
+	this.manualNext();
 	var obj = this;
 	this.timeoutId = setTimeout( function(){ obj.next(); }, this.interval );
 }
@@ -60,6 +50,24 @@ ProgressBar.prototype.stop = function() {
 	for(var i in this.div.childNodes) {
 		this.div.childNodes[i].className = "progress_bar_chunk_active";
 	}
+	add_css_class(this.percentDiv, "hide_me");
+	this.percentDiv.innerHTML = "";
 }
 
 
+	
+ProgressBar.prototype.manualNext = function() {
+	if( this.current == this.size ) {
+		for( var i in this.div.childNodes ) {
+			if(!this.div.childNodes[i])
+			this.div.childNodes[i].className = "progress_bar_chunk";
+		}
+		this.current = 0;
+	} else {
+		var node = this.div.childNodes[this.current];
+		node.className = "progress_bar_chunk_active";
+		this.current = parseInt(this.current) + 1;
+	}
+
+	this.percentDiv.innerHTML = (parseInt(this.current) / parseInt(this.size) * 100) + "%";
+}

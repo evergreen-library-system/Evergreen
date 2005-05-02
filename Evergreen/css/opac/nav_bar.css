@@ -62,7 +62,6 @@
 }
 
 .search_range_cell{
-/*	width: 300px;*/
 	text-align: right;
 	padding-right: 5px;
 }
@@ -73,10 +72,9 @@
 
 #opac_search_bar_box {  
 	font-size: x-small;
-	-moz-border-radius: 25px; 
-	background: #CCF;
    width: 100%; 
-   position: relative;  
 }
 
-
+#search_bar_form {
+	vertical-align: middle;
+}

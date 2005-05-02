@@ -1,21 +1,50 @@
+
+
 .context_menu {
-	width: 200px;
-	border: 2px solid black;
-	border-style: outset;
-	z-index: 23;
-	background: #FFD;
-	vertical-align: top;
-	text-align: center;
+	background-color: #FFFFFF;
+	background-image: url(/images/office_xp_menu_left.png);
+	background-repeat: repeat-y;
+	border: 1px solid #8A867A;
+	cursor: default;
+	padding-bottom: 1px;
+	padding-top: 1px;
+	position: absolute; 
+	z-index: 10;
+
 }
 
 .context_menu_item {
-	font-weight: bold;
-	vertical-align: middle;
-	text-align: center;
+	background: transparent;
+	border: none;
+	color: #000000;
+	font-family: Tahoma, Helvetica, sans, Arial, sans-serif;
+	font-size: 12px;
+	padding-bottom: 3px;
+	padding-left: 30px;
+	padding-right: 15px;
+	padding-top: 3px;
+	position: relative; 
+
 }
 
 .context_menu_item_hover {
-	background: #F66;
-	text-decoration: underline;
+	background-color: #C1D2EE;
+	border: 1px solid #316AC5;
+	color: #000000;
+	font-family: Tahoma, Helvetica, sans, Arial, sans-serif;
+	font-size: 12px;
+	margin-left: 1px;
+	margin-right: 1px;
+	padding-bottom: 2px;
+	padding-left: 28px;
+	padding-right: 15px;
+	padding-top: 2px;
+	position: relative; 
+}
+
+.context_menu_item_img {
+	width: 17px;
+	height: 17px;
+	padding-right: 4px;
 }
 

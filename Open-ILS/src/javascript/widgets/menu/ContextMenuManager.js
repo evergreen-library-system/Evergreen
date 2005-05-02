@@ -41,6 +41,7 @@ ContextMenuManager.prototype.hideAll = function() {
 /* sets a context object for the given menu.  When a user clicks
 	in the context area, the menu appears */
 ContextMenuManager.prototype.setContext = function(node, menu) {
+
 	var obj = this;
 	node.oncontextmenu = function(evt) {
 		var win = getAppWindow();
@@ -48,4 +49,5 @@ ContextMenuManager.prototype.setContext = function(node, menu) {
 		obj.toggle(menu.name);
 		return false;
 	}
+	
 }

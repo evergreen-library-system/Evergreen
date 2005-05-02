@@ -21,8 +21,8 @@ UserSession.prototype.destroy = function() {
 
 UserSession.prototype.verifySession = function() {
 
-	this.session_id	= getCookie("ils_ses");
-	this.username		= getCookie("ils_uname");
+	//this.session_id		= getCookie("ils_ses");
+	//this.username		= getCookie("ils_uname");
 
 	if( this.username && this.session_id ) { 
 		/* we're in the middle of an active session */
@@ -44,7 +44,7 @@ UserSession.prototype.verifySession = function() {
 			if(user && user[0]) {
 
 				debug("Received user object " + js2JSON(user) + "\n");
-				user = new au(user[0]);
+				//user = new au(user[0]);
 				this.username = user.usrname();
 
 			} else {
@@ -106,6 +106,7 @@ function destroySessionTimer() {
 }
 
 UserSession.prototype.setSessionId = function( id ) {
+	debug("User session id " + id );
 	this.session_id = id;
 }
 
@@ -164,7 +165,7 @@ UserSession.prototype.grabOrgUnit = function() {
 	var session = this.getSessionId();
 	if(!session) {
 		throw new EXLogic(
-				"No session ID for user in grabOrgUnit()");
+			"No session ID for user in grabOrgUnit()");
 	}
 
 	debug("Retrieving this users object");
@@ -183,7 +184,6 @@ UserSession.prototype.grabOrgUnit = function() {
 	globalPage.updateCurrentLocation(this.orgUnit);
 
 	return;
-
 
 }
 

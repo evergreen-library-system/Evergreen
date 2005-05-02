@@ -2,9 +2,10 @@
 
 /* menu item class */
 function ContextMenuItem(text,onclick) {
+	this.onclick = onclick;
 	this.div = createAppElement("div");
 	this.div.appendChild(createAppTextNode(text));
-	this.div.onclick = onclick;
+	this.div.onclick = this.onclick;
 	this.div.className = "context_menu_item";
 
 
@@ -20,11 +21,19 @@ function ContextMenuItem(text,onclick) {
 }
 
 
-
 /* returns the DOM object (div) this item sits in */
 ContextMenuItem.prototype.getNode = function() {
 	return this.div;
 }
+
+/* put an image to the left of the menu item */
+ContextMenuItem.prototype.addIcon= function(url) {
+	var img = createAppElement("img");
+	add_css_class( img, "context_menu_item_img");
+	img.setAttribute("src", url);
+	this.div.insertBefore( img, this.div.firstChild )
+}
+
 
 /* context menu class */
 function ContextMenu(name) {
@@ -33,13 +42,15 @@ function ContextMenu(name) {
 	this.wrapperDiv.appendChild(this.div);
 	this.div.className = "context_menu hide_me";
 	this.name = name;
+	this.items = new Array();
 }
 
 
 /* onclick is an actual function(){...} function */
 ContextMenu.prototype.addItem = function(text,onclick) {
-	this.div.appendChild(
-		new ContextMenuItem(text,onclick).getNode());
+	var item = new ContextMenuItem(text, onclick);
+	this.items.push(item)
+	this.div.appendChild(item.getNode());
 }
 
 /* returns the DOM object (div) this menu sits in */
@@ -78,5 +89,9 @@ ContextMenu.prototype.toSring = function() {
 	return this.wrapperDiv.innerHTML;
 }
 
+/* returns an array of ContextMenuItem objects */
+ContextMenu.prototype.getItems = function() {
+	return this.items;
+}
 
 
