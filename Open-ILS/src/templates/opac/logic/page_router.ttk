@@ -32,6 +32,9 @@
 	ELSIF target == "advanced_search";
 		INCLUDE opac/pages/advanced_search.ttk;
 
+	ELSIF target == "record_detail";
+		INCLUDE opac/pages/record_detail.ttk;
+
 	END;
 
 %]
