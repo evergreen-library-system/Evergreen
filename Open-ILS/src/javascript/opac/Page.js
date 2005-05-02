@@ -55,7 +55,6 @@ Page.prototype.setLocDisplay = function(name) {
 
 }
 
-
 Page.prototype.updateCurrentLocation = function(org) {
 	if( typeof org == 'object' ) node = org;
 	else node = getOrgById(orgid);

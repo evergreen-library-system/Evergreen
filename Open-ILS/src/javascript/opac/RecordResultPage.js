@@ -43,10 +43,33 @@ RecordResultPage.prototype.prev = function() {
 }
 
 RecordResultPage.prototype.addMenuItems = function(menu, record) {
-	menu.addItem("View MARC", 
-			function() { alert(record.doc_id()); });
 
+	var func = function() {
+		var req = new RemoteRequest(
+				"open-ils.search", 
+				"open-ils.search.biblio.record.html",
+				record.doc_id());
+		req.send(true);
+		buildViewMARCWindow(req.getResultObject(), record.doc_id() );
+	}
+
+	menu.addItem("View MARC", func);
 	xulEvtRecordResultDisplayed( menu, record );
+
+}
+
+
+function buildViewMARCWindow(html, id) {
+	var win = window.open(null,"MARC_" + id,
+		"location=0,menubar=0,status=0,resizeable,resize," +
+		"outerHeight=500,outerWidth=400,height=500," +
+		"width=400,scrollbars=1,screenX=100," +
+		"screenY=100,top=100,left=100,alwaysraised" )
+	win.document.write(html);
+	win.document.close();
+	win.document.title = "View MARC";
+	win.focus();
+
 }
 
 
@@ -59,7 +82,7 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 		case "title":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_title_link");
-			href.setAttribute("href","?target=record_result&mrid=" + id );
+			href.setAttribute("href","?target=record_detail&record=" + id );
 			href.appendChild(createAppTextNode(value));
 			break;
 
@@ -145,6 +168,11 @@ RecordResultPage.prototype.doSearch = function() {
 			this.globalSearch("isbn", paramObj.__isbn);
 			return;
 		}
+		if( paramObj.__barcode != null ) {
+			this.globalSearch("barcode", paramObj.__barcode);
+			return;
+		}
+
 	}
 		
 }
@@ -156,7 +184,7 @@ RecordResultPage.prototype.globalSearch = function(type, term) {
 	if( !term || term.length < 2 )
 		throw new EXArg( "globalSearch needs valid term: " + term );
 
-	debug("Performing Global search for term: " + term );
+	debug("Performing Global search [" + type + "] for term: " + term );
 
 	var method;
 	switch( type ) {
@@ -166,6 +194,10 @@ RecordResultPage.prototype.globalSearch = function(type, term) {
 
 		case "isbn":
 			method = "open-ils.search.biblio.isbn";
+			break;
+
+		case "barcode":
+			method = "open-ils.search.biblio.find_by_barcode";
 			break;
 	}
 

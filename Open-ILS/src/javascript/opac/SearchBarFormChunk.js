@@ -4,7 +4,6 @@ var globalSearchBarFormChunk = null;
 
 function SearchBarFormChunk() {
 	this.init();
-	//this.resetPage();
 	globalSearchBarFormChunk = this;
 }
 

@@ -51,6 +51,10 @@ function globalInit() {
 			globalPage = new MyOPACPage();
 			break;
 
+		case "record_detail":
+			globalPage = new RecordDetailPage();
+			break;
+
 		case  "about":
 			globalPage = new AboutPage();
 			break;
@@ -65,11 +69,10 @@ function globalInit() {
 		globalLocation = globalOrgTree;
 		globalOrgTreeWidget = new LocationTree(globalOrgTree);
 		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
-		globalUser = UserSession.instance();
-		globalUser.verifySession();
-		globalMenuManager = new ContextMenuManager();
 		loaded = true;
 	}
+
+	globalMenuManager = new ContextMenuManager();
 
 	/* hide all context menus on body click */
 	getDocument().body.onclick = function() {
@@ -80,9 +83,6 @@ function globalInit() {
 	globalPage.setLocDisplay();
 	globalPage.locationTree = globalOrgTreeWidget;
 	
-	
-//	setTimeout("renderTree()", 5 );
-
 	if( globalSearchBarFormChunk != null)
 		globalSearchBarFormChunk.resetPage();
 

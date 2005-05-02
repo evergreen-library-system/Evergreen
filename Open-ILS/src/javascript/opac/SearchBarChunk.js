@@ -21,7 +21,7 @@ function SearchBarChunk() {
 	this.logout_div				= getById("logout_div");
 
 	if(globalSearchBarChunk == null)
-		this.session = UserSession.instance();
+		try { this.session = UserSession.instance(); } catch(E) {}
 	else
 		this.session = globalSearchBarChunk.session;
 

@@ -28,7 +28,7 @@ LogoutPage.prototype.doLogout = function() {
 		request.send(true);
 		var response = request.getResultObject();
 		if(! response ) {
-			alert("error logging out"); /* exception */
+			//alert("error logging out"); /* exception */
 		}
 	}
 

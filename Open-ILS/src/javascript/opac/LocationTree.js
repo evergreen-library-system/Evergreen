@@ -58,6 +58,11 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 		offsetx = xpos;	
 	}
 
+	if(IE) { /*HACK XXX*/
+		offsety = parseInt(offsety) + 15;
+		offsetx = parseInt(offsetx) + 8;
+	}
+
 	this.treeContainerBox.style.position = "absolute"; 
 	this.treeContainerBox.style.top = offsety; 
 	this.treeContainerBox.style.left = offsetx;
@@ -71,8 +76,9 @@ function renderTree() {
 
 	if(!globalPage.locationTree.widget)
 		globalPage.locationTree.buildOrgTreeWidget(); 
-	debug(" +++++++++++++ Adding org tree widget");
 	globalPage.locationTree.treeBox.innerHTML = 
 		globalPage.locationTree.widget.toString();
 
 }
+
+

@@ -62,6 +62,13 @@ function doGlobalSearch() {
 				"search", "global", "tcn", obj.tcnText.value ] );
 		return;
 	}
+	if( obj.barcodeText.value != null 
+			&& obj.barcodeText.value.length > 1 ) {
+		url_redirect( [ "target", "record_result", "page", "0", 
+				"search", "global", "barcode", obj.barcodeText.value ] );
+		return;
+	}
+
 }
 		
 

@@ -5,9 +5,7 @@ AbstractRecordResultPage.baseClass					= Page.constructor;
 
 
 /* constructor for our singleton object */
-function AbstractRecordResultPage() {
-
-}
+function AbstractRecordResultPage() {}
 
 
 /* initialize all of the UI components and set up data structures */
@@ -27,15 +25,15 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.subBox				= getById("record_subject_sidebar_box");
 	this.authBox			= getById("record_author_sidebar_box");
 
+	this.subBoxL				= getById("record_subject_sidebar_box_label");
+	this.authBoxL			= getById("record_author_sidebar_box_label");
+
 	this.hitsPerPage		= 8;	 /* how many hits are displayed per page */
 	this.resetPage();
 
 	this.searchDepth		= 0; /* default to the current search location */
-
 	this.statusBar			= getById("top_status_bar_table");
-
 	this.theadDrawn		= false;
-
 	this.bigOlBox			= getById("big_ol_box");
 
 }
@@ -44,46 +42,35 @@ AbstractRecordResultPage.prototype.init = function() {
 
 /** Resets data structures for a new search */
 AbstractRecordResultPage.prototype.resetPage = function() {
-
-	/*
-	while(this.recordBox.rows.length > 0)
-		this.recordBox.deleteRow(-1);
-		*/
-
-	this.prevButton.style.visibility = "hidden";
-	this.nextButton.style.visibility = "hidden";
-	this.buttonsBox.style.visibility = "hidden";
-
-	//this.prevButton0.style.visibility = "hidden";
-	//this.nextButton0.style.visibility = "hidden";
-	//this.buttonsBox0.style.visibility = "hidden";
-
 	this.subBox.innerHTML				= "";
 	this.authBox.innerHTML				= "";
-	this.subBox.style.visibility		= "hidden";
-	this.authBox.style.visibility		= "hidden";
-
 	this.collectedSubjects				= new Array();
 	this.collectedAuthors				= new Array();
-
 	this.searchBar.reset();
+	var spot = getById("progress_bar_location");
+	var spot2 = getById("progress_bar_percent_location");
+	if(spot) {
+		while(spot.lastChild) 
+			spot.removeChild(spot.lastChild);
 
-	/*
-	this.treeBox		= getById("ot_nav_widget");
-	if(this.treeBox) {
-		this.treeBox.innerHTML = globalOrgTreeWidget.toString();
+		/* progress items for each record and it's hit count listing */
+		this.progressBar = new ProgressBar(parseInt(this.hitsPerPage) * 2);
+		spot.appendChild(this.progressBar.getNode());
+
+		if(!this.progressBar.running()) {
+			//this.progressBar.start();
+		}
 	}
-	*/
-
-	
+	if(spot2 && this.progressBar)
+		spot2.appendChild(this.progressBar.percentDiv);
 }
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
-	this.recordIDS				= new Array();
+	this.recordIDs				= new Array();
+	this.ranks					= new Array();
 	this.collectedSubjects	= new Array();		/* subjects attached to the current batch of records */
 	this.collectedAuthors	= new Array();		/* subjects attached to the current batch of records */
 	this.requestBatch			= new Array();		/* current batch of RemoteRequest objects */
-	this.recordIDs				= new Array();		/* this set of ids for this search */
 	this.hitCount				= 0;					/* hits for the current search */
 	this.searchOffset			= 0;					/* the offset for the search display */
 
@@ -92,40 +79,41 @@ AbstractRecordResultPage.prototype.resetSearch = function() {
 AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 
 	this.hitCount = parseInt(result.count);
+	debug("here");
 
+	/* the 'ids' field consist of [record, rank] */
 	/* gather all of the ID's */
-	for( var i in result.ids ) {
-		if(result.ids[i]==null) break;
-		var offset = parseInt(i) + parseInt(this.searchOffset);
-		this.recordIDs[offset] = result.ids[i];
-		debug("adding recordIDs["+offset+"], result.ids["+i+"]");
+	if( typeof result.ids == 'object' && result.ids[0].constructor == Array ) {
+		for( var i in result.ids ) {
+			if(result.ids[i]==null || result.ids[i][0] == null) break;
+			var offset = parseInt(i) + parseInt(this.searchOffset);
+			this.recordIDs[offset] = result.ids[i][0];
+			this.ranks[offset] = parseFloat(result.ids[i][1]);
+			debug("adding ranks[" + offset + "] = " + result.ids[i][1] + 
+					"  \nrecordIDs["+offset+"], result.ids["+i+"][0]");
+		}
+
+	} else {
+
+		for( var i in result.ids ) {
+			if(result.ids[i]==null) break;
+			var offset = parseInt(i) + parseInt(this.searchOffset);
+			this.recordIDs[offset] = result.ids[i];
+			debug("adding recordIDs["+offset+"], result.ids["+i+"]");
+		}
 	}
 
 }
 
 
-/* search_id is where we are in the recordID's array.  page_id is where we 
-	are in relation to the current page [ 0 .. hitsPerPage ]
-	*/
-function menu() {
-	alert('swapping'); 
-	swapClass(getById('record_context_menu'), 'hide_me', 'show_me' );
-	return true;
-}
 
-
-function recordRowContextHandler(evt) {
-	if(!getAppWindow().event) { getAppWindow().event = evt; };
-	var win = getAppWindow();
-	globalMenuManager.toggle(target.id);
-	return false;
-}
 
 
 
 AbstractRecordResultPage.prototype.displayRecord = 
 	function( record, search_id, page_id ) {
 
+	this.progressBar.manualNext();
 
 	var id = parseInt(page_id);
 	var title_row = table_row_find_or_create(this.recordBox, id * 2 + 1 );
@@ -136,7 +124,8 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	/* build the appropriate context node for this result */
 	var menu = globalMenuManager.buildMenu(
-		"record_result_row","record_result_row_" + page_id );
+		"record_result_row_" + page_id );
+
 	this.addMenuItems( menu, record );
 	globalMenuManager.setContext(title_row, menu);
 	globalMenuManager.setContext(author_row, menu);
@@ -153,8 +142,21 @@ AbstractRecordResultPage.prototype.displayRecord =
 	pic_cell.rowSpan = 2;
 
 
-	pic_cell.innerHTML = 
-		"<img height='60' width='45' src='http://images.amazon.com/images/P/" 
+	var rankBox = "";
+	if( this.ranks.length > 0 ) {
+		debug("AAAAA " + this.page + " " + this.hitsPerPage + " " + page_id );
+		var x = (parseInt(this.page) * parseInt(this.hitsPerPage)) + parseInt(page_id);
+		debug( x + " Ranks: " + this.ranks[x] + " " + this.ranks[0] );
+		var per = parseInt(this.ranks[x] / this.ranks[0] * 100.0);
+		rankBox = "<div class='relevance_box'><div style='width:" + 
+			per + "%' class='relevance'>&nbsp;</div></div>";
+	}
+			
+
+	debug("Adding rank box " + rankBox );
+
+	pic_cell.innerHTML = rankBox + 
+		"<img height='50' width='45' src='http://images.amazon.com/images/P/" 
 		+ isbn + ".01.MZZZZZZZ.jpg'>";
 
 
@@ -166,20 +168,6 @@ AbstractRecordResultPage.prototype.displayRecord =
 	author_cell.id = "record_result_author_box_" + id;
 	add_css_class(author_cell, "record_result_author_box");
 
-
-	if(!title_cell)
-		alert("No title box");
-
-	if(!author_cell)
-		alert("no author box");
-
-	/*
-	try {
-		xulEvtRecordResultButton( globalPageTarget, xul, record, search_id, page_id );
-	} catch(E) {
-		debug("xul function error: " + E );
-	}
-	*/
 
 	debug( "Displaying record title: " + record.title() + " author: " + record.author() );
 
@@ -218,13 +206,23 @@ AbstractRecordResultPage.prototype.displayRecord =
 	if( record.author() )
 		this.collectedAuthors[record.author()] = true;	
 
+	/* gather the subjects.  subjects are either a string or an array of
+		[subject, broader topic].  currently, they're all just treated like
+		subjects */
 	var arr = record.subject();
 	for( var sub in arr ) {
-		var s = normalize(arr[sub]);
-		if( this.collectedSubjects[s])
-			this.collectedSubjects[s] += 1;
-		else
-			this.collectedSubjects[s] = 1;
+
+		var ss = arr[sub];
+		if( ss.constructor != Array )
+			ss = [ss];
+
+		for( var i in ss ) {
+			var s = normalize(ss[i]);
+			if( this.collectedSubjects[s])
+				this.collectedSubjects[s] += 1;
+			else
+				this.collectedSubjects[s] = 1;
+		}
 	}
 
 	/* after loading the last record, contine building the page */
@@ -239,9 +237,10 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	this.collectedSubjects = this.collectedSubjects.sort().reverse();
 	this.collectedAuthors = this.collectedAuthors.sort().reverse();
 
-	this.subBox.style.visibility = "visible";
-	this.authBox.style.visibility = "visible";
-
+	showMe( this.subBox );
+	showMe( this.authBox );
+	showMe( this.subBoxL );
+	showMe( this.authBoxL );
 	var counter = 0;
 
 	debug("Collected Subjects: " + this.collectedSubjects[0] + ":" + this.collectedSubjects);
@@ -272,48 +271,49 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 		this.authBox.innerHTML += "<br/>";
 	}
 
-	/* do we need next/prev buttons */
-	this.buttonsBox.style.visibility = "visible";
+	showMe(this.buttonsBox);
 
-	if( this.searchOffset < (parseInt(this.hitCount) - this.hitsPerPage)) {
-		this.nextButton.style.visibility = "visible";
-	}
-	if(this.searchOffset > 0) {
-		this.prevButton.style.visibility = "visible";
-	}
+	if( this.searchOffset < (parseInt(this.hitCount) - this.hitsPerPage)) 
+		showMe(this.nextButton);
+	if(this.searchOffset > 0) 
+		showMe(this.prevButton);
 	
-	this.bigOlBox.style.visibility = "visible";
-	this.bigOlBox.style.display = "block";
+
+
+	var box = getById("record_survey_sidebar_box");
+	var ses = UserSession.instance().getSessionId();
+
+	if(ses) {
+		showMe(box);
+		showMe(getById("record_survey_sidebar_box_label"));
+		Survey.retrieveRandom(ses, 
+			function(sur) {
+				var name = sur.getName();
+				sur.setAction( function() { alert("Submitted Survey: " + name); } );
+				box.appendChild( sur.getNode() );
+			}
+		);
+	}
 
 	/*
-	if( this.progressBar ) 
-		this.progressBar.progressStop();
-		*/
+	var spot = getById("record_sidebar_box");
+	spot.style.border = "1px solid green";
+	spot.appendChild(createAppElement("br"));
+	var sidebar = new Sidebar();
+	var sidebarbox = new SidebarBox("Test");
+	sidebarbox.addItem(createAppTextNode("Hello"));
+	sidebarbox.addItem(createAppTextNode("Hello2"));
+	sidebar.addItem(sidebarbox);
+	spot.appendChild(sidebar.getNode());
+	*/
 
-	/* now add the subjects */
-
-	this.surveyBox = getById("record_survey_sidebar_box");
-	this.surveyBox.style.visibility = "visible";
-	var ses = UserSession.instance().getSessionId();
-	if(ses) {
-		var surveys = Survey.retrieveAll(ses);
-		for( var i in surveys ) {
-			bc(this.surveyBox,surveys[i]);
-		}
-	}
-}
-
-
-function bc(box, survey) {
-	var name = survey.getName();
-	survey.setAction( function() { alert("Submitted Survey: " + name); } );
-	box.appendChild( survey.getNode() );
 }
 
 
 AbstractRecordResultPage.prototype.displayCopyCounts = 
 	function(copy_counts, search_id, page_id) {
 		
+	this.progressBar.manualNext();
 	var titlerow  = getById("record_result_title_row_" + page_id );
 	var authorrow  = getById("record_result_author_row_" + page_id );
 
@@ -331,19 +331,23 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 	}
 
 	for( var i in copy_counts) {
-		//var cell = titlerow.insertCell(titlerow.cells.length);
 		var cell = createAppElement("td");
 		add_css_class(cell, "copy_count_cell");
 		cell.innerHTML = copy_counts[i].available + " / " + copy_counts[i].count;
 		cell.setAttribute("rowspan","2");
 		cell.rowSpan = 2;
 		titlerow.appendChild(cell);
-		/*
-		titlerow.innerHTML = titlerow.innerHTML + "<td clas='copy_count_cell' rowspan='2'>" + 
-			 copy_counts[i].available + " / " + copy_counts[i].count + "</td>";
-			 */
-
 	}
+
+	if(page_id  == (parseInt(this.hitsPerPage) - 1) ) {
+		if(this.progressBar) this.progressBar.stop();
+		showMe(this.bigOlBox);
+	}
+
+	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
+			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
+		if(this.progressBar) this.progressBar.stop();
+
 
 }
 

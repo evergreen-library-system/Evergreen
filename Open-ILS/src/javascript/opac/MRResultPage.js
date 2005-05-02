@@ -49,12 +49,11 @@ MRResultPage.prototype.prev = function() {
 			] );
 }
 
-MRResultPage.prototype.addMenuItems = function(menu, record) {
-	menu.addItem("View Metarecord Details", 
-			function() { alert(record.doc_id()); });
-	menu.getItems()[0].addIcon("/images/icon1.png");
 
-	xulEvtMRResultDisplayed( menu, record );
+MRResultPage.prototype.addMenuItems = function(menu, record) {
+		menu.addItem("View Metarecord Details", 
+							function() { alert(record.doc_id()); });
+				xulEvtMRResultDisplayed( menu, record );
 }
 
 
@@ -157,7 +156,6 @@ MRResultPage.prototype.doSearch = function() {
 			this.searchLocation.id(), 
 			this.searchDepth, "50", this.searchOffset );
 
-
 	var obj = this;
 	request.setCompleteCallback(
 		function(req) {
@@ -223,6 +221,7 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 	var copy_box	= getById("record_result_copy_count_box_" + page_id );
 
 	/* kick off the copy count search */
+	debug("Grabbing copy count for record " + record.doc_id() );
 	var copy_request = new RemoteRequest( "open-ils.search",
 		"open-ils.search.biblio.metarecord.copy_count", 1, record.doc_id() );
 	this.requestBatch.push(copy_request);
@@ -238,7 +237,7 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 			try {	
 				copy_box.innerHTML = req.getResultObject();	
 			} catch(E) { 
-				alert("Copy Count Retrieval Error:\n" + E ); 
+				//alert("Copy Count Retrieval Error:\n" + E ); 
 			}
 		}
 	);
@@ -273,10 +272,31 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 			try {	
 				obj.displayCopyCounts(req.getResultObject(), search_id, page_id );
 			} catch(E) { 
-				alert("Copy Count Retrieval Error:\n" + E ); 
+				//alert("Copy Count Retrieval Error:\n" + E ); 
 			}
 		}
 	);
 
 	copy_request.send();
 }
+
+
+/*
+MRResultPage.prototype.gatherIDs = function(result) {
+
+	this.hitCount = parseInt(result.count);
+	debug("here");
+
+	for( var i in result.ids ) {
+		if(result.ids[i]==null || result.ids[i][0] == null) break;
+		var offset = parseInt(i) + parseInt(this.searchOffset);
+		this.recordIDs[offset] = result.ids[i][0];
+		this.ranks[offset] = parseFloat(result.ids[i][1]);
+		debug("adding ranks[" + offset + "] = " + result.ids[i][1] + 
+				"  \nrecordIDs["+offset+"], result.ids["+i+"][0]");
+	}
+
+}
+*/
+
+
