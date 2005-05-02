@@ -33,6 +33,7 @@ sub fleshed_copy {
 	my $cp_fm = $cp->to_fieldmapper;
 	$cp_fm->circ_lib( $cp->circ_lib->to_fieldmapper );
 	$cp_fm->location( $cp->location->to_fieldmapper );
+	$cp_fm->status( $cp->status->to_fieldmapper );
 	return $cp_fm;
 }
 __PACKAGE__->register_method(

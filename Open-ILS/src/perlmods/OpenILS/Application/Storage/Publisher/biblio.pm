@@ -58,6 +58,33 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+sub record_by_barcode {
+	my $self = shift;
+	my $client = shift;
+
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+
+	my $id = ''.shift;
+	my ($r) = biblio::record_entry->db_Main->selectrow_array( <<"	SQL", {}, $id );
+		SELECT	cn.record
+		  FROM	$cn_table cn
+		  	JOIN $cp_table cp ON (cp.call_number = cn.id)
+		  WHERE	cp.barcode = ?
+	SQL
+
+	my $rec = biblio::record_entry->retrieve( $r );
+
+	return $rec->to_fieldmapper if ($rec);
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.retrieve_by_barcode',
+	method		=> 'record_by_barcode',
+	api_level	=> 1,
+	cachable	=> 1,
+);
+
 sub record_by_copy {
 	my $self = shift;
 	my $client = shift;
