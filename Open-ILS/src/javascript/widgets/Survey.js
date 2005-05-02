@@ -171,13 +171,21 @@ Survey.prototype.addQuestion = function(question) {
 	this.qList.appendChild(item); 
 }
 
+Survey.prototype.setUser = function(userid) {
+	this.userId = userid;
+}
+
 Survey.prototype.submit = function() {
 
 	var responses = this.buildSurveyResponse();
+	var method;
+	if( this.userId ) 
+		method = "open-ils.circ.survey.submit.user_id";
+	else
+		method = "open-ils.circ.survey.submit.session";
+
 	var request = new RemoteRequest(
-		"open-ils.circ",
-		"open-ils.circ.survey.submit",
-		responses );
+		"open-ils.circ", method, responses );
 	request.send(true);
 
 	/* there is nothing to return, just check for exceptions */
@@ -204,7 +212,10 @@ Survey.prototype.buildSurveyResponse = function() {
 		}
 		var qid = que.question.id()
 		var sur = new asvr();
-		sur.usr(this.userSession);
+		if( this.userId )
+			sur.usr(this.userId);
+		else
+			sur.usr(this.userSession);
 		sur.survey(this.survey.id());
 		sur.question(qid);
 		sur.answer(ans);
@@ -265,7 +276,6 @@ Survey._retrieve = function(user_session, method, recvCallback) {
 Survey.retrieveRandom = function(user_session, recvCallback) {
 	return Survey._retrieve(user_session, 
 		"open-ils.circ.survey.retrieve.all", recvCallback );
-	
 }
 
 
