@@ -1,5 +1,6 @@
 
 var XML_HTTP_GATEWAY = "gateway";
+var XML_HTTP_SERVER = "spacely.georgialibraries.org";
 
 /* Request object */
 function RemoteRequest( service, method ) {
@@ -65,6 +66,11 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 	}
 }
 
+/* http by default.  This makes it https */
+RemoteRequest.prototype.setSecure = function(bool) {
+	this.secure = bool;
+}
+
 /** Send the request 
   * By default, all calls are asynchronous.  if 'blocking' is
   * set to true, then the call will block until a response
@@ -76,6 +82,14 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
+
+	var XUL = true;  /*will be global, needs to be set by the parent XUL app when around */
+	if(XUL) {
+		if(this.secure)
+			url =	"https://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
+		else
+			url =	"http://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
+	}
 
 	var data = null;
 
