@@ -279,19 +279,16 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 		showMe(this.prevButton);
 	
 
-
-	var box = getById("record_survey_sidebar_box");
 	var ses = UserSession.instance().getSessionId();
 
 	if(ses) {
-		showMe(box);
+
 		showMe(getById("record_survey_sidebar_box_label"));
-		Survey.retrieveRandom(ses, 
-			function(sur) {
-				var name = sur.getName();
-				sur.setAction( function() { alert("Submitted Survey: " + name); } );
-				box.appendChild( sur.getNode() );
-			}
+		var box = getById("record_survey_sidebar_box");
+		showMe(box);
+
+		Survey.retrieveAll(ses, 
+			function(sur) { box.appendChild( sur.getNode() ); }
 		);
 	}
 
