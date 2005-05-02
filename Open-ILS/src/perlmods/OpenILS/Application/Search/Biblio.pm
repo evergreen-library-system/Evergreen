@@ -15,6 +15,11 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
 
+use XML::LibXML;
+use XML::LibXSLT;
+
+my $apputils = "OpenILS::Application::AppUtils";
+
 # Houses biblio search utilites 
 
 __PACKAGE__->register_method(
@@ -31,32 +36,16 @@ sub biblio_search_marc {
 	warn "Building biblio marc session\n";
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
-	warn "Sending biblio marc request\n";
+	use Data::Dumper;
+	warn "Sending biblio marc request. String $string\nSearch hash: " . Dumper($search_hash);
 	my $request = $session->request( 
-			#"open-ils.storage.cachable.direct.metabib.full_rec.search_fts.index_vector", 
-			"open-ils.storage.direct.metabib.full_rec.search_fts.index_vector", 
+			"open-ils.storage.direct.metabib.full_rec.search_fts.index_vector.atomic", 
 			restrict => $search_hash, 
 			term		=> $string );
+	my $data = $request->gather(1);
 
-	warn "Waiting complete\n";
-	$request->wait_complete();
+	warn Dumper $data;
 
-	warn "Calling recv\n";
-	my $response = $request->recv(20);
-
-	warn "out of recv\n";
-	if($response and UNIVERSAL::isa($response,"OpenSRF::EX")) {
-		throw $response ($response->stringify);
-	}
-
-
-	my $data = [];
-	if($response and UNIVERSAL::can($response,"content")) {
-		$data = $response->content;
-	}
-	warn "finishing request\n";
-
-	$request->finish();
 	$session->finish();
 	$session->disconnect();
 
@@ -190,7 +179,6 @@ sub record_id_to_copy_count {
 	my $request = $session->request(
 		$method, org_unit => $org_id => $key => $record_id );
 
-	warn "copy_count wait $record_id\n";
 
 	my $count = $request->gather(1);
 	$session->disconnect();
@@ -246,7 +234,6 @@ sub biblio_search_tcn {
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
 			"open-ils.storage.direct.biblio.record_entry.search.tcn_value", $tcn );
-	warn "tcn going into recv\n";
 	my $response = $request->recv();
 
 
@@ -289,15 +276,17 @@ sub biblio_search_isbn {
 	warn "biblio search for ISBN $isbn\n";
 	my $method = $self->method_lookup("open-ils.search.biblio.marc");
 	my ($records) = $method->run( $cat_search_hash->{isbn}, $isbn );
-	my @ids;
+
+=head
 	for my $i (@$records) { 
-		if( ref($i) and defined($i->[0])) { 
+		if(defined($i)) { 
 			push @ids, $i->[0]; 
 		}
 	}
+=cut
 
-	my $size = @ids;
-	return { count => $size, ids => \@ids };
+	my $size = @$records;
+	return { count => $size, ids => $records };
 }
 
 
@@ -306,7 +295,7 @@ sub biblio_search_isbn {
 
 __PACKAGE__->register_method(
 	method	=> "biblio_barcode_to_copy",
-	api_name	=> "open-ils.search.biblio.barcode",
+	api_name	=> "open-ils.search.asset.copy.find_by_barcode",
 );
 
 # turns a barcode into a copy object
@@ -314,10 +303,10 @@ sub biblio_barcode_to_copy {
 	my( $self, $client, $barcode ) = @_;
 
 	throw OpenSRF::EX::InvalidArg 
-		("search.biblio.barcode needs an ISBN to search")
+		("search.biblio.barcode needs a barcode to search")
 			unless defined $barcode;
 
-	warn "copy search for ISBN $barcode\n";
+	warn "copy search for barcode $barcode\n";
 	my $record = OpenILS::Application::AppUtils->simple_scalar_request(
 			"open-ils.storage", 
 			"open-ils.storage.direct.asset.copy.search.barcode",
@@ -326,6 +315,36 @@ sub biblio_barcode_to_copy {
 	return undef unless($record);
 	return $record->[0];
 
+}
+
+__PACKAGE__->register_method(
+	method	=> "biblio_barcode_to_title",
+	api_name	=> "open-ils.search.biblio.find_by_barcode",
+);
+
+sub biblio_barcode_to_title {
+	my( $self, $client, $barcode ) = @_;
+
+	if(!$barcode) {
+		throw OpenSRF::EX::ERROR 
+			("Not enough args to find_by_barcode");
+	}
+
+	my $title = $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.biblio.record_entry.retrieve_by_barcode",
+		$barcode );
+
+	return { ids => $title->id, count => 1 };
+
+=head
+	my $u = OpenILS::Utils::ModsParser->new();
+	$u->start_mods_batch( $title->marc );
+	my $mods = $u->finish_mods_batch();
+	$mods->doc_id($title->id());
+	return $mods;
+=cut
+	
 }
 
 
@@ -470,10 +489,9 @@ sub cat_biblio_search_class_id {
 	my $id_array = OpenILS::Application::SearchCache->get_cache($cache_key);
 
 	if(ref($id_array)) {
-		warn "Return search from cache\n";
+		warn "Returning class search from cache\n";
 		my $size = @$id_array;
 		my @ids = @$id_array[ $offset..($offset+$limit) ];
-		warn "Returning cat.biblio.class.id $string\n";
 		return { count => $size, ids => \@ids };
 	}
 
@@ -499,7 +517,6 @@ sub cat_biblio_search_class_id {
 	OpenILS::Application::SearchCache->put_cache( 
 			$cache_key, \@cache_ids, $size );
 
-	warn "Returning cat.biblio.class.id $string\n";
 	return { count =>$size, ids => \@ids };
 
 }
@@ -517,14 +534,13 @@ sub biblio_search_class {
 	my( $self, $client, $class, $string, 
 			$org_id, $org_type, $limit, $offset ) = @_;
 
-	warn "$org_id : $org_type : $limit :  $offset\n";
+	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
 
 	$offset		||= 0;
 	$limit		= 100 unless defined($limit and $limit > 0 );
 	$org_id	 	= "1" unless defined($org_id); # xxx
 	$org_type	= 0	unless defined($org_type);
 
-	warn "$org_id : $org_type : $limit :  $offset\n";
 	warn "Searching biblio.class.id\n" . 
 		"string: $string "		. 
 		"\noffset: $offset\n"	.
@@ -571,7 +587,6 @@ sub biblio_search_class {
 	# XXX check count size and respond accordingly
 
 	$request->finish();
-	warn "performing mr search\n";
 	$request = $session->request(	
 		#"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
 		"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
@@ -582,7 +597,6 @@ sub biblio_search_class {
 		offset	=> $offset,
 		);
 
-	warn "a\n";
 	$response = $request->recv();
 
 	if(UNIVERSAL::isa($response, "OpenSRF::EX")) {
@@ -591,11 +605,8 @@ sub biblio_search_class {
 		throw $response ($response->stringify);
 	}
 
-	warn "b\n";
 
 	my $records = $response->content;
-	use Data::Dumper;
-	warn Dumper $records;
 
 	my @all_ids;
 
@@ -605,20 +616,19 @@ sub biblio_search_class {
 	}
 
 	for my $i (@$records) { 
-		if(defined($i->[0])) {
-			push @all_ids, $i->[0]; 
+		if(defined($i)) {
+			push @all_ids, $i; 
 		}
 	}
 
 	#my @ids = @all_ids[ $offset..($offset+$limit) ];
 	my @ids = @all_ids;
-	@ids = grep { defined($_) } @ids;
+	@ids = grep { defined($_->[0]) } @ids;
 
 	$request->finish();
 	$session->finish();
 	$session->disconnect();
 
-	warn "Returning biblio.class $string\n";
 	return { count =>$count, ids => \@ids };
 
 }
@@ -653,8 +663,6 @@ sub biblio_mrid_to_modsbatch {
 	if($metarecord->mods()){
 		warn "We already have mods for " . $metarecord->id . "\n";
 		my $perl = JSON->JSON2perl($metarecord->mods());
-		use Data::Dumper;
-		warn Dumper $perl;
 		return Fieldmapper::metabib::virtual_record->new($perl);
 	}
 
@@ -678,13 +686,11 @@ sub biblio_mrid_to_modsbatch {
 	}
 
 	my $u = OpenILS::Utils::ModsParser->new();
-	warn "marc:\n" . $record->marc;
+	use Data::Dumper;
 	$u->start_mods_batch( $record->marc );
 	my $main_doc_id = $record->id();
 
 	@ids = grep { $_ ne $master_id } @ids;
-
-	warn "NON-Master IDs are @ids\n";
 
 	# now we have to collect all of the marc objects and push them into a mods batch
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
@@ -712,7 +718,6 @@ sub biblio_mrid_to_modsbatch {
 	$client->respond_complete($mods);
 
 	my $mods_string = JSON->perl2JSON($mods->decast);
-	warn "Mods String to DB:\n $mods_string\n";
 
 	$metarecord->mods($mods_string);
 
@@ -757,11 +762,56 @@ sub biblio_mrid_to_record_ids {
 	warn "Recovered id's [@ids] for mr $mrid\n";
 
 	my $size = @ids;
-	warn "Size: $size\n";
 
 	return { count => $size, ids => \@ids };
 
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_record_to_marc_html",
+	api_name	=> "open-ils.search.biblio.record.html" );
+
+my $parser		= XML::LibXML->new();
+my $xslt			= XML::LibXSLT->new();
+my $xslt_doc	= $parser->parse_file( 
+		"/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2HTML.xsl");
+my $marc_sheet = $xslt->parse_stylesheet( $xslt_doc );
+
+
+sub biblio_record_to_marc_html {
+	my( $self, $client, $recordid ) = @_;
+
+
+	my $record = $apputils->simple_scalar_request(
+		"open-ils.storage", 
+		"open-ils.storage.direct.biblio.record_entry.retrieve",
+		$recordid );
+
+	my $xmldoc = $parser->parse_string($record->marc);
+	my $html = $marc_sheet->transform($xmldoc);
+	$html = $html->toString();
+	return $html;
+
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_all_copy_locations",
+	api_name	=> "open-ils.search.config.copy_location.retreive.all" );
+
+my $shelving_locations;
+sub retrieve_all_copy_locations {
+	my( $self, $client ) = @_;
+	if(!$shelving_locations) {
+		$shelving_locations = $apputils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
+	}
+	return $shelving_locations;
+}
+
 
 
 
