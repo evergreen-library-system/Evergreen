@@ -8,11 +8,11 @@
 	# content         # body content
 	#--------------------------------------------------------------------------------- 
 
-	"<body ";
+	"<body";
 
-	IF onload; 
-		"onload='$onload'"; 
-	END;
+	IF onload; " onload='$onload'"; END;
+	IF onclick; " onclick='$onclick'"; END;
+	IF id; " id='$id'"; END;
 
 	">";
 
