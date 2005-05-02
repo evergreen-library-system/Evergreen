@@ -48,16 +48,20 @@ my $xpathset = {
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']",
 	},
 	subject => {
-		geographic => 
-			"//mods:mods/*[local-name()='subject']/*[local-name()='geographic']",
-		name => 
-			"//mods:mods/*[local-name()='subject']/*[local-name()='name']",
-		temporal => 
-			"//mods:mods/*[local-name()='subject']/*[local-name()='temporal']",
+
 		topic => 
-			"//mods:mods/*[local-name()='subject']/*[local-name()='topic']",
+			"//mods:mods/*[local-name()='subject']",
+
+#		geographic => 
+#			"//mods:mods/*[local-name()='subject']/*[local-name()='geographic']",
+#		name => 
+#			"//mods:mods/*[local-name()='subject']/*[local-name()='name']",
+#		temporal => 
+#			"//mods:mods/*[local-name()='subject']/*[local-name()='temporal']",
+#		topic => 
+#			"//mods:mods/*[local-name()='subject']/*[local-name()='topic']",
 	},
-	keyword => { keyword => "//mods:mods/*[not(local-name()='originInfo')]", },
+	#keyword => { keyword => "//mods:mods/*[not(local-name()='originInfo')]", },
 };
 # ----------------------------------------------------------------------------------------
 
@@ -79,13 +83,21 @@ sub get_field_value {
 
 		# grab all children of the node
 		my @children = $value->childNodes();
+		my @child_text;
 		for my $child (@children) {
+			next unless( $child->nodeType != 3 );
 
 			# add the childs content to the growing buffer
-			my $content = quotemeta($child->textContent);
-			push(@string, $child->textContent );
+			#my $content = quotemeta($child->textContent);
+			push(@child_text, $child->textContent); 
+			#warn "child text: @child_text\n";
+			#push(@string, $child->textContent );
 		}
-		if( ! @children ) {
+		if(@child_text) {
+			push(@string, \@child_text);
+		}
+
+		if( !@child_text  ) {
 			push(@string, $value->textContent );
 		}
 	}
@@ -93,7 +105,7 @@ sub get_field_value {
 }
 
 
-sub modsdoc_to_values {
+sub _modsdoc_to_values {
 	my( $self, $mods ) = @_;
 	my $data = {};
 	for my $class (keys %$xpathset) {
@@ -109,6 +121,54 @@ sub modsdoc_to_values {
 	}
 	return $data;
 }
+
+sub modsdoc_to_values {
+	my( $self, $mods ) = @_;
+	my $data = {};
+
+	{
+		my $class = "subject";
+		$data->{$class} = {};
+		for my $type(keys %{$xpathset->{$class}}) {
+			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
+			for my $arr (@value) {
+#	if( ref($arr) ) {
+#					push( @{$data->{$class}->{$type}},  join(" -- ", @$arr));
+#				} else {
+					push( @{$data->{$class}->{$type}},  $arr);
+#				}
+			}
+		}
+	}
+
+	{
+		my $class = "title";
+		$data->{$class} = {};
+		for my $type(keys %{$xpathset->{$class}}) {
+			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
+			for my $arr (@value) {
+				if( ref($arr) ) {
+					$data->{$class}->{$type} = join(" ", @$arr);
+				} else {
+					$data->{$class}->{$type} = $arr;
+				}
+			}
+		}
+	}
+
+	{
+		my $class = "author";
+		$data->{$class} = {};
+		for my $type(keys %{$xpathset->{$class}}) {
+			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
+			$data->{$class}->{$type} = $value[0];
+		}
+	}
+
+
+	return $data;
+}
+
 
 
 
@@ -165,6 +225,8 @@ sub start_mods_batch {
 
 	my $xmldoc = $parser->parse_string($master_doc);
 	my $mods = $mods_sheet->transform($xmldoc);
+
+	#warn "MODS " . $mods->toString(1) . "\n";
 
 	$self->{master_doc} = $self->modsdoc_to_values( $mods );
 	$self->{master_doc} = $self->mods_values_to_mods_slim( $self->{master_doc} );
