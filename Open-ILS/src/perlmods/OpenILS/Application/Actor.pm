@@ -556,9 +556,25 @@ sub get_standings {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "get_my_org_path",
+	api_name	=> "open-ils.actor.org_unit.full_path.retrieve"
+);
+
+sub get_my_org_path {
+	my( $self, $client, $user_session, $org_id ) = @_;
+	my $user_obj = $apputils->check_user_session($user_session); 
+	if(!defined($org_id)) { $org_id = $user_obj->home_ou; }
+
+	return $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.actor.org_unit.full_path.atomic",
+		$org_id );
+}
+
+
+
 1;
-
-
 
 
 
