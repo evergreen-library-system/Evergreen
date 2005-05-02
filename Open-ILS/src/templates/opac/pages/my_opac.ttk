@@ -10,9 +10,12 @@
 
 		WRAPPER html/body onload='pageInit();';
 
+			# here, this just provides the color backdrop for the search bar
+			box(id='progress_bar_location'); 
+			box(id='progress_bar_percent_location'); 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-
 			lines(1);
+			INCLUDE opac/pages/chunks/status_bar.ttk;
 
 			" My OPAC goes here<br/>";
 	

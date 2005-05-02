@@ -8,13 +8,15 @@
 			INCLUDE opac/pages/chunks/css_includes.ttk;
 		END;
 
-		WRAPPER html/body onload='pageInit();';
+		WRAPPER html/body id='body'  onload='pageInit();';
 
+			box(id='progress_bar_location'); 
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
 			lines(1);
 			INCLUDE opac/pages/chunks/status_bar.ttk;
 			lines(1);
 			INCLUDE opac/pages/chunks/org_tree.ttk;
+
 
 		END; # - body
 	END; # - html

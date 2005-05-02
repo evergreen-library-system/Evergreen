@@ -5,7 +5,7 @@
 
 		WRAPPER html/cell class='search_range_cell' nowrap='nowrap';
 	
-			input( type='submit', value="Location", 
+			input( type='submit', value="Location", id='location_select_button' 
 				onclick='
 				var evt = event;
 				evt = (evt) ? evt : ((window.event) ? event : null);

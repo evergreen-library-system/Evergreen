@@ -1,13 +1,16 @@
 [%	
-	url	= cgi.server_name();
-	port	= cgi.server_port();
-	target = cgi.param("target");	
+	url		= cgi.server_name();
+	port		= cgi.server_port();
+	target	= cgi.param("target");	
+	ssl		= cgi.https;
 
 	IF !target; target = "start"; END;
 
 	# --------------------------------------------------------------------------------- 
 	# push the cgi params into the javascript
 	# --------------------------------------------------------------------------------- 
+	#js( src='/js/util/webutils.js' );
+
 	WRAPPER html/js;
 		'parent.paramObj = new Object();';
 		FOR pname IN cgi.param();
@@ -37,8 +40,13 @@
 					parent.globalRootPath	= "/opac/";
 					parent.globalPort			= "'_ port _'";
 					parent.globalPageTarget	= "'_ target _'";
+					parent.isSSL				= "' _ ssl _ '";
 					parent.globalInit();
+				} else {
+					alert("I\'m not in a frame");
 				}
+			} else {
+				alert("No parent frame");
 			}
 
 			globalAppFrame = window;

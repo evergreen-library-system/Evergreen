@@ -10,6 +10,10 @@
 
 		WRAPPER html/body onload='pageInit();';
 
+			# here, this just provides the color backdrop for the search bar
+			box(id='progress_bar_location'); 
+			box(id='progress_bar_percent_location'); 
+
 			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
 			lines(1);
 			INCLUDE opac/pages/chunks/status_bar.ttk;
@@ -25,28 +29,12 @@
 				END;
 			END; # left box
 
-			box(class='vert_div');
+			#box(class='vert_div');
 
 			WRAPPER html/div class='adv_search_big_box';
-
-				WRAPPER html/table border='0' width='100%';
-
-					WRAPPER html/row;
-						WRAPPER html/cell class='adv_search_chunk';
-							INCLUDE opac/pages/chunks/adv_mixed_search.ttk;
-						END;
-					END;
-
-					row(content=cell(content=lines(2)));
-	
-					WRAPPER html/row;
-						WRAPPER html/cell class='adv_search_chunk';
-							INCLUDE opac/pages/chunks/adv_refined_keyword.ttk;
-						END; # cell 
-					END; # row
-					
-				END; #table
-			END; # - div
+				INCLUDE opac/pages/chunks/adv_mixed_search.ttk;
+				INCLUDE opac/pages/chunks/adv_refined_keyword.ttk;
+			END;
 
 		END; # - body
 	END; # - html

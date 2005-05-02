@@ -6,41 +6,44 @@
 			"Refined Keyword Search";;
 		END;
 
-		WRAPPER html/table width='100%';
+		WRAPPER html/div class='adv_dashed_box';
 
-			row(content = cell(content = lines(1)));
-
-			WRAPPER html/row;
-				cell(align='left' , width="25%" content= "Find results with all words:");
-				cell(align='left' , content=input(type='text' size='34' id='adv_all_words'));
-			END;
-
-			row(content = cell(content = lines(1)));
-
-			WRAPPER html/row;
-				cell(align='left' content= "Find results with the exact phrase:");
-				cell(align='left' content=input(type='text' size='34' id='adv_exact_words'));
-			END;
-
-			row(content = cell(content = lines(1)));
-
-			WRAPPER html/row;
-				cell(align='left' content= "Find results with none of these words:");
-				cell(align='left' content=input(type='text' size='34' id='adv_none_words'));
-			END;
-
-
-			row(content = cell(content = lines(1)));
-
-
-			WRAPPER html/row;
-				WRAPPER html/cell colspan='4';
-					WRAPPER html/center;
-						input( type='submit', value='Search', onclick='alert("hi");');
+			WRAPPER html/table;
+	
+				row(content = cell(content = lines(1)));
+	
+				WRAPPER html/row;
+					cell(align='left' , content= "Find results with all words:");
+					cell(align='left' , content=input(type='text' size='34' id='adv_all_words'));
+				END;
+	
+				row(content = cell(content = lines(1)));
+	
+				WRAPPER html/row;
+					cell(align='left' content= "Find results with the exact phrase:");
+					cell(align='left' content=input(type='text' size='34' id='adv_exact_words'));
+				END;
+	
+				row(content = cell(content = lines(1)));
+	
+				WRAPPER html/row;
+					cell(align='left' content= "Find results with none of these words:");
+					cell(align='left' content=input(type='text' size='34' id='adv_none_words'));
+				END;
+	
+	
+				row(content = cell(content = lines(1)));
+	
+	
+				WRAPPER html/row;
+					WRAPPER html/cell colspan='4';
+						WRAPPER html/center;
+							input( type='submit', value='Search', onclick='alert("hi");');
+						END;
 					END;
 				END;
-			END;
-
+	
+			END; # table 
 		END; # table 
 
 	END; # div

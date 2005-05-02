@@ -16,11 +16,10 @@
 		WRAPPER html/table border='0' width='100%';
 			WRAPPER html/row;
 
-				WRAPPER html/cell valign='middle' align='left';
+				WRAPPER html/cell nowrap='nowrap' valign='middle' align='left';
 					INCLUDE opac/pages/chunks/search_bar_form.ttk;
 				END;
 
-				#WRAPPER html/cell  id='progress_bar' align='center'; END;
 
 				WRAPPER html/cell  align='center';
 					WRAPPER html/div class="text_link_div" id='adv_search_link_div';

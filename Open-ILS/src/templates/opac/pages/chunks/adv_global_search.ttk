@@ -4,30 +4,31 @@
 
 			
 		box(class='adv_search_header', content="Quick Search");
-		box(class='big_line_div');
 
-		box(class='adv_search_left_item' content="ISBN");
-		box(class='adv_search_left_item' content=
-					input(type='text', size='12', id='adv_isbn_text'));
-
-		box(class='line_div');
-
-		box(class='adv_search_left_item' content="TCN");
-		box(class='adv_search_left_item' content=
-					input(type='text', size='12', id='adv_tcn_text'));
-
-		box(class='line_div');
-
-		box(class='adv_search_left_item' content="Barcode");
-		box(class='adv_search_left_item' content=
-					input(type='text', size='12', id='adv_barcode_text'));
-
-		box(class='line_div');
-
-		box(class='adv_search_left_item' content=
-			input(type='submit', value='Search', id='adv_global_search_button'));
-
-		box(class='line_div');
+		WRAPPER html/div class='adv_dashed_box';
+			box(class='adv_search_left_item' content="ISBN");
+			box(class='adv_search_left_item' content=
+						input(type='text', size='12', id='adv_isbn_text'));
+	
+			lines(1);
+	
+			box(class='adv_search_left_item' content="TCN");
+			box(class='adv_search_left_item' content=
+						input(type='text', size='12', id='adv_tcn_text'));
+	
+			lines(1);
+	
+			box(class='adv_search_left_item' content="Barcode");
+			box(class='adv_search_left_item' content=
+						input(type='text', size='12', id='adv_barcode_text'));
+	
+			lines(1);
+	
+			box(class='adv_search_left_item' content=
+				input(type='submit', value='Search', id='adv_global_search_button'));
+	
+			lines(1);
+		END;
 
 	END; # div
 
