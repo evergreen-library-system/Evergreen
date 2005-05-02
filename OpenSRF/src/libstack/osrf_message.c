@@ -4,6 +4,18 @@
 int parse_json_result = 1;
 int parse_json_params = 1;
 
+static void recurse_doc( xmlNodePtr node ) {
+	if( node == NULL ) return;
+	debug_handler("Recurse: %s =>  %s", node->name, node->content );
+	xmlNodePtr t = node->children;
+	while(t) {
+		recurse_doc(t);
+		t = t->next;
+	}
+}
+
+
+
 osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protocol ) {
 
 	osrf_message* msg			= (osrf_message*) safe_malloc(sizeof(osrf_message));
@@ -16,7 +28,6 @@ osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protoco
 	msg->parse_json_params	= parse_json_params;
 	msg->parray					= init_string_array(16); /* start out with a slot for 16 params. can grow */
 	msg->params					= NULL;
-	msg->full_param_string	= NULL;
 
 	return msg;
 }
@@ -77,7 +88,6 @@ void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
 		warning_handler( "Bad params to osrf_message_set_result_content()" );
 
 	msg->result_string =	strdup(json_string);
-	debug_handler("Setting result_string to %s\n", msg->result_string );
 
 	debug_handler( "Message Parse JSON is set to: %d",  msg->parse_json_result );
 
@@ -105,9 +115,6 @@ void osrf_message_free( osrf_message* msg ) {
 
 	if( msg->method_name != NULL )
 		free(msg->method_name);
-
-	if(msg->full_param_string)
-		free(msg->full_param_string);
 
 	if( msg->params != NULL )
 		json_object_put( msg->params );
@@ -138,9 +145,9 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 	xmlNodePtr	status_node;
 	xmlNodePtr	status_text_node;
 	xmlNodePtr	status_code_node;
-	xmlNodePtr	method_node;
+	xmlNodePtr	method_node = NULL;
 	xmlNodePtr	method_name_node;
-	xmlNodePtr	params_node;
+	xmlNodePtr	params_node = NULL;
 	xmlNodePtr	result_node;
 	xmlNodePtr	content_node;
 
@@ -220,26 +227,27 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 					}
 				} else {
 					if( msg->parray != NULL ) {
+
 						/* construct the json array for the params */
 						growing_buffer* buf = buffer_init(128);
 						buffer_add( buf, "[");
 						int k;
 						for( k=0; k!= msg->parray->size; k++) {
 							buffer_add( buf, string_array_get_string(msg->parray, k) );
-							buffer_add( buf, "," );
+							if(string_array_get_string(msg->parray, k+1))
+								buffer_add( buf, "," );
 						}
 
-						/* remove trailing comma */
-						if(buf->buf[buf->n_used - 1] == ',') {
-							buf->buf[buf->n_used - 1] = '\0';
-							buf->n_used--;
-						}
 						buffer_add( buf, "]");
-						msg->full_param_string = buffer_data(buf);
 
+						char* tmp = safe_malloc( (buf->n_used + 1) * sizeof(char));
+						memcpy(tmp, buf->buf, buf->n_used);
 
 						params_node = xmlNewChild( method_node, NULL, 
-							BAD_CAST "params", BAD_CAST buf->buf );
+							BAD_CAST "params", NULL );
+						
+						xmlNodePtr tt = xmlNewDocTextLen( doc, BAD_CAST tmp, strlen(tmp) );
+						xmlAddChild(params_node, tt);
 
 						buffer_free(buf);
 					}
@@ -285,8 +293,13 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 	// -----------------------------------------------------
 
 	/* passing in a '1' means we want to retain the formatting */
-	xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
+
+	//xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
+	//xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
+	xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
+
 	encoded_msg = strdup( (char*) xmlbuf );
+
 
 	if( encoded_msg == NULL ) 
 		fatal_handler("message_to_xml(): Out of Memory");
@@ -324,6 +337,8 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 	return encoded_msg;
 
 }
+
+
 
 
 int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {

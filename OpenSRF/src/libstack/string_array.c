@@ -56,7 +56,7 @@ void string_array_add(string_array* arr, char* str) {
 	}
 
 	//fprintf(stderr, "String is %s", str);
-	debug_handler("string_array_add: Adding string %s", str);
+	//debug_handler("string_array_add: Adding string %s", str);
 	//arr->array[arr->size - 1] = (char*) safe_malloc(strlen(str));
 	arr->array[arr->size - 1] = strdup(str);
 	//fprintf(stderr,"we have %s\n", arr->array[arr->size - 1]);
@@ -70,7 +70,7 @@ char* string_array_get_string(string_array* arr, int index) {
 	if(str == NULL)
 		warning_handler("Somehow we have a NULL string in the string array");
 
-	debug_handler("string_array_get_string: getting string %s", str);
+	//debug_handler("string_array_get_string: getting string %s", str);
 	return str;
 }
 
@@ -80,7 +80,7 @@ void string_array_destroy(string_array* arr) {
 	int i;
 	for( i = 0; i!= arr->size; i++ ) {
 		if( arr->array[i] != NULL ) {
-			debug_handler("Freeing string from string array %s", arr->array[i]);
+			//debug_handler("Freeing string from string array %s", arr->array[i]);
 			free(arr->array[i]);
 		}
 	}

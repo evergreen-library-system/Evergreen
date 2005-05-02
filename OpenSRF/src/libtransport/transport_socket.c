@@ -121,11 +121,12 @@ int tcp_send( transport_socket* sock_obj, const char* data ){
 	// ------------------------------------------------------------------
 	// Send the data down the TCP pipe
 	// ------------------------------------------------------------------
-	debug_handler( "Sending Data At %f Seconds", get_timestamp_millis() );
 	if( send( sock_obj->sock_fd, data, strlen(data), 0 ) < 0 ) {
 		fatal_handler( "tcp_send(): Error sending data" );
 		return 0;
 	}
+
+	debug_handler( "Sent Data %s At %f Seconds", data, get_timestamp_millis() );
 	return 1;
 }
 
@@ -220,8 +221,10 @@ int tcp_wait( transport_socket* sock_obj, int timeout ){
 #endif
 
 	if( clr_fl( sock_fd, O_NONBLOCK ) < 0 ) {
+		warning_handler("Unable to clear O_NONBLOCK flag on socket");
 		return 0;
 	}
+
 
 	if( n < 0 ) { 
 		if( errno != EAGAIN ) { 

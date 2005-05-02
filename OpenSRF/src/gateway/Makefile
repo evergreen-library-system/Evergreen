@@ -5,7 +5,7 @@ CC_OPTS		= -fPIC -Wall -O2 -I /usr/include/libxml2 \
 				  -I /usr/include/libxml2/libxml -I ../../include \
 				  -I /pines/apps/apache2/include
 
-EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport -lopensrf_stack -ljson -lmd5
+EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport -lopensrf_stack -ljson -lmd5 
 
 all: gateway 
 

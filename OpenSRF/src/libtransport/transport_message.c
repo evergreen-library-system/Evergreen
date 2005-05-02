@@ -295,7 +295,12 @@ char* message_to_xml( const transport_message* msg ) {
 	}
 
 
-	xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
+	xmlBufferPtr buf = xmlBufferCreate();
+	int status = xmlNodeDump( buf, doc, xmlDocGetRootElement(doc) , 1, 0 ); 
+
+	//xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
+	xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
+
 	encoded_body = strdup( (char*) xmlbuf );
 
 	if( encoded_body == NULL ) 

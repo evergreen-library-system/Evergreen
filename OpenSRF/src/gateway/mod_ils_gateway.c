@@ -196,13 +196,14 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			warning_handler("No Post Body");
 		}
 
-		char body[1024];
-		memset(body,0,1024);
-		buffer = buffer_init(1024);
+		char body[1025];
+		memset(body,0,1025);
+		buffer = buffer_init(1025);
 
 		while(ap_get_client_block(r, body, 1024)) {
+			debug_handler("Apache read POST block data: %s\n", body);
 			buffer_add( buffer, body );
-			memset(body,0,1024);
+			memset(body,0,1025);
 		}
 
 		if(arg && arg[0]) {
@@ -210,11 +211,9 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			buffer_add(tmp_buf,arg);
 			buffer_add(tmp_buf,buffer->buf);
 			arg = (char*) apr_pstrdup(p, tmp_buf->buf);
-	//		arg = buffer_data(tmp_buf);;
 			buffer_free(tmp_buf);
 		} else {
 			arg = (char*) apr_pstrdup(p, buffer->buf);
-	//		arg = buffer_data(buffer);
 		}
 		buffer_free(buffer);
 
@@ -232,9 +231,10 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	r->allowed |= (AP_METHOD_BIT << M_POST);
 
 	
-	char* argcopy = (char*) apr_pstrdup(p, arg);
+	//char* argcopy = (char*) apr_pstrdup(p, arg);
 
-	while( argcopy && (val = ap_getword(p, (const char**) &argcopy, '&'))) {
+	//while( argcopy && (val = ap_getword(p, (const char**) &argcopy, '&'))) {
+	while( arg && (val = ap_getword(p, (const char**) &arg, '&'))) {
 
 		//const char* val2 = val;
 
@@ -356,6 +356,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	buffer_free(result_data);
 
 	if(content) {
+		debug_handler( "APACHE writing data to web client: %s", content );
 		ap_rputs(content,r);
 		free(content);
 	} 
