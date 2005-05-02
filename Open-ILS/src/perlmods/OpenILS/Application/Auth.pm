@@ -149,6 +149,8 @@ sub retrieve_session {
 		warn "No User returned from retrieve_session $sessionid\n";
 	}
 	if($user) {$user->clear_password();}
+	use Data::Dumper;
+	warn Dumper $user;
 	return $user;
 }
 

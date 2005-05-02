@@ -305,10 +305,11 @@ sub _update_record_metadata {
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
 	api_name	=> "open-ils.cat.asset.copy_tree.retrieve",
-	argc		=> 2,  #(user_session, record_id)
-	note		=> <<TEXT
-	Returns the copies for a given bib record and for the users home library
-TEXT
+);
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_copies",
+	api_name	=> "open-ils.cat.asset.copy_tree.global.retrieve",
 );
 
 sub retrieve_copies {
@@ -317,147 +318,58 @@ sub retrieve_copies {
 
 	$docid = "$docid";
 
-	#my $results = [];
-
 	if(!$home_ou) {
 		my $user_obj = 
 			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 			$home_ou = $user_obj->home_ou;
 	}
 
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-	
-	# ------------------------------------------------------
-	# grab the short name of the library location
-	my $request = $session->request( 
-			"open-ils.storage.direct.actor.org_unit.retrieve", $home_ou );
-
-	my $org_unit = $request->recv();
-	if(!$org_unit) {
-		throw OpenSRF::EX::ERROR 
-			("No response from storage for org unit search");
+	my $search_hash;
+	if( $self->api_name =~ /global/ ) {
+		$search_hash = { record => $docid };
+	} else {
+		$search_hash = { record => $docid, owning_lib => $home_ou };
 	}
-	if($org_unit->isa("Error")) { throw $org_unit ($org_unit->stringify);}
-	my $location = $org_unit->content->shortname;
-	$request->finish();
-	# ------------------------------------------------------
+
+	my $vols = _build_volume_list( $search_hash );
+
+	return $vols;
+	
+}
 
 
-	# ------------------------------------------------------
-	# grab all the volumes for the given record and location
-	my $search_hash = { record => $docid, owning_lib => $location };
+sub _build_volume_list {
+	my $search_hash = shift;
 
-
-
-	$request = $session->request( 
+	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+	my $request = $session->request( 
 			"open-ils.storage.direct.asset.call_number.search", $search_hash );
 
 	my $volume;
-	my @volume_ids;
+	my @volumes;
 
 	while( $volume = $request->recv() ) {
 
-		if($volume->isa("Error")) { 
+		if(UNIVERSAL::isa($volume,"Error")) { 
 			throw $volume ($volume->stringify);}
 
 		$volume = $volume->content;
 		
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
-		my $copies = 
-			OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-				"open-ils.storage.direct.asset.copy.search.call_number", $volume->id );
+
+		my $creq = $session->request(
+			"open-ils.storage.direct.asset.copy.search.call_number", 
+			$volume->id );
+		my $copies = $creq->gather(1);
 
 		$volume->copies($copies);
 
-		$client->respond( $volume );
-
-		#push @$results, $volume;
+		push( @volumes, $volume );
 
 	}
-
 	$request->finish();
-	$session->finish();
-	$session->disconnect();
-	$session->kill_me();
+	return \@volumes;
 
-	return undef;
-	
-}
-
-
-
-
-__PACKAGE__->register_method(
-	method	=> "retrieve_copies_global",
-	api_name	=> "open-ils.cat.asset.copy_tree.global.retrieve",
-	argc		=> 2,  #(user_session, record_id)
-	note		=> <<TEXT
-	Returns all volumes and attached copies for a given bib record
-TEXT
-);
-
-sub retrieve_copies_global {
-
-	my( $self, $client, $user_session, $docid ) = @_;
-
-	$docid = "$docid";
-
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-
-	# ------------------------------------------------------
-	# grab all the volumes for the given record and location
-	my $request = $session->request( 
-			"open-ils.storage.direct.asset.call_number.search.record", $docid );
-
-	my $volumes = $request->recv();
-
-		
-	if($volumes->isa("Error")) { 
-		throw $volumes ($volumes->stringify);}
-
-	$volumes = $volumes->content;
-
-	$request->finish();
-
-	my $vol_hash = {};
-
-	my @volume_ids;
-	for my $volume (@$volumes) {
-		$vol_hash->{$volume->id} = $volume;
-	}
-
-	my @ii = keys %$vol_hash;
-	warn "Searching volumes @ii\n";
-		
-	$request = $session->request( 
-			"open-ils.storage.direct.asset.copy.search.call_number", keys %$vol_hash );
-	
-	while( my $copylist = $request->recv ) {
-		
-		if(UNIVERSAL::isa( $copylist, "Error")) {
-			throw $copylist ($copylist->stringify);
-		}
-
-		$copylist = $copylist->content;
-
-		my $vol;
-		for my $copy (@$copylist) {
-			$vol = $vol_hash->{$copy->call_number} unless $vol;
-			$vol->copies([]) unless $vol->copies();
-			push @{$vol->copies}, $copy;
-		}
-		$client->respond( $vol );
-	}
-
-
-
-	$request->finish();
-	$session->finish();
-	$session->disconnect();
-	$session->kill_me();
-
-	return undef;
-	
 }
 
 

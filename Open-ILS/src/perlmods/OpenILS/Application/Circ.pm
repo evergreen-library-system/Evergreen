@@ -32,7 +32,7 @@ __PACKAGE__->register_method(
 );
 
 sub checkouts_by_user {
-	my( $self, $client, $user_id ) = @_;
+	my( $self, $client, $user_session, $user_id ) = @_;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
@@ -43,10 +43,18 @@ sub checkouts_by_user {
 
 	my @results;
 	for my $circ (@$circs) {
+
+		my $copy = $session->request(
+			"open-ils.storage.direct.asset.copy.retrieve",
+			$circ->target_copy );
+
 		my $record = $session->request(
 			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
 			$circ->target_copy );
+
+		$copy = $copy->gather(1);
 		$record = $record->gather(1);
+
 		my $due_date = 
 			OpenSRF::Utils->interval_to_seconds( 
 				$circ->duration ) + int(time());
@@ -56,7 +64,7 @@ sub checkouts_by_user {
 		$u->start_mods_batch( $record->marc() );
 		my $mods = $u->finish_mods_batch();
 
-		push( @results, { circ => $circ, record => $mods } );
+		push( @results, { copy => $copy, circ => $circ, record => $mods } );
 	}
 
 	return \@results;

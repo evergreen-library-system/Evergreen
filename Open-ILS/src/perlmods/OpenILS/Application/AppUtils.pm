@@ -4,8 +4,7 @@ use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
 
 
-my $cache_client = OpenSRF::Utils::Cache->new( "global", 0 );
-#my $cache_client;
+my $cache_client = "OpenSRF::Utils::Cache";
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -154,26 +153,26 @@ sub get_org_tree {
 	if($tree) { return $tree; }
 
 	# see if it's in the cache
-	$tree = $cache_client->get_cache('orgtree');
+	$tree = $cache_client->new()->get_cache('_orgtree');
 	if($tree) { return $tree; }
 
 	if(!$orglist) {
 		warn "Retrieving Org Tree\n";
 		$orglist = $self->simple_scalar_request( 
 			"open-ils.storage", 
-			"open-ils.storage.direct.actor.org_unit.retrieve.all" );
+			"open-ils.storage.direct.actor.org_unit.retrieve.all.atomic" );
 	}
 
 	if( ! $org_typelist ) {
 		warn "Retrieving org types\n";
 		$org_typelist = $self->simple_scalar_request( 
 			"open-ils.storage", 
-			"open-ils.storage.direct.actor.org_unit_type.retrieve.all" );
+			"open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic" );
 		$self->build_org_type($org_typelist);
 	}
 
 	$tree = $self->build_org_tree($orglist,1);
-	$cache_client->put_cache('orgtree', $tree);
+	$cache_client->new()->put_cache('_orgtree', $tree);
 	return $tree;
 
 }
@@ -185,18 +184,18 @@ sub get_slim_org_tree {
 	if($slimtree) { return $slimtree; }
 
 	# see if it's in the cache
-	$slimtree = $cache_client->get_cache('slimorgtree');
+	$slimtree = $cache_client->new()->get_cache('slimorgtree');
 	if($slimtree) { return $slimtree; }
 
 	if(!$orglist) {
 		warn "Retrieving Org Tree\n";
 		$orglist = $self->simple_scalar_request( 
 			"open-ils.storage", 
-			"open-ils.storage.direct.actor.org_unit.retrieve.all" );
+			"open-ils.storage.direct.actor.org_unit.retrieve.all.atomic" );
 	}
 
 	$slimtree = $self->build_org_tree($orglist);
-	$cache_client->put_cache('slimorgtree', $slimtree);
+	$cache_client->new->put_cache('slimorgtree', $slimtree);
 	return $slimtree;
 
 }

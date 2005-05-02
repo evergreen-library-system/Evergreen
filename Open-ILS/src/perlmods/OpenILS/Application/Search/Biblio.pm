@@ -768,19 +768,27 @@ sub biblio_mrid_to_record_ids {
 }
 
 
+
 __PACKAGE__->register_method(
 	method	=> "biblio_record_to_marc_html",
 	api_name	=> "open-ils.search.biblio.record.html" );
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
-my $xslt_doc	= $parser->parse_file( 
-		"/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2HTML.xsl");
-my $marc_sheet = $xslt->parse_stylesheet( $xslt_doc );
+my $marc_sheet;
 
-
+my $settings_client = OpenSRF::Utils::SettingsClient->new();
 sub biblio_record_to_marc_html {
 	my( $self, $client, $recordid ) = @_;
+
+	if( !$marc_sheet ) {
+		my $dir = $settings_client->config_value( "dirs", "xsl" );
+		my $xsl = $settings_client->config_value(
+			"apps", "open-ils.search", "app_settings", "marc_html_xsl" );
+
+		$xsl = $parser->parse_file("$dir/$xsl");
+		$marc_sheet = $xslt->parse_stylesheet( $xsl );
+	}
 
 
 	my $record = $apputils->simple_scalar_request(
@@ -799,7 +807,7 @@ sub biblio_record_to_marc_html {
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_all_copy_locations",
-	api_name	=> "open-ils.search.config.copy_location.retreive.all" );
+	api_name	=> "open-ils.search.config.copy_location.retrieve.all" );
 
 my $shelving_locations;
 sub retrieve_all_copy_locations {

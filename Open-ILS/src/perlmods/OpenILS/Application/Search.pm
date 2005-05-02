@@ -29,9 +29,9 @@ sub child_init {
 sub filter_search {
 	my($self, $string) = @_;
 
-	$string =~ s/\s+the\s+//i;
-	$string =~ s/\s+an\s+//i;
-	$string =~ s/\s+a\s+//i;
+	$string =~ s/\s+the\s+/ /i;
+	$string =~ s/\s+an\s+/ /i;
+	$string =~ s/\s+a\s+/ /i;
 
 	$string =~ s/^the\s+//i;
 	$string =~ s/^an\s+//i;

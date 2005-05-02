@@ -14,21 +14,24 @@ my $cache_client = OpenSRF::Utils::Cache->new( "global", 0 );
 
 __PACKAGE__->register_method(
 	method	=> "update_patron",
-	api_name	=> "open-ils.actor.patron.create",
-);
-
-__PACKAGE__->register_method(
-	method	=> "update_patron",
 	api_name	=> "open-ils.actor.patron.update",
 );
 
 
 sub update_patron {
-	my( $self, $client, $patron ) = @_;
+	my( $self, $client, $user_session, $patron ) = @_;
 
 	my $session = $apputils->start_db_session();
 	my $err = undef;
 
+	warn $user_session . " " . $patron . "\n";
+	_d($patron);
+
+	my $user_obj = 
+		OpenILS::Application::AppUtils->check_user_session( 
+				$user_session ); #throws EX on error
+
+	# XXX does this user have permission to add/create users.  Granularity?
 
 	# $new_patron is the patron in progress.  $patron is the original patron
 	# passed in with the method.  new_patron will change as the components
@@ -38,7 +41,7 @@ sub update_patron {
 
 	try {
 		# create/update the patron first so we can use his id
-		if( $self->api_name =~ /create/ ) {
+		if( $patron->isnew() ) {
 			$new_patron = _add_patron(
 					$session, _clone_patron($patron));
 		} else { 
@@ -95,6 +98,8 @@ sub flesh_user {
 	$user->addresses( $add_req->gather(1) );
 
 	if($kill) { $session->disconnect(); }
+	$user->clear_passwd();
+	warn Dumper $user;
 
 	return $user;
 
@@ -133,6 +138,9 @@ sub _clone_patron {
 sub _add_patron {
 	my $session		= shift;
 	my $patron		= shift;
+
+	warn "Creating new patron\n";
+	_d($patron);
 
 	my $req = $session->request(
 		"open-ils.storage.direct.actor.user.create",$patron);
@@ -189,10 +197,22 @@ sub _add_update_addresses {
 
 		} elsif( ref($address) and $address->ischanged() ) {
 			warn "Updating address at street " . $address->street1();
+			$address->usr($new_patron->id());
 			_update_address($session,$address);
 
 		} elsif( ref($address) and $address->isdeleted() ) {
 			warn "Deleting address at street " . $address->street1();
+
+			if( $address->id() == $new_patron->mailing_address() ) {
+				$new_patron->clear_mailing_address();
+				_update_patron($session, $new_patron);
+			}
+
+			if( $address->id() == $new_patron->billing_address() ) {
+				$new_patron->clear_billing_address();
+				_update_patron($session, $new_patron);
+			}
+
 			_delete_address($session,$address);
 		}
 	}
@@ -263,6 +283,7 @@ sub _add_update_cards {
 			}
 
 		} elsif( ref($card) and $card->ischanged() ) {
+			$card->usr($new_patron->id());
 			_update_card($session, $card);
 		}
 	}
@@ -323,6 +344,7 @@ sub _delete_address {
 		throw OpenSRF::EX::ERROR 
 			("Unknown error updating address"); 
 	}
+	warn "Delete address status is $status\n";
 }
 
 
@@ -413,8 +435,6 @@ sub get_user_ident_types {
 __PACKAGE__->register_method(
 	method	=> "get_org_unit",
 	api_name	=> "open-ils.actor.org_unit.retrieve",
-	argc		=> 1, 
-	note		=> "Returns the entire org tree structure",
 );
 
 sub get_org_unit {
@@ -464,6 +484,7 @@ sub get_org_tree {
 
 }
 
+# turns an org list into an org tree
 sub build_org_tree {
 
 	my( $self, $orglist) = @_;
@@ -490,6 +511,48 @@ sub build_org_tree {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "get_org_descendants",
+	api_name	=> "open-ils.actor.org_tree.descendants.retrieve"
+);
+
+# depth is optional.  org_unit is the id
+sub get_org_descendants {
+	my( $self, $client, $org_unit, $depth ) = @_;
+	my $orglist = $apputils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.actor.org_unit.descendants.atomic",
+			$org_unit, $depth );
+	return $self->build_org_tree($orglist);
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "get_org_ancestors",
+	api_name	=> "open-ils.actor.org_tree.ancestors.retrieve"
+);
+
+# depth is optional.  org_unit is the id
+sub get_org_ancestors {
+	my( $self, $client, $org_unit, $depth ) = @_;
+	my $orglist = $apputils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.actor.org_unit.ancestors.atomic",
+			$org_unit, $depth );
+	return $self->build_org_tree($orglist);
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "get_standings",
+	api_name	=> "open-ils.actor.standings.retrieve"
+);
+
+sub get_standings {
+	return $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.config.standing.retrieve.all.atomic" );
+}
 
 
 
@@ -502,6 +565,8 @@ sub build_org_tree {
 
 __END__
 
+
+some old methods that may be good to keep around for now
 
 sub _delete_card {
 	my( $session, $card ) = @_;
@@ -554,8 +619,6 @@ sub delete_patron {
 	warn "Patron Delete complete\n";
 	return 1;
 }
-
-
 
 sub _delete_patron {
 	my( $session, $patron ) = @_;
