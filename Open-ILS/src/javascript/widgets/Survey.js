@@ -1,5 +1,6 @@
 /* */
 
+
 function SurveyQuestion(question, poll) {
 	debug("Creating new survey question " + question.question() );
 	this.question = question;
@@ -242,6 +243,11 @@ Survey._retrieve = function(user_session, method, recvCallback) {
 		debug("Retrieving random survey asynchronously");
 		var c = function(req) {
 			var surveys = req.getResultObject();
+
+			if( typeof surveys != 'object' || 
+					surveys.constructor != Array )
+				surveys = [surveys];
+
 			for( var i in surveys ) {
 				var s = surveys[i];
 				debug("Retrieved survey " + s.name() );
@@ -274,7 +280,7 @@ Survey._retrieve = function(user_session, method, recvCallback) {
 /* this needs a different method for retrieving the correct survey */
 Survey.retrieveRandom = function(user_session, recvCallback) {
 	return Survey._retrieve(user_session, 
-		"open-ils.circ.survey.retrieve.all", recvCallback );
+		"open-ils.circ.survey.retrieve.random", recvCallback );
 }
 
 
