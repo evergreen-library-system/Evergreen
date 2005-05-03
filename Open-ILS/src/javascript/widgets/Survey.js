@@ -233,10 +233,8 @@ Survey.prototype.buildSurveyResponse = function() {
 	an array of surveys is returned.
 	*/
 
-Survey._retrieve = function(user_session, method, recvCallback) {
+Survey._retrieve = function(request, surveyTaker, recvCallback) {
 
-	var request = new RemoteRequest(
-		"open-ils.circ", method, user_session );
 
 	if( recvCallback ) {
 
@@ -252,7 +250,7 @@ Survey._retrieve = function(user_session, method, recvCallback) {
 				var s = surveys[i];
 				debug("Retrieved survey " + s.name() );
 				var surv = new Survey(s);
-				surv.setUserSession(user_session);
+				surv.setUserSession(surveyTaker);
 				recvCallback(surv);
 			}
 		}
@@ -269,7 +267,7 @@ Survey._retrieve = function(user_session, method, recvCallback) {
 			var s = results[index];
 			debug("Retrieved survey " + s.name());
 			var surv = new Survey(s);
-			surv.setUserSession(user_session);
+			surv.setUserSession(surveyTaker);
 			surveys.push(surv);
 		}
 		return surveys;
@@ -279,20 +277,40 @@ Survey._retrieve = function(user_session, method, recvCallback) {
 
 /* this needs a different method for retrieving the correct survey */
 Survey.retrieveRandom = function(user_session, recvCallback) {
-	return Survey._retrieve(user_session, 
-		"open-ils.circ.survey.retrieve.random", recvCallback );
+
+	var request = new RemoteRequest( 
+		"open-ils.circ", 
+		"open-ils.circ.survey.retrieve.random", 
+		user_session );
+	return Survey._retrieve(request, user_session, recvCallback );
 }
 
 
 Survey.retrieveAll = function(user_session, recvCallback) {
-	return Survey._retrieve(user_session, 
-		"open-ils.circ.survey.retrieve.all", recvCallback );
+	var request = new RemoteRequest( 
+		"open-ils.circ", 
+		"open-ils.circ.survey.retrieve.all", 
+		user_session );
+	return Survey._retrieve(request, user_session, recvCallback );
 }
 
 
 Survey.retrieveRequired = function(user_session, recvCallback) {
-	return Survey._retrieve(user_session, 
-		"open-ils.circ.survey.required.retrieve", recvCallback );
+	var request = new RemoteRequest( 
+		"open-ils.circ", 
+		"open-ils.circ.survey.retrieve.required", 
+		user_session );
+	return Survey._retrieve(request, user_session, recvCallback );
+}
+
+Survey.retrieveById = function(user_session, id, recvCallback) {
+
+	var request = new RemoteRequest(
+		"open-ils.circ",
+		"open-ils.circ.survey.fleshed.retrieve",
+		id );
+	return Survey._retrieve(request, user_session, recvCallback );
+
 }
 
 
