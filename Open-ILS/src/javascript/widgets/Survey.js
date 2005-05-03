@@ -32,33 +32,32 @@ SurveyQuestion.prototype.getNode = function() {
 
 SurveyQuestion.prototype.addAnswer = function(answer,poll) {
 	if(poll) {
-		var ans = new SurveyAnswer(answer, poll);
+		var ans = new SurveyAnswer(answer, this.question.id(), poll);
 		this.answers.push(ans);
 		this.selector.appendChild(
 			createAppTextNode(answer.answer()));
 		this.selector.appendChild(ans.getNode());
 	} else {
-		var ans = new SurveyAnswer(answer);
+		var ans = new SurveyAnswer(answer, this.question.id());
 		this.answers.push(ans);
 		this.selector.options[ this.selector.options.length ] = ans.getNode();
 	}
 }
 
 
-function SurveyAnswer(answer,poll) {
+function SurveyAnswer(answer,qid, poll) {
 	this.answer = answer;
 
 	if(poll) {
 
 		if(IE) {
 			this.node = createAppElement(
-				"<input name='answer_" + answer.id() + "' type='radio' value='" + answer.id() + "'></input>" );
+				"<input name='survey_answer_" + qid + "' type='radio' value='" + answer.id() + "'></input>" );
 		} else {
 
 			this.node = createAppElement("input");
-			this.node.type = "radio";
 			this.node.setAttribute("type", "radio");
-			this.node.setAttribute("name", "survey_answer_" + answer.id());
+			this.node.setAttribute("name", "survey_answer_" + qid);
 			this.node.setAttribute("value", answer.id());
 		}
 
