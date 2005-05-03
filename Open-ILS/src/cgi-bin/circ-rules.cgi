@@ -56,11 +56,11 @@ my %dur_cols = (
 	name		=> "Name",
 	extended	=> "Extended",
 	normal		=> "Normal",
-	short		=> "Short",
+	shrt		=> "Short",
 	max_renewals	=> "Max Renewals",
 );
 
-my @dur_display_order = ( qw/name normal extended short max_renewals/ );
+my @dur_display_order = ( qw/name normal extended shrt max_renewals/ );
 
 my %fine_cols = (
 	name			=> "Name",
