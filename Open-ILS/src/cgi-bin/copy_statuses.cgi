@@ -46,7 +46,7 @@ Content-type: text/html
 	</style>
 <body style='padding: 25px;'>
 
-<h1>User Profile Setup</h1>
+<h1>Copy Status Setup</h1>
 <hr/>
 
 HEADER
@@ -55,7 +55,7 @@ HEADER
 # setup part
 #-------------------------------------------------------------------------------
 
-my %profile_cols = ( qw/id SysID name Name/ );
+my %cs_cols = ( qw/id SysID name Name/ );
 
 my @col_display_order = ( qw/id name/ );
 
@@ -66,16 +66,17 @@ my @col_display_order = ( qw/id name/ );
 if (my $action = $cgi->param('action')) {
 	if ( $action eq 'Remove Selected' ) {
 		for my $id ( ($cgi->param('id')) ) {
-			actor::profile->retrieve($id)->delete;
+			next unless ($id > 99);
+			config::copy_status->retrieve($id)->delete;
 		}
 	} elsif ( $action eq 'Update Selected' ) {
 		for my $id ( ($cgi->param('id')) ) {
-			my $u = actor::profile->retrieve($id);
+			my $u = config::copy_status->retrieve($id);
 			$u->name( $cgi->param("name_$id") );
 			$u->update;
 		}
 	} elsif ( $action eq 'Add New' ) {
-		actor::profile->create( { name => $cgi->param("name") } );
+		config::copy_status->create( { name => $cgi->param("name") } );
 	}
 }
 
@@ -91,12 +92,12 @@ if (my $action = $cgi->param('action')) {
 		"<table class='table_class'><tr class='header_class'>\n";
 	
 	for my $col ( @col_display_order ) {
-		print th($profile_cols{$col});
+		print th($cs_cols{$col});
 	}
 	
 	print '<th>Action</th></tr>';
 	
-	for my $row ( sort { $a->name cmp $b->name } (actor::profile->retrieve_all) ) {
+	for my $row ( sort { $a->name cmp $b->name } (config::copy_status->retrieve_all) ) {
 		print Tr(
 			td( $row->id() ),
 			td("<input type='text' name='name_$row' value='". $row->name() ."'>"),

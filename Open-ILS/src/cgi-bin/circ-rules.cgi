@@ -98,7 +98,6 @@ if (my $action = $cgi->param('action')) {
 	if ($form eq 'duration') {
 		if ($action eq 'Remove Selected') {
 			for my $id ( ($cgi->param('remove_me')) ) {
-				warn "========>>>  Deleteing $id\n";
 				config::rules::circ_duration->retrieve($id)->delete;
 			}
 		} elsif ( $action eq 'Add New' ) {
@@ -109,7 +108,6 @@ if (my $action = $cgi->param('action')) {
 	} elsif ($form eq 'recuring_fine') {
 		if ($action eq 'Remove Selected') {
 			for my $id ( ($cgi->param('remove_me')) ) {
-				warn "========>>>  Deleteing $id\n";
 				config::rules::recuring_fine->retrieve($id)->delete;
 			}
 		} elsif ( $action eq 'Add New' ) {
@@ -120,7 +118,6 @@ if (my $action = $cgi->param('action')) {
 	} elsif ($form eq 'max_fine') {
 		if ($action eq 'Remove Selected') {
 			for my $id ( ($cgi->param('remove_me')) ) {
-				warn "========>>>  Deleteing $id\n";
 				config::rules::max_fine->retrieve($id)->delete;
 			}
 		} elsif ( $action eq 'Add New' ) {
@@ -131,7 +128,6 @@ if (my $action = $cgi->param('action')) {
 	} elsif ($form eq 'age_hold') {
 		if ($action eq 'Remove Selected') {
 			for my $id ( ($cgi->param('remove_me')) ) {
-				warn "========>>>  Deleteing $id\n";
 				config::rules::age_hold_protect->retrieve($id)->delete;
 			}
 		} elsif ( $action eq 'Add New' ) {

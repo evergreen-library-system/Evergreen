@@ -79,7 +79,6 @@ if (my $action = $cgi->param('action')) {
 		for my $id ( ($cgi->param('id')) ) {
 			my $u = actor::user->retrieve($id);
 			for my $col ( @col_display_order ) {
-				warn "Updating column $col with ".$cgi->param($col."_$id");
 				$u->$col( $cgi->param($col."_$id") );
 			}
 			$u->active( 'f' ) unless ($cgi->param("active_$id"));
