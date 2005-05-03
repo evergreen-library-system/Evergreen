@@ -109,7 +109,7 @@ if (my $action = $cgi->param('action')) {
 		print th($user_cols{$col});
 	}
 	
-	print '<td/></tr>';
+	print '<th>Update</th></tr>';
 	
 	for my $row ( sort { $a->usrname cmp $b->usrname } actor::user->search( { super_user => 't' } ) ) {
 
