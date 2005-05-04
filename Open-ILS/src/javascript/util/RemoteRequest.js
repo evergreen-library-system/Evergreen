@@ -1,7 +1,32 @@
 
 var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "spacely.georgialibraries.org";
+var XML_HTTP_MAX_TRIES = 3;
 
+
+/* ----------------------------------------------------------------------- */
+/* class methods */
+
+RemoteRequest.pending = new Array();
+
+RemoteRequest.prunePending = function(id) {
+	var tmpArray = new Array();
+	for( var x in RemoteRequest.pending ) {
+		if( RemoteRequest.pending[x] != null ) {
+			if( RemoteRequest.pending[x].id != id )
+				tmpArray.push(RemoteRequest.pending[x]);
+		}
+	}
+	RemoteRequest.pending = tmpArray;
+	debug("Pending array has length " + RemoteRequest.pending.length );
+}
+
+RemoteRequest.numPending = function() {
+	return RemoteRequest.pending.length;
+}
+
+
+/* ----------------------------------------------------------------------- */
 /* Request object */
 function RemoteRequest( service, method ) {
 
@@ -9,11 +34,15 @@ function RemoteRequest( service, method ) {
 	this.method		= method;
 	this.xmlhttp	= false;
 	this.name		= null;
+	this.sendCount = 0;
 
 	/* give us the ability to ignore responses from cancelled searches */
-	this.cancelled = false; 
+	//this.cancelled = false; 
 
 	this.type		= "POST"; /* default */
+
+	this.id			= service + method + Math.random();
+	debug("Request id is " + this.id);
 
 	var i = 2;
 	this.params = ""; 
@@ -30,7 +59,12 @@ function RemoteRequest( service, method ) {
 		return null;
 	}
 
-	/* try MS */
+	if( this.buildXMLRequest() == null )
+		alert("NEWER BROWSER");
+}
+
+RemoteRequest.prototype.buildXMLRequest = function() {
+
 	try { 
 		this.xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); 
 	} catch (e) {
@@ -50,7 +84,12 @@ function RemoteRequest( service, method ) {
 		return null;
 	}
 
+	if( this.callback )
+		this.setCompleteCallback( this.callback );
+
+	return true;
 }
+
 
 /* define the callback we use when this request has received
 	all of its data */
@@ -60,16 +99,39 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 	this.callback = callback;
 	this.xmlhttp.onreadystatechange = function() {
 		if( obj.readyState == 4 ) {
-			if(!this.cancelled)
+			try {
 				callback(object);
+			} catch(E) {
+				debug("Processing Error in complete callback: [" + E + "]");
+
+				if( instanceOf(E, EXCommunication) ) {
+					alert("good hey");
+
+					debug("Communication Error: [" + E + "]");
+					if(object.sendCount > XML_HTTP_MAX_TRIES ) {
+						alert("Arrrgghh, Matey! Error communicating:\n" +
+								 E  + "\n" + object.param_string);
+					} else {
+						object.buildXMLRequest();
+						object.send();
+						return;
+					}
+				} else {
+					RemoteRequest.prunePending(object.id);
+					alert("hey");
+					throw E;
+				}
+			}
+
+			RemoteRequest.prunePending(object.id);
 		}
 	}
 }
 
+
 /* http by default.  This makes it https */
 RemoteRequest.prototype.setSecure = function(bool) {
-	this.secure = bool;
-}
+	this.secure = bool; }
 
 /** Send the request 
   * By default, all calls are asynchronous.  if 'blocking' is
@@ -79,6 +141,14 @@ RemoteRequest.prototype.setSecure = function(bool) {
   * send call returns. 
   */
 RemoteRequest.prototype.send = function(blocking) {
+
+	if( this.sendCount == 0)
+		RemoteRequest.pending.push(this);
+	else 
+		debug("Resending request with id " + this.id 
+				+ " and send count " + this.sendCount);
+
+	
 
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
@@ -110,8 +180,10 @@ RemoteRequest.prototype.send = function(blocking) {
 				'application/x-www-form-urlencoded');
 	}
 
-	if(!this.cancelled)
-		this.xmlhttp.send( data );
+	//if(!this.cancelled)
+	this.xmlhttp.send( data );
+
+	this.sendCount += 1;
 
 	return this;
 }
@@ -128,7 +200,7 @@ RemoteRequest.prototype.isReady = function() {
 
 RemoteRequest.prototype.getResultObject = function() {
 	var text = this.xmlhttp.responseText;
-	debug("Received text from request " + text );
+	//debug("Received text from request " + text );
 	var obj = JSON2js(text);
 	if(obj == null) {
 		debug("received null response");
