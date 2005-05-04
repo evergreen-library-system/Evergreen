@@ -85,13 +85,14 @@ function Survey(survey, onclick) {
 	this.survey = survey;
 	debug("Creating new survey " + survey.name() );
 
+	if( survey.poll() == 0 ) survey.poll(false);
+	if( survey.poll() == 1 ) survey.poll(true);
+
 	if( survey.poll() )
 		this.listBoxInit( false, survey.name(), true, false );
 	else
 		this.listBoxInit( true, survey.name(), true, false );
 
-	if( survey.poll() == 0 ) survey.poll(false);
-	if( survey.poll() == 1 ) survey.poll(true);
 
 	this.questions			= new Array();
 
