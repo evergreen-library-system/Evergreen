@@ -93,8 +93,10 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 			var offset = parseInt(i) + parseInt(this.searchOffset);
 			this.recordIDs[offset] = result.ids[i][0];
 			this.ranks[offset] = parseFloat(result.ids[i][1]);
+			/*
 			debug("adding ranks[" + offset + "] = " + result.ids[i][1] + 
 					"  \nrecordIDs["+offset+"], result.ids["+i+"][0]");
+					*/
 		}
 
 	} else {
@@ -159,8 +161,6 @@ AbstractRecordResultPage.prototype.displayRecord =
 			per + "%' class='relevance'>&nbsp;</div></div>";
 	}
 			
-
-	debug("Adding rank box " + rankBox );
 
 	/* pull from amazon for now... */
 	pic_cell.innerHTML = rankBox + 

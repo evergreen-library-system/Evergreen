@@ -191,7 +191,6 @@ MRResultPage.prototype.doSearch = function() {
 	request.setCompleteCallback(
 		function(req) {
 			var result = req.getResultObject();
-			debug( "MRSearch returned: " + js2JSON(result) );
 			obj.gatherIDs(result) 
 			obj.collectRecords();
 			obj.requestBatch.remove(req);
@@ -220,13 +219,11 @@ MRResultPage.prototype.collectRecords = function() {
 		var request = new RemoteRequest( "open-ils.search",
 			"open-ils.search.biblio.metarecord.mods_slim.retrieve", id );
 		this.requestBatch.add(request);
+		debug( "Sending mods retrieval for metarecord " + id );
 
 		request.name = "record_request_" + i;
 		request.search_id = i;
 		request.page_id	= parseInt(i) - parseInt(this.searchOffset);
-
-		debug("Collecting metarecord for id " + id + " and search_id " + i);
-
 
 		/* define the callback for when we receive the record */
 		var obj = this;
@@ -260,8 +257,6 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
 	copy_request.search_id = search_id;
 	copy_request.name = "copy_request_" + (search_id+this.searchOffset);
-
-	debug("Sending copy request " + search_id + ":" + record.doc_id() );
 
 	var obj = this;
 	copy_request.setCompleteCallback( 

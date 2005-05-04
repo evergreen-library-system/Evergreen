@@ -23,7 +23,6 @@ RemoteRequest.prunePending = function(id) {
 		}
 	}
 	RemoteRequest.pending = tmpArray;
-	debug("Pending array has length " + RemoteRequest.pending.length );
 }
 
 /* returns the number of pending requests */

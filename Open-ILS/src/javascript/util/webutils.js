@@ -359,7 +359,6 @@ function url_redirect(key_value_array) {
 	debug("Redirecting...");
 
 	for( var x = 0; x!= key_value_array.length; x++ ) {
-		debug("Checking key_value_array " + x + " : " + key_value_array[x] );
 		if( x == 0 )
 			fullpath += "?" + encodeURIComponent(key_value_array[x]);
 		else {

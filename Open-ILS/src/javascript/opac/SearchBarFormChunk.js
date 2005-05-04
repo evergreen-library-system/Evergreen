@@ -20,7 +20,6 @@ SearchBarFormChunk.prototype.resetPage = function() {
 
 	this.init();
 
-	debug("pageReset on SearchBarFormChunk");
 	this.search_button.onclick		= mrSearchSubmitForm;
 	this.search_query.onkeydown	= mrSearchSubmitOnEnter;
 	this.search_type.onkeydown		= mrSearchSubmitOnEnter;
@@ -35,7 +34,6 @@ SearchBarFormChunk.prototype.resetPage = function() {
 	try{ this.search_query.focus(); } catch(E) {}
 
 	for( var index in globalOrgTypes ) {
-		debug("Building search range dropdown: " + globalOrgTypes[index].name());
 		var otype = globalOrgTypes[index]
 		var select =  new Option(otype.name(), otype.depth());
 
@@ -51,8 +49,6 @@ SearchBarFormChunk.prototype.resetPage = function() {
 function mrSearchSubmitForm() {
 	var search_query		= getById("mr_search_query").value;
 	var search_type		= getById("mr_search_type").value;
-
-	debug("Submitting MR search via form");
 
 	var depth = globalSearchDepth;
 	var location = globalSelectedLocation;
