@@ -17,57 +17,10 @@ print <<JS;
 // Requires JSON.js
 //  ----------------------------------------------------------------
 
-function FieldmapperException(message) {
-	this.message = message;
-}
-FieldmapperException.toString = function() {
-	return "FieldmapperException: " + this.message + "\\n";
-}
+function Fieldmapper() {}
 
-
-JS
-
-for my $object (keys %$map) {
-
-	if($web) {
-		my $hint = $map->{$object}->{hint};
-		next unless (grep { $_ eq $hint } @web_hints );
-		#next unless( $hint eq "mvr" or $hint eq "aou" or $hint eq "aout" );
-	}
-
-my $short_name = $map->{$object}->{hint};
-
-print <<JS;
-
-//  ----------------------------------------------------------------
-// Class: $short_name
-//  ----------------------------------------------------------------
-
-JS
-
-print	<<JS;
-
-function $short_name(array) {
-
-	this.classname = "$short_name";
-	this._isfieldmapper = true;
-
-	if(array) { 
-		if( array.constructor == Array) 
-			this.array = array;  
-
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
-
-	} else { this.array = []; }
-
-}
-
-$short_name._isfieldmapper = true;
-
-$short_name.prototype.clone = function() {
-	var obj = new $short_name();
+Fieldmapper.prototype.clone = function() {
+	var obj = new this.constructor();
 
 	for( var i in this.array ) {
 		var thing = this.array[i];
@@ -94,6 +47,63 @@ $short_name.prototype.clone = function() {
 	}
 	return obj;
 }
+
+
+
+function FieldmapperException(message) {
+	this.message = message;
+}
+
+FieldmapperException.toString = function() {
+	return "FieldmapperException: " + this.message + "\\n";
+
+}
+
+
+JS
+
+for my $object (keys %$map) {
+
+	if($web) {
+		my $hint = $map->{$object}->{hint};
+		next unless (grep { $_ eq $hint } @web_hints );
+		#next unless( $hint eq "mvr" or $hint eq "aou" or $hint eq "aout" );
+	}
+
+my $short_name = $map->{$object}->{hint};
+
+print <<JS;
+
+//  ----------------------------------------------------------------
+// Class: $short_name
+//  ----------------------------------------------------------------
+
+JS
+
+print	<<JS;
+
+$short_name.prototype					= new Fieldmapper();
+$short_name.prototype.constructor	= $short_name;
+$short_name.baseClass					= Fieldmapper.constructor;
+
+function $short_name(array) {
+
+	this.classname = "$short_name";
+	this._isfieldmapper = true;
+
+	if(array) { 
+		if( array.constructor == Array) 
+			this.array = array;  
+
+		else
+			throw new FieldmapperException(
+				"Attempt to build fieldmapper object with non-array");
+
+	} else { this.array = []; }
+
+}
+
+$short_name._isfieldmapper = true;
 
 
 JS
