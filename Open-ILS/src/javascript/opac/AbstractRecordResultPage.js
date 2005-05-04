@@ -60,12 +60,13 @@ AbstractRecordResultPage.prototype.resetPage = function() {
 	if(spot2 && this.progressBar)
 		spot2.appendChild(this.progressBar.percentDiv);
 	this.received = 0;
+
+	this.requestBatch = new RequestBatch();
 }
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
 	this.recordIDs				= new Array();
 	this.ranks					= new Array();
-	this.requestBatch			= new Array();		/* current batch of RemoteRequest objects */
 	this.hitCount				= 0;					/* hits for the current search */
 	this.searchOffset			= 0;					/* the offset for the search display */
 
@@ -160,6 +161,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	debug("Adding rank box " + rankBox );
 
+	/* pull from amazon for now... */
 	pic_cell.innerHTML = rankBox + 
 		"<img height='50' width='45' src='http://images.amazon.com/images/P/" 
 		+ isbn + ".01.MZZZZZZZ.jpg'>";
@@ -225,18 +227,10 @@ AbstractRecordResultPage.prototype.displayRecord =
 		}
 	}
 
-	/* after loading the last record, contine building the page */
-
-	/*
-	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
-			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
+	/* requestBatch will only have one request in it when the current
+		record is the last record requested */
+	if( this.requestBatch.pending() < 2  )
 		this.finalizePage();
-		*/
-
-	/*
-	if( RemoteRequest.numPending() == 0 )
-		this.finalizePage();
-		*/
 }
 
 AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
@@ -267,17 +261,7 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	this.sidebarBox.appendChild(this.subjectBox.getNode());
 	this.sidebarBox.appendChild(createAppElement("br"));
 	this.sidebarBox.appendChild(this.authorBox.getNode());
-
-
 	this.sidebarBox.appendChild(createAppElement("br"));
-	var test = new ListBox();
-	test.listBoxInit(false, "Test Box", false, true, 10 );
-	test.addItem(createAppTextNode("Item1"), 1 );
-	test.addItem(createAppTextNode("Item2"), 2 );
-	test.addItem(createAppTextNode("Item3"), 3 );
-	test.finalize();
-	this.sidebarBox.appendChild(test.getNode());
-
 
 	showMe(this.buttonsBox);
 
@@ -291,17 +275,21 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 
 	if(ses) {
 		var box = this.sidebarBox;
-		Survey.retrieveRandom(ses, 
+		Survey.retrieveOpacRandom(ses, 
 			function(sur) { 
 				sur.setSubmitCallback(
-					function() { alert("Submitted!"); return false; });
+					function() { alert("Submitted!"); return true; });
 				box.appendChild( sur.getNode() ); 
+				sur.setHidden(false);
 			}
 		);
 	}
 
 	if(this.hitCount < 1)
 		if(this.progressBar) this.progressBar.stop();
+
+	/* in case we're hidden */
+	showMe(this.bigOlBox);
 
 }
 
@@ -337,17 +325,11 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 
 	if(page_id  == (parseInt(this.hitsPerPage) - 1) ) {
 		if(this.progressBar) this.progressBar.stop();
-		showMe(this.bigOlBox);
 	}
 
 	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
 			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
 		if(this.progressBar) this.progressBar.stop();
-
-	if( RemoteRequest.numPending() == 1 )
-		this.finalizePage();
-
-	debug("Pending == " + RemoteRequest.numPending() );
 
 
 }

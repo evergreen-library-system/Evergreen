@@ -7,7 +7,10 @@ var XML_HTTP_MAX_TRIES = 3;
 /* ----------------------------------------------------------------------- */
 /* class methods */
 
-/* Array of globally pending reqeusts */
+/* keeping all requests in a global cache allows us to manage request
+	resends effectively */
+
+/* Array of globally pending requests */
 RemoteRequest.pending = new Array();
 
 /* cleans requests (and null entries) from the pending array */
@@ -28,6 +31,29 @@ RemoteRequest.numPending = function() {
 	return RemoteRequest.pending.length;
 }
 
+
+/* ----------------------------------------------------------------------- */
+/* Generic request manager */
+function RequestBatch() {
+	this.requests = new Array();
+}
+RequestBatch.prototype.add = function(request) {
+	this.requests.push(request);
+}
+
+RequestBatch.prototype.remove = function(request) {
+	var newArray = new Array();
+	for( var i in this.requests ) {
+		if( this.requests[i] != null &&
+			this.requests[i].id != request.id )
+			newArray.push(this.requests[i]);
+	}
+	this.requests = newArray;
+}
+
+RequestBatch.prototype.pending = function() {
+	return this.requests.length;
+}
 
 /* ----------------------------------------------------------------------- */
 /* Request object */
@@ -123,7 +149,7 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 				} else {
 					/* any other exception is alerted for now */
 					RemoteRequest.prunePending(object.id);
-					alert("Exception: " + E);
+					//alert("Exception: " + E);
 					throw E;
 				}
 			}

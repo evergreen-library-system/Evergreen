@@ -35,9 +35,11 @@ SurveyQuestion.prototype.addAnswer = function(answer,poll) {
 	if(poll) {
 		var ans = new SurveyAnswer(answer, this.question.id(), poll);
 		this.answers.push(ans);
-		this.selector.appendChild(
-			createAppTextNode(answer.answer()));
+
 		this.selector.appendChild(ans.getNode());
+		this.selector.appendChild(createAppTextNode(answer.answer()));
+		this.selector.appendChild(createAppElement("br"));
+
 	} else {
 		var ans = new SurveyAnswer(answer, this.question.id());
 		this.answers.push(ans);
@@ -259,11 +261,11 @@ Survey._retrieve = function(request, surveyTaker, recvCallback) {
 }
 
 /* this needs a different method for retrieving the correct survey */
-Survey.retrieveRandom = function(user_session, recvCallback) {
+Survey.retrieveOpacRandom = function(user_session, recvCallback) {
 
 	var request = new RemoteRequest( 
 		"open-ils.circ", 
-		"open-ils.circ.survey.retrieve.random", 
+		"open-ils.circ.survey.retrieve.opac.random", 
 		user_session );
 	return Survey._retrieve(request, user_session, recvCallback );
 }

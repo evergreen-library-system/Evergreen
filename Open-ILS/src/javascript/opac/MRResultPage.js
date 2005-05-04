@@ -194,9 +194,11 @@ MRResultPage.prototype.doSearch = function() {
 			debug( "MRSearch returned: " + js2JSON(result) );
 			obj.gatherIDs(result) 
 			obj.collectRecords();
+			obj.requestBatch.remove(req);
 		}
 	);
 
+	this.requestBatch.add(request);
 	request.send();
 }
 
@@ -217,7 +219,7 @@ MRResultPage.prototype.collectRecords = function() {
 
 		var request = new RemoteRequest( "open-ils.search",
 			"open-ils.search.biblio.metarecord.mods_slim.retrieve", id );
-		this.requestBatch.push(request);
+		this.requestBatch.add(request);
 
 		request.name = "record_request_" + i;
 		request.search_id = i;
@@ -230,13 +232,10 @@ MRResultPage.prototype.collectRecords = function() {
 		var obj = this;
 		request.setCompleteCallback(
 			function(req) {
-				//try {
-					var record = req.getResultObject();
-					obj.displayRecord( record, req.search_id, req.page_id );
-					obj.doCopyCount( record, req.search_id, req.page_id );
-				//} catch(E) { 
-				//	debug("******* Doc Retrieval Error:\n" + E); 
-				//}
+				var record = req.getResultObject();
+				obj.displayRecord( record, req.search_id, req.page_id );
+				obj.doCopyCount( record, req.search_id, req.page_id );
+				obj.requestBatch.remove(req);
 			}
 		);
 
@@ -258,8 +257,6 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 		"open-ils.search",
 		"open-ils.search.biblio.metarecord.copy_count",
 		this.searchLocation, record.doc_id() );
-
-	this.requestBatch.push(copy_request);
 
 	copy_request.search_id = search_id;
 	copy_request.name = "copy_request_" + (search_id+this.searchOffset);

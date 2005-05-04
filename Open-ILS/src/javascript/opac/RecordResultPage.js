@@ -252,7 +252,6 @@ RecordResultPage.prototype.collectRecords = function() {
 
 		var request = new RemoteRequest( "open-ils.search",
 			"open-ils.search.biblio.record.mods_slim.retrieve", id );
-		this.requestBatch.push(request);
 
 		request.name = "record_request_" + i;
 		request.search_id = i;
@@ -285,7 +284,6 @@ RecordResultPage.prototype.doCopyCount = function( record, search_id, page_id ) 
 		"open-ils.search.biblio.record.copy_count", 
 		orgunit.id(), record.doc_id() );
 
-	this.requestBatch.push(copy_request);
 
 	copy_request.search_id = search_id;
 	copy_request.name = "copy_request_" + (search_id+this.searchOffset);
