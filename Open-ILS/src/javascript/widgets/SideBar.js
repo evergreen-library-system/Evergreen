@@ -1,3 +1,6 @@
+SidebarBox.prototype					= new Box();
+SidebarBox.prototype.constructor	= SidebarBox;
+SidebarBox.baseClass					= Box.constructor;
 
 function SidebarBoxItem(domItem) {
 	this.node = createAppElement("div");
@@ -41,13 +44,17 @@ SidebarBox.prototype.getNode = function() {
 
 /* --------------------------------------------------------- */
 
+Sidebar.prototype					= new Box();
+Sidebar.prototype.constructor	= Sidebar;
+Sidebar.baseClass					= Box.constructor;
+
 function Sidebar() {
-	this.node = createAppElement("div");
-	add_css_class(this.node, "sidebar");
+	this.boxinit();
 }
 
 Sidebar.prototype.addItem = function(sidebarBox) {
 	this.node.appendChild(sidebarBox.getNode());	
+	this.node.innerHTML += "<br/>";
 }
 
 Sidebar.prototype.getNode = function() {
