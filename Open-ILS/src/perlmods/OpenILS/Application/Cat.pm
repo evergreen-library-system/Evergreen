@@ -9,6 +9,8 @@ use OpenSRF::EX qw(:try);
 use JSON;
 use OpenILS::Utils::Fieldmapper;
 
+my $apputils = "OpenILS::Application::AppUtils";
+
 my $utils = "OpenILS::Application::Cat::Utils";
 
 
@@ -301,6 +303,24 @@ sub _update_record_metadata {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "orgs_for_title",
+	api_name	=> "open-ils.cat.actor.org_unit.retrieve_by_title"
+);
+
+sub orgs_for_title {
+	my( $self, $client, $record_id ) = @_;
+
+	my $vols = $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.asset.call_number.search.record",
+		$record_id );
+
+	my $orgs = { map {$_->owning_lib => 1 } @$vols };
+	return [ keys %$orgs ];
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
@@ -314,49 +334,57 @@ __PACKAGE__->register_method(
 
 sub retrieve_copies {
 
-	my( $self, $client, $user_session, $docid, $home_ou ) = @_;
+	my( $self, $client, $user_session, $docid, @org_ids ) = @_;
+
+	if(ref($org_ids[0])) { @org_ids = @{$org_ids[0]}; }
 
 	$docid = "$docid";
 
-	if(!$home_ou) {
+	warn " $$ retrieving copy tree for doc $docid at " . time() . "\n";
+
+	if(!@org_ids) {
 		my $user_obj = 
 			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-			$home_ou = $user_obj->home_ou;
+			@org_ids = ($user_obj->home_ou);
 	}
 
-	my $search_hash;
 	if( $self->api_name =~ /global/ ) {
-		$search_hash = { record => $docid };
+		warn "performing global copy_tree search for $docid\n";
+		return _build_volume_list( { record => $docid } );
+
 	} else {
-		$search_hash = { record => $docid, owning_lib => $home_ou };
+
+		my @all_vols;
+		for my $orgid (@org_ids) {
+			my $vols = _build_volume_list( 
+					{ record => $docid, owning_lib => $orgid } );
+			warn "Volumes built for org $orgid\n";
+			push( @all_vols, @$vols );
+		}
+		
+		warn " $$ Finished copy_tree at " . time() . "\n";
+		return \@all_vols;
 	}
 
-	my $vols = _build_volume_list( $search_hash );
-
-	return $vols;
-	
+	return undef;
 }
 
 
 sub _build_volume_list {
 	my $search_hash = shift;
 
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-	my $request = $session->request( 
-			"open-ils.storage.direct.asset.call_number.search", $search_hash );
+	my	$session = OpenSRF::AppSession->create( "open-ils.storage" );
+	
 
-	my $volume;
+	my $request = $session->request( 
+			"open-ils.storage.direct.asset.call_number.search.atomic", $search_hash );
+
+	my $vols = $request->gather(1);
 	my @volumes;
 
-	while( $volume = $request->recv() ) {
+	for my $volume (@$vols) {
 
-		if(UNIVERSAL::isa($volume,"Error")) { 
-			throw $volume ($volume->stringify);}
-
-		$volume = $volume->content;
-		
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
-
 		my $creq = $session->request(
 			"open-ils.storage.direct.asset.copy.search.call_number", 
 			$volume->id );
@@ -365,9 +393,10 @@ sub _build_volume_list {
 		$volume->copies($copies);
 
 		push( @volumes, $volume );
-
 	}
-	$request->finish();
+
+
+	$session->disconnect();
 	return \@volumes;
 
 }

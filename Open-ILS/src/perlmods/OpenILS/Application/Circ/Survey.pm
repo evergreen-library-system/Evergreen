@@ -131,7 +131,7 @@ sub _add_answer {
 # retrieve surveys for a specific org subtree.
 __PACKAGE__->register_method(
 	method	=> "get_required_surveys",
-	api_name	=> "open-ils.circ.survey.required.retrieve");
+	api_name	=> "open-ils.circ.survey.retrieve.required");
 
 sub get_required_surveys {
 	my( $self, $client, $user_session ) = @_;
@@ -330,6 +330,20 @@ sub get_random_survey {
 	return $self->get_fleshed_survey($client, $surv);
 
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_survey",
+	api_name	=> "open-ils.circ.survey.retrieve");
+
+
+
+
+
+
+
+
+
 
 
 1;

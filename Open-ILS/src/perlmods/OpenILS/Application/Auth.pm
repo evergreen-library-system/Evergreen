@@ -133,7 +133,7 @@ sub complete_authenticate {
 	if( $hash eq $passwdhash ) {
 
 		my $session_id = md5_hex( time() . $$ . rand() ); 
-		$cache_handle->put_cache( $session_id, $user, 3600 );
+		$cache_handle->put_cache( $session_id, $user, 28800 );
 		return $session_id;
 
 	} else {

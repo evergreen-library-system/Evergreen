@@ -597,18 +597,11 @@ sub biblio_search_class {
 		offset	=> $offset,
 		);
 
-	$response = $request->recv();
-
-	if(UNIVERSAL::isa($response, "OpenSRF::EX")) {
-		warn "Recieved Exception from storage: " . $response->stringify . "\n";
-		$response->{'msg'} = $response->stringify();
-		throw $response ($response->stringify);
-	}
-
-
-	my $records = $response->content;
-
+	my $records = $request->gather(1);
 	my @all_ids;
+
+	use Data::Dumper;
+	warn Dumper $records;
 
 	# if we just get one, it won't be wrapped in an array
 	if(!ref($records->[0])) {
@@ -625,7 +618,6 @@ sub biblio_search_class {
 	my @ids = @all_ids;
 	@ids = grep { defined($_->[0]) } @ids;
 
-	$request->finish();
 	$session->finish();
 	$session->disconnect();
 
@@ -819,7 +811,6 @@ sub retrieve_all_copy_locations {
 	}
 	return $shelving_locations;
 }
-
 
 
 

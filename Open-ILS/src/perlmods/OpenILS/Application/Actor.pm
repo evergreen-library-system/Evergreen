@@ -395,14 +395,15 @@ __PACKAGE__->register_method(
 	method	=> "get_org_types",
 	api_name	=> "open-ils.actor.org_types.retrieve",
 );
+my $org_types;
 sub get_org_types {
 	my($self, $client) = @_;
 
-	 my $org_typelist = OpenILS::Application::AppUtils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic" );
-
-	 return $org_typelist;
+	return $org_types if $org_types;
+	 return $org_types = 
+		 $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic" );
 }
 
 
@@ -581,6 +582,24 @@ sub get_my_org_path {
 		"open-ils.storage.actor.org_unit.full_path.atomic",
 		$org_id );
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "patron_adv_search",
+	api_name	=> "open-ils.actor.patron.search.advanced" );
+
+sub patron_adv_search {
+	my( $self, $client, $staff_login, $search_hash ) = @_;
+
+	use Data::Dumper;
+	warn "patron adv with $staff_login and search " . 
+		Dumper($search_hash) . "\n";
+}
+
+
+
+
+
 
 
 
