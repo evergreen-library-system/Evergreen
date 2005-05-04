@@ -1,13 +1,12 @@
 var globalUserSession;
 
+/* cookie fields */
+UserSession.SES = 0;
+
 
 function UserSession() { 
-
-	if(globalUserSession != null) {
-		return globalUserSession;
-	}
+	this.cookie = new cookieObject("ses", 1, "/opac/", "ils_ses");
 	this.connected		= false;
-	this.verifySession();
 	this.exp_days		= null;
 	globalUserSession = this; 
 }
@@ -21,102 +20,61 @@ UserSession.prototype.destroy = function() {
 	this.cookie.remove();
 }
 
+UserSession.prototype.persist = function() {
+
+	if( this.session_id )
+		this.cookie.put("ils_ses", this.session_id);
+
+	debug("Persisting session with session " + 
+		this.session_id + " and uname " + this.username );
+
+	this.cookie.write();
+}
+
+
+
 UserSession.prototype.verifySession = function() {
 
-	this.cookie = new cookieObject("ses", 1, "/opac/", "ils_ses", "ils_uname");
-
-	/* if we're already connected */
-	if(this.username && this.session_id) {
-		this.connected = true;
-		this.cookie.put("ils_ses", this.session_id);
-		this.cookie.put("ils_uname", this.username);
-		this.cookie.write();
-		return true;
-	}
-
-	this.session_id = this.cookie.fields[0];
-	this.username	= this.cookie.fields[1];
+	this.session_id = this.cookie.fields[UserSession.SES];
 
 	if( this.session_id ) {
 		debug("Found user session " + this.session_id);
-		debug("Found user uname " + this.username);
 	}
 
-	if( this.username && this.session_id ) { 
-		/* we're in the middle of an active session */
-		this.connected = true;
+	if(this.session_id) {
+
+		debug("Retrieving user information\n");
+
+		/* user is returning to the page with a session key */
+		var request = new RemoteRequest("open-ils.auth", 
+			"open-ils.auth.session.retrieve", this.session_id );
+
+		request.send(true);
+		var user = request.getResultObject();
+
+		if( typeof user == 'object' ) {
+
+			this.username = user.usrname();
+			this.connected = true;
+			this.persist();
+			return true;
+
+		} else {
+			this.destroy();
+			return false;
+		}
 
 	} else {
-
-		if(this.session_id) {
-
-			debug("Retrieving user information\n");
-
-			/* user is returning to the page with a session key */
-			var request = new RemoteRequest("open-ils.auth", 
-				"open-ils.auth.session.retrieve", this.session_id );
-
-			request.send(true);
-			var user = request.getResultObject();
-
-			if(user && user[0]) {
-
-				debug("Received user object " + js2JSON(user) + "\n");
-				this.username = user.usrname();
-
-			} else {
-				this.destroy();
-				return;
-			}
-
-			if(this.username) {
-
-				this.connected = true;
-				this.cookie.put("ils_ses", this.session_id);
-				this.cookie.put("ils_uname", this.username);
-				this.cookie.write();
-
-			} else {
-
-				this.cookie.remove();
-				this.session_id = null;
-				this.username = null;
-				this.connected = false;
-
-			}
-		}
+		this.destroy();
+		return false;
 	}
 }
 
 
 UserSession.instance = function() {
+	if( globalUserSession )
+		return globalUserSession;
 	return new UserSession();
-}
-
-/* XXX needs to be a callback */
-function timed_out() {
-		alert('User Session Timed Out.  \nRedirecting to start page'); 
-		location.href='/'; 
-}
-
-/** Initialize a user session timeout.  */
-function startSessionTimer( timeout_ms ) {
-	var obj = globalUserSession;
-	obj.timeout_ms = timeout_ms;
-	obj.timeout_id = setTimeout( "timed_out()", timeout_ms );
-	window.onmousemove = resetSessionTimer;
-}
-
-/** Reset the user session timeout.  Useful if the user is active */
-function resetSessionTimer() {
-	var obj = globalUserSession;
-	if(obj.timeout_id != null) { clearTimeout( obj.timeout_id ); }
-	obj.timeout_id = setTimeout( "timed_out()", obj.timeout_ms );
-}
-
-function destroySessionTimer() {
-	var obj = globalUserSession;
-	if(obj.timeout_id != null) { clearTimeout( obj.timeout_id ); }
 }
 
 UserSession.prototype.setSessionId = function( id ) {
@@ -158,7 +116,7 @@ UserSession.prototype.login = function( username, password ) {
 
 	this.connected = true;
 
-	this.verifySession();
+	this.persist();
 
 	return true;
 }
