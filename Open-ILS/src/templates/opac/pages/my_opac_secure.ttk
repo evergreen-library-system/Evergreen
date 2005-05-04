@@ -1,0 +1,21 @@
+[%
+	WRAPPER html/html;
+
+		WRAPPER html/head title="My OPAC"; 
+			link(rel="stylesheet", href="/css/my_opac.css" type="text/css");
+			js( src='/js/opac/MyOPACSPage.js' );
+			js( src='/js/util/RemoteRequest.js' );
+			js( src='/js/util/webutils.js' );
+		END;
+
+		WRAPPER html/body onload='';
+			"my secure opac page";
+		
+		END; # - body
+	END; # - html
+%]
+
+
+
+
+		
