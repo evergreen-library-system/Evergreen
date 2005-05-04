@@ -175,6 +175,10 @@ Survey.prototype.setUser = function(userid) {
 	this.userId = userid;
 }
 
+Survey.prototype.setSubmitCallback = function(callback) {
+	this.submitCallback = callback;
+}
+
 Survey.prototype.submit = function() {
 
 	var responses = this.buildSurveyResponse();
@@ -190,9 +194,17 @@ Survey.prototype.submit = function() {
 
 	/* there is nothing to return, just check for exceptions */
 	request.getResultObject();
+
+	var bool = true;
+	if( this.submitCallback )
+		bool = this.submitCallback(this);
+
 	this.buttonDiv.innerHTML = "";
-	this.submittedNode.appendChild( 
-		createAppTextNode("* Submitted *"));
+	if(bool) {
+		this.submittedNode.appendChild( 
+			createAppTextNode("* Submitted *"));
+	}
+
 }
 
 Survey.prototype.buildSurveyResponse = function() {
