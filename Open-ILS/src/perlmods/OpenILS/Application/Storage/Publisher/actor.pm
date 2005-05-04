@@ -272,5 +272,75 @@ __PACKAGE__->register_method(
 	stream          => 1,
 );
 
+#XXX Fix stored proc calls
+sub ranged_actor_stat_cat {
+        my $self = shift;
+        my $client = shift;
+        my $ou = ''.shift();
+        
+        return undef unless ($ou);
+        my $s_table = actor::stat_cat->table;
+
+        my $select = <<"        SQL";
+                SELECT  s.*
+                  FROM  $s_table s
+                        JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
+		  ORDER BY name
+        SQL
+
+        my $sth = actor::stat_cat->db_Main->prepare_cached($select);
+        $sth->execute($ou);
+
+        for my $sc ( map { actor::stat_cat->construct($_) } $sth->fetchall_hash ) {
+		my $sc_fm = $sc->to_fieldmapper;
+		$sc_fm->entries(
+			[ $self->method_lookup( 'open-ils.storage.ranged.fleshed.actor.stat_cat_entry.search.stat_cat' )->run($ou,$sc->id) ]
+		);
+		$client->respond( $sc_fm );
+	}
+
+        return undef;
+}
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.ranged.fleshed.actor.stat_cat.all',
+        api_level       => 1,
+        stream          => 1,
+        method          => 'ranged_actor_stat_cat',
+);
+
+#XXX Fix stored proc calls
+sub ranged_actor_stat_cat_entry {
+        my $self = shift;
+        my $client = shift;
+        my $ou = ''.shift();
+        my $sc = ''.shift();
+        
+        return undef unless ($ou);
+        my $s_table = actor::stat_cat_entry->table;
+
+        my $select = <<"        SQL";
+                SELECT  s.*
+                  FROM  $s_table s
+                        JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
+		  WHERE	stat_cat = ?
+		  ORDER BY name
+        SQL
+
+        my $sth = actor::stat_cat->db_Main->prepare_cached($select);
+        $sth->execute($ou,$sc);
+
+        for my $sce ( map { actor::stat_cat_entry->construct($_) } $sth->fetchall_hash ) {
+		$client->respond( $sce->to_fieldmapper );
+	}
+
+        return undef;
+}
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.ranged.fleshed.actor.stat_cat_entry.search.stat_cat',
+        api_level       => 1,
+        stream          => 1,
+        method          => 'ranged_actor_stat_cat_entry',
+);
+
 
 1;

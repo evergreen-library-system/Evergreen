@@ -212,7 +212,7 @@
 	#---------------------------------------------------------------------
 	package actor::stat_cat_entry_user_map;
 	
-	actor::stat_cat_entry_user_map->table( 'actor.stat_cat_entry_copy_map' );
+	actor::stat_cat_entry_user_map->table( 'actor.stat_cat_entry_usr_map' );
 	actor::stat_cat_entry_user_map->sequence( 'actor.stat_cat_entry_usr_map_id_seq' );
 	
 	#---------------------------------------------------------------------

@@ -53,7 +53,7 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_stat_cat_entry' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/owner value/ );
+__PACKAGE__->columns( Essential => qw/stat_cat owner value/ );
 
 #-------------------------------------------------------------------------------
 package asset::stat_cat_entry_copy_map;

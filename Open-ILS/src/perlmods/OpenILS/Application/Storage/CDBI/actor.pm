@@ -59,7 +59,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat_entry' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/owner value/ );
+__PACKAGE__->columns( Essential => qw/stat_cat owner value/ );
 
 #-------------------------------------------------------------------------------
 package actor::stat_cat_entry_user_map;
@@ -67,7 +67,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat_entry_usr_map' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/stat_cat stat_cat_entry target_user/ );
+__PACKAGE__->columns( Essential => qw/stat_cat stat_cat_entry target_usr/ );
 
 #-------------------------------------------------------------------------------
 package actor::card;

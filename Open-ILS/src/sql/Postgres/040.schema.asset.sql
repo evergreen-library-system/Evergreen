@@ -84,7 +84,8 @@ CREATE TABLE asset.stat_cat (
 
 CREATE TABLE asset.stat_cat_entry (
 	id		SERIAL	PRIMARY KEY,
-	owner		INT	NOT NULL, -- actor.org_unit.id
+        stat_cat        INT     NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE,
+	owner		INT	NOT NULL REFERENCES actor.org_unit.id (id) ON DELETE CASCADE,
 	value		TEXT	NOT NULL,
 	CONSTRAINT sce_once_per_owner UNIQUE (owner,value)
 );
