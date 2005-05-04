@@ -73,58 +73,42 @@ SurveyAnswer.prototype.getNode = function() {
 	return this.node;
 }
 
+
+
+
+Survey.prototype					= new ListBox();
+Survey.prototype.constructor	= Survey;
+Survey.baseClass					= ListBox.constructor;
+
 function Survey(survey, onclick) {
 
-	debug("Creating new survey " + survey.name() );
 	this.survey = survey;
+	debug("Creating new survey " + survey.name() );
 
-	this.node			= createAppElement("div");
-	this.node.id		= "survey_" + survey.id();
-
-	this.wrapperNode	= createAppElement("div");
-	this.wrapperNode.appendChild(this.node);
-	this.nameNode		= createAppElement("div");
-	this.nameNode.appendChild(createAppTextNode(survey.name()));
-	this.descNode		= createAppElement("div");
-	this.descNode.appendChild( createAppTextNode(survey.description()));
-
-	if( survey.poll() == 0 )
-		survey.poll(false);
-	if( survey.poll() == 1 )
-		survey.poll(true);
-
-	if(survey.poll())
-		this.qList			= createAppElement("ul");
+	if( survey.poll() )
+		this.listBoxInit( false, survey.name(), true, false );
 	else
-		this.qList			= createAppElement("ol");
+		this.listBoxInit( true, survey.name(), true, false );
 
-	this.questions		= new Array();
-	this.submittedNode	= createAppElement("div");
+	if( survey.poll() == 0 ) survey.poll(false);
+	if( survey.poll() == 1 ) survey.poll(true);
 
-	add_css_class(this.submittedNode,	"survey_submitted" );
-	add_css_class(this.nameNode,			"survey_name");
-	add_css_class(this.descNode,			"survey_description");
-	add_css_class(this.node,				"survey" );
+	this.questions			= new Array();
 
-	this.node.appendChild( this.nameNode );
-	this.node.appendChild( this.descNode );
-	this.node.appendChild( this.qList );
+	this.addCaption( survey.description() );
 
 	for( var i in survey.questions() ) {
 		this.addQuestion( survey.questions()[i] );
 	}
 
-	this.buttonDiv	= createAppElement("div");
-	add_css_class( this.buttonDiv, "survey_button");
+	
 	this.button = createAppElement("input");
 	this.button.setAttribute("type", "submit");
 	this.button.value = "Submit Survey";
+
 	if(onclick)
 		this.button.onclick = onclick;
-	this.buttonDiv.appendChild(this.button);
-	this.node.appendChild(this.buttonDiv);
-	this.node.appendChild( this.submittedNode );
-	this.node.appendChild(createAppElement("hr"));
+	this.addFooter(this.button);
 
 	var obj = this;
 	this.setAction( function() { obj.submit(); });
@@ -151,14 +135,6 @@ Survey.prototype.getName = function() {
 	return this.survey.name();
 }
 
-Survey.prototype.toString = function() {
-	return this.wrapperNode.innerHTML;
-}
-
-Survey.prototype.getNode = function() {
-	return this.node;
-}
-
 Survey.prototype.addQuestion = function(question) {
 	var questionObj = new SurveyQuestion(question, this.survey.poll());
 	this.questions.push(questionObj);
@@ -166,9 +142,7 @@ Survey.prototype.addQuestion = function(question) {
 		questionObj.addAnswer(question.answers()[i], this.survey.poll());
 	}
 
-	var item = createAppElement("li");
-	item.appendChild(questionObj.getNode());
-	this.qList.appendChild(item); 
+	this.addItem(questionObj.getNode());
 }
 
 Survey.prototype.setUser = function(userid) {
@@ -199,7 +173,8 @@ Survey.prototype.submit = function() {
 	if( this.submitCallback )
 		bool = this.submitCallback(this);
 
-	this.buttonDiv.innerHTML = "";
+	this.removeFooter();
+	//this.buttonDiv.innerHTML = "";
 	if(bool) {
 		this.submittedNode.appendChild( 
 			createAppTextNode("* Submitted *"));

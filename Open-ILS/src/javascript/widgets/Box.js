@@ -40,8 +40,16 @@ Box.prototype.hideOnEmpty = function() {
 	this.hideOnEmpty = true;
 }
 
+Box.prototype.addFooter = function(domItem) {
+	this.footerNode = createAppElement("div")
+	add_css_class(this.footerNode, "box_footer");
+	this.footerNode.appendChild(domItem);
+	this.contentNode.appendChild(this.footerNode);
+}
+
 /* add a caption below the title */
 Box.prototype.addCaption = function(caption) {
+	alert(this.node.name);
 	if(caption == null) return;
 	var captionNode = createAppElement("div");
 	add_css_class(captionNode, "box_caption");
