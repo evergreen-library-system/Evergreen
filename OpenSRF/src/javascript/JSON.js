@@ -54,7 +54,7 @@ function js2JSON(arg) {
 							if (v !== u) {
 								o += v;
 							} else {
-								o += 'null,';
+								o += 'null';
 							}
 						}
 						return '[' + o + ']';
