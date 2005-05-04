@@ -104,6 +104,9 @@ INSERT INTO config.copy_status (name) VALUES ('Cataloging');
 INSERT INTO config.copy_status (name) VALUES ('Reserves');
 INSERT INTO config.copy_status (name) VALUES ('Discard/Weed');
 
+SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);
+
+
 CREATE TABLE config.net_access_level (
 	id	SERIAL		PRIMARY KEY,
 	name	TEXT		NOT NULL UNIQUE

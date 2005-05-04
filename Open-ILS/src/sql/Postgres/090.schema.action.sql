@@ -32,7 +32,7 @@ CREATE TABLE action.survey_answer (
 
 CREATE TABLE action.survey_response (
 	id		BIGSERIAL	PRIMARY KEY,
-	usr		INT		NOT NULL, -- REFERENCES actor.usr
+	usr		INT, -- REFERENCES actor.usr
 	survey		INT		NOT NULL REFERENCES action.survey,
 	question	INT		NOT NULL REFERENCES action.survey_question,
 	answer		INT		NOT NULL REFERENCES action.survey_answer,
