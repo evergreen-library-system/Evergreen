@@ -162,8 +162,12 @@ Survey.prototype.submit = function() {
 	var method;
 	if( this.userId ) 
 		method = "open-ils.circ.survey.submit.user_id";
-	else
-		method = "open-ils.circ.survey.submit.session";
+	else {
+		if( this.userSession )
+			method = "open-ils.circ.survey.submit.session";
+		else 
+			method = "open-ils.circ.survey.submit.anon";
+	}
 
 	var request = new RemoteRequest(
 		"open-ils.circ", method, responses );
@@ -289,15 +293,18 @@ Survey.retrieveRequired = function(user_session, recvCallback) {
 }
 
 Survey.retrieveById = function(user_session, id, recvCallback) {
-
 	var request = new RemoteRequest(
 		"open-ils.circ",
 		"open-ils.circ.survey.fleshed.retrieve",
 		id );
 	return Survey._retrieve(request, user_session, recvCallback );
-
 }
 
-
+Survey.retrieveOpacRandomGlobal = function(recvCallback) {
+	var request = new RemoteRequest(
+		"open-ils.circ",
+		"open-ils.circ.survey.retrieve.opac.random.global");
+	return Survey._retrieve(request, null, recvCallback );
+}
 
 

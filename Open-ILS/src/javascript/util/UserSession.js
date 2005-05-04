@@ -7,7 +7,6 @@ UserSession.SES = 0;
 function UserSession() { 
 	this.cookie = new cookieObject("ses", 1, "/opac/", "ils_ses");
 	this.connected		= false;
-	this.exp_days		= null;
 	globalUserSession = this; 
 }
 
@@ -22,6 +21,10 @@ UserSession.prototype.destroy = function() {
 
 UserSession.prototype.persist = function() {
 
+	this.cookie = new cookieObject("ses", 1, "/opac/", "ils_ses");
+
+	if(!this.session_id) return;
+
 	if( this.session_id )
 		this.cookie.put("ils_ses", this.session_id);
 
@@ -29,21 +32,18 @@ UserSession.prototype.persist = function() {
 		this.session_id + " and uname " + this.username );
 
 	this.cookie.write();
+	debug("Persisted session " + this.cookie.fields[UserSession.SES]);
 }
 
 
 
 UserSession.prototype.verifySession = function() {
 
+	debug("Verifying session...");
 	this.session_id = this.cookie.fields[UserSession.SES];
 
-	if( this.session_id ) {
-		debug("Found user session " + this.session_id);
-	}
-
 	if(this.session_id) {
-
-		debug("Retrieving user information\n");
+		debug("Retrieveing user info for session " + this.session_id);
 
 		/* user is returning to the page with a session key */
 		var request = new RemoteRequest("open-ils.auth", 
@@ -60,11 +60,13 @@ UserSession.prototype.verifySession = function() {
 			return true;
 
 		} else {
+			debug("User session " + this.session_id + " is no longer valid");
 			this.destroy();
 			return false;
 		}
 
 	} else {
+		debug("No session cookie found");
 		this.destroy();
 		return false;
 	}

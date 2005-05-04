@@ -63,14 +63,9 @@ function globalInit() {
 
 	if( ! globalPage ) 
 		throw new EXArg(
-				"globalInit requires a valid page target: " + page_name );
+			"globalInit requires a valid page target: " + page_name );
 
-	if(!loaded) {
-		globalLocation = globalOrgTree;
-		globalOrgTreeWidget = new LocationTree(globalOrgTree);
-		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
-		loaded = true;
-	}
+	if(!loaded) { loaded = true; GlobalInitLoad(); }
 
 	globalMenuManager = new ContextMenuManager();
 
@@ -86,6 +81,24 @@ function globalInit() {
 	if( globalSearchBarFormChunk != null)
 		globalSearchBarFormChunk.resetPage();
 
+}
+
+
+/* we only do this on loading of the outer frame (i.e. only once) */
+function GlobalInitLoad() {
+
+	debug("Global Init is doing its primary load");
+	globalOrgTreeWidget = new LocationTree(globalOrgTree);
+	globalUser = UserSession.instance();
+
+	if(globalUser.verifySession()) {
+		globalUser.grabOrgUnit();
+
+	} else  {
+		globalUser = null;
+		globalLocation = globalOrgTree;
+		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
+	}
 }
 
 

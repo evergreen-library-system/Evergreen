@@ -23,14 +23,15 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.recordBox			= getById("record_result_box");
 
 	this.authorBox = new Box();
-	this.authorBox.init("Relevant Authors", true, true, 15);
+	this.authorBox.init("Relevant Authors", false, true, 15);
 	this.authorBox.sortByCount();
 
 	this.subjectBox = new Box();
-	this.subjectBox.init("Relevant Subjects", true, true, 15);
+	this.subjectBox.init("Relevant Subjects", false, true, 15);
 	this.subjectBox.sortByCount();
 
 	this.sidebarBox		= getById("record_sidebar_box");
+
 
 	this.hitsPerPage		= 8;	 /* how many hits are displayed per page */
 	this.resetPage();
@@ -272,18 +273,28 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	
 
 	var ses = UserSession.instance().getSessionId();
+	var box = this.sidebarBox;
 
 	if(ses) {
-		var box = this.sidebarBox;
 		Survey.retrieveOpacRandom(ses, 
 			function(sur) { 
 				sur.setSubmitCallback(
-					function() { alert("Submitted!"); return true; });
+					function() { alert("Thanks!"); return true; });
+				box.appendChild( sur.getNode() ); 
+				sur.setHidden(false);
+			}
+		);
+	} else {
+		Survey.retrieveOpacRandomGlobal( 
+			function(sur) { 
+				sur.setSubmitCallback(
+					function() { alert("Thanks!"); return true; });
 				box.appendChild( sur.getNode() ); 
 				sur.setHidden(false);
 			}
 		);
 	}
+
 
 	if(this.hitCount < 1)
 		if(this.progressBar) this.progressBar.stop();
