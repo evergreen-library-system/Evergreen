@@ -174,8 +174,6 @@ AbstractRecordResultPage.prototype.displayRecord =
 	add_css_class(author_cell, "record_result_author_box");
 
 
-	debug( "Displaying record title: " + record.title() + " author: " + record.author() );
-
 	/* limit the length of the title and author lines */
 	var tlength = 100;
 
@@ -229,9 +227,16 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	/* after loading the last record, contine building the page */
 
+	/*
 	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
 			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
 		this.finalizePage();
+		*/
+
+	/*
+	if( RemoteRequest.numPending() == 0 )
+		this.finalizePage();
+		*/
 }
 
 AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
@@ -338,6 +343,11 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
 			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
 		if(this.progressBar) this.progressBar.stop();
+
+	if( RemoteRequest.numPending() == 1 )
+		this.finalizePage();
+
+	debug("Pending == " + RemoteRequest.numPending() );
 
 
 }

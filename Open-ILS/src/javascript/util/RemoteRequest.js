@@ -93,9 +93,11 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 /* define the callback we use when this request has received
 	all of its data */
 RemoteRequest.prototype.setCompleteCallback = function(callback) {
+
 	var object = this;
 	var obj = this.xmlhttp;
 	this.callback = callback;
+
 	this.xmlhttp.onreadystatechange = function() {
 		if( obj.readyState == 4 ) {
 			try {
@@ -104,7 +106,6 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 				debug("Processing Error in complete callback: [" + E + "]");
 
 				if( instanceOf(E, EXCommunication) ) {
-					alert("good hey");
 
 					debug("Communication Error: [" + E + "]");
 					if(object.sendCount > XML_HTTP_MAX_TRIES ) {
@@ -117,7 +118,7 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 					}
 				} else {
 					RemoteRequest.prunePending(object.id);
-					alert("hey");
+					alert("Exception: " + E);
 					throw E;
 				}
 			}

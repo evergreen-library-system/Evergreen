@@ -142,16 +142,17 @@ UserSession.prototype.login = function( username, password ) {
 
 	this.setSessionId(auth_result);
 
+	/*
 	var exptime = new Date().valueOf();
-
 	if(this.exp_days) 
-		exptime = new Date(exptime + (this.exp_days * 86400000) /* ms in a day */ ); 
+		exptime = new Date(exptime + (this.exp_days * 86400000) 
 	else
-		exptime = new Date(exptime + (1 * 86400000) /* ms in a day, default to one day */ ); 
+		exptime = new Date(exptime + (1 * 86400000)); 
 
 	fixDate(exptime);
 	setCookie("ils_ses", auth_result, exptime, "/");
-	setCookie("ils_uname", username ); /* current session only */
+	setCookie("ils_uname", username ); 
+	*/
 
 	this.connected = true;
 
