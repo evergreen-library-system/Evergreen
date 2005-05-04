@@ -53,16 +53,11 @@
 .result_odd {}
 .result_even { background: #CCF; border: 2px solid #CCF; }
 
+/*
 .record_sidebar_wrapper_box { 
 	width: 200px;
 	margin-left: 10px;
 }
-
-/*
-.record_sidebar_cell {
-	width: 30%;
-}
-*/
 
 .record_sidebar_box { 
 	margin-left: 10px;
@@ -71,7 +66,6 @@
 
 
 .record_sidebar_content_box {
-	/*-moz-border-radius: 10px;*/
 	border: 2px dashed #99C;
 	font-size: 95%;
 	padding: 2px;
@@ -80,6 +74,7 @@
 .sidebar_label {
 	background: #FCC;
 }
+*/
 
 
 .record_next_prev_links_box {
@@ -107,6 +102,7 @@
 }
 
 
+/*
 .record_sidebar_wrapper_visible {
 	visibility: visible;
 	display: block;
@@ -116,6 +112,7 @@
 	visibility: hidden;
 	display: none;
 }
+*/
 
 .hit_count_cell { 
 	padding-left: 10px;
@@ -142,10 +139,6 @@
 	position:absolute;
 	top: 100px;
 	left: 200px;
-}
-
-.sidebar_box {
-/*width: 400px;*/
 }
 
 

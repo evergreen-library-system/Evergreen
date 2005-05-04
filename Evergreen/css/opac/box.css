@@ -1,0 +1,34 @@
+.box {
+	width: 200px;
+	margin: 3px;
+}
+
+.box_title {
+	text-align: center;
+	width: 98%;
+	background: #C99;
+	padding: 2px;
+}
+
+.box_caption {
+	text-align: center;
+	width: 98%;
+	background: #99C;
+	padding: 2px;
+	font-size: 95%;
+}
+
+.box_content {
+	border: 2px dashed #99C;
+	width: 98%;
+	background: #FFF;
+}
+
+.box_item {
+	font-size: 95%;
+	width: 98%;
+	padding-left: 2px;
+	padding-right: 2px;
+	background: #FFF;
+}
+

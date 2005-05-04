@@ -1,13 +1,12 @@
-/*
 .sidebar {
-	width: 150px;
-	margin-left: 10px;
+	width: 200px;
+	margin-right: 10px;
 }
 
 .sidebar_title_box {
 	text-align: center;
 	width: 98%;
-	background: #99C;
+	background: #C99;
 	padding: 2px;
 }
 
@@ -26,4 +25,3 @@
 	padding: 2px;
 	width: 98%;
 }
-*/
