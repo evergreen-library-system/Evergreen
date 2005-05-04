@@ -174,11 +174,6 @@ Survey.prototype.submit = function() {
 		bool = this.submitCallback(this);
 
 	this.removeFooter();
-	//this.buttonDiv.innerHTML = "";
-	if(bool) {
-		this.submittedNode.appendChild( 
-			createAppTextNode("* Submitted *"));
-	}
 
 }
 
