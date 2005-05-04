@@ -66,6 +66,35 @@ function $short_name(array) {
 
 $short_name._isfieldmapper = true;
 
+$short_name.prototype.clone = function() {
+	var obj = new $short_name();
+
+	for( var i in this.array ) {
+		var thing = this.array[i];
+		if(thing == null) continue;
+
+		if( thing._isfieldmapper ) {
+			obj.array[i] = thing.clone();
+		} else {
+
+			if(instanceOf(thing, Array)) {
+				obj.array[i] = new Array();
+
+				for( var j in thing ) {
+
+					if( thing[j]._isfieldmapper )
+						obj.array[i][j] = thing[j].clone();
+					else
+						obj.array[i][j] = thing[j];
+				}
+			} else {
+				obj.array[i] = thing;
+			}
+		}
+	}
+	return obj;
+}
+
 
 JS
 
@@ -75,7 +104,7 @@ my $position = $map->{$object}->{fields}->{$field}->{position};
 
 print <<JS;
 $short_name.prototype.$field = function(new_value) {
-	if(new_value) { this.array[$position] = new_value; }
+	if(arguments.length == 1) { this.array[$position] = new_value; }
 	return this.array[$position];
 }
 JS
