@@ -288,14 +288,17 @@ sub ranged_actor_stat_cat {
 		  ORDER BY name
         SQL
 
+	$fleshed = 0;
+	$fleshed = 1 if ($self->api_name =~ /fleshed/o);
+
         my $sth = actor::stat_cat->db_Main->prepare_cached($select);
         $sth->execute($ou);
 
         for my $sc ( map { actor::stat_cat->construct($_) } $sth->fetchall_hash ) {
 		my $sc_fm = $sc->to_fieldmapper;
 		$sc_fm->entries(
-			[ $self->method_lookup( 'open-ils.storage.ranged.fleshed.actor.stat_cat_entry.search.stat_cat' )->run($ou,$sc->id) ]
-		);
+			[ $self->method_lookup( 'open-ils.storage.ranged.actor.stat_cat_entry.search.stat_cat' )->run($ou,$sc->id) ]
+		) if ($fleshed);
 		$client->respond( $sc_fm );
 	}
 
@@ -303,6 +306,13 @@ sub ranged_actor_stat_cat {
 }
 __PACKAGE__->register_method(
         api_name        => 'open-ils.storage.ranged.fleshed.actor.stat_cat.all',
+        api_level       => 1,
+        stream          => 1,
+        method          => 'ranged_actor_stat_cat',
+);
+
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.ranged.actor.stat_cat.all',
         api_level       => 1,
         stream          => 1,
         method          => 'ranged_actor_stat_cat',
@@ -336,7 +346,7 @@ sub ranged_actor_stat_cat_entry {
         return undef;
 }
 __PACKAGE__->register_method(
-        api_name        => 'open-ils.storage.ranged.fleshed.actor.stat_cat_entry.search.stat_cat',
+        api_name        => 'open-ils.storage.ranged.actor.stat_cat_entry.search.stat_cat',
         api_level       => 1,
         stream          => 1,
         method          => 'ranged_actor_stat_cat_entry',
