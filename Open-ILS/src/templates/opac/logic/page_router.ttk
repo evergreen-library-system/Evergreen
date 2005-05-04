@@ -23,6 +23,9 @@
 	ELSIF target == "my_opac";
 		INCLUDE opac/pages/my_opac.ttk;
 
+	ELSIF target == "my_opac_secure";
+		INCLUDE opac/pages/my_opac_secure.ttk;
+
 	ELSIF target == "login";
 		INCLUDE opac/pages/login.ttk;
 

@@ -28,12 +28,15 @@
 				END;
 
 				WRAPPER html/cell  align='center';
+
 					WRAPPER html/div class='text_link_div' id='login_div';
 						anchor( id='login_link',  href='?target=login', text = tm.login );
 					END;
+
 					WRAPPER html/div style="display:none;visibility:hidden" class='text_link_div' id='logout_div';
 						anchor( id='logout_link',  href='?target=logout', text = tm.logout );
 					END;
+
 				END;
 
 				WRAPPER html/cell  align='center';

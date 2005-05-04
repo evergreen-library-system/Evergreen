@@ -10,12 +10,9 @@
 
 		WRAPPER html/body id='body'  onload='pageInit();';
 
-			box(id='progress_bar_location'); 
-			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-			lines(1);
-			INCLUDE opac/pages/chunks/status_bar.ttk;
-			lines(1);
-			INCLUDE opac/pages/chunks/org_tree.ttk;
+			INCLUDE opac/pages/chunks/body_header.ttk;
+
+			#"HTML IS HERE";
 
 
 		END; # - body

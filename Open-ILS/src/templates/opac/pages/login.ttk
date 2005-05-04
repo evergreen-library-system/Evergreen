@@ -15,13 +15,8 @@
 			globalPage.login_failure_msg = "<b>' _ tm.failure _ '</b>";
 			';
 
-
 			# here, this just provides the color backdrop for the search bar
-			box(id='progress_bar_location'); 
-			box(id='progress_bar_percent_location'); 
-			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-			lines(1);
-			INCLUDE opac/pages/chunks/status_bar.ttk;
+			INCLUDE opac/pages/chunks/body_header.ttk;
 
 			lines(3);
 

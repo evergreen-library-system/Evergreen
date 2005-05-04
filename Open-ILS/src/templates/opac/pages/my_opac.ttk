@@ -9,16 +9,18 @@
 		END;
 
 		WRAPPER html/body onload='pageInit();';
+			INCLUDE opac/pages/chunks/body_header.ttk;
 
-			# here, this just provides the color backdrop for the search bar
-			box(id='progress_bar_location'); 
-			box(id='progress_bar_percent_location'); 
-			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-			lines(1);
-			INCLUDE opac/pages/chunks/status_bar.ttk;
-
-			" My OPAC goes here<br/>";
-	
+				WRAPPER html/iframe
+					style       = "border:none; border:0px;"
+            	frameborder = '0'
+            	height      = '100%'
+            	width       = '100%'
+            	name        = 'my_oac_iframe'
+            	id          = 'my_opac_iframe'
+            	src         = 'https://spacely.georgialibraries.org/opac/?target=my_opac_secure';
+				END;
+		
 		END; # - body
 	END; # - html
 

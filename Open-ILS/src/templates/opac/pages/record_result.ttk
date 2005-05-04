@@ -15,21 +15,7 @@
 
 		WRAPPER html/body onload='pageInit(); globalPage.doSearch();';
 
-			box(id='progress_bar_location'); 
-			box(id='progress_bar_percent_location'); 
-			INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-
-			lines(1);
-
-			# --------------------------------------------------------------------------------- 
-			# Here we start the top level table for the record results
-			# --------------------------------------------------------------------------------- 
-
-			INCLUDE opac/pages/chunks/status_bar.ttk;
-
-			lines(1);
-
-			INCLUDE opac/pages/chunks/org_tree.ttk;
+			INCLUDE opac/pages/chunks/body_header.ttk;
 
 
 			# --------------------------------------------------------------------------------- 
@@ -54,17 +40,9 @@
 
 
 					WRAPPER html/cell class='record_sidebar_cell' id='record_sidebar_cell' valign="top";
-						WRAPPER html/div id='record_sidebar_box' 
-							class='record_sidebar_wrapper_box record_sidebar_wrapper_visible';
-							INCLUDE opac/pages/chunks/sidebar.ttk 
-								label="Relevant Subjects" type = "subject";
-							lines(1);
-							INCLUDE opac/pages/chunks/sidebar.ttk 
-								label="Relevant Authors" type = "author";
-							lines(1);
-							INCLUDE opac/pages/chunks/sidebar.ttk 
-								label="Survey" type = "survey";
-						END;
+						box( id='record_sidebar_box' );
+							#class='record_sidebar_wrapper_box record_sidebar_wrapper_visible');
+							#END;
 					END;
 
 				END;
