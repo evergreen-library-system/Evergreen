@@ -13,16 +13,34 @@ function UserSession() {
 }
 
 UserSession.prototype.destroy = function() {
+	debug("Removing user session");
 	this.connected		= false;
 	this.session_id	= null;
 	this.username		= null;
 	this.orgUnit		= null;
+	this.cookie.remove();
 }
 
 UserSession.prototype.verifySession = function() {
 
-	//this.session_id		= getCookie("ils_ses");
-	//this.username		= getCookie("ils_uname");
+	this.cookie = new cookieObject("ses", 1, "/opac/", "ils_ses", "ils_uname");
+
+	/* if we're already connected */
+	if(this.username && this.session_id) {
+		this.connected = true;
+		this.cookie.put("ils_ses", this.session_id);
+		this.cookie.put("ils_uname", this.username);
+		this.cookie.write();
+		return true;
+	}
+
+	this.session_id = this.cookie.fields[0];
+	this.username	= this.cookie.fields[1];
+
+	if( this.session_id ) {
+		debug("Found user session " + this.session_id);
+		debug("Found user uname " + this.username);
+	}
 
 	if( this.username && this.session_id ) { 
 		/* we're in the middle of an active session */
@@ -44,27 +62,23 @@ UserSession.prototype.verifySession = function() {
 			if(user && user[0]) {
 
 				debug("Received user object " + js2JSON(user) + "\n");
-				//user = new au(user[0]);
 				this.username = user.usrname();
 
 			} else {
-
-				this.session_id = null;
-				this.username = null;
-				this.connected = false;
+				this.destroy();
 				return;
 			}
 
 			if(this.username) {
 
 				this.connected = true;
-				setCookie("ils_uname", this.username); /* only good for this session */
+				this.cookie.put("ils_ses", this.session_id);
+				this.cookie.put("ils_uname", this.username);
+				this.cookie.write();
 
 			} else {
 
-				deleteCookie("ils_ses");
-				deleteCookie("ils_uname");
-
+				this.cookie.remove();
 				this.session_id = null;
 				this.username = null;
 				this.connected = false;
@@ -142,19 +156,9 @@ UserSession.prototype.login = function( username, password ) {
 
 	this.setSessionId(auth_result);
 
-	/*
-	var exptime = new Date().valueOf();
-	if(this.exp_days) 
-		exptime = new Date(exptime + (this.exp_days * 86400000) 
-	else
-		exptime = new Date(exptime + (1 * 86400000)); 
-
-	fixDate(exptime);
-	setCookie("ils_ses", auth_result, exptime, "/");
-	setCookie("ils_uname", username ); 
-	*/
-
 	this.connected = true;
+
+	this.verifySession();
 
 	return true;
 }
