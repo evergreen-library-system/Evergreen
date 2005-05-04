@@ -7,8 +7,10 @@ var XML_HTTP_MAX_TRIES = 3;
 /* ----------------------------------------------------------------------- */
 /* class methods */
 
+/* Array of globally pending reqeusts */
 RemoteRequest.pending = new Array();
 
+/* cleans requests (and null entries) from the pending array */
 RemoteRequest.prunePending = function(id) {
 	var tmpArray = new Array();
 	for( var x in RemoteRequest.pending ) {
@@ -21,6 +23,7 @@ RemoteRequest.prunePending = function(id) {
 	debug("Pending array has length " + RemoteRequest.pending.length );
 }
 
+/* returns the number of pending requests */
 RemoteRequest.numPending = function() {
 	return RemoteRequest.pending.length;
 }
@@ -36,11 +39,7 @@ function RemoteRequest( service, method ) {
 	this.name		= null;
 	this.sendCount = 0;
 
-	/* give us the ability to ignore responses from cancelled searches */
-	//this.cancelled = false; 
-
 	this.type		= "POST"; /* default */
-
 	this.id			= service + method + Math.random();
 
 	var i = 2;
@@ -62,6 +61,7 @@ function RemoteRequest( service, method ) {
 		alert("NEWER BROWSER");
 }
 
+/* constructs our XMLHTTPRequest object */
 RemoteRequest.prototype.buildXMLRequest = function() {
 
 	try { 
@@ -100,15 +100,19 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 
 	this.xmlhttp.onreadystatechange = function() {
 		if( obj.readyState == 4 ) {
+
 			try {
 				callback(object);
 			} catch(E) {
+
 				debug("Processing Error in complete callback: [" + E + "]");
 
+				/* if we receive a communication error, retry the request up
+					to XML_HTTP_MAX_TRIES attempts */
 				if( instanceOf(E, EXCommunication) ) {
 
 					debug("Communication Error: [" + E + "]");
-					if(object.sendCount > XML_HTTP_MAX_TRIES ) {
+					if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
 						alert("Arrrgghh, Matey! Error communicating:\n" +
 								 E  + "\n" + object.param_string);
 					} else {
@@ -117,28 +121,32 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 						return;
 					}
 				} else {
+					/* any other exception is alerted for now */
 					RemoteRequest.prunePending(object.id);
 					alert("Exception: " + E);
 					throw E;
 				}
 			}
 
+			/* on success, remove the request from the pending cache */
 			RemoteRequest.prunePending(object.id);
 		}
 	}
 }
 
 
-/* http by default.  This makes it https */
+/* http by default.  This makes it https. *ONLY works when
+	embedded in a XUL app. */
 RemoteRequest.prototype.setSecure = function(bool) {
-	this.secure = bool; }
+	this.secure = bool; 
+}
 
 /** Send the request 
   * By default, all calls are asynchronous.  if 'blocking' is
   * set to true, then the call will block until a response
   * is received.  If blocking, callbacks will not be called.
-  * In other words, you can assume the data is avaiable as soon as the
-  * send call returns. 
+  * In other words, you can assume the data is avaiable 
+  * (getResponseObject()) as soon as the send call returns. 
   */
 RemoteRequest.prototype.send = function(blocking) {
 
@@ -147,9 +155,7 @@ RemoteRequest.prototype.send = function(blocking) {
 	else 
 		debug("Resending request with id " + this.id 
 				+ " and send count " + this.sendCount);
-
 	
-
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
@@ -180,14 +186,12 @@ RemoteRequest.prototype.send = function(blocking) {
 				'application/x-www-form-urlencoded');
 	}
 
-	//if(!this.cancelled)
 	this.xmlhttp.send( data );
-
 	this.sendCount += 1;
-
 	return this;
 }
 
+/* returns the actual response text from the request */
 RemoteRequest.prototype.getText = function() {
 	return this.xmlhttp.responseText;
 }
@@ -197,6 +201,7 @@ RemoteRequest.prototype.isReady = function() {
 }
 
 
+/* returns the JSON->js result object  */
 RemoteRequest.prototype.getResultObject = function() {
 	var text = this.xmlhttp.responseText;
 	var obj = JSON2js(text);
@@ -216,7 +221,9 @@ RemoteRequest.prototype.getResultObject = function() {
 	return obj;
 }
 
+/* adds a new parameter to the request */
 RemoteRequest.prototype.addParam = function(param) {
 	var string = encodeURIComponent(js2JSON(param));
 	this.param_string += "&__param=" + string;
 }
+
