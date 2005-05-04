@@ -33,7 +33,8 @@ package action::survey_response;
 use base qw/action/;
 __PACKAGE__->table('action_survey_response');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/usr survey question answer answer_date effective_date/);
+__PACKAGE__->columns(Essential => qw/response_group_id usr survey question
+				     answer answer_date effective_date/);
 #-------------------------------------------------------------------------------
 
 package action::circulation;

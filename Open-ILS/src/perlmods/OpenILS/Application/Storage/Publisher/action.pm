@@ -6,6 +6,23 @@ use base qw/OpenILS::Application::Storage/;
 #
 #my $log = 'OpenSRF::Utils::Logger';
 
+sub next_resp_group_id {
+	my $self = shift;
+	my $client = shift;
+
+	# XXX This is not replication safe!!!
+
+	my ($id) = action::survey->db_Main->selectrow_array(<<"	SQL");
+		SELECT NEXTVAL('action.survey_response_group_id_seq'::TEXT)
+	SQL
+	return $id;
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.survey_response.next_group_id',
+	api_level       => 1,
+	method          => 'next_resp_group_id',
+);
+
 sub patron_circ_summary {
 	my $self = shift;
 	my $client = shift;
