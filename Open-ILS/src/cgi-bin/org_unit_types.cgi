@@ -38,9 +38,15 @@ Content-type: text/html
 		tr.row_class td {
 			border: solid lightgrey 1px;
 		}
+
+                tr.new_row_class {
+                        background: grey;
+                }
 		
 		tr.header_class th {
 			background-color: lightblue;
+                        border: solid blue 1px;
+                        padding: 2px;
 		}
 
 	</style>
@@ -120,7 +126,7 @@ if (my $action = $cgi->param('action')) {
 		);
 	}
 
-	print Tr(
+	print "<tr class='new_row_class'>",
 		td(),
 		td("<input type='text' name='name'>"),
 		td("<input type='text' size=3 name='depth'>"),
@@ -134,7 +140,7 @@ if (my $action = $cgi->param('action')) {
 		td("<input type='checkbox' name='can_have_vols' value='t'>"),
 		td("<input type='checkbox' name='can_have_users' value='t'>"),
 		td(),
-	);
+		"</tr>";
 	print	"</table>";
 	print	"<input type='submit' name='action' value='Remove Selected'/> | ";
 	print	"<input type='submit' name='action' value='Update Selected'/> | ";

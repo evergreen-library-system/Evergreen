@@ -57,12 +57,18 @@ Content-type: text/html
 			color: lightgrey;
 		}
 
+		tr.new_row_class {
+			background: grey;
+		}
+
 		tr.row_class td {
 			border: solid lightgrey 1px;
 		}
 		
 		tr.header_class th {
 			background-color: lightblue;
+                        border: solid blue 1px;
+                        padding: 2px;
 		}
 
 	</style>
@@ -74,6 +80,8 @@ Content-type: text/html
 <h1>Library Hierarchy Setup</h1>
 <hr/>
 HEADER
+
+my $uri = $cgi->url(-relative=>1);
 
 my $top;
 for my $lib ( actor::org_unit->search( {parent_ou=>undef} ) ) {
@@ -87,7 +95,7 @@ for my $lib ( actor::org_unit->search( {parent_ou=>undef} ) ) {
 		function createAppElement (el) { return document.createElement(el); }
 		function createAppTextNode (txt) { return document.createTextNode(txt); }
 	
-		var node_$lib = new WebFXTree('$name');
+		var node_$lib = new WebFXTree('$name','$uri?action=child&id=$lib');
 	HEADER
 	$top = $lib->id;
 	last;
@@ -97,7 +105,6 @@ for my $lib ( actor::org_unit->search_like( {parent_ou => '%'}, {order_by => 'id
 	my $name = $lib->name;
 	$name =~ s/'/\\'/og;
 	my $parent = $lib->parent_ou;
-	my $uri = $cgi->url(-relative=>1);
 	print <<"	JS"
 		var node_$lib = new WebFXTreeItem('$name','$uri?action=child&id=$lib');
 	JS
@@ -140,7 +147,7 @@ if (my $action = $cgi->param('action')) {
 			);
 			print Tr(
 				th($org_cols{name}),
-				td("<input type='text' name='name_$node' value='". $node->name() ."'>"),
+				td("<input type='text' name='name_$node' value=\"". $node->name() ."\">"),
 			);
 			print Tr(
 				th($org_cols{shortname}),
@@ -149,7 +156,7 @@ if (my $action = $cgi->param('action')) {
 			print Tr(
 				th($org_cols{ou_type}),
 				td("<select name='ou_type_$node'>".do{
-							my $out = '';
+							my $out = '<option>-- Select One --</option>';
 							for my $type ( sort {$a->depth <=> $b->depth} actor::org_unit_type->retrieve_all) {
 								$out .= "<option value='$type' ".do {
 									if ($node->ou_type == $type->id) {
@@ -162,7 +169,7 @@ if (my $action = $cgi->param('action')) {
 			print Tr(
 				th($org_cols{parent_ou}),
 				td("<select name='parent_ou_$node'>".do{
-						my $out = '';
+						my $out = '<option>-- Select One --</option>';
 						for my $org ( sort {$a->id <=> $b->id} actor::org_unit->retrieve_all) {
 							$out .= "<option value='$org' ".do {
 								if ($node->parent_ou == $org->id) {
@@ -193,8 +200,8 @@ if (my $action = $cgi->param('action')) {
 			);
 			print Tr(
 				th($org_cols{ou_type}),
-				td("<select name='ou_type_$node'>".do{
-						my $out = '';
+				td("<select name='ou_type'>".do{
+						my $out = '<option>-- Select One --</option>';
 						for my $type ( sort {$a->depth <=> $b->depth} actor::org_unit_type->retrieve_all) {
 							$out .= "<option value='$type'>".$type->name.'</option>'
 						}

@@ -36,8 +36,14 @@ Content-type: text/html
 			border: solid lightgrey 1px;
 		}
 		
+                tr.new_row_class {
+                        background: grey;
+                }
+
 		tr.header_class th {
 			background-color: lightblue;
+                        border: solid blue 1px;
+                        padding: 2px;
 		}
 
 	</style>
@@ -157,15 +163,16 @@ if (my $action = $cgi->param('action')) {
 		print th($dur_cols{$col});
 	}
 	
-	print "<td/></tr><tr class='row_class'>\n";
+	print "<td/>\n";
 	
 	for my $row ( config::rules::circ_duration->retrieve_all ) {
+		print "</tr><tr class='row_class'>";
 		for my $col ( @dur_display_order ) {
 			print td($row->$col);
 		}
-		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>".
-			"</tr><tr class='row_class'>\n";
+		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>";
 	}
+	print "</tr><tr class='new_row_class'>\n";
 	
 	for my $col ( @dur_display_order ) {
 		print td("<input type='text' name='$col'>");
@@ -191,16 +198,18 @@ if (my $action = $cgi->param('action')) {
 		print th($fine_cols{$col});
 	}
 	
-	print "<td/></tr><tr class='row_class'>\n";
+	print "<td/>\n";
 	
 	for my $row ( config::rules::recuring_fine->retrieve_all ) {
+		print "</tr><tr class='row_class'>\n";
 		for my $col ( @fine_display_order ) {
 			print td($row->$col);
 		}
-		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>".
-			"</tr><tr class='row_class'>\n";
+		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>";
 	}
 	
+	print "</tr><tr class='new_row_class'>\n";
+
 	for my $col ( @fine_display_order ) {
 		print td("<input type='text' name='$col'>");
 	}
@@ -225,16 +234,18 @@ if (my $action = $cgi->param('action')) {
 		print th($max_fine_cols{$col});
 	}
 	
-	print "<td/></tr><tr class='row_class'>\n";
+	print "<td/>\n";
 	
 	for my $row ( config::rules::max_fine->retrieve_all ) {
+	print "</tr><tr class='row_class'>\n";
 		for my $col ( @max_fine_display_order ) {
 			print td($row->$col);
 		}
-		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>".
-			"</tr><tr class='row_class'>\n";
+		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>";
 	}
 	
+	print "</tr><tr class='new_row_class'>\n";
+
 	for my $col ( @max_fine_display_order ) {
 		print td("<input type='text' name='$col'>");
 	}
@@ -259,9 +270,10 @@ if (my $action = $cgi->param('action')) {
 		print th($age_cols{$col});
 	}
 	
-	print "<td/></tr><tr class='row_class'>\n";
+	print "<td/>\n";
 	
 	for my $row ( config::rules::age_hold_protect->retrieve_all ) {
+		print "</tr><tr class='row_class'>\n";
 		for my $col ( @age_display_order ) {
 			if ($col eq 'radius') {
 				print td($row->$col->name);
@@ -269,9 +281,10 @@ if (my $action = $cgi->param('action')) {
 				print td($row->$col);
 			}
 		}
-		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>".
-			"</tr><tr class='row_class'>\n";
+		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>";
 	}
+
+	print "</tr><tr class='new_row_class'>\n";
 	
 	for my $col ( @age_display_order ) {
 		if ($col eq 'radius') {
