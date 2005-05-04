@@ -42,7 +42,6 @@ function RemoteRequest( service, method ) {
 	this.type		= "POST"; /* default */
 
 	this.id			= service + method + Math.random();
-	debug("Request id is " + this.id);
 
 	var i = 2;
 	this.params = ""; 
@@ -193,14 +192,12 @@ RemoteRequest.prototype.getText = function() {
 }
 
 RemoteRequest.prototype.isReady = function() {
-	debug( "Request state is " + this.xmlhttp.readyState );
 	return this.xmlhttp.readyState == 4;
 }
 
 
 RemoteRequest.prototype.getResultObject = function() {
 	var text = this.xmlhttp.responseText;
-	//debug("Received text from request " + text );
 	var obj = JSON2js(text);
 	if(obj == null) {
 		debug("received null response");

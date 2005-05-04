@@ -18,10 +18,13 @@ SearchBarFormChunk.prototype.init = function() {
 
 SearchBarFormChunk.prototype.resetPage = function() {
 
+	this.init();
+
 	debug("pageReset on SearchBarFormChunk");
 	this.search_button.onclick		= mrSearchSubmitForm;
 	this.search_query.onkeydown	= mrSearchSubmitOnEnter;
 	this.search_type.onkeydown		= mrSearchSubmitOnEnter;
+
 
 	if(paramObj.__mr_search_query)
 		this.search_query.value = paramObj.__mr_search_query;
@@ -32,6 +35,7 @@ SearchBarFormChunk.prototype.resetPage = function() {
 	try{ this.search_query.focus(); } catch(E) {}
 
 	for( var index in globalOrgTypes ) {
+		debug("Building search range dropdown: " + globalOrgTypes[index].name());
 		var otype = globalOrgTypes[index]
 		var select =  new Option(otype.name(), otype.depth());
 
@@ -50,11 +54,20 @@ function mrSearchSubmitForm() {
 
 	debug("Submitting MR search via form");
 
+	var depth = globalSearchDepth;
+	var location = globalSelectedLocation;
+	if(location == null) 
+		location = globalLocation.id();
+	else
+		location = location.id();
+
 	url_redirect( [ 
-			"target",				"mr_result",
-			"mr_search_type",		search_type,
-			"mr_search_query",	search_query,
-			"page",					0
+			"target",					"mr_result",
+			"mr_search_type",			search_type,
+			"mr_search_query",		search_query,
+			"mr_search_location",	location,
+			"mr_search_depth",		depth,
+			"page",						0
 			] );
 }
 

@@ -14,7 +14,6 @@ Page.prototype.instance = function() {
 
 
 /* XXX move me to the status bar */
-
 Page.prototype.updateSelectedLocation = function(org) {
 	var node;
 	if( typeof org == 'object' ) node = org;
@@ -27,6 +26,7 @@ Page.prototype.updateSelectedLocation = function(org) {
 /* tells the user where he is searching */
 Page.prototype.setLocDisplay = function(name) {
 
+	debug("Setting loc display on the status bar");
 	this.searchingCell = getById("now_searching_cell");
 	this.searchRange	= getById("search_range_select");
 

@@ -30,22 +30,47 @@ MRResultPage.instance = function() {
 }
 
 MRResultPage.prototype.next = function() {
+
+	var location = globalSelectedLocation;
+	if(location == null) 
+		location = globalLocation.id();
+	else
+		location = location.id();
+
+	/* if the user has changed the 'location' of the search, it will be
+		reflected when the user hits the next button.  the search depth
+		will not change, however, because that is a different search */
 	url_redirect( [ 
-			"target",				"mr_result",
-			"mr_search_type",		this.stype,
-			"mr_search_query",	this.string,
-			"page",					this.page + 1	
+			"target",					"mr_result",
+			"mr_search_type",			this.stype,
+			"mr_search_query",		this.string,
+			"mr_search_location",	location,
+			"mr_search_depth",		this.searchDepth,
+			"page",						this.page + 1	
 			] );
 }
 
 
 MRResultPage.prototype.prev = function() {
 	if(this.page == 0 ) return;
+
+	var depth = globalSearchDepth;
+	var location = globalSelectedLocation;
+	if(location == null) 
+		location = globalLocation.id();
+	else
+		location = location.id();
+
+	/* if the user has changed the 'location' of the search, it will be
+		reflected when the user hits this  button.  the search depth
+		will not change, however, because that is a different search */
 	url_redirect( [ 
-			"target",				"mr_result",
-			"mr_search_type",		this.stype,
-			"mr_search_query",	this.string,
-			"page",					this.page - 1	
+			"target",					"mr_result",
+			"mr_search_type",			this.stype,
+			"mr_search_query",		this.string,
+			"mr_search_location",	location,
+			"mr_search_depth",		this.searchDepth,
+			"page",						this.page - 1	
 			] );
 }
 
@@ -93,30 +118,35 @@ MRResultPage.prototype.doSearch = function() {
 
 	var string			= paramObj.__mr_search_query;
 	var stype			= paramObj.__mr_search_type;
-	if(!stype || !string) return;
+	var location		= paramObj.__mr_search_location;
+	var depth			= paramObj.__mr_search_depth;
 
-	var orgunit;
-	if(globalSelectedLocation) 
-		orgunit = globalSelectedLocation;
-	else orgunit = globalLocation;
+	debug("mr search params string " + string + " stype " + stype +
+			" location " + location + " depth " + depth );
+
+	if(depth == null)
+		depth = globalSearchDepth;
+	if(location == null)
+		location = globalLocation.id();
+
+	if(!stype || !string) return;
 
 	if(this.searchDepth == null)
 		this.searchDepth = globalSearchDepth;
 
-	debug("Current search depth: " + globalSearchDepth);
+	debug("Current search depth: " + depth);
 	debug("My search depth: " + this.searchDepth);
 
 	/* see if this is a new search */
 	if(	string != this.string				|| 
 			stype != this.stype					||
-			this.searchLocation != orgunit	||
-			this.searchDepth != globalSearchDepth ) {
-
+			this.searchLocation != location	||
+			this.searchDepth != depth ) {
 		this.resetSearch();
-		this.searchDepth = globalSearchDepth;
 	}
 
-	this.searchLocation	= orgunit;
+	this.searchDepth		= depth;
+	this.searchLocation	= location;
 	this.stype				= stype;
 	this.string				= string;
 	this.page				= parseInt(paramObj.__page);
@@ -146,25 +176,24 @@ MRResultPage.prototype.doSearch = function() {
 
 	debug("MRResultPage doSearch() with type: " 
 			+ this.stype + " and search [" + this.string + "]"
-			+ " and offset " + this.searchOffset );
+			+ " and offset " + this.searchOffset  +
+			" depth: " + depth + " location: " + location);
 
 
 
 	var request = new RemoteRequest( 
 			"open-ils.search", "open-ils.search.biblio.class", 
 			this.stype, this.string, 
-			this.searchLocation.id(), 
+			this.searchLocation, 
 			this.searchDepth, "50", this.searchOffset );
 
 	var obj = this;
 	request.setCompleteCallback(
 		function(req) {
-			try {
-				var result = req.getResultObject();
-				debug( "MRSearch returned: " + js2JSON(result) );
-				obj.gatherIDs(result) 
-				obj.collectRecords();
-			} catch(E) { throw ("Search Error " + E ); }
+			var result = req.getResultObject();
+			debug( "MRSearch returned: " + js2JSON(result) );
+			obj.gatherIDs(result) 
+			obj.collectRecords();
 		}
 	);
 
@@ -206,7 +235,7 @@ MRResultPage.prototype.collectRecords = function() {
 					obj.displayRecord( record, req.search_id, req.page_id );
 					obj.doCopyCount( record, req.search_id, req.page_id );
 				//} catch(E) { 
-				//	alert("Doc Retrieval Error:\n" + E); 
+				//	debug("******* Doc Retrieval Error:\n" + E); 
 				//}
 			}
 		);
@@ -216,48 +245,19 @@ MRResultPage.prototype.collectRecords = function() {
 	}
 }
 
-MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
-
-	var copy_box	= getById("record_result_copy_count_box_" + page_id );
-
-	/* kick off the copy count search */
-	debug("Grabbing copy count for record " + record.doc_id() );
-	var copy_request = new RemoteRequest( "open-ils.search",
-		"open-ils.search.biblio.metarecord.copy_count", 1, record.doc_id() );
-	this.requestBatch.push(copy_request);
-
-	copy_request.search_id = search_id;
-	copy_request.name = "copy_request_" + (search_id+this.searchOffset);
-
-	debug("Sending copy request " + search_id + ":" + record.doc_id() );
-
-	var obj = this;
-	copy_request.setCompleteCallback( 
-		function(req) {
-			try {	
-				copy_box.innerHTML = req.getResultObject();	
-			} catch(E) { 
-				//alert("Copy Count Retrieval Error:\n" + E ); 
-			}
-		}
-	);
-
-	copy_request.send();
-}
-
 
 
 MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
 	var copy_box	= getById("record_result_copy_count_box_" + page_id );
 
-	/* kick off the copy count search */
 	var orgunit = globalSelectedLocation;
 	if(!orgunit) orgunit = globalLocation;
 
-	var copy_request = new RemoteRequest( "open-ils.search",
+	var copy_request = new RemoteRequest( 
+		"open-ils.search",
 		"open-ils.search.biblio.metarecord.copy_count",
-		orgunit.id(), record.doc_id() );
+		this.searchLocation, record.doc_id() );
 
 	this.requestBatch.push(copy_request);
 
@@ -272,31 +272,12 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 			try {	
 				obj.displayCopyCounts(req.getResultObject(), search_id, page_id );
 			} catch(E) { 
-				//alert("Copy Count Retrieval Error:\n" + E ); 
+				debug("****** Copy Count Retrieval Error:\n" + E ); 
 			}
 		}
 	);
 
 	copy_request.send();
 }
-
-
-/*
-MRResultPage.prototype.gatherIDs = function(result) {
-
-	this.hitCount = parseInt(result.count);
-	debug("here");
-
-	for( var i in result.ids ) {
-		if(result.ids[i]==null || result.ids[i][0] == null) break;
-		var offset = parseInt(i) + parseInt(this.searchOffset);
-		this.recordIDs[offset] = result.ids[i][0];
-		this.ranks[offset] = parseFloat(result.ids[i][1]);
-		debug("adding ranks[" + offset + "] = " + result.ids[i][1] + 
-				"  \nrecordIDs["+offset+"], result.ids["+i+"][0]");
-	}
-
-}
-*/
 
 

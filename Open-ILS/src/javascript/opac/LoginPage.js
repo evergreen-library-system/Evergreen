@@ -10,10 +10,19 @@ var globalLoginPage = null;
 
 function LoginPage() {
 
-	if(globalLoginPage != null) { return globalLoginPage; }
+	if(globalLoginPage != null) { 
+		globalLoginPage.init();
+		return globalLoginPage; 
+	}
 
 	this.searchBarForm	= new SearchBarFormChunk();
 	this.searchBar			= new SearchBarChunk();
+
+	globalLoginPage = this;
+}
+
+LoginPage.prototype.init = function() {
+	this.searchBar.reset();
 	this.login_button		= getById("login_button");
 
 	this.login_button.onclick = loginShuffle;
@@ -22,22 +31,34 @@ function LoginPage() {
 	this.password		= getById("login_password");
 	this.result_field = getById("login_result_text");
 
+	this.session = UserSession.instance();
+	this.draw();
+
+}
+
+
+LoginPage.prototype.draw = function() {
 	try {this.username.focus();} catch(E) {}
-	this.username.onkeydown = loginOnEnter;
-	this.password.onkeydown = loginOnEnter;
+
+
+	if(IE) {
+
+		this.username.onkeyup = "window.event.cancelBubble = true"; 
+
+		this.password.onkeyup = 
+			function() {
+				getAppWindow().event.cancelBubble = true; 
+				loginOnEnter; return true; 
+			};
+
+	} else {
+		this.username.onkeyup = function(){};
+		this.password.onkeyup = loginOnEnter;
+	}
 	
 	this.login_success_msg = null;
 	this.login_failure_msg = null;
-
-	this.session = UserSession.instance();
-
-	globalLoginPage = this;
 }
-
-LoginPage.prototype.init = function() {
-	this.searchBar.reset();
-}
-
 
 
 function loginShuffle() {

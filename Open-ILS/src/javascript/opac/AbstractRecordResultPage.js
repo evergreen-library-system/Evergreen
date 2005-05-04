@@ -22,11 +22,15 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.nextButton		= getById("record_next_button_1");
 	this.recordBox			= getById("record_result_box");
 
-	this.subBox				= getById("record_subject_sidebar_box");
-	this.authBox			= getById("record_author_sidebar_box");
+	this.authorBox = new Box();
+	this.authorBox.init("Relevant Authors", true, true, 15);
+	this.authorBox.sortByCount();
 
-	this.subBoxL				= getById("record_subject_sidebar_box_label");
-	this.authBoxL			= getById("record_author_sidebar_box_label");
+	this.subjectBox = new Box();
+	this.subjectBox.init("Relevant Subjects", true, true, 15);
+	this.subjectBox.sortByCount();
+
+	this.sidebarBox		= getById("record_sidebar_box");
 
 	this.hitsPerPage		= 8;	 /* how many hits are displayed per page */
 	this.resetPage();
@@ -42,10 +46,6 @@ AbstractRecordResultPage.prototype.init = function() {
 
 /** Resets data structures for a new search */
 AbstractRecordResultPage.prototype.resetPage = function() {
-	this.subBox.innerHTML				= "";
-	this.authBox.innerHTML				= "";
-	this.collectedSubjects				= new Array();
-	this.collectedAuthors				= new Array();
 	this.searchBar.reset();
 	var spot = getById("progress_bar_location");
 	var spot2 = getById("progress_bar_percent_location");
@@ -56,20 +56,15 @@ AbstractRecordResultPage.prototype.resetPage = function() {
 		/* progress items for each record and it's hit count listing */
 		this.progressBar = new ProgressBar(parseInt(this.hitsPerPage) * 2);
 		spot.appendChild(this.progressBar.getNode());
-
-		if(!this.progressBar.running()) {
-			//this.progressBar.start();
-		}
 	}
 	if(spot2 && this.progressBar)
 		spot2.appendChild(this.progressBar.percentDiv);
+	this.received = 0;
 }
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
 	this.recordIDs				= new Array();
 	this.ranks					= new Array();
-	this.collectedSubjects	= new Array();		/* subjects attached to the current batch of records */
-	this.collectedAuthors	= new Array();		/* subjects attached to the current batch of records */
 	this.requestBatch			= new Array();		/* current batch of RemoteRequest objects */
 	this.hitCount				= 0;					/* hits for the current search */
 	this.searchOffset			= 0;					/* the offset for the search display */
@@ -79,11 +74,18 @@ AbstractRecordResultPage.prototype.resetSearch = function() {
 AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 
 	this.hitCount = parseInt(result.count);
-	debug("here");
+	if(this.hitCount < 1 ) {
+		this.finalizePage();
+		return false;
+	}
+	
 
 	/* the 'ids' field consist of [record, rank] */
 	/* gather all of the ID's */
-	if( typeof result.ids == 'object' && result.ids[0].constructor == Array ) {
+	if( result.ids  && typeof result.ids == 'object' 
+			&& result.ids[0] != null
+			&& result.ids[0].constructor == Array ) {
+
 		for( var i in result.ids ) {
 			if(result.ids[i]==null || result.ids[i][0] == null) break;
 			var offset = parseInt(i) + parseInt(this.searchOffset);
@@ -103,15 +105,20 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 		}
 	}
 
+	return true;
 }
 
 
 
+AbstractRecordResultPage.prototype.complete = function() {
 
+}
 
 
 AbstractRecordResultPage.prototype.displayRecord = 
 	function( record, search_id, page_id ) {
+
+	this.received += 1;
 
 	this.progressBar.manualNext();
 
@@ -144,9 +151,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	var rankBox = "";
 	if( this.ranks.length > 0 ) {
-		debug("AAAAA " + this.page + " " + this.hitsPerPage + " " + page_id );
 		var x = (parseInt(this.page) * parseInt(this.hitsPerPage)) + parseInt(page_id);
-		debug( x + " Ranks: " + this.ranks[x] + " " + this.ranks[0] );
 		var per = parseInt(this.ranks[x] / this.ranks[0] * 100.0);
 		rankBox = "<div class='relevance_box'><div style='width:" + 
 			per + "%' class='relevance'>&nbsp;</div></div>";
@@ -190,7 +195,6 @@ AbstractRecordResultPage.prototype.displayRecord =
 		record.author(normalize(record.author()));
 	}	
 
-	//title_cell.appendChild(createAppTextNode((parseInt(search_id) + 1)  + ".   "));
 	title_cell.appendChild(this.mkLink(record.doc_id(), "title", record.title()));
 	author_cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	author_cell.appendChild(this.mkLink(record.doc_id(), "author", record.author()));
@@ -203,8 +207,9 @@ AbstractRecordResultPage.prototype.displayRecord =
 	add_css_class(author_row, classname);
 
 	/* now grab the record authors and subjects */
-	if( record.author() )
-		this.collectedAuthors[record.author()] = true;	
+	if( record.author() ) {
+		this.authorBox.addItem( this.mkAuthorLink(record.author()), record.author() );
+	}
 
 	/* gather the subjects.  subjects are either a string or an array of
 		[subject, broader topic].  currently, they're all just treated like
@@ -218,10 +223,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 		for( var i in ss ) {
 			var s = normalize(ss[i]);
-			if( this.collectedSubjects[s])
-				this.collectedSubjects[s] += 1;
-			else
-				this.collectedSubjects[s] = 1;
+			this.subjectBox.addItem( this.mkSubjectLink(s), s );
 		}
 	}
 
@@ -232,44 +234,45 @@ AbstractRecordResultPage.prototype.displayRecord =
 		this.finalizePage();
 }
 
+AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
+	var href = createAppElement("a");
+	add_css_class(href,"record_result_sidebar_link");
+	href.setAttribute("href",
+		"?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
+		encodeURIComponent(auth));
+	href.appendChild(createAppTextNode(auth));
+	return href;
+}
+
+AbstractRecordResultPage.prototype.mkSubjectLink = function(sub) {
+	var href = createAppElement("a");
+	add_css_class(href,"record_result_sidebar_link");
+	href.setAttribute("href",
+		"?target=mr_result&mr_search_type=subject&page=0&mr_search_query=" +
+		encodeURIComponent(sub));
+	href.appendChild(createAppTextNode(sub));
+	return href;
+}
+
 AbstractRecordResultPage.prototype.finalizePage = function() {
-	/* sort the arrays */
-	this.collectedSubjects = this.collectedSubjects.sort().reverse();
-	this.collectedAuthors = this.collectedAuthors.sort().reverse();
 
-	showMe( this.subBox );
-	showMe( this.authBox );
-	showMe( this.subBoxL );
-	showMe( this.authBoxL );
-	var counter = 0;
+	this.subjectBox.finalize();
+	this.authorBox.finalize();
 
-	debug("Collected Subjects: " + this.collectedSubjects[0] + ":" + this.collectedSubjects);
+	this.sidebarBox.appendChild(this.subjectBox.getNode());
+	this.sidebarBox.appendChild(createAppElement("br"));
+	this.sidebarBox.appendChild(this.authorBox.getNode());
 
-	for(var sub in this.collectedSubjects) {
-		debug("makeing subject link: " + sub);
-		if(counter++ > 10)
-			break;
-		var href = createAppElement("a");
-		add_css_class(href,"record_result_sidebar_link");
-		href.setAttribute("href","?target=mr_result&mr_search_type=subject&page=0&mr_search_query=" +
-				      encodeURIComponent(sub));
-		href.appendChild(createAppTextNode(sub));
-		this.subBox.appendChild(href);
-		this.subBox.innerHTML += "<br/>";
-	}
 
-	counter = 0;
-	for(var auth in this.collectedAuthors) {
-		if(counter++ > 10)
-			break;
-		var href = createAppElement("a");
-		add_css_class(href,"record_result_sidebar_link");
-		href.setAttribute("href","?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
-				      encodeURIComponent(auth));
-		href.appendChild(createAppTextNode(auth));
-		this.authBox.appendChild(href);
-		this.authBox.innerHTML += "<br/>";
-	}
+	this.sidebarBox.appendChild(createAppElement("br"));
+	var test = new ListBox();
+	test.listBoxInit(false, "Test Box", false, true, 10 );
+	test.addItem(createAppTextNode("Item1"), 1 );
+	test.addItem(createAppTextNode("Item2"), 2 );
+	test.addItem(createAppTextNode("Item3"), 3 );
+	test.finalize();
+	this.sidebarBox.appendChild(test.getNode());
+
 
 	showMe(this.buttonsBox);
 
@@ -282,27 +285,18 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	var ses = UserSession.instance().getSessionId();
 
 	if(ses) {
-
-		showMe(getById("record_survey_sidebar_box_label"));
-		var box = getById("record_survey_sidebar_box");
-		showMe(box);
-
-		Survey.retrieveAll(ses, 
-			function(sur) { box.appendChild( sur.getNode() ); }
+		var box = this.sidebarBox;
+		Survey.retrieveRandom(ses, 
+			function(sur) { 
+				sur.setSubmitCallback(
+					function() { alert("Submitted!"); return false; });
+				box.appendChild( sur.getNode() ); 
+			}
 		);
 	}
 
-	/*
-	var spot = getById("record_sidebar_box");
-	spot.style.border = "1px solid green";
-	spot.appendChild(createAppElement("br"));
-	var sidebar = new Sidebar();
-	var sidebarbox = new SidebarBox("Test");
-	sidebarbox.addItem(createAppTextNode("Hello"));
-	sidebarbox.addItem(createAppTextNode("Hello2"));
-	sidebar.addItem(sidebarbox);
-	spot.appendChild(sidebar.getNode());
-	*/
+	if(this.hitCount < 1)
+		if(this.progressBar) this.progressBar.stop();
 
 }
 

@@ -296,14 +296,9 @@ RecordResultPage.prototype.doCopyCount = function( record, search_id, page_id ) 
 	copy_request.setCompleteCallback( 
 		function(req) {
 			try {	
-				/*
-				//copy_box.innerHTML = req.getResultObject();	
-				copy_box.appendChild(
-					createAppTextNode(req.getResultObject()));	
-					*/
 				obj.displayCopyCounts(req.getResultObject(), search_id, page_id );
 			} catch(E) { 
-				alert("Copy Count Retrieval Error:\n" + E ); 
+				debug("****** Copy Count Retrieval Error:\n" + E ); 
 			}
 		}
 	);
