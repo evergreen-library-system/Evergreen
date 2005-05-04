@@ -262,6 +262,10 @@ __PACKAGE__->register_method(
 	method	=> "submit_survey",
 	api_name	=> "open-ils.circ.survey.submit.user_id");
 
+__PACKAGE__->register_method(
+	method	=> "submit_survey",
+	api_name	=> "open-ils.circ.survey.submit.anon");
+
 
 sub submit_survey {
 	my( $self, $client, $responses ) = @_;
@@ -271,9 +275,15 @@ sub submit_survey {
 			("No survey object sent in update");
 	}
 
+	use Data::Dumper;
+	warn "Submitting survey " . Dumper($responses) . "\n";
+
 	if(!ref($responses)) { $responses = [$responses]; }
 
 	my $session = $apputils->start_db_session();
+
+	my $group_id = $session->request(
+		"open-ils.storage.action.survey_response.next_group_id")->gather(1);
 
 	my %already_seen;
 	for my $res (@$responses) {
@@ -287,10 +297,14 @@ sub submit_survey {
 				$already_seen{$res->usr} = $id;
 			}
 			$res->usr($id);
+		} elsif( $self->api_name =~ /anon/ ) {
+			$res->clear_usr();
 		}
 		
-		warn "Submitting response with question " . $res->question . "\n";
+		warn "Submitting response with question " . 
+			$res->question . " and group $group_id \n";
 
+		$res->response_group_id($group_id);
 		my $req = $session->request(
 			"open-ils.storage.direct.action.survey_response.create",
 			$res );
@@ -312,15 +326,16 @@ sub submit_survey {
 
 __PACKAGE__->register_method(
 	method	=> "get_random_survey",
-	api_name	=> "open-ils.circ.survey.retrieve.random");
+	api_name	=> "open-ils.circ.survey.retrieve.opac.random");
 
 sub get_random_survey {
 	my( $self, $client, $user_session ) = @_;
 	
+	warn "retrieving random survey\n";
 	my $user_obj = $apputils->check_user_session($user_session); 
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
-		"open-ils.storage.action.survey.all.atomic",
+		"open-ils.storage.action.survey.opac.atomic",
 		$user_obj->home_ou() );
 
 	my $random = int(rand(scalar(@$surveys)));
@@ -331,11 +346,27 @@ sub get_random_survey {
 
 }
 
-
 __PACKAGE__->register_method(
-	method	=> "retrieve_survey",
-	api_name	=> "open-ils.circ.survey.retrieve");
+	method	=> "get_random_survey_global",
+	api_name	=> "open-ils.circ.survey.retrieve.opac.random.global");
 
+sub get_random_survey_global {
+	my( $self, $client ) = @_;
+	
+	warn "retrieving random global survey\n";
+	my $surveys = $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.action.survey.search.atomic",
+		# XXX grab the org tree to get the root id...
+		{ owner => 1, opac => 't' } );
+
+	my $random = int(rand(scalar(@$surveys)));
+	warn "Random survey index for process $$ is $random\n";
+	my $surv = $surveys->[$random];
+
+	return $self->get_fleshed_survey($client, $surv);
+
+}
 
 
 
