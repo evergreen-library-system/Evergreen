@@ -159,7 +159,8 @@ Box.prototype.finalize = function() {
 	}
 
 	/* only display the box if there is data inside */
-	if(this.contentNode.childNodes.length > 0)
+	//if(this.contentNode.childNodes.length > 0)
+	if( this.items.length  > 0 )
 		this.setHidden(false);
 }
 

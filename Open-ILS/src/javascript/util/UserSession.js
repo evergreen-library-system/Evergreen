@@ -52,7 +52,7 @@ UserSession.prototype.verifySession = function() {
 		request.send(true);
 		var user = request.getResultObject();
 
-		if( typeof user == 'object' ) {
+		if( typeof user == 'object' && user._isfieldmapper) {
 
 			this.username = user.usrname();
 			this.connected = true;
