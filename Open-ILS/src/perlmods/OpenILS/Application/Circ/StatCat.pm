@@ -55,8 +55,6 @@ sub stat_cat_create {
 
 	my $user_obj = $apputils->check_user_session($user_session); 
 	my $orgid = $user_obj->home_ou();
-	warn "creating new stat_cat with name " . $stat_cat->name() . "\n";
-
 
 	my $method = "open-ils.storage.direct.actor.stat_cat.create";
 	my $entry_create = "open-ils.storage.direct.actor.stat_cat_entry.create";
@@ -69,7 +67,8 @@ sub stat_cat_create {
 	my $session = $apputils->start_db_session();
 	my $newid = _create_stat_cat($session, $stat_cat, $method);
 
-	for my $entry ($stat_cat->entries) {
+	for my $entry (@{$stat_cat->entries}) {
+		$entry->stat_cat($newid);
 		_create_stat_entry($session, $entry, $entry_create);
 	}
 
@@ -125,19 +124,31 @@ sub _flesh_copy_cat {
 
 sub _create_stat_cat {
 	my( $session, $stat_cat, $method) = @_;
+	warn "Creating new stat cat with name " . $stat_cat->name . "\n";
 	$stat_cat->clear_id();
 	my $req = $session->request( $method, $stat_cat );
 	my $id = $req->gather(1);
 	if(!$id) {
 		throw OpenSRF::EX::ERROR 
-			("Error creating new statistical category");
-	}
+		("Error creating new statistical category"); }
+
+	warn "Stat cat create returned id $id\n";
 	return $id;
 }
 
 
 sub _create_stat_entry {
 	my( $session, $stat_entry, $method) = @_;
+	warn "Creating new stat entry with value " . $stat_entry->value . "\n";
+	$stat_entry->clear_id();
+	my $req = $session->request($method, $stat_entry);
+	my $id = $req->gather(1);
+	if(!$id) {
+		throw OpenSRF::EX::ERROR 
+		("Error creating new stat cat entry"); }
+
+	warn "Stat cat entry create returned id $id\n";
+	return $id;
 }
 
 
