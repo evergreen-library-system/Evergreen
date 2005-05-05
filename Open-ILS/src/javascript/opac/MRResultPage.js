@@ -52,7 +52,9 @@ MRResultPage.prototype.next = function() {
 
 
 MRResultPage.prototype.prev = function() {
+	debug("Previous");
 	if(this.page == 0 ) return;
+
 
 	var depth = globalSearchDepth;
 	var location = globalSelectedLocation;
@@ -204,12 +206,8 @@ MRResultPage.prototype.doSearch = function() {
 
 MRResultPage.prototype.collectRecords = function() {
 
+	
 	var i = this.searchOffset;
-
-	var hcell = getById("hit_count_cell");
-	hcell.innerHTML = "Hits";
-	hcell.innerHTML += "&nbsp;&nbsp;";
-	hcell.innerHTML += this.hitCount;
 
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];

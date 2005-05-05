@@ -17,17 +17,14 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.searchBar			= new SearchBarChunk();
 
 	/* UI objects */
-	this.buttonsBox		= getById("record_next_prev_links_box_1");
-	this.prevButton		= getById("record_prev_button_1");
-	this.nextButton		= getById("record_next_button_1");
 	this.recordBox			= getById("record_result_box");
 
 	this.authorBox = new Box();
-	this.authorBox.init("Relevant Authors", false, true, 15);
+	this.authorBox.init("Relevant Authors", true, true, 15);
 	this.authorBox.sortByCount();
 
 	this.subjectBox = new Box();
-	this.subjectBox.init("Relevant Subjects", false, true, 15);
+	this.subjectBox.init("Relevant Subjects", true, true, 15);
 	this.subjectBox.sortByCount();
 
 	this.sidebarBox		= getById("record_sidebar_box");
@@ -63,6 +60,7 @@ AbstractRecordResultPage.prototype.resetPage = function() {
 	this.received = 0;
 
 	this.requestBatch = new RequestBatch();
+	this.finalized = false;
 }
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
@@ -121,6 +119,9 @@ AbstractRecordResultPage.prototype.complete = function() {
 
 AbstractRecordResultPage.prototype.displayRecord = 
 	function( record, search_id, page_id ) {
+
+	if(page_id == 0)
+		this.buildNextLinks();
 
 	this.received += 1;
 
@@ -256,6 +257,10 @@ AbstractRecordResultPage.prototype.mkSubjectLink = function(sub) {
 
 AbstractRecordResultPage.prototype.finalizePage = function() {
 
+	if( this.finalized )
+		return;
+	this.finalized = true;
+
 	this.subjectBox.finalize();
 	this.authorBox.finalize();
 
@@ -264,13 +269,7 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	this.sidebarBox.appendChild(this.authorBox.getNode());
 	this.sidebarBox.appendChild(createAppElement("br"));
 
-	showMe(this.buttonsBox);
-
-	if( this.searchOffset < (parseInt(this.hitCount) - this.hitsPerPage)) 
-		showMe(this.nextButton);
-	if(this.searchOffset > 0) 
-		showMe(this.prevButton);
-	
+//	showMe(this.buttonsBox);
 
 	var ses = UserSession.instance().getSessionId();
 	var box = this.sidebarBox;
@@ -341,8 +340,62 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
 			(page_id == (parseInt(this.hitsPerPage) - 1) )) 
 		if(this.progressBar) this.progressBar.stop();
+}
 
 
+
+AbstractRecordResultPage.prototype.buildNextLinks = function() {
+
+
+	var obj = this;
+	var next;
+	var prev;
+
+	debug("Building links");
+	if( this.searchOffset < (parseInt(this.hitCount) - this.hitsPerPage)) {
+		next = createAppElement("a");
+		add_css_class(next,"record_next_button");
+		add_css_class(next,"record_next_button_active");
+		next.href = "javascript:globalPage.next();";
+	} else {
+		next = createAppElement("span");
+		add_css_class(next,"record_next_button_inactive");
+	}
+
+	if(this.searchOffset > 0) {
+		prev = createAppElement("a");
+		add_css_class(prev,"record_next_button");
+		add_css_class(prev,"record_next_button_active");
+		prev.href = "javascript:globalPage.prev();";
+	} else {
+		prev = createAppElement("span");
+		add_css_class(prev,"record_next_button_inactive");
+	}
+
+	next.appendChild(createAppTextNode("Next"));
+	prev.appendChild(createAppTextNode("Previous"));
+
+
+	var i = this.searchOffset;
+	var max = parseInt(i) + this.hitsPerPage;
+	if( max > this.hitCount )
+		max = this.hitCount;
+
+	var hcell = getById("hit_count_cell");
+
+	hcell.appendChild(
+		createAppTextNode( "Displaying " + 
+		( parseInt(i) + 1 ) + " to " + max + " of " + this.hitCount));
+
+	hcell.appendChild(createAppTextNode(" "));
+
+	hcell.appendChild( prev );
+	var span = createAppElement("span");
+	span.appendChild(createAppTextNode(" ... "));
+	hcell.appendChild(span);
+	hcell.appendChild( next );
+
+	
 }
 
 
