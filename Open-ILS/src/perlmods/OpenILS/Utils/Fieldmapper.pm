@@ -73,7 +73,7 @@ sub _init {
 		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'asc',
 								     proto_fields	=> { entries => 1 } },
 		'Fieldmapper::actor::stat_cat_entry'		=> { hint => 'asce'    },
-		'Fieldmapper::actor::stat_cat_entry_user_map'	=> { hint => 'ascecm'  },
+		'Fieldmapper::actor::stat_cat_entry_user_map'	=> { hint => 'acscecm'  },
 		'Fieldmapper::actor::org_unit'			=> { hint 		=> 'aou',
 								     proto_fields	=> { children => 1 } },
 		'Fieldmapper::actor::org_unit_type'		=> { hint 		=> 'aout',
