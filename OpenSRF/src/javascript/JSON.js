@@ -49,13 +49,19 @@ function js2JSON(arg) {
 
 				if (arg._isfieldmapper) { /* magi-c-ast for fieldmapper objects */
 
-					var arr = new Array();
 					if( arg.array.constructor != Array ) {
+						var arr = new Array();
 						for( var i  = 0; i < arg.array.length; i++ ) {
+
 							if( typeof arg.array[i] != 'object' ) { 
 								arr[i] = arg.array[i];
-							} else if(typeof arg.array[i] == 'object' && arg.array[i]._isfieldmapper) {
+
+							} else if(arg.array[i] != null 
+									&& typeof arg.array[i] == 'object' 
+										&& arg.array[i]._isfieldmapper) {
+
 								arr[i] = arg.array[i];
+
 							} else {
 								arr[i] = object2Array(arg.array[i]);		
 							}
