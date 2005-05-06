@@ -66,6 +66,8 @@ sub fleshed_copy_by_barcode {
 
 	my ($cp) = asset::copy->search( { barcode => $bc } );
 
+	return [] unless ($cp);
+
 	my $cp_fm = $cp->to_fieldmapper;
 	$cp_fm->circ_lib( $cp->circ_lib->to_fieldmapper );
 	$cp_fm->location( $cp->location->to_fieldmapper );
