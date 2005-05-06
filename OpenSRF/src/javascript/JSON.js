@@ -52,12 +52,14 @@ function js2JSON(arg) {
 					if( arg.array.constructor != Array ) {
 						var arr = new Array();
 						for( var i  = 0; i < arg.array.length; i++ ) {
+							if( arg.array[i] == null ) {
+								arr[i] = null; continue;
+							}
 
 							if( typeof arg.array[i] != 'object' ) { 
 								arr[i] = arg.array[i];
 
-							} else if(arg.array[i] != null 
-									&& typeof arg.array[i] == 'object' 
+							} else if( typeof arg.array[i] == 'object' 
 										&& arg.array[i]._isfieldmapper) {
 
 								arr[i] = arg.array[i];
