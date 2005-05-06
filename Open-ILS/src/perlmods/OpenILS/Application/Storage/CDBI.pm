@@ -298,11 +298,13 @@ sub modify_from_fieldmapper {
 	actor::stat_cat_entry->has_a( stat_cat => 'actor::stat_cat' );
 	actor::stat_cat->has_many( entries => 'actor::stat_cat_entry' );
 	actor::stat_cat_entry_user_map->has_a( stat_cat => 'actor::stat_cat' );
+	actor::stat_cat_entry_user_map->has_a( stat_cat_entry => 'actor::stat_cat_entry' );
 	actor::stat_cat_entry_user_map->has_a( target_usr => 'actor::user' );
 
 	asset::stat_cat_entry->has_a( stat_cat => 'asset::stat_cat' );
 	asset::stat_cat->has_many( entries => 'asset::stat_cat_entry' );
 	asset::stat_cat_entry_copy_map->has_a( stat_cat => 'asset::stat_cat' );
+	asset::stat_cat_entry_copy_map->has_a( stat_cat_entry => 'asset::stat_cat_entry' );
 	asset::stat_cat_entry_copy_map->has_a( owning_copy => 'asset::copy' );
 
 	action::survey_response->has_a( usr => 'actor::user' );
@@ -317,6 +319,8 @@ sub modify_from_fieldmapper {
 	asset::copy_note->has_a( owning_copy => 'asset::copy' );
 
 	actor::user->has_many( stat_cat_entries => [ 'actor::stat_cat_entry_user_map' => 'stat_cat_entry' ] );
+	actor::user->has_many( stat_cat_entry_user_maps => 'actor::stat_cat_entry_user_map' );
+
 	asset::copy->has_many( stat_cat_entries => [ 'asset::stat_cat_entry_copy_map' => 'stat_cat_entry' ] );
 	asset::copy->has_many( stat_cat_entry_copy_maps => 'asset::stat_cat_entry_copy_map' );
 

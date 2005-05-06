@@ -40,11 +40,7 @@ sub fleshed_copy {
 		$cp_fm->circ_lib( $cp->circ_lib->to_fieldmapper );
 		$cp_fm->location( $cp->location->to_fieldmapper );
 		$cp_fm->status( $cp->status->to_fieldmapper );
-		my @scs;
-		for my $map ( $cp->stat_cat_entry_copy_maps ) {
-			push @scs, $map->to_fieldmapper;
-		}
-		$cp_fm->stat_cat_entries( \@scs );
+		$cp_fm->stat_cat_entries( [ map { $_->to_fieldmapper } $cp->stat_cat_entries ] );
 
 		$client->respond( $cp_fm );
 	}
