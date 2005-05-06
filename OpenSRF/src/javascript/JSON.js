@@ -58,6 +58,8 @@ function js2JSON(arg) {
 							}
 						}
 						return '[' + o + ']';
+
+						/*
 					} else if (typeof arg.toString != 'undefined') {
 						o = '';
 						for (i in arg) {
@@ -75,6 +77,7 @@ function js2JSON(arg) {
 
 					} else {
 						return;
+						*/
 					}
 				}
 			}
