@@ -246,10 +246,12 @@ sub modify_from_fieldmapper {
 		}
 	}
 
-	my %hash = map { defined $fm->$_ ?
-				($_ => ''.$fm->$_) :
-				()
-			} $fm->real_fields;
+#	my %hash = map { defined $fm->$_ ?
+#				($_ => ''.$fm->$_) :
+#				()
+#			} $fm->real_fields;
+
+	my %hash = map { ($_ => ''.$fm->$_) } $fm->real_fields;
 
 	my $au = $obj->autoupdate;
 	$obj->autoupdate(0);
@@ -314,8 +316,9 @@ sub modify_from_fieldmapper {
 
 	asset::copy_note->has_a( owning_copy => 'asset::copy' );
 
-	actor::user->has_many( stat_cat_entries => 'actor::stat_cat_entry_user_map' );
-	asset::copy->has_many( stat_cat_entries => 'asset::stat_cat_entry_copy_map' );
+	actor::user->has_many( stat_cat_entries => [ 'actor::stat_cat_entry_user_map' => 'stat_cat_entry' ] );
+	asset::copy->has_many( stat_cat_entries => [ 'asset::stat_cat_entry_copy_map' => 'stat_cat_entry' ] );
+	asset::copy->has_many( stat_cat_entry_copy_maps => 'asset::stat_cat_entry_copy_map' );
 
 	asset::copy->has_a( call_number => 'asset::call_number' );
 	asset::copy->has_a( creator => 'actor::user' );
