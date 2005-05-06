@@ -31,6 +31,14 @@ function JSON2js (json) {
 }
 
 
+function object2Array(obj) {
+	var arr = new Array();
+	for( var i  = 0; i < obj.length; i++ ) {
+		arr[i] = obj[i];
+	}
+	return arr;
+}
+
 function js2JSON(arg) {
 	var i, o, u, v;
 
@@ -44,7 +52,13 @@ function js2JSON(arg) {
 					var arr = new Array();
 					if( arg.array.constructor != Array ) {
 						for( var i  = 0; i < arg.array.length; i++ ) {
-							arr[i] = arg.array[i];
+							if(arg.array[i]._isfieldmapper) {
+								arr[i] = arg.array[i];
+							} else if( typeof arg.array[i] != 'object' ) { 
+								arr[i] = arg.array[i];
+							} else {
+								arr[i] = object2Array(arg.array[i]);		
+							}
 						}
 						arg.array = arr;
 					}
