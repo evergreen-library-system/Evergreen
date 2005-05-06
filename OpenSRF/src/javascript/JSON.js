@@ -32,6 +32,8 @@ function JSON2js (json) {
 
 
 function object2Array(obj) {
+	if( obj == null ) return null;
+
 	var arr = new Array();
 	for( var i  = 0; i < obj.length; i++ ) {
 		arr[i] = obj[i];
