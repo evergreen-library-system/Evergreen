@@ -1,51 +1,94 @@
+[%
+
+	util_batch = [ 
+			"js/util/md5.js",
+			"js/util/webutils.js",
+			"js/util/Cookie.js",
+			"js/util/browser.js",
+		];
+
+	ils_batch = [
+			"js/util/ils_utils.js",
+			"js/util/web_fieldmapper.js", 
+			"js/util/RemoteRequest.js"
+			"js/util/ex.js",
+			"js/util/UserSession.js",
+		];
+
+	widget_batch = [
+			"js/widgets/xtree.js",
+			"js/widgets/menu/ContextMenu.js",
+			"js/widgets/menu/ContextMenuManager.js",
+			"js/widgets/ProgressBar.js",
+			"js/widgets/Box.js",
+			"js/widgets/ListBox.js",
+			"js/widgets/SideBar.js",
+			"js/widgets/Survey.js",
+		];
+
+	page_batch = [
+			"js/opac/Page.js",
+			"js/opac/OPACStartPage.js",
+			"js/opac/SearchBarFormChunk.js",
+			"js/opac/SearchBarChunk.js",
+			"js/opac/GlobalInit.js",
+			"js/opac/LocationTree.js",
+			"js/opac/LoginPage.js",
+			"js/opac/AbstractRecordResultPage.js",
+			"js/opac/HTMLChunks.js",
+			"js/opac/XULEvents.js",
+			"js/opac/MRResultPage.js",
+			"js/opac/RecordResultPage.js",
+			"js/opac/RecordDetailPage.js",
+			"js/opac/LogoutPage.js",
+			"js/opac/AboutPage.js",
+			"js/opac/AdvancedSearchPage.js",
+			"js/opac/MyOPACPage.js",
+		];
+
+
+%]
+
+[% BLOCK FASTJS;
+		"<script language='javascript' src='/fastjs?";
+		FOR file IN batch; 
+			IF ! loop.first; "&"; END;
+			"file=" _ file;
+		END;
+		"'></script>";
+	END;
+%]
+
+[% BLOCK JS;
+		FOR file IN batch; 
+			"<script language='javascript' src='/$file'></script>";
+		END;
+	END;
+%] 
+
 <html>
 	<head>
-		<script language='javascript' src='/js/util/web_fieldmapper.js'></script>
+
 		<script language='javascript' src='/js/util/JSON.js'></script>
-		<script language='javascript' src='/js/util/RemoteRequest.js'></script>
-		<script language='javascript' src='/js/util/md5.js'></script>
-		<script language='javascript' src='/js/util/webutils.js'></script>
-		<script language='javascript' src='/js/util/ils_utils.js'></script>
-		<script language='javascript' src='/js/util/ex.js'></script>
-		<script language='javascript' src='/js/util/browser.js'></script>
 
-		<script language='javascript' src='/js/opac/Page.js'></script>
-		<script language='javascript' src='/js/opac/OPACStartPage.js'></script>
-		<script language='javascript' src='/js/opac/SearchBarFormChunk.js'></script>
-		<script language='javascript' src='/js/opac/SearchBarChunk.js'></script>
-		<script language='javascript' src='/js/opac/GlobalInit.js'></script>
+		[%
+			IF cgi.user_agent("MSIE");
+				INCLUDE FASTJS batch=util_batch; 
+				INCLUDE FASTJS batch=ils_batch; 
+				INCLUDE FASTJS batch=widget_batch; 
+				INCLUDE FASTJS batch=page_batch; 
 
-		<script language='javascript' src='/js/opac/LocationTree.js'></script>
-		<script language='javascript' src='/js/widgets/xtree.js'></script>
+			ELSE;
+				INCLUDE JS batch=util_batch;
+				INCLUDE JS batch=ils_batch;
+				INCLUDE JS batch=widget_batch;
+				INCLUDE JS batch=page_batch;
+			END;
+		%]
+
 		<script language='javascript' src='/js/util/OrgTree.js'></script>
 
-
-
-		<script language='javascript' src='/js/opac/LoginPage.js'></script>
-		<script language='javascript' src='/js/util/UserSession.js'></script>
-		
-
-		<script language='javascript' src='/js/opac/AbstractRecordResultPage.js'></script>
-		<script language='javascript' src='/js/opac/HTMLChunks.js'></script>
-		<script language='javascript' src='/js/opac/XULEvents.js'></script>
-		<script language='javascript' src='/js/opac/MRResultPage.js'></script>
-		<script language='javascript' src='/js/opac/RecordResultPage.js'></script>
-		<script language='javascript' src='/js/opac/RecordDetailPage.js'></script>
-		
-		<script language='javascript' src='/js/opac/LogoutPage.js'></script>
-		<script language='javascript' src='/js/opac/AboutPage.js'></script>
-		<script language='javascript' src='/js/opac/AdvancedSearchPage.js'></script>
-		<script language='javascript' src='/js/opac/MyOPACPage.js'></script>
-
-		<script language='javascript' src='/js/widgets/menu/ContextMenu.js'></script>
-		<script language='javascript' src='/js/widgets/menu/ContextMenuManager.js'></script>
-		<script language='javascript' src='/js/widgets/Survey.js'></script>
-		<script language='javascript' src='/js/widgets/ProgressBar.js'></script>
-		<script language='javascript' src='/js/widgets/Box.js'></script>
-		<script language='javascript' src='/js/widgets/ListBox.js'></script>
-		<script language='javascript' src='/js/widgets/SideBar.js'></script>
-		<!-- -->
-
+		[% top_target = cgi.param("top_target"); %]
 
 		<frameset cols='100%'>
 
@@ -56,7 +99,7 @@
 				width			= '100%' 
 				name			= 'appframe' 
 				id				= 'appframe' 
-				src			= '/opac/?target=start'
+				src			= '/opac/?target=[%- IF top_target; top_target; ELSE; "start";END; %]';
 			/>	
 
 		</frameset>

@@ -30,8 +30,7 @@
 						WRAPPER html/table class='record_result_box', id='record_result_box'; 
 							WRAPPER html/thead class='record_result_thead'; 
 								WRAPPER html/row id='record_result_thead_row';
-									cell(); 
-									cell(id='hit_count_cell', class='hit_count_cell'); 
+									cell(id='hit_count_cell', nowrap='nowrap', colspan='2', class='hit_count_cell'); 
 								END;
 							END;
 						END;
@@ -41,8 +40,6 @@
 
 					WRAPPER html/cell class='record_sidebar_cell' id='record_sidebar_cell' valign="top";
 						box( id='record_sidebar_box' );
-							#class='record_sidebar_wrapper_box record_sidebar_wrapper_visible');
-							#END;
 					END;
 
 				END;
@@ -50,10 +47,6 @@
 				
 			END;
 
-			lines(1);
-			INCLUDE opac/pages/chunks/next_prev_box.ttk count=1;
-			INCLUDE opac/pages/chunks/record_context_menu.ttk;
-		
 		END; # body
 
 	END; # html

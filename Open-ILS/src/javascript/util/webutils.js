@@ -1,15 +1,21 @@
 
 function hideMe(obj) {
 	if(!obj)  return;
-	add_css_class( obj, "hide_me");
-	remove_css_class( obj, "show_me");
+	//remove_css_class( obj, "show_me");
+	//add_css_class( obj, "hide_me");
+	obj.style.visibility = "hidden";
+	obj.style.display = "none";
 }
 
 function showMe(obj) {
 	if(!obj)  return;
-	add_css_class( obj, "show_me");
-	remove_css_class( obj, "hide_me");
+	//remove_css_class( obj, "hide_me");
+	//add_css_class( obj, "show_me");
+	obj.style.visibility = "visible";
+	obj.style.display = "block";
 }
+
+
 
 function grabCharCode(evt) {
 	evt = (evt) ? evt : ((window.event) ? event : null); /* for mozilla and IE */
@@ -455,20 +461,20 @@ function findPosX(obj)
 					return curleft;
 }
 
-function findPosY(obj)
-{
-		var curtop = 0;
-			if (obj.offsetParent)
-					{
-								while (obj.offsetParent)
-											{
-															curtop += obj.offsetTop
-																			obj = obj.offsetParent;
-																	}
-									}
-				else if (obj.y)
-							curtop += obj.y;
-					return curtop;
+function findPosY(obj) {
+	var curtop = 0;
+
+	if (obj.offsetParent) { 
+		while (obj.offsetParent) {
+			curtop += obj.offsetTop
+			obj = obj.offsetParent;
+		}
+	} else {
+		if (obj.y)
+			curtop += obj.y;
+	}
+
+	return curtop;
 }
 
 

@@ -24,6 +24,7 @@
 
 				WRAPPER html/table width='100%';
 
+
 					WRAPPER html/row;
 						cell(width='42%', align='right', content = tm.username);
 						cell(width='3%');

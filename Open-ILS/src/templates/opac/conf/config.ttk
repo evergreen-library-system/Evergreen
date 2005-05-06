@@ -55,6 +55,7 @@
 	MACRO h(n,t)		WRAPPER html/h			size=n	text=t;	END;
 	MACRO center		WRAPPER html/center;				content;	END;
 	MACRO box			WRAPPER html/div;					content;	END;
+	MACRO span			WRAPPER html/span;				content;	END;
 
 	MACRO cellbox		WRAPPER html/cell;
 		WRAPPER html/div; content; END;

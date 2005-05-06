@@ -36,6 +36,29 @@ sub retrieve_stat_cats {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_ranged_stat_cats",
+	api_name	=> "open-ils.circ.stat_cat.asset.multirange.retrieve");
+
+sub retrieve_ranged_stat_cats {
+	my( $self, $client, $user_session, $orglist ) = @_;
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+	if(!$orglist) { $orglist = [ $user_obj->home_ou ]; }
+
+	# uniquify, yay!
+	my %hash = map { ($_ => 1) } @$orglist;
+	$orglist = [ keys %hash ];
+
+	warn "range: @$orglist\n";
+
+	my	$method = "open-ils.storage.multiranged.fleshed.asset.stat_cat.all.atomic";
+	return $apputils->simple_scalar_request(
+				"open-ils.storage", $method, $orglist );
+}
+
+
+
 
 __PACKAGE__->register_method(
 	method	=> "stat_cat_create",
@@ -237,10 +260,6 @@ sub retrieve_maps {
 
 	return $apputils->simple_scalar_request("open-ils.storage", $method, $target);
 }
-
-
-
-
 
 
 

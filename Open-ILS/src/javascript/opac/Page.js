@@ -50,8 +50,10 @@ Page.prototype.setLocDisplay = function(name) {
 		names.join("</span> / <span class='breadcrumb_label'>") + 
 		"</span>";
 
+	/*
 	if(globalSearchBarFormChunk)
 		globalSearchBarFormChunk.resetPage();
+		*/
 
 }
 

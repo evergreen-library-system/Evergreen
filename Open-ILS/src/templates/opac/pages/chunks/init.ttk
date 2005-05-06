@@ -36,10 +36,10 @@
 				parent.globalAppFrame		= parent.frames["appframe"];
 
 				if(parent.globalAppFrame) {
-					parent.globalRootURL		= "'_ url _'";
+					parent.globalRootURL		= "' _ url _ '";
 					parent.globalRootPath	= "/opac/";
-					parent.globalPort			= "'_ port _'";
-					parent.globalPageTarget	= "'_ target _'";
+					parent.globalPort			= "' _ port _ '";
+					parent.globalPageTarget	= "' _ target _ '";
 					parent.isSSL				= "' _ ssl _ '";
 					parent.globalInit();
 				} else {

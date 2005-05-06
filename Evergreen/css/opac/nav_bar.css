@@ -55,10 +55,14 @@
 }
 
 
-.now_searching_cell{
+#now_searching_cell{
 	text-align:left;
 	padding-left: 5px;
 	font-size: .75em;  
+}
+
+.front_now_searching {
+	font-size: 100%;
 }
 
 .search_range_cell{
@@ -77,4 +81,8 @@
 
 #search_bar_form {
 	vertical-align: middle;
+}
+
+
+#front_search_form {
 }

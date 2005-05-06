@@ -7,10 +7,10 @@
 		IF id;	" id='" _ id _ "'"; END;
 		IF ! content;	"/"; END;
 	">";
-	IF content;
-		content;
-		"</select>";
-	END;
+
+	IF content; content; END;
+
+	"</select>";
 
 %]
 

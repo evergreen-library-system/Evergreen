@@ -185,12 +185,14 @@ sub _add_update_addresses {
 			$current_id = $address->id();
 			$address = _add_address($session,$address);
 
-			if( $patron->billing_address() == $current_id ) {
+			if( $patron->billing_address() and 
+					$patron->billing_address() == $current_id ) {
 				$new_patron->billing_address($address->id());
 				$new_patron->ischanged(1);
 			}
 
-			if( $patron->mailing_address() == $current_id ) {
+			if( $patron->mailing_address() and
+					$patron->mailing_address() == $current_id ) {
 				$new_patron->mailing_address($address->id());
 				$new_patron->ischanged(1);
 			}

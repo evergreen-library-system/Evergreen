@@ -11,7 +11,8 @@ var globalOPACStartPage = null;
 function OPACStartPage() {
 
 	debug("In OPACStartPage()");
-	this.searchBar			= new SearchBarChunk();
+	//this.searchBar			= new SearchBarChunk();
+	this.searchBrFormChunk = new SearchBarFormChunk();
 
 	if( globalOPACStartPage ) {
 		return globalOPACStartPage; 
@@ -28,7 +29,7 @@ OPACStartPage.prototype.instance = function() {
 }
 
 OPACStartPage.prototype.init = function() {
-	this.searchBar.reset();
+	//this.searchBar.reset();
 	globalSearchBarFormChunk.resetPage();
 	/*
 	var menu = globalMenuManager.buildMenu("record_result_row","record_result_row_1");

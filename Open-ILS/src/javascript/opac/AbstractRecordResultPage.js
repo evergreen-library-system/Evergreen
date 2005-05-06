@@ -33,7 +33,6 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.hitsPerPage		= 8;	 /* how many hits are displayed per page */
 	this.resetPage();
 
-	this.searchDepth		= 0; /* default to the current search location */
 	this.statusBar			= getById("top_status_bar_table");
 	this.theadDrawn		= false;
 	this.bigOlBox			= getById("big_ol_box");
@@ -388,12 +387,22 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 		( parseInt(i) + 1 ) + " to " + max + " of " + this.hitCount));
 
 	hcell.appendChild(createAppTextNode(" "));
+	hcell.appendChild(createAppTextNode(" "));
+	hcell.appendChild(createAppTextNode(" "));
 
-	hcell.appendChild( prev );
+	/*
+	var div = createAppElement("div");
+	div.appendChild(createAppTextNode("."));
+	div.setAttribute("style", "color:#FFF;float:left;width:10px;border:1px solid black;position:relative");
+	hcell.appendChild(div);
+	*/
+
+	hcell.appendChild(prev);
 	var span = createAppElement("span");
 	span.appendChild(createAppTextNode(" ... "));
 	hcell.appendChild(span);
-	hcell.appendChild( next );
+	hcell.appendChild(next);
+
 
 	
 }

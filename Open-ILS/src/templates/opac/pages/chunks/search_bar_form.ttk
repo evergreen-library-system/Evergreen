@@ -3,7 +3,7 @@
 
 		# our text map
 		tm = global.textmap.opac.search_bar;
-	
+
 		space(2);
 		input( type='hidden', name='target', value='mr_result');
 		input( type='hidden', name='page', value='0');
@@ -21,6 +21,7 @@
 		END;
 	
 		space(1);
+
 		input(type='submit', id='mr_search_button', 
 				value=tm.search, onclick='alert("help");' );
 

@@ -52,7 +52,6 @@ MRResultPage.prototype.next = function() {
 
 
 MRResultPage.prototype.prev = function() {
-	debug("Previous");
 	if(this.page == 0 ) return;
 
 
@@ -136,9 +135,6 @@ MRResultPage.prototype.doSearch = function() {
 	if(this.searchDepth == null)
 		this.searchDepth = globalSearchDepth;
 
-	debug("Current search depth: " + depth);
-	debug("My search depth: " + this.searchDepth);
-
 	/* see if this is a new search */
 	if(	string != this.string				|| 
 			stype != this.stype					||
@@ -147,15 +143,13 @@ MRResultPage.prototype.doSearch = function() {
 		this.resetSearch();
 	}
 
+
 	this.searchDepth		= depth;
 	this.searchLocation	= location;
 	this.stype				= stype;
 	this.string				= string;
 	this.page				= parseInt(paramObj.__page);
 	this.searchOffset		= this.page * this.hitsPerPage;
-
-
-	//this.progressBar.progressStart();
 
 	this.resetPage();
 

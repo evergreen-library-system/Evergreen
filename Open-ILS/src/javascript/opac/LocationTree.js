@@ -43,6 +43,8 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 
 	this.treeContainerBox = getById("ot_nav_widget");
 	this.treeBox = getById("ot_nav_widget_box");
+	debug("Tree container " + this.treeContainerBox );
+	debug("Tree box " + this.treeBox );
 	swapClass( this.treeContainerBox, "nav_bar_hidden", "nav_bar_visible" );
 
 	if(this.treeBox && this.treeBox.firstChild.nodeType == 3) {

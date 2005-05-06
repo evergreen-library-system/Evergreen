@@ -33,14 +33,21 @@ SearchBarFormChunk.prototype.resetPage = function() {
 
 	try{ this.search_query.focus(); } catch(E) {}
 
-	for( var index in globalOrgTypes ) {
-		var otype = globalOrgTypes[index]
-		var select =  new Option(otype.name(), otype.depth());
-
-		if( otype.depth() == globalSearchDepth )
-			select.selected = true;
-
-		this.searchRange.options[index] = select;
+	if(this.searchRange) {
+		for( var index in globalOrgTypes ) {
+			var otype = globalOrgTypes[index]
+			var select =  new Option(otype.name(), otype.depth());
+	
+			debug("org depth " + otype.name() + " : " + otype.depth() );
+			if( otype.depth() == globalSearchDepth ) {
+				debug("Building range selector with depth " 
+						+ globalSearchDepth  + " and name " + otype.name() );
+				select.selected = true;
+				//this.searchRange.selectedIndex
+			}
+	
+			this.searchRange.options[index] = select;
+		}
 	}
 
 }

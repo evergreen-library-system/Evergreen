@@ -53,69 +53,43 @@
 .result_odd {}
 .result_even { background: #CCF; border: 2px solid #CCF; }
 
-/*
-.record_sidebar_wrapper_box { 
+#record_sidebar_box { 
+	vertical-align: top;
 	width: 200px;
-	margin-left: 10px;
 }
 
-.record_sidebar_box { 
-	margin-left: 10px;
-	padding: 2px;
-}
-
-
-.record_sidebar_content_box {
-	border: 2px dashed #99C;
-	font-size: 95%;
-	padding: 2px;
-}
-
-.sidebar_label {
-	background: #FCC;
-}
-*/
-
-
-.record_next_prev_links_box {
-	width: 100%;
-	-moz-border-radius: 10px;
-}
-
-.record_prev_button {
-	-moz-border-radius: 10px;
-	background: #99C;
-	width: 32%;
-	float: left;
-	text-align: center;
-	border: 2px solid #666666;
-}
 
 
 .record_next_button {
-	-moz-border-radius: 10px;
-	background: #99C;
-	width: 32%;
-	float: right;
-	text-align: center;
-	border: 2px solid grey;
 }
 
-
-/*
-.record_sidebar_wrapper_visible {
-	visibility: visible;
-	display: block;
+.record_next_button_inactive {
+	color: #888;
 }
 
-.record_sidebar_wrapper_hidden {
-	visibility: hidden;
-	display: none;
+.record_next_button_inactive:hover {
+	text-decoration: none;
+	color: #888;
 }
-*/
+
+.record_next_button_inactive:active {
+	text-decoration: none;
+	color: #888;
+}
+
+.record_next_button_inactive:visited {
+	text-decoration: none;
+	color: #888;
+}
+
+.record_next_button_active {
+	text-decoration: underline;
+}
+
 
 .hit_count_cell { 
-	padding-left: 10px;
+	padding-left: 2px;
+	font-weight: bold;
 }
 
 .copy_count_cell {

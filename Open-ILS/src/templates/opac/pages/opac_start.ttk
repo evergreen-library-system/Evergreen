@@ -1,26 +1,114 @@
 
 [%
-	tm = global.textmap.opac;
-
 	WRAPPER html/html;
 
-		WRAPPER html/head title=tm.basic_search.page_title;
+		WRAPPER html/head title='Evergreen';
 			INCLUDE opac/pages/chunks/css_includes.ttk;
 		END;
 
 		WRAPPER html/body id='body'  onload='pageInit();';
 
-			INCLUDE opac/pages/chunks/body_header.ttk;
+			WRAPPER html/center; 
+				lines(2);
+				img( src='/images/main_logo.jpg');	
+				lines(4);
+				PROCESS front_search; 
+			END;
 
-			#"HTML IS HERE";
+			INCLUDE opac/pages/chunks/org_tree.ttk;
+
+		END; 
+	END; 
+
+	# ---------------------------------------------------------------------------
+	# main search form
+	# ---------------------------------------------------------------------------
+	BLOCK front_search;
+
+		WRAPPER html/div id='front_search_form';
+
+			"Now searching ";
+			lines(1);
+#WRAPPER html/div;
+				span(id='now_searching_cell', class='front_now_searching');
+#			END;
+
+			lines(2);
+
+			input( type='hidden', name='target', value='mr_result');
+			input( type='hidden', name='page', value='0');
+	
+			input(id='mr_search_query',  name='mr_search_query',  
+					type='textarea', size='54');
+		
+			space(1);
+			PROCESS stype_selector;
+
+			lines(2);
+			input(type='submit', id='mr_search_button', 
+					value="Search", onclick='alert("help");' );
 
 
-		END; # - body
-	END; # - html
+			space(3);
+			PROCESS location_input;
+
+			space(3);
+			PROCESS search_range;
+			
+		
+		END;
+	END;
+
+
+	# ---------------------------------------------------------------------------
+	# search type
+	# ---------------------------------------------------------------------------
+	BLOCK stype_selector;
+		WRAPPER html/select name='mr_search_type' id='mr_search_type';
+			option(value='title',	selected='selected', content="Title");
+			option(value='author',	content='Author');
+			option(value='subject', content='Subject');
+			option(value='keyword', content='Keyword');
+		END;
+	END;
+
+
+	# ---------------------------------------------------------------------------
+	# location button
+	# ---------------------------------------------------------------------------
+	BLOCK location_input;
+		input( type='submit', name='tree_button', value="Location", id='location_select_button'); 
+	END;
+
+
+	# ---------------------------------------------------------------------------
+	# search range
+	# ---------------------------------------------------------------------------
+	BLOCK search_range;
+		"Search Range";
+		space(2);
+		WRAPPER html/select 
+			name='search_range_select' 
+			id='search_range_select'
+			onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
+		END;
+	END;
 
 %]
 
+<script language='javascript'>
+	var obj = document.getElementById("location_select_button");
+	obj.onclick = function(evt) {
+		evt = (evt) ? evt : ((window.event) ? event : null);
+		var target = (evt.target) ? evt.target : evt.srcElement;
+		if(evt)
+			globalPage.locationTree.toggle(target);
+	}
+</script>
 
 
 
-		
+
+	
+
+

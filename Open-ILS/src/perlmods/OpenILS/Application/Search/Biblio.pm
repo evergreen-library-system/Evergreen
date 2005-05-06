@@ -277,14 +277,6 @@ sub biblio_search_isbn {
 	my $method = $self->method_lookup("open-ils.search.biblio.marc");
 	my ($records) = $method->run( $cat_search_hash->{isbn}, $isbn );
 
-=head
-	for my $i (@$records) { 
-		if(defined($i)) { 
-			push @ids, $i->[0]; 
-		}
-	}
-=cut
-
 	my $size = @$records;
 	return { count => $size, ids => $records };
 }
@@ -316,6 +308,54 @@ sub biblio_barcode_to_copy {
 	return $record->[0];
 
 }
+
+__PACKAGE__->register_method(
+	method	=> "biblio_id_to_copy",
+	api_name	=> "open-ils.search.asset.copy.batch.retrieve",
+);
+
+# turns a barcode into a copy object
+sub biblio_id_to_copy { 
+	my( $self, $client, $ids ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("search.biblio.batch.retrieve needs a id to search")
+			unless defined $ids;
+
+	warn "copy search for ids @$ids\n";
+	my $record = OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.direct.asset.copy.batch.retrieve.atomic",
+			@$ids );
+
+	return $record;
+
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "fleshed_copy_retrieve",
+	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve",
+);
+
+# turns a barcode into a copy object
+sub fleshed_copy_retrieve { 
+	my( $self, $client, $ids ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("search.biblio.batch.retrieve needs a id to search")
+			unless defined $ids;
+
+	warn "fleshed copy search for id @$ids\n";
+	my $copy = OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.fleshed.asset.copy.batch.retrieve.atomic",
+			@$ids );
+
+	return $copy;
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "biblio_barcode_to_title",
@@ -811,6 +851,25 @@ sub retrieve_all_copy_locations {
 	}
 	return $shelving_locations;
 }
+
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_all_copy_statuses",
+	api_name	=> "open-ils.search.config.copy_status.retrieve.all" );
+
+my $copy_statuses;
+sub retrieve_all_copy_statuses {
+	my( $self, $client ) = @_;
+	if(!$copy_statuses) {
+		$copy_statuses = $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.config.copy_status.retrieve.all.atomic" );
+	}
+	return $copy_statuses;
+}
+
+
 
 
 

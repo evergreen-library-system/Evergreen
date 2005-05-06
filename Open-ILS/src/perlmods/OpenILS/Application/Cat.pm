@@ -14,6 +14,8 @@ my $apputils = "OpenILS::Application::AppUtils";
 my $utils = "OpenILS::Application::Cat::Utils";
 
 
+
+
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_retrieve",
 	api_name	=> "open-ils.cat.biblio.record.tree.retrieve",
@@ -430,7 +432,7 @@ sub generic_edit_copies_volumes {
 	my( $self, $client, $user_session, $items ) = @_;
 
 	my $method = $self->api_name;
-	$method =~ s/open-ils\.cat/open-ils\.storage/og;
+	$method =~ s/open-ils\.cat/open-ils\.storage\.direct/og;
 	warn "our method is $method\n";
 
 	my $user_obj = 
@@ -439,38 +441,17 @@ sub generic_edit_copies_volumes {
 	warn "updating editor info\n";
 
 	for my $item (@$items) {
-
-		next unless $item;
-
-		if( $method =~ /copy/ ) {
-			new Fieldmapper::asset::copy($item);
-		} else {
-			new Fieldmapper::asset::call_number($item);
-		}
-
 		$item->editor( $user_obj->id );
 	}
 
 	my $session = OpenILS::Application::AppUtils->start_db_session;
 	my $request = $session->request( $method, @$items );
-
-	my $result = $request->recv();
-
-	if(!$request->complete) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		throw OpenSRF::EX::ERROR 
-			("No response from storage on $method");
-	}
-
-	if(UNIVERSAL::isa($result, "Error")) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		throw $result ($result->stringify);
-	}
+	my $result = $request->gather(1);
 
 	OpenILS::Application::AppUtils->commit_db_session($session);
 
 	warn "looks like we succeeded\n";
-	return $result->content;
+	return $result;
 }
 
 
@@ -622,6 +603,117 @@ sub volume_tree_add {
 	OpenILS::Application::AppUtils->commit_db_session($session);
 
 	return scalar(@$volumes);
+
+}
+
+__PACKAGE__->register_method(
+	method	=> "copy_update",
+	api_name	=> "open-ils.cat.asset.copy.batch.update",
+);
+
+sub copy_update {
+	my($self, $client, $user_session, $copies) = @_;
+
+	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
+
+	my $session = $apputils->start_db_session();
+	for my $copy (@$copies) {
+		$copy->editor($user_obj->id);
+		my $req = $session->request(
+			"open-ils.storage.direct.asset.copy.update",
+			$copy );
+		my $status = $req->gather(1);
+	}
+
+	$apputils->commit_db_session($session);
+	return 1;
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "fleshed_copy_update",
+	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update",
+);
+
+sub fleshed_copy_update {
+	my($self, $client, $user_session, $copies) = @_;
+
+	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
+
+	my $session = $apputils->start_db_session();
+
+	warn "Updating copies " . Dumper($copies) . "\n";
+	
+	for my $copy (@$copies) {
+
+		warn "Gathering stat maps for copy " . $copy->id . "\n";
+		my $stat_maps = $session->request(
+			"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy",
+			$copy->id )->gather(1);
+
+		$copy->editor($user_obj->id);
+
+		for my $stat_entry (@{$copy->stat_cat_entries}){ 
+			_copy_update_stat_cats( 
+					$session, $copy, $stat_maps, $stat_entry );
+		}
+
+
+		# clean up stale stat maps for the copy
+		for my $map (@$stat_maps) {
+			# if there is no stat cat entry on the copy who's id matches the
+			# current map's id, remove the map from the database
+			if(! grep { $_->id == $map->stat_cat_entry } 
+									@{$copy->stat_cat_entries} ) {
+
+				warn "Deleting copy stat map " . Dumper($map) . "\n";
+				my $req = $session->request(
+					"open-ils.storage.direct.asset.stat_cat_entry_copy_map.delete",
+					$map );
+				$req->gather(1);
+			}
+		}
+
+
+		# if we're fleshed, change back to id's
+		if(ref($copy->status)) {
+			$copy->status( $copy->status->id ); }
+
+		if(ref($copy->location)) {
+			$copy->location( $copy->location->id ); }
+
+
+		my $req = $session->request(
+			"open-ils.storage.direct.asset.copy.update",
+			$copy );
+		my $status = $req->gather(1);
+	}
+
+
+	$apputils->commit_db_session($session);
+	return 1;
+}
+
+sub _copy_update_stat_cats {
+	my ( $session, $copy, $stat_maps, $entry ) = @_;
+
+	# see if this map already exists
+	for my $map (@$stat_maps) {
+		if( $map->stat_cat_entry == $entry->id ) {
+			return;
+		}
+	}
+
+	warn "Creating new stat map for stat  " . 
+		$entry->stat_cat . " and copy " . $copy->id . "\n";
+
+	# if not, create it
+	$entry->clear_id;
+	my $request = $session->request(
+		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.create",
+		$entry );
+	my $status = $request->gather(1);
 
 }
 
