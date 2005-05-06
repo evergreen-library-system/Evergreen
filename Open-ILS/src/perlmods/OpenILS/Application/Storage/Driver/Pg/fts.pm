@@ -17,7 +17,7 @@
 		my $newterm = join('&', $self->words);
 
 		if (@{$self->nots}) {
-			$newterm = '('.$newterm.')&('. join('|', $self->nots) . ')';
+			$newterm = '('.$newterm.')&!('. join('|', $self->nots) . ')';
 		}
 
 		$log->debug("Compiled term is [$newterm]", DEBUG);
