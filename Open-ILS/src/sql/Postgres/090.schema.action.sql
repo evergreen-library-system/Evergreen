@@ -30,18 +30,21 @@ CREATE TABLE action.survey_answer (
 	answer		TEXT	NOT NULL
 );
 
+CREATE SEQUENCE action.survey_response_group_id_seq;
+
 CREATE TABLE action.survey_response (
 	id		BIGSERIAL	PRIMARY KEY,
+	response_group_id	INT,
 	usr		INT, -- REFERENCES actor.usr
 	survey		INT		NOT NULL REFERENCES action.survey,
 	question	INT		NOT NULL REFERENCES action.survey_question,
 	answer		INT		NOT NULL REFERENCES action.survey_answer,
-	answer_date	DATE,
-	effective_date	DATE		NOT NULL DEFAULT NOW()::DATE
+	answer_date	TIMESTAMP WITH TIME ZONE,
+	effective_date	TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 CREATE OR REPLACE FUNCTION action.survey_response_answer_date_fixup () RETURNS TRIGGER AS '
 BEGIN
-	NEW.answer_date := NOW()::DATE;
+	NEW.answer_date := NOW();
 	RETURN NEW;
 END;
 ' LANGUAGE 'plpgsql';
@@ -49,6 +52,7 @@ CREATE TRIGGER action_survey_response_answer_date_fixup_tgr
 	BEFORE INSERT ON action.survey_response
 	FOR EACH ROW
 	EXECUTE PROCEDURE action.survey_response_answer_date_fixup ();
+
 
 CREATE TABLE action.circulation (
 	target_copy		BIGINT		NOT NULL, -- asset.copy.id

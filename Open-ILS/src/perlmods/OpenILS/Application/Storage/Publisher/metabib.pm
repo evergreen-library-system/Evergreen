@@ -26,6 +26,9 @@ sub metarecord_copy_count {
 	my $descendants = "actor.org_unit_descendants(u.id)";
 	my $ancestors = "actor.org_unit_ancestors(?)";
 
+	my $copies_visible = 'AND cp.opac_visible IS TRUE';
+	$copies_visible = '' if ($self->api_name =~ /staff/o);
+
 	my $sql = <<"	SQL";
 		SELECT	t.depth,
 			u.id AS org_unit,
@@ -36,7 +39,8 @@ sub metarecord_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
-				  	AND cp.opac_visible IS TRUE)
+				  	$copies_visible
+				)
 			) AS count,
 			sum(
 				(SELECT count(cp.id)
@@ -46,7 +50,8 @@ sub metarecord_copy_count {
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
 				  	AND cp.status = 0
-					AND cp.opac_visible IS TRUE)
+					$copies_visible
+				)
 			) AS available
 
 		  FROM  $ancestors u
@@ -63,6 +68,13 @@ sub metarecord_copy_count {
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.metarecord.copy_count',
+	method		=> 'metarecord_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.metabib.metarecord.copy_count.staff',
 	method		=> 'metarecord_copy_count',
 	api_level	=> 1,
 	stream		=> 1,
@@ -156,8 +168,27 @@ sub search_class_fts {
 
 	my $rank = join(' + ', @fts_ranks);
 
+	my $has_vols = 'AND cn.owning_lib = d.id';
+	my $has_copies = 'AND cp.call_number = cn.id';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE';
+
+	my $visible_count = ', count(DISTINCT cp.id)';
+	my $visible_count_test = 'HAVING count(DISTINCT cp.id) > 0';
+
+	if ($self->api_name =~ /staff/o) {
+		$copies_visible = '';
+		$visible_count_test = '';
+		$has_copies = '' if ($ou_type == 0);
+		$has_vols = '' if ($ou_type == 0);
+	}
+
+	my $rank_calc = ", sum($rank)/count(m.source)";
+	my $rank_order = "ORDER BY 2 DESC";
+	$rank_calc = ',1' if ($self->api_name =~ /unordered/o);
+	$rank_order = '' if ($self->api_name =~ /unordered/o);
+
 	my $select = <<"	SQL";
-		SELECT	m.metarecord, sum($rank)/count(m.source), count(DISTINCT cp.id)
+		SELECT	m.metarecord $rank_calc $visible_count
 	  	  FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
 			$asset_call_number_table cn,
@@ -166,12 +197,12 @@ sub search_class_fts {
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
 			AND cn.record = m.source
-			AND cn.owning_lib = d.id
-			AND cp.call_number = cn.id
-			AND cp.opac_visible IS TRUE
+			$has_vols
+			$has_copies
+			$copies_visible
 	  	  GROUP BY 1
-		  HAVING count(DISTINCT cp.id) > 0
-	  	  ORDER BY 2 DESC;
+		  $visible_count_test
+	  	  $rank_order
 	SQL
 
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
@@ -183,38 +214,41 @@ sub search_class_fts {
 	$client->respond($_) for (@$recs);
 	return undef;
 }
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.title.search_fts.metarecord',
-	method		=> 'search_class_fts',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::title_field_entry',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.author.search_fts.metarecord',
-	method		=> 'search_class_fts',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::author_field_entry',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.subject.search_fts.metarecord',
-	method		=> 'search_class_fts',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::subject_field_entry',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.keyword.search_fts.metarecord',
-	method		=> 'search_class_fts',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::keyword_field_entry',
-	cachable	=> 1,
-);
+
+for my $class ( qw/title author subject keyword/ ) {
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord",
+		method		=> 'search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord.unordered",
+		method		=> 'search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord.staff",
+		method		=> 'search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord.staff.unordered",
+		method		=> 'search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+}
 
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub search_class_fts_count {
@@ -234,10 +268,6 @@ sub search_class_fts_count {
 		
 
 	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
-	my $cache_key = md5_hex($search_class.$term.$ou.$ou_type.'_COUNT_');
-
-	my $cached_recs = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
-	return $cached_recs if (defined $cached_recs);
 
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
@@ -253,6 +283,15 @@ sub search_class_fts_count {
 
 	my $fts_where = $fts->sql_where_clause;
 
+	my $has_vols = 'AND cn.owning_lib = d.id';
+	my $has_copies = 'AND cp.call_number = cn.id';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE';
+	if ($self->api_name =~ /staff/o) {
+		$copies_visible = '';
+		$has_vols = '' if ($ou_type == 0);
+		$has_copies = '' if ($ou_type == 0);
+	}
+
 	# XXX test an "EXISTS version of descendant checking...
 	my $select = <<"	SQL";
 		SELECT	count(distinct  m.metarecord)
@@ -264,9 +303,9 @@ sub search_class_fts_count {
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
 			AND cn.record = m.source
-			AND cn.owning_lib = d.id
-			AND cp.call_number = cn.id
-			AND cp.opac_visible IS TRUE
+			$has_vols
+			$has_copies
+			$copies_visible
 	SQL
 
 	$log->debug("Field Search Count SQL :: [$select]",DEBUG);
@@ -275,42 +314,27 @@ sub search_class_fts_count {
 	
 	$log->debug("Count Search yielded $recs results.",DEBUG);
 
-	OpenSRF::Utils::Cache->new->put_cache( $cache_key => $recs );
-
 	return $recs;
 
 }
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.title.search_fts.metarecord_count',
-	method		=> 'search_class_fts_count',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::title_field_entry',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.author.search_fts.metarecord_count',
-	method		=> 'search_class_fts_count',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::author_field_entry',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.subject.search_fts.metarecord_count',
-	method		=> 'search_class_fts_count',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::subject_field_entry',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.metabib.keyword.search_fts.metarecord_count',
-	method		=> 'search_class_fts_count',
-	api_level	=> 1,
-	stream		=> 1,
-	cdbi		=> 'metabib::keyword_field_entry',
-	cachable	=> 1,
-);
+for my $class ( qw/title author subject keyword/ ) {
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord_count",
+		method		=> 'search_class_fts_count',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord_count.staff",
+		method		=> 'search_class_fts_count',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+}
+
 
 1;

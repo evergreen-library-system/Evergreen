@@ -246,12 +246,10 @@ sub modify_from_fieldmapper {
 		}
 	}
 
-#	my %hash = map { defined $fm->$_ ?
-#				($_ => ''.$fm->$_) :
-#				()
-#			} $fm->real_fields;
-
-	my %hash = map { ($_ => ''.$fm->$_) } $fm->real_fields;
+	my %hash = map { defined $fm->$_ ?
+				($_ => ''.$fm->$_) :
+				()
+			} $fm->real_fields;
 
 	my $au = $obj->autoupdate;
 	$obj->autoupdate(0);

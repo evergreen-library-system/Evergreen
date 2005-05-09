@@ -7,9 +7,8 @@ CREATE TABLE actor.usr (
 	id			SERIAL		PRIMARY KEY,
 	card			INT		UNIQUE, -- active card
 	profile			INT		NOT NULL, -- patron profile
-	usrid			TEXT		NOT NULL UNIQUE,
 	usrname			TEXT		NOT NULL UNIQUE,
-	email			TEXT		CHECK (email ~ $re$^[[:alnum:]_\.]+@[[:alnum:]_]+(?:\.[[:alnum:]_])+$$re$),
+	email			TEXT,
 	passwd			TEXT		NOT NULL,
 	standing		INT		NOT NULL DEFAULT 1 REFERENCES config.standing (id),
 	ident_type		INT		NOT NULL REFERENCES config.identification_type (id),
@@ -29,7 +28,6 @@ CREATE TABLE actor.usr (
 	mailing_address		INT,
 	billing_address		INT,
 	home_ou			INT,
-	gender			CHAR(1) 	NOT NULL CHECK ( LOWER(gender) IN ('m','f') ),
 	dob			DATE		NOT NULL,
 	active			BOOL		NOT NULL DEFAULT TRUE,
 	master_account		BOOL		NOT NULL DEFAULT FALSE,
@@ -71,12 +69,12 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( profile, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 3, 1,'admin', 'admin', 'open-ils', 'Administrator', '', 'm', '1979-01-22', TRUE, TRUE, 1, 'identification' );
-INSERT INTO actor.usr ( profile, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 2, 2,'demo', 'demo', 'demo', 'demo', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
-INSERT INTO actor.usr ( profile, card, usrid, usrname, passwd, first_given_name, family_name, gender, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 1, 3,'athens', 'athens', 'athens', 'athens', 'user', 'm', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
+	VALUES ( 3, 1,'admin', 'open-ils', 'Administrator', '', '1979-01-22', TRUE, TRUE, 1, 'identification' );
+INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
+	VALUES ( 2, 2,'demo', 'demo', 'demo', 'user', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
+	VALUES ( 1, 3,'athens', 'athens', 'athens', 'user', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 
 CREATE TABLE actor.profile (
 	id		SERIAL	PRIMARY KEY,
@@ -88,7 +86,7 @@ INSERT INTO actor.profile (name) VALUES ('STAFF');
 
 CREATE TABLE actor.stat_cat (
 	id		SERIAL  PRIMARY KEY,
-	owner		INT     NOT NULL, -- actor.org_unit.id
+	owner		INT     NOT NULL,
 	name		TEXT    NOT NULL,
 	opac_visible	BOOL NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
@@ -96,8 +94,8 @@ CREATE TABLE actor.stat_cat (
 
 CREATE TABLE actor.stat_cat_entry (
 	id		SERIAL  PRIMARY KEY,
-	stat_cat	INT	NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE,
-	owner		INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+	stat_cat	INT	NOT NULL,
+	owner		INT     NOT NULL,
 	value		TEXT    NOT NULL,
 	CONSTRAINT sce_once_per_owner UNIQUE (owner,value)
 );
@@ -105,8 +103,8 @@ CREATE TABLE actor.stat_cat_entry (
 CREATE TABLE actor.stat_cat_entry_usr_map (
 	id		BIGSERIAL	PRIMARY KEY,
 	stat_cat_entry	TEXT		NOT NULL,
-	stat_cat	INT		NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE,
-	target_usr	INT		NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
+	stat_cat	INT		NOT NULL,
+	target_usr	INT		NOT NULL,
 	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat)
 );
 CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (target_usr);
@@ -138,7 +136,8 @@ CREATE INDEX actor_org_unit_type_parent_idx ON actor.org_unit_type (parent);
 INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium', 0, NULL, FALSE, FALSE );
 INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'System', 1, 1, FALSE, FALSE );
 INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Branch', 2, 2 );
-INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Sub-lib', 5, 3 );
+INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Sub-lib', 3, 3 );
+INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Bookmobile', 3, 3 );
 
 CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
