@@ -231,18 +231,25 @@ RemoteRequest.prototype.isReady = function() {
 RemoteRequest.prototype.getResultObject = function() {
 	var text = this.xmlhttp.responseText;
 	var obj = JSON2js(text);
+
 	if(obj == null) {
 		debug("received null response");
 		return null;
 	}
 
-	if(obj && obj.is_err) { 
+	if(obj.is_err) { 
 		debug("Something's Wrong: " + js2JSON(obj));
 		throw new EXCommunication(obj.err_msg); 
 	}
 
 	if( obj[0] != null && obj[1] == null ) 
-		return obj[0];
+		obj = obj[0];
+
+	/* these are user level exceptions from the server code */
+	if(instanceOf(obj, ex)) {
+		debug("Received user level exception: " + obj.err_msg());
+		throw obj;
+	}
 
 	return obj;
 }
