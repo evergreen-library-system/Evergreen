@@ -60,6 +60,7 @@ AbstractRecordResultPage.prototype.resetPage = function() {
 
 	this.requestBatch = new RequestBatch();
 	this.finalized = false;
+	this.builtLinks = false;
 }
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
@@ -67,12 +68,15 @@ AbstractRecordResultPage.prototype.resetSearch = function() {
 	this.ranks					= new Array();
 	this.hitCount				= 0;					/* hits for the current search */
 	this.searchOffset			= 0;					/* the offset for the search display */
+	this.page					= 0;
 
 }
 
 AbstractRecordResultPage.prototype.gatherIDs = function(result) {
+	if(result == null) return;
 
 	this.hitCount = parseInt(result.count);
+
 	if(this.hitCount < 1 ) {
 		this.finalizePage();
 		return false;
@@ -121,6 +125,8 @@ AbstractRecordResultPage.prototype.complete = function() {
 
 AbstractRecordResultPage.prototype.displayRecord = 
 	function( record, search_id, page_id ) {
+
+	if(record == null) return;
 
 	if(page_id == 0)
 		this.buildNextLinks();
@@ -240,9 +246,13 @@ AbstractRecordResultPage.prototype.displayRecord =
 AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
 	var href = createAppElement("a");
 	add_css_class(href,"record_result_sidebar_link");
+
 	href.setAttribute("href",
 		"?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
-		encodeURIComponent(auth));
+		encodeURIComponent(auth) +
+		"&mr_search_depth=" + this.searchDepth +
+		"&mr_search_location=" + this.searchLocation);
+
 	href.appendChild(createAppTextNode(auth));
 	return href;
 }
@@ -252,7 +262,9 @@ AbstractRecordResultPage.prototype.mkSubjectLink = function(sub) {
 	add_css_class(href,"record_result_sidebar_link");
 	href.setAttribute("href",
 		"?target=mr_result&mr_search_type=subject&page=0&mr_search_query=" +
-		encodeURIComponent(sub));
+		encodeURIComponent(sub) + 
+		"&mr_search_depth=" + this.searchDepth +
+		"&mr_search_location=" + this.searchLocation);
 	href.appendChild(createAppTextNode(sub));
 	return href;
 }
@@ -347,6 +359,11 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 
 
 AbstractRecordResultPage.prototype.buildNextLinks = function() {
+
+	if(this.builtLinks)
+		return;
+	this.builtLinks = true;
+
 
 
 	var obj = this;

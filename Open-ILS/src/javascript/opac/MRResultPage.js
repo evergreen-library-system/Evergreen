@@ -79,7 +79,8 @@ MRResultPage.prototype.prev = function() {
 MRResultPage.prototype.addMenuItems = function(menu, record) {
 		menu.addItem("View Metarecord Details", 
 							function() { alert(record.doc_id()); });
-				xulEvtMRResultDisplayed( menu, record );
+		if(isXUL())
+			xulEvtMRResultDisplayed( menu, record );
 }
 
 
@@ -117,6 +118,8 @@ MRResultPage.prototype.mkLink = function(id, type, value) {
 MRResultPage.prototype.doSearch = function() {
 
 
+	debug("XUL IS " + isXUL() );
+
 	var string			= paramObj.__mr_search_query;
 	var stype			= paramObj.__mr_search_type;
 	var location		= paramObj.__mr_search_location;
@@ -127,6 +130,10 @@ MRResultPage.prototype.doSearch = function() {
 
 	if(depth == null)
 		depth = globalSearchDepth;
+
+	if(depth == null)
+		depth = findOrgDepth(globalLocation.ou_type());
+
 	if(location == null)
 		location = globalLocation.id();
 
@@ -174,28 +181,74 @@ MRResultPage.prototype.doSearch = function() {
 			+ " and offset " + this.searchOffset  +
 			" depth: " + depth + " location: " + location);
 
+	debug("gathering the search count\n");
 
 
-	var request = new RemoteRequest( 
-			"open-ils.search", "open-ils.search.biblio.class", 
-			this.stype, this.string, 
-			this.searchLocation, 
-			this.searchDepth, "50", this.searchOffset );
+	if(this.searchOffset > 0) {
+		this.buildNextLinks();
+		this.doMRSearch();
+
+	} else {
+
+		var creq = new RemoteRequest(
+			"open-ils.search", "open-ils.search.biblio.class.count",
+			this.stype, this.string, this.searchLocation, this.searchDepth );
+	
+		/* this request grabs the search count.  When the counts come back
+			the metarecord ids are collected */
+		var obj = this;
+		creq.setCompleteCallback(
+			function(req) {
+
+				try {
+					obj.hitCount = req.getResultObject();	
+
+				} catch(E) {
+					if(instanceOf(E, ex)) {
+						alert(E.err_msg());
+						return;
+					}
+					else throw E;
+				}
+
+				obj.buildNextLinks();
+				obj.doMRSearch();	
+				debug("Kicking off the record id's request");
+							}
+		);
+		creq.send();
+	}
+}
+
+
+MRResultPage.prototype.doMRSearch = function() {
 
 	var obj = this;
+	var method = "open-ils.search.biblio.class";
+	if( this.hitCount > 1000 )
+		method = method + ".unordered";
+
+	debug("Search method is " + method);
+
+	var request = new RemoteRequest( 
+		"open-ils.search", method,
+		obj.stype, obj.string, 
+		obj.searchLocation, 
+		obj.searchDepth, "100", obj.searchOffset );
+	
 	request.setCompleteCallback(
 		function(req) {
 			var result = req.getResultObject();
+			result.count = obj.hitCount;
 			obj.gatherIDs(result) 
 			obj.collectRecords();
 			obj.requestBatch.remove(req);
 		}
 	);
-
-	this.requestBatch.add(request);
+	obj.requestBatch.add(request);
 	request.send();
-}
 
+}
 
 MRResultPage.prototype.collectRecords = function() {
 
