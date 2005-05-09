@@ -145,6 +145,14 @@ sub search_class_fts {
 	my $term = $args{term};
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
+	my $limit = $args{limit};
+	my $offset = $args{offset};
+
+	my $limit_clause = '';
+	my $offset_clause = '';
+
+	$limit_clause = "LIMIT $limit" if (defined $limit and int($limit) > 0);
+	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
 
 	my $descendants = defined($ou_type) ?
@@ -203,6 +211,7 @@ sub search_class_fts {
 	  	  GROUP BY 1
 		  $visible_count_test
 	  	  $rank_order
+		  $limit_clause $offset_clause
 	SQL
 
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
@@ -230,7 +239,6 @@ for my $class ( qw/title author subject keyword/ ) {
 		api_level	=> 1,
 		stream		=> 1,
 		cdbi		=> "metabib::${class}_field_entry",
-		cachable	=> 1,
 	);
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord.staff",
@@ -246,7 +254,6 @@ for my $class ( qw/title author subject keyword/ ) {
 		api_level	=> 1,
 		stream		=> 1,
 		cdbi		=> "metabib::${class}_field_entry",
-		cachable	=> 1,
 	);
 }
 
