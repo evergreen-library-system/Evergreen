@@ -12,7 +12,7 @@ __PACKAGE__->table( 'actor_usr' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				second_given_name family_name billing_address
-				claims_returned_count home_ou gender dob
+				claims_returned_count home_ou dob
 				active master_account ident_type ident_value
 				ident_type2 ident_value2 net_access_level
 				photo_url create_date expire_date credit_forward_balance

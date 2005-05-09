@@ -35,7 +35,8 @@ sub metarecord_copy_count {
 					JOIN $cn_table cn ON (cn.record = r.source)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
-				  WHERE r.metarecord = ?)
+				  WHERE r.metarecord = ?
+				  	AND cp.opac_visible IS TRUE)
 			) AS count,
 			sum(
 				(SELECT count(cp.id)
@@ -44,7 +45,8 @@ sub metarecord_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
-				  	AND cp.status = 0)
+				  	AND cp.status = 0
+					AND cp.opac_visible IS TRUE)
 			) AS available
 
 		  FROM  $ancestors u
@@ -142,6 +144,7 @@ sub search_class_fts {
 
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
+	my $asset_copy_table = asset::copy->table;
 
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
@@ -154,16 +157,20 @@ sub search_class_fts {
 	my $rank = join(' + ', @fts_ranks);
 
 	my $select = <<"	SQL";
-		SELECT	m.metarecord, sum($rank)/count(m.source)
+		SELECT	m.metarecord, sum($rank)/count(m.source), count(DISTINCT cp.id)
 	  	  FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
 			$asset_call_number_table cn,
+			$asset_copy_table cp,
 			$descendants d
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
 			AND cn.record = m.source
 			AND cn.owning_lib = d.id
+			AND cp.call_number = cn.id
+			AND cp.opac_visible IS TRUE
 	  	  GROUP BY 1
+		  HAVING count(DISTINCT cp.id) > 0
 	  	  ORDER BY 2 DESC;
 	SQL
 
@@ -237,6 +244,7 @@ sub search_class_fts_count {
 
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
+	my $asset_copy_table = asset::copy->table;
 
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
@@ -251,11 +259,14 @@ sub search_class_fts_count {
 	  	  FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
 			$asset_call_number_table cn,
+			$asset_copy_table cp,
 			$descendants d
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
 			AND cn.record = m.source
-			AND cn.owning_lib = d.id;
+			AND cn.owning_lib = d.id
+			AND cp.call_number = cn.id
+			AND cp.opac_visible IS TRUE
 	SQL
 
 	$log->debug("Field Search Count SQL :: [$select]",DEBUG);

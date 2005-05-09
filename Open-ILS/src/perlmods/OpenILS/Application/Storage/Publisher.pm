@@ -38,17 +38,19 @@ sub cachable_wrapper {
 	my @args = @_;
 
 	my %cache_args = (
-		limit	=> 100,
-		offset	=> 0,
-		timeout	=> 300,
+		limit		=> 100,
+		offset		=> 0,
+		timeout		=> 300,
+		cache_page_size	=> 1000,
 	);
 
 	my @real_args;
 	my $key_string = $self->api_name;
 	for (my $ind = 0; $ind < scalar(@args); $ind++) {
-		if (	"$args[$ind]" eq 'limit' ||
-			"$args[$ind]" eq 'offset' ||
-			"$args[$ind]" eq 'timeout' ) {
+		if (	$args[$ind] eq 'limit' ||
+			$args[$ind] eq 'offset' ||
+			$args[$ind] eq 'cache_page_size' ||
+			$args[$ind] eq 'timeout' ) {
 
 			my $key_ind = $ind;
 			$ind++;
@@ -62,14 +64,18 @@ sub cachable_wrapper {
 		push @real_args, $args[$ind];
 	}
 
-	my $cache_key = md5_hex($key_string);
+	my $cache_page = int($cache_args{offset} / $cache_args{cache_page_size});
+	my $cache_key = md5_hex($key_string.$cache_page);
+
 	$log->debug("Key string for cache lookup is $key_string -> $cache_key", DEBUG);
 
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
 	if (defined $cached_res) {
 		$log->debug("Found ".scalar(@$cached_res)." records in the cache", INFO);
 		$log->debug("Values from cache: ".join(', ', @$cached_res), INTERNAL);
-        	$client->respond( $_ ) for ( grep { defined } @$cached_res[$cache_args{offset} .. int($cache_args{offset} + $cache_args{limit} - 1)] );
+		my $start = int($cache_args{offset} - ($cache_page * $cache_args{cache_page_size}));
+		my $end = int(($cache_args{offset} + $cache_args{limit} - 1) - (($cache_page + 1) * $cache_args{cache_page_size}));
+        	$client->respond( $_ ) for ( grep { defined } @$cached_res[ $start .. $end ]);
 		return undef;
 	}
 
@@ -79,7 +85,11 @@ sub cachable_wrapper {
 
         $client->respond( $_ ) for ( grep { defined } @res[$cache_args{offset} .. int($cache_args{offset} + $cache_args{limit} - 1)] );
 
-        OpenSRF::Utils::Cache->new->put_cache( $cache_key => \@res => $cache_args{timeout});
+        OpenSRF::Utils::Cache->new->put_cache(
+		$cache_key =>
+		[@res[int($cache_page * $cache_args{cache_page_size}) .. int(($cache_page + 1) * $cache_args{cache_page_size}) ]] =>
+		$cache_args{timeout}
+	);
 
 	return undef;
 }
