@@ -10,7 +10,6 @@ use OpenSRF::Utils::Cache;
 
 
 #use OpenILS::Application::Search::StaffClient;
-use OpenILS::Application::Search::Web;
 use OpenILS::Application::Search::Biblio;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
@@ -26,24 +25,58 @@ sub child_init {
 	OpenILS::Application::SearchCache->child_init();
 }
 
+# returns -1 when we hit a dumb search 
 sub filter_search {
-	my($self, $string) = @_;
+	my($self, $string, $full) = @_;
 
-	$string =~ s/\s+the\s+/ /i;
-	$string =~ s/\s+an\s+/ /i;
-	$string =~ s/\s+a\s+/ /i;
+	$string =~ s/\s+the\s+/ /oi;
+	$string =~ s/\s+an\s+/ /oi;
+	$string =~ s/\s+a\s+/ /oi;
 
-	$string =~ s/^the\s+//i;
-	$string =~ s/^an\s+//i;
-	$string =~ s/^a\s+//i;
+	$string =~ s/^the\s+//io;
+	$string =~ s/^an\s+//io;
+	$string =~ s/^a\s+//io;
 
-	$string =~ s/\s+the$//i;
-	$string =~ s/\s+an$//i;
-	$string =~ s/\s+a$//i;
+	$string =~ s/\s+the$//io;
+	$string =~ s/\s+an$//io;
+	$string =~ s/\s+a$//io;
 
-	$string =~ s/^the$//i;
-	$string =~ s/^an$//i;
-	$string =~ s/^a$//i;
+	$string =~ s/^the$//io;
+	$string =~ s/^an$//io;
+	$string =~ s/^a$//io;
+
+	if(!$full) { return $string; }
+
+	my @words = qw/ 
+	fiction
+ 	bibliograph
+ 	juvenil    
+ 	histor   
+ 	literatur
+ 	biograph
+ 	stor    
+ 	american 
+ 	videorecord
+ 	count  
+ 	film   
+ 	life  
+ 	book 
+ 	children 
+ 	centur 
+ 	war    
+ 	genealog
+ 	etc    
+	state
+	unit
+	/;
+
+	push @words, "united state";
+
+	for my $word (@words) {
+		if($string =~ /^\s*"?\s*$word\w*\s*"?\s*$/i) {
+			return "";
+		}
+	}
 
 	warn "Cleansed string to: $string\n";
 	return $string;

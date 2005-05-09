@@ -2,6 +2,8 @@ package OpenILS::Application::Search::Biblio;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
+use OpenILS::EX;
+
 use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
@@ -416,12 +418,13 @@ sub barcode_to_mods {
 
 # --------------------------------------------------------------------------------
 
+
+
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_class",
 	api_name	=> "open-ils.search.cat.biblio.class",
-	argc		=> 3, 
-	note		=> "Searches biblio information by search class",
 );
+
 
 sub cat_biblio_search_class {
 
@@ -506,8 +509,12 @@ sub cat_biblio_search_class_id {
 	$limit -= 1;
 
 
-	$string = OpenILS::Application::Search->filter_search($string);
-	if(!$string) { return undef; }
+	my $bool = ($class eq "subject" || $class eq "keyword");
+	$string = OpenILS::Application::Search->filter_search($string, $bool);
+
+	if(!$string) { 
+		return OpenILS::EX->new("SEARCH_TOO_LARGE")->ex();
+	}
 
 	warn "Searching cat.biblio.class.id string: $string offset: $offset limit: $limit\n";
 
@@ -554,36 +561,34 @@ sub cat_biblio_search_class_id {
 
 }
 
-
 __PACKAGE__->register_method(
-	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class",
+	method	=> "biblio_search_class_count",
+	api_name	=> "open-ils.search.biblio.class.count",
 	argc		=> 3, 
 	note		=> "Searches biblio information by search class and returns the IDs",
 );
+sub biblio_search_class_count {
 
-sub biblio_search_class {
+	my( $self, $client, $class, $string, $org_id, $org_type ) = @_;
 
-	my( $self, $client, $class, $string, 
-			$org_id, $org_type, $limit, $offset ) = @_;
+	warn "org: $org_id : depth: $org_type\n";
 
-	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
-
-	$offset		||= 0;
-	$limit		= 100 unless defined($limit and $limit > 0 );
 	$org_id	 	= "1" unless defined($org_id); # xxx
 	$org_type	= 0	unless defined($org_type);
 
 	warn "Searching biblio.class.id\n" . 
 		"string: $string "		. 
-		"\noffset: $offset\n"	.
-		"limit: $limit\n"			.
 		"org_id: $org_id\n"		.
 		"depth: $org_type\n" ;
 
-	$string = OpenILS::Application::Search->filter_search($string);
-	if(!$string) { return undef; }
+	my $bool = ($class eq "subject" || $class eq "keyword");
+	$string = OpenILS::Application::Search->filter_search($string, $bool);
 
+	if(!$string) { 
+		return OpenILS::EX->new("SEARCH_TOO_LARGE")->ex;
+	}
+
+		
 	if( !defined($org_id) or !$class or !$string ) {
 		warn "not enbough args to metarecord search\n";
 		throw OpenSRF::EX::InvalidArg 
@@ -611,11 +616,72 @@ sub biblio_search_class {
 
 	my $count = $request->gather(1);
 	warn "Received count $count\n";
-	# XXX check count size and respond accordingly
 
-	$request = $session->request(	
-		"open-ils.storage.metabib.$class.search_fts.metarecord.atomic",
+	return $count;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class",
+	api_name	=> "open-ils.search.biblio.class",
+);
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class",
+	api_name	=> "open-ils.search.biblio.class.unordered",
+);
+
+sub biblio_search_class {
+
+	my( $self, $client, $class, $string, 
+			$org_id, $org_type, $limit, $offset ) = @_;
+
+	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
+
+	$offset		||= 0;
+	$limit		= 100 unless defined($limit and $limit > 0 );
+	$org_id	 	= "1" unless defined($org_id); # xxx
+	$org_type	= 0	unless defined($org_type);
+
+	warn "Searching biblio.class.id\n" . 
+		"string: $string "		. 
+		"\noffset: $offset\n"	.
+		"limit: $limit\n"			.
+		"org_id: $org_id\n"		.
+		"depth: $org_type\n" ;
+
+	warn "Search filtering string " . time() . "\n";
+	$string = OpenILS::Application::Search->filter_search($string);
+	if(!$string) { return undef; }
+
+	if( !defined($org_id) or !$class or !$string ) {
+		warn "not enbough args to metarecord search\n";
+		throw OpenSRF::EX::InvalidArg 
+			("Not enough args to open-ils.search.cat.biblio.class")
+	}
+
+	$class =~ s/\s+//g;
+
+	if( ($class ne "title") and ($class ne "author") and 
+		($class ne "subject") and ($class ne "keyword") ) {
+		warn "Invalid search class: $class\n";
+		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
+	}
+
+	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord.atomic";
+
+	if($self->api_name =~ /order/) {
+		$method = "open-ils.storage.metabib.$class.search_fts.metarecord.unordered.atomic";
+	}
+
+	warn "MR search method is $method\n";
+
+	my $session = OpenSRF::AppSession->create('open-ils.storage');
+
+	warn "Search making request " . time() . "\n";
+	my $request = $session->request(	
 		#"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
+		$method,
 		term		=> $string, 
 		org_unit => $org_id, 
 		depth		=> $org_type, 
@@ -624,30 +690,29 @@ sub biblio_search_class {
 		);
 
 	my $records = $request->gather(1);
+	warn "Search request complete " . time() . "\n";
+
 	my @all_ids;
 
 	use Data::Dumper;
-	warn "Received from class search " . Dumper($records);
+	warn "Received " . scalar(@$records) . " id's from class search\n";
 
 	# if we just get one, it won't be wrapped in an array
 	if(!ref($records->[0])) {
-		$records = [$records];
-	}
-
+		$records = [$records]; } 
 	for my $i (@$records) { 
 		if(defined($i)) {
 			push @all_ids, $i; 
 		}
 	}
 
-	#my @ids = @all_ids[ $offset..($offset+$limit) ];
 	my @ids = @all_ids;
 	@ids = grep { defined($_->[0]) } @ids;
 
 	$session->finish();
 	$session->disconnect();
 
-	return { count =>$count, ids => \@ids };
+	return { ids => \@ids };
 
 }
 
