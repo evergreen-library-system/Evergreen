@@ -329,7 +329,7 @@ sub modify_from_fieldmapper {
 	asset::copy->has_a( location => 'asset::copy_location' );
 	asset::copy->has_a( circ_lib => 'actor::org_unit' );
 
-	asset::call_number_note->has_a( owning_call_number => 'asset::call_number' );
+	asset::call_number_note->has_a( call_number => 'asset::call_number' );
 
 	asset::call_number->has_a( record => 'biblio::record_entry' );
 	asset::call_number->has_a( creator => 'actor::user' );
