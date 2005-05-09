@@ -14,7 +14,8 @@
 	WRAPPER html/js;
 		'parent.paramObj = new Object();';
 		FOR pname IN cgi.param();
-			'parent.paramObj["__' _  pname _ '"] = decodeURIComponent("'; cgi.param(pname); '");'; "\n";
+			param = cgi.param(pname).replace("\"","\\\"");
+			'parent.paramObj["__' _  pname _ '"] = decodeURIComponent("'; param; '");'; "\n";
 		END;
 	END;
 

@@ -13,6 +13,10 @@
 			INCLUDE opac/pages/chunks/body_header.ttk;
 
 			lines(1);
+			"<center>";
+			box(content = "ADV search evolves from here...");
+			"</center>";
+
 			box(id='adv_search_main_header', content="Advanced Search");
 			lines(1);
 

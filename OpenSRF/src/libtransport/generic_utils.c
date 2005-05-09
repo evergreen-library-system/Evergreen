@@ -16,6 +16,7 @@ void get_timestamp( char buf_36chars[]) {
 	strcat(buf_36chars,mil);
 	free(localtime);
 }
+
 double get_timestamp_millis() {
 	struct timeb t;
 	ftime(&t);

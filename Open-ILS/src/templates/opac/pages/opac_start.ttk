@@ -14,7 +14,6 @@
 				lines(4);
 				PROCESS front_search; 
 			END;
-
 			INCLUDE opac/pages/chunks/org_tree.ttk;
 
 		END; 
@@ -85,12 +84,14 @@
 	# search range
 	# ---------------------------------------------------------------------------
 	BLOCK search_range;
-		"Search Range";
-		space(2);
-		WRAPPER html/select 
-			name='search_range_select' 
-			id='search_range_select'
-			onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
+		WRAPPER html/span;
+			"Expand search to ";
+			space(2);
+			WRAPPER html/select 
+				name='search_range_select' 
+				id='search_range_select'
+				onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
+			END;
 		END;
 	END;
 
@@ -102,7 +103,7 @@
 		evt = (evt) ? evt : ((window.event) ? event : null);
 		var target = (evt.target) ? evt.target : evt.srcElement;
 		if(evt)
-			globalPage.locationTree.toggle(target);
+			globalPage.locationTree.toggle(target, 0, 0);
 	}
 </script>
 

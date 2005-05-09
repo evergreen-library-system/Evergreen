@@ -234,25 +234,18 @@ sub biblio_search_tcn {
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
 			"open-ils.storage.direct.biblio.record_entry.search.tcn_value", $tcn );
-	my $response = $request->recv();
+	my $record_entry = $request->gather(1);
 
-
-	unless ($response) { return []; }
-
-	if(UNIVERSAL::isa($response,"OpenSRF::EX")) {
-		warn "Received exception for tcn search\n";
-		throw $response ($response->stringify);
-	}
-
-	my $record_entry = $response->content;
 	my @ids;
 	for my $record (@$record_entry) {
 		push @ids, $record->id;
 	}
 
-	warn "received ID's for tcn search @ids\n";
+	$session->disconnect();
 
+	warn "received ID's for tcn search @ids\n";
 	my $size = @ids;
+
 	return { count => $size, ids => \@ids };
 
 }
@@ -616,20 +609,13 @@ sub biblio_search_class {
 			org_unit => $org_id, 
 			depth =>$org_type );
 
-	my $response = $request->recv();
-
-	if(UNIVERSAL::isa($response, "OpenSRF::EX")) {
-		throw $response ($response->stringify);
-	}
-
-	my $count = $response->content;
+	my $count = $request->gather(1);
 	warn "Received count $count\n";
 	# XXX check count size and respond accordingly
 
-	$request->finish();
 	$request = $session->request(	
+		"open-ils.storage.metabib.$class.search_fts.metarecord.atomic",
 		#"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
-		"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
 		term		=> $string, 
 		org_unit => $org_id, 
 		depth		=> $org_type, 
@@ -641,7 +627,7 @@ sub biblio_search_class {
 	my @all_ids;
 
 	use Data::Dumper;
-	warn Dumper $records;
+	warn "Received from class search " . Dumper($records);
 
 	# if we just get one, it won't be wrapped in an array
 	if(!ref($records->[0])) {

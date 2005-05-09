@@ -93,7 +93,7 @@
 		<frameset cols='100%'>
 
 			<frame
-				style			= "border:none; border:0px;" 
+				style			= "border:0px;" 
 				frameborder	= '0' 
 				height		= '100%'
 				width			= '100%' 

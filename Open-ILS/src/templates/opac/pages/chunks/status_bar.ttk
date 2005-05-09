@@ -5,6 +5,19 @@
 
 		WRAPPER html/cell class='search_range_cell' nowrap='nowrap';
 	
+			
+			WRAPPER html/span;
+				space(3);
+				"Expand search to ";
+				space(1);
+	
+				WRAPPER html/select 
+					name='search_range_select' 
+					id='search_range_select'
+					onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
+				END;
+			END;
+
 			input( type='submit', value="Location", id='location_select_button' 
 				onclick='
 				var evt = event;
@@ -14,15 +27,6 @@
 					globalPage.locationTree.toggle(target);'
 			); 
 
-			space(3);
-			"Search Range";
-			space(1);
-
-			WRAPPER html/select 
-				name='search_range_select' 
-				id='search_range_select'
-				onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
-			END;
 	
 		END;
 

@@ -1,6 +1,7 @@
 
 var XML_HTTP_GATEWAY = "gateway";
-var XML_HTTP_SERVER = "spacely.georgialibraries.org";
+//var XML_HTTP_SERVER = "spacely.georgialibraries.org";
+var XML_HTTP_SERVER = "gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
 

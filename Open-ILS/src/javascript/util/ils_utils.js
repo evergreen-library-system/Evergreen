@@ -64,7 +64,18 @@ function buildOrgTreeWidget(org_node) {
 		item = new WebFXTreeItem(org_node.name());
 	}
 
-	item.action = "javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');";
+	item.action = 
+		"javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');" +
+		"globalPage.locationTree.hide();";
+
+	/*
+	item.action = function() {
+		globalPage.updateSelectedLocation(org_node.id());
+		globalPage.globalMenuManager.hideAll();
+	}
+	*/
+
+
 	globalPage.treeWidgetElements[item.id] = org_node;
 
 	for( var index in org_node.children()) {

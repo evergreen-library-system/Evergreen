@@ -807,6 +807,7 @@ sub send {
 
 sub finish {
 	my $self = shift;
+	return unless $self->session;
 	$self->session->remove_app_request($self);
 	delete($$self{$_}) for (keys %$self);
 }
@@ -942,7 +943,7 @@ sub gather {
 	my $self = shift;
 	my $finish = shift;
 	$self->wait_complete;
-	my $resp = $self->recv;
+	my $resp = $self->recv( timeout => 20 );
 	if( $self->failed() ) { 
 		throw OpenSRF::EX::ERROR
 			($self->failed()->stringify());

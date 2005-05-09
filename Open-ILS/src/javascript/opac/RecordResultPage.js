@@ -240,11 +240,6 @@ RecordResultPage.prototype.collectRecords = function() {
 
 	var i = this.searchOffset;
 
-	var hcell = getById("hit_count_cell");
-	hcell.innerHTML = "Hits";
-	hcell.innerHTML += "&nbsp;&nbsp;";
-	hcell.innerHTML += this.hitCount;
-
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];
 

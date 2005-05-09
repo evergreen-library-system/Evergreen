@@ -89,7 +89,10 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 			if(result.ids[i]==null || result.ids[i][0] == null) break;
 			var offset = parseInt(i) + parseInt(this.searchOffset);
 			this.recordIDs[offset] = result.ids[i][0];
-			this.ranks[offset] = parseFloat(result.ids[i][1]);
+			var rank = parseFloat(result.ids[i][1]);
+			if(rank == 0)
+				rank = 0.00000001; /* protect divide by 0 */
+			this.ranks[offset] =  rank;
 			/*
 			debug("adding ranks[" + offset + "] = " + result.ids[i][1] + 
 					"  \nrecordIDs["+offset+"], result.ids["+i+"][0]");

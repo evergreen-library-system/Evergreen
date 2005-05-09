@@ -17,7 +17,9 @@ LocationTree.prototype.buildOrgTreeWidget = function(org_node) {
 		item = new WebFXTreeItem(org_node.name());
 	}
 
-	item.action = "javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');";
+	item.action = 
+		"javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');" +
+		"globalPage.locationTree.hide();";
 
 	for( var index in org_node.children()) {
 		var childorg = org_node.children()[index];
@@ -31,13 +33,14 @@ LocationTree.prototype.buildOrgTreeWidget = function(org_node) {
 
 
 LocationTree.prototype.hide = function() {
-	/*
+	this.treeContainerBox = getById("ot_nav_widget");
 	if(this.treeContainerBox &&  
 			this.treeContainerBox.className.indexOf("nav_bar_visible") != -1 ) {
 		swapClass( this.treeContainerBox, "nav_bar_hidden", "nav_bar_visible" );
 	}
-	*/
 }
+
+
 
 LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 
@@ -51,7 +54,7 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 		setTimeout("renderTree()", 5 );
 	}
 
-	if( button_div && !offsetx && !offsety) {
+	if( button_div && offsetx == null && offsety == null ) {
 		var x = findPosX(button_div);
 		var y = findPosY(button_div);
 		var height = getObjectHeight(button_div);

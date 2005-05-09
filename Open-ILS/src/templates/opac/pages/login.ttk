@@ -26,7 +26,7 @@
 
 
 					WRAPPER html/row;
-						cell(width='42%', align='right', content = tm.username);
+						cell(width='42%', align='right', content = "Username");
 						cell(width='3%');
 						cell(width='55%', align='left',
 								content = input( type='textarea', id='login_username', name='username', size='16' ));
@@ -35,7 +35,7 @@
 					row(content = cell(colspan='3', content = lines(2)));
 
 					WRAPPER html/row;
-						cell(width='42%', align='right', content = tm.password);
+						cell(width='42%', align='right', content = "Password");
 						cell( width='3%');
 						cell(width='55%', align='left',
 								content = input( type='password', id='login_password', name='password', size='16' ));

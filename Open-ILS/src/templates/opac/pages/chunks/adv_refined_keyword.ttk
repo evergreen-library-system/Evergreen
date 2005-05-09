@@ -38,7 +38,7 @@
 				WRAPPER html/row;
 					WRAPPER html/cell colspan='4';
 						WRAPPER html/center;
-							input( type='submit', value='Search', onclick='alert("hi");');
+							input( type='submit', value='Search', onclick='alert("Not Implemented, try the left search bar");');
 						END;
 					END;
 				END;

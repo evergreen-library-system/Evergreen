@@ -44,6 +44,8 @@ my $stash;
 my $cache_handle;
 
 
+use constant NO_COPY => 100;
+
 sub initialize {
 	my $self = shift;
 	my $conf = OpenSRF::Utils::SettingsClient->new;
@@ -129,6 +131,8 @@ sub gather_circ_objects {
 		$patron_id );
 
 	my $copy = $copy_req->gather(1)->[0];
+	if(!$copy) { return NO_COPY; }
+
 	$copy->status( $copy->status->name );
 	$circ_objects->{copy} = $copy;
 
@@ -194,7 +198,16 @@ sub permit_circ {
 	my $session	= OpenSRF::AppSession->create("open-ils.storage");
 	
 	# collect items necessary for circ calculation
-	gather_circ_objects( $session, $barcode, $user_id );
+	my $status = gather_circ_objects( $session, $barcode, $user_id );
+
+	if( $status == NO_COPY ) {
+		return { record => undef, 
+			status => NO_COPY, 
+			text => "No copy available with barcode $barcode"
+		};
+	}
+
+
 	
 	$stash->set("run_block", $permission_script);
 

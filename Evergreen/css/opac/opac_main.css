@@ -100,3 +100,7 @@ table { border-collapse: collapse; }
 	display: block;
 }
 
+
+.no_border_body {
+	border: none;
+}

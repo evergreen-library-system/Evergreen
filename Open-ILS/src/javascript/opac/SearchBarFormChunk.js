@@ -33,9 +33,26 @@ SearchBarFormChunk.prototype.resetPage = function() {
 
 	try{ this.search_query.focus(); } catch(E) {}
 
+//	this.resetRange();
+
+}
+
+
+/*
+SearchBarFormChunk.prototype.resetRange = function() {
+
+	this.searchRange			= getById("search_range_select");
+	var orgunit = globalSelectedLocation;
+	if(!orgunit)
+		orgunit = globalLocation;
+
 	if(this.searchRange) {
 		for( var index in globalOrgTypes ) {
-			var otype = globalOrgTypes[index]
+			var otype = globalOrgTypes[index];
+
+			if( otype.depth() > orgunit.ou_type() )
+				continue;
+
 			var select =  new Option(otype.name(), otype.depth());
 	
 			debug("org depth " + otype.name() + " : " + otype.depth() );
@@ -43,19 +60,19 @@ SearchBarFormChunk.prototype.resetPage = function() {
 				debug("Building range selector with depth " 
 						+ globalSearchDepth  + " and name " + otype.name() );
 				select.selected = true;
-				//this.searchRange.selectedIndex
 			}
 	
 			this.searchRange.options[index] = select;
 		}
 	}
-
 }
-	
+*/
+
 	
 function mrSearchSubmitForm() {
 	var search_query		= getById("mr_search_query").value;
 	var search_type		= getById("mr_search_type").value;
+
 
 	var depth = globalSearchDepth;
 	var location = globalSelectedLocation;

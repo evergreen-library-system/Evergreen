@@ -12,7 +12,11 @@
 				
 				anchor(text="Expand All", onclick="globalPage.locationTree.widget.expandAll();");
 				space(3);
-				anchor(text="Collapse All", onclick="globalPage.locationTree.widget.collapseAll();");
+				anchor(text="Collapse All", 
+						onclick="
+							globalPage.locationTree.widget.collapseAll();
+							globalPage.locationTree.widget.expand();
+							");
 				space(3);
 
 			END;

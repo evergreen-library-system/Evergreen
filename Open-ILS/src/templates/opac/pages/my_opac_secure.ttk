@@ -6,9 +6,11 @@
 			js( src='/js/opac/MyOPACSPage.js' );
 			js( src='/js/util/RemoteRequest.js' );
 			js( src='/js/util/webutils.js' );
+
+			'<style type="text/css"> body { border:0; } </style>'; 
 		END;
 
-		WRAPPER html/body onload='';
+		WRAPPER html/body class='no_border_body' onload='';
 			"my secure opac page";
 		
 		END; # - body

@@ -143,7 +143,6 @@ MRResultPage.prototype.doSearch = function() {
 		this.resetSearch();
 	}
 
-
 	this.searchDepth		= depth;
 	this.searchLocation	= location;
 	this.stype				= stype;

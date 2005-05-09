@@ -235,8 +235,6 @@ sub _get_userid_by_id {
 	return @users;
 }
 
-# open-ils.storage.direct.actor.user.search.usrid
-
 sub _get_id_by_userid {
 
 	my @users = @_;
@@ -406,6 +404,7 @@ sub _build_volume_list {
 
 
 
+=head
 __PACKAGE__->register_method(
 	method	=> "generic_edit_copies_volumes",
 	api_name	=> "open-ils.cat.asset.volume.batch.update",
@@ -454,7 +453,136 @@ sub generic_edit_copies_volumes {
 	return $result;
 }
 
+=cut
 
+
+
+# -----------------------------------------------------------------
+# Fleshed volume tree batch add/update.  This does everything a 
+# volume tree could want, add, update, delete
+# -----------------------------------------------------------------
+__PACKAGE__->register_method(
+	method	=> "volume_tree_fleshed_update",
+	api_name	=> "open-ils.cat.asset.volume_tree.fleshed.batch.update",
+);
+sub volume_tree_fleshed_update {
+
+	my( $self, $client, $user_session, $volumes ) = @_;
+	return undef unless $volumes;
+	my $user_obj = $apputils->check_user_session($user_session);
+
+	my $session = $apputils->start_db_session();
+	warn "Looping on volumes in fleshed volume tree update\n";
+
+	# cycle through the volumes provided and update/create/delete where necessary
+	for my $volume (@$volumes) {
+
+		warn "updating volume " . $volume->id . "\n";
+
+		my $update_copy_list = $volume->copies;
+
+		if( $volume->isnew ) {
+
+			$volume->clear_id;
+			$volume->editor($user_obj->id);
+			$volume->creator($user_obj->id);
+			$volume = _add_volume($session, $volume);
+
+		} elsif( $volume->ischanged ) {
+			$volume->editor($user_obj->id);
+			_update_volume($session, $volume);
+
+		} elsif( $volume->isdeleted) {
+			return _delete_volume($session, $volume);
+		}
+
+		for my $copy (@{$update_copy_list}) {
+
+			$copy->editor($user_obj->id);
+			warn "updating copy for volume " . $volume->id . "\n";
+			if( $copy->isnew ) {
+
+				$copy->clear_id;
+				$copy->call_number($volume->id);
+				$copy->creator($user_obj->id);
+				$copy = _fleshed_copy_update($session,$copy,$user_obj->id);
+
+			} elsif( $copy->ischanged ) {
+				$copy->call_number($volume->id);
+				$copy = _fleshed_copy_update($session, $copy, $user_obj->id);
+
+			} elsif( $copy->isdeleted ) {
+				_fleshed_copy_update($session, $copy, $user_obj->id);
+			}
+		}
+	}
+	$apputils->commit_db_session($session);
+	return scalar(@$volumes);
+}
+
+
+#XXX make me
+sub _delete_volume {
+	my( $session, $volume ) = @_;
+
+	$volume = _find_volume($session, $volume);
+
+#	my $copies = $session->request(
+#		"open-ils.storage.direct.asset.copy.search.call_number",
+#		$volume-id )->gather(1);
+#	if(@$copies) {
+#		throw OpenSRF::EX::ERROR 
+#			("Cannot remove volume with copies attached");
+#	}
+
+}
+
+=head
+sub _find_volume {
+	my( $session, $volume ) = @_;
+	my $cn_req = $session->request( 
+		'open-ils.storage.direct.asset.call_number.search' =>
+	     {       owning_lib      => $volume->owning_lib,
+	             label           => $volume->label,
+	             record          => $volume->record,
+		}); 
+
+	return $cn_req->gather(1);
+}
+=cut
+
+sub _update_volume {
+	my($session, $volume) = @_;
+	my $req = $session->request(
+		"open-ils.storage.direct.asset.call_number.update",
+		$volume );
+	my $status = $req->gather(1);
+}
+
+sub _add_volume {
+
+	my($session, $volume) = @_;
+
+	my $request = $session->request( 
+		"open-ils.storage.direct.asset.call_number.create", $volume );
+
+	my $id = $request->gather(1);
+
+	if( $id == 0 ) {
+		OpenILS::Application::AppUtils->rollback_db_session($session);
+		throw OpenSRF::EX::ERROR (" * -> Error creating new volume");
+	}
+
+	$volume->id($id);
+	warn "received new volume id: $id\n";
+	return $volume;
+
+}
+
+
+
+
+=head
 __PACKAGE__->register_method(
 	method	=> "volume_tree_add",
 	api_name	=> "open-ils.cat.asset.volume.tree.batch.add",
@@ -478,120 +606,56 @@ sub volume_tree_add {
 
 	for my $volume (@$volumes) {
 
-		new Fieldmapper::asset::call_number($volume);
-
 		warn "Looping on volumes\n";
 
-
-
 		my $new_copy_list = $volume->copies;
-		my $id;
 
 		warn "Searching for volume with ".$volume->owning_lib . " " .
 			$volume->label . " " . $volume->record . "\n";
 
-		my $cn_req = $session->request( 
-				'open-ils.storage.direct.asset.call_number.search' =>
-		      {       owning_lib      => $volume->owning_lib,
-		              label           => $volume->label,
-		              record          => $volume->record,
-				}); 
+		my $cn = _find_volume($session, $volume);
 
-		$cn_req->wait_complete;
-		my $cn = $cn_req->recv();
 		
-		if(!$cn_req->complete) {
-			throw OpenSRF::EX::ERROR ("Error searching volumes on storage");
-		}
-
-		$cn_req->finish();
-
 		if($cn) {
 
-			if(UNIVERSAL::isa($cn,"Error")) {
-				throw $cn ($cn->stringify);
-			}
-
-			$volume = $cn->content;
-			$id = $volume->id;
+			$volume = $cn;
 			$volume->editor( $user_obj->id );
 
 		} else {
 
 			$volume->creator( $user_obj->id );
 			$volume->editor( $user_obj->id );
-
-			warn "Attempting to create a new volume:\n";
-
-			warn Dumper $volume;
-
-			my $request = $session->request( 
-				"open-ils.storage.direct.asset.call_number.create", $volume );
-
-			my $response = $request->recv();
-
-			if(!$request->complete) { 
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw OpenSRF::EX::ERROR 
-					("No response from storage on call_number.create");
-			}
-		
-			if(UNIVERSAL::isa($response, "Error")) {
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw $response ($response->stringify);
-			}
-
-			$id = $response->content;
-
-			if( $id == 0 ) {
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw OpenSRF::EX::ERROR (" * -> Error creating new volume");
-			}
-
-			$request->finish();
-	
-			warn "received new volume id: $id\n";
+			$volume = _add_volume($volume);
 
 		}
 
-
 		for my $copy (@{$new_copy_list}) {
-
-			new Fieldmapper::asset::copy($copy);
 
 			warn "adding a copy for volume $id\n";
 
 			$copy->call_number($id);
-			$copy->creator( $user_obj->id );
-			$copy->editor( $user_obj->id );
+			$copy->creator($user_obj->id);
+			$copy->editor($user_obj->id);
 
 			warn Dumper $copy;
 
-			my $req = $session->request(
-					"open-ils.storage.direct.asset.copy.create", $copy );
-			my $resp = $req->recv();
+			if( $copy->isnew() ) {
 
-			if(!$resp || ! ref($resp) ) { 
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw OpenSRF::EX::ERROR 
-					("No response from storage on call_number.create");
-			}
+				my $req = $session->request(
+						"open-ils.storage.direct.asset.copy.create", $copy );
+				my $cid = $req->gather(1);
+
+				if(!$cid) {
+					OpenILS::Application::AppUtils->rollback_db_session($session);
+					throw OpenSRF::EX::ERROR ("Error adding copy to volume $id" );
+				}
 	
-			if(UNIVERSAL::isa($resp, "Error")) {
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw $resp ($resp->stringify);
-			}
-			
-			my $cid = $resp->content;
+				warn "got new copy id $cid\n";
 
-			if(!$cid) {
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw OpenSRF::EX::ERROR ("Error adding copy to volume $id" );
+			} elsif( $copy->ischanged() ) {
+
 			}
 
-			warn "got new copy id $cid\n";
-
-			$req->finish();
 		}
 
 		warn "completed adding copies for $id\n";
@@ -629,6 +693,7 @@ sub copy_update {
 	return 1;
 }
 
+=cut
 
 
 __PACKAGE__->register_method(
@@ -639,93 +704,165 @@ __PACKAGE__->register_method(
 sub fleshed_copy_update {
 	my($self, $client, $user_session, $copies) = @_;
 
-	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
-
+	my $user_obj = $apputils->check_user_session($user_session); 
 	my $session = $apputils->start_db_session();
 
-	warn "Updating copies " . Dumper($copies) . "\n";
-	
 	for my $copy (@$copies) {
-
-		warn "Gathering stat maps for copy " . $copy->id . "\n";
-		my $stat_maps = $session->request(
-			"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy",
-			$copy->id )->gather(1);
-
-		$copy->editor($user_obj->id);
-
-		for my $stat_entry (@{$copy->stat_cat_entries}){ 
-			_copy_update_stat_cats( 
-					$session, $copy, $stat_maps, $stat_entry );
-		}
-
-
-		# clean up stale stat maps for the copy
-		for my $map (@$stat_maps) {
-			# if there is no stat cat entry on the copy who's id matches the
-			# current map's id, remove the map from the database
-			if(! grep { $_->id == $map->stat_cat_entry } 
-									@{$copy->stat_cat_entries} ) {
-
-				warn "Deleting copy stat map " . Dumper($map) . "\n";
-				my $req = $session->request(
-					"open-ils.storage.direct.asset.stat_cat_entry_copy_map.delete",
-					$map );
-				$req->gather(1);
-			}
-		}
-
-
-		# if we're fleshed, change back to id's
-		if(ref($copy->status)) {
-			$copy->status( $copy->status->id ); }
-
-		if(ref($copy->location)) {
-			$copy->location( $copy->location->id ); }
-
-
-		my $req = $session->request(
-			"open-ils.storage.direct.asset.copy.update",
-			$copy );
-		my $status = $req->gather(1);
+		_fleshed_copy_update($session, $copies, $user_obj->id);
 	}
-
 
 	$apputils->commit_db_session($session);
 	return 1;
 }
 
+
+sub _delete_copy {
+	my($session, $copy) = @_;
+	warn "Deleting copy " . $copy->id . "\n";
+	my $request = $session->request(
+		"open-ils.storage.direct.asset.copy.delete",
+		$copy );
+	return $request->gather(1);
+}
+
+sub _create_copy {
+	my($session, $copy) = @_;
+
+	my $request = $session->request(
+		"open-ils.storage.direct.asset.copy.create",
+		$copy );
+	my $id = $request->gather(1);
+
+	if($id < 1) {
+		throw OpenSRF::EX::ERROR
+			("Unable to create new copy " . Dumper($copy));
+	}
+	$copy->id($id);
+	warn "Created copy " . $copy->id . "\n";
+
+	return $copy;
+
+}
+
+sub _update_copy {
+	my($session, $copy) = @_;
+	my $request = $session->request(
+		"open-ils.storage.asset.copy.update",
+		$copy );
+	warn "Updated copy " . $copy->id . "\n";
+	return $request->gather(1);
+}
+
+
+# -----------------------------------------------------------------
+# Creates/Updates/Deletes a fleshed asset.copy.  
+# adds/deletes copy stat_cat maps where necessary
+# -----------------------------------------------------------------
+sub _fleshed_copy_update {
+	my($session, $copy, $editor) = @_;
+
+	my $stat_cat_entries = $copy->stat_cat_entries;
+	$copy->editor($editor);
+	
+	# in case we're fleshed
+	if(ref($copy->status))		{$copy->status( $copy->status->id ); }
+	if(ref($copy->location))	{$copy->location( $copy->location->id ); }
+	if(ref($copy->circ_lib))	{$copy->circ_lib( $copy->circ_lib->id ); }
+
+
+	if( $copy->isdeleted ) { 
+		return _delete_copy($session, $copy);
+	} elsif( $copy->isnew ) {
+		$copy = _create_copy($session, $copy);
+	} elsif( $copy->ischanged ) {
+		_update_copy($session, $copy);
+	}
+
+	warn "Updating copy " . Dumper($copy) . "\n";
+	
+	if(!@$stat_cat_entries) { return 1; }
+
+	my $stat_maps = $session->request(
+		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy",
+		$copy->id )->gather(1);
+
+	if( ! $copy->isnew ) { _delete_stale_maps($session, $copy); }
+	
+	# go through the stat cat update/create process
+	for my $stat_entry (@{$stat_cat_entries}){ 
+		_copy_update_stat_cats( $session, $copy, $stat_maps, $stat_entry );
+	}
+	
+	return 1;
+}
+
+
+# -----------------------------------------------------------------
+# Deletes stat maps attached to this copy in the database that
+# are no longer attached to the current copy
+# -----------------------------------------------------------------
+sub _delete_stale_maps {
+	my( $session, $stat_maps, $copy) = @_;
+
+	warn "Deleting stale stat maps for copy " . $copy->id . "\n";
+	for my $map (@$stat_maps) {
+	# if there is no stat cat entry on the copy who's id matches the
+	# current map's id, remove the map from the database
+	if(! grep { $_->id == $map->stat_cat_entry } @{$copy->stat_cat_entries} ) {
+		my $req = $session->request(
+			"open-ils.storage.direct.asset.stat_cat_entry_copy_map.delete", $map );
+		$req->gather(1);
+		}
+	}
+
+	return $stat_maps;
+}
+
+
+# -----------------------------------------------------------------
+# Searches the stat maps to see if '$entry' already exists on
+# the given copy.  If it does not, a new stat map is created
+# for the given entry and copy
+# -----------------------------------------------------------------
 sub _copy_update_stat_cats {
 	my ( $session, $copy, $stat_maps, $entry ) = @_;
 
+	warn "Updating stat maps for copy " . $copy->id . "\n";
+
 	# see if this map already exists
 	for my $map (@$stat_maps) {
-		if( $map->stat_cat_entry == $entry->id ) {
-			return;
-		}
+		if( $map->stat_cat_entry == $entry->id ) {return;}
 	}
 
 	warn "Creating new stat map for stat  " . 
 		$entry->stat_cat . " and copy " . $copy->id . "\n";
 
 	# if not, create it
-	$entry->clear_id;
+	my $new_map = Fieldmapper::asset::stat_cat_entry_copy_map->new();
+
+	$new_map->stat_cat( $entry->stat_cat );
+	$new_map->stat_cat_entry( $entry->id );
+	$new_map->owning_copy( $copy->id );
+
+	warn "New map is " . Dumper($new_map) . "\n";
+
 	my $request = $session->request(
 		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.create",
-		$entry );
+		$new_map );
 	my $status = $request->gather(1);
+	warn "created new map with id $status\n";
 
 }
 
 
 
+=head
 __PACKAGE__->register_method(
 	method	=> "volume_tree_delete",
 	api_name	=> "open-ils.cat.asset.volume.tree.batch.delete",
 );
 
 sub volume_tree_delete {
-
 
 	my( $self, $client, $user_session, $volumes ) = @_;
 	return undef unless $volumes;
@@ -798,6 +935,7 @@ sub volume_tree_delete {
 }
 
 
+=cut
 
 
 
