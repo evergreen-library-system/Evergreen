@@ -143,6 +143,15 @@ sub _init {
 		'Fieldmapper::asset::call_number'		=> { hint		=> 'acn',
 								     proto_fields	=> { copies => 1 } },
 		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn'    },
+
+		'Fieldmapper::ex'				=> { hint => 'ex',
+								     virtual => 1,
+								     proto_fields => {
+									err_msg	=> 1,
+									type	=> 1,
+								     } },
+
+      
 	};
 
 	#-------------------------------------------------------------------------------
