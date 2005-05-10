@@ -314,6 +314,21 @@
 	);
 
 	#-------------------------------------------------------------------------------
+	package metabib::series_field_entry;
+
+	metabib::series_field_entry->table( 'metabib.series_field_entry' );
+	metabib::series_field_entry->sequence( 'metabib.series_field_entry_id_seq' );
+	metabib::series_field_entry->columns( 'FTS' => 'index_vector' );
+
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.direct.metabib.series_field_entry.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'metabib::series_field_entry',
+	);
+
+	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
 	#package metabib::title_field_entry_source_map;

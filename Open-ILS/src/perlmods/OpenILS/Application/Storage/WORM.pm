@@ -77,7 +77,7 @@ my @fp_mods_xpath = (
 			},
 	],
 
-	'//mods:mods/mods:relatedItem[@type!="host"]' => [
+	'//mods:mods/mods:relatedItem[@type!="host" and @type!="series"]' => [
 			title	=> {
 					xpath	=> [
 							'//mods:mods/mods:relatedItem/mods:titleInfo[mods:title and (@type="uniform")]',
@@ -189,6 +189,7 @@ my $rm_old_tr;
 my $rm_old_ar;
 my $rm_old_sr;
 my $rm_old_kr;
+my $rm_old_ser;
 
 my $fr_create;
 my $rd_create;
@@ -204,6 +205,7 @@ my %descriptor_code = (
 	cat_form => 'substr($ldr,18,1)',
 	pub_status => 'substr($ldr,5,1)',
 	item_lang => 'substr($oo8,35,3)',
+	#lit_form => '(substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/) ? substr($oo8,33,1) : "0"',
 	audience => 'substr($oo8,22,1)',
 );
 
@@ -254,6 +256,8 @@ sub wormize {
 		unless ($rm_old_sr);
 	$rm_old_kr = $self->method_lookup( 'open-ils.storage.direct.metabib.keyword_field_entry.mass_delete')
 		unless ($rm_old_kr);
+	$rm_old_ser = $self->method_lookup( 'open-ils.storage.direct.metabib.series_field_entry.mass_delete')
+		unless ($rm_old_ser);
 	$rd_create = $self->method_lookup( 'open-ils.storage.direct.metabib.record_descriptor.batch.create')
 		unless ($rd_create);
 	$fr_create = $self->method_lookup( 'open-ils.storage.direct.metabib.full_rec.batch.create')
@@ -266,6 +270,8 @@ sub wormize {
 		unless ($$create{subject});
 	$$create{keyword} = $self->method_lookup( 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create')
 		unless ($$create{keyword});
+	$$create{series} = $self->method_lookup( 'open-ils.storage.direct.metabib.series_field_entry.batch.create')
+		unless ($$create{series});
 
 
 	my ($outer_xact) = $in_xact->run;
@@ -355,6 +361,7 @@ sub wormize {
 	$rm_old_ar->run( { source => \@docids } );
 	$rm_old_sr->run( { source => \@docids } );
 	$rm_old_kr->run( { source => \@docids } );
+	$rm_old_ser->run( { source => \@docids } );
 
 	unless ($no_map) {
 		my ($sm) = $create_source_map->run(@source_maps);
@@ -383,7 +390,7 @@ sub wormize {
 	}
 
 	# step 5: insert the new metadata
-	for my $class ( qw/title author subject keyword/ ) {
+	for my $class ( qw/title author subject keyword series/ ) {
 		my @md_list = ();
 		for my $doc ( @mods_data ) {
 			my ($did) = keys %$doc;

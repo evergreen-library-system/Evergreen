@@ -224,7 +224,7 @@ sub search_class_fts {
 	return undef;
 }
 
-for my $class ( qw/title author subject keyword/ ) {
+for my $class ( qw/title author subject keyword series/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord",
 		method		=> 'search_class_fts',
@@ -324,7 +324,7 @@ sub search_class_fts_count {
 	return $recs;
 
 }
-for my $class ( qw/title author subject keyword/ ) {
+for my $class ( qw/title author subject keyword series/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord_count",
 		method		=> 'search_class_fts_count',

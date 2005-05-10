@@ -48,6 +48,14 @@ metabib::keyword_field_entry->columns( Primary => qw/id/ );
 metabib::keyword_field_entry->columns( Essential => qw/field value source/ );
 
 #-------------------------------------------------------------------------------
+package metabib::series_field_entry;
+use base qw/metabib/;
+
+metabib::series_field_entry->table( 'metabib_series_field_entry' );
+metabib::series_field_entry->columns( Primary => qw/id/ );
+metabib::series_field_entry->columns( Essential => qw/field value source/ );
+
+#-------------------------------------------------------------------------------
 package metabib::metarecord_source_map;
 use base qw/metabib/;
 

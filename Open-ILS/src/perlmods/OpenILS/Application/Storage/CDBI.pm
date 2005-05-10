@@ -358,6 +358,9 @@ sub modify_from_fieldmapper {
 	metabib::keyword_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::keyword_field_entry->has_a( field => 'config::metabib_field' );
 	
+	metabib::series_field_entry->has_a( source => 'biblio::record_entry' );
+	metabib::series_field_entry->has_a( field => 'config::metabib_field' );
+	
 	metabib::metarecord_source_map->has_a( metarecord => 'metabib::metarecord' );
 	metabib::metarecord_source_map->has_a( source => 'biblio::record_entry' );
 
@@ -396,6 +399,7 @@ sub modify_from_fieldmapper {
 	biblio::record_entry->has_many( author_field_entries => 'metabib::author_field_entry' );
 	biblio::record_entry->has_many( subject_field_entries => 'metabib::subject_field_entry' );
 	biblio::record_entry->has_many( keyword_field_entries => 'metabib::keyword_field_entry' );
+	biblio::record_entry->has_many( series_field_entries => 'metabib::series_field_entry' );
 
 	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source'] );
 
