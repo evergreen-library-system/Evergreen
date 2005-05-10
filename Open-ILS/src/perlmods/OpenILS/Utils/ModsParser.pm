@@ -6,6 +6,7 @@ use XML::LibXML;
 use XML::LibXSLT;
 use Time::HiRes qw(time);
 use OpenILS::Utils::Fieldmapper;
+use Data::Dumper;
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
@@ -62,6 +63,10 @@ my $xpathset = {
 #			"//mods:mods/*[local-name()='subject']/*[local-name()='topic']",
 	},
 	#keyword => { keyword => "//mods:mods/*[not(local-name()='originInfo')]", },
+
+	series => {
+		series => "//mods:mods/mods:relatedItem[\@type='series']/mods:titleInfo"
+	}
 };
 # ----------------------------------------------------------------------------------------
 
@@ -87,11 +92,17 @@ sub get_field_value {
 		for my $child (@children) {
 			next unless( $child->nodeType != 3 );
 
-			# add the childs content to the growing buffer
-			#my $content = quotemeta($child->textContent);
-			push(@child_text, $child->textContent); 
-			#warn "child text: @child_text\n";
-			#push(@string, $child->textContent );
+			if($child->childNodes) {
+				my @a;
+				for my $c (@{$child->childNodes}){
+					push @a, $c->textContent;
+				}
+				push(@child_text, join(' ', @a));
+
+			} else {
+				push(@child_text, $child->textContent); 
+			}
+
 		}
 		if(@child_text) {
 			push(@string, \@child_text);
@@ -104,7 +115,7 @@ sub get_field_value {
 	return @string;
 }
 
-
+=head
 sub _modsdoc_to_values {
 	my( $self, $mods ) = @_;
 	my $data = {};
@@ -121,6 +132,7 @@ sub _modsdoc_to_values {
 	}
 	return $data;
 }
+=cut
 
 sub modsdoc_to_values {
 	my( $self, $mods ) = @_;
@@ -132,11 +144,7 @@ sub modsdoc_to_values {
 		for my $type(keys %{$xpathset->{$class}}) {
 			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
 			for my $arr (@value) {
-#	if( ref($arr) ) {
-#					push( @{$data->{$class}->{$type}},  join(" -- ", @$arr));
-#				} else {
-					push( @{$data->{$class}->{$type}},  $arr);
-#				}
+				push( @{$data->{$class}->{$type}},  $arr);
 			}
 		}
 	}
@@ -165,6 +173,21 @@ sub modsdoc_to_values {
 		}
 	}
 
+	{
+		my $class = "series";
+		$data->{$class} = {};
+		for my $type(keys %{$xpathset->{$class}}) {
+			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
+			for my $arr (@value) {
+				if( ref($arr) ) {
+					push(@{$data->{$class}->{$type}}, join(" ", @$arr));
+				} else {
+					push( @{$data->{$class}->{$type}}, $arr );
+				}
+			}
+		}
+
+	}
 
 	return $data;
 }
@@ -181,8 +204,10 @@ sub mods_values_to_mods_slim {
 	my $title = "";
 	my $author = "";
 	my $subject = [];
+	my $series	= [];
 
 	my $tmp = $modsperl->{title};
+
 
 	if(!$tmp) { $title = ""; }
 	else {
@@ -209,7 +234,12 @@ sub mods_values_to_mods_slim {
 		}
 	}
 
-	return { title => $title, author => $author, subject => $subject };
+	$tmp = $modsperl->{'series'};
+	if(!$tmp) { $series = []; }
+	else { $series = $tmp->{'series'}; }
+
+
+	return { series => $series, title => $title, author => $author, subject => $subject };
 
 }
 
@@ -226,7 +256,9 @@ sub start_mods_batch {
 	my $xmldoc = $parser->parse_string($master_doc);
 	my $mods = $mods_sheet->transform($xmldoc);
 
-	#warn "MODS " . $mods->toString(1) . "\n";
+#	warn "-" x 100 . "\n";
+#	warn "MODS " . $mods->toString(1) . "\n";
+#	warn "-" x 100 . "\n";
 
 	$self->{master_doc} = $self->modsdoc_to_values( $mods );
 	$self->{master_doc} = $self->mods_values_to_mods_slim( $self->{master_doc} );
@@ -291,15 +323,26 @@ sub finish_mods_batch {
 	my $record = init_virtual_record();
 
 	# turn the hash into a fieldmapper object
-	$record->title($perl->{title});
-	$record->author($perl->{author});
+	(my $title = $perl->{title}) =~ s/\[.*?\]//og;
+	(my $author = $perl->{author}) =~ s/\(.*?\)//og;
+
+	my @series;
+	for my $s (@{$perl->{series}}) {
+		push @series, (split( /\s*;/, $s ))[0];
+	}
+
+	$record->title($title);
+	$record->author($author);
+
 	$record->doc_id($perl->{doc_id});
 	$record->isbn($perl->{isbn});
 	$record->pubdate($perl->{pubdate});
 	$record->publisher($perl->{publisher});
 	$record->tcn($perl->{tcn});
+
 	$record->subject($perl->{subject});
 	$record->types_of_resource($perl->{types_of_resource});
+	$record->series(\@series);
 
 	$self->{master_doc} = undef;
 	#return $perl
