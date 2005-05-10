@@ -25,9 +25,10 @@ sub child_init {
 	OpenILS::Application::SearchCache->child_init();
 }
 
-# returns -1 when we hit a dumb search 
 sub filter_search {
-	my($self, $string, $full) = @_;
+	my($self, $str, $full) = @_;
+
+	my $string = $str;	
 
 	$string =~ s/\s+the\s+/ /oi;
 	$string =~ s/\s+an\s+/ /oi;
@@ -45,7 +46,14 @@ sub filter_search {
 	$string =~ s/^an$//io;
 	$string =~ s/^a$//io;
 
-	if(!$full) { return $string; }
+
+	if(!$full) {
+		if($string =~ /^\s*$/o) {
+			return "";
+		} else {
+			return $str;
+		}
+	}
 
 	my @words = qw/ 
 	fiction
@@ -79,6 +87,12 @@ sub filter_search {
 	}
 
 	warn "Cleansed string to: $string\n";
+	if($string =~ /^\s*$/o) {
+		return "";
+	} else {
+		return $str;
+	}
+	
 	return $string;
 }	
 
