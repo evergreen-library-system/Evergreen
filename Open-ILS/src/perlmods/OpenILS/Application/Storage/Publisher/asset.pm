@@ -145,7 +145,14 @@ sub multiranged_asset_stat_cat {
                   ORDER BY name
         SQL
 
-	my $binds = join(' INTERSECT ', map { 'SELECT id FROM actor.org_unit_full_path(?)' } grep {defined} @$ous);
+	my $collector = ' INTERSECT ';
+	my $entry_method = 'open-ils.storage.multiranged.intersect.asset.stat_cat_entry.search.stat_cat';
+	if ($self->api_name =~ /union/o) {
+		$collector = ' UNION ' if ($self->api_name =~ /union/o);
+		$entry_method = 'open-ils.storage.multiranged.union.asset.stat_cat_entry.search.stat_cat';
+	}
+
+	my $binds = join($collector, map { 'SELECT id FROM actor.org_unit_full_path(?)' } grep {defined} @$ous);
 	$select =~ s/XXX/$binds/so;
 	
         $fleshed = 0;
@@ -157,7 +164,7 @@ sub multiranged_asset_stat_cat {
         for my $sc ( map { asset::stat_cat->construct($_) } $sth->fetchall_hash ) {
                 my $sc_fm = $sc->to_fieldmapper;
                 $sc_fm->entries(
-                        [ $self->method_lookup( 'open-ils.storage.multiranged.asset.stat_cat_entry.search.stat_cat' )->run($ous, $sc->id) ]
+                        [ $self->method_lookup( $entry_method )->run($ous, $sc->id) ]
                 ) if ($fleshed);
                 $client->respond( $sc_fm );
         }
@@ -165,7 +172,13 @@ sub multiranged_asset_stat_cat {
         return undef;
 }
 __PACKAGE__->register_method(
-        api_name        => 'open-ils.storage.multiranged.fleshed.asset.stat_cat.all',
+        api_name        => 'open-ils.storage.multiranged.intersect.fleshed.asset.stat_cat.all',
+        api_level       => 1,
+        stream          => 1,
+        method          => 'multiranged_asset_stat_cat',
+);
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.multiranged.union.fleshed.asset.stat_cat.all',
         api_level       => 1,
         stream          => 1,
         method          => 'multiranged_asset_stat_cat',
@@ -215,6 +228,9 @@ sub multiranged_asset_stat_cat_entry {
         return undef unless (defined($ous) and @$ous);
         my $s_table = asset::stat_cat_entry->table;
 
+	my $collector = ' INTERSECT ';
+	$collector = ' UNION ' if ($self->api_name =~ /union/o);
+
         my $select = <<"        SQL";
                 SELECT  s.*
                   FROM  $s_table s
@@ -222,7 +238,7 @@ sub multiranged_asset_stat_cat_entry {
                   ORDER BY value
         SQL
 
-	my $binds = join(' INTERSECT ', map { 'SELECT id FROM actor.org_unit_full_path(?)' } grep {defined} @$ous);
+	my $binds = join($collector, map { 'SELECT id FROM actor.org_unit_full_path(?)' } grep {defined} @$ous);
 	$select =~ s/XXX/$binds/so;
 	
         my $sth = asset::stat_cat->db_Main->prepare_cached($select);
@@ -235,7 +251,13 @@ sub multiranged_asset_stat_cat_entry {
         return undef;
 }
 __PACKAGE__->register_method(
-        api_name        => 'open-ils.storage.multiranged.asset.stat_cat_entry.search.stat_cat',
+        api_name        => 'open-ils.storage.multiranged.intersect.asset.stat_cat_entry.search.stat_cat',
+        api_level       => 1,
+        stream          => 1,
+        method          => 'multiranged_asset_stat_cat_entry',
+);
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.multiranged.union.asset.stat_cat_entry.search.stat_cat',
         api_level       => 1,
         stream          => 1,
         method          => 'multiranged_asset_stat_cat_entry',
