@@ -68,6 +68,7 @@
 			option(value='author',	content='Author');
 			option(value='subject', content='Subject');
 			option(value='keyword', content='Keyword');
+			option(value='series', content='Series');
 		END;
 	END;
 

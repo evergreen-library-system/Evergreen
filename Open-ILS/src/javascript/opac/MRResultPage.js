@@ -128,13 +128,13 @@ MRResultPage.prototype.doSearch = function() {
 	debug("mr search params string " + string + " stype " + stype +
 			" location " + location + " depth " + depth );
 
-	if(depth == null)
+	if(depth == null || depth == "undefined")
 		depth = globalSearchDepth;
 
 	if(depth == null)
 		depth = findOrgDepth(globalLocation.ou_type());
 
-	if(location == null)
+	if(location == null || location == "undefined")
 		location = globalLocation.id();
 
 	if(!stype || !string) return;
@@ -211,7 +211,9 @@ MRResultPage.prototype.doSearch = function() {
 					else throw E;
 				}
 
-				obj.buildNextLinks();
+				if(obj.hitCount > 0) obj.buildNextLinks();
+				else obj.noHits();
+
 				obj.doMRSearch();	
 				debug("Kicking off the record id's request");
 							}
@@ -225,7 +227,7 @@ MRResultPage.prototype.doMRSearch = function() {
 
 	var obj = this;
 	var method = "open-ils.search.biblio.class";
-	if( this.hitCount > 1000 )
+	if( this.hitCount > 5000 )
 		method = method + ".unordered";
 
 	debug("Search method is " + method);

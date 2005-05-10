@@ -50,45 +50,6 @@ function findOrgUnit(org_id, branch) {
 }
 
 
-function buildOrgTreeWidget(org_node) {
-
-	var item;
-
-	globalPage.treeWidgetElements = new Array();
-
-	if(org_node == null) {
-		org_node = globalOrgTree;
-		item = new WebFXTree(org_node.name());
-		item.setBehavior('classic');
-	} else {
-		item = new WebFXTreeItem(org_node.name());
-	}
-
-	item.action = 
-		"javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');" +
-		"globalPage.locationTree.hide();";
-
-	/*
-	item.action = function() {
-		globalPage.updateSelectedLocation(org_node.id());
-		globalPage.globalMenuManager.hideAll();
-	}
-	*/
-
-
-	globalPage.treeWidgetElements[item.id] = org_node;
-
-	for( var index in org_node.children()) {
-		var childorg = org_node.children()[index];
-		if( childorg != null ) {
-			var tree_node = buildOrgTreeWidget(childorg);
-			if(tree_node != null)
-				item.add(tree_node);
-		}
-	}
-
-	return item;
-}
 
 function getOrgById(id, node) {
 	if(node == null) node = globalOrgTree;

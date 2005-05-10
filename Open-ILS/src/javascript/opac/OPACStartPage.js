@@ -39,3 +39,5 @@ OPACStartPage.prototype.init = function() {
 		*/
 }
 
+OPACStartPage.prototype.doSearch = function() {
+}

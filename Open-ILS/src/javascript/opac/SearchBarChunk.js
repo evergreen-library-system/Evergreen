@@ -25,11 +25,17 @@ function SearchBarChunk() {
 	else
 		this.session = globalSearchBarChunk.session;
 
+	debug("^^^^^^^^^^^^");
+	this.reset();
+
 	globalSearchBarChunk = this;
 }
 
+
 SearchBarChunk.prototype.reset = function() {
 	
+	debug("  -- reset on SearchBarChunk");
+
 	if( this.session.connected ) {
 		debug(" ****** session is connected");
 		hideMe(this.login_div);
@@ -39,6 +45,13 @@ SearchBarChunk.prototype.reset = function() {
 		debug(" ****** session is not connected");
 		showMe(this.login_div);
 		hideMe(this.logout_div);
+	}
 
+	if(isXUL()) {
+		debug("Hiding search bar links since we're XUL");
+		hideMe(this.login_div);
+		hideMe(this.logout_div);
+		hideMe(this.my_opac_link_div);
+		hideMe(this.about_link_div);
 	}
 }

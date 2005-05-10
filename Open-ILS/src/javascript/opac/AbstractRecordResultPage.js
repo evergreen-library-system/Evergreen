@@ -128,6 +128,11 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	if(record == null) return;
 
+	if(!instanceOf(record, Fieldmapper)) {
+		debug(" * Received bogus record " + js2JSON(record));
+		return;
+	}
+
 	if(page_id == 0)
 		this.buildNextLinks();
 
@@ -309,8 +314,9 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	}
 
 
-	if(this.hitCount < 1)
+	if(this.hitCount < 1) {
 		if(this.progressBar) this.progressBar.stop();
+	}
 
 	/* in case we're hidden */
 	showMe(this.bigOlBox);
@@ -349,6 +355,8 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 
 	if(page_id  == (parseInt(this.hitsPerPage) - 1) ) {
 		if(this.progressBar) this.progressBar.stop();
+		if(this.hitCount < 1)
+			this.noHits();
 	}
 
 	if( (page_id  == ((parseInt(this.hitCount) - 1 ) - parseInt(this.searchOffset))) ||
@@ -358,13 +366,18 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 
 
 
+AbstractRecordResultPage.prototype.noHits = function() {
+	var hcell = getById("hit_count_cell");
+	hcell.appendChild(createAppElement("br"));
+	hcell.appendChild(createAppTextNode("0 hits were returned for you search"));
+}
+
+
 AbstractRecordResultPage.prototype.buildNextLinks = function() {
 
 	if(this.builtLinks)
 		return;
 	this.builtLinks = true;
-
-
 
 	var obj = this;
 	var next;

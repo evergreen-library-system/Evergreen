@@ -54,7 +54,8 @@ RecordResultPage.prototype.addMenuItems = function(menu, record) {
 	}
 
 	menu.addItem("View MARC", func);
-	xulEvtRecordResultDisplayed( menu, record );
+	if(isXUL())
+		xulEvtRecordResultDisplayed( menu, record );
 
 }
 
@@ -127,6 +128,10 @@ RecordResultPage.prototype.doSearch = function() {
 	debug( "Key Value Array \n" + js2JSON( paramObj ) );
 
 	this.page			= parseInt(paramObj.__page);
+
+	if(this.page == null)
+		this.page = 0;
+
 	this.searchOffset = this.page * this.hitsPerPage;
 
 

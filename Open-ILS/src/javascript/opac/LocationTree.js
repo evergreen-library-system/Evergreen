@@ -4,22 +4,32 @@ function LocationTree( tree ) {
 	this.orgTree = tree;
 }
 
-LocationTree.prototype.buildOrgTreeWidget = function(org_node) {
+LocationTree.prototype.buildOrgTreeWidget = function() {
+
+	this.widget = buildOrgTreeWidget();
+}
+
+
+function buildOrgTreeWidget(org_node) {
 
 	var item;
 
+	globalPage.treeWidgetElements = new Array();
+
 	if(org_node == null) {
-		org_node = this.orgTree;
+		org_node = globalOrgTree;
 		item = new WebFXTree(org_node.name());
-		this.widget = item;
 		item.setBehavior('classic');
 	} else {
 		item = new WebFXTreeItem(org_node.name());
 	}
 
+	/* make org tree re-submit search on click */
 	item.action = 
 		"javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');" +
-		"globalPage.locationTree.hide();";
+		"globalPage.locationTree.hide();"; 
+
+	globalPage.treeWidgetElements[item.id] = org_node;
 
 	for( var index in org_node.children()) {
 		var childorg = org_node.children()[index];
@@ -29,6 +39,8 @@ LocationTree.prototype.buildOrgTreeWidget = function(org_node) {
 				item.add(tree_node);
 		}
 	}
+
+	return item;
 }
 
 

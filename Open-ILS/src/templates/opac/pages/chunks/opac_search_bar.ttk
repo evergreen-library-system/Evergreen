@@ -21,11 +21,6 @@
 				END;
 
 
-				WRAPPER html/cell  align='center';
-					WRAPPER html/div class="text_link_div" id='adv_search_link_div';
-						anchor( id='adv_search_link',  href='?target=advanced_search', text = tm.advanced );
-					END;
-				END;
 
 				WRAPPER html/cell  align='center';
 
@@ -40,6 +35,13 @@
 				END;
 
 				WRAPPER html/cell  align='center';
+					WRAPPER html/div class="text_link_div" id='adv_search_link_div';
+						anchor( id='adv_search_link',  href='?target=advanced_search', text = tm.advanced );
+					END;
+				END;
+
+
+				WRAPPER html/cell  align='center';
 					WRAPPER html/div class='text_link_div' id='my_opac_link_div';
 						anchor( id='my_opac_link',  href='?target=my_opac', text = tm.my_opac );
 					END;
@@ -52,6 +54,7 @@
 					END;
 				END;
 
+			
 
 				WRAPPER html/cell valign='bottom' align='right';
 					WRAPPER html/div id='small_logo_div';

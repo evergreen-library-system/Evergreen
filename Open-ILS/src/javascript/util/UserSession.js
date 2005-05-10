@@ -37,10 +37,16 @@ UserSession.prototype.persist = function() {
 
 
 
-UserSession.prototype.verifySession = function() {
+UserSession.prototype.verifySession = function(ses) {
 
 	debug("Verifying session...");
-	this.session_id = this.cookie.fields[UserSession.SES];
+	if(ses)
+		debug("Session key passed in from XUL[" + ses + "], verifying...");
+
+	if(ses != null)
+		this.session_id = ses;
+	else
+		this.session_id = this.cookie.fields[UserSession.SES];
 
 	if(this.session_id) {
 		debug("Retrieveing user info for session " + this.session_id);
