@@ -106,6 +106,8 @@ sub _init {
 								     			     types_of_resource	=> 1,
 								     			     call_numbers	=> 1,
 											     copy_count	        => 1,
+											     series	        => 1,
+											     serials	        => 1,
 											   } },
 
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
