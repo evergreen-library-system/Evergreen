@@ -11,7 +11,10 @@ use OpenSRF::Utils::SettingsClient;
 
 use OpenILS::Utils::FlatXML;
 use OpenILS::Application::Cat::Utils;
+use OpenILS::Application::AppUtils;
+
 my $utils = "OpenILS::Application::Cat::Utils";
+my $apputils = "OpenILS::Application::AppUtils";
 
 use OpenILS::Utils::ModsParser;
 
@@ -102,7 +105,10 @@ __PACKAGE__->register_method(
 );
 
 sub import_search {
-	my($self, $client, $string) = @_;
+	my($self, $client, $user_session, $string) = @_;
+
+	my $user_obj = 
+		$apputils->check_user_session( $user_session ); #throws EX on error
 
 	return $self->z39_search_by_string(
 		$client, $host, $port, $database, 
