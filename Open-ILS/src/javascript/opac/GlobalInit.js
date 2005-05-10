@@ -11,8 +11,19 @@ var globalMenuManager			= null;
 
 var loaded = false;
 
+function isXUL() {
+	try {
+		if(IAMXUL)
+			return true;
+	} catch(E) {
+		return false;
+	}
+}
+
 
 function globalInit() {
+
+	debug(" --- XUL IS " + isXUL() );
 
 	var page_name = globalPageTarget;
 
@@ -77,6 +88,9 @@ function globalInit() {
 	globalPage.init();
 	globalPage.setLocDisplay();
 	globalPage.locationTree = globalOrgTreeWidget;
+
+	if(globalSearchBarChunk)
+		globalSearchBarChunk.reset();
 	
 	if( globalSearchBarFormChunk != null)
 		globalSearchBarFormChunk.resetPage();
@@ -91,7 +105,11 @@ function GlobalInitLoad() {
 	globalOrgTreeWidget = new LocationTree(globalOrgTree);
 	globalUser = UserSession.instance();
 
-	if(globalUser.verifySession()) {
+	var ses = null;
+	if(isXUL()) 
+		ses = G['auth_ses'][0]; /* G is shoved in by XUL */
+
+	if(globalUser.verifySession(ses)) {
 		globalUser.grabOrgUnit();
 
 	} else  {
