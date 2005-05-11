@@ -3,7 +3,7 @@
 #
 
 
-all: prep router srfsh gateway
+all: prep router srfsh 
 
 prep:
 	if [ ! -d ../lib ];then mkdir ../lib; fi;
