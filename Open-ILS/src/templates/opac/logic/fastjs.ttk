@@ -1,0 +1,14 @@
+[%-	
+	# gathers javascript files into a single blob of stripped text
+
+	FOR file IN files;
+		file = doc_root _ "/" _ file;
+		INCLUDE $file | 
+			replace('(?gm:^\s*)','')		| 
+			replace('(?gm:(?<!:|")\/\/.*$)','')	|
+			replace('(?gm:^$)','')			|
+			replace('\t+',' ')				|
+			replace('\/\*[^\*]+.*?\*\/','') #removes javascript comments but not opensrf object hint comments
+			;
+	END;
+-%]
