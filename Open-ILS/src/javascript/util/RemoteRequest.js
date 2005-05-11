@@ -185,12 +185,11 @@ RemoteRequest.prototype.send = function(blocking) {
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
-	var XUL = true;  /*will be global, needs to be set by the parent XUL app when around */
-	if(XUL) {
+	if(isXUL()) {
 		if(this.secure)
 			url =	"https://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 		else
-			url =	"http://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
+			url =	"http://" + XML_HTTP_SERVER + ":8080/" + XML_HTTP_GATEWAY;
 	}
 
 	var data = null;
