@@ -33,7 +33,7 @@
 
 /* we hold a title, copy count */
 .record_result_title_row_box	{ width: 100%;}
-.record_result_title_box		{ width: 90%; }
+.record_result_title_box		{ width: 90%; vertical-align: top;}
 .record_result_copy_count_box { width: 8%;}
 
 .record_result_xul_button_box { 
@@ -47,6 +47,7 @@
 	text-align: left; 
 	vertical-align:top;
 	padding-left: 20px;
+	vertical-align: top;
 }
 
 /* style the odd and even results */
