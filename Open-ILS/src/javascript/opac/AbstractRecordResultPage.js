@@ -27,6 +27,10 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.subjectBox.init("Relevant Subjects", true, true, 15);
 	this.subjectBox.sortByCount();
 
+	this.seriesBox = new Box();
+	this.seriesBox.init("Relevant Series", true, true, 15);
+	this.seriesBox.sortByCount();
+
 	this.sidebarBox		= getById("record_sidebar_box");
 
 
@@ -242,6 +246,13 @@ AbstractRecordResultPage.prototype.displayRecord =
 		}
 	}
 
+	var series = record.series();
+	for( var s in  series ) {
+		debug("Found series entry: " + series[s] );
+		this.seriesBox.addItem(
+			this.mkSeriesLink(series[s]), series[s] );
+	}
+
 	/* requestBatch will only have one request in it when the current
 		record is the last record requested */
 	if( this.requestBatch.pending() < 2  )
@@ -259,6 +270,20 @@ AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
 		"&mr_search_location=" + this.searchLocation);
 
 	href.appendChild(createAppTextNode(auth));
+	return href;
+}
+
+AbstractRecordResultPage.prototype.mkSeriesLink = function(series) {
+	var href = createAppElement("a");
+	add_css_class(href,"record_result_sidebar_link");
+
+	href.setAttribute("href",
+		"?target=mr_result&mr_search_type=series&page=0&mr_search_query=" +
+		encodeURIComponent(series) +
+		"&mr_search_depth=" + this.searchDepth +
+		"&mr_search_location=" + this.searchLocation);
+
+	href.appendChild(createAppTextNode(series));
 	return href;
 }
 
@@ -282,10 +307,15 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 
 	this.subjectBox.finalize();
 	this.authorBox.finalize();
+	this.seriesBox.finalize();
 
 	this.sidebarBox.appendChild(this.subjectBox.getNode());
 	this.sidebarBox.appendChild(createAppElement("br"));
+
 	this.sidebarBox.appendChild(this.authorBox.getNode());
+	this.sidebarBox.appendChild(createAppElement("br"));
+
+	this.sidebarBox.appendChild(this.seriesBox.getNode());
 	this.sidebarBox.appendChild(createAppElement("br"));
 
 //	showMe(this.buttonsBox);

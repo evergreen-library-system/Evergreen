@@ -25,7 +25,6 @@ function SearchBarChunk() {
 	else
 		this.session = globalSearchBarChunk.session;
 
-	debug("^^^^^^^^^^^^");
 	this.reset();
 
 	globalSearchBarChunk = this;
@@ -34,15 +33,13 @@ function SearchBarChunk() {
 
 SearchBarChunk.prototype.reset = function() {
 	
-	debug("  -- reset on SearchBarChunk");
-
 	if( this.session.connected ) {
-		debug(" ****** session is connected");
+		debug("session is connected");
 		hideMe(this.login_div);
 		showMe(this.logout_div);
 
 	} else { 
-		debug(" ****** session is not connected");
+		debug("session is not connected");
 		showMe(this.login_div);
 		hideMe(this.logout_div);
 	}

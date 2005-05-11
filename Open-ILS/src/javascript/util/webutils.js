@@ -83,14 +83,28 @@ if(reg.exec(navigator.userAgent))
 	ismoz = true;
 
 var DEBUG = true;
+var WIN_DEBUG = false;
 
+
+var debugWindow;
 function debug(message) {
 	if(DEBUG) {
 		try {
 			dump(" -|*|- Debug: " + message + "\n");
 		} catch(E) {}
 	}
+	if(WIN_DEBUG) {
+		if(!debugWindow) {
+			debugWindow = window.open(null,"Debug",
+				"location=0,menubar=0,status=0,resizeable,resize," +
+				"outerHeight=900,outerWidth=700,height=900," +
+				"width=700,scrollbars=1,screenX=100," +
+				"screenY=100,top=100,left=100,alwaysraised" )
+		}
+		debugWindow.document.write("<br/>" + message);
+	}
 }
+
 
 /* finds or builds the requested row id, adding any intermediate rows along the way */
 function table_row_find_or_create( table, index ) {
@@ -113,14 +127,6 @@ function table_row_find_or_create( table, index ) {
 	for( var x = 0; x <= index; x++ ) {
 		if(table.rows[x] == null) {
 			row = tbody.appendChild(createAppElement("tr"));
-			//row = table.appendChild(document.createElement("tr"));
-			//row = document.createElement("tr");
-			//var tbody = table.getElementsByTagName("tbody")[0];
-			//debug(tbody);
-			//tbody.appendChild(row);
-			//table.childNodes[x] = row;
-			//table.rows[x] = row;
-			//row = table.insertRow(x);
 		}
 	}
 	return row;

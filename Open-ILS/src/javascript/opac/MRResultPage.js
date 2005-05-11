@@ -190,8 +190,14 @@ MRResultPage.prototype.doSearch = function() {
 
 	} else {
 
+		var method = "open-ils.search.biblio.class.count";
+		if(isXUL()) 
+			method = method + ".staff";
+
+		debug("Method: " + method);
+		
 		var creq = new RemoteRequest(
-			"open-ils.search", "open-ils.search.biblio.class.count",
+			"open-ils.search", method,
 			this.stype, this.string, this.searchLocation, this.searchDepth );
 	
 		/* this request grabs the search count.  When the counts come back
@@ -229,6 +235,9 @@ MRResultPage.prototype.doMRSearch = function() {
 	var method = "open-ils.search.biblio.class";
 	if( this.hitCount > 5000 )
 		method = method + ".unordered";
+
+	if(isXUL())
+		method = method + ".staff";
 
 	debug("Search method is " + method);
 
@@ -296,9 +305,12 @@ MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 	var orgunit = globalSelectedLocation;
 	if(!orgunit) orgunit = globalLocation;
 
+	var method = "open-ils.search.biblio.metarecord.copy_count";
+	if(isXUL())
+		method = method + ".staff";
+
 	var copy_request = new RemoteRequest( 
-		"open-ils.search",
-		"open-ils.search.biblio.metarecord.copy_count",
+		"open-ils.search", method,
 		this.searchLocation, record.doc_id() );
 
 	copy_request.search_id = search_id;
