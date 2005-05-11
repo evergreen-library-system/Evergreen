@@ -19,15 +19,15 @@ CREATE TABLE config.standing (
 
 INSERT INTO config.standing (value) VALUES ('Good');
 INSERT INTO config.standing (value) VALUES ('Barred');
-INSERT INTO config.standing (value) VALUES ('Blocked');
 
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
-	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword')),
+	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
 	name		TEXT	NOT NULL UNIQUE,
 	xpath		TEXT	NOT NULL
 );
 
+INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'series', 'seriestitle', $$//mods:mods/mods:relatedItem[@type="series"]/mods:titleInfo$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'abbreviated', $$//mods:mods/mods:titleInfo[mods:title and (@type='abreviated')]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'translated', $$//mods:mods/mods:titleInfo[mods:title and (@type='translated')]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'uniform', $$//mods:mods/mods:titleInfo[mods:title and (@type='uniform')]$$ );

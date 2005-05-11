@@ -59,6 +59,17 @@ CREATE TRIGGER metabib_keyword_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.keyword_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
 
+CREATE TABLE metabib.series_field_entry (
+	id		BIGSERIAL	PRIMARY KEY,
+	source		BIGINT		NOT NULL,
+	field		INT		NOT NULL,
+	value		TEXT		NOT NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE TRIGGER metabib_series_field_entry_fti_trigger
+	BEFORE UPDATE OR INSERT ON metabib.series_field_entry
+	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
+
 CREATE TABLE metabib.rec_descriptor (
 	id		BIGSERIAL PRIMARY KEY,
 	record		BIGINT,
