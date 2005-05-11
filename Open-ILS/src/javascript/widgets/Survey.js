@@ -159,6 +159,23 @@ Survey.prototype.setSubmitCallback = function(callback) {
 Survey.prototype.submit = function() {
 
 	var responses = this.buildSurveyResponse();
+
+	if( this.commitCallback) {
+		this.commitCallback(responses);
+
+	} else {
+		this.commit(responses);
+	}
+	
+	var bool = true;
+	if( this.submitCallback )
+		bool = this.submitCallback(this);
+	
+	this.removeFooter();
+
+}
+
+Survey.prototype.commit = function(responses) {
 	var method;
 	if( this.userId ) 
 		method = "open-ils.circ.survey.submit.user_id";
@@ -175,14 +192,8 @@ Survey.prototype.submit = function() {
 
 	/* there is nothing to return, just check for exceptions */
 	request.getResultObject();
-
-	var bool = true;
-	if( this.submitCallback )
-		bool = this.submitCallback(this);
-
-	this.removeFooter();
-
 }
+
 
 Survey.prototype.buildSurveyResponse = function() {
 
