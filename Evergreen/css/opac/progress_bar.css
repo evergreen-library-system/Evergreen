@@ -1,0 +1,41 @@
+#progress_bar_location {
+	z-index: -10;
+	position: absolute;
+	background: #CCF;
+	width: 98%;
+	height: 32px;
+}
+
+#progress_bar_percent_location {
+	z-index: 5;
+	position: absolute;
+	bottom: 12px;
+	width: 98%;
+	height: 32px;
+	text-align: center;
+}
+
+.progress_bar {
+	height: 100%;
+	width: 100%;
+	background: #FFF;
+}
+
+.progress_bar_chunk {
+	height: 100%;
+	float: left;
+}
+
+.progress_bar_chunk_active {
+	height: 100%;
+	float: left;
+	background: #CCF;
+}
+
+.progress_percent {
+	font-weight: bold;
+	color: #888;
+	font-size: 2em;
+	width: 100%;
+	text-align: center;
+}
