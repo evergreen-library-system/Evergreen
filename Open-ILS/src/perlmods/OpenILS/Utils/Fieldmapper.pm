@@ -107,6 +107,7 @@ sub _init {
 								     			     subject		=> 1,
 								     			     types_of_resource	=> 1,
 								     			     call_numbers	=> 1,
+													  edition	=> 1,
 											     copy_count	        => 1,
 											     series	        => 1,
 											     serials	        => 1,
