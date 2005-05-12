@@ -43,7 +43,7 @@ sub patron_search {
 	my $usr = join ' AND ', map { "LOWER($_) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 	my @usrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 
-	my $addr = join ' AND ', map { "LOWER($_) ~ " } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my $addr = join ' AND ', map { "LOWER($_) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 	my @addrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 
 	my $pv = $$search{phone}{value};
@@ -94,7 +94,7 @@ sub patron_search {
 		return undef;
 	}
 
-	return actor::user->db_Main->selectcol_arrayref($select, {}, @usrv,@phonev,@identv,@addrv);
+	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@addrv));
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.crazy_search',
