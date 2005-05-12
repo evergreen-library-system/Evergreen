@@ -94,7 +94,7 @@ sub patron_search {
 		return undef;
 	}
 
-	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@addrv));
+	return actor::user->db_Main->selectcol_arrayref($select." LIMIT 1000", {}, map {lc($_)} (@usrv,@phonev,@identv,@addrv));
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.crazy_search',
