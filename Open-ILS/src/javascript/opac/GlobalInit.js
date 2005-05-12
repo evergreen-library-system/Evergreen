@@ -106,17 +106,22 @@ function GlobalInitLoad() {
 	globalUser = UserSession.instance();
 
 	var ses = null;
-	if(isXUL()) 
+	var org = null;
+
+	if(isXUL()) {
 		ses = G['auth_ses'][0]; /* G is shoved in by XUL */
+		org = G['user_ou']; /* the desired location of the user */
+	}
 
 	if(globalUser.verifySession(ses)) {
-		globalUser.grabOrgUnit();
+		globalUser.grabOrgUnit(org);
 
 	} else  {
 		globalUser = null;
 		globalLocation = globalOrgTree;
 		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
 	}
+
 }
 
 

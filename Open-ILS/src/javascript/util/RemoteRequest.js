@@ -1,6 +1,5 @@
 
 var XML_HTTP_GATEWAY = "gateway";
-//var XML_HTTP_SERVER = "spacely.georgialibraries.org";
 var XML_HTTP_SERVER = "gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
@@ -31,6 +30,15 @@ RemoteRequest.numPending = function() {
 	return RemoteRequest.pending.length;
 }
 
+RemoteRequest.cancelAll = function() {
+	for( var x in RemoteRequest.pending ) {
+		if( RemoteRequest.pending[x] != null ) {
+			debug("Cancelling request...");
+			RemoteRequest.pending[x].cancelled = true;
+		}
+	}
+}
+
 
 /* ----------------------------------------------------------------------- */
 /* Generic request manager */
@@ -55,6 +63,14 @@ RequestBatch.prototype.pending = function() {
 	return this.requests.length;
 }
 
+/* cancels all requests in this batch that have not already been sent */
+RequestBatch.prototype.cancel = function() {
+	for(var i in this.requests) {
+		if(this.requests[i] != null)
+			this.requests.cancelled = true;
+	}
+}
+
 /* ----------------------------------------------------------------------- */
 /* Request object */
 function RemoteRequest( service, method ) {
@@ -67,6 +83,7 @@ function RemoteRequest( service, method ) {
 
 	this.type		= "POST"; /* default */
 	this.id			= service + method + Math.random();
+	this.cancelled = false;
 
 	var i = 2;
 	this.params = ""; 
@@ -128,6 +145,7 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 		if( obj.readyState == 4 ) {
 
 			try {
+				if(object.cancelled) return;
 				callback(object);
 			} catch(E) {
 
@@ -175,6 +193,8 @@ RemoteRequest.prototype.setSecure = function(bool) {
   * (getResponseObject()) as soon as the send call returns. 
   */
 RemoteRequest.prototype.send = function(blocking) {
+
+	if(this.cancelled) return;
 
 	if( this.sendCount == 0)
 		RemoteRequest.pending.push(this);
@@ -228,6 +248,8 @@ RemoteRequest.prototype.isReady = function() {
 
 /* returns the JSON->js result object  */
 RemoteRequest.prototype.getResultObject = function() {
+	if(this.cancelled) return null;
+
 	var text = this.xmlhttp.responseText;
 	var obj = JSON2js(text);
 

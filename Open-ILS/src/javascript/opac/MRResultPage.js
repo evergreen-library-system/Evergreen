@@ -83,6 +83,17 @@ MRResultPage.prototype.addMenuItems = function(menu, record) {
 			xulEvtMRResultDisplayed( menu, record );
 }
 
+MRResultPage.prototype.URLRefresh = function() {
+
+	return [ 
+				"target",					"mr_result",
+				"mr_search_type",			this.stype,
+				"mr_search_query",		this.string,
+				"mr_search_location",	this.searchLocation,
+				"mr_search_depth",		this.searchDepth,	
+				"page",						0
+				];
+}
 
 MRResultPage.prototype.mkLink = function(id, type, value) {
 
@@ -93,15 +104,27 @@ MRResultPage.prototype.mkLink = function(id, type, value) {
 		case "title":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_title_link");
-			href.setAttribute("href","?target=record_result&page=0&mrid=" + id );
+			href.setAttribute("href",
+				"?target=record_result&page=0&mrid=" + id + 
+				"&hits_per_page=" + this.hitsPerPage);
 			href.appendChild(createAppTextNode(value));
 			break;
+
+	case "img":
+			href = createAppElement("a");
+			add_css_class(href,"record_result_title_link");
+			href.setAttribute("href",
+				"?target=record_result&page=0&mrid=" + id +
+				"&hits_per_page=" + this.hitsPerPage);
+			break;
+
 
 		case "author":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_author_link");
-			href.setAttribute("href","?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
-					      encodeURIComponent(value));
+			href.setAttribute("href",
+				"?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
+			     encodeURIComponent(value));
 			href.appendChild(createAppTextNode(value));
 			break;
 
@@ -124,6 +147,10 @@ MRResultPage.prototype.doSearch = function() {
 	var stype			= paramObj.__mr_search_type;
 	var location		= paramObj.__mr_search_location;
 	var depth			= paramObj.__mr_search_depth;
+	var hitsper			= paramObj.__hits_per_page;
+
+	if(hitsper)
+		this.hitsPerPage = parseInt(hitsper);
 
 	debug("mr search params string " + string + " stype " + stype +
 			" location " + location + " depth " + depth );
@@ -250,6 +277,7 @@ MRResultPage.prototype.doMRSearch = function() {
 	request.setCompleteCallback(
 		function(req) {
 			var result = req.getResultObject();
+			if(result == null) return;
 			result.count = obj.hitCount;
 			obj.gatherIDs(result) 
 			obj.collectRecords();

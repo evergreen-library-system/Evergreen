@@ -36,6 +36,14 @@ RecordResultPage.prototype.next = function() {
 }
 
 
+
+RecordResultPage.prototype.URLRefresh = function() {
+	paramObj.__page = 0;
+	return build_param_array();
+}
+
+
+
 RecordResultPage.prototype.prev = function() {
 	paramObj.__page = parseInt(paramObj.__page) - 1;
 	var paramArray = build_param_array();
@@ -95,6 +103,12 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 			href.appendChild(createAppTextNode(value));
 			break;
 
+	case "img":
+			href = createAppElement("a");
+			add_css_class(href,"record_result_image_link");
+			href.setAttribute("href","?target=record_detail&page=0&mrid=" + id );
+			break;
+
 		default:
 			throw new EXArg("Unknown link type: " + type );
 	}
@@ -128,6 +142,26 @@ RecordResultPage.prototype.doSearch = function() {
 	debug( "Key Value Array \n" + js2JSON( paramObj ) );
 
 	this.page			= parseInt(paramObj.__page);
+	var hitsper			= paramObj.__hits_per_page;
+
+	/*
+	if(hitsper)
+		this.hitsPerPage = parseInt(hitsper);
+
+	debug("******* Hits per = " + this.hitsPerPage);
+
+	this.hitsPerPageSelector = getById('hits_per_page');
+	for( var i in this.hitsPerPageSelector.options ) {
+		var hits_obj = this.hitsPerPageSelector.options[i];
+		if(hits_obj == null) continue;
+		var hits = hits_obj.value;
+		debug(hits);
+		if( this.hitsPerPage == parseInt(hits) ) {
+			this.hitsPerPageSelector.options[i].selected = true;
+			debug("Setting selected on selector with hits " + hits);
+		}
+	}
+	*/
 
 	if(this.page == null)
 		this.page = 0;

@@ -34,12 +34,15 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.sidebarBox		= getById("record_sidebar_box");
 
 
-	this.hitsPerPage		= 8;	 /* how many hits are displayed per page */
+	if(!this.hitsPerPage)
+		this.hitsPerPage		= 10;	 /* how many hits are displayed per page */
+
 	this.resetPage();
 
 	this.statusBar			= getById("top_status_bar_table");
 	this.theadDrawn		= false;
 	this.bigOlBox			= getById("big_ol_box");
+
 
 }
 
@@ -62,10 +65,50 @@ AbstractRecordResultPage.prototype.resetPage = function() {
 		spot2.appendChild(this.progressBar.percentDiv);
 	this.received = 0;
 
+	RemoteRequest.cancelAll();
+
 	this.requestBatch = new RequestBatch();
 	this.finalized = false;
 	this.builtLinks = false;
+
+	this.hitsPerPageSelector = getById('hits_per_page');
+
+	var obj = this;
+	this.hitsPerPageSelector.onchange = function() {
+
+		var hits;
+		var hits_obj = obj.hitsPerPageSelector.options[
+			obj.hitsPerPageSelector.selectedIndex];	
+
+		if(hits_obj == null)
+			return;
+
+		hits = hits_obj.value
+
+		debug("Hits per page set to " + hits );
+
+		obj.hitsPerPage = parseInt(hits); 	
+
+
+		var location = globalSelectedLocation;
+		if(location == null) location = globalLocation.id();
+
+		url_redirect(obj.URLRefresh());
+	}
+
+
+	for( var i in this.hitsPerPageSelector.options ) {
+
+		var hits_obj = obj.hitsPerPageSelector.options[i];
+		if(hits_obj == null) continue;
+		var hits = hits_obj.value;
+
+		if( this.hitsPerPage == parseInt(hits) ) 
+			this.hitsPerPageSelector.options[i].selected = true;
+	}
+
 }
+
 
 AbstractRecordResultPage.prototype.resetSearch = function() {
 	this.recordIDs				= new Array();
@@ -145,8 +188,29 @@ AbstractRecordResultPage.prototype.displayRecord =
 	this.progressBar.manualNext();
 
 	var id = parseInt(page_id);
-	var title_row = table_row_find_or_create(this.recordBox, id * 2 + 1 );
-	var author_row = table_row_find_or_create(this.recordBox, id * 2 + 2 );
+	var title_row = table_row_find_or_create(this.recordBox, id * 3 + 1 );
+	var author_row = table_row_find_or_create(this.recordBox, id * 3 + 2 );
+	var misc_row = table_row_find_or_create(this.recordBox, id * 3 + 3 );
+
+	add_css_class(misc_row, "record_misc_row");
+	add_css_class(title_row, "record_title_row");
+
+
+
+	var c = misc_row.insertCell(0);
+	/* shove in a div for each of the types of resource */
+	for( var i = 0; i!= 9; i++) {
+		var div = createAppElement("div");
+		div.innerHTML = "&nbsp;";
+		add_css_class(div, "record_resource_div");
+		c.appendChild(div);
+	}
+
+	c.className = "record_misc_cell";
+	var resources = record.types_of_resource();
+
+	for( var i in resources ) 
+		this.buildResourcePic( c, resources[i]);
 
 	author_row.id = "record_result_author_row_" + id;
 	title_row.id = "record_result_title_row_" + id;
@@ -162,29 +226,8 @@ AbstractRecordResultPage.prototype.displayRecord =
 	/* ------------------------------------ */
 
 
-	var isbn = record.isbn();
-	if(isbn) isbn = isbn.replace(/\s+/,"");
-	else isbn = "";
-
 	var pic_cell = title_row.insertCell(0);
-	pic_cell.setAttribute("rowspan","2");
-	pic_cell.rowSpan = 2;
-
-
-	var rankBox = "";
-	if( this.ranks.length > 0 ) {
-		var x = (parseInt(this.page) * parseInt(this.hitsPerPage)) + parseInt(page_id);
-		var per = parseInt(this.ranks[x] / this.ranks[0] * 100.0);
-		rankBox = "<div class='relevance_box'><div style='width:" + 
-			per + "%' class='relevance'>&nbsp;</div></div>";
-	}
-			
-
-	/* pull from amazon for now... */
-	pic_cell.innerHTML = rankBox + 
-		"<img height='50' width='45' src='http://images.amazon.com/images/P/" 
-		+ isbn + ".01.MZZZZZZZ.jpg'>";
-
+	this.buildRecordImage( pic_cell, record, page_id );
 
 	var title_cell = title_row.insertCell(title_row.cells.length);
 	title_cell.id = "record_result_title_box_" + id;
@@ -196,27 +239,45 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 
 	/* limit the length of the title and author lines */
-	var tlength = 100;
+	var tlength = 80;
 
+	var title = "";
 	if( record.title() ) {
 		if(record.title().length > tlength) {
 			record.title(record.title().substr(0,tlength));
 			record.title(record.title() + "...");
 		}
-		record.title(normalize(record.title()));
+		title = normalize(record.title());
 	}
 
+	var author = "";
 	if( record.author() ) {
 		if(record.author().length > tlength) {
 			record.author( record.author().substr(0,tlength));
 			record.author(record.author() + "...");
 		}
-		record.author(normalize(record.author()));
-	}	
+		author = normalize(record.author());
+	}
 
-	title_cell.appendChild(this.mkLink(record.doc_id(), "title", record.title()));
+	title_cell.appendChild(this.mkLink(record.doc_id(), "title", title ));
 	author_cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	author_cell.appendChild(this.mkLink(record.doc_id(), "author", record.author()));
+	author_cell.appendChild(this.mkLink(record.doc_id(), "author", author ));
+
+	if(instanceOf(this, RecordResultPage)) {
+		var span = createAppElement("span");
+		span.style.marginLeft = "10px";
+
+		if(record.pubdate() || record.edition())
+			span.appendChild(createAppTextNode(" -- "));
+
+		if(record.pubdate())
+			span.appendChild(createAppTextNode(" " + record.pubdate()));
+
+		if(record.edition())
+			span.appendChild(createAppTextNode(" " + record.edition()));
+
+			author_cell.appendChild(span);
+	}
 
 	var classname = "result_even";
 	if((page_id%2) != 0) 
@@ -224,10 +285,11 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	add_css_class(title_row, classname);
 	add_css_class(author_row, classname);
+	add_css_class(misc_row, classname);
 
 	/* now grab the record authors and subjects */
-	if( record.author() ) {
-		this.authorBox.addItem( this.mkAuthorLink(record.author()), record.author() );
+	if( author ) {
+		this.authorBox.addItem( this.mkAuthorLink(author) , author);
 	}
 
 	/* gather the subjects.  subjects are either a string or an array of
@@ -237,6 +299,11 @@ AbstractRecordResultPage.prototype.displayRecord =
 	for( var sub in arr ) {
 
 		var ss = arr[sub];
+
+		/* only taking first part of subject (non-topic, etc.) */
+		if( ss.constructor == Array)
+			ss = ss[0];
+
 		if( ss.constructor != Array )
 			ss = [ss];
 
@@ -378,8 +445,8 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 		var cell = createAppElement("td");
 		add_css_class(cell, "copy_count_cell");
 		cell.innerHTML = copy_counts[i].available + " / " + copy_counts[i].count;
-		cell.setAttribute("rowspan","2");
-		cell.rowSpan = 2;
+		cell.setAttribute("rowspan","3");
+		cell.rowSpan = 3;
 		titlerow.appendChild(cell);
 	}
 
@@ -471,4 +538,139 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 }
 
 
+AbstractRecordResultPage.prototype.buildResourcePic = function(c, resource) {
+
+	var pic = createAppElement("img");
+	var big_pic_div = createAppElement("div");
+
+
+	pic.setAttribute("src", "/images/" + resource + ".jpg");
+	pic.className = "record_resource_pic";
+	pic.setAttribute("width", "20");
+	pic.setAttribute("height", "20");
+	pic.setAttribute("title", resource);
+
+
+	var index;
+
+	switch(resource) {
+
+		case "text":
+			index = 0;
+			break;
+
+		case "moving image":
+			index = 1;
+			break;
+
+		case "sound recording":
+			index = 2;
+			break;
+
+		case "software, multimedia":
+			index = 3;
+			break;
+
+		case "still images":
+			index = 4;
+			break;
+
+		case "cartographic":
+			index = 5;
+			break;
+
+		case "mixed material":
+			index = 6;
+			break;
+
+		case "notated music":
+			index = 7;
+			break;
+
+		case "three dimensional object":
+			index = 8;
+			break;
+
+		default:
+			index = 0;
+	}
+
+	c.childNodes[index].innerHTML = "";
+	c.childNodes[index].appendChild(pic);
+}
+
+AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record, page_id) {
+
+	var isbn = record.isbn();
+	if(isbn) isbn = isbn.replace(/\s+/,"");
+	else isbn = "";
+
+	pic_cell.setAttribute("rowspan","3");
+	pic_cell.rowSpan = 3;
+
+	pic_cell.noWrap = 'nowrap';
+	pic_cell.setAttribute("nowrap", "nowrap");
+
+	pic_cell.width = "60";
+	pic_cell.className = "record_image_cell";
+
+
+	var rankBox;
+	if( this.ranks.length > 0 ) {
+		var x = (parseInt(this.page) * parseInt(this.hitsPerPage)) + parseInt(page_id);
+		var per = parseInt(this.ranks[x] / this.ranks[0] * 100.0);
+
+		debug("Per is " + per);
+		per = 100 - parseInt(per);
+
+		rankBox = createAppElement("div");
+		add_css_class(rankBox, "relevance_box");
+
+		var d = createAppElement("div");
+		d.setAttribute("height", per + "%");
+		d.style.height = per + "%";
+
+		add_css_class(d, "relevance");
+		rankBox.appendChild(d);
+
+		rankBox.setAttribute("title", (100 - parseInt(per)) + "% Relevant");
+	}
+
+	/* use amazon for now */
+	var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
+	var big_div = createAppElement("div");
+	add_css_class(big_div, "record_image_big hide_me");
+
+	var big_pic = createAppElement("img");
+	var pic = createAppElement("img");
+	
+	big_pic.setAttribute("src", img_src);
+	big_pic.setAttribute("border", "0");
+	pic.setAttribute("src", img_src);
+	add_css_class(big_pic, "record_image");
+	add_css_class(pic, "record_image");
+
+	pic.setAttribute("width", "45");
+	pic.setAttribute("height", "50");
+	pic.style.width = "45";
+	pic.style.height = "50";
+
+	if(IE) 
+		big_div.style.left = 0;
+
+
+	var anch = this.mkLink(record.doc_id(), "img" );
+	anch.appendChild(big_pic);
+	big_div.appendChild(anch);
+	pic_cell.appendChild(big_div);
+
+	pic_cell.appendChild(pic);
+
+	if(rankBox)
+		pic_cell.appendChild(rankBox);
+
+	pic.onmouseover = function() {showMe(big_div);}
+	big_div.onmouseout = function(){hideMe(big_div);}
+
+}
 

@@ -132,7 +132,9 @@ UserSession.prototype.login = function( username, password ) {
 
 
 /* grab this users org unit */
-UserSession.prototype.grabOrgUnit = function() {
+/* if new_org_id is provided, it is used instead of the home_ou 
+	of the user */
+UserSession.prototype.grabOrgUnit = function(org) {
 	var session = this.getSessionId();
 	if(!session) {
 		throw new EXLogic(
@@ -148,8 +150,11 @@ UserSession.prototype.grabOrgUnit = function() {
 	request.send(true);
 	this.userObject = request.getResultObject();
 	
-	this.orgUnit = findOrgUnit(this.userObject.home_ou());
-	globalSearchDepth = findOrgDepth(this.orgUnit.ou_type());
+	if(org) 
+		this.orgUnit = org;
+	else	
+		this.orgUnit = findOrgUnit(this.userObject.home_ou());
+
 	globalSelectedDepth = findOrgDepth(this.orgUnit.ou_type());
 	globalPage.updateSelectedLocation(this.orgUnit);
 	globalPage.updateCurrentLocation(this.orgUnit);
