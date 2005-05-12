@@ -44,6 +44,19 @@ CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
 CREATE INDEX actor_usr_mailing_address_idx ON actor.usr (mailing_address);
 CREATE INDEX actor_usr_billing_address_idx ON actor.usr (billing_address);
 
+CREATE INDEX actor_usr_first_given_name_idx ON actor.usr (lower(first_given_name));
+CREATE INDEX actor_usr_second_given_name_idx ON actor.usr (lower(second_given_name));
+CREATE INDEX actor_usr_family_name_idx ON actor.usr (lower(family_name));
+
+CREATE INDEX actor_usr_email_idx ON actor.usr (lower(email));
+
+CREATE INDEX actor_usr_day_phone_idx ON actor.usr (lower(day_phone));
+CREATE INDEX actor_usr_evening_phone_idx ON actor.usr (lower(evening_phone));
+CREATE INDEX actor_usr_other_phone_idx ON actor.usr (lower(other_phone));
+
+CREATE INDEX actor_usr_ident_value_idx ON actor.usr (lower(ident_value));
+CREATE INDEX actor_usr_ident_value2_idx ON actor.usr (lower(ident_value2));
+
 CREATE FUNCTION actor.crypt_pw_insert () RETURNS TRIGGER AS $$
 	BEGIN
 		NEW.passwd = MD5( NEW.passwd );
@@ -206,6 +219,14 @@ CREATE TABLE actor.usr_address (
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL
 );
+
+CREATE INDEX actor_usr_addr_street1_idx ON actor.usr_address (lower(street1));
+CREATE INDEX actor_usr_addr_street2_idx ON actor.usr_address (lower(street2));
+
+CREATE INDEX actor_usr_addr_city_idx ON actor.usr_address (lower(city));
+CREATE INDEX actor_usr_addr_state_idx ON actor.usr_address (lower(state));
+CREATE INDEX actor_usr_addr_post_code_idx ON actor.usr_address (lower(post_code));
+
 
 CREATE TABLE actor.org_address (
 	id		SERIAL	PRIMARY KEY,

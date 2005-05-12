@@ -162,6 +162,8 @@ sub search_class_fts {
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 
+	my $metabib_metarecord = metabib::metarecord->table;
+	my $metabib_full_rec = metabib::full_rec->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
@@ -169,7 +171,7 @@ sub search_class_fts {
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value', "$index_col");
+	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
 
 	my $fts_where = $fts->sql_where_clause;
 	my @fts_ranks = $fts->fts_rank;
@@ -208,8 +210,7 @@ sub search_class_fts {
 			$has_vols
 			$has_copies
 			$copies_visible
-	  	  GROUP BY 1
-		  $visible_count_test
+	  	  GROUP BY m.metarecord $visible_count_test
 	  	  $rank_order
 		  $limit_clause $offset_clause
 	SQL

@@ -1,6 +1,6 @@
 package OpenILS::Application::Storage::Publisher::actor;
 use base qw/OpenILS::Application::Storage/;
-#use OpenILS::Application::Storage::CDBI::actor;
+use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Utils::Fieldmapper;
 
@@ -28,6 +28,78 @@ __PACKAGE__->register_method(
 	method		=> 'user_by_barcode',
 	stream		=> 1,
 	cachable	=> 1,
+);
+
+
+sub patron_search {
+	my $self = shift;
+	my $client = shift;
+	my $search = shift;
+
+	# group 0 = user
+	# group 1 = address
+	# group 2 = phone, ident
+
+	my $usr = join ' AND ', map { "LOWER($_) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+	my @usrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+
+	my $addr = join ' AND ', map { "LOWER($_) ~ " } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my @addrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+
+	my $pv = $$search{phone}{value};
+	my $iv = $$search{ident}{value};
+
+	my $phone = '';
+	my @ps;
+	my @phonev;
+	if ($pv) {
+		for my $p ( qw/day_phone evening_phone other_phone/ ) {
+			push @ps, "LOWER($p) ~ ?";
+			push @phonev, "^$pv";
+		}
+		$phone = '(' . join(' OR ', @ps) . ')';
+	}
+
+	my $ident = '';
+	my @is;
+	my @identv;
+	if ($pv) {
+		for my $i ( qw/ident_value ident_value2/ ) {
+			push @is, "LOWER($i) ~ ?";
+			push @identv, "^$iv";
+		}
+		$ident = '(' . join(' OR ', @is) . ')';
+	}
+
+	my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident);
+	my $addr_where = $addr;
+
+
+	my $u_table = actor::user->table;
+	my $a_table = actor::user_address->table;
+
+	my $u_select = "SELECT id FROM $u_table a WHERE $usr_where";
+	my $a_select = "SELECT usr FROM $a_table a WHERE $addr_where";
+
+	my $select = '';
+	if ($usr_where) {
+		if ($addr_where) {
+			$select = "$u_select INTERSECT $a_select";
+		} else {
+			$select = $u_select;
+		}
+	} elsif ($addr_where) {
+		$select = $a_select;
+	} else {
+		return undef;
+	}
+
+	return actor::user->db_Main->selectcol_arrayref($select, {}, @usrv,@phonev,@identv,@addrv);
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.crazy_search',
+	api_level	=> 1,
+	method		=> 'patron_search',
 );
 
 =comment not gonna use it...
