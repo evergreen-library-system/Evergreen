@@ -1,6 +1,7 @@
 body {
-	font-size: small;
-	background: #FFF;
+	font-family: Helvetica, Arial, Tahoma, sans-serif;
+	font: .76em; 
+/*	background: #FFF;*/
 }
 
 .text_link_div {

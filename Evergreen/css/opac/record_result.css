@@ -20,6 +20,7 @@
 
 .big_ol_box {
 	width: 100%;
+	background: #FFF;
 }
 
 .record_result_cell { 
@@ -32,8 +33,17 @@
 .record_result_row_table{ width: 100%; }
 
 /* we hold a title, copy count */
-.record_result_title_row_box	{ width: 100%;}
-.record_result_title_box		{ width: 90%; vertical-align: top;}
+.record_result_title_row_box	{ 
+	width: 100%;
+}
+.record_result_title_box		{ 
+	width: 90%; 
+	vertical-align: top;
+	font-weight: 500;
+	font-size: .90em;
+	padding-top: 3px;
+}
+
 .record_result_copy_count_box { width: 8%;}
 
 .record_result_xul_button_box { 
@@ -48,11 +58,12 @@
 	vertical-align:top;
 	padding-left: 20px;
 	vertical-align: top;
+	font-size: 80%;
 }
 
 /* style the odd and even results */
 .result_odd {}
-.result_even { background: #CCF; border: 2px solid #CCF; }
+/*.result_even { background:#EEF;}*/
 
 #record_sidebar_box { 
 	vertical-align: top;
@@ -91,11 +102,13 @@
 .hit_count_cell { 
 	padding-left: 2px;
 	font-weight: bold;
+	float:left;
 }
 
 .copy_count_cell {
 	vertical-align: middle;
 	text-align: center;
+	border-bottom: 1px solid #FFF;
 }
 
 .record_result_thead_header{ 
@@ -118,15 +131,59 @@
 
 
 .relevance_box {
-	width: 43px;
-	border: 1px solid black;
-	height: 5px;
+	border: 1px solid lightgreen;
+	float: right;
+	background: lightgreen;
+	height: 36px;
+	width: 4px;
 }
 
 .relevance {
-	height: 100%;
-	background: green;
+	width: 100%;
 	font-size: .1em;
+	background: #EFE;
+}
+
+.record_image {
+	float: left;
+}
+
+.record_image_cell {
+	vertical-align: top;
+}
+
+.record_misc_cell {
+	border-bottom: 1px dashed #99C;
+	padding-bottom: 3px;
+}
+
+.record_resource_pic {
+	margin-right: 3px;
+}
+
+.record_resource_div {
+	width: 20px;
+	border-collapse: collapse;
+	float:left;
+	border-left: 1px dotted #CCF;
+	height: 20px;
 }
 
 
+.record_title_row {
+}
+
+.record_misc_row {
+	padding-bottom: 4px;
+}
+
+.hit_count_selector_div {
+	text-align: right;
+	width: 100%;
+	margin: 3px;
+}
+
+.record_image_big {
+	z-index: 10;
+	position: absolute;
+}

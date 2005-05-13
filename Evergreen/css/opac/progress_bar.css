@@ -24,12 +24,14 @@
 .progress_bar_chunk {
 	height: 100%;
 	float: left;
+	border-collapse: collapse;
 }
 
 .progress_bar_chunk_active {
 	height: 100%;
 	float: left;
 	background: #CCF;
+	border-collapse: collapse;
 }
 
 .progress_percent {
