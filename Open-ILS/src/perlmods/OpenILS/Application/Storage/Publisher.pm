@@ -40,7 +40,7 @@ sub cachable_wrapper {
 	my %cache_args = (
 		limit		=> 100,
 		offset		=> 0,
-		timeout		=> 300,
+		timeout		=> 7200,
 		cache_page_size	=> 1000,
 	);
 
@@ -68,13 +68,15 @@ sub cachable_wrapper {
 	my $cache_key = md5_hex($key_string.$cache_page);
 
 	$log->debug("Key string for cache lookup is $key_string -> $cache_key", DEBUG);
+	$log->debug("Cache page is $cache_page", DEBUG);
 
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( $cache_key );
 	if (defined $cached_res) {
 		$log->debug("Found ".scalar(@$cached_res)." records in the cache", INFO);
 		$log->debug("Values from cache: ".join(', ', @$cached_res), INTERNAL);
 		my $start = int($cache_args{offset} - ($cache_page * $cache_args{cache_page_size}));
-		my $end = int(($cache_args{offset} + $cache_args{limit} - 1) - (($cache_page + 1) * $cache_args{cache_page_size}));
+		my $end = int($start + $cache_args{limit} - 1);
+		$log->debug("Responding with values from ".$start.' to '.$end,DEBUG);
         	$client->respond( $_ ) for ( grep { defined } @$cached_res[ $start .. $end ]);
 		return undef;
 	}
@@ -85,6 +87,8 @@ sub cachable_wrapper {
 
         $client->respond( $_ ) for ( grep { defined } @res[$cache_args{offset} .. int($cache_args{offset} + $cache_args{limit} - 1)] );
 
+	$log->debug("Saving values from ".int($cache_page * $cache_args{cache_page_size})." to ".
+		int(($cache_page + 1) * $cache_args{cache_page_size}). "to the cache", INTERNAL);
         OpenSRF::Utils::Cache->new->put_cache(
 		$cache_key =>
 		[@res[int($cache_page * $cache_args{cache_page_size}) .. int(($cache_page + 1) * $cache_args{cache_page_size}) ]] =>
