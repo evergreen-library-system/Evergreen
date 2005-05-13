@@ -192,9 +192,9 @@ sub search_class_fts {
 		$has_vols = '' if ($ou_type == 0);
 	}
 
-	my $rank_calc = ", sum($rank)/count(m.source)";
+	my $rank_calc = ", sum($rank + CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)/count(m.source)";
 	my $rank_order = "ORDER BY 2 DESC";
-	$rank_calc = ',1' if ($self->api_name =~ /unordered/o);
+	$rank_calc = ',sum(1 + CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)' if ($self->api_name =~ /unordered/o);
 	$rank_order = '' if ($self->api_name =~ /unordered/o);
 
 	my $select = <<"	SQL";
@@ -217,7 +217,8 @@ sub search_class_fts {
 
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
 
-	my $recs = $class->db_Main->selectall_arrayref($select);
+	my $string = '%'.join('%',$fts->words).'%';
+	my $recs = $class->db_Main->selectall_arrayref($select, {}, lc($string));
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
@@ -240,6 +241,7 @@ for my $class ( qw/title author subject keyword series/ ) {
 		api_level	=> 1,
 		stream		=> 1,
 		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
 	);
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord.staff",
@@ -255,6 +257,7 @@ for my $class ( qw/title author subject keyword series/ ) {
 		api_level	=> 1,
 		stream		=> 1,
 		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
 	);
 }
 
