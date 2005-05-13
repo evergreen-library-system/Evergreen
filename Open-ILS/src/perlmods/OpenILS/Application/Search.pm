@@ -25,6 +25,10 @@ sub child_init {
 	OpenILS::Application::SearchCache->child_init();
 }
 
+sub initialize {
+	OpenILS::Application::Search::Z3950->initialize();
+}
+
 sub filter_search {
 	my($self, $str, $full) = @_;
 

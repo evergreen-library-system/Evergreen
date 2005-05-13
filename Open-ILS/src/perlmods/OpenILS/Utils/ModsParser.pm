@@ -23,8 +23,11 @@ my $pub_xpath			= "//mods:mods/mods:originInfo//mods:dateIssued[\@encoding='marc
 my $tcn_xpath			= "//mods:mods/mods:recordInfo/mods:recordIdentifier";
 my $publisher_xpath	= "//mods:mods/mods:originInfo//mods:publisher[1]";
 
+my $edition_xpath = "//mods:mods/mods:originInfo//mods:edition[1]";
+
 
 my $xpathset = {
+
 	title => {
 		abbreviated => 
 			"//mods:mods/mods:titleInfo[mods:title and (\@type='abreviated')]",
@@ -35,6 +38,7 @@ my $xpathset = {
 		proper =>
 			"//mods:mods/mods:titleInfo[mods:title and not (\@type)]",
 	},
+
 	author => {
 		corporate => 
 			"//mods:mods/mods:name[\@type='corporate']/*[local-name()='namePart']".
@@ -48,6 +52,7 @@ my $xpathset = {
 		other => 
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']",
 	},
+
 	subject => {
 
 		topic => 
@@ -278,6 +283,9 @@ sub start_mods_batch {
 	($self->{master_doc}->{publisher}) = 
 		$self->get_field_value( $mods, $publisher_xpath );
 
+	($self->{master_doc}->{edition}) =
+		$self->get_field_value( $mods, $edition_xpath );
+
 }
 
 # ---------------------------------------------------------------------------
@@ -331,6 +339,11 @@ sub finish_mods_batch {
 		push @series, (split( /\s*;/, $s ))[0];
 	}
 
+	# uniquify the types of resource
+	my $rtypes = $perl->{type_of_resource};
+	my %hash = map { ($_ => 1) } @$rtypes;
+	$rtypes = [ keys %hash ];
+
 	$record->title($title);
 	$record->author($author);
 
@@ -340,12 +353,13 @@ sub finish_mods_batch {
 	$record->publisher($perl->{publisher});
 	$record->tcn($perl->{tcn});
 
+	$record->edition($perl->{edition});
+
 	$record->subject($perl->{subject});
-	$record->types_of_resource($perl->{types_of_resource});
+	$record->types_of_resource($rtypes);
 	$record->series(\@series);
 
 	$self->{master_doc} = undef;
-	#return $perl
 	return $record;
 }
 

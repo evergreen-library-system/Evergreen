@@ -41,7 +41,7 @@ sub update_patron {
 
 	try {
 		# create/update the patron first so we can use his id
-		if( $patron->isnew() ) {
+		if($patron->isnew()) {
 			$new_patron = _add_patron(
 					$session, _clone_patron($patron));
 		} else { 
@@ -50,6 +50,8 @@ sub update_patron {
 
 		$new_patron = _add_update_addresses($session, $patron, $new_patron);
 		$new_patron = _add_update_cards($session, $patron, $new_patron);
+		$new_patron = _add_survey_responses($session, $patron, $new_patron);
+		$new_patron	= _create_stat_maps($user_session, $patron, $new_patron);
 
 		# re-update the patron if anything has happened to him during this process
 		if($new_patron->ischanged()) {
@@ -97,6 +99,11 @@ sub flesh_user {
 			$user->id() );
 	$user->addresses( $add_req->gather(1) );
 
+	my $stat_req = $session->request(
+		"open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr",
+		$user->id() );
+	$user->stat_cat_entries($stat_req->gather(1));
+
 	if($kill) { $session->disconnect(); }
 	$user->clear_passwd();
 	warn Dumper $user;
@@ -130,6 +137,7 @@ sub _clone_patron {
 	$new_patron->clear_isnew();
 	$new_patron->clear_changed();
 	$new_patron->clear_deleted();
+	$new_patron->clear_stat_cat_entries();
 
 	return $new_patron;
 }
@@ -147,16 +155,20 @@ sub _add_patron {
 	my $id = $req->gather(1);
 	if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new user"); }
 	warn "Created new patron with id $id\n";
-	$patron->id($id);
 
-	return $patron;
+	# retrieve the patron from the db to collect defaults
+	my $ureq = $session->request(
+			"open-ils.storage.direct.actor.user.retrieve",
+			$id);
+	return $ureq->gather(1);
 }
 
 
 sub _update_patron {
 	my( $session, $patron) = @_;
 
-	warn "updating patron " . $patron->usrname() . "\n";
+	warn "updating patron " . Dumper($patron) . "\n";
+
 	my $req = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron );
 	my $status = $req->gather(1);
@@ -351,6 +363,60 @@ sub _delete_address {
 
 
 
+sub _add_survey_responses {
+	my ($session, $patron, $new_patron) = @_;
+
+	warn "updating responses for user " . $new_patron->id . "\n";
+
+	my $responses = $patron->survey_responses;
+	for my $resp( @$responses ) {
+		$resp->usr($new_patron->id);
+	}
+
+	my $status = $apputils->simple_scalar_request(
+		"open-ils.circ", 
+		"open-ils.circ.survey.submit.user_id",
+		$responses );
+
+	return $new_patron;
+}
+
+
+sub _create_stat_maps {
+
+	my($user_session, $patron, $new_patron) = @_;
+	my $maps = $patron->stat_cat_entries();
+
+	my $session = OpenSRF::AppSession->create("open-ils.circ");
+
+	for my $map (@$maps) {
+
+		next unless($map->isnew() || $map->ischanged());
+
+		my $method = "open-ils.circ.stat_cat.actor.user_map.update";
+		if($map->isnew()) {
+			$method = "open-ils.circ.stat_cat.actor.user_map.create";
+		}
+
+		warn "Updating stat entry with method $method and 
+			session $user_session and map $map\n";
+
+		my $req = $session->request($method, $user_session, $map);
+		my $status = $req->gather(1);
+
+		warn "Updated\n";
+
+		if(!$status) {
+			throw OpenSRF::EX::ERROR 
+				("Error updating stat map with method $method");	
+		}
+	}
+
+	$session->disconnect();
+	return $new_patron;
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "search_username",
@@ -365,6 +431,8 @@ sub search_username {
 			$username );
 	return $users;
 }
+
+
 
 
 __PACKAGE__->register_method(
@@ -392,11 +460,27 @@ sub user_retrieve_by_barcode {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "get_user_by_id",
+	api_name	=> "open-ils.actor.user.retrieve",);
+
+sub get_user_by_id {
+	my ($self, $client, $user_session, $id) = @_;
+
+	my $user_obj = $apputils->check_user_session( $user_session ); 
+
+	return $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.actor.user.retrieve",
+		$id );
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "get_org_types",
-	api_name	=> "open-ils.actor.org_types.retrieve",
-);
+	api_name	=> "open-ils.actor.org_types.retrieve",);
+
 my $org_types;
 sub get_org_types {
 	my($self, $client) = @_;
@@ -407,6 +491,7 @@ sub get_org_types {
 			"open-ils.storage",
 			"open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic" );
 }
+
 
 
 __PACKAGE__->register_method(
@@ -596,6 +681,15 @@ sub patron_adv_search {
 	use Data::Dumper;
 	warn "patron adv with $staff_login and search " . 
 		Dumper($search_hash) . "\n";
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $req = $session->request(
+		"open-ils.storage.actor.user.crazy_search", $search_hash);
+
+	my $ans = $req->gather(1);
+	$session->disconnect();
+	return $ans;
+
 }
 
 

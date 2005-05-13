@@ -164,6 +164,11 @@ __PACKAGE__->register_method(
 	method	=> "record_id_to_copy_count",
 	api_name	=> "open-ils.search.biblio.metarecord.copy_count",
 );
+
+__PACKAGE__->register_method(
+	method	=> "record_id_to_copy_count",
+	api_name	=> "open-ils.search.biblio.metarecord.copy_count.staff",
+);
 sub record_id_to_copy_count {
 	my( $self, $client, $org_id, $record_id ) = @_;
 
@@ -173,6 +178,12 @@ sub record_id_to_copy_count {
 		$method = "open-ils.storage.metabib.metarecord.copy_count.atomic";
 		$key = "metarecord";
 	}
+
+	if($self->api_name =~ /staff/ ) {
+		$method =~ s/atomic/staff\.atomic/og;
+		warn "Doing staff search $method\n";
+	}
+
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	warn "copy_count retrieve $record_id\n";
@@ -564,9 +575,13 @@ sub cat_biblio_search_class_id {
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class_count",
 	api_name	=> "open-ils.search.biblio.class.count",
-	argc		=> 3, 
-	note		=> "Searches biblio information by search class and returns the IDs",
 );
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class_count",
+	api_name	=> "open-ils.search.biblio.class.count.staff",
+);
+
 sub biblio_search_class_count {
 
 	my( $self, $client, $class, $string, $org_id, $org_type ) = @_;
@@ -598,7 +613,8 @@ sub biblio_search_class_count {
 	$class =~ s/\s+//g;
 
 	if( ($class ne "title") and ($class ne "author") and 
-		($class ne "subject") and ($class ne "keyword") ) {
+		($class ne "subject") and ($class ne "keyword") 
+		and ($class ne "series"  )) {
 		warn "Invalid search class: $class\n";
 		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
 	}
@@ -606,7 +622,10 @@ sub biblio_search_class_count {
 	# grab the mr id's from storage
 
 	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord_count";
+	if($self->api_name =~ /staff/) { $method = "$method.staff"; }
 	warn "Performing count method $method\n";
+	warn "API name " . $self->api_name() . "\n";
+
 	my $session = OpenSRF::AppSession->create('open-ils.storage');
 
 	my $request = $session->request( $method, 
@@ -629,6 +648,16 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class",
 	api_name	=> "open-ils.search.biblio.class.unordered",
+);
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class",
+	api_name	=> "open-ils.search.biblio.class.staff",
+);
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class",
+	api_name	=> "open-ils.search.biblio.class.unordered.staff",
 );
 
 sub biblio_search_class {
@@ -663,7 +692,8 @@ sub biblio_search_class {
 	$class =~ s/\s+//g;
 
 	if( ($class ne "title") and ($class ne "author") and 
-		($class ne "subject") and ($class ne "keyword") ) {
+		($class ne "subject") and ($class ne "keyword") 
+		and ($class ne "series") ) {
 		warn "Invalid search class: $class\n";
 		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
 	}
@@ -674,6 +704,11 @@ sub biblio_search_class {
 		$method = "open-ils.storage.metabib.$class.search_fts.metarecord.unordered.atomic";
 	}
 
+	if($self->api_name =~ /staff/) { 
+		$method =~ s/atomic/staff\.atomic/og;
+	}
+
+	warn "Performing search method $method\n";
 	warn "MR search method is $method\n";
 
 	my $session = OpenSRF::AppSession->create('open-ils.storage');

@@ -37,10 +37,10 @@ sub retrieve_stat_cats {
 
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_ranged_stat_cats",
-	api_name	=> "open-ils.circ.stat_cat.asset.multirange.retrieve");
+	method	=> "retrieve_ranged_intersect_stat_cats",
+	api_name	=> "open-ils.circ.stat_cat.asset.multirange.intersect.retrieve");
 
-sub retrieve_ranged_stat_cats {
+sub retrieve_ranged_intersect_stat_cats {
 	my( $self, $client, $user_session, $orglist ) = @_;
 
 	my $user_obj = $apputils->check_user_session($user_session); 
@@ -52,10 +52,33 @@ sub retrieve_ranged_stat_cats {
 
 	warn "range: @$orglist\n";
 
-	my	$method = "open-ils.storage.multiranged.fleshed.asset.stat_cat.all.atomic";
+	my	$method = "open-ils.storage.multiranged.intersect.fleshed.asset.stat_cat.all.atomic";
 	return $apputils->simple_scalar_request(
 				"open-ils.storage", $method, $orglist );
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_ranged_union_stat_cats",
+	api_name	=> "open-ils.circ.stat_cat.asset.multirange.union.retrieve");
+
+sub retrieve_ranged_union_stat_cats {
+	my( $self, $client, $user_session, $orglist ) = @_;
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+	if(!$orglist) { $orglist = [ $user_obj->home_ou ]; }
+
+	# uniquify, yay!
+	my %hash = map { ($_ => 1) } @$orglist;
+	$orglist = [ keys %hash ];
+
+	warn "range: @$orglist\n";
+
+	my	$method = "open-ils.storage.multiranged.union.fleshed.asset.stat_cat.all.atomic";
+	return $apputils->simple_scalar_request(
+				"open-ils.storage", $method, $orglist );
+}
+
 
 
 
@@ -162,10 +185,15 @@ sub _create_stat_cat {
 
 sub _create_stat_entry {
 	my( $session, $stat_entry, $method) = @_;
+
 	warn "Creating new stat entry with value " . $stat_entry->value . "\n";
 	$stat_entry->clear_id();
+
 	my $req = $session->request($method, $stat_entry);
 	my $id = $req->gather(1);
+
+	warn "Stat entry " . Dumper($stat_entry) . "\n";	
+	
 	if(!$id) {
 		throw OpenSRF::EX::ERROR 
 		("Error creating new stat cat entry"); }
@@ -199,6 +227,65 @@ sub update_stat_entry {
 	$apputils->commit_db_session($session);
 	warn "stat cat entry with value " . $entry->value . " updated with status $status\n";
 	return 1;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "update_stat",
+	api_name	=> "open-ils.circ.stat_cat.actor.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_stat",
+	api_name	=> "open-ils.circ.stat_cat.asset.update");
+
+sub update_stat {
+	my( $self, $client, $user_session, $cat ) = @_;
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	my $method = "open-ils.storage.direct.actor.stat_cat.update";
+	if($self->api_name =~ /asset/) {
+		$method = "open-ils.storage.direct.asset.stat_cat.update";
+	}
+
+	my $session = $apputils->start_db_session();
+	my $req = $session->request($method, $cat); 
+	my $status = $req->gather(1);
+	$apputils->commit_db_session($session);
+	warn "stat cat with id " . $cat->id . " updated with status $status\n";
+	return 1;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "create_stat_entry",
+	api_name	=> "open-ils.circ.stat_cat.actor.entry.create");
+
+__PACKAGE__->register_method(
+	method	=> "create_stat_entry",
+	api_name	=> "open-ils.circ.stat_cat.asset.entry.create");
+
+sub create_stat_entry {
+	my( $self, $client, $user_session, $entry ) = @_;
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	$entry->clear_id();
+	use Data::Dumper;
+	warn Dumper($entry);
+
+	my $method = "open-ils.storage.direct.actor.stat_cat_entry.create";
+	if($self->api_name =~ /asset/) {
+		$method = "open-ils.storage.direct.asset.stat_cat_entry.create";
+	}
+
+	my $session = $apputils->start_db_session();
+	my $req = $session->request($method, $entry); 
+	my $status = $req->gather(1);
+	$apputils->commit_db_session($session);
+
+	warn "stat cat entry with id " . $status . " updated with status $status\n";
+	return $status;
 }
 
 
@@ -238,6 +325,36 @@ sub create_stat_map {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "update_stat_map",
+	api_name	=> "open-ils.circ.stat_cat.actor.user_map.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_stat_map",
+	api_name	=> "open-ils.circ.stat_cat.asset.copy_map.update");
+
+sub update_stat_map {
+	my( $self, $client, $user_session, $map ) = @_;
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	warn "Updating stat_cat_map\n";
+
+	my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
+	if($self->api_name =~ /asset/) {
+		$method = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.update";
+	}
+
+	my $session = $apputils->start_db_session();
+	my $req = $session->request($method, $map); 
+	my $newid = $req->gather(1);
+	warn "Updated new stat cat map with id $newid\n";
+	$apputils->commit_db_session($session);
+
+	return $newid;
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_maps",
@@ -264,10 +381,62 @@ sub retrieve_maps {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "delete_stats",
+	api_name	=> "open-ils.circ.stat_cat.actor.delete");
+
+__PACKAGE__->register_method(
+	method	=> "delete_stats",
+	api_name	=> "open-ils.circ.stat_cat.asset.delete");
+
+sub delete_stats {
+	my( $self, $client, $user_session, $target ) = @_;
+	my $user_obj = $apputils->check_user_session($user_session); 
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $type = "actor";
+	if($self->api_name =~ /asset/) { $type = "asset"; }
+	return _delete_stats($session, $target, $type);
+}
+
+sub _delete_stats {
+	my( $session, $stat, $type) = @_;
+
+	my	$method = "open-ils.storage.direct.asset.stat_cat.delete";
+	if($type =~ /actor/ ) {
+		$method = "open-ils.storage.direct.actor.stat_cat.delete";
+	}
+	return $session->request($method, $stat)->gather(1);
+}
 
 
 
+__PACKAGE__->register_method(
+	method	=> "delete_entry",
+	api_name	=> "open-ils.circ.stat_cat.actor.entry.delete");
 
+__PACKAGE__->register_method(
+	method	=> "delete_entry",
+	api_name	=> "open-ils.circ.stat_cat.asset.entry.delete");
+
+sub delete_entry {
+	my( $self, $client, $user_session, $target ) = @_;
+	my $user_obj = $apputils->check_user_session($user_session); 
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $type = "actor";
+	if($self->api_name =~ /asset/) { $type = "asset"; }
+	return _delete_entry($session, $target, $type);
+}
+
+sub _delete_entry {
+	my( $session, $stat_entry, $type) = @_;
+
+	my	$method = "open-ils.storage.direct.asset.stat_cat_entry.delete";
+	if($type =~ /actor/ ) {
+		$method = "open-ils.storage.direct.actor.stat_cat_entry.delete";
+	}
+
+	return $session->request($method, $stat_entry)->gather(1);
+}
 
 
 

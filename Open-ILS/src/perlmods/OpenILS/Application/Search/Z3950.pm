@@ -17,6 +17,7 @@ my $utils = "OpenILS::Application::Cat::Utils";
 my $apputils = "OpenILS::Application::AppUtils";
 
 use OpenILS::Utils::ModsParser;
+use Data::Dumper;
 
 my $output = "USMARC"; # only support output for now
 my $host;
@@ -83,10 +84,26 @@ sub z39_search_by_string {
 
 
 	for( my $x = 0; $x != $hash->{count}; $x++ ) {
+		warn "Churning on z39 record count $x\n";
+
 		my $rec = $rs->record($x+1);
 		my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
 
-		my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marc->as_xml() ); 
+		my $marcxml = $marc->as_xml();
+		my $flat = OpenILS::Utils::FlatXML->new( xml => $marcxml ); 
+		my $doc = $flat->xml_to_doc();
+
+
+		if( $doc->documentElement->nodeName =~ /collection/io ) {
+			$doc->setDocumentElement( $doc->documentElement->firstChild );
+			$doc->documentElement->setNamespace(
+					"http://www.loc.gov/MARC21/slim", undef, 1);
+		}
+
+		warn $doc->toString . "\n";
+
+		my $nodes = $flat->xmldoc_to_nodeset($doc);
+
 		warn "turning nodeset into tree\n";
 		my $tree = $utils->nodeset2tree( $nodes->nodeset );
 

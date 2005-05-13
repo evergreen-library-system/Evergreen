@@ -3,6 +3,24 @@
 	box(id='progress_bar_percent_location'); 
 	INCLUDE opac/pages/chunks/opac_search_bar.ttk;
 	lines(1);
+
 	INCLUDE opac/pages/chunks/status_bar.ttk;
+
+	WRAPPER html/div class='hit_count_selector_div';
+
+		WRAPPER html/div class='hit_count_cell' id='hit_count_cell';
+		END;
+
+		"Hits per page ";
+		WRAPPER html/select name='hits_per_page' id='hits_per_page';
+			option(value='5',		content="5");
+			option(value='10',	selected='selected', content="10");
+			option(value='15',	content="15");
+			option(value='25',	content="25");
+			option(value='50',	content="50");
+			option(value='100',  content="100");
+		END;
+	END;
+
 	INCLUDE opac/pages/chunks/org_tree.ttk;
 %]

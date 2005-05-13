@@ -8,19 +8,119 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use JSON;
 use OpenILS::Utils::Fieldmapper;
+use XML::LibXML;
+use Data::Dumper;
+use OpenILS::Utils::FlatXML;
 
 my $apputils = "OpenILS::Application::AppUtils";
 
 my $utils = "OpenILS::Application::Cat::Utils";
 
 
+__PACKAGE__->register_method(
+	method	=> "biblio_record_tree_import",
+	api_name	=> "open-ils.cat.biblio.record.tree.import",
+);
+
+sub biblio_record_tree_import {
+	my( $self, $client, $user_session, $tree) = @_;
+	my $user_obj = $apputils->check_user_session($user_session);
+
+	warn "importing new record " . Dumper($tree) . "\n";
+
+	my $nodeset = $utils->tree2nodeset($tree);
+	warn "turned into nodeset " . Dumper($nodeset) . "\n";
+
+	# copy the doc so that we can mangle the namespace.  
+	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml($nodeset);
+	my $copy_marcxml = XML::LibXML->new->parse_string($marcxml);
+
+	$marcxml->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
+	my $tcn;
+
+	my $xpath = '//controlfield[@tag="001"]';
+	$tcn = $marcxml->documentElement->findvalue($xpath);
+	my $tcn_source = "External";
+	my $source = 2; # system local source
+
+	warn "Starting db session in import\n";
+	my $session = $apputils->start_db_session();
+
+	if(!$tcn) {
+		$xpath = '//datafield[@tag="020"]';
+		$tcn = $marcxml->documentElement->findvalue($xpath);
+		$tcn_source = "ISBN";
+		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+	}
+
+	if(!$tcn) { 
+		$xpath = '//datafield[@tag="022"]';
+		$tcn = $marcxml->documentElement->findvalue($xpath);
+		$tcn_source = "ISSN";
+		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+	}
+
+	if(!$tcn) {
+		$xpath = '//datafield[@tag="010"]';
+		$tcn = $marcxml->documentElement->findvalue($xpath);
+		$tcn_source = "LCCN";
+		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+	}
+
+	if(!$tcn) {
+		$xpath = '//datafield[@tag="035"]';
+		$tcn = $marcxml->documentElement->findvalue($xpath);
+		$tcn_source = "System";
+		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+	}
+
+	warn "Record import with tcn: $tcn\n";
+
+	my $record = Fieldmapper::biblio::record_entry->new;
+
+	$record->source($source);
+	$record->tcn_source($tcn_source);
+	$record->tcn_value($tcn);
+	$record->creator($user_obj->id);
+	$record->editor($user_obj->id);
+	$record->marc($copy_marcxml->toString);
+
+
+	my $req = $session->request(
+		"open-ils.storage.direct.biblio.record_entry.create",
+		$record );
+	my $id = $req->gather(1);
+
+	my $wreq = $session->request("open-ils.worm.wormize", $id);
+	$wreq->gather(1);
+
+	$apputils->commit_db_session($session);
+
+	return $self->biblio_record_tree_retrieve($client, $id);
+}
+
+sub _tcn_exists {
+	my $session = shift;
+	my $tcn = shift;
+
+	if(!$tcn) {return 0;}
+
+	my $req = $session->request(      
+		"open-ils.storage.direct.biblio.record_entry.search.tcn_value",
+		$tcn );
+	my $recs = $req->gather(1);
+
+	if($recs and $recs->[0]) {
+		return 1;
+	}
+	return 0;
+}
+
 
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_retrieve",
 	api_name	=> "open-ils.cat.biblio.record.tree.retrieve",
-	argc		=> 1, 
-	note		=> "Returns the tree associated with the nodeset of the given doc id"
 );
 
 sub biblio_record_tree_retrieve {
@@ -63,9 +163,6 @@ __PACKAGE__->register_method(
 sub biblio_record_tree_commit {
 
 	my( $self, $client, $user_session,  $tree ) = @_;
-	new Fieldmapper::biblio::record_node ($tree);
-
-	use Data::Dumper;
 
 	throw OpenSRF::EX::InvalidArg 
 		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
@@ -90,7 +187,7 @@ sub biblio_record_tree_commit {
 
 	# turn the tree into a nodeset
 	my $nodeset = $utils->tree2nodeset($tree);
-	$nodeset = $utils->clean_nodeset( $nodeset );
+	$nodeset = $utils->clean_nodeset($nodeset);
 
 	if(!defined($docid)) { # be sure
 		for my $node (@$nodeset) {
@@ -402,61 +499,6 @@ sub _build_volume_list {
 }
 
 
-
-
-=head
-__PACKAGE__->register_method(
-	method	=> "generic_edit_copies_volumes",
-	api_name	=> "open-ils.cat.asset.volume.batch.update",
-);
-
-__PACKAGE__->register_method(
-	method	=> "generic_edit_copies_volumes",
-	api_name	=> "open-ils.cat.asset.volume.batch.delete",
-);
-
-__PACKAGE__->register_method(
-	method	=> "generic_edit_copies_volumes",
-	api_name	=> "open-ils.cat.asset.copy.batch.update",
-);
-
-__PACKAGE__->register_method(
-	method	=> "generic_edit_copies_volumes",
-	api_name	=> "open-ils.cat.asset.copy.batch.delete",
-);
-
-
-sub generic_edit_copies_volumes {
-
-	my( $self, $client, $user_session, $items ) = @_;
-
-	my $method = $self->api_name;
-	$method =~ s/open-ils\.cat/open-ils\.storage\.direct/og;
-	warn "our method is $method\n";
-
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-	
-	warn "updating editor info\n";
-
-	for my $item (@$items) {
-		$item->editor( $user_obj->id );
-	}
-
-	my $session = OpenILS::Application::AppUtils->start_db_session;
-	my $request = $session->request( $method, @$items );
-	my $result = $request->gather(1);
-
-	OpenILS::Application::AppUtils->commit_db_session($session);
-
-	warn "looks like we succeeded\n";
-	return $result;
-}
-
-=cut
-
-
-
 # -----------------------------------------------------------------
 # Fleshed volume tree batch add/update.  This does everything a 
 # volume tree could want, add, update, delete
@@ -481,7 +523,15 @@ sub volume_tree_fleshed_update {
 
 		my $update_copy_list = $volume->copies;
 
-		if( $volume->isnew ) {
+
+		if( $volume->isdeleted) {
+			my $status = _delete_volume($session, $volume);
+			if(!$status) {
+				throw OpenSRF::EX::ERROR
+					("Volume delete failed for volume " . $volume->id);
+			}
+
+		} elsif( $volume->isnew ) {
 
 			$volume->clear_id;
 			$volume->editor($user_obj->id);
@@ -489,30 +539,34 @@ sub volume_tree_fleshed_update {
 			$volume = _add_volume($session, $volume);
 
 		} elsif( $volume->ischanged ) {
+
 			$volume->editor($user_obj->id);
 			_update_volume($session, $volume);
-
-		} elsif( $volume->isdeleted) {
-			return _delete_volume($session, $volume);
 		}
 
-		for my $copy (@{$update_copy_list}) {
 
-			$copy->editor($user_obj->id);
-			warn "updating copy for volume " . $volume->id . "\n";
-			if( $copy->isnew ) {
-
-				$copy->clear_id;
-				$copy->call_number($volume->id);
-				$copy->creator($user_obj->id);
-				$copy = _fleshed_copy_update($session,$copy,$user_obj->id);
-
-			} elsif( $copy->ischanged ) {
-				$copy->call_number($volume->id);
-				$copy = _fleshed_copy_update($session, $copy, $user_obj->id);
-
-			} elsif( $copy->isdeleted ) {
-				_fleshed_copy_update($session, $copy, $user_obj->id);
+		if( ! $volume->isdeleted ) {
+			for my $copy (@{$update_copy_list}) {
+	
+				$copy->editor($user_obj->id);
+				warn "updating copy for volume " . $volume->id . "\n";
+	
+				if( $copy->isnew ) {
+	
+					$copy->clear_id;
+					$copy->call_number($volume->id);
+					$copy->creator($user_obj->id);
+					$copy = _fleshed_copy_update($session,$copy,$user_obj->id);
+	
+				} elsif( $copy->ischanged ) {
+					$copy->call_number($volume->id);
+					$copy = _fleshed_copy_update($session, $copy, $user_obj->id);
+	
+				} elsif( $copy->isdeleted ) {
+					warn "Deleting copy " . $copy->id . " for volume " . $volume->id . "\n";
+					my $status = _fleshed_copy_update($session, $copy, $user_obj->id);
+					warn "Copy delete returned a status of $status\n";
+				}
 			}
 		}
 	}
@@ -521,35 +575,26 @@ sub volume_tree_fleshed_update {
 }
 
 
-#XXX make me
 sub _delete_volume {
 	my( $session, $volume ) = @_;
 
-	$volume = _find_volume($session, $volume);
+	#$volume = _find_volume($session, $volume);
+	warn "Deleting volume " . $volume->id . "\n";
 
-#	my $copies = $session->request(
-#		"open-ils.storage.direct.asset.copy.search.call_number",
-#		$volume-id )->gather(1);
-#	if(@$copies) {
-#		throw OpenSRF::EX::ERROR 
-#			("Cannot remove volume with copies attached");
-#	}
+	my $copies = $session->request(
+		"open-ils.storage.direct.asset.copy.search.call_number",
+		$volume->id )->gather(1);
+	if(@$copies) {
+		throw OpenSRF::EX::ERROR 
+			("Cannot remove volume with copies attached");
+	}
 
+	my $req = $session->request(
+		"open-ils.storage.direct.asset.call_number.delete",
+		$volume );
+	return $req->gather(1);
 }
 
-=head
-sub _find_volume {
-	my( $session, $volume ) = @_;
-	my $cn_req = $session->request( 
-		'open-ils.storage.direct.asset.call_number.search' =>
-	     {       owning_lib      => $volume->owning_lib,
-	             label           => $volume->label,
-	             record          => $volume->record,
-		}); 
-
-	return $cn_req->gather(1);
-}
-=cut
 
 sub _update_volume {
 	my($session, $volume) = @_;
@@ -582,120 +627,6 @@ sub _add_volume {
 
 
 
-=head
-__PACKAGE__->register_method(
-	method	=> "volume_tree_add",
-	api_name	=> "open-ils.cat.asset.volume.tree.batch.add",
-);
-
-sub volume_tree_add {
-
-	my( $self, $client, $user_session, $volumes ) = @_;
-	return undef unless $volumes;
-
-	use Data::Dumper;
-	warn "Volumes:\n";
-	warn Dumper $volumes;
-
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-
-	warn "volume_tree_add creating new db session\n";
-
-	my $session = OpenILS::Application::AppUtils->start_db_session;
-
-	for my $volume (@$volumes) {
-
-		warn "Looping on volumes\n";
-
-		my $new_copy_list = $volume->copies;
-
-		warn "Searching for volume with ".$volume->owning_lib . " " .
-			$volume->label . " " . $volume->record . "\n";
-
-		my $cn = _find_volume($session, $volume);
-
-		
-		if($cn) {
-
-			$volume = $cn;
-			$volume->editor( $user_obj->id );
-
-		} else {
-
-			$volume->creator( $user_obj->id );
-			$volume->editor( $user_obj->id );
-			$volume = _add_volume($volume);
-
-		}
-
-		for my $copy (@{$new_copy_list}) {
-
-			warn "adding a copy for volume $id\n";
-
-			$copy->call_number($id);
-			$copy->creator($user_obj->id);
-			$copy->editor($user_obj->id);
-
-			warn Dumper $copy;
-
-			if( $copy->isnew() ) {
-
-				my $req = $session->request(
-						"open-ils.storage.direct.asset.copy.create", $copy );
-				my $cid = $req->gather(1);
-
-				if(!$cid) {
-					OpenILS::Application::AppUtils->rollback_db_session($session);
-					throw OpenSRF::EX::ERROR ("Error adding copy to volume $id" );
-				}
-	
-				warn "got new copy id $cid\n";
-
-			} elsif( $copy->ischanged() ) {
-
-			}
-
-		}
-
-		warn "completed adding copies for $id\n";
-
-
-	}
-
-	warn "committing volume tree add db session\n";
-	OpenILS::Application::AppUtils->commit_db_session($session);
-
-	return scalar(@$volumes);
-
-}
-
-__PACKAGE__->register_method(
-	method	=> "copy_update",
-	api_name	=> "open-ils.cat.asset.copy.batch.update",
-);
-
-sub copy_update {
-	my($self, $client, $user_session, $copies) = @_;
-
-	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
-
-	my $session = $apputils->start_db_session();
-	for my $copy (@$copies) {
-		$copy->editor($user_obj->id);
-		my $req = $session->request(
-			"open-ils.storage.direct.asset.copy.update",
-			$copy );
-		my $status = $req->gather(1);
-	}
-
-	$apputils->commit_db_session($session);
-	return 1;
-}
-
-=cut
-
-
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_update",
 	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update",
@@ -708,12 +639,13 @@ sub fleshed_copy_update {
 	my $session = $apputils->start_db_session();
 
 	for my $copy (@$copies) {
-		_fleshed_copy_update($session, $copies, $user_obj->id);
+		_fleshed_copy_update($session, $copy, $user_obj->id);
 	}
 
 	$apputils->commit_db_session($session);
 	return 1;
 }
+
 
 
 sub _delete_copy {
@@ -747,10 +679,10 @@ sub _create_copy {
 sub _update_copy {
 	my($session, $copy) = @_;
 	my $request = $session->request(
-		"open-ils.storage.asset.copy.update",
-		$copy );
+		"open-ils.storage.direct.asset.copy.update", $copy );
+	my $status = $request->gather(1);
 	warn "Updated copy " . $copy->id . "\n";
-	return $request->gather(1);
+	return $status;
 }
 
 
@@ -769,6 +701,7 @@ sub _fleshed_copy_update {
 	if(ref($copy->location))	{$copy->location( $copy->location->id ); }
 	if(ref($copy->circ_lib))	{$copy->circ_lib( $copy->circ_lib->id ); }
 
+	warn "Updating copy " . Dumper($copy) . "\n";
 
 	if( $copy->isdeleted ) { 
 		return _delete_copy($session, $copy);
@@ -778,7 +711,6 @@ sub _fleshed_copy_update {
 		_update_copy($session, $copy);
 	}
 
-	warn "Updating copy " . Dumper($copy) . "\n";
 	
 	if(!@$stat_cat_entries) { return 1; }
 
@@ -786,7 +718,7 @@ sub _fleshed_copy_update {
 		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy",
 		$copy->id )->gather(1);
 
-	if( ! $copy->isnew ) { _delete_stale_maps($session, $copy); }
+	if(!$copy->isnew) { _delete_stale_maps($session, $stat_maps, $copy); }
 	
 	# go through the stat cat update/create process
 	for my $stat_entry (@{$stat_cat_entries}){ 
@@ -854,88 +786,6 @@ sub _copy_update_stat_cats {
 
 }
 
-
-
-=head
-__PACKAGE__->register_method(
-	method	=> "volume_tree_delete",
-	api_name	=> "open-ils.cat.asset.volume.tree.batch.delete",
-);
-
-sub volume_tree_delete {
-
-	my( $self, $client, $user_session, $volumes ) = @_;
-	return undef unless $volumes;
-
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-
-	my $session = OpenILS::Application::AppUtils->start_db_session;
-
-	for my $volume (@$volumes) {
-
-		$volume->editor($user_obj->id);
-
-		new Fieldmapper::asset::call_number($volume);
-
-		for my $copy (@{$volume->copies}) {
-
-			new Fieldmapper::asset::copy($copy);
-
-			$copy->editor( $user_obj->id );
-
-			warn "Deleting copy " . $copy->id . " from db\n";
-
-			my $req = $session->request(
-					"open-ils.storage.direct.asset.copy.delete", $copy );
-
-			my $resp = $req->recv();
-
-			if( !$req->complete ) {
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw OpenSRF::EX::ERROR (
-						"No response from storage on copy delete");
-			}
-	
-			if(UNIVERSAL::isa($resp, "Error")) {
-				OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw $resp ($resp->stringify);
-			}
-			
-			$req->finish();
-		}
-
-		warn "Deleting volume " . $volume->id . " from database\n";
-
-		my $vol_req = $session->request(
-				"open-ils.storage.direct.asset.call_number.delete", $volume );
-		my $vol_resp = $vol_req;
-
-		if(!$vol_req->complete) {
-			OpenILS::Application::AppUtils->rollback_db_session($session);
-				throw OpenSRF::EX::ERROR 
-					("No response from storage on volume delete");
-		}
-
-		if( $vol_resp and UNIVERSAL::isa($vol_resp, "Error")) {
-			OpenILS::Application::AppUtils->rollback_db_session($session);
-			throw $vol_resp ($vol_resp->stringify);
-		}
-
-		$vol_req->finish();
-
-	}
-
-	warn "committing delete volume tree add db session\n";
-
-	OpenILS::Application::AppUtils->commit_db_session($session);
-
-	return scalar(@$volumes);
-
-}
-
-
-=cut
 
 
 

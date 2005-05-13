@@ -30,7 +30,7 @@
 						WRAPPER html/table class='record_result_box', id='record_result_box'; 
 							WRAPPER html/thead class='record_result_thead'; 
 								WRAPPER html/row id='record_result_thead_row';
-									cell(id='hit_count_cell', nowrap='nowrap', colspan='2', class='hit_count_cell'); 
+									cell(nowrap='nowrap', colspan='2' ); 
 								END;
 							END;
 						END;

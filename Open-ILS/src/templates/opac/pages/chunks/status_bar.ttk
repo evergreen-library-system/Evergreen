@@ -6,6 +6,7 @@
 		WRAPPER html/cell class='search_range_cell' nowrap='nowrap';
 	
 			
+
 			WRAPPER html/span;
 				space(3);
 				"Expand search to ";
@@ -28,6 +29,7 @@
 			); 
 
 	
+		
 		END;
 
 	END;
