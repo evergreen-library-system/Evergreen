@@ -12,6 +12,7 @@
 		$self = ref($self) || $self;
 		$self = bless {} => $self;
 
+		$term =~ s/\pM//gos;
 		$self->decompose($term);
 
 		my $newterm = join('&', $self->words);
