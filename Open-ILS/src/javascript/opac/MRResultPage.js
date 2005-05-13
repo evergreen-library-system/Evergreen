@@ -328,6 +328,8 @@ MRResultPage.prototype.collectRecords = function() {
 
 MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
+	if(record == null) return;
+
 	var copy_box	= getById("record_result_copy_count_box_" + page_id );
 
 	var orgunit = globalSelectedLocation;

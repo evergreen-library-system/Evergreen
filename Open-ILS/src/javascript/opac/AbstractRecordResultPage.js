@@ -220,8 +220,11 @@ AbstractRecordResultPage.prototype.displayRecord =
 		"record_result_row_" + page_id );
 
 	this.addMenuItems( menu, record );
+
 	globalMenuManager.setContext(title_row, menu);
 	globalMenuManager.setContext(author_row, menu);
+	globalMenuManager.setContext(misc_row, menu);
+
 	getDocument().body.appendChild(menu.getNode());
 	/* ------------------------------------ */
 

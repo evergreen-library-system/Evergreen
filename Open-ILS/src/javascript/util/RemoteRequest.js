@@ -137,6 +137,8 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 	all of its data */
 RemoteRequest.prototype.setCompleteCallback = function(callback) {
 
+	if(this.cancelled) return;
+
 	var object = this;
 	var obj = this.xmlhttp;
 	this.callback = callback;
@@ -147,6 +149,7 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 			try {
 				if(object.cancelled) return;
 				callback(object);
+
 			} catch(E) {
 
 				debug("Processing Error in complete callback: [" + E + "]");

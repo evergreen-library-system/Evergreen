@@ -46,6 +46,13 @@ ContextMenuManager.prototype.setContext = function(node, menu) {
 	node.oncontextmenu = function(evt) {
 		var win = getAppWindow();
 		if(!win.event) win.event = evt;
+
+		if(!IE) {
+			win.event.preventDefault();
+		} else {
+			win.event.cancellBubble = true;
+		}
+
 		obj.toggle(menu.name);
 		return false;
 	}
