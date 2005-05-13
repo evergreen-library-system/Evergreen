@@ -9,7 +9,7 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 
-OpenILS::Application::Storage::CDBI->connection('dbi:Pg:host=10.0.0.2;dbname=open-ils-dev', 'postgres');
+OpenILS::Application::Storage::CDBI->connection('dbi:Pg:host=10.0.0.2;dbname=demo-dev', 'postgres');
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
 
 my $cgi = new CGI;
