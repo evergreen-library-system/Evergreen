@@ -40,7 +40,7 @@ my $persist_destroy_slot;
 my $persist_slot_get_expire;
 my $persist_slot_find;
 
-my $max_persist_time					= 86400;
+my $max_persist_time;
 my $persist_add_slot_name			= "opensrf.persist.slot.create_expirable";
 my $persist_push_stack_name		= "opensrf.persist.stack.push";
 my $persist_peek_stack_name		= "opensrf.persist.stack.peek";
@@ -72,7 +72,7 @@ sub new {
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	my $servers = $conf->config_value( cache => $cache_type => servers => 'server' );
-	my $expire_time = $conf->config_value( cache => $cache_type => 'max_cache_time' );
+	$max_persist_time = $conf->config_value( cache => $cache_type => 'max_cache_time' );
 
 	if(!ref($servers)){
 		$servers = [ $servers ];
