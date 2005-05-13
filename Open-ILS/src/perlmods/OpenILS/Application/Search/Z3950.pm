@@ -102,13 +102,16 @@ sub z39_search_by_string {
 
 		warn $doc->toString . "\n";
 
-		my $nodes = $flat->xmldoc_to_nodeset($doc);
+		my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
 
 		warn "turning nodeset into tree\n";
 		my $tree = $utils->nodeset2tree( $nodes->nodeset );
 
 		push @$records, $tree;
 	}
+
+	use Data::Dumper;
+	warn "Returning marc tree " . Dumper($records) . "\n";
 
 	$hash->{records} = $records;
 	return $hash;
