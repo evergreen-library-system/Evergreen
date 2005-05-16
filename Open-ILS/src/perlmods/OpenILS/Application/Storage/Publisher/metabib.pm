@@ -193,9 +193,7 @@ sub search_class_fts {
 	}
 
 	my $rank_calc = ", sum($rank + CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)/count(m.source)";
-	my $rank_order = "ORDER BY 2 DESC";
-	$rank_calc = ',sum(CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)/count(f.id)' if ($self->api_name =~ /unordered/o);
-	$rank_order = '' if ($self->api_name =~ /unordered/o);
+	$rank_calc = ', 1' if ($self->api_name =~ /unordered/o);
 
 	my $select = <<"	SQL";
 		SELECT	m.metarecord $rank_calc $visible_count
@@ -218,7 +216,9 @@ sub search_class_fts {
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
 
 	my $string = '%'.join('%',$fts->words).'%';
-	my $recs = $class->db_Main->selectall_arrayref($select, {}, lc($string));
+	my $recs = ($self->api_name =~ /unordered/o) ? 
+			$class->db_Main->selectall_arrayref($select) :
+			$class->db_Main->selectall_arrayref($select, {}, lc($string));
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
