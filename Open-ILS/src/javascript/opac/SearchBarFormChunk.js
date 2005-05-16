@@ -25,11 +25,12 @@ SearchBarFormChunk.prototype.resetPage = function() {
 	this.search_type.onkeydown		= mrSearchSubmitOnEnter;
 
 
-	if(paramObj.__mr_search_query)
-		this.search_query.value = paramObj.__mr_search_query;
-
-	if(paramObj.__mr_search_type)
-		this.search_type.value = paramObj.__mr_search_type;
+	var s = paramObj.__mr_search_query;
+	if(!s) s = lastSearchString;
+	var t = paramObj.__mr_search_type;
+	if(!t) t = lastSearchType;
+	if(s) this.search_query.value = s;
+	if(t) this.search_type.value = t;
 
 	try{ this.search_query.focus(); } catch(E) {}
 
@@ -37,36 +38,6 @@ SearchBarFormChunk.prototype.resetPage = function() {
 
 }
 
-
-/*
-SearchBarFormChunk.prototype.resetRange = function() {
-
-	this.searchRange			= getById("search_range_select");
-	var orgunit = globalSelectedLocation;
-	if(!orgunit)
-		orgunit = globalLocation;
-
-	if(this.searchRange) {
-		for( var index in globalOrgTypes ) {
-			var otype = globalOrgTypes[index];
-
-			if( otype.depth() > orgunit.ou_type() )
-				continue;
-
-			var select =  new Option(otype.name(), otype.depth());
-	
-			debug("org depth " + otype.name() + " : " + otype.depth() );
-			if( otype.depth() == globalSearchDepth ) {
-				debug("Building range selector with depth " 
-						+ globalSearchDepth  + " and name " + otype.name() );
-				select.selected = true;
-			}
-	
-			this.searchRange.options[index] = select;
-		}
-	}
-}
-*/
 
 	
 function mrSearchSubmitForm() {

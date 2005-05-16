@@ -19,3 +19,35 @@ RecordDetailPage.instance = function() {
 RecordDetailPage.prototype.init = function() {
 	debug("Initing RecordDetailPage");
 }
+
+RecordDetailPage.prototype.setPageTrail = function() {
+	var box = getById("page_trail");
+	if(!box) return;
+
+	var d = this.buildTrailLink("start",true);
+	if(d) {
+		box.appendChild(d);
+	} else {
+		d = this.buildTrailLink("advanced_search",true);
+		if(d)
+			box.appendChild(d);
+	}
+
+	var b = this.buildTrailLink("mr_result", true);
+
+	if(b) {
+		box.appendChild(this.buildDivider());
+		box.appendChild(b);
+	}
+
+	box.appendChild(this.buildDivider());
+	box.appendChild(this.buildTrailLink("record_result", true));
+
+	box.appendChild(this.buildDivider());
+	box.appendChild(
+		this.buildTrailLink("record_detail",false));
+}
+
+
+
+

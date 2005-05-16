@@ -121,8 +121,8 @@ Page.prototype.resetRange = function() {
 	
 			url_redirect( [ 
 					"target",					"mr_result",
-					"mr_search_type",			obj.stype,
-					"mr_search_query",		obj.string,
+					"mr_search_type",			lastSearchType,
+					"mr_search_query",		lastSearchString,
 					"mr_search_location",	location,
 					"mr_search_depth",		globalSearchDepth,	
 					"page",						0
@@ -131,4 +131,43 @@ Page.prototype.resetRange = function() {
 	}
 }
 
+
+
+
+
+Page.prototype.setPageTrail = function() {
+	debug("Falling back to Page.setPageTrail");
+}
+
+
+Page.prototype.buildTrailLink = function(type, active) {
+
+	var obj = locationStack[type];
+	if(obj == null) return;
+
+	var div = createAppElement("div");
+
+	if(active) {
+		add_css_class(div,"page_trail_word");
+		var a = createAppElement("a");
+		a.setAttribute("href", obj.location);
+		a.appendChild(createAppTextNode(obj.title));
+		a.title = obj.title;
+		div.appendChild(a);
+
+	} else {
+		add_css_class(div,"page_trail_word_inactive");
+		div.appendChild(createAppTextNode(obj.title));
+	}
+
+	return div;
+}
+
+Page.prototype.buildDivider = function() {
+	var div = createAppElement("div");
+	div.className = "page_trail_divider";
+	var text =  createAppTextNode(" / ");
+	div.appendChild(text);
+	return div;
+}
 

@@ -15,7 +15,7 @@ function ProgressBar(size,interval) {
 	this.percentDiv = createAppElement("div");
 	add_css_class(this.percentDiv, "progress_percent");
 
-	var divWidth = 100 / parseInt(size);
+	var divWidth = parseInt(100 / parseInt(size));
 	for( i = 0; i!= size; i++ ) {
 		var div = createAppElement("div");
 		div.className = "progress_bar_chunk";
@@ -47,10 +47,13 @@ ProgressBar.prototype.stop = function() {
 	this.is_running = false;
 	this.current = this.size;
 	clearTimeout(this.timeoutId);
+	/*
 	for(var i in this.div.childNodes) {
 		this.div.childNodes[i].className = "progress_bar_chunk_active";
 	}
+	*/
 	add_css_class(this.percentDiv, "hide_me");
+	add_css_class(this.div, "progress_bar_done");
 	this.percentDiv.innerHTML = "";
 }
 
@@ -69,5 +72,5 @@ ProgressBar.prototype.manualNext = function() {
 		this.current = parseInt(this.current) + 1;
 	}
 
-	this.percentDiv.innerHTML = (parseInt(this.current) / parseInt(this.size) * 100) + "%";
+	this.percentDiv.innerHTML = parseInt((parseInt(this.current) / parseInt(this.size) * 100)) + "%";
 }

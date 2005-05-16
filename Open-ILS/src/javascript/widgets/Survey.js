@@ -241,6 +241,7 @@ Survey._retrieve = function(request, surveyTaker, recvCallback) {
 		debug("Retrieving random survey asynchronously");
 		var c = function(req) {
 			var surveys = req.getResultObject();
+			if(!surveys) return null;
 
 			if( typeof surveys != 'object' || 
 					surveys.constructor != Array )

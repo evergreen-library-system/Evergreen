@@ -8,8 +8,14 @@ var globalOrgTreeWidgetBox		= null;
 var globalSelectedLocation		= null;
 var globalSearchDepth			= null;
 var globalMenuManager			= null;
+var locationStack					= new Array();
+
+var lastSearchString				= null;
+var lastSearchType				= null;
+
 
 var loaded = false;
+
 
 function isXUL() {
 	try {
@@ -20,10 +26,26 @@ function isXUL() {
 	}
 }
 
+function addLocation(type, title) {
+	try { 
+		if(globalAppFrame) {
+			var obj = new Object();
+			obj.location = globalAppFrame.location.href;
+			obj.title = title;
+			locationStack[type] = obj;
+		}
+	} catch(E){}
+
+}
+
 
 function globalInit() {
 
 	debug(" --- XUL IS " + isXUL() );
+
+
+	if( isXUL() && globalAppFrame )
+		globalAppFrame.document.body.style.background = "#FFF";
 
 	var page_name = globalPageTarget;
 
@@ -36,18 +58,24 @@ function globalInit() {
 
 		case "start":
 			globalPage = new OPACStartPage();
+			addLocation("start", "Home");
+			locationStack["advanced_search"] = null;
 			break;
 
 		case  "advanced_search":
 			globalPage = new AdvancedSearchPage();
+			addLocation("advanced_search", "Advanced Search");
+			locationStack["start"] = null;
 			break;
 
 		case  "mr_result":
 			globalPage = new MRResultPage();
+			addLocation("mr_result", "Title Group Results");
 			break;
 
 		case  "record_result":
 			globalPage = new RecordResultPage();
+			addLocation("record_result", "Title Results");
 			break;
 
 		case  "login":
@@ -64,6 +92,7 @@ function globalInit() {
 
 		case "record_detail":
 			globalPage = new RecordDetailPage();
+			addLocation("record_detail", "Title Details");
 			break;
 
 		case  "about":
@@ -88,6 +117,7 @@ function globalInit() {
 	globalPage.init();
 	globalPage.setLocDisplay();
 	globalPage.locationTree = globalOrgTreeWidget;
+	globalPage.setPageTrail();
 
 	if(globalSearchBarChunk)
 		globalSearchBarChunk.reset();

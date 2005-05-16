@@ -21,7 +21,7 @@ AbstractRecordResultPage.prototype.init = function() {
 
 	this.authorBox = new Box();
 	this.authorBox.init("Relevant Authors", true, true, 15);
-	this.authorBox.sortByCount();
+	this.authorBox.sortByKey();
 
 	this.subjectBox = new Box();
 	this.subjectBox.init("Relevant Subjects", true, true, 15);
@@ -29,7 +29,7 @@ AbstractRecordResultPage.prototype.init = function() {
 
 	this.seriesBox = new Box();
 	this.seriesBox.init("Relevant Series", true, true, 15);
-	this.seriesBox.sortByCount();
+	this.seriesBox.sortByKey();
 
 	this.sidebarBox		= getById("record_sidebar_box");
 
@@ -230,7 +230,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 
 	var pic_cell = title_row.insertCell(0);
-	this.buildRecordImage( pic_cell, record, page_id );
+	this.buildRecordImage( pic_cell, record, page_id, record.title());
 
 	var title_cell = title_row.insertCell(title_row.cells.length);
 	title_cell.id = "record_result_title_box_" + id;
@@ -253,6 +253,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 		title = normalize(record.title());
 	}
 
+
 	var author = "";
 	if( record.author() ) {
 		if(record.author().length > tlength) {
@@ -262,7 +263,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 		author = normalize(record.author());
 	}
 
-	title_cell.appendChild(this.mkLink(record.doc_id(), "title", title ));
+	title_cell.appendChild(this.mkLink(record.doc_id(), "title", title, record.title() ));
 	author_cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	author_cell.appendChild(this.mkLink(record.doc_id(), "author", author ));
 
@@ -340,12 +341,15 @@ AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
 		"&mr_search_location=" + this.searchLocation);
 
 	href.appendChild(createAppTextNode(auth));
+	href.title = "Author search for " + auth;
 	return href;
 }
 
 AbstractRecordResultPage.prototype.mkSeriesLink = function(series) {
 	var href = createAppElement("a");
 	add_css_class(href,"record_result_sidebar_link");
+
+	debug("Series: " + series + " : " + encodeURIComponent(series));
 
 	href.setAttribute("href",
 		"?target=mr_result&mr_search_type=series&page=0&mr_search_query=" +
@@ -354,6 +358,7 @@ AbstractRecordResultPage.prototype.mkSeriesLink = function(series) {
 		"&mr_search_location=" + this.searchLocation);
 
 	href.appendChild(createAppTextNode(series));
+	href.title = "Series search for " + series;
 	return href;
 }
 
@@ -366,6 +371,7 @@ AbstractRecordResultPage.prototype.mkSubjectLink = function(sub) {
 		"&mr_search_depth=" + this.searchDepth +
 		"&mr_search_location=" + this.searchLocation);
 	href.appendChild(createAppTextNode(sub));
+	href.title = "Subject search for " + sub;
 	return href;
 }
 
@@ -374,6 +380,7 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 	if( this.finalized )
 		return;
 	this.finalized = true;
+
 
 	this.subjectBox.finalize();
 	this.authorBox.finalize();
@@ -420,6 +427,7 @@ AbstractRecordResultPage.prototype.finalizePage = function() {
 
 	/* in case we're hidden */
 	showMe(this.bigOlBox);
+	showMe(getById("hit_count_cell_2"));
 
 }
 
@@ -450,6 +458,7 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 		cell.innerHTML = copy_counts[i].available + " / " + copy_counts[i].count;
 		cell.setAttribute("rowspan","3");
 		cell.rowSpan = 3;
+		cell.title = " Availabie Copies / Total Copies";
 		titlerow.appendChild(cell);
 	}
 
@@ -514,9 +523,15 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 		max = this.hitCount;
 
 	var hcell = getById("hit_count_cell");
+	var hcell2 = getById("hit_count_cell_2");
+	hideMe(hcell2);
+
+	var ident = "Titles";
+	if(instanceOf(this, MRResultPage))
+		ident = "Title Groups";
 
 	hcell.appendChild(
-		createAppTextNode( "Displaying " + 
+		createAppTextNode( "Displaying " + ident + " " +
 		( parseInt(i) + 1 ) + " to " + max + " of " + this.hitCount));
 
 	hcell.appendChild(createAppTextNode(" "));
@@ -536,7 +551,7 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 	hcell.appendChild(span);
 	hcell.appendChild(next);
 
-
+	hcell2.innerHTML = hcell.innerHTML;
 	
 }
 
@@ -602,7 +617,7 @@ AbstractRecordResultPage.prototype.buildResourcePic = function(c, resource) {
 	c.childNodes[index].appendChild(pic);
 }
 
-AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record, page_id) {
+AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record, page_id, title) {
 
 	var isbn = record.isbn();
 	if(isbn) isbn = isbn.replace(/\s+/,"");
@@ -636,7 +651,7 @@ AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record,
 		add_css_class(d, "relevance");
 		rankBox.appendChild(d);
 
-		rankBox.setAttribute("title", (100 - parseInt(per)) + "% Relevant");
+		rankBox.setAttribute("title", parseInt((100 - parseInt(per))) + "% Relevant");
 	}
 
 	/* use amazon for now */
@@ -662,7 +677,7 @@ AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record,
 		big_div.style.left = 0;
 
 
-	var anch = this.mkLink(record.doc_id(), "img" );
+	var anch = this.mkLink(record.doc_id(), "img", title );
 	anch.appendChild(big_pic);
 	big_div.appendChild(anch);
 	pic_cell.appendChild(big_div);

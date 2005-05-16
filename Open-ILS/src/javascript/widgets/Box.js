@@ -138,19 +138,82 @@ Box.prototype.setMax = function(max) {
 		this.max = null;
 }
 
+Box.prototype.sortMyKeys = function() {
+
+	var keys = new Array();
+
+	for( var i in this.items) 
+		keys.push(this.items[i].getKey());
+
+	keys = keys.sort();
+	debug("Keys: " + keys);
+
+	/* drop all of the children */
+	while(this.contentNode.childNodes.length > 0 ) 
+		this.contentNode.removeChild(
+				this.contentNode.lastChild);
+
+	for(var k in keys) {
+		var node = this.findByKey(keys[k]);
+		if(node)
+			this.contentNode.appendChild(node.getNode());
+	}
+
+}
+
+
+Box.prototype.sortMyCounts = function() {
+
+	var counts = new Array();
+	for( var x in this.itemCount) {
+		counts.push(this.itemCount[x]);
+	}
+
+
+	/* remove all of the divs */
+	while(this.contentNode.childNodes.length > 0 ) 
+		this.contentNode.removeChild(
+				this.contentNode.lastChild);
+
+	/* then re-insert in order of the sorted counts array*/
+	counts = counts.sort().reverse();
+	for(var i in counts) {
+		for( var c in this.itemCount ) {
+			if(this.itemCount[c] == counts[i]) {
+				var item = this.findByKey(c);
+				this.contentNode.appendChild(item.getNode());
+			}
+		}
+	}
+
+}
+
+
+Box.prototype.sortMyBoth = function() {
+}
+
+Box.prototype.findByKey = function(key) {
+	for( var i in this.items) {
+		if( this.items[i] && this.items[i].getKey() == key)
+			return this.items[i];
+	}
+	return null;
+}
+
 /* checks for sorting order/max items and does the final 
 	div drawing. Sets hidden to false */
 Box.prototype.finalize = function() {
 
 	/* first sort if necessary */
 
-	if(this.sortCounts){
-		/*remove all childrens*/
-	} 
+	if(this.sortCounts && this.sortKeys)
+		this.sortMyBoth(); 
 
-	if(this.sortKeys){
-	}
+	else if(this.sortKeys)
+		this.sortMyKeys();
 
+	else if(this.sortCounts) 
+		this.sortMyCounts();
 
 	/* then trim */
 	if( this.max ) {

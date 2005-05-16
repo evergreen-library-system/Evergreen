@@ -29,6 +29,28 @@ MRResultPage.instance = function() {
 	return new MRResultPage();
 }
 
+
+MRResultPage.prototype.setPageTrail = function() {
+
+	var box = getById("page_trail");
+	if(!box) return;
+
+	var d = this.buildTrailLink("start",true);
+	if(d) {
+		box.appendChild(d);
+	} else {
+		d = this.buildTrailLink("advanced_search", true);
+		if(d)
+			box.appendChild(d);
+	}
+
+	box.appendChild(this.buildDivider());
+	box.appendChild(
+			this.buildTrailLink("mr_result", false));
+	
+}
+
+
 MRResultPage.prototype.next = function() {
 
 	var location = globalSelectedLocation;
@@ -95,9 +117,14 @@ MRResultPage.prototype.URLRefresh = function() {
 				];
 }
 
-MRResultPage.prototype.mkLink = function(id, type, value) {
+MRResultPage.prototype.mkLink = function(id, type, value, title) {
 
 	var href;
+
+	var t = title;
+	if(!t) t = value;
+
+	debug("T: " + t);
 
 	switch(type) {
 
@@ -108,6 +135,7 @@ MRResultPage.prototype.mkLink = function(id, type, value) {
 				"?target=record_result&page=0&mrid=" + id + 
 				"&hits_per_page=" + this.hitsPerPage);
 			href.appendChild(createAppTextNode(value));
+			href.title = "View titles for " + t + "";
 			break;
 
 	case "img":
@@ -116,6 +144,7 @@ MRResultPage.prototype.mkLink = function(id, type, value) {
 			href.setAttribute("href",
 				"?target=record_result&page=0&mrid=" + id +
 				"&hits_per_page=" + this.hitsPerPage);
+			href.title = "View titles for " + t + "";
 			break;
 
 
@@ -126,6 +155,7 @@ MRResultPage.prototype.mkLink = function(id, type, value) {
 				"?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
 			     encodeURIComponent(value));
 			href.appendChild(createAppTextNode(value));
+			href.title = "Author search for " + t + "";
 			break;
 
 		default:
@@ -148,6 +178,9 @@ MRResultPage.prototype.doSearch = function() {
 	var location		= paramObj.__mr_search_location;
 	var depth			= paramObj.__mr_search_depth;
 	var hitsper			= paramObj.__hits_per_page;
+
+	lastSearchString = string;
+	lastSearchType = stype;
 
 	if(hitsper)
 		this.hitsPerPage = parseInt(hitsper);
@@ -243,6 +276,10 @@ MRResultPage.prototype.doSearch = function() {
 					}
 					else throw E;
 				}
+				
+				var row = getById("hourglass_row");
+				if(row)
+					row.parentNode.removeChild(row);
 
 				if(obj.hitCount > 0) obj.buildNextLinks();
 				else obj.noHits();
@@ -272,7 +309,7 @@ MRResultPage.prototype.doMRSearch = function() {
 		"open-ils.search", method,
 		obj.stype, obj.string, 
 		obj.searchLocation, 
-		obj.searchDepth, "100", obj.searchOffset );
+		obj.searchDepth, "50", obj.searchOffset );
 	
 	request.setCompleteCallback(
 		function(req) {
@@ -293,6 +330,10 @@ MRResultPage.prototype.collectRecords = function() {
 
 	
 	var i = this.searchOffset;
+
+	var row = getById("hourglass_row");
+	if(row)
+		row.parentNode.removeChild(row);
 
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];

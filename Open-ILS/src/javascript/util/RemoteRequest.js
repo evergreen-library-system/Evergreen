@@ -160,8 +160,12 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 
 					debug("Communication Error: [" + E + "]");
 					if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
-						alert("Arrrgghh, Matey! Error communicating:\n" +
+						if(isXUL()) {
+							throw object;
+						} else {
+							alert("Arrrgghh, Matey! Error communicating:\n" +
 								 E  + "\n" + object.param_string);
+						}
 					} else {
 						object.buildXMLRequest();
 						object.send();

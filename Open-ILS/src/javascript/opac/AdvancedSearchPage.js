@@ -29,8 +29,10 @@ AdvancedSearchPage.prototype.init = function() {
 	this.tcnText				= getById("adv_tcn_text");
 	this.ISBNText				= getById("adv_isbn_text");
 	this.barcodeText			= getById("adv_barcode_text");
+	var refinedButton			= getById("adv_search_refined_submit");
 
 	this.globalSearchButton.onclick = doGlobalSearch;
+	refinedButton.onclick = doGlobalSearch;
 }
 
 /* resets the page */
@@ -69,6 +71,49 @@ function doGlobalSearch() {
 		return;
 	}
 
+	var allWords = getById("adv_all_words").value;
+	var exactWords = getById("adv_exact_words").value;
+	var noneWords	= getById("adv_none_words").value;
+	var type = getById("adv_search_type").value;
+	if(allWords || exactWords || noneWords) {
+		var search_string = obj.buildRefinedSearch(allWords, exactWords, noneWords);
+		debug("Refined search string is [ " + search_string + " ] and type " + type);
+
+		url_redirect ([ 
+				"target",					"mr_result",
+				"mr_search_type",			type,
+				"mr_search_query",		search_string,
+				"page",						0
+				]);
+
+	}
+
+}
+
+AdvancedSearchPage.prototype.buildRefinedSearch = 
+			function(allWords, exactWords, noneWords) {
+	
+	var string = "";
+
+	if(allWords) {
+		string = allWords;
+	}
+
+	if(exactWords) {
+		if(exactWords.indexOf('"') > -1) 
+			string += " " + exactWords;
+		else 
+			string += " \"" + exactWords + "\"";
+		
+	}
+
+	if(noneWords) {
+		var words = noneWords.split(" ");
+		for(var i in words) 
+			string += " -" + words[i];
+	}
+
+	return string;
 }
 		
 

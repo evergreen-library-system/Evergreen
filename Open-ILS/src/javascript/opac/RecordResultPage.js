@@ -9,6 +9,10 @@ function RecordResultPage() {
 
 	debug("in RecordResultPage()");
 
+	var row = getById("hourglass_row");
+	if(row)
+		row.parentNode.removeChild(row);
+
 	if( globalRecordResultPage != null ) {
 		debug("globalRecordResultPage already exists: " + 
 				globalRecordResultPage.toString() );
@@ -17,12 +21,50 @@ function RecordResultPage() {
 	globalRecordResultPage = this;
 	this.resetSearch();
 	debug("Built a new RecordResultPage()");
+
+	var row = getById("hourglass_row");
+	if(row)
+		row.parentNode.removeChild(row);
 }
+
+
+RecordResultPage.prototype.setPageTrail = function() {
+	var box = getById("page_trail");
+	if(!box) return;
+
+	var d = this.buildTrailLink("start", true);
+	if(d) {
+		box.appendChild(d);
+	} else {
+		d = this.buildTrailLink("advanced_search", true);
+		if(d)
+			box.appendChild(d);
+	}
+
+	var b = this.buildTrailLink("mr_result", true);
+
+	if(b) {
+		box.appendChild(this.buildDivider());
+		box.appendChild(b);
+	}
+
+	box.appendChild(this.buildDivider());
+	box.appendChild(
+		this.buildTrailLink("record_result",false));
+}
+
+
+
 
 
 /* returns the global instance. builds the instance if necessary.  All client
  * code should use this method */
 RecordResultPage.instance = function() {
+
+	var row = getById("hourglass_row");
+	if(row)
+		row.parentNode.removeChild(row);
+
 	if( globalRecordResultPage != null ) {
 		return globalRecordResultPage;
 	} 
@@ -93,6 +135,7 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 			add_css_class(href,"record_result_title_link");
 			href.setAttribute("href","?target=record_detail&record=" + id );
 			href.appendChild(createAppTextNode(value));
+			href.title = "View title details for " + value;
 			break;
 
 		case "author":
@@ -101,12 +144,14 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 			href.setAttribute("href","?target=mr_result&mr_search_type=author&mr_search_query=" +
 					      encodeURIComponent(value));
 			href.appendChild(createAppTextNode(value));
+			href.title = "Author search for " + value + "";
 			break;
 
 	case "img":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_image_link");
 			href.setAttribute("href","?target=record_detail&page=0&mrid=" + id );
+			href.title = "View title details for " + value;
 			break;
 
 		default:
