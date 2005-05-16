@@ -59,7 +59,7 @@
 				WRAPPER html/cell valign='bottom' align='right';
 					WRAPPER html/div id='small_logo_div';
 						WRAPPER html/anchor href=global.config.root_url;
-							img(src = "/images/small_logo.jpg", border="0", width='30', height='30');
+							img(src = "/images/small_logo.jpg", title="Home", border="0", width='30', height='30');
 						END; # - anchor
 					END; # - div
 				END; # - cell	

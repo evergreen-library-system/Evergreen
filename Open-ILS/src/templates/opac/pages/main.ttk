@@ -95,8 +95,6 @@
 			<frame
 				style			= "border:0px;" 
 				frameborder	= '0' 
-				height		= '100%'
-				width			= '100%' 
 				name			= 'appframe' 
 				id				= 'appframe' 
 				src			= '/opac/?target=[%- IF top_target; top_target; ELSE; "start";END; %]';

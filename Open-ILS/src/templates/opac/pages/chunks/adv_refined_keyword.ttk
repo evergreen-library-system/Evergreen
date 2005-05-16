@@ -3,7 +3,7 @@
 	WRAPPER html/div id='adv_refined_search_div' class='adv_search_chunk_box';
 
 		WRAPPER html/div class='adv_search_header';
-			"Refined Keyword Search";;
+			"Refined Search";;
 		END;
 
 		WRAPPER html/div class='adv_dashed_box';
@@ -11,6 +11,22 @@
 			WRAPPER html/table;
 	
 				row(content = cell(content = lines(1)));
+
+				WRAPPER html/row;
+				cell(align='left', content="Search Type");
+				WRAPPER html/cell align='left';
+					WRAPPER html/select name='adv_search_type' id='adv_search_type';
+						option(value='title',	content="Title");
+						option(value='author',	content="Author");
+						option(value='subject', content="Subject");
+						option(value='keyword', selected='selected', content="Keyword");
+						option(value='series',  content="Series");
+					END;
+				END;
+				END;
+
+				row(content = cell(content = lines(1)));
+
 	
 				WRAPPER html/row;
 					cell(align='left' , content= "Find results with all words:");
@@ -38,7 +54,7 @@
 				WRAPPER html/row;
 					WRAPPER html/cell colspan='4';
 						WRAPPER html/center;
-							input( type='submit', value='Search', onclick='alert("Not Implemented, try the left search bar");');
+							input( type='submit', value='Search', id="adv_search_refined_submit"); 
 						END;
 					END;
 				END;

@@ -9,7 +9,7 @@
 		input( type='hidden', name='page', value='0');
 
 		input(id='mr_search_query',  name='mr_search_query',  
-				type='textarea', size='24');
+				type='textarea', size='34');
 	
 		space(1);
 	

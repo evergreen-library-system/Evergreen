@@ -13,9 +13,6 @@
 			INCLUDE opac/pages/chunks/body_header.ttk;
 
 			lines(1);
-			"<center>";
-			box(content = "ADV search evolves from here...");
-			"</center>";
 
 			box(id='adv_search_main_header', content="Advanced Search");
 			lines(1);
@@ -30,9 +27,13 @@
 			#box(class='vert_div');
 
 			WRAPPER html/div class='adv_search_big_box';
-				INCLUDE opac/pages/chunks/adv_mixed_search.ttk;
+				#INCLUDE opac/pages/chunks/adv_mixed_search.ttk;
 				INCLUDE opac/pages/chunks/adv_refined_keyword.ttk;
 			END;
+
+			lines(5);
+
+			"<center><b>More to come...</b></center>";
 
 		END; # - body
 	END; # - html

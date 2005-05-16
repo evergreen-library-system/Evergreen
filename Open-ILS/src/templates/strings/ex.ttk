@@ -21,4 +21,7 @@
 	IF type == ex_types.SEARCH_TOO_LARGE;
 		ret("Search term is too broad, please narrow your search");	END;
 
+	IF type == ex_types.UNKNOWN_BARCODE;
+		ret("Barcode does not exist in the database");	END;
+
 -%]
