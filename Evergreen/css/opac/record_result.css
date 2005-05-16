@@ -187,3 +187,8 @@
 	z-index: 10;
 	position: absolute;
 }
+
+.record_box_descriptor {
+	font-weight: bold;
+	text-align: center;
+}

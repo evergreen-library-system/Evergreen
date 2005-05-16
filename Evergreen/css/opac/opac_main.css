@@ -1,6 +1,6 @@
 body {
 	font-family: Helvetica, Arial, Tahoma, sans-serif;
-	font: .76em; 
+	/*font: .76em; */
 /*	background: #FFF;*/
 }
 
@@ -105,4 +105,23 @@ table { border-collapse: collapse; }
 
 .no_border_body {
 	border: none;
+}
+
+#page_trail {
+	vertical-align: middle;
+	float:left;
+}
+
+.page_trail_word {
+	text-decoration: underline;
+	float:left;
+	padding-right: 4px;
+}
+.page_trail_word_inactive {
+	text-decoration: none;
+}
+
+.page_trail_divider {
+	float:left;
+	padding-right: 4px;
 }
