@@ -9,6 +9,11 @@
 		my $self = shift;
 		my $term = shift;
 
+		$log->debug("Raw term: $term",DEBUG);
+
+		$term =~ s/\&//go;
+		$term =~ s/\|//go;
+
 		$self = ref($self) || $self;
 		$self = bless {} => $self;
 
