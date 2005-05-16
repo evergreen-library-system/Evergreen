@@ -280,17 +280,26 @@ char* message_to_xml( const transport_message* msg ) {
 	char* thread			= msg->thread; 
 
 	if( thread && strlen(thread) > 0 ) {
-		thread_node = xmlNewChild(message_node, NULL, (xmlChar*) "thread", (xmlChar*) thread );
-		xmlAddChild( message_node, thread_node ); 
+		thread_node = xmlNewChild(message_node, NULL, (xmlChar*) "thread", NULL );
+//		xmlNewTextChild(thread_node, NULL, NULL,  );
+		xmlNodePtr txt = xmlNewText((xmlChar*) thread);
+		xmlAddChild(thread_node, txt);
+		xmlAddChild(message_node, thread_node); 
 	}
 
 	if( subject && strlen(subject) > 0 ) {
-		subject_node = xmlNewChild(message_node, NULL, (xmlChar*) "subject", (xmlChar*) subject );
+		subject_node = xmlNewChild(message_node, NULL, (xmlChar*) "subject", NULL );
+		//xmlNewTextChild(subject_node, NULL, NULL, (xmlChar*) subject );
+		xmlNodePtr txt = xmlNewText((xmlChar*) subject);
+		xmlAddChild(subject_node, txt);
 		xmlAddChild( message_node, subject_node ); 
 	}
 
 	if( body && strlen(body) > 0 ) {
-		body_node = xmlNewChild(message_node, NULL, (xmlChar*) "body", (xmlChar*) body );
+		body_node = xmlNewChild(message_node, NULL, (xmlChar*) "body", NULL);
+		//xmlNewTextChild(body_node, NULL, NULL, (xmlChar*) body );
+		xmlNodePtr txt = xmlNewText((xmlChar*) body);
+		xmlAddChild(body_node, txt);
 		xmlAddChild( message_node, body_node ); 
 	}
 
