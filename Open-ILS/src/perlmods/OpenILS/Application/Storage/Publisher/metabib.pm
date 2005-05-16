@@ -194,7 +194,7 @@ sub search_class_fts {
 
 	my $rank_calc = ", sum($rank + CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)/count(m.source)";
 	my $rank_order = "ORDER BY 2 DESC";
-	$rank_calc = ',sum(1 + CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)' if ($self->api_name =~ /unordered/o);
+	$rank_calc = ',sum(CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)/count(f.id)' if ($self->api_name =~ /unordered/o);
 	$rank_order = '' if ($self->api_name =~ /unordered/o);
 
 	my $select = <<"	SQL";
@@ -211,7 +211,7 @@ sub search_class_fts {
 			$has_copies
 			$copies_visible
 	  	  GROUP BY m.metarecord $visible_count_test
-	  	  $rank_order
+	  	  ORDER BY 2 DESC
 		  $limit_clause $offset_clause
 	SQL
 
