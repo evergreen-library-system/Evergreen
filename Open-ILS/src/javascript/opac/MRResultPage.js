@@ -194,8 +194,12 @@ MRResultPage.prototype.doSearch = function() {
 	if(depth == null)
 		depth = findOrgDepth(globalLocation.ou_type());
 
-	if(location == null || location == "undefined")
-		location = globalLocation.id();
+	if(location == null || location == "undefined") {
+		if(globalSelectedLocation)
+			location = globalSelectedLocation.id();
+		else
+			location = globalLocation.id();
+	}
 
 	if(!stype || !string) return;
 
