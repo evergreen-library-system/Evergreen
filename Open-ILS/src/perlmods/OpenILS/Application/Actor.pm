@@ -72,9 +72,21 @@ sub update_patron {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "user_retrieve_fleshed_by_id",
+	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
+
+sub user_retrieve_fleshed_by_id {
+	my( $self, $client, $user_session, $user_id ) = @_;
+	my $user_obj = $apputils->check_user_session( $user_session ); 
+	return flesh_user($user_id);
+}
+
+
 sub flesh_user {
 	my $id = shift;
 	my $session = shift;
+
 	my $kill = 0;
 
 	if(!$session) {
@@ -437,12 +449,12 @@ sub search_username {
 
 __PACKAGE__->register_method(
 	method	=> "user_retrieve_by_barcode",
-	api_name	=> "open-ils.actor.user.fleshed.retrieve_by_barcode",
-);
+	api_name	=> "open-ils.actor.user.fleshed.retrieve_by_barcode",);
 
 sub user_retrieve_by_barcode {
-	my($self, $client, $barcode) = @_;
+	my($self, $client, $user_session, $barcode) = @_;
 	warn "Searching for user with barcode $barcode\n";
+	my $user_obj = $apputils->check_user_session( $user_session ); 
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 

@@ -381,7 +381,12 @@ sub biblio_barcode_to_title {
 		"open-ils.storage.biblio.record_entry.retrieve_by_barcode",
 		$barcode );
 
-	return { ids => $title->id, count => 1 };
+	if($title) {
+		return { ids => $title->id, count => 1 };
+	} else {
+		return { count => 0 };
+	}
+
 
 =head
 	my $u = OpenILS::Utils::ModsParser->new();
@@ -390,6 +395,7 @@ sub biblio_barcode_to_title {
 	$mods->doc_id($title->id());
 	return $mods;
 =cut
+
 	
 }
 
@@ -621,8 +627,11 @@ sub biblio_search_class_count {
 
 	# grab the mr id's from storage
 
-	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord_count";
-	if($self->api_name =~ /staff/) { $method = "$method.staff"; }
+	my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord_count";
+	if($self->api_name =~ /staff/) { 
+		$method = "$method.staff"; 
+		$method =~ s/\.cachable//o;
+	}
 	warn "Performing count method $method\n";
 	warn "API name " . $self->api_name() . "\n";
 
@@ -631,6 +640,7 @@ sub biblio_search_class_count {
 	my $request = $session->request( $method, 
 			term => $string, 
 			org_unit => $org_id, 
+			cache_page_size => 1,
 			depth =>$org_type );
 
 	my $count = $request->gather(1);
@@ -698,14 +708,17 @@ sub biblio_search_class {
 		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
 	}
 
-	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord.atomic";
+	#my $method = "open-ils.storage.metabib.$class.search_fts.metarecord.atomic";
+	my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic";
 
 	if($self->api_name =~ /order/) {
-		$method = "open-ils.storage.metabib.$class.search_fts.metarecord.unordered.atomic";
+		$method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.unordered.atomic",
+		#$method = "open-ils.storage.metabib.$class.search_fts.metarecord.unordered.atomic";
 	}
 
 	if($self->api_name =~ /staff/) { 
 		$method =~ s/atomic/staff\.atomic/og;
+		$method =~ s/\.cachable//o;
 	}
 
 	warn "Performing search method $method\n";
@@ -715,13 +728,13 @@ sub biblio_search_class {
 
 	warn "Search making request " . time() . "\n";
 	my $request = $session->request(	
-		#"open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic",
 		$method,
 		term		=> $string, 
 		org_unit => $org_id, 
 		depth		=> $org_type, 
 		limit		=> $limit,
 		offset	=> $offset,
+		cache_page_size => 200,
 		);
 
 	my $records = $request->gather(1);

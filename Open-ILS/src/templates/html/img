@@ -11,6 +11,7 @@
 	IF onmouseout;						" onmouseout='"	_ onmouseout	_ "'"; END;
 	IF onmouseover;					" onmouseover='"	_ onmouseover	_ "'"; END;
 	IF onclick;						" onclick='"	_ onclick	_ "'"; END;
+	IF title;						" title='"	_ title	_ "'"; END;
 
 	"/>";
 %]

@@ -4,6 +4,7 @@ use strict; use warnings;
 
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::EX;
 
 use Template qw(:template);
 use Template::Stash; 
@@ -361,6 +362,16 @@ sub run_circ_scripts {
 
 	my $copy = $circ_objects->{copy};
 
+	use Data::Dumper;
+	warn "Building a new circulation object with\n".
+		"=> copy "				. Dumper($copy) .
+		"=> duration_rule "	. Dumper($duration_rule) .
+		"=> rec_files_rule " . Dumper($rec_fines_rule) .
+		"=> duration "			. Dumper($duration) .
+		"=> recurring "		. Dumper($recurring) .
+		"=> max "				. Dumper($max);
+
+
 	# build the new circ object
 	my $circ =  build_circ_object($session, $copy, $duration_rule->[1], 
 			$rec_fines_rule->[1], $duration, $recurring, $max );
@@ -415,7 +426,7 @@ __PACKAGE__->register_method(
 );
 
 sub checkin {
-	my( $self, $user_session, $client, $barcode ) = @_;
+	my( $self, $client, $user_session, $barcode ) = @_;
 
 	my $err;
 	my $copy;
@@ -437,6 +448,11 @@ sub checkin {
 			"open-ils.storage.direct.asset.copy.search.barcode", 
 			$barcode );
 		$copy = $copy_req->gather(1)->[0];
+		if(!$copy) {
+			$client->respond_complete(
+					OpenILS::EX->new("UNKNOWN_BARCODE")->ex);
+		}
+
 		$copy->status(0);
 	
 		# find circ's where the transaction is still open for the

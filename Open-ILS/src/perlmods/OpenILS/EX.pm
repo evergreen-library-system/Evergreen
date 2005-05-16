@@ -11,6 +11,7 @@ use OpenILS::Utils::Fieldmapper;
 my %ex_types = (
 	UNKNOWN				=> 1,
 	SEARCH_TOO_LARGE	=> 2,
+	UNKNOWN_BARCODE	=> 3,
 );
 
 use overload ( '""' => sub { $_[0]->ex()->err_msg(); } );

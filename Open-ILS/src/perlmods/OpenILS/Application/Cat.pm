@@ -33,18 +33,21 @@ sub biblio_record_tree_import {
 
 	# copy the doc so that we can mangle the namespace.  
 	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml($nodeset);
-	my $copy_marcxml = XML::LibXML->new->parse_string($marcxml);
+	my $copy_marcxml = XML::LibXML->new->parse_string($marcxml->toString);
 
 	$marcxml->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
 	my $tcn;
 
-	my $xpath = '//controlfield[@tag="001"]';
-	$tcn = $marcxml->documentElement->findvalue($xpath);
-	my $tcn_source = "External";
-	my $source = 2; # system local source
 
 	warn "Starting db session in import\n";
 	my $session = $apputils->start_db_session();
+	my $source = 2; # system local source
+
+	my $xpath = '//controlfield[@tag="001"]';
+	$tcn = $marcxml->documentElement->findvalue($xpath);
+	if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+	my $tcn_source = "External";
+
 
 	if(!$tcn) {
 		$xpath = '//datafield[@tag="020"]';
@@ -74,7 +77,7 @@ sub biblio_record_tree_import {
 		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
 	}
 
-	warn "Record import with tcn: $tcn\n";
+	warn "Record import with tcn: $tcn and source $tcn_source\n";
 
 	my $record = Fieldmapper::biblio::record_entry->new;
 
