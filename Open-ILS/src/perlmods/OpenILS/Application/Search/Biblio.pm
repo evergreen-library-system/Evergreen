@@ -283,6 +283,7 @@ sub biblio_search_isbn {
 	my $method = $self->method_lookup("open-ils.search.biblio.marc");
 	my ($records) = $method->run( $cat_search_hash->{isbn}, $isbn );
 
+	return { count => 0 } unless($records and @$records);
 	my $size = @$records;
 	return { count => $size, ids => $records };
 }
