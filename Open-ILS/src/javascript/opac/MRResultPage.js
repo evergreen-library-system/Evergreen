@@ -281,16 +281,22 @@ MRResultPage.prototype.doSearch = function() {
 					else throw E;
 				}
 				
+				/*
 				var row = getById("hourglass_row");
-				if(row)
-					row.parentNode.removeChild(row);
+				if(row) row.parentNode.removeChild(row);
+				*/
 
 				if(obj.hitCount > 0) obj.buildNextLinks();
-				else obj.noHits();
+				else { 
+					var row = getById("hourglass_row");
+					if(row) row.parentNode.removeChild(row);
+					obj.noHits(); 
+					return; 
+				}
 
 				obj.doMRSearch();	
 				debug("Kicking off the record id's request");
-							}
+			}
 		);
 		creq.send();
 	}
@@ -317,6 +323,11 @@ MRResultPage.prototype.doMRSearch = function() {
 	
 	request.setCompleteCallback(
 		function(req) {
+
+			var row = getById("hourglass_row");
+			if(row)
+				row.parentNode.removeChild(row);
+
 			var result = req.getResultObject();
 			if(result == null) return;
 			result.count = obj.hitCount;
@@ -332,7 +343,6 @@ MRResultPage.prototype.doMRSearch = function() {
 
 MRResultPage.prototype.collectRecords = function() {
 
-	
 	var i = this.searchOffset;
 
 	var row = getById("hourglass_row");
@@ -373,7 +383,7 @@ MRResultPage.prototype.collectRecords = function() {
 
 MRResultPage.prototype.doCopyCount = function( record, search_id, page_id ) {
 
-	if(record == null) return;
+	if(record==null || !record) return;
 
 	var copy_box	= getById("record_result_copy_count_box_" + page_id );
 

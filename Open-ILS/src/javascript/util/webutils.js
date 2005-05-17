@@ -57,20 +57,38 @@ function createAppTextNode(text) {
 
 
 
+/* split on spaces.  capitalize the first /\w/ character in
+	each substring */
 function normalize(val) {
+
 	var newVal = '';
 	val = val.split(' ');
-	for(var c=0; c < val.length; c++) {
-		var string = val[c];
+	var reg = /\w/;
 
+	for( var c = 0; c < val.length; c++) {
+
+		var string = val[c];
+		var cap = false;
 		for(var x = 0; x != string.length; x++) {
-			if(x==0)
-				newVal += string.charAt(x).toUpperCase();
-			else
-				newVal += string.charAt(x).toLowerCase();
+
+			if(!cap) {
+				var ch = string.charAt(x);
+				if(reg.exec(ch + "")) {
+					newVal += string.charAt(x).toUpperCase();
+					cap = true;
+					continue;
+				}
+			}
+
+			newVal += string.charAt(x).toLowerCase();
 		}
 		if(c < (val.length-1)) newVal += " ";
 	}
+
+	newVal = newVal.replace(/\s*\.\s*$/,'');
+	newVal = newVal.replace(/\s*\/\s*\/\s*$/,' / ');
+	newVal = newVal.replace(/\s*\/\s*$/,'');
+
 	return newVal;
 }
 

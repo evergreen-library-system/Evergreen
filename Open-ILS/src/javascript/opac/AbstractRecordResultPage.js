@@ -320,8 +320,8 @@ AbstractRecordResultPage.prototype.displayRecord =
 	var series = record.series();
 	for( var s in  series ) {
 		debug("Found series entry: " + series[s] );
-		this.seriesBox.addItem(
-			this.mkSeriesLink(series[s]), series[s] );
+		var ss = normalize(series[s]);
+		this.seriesBox.addItem( this.mkSeriesLink(ss), ss );
 	}
 
 	/* requestBatch will only have one request in it when the current
