@@ -137,10 +137,17 @@ sub get_required_surveys {
 	my( $self, $client, $user_session ) = @_;
 	
 	my $user_obj = $apputils->check_user_session($user_session); 
-	return $apputils->simple_scalar_request(
+	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.action.survey.required.atomic",
 		$user_obj->home_ou() );
+
+	my @fleshed;
+	for my $survey (@$surveys) {
+		push(@fleshed, $self->get_fleshed_survey($client, $survey));
+	}
+	return \@fleshed;
+
 }
 
 __PACKAGE__->register_method(
