@@ -27,12 +27,12 @@
 		WRAPPER html/div id='front_search_form';
 
 			"Now searching ";
-			lines(1);
+			lines(2);
 #WRAPPER html/div;
 				span(id='now_searching_cell', class='front_now_searching');
 #			END;
 
-			lines(2);
+			lines(3);
 
 			input( type='hidden', name='target', value='mr_result');
 			input( type='hidden', name='page', value='0');
@@ -42,6 +42,7 @@
 		
 			space(1);
 			PROCESS stype_selector;
+
 
 			lines(2);
 			input(type='submit', id='mr_search_button', 
@@ -53,8 +54,10 @@
 
 			space(3);
 			PROCESS search_range;
-			
-		
+
+			lines(3);
+			anchor( id='adv_search_link',  href='?target=advanced_search', text = "Advanced Search" );
+
 		END;
 	END;
 

@@ -20,8 +20,6 @@
 					INCLUDE opac/pages/chunks/search_bar_form.ttk;
 				END;
 
-
-
 				WRAPPER html/cell  align='center';
 
 					WRAPPER html/div class='text_link_div' id='login_div';
