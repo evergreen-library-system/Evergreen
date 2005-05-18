@@ -136,11 +136,17 @@ __PACKAGE__->register_method(
 sub get_required_surveys {
 	my( $self, $client, $user_session ) = @_;
 	
+	warn "Retrieving required surveys\n";
+
 	my $user_obj = $apputils->check_user_session($user_session); 
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.action.survey.required.atomic",
 		$user_obj->home_ou() );
+
+	if($surveys) {
+		warn "Retrieved " . scalar(@$surveys)." required surveys\n";
+	}
 
 	my @fleshed;
 	for my $survey (@$surveys) {

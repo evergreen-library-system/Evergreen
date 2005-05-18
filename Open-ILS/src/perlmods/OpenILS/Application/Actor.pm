@@ -185,12 +185,14 @@ sub _add_patron {
 	if(!$id) { 
 		return OpenILS::EX->new("DUPLICATE_USER_USERNAME");
 	}
-	warn "Created new patron with id $id\n";
 
 	# retrieve the patron from the db to collect defaults
 	my $ureq = $session->request(
 			"open-ils.storage.direct.actor.user.retrieve",
 			$id);
+
+	warn "Created new patron with id $id\n";
+
 	return $ureq->gather(1);
 }
 
