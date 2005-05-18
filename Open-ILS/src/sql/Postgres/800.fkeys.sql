@@ -10,8 +10,7 @@ ALTER TABLE actor.stat_cat ADD CONSTRAINT actor_stat_cat_owner_fkey FOREIGN KEY 
 ALTER TABLE actor.stat_cat_entry ADD CONSTRAINT actor_stat_cat_entry_stat_cat_fkey FOREIGN KEY (stat_cat) REFERENCES actor.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.stat_cat_entry ADD CONSTRAINT actor_stat_cat_entry_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE actor.stat_cat_entry_user_map ADD CONSTRAINT actor_sc_tu_fkey FOREIGN KEY (target_usr) REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE actor.stat_cat_entry_user_map ADD CONSTRAINT actor_sc_sue_fkey FOREIGN KEY (stat_cat_entry) REFERENCES actor.stat_cat_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.stat_cat_entry_usr_map ADD CONSTRAINT actor_sc_tu_fkey FOREIGN KEY (target_usr) REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
