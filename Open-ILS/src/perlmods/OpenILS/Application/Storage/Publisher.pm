@@ -65,7 +65,10 @@ sub cachable_wrapper {
 	}
 
 	my $cache_page = int($cache_args{offset} / $cache_args{cache_page_size});
-	my $cache_key = md5_hex($key_string.$cache_page);
+	my $cache_key;
+	{	use bytes;
+		$cache_key = md5_hex($key_string.$cache_page);
+	}
 
 	$log->debug("Key string for cache lookup is $key_string -> $cache_key", DEBUG);
 	$log->debug("Cache page is $cache_page", DEBUG);
