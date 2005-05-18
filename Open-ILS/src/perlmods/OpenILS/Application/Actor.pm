@@ -485,6 +485,12 @@ sub user_retrieve_by_barcode {
 			"open-ils.storage.direct.actor.card.search.barcode",
 			$barcode );
 	my $card = $creq->gather(1);
+
+	if(!$card || !$card->[0]) {
+		$session->disconnect();
+		return undef;
+	}
+
 	$card = $card->[0];
 	my $user = flesh_user($card->usr(), $session);
 	$session->disconnect();
