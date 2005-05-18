@@ -2,14 +2,17 @@ package OpenILS::Application::Actor;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use Data::Dumper;
+
 use OpenSRF::EX qw(:try);
+use OpenILS::EX;
+
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
 
 my $apputils = "OpenILS::Application::AppUtils";
 sub _d { warn "Patron:\n" . Dumper(shift()); }
-my $cache_client = OpenSRF::Utils::Cache->new( "global", 0 );
+my $cache_client = OpenSRF::Utils::Cache->new("global", 0);
 
 
 __PACKAGE__->register_method(
@@ -39,19 +42,30 @@ sub update_patron {
 
 	my $new_patron;
 
-	try {
+	#try {
 		# create/update the patron first so we can use his id
 		if($patron->isnew()) {
 			$new_patron = _add_patron(
 					$session, _clone_patron($patron));
+			if(UNIVERSAL::isa($new_patron, "OpenILS::EX")) {
+				$client->respond_complete($new_patron->ex);
+				return undef;
+			}
+
 		} else { 
 			$new_patron = $patron; 
 		}
 
 		$new_patron = _add_update_addresses($session, $patron, $new_patron);
 		$new_patron = _add_update_cards($session, $patron, $new_patron);
+
+		if(UNIVERSAL::isa($new_patron,"OpenILS::EX")) {
+			$client->respond_complete($new_patron->ex);
+			return undef;
+		}
+
 		$new_patron = _add_survey_responses($session, $patron, $new_patron);
-		$new_patron	= _create_stat_maps($user_session, $patron, $new_patron);
+		$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron);
 
 		# re-update the patron if anything has happened to him during this process
 		if($new_patron->ischanged()) {
@@ -59,6 +73,7 @@ sub update_patron {
 		}
 		$apputils->commit_db_session($session);
 
+=head
 	} catch Error with { 
 		my $e = shift;
 		$err =  "-*- Failure adding user: $e";
@@ -67,6 +82,8 @@ sub update_patron {
 	};
 
 	if($err) { throw OpenSRF::EX::ERROR ($err); }
+=cut
+
 	warn "Patron Update/Create complete\n";
 	return flesh_user($new_patron->id());
 }
@@ -165,7 +182,9 @@ sub _add_patron {
 	my $req = $session->request(
 		"open-ils.storage.direct.actor.user.create",$patron);
 	my $id = $req->gather(1);
-	if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new user"); }
+	if(!$id) { 
+		return OpenILS::EX->new("DUPLICATE_USER_USERNAME");
+	}
 	warn "Created new patron with id $id\n";
 
 	# retrieve the patron from the db to collect defaults
@@ -302,6 +321,9 @@ sub _add_update_cards {
 
 			$virtual_id = $card->id();
 			$card = _add_card($session,$card);
+			if(UNIVERSAL::isa($card,"OpenILS::EX")) {
+				return $card;
+			}
 
 			if($patron->card() == $virtual_id) {
 				$new_patron->card($card->id());
@@ -329,8 +351,7 @@ sub _add_card {
 
 	my $id = $req->gather(1);
 	if(!$id) { 
-		throw OpenSRF::EX::ERROR 
-			("Unknown error creating card"); 
+		return OpenILS::EX->new("DUPLICATE_INVALID_USER_BARCODE");
 	}
 
 	$card->id($id);
@@ -396,24 +417,24 @@ sub _add_survey_responses {
 
 sub _create_stat_maps {
 
-	my($user_session, $patron, $new_patron) = @_;
-	my $maps = $patron->stat_cat_entries();
+	my($session, $user_session, $patron, $new_patron) = @_;
 
-	my $session = OpenSRF::AppSession->create("open-ils.circ");
+	my $maps = $patron->stat_cat_entries();
 
 	for my $map (@$maps) {
 
 		next unless($map->isnew() || $map->ischanged());
 
-		my $method = "open-ils.circ.stat_cat.actor.user_map.update";
+		my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
 		if($map->isnew()) {
-			$method = "open-ils.circ.stat_cat.actor.user_map.create";
+			$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.create";
 		}
 
-		warn "Updating stat entry with method $method and 
-			session $user_session and map $map\n";
+		$map->target_usr($new_patron->id);
 
-		my $req = $session->request($method, $user_session, $map);
+		warn "Updating stat entry with method $method and session $user_session and map $map\n";
+
+		my $req = $session->request($method, $map);
 		my $status = $req->gather(1);
 
 		warn "Updated\n";
@@ -424,7 +445,6 @@ sub _create_stat_maps {
 		}
 	}
 
-	$session->disconnect();
 	return $new_patron;
 }
 

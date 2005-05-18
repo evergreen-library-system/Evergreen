@@ -108,7 +108,8 @@
 .copy_count_cell {
 	vertical-align: middle;
 	text-align: center;
-	border-bottom: 1px solid #FFF;
+	/*border-bottom: 1px solid #FFF;*/
+	border-bottom: 1px dashed #99C;
 }
 
 .record_result_thead_header{ 
@@ -175,6 +176,7 @@
 
 .record_misc_row {
 	padding-bottom: 4px;
+	/*border-bottom: 1px dashed #99C;*/
 }
 
 .hit_count_selector_div {

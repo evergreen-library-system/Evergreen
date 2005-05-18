@@ -383,21 +383,11 @@ sub biblio_barcode_to_title {
 		$barcode );
 
 	if($title) {
-		return { ids => $title->id, count => 1 };
+		return { ids => [ $title->id ], count => 1 };
 	} else {
 		return { count => 0 };
 	}
 
-
-=head
-	my $u = OpenILS::Utils::ModsParser->new();
-	$u->start_mods_batch( $title->marc );
-	my $mods = $u->finish_mods_batch();
-	$mods->doc_id($title->id());
-	return $mods;
-=cut
-
-	
 }
 
 

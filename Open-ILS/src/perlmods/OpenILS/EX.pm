@@ -9,9 +9,11 @@ use OpenILS::Utils::Fieldmapper;
 # ----------------------------------------------------------------------------------
 
 my %ex_types = (
-	UNKNOWN				=> 1,
-	SEARCH_TOO_LARGE	=> 2,
-	UNKNOWN_BARCODE	=> 3,
+	UNKNOWN							=> 1,
+	SEARCH_TOO_LARGE				=> 2,
+	UNKNOWN_BARCODE				=> 3,
+	DUPLICATE_INVALID_USER_BARCODE	=> 4,
+	DUPLICATE_USER_USERNAME		=> 5,
 );
 
 use overload ( '""' => sub { $_[0]->ex()->err_msg(); } );

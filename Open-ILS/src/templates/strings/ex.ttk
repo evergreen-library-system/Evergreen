@@ -24,4 +24,10 @@
 	IF type == ex_types.UNKNOWN_BARCODE;
 		ret("Barcode does not exist in the database");	END;
 
+	IF type == ex_types.DUPLICATE_INVALID_USER_BARCODE;
+		ret("Barcode is a duplicate or is not valid");	END;
+
+	IF type == ex_types.DUPLICATE_USER_USERNAME;
+		ret("Username is a duplicate");	END;
+
 -%]
