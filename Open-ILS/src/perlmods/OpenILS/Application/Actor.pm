@@ -727,6 +727,12 @@ sub patron_adv_search {
 		"open-ils.storage.actor.user.crazy_search", $search_hash);
 
 	my $ans = $req->gather(1);
+
+	my %hash = map { ($_ =>1) } @$ans;
+	$ans = [ keys %hash ];
+
+	warn "Returning @$ans\n";
+
 	$session->disconnect();
 	return $ans;
 
