@@ -1,0 +1,34 @@
+[%
+
+	# --------------------------------------------------------------------------------- 
+	# This page will display a list of metarecord search results
+	# --------------------------------------------------------------------------------- 
+	tm = global.textmap.opac.mr_result;
+
+	WRAPPER html/html;
+
+		WRAPPER html/head title="Record Detail Page";
+			INCLUDE opac/pages/chunks/css_includes.ttk;
+		END;
+
+
+
+		WRAPPER html/body onload='pageInit();';
+
+			INCLUDE opac/pages/chunks/body_header.ttk;
+
+			WRAPPER html/div id='page_trail';END;
+
+			# --------------------------------------------------------------------------------- 
+			# Display record detail info
+			# --------------------------------------------------------------------------------- 
+
+			lines(1);
+			"Record details go here...";
+					
+		END; # body
+
+	END; # html
+
+%]
+
