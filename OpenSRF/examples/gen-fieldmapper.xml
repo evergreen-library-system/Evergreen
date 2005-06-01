@@ -1,0 +1,141 @@
+<? xml version="1.0" encoding="UTF-8" ?>
+<opensrf:fieldmapper
+	xmlns:opensrf="http://opensrf.org/xmlns/opensrf"
+	xmlns:cdbi="http://opensrf.org/xmlns/opensrf/cdbi"
+	xmlns:perl="http://opensrf.org/xmlns/opensrf/perl"
+	xmlns:javascript="http://opensrf.org/xmlns/opensrf/javascript"
+	xmlns:c="http://opensrf.org/xmlns/opensrf/c">
+
+	<opensrf:classes>
+		<!-- template class definition -->
+		<!--
+		<opensrf:class
+			id=""
+			perl:class=""
+			cdbi:class=""
+			javascript:class="">
+	
+			<cdbi:table rdbms="Pg">
+				<cdbi:name></cdbi:name>
+				<cdbi:sequence></cdbi:sequence>
+			</cdbi:table>
+			<cdbi:table rdbms="MySQL">
+				<cdbi:name></cdbi:name>
+			</cdbi:table>
+	
+			<perl:parent>Fieldmapper</perl:parent>
+			<cdbi:parent>OpenILS::Storage::CDBI</cdbi:parent>
+			
+			<opensrf:fields>
+				<opensrf:field name="" datatype="" cdbi:primary="" cdbi:required="" default="" cdbi:default=""/>
+			</opensrf:fields>
+			
+			<opensrf:links>
+				<opensrf:link field="" source="" javascript:list="" cdbi:type=""/>
+			</opensrf:links>
+	
+		</opensrf:class>
+		-->
+	
+		<opensrf:class id="asvr">
+			<opensrf:links>
+				<opensrf:link field="survey" source="asv" cdbi:type="has_a"/>
+			</opensrf:links>
+		</opensrf:class>
+
+		<opensrf:class id="asvq">
+			<opensrf:links>
+				<opensrf:link field="survey" source="asv" cdbi:type="has_a"/>
+			</opensrf:links>
+		</opensrf:class>
+
+		<opensrf:class id="aou"/>
+
+		<!-- Survey class definition -->
+		<opensrf:class
+			id="asv"
+			perl:class="Fieldmapper::action::survey"
+			cdbi:class="action::survey"
+			javascript:class="asv"
+			c:class="asv">
+			<cdbi:table rdbms="Pg">
+				<cdbi:name>action.survey</cdbi:name>
+				<cdbi:sequence>action.survey_id_seq</cdbi:sequence>
+			</cdbi:table>
+			<cdbi:table rdbms="MySQL">
+				<cdbi:name>action_survey</cdbi:name>
+			</cdbi:table>
+	
+			<perl:parent>Fieldmapper</perl:parent>
+			<cdbi:parent>OpenILS::Storage::CDBI</cdbi:parent>
+			
+			<opensrf:fields>
+				<opensrf:field
+					name="id"
+					datatype="int"
+					cdbi:primary="true" />
+					
+				<opensrf:field
+					name="name"
+					datatype="text"
+					cdbi:required="true" />
+					
+				<opensrf:field
+					name="description"
+					datatype="text"
+					cdbi:required="true" />
+					
+				<opensrf:field
+					name="owner"
+					datatype="int"
+					cdbi:required="true" />
+					
+				<opensrf:field
+					name="start_date"
+					datatype="timestamp"
+					cdbi:required="true"
+					cdbi:default="now()" />
+					
+				<opensrf:field
+					name="end_date"
+					datatype="timestamp"
+					cdbi:required="true"
+					cdbi:default="now() + '1 month'" />
+					
+				<opensrf:field
+					name="usr_summary"
+					datatype="bool"
+					cdbi:required="true"
+					default="t" />
+					
+				<opensrf:field
+					name="opac"
+					datatype="bool"
+					cdbi:required="true"
+					default="f" />
+					
+				<opensrf:field
+					name="poll"
+					datatype="bool"
+					cdbi:required="true"
+					default="f" />
+
+				<opensrf:field
+					name="required"
+					datatype="bool"
+					cdbi:required="true"
+					default="f" />
+
+			</opensrf:fields>
+	
+			<opensrf:links>
+				<opensrf:link field="questions" source="asvq" cdbi:type="has_many"/>
+				<opensrf:link field="responses" source="asvr" cdbi:type="has_many"/>
+				<opensrf:link field="owner" source="aou" cdbi:type="has_a"/>
+			</opensrf:links>
+	
+		</opensrf:class>
+
+	</opensrf:classes>
+</opensrf:fieldmapper>
+
