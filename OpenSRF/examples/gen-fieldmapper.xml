@@ -1,4 +1,4 @@
-<? xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <opensrf:fieldmapper
 	xmlns:opensrf="http://opensrf.org/xmlns/opensrf"
 	xmlns:cdbi="http://opensrf.org/xmlns/opensrf/cdbi"
@@ -23,34 +23,202 @@
 				<cdbi:name></cdbi:name>
 			</cdbi:table>
 	
-			<perl:parent>Fieldmapper</perl:parent>
-			<cdbi:parent>OpenILS::Storage::CDBI</cdbi:parent>
+			<javascript:superclass>Fieldmapper</javascript:superclass>
+			<perl:superclass>Fieldmapper</perl:superclass>
+			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
 			<opensrf:fields>
 				<opensrf:field name="" datatype="" cdbi:primary="" cdbi:required="" default="" cdbi:default=""/>
 			</opensrf:fields>
 			
 			<opensrf:links>
-				<opensrf:link field="" source="" javascript:list="" cdbi:type=""/>
+				<opensrf:link field="" source="" javascript:list="" type=""/>
 			</opensrf:links>
 	
 		</opensrf:class>
 		-->
 	
-		<opensrf:class id="asvr">
+		<opensrf:class
+			id="asvr"
+			virtual="0"
+			perl:class="Fieldmapper::action::survey_response"
+			cdbi:class="action::survey_response"
+			javascript:class="asvr"
+			c:class="asvr">
+			<cdbi:table rdbms="Pg">
+				<cdbi:name>action.survey_response</cdbi:name>
+				<cdbi:sequence>action.survey_response_id_seq</cdbi:sequence>
+			</cdbi:table>
+			<cdbi:table rdbms="MySQL">
+				<cdbi:name>action_survey_response</cdbi:name>
+			</cdbi:table>
+	
+			<javascript:superclass>Fieldmapper</javascript:superclass>
+			<perl:superclass>Fieldmapper</perl:superclass>
+			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
+			
+			<opensrf:fields>
+				<opensrf:field
+					name="id"
+					datatype="int"
+					cdbi:primary="true" />
+					
+				<opensrf:field
+					name="survey"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="question"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="answer"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="usr"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="response_group_id"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="answser_date"
+					datatype="timestamp"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="effective_date"
+					datatype="timestamp"
+					cdbi:required="true" />
+
+			</opensrf:fields>
+
 			<opensrf:links>
-				<opensrf:link field="survey" source="asv" cdbi:type="has_a"/>
+				<opensrf:link field="survey" source="asv" type="has_a"/>
+				<opensrf:link field="question" source="asvq" type="has_a"/>
+				<opensrf:link field="answer" source="asva" type="has_a"/>
+				<!-- <opensrf:link field="usr" source="au" type="has_a"/> -->
+			</opensrf:links>
+
+		</opensrf:class>
+
+		<opensrf:class
+			id="asvq"
+			perl:class="Fieldmapper::action::survey_question"
+			cdbi:class="action::survey_question"
+			javascript:class="asvq"
+			c:class="asvq">
+			<cdbi:table rdbms="Pg">
+				<cdbi:name>action.survey_question</cdbi:name>
+				<cdbi:sequence>action.survey_question_id_seq</cdbi:sequence>
+			</cdbi:table>
+			<cdbi:table rdbms="MySQL">
+				<cdbi:name>action_survey_question</cdbi:name>
+			</cdbi:table>
+	
+			<javascript:superclass>Fieldmapper</javascript:superclass>
+			<perl:superclass>Fieldmapper</perl:superclass>
+			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
+			
+			<opensrf:fields>
+				<opensrf:field
+					name="id"
+					datatype="int"
+					cdbi:primary="true" />
+					
+				<opensrf:field
+					name="survey"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="question"
+					datatype="text"
+					cdbi:required="true" />
+
+			</opensrf:fields>
+
+			<opensrf:links>
+				<opensrf:link field="survey" source="asv" type="has_a"/>
+				<opensrf:link field="answers" source="asva" type="has_many"/>
 			</opensrf:links>
 		</opensrf:class>
 
-		<opensrf:class id="asvq">
+		<opensrf:class
+			id="asva"
+			perl:class="Fieldmapper::action::survey_answer"
+			cdbi:class="action::survey_answer"
+			javascript:class="asva"
+			c:class="asva">
+			<cdbi:table rdbms="Pg">
+				<cdbi:name>action.survey_answer</cdbi:name>
+				<cdbi:sequence>action.survey_answer_id_seq</cdbi:sequence>
+			</cdbi:table>
+			<cdbi:table rdbms="MySQL">
+				<cdbi:name>action_survey_answer</cdbi:name>
+			</cdbi:table>
+	
+			<javascript:superclass>Fieldmapper</javascript:superclass>
+			<perl:superclass>Fieldmapper</perl:superclass>
+			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
+			
+			<opensrf:fields>
+				<opensrf:field
+					name="id"
+					datatype="int"
+					cdbi:primary="true" />
+					
+				<opensrf:field
+					name="question"
+					datatype="int"
+					cdbi:required="true" />
+
+				<opensrf:field
+					name="answer"
+					datatype="text"
+					cdbi:required="true" />
+
+			</opensrf:fields>
+
 			<opensrf:links>
-				<opensrf:link field="survey" source="asv" cdbi:type="has_a"/>
+				<opensrf:link field="question" source="asvq" type="has_a"/>
+				<opensrf:link field="responses" source="asvr" type="has_many"/>
 			</opensrf:links>
 		</opensrf:class>
 
-		<opensrf:class id="aou"/>
-
+		<opensrf:class
+			id="aou"
+			perl:class="Fieldmapper::actor::org_unit"
+			cdbi:class="actor::org_unit"
+			javascript:class="aou"
+			c:class="aou">
+			<cdbi:table rdbms="Pg">
+				<cdbi:name>actor.org_unit</cdbi:name>
+				<cdbi:sequence>actor.org_unit_id_seq</cdbi:sequence>
+			</cdbi:table>
+			<cdbi:table rdbms="MySQL">
+				<cdbi:name>actor_org_unit</cdbi:name>
+			</cdbi:table>
+	
+			<javascript:superclass>Fieldmapper</javascript:superclass>
+			<perl:superclass>Fieldmapper</perl:superclass>
+			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
+			
+			<opensrf:fields>
+				<opensrf:field
+					name="id"
+					datatype="int"
+					cdbi:primary="true" />
+			</opensrf:fields>
+		</opensrf:class>
+	
 		<!-- Survey class definition -->
 		<opensrf:class
 			id="asv"
@@ -66,8 +234,9 @@
 				<cdbi:name>action_survey</cdbi:name>
 			</cdbi:table>
 	
-			<perl:parent>Fieldmapper</perl:parent>
-			<cdbi:parent>OpenILS::Storage::CDBI</cdbi:parent>
+			<javascript:superclass>Fieldmapper</javascript:superclass>
+			<perl:superclass>Fieldmapper</perl:superclass>
+			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
 			<opensrf:fields>
 				<opensrf:field
@@ -129,9 +298,9 @@
 			</opensrf:fields>
 	
 			<opensrf:links>
-				<opensrf:link field="questions" source="asvq" cdbi:type="has_many"/>
-				<opensrf:link field="responses" source="asvr" cdbi:type="has_many"/>
-				<opensrf:link field="owner" source="aou" cdbi:type="has_a"/>
+				<opensrf:link field="questions" source="asvq" type="has_many"/>
+				<opensrf:link field="responses" source="asvr" type="has_many"/>
+				<opensrf:link field="owner" source="aou" type="has_a"/>
 			</opensrf:links>
 	
 		</opensrf:class>

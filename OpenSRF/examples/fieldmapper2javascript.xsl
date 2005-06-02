@@ -76,6 +76,28 @@ function Fieldmapper(array) {
 }
 Fieldmapper.prototype.baseClass = Fieldmapper;
 Fieldmapper.prototype.obj_cache = {};
+
+Fieldmapper.prototype.search function (type,field,value) {
+
+	var list = user_request(
+		'open-ils.proxy',
+		'open-ils.proxy.proxy',
+		[
+			mw.G.auth_ses[0],
+			'open-ils.storage',
+			'open-ils.storage.direct.' + type.db_type + '.search.' + field,
+			array
+		]
+	)[0];
+	if (type.cacheable) {
+		if (type.baseClass.obj_cache[type.classname] == null)
+			type.baseClass.obj_cache[type.classname] = {};
+		for (var i in list) {
+			type.baseClass.obj_cache[type.classname][list[i].id()] = list[i];
+		}
+	}
+	return list;
+}
  
 Fieldmapper.prototype.clone = function() {
         var obj = new this.constructor();
@@ -126,6 +148,7 @@ FieldmapperException.toString = function() {
 <!-- sub-templates -->
 	<xsl:template match="opensrf:fieldmapper/opensrf:classes">
 		<xsl:for-each select="opensrf:class">
+			<xsl:sort select="@id"/>
 			<xsl:apply-templates select="."/>
 		</xsl:for-each>
 	</xsl:template>
@@ -136,7 +159,7 @@ FieldmapperException.toString = function() {
 	<xsl:template match="opensrf:class">
 		<xsl:apply-templates select="@javascript:class"/>
 		<xsl:apply-templates select="opensrf:fields"/>
-		<xsl:apply-templates select="opensrf:links/opensrf:link[@cdbi:type='has_many']"/>
+		<xsl:apply-templates select="opensrf:links/opensrf:link[@type='has_many']"/>
 	</xsl:template>
 
 
@@ -144,34 +167,6 @@ FieldmapperException.toString = function() {
 
 	<xsl:template match="opensrf:fields">
 		<xsl:apply-templates select="opensrf:field"/>
-	</xsl:template>
-
-
-
-
-	<xsl:template match="opensrf:links/opensrf:link[@cdbi:type='has_many']">
-		<xsl:variable name="num"><xsl:number/></xsl:variable>
-		<xsl:variable name="source"><xsl:value-of select="@source"/></xsl:variable>
-		<xsl:variable name="classname"><xsl:value-of select="../../@javascript:class"/></xsl:variable>
-
-// accessor for <xsl:value-of select="$classname"/>:
-<xsl:value-of select="$classname"/>.prototype.<xsl:value-of select="@field"/> = function () {
- 
-	var _pos = <xsl:value-of select="$classname"/>.last_real_field + <xsl:value-of select="$num"/>;
- 
-	if (!instanceOf(this.array[_pos], Array)) {
-		this.array[_pos] = [];
- 
-	if (this.array[_pos].length == 0) {
-		/* get the real thing.
-		 * search where <xsl:value-of select="$source"/>.<xsl:value-of select="//*[@id=$source]/opensrf:links/opensrf:link[@cdbi:type='has_a' and @source=$classname]/@field"/>()
-		 * equals this.<xsl:value-of select="../../opensrf:fields/opensrf:field[@cdbi:primary='true']/@name"/>();
-		 */
-	}
- 
-	return this.array[_pos];
-}
-
 	</xsl:template>
 
 
@@ -193,9 +188,9 @@ function <xsl:value-of select="."/> (array) {
 	this.uber = <xsl:value-of select="."/>.baseClass.prototype;
 }
 
-<xsl:value-of select="."/>.prototype			= new Fieldmapper();
+<xsl:value-of select="."/>.prototype			= new <xsl:value-of select="../javascript:superclass"/>();
 <xsl:value-of select="."/>.prototype.constructor	= <xsl:value-of select="."/>;
-<xsl:value-of select="."/>.baseClass			= Fieldmapper;
+<xsl:value-of select="."/>.baseClass			= <xsl:value-of select="../javascript:superclass"/>;
 <xsl:value-of select="."/>.prototype.cachable		= true;
 <xsl:value-of select="."/>.prototype.fields		= [];
 <xsl:value-of select="."/>.last_real_field		= 2;
@@ -224,6 +219,7 @@ function <xsl:value-of select="."/> (array) {
 
 
 
+	<!-- scalar valued fields and "has_a" relationships -->
 	<xsl:template match="opensrf:field">
 
 		<xsl:variable name="num"><xsl:number/></xsl:variable>
@@ -235,14 +231,14 @@ function <xsl:value-of select="."/> (array) {
 <xsl:value-of select="../../@javascript:class"/>.last_real_field++;
 <xsl:value-of select="../../@javascript:class"/>.prototype.fields.push("<xsl:value-of select="$field_name"/>");
 <xsl:value-of select="../../@javascript:class"/>.prototype.<xsl:value-of select="$field_name"/> = function (new_value) {
-
-		<xsl:choose>
-			<xsl:when test="../../opensrf:links/opensrf:link[@field=$field_name and @cdbi:type='has_a']">
-				<xsl:variable
-					name="source"
-					select="../../opensrf:links/opensrf:link[@field=$field_name and @cdbi:type='has_a']/@source"/>
-
         if(arguments.length == 1) { this.array[<xsl:value-of select="$field_pos"/>] = new_value; }
+
+		<xsl:if test="../../opensrf:links/opensrf:link[@field=$field_name and @type='has_a']">
+			<!-- We have a fkey on this field.  Go fetch the referenced object. -->
+			<xsl:variable
+				name="source"
+				select="../../opensrf:links/opensrf:link[@field=$field_name and @type='has_a']/@source"/>
+
         var val = this.array[<xsl:value-of select="$field_pos"/>];
 
         if (!instanceOf(this.array[<xsl:value-of select="$field_pos"/>], <xsl:value-of select="$source"/>)) {
@@ -250,17 +246,51 @@ function <xsl:value-of select="."/> (array) {
                 	this.array[<xsl:value-of select="$field_pos"/>] = new <xsl:value-of select="$source"/>(val);
 		}
 	}
-
-        return this.array[<xsl:value-of select="$field_pos"/>];
-			</xsl:when>
-
-			<xsl:otherwise>
-	if(arguments.length == 1) { this.array[<xsl:value-of select="$field_pos"/>] = new_value; }
+		</xsl:if>
 	return this.array[<xsl:value-of select="$field_pos"/>];
-			</xsl:otherwise>
-		</xsl:choose>
 }
 	</xsl:template>
+
+
+
+
+
+	<!-- "has_many" relationships -->
+	<xsl:template match="opensrf:links/opensrf:link[@type='has_many']">
+		<xsl:variable name="num"><xsl:number/></xsl:variable>
+		<xsl:variable name="source"><xsl:value-of select="@source"/></xsl:variable>
+		<xsl:variable name="classname"><xsl:value-of select="../../@javascript:class"/></xsl:variable>
+		<xsl:variable name="id"><xsl:value-of select="../../@id"/></xsl:variable>
+		<xsl:variable name="fkey" select="//*[@id=$source]/opensrf:links/opensrf:link[@type='has_a' and @source=$id]/@field"/>
+		<xsl:variable name="pkey" select="../../opensrf:fields/opensrf:field[@cdbi:primary='true']/@name"/>
+
+// accessor for <xsl:value-of select="$classname"/>:
+<xsl:value-of select="$classname"/>.prototype.<xsl:value-of select="@field"/> = function () {
+ 
+	var _pos = <xsl:value-of select="$classname"/>.last_real_field + <xsl:value-of select="$num"/>;
+ 
+	if (!instanceOf(this.array[_pos], Array)) {
+		this.array[_pos] = [];
+ 
+	if (this.array[_pos].length == 0) {
+		/* get the real thing.
+		 * search where <xsl:value-of select="$source"/>.<xsl:value-of select="$fkey"/>()
+		 * equals this.<xsl:value-of select="../../opensrf:fields/opensrf:field[@cdbi:primary='true']/@name"/>();
+		 */
+		this.array[_pos] = this.uber.search(
+			<xsl:value-of select="$source"/>,
+			"<xsl:value-of select="$fkey"/>",
+			this.<xsl:value-of select="$pkey"/>()
+		);
+	}
+ 
+	return this.array[_pos];
+}
+
+	</xsl:template>
+
+
+
 
 </xsl:stylesheet>
 
