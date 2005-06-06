@@ -15,10 +15,13 @@ install:
 transport:
 	make -C libtransport
 
+objson:
+	make -C objson
+
 json: 
 	make -C libjson
 
-stack: json transport
+stack: objson json transport
 	make -C libstack
 
 router: stack  
