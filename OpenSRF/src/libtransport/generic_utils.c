@@ -17,6 +17,7 @@ void get_timestamp( char buf_36chars[]) {
 	free(localtime);
 }
 
+/*
 double get_timestamp_millis() {
 	struct timeb t;
 	ftime(&t);
@@ -32,10 +33,7 @@ inline void* safe_malloc( int size ) {
 	memset( ptr, 0, size );
 	return ptr;
 }
-
-// ---------------------------------------------------------------------------------
-// Here we define how we want to handle various error levels.
-// ---------------------------------------------------------------------------------
+*/
 
 
 static FILE* log_file = NULL;
@@ -208,10 +206,7 @@ int log_init( int llevel, char* lfile ) {
 }
 
 
-// ---------------------------------------------------------------------------------
-// Flesh out a ubiqitous growing string buffer
-// ---------------------------------------------------------------------------------
-
+/*
 growing_buffer* buffer_init(int num_initial_bytes) {
 
 	if( num_initial_bytes > BUFFER_MAX_SIZE ) {
@@ -223,7 +218,7 @@ growing_buffer* buffer_init(int num_initial_bytes) {
 
 	growing_buffer* gb = (growing_buffer*) safe_malloc(len);
 
-	gb->n_used = 0;/* nothing stored so far */
+	gb->n_used = 0;
 	gb->size = num_initial_bytes;
 	gb->buf = (char *) safe_malloc(gb->size + 1);
 
@@ -280,6 +275,7 @@ int buffer_free( growing_buffer* gb ) {
 char* buffer_data( growing_buffer *gb) {
 	return strdup( gb->buf );
 }
+*/
 
 
 
