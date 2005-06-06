@@ -216,7 +216,8 @@ RemoteRequest.prototype.send = function(blocking) {
 		if(this.secure)
 			url =	"https://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 		else
-			url =	"http://" + XML_HTTP_SERVER + ":8080/" + XML_HTTP_GATEWAY;
+			//url =	"http://" + XML_HTTP_SERVER + ":8080/" + XML_HTTP_GATEWAY;
+			url =	"http://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 	}
 
 	var data = null;
