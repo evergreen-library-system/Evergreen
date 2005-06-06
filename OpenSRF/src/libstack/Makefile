@@ -2,7 +2,7 @@ LIB_DIR = ../../lib
 CC_OPTS = -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include -fPIC 
 LIB_SOURCES = osrf_message.c osrf_app_session.c osrf_stack.c osrf_system.c string_array.c
 LIB_TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o string_array.o
-EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport  -lopensrf_stack -ljson -L /home/erickson/cc/lib #-ldmalloc
+EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport  -lopensrf_stack -lobjson -ljson 
 CC = gcc
 
 all: lib 
