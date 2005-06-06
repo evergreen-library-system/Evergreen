@@ -237,6 +237,22 @@
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
+
+			<opensrf:methods interface='authenticated' service='open-ils.proxy'>
+				<opensrf:create method='open-ils.storage.direct.action.survey.create'/>
+				<opensrf:retrieve method='open-ils.storage.direct.action.survey.retrieve'/>
+				<opensrf:search method='open-ils.storage.direct.action.survey.search'/>
+				<opensrf:update method='open-ils.storage.direct.action.survey.update'/>
+				<opensrf:delete method='open-ils.storage.direct.action.survey.delete'/>
+			</opensrf:methods>
+			
+			<opensrf:methods interface='trusted' service='open-ils.storage'>
+				<opensrf:create method='open-ils.storage.direct.action.survey.create'/>
+				<opensrf:retrieve method='open-ils.storage.direct.action.survey.retrieve'/>
+				<opensrf:search method='open-ils.storage.direct.action.survey.search'/>
+				<opensrf:update method='open-ils.storage.direct.action.survey.update'/>
+				<opensrf:delete method='open-ils.storage.direct.action.survey.delete'/>
+			</opensrf:methods>
 			
 			<opensrf:fields>
 				<opensrf:field
