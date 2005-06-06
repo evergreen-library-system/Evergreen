@@ -14,6 +14,7 @@ test: lib objson_test.c
 
 lib:	$(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(LIB_DIR)/libobjson.so
+	if [ ! -d $(HEADER_DIR)/objson/ ];then mkdir $(HEADER_DIR)/objson; fi;
 	cp *.h $(HEADER_DIR)/objson/
 
 object.o:	object.h object.c
