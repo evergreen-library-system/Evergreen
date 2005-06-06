@@ -304,8 +304,10 @@ char* message_to_xml( const transport_message* msg ) {
 	}
 
 
+	/*
 	xmlBufferPtr buf = xmlBufferCreate();
 	int status = xmlNodeDump( buf, doc, xmlDocGetRootElement(doc) , 1, 0 ); 
+	*/
 
 	//xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
 	xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
