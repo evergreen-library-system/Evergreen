@@ -3,6 +3,7 @@
 	xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
 	xmlns:opensrf="http://opensrf.org/xmlns/opensrf"
 	xmlns:cdbi="http://opensrf.org/xmlns/opensrf/cdbi"
+	xmlns:database="http://opensrf.org/xmlns/opensrf/database"
 	xmlns:perl="http://opensrf.org/xmlns/opensrf/perl"
 	xmlns:javascript="http://opensrf.org/xmlns/opensrf/javascript"
 	xmlns:c="http://opensrf.org/xmlns/opensrf/c">
@@ -196,7 +197,7 @@ sub clear_<xsl:value-of select="$field_name"/> {
 		<xsl:variable name="classname"><xsl:value-of select="../../@perl:class"/></xsl:variable>
 		<xsl:variable name="id"><xsl:value-of select="../../@id"/></xsl:variable>
 		<xsl:variable name="fkey" select="//*[@id=$source]/opensrf:links/opensrf:link[@type='has_a' and @source=$id]/@field"/>
-		<xsl:variable name="pkey" select="../../opensrf:fields/opensrf:field[@cdbi:primary='true']/@name"/>
+		<xsl:variable name="pkey" select="../../opensrf:fields/opensrf:field[@database:primary='true']/@name"/>
 
 # accessor for <xsl:value-of select="$classname"/>::<xsl:value-of select="@field"/>:
 sub <xsl:value-of select="@field"/> {

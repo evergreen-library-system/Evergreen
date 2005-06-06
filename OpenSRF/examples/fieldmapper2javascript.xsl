@@ -3,6 +3,7 @@
 	xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
 	xmlns:opensrf="http://opensrf.org/xmlns/opensrf"
 	xmlns:cdbi="http://opensrf.org/xmlns/opensrf/cdbi"
+	xmlns:database="http://opensrf.org/xmlns/opensrf/database"
 	xmlns:perl="http://opensrf.org/xmlns/opensrf/perl"
 	xmlns:javascript="http://opensrf.org/xmlns/opensrf/javascript"
 	xmlns:c="http://opensrf.org/xmlns/opensrf/c">
@@ -196,7 +197,7 @@ function <xsl:value-of select="."/> (array) {
 <xsl:value-of select="."/>.last_real_field		= 2;
  
 <!-- XXX This needs to come from somewhere else!!!! -->
-<xsl:value-of select="."/>.prototype.db_type		= "<xsl:value-of select="../cdbi:table[@rdbms='Pg']/cdbi:name"/>";
+<xsl:value-of select="."/>.prototype.db_type		= "<xsl:value-of select="../database:table[@rdbms='Pg']/database:name"/>";
  
 <xsl:value-of select="."/>.prototype.isnew = function(new_value) {
         if(arguments.length == 1) { this.array[0] = new_value; }
@@ -262,7 +263,7 @@ function <xsl:value-of select="."/> (array) {
 		<xsl:variable name="classname"><xsl:value-of select="../../@javascript:class"/></xsl:variable>
 		<xsl:variable name="id"><xsl:value-of select="../../@id"/></xsl:variable>
 		<xsl:variable name="fkey" select="//*[@id=$source]/opensrf:links/opensrf:link[@type='has_a' and @source=$id]/@field"/>
-		<xsl:variable name="pkey" select="../../opensrf:fields/opensrf:field[@cdbi:primary='true']/@name"/>
+		<xsl:variable name="pkey" select="../../opensrf:fields/opensrf:field[@database:primary='true']/@name"/>
 
 // accessor for <xsl:value-of select="$classname"/>:
 <xsl:value-of select="$classname"/>.prototype.<xsl:value-of select="@field"/> = function () {
@@ -275,7 +276,7 @@ function <xsl:value-of select="."/> (array) {
 	if (this.array[_pos].length == 0) {
 		/* get the real thing.
 		 * search where <xsl:value-of select="$source"/>.<xsl:value-of select="$fkey"/>()
-		 * equals this.<xsl:value-of select="../../opensrf:fields/opensrf:field[@cdbi:primary='true']/@name"/>();
+		 * equals this.<xsl:value-of select="../../opensrf:fields/opensrf:field[@database:primary='true']/@name"/>();
 		 */
 		this.array[_pos] = this.uber.search(
 			<xsl:value-of select="$source"/>,

@@ -1,326 +1,327 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<opensrf:fieldmapper
-	xmlns:opensrf="http://opensrf.org/xmlns/opensrf"
+<fieldmapper
+	xmlns="http://opensrf.org/xmlns/opensrf"
 	xmlns:cdbi="http://opensrf.org/xmlns/opensrf/cdbi"
+	xmlns:database="http://opensrf.org/xmlns/opensrf/database"
 	xmlns:perl="http://opensrf.org/xmlns/opensrf/perl"
 	xmlns:javascript="http://opensrf.org/xmlns/opensrf/javascript"
 	xmlns:c="http://opensrf.org/xmlns/opensrf/c">
 
-	<opensrf:classes>
+	<classes>
 		<!-- template class definition -->
 		<!--
-		<opensrf:class
+		<class
 			id=""
 			perl:class=""
 			cdbi:class=""
 			javascript:class="">
 	
-			<cdbi:table rdbms="Pg">
-				<cdbi:name></cdbi:name>
-				<cdbi:sequence></cdbi:sequence>
-			</cdbi:table>
-			<cdbi:table rdbms="MySQL">
-				<cdbi:name></cdbi:name>
-			</cdbi:table>
+			<database:table rdbms="Pg">
+				<database:name></database:name>
+				<database:sequence></database:sequence>
+			</database:table>
+			<database:table rdbms="MySQL">
+				<database:name></database:name>
+			</database:table>
 	
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
-			<opensrf:fields>
-				<opensrf:field name="" datatype="" cdbi:primary="" cdbi:required="" default="" cdbi:default=""/>
-			</opensrf:fields>
+			<fields>
+				<field name="" datatype="" database:primary="" database:required="" default="" database:default=""/>
+			</fields>
 			
-			<opensrf:links>
-				<opensrf:link field="" source="" javascript:list="" type=""/>
-			</opensrf:links>
+			<links>
+				<link field="" source="" javascript:list="" type=""/>
+			</links>
 	
-		</opensrf:class>
+		</class>
 		-->
 	
-		<opensrf:class
+		<class
 			id="asvr"
 			virtual="0"
 			perl:class="Fieldmapper::action::survey_response"
 			cdbi:class="action::survey_response"
 			javascript:class="asvr"
 			c:class="asvr">
-			<cdbi:table rdbms="Pg">
-				<cdbi:name>action.survey_response</cdbi:name>
-				<cdbi:sequence>action.survey_response_id_seq</cdbi:sequence>
-			</cdbi:table>
-			<cdbi:table rdbms="MySQL">
-				<cdbi:name>action_survey_response</cdbi:name>
-			</cdbi:table>
+			<database:table rdbms="Pg">
+				<database:name>action.survey_response</database:name>
+				<database:sequence>action.survey_response_id_seq</database:sequence>
+			</database:table>
+			<database:table rdbms="MySQL">
+				<database:name>action_survey_response</database:name>
+			</database:table>
 	
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
-			<opensrf:fields>
-				<opensrf:field
+			<fields>
+				<field
 					name="id"
 					datatype="int"
-					cdbi:primary="true" />
+					database:primary="true" />
 					
-				<opensrf:field
+				<field
 					name="survey"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="question"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="answer"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="usr"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="response_group_id"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="answser_date"
 					datatype="timestamp"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="effective_date"
 					datatype="timestamp"
-					cdbi:required="true" />
+					database:required="true" />
 
-			</opensrf:fields>
+			</fields>
 
-			<opensrf:links>
-				<opensrf:link field="survey" source="asv" type="has_a"/>
-				<opensrf:link field="question" source="asvq" type="has_a"/>
-				<opensrf:link field="answer" source="asva" type="has_a"/>
-				<!-- <opensrf:link field="usr" source="au" type="has_a"/> -->
-			</opensrf:links>
+			<links>
+				<link field="survey" source="asv" type="has_a"/>
+				<link field="question" source="asvq" type="has_a"/>
+				<link field="answer" source="asva" type="has_a"/>
+				<!-- <link field="usr" source="au" type="has_a"/> -->
+			</links>
 
-		</opensrf:class>
+		</class>
 
-		<opensrf:class
+		<class
 			id="asvq"
 			perl:class="Fieldmapper::action::survey_question"
 			cdbi:class="action::survey_question"
 			javascript:class="asvq"
 			c:class="asvq">
-			<cdbi:table rdbms="Pg">
-				<cdbi:name>action.survey_question</cdbi:name>
-				<cdbi:sequence>action.survey_question_id_seq</cdbi:sequence>
-			</cdbi:table>
-			<cdbi:table rdbms="MySQL">
-				<cdbi:name>action_survey_question</cdbi:name>
-			</cdbi:table>
+			<database:table rdbms="Pg">
+				<database:name>action.survey_question</database:name>
+				<database:sequence>action.survey_question_id_seq</database:sequence>
+			</database:table>
+			<database:table rdbms="MySQL">
+				<database:name>action_survey_question</database:name>
+			</database:table>
 	
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
-			<opensrf:fields>
-				<opensrf:field
+			<fields>
+				<field
 					name="id"
 					datatype="int"
-					cdbi:primary="true" />
+					database:primary="true" />
 					
-				<opensrf:field
+				<field
 					name="survey"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="question"
 					datatype="text"
-					cdbi:required="true" />
+					database:required="true" />
 
-			</opensrf:fields>
+			</fields>
 
-			<opensrf:links>
-				<opensrf:link field="survey" source="asv" type="has_a"/>
-				<opensrf:link field="answers" source="asva" type="has_many"/>
-			</opensrf:links>
-		</opensrf:class>
+			<links>
+				<link field="survey" source="asv" type="has_a"/>
+				<link field="answers" source="asva" type="has_many"/>
+			</links>
+		</class>
 
-		<opensrf:class
+		<class
 			id="asva"
 			perl:class="Fieldmapper::action::survey_answer"
 			cdbi:class="action::survey_answer"
 			javascript:class="asva"
 			c:class="asva">
-			<cdbi:table rdbms="Pg">
-				<cdbi:name>action.survey_answer</cdbi:name>
-				<cdbi:sequence>action.survey_answer_id_seq</cdbi:sequence>
-			</cdbi:table>
-			<cdbi:table rdbms="MySQL">
-				<cdbi:name>action_survey_answer</cdbi:name>
-			</cdbi:table>
+			<database:table rdbms="Pg">
+				<database:name>action.survey_answer</database:name>
+				<database:sequence>action.survey_answer_id_seq</database:sequence>
+			</database:table>
+			<database:table rdbms="MySQL">
+				<database:name>action_survey_answer</database:name>
+			</database:table>
 	
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
-			<opensrf:fields>
-				<opensrf:field
+			<fields>
+				<field
 					name="id"
 					datatype="int"
-					cdbi:primary="true" />
+					database:primary="true" />
 					
-				<opensrf:field
+				<field
 					name="question"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 
-				<opensrf:field
+				<field
 					name="answer"
 					datatype="text"
-					cdbi:required="true" />
+					database:required="true" />
 
-			</opensrf:fields>
+			</fields>
 
-			<opensrf:links>
-				<opensrf:link field="question" source="asvq" type="has_a"/>
-				<opensrf:link field="responses" source="asvr" type="has_many"/>
-			</opensrf:links>
-		</opensrf:class>
+			<links>
+				<link field="question" source="asvq" type="has_a"/>
+				<link field="responses" source="asvr" type="has_many"/>
+			</links>
+		</class>
 
-		<opensrf:class
+		<class
 			id="aou"
 			perl:class="Fieldmapper::actor::org_unit"
 			cdbi:class="actor::org_unit"
 			javascript:class="aou"
 			c:class="aou">
-			<cdbi:table rdbms="Pg">
-				<cdbi:name>actor.org_unit</cdbi:name>
-				<cdbi:sequence>actor.org_unit_id_seq</cdbi:sequence>
-			</cdbi:table>
-			<cdbi:table rdbms="MySQL">
-				<cdbi:name>actor_org_unit</cdbi:name>
-			</cdbi:table>
+			<database:table rdbms="Pg">
+				<database:name>actor.org_unit</database:name>
+				<database:sequence>actor.org_unit_id_seq</database:sequence>
+			</database:table>
+			<database:table rdbms="MySQL">
+				<database:name>actor_org_unit</database:name>
+			</database:table>
 	
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 			
-			<opensrf:fields>
-				<opensrf:field
+			<fields>
+				<field
 					name="id"
 					datatype="int"
-					cdbi:primary="true" />
-			</opensrf:fields>
-		</opensrf:class>
+					database:primary="true" />
+			</fields>
+		</class>
 	
 		<!-- Survey class definition -->
-		<opensrf:class
+		<class
 			id="asv"
 			perl:class="Fieldmapper::action::survey"
 			cdbi:class="action::survey"
 			javascript:class="asv"
 			c:class="asv">
-			<cdbi:table rdbms="Pg">
-				<cdbi:name>action.survey</cdbi:name>
-				<cdbi:sequence>action.survey_id_seq</cdbi:sequence>
-			</cdbi:table>
-			<cdbi:table rdbms="MySQL">
-				<cdbi:name>action_survey</cdbi:name>
-			</cdbi:table>
+			<database:table rdbms="Pg">
+				<database:name>action.survey</database:name>
+				<database:sequence>action.survey_id_seq</database:sequence>
+			</database:table>
+			<database:table rdbms="MySQL">
+				<database:name>action_survey</database:name>
+			</database:table>
 	
 			<javascript:superclass>Fieldmapper</javascript:superclass>
 			<perl:superclass>Fieldmapper</perl:superclass>
 			<cdbi:superclass>OpenILS::Storage::CDBI</cdbi:superclass>
 
-			<opensrf:methods interface='authenticated' service='open-ils.proxy'>
-				<opensrf:create method='open-ils.storage.direct.action.survey.create'/>
-				<opensrf:retrieve method='open-ils.storage.direct.action.survey.retrieve'/>
-				<opensrf:search method='open-ils.storage.direct.action.survey.search'/>
-				<opensrf:update method='open-ils.storage.direct.action.survey.update'/>
-				<opensrf:delete method='open-ils.storage.direct.action.survey.delete'/>
-			</opensrf:methods>
+			<methods interface='authenticated' service='open-ils.proxy'>
+				<create method='open-ils.storage.direct.action.survey.create'/>
+				<retrieve method='open-ils.storage.direct.action.survey.retrieve'/>
+				<search method='open-ils.storage.direct.action.survey.search'/>
+				<update method='open-ils.storage.direct.action.survey.update'/>
+				<delete method='open-ils.storage.direct.action.survey.delete'/>
+			</methods>
 			
-			<opensrf:methods interface='trusted' service='open-ils.storage'>
-				<opensrf:create method='open-ils.storage.direct.action.survey.create'/>
-				<opensrf:retrieve method='open-ils.storage.direct.action.survey.retrieve'/>
-				<opensrf:search method='open-ils.storage.direct.action.survey.search'/>
-				<opensrf:update method='open-ils.storage.direct.action.survey.update'/>
-				<opensrf:delete method='open-ils.storage.direct.action.survey.delete'/>
-			</opensrf:methods>
+			<methods interface='trusted' service='open-ils.storage'>
+				<create method='open-ils.storage.direct.action.survey.create'/>
+				<retrieve method='open-ils.storage.direct.action.survey.retrieve'/>
+				<search method='open-ils.storage.direct.action.survey.search'/>
+				<update method='open-ils.storage.direct.action.survey.update'/>
+				<delete method='open-ils.storage.direct.action.survey.delete'/>
+			</methods>
 			
-			<opensrf:fields>
-				<opensrf:field
+			<fields>
+				<field
 					name="id"
 					datatype="int"
-					cdbi:primary="true" />
+					database:primary="true" />
 					
-				<opensrf:field
+				<field
 					name="name"
 					datatype="text"
-					cdbi:required="true" />
+					database:required="true" />
 					
-				<opensrf:field
+				<field
 					name="description"
 					datatype="text"
-					cdbi:required="true" />
+					database:required="true" />
 					
-				<opensrf:field
+				<field
 					name="owner"
 					datatype="int"
-					cdbi:required="true" />
+					database:required="true" />
 					
-				<opensrf:field
+				<field
 					name="start_date"
 					datatype="timestamp"
-					cdbi:required="true"
-					cdbi:default="now()" />
+					database:required="true"
+					database:default="now()" />
 					
-				<opensrf:field
+				<field
 					name="end_date"
 					datatype="timestamp"
-					cdbi:required="true"
-					cdbi:default="now() + '1 month'" />
+					database:required="true"
+					database:default="now() + '1 month'" />
 					
-				<opensrf:field
+				<field
 					name="usr_summary"
 					datatype="bool"
-					cdbi:required="true"
+					database:required="true"
 					default="t" />
 					
-				<opensrf:field
+				<field
 					name="opac"
 					datatype="bool"
-					cdbi:required="true"
+					database:required="true"
 					default="f" />
 					
-				<opensrf:field
+				<field
 					name="poll"
 					datatype="bool"
-					cdbi:required="true"
+					database:required="true"
 					default="f" />
 
-				<opensrf:field
+				<field
 					name="required"
 					datatype="bool"
-					cdbi:required="true"
+					database:required="true"
 					default="f" />
 
-			</opensrf:fields>
+			</fields>
 	
-			<opensrf:links>
-				<opensrf:link field="questions" source="asvq" type="has_many"/>
-				<opensrf:link field="responses" source="asvr" type="has_many"/>
-				<opensrf:link field="owner" source="aou" type="has_a"/>
-			</opensrf:links>
+			<links>
+				<link field="questions" source="asvq" type="has_many"/>
+				<link field="responses" source="asvr" type="has_many"/>
+				<link field="owner" source="aou" type="has_a"/>
+			</links>
 	
-		</opensrf:class>
+		</class>
 
-	</opensrf:classes>
-</opensrf:fieldmapper>
+	</classes>
+</fieldmapper>
 
