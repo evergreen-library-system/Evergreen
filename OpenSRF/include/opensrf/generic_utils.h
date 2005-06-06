@@ -10,6 +10,8 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/tree.h>
 
+#include "utils.h"
+
 #ifndef GENERIC_UTILS_H
 #define GENERIC_UTILS_H
 
@@ -21,19 +23,12 @@
 
 #define equals(a,b) !strcmp(a,b) 
 
-/** Malloc's, checks for NULL, clears all memory bits and 
-  * returns the pointer
-  * 
-  * @param size How many bytes of memory to allocate
-  */
+
+/*
 inline void* safe_malloc( int size );
 
-/* 10M limit on buffers for overflow protection */
 #define BUFFER_MAX_SIZE 10485760 
 
-// ---------------------------------------------------------------------------------
-// Generic growing buffer. Add data all you want
-// ---------------------------------------------------------------------------------
 struct growing_buffer_struct {
 	char *buf;
 	int n_used;
@@ -47,6 +42,8 @@ int buffer_add(growing_buffer* gb, char* c);
 int buffer_reset( growing_buffer* gb);
 char* buffer_data( growing_buffer* gb);
 int buffer_free( growing_buffer* gb );
+int buffer_fadd(growing_buffer* gb, const char* format, ... );
+*/
 
 
 void log_free(); 
@@ -87,8 +84,6 @@ void config_reader_init( char* name, char* config_file );
 void config_reader_free();
 
 // allocastes a char*. FREE me.
-//char* config_value( const char* xpath_query, ... );
 char* config_value( const char* config_name, const char* xp_query, ... );
-//char* config_value( config_reader* reader, const char* xp_query, ... );
 
 #endif
