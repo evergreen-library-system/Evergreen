@@ -73,7 +73,7 @@ FOREACH mr_id IN mr_list;
 -%]
       <item>
         <title>[% mods.title() %]</title>
-        <link>http://gapines.org/opac/?target=record_result&page=0&mrid=[% mr_id.0 %]&hits_per_page=10</link>
+        <link>http://gapines.org/opac/?target=record_result&amp;page=0&amp;mrid=[% mr_id.0 %]&amp;hits_per_page=10</link>
         <description>
 		&lt;b&gt;Author:&lt;/b&gt; [% mods.author() %]&lt;br&gt;
 		&lt;b&gt;Subjects:&lt;/b&gt; 
@@ -88,7 +88,7 @@ FOREACH mr_id IN mr_list;
 		END;
 		sub.list.0;
 	END;
--%]
+-%]&lt;br&gt;
 		&lt;b&gt;Available:&lt;/b&gt; [% mr_id.2 %] 
         </description>
       </item>
