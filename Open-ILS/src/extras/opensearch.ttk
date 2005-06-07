@@ -1,7 +1,7 @@
 [%-
 USE CGI;
-USE WebSession;
-WebSession.bootstrap();
+USE ws = WebSession;
+ws.bootstrap_client("/pines/conf/bootstrap.conf");
 
 rank_threshold = 5000;
 
@@ -13,7 +13,7 @@ count_meth = 'open-ils.search.biblio.class.count';
 #type,string,location,depth,limit,offset
 search_meth = 'open-ils.search.biblio.class';
 
-session = WebSession.init_app_session('open-ils.search');
+session = ws.init_app_session('open-ils.search');
 
 type = CGI.param('mr_search_type');
 string = CGI.param('mr_search_query');

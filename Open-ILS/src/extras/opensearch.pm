@@ -17,7 +17,7 @@ use OpenSRF::System;
 
 my $child_init_ttk = "opensearch.ttk";
 
-my $includes = [ '/pines/cvs/ILS/Open-ILS/src/templates' ];
+my $includes = [ '/pines/cvs/ILS/Open-ILS/src/extras' ];
 
 my $plugin_base = 'OpenILS::Template::Plugin';
 
@@ -29,7 +29,7 @@ sub handler {
 	_process_template(
 			apache		=> $apache,
 			template		=> 'opensearch.ttk',
-			pre_process	=> $init_ttk );
+			);
 
 	return Apache::OK;
 }
@@ -67,8 +67,7 @@ sub _process_template {
 			my $err = $template->error();
 			$err =~ s/\n/\<br\/\>/g;
 			warn "Error processing template $ttk\n";	
-			my $string =  "<br><b>Unable to process template:<br/><br/> " . $err . "!!!</b>";
-			$template->process( $error_ttk , { error => $string } );
+			print "<br><b>Unable to process template:<br/><br/> " . $err . "!!!</b>";
 		}
 
 	} catch Error with {
