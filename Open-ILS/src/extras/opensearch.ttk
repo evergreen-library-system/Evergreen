@@ -44,7 +44,7 @@ END;
 req = session.request(search_meth, type, string, location, depth, limit, offset);
 j = req.wait_complete();
 
-list = req.recv().content();
+list = req.recv().content().ids;
 j = req.finish;
 
 -%]
