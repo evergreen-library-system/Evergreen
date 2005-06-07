@@ -57,8 +57,8 @@ j = req.finish;
       <openSearch:itemsPerPage>[% pagesize %]</openSearch:itemsPerPage>
 [%-
 
-FOREACH mr_id IN list;
-	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id);
+FOREACH mr_id IN list.id;
+	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id.0);
 	req.wait_complete();
 
 	mods = req.recv().content();
@@ -83,6 +83,7 @@ FOREACH mr_id IN list;
 		sub.list.0;
 	END;
 -%]
+		&lt;b&gt;Available:&lt;/b&gt; [% mr_id.2 %] 
         </description>
       </item>
 [%-
