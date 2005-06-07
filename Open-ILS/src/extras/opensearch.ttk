@@ -25,7 +25,7 @@ string = CGI.param('mr_search_query');
 location = CGI.param('mr_search_location');
 depth = CGI.param('mr_search_depth');
 limit = pagesize;
-offset = itempage * pagesize - 1;
+offset = ((itempage - 1) * pagesize) - 1;
 
 IF offset < 0;
 	offset = 0;
