@@ -1,7 +1,7 @@
 [%-
 USE CGI;
 USE ws = WebSession;
-ws.bootstrap_client("/pines/conf/bootstrap.conf");
+j = ws.bootstrap_client("/pines/conf/bootstrap.conf");
 
 rank_threshold = 5000;
 
@@ -28,20 +28,20 @@ IF CGI.param('pagesize');
 END;
 
 req = session.request(count_meth, type, string, location, depth);
-req.wait_complete();
+j = req.wait_complete();
 
 count = req.recv();
-req.finish;
+j = req.finish;
 
 IF count > rank_threshold;
 	search_meth = 'open-ils.search.biblio.class.unorded';
 END;
 
 req = session.request(search_meth, type, string, location, depth, limit, offset);
-req.wait_complete();
+j = req.wait_complete();
 
 list = req.recv();
-req.finish;
+j = req.finish;
 
 -%]
 <?xml version="1.0"?>
