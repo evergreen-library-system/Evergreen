@@ -65,10 +65,10 @@ mr_list = list.ids;
 
 FOREACH mr_id IN mr_list;
 	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id.0);
-	req.wait_complete();
+	j = req.wait_complete();
 
 	mods = req.recv().content();
-	req.finish;
+	j = req.finish;
 
 -%]
       <item>
