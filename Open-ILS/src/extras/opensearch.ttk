@@ -30,7 +30,7 @@ END;
 req = session.request(count_meth, type, string, location, depth);
 j = req.wait_complete();
 
-count = req.recv();
+count = req.recv().content();
 j = req.finish;
 
 IF count > rank_threshold;
@@ -40,7 +40,7 @@ END;
 req = session.request(search_meth, type, string, location, depth, limit, offset);
 j = req.wait_complete();
 
-list = req.recv();
+list = req.recv().content();
 j = req.finish;
 
 -%]
@@ -61,7 +61,7 @@ FOREACH mr_id IN list;
 	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id);
 	req.wait_complete();
 
-	mods = req.recv();
+	mods = req.recv().content();
 	req.finish;
 
 -%]
