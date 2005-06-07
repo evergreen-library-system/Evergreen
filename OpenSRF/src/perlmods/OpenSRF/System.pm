@@ -90,20 +90,6 @@ sub _unixserver {
 
 sub _listener {
 	my( $app ) = @_;
-
-=head
-	my $service = $app;
-	my $username = $app;
-	my $password = "jkjkasdf";
-	my $jserver = "elroy";
-	my $port = "5222";
-	my $hostname = "elroy.pls-hq.org";
-	my $unix_file = "/pines/var/sock/$app" . "_unix.sock";
-	my $router = 'router\@elroy/router'; 
-	return "exec(\"/pines/cvs/ILS/OpenSRF/src/forker/oils_inbound $service $username " .
-		"$password $jserver $port $hostname $unix_file $router\")";
-=cut
-
 	return "OpenSRF::Transport::Listener->new( '$app' )->initialize()->listen()";
 }
 

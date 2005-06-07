@@ -203,6 +203,11 @@ sub do_server {
 
 	if ($session->state == $session->CONNECTING()) {
 
+		if($mtype ne "CONNECT" and $session->stateless) {
+			$log->debug("Got message Stateless", DEBUG);
+			return 1; #pass the message up the stack
+		}
+
 		# the transport layer thinks this is a new connection. is it?
 		unless ($mtype eq 'CONNECT') {
 			$log->error("Connection seems to be mangled: Got $mtype instead of CONNECT");

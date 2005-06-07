@@ -1,7 +1,7 @@
 package OpenSRF::UnixServer;
 use strict; use warnings;
 use base qw/OpenSRF/;
-use OpenSRF::EX;
+use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::Transport::PeerHandle;
 use OpenSRF::Application;
@@ -88,15 +88,25 @@ sub process_request {
 
 	if(!ref($app_session)) {
 		$logger->transport( "Did not receive AppSession from transport handler, returning...", WARN );
-		$0 =~ s/\*//g;
+		$0 = $orig;
 		return;
 	}
+
+	if($app_session->stateless and $app_session->state != $app_session->CONNECTED()){
+		$logger->debug("Exiting keepalive for stateless session / orig = $orig");
+		$app_session->kill_me;
+		$0 = $orig;
+		return;
+	}
+
 
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	my $keepalive = $client->config_value("apps", $self->app(), "keepalive");
 
 	my $req_counter = 0;
-	while( $app_session and $app_session->state and $app_session->state != $app_session->DISCONNECTED() and
+	while( $app_session and 
+			$app_session->state and 
+			$app_session->state != $app_session->DISCONNECTED() and
 			$app_session->find( $app_session->session_id ) ) {
 		
 
@@ -115,7 +125,7 @@ sub process_request {
 			$app_session->state( $app_session->DISCONNECTED() );
 			last;
 		}
-
+	
 	}
 
 	my $x = 0;

@@ -19,6 +19,11 @@ sub set_cache {
 	if(defined($val)) { $we_cache = $val; }
 }
 
+sub has_config {
+	if($host_config) { return 1; }
+	return 0;
+}
+
 
 # ------------------------------------
 # utility method for grabbing config info

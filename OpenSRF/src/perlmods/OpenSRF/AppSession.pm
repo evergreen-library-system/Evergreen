@@ -98,8 +98,6 @@ sub server_build {
 
 	return undef unless ($sess_id and $remote_id and $service);
 
-	my $config_client = OpenSRF::Utils::SettingsClient->new();
-	
 	if ( my $thingy = $class->find($sess_id) ) {
 		$thingy->remote_id( $remote_id );
 		$logger->debug( "AppSession returning existing session $sess_id", DEBUG );
@@ -113,8 +111,11 @@ sub server_build {
 		#	" Session ID [$sess_id], remote_id [$remote_id]");
 		$logger->debug("Attempting to build a client session as ".
 				"a server Session ID [$sess_id], remote_id [$remote_id]", ERROR );
+		return undef;
 	}
 
+	my $config_client = OpenSRF::Utils::SettingsClient->new();
+	my $stateless = $config_client->config_value("apps", $service, "stateless");
 
 	#my $max_requests = $conf->$service->max_requests;
 	my $max_requests	= $config_client->config_value("apps",$service,"max_requests");
@@ -135,6 +136,7 @@ sub server_build {
 				max_requests => $max_requests,
 				session_threadTrace => 0,
 				service => $service,
+				stateless => $stateless,
 			 } => $class;
 
 	return $_CACHE{$sess_id} = $self;
@@ -193,6 +195,11 @@ sub get_app_targets {
 	return @targets;
 }
 
+sub stateless {
+	my $self = shift;
+	if($self) {return $self->{stateless};}
+}
+
 # When we're a client and we want to connect to a remote service
 # create( $app, username => $user, secret => $passwd );
 #    OR
@@ -203,19 +210,30 @@ sub create {
 
 	my $app = shift;
 
+
+	
 	if( my $thingy = OpenSRF::AppSession->find_client( $app ) ) {
-			$logger->debug( "AppSession returning existing client session for $app", DEBUG );
+			$logger->debug( 
+				"AppSession returning existing client session for $app", DEBUG );
 			return $thingy;
 	} else {
 		$logger->debug( "AppSession creating new client session for $app", DEBUG );
 	}
 
+	my $stateless = 0;
+	my $c = OpenSRF::Utils::SettingsClient->new();
+	# we can get an infinite loop if we're grabbing the settings and we
+	# need the settings to grab the settings...
+	if($app ne "opensrf.settings" || $c->has_config()) { 
+		$stateless = $c->config_value("apps", $app, "stateless");
+	}
 
 	my $sess_id = time . rand( $$ );
 	while ( $class->find($sess_id) ) {
 		$sess_id = time . rand( $$ );
 	}
 
+	
 	my ($r_id) = get_app_targets($app);
 
 	my $peer_handle = OpenSRF::Transport::PeerHandle->retrieve("client"); 
@@ -235,6 +253,7 @@ sub create {
 			   orig_remote_id   => $r_id,
 				peer_handle => $peer_handle,
 				session_threadTrace => 0,
+				stateless		=> $stateless,
 			 } => $class;
 
 	$self->client_cache();
@@ -273,17 +292,20 @@ sub connect {
 
 
 	if ( ref( $self ) and  $self->state && $self->state == CONNECTED  ) {
-		$logger->transport("ABC AppSession already connected", DEBUG );
+		$logger->transport("AppSession already connected", DEBUG );
 	} else {
-		$logger->transport("ABC AppSession not connected, connecting..", DEBUG );
+		$logger->transport("AppSession not connected, connecting..", DEBUG );
 	}
 	return $self if ( ref( $self ) and  $self->state && $self->state == CONNECTED  );
+
 
 	my $app = shift;
 	my $api_level = shift;
 	$api_level = 1 unless (defined $api_level);
 
 	$self = $class->create($app, @_) if (!ref($self));
+
+
 	return undef unless ($self);
 
 	$self->{api_level} = $api_level;
@@ -388,8 +410,13 @@ sub disconnect {
 		}
 	}
 
+	if( $self->stateless and $self->state != CONNECTED ) {
+		$self->reset;
+		return;
+	}
+
 	unless( $self->state == DISCONNECTED ) {
-		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);;
+		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);
 		$self->state( DISCONNECTED ); 
 	}
 
@@ -433,7 +460,6 @@ sub send {
 	my $self = shift;
 	my @payload_list = @_; # this is a Domain Object
 
-
 	return unless ($self and $self->{peer_handle});
 
 	$logger->debug( "In send", INTERNAL );
@@ -465,8 +491,9 @@ sub send {
 			}
 		}
 
-		if( $msg_type eq "CONNECT" ) { $connecting++; }
-
+		if( $msg_type eq "CONNECT" ) { 
+			$connecting++; 
+		}
 
 		if( $payload ) {
 			$logger->debug( "Payload is ".$payload->toString, INTERNAL );
@@ -507,16 +534,30 @@ sub send {
 	
 	if ($self->endpoint == CLIENT and ! $disconnect) {
 		$self->queue_wait(0);
-		unless ($self->state == CONNECTED || ($self->state == CONNECTING && $connecting )) {
-			my $v = $self->connect();
-			if( ! $v ) {
-				$logger->debug( "Unable to connect to remote service in AppSession::send()", ERROR );
-				return undef;
-			}
-			if( ref($v) and $v->can("class") and $v->class->isa( "OpenSRF::EX" ) ) {
-				return $v;
+
+
+		if($self->stateless && $self->state != CONNECTED) {
+			$self->reset;
+			$logger->debug("AppSession is stateless in send", DEBUG );
+		}
+
+		if( !$self->stateless and $self->state != CONNECTED ) {
+
+			$logger->debug( "Sending connect before request 1", INTERNAL );
+
+			unless (($self->state == CONNECTING && $connecting )) {
+				$logger->debug( "Sending connect before request 2", INTERNAL );
+				my $v = $self->connect();
+				if( ! $v ) {
+					$logger->debug( "Unable to connect to remote service in AppSession::send()", ERROR );
+					return undef;
+				}
+				if( ref($v) and $v->can("class") and $v->class->isa( "OpenSRF::EX" ) ) {
+					return $v;
+				}
 			}
 		}
+
 	} 
 	$logger->debug( "AppSession sending doc: " . $doc->toString(), INTERNAL );
 
@@ -943,7 +984,7 @@ sub gather {
 	my $self = shift;
 	my $finish = shift;
 	$self->wait_complete;
-	my $resp = $self->recv( timeout => 20 );
+	my $resp = $self->recv( timeout => 60 );
 	if( $self->failed() ) { 
 		throw OpenSRF::EX::ERROR
 			($self->failed()->stringify());
