@@ -1,0 +1,93 @@
+[%-
+USE CGI;
+USE WebSession;
+WebSession.bootstrap();
+
+rank_threshold = 5000;
+
+itempage = CGI.param('itempage');
+
+#type,string,location,depth
+count_meth = 'open-ils.search.biblio.class.count';
+
+#type,string,location,depth,limit,offset
+search_meth = 'open-ils.search.biblio.class';
+
+session = WebSession.init_app_session('open-ils.search');
+
+type = CGI.param('mr_search_type');
+string = CGI.param('mr_search_query');
+location = CGI.param('mr_search_location');
+depth = CGI.param('mr_search_depth');
+limit = pagesize;
+offset = itempage * pagesize - 1;
+
+pagesize = 10;
+IF CGI.param('pagesize');
+	pagesize = CGI.param('pagesize');
+END;
+
+req = session.request(count_meth, type, string, location, depth);
+req.wait_complete();
+
+count = req.recv();
+req.finish;
+
+IF count > rank_threshold;
+	search_meth = 'open-ils.search.biblio.class.unorded';
+END;
+
+req = session.request(search_meth, type, string, location, depth, limit, offset);
+req.wait_complete();
+
+list = req.recv();
+req.finish;
+
+-%]
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    <channel>
+      <title>Pines Catalogue Search: [% string %] </title>
+      <link>http://http://gapines.org/opensearch.ttk/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string %]&amp;itempage=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]</link>
+      <description>Search results for "[% string %]" at gapines.org</description>
+      <language>en-us</language>
+      <copyright>&amp;copy;2004-2005, Georga Public Library Service.</copyright>
+      <openSearch:totalResults>[% count %]</openSearch:totalResults>
+      <openSearch:startIndex>[% offset + 1 %]</openSearch:startIndex>
+      <openSearch:itemsPerPage>[% pagesize %]</openSearch:itemsPerPage>
+[%-
+
+FOREACH mr_id IN list;
+	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id);
+	req.wait_complete();
+
+	mods = req.recv();
+	req.finish;
+
+-%]
+      <item>
+        <title>[% mods.title() %]</title>
+        <link>http://gapines.org/opac/?target=record_result&page=0&mrid=[% mr_id %]&hits_per_page=10</link>
+        <description>
+		&lt;b&gt;Author:&lt;/b&gt; [% mods.author() %]&lt;br&gt;
+		&lt;b&gt;Subjects:&lt;/b&gt; 
+[%-
+	FOREACH sub IN mods.subject();
+		IF loop.count() > 5;
+			', ...';
+			LAST;
+		END;
+		IF loop.index;
+			', ';
+		END;
+		sub.list.0;
+	END;
+-%]
+        </description>
+      </item>
+[%-
+
+END;
+
+ -%]
+</rss>
