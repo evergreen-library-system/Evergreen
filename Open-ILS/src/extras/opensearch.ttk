@@ -44,7 +44,7 @@ END;
 req = session.request(search_meth, type, string, location, depth, limit, offset);
 j = req.wait_complete();
 
-list = req.recv().content().ids;
+list = req.recv().content();
 j = req.finish;
 
 -%]
@@ -61,7 +61,7 @@ j = req.finish;
       <openSearch:itemsPerPage>[% pagesize %]</openSearch:itemsPerPage>
 [%-
 
-mr_list = list.id;
+mr_list = list.ids;
 
 FOREACH mr_id IN mr_list;
 	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id.0);
