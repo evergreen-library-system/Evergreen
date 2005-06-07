@@ -48,7 +48,7 @@ req.finish;
 <rss version="2.0" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
     <channel>
       <title>Pines Catalogue Search: [% string %] </title>
-      <link>http://http://gapines.org/opensearch.ttk/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string %]&amp;itempage=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]</link>
+      <link>http://http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string %]&amp;itempage=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]</link>
       <description>Search results for "[% string %]" at gapines.org</description>
       <language>en-us</language>
       <copyright>&amp;copy;2004-2005, Georga Public Library Service.</copyright>
