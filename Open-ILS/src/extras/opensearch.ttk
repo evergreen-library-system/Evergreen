@@ -5,6 +5,11 @@ j = ws.bootstrap_client("/pines/conf/bootstrap.conf");
 
 rank_threshold = 5000;
 
+pagesize = 10;
+IF CGI.param('pagesize');
+	pagesize = CGI.param('pagesize');
+END;
+
 itempage = CGI.param('itempage');
 
 #type,string,location,depth
@@ -22,9 +27,8 @@ depth = CGI.param('mr_search_depth');
 limit = pagesize;
 offset = itempage * pagesize - 1;
 
-pagesize = 10;
-IF CGI.param('pagesize');
-	pagesize = CGI.param('pagesize');
+IF offset < 0;
+	offset = 0;
 END;
 
 req = session.request(count_meth, type, string, location, depth);
