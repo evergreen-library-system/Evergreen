@@ -34,7 +34,7 @@ count = req.recv().content();
 j = req.finish;
 
 IF count > rank_threshold;
-	search_meth = 'open-ils.search.biblio.class.unorded';
+	search_meth = 'open-ils.search.biblio.class.unordered';
 END;
 
 req = session.request(search_meth, type, string, location, depth, limit, offset);
@@ -90,4 +90,5 @@ FOREACH mr_id IN list;
 END;
 
  -%]
+  </channel>
 </rss>
