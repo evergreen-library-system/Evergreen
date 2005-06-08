@@ -19,7 +19,7 @@ use OpenSRF::System;
 sub handler {
 
 	my $apache = shift;
-	print "Content-type: application/rss+xml; charset=utf-8\n\n";
+	print "Content-type: text/xml; charset=utf-8\n\n";
 
 	my $template = Template->new( { 
 		OUTPUT			=> $apache, 
