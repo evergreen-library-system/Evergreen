@@ -243,10 +243,17 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 	session->orig_remote_id = strdup(session->remote_id);
 	session->remote_service = strdup(remote_service);
 
+	#ifdef ASSUME_STATELESS
+	session->stateless = 1;
+	debug_handler("session is stateless");
+	#else
+	session->stateless = 0;
+	debug_handler("session is NOT stateless");
+	#endif
+
 	/* build a chunky, random session id */
 	char id[256];
 	memset(id,0,256);
-	//srand((int)time(NULL));
 
 	sprintf(id, "%lf.%d%d", get_timestamp_millis(), (int)time(NULL), getpid());
 	session->session_id = strdup(id);
@@ -281,6 +288,12 @@ osrf_app_session* osrf_app_server_session_init(
 	session->orig_remote_id = strdup(remote_id);
 	session->session_id = strdup(session_id);
 	session->remote_service = strdup(remote_service);
+
+	#ifdef ASSUME_STATELESS
+	session->stateless = 1;
+	#else
+	session->stateless = 0;
+	#endif
 
 	debug_handler( "Building a new server session [%s] with id [%s]", 
 			session->remote_service,  session_id );
@@ -528,6 +541,14 @@ int osrf_app_session_disconnect( osrf_app_session* session){
 
 	if(session->state == OSRF_SESSION_DISCONNECTED)
 		return 1;
+
+	if(session->stateless && session->state != OSRF_SESSION_CONNECTED) {
+		debug_handler(
+				"Exiting disconnect on stateless session %s", 
+				session->session_id);
+		return 1;
+	}
+
 	debug_handler( "AppSession disconnecting from %s", session->remote_id );
 
 	osrf_message* dis_msg = osrf_message_init( DISCONNECT, session->thread_trace, 1 );
@@ -554,10 +575,16 @@ int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
 	debug_handler( "AppSession sending type %d, and thread_trace %d",
 			msg->m_type, msg->thread_trace );
 
-	if( (msg->m_type != CONNECT) && (msg->m_type != DISCONNECT) &&
-			(session->state != OSRF_SESSION_CONNECTED) ) {
-		if(!osrf_app_session_connect( session )) 
-			return 0;
+	if(session->stateless) {
+		osrf_app_session_reset_remote(session);
+
+	} else {
+
+		if( (msg->m_type != CONNECT) && (msg->m_type != DISCONNECT) &&
+				(session->state != OSRF_SESSION_CONNECTED) ) {
+			if(!osrf_app_session_connect( session )) 
+				return 0;
+		}
 	}
 
 	char* xml =  osrf_message_to_xml(msg);

@@ -1,5 +1,9 @@
 #include "opensrf/osrf_message.h"
 
+#include "utils.h"
+#include "objson/object.h"
+#include "objson/json_parser.h"
+
 /* default to true */
 int parse_json_result = 1;
 int parse_json_params = 1;
@@ -88,6 +92,18 @@ void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
 		warning_handler( "Bad params to osrf_message_set_result_content()" );
 
 	msg->result_string =	strdup(json_string);
+
+	/* ----------------------------------------------------- */
+	object* o = json_parse_string(json_string);
+	char* string = o->to_json(o);
+	debug_handler("---------------------------------------------------");
+	debug_handler("Parsed JSON string \n%s\n", string);
+	if(o->classname)
+		debug_handler("Class is %s\n", o->classname);
+	debug_handler("---------------------------------------------------");
+	free_object(o);
+	free(string);
+	/* ----------------------------------------------------- */
 
 	debug_handler( "Message Parse JSON is set to: %d",  msg->parse_json_result );
 
@@ -222,9 +238,13 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 
 				if( msg->parse_json_params ) {
 					if( msg->params != NULL ) {
-						params_node = xmlNewChild( method_node, NULL, 
-							BAD_CAST "params", BAD_CAST json_object_to_json_string( msg->params ) );
+
+						char* jj = json_object_to_json_string( msg->params );
+						params_node = xmlNewChild( method_node, NULL, BAD_CAST "params", NULL );
+						xmlNodePtr tt = xmlNewDocTextLen( doc, BAD_CAST jj, strlen(jj) );
+						xmlAddChild(params_node, tt);
 					}
+
 				} else {
 					if( msg->parray != NULL ) {
 
