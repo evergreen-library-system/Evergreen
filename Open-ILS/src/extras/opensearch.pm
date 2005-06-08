@@ -34,7 +34,7 @@ sub handler {
 
 	try {
 
-		if( ! $template->process( 'opensearch.ttk', $param_hash ) ) { 
+		if( ! $template->process( 'opensearch.ttk' ) ) { 
 			warn "Error processing template opensearch.ttk\n";	
 			warn  "Error Occured: " . $template->error();
 			my $err = $template->error();
