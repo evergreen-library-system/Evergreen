@@ -4,16 +4,8 @@ sub new {
 	my $x = shift || $class;
 	return bless \$x => __PACKAGE__;
 }
+
 use overload ( '""' => \&toString );
-use overload ( '0+' => sub { $_[0]->toString } );
-use overload ( '+' => sub { int($_[0]) + int($_[1]) } );
-use overload ( '-' => sub { int($_[0]) - int($_[1]) } );
-use overload ( '*' => sub { int($_[0]) * int($_[1]) } );
-use overload ( '/' => sub { int($_[0]) / int($_[1]) } );
-use overload ( '%' => sub { int($_[0]) % int($_[1]) } );
-use overload ( '**' => sub { int($_[0]) ** int($_[1]) } );
-use overload ( 'neg' => sub { -int($_[0]) } );
-use overload ( '==' => sub { int($_[0]->toString) == int($_[1])} );
 
 sub toString { defined($_[1]) ? ${$_[1]} : ${$_[0]} }
 
@@ -106,7 +98,7 @@ sub JSON2perl {
 	s/:/ => /sog;
 
 	# Do numbers...
-	s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
+#	s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
 
 	# Change javascript stuff to perl...
 	s/null/ undef /sog;
