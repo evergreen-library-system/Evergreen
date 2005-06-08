@@ -75,7 +75,7 @@ FOREACH mr_id IN mr_list;
         <title>[% mods.title() %]</title>
         <link>http://gapines.org/opac/?target=record_result&amp;page=0&amp;mrid=[% mr_id.0 %]&amp;hits_per_page=10</link>
         <description>
-		&lt;b&gt;Author:&lt;/b&gt; [% mods.author() %]&lt;br&gt;
+		&lt;b&gt;Author:&lt;/b&gt; &lt;a href="http://http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=author&amp;mr_search_query=[% mods.author() %]&amp;page=1&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% mods.author() %]&lt;/a&gt;&lt;br&gt;
 		&lt;b&gt;Subjects:&lt;/b&gt; 
 [%-
 	FOREACH sub IN mods.subject();
@@ -86,7 +86,7 @@ FOREACH mr_id IN mr_list;
 		IF loop.index;
 			', ';
 		END;
-		sub.list.0;
+		-%]&lt;a href="http://http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=subject&amp;mr_search_query=[% sub.list.0 %]&amp;page=1&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% sub.list.0 %]&lt;/a&gt;[%-
 	END;
 -%]&lt;br&gt;
 		&lt;b&gt;Available:&lt;/b&gt; [% mr_id.2 %] 
