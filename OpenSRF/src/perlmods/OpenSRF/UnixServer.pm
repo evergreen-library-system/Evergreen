@@ -72,8 +72,8 @@ sub process_request {
 
 
 	if( ! $data or ! defined( $data ) or $data eq "" ) {
-		throw OpenSRF::EX::Socket(
-				"Unix child received empty data from socket" );
+		$logger->debug("Unix child received empty data from socket", ERROR);
+		return;
 	}
 
 	if( ! close( $self->{server}->{client} ) ) {
