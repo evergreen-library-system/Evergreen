@@ -67,14 +67,16 @@ sub process_request {
 	my $data; my $d;
 	while( $d = <STDIN> ) { $data .= $d; }
 
+	
 	my $orig = $0;
 	$0 = "$0*";
 
-
 	if( ! $data or ! defined( $data ) or $data eq "" ) {
 		$logger->debug("Unix child received empty data from socket", ERROR);
+		$0 = $orig;
 		return;
 	}
+
 
 	if( ! close( $self->{server}->{client} ) ) {
 		$logger->debug( "Error closing Unix socket: $!", ERROR );
