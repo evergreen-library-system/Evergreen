@@ -7,7 +7,7 @@ FM_HEADER	= fieldmapper.h
 FM_SOURCE	= fieldmapper.c
 HEADER_DIR  = $(INCLUDE)/opensrf
 
-all: util fieldmapper
+all: util #fieldmapper
 
 util: md5
 
