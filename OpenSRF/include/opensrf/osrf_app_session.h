@@ -53,6 +53,9 @@ struct osrf_app_session_struct {
 	/** Our ID */
 	char* session_id;
 
+	/* true if this session does not require connect messages */
+	int stateless;
+
 	/** The connect state */
 	enum OSRF_SESSION_STATE state;
 
