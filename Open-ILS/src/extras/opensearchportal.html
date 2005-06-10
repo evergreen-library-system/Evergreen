@@ -53,7 +53,7 @@ var current_startPage = 1;
 var current_startIndex = 1;
 var current_count = 5;
 
-function opensearch ( term ) {
+function opensearch ( term, reset ) {
 
 	var tot = document.getElementById('total');
 	while (tot.lastChild)
@@ -76,6 +76,9 @@ function opensearch ( term ) {
 	for (var i in sources) {
 		create_search( sources[i] );
 	}
+
+	if (reset)
+		current_startPage = 1;
 
 	current_startIndex = (current_count * (current_startPage - 1)) + 1; 
 
