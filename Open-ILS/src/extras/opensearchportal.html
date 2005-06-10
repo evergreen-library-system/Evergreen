@@ -1,0 +1,298 @@
+<html>
+	<head>
+		<title>mikers experimental opensearch portal</title>
+		<style>
+
+.res_table {
+	border-collapse: collapse;
+}
+
+.res_tr {
+	border-bottom: 1px dashed darkgrey;
+}
+
+		</style>
+		<script>
+
+var isIE = false;
+
+function create_requestor () {
+	var req;
+	try { 
+		req = new ActiveXObject("Msxml2.XMLHTTP");
+		isIE = true;
+	} catch (e) {
+		try { 
+			req = new ActiveXObject("Microsoft.XMLHTTP");
+			isIE = true;
+		} catch (E) {
+			req = false;
+		}
+	}
+
+	if (!req && typeof XMLHttpRequest!='undefined') {
+		req = new XMLHttpRequest();
+	}
+        
+	if(!req) {
+		alert("NEEDS NEWER JAVASCRIPT for XMLHTTPRequest()");
+		return null;
+	}
+
+	return req;
+}
+
+var proxy = 'http://gapines.org/opensearch/?fetch=';
+
+var images = [];
+var search_templates = [];
+var search_urls = [];
+var rel_scales = [];
+
+var current_startPage = 1;
+var current_startIndex = 1;
+var current_count = 5;
+
+function opensearch ( term ) {
+
+	var tot = document.getElementById('total');
+	while (tot.lastChild)
+			tot.removeChild(tot.lastChild);
+
+	var tab = document.getElementById('results');
+	while (tab.lastChild)
+			tab.removeChild(tab.lastChild);
+
+	
+	var sources = new Array();
+	var selector = document.getElementById('sources');
+	for (var i = 0; i < selector.options.length; i++) {
+		if (selector.options[i].selected) {
+			sources.push(selector.options[i].value);
+		}
+	}
+
+	search_templates = [];
+	for (var i in sources) {
+		create_search( sources[i] );
+	}
+
+	current_startIndex = (current_count * (current_startPage - 1)) + 1; 
+
+	search_urls = [];
+	for (var i in search_templates) {
+		if (!search_templates[i])
+			continue;
+
+		if (!rel_scales[i])
+			rel_scales[i] = 0;
+
+		var url = search_templates[i].replace(/\{searchTerms\}/,encodeURIComponent(term));
+		url = url.replace(/\{startPage\}/,current_startPage);
+		url = url.replace(/\{startIndex\}/,current_startIndex);
+		url = url.replace(/\{count\}/,current_count);
+		url = url.replace(/\{relevanceScale}/,rel_scales[i]);
+		search_urls[i] = proxy + encodeURIComponent(url);
+	}
+
+	for (var i in search_urls) {
+		if (!search_templates[i])
+			continue;
+
+		perform_search(i);
+	}
+}
+
+function perform_search ( index ) {
+	var req = create_requestor();
+	var img = images[index];
+	var source = index;
+
+	req.onreadystatechange = function () {
+		if (req.readyState != 4)
+			return;
+
+		var xml = req.responseXML;
+
+		var total  = getElementFloatNS('openSearch','totalResults',xml,0);
+		rel_scales[index]  = getElementFloatNS('openIll','relevanceScale',xml,0);
+		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
+		var tot = document.getElementById('total');
+
+		if (!current_tot)
+			current_tot = 0;
+
+		tot.innerHTML = total + current_tot;
+
+		var list = xml.getElementsByTagName('item');
+		for (var i = 0; i < list.length; i++) {
+
+			if ( typeof list[i] != 'object')
+					continue;
+
+			var tab = document.getElementById('results');
+
+			if (!tab.rows.length) {
+				add_result_row(0, list[i], img);
+			} else {
+				for (var j = 0; j < tab.rows.length; j++) {
+					if ( typeof tab.rows[j] != 'object')
+						continue;
+
+					var rank;
+					try {
+						rank = getElementFloatNS('openIll','relevance',list[i],0);
+					} catch (e) {
+						alert("error getting float relevance: " + e);
+						rank = 0;
+					}
+
+					if ( rank < parseFloat(tab.rows[j].firstChild.firstChild.textContent) ) {
+						if ( (j + 1) == tab.rows.length) {
+							add_result_row(tab.rows.length, list[i], img);
+							break
+						}
+						continue;
+					}
+					add_result_row(j, list[i], img);
+					break;
+				}
+			}
+		}
+	};
+
+	req.open('GET', proxy + encodeURIComponent(search_urls[index]), true);
+	req.send(null);
+}
+
+
+// retrieve text of an XML document element, including
+// elements using namespaces
+function getElementFloatNS(prefix, local, parentElem, index) {
+    var result = "";
+    if (prefix && isIE) {
+        // IE/Windows way of handling namespaces
+        result = parentElem.getElementsByTagName(prefix + ":" + local)[index];
+    } else {
+        // the namespace versions of this method 
+        // (getElementsByTagNameNS()) operate
+        // differently in Safari and Mozilla, but both
+        // return value with just local name, provided 
+        // there aren't conflicts with non-namespace element
+        // names
+        result = parentElem.getElementsByTagName(local)[index];
+    }
+    if (result) {
+        // get text, accounting for possible
+        // whitespace (carriage return) text nodes 
+        if (result.childNodes.length > 1) {
+            return parseFloat(result.childNodes[1].nodeValue);
+        } else {
+            return parseFloat(result.textContent);    		
+        }
+    } else {
+        return 0;
+    }
+}
+
+function add_result_row (index, xml, img) {
+	var tab = document.getElementById('results');
+	var rank,title,tlink,desc;
+
+	try {
+		rank = getElementFloatNS('openIll','relevance',xml,0);
+	} catch (e) {
+		alert("error getting relevance: " + e);
+		rank = '0';
+	}
+	
+	try {
+		title = xml.getElementsByTagName('title')[0].textContent;
+	} catch (e) {
+		title = '';
+	}
+	
+	try {
+		tlink = xml.getElementsByTagName('link')[0].textContent;
+	} catch (e) {
+		tlink = '';
+	}
+
+	try {
+		description = xml.getElementsByTagName('description')[0].textContent;
+	} catch (e) {
+		description = '';
+	}
+
+	var row = tab.insertRow(index);
+	row.className = 'res_tr';
+	row.innerHTML = '<td style="padding: 4px"><div style="display: none; visibility: hidden;">' + rank +
+						 '</div><a href="' + tlink + '">' + title + '</a><br/>' + description +
+						 '</td><td><img title="' + parseInt(rank) + '% Relevant" width="32" height="32" src="' + img + '"></td>';
+}
+
+function create_search ( s ) {
+	var req = create_requestor();
+
+	req.open('GET',proxy +  encodeURIComponent(s),false);
+	req.send(null);
+
+	try {
+		var xml = req.responseXML;
+		search_templates[s] = xml.getElementsByTagName('Url')[0].textContent;
+		var i =  xml.getElementsByTagName('Image');
+		if (i.length)
+			images[s] = i[0].textContent;
+	} catch (e) {
+		alert('BAD XML!\n\n' + e + '\n\n' + req.responseText);
+		search_templates[s] = null;
+		images[s] = null;
+	}
+
+}
+
+		</script>
+	</head>
+	<body>
+		<br/>
+		<form onsubmit="opensearch(document.getElementById('term').value, true); return false;">
+		<table>
+			<tr valign="top">
+				<td>Keyword Search: </td>
+				<td><input type="text" id="term" value="javascript"/></td>
+			</tr>
+			<tr valign="top">
+				<td>Sources: </td>
+				<td>
+					<select id="sources" multiple="multiple" size=5>
+						<option value="http://gapines.org/opensearch.xml" selected>GPLS Pines</option>
+						<option value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription" selected>NPL/Koha</option>
+						<option value="http://www.webdevref.com/blog/opensearchdescription.xml" selected>WebDefRef</option>
+					</select>
+			</tr>
+			<tr valign="top">
+				<td>Hits per Source: </td>
+				<td>
+					<select onchange="current_count=this.options[this.selectedIndex].value;">
+						<option value="5" selected>5</option>
+						<option value="10">10</option>
+						<option value="25">25</option>
+					</select>
+			</tr>
+			<tr valign="top">
+				<td colspan="2"><input type="submit" value="Go!"/></td>
+			</tr>
+		</table>
+		</form>
+
+		<h1>Integrated search results</h1>
+		<div>Total results: <span id="total"/></div>
+		<hr/>
+		<button onclick="current_startPage -= 1; opensearch(document.getElementById('term').value);">Previous Page</button>
+		...
+		<button onclick="current_startPage += 1; opensearch(document.getElementById('term').value);">Next Page</button>
+		<br/>
+		<br/>
+		<table class="res_table" width="100%" id="results"/>
+	</body>
+</html>
