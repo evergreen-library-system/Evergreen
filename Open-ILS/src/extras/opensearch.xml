@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
-  <Url>http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=keyword&amp;mr_search_query={searchTerms}&amp;page={startPage}&amp;mr_search_depth=0&amp;mr_search_location=1</Url>
+<OpenSearchDescription
+	xmlns="http://a9.com/-/spec/opensearchdescription/1.0/"
+	xmlns:openIll="http://open-ils.org/xml/openIll/1.0">
+  <Url>http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=keyword&amp;mr_search_query={searchTerms}&amp;page={startPage}&amp;mr_search_depth=0&amp;mr_search_location=1&amp;pagesize={count}&amp;max_rank={relevanceScale}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
   <ShortName>Pines</ShortName>
   <LongName>Pines Consortium Catalogue</LongName>

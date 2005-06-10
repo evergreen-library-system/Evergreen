@@ -24,8 +24,9 @@ type = CGI.param('mr_search_type');
 string = CGI.param('mr_search_query');
 location = CGI.param('mr_search_location');
 depth = CGI.param('mr_search_depth');
+max_rank = CGI.param('max_rank');
 limit = pagesize;
-offset = ((itempage - 1) * pagesize) - 1;
+offset = (itempage - 1) * pagesize;
 
 IF offset < 0;
 	offset = 0;
@@ -42,20 +43,25 @@ j = id_req.wait_complete();
 list = id_req.recv().content();
 j = id_req.finish;
 
-max_rank = 0;
+IF max_rank == '{relevanceScale}';
+	max_rank = 0;
+END;
 
 -%]
 <?xml version="1.0"?>
-<rss version="2.0" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+<rss version="2.0"
+	xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/"
+	xmlns:openIll="http://open-ils.org/xml/openIll/1.0">
     <channel>
       <title>Pines Catalogue Search: [% string | html %] </title>
-      <link>http://http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]</link>
+      <link>http://http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]&amp;pagesize=[% pagesize %]&amp;max_rank=[% max_rank %]</link>
       <description>Search results for "[% string | html %]" at gapines.org</description>
       <language>en-us</language>
       <copyright>&amp;copy;2004-2005, Georga Public Library Service.</copyright>
       <openSearch:totalResults>[% count %]</openSearch:totalResults>
       <openSearch:startIndex>[% offset + 1 %]</openSearch:startIndex>
       <openSearch:itemsPerPage>[% pagesize %]</openSearch:itemsPerPage>
+
 [%-
 
 mr_list = list.ids;
@@ -66,6 +72,7 @@ FOREACH mr_id IN mr_list;
 
 	IF max_rank == 0;
 		max_rank = mr_id.1;
+		'      <openIll:relevanceScale>' _ max_rank _ "</openIll:relevanceScale>\n";
 	END;
 
 	rank = mr_id.1 / max_rank;
@@ -79,7 +86,7 @@ FOREACH mr_id IN mr_list;
       <item>
         <title>[% mods.title() | html %]</title>
         <link>http://gapines.org/opac/?sub_frame=1&amp;target=record_result&amp;page=0&amp;mrid=[% mr_id.0 %]&amp;hits_per_page=10</link>
-        <rank>[% rank %]</rank>
+        <openIll:relevance>[% rank %]</openIll:relevance>
         <description>
 [%-
 	IF mods.author();
