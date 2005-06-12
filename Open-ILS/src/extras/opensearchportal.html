@@ -3,6 +3,17 @@
 		<title>mikers experimental opensearch portal</title>
 		<style>
 
+#result_sources a {
+	font-size: 8px;
+	color: grey;
+	text-decoration: none;
+}
+
+.col_tab {
+	border-collapse: collapse;
+	border: solid gray 1px;
+}
+
 .res_table {
 	border-collapse: collapse;
 }
@@ -49,6 +60,7 @@ var search_templates = [];
 var search_urls = [];
 var rel_scales = [];
 
+var display_mode = 'int';
 var current_startPage = 1;
 var current_startIndex = 1;
 var current_count = 5;
@@ -58,6 +70,10 @@ function opensearch ( term, reset ) {
 	var tot = document.getElementById('total');
 	while (tot.lastChild)
 			tot.removeChild(tot.lastChild);
+
+	var src = document.getElementById('result_sources');
+	while (src.lastChild)
+			src.removeChild(src.lastChild);
 
 	var tab = document.getElementById('results');
 	while (tab.lastChild)
@@ -96,6 +112,8 @@ function opensearch ( term, reset ) {
 		url = url.replace(/\{count\}/,current_count);
 		url = url.replace(/\{relevanceScale}/,rel_scales[i]);
 		search_urls[i] = proxy + encodeURIComponent(url);
+
+		src.innerHTML += '<a href="' + url + '">' + url + '</a><br>';
 	}
 
 	for (var i in search_urls) {
@@ -106,10 +124,8 @@ function opensearch ( term, reset ) {
 	}
 }
 
-function perform_search ( index ) {
+function perform_search ( source ) {
 	var req = create_requestor();
-	var img = images[index];
-	var source = index;
 
 	req.onreadystatechange = function () {
 		if (req.readyState != 4)
@@ -118,7 +134,7 @@ function perform_search ( index ) {
 		var xml = req.responseXML;
 
 		var total  = getElementFloatNS('openSearch','totalResults',xml,0);
-		rel_scales[index]  = getElementFloatNS('openIll','relevanceScale',xml,0);
+		rel_scales[source]  = getElementFloatNS('openIll','relevanceScale',xml,0);
 		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
 		var tot = document.getElementById('total');
 
@@ -134,9 +150,33 @@ function perform_search ( index ) {
 					continue;
 
 			var tab = document.getElementById('results');
+			if (display_mode == 'col') {
+				var col = document.getElementById(source);
+				if (!col) {
+					var row = tab.rows[0];
+					if (!row)
+						row = tab.insertRow(0);
+
+					col = document.createElement('td');
+					col.setAttribute('id',source);
+					row.appendChild(col);
+
+					tab = document.createElement('table');
+					tab.setAttribute('valign','top');
+					tab.setAttribute('class','col_tab');
+					col.appendChild(tab);
+
+					var per = parseInt(100 / search_urls.length);
+					col.setAttribute('valign','top');
+					col.setAttribute('width', + per + '%');
+
+				} else {
+					tab = col.firstChild;
+				}
+			}
 
 			if (!tab.rows.length) {
-				add_result_row(0, list[i], img);
+				add_result_row(tab, 0, list[i], source);
 			} else {
 				for (var j = 0; j < tab.rows.length; j++) {
 					if ( typeof tab.rows[j] != 'object')
@@ -152,19 +192,19 @@ function perform_search ( index ) {
 
 					if ( rank < parseFloat(tab.rows[j].firstChild.firstChild.textContent) ) {
 						if ( (j + 1) == tab.rows.length) {
-							add_result_row(tab.rows.length, list[i], img);
+							add_result_row(tab, tab.rows.length, list[i], source);
 							break
 						}
 						continue;
 					}
-					add_result_row(j, list[i], img);
+					add_result_row(tab, j, list[i], source);
 					break;
 				}
 			}
 		}
 	};
 
-	req.open('GET', proxy + encodeURIComponent(search_urls[index]), true);
+	req.open('GET', proxy + encodeURIComponent(search_urls[source]), true);
 	req.send(null);
 }
 
@@ -198,8 +238,8 @@ function getElementFloatNS(prefix, local, parentElem, index) {
     }
 }
 
-function add_result_row (index, xml, img) {
-	var tab = document.getElementById('results');
+function add_result_row (tab, index, xml, source) {
+	var img = images[source];
 	var rank,title,tlink,desc;
 
 	try {
@@ -283,19 +323,29 @@ function create_search ( s ) {
 					</select>
 			</tr>
 			<tr valign="top">
+				<td>Display mode: </td>
+				<td>
+					<select onchange="display_mode=this.options[this.selectedIndex].value;">
+						<option value="int" selected>Integrated</option>
+						<option value="col">Columns</option>
+					</select> (Use "Columns" when searching unranked sources)
+			</tr>
+			<tr valign="top">
 				<td colspan="2"><input type="submit" value="Go!"/></td>
 			</tr>
 		</table>
 		</form>
 
-		<h1>Integrated search results</h1>
+		<div id="result_sources"></div>
+		<br/>
 		<div>Total results: <span id="total"/></div>
+		<h1>Search Results</h1>
 		<hr/>
 		<button onclick="current_startPage -= 1; opensearch(document.getElementById('term').value);">Previous Page</button>
 		...
 		<button onclick="current_startPage += 1; opensearch(document.getElementById('term').value);">Next Page</button>
 		<br/>
 		<br/>
-		<table class="res_table" width="100%" id="results"/>
+		<table class="res_table" id="results"/>
 	</body>
 </html>
