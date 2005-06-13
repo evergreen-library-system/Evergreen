@@ -153,6 +153,7 @@ function perform_search ( source ) {
 		var xml = req.responseXML;
 
 		var desc  = getElementTextNS('','description',xml,0);
+		var xml_link  = getElementTextNS('','link',xml,0);
 
 		var total  = getElementFloatNS('openSearch','totalResults',xml,0);
 		rel_scales[source]  = getElementFloatNS('openIll','relevanceScale',xml,0);
@@ -192,7 +193,7 @@ function perform_search ( source ) {
 
 					var cap = document.createElement('caption');
 					tab.appendChild(cap);
-					cap.innerHTML = desc;
+					cap.innerHTML = desc + ' -- <a href="' + xml_link + '">XML</a>';
 
 					col.appendChild(tab);
 
@@ -368,8 +369,9 @@ function create_search ( s ) {
 				<td>
 					<select id="sources" multiple="multiple" size=5>
 						<option value="http://gapines.org/opensearch.xml" selected>GPLS Pines</option>
+						<option value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml" selected>GIL Universal Catalog</option>
 						<option value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription" selected>NPL/Koha</option>
-						<option value="http://www.webdevref.com/blog/opensearchdescription.xml" selected>WebDefRef</option>
+						<option value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef</option>
 					</select>
 			</tr>
 			<tr valign="top">
