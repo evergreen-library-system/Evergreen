@@ -54,7 +54,7 @@ END;
 	xmlns:openIll="http://open-ils.org/xml/openIll/1.0">
     <channel>
       <title>Pines Catalogue Search: [% string | html %] </title>
-      <link>http://http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]&amp;pagesize=[% pagesize %]&amp;max_rank=[% max_rank %]</link>
+      <link>http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]&amp;pagesize=[% pagesize %]&amp;max_rank=[% max_rank %]</link>
       <description>Search results for "[% string | html %]" at gapines.org</description>
       <language>en-us</language>
       <copyright>&amp;copy;2004-2005, Georga Public Library Service.</copyright>
