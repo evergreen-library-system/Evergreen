@@ -61,6 +61,7 @@ a:visited {
 
 .res_table {
 	border-collapse: collapse;
+	width: 100%;
 }
 
 .res_tr {
@@ -112,8 +113,10 @@ var current_count = 5;
 
 function opensearch ( term, reset ) {
 
-	if (reset)
+	if (reset) {
 		current_startPage = 1;
+		rel_scales = {};
+	}
 
 	document.getElementById('next_button').className = 'hide';
 
