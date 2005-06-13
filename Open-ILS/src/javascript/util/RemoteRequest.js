@@ -4,6 +4,18 @@ var XML_HTTP_SERVER = "gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
 
+
+/* true if we've been absorbed by a XUL app */
+function isXUL() {
+	try {
+		if(IAMXUL)
+			return true;
+	} catch(E) {
+		return false;
+	}
+}
+
+
 /* ----------------------------------------------------------------------- */
 /* class methods */
 
@@ -87,7 +99,7 @@ function RemoteRequest( service, method ) {
 
 	var i = 2;
 	this.params = ""; 
-	while(arguments[i] != null) {
+	while(i < arguments.length) {
 		var object = js2JSON(arguments[i++]);
 		this.params += "&__param=" + encodeURIComponent(object);
 	}
