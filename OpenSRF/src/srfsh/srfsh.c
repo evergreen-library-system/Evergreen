@@ -441,7 +441,7 @@ int send_request( char* server,
 	int req_id = osrf_app_session_make_request( session, params, method, 1, NULL );
 
 
-	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 12 );
+	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 60 );
 	debug_handler("srfsh0");
 
 
