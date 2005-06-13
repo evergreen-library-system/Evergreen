@@ -2,9 +2,12 @@
 [%
 	WRAPPER html/html;
 
+
 		WRAPPER html/head title='Evergreen';
 			INCLUDE opac/pages/chunks/css_includes.ttk;
+			#"<script language='javascript' src='/js/opac/OPACStartPage.js'></script>";
 		END;
+
 
 		WRAPPER html/body id='body'  onload='pageInit();';
 
@@ -28,9 +31,7 @@
 
 			"Now searching ";
 			lines(2);
-#WRAPPER html/div;
-				span(id='now_searching_cell', class='front_now_searching');
-#			END;
+			span(id='now_searching_cell', class='front_now_searching');
 
 			lines(3);
 

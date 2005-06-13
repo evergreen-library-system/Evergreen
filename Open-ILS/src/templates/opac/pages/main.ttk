@@ -1,94 +1,16 @@
-[%
-
-	util_batch = [ 
-			"js/util/md5.js",
-			"js/util/webutils.js",
-			"js/util/Cookie.js",
-			"js/util/browser.js",
-		];
-
-	ils_batch = [
-			"js/util/ils_utils.js",
-			"js/util/web_fieldmapper.js", 
-			"js/util/RemoteRequest.js"
-			"js/util/ex.js",
-			"js/util/UserSession.js",
-		];
-
-	widget_batch = [
-			"js/widgets/xtree.js",
-			"js/widgets/menu/ContextMenu.js",
-			"js/widgets/menu/ContextMenuManager.js",
-			"js/widgets/ProgressBar.js",
-			"js/widgets/Box.js",
-			"js/widgets/ListBox.js",
-			"js/widgets/SideBar.js",
-			"js/widgets/Survey.js",
-		];
-
-	page_batch = [
-			"js/opac/Page.js",
-			"js/opac/OPACStartPage.js",
-			"js/opac/SearchBarFormChunk.js",
-			"js/opac/SearchBarChunk.js",
-			"js/opac/GlobalInit.js",
-			"js/opac/LocationTree.js",
-			"js/opac/LoginPage.js",
-			"js/opac/AbstractRecordResultPage.js",
-			"js/opac/HTMLChunks.js",
-			"js/opac/XULEvents.js",
-			"js/opac/MRResultPage.js",
-			"js/opac/RecordResultPage.js",
-			"js/opac/RecordDetailPage.js",
-			"js/opac/LogoutPage.js",
-			"js/opac/AboutPage.js",
-			"js/opac/AdvancedSearchPage.js",
-			"js/opac/MyOPACPage.js",
-		];
-
-
-%]
-
-[% BLOCK FASTJS;
-		"<script language='javascript' src='/fastjs?";
-		FOR file IN batch; 
-			IF ! loop.first; "&"; END;
-			"file=" _ file;
-		END;
-		"'></script>";
-	END;
-%]
-
-[% BLOCK JS;
-		FOR file IN batch; 
-			"<script language='javascript' src='/$file'></script>";
-		END;
-	END;
-%] 
+[% PROCESS opac/pages/chunks/javascript.ttk %] 
+[%# PROCESS gives us the blocks defined in javascript.ttk %]
 
 <html>
 	<head>
 
-		<script language='javascript' src='/js/util/JSON.js'></script>
+		[% INCLUDE ALL_JS; %]
 
-		[%
-			IF cgi.user_agent("MSIE");
-				INCLUDE FASTJS batch=util_batch; 
-				INCLUDE FASTJS batch=ils_batch; 
-				INCLUDE FASTJS batch=widget_batch; 
-				INCLUDE FASTJS batch=page_batch; 
 
-			ELSE;
-				INCLUDE JS batch=util_batch;
-				INCLUDE JS batch=ils_batch;
-				INCLUDE JS batch=widget_batch;
-				INCLUDE JS batch=page_batch;
-			END;
+		[% 
+			top_target	= cgi.param("top_target"); 
+			sub_frame	= cgi.param("sub_frame");
 		%]
-
-		<script language='javascript' src='/js/util/OrgTree.js'></script>
-
-		[% top_target = cgi.param("top_target"); %]
 
 		<frameset cols='100%'>
 
@@ -97,14 +19,33 @@
 				frameborder	= '0' 
 				name			= 'appframe' 
 				id				= 'appframe' 
-				src			= '/opac/?target=[%- IF top_target; top_target; ELSE; "start";END; %]';
+
+				[% 
+					# if sub_frame is specified, we copy over all cgi params to the target frame
+
+					IF sub_frame;
+						"src='/opac/?";
+						FOR p IN cgi.param;
+
+							IF p != "sub_frame"; 
+								par = cgi.param(p) | uri | html;
+								p _ "=" _ par  _ "&"; 
+							END;
+
+						END;
+					ELSE; 
+				%]
+
+				src			= '/opac/?target=[%- IF top_target; top_target; ELSE; "start";END; %]'
+
+				[% END; %] 
 			/>	
 
 		</frameset>
+	
 	
 	</head>
 
 
 </html>
-
 

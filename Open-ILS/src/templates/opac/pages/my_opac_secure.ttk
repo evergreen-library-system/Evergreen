@@ -3,15 +3,30 @@
 
 		WRAPPER html/head title="My OPAC"; 
 			link(rel="stylesheet", href="/css/my_opac.css" type="text/css");
+			link(rel="stylesheet", href="/css/box.css" type="text/css");
 			js( src='/js/opac/MyOPACSPage.js' );
 			js( src='/js/util/RemoteRequest.js' );
 			js( src='/js/util/webutils.js' );
-
-			'<style type="text/css"> body { border:0; } </style>'; 
+			js( src='/js/util/UserSession.js' );
+			js( src='/js/util/Cookie.js' );
+			js( src='/js/util/ex.js' );
+			js( src='/js/widgets/Box.js' );
+			js( src='/js/util/JSON.js' );
+			js( src='/js/util/web_fieldmapper.js' );
+			js( src='/js/util/browser.js' );
 		END;
 
-		WRAPPER html/body class='no_border_body' onload='';
-			"my secure opac page";
+		WRAPPER html/body class='no_border_body' 
+			onload='
+				var globalAppFrame = window;
+				var globalPage = new MyOPACSPage();
+				globalPage.init(); 
+				';
+
+			WRAPPER html/box id='my_opac_main_box';
+				box(id='my_opac_edit_personal');
+				box(id='my_opac_checked_out');
+			END;
 		
 		END; # - body
 	END; # - html

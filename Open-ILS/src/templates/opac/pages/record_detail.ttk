@@ -15,8 +15,7 @@
 
 		WRAPPER html/body onload='pageInit();';
 
-			INCLUDE opac/pages/chunks/body_header.ttk;
-
+			INCLUDE opac/pages/chunks/body_header.ttk hide_hits_per=1;
 			WRAPPER html/div id='page_trail';END;
 
 			# --------------------------------------------------------------------------------- 
@@ -24,8 +23,67 @@
 			# --------------------------------------------------------------------------------- 
 
 			lines(1);
-			"Record details go here...";
-					
+
+			WRAPPER html/box id='record_detail_main_box';
+
+				WRAPPER html/box id='detail_items_div';
+					WRAPPER html/table id='record_detail_table';
+	
+						WRAPPER html/row;
+							cell(content="Record Details", class="detail_header_cell");
+							cell(id='record_detail_view_marc', class="detail_header_cell");
+						END;
+
+	
+						WRAPPER html/row;
+							cell(content="Title");
+							cell(id='record_detail_title_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Author");
+							cell(id='record_detail_author_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="ISBN");
+							cell(id='record_detail_isbn_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Edition");
+							cell(id='record_detail_edition_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Publication Date");
+							cell(id='record_detail_pubdate_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Publisher");
+							cell(id='record_detail_publisher_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Title Control Number");
+							cell(id='record_detail_tcn_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Type of Resource");
+							cell(id='record_detail_resource_cell');
+						END;
+	
+						WRAPPER html/row;
+							cell(content="Subjects");
+							cell(id='record_detail_subject_cell');
+						END;
+	
+					END;
+				END;
+			END;
+						
 		END; # body
 
 	END; # html

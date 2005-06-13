@@ -14,7 +14,7 @@
 			globalPage.doLogout();
 			';
 
-			INCLUDE opac/pages/chunks/body_header.ttk;
+			INCLUDE opac/pages/chunks/body_header.ttk hide_hits_per='1';
 
 			lines(3);
 

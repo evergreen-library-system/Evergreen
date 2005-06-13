@@ -6,6 +6,7 @@
 	link(rel="stylesheet", href="/css/opac_main.css",		type="text/css");
 	link(rel="stylesheet", href="/css/nav_bar.css",			type="text/css");
 	link(rel="stylesheet", href="/css/record_result.css", type="text/css");
+	link(rel="stylesheet", href="/css/record_detail.css", type="text/css");
 	link(rel="stylesheet", href="/css/adv_search.css",		type="text/css");
 	link(rel="stylesheet", href="/css/xtree.css",			type="text/css");
 	link(rel="stylesheet", href="/css/context_menu.css"	type="text/css");

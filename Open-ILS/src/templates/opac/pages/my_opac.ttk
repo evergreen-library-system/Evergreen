@@ -6,20 +6,29 @@
 
 		WRAPPER html/head title=tm.basic_search.page_title;
 			INCLUDE opac/pages/chunks/css_includes.ttk;
+
+			WRAPPER html/js;
+				'
+				if(!logicNode.UserSession.instance().connected) {
+					location.href="/opac/?target=login";
+				} 
+				';
+			END;
 		END;
 
-		WRAPPER html/body onload='pageInit();';
-			INCLUDE opac/pages/chunks/body_header.ttk;
+		WRAPPER html/body onload='pageInit(); globalPage.redirect()';
+			INCLUDE opac/pages/chunks/body_header.ttk hide_hits_per=1;
 
-				WRAPPER html/iframe
-					style       = "border:none;"
-            	frameborder = '0'
-					#height     = '100%'
-            	width       = '100%'
-            	name        = 'my_oac_iframe'
-            	id          = 'my_opac_iframe'
-            	src         = 'https://spacely.georgialibraries.org/opac/?target=my_opac_secure';
-				END;
+			WRAPPER html/iframe
+				frameborder	= '0' 
+				style       = 'border:none;'
+				scrolling	= 'no'
+           	width       = '100%'
+				height		= '500' 
+           	name        = 'my_oac_iframe'
+				#src        = 'https://gapines.org/opac/?target=my_opac_secure'
+           	id          = 'my_opac_iframe';
+			END;
 		
 		END; # - body
 	END; # - html

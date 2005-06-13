@@ -11,13 +11,23 @@
 	# --------------------------------------------------------------------------------- 
 	#js( src='/js/util/webutils.js' );
 
+	IF cgi.param("no_frame");
+		PROCESS opac/pages/chunks/javascript.ttk; 
+		INCLUDE ALL_JS;
+	END;
+
 	WRAPPER html/js;
-		'parent.paramObj = new Object();';
+		'
+		if(parent) logicNode = parent;
+		else logicNode = window;
+		logicNode.paramObj = new Object();
+		';
 		FOR pname IN cgi.param();
 			param = cgi.param(pname).replace("\"","\\\"");
-			'parent.paramObj["__' _  pname _ '"] = decodeURIComponent("'; param; '");'; "\n";
+			'logicNode.paramObj["__' _  pname _ '"] = decodeURIComponent("'; param; '");'; "\n";
 		END;
 	END;
+
 
 	# --------------------------------------------------------------------------------- 
 	# Load up the necessary global variables
@@ -26,32 +36,33 @@
 		'
 		var globalPage;
 		var globalAppFrame;
-		var webFXTreeHandler = parent.webFXTreeHandler;
-		var logicNode; 
+		var webFXTreeHandler = logicNode.webFXTreeHandler;
 
 		function pageInit() {
 
-			if(parent) { /* if we are inside an iframe */
+			if(logicNode) {  /* defined above */
 
-				logicNode = parent;
-				parent.globalAppFrame		= parent.frames["appframe"];
+				if(logicNode.paramObj["__no_frame"]) 
+					logicNode.globalAppFrame		= logicNode;
+				else
+					logicNode.globalAppFrame		= logicNode.frames["appframe"];
 
-				if(parent.globalAppFrame) {
-					parent.globalRootURL		= "' _ url _ '";
-					parent.globalRootPath	= "/opac/";
-					parent.globalPort			= "' _ port _ '";
-					parent.globalPageTarget	= "' _ target _ '";
-					parent.isSSL				= "' _ ssl _ '";
-					parent.globalInit();
+				if(logicNode.globalAppFrame) {
+					logicNode.globalRootURL		= "' _ url _ '";
+					logicNode.globalRootPath	= "/opac/";
+					logicNode.globalPort			= "' _ port _ '";
+					logicNode.globalPageTarget	= "' _ target _ '";
+					logicNode.isSSL				= "' _ ssl _ '";
+					logicNode.globalInit();
 				} else {
-					alert("I\'m not in a frame");
+					alert("logicNode.globalAppFrame is undefined.  Why?");
 				}
 			} else {
-				alert("No parent frame");
+				alert("Something is really broken.  No logicNode");
 			}
 
 			globalAppFrame = window;
-			globalPage = parent.globalPage;
+			globalPage = logicNode.globalPage;
 		}
 		';
 	END;

@@ -1,7 +1,6 @@
 [%
 	box(id='progress_bar_location'); 
 	INCLUDE opac/pages/chunks/opac_search_bar.ttk;
-#lines(1);
 
 	WRAPPER html/div id='page_trail';END;
 	lines(1);
@@ -15,14 +14,17 @@
 
 		box(id='progress_bar_percent_location'); 
 
-		"Hits per page ";
-		WRAPPER html/select name='hits_per_page' id='hits_per_page';
-			option(value='5',		content="5");
-			option(value='10',	selected='selected', content="10");
-			option(value='15',	content="15");
-			option(value='25',	content="25");
-			option(value='50',	content="50");
+		IF ! hide_hits_per;
+			"Hits per page ";
+			WRAPPER html/select name='hits_per_page' id='hits_per_page';
+				option(value='5',		content="5");
+				option(value='10',	selected='selected', content="10");
+				option(value='15',	content="15");
+				option(value='25',	content="25");
+				option(value='50',	content="50");
+			END;
 		END;
+
 	END;
 
 	INCLUDE opac/pages/chunks/org_tree.ttk;
