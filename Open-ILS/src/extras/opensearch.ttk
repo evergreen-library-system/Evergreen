@@ -72,8 +72,8 @@ FOREACH mr_id IN mr_list;
 
 	IF max_rank == 0;
 		max_rank = mr_id.1;
-		'      <openIll:relevanceScale>' _ max_rank _ "</openIll:relevanceScale>\n";
 	END;
+	'      <openIll:relevanceScale>' _ max_rank _ "</openIll:relevanceScale>\n";
 
 	rank = mr_id.1 / max_rank;
 	rank = rank * 100;

@@ -3,14 +3,51 @@
 		<title>mikers experimental opensearch portal</title>
 		<style>
 
+* {
+	font-family: verdana,arial,helvetica,sans-serif;
+}
+
 #result_sources a {
 	font-size: 8px;
 	color: grey;
 	text-decoration: none;
 }
 
+.data_table {
+	max-width: 200px;
+}
+
 caption {
 	border: solid lightblue 1px;
+}
+
+a {
+	color: blue;
+	text-decoration: none;
+}
+
+a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+
+a:active {
+	color: red;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: blue;
+	text-decoration: none;
+}
+
+.title_link {
+	font-size: medium;
+	font-weight: bold;
+}
+
+.desc_text {
+	font-size: small;
 }
 
 .hide {
@@ -65,17 +102,19 @@ var proxy = 'http://gapines.org/opensearch/?fetch=';
 
 var images = [];
 var search_templates = [];
-var search_urls = [];
-var rel_scales = [];
+var search_urls = {};
+var rel_scales = {};
 
-var display_mode = 'int';
+var display_mode = 'col';
 var current_startPage = 1;
 var current_startIndex = 1;
 var current_count = 5;
 
 function opensearch ( term, reset ) {
 
-	document.getElementById('next_button').className = 'hide';
+	if (reset)
+		current_startPage = 1;
+
 	document.getElementById('next_button').className = 'hide';
 
 	if (current_startPage == 1)
@@ -109,9 +148,6 @@ function opensearch ( term, reset ) {
 	for (var i in sources) {
 		create_search( sources[i] );
 	}
-
-	if (reset)
-		current_startPage = 1;
 
 	current_startIndex = (current_count * (current_startPage - 1)) + 1; 
 
@@ -156,7 +192,10 @@ function perform_search ( source ) {
 		var xml_link  = getElementTextNS('','link',xml,0);
 
 		var total  = getElementFloatNS('openSearch','totalResults',xml,0);
-		rel_scales[source]  = getElementFloatNS('openIll','relevanceScale',xml,0);
+		var scale = getElementFloatNS('openIll','relevanceScale',xml,0);
+
+		rel_scales[source]  = scale
+		
 		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
 		var tot = document.getElementById('total');
 
@@ -330,8 +369,9 @@ function add_result_row (tab, index, xml, source) {
 	var row = tab.insertRow(index);
 	row.className = 'res_tr';
 	row.innerHTML = '<td style="padding: 4px"><div style="display: none; visibility: hidden;">' + rank +
-						 '</div><a href="' + tlink + '">' + title + '</a><br/>' + description +
-						 '</td><td><img title="' + parseInt(rank) + '% Relevant" width="32" height="32" src="' + img + '"></td>';
+						 '</div><span class="title_link"><a href="' + tlink + '">' + title +
+						 '</a></span><br/><span class="desc_text">' + description + '</span></td>' +
+						 '<td><img title="' + parseInt(rank) + '% Relevant" width="32" height="32" src="' + img + '"></td>';
 }
 
 function create_search ( s ) {
@@ -370,7 +410,7 @@ function create_search ( s ) {
 					<select id="sources" multiple="multiple" size=5>
 						<option value="http://gapines.org/opensearch.xml" selected>GPLS Pines</option>
 						<option value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml" selected>GIL Universal Catalog</option>
-						<option value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription" selected>NPL/Koha</option>
+						<option value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha</option>
 						<option value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef</option>
 					</select>
 			</tr>
@@ -387,8 +427,8 @@ function create_search ( s ) {
 				<td>Display mode: </td>
 				<td>
 					<select onchange="display_mode=this.options[this.selectedIndex].value;">
-						<option value="int" selected>Integrated</option>
-						<option value="col">Columns</option>
+						<option value="int">Integrated</option>
+						<option value="col" selected>Columns</option>
 					</select> (Use "Columns" when searching unranked sources)
 			</tr>
 			<tr valign="top">
