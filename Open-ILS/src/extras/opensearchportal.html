@@ -9,6 +9,14 @@
 	text-decoration: none;
 }
 
+caption {
+	border: solid lightblue 1px;
+}
+
+.hide {
+	color: lightgray;
+}
+
 .col_tab {
 	border-collapse: collapse;
 	border: solid gray 1px;
@@ -67,6 +75,14 @@ var current_count = 5;
 
 function opensearch ( term, reset ) {
 
+	document.getElementById('next_button').className = 'hide';
+	document.getElementById('next_button').className = 'hide';
+
+	if (current_startPage == 1)
+		document.getElementById('prev_button').className = 'hide';
+	else 
+		document.getElementById('prev_button').className = '';
+
 	var tot = document.getElementById('total');
 	while (tot.lastChild)
 			tot.removeChild(tot.lastChild);
@@ -79,7 +95,8 @@ function opensearch ( term, reset ) {
 	while (tab.lastChild)
 			tab.removeChild(tab.lastChild);
 
-	
+	search_count = 0;
+
 	var sources = new Array();
 	var selector = document.getElementById('sources');
 	for (var i = 0; i < selector.options.length; i++) {
@@ -122,6 +139,8 @@ function opensearch ( term, reset ) {
 
 		perform_search(i);
 	}
+
+	document.getElementById('page_label').innerHTML = current_startPage;
 }
 
 function perform_search ( source ) {
@@ -133,6 +152,8 @@ function perform_search ( source ) {
 
 		var xml = req.responseXML;
 
+		var desc  = getElementTextNS('','description',xml,0);
+
 		var total  = getElementFloatNS('openSearch','totalResults',xml,0);
 		rel_scales[source]  = getElementFloatNS('openIll','relevanceScale',xml,0);
 		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
@@ -141,7 +162,11 @@ function perform_search ( source ) {
 		if (!current_tot)
 			current_tot = 0;
 
-		tot.innerHTML = total + current_tot;
+		if (total > (current_startPage * current_count))
+			document.getElementById('next_button').className = '';
+
+		current_tot += total
+		tot.innerHTML = current_tot;
 
 		var list = xml.getElementsByTagName('item');
 		for (var i = 0; i < list.length; i++) {
@@ -164,6 +189,11 @@ function perform_search ( source ) {
 					tab = document.createElement('table');
 					tab.setAttribute('valign','top');
 					tab.setAttribute('class','col_tab');
+
+					var cap = document.createElement('caption');
+					tab.appendChild(cap);
+					cap.innerHTML = desc;
+
 					col.appendChild(tab);
 
 					var per = parseInt(100 / search_urls.length);
@@ -209,7 +239,7 @@ function perform_search ( source ) {
 }
 
 
-// retrieve text of an XML document element, including
+// retrieve float of an XML document element, including
 // elements using namespaces
 function getElementFloatNS(prefix, local, parentElem, index) {
     var result = "";
@@ -235,6 +265,35 @@ function getElementFloatNS(prefix, local, parentElem, index) {
         }
     } else {
         return 0;
+    }
+}
+
+// retrieve text of an XML document element, including
+// elements using namespaces
+function getElementTextNS(prefix, local, parentElem, index) {
+    var result = "";
+    if (prefix && isIE) {
+        // IE/Windows way of handling namespaces
+        result = parentElem.getElementsByTagName(prefix + ":" + local)[index];
+    } else {
+        // the namespace versions of this method 
+        // (getElementsByTagNameNS()) operate
+        // differently in Safari and Mozilla, but both
+        // return value with just local name, provided 
+        // there aren't conflicts with non-namespace element
+        // names
+        result = parentElem.getElementsByTagName(local)[index];
+    }
+    if (result) {
+        // get text, accounting for possible
+        // whitespace (carriage return) text nodes 
+        if (result.childNodes.length > 1) {
+            return result.childNodes[1].nodeValue;
+        } else {
+            return result.textContent;    		
+        }
+    } else {
+        return '';
     }
 }
 
@@ -338,14 +397,16 @@ function create_search ( s ) {
 
 		<div id="result_sources"></div>
 		<br/>
+		<div>Current page: <span id="page_label"></span> -- 
+			<button class='hide' id='prev_button' onclick="if (this.className != 'hide') {current_startPage -= 1; opensearch(document.getElementById('term').value);}">Previous Page</button>
+			...
+			<button class='hide' id='next_button' onclick="if (this.className != 'hide') {current_startPage += 1; opensearch(document.getElementById('term').value);}">Next Page</button>
+		</div>
 		<div>Total results: <span id="total"/></div>
 		<h1>Search Results</h1>
 		<hr/>
-		<button onclick="current_startPage -= 1; opensearch(document.getElementById('term').value);">Previous Page</button>
-		...
-		<button onclick="current_startPage += 1; opensearch(document.getElementById('term').value);">Next Page</button>
 		<br/>
 		<br/>
-		<table class="res_table" id="results"/>
+		<table class="res_table" id="results"></table>
 	</body>
 </html>
