@@ -37,22 +37,28 @@ function getById(id) {
 			obj = globalAppFrame.document.getElementById(id);
 		}
 	} catch(E) {
-		alert("We need a globalAppFrame to function");
+		alert("We need a globalAppFrame to function:\n" + E);
 	}
 
 	return obj;
 }
 
 function createAppElement(name) {
-	if(globalAppFrame)
-		return globalAppFrame.document.createElement(name);
-	return document.createElement(name);
+	try {
+		if(globalAppFrame)
+			return globalAppFrame.document.createElement(name);
+	} catch(E) {
+		return document.createElement(name);
+	}
 }
 
 function createAppTextNode(text) {
-	if(globalAppFrame)
-		return globalAppFrame.document.createTextNode(text);
-	return document.createTextNode(text);
+	try {
+		if(globalAppFrame)
+			return globalAppFrame.document.createTextNode(text);
+	} catch(E) {
+		return document.createTextNode(text);
+	}
 }
 
 
@@ -584,4 +590,31 @@ function instanceOf(object, constructorFunction) {
 	}
 	return false;
 }
+
+
+/* builds any element */
+function elem(name, attrs, style, text) {
+    var e = createAppElement(name);
+    if (attrs) {
+        for (key in attrs) {
+            if (key == 'class') {
+                e.className = attrs[key];
+            } else if (key == 'id') {
+                e.id = attrs[key];
+            } else {
+                e.setAttribute(key, attrs[key]);
+            }
+        }
+    }
+    if (style) {
+        for (key in style) {
+            e.style[key] = style[key];
+        }
+    }
+    if (text) {
+        e.appendChild(document.createTextNode(text));
+    }
+    return e;
+}
+
 

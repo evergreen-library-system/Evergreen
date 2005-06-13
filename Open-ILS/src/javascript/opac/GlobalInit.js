@@ -17,14 +17,7 @@ var lastSearchType				= null;
 var loaded = false;
 
 
-function isXUL() {
-	try {
-		if(IAMXUL)
-			return true;
-	} catch(E) {
-		return false;
-	}
-}
+
 
 function addLocation(type, title) {
 	try { 

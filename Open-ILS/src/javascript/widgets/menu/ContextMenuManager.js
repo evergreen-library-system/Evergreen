@@ -26,8 +26,20 @@ ContextMenuManager.prototype.getMenu = function(name) {
 
 /* hides all visible menus and brings the 
 	selected menu to the front */
-ContextMenuManager.prototype.toggle = function(name) {
+ContextMenuManager.prototype.toggle = function(name, evt) {
+
+	if(evt) {
+		var win = getAppWindow();
+		win.event = evt;
+		/*
+		if(!win.event) win.event = evt;
+		if(!IE) win.event.preventDefault();
+		else win.event.cancellBubble = true;
+		*/
+	}
+
 	this.hideAll();
+	debug("Toggling context menu " + name );
 	this.getMenu(name).toggle();
 }
 
@@ -44,14 +56,11 @@ ContextMenuManager.prototype.setContext = function(node, menu) {
 
 	var obj = this;
 	node.oncontextmenu = function(evt) {
+
 		var win = getAppWindow();
 		if(!win.event) win.event = evt;
-
-		if(!IE) {
-			win.event.preventDefault();
-		} else {
-			win.event.cancellBubble = true;
-		}
+		if(!IE) win.event.preventDefault();
+		else win.event.cancellBubble = true;
 
 		obj.toggle(menu.name);
 		return false;

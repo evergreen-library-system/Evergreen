@@ -41,7 +41,7 @@ UserSession.prototype.verifySession = function(ses) {
 
 	debug("Verifying session...");
 	if(ses)
-		debug("Session key passed in from XUL[" + ses + "], verifying...");
+		debug("Session key passed in [" + ses + "], verifying...");
 
 	if(ses != null)
 		this.session_id = ses;
@@ -61,6 +61,7 @@ UserSession.prototype.verifySession = function(ses) {
 		if( typeof user == 'object' && user._isfieldmapper) {
 
 			this.username = user.usrname();
+			this.userObject = user;
 			this.connected = true;
 			this.persist();
 			return true;
@@ -163,6 +164,73 @@ UserSession.prototype.grabOrgUnit = function(org) {
 
 }
 
+
+
+
+UserSession.prototype.updatePassword = function(currentPassword, password) {
+	if(!password || !currentPassword) return null;
+
+	var request = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.password.update",
+		this.getSessionId(),
+		password, 
+		currentPassword );
+
+	request.send(true);
+	var resp;
+
+	try { resp = request.getResultObject(); }
+	catch(E) { 
+		if(instanceOf(E, ex))
+			alert(E.err_msg());
+		else
+			alert(E);
+		return false;
+	}
+
+	if(resp) {
+		this.password = password;
+		this.userObject.passwd(password);
+		return true;
+	}
+
+	return false;
+}
+
+
+UserSession.prototype.updateUsername = function(username) {
+	if(!username) return null;
+	var request = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.username.update",
+		this.getSessionId(),
+		username );
+	request.send(true);
+	var resp = request.getResultObject();
+	if(resp) {
+		this.username = username;
+		this.userObject.usrname(username);
+		return true;
+	}
+	return false;
+}
+
+UserSession.prototype.updateEmail = function(email) {
+	if(!email) return null;
+	var request = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.email.update",
+		this.getSessionId(),
+		email );
+	request.send(true);
+	var resp = request.getResultObject();
+	if(resp) {
+		this.userObject.email(email);
+		return true;
+	}
+	return false;
+}
 
 
 

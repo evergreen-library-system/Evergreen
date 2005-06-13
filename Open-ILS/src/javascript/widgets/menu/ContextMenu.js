@@ -80,8 +80,10 @@ ContextMenu.prototype.toggle = function() {
 	this.div.style.position = "absolute";
    this.div.style.left = mousepos[0];
    this.div.style.top = mousepos[1];
-
+	debug("Toggling menu " + this.name + " : " + this.div.className);
 	swapClass(this.div,"show_me", "hide_me");
+
+	debug("After Toggling menu " + this.name + " : " + this.div.className);
 }
 
 /* returns the menu as an HTML string */

@@ -30,6 +30,11 @@ MRResultPage.instance = function() {
 }
 
 
+MRResultPage.buildExtendedLinks = function(record, page_id) {
+	return null;
+}
+
+
 MRResultPage.prototype.setPageTrail = function() {
 
 	var box = getById("page_trail");
@@ -124,7 +129,7 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 	var t = title;
 	if(!t) t = value;
 
-	debug("T: " + t);
+	debug("Making link with title: " + t);
 
 	switch(type) {
 
@@ -219,6 +224,8 @@ MRResultPage.prototype.doSearch = function() {
 	this.stype				= stype;
 	this.string				= string;
 	this.page				= parseInt(paramObj.__page);
+	if(this.page == null) this.page = 0;
+
 	this.searchOffset		= this.page * this.hitsPerPage;
 
 	this.resetPage();
@@ -248,7 +255,7 @@ MRResultPage.prototype.doSearch = function() {
 	debug("gathering the search count\n");
 
 
-	if(this.searchOffset > 0) {
+	if(this.searchOffset > 0 && this.hitCount > 0) {
 		this.buildNextLinks();
 		this.doMRSearch();
 
@@ -272,6 +279,7 @@ MRResultPage.prototype.doSearch = function() {
 
 				try {
 					obj.hitCount = req.getResultObject();	
+					debug("Received hit count of " + obj.hitCount );
 
 				} catch(E) {
 					if(instanceOf(E, ex)) {
@@ -287,18 +295,59 @@ MRResultPage.prototype.doSearch = function() {
 				*/
 
 				if(obj.hitCount > 0) obj.buildNextLinks();
+
+				/* do the spell check and make suggestion if possible */
+
 				else { 
 					var row = getById("hourglass_row");
 					if(row) row.parentNode.removeChild(row);
 					obj.noHits(); 
+					obj.checkSpelling();
 					return; 
 				}
 
-				obj.doMRSearch();	
-				debug("Kicking off the record id's request");
+				obj.checkSpelling();
+
+	//			obj.doMRSearch();	
 			}
 		);
 		creq.send();
+
+		this.doMRSearch();	
+	}
+}
+
+
+MRResultPage.prototype.checkSpelling = function() {
+	if(this.hitCount > 3) return;
+
+	debug("Checking spelling on " + this.string );
+
+	var request = new RemoteRequest(
+		"open-ils.search",
+		"open-ils.search.spell_check",
+		this.string );
+	request.send(true);
+
+	var response = request.getResultObject();
+	if(response && response != "0") {
+		debug("Received spell check response " + response );
+
+		var hcell = getById("hit_count_cell");
+		var href = createAppElement("a");
+		add_css_class(href,"record_result_author_link");
+		href.setAttribute("href",
+			"?target=mr_result&mr_search_type=" + 
+			this.stype + "&page=0&mr_search_query=" +
+			encodeURIComponent(response));
+		href.appendChild(createAppTextNode(response));
+		href.title = "Search for " + response + "";
+		hcell.appendChild(createAppTextNode(" ... Did you mean "));
+		var ul = createAppElement("u");
+		hcell.appendChild(ul);
+		ul.appendChild(href);
+		hcell.appendChild(createAppTextNode("?"));
+
 	}
 }
 
@@ -307,8 +356,10 @@ MRResultPage.prototype.doMRSearch = function() {
 
 	var obj = this;
 	var method = "open-ils.search.biblio.class";
+	/*
 	if( this.hitCount > 5000 )
 		method = method + ".unordered";
+		*/
 
 	if(isXUL())
 		method = method + ".staff";
@@ -338,6 +389,7 @@ MRResultPage.prototype.doMRSearch = function() {
 	);
 	obj.requestBatch.add(request);
 	request.send();
+	debug("Sent mr id search");
 
 }
 
@@ -374,6 +426,7 @@ MRResultPage.prototype.collectRecords = function() {
 			}
 		);
 
+		debug("Sending mods retrieval request for " + id);
 		request.send();
 		i++;
 	}

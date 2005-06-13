@@ -124,7 +124,7 @@ AbstractRecordResultPage.prototype.gatherIDs = function(result) {
 
 	this.hitCount = parseInt(result.count);
 
-	if(this.hitCount < 1 ) {
+	if(result.ids.length < 1) {
 		this.finalizePage();
 		return false;
 	}
@@ -174,6 +174,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 	function( record, search_id, page_id ) {
 
 	if(record == null) return;
+	debug("Displaying record " + record.doc_id());
 
 	if(!instanceOf(record, Fieldmapper)) {
 		debug(" * Received bogus record " + js2JSON(record));
@@ -196,7 +197,6 @@ AbstractRecordResultPage.prototype.displayRecord =
 	add_css_class(title_row, "record_title_row");
 
 
-
 	var c = misc_row.insertCell(0);
 	/* shove in a div for each of the types of resource */
 	for( var i = 0; i!= 9; i++) {
@@ -205,6 +205,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 		add_css_class(div, "record_resource_div");
 		c.appendChild(div);
 	}
+	//var options_cell = misc_row.insertCell(1);
 
 	c.className = "record_misc_cell";
 	var resources = record.types_of_resource();
@@ -216,8 +217,8 @@ AbstractRecordResultPage.prototype.displayRecord =
 	title_row.id = "record_result_title_row_" + id;
 
 	/* build the appropriate context node for this result */
-	var menu = globalMenuManager.buildMenu(
-		"record_result_row_" + page_id );
+	var menu_name = "record_result_row_" + page_id;
+	var menu = globalMenuManager.buildMenu(menu_name);
 
 	this.addMenuItems( menu, record );
 
@@ -226,6 +227,10 @@ AbstractRecordResultPage.prototype.displayRecord =
 	globalMenuManager.setContext(misc_row, menu);
 
 	getDocument().body.appendChild(menu.getNode());
+
+	//var optionsLink = this.buildExtendedLinks(record, page_id);
+	//if(optionsLink)
+	//	options_cell.appendChild(optionsLink);
 	/* ------------------------------------ */
 
 
@@ -300,7 +305,9 @@ AbstractRecordResultPage.prototype.displayRecord =
 		[subject, broader topic].  currently, they're all just treated like
 		subjects */
 	var arr = record.subject();
+	var x = 0;
 	for( var sub in arr ) {
+		if(x++ > 5) break; /* too many subjects makes things real sluggish */
 
 		var ss = arr[sub];
 
@@ -328,6 +335,8 @@ AbstractRecordResultPage.prototype.displayRecord =
 		record is the last record requested */
 	if( this.requestBatch.pending() < 2  )
 		this.finalizePage();
+
+	debug("Finished displaying record " + record.doc_id());
 }
 
 AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
@@ -619,6 +628,7 @@ AbstractRecordResultPage.prototype.buildResourcePic = function(c, resource) {
 
 AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record, page_id, title) {
 
+	debug("Building record image for " + page_id);
 	var isbn = record.isbn();
 	if(isbn) isbn = isbn.replace(/\s+/,"");
 	else isbn = "";

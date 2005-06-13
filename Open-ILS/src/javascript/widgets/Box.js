@@ -112,6 +112,10 @@ Box.prototype.append = function(domItem) {
 	this.contentNode.appendChild(domItem);
 }
 
+Box.prototype.remove = function(domItem) {
+	this.contentNode.removeChild(domItem);
+}
+
 
 Box.prototype.sortByCount = function() {
 	this.sortCounts = true;
@@ -196,6 +200,23 @@ Box.prototype.findByKey = function(key) {
 	for( var i in this.items) {
 		if( this.items[i] && this.items[i].getKey() == key)
 			return this.items[i];
+	}
+	return null;
+}
+
+/* removes the given item from this box and returns the item */
+Box.prototype.removeItem = function(key) {
+	for( var i in this.items) {
+		if( this.items[i] && this.items[i].getKey() == key) {
+			var obj = this.items[i];
+			this.remove(obj.getNode());
+
+			/* scooch all the other items down by one */
+			for( var j = i; j!= this.items.length; j++ ) {
+				this.items[j] = this.items[j+1];
+			}
+			return obj;
+		}
 	}
 	return null;
 }

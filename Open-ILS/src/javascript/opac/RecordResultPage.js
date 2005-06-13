@@ -28,6 +28,10 @@ function RecordResultPage() {
 }
 
 
+RecordResultPage.buildExtendedLinks = function(record, page_id) {
+	return null;
+}
+
 RecordResultPage.prototype.setPageTrail = function() {
 	var box = getById("page_trail");
 	if(!box) return;
@@ -94,15 +98,7 @@ RecordResultPage.prototype.prev = function() {
 
 RecordResultPage.prototype.addMenuItems = function(menu, record) {
 
-	var func = function() {
-		var req = new RemoteRequest(
-				"open-ils.search", 
-				"open-ils.search.biblio.record.html",
-				record.doc_id());
-		req.send(true);
-		buildViewMARCWindow(req.getResultObject(), record.doc_id() );
-	}
-
+	var func = buildViewMARCWindow(record);
 	menu.addItem("View MARC", func);
 	if(isXUL())
 		xulEvtRecordResultDisplayed( menu, record );
@@ -110,17 +106,31 @@ RecordResultPage.prototype.addMenuItems = function(menu, record) {
 }
 
 
-function buildViewMARCWindow(html, id) {
-	var win = window.open(null,"MARC_" + id,
-		"location=0,menubar=0,status=0,resizeable,resize," +
-		"outerHeight=500,outerWidth=400,height=500," +
-		"width=400,scrollbars=1,screenX=100," +
-		"screenY=100,top=100,left=100,alwaysraised" )
-	win.document.write(html);
-	win.document.close();
-	win.document.title = "View MARC";
-	win.focus();
+function buildViewMARCWindow(record) {
 
+	debug("Setting up view marc with record " + record.doc_id());
+	var func = function() {
+		var req = new RemoteRequest(
+				"open-ils.search", 
+				"open-ils.search.biblio.record.html",
+				record.doc_id());
+		req.send(true);
+
+		var html = req.getResultObject();
+		var id = record.doc_id();
+
+		var win = window.open(null,"MARC_" + id,
+			"location=0,menubar=0,status=0,resizeable,resize," +
+			"outerHeight=500,outerWidth=400,height=500," +
+			"width=400,scrollbars=1,screenX=100," +
+			"screenY=100,top=100,left=100,alwaysraised" )
+		win.document.write(html);
+		win.document.close();
+		win.document.title = "View MARC";
+		win.focus();
+	}
+	
+	return func;
 }
 
 
@@ -141,7 +151,7 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 		case "author":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_author_link");
-			href.setAttribute("href","?target=mr_result&mr_search_type=author&mr_search_query=" +
+			href.setAttribute("href","?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
 					      encodeURIComponent(value));
 			href.appendChild(createAppTextNode(value));
 			href.title = "Author search for " + value + "";
@@ -189,7 +199,6 @@ RecordResultPage.prototype.doSearch = function() {
 	this.page			= parseInt(paramObj.__page);
 	var hitsper			= paramObj.__hits_per_page;
 
-	/*
 	if(hitsper)
 		this.hitsPerPage = parseInt(hitsper);
 
@@ -206,7 +215,6 @@ RecordResultPage.prototype.doSearch = function() {
 			debug("Setting selected on selector with hits " + hits);
 		}
 	}
-	*/
 
 	if(this.page == null)
 		this.page = 0;

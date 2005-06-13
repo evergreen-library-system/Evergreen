@@ -2,12 +2,24 @@ OPACStartPage.prototype					= new Page();
 OPACStartPage.prototype.constructor	= OPACStartPage;
 OPACStartPage.baseClass					= Page.constructor;
 
+try {
+	if(parent) 
+		parent.OPACStartPage = OPACStartPage;
+} catch(E){}
+
+try {
+	if(child)
+		child.OPACStartPage = OPACStartPage;
+} catch(E){}
+
+
 // ---------------------------------------------------------------------------------
 // opac_start
 // ---------------------------------------------------------------------------------
 
 var globalOPACStartPage = null;
 
+		
 function OPACStartPage() {
 
 	debug("In OPACStartPage()");
@@ -17,6 +29,7 @@ function OPACStartPage() {
 	if( globalOPACStartPage ) {
 		return globalOPACStartPage; 
 	}
+
 
 	globalOPACStartPage = this;
 }

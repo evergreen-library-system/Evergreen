@@ -67,8 +67,11 @@ function loginShuffle() {
 	if( ses.login( obj.username.value, obj.password.value )) {
 		/* now grab the org_unit associated with this user */
 		ses.grabOrgUnit();
+		url_redirect( [ "target", "my_opac" ] ); /* redirect to the my opac page */
+		/*
 		obj.result_field.innerHTML = obj.login_success_msg;
 		obj.searchBar.reset();
+		*/
 	} else {
 		obj.result_field.innerHTML = obj.login_failure_msg;
 	}
