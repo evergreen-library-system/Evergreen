@@ -26,7 +26,15 @@ sub handler {
 	
 	if (my $fetch = $cgi->param('fetch')) {
 
-		print LWP::UserAgent->new->get($fetch)->content;
+		try {
+			alarm(15);
+			print LWP::UserAgent->new->get($fetch)->content;
+			alarm(0);
+		} catch Error with {
+			alarm(0);
+			print '<arg>';
+		};
+		alarm(0);
 
 	} else {
 
