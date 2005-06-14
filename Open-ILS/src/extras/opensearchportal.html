@@ -5,6 +5,7 @@
 
 * {
 	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: small;
 }
 
 #result_sources a {
@@ -22,7 +23,12 @@ td {
 }
 
 caption {
+	border: solid black 1px;
+}
+
+.header {
 	border: solid lightblue 1px;
+	background-color: lightblue;
 }
 
 a {
@@ -65,9 +71,20 @@ a:visited {
 
 .res_table {
 	border-collapse: collapse;
-	/*width: 100%;*/
-	max-width: 400px;
-	min-width: 300px;
+}
+
+#col_res {
+	max-width: 300px !important;
+	min-width: 200px !important;
+}
+
+#int_res {
+	max-width: 100% !important;
+}
+
+#int_res_hide {
+	max-width: 100% !important;
+	min-width: 400px !important;
 }
 
 .res_tr {
@@ -259,7 +276,7 @@ function perform_search ( source ) {
 
 					col.appendChild(tab);
 
-					var per = parseInt(100 / search_urls.length);
+					var per = parseInt(100 / (search_urls.length * 2)) - 1;
 					col.setAttribute('valign','top');
 					col.setAttribute('width', + per + '%');
 
@@ -380,6 +397,8 @@ function add_result_row (tab, index, xml, source) {
 
 	try {
 		description = getElementTextNS('','description',xml,0);
+		if (description.length > 1024)
+			description = description.substring(1,1024);
 	} catch (e) {
 		description = '';
 	}
@@ -416,12 +435,12 @@ function create_search ( s ) {
 	</head>
 	<body>
 		<br/>
-		<form onsubmit="opensearch(document.getElementById('term').value, true); return false;">
+		<form>
 		<table>
 			<tr valign="top">
 				<td align="left">Keyword Search: 
 					<input type="text" id="term" value="javascript"/>
-					<input type="submit" value="Go!"/>
+					<input type="submit" value="Go!" onclick="opensearch(document.getElementById('term').value, true); return false;"/>
 				</td>
 				<td align="right">Hits per Source: 
 					<select onchange="current_count=this.options[this.selectedIndex].value;">
@@ -454,21 +473,21 @@ function create_search ( s ) {
 		</div>
 		<hr/>
 		<br/>
-		<table id="results">
+		<table id="results" width="100%">
 			<tr>
-				<td id="int_res_hide" class="noshow">
-					<table>
-						<caption>Merged search results</caption>
+				<td id="int_res_hide" class="noshow" width="100%">
+					<table width="100%">
+						<caption class="header">Merged search results</caption>
 						<tr>
-							<td>
-								<table id='int_res' class="res_table"></table>
+							<td width="100%">
+								<table id='int_res' class="res_table" width="100%"></table>
 							</td>
 						</tr>
 					</table>
 				</td>
 				<td id='col_res_hide' class="noshow">
 					<table>
-						<caption>Unranked search results</caption>
+						<caption class="header">Unranked search results</caption>
 						<tr>
 							<td>
 								<table id='col_res' class="res_table"></table>
