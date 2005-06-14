@@ -13,8 +13,11 @@
 	text-decoration: none;
 }
 
+td {
+	vertical-align: top;
+}
+
 .data_table {
-	max-width: 200px;
 }
 
 caption {
@@ -61,11 +64,17 @@ a:visited {
 
 .res_table {
 	border-collapse: collapse;
-	width: 100%;
+	/*width: 100%;*/
+	max-width: 400px;
 }
 
 .res_tr {
 	border-bottom: 1px dashed darkgrey;
+}
+
+.noshow {
+	display: none;
+	visibility: hidden;
 }
 
 		</style>
@@ -106,7 +115,6 @@ var search_templates = [];
 var search_urls = {};
 var rel_scales = {};
 
-var display_mode = 'col';
 var current_startPage = 1;
 var current_startIndex = 1;
 var current_count = 5;
@@ -133,17 +141,24 @@ function opensearch ( term, reset ) {
 	while (src.lastChild)
 			src.removeChild(src.lastChild);
 
-	var tab = document.getElementById('results');
+	document.getElementById('int_res_hide').className = 'noshow';
+	document.getElementById('col_res_hide').className = 'noshow';
+
+	var tab = document.getElementById('int_res');
+	while (tab.lastChild)
+			tab.removeChild(tab.lastChild);
+
+	tab = document.getElementById('col_res');
 	while (tab.lastChild)
 			tab.removeChild(tab.lastChild);
 
 	search_count = 0;
 
 	var sources = new Array();
-	var selector = document.getElementById('sources');
-	for (var i = 0; i < selector.options.length; i++) {
-		if (selector.options[i].selected) {
-			sources.push(selector.options[i].value);
+	var selector = document.getElementsByName('source');
+	for (var i = 0; i < selector.length; i++) {
+		if (selector[i].checked) {
+			sources.push(selector[i].value);
 		}
 	}
 
@@ -195,9 +210,10 @@ function perform_search ( source ) {
 		var xml_link  = getElementTextNS('','link',xml,0);
 
 		var total  = getElementFloatNS('openSearch','totalResults',xml,0);
+		var integratible = (getElementNS('openIll','relevance',xml,0) != null);
 		var scale = getElementFloatNS('openIll','relevanceScale',xml,0);
 
-		rel_scales[source]  = scale
+		rel_scales[source]  = scale;
 		
 		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
 		var tot = document.getElementById('total');
@@ -217,8 +233,10 @@ function perform_search ( source ) {
 			if ( typeof list[i] != 'object')
 					continue;
 
-			var tab = document.getElementById('results');
-			if (display_mode == 'col') {
+			var tab;
+			if (!integratible) {
+				tab = document.getElementById('col_res');
+				document.getElementById('col_res_hide').className = '';
 				var col = document.getElementById(source);
 				if (!col) {
 					var row = tab.rows[0];
@@ -246,6 +264,9 @@ function perform_search ( source ) {
 				} else {
 					tab = col.firstChild;
 				}
+			} else {
+				tab = document.getElementById('int_res');
+				document.getElementById('int_res_hide').className = '';
 			}
 
 			if (!tab.rows.length) {
@@ -285,19 +306,7 @@ function perform_search ( source ) {
 // retrieve float of an XML document element, including
 // elements using namespaces
 function getElementFloatNS(prefix, local, parentElem, index) {
-    var result = "";
-    if (prefix && isIE) {
-        // IE/Windows way of handling namespaces
-        result = parentElem.getElementsByTagName(prefix + ":" + local)[index];
-    } else {
-        // the namespace versions of this method 
-        // (getElementsByTagNameNS()) operate
-        // differently in Safari and Mozilla, but both
-        // return value with just local name, provided 
-        // there aren't conflicts with non-namespace element
-        // names
-        result = parentElem.getElementsByTagName(local)[index];
-    }
+    var result = getElementNS(prefix, local, parentElem, index);
     if (result) {
         // get text, accounting for possible
         // whitespace (carriage return) text nodes 
@@ -311,13 +320,11 @@ function getElementFloatNS(prefix, local, parentElem, index) {
     }
 }
 
-// retrieve text of an XML document element, including
-// elements using namespaces
-function getElementTextNS(prefix, local, parentElem, index) {
+function getElementNS(prefix, local, parentElem, index) {
     var result = "";
     if (prefix && isIE) {
         // IE/Windows way of handling namespaces
-        result = parentElem.getElementsByTagName(prefix + ":" + local)[index];
+        return parentElem.getElementsByTagName(prefix + ":" + local)[index];
     } else {
         // the namespace versions of this method 
         // (getElementsByTagNameNS()) operate
@@ -325,8 +332,14 @@ function getElementTextNS(prefix, local, parentElem, index) {
         // return value with just local name, provided 
         // there aren't conflicts with non-namespace element
         // names
-        result = parentElem.getElementsByTagName(local)[index];
+        return parentElem.getElementsByTagName(local)[index];
     }
+}
+
+// retrieve text of an XML document element, including
+// elements using namespaces
+function getElementTextNS(prefix, local, parentElem, index) {
+    var result = getElementNS(prefix, local, parentElem, index);
     if (result) {
         // get text, accounting for possible
         // whitespace (carriage return) text nodes 
@@ -405,19 +418,10 @@ function create_search ( s ) {
 		<table>
 			<tr valign="top">
 				<td>Keyword Search: </td>
-				<td><input type="text" id="term" value="javascript"/></td>
-			</tr>
-			<tr valign="top">
-				<td>Sources: </td>
-				<td>
-					<select id="sources" multiple="multiple" size=5>
-						<option value="http://gapines.org/opensearch.xml" selected>GPLS Pines</option>
-						<option value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml" selected>GIL Universal Catalog</option>
-						<option value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha</option>
-						<option value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef</option>
-					</select>
-			</tr>
-			<tr valign="top">
+				<td align="left">
+					<input type="text" id="term" value="javascript"/>
+					<input type="submit" value="Go!"/>
+				</td>
 				<td>Hits per Source: </td>
 				<td>
 					<select onchange="current_count=this.options[this.selectedIndex].value;">
@@ -425,33 +429,52 @@ function create_search ( s ) {
 						<option value="10">10</option>
 						<option value="25">25</option>
 					</select>
+				</td>
 			</tr>
 			<tr valign="top">
-				<td>Display mode: </td>
-				<td>
-					<select onchange="display_mode=this.options[this.selectedIndex].value;">
-						<option value="int">Integrated</option>
-						<option value="col" selected>Columns</option>
-					</select> (Use "Columns" when searching unranked sources)
-			</tr>
-			<tr valign="top">
-				<td colspan="2"><input type="submit" value="Go!"/></td>
+				<td colspan=4>Sources:  
+					<input name="source" type="checkbox" value="http://gapines.org/opensearch.xml" checked>GPLS Pines
+					<input name="source" type="checkbox" value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml" checked>GIL Universal Catalog
+					<input name="source" type="checkbox" value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha
+					<input name="source" type="checkbox" value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef
+				</td>
 			</tr>
 		</table>
 		</form>
 
-		<div id="result_sources"></div>
-		<br/>
+		<div>Total results: <span id="total"/></div>
 		<div>Current page: <span id="page_label"></span> -- 
 			<button class='hide' id='prev_button' onclick="if (this.className != 'hide') {current_startPage -= 1; opensearch(document.getElementById('term').value);}">Previous Page</button>
 			...
 			<button class='hide' id='next_button' onclick="if (this.className != 'hide') {current_startPage += 1; opensearch(document.getElementById('term').value);}">Next Page</button>
 		</div>
-		<div>Total results: <span id="total"/></div>
-		<h1>Search Results</h1>
 		<hr/>
 		<br/>
+		<table id="results">
+			<tr>
+				<td id="int_res_hide" class="noshow">
+					<table>
+						<caption>Merged search results</caption>
+						<tr>
+							<td>
+								<table id='int_res' class="res_table"></table>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td id='col_res_hide' class="noshow">
+					<table>
+						<caption>Unranked search results</caption>
+						<tr>
+							<td>
+								<table id='col_res' class="res_table"></table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<div id="result_sources"></div>
 		<br/>
-		<table class="res_table" id="results"></table>
 	</body>
 </html>
