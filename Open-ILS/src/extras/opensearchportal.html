@@ -18,10 +18,6 @@ td {
 	vertical-align: top;
 }
 
-.source_input {
-	border: dotted blue 1px;
-}
-
 caption {
 	border: solid black 1px;
 }
@@ -436,13 +432,14 @@ function create_search ( s ) {
 	<body>
 		<br/>
 		<form>
-		<table>
-			<tr valign="top">
-				<td align="left">Keyword Search: 
+		<table style="border-collapse: collapse; margin: 5px;" width="100%">
+			<tr style="border-bottom: dotted black 1px;" valign="top">
+				<td align="right">Keyword Search: </td>
+				<td align="left">
 					<input type="text" id="term" value="javascript"/>
 					<input type="submit" value="Go!" onclick="opensearch(document.getElementById('term').value, true); return false;"/>
 				</td>
-				<td align="right">Hits per Source: 
+				<td align="left">Hits per Source for each page: 
 					<select onchange="current_count=this.options[this.selectedIndex].value;">
 						<option value="5" selected>5</option>
 						<option value="10">10</option>
@@ -450,27 +447,110 @@ function create_search ( s ) {
 					</select>
 				</td>
 			</tr>
-			<tr valign="top">
-				<td colspan=2>Sources:  
-					<label class="source_input"><input name="source" type="checkbox" value="http://gapines.org/opensearch.xml" checked>GPLS Pines</label>
-					<label class="source_input"><input name="source" type="checkbox" value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml" checked>GIL Universal Catalog</label>
-					<label class="source_input"><input name="source" type="checkbox" value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha</label>
-					<label class="source_input"><input name="source" type="checkbox" value="http://www.koders.com/search/KodersSourceCodeSearchDescription.xml">Koders Source Code</label>
-					<label class="source_input"><input name="source" type="checkbox" value="http://cnx.rice.edu/content/opensearchdescription">rice.edu Connexions</label>
-					<label class="source_input"><input name="source" type="checkbox" value="http://redlightgreen.com/ucwprod/web/opensearchDescription.xml">RedLightGreen</label>
-					<label class="source_input"><input name="source" type="checkbox" value="http://www.itpapers.com/itpaperssearchdescription.xml">ITPapers</label>
+			<tr style="border-bottom: dotted black 1px;" valign="top">
+				<td align="right">Sources: </td>
+				<td colspan=2>
+					<table width="100%" style="border-collapse: collapse;">
+						<tr>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://gapines.org/opensearch.xml"
+										checked>GPLS Pines
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml"
+										checked>GIL Universal Catalog
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://www.koders.com/search/KodersSourceCodeSearchDescription.xml">Koders Source Code
+								</label>
+							</td>
+							<td>
+						</tr>
+						<tr>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://cnx.rice.edu/content/opensearchdescription">rice.edu Connexions
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://redlightgreen.com/ucwprod/web/opensearchDescription.xml">RedLightGreen
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										name="source"
+										type="checkbox"
+										value="http://www.itpapers.com/itpaperssearchdescription.xml">ITPapers
+								</label>
+							</td>
 					<!-- <input name="source" type="checkbox" value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef -->
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>Total results: </td>
+				<td colspan=2 id="total"></td>
+			</tr>
+			<tr>
+				<td>Current page: </td>
+				<td id="page_label"></td>
+				<td>
+					<button
+						class='hide'
+						id='prev_button'
+						onclick="
+							if (this.className != 'hide') {
+								current_startPage -= 1;
+								opensearch(document.getElementById('term').value);
+							}
+							return false;">Previous Page
+					</button> ...
+					<button
+						class='hide'
+						id='next_button'
+						onclick="
+							if (this.className != 'hide') {
+								current_startPage += 1;
+								opensearch(document.getElementById('term').value);
+							}
+							return false;">Next Page
+					</button>
 				</td>
 			</tr>
 		</table>
 		</form>
 
-		<div>Total results: <span id="total"/></div>
-		<div>Current page: <span id="page_label"></span> -- 
-			<button class='hide' id='prev_button' onclick="if (this.className != 'hide') {current_startPage -= 1; opensearch(document.getElementById('term').value);}">Previous Page</button>
-			...
-			<button class='hide' id='next_button' onclick="if (this.className != 'hide') {current_startPage += 1; opensearch(document.getElementById('term').value);}">Next Page</button>
-		</div>
 		<hr/>
 		<br/>
 		<table id="results" width="100%">
