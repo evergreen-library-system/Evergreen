@@ -56,12 +56,16 @@ sub new {
 
 	my $username	= $conf->bootstrap->username;
 	my $password	= $conf->bootstrap->passwd;
-	my $port			= $conf->bootstrap->port;
+	my $port	= $conf->bootstrap->port;
 	my $resource	= "${app}_drone_at_$h";
-	my $host			= $domains->[0]; # XXX for now...
+	my $host	= $domains->[0]; # XXX for now...
 
 	if( $app eq "client" ) { $resource = "client_at_$h"; }
 
+	unless ( $conf->bootstrap->router_name ) {
+		$username = 'router';
+		$resource = $app;
+	}
 
 
 	OpenSRF::EX::Config->throw( "JPeer could not load all necesarry values from config" )

@@ -3,10 +3,12 @@ use strict; use warnings;
 use OpenSRF::EX;
 use base qw( OpenSRF );
 use OpenSRF::Utils::Logger qw(:level);
+use OpenSRF::Utils::Config;
 use Time::HiRes qw(ualarm);
 
 use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK);
 use IO::Socket::INET;
+use IO::Socket::UNIX;
 
 =head1 Description
 
@@ -449,14 +451,19 @@ sub initialize {
 </iq>
 	XML
 
+	my $sock_type = 'IO::Socket::INET';
+	unless ($port > 0) {
+		$sock_type = 'IO::Socket::UNIX';
+	}
 
 	# --- 5 tries to connect to the jabber server
 	my $socket;
 	for(1..5) {
 		$logger->transport( "$jid: Attempting to connect to server...$host:$port (Try # $_)", WARN );
-		$socket = IO::Socket::INET->new( PeerHost => $host,
-						 PeerPort => $port,
-						 Proto    => 'tcp' );
+		$socket = $sock_type->new( PeerHost => $host,
+					   PeerPort => $port,
+					   Peer => $port,
+					   Proto    => 'tcp' );
 		$logger->transport( "$jid: $_ connect attempt to $host:$port", WARN );
 		last if ( $socket and $socket->connected );
 		sleep 3;

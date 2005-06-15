@@ -179,7 +179,7 @@ sub get_app_targets {
 	my $app = shift;
 
 	my $conf = OpenSRF::Utils::Config->current;
-	my $router_name = $conf->bootstrap->router_name;
+	my $router_name = $conf->bootstrap->router_name || 'router';
 	my $routers = $conf->bootstrap->domains;
 
 	unless($router_name and $routers) {
