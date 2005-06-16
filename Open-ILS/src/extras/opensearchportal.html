@@ -232,6 +232,10 @@ function perform_search ( source ) {
 		
 		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
 		var tot = document.getElementById('total');
+		var res_type = document.getElementById('res_type');
+
+		if (res_type.options[res_type.selectedIndex].value == 'col')
+			integratible = 0;
 
 		if (!current_tot)
 			current_tot = 0;
@@ -444,6 +448,12 @@ function create_search ( s ) {
 						<option value="5" selected>5</option>
 						<option value="10">10</option>
 						<option value="25">25</option>
+					</select>
+				</td>
+				<td align="left">Display style: 
+					<select id="res_type">
+						<option value="int" selected>Merged Results</option>
+						<option value="col">Seperate Columns</option>
 					</select>
 				</td>
 			</tr>
