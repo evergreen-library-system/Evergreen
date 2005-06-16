@@ -421,8 +421,6 @@ function add_result_row (tab, index, xml, source) {
 
 	try {
 		description = getElementTextNS('','description',xml,0);
-		if (description.length > 1024)
-			description = description.substring(1,1024);
 	} catch (e) {
 		description = '';
 	}
@@ -488,7 +486,7 @@ function remove_by_name( src ) {
 				<td align="left">Display style: 
 					<select id="res_type">
 						<option value="int" selected>Merged Results</option>
-						<option value="col">Seperate Columns</option>
+						<option value="col">Separate Columns</option>
 					</select>
 				</td>
 			</tr>
