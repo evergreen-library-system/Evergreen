@@ -125,6 +125,8 @@ function create_requestor () {
 
 var proxy = 'http://gapines.org/opensearch/?fetch=';
 
+var insearch=false;
+
 var images = [];
 var search_templates = [];
 var search_urls = {};
@@ -134,11 +136,32 @@ var current_startPage = 1;
 var current_startIndex = 1;
 var current_count = 5;
 
-function opensearch ( term, reset ) {
+function opensearch ( term, reset, single_source ) {
 
 	if (reset) {
 		current_startPage = 1;
 		rel_scales = {};
+	}
+
+	if (single_source) {
+
+		create_search(single_source);
+		var turi = search_templates[single_source].replace(/\{searchTerms\}/,encodeURIComponent(term));
+		turi = turi.replace(/\{startPage\}/,current_startPage);
+		turi = turi.replace(/\{startIndex\}/,current_startIndex);
+		turi = turi.replace(/\{count\}/,current_count);
+		turi = turi.replace(/\{relevanceScale}/,'0');
+		search_urls[single_source] = proxy + encodeURIComponent(turi);
+
+		rel_scales
+		var cur_src = document.getElementById('result_sources');
+		for (var i = 1; i < cur_src.childNodes.length; i++) {
+			if (cur_src.childNodes[i].textContent == turi)
+				return;
+		}
+		cur_src.innerHTML += '<a name="' + single_source + '" href="' + turi + '">' + turi + '</a><br>';
+		perform_search(single_source);
+		return;
 	}
 
 	document.getElementById('next_button').className = 'hide';
@@ -199,7 +222,7 @@ function opensearch ( term, reset ) {
 		url = url.replace(/\{relevanceScale}/,rel_scales[i]);
 		search_urls[i] = proxy + encodeURIComponent(url);
 
-		src.innerHTML += '<a href="' + url + '">' + url + '</a><br>';
+		src.innerHTML += '<a name="' + i + '" href="' + url + '">' + url + '</a><br>';
 	}
 
 	for (var i in search_urls) {
@@ -230,8 +253,8 @@ function perform_search ( source ) {
 
 		rel_scales[source]  = scale;
 		
-		var current_tot = getElementFloatNS('','span',document.getElementById('total').parentNode,0);
 		var tot = document.getElementById('total');
+		var current_tot = parseFloat(tot.textContent);
 		var res_type = document.getElementById('res_type');
 
 		if (res_type.options[res_type.selectedIndex].value == 'col')
@@ -264,6 +287,7 @@ function perform_search ( source ) {
 
 					col = document.createElement('td');
 					col.setAttribute('id',source);
+					col.setAttribute('name',source);
 					row.appendChild(col);
 
 					tab = document.createElement('table');
@@ -404,6 +428,7 @@ function add_result_row (tab, index, xml, source) {
 	}
 
 	var row = tab.insertRow(index);
+	row.setAttribute('name',source);
 	row.className = 'res_tr';
 	row.innerHTML = '<td style="padding: 4px"><div style="display: none; visibility: hidden;">' + rank +
 						 '</div><span class="title_link"><a href="' + tlink + '">' + title +
@@ -423,12 +448,22 @@ function create_search ( s ) {
 		var i =  xml.getElementsByTagName('Image');
 		if (i.length)
 			images[s] = i[0].textContent;
+		return search_templates[s];
 	} catch (e) {
 		alert('BAD XML!\n\n' + e + '\n\n' + req.responseText);
 		search_templates[s] = null;
 		images[s] = null;
 	}
 
+}
+
+function remove_by_name( src ) {
+	var list = document.getElementsByName(src);
+
+	var len = list.length;
+
+	while (list.length)
+		list[0].parentNode.removeChild(list[0]);
 }
 
 		</script>
@@ -441,7 +476,7 @@ function create_search ( s ) {
 				<td align="right">Keyword Search: </td>
 				<td align="left">
 					<input type="text" id="term" value="javascript"/>
-					<input type="submit" value="Go!" onclick="opensearch(document.getElementById('term').value, true); return false;"/>
+					<input type="submit" value="Go!" onclick="insearch=true; opensearch(document.getElementById('term').value, true); return false;"/>
 				</td>
 				<td align="left">Hits per Source for each page: 
 					<select onchange="current_count=this.options[this.selectedIndex].value;">
@@ -465,6 +500,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://gapines.org/opensearch.xml"
@@ -474,6 +517,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://rsinger.library.gatech.edu/opensearch/osdd-gil.xml"
@@ -483,6 +534,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha
@@ -491,6 +550,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://www.koders.com/search/KodersSourceCodeSearchDescription.xml">Koders Source Code
@@ -502,6 +569,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://cnx.rice.edu/content/opensearchdescription">rice.edu Connexions
@@ -510,6 +585,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://redlightgreen.com/ucwprod/web/opensearchDescription.xml">RedLightGreen
@@ -518,6 +601,14 @@ function create_search ( s ) {
 							<td>
 								<label class="source_input">
 									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
 										name="source"
 										type="checkbox"
 										value="http://www.itpapers.com/itpaperssearchdescription.xml">ITPapers
