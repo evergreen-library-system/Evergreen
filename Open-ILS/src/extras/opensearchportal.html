@@ -492,7 +492,7 @@ function remove_by_name( src ) {
 			</tr>
 			<tr style="border-bottom: dotted black 1px;" valign="top">
 				<td align="right">Sources: </td>
-				<td colspan=2>
+				<td colspan=3>
 					<table width="100%" style="border-collapse: collapse;">
 						<tr>
 							<td>
@@ -610,6 +610,22 @@ function remove_by_name( src ) {
 										name="source"
 										type="checkbox"
 										value="http://www.itpapers.com/itpaperssearchdescription.xml">ITPapers
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
+										name="source"
+										type="checkbox"
+										value="http://lib-cufts.lib.sfu.ca/CUFTS/opensearchjournal.xml">SFU CUFTS
 								</label>
 							</td>
 					<!-- <input name="source" type="checkbox" value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef -->
