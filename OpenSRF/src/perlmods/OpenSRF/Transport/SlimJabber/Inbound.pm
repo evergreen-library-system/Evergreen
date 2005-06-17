@@ -102,22 +102,24 @@ sub listen {
 		$self->{routers} = $routers; #store for destroy
 		$self->{router_name} = $router_name;
 	
-		unless($router_name and $routers) {
-			throw OpenSRF::EX::Config 
-				("Missing router config information 'router_name' and 'routers'");
-		}
+		if($router_name and $routers) {
 	
-		my @targets;
-		for my $router (@$routers) {
-			push @targets, "$router_name\@$router/router";
-		}
+			my @targets;
+			for my $router (@$routers) {
+				push @targets, "$router_name\@$router/router";
+			}
+	
+			for my $router (@targets) {
+				$logger->transport( $self->{app} . " connecting to router $router", INFO ); 
+				$self->send( to => $router, 
+						body => "registering", router_command => "register" , router_class => $self->{app} );
+			}
+			$logger->transport( $self->{app} . " :routers connected", INFO ); 
 
-		for my $router (@targets) {
-			$logger->transport( $self->{app} . " connecting to router $router", INFO ); 
-			$self->send( to => $router, 
-					body => "registering", router_command => "register" , router_class => $self->{app} );
+		} else {
+
+			$logger->transport("Bypassing routers...", INFO);
 		}
-		$logger->transport( $self->{app} . " :routers connected", INFO ); 
 
 		
 	} catch OpenSRF::EX::Config with {
