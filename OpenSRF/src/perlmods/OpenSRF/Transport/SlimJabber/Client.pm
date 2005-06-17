@@ -452,7 +452,9 @@ sub initialize {
 	XML
 
 	my $sock_type = 'IO::Socket::INET';
-	unless ($port > 0) {
+	
+	# if port is a string, then we're connecting to a UNIX socket
+	unless( $port =~ /^\d+$/ ) {
 		$sock_type = 'IO::Socket::UNIX';
 	}
 
