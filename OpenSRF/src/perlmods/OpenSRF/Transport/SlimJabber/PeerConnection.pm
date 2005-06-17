@@ -62,10 +62,10 @@ sub new {
 
 	if( $app eq "client" ) { $resource = "client_at_$h"; }
 
-	unless ( $conf->bootstrap->router_name ) {
-		$username = 'router';
-		$resource = $app;
-	}
+#	unless ( $conf->bootstrap->router_name ) {
+#		$username = 'router';
+#		$resource = $app;
+#	}
 
 
 	OpenSRF::EX::Config->throw( "JPeer could not load all necesarry values from config" )

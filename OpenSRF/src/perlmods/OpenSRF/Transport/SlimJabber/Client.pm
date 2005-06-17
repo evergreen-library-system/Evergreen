@@ -5,6 +5,7 @@ use base qw( OpenSRF );
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::Utils::Config;
 use Time::HiRes qw(ualarm);
+use OpenSRF::Utils::Config;
 
 use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK);
 use IO::Socket::INET;
@@ -441,12 +442,18 @@ sub initialize {
 <stream:stream to='$host' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>
 	XML
 
+	my $conf = OpenSRF::Utils::Config->current;
+	my $tail = "_$$";
+	if(!$conf->bootstrap->router_name && $username eq "router") {
+		$tail = "";
+	}
+
 	my $auth = <<"	XML";
 <iq id='123' type='set'>
 <query xmlns='jabber:iq:auth'>
 <username>$username</username>
 <password>$password</password>
-<resource>${resource}_$$</resource>
+<resource>${resource}$tail</resource>
 </query>
 </iq>
 	XML

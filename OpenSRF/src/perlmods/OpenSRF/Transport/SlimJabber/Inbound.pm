@@ -43,7 +43,10 @@ This service should be loaded at system startup.
 
 			my $router_name = $conf->bootstrap->router_name;
 			# no router, only one listener running..
-			if(!$router_name) { $resource = $app; }
+			if(!$router_name) { 
+				$username = "router";
+				$resource = $app; 
+			}
 
 			OpenSRF::Utils::Logger->transport("Inbound as $username, $password, $resource, $host, $port\n", INTERNAL );
 
