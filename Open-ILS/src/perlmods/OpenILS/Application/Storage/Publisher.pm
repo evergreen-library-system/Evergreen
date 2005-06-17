@@ -92,11 +92,16 @@ sub cachable_wrapper {
 
 	$log->debug("Saving values from ".int($cache_page * $cache_args{cache_page_size})." to ".
 		int(($cache_page + 1) * $cache_args{cache_page_size}). "to the cache", INTERNAL);
-        OpenSRF::Utils::Cache->new->put_cache(
-		$cache_key =>
-		[@res[int($cache_page * $cache_args{cache_page_size}) .. int(($cache_page + 1) * $cache_args{cache_page_size}) ]] =>
-		$cache_args{timeout}
-	);
+	try {
+		OpenSRF::Utils::Cache->new->put_cache(
+			$cache_key =>
+			[@res[int($cache_page * $cache_args{cache_page_size}) .. int(($cache_page + 1) * $cache_args{cache_page_size}) ]] =>
+			$cache_args{timeout}
+		);
+	} catch Error with {
+		my $e = shift;
+		$log->error("Cache seems to be down, $e");
+	};
 
 	return undef;
 }
