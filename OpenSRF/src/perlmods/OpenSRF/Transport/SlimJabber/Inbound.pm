@@ -41,6 +41,10 @@ This service should be loaded at system startup.
 			my $host			= $domains->[0]; # XXX for now...
 			my $resource	= $app . '_listener_at_' . $conf->env->hostname;
 
+			my $router_name = $conf->bootstrap->router_name;
+			# no router, only one listener running..
+			if(!$router_name) { $resource = $app; }
+
 			OpenSRF::Utils::Logger->transport("Inbound as $username, $password, $resource, $host, $port\n", INTERNAL );
 
 			my $self = __PACKAGE__->SUPER::new( 
