@@ -1,0 +1,3 @@
+content evergreen jar:evergreen.jar!/content/evergreen/
+locale evergreen en-US jar:evergreen.jar!/locale/en-US/evergreen/
+skin evergreen evergreen jar:evergreen.jar!/skin/evergreen/
