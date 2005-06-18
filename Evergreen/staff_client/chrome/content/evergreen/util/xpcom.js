@@ -1,12 +1,5 @@
 sdump('TRACE','Loading xpcom.js\n');
 
-function xp_sound_init() {
-	var SOUNDContractID = "@mozilla.org/sound;1";
-	var SOUNDIID        = Components.interfaces.nsISound;
-	var SOUND           = Components.classes[SOUNDContractID].createInstance(SOUNDIID);
-	return SOUND;
-}
-
 function xp_url_init(aURL) {
 	var URLContractID   = "@mozilla.org/network/standard-url;1";
 	var URLIID          = Components.classes[URLContractID].createInstance( );

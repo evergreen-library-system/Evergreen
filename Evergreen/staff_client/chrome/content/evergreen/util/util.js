@@ -20,38 +20,6 @@ function sdump(level,msg) {
 	} catch(E) {}
 }
 
-function snd_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/redalert.wav') );
-}
-
-function snd_really_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/die.wav') );
-}
-
-function snd_good() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/turn.wav') );
-}
-
-function snd_circ_good() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/clicked.wav') );
-}
-
-function snd_circ_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/cow.wav') );
-}
-
-function snd_logon() {
-
-}
-
-function snd_logoff() {
-
-}
-
-function snd_exit() {
-
-}
-
 function handle_error(E) {
 	var s = '';
 	if (instanceOf(E,ex)) {
