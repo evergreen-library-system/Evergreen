@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- Modified by Jason for Evergreen -->
+
+<overlay id="util"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<util id="util_js">
+	<script>
+		var IAMXUL = true;
+	</script>
+</util>
+
+</overlay>

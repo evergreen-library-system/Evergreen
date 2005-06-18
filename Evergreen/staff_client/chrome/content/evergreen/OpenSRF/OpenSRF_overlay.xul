@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- Modified by Jason for Evergreen -->
+
+<overlay id="OpenSRF"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<OpenSRF id="OpenSRF_js">
+	<script src="JSON.js" />
+	<script src="md5.js" />
+	<script src="opensrf_utils.js" />
+	<script src="opensrf_config.js" />
+	<script src="opensrf_dom_element.js" />
+	<script src="opensrf_domain_object.js" />
+	<script src="opensrf_transport.js" />
+	<script src="opensrf_jabber_transport.js" />
+	<script src="opensrf_msg_stack.js" />
+	<script src="opensrf_app_session.js" />
+</OpenSRF>
+
+</overlay>

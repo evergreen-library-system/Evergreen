@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- Modified by Jason for Evergreen -->
+
+<overlay id="util"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script src="chrome://evergreen/content/util/browser.js"/>
+
+	<popup id="contentAreaContextMenu">
+		<menuitem id="evergreen_right_click_menu" 
+			label="Search Evergreen OPAC" 
+			accesskey=""
+			insertafter="context-stop" 
+			oncommand="startEvergreenOPAC();"/>
+	</popup>
+
+	<menupopup id="menu_ToolsPopup">
+		<menuitem id="evergreen_tools_menu"
+			insertafter="devToolsSeparator" 
+			label="Evergreen Staff Client"
+			accesskey="" 
+			oncommand="startEvergreenStaffClient();" />
+	</menupopup>
+
+</overlay>

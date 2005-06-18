@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- Modified by Jason for Evergreen -->
+
+<overlay id="OpenILS"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<OpenILS id="OpenILS_js">
+</OpenILS>
+
+</overlay>

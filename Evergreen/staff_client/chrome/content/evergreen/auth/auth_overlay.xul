@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/auth.dtd">
+<overlay id="auth_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- Modified by Jason for Evergreen -->
+
+<!-- The javascript logic for the staff client -->
+<Auth id="auth_js">
+	<script>var ses;</script>
+	<util id="util_js"/>
+	<script src="auth.js" />
+</Auth>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="auth_cmds">
+	<command id="cmd_login" oncommand="
+		disable_login_prompts();
+		authenticate();
+	"/>
+	<command id="cmd_logoff" oncommand="logoff();"/>
+	<command id="cmd_close_window" oncommand="nice_shutdown();"/>
+</commandset>
+
+<!-- The top level widget for the staff client -->
+<box id="auth_main" flex="1" orient="vertical">
+	<deck id="main_deck">
+		<groupbox id="main_groupbox" flex="1"/>
+		<iframe id="print_frame" flex="1"/>
+		<iframe id="scratch_pad" flex="1"/>
+	</deck>
+	<button id="test" label="testing MVC" oncommand="test_mvc();" accesskey="t"/>
+	<button id="test2" label="testing MVC 2" oncommand="test_mvc2();" accesskey="2"/>
+</box>
+
+<groupbox id="main_groupbox" flex="1">
+	<caption id="main_caption" label="&auth.login_header;"/>
+	<label value="&auth.version;"/>
+	<grid>
+		<columns>
+			<column />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<label value="&auth.name_prompt;" control="name_prompt" accesskey="&auth.name_prompt.key;"/>
+				<textbox id="name_prompt" value=""/>
+			</row>
+			<row>
+				<label value="&auth.password_prompt;" control="password_prompt" accesskey="&auth.password_prompt.key;"/>
+				<textbox id="password_prompt" value="" type="password"/>
+			</row>
+			<row>
+				<label/>
+				<hbox>
+				<button id="submit_button" label="&auth.submit_prompt;" accesskey="&auth.submit_prompt.key;" command="cmd_login"/>
+				<button label="&auth.logoff_prompt;" accesskey="&auth.logoff_prompt.key;" command="cmd_logoff"/>
+				</hbox>
+			</row>
+			<row>
+				<label/>
+				<label/>
+			</row>
+			<row>
+				<label/>
+				<button label="&auth.quit_prompt;" accesskey="&auth.quit_prompt.key;" command="cmd_close_window"/>
+			</row>
+		</rows>
+	</grid>
+	<progressmeter id="auth_meter" mode="normal" value="0"/>
+</groupbox>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="auth_keys">
+	<key id="auth-login-key" modifiers="accel" key="S" command="cmd_login"/>
+	<key id="auth-logoff-key" modifiers="accel" key="L" command="cmd_logoff"/>
+	<key id="auth-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+</keyset>
+
+</overlay>
