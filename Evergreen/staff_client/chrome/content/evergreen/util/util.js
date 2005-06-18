@@ -213,6 +213,7 @@ function interval_to_seconds ( $interval ) {
         return $amount;
 }
 
+/*
 function debug() {
 	var s = '';
 	for (var i = 0; i < arguments.length; i++) {
@@ -220,7 +221,7 @@ function debug() {
 	}
 	//dump('debug:' + s + '\n');
 }
-
+*/
 
 function counter_init(id) {
 	counter[id] = 0;
