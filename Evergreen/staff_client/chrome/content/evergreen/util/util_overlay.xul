@@ -10,10 +10,10 @@
 		var IAMXUL = true;
 	</script>
 
+	<script src="error.js" />	<!-- more like output handling -->
 	<script src="util.js" />	<!-- miscellaneous scripts.  want to make this empty -->
 	<script src="functional.js" />	<!-- neat use of first-class functions, and some predecessors -->
 	<script src="fm_utils.js" />	<!-- some convenience functions for fieldmapper objects -->
-	<script src="error.js" />	<!-- more like output handling -->
 	<script src="validate.js" />	<!-- some validation functions -->
 	<script src="widgets.js" />	<!-- some convenience functions for XUL/HTML elements.  want to eliminate overlap with webutils -->
 	<script src="populate.js" />	<!-- populate widgets (like menus) with values -->
