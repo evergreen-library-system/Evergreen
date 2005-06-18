@@ -1,7 +1,7 @@
 ILS_DIR=${PWD}/../..
 
-RETRIEVE_FIELDMAPPER=wget http://gapines.org/js/util/fieldmapper.js
-RETRIEVE_ORG_TREE=wget http://gapines.org/js/util/OrgTree.js
+RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js
+RETRIEVE_ORG_TREE=wget -N http://gapines.org/js/util/OrgTree.js
 RETRIEVE_CLIENT_CONFIG=cp ${ILS_DIR}/OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
 
 all: evergreen.xpi
