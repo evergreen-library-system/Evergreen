@@ -1,4 +1,4 @@
-dump('Loading print.js\n');
+sdump('D_TRACE','Loading print.js\n');
 
 function sPrint(s) {
 	//var w = window.open('about:blank','print_win','alwaysLowered,minimizable,resizable,height=100,width=100,sizemode=minimized');
@@ -11,7 +11,7 @@ function sPrint(s) {
 }
 
 function sPrint_old(s) {
-	dump('Printing "' + s + '"\n');
+	sdump('D_PRINT','Printing "' + s + '"\n');
 	//var deck = mw.document.getElementById('main_deck');
 	var iframe = mw.document.getElementById('print_frame');
 	//deck.appendChild(iframe);
@@ -57,7 +57,7 @@ function NSPrint(w)
 	// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
 	// causing an exception to be thrown which we catch here.
 	// Unfortunately this will also consume helpful failures, so add a
-	 	dump('PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
+	 	sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
 	}
 }
 
@@ -78,7 +78,7 @@ function NSPrint2(w) {
 	// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
 	// causing an exception to be thrown which we catch here.
 	// Unfortunately this will also consume helpful failures, so add a
-	 	dump('PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
+	 	sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
 	}
 
 }
@@ -106,7 +106,7 @@ function GetPrintSettings()
        }
      }
    } catch (e) {
-     dump("GetPrintSettings() "+e+"\n");
+     sdump('D_PRINT',"GetPrintSettings() "+e+"\n");
      alert("GetPrintSettings() "+e+"\n");
    }
  

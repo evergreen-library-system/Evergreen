@@ -30,12 +30,8 @@ G['actsc_hash']; // actor::stat_cat
 var mw = G['main_window'];
 var auth_meter_per = 10;
 
-function OpenILS_init() {
-	my_init();
-}
-
-function my_init() {
-	dump('TESTING: auth.js: ' + mw.G['main_test_variable'] + '\n');
+function auth_init() {
+	sdump('D_AUTH','TESTING: auth.js: ' + mw.G['main_test_variable'] + '\n');
 	var np = document.getElementById('name_prompt');
 	np.addEventListener("keypress",handle_keypress,false);
 	np.focus();
@@ -103,7 +99,7 @@ function auth_init_callback(request) {
 		alert('Login failed on auth_init: ' + js2JSON(E)); enable_login_prompts(); return;
 	}
 
-	dump( 'AUTH_INIT: ' + typeof(auth_init) + ' : ' + auth_init + '\n');
+	sdump( 'D_AUTH', 'D_AUTH_INIT: ' + typeof(auth_init) + ' : ' + auth_init + '\n');
 	var name = document.getElementById('name_prompt').value;
 	var pw = document.getElementById('password_prompt').value;
 
@@ -126,7 +122,7 @@ function auth_ses_callback(request) {
 		alert('Login failed on auth_ses: ' + js2JSON(E)); enable_login_prompts(); return;
 	}
 	mw.G.auth_ses = [ auth_ses ];
-	dump( 'AUTH_SES: ' + typeof(mw.G['auth_ses'][0]) + ' : ' + mw.G['auth_ses'][0] + '\n');
+	sdump( 'D_AUTH', 'D_AUTH_SES: ' + typeof(mw.G['auth_ses'][0]) + ' : ' + mw.G['auth_ses'][0] + '\n');
 
 	user_async_request(
 		'open-ils.actor',
@@ -191,7 +187,7 @@ function cst_list_callback(request) {
 	}
 	mw.G.cst_list = cst_list;
 	mw.G.cst_hash = convert_object_list_to_hash( cst_list );
-	dump('cst_list = ' + js2JSON(cst_list) + '\n');
+	sdump('D_AUTH', 'cst_list = ' + js2JSON(cst_list) + '\n');
 
 	user_async_request(
 		'open-ils.search',
@@ -214,7 +210,7 @@ function acpl_list_callback(request) {
 	}
 	mw.G.acpl_list = acpl_list;
 	mw.G.acpl_hash = convert_object_list_to_hash( acpl_list );
-	dump('acpl_list = ' + js2JSON(acpl_list) + '\n');
+	sdump('D_AUTH', 'acpl_list = ' + js2JSON(acpl_list) + '\n');
 
 	user_async_request(
 		'open-ils.search',
@@ -236,7 +232,7 @@ function ccs_list_callback(request) {
 	}
 	mw.G.ccs_list = ccs_list;
 	mw.G.ccs_hash = convert_object_list_to_hash( ccs_list );
-	dump('ccs_list = ' + js2JSON(ccs_list) + '\n');
+	sdump('D_AUTH', 'ccs_list = ' + js2JSON(ccs_list) + '\n');
 
 	user_async_request(
 		'open-ils.search',
@@ -259,8 +255,8 @@ function user_callback(request) {
 	}
 	mw.G.user = user;
 	mw.G.user_ou = user.home_ou();
-	dump("user: " + js2JSON(mw.G['user']) + '\n');
-	dump("user_ou: " + js2JSON(mw.G['user_ou']) + '\n');
+	sdump('D_AUTH', "user: " + js2JSON(mw.G['user']) + '\n');
+	sdump('D_AUTH', "user_ou: " + js2JSON(mw.G['user_ou']) + '\n');
 	/*user_async_request(
 		'open-ils.search',
 		'open-ils.search.actor.org_tree.retrieve',
@@ -316,7 +312,7 @@ function my_orgs_callback(request) {
 
 	mw.G.my_orgs = my_orgs;
 	mw.G.my_orgs_hash = convert_object_list_to_hash( my_orgs );
-	dump('my_orgs = ' + js2JSON(my_orgs) + '\n');
+	sdump('D_AUTH','my_orgs = ' + js2JSON(my_orgs) + '\n');
 	mw.G.acpl_my_orgs = filter_list( 
 		mw.G.acpl_list, 
 		function (obj) {
@@ -325,7 +321,7 @@ function my_orgs_callback(request) {
 		}
 	);
 	mw.G.acpl_my_orgs_hash = convert_object_list_to_hash( mw.G.acpl_my_orgs );
-	//dump('my_orgs.length = ' + mw.G.my_orgs.length + '   other_orgs.length = ' + mw.G.other_orgs.length + '\n');
+	//sdump('D_AUTH', 'my_orgs.length = ' + mw.G.my_orgs.length + '   other_orgs.length = ' + mw.G.other_orgs.length + '\n');
 
 	user_async_request(
 		'open-ils.circ',
@@ -348,7 +344,7 @@ function my_actsc_list_callback(request) {
 	}
 	mw.G.actsc_list = actsc_list;
 	mw.G.actsc_hash = convert_object_list_to_hash( actsc_list );
-	dump('actsc_list = ' + js2JSON(actsc_list) + '\n');
+	sdump('D_AUTH', 'actsc_list = ' + js2JSON(actsc_list) + '\n');
 
 	document.getElementById('auth_meter').value += auth_meter_per;
 
@@ -386,36 +382,3 @@ function nice_shutdown() {
 	window.close();
 }
 
-function test_mvc () {
-	var w = new_window('chrome://evergreen/content/blank.xul');
-	w.title = 'testing';
-	w.addEventListener('load',test_mvc2,false);
-}
-
-function test_mvc2(ev) {
-
-	// Model
-
-	var cm = user_request(
-		'open-ils.search',
-		'open-ils.search.asset.copy.batch.retrieve',
-		[ [2] ]
-	)[0][0];
-	dump('cm = ' + js2JSON(cm) + '\n');
-	
-	// View
-
-	var cv = new CopyDisplayXULView();
-
-	var doc = ev.target;
-	var cnv = doc.getElementById('canvas');
-	cv.canvas( cnv );
-
-	// Controller
-
-	var cc = new CopyController();
-	cc.add_view(cv);
-	cc.add_model(cm);
-
-	cc.render_active_view();
-}

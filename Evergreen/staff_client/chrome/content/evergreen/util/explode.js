@@ -1,4 +1,4 @@
-dump('Loading explode.js\n');
+sdump('D_TRACE','Loading explode.js\n');
 var EXPLODE = {};
 
 function explode_aou(id) {
@@ -15,53 +15,53 @@ EXPLODE.ap = explode_ap;
 EXPLODE.au_profile = explode_ap;
 
 function magic_field_edit( ev, otype, o_id, field, explode ) {
-	dump('\nIn magic_field_edit\n')
+	sdump('D_TRACE','\nIn magic_field_edit\n')
 	var target = ev.target;
-	dump('\ttarget = ' + target + '\n');
-	dump('\totype = ' + otype + '\n');
-	dump('\tfield = ' + field + '\n');
+	sdump('D_EXPLODE','\ttarget = ' + target + '\n');
+	sdump('D_EXPLODE','\totype = ' + otype + '\n');
+	sdump('D_EXPLODE','\tfield = ' + field + '\n');
 	var value = target.value;
-	dump('\tvalue = ' + value + '\n');
-	dump('\texplode = ' + explode + '\n');
+	sdump('D_EXPLODE','\tvalue = ' + value + '\n');
+	sdump('D_EXPLODE','\texplode = ' + explode + '\n');
 	try {
 		if (explode) {
 			var command = ( 'value = EXPLODE.' + otype + '_' + field + '(' + value + ');' );
-			dump('\tcommand = ' + command + '\n');
+			sdump('D_EXPLODE','\tcommand = ' + command + '\n');
 			eval( command );
 		}
 	} catch(E) {
-		dump( '\tNo EXPLODE.' + otype + '_' + field + '() defined\n' );
+		sdump('D_EXPLODE', '\tNo EXPLODE.' + otype + '_' + field + '() defined\n' );
 	}
-	dump('\tvalue = ' + value + '\n');
-	dump('\t' + otype + '_id = ' + o_id + '\n');
+	sdump('D_EXPLODE','\tvalue = ' + value + '\n');
+	sdump('D_EXPLODE','\t' + otype + '_id = ' + o_id + '\n');
 	// ######## method 1, node in element
 	var row = document.getElementById( otype + o_id );
 	if (row) {
 		var node = JSON2js(row.getAttribute('node'));
-		dump('\telem: original node = ' + js2JSON(node) + '\n');
+		sdump('D_EXPLODE','\telem: original node = ' + js2JSON(node) + '\n');
 		var command = ( 'node.' + field + '(' + js2JSON(value) + ');');
 		eval(command);
 		var command2 = ( 'node.ischanged("1");');
 		eval(command2);
-		dump('\telem:    after edit = ' + js2JSON(node) + '\n');
+		sdump('D_EXPLODE','\telem:    after edit = ' + js2JSON(node) + '\n');
 		row.setAttribute('node',js2JSON(node));
 	} else {
-		dump('\tCould not find containing element with id = ' + otype + o_id + '\n');
+		sdump('D_EXPLODE','\tCould not find containing element with id = ' + otype + o_id + '\n');
 	}
 	// ######## method 2, node in hash
 	try {
 		var myhash = eval('hash_'+otype);
 		if (typeof(myhash) == 'object') {
 			if (! myhash[o_id] ) { myhash[o_id] = eval('new ' + otype + '();'); }
-			dump('\thash: original node = ' + js2JSON(myhash[o_id]) + '\n');
+			sdump('D_EXPLODE','\thash: original node = ' + js2JSON(myhash[o_id]) + '\n');
 			var command = ('myhash[o_id].' + field + '(' + js2JSON(value) + ');');
 			eval(command);
 			var command2 = ( 'myhash[o_id].ischanged("1");');
 			eval(command2);
-			dump('\thash:    after edit = ' + js2JSON(myhash[o_id]) + '\n');
+			sdump('D_EXPLODE','\thash:    after edit = ' + js2JSON(myhash[o_id]) + '\n');
 		}
 	} catch(E) {
-		dump('magic_field_edit: ' + js2JSON(E) + '\n');
+		sdump('D_EXPLODE','magic_field_edit: ' + js2JSON(E) + '\n');
 	}
 }
 

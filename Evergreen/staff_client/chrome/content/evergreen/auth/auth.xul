@@ -9,7 +9,7 @@
 
 <window id="auth_win" title="&auth.title;" 
 	orient="vertical" style="overflow: auto"  persist="width height"
-	onload="OpenILS_init('login');"
+	onload="OpenILS_init('auth');"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- More Localization -->

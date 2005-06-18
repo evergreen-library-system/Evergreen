@@ -4,6 +4,19 @@ var timer = {};
 var counter = {};
 var treeitem_id = 0;
 
+function sdump(level,msg) {
+	var D_TRACE = true;
+	var D_AUTH = false;
+	var D_UTIL = false;
+	var D_EXPLODE = false;
+	var D_PRINT = false;
+	var D_SES = false;
+	try {
+		if (eval(level))
+			debug(msg);
+	} catch(E) {}
+}
+
 function snd_bad() {
 	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/redalert.wav') );
 }
@@ -63,10 +76,10 @@ function string_to_array(s) {
 
 function textbox_checkdigit(ev) {
 	if ( check_checkdigit( ev.target.value ) ) {
-		dump('success\n');
+		sdump('D_UTIL', 'success\n');
 		return true;
 	} else {
-		dump('failure\n');
+		sdump('D_UTIL', 'failure\n');
 		ev.preventDefault();
 		ev.stopPropagation();
 		return false;
@@ -78,36 +91,36 @@ function check_checkdigit(barcode) {
 	var stripped_barcode = barcode.slice(0,-1);
 	var checkdigit = barcode.slice(-1);
 
-	dump('\n\n=-=***=-=\n\ncheck_checkdigit: barcode = ' + barcode + ' barcode stripped = ' + stripped_barcode + ' checkdigit = ' + checkdigit + '\n');
+	sdump('D_UTIL', '\n\n=-=***=-=\n\ncheck_checkdigit: barcode = ' + barcode + ' barcode stripped = ' + stripped_barcode + ' checkdigit = ' + checkdigit + '\n');
 
 	var sum = 0; var mul = 2;
 
 	var b_array = string_to_array( stripped_barcode ).reverse();
-	dump( '\tb_array = ' + b_array + '\n');
+	sdump('D_UTIL', '\tb_array = ' + b_array + '\n');
 
 	for (var i in b_array) {
 		var digit = parseInt( b_array[i] );
-		dump('\t\tdigit = ' + digit + '\n');
+		sdump('D_UTIL', '\t\tdigit = ' + digit + '\n');
 
 		var product = digit * mul;
 		if (mul == 2) { mul = 1; } else { mul = 2; }
 
 		var p_array = string_to_array( product.toString() );
-		dump( '\t\tp_array = ' + p_array + '\n');
+		sdump('D_UTIL', '\t\tp_array = ' + p_array + '\n');
 
 		for (var j in p_array) { 
 			var n = parseInt( p_array[j] );
-			dump('\t\t\tn = ' + n + '\n');
+			sdump('D_UTIL', '\t\t\tn = ' + n + '\n');
 			sum += n;
 		}
 	}
 
-	dump('\tsum = ' + sum + '\n');
+	sdump('D_UTIL', '\tsum = ' + sum + '\n');
 
 	var s_array = string_to_array( sum.toString() );
 	var calculated_checkdigit = s_array.pop();
 	if (calculated_checkdigit > 0) calculated_checkdigit = 10 - calculated_checkdigit;
-	dump('\tcalculated checkdigit = ' + calculated_checkdigit + '\n\n=-=***=-=\n\n');
+	sdump('D_UTIL', '\tcalculated checkdigit = ' + calculated_checkdigit + '\n\n=-=***=-=\n\n');
 
 	return ( calculated_checkdigit == checkdigit );
 }
@@ -117,34 +130,34 @@ function fake_tab_for_textboxes(w,current) {
 	if (typeof(w)!='object') {
 		w = document.getElementById(w);
 	}
-	dump('fake_tab_for_textboxes: Current ' + current + '\n');
+	sdump('D_UTIL', 'fake_tab_for_textboxes: Current ' + current + '\n');
 	var nl = w.getElementsByTagName('textbox');
 	//var nl = document.getElementsByTagName('textbox');
-	dump('fake_tab_for_textboxes: nl.length = ' + nl.length + '\n');
+	sdump('D_UTIL', 'fake_tab_for_textboxes: nl.length = ' + nl.length + '\n');
 	for (var i = 0; i < nl.length; i++) {
-		dump('fake_tab_for_textboxes: Considering ' + nl[i] + '...\n');
+		sdump('D_UTIL', 'fake_tab_for_textboxes: Considering ' + nl[i] + '...\n');
 		if (flag && !next_one) {
-			dump('fake_tab_for_textboxes: Setting next_one ' + nl[i] + '\n');	
+			sdump('D_UTIL', 'fake_tab_for_textboxes: Setting next_one ' + nl[i] + '\n');	
 			next_one = nl[i];
 		}
 		if (nl[i] === current) {
-			dump('fake_tab_for_textboxes: Found current\n');
+			sdump('D_UTIL','fake_tab_for_textboxes: Found current\n');
 			flag = true;
 		}
 	}
 	if (!next_one) {
-		dump('fake_tab_for_textboxes: Out of loop, Setting next_one ' + nl[0] + '\n');	
+		sdump('D_UTIL','fake_tab_for_textboxes: Out of loop, Setting next_one ' + nl[0] + '\n');	
 		next_one = nl[0];
 	}
 	if (next_one) {
 		next_one.focus(); next_one.select();
 	} else {
-		dump('fake_tab_for_textboxes: next_one not set\n');
+		sdump('D_UTIL','fake_tab_for_textboxes: next_one not set\n');
 	}
 }
 
 function get_list_from_tree_selection(tree_w) {
-	dump('entering get_list_from_tree...\n');
+	sdump('D_UTIL','entering get_list_from_tree...\n');
 	var hitlist;
 	if (typeof(tree_w) != 'object') {
 		hitlist = document.getElementById(tree_w);
@@ -159,11 +172,11 @@ function get_list_from_tree_selection(tree_w) {
 		hitlist.view.selection.getRangeAt(t,start,end);
 		for (var v=start.value; v<=end.value; v++){
 			var i = hitlist.contentView.getItemAtIndex(v);
-			//dump(i.tagName + '\n');
+			//sdump('D_UTIL',i.tagName + '\n');
 			list.push( i );
 		}
 	}
-	dump('leaving get_list_from_tree...\n');
+	sdump('D_UTIL','leaving get_list_from_tree...\n');
 	return list;
 }
 
@@ -219,7 +232,7 @@ function debug() {
 	for (var i = 0; i < arguments.length; i++) {
 		s = s + arguments[i];
 	}
-	//dump('debug:' + s + '\n');
+	//sdump('D_UTIL','debug:' + s + '\n');
 }
 */
 
@@ -315,12 +328,12 @@ function pretty_print(s) {
 function enable_widgets() {
 	for (var i = 0; i < arguments.length; i++) {
 		if (typeof(arguments[i]) == 'object') {
-			dump(arguments[i] + '.disabled = false;\n');
+			sdump('D_UTIL',arguments[i] + '.disabled = false;\n');
 			arguments[i].disabled = false;
 		} else {
 			var w = document.getElementById( arguments[i] );
 			if (w) { 
-				dump(w + '.disabled = false;\n');
+				sdump('D_UTIL',w + '.disabled = false;\n');
 				w.disabled = false; 
 			}
 		}
@@ -330,12 +343,12 @@ function enable_widgets() {
 function disable_widgets() {
 	for (var i = 0; i < arguments.length; i++) {
 		if (typeof(arguments[i]) == 'object') {
-			dump(arguments[i] + '.disabled = true;\n');
+			sdump('D_UTIL',arguments[i] + '.disabled = true;\n');
 			arguments[i].disabled = true;
 		} else {
 			var w = document.getElementById( arguments[i] );
 			if (w) { 
-				dump(w + '.disabled = true;\n');
+				sdump('D_UTIL',w + '.disabled = true;\n');
 				w.disabled = true; 
 			}
 		}
@@ -353,13 +366,13 @@ function focus_widget(e) {
 
 function empty_widget(e) {
 	if (typeof(e) != 'object') { e = document.getElementById(e); }
-	if (typeof(e) != 'object') { dump('Failed on empty_widget\n'); return; }
+	if (typeof(e) != 'object') { sdump('D_UTIL','Failed on empty_widget\n'); return; }
 	while (e.lastChild) { e.removeChild(e.lastChild); }
 }
 
 function empty_listbox(e) {
 	if (typeof(e) != 'object') { e = document.getElementById(e); }
-	if (typeof(e) != 'object') { dump('Failed on empty_listbox\n'); return; }
+	if (typeof(e) != 'object') { sdump('D_UTIL','Failed on empty_listbox\n'); return; }
 	var nl = e.getElementsByTagName('listitem');
 	for (var i = 0; i < nl.length; i++) {
 		e.removeChild(nl[i]);
@@ -368,13 +381,13 @@ function empty_listbox(e) {
 
 function swap_attributes(e,a1,a2) {
 	if (typeof(e) != 'object') { e = document.getElementById(e); }
-	if (typeof(e) != 'object') { dump('Failed on swap_attributes\n'); return; }
+	if (typeof(e) != 'object') { sdump('D_UTIL','Failed on swap_attributes\n'); return; }
 	var a1_v = e.getAttribute(a1);
 	var a2_v = e.getAttribute(a2);
 	e.setAttribute(a1,a2_v);
 	e.setAttribute(a2, a1_v);
-	dump('before: a1 = ' + a1_v + ' a2 = ' + a2_v + ' and ');
-	dump('after: a1 = ' + a2_v + ' a2 = ' + a1_v + '\n');
+	sdump('D_UTIL','before: a1 = ' + a1_v + ' a2 = ' + a2_v + ' and ');
+	sdump('D_UTIL','after: a1 = ' + a2_v + ' a2 = ' + a1_v + '\n');
 }
 
 function cycle_attribute(e,a,v) {
@@ -387,11 +400,11 @@ function cycle_attribute(e,a,v) {
 
 		var toggle = e.getAttribute(a);
 		var next_one = false;
-		dump('cycling ' + a + ' on ' + e.getAttribute('id') + ' to ');
+		sdump('D_UTIL','cycling ' + a + ' on ' + e.getAttribute('id') + ' to ');
 		for (var i = 0; i < v.length; i++) {
 			if (next_one) {
 				e.setAttribute(a,v[i]);
-				dump(v[i] + '\n');
+				sdump('D_UTIL',v[i] + '\n');
 				return v[i];
 			}
 			if (toggle == v[i]) {
@@ -400,14 +413,14 @@ function cycle_attribute(e,a,v) {
 		}
 		if (next_one) {
 			e.setAttribute(a,v[0]);
-			dump(v[0] + '\n');
+			sdump('D_UTIL',v[0] + '\n');
 			return v[0];
 		} else {
 			throw('current value not in list');
 		}
 	} catch(E) {
-		dump('cycle_attribute error: ' + js2JSON(E) + '\n');
-		dump('null\n');
+		sdump('D_UTIL','cycle_attribute error: ' + js2JSON(E) + '\n');
+		sdump('D_UTIL','null\n');
 		return null;
 	}
 }
@@ -429,7 +442,7 @@ function radio_checkbox(ev) {
                 }
 		target.checked = true;
 	} else {
-		dump('radio_checkbox: Checkbox must have a group attribute to find peers');
+		sdump('D_UTIL','radio_checkbox: Checkbox must have a group attribute to find peers');
 	}
 }
 
@@ -442,7 +455,7 @@ function toggle_hidden_grid_rows(grid) {
 	for (var r = 0; r < rows.childNodes.length; r++ ) {
 		var row = rows.childNodes[r];
 		if (typeof(row) == 'object') {
-			//dump('toggle row = ' + row + '\n');
+			//sdump('D_UTIL','toggle row = ' + row + '\n');
 			var hidden = row.getAttribute('hidden');
 			if (hidden == 'true') {
 				row.setAttribute('hidden','false');
@@ -473,14 +486,14 @@ function xul_setAttributes(el,attrs) {
 function append_treeitem() {
 	var id = arguments[0];
 	var treechildren = document.getElementById(id);
-	if (!treechildren) { dump('No ' + id + ' to append to\n'); return; }
+	if (!treechildren) { sdump('D_UTIL','No ' + id + ' to append to\n'); return; }
 	var treeitem = document.createElement('treeitem'); treechildren.appendChild(treeitem);
 	var treerow = document.createElement('treerow'); treeitem.appendChild(treerow);
 	for (var i = 1; i < arguments.length ; i++ ) {
 		var treecell = document.createElement('treecell'); treerow.appendChild(treecell);
 		treecell.setAttribute('label',arguments[i]);
 			treecell.setAttribute('id', 'treeitem_' + treeitem_id + '_' + i);
-		//dump('treecell.label = ' + arguments[i] + '\n');
+		//sdump('D_UTIL','treecell.label = ' + arguments[i] + '\n');
 	}
 	return treeitem_id++;
 }
@@ -556,32 +569,32 @@ function get_my_orgs(user_ou) {
 
 	// self and ancestors
 	var current_item_id = user_ou.id();
-	//dump('mw.G[user_ou] = ' + js2JSON(mw.G['user_ou']) + '\n');
-	//dump('current_item_id = ' + current_item_id + '\n');
+	//sdump('D_UTIL','mw.G[user_ou] = ' + js2JSON(mw.G['user_ou']) + '\n');
+	//sdump('D_UTIL','current_item_id = ' + current_item_id + '\n');
 	var item_ou; var my_orgs = {}; var other_orgs = {};
 	while( item_ou = find_ou(mw.G['org_tree'],current_item_id) ) {
-		//dump('\titem_ou = ' + js2JSON(item_ou) + '\n');
+		//sdump('D_UTIL','\titem_ou = ' + js2JSON(item_ou) + '\n');
 		my_orgs[ item_ou.id() ] = item_ou;
 		current_item_id = item_ou.parent_ou();
 		if (!current_item_id) { break; }
 	}
 
         current_item_id = user_ou.id();
-	//dump('self & ancestors : my_orgs = <<<'+js2JSON(my_orgs)+'>>>\n');
+	//sdump('D_UTIL','self & ancestors : my_orgs = <<<'+js2JSON(my_orgs)+'>>>\n');
 	// descendants
 	var my_children;
         var find_ou_result = find_ou(mw.G['org_tree'],current_item_id);
 	if (find_ou_result) { 
 		my_children = find_ou_result.children() } 
 	else {
-		dump('ERROR: find_ou(org_tree,'+current_item_id+') returned with no properties\n');
+		sdump('D_UTIL','ERROR: find_ou(org_tree,'+current_item_id+') returned with no properties\n');
 	};
-	//dump('my_children: ' + my_children + ' : ' + js2JSON(my_children) + '\n');
+	//sdump('D_UTIL','my_children: ' + my_children + ' : ' + js2JSON(my_children) + '\n');
         if (my_children) {
                 for (var i = 0; i < my_children.length; i++) {
                         var my_child = my_children[i];
                         my_orgs[ my_child.id() ] = my_child;
-			//dump('my_child.children(): ' + my_child.children() + ' : ' + js2JSON(my_child.children()) + '\n');
+			//sdump('D_UTIL','my_child.children(): ' + my_child.children() + ' : ' + js2JSON(my_child.children()) + '\n');
 			if (my_child.children() != null) {
                         	for (var j = 0; j < my_child.children().length; j++) {
 					var my_gchild = my_child.children()[j];
@@ -590,7 +603,7 @@ function get_my_orgs(user_ou) {
 			}
                 }
         }
-	//dump('& descendants : my_orgs = <<<'+js2JSON(my_orgs)+'>>>\n');
+	//sdump('D_UTIL','& descendants : my_orgs = <<<'+js2JSON(my_orgs)+'>>>\n');
 	return my_orgs;
 }
 
@@ -598,7 +611,7 @@ function get_other_orgs(org,other_orgs) {
 }
 
 function flatten_ou_branch(branch) {
-	//dump('flatten: branch = ' + js2JSON(branch) + '\n');
+	//sdump('D_UTIL','flatten: branch = ' + js2JSON(branch) + '\n');
 	var my_array = new Array();
 	my_array.push( branch );
 	for (var i in branch.children() ) {
@@ -683,7 +696,7 @@ function convert_object_list_to_hash(list) {
 }
 
 function find_id_object_in_list(list,id) {
-	//dump('find_id_object_in_list(' + js2JSON(list).substr(0,20) + '... ,' + id + ')\n');
+	//sdump('D_UTIL','find_id_object_in_list(' + js2JSON(list).substr(0,20) + '... ,' + id + ')\n');
 	if (list) {
 		for (var i = 0; i < list.length; i++ ) {
 			try {
@@ -691,25 +704,25 @@ function find_id_object_in_list(list,id) {
 					return list[i];
 				}
 			} catch(E) {
-				dump('find_id_object_in_list error, i = ' + i + '  typeof(list[i]) = ' + typeof(list[i]) + '  list[i] = ' + js2JSON(list[i]) + ' : ' + js2JSON(E) + '\n');
+				sdump('D_UTIL','find_id_object_in_list error, i = ' + i + '  typeof(list[i]) = ' + typeof(list[i]) + '  list[i] = ' + js2JSON(list[i]) + ' : ' + js2JSON(E) + '\n');
 			}
 		}
 	}
-	//dump('not found\n');
+	//sdump('D_UTIL','not found\n');
 	return null;
 }
 
 function find_attr_object_in_list(list,attr,value) {
 	if (list) {
 		for (var i = 0; i < list.length; i++ ) {
-			dump('find_attr_object_in_list: i = ' + i + '  id = ' + list[i].id() + '\n');
+			sdump('D_UTIL','find_attr_object_in_list: i = ' + i + '  id = ' + list[i].id() + '\n');
 			try {
 				var command = 'list[' + i + '].'+attr+'() == ' + value;
 				if ( eval(command) ) {
 					return list[i];
 				}
 			} catch(E) {
-				dump('find_attr_object_in_list error, i = ' + i + '  typeof(list[i]) = ' + typeof(list[i]) + '  list[i] = ' + js2JSON(list[i]) + ' :   list = ' + js2JSON(list) + ' : ' + js2JSON(E) + '\n');
+				sdump('D_UTIL','find_attr_object_in_list error, i = ' + i + '  typeof(list[i]) = ' + typeof(list[i]) + '  list[i] = ' + js2JSON(list[i]) + ' :   list = ' + js2JSON(list) + ' : ' + js2JSON(E) + '\n');
 			}
 		}
 	}
@@ -730,14 +743,14 @@ function find_ou_by_shortname(tree,sn) {
 }
 
 function populate_listbox_with_local_stat_cats_myself(local_stat_cats,local_cat_entries,listbox,libs,app,method,editable) {
-	dump('populate_local_stat_cats: pertinent libs = ' + js2JSON(libs) + '\n');
+	sdump('D_UTIL','populate_local_stat_cats: pertinent libs = ' + js2JSON(libs) + '\n');
 
 	local_stat_cats = user_request(
 		app,
 		method,
 		[ mw.G.auth_ses[0], libs ]
 	)[0];
-	//dump('local_stat_cats = ' + pretty_print( js2JSON( local_stat_cats ) ) + '\n');
+	//sdump('D_UTIL','local_stat_cats = ' + pretty_print( js2JSON( local_stat_cats ) ) + '\n');
 
 	var list = listbox;
 	if (typeof list != 'object') list = document.getElementById(list);
@@ -749,28 +762,28 @@ function populate_listbox_with_local_stat_cats_myself(local_stat_cats,local_cat_
 		var listitem = document.createElement('listitem'); 
 		list.appendChild(listitem);
 		listitem.setAttribute('allowevents','true');
-		dump('listitem = ' + listitem + '\n');
+		sdump('D_UTIL','listitem = ' + listitem + '\n');
 
 			var label = document.createElement('listcell'); 
 			listitem.appendChild(label);
 			label.setAttribute('label',stat_cat.name() );
-			dump('\tlistcell = ' + label + '\n');
+			sdump('D_UTIL','\tlistcell = ' + label + '\n');
 
 			var menucell = document.createElement('listcell'); 
 			listitem.appendChild(menucell);
-			dump('\tlistcell = ' + menucell + '\n');
+			sdump('D_UTIL','\tlistcell = ' + menucell + '\n');
 
 				var menulist = document.createElement('menulist');
 				menucell.appendChild(menulist);
 				if (editable) { menulist.setAttribute('editable','true'); }
 				menulist.setAttribute('id','menulist_stat_cat_'+stat_cat.id());
-				dump('\tmenulist = ' + menulist + '\n');
+				sdump('D_UTIL','\tmenulist = ' + menulist + '\n');
 
 					var menupopup = document.createElement('menupopup');
 					menulist.appendChild(menupopup);
 					menupopup.setAttribute('stat_cat',stat_cat.id());
 					menupopup.setAttribute('oncommand','apply_attribute(event);');
-					dump('\t\tmenupopup = ' + menupopup + '\n');
+					sdump('D_UTIL','\t\tmenupopup = ' + menupopup + '\n');
 
 		for (var j in stat_cat.entries() ) {
 
@@ -787,25 +800,25 @@ function populate_listbox_with_local_stat_cats_myself(local_stat_cats,local_cat_
 			}
 			menuitem.setAttribute('stat_cat',stat_cat.id());
 			menuitem.setAttribute('id','menuitem_stat_cat_entry_' + stat_entry.id());
-			dump('\t\t\tmenuitem = ' + menuitem + '\n');
+			sdump('D_UTIL','\t\t\tmenuitem = ' + menuitem + '\n');
 
 		}
 
 	}
 
-	//dump('local_stat_cat_entries = ' + pretty_print( js2JSON( local_stat_cat_entries ) ) + '\n');
+	//sdump('D_UTIL','local_stat_cat_entries = ' + pretty_print( js2JSON( local_stat_cat_entries ) ) + '\n');
 
 }
 
 function populate_rows_with_local_stat_cats(local_stat_cats,local_stat_cat_entries,rows,editable) {
-	//dump('populate_local_stat_cats: pertinent libs = ' + js2JSON(libs) + '\n');
+	//sdump('D_UTIL','populate_local_stat_cats: pertinent libs = ' + js2JSON(libs) + '\n');
 
 	/*local_stat_cats = user_request(
 		app,
 		method,
 		[ mw.G.auth_ses[0], libs ]
 	)[0];*/
-	//dump('local_stat_cats = ' + pretty_print( js2JSON( local_stat_cats ) ) + '\n');
+	//sdump('D_UTIL','local_stat_cats = ' + pretty_print( js2JSON( local_stat_cats ) ) + '\n');
 
 	if (typeof rows != 'object') rows = document.getElementById(rows);
 
@@ -825,13 +838,13 @@ function populate_rows_with_local_stat_cats(local_stat_cats,local_stat_cat_entri
 		if (editable) { menulist.setAttribute('editable','true'); }
 		menulist.setAttribute('id','menulist_stat_cat_'+stat_cat.id());
 		menulist.setAttribute('stat_cat_id',stat_cat.id());
-		dump('\tmenulist = ' + menulist + '\n');
+		sdump('D_UTIL','\tmenulist = ' + menulist + '\n');
 
 			var menupopup = document.createElement('menupopup');
 			menulist.appendChild(menupopup);
 			menupopup.setAttribute('stat_cat',stat_cat.id());
 			menupopup.setAttribute('command','cmd_apply');
-			dump('\t\tmenupopup = ' + menupopup + '\n');
+			sdump('D_UTIL','\t\tmenupopup = ' + menupopup + '\n');
 
 		for (var j in stat_cat.entries() ) {
 
@@ -848,18 +861,18 @@ function populate_rows_with_local_stat_cats(local_stat_cats,local_stat_cat_entri
 			}
 			menuitem.setAttribute('stat_cat',stat_cat.id());
 			menuitem.setAttribute('id','menuitem_stat_cat_entry_' + stat_entry.id());
-			dump('\t\t\tmenuitem = ' + menuitem + '\n');
+			sdump('D_UTIL','\t\t\tmenuitem = ' + menuitem + '\n');
 
 		}
 
 	}
 
-	//dump('local_stat_cat_entries = ' + pretty_print( js2JSON( local_stat_cat_entries ) ) + '\n');
+	//sdump('D_UTIL','local_stat_cat_entries = ' + pretty_print( js2JSON( local_stat_cat_entries ) ) + '\n');
 
 }
 
 function populate_copy_status_list(menulist,menupopup,defaultccs) {
-	dump('populate_copy_status_list\n');
+	sdump('D_UTIL','populate_copy_status_list\n');
 	var popup = document.getElementById(menupopup);
 
 	if (popup) {
@@ -869,7 +882,7 @@ function populate_copy_status_list(menulist,menupopup,defaultccs) {
 			menuitem.setAttribute('label', mw.G.ccs_list[i].name()); 
 			menuitem.setAttribute('value', mw.G.ccs_list[i].id()); 
 			menuitem.setAttribute('id', 'ccsitem' + mw.G.ccs_list[i].id()); 
-			//dump('pop_ccs_list: i = ' + i + ' ccs = ' + mw.G.ccs_list[i] + ' = ' + js2JSON(mw.G.ccs_list[i]) + '\n');
+			//sdump('D_UTIL','pop_ccs_list: i = ' + i + ' ccs = ' + mw.G.ccs_list[i] + ' = ' + js2JSON(mw.G.ccs_list[i]) + '\n');
 			popup.appendChild(menuitem);
 		}
 		var list = document.getElementById(menulist);
@@ -883,21 +896,21 @@ function populate_copy_status_list(menulist,menupopup,defaultccs) {
 			);
 			var  menulist_e = document.getElementById(menulist);
 			if (menulist_e && menuitem) { 
-				dump('Setting default ccs\n');
+				sdump('D_UTIL','Setting default ccs\n');
 				menulist_e.selectedItem = menuitem; 
 			} else {
-				dump('Not Setting default ccs\n');
+				sdump('D_UTIL','Not Setting default ccs\n');
 			}
 		}
 	} else {
-			dump('populate_copy_status_list: Could not find menupopup: ' + menupopup + '\n');
+			sdump('D_UTIL','populate_copy_status_list: Could not find menupopup: ' + menupopup + '\n');
 			throw('populate_copy_status_list: Could not find menupopup: ' + menupopup + '\n');
 	}
 
 }
 
 function populate_copy_location_list(menulist,menupopup,defaultacpl) {
-	dump('populate_copy_location_list\n');
+	sdump('D_UTIL','populate_copy_location_list\n');
 	var popup = document.getElementById(menupopup);
 
 	if (popup) {
@@ -907,7 +920,7 @@ function populate_copy_location_list(menulist,menupopup,defaultacpl) {
 			menuitem.setAttribute('label', mw.G.acpl_my_orgs[i].name()); 
 			menuitem.setAttribute('value', mw.G.acpl_my_orgs[i].id()); 
 			menuitem.setAttribute('id', 'acplitem' + mw.G.acpl_my_orgs[i].id()); 
-			//dump('populate_copy_location_list: i = ' + i + ' acpl_my_orgs = ' + mw.G.acpl_my_orgs[i] + ' = ' + js2JSON(mw.G.acpl_my_orgs[i]) + '\n');
+			//sdump('D_UTIL','populate_copy_location_list: i = ' + i + ' acpl_my_orgs = ' + mw.G.acpl_my_orgs[i] + ' = ' + js2JSON(mw.G.acpl_my_orgs[i]) + '\n');
 			popup.appendChild(menuitem);
 		}
 		var list = document.getElementById(menulist);
@@ -923,14 +936,14 @@ function populate_copy_location_list(menulist,menupopup,defaultacpl) {
 			if (menulist_e && menuitem) { menulist_e.selectedItem = menuitem; }
 		}
 	} else {
-			dump('populate_copy_location_list: Could not find menupopup: ' + menupopup + '\n');
+			sdump('D_UTIL','populate_copy_location_list: Could not find menupopup: ' + menupopup + '\n');
 			throw('populate_copy_location_list: Could not find menupopup: ' + menupopup + '\n');
 	}
 
 }
 
 function populate_lib_list(menulist,menupopup,defaultlib,id_flag) {
-	dump('populate_lib_list\n');
+	sdump('D_UTIL','populate_lib_list\n');
 	var default_menuitem;
 	if (typeof defaultlib == 'object') {
 		defaultlib = defaultlib.id();	
@@ -938,15 +951,15 @@ function populate_lib_list(menulist,menupopup,defaultlib,id_flag) {
 	var popup = menupopup;
 	if (typeof(popup)!='object') { popup = document.getElementById(menupopup); }
 	if (popup) {
-		//dump('found popup\n');
+		//sdump('D_UTIL','found popup\n');
 		empty_widget(popup);
 		var padding_flag = false;
 		for (var ou in mw.G.my_orgs) {
-			//dump('\tlooping on my_orgs:  ' + js2JSON(mw.G.my_orgs[ou]) + '\n');
-			//dump('\tlooping on my_orgs:  ou = ' + ou + '\n');
+			//sdump('D_UTIL','\tlooping on my_orgs:  ' + js2JSON(mw.G.my_orgs[ou]) + '\n');
+			//sdump('D_UTIL','\tlooping on my_orgs:  ou = ' + ou + '\n');
 			var menuitem = document.createElement('menuitem');
 			popup.appendChild(menuitem);
-			//dump('\t\tmenuitem = ' + menuitem + '\n');
+			//sdump('D_UTIL','\t\tmenuitem = ' + menuitem + '\n');
 			var padding = '';
 			//var depth = find_id_object_in_list( mw.G.aout_list, mw.G.my_orgs[ou].ou_type() ).depth();
 			var depth = mw.G.aout_hash[ mw.G.my_orgs[ou].ou_type() ].depth();
@@ -959,26 +972,26 @@ function populate_lib_list(menulist,menupopup,defaultlib,id_flag) {
 			menuitem.setAttribute('label', padding + mw.G.my_orgs[ou].name() );
 			menuitem.setAttribute('value', mw.G.my_orgs[ou].id() );
 			if (id_flag) menuitem.setAttribute('id', 'libitem' + mw.G.my_orgs[ou].id() );
-			//dump('\tname = ' + mw.G.my_orgs[ou].name() + '  id = ' + mw.G.my_orgs[ou].id() + '\n');
+			//sdump('D_UTIL','\tname = ' + mw.G.my_orgs[ou].name() + '  id = ' + mw.G.my_orgs[ou].id() + '\n');
 			if (defaultlib == mw.G.my_orgs[ou].id()) {
 				default_menuitem = menuitem;
-				dump('Setting defaultlib = ' + defaultlib + '\n');
+				sdump('D_UTIL','Setting defaultlib = ' + defaultlib + '\n');
 			}
 		}
 		var list = menulist;
 		if (typeof(list)!='object') { list = document.getElementById(menulist); }
 		if (list && defaultlib && default_menuitem) {
-			//dump('default_menuitem = ' + default_menuitem + '\n');
+			//sdump('D_UTIL','default_menuitem = ' + default_menuitem + '\n');
 			if (list) { list.selectedItem = default_menuitem; }
 		}
 	} else {
-			dump('populate_lib_list: Could not find ' + menupopup + '\n');
+			sdump('D_UTIL','populate_lib_list: Could not find ' + menupopup + '\n');
 			throw('populate_lib_list: Could not find ' + menupopup + '\n');
 	}
 }
 
 function populate_lib_list_with_branch(menulist,menupopup,defaultlib,branch,id_flag) {
-	dump('populate_lib_list_with_branch\n');
+	sdump('D_UTIL','populate_lib_list_with_branch\n');
 	var default_menuitem;
 	if (typeof defaultlib == 'object') {
 		defaultlib = defaultlib.id();	
@@ -989,9 +1002,9 @@ function populate_lib_list_with_branch(menulist,menupopup,defaultlib,branch,id_f
 		empty_widget(popup);
 		var padding_flag = true;
 		var flat_branch = flatten_ou_branch( branch );
-		//dump('\n\nflat_branch = ' + js2JSON(flat_branch) + '\n');
+		//sdump('D_UTIL','\n\nflat_branch = ' + js2JSON(flat_branch) + '\n');
 		for (var i in flat_branch) {
-			//dump('i = ' + js2JSON(i) + ' flat_branch[i] = ' + js2JSON(flat_branch[i]) + '\n');
+			//sdump('D_UTIL','i = ' + js2JSON(i) + ' flat_branch[i] = ' + js2JSON(flat_branch[i]) + '\n');
 			var menuitem = document.createElement('menuitem');
 			var padding = '';
 			//if (flat_branch[i].ou_type().depth() == '0') { padding_flag = true; }
@@ -1006,25 +1019,25 @@ function populate_lib_list_with_branch(menulist,menupopup,defaultlib,branch,id_f
 			if (id_flag) menuitem.setAttribute('id', 'libitem' + flat_branch[i].id() );
 			if (defaultlib == flat_branch[i].id()) {
 				default_menuitem = menuitem;
-				dump('i = ' + i + ' Setting defaultlib = ' + defaultlib + '   menuitem = ' + default_menuitem + '  value = ' + default_menuitem.getAttribute('value') + '\n');
+				sdump('D_UTIL','i = ' + i + ' Setting defaultlib = ' + defaultlib + '   menuitem = ' + default_menuitem + '  value = ' + default_menuitem.getAttribute('value') + '\n');
 			}
 			popup.appendChild(menuitem);
 		}
 		var list = menulist;
 		if (typeof(list)!='object') { list = document.getElementById(menulist); }
 		if (list && defaultlib && default_menuitem) {
-			//dump('default_menuitem = ' + default_menuitem + ' value = ' + default_menuitem.getAttribute('value') + '\n');
+			//sdump('D_UTIL','default_menuitem = ' + default_menuitem + ' value = ' + default_menuitem.getAttribute('value') + '\n');
 			if (list) { list.selectedItem = default_menuitem; }
 		}
 	} else {
-			dump('populate_lib_list_with_branch: Could not find ' + menupopup + '\n');
+			sdump('D_UTIL','populate_lib_list_with_branch: Could not find ' + menupopup + '\n');
 			throw('populate_lib_list_with_branch: Could not find ' + menupopup + '\n');
 	}
-	dump('\tleaving populate_lib_list_with_branch\n');
+	sdump('D_UTIL','\tleaving populate_lib_list_with_branch\n');
 }
 
 function populate_user_profile(menulist,menupopup,defaultap) {
-	dump('Entering populate_user_profile\n');
+	sdump('D_TRACE','Entering populate_user_profile\n');
 	var popup = document.getElementById(menupopup);
 	if (popup) {
 		empty_widget(popup);
@@ -1033,7 +1046,7 @@ function populate_user_profile(menulist,menupopup,defaultap) {
 			menuitem.setAttribute('label', mw.G.ap_list[i].name()); 
 			menuitem.setAttribute('value', mw.G.ap_list[i].id()); 
 			menuitem.setAttribute('id', 'apitem' + mw.G.ap_list[i].id()); 
-			//dump('pop_ap_list: i = ' + i + ' ap = ' + mw.G.ap_list[i] + ' = ' + js2JSON(mw.G.ap_list[i]) + '\n');
+			//sdump('D_UTIL','pop_ap_list: i = ' + i + ' ap = ' + mw.G.ap_list[i] + ' = ' + js2JSON(mw.G.ap_list[i]) + '\n');
 			popup.appendChild(menuitem);
 		}
 		var list = document.getElementById(menulist);
@@ -1049,13 +1062,13 @@ function populate_user_profile(menulist,menupopup,defaultap) {
 			if (menulist_e) { menulist_e.selectedItem = menuitem; }
 		}
 	} else {
-			dump('populate_user_profile: Could not find menupopup: ' + menupopup + '\n');
+			sdump('D_UTIL','populate_user_profile: Could not find menupopup: ' + menupopup + '\n');
 			throw('populate_user_profile: Could not find menupopup: ' + menupopup + '\n');
 	}
 }
 
 function populate_ident_types(menulist,menupopup,repeatid,defaultcit) {
-	dump('Entering populate_ident_types\n');
+	sdump('D_TRACE','Entering populate_ident_types\n');
 	var popup = document.getElementById(menupopup);
 	if (popup) {
 		empty_widget(popup);
@@ -1064,7 +1077,7 @@ function populate_ident_types(menulist,menupopup,repeatid,defaultcit) {
 			menuitem.setAttribute('label', mw.G.cit_list[i].name()); 
 			menuitem.setAttribute('value', mw.G.cit_list[i].id()); 
 			menuitem.setAttribute('id', 'cit' + repeatid + 'item' + mw.G.cit_list[i].id()); 
-			//dump('pop_cit_list: i = ' + i + ' cit = ' + mw.G.cit_list[i] + ' = ' + js2JSON(mw.G.cit_list[i]) + '\n');
+			//sdump('D_UTIL','pop_cit_list: i = ' + i + ' cit = ' + mw.G.cit_list[i] + ' = ' + js2JSON(mw.G.cit_list[i]) + '\n');
 			popup.appendChild(menuitem);
 		}
 		if (list && defaultcit) {
@@ -1079,7 +1092,7 @@ function populate_ident_types(menulist,menupopup,repeatid,defaultcit) {
 			if (menulist_e) { menulist_e.selectedItem = menuitem; }
 		}
 	} else {
-			dump('populate_ident_types: Could not find menupopup: ' + menupopup + '\n');
+			sdump('D_UTIL','populate_ident_types: Could not find menupopup: ' + menupopup + '\n');
 			throw('populate_ident_types: Could not find menupopup: ' + menupopup + '\n');
 	}
 }
@@ -1176,11 +1189,11 @@ function populate_name_prefix(menulist,menupopup,defaultvalue) {
 				list.value = defaultvalue;
 			}
 		} else {
-			dump('populate_name_prefix: Could not find menulist: ' + menulist + '\n');
+			sdump('D_UTIL','populate_name_prefix: Could not find menulist: ' + menulist + '\n');
 			throw('populate_name_prefix: Could not find menulist: ' + menulist + '\n');
 		}
 	} else {
-			dump('populate_name_prefix: Could not find menupopup: ' + menupopup + '\n');
+			sdump('D_UTIL','populate_name_prefix: Could not find menupopup: ' + menupopup + '\n');
 			throw('populate_name_prefix: Could not find menupopup: ' + menupopup + '\n');
 	}
 
@@ -1239,11 +1252,11 @@ function populate_name_suffix(menulist,menupopup,defaultvalue) {
 				list.value = defaultvalue;
 			}
 		} else {
-			dump('populate_name_suffix: Could not find ' + menulist + '\n');
+			sdump('D_UTIL','populate_name_suffix: Could not find ' + menulist + '\n');
 			throw('populate_name_suffix: Could not find ' + menulist + '\n');
 		}
 	} else {
-			dump('populate_name_suffix: Could not find ' + menupopup + '\n');
+			sdump('D_UTIL','populate_name_suffix: Could not find ' + menupopup + '\n');
 			throw('populate_name_suffix: Could not find ' + menupopup + '\n');
 	}
 

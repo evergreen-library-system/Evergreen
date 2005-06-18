@@ -1,4 +1,4 @@
-dump('Loading xpcom.js\n');
+sdump('TRACE','Loading xpcom.js\n');
 
 function xp_sound_init() {
 	var SOUNDContractID = "@mozilla.org/sound;1";
@@ -25,7 +25,7 @@ function xp_WebNavigation_init(w) {
 			.getInterface(Components.interfaces.nsIWebNavigation);
 		return webNavigation;
 	} catch(E) {
-	 	dump('WEB NAVIGATION EXCEPTION: ' + js2JSON(e) + '\n');
+	 	sdump('TRACE','WEB NAVIGATION EXCEPTION: ' + js2JSON(e) + '\n');
 	}
 }
 

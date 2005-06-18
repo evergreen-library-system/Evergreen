@@ -1,4 +1,4 @@
-dump('Loading win.js\n');
+sdump('D_WIN','Loading win.js\n');
 
 function s_alert(s) {
 	// alert() replacement, intended to stop barcode scanners from "scanning through" the dialog
@@ -20,7 +20,7 @@ function s_alert(s) {
 	// the buttons, which are used if BUTTON_TITLE_IS_STRING is assigned to a
 	// particular button. The last two arguments are for an optional check box.
 	var check = {};
-	dump('s_alert: ' + s);
+	sdump('D_WIN','s_alert: ' + s);
 	promptService.confirmEx(window,"ALERT",
 		s,
 		flags, 
@@ -115,7 +115,7 @@ function close_all_windows() {
 }
 
 function spawn_copy_browser(tab,params) {
-	dump('trying to spawn_copy_browser('+js2JSON(params)+')\n');
+	sdump('D_WIN','trying to spawn_copy_browser('+js2JSON(params)+')\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/cat/browse_list.xul';
 	if (tab) {
@@ -129,7 +129,7 @@ function spawn_copy_browser(tab,params) {
 }
 
 function spawn_batch_copy_editor(tab,params) {
-	dump('trying to spawn_copy_editor(' + params + ')');
+	sdump('D_WIN','trying to spawn_copy_editor(' + params + ')');
 	var w;
 	var chrome = 'chrome://evergreen/content/cat/copy_edit.xul';
 	if (tab) {
@@ -142,7 +142,7 @@ function spawn_batch_copy_editor(tab,params) {
 }
 
 function spawn_marc_editor(tab,params) {
-	dump('trying to spawn_marc_editor('+js2JSON(params)+')\n');
+	sdump('D_WIN','trying to spawn_marc_editor('+js2JSON(params)+')\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/cat/marc.xul';
 	if (tab) {
@@ -157,7 +157,7 @@ function spawn_marc_editor(tab,params) {
 }
 
 function spawn_oclc_import(tab,params) {
-	dump('trying to spawn_marc_editor('+js2JSON(params)+')\n');
+	sdump('D_WIN','trying to spawn_marc_editor('+js2JSON(params)+')\n');
 	// sample TCN: 03715963 
 	try {
 		if (params.tcn.length < 6) {
@@ -196,8 +196,8 @@ function spawn_oclc_import(tab,params) {
 }
 
 function spawn_bill_pay(tab,patron,params) {
-	dump('trying to spawn_bill_pay('+js2JSON(patron)+')\n');
-	dump('barcode: ' + patron.barcode() + '\n');
+	sdump('D_WIN','trying to spawn_bill_pay('+js2JSON(patron)+')\n');
+	sdump('D_WIN','barcode: ' + patron.barcode() + '\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/bill/bill.xul';
 	var params = { 'barcode' : patron.barcode() };
@@ -210,8 +210,8 @@ function spawn_bill_pay(tab,patron,params) {
 }
 
 function spawn_check_out(tab,patron,params) {
-	dump('trying to spawn_check_out('+js2JSON(patron)+')\n');
-	dump('barcode: ' + patron.barcode() + '\n');
+	sdump('D_WIN','trying to spawn_check_out('+js2JSON(patron)+')\n');
+	sdump('D_WIN','barcode: ' + patron.barcode() + '\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/circ/checkout.xul';
 	var params = { 'barcode' : patron.barcode() };
@@ -224,8 +224,8 @@ function spawn_check_out(tab,patron,params) {
 }
 
 function spawn_circ_list(tab,patron,params) {
-	dump('trying to spawn_circ_list('+js2JSON(patron)+')\n');
-	dump('barcode: ' + patron.barcode() + '\n');
+	sdump('D_WIN','trying to spawn_circ_list('+js2JSON(patron)+')\n');
+	sdump('D_WIN','barcode: ' + patron.barcode() + '\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/circ/circ_list.xul';
 	var params = { 'barcode' : patron.barcode() };
@@ -238,8 +238,8 @@ function spawn_circ_list(tab,patron,params) {
 }
 
 function spawn_patron_edit(tab,patron,params) {
-	dump('trying to spawn_patron_edit('+js2JSON(patron)+')\n');
-	dump('barcode: ' + patron.barcode() + '\n');
+	sdump('D_WIN','trying to spawn_patron_edit('+js2JSON(patron)+')\n');
+	sdump('D_WIN','barcode: ' + patron.barcode() + '\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	var params = { 'barcode' : patron.barcode() };
