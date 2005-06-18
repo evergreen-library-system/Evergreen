@@ -4,15 +4,18 @@ var timer = {};
 var counter = {};
 var treeitem_id = 0;
 
+var sdump_levels = {
+	'D_TRACE' :  true,
+	'D_AUTH' : false,
+	'D_UTIL' : false,
+	'D_EXPLODE' : false,
+	'D_PRINT' : false,
+	'D_SES' : true
+};
+
 function sdump(level,msg) {
-	var D_TRACE = true;
-	var D_AUTH = false;
-	var D_UTIL = false;
-	var D_EXPLODE = false;
-	var D_PRINT = false;
-	var D_SES = false;
 	try {
-		if (eval(level))
+		if (sdump_levels[level])
 			debug(msg);
 	} catch(E) {}
 }
