@@ -7,6 +7,7 @@ RETRIEVE_CLIENT_CONFIG=cp ${ILS_DIR}/OpenSRF/examples/math_xul_client/math/conte
 all: evergreen.xpi
 	@echo
 	@echo How do makefiles work again?
+	touch application.ini
 
 generated:
 	@echo
