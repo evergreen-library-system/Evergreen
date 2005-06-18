@@ -29,8 +29,6 @@
 		<iframe id="print_frame" flex="1"/>
 		<iframe id="scratch_pad" flex="1"/>
 	</deck>
-	<button id="test" label="testing MVC" oncommand="test_mvc();" accesskey="t"/>
-	<button id="test2" label="testing MVC 2" oncommand="test_mvc2();" accesskey="2"/>
 </box>
 
 <groupbox id="main_groupbox" flex="1">
