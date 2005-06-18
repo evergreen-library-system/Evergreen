@@ -10,23 +10,24 @@
 		var IAMXUL = true;
 	</script>
 
-	<script src="util.js" />
-	<script src="fieldmapper.js" />
-	<script src="OrgTree.js" />
+	<script src="util.js" />	<!-- miscellaneous scripts.  want to make this empty -->
+	<script src="populate.js" />	<!-- populate widgets (like menus) with values -->
+	<script src="fieldmapper.js" /> <!-- our Objects for things like patrons, books, etc.  This is generated. -->
+	<script src="OrgTree.js" />	<!-- our Organization Hierarchy.  This is generated. -->
 
-	<script src="chrome://evergreen/content/Open-ILS/util/webutils.js" />
-	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
-	<script src="chrome://evergreen/content/Open-ILS/util/ex.js" />
+	<script src="chrome://evergreen/content/Open-ILS/util/webutils.js" />		<!-- Bill's grab bag of useful functions.  want to elminate overlap -->
+	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />	<!-- XMLHttpRequest -->
+	<script src="chrome://evergreen/content/Open-ILS/util/ex.js" />			<!-- error/exception handling -->
 
-	<script src="ses.js" />
-	<script src="explode.js" />
-	<script src="win.js" />
-	<script src="xpcom.js" />
-	<script src="print.js" />
+	<script src="ses.js" />		<!-- my wrapper over the OpenSRF communication layer.. Jabber and XMLHttpRequest -->
+	<script src="explode.js" />	<!-- original attempt at linking widgets to data.  Want to use something more OO -->
+	<script src="win.js" />		<!-- window and tab handling -->
+	<script src="xpcom.js" />	<!-- a grab bag of xpcom for things like sound -->
+	<script src="print.js" />	<!-- some xpcom for printing -->
 
-	<script src="chrome://evergreen/content/Open-ILS/util/browser.js" />
+	<script src="chrome://evergreen/content/Open-ILS/util/browser.js" />	<!-- browser detection.. am I not using Mozilla? doh :) -->
 
-	<script src="chrome://evergreen/content/Open-ILS/widgets/Box.js" />
+	<script src="chrome://evergreen/content/Open-ILS/widgets/Box.js" />		<!-- shared code between OPAC and staff client for surveys -->
 	<script src="chrome://evergreen/content/Open-ILS/widgets/ListBox.js" />
 	<script src="chrome://evergreen/content/Open-ILS/widgets/Survey.js" />
 
