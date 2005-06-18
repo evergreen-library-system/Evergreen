@@ -5,9 +5,31 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <util id="util_js">
+
 	<script>
 		var IAMXUL = true;
 	</script>
+
+	<script src="util.js" />
+	<script src="fieldmapper.js" />
+	<script src="OrgTree.js" />
+
+	<script src="chrome://evergreen/content/Open-ILS/util/webutils.js" />
+	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
+	<script src="chrome://evergreen/content/Open-ILS/util/ex.js" />
+
+	<script src="ses.js" />
+	<script src="explode.js" />
+	<script src="win.js" />
+	<script src="xpcom.js" />
+	<script src="print.js" />
+
+	<script src="chrome://evergreen/content/Open-ILS/util/browser.js" />
+
+	<script src="chrome://evergreen/content/widgets/Box.js" />
+	<script src="chrome://evergreen/content/widgets/ListBox.js" />
+	<script src="chrome://evergreen/content/widgets/Survey.js" />
+
 </util>
 
 </overlay>
