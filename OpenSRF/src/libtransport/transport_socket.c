@@ -1,4 +1,4 @@
-#include "opensrf/transport_socket.h"
+#include "transport_socket.h"
 
 
 /*
@@ -34,10 +34,12 @@ int main( char* argc, char** argv ) {
 // returns the socket fd, -1 on error
 int tcp_connect( transport_socket* sock_obj ){
 
+
 	if( sock_obj == NULL ) {
 		fatal_handler( "connect(): null sock_obj" );
 		return -1;
 	}
+
 	struct sockaddr_in remoteAddr, localAddr;
 	struct hostent *hptr;
 	int sock_fd;
@@ -50,7 +52,6 @@ int tcp_connect( transport_socket* sock_obj ){
 		return -1;
 	}
 	#endif
-
 
 
 	// ------------------------------------------------------------------
@@ -131,6 +132,7 @@ int tcp_send( transport_socket* sock_obj, const char* data ){
 }
 
 
+
 int tcp_disconnect( transport_socket* sock_obj ){
 
 	if( sock_obj == NULL ) {
@@ -161,11 +163,11 @@ int tcp_wait( transport_socket* sock_obj, int timeout ){
 		return 0;
 	}
 
+
 	int n = 0; 
 	int retval = 0;
 	char buf[BUFSIZE];
 	int sock_fd = sock_obj->sock_fd;
-
 
 	fd_set read_set;
 
@@ -236,47 +238,11 @@ int tcp_wait( transport_socket* sock_obj, int timeout ){
 #ifdef _ROUTER
 	return n;
 #else
-	return 1;
+	return sock_fd;
 #endif
 
 }
 
-int set_fl( int fd, int flags ) {
-	
-	int val;
-
-	if( (val = fcntl( fd, F_GETFL, 0) ) < 0 ) {
-		fatal_handler("fcntl F_GETFL error");
-		return -1;
-	}
-
-	val |= flags;
-
-	if( fcntl( fd, F_SETFL, val ) < 0 ) {
-		fatal_handler( "fcntl F_SETFL error" );
-		return -1;
-	}
-	return 0;
-}
-	
-int clr_fl( int fd, int flags ) {
-	
-	int val;
-
-	if( (val = fcntl( fd, F_GETFL, 0) ) < 0 ) {
-		fatal_handler("fcntl F_GETFL error" );
-		return -1;
-	}
-
-	val &= ~flags;
-
-	if( fcntl( fd, F_SETFL, val ) < 0 ) {
-		fatal_handler( "fcntl F_SETFL error" );
-		return -1;
-	}
-	return 0;
-}
-	
 
 /*
 int tcp_connected( transport_socket* obj ) {

@@ -1,4 +1,4 @@
-#include "opensrf/transport_session.h"
+#include "transport_session.h"
 
 
 
@@ -172,7 +172,8 @@ int session_connect( transport_session* session,
 		char stanza1[ size1 ]; 
 		memset( stanza1, 0, size1 );
 		sprintf( stanza1, 
-				"<stream:stream version='1.0' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:component:accept' to='%s' from='%s' xml:lang='en'>",
+				"<stream:stream version='1.0' xmlns:stream='http://etherx.jabber.org/streams' "
+				"xmlns='jabber:component:accept' to='%s' from='%s' xml:lang='en'>",
 				username, our_hostname );
 
 		/* send the first stanze */
@@ -212,7 +213,8 @@ int session_connect( transport_session* session,
 		char stanza1[ size1 ]; 
 		memset( stanza1, 0, size1 );
 		sprintf( stanza1, 
-				"<stream:stream to='%s' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>",
+				"<stream:stream to='%s' xmlns='jabber:client' "
+				"xmlns:stream='http://etherx.jabber.org/streams'>",
 			server );
 	
 
@@ -235,20 +237,9 @@ int session_connect( transport_session* session,
 			memset( stanza2, 0, size2 );
 		
 			sprintf( stanza2, 
-					"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><password>%s</password><resource>%s</resource></query></iq>",
+					"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'>"
+					"<username>%s</username><password>%s</password><resource>%s</resource></query></iq>",
 					username, password, resource );
-	
-
-		/*
-		<iq type='set' id='auth2'>
-			<query xmlns='jabber:iq:auth'>
-				<username>bill</username>
-			   <digest>48fc78be9ec8f86d8ce1c39c320c97c21d62334d</digest>
-				<resource>globe</resource>
-			</query>
-		</iq>
-		*/
-	
 	
 			/* server acknowledges our existence, now see if we can login */
 			if( session->state_machine->connecting == CONNECTING_2 ) {
@@ -273,20 +264,9 @@ int session_connect( transport_session* session,
 			memset( stanza2, 0, size2 );
 		
 			sprintf( stanza2, 
-					"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'><username>%s</username><digest>%s</digest><resource>%s</resource></query></iq>",
+					"<iq id='123456789' type='set'><query xmlns='jabber:iq:auth'>"
+					"<username>%s</username><digest>%s</digest><resource>%s</resource></query></iq>",
 					username, hash, resource );
-	
-
-		/*
-		<iq type='set' id='auth2'>
-			<query xmlns='jabber:iq:auth'>
-				<username>bill</username>
-			   <digest>48fc78be9ec8f86d8ce1c39c320c97c21d62334d</digest>
-				<resource>globe</resource>
-			</query>
-		</iq>
-		*/
-	
 	
 			/* server acknowledges our existence, now see if we can login */
 			if( session->state_machine->connecting == CONNECTING_2 ) {
@@ -449,6 +429,15 @@ void endElementHandler( void *session, const xmlChar *name) {
 
 	if( strcmp( name, "message" ) == 0 ) {
 
+
+		/*
+		int			bufsize;
+		xmlChar*		xmlbuf;
+		xmlDocDumpFormatMemory( ses->parser_ctxt->myDoc, &xmlbuf, &bufsize, 0 );
+		debug_handler("endElementHandler SAX Doc:\n%s\n", (char*) xmlbuf );
+		xmlFree(xmlbuf);
+		*/
+
 		/* pass off the message info the callback */
 		if( ses->message_callback ) {
 
@@ -599,7 +588,7 @@ void  parseWarningHandler( void *session, const char* msg, ... ) {
 
 	va_list args;
 	va_start(args, msg);
-	fprintf(stdout, "WARNING");
+	fprintf(stdout, "transport_session XML WARNING");
 	vfprintf(stdout, msg, args);
 	va_end(args);
 	fprintf(stderr, "XML WARNING: %s\n", msg ); 
@@ -609,7 +598,7 @@ void  parseErrorHandler( void *session, const char* msg, ... ){
 
 	va_list args;
 	va_start(args, msg);
-	fprintf(stdout, "ERROR");
+	fprintf(stdout, "transport_session XML ERROR");
 	vfprintf(stdout, msg, args);
 	va_end(args);
 	fprintf(stderr, "XML ERROR: %s\n", msg ); 

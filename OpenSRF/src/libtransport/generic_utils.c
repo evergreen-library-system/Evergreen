@@ -1,8 +1,9 @@
-#include "opensrf/generic_utils.h"
+#include "generic_utils.h"
 #include <stdio.h>
 #include "pthread.h"
 #include <sys/timeb.h>
 
+/*
 void get_timestamp( char buf_36chars[]) {
 
 	struct timeb tb;
@@ -16,25 +17,6 @@ void get_timestamp( char buf_36chars[]) {
 	strcat(buf_36chars,mil);
 	free(localtime);
 }
-
-/*
-double get_timestamp_millis() {
-	struct timeb t;
-	ftime(&t);
-	double time	= ( (int)t.time	+ ( ((double)t.millitm) / 1000 ) );
-	return time;
-}
-	
-
-inline void* safe_malloc( int size ) {
-	void* ptr = (void*) malloc( size );
-	if( ptr == NULL ) 
-		fatal_handler("safe_malloc(): Out of Memory" );
-	memset( ptr, 0, size );
-	return ptr;
-}
-*/
-
 
 static FILE* log_file = NULL;
 static int log_level = -1;
@@ -69,7 +51,6 @@ void fatal_handler( char* msg, ... ) {
 
 	}
 	
-	/* also log to stderr  for ERRORS*/
 	fprintf( stderr, "[%s %d] [%s] ", buf, pid, "ERR " );
 	va_start(args, msg);
 	vfprintf(stderr, msg, args);
@@ -204,6 +185,8 @@ int log_init( int llevel, char* lfile ) {
 	return 1;
 
 }
+
+*/
 
 
 /*
