@@ -7,15 +7,12 @@ int current_strlen; /* XXX need to move this into the function params for thread
 
 object* json_parse_string(char* string) {
 
-	if(string == NULL) {
-		return NULL;
-	}
+	if(string == NULL) return NULL;
 
 	current_strlen = strlen(string);
 
-	if(current_strlen == 0) {
+	if(current_strlen == 0) 
 		return NULL;
-	}
 
 	object* obj = new_object(NULL);
 	unsigned long index = 0;
@@ -74,17 +71,20 @@ int _json_parse_string(char* string, unsigned long* index, object* obj) {
 			status = json_parse_json_array(string, index, obj);			
 			break;
 
+		/* json object */
 		case '{':
 			(*index)++;
 			status = json_parse_json_object(string, index, obj);
 			break;
 
+		/* NULL */
 		case 'n':
 		case 'N':
 			status = json_parse_json_null(string, index, obj);
 			break;
 			
 
+		/* true, false */
 		case 'f':
 		case 'F':
 		case 't':
@@ -92,7 +92,6 @@ int _json_parse_string(char* string, unsigned long* index, object* obj) {
 			status = json_parse_json_bool(string, index, obj);
 			break;
 
-		/* we should never get here */
 		default:
 			if(is_number(c) || c == '.' || c == '-') { /* are we a number? */
 				status = json_parse_json_number(string, index, obj);	
@@ -101,6 +100,7 @@ int _json_parse_string(char* string, unsigned long* index, object* obj) {
 			}
 
 			(*index)--;
+			/* we should never get here */
 			return json_handle_error(string, index, "_json_parse_string() final switch clause");
 	}	
 
@@ -404,8 +404,8 @@ int json_parse_json_string(char* string, unsigned long* index, object* obj) {
 					memcpy(buff, string + (*index), 4);
 
 
-					/* ------------------------------------------------------------------- */
-					/* ------------------------------------------------------------------- */
+					/* ----------------------------------------------------------------------- */
+					/* ----------------------------------------------------------------------- */
 					/* This was taken directly from json-c http://oss.metaparadigm.com/json-c/ */
 					unsigned char utf_out[3];
 					memset(utf_out,0,3);
@@ -433,8 +433,8 @@ int json_parse_json_string(char* string, unsigned long* index, object* obj) {
 						utf_out[2] = 0x80 | (ucs_char & 0x3f);
 						buffer_add(buf, utf_out);
 					}
-					/* ------------------------------------------------------------------- */
-					/* ------------------------------------------------------------------- */
+					/* ----------------------------------------------------------------------- */
+					/* ----------------------------------------------------------------------- */
 
 
 					(*index) += 3;
@@ -627,7 +627,8 @@ int json_handle_error(char* string, unsigned long* index, char* err_msg) {
 		strncpy( buf, string, 59 );
 
 	fprintf(stderr, 
-			"\nError parsing json string at charracter %c (code %d) and index %ld\nMsg:\t%s\nNear:\t%s\n\n", 
+			"\nError parsing json string at charracter %c "
+			"(code %d) and index %ld\nMsg:\t%s\nNear:\t%s\n\n", 
 			string[*index], string[*index], *index, err_msg, buf );
 	return -1;
 }
