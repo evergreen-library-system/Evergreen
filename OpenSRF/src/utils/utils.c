@@ -26,6 +26,43 @@ double get_timestamp_millis() {
 }
 
 
+/* setting/clearing file flags */
+int set_fl( int fd, int flags ) {
+	
+	int val;
+
+	if( (val = fcntl( fd, F_GETFL, 0) ) < 0 ) {
+		fprintf(stderr, "fcntl F_GETFL error");
+		return -1;
+	}
+
+	val |= flags;
+
+	if( fcntl( fd, F_SETFL, val ) < 0 ) {
+		fprintf(stderr, "fcntl F_SETFL error");
+		return -1;
+	}
+	return 0;
+}
+	
+int clr_fl( int fd, int flags ) {
+	
+	int val;
+
+	if( (val = fcntl( fd, F_GETFL, 0) ) < 0 ) {
+		fprintf(stderr, "fcntl F_GETFL error" );
+		return -1;
+	}
+
+	val &= ~flags;
+
+	if( fcntl( fd, F_SETFL, val ) < 0 ) {
+		fprintf( stderr, "fcntl F_SETFL error" );
+		return -1;
+	}
+	return 0;
+}
+
 // ---------------------------------------------------------------------------------
 // Flesh out a ubiqitous growing string buffer
 // ---------------------------------------------------------------------------------
