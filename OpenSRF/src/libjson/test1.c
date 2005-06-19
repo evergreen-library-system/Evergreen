@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "libjson/json.h"
+#include "json.h"
 
 
 int main(int argc, char **argv)

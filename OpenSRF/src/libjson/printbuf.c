@@ -21,9 +21,9 @@
 #include <stdarg.h>
 #include <string.h>
 
-#include "libjson/bits.h"
-#include "libjson/debug.h"
-#include "libjson/printbuf.h"
+#include "bits.h"
+#include "debug.h"
+#include "printbuf.h"
 
 
 struct printbuf* printbuf_new()

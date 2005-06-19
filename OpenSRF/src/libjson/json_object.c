@@ -20,13 +20,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "libjson/debug.h"
-#include "libjson/printbuf.h"
-#include "libjson/linkhash.h"
-#include "libjson/arraylist.h"
-#include "libjson/json_object.h"
-#include "libjson/ossupport.h"
-#include "libjson/json_object_private.h"
+#include "debug.h"
+#include "printbuf.h"
+#include "linkhash.h"
+#include "arraylist.h"
+#include "json_object.h"
+#include "ossupport.h"
+#include "json_object_private.h"
 
 
 /* #define REFCOUNT_DEBUG */
@@ -88,33 +88,41 @@ static int json_escape_str(struct printbuf *pb, char *str)
   do {
     c = str[pos];
     switch(c) {
-    case '\b':
-    case '\n':
-    case '\r':
-    case '\t':
-    case '"':
-      if(pos - start_offset > 0)
-	printbuf_memappend(pb, str + start_offset, pos - start_offset);
-      if(c == '\b') printbuf_memappend(pb, "\\b", 2);
-      else if(c == '\n') printbuf_memappend(pb, "\\n", 2);
-      else if(c == '\r') printbuf_memappend(pb, "\\r", 2);
-      else if(c == '\t') printbuf_memappend(pb, "\\t", 2);
-      else if(c == '"') printbuf_memappend(pb, "\\\"", 2);
+		case '\b':
+		case '\n':
+		case '\r':
+		case '\t':
+		case '"':
+
+			if(pos - start_offset > 0)
+				printbuf_memappend(pb, str + start_offset, pos - start_offset);
+
+			if(c == '\b')			printbuf_memappend(pb, "\\b", 2);
+			else if(c == '\n')	printbuf_memappend(pb, "\\n", 2);
+			else if(c == '\r')	printbuf_memappend(pb, "\\r", 2);
+			else if(c == '\t')	printbuf_memappend(pb, "\\t", 2);
+			else if(c == '"')		printbuf_memappend(pb, "\\\"", 2);
+
       start_offset = ++pos;
       break;
+
     default:
       if(c && c < ' ') {
-	if(pos - start_offset > 0)
-	  printbuf_memappend(pb, str + start_offset, pos - start_offset);
-	sprintbuf(pb, "\\u00%c%c",
-		  json_hex_chars[c >> 4],
-		  json_hex_chars[c & 0xf]);
-	start_offset = ++pos;
+			if(pos - start_offset > 0)
+				printbuf_memappend(pb, str + start_offset, pos - start_offset);
+
+			sprintbuf(pb, "\\u00%c%c",
+				json_hex_chars[c >> 4], json_hex_chars[c & 0xf]);
+
+			start_offset = ++pos;
+
       } else if(c) pos++;
     }
   } while(c);
+
   if(pos - start_offset > 0)
     printbuf_memappend(pb, str + start_offset, pos - start_offset);
+
   return 0;
 }
 

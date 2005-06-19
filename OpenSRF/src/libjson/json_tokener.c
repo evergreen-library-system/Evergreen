@@ -21,15 +21,15 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "libjson/json_tokener.h"
-#include "libjson/bits.h"
-#include "libjson/debug.h"
-#include "libjson/printbuf.h"
-#include "libjson/linkhash.h"
-#include "libjson/arraylist.h"
-#include "libjson/json_object.h"
-#include "libjson/ossupport.h"
-#include "libjson/json_object_private.h"
+#include "json_tokener.h"
+#include "bits.h"
+#include "debug.h"
+#include "printbuf.h"
+#include "linkhash.h"
+#include "arraylist.h"
+#include "json_object.h"
+#include "ossupport.h"
+#include "json_object_private.h"
 
 
 
@@ -231,37 +231,40 @@ static struct json_object* json_tokener_do_parse(struct json_tokener *this)
       }
       break;
 
-    case json_tokener_state_escape_unicode:
-      if(strchr(json_hex_chars, c)) {
-	this->pos++;
-	if(this->pos - start_offset == 4) {
-	  unsigned char utf_out[3];
-	  unsigned int ucs_char =
-	    (hexdigit(*(this->source + start_offset)) << 12) +
-	    (hexdigit(*(this->source + start_offset + 1)) << 8) +
-	    (hexdigit(*(this->source + start_offset + 2)) << 4) +
-	    hexdigit(*(this->source + start_offset + 3));
-	  if (ucs_char < 0x80) {
-	    utf_out[0] = ucs_char;
-	    printbuf_memappend(this->pb, utf_out, 1);
-	  } else if (ucs_char < 0x800) {
-	    utf_out[0] = 0xc0 | (ucs_char >> 6);
-	    utf_out[1] = 0x80 | (ucs_char & 0x3f);
-	    printbuf_memappend(this->pb, utf_out, 2);
-	  } else {
-	    utf_out[0] = 0xe0 | (ucs_char >> 12);
-	    utf_out[1] = 0x80 | ((ucs_char >> 6) & 0x3f);
-	    utf_out[2] = 0x80 | (ucs_char & 0x3f);
-	    printbuf_memappend(this->pb, utf_out, 3);
-	  }
-	  start_offset = this->pos;
-	  state = saved_state;
+	case json_tokener_state_escape_unicode:
+
+		if(strchr(json_hex_chars, c)) {
+			this->pos++;
+
+			if(this->pos - start_offset == 4) {
+				unsigned char utf_out[3];
+				unsigned int ucs_char =
+					(hexdigit(*(this->source + start_offset)) << 12) +
+					(hexdigit(*(this->source + start_offset + 1)) << 8) +
+					(hexdigit(*(this->source + start_offset + 2)) << 4) +
+					hexdigit(*(this->source + start_offset + 3));
+
+				if (ucs_char < 0x80) {
+					utf_out[0] = ucs_char;
+					printbuf_memappend(this->pb, utf_out, 1);
+				} else if (ucs_char < 0x800) {
+					utf_out[0] = 0xc0 | (ucs_char >> 6);
+					utf_out[1] = 0x80 | (ucs_char & 0x3f);
+					printbuf_memappend(this->pb, utf_out, 2);
+				} else {
+					utf_out[0] = 0xe0 | (ucs_char >> 12);
+					utf_out[1] = 0x80 | ((ucs_char >> 6) & 0x3f);
+					utf_out[2] = 0x80 | (ucs_char & 0x3f);
+					printbuf_memappend(this->pb, utf_out, 3);
+				}
+				start_offset = this->pos;
+				state = saved_state;
+				}
+			} else {
+				err = json_tokener_error_parse_string;
+				goto out;
 	}
-      } else {
-	err = json_tokener_error_parse_string;
-	goto out;
-      }
-      break;
+	break;
 
     case json_tokener_state_boolean:
       if(strncasecmp("true", this->source + start_offset,

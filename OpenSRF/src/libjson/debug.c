@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <sys/param.h>
 
-#include "libjson/debug.h"
+#include "debug.h"
 
 
 static int _syslog = 0;

@@ -20,8 +20,8 @@
 #include <string.h>
 #include <strings.h>
 
-#include "libjson/bits.h"
-#include "libjson/arraylist.h"
+#include "bits.h"
+#include "arraylist.h"
 
 
 struct array_list*

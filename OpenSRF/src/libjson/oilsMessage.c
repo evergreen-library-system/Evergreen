@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "libjson/json.h"
+#include "json.h"
 
 
 struct oils_method_struct {

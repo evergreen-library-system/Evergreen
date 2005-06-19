@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "libjson/linkhash.h"
+#include "linkhash.h"
 
 
 void lh_abort(const char *msg, ...)
