@@ -1,9 +1,8 @@
 # $Id$
 
 CFLAGS		+= -g -O2 -Wall -std=gnu99 -D_GNU_SOURCE -D_REENTRANT -I ../../include -fPIC
-LDFLAGS		+= -shared -W1 
-LIB_DIR		= ../../lib
-LDLIBS		+= -L . -ljson -L $(LIB_DIR)
+
+DEST_INCLUDE = libjson
 
 LIB_OBJS 	= debug.o \
 		  linkhash.o \
@@ -14,25 +13,29 @@ LIB_OBJS 	= debug.o \
 
 TESTS		= test1 test2
 
-all: tests lib oils_method
+all: tests  
 
 lib: $(LIB_OBJS)
-	gcc $(LDFLAGS) $(LIB_OBJS) -o $(LIB_DIR)/libjson.so
+	gcc -shared -W1 $(LIB_OBJS) -o $(TMPDIR)/libjson.so
+	mkdir -p $(TMPDIR)/$(DEST_INCLUDE)/
+	cp *.h $(TMPDIR)/$(DEST_INCLUDE)/
+
+install:
+	mkdir -p $(INCLUDE)/$(DEST_INCLUDE)/
+	cp $(TMPDIR)/$(DEST_INCLUDE)/*.h $(INCLUDE)/$(DEST_INCLUDE)/
+	cp $(TMPDIR)/libjson.so $(LIBDIR)/libjson.so
+
 
 tests: $(TESTS)
 
 test1: test1.o lib 
-	gcc $(LDLIBS) test1.o -o test1
+	gcc -ljson $(LD_OPTS) $(LDLIBS) test1.o -o test1
 test2: test2.o lib 
-	gcc $(LDLIBS) test2.o -o test2
-oils_method: oils_method.o lib
-	gcc $(LDLIBS) oils_method.o -o oils_method
+	gcc -ljson $(LD_OPTS) $(LDLIBS) test2.o -o test2
 
-oils_method.o: oils_method.c
-	gcc -c $(CFLAGS) oils_method.c -o oils_method.o
 
 clean:
-	rm -f *.o *~ $(TESTS) $(LIB_DIR)/libjson.so oils_method
+	rm -f *.o *~ $(TESTS) 
 
 cex.o: cex.c 
 debug.o: debug.c 

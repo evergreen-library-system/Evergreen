@@ -1,30 +1,28 @@
 # set this shell variable prior to calling make to run with malloc_check enabled
 #MALLOC_CHECK_=1 # XXX debug only
 
-CC = gcc
-LIB_DIR=../../lib
-UTIL_DIR = ../utils
-CC_OPTS = -fPIC -Wall -O2 -I /usr/include/libxml2 -I /usr/include/libxml2/libxml -I ../../include #-I /home/erickson/cc/libxml2-2.6.16
-EXE_LD_OPTS = -L $(LIB_DIR) -lxml2 -lopensrf_transport 
-LIB_SOURCES = $(UTIL_DIR)/utils.c generic_utils.c transport_socket.c transport_session.c transport_message.c transport_client.c $(UTIL_DIR)/sha.c
+LD_OPTS	+= -lxml2 -lopensrf_transport -lc_utils 
 
-TARGETS=utils.o generic_utils.o transport_socket.o transport_message.o transport_session.o transport_client.o  sha.o
+SOURCES	= generic_utils.c transport_socket.c transport_session.c transport_message.c transport_client.c
+TARGETS	= generic_utils.o transport_socket.o transport_message.o transport_session.o transport_client.o 
+HEADERS	= generic_utils.h transport_socket.h transport_message.h transport_session.h transport_client.h 
 
-all: basic_client component
-
-component: lib
-	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) component.c -o $@
-
-basic_client: lib
-	$(CC) $(CC_OPTS) $(EXE_LD_OPTS) basic_client.c -o $@
-
-
-# --- Libs -----------------------------------------------
+all:  lib
 	
-lib: 
-	$(CC) -c $(CC_OPTS)	$(LIB_SOURCES)  
-	$(CC) -shared -W1 $(LD_OPTS) $(TARGETS) -o $(LIB_DIR)/libopensrf_transport.so
+lib:  $(SOURCES) $(HEADERS)
+	$(CC) -c $(CC_OPTS) $(SOURCES)  
+	$(CC) -shared -W1 $(LD_OPTS) $(TARGETS) -o $(TMPDIR)/libopensrf_transport.so
+	cp $(HEADERS) $(TMPDIR)
+
+
+install:
+	@echo "Installing libopensrf_transport..."
+	cp $(TMPDIR)/libopensrf_transport.so $(LIBDIR)/
+	cp $(HEADERS) $(INCLUDEDIR)/$(OPENSRF)
+#	for h in $(TMPDIR)/$(HEADERS); do
+#		mv $$h $(INCLUDEDIR)/$(OPENSRF);
+#	done
 
 
 clean:
-	/bin/rm -f *.o $(LIB_DIR)/libopensrf_transport.so basic_client component
+	/bin/rm -f *.o basic_client component
