@@ -1,4 +1,4 @@
-#include "opensrf/string_array.h"
+#include "string_array.h"
 
 /*
 int main() {

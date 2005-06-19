@@ -1,5 +1,3 @@
-#include "generic_utils.h"
-
 #include <string.h>
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
@@ -7,6 +5,9 @@
 #include <libxml/tree.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
+
+#include "utils.h"
+#include "logging.h"
 
 #ifndef TRANSPORT_MESSAGE_H
 #define TRANSPORT_MESSAGE_H

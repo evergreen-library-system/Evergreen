@@ -1,4 +1,4 @@
-#include "opensrf/osrf_stack.h"
+#include "osrf_stack.h"
 
 osrf_message* _do_client( osrf_app_session*, osrf_message* );
 osrf_message* _do_server( osrf_app_session*, osrf_message* );

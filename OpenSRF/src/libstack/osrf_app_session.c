@@ -1,4 +1,4 @@
-#include "opensrf/osrf_app_session.h"
+#include "osrf_app_session.h"
 #include <time.h>
 
 /* the global app_session cache */

@@ -1,9 +1,9 @@
 #include "libjson/json.h"
 #include "opensrf/transport_client.h"
-#include "opensrf/generic_utils.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
 #include "string_array.h"
+#include "osrf_config.h"
 
 #ifndef OSRF_APP_SESSION
 #define OSRF_APP_SESSION

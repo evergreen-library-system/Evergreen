@@ -30,7 +30,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /* our stuff */
 #include "opensrf/transport_client.h"
-#include "opensrf/generic_utils.h"
 #include "opensrf/osrf_message.h"
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/string_array.h"
@@ -45,15 +44,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
    */
 #define MODULE_NAME "ils_gateway_module"
 
+/*
 struct session_list_struct {
-	//char* service;
 	osrf_app_session* session;
 	struct session_list_struct* next;
 	int serve_count;
 };
 typedef struct session_list_struct session_list;
 
-/* the global session cache */
 static session_list* the_list = NULL;
 
 static void del_session( char* service ) {
@@ -89,8 +87,7 @@ static void del_session( char* service ) {
 
 }
 
-/* find a session in the list */
-/* if(update) we add 1 to the serve_count */
+// if(update) we add 1 to the serve_count 
 static osrf_app_session* find_session( char* service, int update ) {
 
 	session_list* item = the_list;
@@ -115,7 +112,6 @@ static osrf_app_session* find_session( char* service, int update ) {
 	return NULL;
 }
 
-/* add a session to the list */
 static void add_session( char* service, osrf_app_session* session ) {
 
 	if(!session) return;
@@ -138,6 +134,7 @@ static void add_session( char* service, osrf_app_session* session ) {
 		the_list = new_item;
 	}
 }
+*/
 
 static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 	if( ! osrf_system_bootstrap_client( 
@@ -264,6 +261,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		info_handler( "param %s", string_array_get_string(sarray,k));
 	}
 
+	/*
 	osrf_app_session* session = find_session(service,1);
 
 	if(!session) {
@@ -271,11 +269,15 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		session = osrf_app_client_session_init(service);
 		add_session(service, session);
 	}
+	*/
+
+	osrf_app_session* session = osrf_app_client_session_init(service);
 
 	debug_handler("MOD session service: %s", session->remote_service );
 
 
 	/* connect to the remote service */
+	/*
 	if(!osrf_app_session_connect(session)) {
 		exception = json_object_new_object();
 		json_object_object_add( exception, "is_err", json_object_new_int(1));
@@ -286,6 +288,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		json_object_put(exception);
 		return OK;
 	}
+	*/
 
 	int req_id = osrf_app_session_make_request( session, NULL, method, 1, sarray );
 	string_array_destroy(sarray);
@@ -296,7 +299,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	buffer_add(result_data, "[");
 
 	/* gather result data */
-	while((omsg = osrf_app_session_request_recv( session, req_id, 30 ))) {
+	while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
 
 		if( omsg->result_string ) {
 			buffer_add(result_data, omsg->result_string);
@@ -364,6 +367,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	osrf_app_session_request_finish( session, req_id );
 	debug_handler("gateway process message successfully");
 
+
+	osrf_app_session_destroy(session);
 	return OK;
 
 }

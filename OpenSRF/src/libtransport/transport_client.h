@@ -1,4 +1,7 @@
 #include "transport_session.h"
+#include "utils.h"
+#include "logging.h"
+
 #include <time.h>
 
 #ifndef TRANSPORT_CLIENT_H

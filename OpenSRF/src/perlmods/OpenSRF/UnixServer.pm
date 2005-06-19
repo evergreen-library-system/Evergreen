@@ -72,6 +72,7 @@ sub process_request {
 	$0 = "$0*";
 
 	if( ! $data or ! defined( $data ) or $data eq "" ) {
+		close($self->{server}->{client}); 
 		$logger->debug("Unix child received empty data from socket", ERROR);
 		$0 = $orig;
 		return;

@@ -1,7 +1,10 @@
 #include "opensrf/transport_client.h"
 #include "opensrf/transport_message.h"
 #include "opensrf/osrf_message.h"
-#include "opensrf/generic_utils.h"
+
+#include "utils.h"
+#include "logging.h"
+#include "osrf_config.h"
 
 #include <time.h>
 #include <sys/select.h>

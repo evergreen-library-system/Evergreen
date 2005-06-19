@@ -1,4 +1,4 @@
-#include "opensrf/osrf_system.h"
+#include "osrf_system.h"
 
 transport_client* global_client;
 

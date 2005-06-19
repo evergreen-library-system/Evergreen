@@ -139,7 +139,11 @@ sub handler {
 		} else {
 			$app_session->reset;
 			$app_session->state( $app_session->DISCONNECTED );
-			$app_session->push_resend( $app_session->app_request( $doc->documentElement->firstChild->threadTrace ) );
+			# below will lead to infinite looping, should return an exception
+			#$app_session->push_resend( $app_session->app_request( 
+			#		$doc->documentElement->firstChild->threadTrace ) );
+			$logger->debug(
+				"Got Jabber error on client connection $remote_id, nothing we can do..", ERROR );
 			return 1;
 		}
 	}

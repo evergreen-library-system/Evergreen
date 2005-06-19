@@ -1,6 +1,7 @@
 #include "opensrf/transport_client.h"
 #include "osrf_message.h"
 #include "osrf_app_session.h"
+#include "osrf_config.h"
 
 #ifndef OSRF_STACK_H
 #define OSRF_STACK_H

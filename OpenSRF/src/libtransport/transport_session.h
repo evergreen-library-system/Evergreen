@@ -5,7 +5,9 @@
 // ---------------------------------------------------------------------------------
 #include "transport_socket.h"
 #include "transport_message.h"
-#include "generic_utils.h"
+
+#include "utils.h"
+#include "logging.h"
 
 #include "sha.h"
 

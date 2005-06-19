@@ -750,7 +750,7 @@ int do_math( int count, int style ) {
 	json_object_array_add(params, json_object_new_string("2"));
 
 	char* methods[] = { "add", "sub", "mult", "div" };
-	char* answers[] = { "3", "-1", "2", "0.500000" };
+	char* answers[] = { "3", "-1", "2", "0.5" };
 
 	float times[ count * 4 ];
 	memset(times,0,count*4);

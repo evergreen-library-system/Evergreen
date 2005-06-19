@@ -6,12 +6,15 @@
 #include <sys/timeb.h>
 
 #include "md5.h"
+#include "utils.h"
 
 #include <signal.h>
 
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+
+
 
 
 #define SRFSH_PORT 5222

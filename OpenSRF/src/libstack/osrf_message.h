@@ -1,6 +1,20 @@
 #include "libjson/json.h"
-#include "opensrf/generic_utils.h"
 #include "string_array.h"
+#include "utils.h"
+#include "logging.h"
+#include "osrf_config.h"
+#include "objson/object.h"
+#include "objson/json_parser.h"
+
+
+/* libxml stuff for the config reader */
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
+#include <libxml/tree.h>
+
+
 
 #ifndef osrf_message_h
 #define osrf_message_h

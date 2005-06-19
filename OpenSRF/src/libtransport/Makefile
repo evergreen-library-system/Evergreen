@@ -3,9 +3,9 @@
 
 LD_OPTS	+= -lxml2 -lopensrf_transport -lc_utils 
 
-SOURCES	= generic_utils.c transport_socket.c transport_session.c transport_message.c transport_client.c
-TARGETS	= generic_utils.o transport_socket.o transport_message.o transport_session.o transport_client.o 
-HEADERS	= generic_utils.h transport_socket.h transport_message.h transport_session.h transport_client.h 
+SOURCES	= transport_socket.c transport_session.c transport_message.c transport_client.c
+TARGETS	= transport_socket.o transport_message.o transport_session.o transport_client.o 
+HEADERS	= transport_socket.h transport_message.h transport_session.h transport_client.h 
 
 all:  lib
 	

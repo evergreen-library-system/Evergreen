@@ -1,9 +1,17 @@
-#include "opensrf/transport_client.h"
+#include "transport_client.h"
 #include "signal.h"
 
 
+/*
+void print_stuff(void* blah, char* data) {
+	fprintf(stderr, "Received from socket: %s\n", data);
+}
+*/
+
 /* connects and registers with the router */
 int main( int argc, char** argv ) {
+
+
 
 	if( argc < 5 ) {
 		fatal_handler( "Usage: %s <server> <port> <name> <secret>", argv[0] );

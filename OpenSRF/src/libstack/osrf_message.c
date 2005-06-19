@@ -1,13 +1,10 @@
-#include "opensrf/osrf_message.h"
-
-#include "utils.h"
-#include "objson/object.h"
-#include "objson/json_parser.h"
+#include "osrf_message.h"
 
 /* default to true */
 int parse_json_result = 1;
 int parse_json_params = 1;
 
+/* utility function for debugging a DOM doc */
 static void recurse_doc( xmlNodePtr node ) {
 	if( node == NULL ) return;
 	debug_handler("Recurse: %s =>  %s", node->name, node->content );
