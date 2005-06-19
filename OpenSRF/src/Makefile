@@ -3,21 +3,22 @@
 #
 
 # Change to suit...
-export PREFIX		= /pines
-export APXS			= /pines/apps/apache2/bin/apxs
-export TMP			= /tmp/opensrf_build
+export PREFIX				= /pines
+export APXS					= /pines/apps/apache2/bin/apxs
+export TMP					= /tmp/opensrf_build
+export APACHE_HEADERS	= /pines/apps/apache2/include 
 
 
-export TMPDIR		= $(TMP)/opensrf
-export OPENSRF		= opensrf
-export BINDIR		= $(PREFIX)/bin
-export LIBDIR		= $(PREFIX)/lib
-export PERLDIR		= $(LIBDIR)/perl5
-export INCLUDEDIR	= $(PREFIX)/include
-export CC			= gcc
-export LD_OPTS		= -L $(TMPDIR) -L .
-export CC_OPTS		= -Wall -O2 -fPIC -I /usr/include/libxml2 \
-							-I /usr/include/libxml2/libxml  -I $(TMP) -I $(TMPDIR)
+export TMPDIR			= $(TMP)/opensrf
+export OPENSRF			= opensrf
+export BINDIR			= $(PREFIX)/bin
+export LIBDIR			= $(PREFIX)/lib
+export PERLDIR			= $(LIBDIR)/perl5
+export INCLUDEDIR		= $(PREFIX)/include
+export CC				= gcc
+export LD_OPTS			= -L $(TMPDIR) -L .
+export CC_OPTS			= -Wall -O2 -fPIC -I/usr/include/libxml2 -I$(APACHE_HEADERS) \
+								-I/usr/include/libxml2/libxml  -I$(TMP) -I$(TMPDIR)
 
 
 all: prep router srfsh jserver gateway

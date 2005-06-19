@@ -1,4 +1,4 @@
-CC_OPTS	+= -I /pines/apps/apache2/include -DASSUME_STATELESS
+CC_OPTS	+= -DASSUME_STATELESS
 LD_OPTS	+= -lc_utils -lobjson -lxml2 -lopensrf_transport -lopensrf_stack -ljson 
 
 all: libmod_ils_gateway.so
