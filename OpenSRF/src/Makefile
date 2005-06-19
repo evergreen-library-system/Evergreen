@@ -4,9 +4,9 @@
 
 # Change to suit...
 export PREFIX				= /pines
-export APXS					= /pines/apps/apache2/bin/apxs
+export APXS2					= /pines/apps/apache2/bin/apxs
 export TMP					= /tmp/opensrf_build
-export APACHE_HEADERS	= /pines/apps/apache2/include 
+export APACHE2_HEADERS	= /pines/apps/apache2/include 
 
 
 export TMPDIR			= $(TMP)/opensrf
@@ -17,7 +17,7 @@ export PERLDIR			= $(LIBDIR)/perl5
 export INCLUDEDIR		= $(PREFIX)/include
 export CC				= gcc
 export LD_OPTS			= -L $(TMPDIR) -L .
-export CC_OPTS			= -Wall -O2 -fPIC -I/usr/include/libxml2 -I$(APACHE_HEADERS) \
+export CC_OPTS			= -Wall -O2 -fPIC -I/usr/include/libxml2 -I$(APACHE2_HEADERS) \
 								-I/usr/include/libxml2/libxml  -I$(TMP) -I$(TMPDIR)
 
 

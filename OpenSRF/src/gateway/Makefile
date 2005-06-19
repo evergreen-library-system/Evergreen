@@ -5,7 +5,7 @@ all: libmod_ils_gateway.so
 
 install: 
 	cp $(TMPDIR)/libmod_ils_gateway.so $(LIBDIR)/libmod_ils_gateway.so
-	$(APXS) -i -a -n ils_gateway $(LIBDIR)/libmod_ils_gateway.so
+	$(APXS2) -i -a -n ils_gateway $(LIBDIR)/libmod_ils_gateway.so
 
 libmod_ils_gateway.so: mod_ils_gateway.c	
 	$(CC) -c $(CC_OPTS)  mod_ils_gateway.c
