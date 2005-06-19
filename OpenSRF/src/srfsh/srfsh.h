@@ -1,5 +1,4 @@
 #include "opensrf/transport_client.h"
-#include "opensrf/generic_utils.h"
 #include "opensrf/osrf_message.h"
 #include "opensrf/osrf_app_session.h"
 #include <time.h>
