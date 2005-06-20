@@ -4,7 +4,7 @@
 <overlay id="util"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script src="chrome://evergreen/content/util/browser.js"/>
+	<script src="chrome://evergreen/content/util/browser_overlay.js"/>
 
 	<popup id="contentAreaContextMenu">
 		<menuitem id="evergreen_right_click_menu" 
