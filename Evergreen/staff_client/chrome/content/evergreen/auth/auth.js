@@ -28,7 +28,7 @@ G['actsc_list'] = []; // actor::stat_cat
 G['actsc_hash']; // actor::stat_cat
 
 var mw = G['main_window'];
-var auth_meter_per = 10;
+var auth_meter_incr = 8;
 
 function auth_init() {
 	sdump('D_AUTH','TESTING: auth.js: ' + mw.G['main_test_variable'] + '\n');
@@ -74,6 +74,7 @@ function enable_login_prompts() {
 	var np = document.getElementById('name_prompt');
 	np.focus(); np.select();
 	document.getElementById('auth_meter').value = 0;
+	document.getElementById('auth_meter').setAttribute('real', '0.0');
 	G.sound.beep();
 }
 
@@ -109,7 +110,7 @@ function auth_init_callback(request) {
 		[ name, hex_md5(auth_init + hex_md5(pw)) ],
 		auth_ses_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function auth_ses_callback(request) {
@@ -130,7 +131,7 @@ function auth_ses_callback(request) {
 		[],
 		ap_list_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function ap_list_callback(request) {
@@ -151,7 +152,7 @@ function ap_list_callback(request) {
 		[],
 		cit_list_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function cit_list_callback(request) {
@@ -173,7 +174,7 @@ function cit_list_callback(request) {
 		cst_list_callback
 	);
 
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function cst_list_callback(request) {
@@ -195,7 +196,7 @@ function cst_list_callback(request) {
 		[],
 		acpl_list_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 
 }
 
@@ -218,7 +219,7 @@ function acpl_list_callback(request) {
 		[],
 		ccs_list_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function ccs_list_callback(request) {
@@ -240,7 +241,7 @@ function ccs_list_callback(request) {
 		[ mw.G['auth_ses'][0] ],
 		user_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function user_callback(request) {
@@ -270,7 +271,7 @@ function user_callback(request) {
 		org_type_callback
 	);*/
 	org_type_callback();
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function org_type_callback(request) {
@@ -295,7 +296,7 @@ function org_type_callback(request) {
 		[ mw.G.auth_ses[0] ],
 		my_orgs_callback
 	);
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 
 }
 
@@ -330,7 +331,7 @@ function my_orgs_callback(request) {
 		my_actsc_list_callback
 	);
 
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 }
 
 function my_actsc_list_callback(request) {
@@ -346,7 +347,7 @@ function my_actsc_list_callback(request) {
 	mw.G.actsc_hash = convert_object_list_to_hash( actsc_list );
 	sdump('D_AUTH', 'actsc_list = ' + js2JSON(actsc_list) + '\n');
 
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',auth_meter_incr);
 
 	spawn_main();
 
@@ -355,7 +356,7 @@ function my_actsc_list_callback(request) {
 
 function spawn_main() {
 	try {
-		var w = new_window('chrome://evergreen/content/evergreen/main.xul');
+		var w = new_window('chrome://evergreen/content/evergreen/main/app_shell.xul');
 		if (!w) { throw('window ref == null'); }
 		try {
 			w.document.title = mw.G.user.usrname() + '@' + mw.G.user_ou.name();
@@ -363,15 +364,17 @@ function spawn_main() {
 			alert('Hrmm. ' + pretty_print( js2JSON(E) ) );
 		}
 	} catch(E) {
+		incr_progressmeter('auth_meter',-100);
 		alert('Login failed on new_window: ' + js2JSON(E)); enable_login_prompts(); return;
 	}
-	document.getElementById('auth_meter').value += auth_meter_per;
+	incr_progressmeter('auth_meter',100);
 }
 
 function logoff() {
 	mw.G['auth_ses'] = '';
 	close_all_windows();
 	enable_login_prompts();
+	incr_progressmeter('auth_meter',-100);
 	snd_logoff();
 }
 

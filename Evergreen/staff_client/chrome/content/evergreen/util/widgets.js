@@ -202,6 +202,28 @@ function get_list_from_tree_selection(tree_w) {
 	return list;
 }
 
+// Increment a XUL progressmeter
+function incr_progressmeter(meter,increment) {
+	if (typeof(meter)!='object') 
+		meter = document.getElementById(meter);
+	if (typeof(meter)!='object')
+		return;
+
+	var real = meter.getAttribute('_real');
+
+	if (!real)
+		real = 0;
+	real = parseFloat( real ) + parseFloat( increment );
+
+	if (real > 100)
+		real = 100;
+	else if ( real < 0)
+		real = 0;
+
+	meter.setAttribute('_real',real);
+	meter.value = Math.ceil( real );
+}
+
 // Simulates radio buttons with checkboxes.  Include this in command event listeners
 // for the pertinent textboxes.  For any set of checkboxes that have the same 'group'
 // attribute, only one can be checked at a time.
