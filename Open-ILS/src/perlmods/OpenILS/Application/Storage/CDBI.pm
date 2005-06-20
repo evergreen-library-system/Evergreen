@@ -9,6 +9,7 @@ use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::CDBI::money;
+use OpenILS::Application::Storage::CDBI::permission;
 
 use OpenSRF::Utils::Logger;
 use OpenSRF::EX qw/:try/;
