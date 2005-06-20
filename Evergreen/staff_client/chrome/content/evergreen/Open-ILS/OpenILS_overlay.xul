@@ -6,6 +6,7 @@
 
 <OpenILS id="OpenILS_js">
 	<script src="OpenILS.js" />
+	<script src="chrome://evergreen/content/main/AppShell.js" />
 </OpenILS>
 
 </overlay>

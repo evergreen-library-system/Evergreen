@@ -1,3 +1,73 @@
+function spawn_batch_copy_editor(d,tab,params) {
+	sdump('D_SPAWN','trying to spawn_copy_editor(' + params + ')');
+	var w;
+	var chrome = 'chrome://evergreen/content/cat/copy_edit.xul';
+	if (tab) {
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','COPIES EDITOR',chrome);
+	} else {
+		w = mw.new_window( chrome );
+	}
+	w.params = params;
+}
+
+function spawn_bill_pay(d,tab,patron,params) {
+	sdump('D_SPAWN','trying to spawn_bill_pay('+js2JSON(patron)+')\n');
+	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
+	var w;
+	var chrome = 'chrome://evergreen/content/bill/bill.xul';
+	var params = { 'barcode' : patron.barcode() };
+	if (tab) {
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','BILLS',chrome,params);
+	} else {
+		w = mw.new_window( chrome,params );
+	}
+}
+
+function spawn_check_out(d,tab,patron,params) {
+	sdump('D_SPAWN','trying to spawn_check_out('+js2JSON(patron)+')\n');
+	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
+	var w;
+	var chrome = 'chrome://evergreen/content/circ/checkout.xul';
+	var params = { 'barcode' : patron.barcode() };
+	if (tab) {
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','CHECK OUT',chrome,params);
+	} else {
+		w = mw.new_window( chrome,params );
+	}
+}
+
+function spawn_circ_list(d,tab,patron,params) {
+	sdump('D_SPAWN','trying to spawn_circ_list('+js2JSON(patron)+')\n');
+	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
+	var w;
+	var chrome = 'chrome://evergreen/content/circ/circ_list.xul';
+	var params = { 'barcode' : patron.barcode() };
+	if (tab) {
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','ITEMS OUT',chrome,params);
+	} else {
+		w = mw.new_window( chrome,params );
+	}
+}
+
+
+function spawn_copy_browser(d,tab,params) {
+	sdump('D_SPAWN','trying to spawn_copy_browser('+js2JSON(params)+')\n');
+	var w;
+	var chrome = 'chrome://evergreen/content/cat/browse_list.xul';
+	if (tab) {
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','COPIES',chrome);
+	} else {
+		w = mw.new_window( chrome );
+	}
+	w.find_this_id = params[0];
+	w.record_columns = params;
+}
+
 function spawn_main() {
 	try {
 		var w = new_window('chrome://evergreen/content/evergreen/main/app_shell.xul');
@@ -14,40 +84,14 @@ function spawn_main() {
 	incr_progressmeter('auth_meter',100);
 }
 
-function spawn_copy_browser(tab,params) {
-	sdump('D_SPAWN','trying to spawn_copy_browser('+js2JSON(params)+')\n');
-	var w;
-	var chrome = 'chrome://evergreen/content/cat/browse_list.xul';
-	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','COPIES',chrome);
-	} else {
-		w = mw.new_window( chrome );
-	}
-	w.find_this_id = params[0];
-	w.record_columns = params;
-}
 
-function spawn_batch_copy_editor(tab,params) {
-	sdump('D_SPAWN','trying to spawn_copy_editor(' + params + ')');
-	var w;
-	var chrome = 'chrome://evergreen/content/cat/copy_edit.xul';
-	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','COPIES EDITOR',chrome);
-	} else {
-		w = mw.new_window( chrome );
-	}
-	w.params = params;
-}
-
-function spawn_marc_editor(tab,params) {
+function spawn_marc_editor(d,tab,params) {
 	sdump('D_SPAWN','trying to spawn_marc_editor('+js2JSON(params)+')\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/cat/marc.xul';
 	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','MARC',chrome);
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','MARC',chrome);
 	} else {
 		w = mw.new_window( chrome );
 	}
@@ -56,7 +100,7 @@ function spawn_marc_editor(tab,params) {
 	w.params = params;
 }
 
-function spawn_oclc_import(tab,params) {
+function spawn_oclc_import(d,tab,params) {
 	sdump('D_SPAWN','trying to spawn_marc_editor('+js2JSON(params)+')\n');
 	// sample TCN: 03715963 
 	try {
@@ -80,8 +124,8 @@ function spawn_oclc_import(tab,params) {
 		var w;
 		var chrome = 'chrome://evergreen/content/cat/marc.xul';
 		if (tab) {
-			if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-			w = tabWindow.replace_tab('main_tabbox','MARC',chrome);
+			if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+			w = replace_tab(d,'main_tabbox','MARC',chrome);
 		} else {
 			w = mw.new_window( chrome );
 		}
@@ -95,66 +139,24 @@ function spawn_oclc_import(tab,params) {
 
 }
 
-function spawn_bill_pay(tab,patron,params) {
-	sdump('D_SPAWN','trying to spawn_bill_pay('+js2JSON(patron)+')\n');
-	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
-	var w;
-	var chrome = 'chrome://evergreen/content/bill/bill.xul';
-	var params = { 'barcode' : patron.barcode() };
-	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','BILLS',chrome,params);
-	} else {
-		w = mw.new_window( chrome,params );
-	}
-}
-
-function spawn_check_out(tab,patron,params) {
-	sdump('D_SPAWN','trying to spawn_check_out('+js2JSON(patron)+')\n');
-	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
-	var w;
-	var chrome = 'chrome://evergreen/content/circ/checkout.xul';
-	var params = { 'barcode' : patron.barcode() };
-	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','CHECK OUT',chrome,params);
-	} else {
-		w = mw.new_window( chrome,params );
-	}
-}
-
-function spawn_circ_list(tab,patron,params) {
-	sdump('D_SPAWN','trying to spawn_circ_list('+js2JSON(patron)+')\n');
-	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
-	var w;
-	var chrome = 'chrome://evergreen/content/circ/circ_list.xul';
-	var params = { 'barcode' : patron.barcode() };
-	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','ITEMS OUT',chrome,params);
-	} else {
-		w = mw.new_window( chrome,params );
-	}
-}
-
-function spawn_patron_edit(tab,patron,params) {
+function spawn_patron_edit(d,tab,patron,params) {
 	sdump('D_SPAWN','trying to spawn_patron_edit('+js2JSON(patron)+')\n');
 	sdump('D_SPAWN','barcode: ' + patron.barcode() + '\n');
 	var w;
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	var params = { 'barcode' : patron.barcode() };
 	if (tab) {
-		if (tab != 'replace') { tabWindow.new_tab('main_tabbox'); }
-		w = tabWindow.replace_tab('main_tabbox','PATRON EDIT',chrome,params);
+		if (tab != 'replace') { new_tab(d,'main_tabbox'); }
+		w = replace_tab(d,'main_tabbox','PATRON EDIT',chrome,params);
 	} else {
 		w = mw.new_window( chrome, params );
 	}
 }
 
-function spawn_test() {
+function spawn_test(d) {
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	var params = { 'barcode':'101010101010101' };
-	var w = tabWindow.replace_tab('main_tabbox','TEST',chrome,params);
+	var w = replace_tab(d,'main_tabbox','TEST',chrome,params);
 }
 
 

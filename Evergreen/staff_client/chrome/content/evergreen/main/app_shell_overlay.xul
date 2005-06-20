@@ -1,0 +1,294 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/app_shell.dtd">
+<overlay id="app_shell_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<commandset id="AppShell_cmds">
+
+	<command id="cmd_close_window" oncommand="
+		window.close();"/>
+
+	<command id="cmd_new_window" oncommand="
+		spawn_main_window();"/>
+
+	<command id="cmd_new_tab" oncommand="
+		new_tab(document,'main_tabbox');"/>
+
+	<command id="cmd_close_tab" oncommand="
+		close_tab(document,'main_tabbox');"/>
+
+	<command id="cmd_cat_main" oncommand="
+		replace_tab(document,'main_tabbox','Navigator','chrome://evergreen/content/opac/opac.xul'); "/>
+
+	<command id="cmd_circ_checkout" oncommand="
+		replace_tab(document,'main_tabbox','Check Out','chrome://evergreen/content/circ/circ_deck_checkout.xul'); "/>
+
+	<command id="cmd_circ_search" oncommand="
+		replace_tab(document,'main_tabbox','Patron Search','chrome://evergreen/content/circ/circ_deck_search.xul'); "/>
+
+	<command id="cmd_circ_display" oncommand="
+		replace_tab(document,'main_tabbox','Display Patron','chrome://evergreen/content/circ/circ_deck_patron.xul'); "/>
+
+	<command id="cmd_circ_checkin" oncommand="
+		replace_tab(document,'main_tabbox','Check In','chrome://evergreen/content/circ/checkin.xul'); "/>
+
+	<command id="cmd_search_opac" oncommand="
+		replace_tab(document,'main_tabbox','Navigator','chrome://evergreen/content/opac/opac.xul'); "/>
+
+	<command id="cmd_patron_register" oncommand="
+		replace_tab(document,'main_tabbox','NEW PATRON','chrome://evergreen/content/patron/patron_new.xul'); "/>
+
+	<command id="cmd_survey_wizard" oncommand="
+		mw.new_window(document,'chrome://evergreen/content/survey/survey_wizard.xul'); "/>
+
+	<command id="cmd_copy_stat_cat_edit" oncommand="
+		replace_tab(document,'main_tabbox','Copy Stat-Cats','chrome://evergreen/content/stat_cat/copy_stat_cat_editor.xul'); "/>
+
+	<command id="cmd_patron_stat_cat_edit" oncommand="
+		replace_tab(document,'main_tabbox','Patron Stat-Cats','chrome://evergreen/content/stat_cat/patron_stat_cat_editor.xul'); "/>
+
+	<command id="cmd_z39_50_import_old" oncommand="
+		replace_tab(document,'main_tabbox','Z39.50 Import','chrome://evergreen/content/z39_50/z39_50.xul'); "/>
+
+	<command id="cmd_test" oncommand="
+		"/>
+
+	<command id="cmd_z39_50_import" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+</commandset>
+
+<!-- The top level widget for the staff client -->
+<vbox id="main_vbox" flex="1">
+	<toolbox id="main_toolbox"/>
+	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
+		<tabs id="main_tabs"/>
+		<tabpanels id="main_panels" flex="1"/>
+	</tabbox>
+	<toolbox id="entity_toolbox"/>
+</vbox>
+
+<!-- The main top level menubar -->
+<toolbox id="main_toolbox">
+	<menubar id="main_menubar">
+		<menu id="file-menu" label="&evergreen.file;" accesskey="&evergreen.file.key;"/>
+		<menu id="edit-menu" label="&evergreen.edit;" accesskey="&evergreen.edit.key;"/>
+		<menu id="search-menu" label="&evergreen.search;" accesskey="&evergreen.search.key;"/>
+		<menu id="circ-menu" label="&evergreen.circ;" accesskey="&evergreen.circ.key;"/>
+		<menu id="cat-menu" label="&evergreen.cat;" accesskey="&evergreen.cat.key;"/>
+		<menu id="serials-menu" label="&evergreen.serials;" accesskey="&evergreen.serials.key;"/>
+		<menu id="acquisitions-menu" label="&evergreen.acquisitions;" accesskey="&evergreen.acquisitions.key;"/>
+		<menu id="reports-menu" label="&evergreen.reports;" accesskey="&evergreen.reports.key;"/>
+		<spacer flex="1" />
+		<menu id="admin-menu" label="&evergreen.admin;" accesskey="&evergreen.admin.key;"/>
+		<menu id="help-menu" label="&evergreen.help;" accesskey="&evergreen.help.key;"/>
+	</menubar>
+</toolbox>
+
+<!-- The File menu on the main menu -->
+<menu id="file-menu">
+	<menupopup id="file-popup">
+		<menuitem label="&evergreen.file.new;" accesskey="&evergreen.file.new.key;" key="file-new-key" command="cmd_new_window"/>
+		<menuitem label="&evergreen.file.new_tab;" accesskey="&evergreen.file.new_tab.key;" key="file-new-tab-key" command="cmd_new_tab"/>
+		<menuseparator />
+		<menuitem label="&evergreen.file.open;" accesskey="&evergreen.file.open.key;" key="file-open-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.file.save;" accesskey="&evergreen.file.save.key;" key="file-save-key" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.file.close_tab;" accesskey="&evergreen.file.close_tab.key;" key="file-close-tab-key" command="cmd_close_tab"/>
+		<menuitem label="&evergreen.file.close;" accesskey="&evergreen.file.close.key;" key="file-close-key" command="cmd_close_window"/>
+	</menupopup>
+</menu>
+
+<!-- The Edit menu on the main menu -->
+<menu id="edit-menu">
+	<menupopup id="edit-popup">
+		<menuitem label="&evergreen.edit.undo;" accesskey="&evergreen.edit.undo.key;" key="edit-undo-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.edit.redo;" accesskey="&evergreen.edit.redo.key;" key="edit-redo-key" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.edit.cut;" accesskey="&evergreen.edit.cut.key;" key="edit-cut-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.edit.copy;" accesskey="&evergreen.edit.copy.key;" key="edit-copy-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.edit.paste;" accesskey="&evergreen.edit.paste.key;" key="edit-paste-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.edit.delete;" accesskey="&evergreen.edit.delete.key;" key="edit-delete-key" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.edit.buckets;" accesskey="&evergreen.edit.buckets.key;" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.edit.select_all;" accesskey="&evergreen.edit.select_all.key;" key="edit-select-all-key" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.edit.find;" accesskey="&evergreen.edit.find.key;" key="edit-find-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.edit.find_again;" accesskey="&evergreen.edit.find_again.key;" key="edit-find-again-key" command="cmd_broken"/>
+	</menupopup>
+</menu>
+
+<!-- The Circulation menu on the main menu -->
+<menu id="circ-menu">
+	<menupopup id="circ-popup">
+		<menuitem label="&evergreen.circ.checkout;" accesskey="&evergreen.circ.checkout.key;" key="circ-check-out-key" command="cmd_circ_checkout"/>
+		<menuitem label="&evergreen.circ.checkin;" accesskey="&evergreen.circ.checkin.key;" key="circ-check-in-key" command="cmd_circ_checkin"/>
+		<menuitem label="&evergreen.circ.renew;" accesskey="&evergreen.circ.renew.key;" key="circ-renew-key" command="cmd_broken"/>
+		<menu id="special-circ-menu" label="&evergreen.circ.special;" accesskey="&evergreen.circ.special.key;" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.circ.place_hold;" accesskey="&evergreen.circ.place_hold.key;" key="circ-place-hold-key" command="cmd_broken"/>
+		<menuseparator />
+		<menuitem label="&evergreen.circ.copy_status;" accesskey="&evergreen.circ.copy_status.key;" key="circ-copy-status-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.circ.patron_status;" accesskey="&evergreen.circ.patron_status.key;" key="circ-patron-status-key" command="cmd_circ_display"/>
+		<menuseparator />
+		<menuitem label="&evergreen.circ.patron_registration;" accesskey="&evergreen.circ.patron_registration.key;" key="circ-patron-registration-key" command="cmd_patron_register"/>
+	</menupopup>
+</menu>
+
+<!-- The Special Circulation submenu in the Circulation menu -->
+<menu id="special-circ-menu">
+	<menupopup id="special-circ-popup">
+		<menuitem label="&evergreen.circ.mark_used;" accesskey="&evergreen.circ.mark_used.key;" key="circ-mark-used-key" command="cmd_broken"/>
+		<menuitem label="&evergreen.circ.lost;" accesskey="&evergreen.circ.lost.key;" command="cmd_broken"/>
+		<menuitem label="&evergreen.circ.missing;" accesskey="&evergreen.circ.missing.key;" command="cmd_broken"/>
+		<menuitem label="&evergreen.circ.found;" accesskey="&evergreen.circ.found.key;" command="cmd_broken"/>
+		<menuitem label="&evergreen.circ.claimed_returned;" accesskey="&evergreen.circ.claimed_returned.key;" command="cmd_broken"/>
+		<menuitem label="&evergreen.circ.quick_add;" accesskey="&evergreen.circ.quick_add.key;" command="cmd_broken"/>
+	</menupopup>
+</menu>
+
+<!-- The Cataloging menu on the main menu -->
+<menu id="cat-menu">
+	<menupopup id="cat-popup">
+		<menuitem label="&evergreen.cat.bib_search;" accesskey="&evergreen.cat.bib_search.key;" command="cmd_cat_main"/>
+		<menuseparator />
+		<menuitem disabled="true" label="&evergreen.cat.dedup;" accesskey="&evergreen.cat.dedup.key;" command="cmd_broken"/>
+		<menuitem label="Z39.50 Import" accesskey="Z" command="cmd_z39_50_import"/>
+	</menupopup>
+</menu>
+
+<!-- The Search menu on the main menu -->
+<menu id="search-menu">
+	<menupopup id="search-popup">
+		<menuitem label="Catalog" accesskey="C" command="cmd_search_opac" />
+		<menuitem label="Patrons" accesskey="P" command="cmd_circ_search" />
+	</menupopup>
+</menu>
+
+<!-- The Serials menu on the main menu -->
+<menu id="serials-menu">
+	<menupopup id="serials-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Acquisitions menu on the main menu -->
+<menu id="acquisitions-menu">
+	<menupopup id="acquisitions-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Reports menu on the main menu -->
+<menu id="reports-menu">
+	<menupopup id="reports-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Help menu on the main menu -->
+<menu id="help-menu">
+	<menupopup id="help-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Help menu on the main menu -->
+<menu id="admin-menu">
+	<menupopup id="admin-popup">
+		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
+		<menuitem label="Copy Stat-Cat Editor" accesskey="C" command="cmd_copy_stat_cat_edit"/>
+		<menuitem label="Patron Stat-Cat Editor" accesskey="P" command="cmd_patron_stat_cat_edit"/>
+		<menuitem label="stub" />
+		<menuitem label="Test Module" command="cmd_test"/>
+	</menupopup>
+</menu>
+
+<!-- The Entity top level menubar -->
+<toolbox id="entity_toolbox">
+	<menubar id="entity_menubar">
+		<menu id="patron-menu" label="&evergreen.entity.patron;" accesskey="&evergreen.entity.patron.key;" command="cmd_broken"/>
+		<menu id="copy-menu" label="&evergreen.entity.copy;" accesskey="&evergreen.entity.copy.key;" command="cmd_broken"/>
+		<menu id="volume-menu" label="&evergreen.entity.volume;" accesskey="&evergreen.entity.volume.key;" command="cmd_broken"/>
+		<menu id="bib-menu" label="&evergreen.entity.bib;" accesskey="&evergreen.entity.bib.key;" command="cmd_broken"/>
+	</menubar>
+</toolbox>
+
+<!-- The Patron menu on the Entity menubar -->
+<menu id="patron-menu">
+	<menupopup id="patron-popup">
+		<menuitem label="&evergreen.circ.patron_registration;" accesskey="&evergreen.entity.patron.register.key;" command="cmd_patron_register"/>
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Items menu on the Entity menubar -->
+<menu id="copy-menu">
+	<menupopup id="copy-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Volumes menu on the Entity menubar -->
+<menu id="volume-menu">
+	<menupopup id="volume-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- The Bib Records menu on the Entity menubar -->
+<menu id="bib-menu">
+	<menupopup id="bib-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="evergreen_keys">
+	<key id="file-new-key" modifiers="accel" key="N" command="cmd_new_window"/>
+	<key id="file-new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
+	<key id="file-open-key" modifiers="accel" key="O" command=""/>
+	<key id="file-save-key" modifiers="accel" key="S" command=""/>
+	<key id="file-close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
+	<key id="file-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+
+	<key id="edit-undo-key" modifiers="accel" key="Z" command=""/>
+	<key id="edit-redo-key" modifiers="accel" key="Y" command=""/>
+	<key id="edit-cut-key" modifiers="accel" key="X" command=""/>
+	<key id="edit-copy-key" modifiers="accel" key="C" command=""/>
+	<key id="edit-paste-key" modifiers="accel" key="V" command=""/>
+	<key id="edit-delete-key" modifiers="" keycode="VK_DELETE" command=""/>
+	<key id="edit-select-all-key" modifiers="accel" key="A" command=""/>
+	<key id="edit-find-key" modifiers="accel" key="F" command=""/>
+	<key id="edit-find-again-key" modifiers="accel" key="G" command=""/>
+
+	<key id="circ-patron-status-key" keycode="VK_F11" command="cmd_circ_display"/>
+	<key id="circ-copy-status-key" keycode="VK_F9" command=""/>
+	<key id="circ-check-out-key" keycode="VK_F1" command="cmd_circ_checkout"/>
+	<key id="circ-check-in-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="circ-renew-key" keycode="VK_F3" command=""/>
+	<key id="circ-mark-used-key" keycode="VK_F4" command=""/>
+	<key id="circ-place-hold-key" keycode="VK_F5" command=""/>
+	<key id="circ-patron-registration-key" keycode="VK_F12" command=""/>
+</keyset>
+
+</overlay>
