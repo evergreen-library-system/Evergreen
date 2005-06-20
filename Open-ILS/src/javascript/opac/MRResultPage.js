@@ -212,11 +212,16 @@ MRResultPage.prototype.doSearch = function() {
 		this.searchDepth = globalSearchDepth;
 
 	/* see if this is a new search */
-	if(	string != this.string				|| 
+	if(	isXUL()									|| /* don't cache client searches */
+			string != this.string				|| 
 			stype != this.stype					||
 			this.searchLocation != location	||
 			this.searchDepth != depth ) {
+		debug("Resetting MRSearch for search " + string);
 		this.resetSearch();
+
+	} else {
+		debug("Not Resetting MRSearch for search " + string);
 	}
 
 	this.searchDepth		= depth;

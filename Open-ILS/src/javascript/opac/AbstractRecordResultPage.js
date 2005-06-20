@@ -566,10 +566,12 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 
 
 AbstractRecordResultPage.prototype.buildResourcePic = function(c, resource) {
+	return buildResourcePic(c, resource);
+}
+
+function buildResourcePic(c, resource) {
 
 	var pic = createAppElement("img");
-	var big_pic_div = createAppElement("div");
-
 
 	pic.setAttribute("src", "/images/" + resource + ".jpg");
 	pic.className = "record_resource_pic";

@@ -67,6 +67,8 @@ function createAppTextNode(text) {
 	each substring */
 function normalize(val) {
 
+	if(!val) return "";
+
 	var newVal = '';
 	val = val.split(' ');
 	var reg = /\w/;
@@ -327,6 +329,8 @@ function add_css_class(w,c) {
 	} else {
 		e = getById(w);
 	}
+	if(!e) return;
+
 	var css_class_string = e.className;
 	var css_class_array;
 
@@ -353,6 +357,7 @@ function remove_css_class(w,c) {
 	} else {
 		e = getById(w);
 	}
+	if(!e) return;
 	var css_class_string = '';
 
 	var css_class_array = e.className;
@@ -617,4 +622,26 @@ function elem(name, attrs, style, text) {
     return e;
 }
 
+function filter_list(list,f) {
+	var new_list = [];
+	for (var i in list) {
+		var t = f( list[i] );
+		if (t) new_list.push( list[i] );
+	}
+	return new_list;
+}
 
+function find_list(list,f) {
+	for (var i in list) {
+		var t = f( list[i] );
+		if (t) return list[i];
+	}
+	return null;
+}
+
+function removeChildren(node) {
+	if(typeof node == 'object' && node != null) {
+		while(node.childNodes[0])
+			node.removeChild(node.childNodes[0]);
+	}
+}

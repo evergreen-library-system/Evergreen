@@ -8,6 +8,7 @@ function findOrgDepth(type_id) {
 	var t = findOrgType(type_id);
 	if(t != null)
 		return t.depth();
+
 	return null;
 }
 
@@ -67,13 +68,17 @@ function getOrgById(id, node) {
 function orgNodeTrail(node) {
 	var nodeArray = new Array();
 	while( node ) {
-		debug("pushing " + node.name() );
 		nodeArray.push(node);
 		node = findOrgUnit(node.parent_ou());
 	}
 	nodeArray = nodeArray.reverse();
 	return nodeArray;
 }
+
+function findSiblingOrgs(node) {
+	return findOrgUnit(node.parent_ou()).children();
+}
+
 
 
 

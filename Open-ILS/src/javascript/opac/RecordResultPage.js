@@ -321,6 +321,15 @@ RecordResultPage.prototype.mrSearch = function(mrid) {
 		function(req) {
 			try{
 				obj.gatherIDs(req.getResultObject());
+
+				if(parseInt(obj.hitCount) == 1) {
+					debug("Redirecting to record detail page with record " + obj.recordIDs[0] );
+					url_redirect( [
+						"target", "record_detail",
+						"record", obj.recordIDs[0] ] );
+					return;
+				}
+
 				obj.collectRecords();
 			} catch(E) { throw ("Search Error " + E ); }
 		}

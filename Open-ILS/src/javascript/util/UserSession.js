@@ -55,11 +55,15 @@ UserSession.prototype.verifySession = function(ses) {
 		var request = new RemoteRequest("open-ils.auth", 
 			"open-ils.auth.session.retrieve", this.session_id );
 
+		debug("1");
 		request.send(true);
+		debug("2");
 		var user = request.getResultObject();
+		debug("3");
 
 		if( typeof user == 'object' && user._isfieldmapper) {
 
+			debug("User retrieved, setting up user info");
 			this.username = user.usrname();
 			this.userObject = user;
 			this.connected = true;
@@ -151,13 +155,13 @@ UserSession.prototype.grabOrgUnit = function(org) {
 	request.send(true);
 	this.userObject = request.getResultObject();
 	
-	if(org) 
-		this.orgUnit = org;
-	else	
-		this.orgUnit = findOrgUnit(this.userObject.home_ou());
+	if(org) this.orgUnit = org;
+	else this.orgUnit = findOrgUnit(this.userObject.home_ou());
 
-	globalSelectedDepth = findOrgDepth(this.orgUnit.ou_type());
-	globalPage.updateSelectedLocation(this.orgUnit);
+	if(!paramObj.__depth)
+		globalSelectedDepth = findOrgDepth(this.orgUnit.ou_type());
+	if(!paramObj.__location)
+		globalPage.updateSelectedLocation(this.orgUnit);
 	globalPage.updateCurrentLocation(this.orgUnit);
 
 	return;

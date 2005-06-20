@@ -1,23 +1,40 @@
 /* */
 
-function LocationTree( tree ) {
+function LocationTree( tree, box_id, container_id ) {
 	this.orgTree = tree;
+
+	this.treeContainerBoxId = container_id;
+	this.treeBoxId = box_id;
+	this.setObjects();
+}
+
+
+LocationTree.prototype.setObjects = function() {
+	if(this.treeContainerBoxId)
+		this.treeContainerBox = getById(this.treeContainerBoxId);
+	else
+		this.treeContainerBox = getById("ot_nav_widget");
+
+	if(this.treeBoxId)
+		this.treeBox = getById(treeBoxId);
+	else
+		this.treeBox = getById("ot_nav_widget_box");
+
 }
 
 LocationTree.prototype.buildOrgTreeWidget = function() {
 
-	this.widget = buildOrgTreeWidget();
+	debug("Somebody called buildOrgTreeWidget on me...");
+	this.setObjects();
+	this.widget = buildOrgTreeWidget(globalOrgTree, true);
 }
 
 
-function buildOrgTreeWidget(org_node) {
+function buildOrgTreeWidget(org_node, root) {
 
 	var item;
 
-	globalPage.treeWidgetElements = new Array();
-
-	if(org_node == null) {
-		org_node = globalOrgTree;
+	if(root) {
 		item = new WebFXTree(org_node.name());
 		item.setBehavior('classic');
 	} else {
@@ -28,8 +45,6 @@ function buildOrgTreeWidget(org_node) {
 	item.action = 
 		"javascript:globalPage.updateSelectedLocation('" + org_node.id() + "');" +
 		"globalPage.locationTree.hide();"; 
-
-	globalPage.treeWidgetElements[item.id] = org_node;
 
 	for( var index in org_node.children()) {
 		var childorg = org_node.children()[index];
@@ -45,7 +60,8 @@ function buildOrgTreeWidget(org_node) {
 
 
 LocationTree.prototype.hide = function() {
-	this.treeContainerBox = getById("ot_nav_widget");
+	this.setObjects();
+	this.widget = buildOrgTreeWidget(globalOrgTree, true);
 	if(this.treeContainerBox &&  
 			this.treeContainerBox.className.indexOf("nav_bar_visible") != -1 ) {
 		swapClass( this.treeContainerBox, "nav_bar_hidden", "nav_bar_visible" );
@@ -56,15 +72,17 @@ LocationTree.prototype.hide = function() {
 
 LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 
-	this.treeContainerBox = getById("ot_nav_widget");
-	this.treeBox = getById("ot_nav_widget_box");
+	this.setObjects();
 	debug("Tree container " + this.treeContainerBox );
 	debug("Tree box " + this.treeBox );
+
 	swapClass( this.treeContainerBox, "nav_bar_hidden", "nav_bar_visible" );
 
+	var obj = this;
 	if(this.treeBox && this.treeBox.firstChild.nodeType == 3) {
-		setTimeout("renderTree()", 5 );
+		setTimeout(function() { renderTree(obj); }, 5 );
 	}
+
 
 	if( button_div && offsetx == null && offsety == null ) {
 		var x = findPosX(button_div);
@@ -86,16 +104,10 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 }
 
 
-function renderTree() {
-
-	globalPage.locationTree.treeContainerBox = getById("ot_nav_widget");
-	globalPage.locationTree.treeBox = getById("ot_nav_widget_box");
-
-	if(!globalPage.locationTree.widget)
-		globalPage.locationTree.buildOrgTreeWidget(); 
-	globalPage.locationTree.treeBox.innerHTML = 
-		globalPage.locationTree.widget.toString();
-
+function renderTree(tree) {
+	tree.setObjects();
+	if(!tree.widget) tree.buildOrgTreeWidget(); 
+	tree.treeBox.innerHTML = tree.widget.toString();
 }
 
 

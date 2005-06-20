@@ -8,6 +8,7 @@ var globalOrgTreeWidgetBox		= null;
 var globalSelectedLocation		= null;
 var globalSearchDepth			= null;
 var globalMenuManager			= null;
+var globalCopyStatus				= null;
 var locationStack					= new Array();
 
 var lastSearchString				= null;
@@ -15,8 +16,6 @@ var lastSearchType				= null;
 
 
 var loaded = false;
-
-
 
 
 function addLocation(type, title) {
@@ -39,6 +38,17 @@ function globalInit() {
 
 	if( isXUL() && globalAppFrame )
 		globalAppFrame.document.body.style.background = "#FFF";
+
+	if(paramObj.__location != null) {
+		globalSelectedLocation = findOrgUnit(paramObj.__location);
+		debug("Setting selected location to " + globalSelectedLocation.name() );
+	} 
+
+
+	if(paramObj.__depth != null) {
+		globalSearchDepth = findOrgType(paramObj.__depth);
+		debug("Setting selected depth to " + globalSearchDepth.name() );
+	}
 
 	var page_name = globalPageTarget;
 
@@ -142,9 +152,38 @@ function GlobalInitLoad() {
 	} else  {
 		globalUser = null;
 		globalLocation = globalOrgTree;
-		globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
+		if(globalSearchDepth == null)
+			globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
 	}
 
+	grabCopyStatus();
+
 }
+
+function grabCopyStatus() {
+	if(globalCopyStatus) return;
+
+	debug("Grabbing copy statuses");
+	var req = new RemoteRequest(
+		"open-ils.search",
+		"open-ils.search.config.copy_status.retrieve.all" );
+
+	if(paramObj.__sub_frame) {
+		/* we have to grab the copy statuses synchronously */
+		req.send(true);
+		globalCopyStatus = r.getResultObject();
+
+	} else {
+
+		req.setCompleteCallback(function(r) { 
+			debug("Got globalCopyStatus");
+			globalCopyStatus = r.getResultObject(); });
+	
+		req.send();
+	}
+
+
+}
+
 
 

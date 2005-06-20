@@ -99,6 +99,7 @@ function RemoteRequest( service, method ) {
 
 	var i = 2;
 	this.params = ""; 
+
 	while(i < arguments.length) {
 		var object = js2JSON(arguments[i++]);
 		this.params += "&__param=" + encodeURIComponent(object);
@@ -251,8 +252,10 @@ RemoteRequest.prototype.send = function(blocking) {
 				'application/x-www-form-urlencoded');
 	}
 
+	debug("Remote Request sending..." + data);
 	this.xmlhttp.send( data );
 	this.sendCount += 1;
+	debug("Remote Request done sending");
 	return this;
 }
 
