@@ -8,23 +8,23 @@ function xp_sound_init() {
 }
 
 function snd_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/sounds/redalert.wav') );
+	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/redalert.wav') );
 }
 
 function snd_really_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/sounds/die.wav') );
+	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/die.wav') );
 }
 
 function snd_good() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/sounds/turn.wav') );
+	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/turn.wav') );
 }
 
 function snd_circ_good() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/sounds/clicked.wav') );
+	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/clicked.wav') );
 }
 
 function snd_circ_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/content/media/sounds/cow.wav') );
+	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/cow.wav') );
 }
 
 function snd_logon() {
