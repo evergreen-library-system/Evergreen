@@ -150,6 +150,12 @@ sub _init {
 								     proto_fields	=> { copies => 1 } },
 		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn'    },
 
+		'Fieldmapper::permission::perm_list'		=> { hint => 'ppl'    },
+		'Fieldmapper::permission::grp_tree'		=> { hint => 'pgt'    },
+		'Fieldmapper::permission::usr_grp_map'		=> { hint => 'pugm'   },
+		'Fieldmapper::permission::usr_perm_map'		=> { hint => 'pupm'   },
+		'Fieldmapper::permission::grp_perm_map'		=> { hint => 'pgpm'   },
+
 		'Fieldmapper::ex'				=> { hint => 'ex',
 								     virtual => 1,
 								     proto_fields => {

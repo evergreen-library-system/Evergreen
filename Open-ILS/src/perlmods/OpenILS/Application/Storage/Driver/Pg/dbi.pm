@@ -405,6 +405,43 @@
 
 
 	#-------------------------------------------------------------------------------
+
+	package permission::perm_list;
+
+	permission::perm_list->sequence( 'permission.perm_list_id_seq' );
+	permission::perm_list->table('permission.perm_list');
+
+	#-------------------------------------------------------------------------------
+
+	package permission::grp_tree;
+
+	permission::grp_tree->sequence( 'permission.grp_tree_id_seq' );
+	permission::grp_tree->table('permission.grp_tree');
+
+	#-------------------------------------------------------------------------------
+
+	package permission::usr_grp_map;
+
+	permission::usr_grp_map->sequence( 'permission.usr_grp_map_id_seq' );
+	permission::usr_grp_map->table('permission.usr_grp_map');
+
+	#-------------------------------------------------------------------------------
+
+	package permission::usr_perm_map;
+
+	permission::usr_perm_map->sequence( 'permission.usr_perm_map_id_seq' );
+	permission::usr_perm_map->table('permission.usr_perm_map');
+
+	#-------------------------------------------------------------------------------
+
+	package permission::grp_perm_map;
+
+	permission::grp_perm_map->sequence( 'permission.grp_perm_map_id_seq' );
+	permission::grp_perm_map->table('permission.grp_perm_map');
+
+	#-------------------------------------------------------------------------------
+
+
 }
 
 1;

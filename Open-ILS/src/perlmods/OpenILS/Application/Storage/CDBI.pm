@@ -427,4 +427,17 @@ sub modify_from_fieldmapper {
 	money::credit_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_payment->has_a( accepting_usr => 'actor::user' );
 
+	permission::grp_tree->has_a( parent => 'permission::grp_tree' );
+
+	permission::grp_perm_map->has_a( grp => 'permission::grp_tree' );
+	permission::grp_perm_map->has_a(  perm => 'permission::perm_list' );
+	permission::grp_perm_map->has_a(  depth => 'actor::org_unit_type' );
+	
+	permission::usr_perm_map->has_a( usr => 'actor::usr' );
+	permission::usr_perm_map->has_a(  perm => 'permission::perm_list' );
+	permission::usr_perm_map->has_a(  depth => 'actor::org_unit_type' );
+	
+	permission::usr_grp_map->has_a(  usr => 'actor::usr' );
+	permission::usr_grp_map->has_a(  grp => 'permission::grp_tree' );
+
 1;
