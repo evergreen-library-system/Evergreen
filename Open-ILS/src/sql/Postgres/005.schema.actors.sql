@@ -179,33 +179,6 @@ CREATE TABLE actor.usr_access_entry (
 	CONSTRAINT usr_once_per_ou UNIQUE (usr,org_unit)
 );
 
-
-CREATE TABLE actor.perm_group (
-	id	SERIAL	PRIMARY KEY,
-	name	TEXT	NOT NULL,
-	ou_type	INT	NOT NULL REFERENCES actor.org_unit_type (id)
-);
-
-CREATE TABLE actor.permission (
-	id		SERIAL	PRIMARY KEY,
-	name		TEXT	NOT NULL UNIQUE,
-	code		TEXT	NOT NULL UNIQUE
-);
-
-CREATE TABLE actor.perm_group_permission_map (
-	id		SERIAL	PRIMARY KEY,
-	permission	INT	NOT NULL REFERENCES actor.permission (id),
-	perm_group	INT	NOT NULL REFERENCES actor.perm_group (id),
-	CONSTRAINT perm_once_per_group UNIQUE (permission, perm_group)
-);
-
-CREATE TABLE actor.perm_group_usr_map (
-	id		BIGSERIAL	PRIMARY KEY,
-	usr		INT		NOT NULL REFERENCES actor.usr (id),
-	perm_group	INT		NOT NULL REFERENCES actor.perm_group (id),
-	CONSTRAINT usr_once_per_group UNIQUE (usr, perm_group)
-);
-
 CREATE TABLE actor.usr_address (
 	id		SERIAL	PRIMARY KEY,
 	valid		BOOL	NOT NULL DEFAULT TRUE,
