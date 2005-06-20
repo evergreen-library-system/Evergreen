@@ -27,6 +27,7 @@
 	<script src="ses.js" />		<!-- my wrapper over the OpenSRF communication layer.. Jabber and XMLHttpRequest -->
 	<script src="explode.js" />	<!-- original attempt at linking widgets to data.  Want to use something more OO -->
 	<script src="win.js" />		<!-- window and tab handling -->
+	<script src="spawn_win.js" />	<!-- spawning various interfaces in tabs -->
 	<script src="xpcom.js" />	<!-- misc xpcom -->
 	<script src="print.js" />	<!-- some xpcom for printing -->
 	<script src="sound.js" />	<!-- some xpcom for sound -->
