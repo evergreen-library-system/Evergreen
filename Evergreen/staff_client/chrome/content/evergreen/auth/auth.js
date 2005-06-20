@@ -354,22 +354,6 @@ function my_actsc_list_callback(request) {
 }
 
 
-function spawn_main() {
-	try {
-		var w = new_window('chrome://evergreen/content/evergreen/main/app_shell.xul');
-		if (!w) { throw('window ref == null'); }
-		try {
-			w.document.title = mw.G.user.usrname() + '@' + mw.G.user_ou.name();
-		} catch(E) {
-			alert('Hrmm. ' + pretty_print( js2JSON(E) ) );
-		}
-	} catch(E) {
-		incr_progressmeter('auth_meter',-100);
-		alert('Login failed on new_window: ' + js2JSON(E)); enable_login_prompts(); return;
-	}
-	incr_progressmeter('auth_meter',100);
-}
-
 function logoff() {
 	mw.G['auth_ses'] = '';
 	close_all_windows();
