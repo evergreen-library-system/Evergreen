@@ -31,24 +31,6 @@ if (my $action = $cgi->param('action')) {
 			}
 			$u->update;
 		}
-	} elsif ( $action eq 'Set Permissions' ) {
-		my $grp = permission::grp_tree->retrieve($cgi->param('perms'));
-		my @ids = $cgi->param('permission');
-		for my $perm ( permission::perm_list->retrieve_all ) {
-			if (my $id = $cgi->param('permission_'.$perm->id) ) {
-				my $p = permission::grp_perm_map->search({perm=>$id,grp=>$grp->id})->next;
-				my $d = $cgi->param("depth_$id");
-				if (!$p) {
-					$p = permission::grp_perm_map->create({perm=>$id,grp=>$grp->id,depth=>$d});
-				} else {
-					$p->depth( $d );
-				}
-				$p->update;
-			} else {
-				permission::grp_perm_map->search({perm=>$perm->id,grp=>$grp->id})->delete_all;
-			}
-		}
-		$cgi->param('action'=>'child');
 	} elsif ( $action eq 'Add New' ) {
 		permission::grp_tree->create( { map { defined($cgi->param($_)) ? ($_ => $cgi->param($_)) : () } keys %org_cols } );
 	}
@@ -140,7 +122,7 @@ print <<HEADER;
 		document.write(node_$top);
 	</script>
 </div>
-<div style="float:right; width:50%;">
+<div>
 
 HEADER
 
@@ -157,7 +139,7 @@ if (my $action = $cgi->param('action')) {
 			# child form
 			#-----------------------------------------------------------------------
 
-			print "<h2>Edit Group '".$node->name."'</h2>";
+			print "<h2>Edit ".$node->name."</h2>";
 			print	"<form method='POST'>".
 				"<table class='table_class'><tr class='header_class'>\n";
 	
@@ -170,6 +152,19 @@ if (my $action = $cgi->param('action')) {
 				td("<input type='text' name='name_$node' value=\"". $node->name() ."\">"),
 			);
 			print Tr(
+				th($org_cols{depth}),
+				td("<select name='depth_$node'>".do{
+							my $out = '<option>-- Select One --</option>';
+							for my $type ( sort {$a->depth <=> $b->depth} actor::org_unit_type->retrieve_all) {
+								$out .= "<option value='".$type->depth."' ".do {
+									if ($node->depth == $type->depth) {
+										"selected";
+									}}.'>'.$type->name.'</option>'
+							}
+							$out;
+						}."</select>"),
+			);
+			print Tr(
 				th($org_cols{parent}),
 				td("<select name='parent_$node'>".do{
 						my $out = '<option>-- Select One --</option>';
@@ -177,7 +172,7 @@ if (my $action = $cgi->param('action')) {
 							$out .= "<option value='$org' ".do {
 								if ($node->parent == $org->id) {
 									"selected";
-								}}.'>'.$org->name.'</option>'
+								}}.'>'.do{'&nbsp;&nbsp;'x$org->depth}.$org->name.'</option>'
 						}
 						$out;
 					}."</select><input type='hidden' value='$node' name='id'>"),
@@ -186,63 +181,6 @@ if (my $action = $cgi->param('action')) {
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
 
 			print	"</table></form><hr/>";
-
-
-			print "<h2>Group Permissions</h2>";
-
-			print   "<form method='POST'>".
-				"<table class='table_class'>\n".
-				"<tr class='header_class'><th>Permission</th><th>Select</th><th>At Depth</th></tr>";
-
-			for my $perm ( permission::perm_list->retrieve_all ) {
-				my $grp = $node;
-				my $out = '<select name="depth_'.$perm->id.'"><option value="">-- Select One --</option>';
-				for my $outype ( actor::org_unit_type->retrieve_all ) {
-					my $grp = $node;
-					$out .= "<option value='".$outype->depth."' ".do{
-						my $stuff = '';
-						do {
-							if ($grp) {
-								my $setting = permission::grp_perm_map->search(
-								  		{ grp  => $grp->id,
-										  perm => $perm->id }
-								)->next;
-								$stuff = "selected " if($setting && $outype->depth == $setting->depth);
-								if($stuff && $setting && $setting->grp != $node->id) {
-									$out =~ s/^<select/<select disabled/o;
-								}
-							}
-						} while (!$stuff && $grp && ($grp = $grp->parent));
-						$stuff;
-					}.">".$outype->name."</option>";
-				}
-				$out .= "</select>";
-				$grp = $node;
-				print Tr( "<td>".$perm->code."</td><td>".
-					  "<input type='checkbox' name='permission_$perm' value='$perm' ".
-					  do{
-					  	my $stuff = '';
-						do {
-							if ($grp) {
-								my $setting = permission::grp_perm_map->search(
-								  		{ grp  => $grp->id,
-										  perm => $perm->id }
-								)->next;
-							  	$stuff = "checked " if ($setting);
-								$stuff .= "disabled " if($setting && $setting->grp != $node->id);
-							}
-						} while (!$stuff && $grp && ($grp = $grp->parent));
-					  	$stuff;
-					  }.
-					  "></td><td>$out</td>"
-
-				);
-			}
-			
-			print Tr( "<td colspan='3'><input type='hidden' value='$node' name='perms'>",
-				  "<input type='submit' name='action' value='Set Permissions'/></td>" );
-			print	"</table></form><hr/>";
-
 
 
 			print "<h2>New Child</h2>";
@@ -254,10 +192,19 @@ if (my $action = $cgi->param('action')) {
 				th($org_cols{name}),
 				td("<input type='text' name='name'>"),
 			);
+			print Tr(
+				th($org_cols{depth}),
+				td("<select name='depth'>".do{
+						my $out = '<option>-- Select One --</option>';
+						for my $type ( sort {$a->depth <=> $b->depth} actor::org_unit_type->retrieve_all) {
+							$out .= "<option value='".$type->depth."'>".$type->name.'</option>'
+						}
+						$out;
+					}."</select>"),
+			);
 			print Tr( "<td colspan='2'><input type='hidden' value='$node' name='parent'>",
 				  "<input type='submit' name='action' value='Add New'/></td>" );
 			print	"</table></form><hr/>";
-
 		}
 	}
 }
