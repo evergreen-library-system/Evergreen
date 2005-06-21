@@ -9,7 +9,8 @@ my $map = $Fieldmapper::fieldmap;
 my $web = $ARGV[0];
 # List of classes needed by the opac
 my @web_hints = ("ex", "mvr", "au", "aou",
-		"aout", "asv", "asva", "asvr", "asvq", "circ", "acp");
+		"aout", "asv", "asva", "asvr", "asvq", 
+		"circ", "acp", "acn", "ccs");
 
 print <<JS;
 
