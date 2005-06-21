@@ -125,3 +125,10 @@ table { border-collapse: collapse; }
 	float:left;
 	padding-right: 4px;
 }
+
+#deep_link_div {
+	float: left;
+	margin-left: 20px;
+	text-decoration: underline;
+}
+
