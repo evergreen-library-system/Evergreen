@@ -36,6 +36,9 @@ sub checkouts_by_user {
 	my( $self, $client, $user_session, $user_id ) = @_;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	if(!$user_id) { $user_id = $user_obj->id(); }
 
 	my $circs = $session->request(
 		"open-ils.storage.direct.action.circulation.search.atomic",
@@ -64,6 +67,8 @@ sub checkouts_by_user {
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch( $record->marc() );
 		my $mods = $u->finish_mods_batch();
+		warn "Doc id is " . $record->id() . "\n";
+		$mods->doc_id($record->id());
 
 		push( @results, { copy => $copy, circ => $circ, record => $mods } );
 	}

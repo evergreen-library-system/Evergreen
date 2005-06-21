@@ -3,6 +3,8 @@ use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use Data::Dumper;
 
+use Digest::MD5 qw(md5_hex);
+
 use OpenSRF::EX qw(:try);
 use OpenILS::EX;
 
@@ -17,9 +19,7 @@ my $cache_client = OpenSRF::Utils::Cache->new("global", 0);
 
 __PACKAGE__->register_method(
 	method	=> "update_patron",
-	api_name	=> "open-ils.actor.patron.update",
-);
-
+	api_name	=> "open-ils.actor.patron.update",);
 
 sub update_patron {
 	my( $self, $client, $user_session, $patron ) = @_;
@@ -87,6 +87,8 @@ sub update_patron {
 	warn "Patron Update/Create complete\n";
 	return flesh_user($new_patron->id());
 }
+
+
 
 
 __PACKAGE__->register_method(
@@ -574,15 +576,19 @@ __PACKAGE__->register_method(
 
 sub get_org_unit {
 
-	my( $self, $client, $user_session ) = @_;
+	my( $self, $client, $user_session, $org_id ) = @_;
 
 	my $user_obj = 
 		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 
+	if(!$org_id) {
+		$org_id = $user_obj->home_ou;
+	}
+
 	my $home_ou = OpenILS::Application::AppUtils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.direct.actor.org_unit.retrieve", 
-		$user_obj->home_ou );
+		$org_id );
 
 	return $home_ou;
 }
@@ -740,6 +746,68 @@ sub patron_adv_search {
 
 
 
+sub _verify_password {
+	my($user_session, $password) = @_;
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	#grab the user with password
+	$user_obj = $apputils->simple_scalar_request(
+		"open-ils.storage", 
+		"open-ils.storage.direct.actor.user.retrieve",
+		$user_obj->id );
+
+	if($user_obj->passwd eq $password) {
+		return 1;
+	}
+
+	return 0;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "update_password",
+	api_name	=> "open-ils.actor.user.password.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_password",
+	api_name	=> "open-ils.actor.user.username.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_password",
+	api_name	=> "open-ils.actor.user.email.update");
+
+sub update_password {
+	my( $self, $client, $user_session, $new_value, $current_password ) = @_;
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+	warn "Updating user with method " .$self->api_name . "\n";
+
+	if($self->api_name =~ /password/) {
+
+		#make sure they know the current password
+		if(!_verify_password($user_session, md5_hex($current_password))) {
+			return OpenILS::EX->new("USER_WRONG_PASSWORD")->ex;
+		}
+
+		$user_obj->passwd($new_value);
+	} 
+	elsif($self->api_name =~ /username/) {
+		$user_obj->usrname($new_value);
+	}
+
+	elsif($self->api_name =~ /email/) {
+		$user_obj->email($new_value);
+	}
+
+	my $session = $apputils->start_db_session();
+	$user_obj = _update_patron($session, $user_obj);
+	$apputils->commit_db_session($session);
+
+	if($user_obj) { return 1; }
+	return undef;
+}
+
+
 
 
 
@@ -821,4 +889,5 @@ sub _delete_patron {
 			("Unknown error updating patron"); 
 	}
 }
+
 

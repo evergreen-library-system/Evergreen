@@ -247,9 +247,14 @@ sub biblio_record_tree_commit {
 	$tree = $utils->nodeset2tree($nodeset->nodeset);
 	$tree->owner_doc($docid);
 
-	$client->respond_complete($tree);
+#	$client->respond_complete($tree);
 
 	warn "Done wormizing\n";
+
+	use Data::Dumper;
+	warn "Returning tree:\n";
+	warn Dumper $tree;
+	return $tree;
 
 }
 
@@ -424,14 +429,13 @@ sub orgs_for_title {
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
-	api_name	=> "open-ils.cat.asset.copy_tree.retrieve",
-);
+	api_name	=> "open-ils.cat.asset.copy_tree.retrieve");
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
-	api_name	=> "open-ils.cat.asset.copy_tree.global.retrieve",
-);
+	api_name	=> "open-ils.cat.asset.copy_tree.global.retrieve");
 
+# user_session may be null/undef
 sub retrieve_copies {
 
 	my( $self, $client, $user_session, $docid, @org_ids ) = @_;
@@ -440,9 +444,10 @@ sub retrieve_copies {
 
 	$docid = "$docid";
 
-	warn " $$ retrieving copy tree for doc $docid at " . time() . "\n";
+	warn " $$ retrieving copy tree for orgs @org_ids and doc $docid at " . time() . "\n";
 
-	if(!@org_ids) {
+	# grabbing copy trees should be available for everyone..
+	if(!@org_ids and $user_session) {
 		my $user_obj = 
 			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
 			@org_ids = ($user_obj->home_ou);

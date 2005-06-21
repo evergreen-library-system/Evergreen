@@ -112,7 +112,7 @@ sub simple_scalar_request {
 	$request->wait_complete;
 
 	if(!$request->complete) {
-		throw $response ("Call to $service for method $method with params @params" . 
+		throw OpenSRF::EX::ERROR ("Call to $service for method $method with params @params" . 
 				"\n did not complete successfully");
 	}
 

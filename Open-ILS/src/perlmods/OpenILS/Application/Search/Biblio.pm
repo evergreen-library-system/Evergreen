@@ -501,6 +501,7 @@ sub cat_biblio_search_class {
 
 
 
+=head comment
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_class_id",
 	api_name	=> "open-ils.search.cat.biblio.class.id",
@@ -568,6 +569,7 @@ sub cat_biblio_search_class_id {
 	return { count =>$size, ids => \@ids };
 
 }
+=cut
 
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class_count",
@@ -668,10 +670,10 @@ sub biblio_search_class {
 
 	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
 
-	$offset		||= 0;
-	$limit		= 100 unless defined($limit and $limit > 0 );
-	$org_id	 	= "1" unless defined($org_id); # xxx
-	$org_type	= 0	unless defined($org_type);
+	$offset		= 0	unless (defined($offset) and $offset > 0);
+	$limit		= 100 unless (defined($limit) and $limit > 0);
+	$org_id	 	= "1" unless (defined($org_id)); # xxx
+	$org_type	= 0	unless (defined($org_type));
 
 	warn "Searching biblio.class.id\n" . 
 		"string: $string "		. 
@@ -958,8 +960,6 @@ sub retrieve_all_copy_statuses {
 	}
 	return $copy_statuses;
 }
-
-
 
 
 
