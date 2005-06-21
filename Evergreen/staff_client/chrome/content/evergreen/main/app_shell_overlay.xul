@@ -59,7 +59,7 @@
 </commandset>
 
 <!-- The top level widget for the staff client -->
-<box id="AppShell_main" flex="1">
+<box id="AppShell_main" flex="1" orient="vertical">
 	<toolbox id="main_toolbox"/>
 	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
 		<tabs id="main_tabs"/>

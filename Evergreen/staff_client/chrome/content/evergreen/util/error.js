@@ -6,7 +6,8 @@ var sdump_levels = {
 	'D_UTIL' : false,
 	'D_EXPLODE' : false,
 	'D_PRINT' : false,
-	'D_SES' : true
+	'D_SES' : true,
+	'D_SPAWN' : true
 };
 
 function sdump(level,msg) {

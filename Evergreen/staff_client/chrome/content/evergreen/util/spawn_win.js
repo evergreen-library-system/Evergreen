@@ -51,8 +51,9 @@ function spawn_copy_browser(d,tab_flag,passthru_params) {
 }
 
 function spawn_main() {
+	sdump('D_SPAWN','trying to spawn app_shell\n');
 	try {
-		var w = new_window('chrome://evergreen/content/evergreen/main/app_shell.xul');
+		var w = new_window('chrome://evergreen/content/main/app_shell.xul');
 		if (!w) { throw('window ref == null'); }
 		try {
 			w.document.title = G.user.usrname() + '@' + G.user_ou.name();
@@ -60,6 +61,7 @@ function spawn_main() {
 			alert('Hrmm. ' + pretty_print( js2JSON(E) ) );
 		}
 	} catch(E) {
+		dump(js2JSON(E)+'\n');
 		//incr_progressmeter('auth_meter',-100);
 		//alert('Login failed on new_window: ' + js2JSON(E)); enable_login_prompts(); return;
 	}

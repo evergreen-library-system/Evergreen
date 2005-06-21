@@ -1,4 +1,4 @@
-sdump('D_TRACE','Loading util.js\n');
+sdump('D_TRACE','Loading app_shell.js\n');
 
 var tab_count = [ false, false, false, false, false, false, false, false, false, false ];
 

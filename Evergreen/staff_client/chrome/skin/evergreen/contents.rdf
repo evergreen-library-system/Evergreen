@@ -6,17 +6,17 @@
 	<!-- modified by Jason for Evergreen -->
 
 	<RDF:Seq about="urn:mozilla:skin:root">
-		<RDF:li resource="urn:mozilla:skin:evergreen/0.0.2"/>
+		<RDF:li resource="urn:mozilla:skin:evergreen/0.0.4"/>
 	</RDF:Seq>
 
-	<RDF:Description about="urn:mozilla:skin:evergreen/0.0.2"
+	<RDF:Description about="urn:mozilla:skin:evergreen/0.0.4"
 		chrome:displayName="Evergreen"
 		chrome:author="PINES"
 		chrome:name="evergreen/1.0">
 
 		<chrome:packages>
-			<RDF:Seq about="urn:mozilla:skin:evergreen/0.0.2:packages">
-				<RDF:li resource="urn:mozilla:skin:evergreen/0.0.2:evergreen"/>	
+			<RDF:Seq about="urn:mozilla:skin:evergreen/0.0.4:packages">
+				<RDF:li resource="urn:mozilla:skin:evergreen/0.0.4:evergreen"/>	
 			</RDF:Seq>
 		</chrome:packages>
 	</RDF:Description>
