@@ -293,31 +293,49 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 int _socket_route_data(
 	socket_manager* mgr, int num_active, fd_set* read_set) {
 
-	socket_node* node = mgr->socket;
-	int handled = 0;
+	if(mgr == NULL) return -1;
+
+
+	/* come back here if someone yanks a socket_node from beneath us */
+	while(1) {
+
+		socket_node* node = mgr->socket;
+		int handled = 0;
+		int status = 0;
+		
+		while(node && (handled < num_active)) {
 	
-	while(node && (handled < num_active)) {
+			int sock_fd = node->sock_fd;
+	
+			/* does this socket have data? */
+			if( FD_ISSET( sock_fd, read_set ) ) {
+	
+				debug_handler("Socket %d active", sock_fd);
+				handled++;
+				FD_CLR(sock_fd, read_set);
+	
+				if(node->endpoint == SERVER_SOCKET) 
+					_socket_handle_new_client(mgr, node);
+	
+				if(node->endpoint == CLIENT_SOCKET ) 
+					status = _socket_handle_client_data(mgr, node);
+	
+				/* someone may have yanked a socket_node out from under 
+					us...start over with the first socket */
+				if(status == -1)  {
+					debug_handler("Backtracking back to start of loop because "
+							"of -1 return code from _socket_handle_client_data()");
+				}
+			}
 
-		int sock_fd = node->sock_fd;
-
-		/* does this socket have data? */
-		if( FD_ISSET( sock_fd, read_set ) ) {
-
-			debug_handler("Socket %d active", sock_fd);
-			handled++;
-			FD_CLR(sock_fd, read_set);
-
-			if(node->endpoint == SERVER_SOCKET) 
-				_socket_handle_new_client(mgr, node);
-
-			if(node->endpoint == CLIENT_SOCKET ) 
-				_socket_handle_client_data(mgr, node);
+			if(status == -1) break;
+			node = node->next;
 
 		} // is_set
-		
-		node = node->next;
 
-	} // while(node)
+		if(status == 0) break;
+		if(status == -1) status = 0;
+	} 
 
 	return 0;
 }
@@ -385,8 +403,10 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	}
 
 	if(read_bytes == 0) {  /* socket closed by client */
-		if(mgr->on_socket_closed)
+		if(mgr->on_socket_closed) {
 			mgr->on_socket_closed(mgr->blob, sock_fd);
+			return -1;
+		}
 	}
 
 	return 0;

@@ -157,6 +157,7 @@ void _jserver_remove_client(jserver* js, char* addr) {
 
 	if(node->addr && !strcmp(node->addr,addr)) {
 		js->client = node->next;
+		debug_handler("Removing the first jserver client");
 		socket_disconnect(js->mgr, node->id);
 		_free_jclient_node(node);
 		return;
@@ -169,6 +170,7 @@ void _jserver_remove_client(jserver* js, char* addr) {
 	while(node) {
 		if(node->addr && !strcmp(node->addr,addr)) {
 			tail_node->next = node->next;
+			debug_handler("Removing a jserver client");
 			socket_disconnect(js->mgr, node->id);
 			_free_jclient_node(node);
 			return;
