@@ -12,29 +12,23 @@
 	onload="mw.OpenILS_init('Auth');"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- More Localization -->
-	<stringbundle id="strings" src="chrome://evergreen/locale/auth.properties"/>
-
 	<!-- Stylesheets -->
 	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
 	<?xml-stylesheet href="chrome://evergreen/skin/auth.css" type="text/css"?>
 
 	<!-- Overlays for this XUL file -->
-	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/Open-ILS/OpenILS_overlay.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/auth/auth_overlay.xul"?>
 
-	<!-- OpenSRF -->
-	<script>var myPackageDir = "evergreen";</script>
-	<OpenSRF id="OpenSRF_js" />
+	<!-- More Localization -->
+	<stringbundleset id="string_bundles"/>
 
 	<!-- The logic for this app -->
 	<OpenILS id="OpenILS_js" />
 
 	<!-- The logic for this screen -->
-	<Auth id="auth_js" />
+	<!--<Auth id="auth_js" />-->
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
 	<commandset id="auth_cmds" />

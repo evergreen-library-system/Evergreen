@@ -6,55 +6,52 @@
 <commandset id="AppShell_cmds">
 
 	<command id="cmd_close_window" oncommand="
-		window.close();"/>
+		window.close();" />
 
 	<command id="cmd_new_window" oncommand="
-		spawn_main_window();"/>
+		spawn_main_window();" />
 
 	<command id="cmd_new_tab" oncommand="
-		new_tab(document,'main_tabbox');"/>
+		new_tab(document,'main_tabbox');" />
 
 	<command id="cmd_close_tab" oncommand="
-		close_tab(document,'main_tabbox');"/>
+		close_tab(document,'main_tabbox');" />
 
 	<command id="cmd_cat_main" oncommand="
-		replace_tab(document,'main_tabbox','Navigator','chrome://evergreen/content/opac/opac.xul'); "/>
+		spawn_opac_navigator(document,'replace',{}); "/>	
 
 	<command id="cmd_circ_checkout" oncommand="
-		replace_tab(document,'main_tabbox','Check Out','chrome://evergreen/content/circ/circ_deck_checkout.xul'); "/>
+		spawn_check_out(document,'replace',{}); "/>	
 
 	<command id="cmd_circ_search" oncommand="
-		replace_tab(document,'main_tabbox','Patron Search','chrome://evergreen/content/circ/circ_deck_search.xul'); "/>
+		spawn_circ_search(document,'replace',{}); "/>	
 
 	<command id="cmd_circ_display" oncommand="
-		replace_tab(document,'main_tabbox','Display Patron','chrome://evergreen/content/circ/circ_deck_patron.xul'); "/>
+		spawn_circ_display(document,'replace',{}); "/>
 
 	<command id="cmd_circ_checkin" oncommand="
-		replace_tab(document,'main_tabbox','Check In','chrome://evergreen/content/circ/checkin.xul'); "/>
+		spawn_check_in(document,'replace',{}); "/>	
 
 	<command id="cmd_search_opac" oncommand="
-		replace_tab(document,'main_tabbox','Navigator','chrome://evergreen/content/opac/opac.xul'); "/>
+		spawn_opac_navigator(document,'replace',{}); "/>	
 
 	<command id="cmd_patron_register" oncommand="
-		replace_tab(document,'main_tabbox','NEW PATRON','chrome://evergreen/content/patron/patron_new.xul'); "/>
+		spawn_patron_register(document,'replace',{}); "/>	
 
 	<command id="cmd_survey_wizard" oncommand="
-		mw.new_window(document,'chrome://evergreen/content/survey/survey_wizard.xul'); "/>
+		spawn_survey_admin_wizard(document,false,{}); "/>	
 
 	<command id="cmd_copy_stat_cat_edit" oncommand="
-		replace_tab(document,'main_tabbox','Copy Stat-Cats','chrome://evergreen/content/stat_cat/copy_stat_cat_editor.xul'); "/>
+		spawn_copy_stat_cat_edit(document,'replace',{}); "/>	
 
 	<command id="cmd_patron_stat_cat_edit" oncommand="
-		replace_tab(document,'main_tabbox','Patron Stat-Cats','chrome://evergreen/content/stat_cat/patron_stat_cat_editor.xul'); "/>
+		spawn_patron_stat_cat_edit(document,'replace',{}); "/>	
 
 	<command id="cmd_z39_50_import_old" oncommand="
-		replace_tab(document,'main_tabbox','Z39.50 Import','chrome://evergreen/content/z39_50/z39_50.xul'); "/>
+		spawn_z3950_import(document,'replace',{}); "/>	
 
 	<command id="cmd_test" oncommand="
 		"/>
-
-	<command id="cmd_z39_50_import" oncommand="
-		alert('Not Yet Implemented'); "/>
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
@@ -62,14 +59,14 @@
 </commandset>
 
 <!-- The top level widget for the staff client -->
-<vbox id="main_vbox" flex="1">
+<box id="AppShell_main" flex="1">
 	<toolbox id="main_toolbox"/>
 	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
 		<tabs id="main_tabs"/>
 		<tabpanels id="main_panels" flex="1"/>
 	</tabbox>
 	<toolbox id="entity_toolbox"/>
-</vbox>
+</box>
 
 <!-- The main top level menubar -->
 <toolbox id="main_toolbox">

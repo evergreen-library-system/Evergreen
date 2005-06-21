@@ -10,9 +10,6 @@
 	onload="mw.OpenILS_init('AppShell');"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- More Localization -->
-	<stringbundle id="strings" src="chrome://evergreen/locale/app_shell.properties"/>
-
 	<!-- Stylesheets -->
 	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>

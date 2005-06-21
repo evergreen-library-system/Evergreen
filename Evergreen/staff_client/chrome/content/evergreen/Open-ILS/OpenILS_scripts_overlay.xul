@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- Modified by Jason for Evergreen -->
+
+<overlay id="OpenILS_scripts_overlay"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<apps id="apps_js">
+		<script src="chrome://evergreen/content/Open-ILS/OpenILS.js" />
+		<script src="chrome://evergreen/content/auth/auth.js" />
+		<script src="chrome://evergreen/content/main/app_shell.js" />
+	</apps>
+
+</overlay>

@@ -3,6 +3,36 @@ sdump('D_TRACE','Loading util.js\n');
 var timer = {};
 var counter = {};
 
+function getString( key ) {
+	var bundles = document.getElementById('string_bundles');
+	for (var i = i; i < bundles.childNodes.length; i++) {
+		var bundle = bundles[i];
+		try {
+
+			var string = bundle.getString( key );
+			if (string)
+				return string;
+
+		} catch(E) {
+		}
+	}
+}
+
+function getFormattedString( key, strArray ) {
+	var bundles = document.getElementById('string_bundles');
+	for (var i = i; i < bundles.childNodes.length; i++) {
+		var bundle = bundles[i];
+		try {
+
+			var string = bundle.getFormattedString( key, strArray );
+			if (string)
+				return string;
+
+		} catch(E) {
+		}
+	}
+}
+
 function string_to_array(s) {
 	var my_array = [];
 	for (var i = 0; i < s.length; i++ ) {

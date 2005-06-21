@@ -8,6 +8,7 @@
 
 	<script>
 		var IAMXUL = true;
+		dump('Loading all the js in the util overlay...\n');
 	</script>
 
 	<script src="error.js" />	<!-- more like output handling -->

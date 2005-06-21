@@ -1,12 +1,27 @@
 <?xml version="1.0"?>
 <!-- Modified by Jason for Evergreen -->
 
-<overlay id="OpenILS"
+<overlay id="OpenILS_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<OpenILS id="OpenILS_js">
-	<script src="OpenILS.js" />
-	<script src="chrome://evergreen/content/main/AppShell.js" />
-</OpenILS>
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/Open-ILS/OpenILS_scripts_overlay.xul"?>
+
+	<OpenILS id="OpenILS_js">
+
+		<!-- OpenSRF -->
+		<script>var myPackageDir = "evergreen"; var ses; dump('Loading all the js in the OpenILS overlay...\n');</script>
+		<OpenSRF id="OpenSRF_js" />
+
+		<util id="util_js" />
+
+		<apps id="apps_js" />
+
+	</OpenILS>
+
+	<stringbundleset id="string_bundles">
+		<stringbundle id="main_strings" src="chrome://evergreen/locale/OpenILS.properties"/>
+	</stringbundleset>
 
 </overlay>

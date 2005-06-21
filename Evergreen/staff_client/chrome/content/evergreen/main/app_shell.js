@@ -1,3 +1,5 @@
+sdump('D_TRACE','Loading util.js\n');
+
 var tab_count = [ false, false, false, false, false, false, false, false, false, false ];
 
 function app_shell_init() {

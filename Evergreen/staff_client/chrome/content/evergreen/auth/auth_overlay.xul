@@ -6,11 +6,11 @@
 <!-- Modified by Jason for Evergreen -->
 
 <!-- The javascript logic for the staff client -->
+<!--
 <Auth id="auth_js">
-	<script>var ses;</script>
-	<util id="util_js"/>
 	<script src="auth.js" />
 </Auth>
+-->
 
 <!-- Some logic abstracted a bit.  Sort of like an API list -->
 <commandset id="auth_cmds">

@@ -1,0 +1,72 @@
+<!ENTITY evergreen.title "Evergreen Staff Client">
+
+<!-- The Main Menubar -->
+<!ENTITY evergreen.file "File"><!ENTITY evergreen.file.key "F">
+<!ENTITY evergreen.edit "Edit"><!ENTITY evergreen.edit.key "E">
+<!ENTITY evergreen.circ "Circulation"><!ENTITY evergreen.circ.key "C">
+<!ENTITY evergreen.cat "Cataloging"><!ENTITY evergreen.cat.key "a">
+<!ENTITY evergreen.serials "Serials"><!ENTITY evergreen.serials.key "l">
+<!ENTITY evergreen.acquisitions "Acquisitions"><!ENTITY evergreen.acquisitions.key "q">
+<!ENTITY evergreen.search "Search"><!ENTITY evergreen.search.key "r">
+<!ENTITY evergreen.reports "Reports"><!ENTITY evergreen.reports.key "">
+<!ENTITY evergreen.help "Help"><!ENTITY evergreen.help.key "H">
+<!ENTITY evergreen.admin "Admin"><!ENTITY evergreen.admin.key "">
+
+<!-- The File menu on the Main Menubar -->
+<!ENTITY evergreen.file.new "New Window"><!ENTITY evergreen.file.new.key "N">
+<!ENTITY evergreen.file.new_tab "New Tab"><!ENTITY evergreen.file.new_tab.key "T">
+<!ENTITY evergreen.file.open "Open Session"><!ENTITY evergreen.file.open.key "O">
+<!ENTITY evergreen.file.save "Save Session"><!ENTITY evergreen.file.save.key "S">
+<!ENTITY evergreen.file.close_tab "Close Tab"><!ENTITY evergreen.file.close_tab.key "">
+<!ENTITY evergreen.file.close "Close Window"><!ENTITY evergreen.file.close.key "C">
+
+<!-- The Edit menu on the Main Menubar -->
+<!ENTITY evergreen.edit.undo "Undo"><!ENTITY evergreen.edit.undo.key "U">
+<!ENTITY evergreen.edit.redo "Redo"><!ENTITY evergreen.edit.redo.key "R">
+<!ENTITY evergreen.edit.cut "Cut"><!ENTITY evergreen.edit.cut.key "t">
+<!ENTITY evergreen.edit.copy "Copy"><!ENTITY evergreen.edit.copy.key "C">
+<!ENTITY evergreen.edit.paste "Paste"><!ENTITY evergreen.edit.paste.key "P">
+<!ENTITY evergreen.edit.delete "Delete"><!ENTITY evergreen.edit.delete.key "D">
+<!ENTITY evergreen.edit.select_all "Select All"><!ENTITY evergreen.edit.select_all.key "A">
+<!ENTITY evergreen.edit.find "Find"><!ENTITY evergreen.edit.find.key "F">
+<!ENTITY evergreen.edit.find_again "Find Again"><!ENTITY evergreen.edit.find_again.key "g">
+<!ENTITY evergreen.edit.buckets "Manage Buckets"><!ENTITY evergreen.edit.buckets.key "B">
+
+<!-- The Circulation menu on the Main Menubar -->
+<!ENTITY evergreen.circ.checkout "Check Out"><!ENTITY evergreen.circ.checkout.key "O">
+<!ENTITY evergreen.circ.checkin "Check In"><!ENTITY evergreen.circ.checkin.key "C">
+<!ENTITY evergreen.circ.renew "Renew"><!ENTITY evergreen.circ.renew.key "n">
+<!ENTITY evergreen.circ.mark_used "Mark Used"><!ENTITY evergreen.circ.mark_used.key "U">
+<!ENTITY evergreen.circ.copy_status "Display Item"><!ENTITY evergreen.circ.copy_status.key "I">
+<!ENTITY evergreen.circ.patron_status "Display Patron"><!ENTITY evergreen.circ.patron_status.key "P">
+<!ENTITY evergreen.circ.patron_registration "Register Patron"><!ENTITY evergreen.circ.patron_registration.key "R">
+<!ENTITY evergreen.circ.place_hold "Place Hold"><!ENTITY evergreen.circ.place_hold.key "H">
+
+<!-- The Special Circulation submenu in the Circulation Menu -->
+<!ENTITY evergreen.circ.special "Special Circulation"><!ENTITY evergreen.circ.special.key "S">
+<!ENTITY evergreen.circ.lost "Mark Lost"><!ENTITY evergreen.circ.lost.key "L">
+<!ENTITY evergreen.circ.missing "Mark Missing"><!ENTITY evergreen.circ.missing.key "M">
+<!ENTITY evergreen.circ.found "Mark Found"><!ENTITY evergreen.circ.found.key "F">
+<!ENTITY evergreen.circ.quick_add "Quick Add"><!ENTITY evergreen.circ.quick_add.key "Q">
+<!ENTITY evergreen.circ.claimed_returned 'Mark as "Claimed Returned"'><!ENTITY evergreen.circ.claimed_returned.key "C">
+
+<!-- The Cataloging menu on the Main Menubar -->
+<!ENTITY evergreen.cat.add_copy "Add Item"><!ENTITY evergreen.cat.add_copy.key "I">
+<!ENTITY evergreen.cat.add_volume "Add Volume"><!ENTITY evergreen.cat.add_volume.key "V">
+<!ENTITY evergreen.cat.add_bib "Add Bib Record"><!ENTITY evergreen.cat.add_bib.key "B">
+<!ENTITY evergreen.cat.copy_status "Display Item"><!ENTITY evergreen.cat.copy_status.key "I">
+<!ENTITY evergreen.cat.volume_status "Display Volume"><!ENTITY evergreen.cat.volume_status.key "V">
+<!ENTITY evergreen.cat.bib_status "Display Bib Record"><!ENTITY evergreen.cat.bib_status.key "B">
+<!ENTITY evergreen.cat.bib_search "Search Catalog"><!ENTITY evergreen.cat.bib_search.key "S">
+<!ENTITY evergreen.cat.dedup "Merge/Transfer Interface"><!ENTITY evergreen.cat.dedup.key "M">
+
+<!-- The Entity Menubar -->
+<!ENTITY evergreen.entity.patron "Patrons"><!ENTITY evergreen.entity.patron.key "">
+<!ENTITY evergreen.entity.copy "Items"><!ENTITY evergreen.entity.copy.key "">
+<!ENTITY evergreen.entity.volume "Volumes"><!ENTITY evergreen.entity.volume.key "">
+<!ENTITY evergreen.entity.bib "Bib Records"><!ENTITY evergreen.entity.bib.key "">
+
+<!-- The Patron menu on the Entity Menubar -->
+<!-- Re-use evergreen.copy.patron_registration for menuitem label -->
+<!ENTITY evergreen.entity.patron.register.key "R">
+
