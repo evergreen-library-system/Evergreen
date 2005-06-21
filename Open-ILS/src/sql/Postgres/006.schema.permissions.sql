@@ -24,17 +24,17 @@ CREATE TABLE permission.grp_perm_map (
 	id	SERIAL	PRIMARY KEY,
 	grp	INT	NOT NULL REFERENCES permission.grp_tree (id),
 	perm	INT	NOT NULL REFERENCES permission.perm_list (id),
-	depth	INT	NOT NULL REFERENCES actor.org_unit_type (id),
+	depth	INT	NOT NULL,
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
 );
-INSERT INTO permission.grp_perm_map VALUES (DEFAULT,1,2,(SELECT id FROM actor.org_unit_type WHERE depth = 0 LIMIT 1));
-INSERT INTO permission.grp_perm_map VALUES (DEFAULT,2,1,(SELECT id FROM actor.org_unit_type WHERE depth = 0 LIMIT 1));
+INSERT INTO permission.grp_perm_map VALUES (DEFAULT,1,2,0);
+INSERT INTO permission.grp_perm_map VALUES (DEFAULT,2,1,0);
 
 CREATE TABLE permission.usr_perm_map (
 	id	SERIAL	PRIMARY KEY,
 	usr	INT	NOT NULL REFERENCES actor.usr (id),
 	perm	INT	NOT NULL REFERENCES permission.perm_list (id),
-	depth	INT	NOT NULL REFERENCES actor.org_unit_type (id),
+	depth	INT	NOT NULL,
 		CONSTRAINT perm_usr_once UNIQUE (usr,perm)
 );
 
@@ -88,7 +88,7 @@ BEGIN
 		FOR g_list IN	SELECT	*
 				  FROM	permission.grp_ancestors( grp.grp ) LOOP
 
-			FOR u_perm IN	SELECT	DISTINCT p.id, iuser AS usr, p.perm, p.depth
+			FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth
 					  FROM	permission.grp_perm_map p
 						JOIN permission.usr_grp_map m ON (m.grp = p.grp)
 					  WHERE	m.grp = g_list.id LOOP
@@ -98,22 +98,37 @@ BEGIN
 			END LOOP;
 		END LOOP;
 	END LOOP;
+
 	RETURN;
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION permission.usr_has_perm ( iuser INT, tperm TEXT ) RETURNS BOOL AS $$
+CREATE OR REPLACE FUNCTION permission.usr_has_perm ( iuser INT, tperm TEXT, target INT ) RETURNS BOOL AS $$
+DECLARE
+	r_usr	actor.usr%ROWTYPE;
+	r_perm	permission.usr_perm_map%ROWTYPE;
 BEGIN
-	PERFORM	TRUE
-	  FROM	permission.usr_perms(iuser) p
-		JOIN permission.perm_list l
-			ON (l.id = p.perm)
-	  WHERE	l.code = tperm;
-	IF FOUND THEN
-		RETURN TRUE;
-	ELSE
-		RETURN FALSE;
-	END IF;
+
+	SELECT * INTO r_usr FROM actor.usr WHERE id = iuser;
+
+	FOR r_perm IN	SELECT	*
+			  FROM	permission.usr_perms(iuser) p
+				JOIN permission.perm_list l
+					ON (l.id = p.perm)
+			  WHERE	l.code = tperm LOOP
+
+		PERFORM	*
+		  FROM	actor.org_unit_descendants(target,r_perm.depth)
+		  WHERE	id = r_usr.home_ou;
+
+		IF FOUND THEN
+			RETURN TRUE;
+		ELSE
+			RETURN FALSE;
+		END IF;
+	END LOOP;
+
+	RETURN FALSE;
 END;
 $$ LANGUAGE PLPGSQL;
 
