@@ -9,7 +9,10 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 
-OpenILS::Application::Storage::CDBI->connection('dbi:Pg:host=10.0.0.2;dbname=demo-dev', 'postgres');
+our %config;
+do '../setup.pl';
+
+OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
 
 my $cgi = new CGI;
@@ -52,6 +55,8 @@ Content-type: text/html
 	</style>
 <body style='padding: 25px;'>
 
+<a href="$config{index}">Home</a>
+
 <h1>Organizational Unit Type Setup</h1>
 <hr/>
 
@@ -61,9 +66,9 @@ HEADER
 # setup part
 #-------------------------------------------------------------------------------
 
-my %ou_cols = ( qw/id SysID name Name depth Depth parent ParentType can_have_vols CanHaveVolumes can_have_users CanHaveUsers/ );
+my %ou_cols = ( qw/id SysID name Name opac_label OpacLabel depth Depth parent ParentType can_have_vols CanHaveVolumes can_have_users CanHaveUsers/ );
 
-my @col_display_order = ( qw/id name depth parent can_have_vols can_have_users/ );
+my @col_display_order = ( qw/id name opac_label depth parent can_have_vols can_have_users/ );
 
 #-------------------------------------------------------------------------------
 # Logic part
@@ -78,6 +83,7 @@ if (my $action = $cgi->param('action')) {
 		for my $id ( ($cgi->param('id')) ) {
 			my $u = actor::org_unit_type->retrieve($id);
 			for my $col (@col_display_order) {
+				next if ($cgi->param($col."_$id") =~ /Select One/o);
 				$u->$col( $cgi->param($col."_$id") );
 			}
 			$u->update;
@@ -108,6 +114,7 @@ if (my $action = $cgi->param('action')) {
 		print Tr(
 			td( $row->id() ),
 			td("<input type='text' name='name_$row' value='". $row->name() ."'>"),
+			td("<input type='text' name='opac_label_$row' value='". $row->opac_label() ."'>"),
 			td("<input type='text' size=3 name='depth_$row' value='". $row->depth() ."'>"),
 			td("<select name='parent_$row'><option>-- Select One --</option>".do{
 				my $out = '';
@@ -129,6 +136,7 @@ if (my $action = $cgi->param('action')) {
 	print "<tr class='new_row_class'>",
 		td(),
 		td("<input type='text' name='name'>"),
+		td("<input type='text' name='opac_label'>"),
 		td("<input type='text' size=3 name='depth'>"),
 		td("<select name='parent'><option>-- Select One --</option>".do{
 			my $out = '';

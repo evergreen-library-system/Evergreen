@@ -8,8 +8,10 @@ use OpenILS::Application::Storage::CDBI;
 use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
+our %config;
+do '../setup.pl';
 
-OpenILS::Application::Storage::CDBI->connection('dbi:Pg:host=10.0.0.2;dbname=demo-dev', 'postgres');
+OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
 
 my $cgi = new CGI;
@@ -51,6 +53,8 @@ Content-type: text/html
 
 	</style>
 <body style='padding: 25px;'>
+
+<a href="$config{index}">Home</a>
 
 <h1>Copy Status Setup</h1>
 <hr/>

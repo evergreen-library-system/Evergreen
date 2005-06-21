@@ -9,7 +9,10 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 
-OpenILS::Application::Storage::CDBI->connection('dbi:Pg:host=10.0.0.2;dbname=demo-dev', 'postgres');
+our %config;
+do '../setup.pl';
+
+OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
 
 my $cgi = new CGI;
@@ -48,6 +51,8 @@ Content-type: text/html
 
 	</style>
 <body style='padding: 25px;'>
+
+<a href="$config{index}">Home</a>
 
 <h1>Configure Circulation Rules</h1>
 <hr/>

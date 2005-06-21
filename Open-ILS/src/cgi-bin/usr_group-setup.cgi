@@ -9,7 +9,10 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 
-OpenILS::Application::Storage::CDBI->connection('dbi:Pg:host=10.0.0.2;dbname=demo-dev', 'postgres');
+our %config;
+do '../setup.pl';
+
+OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
 
 my $cgi = new CGI;
@@ -27,6 +30,7 @@ if (my $action = $cgi->param('action')) {
 		for my $id ( ($cgi->param('id')) ) {
 			my $u = permission::grp_tree->retrieve($id);
 			for my $col ( keys %org_cols ) {
+				next if ($cgi->param($col."_$id") =~ /Select One/o);
 				$u->$col( $cgi->param($col."_$id") );
 			}
 			$u->update;
@@ -94,6 +98,8 @@ Content-type: text/html
 </head>
 
 <body style='padding: 25px;'>
+
+<a href="$config{index}">Home</a>
 
 <h1>User Group Hierarchy Setup</h1>
 <hr/>
