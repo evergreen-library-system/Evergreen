@@ -34,7 +34,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit_type' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Essential => qw/name depth parent can_have_vols can_have_users/);
+__PACKAGE__->columns( Essential => qw/name opac_label depth parent can_have_vols can_have_users/);
 
 #-------------------------------------------------------------------------------
 package actor::org_unit;

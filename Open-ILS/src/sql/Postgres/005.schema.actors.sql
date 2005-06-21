@@ -138,6 +138,7 @@ INSERT INTO actor.card (usr, barcode) VALUES (3,'101010101010103');
 CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
+	opac_label	TEXT	NOT NULL,
 	depth		INT	NOT NULL,
 	parent		INT	REFERENCES actor.org_unit_type (id),
 	can_have_vols	BOOL	NOT NULL DEFAULT TRUE,
@@ -146,11 +147,11 @@ CREATE TABLE actor.org_unit_type (
 CREATE INDEX actor_org_unit_type_parent_idx ON actor.org_unit_type (parent);
 
 -- The PINES levels
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium', 0, NULL, FALSE, FALSE );
-INSERT INTO actor.org_unit_type (name, depth, parent, can_have_users, can_have_vols) VALUES ( 'System', 1, 1, FALSE, FALSE );
-INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Branch', 2, 2 );
-INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Sub-lib', 3, 3 );
-INSERT INTO actor.org_unit_type (name, depth, parent) VALUES ( 'Bookmobile', 3, 3 );
+INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium','All of PINES', 0, NULL, FALSE, FALSE );
+INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES ( 'System','Local Library System', 1, 1, FALSE, FALSE );
+INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES ( 'Branch','This Branch', 2, 2 );
+INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES ( 'Sub-lib','This Specialized Library', 3, 3 );
+INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES ( 'Bookmobile','Your Bookmobile', 3, 3 );
 
 CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
