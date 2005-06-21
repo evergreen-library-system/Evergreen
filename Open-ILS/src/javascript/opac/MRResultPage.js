@@ -138,7 +138,9 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 			add_css_class(href,"record_result_title_link");
 			href.setAttribute("href",
 				"?target=record_result&page=0&mrid=" + id + 
-				"&hits_per_page=" + this.hitsPerPage);
+				"&hits_per_page=" + this.hitsPerPage +
+				"&location=" + this.searchLocation +
+				"&depth=" + this.searchDepth );
 			href.appendChild(createAppTextNode(value));
 			href.title = "View titles for " + t + "";
 			break;
@@ -148,7 +150,9 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 			add_css_class(href,"record_result_title_link");
 			href.setAttribute("href",
 				"?target=record_result&page=0&mrid=" + id +
-				"&hits_per_page=" + this.hitsPerPage);
+				"&hits_per_page=" + this.hitsPerPage +
+				"&location=" + this.searchLocation +
+				"&depth=" + this.searchDepth );
 			href.title = "View titles for " + t + "";
 			break;
 

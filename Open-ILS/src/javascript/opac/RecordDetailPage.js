@@ -169,21 +169,32 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 		createAppTextNode(record.types_of_resource()));
 
 
-
-	var isbn = record.isbn();
-	if(isbn) isbn = isbn.replace(/\s+/,"");
-	else isbn = "";
-
-	var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
-	var pic = createAppElement("img");
-	pic.setAttribute("src", img_src);
-	pic_cell.appendChild(pic);
+	pic_cell.appendChild(this.mkImage(record));
 
 	var orgUnit = globalSelectedLocation;
 	if(!orgUnit) orgUnit = globalLocation;
 
 	this.drawCopyTrees(orgUnit, record);
 }
+
+/* sets up the cover art image */
+RecordDetailPage.prototype.mkImage = function(record) {
+
+	var isbn = record.isbn();
+	if(isbn) isbn = isbn.replace(/\s+/,"");
+	else isbn = "";
+
+	var big_pic = elem("a", {
+		href : "http://images.amazon.com/images/P/" +isbn + ".01.LZZZZZZZ.jpg",
+		title : "Click for larger image" } );
+
+	var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
+	var pic = elem ( "img", { src : img_src }, { border : "0px none" });
+	big_pic.appendChild(pic);
+
+	return big_pic;
+}
+
 
 /* if sync, it is a synchronous call */
 RecordDetailPage.prototype.grabCopyTree = function(record, orgUnit, callback, sync) {

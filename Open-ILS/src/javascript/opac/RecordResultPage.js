@@ -138,12 +138,20 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 
 	var href;
 
+	var org = globalSelectedLocation;
+	if(org == null)
+		org = globalLocation;
+
 	switch(type) {
+
 
 		case "title":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_title_link");
-			href.setAttribute("href","?target=record_detail&record=" + id );
+			href.setAttribute("href",
+				"?target=record_detail&record=" + id  +
+				"&location=" + org.id() +
+				"&depth=" + globalSearchDepth );
 			href.appendChild(createAppTextNode(value));
 			href.title = "View title details for " + value;
 			break;
@@ -160,7 +168,10 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 	case "img":
 			href = createAppElement("a");
 			add_css_class(href,"record_result_image_link");
-			href.setAttribute("href","?target=record_detail&page=0&mrid=" + id );
+			href.setAttribute("href",
+					"?target=record_detail&page=0&mrid=" + id  +
+				"&location=" + org.id() +
+				"&depth=" + globalSearchDepth );
 			href.title = "View title details for " + value;
 			break;
 
@@ -322,12 +333,17 @@ RecordResultPage.prototype.mrSearch = function(mrid) {
 			try{
 				obj.gatherIDs(req.getResultObject());
 
-				if(parseInt(obj.hitCount) == 1) {
-					debug("Redirecting to record detail page with record " + obj.recordIDs[0] );
+				if(!recordResultRedirect) { /* if the user isn't just hitting the 'back' button */
+					if(parseInt(obj.hitCount) == 1) {
+						recordResultRedirect = true;
+						debug("Redirecting to record detail page with record " + obj.recordIDs[0] );
 					url_redirect( [
-						"target", "record_detail",
-						"record", obj.recordIDs[0] ] );
-					return;
+							"target", "record_detail",
+							"record", obj.recordIDs[0] ] );
+						return;
+					}
+				} else { 
+					recordResultRedirect = false;
 				}
 
 				obj.collectRecords();

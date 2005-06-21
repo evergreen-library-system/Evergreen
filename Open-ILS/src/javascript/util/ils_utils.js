@@ -22,7 +22,7 @@ function findOrgType(type_id) {
 
 	for(var type in globalOrgTypes) {
 		var t =globalOrgTypes[type]; 
-		if( t.id() == type_id ) 
+		if( t.id() == type_id || t.id() == parseInt(type_id) ) 
 			return t;
 	}
 	return null;

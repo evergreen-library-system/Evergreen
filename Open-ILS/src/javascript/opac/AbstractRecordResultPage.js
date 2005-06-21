@@ -347,7 +347,9 @@ AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
 		"?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
 		encodeURIComponent(auth) +
 		"&mr_search_depth=" + this.searchDepth +
-		"&mr_search_location=" + this.searchLocation);
+		"&mr_search_location=" + this.searchLocation +
+		"&location=" +  this.searchLocation +
+		"&depth=" +  this.searchDepth);
 
 	href.appendChild(createAppTextNode(auth));
 	href.title = "Author search for " + auth;
@@ -364,7 +366,9 @@ AbstractRecordResultPage.prototype.mkSeriesLink = function(series) {
 		"?target=mr_result&mr_search_type=series&page=0&mr_search_query=" +
 		encodeURIComponent(series) +
 		"&mr_search_depth=" + this.searchDepth +
-		"&mr_search_location=" + this.searchLocation);
+		"&mr_search_location=" + this.searchLocation +
+		"&location=" +  this.searchLocation +
+		"&depth=" +  this.searchDepth);
 
 	href.appendChild(createAppTextNode(series));
 	href.title = "Series search for " + series;
@@ -378,7 +382,10 @@ AbstractRecordResultPage.prototype.mkSubjectLink = function(sub) {
 		"?target=mr_result&mr_search_type=subject&page=0&mr_search_query=" +
 		encodeURIComponent(sub) + 
 		"&mr_search_depth=" + this.searchDepth +
-		"&mr_search_location=" + this.searchLocation);
+		"&mr_search_location=" + this.searchLocation +
+		"&location=" +  this.searchLocation +
+		"&depth=" +  this.searchDepth);
+
 	href.appendChild(createAppTextNode(sub));
 	href.title = "Subject search for " + sub;
 	return href;

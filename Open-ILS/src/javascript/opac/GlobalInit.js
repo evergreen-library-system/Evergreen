@@ -14,6 +14,11 @@ var locationStack					= new Array();
 var lastSearchString				= null;
 var lastSearchType				= null;
 
+/* this is true if we directed to the record detail page
+	becuase of only having one hit on the record result
+	page.  this allows us to back up from the detail
+	page to the mr_result page */
+var recordResultRedirect = false;
 
 var loaded = false;
 
@@ -39,16 +44,7 @@ function globalInit() {
 	if( isXUL() && globalAppFrame )
 		globalAppFrame.document.body.style.background = "#FFF";
 
-	if(paramObj.__location != null) {
-		globalSelectedLocation = findOrgUnit(paramObj.__location);
-		debug("Setting selected location to " + globalSelectedLocation.name() );
-	} 
 
-
-	if(paramObj.__depth != null) {
-		globalSearchDepth = findOrgType(paramObj.__depth);
-		debug("Setting selected depth to " + globalSearchDepth.name() );
-	}
 
 	var page_name = globalPageTarget;
 
@@ -118,6 +114,19 @@ function globalInit() {
 	}
 
 	globalPage.init();
+
+	if(paramObj.__location != null) {
+		globalSelectedLocation = findOrgUnit(paramObj.__location);
+		debug("Setting selected location to " + globalSelectedLocation.name() );
+	} 
+
+
+	if(paramObj.__depth != null) {
+		debug("Passed in depth from search params: " + paramObj.__depth);
+		globalSearchDepth = parseInt(paramObj.__depth);
+		debug("Setting selected depth to " + globalSearchDepth );
+	}
+
 	globalPage.setLocDisplay();
 	globalPage.locationTree = globalOrgTreeWidget;
 	globalPage.setPageTrail();
@@ -127,6 +136,8 @@ function globalInit() {
 	
 	if( globalSearchBarFormChunk != null)
 		globalSearchBarFormChunk.resetPage();
+
+
 
 }
 
