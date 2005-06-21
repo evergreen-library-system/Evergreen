@@ -194,7 +194,7 @@ if (my $action = $cgi->param('action')) {
 				"<table class='table_class'>\n".
 				"<tr class='header_class'><th>Permission</th><th>Select</th><th>At Depth</th></tr>";
 
-			for my $perm ( permission::perm_list->retrieve_all ) {
+			for my $perm ( sort {$a->code cmp $b->code} permission::perm_list->retrieve_all ) {
 				my $grp = $node;
 				my $out = '<select name="depth_'.$perm->id.'"><option value="">-- Select One --</option>';
 				for my $outype ( actor::org_unit_type->retrieve_all ) {
