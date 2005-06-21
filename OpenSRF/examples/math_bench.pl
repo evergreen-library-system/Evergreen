@@ -29,15 +29,6 @@ warn "PID: $$\n";
 OpenSRF::System->bootstrap_client();
 my $session = OpenSRF::AppSession->create( "opensrf.math" );
 
-try {
-	if( ! ($session->connect()) ) { die "Connect timed out\n"; }
-
-} catch OpenSRF::EX with {
-	my $e = shift;
-	warn "Connection Failed *\n";
-	die $e;
-}
-
 my @times;
 my %vals = ( add => 3, sub => -1, mult => 2, div => 0.5 );
 
@@ -58,6 +49,7 @@ for my $scale ( 1..$count ) {
 		try {
 
 			$starttime = time();
+			if( ! ($session->connect()) ) { die "Connect timed out\n"; }
 			$req = $session->request( $mname, 1, 2 );
 			$resp = $req->recv( timeout => 10 );
 			push @times, time() - $starttime;
@@ -87,7 +79,7 @@ for my $scale ( 1..$count ) {
 		} else { print "*NADA*";	}
 
 		$req->finish();
-		$session->disconnect();
+#		$session->disconnect();
 		$c++;
 
 	}
