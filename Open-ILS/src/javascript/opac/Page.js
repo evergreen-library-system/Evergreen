@@ -86,7 +86,7 @@ Page.prototype.resetRange = function() {
 			if( otype.depth() > findOrgType(orgunit.ou_type()).depth() )
 				continue;
 
-			var select =  new Option(otype.name(), otype.depth());
+			var select =  new Option(otype.opac_label(), otype.depth());
 
 			this.searchRange.options[this.searchRange.options.length] = select;
 

@@ -32,8 +32,9 @@
 						WRAPPER html/table class='record_result_box', id='record_result_box'; 
 							WRAPPER html/thead class='record_result_thead'; 
 								WRAPPER html/row id='record_result_thead_row';
-									cell(nowrap='nowrap', colspan='2', 
-											content="Title / Author", class='record_box_descriptor' ); 
+										cell(nowrap='nowrap', colspan='2', 
+											#content="Title / Author", class='record_box_descriptor' ); 
+											content="&nbsp;", class='record_box_descriptor' ); 
 								END;
 							END;
 						END;

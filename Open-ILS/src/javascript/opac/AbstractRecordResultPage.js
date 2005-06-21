@@ -463,7 +463,8 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 			var cell = trow.insertCell(trow.cells.length);
 			add_css_class(cell,"record_result_thead_header");
 			cell.innerHTML = 
-				findOrgType(findOrgUnit(copy_counts[i].org_unit).ou_type()).name();
+				findOrgType(findOrgUnit(
+					copy_counts[i].org_unit).ou_type()).opac_label();
 		}
 		this.theadDrawn = true;
 	}

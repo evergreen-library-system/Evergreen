@@ -32,6 +32,7 @@ function findOrgType(type_id) {
 /* locates a specific org unit */
 function findOrgUnit(org_id, branch) {
 	if(org_id == null) return null;
+	if(typeof org_id == 'object') return org_id;
 	if(globalOrgTree == null)
 		throw new EXArg("Need globalOrgTree");
 

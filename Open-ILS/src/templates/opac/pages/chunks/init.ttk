@@ -73,8 +73,17 @@
 		function setDeepLink() {
 			var node = document.getElementById("deep_link_div");
 			if(node) {
+				var org = logicNode.globalSelectedLocation;
+				if(org == null)
+					org = logicNode.globalLocation;
+				org = org.id();
+
+				var depth = logicNode.globalSearchDepth;
+
 				var a = document.createElement("a");
-				a.setAttribute("href", location.href + "&sub_frame=1");
+				a.setAttribute("href", location.href + 
+					"&sub_frame=1&location=" + org + "&depth=" + depth);
+
 				a.setAttribute("target", "_blank");
 				a.appendChild(document.createTextNode("Link to this page"));
 				node.appendChild(a);

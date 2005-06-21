@@ -6,6 +6,7 @@ function LocationTree( tree, box_id, container_id ) {
 	this.treeContainerBoxId = container_id;
 	this.treeBoxId = box_id;
 	this.setObjects();
+	this.treeBuilder = buildOrgTreeWidget;
 }
 
 
@@ -16,7 +17,7 @@ LocationTree.prototype.setObjects = function() {
 		this.treeContainerBox = getById("ot_nav_widget");
 
 	if(this.treeBoxId)
-		this.treeBox = getById(treeBoxId);
+		this.treeBox = getById(this.treeBoxId);
 	else
 		this.treeBox = getById("ot_nav_widget_box");
 
@@ -26,7 +27,8 @@ LocationTree.prototype.buildOrgTreeWidget = function() {
 
 	debug("Somebody called buildOrgTreeWidget on me...");
 	this.setObjects();
-	this.widget = buildOrgTreeWidget(globalOrgTree, true);
+	//this.widget = buildOrgTreeWidget(globalOrgTree, true);
+	this.widget = this.treeBuilder(globalOrgTree, true);
 }
 
 
@@ -61,10 +63,10 @@ function buildOrgTreeWidget(org_node, root) {
 
 LocationTree.prototype.hide = function() {
 	this.setObjects();
-	this.widget = buildOrgTreeWidget(globalOrgTree, true);
+	this.widget = this.treeBuilder(globalOrgTree, true);
 	if(this.treeContainerBox &&  
-			this.treeContainerBox.className.indexOf("nav_bar_visible") != -1 ) {
-		swapClass( this.treeContainerBox, "nav_bar_hidden", "nav_bar_visible" );
+			this.treeContainerBox.className.indexOf("show_me") != -1 ) {
+		swapClass( this.treeContainerBox, "hide_me", "show_me" );
 	}
 }
 
@@ -76,13 +78,18 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 	debug("Tree container " + this.treeContainerBox );
 	debug("Tree box " + this.treeBox );
 
-	swapClass( this.treeContainerBox, "nav_bar_hidden", "nav_bar_visible" );
+	swapClass( this.treeContainerBox, "hide_me", "show_me" );
 
 	var obj = this;
-	if(this.treeBox && this.treeBox.firstChild.nodeType == 3) {
+	if( (this.treeBox && this.treeBox.firstChild && 
+			this.treeBox.firstChild.nodeType == 3) ||
+			(!this.treeBox.firstChild)) {
+
+		debug("location tree has not been rendered... rendering..");
 		setTimeout(function() { renderTree(obj); }, 5 );
 	}
 
+	//alert(this.treeBox.firstChild.nodeType);
 
 	if( button_div && offsetx == null && offsety == null ) {
 		var x = findPosX(button_div);
@@ -107,7 +114,48 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 function renderTree(tree) {
 	tree.setObjects();
 	if(!tree.widget) tree.buildOrgTreeWidget(); 
+	/*
+	debug("Spitting tree out to the treeBox:\n" +
+			tree.widget.toString() ); */
 	tree.treeBox.innerHTML = tree.widget.toString();
 }
 
 
+
+/* generates a new chunk within with the tree is inserted */
+LocationTree.prototype.newSpot = function(box_id, container_id) {
+
+	var cont 			= elem("div", { id : this.treeContainerBoxId } );
+	var box				= elem("div", { id : this.treeBoxId } );
+	var expando_line 	= elem("div");
+	var expando 		= elem("div");
+	var expand_all		= elem("a", null, null, "Expand All");
+	var collapse_all	= elem("a", null, null, "Collapse All");
+
+	add_css_class(cont, "nav_widget");
+	add_css_class(cont, "hide_me");
+	add_css_class(box, "ot_nav_widget_box");
+	add_css_class(expando_line, "expando_links");
+	add_css_class(expando, "expando_links");
+
+
+	cont.appendChild(expando_line);
+	cont.appendChild(expando);
+	cont.appendChild(elem("br"));
+	cont.appendChild(box);
+
+	expando_line.appendChild(elem("br"));
+	var obj = this;
+	expand_all.onclick = function() { obj.widget.expandAll(); };
+	collapse_all.onclick = function() {
+   	obj.widget.collapseAll();
+		obj.widget.expand(); };
+
+	expando.appendChild(expand_all);
+	expando.appendChild(createAppTextNode(" "));
+	expando.appendChild(collapse_all);
+	expando.appendChild(createAppTextNode(" "));
+
+	return cont;
+
+}

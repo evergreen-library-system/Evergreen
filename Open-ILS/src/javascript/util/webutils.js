@@ -617,7 +617,7 @@ function elem(name, attrs, style, text) {
         }
     }
     if (text) {
-        e.appendChild(document.createTextNode(text));
+        e.appendChild(createAppTextNode(text));
     }
     return e;
 }

@@ -2,7 +2,7 @@
 
 	WRAPPER html/div id='ot_wrapper_box' class='nav_wrapper_box'; 
 
-		WRAPPER html/div id='ot_nav_widget' class='nav_widget nav_bar_hidden' ; 
+		WRAPPER html/div id='ot_nav_widget' class='nav_widget hide_me' ; 
 
 			WRAPPER html/div class='expando_links';
 				lines(1);
@@ -23,7 +23,7 @@
 
 			lines(1);
 
-			WRAPPER html/div id='ot_nav_widget_box'; 
+			WRAPPER html/div class='ot_nav_widget_box' id='ot_nav_widget_box'; 
 				"Loading Tree...";
 			END;
 

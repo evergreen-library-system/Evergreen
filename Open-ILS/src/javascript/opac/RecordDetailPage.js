@@ -3,6 +3,8 @@ RecordDetailPage.prototype					= new Page();
 RecordDetailPage.prototype.constructor	= RecordDetailPage;
 RecordDetailPage.baseClass					= Page.constructor;
 
+var globalDetailRecord;
+
 function RecordDetailPage() {
 	if( globalRecordDetailPage != null )
 		return globalRecordDetailPage;
@@ -54,15 +56,44 @@ RecordDetailPage.prototype.init = function() {
 RecordDetailPage.prototype.draw = function() {
 	this.mainBox = getById("record_detail_copy_info");
 
+	var linksDiv = elem("div");
+	var leftLink = elem("div", { style: "width: 50%;text-align: left" });
+	var rightLink = elem("div", { style: "width: 50%;text-align: right"});
+	linksDiv.appendChild(leftLink);
+	linksDiv.appendChild(rightLink);
+	this.mainBox.appendChild(linksDiv);
+
 	this.mainBox.appendChild(elem("br"));
 	this.parentLink = elem("a",
 		{ href : "javascript:void(0)",
 			id : "parent_link",
 		  style : "text-decoration:underline" } );
 
-	this.mainBox.appendChild(this.parentLink);
-	this.locationTree = elem("div");
-	this.mainBox.appendChild(this.locationTree);
+	var a = elem("a", 
+		{	href : "javascript:void(0)", 
+			style : "text-decoration:underline" }, null,
+		"Select a location whose Volumes/Copies you wish to see");
+
+	var obj = this;
+	a.onclick =  function(evt) {
+		obj.copyLocationTree.toggle(null, 100, 100);
+	};
+
+	leftLink.appendChild(a);
+	rightLink.appendChild(this.parentLink);
+
+	/* --------------------------------------------- */
+
+		
+	this.copyLocationTree =  new LocationTree(
+		globalOrgTree, "record_detail_tree", "record_detail_tree_container" );
+	td = this.copyLocationTree.newSpot();
+	this.copyLocationTree.treeBuilder = buildCustomOrgTree;
+	this.mainBox.appendChild(td);
+
+	this.copyLocationTree.setObjects();
+
+
 
 	this.treeDiv = elem("div");
 	this.mainBox.appendChild(this.treeDiv);
@@ -72,6 +103,39 @@ RecordDetailPage.prototype.draw = function() {
 	
 
 }
+
+
+function buildCustomOrgTree(org_node, root) {
+
+	debug("performing custom org tree build");
+	var item;
+
+	if(root) {
+		item = new WebFXTree(org_node.name());
+		item.setBehavior('classic');
+	} else {
+		item = new WebFXTreeItem(org_node.name());
+	}
+
+	item.action = 
+		"javascript:globalPage.drawCopyTrees(" + 
+		org_node.id() + ", logicNode.globalDetailRecord );" +
+		"globalPage.copyLocationTree.hide();"; 
+		
+	
+	for( var index in org_node.children()) {
+		var childorg = org_node.children()[index];
+		if( childorg != null ) {
+			debug("Adding " + childorg.name() + " to org tree");
+			var tree_node = buildCustomOrgTree(childorg);
+			if(tree_node != null)
+				item.add(tree_node);
+		}
+	}
+
+	return item;
+}
+
 
 RecordDetailPage.prototype.setViewMarc = function(record) {
 	var marcb = elem( "a", 
@@ -103,6 +167,9 @@ RecordDetailPage.prototype.fetchRecord = function(id) {
 	req.setCompleteCallback(
 		function() { 
 			obj.record = req.getResultObject();
+			globalDetailRecord = obj.record;
+			obj.copyLocationTree.widget = 
+				buildCustomOrgTree(globalOrgTree, obj.record, true);
 			obj.drawRecord(obj.record); 
 			obj.setViewMarc(obj.record);
 		} 
@@ -232,9 +299,12 @@ RecordDetailPage.prototype.grabCopyTree = function(record, orgUnit, callback, sy
 /* entry point for displaying the copy details pane */
 RecordDetailPage.prototype.drawCopyTrees = function(orgUnit, record) {
 
+	debug("Got ORG unit " + orgUnit);
+	orgUnit = findOrgUnit(orgUnit);
+
 	debug("OrgUnit depth is: " + findOrgType(orgUnit.ou_type()).depth());
 
-	this.displayLocationTree(record);
+	//this.displayLocationTree(record);
 
 	/* display a 'hold on' message */
 	this.treeDiv.appendChild(elem("br"));
@@ -251,15 +321,12 @@ RecordDetailPage.prototype.drawCopyTrees = function(orgUnit, record) {
 }
 
 
-/* displays a link to choose another location and embeds a 
-	copy of the location tree for choosing said location */
+/*
 RecordDetailPage.prototype.displayLocationTree = function(record) {
-
-	var locTree = new LocationTree(globalOrgTree);
-	locTree.buildOrgTreeWidget();
-
-
 }
+*/
+
+
 
 /* displays a link to view info for the parent org 
 	if showMe == true, we don't search for the parent, 
