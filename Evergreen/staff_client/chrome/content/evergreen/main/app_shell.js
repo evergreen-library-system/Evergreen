@@ -10,23 +10,32 @@ function app_shell_init(params) {
 
 function close_tab( d, tabbox ) {
 	sdump('D_TAB','calling close_tab( ' + d + ',' + tabbox + ');\n');
-	var tbox = d.getElementById(tabbox);
-	var tabs = tbox.firstChild;
-	var panels = tbox.lastChild;
-	if (tabs.childNodes.length == 0) { return 0; }
+	if (typeof(tabbox)!='object')
+		tabbox = d.getElementById(tabbox);
+	if (typeof(tabbox)!='object')
+		throw('Could not find tabbox. d = ' + d + ' tabbox = ' + tabbox + '\n');
 	try {
-		var tab = tabs.selectedItem;
-		var panel = tbox.selectedPanel;
-		tab_count[ tab.getAttribute('count') ] = false;
-		tabs.advanceSelectedTab(-1);
-		tabs.removeChild( tab );
-		panels.removeChild( panel );
+		var idx = tabbox.selectedIndex;
+		var tabs = tabbox.firstChild; 
+		var panels = tabbox.lastChild;
+
+		if (idx == 0)
+			tabs.advanceSelectedTab(+1);
+		else
+			tabs.advanceSelectedTab(-1);
+
+		if (tabs.childNodes.length > 1 ) {
+			tabs.removeItemAt( idx );
+			panels.removeChild( panels.childNodes[ idx ] );
+		} else {
+			replace_tab(d,tabbox,'Tab','chrome://evergreen/content/main/about.xul');
+		}
+
 	} catch(E) {
-		dump(js2JSON(E)+'\n');
+		dump(E+'\n');
+		throw(E);
 	}
-	if (tabs.childNodes.length == 0) { 
-		new_tab(d,'main_tabbox');
-	}
+	sdump('D_TAB',' : tabs.childNodes.length = ' + tabs.childNodes.length + '  panels.childNodes.length = ' + panels.childNodes.length + '\n');
 }
 
 function delete_tab_contents( tab, panel ) {
@@ -51,9 +60,12 @@ function first_free_tab_count() {
 
 function new_tab( d, tabbox ) {
 	sdump('D_TAB','calling new_tab( ' + d + ',' + tabbox + ');\n');
-	var tbox = d.getElementById(tabbox);
-	var tabs = tbox.firstChild;
-	var panels = tbox.lastChild;
+	if (typeof(tabbox)!='object')
+		tabbox = d.getElementById(tabbox);
+	if (typeof(tabbox)!='object')
+		throw('Could not find tabbox. d = ' + d + ' tabbox = ' + tabbox + '\n');
+	var tabs = tabbox.firstChild;
+	var panels = tabbox.lastChild;
 	var tc = first_free_tab_count();
 	if (tc == -1) { return; } // let's only have up to 10 tabs
 	var panel = d.createElement('tabpanel');
@@ -72,25 +84,29 @@ function new_tab( d, tabbox ) {
 		tab.setAttribute('linkedpanel','panel'+tc);
 	tabs.appendChild(tab);
 	try {
-		tbox.selectedIndex = tc;
+		tabbox.selectedIndex = tc;
 		tabs.selectedIndex = tc;
-		//tbox.selectedIndex = tabs.childNodes.length - 1;
+		//tabbox.selectedIndex = tabs.childNodes.length - 1;
 		//tabs.selectedIndex = tabs.childNodes.length - 1;
-		replace_tab(d,tabbox,'Tab','chrome://evergreen/content/about.xul');
+		replace_tab(d,tabbox,'Tab','chrome://evergreen/content/main/about.xul');
 	} catch(E) {
 		dump(js2JSON(E)+'\n');
 	}
+	sdump('D_TAB',' : tabs.childNodes.length = ' + tabs.childNodes.length + '  panels.childNodes.length = ' + panels.childNodes.length + '\n');
 }
 
 function replace_tab( d, tabbox, label, chrome, params ) {
 	sdump('D_TAB','calling replace_tab( ' + d + ',' + tabbox + ');\n');
-	var tbox = d.getElementById(tabbox);
-	var tabs = tbox.firstChild;
-	var panels = tbox.lastChild;
+	if (typeof(tabbox)!='object')
+		tabbox = d.getElementById(tabbox);
+	if (typeof(tabbox)!='object')
+		throw('Could not find tabbox. d = ' + d + ' tabbox = ' + tabbox + '\n');
+	var tabs = tabbox.firstChild;
+	var panels = tabbox.lastChild;
 	if (tabs.childNodes.length == 0) { new_tab(d,tabbox); }
 	try {
 		var tab = tabs.selectedItem;
-		var panel = tbox.selectedPanel;
+		var panel = tabbox.selectedPanel;
 		delete_tab_contents(tab,panel);
 
 		tab.setAttribute('label',label + ' ' + tab.getAttribute('count') );
@@ -112,5 +128,6 @@ function replace_tab( d, tabbox, label, chrome, params ) {
 	} catch(E) {
 		dump(js2JSON(E)+'\n');
 	}
+	sdump('D_TAB',' : tabs.childNodes.length = ' + tabs.childNodes.length + '  panels.childNodes.length = ' + panels.childNodes.length + '\n');
 
 }

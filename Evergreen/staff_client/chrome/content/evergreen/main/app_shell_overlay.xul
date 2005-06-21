@@ -62,7 +62,7 @@
 <box id="AppShell_main" flex="1" orient="vertical">
 	<toolbox id="main_toolbox"/>
 	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
-		<tabs id="main_tabs"/>
+		<tabs id="main_tabs" closebutton="true"/>
 		<tabpanels id="main_panels" flex="1"/>
 	</tabbox>
 	<toolbox id="entity_toolbox"/>
