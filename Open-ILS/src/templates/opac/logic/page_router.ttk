@@ -1,8 +1,9 @@
 [%
 
 	target = cgi.param("target");	
+	sub_frame = cgi.param("sub_frame");
 
-	IF ! target;
+	IF ! target or sub_frame;
 		INCLUDE opac/pages/main.ttk;
 
 	ELSIF target == "start";

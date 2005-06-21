@@ -1,4 +1,7 @@
 [%
+	WRAPPER html/div;
+
+
 	WRAPPER html/table  + html/row id='top_status_bar' class='status_bar';
 
 		cell(id='now_searching_cell', class='now_searching_cell');
@@ -32,5 +35,6 @@
 		
 		END;
 
+	END;
 	END;
 %]

@@ -13,6 +13,7 @@
 			globalPage.session.exp_days = "' _ global.config.session_timeout _ '";
 			globalPage.login_success_msg = "<b>' _ tm.success _ '</b>";
 			globalPage.login_failure_msg = "<b>' _ tm.failure _ '</b>";
+			document.getElementById("login_username").focus();
 			';
 
 			# here, this just provides the color backdrop for the search bar

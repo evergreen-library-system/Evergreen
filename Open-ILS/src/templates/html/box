@@ -1,10 +1,20 @@
-[%# html/bar: table containing a single row and a single cell
-  # ARGS:
-  #	as per html/table, html/row and html/cell
--%]
-[% WRAPPER html/table;
-    WRAPPER html/row + html/cell width='' col='';
-     content;
-    END;
-   END;
+[%
+	"<div";
+
+	IF class;			" class='"			_ class _ "'";			END;
+	IF id;				" id='"				_ id _ "'";				END;
+	IF valign;				" valign='"				_ valign _ "'";				END;
+	IF style;				" style='"				_ style _ "'";				END;
+	IF visibility;		" visibility='"	_ visibility _ "'";	END;
+	IF onclick;				" onclick='"				_ onclick _ "'";				END;
+	IF onblur;				" onblur='"				_ onblur _ "'";				END;
+	IF onmouseover;				" onmouseover='"				_ onmouseover _ "'";				END;
+	IF onmouseout;				" onmouseout='"				_ onmouseout _ "'";				END;
+	IF onmousedown;				" onmousedown='"				_ onmousedown _ "'";				END;
+	IF onmouseup;				" onmouseup='"				_ onmouseup _ "'";				END;
+
+	">";
+	content;
+	"</div>";
 %]
+

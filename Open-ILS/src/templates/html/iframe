@@ -2,11 +2,11 @@
 	"<iframe";
 	IF src; " src='" _ src _ "'"; END;
 	IF id; " id='" _ id _ "'"; END;
+	IF frameborder.defined; " frameborder='" _ frameborder _ "'"; END;
 	IF class; " class='" _ class _ "'"; END;
 	IF style; " style='" _ style _ "'"; END;
-	IF frameborder; " frameborder='" _ frameborder _ "'"; END;
+	IF scrolling; " scrolling='" _ scrolling _ "'"; END;
 	IF height; " height='" _ height _ "'"; END;
-	IF width; " width='" _ width _ "'"; END;
 	IF width; " width='" _ width _ "'"; END;
 	IF name; " name='" _ name _ "'"; END;
 	"/>";

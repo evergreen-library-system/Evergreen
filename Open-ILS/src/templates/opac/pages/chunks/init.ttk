@@ -18,8 +18,12 @@
 
 	WRAPPER html/js;
 		'
-		if(parent) logicNode = parent;
-		else logicNode = window;
+		if(!parent || !parent.frames["appframe"]) { 
+			/* redirect to the outer frame */
+			location.href = location.href + "&sub_frame=1"; 
+		}
+
+		logicNode = parent;
 		logicNode.paramObj = new Object();
 		';
 		FOR pname IN cgi.param();
@@ -63,6 +67,18 @@
 
 			globalAppFrame = window;
 			globalPage = logicNode.globalPage;
+			setDeepLink();
+		}
+
+		function setDeepLink() {
+			var node = document.getElementById("deep_link_div");
+			if(node) {
+				var a = document.createElement("a");
+				a.setAttribute("href", location.href + "&sub_frame=1");
+				a.setAttribute("target", "_blank");
+				a.appendChild(document.createTextNode("Link to this page"));
+				node.appendChild(a);
+			} 
 		}
 		';
 	END;

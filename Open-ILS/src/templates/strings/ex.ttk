@@ -30,4 +30,7 @@
 	IF type == ex_types.DUPLICATE_USER_USERNAME;
 		ret("Username is a duplicate");	END;
 
+	IF type == ex_types.USER_WRONG_PASSWORD;
+		ret("Password is incorrect");	END;
+
 -%]
