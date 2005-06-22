@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: About -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<window id="about_win" 
+	onload="document.getElementById('about_image').focus();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<vbox id="about_vbox" flex="1" pack="center" align="center">
+		<groupbox id="about_groupbox">
+			<image id="about_image" src="chrome://evergreen/skin/media/images/main_logo.jpg"/>
+			<image id="about_image" src="chrome://evergreen/skin/media/images/cooltext001.png"/>
+		</groupbox>
+	</vbox>
+
+	<script>
+		function returnElementById(id) {
+			dump('returnElementById:  this = ' + this + '  document =  ' + document + '\n');
+			return document.getElementById(id);
+		}
+	</script>
+
+	<button label="testing" oncommand="dump('Element = ' + returnElementById('about_vbox') + '\n' );" accesskey="t"/>
+</window>
+
