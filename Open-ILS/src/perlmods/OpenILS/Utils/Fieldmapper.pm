@@ -156,12 +156,22 @@ sub _init {
 		'Fieldmapper::permission::usr_perm_map'		=> { hint => 'pupm'   },
 		'Fieldmapper::permission::grp_perm_map'		=> { hint => 'pgpm'   },
 
+
 		'Fieldmapper::ex'				=> { hint => 'ex',
 								     virtual => 1,
 								     proto_fields => {
 									err_msg	=> 1,
 									type	=> 1,
 								     } },
+
+
+		'Fieldmapper::perm_ex'				=> { hint => 'perm_ex',
+								     virtual => 1,
+								     proto_fields => {
+									err_msg	=> 1,
+									type	=> 1,
+								     } },
+
 
       
 	};
