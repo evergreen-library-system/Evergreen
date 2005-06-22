@@ -2,6 +2,7 @@ package OpenILS::Application::AppUtils;
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
+use OpenSRF::EX qw(:try);
 
 
 my $cache_client = "OpenSRF::Utils::Cache";
@@ -29,6 +30,33 @@ sub start_db_session {
 	$trans_req->finish();
 	return $session;
 }
+
+
+# returns undef if user has all of the perms provided
+# returns the first failed perm on failure
+sub check_user_perms {
+	my($self, $user_id, $org_id, @perm_types ) = @_;
+
+	throw OpenSRF::EX::ERROR ("Invalid call to check_user_perms()")
+		unless( defined($user_id) and defined($org_id) and @perm_types); 
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	for my $type (@perm_types) {
+		my $req = $session->request(
+			"open-ils.storage.permission.user_has_perm",
+			$user_id, $type, $org_id );
+		my $resp = $req->gather(1);
+		if(!$resp) { 
+			$session->disconnect();
+			return $type; 
+		}
+	}
+
+	$session->disconnect();
+	return undef;
+}
+
+
 
 # ---------------------------------------------------------------------------
 # commits and destroys the session

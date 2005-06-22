@@ -8,9 +8,12 @@ use OpenSRF::Utils::Logger qw(:level);
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::EX qw(:try);
 use OpenILS::Application::AppUtils;
+use OpenILS::Perm;
+use OpenILS::Application::AppUtils;
 
 # memcache handle
 my $cache_handle;
+my $apputils = "OpenILS::Application::AppUtils";
 
 
 # -------------------------------------------------------------
@@ -93,9 +96,11 @@ sub init_authenticate {
 # their password hash against our re-hashed version of the 
 # password. If all goes well, we return the session id. 
 # Otherwise, we return "0"
+# If type is set to 'opac', then this is an opac login,
+# otherwise, it's a staff login
 # -------------------------------------------------------------
 sub complete_authenticate {
-	my( $self, $client, $username, $passwdhash ) = @_;
+	my( $self, $client, $username, $passwdhash, $type ) = @_;
 
 	my $name = "open-ils.storage.direct.actor.user.search.usrname";
 
@@ -131,9 +136,20 @@ sub complete_authenticate {
 	my $hash = md5_hex($current_seed . $password);
 
 	if( $hash eq $passwdhash ) {
+		# password is correct... do they have permission to login here?
 
-		my $session_id = md5_hex( time() . $$ . rand() ); 
-		$cache_handle->put_cache( $session_id, $user, 28800 );
+		my $timeout = 28800; #staff login timeout - different for opac?
+
+		if($type eq "opac") {
+			# 1 is the top level org unit (we should probably load the tree and get id from it)
+			warn "Checking user perms for OPAC login\n";
+			if($apputils->check_user_perms($user->id(), 1, "OPAC_LOGIN")) {
+				return OpenILS::Perm->new("OPAC_LOGIN");
+			}
+		}
+
+		my $session_id = md5_hex(time() . $$ . rand()); 
+		$cache_handle->put_cache( $session_id, $user, $timeout );
 		return $session_id;
 
 	} else {

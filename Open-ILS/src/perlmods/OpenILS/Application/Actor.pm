@@ -808,6 +808,18 @@ sub update_password {
 }
 
 
+# returns undef on success, the first perm_type that failed
+# on permission error
+
+__PACKAGE__->register_method(
+	method	=> "check_user_perms",
+	api_name	=> "open-ils.actor.user.email.update");
+
+sub check_user_perms {
+	my( $self, $client, $user_id, $org_id, @perm_types ) = @_;
+}
+
+
 
 
 
