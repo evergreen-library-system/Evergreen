@@ -434,11 +434,11 @@ sub modify_from_fieldmapper {
 	permission::grp_perm_map->has_a(  perm => 'permission::perm_list' );
 	permission::grp_perm_map->has_a(  depth => 'actor::org_unit_type' );
 	
-	permission::usr_perm_map->has_a( usr => 'actor::usr' );
+	permission::usr_perm_map->has_a( usr => 'actor::user' );
 	permission::usr_perm_map->has_a(  perm => 'permission::perm_list' );
 	permission::usr_perm_map->has_a(  depth => 'actor::org_unit_type' );
 	
-	permission::usr_grp_map->has_a(  usr => 'actor::usr' );
+	permission::usr_grp_map->has_a(  usr => 'actor::user' );
 	permission::usr_grp_map->has_a(  grp => 'permission::grp_tree' );
 
 1;
