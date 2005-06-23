@@ -49,5 +49,24 @@ __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
 
 #-------------------------------------------------------------------------------
 
+package action::hold_request;
+use base qw/action/;
+__PACKAGE__->table('action_hold_request');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
+				     prev_check_time expire_time requestor usr
+				     hold_type holdable_formats target
+				     selection_depth pickup_lib current_copy/);
+
+#-------------------------------------------------------------------------------
+
+package action::hold_notification;
+use base qw/action/;
+__PACKAGE__->table('action_hold_notification');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/hold method notify_time note/);
+
+#-------------------------------------------------------------------------------
+
 1;
 

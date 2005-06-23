@@ -441,6 +441,20 @@
 
 	#-------------------------------------------------------------------------------
 
+	package action::hold_request;
+
+	action::hold_request->sequence( 'action.hold_request_id_seq' );
+	action::hold_request->table('action.hold_request');
+
+	#-------------------------------------------------------------------------------
+
+	package action::hold_notification;
+
+	action::hold_notification->sequence( 'action.hold_notification_id_seq' );
+	action::hold_notification->table('action.hold_notification');
+
+	#-------------------------------------------------------------------------------
+
 
 }
 

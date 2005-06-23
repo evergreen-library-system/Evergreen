@@ -441,4 +441,13 @@ sub modify_from_fieldmapper {
 	permission::usr_grp_map->has_a(  usr => 'actor::user' );
 	permission::usr_grp_map->has_a(  grp => 'permission::grp_tree' );
 
+	action::hold_notification->has_a(  hold => 'action::hold_request' );
+	
+	action::hold_request->has_a(  current_copy => 'asset::copy' );
+	action::hold_request->has_a(  requestor => 'actor::user' );
+	action::hold_request->has_a(  usr => 'actor::user' );
+	action::hold_request->has_a(  pickup_lib => 'actor::org_unit' );
+
+	action::hold_request->has_many(  notifications => 'action::hold_notification' );
+
 1;

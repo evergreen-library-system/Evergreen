@@ -90,10 +90,10 @@ CREATE TABLE action.hold_request (
 
 
 CREATE TABLE action.hold_notification (
-	id		SERIAL		PRIMARY KEY,
-	hold		INT		NOT NULL REFERENCES action.hold_request (id),
-	method		TEXT		NOT NULL, -- eh...
-	notify_time	TIMESTAMP	NOT NULL DEFAULT NOW(),
+	id		SERIAL				PRIMARY KEY,
+	hold		INT				NOT NULL REFERENCES action.hold_request (id),
+	method		TEXT				NOT NULL, -- eh...
+	notify_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	note		TEXT
 );
 
