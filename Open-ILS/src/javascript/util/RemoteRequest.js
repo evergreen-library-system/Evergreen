@@ -292,6 +292,15 @@ RemoteRequest.prototype.getResultObject = function() {
 	/* these are user level exceptions from the server code */
 	if(instanceOf(obj, ex)) {
 		debug("Received user level exception: " + obj.err_msg());
+		/* the opac will go ahead and spit out the error msg */
+		if(!isXUL()) alert(obj.err_msg());
+		throw obj;
+	}
+
+	if(instanceOf(obj, perm_ex)) {
+		debug("Received permission error: " + obj.err_msg());
+		/* the opac will go ahead and spit out the error msg */
+		if(!isXUL()) alert(obj.err_msg());
 		throw obj;
 	}
 

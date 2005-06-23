@@ -56,14 +56,18 @@ RecordDetailPage.prototype.init = function() {
 RecordDetailPage.prototype.draw = function() {
 	this.mainBox = getById("record_detail_copy_info");
 
-	var linksDiv = elem("div");
-	var leftLink = elem("div", { style: "width: 50%;text-align: left" });
-	var rightLink = elem("div", { style: "width: 50%;text-align: right"});
-	linksDiv.appendChild(leftLink);
-	linksDiv.appendChild(rightLink);
-	this.mainBox.appendChild(linksDiv);
+	var table = elem("table", { width: "100%" } );
+	table.width = "100%";
 
-	this.mainBox.appendChild(elem("br"));
+	var linksDiv = table.insertRow(0);
+	var leftLink = linksDiv.insertCell(0);
+	var rightLink = linksDiv.insertCell(1);
+
+	leftLink.width = "50%";
+	rightLink.width = "50%";
+	leftLink.align = "left";
+	rightLink.align = "right";
+
 	this.parentLink = elem("a",
 		{ href : "javascript:void(0)",
 			id : "parent_link",
@@ -79,8 +83,10 @@ RecordDetailPage.prototype.draw = function() {
 		obj.copyLocationTree.toggle(null, 100, 100);
 	};
 
+
 	leftLink.appendChild(a);
 	rightLink.appendChild(this.parentLink);
+	this.mainBox.appendChild(table);
 
 	/* --------------------------------------------- */
 
@@ -361,7 +367,7 @@ RecordDetailPage.prototype.displayParentLink = function(orgUnit, record, showMe)
 	}
 
 	var reg_div = createAppElement("div");
-	reg_div.appendChild(href);
+	//reg_div.appendChild(href);
 	this.mainBox.insertBefore(reg_div, this.treeDiv);
 }
 

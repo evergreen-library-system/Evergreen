@@ -118,7 +118,7 @@ UserSession.prototype.login = function( username, password ) {
 
 	var auth_request = new RemoteRequest( 'open-ils.auth',
 			'open-ils.auth.authenticate.complete', username, 
-			hex_md5(seed + hex_md5(password)));
+			hex_md5(seed + hex_md5(password)), "opac");
 
 	auth_request.send(true);
 	var auth_result = auth_request.getResultObject();

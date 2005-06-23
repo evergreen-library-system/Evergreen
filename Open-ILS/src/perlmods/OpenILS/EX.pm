@@ -15,6 +15,7 @@ my %ex_types = (
 	DUPLICATE_INVALID_USER_BARCODE	=> 4,
 	DUPLICATE_USER_USERNAME				=> 5,
 	USER_WRONG_PASSWORD					=> 6,
+	PERMISSION_DENIED						=> 7,
 );
 
 use overload ( '""' => sub { $_[0]->ex()->err_msg(); } );

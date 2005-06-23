@@ -117,7 +117,10 @@ function globalInit() {
 
 	if(paramObj.__location != null) {
 		globalSelectedLocation = findOrgUnit(paramObj.__location);
-		debug("Setting selected location to " + globalSelectedLocation.name() );
+		if(globalSelectedLocation == null) 
+			debug("Invalid location in url : " + paramObj.__location);
+		else
+			debug("Setting selected location to " + globalSelectedLocation.name() );
 	} 
 
 
