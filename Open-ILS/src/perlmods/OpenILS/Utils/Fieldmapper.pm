@@ -155,6 +155,8 @@ sub _init {
 		'Fieldmapper::permission::usr_grp_map'		=> { hint => 'pugm'   },
 		'Fieldmapper::permission::usr_perm_map'		=> { hint => 'pupm'   },
 		'Fieldmapper::permission::grp_perm_map'		=> { hint => 'pgpm'   },
+		'Fieldmapper::action::hold_request'		=> { hint => 'ahr'   },
+		'Fieldmapper::action::hold_notification'	=> { hint => 'ahn'   },
 
 
 		'Fieldmapper::ex'				=> { hint => 'ex',
