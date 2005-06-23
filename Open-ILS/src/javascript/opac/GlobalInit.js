@@ -35,9 +35,16 @@ function addLocation(type, title) {
 
 }
 
+function _test() {
+	debug("At: " + (new RegExp(".+").exec(
+			arguments.callee.toString()))[0].replace("{", "") );
+}
+
 
 function globalInit() {
 
+
+	_test();
 	debug(" --- XUL IS " + isXUL() );
 
 

@@ -80,7 +80,7 @@ RecordDetailPage.prototype.draw = function() {
 
 	var obj = this;
 	a.onclick =  function(evt) {
-		obj.copyLocationTree.toggle(null, 100, 100);
+		obj.copyLocationTree.toggle(null, 0, 0);
 	};
 
 

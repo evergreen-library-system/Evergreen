@@ -171,3 +171,31 @@ Page.prototype.buildDivider = function() {
 	return div;
 }
 
+Page.prototype.buildNavBox = function() {
+	Page.navBox = new Box();
+	Page.navBox.init("Navigate", false, false);
+	var table = elem("table", {className:"main_nav_table"});
+
+	var arr = new Array();
+
+	arr.push(elem("a", {href:'?target=advanced_search'}, "Advanced Search"));
+	arr.push(elem("a", {href:'?target=my_opac'}, "My OPAC"));
+	arr.push(elem("a", {href:'?target=about'}, "About PINES"));
+
+	for( var i in arr ) {
+		var row = table.insertRow(table.rows.length);
+		add_css_class(row, "main_nav_row");
+		var cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "main_nav_cell");
+	}
+
+	/* append to the page */
+	Page.navBox.addItem(table);
+	var location = getById("main_page_nav_box");
+	if(location)
+		location.appendChild(Page.navBox.getNode());
+}
+
+
+
+

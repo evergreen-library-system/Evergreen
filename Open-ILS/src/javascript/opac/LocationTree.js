@@ -72,7 +72,7 @@ LocationTree.prototype.hide = function() {
 
 
 
-LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
+LocationTree.prototype.toggle = function(button_div, offsetx, offsety, relative) {
 
 	this.setObjects();
 	debug("Tree container " + this.treeContainerBox );
@@ -91,13 +91,19 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety) {
 
 	//alert(this.treeBox.firstChild.nodeType);
 
-	if( button_div && offsetx == null && offsety == null ) {
+	if( button_div && 
+			((offsetx == null && offsety == null) || relative) ) {
+
 		var x = findPosX(button_div);
 		var y = findPosY(button_div);
 		var height = getObjectHeight(button_div);
 		var xpos = x - getObjectWidth(this.treeBox) + getObjectWidth(button_div);
-		offsety = y + height;
-		offsetx = xpos;	
+
+		if(offsety == null) offsety = 0;
+		if(offsetx == null) offsetx = 0;
+
+		offsety = y + height + offsety;
+		offsetx = xpos + offsetx;	
 	}
 
 	if(IE) { /*HACK XXX*/

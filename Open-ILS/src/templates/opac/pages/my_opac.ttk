@@ -9,7 +9,7 @@
 
 			WRAPPER html/js;
 				'
-				if(!logicNode.UserSession.instance().connected) {
+				if(!logicNode.UserSession.instance().verifySession()) {
 					location.href="/opac/?target=login";
 				} 
 				';

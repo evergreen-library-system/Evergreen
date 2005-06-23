@@ -37,7 +37,7 @@ function getById(id) {
 			obj = globalAppFrame.document.getElementById(id);
 		}
 	} catch(E) {
-		alert("We need a globalAppFrame to function:\n" + E);
+		debug(" + + + getById() for " + id + " failed and we have no app frame...: " + E);
 	}
 
 	return obj;

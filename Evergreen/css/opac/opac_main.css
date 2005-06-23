@@ -132,3 +132,22 @@ table { border-collapse: collapse; }
 	text-decoration: underline;
 }
 
+
+.main_nav_table {
+}
+
+.main_nav_row {
+}
+
+.main_nav_cell {
+	background: #CCF;
+}
+
+.main_nav_cell_active {
+	background: #CFF;
+}
+
+.main_nav_cell a:hover {
+	color: red;
+}
+

@@ -23,6 +23,39 @@
 				globalPage.init(); 
 				';
 
+			lines(2);
+			WRAPPER html/box id='my_opac_nav_bar';
+				WRAPPER html/center;
+				WRAPPER html/table id='my_opac_nav_table';	
+					WRAPPER html/row;
+						cell(class='my_opac_link_cell', width="25%", id='my_opac_checked', 
+								content=anchor(id='my_opac_checked_link', 
+									text="Checked Out", href="javascript:void(0);"));
+
+						cell(class='my_opac_link_cell', width="25%", id='my_opac_holds', 
+								content=anchor(id='my_opac_holds_link', 
+									text="Holds", href="javascript:void(0);"));
+
+						cell(class='my_opac_link_cell', width="25%", id='my_opac_profile', 
+								content=anchor(id='my_opac_profile_link', 
+									text="My Profile", href="javascript:void(0);"));
+
+						cell(class='my_opac_link_cell', width="25%", id='my_opac_fines', 
+								content=anchor(id='my_opac_fines_link', 
+									text="Fines", href="javascript:void(0);"));
+					END;
+				END;
+				END;
+			END;
+			lines(2);
+
+			WRAPPER html/box id='my_opac_info_pane';
+				WRAPPER html/center;
+					WRAPPER html/table id='my_opac_info_table' width="80%";
+					END;
+				END;
+			END;
+
 			WRAPPER html/box id='my_opac_main_box';
 				box(id='my_opac_edit_personal');
 				box(id='my_opac_checked_out');
