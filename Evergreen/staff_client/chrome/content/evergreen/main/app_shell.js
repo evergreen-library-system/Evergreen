@@ -35,6 +35,17 @@ function debug_tabs( d, tabbox ) {
 			}
 		}
 	}
+	sdump('D_TAB',
+		'tabbox.selectedIndex = ' + tabbox.selectedIndex +
+		' .selectedTab = ' + tabbox.selectedTab.id +
+		' .selectedPanel = ' + tabbox.selectedPanel.id + '\n');
+	sdump('D_TAB',
+		'tabs.selectedIndex = ' + tabs.selectedIndex + 
+		' .selectedItem = ' + tabs.selectedItem.id + '\n');
+	sdump('D_TAB',
+		'panels.selectedIndex = ' + panels.selectedIndex + 
+		' .selectedPanel.id = ' + panels.selectedPanel.id + '\n');
+
 }
 
 function app_shell_init(params) {
@@ -126,37 +137,16 @@ function new_tab( d, tabbox ) {
 	tabs.appendChild(tab);
 	sdump('D_TAB','Created a tab: ' + tab.id + '\n');
 	try {
-	/*
-		sdump('D_TAB','before: tabbox.selectedIndex = ' +
-			tabbox.selectedIndex +
-			' .selectedTab = ' + tabbox.selectedTab.id +
-			' .selectedPanel = ' + tabbox.selectedPanel.id + '\n');
-		sdump('D_TAB','before: tabs.selectedIndex = ' +
-			tabs.selectedIndex + ' .selectedItem = ' +
-			tabs.selectedItem.id + '\n');
-		sdump('D_TAB','before: panels.selectedIndex = ' +
-			panels.selectedIndex + ' .selectedPanel = ' +
-			panels.selectedPanel.id + '\n');
-	*/
+		/*
 		tabbox.selectedIndex = tc;
 		tabs.selectedIndex = tc;
-	/*
-		sdump('D_TAB','after: tabbox.selectedIndex = ' +
-			tabbox.selectedIndex +
-			' .selectedTab = ' + tabbox.selectedTab.id +
-			' .selectedPanel = ' + tabbox.selectedPanel.id + '\n');
-		sdump('D_TAB','after: tabs.selectedIndex = ' +
-			tabs.selectedIndex + ' .selectedItem = ' +
-			tabs.selectedItem.id + '\n');
-		sdump('D_TAB','after: panels.selectedIndex = ' +
-			panels.selectedIndex + ' .selectedPanel = ' +
-			panels.selectedPanel.id + '\n');
-	*/
+		*/
+		tabs.selectedTab = tab;
 		//tabbox.selectedIndex = tabs.childNodes.length - 1;
 		//tabs.selectedIndex = tabs.childNodes.length - 1;
 		replace_tab(d,tabbox,'Tab','chrome://evergreen/content/main/about.xul');
 	} catch(E) {
-		dump(js2JSON(E)+'\n');
+		dump('+++++++++++++++++++++++++++++' + E + ' : ' + js2JSON(E)+'\n');
 	}
 	debug_tabs(d,tabbox);
 }
