@@ -286,6 +286,22 @@ AbstractRecordResultPage.prototype.displayRecord =
 			span.appendChild(createAppTextNode(" " + record.edition()));
 
 			author_cell.appendChild(span);
+
+		var marcb = elem( "a",
+			{
+				href:"javascript:void(0)",
+				style: "text-decoration:underline"
+			},
+			{}, "View MARC" );
+
+		debug("Setting up view marc callback with record " + record.doc_id());
+		var func = buildViewMARCWindow(record);
+		marcb.onclick = func;
+
+		var marcd = elem( "div", { style: "float:right" } );
+		marcd.appendChild(marcb);
+		author_cell.appendChild(marcd);
+
 	}
 
 	var classname = "result_even";
