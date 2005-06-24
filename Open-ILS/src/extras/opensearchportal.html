@@ -534,20 +534,52 @@ function remove_by_name( src ) {
 		list[0].parentNode.removeChild(list[0]);
 }
 
+function do_submit(evt) {
+	evt = (evt) ? evt : ((window.event) ? event : null);
+	var obj = (evt && evt.srcElement)? evt.srcElement : evt.target;
+	var code = grabCharCode(evt);
+	if(code==13||code==3) {
+		insearch=true;
+		opensearch(obj.form['term'].value, true);
+	}
+	return false;
+}
+
+
+function attach_listeners () {
+	for (var i in listening_elements) {
+		if (document.firstChild.addEventListener)
+			document.getElementById(listening_elements[i]).addEventListener('keydown',do_submit,true);
+		else
+			document.getElementById(listening_elements[i]).attachEvent('onkeydown',do_submit,true);
+	}
+}
+
+function grabCharCode(evt) {
+	evt = (evt) ? evt : ((window.event) ? event : null); /* for mozilla and IE */
+	if( evt ) {
+		return (evt.charCode ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode ));
+	} else {
+		return -1;
+	}
+}
+
+var listening_elements = ['term','gobutton','res_count_per','res_type'];
+
 		</script>
 	</head>
-	<body>
+	<body onload="attach_listeners();">
 		<br/>
 		<form>
 		<table style="border-collapse: collapse; margin: 5px;" width="100%">
 			<tr style="border-bottom: dotted black 1px;" valign="top">
 				<td align="right">Keyword Search: </td>
 				<td align="left">
-					<input type="text" id="term" value="javascript"/>
-					<input type="button" value="Go!" onclick="insearch=true; opensearch(document.getElementById('term').value, true); return false;"/>
+					<input type="text" name="term" id="term" value="javascript"/>
+					<input type="button" id="gobutton" value="Go!" onclick="insearch=true; opensearch(document.getElementById('term').value, true); return false;"/>
 				</td>
 				<td align="left">Hits per Source for each page: 
-					<select onchange="current_count=this.options[this.selectedIndex].value;">
+					<select onchange="current_count=this.options[this.selectedIndex].value;" id="res_count_per">
 						<option value="5" selected>5</option>
 						<option value="10">10</option>
 						<option value="25">25</option>
