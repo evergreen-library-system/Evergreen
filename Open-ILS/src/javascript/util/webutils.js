@@ -1,3 +1,22 @@
+function cleanIEMemory() {
+	var a = [ "a", "div", "span", "select", "option", "img", "body", "iframe", "frame"];
+	for( var index in a ) {
+		var nodes = getDocument().getElementsByTagName(a[index]);
+		for( var n = 0; n!= nodes.length; n++ ) {
+			var node = nodes[n];
+			node.onclick = null;
+			node.onchange = null;
+			node.onselect = null;
+		}
+	}
+}
+
+
+
+
+
+
+
 
 function hideMe(obj) {
 	if(!obj)  return;
@@ -70,7 +89,7 @@ function normalize(val) {
 	if(!val) return "";
 
 	var newVal = '';
-	val = val.split(' ');
+	try {val = val.split(' ');} catch(E) {return val;}
 	var reg = /\w/;
 
 	for( var c = 0; c < val.length; c++) {
@@ -553,6 +572,12 @@ function getDocument() {
 	if(globalAppFrame)
 		return globalAppFrame.document;
 	return document;
+}
+
+function getWindow() {
+	if(globalAppFrame)
+		return globalAppFrame;
+	return window;
 }
 
 /* returns [x, y] coords of the mouse */

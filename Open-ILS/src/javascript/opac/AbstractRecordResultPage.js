@@ -33,6 +33,8 @@ AbstractRecordResultPage.prototype.init = function() {
 
 	this.sidebarBox		= getById("record_sidebar_box");
 
+	this.sidebarBox.appendChild(this.buildNavBox());
+	this.sidebarBox.appendChild(elem("br"));
 
 	if(!this.hitsPerPage)
 		this.hitsPerPage		= 10;	 /* how many hits are displayed per page */
@@ -300,7 +302,10 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 		var marcd = elem( "div", { style: "float:right" } );
 		marcd.appendChild(marcb);
-		author_cell.appendChild(marcd);
+		//author_cell.appendChild(marcd);
+		//misc_row.insertCell(misc_row.cells.length).appendChild(marcd);
+		c.appendChild(marcd);
+
 
 	}
 
@@ -510,7 +515,7 @@ AbstractRecordResultPage.prototype.displayCopyCounts =
 
 AbstractRecordResultPage.prototype.noHits = function() {
 	var hcell = getById("hit_count_cell");
-	hcell.appendChild(createAppElement("br"));
+	//hcell.appendChild(createAppElement("br"));
 	hcell.appendChild(createAppTextNode("0 hits were returned for you search"));
 }
 
@@ -559,32 +564,29 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 	var hcell2 = getById("hit_count_cell_2");
 	hideMe(hcell2);
 
-	var ident = "Titles";
-	if(instanceOf(this, MRResultPage))
-		ident = "Title Groups";
+	if(hcell) {
 
-	hcell.appendChild(
-		createAppTextNode( "Displaying " + ident + " " +
-		( parseInt(i) + 1 ) + " to " + max + " of " + this.hitCount));
-
-	hcell.appendChild(createAppTextNode(" "));
-	hcell.appendChild(createAppTextNode(" "));
-	hcell.appendChild(createAppTextNode(" "));
-
-	/*
-	var div = createAppElement("div");
-	div.appendChild(createAppTextNode("."));
-	div.setAttribute("style", "color:#FFF;float:left;width:10px;border:1px solid black;position:relative");
-	hcell.appendChild(div);
-	*/
-
-	hcell.appendChild(prev);
-	var span = createAppElement("span");
-	span.appendChild(createAppTextNode(" ... "));
-	hcell.appendChild(span);
-	hcell.appendChild(next);
-
-	hcell2.innerHTML = hcell.innerHTML;
+		var ident = "Titles";
+		if(instanceOf(this, MRResultPage))
+			ident = "Title Groups";
+	
+		hcell.appendChild(
+			createAppTextNode( "Displaying " + ident + " " +
+			( parseInt(i) + 1 ) + " to " + max + " of " + this.hitCount));
+	
+		hcell.appendChild(createAppTextNode(" "));
+		hcell.appendChild(createAppTextNode(" "));
+		hcell.appendChild(createAppTextNode(" "));
+	
+		hcell.appendChild(prev);
+		var span = createAppElement("span");
+		span.appendChild(createAppTextNode(" ... "));
+		hcell.appendChild(span);
+		hcell.appendChild(next);
+	
+		hcell2.innerHTML = hcell.innerHTML;
+	
+	}
 	
 }
 

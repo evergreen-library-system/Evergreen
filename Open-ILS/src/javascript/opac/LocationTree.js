@@ -111,6 +111,9 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety, relative)
 		offsetx = parseInt(offsetx) + 8;
 	}
 
+
+	debug("TREE OFFSET y: " + offsety + " x: " + offsetx );
+
 	this.treeContainerBox.style.position = "absolute"; 
 	this.treeContainerBox.style.top = offsety; 
 	this.treeContainerBox.style.left = offsetx;

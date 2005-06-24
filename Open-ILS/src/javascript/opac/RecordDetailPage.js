@@ -106,6 +106,8 @@ RecordDetailPage.prototype.draw = function() {
 
 	this.fetchRecord(paramObj.__record); /* sets this.record */
 	this.viewMarc = getById("record_detail_view_marc");
+
+	this.buildNavBox();
 	
 
 }
@@ -113,7 +115,6 @@ RecordDetailPage.prototype.draw = function() {
 
 function buildCustomOrgTree(org_node, root) {
 
-	debug("performing custom org tree build");
 	var item;
 
 	if(root) {
@@ -132,7 +133,6 @@ function buildCustomOrgTree(org_node, root) {
 	for( var index in org_node.children()) {
 		var childorg = org_node.children()[index];
 		if( childorg != null ) {
-			debug("Adding " + childorg.name() + " to org tree");
 			var tree_node = buildCustomOrgTree(childorg);
 			if(tree_node != null)
 				item.add(tree_node);

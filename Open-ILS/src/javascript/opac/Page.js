@@ -45,6 +45,15 @@ Page.prototype.setLocDisplay = function(name) {
 		orgunit = globalSelectedLocation;
 	else { orgunit = globalLocation; }
 
+	this.searchingCell.innerHTML = 
+		"Now Searching <span class='breadcrumb_label'>" + orgunit.name() + "</span>";
+
+	this.resetRange();
+	return;
+
+
+
+
 	var arr = orgNodeTrail(orgunit);
 
 	this.searchingCell.innerHTML = "";
@@ -97,7 +106,8 @@ Page.prototype.resetRange = function() {
 	}
 
 	this.searchRange.selectedIndex = selectedOption;
-	this.searchRange.options[selectedOption].selected = true;
+	var opt = this.searchRange.options[selectedOption];
+	if(opt) opt.selected = true;
 
 	if(this.searchRange.options.length == 1 ) 
 		hideMe(this.searchRange.parentNode);
@@ -112,6 +122,8 @@ Page.prototype.resetRange = function() {
 		var obj = this;
 
 		debug("Setting onclick for selector");
+
+		var obj = this;
 		this.searchRange.onchange = function() {
 	
 			var location = globalSelectedLocation;
@@ -174,28 +186,79 @@ Page.prototype.buildDivider = function() {
 Page.prototype.buildNavBox = function() {
 	Page.navBox = new Box();
 	Page.navBox.init("Navigate", false, false);
-	var table = elem("table", {className:"main_nav_table"});
+	var table = elem("table");
+	add_css_class(table, "main_nav_table");
 
-	var arr = new Array();
+	var arr = [];
 
-	arr.push(elem("a", {href:'?target=advanced_search'}, "Advanced Search"));
-	arr.push(elem("a", {href:'?target=my_opac'}, "My OPAC"));
-	arr.push(elem("a", {href:'?target=about'}, "About PINES"));
+	/* location tree */
+	var loc = elem("a", 
+		{id:"location_nav_link", href:"javascript:void(0);"}, null, "Change Search Location");
+
+	loc.onclick = function(evt) {
+		globalPage.locationTree.toggle(getById("location_nav_link"));
+	}
+	arr.push(loc);
+
+	arr.push(elem("a", {href:'?target=advanced_search'}, null, "Advanced Search"));
+	arr.push(elem("a", {href:'?target=my_opac'}, null, "My OPAC"));
+	arr.push(elem("a", {href:'?target=about'}, null, "About PINES"));
+	arr.push(this.buildDeepLink());
+
+	if(UserSession.instance().verifySession()) {
+		arr.push(elem("a", {href:"?target=logout"}, null, "Logout"));
+	} 
+
 
 	for( var i in arr ) {
 		var row = table.insertRow(table.rows.length);
 		add_css_class(row, "main_nav_row");
 		var cell = row.insertCell(row.cells.length);
 		add_css_class(cell, "main_nav_cell");
+		cell.appendChild(arr[i]);
 	}
 
 	/* append to the page */
 	Page.navBox.addItem(table);
+	Page.navBox.finalize();
+
 	var location = getById("main_page_nav_box");
 	if(location)
 		location.appendChild(Page.navBox.getNode());
+
+	return Page.navBox.getNode();
 }
 
+Page.prototype.buildDeepLink = function() {
+	try {
+		if(!globalAppFrame)
+			return elem("div");
+	} catch(E) { return elem("div"); }
+
+	var org = globalSelectedLocation;
+	if(org == null)
+		org = globalLocation;
+	org = org.id();
+
+	var depth = globalSearchDepth;
+
+	var string =globalAppFrame.location.href;
+	if(!string.match(/sub_frame/))
+		string += "&sub_frame=1"
+	if(!string.match(/location/))
+		string += "&location=" + org;
+	if(!string.match(/depth/))
+		string += "&depth=" + depth;
+
+	debug("Redirecting deep link to " + string );
+
+	var a = elem("a",
+		{ href: string }, null, "Link to this page"
+	);
+
+	a.setAttribute("target", "_blank");
+	return a;
+}
 
 
 

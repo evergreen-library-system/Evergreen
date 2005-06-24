@@ -30,8 +30,13 @@ RemoteRequest.prunePending = function(id) {
 	var tmpArray = new Array();
 	for( var x in RemoteRequest.pending ) {
 		if( RemoteRequest.pending[x] != null ) {
-			if( RemoteRequest.pending[x].id != id )
-				tmpArray.push(RemoteRequest.pending[x]);
+			var req = RemoteRequest.pending[x];
+			if( req.id != id )
+				tmpArray.push(req);
+			else {
+				debug("Cleaning " + req.id );
+				req.clean();
+			}
 		}
 	}
 	RemoteRequest.pending = tmpArray;
@@ -46,7 +51,9 @@ RemoteRequest.cancelAll = function() {
 	for( var x in RemoteRequest.pending ) {
 		if( RemoteRequest.pending[x] != null ) {
 			debug("Cancelling request...");
-			RemoteRequest.pending[x].cancelled = true;
+			var req = RemoteRequest.pending[x];
+			req.cancelled = true;
+			req.clean();
 		}
 	}
 }
@@ -115,6 +122,11 @@ function RemoteRequest( service, method ) {
 
 	if( this.buildXMLRequest() == null )
 		alert("NEWER BROWSER");
+}
+
+RemoteRequest.prototype.clean = function() {
+	this.xmlhttp.onreadystatechange = function(){};
+	this.callback = null;
 }
 
 /* constructs our XMLHTTPRequest object */
@@ -190,7 +202,7 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 					//alert("Exception: " + E);
 					throw E;
 				}
-			}
+			} 
 
 			/* on success, remove the request from the pending cache */
 			RemoteRequest.prunePending(object.id);

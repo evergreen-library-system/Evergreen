@@ -205,6 +205,13 @@ RecordResultPage.prototype.isNewSearch = function() {
 /* performs a new search */
 RecordResultPage.prototype.doSearch = function() {
 
+	if(recordResultRedirect) { 
+		/* if the user is just hitting the 'back' button */
+		recordResultRedirect = false;
+		history.back();
+		return;
+	}
+
 	debug( "Key Value Array \n" + js2JSON( paramObj ) );
 
 	this.page			= parseInt(paramObj.__page);
@@ -344,6 +351,7 @@ RecordResultPage.prototype.mrSearch = function(mrid) {
 					}
 				} else { 
 					recordResultRedirect = false;
+					history.back();
 				}
 
 				obj.collectRecords();

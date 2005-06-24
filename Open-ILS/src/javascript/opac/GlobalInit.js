@@ -51,6 +51,7 @@ function globalInit() {
 	if( isXUL() && globalAppFrame )
 		globalAppFrame.document.body.style.background = "#FFF";
 
+	getDocument().body.onunload = cleanIEMemory;
 
 
 	var page_name = globalPageTarget;
