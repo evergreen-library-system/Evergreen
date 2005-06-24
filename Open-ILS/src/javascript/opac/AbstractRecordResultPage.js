@@ -96,6 +96,7 @@ AbstractRecordResultPage.prototype.resetPage = function() {
 		if(location == null) location = globalLocation.id();
 
 		url_redirect(obj.URLRefresh());
+		obj = null;
 	}
 
 

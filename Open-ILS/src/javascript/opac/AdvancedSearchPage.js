@@ -33,6 +33,7 @@ AdvancedSearchPage.prototype.init = function() {
 
 	this.globalSearchButton.onclick = doGlobalSearch;
 	refinedButton.onclick = doGlobalSearch;
+	this.buildNavBox();
 }
 
 /* resets the page */

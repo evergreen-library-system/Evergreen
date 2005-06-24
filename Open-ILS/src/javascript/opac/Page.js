@@ -183,30 +183,38 @@ Page.prototype.buildDivider = function() {
 	return div;
 }
 
-Page.prototype.buildNavBox = function() {
+/* if 'full' add target=_top to break out of the page */
+Page.prototype.buildNavBox = function(full) {
 	Page.navBox = new Box();
-	Page.navBox.init("Navigate", false, false);
+	Page.navBox.init("Navigation", false, false);
 	var table = elem("table");
 	add_css_class(table, "main_nav_table");
 
 	var arr = [];
 
 	/* location tree */
-	var loc = elem("a", 
-		{id:"location_nav_link", href:"javascript:void(0);"}, null, "Change Search Location");
+	var loc = null;
+	try {
+		if(globalOrgTree)
+			loc = elem("a", 
+				{id:"location_nav_link", href:"javascript:void(0);"}, null, "Change Search Location");
 
-	loc.onclick = function(evt) {
-		globalPage.locationTree.toggle(getById("location_nav_link"));
-	}
-	arr.push(loc);
+		loc.onclick = function(evt) {
+			globalPage.locationTree.toggle(getById("location_nav_link"));
+		}
+		arr.push(loc);
+	} catch(E){}
 
-	arr.push(elem("a", {href:'?target=advanced_search'}, null, "Advanced Search"));
-	arr.push(elem("a", {href:'?target=my_opac'}, null, "My OPAC"));
-	arr.push(elem("a", {href:'?target=about'}, null, "About PINES"));
-	arr.push(this.buildDeepLink());
+	if(globalPort == "443") globalPort = "80";
+	var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
+
+	arr.push(elem("a", {href: prefix + '?target=advanced_search'}, null, "Advanced Search"));
+	arr.push(elem("a", {href: prefix + '?target=my_opac'}, null, "My OPAC"));
+	arr.push(elem("a", {href: prefix + '?target=about'}, null, "About PINES"));
+	if(loc) arr.push(this.buildDeepLink());
 
 	if(UserSession.instance().verifySession()) {
-		arr.push(elem("a", {href:"?target=logout"}, null, "Logout"));
+		arr.push(elem("a", {href: prefix + "?target=logout"}, null, "Logout"));
 	} 
 
 
@@ -216,6 +224,8 @@ Page.prototype.buildNavBox = function() {
 		var cell = row.insertCell(row.cells.length);
 		add_css_class(cell, "main_nav_cell");
 		cell.appendChild(arr[i]);
+		if(full) 
+			arr[i].setAttribute("target", "_top");
 	}
 
 	/* append to the page */
@@ -223,8 +233,9 @@ Page.prototype.buildNavBox = function() {
 	Page.navBox.finalize();
 
 	var location = getById("main_page_nav_box");
-	if(location)
+	if(location) 
 		location.appendChild(Page.navBox.getNode());
+	
 
 	return Page.navBox.getNode();
 }
@@ -238,27 +249,42 @@ Page.prototype.buildDeepLink = function() {
 	var org = globalSelectedLocation;
 	if(org == null)
 		org = globalLocation;
-	org = org.id();
+	if(org) org = org.id();
 
 	var depth = globalSearchDepth;
+
+	if(globalPort == "443") globalPort = "80";
+	var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
 
 	var string =globalAppFrame.location.href;
 	if(!string.match(/sub_frame/))
 		string += "&sub_frame=1"
-	if(!string.match(/location/))
+
+	if(org) {
+		if(!string.match(/location/))
 		string += "&location=" + org;
-	if(!string.match(/depth/))
+	}
+
+	if(depth) {
+		if(!string.match(/depth/))
 		string += "&depth=" + depth;
+	}
 
 	debug("Redirecting deep link to " + string );
 
 	var a = elem("a",
-		{ href: string }, null, "Link to this page"
+		{ href: prefix + string }, null, "Link to this page"
 	);
 
 	a.setAttribute("target", "_blank");
 	return a;
 }
 
+
+Page.prototype.destroy = function() { 
+	for( var x in this ){
+		this[x] = null;
+	}
+}
 
 

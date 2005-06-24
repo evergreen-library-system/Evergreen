@@ -86,7 +86,8 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety, relative)
 			(!this.treeBox.firstChild)) {
 
 		debug("location tree has not been rendered... rendering..");
-		setTimeout(function() { renderTree(obj); }, 5 );
+		//setTimeout(function() { renderTree(obj); }, 5 );
+		renderTree(obj);
 	}
 
 	//alert(this.treeBox.firstChild.nodeType);
@@ -158,7 +159,7 @@ LocationTree.prototype.newSpot = function(box_id, container_id) {
 	expand_all.onclick = function() { obj.widget.expandAll(); };
 	collapse_all.onclick = function() {
    	obj.widget.collapseAll();
-		obj.widget.expand(); };
+		obj.widget.expand();};
 
 	expando.appendChild(expand_all);
 	expando.appendChild(createAppTextNode(" "));

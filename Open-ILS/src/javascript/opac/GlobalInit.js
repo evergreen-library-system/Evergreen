@@ -76,12 +76,14 @@ function globalInit() {
 			break;
 
 		case  "mr_result":
-			globalPage = new MRResultPage();
+			//globalPage = new MRResultPage();
+			globalPage = MRResultPage.instance();
 			addLocation("mr_result", "Title Group Results");
 			break;
 
 		case  "record_result":
-			globalPage = new RecordResultPage();
+			//globalPage = new RecordResultPage();
+			globalPage = RecordResultPage.instance();
 			addLocation("record_result", "Title Results");
 			break;
 

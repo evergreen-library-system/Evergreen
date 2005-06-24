@@ -200,11 +200,13 @@ WebFXTreeAbstractNode.prototype.toggle = function() {
 }	}
 
 WebFXTreeAbstractNode.prototype.select = function() {
-	getById(this.id + '-anchor').focus();
+	var a = getById(this.id + '-anchor');
+	if(a) a.focus();
 }
 
 WebFXTreeAbstractNode.prototype.deSelect = function() {
-	getById(this.id + '-anchor').className = '';
+	var a = getById(this.id + '-anchor');
+	if(a) a.className = '';
 	webFXTreeHandler.selected = null;
 }
 

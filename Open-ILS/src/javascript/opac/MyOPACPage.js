@@ -12,7 +12,16 @@ function MyOPACPage() {
 
 MyOPACPage.prototype.redirect = function() {
 	var frame = getById("my_opac_iframe");
-	var source = "https://gapines.org/opac/?target=my_opac_secure";
+
+	var org = globalSelectedLocation;
+	if(org == null)
+		org = globalLocation;
+	org = org.id();
+	var depth = globalSearchDepth;
+
+	var source = "https://" + globalRootURL + globalRootPath 
+		+ "?target=my_opac_secure" + "&location=" + org + "&depth=" + depth;
+
 	source += "&session=" + UserSession.instance().getSessionId();
 	frame.setAttribute("src",source);
 	return true;

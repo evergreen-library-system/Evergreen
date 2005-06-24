@@ -1,18 +1,41 @@
+
 function cleanIEMemory() {
+
+//	alert("here");
+
 	var a = [ "a", "div", "span", "select", "option", "img", "body", "iframe", "frame"];
 	for( var index in a ) {
 		var nodes = getDocument().getElementsByTagName(a[index]);
+		var nodes2 = document.getElementsByTagName(a[index]);
+
 		for( var n = 0; n!= nodes.length; n++ ) {
 			var node = nodes[n];
 			node.onclick = null;
 			node.onchange = null;
 			node.onselect = null;
+			node.oncontextmenu = null;
 		}
+
+		for( var n = 0; n!= nodes2.length; n++ ) {
+			var node = nodes2[n];
+			node.onclick = null;
+			node.onchange = null;
+			node.onselect = null;
+			node.oncontextmenu = null;
+		}
+		nodes = null; 
+		nodes2 = null;
 	}
+
+	globalPage = null;
+	globalMenuManager = null;
+
+	if(IE) {
+		window.CollectGarbage();
+		getWindow().CollectGarbage();
+	}
+
 }
-
-
-
 
 
 
@@ -485,6 +508,7 @@ function eventPoll(name) {
 
 
 function swapClass(obj, class1, class2 ) {
+	if(obj == null) return;
 	if( obj.className.indexOf(class1) != -1 ) {
 		remove_css_class(obj, class1);
 		add_css_class(obj,class2);
