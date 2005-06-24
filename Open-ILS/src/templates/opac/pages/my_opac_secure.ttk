@@ -1,9 +1,15 @@
 [%
+	url		= cgi.server_name();
+	port		= cgi.server_port();
+
 	WRAPPER html/html;
 
 		WRAPPER html/head title="My OPAC"; 
 			link(rel="stylesheet", href="/css/my_opac.css" type="text/css");
 			link(rel="stylesheet", href="/css/box.css" type="text/css");
+			link(rel="stylesheet", href="/css/opac_main.css" type="text/css");
+
+			js( src='/js/opac/Page.js' );
 			js( src='/js/opac/MyOPACSPage.js' );
 			js( src='/js/util/RemoteRequest.js' );
 			js( src='/js/util/webutils.js' );
@@ -14,40 +20,66 @@
 			js( src='/js/util/JSON.js' );
 			js( src='/js/util/web_fieldmapper.js' );
 			js( src='/js/util/browser.js' );
-		END;
 
-		WRAPPER html/body class='no_border_body' 
-			onload='
+			WRAPPER html/js;
+				'
+				var globalSelectedLocation = null;
+				var globalLocation = null;
+				var globalSearchDepth = null;
+
 				var globalAppFrame = window;
 				var globalPage = new MyOPACSPage();
-				globalPage.init(); 
+				var globalRootURL = "' _ url _ '";
+				var globalRootPath	= "/opac/";
+				var globalPort			= "' _ port _ '";
 				';
-
-			lines(2);
-			WRAPPER html/box id='my_opac_nav_bar';
-				WRAPPER html/center;
-				WRAPPER html/table id='my_opac_nav_table';	
-					WRAPPER html/row;
-						cell(class='my_opac_link_cell', width="25%", id='my_opac_checked', 
-								content=anchor(id='my_opac_checked_link', 
-									text="Checked Out", href="javascript:void(0);"));
-
-						cell(class='my_opac_link_cell', width="25%", id='my_opac_holds', 
-								content=anchor(id='my_opac_holds_link', 
-									text="Holds", href="javascript:void(0);"));
-
-						cell(class='my_opac_link_cell', width="25%", id='my_opac_profile', 
-								content=anchor(id='my_opac_profile_link', 
-									text="My Profile", href="javascript:void(0);"));
-
-						cell(class='my_opac_link_cell', width="25%", id='my_opac_fines', 
-								content=anchor(id='my_opac_fines_link', 
-									text="Fines", href="javascript:void(0);"));
-					END;
-				END;
-				END;
 			END;
-			lines(2);
+
+		END;
+
+
+		WRAPPER html/body class='no_border_body' onload='globalPage.init();';
+
+			WRAPPER html/table width="100%";
+
+				WRAPPER html/row;
+
+					WRAPPER html/cell width="70%";
+						WRAPPER html/box id='my_opac_nav_bar';
+							WRAPPER html/center;
+								WRAPPER html/table id='my_opac_nav_table';	
+									WRAPPER html/row;
+										cell(class='my_opac_link_cell', width="25%", id='my_opac_checked', 
+												content=anchor(id='my_opac_checked_link', 
+													text="Checked Out", href="javascript:void(0);"));
+				
+										cell(class='my_opac_link_cell', width="25%", id='my_opac_holds', 
+												content=anchor(id='my_opac_holds_link', 
+													text="Holds", href="javascript:void(0);"));
+				
+										cell(class='my_opac_link_cell', width="25%", id='my_opac_profile', 
+												content=anchor(id='my_opac_profile_link', 
+													text="My Profile", href="javascript:void(0);"));
+				
+										cell(class='my_opac_link_cell', width="25%", id='my_opac_fines', 
+												content=anchor(id='my_opac_fines_link', 
+													text="Fines", href="javascript:void(0);"));
+									END;
+								END;
+							END;
+						END;
+					END; # cell
+
+					WRAPPER html/cell;
+						box(id='main_page_nav_box', class='nav_box_box');
+					END;
+
+				END; #row
+			END; # table
+
+
+
+			lines(1);
 
 			WRAPPER html/box id='my_opac_info_pane';
 				WRAPPER html/center;

@@ -12,28 +12,42 @@
 
 			INCLUDE opac/pages/chunks/body_header.ttk hide_hits_per=1;
 
-			lines(1);
+			WRAPPER html/table width="100%";
 
-			box(id='adv_search_main_header', content="Advanced Search");
-			lines(1);
-
-
-			WRAPPER html/div class='adv_search_left_box';
-				WRAPPER html/div class='adv_search_quick_box';
-					INCLUDE opac/pages/chunks/adv_global_search.ttk;
+				WRAPPER html/row;
+					WRAPPER html/cell colspan='2';
+						box(id='adv_search_main_header', content="Advanced Search");
+					END;
+					WRAPPER html/cell valign='top' rowspan='2';
+						box(id='main_page_nav_box', class='nav_box_box');
+					END;
 				END;
-			END; # left box
 
-			#box(class='vert_div');
 
-			WRAPPER html/div class='adv_search_big_box';
-				#INCLUDE opac/pages/chunks/adv_mixed_search.ttk;
-				INCLUDE opac/pages/chunks/adv_refined_keyword.ttk;
-			END;
+				WRAPPER html/row;
+
+					WRAPPER html/cell;
+						WRAPPER html/div class='adv_search_left_box';
+							WRAPPER html/div class='adv_search_quick_box';
+								INCLUDE opac/pages/chunks/adv_global_search.ttk;
+							END;
+						END; # left box
+					END;
+			
+			
+					WRAPPER html/cell;
+						WRAPPER html/div class='adv_search_big_box';
+							#INCLUDE opac/pages/chunks/adv_mixed_search.ttk;
+							INCLUDE opac/pages/chunks/adv_refined_keyword.ttk;
+						END;
+					END;
+
+				END;
+			END; #table
 
 			lines(5);
+			"<center><b>More to come... ...</b></center>";
 
-			"<center><b>More to come...</b></center>";
 
 		END; # - body
 	END; # - html

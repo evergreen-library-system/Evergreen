@@ -43,7 +43,6 @@
 
 
 					WRAPPER html/cell class='record_sidebar_cell' id='record_sidebar_cell' valign="top";
-						#box( id='main_page_nav_box');
 						box( id='record_sidebar_box' );
 					END;
 

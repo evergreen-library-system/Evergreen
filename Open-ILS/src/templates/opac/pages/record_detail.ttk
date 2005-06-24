@@ -16,13 +16,11 @@
 		WRAPPER html/body onload='pageInit();';
 
 			INCLUDE opac/pages/chunks/body_header.ttk hide_hits_per=1;
-			WRAPPER html/div id='page_trail';END;
+			#WRAPPER html/div id='page_trail';END;
 
 			# --------------------------------------------------------------------------------- 
 			# Display record detail info
 			# --------------------------------------------------------------------------------- 
-
-			lines(1);
 
 			WRAPPER html/box id='record_detail_main_box';
 

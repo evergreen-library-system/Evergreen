@@ -25,14 +25,17 @@
 
 					IF sub_frame;
 						"src='/opac/?";
+						a1 = [];
+
 						FOR p IN cgi.param;
-
 							IF p != "sub_frame"; 
-								par = cgi.param(p) | uri | html;
-								p _ "=" _ par  _ "&"; 
+								v = p _ "=" _ cgi.param(p);
+								a1.push(v);
 							END;
-
 						END;
+						a1.join("&");
+						"'";
+
 					ELSE; 
 				%]
 

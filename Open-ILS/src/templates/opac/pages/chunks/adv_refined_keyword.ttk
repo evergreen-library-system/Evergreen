@@ -26,7 +26,6 @@
 				END;
 
 				row(content = cell(content = lines(1)));
-
 	
 				WRAPPER html/row;
 					cell(align='left' , content= "Find results with all words:");
@@ -47,9 +46,7 @@
 					cell(align='left' content=input(type='text' size='34' id='adv_none_words'));
 				END;
 	
-	
 				row(content = cell(content = lines(1)));
-	
 	
 				WRAPPER html/row;
 					WRAPPER html/cell colspan='4';

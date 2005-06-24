@@ -2,10 +2,7 @@
 	box(id='progress_bar_location'); 
 	INCLUDE opac/pages/chunks/opac_search_bar.ttk;
 
-	WRAPPER html/div id='page_trail';END;
-	WRAPPER html/div id='deep_link_div';END;
-
-	lines(1);
+	#WRAPPER html/div id='deep_link_div';END;
 
 	#INCLUDE opac/pages/chunks/status_bar.ttk;
 
@@ -17,7 +14,6 @@
 		END;
 	END;
 
-	lines(1);
-
+	#box(id='page_trail', style="float:left;");
 	#INCLUDE opac/pages/chunks/org_tree.ttk;
 %]
