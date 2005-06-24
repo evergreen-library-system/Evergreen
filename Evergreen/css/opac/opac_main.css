@@ -152,4 +152,8 @@ table { border-collapse: collapse; }
 .main_nav_cell a:hover {
 	color: red;
 }
-
+.nav_box_box {
+	width: 200px;
+	vertical-align: top;
+	float: right;
+}
