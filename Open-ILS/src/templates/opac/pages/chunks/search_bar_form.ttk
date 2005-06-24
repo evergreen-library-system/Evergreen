@@ -9,7 +9,7 @@
 		input( type='hidden', name='page', value='0');
 
 		input(id='mr_search_query',  name='mr_search_query',  
-				type='textarea', size='34');
+				type='textarea', size='28');
 	
 		space(1);
 	
@@ -27,9 +27,23 @@
 				value=tm.search, onclick='alert("help");' );
 
 		space(1);
+		%]
+
+		[%
+			"Hits per page ";
+			WRAPPER html/select name='hits_per_page' id='hits_per_page';
+				option(value='5',		content="5");
+				option(value='10',	selected='selected', content="10");
+				option(value='15',	content="15");
+				option(value='25',	content="25");
+				option(value='50',	content="50");
+			END;
+		%]
+
 
 		
 		
+		[%
 	END;
 
 %]

@@ -57,7 +57,7 @@
 			PROCESS search_range;
 
 			lines(3);
-			anchor( id='login_link',  href='?target=login', text = "Login" );
+			anchor( id='login_link',  href='?target=my_opac', text = "My OPAC" );
 			space(3);
 			anchor( id='adv_search_link',  href='?target=advanced_search', text = "Advanced Search" );
 

@@ -7,27 +7,17 @@
 
 	lines(1);
 
-	INCLUDE opac/pages/chunks/status_bar.ttk;
+	#INCLUDE opac/pages/chunks/status_bar.ttk;
 
-	WRAPPER html/div class='hit_count_selector_div';
-
-		WRAPPER html/div class='hit_count_cell' id='hit_count_cell';
+	WRAPPER html/center;
+		WRAPPER html/div class='hit_count_selector_div' width="100%";
+			box(id='hit_count_cell', class='hit_count_cell');
+			box(id='progress_bar_percent_location'); 
+			box(id='now_searching_cell', class='now_searching_cell', style="float:right;");
 		END;
-
-		box(id='progress_bar_percent_location'); 
-
-		IF ! hide_hits_per;
-			"Hits per page ";
-			WRAPPER html/select name='hits_per_page' id='hits_per_page';
-				option(value='5',		content="5");
-				option(value='10',	selected='selected', content="10");
-				option(value='15',	content="15");
-				option(value='25',	content="25");
-				option(value='50',	content="50");
-			END;
-		END;
-
 	END;
 
-	INCLUDE opac/pages/chunks/org_tree.ttk;
+	lines(1);
+
+	#INCLUDE opac/pages/chunks/org_tree.ttk;
 %]

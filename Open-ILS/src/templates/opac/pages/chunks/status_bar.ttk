@@ -4,12 +4,14 @@
 
 	WRAPPER html/table  + html/row id='top_status_bar' class='status_bar';
 
-		cell(id='now_searching_cell', class='now_searching_cell');
+		#cell(id='now_searching_cell', class='now_searching_cell');
 
-		WRAPPER html/cell class='search_range_cell' nowrap='nowrap';
+		#WRAPPER html/cell class='search_range_cell' nowrap='nowrap';
 	
 			
 
+		%]
+		[%#
 			WRAPPER html/span;
 				space(3);
 				"Expand search to ";
@@ -21,6 +23,10 @@
 					onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
 				END;
 			END;
+		%]
+
+
+		[%#
 
 			input( type='submit', value="Location", id='location_select_button' 
 				onclick='
@@ -30,10 +36,13 @@
 				if(evt)
 					globalPage.locationTree.toggle(target);'
 			); 
+		%]
+
+		[%
 
 	
 		
-		END;
+#	END;
 
 	END;
 	END;

@@ -67,7 +67,7 @@
 
 			globalAppFrame = window;
 			globalPage = logicNode.globalPage;
-			setDeepLink();
+			//setDeepLink();
 		}
 
 		function setDeepLink() {

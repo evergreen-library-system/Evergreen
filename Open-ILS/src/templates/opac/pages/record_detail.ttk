@@ -28,68 +28,80 @@
 
 				WRAPPER html/box id='detail_items_div';
 
-					WRAPPER html/table id='record_detail_table';
+				WRAPPER html/table width="100%";
+					WRAPPER html/row;
+						WRAPPER html/cell width="70%";
+							WRAPPER html/table id='record_detail_table';
+		
+								WRAPPER html/row;
+									cell(content="Record Details", nowrap='nowrap', class="detail_header_cell");
+									cell(id='record_detail_view_marc', class="detail_header_cell");
+									cell(id='record_detail_pic_cell', rowspan='10');
+								END;
 
-						WRAPPER html/row;
-							cell(content="Record Details", nowrap='nowrap', class="detail_header_cell");
-							cell(id='record_detail_view_marc', class="detail_header_cell");
-							cell(id='record_detail_pic_cell', rowspan='10');
+	
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Title", nowrap='nowrap', class='detail_item_label');
+									cell(id='record_detail_title_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Author", class='detail_item_label');
+									cell(id='record_detail_author_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="ISBN", class='detail_item_label');
+									cell(id='record_detail_isbn_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Edition", class='detail_item_label');
+									cell(id='record_detail_edition_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Publication Date", class='detail_item_label');
+									cell(id='record_detail_pubdate_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Publisher", class='detail_item_label');
+									cell(id='record_detail_publisher_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Title Control Number", nowrap='nowrap', class='detail_item_label');
+									cell(id='record_detail_tcn_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Type of Resource", class='detail_item_label');
+									cell(id='record_detail_resource_cell');
+								END;
+			
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Subjects", class='detail_item_label');
+									cell(id='record_detail_subject_cell');
+								END;
+			
+							END; # table
 						END;
+		
+						WRAPPER html/cell valign='top' width="30%";
+							box(id='main_page_nav_box', style="width:200px; float:right;");
+						END;
+					END; #row
+				END; # table
 
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Title", nowrap='nowrap', class='detail_item_label');
-							cell(id='record_detail_title_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Author", class='detail_item_label');
-							cell(id='record_detail_author_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="ISBN", class='detail_item_label');
-							cell(id='record_detail_isbn_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Edition", class='detail_item_label');
-							cell(id='record_detail_edition_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Publication Date", class='detail_item_label');
-							cell(id='record_detail_pubdate_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Publisher", class='detail_item_label');
-							cell(id='record_detail_publisher_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Title Control Number", nowrap='nowrap', class='detail_item_label');
-							cell(id='record_detail_tcn_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Type of Resource", class='detail_item_label');
-							cell(id='record_detail_resource_cell');
-						END;
-	
-						WRAPPER html/row class='detail_item_row';
-							cell(content="Subjects", class='detail_item_label');
-							cell(id='record_detail_subject_cell');
-						END;
-	
-					END;
+			END; # detail_items_div
 
-				END;
-
-				lines(1);
-				box(id='record_detail_copy_info');
 
 			END;
+
+			lines(1);
+			box(id='record_detail_copy_info');
+
 						
 		END; # body
 

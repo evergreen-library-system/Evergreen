@@ -20,6 +20,31 @@
 					INCLUDE opac/pages/chunks/search_bar_form.ttk;
 				END;
 
+				%]
+
+
+				[%
+
+
+				WRAPPER html/cell nowrap='nowrap';
+				WRAPPER html/span;
+					space(3);
+					"Expand search to ";
+					space(1);
+		
+					WRAPPER html/select 
+						name='search_range_select' 
+						id='search_range_select'
+						onchange='logicNode.globalSearchDepth = this.options[this.selectedIndex].value;';
+					END;
+				END;
+				END;
+				%]
+
+
+
+				[%# -------
+
 				WRAPPER html/cell  align='center';
 
 					WRAPPER html/div class='text_link_div' id='login_div';
@@ -52,7 +77,11 @@
 					END;
 				END;
 
-			
+				%]
+
+
+
+				[%
 
 				WRAPPER html/cell valign='bottom' align='right';
 					WRAPPER html/div id='small_logo_div';
