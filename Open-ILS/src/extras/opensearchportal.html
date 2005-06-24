@@ -138,6 +138,7 @@ var current_count = 5;
 
 function opensearch ( term, reset, single_source ) {
 
+
 	if (reset) {
 		current_startPage = 1;
 		rel_scales = {};
@@ -156,7 +157,7 @@ function opensearch ( term, reset, single_source ) {
 		rel_scales
 		var cur_src = document.getElementById('result_sources');
 		for (var i = 1; i < cur_src.childNodes.length; i++) {
-			if (cur_src.childNodes[i].textContent == turi)
+			if (cur_src.childNodes[i].nodeValue == turi)
 				return;
 		}
 		cur_src.innerHTML += '<a name="' + single_source + '" href="' + turi + '">' + turi + '</a><br>';
@@ -238,7 +239,7 @@ function opensearch ( term, reset, single_source ) {
 function perform_search ( source ) {
 	var req = create_requestor();
 
-	req.onreadystatechange = function () {
+	var func = function () {
 		if (req.readyState != 4)
 			return;
 
@@ -254,7 +255,10 @@ function perform_search ( source ) {
 		rel_scales[source]  = scale;
 		
 		var tot = document.getElementById('total');
-		var current_tot = parseFloat(tot.textContent);
+		var current_tot = 0;
+		if (tot.childNodes.length)
+			current_tot = parseFloat(tot.childNodes[0].nodeValue);
+
 		var res_type = document.getElementById('res_type');
 
 		if (res_type.options[res_type.selectedIndex].value == 'col')
@@ -277,26 +281,38 @@ function perform_search ( source ) {
 
 			var tab;
 			if (!integratible) {
+
 				tab = document.getElementById('col_res');
 				document.getElementById('col_res_hide').className = '';
-				var col = document.getElementById(source);
+
+				var col = document.getElementById(encodeURI(source));
+				if (col) {
+					if (col.nodeName != 'TABLE')
+						col = null;
+				}
+
 				if (!col) {
 					var row = tab.rows[0];
 					if (!row)
 						row = tab.insertRow(0);
 
 					col = document.createElement('td');
-					col.setAttribute('id',source);
-					col.setAttribute('name',source);
 					row.appendChild(col);
 
 					tab = document.createElement('table');
-					tab.setAttribute('valign','top');
-					tab.setAttribute('class','col_tab');
+					tab.id = encodeURI(source);
+					tab.name = encodeURI(source);
+					tab.setAttribute('id',encodeURI(source));
+					tab.setAttribute('name',encodeURI(source));
 
-					var cap = document.createElement('caption');
-					tab.appendChild(cap);
-					cap.innerHTML = desc + ' -- <a href="' + xml_link + '">XML</a>';
+					tab.setAttribute('valign','top');
+					tab.className ='col_tab';
+
+					if(!isIE) {
+						var cap = document.createElement('caption');
+						tab.appendChild(cap);
+						cap.innerHTML = desc + ' -- <a href="' + xml_link + '">XML</a>';
+					}
 
 					col.appendChild(tab);
 
@@ -305,14 +321,17 @@ function perform_search ( source ) {
 					col.setAttribute('width', + per + '%');
 
 				} else {
-					tab = col.firstChild;
+					tab = col;
 				}
 			} else {
 				tab = document.getElementById('int_res');
 				document.getElementById('int_res_hide').className = '';
 			}
 
-			if (!tab.rows.length) {
+			if (tab.nodeName != 'TABLE')
+				alert(tab.href);
+
+			if (!tab.rows || !tab.rows.length) {
 				add_result_row(tab, 0, list[i], source);
 			} else {
 				for (var j = 0; j < tab.rows.length; j++) {
@@ -327,7 +346,15 @@ function perform_search ( source ) {
 						rank = 0;
 					}
 
-					if ( rank < parseFloat(tab.rows[j].firstChild.firstChild.textContent) ) {
+					var curr_rank;
+					if (tab.rows[j] && tab.rows[j].firstChild && tab.rows[j].firstChild.firstChild) {
+						if (tab.rows[j].firstChild.firstChild.childNodes.length)
+							curr_rank = parseFloat(tab.rows[j].firstChild.firstChild.childNodes[0].nodeValue);
+					} else {
+						curr_rank = 0.0;
+					}
+
+					if ( rank < curr_rank ) {
 						if ( (j + 1) == tab.rows.length) {
 							add_result_row(tab, tab.rows.length, list[i], source);
 							break
@@ -341,6 +368,7 @@ function perform_search ( source ) {
 		}
 	};
 
+	req.onreadystatechange = func;
 	req.open('GET', proxy + encodeURIComponent(search_urls[source]), true);
 	req.send(null);
 }
@@ -356,7 +384,7 @@ function getElementFloatNS(prefix, local, parentElem, index) {
         if (result.childNodes.length > 1) {
             return parseFloat(result.childNodes[1].nodeValue);
         } else {
-            return parseFloat(result.textContent);    		
+            return parseFloat(result.childNodes[0].nodeValue);    		
         }
     } else {
         return 0;
@@ -426,26 +454,68 @@ function add_result_row (tab, index, xml, source) {
 	}
 
 	var row = tab.insertRow(index);
-	row.setAttribute('name',source);
+
+	row.name = encodeURI(source);
+	row.setAttribute('name',encodeURI(source));
 	row.className = 'res_tr';
-	row.innerHTML = '<td style="padding: 4px"><div style="display: none; visibility: hidden;">' + rank +
-						 '</div><span class="title_link"><a href="' + tlink + '">' + title +
-						 '</a></span><br/><span class="desc_text">' + description + '</span></td>' +
-						 '<td><img title="' + parseInt(rank) + '% Relevant" width="32" height="32" src="' + img + '"></td>';
+
+	var c1 = row.insertCell(0);
+	c1.style.padding = "4px";
+
+	var d1 = document.createElement('div');
+	d1.style.display = "none";
+	d1.style.visibility = "hidden";
+	d1.appendChild(document.createTextNode(rank));
+
+	c1.appendChild(d1);
+
+	var s1 = document.createElement('span');
+	s1.className='title_link';
+
+	var a1 = document.createElement('a');
+	a1.href=tlink;
+	a1.appendChild(document.createTextNode(title));
+
+	s1.appendChild(a1);
+	c1.appendChild(s1);
+	c1.appendChild(document.createElement('br'));
+	
+	var s2 = document.createElement('span');
+	s2.className='desc_text';
+	s2.innerHTML = description;
+
+	c1.appendChild(s2);
+
+	var c2 = row.insertCell(1);
+	
+	var i1 = document.createElement('img');
+	i1.title= parseInt(rank) + '% Relevant';
+	i1.src=img;
+	i1.setAttribute('width','32');
+	i1.setAttribute('height','32');
+	i1.width=32;
+	i1.height=32;
+
+	c2.appendChild(i1);
 }
 
 function create_search ( s ) {
 	var req = create_requestor();
+
 
 	req.open('GET',proxy +  encodeURIComponent(s),false);
 	req.send(null);
 
 	try {
 		var xml = req.responseXML;
-		search_templates[s] = xml.getElementsByTagName('Url')[0].textContent;
+		var u = xml.getElementsByTagName('Url');
+		if (u.length)
+			search_templates[s] = u[0].childNodes[0].nodeValue;
+
 		var i =  xml.getElementsByTagName('Image');
 		if (i.length)
-			images[s] = i[0].textContent;
+			images[s] = i[0].childNodes[0].nodeValue;
+
 		return search_templates[s];
 	} catch (e) {
 		alert('BAD XML!\n\n' + e + '\n\n' + req.responseText);
@@ -456,7 +526,7 @@ function create_search ( s ) {
 }
 
 function remove_by_name( src ) {
-	var list = document.getElementsByName(src);
+	var list = document.getElementsByName(encodeURI(src));
 
 	var len = list.length;
 
@@ -474,7 +544,7 @@ function remove_by_name( src ) {
 				<td align="right">Keyword Search: </td>
 				<td align="left">
 					<input type="text" id="term" value="javascript"/>
-					<input type="submit" value="Go!" onclick="insearch=true; opensearch(document.getElementById('term').value, true); return false;"/>
+					<input type="button" value="Go!" onclick="insearch=true; opensearch(document.getElementById('term').value, true); return false;"/>
 				</td>
 				<td align="left">Hits per Source for each page: 
 					<select onchange="current_count=this.options[this.selectedIndex].value;">
