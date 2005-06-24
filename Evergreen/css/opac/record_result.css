@@ -103,6 +103,9 @@
 	padding-left: 2px;
 	font-weight: bold;
 	float:left;
+	text-align: left;
+	padding-right: 5px;
+	border-right: 2px solid lightgrey;
 }
 
 .copy_count_cell {
@@ -181,8 +184,10 @@
 
 .hit_count_selector_div {
 	text-align: right;
-	width: 100%;
+	width: 95%;
 	margin: 3px;
+	border: 1px solid lightgrey;
+	height: 1.3em;
 }
 
 .record_image_big {

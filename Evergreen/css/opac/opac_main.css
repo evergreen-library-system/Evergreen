@@ -134,13 +134,15 @@ table { border-collapse: collapse; }
 
 
 .main_nav_table {
+	width: 100%;
 }
 
 .main_nav_row {
 }
 
 .main_nav_cell {
-	background: #CCF;
+	width: 100%;
+	border-bottom: 1px solid green;
 }
 
 .main_nav_cell_active {

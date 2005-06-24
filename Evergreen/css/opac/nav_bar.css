@@ -56,9 +56,10 @@
 
 
 #now_searching_cell{
-	text-align:left;
+	text-align:right;
 	padding-left: 5px;
 /*	font-size: .75em;  */
+	clip: rect(0, 0, auto, auto);
 }
 
 .front_now_searching {
