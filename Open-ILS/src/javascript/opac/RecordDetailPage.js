@@ -54,7 +54,32 @@ RecordDetailPage.prototype.init = function() {
 }
 
 RecordDetailPage.prototype.draw = function() {
+
 	this.mainBox = getById("record_detail_copy_info");
+
+	this.copyLocationTree = elem("select");
+	var opt =  new Option(
+		"Select a location whose Volumes/Copies you wish to see");
+	this.copyLocationTree.options[this.copyLocationTree.options.length] = opt;
+	var tree = this.copyLocationTree;
+
+	var obj = this;
+
+	tree.onchange = function() {
+
+		var idx = tree.selectedIndex;
+		debug("INDEX is " + idx);
+		var org_id = tree.options[idx].value;	
+		if(org_id == null) return;
+		obj.drawCopyTrees(findOrgUnit(org_id), obj.record);
+
+		tree.selectedIndex = idx;
+		var opt = tree.options[idx];
+		if(opt) {
+			debug("Setting idx " + idx + " to selected");
+			opt.selected = true;	
+		}
+	}
 
 	var table = elem("table", { width: "100%" } );
 	table.width = "100%";
@@ -73,32 +98,10 @@ RecordDetailPage.prototype.draw = function() {
 			id : "parent_link",
 		  style : "text-decoration:underline" } );
 
-	var a = elem("a", 
-		{	href : "javascript:void(0)", 
-			style : "text-decoration:underline" }, null,
-		"Select a location whose Volumes/Copies you wish to see");
-
-	var obj = this;
-	a.onclick =  function(evt) {
-		obj.copyLocationTree.toggle(null, 0, 0);
-	};
-
-
-	leftLink.appendChild(a);
+	leftLink.appendChild(this.copyLocationTree);
 	rightLink.appendChild(this.parentLink);
 	this.mainBox.appendChild(table);
-
 	/* --------------------------------------------- */
-
-		
-	this.copyLocationTree =  new LocationTree(
-		globalOrgTree, "record_detail_tree", "record_detail_tree_container" );
-	td = this.copyLocationTree.newSpot();
-	this.copyLocationTree.treeBuilder = buildCustomOrgTree;
-	this.mainBox.appendChild(td);
-
-	this.copyLocationTree.setObjects();
-
 
 
 	this.treeDiv = elem("div");
@@ -113,7 +116,78 @@ RecordDetailPage.prototype.draw = function() {
 }
 
 
-function buildCustomOrgTree(org_node, root) {
+RecordDetailPage.prototype.buildCustomOrgTree = function(record) {
+
+	var req = new RemoteRequest(
+		"open-ils.search",
+		"open-ils.search.biblio.copy_counts.retrieve",
+		record.doc_id() );
+
+	var obj = this;
+	req.setCompleteCallback(
+		function(req) {
+			_fleshOrgTree(req.getResultObject(), obj.copyLocationTree);}
+	);
+	debug("Sending copy tree request");
+	req.send();
+}
+
+/* builds the select list with the appropriate org units */
+function _fleshOrgTree(org_array, selector) {
+
+	debug("Fleshing org tree selector");
+
+	for( var idx in org_array ) {
+		var slot = org_array[idx];
+		var org = findOrgUnit(slot[0]);
+		_addOrgAndParents(selector, org);
+	}
+
+	debug("Tree is built..");
+}
+
+
+function _addOrgAndParents(selector, org) {
+
+	if(!org || org.added) return;
+
+	debug("Checking org " + org.name());
+
+	if(org.ou_type() == "1") {
+		org.added = true;
+		return;
+	}
+
+	var par = findOrgUnit(org.parent_ou());
+	if(par && !par.added)
+		_addOrgAndParents(selector, par);
+
+
+	/* build the selector text part */
+	if(IE) {
+		var node = elem("pre");
+		for(var x=2; x <= findOrgType(org.ou_type()).depth(); x++) {
+			node.appendChild(mktext("   "));
+		}
+		node.appendChild(mktext(org.name()));
+
+		var select = new Option("", org.id());
+		selector.options[selector.options.length] = select;
+		select.appendChild(node);
+
+	} else {
+
+		var pad = (findOrgType(org.ou_type()).depth() - 1) * 10;
+		var select = new Option(org.name(), org.id());
+		select.setAttribute("style", "padding-left: " + pad);
+		selector.options[selector.options.length] = select;
+	}
+
+	org.added = true;
+}
+
+
+function _buildCustomOrgTree(org_node, root) {
 
 	var item;
 
@@ -174,8 +248,7 @@ RecordDetailPage.prototype.fetchRecord = function(id) {
 		function() { 
 			obj.record = req.getResultObject();
 			globalDetailRecord = obj.record;
-			obj.copyLocationTree.widget = 
-				buildCustomOrgTree(globalOrgTree, obj.record, true);
+			obj.buildCustomOrgTree(obj.record);
 			obj.drawRecord(obj.record); 
 			obj.setViewMarc(obj.record);
 		} 
@@ -309,14 +382,12 @@ RecordDetailPage.prototype.drawCopyTrees = function(orgUnit, record) {
 	orgUnit = findOrgUnit(orgUnit);
 
 	debug("OrgUnit depth is: " + findOrgType(orgUnit.ou_type()).depth());
-
-	//this.displayLocationTree(record);
+	removeChildren(this.treeDiv);
 
 	/* display a 'hold on' message */
 	this.treeDiv.appendChild(elem("br"));
 	this.treeDiv.appendChild(elem("br"));
 
-	/* everyone gets to see the location tree */
 	var depth = parseInt(findOrgType(orgUnit.ou_type()).depth());
 	if(depth != 0) {
 		this.treeDiv.appendChild(elem("div", null, null, "Loading copy information..."));
@@ -325,13 +396,6 @@ RecordDetailPage.prototype.drawCopyTrees = function(orgUnit, record) {
 		this.displayTrees(orgUnit, record);
 	}
 }
-
-
-/*
-RecordDetailPage.prototype.displayLocationTree = function(record) {
-}
-*/
-
 
 
 /* displays a link to view info for the parent org 
@@ -449,9 +513,10 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 		/* here we don't want to repeat the same libs name */
 		if(find_list( libsVisited,
 				function(name) { 
-				return (name == findOrgUnit(volume.owning_lib()).name()); })) {
 
+				return (name == findOrgUnit(volume.owning_lib()).name()); })) {
 			cell1.appendChild(createAppTextNode(" "));
+
 		} else {
 			var name = findOrgUnit(volume.owning_lib()).name();
 			cell1.appendChild(createAppTextNode(name));

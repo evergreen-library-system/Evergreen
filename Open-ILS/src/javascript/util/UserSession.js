@@ -8,6 +8,7 @@ function UserSession() {
 	this.cookie = new cookieObject("ses", 1, "/opac/", "ils_ses");
 	this.connected		= false;
 	globalUserSession = this; 
+	this.fleshed		= false;
 }
 
 UserSession.prototype.destroy = function() {
@@ -235,6 +236,22 @@ UserSession.prototype.updateEmail = function(email) {
 	}
 	return false;
 }
+
+
+UserSession.prototype.fleshMe = function() {
+	if(this.fleshed) return;
+
+	var req = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.fleshed.retrieve",
+		this.session_id, this.userObject.id());
+
+	req.send(true);
+	this.userObject = req.getResultObject();
+	this.fleshed = true;
+}
+
+
 
 
 

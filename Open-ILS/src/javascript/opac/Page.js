@@ -96,7 +96,6 @@ Page.prototype.resetRange = function() {
 				continue;
 
 			var select =  new Option(otype.opac_label(), otype.depth());
-
 			this.searchRange.options[this.searchRange.options.length] = select;
 
 			if( otype.depth() == globalSearchDepth ) {

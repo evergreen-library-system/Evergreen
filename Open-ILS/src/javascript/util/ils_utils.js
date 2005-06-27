@@ -30,25 +30,32 @@ function findOrgType(type_id) {
 
 
 /* locates a specific org unit */
+var orgArraySearcher = null;
+
+/* flatten the org tree for faster searching */
+function _flattenOrgs(node) { 
+
+	if(node == null) {
+		node = globalOrgTree;
+		orgArraySearcher = new Object();
+	}
+
+	orgArraySearcher[node.id()] = node;
+	for(var idx in node.children()) {
+		_flattenOrgs(node.children()[idx]);
+	}
+}
+
 function findOrgUnit(org_id, branch) {
 	if(org_id == null) return null;
 	if(typeof org_id == 'object') return org_id;
 	if(globalOrgTree == null)
 		throw new EXArg("Need globalOrgTree");
 
-	if( branch == null )
-		branch = globalOrgTree;
+	if(orgArraySearcher == null)
+		_flattenOrgs();
 
-	if( org_id == branch.id() )
-		return branch;
-
-	var org;
-	for( var child in branch.children() ) {
-		org = findOrgUnit(org_id, branch.children()[child]);
-		if(org != null) 
-			return org;
-	}
-	return null;
+	return orgArraySearcher[org_id];
 }
 
 

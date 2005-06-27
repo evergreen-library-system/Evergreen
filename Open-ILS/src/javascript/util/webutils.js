@@ -103,6 +103,8 @@ function createAppTextNode(text) {
 	}
 }
 
+function mktext(text) { return createAppTextNode(text); }
+
 
 
 /* split on spaces.  capitalize the first /\w/ character in
