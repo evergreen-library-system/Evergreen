@@ -142,7 +142,6 @@ table { border-collapse: collapse; }
 
 .main_nav_cell {
 	width: 100%;
-	border-bottom: 1px solid green;
 }
 
 .main_nav_cell_active {
