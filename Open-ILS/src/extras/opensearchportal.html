@@ -627,23 +627,6 @@ var listening_elements = ['term','gobutton','res_count_per','res_type'];
 											}"
 										name="source"
 										type="checkbox"
-										value="http://search.library.gatech.edu/opensearch/osdd-gil.xml"
-										checked>GIL Universal Catalog
-								</label>
-							</td>
-							<td>
-								<label class="source_input">
-									<input
-										onclick="
-											if(insearch) {
-												if(this.checked) {
-													opensearch(document.getElementById('term').value, false, this.value);
-												} else {
-													remove_by_name(this.value);
-												}
-											}"
-										name="source"
-										type="checkbox"
 										value="http://search.athenscounty.lib.oh.us/cgi-bin/koha/opensearchdescription">NPL/Koha
 								</label>
 							</td>
@@ -679,7 +662,8 @@ var listening_elements = ['term','gobutton','res_count_per','res_type'];
 											}"
 										name="source"
 										type="checkbox"
-										value="http://cnx.rice.edu/content/opensearchdescription">rice.edu Connexions
+										value="http://search.library.gatech.edu/opensearch/osdd-gil.xml"
+										checked>GIL Universal Catalog
 								</label>
 							</td>
 							<td>
@@ -714,6 +698,42 @@ var listening_elements = ['term','gobutton','res_count_per','res_type'];
 										value="http://www.itpapers.com/itpaperssearchdescription.xml">ITPapers
 								</label>
 							</td>
+					<!-- <input name="source" type="checkbox" value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef -->
+						</tr>
+						<tr>
+							<td>
+								<label class="source_input">
+									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
+										name="source"
+										checked
+										type="checkbox"
+										value="http://search.library.gatech.edu/opensearch/osdd.xml">Georgia Tech Catalog
+								</label>
+							</td>
+							<td>
+								<label class="source_input">
+									<input
+										onclick="
+											if(insearch) {
+												if(this.checked) {
+													opensearch(document.getElementById('term').value, false, this.value);
+												} else {
+													remove_by_name(this.value);
+												}
+											}"
+										name="source"
+										type="checkbox"
+										value="http://cnx.rice.edu/content/opensearchdescription">rice.edu Connexions
+								</label>
+							</td>
 							<td>
 								<label class="source_input">
 									<input
@@ -730,7 +750,6 @@ var listening_elements = ['term','gobutton','res_count_per','res_type'];
 										value="http://lib-cufts.lib.sfu.ca/CUFTS/opensearchjournal.xml">SFU CUFTS
 								</label>
 							</td>
-					<!-- <input name="source" type="checkbox" value="http://www.webdevref.com/blog/opensearchdescription.xml">WebDefRef -->
 						</tr>
 					</table>
 				</td>
