@@ -10,7 +10,8 @@ my $web = $ARGV[0];
 # List of classes needed by the opac
 my @web_hints = ("ex", "mvr", "au", "aou",
 		"aout", "asv", "asva", "asvr", "asvq", 
-		"circ", "acp", "acpl", "acn", "ccs", "perm_ex", "ahn");
+		"circ", "acp", "acpl", "acn", "ccs", 
+		"perm_ex", "ahn", "aua", "ac");
 
 print <<JS;
 
