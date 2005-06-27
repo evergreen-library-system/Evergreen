@@ -89,6 +89,7 @@
 						WRAPPER html/cell valign='top' width="30%";
 							box(id='main_page_nav_box', style="width:200px; float:right;");
 						END;
+
 					END; #row
 				END; # table
 

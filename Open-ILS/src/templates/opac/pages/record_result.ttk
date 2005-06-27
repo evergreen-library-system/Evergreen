@@ -23,6 +23,8 @@
 			# --------------------------------------------------------------------------------- 
 			# search results are spit out into this table
 			# --------------------------------------------------------------------------------- 
+			box(id="did_you_mean_box", style="margin-left:20px;width:100%;text-align:left");
+
 			WRAPPER html/table class='big_ol_box' id='big_ol_box';
 
 
