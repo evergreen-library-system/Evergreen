@@ -340,23 +340,29 @@ MRResultPage.prototype.checkSpelling = function() {
 
 	var response = request.getResultObject();
 	if(response && response != "0") {
+
 		debug("Received spell check response " + response );
 
-		var hcell = getById("hit_count_cell");
-		var href = createAppElement("a");
-		add_css_class(href,"record_result_author_link");
-		href.setAttribute("href",
-			"?target=mr_result&mr_search_type=" + 
-			this.stype + "&page=0&mr_search_query=" +
-			encodeURIComponent(response));
-		href.appendChild(createAppTextNode(response));
-		href.title = "Search for " + response + "";
-		hcell.appendChild(createAppTextNode(" ... Did you mean "));
-		var ul = createAppElement("u");
-		hcell.appendChild(ul);
-		ul.appendChild(href);
-		hcell.appendChild(createAppTextNode("?"));
+		var dymb = getById("did_you_mean_box");
+		dymb.appendChild(elem("br"));
 
+		var ref = elem("a", 
+			{
+				href: "?target=mr_result&mr_search_type=" + 
+					this.stype + "&page=0&mr_search_query=" +
+					encodeURIComponent(response)
+			} 
+		);
+
+		add_css_class(ref,"record_result_author_link");
+		ref.appendChild(createAppTextNode(response));
+		ref.title = "Search for " + response + "";
+
+		dymb.appendChild(createAppTextNode("Did you mean "));
+		var ul = createAppElement("u");
+		dymb.appendChild(ul);
+		ul.appendChild(ref);
+		dymb.appendChild(createAppTextNode("?"));
 	}
 }
 
@@ -365,7 +371,8 @@ MRResultPage.prototype.doMRSearch = function() {
 
 	var obj = this;
 	var method = "open-ils.search.biblio.class";
-	/*
+
+	/* now the count and search are simultaneous 
 	if( this.hitCount > 5000 )
 		method = method + ".unordered";
 		*/

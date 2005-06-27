@@ -197,7 +197,8 @@ Page.prototype.buildNavBox = function(full) {
 	try {
 		if(globalOrgTree)
 			loc = elem("a", 
-				{id:"location_nav_link", href:"javascript:void(0);"}, null, "Change Search Location");
+				{id:"location_nav_link", href:"javascript:void(0);"}, 
+				null, "Change Search Location");
 
 		loc.onclick = function(evt) {
 			globalPage.locationTree.toggle(getById("location_nav_link"));
@@ -210,7 +211,7 @@ Page.prototype.buildNavBox = function(full) {
 
 	arr.push(elem("a", {href: prefix + '?target=advanced_search'}, null, "Advanced Search"));
 	arr.push(elem("a", {href: prefix + '?target=my_opac'}, null, "My OPAC"));
-	arr.push(elem("a", {href: prefix + '?target=about'}, null, "About PINES"));
+	//arr.push(elem("a", {href: prefix + '?target=about'}, null, "About PINES"));
 	if(loc) arr.push(this.buildDeepLink());
 
 	if(UserSession.instance().verifySession()) {

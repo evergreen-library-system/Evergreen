@@ -81,5 +81,34 @@ function findSiblingOrgs(node) {
 }
 
 
+function grabCopyLocations() {
+
+	if(globalCopyLocations != null) return;
+	debug("Grabbing copy locations");
+
+	var req = new RemoteRequest(
+		"open-ils.search",
+		"open-ils.search.config.copy_location.retrieve.all" );
+
+	req.send(true);
+	globalCopyLocations = req.getResultObject();
+	return globalCopyLocations;
+
+}
+
+function findCopyLocation(id) {
+
+	grabCopyLocations();
+	if(typeof id == 'object') return id;
+
+	if(globalCopyLocations == null) 
+		throw new EXLogic("globalCopyLocations is NULL");
+
+	for( var x = 0; x!= globalCopyLocations.length; x++) {
+		if(globalCopyLocations[x].id() == id)
+			return globalCopyLocations[x];
+	}
+	return null;
+}
 
 

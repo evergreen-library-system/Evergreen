@@ -10,6 +10,7 @@ var globalSearchDepth			= null;
 var globalMenuManager			= null;
 var globalCopyStatus				= null;
 var locationStack					= new Array();
+var globalCopyLocations			= null;
 
 var lastSearchString				= null;
 var lastSearchType				= null;
@@ -205,8 +206,6 @@ function grabCopyStatus() {
 	
 		req.send();
 	}
-
-
 }
 
 

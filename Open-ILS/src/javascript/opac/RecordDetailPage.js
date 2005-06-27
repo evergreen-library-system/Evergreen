@@ -415,16 +415,19 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 	var cell2	= row2.insertCell(row2.cells.length);
 	var cell3	= row2.insertCell(row2.cells.length);
 	var cell4	= row2.insertCell(row2.cells.length);
+	var cell5	= row2.insertCell(row2.cells.length);
 
-	cell1.appendChild(createAppTextNode("Callnumber"));
-	cell2.appendChild(createAppTextNode("Location"));
+	cell1.appendChild(createAppTextNode("Library"));
+	cell2.appendChild(createAppTextNode("Callnumber"));
 	cell3.appendChild(createAppTextNode("Barcode(s)"));
-	cell4.appendChild(createAppTextNode("Availability"));
+	cell4.appendChild(createAppTextNode("Location"));
+	cell5.appendChild(createAppTextNode("Availability"));
 
 	add_css_class(cell1, "detail_header_cell");
 	add_css_class(cell2, "detail_header_cell");
 	add_css_class(cell3, "detail_header_cell");
 	add_css_class(cell4, "detail_header_cell");
+	add_css_class(cell5, "detail_header_cell");
 
 	if(tree.length == 0) {
 		var row = table.insertRow(table.rows.length);
@@ -432,6 +435,7 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 			createAppTextNode("No copies available for this location"));
 	}
 
+	var libsVisited = new Array();
 	var x = 0;
 	for( var i in tree ) {
 		var row = table.insertRow(table.rows.length);
@@ -440,11 +444,23 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 
 		var cell1 = row.insertCell(row.cells.length);
 		add_css_class(cell1, "detail_item_cell");
-		cell1.appendChild(createAppTextNode(volume.label()));
+
+
+		/* here we don't want to repeat the same libs name */
+		if(find_list( libsVisited,
+				function(name) { 
+				return (name == findOrgUnit(volume.owning_lib()).name()); })) {
+
+			cell1.appendChild(createAppTextNode(" "));
+		} else {
+			var name = findOrgUnit(volume.owning_lib()).name();
+			cell1.appendChild(createAppTextNode(name));
+			libsVisited.push(name);
+		}
+
 		var cell2 = row.insertCell(row.cells.length);
 		add_css_class(cell2, "detail_item_cell");
-		cell2.appendChild(createAppTextNode(
-			findOrgUnit(volume.owning_lib()).name()));
+		cell2.appendChild(createAppTextNode(volume.label()));
 
 		var cell3 = row.insertCell(row.cells.length);
 		add_css_class(cell3, "detail_item_cell");
@@ -453,18 +469,29 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 		var cell4 = row.insertCell(row.cells.length);
 		add_css_class(cell4, "detail_item_cell");
 		cell4.appendChild(createAppTextNode(" "));
+
+		var cell5 = row.insertCell(row.cells.length);
+		add_css_class(cell4, "detail_item_cell");
+		cell5.appendChild(createAppTextNode(" "));
 		
 		var copies = volume.copies();
 		var c = 0;
+
 		while(c < copies.length) {
+
 			var copy = copies[c];
+			var loc = findCopyLocation(copy.location()).name();
+
 			if(c == 0) { /* put the first barcode in the same row as the callnumber */
 
-				cell3.removeChild(cell3.childNodes[0]);
+				removeChildren(cell3);
 				cell3.appendChild(createAppTextNode(copy.barcode()));
-				cell4.removeChild(cell4.childNodes[0]);
 
-				cell4.appendChild(createAppTextNode(
+				removeChildren(cell4);
+				cell4.appendChild(createAppTextNode(loc));
+
+				removeChildren(cell5);
+				cell5.appendChild(createAppTextNode(
 					find_list(globalCopyStatus, 
 						function(i) { return (i.id() == copy.status()); } ).name() ));
 
@@ -476,10 +503,15 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 				row.insertCell(1).appendChild(createAppTextNode(" "));
 
 				var ce = row.insertCell(2);
-				var status_cell = row.insertCell(3);
+				var loc_cell = row.insertCell(3);
+				var status_cell = row.insertCell(4);
+
 				add_css_class(ce, "detail_item_cell");
+				add_css_class(loc_cell, "detail_item_cell");
 				add_css_class(status_cell, "detail_item_cell");
+
 				ce.appendChild(createAppTextNode(copy.barcode()));
+				loc_cell.appendChild(createAppTextNode(loc));
 
 				status_cell.appendChild(createAppTextNode(
 					find_list(globalCopyStatus, 
