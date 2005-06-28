@@ -62,8 +62,28 @@
 <box id="AppShell_main" flex="1" orient="vertical">
 	<toolbox id="main_toolbox"/>
 	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
-		<tabs id="main_tabs" closebutton="true"/>
-		<tabpanels id="main_panels" flex="1"/>
+		<tabs id="main_tabs" closebutton="true">
+			<tab id="tab_1" accesskey="1" label="Tab 1" />
+			<tab id="tab_2" accesskey="2" label="Tab 2" hidden="true" />
+			<tab id="tab_3" accesskey="3" label="Tab 3" hidden="true" />
+			<tab id="tab_4" accesskey="4" label="Tab 4" hidden="true" />
+			<tab id="tab_5" accesskey="5" label="Tab 5" hidden="true" />
+			<tab id="tab_6" accesskey="6" label="Tab 6" hidden="true" />
+			<tab id="tab_7" accesskey="7" label="Tab 7" hidden="true" />
+			<tab id="tab_8" accesskey="8" label="Tab 8" hidden="true" />
+			<tab id="tab_9" accesskey="9" label="Tab 9" hidden="true" />
+		</tabs>
+		<tabpanels id="main_panels" flex="1">
+			<tabpanel id="panel_1"><label value="panel_1"/></tabpanel>
+			<tabpanel id="panel_2"><label value="panel_2"/></tabpanel>
+			<tabpanel id="panel_3"><label value="panel_3"/></tabpanel>
+			<tabpanel id="panel_4"><label value="panel_4"/></tabpanel>
+			<tabpanel id="panel_5"><label value="panel_5"/></tabpanel>
+			<tabpanel id="panel_6"><label value="panel_6"/></tabpanel>
+			<tabpanel id="panel_7"><label value="panel_7"/></tabpanel>
+			<tabpanel id="panel_8"><label value="panel_8"/></tabpanel>
+			<tabpanel id="panel_9"><label value="panel_9"/></tabpanel>
+		</tabpanels>
 	</tabbox>
 	<toolbox id="entity_toolbox"/>
 </box>
@@ -260,7 +280,7 @@
 </menu>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
-<keyset id="evergreen_keys">
+<keyset id="AppShell_keys">
 	<key id="file-new-key" modifiers="accel" key="N" command="cmd_new_window"/>
 	<key id="file-new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
 	<key id="file-open-key" modifiers="accel" key="O" command=""/>
