@@ -77,7 +77,7 @@ function close_tab( d, t1, t2 ) {
 }
 
 function delete_tab_contents( panel ) {
-	sdump('D_TAB',arg_dump(arguments));
+	sdump('D_TAB',arg_dump(arguments,{0:'.tagName'}));
 	try {
 		while (panel.lastChild) { panel.removeChild(panel.lastChild); }
 	} catch(E) {

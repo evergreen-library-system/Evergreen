@@ -8,7 +8,7 @@ var sdump_levels = {
 	'D_PRINT' : false,
 	'D_SES' : true,
 	'D_SPAWN' : true,
-	'D_TAB' : false,
+	'D_TAB' : true,
 	'D_OPAC' : true,
 	'D_STRING' : true
 };
@@ -31,13 +31,29 @@ function arg_dump(args,dump_these) {
 		s += '\n';
 		for (var i = 0; i < args.length; i++)
 			if (dump_these[i]) {
-				s += '\targ #' + i + ' = ';
-				try {
-					s += js2JSON( args[i] );
-				} catch(E) {
-					s += args[i];
+
+				if (typeof(dump_these[i])=='string') {
+
+					if (dump_these[i].slice(0,1) == '.') {
+						var cmd = 'args[' + i + ']' + dump_these[i];
+						var result = eval( cmd );
+						s += '\targ #' + i + ': ' + cmd + ' = ' + result;
+					} else {
+						var result = eval( dump_these[i] );
+						s += '\targ #' + i + ': ' + dump_these[i] + ' = ' + result;
+					}
+
+				} else {
+					s += '\targ #' + i + ' = ';
+					try {
+						s += js2JSON( args[i] );
+					} catch(E) {
+						s += args[i];
+					}
 				}
+
 				s += '\n';
+
 			}
 		return s;
 	} catch(E) {
