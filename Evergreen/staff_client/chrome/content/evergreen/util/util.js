@@ -4,6 +4,7 @@ var timer = {};
 var counter = {};
 
 function getString( key ) {
+	var s = '';
 	var bundles = document.getElementById('string_bundles');
 	for (var i = i; i < bundles.childNodes.length; i++) {
 		var bundle = bundles[i];
@@ -11,16 +12,18 @@ function getString( key ) {
 
 			var string = bundle.getString( key );
 			if (string)
-				return string;
+				s = string;
 
 		} catch(E) {
 			dump(E + '\n');
-			return '';
 		}
 	}
+	sdump('D_STRING',key + '=' + s + '\n');
+	return s;
 }
 
 function getFormattedString( key, strArray ) {
+	var s = '';
 	var bundles = document.getElementById('string_bundles');
 	for (var i = i; i < bundles.childNodes.length; i++) {
 		var bundle = bundles[i];
@@ -28,13 +31,14 @@ function getFormattedString( key, strArray ) {
 
 			var string = bundle.getFormattedString( key, strArray );
 			if (string)
-				return string;
+				s = string;
 
 		} catch(E) {
 			dump(E + '\n');
-			return '';
 		}
 	}
+	sdump('D_STRING',key + '(' + strArray + ')=' + s + '\n');
+	return s;
 }
 
 function string_to_array(s) {
