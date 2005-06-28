@@ -285,6 +285,9 @@ use OpenILS::Application::Storage::Publisher::permission;
 ';
 
 for my $fmclass ( (Fieldmapper->classes) ) {
+
+	next if ($fmclass->is_virtual);
+
 	$log->debug("Generating methods for Fieldmapper class $fmclass", DEBUG);
 
 	(my $cdbi = $fmclass) =~ s/^Fieldmapper:://o;
@@ -328,8 +331,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		);
 	}
 
-	unless ($fmclass->is_virtual) {
-		for my $field ($fmclass->real_fields) {
+	for my $field ($fmclass->real_fields) {
 			unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
 				__PACKAGE__->register_method(
 					api_name	=> $api_prefix.'.search.'.$field,

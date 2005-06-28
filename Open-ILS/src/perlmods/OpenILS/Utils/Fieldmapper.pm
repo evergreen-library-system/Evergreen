@@ -295,6 +295,8 @@ sub api_level {
 
 sub is_virtual {
 	my $self = shift;
+	my $field = shift;
+	return $fieldmap->{$self->class_name}->{proto_fields}->{$field} if ($field);
 	return $fieldmap->{$self->class_name}->{virtual};
 }
 
