@@ -11,7 +11,7 @@ my $web = $ARGV[0];
 my @web_hints = ("ex", "mvr", "au", "aou",
 		"aout", "asv", "asva", "asvr", "asvq", 
 		"circ", "acp", "acpl", "acn", "ccs", 
-		"perm_ex", "ahn", "aua", "ac");
+		"perm_ex", "ahn", "aua", "ac", "actscecm");
 
 print <<JS;
 
