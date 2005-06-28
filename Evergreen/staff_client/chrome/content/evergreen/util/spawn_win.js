@@ -2,7 +2,7 @@ function spawn_interface(d,tab_flag,tabbox,chrome,label,passthru_params) {
 	sdump('D_SPAWN','trying to spawn_window('+d+','+tab_flag+','+tabbox+','+chrome+','+label+','+js2JSON(passthru_params)+')\n');
 	var w;
 	if (tab_flag) {
-		if (tab != 'replace') { new_tab(d,tabbox); }
+		if (tab_flag != 'replace') { new_tab(d,tabbox); }
 		w = replace_tab(d,tabbox,label,chrome);
 	} else {
 		w = new_window( chrome );
