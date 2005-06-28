@@ -1,0 +1,72 @@
+#my_opac_main_box {
+	width: 100%;
+}
+
+#my_opac_checked_out {
+	float: left;
+	width: 350px;
+	padding-left: 8px;
+}
+
+#my_opac_edit_personal {
+	float: left;
+	width: 180px;
+}
+
+.edit_personal_active {
+	background: #CCF;
+}
+
+
+#my_opac_nav_bar {
+	width: 100%;
+	text-align: center;
+}
+
+#my_opac_nav_table {
+	background: #CCF;
+	width: 60%;
+}
+
+
+.my_opac_link_cell {
+	text-align: center;
+}
+
+.my_opac_link_cell a:hover {
+	color: red;
+}
+
+.my_opac_link_cell_active {
+	background: #CFF;
+}
+
+#my_opac_info_pane {
+	width: 100%
+}
+
+#my_opac_info_table {
+	width: 100%;
+}
+
+.my_opac_info_table_header {
+	background: #CCF;
+	color: green;
+	border: 1px solid blue;
+	padding: 3px;
+}
+
+.my_opac_profile_cell {
+	padding: 7px;
+	border: 1px solid blue;
+}
+
+.my_opac_update_table {
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+}
+
+.my_opac_update_table td {
+	padding-left: 8px;
+}
+

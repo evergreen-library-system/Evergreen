@@ -1,0 +1,75 @@
+.copy_tree_div {
+	border-top: 1px solid blue;
+	margin-top: 15px;
+}
+
+.detail_header_cell {
+	background: #CCF;
+	color: green;
+	border: 1px solid blue;
+	padding: 3px;
+}
+
+.detail_item_label {
+	padding: 3px;
+	font-weight: bold;
+}
+
+.detail_item_cell {
+	padding: 3px;
+}
+
+#detail_items_div {
+}
+
+#detail_top_div {
+	width: 50%;
+	border: 1px solid red;
+}
+
+#record_details_copy_info {
+	width: 100%;
+}
+
+#system_copy_tree {
+	width: 50%;
+}
+
+#local_copy_tree {
+	width: 50%;
+}
+
+#local_copy_tree_table {
+	empty-cells: show;
+}
+
+
+#system_copy_tree_table {
+	empty-cells: show;
+}
+
+.copy_tree_table {
+	width: 100%;
+	empty-cells: show;
+}
+
+#record_detail_main_box {
+	width: 100%;
+}
+
+#record_detail_table {
+	width: 100%;
+	/*float: left;*/
+}
+
+.copy_tree_row_highlight {
+	background: #CFF;
+}
+
+
+.record_detail_pic_link {
+	border: 0;
+}
+
+
+
