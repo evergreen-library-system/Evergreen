@@ -13,17 +13,9 @@
 	<vbox id="about_vbox" flex="1" pack="center" align="center">
 		<groupbox id="about_groupbox">
 			<image id="about_image" src="chrome://evergreen/skin/media/images/main_logo.jpg"/>
-			<image id="about_image" src="chrome://evergreen/skin/media/images/cooltext001.png"/>
+			<!--<image id="about_image" src="chrome://evergreen/skin/media/images/cooltext001.png"/>-->
 		</groupbox>
 	</vbox>
 
-	<script>
-		function returnElementById(id) {
-			dump('returnElementById:  this = ' + this + '  document =  ' + document + '\n');
-			return document.getElementById(id);
-		}
-	</script>
-
-	<button label="testing" oncommand="dump('Element = ' + returnElementById('about_vbox') + '\n' );" accesskey="t"/>
 </window>
 
