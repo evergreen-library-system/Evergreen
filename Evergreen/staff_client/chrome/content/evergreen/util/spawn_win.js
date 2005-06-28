@@ -7,7 +7,7 @@ function spawn_interface(d,tab_flag,tabbox,chrome,label,passthru_params) {
 	} else {
 		w = new_window( chrome );
 	}
-	w.params = params;
+	w.params = passthru_params;
 }
 
 function spawn_batch_copy_editor(d,tab_flag,passthru_params) {
