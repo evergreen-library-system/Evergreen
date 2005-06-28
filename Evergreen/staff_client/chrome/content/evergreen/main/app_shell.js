@@ -133,7 +133,7 @@ function new_tab( d, tabbox ) {
 }
 
 function replace_tab( d, tabbox, label, chrome, params ) {
-	sdump('D_TAB',arg_dump(arguments,{'3':true}));
+	sdump('D_TAB',arg_dump(arguments,{2:true,3:true,4:true}));
 	if (typeof(tabbox)!='object')
 		tabbox = d.getElementById(tabbox);
 	if (typeof(tabbox)!='object')
@@ -151,7 +151,7 @@ function replace_tab( d, tabbox, label, chrome, params ) {
 		frame.setAttribute('flex','1');
 		frame.setAttribute('src',chrome);
 		panels.childNodes[ idx ].appendChild(frame);
-		sdump('D_TAB','Created frame : ' + frame.id + ' for index : ' + idx + '\n');
+		sdump('D_TAB','Created frame : ' + frame.id + ' for index : ' + idx + ' with src=' + frame.getAttribute('src') + '\n');
 		//frame.contentWindow.parentWindow = parentWindow;
 		//frame.contentWindow.tabWindow = this;
 		//dump('replace_tab.tabWindow = ' + this + '\n');

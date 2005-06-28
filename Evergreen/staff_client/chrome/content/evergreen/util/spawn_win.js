@@ -75,6 +75,7 @@ function spawn_marc_editor(d,tab_flag,passthru_params) {
 
 function spawn_opac_navigator(d,tab_flag,passthru_params) {
 	var chrome = 'chrome://evergreen/content/opac/opac.xul';
+	//var chrome = 'http://google.com/';
 	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('opac_navigator_interface_label'),passthru_params);
 }
 
