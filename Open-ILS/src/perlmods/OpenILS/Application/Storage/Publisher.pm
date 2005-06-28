@@ -332,24 +332,23 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 	}
 
 	for my $field ($fmclass->real_fields) {
-			unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
-				__PACKAGE__->register_method(
-					api_name	=> $api_prefix.'.search.'.$field,
-					method		=> 'search_one_field',
-					api_level	=> 1,
-					cdbi		=> $cdbi,
-					cachable	=> 1,
-				);
-			}
-			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
-				__PACKAGE__->register_method(
-					api_name	=> $api_prefix.'.search_like.'.$field,
-					method		=> 'search_one_field',
-					api_level	=> 1,
-					cdbi		=> $cdbi,
-					cachable	=> 1,
-				);
-			}
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search.'.$field ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search.'.$field,
+				method		=> 'search_one_field',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+				cachable	=> 1,
+			);
+		}
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search_like.'.$field,
+				method		=> 'search_one_field',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+				cachable	=> 1,
+			);
 		}
 	}
 
