@@ -180,4 +180,59 @@ __PACKAGE__->register_method(
 
 =cut
 
+sub global_record_copy_count {
+	my $self = shift;
+	my $client = shift;
+
+	my $rec = shift;
+
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+
+	my $copies_visible = 'AND cp.opac_visible IS TRUE';
+	$copies_visible = '' if ($self->api_name =~ /staff/o);
+
+	my $sql = <<"	SQL";
+
+		SELECT	owning_lib, sum(avail), sum(tot)
+ 		  FROM	(
+        			SELECT	owning_lib, count(cp.id) as avail, 0 as tot
+				  FROM	$cn_table cn
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+				  WHERE	cn.record = ?
+				  	AND cp.status = 0
+				  	$copies_visible
+				  GROUP BY 1
+                        			UNION
+        			SELECT	owning_lib, 0 as avail, count(cp.id) as tot
+				  FROM	$cn_table cn
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+				  WHERE	cn.record = ?
+				  	$copies_visible
+				  GROUP BY 1
+			) x
+		  GROUP BY 1
+	SQL
+
+	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
+	$sth->execute("$rec", "$rec");
+
+	$client->respond( $_ ) for (@{$sth->fetchall_arrayref});
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.global_copy_count',
+	method		=> 'global_record_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.global_copy_count.staff',
+	method		=> 'global_record_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 1;
