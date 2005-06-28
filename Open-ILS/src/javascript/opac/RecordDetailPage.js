@@ -75,10 +75,8 @@ RecordDetailPage.prototype.draw = function() {
 
 		tree.selectedIndex = idx;
 		var opt = tree.options[idx];
-		if(opt) {
-			debug("Setting idx " + idx + " to selected");
-			opt.selected = true;	
-		}
+		if(opt) opt.selected = true;	
+		
 	}
 
 	var table = elem("table", { width: "100%" } );
@@ -231,6 +229,22 @@ RecordDetailPage.prototype.setViewMarc = function(record) {
 	this.viewMarc.appendChild(marcb);
 }
 
+RecordDetailPage.prototype.setPlaceHold = function(record) {
+	var holds = elem( "a", 
+		{ 
+			href:"javascript:void(0)", 
+			style: "text-decoration:underline" 
+		}, 
+		{}, "Place Hold" );
+
+	var func = new HoldsWindow(record).buildHoldsWindowCallback("M");
+	holds.onclick = func;
+
+	var space = elem("span", {style:"padding:5px"},null, " ");
+	this.viewMarc.appendChild(space);
+	this.viewMarc.appendChild(holds);
+}
+
 
 RecordDetailPage.prototype.fetchRecord = function(id) {
 	if(!id) {
@@ -251,6 +265,7 @@ RecordDetailPage.prototype.fetchRecord = function(id) {
 			obj.buildCustomOrgTree(obj.record);
 			obj.drawRecord(obj.record); 
 			obj.setViewMarc(obj.record);
+			obj.setPlaceHold(obj.record);
 		} 
 	);
 
@@ -380,6 +395,7 @@ RecordDetailPage.prototype.drawCopyTrees = function(orgUnit, record) {
 
 	debug("Got ORG unit " + orgUnit);
 	orgUnit = findOrgUnit(orgUnit);
+	if(orgUnit == null) return;
 
 	debug("OrgUnit depth is: " + findOrgType(orgUnit.ou_type()).depth());
 	removeChildren(this.treeDiv);
@@ -558,7 +574,7 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 				removeChildren(cell5);
 				cell5.appendChild(createAppTextNode(
 					find_list(globalCopyStatus, 
-						function(i) { return (i.id() == copy.status()); } ).name() ));
+						function(i) {return (i.id() == copy.status());} ).name() ));
 
 			} else {
 

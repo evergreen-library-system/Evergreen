@@ -119,11 +119,13 @@ function buildViewMARCWindow(record) {
 		var html = req.getResultObject();
 		var id = record.doc_id();
 
-		var win = window.open(null,"MARC_" + id,
+		//var win = window.open(null,"MARC_" + id,
+		var win = window.open("about:blank","MARC_" + id,
 			"location=0,menubar=0,status=0,resizeable,resize," +
 			"outerHeight=500,outerWidth=400,height=500," +
 			"width=400,scrollbars=1,screenX=100," +
-			"screenY=100,top=100,left=100,alwaysraised" )
+			"screenY=100,top=100,left=100,alwaysraised,chrome" )
+
 		win.document.write(html);
 		win.document.close();
 		win.document.title = "View MARC";
