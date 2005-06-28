@@ -11,7 +11,7 @@
 		window.close();" />
 
 	<command id="cmd_new_window" oncommand="
-		mw.spawn_main_window();" />
+		mw.spawn_main();" />
 
 	<command id="cmd_new_tab" oncommand="
 		mw.new_tab(document,'main_tabbox');" />
