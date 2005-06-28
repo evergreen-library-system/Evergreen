@@ -76,3 +76,12 @@ CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT ) RETURNS SETOF actor.
 	  FROM	actor.org_unit_descendants($1);
 ' LANGUAGE SQL STABLE;
 
+
+CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS '
+	SELECT COUNT(id)::INT FROM (
+		select * from (SELECT id FROM  actor.org_unit_ancestors($1) UNION SELECT  id FROM  actor.org_unit_ancestors($2)) x
+			EXCEPT
+		select * from (SELECT id FROM  actor.org_unit_ancestors($1) INTERSECT SELECT  id FROM  actor.org_unit_ancestors($2)) y) z;
+' LANGUAGE SQL STABLE;
+
+
