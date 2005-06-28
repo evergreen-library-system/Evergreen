@@ -13,6 +13,91 @@ my $log = 'OpenSRF::Utils::Logger';
 
 $VERSION = 1;
 
+# need to order record IDs by:
+#  1) format - text, movie, sound, software, images, maps, mixed, music, 3d
+#  2) proximity --- XXX Can't do it cheap...
+#  3) count
+sub ordered_records_from_metarecord {
+	my $self = shift;
+	my $client = shift;
+	my $mr = shift;
+
+	my $copies_visible = 'AND cp.opac_visible IS TRUE';
+	$copies_visible = '' if ($self->api_name =~ /staff/o);
+
+	my $sm_table = metabib::metarecord_source_map->table;
+	my $rd_table = metabib::record_descriptor->table;
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+	my $out_table = actor::org_unit_type->table;
+
+	my $sql = <<"	SQL";
+		SELECT	cn.record,
+			rd.item_type,
+                        sum((SELECT	count(cp.id)
+	                       FROM	$cp_table cp
+	                       WHERE	cn.id = cp.call_number
+	                                $copies_visible
+			  )) AS count
+		  FROM	$cn_table cn,
+			$sm_table sm,
+			$rd_table rd
+		  WHERE	cn.record = sm.source
+		  	AND cn.record = rd.record
+			AND sm.metarecord = ?
+		  GROUP BY cn.record, rd.item_type
+		  ORDER BY
+			CASE
+				WHEN rd.item_type IS NULL -- default
+					THEN 0
+				WHEN rd.item_type = '' -- default
+					THEN 0
+				WHEN rd.item_type IN ('a','t') -- books
+					THEN 1
+				WHEN rd.item_type = 'g' -- movies
+					THEN 2
+				WHEN rd.item_type IN ('i','j') -- sound recordings
+					THEN 3
+				WHEN rd.item_type = 'm' -- software
+					THEN 4
+				WHEN rd.item_type = 'k' -- images
+					THEN 5
+				WHEN rd.item_type IN ('e','f') -- maps
+					THEN 6
+				WHEN rd.item_type IN ('o','p') -- mixed
+					THEN 7
+				WHEN rd.item_type IN ('c','d') -- music
+					THEN 8
+				WHEN rd.item_type = 'r' -- 3d
+					THEN 9
+			END,
+			count DESC
+	SQL
+
+	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
+	$sth->execute("$mr");
+	while ( my $row = $sth->fetchrow_arrayref ) {
+		$client->respond( $$row[0] );
+	}
+	return undef;
+
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.ordered.metabib.metarecord.records',
+	method		=> 'ordered_records_from_metarecord',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.ordered.metabib.metarecord.records.staff',
+	method		=> 'ordered_records_from_metarecord',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+
 sub metarecord_copy_count {
 	my $self = shift;
 	my $client = shift;
