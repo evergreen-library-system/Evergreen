@@ -49,10 +49,13 @@ void osrf_message_set_request_info(
 		fatal_handler( "Bad params to osrf_message_set_request_params()" );
 
 	if(msg->parse_json_params) {
-		if( json_params != NULL )
+		if( json_params != NULL ) {
 			msg->params = json_tokener_parse(json_object_to_json_string(json_params));
-		else
+			msg->_params = json_parse_string(json_object_to_json_string(json_params));
+		} else {
 			msg->params = json_tokener_parse("[]");
+			msg->_params = json_parse_string("[]");
+		}
 	}
 
 	msg->method_name = strdup( method_name );
@@ -104,8 +107,14 @@ void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
 
 	debug_handler( "Message Parse JSON is set to: %d",  msg->parse_json_result );
 
-	if(msg->parse_json_result)
+	if(msg->parse_json_result) {
 		msg->result_content = json_tokener_parse(msg->result_string);
+		msg->_result_content = json_parse_string(msg->result_string);
+
+		char* j = object_to_json(msg->_result_content);
+		debug_handler("PARSE json result content %s", j);
+		free(j);
+	} 
 }
 
 
@@ -123,6 +132,9 @@ void osrf_message_free( osrf_message* msg ) {
 	if( msg->result_content != NULL )
 		json_object_put( msg->result_content );
 
+	if( msg->_result_content != NULL )
+		free_object( msg->_result_content );
+
 	if( msg->result_string != NULL )
 		free( msg->result_string);
 
@@ -131,6 +143,10 @@ void osrf_message_free( osrf_message* msg ) {
 
 	if( msg->params != NULL )
 		json_object_put( msg->params );
+
+	if( msg->_params != NULL )
+		free_object(msg->_params);
+
 
 	string_array_destroy(msg->parray);
 
@@ -236,7 +252,8 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 				if( msg->parse_json_params ) {
 					if( msg->params != NULL ) {
 
-						char* jj = json_object_to_json_string( msg->params );
+						//char* jj = json_object_to_json_string( msg->params );
+						char* jj = msg->_params->to_json(msg->_params); 
 						params_node = xmlNewChild( method_node, NULL, BAD_CAST "params", NULL );
 						xmlNodePtr tt = xmlNewDocTextLen( doc, BAD_CAST jj, strlen(jj) );
 						xmlAddChild(params_node, tt);
@@ -458,12 +475,14 @@ int osrf_message_from_xml( char* xml, osrf_message* msgs[] ) {
 								//new_msg->params = json_object_new_string( meth_node->children->content );
 								if( new_msg->parse_json_params) {
 									new_msg->params = json_tokener_parse(meth_node->children->content);
+									new_msg->_params = json_parse_string(meth_node->children->content);
 								} else {
 									/* XXX this will have to parse the JSON to 
 										grab the strings for full support! This should only be 
 										necessary for server support of 
 										non-json-param-parsing, though. Ugh. */
 									new_msg->params = json_tokener_parse(meth_node->children->content);
+									new_msg->_params = json_parse_string(meth_node->children->content);
 								}	
 							}
 

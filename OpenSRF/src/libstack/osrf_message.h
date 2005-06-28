@@ -66,6 +66,7 @@ struct osrf_message_struct {
 
 	/* if we're a RESULT */
 	json* result_content;
+	object* _result_content;
 
 	/* unparsed json string */
 	char* result_string;
@@ -73,6 +74,7 @@ struct osrf_message_struct {
 	/* if we're a REQUEST */
 	char* method_name;
 	json* params;
+	object* _params;
 
 	/* in case anyone wants to make a list of us.  
 		we won't touch this variable */

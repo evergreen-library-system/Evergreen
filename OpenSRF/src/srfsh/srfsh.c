@@ -216,7 +216,20 @@ int handle_login( char* words[]) {
 				"request open-ils.auth open-ils.auth.authenticate.init \"%s\"", username );
 		parse_request(buf); 
 
-		char* hash = json_object_get_string( last_result->result_content );
+		//char* hash = json_object_get_string( last_result->result_content );
+
+		char* hash;
+		if(last_result && last_result->_result_content) {
+			object* r = last_result->_result_content;
+			hash = r->string_data;
+		} else return 0;
+
+		/*
+		fprintf(stderr, "HASHES %s : %s\n", hash, hash2);
+		object* r = last_result->_result_content;
+		fprintf(stderr, "%s\n", r->to_json(r));
+		*/
+
 
 		char* pass_buf = md5sum(password);
 
@@ -227,7 +240,7 @@ int handle_login( char* words[]) {
 		char* mess_buf = md5sum(both_buf);
 
 		sprintf( buf2,
-				"request open-ils.auth open-ils.auth.authenticate.complete \"%s\", \"%s\"", 
+				"request open-ils.auth open-ils.auth.authenticate.complete \"%s\", \"%s\", \"opac\"", 
 				username, mess_buf );
 
 		free(pass_buf);
@@ -235,7 +248,8 @@ int handle_login( char* words[]) {
 
 		parse_request( buf2 );
 
-		login_session = strdup(json_object_get_string( last_result->result_content ));
+		//login_session = strdup(json_object_get_string( last_result->result_content ));
+		login_session = strdup(last_result->_result_content->string_data);
 
 		printf("Login Session: %s\n", login_session );
 		
@@ -469,7 +483,8 @@ int send_request( char* server,
 			if( pretty_print ) 
 				content = json_printer( omsg->result_content );
 			else
-				content = json_object_get_string(omsg->result_content);
+				//content = json_object_get_string(omsg->result_content);
+				content = object_get_string(omsg->_result_content);
 
 			debug_handler("srfsh2");
 
