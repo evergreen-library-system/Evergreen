@@ -14,6 +14,8 @@ function getString( key ) {
 				return string;
 
 		} catch(E) {
+			dump(E + '\n');
+			return '';
 		}
 	}
 }
@@ -29,6 +31,8 @@ function getFormattedString( key, strArray ) {
 				return string;
 
 		} catch(E) {
+			dump(E + '\n');
+			return '';
 		}
 	}
 }
