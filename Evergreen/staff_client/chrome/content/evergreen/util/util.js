@@ -6,13 +6,19 @@ var counter = {};
 function getString( key ) {
 	var s = '';
 	var bundles = document.getElementById('string_bundles');
-	for (var i = i; i < bundles.childNodes.length; i++) {
-		var bundle = bundles[i];
+	sdump('D_STRING','bundles = ' + bundles + ' bundles.childNodes.length = ' + bundles.childNodes.length + '\n');
+	for (var i = 0; i < bundles.childNodes.length; i++) {
+		var bundle = bundles.childNodes[i];
+		sdump('D_STRING','\ttrying bundle = ' + bundle + '\n');
 		try {
 
 			var string = bundle.getString( key );
-			if (string)
+			if (string) {
 				s = string;
+				sdump('D_STRING','\tfound\n');
+			} else {
+				sdump('D_STRING','\tnot found\n');
+			}
 
 		} catch(E) {
 			dump(E + '\n');
