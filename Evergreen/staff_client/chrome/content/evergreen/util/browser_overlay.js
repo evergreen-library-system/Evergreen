@@ -1,7 +1,7 @@
 // Modified by Jason for Evergreen
 
 function startEvergreenStaffClient() {
-	if (! window.open('chrome://evergreen/content/','auth_win','chrome') )
+	if (! window.open('chrome://evergreen/content/auth/auth.xul','auth_win','chrome') )
 		alert('Could not start Evergreen');
 }
 
