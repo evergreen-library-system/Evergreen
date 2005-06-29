@@ -145,6 +145,7 @@ function replace_tab( d, tabbox, label, chrome, params ) {
 		
 		delete_tab_contents(panels.childNodes[ idx ]);
 		tabs.childNodes[ idx ].hidden = false;
+		tabs.childNodes[ idx].setAttribute('label',label + ' ' + (idx+1));
 
 		var frame = d.createElement('iframe');
 		frame.setAttribute('id','frame_'+idx);
