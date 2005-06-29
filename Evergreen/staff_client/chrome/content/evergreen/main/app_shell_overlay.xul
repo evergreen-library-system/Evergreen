@@ -20,49 +20,56 @@
 		mw.close_tab(document,'main_tabbox');" />
 
 	<command id="cmd_cat_main" oncommand="
-		mw.spawn_opac_navigator(document,'replace',{}); "/>	
+		mw.spawn_opac_navigator(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_circ_checkout" oncommand="
-		mw.spawn_check_out(document,'replace',{}); "/>	
+		mw.spawn_check_out(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_circ_search" oncommand="
-		mw.spawn_circ_search(document,'replace',{}); "/>	
+		mw.spawn_circ_search(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_circ_display" oncommand="
-		mw.spawn_circ_display(document,'replace',{}); "/>
+		mw.spawn_circ_display(document,'replace_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_circ_checkin" oncommand="
-		mw.spawn_check_in(document,'replace',{}); "/>	
+		mw.spawn_check_in(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_search_opac" oncommand="
-		mw.spawn_opac_navigator(document,'replace',{}); "/>	
+		mw.spawn_opac_navigator(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_patron_register" oncommand="
-		mw.spawn_patron_register(document,'replace',{}); "/>	
+		mw.spawn_patron_register(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_survey_wizard" oncommand="
-		mw.spawn_survey_admin_wizard(document,false,{}); "/>	
+		mw.spawn_survey_admin_wizard(document,'new_window','',{}); "/>	
 
 	<command id="cmd_copy_stat_cat_edit" oncommand="
-		mw.spawn_copy_stat_cat_edit(document,'replace',{}); "/>	
+		mw.spawn_copy_stat_cat_edit(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_patron_stat_cat_edit" oncommand="
-		mw.spawn_patron_stat_cat_edit(document,'replace',{}); "/>	
+		mw.spawn_patron_stat_cat_edit(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_z39_50_import_old" oncommand="
-		mw.spawn_z3950_import(document,'replace',{}); "/>	
+		mw.spawn_z3950_import(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_console" oncommand="
-		mw.spawn_javascript_console(document,true,{}); "/>
+		mw.spawn_javascript_console(document,'new_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_shell" oncommand="
-		mw.spawn_javascript_shell(document,true,{}); "/>
+		mw.spawn_javascript_shell(document,'new_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_xuleditor" oncommand="
-		mw.spawn_xuleditor(document,true,{}); "/>
+		mw.spawn_xuleditor(document,'new_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_test" oncommand="
-		"/>
+		mw.spawn_interface(
+			document,
+			'new_tab',
+			'main_tabbox',
+			'chrome://evergreen/content/main/clam_shell.xul',
+			'test',
+			{}
+		); "/>
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
