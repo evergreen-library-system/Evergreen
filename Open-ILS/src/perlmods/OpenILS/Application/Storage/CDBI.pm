@@ -444,7 +444,7 @@ sub modify_from_fieldmapper {
 	action::hold_notification->has_a(  hold => 'action::hold_request' );
 	
 	action::hold_copy_map->has_a(  hold => 'action::hold_request' );
-	action::hold_copy_map->has_a(  copy => 'asset::copy' );
+	action::hold_copy_map->has_a(  target_copy => 'asset::copy' );
 
 	action::hold_request->has_a(  current_copy => 'asset::copy' );
 	action::hold_request->has_a(  requestor => 'actor::user' );

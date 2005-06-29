@@ -100,9 +100,9 @@ CREATE TABLE action.hold_notification (
 );
 
 CREATE TABLE action.hold_copy_map (
-	id	SERIAL	PRIMARY KEY,
-	hold	INT	NOT NULL REFERENCES action.hold_notification (id) ON DELETE CASCADE,
-	copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
+	id		SERIAL	PRIMARY KEY,
+	hold		INT	NOT NULL REFERENCES action.hold_notification (id) ON DELETE CASCADE,
+	target_copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,copy)
 );
 
