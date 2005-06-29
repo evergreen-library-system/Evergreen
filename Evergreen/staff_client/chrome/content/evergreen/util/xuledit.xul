@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <!-- From Ted's Mozilla page: http://ted.mielczarek.org/code/mozilla/index.html -->
+<!-- Edited by Jason for Evergreen -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <window id="xuledit" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Live XUL Editor"
-onload="init()">
+onload="params.d = document; params.app = 'Xuledit'; mw.OpenILS_init(params); init();" onunload="mw.OpenILS_exit(params);">
 <script type="application/x-javascript" src="xuledit.js"/>
 <vbox flex="1">
 <textbox id="ta" multiline="true" wrap="true" flex="1" onkeydown="resetTimeout()"
