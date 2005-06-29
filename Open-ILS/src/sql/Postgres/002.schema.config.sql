@@ -86,19 +86,20 @@ CREATE TABLE config.rule_age_hold_protect (
 );
 
 CREATE TABLE config.copy_status (
-	id	SERIAL		PRIMARY KEY,
-	name	TEXT		NOT NULL UNIQUE
+	id		SERIAL	PRIMARY KEY,
+	name		TEXT	NOT NULL UNIQUE,
+	holdable	BOOL	NOT NULL DEFAULT 'F'
 );
-INSERT INTO config.copy_status (id,name) VALUES (0,'Available');
-INSERT INTO config.copy_status (name) VALUES ('Checked out');
+INSERT INTO config.copy_status (id,name,holdable) VALUES (0,'Available','t');
+INSERT INTO config.copy_status (name,holdable) VALUES ('Checked out','t');
 INSERT INTO config.copy_status (name) VALUES ('Bindery');
 INSERT INTO config.copy_status (name) VALUES ('Lost');
 INSERT INTO config.copy_status (name) VALUES ('Missing');
-INSERT INTO config.copy_status (name) VALUES ('In process');
+INSERT INTO config.copy_status (name,holdable) VALUES ('In process','t');
 INSERT INTO config.copy_status (name) VALUES ('In transit');
-INSERT INTO config.copy_status (name) VALUES ('Reshelving');
+INSERT INTO config.copy_status (name,holdable) VALUES ('Reshelving','t');
 INSERT INTO config.copy_status (name) VALUES ('On holds shelf');
-INSERT INTO config.copy_status (name) VALUES ('On order');
+INSERT INTO config.copy_status (name,holdable) VALUES ('On order','t');
 INSERT INTO config.copy_status (name) VALUES ('ILL');
 INSERT INTO config.copy_status (name) VALUES ('Cataloging');
 INSERT INTO config.copy_status (name) VALUES ('Reserves');
