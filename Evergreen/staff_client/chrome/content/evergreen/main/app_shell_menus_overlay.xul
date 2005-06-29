@@ -127,6 +127,7 @@
 		<menuitem label="Patron Stat-Cat Editor" accesskey="P" command="cmd_patron_stat_cat_edit"/>
 		<menuitem label="stub" />
 		<menuitem label="Test Module" command="cmd_test"/>
+		<menuitem label="Javscript Console" command="cmd_console"/>
 	</menupopup>
 </menu>
 

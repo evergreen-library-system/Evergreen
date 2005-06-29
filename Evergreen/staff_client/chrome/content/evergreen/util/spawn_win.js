@@ -138,3 +138,7 @@ function spawn_z3950_import(d,tab_flag,passthru_params) {
 	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('z39_50_import_interface_label'),passthru_params);
 }
 
+function spawn_javascript_console(d,tab_flag,passthru_params) {
+	var chrome = 'chrome://global/cotnent/console.xul';
+	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('javascript_console_label'),passthru_params);
+}

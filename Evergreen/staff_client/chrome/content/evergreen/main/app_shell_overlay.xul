@@ -52,6 +52,9 @@
 	<command id="cmd_z39_50_import_old" oncommand="
 		mw.spawn_z3950_import(document,'replace',{}); "/>	
 
+	<command id="cmd_console" oncommand="
+		mw.spawn_javascript_console(document,true,{}); "/>
+
 	<command id="cmd_test" oncommand="
 		"/>
 
