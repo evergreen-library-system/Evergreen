@@ -156,3 +156,31 @@ table { border-collapse: collapse; }
 	vertical-align: top;
 	float: right;
 }
+
+
+.holds_window {
+	position: absolute;
+	z-index: 30;
+	top: 10px;
+	border: 2px solid lightblue;
+	height: 400px;
+	width: 500px;
+	background: #FFE;
+}
+
+.visible {
+	visibility: visible;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+.holds_window_buttons {
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+	width:100%;
+	text-align:center;
+}
+
+
