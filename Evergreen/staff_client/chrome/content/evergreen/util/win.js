@@ -101,17 +101,39 @@ function SafeWindowOpen(url,title,features)
 } 
 
 function register_window(w) {
-	mw.G['win_list'].push(w);
+	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	mw.G.win_list[w.toString()] = w;
 }
 
-function register_patron_window(w) { }
-function unregister_patron_window(w) { }
+function unregister_window(w) {
+	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	try { delete mw.G.win_list[w.toString()]; } catch(E) { mw.G.win_list[w.toString()] = false; }	
+}
 
 function close_all_windows() {
+	sdump('D_WIN',arg_dump(arguments));
 	var w;
-	while (w = mw.G['win_list'].pop()) {
-		w.close();
+	for (var i in mw.G.win_list) {
+		sdump('D_WIN','\tconsidering ' + i + '...');
+		if (mw.G.win_list[i] != mw) {
+			sdump('D_WIN','closing');
+			var w = mw.G.win_list[i];
+			try { w.close(); } catch (E) {}
+			//unregister_window( w );
+		}
+		sdump('D_WIN','\n');
 	}
+	mw.close();
+}
+
+function register_document(d) {
+	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	mw.G.doc_list[d.toString()] = d;
+}
+
+function unregister_document(d) {
+	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	try { delete mw.G.doc_list[d.toString()]; } catch(E) { mw.G.doc_list[d.toString()] = false; }	
 }
 
 

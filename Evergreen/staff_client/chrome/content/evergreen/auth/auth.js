@@ -1,6 +1,7 @@
 var G = {}; // the master Global variable
 G['main_window'] = self;
-G['win_list'] = new Array();
+G['win_list'] = new Object();
+G['doc_list'] = new Object();
 G['window_name_increment'] = 0;
 G['auth_ses'] = '';
 G['user_ou'] = '';
