@@ -87,6 +87,7 @@ function spawn_main() {
 		if (!w) { throw('window ref == null'); }
 		try {
 			w.document.title = G.user.usrname() + '@' + G.user_ou.name();
+			w.params = {};
 		} catch(E) {
 			alert('Hrmm. ' + pretty_print( js2JSON(E) ) );
 		}
