@@ -1,4 +1,5 @@
 // From Ted's Mozilla page: http://ted.mielczarek.org/code/mozilla/index.html 
+// Modified by Jason for Evergreen to push in the main (auth) window reference
 var old = '';
 var timeout = -1;
 var xwin = null;
@@ -49,6 +50,8 @@ function update()
     else
       xwin.setAttribute("src",dataURI);
   }
+  try { xwin.contentWindow.mw = mw; } catch(E) {}
+  try { xwin.mw = mw; } catch(E) {}
 
   timeout = window.setTimeout(update, 500);
 }
