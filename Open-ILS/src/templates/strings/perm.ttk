@@ -1,0 +1,27 @@
+[%-
+	# ------------------------------------------------------------------	
+	# return macro... 
+	# ------------------------------------------------------------------
+	MACRO ret(str) PROCESS ret_block s=str;
+	BLOCK ret_block; "Permission Denied: " _ s; STOP; END;
+	# ------------------------------------------------------------------
+-%]
+
+[%
+
+	perm_map = {};
+	perm_map.EDIT_MARC = "MARC Editing";
+	perm_map.OPAC_LOGIN = "OPAC Login";
+	perm_map.STAFF_LOGIN = "STAFF Login";
+	perm_map.COPY_HOLDS = "Copy level holds";
+	perm_map.VOLUME_HOLDS = "Volume level holds";
+	perm_map.TITLE_HOLDS = "Title level holds";
+	perm_map.MR_HOLDS = "Metarecord/Title Group level holds";
+	perm_map.REQUEST_HOLDS = "Requesting a hold for another user";
+	perm_map.REQUEST_HOLDS_OVERRIDE = "Requesting a dissallowed hold for another user";
+
+
+	ret(perm_map.$type);
+
+%]
+
