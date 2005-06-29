@@ -8,6 +8,7 @@
 		<script src="chrome://evergreen/content/Open-ILS/OpenILS.js" />
 		<script src="chrome://evergreen/content/auth/auth.js" />
 		<script src="chrome://evergreen/content/main/app_shell.js" />
+		<script src="chrome://evergreen/content/main/clam_shell.js" />
 		<script src="chrome://evergreen/content/opac/opac.js" />
 	</apps>
 
