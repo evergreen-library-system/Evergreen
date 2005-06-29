@@ -1,5 +1,5 @@
 function OpenILS_init(params) { 
-	sdump('D_TRACE','Entering OpenILS_init with ' + screen + '\n');
+	sdump('D_TRACE','Entering OpenILS_init with ' + params + '\n');
 
 	try {
 
@@ -18,7 +18,7 @@ function OpenILS_init(params) {
 }
 
 function OpenILS_exit(params) {
-	sdump('D_TRACE','Entering OpenILS_exit with ' + screen + '\n');
+	sdump('D_TRACE','Entering OpenILS_exit with ' + params + '\n');
 
 	try {
 	
