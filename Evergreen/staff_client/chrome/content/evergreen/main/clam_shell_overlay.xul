@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/clam_shell.dtd">
+<overlay id="clam_shell_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<commandset id="ClamShell_cmds">
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+</commandset>
+
+<!-- main widget for clam_shell -->
+<box id="ClamShell_main" flex="1" orient="vertical">
+	<deck id="ClamShell_first_deck" flex="1"/>
+	<splitter id="ClamShell_splitter" />
+	<deck id="CLamShell_second_deck" flex="1"/>
+</box>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="ClamShell_keys">
+</keyset>
+
+</overlay>
