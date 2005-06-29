@@ -3,7 +3,7 @@
 #
 
 # Change to suit...
-export PREFIX				= /pines
+export PREFIX				= /usr
 export APXS2					= /pines/apps/apache2/bin/apxs
 export TMP					= /tmp/opensrf_build
 export APACHE2_HEADERS	= /pines/apps/apache2/include 
@@ -68,7 +68,7 @@ jserver: c_utils
 # --------------------------------------------------------------------------------
 # INSTALL
 # --------------------------------------------------------------------------------
-install-prep:
+install-prep:	install-prep
 	@echo "Creating install directories"
 	mkdir -p $(LIBDIR)
 	mkdir -p $(BINDIR)
@@ -76,34 +76,34 @@ install-prep:
 	mkdir -p $(INCLUDEDIR)
 	mkdir -p $(INCLUDEDIR)/$(OPENSRF)
 
-transport-install:
+transport-install:	install-prep utils-install
 	make -C libtransport install
 
-libjson-install:
+libjson-install:	install-prep
 	make -C libjson install
 
-utils-install:
+utils-install:	install-prep
 	make -C utils install
 
-objson-install:
+objson-install:	install-prep utils-install
 	make -C objson install
 
-stack-install:
+stack-install:	install-prep transport-install libjson-install objson-install
 	make -C libstack install
 
-gateway-install:	
+gateway-install:	install-prep stack-install	
 	make -C gateway install
 
-router-install: 
+router-install:	install-prep stack-install
 	make -C router install
 
-srfsh-install: 
+srfsh-install:	install-prep stack-install 
 	make -C srfsh install
 
-jserver-install:
+jserver-install:	install-prep utils-install
 	make -C jserver install
 
-perl-install:
+perl-install:	install-prep
 	cp -r perlmods/* $(PERLDIR)/
 
 
