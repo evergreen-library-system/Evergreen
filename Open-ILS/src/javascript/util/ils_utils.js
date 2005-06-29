@@ -59,7 +59,6 @@ function findOrgUnit(org_id, branch) {
 }
 
 
-
 function getOrgById(id, node) {
 	if(node == null) node = globalOrgTree;
 	if( node.id() == id) return node;
@@ -116,6 +115,31 @@ function findCopyLocation(id) {
 			return globalCopyLocations[x];
 	}
 	return null;
+}
+
+
+function modsFormatToMARC(format) {
+	switch(format) {
+		case "text":
+			return "at";
+		case "moving image":
+			return "g";
+		case "sound recording":
+			return "ij";
+		case "software, multimedia":
+			return "m";
+		case "still images":
+			return "k";
+		case "cartographic":
+			return "ef";
+		case "mixed material":
+			return "op";
+		case "notated muix":
+			return "cd";
+		case "three dimensional object":
+			return "r";
+	}
+	throw new EXLogic("Invalid format provided form modsFormatToMARC: " + format);
 }
 
 

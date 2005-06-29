@@ -288,14 +288,13 @@ AbstractRecordResultPage.prototype.displayRecord =
 		if(record.edition())
 			span.appendChild(createAppTextNode(" " + record.edition()));
 
-			author_cell.appendChild(span);
+		author_cell.appendChild(span);
 
 		var marcb = elem( "a",
 			{
 				href:"javascript:void(0)",
 				style: "text-decoration:underline"
-			},
-			{}, "View MARC" );
+			}, {}, "View MARC" );
 
 		debug("Setting up view marc callback with record " + record.doc_id());
 		var func = buildViewMARCWindow(record);
@@ -310,8 +309,44 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	}
 
+	var holds = elem( "a", 
+	{ 
+		href:"javascript:void(0)", 
+		style: "text-decoration:underline" 
+	}, {}, "Place Hold" );
+
+	var user = UserSession.instance();
+
+	/*
+	if(!(user && user.verifySession()))  
+		return;
+		*/
+	
+	var type = "M";
+	if(instanceOf(this, RecordResultPage))
+		type = "T";
+
+	var win = new HoldsWindow(record.doc_id(), 
+			type, user.userObject, user.userObject, user.session_id);
+
+	win.buildWindow(); 
+	holds.onclick = function() { win.toggle(); }
+	var holddiv = elem("div");
+
+	//if(instanceOf(this,RecordResultPage))
+	holddiv.setAttribute("style", "float:right");
+
+	holddiv.appendChild(holds);
+	//var space = elem("span", {style:"padding:5px"},null, " ");
+	//c.appendChild(space)
+	c.appendChild(mktext(" "))
+	c.appendChild(holddiv)
+
+
+
+
 	var classname = "result_even";
-	if((page_id%2) != 0) 
+	if((page_id % 2) != 0) 
 		classname = "result_odd";
 
 	add_css_class(title_row, classname);

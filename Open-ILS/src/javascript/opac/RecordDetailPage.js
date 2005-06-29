@@ -224,6 +224,7 @@ RecordDetailPage.prototype.setViewMarc = function(record) {
 		{}, "View MARC" );
 
 	debug(".ou_type()Setting up view marc callback with record " + record.doc_id());
+
 	var func = buildViewMARCWindow(record);
 	marcb.onclick = func;
 	this.viewMarc.appendChild(marcb);
@@ -237,8 +238,14 @@ RecordDetailPage.prototype.setPlaceHold = function(record) {
 		}, 
 		{}, "Place Hold" );
 
-	var func = new HoldsWindow(record).buildHoldsWindowCallback("M");
-	holds.onclick = func;
+	var user = UserSession.instance();
+	if(!(user && user.verifySession()))  /* needs to pop up a login dialog XXX */
+		return;
+
+	var win = new HoldsWindow(record.doc_id(), 
+			"T", user.userObject, user.userObject, user.session_id);
+	win.buildWindow(); 
+	holds.onclick = function() { win.toggle(); }
 
 	var space = elem("span", {style:"padding:5px"},null, " ");
 	this.viewMarc.appendChild(space);
@@ -475,6 +482,8 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 	
 	debug("Displaying copy tree for " + title);
 
+	if(!globalCopyStatus) grabCopyStatus(); /* just to be safe */
+
 	var treeDiv =  this.treeDiv;
 	removeChildren(treeDiv);
 	add_css_class( treeDiv, "copy_tree_div" );
@@ -572,9 +581,12 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 				cell4.appendChild(createAppTextNode(loc));
 
 				removeChildren(cell5);
-				cell5.appendChild(createAppTextNode(
-					find_list(globalCopyStatus, 
-						function(i) {return (i.id() == copy.status());} ).name() ));
+				var status = find_list(globalCopyStatus, 
+						function(i) { return (i.id() == copy.status());} );
+
+				var sname = "";
+				if(status) sname = status.name();
+				cell5.appendChild(createAppTextNode(sname));
 
 			} else {
 
@@ -594,9 +606,11 @@ RecordDetailPage.prototype.displayCopyTree = function(tree, title) {
 				ce.appendChild(createAppTextNode(copy.barcode()));
 				loc_cell.appendChild(createAppTextNode(loc));
 
-				status_cell.appendChild(createAppTextNode(
-					find_list(globalCopyStatus, 
-						function(i) { return (i.id() == copy.status()); } ).name() ));
+				var status = find_list(globalCopyStatus, 
+						function(i) { return (i.id() == copy.status());} );
+				var sname = "";
+				if(status) sname = status.name();
+				status_cell.appendChild(mktext(sname))
 			}
 
 			c++;

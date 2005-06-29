@@ -193,11 +193,15 @@ function grabCopyStatus() {
 		"open-ils.search",
 		"open-ils.search.config.copy_status.retrieve.all" );
 
-	if(paramObj.__sub_frame) {
-		/* we have to grab the copy statuses synchronously */
-		req.send(true);
-		globalCopyStatus = r.getResultObject();
 
+	//if(paramObj.__sub_frame) {
+		req.send(true);
+		globalCopyStatus = req.getResultObject();
+		if(!globalCopyStatus) {
+			userMessage("Retrieving copy statuses");
+		}
+
+		/*
 	} else {
 
 		req.setCompleteCallback(function(r) { 
@@ -206,6 +210,7 @@ function grabCopyStatus() {
 	
 		req.send();
 	}
+	*/
 }
 
 

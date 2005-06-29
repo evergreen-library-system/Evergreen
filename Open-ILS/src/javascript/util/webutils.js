@@ -696,3 +696,9 @@ function removeChildren(node) {
 			node.removeChild(node.childNodes[0]);
 	}
 }
+
+
+
+function userMessage(msg) {
+	alert("An unknown error occured during the following process: " + msg);
+}
