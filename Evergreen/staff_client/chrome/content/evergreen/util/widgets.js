@@ -4,9 +4,8 @@ sdump('D_WIDGETS',"Loading widgets.js\n");
 // The first argument is the treechildren element for the tree.
 // Subsequent arguments are treated as textual values for treecells in that treeitem.
 var treeitem_id = 0;
-function append_treeitem() {
-	var e = arguments[0];
-	if (typeof(e) != 'object') { e = document.getElementById(e); }
+function append_treeitem(d,e) {
+	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { throw('typeof e != object : typeof e = ' + typeof(e)); }
 	var treechildren = e;
 
@@ -14,7 +13,7 @@ function append_treeitem() {
 
 	var treeitem = elem('treeitem'); treechildren.appendChild(treeitem);
 	var treerow = elem('treerow'); treeitem.appendChild(treerow);
-	for (var i = 1; i < arguments.length ; i++ ) {
+	for (var i = 2; i < arguments.length ; i++ ) {
 		var treecell = elem(
 			'treecell',
 			{ 'label': arguments[i], 'id' : 'treeitem_' + treeitem_id + '_' + i }
@@ -29,9 +28,9 @@ function append_treeitem() {
 // The first argument is the element, the second argument is the pertinant attribute,
 // and the third argument is an array of values to cycle through for setting the
 // element's attribute.  Ex: var toggle = cycle_attribute( target,'toggle',['1','2','3'] );
-function cycle_attribute(e,a,v) {
+function cycle_attribute(d,e,a,v) {
 	try {
-		if (typeof(e) != 'object') { e = document.getElementById(e); }
+		if (typeof(e) != 'object') { e = d.getElementById(e); }
 		if (typeof(e) != 'object') { throw('typeof e != object : typeof e = ' + typeof(e)); }
 		if (!a) { throw('!a : a = ' + a); }
 		if (! e.getAttribute(a) ) { throw(' ! e.getAttribute(a) : a = ' + a); }
@@ -65,13 +64,13 @@ function cycle_attribute(e,a,v) {
 }
 
 // Treats each argument as an element to disable 
-function disable_widgets() {
-	for (var i = 0; i < arguments.length; i++) {
+function disable_widgets(d) {
+	for (var i = 1; i < arguments.length; i++) {
 		if (typeof(arguments[i]) == 'object') {
 			sdump('D_WIDGETS',arguments[i] + '.disabled = true;\n');
 			arguments[i].disabled = true;
 		} else {
-			var w = document.getElementById( arguments[i] );
+			var w = d.getElementById( arguments[i] );
 			if (w) { 
 				sdump('D_WIDGETS',w + '.disabled = true;\n');
 				w.disabled = true; 
@@ -81,8 +80,8 @@ function disable_widgets() {
 }
 
 // removes listitems from listboxes
-function empty_listbox(e) {
-	if (typeof(e) != 'object') { e = document.getElementById(e); }
+function empty_listbox(d,e) {
+	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_listbox\n'); return; }
 	var nl = e.getElementsByTagName('listitem');
 	for (var i = 0; i < nl.length; i++) {
@@ -91,21 +90,21 @@ function empty_listbox(e) {
 }
 
 // removes all of an element's children
-function empty_widget(e) {
-	if (typeof(e) != 'object') { e = document.getElementById(e); }
+function empty_widget(d,e) {
+	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_widget\n'); return; }
 	while (e.lastChild) { e.removeChild(e.lastChild); }
 }
 
 
 // Treats each argument as an element to enable 
-function enable_widgets() {
-	for (var i = 0; i < arguments.length; i++) {
+function enable_widgets(d) {
+	for (var i = 1; i < arguments.length; i++) {
 		if (typeof(arguments[i]) == 'object') {
 			sdump('D_WIDGETS',arguments[i] + '.disabled = false;\n');
 			arguments[i].disabled = false;
 		} else {
-			var w = document.getElementById( arguments[i] );
+			var w = d.getElementById( arguments[i] );
 			if (w) { 
 				sdump('D_WIDGETS',w + '.disabled = false;\n');
 				w.disabled = false; 
@@ -118,14 +117,14 @@ function enable_widgets() {
 // The first argument is the element to search for textboxes, and the second
 // argument is the current textbox.  This function finds the next textbox and
 // gives it focus.
-function fake_tab_for_textboxes(w,current) {
+function fake_tab_for_textboxes(d,w,current) {
 	var flag = false; var next_one;
 	if (typeof(w)!='object') {
-		w = document.getElementById(w);
+		w = d.getElementById(w);
 	}
 	sdump('D_WIDGETS', 'fake_tab_for_textboxes: Current ' + current + '\n');
 	var nl = w.getElementsByTagName('textbox');
-	//var nl = document.getElementsByTagName('textbox');
+	//var nl = d.getElementsByTagName('textbox');
 	sdump('D_WIDGETS', 'fake_tab_for_textboxes: nl.length = ' + nl.length + '\n');
 	for (var i = 0; i < nl.length; i++) {
 		sdump('D_WIDGETS', 'fake_tab_for_textboxes: Considering ' + nl[i] + '...\n');
@@ -153,8 +152,8 @@ function fake_tab_for_textboxes(w,current) {
 // Not actually used anywhere.  I'm not sure what this is :D
 // Ah, looks like it could handle XUL trees and fieldmapper trees
 // Ex. find( org_tree, function(o){return o.children();}, function(o){return (o.id == 'the winner');})
-function find_tree_via_children(tree,children_func,find_func) {
-	if (typeof(tree)!='object') tree = document.getElementById(tree);
+function find_tree_via_children(d,tree,children_func,find_func) {
+	if (typeof(tree)!='object') tree = d.getElementById(tree);
 
 	var t = find_func(tree); if (t) return t;
 
@@ -168,21 +167,21 @@ function find_tree_via_children(tree,children_func,find_func) {
 
 
 // Give this element focus
-function focus_widget(e) {
+function focus_widget(d,e) {
 	if (typeof(e) == 'object') {
 		e.focus();
 	} else {
-		var w = document.getElementById(e);
+		var w = d.getElementById(e);
 		if (w) { w.focus(); }
 	}
 }
 
 // Returns a list of selected treeitems from the specified tree
-function get_list_from_tree_selection(tree_w) {
+function get_list_from_tree_selection(d,tree_w) {
 	sdump('D_WIDGETS','entering get_list_from_tree...\n');
 	var hitlist;
 	if (typeof(tree_w) != 'object') {
-		hitlist = document.getElementById(tree_w);
+		hitlist = d.getElementById(tree_w);
 	} else {
 		hitlist = tree_w;
 	}
@@ -202,10 +201,21 @@ function get_list_from_tree_selection(tree_w) {
 	return list;
 }
 
+// Make sure we a widget
+function get_widget(d,e) {
+	if (typeof(e) == 'object') {
+		return e;
+	} else {
+		var w = d.getElementById(e);
+		if (w) return w;
+	}
+	return null;
+}
+
 // Increment a XUL progressmeter
-function incr_progressmeter(meter,increment) {
+function incr_progressmeter(d,meter,increment) {
 	if (typeof(meter)!='object') 
-		meter = document.getElementById(meter);
+		meter = d.getElementById(meter);
 	if (typeof(meter)!='object')
 		return;
 
@@ -227,11 +237,11 @@ function incr_progressmeter(meter,increment) {
 // Simulates radio buttons with checkboxes.  Include this in command event listeners
 // for the pertinent textboxes.  For any set of checkboxes that have the same 'group'
 // attribute, only one can be checked at a time.
-function radio_checkbox(ev) {
+function radio_checkbox(d,ev) {
 	var target = ev.target;
 	var group = target.getAttribute('group');
 	if (group) {
-		var nl = document.getElementsByTagName('checkbox');
+		var nl = d.getElementsByTagName('checkbox');
 		for (var i in nl) {
 			if (typeof(nl[i])=='object') {
 				var c = nl[i];
@@ -249,16 +259,16 @@ function radio_checkbox(ev) {
 
 // Takes a hash with key:value => deck element id : page index
 // Sets each deck to the corresponding index
-function set_decks(params) {
+function set_decks(d,params) {
 	for (var deck_id in params) {
-		var deck = document.getElementById( deck_id )
+		var deck = d.getElementById( deck_id )
 		if (deck) deck.setAttribute( 'selectedIndex', params[deck_id] );
 	}
 }
 
 // swaps the values of two attributes for an element
-function swap_attributes(e,a1,a2) {
-	if (typeof(e) != 'object') { e = document.getElementById(e); }
+function swap_attributes(d,e,a1,a2) {
+	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on swap_attributes\n'); return; }
 	var a1_v = e.getAttribute(a1);
 	var a2_v = e.getAttribute(a2);
@@ -269,9 +279,9 @@ function swap_attributes(e,a1,a2) {
 }
 
 // Flips the hidden value for each row in a grid
-function toggle_hidden_grid_rows(grid) {
+function toggle_hidden_grid_rows(d,grid) {
 	if (typeof(grid) != 'object') {
-		grid = document.getElementById(grid);
+		grid = d.getElementById(grid);
 	}
 	if (!grid) { return; }
 	var rows = grid.lastChild; if (!rows) { return; }
@@ -290,16 +300,16 @@ function toggle_hidden_grid_rows(grid) {
 }
 
 /* The first parameter is the id of the element to set, or an array of ids for elements to set in batch.  The second parameter is an object containing the attribute/value pairs to assign to the element or elements */
-function xul_setAttributes(el,attrs) {
+function xul_setAttributes(d,el,attrs) {
 	if (typeof(el) == 'object') {
 		for (var e in el) {
-			var w = document.getElementById(e);
+			var w = d.getElementById(e);
 			for (var a in attrs) {
 				w.setAttribute(a,attrs[a]);
 			}
 		}
 	} else {
-		var w = document.getElementById(el);
+		var w = d.getElementById(el);
 		for (var a in attrs) {
 			w.setAttribute(a,attrs[a]);
 		}
