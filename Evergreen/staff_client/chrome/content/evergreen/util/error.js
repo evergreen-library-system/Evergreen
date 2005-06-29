@@ -10,7 +10,8 @@ var sdump_levels = {
 	'D_SPAWN' : true,
 	'D_TAB' : true,
 	'D_OPAC' : true,
-	'D_STRING' : true
+	'D_STRING' : true,
+	'D_WIN' : true
 };
 
 function sdump(level,msg) {
