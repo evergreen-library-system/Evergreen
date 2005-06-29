@@ -64,12 +64,12 @@ function handle_keypress(ev) {
 }
 
 function disable_login_prompts() {
-	disable_widgets('password_prompt','name_prompt','submit_button');
+	disable_widgets(document,'password_prompt','name_prompt','submit_button');
 	G.sound.beep();
 }
 
 function enable_login_prompts() {
-	enable_widgets('password_prompt','name_prompt','submit_button');
+	enable_widgets(document,'password_prompt','name_prompt','submit_button');
 	document.getElementById('password_prompt').value = '';
 	var np = document.getElementById('name_prompt');
 	np.focus(); np.select();
@@ -110,7 +110,7 @@ function auth_init_callback(request) {
 		[ name, hex_md5(auth_init + hex_md5(pw)) ],
 		auth_ses_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function auth_ses_callback(request) {
@@ -131,7 +131,7 @@ function auth_ses_callback(request) {
 		[],
 		ap_list_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function ap_list_callback(request) {
@@ -152,7 +152,7 @@ function ap_list_callback(request) {
 		[],
 		cit_list_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function cit_list_callback(request) {
@@ -174,7 +174,7 @@ function cit_list_callback(request) {
 		cst_list_callback
 	);
 
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function cst_list_callback(request) {
@@ -196,7 +196,7 @@ function cst_list_callback(request) {
 		[],
 		acpl_list_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 
 }
 
@@ -219,7 +219,7 @@ function acpl_list_callback(request) {
 		[],
 		ccs_list_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function ccs_list_callback(request) {
@@ -241,7 +241,7 @@ function ccs_list_callback(request) {
 		[ mw.G['auth_ses'][0] ],
 		user_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function user_callback(request) {
@@ -271,7 +271,7 @@ function user_callback(request) {
 		org_type_callback
 	);*/
 	org_type_callback();
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function org_type_callback(request) {
@@ -296,7 +296,7 @@ function org_type_callback(request) {
 		[ mw.G.auth_ses[0] ],
 		my_orgs_callback
 	);
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 
 }
 
@@ -331,7 +331,7 @@ function my_orgs_callback(request) {
 		my_actsc_list_callback
 	);
 
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function my_actsc_list_callback(request) {
@@ -347,7 +347,7 @@ function my_actsc_list_callback(request) {
 	mw.G.actsc_hash = convert_object_list_to_hash( actsc_list );
 	sdump('D_AUTH', 'actsc_list = ' + js2JSON(actsc_list) + '\n');
 
-	incr_progressmeter('auth_meter',auth_meter_incr);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 
 	spawn_main();
 
@@ -358,7 +358,7 @@ function logoff() {
 	mw.G['auth_ses'] = '';
 	close_all_windows();
 	enable_login_prompts();
-	incr_progressmeter('auth_meter',-100);
+	incr_progressmeter(document,'auth_meter',-100);
 	snd_logoff();
 }
 
