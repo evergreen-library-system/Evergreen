@@ -55,6 +55,9 @@
 	<command id="cmd_console" oncommand="
 		mw.spawn_javascript_console(document,true,{}); "/>
 
+	<command id="cmd_xuleditor" oncommand="
+		mw.spawn_xuleditor(document,true,{}); "/>
+
 	<command id="cmd_test" oncommand="
 		"/>
 

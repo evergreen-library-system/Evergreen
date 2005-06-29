@@ -142,3 +142,8 @@ function spawn_javascript_console(d,tab_flag,passthru_params) {
 	var chrome = 'chrome://global/cotnent/console.xul';
 	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('javascript_console_label'),passthru_params);
 }
+
+function spawn_xuleditor(d,tab_flag,passthru_params) {
+	var chrome = 'chrome://evergreen/content/util/xuledit.xul';
+	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('xuleditor_label'),passthru_params);
+}
