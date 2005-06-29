@@ -128,6 +128,7 @@
 		<menuitem label="stub" />
 		<menuitem label="Test Module" command="cmd_test"/>
 		<menuitem label="Javscript Console" command="cmd_console"/>
+		<menuitem label="Javscript Shell" command="cmd_shell"/>
 		<menuitem label="XUL Test" command="cmd_xuleditor"/>
 	</menupopup>
 </menu>

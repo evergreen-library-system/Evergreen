@@ -147,3 +147,8 @@ function spawn_xuleditor(d,tab_flag,passthru_params) {
 	var chrome = 'chrome://evergreen/content/util/xuledit.xul';
 	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('xuleditor_label'),passthru_params);
 }
+
+function spawn_javascript_shell(d,tab_flag,passthru_params) {
+	var chrome = 'chrome://evergreen/content/util/shell.html';
+	spawn_interface(d,tab_flag,'main_tabbox',chrome,getString('javascript_shell_label'),passthru_params);
+}
