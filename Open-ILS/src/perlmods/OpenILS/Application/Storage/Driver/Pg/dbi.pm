@@ -455,6 +455,13 @@
 
 	#-------------------------------------------------------------------------------
 
+	package action::hold_copy_map;
+
+	action::hold_copy_map->sequence( 'action.hold_copy_map_id_seq' );
+	action::hold_copy_map->table('action.hold_copy_map');
+
+	#-------------------------------------------------------------------------------
+
 
 }
 

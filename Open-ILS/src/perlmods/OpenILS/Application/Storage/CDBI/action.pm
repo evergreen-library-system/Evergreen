@@ -56,7 +56,8 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 				     prev_check_time expire_time requestor usr
 				     hold_type holdable_formats target
-				     selection_depth pickup_lib current_copy/);
+				     phone_notify email_notify selection_depth
+				     pickup_lib current_copy/);
 
 #-------------------------------------------------------------------------------
 
@@ -65,6 +66,14 @@ use base qw/action/;
 __PACKAGE__->table('action_hold_notification');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/hold method notify_time note/);
+
+#-------------------------------------------------------------------------------
+
+package action::hold_copy_map;
+use base qw/action/;
+__PACKAGE__->table('action_hold_copy_map');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/hold copy/);
 
 #-------------------------------------------------------------------------------
 

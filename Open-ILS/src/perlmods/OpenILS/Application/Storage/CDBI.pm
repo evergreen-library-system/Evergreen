@@ -443,11 +443,17 @@ sub modify_from_fieldmapper {
 
 	action::hold_notification->has_a(  hold => 'action::hold_request' );
 	
+	action::hold_copy_map->has_a(  hold => 'action::hold_request' );
+	action::hold_copy_map->has_a(  copy => 'asset::copy' );
+
 	action::hold_request->has_a(  current_copy => 'asset::copy' );
 	action::hold_request->has_a(  requestor => 'actor::user' );
 	action::hold_request->has_a(  usr => 'actor::user' );
 	action::hold_request->has_a(  pickup_lib => 'actor::org_unit' );
 
 	action::hold_request->has_many(  notifications => 'action::hold_notification' );
+	action::hold_request->has_many(  copy_maps => 'action::hold_copy_map' );
+
+	asset::copy->has_many(  hold_maps => 'action::hold_copy_map' );
 
 1;

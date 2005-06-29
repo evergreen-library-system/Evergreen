@@ -82,6 +82,8 @@ CREATE TABLE action.hold_request (
 	usr			INT				NOT NULL REFERENCES actor.usr (id),
 	hold_type		CHAR				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	holdable_formats	TEXT,
+	phone_notify		TEXT,
+	email_notify		TEXT,
 	target			BIGINT				NOT NULL, -- see hold_type
 	selection_depth		INT				NOT NULL DEFAULT 0,
 	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit,
@@ -97,6 +99,12 @@ CREATE TABLE action.hold_notification (
 	note		TEXT
 );
 
+CREATE TABLE action.hold_copy_map (
+	id	SERIAL	PRIMARY KEY,
+	hold	INT	NOT NULL REFERENCES action.hold_notification (id) ON DELETE CASCADE,
+	copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
+	CONSTRAINT copy_once_per_hold UNIQUE (hold,copy)
+);
 
 
 COMMIT;
