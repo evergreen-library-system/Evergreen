@@ -108,6 +108,8 @@ sub _init {
 								     			     types_of_resource	=> 1,
 								     			     call_numbers	=> 1,
 													  edition	=> 1,
+													  online_loc	=> 1,
+													  abstract	=> 1,
 											     copy_count	        => 1,
 											     series	        => 1,
 											     serials	        => 1,
@@ -160,17 +162,17 @@ sub _init {
 		'Fieldmapper::action::hold_copy_map'		=> { hint => 'ahcm'   },
 
 
-		'Fieldmapper::ex'				=> { hint => 'ex',
-								     virtual => 1,
-								     proto_fields => {
-									err_msg	=> 1,
-									type	=> 1,
+		'Fieldmapper::ex'				=> { hint	    => 'ex',
+								     virtual	    => 1,
+								     proto_fields   => {
+									err_msg	 => 1,
+									type	 => 1,
 								     } },
 
 
-		'Fieldmapper::perm_ex'				=> { hint => 'perm_ex',
-								     virtual => 1,
-								     proto_fields => {
+		'Fieldmapper::perm_ex'				=> { hint	    => 'perm_ex',
+								     virtual	    => 1,
+								     proto_fields   => {
 									err_msg	=> 1,
 									type	=> 1,
 								     } },
