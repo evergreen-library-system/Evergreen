@@ -11,20 +11,22 @@ use Data::Dumper;
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
 my $xslt_doc	= $parser->parse_file( 
-		"/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
+		"/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS3.xsl" );
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 
 # ----------------------------------------------------------------------------------------
-# XXX get me from the database and cache me ...
+# XPATH for extracting info from a MODS doc
 my $isbn_xpath			= "//mods:mods/mods:identifier[\@type='isbn']";
 my $resource_xpath	= "//mods:mods/mods:typeOfResource";
 my $pub_xpath			= "//mods:mods/mods:originInfo//mods:dateIssued[\@encoding='marc']|" . 
 								"//mods:mods/mods:originInfo//mods:dateIssued[1]";
 my $tcn_xpath			= "//mods:mods/mods:recordInfo/mods:recordIdentifier";
 my $publisher_xpath	= "//mods:mods/mods:originInfo//mods:publisher[1]";
-
-my $edition_xpath = "//mods:mods/mods:originInfo//mods:edition[1]";
-
+my $edition_xpath		= "//mods:mods/mods:originInfo//mods:edition[1]";
+my $abstract_xpath	= "//mods:mods/mods:abstract";
+my $toc_xpath			= "";
+my $related_xpath		= "";
+my $online_loc_xpath = "(//mods:location/mods:url|//mods:location/mods:url/\@displayLabel)";
 
 my $xpathset = {
 
@@ -85,7 +87,7 @@ sub get_field_value {
 
 	my @string;
 	my $root = $mods->documentElement;
-	$root->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+	$root->setNamespace( "http://www.loc.gov/mods/v3", "mods", 1 );
 
 	# grab the set of matching nodes
 	my @nodes = $root->findnodes( $xpath );
@@ -244,8 +246,8 @@ sub mods_values_to_mods_slim {
 	else { $series = $tmp->{'series'}; }
 
 
-	return { series => $series, title => $title, author => $author, subject => $subject };
-
+	return { series => $series, title => $title, 
+			author => $author, subject => $subject };
 }
 
 
@@ -261,9 +263,9 @@ sub start_mods_batch {
 	my $xmldoc = $parser->parse_string($master_doc);
 	my $mods = $mods_sheet->transform($xmldoc);
 
-#	warn "-" x 100 . "\n";
-#	warn "MODS " . $mods->toString(1) . "\n";
-#	warn "-" x 100 . "\n";
+	warn "-" x 100 . "\n";
+	warn "MODS " . $mods->toString(1) . "\n";
+	warn "-" x 100 . "\n";
 
 	$self->{master_doc} = $self->modsdoc_to_values( $mods );
 	$self->{master_doc} = $self->mods_values_to_mods_slim( $self->{master_doc} );
@@ -286,7 +288,20 @@ sub start_mods_batch {
 	($self->{master_doc}->{edition}) =
 		$self->get_field_value( $mods, $edition_xpath );
 
+
+
+# ------------------------------
+	# holds an array of [ link, title, link, title, ... ]
+	$self->{master_doc}->{online_loc} = [];
+	push(@{$self->{master_doc}->{online_loc}},
+		$self->get_field_value( $mods, $online_loc_xpath ));
+
+	($self->{master_doc}->{abstract}) = 
+		$self->get_field_value( $mods, $abstract_xpath );
+
 }
+
+
 
 # ---------------------------------------------------------------------------
 # Takes a MARCXML string and adds it to the growing MODS doc
@@ -358,6 +373,9 @@ sub finish_mods_batch {
 	$record->subject($perl->{subject});
 	$record->types_of_resource($rtypes);
 	$record->series(\@series);
+
+	$record->online_loc($perl->{online_loc});
+	$record->abstract($perl->{abstract});
 
 	$self->{master_doc} = undef;
 	return $record;
