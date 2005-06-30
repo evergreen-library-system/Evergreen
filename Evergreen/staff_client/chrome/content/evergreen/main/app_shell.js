@@ -1,8 +1,15 @@
 sdump('D_TRACE','Loading app_shell.js\n');
 
-function app_shell_init(params) {
+function app_shell_init(p) {
 	dump("TESTING: app_shell.js: " + mw.G['main_test_variable'] + '\n');
-	replace_tab(params.d,'main_tabbox','Tab','chrome://evergreen/content/main/about.xul');
+
+	p.w.close_tab = function (t1,t2) { return close_tab(p.d,t1,t2); };
+	p.w.delete_tab_contents = function (panel) { return delete_tab_contents(panel); };
+	p.w.find_free_tab = function (tabs) { return find_free_tab(tabs); };
+	p.w.new_tab = function () { return new_tab(p.d,p.tabbox); };
+	p.w.replace_tab = function (label,chrome,params) { return replace_tab(p.d,p.tabbox,label,chrome,params); };
+	
+	p.w.replace_tab('Tab','chrome://evergreen/content/main/about.xul');
 }
 
 function close_tab( d, t1, t2 ) {
