@@ -4,7 +4,6 @@ function app_shell_init(p) {
 	dump("TESTING: app_shell.js: " + mw.G['main_test_variable'] + '\n');
 
 	p.w.close_tab = function (t1,t2) { return close_tab(p.d,t1,t2); };
-	p.w.delete_tab_contents = function (panel) { return delete_tab_contents(panel); };
 	p.w.find_free_tab = function (tabs) { return find_free_tab(tabs); };
 	p.w.new_tab = function () { return new_tab(p.d,p.tabbox); };
 	p.w.replace_tab = function (label,chrome,params) { return replace_tab(p.d,p.tabbox,label,chrome,params); };
@@ -63,7 +62,6 @@ function close_tab( d, t1, t2 ) {
 		sdump('D_TAB','\tnew tabbox.selectedIndex = ' + tabbox.selectedIndex + '\n');
 
 		tabs.childNodes[ idx ].hidden = true;
-		delete_tab_contents( panels.childNodes[ idx ] );
 		sdump('D_TAB','tabs.childNodes[ ' + idx + ' ].hidden = true;\n');
 
 		// Make sure we keep at least one tab open.
@@ -79,15 +77,6 @@ function close_tab( d, t1, t2 ) {
 	} catch(E) {
 		dump(E+'\n');
 		throw(E);
-	}
-}
-
-function delete_tab_contents( panel ) {
-	sdump('D_TAB',arg_dump(arguments,{0:'.tagName'}));
-	try {
-		while (panel.lastChild) { panel.removeChild(panel.lastChild); }
-	} catch(E) {
-		dump(js2JSON(E)+'\n');
 	}
 }
 
@@ -148,16 +137,19 @@ function replace_tab( d, tabbox, label, chrome, params ) {
 	var panels = tabbox.lastChild;
 	try {
 		var idx = tabs.selectedIndex;
-		
-		delete_tab_contents(panels.childNodes[ idx ]);
-		tabs.childNodes[ idx ].hidden = false;
-		tabs.childNodes[ idx].setAttribute('label',label + ' ' + (idx+1));
+		var tab = tabs.childNodes[ idx ];
+		var panel = panels.childNodes[ idx ];
+
+		tab.hidden = false;
+		tab.setAttribute('label',label + ' ' + (idx+1));
 
 		var frame = d.createElement('iframe');
 		frame.setAttribute('id','frame_'+idx);
 		frame.setAttribute('flex','1');
 		frame.setAttribute('src',chrome);
-		panels.childNodes[ idx ].appendChild(frame);
+		panel.appendChild(frame);
+		panel.replaceChild(panel.lastChild,panel.firstChild);
+		
 		sdump('D_TAB','Created frame : ' + frame.id + ' for index : ' + idx + ' with src=' + frame.getAttribute('src') + '\n');
 		//frame.contentWindow.parentWindow = parentWindow;
 		//frame.contentWindow.tabWindow = this;
