@@ -257,6 +257,11 @@ function radio_checkbox(d,ev) {
 	}
 }
 
+// simpler version of set_decks
+function set_deck(d,deck,idx) {
+	set_decks(d,{ deck : idx });
+}
+
 // Takes a hash with key:value => deck element id : page index
 // Sets each deck to the corresponding index
 function set_decks(d,params) {

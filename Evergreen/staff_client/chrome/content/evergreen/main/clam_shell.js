@@ -13,8 +13,8 @@ function clam_shell_init(p) {
 	var first_deck = nl[0];
 	var second_deck = nl[1];
 
-	p.w.set_first_deck = function (idx) { return clam_shell_set_first_deck(p.d,first_deck,idx); };
-	p.w.set_second_deck = function (idx) { return clam_shell_set_second_deck(p.d,second_deck,idx); };
+	p.w.set_first_deck = function (idx) { return set_deck(p.d,first_deck,idx); };
+	p.w.set_second_deck = function (idx) { return set_deck(p.d,second_deck,idx); };
 	p.w.replace_card_in_first_deck = function (idx,chrome,params) {
 		return replace_card_in_deck(p.d,first_deck,idx,chrome,params);
 	};
@@ -28,14 +28,6 @@ function clam_shell_init(p) {
 		return new_card_in_deck(p.d,second_deck,chrome,params);
 	};
 
-}
-
-function clam_shell_set_first_deck(doc,deck,idx) {
-	set_decks(doc,{ deck : idx });
-}
-
-function clam_shell_set_second_deck(doc,deck,idx) {
-	set_decks(doc,{ deck : idx });
 }
 
 function new_card_in_deck(doc,deck,chrome,params) {
