@@ -13,6 +13,20 @@ function clam_shell_init(p) {
 	var first_deck = nl[0];
 	var second_deck = nl[1];
 
+	p.w.first_deck = first_deck;
+	p.w.second_deck = second_deck;
+	p.w.get_card_in_first_deck = function (idx) {
+		if (idx)
+			return first_deck.childNodes[ idx ];
+		else
+			return first_deck.selectedPanel;
+	}
+	p.w.get_card_in_second_deck = function (idx) {
+		if (idx)
+			return second_deck.childNodes[ idx ];
+		else
+			return second_deck.selectedPanel;
+	}
 	p.w.set_first_deck = function (idx) { return set_deck(p.d,first_deck,idx); };
 	p.w.set_second_deck = function (idx) { return set_deck(p.d,second_deck,idx); };
 	p.w.replace_card_in_first_deck = function (idx,chrome,params) {
