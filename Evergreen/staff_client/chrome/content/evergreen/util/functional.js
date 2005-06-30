@@ -9,10 +9,27 @@ function filter_list(list,f) {
 	return new_list;
 }
 
+function filter_object(obj,f) {
+	var new_obj = {};
+	for (var i in obj) {
+		var t = f( i, obj[i] );
+		if (t) new_obj[i] = obj[i];
+	}
+	return new_obj;
+}
+
 function find_list(list,f) {
 	for (var i in list) {
 		var t = f( list[i] );
 		if (t) return list[i];
+	}
+	return null;
+}
+
+function find_object(obj,f) {
+	for (var i in obj) {
+		var t = f( i, obj[i] );
+		if (t) return obj[i];
 	}
 	return null;
 }
@@ -23,6 +40,14 @@ function map_list(list,f) {
 		new_list.push( f( list[i] ) );
 	}
 	return new_list;
+}
+
+function map_object(obj,f) {
+	var new_obj = {};
+	for (var i in obj) {
+		new_obj[ f( i, obj[i] )[0] ] = f( i, obj[i] )[1];
+	}
+	return new_obj;
 }
 
 function map_object_to_list(obj,f) {
