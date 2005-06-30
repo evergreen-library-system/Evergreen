@@ -261,7 +261,9 @@ function radio_checkbox(d,ev) {
 // Sets each deck to the corresponding index
 function set_decks(d,params) {
 	for (var deck_id in params) {
-		var deck = d.getElementById( deck_id )
+		var deck;
+		if (typeof(deck) != 'object')
+			deck = d.getElementById( deck_id )
 		if (deck) deck.setAttribute( 'selectedIndex', params[deck_id] );
 	}
 }
