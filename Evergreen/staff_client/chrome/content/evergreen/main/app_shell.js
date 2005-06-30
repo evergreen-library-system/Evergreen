@@ -169,11 +169,11 @@ function replace_tab( d, tabbox, label, chrome, params ) {
 		tab.setAttribute('label',label + ' ' + (idx+1));
 
 		var frame = d.createElement('iframe');
-		frame.setAttribute('id','frame_'+idx);
 		frame.setAttribute('flex','1');
 		frame.setAttribute('src',chrome);
 		panel.appendChild(frame);
 		panel.replaceChild(panel.lastChild,panel.firstChild);
+		frame.setAttribute('id','frame_'+idx);
 		
 		sdump('D_TAB','Created frame : ' + frame.id + ' for index : ' + idx + ' with src=' + frame.getAttribute('src') + '\n');
 		//frame.contentWindow.parentWindow = parentWindow;
