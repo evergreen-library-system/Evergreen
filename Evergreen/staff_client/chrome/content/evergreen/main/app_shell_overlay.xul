@@ -68,7 +68,7 @@
 			'main_tabbox',
 			'chrome://evergreen/content/main/clam_shell.xul',
 			'test',
-			{ 'vertical' : true }
+			{ }
 		); "/>
 
 	<command id="cmd_broken" oncommand="

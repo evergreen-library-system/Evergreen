@@ -11,7 +11,7 @@
 </commandset>
 
 <!-- main widget for clam_shell -->
-<box id="ClamShell_main" flex="1" orient="vertical">
+<box id="ClamShell_main" flex="1" orient="horizontal">
 	<deck id="ClamShell_first_deck" flex="1"/>
 	<splitter id="ClamShell_splitter" />
 	<deck id="CLamShell_second_deck" flex="1"/>
