@@ -296,7 +296,7 @@ sub start_mods_batch {
 	push(@{$self->{master_doc}->{online_loc}},
 		$self->get_field_value( $mods, $online_loc_xpath ));
 
-	($self->{master_doc}->{abstract}) = 
+	($self->{master_doc}->{synopsis}) = 
 		$self->get_field_value( $mods, $abstract_xpath );
 
 }
@@ -375,7 +375,7 @@ sub finish_mods_batch {
 	$record->series(\@series);
 
 	$record->online_loc($perl->{online_loc});
-	$record->abstract($perl->{abstract});
+	$record->synopsis($perl->{synopsis});
 
 	$self->{master_doc} = undef;
 	return $record;
