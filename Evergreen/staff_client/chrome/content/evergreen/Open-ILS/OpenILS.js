@@ -1,5 +1,5 @@
 function OpenILS_init(params) { 
-	sdump('D_TRACE','Entering OpenILS_init with ' + params + '\n');
+	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d") return [i,o.toString()]; else return [i,o]; }))' }));
 
 	try {
 
@@ -14,11 +14,10 @@ function OpenILS_init(params) {
 
 	} catch(E) {}
 
-	sdump('D_TRACE','Exiting OpenILS_init\n');
 }
 
 function OpenILS_exit(params) {
-	sdump('D_TRACE','Entering OpenILS_exit with ' + params + '\n');
+	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d") return [i,o.toString()]; else return [i,o]; }))' }));
 
 	try {
 	
