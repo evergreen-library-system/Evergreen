@@ -7,7 +7,7 @@
 <window id="app_shell_win"
 	orient="vertical" style="overflow: auto" width="800" height="500"
 	sizemode="maximized" persist="width height" 
-	onload="params.d = document; params.app = 'AppShell'; mw.OpenILS_init(params);"
+	onload="params.w = window; params.d = document; params.app = 'AppShell'; mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

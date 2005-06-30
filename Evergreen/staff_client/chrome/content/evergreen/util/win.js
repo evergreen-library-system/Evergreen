@@ -54,7 +54,7 @@ function new_window(chrome,params) {
 		if (w != self) { 
 			w.parentWindow = self;
 			w.mw = mw;
-			register_window(w); 
+			//register_window(w); 
 		}
 		w.am_i_a_top_level_tab = false;
 		if (params) {

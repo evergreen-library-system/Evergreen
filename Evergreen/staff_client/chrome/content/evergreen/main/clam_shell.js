@@ -11,3 +11,10 @@ function clam_shell_init(p) {
 	}
 }
 
+function clam_shell_set_first_deck(d,i) {
+	set_decks(d,{ 'ClamShell_first_deck' : i });
+}
+
+function clam_shell_set_second_deck(d,i) {
+	set_decks(d,{ 'ClamShell_second_deck' : i });
+}

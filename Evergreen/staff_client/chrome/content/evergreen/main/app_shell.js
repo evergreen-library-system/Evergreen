@@ -3,7 +3,6 @@ sdump('D_TRACE','Loading app_shell.js\n');
 function app_shell_init(params) {
 	dump("TESTING: app_shell.js: " + mw.G['main_test_variable'] + '\n');
 	replace_tab(params.d,'main_tabbox','Tab','chrome://evergreen/content/main/about.xul');
-	mw.G.sound.beep();
 }
 
 function close_tab( d, t1, t2 ) {

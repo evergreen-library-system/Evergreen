@@ -9,8 +9,8 @@
 
 <window id="auth_win" title="&auth.title;" 
 	orient="vertical" style="overflow: auto"  persist="width height"
-	onload="mw.OpenILS_init({ 'd' : document, 'app' : 'Auth' });"
-	onunload="mw.OpenILS_exit({ 'd' : document, 'app' : 'Auth' });"
+	onload="mw.OpenILS_init({ 'w' : window, 'd' : document, 'app' : 'Auth' });"
+	onunload="mw.OpenILS_exit({ 'w' : window, 'd' : document, 'app' : 'Auth' });"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- Stylesheets -->

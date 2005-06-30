@@ -2,7 +2,7 @@
 <!-- Application: Evergreen Staff Client -->
 
 <page id="opac_win" orient="vertical" style="overflow: auto;" persist="width height"
-	onload="params.d = document; params.app = 'Opac'; mw.OpenILS_init(params);" 
+	onload="params.w = window; params.d = document; params.app = 'Opac'; mw.OpenILS_init(params);" 
 	onunload="mw.OpenILS_exit(params);" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

@@ -1,5 +1,5 @@
 function OpenILS_init(params) { 
-	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d") return [i,o.toString()]; else return [i,o]; }))' }));
+	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d"||i=="w") return [i,o.toString()]; else return [i,o]; }))' }));
 
 	try {
 
@@ -11,13 +11,14 @@ function OpenILS_init(params) {
 		}
 
 		register_document(params.d);
+		register_window(params.w);
 
-	} catch(E) {}
+	} catch(E) { dump(js2JSON(E)+'\n'); }
 
 }
 
 function OpenILS_exit(params) {
-	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d") return [i,o.toString()]; else return [i,o]; }))' }));
+	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d"||i=="w") return [i,o.toString()]; else return [i,o]; }))' }));
 
 	try {
 	
@@ -29,8 +30,9 @@ function OpenILS_exit(params) {
 		}
 
 		unregister_document(params.d);
+		unregister_window(params.w);
 
-	} catch(E) {}
+	} catch(E) { dump(js2JSON(E)+'\n'); }
 
 	sdump('D_TRACE','Exiting OpenILS_exit\n');
 }
