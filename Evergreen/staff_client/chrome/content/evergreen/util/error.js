@@ -33,23 +33,36 @@ function arg_dump(args,dump_these) {
 		for (var i = 0; i < args.length; i++)
 			if (dump_these[i]) {
 
+				var arg = args[i];
+				dump('dump_these[i] = ' + dump_these[i] + '  arg = ' + arg + '\n');
+
 				if (typeof(dump_these[i])=='string') {
 
 					if (dump_these[i].slice(0,1) == '.') {
-						var cmd = 'args[' + i + ']' + dump_these[i];
-						var result = eval( cmd );
+						var cmd = 'arg' + dump_these[i];
+						var result;
+						try {
+							result = eval( cmd );
+						} catch(E) {
+							result = cmd + ' ==> ' + E;
+						}
 						s += '\targ #' + i + ': ' + cmd + ' = ' + result;
 					} else {
-						var result = eval( dump_these[i] );
-						s += '\targ #' + i + ': ' + dump_these[i] + ' = ' + result;
+						var result;
+						try {
+							result = eval( dump_these[i] );
+						} catch(E) {
+							result = dump_these[i] + ' ==> ' + E;
+						}
+						s += '\targ #' + i + ': ' + result;
 					}
 
 				} else {
 					s += '\targ #' + i + ' = ';
 					try {
-						s += js2JSON( args[i] );
+						s += js2JSON( arg );
 					} catch(E) {
-						s += args[i];
+						s += arg;
 					}
 				}
 
