@@ -7,6 +7,7 @@ function app_shell_init(p) {
 	p.w.find_free_tab = function (tabs) { return find_free_tab(tabs); };
 	p.w.new_tab = function () { return new_tab(p.d,p.tabbox); };
 	p.w.replace_tab = function (label,chrome,params) { return replace_tab(p.d,p.tabbox,label,chrome,params); };
+	p.w.get_frame_in_tab = function (idx, all_or_vis) { return get_frame_in_tab( p.d, p.tabbox, idx, all_or_vis ); }; 
 	
 	p.w.replace_tab('Tab','chrome://evergreen/content/main/about.xul');
 }
@@ -103,6 +104,30 @@ function find_free_tab(tabs) {
 			return i;
 	}
 	return -1;
+}
+
+function get_frame_in_tab( d, tabbox, idx, all_or_visible ) {
+	sdump('D_TAB',arg_dump(arguments));
+	if (typeof(tabbox)!='object')
+		tabbox = d.getElementById(tabbox);
+	if (typeof(tabbox)!='object')
+		throw('Could not find tabbox. d = ' + d + ' tabbox = ' + tabbox + '\n');
+	var tabs = tabbox.firstChild;
+	var panels = tabbox.lastChild;
+	try {
+		if (all_or_visible == 'visible') {
+			var count = 0;
+			for (var i = 0; i < tabs.childNodes.length; i++) {
+				if (!tabs.childNodes[i].hidden) count++;
+				if (count==idx) return panels.childNodes[i].getElementsByTagName('iframe')[0];
+			}
+		} else {
+			return panels.childNodes[ idx ].getElementsByTagName('iframe')[0];
+		}
+	} catch(E) {
+		dump(js2JSON(E) + '\n');
+	}
+	return null;
 }
 
 function new_tab( d, tabbox ) {
