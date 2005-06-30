@@ -1,5 +1,5 @@
 function spawn_interface(d,placement,place,chrome,label,passthru_params) {
-	sdump('D_SPAWN','trying to spawn_interface('+d+','+placement+','+place+','+chrome+','+label+','+js2JSON(passthru_params)+')\n');
+	sdump('D_SPAWN',arg_dump(arguments,{0:true,1:true,2:true,3:true,4:true,5:true}));
 	var w;
 	switch(placement) {
 		case 'new_tab' : 
