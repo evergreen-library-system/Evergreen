@@ -33,6 +33,16 @@ function patron_search_form_init(p) {
 			false);
 	else
 		dump("No cmd_clear element.\n");
+
+	if (p.onload) {
+		try {
+			dump('D_TRACE','trying psuedo-onload...\n');
+			p.onload(p.w);
+		} catch(E) {
+			dump( js2JSON(E) + '\n' );
+		}
+	}
+
 }
 
 function patron_search_form_textbox_handler(doc,textbox,search_hash) {
