@@ -121,7 +121,7 @@ sub fast_fieldmapper {
 			$search_type = 'search_regex'
 		}
 
-		for my $obj ($cdbi->$search_type({ $col => $id})) {
+		for my $obj ($class->$search_type({ $col => $id})) {
 			push @fms, $obj->to_fieldmapper;
 		}
 	}

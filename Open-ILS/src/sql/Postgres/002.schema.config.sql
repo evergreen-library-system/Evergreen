@@ -116,4 +116,50 @@ INSERT INTO config.net_access_level (name) VALUES ('Restricted');
 INSERT INTO config.net_access_level (name) VALUES ('Full');
 INSERT INTO config.net_access_level (name) VALUES ('None');
 
+
+
+/*
+
+CREATE TABLE config.new_metabib_field (
+	id		SERIAL	PRIMARY KEY,
+	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
+	name		TEXT	NOT NULL UNIQUE,
+	search_xpath	TEXT	NOT NULL,
+	browse_xpath	TEXT
+);
+
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
+	VALUES ( 'series', 'seriestitle', $$//mods/relatedItem[@type="series"]/titleInfo$$, $$//mods/relatedItem[@type="series"]/titleInfo/title$$ );
+
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
+	VALUES ( 'title', 'abbreviated', $$//mods/titleInfo[title and (@type='abreviated')]$$, $$//mods/titleInfo[title and (@type='abreviated')]/title$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
+	VALUES ( 'title', 'translated', $$//mods/titleInfo[title and (@type='translated')]$$, $$//mods/titleInfo[title and (@type='translated')]/title$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
+	VALUES ( 'title', 'uniform', $$//mods/titleInfo[title and (@type='uniform')]$$, $$//mods/titleInfo[title and (@type='uniform')]/title$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
+	VALUES ( 'title', 'proper', $$//mods/titleInfo[title and not (@type)]$$, $$//mods/titleInfo[title and not (@type)]/title$$ );
+
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'author', 'corporate', $$//mods/name[@type='corporate']/namePart[../role/text[text()='creator']]$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'author', 'personal', $$//mods/name[@type='personal']/namePart[../role/text[text()='creator']]$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'author', 'conference', $$//mods/name[@type='conference']/namePart[../role/text[text()='creator']]$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'author', 'other', $$//mods/name[@type='personal']/namePart[not(../role)]$$ );
+
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'subject', 'geographic', $$//mods/subject/geographic$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'subject', 'name', $$//mods/subject/name$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'subject', 'temporal', $$//mods/subject/temporal$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'subject', 'topic', $$//mods/subject/topic$$ );
+INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
+	VALUES ( 'keyword', 'keyword', $$//mods/*[not(local-name()='originInfo')]$$ ); 
+
+*/
+
 COMMIT;
