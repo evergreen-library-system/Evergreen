@@ -82,7 +82,12 @@
 									cell(content="Subjects", class='detail_item_label');
 									cell(id='record_detail_subject_cell');
 								END;
-			
+
+								WRAPPER html/row class='detail_item_row';
+									cell(content="Abstract", class='detail_item_label');
+									cell(id='record_detail_abstract_cell');
+								END;
+
 							END; # table
 						END;
 		

@@ -238,8 +238,8 @@ UserSession.prototype.updateEmail = function(email) {
 }
 
 
-UserSession.prototype.fleshMe = function() {
-	if(this.fleshed) return;
+UserSession.prototype.fleshMe = function(force) {
+	if(this.fleshed && !force) return;
 
 	var req = new RemoteRequest(
 		"open-ils.actor",
@@ -248,6 +248,7 @@ UserSession.prototype.fleshMe = function() {
 
 	req.send(true);
 	this.userObject = req.getResultObject();
+	this.username = this.userObject.usrname();
 	this.fleshed = true;
 }
 

@@ -233,8 +233,10 @@ Page.prototype.buildNavBox = function(full) {
 	Page.navBox.finalize();
 
 	var location = getById("main_page_nav_box");
-	if(location) 
+	if(location) {
+		removeChildren(location);
 		location.appendChild(Page.navBox.getNode());
+	}
 	
 
 	return Page.navBox.getNode();

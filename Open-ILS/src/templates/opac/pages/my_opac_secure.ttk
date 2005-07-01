@@ -13,6 +13,7 @@
 			js( src='/js/opac/MyOPACSPage.js' );
 			js( src='/js/util/RemoteRequest.js' );
 			js( src='/js/util/webutils.js' );
+			js( src='/js/util/ils_utils.js' );
 			js( src='/js/util/UserSession.js' );
 			js( src='/js/util/Cookie.js' );
 			js( src='/js/util/ex.js' );

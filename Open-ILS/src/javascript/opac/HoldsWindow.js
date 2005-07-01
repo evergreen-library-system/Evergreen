@@ -1,14 +1,3 @@
-var resourceFormats = [ 
-	"text", 
-	"moving image",
-	"sound recording",
-	"software, multimedia",
-	"still images",
-	"cartographic",
-	"mixed material",
-	"notated music",
-	"three dimensional object" ];
-
 
 /* 
 	@param record the id of the target item 
@@ -27,6 +16,7 @@ function HoldsWindow(record, type, requestor, recipient, requestor_login) {
 	this.recipient	= recipient;
 	this.type = type;
 	this.session = requestor_login;
+	this.built = false;
 
 	add_css_class(this.div, "holds_window");
 	add_css_class(this.div, "hide_me");
@@ -89,13 +79,27 @@ HoldsWindow.prototype.sendHoldsRequest = function(formats, org, email, phone) {
 
 }
 
-HoldsWindow.prototype.buildWindow = function() {
+/* returns false if we don't have a recipient for the hold */
+HoldsWindow.prototype.buildWindow = function(node) {
 
+	if(this.built) return true;
 	var d = elem("div");
 	var id = this.record;
 
 	var usr = this.recipient;
-	if(!usr) return;
+	if(!usr) {
+		var obj = this;
+		var func = function(usr) { 
+			obj.recipient = usr.userObject;
+			obj.requestor = usr.userObject;
+			obj.session = usr.session_id;
+			obj.toggle();
+		}
+		var diag = new LoginDialog(getDocument().body, func);
+		diag.display(node);
+		return false;
+	}
+
 	var org = usr.home_ou();
 	d.appendChild(this.buildPickuplibSelector(org));
 
@@ -104,9 +108,16 @@ HoldsWindow.prototype.buildWindow = function() {
 	d.appendChild(this.buildSubmit());
 
 	this.div.appendChild(d);
+	this.built = true;
+	return true;
 }
 
-HoldsWindow.prototype.toggle = function() {
+HoldsWindow.prototype.toggle = function(node) {
+
+	debug("Building window with node " + node);
+	if(!this.built) 
+		if(!this.buildWindow(node)) return;
+
 	swapClass( this.div, "hide_me", "show_me" );
 
 
@@ -114,7 +125,7 @@ HoldsWindow.prototype.toggle = function() {
 	if(IE) {
 
 		var sels = getDocument().getElementsByTagName("select");
-		if(sels.length == 0) return;
+		if(sels.length == 0) return true;
 
 		if(this.div.className.indexOf("hide_me") != -1)  {
 			for(var i = 0; i!= sels.length; i++) {
@@ -136,6 +147,8 @@ HoldsWindow.prototype.toggle = function() {
 			}
 		}
 	}
+
+	return true;
 }
 
 /*
@@ -185,18 +198,18 @@ HoldsWindow.prototype.buildSubmit = function() {
 	add_css_class(bdiv, "holds_window_buttons");
 
 	var button = elem("input", 
-		{type:"submit", style:"margin-left: 10px;", value:"Place Hold"});
+		{type:"submit", style:"margin-right: 10px;", value:"Place Hold"});
 
 	var cancel = elem("input", 
-		{type:"submit", style:"margin-right: 10px;",value:"Cancel"});
+		{type:"submit", style:"margin-left: 10px;",value:"Cancel"});
 	var obj = this;
 
 	cancel.onclick = function() { obj.toggle(); }
 	button.onclick = function() { obj.toggle(); obj.process(); }
 
 	div.appendChild(elem("br"));
-	bdiv.appendChild(cancel);
 	bdiv.appendChild(button);
+	bdiv.appendChild(cancel);
 	div.appendChild(bdiv);
 
 	return div;
@@ -319,13 +332,6 @@ HoldsWindow.prototype.buildResourceSelector = function() {
 
 }
 
-function mkResourceImage(resource) {
-	var pic = elem("img");
-	pic.setAttribute("src", "/images/" + resource + ".jpg");
-	pic.setAttribute("width", "20");
-	pic.setAttribute("height", "20");
-	pic.setAttribute("title", resource);
-	return pic;
-}
+
 
 

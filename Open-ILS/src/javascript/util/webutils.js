@@ -695,6 +695,7 @@ function removeChildren(node) {
 		while(node.childNodes[0])
 			node.removeChild(node.childNodes[0]);
 	}
+	return node;
 }
 
 
@@ -702,3 +703,26 @@ function removeChildren(node) {
 function userMessage(msg) {
 	alert("An unknown error occured during the following process: " + msg);
 }
+
+
+
+/* returns [ xoffset, yoffset ] of the target node */
+function getXYOffsets(target) {
+
+	var x = findPosX(target);
+	var y = findPosY(target);
+	var height = getObjectHeight(target);
+	var xpos = x;
+
+	var offsety = y + height;
+	var offsetx = xpos; 
+	
+	if(IE) { /*HACK XXX*/
+		offsety = parseInt(offsety) + 15;
+		offsetx = parseInt(offsetx) + 8;
+	}
+
+	debug("getXYOffset y: " + offsety + " x: " + offsetx );
+	return [x, y];
+}
+

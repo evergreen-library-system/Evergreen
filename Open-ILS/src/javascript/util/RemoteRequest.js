@@ -34,7 +34,7 @@ RemoteRequest.prunePending = function(id) {
 			if( req.id != id )
 				tmpArray.push(req);
 			else {
-				debug("Cleaning " + req.id );
+				//debug("Cleaning " + req.id );
 				req.clean();
 			}
 		}

@@ -76,6 +76,8 @@ RecordDetailPage.prototype.draw = function() {
 		tree.selectedIndex = idx;
 		var opt = tree.options[idx];
 		if(opt) opt.selected = true;	
+
+		obj.displayParentLink(findOrgUnit(org_id), obj.record);
 		
 	}
 
@@ -133,7 +135,7 @@ RecordDetailPage.prototype.buildCustomOrgTree = function(record) {
 /* builds the select list with the appropriate org units */
 function _fleshOrgTree(org_array, selector) {
 
-	debug("Fleshing org tree selector");
+	debug("Fleshing org tree selector with " + org_array);
 
 	for( var idx in org_array ) {
 		var slot = org_array[idx];
@@ -141,7 +143,18 @@ function _fleshOrgTree(org_array, selector) {
 		_addOrgAndParents(selector, org);
 	}
 
+	/* clear out the state flags we added after the tree is built */
+	setTimeout(function(){_clearOrgFlags();}, 500);
+
 	debug("Tree is built..");
+}
+
+function _clearOrgFlags(node) {
+	if(node == null)
+		node = globalOrgTree;
+	node.added = false;
+	for(var c in node.children()) 
+		_clearOrgFlags(node.children()[c]);
 }
 
 
@@ -239,13 +252,15 @@ RecordDetailPage.prototype.setPlaceHold = function(record) {
 		{}, "Place Hold" );
 
 	var user = UserSession.instance();
-	if(!(user && user.verifySession()))  /* needs to pop up a login dialog XXX */
-		return;
-
-	var win = new HoldsWindow(record.doc_id(), 
+	var win;
+	if(user.verifySession()) {
+		win = new HoldsWindow(record.doc_id(), 
 			"T", user.userObject, user.userObject, user.session_id);
-	win.buildWindow(); 
-	holds.onclick = function() { win.toggle(); }
+	} else {
+		win = new HoldsWindow(record.doc_id(), 
+			"T", null, null, null);
+	}
+	holds.onclick = function() { win.toggle(holds); }
 
 	var space = elem("span", {style:"padding:5px"},null, " ");
 	this.viewMarc.appendChild(space);
@@ -294,6 +309,7 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 	var tcn_cell			= getById("record_detail_tcn_cell");
 	var resource_cell		= getById("record_detail_resource_cell");
 	var pic_cell			= getById("record_detail_pic_cell");
+	var abstract_cell		= getById("record_detail_abstract_cell");
 
 	add_css_class(title_cell,		"detail_item_cell");
 	add_css_class(author_cell,		"detail_item_cell");
@@ -304,6 +320,7 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 	add_css_class(subject_cell,	"detail_item_cell");
 	add_css_class(tcn_cell,			"detail_item_cell");
 	add_css_class(resource_cell,	"detail_item_cell");
+	add_css_class(abstract_cell,	"detail_item_cell");
 
 	title_cell.appendChild(
 		createAppTextNode(normalize(record.title())));
@@ -324,10 +341,15 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 	tcn_cell.appendChild(
 		createAppTextNode(record.tcn()));
 
+	var abs = record.synopsis();
+	if(abs == null || abs == "") abs = "N/A";
+	abstract_cell.appendChild(mktext(abs));
 
 
 
 	var resource = record.types_of_resource()[0];
+	if(resource.indexOf("sound recording") != -1) 
+		resource = "sound recording";
 	var r_pic = elem("img", 
 		{ src: "/images/" + resource + ".jpg" } );
 	resource_cell.appendChild(r_pic);
@@ -336,8 +358,32 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 	resource_cell.appendChild(
 		createAppTextNode(record.types_of_resource()));
 
-
 	pic_cell.appendChild(this.mkImage(record));
+
+
+	var locs = record.online_loc();
+	if(locs && locs.length > 0){ 
+		var tab = pic_cell.parentNode.parentNode;
+		var loc_row = tab.insertRow(tab.rows.length);
+		var desc_cell =loc_row.insertCell(0);
+		add_css_class(desc_cell, "detail_item_label");
+		desc_cell.appendChild(mktext("Other Resources"));
+		var links_cell =loc_row.insertCell(1);
+
+		var found = new Array(); /* weed out duplicates */
+		/* online location field is of the form [link, title, link, title, ...] */
+		for(var i = 0; i!= locs.length; i++ ) {
+			var ref = locs[i++]; 
+			var ttl = locs[i];
+			if(find_list(found,function(f){return (f==ref);}))
+				continue;
+			found.push(ref);
+			var a = elem("a", {style:"text-decoration:underline",
+					target:"_blank",href:ref,title:ttl}, null, ttl);
+			links_cell.appendChild(a);
+			links_cell.appendChild(mktext(" "));
+		}
+	}
 
 	var orgUnit = globalSelectedLocation;
 	if(!orgUnit) orgUnit = globalLocation;
@@ -424,14 +470,18 @@ RecordDetailPage.prototype.drawCopyTrees = function(orgUnit, record) {
 /* displays a link to view info for the parent org 
 	if showMe == true, we don't search for the parent, 
 	but use the given orgUnit as the link point */
-RecordDetailPage.prototype.displayParentLink = function(orgUnit, record, showMe) {
-
-	var region = orgUnit;
-	if(!showMe)
-		region = findOrgUnit(orgUnit.parent_ou());
+RecordDetailPage.prototype.displayParentLink = function(orgUnit, record) {
 
 	var href = this.parentLink;
 	removeChildren(href);
+	var region = orgUnit;
+	if(region == null) return;
+
+	var depth = parseInt(findOrgType(region.ou_type()).depth());
+
+	if(depth < 2) return;
+
+	region = findOrgUnit(orgUnit.parent_ou());
 
 	href.appendChild(createAppTextNode(
 		"View Volumes/Copies for " + region.name()));
@@ -447,10 +497,7 @@ RecordDetailPage.prototype.displayParentLink = function(orgUnit, record, showMe)
 		/* allows the above message to be displayed */
 		setTimeout(function() { obj.displayTrees(region, record, true) }, 100); 
 
-		if(showMe)
-			obj.displayParentLink(orgUnit, record);
-		else
-			obj.displayParentLink(orgUnit, record, true);
+		obj.displayParentLink(null);
 	}
 
 	var reg_div = createAppElement("div");

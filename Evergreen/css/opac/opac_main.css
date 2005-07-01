@@ -183,4 +183,13 @@ table { border-collapse: collapse; }
 	text-align:center;
 }
 
+.login_dialog {
+	position: absolute;
+	z-index: 40;
+	top: 10px;
+	border: 2px solid lightblue;
+	background: #FFE;
+	padding: 10px;
+}
+
 

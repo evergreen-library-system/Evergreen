@@ -45,7 +45,6 @@ AbstractRecordResultPage.prototype.init = function() {
 	this.theadDrawn		= false;
 	this.bigOlBox			= getById("big_ol_box");
 
-
 }
 
 
@@ -201,6 +200,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 
 	var c = misc_row.insertCell(0);
+
 	/* shove in a div for each of the types of resource */
 	for( var i = 0; i!= 9; i++) {
 		var div = createAppElement("div");
@@ -275,6 +275,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 	author_cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	author_cell.appendChild(this.mkLink(record.doc_id(), "author", author ));
 
+	var marcd = elem("div");
 	if(instanceOf(this, RecordResultPage)) {
 		var span = createAppElement("span");
 		span.style.marginLeft = "10px";
@@ -300,11 +301,12 @@ AbstractRecordResultPage.prototype.displayRecord =
 		var func = buildViewMARCWindow(record);
 		marcb.onclick = func;
 
-		var marcd = elem( "div", { style: "float:right" } );
+		marcd = elem( "div", { style: "float:right" } );
 		marcd.appendChild(marcb);
+
 		//author_cell.appendChild(marcd);
 		//misc_row.insertCell(misc_row.cells.length).appendChild(marcd);
-		c.appendChild(marcd);
+		//c.appendChild(marcd);
 
 
 	}
@@ -315,22 +317,23 @@ AbstractRecordResultPage.prototype.displayRecord =
 		style: "text-decoration:underline" 
 	}, {}, "Place Hold" );
 
-	var user = UserSession.instance();
 
-	/*
-	if(!(user && user.verifySession()))  
-		return;
-		*/
-	
 	var type = "M";
 	if(instanceOf(this, RecordResultPage))
 		type = "T";
 
-	var win = new HoldsWindow(record.doc_id(), 
+	var win;
+	var user = UserSession.instance();
+	if(user.verifySession()) {
+		win = new HoldsWindow(record.doc_id(), 
 			type, user.userObject, user.userObject, user.session_id);
+	} else {
+		win = new HoldsWindow(record.doc_id(), 
+			type, null, null, null);
+	}
 
-	win.buildWindow(); 
-	holds.onclick = function() { win.toggle(); }
+	
+	holds.onclick = function() { win.toggle(holds); }
 	var holddiv = elem("div");
 
 	//if(instanceOf(this,RecordResultPage))
@@ -339,9 +342,21 @@ AbstractRecordResultPage.prototype.displayRecord =
 	holddiv.appendChild(holds);
 	//var space = elem("span", {style:"padding:5px"},null, " ");
 	//c.appendChild(space)
-	c.appendChild(mktext(" "))
-	c.appendChild(holddiv)
+	//c.appendChild(mktext(" "))
+	//c.appendChild(holddiv)
 
+	var tab = elem("table",{style:"float:right"});
+	var tr = tab.insertRow(0);
+	var tc = tr.insertCell(0);
+	var tc2 = tr.insertCell(1);
+	var tc3 = tr.insertCell(2);
+	tc.setAttribute("nowrap", "nowrap");
+	tc3.setAttribute("nowrap", "nowrap");
+
+	tc.appendChild(marcd);
+	tc2.appendChild(mktext(" "));
+	tc3.appendChild(holddiv);
+	c.appendChild(tab);
 
 
 
@@ -635,6 +650,9 @@ function buildResourcePic(c, resource) {
 
 	var pic = createAppElement("img");
 
+
+	if(resource.indexOf("sound recording") != -1) 
+		resource = "sound recording";
 	pic.setAttribute("src", "/images/" + resource + ".jpg");
 	pic.className = "record_resource_pic";
 	pic.setAttribute("width", "20");
