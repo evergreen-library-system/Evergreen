@@ -14,6 +14,13 @@
 		}
 		$self->_do_search("@@"  => @args);
 	}
+
+	sub search_regex {
+		my $self = shift;
+		my @args = @_;
+		$self->_do_search("~*"  => @args);
+	}
+
 }
 
 1;

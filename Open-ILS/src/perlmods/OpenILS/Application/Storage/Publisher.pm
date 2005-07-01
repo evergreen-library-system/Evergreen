@@ -132,9 +132,13 @@ sub search {
 
 	my $cdbi = $self->{cdbi};
 
-	$log->debug("Searching $cdbi for { ".join(',', map { "$_ => $$searches{$_}" } keys %$searches).' }',DEBUG);
+	(my $search_type = $self->api_name) =~ s/.*\.(search[^.]*).*/$1/o;
 
-	for my $obj ($cdbi->search($searches)) {
+	$log->debug("Searching $cdbi for { ".
+		join(',', map { "$_ => $$searches{$_}" } keys %$searches).
+		" } using $search_type",DEBUG);
+
+	for my $obj ($cdbi->$search_type($searches)) {
 		$client->respond( $obj->to_fieldmapper );
 	}
 	return undef;
@@ -151,6 +155,8 @@ sub search_one_field {
 
 	my $like = 0;
 	$like = 1 if ($search_type =~ /like$/o);
+	$like = 2 if ($search_type =~ /fts$/o);
+	$like = 3 if ($search_type =~ /regex$/o);
 
 	for my $term (@terms) {
 		$log->debug("Searching $cdbi for $col using type $search_type, value '$term'",DEBUG);
@@ -296,7 +302,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 	my $registration_class = __PACKAGE__ . "::$class";
 	my $api_prefix = 'open-ils.storage.direct.'.$api_class;
 
-	# Create the search method
+	# Create the search methods
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.search' ) ) {
 		__PACKAGE__->register_method(
 			api_name	=> $api_prefix.'.search',
@@ -306,6 +312,43 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			cdbi		=> $cdbi,
 			cachable	=> 1,
 		);
+	}
+
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.search_like',
+			method		=> 'search',
+			api_level	=> 1,
+			stream		=> 1,
+			cdbi		=> $cdbi,
+			cachable	=> 1,
+		);
+	}
+
+	if (\&Class::DBI::search_fts) {
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_fts' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search_fts',
+				method		=> 'search',
+				api_level	=> 1,
+				stream		=> 1,
+				cdbi		=> $cdbi,
+				cachable	=> 1,
+			);
+		}
+	}
+
+	if (\&Class::DBI::search_regex) {
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_regex' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search_regex',
+				method		=> 'search',
+				api_level	=> 1,
+				stream		=> 1,
+				cdbi		=> $cdbi,
+				cachable	=> 1,
+			);
+		}
 	}
 
 	# Create the retrieve method
@@ -349,6 +392,28 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				cdbi		=> $cdbi,
 				cachable	=> 1,
 			);
+		}
+		if (\&Class::DBI::search_fts) {
+			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_fts.'.$field ) ) {
+				__PACKAGE__->register_method(
+					api_name	=> $api_prefix.'.search_fts.'.$field,
+					method		=> 'search_one_field',
+					api_level	=> 1,
+					cdbi		=> $cdbi,
+					cachable	=> 1,
+				);
+			}
+		}
+		if (\&Class::DBI::search_regex) {
+			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_regex.'.$field ) ) {
+				__PACKAGE__->register_method(
+					api_name	=> $api_prefix.'.search_regex.'.$field,
+					method		=> 'search_one_field',
+					api_level	=> 1,
+					cdbi		=> $cdbi,
+					cachable	=> 1,
+				);
+			}
 		}
 	}
 

@@ -30,7 +30,7 @@ sub child_init {
 	__PACKAGE__->set_sql( 'OILSFastOrderedSearchLike', <<"	SQL", 'Main');
 		SELECT	%s
 		  FROM	%s
-		  WHERE	%s ~ ?
+		  WHERE	%s LIKE ?
 		  ORDER BY %s
 	SQL
 
@@ -105,12 +105,25 @@ sub fast_fieldmapper {
 	my $fm_class = 'Fieldmapper::'.$class;
 	my @fms;
 	$log->debug("fast_fieldmapper() ==> Retrieving $fm_class", INTERNAL);
-	for my $hash ($self->fast_flesh_sth( $col, "$id", { order_by => $col }, $like )->fetchall_hash) {
-		my $fm = $fm_class->new;
-		for my $field ( $fm_class->real_fields ) {
-			$fm->$field( $$hash{$field} );
+	if ($like < 2) {
+		for my $hash ($self->fast_flesh_sth( $col, "$id", { order_by => $col }, $like )->fetchall_hash) {
+			my $fm = $fm_class->new;
+			for my $field ( $fm_class->real_fields ) {
+				$fm->$field( $$hash{$field} );
+			}
+			push @fms, $fm;
 		}
-		push @fms, $fm;
+	} else {
+		my $search_type = 'search';
+		if ($like == 2) {
+			$search_type = 'search_fts'
+		} elsif ($like == 3) {
+			$search_type = 'search_regex'
+		}
+
+		for my $obj ($cdbi->$search_type({ $col => $id})) {
+			push @fms, $obj->to_fieldmapper;
+		}
 	}
 	return @fms;
 }
