@@ -1,3 +1,19 @@
+/*
+Copyright (C) 2005  Georgia Public Library Service 
+Bill Erickson <highfalutin@gmail.com>
+Mike Rylander <mrylander@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+*/
+
 #ifndef UTILS_H
 #define UTILS_H
 
@@ -32,8 +48,18 @@ int buffer_free( growing_buffer* gb );
 int buffer_add_char(growing_buffer* gb, char c);
 
 
+/* string escape utility method.  escapes unicode embeded characters.
+	escapes the usual \n, \t, etc. 
+	for example, if you provide a string like so:
+
+	hello,
+		you
+
+	you would get back:
+	hello,\n\tyou
+ 
+ */
 char* uescape( const char* string, int size, int full_escape );
-double get_timestamp_millis();
 
 /* utility methods */
 int set_fl( int fd, int flags );
