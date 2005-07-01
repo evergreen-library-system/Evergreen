@@ -11,7 +11,8 @@ var sdump_levels = {
 	'D_TAB' : true,
 	'D_OPAC' : true,
 	'D_STRING' : true,
-	'D_WIN' : true
+	'D_WIN' : true,
+	'D_PATRON_SEARCH_FORM' : true
 };
 
 function sdump(level,msg) {

@@ -103,6 +103,7 @@ function SafeWindowOpen(url,title,features)
 function register_window(w) {
 	sdump('D_WIN',arg_dump(arguments,{0:true}));
 	mw.G.win_list[w.toString()] = w;
+	mw.G.last_win = w;
 }
 
 function unregister_window(w) {
@@ -129,6 +130,7 @@ function close_all_windows() {
 function register_document(d) {
 	sdump('D_WIN',arg_dump(arguments,{0:true}));
 	mw.G.doc_list[d.toString()] = d;
+	mw.G.last_doc = d;
 }
 
 function unregister_document(d) {
