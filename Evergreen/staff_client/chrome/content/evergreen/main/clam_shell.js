@@ -4,9 +4,9 @@ function clam_shell_init(p) {
 	dump("TESTING: clam_shell.js: " + mw.G['main_test_variable'] + '\n');
 	if (p) {
 		if (p.horizontal) {
-			get_widget(p.d,p.clamshell).orient = 'horizontal';
+			get_widget(p.w.document,p.clamshell).orient = 'horizontal';
 		} else if (p.vertical) {
-			get_widget(p.d,p.clamshell).orient = 'vertical';
+			get_widget(p.w.document,p.clamshell).orient = 'vertical';
 		}
 	}
 	var nl = get_widget(p.clamshell).getElementsByTagName('deck');
@@ -27,19 +27,19 @@ function clam_shell_init(p) {
 		else
 			return second_deck.selectedPanel;
 	}
-	p.w.set_first_deck = function (idx) { return set_deck(p.d,first_deck,idx); };
-	p.w.set_second_deck = function (idx) { return set_deck(p.d,second_deck,idx); };
+	p.w.set_first_deck = function (idx) { return set_deck(p.w.document,first_deck,idx); };
+	p.w.set_second_deck = function (idx) { return set_deck(p.w.document,second_deck,idx); };
 	p.w.replace_card_in_first_deck = function (idx,chrome,params) {
-		return replace_card_in_deck(p.d,first_deck,idx,chrome,params);
+		return replace_card_in_deck(p.w.document,first_deck,idx,chrome,params);
 	};
 	p.w.replace_card_in_second_deck = function (idx,chrome,params) {
-		return replace_card_in_deck(p.d,second_deck,idx,chrome,params);
+		return replace_card_in_deck(p.w.document,second_deck,idx,chrome,params);
 	};
 	p.w.new_card_in_first_deck = function (chrome,params) {
-		return new_card_in_deck(p.d,first_deck,chrome,params);
+		return new_card_in_deck(p.w.document,first_deck,chrome,params);
 	};
 	p.w.new_card_in_second_deck = function (chrome,params) {
-		return new_card_in_deck(p.d,second_deck,chrome,params);
+		return new_card_in_deck(p.w.document,second_deck,chrome,params);
 	};
 
 }

@@ -11,7 +11,7 @@ function OpenILS_init(params) {
 			case 'PatronSearchForm' : patron_search_form_init(params); break;
 		}
 
-		register_document(params.d);
+		register_document(params.w.document);
 		register_window(params.w);
 
 	} catch(E) { dump(js2JSON(E)+'\n'); }
@@ -31,7 +31,7 @@ function OpenILS_exit(params) {
 			case 'PatronSearchForm' : patron_search_form_exit(params); break;
 		}
 
-		unregister_document(params.d);
+		unregister_document(params.w.document);
 		unregister_window(params.w);
 
 	} catch(E) { dump(js2JSON(E)+'\n'); }

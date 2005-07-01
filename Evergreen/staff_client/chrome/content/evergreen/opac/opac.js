@@ -10,10 +10,10 @@ var opac_appframe; /* i hold the actual opac iframe */
 
 
 /* init the opac */
-function opac_init(params) {
+function opac_init(p) {
 	sdump('D_OPAC',"Initing OPAC\n");
 
-	var box = params.d.getElementById('opac_vbox');
+	var box = p.w.document.getElementById('opac_vbox');
 	opac_iframe = box.appendChild(document.createElement("browser"));
 
 	opac_iframe.setAttribute("type", "content-primary");
