@@ -8,8 +8,13 @@ function OpenILS_init(params) {
 			case 'AppShell' : app_shell_init(params); break;
 			case 'ClamShell' : clam_shell_init(params); break;
 			case 'Opac' : opac_init(params); break;
+			case 'PatronSearch' : patron_search_init(params); break;
 			case 'PatronSearchForm' : patron_search_form_init(params); break;
 		}
+
+	} catch(E) { dump(js2JSON(E)+'\n'); }
+
+	try {
 
 		register_document(params.w.document);
 		register_window(params.w);
@@ -28,11 +33,17 @@ function OpenILS_exit(params) {
 			case 'AppShell' : app_shell_exit(params); break;
 			case 'ClamShell' : clam_shell_exit(params); break;
 			case 'Opac' : opac_exit(params); break;
+			case 'PatronSearch' : patron_search_exit(params); break;
 			case 'PatronSearchForm' : patron_search_form_exit(params); break;
 		}
 
-		unregister_document(params.w.document);
-		unregister_window(params.w);
+	} catch(E) { dump(js2JSON(E)+'\n'); }
+
+	try {
+
+		// buggy for now
+		//unregister_document(params.w.document);
+		//unregister_window(params.w);
 
 	} catch(E) { dump(js2JSON(E)+'\n'); }
 
