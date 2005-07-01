@@ -104,6 +104,7 @@ sub create_hold {
 		my $req = $session->request( $method, $hold );
 
 		my $resp = $req->gather(1);
+		$session->disconnect();
 		if(!$resp) { return OpenILS::EX->new("UNKNOWN")->ex(); }
 #		$apputils->commit_db_session($session);
 	}
@@ -156,6 +157,37 @@ sub _check_request_holds_override {
 		return OpenILS::Perm->new("REQUEST_HOLDS_OVERRIDE");
 	}
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds",
+	api_name	=> "open-ils.circ.holds.retrieve",
+	notes		=> <<NOTE);
+Retrieves all the holds for the specified user id.  The login session
+is the requestor and if the requestor is different from the user, then
+the requestor must have VIEW_HOLDS permissions.
+NOTE
+
+sub retrieve_holds {
+	my($self, $client, $login_session, $user_id) = @_;
+	my $user = $apputils->check_user_session($login_session);
+
+	if($user->id ne $user_id) {
+		if($apputils->check_user_perms($user_id, $user->home_ou, "VIEW_HOLDS")) {
+			return OpenILS::Perm->new("VIEW_HOLDS");
+		}
+	}
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $req = $session->request(
+		"open-ils.storage.direct.action.hold_request.search.usr",
+		$user_id );
+	my $h = $req->gather(1);
+	$session->disconnect();
+	return $h;
+}
+
+
 
 
 1;

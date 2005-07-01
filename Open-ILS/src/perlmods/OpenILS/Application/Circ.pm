@@ -5,7 +5,7 @@ use strict; use warnings;
 use OpenILS::Application::Circ::Rules;
 use OpenILS::Application::Circ::Survey;
 use OpenILS::Application::Circ::StatCat;
-#use OpenILS::Application::Circ::Actor;
+use OpenILS::Application::Circ::Holds;
 
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";

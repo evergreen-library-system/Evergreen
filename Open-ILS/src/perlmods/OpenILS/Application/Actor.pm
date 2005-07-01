@@ -113,10 +113,9 @@ sub flesh_user {
 		$kill = 1;
 	}
 
-	# grab the user with the given card
+	# grab the user with the given id 
 	my $ureq = $session->request(
-			"open-ils.storage.direct.actor.user.retrieve",
-			$id);
+			"open-ils.storage.direct.actor.user.retrieve", $id);
 	my $user = $ureq->gather(1);
 
 	# grab the cards
@@ -125,10 +124,31 @@ sub flesh_user {
 			$user->id() );
 	$user->cards( $cards_req->gather(1) );
 
+	for my $c(@{$user->cards}) {
+		if($c->id == $user->card || $c->id eq $user->card ) {
+			warn "Setting my card to " . $c->id . "\n";
+			$user->card($c);
+		}
+	}
+
 	my $add_req = $session->request(
 			"open-ils.storage.direct.actor.user_address.search.usr",
 			$user->id() );
 	$user->addresses( $add_req->gather(1) );
+
+	for my $c(@{$user->addresses}) {
+		if($c->id == $user->billing_address || $c->id eq $user->billing_address ) {
+			warn "Setting my address to " . $c->id . "\n";
+			$user->billing_address($c);
+		}
+	}
+
+	for my $c(@{$user->addresses}) {
+		if($c->id == $user->mailing_address || $c->id eq $user->mailing_address ) {
+			warn "Setting my address to " . $c->id . "\n";
+			$user->mailing_address($c);
+		}
+	}
 
 	my $stat_req = $session->request(
 		"open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr",
@@ -578,12 +598,14 @@ sub get_org_unit {
 
 	my( $self, $client, $user_session, $org_id ) = @_;
 
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-
-	if(!$org_id) {
-		$org_id = $user_obj->home_ou;
+	if(defined($user_session) && !defined($org_id)) {
+		my $user_obj = 
+			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+		if(!defined($org_id)) {
+			$org_id = $user_obj->home_ou;
+		}
 	}
+
 
 	my $home_ou = OpenILS::Application::AppUtils->simple_scalar_request(
 		"open-ils.storage",
@@ -779,8 +801,8 @@ __PACKAGE__->register_method(
 sub update_password {
 	my( $self, $client, $user_session, $new_value, $current_password ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
 	warn "Updating user with method " .$self->api_name . "\n";
+	my $user_obj = $apputils->check_user_session($user_session); 
 
 	if($self->api_name =~ /password/) {
 
@@ -796,6 +818,7 @@ sub update_password {
 	}
 
 	elsif($self->api_name =~ /email/) {
+		warn "Updating email to $new_value\n";
 		$user_obj->email($new_value);
 	}
 
@@ -813,7 +836,7 @@ sub update_password {
 
 __PACKAGE__->register_method(
 	method	=> "check_user_perms",
-	api_name	=> "open-ils.actor.user.email.update");
+	api_name	=> "open-ils.actor.user.perm.check");
 
 sub check_user_perms {
 	my( $self, $client, $user_id, $org_id, @perm_types ) = @_;

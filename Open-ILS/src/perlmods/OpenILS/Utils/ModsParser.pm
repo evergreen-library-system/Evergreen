@@ -58,7 +58,7 @@ my $xpathset = {
 	subject => {
 
 		topic => 
-			"//mods:mods/*[local-name()='subject']",
+			"//mods:mods/mods:subject/*[local-name()!='geographicCode']/parent::mods:subject",
 
 #		geographic => 
 #			"//mods:mods/*[local-name()='subject']/*[local-name()='geographic']",

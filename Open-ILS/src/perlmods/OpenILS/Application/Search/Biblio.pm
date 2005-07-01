@@ -341,12 +341,11 @@ sub biblio_id_to_copy {
 
 
 __PACKAGE__->register_method(
-	method	=> "fleshed_copy_retrieve",
+	method	=> "fleshed_copy_retrieve_batch",
 	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve",
 );
 
-# turns a barcode into a copy object
-sub fleshed_copy_retrieve { 
+sub fleshed_copy_retrieve_batch { 
 	my( $self, $client, $ids ) = @_;
 
 	throw OpenSRF::EX::InvalidArg 
@@ -360,6 +359,22 @@ sub fleshed_copy_retrieve {
 			@$ids );
 
 	return $copy;
+}
+
+__PACKAGE__->register_method(
+	method	=> "fleshed_copy_retrieve",
+	api_name	=> "open-ils.search.asset.copy.fleshed.retrieve",
+);
+
+sub fleshed_copy_retrieve_batch { 
+	my( $self, $client, $id ) = @_;
+
+	return undef unless defined $id;
+	warn "copy retrieve for id $id\n";
+	return OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.fleshed.asset.copy.retrieve.atomic",
+			$id );
 }
 
 
@@ -877,17 +892,21 @@ sub biblio_mrid_to_record_ids {
 
 	warn "Searching for record for MR $mrid\n";
 
-	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-			"open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord", $mrid );
+	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( 
+			"open-ils.storage", 
+			#"open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord", $mrid );
+			"open-ils.storage.ordered.metabib.metarecord.records.atomic", 
+			$mrid );
 
-	my @ids;
-	for my $map (@$mrmaps) { push @ids, $map->source(); }
 
-	warn "Recovered id's [@ids] for mr $mrid\n";
+	#my @ids;
+	#for my $map (@$mrmaps) { push @ids, $map->source(); }
+	#warn "Recovered id's [@ids] for mr $mrid\n";
+	#my $size = @ids;
 
-	my $size = @ids;
+	my $size = @$mrmaps;	
 
-	return { count => $size, ids => \@ids };
+	return { count => $size, ids => $mrmaps };
 
 }
 
@@ -960,6 +979,22 @@ sub retrieve_all_copy_statuses {
 	}
 	return $copy_statuses;
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "copy_counts_per_org",
+	api_name	=> "open-ils.search.biblio.copy_counts.retrieve");
+
+sub copy_counts_per_org {
+	my( $self, $client, $record_id ) = @_;
+	my $counts = $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.biblio.record_entry.global_copy_count.atomic",
+		$record_id );
+	$counts = [ sort {$a->[0] <=> $b->[0]} @$counts ];
+	return $counts;
+}
+
 
 
 

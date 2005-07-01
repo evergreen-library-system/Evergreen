@@ -104,6 +104,9 @@ sub complete_authenticate {
 
 	my $name = "open-ils.storage.direct.actor.user.search.usrname";
 
+	warn "Completing Authentication\n";
+
+	warn "Retrieving user from storage..\n";
 	my $user_list = OpenILS::Application::AppUtils->simple_scalar_request(
 			"open-ils.storage", $name, $username );
 
@@ -111,6 +114,8 @@ sub complete_authenticate {
 		throw OpenSRF::EX::ERROR 
 			("No user info returned from storage for $username");
 	}
+
+	warn "We have the user from storage with usrname $username\n";
 
 	my $user = $user_list->[0];
 	
@@ -120,13 +125,18 @@ sub complete_authenticate {
 	}
 
 	my $password = $user->passwd();
+	warn "user passwd is $password\n";
 
 	if(!$password) {
 		throw OpenSRF::EX::ERROR ("No password exists for $username", ERROR);
 	}
 
+	warn "we have a password\n";
+
 	my $current_seed = $cache_handle->get_cache("_open-ils_seed_$username");
 	$cache_handle->delete_cache( "_open-ils_seed_$username" );
+
+	warn "Removed tmp data from cache\n";
 
 	unless($current_seed) {
 		throw OpenSRF::EX::User 
@@ -154,6 +164,7 @@ sub complete_authenticate {
 
 	} else {
 
+		warn "User password is incorrect...\n"; # send exception
 		return 0;
 	}
 }
