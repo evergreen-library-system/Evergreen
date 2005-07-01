@@ -105,12 +105,12 @@ FOREACH mr_id IN mr_list;
 	IF mods.author();
 -%]
 		&lt;b&gt;Author:&lt;/b&gt; &lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=author&amp;mr_search_query=[% mods.author() | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% mods.author() | html %]&lt;/a&gt;&lt;br&gt;
-[%-
+[%
 	END;
 	IF mods.subject();
--%]
+%]
 		&lt;b&gt;Subjects:&lt;/b&gt; 
-[%-
+[%
 	FOREACH sub IN mods.subject();
 		IF loop.count() > 3;
 			', ...';
@@ -119,12 +119,46 @@ FOREACH mr_id IN mr_list;
 		IF loop.index;
 			', ';
 		END;
-		-%]&lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=subject&amp;mr_search_query=[% sub.list.0 | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% sub.list.0 | html %]&lt;/a&gt;[%-
+		-%]
+&lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=subject&amp;mr_search_query=[% sub.list.0 | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% sub.list.0 | html %]&lt;/a&gt;[%
 	END;
--%]&lt;br&gt;
-[%-
+%]
+&lt;br&gt;
+
+[%
+	l = mods.online_loc();
+	IF l.size;
+		'&lt;b&gt;Other Resources:&lt;/b&gt;';
+    	x = l.size / 2;
+		i = 0;
+		saw = { 'no' => 'no' };
+%][%
+		WHILE i <= x;
+
+			h = i * 2;
+			t = h + 1;
+	
+			h = l.list.$h | uri | html;
+			t = l.list.$t | html;
+
+%][%
+			IF saw.exists(t);
+				i = i + 1;
+				NEXT;
+			END
+
+%][%
+			saw.$t = t;
+			
+			'&lt;a href="' _ h _ '"&gt;' _ t _ '&lt;/a&gt;&amp;nbsp;';
+	
+			i = i + 1;
+		END;
+		'&lt;br&gt;';
+	END; 
+
 	END;
--%]
+%]
 		&lt;b&gt;Copies Available:&lt;/b&gt; [% mr_id.2 %] 
         </description>
       </item>
