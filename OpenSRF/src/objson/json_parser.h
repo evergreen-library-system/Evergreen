@@ -1,8 +1,24 @@
+/*
+Copyright (C) 2005  Georgia Public Library Service 
+Bill Erickson <highfalutin@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+*/
+
+
+
+
 /* ---------------------------------------------------------------------------------------
 	JSON parser.
  * --------------------------------------------------------------------------------------- */
-
-
 #include <stdio.h>
 #include "object.h"
 #include "utils.h"
@@ -11,11 +27,14 @@
 #define JSON_PARSER_H
 
 
-
-
-/* returns NULL on error.  if string is NULL, returns an object whose is_null flag  
- * is set to true */
+/* Parses the given JSON string and returns the built object. 
+ *	returns NULL (and prints parser error to stderr) on error.  
+ * if string is NULL, returns an object whose is_null flag  is set to true. 
+ */
 object* json_parse_string(char* string);
+
+
+
 
 /* does the actual parsing work.  returns 0 on success.  -1 on error and
  * -2 if there was no object to build (string was all comments) 
@@ -28,13 +47,14 @@ int json_parse_json_string(char* string, unsigned long* index, object* obj);
 /* returns 0 on success and turns obj into a number or double object */
 int json_parse_json_number(char* string, unsigned long* index, object* obj);
 
+/* returns 0 on success and turns obj into an 'object' object */
 int json_parse_json_object(char* string, unsigned long* index, object* obj);
 
 /* returns 0 on success and turns object into an array object */
 int json_parse_json_array(char* string, unsigned long* index, object* obj);
 
 /* churns through whitespace and increments index as it goes.
- * eat_all means we should eat newlines, tabs
+ * eat_all == true means we should eat newlines, tabs
  */
 void json_eat_ws(char* string, unsigned long* index, int eat_all);
 

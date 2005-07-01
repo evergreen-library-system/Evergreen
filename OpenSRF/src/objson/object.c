@@ -1,3 +1,18 @@
+/*
+Copyright (C) 2005  Georgia Public Library Service 
+Bill Erickson <highfalutin@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+*/
+
 #include "object.h"
 #include "json_parser.h"
 #include <fcntl.h>
@@ -19,7 +34,7 @@ object* _init_object(char* string_value) {
 	obj->data			= NULL;
 
 	obj->push			= &object_push;
-	obj->add_index		= &object_add_index;
+	obj->set_index		= &object_set_index;
 	obj->add_key		= &object_add_key;
 	obj->get_index		= &object_get_index;
 	obj->get_key		= &object_get_key;
@@ -81,7 +96,7 @@ unsigned long object_push(object* obj, object* new_obj) {
 	return obj->size;
 }
 
-unsigned long  object_add_index(object* obj, unsigned long index, object* new_obj) {
+unsigned long  object_set_index(object* obj, unsigned long index, object* new_obj) {
 	assert(obj != NULL && index <= MAX_OBJECT_NODES);
 	object_clear_type(obj);
 	obj->is_array = 1;

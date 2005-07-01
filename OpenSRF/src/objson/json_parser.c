@@ -1,3 +1,19 @@
+/*
+Copyright (C) 2005  Georgia Public Library Service 
+Bill Erickson <highfalutin@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+*/
+
+
 #include "json_parser.h"
 
 /* keep a copy of the length of the current json string so we don't 
@@ -406,7 +422,8 @@ int json_parse_json_string(char* string, unsigned long* index, object* obj) {
 
 					/* ----------------------------------------------------------------------- */
 					/* ----------------------------------------------------------------------- */
-					/* This was taken directly from json-c http://oss.metaparadigm.com/json-c/ */
+					/* The following chunk was borrowed with permission from 
+						json-c http://oss.metaparadigm.com/json-c/ */
 					unsigned char utf_out[3];
 					memset(utf_out,0,3);
 
@@ -435,7 +452,6 @@ int json_parse_json_string(char* string, unsigned long* index, object* obj) {
 					}
 					/* ----------------------------------------------------------------------- */
 					/* ----------------------------------------------------------------------- */
-
 
 					(*index) += 3;
 					in_escape = 0;

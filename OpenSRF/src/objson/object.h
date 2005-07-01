@@ -1,3 +1,18 @@
+/*
+Copyright (C) 2005  Georgia Public Library Service 
+Bill Erickson <highfalutin@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+*/
+
 /* ---------------------------------------------------------------------------------------
 	Generic object framework for C.  An object can be either a string, boolean, null, 
 	number, array or hash (think Perl hash, dictionary, etc.).   
@@ -11,13 +26,12 @@
 #include <assert.h>
 #include "utils.h"
 
-/* does we need this? */
 #define MAX_OBJECT_NODES 1000000
 
 #ifndef OBJECT_H
 #define OBJECT_H
 
-/* top leve generic object structuure */
+/* top level generic object structuure */
 struct object_struct {
 
 	/* how many sub-objects do we contain.  Note that this includes null
@@ -38,7 +52,7 @@ struct object_struct {
 
 	/* attached accessor/mutator methods for the OO inclined*/
 	unsigned long				(*push)				(struct object_struct* src, struct object_struct*);
-	unsigned long				(*add_index)		(struct object_struct* src, unsigned long index, struct object_struct*);
+	unsigned long				(*set_index)		(struct object_struct* src, unsigned long index, struct object_struct*);
 	unsigned long				(*add_key)			(struct object_struct* src, char* key, struct object_struct*);
 	struct object_struct*	(*get_index)		(struct object_struct*, unsigned long index);
 	struct object_struct*	(*get_key)			(struct object_struct*, char* key);
@@ -112,7 +126,8 @@ object_node* object_iterator_next(object_iterator*);
 int object_iterator_has_next(object_iterator*);
 
 
-/* allocates a new object. classname is optional */
+/* allocates a new object. 'string' is the string data if this object
+	is to be a string.  if not, string should be NULL */
 object* new_object(char* string);
 
 /* utility method for initing an object */
@@ -125,7 +140,8 @@ object* object_get_index( object* obj, unsigned long index );
 /* returns a pointer to the object with the given key */
 object* object_get_key( object* obj, char* key );
 
-/* de-allocates a object */
+/* de-allocates a object ( * should only be called on objects that are not
+	children of other objects ) */
 void free_object(object*);
 
 /* allocates a new object node */
@@ -134,17 +150,21 @@ object_node* new_object_node(object* obj);
 /* de-allocates a object node */
 void free_object_node(object_node*);
 
+
 /* pushes the given object onto the end of the list, 
  * returns the size on success, -1 on error 
+ * If obj is NULL, inserts a new object into the list with is_null set to true
  */
 unsigned long object_push(object*, object* obj);
 
-/* removes the object at the given index (if one exists) and inserts 
+/* removes (and deallocates) the object at the given index (if one exists) and inserts 
  * the new one.  returns the size on success, -1 on error 
+ * If obj is NULL, inserts a new object into the list with is_null set to true
  */
-unsigned long object_add_index(object*, unsigned long index, object* obj);
+unsigned long object_set_index(object*, unsigned long index, object* obj);
 
-/* inserts the new object, overwriting any previous object with the given key 
+/* inserts the new object, overwriting (removing, deallocating) any 
+ * previous object with the given key.
  * returns the size on success, -1 on error 
  * if 'obj' is NULL, a new object is inserted at key 'key' with 'is_null' 
  * set to true
@@ -156,11 +176,7 @@ unsigned long object_add_key(object*, char* key, object* obj);
  */
 unsigned long object_remove_index(object*, unsigned long index);
 
-/* de-allocates the object at index 'index' and sets the field to null.
- * this will *not* change the object size */
-//unsigned long object_clear_index(object*, unsigned long index);
-
-/* removes the object with key 'key' if it exists */
+/* removes (and deallocates) the object with key 'key' if it exists */
 unsigned long object_remove_key(object*, char* key);
 
 /* returns a pointer to the string data held by this object */
@@ -187,7 +203,7 @@ void object_clear_type(object*);
 /* set this object's comment string */
 void object_set_comment(object*, char*);
 
-/* starting at index 'index', shifts all indices down by one and 
+/* utility method.  starting at index 'index', shifts all indices down by one and 
  * decrements the objects size by 1 
  */
 void object_shift_index(object*, unsigned long index);
