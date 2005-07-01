@@ -17,7 +17,7 @@ export PERLDIR			= $(LIBDIR)/perl5
 export INCLUDEDIR		= $(PREFIX)/include
 export CC				= gcc
 export LD_OPTS			= -L $(TMPDIR) -L .
-export CC_OPTS			= -Wall -O2 -fPIC -I/usr/include/libxml2 -I$(APACHE2_HEADERS) \
+export CC_OPTS			= -g -Wall -O2 -fPIC -I/usr/include/libxml2 -I$(APACHE2_HEADERS) \
 								-I/usr/include/libxml2/libxml  -I$(TMP) -I$(TMPDIR)
 
 
@@ -137,6 +137,7 @@ clean:
 	make -C utils clean
 	make -C objson clean
 	make -C libjson clean
+	make -C srfsh clean
 	/bin/rm -rf $(TMPDIR)
 
 
