@@ -1,0 +1,29 @@
+<!ENTITY patron_search_form.family_name.label 'Last Name:'>
+	<!ENTITY patron_search_form.family_name.accesskey 'L'>
+<!ENTITY patron_search_form.first_given_name.label 'First Name:'>
+	<!ENTITY patron_search_form.first_given_name.accesskey ''>
+<!ENTITY patron_search_form.second_given_name.label 'Middle Name:'>
+	<!ENTITY patron_search_form.second_given_name.accesskey ''>
+<!ENTITY patron_search_form.email.label 'Email:'>
+	<!ENTITY patron_search_form.email.accesskey ''>
+<!ENTITY patron_search_form.phone.label 'Phone:'>
+	<!ENTITY patron_search_form.phone.accesskey 'P'>
+<!ENTITY patron_search_form.ident.label 'ID:'>
+	<!ENTITY patron_search_form.ident.accesskey ''>
+<!ENTITY patron_search_form.street1.label 'Address 1:'>
+	<!ENTITY patron_search_form.street1.accesskey 'd'>
+<!ENTITY patron_search_form.street2.label 'Address 2:'>
+	<!ENTITY patron_search_form.street2.accesskey ''>
+<!ENTITY patron_search_form.city.label 'City:'>
+	<!ENTITY patron_search_form.city.accesskey ''>
+<!ENTITY patron_search_form.state.label 'State:'>
+	<!ENTITY patron_search_form.state.accesskey ''>
+<!ENTITY patron_search_form.post_code.label 'ZIP:'>
+	<!ENTITY patron_search_form.post_code.accesskey ''>
+
+<!ENTITY patron_search_form.search.label 'Search'>
+	<!ENTITY patron_search_form.search.accesskey ''>
+
+<!ENTITY patron_search_form.clear.label 'Reset'>
+	<!ENTITY patron_search_form.clear.accesskey ''>
+

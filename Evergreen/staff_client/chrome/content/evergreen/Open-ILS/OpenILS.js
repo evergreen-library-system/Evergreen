@@ -8,6 +8,7 @@ function OpenILS_init(params) {
 			case 'AppShell' : app_shell_init(params); break;
 			case 'ClamShell' : clam_shell_init(params); break;
 			case 'Opac' : opac_init(params); break;
+			case 'PatronSearchForm' : patron_search_form_init(params); break;
 		}
 
 		register_document(params.d);
@@ -27,6 +28,7 @@ function OpenILS_exit(params) {
 			case 'AppShell' : app_shell_exit(params); break;
 			case 'ClamShell' : clam_shell_exit(params); break;
 			case 'Opac' : opac_exit(params); break;
+			case 'PatronSearchForm' : patron_search_form_exit(params); break;
 		}
 
 		unregister_document(params.d);

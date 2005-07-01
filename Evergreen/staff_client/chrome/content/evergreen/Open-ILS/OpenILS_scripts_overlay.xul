@@ -10,6 +10,7 @@
 		<script src="chrome://evergreen/content/main/app_shell.js" />
 		<script src="chrome://evergreen/content/main/clam_shell.js" />
 		<script src="chrome://evergreen/content/opac/opac.js" />
+		<script src="chrome://evergreen/content/patron/patron_search_form.js" />
 	</apps>
 
 </overlay>
