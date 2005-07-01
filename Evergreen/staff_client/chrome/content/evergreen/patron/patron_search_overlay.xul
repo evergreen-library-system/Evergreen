@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/patron_search.dtd">
+<overlay id="patron_search_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<commandset id="PatronSearch_cmds">
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+</commandset>
+
+<!-- main widget for patron_search -->
+<box id="PatronSearch_main" flex="1" orient="vertical">
+	<box id="PatronSearch_clamshell" flex="1" orient="horizontal"/>
+</box>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="PatronSearch_keys">
+</keyset>
+
+</overlay>

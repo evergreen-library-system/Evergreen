@@ -26,7 +26,7 @@
 		mw.spawn_check_out(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_circ_search" oncommand="
-		mw.spawn_circ_search(document,'replace_tab','main_tabbox',{}); "/>	
+		mw.spawn_patron_search(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_circ_display" oncommand="
 		mw.spawn_circ_display(document,'replace_tab','main_tabbox',{}); "/>

@@ -6,19 +6,20 @@ var sdump_levels = {
 	'D_UTIL' : false,
 	'D_EXPLODE' : false,
 	'D_PRINT' : false,
-	'D_SES' : true,
+	'D_SES' : false,
 	'D_SPAWN' : true,
-	'D_TAB' : true,
+	'D_TAB' : false,
 	'D_OPAC' : true,
-	'D_STRING' : true,
-	'D_WIN' : true,
+	'D_STRING' : false,
+	'D_WIN' : false,
+	'D_PATRON_SEARCH' : true,
 	'D_PATRON_SEARCH_FORM' : true
 };
 
 function sdump(level,msg) {
 	try {
 		if (sdump_levels[level])
-			debug(msg);
+			debug(level + ': ' + msg);
 	} catch(E) {}
 }
 
@@ -35,7 +36,7 @@ function arg_dump(args,dump_these) {
 			if (dump_these[i]) {
 
 				var arg = args[i];
-				dump('dump_these[i] = ' + dump_these[i] + '  arg = ' + arg + '\n');
+				//dump('dump_these[i] = ' + dump_these[i] + '  arg = ' + arg + '\n');
 
 				if (typeof(dump_these[i])=='string') {
 
