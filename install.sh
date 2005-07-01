@@ -110,6 +110,14 @@ function runInstall {
 	# pass the collected variables to make
 	for target in ${TARGETS[@]:0}; do
 
+		cat <<-MSG
+
+		--------------------------------------------------------------------
+		Building $target
+		--------------------------------------------------------------------
+
+		MSG
+
 		target="$target/src";
 
 		make -C "$target" \
