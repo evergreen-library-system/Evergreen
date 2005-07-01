@@ -9,7 +9,7 @@ function clam_shell_init(p) {
 			get_widget(p.w.document,p.clamshell).orient = 'vertical';
 		}
 	}
-	var nl = get_widget(p.clamshell).getElementsByTagName('deck');
+	var nl = get_widget(p.w.document,p.clamshell).getElementsByTagName('deck');
 	var first_deck = nl[0];
 	var second_deck = nl[1];
 
@@ -42,15 +42,25 @@ function clam_shell_init(p) {
 		return new_card_in_deck(p.w.document,second_deck,chrome,params);
 	};
 
+	if (p.onload) {
+		try {
+			dump('D_TRACE','trying psuedo-onload...\n');
+			p.onload(p.w);
+		} catch(E) {
+			dump( js2JSON(E) + '\n' );
+		}
+	}
+
 }
 
 function new_card_in_deck(doc,deck,chrome,params) {
 	deck = get_widget(doc,deck);
 	var new_card = document.createElement('iframe');
+	deck.appendChild(new_card);
 	new_card.setAttribute('flex','1');
 	new_card.setAttribute('src',chrome);
-	deck.appendChild(new_card);
 	new_card.setAttribute('id','card_'+(deck.childNodes.length-1));
+	return new_card.contentWindow;
 }
 
 function replace_card_in_deck(doc,deck,idx,chrome,params) {
