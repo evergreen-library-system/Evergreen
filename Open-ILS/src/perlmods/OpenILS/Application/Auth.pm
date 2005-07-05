@@ -10,6 +10,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Application::AppUtils;
 use OpenILS::Perm;
 use OpenILS::Application::AppUtils;
+use OpenILS::EX;
 
 # memcache handle
 my $cache_handle;
@@ -111,8 +112,7 @@ sub complete_authenticate {
 			"open-ils.storage", $name, $username );
 
 	unless(ref($user_list)) {
-		throw OpenSRF::EX::ERROR 
-			("No user info returned from storage for $username");
+		return OpenILS::EX->new("UNKNOWN_USER")->ex;
 	}
 
 	warn "We have the user from storage with usrname $username\n";
@@ -121,7 +121,7 @@ sub complete_authenticate {
 	
 
 	if(!$user or !ref($user) ) {
-		throw OpenSRF::EX::ERROR ("No user for $username");
+		return OpenILS::EX->new("UNKNOWN_USER")->ex();
 	}
 
 	my $password = $user->passwd();

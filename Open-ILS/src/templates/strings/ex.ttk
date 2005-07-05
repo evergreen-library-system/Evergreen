@@ -33,4 +33,9 @@
 	IF type == ex_types.USER_WRONG_PASSWORD;
 		ret("Password is incorrect");	END;
 
+	IF type == ex_types.UNKNOWN_USER;
+		ret("User is not recognized"); END;
+
+	ret("Unknown exception occured");
+
 -%]
