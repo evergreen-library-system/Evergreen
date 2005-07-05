@@ -4,7 +4,7 @@
 	use Class::DBI;
 	package Class::DBI;
 
-	sub search_fti {
+	sub search_fts {
 		my $self = shift;
 		my @args = @_;
 		if (ref($args[-1]) eq 'HASH') {

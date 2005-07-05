@@ -129,6 +129,7 @@ sub search {
 	my $self = shift;
 	my $client = shift;
 	my $searches = shift;
+	my $options = shift;
 
 	my $cdbi = $self->{cdbi};
 
@@ -138,7 +139,9 @@ sub search {
 		join(',', map { "$_ => $$searches{$_}" } keys %$searches).
 		" } using $search_type",DEBUG);
 
-	for my $obj ($cdbi->$search_type($searches)) {
+	for my $obj ($cdbi->$search_type($searches, $options)) {
+		warn "$obj -> ".ref($obj);
+		next unless ref($obj);
 		$client->respond( $obj->to_fieldmapper );
 	}
 	return undef;
