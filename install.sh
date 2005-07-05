@@ -18,34 +18,22 @@
 # --------------------------------------------------------------------
 # ILS install script
 # --------------------------------------------------------------------
-
- 
-# *!*!* EDIT THESE *!*!*
-# --------------------------------------------------------------------
-# Here define all of the necessary install variables 
-# --------------------------------------------------------------------
-APXS2="/pines/apps/apache2/bin/apxs";
-PREFIX="/pines/";
-TMP="/tmp/pines/";
-APACHE2_HEADERS="/pines/apps/apache2/include/";
-LIBXML2_HEADERS="/usr/include/libxml2/";
-TARGETS=("OpenSRF" "Open-ILS" "Evergreen");
-# --------------------------------------------------------------------
-
-# --------------------------------------------------------------------
-# if FORCE is set to any non-empty value, we'll use 
-# the default settings
-FORCE=$1 
-# --------------------------------------------------------------------
-
-
-
+CONFIG_FILE="install.conf";
+DEFAULT_CONFIG_FILE="install.conf.default";
 
 
 # --------------------------------------------------------------------
 # Loads all of the path information from the user setting 
 # install variables as it goes
 # --------------------------------------------------------------------
+
+function fail {
+	MSG="$1";
+	echo "A build error occured: $MSG";
+	exit 99;
+}
+
+
 function verifyInstallPaths {
 
 	cat <<-WORDS
@@ -65,11 +53,21 @@ function verifyInstallPaths {
 	-----------------------------------------------------------------------
 
 	If these are not OK, use control-c to break out and fix the variables 
-	at the top of this script.  Otherwise, type enter.
+	in install.config.  Otherwise, type enter.
+
+	To disable this message, run "./install.sh force".
 
 	WORDS
 	read OK;
 }
+
+#function postMessage {
+
+#cat <<-WORDS
+#	--------------------------------------------------------------------
+
+
+#}
 
 # --------------------------------------------------------------------
 # Makes sure the install directories exist and are writable
@@ -77,34 +75,45 @@ function verifyInstallPaths {
 function mkInstallDirs {
 
 	mkdir -p "$PREFIX";
-
 	if [ "$?" != "0" ]; then
-		echo "Error creating $PREFIX";
-		exit 99;
+		fail "Error creating $PREFIX";
 	fi
 
 	mkdir -p "$TMP";
 	if [ "$?" != "0" ]; then
-		echo "Error creating $TMP";
-		exit 99;
+		fail "Error creating $TMP";
 	fi
 
 	if [ ! -w "$PREFIX" ]; then
-		echo "We don't have write access to $PREFIX";
-		exit 99;
+		fail "We don't have write access to $PREFIX";
 	fi
 
 	if [ ! -w "$TMP" ]; then
-		echo "We don't have write access to $TMP";
-		exit 99;
+		fail "We don't have write access to $TMP";
 	fi
 
+}
+
+# --------------------------------------------------------------------
+# Loads the config file.  If it can't fine CONFIG_FILE, it attempts to
+# use DEFAULT_CONFIG_FILE.  If it can't find that, it fails.
+# --------------------------------------------------------------------
+function loadConfig {
+	if [ ! -f "$CONFIG_FILE" ]; then
+		if [ -f "$DEFAULT_CONFIG_FILE" ];
+			$CONFIG_FILE="$DEFAULT_CONFIG_FILE";
+		else
+			fail "config file \"$CONFIG_FILE\" cannot be found";
+	fi
+	source "$CONFIG_FILE";
 }
 
 
 function runInstall {
 
-	[ -z "$FORCE" ] && verifyInstallPaths;
+
+	loadConfig;
+	[ ! -z "$NOFORCE" ] && verifyInstallPaths;
 	mkInstallDirs;
 
 	# pass the collected variables to make
@@ -118,21 +127,57 @@ function runInstall {
 
 		MSG
 
-		target="$target/src";
+		MAKE="make APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS"; 
 
-		make -C "$target" \
-			APXS2="$APXS2" \
-			PREFIX="$PREFIX" \
-			TMP="$TMP" \
-			APCHE2_HEADERS="$APACHE2_HEADERS" \
-			LIBXML2_HEADERS="$LIBXML2_HEADERS" \
-			all;	
+		echo "Passing to sub-makes: $VARS"
+			
+		case "$target" in
+			
+			"jserver" | "router" | "gateway" | "srfsh" ) $MAKE -C "$OPENSRF_DIR" "$target" "$target-install";;
+
+			*) fail "Unknown target: $target";;
+
+		esac
 
 	done
 }
 
 
+# --------------------------------------------------------------------
+# Checks command line parameters for special behavior
+# Supported params are:
+# clean - cleans all build files
+# force - forces build without the initial message
+# --------------------------------------------------------------------
+function checkParams {
+
+	if [ -z "$1" ]; then return; fi;
+
+	for arg in "$*"; do
+
+		case "$arg" in
+
+			"clean") 
+				make -C OpenSRF/src clean
+				make -C Open-ILS/src clean
+				make -C Evergreen/src clean
+				exit 0;;
+
+			"force")
+				FORCE="1";;
+
+			*) fail "Unknown command line argument: $arg";;
+		esac
+
+	done
+}
+
+# if user passes in the word 'clean' as the first shell arg, clean all
+checkParams "$*";
+
 
 # Kick it off...
 runInstall;
+
+
 

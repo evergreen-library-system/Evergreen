@@ -1,0 +1,68 @@
+# --------------------------------------------------------------------
+# Build targets.  Options include:
+# 
+# jserver    - custom 'single-domain' jabber server which may be used
+#              in place of jabberd2
+# router     - jabber router.  
+# gateway    - mod_ils_gateway, Apache module for proxying API calls
+# srfsh      - diagnostic shell interface to OpenSRF
+# marcdumper - utility code for converting MARC to MARCXML
+# xul        - client XUL application
+#
+# When running the server components of OpenSRF/OpenILS, the simplest
+# thing is to build jserver, router, gateway, and srfsh, even if you 
+# don't use all of them.  Build marcdumper only if you need to convert
+# MARC files to MARCXML.  If you only want to build the client app,
+# then just build xul.
+# --------------------------------------------------------------------
+#TARGETS=("jserver" "router" "gateway" "srfsh" "marcdumper" "xul");
+TARGETS=("router" "gateway" "jserver" "srfsh");
+
+
+# --------------------------------------------------------------------
+# Global install prefix.  Binaries will be installed into PREFIX/bin,
+# libraries will be installed into PERFIX/lib, etc.  The user 
+# running install.sh must have write permissions to PREFIX
+# --------------------------------------------------------------------
+#PREFIX="/tmp/testinstall/";
+PREFIX="/pines/";
+
+
+# --------------------------------------------------------------------
+# Temporary build files go here.  The User running install.sh must
+# have write permissions to TMP
+# --------------------------------------------------------------------
+TMP="/tmp/ilsinstall/";
+
+
+# --------------------------------------------------------------------
+# Location of the apxs binary for Apache2.  This must be set when
+# building the mod_ils_gateway C plugin for allowing web access
+# to the published API.
+# --------------------------------------------------------------------
+APXS2="/pines/apps/apache2/bin/apxs";
+
+
+# --------------------------------------------------------------------
+# Directory where the Apache2 header files are located.  This must 
+# be set when building the mod_ils_gateway C plugin for allowing web 
+# access to the published API.
+# --------------------------------------------------------------------
+APACHE2_HEADERS="/pines/apps/apache2/include/";
+
+
+# --------------------------------------------------------------------
+# Directory where the libxml2 headers are located.  Libxml2 is used
+# by various components
+# --------------------------------------------------------------------
+LIBXML2_HEADERS="/usr/include/libxml2/";
+
+
+
+# --------------------------------------------------------------------
+# These point to the top level makefiles for each of the sub 
+# projects.  Only change these if you have relocated the directories.
+# --------------------------------------------------------------------
+OPENSRF_DIR="OpenSRF/src/";
+OPENILS_DIR="Open-ILS/src/";
+EVERGREEN_DIR="Evergreen/";
