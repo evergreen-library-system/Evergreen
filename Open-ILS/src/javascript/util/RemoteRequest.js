@@ -322,6 +322,6 @@ RemoteRequest.prototype.getResultObject = function() {
 /* adds a new parameter to the request */
 RemoteRequest.prototype.addParam = function(param) {
 	var string = encodeURIComponent(js2JSON(param));
-	this.param_string += "&__param=" + string;
+	this.param_string += "&param=" + string;
 }
 
