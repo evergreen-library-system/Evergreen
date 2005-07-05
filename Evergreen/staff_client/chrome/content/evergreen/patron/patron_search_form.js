@@ -1,9 +1,7 @@
 sdump('D_TRACE','Loading patron_search_form.js\n');
 
 function patron_search_form_init(p) {
-	dump("TESTING: patron_search_form.js: " + mw.G['main_test_variable'] + '\n');
-	dump('p.w          = ' + p.w + '\n');
-	dump('p.w.document = ' + p.w.document + '\n');
+	sdump('D_PATRON_SEARCH_FORM',"TESTING: patron_search_form.js: " + mw.G['main_test_variable'] + '\n');
 	p.w.crazy_search_hash = {}; // hash[ field ] = { 'value' : ???, 'group' : ??? }
 
 	var nl = p.w.document.getElementsByTagName('textbox');
@@ -32,14 +30,14 @@ function patron_search_form_init(p) {
 				p.w.crazy_search_hash = {}; },
 			false);
 	else
-		dump("No cmd_clear element.\n");
+		sdump('D_PATRON_SEARCH_FORM',"No cmd_clear element.\n");
 
 	if (p.onload) {
 		try {
-			dump('D_TRACE','trying psuedo-onload...\n');
+			sdump('D_TRACE','trying psuedo-onload...\n');
 			p.onload(p.w);
 		} catch(E) {
-			dump( js2JSON(E) + '\n' );
+			sdump('D_ERROR', js2JSON(E) + '\n' );
 		}
 	}
 
