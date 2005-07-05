@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
+use OpenSRF::EX qw/:try/;
+use JSON;
 use OpenSRF::System;
 use OpenSRF::Application;
 use OpenILS::Utils::Fieldmapper;
@@ -11,6 +13,7 @@ my $cgi = new CGI;
 my $url = $cgi->url;
 
 my $method = $cgi->param('method');
+my $service = $cgi->param('service');
 my @params = $cgi->param('param');
 
 unless( $method ) {
@@ -19,24 +22,37 @@ unless( $method ) {
 	exit;
 }
 
+OpenSRF::System->bootstrap_client( config_file => '/pines/conf/bootstrap.conf' );
 print "Content-Type: text/xml\n\n";
 
-OpenSRF::System->bootstrap_client( config_file => '/pines/conf/bootstrap.conf' );
-$method = OpenSRF::Application->method_lookup( $method );
-
-my @resp = $method->run(@params);
-
 my $val = '';
+try {
+	my @resp;
+	if ($service) {
+		my $session = OpenSRF::AppSession->create($service);
+		my $req = $session->request($method, @params);
+		while (my $res = $req->recv) {
+			push @resp, $res->content;
+		}
+	} else {
+		$method = OpenSRF::Application->method_lookup( $method );
+		@resp = $method->run(@params);
+	}
 
-Perl2REST(\$val, $_) for (@resp);
+	Perl2REST(\$val, $_, 1) for (@resp);
+} catch Error with {
+	print "<response/>";
+	exit;
+};
 
-print $val;
+print "<response>\n" . $val . "</response>";
 
 
 sub Perl2REST {
 	my $val = shift;
 	my $obj = shift;
 	my $level = shift || 0;
+	return unless defined($obj);
 	if (!ref($obj)) {
 		$$val .= '  'x$level . "<datum>$obj</datum>\n";
 	} elsif (ref($obj) eq 'ARRAY') {
@@ -56,13 +72,18 @@ sub Perl2REST {
 		$$val .= '  'x$level . "</hash>\n";
 	} elsif (UNIVERSAL::isa($obj, 'Fieldmapper')) {
 		my $class = ref($obj);
-		$class =~ s/::/_/go;
+		(my $class_name = $class) =~ s/::/_/go;
+		my $hint = $class->json_hint || $class_name;
+		my $json = JSON->perl2JSON($obj);
+		$json =~ s/&/&amp;/go;
+		$json =~ s/</&lt;/go;
+		$json =~ s/>/&gt;/go;
 		my %hash;
 		for ($obj->properties) {
 			$hash{$_} = $obj->$_;
 		}
 		my $next = $level + 2;
-		$$val .= '  'x$level . "<$class>\n";
+		$$val .= '  'x$level . "<Fieldmapper hint='$hint' json='$json'>\n";
 		for (sort keys %hash) {
 			if ($hash{$_}) {
 				$$val .= '  'x$level . "  <$_>\n";
@@ -72,7 +93,7 @@ sub Perl2REST {
 				$$val .= '  'x$level . "  <$_/>\n";
 			}
 		}
-		$$val .= '  'x$level . "</$class>\n";
+		$$val .= '  'x$level . "</Fieldmapper>\n";
 
 	} elsif ($obj =~ /HASH/o) {
 		my $class = ref($obj);
