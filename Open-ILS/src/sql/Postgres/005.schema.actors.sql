@@ -2,6 +2,28 @@ DROP SCHEMA actor CASCADE;
 
 BEGIN;
 CREATE SCHEMA actor;
+COMMENT ON SCHEMA actor IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Schema: actor
+ *
+ * Holds all tables pertaining to users and libraries (org units).
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
 
 CREATE TABLE actor.usr (
 	id			SERIAL		PRIMARY KEY,
@@ -40,6 +62,31 @@ CREATE TABLE actor.usr (
 	create_date		DATE		NOT NULL DEFAULT now()::DATE,
 	expire_date		DATE		NOT NULL DEFAULT (now() + '3 years'::INTERVAL)::DATE
 );
+COMMENT ON TABLE actor.usr IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * User objects
+ *
+ * This table contains the core User objects that describe both
+ * staff members and patrons.  The difference between the two
+ * types of users is based on the user's permissions.
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
 CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
 CREATE INDEX actor_usr_mailing_address_idx ON actor.usr (mailing_address);
 CREATE INDEX actor_usr_billing_address_idx ON actor.usr (billing_address);
@@ -104,6 +151,30 @@ CREATE TABLE actor.stat_cat (
 	opac_visible	BOOL NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
+COMMENT ON TABLE actor.stat_cat IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * User Statistical Catagories
+ *
+ * Local data collected about Users is placed into a Statistical
+ * Catagory.  Here's where those catagories are defined.
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
 
 CREATE TABLE actor.stat_cat_entry (
 	id		SERIAL  PRIMARY KEY,
@@ -112,6 +183,32 @@ CREATE TABLE actor.stat_cat_entry (
 	value		TEXT    NOT NULL,
 	CONSTRAINT sce_once_per_owner UNIQUE (owner,value)
 );
+COMMENT ON TABLE actor.stat_cat_entry IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * User Statistical Catagory Entries
+ *
+ * Local data collected about Users is placed into a Statistical
+ * Catagory.  Each library can create entries into any of it's own
+ * stat_cats, it's anscestors stat_cats, or it's descendants' stat_cats.
+ *
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
 
 CREATE TABLE actor.stat_cat_entry_usr_map (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -120,6 +217,30 @@ CREATE TABLE actor.stat_cat_entry_usr_map (
 	target_usr	INT		NOT NULL,
 	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat)
 );
+COMMENT ON TABLE actor.stat_cat_entry_usr_map IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Statistical Catagory Entry to User map
+ *
+ * Records the stat_cat entries for each user.
+ *
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
 CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (target_usr);
 
 CREATE TABLE actor.card (
@@ -128,6 +249,33 @@ CREATE TABLE actor.card (
 	barcode	TEXT	NOT NULL UNIQUE,
 	active	BOOL	NOT NULL DEFAULT TRUE
 );
+COMMENT ON TABLE actor.card IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Library Cards
+ *
+ * Each User has one or more library cards.  The current "main"
+ * card is linked to here from the actor.usr table, and it is up
+ * to the consortium policy whether more than one card can be
+ * active for any one user at a given time.
+ *
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
 
 INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
