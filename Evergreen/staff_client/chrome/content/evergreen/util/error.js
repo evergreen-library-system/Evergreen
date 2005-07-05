@@ -23,10 +23,11 @@ var sdump_levels = {
 
 function sdump(level,msg) {
 	try {
-		if (sdump_levels[level])
+		if (sdump_levels[level]) {
 			debug(level + ': ' + msg);
-		if (consoleDump)
-			consoleService.logStringMessage(level + ': ' + msg);
+			if (consoleDump)
+				consoleService.logStringMessage(level + ': ' + msg);
+		}
 	} catch(E) {}
 }
 
