@@ -109,7 +109,7 @@ function RemoteRequest( service, method ) {
 
 	while(i < arguments.length) {
 		var object = js2JSON(arguments[i++]);
-		this.params += "&__param=" + encodeURIComponent(object);
+		this.params += "&param=" + encodeURIComponent(object);
 	}
 
 	if(!this.params) { this.params = ""; }
