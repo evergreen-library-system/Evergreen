@@ -214,7 +214,10 @@ Page.prototype.buildNavBox = function(full) {
 	if(loc) arr.push(this.buildDeepLink());
 
 	if(UserSession.instance().verifySession()) {
-		arr.push(elem("a", {href: prefix + "?target=logout"}, null, "Logout"));
+		//arr.push(elem("a", {href: prefix + "?target=logout"}, null, "Logout"));
+		var a = elem("a", {href:globalRootPath}, null, "Logout");
+		a.onclick = doLogout;
+		arr.push(a);
 	} 
 
 

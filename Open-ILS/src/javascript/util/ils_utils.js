@@ -297,10 +297,10 @@ function mkResourceImage(resource) {
 
 function doLogout() {
 
-	/* remove cookie so browse know's we're logged out */
+	/* remove cookie so browser know's we're logged out */
 	deleteCookie("ils_ses");
 
-	var user = UserSession.instanece();
+	var user = UserSession.instance();
 	if( user.session_id ) {
 		var request = new RemoteRequest( "open-ils.auth",
 			"open-ils.auth.session.delete", user.session_id );

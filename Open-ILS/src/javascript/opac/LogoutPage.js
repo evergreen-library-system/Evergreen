@@ -38,6 +38,8 @@ LogoutPage.prototype.doLogout = function() {
 	message.innerHTML = this.logout_success_msg;
 	this.searchBar.reset();
 
+	return true;
+
 }
 
 

@@ -161,7 +161,6 @@ function GlobalInitLoad() {
 
 	debug("Global Init is doing its primary load");
 	globalOrgTreeWidget = new LocationTree(globalOrgTree);
-	globalUser = UserSession.instance();
 
 	var ses = null;
 	var org = null;
@@ -171,14 +170,21 @@ function GlobalInitLoad() {
 		org = G['user_ou']; /* the desired location of the user */
 	}
 
-	if(globalUser.verifySession(ses)) {
-		globalUser.grabOrgUnit(org);
+	if(paramObj.__logout) {
+		doLogout();
 
-	} else  {
-		globalUser = null;
-		globalLocation = globalOrgTree;
-		if(globalSearchDepth == null)
-			globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
+	} else {
+
+		globalUser = UserSession.instance();
+		if(globalUser.verifySession(ses)) {
+			globalUser.grabOrgUnit(org);
+	
+		} else  {
+			globalUser = null;
+			globalLocation = globalOrgTree;
+			if(globalSearchDepth == null)
+				globalSearchDepth = findOrgDepth(globalOrgTree.ou_type());
+		}
 	}
 
 	grabCopyStatus();
