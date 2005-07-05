@@ -59,7 +59,7 @@ package config::rules::age_hold_protect;
 use base qw/config/;
 __PACKAGE__->table('config_rule_age_hold_protect');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name age radius/);
+__PACKAGE__->columns(Essential => qw/name age prox/);
 #-------------------------------------------------------------------------------
 
 package config::copy_status;
