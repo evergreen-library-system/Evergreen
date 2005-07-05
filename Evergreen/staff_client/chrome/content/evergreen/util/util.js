@@ -21,7 +21,7 @@ function getString( key ) {
 			}
 
 		} catch(E) {
-			dump(E + '\n');
+			sdump('D_ERROR',E + '\n');
 		}
 	}
 	sdump('D_STRING',key + '=' + s + '\n');
@@ -40,7 +40,7 @@ function getFormattedString( key, strArray ) {
 				s = string;
 
 		} catch(E) {
-			dump(E + '\n');
+			sdump('D_ERROR',E + '\n');
 		}
 	}
 	sdump('D_STRING',key + '(' + strArray + ')=' + s + '\n');

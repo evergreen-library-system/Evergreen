@@ -1,7 +1,7 @@
 sdump('D_TRACE','Loading app_shell.js\n');
 
 function app_shell_init(p) {
-	dump("TESTING: app_shell.js: " + mw.G['main_test_variable'] + '\n');
+	sdump('D_TAB',"TESTING: app_shell.js: " + mw.G['main_test_variable'] + '\n');
 
 	p.w.close_tab = function (t1,t2) { return close_tab(p.w.document,t1,t2); };
 	p.w.find_free_tab = function (tabs) { return find_free_tab(tabs); };
@@ -40,22 +40,22 @@ function close_tab( d, t1, t2 ) {
 			try {
 				tabs.advanceSelectedTab(+1);
 			} catch(E) {
-				dump('failed tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
+				sdump('D_TAB','failed tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
 				try {
 					tabs.advanceSelectedTab(-1);
 				} catch(E) {
-					dump('failed again tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
+					sdump('D_TAB','failed again tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
 				}
 			}
 		} else {
 			try {
 				tabs.advanceSelectedTab(-1);
 			} catch(E) {
-				dump('failed tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
+				sdump('D_TAB','failed tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
 				try {
 					tabs.advanceSelectedTab(+1);
 				} catch(E) {
-					dump('failed again tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
+					sdump('D_TAB','failed again tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
 				}
 			}
 
@@ -77,7 +77,7 @@ function close_tab( d, t1, t2 ) {
 			new_tab(d,tabbox);
 
 	} catch(E) {
-		dump(E+'\n');
+		sdump('D_ERROR',E+'\n');
 		throw(E);
 	}
 }
@@ -126,7 +126,7 @@ function get_frame_in_tab( d, tabbox, idx, all_or_visible ) {
 			return panels.childNodes[ idx ].getElementsByTagName('iframe')[0];
 		}
 	} catch(E) {
-		dump(js2JSON(E) + '\n');
+		sdump('D_ERROR',js2JSON(E) + '\n');
 	}
 	return null;
 }
@@ -149,7 +149,7 @@ function new_tab( d, tabbox ) {
 		tabs.selectedIndex = tc;
 		replace_tab(d,tabbox,'Tab','chrome://evergreen/content/main/about.xul');
 	} catch(E) {
-		dump('+++++++++++++++++++++++++++++' + E + ' : ' + js2JSON(E)+'\n');
+		sdump('D_ERROR','+++++++++++++++++++++++++++++' + E + ' : ' + js2JSON(E)+'\n');
 	}
 }
 
@@ -187,7 +187,7 @@ function replace_tab( d, tabbox, label, chrome, params ) {
 		}
 		return frame.contentWindow;
 	} catch(E) {
-		dump(js2JSON(E)+'\n');
+		sdump('D_ERROR',js2JSON(E)+'\n');
 	}
 	//debug_tabs(d,tabbox);
 }

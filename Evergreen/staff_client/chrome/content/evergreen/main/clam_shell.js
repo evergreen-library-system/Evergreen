@@ -1,7 +1,7 @@
 sdump('D_TRACE','Loading clam_shell.js\n');
 
 function clam_shell_init(p) {
-	dump("TESTING: clam_shell.js: " + mw.G['main_test_variable'] + '\n');
+	sdump('D_CLAM',"TESTING: clam_shell.js: " + mw.G['main_test_variable'] + '\n');
 	if (p) {
 		if (p.horizontal) {
 			get_widget(p.w.document,p.clamshell).orient = 'horizontal';
@@ -44,16 +44,17 @@ function clam_shell_init(p) {
 
 	if (p.onload) {
 		try {
-			dump('D_TRACE','trying psuedo-onload...\n');
+			sdump('D_TRACE','trying psuedo-onload...\n');
 			p.onload(p.w);
 		} catch(E) {
-			dump( js2JSON(E) + '\n' );
+			sdump('D_ERROR', js2JSON(E) + '\n' );
 		}
 	}
 
 }
 
 function new_card_in_deck(doc,deck,chrome,params) {
+	sdump('D_CLAM',arg_dump(arguments));
 	deck = get_widget(doc,deck);
 	var new_card = document.createElement('iframe');
 	deck.appendChild(new_card);
@@ -64,6 +65,7 @@ function new_card_in_deck(doc,deck,chrome,params) {
 }
 
 function replace_card_in_deck(doc,deck,idx,chrome,params) {
+	sdump('D_CLAM',arg_dump(arguments));
 	deck = get_widget(doc,deck);
 	var old_card = deck.childNodes[ idx ];
 	var new_card = document.createElement('iframe');

@@ -12,14 +12,14 @@ function OpenILS_init(params) {
 			case 'PatronSearchForm' : patron_search_form_init(params); break;
 		}
 
-	} catch(E) { dump(js2JSON(E)+'\n'); }
+	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 
 	try {
 
 		register_document(params.w.document);
 		register_window(params.w);
 
-	} catch(E) { dump(js2JSON(E)+'\n'); }
+	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 
 }
 
@@ -37,7 +37,7 @@ function OpenILS_exit(params) {
 			case 'PatronSearchForm' : patron_search_form_exit(params); break;
 		}
 
-	} catch(E) { dump(js2JSON(E)+'\n'); }
+	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 
 	try {
 
@@ -45,7 +45,7 @@ function OpenILS_exit(params) {
 		//unregister_document(params.w.document);
 		//unregister_window(params.w);
 
-	} catch(E) { dump(js2JSON(E)+'\n'); }
+	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 
 	sdump('D_TRACE','Exiting OpenILS_exit\n');
 }

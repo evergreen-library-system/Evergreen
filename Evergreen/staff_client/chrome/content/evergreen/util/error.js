@@ -14,6 +14,7 @@ var sdump_levels = {
 	'D_SES' : false,
 	'D_SPAWN' : true,
 	'D_TAB' : false,
+	'D_CLAM' : false,
 	'D_OPAC' : true,
 	'D_STRING' : false,
 	'D_WIN' : false,
