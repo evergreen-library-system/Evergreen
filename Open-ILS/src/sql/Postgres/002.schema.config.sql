@@ -337,7 +337,7 @@ COMMENT ON TABLE config.copy_status IS $$
  *
  * You may add and remove statuses above 100, and these can be used
  * to remove items from normal circulation without affecting the rest
- * of the copies values or it's location.
+ * of the copy's values or it's location.
  *
  * ****
  *
