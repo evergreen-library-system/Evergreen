@@ -21,8 +21,8 @@ lib: $(LIB_OBJS)
 	cp *.h $(TMPDIR)/$(DEST_INCLUDE)/
 
 install:
-	mkdir -p $(INCLUDE)/$(DEST_INCLUDE)/
-	cp $(TMPDIR)/$(DEST_INCLUDE)/*.h $(INCLUDE)/$(DEST_INCLUDE)/
+	mkdir -p $(INCLUDEDIR)/$(DEST_INCLUDE)/
+	cp $(TMPDIR)/$(DEST_INCLUDE)/*.h $(INCLUDEDIR)/$(DEST_INCLUDE)/
 	cp $(TMPDIR)/libjson.so $(LIBDIR)/libjson.so
 
 

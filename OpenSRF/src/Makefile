@@ -3,10 +3,10 @@
 #
 
 # Change to suit...
-export PREFIX				= /usr
-export APXS2					= /pines/apps/apache2/bin/apxs
-export TMP					= /tmp/opensrf_build
-export APACHE2_HEADERS	= /pines/apps/apache2/include 
+#export PREFIX				= /usr
+#export APXS2					= /pines/apps/apache2/bin/apxs
+#export TMP					= /tmp/opensrf_build
+#export APACHE2_HEADERS	= /pines/apps/apache2/include 
 
 
 export TMPDIR			= $(TMP)/opensrf
@@ -17,11 +17,14 @@ export PERLDIR			= $(LIBDIR)/perl5
 export INCLUDEDIR		= $(PREFIX)/include
 export CC				= gcc
 export LD_OPTS			= -L $(TMPDIR) -L .
-export CC_OPTS			= -g -Wall -O2 -fPIC -I/usr/include/libxml2 -I$(APACHE2_HEADERS) \
-								-I/usr/include/libxml2/libxml  -I$(TMP) -I$(TMPDIR)
+export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
+								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
 
-all: prep router srfsh jserver gateway
+all: test prep router srfsh jserver gateway
+
+test: test
+	echo "TEST TEST TEST"
 
 install: install-prep transport-install stack-install gateway-install	\
 		router-install srfsh-install jserver-install perl-install			\
@@ -34,18 +37,24 @@ prep:
 # LIBS 
 # --------------------------------------------------------------------------------
 c_utils: prep
+	echo APXS2=$(APXS2) PREFIX=$(PREFIX) TMP=$(TMP) APCHE2_HEADERS=$(APACHE2_HEADERS) LIBXML2_HEADERS=$(LIBXML2_HEADERS)
+	@echo -e "\n + c_utils"
 	make -C utils
 
 transport: c_utils
+	@echo -e "\n + transport"
 	make -C libtransport
 
 objson: c_utils
+	@echo -e "\n + objson"
 	make -C objson
 
 json: prep
+	@echo -e "\n + libjson"
 	make -C libjson
 
 stack: json objson transport 
+	@echo -e "\n + stack"
 	make -C libstack
 
 
@@ -53,15 +62,19 @@ stack: json objson transport
 # BINARIES
 # --------------------------------------------------------------------------------
 router: stack 
+	@echo -e "\n + router"
 	make -C router 
 
 srfsh: stack
+	@echo -e "\n + srfsh"
 	make -C srfsh
 
 gateway:	stack 
+	@echo -e "\n + gateway"
 	make -C gateway
 
 jserver: c_utils
+	@echo -e "\n + jserver"
 	make -C jserver
 
 
