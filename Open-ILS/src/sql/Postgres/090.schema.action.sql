@@ -70,12 +70,32 @@ CREATE TABLE action.circulation (
 ) INHERITS (money.billable_xact);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 
+CREATE OR REPLACE VIEW action.open_cirulations AS
+	SELECT	*
+	  FROM	action.circulation
+	  WHERE	xact_finish IS NULL;
+
+CREATE OR REPLACE FUNCTION action.circulation_claims_returned () RETURNS TRIGGER AS $$
+BEGIN
+	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'CLAIMSRETURNED' THEN
+		UPDATE actor.usr SET claims_returned_count = claims_returned_count + 1 WHERE id = NEW.usr;
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+CREATE TRIGGER action_circulation_claims_returned
+	BEFORE UPDATE ON action.circulation
+	FOR EACH ROW
+	EXECUTE PROCEDURE action.circulation_claims_returned ();
+
 
 CREATE TABLE action.hold_request (
 	id			SERIAL				PRIMARY KEY,
 	request_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	capture_time		TIMESTAMP WITH TIME ZONE,
 	fulfillment_time	TIMESTAMP WITH TIME ZONE,
+	checkin_time		TIMESTAMP WITH TIME ZONE,
+	return_time		TIMESTAMP WITH TIME ZONE,
 	prev_check_time		TIMESTAMP WITH TIME ZONE,
 	expire_time		TIMESTAMP WITH TIME ZONE,
 	requestor		INT				NOT NULL REFERENCES actor.usr (id),
@@ -101,11 +121,21 @@ CREATE TABLE action.hold_notification (
 
 CREATE TABLE action.hold_copy_map (
 	id		SERIAL	PRIMARY KEY,
-	hold		INT	NOT NULL REFERENCES action.hold_notification (id) ON DELETE CASCADE,
+	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE,
 	target_copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
-	CONSTRAINT copy_once_per_hold UNIQUE (hold,copy)
+	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
 );
 
+CREATE TABLE action.hold_transit_copy (
+	id			SERIAL				PRIMARY KEY,
+	hold			INT				NOT NULL REFERENCES action.hold_request (id),
+	source			INT				NOT NULL REFERENCES actor.org_unit (id),
+	dest			INT				NOT NULL REFERENCES actor.org_unit (id),
+	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE,
+	source_send_time	TIMESTAMP WITH TIME ZONE,
+	dest_recv_time		TIMESTAMP WITH TIME ZONE,
+	prev_hop		INT				REFERENCES action.hold_transit_copy (id)
+);
 
 COMMIT;
 

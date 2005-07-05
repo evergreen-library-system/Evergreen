@@ -101,6 +101,7 @@ sub fast_fieldmapper {
 	my $id = shift;
 	my $col = shift;
 	my $like = shift;
+	my $options = shift;
 	my $class = ref($self) || $self;
 	my $fm_class = 'Fieldmapper::'.$class;
 	my @fms;
@@ -121,7 +122,7 @@ sub fast_fieldmapper {
 			$search_type = 'search_regex'
 		}
 
-		for my $obj ($class->$search_type({ $col => $id})) {
+		for my $obj ($class->$search_type({ $col => $id}, $options)) {
 			push @fms, $obj->to_fieldmapper;
 		}
 	}
@@ -300,8 +301,6 @@ sub modify_from_fieldmapper {
 	actor::user_address->has_a( usr => 'actor::user' );
 	
 	actor::card->has_a( usr => 'actor::user' );
-	
-	config::rules::age_hold_protect->has_a( radius => 'actor::org_unit_type' );
 	
 	actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
 	actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
