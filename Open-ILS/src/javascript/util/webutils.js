@@ -726,3 +726,14 @@ function getXYOffsets(target) {
 	return [x, y];
 }
 
+
+
+
+/* returns true if the user pressed enter */
+function userPressedEnter(evt) {
+	var code = grabCharCode(evt); 
+	if(code==13||code==3) return true;
+	return false;
+}
+
+

@@ -292,3 +292,29 @@ function mkResourceImage(resource) {
 	pic.setAttribute("title", resource);
 	return pic;
 }
+
+
+
+function doLogout() {
+
+	/* remove cookie so browse know's we're logged out */
+	deleteCookie("ils_ses");
+
+	var user = UserSession.instanece();
+	if( user.session_id ) {
+		var request = new RemoteRequest( "open-ils.auth",
+			"open-ils.auth.session.delete", user.session_id );
+		request.send(true);
+		var response = request.getResultObject();
+		if(! response ) {
+			//alert("error logging out"); /* exception */
+		}
+	}
+
+	/* completely destroy this user object */
+	user.destroy();
+}
+
+
+
+
