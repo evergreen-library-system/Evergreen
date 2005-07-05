@@ -60,7 +60,7 @@ sub _init {
 								     proto_fields	=> { responses => 1 } },
 		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
 		'Fieldmapper::action::circulation'		=> { hint		=> 'circ',
-								     proto_fields	=> { due_date => 1 } },
+								     proto_fields	=> {} },
 		'Fieldmapper::actor::user'			=> { hint		=> 'au',
 								     proto_fields	=> { cards		=> 1,
 								     			     survey_responses	=> 1,
