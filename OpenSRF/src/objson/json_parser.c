@@ -210,6 +210,7 @@ int json_parse_json_number(char* string, unsigned long* index, object* obj) {
 					"json_parse_json_number(): malformed json number");
 			}
 			dot_seen = 1;
+			buffer_add_char(buf, c);
 		} else {
 			done = 1; break;
 		}

@@ -424,7 +424,7 @@ char* object_to_json(object* obj) {
 		buffer_add(buf, b);
 	}
 
-	if(obj->is_null)
+	else if(obj->is_null)
 		buffer_add(buf, "null");
 
 	else if (obj->is_string) {

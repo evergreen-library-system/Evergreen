@@ -25,6 +25,34 @@ GNU General Public License for more details.
 /* ---------------------------------------------------------------------- */
 int main() {
 
+
+	/* number, double, and 'null' parsing... */
+	object* num = json_parse_string("1");
+	printf("\nParsed number: %d\n", num->num_value);
+	free_object(num);
+	num = json_parse_string("1.1");
+	printf("\nDouble number: %lf\n", num->double_value);
+	free_object(num);
+
+	object* null = json_parse_string("nUlL");
+	char* n = null->to_json(null);
+	free_object(null);
+	printf("\nJSON Null: %s\n", n);
+	free(n);
+
+	object* mix = json_parse_string("[1, .5, null]");
+	char* m = mix->to_json(mix);
+	printf("\nJSON MIX: %s\n", m );
+	free(m);
+	free_object(mix);
+
+	/* simulate an error.. */
+	printf("\nShould print error msg: \n");
+	object* error = json_parse_string("[1, .5. null]");
+
+
+
+
 	/* sample JSON string with some encoded UTF8 */
 	char* jsons = "/*--S mvr--*/[null,null,null,\"Griswold del Castillo, Richard\",[],null,\"1405676\",null,null,\"1558853243 (alk. paper) :\",\"c2002\",\"Pin\\u0303ata Books\",null,[],[[\"Chavez, Cesar 1927-\",\"Juvenile literature\"],[\"Labor leaders\",\"United States\",\"Biography\",\"Juvenile literature\"],[\"Mexican Americans\",\"Biography\",\"Juvenile literature\"],[\"Agricultural laborers\",\"Labor unions\",\"United States\",\"History\",\"Juvenile literature\"],[\"United Farm Workers\",\"History\",\"Juvenile literature\"],[\"Chavez, Cesar 1927-\"],[\"Labor leaders\"],[\"Mexican Americans\",\"Biography\"],[\"United Farm Workers.\"],[\"Spanish language materials\",\"Bilingual\"],[\"Chavez, Cesar 1927-\",\"Literatura juvenil\"],[\"Li\\u0301deres obreros\",\"Estados Unidos\",\"Biografi\\u0301a\",\"Literatura juvenil\"],[\"Mexicano-americanos\",\"Biografi\\u0301a\",\"Literatura juvenil\"],[\"Sindicatos\",\"Trabajadores agri\\u0301colas\",\"Estados Unidos\",\"Historia\",\"Literatura juvenil\"],[\"Unio\\u0301n de Trabajadores Agri\\u0301colas\",\"Historia\",\"Literatura juvenil\"]],\"ocm48083852 \",\"Ce\\u0301sar Cha\\u0301vez : the struggle for justice = Ce\\u0301sar Cha\\u0301vez : la lucha por la justicia\",[\"text\"], { \"hi\":\"you\"} ]/*--E mvr--*/";
 
@@ -54,7 +82,7 @@ int main() {
 	char* string2 = strdup(jsons);
 
 	int x = 0;
-	int count = 10000;
+	int count = 3000;
 	printf("\nParsing %d round trips at %f...\n", count, get_timestamp_millis());
 
 	/* parse and stringify many times in a loop to check speed */
@@ -110,6 +138,9 @@ int main() {
 	object* k4 = k3->get_key(k3,"servlet-class");
 
 	printf("\nValue for object with key 'servlet-class' in the JSON file => %s\n", k4->get_string(k4));
+
+
+	
 
 	return 0;
 }
