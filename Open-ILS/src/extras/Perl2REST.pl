@@ -1,57 +1,36 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
-use OpenSRF::System qw(/pines/conf/client.conf);
-use OpenSRF::EX qw/:try/;
+use OpenSRF::System;
+use OpenSRF::Application;
 use OpenILS::Utils::Fieldmapper;
-use Time::HiRes (qw/time/);
+use CGI;
 
 $| = 1;
 
-# ----------------------------------------------------------------------------------------
-# This is a quick and dirty script to perform benchmarking against the math server.
-# Note: 1 request performs a batch of 4 queries, one for each supported method: add, sub,
-# mult, div.
-# Usage: $ perl math_bench.pl <num_requests>
-# ----------------------------------------------------------------------------------------
+my $cgi = new CGI;
+my $url = $cgi->url;
 
-
-my $method = shift;
+my $method = $cgi->param('method');
+my @params = $cgi->param('param');
 
 unless( $method ) {
-	print "usage: $0 method\n";
+	print "Content-Type: text/plain\n\n";
+	print "usage:  $url?method={method}&param={param1}&param={param2}...\n";
 	exit;
 }
 
-OpenSRF::System->bootstrap_client();
+print "Content-Type: text/xml\n\n";
+
+OpenSRF::System->bootstrap_client( config_file => '/pines/conf/bootstrap.conf' );
 $method = OpenSRF::Application->method_lookup( $method );
-my $resp = $method->run(@ARGV);
 
-#my $usr = new Fieldmapper::actor::user;
-#$usr->first_given_name('mike');
-#$usr->family_name('rylander');
-#
-#my $addr = new Fieldmapper::actor::user_address;
-#$addr->street1('123 main st');
-#$addr->post_code('30144');
-#
-#$usr->billing_address($addr);
-
-#my $resp =  {
-#	a => 'hash',
-#	b => 'value',
-#	c => { nested => 'hash' },
-#	d => [ qw/with an array inside/ ],
-#	e => $usr,
-#};
+my @resp = $method->run(@params);
 
 my $val = '';
 
-my $start = time;
-Perl2REST(\$val, $resp);
-my $end = time;
+Perl2REST(\$val, $_) for (@resp);
 
 print $val;
-print "\nTIME: ". ($end - $start) . "s\n";
 
 
 sub Perl2REST {
@@ -95,7 +74,7 @@ sub Perl2REST {
 		}
 		$$val .= '  'x$level . "</$class>\n";
 
-	} elsif (ref($obj) =~ /HASH/o) {
+	} elsif ($obj =~ /HASH/o) {
 		my $class = ref($obj);
 		$class =~ s/::/_/go;
 		$$val .= '  'x$level . "<$class>\n";
@@ -106,7 +85,7 @@ sub Perl2REST {
 			$$val .= '  'x$level . "  </$_>\n";
 		}
 		$$val .= '  'x$level . "</$class>\n";
-	} elsif (ref($obj) =~ /ARRAY/o) {
+	} elsif ($obj =~ /ARRAY/o) {
 		my $class = ref($obj);
 		$class =~ s/::/_/go;
 		my $next = $level + 1;
