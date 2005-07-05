@@ -248,7 +248,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		if(!strcmp(key,"method"))
 			method = val;
 
-		if(!strcmp(key,"__param"))
+		if(!strcmp(key,"param"))
 			string_array_add(sarray, val);
 
 	}
