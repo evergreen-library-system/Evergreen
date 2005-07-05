@@ -290,6 +290,12 @@ sub real_fields {
 	return @f;
 }
 
+sub properties {
+	my $self = shift;
+	my $class_name = $self->class_name;
+	return keys %{$$fieldmap{$class_name}{fields}};
+}
+
 sub api_level {
 	my $self = shift;
 	return $fieldmap->{$self->class_name}->{api_level};
