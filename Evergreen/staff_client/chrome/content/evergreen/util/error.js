@@ -1,5 +1,10 @@
 sdump('D_TRACE',"Loading error.js\n");
 
+var consoleService = Components.classes['@mozilla.org/consoleservice;1']
+	.getService(Components.interfaces.nsIConsoleService);
+
+var consoleDump = true;
+
 var sdump_levels = {
 	'D_TRACE' :  true,
 	'D_AUTH' : false,
@@ -20,6 +25,8 @@ function sdump(level,msg) {
 	try {
 		if (sdump_levels[level])
 			debug(level + ': ' + msg);
+		if (consoleDump)
+			consoleService.logStringMessage(level + ': ' + msg);
 	} catch(E) {}
 }
 
