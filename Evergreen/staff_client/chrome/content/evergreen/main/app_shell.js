@@ -10,7 +10,8 @@ function app_shell_init(p) {
 	p.w.get_frame_in_tab = function (idx, all_or_vis) { return get_frame_in_tab( p.w.document, p.tabbox, idx, all_or_vis ); }; 
 	
 	//p.w.replace_tab('Tab','chrome://evergreen/content/main/about.xul');
-	spawn_javascript_shell(p.w.document,'replace_tab','main_tabbox',{});
+	spawn_javascript_console(p.w.document,'replace_tab','main_tabbox',{});
+	spawn_javascript_shell(p.w.document,'new_tab','main_tabbox',{});
 }
 
 function close_tab( d, t1, t2 ) {
