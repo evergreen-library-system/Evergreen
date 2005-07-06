@@ -171,6 +171,22 @@ function runInstall {
 				if installing; then $MAKE -C "$OPENILS_DIR" "perl-install"; fi;
 				;;
 
+			"opensrf")
+				if building; then $MAKE -C "$OPENSRF_DIR" all; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" install; fi;
+				;;
+
+			"openils")
+				if building; then $MAKE -C "$OPENILS_DIR" all; fi;
+				if installing; then $MAKE -C "$OPENILS_DIR" install; fi;
+				;;
+
+			"evergreen")
+				if building; then $MAKE -C "$EVERGREEN_DIR" all; fi;
+				if installing; then $MAKE -C "$EVERGREEN_DIR" install; fi;
+				;;
+
+
 			*) fail "Unknown target: $target";;
 
 		esac

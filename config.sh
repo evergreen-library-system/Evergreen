@@ -72,6 +72,10 @@ function buildConfig {
 	read X;
 	if [ ! -z "$X" ]; then INCLUDEDIR="$X"; fi;
 
+	prompt "Config files directory [$ETCDIR] "
+	read X;
+	if [ ! -z "$X" ]; then ETCDIR="$X"; fi;
+
 	prompt "Temporary files directory [$TMP] "
 	read X;
 	if [ ! -z "$X" ]; then TMP="$X"; fi;

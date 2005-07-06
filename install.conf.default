@@ -25,7 +25,12 @@
 # gateway    - mod_ils_gateway, Apache module for proxying API calls
 # srfsh      - diagnostic shell interface to OpenSRF
 # marcdumper - utility code for converting MARC to MARCXML
+# opensrf_perl - install the OpenSRF perl modules
+# openils_perl - install the Open-ILS perl modules
 # xul        - client XUL application
+# opensrf	- builds all OpenSRF compenents
+# openils	- builds all OpenILS compenents
+# evergreen	- builds all Evergreen components
 #
 # When running the server components of OpenSRF/OpenILS, the simplest
 # thing is to build jserver, router, gateway, and srfsh, even if you 
@@ -33,22 +38,28 @@
 # MARC files to MARCXML.  If you only want to build the client app,
 # then just build xul.
 # --------------------------------------------------------------------
+
 #TARGETS=("jserver" "router" "gateway" "srfsh" "marcdumper" "xul");
-TARGETS=("router" "gateway" "jserver" "srfsh");
+#TARGETS=("router" "gateway" "jserver" "srfsh" "opensrf_perl" "openils_perl");
+TARGETS=("opensrf");
 
 
 # --------------------------------------------------------------------
 # Global install prefix.  Binaries will be installed into PREFIX/bin,
 # libraries will be installed into PERFIX/lib, etc.  The user 
-# running install.sh must have write permissions to PREFIX
+# running 'install.sh install' must have write permissions to PREFIX
 # --------------------------------------------------------------------
-#PREFIX="/tmp/testinstall/";
 PREFIX="/tmp/ilsinstall/";
+BINDIR="$PREFIX/bin/";
+LIBDIR="$PREFIX/lib/";
+PERLDIR="$LIBDIR/perl5/";
+INCLUDEDIR="$PREFIX/include/";
+ETCDIR="$PREFIX/etc/";
 
 
 # --------------------------------------------------------------------
-# Temporary build files go here.  The User running install.sh must
-# have write permissions to TMP
+# Temporary build files go here.  The User running 'install.sh build'
+# must have write permissions to TMP
 # --------------------------------------------------------------------
 TMP="/tmp/ilstmp/";
 
