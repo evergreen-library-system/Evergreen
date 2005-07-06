@@ -23,14 +23,13 @@ var globalOPACStartPage = null;
 function OPACStartPage() {
 
 	debug("In OPACStartPage()");
-	//this.searchBar			= new SearchBarChunk();
 	this.searchBrFormChunk = new SearchBarFormChunk();
 
 	if( globalOPACStartPage ) {
 		return globalOPACStartPage; 
 	}
 
-
+	this.init();
 	globalOPACStartPage = this;
 }
 
@@ -42,15 +41,18 @@ OPACStartPage.prototype.instance = function() {
 }
 
 OPACStartPage.prototype.init = function() {
-	//this.searchBar.reset();
+
 	globalSearchBarFormChunk.resetPage();
-	/*
-	var menu = globalMenuManager.buildMenu("record_result_row","record_result_row_1");
-	globalAppFrame.document.body.appendChild(menu.getNode());
-	getById('help').setAttribute("oncontextmenu",  
-		"logicNode.globalMenuManager.getMenu('record_result_row_1').toggle(); return false;");
-		*/
+	var login = getById("login_link");
+
+	if(!UserSession.instance().verifySession()) {
+		login.setAttribute("href","javascript:void(0);");
+		var func = function(){url_redirect(["target","my_opac"])};
+		var diag = new LoginDialog(getDocument().body, func);
+		login.onclick = function(){diag.display(login);}
+	}
 }
+
 
 OPACStartPage.prototype.doSearch = function() {
 }

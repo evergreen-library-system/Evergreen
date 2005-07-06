@@ -209,13 +209,26 @@ Page.prototype.buildNavBox = function(full) {
 	var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
 
 	arr.push(elem("a", {href: prefix + '?target=advanced_search'}, null, "Advanced Search"));
-	arr.push(elem("a", {href: prefix + '?target=my_opac'}, null, "My OPAC"));
-	//arr.push(elem("a", {href: prefix + '?target=about'}, null, "About PINES"));
+
+
+	var mylink = elem("a", {href: "?target=my_opac"}, null, "My OPAC");
+	arr.push(mylink);
+
+	/* if user is not logged in, popup the login dialog when they
+		select the myopac link */
+	if(!UserSession.instance().verifySession()) {
+		mylink.setAttribute("href","javascript:void(0);");
+		var func = function(){url_redirect(["target","my_opac"])};
+		var diag = new LoginDialog(getDocument().body, func);
+		mylink.onclick = function(){diag.display(mylink);}
+	}
+
+
 	if(loc) arr.push(this.buildDeepLink());
 
 	if(UserSession.instance().verifySession()) {
-		//arr.push(elem("a", {href: prefix + "?target=logout"}, null, "Logout"));
-		var a = elem("a", {href:globalRootPath}, null, "Logout");
+		var a = elem("a", {href:"http://" + globalRootURL + ":" 
+				+ globalPort + "/" + globalRootPath}, null, "Logout");
 		a.onclick = doLogout;
 		arr.push(a);
 	} 
