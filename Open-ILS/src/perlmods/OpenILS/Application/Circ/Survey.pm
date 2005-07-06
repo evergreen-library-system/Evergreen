@@ -245,14 +245,17 @@ sub get_fleshed_survey {
 
 	warn "Grabbing survey questions\n";
 	my $qreq = $session->request(
-		"open-ils.storage.direct.action.survey_question.search.survey", 
+		"open-ils.storage.direct.action.survey_question.search.survey.atomic", 
 		$survey->id() );
 
 	my $questions = $qreq->gather(1); 
+	use Data::Dumper;
+	warn "Question: " . Dumper($questions);
 
 	if($questions) {
 
 		for my $question (@$questions) {
+			next unless defined $question;
 	
 			# add this question to the survey
 			push( @{$survey->questions()}, $question );
@@ -260,7 +263,7 @@ sub get_fleshed_survey {
 			warn "Grabbing question answers\n";
 
 			my $ans_req = $session->request(
-				"open-ils.storage.direct.action.survey_answer.search.question",
+				"open-ils.storage.direct.action.survey_answer.search.question.atomic",
 				$question->id() );
 	
 			# add this array of answers to this question

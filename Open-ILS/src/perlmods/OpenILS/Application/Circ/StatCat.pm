@@ -384,10 +384,10 @@ sub retrieve_maps {
 
 	my $user_obj = $apputils->check_user_session($user_session); 
 
-	my	$method = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy";
+	my	$method = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy.atomic";
 	if($self->api_name =~ /actor/ ) {
 		if(!$target) { $target = $user_obj->id; }
-		$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr";
+		$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr.atomic";
 	}
 
 	return $apputils->simple_scalar_request("open-ils.storage", $method, $target);

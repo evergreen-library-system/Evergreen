@@ -120,7 +120,7 @@ sub flesh_user {
 
 	# grab the cards
 	my $cards_req = $session->request(
-			"open-ils.storage.direct.actor.card.search.usr",
+			"open-ils.storage.direct.actor.card.search.usr.atomic",
 			$user->id() );
 	$user->cards( $cards_req->gather(1) );
 
@@ -132,7 +132,7 @@ sub flesh_user {
 	}
 
 	my $add_req = $session->request(
-			"open-ils.storage.direct.actor.user_address.search.usr",
+			"open-ils.storage.direct.actor.user_address.search.usr.atomic",
 			$user->id() );
 	$user->addresses( $add_req->gather(1) );
 
@@ -151,7 +151,7 @@ sub flesh_user {
 	}
 
 	my $stat_req = $session->request(
-		"open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr",
+		"open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr.atomic",
 		$user->id() );
 	$user->stat_cat_entries($stat_req->gather(1));
 
@@ -483,7 +483,7 @@ sub search_username {
 	my($self, $client, $username) = @_;
 	my $users = OpenILS::Application::AppUtils->simple_scalar_request(
 			"open-ils.storage", 
-			"open-ils.storage.direct.actor.user.search.usrname",
+			"open-ils.storage.direct.actor.user.search.usrname.atomic",
 			$username );
 	return $users;
 }
@@ -504,7 +504,7 @@ sub user_retrieve_by_barcode {
 
 	# find the card with the given barcode
 	my $creq	= $session->request(
-			"open-ils.storage.direct.actor.card.search.barcode",
+			"open-ils.storage.direct.actor.card.search.barcode.atomic",
 			$barcode );
 	my $card = $creq->gather(1);
 

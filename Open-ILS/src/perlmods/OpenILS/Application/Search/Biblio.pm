@@ -246,7 +246,7 @@ sub biblio_search_tcn {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.search.tcn_value", $tcn );
+			"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic", $tcn );
 	my $record_entry = $request->gather(1);
 
 	my @ids;
@@ -308,7 +308,7 @@ sub biblio_barcode_to_copy {
 	warn "copy search for barcode $barcode\n";
 	my $record = OpenILS::Application::AppUtils->simple_scalar_request(
 			"open-ils.storage", 
-			"open-ils.storage.direct.asset.copy.search.barcode",
+			"open-ils.storage.direct.asset.copy.search.barcode.atomic",
 			$barcode );
 
 	return undef unless($record);
@@ -366,7 +366,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.asset.copy.fleshed.retrieve",
 );
 
-sub fleshed_copy_retrieve_batch { 
+sub fleshed_copy_retrieve { 
 	my( $self, $client, $id ) = @_;
 
 	return undef unless defined $id;

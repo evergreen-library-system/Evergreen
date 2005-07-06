@@ -103,7 +103,7 @@ sub init_authenticate {
 sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash, $type ) = @_;
 
-	my $name = "open-ils.storage.direct.actor.user.search.usrname";
+	my $name = "open-ils.storage.direct.actor.user.search.usrname.atomic";
 
 	warn "Completing Authentication\n";
 

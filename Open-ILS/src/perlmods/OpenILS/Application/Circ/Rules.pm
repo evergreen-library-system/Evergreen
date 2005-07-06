@@ -139,7 +139,7 @@ sub gather_circ_objects {
 
 
 	my $copy_req	= $session->request(
-		"open-ils.storage.fleshed.asset.copy.search.barcode", 
+		"open-ils.storage.fleshed.asset.copy.search.barcode.atomic", 
 		$barcode_string );
 
 	my $patron_req	= $session->request(
@@ -317,11 +317,13 @@ sub circulate {
 	$circ->max_fine_rule($max);
 	$circ->recuring_fine_rule($recurring);
 
-	my $due_date = 
-		OpenSRF::Utils->interval_to_seconds( 
-			$circ->duration ) + int(time());
 
-	$circ->due_date($due_date);
+#	my $due_date = 
+#		OpenSRF::Utils->interval_to_seconds( 
+#		$circ->duration ) + int(time());
+
+#	this comes from an earlier setting now
+#	$circ->due_date($due_date);
 
 	return $circ;
 
@@ -360,15 +362,15 @@ sub run_circ_scripts {
 	# find the rules objects based on the rule names returned from
 	# the various scripts.
 	my $dur_req = $session->request(
-		"open-ils.storage.direct.config.rules.circ_duration.search.name",
+		"open-ils.storage.direct.config.rules.circ_duration.search.name.atomic",
 		$duration_rule->[0] );
 
 	my $rec_req = $session->request(
-		"open-ils.storage.direct.config.rules.recuring_fine.search.name",
+		"open-ils.storage.direct.config.rules.recuring_fine.search.name.atomic",
 		$rec_fines_rule->[0] );
 
 	my $max_req = $session->request(
-		"open-ils.storage.direct.config.rules.max_fine.search.name",
+		"open-ils.storage.direct.config.rules.max_fine.search.name.atomic",
 		$max_fines_rule->[0] );
 
 	my $duration	= $dur_req->gather(1)->[0];
@@ -460,7 +462,7 @@ sub checkin {
 		}
 	
 		my $copy_req = $session->request(
-			"open-ils.storage.direct.asset.copy.search.barcode", 
+			"open-ils.storage.direct.asset.copy.search.barcode.atomic", 
 			$barcode );
 		$copy = $copy_req->gather(1)->[0];
 		if(!$copy) {
@@ -474,7 +476,7 @@ sub checkin {
 		# given copy.  should only be one.
 		warn "Retrieving circ for checking\n";
 		my $circ_req = $session->request(
-			"open-ils.storage.direct.action.circulation.search.atomic",
+			"open-ils.storage.direct.action.circulation.search.atomic.atomic",
 			{ target_copy => $copy->id, xact_finish => undef } );
 	
 		my $circ = $circ_req->gather(1)->[0];

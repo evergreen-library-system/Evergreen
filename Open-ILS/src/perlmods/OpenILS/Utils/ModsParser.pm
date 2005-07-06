@@ -263,9 +263,9 @@ sub start_mods_batch {
 	my $xmldoc = $parser->parse_string($master_doc);
 	my $mods = $mods_sheet->transform($xmldoc);
 
-	warn "-" x 100 . "\n";
-	warn "MODS " . $mods->toString(1) . "\n";
-	warn "-" x 100 . "\n";
+#	warn "-" x 100 . "\n";
+#	warn "MODS " . $mods->toString(1) . "\n";
+#	warn "-" x 100 . "\n";
 
 	$self->{master_doc} = $self->modsdoc_to_values( $mods );
 	$self->{master_doc} = $self->mods_values_to_mods_slim( $self->{master_doc} );

@@ -59,15 +59,16 @@ sub checkouts_by_user {
 		$copy = $copy->gather(1);
 		$record = $record->gather(1);
 
-		my $due_date = 
-			OpenSRF::Utils->interval_to_seconds( 
-				$circ->duration ) + int(time());
-		$circ->due_date($due_date);
+#		my $due_date = 
+#			OpenSRF::Utils->interval_to_seconds( 
+#		$circ->duration ) + int(time());
+#		$circ->due_date($due_date);
 
+		use Data::Dumper;
+		warn Dumper $circ;
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch( $record->marc() );
 		my $mods = $u->finish_mods_batch();
-		warn "Doc id is " . $record->id() . "\n";
 		$mods->doc_id($record->id());
 
 		push( @results, { copy => $copy, circ => $circ, record => $mods } );

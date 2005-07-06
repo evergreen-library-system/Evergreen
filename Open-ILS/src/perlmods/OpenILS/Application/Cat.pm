@@ -109,7 +109,7 @@ sub _tcn_exists {
 	if(!$tcn) {return 0;}
 
 	my $req = $session->request(      
-		"open-ils.storage.direct.biblio.record_entry.search.tcn_value",
+		"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic",
 		$tcn );
 	my $recs = $req->gather(1);
 
@@ -347,7 +347,7 @@ sub _get_id_by_userid {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-		"open-ils.storage.direct.actor.user.search.usrname", @users );
+		"open-ils.storage.direct.actor.user.search.usrname.atomic", @users );
 
 	$request->wait_complete;
 	my $response = $request->recv();
@@ -418,7 +418,7 @@ sub orgs_for_title {
 
 	my $vols = $apputils->simple_scalar_request(
 		"open-ils.storage",
-		"open-ils.storage.direct.asset.call_number.search.record",
+		"open-ils.storage.direct.asset.call_number.search.record.atomic",
 		$record_id );
 
 	my $orgs = { map {$_->owning_lib => 1 } @$vols };
@@ -491,7 +491,7 @@ sub _build_volume_list {
 
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
 		my $creq = $session->request(
-			"open-ils.storage.direct.asset.copy.search.call_number", 
+			"open-ils.storage.direct.asset.copy.search.call_number.atomic", 
 			$volume->id );
 		my $copies = $creq->gather(1);
 
@@ -590,7 +590,7 @@ sub _delete_volume {
 	warn "Deleting volume " . $volume->id . "\n";
 
 	my $copies = $session->request(
-		"open-ils.storage.direct.asset.copy.search.call_number",
+		"open-ils.storage.direct.asset.copy.search.call_number.atomic",
 		$volume->id )->gather(1);
 	if(@$copies) {
 		throw OpenSRF::EX::ERROR 
@@ -723,7 +723,7 @@ sub _fleshed_copy_update {
 	if(!@$stat_cat_entries) { return 1; }
 
 	my $stat_maps = $session->request(
-		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy",
+		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy.atomic",
 		$copy->id )->gather(1);
 
 	if(!$copy->isnew) { _delete_stale_maps($session, $stat_maps, $copy); }

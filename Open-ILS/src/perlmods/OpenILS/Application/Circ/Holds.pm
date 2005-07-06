@@ -180,7 +180,7 @@ sub retrieve_holds {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $req = $session->request(
-		"open-ils.storage.direct.action.hold_request.search.usr",
+		"open-ils.storage.direct.action.hold_request.search.usr.atomic",
 		$user_id );
 	my $h = $req->gather(1);
 	$session->disconnect();
