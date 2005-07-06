@@ -1,0 +1,6 @@
+<!ENTITY displaying.results 'Displaying results'>
+<!ENTITY displaying.of 'of'>
+<!ENTITY previous.range 'Previous'>
+	<!ENTITY previous.range.key 'P'>
+<!ENTITY next.range 'Next'>
+	<!ENTITY next.range.key 'N'>
