@@ -7,11 +7,13 @@
 	sub search_fts {
 		my $self = shift;
 		my @args = @_;
-		if (ref($args[-1]) eq 'HASH') {
+
+		if (ref($args[-1]) eq 'HASH' && @args > 1) {
 			$args[-1]->{_placeholder} = "to_tsquery('default',?)";
 		} else {
 			push @args, {_placeholder => "to_tsquery('default',?)"};
 		}
+		
 		$self->_do_search("@@"  => @args);
 	}
 
@@ -19,6 +21,12 @@
 		my $self = shift;
 		my @args = @_;
 		$self->_do_search("~*"  => @args);
+	}
+
+	sub search_ilike {
+		my $self = shift;
+		my @args = @_;
+		$self->_do_search("ILIKE"  => @args);
 	}
 
 }

@@ -128,18 +128,20 @@ sub retrieve_node {
 sub search {
 	my $self = shift;
 	my $client = shift;
-	my $searches = shift;
-	my $options = shift;
+	my @args = @_;
+	#my $searches = shift;
+	#my $options = shift;
 
 	my $cdbi = $self->{cdbi};
 
 	(my $search_type = $self->api_name) =~ s/.*\.(search[^.]*).*/$1/o;
 
-	$log->debug("Searching $cdbi for { ".
-		join(',', map { "$_ => $$searches{$_}" } keys %$searches).
-		" } using $search_type",DEBUG);
+	#$log->debug("Searching $cdbi for { ".
+	#	join(',', map { "$_ => $$searches{$_}" } keys %$searches).
+	#	" } using $search_type",DEBUG);
 
-	for my $obj ($cdbi->$search_type($searches, $options)) {
+	#for my $obj ($cdbi->$search_type($searches, $options)) {
+	for my $obj ($cdbi->$search_type(@args)) {
 		warn "$obj -> ".ref($obj);
 		next unless ref($obj);
 		$client->respond( $obj->to_fieldmapper );
@@ -148,6 +150,16 @@ sub search {
 }
 
 sub search_one_field {
+	my $self = shift;
+	my $client = shift;
+	my @args = @_;
+
+	(my $field = $self->api_name) =~ s/.*\.([^\.]+)$/$1/o;
+
+	return search( $self, $client, $field, @args );
+}
+
+sub old_search_one_field {
 	my $self = shift;
 	my $client = shift;
 	my @terms = @_;
@@ -354,6 +366,19 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		}
 	}
 
+	if (\&Class::DBI::search_ilike) {
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_ilike' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.search_ilike',
+				method		=> 'search',
+				api_level	=> 1,
+				stream		=> 1,
+				cdbi		=> $cdbi,
+				cachable	=> 1,
+			);
+		}
+	}
+
 	# Create the retrieve method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.retrieve' ) ) {
 		__PACKAGE__->register_method(
@@ -411,6 +436,17 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_regex.'.$field ) ) {
 				__PACKAGE__->register_method(
 					api_name	=> $api_prefix.'.search_regex.'.$field,
+					method		=> 'search_one_field',
+					api_level	=> 1,
+					cdbi		=> $cdbi,
+					cachable	=> 1,
+				);
+			}
+		}
+		if (\&Class::DBI::search_ilike) {
+			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_ilike.'.$field ) ) {
+				__PACKAGE__->register_method(
+					api_name	=> $api_prefix.'.search_ilike.'.$field,
 					method		=> 'search_one_field',
 					api_level	=> 1,
 					cdbi		=> $cdbi,

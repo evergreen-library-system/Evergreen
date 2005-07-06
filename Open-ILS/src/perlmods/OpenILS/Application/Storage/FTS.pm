@@ -172,10 +172,10 @@ package Class::DBI;
 		my ($proto, $search_type, @args) = @_;
 		my $class = ref $proto || $proto;
 		
-		@args = %{ $args[0] } if ref $args[0] eq "HASH";
-
 		my (@cols, @vals);
-		my $search_opts = @args % 2 ? pop @args : {};
+		my $search_opts = (@args > 1 and ref($args[-1]) eq 'HASH') ? pop @args : {};
+
+		@args = %{ $args[0] } if ref $args[0] eq "HASH";
 
 		$search_opts->{offset} = int($search_opts->{page}) * int($search_opts->{page_size})  if ($search_opts->{page_size});
 		$search_opts->{_placeholder} ||= '?';
