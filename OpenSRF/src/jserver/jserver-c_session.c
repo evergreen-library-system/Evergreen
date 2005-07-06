@@ -147,11 +147,14 @@ void sax_end_element( void* blob, const xmlChar *name) {
 	if(session->state & JABBER_STATE_CONNECTED) {
 		if(!strcmp(name, "message")) {
 			if(session->on_msg_complete) {
+
+				debug_handler("Message is complete, finishing DOC");
+
 				/* we have to make sure the 'from' address is set.. */
 				xmlNodePtr msg = xmlDocGetRootElement(session->current_msg);
 				if(msg) xmlSetProp(msg, BAD_CAST "from", BAD_CAST session->current_from );
-
 				char* string = _xml_to_string(session->current_msg);
+
 				session->on_msg_complete(session->blob, string, 
 					session->current_from, session->current_to );
 				free(string);
@@ -266,38 +269,11 @@ char* sax_xml_attr( const xmlChar** atts, char* attr_name ) {
 
 char* _xml_to_string( xmlDocPtr doc ) {
 	
-	int			bufsize;
-	xmlChar*		xmlbuf;
-	xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
+	xmlBufferPtr xmlbuf = xmlBufferCreate();
+	xmlNodeDump( xmlbuf, doc, xmlDocGetRootElement(doc), 0, 0);
 
-	char* xml = strdup(xmlbuf);
-	xmlFree(xmlbuf);
-
-	/*** remove the XML declaration */
-	int len = strlen(xml);
-	char tmp[len];
-	memset( tmp, 0, len );
-	int i;
-	int found_at = 0;
-						
-	/* when we reach the first >, take everything after it */
-	for( i = 0; i!= len; i++ ) {
-		if( xml[i] == 62) { /* ascii > */
-	
-			/* found_at holds the starting index of the rest of the doc*/
-			found_at = i + 1; 
-			break;
-		}
-	}
-
-	if( found_at ) {
-
-		/* move the shortened doc into the tmp buffer */
-		strncpy( tmp, xml + found_at, len - found_at );
-		/* move the tmp buffer back into the allocated space */
-		memset( xml, 0, len );
-		strcpy( xml, tmp );
-	}
+	char* xml = strdup( (char*) (xmlBufferContent(xmlbuf)));
+	xmlBufferFree(xmlbuf);
 
 	int l = strlen(xml)-1;
 	if( xml[l] == 10 || xml[l] == 13 )

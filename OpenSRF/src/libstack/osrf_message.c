@@ -161,9 +161,9 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 	if( msg == NULL )
 		return NULL;
 
-	int			bufsize;
-	xmlChar*		xmlbuf;
-	char*			encoded_msg;
+	//int			bufsize;
+	//xmlChar*		xmlbuf;
+	//char*			encoded_msg;
 
 	xmlKeepBlanksDefault(0);
 
@@ -330,6 +330,10 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 
 	//xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
 	//xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
+
+
+
+	/*
 	xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
 
 	encoded_msg = strdup( (char*) xmlbuf );
@@ -341,34 +345,48 @@ char* osrf_message_to_xml( osrf_message* msg ) {
 	xmlFree(xmlbuf);
 	xmlFreeDoc( doc );
 	xmlCleanupParser();
+	*/
 
 
-	/*** remove the XML declaration */
+	/***/
+	xmlBufferPtr xmlbuf = xmlBufferCreate();
+	xmlNodeDump( xmlbuf, doc, xmlDocGetRootElement(doc), 0, 0);
+
+	char* xml = strdup( (char*) (xmlBufferContent(xmlbuf)));
+	xmlBufferFree(xmlbuf);
+
+	int l = strlen(xml)-1;
+	if( xml[l] == 10 || xml[l] == 13 )
+		xml[l] = '\0';
+
+	return xml;
+	/***/
+
+
+
+	/*
 	int len = strlen(encoded_msg);
 	char tmp[len];
 	memset( tmp, 0, len );
 	int i;
 	int found_at = 0;
 
-	/* when we reach the first >, take everything after it */
 	for( i = 0; i!= len; i++ ) {
-		if( encoded_msg[i] == 62) { /* ascii > */
+		if( encoded_msg[i] == 62) { 
 
-			/* found_at holds the starting index of the rest of the doc*/
 			found_at = i + 1; 
 			break;
 		}
 	}
 
 	if( found_at ) {
-		/* move the shortened doc into the tmp buffer */
 		strncpy( tmp, encoded_msg + found_at, len - found_at );
-		/* move the tmp buffer back into the allocated space */
 		memset( encoded_msg, 0, len );
 		strcpy( encoded_msg, tmp );
 	}
 
 	return encoded_msg;
+	*/
 
 }
 
