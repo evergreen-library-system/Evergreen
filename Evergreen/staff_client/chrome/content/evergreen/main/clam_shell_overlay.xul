@@ -14,7 +14,7 @@
 <box id="ClamShell_main" flex="1" orient="horizontal">
 	<deck id="ClamShell_first_deck" flex="1"/>
 	<splitter id="ClamShell_splitter" />
-	<deck id="CLamShell_second_deck" flex="1"/>
+	<deck id="ClamShell_second_deck" flex="1"/>
 </box>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
