@@ -248,11 +248,12 @@ function incr_progressmeter(d,meter,increment) {
 
 // Populate a treeitem row
 function map_array_to_treecells_via_treeitem( cols, treeitem ) {
-	sdump('D_WIDGETS',arg_dump(arguments));
+	sdump('D_WIDGETS',arg_dump(arguments),{0:true});
 	var treerow = treeitem.firstChild;
 	for (var i = 0; i < treerow.childNodes.length; i++) {
 		var treecell = treerow.childNodes[i];
 		treecell.setAttribute('label',cols[i]);
+		sdump('D_WIDGETS','treeitem = ' + treeitem + ' treerow = ' + treerow + ' treecell = ' + treecell + ' cols[ ' + i + '] = ' + cols[i] + '\n');
 	}
 }
 

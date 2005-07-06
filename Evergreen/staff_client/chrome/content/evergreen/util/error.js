@@ -4,10 +4,13 @@ var consoleService = Components.classes['@mozilla.org/consoleservice;1']
 	.getService(Components.interfaces.nsIConsoleService);
 
 var consoleDump = true;
+var arg_dump_full = false;
 
 var sdump_levels = {
 	'D_ERROR' : true,
 	'D_TRACE' :  true,
+	'D_TRACE_ENTER' :  false,
+	'D_TRACE_EXIT' :  true,
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : true,
@@ -23,11 +26,12 @@ var sdump_levels = {
 
 	'D_EXPLODE' : false,
 	'D_PRINT' : false,
-	'D_SES' : false,
+	'D_SES' : true,
 	'D_SPAWN' : true,
 	'D_STRING' : false,
 	'D_UTIL' : false,
-	'D_WIN' : false
+	'D_WIN' : false,
+	'D_WIDGETS' : true
 
 };
 
@@ -87,6 +91,8 @@ function arg_dump(args,dump_these) {
 				}
 
 				s += '\n';
+				if (arg_dump_full)
+					s += 'Definition: ' + args.callee.toString() + '\n';
 
 			}
 		return s;
