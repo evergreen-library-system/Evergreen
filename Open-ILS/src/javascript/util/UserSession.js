@@ -49,6 +49,10 @@ UserSession.prototype.verifySession = function(ses) {
 	else
 		this.session_id = this.cookie.fields[UserSession.SES];
 
+	if(this.session_id && this.userObject && this.username && this.connected) {
+		return true;
+	}
+
 	if(this.session_id) {
 		debug("Retrieveing user info for session " + this.session_id);
 

@@ -706,24 +706,31 @@ function userMessage(msg) {
 
 
 
-/* returns [ xoffset, yoffset ] of the target node */
-function getXYOffsets(target) {
+/* returns [ xoffset, yoffset ] of the target node 
+	object (if provided) is used as the box that will be displayed */
+function getXYOffsets(target, object) {
 
 	var x = findPosX(target);
 	var y = findPosY(target);
 	var height = getObjectHeight(target);
-	var xpos = x;
+	var xpos; 
+
+	if(object) 
+		xpos = x - getObjectWidth(object) + getObjectWidth(target);
+	else xpos = x;
 
 	var offsety = y + height;
 	var offsetx = xpos; 
 	
-	if(IE) { /*HACK XXX*/
+/*
+	if(IE) { 
 		offsety = parseInt(offsety) + 15;
 		offsetx = parseInt(offsetx) + 8;
 	}
+*/
 
 	debug("getXYOffset y: " + offsety + " x: " + offsetx );
-	return [x, y];
+	return [offsetx, offsety];
 }
 
 
@@ -736,4 +743,13 @@ function userPressedEnter(evt) {
 	return false;
 }
 
+
+/* return [ x, y ] for the window */
+function getWindowSize() {
+	var doc = getDocument();
+	var win = getWindow();
+	if (IE) 
+		return [doc.body.offsetWidth, doc.body.offsetHeight ];
+	return [	win.innerWidth, win.innerHeight ];
+}
 

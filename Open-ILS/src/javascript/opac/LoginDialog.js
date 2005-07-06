@@ -2,7 +2,6 @@
 function LoginDialog(node, logged_in_callback) {
 	this.node = node;
 	this.callback = logged_in_callback;
-	this.connected = false;
 }
 
 /* node is the element the dialog should popup under */

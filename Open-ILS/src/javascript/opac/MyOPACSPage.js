@@ -578,11 +578,11 @@ MyOPACSPage.prototype._drawHolds = function() {
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_info_table_header");
-	cell.appendChild(mktext("Notify Email"));
+	cell.appendChild(mktext("Notify Email / Phone"));
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_info_table_header");
-	cell.appendChild(mktext("Notify Phone"));
+	cell.appendChild(mktext("Cancel"));
 
 	for( var idx = 0; idx != holds.length; idx++ ) {
 		_doCallbackDance(table, holds[idx]);
@@ -627,6 +627,8 @@ function _drawHoldsRow(table, hold, record) {
 		formats = modsFormatToMARC(record.types_of_resource()[0]);
 
 	cell.appendChild(_mkFormatList(formats));
+	cell.noWrap = "nowrap";
+	cell.setAttribute("nowrap", "nowrap");
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_profile_cell");
@@ -634,10 +636,84 @@ function _drawHoldsRow(table, hold, record) {
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_profile_cell");
-	cell.appendChild(mktext(hold.email_notify()));
+	cell.appendChild(_buildChangeEmailNotify(hold));
+	cell.appendChild(elem("br"));
+	cell.appendChild(_buildChangePhoneNotify(hold));
+
 	cell = row.insertCell(row.cells.length);
+	var a = elem("a",{href:"javascript:void(0);",
+			style:"text-decoration:underline"},null, "Cancel");
+	a.onclick = function(){_cancelHoldRequest(hold);};
 	add_css_class(cell, "my_opac_profile_cell");
-	cell.appendChild(mktext(hold.phone_notify()));
+	cell.appendChild(a);
+}
+
+function _cancelHoldRequest(hold) {
+	alert("Canceling hold " + hold.id());
+}
+
+function _buildChangeEmailNotify(hold) {
+	var a = elem("a",{href:"javascript:void(0);",
+			style:"text-decoration:underline"},null, hold.email_notify());
+	var et1 = elem("input",{type:"text",size:"20"});
+	var et2 = elem("input",{type:"text",size:"20"});
+	var box = new PopupBox(a);
+	var but = elem("input",{type:"submit",value:"Submit"});
+	var can = elem("input",{type:"submit",value:"Cancel"});
+
+	but.onclick = function(){
+		var ret = _submitUpdateNotifyEmail(hold);
+		if(ret) box.hide();
+	}
+	can.onclick = function(){ box.hide(); };
+
+	box.title("Change Holds Notification Email");
+	box.addText("Enter new notification email");
+	box.addNode(et1);
+	box.lines(1);
+	box.addText("Repeat email");
+	box.addNode(et2);
+	box.lines();
+	box.makeGroup([ but, can ]);
+
+	a.onclick = function(){box.show();}
+	return a;
+}
+
+/* return true to show success */
+function _submitUpdateNotifyEmail(hold) {
+	alert("updating email for hold " + hold.id());
+	return true;
+}
+
+function _submitUpdateNotifyPhone(hold) {
+	alert("updating phone for hold " + hold.id());
+	return true;
+}
+
+
+function _buildChangePhoneNotify(hold) {
+	var a = elem("a",{href:"javascript:void(0);",
+			style:"text-decoration:underline"},null, hold.phone_notify());
+	var et1 = elem("input",{type:"text",size:"10"});
+	var box = new PopupBox(a);
+	var but = elem("input",{type:"submit",value:"Submit"});
+	var can = elem("input",{type:"submit",value:"Cancel"});
+
+	but.onclick = function(){
+		var ret = _submitUpdateNotifyPhone(hold);
+		if(ret) box.hide();
+	}
+	can.onclick = function(){ box.hide(); };
+
+	box.title("Change Holds Notification Phone Number");
+	box.addText("Enter new notification number");
+	box.addNode(et1);
+	box.lines();
+	box.makeGroup([ but, can ]);
+
+	a.onclick = function(){box.show();}
+	return a;
 }
 
 
