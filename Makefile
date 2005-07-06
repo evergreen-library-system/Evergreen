@@ -14,13 +14,16 @@
 # GNU General Public License for more details.
 # --------------------------------------------------------------------
 
-all:	config install
+all: config build
 
 config:
 	./config.sh
 
+build:
+	./install.sh build
+
 install:
-	./install.sh
+	./install.sh install
 
 clean:
 	./install.sh clean

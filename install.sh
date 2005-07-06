@@ -74,25 +74,46 @@ function verifyInstallPaths {
 # --------------------------------------------------------------------
 function mkInstallDirs {
 
-	mkdir -p "$PREFIX";
-	if [ "$?" != "0" ]; then
-		fail "Error creating $PREFIX";
+	if installing; then
+
+		mkdir -p "$PREFIX";
+		if [ "$?" != "0" ]; then
+			fail "Error creating $PREFIX";
+		fi
+
+		if [ ! -w "$PREFIX" ]; then
+			fail "We don't have write access to $PREFIX";
+		fi
+
 	fi
 
-	mkdir -p "$TMP";
-	if [ "$?" != "0" ]; then
-		fail "Error creating $TMP";
+	if building; then
+
+		mkdir -p "$TMP";
+		if [ "$?" != "0" ]; then
+			fail "Error creating $TMP";
+		fi
+
+		if [ ! -w "$TMP" ]; then
+			fail "We don't have write access to $TMP";
+		fi
 	fi
 
-	if [ ! -w "$PREFIX" ]; then
-		fail "We don't have write access to $PREFIX";
-	fi
-
-	if [ ! -w "$TMP" ]; then
-		fail "We don't have write access to $TMP";
-	fi
+	
 
 }
+
+function installing {
+	if [ -z "$INSTALLING" ]; then return 1; fi;
+	return 0;
+}
+
+function building {
+	if [ -z "$BUILDING" ]; then return 1; fi;
+	return 0;
+}
+
+
 
 # --------------------------------------------------------------------
 # Loads the config file.  If it can't fine CONFIG_FILE, it attempts to
@@ -101,6 +122,7 @@ function mkInstallDirs {
 function loadConfig {
 	if [ ! -f "$CONFIG_FILE" ]; then
 		if [ -f "$DEFAULT_CONFIG_FILE" ]; then
+			echo "+ + + Copying $DEFAULT_CONFIG_FILE to $CONFIG_FILE and using its settings...";
 			cp "$DEFAULT_CONFIG_FILE" "$CONFIG_FILE";
 		else
 			fail "config file \"$CONFIG_FILE\" cannot be found";
@@ -134,7 +156,10 @@ function runInstall {
 			
 		case "$target" in
 			
-			"jserver" | "router" | "gateway" | "srfsh" ) $MAKE -C "$OPENSRF_DIR" "$target" "$target-install";;
+			"jserver" | "router" | "gateway" | "srfsh" ) 
+				if building; then $MAKE -C "$OPENSRF_DIR" "$target"; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" "$target-install"; fi;
+				;;
 
 			*) fail "Unknown target: $target";;
 
@@ -161,24 +186,35 @@ function checkParams {
 		case "$arg" in
 
 			"clean") 
-				make -C OpenSRF/src clean
-				make -C Open-ILS/src clean
-				make -C Evergreen/src clean;;
+				cleanMe;;
 
 			"force")
 				FORCE="1";;
+
+			"build")
+				BUILDING="1";;
+
+			"install")
+				INSTALLING="1";;
 
 			*) fail "Unknown command line argument: $arg";;
 		esac
 	done
 
-	echo "LAST $lastArg";
 	if [ "$lastArg" = "clean" ]; then exit 0; fi;
 }
 
-# if user passes in the word 'clean' as the first shell arg, clean all
+
+function cleanMe {
+	loadConfig;
+	make -C "$OPENSRF_DIR" clean;
+	make -C "$OPENILS_DIR"  clean;
+	make -C "$EVERGREEN_DIR" clean;
+}
+
 checkParams "$@";
 
+if installing; then echo "Installing..."; fi;
 
 # Kick it off...
 runInstall;
