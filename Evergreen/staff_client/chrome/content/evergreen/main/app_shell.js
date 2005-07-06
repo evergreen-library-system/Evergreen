@@ -22,6 +22,7 @@ function app_shell_init(p) {
 		}, 2
 	);
 	*/
+	return;
 }
 
 function close_tab( d, t1, t2 ) {

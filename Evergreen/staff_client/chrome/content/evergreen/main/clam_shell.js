@@ -51,6 +51,7 @@ function clam_shell_init(p) {
 		}
 	}
 
+	return;
 }
 
 function new_card_in_deck(doc,deck,chrome,params) {

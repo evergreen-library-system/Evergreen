@@ -71,6 +71,7 @@ function paged_tree_init(p) {
                 }
         }
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
+	return;
 }
 
 function paged_tree_make_columns( p, treecols, cols ) {

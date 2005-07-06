@@ -18,8 +18,8 @@ function OpenILS_init(params) {
 
 	try {
 
-		register_document(params.w.document);
-		register_window(params.w);
+		//register_document(params.w.document);
+		//register_window(params.w);
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 

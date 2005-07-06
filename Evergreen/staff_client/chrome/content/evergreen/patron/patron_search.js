@@ -18,6 +18,7 @@ function patron_search_init(p) {
 		return patron_search( p.w, crazy_search_hash );
 	};
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
+	return;
 }
 
 function patron_search(search_win, crazy_search_hash) {
@@ -61,7 +62,7 @@ function patron_search_init_after_clamshell(p) {
 			}
 		);
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
-
+		return;
 	};
 }
 
@@ -84,6 +85,7 @@ function patron_init_after_patron_search_form(p) {
 			}
 		);
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
+		return;
 	};
 }
 
@@ -121,5 +123,6 @@ function patron_init_after_patron_search_results(p) {
 			}
 		);
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
+		return;
 	};
 }

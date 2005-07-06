@@ -3,6 +3,8 @@
 <overlay id="paged_tree_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+	<script>mw.sdump('D_TRACE','Loading paged_tree_overlay.xul\n');</script>
+
 <commandset id="PagedTree_cmds">
 
 	<command id="cmd_prev" />

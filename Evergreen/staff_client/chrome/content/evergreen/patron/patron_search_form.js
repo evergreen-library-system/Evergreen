@@ -40,7 +40,7 @@ function patron_search_form_init(p) {
 			sdump('D_ERROR', js2JSON(E) + '\n' );
 		}
 	}
-
+	return;
 }
 
 function patron_search_form_textbox_handler(doc,textbox,search_hash) {

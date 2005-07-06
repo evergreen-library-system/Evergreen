@@ -59,6 +59,7 @@ function patron_search_results_init(p) {
                 }
         }
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
+	return;
 }
 
 function patron_search_results_init_after_paged_tree(p) {
@@ -72,6 +73,7 @@ function patron_search_results_init_after_paged_tree(p) {
 		tree_win.register_flesh_row_function( p.w._flesh_patron_function );
 		p.w.add_patrons = tree_win.add_rows;
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
+		return;
 	};
 }
 
