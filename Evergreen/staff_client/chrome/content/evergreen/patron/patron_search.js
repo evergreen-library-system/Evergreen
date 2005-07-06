@@ -78,6 +78,7 @@ function patron_init_after_patron_search_form(p) {
 				sdump('D_PATRON_SEARCH','Submitted: ' + 
 					js2JSON(form_w.crazy_search_hash) + '\n');
 				if (p.w.crazy_search) {
+					p.w.result_tree.clear_patrons();
 					p.w.result_tree.add_patrons(
 						p.w.crazy_search( form_w.crazy_search_hash )
 					);

@@ -40,20 +40,26 @@ function paged_tree_init(p) {
 
 	paged_tree_make_columns( p, p.w.treecols, p.cols )
 
-	p.w.add_rows = function paged_tree_add_rows_indirect(ids) { 
+	p.w.clear_tree = function () {
+		empty_widget( p.w.document, p.w.tc );
+		p.w.current_idx = 0;
+		paged_tree_update_nav(p);
+	}
+
+	p.w.add_rows = function (ids) { 
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return paged_tree_add_rows(p,p.w.tc,ids); 
 	}
 
-	p.w.register_flesh_row_function = function paged_tree_register_flesh_row_function(f) { 
+	p.w.register_flesh_row_function = function (f) { 
 		sdump('D_PAGED_TREE',arg_dump(arguments));
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		p.w._flesh_row_function = f; 
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
 	}
 
-	p.w.register_select_callback = function paged_tree_register_select_callback(f) { 
+	p.w.register_select_callback = function (f) { 
 		sdump('D_PAGED_TREE',arg_dump(arguments));
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		p.w._select_callback = f; 
