@@ -34,7 +34,7 @@ function patron_search_form_init(p) {
 
 	if (p.onload) {
 		try {
-			sdump('D_TRACE','trying psuedo-onload...\n');
+			sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
 			p.onload(p.w);
 		} catch(E) {
 			sdump('D_ERROR', js2JSON(E) + '\n' );

@@ -4,6 +4,7 @@ var test_variable = false;
 
 function patron_search_init(p) {
 	sdump('D_PATRON_SEARCH',"TESTING: patron_search.js: " + mw.G['main_test_variable'] + '\n');
+	sdump('D_TRACE_ENTER',arg_dump(arguments));
 
 	var clamshell = spawn_clamshell( 
 		p.w.document, 'new_iframe', p.clamshell, { 
@@ -12,12 +13,16 @@ function patron_search_init(p) {
 	);
 
 	p.w.crazy_search = function (crazy_search_hash) {
+		sdump('D_TRACE_ENTER',arg_dump(arguments));
+		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return patron_search( p.w, crazy_search_hash );
 	};
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }
 
 function patron_search(search_win, crazy_search_hash) {
 	sdump('D_PATRON_SEARCH',arg_dump(arguments));
+	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	var result = [];
 	try {
 		result = user_request(
@@ -29,12 +34,17 @@ function patron_search(search_win, crazy_search_hash) {
 	} catch(E) {
 		handle_error(E);
 	}
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return result;
 }
 
 function patron_search_init_after_clamshell(p) {
 	sdump('D_PATRON_SEARCH',arg_dump(arguments));
+	sdump('D_TRACE_ENTER',arg_dump(arguments));
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return function (clamshell_w) {
+		sdump('D_PATRON_SEARCH',arg_dump(arguments));
+		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		p.w.search_form = spawn_patron_search_form(
 			clamshell_w.document, 
 			'new_iframe', 
@@ -50,13 +60,18 @@ function patron_search_init_after_clamshell(p) {
 				'onload' : patron_init_after_patron_search_results(p)
 			}
 		);
+		sdump('D_TRACE_EXIT',arg_dump(arguments));
 
 	};
 }
 
 function patron_init_after_patron_search_form(p) {
 	sdump('D_PATRON_SEARCH',arg_dump(arguments));
+	sdump('D_TRACE_ENTER',arg_dump(arguments));
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return function(form_w) {
+		sdump('D_PATRON_SEARCH',arg_dump(arguments));
+		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		form_w.register_search_callback(
 			function (ev) {
 				sdump('D_PATRON_SEARCH','Submitted: ' + 
@@ -68,12 +83,17 @@ function patron_init_after_patron_search_form(p) {
 				}
 			}
 		);
+		sdump('D_TRACE_EXIT',arg_dump(arguments));
 	};
 }
 
 function patron_init_after_patron_search_results(p) {
 	sdump('D_PATRON_SEARCH',arg_dump(arguments));
+	sdump('D_TRACE_ENTER',arg_dump(arguments));
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return function(results_w) {
+		sdump('D_PATRON_SEARCH',arg_dump(arguments));
+		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		results_w.register_patron_select_callback(
 			function (ev) {
 				alert('Selected: ' + 
@@ -88,9 +108,10 @@ function patron_init_after_patron_search_results(p) {
 					'open-ils.actor.user.fleshed.retrieve',
 					[ G.auth_ses[0], treeitem.getAttribute('record_id') ],
 					function (request) {
-						sdump('D_PATRON_SEARCH',arg_dump(arguments));
+						sdump('D_PATRON_SEARCH','In flesh_patron_function: ' + arg_dump(arguments));
 						try {
 							var patron = request.getResultObject();
+							sdump('D_PATRON_SEARCH','patron = ' + js2JSON( patron ) + '\n');
 							results_w.map_patron_to_cols( patron, treeitem );
 						} catch(E) {
 							sdump('D_ERROR',js2JSON(E) + '\n');
@@ -99,5 +120,6 @@ function patron_init_after_patron_search_results(p) {
 				);
 			}
 		);
+		sdump('D_TRACE_EXIT',arg_dump(arguments));
 	};
 }
