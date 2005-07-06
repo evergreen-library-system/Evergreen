@@ -17,6 +17,7 @@
 			<frame
 				style			= "border:0px;" 
 				frameborder	= '0' 
+				scrolling	= 'yes'
 				name			= 'appframe' 
 				id				= 'appframe' 
 
