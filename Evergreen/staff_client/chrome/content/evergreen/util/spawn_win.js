@@ -195,7 +195,7 @@ function spawn_z3950_import(d,placement,place,passthru_params) {
 }
 
 function spawn_javascript_console(d,placement,place,passthru_params) {
-	var chrome = 'chrome://global/cotnent/console.xul';
+	var chrome = 'chrome://global/content/console.xul';
 	return spawn_interface(d,placement,place,chrome,getString('javascript_console_label'),passthru_params);
 }
 
