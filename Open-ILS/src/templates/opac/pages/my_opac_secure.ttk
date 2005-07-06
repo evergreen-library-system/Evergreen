@@ -21,6 +21,7 @@
 			js( src='/js/util/JSON.js' );
 			js( src='/js/util/web_fieldmapper.js' );
 			js( src='/js/util/browser.js' );
+			js( src='/js/widgets/PopupBox.js' );
 
 			WRAPPER html/js;
 				'
@@ -35,6 +36,7 @@
 				var globalPort			= "' _ port _ '";
 				';
 			END;
+
 
 		END;
 

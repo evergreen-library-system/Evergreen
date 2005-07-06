@@ -25,7 +25,7 @@
 				scrolling	= 'yes'
            	width       = '100%'
 				#height		= '500' 
-				height		= '100%' 
+				height		= '90%' 
            	name        = 'my_oac_iframe'
 				#src        = 'https://gapines.org/opac/?target=my_opac_secure'
            	id          = 'my_opac_iframe';

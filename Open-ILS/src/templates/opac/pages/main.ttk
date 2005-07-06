@@ -3,9 +3,9 @@
 
 <html>
 	<head>
+		<title>Evergreen</title>
 
 		[% INCLUDE ALL_JS; %]
-
 
 		[% 
 			top_target	= cgi.param("top_target"); 
