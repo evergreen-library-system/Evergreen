@@ -6,20 +6,29 @@ var consoleService = Components.classes['@mozilla.org/consoleservice;1']
 var consoleDump = true;
 
 var sdump_levels = {
+	'D_ERROR' : true,
 	'D_TRACE' :  true,
+
+	'D_CLAM' : false,
+	'D_PAGED_TREE' : true,
+	'D_TAB' : false,
+
 	'D_AUTH' : false,
-	'D_UTIL' : false,
+
+	'D_OPAC' : true,
+
+	'D_PATRON_SEARCH' : true,
+	'D_PATRON_SEARCH_FORM' : true,
+	'D_PATRON_SEARCH_RESULTS' : true,
+
 	'D_EXPLODE' : false,
 	'D_PRINT' : false,
 	'D_SES' : false,
 	'D_SPAWN' : true,
-	'D_TAB' : false,
-	'D_CLAM' : false,
-	'D_OPAC' : true,
 	'D_STRING' : false,
-	'D_WIN' : false,
-	'D_PATRON_SEARCH' : true,
-	'D_PATRON_SEARCH_FORM' : true
+	'D_UTIL' : false,
+	'D_WIN' : false
+
 };
 
 function sdump(level,msg) {
@@ -100,6 +109,7 @@ function handle_error(E) {
 		s += js2JSON(E).substr(0,200) + '\n\n';
 		if (snd_really_bad) snd_really_bad();
 	}
+	sdump('D_ERROR',s);
 	s_alert(s);
 }
 

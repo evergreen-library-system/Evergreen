@@ -143,6 +143,11 @@ function spawn_oclc_import(d,placement,place,params) {
 	}
 }
 
+function spawn_paged_tree(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/main/paged_tree.xul';
+	return spawn_interface(d,placement,place,chrome,'paged_tree',passthru_params);
+}
+
 function spawn_patron_edit(d,placement,place,passthru_params) {
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_editor_interface_label'),passthru_params);
@@ -160,6 +165,11 @@ function spawn_patron_search(d,placement,place,passthru_params) {
 
 function spawn_patron_search_form(d,placement,place,passthru_params) {
 	var chrome = 'chrome://evergreen/content/patron/patron_search_form.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params);
+}
+
+function spawn_patron_search_results(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/patron/patron_search_results.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params);
 }
 

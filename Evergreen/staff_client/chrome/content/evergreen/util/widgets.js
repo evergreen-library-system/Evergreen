@@ -5,6 +5,7 @@ sdump('D_WIDGETS',"Loading widgets.js\n");
 // Subsequent arguments are treated as textual values for treecells in that treeitem.
 var treeitem_id = 0;
 function append_treeitem(d,e) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { throw('typeof e != object : typeof e = ' + typeof(e)); }
 	var treechildren = e;
@@ -29,6 +30,7 @@ function append_treeitem(d,e) {
 // and the third argument is an array of values to cycle through for setting the
 // element's attribute.  Ex: var toggle = cycle_attribute( target,'toggle',['1','2','3'] );
 function cycle_attribute(d,e,a,v) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	try {
 		if (typeof(e) != 'object') { e = d.getElementById(e); }
 		if (typeof(e) != 'object') { throw('typeof e != object : typeof e = ' + typeof(e)); }
@@ -65,6 +67,7 @@ function cycle_attribute(d,e,a,v) {
 
 // Treats each argument as an element to disable 
 function disable_widgets(d) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	for (var i = 1; i < arguments.length; i++) {
 		if (typeof(arguments[i]) == 'object') {
 			sdump('D_WIDGETS',arguments[i] + '.disabled = true;\n');
@@ -81,6 +84,7 @@ function disable_widgets(d) {
 
 // removes listitems from listboxes
 function empty_listbox(d,e) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_listbox\n'); return; }
 	var nl = e.getElementsByTagName('listitem');
@@ -91,6 +95,7 @@ function empty_listbox(d,e) {
 
 // removes all of an element's children
 function empty_widget(d,e) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_widget\n'); return; }
 	while (e.lastChild) { e.removeChild(e.lastChild); }
@@ -99,6 +104,7 @@ function empty_widget(d,e) {
 
 // Treats each argument as an element to enable 
 function enable_widgets(d) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	for (var i = 1; i < arguments.length; i++) {
 		if (typeof(arguments[i]) == 'object') {
 			sdump('D_WIDGETS',arguments[i] + '.disabled = false;\n');
@@ -118,6 +124,7 @@ function enable_widgets(d) {
 // argument is the current textbox.  This function finds the next textbox and
 // gives it focus.
 function fake_tab_for_textboxes(d,w,current) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	var flag = false; var next_one;
 	if (typeof(w)!='object') {
 		w = d.getElementById(w);
@@ -153,6 +160,7 @@ function fake_tab_for_textboxes(d,w,current) {
 // Ah, looks like it could handle XUL trees and fieldmapper trees
 // Ex. find( org_tree, function(o){return o.children();}, function(o){return (o.id == 'the winner');})
 function find_tree_via_children(d,tree,children_func,find_func) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(tree)!='object') tree = d.getElementById(tree);
 
 	var t = find_func(tree); if (t) return t;
@@ -168,6 +176,7 @@ function find_tree_via_children(d,tree,children_func,find_func) {
 
 // Give this element focus
 function focus_widget(d,e) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(e) == 'object') {
 		e.focus();
 	} else {
@@ -178,6 +187,7 @@ function focus_widget(d,e) {
 
 // Returns a list of selected treeitems from the specified tree
 function get_list_from_tree_selection(d,tree_w) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	sdump('D_WIDGETS','entering get_list_from_tree...\n');
 	var hitlist;
 	if (typeof(tree_w) != 'object') {
@@ -203,6 +213,7 @@ function get_list_from_tree_selection(d,tree_w) {
 
 // Make sure we a widget
 function get_widget(d,e) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(e) == 'object') {
 		return e;
 	} else {
@@ -214,6 +225,7 @@ function get_widget(d,e) {
 
 // Increment a XUL progressmeter
 function incr_progressmeter(d,meter,increment) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(meter)!='object') 
 		meter = d.getElementById(meter);
 	if (typeof(meter)!='object')
@@ -234,10 +246,21 @@ function incr_progressmeter(d,meter,increment) {
 	meter.value = Math.ceil( real );
 }
 
+// Populate a treeitem row
+function map_array_to_treecells_via_treeitem( cols, treeitem ) {
+	sdump('D_WIDGETS',arg_dump(arguments));
+	var treerow = treeitem.firstChild;
+	for (var i = 0; i < treerow.childNodes.length; i++) {
+		var treecell = treerow.childNodes[i];
+		treecell.setAttribute('label',cols[i]);
+	}
+}
+
 // Simulates radio buttons with checkboxes.  Include this in command event listeners
 // for the pertinent textboxes.  For any set of checkboxes that have the same 'group'
 // attribute, only one can be checked at a time.
 function radio_checkbox(d,ev) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	var target = ev.target;
 	var group = target.getAttribute('group');
 	if (group) {
@@ -259,12 +282,14 @@ function radio_checkbox(d,ev) {
 
 // simpler version of set_decks
 function set_deck(d,deck,idx) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	set_decks(d,{ deck : idx });
 }
 
 // Takes a hash with key:value => deck element id : page index
 // Sets each deck to the corresponding index
 function set_decks(d,params) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	for (var deck_id in params) {
 		var deck;
 		if (typeof(deck) != 'object')
@@ -275,6 +300,7 @@ function set_decks(d,params) {
 
 // swaps the values of two attributes for an element
 function swap_attributes(d,e,a1,a2) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(e) != 'object') { e = d.getElementById(e); }
 	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on swap_attributes\n'); return; }
 	var a1_v = e.getAttribute(a1);
@@ -287,6 +313,7 @@ function swap_attributes(d,e,a1,a2) {
 
 // Flips the hidden value for each row in a grid
 function toggle_hidden_grid_rows(d,grid) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(grid) != 'object') {
 		grid = d.getElementById(grid);
 	}
@@ -308,6 +335,7 @@ function toggle_hidden_grid_rows(d,grid) {
 
 /* The first parameter is the id of the element to set, or an array of ids for elements to set in batch.  The second parameter is an object containing the attribute/value pairs to assign to the element or elements */
 function xul_setAttributes(d,el,attrs) {
+	sdump('D_WIDGETS',arg_dump(arguments));
 	if (typeof(el) == 'object') {
 		for (var e in el) {
 			var w = d.getElementById(e);
