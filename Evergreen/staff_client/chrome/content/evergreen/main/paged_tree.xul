@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- Clamlication: Evergreen Staff Client -->
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/paged_tree.dtd">
+
+<page id="paged_tree_win"
+	orient="vertical" style="overflow: auto" width="800" height="500"
+	sizemode="maximized" persist="width height" 
+	onload="
+		params.paged_tree = 'PagedTree_tree'; 
+		params.nav_range = 'PagedTree_label_range'; 
+		params.nav_results = 'PagedTree_label_results'; 
+		params.nav_next = 'PagedTree_button_next';
+		params.nav_prev = 'PagedTree_button_prev';
+		params.w = window; 
+		params.app = 'PagedTree'; 
+		mw.OpenILS_init(params);"
+	onunload="mw.OpenILS_exit(params);"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Stylesheets -->
+	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/paged_tree.css" type="text/css"?>
+	
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/main/paged_tree_overlay.xul"?>
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="PagedTree_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="PagedTree_keys" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<box id="PagedTree_main" />
+
+</page>
+

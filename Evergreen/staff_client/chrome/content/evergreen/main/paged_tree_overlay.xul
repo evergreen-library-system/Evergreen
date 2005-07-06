@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/paged_tree.dtd">
+<overlay id="paged_tree_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<commandset id="PagedTree_cmds">
+
+	<command id="cmd_prev" />
+
+	<command id="cmd_next" />
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+</commandset>
+
+<!-- main widget for paged_tree -->
+<box id="PagedTree_main" flex="1" orient="vertical">
+	<hbox id="PagedTree_nav">
+		<label value="&displaying.results;"/>
+		<label id="PagedTree_label_range" value="??? - ???" />
+		<label value="&displaying.of;"/>
+		<label id="PagedTree_label_results" value="???"/>
+		<spacer flex="1"/>
+		<button id="PagedTree_button_prev" label="&previous.range;" accesskey="&previous.range.key;" command="cmd_prev" disabled="true"/>
+		<button id="PagedTree_button_next" label="&next.range;" accesskey="&next.range.key;" command="cmd_next" disabled="true"/>
+	</hbox>
+	<tree id="PagedTree_tree" flex="1">
+		<treecols id="PagedTree_columns"/>
+		<treechildren id="PagedTree_children"/>
+	</tree>
+</box>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="PagedTree_keys">
+</keyset>
+
+</overlay>
