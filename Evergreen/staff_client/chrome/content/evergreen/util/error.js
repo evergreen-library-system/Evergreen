@@ -3,35 +3,35 @@ sdump('D_TRACE',"Loading error.js\n");
 var consoleService = Components.classes['@mozilla.org/consoleservice;1']
 	.getService(Components.interfaces.nsIConsoleService);
 
-var consoleDump = true;
+var consoleDump = false;
 var arg_dump_full = false;
 
 var sdump_levels = {
 	'D_ERROR' : true,
 	'D_TRACE' :  true,
 	'D_TRACE_ENTER' :  false,
-	'D_TRACE_EXIT' :  true,
+	'D_TRACE_EXIT' :  false,
 
 	'D_CLAM' : false,
-	'D_PAGED_TREE' : true,
+	'D_PAGED_TREE' : false,
 	'D_TAB' : false,
 
 	'D_AUTH' : false,
 
-	'D_OPAC' : true,
+	'D_OPAC' : false,
 
-	'D_PATRON_SEARCH' : true,
-	'D_PATRON_SEARCH_FORM' : true,
-	'D_PATRON_SEARCH_RESULTS' : true,
+	'D_PATRON_SEARCH' : false,
+	'D_PATRON_SEARCH_FORM' : false,
+	'D_PATRON_SEARCH_RESULTS' : false,
 
 	'D_EXPLODE' : false,
 	'D_PRINT' : false,
 	'D_SES' : true,
-	'D_SPAWN' : true,
+	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,
 	'D_WIN' : false,
-	'D_WIDGETS' : true
+	'D_WIDGETS' : false
 
 };
 

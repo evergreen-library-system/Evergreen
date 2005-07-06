@@ -9,9 +9,19 @@ function app_shell_init(p) {
 	p.w.replace_tab = function (label,chrome,params) { return replace_tab(p.w.document,p.tabbox,label,chrome,params); };
 	p.w.get_frame_in_tab = function (idx, all_or_vis) { return get_frame_in_tab( p.w.document, p.tabbox, idx, all_or_vis ); }; 
 	
-	//p.w.replace_tab('Tab','chrome://evergreen/content/main/about.xul');
-	spawn_javascript_console(p.w.document,'replace_tab','main_tabbox',{});
-	spawn_javascript_shell(p.w.document,'new_tab','main_tabbox',{});
+	p.w.replace_tab('Tab','chrome://evergreen/content/main/about.xul');
+	/*
+	setTimeout( 
+		function () { 
+			spawn_javascript_console(p.w.document,'replace_tab','main_tabbox',{}); 
+			setTimeout(
+				function () {
+					spawn_javascript_shell(p.w.document,'new_tab','main_tabbox',{});
+				}, 2
+			);
+		}, 2
+	);
+	*/
 }
 
 function close_tab( d, t1, t2 ) {

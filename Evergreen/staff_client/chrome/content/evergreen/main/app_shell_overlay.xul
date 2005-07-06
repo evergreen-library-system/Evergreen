@@ -81,7 +81,7 @@
 	<toolbox id="main_toolbox"/>
 	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
 		<tabs id="main_tabs" closebutton="true">
-			<tab id="tab_1" accesskey="1" label="Tab 1" />
+			<tab id="tab_1" accesskey="1" label="Tab 1" hidden="true" />
 			<tab id="tab_2" accesskey="2" label="Tab 2" hidden="true" />
 			<tab id="tab_3" accesskey="3" label="Tab 3" hidden="true" />
 			<tab id="tab_4" accesskey="4" label="Tab 4" hidden="true" />

@@ -4,7 +4,7 @@ function paged_tree_init(p) {
 	sdump('D_PAGED_TREE',"TESTING: paged_tree.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 
-	p.w.display_count = 5;
+	p.w.display_count = 10;
 	p.w.current_idx = 0;
 
 	p.w.results_label = get_widget( p.w.document, p.nav_results );
