@@ -190,6 +190,38 @@ table { border-collapse: collapse; }
 	border: 2px solid lightblue;
 	background: #FFE;
 	padding: 10px;
+	text-align: center;
+	vertical-align: middle;
 }
+
+/* popup box stuff -------------------------------------- */
+.popup_box {
+	position: absolute;
+	z-index: 40;
+	border: 2px solid lightblue;
+	background: #FFE;
+	padding: 10px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.popup_box_buttons {
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+	text-align:center;
+}
+
+.popup_box_buttons td {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.popup_box_title {
+	border-bottom: 1px solid lightgrey;
+	font-weight: bolder;
+}
+
+/* -------------------------------------------------------- */
+
 
 
