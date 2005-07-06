@@ -15,6 +15,12 @@
 # --------------------------------------------------------------------
 
 
+# --------------------------------------------------------------------
+# Prompts the user for config settings and writes a custom config
+# file based on these settings
+# --------------------------------------------------------------------
+
+
 CONFIG_FILE="install.conf";
 DEFAULT_CONFIG_FILE="install.conf.default";
 
