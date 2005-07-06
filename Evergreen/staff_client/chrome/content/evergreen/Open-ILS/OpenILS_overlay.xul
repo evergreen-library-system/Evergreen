@@ -22,6 +22,7 @@
 
 	<stringbundleset id="string_bundles">
 		<stringbundle id="main_strings" src="chrome://evergreen/locale/OpenILS.properties"/>
+		<stringbundle id="patron_strings" src="chrome://evergreen/locale/patron.properties"/>
 	</stringbundleset>
 
 </overlay>

@@ -9,9 +9,11 @@
 		<script src="chrome://evergreen/content/auth/auth.js" />
 		<script src="chrome://evergreen/content/main/app_shell.js" />
 		<script src="chrome://evergreen/content/main/clam_shell.js" />
+		<script src="chrome://evergreen/content/main/paged_tree.js" />
 		<script src="chrome://evergreen/content/opac/opac.js" />
 		<script src="chrome://evergreen/content/patron/patron_search.js" />
 		<script src="chrome://evergreen/content/patron/patron_search_form.js" />
+		<script src="chrome://evergreen/content/patron/patron_search_results.js" />
 	</apps>
 
 </overlay>

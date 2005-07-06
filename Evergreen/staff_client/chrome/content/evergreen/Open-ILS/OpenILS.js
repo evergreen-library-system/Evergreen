@@ -7,9 +7,11 @@ function OpenILS_init(params) {
 			case 'Auth' : auth_init(params); break;
 			case 'AppShell' : app_shell_init(params); break;
 			case 'ClamShell' : clam_shell_init(params); break;
+			case 'PagedTree' : paged_tree_init(params); break;
 			case 'Opac' : opac_init(params); break;
 			case 'PatronSearch' : patron_search_init(params); break;
 			case 'PatronSearchForm' : patron_search_form_init(params); break;
+			case 'PatronSearchResults' : patron_search_results_init(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
@@ -32,9 +34,11 @@ function OpenILS_exit(params) {
 			case 'Auth' : auth_exit(params); break;
 			case 'AppShell' : app_shell_exit(params); break;
 			case 'ClamShell' : clam_shell_exit(params); break;
+			case 'PagedTree' : paged_tree_exit(params); break;
 			case 'Opac' : opac_exit(params); break;
 			case 'PatronSearch' : patron_search_exit(params); break;
 			case 'PatronSearchForm' : patron_search_form_exit(params); break;
+			case 'PatronSearchResults' : patron_search_results_exit(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
