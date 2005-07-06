@@ -100,10 +100,11 @@ function mkInstallDirs {
 # --------------------------------------------------------------------
 function loadConfig {
 	if [ ! -f "$CONFIG_FILE" ]; then
-		if [ -f "$DEFAULT_CONFIG_FILE" ];
-			$CONFIG_FILE="$DEFAULT_CONFIG_FILE";
+		if [ -f "$DEFAULT_CONFIG_FILE" ]; then
+			cp "$DEFAULT_CONFIG_FILE" "$CONFIG_FILE";
 		else
 			fail "config file \"$CONFIG_FILE\" cannot be found";
+		fi
 	fi
 	source "$CONFIG_FILE";
 }
@@ -113,7 +114,7 @@ function runInstall {
 
 
 	loadConfig;
-	[ ! -z "$NOFORCE" ] && verifyInstallPaths;
+	#[ -z "$FORCE" ] && verifyInstallPaths;
 	mkInstallDirs;
 
 	# pass the collected variables to make
@@ -153,27 +154,30 @@ function checkParams {
 
 	if [ -z "$1" ]; then return; fi;
 
-	for arg in "$*"; do
+	for arg in "$@"; do
+
+		lastArg="$arg";
 
 		case "$arg" in
 
 			"clean") 
 				make -C OpenSRF/src clean
 				make -C Open-ILS/src clean
-				make -C Evergreen/src clean
-				exit 0;;
+				make -C Evergreen/src clean;;
 
 			"force")
 				FORCE="1";;
 
 			*) fail "Unknown command line argument: $arg";;
 		esac
-
 	done
+
+	echo "LAST $lastArg";
+	if [ "$lastArg" = "clean" ]; then exit 0; fi;
 }
 
 # if user passes in the word 'clean' as the first shell arg, clean all
-checkParams "$*";
+checkParams "$@";
 
 
 # Kick it off...
