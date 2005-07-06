@@ -16,7 +16,7 @@
 </commandset>
 
 <!-- main widget for patron_search_form -->
-<box id="PatronSearchForm_main" flex="1" orient="horizontal">
+<box id="PatronSearchForm_main" flex="0" orient="horizontal">
 
 	<!-- group 0 = user  group 1 = address  group 2 = phone, ident -->
 
