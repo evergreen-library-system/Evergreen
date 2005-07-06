@@ -150,15 +150,25 @@ function runInstall {
 
 		MSG
 
-		MAKE="make APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS"; 
+		MAKE="make APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
+			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
+			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR";
 
-		echo "Passing to sub-makes: $VARS"
+		echo "Passing to sub-makes: $MAKE"
 			
 		case "$target" in
 			
 			"jserver" | "router" | "gateway" | "srfsh" ) 
 				if building; then $MAKE -C "$OPENSRF_DIR" "$target"; fi;
 				if installing; then $MAKE -C "$OPENSRF_DIR" "$target-install"; fi;
+				;;
+
+			"opensrf_perl")
+				if installing; then $MAKE -C "$OPENSRF_DIR" "perl-install"; fi;
+				;;
+
+			"openils_perl")
+				if installing; then $MAKE -C "$OPENILS_DIR" "perl-install"; fi;
 				;;
 
 			*) fail "Unknown target: $target";;

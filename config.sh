@@ -26,14 +26,14 @@ DEFAULT_CONFIG_FILE="install.conf.default";
 
 function buildConfig {
 
-	if [ -f "$CONFIG_FILE" ]; then
-		echo "";
-		echo "Using existing config file \"$CONFIG_FILE\""; 
-		echo "To generate a new config, remove \"$CONFIG_FILE\"";
-		echo "";
-		sleep 3;	
-		exit 0;
-	fi
+#	if [ -f "$CONFIG_FILE" ]; then
+#		echo "";
+#		echo "Using existing config file \"$CONFIG_FILE\""; 
+#		echo "To generate a new config, remove \"$CONFIG_FILE\"";
+#		echo "";
+#		sleep 3;	
+#		exit 0;
+#	fi
 
 
 	if [ -f "$DEFAULT_CONFIG_FILE" ]; then
@@ -48,7 +48,29 @@ function buildConfig {
 
 	prompt "Install prefix [$PREFIX] ";
 	read X;
-	if [ ! -z "$X" ]; then PREFIX="$X"; fi;
+	if [ ! -z "$X" ]; then 
+		PREFIX="$X"; 
+		BINDIR="$PREFIX/bin/";
+		LIBDIR="$PREFIX/lib/";
+		PERLDIR="$LIBDIR/perl5/";
+		INCLUDEDIR="$PREFIX/include/";
+	fi
+
+	prompt "Executables directory [$BINDIR] "
+	read X;
+	if [ ! -z "$X" ]; then BINDIR="$X"; fi;
+
+	prompt "Lib directory [$LIBDIR] "
+	read X;
+	if [ ! -z "$X" ]; then LIBDIR="$X"; fi;
+
+	prompt "Perl directory [$PERLDIR] "
+	read X;
+	if [ ! -z "$X" ]; then PERLDIR="$X"; fi;
+
+	prompt "Include files directory [$INCLUDEDIR] "
+	read X;
+	if [ ! -z "$X" ]; then INCLUDEDIR="$X"; fi;
 
 	prompt "Temporary files directory [$TMP] "
 	read X;
@@ -105,6 +127,11 @@ function writeConfig {
 	echo "Writing config to $CONFIG_FILE...";
 
 	_write "PREFIX=\"$PREFIX\"";
+	_write "BINDIR=\"$BINDIR\"";
+	_write "LIBDIR=\"$LIBDIR\"";
+	_write "PERLDIR=\"$PERLDIR\"";
+	_write "INCLUDEDIR=\"$INCLUDEDIR\"";
+
 	_write "TMP=\"$TMP\"";
 	_write "APXS2=\"$APXS2\"";
 	_write "APACHE2_HEADERS=\"$APACHE2_HEADERS\"";
