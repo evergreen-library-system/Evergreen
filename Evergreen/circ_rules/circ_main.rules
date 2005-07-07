@@ -60,8 +60,8 @@
 		copy				= circ_objects.copy
 		circlib			= circ_objects.copy.circlib() 
 		title				= circ_objects.title
-		standings		= circ_objects.standings;
-		patron_copies	= circ_objects.patron_copies;
+		standings		= circ_objects.standings
+		patron_copies	= circ_objects.patron_copies
 		patron_fines	= circ_objects.patron_fines;
 
 %]
