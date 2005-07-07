@@ -41,6 +41,7 @@ my $permission_script;
 my $duration_script;
 my $recurring_fines_script;
 my $max_fines_script;
+my $permit_hold_script;
 # ----------------------------------------------------------------
 
 
@@ -84,9 +85,144 @@ sub initialize {
 	$max_fines_script = $conf->config_value(			
 		"apps", "open-ils.circ","app_settings", "rules", "max_fines");
 
+	$permit_hold_script = $conf->config_value(
+		"apps", "open-ils.circ","app_settings", "rules", "permit_hold");
+
 
 	$cache_handle = OpenSRF::Utils::Cache->new();
 }
+
+
+sub _grab_patron_standings {
+	my $session = shift;
+	if(!$patron_standings) {
+		my $standing_req = $session->request(
+			"open-ils.storage.direct.config.standing.retrieve.all.atomic");
+		$patron_standings = $standing_req->gather(1);
+		$patron_standings =
+			{ map { (''.$_->id => $_->value) } @$patron_standings };
+	}
+}
+
+sub _grab_patron_profiles {
+	my $session = shift;
+	if(!$patron_profiles) {
+		my $profile_req = $session->request(
+			"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
+		$patron_profiles = $profile_req->gather(1);
+		$patron_profiles =
+			{ map { (''.$_->id => $_->name) } @$patron_profiles };
+	}
+
+}
+
+sub _grab_user {
+	my $session = shift;
+	my $patron_id = shift;
+	my $patron_req	= $session->request(
+		"open-ils.storage.direct.actor.user.retrieve", 
+		$patron_id );
+	return $patron_req->gather(1);
+}
+	
+
+sub _grab_title_by_copy {
+	my $session = shift;
+	my $copyid = shift;
+	my $title_req	= $session->request(
+		"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
+		$copyid );
+	return $title_req->gather(1);
+}
+
+sub _grab_patron_summary {
+	my $session = shift;
+	my $patron_id = shift;
+	my $summary_req = $session->request(
+		"open-ils.storage.action.circulation.patron_summary",
+		$patron_id );
+	return $summary_req->gather(1);
+}
+
+sub _grab_copy_by_barcode {
+	my($session, $barcode) = @_;
+	warn "Searching for copy with barcode $barcode\n";
+	my $copy_req	= $session->request(
+		"open-ils.storage.fleshed.asset.copy.search.barcode", 
+		$barcode );
+	return $copy_req->gather(1);
+}
+
+
+sub gather_hold_objects {
+	my($session, $hold, $copy) = @_;
+
+	_grab_patron_standings($session);
+	_grab_patron_profiles($session);
+
+
+	# flesh me
+	$copy = _grab_copy_by_barcode($session, $copy->barcode);
+
+	my $hold_objects = {};
+	$hold_objects->{standings} = $patron_standings;
+	$hold_objects->{copy}		= $copy;
+	$hold_objects->{hold}		= $hold;
+	$hold_objects->{title}		= _grab_title_by_copy($session, $copy->id);
+	$hold_objects->{requestor} = _grab_user($session, $hold->requestor);
+	my $patron						= _grab_user($session, $hold->usr);
+
+	$copy->status( $copy->status->name );
+	$patron->standing($patron_standings->{$patron->standing()});
+	$patron->profile( $patron_profiles->{$patron->profile});
+
+	$hold_objects->{patron}		= $patron;
+
+	return $hold_objects;
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "permit_hold",
+	api_name	=> "open-ils.circ.permit_hold",
+	notes		=> <<NOTES
+Determines whether a given copy is eligible to be held
+NOTES
+);
+
+sub permit_hold {
+	my( $self, $client, $hold, $copy ) = @_;
+
+	my $session	= OpenSRF::AppSession->create("open-ils.storage");
+	
+	# collect items necessary for circ calculation
+	my $hold_objects = gather_hold_objects( $session, $hold, $copy );
+
+	$stash = Template::Stash->new(
+			circ_objects			=> $hold_objects,
+			result					=> []);
+
+	$stash->set("run_block", $permit_hold_script);
+
+	# grab the number of copies checked out by the patron as
+	# well as the total fines
+	my $summary = _grab_patron_summary($session, $hold_objects->{patron}->id);
+
+	$stash->set("patron_copies", $summary->[0] );
+	$stash->set("patron_fines", $summary->[1] );
+
+	# run the permissibility script
+	run_script();
+	my $result = $stash->get("result");
+
+	# 0 means OK in the script
+	return 1 if($result->[0] == 0);
+	return 0;
+
+}
+
+
 
 
 
@@ -103,8 +239,6 @@ sub gather_circ_objects {
 
 	warn "Gathering circ objects with barcode $barcode_string and patron id $patron_id\n";
 
-	
-
 	# see if all of the circ objects are in cache
 	my $cache_key =  "circ_object_" . md5_hex( $barcode_string, $patron_id );
 	$circ_objects = $cache_handle->get_cache($cache_key);
@@ -118,52 +252,27 @@ sub gather_circ_objects {
 		return;
 	}
 
-	# grab the patron standing list of we don't already have it
 	# only necessary if the circ objects have not been built yet
-	if(!$patron_standings) {
-		my $standing_req = $session->request(
-			"open-ils.storage.direct.config.standing.retrieve.all.atomic");
-		$patron_standings = $standing_req->gather(1);
-		$patron_standings =
-			{ map { (''.$_->id => $_->value) } @$patron_standings };
-	}
 
-	# grab patron profiles
-	if(!$patron_profiles) {
-		my $profile_req = $session->request(
-			"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
-		$patron_profiles = $profile_req->gather(1);
-		$patron_profiles =
-			{ map { (''.$_->id => $_->name) } @$patron_profiles };
-	}
+	_grab_patron_standings($session);
+	_grab_patron_profiles($session);
 
 
-	my $copy_req	= $session->request(
-		"open-ils.storage.fleshed.asset.copy.search.barcode.atomic", 
-		$barcode_string );
-
-	my $patron_req	= $session->request(
-		"open-ils.storage.direct.actor.user.retrieve", 
-		$patron_id );
-
-	my $copy = $copy_req->gather(1)->[0];
+	my $copy = _grab_copy_by_barcode($session, $barcode_string);
 	if(!$copy) { return NO_COPY; }
+
+	my $patron = _grab_user($session, $patron_id);
 
 	$copy->status( $copy->status->name );
 	$circ_objects->{copy} = $copy;
 
-	my $patron = $patron_req->gather(1);
 	$patron->standing($patron_standings->{$patron->standing()});
 	$patron->profile( $patron_profiles->{$patron->profile});
 	$circ_objects->{patron} = $patron;
+	$circ_objects->{standings} = $patron_standings;
 
-	
-	my $title_req	= $session->request(
-		"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
-		$circ_objects->{copy}->id() );
-
-	$circ_objects->{title} = $title_req->gather(1);
-
+	#$circ_objects->{title} = $title_req->gather(1);
+	$circ_objects->{title} = _grab_title_by_copy($session, $circ_objects->{copy}->id);
 	$cache_handle->put_cache( $cache_key, $circ_objects, 30 );
 
 	$stash = Template::Stash->new(
@@ -171,7 +280,6 @@ sub gather_circ_objects {
 			result					=> [],
 			target_copy_status	=> 1,
 			);
-
 }
 
 
@@ -223,8 +331,6 @@ sub permit_circ {
 		};
 	}
 
-
-	
 	$stash->set("run_block", $permission_script);
 
 	# grab the number of copies checked out by the patron as
@@ -250,6 +356,7 @@ sub permit_circ {
 	return { record => $mods, status => $arr->[0], text => $arr->[1] };
 
 }
+
 
 
 __PACKAGE__->register_method(
