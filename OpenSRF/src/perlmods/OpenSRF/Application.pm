@@ -210,7 +210,9 @@ sub handler {
 
 			return 1;
 		} 
-		my $res = OpenSRF::DomainObject::oilsMethodException->new;
+
+		my $res = OpenSRF::DomainObject::oilsMethodException->new( 
+				status => "Received non-REQUEST message in Application handler");
 		$session->send('ERROR', $res);
 		$session->kill_me;
 		return 1;
