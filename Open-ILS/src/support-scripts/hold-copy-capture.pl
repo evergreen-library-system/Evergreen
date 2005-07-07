@@ -8,6 +8,7 @@ die "USAGE:\n\t$0 config_file\n" unless @ARGV;
 
 OpenSRF::System->bootstrap_client( config_file => $ARGV[0] );
 my $session = OpenSRF::AppSession->create('open-ils.storage');
+my $circ = OpenSRF::AppSession->create('open-ils.circ');
 
 my $statuses = $session->request(
 	'open-ils.storage.direct.config.copy_status.search.holdable.atomic',
@@ -59,20 +60,37 @@ sub copy_hold_capture {
 		};
 	}
 
-	my @copies = grep { $_->holdable == 1 } @$cps;
+	my @copies = grep { $_->holdable == 1  and $_->ref == 0 } @$cps;
 
+	$circ->connect;
+	print "Applying user defined filters for hold ".$hold->id."...\n";
 	for (my $i = 0; $i < @copies; $i++) {
-		$copies[$i] = undef unless (grep { $copies[$i]->status eq $_->id} @$statuses);
-		$copies[$i] = undef unless (grep { $copies[$i]->location eq $_->id} @$locations);
+		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->status eq $_->id}@$statuses);
+		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->location eq $_->id}@$locations);
+		$copies[$i] = undef if (
+			$copies[$i] &&
+			!$circ->request(
+				'open-ils.circ.permit_hold',
+				$hold, $copies[$i] )->gather(1)
+		);
 	}
+	$circ->disconnect;
+
 	@copies = grep { defined $_ } @copies;
-	
+
+	my @prox_list;
 	my $count = @copies;
 	print "Found $count eligible copies for hold ".$hold->id.":\n";
 	for my $cp (@copies) {
-		print "\t".$cp->id." -> ".$cp->barcode."\n";
+		my $prox = $session->request(
+			'open-ils.storage.asset.copy.proximity',
+			$cp->id, $hold->pickup_lib )->gather(1);
+		print "\t".$cp->id." -> ".$cp->barcode." :: Proximity -> $prox\n";
+		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
+		push @{$prox_list[$prox]}, $cp;
 	}
 	print "\n";
+
 }
 
 sub volume_hold_capture {
