@@ -48,7 +48,7 @@ OPACStartPage.prototype.init = function() {
 	if(!UserSession.instance().verifySession()) {
 		login.setAttribute("href","javascript:void(0);");
 		var func = function(){url_redirect(["target","my_opac"])};
-		var diag = new LoginDialog(getDocument().body, func);
+		var diag = new LoginDialog(func);
 		login.onclick = function(){diag.display(login);}
 	}
 }

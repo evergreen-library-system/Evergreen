@@ -1,7 +1,6 @@
-/* node is where we attache the div */
-function LoginDialog(node, logged_in_callback) {
-	this.node = node;
+function LoginDialog(logged_in_callback) {
 	this.callback = logged_in_callback;
+	this.rand = Math.random();
 }
 
 /* node is the element the dialog should popup under */
@@ -12,13 +11,14 @@ LoginDialog.prototype.display = function(node) {
 		return;
 	}
 
-	this.div = elem("div",{id:"login_dialog"});
-	var div = this.div;
-	if(IE) div.style.width = "200px"; /* just has to be done */
+	this.box = new PopupBox(node);
+	var box = this.box;
+	box.title("Login");
 
-	add_css_class(div,"login_dialog");
-	var ut = elem("input", {id:"login_uname",type:"text",size:"16"});
-	var pw = elem("input",{id:"login_passwd",type:"password",size:"16"});
+	var ut = elem("input", {id:"login_uname_" + this.rand,type:"text",size:"16"});
+	var pw = elem("input",{id:"login_passwd_" + this.rand,type:"password",size:"16"});
+	ut.size = 16;
+	pw.size = 16;
 
 	var but = elem("input",
 		{style:"margin-right: 10px", type:"submit",value:"Login"});
@@ -28,8 +28,8 @@ LoginDialog.prototype.display = function(node) {
 
 	var obj = this;
 	var submitFunc = function() {
-		var uname = getById("login_uname").value;
-		var passwd = getById("login_passwd").value;
+		var uname = getById("login_uname_" + obj.rand).value;
+		var passwd = getById("login_passwd_" + obj.rand).value;
 
 		if(uname == null || uname == "") {
 			alert("Please enter username");
@@ -53,36 +53,23 @@ LoginDialog.prototype.display = function(node) {
 			try{pw.focus();}catch(e){}
 		}
 	}
+
 	but.onclick = submitFunc;
 	ut.onkeyup = function(evt) { if(userPressedEnter(evt)) submitFunc(); }
 	pw.onkeyup = function(evt) { if(userPressedEnter(evt)) submitFunc(); }
 	cancel.onclick = function() { obj.hideMe(); }
 
-	var A = getXYOffsets(node);
-	div.style.left = A[0];
-	div.style.top = A[1];
-
-	div.appendChild(elem("br"));
-	div.appendChild(mktext("Username "));
-	div.appendChild(ut);
-	div.appendChild(elem("br"));
-	div.appendChild(elem("br"));
-	div.appendChild(mktext("Password "));
-	div.appendChild(pw);
-	div.appendChild(elem("br"));
-	div.appendChild(elem("br"));
-
-	var bdiv = elem("div");
-	add_css_class(bdiv, "holds_window_buttons");
-	bdiv.appendChild(but);
-	bdiv.appendChild(cancel);
-	div.appendChild(bdiv);
-
-
-	div.appendChild(elem("br"));
-	this.node.appendChild(this.div);
-
+	box.addText("Username ");
+	box.addNode(ut);
+	box.lines();
+	box.addText("Passwod ");
+	box.addNode(pw);
+	box.lines();
+	box.makeGroup([but, cancel]);
+	
+	box.show();
 	try{ut.focus();}catch(E){}
+
 }
 
 function runLoginOnEnter(evt) {
@@ -91,7 +78,8 @@ function runLoginOnEnter(evt) {
 }
 
 
-
 LoginDialog.prototype.hideMe = function() {
-	this.node.removeChild(this.div);
+	this.box.hide();
 }
+
+

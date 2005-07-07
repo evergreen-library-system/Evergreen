@@ -693,8 +693,10 @@ function _submitUpdateNotifyPhone(hold) {
 
 
 function _buildChangePhoneNotify(hold) {
+
 	var a = elem("a",{href:"javascript:void(0);",
 			style:"text-decoration:underline"},null, hold.phone_notify());
+
 	var et1 = elem("input",{type:"text",size:"10"});
 	var box = new PopupBox(a);
 	var but = elem("input",{type:"submit",value:"Submit"});

@@ -219,7 +219,7 @@ Page.prototype.buildNavBox = function(full) {
 	if(!UserSession.instance().verifySession()) {
 		mylink.setAttribute("href","javascript:void(0);");
 		var func = function(){url_redirect(["target","my_opac"])};
-		var diag = new LoginDialog(getDocument().body, func);
+		var diag = new LoginDialog(func);
 		mylink.onclick = function(){diag.display(mylink);}
 	}
 

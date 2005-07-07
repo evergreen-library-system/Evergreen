@@ -88,17 +88,19 @@ PopupBox.prototype.hide = function() {
 
 /* pass in an array of DOM nodes and they will
 	be displayed as a group along the box */
-PopupBox.prototype.makeGroup = function(buttons) {
+PopupBox.prototype.makeGroup = function(group) {
 
+	var center = elem("center");
 	var table = elem("table");
-	add_css_class(table, "popup_box_buttons");
+	center.appendChild(table);
+	add_css_class(table, "popup_box_group");
 	var row = table.insertRow(0);
 
-	for(var i = 0; i!= buttons.length; i++) {
+	for(var i = 0; i!= group.length; i++) {
 		var cell = row.insertCell(row.cells.length);
-		cell.appendChild(buttons[i]);
+		cell.appendChild(group[i]);
 	}
 
 	this.div.appendChild(elem("br"));
-	this.div.appendChild(table);
+	this.div.appendChild(center);
 }

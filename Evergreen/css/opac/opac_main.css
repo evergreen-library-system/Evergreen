@@ -205,15 +205,15 @@ table { border-collapse: collapse; }
 	vertical-align: middle;
 }
 
-.popup_box_buttons {
+.popup_box_group {
 	border-top: 1px solid lightgrey;
 	border-bottom: 1px solid lightgrey;
 	text-align:center;
 }
 
-.popup_box_buttons td {
-	padding-left: 5px;
-	padding-right: 5px;
+.popup_box_group td {
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .popup_box_title {

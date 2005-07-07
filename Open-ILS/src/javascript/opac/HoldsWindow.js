@@ -95,7 +95,7 @@ HoldsWindow.prototype.buildWindow = function(node) {
 			obj.session = usr.session_id;
 			obj.toggle();
 		}
-		var diag = new LoginDialog(getDocument().body, func);
+		var diag = new LoginDialog(func);
 		diag.display(node);
 		return false;
 	}
