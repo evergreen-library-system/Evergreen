@@ -18,7 +18,8 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_call_number' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/record label creator create_date editor edit_date record label owning_lib/ );
+__PACKAGE__->columns( Essential => qw/record label creator create_date editor
+				   edit_date record label owning_lib/ );
 
 #-------------------------------------------------------------------------------
 package asset::call_number_note;
@@ -37,7 +38,8 @@ __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date editor
 				   edit_date copy_number status loan_duration circ_lib
 				   fine_level circulate deposit price ref opac_visible
-				   circ_as_type circ_modifier deposit_amount location/ );
+				   circ_as_type circ_modifier deposit_amount location
+				   holdable/ );
 
 #-------------------------------------------------------------------------------
 package asset::stat_cat;
