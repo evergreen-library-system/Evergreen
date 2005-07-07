@@ -100,7 +100,8 @@ sub handler {
 		my $coderef = $app->method_lookup( $method_name, $method_proto, 1, 1 );
 
 		unless ($coderef) {
-			$session->status( OpenSRF::DomainObject::oilsMethodException->new() );
+			$session->status( OpenSRF::DomainObject::oilsMethodException->new( 
+						status => "Method [$method_name] not found for $app"));
 			return 1;
 		}
 
