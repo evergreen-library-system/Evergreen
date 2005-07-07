@@ -54,14 +54,14 @@ ECGR-BKM	Bookmobile	East Central Georgia Regional Library
 ECGR-BURKE	Burke County Library	East Central Georgia Regional Library
 ECGR-EUCHE	Euchee Creek Library	East Central Georgia Regional Library
 ECGR-FRMAN	Friedman Branch Library	East Central Georgia Regional Library
-ECGR-GIBBS	Columbia County Libraries/Gibbs Memorial	East Central Georgia Regional Library
+ECGR-GIBBS	Gibbs Memorial	East Central Georgia Regional Library
 ECGR-GLSCK	Glascock County Library	East Central Georgia Regional Library
 ECGR-HARLM	Harlem Branch Library	East Central Georgia Regional Library
 ECGR-LINCN	Lincoln County Library	East Central Georgia Regional Library
 ECGR-MAIN	Augusta-Richmond County Public Library	East Central Georgia Regional Library
 ECGR-MIDVL	Midville Branch Library	East Central Georgia Regional Library
 ECGR-MXWLL	Maxwell Branch Library	East Central Georgia Regional Library
-ECGR-SOAUG	South Augusta Branch Library/ Diamond Lakes Branch Library	East Central Georgia Regional Library
+ECGR-SOAUG	Diamond Lakes Branch Library	East Central Georgia Regional Library
 ECGR-SRDIS	Sardis Branch Library	East Central Georgia Regional Library
 ECGR-WALLC	Wallace Branch Library	East Central Georgia Regional Library
 ECGR-WARRN	Warren County Library	East Central Georgia Regional Library
@@ -135,9 +135,9 @@ MRLS-UCPL	Union County Public Library	Mountain Regional Library
 NCLS-COVTN	Newton County Library Headqtrs.	Newton County Library System
 NEG-BKMB	Bookmobile--See Clarkesville-Habersham Co.	Northeast Georgia Regional Library
 NEG-CLRKVL	Clarkesville-Habersham County Library	Northeast Georgia Regional Library
-NEG-CLVLND	"White County Library, Cleveland Branch"	Northeast Georgia Regional Library
+NEG-CLVLND	White County Library, Cleveland Branch	Northeast Georgia Regional Library
 NEG-CORNEL	Cornelia-Habersham Library	Northeast Georgia Regional Library
-NEG-HELEN	"White County Library, Helen Branch"	Northeast Georgia Regional Library
+NEG-HELEN	White County Library, Helen Branch	Northeast Georgia Regional Library
 NEG-RABUN	Rabun County Library	Northeast Georgia Regional Library
 NEG-TOCCOA	Toccoa-Stephens County Library	Northeast Georgia Regional Library
 OCRL-DUBLN	Oconee Regional Library	Oconee Regional Library

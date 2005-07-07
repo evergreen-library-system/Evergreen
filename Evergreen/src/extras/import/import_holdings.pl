@@ -32,10 +32,27 @@ eval `cat $lib_map_file`;
 open CP, ">$cp_file" or die "Can't open $cp_file!  $!\n";
 open CN, ">$cn_file" or die "Can't open $cn_file!  $!\n";
 
+my %status_map = (
+	''		=> 0,
+	CHECKEDOUT	=> 1,
+	BINDERY		=> 2,
+	LOST		=> 3,
+	MISSING		=> 4,
+	INPROCESS	=> 5,
+	INTRANSIT	=> 6,
+	RESHELVING	=> 7,
+	'ON HOLDS SHELF' => 8,
+	'ON-ORDER'	=> 9,
+	ILL		=> 10,
+	CATALOGING	=> 11,
+	RESERVES	=> 12,
+	DISCARD		=> 13,
+);
+
 
 print CP <<SQL;
 SET CLIENT_ENCODING TO 'UNICODE';
-COPY asset.copy (id,editor,creator,barcode,call_number,copy_number,available,loan_duration,fine_level,circulate,deposit,deposit_amount,price,ref,opac_visible) FROM STDIN;
+COPY asset.copy (id,circ_lib,editor,creator,barcode,call_number,copy_number,status,loan_duration,fine_level,circulate,deposit,deposit_amount,price,ref,opac_visible) FROM STDIN;
 SQL
 
 print CN <<SQL;
@@ -90,7 +107,9 @@ while ( $xml .= <STDIN> ) {
 		my $owning_lib = $$lib_map{ $node->findvalue( '*[@code="m"]' ) };
 		my $price = $node->findvalue( '*[@code="p"]' );
 		my $copy_number = $node->findvalue( '*[@code="c"]' );
-		my $available = $node->findvalue( '*[@code="k"]' ) ? 1 : 0;
+		my $available = $node->findvalue( '*[@code="k"]' ) || '';
+
+		my $status = $status_map{$available} || 0;
 
 		next unless $barcode;
 		next unless $owning_lib;
@@ -112,9 +131,9 @@ while ( $xml .= <STDIN> ) {
 
 # id,editor,creator,barcode,call_number,copy_number,available,loan_duration,fine_level,circulate,deposit,deposit_amount,price,ref,opac_visible
 
-		print CP join("\t", (	$cp_id,$userid,$userid,$barcode,
+		print CP join("\t", (	$cp_id,$owning_lib,$userid,$userid,$barcode,
 					$$cn_map{"$rec_id/$owning_lib/$label"},
-					$copy_number,$available,2,2,1,0,'0.00',
+					$copy_number,$status,2,2,1,0,'0.00',
 					$price,0,1 )
 			 )."\n";
 		print 'c';

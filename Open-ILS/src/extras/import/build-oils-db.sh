@@ -9,8 +9,8 @@ PWD=`pwd`
 WD=`dirname $0`
 
 (
-	echo "cd $PWD/$WD/../../sql/$2/;"
-	cd $PWD/$WD/../../sql/$2/;
+	echo "cd $WD/../../sql/$2/;"
+	cd $WD/../../sql/$2/;
 	pwd
 	./build-db-$2.sh $1 $3 $4
 )

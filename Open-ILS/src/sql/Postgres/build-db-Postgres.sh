@@ -9,5 +9,5 @@ psql -U $1 -d $2 -f 040.schema.asset.sql
 psql -U $1 -d $2 -f 080.schema.money.sql
 psql -U $1 -d $2 -f 090.schema.action.sql
 
-psql -U $1 -d $2 -f 800.fkeys.sql
-psql -U $1 -d $2 -f 900.audit-tables.sql
+#psql -U $1 -d $2 -f 800.fkeys.sql
+#psql -U $1 -d $2 -f 900.audit-tables.sql

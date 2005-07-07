@@ -20,7 +20,7 @@ for my $i ( $start .. $stop ) {
 		push @list, $i;
 		next;
 	}
-	print SFSH "request open-ils.storage open-ils.worm.wormize.batch ".join(',', @list)."\n" if (@list);
+	print SFSH "request open-ils.storage open-ils.worm.wormize.no_map.batch ".join(',', @list)."\n" if (@list);
 	@list = ($i);
 }
-print SFSH "request open-ils.storage open-ils.worm.wormize.batch ".join(',', @list)."\n" if (@list);
+print SFSH "request open-ils.storage open-ils.worm.wormize.no_map.no_map.batch ".join(',', @list)."\n" if (@list);

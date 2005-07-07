@@ -9,12 +9,11 @@ use open qw/:utf8/;
 
 $|=1;
 
-my ($userid, $sourceid, $rec_id, $entry_file, $marc_file, $map_file) = (1, 2, 1, 'record_entry.sql','record_marc.sql','record_id_map.pl');
+my ($userid, $sourceid, $rec_id, $entry_file, $map_file) = (1, 2, 1, 'record_entry.sql','record_id_map.pl');
 
 GetOptions (	
 	"sourceid"		=> \$sourceid,
 	"entry_file=s"		=> \$entry_file,
-	"marc_file=s"		=> \$marc_file,
 	"tcn_map_file=s"	=> \$map_file,
 	"userid=i"		=> \$userid,
 	"first=i"		=> \$rec_id,
@@ -23,16 +22,10 @@ GetOptions (
 my $tcn_map;
 
 open RE, ">$entry_file" or die "Can't open $entry_file!  $!\n";
-open RM, ">$marc_file" or die "Can't open $marc_file!  $!\n";
 
 print RE <<SQL;
 SET CLIENT_ENCODING TO 'UNICODE';
-COPY biblio.record_entry (id,editor,creator,source,tcn_value,last_xact_id) FROM STDIN;
-SQL
-
-print RM <<SQL;
-SET CLIENT_ENCODING TO 'UNICODE';
-COPY biblio.record_marc (id,marc,last_xact_id) FROM STDIN;
+COPY biblio.record_entry (id,editor,creator,source,tcn_value,marc,last_xact_id) FROM STDIN;
 SQL
 
 my $xact_id = time;
@@ -78,8 +71,7 @@ while ( $xml .= <STDIN> ) {
 	print ".";
 	$$tcn_map{$tcn} = $rec_id;
 
-	print RE join("\t", ($rec_id,$userid,$userid,$sourceid,$tcn,$xact_id))."\n";
-	print RM join("\t", ($rec_id,$xml,$xact_id))."\n";
+	print RE join("\t", ($rec_id,$userid,$userid,$sourceid,$tcn,$xml,$xact_id))."\n";
 
 	$rec_id++;
 	$xml = '';
@@ -87,7 +79,6 @@ while ( $xml .= <STDIN> ) {
 
 print RE "\\.\n";
 print RE "SELECT setval('biblio.record_entry_id_seq'::TEXT, $rec_id);\n";
-print RM "\\.\n";
 
 open MAP, ">$map_file" or die "Can't open $map_file!  $!\n";
 print MAP Data::Dumper->Dump([$tcn_map],['tcn_map']);
