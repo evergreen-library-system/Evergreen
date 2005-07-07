@@ -6,7 +6,7 @@ TRUNCATE metabib.metarecord;
 TRUNCATE metabib.metarecord_source_map;
 
 INSERT INTO metabib.metarecord (fingerprint,master_record)
-	SELECT	fingerprint,min(id)
+	SELECT	fingerprint,max(id)
 	  FROM	biblio.record_entry
 	  WHERE	fingerprint IS NOT NULL
 	  GROUP BY 1;
