@@ -11,7 +11,7 @@
 	BLOCK ret_block;
 		result.0 = s;
 		result.1 = t;
-		"Circ Template Result: "; result.0; " "; result.1; 
+		"Template Result: "; result.0; " "; result.1; 
 		STOP;
 	END;
 
