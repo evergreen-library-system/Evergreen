@@ -410,6 +410,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				api_level	=> 1,
 				cdbi		=> $cdbi,
 				cachable	=> 1,
+				stream		=> 1,
 			);
 		}
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
@@ -419,6 +420,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				api_level	=> 1,
 				cdbi		=> $cdbi,
 				cachable	=> 1,
+				stream		=> 1,
 			);
 		}
 		if (\&Class::DBI::search_fts) {
@@ -429,6 +431,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 					api_level	=> 1,
 					cdbi		=> $cdbi,
 					cachable	=> 1,
+					stream		=> 1,
 				);
 			}
 		}
@@ -440,6 +443,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 					api_level	=> 1,
 					cdbi		=> $cdbi,
 					cachable	=> 1,
+					stream		=> 1,
 				);
 			}
 		}
@@ -451,6 +455,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 					api_level	=> 1,
 					cdbi		=> $cdbi,
 					cachable	=> 1,
+					stream		=> 1,
 				);
 			}
 		}
