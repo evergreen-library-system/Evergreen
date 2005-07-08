@@ -6,12 +6,17 @@ use XML::LibXML;
 use XML::LibXSLT;
 use Time::HiRes qw(time);
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::SettingsClient;
 use Data::Dumper;
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
-my $xslt_doc	= $parser->parse_file( 
-		"/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS3.xsl" );
+my $xslt_doc	= $parser->parse_file(
+	OpenSRF::Utils::SettingsClient
+		->new
+		->config_value(dirs => 'xsl') .  "/MARC21slim2MODS3.xsl"
+);
+
 my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 
 # ----------------------------------------------------------------------------------------
