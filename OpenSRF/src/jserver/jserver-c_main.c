@@ -85,6 +85,7 @@ void launch_server() {
 			"sock file %s", port, unix_sock_file);
 
 	js = jserver_init();
+	unlink(unix_sock_file);
 	if(jserver_connect(js, port, unix_sock_file) < 0)
 		fatal_handler("Could not connect...");
 
