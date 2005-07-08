@@ -20,6 +20,7 @@ use strict; use warnings;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::EX;
+use OpenSRF::Utils::Logger qw(:level); 
 
 use Template qw(:template);
 use Template::Stash; 
@@ -33,6 +34,8 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 use Digest::MD5 qw(md5_hex);
+
+my $log = "OpenSRF::Utils::Logger";
 
 # ----------------------------------------------------------------
 # rules scripts
@@ -87,6 +90,11 @@ sub initialize {
 
 	$permit_hold_script = $conf->config_value(
 		"apps", "open-ils.circ","app_settings", "rules", "permit_hold");
+
+	$log->debug("Loaded rules scripts for circ:\n".
+		"main - $circ_script : permit circ - $permission_script\n".
+		"duration - $duration_script : recurring - $recurring_fines_script\n".
+		"max fines - $max_fines_script : permit hold - $permit_hold_script", DEBUG);
 
 
 	$cache_handle = OpenSRF::Utils::Cache->new();
@@ -155,7 +163,7 @@ sub _grab_copy_by_barcode {
 
 
 sub gather_hold_objects {
-	my($session, $hold, $copy) = @_;
+	my($session, $hold, $copy, $args) = @_;
 
 	_grab_patron_standings($session);
 	_grab_patron_profiles($session);
@@ -168,7 +176,7 @@ sub gather_hold_objects {
 	$hold_objects->{standings} = $patron_standings;
 	$hold_objects->{copy}		= $copy;
 	$hold_objects->{hold}		= $hold;
-	$hold_objects->{title}		= _grab_title_by_copy($session, $copy->id);
+	$hold_objects->{title}		= $$args{title} || _grab_title_by_copy($session, $copy->id);
 	$hold_objects->{requestor} = _grab_user($session, $hold->requestor);
 	my $patron						= _grab_user($session, $hold->usr);
 
@@ -192,12 +200,12 @@ NOTES
 );
 
 sub permit_hold {
-	my( $self, $client, $hold, $copy ) = @_;
+	my( $self, $client, $hold, $copy, $args ) = @_;
 
 	my $session	= OpenSRF::AppSession->create("open-ils.storage");
 	
 	# collect items necessary for circ calculation
-	my $hold_objects = gather_hold_objects( $session, $hold, $copy );
+	my $hold_objects = gather_hold_objects( $session, $hold, $copy, $args );
 
 	$stash = Template::Stash->new(
 			circ_objects			=> $hold_objects,
@@ -208,6 +216,8 @@ sub permit_hold {
 	# grab the number of copies checked out by the patron as
 	# well as the total fines
 	my $summary = _grab_patron_summary($session, $hold_objects->{patron}->id);
+	$summary->[0] ||= 0;
+	$summary->[0] ||= 0.0;
 
 	$stash->set("patron_copies", $summary->[0] );
 	$stash->set("patron_fines", $summary->[1] );

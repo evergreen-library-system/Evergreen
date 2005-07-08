@@ -58,7 +58,7 @@
 	PROCESS "$run_block"
 		patron			= circ_objects.patron 
 		copy				= circ_objects.copy
-		circlib			= circ_objects.copy.circlib() 
+		circlib			= circ_objects.copy.circ_lib() 
 		title				= circ_objects.title
 		standings		= circ_objects.standings
 		patron_copies	= circ_objects.patron_copies
