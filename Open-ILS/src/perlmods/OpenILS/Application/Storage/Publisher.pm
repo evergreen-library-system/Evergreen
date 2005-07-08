@@ -125,24 +125,30 @@ sub retrieve_node {
 	return undef;
 }
 
+sub search_where {
+	my $self = shift;
+	my $client = shift;
+	my @args = @_;
+
+	my $cdbi = $self->{cdbi};
+
+	for my $obj ($cdbi->search_where(@args)) {
+		next unless ref($obj);
+		$client->respond( $obj->to_fieldmapper );
+	}
+	return undef;
+}
+
 sub search {
 	my $self = shift;
 	my $client = shift;
 	my @args = @_;
-	#my $searches = shift;
-	#my $options = shift;
 
 	my $cdbi = $self->{cdbi};
 
 	(my $search_type = $self->api_name) =~ s/.*\.(search[^.]*).*/$1/o;
 
-	#$log->debug("Searching $cdbi for { ".
-	#	join(',', map { "$_ => $$searches{$_}" } keys %$searches).
-	#	" } using $search_type",DEBUG);
-
-	#for my $obj ($cdbi->$search_type($searches, $options)) {
 	for my $obj ($cdbi->$search_type(@args)) {
-		warn "$obj -> ".ref($obj);
 		next unless ref($obj);
 		$client->respond( $obj->to_fieldmapper );
 	}
@@ -322,6 +328,17 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		__PACKAGE__->register_method(
 			api_name	=> $api_prefix.'.search',
 			method		=> 'search',
+			api_level	=> 1,
+			stream		=> 1,
+			cdbi		=> $cdbi,
+			cachable	=> 1,
+		);
+	}
+
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.search_where' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.search_where',
+			method		=> 'search_where',
 			api_level	=> 1,
 			stream		=> 1,
 			cdbi		=> $cdbi,

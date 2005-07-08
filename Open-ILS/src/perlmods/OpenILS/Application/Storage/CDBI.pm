@@ -1,6 +1,7 @@
 package OpenILS::Application::Storage::CDBI;
 use base qw/Class::DBI/;
 use Class::DBI;
+use Class::DBI::AbstractSearch;
 
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::action;
