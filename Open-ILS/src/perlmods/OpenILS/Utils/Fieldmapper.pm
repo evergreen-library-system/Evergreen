@@ -259,7 +259,7 @@ sub AUTOLOAD {
 	}
 
 	die "No field by the name $field in $class_name!"
-		unless (exists $$fieldmap{$class_name}{fields}{$field});
+		unless (exists $$fieldmap{$class_name}{fields}{$field} && defined($pos));
 
 
 	{	no strict 'subs';
