@@ -49,6 +49,14 @@ int main() {
 	/* simulate an error.. */
 	printf("\nShould print error msg: \n");
 	object* error = json_parse_string("[1, .5. null]");
+	if( error == NULL ) printf("\n"); 
+
+	object * t = json_parse_string("[ Null, trUe, falSE, 1, 12.9, \"true\" ]");
+	char* ts = t->to_json(t);
+	printf("More JSON: %s\n", ts);
+	free(ts);
+	free_object(t);
+
 
 
 

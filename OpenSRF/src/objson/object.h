@@ -85,6 +85,7 @@ struct object_struct {
 	 * added serialized object when applicable
 	 */
 	char* comment;
+
 };
 typedef struct object_struct object;
 

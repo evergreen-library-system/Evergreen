@@ -31,6 +31,7 @@ install:
 
 lib:	$(OBJS)
 	$(CC) -shared -W1 $(OBJS) -o $(TMPDIR)/libobjson.so
+	$(CC) -shared -W1 $(OBJS) -o libobjson.so
 	mkdir -p $(TMPDIR)/$(DEST_INCLUDE)/
 	cp *.h $(TMPDIR)/$(DEST_INCLUDE)/
 
@@ -44,4 +45,4 @@ utils.o:	$(UTIL_DIR)/utils.h $(UTIL_DIR)/utils.c
 	$(CC) -c $(CC_OPTS) $(UTIL_DIR)/utils.c -o $@
 
 clean:
-	/bin/rm -f *.o test
+	/bin/rm -f *.o *.so test

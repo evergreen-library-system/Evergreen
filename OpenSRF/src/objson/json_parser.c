@@ -171,6 +171,8 @@ int json_parse_json_bool(char* string, unsigned long* index, object* obj) {
 	
 	if(!strncasecmp( string + (*index), "false", 5)) {
 		(*index) += 5;
+		obj->bool_value = 0;
+		obj->is_bool = 1;
 		return 0;
 	}
 
@@ -179,6 +181,8 @@ int json_parse_json_bool(char* string, unsigned long* index, object* obj) {
 
 	if(!strncasecmp( string + (*index), "true", 4)) {
 		(*index) += 4;
+		obj->bool_value = 1;
+		obj->is_bool = 1;
 		return 0;
 	}
 

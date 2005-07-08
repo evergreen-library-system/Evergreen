@@ -260,31 +260,41 @@ void listen_loop( transport_router_registrar* router ) {
 
 				/* We only process a message if we have some trusted servers and the current
 					message came from one of those servers */
-				if(router->trusted_servers && router->trusted_servers[0]) {
-					int i = 0;
-					int found = 0;
+				if(cur_msg) {
 
-					char server_buf[256];
-					memset(server_buf,0,256);
-					jid_get_domain( cur_msg->sender, server_buf );
-					info_handler("Received top level message from %s", server_buf );
+					if(router->trusted_servers && router->trusted_servers[0]) {
 
-					while(1) {
-						if(router->trusted_servers[i] == NULL)
-							break;
-						if(!strcmp(router->trusted_servers[i], server_buf)) {
-							found = 1;
-							break;
+						int i = 0;
+						int found = 0;
+	
+						if( cur_msg->sender ) {
+
+							int len = strlen(cur_msg->sender) + 1; /* there's no way it could be that big, but... */
+							char server_buf[len];
+							memset(server_buf,0,len);
+							jid_get_domain( cur_msg->sender, server_buf );
+							info_handler("Received top level message from %s", server_buf );
+		
+							while(1) {
+								if(router->trusted_servers[i] == NULL)
+									break;
+								if(!strcmp(router->trusted_servers[i], server_buf)) {
+									found = 1;
+									break;
+								}
+								i++;
+							}
 						}
-						i++;
+
+						if(found)
+							router_registrar_handle_msg( router, cur_msg );
+						else
+							warning_handler( "Received top level message from unpriveleged sender %s", cur_msg->sender );
 					}
-					if(found)
-						router_registrar_handle_msg( router, cur_msg );
-					else
-						warning_handler( "Received top level message from unpriveleged sender %s", cur_msg->sender );
+	
+					message_free( cur_msg );
 				}
 
-				message_free( cur_msg );
 				if( ++num_handled == select_ret ) 
 					continue;
 			}
@@ -300,32 +310,39 @@ void listen_loop( transport_router_registrar* router ) {
 					FD_CLR(cur_fd,&listen_set);
 
 					cur_msg = client_recv( cur_node->jabber->t_client, 1 );
-					info_handler( "%s received from %s", cur_node->server_class, cur_msg->sender );
-					int handle_ret = server_class_handle_msg( router, cur_node, cur_msg );
 
-					if( handle_ret == -1 ) {
-						warning_handler( "server_class_handle_msg() returned -1" );
-						cur_node = router->server_class_list; /*start over*/
-						continue;
+					if(cur_msg) {
 
-					} else if( handle_ret == 0 ) {
-						/* delete and continue */
-						warning_handler( "server_class_handle_msg() returned 0" );
-						//server_class_node* tmp_node = cur_node->next;
-						remove_server_class( router, cur_node );	
-						debug_handler( "Removed Server Class" );
-						cur_node = router->server_class_list; /*start over*/
-						//cur_node = tmp_node;
-						continue;
-					} 
+						info_handler( "%s received from %s", cur_node->server_class, cur_msg->sender );
+						int handle_ret = server_class_handle_msg( router, cur_node, cur_msg );
+	
+						if( handle_ret == -1 ) {
+							warning_handler( "server_class_handle_msg() returned -1" );
+							cur_node = router->server_class_list; /*start over*/
+							continue;
+	
+						} else if( handle_ret == 0 ) {
+							/* delete and continue */
+							warning_handler( "server_class_handle_msg() returned 0" );
+							//server_class_node* tmp_node = cur_node->next;
+							remove_server_class( router, cur_node );	
+							debug_handler( "Removed Server Class" );
+							cur_node = router->server_class_list; /*start over*/
+							//cur_node = tmp_node;
+							continue;
+						} 
+	
+						info_handler( "%s handled message successfully", cur_node->server_class );
+						/* dont free message here */
+						if( num_handled == select_ret ) 
+							break;
+					}
 
-					info_handler( "%s handled message successfully", cur_node->server_class );
-					/* dont free message here */
-					if( num_handled == select_ret ) 
-						break;
 				}
+
 				if( num_handled == select_ret ) 
 					break;
+
 				cur_node = cur_node->next;
 
 			} /* cycling through the server_class list */
