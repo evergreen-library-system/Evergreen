@@ -6,6 +6,28 @@ use base qw/OpenILS::Application::Storage/;
 #
 #my $log = 'OpenSRF::Utils::Logger';
 
+sub copy_proximity {
+	my $self = shift;
+	my $client = shift;
+
+	my $cp = shift;
+	my $org = shift;
+
+	return unless ($cp && $org);
+
+	$cp = $cp->id if (ref $cp);
+	$cp = asset::copy->retrieve($cp);
+	my $ol = $cp->call_number->owning_lib;
+
+	return asset::copy->db_Main->selectcol_arrayref('SELECT actor.org_unit_proximity(?,?)',{},"$ol","$org")->[0];
+}
+__PACKAGE__->register_method(
+	method		=> 'copy_proximity',
+	api_name	=> 'open-ils.storage.asset.copy.proximity',
+	argc		=> 0,
+	stream		=> 1,
+);
+
 sub asset_copy_location_all {
 	my $self = shift;
 	my $client = shift;
@@ -66,14 +88,14 @@ sub fleshed_copy_by_barcode {
 
 	my ($cp) = asset::copy->search( { barcode => $bc } );
 
-	return [] unless ($cp);
+	return undef unless ($cp);
 
 	my $cp_fm = $cp->to_fieldmapper;
 	$cp_fm->circ_lib( $cp->circ_lib->to_fieldmapper );
 	$cp_fm->location( $cp->location->to_fieldmapper );
 	$cp_fm->status( $cp->status->to_fieldmapper );
 
-	return [ $cp_fm ];
+	return $cp_fm;
 }	
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.fleshed.asset.copy.search.barcode',
