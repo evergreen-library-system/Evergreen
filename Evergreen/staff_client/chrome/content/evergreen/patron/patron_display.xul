@@ -10,6 +10,7 @@
 	onload="params.w = window; 
 		params.app = 'PatronDisplay'; 
 		params.clamshell = 'PatronDisplay_groupbox';
+		mw.focus_widget( document, 'PatronNavBar_refresh' );
 		mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
