@@ -14,11 +14,17 @@ function patron_get_full_name( au ) {
 function patron_get_barcode( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
-		return find_id_object_in_list( au.cards(), au.card() ).barcode();
+		if (au && au.card && au.card() ) {
+			if ( (au.card()!='null') && (typeof(au.card())=='object') ) {
+				return au.card().barcode();
+			} else {
+				return find_id_object_in_list( au.cards(), au.card() ).barcode();
+			}
+		}
 	} catch(E) {
-		handle_error(E);
-		return null;
+		sdump('D_ERROR',E);
 	}
+	return '???';
 }
 
 function patron_get_bills_total( au ) {
