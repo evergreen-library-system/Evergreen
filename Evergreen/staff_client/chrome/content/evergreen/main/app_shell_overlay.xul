@@ -68,7 +68,7 @@
 			document,
 			'new_tab',
 			'main_tabbox',
-			'chrome://evergreen/content/patron/patron_search_form.xul',
+			'chrome://evergreen/content/patron/patron_display.xul',
 			'test',
 			{ }
 		); "/>
@@ -189,7 +189,7 @@
 	<key id="file-save-key" modifiers="accel" key="S" command=""/>
 	<key id="file-close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
 	<key id="file-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
-
+	<!--
 	<key id="edit-undo-key" modifiers="accel" key="Z" command=""/>
 	<key id="edit-redo-key" modifiers="accel" key="Y" command=""/>
 	<key id="edit-cut-key" modifiers="accel" key="X" command=""/>
@@ -208,6 +208,8 @@
 	<key id="circ-mark-used-key" keycode="VK_F4" command=""/>
 	<key id="circ-place-hold-key" keycode="VK_F5" command=""/>
 	<key id="circ-patron-registration-key" keycode="VK_F12" command=""/>
+	-->
+	<key id="file-key" keycode="VK_F1" oncommand="get_widget('main.menu.file').focus();" />
 </keyset>
 
 </overlay>

@@ -6,7 +6,7 @@
 	<script>mw.sdump('D_TRACE','Loading app_shell_menus_overlay.xul\n');</script>
 
 <!-- The File menu on the main menu -->
-<menu id="main.menu.file" label="&main.menu.file.label;" accesskey="&main.menu.file.key;">
+<menu id="main.menu.file" label="&main.menu.file.label;" accesskey="&main.menu.file.key;" >
 	<menupopup id="main.menu.file.popup">
 		<menuitem label="&main.menu.file.new.label;" accesskey="&main.menu.file.new.key;" key="file-new-key" command="cmd_new_window"/>
 		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="file-new-tab-key" command="cmd_new_tab"/>
@@ -47,26 +47,26 @@
 <!-- The Circulation menu on the main menu -->
 <menu id="main.menu.circ" label="&main.menu.circ.label;" accesskey="&main.menu.circ.key;">
 	<menupopup id="main.menu.circ.popup">
-		<menuitem label="&main.menu.circ.checkout.label;" accesskey="&main.menu.circ.checkout.key;" key="circ-check-out-key" command="cmd_circ_checkout"/>
-		<menuitem label="&main.menu.circ.checkin.label;" accesskey="&main.menu.circ.checkin.key;" key="circ-check-in-key" command="cmd_circ_checkin"/>
-		<menuitem label="&main.menu.circ.renew.label;" accesskey="&main.menu.circ.renew.key;" key="circ-renew-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.circ.checkout.label;" accesskey="&main.menu.circ.checkout.key;" command="cmd_circ_checkout"/>
+		<menuitem label="&main.menu.circ.checkin.label;" accesskey="&main.menu.circ.checkin.key;" command="cmd_circ_checkin"/>
+		<menuitem label="&main.menu.circ.renew.label;" accesskey="&main.menu.circ.renew.key;" command="cmd_broken"/>
 	<!--
 		<menu id="special-circ-menu" label="&main.menu.circ.special.label;" accesskey="&main.menu.circ.special.key;" command="cmd_broken"/>
 		<menuseparator />
 		<menuitem label="&main.menu.circ.place_hold.label;" accesskey="&main.menu.circ.place_hold.key;" key="circ-place-hold-key" command="cmd_broken"/>
 	-->
 		<menuseparator />
-		<menuitem label="&main.menu.circ.copy_status.label;" accesskey="&main.menu.circ.copy_status.key;" key="circ-copy-status-key" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.patron_status.label;" accesskey="&main.menu.circ.patron_status.key;" key="circ-patron-status-key" command="cmd_circ_display"/>
+		<menuitem label="&main.menu.circ.copy_status.label;" accesskey="&main.menu.circ.copy_status.key;" command="cmd_broken"/>
+		<menuitem label="&main.menu.circ.patron_status.label;" accesskey="&main.menu.circ.patron_status.key;" command="cmd_circ_display"/>
 		<menuseparator />
-		<menuitem label="&main.menu.circ.patron_registration.label;" accesskey="&main.menu.circ.patron_registration.key;" key="circ-patron-registration-key" command="cmd_patron_register"/>
+		<menuitem label="&main.menu.circ.patron_registration.label;" accesskey="&main.menu.circ.patron_registration.key;" command="cmd_patron_register"/>
 	</menupopup>
 </menu>
 
 <!-- The Special Circulation submenu in the Circulation menu -->
 <menu id="special-circ-menu">
 	<menupopup id="special-circ-popup">
-		<menuitem label="&main.menu.circ.mark_used.label;" accesskey="&main.menu.circ.mark_used.key;" key="circ-mark-used-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.circ.mark_used.label;" accesskey="&main.menu.circ.mark_used.key;" command="cmd_broken"/>
 		<menuitem label="&main.menu.circ.lost.label;" accesskey="&main.menu.circ.lost.key;" command="cmd_broken"/>
 		<menuitem label="&main.menu.circ.missing.label;" accesskey="&main.menu.circ.missing.key;" command="cmd_broken"/>
 		<menuitem label="&main.menu.circ.found.label;" accesskey="&main.menu.circ.found.key;" command="cmd_broken"/>
