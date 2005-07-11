@@ -1003,6 +1003,7 @@ sub respond {
 	my $resp = shift;
 	push @{$$self{resp}}, $resp if (defined $resp);
 }
+sub respond_complete { respond(@_); }
 
 sub new {
 	return bless({resp => []}, 'OpenSRF::AppSubrequest');
