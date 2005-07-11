@@ -5,13 +5,16 @@ function OpenILS_init(params) {
 
 		switch(params.app) {
 			case 'Auth' : auth_init(params); break;
-			case 'AppShell' : app_shell_init(params); break;
+			case 'AppShell' : app_shell_init(params); register_AppShell(params.w); break;
 			case 'ClamShell' : clam_shell_init(params); break;
 			case 'PagedTree' : paged_tree_init(params); break;
 			case 'Opac' : opac_init(params); break;
 			case 'PatronSearch' : patron_search_init(params); break;
 			case 'PatronSearchForm' : patron_search_form_init(params); break;
 			case 'PatronSearchResults' : patron_search_results_init(params); break;
+			case 'PatronDisplay' : patron_display_init(params); break;
+			case 'PatronDisplayStatus' : patron_display_status_init(params); break;
+			case 'PatronDisplayContact' : patron_display_contact_init(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
@@ -19,7 +22,7 @@ function OpenILS_init(params) {
 	try {
 
 		//register_document(params.w.document);
-		//register_window(params.w);
+		register_window(params.w);
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 
@@ -32,13 +35,16 @@ function OpenILS_exit(params) {
 	
 		switch(params.app) {
 			case 'Auth' : auth_exit(params); break;
-			case 'AppShell' : app_shell_exit(params); break;
+			case 'AppShell' : app_shell_exit(params); unregister_AppShell(params.w); break;
 			case 'ClamShell' : clam_shell_exit(params); break;
 			case 'PagedTree' : paged_tree_exit(params); break;
 			case 'Opac' : opac_exit(params); break;
 			case 'PatronSearch' : patron_search_exit(params); break;
 			case 'PatronSearchForm' : patron_search_form_exit(params); break;
 			case 'PatronSearchResults' : patron_search_results_exit(params); break;
+			case 'PatronDisplay' : patron_display_exit(params); break;
+			case 'PatronDisplayStatus' : patron_display_status_exit(params); break;
+			case 'PatronDisplayContact' : patron_display_contact_exit(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
@@ -47,7 +53,7 @@ function OpenILS_exit(params) {
 
 		// buggy for now
 		//unregister_document(params.w.document);
-		//unregister_window(params.w);
+		unregister_window(params.w);
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 
