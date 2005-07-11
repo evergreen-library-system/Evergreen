@@ -1,7 +1,11 @@
 var G = {}; // the master Global variable
+
+var debug_ignore_auth_failures = false;
+
 G['main_window'] = self;
-G['win_list'] = new Object();
-G['doc_list'] = new Object();
+G['win_list'] = [];
+G['appshell_list'] = [];
+G['doc_list'] = [];
 G['window_name_increment'] = 0;
 G['auth_ses'] = '';
 G['user_ou'] = '';
@@ -29,7 +33,7 @@ G['actsc_list'] = []; // actor::stat_cat
 G['actsc_hash']; // actor::stat_cat
 
 var mw = G['main_window'];
-var auth_meter_incr = 8;
+var auth_meter_incr = 10;
 
 function auth_init() {
 	sdump('D_AUTH','TESTING: auth.js: ' + mw.G['main_test_variable'] + '\n');
@@ -98,7 +102,10 @@ function auth_init_callback(request) {
 		auth_init = request.getResultObject();
 		if (!auth_init) { throw('null result'); }
 	} catch(E) {
-		alert('Login failed on auth_init: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on auth_init: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 
 	sdump( 'D_AUTH', 'D_AUTH_INIT: ' + typeof(auth_init) + ' : ' + auth_init + '\n');
@@ -121,7 +128,10 @@ function auth_ses_callback(request) {
 		if (!auth_ses) { throw('null result'); }
 		if (auth_ses == 0) { throw('0 result'); }
 	} catch(E) {
-		alert('Login failed on auth_ses: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on auth_ses: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.auth_ses = [ auth_ses ];
 	sdump( 'D_AUTH', 'D_AUTH_SES: ' + typeof(mw.G['auth_ses'][0]) + ' : ' + mw.G['auth_ses'][0] + '\n');
@@ -142,7 +152,10 @@ function ap_list_callback(request) {
 		if (!ap_list) { throw('null result'); }
 		if (ap_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
-		alert('Login failed on ap_list: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on ap_list: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.ap_list = ap_list;
 	mw.G.ap_hash = convert_object_list_to_hash( ap_list );
@@ -163,7 +176,10 @@ function cit_list_callback(request) {
 		if (!cit_list) { throw('null result'); }
 		if (cit_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
-		alert('Login failed on cit_list: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on cit_list: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.cit_list = cit_list;
 	mw.G.cit_hash = convert_object_list_to_hash( cit_list );
@@ -185,7 +201,10 @@ function cst_list_callback(request) {
 		if (!cst_list) { throw('null result'); }
 		if (cst_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
-		alert('Login failed on cst_list: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on cst_list: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.cst_list = cst_list;
 	mw.G.cst_hash = convert_object_list_to_hash( cst_list );
@@ -208,7 +227,10 @@ function acpl_list_callback(request) {
 		if (!acpl_list) { throw('null result'); }
 		if (acpl_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
-		alert('Login failed on acpl_list: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on acpl_list: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.acpl_list = acpl_list;
 	mw.G.acpl_hash = convert_object_list_to_hash( acpl_list );
@@ -230,7 +252,10 @@ function ccs_list_callback(request) {
 		if (!ccs_list) { throw('null result'); }
 		if (ccs_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
-		alert('Login failed on ccs_list: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on ccs_list: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.ccs_list = ccs_list;
 	mw.G.ccs_hash = convert_object_list_to_hash( ccs_list );
@@ -253,7 +278,10 @@ function user_callback(request) {
 		if (!user) { throw('null result'); }
 		if (typeof(user) != 'object') { throw('result not an object' + user); }
 	} catch(E) {
-		alert('Login failed on user: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on user: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.user = user;
 	mw.G.user_ou = user.home_ou();
@@ -309,7 +337,10 @@ function my_orgs_callback(request) {
 		if (typeof(my_orgs) != 'object') { throw('result not an object' + my_orgs); }
 		if (my_orgs.length == 0) { throw('empty my_orgs'); }
 	} catch(E) {
-		alert('Login failed on my_orgs: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on my_orgs: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 
 	mw.G.my_orgs = my_orgs;
@@ -342,7 +373,10 @@ function my_actsc_list_callback(request) {
 		if (!actsc_list) { throw('null result'); }
 		if (actsc_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
-		alert('Login failed on asc_list: ' + js2JSON(E)); enable_login_prompts(); return;
+		alert('Login failed on asc_list: ' + js2JSON(E)); 
+		if (!debug_ignore_auth_failures) {
+			enable_login_prompts(); return;
+		}
 	}
 	mw.G.actsc_list = actsc_list;
 	mw.G.actsc_hash = convert_object_list_to_hash( actsc_list );
@@ -351,6 +385,8 @@ function my_actsc_list_callback(request) {
 	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 
 	spawn_main();
+
+	mw.minimize();
 
 }
 
