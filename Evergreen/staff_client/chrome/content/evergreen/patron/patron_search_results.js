@@ -46,6 +46,10 @@ function patron_search_results_init(p) {
 		p.w._flesh_patron_function = f;
 	}
 
+	p.w.register_context_builder = function (f) {
+		p.w._context_function = f;
+	}
+
 	p.w.map_patron_to_cols = function (patron, treeitem) {
 		patron_search_results_map_patron_to_cols(p, patron, treeitem);	
 	}
@@ -65,17 +69,19 @@ function patron_search_results_init(p) {
 function patron_search_results_init_after_paged_tree(p) {
 	sdump('D_PATRON_SEARCH_RESULTS',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return function (tree_win) {
+	var result = function (tree_win) {
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		sdump('D_PATRON_SEARCH_RESULTS',arg_dump(arguments));
 		tree_win.register_select_callback( p.w._patron_select_callback );
 		tree_win.register_flesh_row_function( p.w._flesh_patron_function );
+		tree_win.register_context_builder( p.w._context_function );
 		p.w.add_patrons = tree_win.add_rows;
 		p.w.clear_patrons = tree_win.clear_tree;
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return;
 	};
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
+	return result;
 }
 
 function patron_search_results_map_patron_to_cols(p, patron, treeitem) {
