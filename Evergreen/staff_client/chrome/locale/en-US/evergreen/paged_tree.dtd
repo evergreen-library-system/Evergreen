@@ -1,5 +1,6 @@
 <!ENTITY displaying.results 'Displaying results'>
 <!ENTITY displaying.of 'of'>
+<!ENTITY displaying.hits_per_page 'Results per page'>
 <!ENTITY previous.range 'Previous'>
 	<!ENTITY previous.range.key 'P'>
 <!ENTITY next.range 'Next'>

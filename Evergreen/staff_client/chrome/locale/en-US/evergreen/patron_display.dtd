@@ -1,0 +1,65 @@
+<!ENTITY patron_display.name.label 'Patron Name'>
+<!ENTITY patron_display.status.caption 'Status'>
+<!ENTITY patron_display.contact.caption 'Identity &amp; Contact Info'>
+
+<!ENTITY patron_navbar.retrieve 'Retrieve Patron'>
+<!ENTITY patron_navbar.retrieve.accesskey 'R'>
+<!ENTITY patron_navbar.refresh 'Refresh'>
+<!ENTITY patron_navbar.refresh.accesskey 'R'>
+<!ENTITY patron_navbar.checkout 'Check Out'>
+<!ENTITY patron_navbar.checkout.accesskey 'C'>
+<!ENTITY patron_navbar.items 'Items'>
+<!ENTITY patron_navbar.items.accesskey 'I'>
+<!ENTITY patron_navbar.holds 'Holds'>
+<!ENTITY patron_navbar.holds.accesskey 'H'>
+<!ENTITY patron_navbar.bills 'Bills'>
+<!ENTITY patron_navbar.bills.accesskey 'B'>
+<!ENTITY patron_navbar.edit 'Edit'>
+<!ENTITY patron_navbar.edit.accesskey 'E'>
+<!ENTITY patron_navbar.info 'Info'>
+<!ENTITY patron_navbar.info.accesskey 'o'>
+
+<!ENTITY patron_display.family_name.label 'Last Name:'>
+<!ENTITY patron_display.first_given_name.label 'First Name:'>
+<!ENTITY patron_display.second_given_name.label 'Middle Name:'>
+
+<!ENTITY patron_display.email.label 'Email:'>
+
+<!ENTITY patron_display.ident1.label 'ID 1:'>
+<!ENTITY patron_display.ident2.label 'ID 2:'>
+
+<!ENTITY patron_display.day_phone.label 'Day Phone:'>
+<!ENTITY patron_display.evening_phone.label 'Evening Phone:'>
+<!ENTITY patron_display.other_phone.label 'Other Phone:'>
+
+<!ENTITY patron_display.mailing_address 'Mailing Address'>
+<!ENTITY patron_display.mailing.street1.label 'Mailing Address 1:'>
+<!ENTITY patron_display.mailing.street2.label 'Mailing Address 2:'>
+<!ENTITY patron_display.mailing.city.label 'Mailing City:'>
+<!ENTITY patron_display.mailing.state.label 'Mailing State:'>
+<!ENTITY patron_display.mailing.post_code.label 'Mailing ZIP:'>
+
+<!ENTITY patron_display.physical_address 'Physical Address'>
+<!ENTITY patron_display.physical.street1.label 'Physical Address 1:'>
+<!ENTITY patron_display.physical.street2.label 'Physical Address 2:'>
+<!ENTITY patron_display.physical.city.label 'Physical City:'>
+<!ENTITY patron_display.physical.state.label 'Physical State:'>
+<!ENTITY patron_display.physical.post_code.label 'Physical ZIP:'>
+
+<!ENTITY patron_display.standing.label 'Standing:'>
+<!ENTITY patron_display.profile.label 'Profile:'>
+<!ENTITY patron_display.home_ou.label 'Home Library:'>
+<!ENTITY patron_display.checkouts.label 'Check Outs:'>
+<!ENTITY patron_display.checkouts_overdue.label 'Overdue:'>
+<!ENTITY patron_display.holds.label 'Holds:'>
+<!ENTITY patron_display.holds_available.label 'Available:'>
+<!ENTITY patron_display.bills.label 'Bills:'>
+<!ENTITY patron_display.credit.label 'Credit:'>
+<!ENTITY patron_display.items_claimed_returned.label 'Items Claimed Returned:'>
+
+
+
+
+
+
+

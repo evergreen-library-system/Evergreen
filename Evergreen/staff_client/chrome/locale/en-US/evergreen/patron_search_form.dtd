@@ -1,3 +1,5 @@
+<!ENTITY patron_search_form.caption 'Search for Patron'>
+
 <!ENTITY patron_search_form.family_name.label 'Last Name:'>
 	<!ENTITY patron_search_form.family_name.accesskey 'L'>
 <!ENTITY patron_search_form.first_given_name.label 'First Name:'>
@@ -22,8 +24,8 @@
 	<!ENTITY patron_search_form.post_code.accesskey ''>
 
 <!ENTITY patron_search_form.search.label 'Search'>
-	<!ENTITY patron_search_form.search.accesskey ''>
+	<!ENTITY patron_search_form.search.accesskey 'S'>
 
-<!ENTITY patron_search_form.clear.label 'Reset'>
-	<!ENTITY patron_search_form.clear.accesskey ''>
+<!ENTITY patron_search_form.clear.label 'Clear Form'>
+	<!ENTITY patron_search_form.clear.accesskey 'C'>
 

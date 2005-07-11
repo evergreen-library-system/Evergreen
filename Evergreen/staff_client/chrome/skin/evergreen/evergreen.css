@@ -1,3 +1,10 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
-/* * { color: red; } */
+
+tabpanel { border: 2px groove black; }
+
+.text_left { text-align: left; }
+.text_right { text-align: right; }
+.text_center { text-align: center; }
+.text_justify { text-align: justify; }
+

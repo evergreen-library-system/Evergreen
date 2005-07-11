@@ -10,7 +10,7 @@
 <!ENTITY main.menu.search.label "Search"><!ENTITY main.menu.search.key "r">
 <!ENTITY main.menu.reports.label "Reports"><!ENTITY main.menu.reports.key "">
 <!ENTITY main.menu.help.label "Help"><!ENTITY main.menu.help.key "H">
-<!ENTITY main.menu.admin.label "Admin"><!ENTITY main.menu.admin.key "">
+<!ENTITY main.menu.admin.label "Admin"><!ENTITY main.menu.admin.key "i">
 
 <!-- The File menu on the Main Menubar -->
 <!ENTITY main.menu.file.new.label "New Window"><!ENTITY main.menu.file.new.key "N">
