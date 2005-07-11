@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/patron_display.dtd">
+<overlay id="patron_display_contact_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading patron_display_contact_overlay.xul\n');</script>
+
+<commandset id="PatronDisplayContact_cmds">
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+</commandset>
+
+<!-- main widget for patron_display_contact -->
+<box id="PatronDisplayContact_main" flex="1" orient="vertical">
+	<groupbox id="PatronDisplayContact_groupbox" flex="1"/>
+</box>
+
+<groupbox id="PatronDisplayContact_groupbox" orient="vertical">
+	<caption label="&patron_display.contact.caption;"/>
+	<grid id="PatronDisplayContact_grid" />
+	<groupbox id="PatronDisplayContact_mailing_address" />
+	<groupbox id="PatronDisplayContact_physical_address" />
+</groupbox>
+
+<grid id="PatronDisplayContact_grid">
+	<columns id="pdsgc">
+		<column id="pdsgc1" />
+		<column id="pdsgc2" />
+	</columns>
+	<rows id="pdsgr" flex="1">
+		<row id="pdsgr0">
+			<label id="PatronDisplayContact_ident_label" class="text_right"
+				value="&patron_display.ident1.label;"/>
+			<hbox id="pdsgr0h">
+				<label id="PatronDisplayContact_ident_type"
+					render="true" fm_class="au" render_value="patron_get_ident1_type_as_text($$)" />
+				<label id="PatronDisplayContact_ident_value"
+					render="true" fm_class="au" render_value=".ident_value()" />
+			</hbox>
+		</row>
+		<row id="pdsgr0a">
+			<label id="PatronDisplayContact_ident_label2" class="text_right"
+				value="&patron_display.ident2.label;"/>
+			<hbox id="pdsgr0ah">
+				<label id="PatronDisplayContact_ident_type2"
+					render="true" fm_class="au" render_value="patron_get_ident2_type_as_text($$)" />
+				<label id="PatronDisplayContact_ident_value2"
+					render="true" fm_class="au" render_value=".ident_value2()" />
+			</hbox>
+		</row>
+		<row id="pdsgr0b"><label id="pdsgr0bl" value=" "/></row>
+		<row id="pdsgr1">
+			<label id="PatronDisplayContact_day_phone_label" class="text_right"
+				value="&patron_display.day_phone.label;" />
+			<label id="PatronDisplayContact_day_phone" 
+				render="true" fm_class="au" 
+				render_value=".day_phone()" />
+		</row>
+		<row id="pdsgr2">
+			<label id="PatronDisplayContact_evening_phone_label" class="text_right"
+				value="&patron_display.evening_phone.label;" />
+			<label id="PatronDisplayContact_evening_phone" 
+				render="true" fm_class="au" 
+				render_value=".evening_phone()" />
+		</row>
+		<row id="pdsgr3">
+			<label id="PatronDisplayContact_other_phone_label" class="text_right"
+				value="&patron_display.other_phone.label;" />
+			<label id="PatronDisplayContact_other_phone" 
+				render="true" fm_class="au" 
+				render_value=".other_phone()" />
+		</row>
+	</rows>
+</grid>
+
+<groupbox id="PatronDisplayContact_mailing_address" orient="vertical">
+	<caption id="pdcmac" label="&patron_display.mailing_address;"/>
+	<label id="pdcmal1" 
+		tooltiptext="&patron_display.mailing.street1.label;" 
+		render="true" fm_class="au" render_value=".mailing_address().street1()" />
+	<label id="pdcmal2" 
+		tooltiptext="&patron_display.mailing.street2.label;" 
+		render="true" fm_class="au" render_value=".mailing_address().street2()" />
+	<hbox id="pdcmah">
+		<label id="pdcmal3" 
+			tooltiptext="&patron_display.mailing.city.label;" 
+			render="true" fm_class="au" render_value=".mailing_address().city()" />
+		<label id="pdcmal4" 
+			tooltiptext="&patron_display.mailing.state.label;" 
+			render="true" fm_class="au" render_value=".mailing_address().state()" />
+		<label id="pdcmal5" 
+			tooltiptext="&patron_display.mailing.post_code.label;" 
+			render="true" fm_class="au" render_value=".mailing_address().post_code()" />
+	</hbox>
+</groupbox>
+
+<groupbox id="PatronDisplayContact_physical_address" orient="vertical">
+	<caption id="pdcpac" label="&patron_display.physical_address;"/>
+	<label id="pdcpal1" 
+		tooltiptext="&patron_display.physical.street1.label;" 
+		render="true" fm_class="au" render_value=".billing_address().street1()" />
+	<label id="pdcpal2" 
+		tooltiptext="&patron_display.physical.street2.label;" 
+		render="true" fm_class="au" render_value=".billing_address().street2()" />
+	<hbox id="pdcpah">
+		<label id="pdcpal3" 
+			tooltiptext="&patron_display.physical.city.label;" 
+			render="true" fm_class="au" render_value=".billing_address().city()" />
+		<label id="pdcpal4" 
+			tooltiptext="&patron_display.physical.state.label;" 
+			render="true" fm_class="au" render_value=".billing_address().state()" />
+		<label id="pdcpal5" 
+			tooltiptext="&patron_display.physical.post_code.label;" 
+			render="true" fm_class="au" render_value=".billing_address().post_code()" />
+	</hbox>
+</groupbox>
+
+
+
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="PatronDisplayContact_keys">
+</keyset>
+
+</overlay>
