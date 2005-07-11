@@ -100,21 +100,32 @@ function SafeWindowOpen(url,title,features)
 	return w;
 } 
 
+function register_AppShell(w) {
+	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	mw.G.appshell_list.push(w);
+}
+
+function unregister_AppShell(w) {
+	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	mw.G.appshell_list = filter_list( mw.G.appshell_list, function(e){return(e!=w);} );
+}
+
 function register_window(w) {
 	sdump('D_WIN',arg_dump(arguments,{0:true}));
-	mw.G.win_list[w.toString()] = w;
+	mw.G.win_list.push(w);
 	mw.G.last_win = w;
 }
 
 function unregister_window(w) {
 	sdump('D_WIN',arg_dump(arguments,{0:true}));
-	try { delete mw.G.win_list[w.toString()]; } catch(E) { mw.G.win_list[w.toString()] = false; }	
+	mw.G.win_list = filter_list( mw.G.win_list, function(e){return(e!=w);} );
+	mw.G.last_win = mw.G.win_list[ mw.G.win_list.length - 1 ];
 }
 
 function close_all_windows() {
 	sdump('D_WIN',arg_dump(arguments));
 	var w;
-	for (var i in mw.G.win_list) {
+	for (var i in mw.G.appshell_list) {
 		sdump('D_WIN','\tconsidering ' + i + '...');
 		if (mw.G.win_list[i] != mw) {
 			sdump('D_WIN','closing');
