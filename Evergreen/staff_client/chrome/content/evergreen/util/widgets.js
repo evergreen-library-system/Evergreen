@@ -417,6 +417,7 @@ function set_widget_value_for_display(e,v) {
 	switch (e.tagName) {
 		case 'textbox' : e.value = v; break;
 		case 'label' : e.setAttribute('value',v); break;
+		case 'image' : e.setAttribute('src',v); break;
 		default: try {e.setAttribute('value',v); e.value = v;} catch(E) {} break;
 	}
 }
