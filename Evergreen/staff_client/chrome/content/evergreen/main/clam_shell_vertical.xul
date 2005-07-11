@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- Clamlication: Evergreen Staff Client -->
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/clam_shell.dtd">
+
+<page id="clam_shell_win"
+	orient="vertical" style="overflow: auto" width="800" height="500"
+	sizemode="maximized" persist="width height" 
+	onload="params.clamshell = 'ClamShell_main'; 
+		params.splitter = 'ClamShell_splitter';
+		params.w = window; 
+		params.app = 'ClamShell'; 
+		mw.OpenILS_init(params);"
+	onunload="mw.OpenILS_exit(params);"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading clam_shell_vertical.xul\n');</script>
+
+	<!-- Stylesheets -->
+	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/clam_shell.css" type="text/css"?>
+	
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_vertical_overlay.xul"?>
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="ClamShell_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="ClamShell_keys" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<box id="ClamShell_main" />
+
+</page>
+
