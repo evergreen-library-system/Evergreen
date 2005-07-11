@@ -11,6 +11,10 @@
 
 	<command id="cmd_next" />
 
+	<!-- For some reason I can't add an event listener to this and have it fire
+		from the menulist below, so using oncommand instead -->
+	<command id="cmd_set_hits_per_page" />
+
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
 
@@ -18,20 +22,42 @@
 
 <!-- main widget for paged_tree -->
 <box id="PagedTree_main" flex="1" orient="vertical">
-	<hbox id="PagedTree_nav">
-		<label value="&displaying.results;"/>
-		<label id="PagedTree_label_range" value="??? - ???" />
-		<label value="&displaying.of;"/>
-		<label id="PagedTree_label_results" value="???"/>
-		<spacer flex="1"/>
-		<button id="PagedTree_button_prev" label="&previous.range;" accesskey="&previous.range.key;" command="cmd_prev" disabled="true"/>
-		<button id="PagedTree_button_next" label="&next.range;" accesskey="&next.range.key;" command="cmd_next" disabled="true"/>
-	</hbox>
+	<hbox id="PagedTree_nav" />
 	<tree id="PagedTree_tree" flex="1">
 		<treecols id="PagedTree_columns"/>
-		<treechildren id="PagedTree_children"/>
+		<treechildren id="PagedTree_children" context="PagedTree_popup"/>
 	</tree>
 </box>
+
+<hbox id="PagedTree_nav">
+	<label value="&displaying.results;"/>
+	<label id="PagedTree_label_range" value="??? - ???" />
+	<label value="&displaying.of;"/>
+	<label id="PagedTree_label_results" value="???"/>
+	<spacer flex="1"/>
+	<label id="ptnl1" value="&displaying.hits_per_page;"/>
+	<menulist id="PagedTree_menulist_hits_per_page" oncommand="window.set_hits_per_page()">
+		<menupopup id="ptnmp">
+			<menuitem id="ptnm0" label="10" value="10"  />
+			<menuitem id="ptnm1" label="20" value="20" selected="true" />
+			<menuitem id="ptnm2" label="30" value="30" />
+			<menuitem id="ptnm3" label="40" value="40" />
+			<menuitem id="ptnm4" label="50" value="50" />
+			<menuitem id="ptnm5" label="60" value="60" />
+			<menuitem id="ptnm6" label="70" value="70" />
+			<menuitem id="ptnm7" label="80" value="80" />
+			<menuitem id="ptnm8" label="90" value="90" />
+			<menuitem id="ptnm9" label="100" value="100" />
+		</menupopup>
+	</menulist>
+	<button id="PagedTree_button_prev" label="&previous.range;" accesskey="&previous.range.key;" command="cmd_prev" disabled="true"/>
+	<button id="PagedTree_button_next" label="&next.range;" accesskey="&next.range.key;" command="cmd_next" disabled="true"/>
+</hbox>
+
+<!-- Context menus -->
+<popupset id="PagedTree_popupset">
+	<popup id="PagedTree_popup" />
+</popupset>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 <keyset id="PagedTree_keys">

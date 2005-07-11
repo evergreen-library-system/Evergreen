@@ -9,8 +9,10 @@
 	sizemode="maximized" persist="width height" 
 	onload="
 		params.paged_tree = 'PagedTree_tree'; 
+		params.popup = 'PagedTree_popup';
 		params.nav_range = 'PagedTree_label_range'; 
 		params.nav_results = 'PagedTree_label_results'; 
+		params.nav_hits_per_page = 'PagedTree_menulist_hits_per_page';
 		params.nav_next = 'PagedTree_button_next';
 		params.nav_prev = 'PagedTree_button_prev';
 		params.w = window; 
@@ -34,6 +36,9 @@
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="PagedTree_keys" />
+
+	<!-- Context menus -->
+	<popupset id="PagedTree_popupset" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="PagedTree_main" />

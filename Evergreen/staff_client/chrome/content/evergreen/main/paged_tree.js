@@ -9,16 +9,52 @@ function paged_tree_init(p) {
 
 	p.w.results_label = get_widget( p.w.document, p.nav_results );
 	p.w.range_label = get_widget( p.w.document, p.nav_range );
+	p.w.hits_per_page_menu = get_widget( p.w.document, p.nav_hits_per_page );
 	p.w.next_button = get_widget( p.w.document, p.nav_next );
 	p.w.prev_button = get_widget( p.w.document, p.nav_prev );
+
+	/*
+	// Doesn't work for some reason
+	var cmd_set_hits_per_page = get_widget( p.w.document, 'cmd_set_hits_per_page' );
+	cmd_set_hits_per_page.addEventListener(
+		'command',
+		function (ev) {
+			sdump('D_TRACE','In set_hits handler\n');
+			alert('testing123');
+			try {
+				p.w.display_count = parseInt( p.w.hits_per_page_menu.getAttribute('value') );
+				paged_tree_update_visibility( p );
+				paged_tree_update_nav( p );
+				paged_tree_flesh_records( p );
+			} catch(E) {
+				sdump('D_ERROR',js2JSON(E)+'\n');
+			}
+			sdump('D_TRACE','Leaving set_hits handler\n');
+		},
+		false
+	);
+	*/
+
+	p.w.set_hits_per_page = function () {
+		try {
+			p.w.display_count = parseInt( p.w.hits_per_page_menu.getAttribute('value') );
+			paged_tree_update_visibility( p );
+			paged_tree_update_nav( p );
+			paged_tree_flesh_records( p );
+		} catch(E) {
+			sdump('D_ERROR',js2JSON(E)+'\n');
+		}
+	}
 
 	var cmd_next = get_widget( p.w.document, 'cmd_next' );
 	cmd_next.addEventListener(
 		'command',
 		function (ev) {
-			sdump('D_TRACE_ENTER',arg_dump(arguments));
-			sdump('D_TRACE_EXIT',arg_dump(arguments));
-			return paged_tree_nav_next(p);
+			var backup_select_callback = p.w._select_callback;
+			p.w._select_callback = function (ev) {};
+			var result = paged_tree_nav_next(p);
+			p.w._select_callback = backup_select_callback;
+			return result;
 		},
 		false
 	);
@@ -27,43 +63,48 @@ function paged_tree_init(p) {
 	cmd_prev.addEventListener(
 		'command',
 		function (ev) {
-			sdump('D_TRACE_ENTER',arg_dump(arguments));
-			sdump('D_TRACE_EXIT',arg_dump(arguments));
-			return paged_tree_nav_prev(p);
+			var backup_select_callback = p.w._select_callback;
+			p.w._select_callback = function (ev) {};
+			var result = paged_tree_nav_prev(p);
+			p.w._select_callback = backup_select_callback;
+			return result;
 		},
 		false
 	);
 
 	p.w.tree = get_widget(p.w.document,p.paged_tree);
+	p.w.popup = get_widget(p.w.document,p.popup);
 	p.w.treecols = p.w.tree.firstChild;
 	p.w.tc = p.w.tree.lastChild;
+
+	p.w._context_function = function (ev) {};
+	p.w.popup.addEventListener('popupshowing',function (ev) { return p.w._context_function(ev); },false);
+
+	p.w._select_callback = function (ev) {};
+	p.w.tree.addEventListener('select',function (ev) { return p.w._select_callback(ev); },false);
 
 	paged_tree_make_columns( p, p.w.treecols, p.cols )
 
 	p.w.clear_tree = function () {
 		empty_widget( p.w.document, p.w.tc );
 		p.w.current_idx = 0;
-		paged_tree_update_nav(p);
+		return paged_tree_update_nav(p);
 	}
 
 	p.w.add_rows = function (ids) { 
-		sdump('D_TRACE_ENTER',arg_dump(arguments));
-		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return paged_tree_add_rows(p,p.w.tc,ids); 
 	}
 
 	p.w.register_flesh_row_function = function (f) { 
-		sdump('D_PAGED_TREE',arg_dump(arguments));
-		sdump('D_TRACE_ENTER',arg_dump(arguments));
-		p.w._flesh_row_function = f; 
-		sdump('D_TRACE_EXIT',arg_dump(arguments));
+		return p.w._flesh_row_function = f; 
 	}
 
 	p.w.register_select_callback = function (f) { 
-		sdump('D_PAGED_TREE',arg_dump(arguments));
-		sdump('D_TRACE_ENTER',arg_dump(arguments));
-		p.w._select_callback = f; 
-		sdump('D_TRACE_EXIT',arg_dump(arguments));
+		return p.w._select_callback = f; 
+	}
+
+	p.w.register_context_builder = function (f) {
+		return p.w._context_function = f;
 	}
 
 	p.w.map_cols_to_treeitem = map_array_to_treecells_via_treeitem;
@@ -165,8 +206,12 @@ function paged_tree_update_nav(p) {
 	var max = p.w.current_idx + p.w.display_count;
 	if (max > p.w.tc.childNodes.length)
 		max = p.w.tc.childNodes.length;
-	if (p.w.range_label)
-		p.w.range_label.setAttribute('value', min + ' - ' + max );
+	if (p.w.range_label) {
+		if (max > 0)
+			p.w.range_label.setAttribute('value', min + ' - ' + max );
+		else
+			p.w.range_label.setAttribute('value', '0 - 0' );
+	}
 
 	if (p.w.next_button) {
 		if (max < p.w.tc.childNodes.length)
