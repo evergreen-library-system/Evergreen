@@ -35,13 +35,13 @@ function patron_get_credit_total( au ) {
 function patron_get_checkouts( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
-		au._checkouts = user_request(
+		au.checkouts( user_request(
 			'open-ils.circ',
 			'open-ils.circ.actor.user.checked_out',
 			[ mw.G.auth_ses[0], au.id() ]
-		)[0];
+		)[0] );
 		sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(au._checkouts) + '\n');
-		return au._checkouts;
+		return au.checkouts();
 	} catch(E) {
 		sdump('D_ERROR',js2JSON(E) + '\n');
 		return null;
@@ -50,23 +50,25 @@ function patron_get_checkouts( au ) {
 
 function patron_get_checkouts_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au._checkouts) patron_get_checkouts( au );
-	if (au._checkouts == null)
+	if (! au.checkouts()) patron_get_checkouts( au );
+	if (au.checkouts() == null)
 		return '???';
 	else
-		return au._checkouts.length;
+		return au.checkouts().length;
 }
 
 function patron_get_checkouts_overdue_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au._checkouts) patron_get_checkouts( au );
+	if (! au.checkouts()) patron_get_checkouts( au );
 	var total = 0;
-	for (var i = 0; i < au._checkouts.length; i++) {
-		var item = au._checkouts[i];
-		var due_date = item.circ.due_date();
-		due_date = due_date.substr(0,4) + due_date.substr(5,2) + due_date.substr(8,2);
-		var today = formatted_date( new Date() , '%Y%m%d' );
-		if (today > due_date) total++;
+	if ( (au.checkouts() != null) && (typeof(au.checkouts())=='object') ) {
+		for (var i = 0; i < au.checkouts().length; i++) {
+			var item = au.checkouts()[i];
+			var due_date = item.circ.due_date();
+			due_date = due_date.substr(0,4) + due_date.substr(5,2) + due_date.substr(8,2);
+			var today = formatted_date( new Date() , '%Y%m%d' );
+			if (today > due_date) total++;
+		}
 	}
 	sdump('D_PATRON_UTILS','\toverdue = ' + total + '\n');
 	return total;
@@ -75,13 +77,13 @@ function patron_get_checkouts_overdue_total( au ) {
 function patron_get_holds( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
-		au._holds = user_request(
+		au.hold_requests( user_request(
 			'open-ils.circ',
 			'open-ils.circ.holds.retrieve',
 			[ mw.G.auth_ses[0], au.id() ]
-		)[0];
-		sdump('D_PATRON_UTILS','holds = ' + js2JSON(au._holds) + '\n');
-		return au._holds;
+		)[0] );
+		sdump('D_PATRON_UTILS','holds = ' + js2JSON(au.hold_requests()) + '\n');
+		return au.hold_requests();
 	} catch(E) {
 		sdump('D_ERROR',js2JSON(E) + '\n');
 		return null;
@@ -90,20 +92,22 @@ function patron_get_holds( au ) {
 
 function patron_get_holds_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au._holds) patron_get_holds( au );
-	if (au._holds == null)
+	if (! au.hold_requests()) patron_get_holds( au );
+	if (au.hold_requests() == null)
 		return '???';
 	else
-		return au._holds.length;
+		return au.hold_requests().length;
 }
 
 function patron_get_holds_available_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au._holds) patron_get_holds( au );
+	if (! au.hold_requests()) patron_get_holds( au );
 	var total = 0;
-	for (var i = 0; i < au._holds.length; i++) {
-		var hold = au._holds[i];
-		if (hold.capture_time()) total++;
+	if ( (au.hold_requests() != null) && (typeof(au.hold_requests()) == 'object') ) {
+		for (var i = 0; i < au.hold_requests().length; i++) {
+			var hold = au.hold_requests()[i];
+			if (hold.capture_time()) total++;
+		}
 	}
 	sdump('D_PATRON_UTILS','\tavailable = ' + total + '\n');
 	return total;
