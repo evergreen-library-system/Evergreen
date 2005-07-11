@@ -15,6 +15,8 @@ function patron_search_form_init(p) {
 					p.w.crazy_search_hash); },
 			false);
 
+	p.w.selection_canvas = get_widget( p.w.document, p.selection_canvas );
+
 	var search_command = p.w.document.getElementById('cmd_search');
 	var clear_command = p.w.document.getElementById('cmd_clear');
 
