@@ -13,13 +13,19 @@
 </commandset>
 
 <!-- main widget for patron_display_contact -->
-<box id="PatronDisplayContact_main" flex="1" orient="vertical">
+<box id="PatronDisplayContact_main" flex="1" orient="vertical" style="overflow: auto;">
 	<groupbox id="PatronDisplayContact_groupbox" flex="1"/>
 </box>
 
 <groupbox id="PatronDisplayContact_groupbox" orient="vertical">
 	<caption label="&patron_display.contact.caption;"/>
-	<grid id="PatronDisplayContact_grid" />
+	<hbox id="pdcgbhb1">
+		<grid id="PatronDisplayContact_grid" />
+		<spacer id="pdcgbhbs1" flex="1"/>
+		<image id="PatronDisplay_photo" 
+			render="true" fm_class="au" render_value=".photo_url()" />
+	</hbox>
+	<grid id="PatronDisplayContact_grid_phone" />
 	<groupbox id="PatronDisplayContact_mailing_address" />
 	<groupbox id="PatronDisplayContact_physical_address" />
 </groupbox>
@@ -31,6 +37,12 @@
 	</columns>
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr0">
+			<label id="PatronDisplayContact_library_card_label" class="text_right"
+				value="&patron_display.library_card.label;"/>
+			<label id="PatronDisplayContact_library_card"
+				render="true" fm_class="au" render_value="patron_get_barcode($$)"/>
+		</row>
+		<row id="pdsgr1">
 			<label id="PatronDisplayContact_ident_label" class="text_right"
 				value="&patron_display.ident1.label;"/>
 			<hbox id="pdsgr0h">
@@ -40,7 +52,7 @@
 					render="true" fm_class="au" render_value=".ident_value()" />
 			</hbox>
 		</row>
-		<row id="pdsgr0a">
+		<row id="pdsgr2">
 			<label id="PatronDisplayContact_ident_label2" class="text_right"
 				value="&patron_display.ident2.label;"/>
 			<hbox id="pdsgr0ah">
@@ -50,28 +62,53 @@
 					render="true" fm_class="au" render_value=".ident_value2()" />
 			</hbox>
 		</row>
-		<row id="pdsgr0b"><label id="pdsgr0bl" value=" "/></row>
-		<row id="pdsgr1">
+		<row id="pdsgr3">
+			<label id="PatronDisplayContact_date_of_birth_label" class="text_right"
+				value="&patron_display.date_of_birth.label;"/>
+			<label id="PatronDisplayContact_date_of_birth"
+				render="true" fm_class="au" render_value=".dob()"/>
+		</row>
+		<row id="pdsgr4"><label id="pdsgr4l" value=" "/></row>
+	</rows>
+</grid>
+
+<grid id="PatronDisplayContact_grid_phone">
+	<columns id="pdcgpc">
+		<column id="pdcgpc1" />
+		<column id="pdcgpc2" />
+	</columns>
+	<rows id="pdcgpr" flex="1">
+		<row id="pdcgpr1">
 			<label id="PatronDisplayContact_day_phone_label" class="text_right"
 				value="&patron_display.day_phone.label;" />
 			<label id="PatronDisplayContact_day_phone" 
 				render="true" fm_class="au" 
 				render_value=".day_phone()" />
 		</row>
-		<row id="pdsgr2">
+		<row id="pdcgpr2">
 			<label id="PatronDisplayContact_evening_phone_label" class="text_right"
 				value="&patron_display.evening_phone.label;" />
 			<label id="PatronDisplayContact_evening_phone" 
 				render="true" fm_class="au" 
 				render_value=".evening_phone()" />
 		</row>
-		<row id="pdsgr3">
+		<row id="pdcgpr3">
 			<label id="PatronDisplayContact_other_phone_label" class="text_right"
 				value="&patron_display.other_phone.label;" />
 			<label id="PatronDisplayContact_other_phone" 
 				render="true" fm_class="au" 
 				render_value=".other_phone()" />
 		</row>
+		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
+		<row id="pdcgpr5">
+			<label id="PatronDisplayContact_email_label" class="text_right"
+				value="&patron_display.email.label;" />
+			<label id="PatronDisplayContact_email" 
+				render="true" fm_class="au" 
+				render_value=".email()" />
+		</row>
+		<row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
+
 	</rows>
 </grid>
 
