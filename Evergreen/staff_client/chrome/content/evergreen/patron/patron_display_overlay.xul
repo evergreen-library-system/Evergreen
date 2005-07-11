@@ -10,7 +10,7 @@
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
 
-	<command id="cmd_patron_refresh" oncommand="try { refresh(); } catch(E) { alert(E); };" />
+	<command id="cmd_patron_refresh" oncommand="try { refresh(); } catch(E) { mw.sdump('D_ERROR',E); };" />
 	<command id="cmd_patron_checkout" />
 	<command id="cmd_patron_items" />
 	<command id="cmd_patron_holds" />
