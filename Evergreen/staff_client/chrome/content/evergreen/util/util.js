@@ -64,6 +64,10 @@ function yesno(value) {
 	}
 }
 
+function cents_as_dollars( cents ) {
+	return '$' + cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
+}
+
 function formatted_date(date,format) {
 	// pass in a Date object or epoch seconds
 	if (typeof(date) == 'string') {
