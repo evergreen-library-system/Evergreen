@@ -38,6 +38,7 @@ function spawn_interface(d,placement,place,chrome,label,passthru_params) {
 	}
 	w.params = passthru_params;
 	w.mw = mw;
+	if (placement == 'new_tab' || placement == 'replace_tab') w.app_shell = d;
 	return w;
 }
 
@@ -78,6 +79,11 @@ function spawn_circ_search(d,placement,place,passthru_params) {
 
 function spawn_clamshell(d,placement,place,passthru_params) {
 	var chrome = 'chrome://evergreen/content/main/clam_shell.xul';
+	return spawn_interface(d,placement,place,chrome,'clamshell',passthru_params);
+}
+
+function spawn_clamshell_vertical(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/main/clam_shell_vertical.xul';
 	return spawn_interface(d,placement,place,chrome,'clamshell',passthru_params);
 }
 
@@ -148,6 +154,21 @@ function spawn_paged_tree(d,placement,place,passthru_params) {
 	return spawn_interface(d,placement,place,chrome,'paged_tree',passthru_params);
 }
 
+function spawn_patron_display(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/patron/patron_display.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params);
+}
+
+function spawn_patron_display_status(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/patron/patron_display_status.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params);
+}
+
+function spawn_patron_display_contact(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/patron/patron_display_contact.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params);
+}
+
 function spawn_patron_edit(d,placement,place,passthru_params) {
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_editor_interface_label'),passthru_params);
@@ -160,7 +181,7 @@ function spawn_patron_register(d,placement,place,passthru_params) {
 
 function spawn_patron_search(d,placement,place,passthru_params) {
 	var chrome = 'chrome://evergreen/content/patron/patron_search.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_interface_label'),passthru_params);
+	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params);
 }
 
 function spawn_patron_search_form(d,placement,place,passthru_params) {
