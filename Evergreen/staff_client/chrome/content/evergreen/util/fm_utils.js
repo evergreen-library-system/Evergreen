@@ -87,4 +87,43 @@ function find_ou_by_shortname(tree,sn) {
 	return null;
 }
 
-
+function render_fm(d,obj) {
+	sdump('D_FM_UTILS',arg_dump(arguments,{1:true}));
+	var nl = d.getElementsByAttribute('render','true');
+	for (var i = 0; i < nl.length; i++) {
+		var node = nl[i];
+		var fm_class = node.getAttribute('fm_class');
+		var render_value = node.getAttribute('render_value');
+		var render_css_style = node.getAttribute('render_css_style');
+		var render_css_class = node.getAttribute('render_css_class');
+		if ( !fm_class ) continue;
+		if ( obj[ fm_class ] ) {
+			sdump('D_FM_UTILS',"We're in:\n\trender_value = " + render_value + "\n\trender_css_style = " + render_css_style + "\n\trender_css_class = " + render_css_class + "\n");
+			var result = '';
+			if (render_value) {
+				if (render_value.slice(0,1) == '.') {
+					var cmd = 'obj[ fm_class ]' + render_value;
+				} else {
+					var cmd = render_value.replace( /\$\$/g, 'obj[ fm_class ]' );
+				}
+				result = eval( cmd );
+				sdump('D_FM_UTILS','<'+cmd+'> renders <'+result+'>\n');
+				set_widget_value_for_display( node, result );
+			}
+			if (render_css_style) {
+				var cmd = render_css_style.replace( /\$\$/g, 'obj[ fm_class ]' );
+				var cmd = cmd.replace( /\%\%/g, 'result' );
+				var result = eval(cmd);
+				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
+				node.setAttribute('style',result);
+			}
+			if (render_css_class) {
+				var cmd = render_css_class.replace( /\$\$/g, 'obj[ fm_class ]' );
+				var cmd = cmd.replace( /\%\%/g, 'result' );
+				var result = eval(cmd);
+				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
+				node.setAttribute('class',result);
+			}
+		}
+	}
+}
