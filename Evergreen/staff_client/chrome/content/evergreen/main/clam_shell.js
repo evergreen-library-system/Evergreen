@@ -2,14 +2,26 @@ sdump('D_TRACE','Loading clam_shell.js\n');
 
 function clam_shell_init(p) {
 	sdump('D_CLAM',"TESTING: clam_shell.js: " + mw.G['main_test_variable'] + '\n');
+	p.w.clamshell = get_widget(p.w.document,p.clamshell);
 	if (p) {
 		if (p.horizontal) {
-			get_widget(p.w.document,p.clamshell).orient = 'horizontal';
+			sdump('D_CLAM','Setting horizontal\n');
+			p.w.clamshell.orient = 'horizontal';
 		} else if (p.vertical) {
-			get_widget(p.w.document,p.clamshell).orient = 'vertical';
+			sdump('D_CLAM','Setting vertical\n');
+			p.w.clamshell.orient = 'vertical';
 		}
+		p.w.splitter = get_widget( p.w.document, p.splitter );
+		if (p.hide_splitter) {
+			sdump('D_CLAM','Hiding splitter\n');
+			p.w.splitter.hidden = true;
+		} else {
+			sdump('D_CLAM','Showing splitter\n');
+			p.w.splitter.hidden = false;
+		}
+			
 	}
-	var nl = get_widget(p.w.document,p.clamshell).getElementsByTagName('deck');
+	var nl = p.w.clamshell.getElementsByTagName('deck');
 	var first_deck = nl[0];
 	var second_deck = nl[1];
 
