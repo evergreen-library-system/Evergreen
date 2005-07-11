@@ -65,6 +65,8 @@ sub _init {
 								     proto_fields	=> { cards		=> 1,
 								     			     survey_responses	=> 1,
 								     			     stat_cat_entries	=> 1,
+								     			     checkouts		=> 1,
+								     			     hold_requests	=> 1,
 								     			     addresses		=> 1 } },
 		'Fieldmapper::actor::user_address'		=> { hint => 'aua'    },
 		'Fieldmapper::actor::org_address'		=> { hint => 'aoa'    },
