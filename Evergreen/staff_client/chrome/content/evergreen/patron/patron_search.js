@@ -41,8 +41,6 @@ function patron_search(search_win, crazy_search_hash) {
 
 function patron_search_init_after_clamshell(p) {
 	sdump('D_PATRON_SEARCH',arg_dump(arguments));
-	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return function (clamshell_w) {
 		sdump('D_PATRON_SEARCH',arg_dump(arguments));
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
@@ -85,6 +83,12 @@ function patron_init_after_patron_search_form(p) {
 				}
 			}
 		);
+		form_w.status_w = spawn_patron_display_status( 
+			form_w.document, 
+			'new_iframe', 
+			form_w.selection_canvas, 
+			{ 'show_name' : true, 'show_retrieve_button' : true, 'app_shell' : p.w.app_shell } 
+		);
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return;
 	};
@@ -99,8 +103,11 @@ function patron_init_after_patron_search_results(p) {
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		results_w.register_patron_select_callback(
 			function (ev) {
-				alert('Selected: ' + 
-					js2JSON(results_w.selection_id) + '\n');
+				sdump('D_PATRON_SEARCH','Firing patron_select_callback\n');
+				var patrons = get_list_from_tree_selection( results_w.tree_win.tree );
+				p.w.search_form.status_w.display_patron(
+					retrieve_patron_by_id( patrons[ patrons.length - 1 ].getAttribute('record_id') )
+				);
 			}
 		);
 		results_w.register_flesh_patron_function(
@@ -120,6 +127,31 @@ function patron_init_after_patron_search_results(p) {
 							sdump('D_ERROR',js2JSON(E) + '\n');
 						}
 					}
+				);
+			}
+		);
+		results_w.register_context_builder(
+			function (ev) {
+				empty_widget(results_w.tree_win.popup);
+				var patrons = get_list_from_tree_selection( results_w.tree_win.tree );
+				var menuitem = results_w.tree_win.document.createElement('menuitem');
+				results_w.tree_win.popup.appendChild( menuitem );
+				menuitem.setAttribute('label','Open in tab');
+				menuitem.addEventListener(
+					'command',
+					function (ev) {
+						for (var i = 0; i < patrons.length; i++) {
+							spawn_patron_display(
+								p.w.app_shell,'new_tab','main_tabbox', 
+								{ 
+									'patron' : retrieve_patron_by_id( 
+										patrons[i].getAttribute('record_id') 
+									)
+								}
+							);
+						}
+					},
+					false
 				);
 			}
 		);
