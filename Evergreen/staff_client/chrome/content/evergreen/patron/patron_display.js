@@ -10,9 +10,9 @@ function patron_display_init(p) {
 	p.w.display_patron = function (au) {
 		if (au) p.w.set_patron(au);
 		if (p.w.status_w)
-			p.w.status_w.display_patron(au);
+			p.w.status_w.display_patron();
 		if (p.w.contact_w)
-			p.w.contact_w.display_patron(au);
+			p.w.contact_w.display_patron();
 		return render_fm(p.w.document, { 'au' : p.w._patron });
 	};
 	p.w.retrieve_patron_via_barcode = function (barcode) {
