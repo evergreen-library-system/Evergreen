@@ -24,7 +24,14 @@ var sdump_levels = {
 	'D_PATRON_SEARCH_FORM' : false,
 	'D_PATRON_SEARCH_RESULTS' : false,
 
+	'D_PATRON_DISPLAY' : true,
+	'D_PATRON_DISPLAY_STATUS' : true,
+	'D_PATRON_DISPLAY_CONTACT' : true,
+
+	'D_PATRON_UTILS' : true,
+
 	'D_EXPLODE' : false,
+	'D_FM_UTILS' : true,
 	'D_PRINT' : false,
 	'D_SES' : true,
 	'D_SPAWN' : false,
