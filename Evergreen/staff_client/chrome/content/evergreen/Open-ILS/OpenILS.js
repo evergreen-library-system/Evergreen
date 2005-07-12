@@ -1,5 +1,5 @@
 function OpenILS_init(params) { 
-	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d"||i=="w") return [i,o.toString()]; else return [i,o]; }))' }));
+	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg,function(i,o){try{return [i,o.toString()];}catch(E){return [i,o];}}))' }));
 
 	try {
 
@@ -29,7 +29,9 @@ function OpenILS_init(params) {
 }
 
 function OpenILS_exit(params) {
-	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg, function (i,o) { if (i=="d"||i=="w") return [i,o.toString()]; else return [i,o]; }))' }));
+	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg,function(i,o){try{return [i,o.toString()];}catch(E){return [i,o];}}))' }));
+	params.w.document.firstChild.setAttribute('style','background-color: red;');
+	return;
 
 	try {
 	
