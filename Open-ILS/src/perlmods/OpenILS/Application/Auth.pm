@@ -156,6 +156,13 @@ sub complete_authenticate {
 			if($apputils->check_user_perms($user->id(), 1, "OPAC_LOGIN")) {
 				return OpenILS::Perm->new("OPAC_LOGIN");
 			}
+
+		} else {
+			# 1 is the top level org unit (we should probably load the tree and get id from it)
+			warn "Checking user perms for Staff login\n";
+			if($apputils->check_user_perms($user->id(), 1, "STAFF_LOGIN")) {
+				return OpenILS::Perm->new("STAFF_LOGIN");
+			}
 		}
 
 		my $session_id = md5_hex(time() . $$ . rand()); 

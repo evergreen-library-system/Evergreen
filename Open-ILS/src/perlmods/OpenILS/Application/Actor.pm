@@ -118,6 +118,8 @@ sub flesh_user {
 			"open-ils.storage.direct.actor.user.retrieve", $id);
 	my $user = $ureq->gather(1);
 
+	if(!$user) { return undef; }
+
 	# grab the cards
 	my $cards_req = $session->request(
 			"open-ils.storage.direct.actor.card.search.usr.atomic",
@@ -836,10 +838,26 @@ sub update_password {
 
 __PACKAGE__->register_method(
 	method	=> "check_user_perms",
-	api_name	=> "open-ils.actor.user.perm.check");
+	api_name	=> "open-ils.actor.user.perm.check",
+	notes		=> <<"	NOTES"
+	Takes a user id, an org id, and an array of perm type strings.  For each
+	perm type, if the user does *not* have the given permission it is added
+	to a list which is returned from the method.  If all permissions
+	are allowed, an empty list is returned
+	NOTES
+	);
 
 sub check_user_perms {
-	my( $self, $client, $user_id, $org_id, @perm_types ) = @_;
+	my( $self, $client, $user_id, $org_id, $perm_types ) = @_;
+
+	my @not_allowed;
+	for my $perm (@$perm_types) {
+		if($apputils->check_user_perms($user_id, $org_id, $perm)) {
+			push @not_allowed, $perm;
+		}
+	}
+
+	return \@not_allowed
 }
 
 
@@ -849,6 +867,38 @@ sub check_user_perms {
 
 
 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -67,6 +67,7 @@ my $cache_handle;
 use constant NO_COPY => 100;
 
 sub initialize {
+
 	my $self = shift;
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 

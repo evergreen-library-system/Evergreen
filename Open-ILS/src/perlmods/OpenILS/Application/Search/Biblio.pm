@@ -24,6 +24,15 @@ my $apputils = "OpenILS::Application::AppUtils";
 
 # Houses biblio search utilites 
 
+
+__PACKAGE__->register_method(
+	method	=> "test",
+	api_name	=> "open-ils.search.test");
+
+sub test { return "test"; }
+
+
+
 __PACKAGE__->register_method(
 	method	=> "biblio_search_marc",
 	api_name	=> "open-ils.search.biblio.marc",
@@ -134,6 +143,7 @@ sub record_id_to_mods {
 }
 
 
+
 __PACKAGE__->register_method(
 	method	=> "record_id_to_mods_slim",
 	api_name	=> "open-ils.search.biblio.record.mods_slim.retrieve",
@@ -143,11 +153,12 @@ __PACKAGE__->register_method(
 
 # converts a record into a mods object with NO copy counts attached
 sub record_id_to_mods_slim {
-
 	my( $self, $client, $id ) = @_;
-	warn "Retrieving MODS object for record $id\n";
-	return undef unless(defined $id);
+	return undef unless defined $id;
 
+	if(ref($id) and ref($id) == 'ARRAY') {
+		return _records_to_mods( @$id );
+	}
 	my $mods_list = _records_to_mods( $id );
 	my $mods_obj = $mods_list->[0];
 	return $mods_obj;
@@ -773,12 +784,31 @@ sub biblio_search_class {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_to_modsbatch_batch",
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.batch.retrieve");
+
+sub biblio_mrid_to_modsbatch_batch {
+	my( $self, $client, $mrids) = @_;
+	warn "Performing mrid_to_modsbatch_batch...";
+	my @mods;
+	my $method = $self->method_lookup("open-ils.search.biblio.metarecord.mods_slim.retrieve");
+	use Data::Dumper;
+	warn "Grabbing mods for " . Dumper($mrids) . "\n";
+
+	for my $id (@$mrids) {
+		next unless defined $id;
+		#push @mods, biblio_mrid_to_modsbatch($self, $client, $id);
+		my ($m) = $method->run($id);
+		push @mods, $m;
+	}
+	return \@mods;
+}
 
 
 __PACKAGE__->register_method(
 	method	=> "biblio_mrid_to_modsbatch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve",
-);
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve");
 
 sub biblio_mrid_to_modsbatch {
 	my( $self, $client, $mrid ) = @_;
