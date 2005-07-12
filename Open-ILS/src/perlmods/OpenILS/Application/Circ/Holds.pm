@@ -189,6 +189,75 @@ sub retrieve_holds {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "cancel_hold",
+	api_name	=> "open-ils.circ.hold.cancel",
+	notes		=> <<"	NOTE");
+	Cancels the specified hold.  The login session
+	is the requestor and if the requestor is different from the usr field
+	on the hold, the requestor must have CANCEL_HOLDS permissions.
+	NOTE
+
+sub cancel_hold {
+	my($self, $client, $login_session, $hold) = @_;
+
+	my $user = $apputils->check_user_session($login_session);
+
+	if($user->id ne $hold->usr) {
+		if($apputils->check_user_perms($user->id, $user->home_ou, "CANCEL_HOLDS")) {
+			return OpenILS::Perm->new("CANCEL_HOLDS");
+		}
+	}
+
+	use Data::Dumper;
+	warn "Cancelling hold: " . Dumper($hold) . "\n";
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $req = $session->request(
+		"open-ils.storage.direct.action.hold_request.delete",
+		$hold );
+	my $h = $req->gather(1);
+
+	warn "[$h] returned from hold_request delete\n";
+	$session->disconnect();
+	return $h;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "update_hold",
+	api_name	=> "open-ils.circ.hold.update",
+	notes		=> <<"	NOTE");
+	Updates the specified hold.  The login session
+	is the requestor and if the requestor is different from the usr field
+	on the hold, the requestor must have UPDATE_HOLDS permissions.
+	NOTE
+
+sub update_hold {
+	my($self, $client, $login_session, $hold) = @_;
+
+	my $user = $apputils->check_user_session($login_session);
+
+	if($user->id ne $hold->usr) {
+		if($apputils->check_user_perms($user->id, $user->home_ou, "UPDATE_HOLDS")) {
+			return OpenILS::Perm->new("UPDATE_HOLDS");
+		}
+	}
+
+	use Data::Dumper;
+	warn "Updating hold: " . Dumper($hold) . "\n";
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $req = $session->request(
+		"open-ils.storage.direct.action.hold_request.update", $hold );
+	my $h = $req->gather(1);
+
+	warn "[$h] returned from hold_request update\n";
+	$session->disconnect();
+	return $h;
+}
+
+
 
 
 1;
