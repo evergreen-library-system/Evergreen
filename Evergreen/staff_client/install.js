@@ -15,7 +15,7 @@ var XpiInstaller = {
 	// --- Editable items end ---
 
 	profileInstall: true,
-	silentInstall: false,
+	silentInstall: true,
 
 	install: function()
 	{
@@ -116,4 +116,7 @@ var XpiInstaller = {
 	}
 };
 
-XpiInstaller.install();
+/* XpiInstaller.install(); */
+Install.alert('The install.js file for Evergreen is currently broken for Mozilla browsers.  Any volunteers for fixing this?  The problem I see is with registering the skin component.  The install.rdf for Firefox should work');
+Install.cancelInstall(Install.INSTALL_CANCELLED);
+
