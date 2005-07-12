@@ -126,16 +126,19 @@ CREATE TABLE action.hold_copy_map (
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
 );
 
-CREATE TABLE action.hold_transit_copy (
+CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
-	hold			INT				NOT NULL REFERENCES action.hold_request (id),
 	source			INT				NOT NULL REFERENCES actor.org_unit (id),
 	dest			INT				NOT NULL REFERENCES actor.org_unit (id),
 	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE,
 	source_send_time	TIMESTAMP WITH TIME ZONE,
 	dest_recv_time		TIMESTAMP WITH TIME ZONE,
-	prev_hop		INT				REFERENCES action.hold_transit_copy (id)
+	prev_hop		INT				REFERENCES action.transit_copy (id)
 );
+
+CREATE TABLE action.hold_transit_copy (
+	hold			INT				NOT NULL REFERENCES action.hold_request (id)
+) INHERITS (action.transit_copy);
 
 COMMIT;
 
