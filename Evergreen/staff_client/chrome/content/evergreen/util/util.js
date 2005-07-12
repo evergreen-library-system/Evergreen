@@ -3,6 +3,15 @@ sdump('D_TRACE','Loading util.js\n');
 var timer = {};
 var counter = {};
 
+function parse_render_string( obj_string, render_string, regexp ) {
+	if (!regexp) regexp = /\$\$/g;
+	if (string.slice(0,1) == '.') {
+		return obj_string + render_string;
+	} else {
+		return render_string.replace( regexp, obj_string );
+	}
+}
+
 function getString( key ) {
 	var s = '';
 	var bundles = document.getElementById('string_bundles');
