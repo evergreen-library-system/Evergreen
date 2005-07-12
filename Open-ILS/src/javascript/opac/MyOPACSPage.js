@@ -556,7 +556,6 @@ MyOPACSPage.prototype.updateEmail = function(){
 
 MyOPACSPage.prototype._drawHolds = function() {
 
-	var holds = this.grabHolds();
 	var table = this.infoTable;
 	var row = table.insertRow(table.rows.length);
 
@@ -584,9 +583,20 @@ MyOPACSPage.prototype._drawHolds = function() {
 	add_css_class(cell, "my_opac_info_table_header");
 	cell.appendChild(mktext("Cancel"));
 
+	/* ---------------------------------------- */
+	row = table.insertRow(table.rows.length);
+	cell = row.insertCell(row.cells.length);
+	cell.appendChild(mktext("Retrieving holds..."));
+	/* ---------------------------------------- */
+
+	var holds = this.grabHolds();
+	table.firstChild.removeChild(table.firstChild.childNodes[1]);
+
 	for( var idx = 0; idx != holds.length; idx++ ) {
+		debug("Displaying hold " + holds[idx].id());
 		_doCallbackDance(table, holds[idx]);
 	}
+
 }
 
 function _doCallbackDance(table, hold) {
@@ -603,7 +613,6 @@ function _doCallbackDance(table, hold) {
 }
 
 
-
 function _drawHoldsRow(table, hold, record) {
 
 	if(record == null || record.length == 0) return;
@@ -614,10 +623,26 @@ function _drawHoldsRow(table, hold, record) {
 
 	add_css_class(cell, "my_opac_profile_cell");
 	cell.style.width = "35%";
-	cell.appendChild(mktext(record.title()));
+
+	var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
+	var tl = elem("a",
+			{href:prefix + "?sub_frame=1&target=record_detail&record="+encodeURIComponent(record.doc_id())},
+			null, record.title());
+	tl.setAttribute("target","_top");
+	//cell.appendChild(mktext(record.title()));
+	cell.appendChild(tl);
+
 	cell = row.insertCell(row.cells.length);
+	var al = elem("a",
+			{href:prefix + "?sub_frame=1&target=mr_result"+
+				"&mr_search_query="+encodeURIComponent(record.author())+
+				"&mr_search_type=author"},
+			null, record.author());
+	al.setAttribute("target","_top");
 	add_css_class(cell, "my_opac_profile_cell");
-	cell.appendChild(mktext(record.author()));
+
+	//cell.appendChild(mktext(record.author()));
+	cell.appendChild(al);
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_profile_cell");

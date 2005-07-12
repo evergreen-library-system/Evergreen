@@ -214,6 +214,7 @@ function MARCFormatToMods(format) {
 /* if callback exists, call is asynchronous and 
 	the returned item is passed to the callback... */
 function fetchRecord(id, callback) {
+
 	var req = new RemoteRequest(
 		"open-ils.search",
 		"open-ils.search.biblio.record.mods_slim.retrieve",

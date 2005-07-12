@@ -722,12 +722,7 @@ function getXYOffsets(target, object) {
 	var offsety = y + height;
 	var offsetx = xpos; 
 	
-/*
-	if(IE) { 
-		offsety = parseInt(offsety) + 15;
-		offsetx = parseInt(offsetx) + 8;
-	}
-*/
+	if(IE) offsety += 15; 
 
 	debug("getXYOffset y: " + offsety + " x: " + offsetx );
 	return [offsetx, offsety];
@@ -746,10 +741,28 @@ function userPressedEnter(evt) {
 
 /* return [ x, y ] for the window */
 function getWindowSize() {
+
 	var doc = getDocument();
 	var win = getWindow();
-	if (IE) 
-		return [doc.body.offsetWidth, doc.body.offsetHeight ];
-	return [	win.innerWidth, win.innerHeight ];
+	var x, y;
+
+	if (IE) {
+
+		if(doc.documentElement.offsetWidth != null) { /* IE 6 standards compliant */
+			x = doc.documentElement.offsetWidth;
+			y = doc.documentElement.offsetHeight;
+
+		} else {
+			x = doc.body.offsetWidth; 
+			y = doc.body.offsetHeight;
+		}
+
+	} else {
+		x = win.innerWidth;
+		y = win.innerHeight;
+	}
+	return [x, y];
 }
+
+
 

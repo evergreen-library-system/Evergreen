@@ -366,6 +366,19 @@ MRResultPage.prototype.checkSpelling = function() {
 	}
 }
 
+/* expand search if results are too low... */
+MRResultPage.prototype.buildExpandSearchLinks = function() {
+
+	/*
+	var string			= paramObj.__mr_search_query;
+	var stype			= paramObj.__mr_search_type;
+	var location		= paramObj.__mr_search_location;
+	var depth			= paramObj.__mr_search_depth;
+	*/
+	
+	var div = elem("div");
+}
+
 
 MRResultPage.prototype.doMRSearch = function() {
 
@@ -411,11 +424,47 @@ MRResultPage.prototype.doMRSearch = function() {
 
 MRResultPage.prototype.collectRecords = function() {
 
+	debug("Collecting records...");
 	var i = this.searchOffset;
 
 	var row = getById("hourglass_row");
 	if(row)
 		row.parentNode.removeChild(row);
+
+	/* ------------------------------------------------- */
+
+	/*
+	var ids = new Array();
+	while( i < (this.searchOffset + this.hitsPerPage) ) 
+		ids.push(this.recordIDs[i++]);
+
+	debug("Retrieving IDs " + ids);
+
+	var request = new RemoteRequest( "open-ils.search",
+		"open-ils.search.biblio.metarecord.mods_slim.batch.retrieve", ids );
+	this.requestBatch.add(request);
+	var obj = this;
+
+
+	request.setCompleteCallback(
+		function(req) {
+			var records = req.getResultObject();
+			//alert(records);
+
+			for(var i = 0; i!= records.length; i++) {
+				var rec = records[i];
+				debug("Displaying recocord " + rec.doc_id());
+				obj.displayRecord( rec, obj.searchOffset, i );
+				obj.doCopyCount( rec, obj.searchOffset, i );
+			}
+			obj.requestBatch.remove(request);
+		}
+	);		
+	request.send();
+	return;
+	*/
+	/* ------------------------------------------------- */
+
 
 	while( i < (this.searchOffset + this.hitsPerPage) ) {
 		var id = this.recordIDs[i];

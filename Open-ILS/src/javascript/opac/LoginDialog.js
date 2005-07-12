@@ -1,7 +1,12 @@
+var PopupBoxId = 0;
+
+
 function LoginDialog(logged_in_callback) {
 	this.callback = logged_in_callback;
-	this.rand = Math.random();
+	this.rand = PopupBoxId++;
 }
+
+
 
 /* node is the element the dialog should popup under */
 LoginDialog.prototype.display = function(node) {

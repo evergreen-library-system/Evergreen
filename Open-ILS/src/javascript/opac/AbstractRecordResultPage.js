@@ -311,40 +311,44 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	}
 
-	var holds = elem( "a", 
-	{ 
-		href:"javascript:void(0)", 
-		style: "text-decoration:underline" 
-	}, {}, "Place Hold" );
+	var holddiv = null;
+	if(instanceOf(this, RecordResultPage)) {
 
-
-	var type = "M";
-	if(instanceOf(this, RecordResultPage))
-		type = "T";
-
-	var win;
-	var user = UserSession.instance();
-	if(user.verifySession()) {
-		win = new HoldsWindow(record.doc_id(), 
-			type, user.userObject, user.userObject, user.session_id);
-	} else {
-		win = new HoldsWindow(record.doc_id(), 
-			type, null, null, null);
-	}
-
+		var holds = elem( "a", 
+		{ 
+			href:"javascript:void(0)", 
+			style: "text-decoration:underline" 
+		}, {}, "Place Hold" );
 	
-	holds.onclick = function() { win.toggle(holds); }
-	var holddiv = elem("div");
-
-	//if(instanceOf(this,RecordResultPage))
-	holddiv.setAttribute("style", "float:right");
-
-	holddiv.appendChild(holds);
-	//var space = elem("span", {style:"padding:5px"},null, " ");
-	//c.appendChild(space)
-	//c.appendChild(mktext(" "))
-	//c.appendChild(holddiv)
-
+	
+		var type = "M";
+		if(instanceOf(this, RecordResultPage))
+			type = "T";
+	
+		var win;
+		var user = UserSession.instance();
+		if(user.verifySession()) {
+			win = new HoldsWindow(record.doc_id(), 
+				type, user.userObject, user.userObject, user.session_id);
+		} else {
+			win = new HoldsWindow(record.doc_id(), 
+				type, null, null, null);
+		}
+	
+		
+		holds.onclick = function() { win.toggle(holds); }
+		holddiv = elem("div");
+	
+		//if(instanceOf(this,RecordResultPage))
+		holddiv.setAttribute("style", "float:right");
+	
+		holddiv.appendChild(holds);
+		//var space = elem("span", {style:"padding:5px"},null, " ");
+		//c.appendChild(space)
+		//c.appendChild(mktext(" "))
+		//c.appendChild(holddiv)
+	}
+	
 	var tab = elem("table",{style:"float:right"});
 	var tr = tab.insertRow(0);
 	var tc = tr.insertCell(0);
@@ -353,9 +357,10 @@ AbstractRecordResultPage.prototype.displayRecord =
 	tc.setAttribute("nowrap", "nowrap");
 	tc3.setAttribute("nowrap", "nowrap");
 
-	tc.appendChild(marcd);
+	if(holddiv) tc.appendChild(holddiv);
 	tc2.appendChild(mktext(" "));
-	tc3.appendChild(holddiv);
+	tc3.appendChild(marcd);
+
 	c.appendChild(tab);
 
 

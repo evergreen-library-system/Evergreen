@@ -60,12 +60,14 @@ if (i >=0) {
 
 function ucFieldPut (fieldname, fieldval) {
 var i = this.namepos(fieldname)
-if (i >=0) {
-  this.fields[i] = fieldval
-  return true
-} else {
-  return false
+
+if(i < 0) {
+	i = this.fieldnames.length;
+	this.fieldnames[i] = fieldname;
 }
+
+this.fields[i] = fieldval
+return true
 }
 
 function ucNamePos(fieldname) {
@@ -119,6 +121,7 @@ if (this.fields.length == 1) {
 function ucRead() {
   var search = this.name + "="                       
   var CookieString = document.cookie            
+  if(CookieString == null) CookieString = "";
   this.rawValue = null
   this.found = false     
   if (CookieString.length > 0) {                

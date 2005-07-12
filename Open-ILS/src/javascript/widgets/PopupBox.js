@@ -63,7 +63,6 @@ PopupBox.prototype.show = function() {
 	var wx = W[0];
 	var wy = W[1];
 
-
 	var x =  getObjectWidth(this.div);
 	var y =  getObjectHeight(this.div);
 

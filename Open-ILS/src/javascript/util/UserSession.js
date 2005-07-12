@@ -163,14 +163,14 @@ UserSession.prototype.grabOrgUnit = function(org) {
 	if(org) this.orgUnit = org;
 	else this.orgUnit = findOrgUnit(this.userObject.home_ou());
 
-	if(!paramObj.__depth)
+	if(!paramObj.__depth && this.orgUnit)
 		globalSelectedDepth = findOrgDepth(this.orgUnit.ou_type());
-	if(!paramObj.__location)
+	if(!paramObj.__location && this.orgUnit)
 		globalPage.updateSelectedLocation(this.orgUnit);
+
 	globalPage.updateCurrentLocation(this.orgUnit);
 
 	return;
-
 }
 
 
