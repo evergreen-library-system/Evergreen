@@ -11,11 +11,11 @@
 		alert('Not Yet Implemented'); "/>
 
 	<command id="cmd_patron_refresh" oncommand="try { refresh(); } catch(E) { mw.sdump('D_ERROR',E); };" />
-	<command id="cmd_patron_checkout" />
-	<command id="cmd_patron_items" />
-	<command id="cmd_patron_holds" />
-	<command id="cmd_patron_bills" />
-	<command id="cmd_patron_edit" />
+	<command id="cmd_patron_checkout" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
+	<command id="cmd_patron_items" oncommand="try { show_items(); } catch(E) { mw.sdump('D_ERROR',E); };"/>
+	<command id="cmd_patron_holds" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
+	<command id="cmd_patron_bills" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
+	<command id="cmd_patron_edit" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
 	<command id="cmd_patron_info" oncommand="alert('info');"/>
 
 </commandset>
