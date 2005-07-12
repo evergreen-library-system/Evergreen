@@ -69,6 +69,11 @@ function spawn_circ_display(d,placement,place,passthru_params) {
 	return spawn_interface(d,placement,place,chrome,getString('display_patron_interface_label'),passthru_params);
 }
 
+function spawn_circ_tree(d,placement,place,passthru_params) {
+	var chrome = 'chrome://evergreen/content/circ/circ_tree.xul';
+	return spawn_interface(d,placement,place,chrome,'circ_tree',passthru_params);
+}
+
 function spawn_circ_list(d,placement,place,passthru_params) {
 	var chrome = 'chrome://evergreen/content/circ/circ_list.xul';
 	return spawn_interface(d,placement,place,chrome,getString('items_out_interface_label'),passthru_params);

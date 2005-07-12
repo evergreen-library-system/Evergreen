@@ -31,12 +31,14 @@ var sdump_levels = {
 	'D_PATRON_DISPLAY_CONTACT' : true,
 
 	'D_PATRON_UTILS' : true,
+	
+	'D_CIRC_TREE' : true,
 
 	'D_EXPLODE' : false,
-	'D_FM_UTILS' : true,
+	'D_FM_UTILS' : false,
 	'D_PRINT' : false,
 	'D_SES' : true,
-	'D_SPAWN' : false,
+	'D_SPAWN' : true,
 	'D_STRING' : false,
 	'D_UTIL' : false,
 	'D_WIN' : false,

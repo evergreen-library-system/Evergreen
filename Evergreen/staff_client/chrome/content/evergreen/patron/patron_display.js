@@ -43,7 +43,6 @@ function patron_display_init(p) {
 		}
 	);
 
-
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
 }
@@ -59,11 +58,34 @@ function patron_display_init_after_clamshell(p) {
 				'onload' : patron_display_init_after_inner_clamshell(p)
 			}
 		);
+		p.w.item_tree = spawn_circ_tree( 
+			clamshell_w.document, 
+			'new_iframe', 
+			clamshell_w.second_deck, {
+				'paged_tree_onload' : patron_display_init_after_item_tree_paged_tree(p),
+				'onload' : patron_display_init_after_item_tree(p)
+			}
+		);
+
 
 		return;
 	};
 
 }
+
+function patron_display_init_after_item_tree_paged_tree(p) {
+	sdump('D_PATRON_DISPLAY',arg_dump(arguments));
+	return function (tree_win) {
+		sdump('D_TRACE','<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n');
+		if (p.w._patron) {
+			sdump('D_TRACE','>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n');
+			if (!p.w._patron.checkouts()) patron_get_checkouts( p.w._patron );
+			for (var i = 0; i < p.w._patron.checkouts().length; i++) {
+				p.w.item_tree.add_circs( [ i ] );
+			}
+		}
+	};
+};
 
 function patron_display_init_after_inner_clamshell(p) {
 	sdump('D_PATRON_DISPLAY',arg_dump(arguments));
@@ -87,3 +109,51 @@ function patron_display_init_after_inner_clamshell(p) {
 	};
 }
 
+function patron_display_init_after_item_tree(p) {
+	sdump('D_PATRON_DISPLAY',arg_dump(arguments));
+	return function (item_tree_w) {
+		sdump('D_PATRON_DISPLAY',arg_dump(arguments));
+		item_tree_w.register_circ_select_callback(
+			function (ev) {
+				sdump('D_PATRON_DISPLAY','Firing circ_select_callback\n');
+				var circs = get_list_from_tree_selection( item_tree_w.tree_win.tree );
+				/* grab cover art for selected item? */
+			}
+		);
+		item_tree_w.register_flesh_circ_function(
+			function (treeitem) {
+				sdump('D_PATRON_DISPLAY',arg_dump(arguments));
+				/* A little kludgy if the patron's checkouts change while the list is being navigated, but since
+				there is no network traffic, it may be worth clearing and rebuilding the tree when updating */
+				var record_id = treeitem.getAttribute('record_id'); 
+				item_tree_w.map_circ_to_cols( p.w._patron.checkouts()[ record_id ], treeitem );
+			}
+		);
+		item_tree_w.register_context_builder(
+			function (ev) {
+				/* add check-in and renew options */
+				empty_widget(item_tree_w.tree_win.popup);
+				var circs = get_list_from_tree_selection( item_tree_w.tree_win.tree );
+				var menuitem = item_tree_w.tree_win.document.createElement('menuitem');
+				item_tree_w.tree_win.popup.appendChild( menuitem );
+				menuitem.setAttribute('label','Open in OPAC');
+				menuitem.addEventListener(
+					'command',
+					function (ev) {
+						for (var i = 0; i < circs.length; i++) {
+							spawn_circ_display(
+								p.w.app_shell,'new_tab','main_tabbox', 
+								{ 
+									'circ' : retrieve_circ_by_id( 
+										circs[i].getAttribute('record_id') 
+									)
+								}
+							);
+						}
+					},
+					false
+				);
+			}
+		);
+	};
+}
