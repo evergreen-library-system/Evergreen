@@ -7,6 +7,8 @@ var consoleDump = true;
 var arg_dump_full = false;
 
 var sdump_levels = {
+	'D_NONE' : false,
+	'D_ALL' : false,
 	'D_ERROR' : true,
 	'D_TRACE' :  true,
 	'D_TRACE_ENTER' :  false,
@@ -44,12 +46,15 @@ var sdump_levels = {
 
 function sdump(level,msg) {
 	try {
-		if (sdump_levels[level]) {
+		if (sdump_levels['D_NONE']) return;
+		if (sdump_levels[level]||sdump_levels['D_ALL']) {
 			debug(level + ': ' + msg);
 			if (consoleDump)
 				consoleService.logStringMessage(level + ': ' + msg);
 		}
-	} catch(E) {}
+	} catch(E) {
+		dump('Calling sdump but ' + E + '\n');
+	}
 }
 
 function arg_dump(args,dump_these) {
