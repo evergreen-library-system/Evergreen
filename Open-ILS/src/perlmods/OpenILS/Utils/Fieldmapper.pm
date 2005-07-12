@@ -162,6 +162,7 @@ sub _init {
 		'Fieldmapper::action::hold_request'		=> { hint => 'ahr'   },
 		'Fieldmapper::action::hold_notification'	=> { hint => 'ahn'   },
 		'Fieldmapper::action::hold_copy_map'		=> { hint => 'ahcm'   },
+		'Fieldmapper::action::hold_transit_copy'	=> { hint => 'ahtc'   },
 
 
 		'Fieldmapper::ex'				=> { hint	    => 'ex',
