@@ -4,12 +4,16 @@ MyOPACSPage.prototype					= new Page();
 MyOPACSPage.prototype.constructor	= Page;
 MyOPACSPage.baseClass					= Page.constructor;
 
+var globalmyopac = null;
+var globalinteger = 1;
+
 function MyOPACSPage() {
 	var session_id = location.search.substring(  
 			location.search.indexOf("session") + 8 ); /*md5 session key*/
 
 	this.user = UserSession.instance();
 	this.user.verifySession(session_id);
+	globalmyopac = this;
 }
 
 MyOPACSPage.prototype.init = function() {
@@ -700,17 +704,23 @@ function _cancelHold(hold, session_id) {
 
 
 function _buildChangeEmailNotify(hold) {
+	var em = hold.email_notify();
+	if(!em || em == "") em = "(no email provided)";
 	var a = elem("a",{href:"javascript:void(0);",
-			style:"text-decoration:underline"},null, hold.email_notify());
-	var et1 = elem("input",{type:"text",size:"20"});
-	var et2 = elem("input",{type:"text",size:"20"});
+			style:"text-decoration:underline"},null, em);
+	var ourint = ++globalinteger;
+	var et1 = elem("input",{id:"update_email_1_" + ourint,type:"text",size:"20"});
+	var et2 = elem("input",{id:"update_email_2_" + ourint,type:"text",size:"20"});
 	var box = new PopupBox(a);
 	var but = elem("input",{type:"submit",value:"Submit"});
 	var can = elem("input",{type:"submit",value:"Cancel"});
 
 	but.onclick = function(){
-		var ret = _submitUpdateNotifyEmail(hold);
-		if(ret) box.hide();
+		var ret = _submitUpdateNotifyEmail(hold, ourint);
+		if(ret) {
+			box.hide();
+			globalmyopac.draw("holds");
+		}
 	}
 	can.onclick = function(){ box.hide(); };
 
@@ -723,35 +733,71 @@ function _buildChangeEmailNotify(hold) {
 	box.lines();
 	box.makeGroup([ but, can ]);
 
-	a.onclick = function(){box.show();}
+	a.onclick = function(){box.show(); et1.focus();}
 	return a;
 }
 
 /* return true to show success */
-function _submitUpdateNotifyEmail(hold) {
-	alert("updating email for hold " + hold.id());
-	return true;
+function _submitUpdateNotifyEmail(hold, ourint) {
+
+	var e1 = getById("update_email_1_" + ourint).value;
+	var e2 = getById("update_email_2_" + ourint).value;
+
+	if(!e1 || !e2 || e1 == "" || e2 == "") {
+		alert("Enter and repeate new email address");
+		return false;
+	}
+	if( e1 != e2) {
+		alert("Email addresses do not match");
+		return false;
+	}
+
+	hold.email_notify(e1);
+	if(_updateHold(hold)) return true;
 }
 
-function _submitUpdateNotifyPhone(hold) {
-	alert("updating phone for hold " + hold.id());
-	return true;
+function _submitUpdateNotifyPhone(hold, ourint) {
+	var p = getById("update_phone_" + ourint).value;
+	if(!p || p == "") {
+		alert("Enter new phone number in the field provided");
+		return false;
+	}
+
+	hold.phone_notify(p);
+	if(_updateHold(hold)) return true;
+}
+
+
+function _updateHold(hold) {
+	var req = new RemoteRequest(
+		"open-ils.circ",
+		"open-ils.circ.hold.update",
+		globalmyopac.user.session_id, hold);
+	req.send(true);
+	if(req.getResultObject()) return true;
 }
 
 
 function _buildChangePhoneNotify(hold) {
 
+	var phone = hold.phone_notify();
+	if(!phone || phone == "") phone = "(no phone provided)";
 	var a = elem("a",{href:"javascript:void(0);",
-			style:"text-decoration:underline"},null, hold.phone_notify());
+			style:"text-decoration:underline"},null, phone);
 
-	var et1 = elem("input",{type:"text",size:"10"});
+	var ourint = ++globalinteger;
+
+	var et1 = elem("input",{id:"update_phone_" + ourint,type:"text",size:"10"});
 	var box = new PopupBox(a);
 	var but = elem("input",{type:"submit",value:"Submit"});
 	var can = elem("input",{type:"submit",value:"Cancel"});
 
 	but.onclick = function(){
-		var ret = _submitUpdateNotifyPhone(hold);
-		if(ret) box.hide();
+		var ret = _submitUpdateNotifyPhone(hold, ourint);
+		if(ret) {
+			box.hide();
+			globalmyopac.draw("holds");
+		}
 	}
 	can.onclick = function(){ box.hide(); };
 
@@ -761,7 +807,7 @@ function _buildChangePhoneNotify(hold) {
 	box.lines();
 	box.makeGroup([ but, can ]);
 
-	a.onclick = function(){box.show();}
+	a.onclick = function(){box.show(); et1.focus();}
 	return a;
 }
 
