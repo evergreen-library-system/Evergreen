@@ -4,12 +4,22 @@ var timer = {};
 var counter = {};
 
 function parse_render_string( obj_string, render_string, regexp ) {
-	if (!regexp) regexp = /\$\$/g;
-	if (string.slice(0,1) == '.') {
-		return obj_string + render_string;
-	} else {
-		return render_string.replace( regexp, obj_string );
+	sdump('D_UTIL', arg_dump(arguments,{0:true,1:true}));
+	var cmd;
+	try {
+		if (!regexp) regexp = /\$\$/g;
+		if (render_string.slice(0,1) == '.') {
+			cmd = obj_string + render_string;
+		} else {
+			cmd = render_string.replace( regexp, obj_string );
+		}
+
+	} catch(E) {
+
+		sdump('D_ERROR',E);
 	}
+	sdump('D_UTIL', 'cmd = ' + cmd + '\n');
+	return cmd;
 }
 
 function getString( key ) {
