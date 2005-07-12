@@ -45,6 +45,7 @@ my $duration_script;
 my $recurring_fines_script;
 my $max_fines_script;
 my $permit_hold_script;
+my $permit_renew_script;
 # ----------------------------------------------------------------
 
 
@@ -91,6 +92,9 @@ sub initialize {
 
 	$permit_hold_script = $conf->config_value(
 		"apps", "open-ils.circ","app_settings", "rules", "permit_hold");
+
+	$permit_renew_script = $conf->config_value(
+		"apps", "open-ils.circ","app_settings", "rules", "permit_renew");
 
 	$log->debug("Loaded rules scripts for circ:\n".
 		"main - $circ_script : permit circ - $permission_script\n".
@@ -162,6 +166,17 @@ sub _grab_copy_by_barcode {
 	return $copy_req->gather(1);
 }
 
+sub _grab_copy_by_id {
+	my($session, $id) = @_;
+	warn "Searching for copy with id $id\n";
+	my $copy_req	= $session->request(
+		"open-ils.storage.direct.asset.copy.retrieve", 
+		$id );
+	my $c = $copy_req->gather(1);
+	if($c) { return _grab_copy_by_barcode($session, $c->barcode); }
+	return undef;
+}
+
 
 sub gather_hold_objects {
 	my($session, $hold, $copy, $args) = @_;
@@ -218,7 +233,7 @@ sub permit_hold {
 	# well as the total fines
 	my $summary = _grab_patron_summary($session, $hold_objects->{patron}->id);
 	$summary->[0] ||= 0;
-	$summary->[0] ||= 0.0;
+	$summary->[1] ||= 0.0;
 
 	$stash->set("patron_copies", $summary->[0] );
 	$stash->set("patron_fines", $summary->[1] );
@@ -350,6 +365,9 @@ sub permit_circ {
 		"open-ils.storage.action.circulation.patron_summary",
 		$stash->get("circ_objects")->{patron}->id );
 	my $summary = $summary_req->gather(1);
+
+	$summary->[0] ||= 0;
+	$summary->[1] ||= 0.0;
 
 	$stash->set("patron_copies", $summary->[0]  + $outstanding_count );
 	$stash->set("patron_fines", $summary->[1] );
@@ -648,6 +666,101 @@ sub checkin {
 
 	return 1;
 
+}
+
+
+
+
+
+
+
+
+# ------------------------------------------------------------------------------
+# RENEWALS
+# ------------------------------------------------------------------------------
+
+
+__PACKAGE__->register_method(
+	method	=> "renew",
+	api_name	=> "open-ils.circ.renew",
+	notes		=> <<"	NOTES");
+	open-ils.circ.renew(login_session, circ_object);
+	Renews the provided circulation.  login_session is the requestor of the
+	renewal and if the logged in user is not the same as circ->usr, then
+	the logged in user must have RENEW_CIRC permissions.
+	NOTES
+
+sub renew {
+	my($self, $client, $login_session, $circ) = @_;
+	my $user = $apputils->check_user_session($login_session);
+
+	if($user->id ne $circ->usr) {
+		if($apputils->check_user_perms($user->id, $user->home_ou, "RENEW_CIRC")) {
+			return OpenILS::Perm->new("RENEW_CIRC");
+		}
+	}
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	#XXX XXX See if the copy this circ points to is needed to fulfill a hold!
+
+	my $renew_objects = gather_renew_objects( $session, $circ );
+	if(!ref($renew_objects)) {
+		if($renew_objects == NO_COPY) {
+			return { 
+				status => NO_COPY, 
+				text => "No copy available with id " . $circ->target_copy };
+		}
+	}
+
+	$stash = Template::Stash->new(
+			circ_objects			=> $renew_objects,
+			result					=> []);
+
+	$stash->set("run_block", $permit_renew_script);
+
+	# grab the number of copies checked out by the patron as
+	# well as the total fines
+	my $summary = _grab_patron_summary($session, $renew_objects->{patron}->id);
+	$summary->[0] ||= 0;
+	$summary->[1] ||= 0.0;
+
+	$stash->set("patron_copies", $summary->[0] );
+	$stash->set("patron_fines", $summary->[1] );
+
+	# run the permissibility script
+	run_script();
+
+	return $stash->get("result");
+
+}
+
+
+
+sub gather_renew_objects {
+	my($session, $circ) = @_;
+
+	_grab_patron_standings($session);
+	_grab_patron_profiles($session);
+
+	# flesh me
+	my $copy = _grab_copy_by_id($session, $circ->target_copy);
+	if(!$copy) { return NO_COPY; }
+
+	my $renew_objects = {};
+	$renew_objects->{standings} = $patron_standings;
+	$renew_objects->{copy}		= $copy;
+	$renew_objects->{circ}		= $circ;
+	$renew_objects->{title}		= _grab_title_by_copy($session, $copy->id);
+	my $patron						= _grab_user($session, $circ->usr);
+
+	$copy->status( $copy->status->name );
+	$patron->standing($patron_standings->{$patron->standing()});
+	$patron->profile( $patron_profiles->{$patron->profile});
+
+	$renew_objects->{patron}		= $patron;
+
+	return $renew_objects;
 }
 
 
