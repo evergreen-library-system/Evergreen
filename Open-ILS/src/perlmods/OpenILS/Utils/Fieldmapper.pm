@@ -299,6 +299,11 @@ sub properties {
 	return keys %{$$fieldmap{$class_name}{fields}};
 }
 
+sub clone {
+	my $self = shift;
+	return $self->new( [@$self] );
+}
+
 sub api_level {
 	my $self = shift;
 	return $fieldmap->{$self->class_name}->{api_level};
