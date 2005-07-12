@@ -134,6 +134,9 @@ function paged_tree_make_columns( p, treecols, cols ) {
 		for (var j in col) {
 			treecol.setAttribute( j, col[j] );
 		}
+		var splitter = d.createElement( 'splitter' );
+		treecols.appendChild(splitter);
+		splitter.setAttribute('class','tree-splitter');
 	}
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return treecols;
