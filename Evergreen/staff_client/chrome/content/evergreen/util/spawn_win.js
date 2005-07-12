@@ -19,7 +19,8 @@ function spawn_interface(d,placement,place,chrome,label,passthru_params) {
 			var el = placement.slice(8);
 			var container = get_widget( d, place );
 			empty_widget( d, container );
-			w = spawn_interface(d,'new_' + el,place,chrome,label,passthru_params); break;
+			w = spawn_interface(d,'new_' + el,place,chrome,label,passthru_params); 
+			break;
 
 		case 'new_iframe' :
 		case 'new_browser' :
@@ -28,7 +29,8 @@ function spawn_interface(d,placement,place,chrome,label,passthru_params) {
 			var frame = d.createElement( el );
 			frame.setAttribute('flex','1');
 			get_widget( d, place ).appendChild( frame );
-			w = spawn_interface(d,'set_frame',frame,chrome,label,passthru_params); break;
+			w = spawn_interface(d,'set_frame',frame,chrome,label,passthru_params); 
+			break;
 
 		case 'set_frame' :
 			var frame = get_widget( d, place );
