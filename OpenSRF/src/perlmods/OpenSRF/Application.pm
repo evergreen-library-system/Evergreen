@@ -477,7 +477,7 @@ sub introspect {
 		for my $api_name ( sort keys %{$_METHODS[$api_level]} ) {
 			if (!$_METHODS[$api_level]{$api_name}{remote}) {
 				if (defined($method)) {
-					if ($api_name eq $method) {
+					if ($api_name =~ $method) {
 						$client->respond( $_METHODS[$api_level]{$api_name} );
 					}
 				} else {
