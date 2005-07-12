@@ -18,7 +18,7 @@ GetOptions(	'cvs_base=s'	=> \$cvs_base,
 );
 
 unless( $service ) {
-	print "usage: $0 -s <service name> [-c <cvs repo base URL> -n]\n";
+	print "usage: $0 -s <service name> [-c <cvs repo base URL> -f <regex filter for method names> -n]\n";
 	exit;
 }
 
