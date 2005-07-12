@@ -28,6 +28,9 @@ function opac_init(p) {
 	opac_iframe.contentWindow.xulEvtMRResultDisplayed 
 		= xulEvtMRResultDisplayed;
 
+	opac_iframe.contentWindow.xulEvtRecordDetailDisplayed 
+		= xulEvtRecordDetailDisplayed;
+
 	/* shove BIG G in so global variables may be accessed */
 	opac_iframe.contentWindow.G = mw.G;
 
@@ -74,6 +77,20 @@ var xulEvtRecordResultDisplayed = function(ui_obj, record) {
 
 var xulEvtMRResultDisplayed = function(ui_obj, record) {
 	sdump('D_OPAC',"xulEvtMRRsultsDisplayed()\n");
+}
+
+
+var xulEvtRecordDetailDisplayed = function(ui_obj, record) {
+	ui_obj.addItem("Edit MARC", function() { 
+			spawn_marc_editor( true, [ record.doc_id() ] );
+		}
+	);
+
+	ui_obj.addItem("Open Copy Browser", function() { 
+			spawn_copy_browser(true, [ record.doc_id() ]); 
+		}
+	);
+
 }
 
 
