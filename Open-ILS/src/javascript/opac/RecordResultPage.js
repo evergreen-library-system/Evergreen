@@ -96,13 +96,13 @@ RecordResultPage.prototype.prev = function() {
 	url_redirect( paramArray ) 
 }
 
+
 RecordResultPage.prototype.addMenuItems = function(menu, record) {
 
 	var func = buildViewMARCWindow(record);
 	menu.addItem("View MARC", func);
 	if(isXUL())
 		xulEvtRecordResultDisplayed( menu, record );
-
 }
 
 

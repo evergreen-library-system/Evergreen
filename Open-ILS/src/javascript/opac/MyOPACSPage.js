@@ -594,15 +594,15 @@ MyOPACSPage.prototype._drawHolds = function() {
 
 	for( var idx = 0; idx != holds.length; idx++ ) {
 		debug("Displaying hold " + holds[idx].id());
-		_doCallbackDance(table, holds[idx]);
+		_doCallbackDance(table, holds[idx], this.user.session_id, this);
 	}
 
 }
 
-function _doCallbackDance(table, hold) {
+function _doCallbackDance(table, hold, session_id, obj) {
 	if(hold == null) return;
 	debug("Setting holds callback with hold " + hold.id() );
-	var func = function(rec) {_drawHoldsRow(table, hold, rec)};
+	var func = function(rec) {_drawHoldsRow(table, hold, rec, session_id, obj)};
 
 	/* grab the record that is held */
 	if(hold.hold_type() == "M")
@@ -613,7 +613,7 @@ function _doCallbackDance(table, hold) {
 }
 
 
-function _drawHoldsRow(table, hold, record) {
+function _drawHoldsRow(table, hold, record, session_id, obj) {
 
 	if(record == null || record.length == 0) return;
 	debug("In holds callback with hold " + hold );
@@ -668,14 +668,36 @@ function _drawHoldsRow(table, hold, record) {
 	cell = row.insertCell(row.cells.length);
 	var a = elem("a",{href:"javascript:void(0);",
 			style:"text-decoration:underline"},null, "Cancel");
-	a.onclick = function(){_cancelHoldRequest(hold);};
+	a.onclick = function(){_cancelHoldRequest(hold, a, session_id, obj);};
 	add_css_class(cell, "my_opac_profile_cell");
 	cell.appendChild(a);
 }
 
-function _cancelHoldRequest(hold) {
-	alert("Canceling hold " + hold.id());
+
+function _cancelHoldRequest(hold, node, session_id, obj) {
+	var box = new PopupBox(node);
+	box.title("Cancel Hold");
+	box.addText("Are you sure you wish to cancel the hold?");
+	var but = elem("input",{type:"submit",value:"Cancel Hold"});
+	var can = elem("input",{type:"submit",value:"Do not Cancel Hold"});
+	box.makeGroup([but, can]);
+	but.onclick = function(){
+		_cancelHold(hold, session_id); box.hide(); obj.draw("holds");};
+	can.onclick = function() { box.hide(); };
+	box.show();
 }
+
+function _cancelHold(hold, session_id) {
+	var req = new RemoteRequest(
+		"open-ils.circ", "open-ils.circ.hold.cancel", 
+		session_id, hold );
+
+	req.send(true);
+	if(req.getResultObject())
+		alert("Hold successfully cancelled");
+}
+
+
 
 function _buildChangeEmailNotify(hold) {
 	var a = elem("a",{href:"javascript:void(0);",

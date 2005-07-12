@@ -42,6 +42,21 @@ RecordDetailPage.prototype.setPageTrail = function() {
 }
 
 
+RecordDetailPage.prototype.buildContextMenu = function(record) {
+
+	var menu_name = "record_detail_menu";
+	var menu = globalMenuManager.buildMenu(menu_name);
+
+	globalMenuManager.setContext(getById("record_detail_main_box"), menu);
+	var func = buildViewMARCWindow(record);
+	menu.addItem("View MARC", func);
+
+	if(isXUL())
+		xulEvtRecordDetailDisplayed( menu, record );
+	getDocument().body.appendChild(menu.getNode());
+}
+
+
 RecordDetailPage.instance = function() {
 	if( globalRecordDetailPage != null )
 		return globalRecordDetailPage;
@@ -389,6 +404,7 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 	if(!orgUnit) orgUnit = globalLocation;
 
 	this.drawCopyTrees(orgUnit, record);
+	this.buildContextMenu(record);
 }
 
 /* sets up the cover art image */

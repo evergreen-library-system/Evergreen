@@ -275,7 +275,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 	author_cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	author_cell.appendChild(this.mkLink(record.doc_id(), "author", author ));
 
-	var marcd = elem("div");
+	var marcd = null;
 	if(instanceOf(this, RecordResultPage)) {
 		var span = createAppElement("span");
 		span.style.marginLeft = "10px";
@@ -292,22 +292,16 @@ AbstractRecordResultPage.prototype.displayRecord =
 		author_cell.appendChild(span);
 
 		var marcb = elem( "a",
-			{
-				href:"javascript:void(0)",
-				style: "text-decoration:underline"
-			}, {}, "View MARC" );
+			{	href:"javascript:void(0)", 
+				style: "text-decoration:underline;"
+			}, null, "View MARC" );
 
 		debug("Setting up view marc callback with record " + record.doc_id());
 		var func = buildViewMARCWindow(record);
 		marcb.onclick = func;
 
-		marcd = elem( "div", { style: "float:right" } );
+		marcd = elem( "div", { style: "float:right;font-size:x-small;" } );
 		marcd.appendChild(marcb);
-
-		//author_cell.appendChild(marcd);
-		//misc_row.insertCell(misc_row.cells.length).appendChild(marcd);
-		//c.appendChild(marcd);
-
 
 	}
 
@@ -359,7 +353,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	if(holddiv) tc.appendChild(holddiv);
 	tc2.appendChild(mktext(" "));
-	tc3.appendChild(marcd);
+	if(marcd) tc3.appendChild(marcd);
 
 	c.appendChild(tab);
 
