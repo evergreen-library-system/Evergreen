@@ -4,16 +4,17 @@ use Getopt::Long
 
 $| = 1;
 
-my $count = $ARGV[0];
 my $cvs_base = 'http://open-ils.org/cgi-bin/viewcvs.cgi/ILS/Open-ILS/src/perlmods/';
 my $nest = 0;
 my $service;
+my $filter;
 my $sort_ignore;
 
 GetOptions(	'cvs_base=s'	=> \$cvs_base,
 		'nest'		=> \$nest,
 		'service=s'	=> \$service,
 		'ignore=s'	=> \$sort_ignore,
+		'filter=s'	=> \$filter,
 );
 
 unless( $service ) {
@@ -24,7 +25,12 @@ unless( $service ) {
 OpenSRF::System->bootstrap_client();
 my $session = OpenSRF::AppSession->create( $service );
 
-my $req = $session->request('opensrf.system.method.all');
+my $req; 
+if ($filter) {
+	$req = $session->request('opensrf.system.method', $filter);
+} else {
+	$req = $session->request('opensrf.system.method.all');
+}
 
 my $count = 1;
 my %m;
