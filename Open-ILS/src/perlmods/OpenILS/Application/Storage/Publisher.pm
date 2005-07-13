@@ -4,8 +4,8 @@ our $VERSION = 1;
 
 use Digest::MD5 qw/md5_hex/;
 use OpenSRF::EX qw/:try/;;
-use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils;
+use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Utils::Fieldmapper;
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -97,7 +97,7 @@ sub cachable_wrapper {
 		OpenSRF::Utils::Cache->new->put_cache(
 			$cache_key =>
 			[@res[int($cache_page * $cache_args{cache_page_size}) .. int(($cache_page + 1) * $cache_args{cache_page_size}) ]] =>
-			OpenSRF::Utils->interval_to_seconds( $cache_args{timeout} );
+			OpenSRF::Utils->interval_to_seconds( $cache_args{timeout} )
 		);
 	} catch Error with {
 		my $e = shift;
