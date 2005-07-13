@@ -52,4 +52,9 @@ function patron_search_form_textbox_handler(doc,textbox,search_hash) {
 	var group = textbox.getAttribute('group');
 	var value = textbox.value;
 	search_hash[ field ] = { 'value' : value, 'group' : group };
+	try {
+		if (value==''||value==null||value==undefined) delete(search_hash[ field ]);
+	} catch(E) {
+		sdump('D_ERROR',E);
+	}
 }
