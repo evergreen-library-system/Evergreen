@@ -288,7 +288,14 @@ sub search_class_fts {
 		$has_vols = '' if ($ou_type == 0);
 	}
 
-	my $rank_calc = ", sum($rank + CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END)/count(m.source)";
+	my $rank_calc = <<"	RANK";
+		, SUM(	$rank
+			+ CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END
+			+ CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END
+			+ 1 / CASE WHEN OCTET_LENGTH(f.value) IS NULL OR OCTET_LENGTH(f.value) = 0 THEN 1000 ELSE OCTET_LENGTH(f.value) END
+		)/COUNT(m.source)
+	RANK
+
 	$rank_calc = ', 1' if ($self->api_name =~ /unordered/o);
 
 	my $select = <<"	SQL";
@@ -314,9 +321,10 @@ sub search_class_fts {
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
 
 	my $string = '%'.join('%',$fts->words).'%';
+	my $first_word = ($fts->words)[0].'%';
 	my $recs = ($self->api_name =~ /unordered/o) ? 
 			$class->db_Main->selectall_arrayref($select) :
-			$class->db_Main->selectall_arrayref($select, {}, lc($string));
+			$class->db_Main->selectall_arrayref($select, {}, lc($string), lc($first_word));
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
