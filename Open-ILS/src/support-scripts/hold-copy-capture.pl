@@ -19,7 +19,7 @@ my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time - $check_
 $year += 1900;
 $mon += 1;
 my $expire_threshold = sprintf(
-	'%s-%0.2d-%0.2d %s:%0.2d:%0.s2-00',
+	'%s-%0.2d-%0.2dT%s:%0.2d:%0.s2-00',
 	$year, $mon, $mday, $hour, $min, $sec
 );
 
