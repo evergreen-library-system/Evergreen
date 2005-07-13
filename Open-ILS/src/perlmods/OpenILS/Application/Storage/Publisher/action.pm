@@ -1,10 +1,38 @@
 package OpenILS::Application::Storage::Publisher::action;
 use base qw/OpenILS::Application::Storage/;
-#use OpenILS::Application::Storage::CDBI::action;
-#use OpenSRF::Utils::Logger qw/:level/;
-#use OpenILS::Utils::Fieldmapper;
-#
-#my $log = 'OpenSRF::Utils::Logger';
+use OpenSRF::Utils::Logger qw/:level/;
+my $log = 'OpenSRF::Utils::Logger';
+
+sub grab_overdue {
+	my $self = shift;
+	my $client = shift;
+	my $grace = shift || '';
+
+	my $c_t = action::circulation->table;
+
+	$grace = ' - (1 * (fine_interval))' if ($grace);
+
+	my $sql = <<"	SQL";
+		SELECT	*
+		  FROM	$c_t
+		  WHERE	stop_fines IS NULL
+		  	AND due_date < ( CURRENT_TIMESTAMP $grace)
+	SQL
+
+	my $sth = action::circulation->db_Main->prepare_cached($sql);
+	$sth->execute;
+
+	$client->respond( $_->to_fieldmapper ) for ( map { action::circulation->construct($_) } $sth->fetchall_hash );
+
+	return undef;
+
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.circulation.overdue',
+	api_level       => 1,
+	stream		=> 1,
+	method          => 'grab_overdue',
+);
 
 sub next_resp_group_id {
 	my $self = shift;
