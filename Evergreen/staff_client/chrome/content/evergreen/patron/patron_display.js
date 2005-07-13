@@ -36,12 +36,20 @@ function patron_display_init(p) {
 			p.w.retrieve_patron_via_barcode( p.patron );
 	}
 
-	p.w.clamshell = spawn_clamshell( 
-		p.w.document, 'new_iframe', p.clamshell, {
-			'horizontal' : true,
-			'onload' : patron_display_init_after_clamshell(p) 
+	sdump('D_TRACE','******** SETTING TIMEOUT\n');
+	setTimeout( 
+		function() {
+			sdump('D_TRACE','******** TIMEOUT OCCURRED\n');
+			p.w.clamshell = spawn_clamshell( 
+				p.w.document, 'new_iframe', p.clamshell, {
+					'horizontal' : true,
+					'onload' : patron_display_init_after_clamshell(p) 
+				}
+			);
 		}
+		,0
 	);
+	sdump('D_TRACE','******** AFTER SETTING TIMEOUT\n');
 
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
