@@ -177,7 +177,7 @@ package Class::DBI;
 
 		@args = %{ $args[0] } if ref $args[0] eq "HASH";
 
-		$search_opts->{offset} = int($search_opts->{page}) * int($search_opts->{page_size})  if ($search_opts->{page_size});
+		$search_opts->{offset} = int($search_opts->{page} - 1) * int($search_opts->{page_size})  if ($search_opts->{page_size});
 		$search_opts->{_placeholder} ||= '?';
 
 		my @frags;
