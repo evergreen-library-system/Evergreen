@@ -37,6 +37,7 @@ var auth_meter_incr = 10;
 
 function auth_init() {
 	sdump('D_AUTH','TESTING: auth.js: ' + mw.G['main_test_variable'] + '\n');
+	sdump('D_AUTH',arg_dump(arguments));
 	var np = document.getElementById('name_prompt');
 	np.addEventListener("keypress",handle_keypress,false);
 	np.focus();
@@ -69,11 +70,13 @@ function handle_keypress(ev) {
 }
 
 function disable_login_prompts() {
+	sdump('D_AUTH',arg_dump(arguments));
 	disable_widgets(document,'password_prompt','name_prompt','submit_button');
 	G.sound.beep();
 }
 
 function enable_login_prompts() {
+	sdump('D_AUTH',arg_dump(arguments));
 	enable_widgets(document,'password_prompt','name_prompt','submit_button');
 	document.getElementById('password_prompt').value = '';
 	var np = document.getElementById('name_prompt');
@@ -84,6 +87,7 @@ function enable_login_prompts() {
 }
 
 function authenticate() {
+	sdump('D_AUTH',arg_dump(arguments));
 	timer_init('cat');
 	var name = document.getElementById('name_prompt').value;
 	if (name.length == 0) { enable_login_prompts(); return; }
@@ -97,6 +101,7 @@ function authenticate() {
 }
 
 function auth_init_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var auth_init;
 	try {
 		auth_init = request.getResultObject();
@@ -122,6 +127,7 @@ function auth_init_callback(request) {
 }
 
 function auth_ses_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var auth_ses;
 	try {
 		auth_ses = request.getResultObject();
@@ -146,6 +152,7 @@ function auth_ses_callback(request) {
 }
 
 function ap_list_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var ap_list;
 	try {
 		ap_list = request.getResultObject();
@@ -170,6 +177,7 @@ function ap_list_callback(request) {
 }
 
 function cit_list_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var cit_list;
 	try {
 		cit_list = request.getResultObject();
@@ -195,6 +203,7 @@ function cit_list_callback(request) {
 }
 
 function cst_list_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var cst_list;
 	try {
 		cst_list = request.getResultObject();
@@ -221,6 +230,7 @@ function cst_list_callback(request) {
 }
 
 function acpl_list_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var acpl_list;
 	try {
 		acpl_list = request.getResultObject();
@@ -246,6 +256,7 @@ function acpl_list_callback(request) {
 }
 
 function ccs_list_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var ccs_list;
 	try {
 		ccs_list = request.getResultObject();
@@ -271,6 +282,7 @@ function ccs_list_callback(request) {
 }
 
 function user_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var user;
 	var user_ou;
 	try {
@@ -304,6 +316,7 @@ function user_callback(request) {
 }
 
 function org_type_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var aout_list = globalOrgTypes;
 	/*try {
 		aout_list = request.getResultObject();
@@ -330,6 +343,7 @@ function org_type_callback(request) {
 }
 
 function my_orgs_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var my_orgs;
 	try {
 		my_orgs = request.getResultObject();
@@ -367,6 +381,7 @@ function my_orgs_callback(request) {
 }
 
 function my_actsc_list_callback(request) {
+	sdump('D_AUTH',arg_dump(arguments));
 	var actsc_list;
 	try {
 		actsc_list = request.getResultObject();
@@ -392,6 +407,7 @@ function my_actsc_list_callback(request) {
 
 
 function logoff() {
+	sdump('D_AUTH',arg_dump(arguments));
 	mw.G['auth_ses'] = '';
 	close_all_windows();
 	enable_login_prompts();
@@ -400,6 +416,7 @@ function logoff() {
 }
 
 function nice_shutdown() {
+	sdump('D_AUTH',arg_dump(arguments));
 	if (ses) { logoff(); ses.disconnect(); }
 	snd_exit;
 	close_all_windows();
