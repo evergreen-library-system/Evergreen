@@ -58,24 +58,30 @@ function patron_display_init(p) {
 function patron_display_init_after_clamshell(p) {
 	sdump('D_PATRON_DISPLAY',arg_dump(arguments));
 	return function (clamshell_w) {
-		p.w.inner_clamshell = spawn_clamshell_vertical( 
-			clamshell_w.document, 
-			'new_iframe', 
-			clamshell_w.first_deck, {
-				'vertical' : true,
-				'onload' : patron_display_init_after_inner_clamshell(p)
-			}
+		setTimeout(
+			function() {
+				p.w.inner_clamshell = spawn_clamshell_vertical( 
+					clamshell_w.document, 
+					'new_iframe', 
+					clamshell_w.first_deck, {
+						'vertical' : true,
+						'onload' : patron_display_init_after_inner_clamshell(p)
+					}
+				);
+			}, 0
 		);
-		p.w.item_tree = spawn_circ_tree( 
-			clamshell_w.document, 
-			'new_iframe', 
-			clamshell_w.second_deck, {
-				'paged_tree_onload' : patron_display_init_after_item_tree_paged_tree(p),
-				'onload' : patron_display_init_after_item_tree(p)
-			}
+		setTimeout(
+			function() {
+				p.w.item_tree = spawn_circ_tree( 
+					clamshell_w.document, 
+					'new_iframe', 
+					clamshell_w.second_deck, {
+						'paged_tree_onload' : patron_display_init_after_item_tree_paged_tree(p),
+						'onload' : patron_display_init_after_item_tree(p)
+					}
+				);
+			}, 0
 		);
-
-
 		return;
 	};
 
@@ -84,9 +90,7 @@ function patron_display_init_after_clamshell(p) {
 function patron_display_init_after_item_tree_paged_tree(p) {
 	sdump('D_PATRON_DISPLAY',arg_dump(arguments));
 	return function (tree_win) {
-		sdump('D_TRACE','<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n');
 		if (p.w._patron) {
-			sdump('D_TRACE','>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n');
 			if (!p.w._patron.checkouts()) patron_get_checkouts( p.w._patron );
 			for (var i = 0; i < p.w._patron.checkouts().length; i++) {
 				p.w.item_tree.add_circs( [ i ] );
@@ -99,19 +103,27 @@ function patron_display_init_after_inner_clamshell(p) {
 	sdump('D_PATRON_DISPLAY',arg_dump(arguments));
 	return function (clamshell_w) {
 		sdump('D_PATRON_DISPLAY',arg_dump(arguments));
-		p.w.status_w = spawn_patron_display_status(
-			clamshell_w.document, 
-			'new_iframe', 
-			clamshell_w.first_deck, {
-				'patron' : p.w._patron
-			}
+		setTimeout(
+			function() {
+				p.w.status_w = spawn_patron_display_status(
+					clamshell_w.document, 
+					'new_iframe', 
+					clamshell_w.first_deck, {
+						'patron' : p.w._patron
+					}
+				);
+			}, 0
 		);
-		p.w.contact_w = spawn_patron_display_contact(
-			clamshell_w.document, 
-			'new_iframe', 
-			clamshell_w.second_deck, {
-				'patron' : p.w._patron
-			}
+		setTimeout(
+			function() {
+				p.w.contact_w = spawn_patron_display_contact(
+					clamshell_w.document, 
+					'new_iframe', 
+					clamshell_w.second_deck, {
+						'patron' : p.w._patron
+					}
+				);
+			}, 0
 		);
 		return;
 	};
