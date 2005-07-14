@@ -4,6 +4,7 @@ var consoleService = Components.classes['@mozilla.org/consoleservice;1']
 	.getService(Components.interfaces.nsIConsoleService);
 
 var consoleDump = true;
+var debugDump = true;
 var arg_dump_full = false;
 
 var sdump_levels = {
@@ -13,6 +14,8 @@ var sdump_levels = {
 	'D_TRACE' :  true,
 	'D_TRACE_ENTER' :  false,
 	'D_TRACE_EXIT' :  false,
+	'D_TIMEOUT' :  true,
+	'D_FILTER' : true,
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
@@ -46,13 +49,47 @@ var sdump_levels = {
 
 };
 
+var sdump_last_time = new Date();
+
+function filter_console_init(p) {
+	sdump('D_FILTER',arg_dump(arguments,{0:true}));
+
+	var filterConsoleListener = {
+		observe: function( msg ) {
+			try {
+				p.observe_msg( msg );
+			} catch(E) {
+				alert(E);
+			}
+		},
+		QueryInterface: function (iid) {
+			if (!iid.equals(Components.interfaces.nsIConsoleListener) &&
+				!iid.equals(Components.interfaces.nsISupports)) {
+					throw Components.results.NS_ERROR_NO_INTERFACE;
+			}
+		        return this;
+		}
+	};
+	try {
+		consoleService.registerListener(filterConsoleListener);	
+	} catch(E) {
+		alert(E);
+	}
+
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
+}
+
 function sdump(level,msg) {
 	try {
+		var now = new Date();
+		var message = now.valueOf() + '\tdelta = ' + (now.valueOf() - sdump_last_time.valueOf()) + '\n' + level + '\n' + msg;
 		if (sdump_levels['D_NONE']) return;
 		if (sdump_levels[level]||sdump_levels['D_ALL']) {
-			debug(level + ': ' + msg);
+			sdump_last_time = now;
+			if (debugDump)
+				debug(message);
 			if (consoleDump)
-				consoleService.logStringMessage(level + ': ' + msg);
+				consoleService.logStringMessage(message);
 		}
 	} catch(E) {
 		dump('Calling sdump but ' + E + '\n');

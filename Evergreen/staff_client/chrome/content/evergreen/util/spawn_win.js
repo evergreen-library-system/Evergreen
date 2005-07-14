@@ -240,3 +240,8 @@ function spawn_javascript_shell(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/util/shell.html';
 	return spawn_interface(d,placement,place,chrome,getString('javascript_shell_label'),passthru_params,clone);
 }
+
+function spawn_filter_console(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/util/filter_console.xul';
+	return spawn_interface(d,placement,place,chrome,getString('filter_console_label'),passthru_params,clone);
+}
