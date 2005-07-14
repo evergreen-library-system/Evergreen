@@ -84,13 +84,6 @@ function circ_tree_init(p) {
 		
 	];
 
-        p.w.tree_win = spawn_paged_tree(
-                p.w.document, 'new_iframe', p.paged_tree, { 
-			'cols' : p.w.circ_cols,
-			'onload' : circ_tree_init_after_paged_tree(p) 
-		}
-        );
-
 	p.w.register_circ_select_callback = function (f) {
 		p.w._circ_select_callback = f;
 	}
@@ -107,14 +100,33 @@ function circ_tree_init(p) {
 		circ_tree_map_circ_to_cols(p, circ, treeitem);	
 	}
 
-        if (p.onload) {
-                try {
-			sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-                        p.onload(p.w);
-                } catch(E) {
-                        sdump('D_ERROR', js2JSON(E) + '\n' );
-                }
-        }
+	setTimeout(
+		function() {
+			sdump('D_TIMEOUT','***** timeout occured circ_tree.js');
+		        p.w.tree_win = spawn_paged_tree(
+		                p.w.document, 'new_iframe', p.paged_tree, {
+					'hide_nav' : true,
+					'hits_per_page' : 99999, 
+					'cols' : p.w.circ_cols,
+					'onload' : circ_tree_init_after_paged_tree(p) 
+				}
+		        );
+			setTimeout(
+				function () {
+					sdump('D_TIMEOUT','***** timeout timeout occured circ_tree.js');
+				        if (p.onload) {
+				                try {
+							sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
+				                        p.onload(p.w);
+				                } catch(E) {
+				                        sdump('D_ERROR', js2JSON(E) + '\n' );
+				                }
+				        }
+				}, 0
+			);
+		}, 0
+	);
+
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
 }
@@ -130,11 +142,16 @@ function circ_tree_init_after_paged_tree(p) {
 		tree_win.register_context_builder( p.w._context_function );
 		p.w.add_circs = tree_win.add_rows;
 		p.w.clear_circs = tree_win.clear_tree;
-		try {
-			if (p.paged_tree_onload) p.paged_tree_onload(tree_win);
-		} catch(E) {
-                        sdump('D_ERROR', js2JSON(E) + '\n' );
-		}
+		setTimeout(
+			function() {
+				sdump('D_TIMEOUT','***** timeout after paged_tree occured circ_tree.js');
+				try {
+					if (p.paged_tree_onload) p.paged_tree_onload(tree_win);
+				} catch(E) {
+		                        sdump('D_ERROR', js2JSON(E) + '\n' );
+				}
+			}, 0
+		);
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return;
 	};

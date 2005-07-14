@@ -36,10 +36,10 @@ function patron_display_init(p) {
 			p.w.retrieve_patron_via_barcode( p.patron );
 	}
 
-	sdump('D_TRACE','******** SETTING TIMEOUT\n');
+	sdump('D_TIMEOUT','******** SETTING TIMEOUT\n');
 	setTimeout( 
 		function() {
-			sdump('D_TRACE','******** TIMEOUT OCCURRED\n');
+			sdump('D_TIMEOUT','******** timeout occurred in patron_display.js\n');
 			p.w.clamshell = spawn_clamshell( 
 				p.w.document, 'new_iframe', p.clamshell, {
 					'horizontal' : true,
@@ -49,7 +49,7 @@ function patron_display_init(p) {
 		}
 		,0
 	);
-	sdump('D_TRACE','******** AFTER SETTING TIMEOUT\n');
+	sdump('D_TIMEOUT','******** AFTER SETTING TIMEOUT\n');
 
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
@@ -60,6 +60,7 @@ function patron_display_init_after_clamshell(p) {
 	return function (clamshell_w) {
 		setTimeout(
 			function() {
+				sdump('D_TIMEOUT','******** timeout occurred (1) after clamshell in patron_display.js\n');
 				p.w.inner_clamshell = spawn_clamshell_vertical( 
 					clamshell_w.document, 
 					'new_iframe', 
@@ -70,8 +71,10 @@ function patron_display_init_after_clamshell(p) {
 				);
 			}, 0
 		);
+		/*
 		setTimeout(
 			function() {
+				sdump('D_TIMEOUT','******** timeout occurred (2) after clamshell in patron_display.js\n');
 				p.w.item_tree = spawn_circ_tree( 
 					clamshell_w.document, 
 					'new_iframe', 
@@ -82,6 +85,7 @@ function patron_display_init_after_clamshell(p) {
 				);
 			}, 0
 		);
+		*/
 		return;
 	};
 
@@ -105,6 +109,7 @@ function patron_display_init_after_inner_clamshell(p) {
 		sdump('D_PATRON_DISPLAY',arg_dump(arguments));
 		setTimeout(
 			function() {
+				sdump('D_TIMEOUT','******** timeout occurred (1) after inner clamshell in patron_display.js\n');
 				p.w.status_w = spawn_patron_display_status(
 					clamshell_w.document, 
 					'new_iframe', 
@@ -116,6 +121,7 @@ function patron_display_init_after_inner_clamshell(p) {
 		);
 		setTimeout(
 			function() {
+				sdump('D_TIMEOUT','******** timeout occurred (2) after inner clamshell in patron_display.js\n');
 				p.w.contact_w = spawn_patron_display_contact(
 					clamshell_w.document, 
 					'new_iframe', 

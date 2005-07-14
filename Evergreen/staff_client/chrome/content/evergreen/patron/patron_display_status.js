@@ -54,13 +54,18 @@ function patron_display_status_init(p) {
 		return p.w.display_patron();
 	}
 
-	if (p.patron) {
-		if (typeof(p.patron) == 'object') {
-			p.w.set_patron( p.patron );
-			p.w.display_patron();
-		} else
-			p.w.retrieve_patron_via_barcode( p.patron );
-	}
+	setTimeout(
+		function() {
+			sdump('D_TIMEOUT','******** timeout occurred in patron_display_status.js\n');
+			if (p.patron) {
+				if (typeof(p.patron) == 'object') {
+					p.w.set_patron( p.patron );
+					p.w.display_patron();
+				} else
+					p.w.retrieve_patron_via_barcode( p.patron );
+			}
+		}, 0
+	);
 
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;

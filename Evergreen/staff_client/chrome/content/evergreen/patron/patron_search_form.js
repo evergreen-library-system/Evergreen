@@ -34,14 +34,19 @@ function patron_search_form_init(p) {
 	else
 		sdump('D_PATRON_SEARCH_FORM',"No cmd_clear element.\n");
 
-	if (p.onload) {
-		try {
-			sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-			p.onload(p.w);
-		} catch(E) {
-			sdump('D_ERROR', js2JSON(E) + '\n' );
-		}
-	}
+	setTimeout(
+		function() {
+			sdump('D_TIMEOUT','******** timeout occurred in patron_search_form.js\n');
+			if (p.onload) {
+				try {
+					sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
+					p.onload(p.w);
+				} catch(E) {
+					sdump('D_ERROR', js2JSON(E) + '\n' );
+				}
+			}
+		}, 0
+	);
 	return;
 }
 

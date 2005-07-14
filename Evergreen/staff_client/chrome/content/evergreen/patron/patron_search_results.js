@@ -54,14 +54,19 @@ function patron_search_results_init(p) {
 		patron_search_results_map_patron_to_cols(p, patron, treeitem);	
 	}
 
-        if (p.onload) {
-                try {
-			sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-                        p.onload(p.w);
-                } catch(E) {
-                        sdump('D_ERROR', js2JSON(E) + '\n' );
-                }
-        }
+	setTimeout(
+		function() {
+			sdump('D_TIMEOUT','******** timeout occurred in patron_search_results.js\n');
+		        if (p.onload) {
+		                try {
+					sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
+		                        p.onload(p.w);
+		                } catch(E) {
+		                        sdump('D_ERROR', js2JSON(E) + '\n' );
+		                }
+        		}
+		}, 0
+	);
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
 }
