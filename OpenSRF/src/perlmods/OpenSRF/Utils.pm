@@ -334,6 +334,16 @@ sub set_psname {
 	$0 = $PS_NAME if ($PS_NAME);
 }
 
+sub clense_ISO8601 {
+	my $self = shift;
+	my $date = shift || $self;
+	if ($date =~ /(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):(\d{2}):(\d{2})\.?\d*((?:-|\+)\d{2,4})?$/) {
+		my $z = $7 || '-00';
+		$date = "$1-$2-$3T$4:$5:$6$z";
+	}
+	return $date;
+}
+
 =head2 $utils_obj->daemonize('ps_name') OR daemonize('ps_name')
 
 Turns the current process into a daemon.  B<ps_name> is optional, and is used
