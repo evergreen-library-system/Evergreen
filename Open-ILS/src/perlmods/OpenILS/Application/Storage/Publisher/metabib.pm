@@ -22,6 +22,15 @@ sub ordered_records_from_metarecord {
 	my $self = shift;
 	my $client = shift;
 	my $mr = shift;
+	my $formats = shift;
+
+	my (@types,@forms);
+
+	if ($formats) {
+		my ($t, $f) = split '-', $formats;
+		@types = split '', $t;
+		@forms = split '', $f;
+	}
 
 	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
@@ -38,6 +47,7 @@ sub ordered_records_from_metarecord {
 	   FROM	(
 		SELECT	cn.record,
 			rd.item_type,
+			rd.item_form,
                         sum((SELECT	count(cp.id)
 	                       FROM	$cp_table cp
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
@@ -50,7 +60,7 @@ sub ordered_records_from_metarecord {
 		  WHERE	cn.record = sm.source
 		  	AND cn.record = rd.record
 			AND sm.metarecord = ?
-		  GROUP BY cn.record, rd.item_type
+		  GROUP BY cn.record, rd.item_type, rd.item_form
 		  ORDER BY
 			CASE
 				WHEN rd.item_type IS NULL -- default
@@ -81,8 +91,16 @@ sub ordered_records_from_metarecord {
 	  WHERE	x.count > 0
 	SQL
 
+	if (@types) {
+		$sql .= ' AND x.item_type IN ('.join(',',map{'?'}@types).')';
+	}
+
+	if (@forms) {
+		$sql .= ' AND x.item_form IN ('.join(',',map{'?'}@forms).')';
+	}
+
 	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
-	$sth->execute("$mr");
+	$sth->execute("$mr", @types, @forms);
 	while ( my $row = $sth->fetchrow_arrayref ) {
 		$client->respond( $$row[0] );
 	}
@@ -249,6 +267,23 @@ sub search_class_fts {
 	$limit_clause = "LIMIT $limit" if (defined $limit and int($limit) > 0);
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
+	my (@types,@forms);
+	my ($t_filter, $f_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+	}
+
+
 
 	my $descendants = defined($ou_type) ?
 				"actor.org_unit_descendants($ou, $ou_type)" :
@@ -257,6 +292,7 @@ sub search_class_fts {
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
 	my $metabib_metarecord = metabib::metarecord->table;
 	my $metabib_full_rec = metabib::full_rec->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
@@ -289,14 +325,14 @@ sub search_class_fts {
 	}
 
 	my $rank_calc = <<"	RANK";
-		, SUM(	$rank
-			+ CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END
-			+ CASE WHEN f.value ILIKE ? THEN 1 ELSE 0 END
-			+ 1 / CASE WHEN OCTET_LENGTH(f.value) IS NULL OR OCTET_LENGTH(f.value) = 0 THEN 1000 ELSE OCTET_LENGTH(f.value) END
-		)/COUNT(m.source)
+		, (SUM(	$rank
+			* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
+			* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
+			* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
+		)/COUNT(m.source)), MIN(COALESCE(CHAR_LENGTH(f.value),1))
 	RANK
 
-	$rank_calc = ', 1' if ($self->api_name =~ /unordered/o);
+	$rank_calc = ',1 , 1' if ($self->api_name =~ /unordered/o);
 
 	my $select = <<"	SQL";
 		SELECT	m.metarecord $rank_calc $visible_count
@@ -305,30 +341,40 @@ sub search_class_fts {
 			$asset_call_number_table cn,
 			$asset_copy_table cp,
 			$cs_table cs,
+			$metabib_record_descriptor rd,
 			$descendants d
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
 			AND cn.record = m.source
+			AND rd.record = m.source
 			AND cp.status = cs.id
 			$has_vols
 			$has_copies
 			$copies_visible
+			$t_filter
+			$f_filter
 	  	  GROUP BY m.metarecord $visible_count_test
-	  	  ORDER BY 2 DESC
+	  	  ORDER BY 2 DESC,3
 		  $limit_clause $offset_clause
 	SQL
 
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
 
-	my $string = '%'.join('%',$fts->words).'%';
+	my $SQLstring = join('%',$fts->words);
+	my $REstring = join('\\s+',$fts->words);
 	my $first_word = ($fts->words)[0].'%';
 	my $recs = ($self->api_name =~ /unordered/o) ? 
-			$class->db_Main->selectall_arrayref($select) :
-			$class->db_Main->selectall_arrayref($select, {}, lc($string), lc($first_word));
+			$class->db_Main->selectall_arrayref($select, {}, @types, @forms) :
+			$class->db_Main->selectall_arrayref($select, {},
+				'%'.lc($SQLstring).'%',			# phrase order match
+				lc($first_word),			# first word match
+				'^\\s*'.lc($REstring).'\\s*/?\s*$',	# full exact match
+				@types, @forms
+			);
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond($_) for (@$recs);
+	$client->respond($_) for (map { [@$_[0,1,3]] } @$recs);
 	return undef;
 }
 
@@ -383,12 +429,29 @@ sub search_class_fts_count {
 				"actor.org_unit_descendants($ou, $ou_type)" :
 				"actor.org_unit_descendants($ou)";
 		
+	my (@types,@forms);
+	my ($t_filter, $f_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+	}
+
 
 	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
 
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
@@ -418,19 +481,23 @@ sub search_class_fts_count {
 			$asset_call_number_table cn,
 			$asset_copy_table cp,
 			$cs_table cs,
+			$metabib_record_descriptor rd,
 			$descendants d
 	  	  WHERE	$fts_where
 		  	AND m.source = f.source
 			AND cn.record = m.source
+			AND rd.record = m.source
 			AND cp.status = cs.id
 			$has_vols
 			$has_copies
 			$copies_visible
+			$t_filter
+			$f_filter
 	SQL
 
 	$log->debug("Field Search Count SQL :: [$select]",DEBUG);
 
-	my $recs = $class->db_Main->selectrow_arrayref($select)->[0];
+	my $recs = $class->db_Main->selectrow_arrayref($select, {}, @types, @forms)->[0];
 	
 	$log->debug("Count Search yielded $recs results.",DEBUG);
 
