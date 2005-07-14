@@ -4,14 +4,22 @@ function paged_tree_init(p) {
 	sdump('D_PAGED_TREE',"TESTING: paged_tree.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 
-	p.w.display_count = 10;
 	p.w.current_idx = 0;
 
 	p.w.results_label = get_widget( p.w.document, p.nav_results );
 	p.w.range_label = get_widget( p.w.document, p.nav_range );
+
 	p.w.hits_per_page_menu = get_widget( p.w.document, p.nav_hits_per_page );
+	if (p.hits_per_page) 
+		p.w.display_count = parseInt( p.hits_per_page );
+	else 
+		p.w.display_count = parseInt( p.w.hits_per_page_menu.getAttribute('value') );
+
 	p.w.next_button = get_widget( p.w.document, p.nav_next );
 	p.w.prev_button = get_widget( p.w.document, p.nav_prev );
+
+	p.w.nav_bar = get_widget( p.w.document, p.nav_bar );
+	if (p.hide_nav) p.w.nav_bar.hidden = p.hide_nav;
 
 	/*
 	// Doesn't work for some reason
@@ -109,14 +117,19 @@ function paged_tree_init(p) {
 
 	p.w.map_cols_to_treeitem = map_array_to_treecells_via_treeitem;
 
-        if (p.onload) {
-                try {
-                        sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-                        p.onload(p.w);
-                } catch(E) {
-                        sdump('D_ERROR', js2JSON(E) + '\n' );
-                }
-        }
+	setTimeout(
+		function() {
+			sdump('D_TIMEOUT','***** timeout occured paged_tree.js');
+		        if (p.onload) {
+		                try {
+		                        sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
+		                        p.onload(p.w);
+		                } catch(E) {
+		                        sdump('D_ERROR', js2JSON(E) + '\n' );
+		                }
+		        }
+		}, 0
+	);
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
 }

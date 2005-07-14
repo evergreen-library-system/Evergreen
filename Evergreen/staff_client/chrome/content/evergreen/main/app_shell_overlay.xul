@@ -63,15 +63,11 @@
 	<command id="cmd_xuleditor" oncommand="
 		mw.spawn_xuleditor(document,'new_tab','main_tabbox',{}); "/>
 
+	<command id="cmd_filter_console" oncommand="
+		mw.spawn_filter_console(document,'new_tab','main_tabbox',{}); "/>
+
 	<command id="cmd_test" oncommand="
-		mw.spawn_interface(
-			document,
-			'new_tab',
-			'main_tabbox',
-			'chrome://evergreen/content/patron/patron_display.xul',
-			'test',
-			{ }
-		); "/>
+		alert('Not Yet Implemented'); "/>
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>

@@ -127,11 +127,11 @@
 		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
 		<menuitem label="Copy Stat-Cat Editor" accesskey="C" command="cmd_copy_stat_cat_edit"/>
 		<menuitem label="Patron Stat-Cat Editor" accesskey="P" command="cmd_patron_stat_cat_edit"/>
-		<menuitem label="stub" />
-		<menuitem label="Test Module" command="cmd_test"/>
-		<menuitem label="Javscript Console" command="cmd_console"/>
-		<menuitem label="Javscript Shell" command="cmd_shell"/>
-		<menuitem label="XUL Test" command="cmd_xuleditor"/>
+		<menuitem label="Test Module" accesskey="T" command="cmd_test"/>
+		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
+		<menuitem label="Javscript Console" accesskey="J" command="cmd_console"/>
+		<menuitem label="Filterable Console" accesskey="F" command="cmd_filter_console"/>
+		<menuitem label="Javscript Shell" accesskey="H" command="cmd_shell"/>
 	</menupopup>
 </menu>
 
