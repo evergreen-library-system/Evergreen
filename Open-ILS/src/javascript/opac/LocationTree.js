@@ -83,7 +83,7 @@ LocationTree.prototype.toggle = function(button_div, offsetx, offsety, relative)
 	var obj = this;
 	if( (this.treeBox && this.treeBox.firstChild && 
 			this.treeBox.firstChild.nodeType == 3) ||
-			(!this.treeBox.firstChild)) {
+			(this.treeBox && !this.treeBox.firstChild)) {
 
 		debug("location tree has not been rendered... rendering..");
 		//setTimeout(function() { renderTree(obj); }, 5 );

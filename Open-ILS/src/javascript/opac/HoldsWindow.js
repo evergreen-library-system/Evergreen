@@ -57,6 +57,17 @@ HoldsWindow.prototype.process = function() {
 /* formats is a string of format characters, org is the 
 	org unit used for delivery */
 HoldsWindow.prototype.sendHoldsRequest = function(formats, org, email, phone) {
+
+	if(isXUL()) { /* staff member entered barcode, now fetch the user */
+		var recip_barcode = getById("recipient_barcode").value;
+		if(!recip_barcode || recip_barcode == "") {
+			alert("Please enter the user's barcode");
+		}
+		try {
+			this.recipient = grabUserByBarcode(recip_barcode);
+		} catch(E) { alert(E.err_msg()); }
+	}
+
 	var hold = new ahr();
 	hold.pickup_lib(org.id());
 	hold.requestor(this.requestor.id());
@@ -64,6 +75,7 @@ HoldsWindow.prototype.sendHoldsRequest = function(formats, org, email, phone) {
 	hold.hold_type(this.type);
 	hold.email_notify(email);
 	hold.phone_notify(phone);
+
 	if(this.type == "M") hold.holdable_formats(formats);
 	hold.target(this.record);
 
@@ -87,24 +99,38 @@ HoldsWindow.prototype.buildWindow = function(node) {
 	var id = this.record;
 
 	var usr = this.recipient;
-	if(!usr) {
-		var obj = this;
-		var func = function(usr) { 
-			obj.recipient = usr.userObject;
-			obj.requestor = usr.userObject;
-			obj.session = usr.session_id;
-			obj.toggle();
+	var barcodebox = null;
+
+	if(isXUL()) {
+		/* used by xul to enter the recipient barcode */
+		barcodebox = elem("input",{type:"text",id:"recipient_barcode"});
+	} else {
+
+		if(!usr) {
+			var obj = this;
+			var func = function(usr) { 
+				obj.recipient = usr.userObject;
+				obj.requestor = usr.userObject;
+				obj.session = usr.session_id;
+				obj.toggle();
+			}
+			var diag = new LoginDialog(func);
+			diag.display(node);
+			return false;
 		}
-		var diag = new LoginDialog(func);
-		diag.display(node);
-		return false;
 	}
+
+
 
 	var org = usr.home_ou();
 	d.appendChild(this.buildPickuplibSelector(org));
 
 	if(this.type == "M")
 		d.appendChild(this.buildResourceSelector());
+
+	if(barcodebox)
+		d.appendChild(barcodebox);
+
 	d.appendChild(this.buildSubmit());
 
 	this.div.appendChild(d);
@@ -150,6 +176,8 @@ HoldsWindow.prototype.toggle = function(node) {
 
 	return true;
 }
+
+
 
 /*
 HoldsWindow.prototype.buildHoldsWindowCallback = function(type) {

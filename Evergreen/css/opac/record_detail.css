@@ -1,13 +1,19 @@
 .copy_tree_div {
-	border-top: 1px solid blue;
+	/*border-top: 1px solid blue;*/
+	/*border: 1px solid #CCCC66;*/
 	margin-top: 15px;
 }
 
 .detail_header_cell {
-	background: #CCF;
-	color: green;
+
+	/*background: #CCF;
 	border: 1px solid blue;
+	color: green; */
 	padding: 3px;
+
+	border: 1px solid #CCCC66;
+	background: #556644;
+	color: #FFF;
 }
 
 .detail_item_label {

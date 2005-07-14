@@ -710,9 +710,18 @@ function buildResourcePic(c, resource) {
 AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record, page_id, title) {
 
 	debug("Building record image for " + page_id);
+
+	/*
 	var isbn = record.isbn();
-	if(isbn) isbn = isbn.replace(/\s+/,"");
-	else isbn = "";
+	if(isbn) {
+		isbn = isbn.replace(/^\s+/,"");
+		var idx = isbn.indexOf(" ");
+		if(idx > -1) {
+			isbn = isbn.substring(0, idx);
+		}
+
+	} else isbn = "";
+	*/
 
 	pic_cell.setAttribute("rowspan","3");
 	pic_cell.rowSpan = 3;
@@ -746,7 +755,10 @@ AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record,
 	}
 
 	/* use amazon for now */
-	var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
+	//var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
+	//var img_src = "http://www.thecontentserver.com/bin/cntsvr.dll?GetImage&SysID=Content&CustID=Cafe&Return=1&Type=S&Key=" + isbn ;
+
+	var img_src = buildISBNSrc(cleanISBN(record.isbn()));
 	var big_div = createAppElement("div");
 	add_css_class(big_div, "record_image_big hide_me");
 

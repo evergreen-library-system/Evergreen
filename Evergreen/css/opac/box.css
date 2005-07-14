@@ -7,20 +7,23 @@
 .box_title {
 	text-align: center;
 	width: 98%;
-	background: #C99;
+	/*background: #C99;*/
+	/*background: #445533;*/
+	background: #556644;
 	padding: 2px;
+	color: #EFF;
 }
 
 .box_caption {
 	text-align: center;
 	width: 98%;
-	background: #99C;
+	background: #556644;
 	padding: 2px;
 	font-size: 95%;
 }
 
 .box_content {
-	border: 2px dashed #99C;
+	border: 2px dashed #556644;
 	width: 98%;
 	background: #FFF;
 }

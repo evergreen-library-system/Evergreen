@@ -135,9 +135,12 @@
 
 
 .relevance_box {
-	border: 1px solid lightgreen;
+	border: 1px solid #556644;
 	float: right;
+			 /*
 	background: lightgreen;
+	*/
+	background: #445533;
 	height: 36px;
 	width: 4px;
 }
@@ -145,7 +148,8 @@
 .relevance {
 	width: 100%;
 	font-size: .1em;
-	background: #EFE;
+	/*background: #EFE;*/
+	background: #EFF;
 }
 
 .record_image {

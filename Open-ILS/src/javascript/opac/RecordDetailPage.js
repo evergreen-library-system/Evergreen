@@ -245,10 +245,8 @@ function _buildCustomOrgTree(org_node, root) {
 
 RecordDetailPage.prototype.setViewMarc = function(record) {
 	var marcb = elem( "a", 
-		{ 
-			href:"javascript:void(0)", 
-			style: "text-decoration:underline" 
-		}, 
+		{	href:"javascript:void(0)", 
+			style: "text-decoration:underline;color:#EFF;" }, 
 		{}, "View MARC" );
 
 	debug(".ou_type()Setting up view marc callback with record " + record.doc_id());
@@ -262,7 +260,7 @@ RecordDetailPage.prototype.setPlaceHold = function(record) {
 	var holds = elem( "a", 
 		{ 
 			href:"javascript:void(0)", 
-			style: "text-decoration:underline" 
+			style: "text-decoration:underline;color:#EFF;" 
 		}, 
 		{}, "Place Hold" );
 
@@ -411,14 +409,17 @@ RecordDetailPage.prototype.drawRecord = function(record) {
 RecordDetailPage.prototype.mkImage = function(record) {
 
 	var isbn = record.isbn();
+	/*
 	if(isbn) isbn = isbn.replace(/\s+/,"");
 	else isbn = "";
+	*/
 
 	var big_pic = elem("a", {
-		href : "http://images.amazon.com/images/P/" +isbn + ".01.LZZZZZZZ.jpg",
+		href : "http://images.amazon.com/images/P/" + cleanISBN(isbn) + ".01.LZZZZZZZ.jpg",
 		title : "Click for larger image" } );
 
-	var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
+	var img_src = buildISBNSrc(cleanISBN(record.isbn()));
+	//var img_src = "http://images.amazon.com/images/P/" +isbn + ".01.MZZZZZZZ.jpg";
 	var pic = elem ( "img", { src : img_src }, { border : "0px none" });
 	big_pic.appendChild(pic);
 

@@ -107,6 +107,7 @@
 			box(id='record_detail_copy_info');
 
 						
+			INCLUDE opac/pages/chunks/org_tree.ttk;
 		END; # body
 
 	END; # html

@@ -317,5 +317,29 @@ function doLogout() {
 }
 
 
+function cleanISBN(isbn) {
+	if(isbn) {
+		isbn = isbn.replace(/^\s+/,"");
+		var idx = isbn.indexOf(" ");
+		if(idx > -1) {
+			isbn = isbn.substring(0, idx);
+		}
+
+	} else isbn = "";
+	return isbn
+
+}
+
+
+function grabUserByBarcode(barcode) {
+	if(!barcode) return null;
+	var req = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.fleshed.retrieve_by_barcode",
+		barcode );
+
+	return req.send(true).getResultObject();
+}
+
 
 

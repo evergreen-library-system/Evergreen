@@ -9,19 +9,19 @@
 			link(rel="stylesheet", href="/css/box.css" type="text/css");
 			link(rel="stylesheet", href="/css/opac_main.css" type="text/css");
 
-			js( src='/js/opac/Page.js' );
-			js( src='/js/opac/MyOPACSPage.js' );
-			js( src='/js/util/RemoteRequest.js' );
-			js( src='/js/util/webutils.js' );
-			js( src='/js/util/ils_utils.js' );
-			js( src='/js/util/UserSession.js' );
-			js( src='/js/util/Cookie.js' );
-			js( src='/js/util/ex.js' );
-			js( src='/js/widgets/Box.js' );
-			js( src='/js/util/JSON.js' );
-			js( src='/js/util/web_fieldmapper.js' );
-			js( src='/js/util/browser.js' );
-			js( src='/js/widgets/PopupBox.js' );
+			js( src='http://gapines.org/js/util/JSON.js' );
+			js( src='http://gapines.org/js/opac/Page.js' );
+			js( src='http://gapines.org/js/opac/MyOPACSPage.js' );
+			js( src='http://gapines.org/js/util/RemoteRequest.js' );
+			js( src='http://gapines.org/js/util/webutils.js' );
+			js( src='http://gapines.org/js/util/ils_utils.js' );
+			js( src='http://gapines.org/js/util/UserSession.js' );
+			js( src='http://gapines.org/js/util/Cookie.js' );
+			js( src='http://gapines.org/js/util/ex.js' );
+			js( src='http://gapines.org/js/widgets/Box.js' );
+			js( src='http://gapines.org/js/util/web_fieldmapper.js' );
+			js( src='http://gapines.org/js/util/browser.js' );
+			js( src='http://gapines.org/js/widgets/PopupBox.js' );
 
 			WRAPPER html/js;
 				'

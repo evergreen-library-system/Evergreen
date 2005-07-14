@@ -1,7 +1,9 @@
 #progress_bar_location {
 	z-index: -10;
 	position: absolute;
-	background: #CCF;
+	/*background: #CCF;*/
+	/*background: #CC6;*/
+	background: #f0b42e;
 	width: 98%;
 	height: 32px;
 	border-collapse: collapse;
@@ -33,7 +35,9 @@
 .progress_bar_done {
 	height: 100%;
 	width: 100%;
-	background: #CCF;
+	/*background: #CCF;*/
+	/*background: #CC6;*/
+	background: #ffb42e;
 	border-collapse: collapse;
 	white-space:nowrap;
 }
@@ -47,7 +51,9 @@
 .progress_bar_chunk_active {
 	height: 100%;
 	float: left;
-	background: #CCF;
+	/*background: #CCF;*/
+	/*background: #CCCC66;*/
+	background: #ffb42e;
 	border-collapse: collapse;
 }
 

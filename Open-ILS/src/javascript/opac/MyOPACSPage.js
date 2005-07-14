@@ -146,19 +146,49 @@ function _drawCheckedOut(obj, data) {
 		circRow = obj.infoTable.insertRow(obj.infoTable.rows.length);
 
 
-		//var due = new Date(parseInt(circ.due_date() + "000")).toLocaleString();
 		var due = circ.due_date();
-
-		/* chop the 'time' portion of the date */
+		//due = due.substring(0,10) + "T" + due.substring(12,due.length);
 		due = due.replace(/[0-9][0-9]:.*$/,"");
+
+		/*
+		var year = parseInt(due.substring(0,4)) - 1900; 
+		var month =  parseInt(due.substring(5,7)) - 1;
+		var day = parseInt(due.substring(8,10));
+
+		//alert(parseInt(due.substring(0,4)) + " " + parseInt(due.substring(5,7))  + " " + parseInt(due.substring(8,10)));
+
+		//alert(year + " " + month + " "  + day);
+
+		var date = new Date(year, month, day, 0, 0, 0);
+		due = date.toString();
+		//due = due.replace(/[0-9][0-9]:.*$/,"");
+		*/
+
+		//alert(date);
+		/*
+		alert(due);
+		due = new Date(due);
+		alert(due);
+		*/
+
+		/*
+		alert(circ.due_date());
+		alert(new Date(circ.due_date()));
+		*/
 
 		var title_href = createAppElement("a");
 		title_href.setAttribute("href","?sub_frame=1&target=record_detail&record=" + record.doc_id() );
 		title_href.setAttribute("target","_top"); /* escape to the outermost frame */
 		title_href.appendChild(mktext(record.title()));
 
+		/*
 		var renewbox = elem("input", 
 			{type:"checkbox", id:"renew_checkbox_" + record.doc_id()});
+			*/
+
+		var renewboxlink = mktext("N/A");
+		if(parseInt(circ.renewal_remaining()) > 0)
+			renewboxlink = buildRenewBoxLink(circ);
 
 		/* grab circ lib name */
 		var org = obj._getOrgUnit(copy.circ_lib());
@@ -187,10 +217,40 @@ function _drawCheckedOut(obj, data) {
 		barcodeCell.appendChild(mktext(copy.barcode()));
 		circLibCell.appendChild(mktext(org));
 		renewRemainCell.appendChild(mktext(circ.renewal_remaining()));
-		renewCell.appendChild(renewbox);
+		renewCell.appendChild(renewboxlink);
 
 	}
 
+}
+
+function buildRenewBoxLink(circ) {
+
+	var a = elem("a", 
+		{href:"javascript:void(0);",style:"text-decoration:underline"}, null, "Renew");
+	var but = elem("input",{type:"submit",value:"Renew Circulation"});
+	var can = elem("input",{type:"submit",value:"Cancel"});
+
+	var box = new PopupBox(a);
+	a.onclick = function(){box.show();}
+	can.onclick = function(){box.hide();}
+	but.onclick = function(){renewCheckout(circ);box.hide();};
+	box.title("Renew Circulation");
+	box.addText("Are you sure you want to renew the circulation?");
+	box.makeGroup([but, can]);
+	return a;
+}
+
+function renewCheckout(circ) {
+	var req = new RemoteRequest(
+		"open-ils.circ", "open-ils.circ.renew",
+		globalmyopac.user.session_id, circ );
+	req.send(true);
+
+	try{var ret = req.getResultObject();}catch(E){return;}
+
+	//alert(js2JSON(ret));
+	alert("Renewal completed successfully");
+	globalmyopac.draw("checked");
 }
 
 
@@ -303,15 +363,21 @@ MyOPACSPage.prototype._drawProfile = function() {
 	bcell2.appendChild(bbold);
 	bcell3.appendChild(mktext(" "));
 
+	/*
 	var addrTable = elem("table");
 	add_css_class(addrTable, "my_opac_addr_table");
+
 	var row = addrTable.insertRow(0);
 	var mailing = row.insertCell(0);
 	var space = row.insertCell(1);
 	var billing = row.insertCell(2);
+	*/
 
+	/*
 	space.setAttribute("style","width: 30px");
 	space.appendChild(mktext(" "));
+
+	appendChild(this.mkAddrTable(addrTable, this.userObject.addresses()[a]));
 
 	var addr = this.user.userObject.mailing_address();
 	mailing.appendChild(this.mkAddrTable("Mailing Address", addr));
@@ -320,16 +386,94 @@ MyOPACSPage.prototype._drawProfile = function() {
 	billing.appendChild(this.mkAddrTable("Billing Address", addr));
 
 	this.infoPane.appendChild(elem("br"));
-	/*
+	*/
+
+
 	this.infoPane.appendChild(elem("hr"));
 	this.infoPane.appendChild(elem("br"));
-	this.infoPane.appendChild(addrTable);
-	*/
+	this.infoPane.appendChild(this.mkAddrTable(this.user.userObject.addresses()));
 
 }
 
 
-MyOPACSPage.prototype.mkAddrTable = function(type, addr) {
+MyOPACSPage.prototype.mkAddrTable = function(addresses) {
+
+	var table = elem("table");
+	add_css_class(table, "my_opac_addr_table");
+
+	var row = table.insertRow(table.rows.length);
+	var cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Address Type"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Street"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("City"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("County"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("State"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Zip Code"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Valid"));
+
+	for( var a in addresses ) {
+		var addr = addresses[a];
+		var row = table.insertRow(table.rows.length);
+		var cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		cell.appendChild(mktext(addr.address_type()));
+	
+		cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		var st = addr.street1();
+		if(addr.street2()) st += ", " + addr.street2();
+		cell.appendChild(mktext(st));
+	
+		cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		cell.appendChild(mktext(addr.city()));
+
+		cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		cell.appendChild(mktext(addr.county()));
+	
+		cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		cell.appendChild(mktext(addr.state()));
+	
+		cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		cell.appendChild(mktext(addr.post_code()));
+
+		var v = "Yes";
+		if(addr.valid() != "1") v = "No";
+		cell = row.insertCell(row.cells.length);
+		add_css_class(cell, "my_opac_profile_cell");
+		cell.appendChild(mktext(v));
+	
+	}
+
+	return table;
+}
+
+
+
+
+MyOPACSPage.prototype.__mkAddrTable = function(type, addr) {
 	var table = elem("table");
 
 	var header_row = table.insertRow(table.rows.length);
@@ -1137,7 +1281,6 @@ MyOPACSPage.prototype._addCircs = function(data) {
 
 
 		var due = new Date(parseInt(circ.due_date() + "000")).toLocaleString();
-		/* chop the 'time' portion of the date */
 		due = due.replace(/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/,"");
 
 		var title_href = createAppElement("a");
@@ -1152,6 +1295,7 @@ MyOPACSPage.prototype._addCircs = function(data) {
 		/* for each circulation, build a small table of data */
 		var table = createAppElement("table");
 		this._mkCircRow(table, "Title",		title_href);
+		//this._mkCircRow(table, "Due Date",	mktext(due));
 		this._mkCircRow(table, "Due Date",	mktext(due));
 		this._mkCircRow(table, "Duration",	mktext(circ.duration()));
 		this._mkCircRow(table, "Barcode",	mktext(copy.barcode()));

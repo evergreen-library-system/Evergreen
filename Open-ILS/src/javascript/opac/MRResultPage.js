@@ -276,6 +276,9 @@ MRResultPage.prototype.doSearch = function() {
 
 		debug("Method: " + method);
 		
+		if(isNaN(this.searchDepth)) this.searchDepth = 0;
+		if(isNaN(this.searchLocation)) this.searchLocation = 1;
+
 		var creq = new RemoteRequest(
 			"open-ils.search", method,
 			this.stype, this.string, this.searchLocation, this.searchDepth );

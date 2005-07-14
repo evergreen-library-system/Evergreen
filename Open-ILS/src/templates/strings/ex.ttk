@@ -36,6 +36,9 @@
 	IF type == ex_types.UNKNOWN_USER;
 		ret("User is not recognized"); END;
 
+	IF type == ex_types.MAX_RENEWALS_REACHED;
+		ret("The maximun number of renewals has been reached"); END;
+
 	ret("Unknown exception occured");
 
 -%]

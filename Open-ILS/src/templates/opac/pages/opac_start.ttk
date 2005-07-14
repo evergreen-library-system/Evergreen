@@ -29,8 +29,6 @@
 
 		WRAPPER html/div id='front_search_form';
 
-			"Now searching ";
-			lines(2);
 			span(id='now_searching_cell', class='front_now_searching');
 
 			lines(3);
@@ -41,9 +39,13 @@
 			input(id='mr_search_query',  name='mr_search_query',  
 					type='textarea', size='54');
 		
-			space(1);
+			#space(1);
+			lines(2);
 			PROCESS stype_selector;
-
+			space(2);
+			PROCESS location_input;
+			space(2);
+			PROCESS search_range;
 
 			lines(2);
 			input(type='submit', id='mr_search_button', 
@@ -51,10 +53,8 @@
 
 
 			space(3);
-			PROCESS location_input;
 
 			space(3);
-			PROCESS search_range;
 
 			lines(3);
 			anchor( id='login_link',  href='?target=my_opac', text = "My OPAC" );
@@ -76,7 +76,16 @@
 			option(value='keyword', content='Keyword');
 			option(value='series', content='Series');
 		END;
+
+		space(2);
+		WRAPPER html/select name='format' id='mr_search_format';
+			option(value='all',	selected='selected', content="All Formats");
+			option(value='audiobooks',	content="Audiobooks");
+			option(value='',	content="...");
+		END;
+
 	END;
+
 
 
 	# ---------------------------------------------------------------------------

@@ -20,6 +20,13 @@
 			option(value='keyword', content=tm.keyword);
 			option(value='series',  content="Series");
 		END;
+
+		WRAPPER html/select name='format' id='mr_search_format';
+			option(value='all',	selected='selected', content="All Formats");
+			option(value='audiobooks',	content="Audiobooks");
+			option(value='',	content="...");
+		END;
+
 	
 		space(1);
 

@@ -58,6 +58,26 @@
 
 				END; # - table
 			END; # - center
+
+			%]
+
+
+			<!--
+			<table border=0 cellspacing=5 cellpadding=0>
+			<tr><td>
+			<iframe src="http://www.siteprocentral.com/cgi-bin/feed/feedload.cgi?id=feed" width="762" height="406" frameborder="0" scrolling="no"></iframe>
+			</td></tr>
+			<tr>
+			<td align=center style="font: 10px Arial, Helvetica, sans-serif">
+			<hr width="760" size="1" noshade>
+			Place this <a href="http://www.siteprocentral.com/html_color_code.html">HTML Color Code</a> tool on your website free. | Professional <a href="http://www.turnkey-websites-opportunity.com"> Turnkey Websites</a>
+			</td></tr></table>
+			-->
+	
+			[%
+
+
+
 		END; # - body
 	END; # - html
 
