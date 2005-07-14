@@ -40,7 +40,7 @@ CREATE OR REPLACE VIEW money.usr_billable_summary_xact AS
 		SUM(COALESCE(debit.amount,0) - COALESCE(credit.amount,0)) AS balance_owed
 	  FROM	money.billable_xact xact
 	  	JOIN money.billing debit ON (xact.id = debit.xact)
-		JOIN money.payment credit ON (xact.id = credit.xact)
+		LEFT JOIN money.payment credit ON (xact.id = credit.xact)
 	  WHERE	xact.xact_finish IS NULL
 	GROUP BY 1,2;
 

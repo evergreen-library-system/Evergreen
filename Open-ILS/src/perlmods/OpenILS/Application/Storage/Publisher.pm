@@ -309,6 +309,7 @@ use OpenILS::Application::Storage::Publisher::asset;
 use OpenILS::Application::Storage::Publisher::biblio;
 use OpenILS::Application::Storage::Publisher::config;
 use OpenILS::Application::Storage::Publisher::metabib;
+use OpenILS::Application::Storage::Publisher::money;
 use OpenILS::Application::Storage::Publisher::permission;
 ';
 
