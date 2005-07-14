@@ -264,7 +264,12 @@ mathHelp : function mathHelp()
   printWithRunin("Math methods", "abs, acos, asin, atan, atan2, ceil, cos, exp, floor, log, max, min, pow, random, round, sin, sqrt, tan", "propList");
 },
 
-ans : undefined
+ans : undefined,
+
+cls : function cls()
+{
+	while (_out.lastChild) { _out.removeChild( _out.lastChild ); }
+}
 };
 
 
@@ -676,7 +681,7 @@ form { margin: 0; padding: 0; }
 
 <body onload="params.w = window; params.app = 'Shell'; mw.OpenILS_init(params); init();" onunload="mw.OpenILS_exit(params);">
 
- <div id="output"><h3>JavaScript Shell 1.3.1</h3><div>Features: autocompletion of property names with Tab, multiline input with Shift+Enter, input history with (Ctrl+) Up/Down, <a accesskey=M href="javascript:go('scope(Math); mathHelp();');">Math</a>, <a accesskey=H href="http://www.squarefree.com/shell/?ignoreReferrerFrom=shell1.3.1">help</a></div><div>Values and functions: ans, print(string), <a accesskey=P href="javascript:go('props(ans)')">props(object)</a>, <a accesskey=B href="javascript:go('blink(ans)')">blink(node)</a>, load(scriptURL), scope(object)</div></div>
+ <div id="output"><h3>JavaScript Shell 1.3.1</h3><div>Features: autocompletion of property names with Tab, multiline input with Shift+Enter, input history with (Ctrl+) Up/Down, <a accesskey=M href="javascript:go('scope(Math); mathHelp();');">Math</a>, <a accesskey=H href="http://www.squarefree.com/shell/?ignoreReferrerFrom=shell1.3.1">help</a></div><div>Values and functions: ans, print(string), <a accesskey=P href="javascript:go('props(ans)')">props(object)</a>, <a accesskey=B href="javascript:go('blink(ans)')">blink(node)</a>, load(scriptURL), scope(object), cls()</div></div>
 
 <div><textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea></div>
 
