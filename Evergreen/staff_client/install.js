@@ -10,7 +10,7 @@ var XpiInstaller = {
 	extVersion: '0.0.4',
 	extAuthor: 'GPLS',
 	extLocaleNames: ['en-US'], //null, // e.g. ['en-US', 'en-GB']
-	extSkinNames: null, // e.g. ['classic', 'modern']
+	extSkinNames: null, // e.g. ['classic', 'modern']  I have this broken
 	extPostInstallMessage: 'Success! Please restart your browser to finish the installation.', // Set to null for no post-install message
 	// --- Editable items end ---
 
@@ -68,11 +68,8 @@ var XpiInstaller = {
 		}
 
 		// Register skins
-		for (var skin in this.extSkinNames)
-		{
-			var regPath = 'skin/' + this.extSkinNames[skin] + '/' + this.extShortName + '/';
-			Install.registerChrome(Install.SKIN | installType, jarPath, regPath);
-		}
+		var regPath = 'skin/' + this.extShortName + '/';
+		Install.registerChrome(Install.SKIN | installType, jarPath, regPath);
 
 		// Perform install
 		var err = Install.performInstall();
@@ -116,7 +113,8 @@ var XpiInstaller = {
 	}
 };
 
-/* XpiInstaller.install(); */
+XpiInstaller.install(); 
+/* 
 Install.alert('The install.js file for Evergreen is currently broken for Mozilla browsers.  Any volunteers for fixing this?  The problem I see is with registering the skin component.  The install.rdf for Firefox should work');
 Install.cancelInstall(Install.INSTALL_CANCELLED);
-
+*/
