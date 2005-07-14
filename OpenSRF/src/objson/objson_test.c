@@ -27,68 +27,94 @@ int main() {
 
 
 	/* number, double, and 'null' parsing... */
-	object* num = json_parse_string("1");
-	printf("\nParsed number: %d\n", num->num_value);
-	free_object(num);
-	num = json_parse_string("1.1");
-	printf("\nDouble number: %lf\n", num->double_value);
-	free_object(num);
+	printf("------------------------------------------------------------------\n");
+	object* o = json_parse_string("1");
+	printf("\nParsed number: %ld\n", o->num_value);
+	free_object(o);
 
-	object* null = json_parse_string("nUlL");
-	char* n = null->to_json(null);
-	free_object(null);
-	printf("\nJSON Null: %s\n", n);
-	free(n);
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("1.1");
+	printf("\nDouble number: %lf\n", o->double_value);
+	free_object(o);
 
-	object* mix = json_parse_string("[1, .5, null]");
-	char* m = mix->to_json(mix);
-	printf("\nJSON MIX: %s\n", m );
-	free(m);
-	free_object(mix);
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("nUlL");
+	char* s = o->to_json(o);
+	free_object(o);
 
+	printf("\nJSON Null: %s\n", s);
+	free(s);
+
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("[1, .5, null]");
+	s  = o->to_json(o);
+	printf("\nJSON MIX: %s\n", s );
+	free(s);
+	free_object(o);
+
+	printf("------------------------------------------------------------------\n");
 	/* simulate an error.. */
 	printf("\nShould print error msg: \n");
-	object* error = json_parse_string("[1, .5. null]");
-	if( error == NULL ) printf("\n"); 
+	o = json_parse_string("[1, .5. null]");
+	if( o == NULL ) printf("\n"); 
 
-	object * t = json_parse_string("[ Null, trUe, falSE, 1, 12.9, \"true\" ]");
-	char* ts = t->to_json(t);
-	printf("More JSON: %s\n", ts);
-	free(ts);
-	free_object(t);
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("[ Null, trUe, falSE, 1, 12.9, \"true\" ]");
+	s = o->to_json(o);
+	printf("More JSON: %s\n", s);
+	free(s);
+	free_object(o);
+
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("[ Null, trUe, falSE, 1, 12.9, \"true\", "
+			"{\"key\":[0,0.0,1],\"key2\":null},NULL, { }, [] ]");
+	s = o->to_json(o);
+	printf("More JSON: %s\n", s);
+	free(s);
+	free_object(o);
 
 
-
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("\"Pin\\u0303ata\"");
+	s = o->to_json(o);
+	printf("UNICODE:: %s\n", o->string_data);
+	printf("Back to JSON: %s\n", s);
+	free_object(o);
+	free(s);
 
 
 	/* sample JSON string with some encoded UTF8 */
 	char* jsons = "/*--S mvr--*/[null,null,null,\"Griswold del Castillo, Richard\",[],null,\"1405676\",null,null,\"1558853243 (alk. paper) :\",\"c2002\",\"Pin\\u0303ata Books\",null,[],[[\"Chavez, Cesar 1927-\",\"Juvenile literature\"],[\"Labor leaders\",\"United States\",\"Biography\",\"Juvenile literature\"],[\"Mexican Americans\",\"Biography\",\"Juvenile literature\"],[\"Agricultural laborers\",\"Labor unions\",\"United States\",\"History\",\"Juvenile literature\"],[\"United Farm Workers\",\"History\",\"Juvenile literature\"],[\"Chavez, Cesar 1927-\"],[\"Labor leaders\"],[\"Mexican Americans\",\"Biography\"],[\"United Farm Workers.\"],[\"Spanish language materials\",\"Bilingual\"],[\"Chavez, Cesar 1927-\",\"Literatura juvenil\"],[\"Li\\u0301deres obreros\",\"Estados Unidos\",\"Biografi\\u0301a\",\"Literatura juvenil\"],[\"Mexicano-americanos\",\"Biografi\\u0301a\",\"Literatura juvenil\"],[\"Sindicatos\",\"Trabajadores agri\\u0301colas\",\"Estados Unidos\",\"Historia\",\"Literatura juvenil\"],[\"Unio\\u0301n de Trabajadores Agri\\u0301colas\",\"Historia\",\"Literatura juvenil\"]],\"ocm48083852 \",\"Ce\\u0301sar Cha\\u0301vez : the struggle for justice = Ce\\u0301sar Cha\\u0301vez : la lucha por la justicia\",[\"text\"], { \"hi\":\"you\"} ]/*--E mvr--*/";
 
 
+	printf("------------------------------------------------------------------\n");
 	printf("\nOriginal JSON\n%s\n", jsons); 
 
 	/* parse the JSON string */
 	object* yuk = json_parse_string(jsons); 
 
 	/* grab the class name from the object */
+	printf("------------------------------------------------------------------\n");
 	printf("\nParsed object with class %s\n", yuk->classname );
 
 	/* turn the resulting object back into JSON */
 	char* ccc = yuk->to_json(yuk); 
 	
 	/* extract a sub-object from the object and print its data*/
-	object* o = yuk->get_index(yuk, 11);
+	o = yuk->get_index(yuk, 11);
 	printf("\nRandom unicode string => %s\n", o->string_data);
 
 	/* parse the new JSON string to build yet another object */
 	object* yuk2 = json_parse_string(ccc);
 
+	printf("------------------------------------------------------------------\n");
 	/* turn that one back into JSON and print*/
 	char* cccc = yuk2->to_json(yuk2);
 	printf("\nFinal JSON: \n%s\n", cccc);
 
 	char* string2 = strdup(jsons);
 
+	printf("------------------------------------------------------------------\n");
 	int x = 0;
 	int count = 3000;
 	printf("\nParsing %d round trips at %f...\n", count, get_timestamp_millis());
@@ -139,6 +165,7 @@ int main() {
 
 	/* dig our way into the JSON object we parsed, see test.json to get
 	   an idea of the object structure */
+	printf("------------------------------------------------------------------\n");
 	object* big = json_parse_string(buf);
 	object* k = big->get_key(big,"web-app");
 	object* k2 = k->get_key(k,"servlet");

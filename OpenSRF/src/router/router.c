@@ -1142,8 +1142,8 @@ int router_registrar_free( transport_router_registrar* router_registrar ) {
 
 	transport_router_registrar* router = router_registrar;
 
+	/* make this better 
 	int i = 0;
-	
 	while(1) {
 
 		if( router->trusted_servers[i] == NULL &&
@@ -1156,11 +1156,9 @@ int router_registrar_free( transport_router_registrar* router_registrar ) {
 			free(router->trusted_clients[i]);
 		i++;
 	}
+	*/
 
 	free( router_registrar );
-
-
-
 	return 1;
 }
 

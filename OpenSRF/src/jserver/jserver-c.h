@@ -55,6 +55,8 @@ jclient_node* _jserver_add_client(jserver* js, int id);
 /* removes and frees a client node */
 void _jserver_remove_client(jserver* js, char* addr);
 
+void _jserver_remove_client_id(jserver* js, int id);
+
 /* finds a client node by addr */
 jclient_node* jserver_find_client(jserver* js, char* addr);
 

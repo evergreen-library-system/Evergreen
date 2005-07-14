@@ -173,6 +173,7 @@ int json_parse_json_bool(char* string, unsigned long* index, object* obj) {
 		(*index) += 5;
 		obj->bool_value = 0;
 		obj->is_bool = 1;
+		obj->is_null = 0;
 		return 0;
 	}
 
@@ -183,6 +184,7 @@ int json_parse_json_bool(char* string, unsigned long* index, object* obj) {
 		(*index) += 4;
 		obj->bool_value = 1;
 		obj->is_bool = 1;
+		obj->is_null = 0;
 		return 0;
 	}
 
@@ -225,12 +227,14 @@ int json_parse_json_number(char* string, unsigned long* index, object* obj) {
 
 	if(dot_seen) {
 		obj->is_double = 1;
+		obj->is_null = 0;
 		obj->double_value = strtod(buf->buf, NULL);
 		buffer_free(buf);
 		return 0;
 
 	} else {
 		obj->is_number = 1;
+		obj->is_null = 0;
 		obj->num_value = atol(buf->buf);
 		buffer_free(buf);
 		return 0;
@@ -246,6 +250,7 @@ int json_parse_json_array(char* string, unsigned long* index, object* obj) {
 	int status;
 	int in_parse = 0; /* true if this array already contains one item */
 	obj->is_array = 1;
+	obj->is_null = 0;
 	while(*index < current_strlen) {
 
 		json_eat_ws(string, index, 1);
@@ -284,6 +289,7 @@ int json_parse_json_object(char* string, unsigned long* index, object* obj) {
 	assert(string && obj && index && *index < current_strlen);
 
 	obj->is_hash = 1;
+	obj->is_null = 0;
 	int status;
 	int in_parse = 0; /* true if we've already added one item to this object */
 
@@ -337,6 +343,7 @@ int json_parse_json_object(char* string, unsigned long* index, object* obj) {
 		free_object(key_obj);
 		in_parse = 1;
 	}
+
 	return 0;
 }
 

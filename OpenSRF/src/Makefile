@@ -28,7 +28,7 @@ test: test
 
 install: install-prep transport-install stack-install gateway-install	\
 		router-install srfsh-install jserver-install perl-install			\
-		libjson-install objson-install utils-install info
+		libjson-install objson-install utils-install bin-install info
 
 prep:
 	mkdir -p $(TMPDIR)
@@ -119,6 +119,9 @@ jserver-install:	install-prep utils-install
 perl-install:	install-prep
 	cp -r perlmods/* $(PERLDIR)/
 
+bin-install: install-prep
+	cp ../bin/opensrf_ctl $(BINDIR)
+
 
 # --------------------------------------------------------------------------------
 # INFO
@@ -130,9 +133,9 @@ info:
 	@echo "It may be helpful to set some environment variables if the install "
 	@echo "was set to a non-standard location.  These include:"
 	@echo ""
-	@echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBDIR)"
-	@echo "export PERL5LIB=\$$PERL5LIB:$(PERLDIR)"
-	@echo "export PATH=\$$PATH:$(BINDIR)"
+	@echo "export LD_LIBRARY_PATH=$(LIBDIR):\$$LD_LIBRARY_PATH"
+	@echo "export PERL5LIB=$(PERLDIR):\$$PERL5LIB"
+	@echo "export PATH=$(BINDIR):\$$PATH"
 	@echo ""
 
 

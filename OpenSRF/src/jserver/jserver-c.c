@@ -27,7 +27,7 @@ void jserver_free(jserver* js) {
 	jclient_node* node; 
 	while(js->client) {
 		node = js->client->next;
-		_jserver_remove_client(js, js->client->addr);
+		_jserver_remove_client_id(js, js->client->id);
 		js->client = node;
 	}
 	socket_manager_free(js->mgr);
@@ -37,13 +37,8 @@ void jserver_free(jserver* js) {
 void jserver_socket_closed(void* blob, int sock_id) {
 	jserver* js = (jserver*) blob;
 	if(js == NULL) return;
-	jclient_node* node = jserver_find_client_id(js, sock_id);
-	if(node) {
-		info_handler("Removing client %d - %s remote "
-				"site closed socket", sock_id, node->addr);
-		_jserver_remove_client(js, node->addr);
-	}
-
+	info_handler("Removing client %d - site closed socket",sock_id);
+	_jserver_remove_client_id(js, sock_id);
 }
 
 /* opens the inet and unix sockets that we're listening on */
@@ -169,6 +164,38 @@ void _jserver_remove_client(jserver* js, char* addr) {
 
 	while(node) {
 		if(node->addr && !strcmp(node->addr,addr)) {
+			tail_node->next = node->next;
+			debug_handler("Removing a jserver client");
+			socket_disconnect(js->mgr, node->id);
+			_free_jclient_node(node);
+			return;
+		}
+		tail_node = node;
+		node = node->next;
+	}
+}
+
+
+/* removes and frees a client node */
+void _jserver_remove_client_id(jserver* js, int id) {
+	if(js == NULL || js->client == NULL) return;
+
+	jclient_node* node = js->client;
+
+	if(node->id == id) {
+		js->client = node->next;
+		debug_handler("Removing the first jserver client");
+		socket_disconnect(js->mgr, node->id);
+		_free_jclient_node(node);
+		return;
+	}
+
+	debug_handler("Searching for jclient to remove");
+	jclient_node* tail_node = node;
+	node = node->next;
+
+	while(node) {
+		if(node->id == id) {
 			tail_node->next = node->next;
 			debug_handler("Removing a jserver client");
 			socket_disconnect(js->mgr, node->id);
