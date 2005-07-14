@@ -16,6 +16,7 @@ var sdump_levels = {
 	'D_TRACE_EXIT' :  false,
 	'D_TIMEOUT' :  true,
 	'D_FILTER' : true,
+	'D_CONSTRUCTOR' : true,
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
@@ -32,6 +33,8 @@ var sdump_levels = {
 	'D_PATRON_DISPLAY' : true,
 	'D_PATRON_DISPLAY_STATUS' : true,
 	'D_PATRON_DISPLAY_CONTACT' : true,
+
+	'D_PATRON_ITEMS' : true,
 
 	'D_PATRON_UTILS' : true,
 	

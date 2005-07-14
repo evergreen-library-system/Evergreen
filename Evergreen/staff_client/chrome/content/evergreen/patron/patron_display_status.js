@@ -54,7 +54,7 @@ function patron_display_status_init(p) {
 		return p.w.display_patron();
 	}
 
-	setTimeout(
+	consider_Timeout(
 		function() {
 			sdump('D_TIMEOUT','******** timeout occurred in patron_display_status.js\n');
 			if (p.patron) {

@@ -5,7 +5,7 @@
 
 	<script>mw.sdump('D_TRACE','Loading clam_shell_overlay.xul\n');</script>
 
-<commandset id="ClamShell_cmds">
+<commandset id="universal_cmds">
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>

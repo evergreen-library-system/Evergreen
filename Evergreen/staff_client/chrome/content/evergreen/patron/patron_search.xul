@@ -7,7 +7,11 @@
 <page id="patron_search_win"
 	orient="vertical" style="overflow: auto" width="800" height="500"
 	sizemode="maximized" persist="width height" 
-	onload="params.clamshell = 'PatronSearch_clamshell'; params.w = window; params.app = 'PatronSearch'; mw.OpenILS_init(params);"
+	onload="params.clamshell = 'PatronSearch_clamshell'; 
+		params.right_panel = 'PatronSearch_right_panel';
+		params.w = window; 
+		params.app = 'PatronSearch'; 
+		mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -22,13 +26,15 @@
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_search_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="PatronSearch_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="PatronSearch_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="PatronSearch_main" />
+
+	<popupset id="universal_popupset" />
 
 </page>
 

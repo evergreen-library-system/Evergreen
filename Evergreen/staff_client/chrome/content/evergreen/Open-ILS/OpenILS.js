@@ -15,6 +15,7 @@ function OpenILS_init(params) {
 			case 'PatronDisplay' : patron_display_init(params); break;
 			case 'PatronDisplayStatus' : patron_display_status_init(params); break;
 			case 'PatronDisplayContact' : patron_display_contact_init(params); break;
+			case 'PatronItems' : patron_items_init(params); break;
 			case 'CircTree' : circ_tree_init(params); break;
 		}
 
@@ -47,6 +48,7 @@ function OpenILS_exit(params) {
 			case 'PatronDisplay' : patron_display_exit(params); break;
 			case 'PatronDisplayStatus' : patron_display_status_exit(params); break;
 			case 'PatronDisplayContact' : patron_display_contact_exit(params); break;
+			case 'PatronItems' : patron_items_exit(params); break;
 			case 'CircTree' : circ_tree_exit(params); break;
 		}
 

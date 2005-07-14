@@ -7,8 +7,7 @@
 <page id="clam_shell_win"
 	orient="vertical" style="overflow: auto" width="800" height="500"
 	sizemode="maximized" persist="width height" 
-	onload="params.clamshell = 'ClamShell_main'; 
-		params.splitter = 'ClamShell_splitter';
+	onload="params.node = document.getElementById('ClamShell_main'); 
 		params.w = window; 
 		params.app = 'ClamShell'; 
 		mw.OpenILS_init(params);"
@@ -26,13 +25,15 @@
 	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="ClamShell_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="ClamShell_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="ClamShell_main" />
+
+	<popupset id="universal_popupset" />
 
 </page>
 

@@ -26,13 +26,15 @@
 	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_vertical_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="ClamShell_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="ClamShell_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="ClamShell_main" />
+
+	<popupset id="universal_popupset" />
 
 </page>
 

@@ -25,13 +25,15 @@
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_search_form_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="PatronSearchForm_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="PatronSearchForm_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="PatronSearchForm_main" />
+
+	<popupset id="universal_popupset" />
 
 </page>
 

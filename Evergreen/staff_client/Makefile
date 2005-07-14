@@ -22,12 +22,16 @@ open-ils:
 	cp ../../Open-ILS/src/javascript/widgets/*.js chrome/content/evergreen/Open-ILS/widgets/
 	cp ../../Open-ILS/src/javascript/widgets/menu/*.js chrome/content/evergreen/Open-ILS/widgets/menu/
 
+patron:
+	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_items/g | sed s/PagedTree/PatronItems/g > chrome/content/evergreen/patron/patron_items_overlay.xul )
+	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_items.dtd)
+
 evergreen.xpi: evergreen.jar
 	@echo
 	@echo make the xpi file
 	zip -r evergreen.xpi chrome/ defaults/ install.js install.rdf Makefile LICENSE README -x \*CVS\* > /dev/null
 
-evergreen.jar: generated open-ils
+evergreen.jar: generated open-ils patron
 	@echo
 	@echo make the jar file
 	(cd chrome; zip -r evergreen.jar content/ locale/ skin/ -x \*CVS\* > /dev/null )
@@ -37,6 +41,7 @@ clean:
 	@echo delete derived files
 	rm -f evergreen.xpi
 	rm -f chrome/evergreen.jar
+	rm -f chrome/content/evergreen/patron/patron_items_overlay.xml chrome/locale/en-US/evergreen/patron_items.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
 	rm -f chrome/content/evergreen/util/fieldmapper.js
 	rm -f chrome/content/evergreen/util/OrgTree.js

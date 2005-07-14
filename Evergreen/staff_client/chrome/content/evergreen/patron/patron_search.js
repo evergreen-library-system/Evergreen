@@ -6,22 +6,21 @@ function patron_search_init(p) {
 	sdump('D_PATRON_SEARCH',"TESTING: patron_search.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 
-	setTimeout(
-		function () {
-			sdump('D_TIMEOUT','******** timeout occurred in patron_search.js\n');
-			p.w.clamshell = spawn_clamshell( 
-				p.w.document, 'new_iframe', p.clamshell, { 
-					'onload' : patron_search_init_after_clamshell(p) 
-				}
-			);
-		}, 0
-	);
-
 	p.w.crazy_search = function (crazy_search_hash) {
 		sdump('D_TRACE_ENTER',arg_dump(arguments));
 		sdump('D_TRACE_EXIT',arg_dump(arguments));
 		return patron_search( p.w, crazy_search_hash );
 	};
+	
+	p.w.result_tree = spawn_patron_search_results(
+		p.w.document, 
+		'new_iframe', 
+		get_widget(p.w.document,p.right_panel), {
+			'onload' : patron_init_after_patron_search_results(p)
+		}
+	);
+
+
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return;
 }
@@ -44,40 +43,6 @@ function patron_search(search_win, crazy_search_hash) {
 	return result;
 }
 
-function patron_search_init_after_clamshell(p) {
-	sdump('D_PATRON_SEARCH',arg_dump(arguments));
-	return function (clamshell_w) {
-		sdump('D_PATRON_SEARCH',arg_dump(arguments));
-		sdump('D_TRACE_ENTER',arg_dump(arguments));
-		setTimeout(
-			function () {
-				sdump('D_TIMEOUT','******** timeout occurred (1) after clamshell in patron_search.js\n');
-				p.w.search_form = spawn_patron_search_form(
-					clamshell_w.document, 
-					'new_iframe', 
-					clamshell_w.first_deck, {
-						'onload' : patron_init_after_patron_search_form(p)
-					}
-				);
-			}, 0
-		);
-		setTimeout(
-			function () {
-				sdump('D_TIMEOUT','******** timeout occurred (2) after clamshell in patron_search.js\n');
-				p.w.result_tree = spawn_patron_search_results(
-					clamshell_w.document, 
-					'new_iframe', 
-					clamshell_w.second_deck, {
-						'onload' : patron_init_after_patron_search_results(p)
-					}
-				);
-			}, 0
-		);
-		sdump('D_TRACE_EXIT',arg_dump(arguments));
-		return;
-	};
-}
-
 function patron_init_after_patron_search_form(p) {
 	sdump('D_PATRON_SEARCH',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
@@ -97,7 +62,7 @@ function patron_init_after_patron_search_form(p) {
 				}
 			}
 		);
-		setTimeout(
+		consider_Timeout(
 			function () {
 				sdump('D_TIMEOUT','******** timeout occurred after patron_search_form in patron_search.js\n');
 				form_w.status_w = spawn_patron_display_status( 

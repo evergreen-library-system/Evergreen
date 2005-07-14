@@ -7,7 +7,7 @@
 
 	<?xul-overlay href="chrome://evergreen/content/main/app_shell_menus_overlay.xul"?>
 
-<commandset id="AppShell_cmds">
+<commandset id="universal_cmds">
 
 	<command id="cmd_close_window" oncommand="
 		window.close();" />
@@ -67,7 +67,7 @@
 		mw.spawn_filter_console(document,'new_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_test" oncommand="
-		alert('Not Yet Implemented'); "/>
+		mw.spawn_patron_display(document,'new_tab','main_tabbox',{'patron':'21099000006699'}); "/>
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>

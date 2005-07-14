@@ -5,7 +5,7 @@
 
 	<script>mw.sdump('D_TRACE','Loading circ_tree_overlay.xul\n');</script>
 
-<commandset id="CircTree_cmds">
+<commandset id="universal_cmds">
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>

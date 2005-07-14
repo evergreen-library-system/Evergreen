@@ -33,16 +33,17 @@
 	<?xul-overlay href="chrome://evergreen/content/main/paged_tree_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="PagedTree_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="PagedTree_keys" />
 
 	<!-- Context menus -->
-	<popupset id="PagedTree_popupset" />
+	<popupset id="universal_popupset" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="PagedTree_main" />
+
 
 </page>
 

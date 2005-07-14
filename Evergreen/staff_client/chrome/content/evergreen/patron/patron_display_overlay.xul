@@ -5,26 +5,54 @@
 
 	<script>mw.sdump('D_TRACE','Loading patron_display_overlay.xul\n');</script>
 
-<commandset id="PatronDisplay_cmds">
+	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_items_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_contact.xul"?>
+
+<commandset id="universal_cmds">
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
 
-	<command id="cmd_patron_refresh" oncommand="try { refresh(); } catch(E) { mw.sdump('D_ERROR',E); };" />
-	<command id="cmd_patron_checkout" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
-	<command id="cmd_patron_items" oncommand="try { show_items(); } catch(E) { mw.sdump('D_ERROR',E); };"/>
-	<command id="cmd_patron_holds" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
-	<command id="cmd_patron_bills" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
-	<command id="cmd_patron_edit" oncommand="try { } catch(E) { mw.sdump('D_ERROR',E); };"/>
-	<command id="cmd_patron_info" oncommand="alert('info');"/>
+	<command id="cmd_patron_refresh" />
+	<command id="cmd_patron_checkout" />
+	<command id="cmd_patron_items" />
+	<command id="cmd_patron_holds" />
+	<command id="cmd_patron_bills" />
+	<command id="cmd_patron_edit" />
+	<command id="cmd_patron_info" />
 
 </commandset>
 
 <!-- main widget for patron_display -->
 <box id="PatronDisplay_main" flex="1" orient="vertical">
 	<hbox id="PatronNavBar" flex="0"/>
-	<groupbox id="PatronDisplay_groupbox" orient="vertical" flex="1"/>
+	<groupbox id="PatronDisplay_groupbox" orient="vertical" flex="1">
+		<box id="ClamShell_main" />
+	</groupbox>
 </box>
+
+<deck id="ClamShell_first_deck">
+	<vbox id="inner_left_clamshell" flex="1">
+		<deck id="csfdvbd1" style="overflow: auto;">
+			<groupbox id="PatronDisplayStatus_groupbox" />
+		</deck>
+		<splitter id="csfdvbs" />
+		<deck id="csfdvbd2" style="overflow: auto;">
+			<groupbox id="PatronDisplayContact_groupbox" />
+		</deck>
+	</vbox>
+</deck>
+
+<deck id="ClamShell_second_deck">
+	<box id="PatronCheckout_main"><label value="checkout"/></box>
+	<box id="PatronItems_main" />
+	<box id="PatronHolds_main"><label value="holds" /></box>
+	<box id="PatronBills_main"><label value="bills" /></box>
+	<box id="PatronEdit_main"><label value="edit" /></box>
+	<box id="PatronInfo_main"><label value="info" /></box>
+</deck>
 
 <hbox id="PatronNavBar">
 	<label id="PatronNavBar_patron_name" class="patronNameLarge"

@@ -5,7 +5,7 @@
 
 	<script>mw.sdump('D_TRACE','Loading patron_search_form_overlay.xul\n');</script>
 
-<commandset id="PatronSearchForm_cmds">
+<commandset id="universal_cmds">
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
@@ -22,8 +22,7 @@
 		<caption id="psgf_gbc" label='&patron_search_form.caption;' />
 		<grid id="psg" />
 	</groupbox>
-	<box id="PatronSearchForm_selection" orient="vertical" flex="1" />
-
+	<groupbox id="PatronDisplayStatus_groupbox">
 </box>
 
 <!-- group 0 = user  group 1 = address  group 2 = phone, ident -->

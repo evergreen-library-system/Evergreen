@@ -1,10 +1,5 @@
 sdump('D_TRACE','Loading circ_tree.js\n');
-
-function circ_tree_init(p) {
-	sdump('D_CIRC_TREE',"TESTING: circ_tree.js: " + mw.G['main_test_variable'] + '\n');
-	sdump('D_TRACE_ENTER',arg_dump(arguments));
-
-	p.w.circ_cols = [
+var circ_cols = [
 		{
 			'id' : 'barcode', 'label' : getString('acp_label_barcode'), 'flex' : 1,
 			'primary' : true, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : '.barcode()'
@@ -84,6 +79,11 @@ function circ_tree_init(p) {
 		
 	];
 
+
+function circ_tree_init(p) {
+	sdump('D_CIRC_TREE',"TESTING: circ_tree.js: " + mw.G['main_test_variable'] + '\n');
+	sdump('D_TRACE_ENTER',arg_dump(arguments));
+
 	p.w.register_circ_select_callback = function (f) {
 		p.w._circ_select_callback = f;
 	}
@@ -100,7 +100,7 @@ function circ_tree_init(p) {
 		circ_tree_map_circ_to_cols(p, circ, treeitem);	
 	}
 
-	setTimeout(
+	consider_Timeout(
 		function() {
 			sdump('D_TIMEOUT','***** timeout occured circ_tree.js');
 		        p.w.tree_win = spawn_paged_tree(
@@ -111,7 +111,7 @@ function circ_tree_init(p) {
 					'onload' : circ_tree_init_after_paged_tree(p) 
 				}
 		        );
-			setTimeout(
+			consider_Timeout(
 				function () {
 					sdump('D_TIMEOUT','***** timeout timeout occured circ_tree.js');
 				        if (p.onload) {
@@ -142,7 +142,7 @@ function circ_tree_init_after_paged_tree(p) {
 		tree_win.register_context_builder( p.w._context_function );
 		p.w.add_circs = tree_win.add_rows;
 		p.w.clear_circs = tree_win.clear_tree;
-		setTimeout(
+		consider_Timeout(
 			function() {
 				sdump('D_TIMEOUT','***** timeout after paged_tree occured circ_tree.js');
 				try {

@@ -22,13 +22,15 @@
 	<?xul-overlay href="chrome://evergreen/content/main/app_shell_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="AppShell_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="AppShell_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="AppShell_main" />
+
+	<popupset id="universal_popupset" />
 
 </window>
 

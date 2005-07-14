@@ -2,6 +2,19 @@ sdump('D_TRACE','Loading util.js\n');
 
 var timer = {};
 var counter = {};
+var consider_Timeout_default = false;
+
+function consider_Timeout( f, t, b) {
+	sdump('D_TIMEOUT', arg_dump(arguments,{0:true,1:true,2:true}));
+	if (b) {
+		setTimeout(f,t);
+	} else {
+		if (consider_Timeout_default)
+			setTimeout(f,t);
+		else
+			f();
+	}
+}
 
 function parse_render_string( obj_string, render_string, regexp ) {
 	sdump('D_UTIL', arg_dump(arguments,{0:true,1:true}));

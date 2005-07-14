@@ -28,13 +28,15 @@
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="PatronDisplayStatus_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="PatronDisplayStatus_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="PatronDisplayStatus_main" />
+
+	<popupset id="universal_popupset" />
 
 </page>
 

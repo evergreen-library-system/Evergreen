@@ -34,7 +34,7 @@ function patron_search_form_init(p) {
 	else
 		sdump('D_PATRON_SEARCH_FORM',"No cmd_clear element.\n");
 
-	setTimeout(
+	consider_Timeout(
 		function() {
 			sdump('D_TIMEOUT','******** timeout occurred in patron_search_form.js\n');
 			if (p.onload) {

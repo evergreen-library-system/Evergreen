@@ -381,12 +381,13 @@ function set_deck() {
 	if (arguments.length == 2) {
 		deck = arguments[0];
 		idx = arguments[1];
+		set_decks({ deck : idx });
 	} else {
 		d = arguments[0];
 		deck = arguments[1];
 		idx = arguments[2];
+		set_decks(d,{ deck : idx });
 	}
-	set_decks(d,{ deck : idx });
 }
 
 // Takes a hash with key:value => deck element id : page index
@@ -404,7 +405,10 @@ function set_decks() {
 		var deck = deck_id;
 		if (typeof(deck) != 'object')
 			deck = d.getElementById( deck_id )
-		if (deck) deck.setAttribute( 'selectedIndex', params[deck_id] );
+		if (deck) {
+			deck.setAttribute( 'selectedIndex', params[deck_id] );
+			deck.selectedIndex = params[deck_id];
+		}
 	}
 }
 

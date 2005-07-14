@@ -58,6 +58,7 @@
 				var tb = document.createElement('textbox');
 				hbox.appendChild(tb);
 				tb.setAttribute('multiline','true');
+				tb.setAttribute('readonly','true');
 				tb.setAttribute('rows','5');
 				tb.setAttribute('flex','1');
 				tb.setAttribute('value',msg.message);

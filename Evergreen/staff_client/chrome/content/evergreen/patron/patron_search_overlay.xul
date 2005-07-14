@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/patron_search.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/patron_display.dtd">
 <overlay id="patron_search_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<script>mw.sdump('D_TRACE','Loading patron_search_overlay.xul\n');</script>
 
-<commandset id="PatronSearch_cmds">
+<commandset id="universal_cmds">
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
@@ -14,8 +14,25 @@
 
 <!-- main widget for patron_search -->
 <box id="PatronSearch_main" flex="1" orient="vertical">
-	<box id="PatronSearch_clamshell" flex="1" orient="horizontal"/>
+	<deck id="psmd1">
+	</deck>
+	<splitter id="psms" />
+	<deck id="PatronSearch_right_panel"/>
 </box>
+
+<hbox id="PatronSearch_DisplayStatus_insert1"/>
+	<label id="PatronSearch_patron_name" class="patronNameMedium"
+		tooltiptext="&patron_display.name.label;"
+		value=" "
+		render="true" fm_class="au" 
+		render_value="patron_get_full_name($$)" />
+</hbox>
+<hbox id="PatronSearch_DisplayStatus_insert2"/>
+	<button id="PatronSearch_retrieve_button" 
+		label="&patron_navbar.retrieve;" 
+		accesskey="&patron_navbar.retrieve.accesskey;"/>
+</hbox>
+
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 <keyset id="PatronSearch_keys">

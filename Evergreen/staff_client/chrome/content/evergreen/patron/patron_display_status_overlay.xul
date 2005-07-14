@@ -5,7 +5,7 @@
 
 	<script>mw.sdump('D_TRACE','Loading patron_display_status_overlay.xul\n');</script>
 
-<commandset id="PatronDisplayStatus_cmds">
+<commandset id="universal_cmds">
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
@@ -19,20 +19,14 @@
 
 <groupbox id="PatronDisplayStatus_groupbox" orient="vertical">
 	<caption label="&patron_display.status.caption;"/>
-	<label id="PatronDisplayStatus_patron_name" class="patronNameMedium"
-		tooltiptext="&patron_display.name.label;"
-		value=" "
-		render="true" fm_class="au" 
-		render_value="patron_get_full_name($$)" />
+	<hbox id="PatronSearch_DisplayStatus_insert1"/>
 	<label id="PatronDisplayStatus_home_ou"
 		tooltiptext="&patron_display.home_ou.label;"
 		value=" "
 		render="true" fm_class="au" 
 		render_value="patron_get_home_ou_name($$)" />
 	<grid id="PatronDisplayStatus_grid" flex="1"/>
-	<button id="PatronDisplayStatus_retrieve_button" 
-		label="&patron_navbar.retrieve;" 
-		accesskey="&patron_navbar.retrieve.accesskey;"/>
+	<hbox id="PatronSearch_DisplayStatus_insert2"/>
 	<label bug="without this here, the label and grid get swapped in the display"/>
 </groupbox>
 

@@ -54,7 +54,7 @@ function patron_search_results_init(p) {
 		patron_search_results_map_patron_to_cols(p, patron, treeitem);	
 	}
 
-	setTimeout(
+	consider_Timeout(
 		function() {
 			sdump('D_TIMEOUT','******** timeout occurred in patron_search_results.js\n');
 		        if (p.onload) {

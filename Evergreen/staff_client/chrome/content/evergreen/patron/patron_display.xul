@@ -9,7 +9,10 @@
 	sizemode="maximized" persist="width height" 
 	onload="params.w = window; 
 		params.app = 'PatronDisplay'; 
-		params.clamshell = 'PatronDisplay_groupbox';
+		params.clamshell_node = document.getElementById('ClamShell_main');
+		params.patron_items_node = document.getElementById('PatronItems_main');
+		params.commandset_node = document.getElementById('universal_cmds');
+		params.popupset_node = document.getElementById('universal_popupset');
 		mw.focus_widget( document, 'PatronNavBar_refresh' );
 		mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"
@@ -27,13 +30,15 @@
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_overlay.xul"?>
 
 	<!-- XUL'ified abstraction for logic to attach to widgets -->
-	<commandset id="PatronDisplay_cmds" />
+	<commandset id="universal_cmds" />
 
 	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 	<keyset id="PatronDisplay_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<box id="PatronDisplay_main" />
+
+	<popupset id="universal_popupset" />
 
 </page>
 
