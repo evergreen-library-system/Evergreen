@@ -114,12 +114,14 @@ function register_window(w) {
 	sdump('D_WIN',arg_dump(arguments,{0:true}));
 	mw.G.win_list.push(w);
 	mw.G.last_win = w;
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }
 
 function unregister_window(w) {
 	sdump('D_WIN',arg_dump(arguments,{0:true}));
 	mw.G.win_list = filter_list( mw.G.win_list, function(e){return(e!=w);} );
 	mw.G.last_win = mw.G.win_list[ mw.G.win_list.length - 1 ];
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }
 
 function close_all_windows() {
@@ -127,14 +129,14 @@ function close_all_windows() {
 	var w;
 	for (var i in mw.G.appshell_list) {
 		sdump('D_WIN','\tconsidering ' + i + '...');
-		if (mw.G.win_list[i] != mw) {
+		if (mw.G.appshell_list[i] != mw) {
 			sdump('D_WIN','closing');
-			var w = mw.G.win_list[i];
+			var w = mw.G.appshell_list[i];
 			try { w.close(); } catch (E) {}
-			//unregister_window( w );
 		}
 		sdump('D_WIN','\n');
 	}
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	mw.close();
 }
 
