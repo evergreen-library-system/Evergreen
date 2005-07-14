@@ -213,8 +213,16 @@ AbstractRecordResultPage.prototype.displayRecord =
 	c.className = "record_misc_cell";
 	var resources = record.types_of_resource();
 
-	for( var i in resources ) 
-		this.buildResourcePic( c, resources[i]);
+	for( var i in resources ) {
+		var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
+		var res = modsFormatToMARC(resources[i]);
+		var a = elem("a", 
+			{href: prefix + "?target=record_result&mrid=" +
+			record.doc_id() + "&format=" + res +
+			"&page=0&location=" + this.location +
+			"&depth=" + this.depth} );
+		this.buildResourcePic( c, resources[i], a);
+	}
 
 	author_row.id = "record_result_author_row_" + id;
 	title_row.id = "record_result_title_row_" + id;
@@ -641,18 +649,18 @@ AbstractRecordResultPage.prototype.buildNextLinks = function() {
 }
 
 
-AbstractRecordResultPage.prototype.buildResourcePic = function(c, resource) {
-	return buildResourcePic(c, resource);
+AbstractRecordResultPage.prototype.buildResourcePic = function(c, resource, parent) {
+	return buildResourcePic(c, resource, parent);
 }
 
-function buildResourcePic(c, resource) {
+function buildResourcePic(c, resource, parent) {
 
 	var pic = createAppElement("img");
-
 
 	if(resource.indexOf("sound recording") != -1) 
 		resource = "sound recording";
 	pic.setAttribute("src", "/images/" + resource + ".jpg");
+	pic.setAttribute("border", "0");
 	pic.className = "record_resource_pic";
 	pic.setAttribute("width", "20");
 	pic.setAttribute("height", "20");
@@ -704,7 +712,13 @@ function buildResourcePic(c, resource) {
 	}
 
 	c.childNodes[index].innerHTML = "";
-	c.childNodes[index].appendChild(pic);
+
+	if(parent) {
+		parent.appendChild(pic);
+		c.childNodes[index].appendChild(parent);
+	} else {
+		c.childNodes[index].appendChild(pic);
+	}
 }
 
 AbstractRecordResultPage.prototype.buildRecordImage = function(pic_cell, record, page_id, title) {

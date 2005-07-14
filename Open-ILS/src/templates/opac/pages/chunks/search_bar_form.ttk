@@ -23,8 +23,12 @@
 
 		WRAPPER html/select name='format' id='mr_search_format';
 			option(value='all',	selected='selected', content="All Formats");
-			option(value='audiobooks',	content="Audiobooks");
-			option(value='',	content="...");
+			option(value='at',	content="Books");
+			option(value='at-d',	content="Large Print Books");
+			option(value='ij',	content="Audiobooks");
+			option(value='g',		content="Video Recording");
+			option(value='cd',	content="Music");
+			option(value='m',		content="Electronic Resources");
 		END;
 
 	

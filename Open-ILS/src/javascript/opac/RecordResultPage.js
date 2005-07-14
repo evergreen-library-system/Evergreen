@@ -218,6 +218,7 @@ RecordResultPage.prototype.doSearch = function() {
 
 	this.page			= parseInt(paramObj.__page);
 	var hitsper			= paramObj.__hits_per_page;
+	this.format			= paramObj.__format;
 
 	if(hitsper)
 		this.hitsPerPage = parseInt(hitsper);
@@ -332,8 +333,11 @@ RecordResultPage.prototype.globalSearch = function(type, term) {
 
 RecordResultPage.prototype.mrSearch = function(mrid) {
 
+	var form = this.format;
+	if(form == "all") form = null;
 	var request = new RemoteRequest("open-ils.search",
-		"open-ils.search.biblio.metarecord_to_records", mrid );
+		"open-ils.search.biblio.metarecord_to_records", mrid, form );
+
 	debug("Gathering doc ids for metarecord " + mrid );
 
 	var obj = this;

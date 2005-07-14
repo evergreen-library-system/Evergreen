@@ -155,6 +155,10 @@ function modsFormatToMARC(format) {
 			return "g";
 		case "sound recording":
 			return "ij";
+		case "sound recording-nonmusical":
+			return "ij";
+		case "sound recording-musical":
+			return "ij";
 		case "software, multimedia":
 			return "m";
 		case "still images":

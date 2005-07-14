@@ -177,7 +177,8 @@ function _drawCheckedOut(obj, data) {
 		*/
 
 		var title_href = createAppElement("a");
-		title_href.setAttribute("href","?sub_frame=1&target=record_detail&record=" + record.doc_id() );
+		var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
+		title_href.setAttribute("href", prefix + "?sub_frame=1&target=record_detail&record=" + record.doc_id() );
 		title_href.setAttribute("target","_top"); /* escape to the outermost frame */
 		title_href.appendChild(mktext(record.title()));
 
@@ -1284,7 +1285,8 @@ MyOPACSPage.prototype._addCircs = function(data) {
 		due = due.replace(/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/,"");
 
 		var title_href = createAppElement("a");
-		title_href.setAttribute("href","?sub_frame=1&target=record_detail&record=" + record.doc_id() );
+		var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
+		title_href.setAttribute("href",prefix + "?sub_frame=1&target=record_detail&record=" + record.doc_id() );
 		title_href.setAttribute("target","_top"); /* escape to the outermost frame */
 		title_href.appendChild(mktext(record.title()));
 

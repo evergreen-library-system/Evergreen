@@ -527,75 +527,6 @@ sub cat_biblio_search_class {
 
 
 
-=head comment
-__PACKAGE__->register_method(
-	method	=> "cat_biblio_search_class_id",
-	api_name	=> "open-ils.search.cat.biblio.class.id",
-	argc		=> 3, 
-	note		=> "Searches biblio information by search class and returns the IDs",
-);
-
-sub cat_biblio_search_class_id {
-
-	my( $self, $client, $org_id, $class, $string, $limit, $offset ) = @_;
-
-	$offset	||= 0;
-	$limit	||= 100;
-	$limit -= 1;
-
-
-	my $bool = ($class eq "subject" || $class eq "keyword");
-	$string = OpenILS::Application::Search->filter_search($string, $bool);
-
-	if(!$string) { 
-		return OpenILS::EX->new("SEARCH_TOO_LARGE")->ex();
-	}
-
-	warn "Searching cat.biblio.class.id string: $string offset: $offset limit: $limit\n";
-
-	throw OpenSRF::EX::InvalidArg 
-		("Not enough args to open-ils.search.cat.biblio.class")
-			unless( defined($org_id) and $class and $string );
-
-
-	my $search_hash;
-
-	my $cache_key = md5_hex( $org_id . $class . $string );
-	my $id_array = OpenILS::Application::SearchCache->get_cache($cache_key);
-
-	if(ref($id_array)) {
-		warn "Returning class search from cache\n";
-		my $size = @$id_array;
-		my @ids = @$id_array[ $offset..($offset+$limit) ];
-		return { count => $size, ids => \@ids };
-	}
-
-	my $method = $self->method_lookup("open-ils.search.biblio.marc");
-	if(!$method) {
-		throw OpenSRF::EX::PANIC 
-			("Can't lookup method 'open-ils.search.biblio.marc'");
-	}
-
-	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
-
-	my @cache_ids;
-
-	for my $i (@$records) { 
-		if(defined($i->[0])) {
-			push @cache_ids, $i->[0]; 
-		}
-	}
-
-	my @ids = @cache_ids[ $offset..($offset+$limit) ];
-	my $size = @$records;
-
-	OpenILS::Application::SearchCache->put_cache( 
-			$cache_key, \@cache_ids, $size );
-
-	return { count =>$size, ids => \@ids };
-
-}
-=cut
 
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class_count",
@@ -609,7 +540,7 @@ __PACKAGE__->register_method(
 
 sub biblio_search_class_count {
 
-	my( $self, $client, $class, $string, $org_id, $org_type ) = @_;
+	my( $self, $client, $class, $string, $org_id, $org_type, $format ) = @_;
 
 	warn "org: $org_id : depth: $org_type\n";
 
@@ -619,7 +550,8 @@ sub biblio_search_class_count {
 	warn "Searching biblio.class.id\n" . 
 		"string: $string "		. 
 		"org_id: $org_id\n"		.
-		"depth: $org_type\n" ;
+		"depth: $org_type\n"		.
+		"format: $format\n";
 
 #	my $bool = ($class eq "subject" || $class eq "keyword");
 #	$string = OpenILS::Application::Search->filter_search($string, $bool);
@@ -660,7 +592,8 @@ sub biblio_search_class_count {
 			term => $string, 
 			org_unit => $org_id, 
 			cache_page_size => 1,
-			depth =>$org_type );
+			depth =>$org_type,
+			format => $format );
 
 	my $count = $request->gather(1);
 	warn "Received count $count\n";
@@ -692,7 +625,7 @@ __PACKAGE__->register_method(
 sub biblio_search_class {
 
 	my( $self, $client, $class, $string, 
-			$org_id, $org_type, $limit, $offset ) = @_;
+			$org_id, $org_type, $limit, $offset, $format ) = @_;
 
 	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
 
@@ -706,7 +639,8 @@ sub biblio_search_class {
 		"\noffset: $offset\n"	.
 		"limit: $limit\n"			.
 		"org_id: $org_id\n"		.
-		"depth: $org_type\n" ;
+		"depth: $org_type\n"		.
+		"format: $format\n";
 
 	warn "Search filtering string " . time() . "\n";
 	$string = OpenILS::Application::Search->filter_search($string);
@@ -753,6 +687,7 @@ sub biblio_search_class {
 		depth		=> $org_type, 
 		limit		=> $limit,
 		offset	=> $offset,
+		format	=> $format,
 		cache_page_size => 200,
 		);
 
@@ -914,7 +849,7 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_mrid_to_record_ids {
-	my( $self, $client, $mrid ) = @_;
+	my( $self, $client, $mrid, $format ) = @_;
 
 	throw OpenSRF::EX::InvalidArg 
 		("search.biblio.metarecord_to_record_ids requires mr id")
@@ -926,7 +861,7 @@ sub biblio_mrid_to_record_ids {
 			"open-ils.storage", 
 			#"open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord", $mrid );
 			"open-ils.storage.ordered.metabib.metarecord.records.atomic", 
-			$mrid );
+			$mrid, $format );
 
 
 	#my @ids;

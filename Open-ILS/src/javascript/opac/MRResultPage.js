@@ -73,6 +73,7 @@ MRResultPage.prototype.next = function() {
 			"mr_search_query",		this.string,
 			"mr_search_location",	location,
 			"mr_search_depth",		this.searchDepth,
+			"format",					this.format, 
 			"page",						this.page + 1	
 			] );
 }
@@ -98,6 +99,7 @@ MRResultPage.prototype.prev = function() {
 			"mr_search_query",		this.string,
 			"mr_search_location",	location,
 			"mr_search_depth",		this.searchDepth,
+			"format",					this.format,
 			"page",						this.page - 1	
 			] );
 }
@@ -118,6 +120,7 @@ MRResultPage.prototype.URLRefresh = function() {
 				"mr_search_query",		this.string,
 				"mr_search_location",	this.searchLocation,
 				"mr_search_depth",		this.searchDepth,	
+				"format",					this.format,
 				"page",						0
 				];
 }
@@ -141,6 +144,7 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 				"&hits_per_page=" + this.hitsPerPage +
 				"&location=" + this.searchLocation +
 				"&depth=" + this.searchDepth );
+
 			href.appendChild(createAppTextNode(value));
 			href.title = "View titles for " + t + "";
 			break;
@@ -153,6 +157,7 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 				"&hits_per_page=" + this.hitsPerPage +
 				"&location=" + this.searchLocation +
 				"&depth=" + this.searchDepth );
+
 			href.title = "View titles for " + t + "";
 			break;
 
@@ -187,6 +192,7 @@ MRResultPage.prototype.doSearch = function() {
 	var location		= paramObj.__mr_search_location;
 	var depth			= paramObj.__mr_search_depth;
 	var hitsper			= paramObj.__hits_per_page;
+	var format			= paramObj.__format;
 
 	lastSearchString = string;
 	lastSearchType = stype;
@@ -195,7 +201,7 @@ MRResultPage.prototype.doSearch = function() {
 		this.hitsPerPage = parseInt(hitsper);
 
 	debug("mr search params string " + string + " stype " + stype +
-			" location " + location + " depth " + depth );
+			" location " + location + " depth " + depth  + " format " + format);
 
 	if(depth == null || depth == "undefined")
 		depth = globalSearchDepth;
@@ -220,6 +226,7 @@ MRResultPage.prototype.doSearch = function() {
 			string != this.string				|| 
 			stype != this.stype					||
 			this.searchLocation != location	||
+			this.format != format				|| 
 			this.searchDepth != depth ) {
 		debug("Resetting MRSearch for search " + string);
 		this.resetSearch();
@@ -233,6 +240,8 @@ MRResultPage.prototype.doSearch = function() {
 	this.stype				= stype;
 	this.string				= string;
 	this.page				= parseInt(paramObj.__page);
+	this.format				= format;
+
 	if(this.page == null) this.page = 0;
 
 	this.searchOffset		= this.page * this.hitsPerPage;
@@ -279,9 +288,11 @@ MRResultPage.prototype.doSearch = function() {
 		if(isNaN(this.searchDepth)) this.searchDepth = 0;
 		if(isNaN(this.searchLocation)) this.searchLocation = 1;
 
+		var form = this.format;
+		if(this.format == "all") form = null;
 		var creq = new RemoteRequest(
 			"open-ils.search", method,
-			this.stype, this.string, this.searchLocation, this.searchDepth );
+			this.stype, this.string, this.searchLocation, this.searchDepth, form );
 	
 		/* this request grabs the search count.  When the counts come back
 			the metarecord ids are collected */
@@ -398,11 +409,12 @@ MRResultPage.prototype.doMRSearch = function() {
 
 	debug("Search method is " + method);
 
+	var form = this.format;
+	if(this.format == "all") form = null;
+
 	var request = new RemoteRequest( 
-		"open-ils.search", method,
-		obj.stype, obj.string, 
-		obj.searchLocation, 
-		obj.searchDepth, "50", obj.searchOffset );
+		"open-ils.search", method, obj.stype, obj.string, obj.searchLocation, 
+		obj.searchDepth, "50", obj.searchOffset, form );
 	
 	request.setCompleteCallback(
 		function(req) {
