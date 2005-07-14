@@ -26,14 +26,13 @@ function OpenILS_init(params) {
 		register_window(params.w);
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
-
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }
 
 function OpenILS_exit(params) {
 	sdump( 'D_TRACE', arg_dump( arguments, { '0':'js2JSON( map_object( arg,function(i,o){try{return [i,o.toString()];}catch(E){return [i,o];}}))' }));
-	params.w.document.firstChild.setAttribute('style','background-color: red;');
-	return;
 
+	/*
 	try {
 	
 		switch(params.app) {
@@ -52,6 +51,7 @@ function OpenILS_exit(params) {
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
+	*/
 
 	try {
 
