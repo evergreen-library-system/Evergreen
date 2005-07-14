@@ -17,6 +17,7 @@ my %ex_types = (
 	USER_WRONG_PASSWORD					=> 6,
 	PERMISSION_DENIED						=> 7,
 	UNKNOWN_USER							=> 8, 
+	MAX_RENEWALS_REACHED					=> 9,
 );
 
 use overload ( '""' => sub { $_[0]->ex()->err_msg(); } );

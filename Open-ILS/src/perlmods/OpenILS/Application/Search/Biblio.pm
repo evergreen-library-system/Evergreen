@@ -621,12 +621,12 @@ sub biblio_search_class_count {
 		"org_id: $org_id\n"		.
 		"depth: $org_type\n" ;
 
-	my $bool = ($class eq "subject" || $class eq "keyword");
-	$string = OpenILS::Application::Search->filter_search($string, $bool);
+#	my $bool = ($class eq "subject" || $class eq "keyword");
+#	$string = OpenILS::Application::Search->filter_search($string, $bool);
 
-	if(!$string) { 
-		return OpenILS::EX->new("SEARCH_TOO_LARGE")->ex;
-	}
+#	if(!$string) { 
+#		return OpenILS::EX->new("SEARCH_TOO_LARGE")->ex;
+#	}
 
 		
 	if( !defined($org_id) or !$class or !$string ) {

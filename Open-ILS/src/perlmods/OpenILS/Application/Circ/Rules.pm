@@ -210,10 +210,9 @@ sub gather_hold_objects {
 __PACKAGE__->register_method(
 	method	=> "permit_hold",
 	api_name	=> "open-ils.circ.permit_hold",
-	notes		=> <<NOTES
-Determines whether a given copy is eligible to be held
-NOTES
-);
+	notes		=> <<"	NOTES");
+	Determines whether a given copy is eligible to be held
+	NOTES
 
 sub permit_hold {
 	my( $self, $client, $hold, $copy, $args ) = @_;
@@ -343,7 +342,12 @@ __PACKAGE__->register_method(
 sub permit_circ {
 	my( $self, $client, $user_session, $barcode, $user_id, $outstanding_count ) = @_;
 
-	$outstanding_count ||= 0;
+	my $renew = 0;
+	if(defined($outstanding_count) && $outstanding_count eq "renew") {
+		$renew = 1;
+		$outstanding_count = 0;
+	} else { $outstanding_count ||= 0; }
+
 
 	my $session	= OpenSRF::AppSession->create("open-ils.storage");
 	
@@ -371,6 +375,7 @@ sub permit_circ {
 
 	$stash->set("patron_copies", $summary->[0]  + $outstanding_count );
 	$stash->set("patron_fines", $summary->[1] );
+	$stash->set("renew", 1) if $renew; 
 
 	# run the permissibility script
 	run_script();
@@ -394,7 +399,7 @@ __PACKAGE__->register_method(
 );
 
 sub circulate {
-	my( $self, $client, $user_session, $barcode, $patron ) = @_;
+	my( $self, $client, $user_session, $barcode, $patron, $isrenew, $numrenews ) = @_;
 
 
 	my $session = $apputils->start_db_session();
@@ -414,6 +419,26 @@ sub circulate {
 	my $copy = $circ_objects->{copy};
 	my ($circ, $duration, $recurring, $max) =  run_circ_scripts($session);
 
+
+
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = 
+		gmtime(OpenSRF::Utils->interval_to_seconds($circ->duration) + int(time()));
+	$year += 1900; $mon += 1;
+	my $due_date = sprintf(
+   	'%s-%0.2d-%0.2dT%s:%0.2d:%0.s2-00',
+   	$year, $mon, $mday, $hour, $min, $sec);
+
+	warn "Setting due date to $due_date\n";
+	$circ->due_date($due_date);
+
+	if($isrenew) {
+		warn "Renewing circ....";
+		$circ->renewal(1);
+		$circ->clear_id;
+		$circ->renewal_remaining($numrenews - 1);
+	}
+
+
 	# commit new circ object to db
 	my $commit = $session->request(
 		"open-ils.storage.direct.action.circulation.create",
@@ -428,7 +453,7 @@ sub circulate {
 	# update the copy with the new circ
 	$copy->status( $stash->get("target_copy_status") );
 	$copy->location( $copy->location->id );
-	$copy->circ_lib( $copy->circ_lib->id );
+	$copy->circ_lib( $copy->circ_lib->id ); #XXX XXX needs to point to the lib that actually checked out the item (user->home_ou)?
 
 	# commit copy to db
 	my $copy_update = $session->request(
@@ -452,14 +477,6 @@ sub circulate {
 	$circ->duration_rule($duration);
 	$circ->max_fine_rule($max);
 	$circ->recuring_fine_rule($recurring);
-
-
-#	my $due_date = 
-#		OpenSRF::Utils->interval_to_seconds( 
-#		$circ->duration ) + int(time());
-
-#	this comes from an earlier setting now
-#	$circ->due_date($due_date);
 
 	return $circ;
 
@@ -579,7 +596,7 @@ __PACKAGE__->register_method(
 );
 
 sub checkin {
-	my( $self, $client, $user_session, $barcode ) = @_;
+	my( $self, $client, $user_session, $barcode, $isrenewal ) = @_;
 
 	my $err;
 	my $copy;
@@ -612,7 +629,7 @@ sub checkin {
 		# given copy.  should only be one.
 		warn "Retrieving circ for checking\n";
 		my $circ_req = $session->request(
-			"open-ils.storage.direct.action.circulation.search.atomic.atomic",
+			"open-ils.storage.direct.action.circulation.search.atomic",
 			{ target_copy => $copy->id, xact_finish => undef } );
 	
 		my $circ = $circ_req->gather(1)->[0];
@@ -625,6 +642,8 @@ sub checkin {
 			warn "Checking in circ ". $circ->id . "\n";
 		
 			$circ->stop_fines("CHECKIN");
+			$circ->stop_fines("RENEW") if($isrenewal);
+
 			$circ->xact_finish("now");
 		
 			my $cp_up = $session->request(
@@ -700,9 +719,31 @@ sub renew {
 		}
 	}
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	if($circ->renewal_remaining <= 0) {
+		return OpenILS::EX->new("MAX_RENEWALS_REACHED")->ex;
+	}
 
-	#XXX XXX See if the copy this circ points to is needed to fulfill a hold!
+	# XXX XXX See if the copy this circ points to is needed to fulfill a hold!
+	# XXX check overdue..?
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $copy = _grab_copy_by_id($session, $circ->target_copy);
+	my $checkin = $self->method_lookup("open-ils.circ.checkin.barcode");
+	my ($status) = $checkin->run($login_session, $copy->barcode, 1);
+	return $status if ($status->{status} ne "0"); 
+
+	my $permit_checkout = $self->method_lookup("open-ils.circ.permit_checkout");
+	($status) = $permit_checkout->run($login_session, $copy->barcode, $circ->usr, "renew");
+	return $status if($status->{status} ne "0");
+
+	my $checkout = $self->method_lookup("open-ils.circ.checkout.barcode");
+	($status) = $checkout->run($login_session, $copy->barcode, $circ->usr, 1, $circ->renewal_remaining);
+	return $status;
+
+}
+
+
+=head
 
 	my $renew_objects = gather_renew_objects( $session, $circ );
 	if(!ref($renew_objects)) {
@@ -763,6 +804,7 @@ sub gather_renew_objects {
 	return $renew_objects;
 }
 
+=cut
 
 
 

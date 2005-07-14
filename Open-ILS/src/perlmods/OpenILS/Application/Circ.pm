@@ -52,6 +52,8 @@ sub checkouts_by_user {
 			"open-ils.storage.direct.asset.copy.retrieve",
 			$circ->target_copy );
 
+		warn "Retrieving record for copy " . $circ->target_copy . "\n";
+
 		my $record = $session->request(
 			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
 			$circ->target_copy );
