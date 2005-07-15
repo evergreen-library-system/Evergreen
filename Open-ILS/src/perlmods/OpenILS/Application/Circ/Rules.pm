@@ -711,7 +711,18 @@ __PACKAGE__->register_method(
 
 sub renew {
 	my($self, $client, $login_session, $circ) = @_;
+
+	throw OpenSRF::EX::InvalidArg 
+		("open-ils.circ.renew no circ") unless defined($circ);
+
 	my $user = $apputils->check_user_session($login_session);
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	if(!ref($circ)) {
+		$circ = $session->request(
+			"open-ils.storage.direct.action.circulation.retrieve", $circ )->gather(1);
+	}
 
 	if($user->id ne $circ->usr) {
 		if($apputils->check_user_perms($user->id, $user->home_ou, "RENEW_CIRC")) {
@@ -726,7 +737,6 @@ sub renew {
 	# XXX XXX See if the copy this circ points to is needed to fulfill a hold!
 	# XXX check overdue..?
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $copy = _grab_copy_by_id($session, $circ->target_copy);
 	my $checkin = $self->method_lookup("open-ils.circ.checkin.barcode");
 	my ($status) = $checkin->run($login_session, $copy->barcode, 1);
