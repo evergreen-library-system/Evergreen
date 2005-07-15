@@ -16,7 +16,6 @@ function OpenILS_init(params) {
 			case 'PatronDisplayStatus' : patron_display_status_init(params); break;
 			case 'PatronDisplayContact' : patron_display_contact_init(params); break;
 			case 'PatronItems' : patron_items_init(params); break;
-			case 'CircTree' : circ_tree_init(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
@@ -49,7 +48,6 @@ function OpenILS_exit(params) {
 			case 'PatronDisplayStatus' : patron_display_status_exit(params); break;
 			case 'PatronDisplayContact' : patron_display_contact_exit(params); break;
 			case 'PatronItems' : patron_items_exit(params); break;
-			case 'CircTree' : circ_tree_exit(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
