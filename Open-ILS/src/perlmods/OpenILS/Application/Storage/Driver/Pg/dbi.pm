@@ -226,6 +226,12 @@
 	actor::user->sequence( 'actor.usr_id_seq' );
 
 	#---------------------------------------------------------------------
+	package actor::user_setting;
+	
+	actor::user_setting->table( 'actor.usr_setting' );
+	actor::user_setting->sequence( 'actor.usr_setting_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::user_address;
 	
 	actor::user_address->table( 'actor.usr_address' );

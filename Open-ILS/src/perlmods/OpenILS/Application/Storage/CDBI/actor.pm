@@ -21,6 +21,14 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				day_phone evening_phone other_phone mailing_address/ );
 
 #-------------------------------------------------------------------------------
+package actor::user_setting;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_user_setting' );
+__PACKAGE__->columns( Primary => qw/id/);
+__PACKAGE__->columns( Essential => qw/usr name value/);
+
+#-------------------------------------------------------------------------------
 package actor::profile;
 use base qw/actor/;
 

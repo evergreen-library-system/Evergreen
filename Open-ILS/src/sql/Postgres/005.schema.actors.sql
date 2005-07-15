@@ -136,6 +136,39 @@ INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
 	VALUES ( 1, 3,'athens', 'athens', 'athens', 'user', '1979-01-22', FALSE, TRUE, 1, 'identification' );
 
+
+CREATE TABLE actor.usr_setting (
+	id	BIGSERIAL	PRIMARY KEY,
+	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	name	TEXT		NOT NULL,
+	value	TEXT		NOT NULL,
+	CONSTRAINT name_once_per_value UNIQUE (usr,name)
+);
+COMMENT ON TABLE actor.usr_setting IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * User objects
+ *
+ * This table contains any arbitrary settings that a client
+ * program would like to save for a user.
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
+
 CREATE TABLE actor.profile (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE

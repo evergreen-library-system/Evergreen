@@ -67,7 +67,9 @@ sub _init {
 								     			     stat_cat_entries	=> 1,
 								     			     checkouts		=> 1,
 								     			     hold_requests	=> 1,
+								     			     settings		=> 1,
 								     			     addresses		=> 1 } },
+		'Fieldmapper::actor::user_setting'		=> { hint => 'aus'    },
 		'Fieldmapper::actor::user_address'		=> { hint => 'aua'    },
 		'Fieldmapper::actor::org_address'		=> { hint => 'aoa'    },
 		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },
@@ -327,7 +329,6 @@ sub cdbi {
 	my $self = shift;
 	return $fieldmap->{$self->class_name}->{cdbi};
 }
-
 
 sub is_virtual {
 	my $self = shift;
