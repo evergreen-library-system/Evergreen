@@ -5,62 +5,63 @@
 #  Only works on linux because of 'ps' syntax
 #
 
-usage() {
-	echo "usage: system.sh [start|stop|restart|status] <boostrap_config (on start and restart)>";
+function usage {
+	echo "usage: $0 [start|stop|restart|status] <boostrap_config (on start and restart)>";
+	exit;
 }
 
+function startSystem {
 
-case $1 in 
-	"start")
-		if [ -z $2 ]; then
+	case $1 in 
+	
+		"start")
+			[ -z "$2" ] && usage;
+			perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
+			sleep 5;
+			$0 status;
+			echo;
+			;;
+	
+		"startprofile")
+			[ -z "$2" ] && usage;
+			OPENSRF_PROFILE=1 perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
+			sleep 5;
+			$0 status;
+			echo;
+			;;
+	
+		"stop")
+			PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
+			if [ -z $PID ]; then
+				echo "OpenSRF System is not running";
+				exit;
+			fi
+			echo "Killing System...$PID";
+			kill -s INT $PID;
+			echo "Done";
+			;;
+	
+		"status")
+			PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
+			if [ -z $PID ]; then
+				echo "OpenSRF System is not running";
+				exit 0;
+			fi
+			echo "OpenSRF System is running";
+			exit 1;
+			;;
+	
+		"restart")
+			[ -z "$2" ] && usage;
+			$0 stop;
+			$0 start $2;
+			;;
+		*)
 			usage;
-			exit;
-		fi		
-		perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
-		sleep 5;
-		$0 status;
-		echo;
-		;;
-	"startprofile")
-		if [ -z $2 ]; then
-			usage;
-			exit;
-		fi		
-		OPENSRF_PROFILE=1 perl -MOpenSRF::System="$2" -e 'OpenSRF::System->bootstrap()' & 
-		sleep 5;
-		$0 status;
-		echo;
-		;;
-	"stop")
-		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
-		if [ -z $PID ]; then
-			echo "OpenSRF System is not running";
-			exit;
-		fi
-		echo "Killing System...$PID";
-		kill -s INT $PID;
-		echo "Done";
-		;;
-	"status")
-		PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
-		if [ -z $PID ]; then
-			echo "OpenSRF System is not running";
-			exit 0;
-		fi
-		echo "OpenSRF System is running";
-		exit 1;
-		;;
-	"restart")
-		if [ -z $2 ]; then
-			usage;
-			exit;
-		fi		
-		$0 stop;
-		$0 start $2;
-		;;
-	*)
-		usage;
-		;;
-esac
+			;;
+	esac
+}
 
-
+startSystem $*;
+	
+			
