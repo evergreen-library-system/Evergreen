@@ -10,8 +10,8 @@
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
 
-	<command id="cmd_search" />
-	<command id="cmd_clear" />
+	<command id="cmd_patron_search_form_search" />
+	<command id="cmd_patron_search_form_clear" />
 
 </commandset>
 
