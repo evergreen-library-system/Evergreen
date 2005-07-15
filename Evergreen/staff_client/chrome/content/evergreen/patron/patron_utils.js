@@ -209,31 +209,44 @@ function patron_get_standing_css_style( value ) {
 	}
 }
 
-function retrieve_patron_by_barcode( barcode ) {
+function retrieve_patron_by_barcode( barcode, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (!barcode) return null;
-	return retrieve_patron_by_method( barcode, 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve_by_barcode' );
+	return retrieve_patron_by_method( barcode, 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve_by_barcode', f );
 }
 
-function retrieve_patron_by_id( id ) {
+function retrieve_patron_by_id( id, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (!id) return null;
-	return retrieve_patron_by_method( id, 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve' );
+	return retrieve_patron_by_method( id, 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve', f );
 }
 
-function retrieve_patron_by_method( id, app, method ) {
+function retrieve_patron_by_method( id, app, method, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (!id) return null;
-	try {
-		var au = user_request(
-			app,
-			method,
-			[ mw.G.auth_ses[0], id ]
-		)[0];
-		return au;
-	} catch(E) {
-		handle_error(E);
-		return null;
+	if (f) {
+		try {
+			user_async_request(
+				app,
+				method,
+				[ mw.G.auth_ses[0], id ],
+				f
+			);
+		} catch(E) {
+			sdump('D_ERROR',E);
+		}
+	} else {
+		try {
+			var au = user_request(
+				app,
+				method,
+				[ mw.G.auth_ses[0], id ]
+			)[0];
+			return au;
+		} catch(E) {
+			sdump('D_ERROR',E);
+			return null;
+		}
 	}
 }
 

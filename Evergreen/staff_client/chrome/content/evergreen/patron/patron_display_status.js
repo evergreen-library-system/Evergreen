@@ -3,9 +3,7 @@ sdump('D_TRACE','Loading patron_display_status.js\n');
 function patron_display_status_init(p) {
 	sdump('D_PATRON_DISPLAY_STATUS',"TESTING: patron_display_status.js: " + mw.G['main_test_variable'] + '\n');
 
-	if (p.app_shell) p.w.app_shell = p.app_shell;
-
-	p.w.patron_name_label = get_widget( p.w.document, p.patron_name_label );
+	p.patron_name_label = get_widget( p.w.document, p.patron_name_label );
 	if (p.show_name) {
 		sdump('D_PATRON_DISPLAY_STATUS','Showing name label\n');
 		p.w.patron_name_label.hidden = false;

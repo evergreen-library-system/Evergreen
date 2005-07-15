@@ -23,21 +23,21 @@
 </box>
 
 <deck id="ClamShell_first_deck">
-	<box id="PatronSearchForm_main">
+	<box id="PatronSearchForm_main"/>
 </deck>
 
 <deck id="ClamShell_second_deck">
-
+	<box id="PatronSearchResults_main"/>
 </deck>
 
-<hbox id="PatronSearch_DisplayStatus_insert1"/>
+<hbox id="PatronSearch_DisplayStatus_insert1">
 	<label id="PatronSearch_patron_name" class="patronNameMedium"
 		tooltiptext="&patron_display.name.label;"
 		value=" "
 		render="true" fm_class="au" 
 		render_value="patron_get_full_name($$)" />
 </hbox>
-<hbox id="PatronSearch_DisplayStatus_insert2"/>
+<hbox id="PatronSearch_DisplayStatus_insert2">
 	<button id="PatronSearch_retrieve_button" 
 		label="&patron_navbar.retrieve;" 
 		accesskey="&patron_navbar.retrieve.accesskey;"/>

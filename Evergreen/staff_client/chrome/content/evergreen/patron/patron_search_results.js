@@ -4,7 +4,7 @@ function patron_search_results_init(p) {
 	sdump('D_PATRON_SEARCH_RESULTS',"TESTING: patron_search_results.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 
-	p.w.patron_cols = [
+	p.patron_cols = [
 		{ 
 			'id' : 'id_col', 'label' : getString('au_label_id'), 'flex' : 1, 
 			'primary' : true, 'hidden' : false, 'fm_field_render' : '.id()'
@@ -31,70 +31,40 @@ function patron_search_results_init(p) {
 		}
 	];
 
-        p.w.tree_win = spawn_paged_tree(
-                p.w.document, 'new_iframe', p.paged_tree, { 
-			'cols' : p.w.patron_cols,
-			'onload' : patron_search_results_init_after_paged_tree(p) 
-		}
-        );
+	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'popupset_node' : p.popupset_node, 'cols' : p.patron_cols, 'debug' : p.app } );
+	p.add_patrons = p.paged_tree.add_rows;
+	p.clear_patrons = p.paged_tree.clear_tree;
 
-	p.w.register_patron_select_callback = function (f) {
-		p.w._patron_select_callback = f;
+	p.register_patron_select_callback = function (f) {
+		sdump('D_PATRON_SEARCH_RESULTS','p.register_patron_select_callback(' + f + ')\n');
+		p.paged_tree.register_select_callback( f );
 	}
 
-	p.w.register_flesh_patron_function = function (f) {
-		p.w._flesh_patron_function = f;
+	p.register_flesh_patron_function = function (f) {
+		sdump('D_PATRON_SEARCH_RESULTS','p.register_flesh_patron_function(' + f + ')\n');
+		p.paged_tree.register_flesh_row_function( f );
 	}
 
-	p.w.register_context_builder = function (f) {
-		p.w._context_function = f;
+	p.register_context_builder = function (f) {
+		sdump('D_PATRON_SEARCH_RESULTS','p.register_context_builder(' + f + ')\n');
+		p.paged_tree.register_context_builder( f );
 	}
 
-	p.w.map_patron_to_cols = function (patron, treeitem) {
+	p.map_patron_to_cols = function (patron, treeitem) {
+		sdump('D_PATRON_SEARCH_RESULTS','p.map_patron_to_cols(' + patron + ',' + treeitem + ')\n');
 		patron_search_results_map_patron_to_cols(p, patron, treeitem);	
 	}
 
-	consider_Timeout(
-		function() {
-			sdump('D_TIMEOUT','******** timeout occurred in patron_search_results.js\n');
-		        if (p.onload) {
-		                try {
-					sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-		                        p.onload(p.w);
-		                } catch(E) {
-		                        sdump('D_ERROR', js2JSON(E) + '\n' );
-		                }
-        		}
-		}, 0
-	);
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return;
-}
-
-function patron_search_results_init_after_paged_tree(p) {
-	sdump('D_PATRON_SEARCH_RESULTS',arg_dump(arguments));
-	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	var result = function (tree_win) {
-		sdump('D_TRACE_ENTER',arg_dump(arguments));
-		sdump('D_PATRON_SEARCH_RESULTS',arg_dump(arguments));
-		tree_win.register_select_callback( p.w._patron_select_callback );
-		tree_win.register_flesh_row_function( p.w._flesh_patron_function );
-		tree_win.register_context_builder( p.w._context_function );
-		p.w.add_patrons = tree_win.add_rows;
-		p.w.clear_patrons = tree_win.clear_tree;
-		sdump('D_TRACE_EXIT',arg_dump(arguments));
-		return;
-	};
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return result;
+	return p;
 }
 
 function patron_search_results_map_patron_to_cols(p, patron, treeitem) {
 	sdump('D_PATRON_SEARCH_RESULTS',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	var cols = new Array();
-	for (var i = 0; i < p.w.patron_cols.length; i++) {
-		var hash = p.w.patron_cols[i];
+	for (var i = 0; i < p.patron_cols.length; i++) {
+		var hash = p.patron_cols[i];
 		sdump('D_PATRON_SEARCH_RESULTS','Considering ' + js2JSON(hash) + '\n');
 		var cmd = 'patron'+hash.fm_field_render;
 		sdump('D_PATRON_SEARCH_RESULTS','cmd = ' + cmd + '\n');
@@ -108,6 +78,6 @@ function patron_search_results_map_patron_to_cols(p, patron, treeitem) {
 		cols.push( col );
 	}
 	sdump('D_PATRON_SEARCH_RESULTS','cols = ' + js2JSON(cols) + '\n');
-	p.w.tree_win.map_cols_to_treeitem( cols, treeitem );
+	p.paged_tree.map_cols_to_treeitem( cols, treeitem );
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }

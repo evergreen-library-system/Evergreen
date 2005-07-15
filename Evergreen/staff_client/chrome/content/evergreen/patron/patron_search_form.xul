@@ -9,7 +9,6 @@
 	sizemode="maximized" persist="width height" 
 	onload="params.w = window; 
 		params.app = 'PatronSearchForm'; 
-		params.selection_canvas = 'PatronSearchForm_selection';
 		mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

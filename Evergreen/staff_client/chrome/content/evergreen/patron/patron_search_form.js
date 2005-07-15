@@ -2,57 +2,47 @@ sdump('D_TRACE','Loading patron_search_form.js\n');
 
 function patron_search_form_init(p) {
 	sdump('D_PATRON_SEARCH_FORM',"TESTING: patron_search_form.js: " + mw.G['main_test_variable'] + '\n');
-	p.w.crazy_search_hash = {}; // hash[ field ] = { 'value' : ???, 'group' : ??? }
+	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
-	var nl = p.w.document.getElementsByTagName('textbox');
-	for (var i = 0; i < nl.length; i++) 
+	p.crazy_search_hash = {}; // hash[ field ] = { 'value' : ???, 'group' : ??? }
+
+	var nl = p.node.getElementsByTagName('textbox');
+	for (var i = 0; i < nl.length; i++) {
 		nl[i].addEventListener(
 			'change',
 			function (ev) {
 				return patron_search_form_textbox_handler(
-					p.w.document,
 					ev.target,
-					p.w.crazy_search_hash); },
-			false);
+					p.crazy_search_hash
+				); 
+			},false
+		);
+	}
 
-	p.w.selection_canvas = get_widget( p.w.document, p.selection_canvas );
+	var search_button = p.node.getElementsByAttribute('name','button_search')[0];
+	var clear_button = p.node.getElementsByAttribute('name','button_clear')[0];
 
-	var search_command = p.w.document.getElementById('cmd_search');
-	var clear_command = p.w.document.getElementById('cmd_clear');
+	p.register_search_callback = function (f) { search_button.addEventListener( 'command',f,false ); };
 
-	p.w.register_search_callback = function (f) { search_command.addEventListener( 'command',f,false ); };
-
-	if (clear_command)
-		clear_command.addEventListener(
+	if (clear_button) {
+		clear_button.addEventListener(
 			'command',
 			function (ev) {
-				var nl = p.w.document.getElementsByTagName('textbox');
+				var nl = p.node.getElementsByTagName('textbox');
 				for (var i = 0; i < nl.length; i++) 
 					nl[i].value = '';
-				p.w.crazy_search_hash = {}; },
-			false);
-	else
-		sdump('D_PATRON_SEARCH_FORM',"No cmd_clear element.\n");
+				p.crazy_search_hash = {}; 
+			},false
+		);
+	} else {
+		sdump('D_PATRON_SEARCH_FORM',"No name=button_clear element.\n");
+	}
 
-	consider_Timeout(
-		function() {
-			sdump('D_TIMEOUT','******** timeout occurred in patron_search_form.js\n');
-			if (p.onload) {
-				try {
-					sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-					p.onload(p.w);
-				} catch(E) {
-					sdump('D_ERROR', js2JSON(E) + '\n' );
-				}
-			}
-		}, 0
-	);
-	return;
+	return p;
 }
 
-function patron_search_form_textbox_handler(doc,textbox,search_hash) {
+function patron_search_form_textbox_handler(textbox,search_hash) {
 	sdump('D_PATRON_SEARCH_FORM',arg_dump(arguments));
-	textbox = get_widget(doc,textbox);
 	var field = textbox.getAttribute('field');
 	var group = textbox.getAttribute('group');
 	var value = textbox.value;
