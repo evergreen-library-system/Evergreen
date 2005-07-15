@@ -46,7 +46,7 @@ function patron_get_checkouts( au ) {
 			'open-ils.circ.actor.user.checked_out',
 			[ mw.G.auth_ses[0], au.id() ]
 		)[0] );
-		sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(au._checkouts) + '\n');
+		sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(au.checkouts()) + '\n');
 		return au.checkouts();
 	} catch(E) {
 		sdump('D_ERROR',js2JSON(E) + '\n');

@@ -11,33 +11,38 @@ function paged_tree_init(p) {
 	p.treecols = p.tree.firstChild;
 	p.tc = p.tree.lastChild;
 
-	p._context_function = function (ev) {};
+	p._context_function = function (ev) { alert('default _context_function'); };
 	p.popup.addEventListener('popupshowing',function (ev) { return p._context_function(ev); },false);
 
-	p._select_callback = function (ev) {};
+	p._select_callback = function (ev) { alert('default _select_callback'); };
 	p.tree.addEventListener('select',function (ev) { return p._select_callback(ev); },false);
 
 	paged_tree_make_columns( p, p.treecols, p.cols )
 
 	p.clear_tree = function () {
+		sdump('D_PAGED_TREE','p.clear_tree()\n');
 		empty_widget( p.w.document, p.tc );
 		p.current_idx = 0;
 		return paged_tree_update_nav(p);
 	}
 
 	p.add_rows = function (ids) { 
+		sdump('D_PAGED_TREE','p.add_rows()\n');
 		return paged_tree_add_rows(p,p.tc,ids); 
 	}
 
 	p.register_flesh_row_function = function (f) { 
+		sdump('D_PAGED_TREE','p.register_flesh_row_function(' + f + ')\n');
 		return p._flesh_row_function = f; 
 	}
 
 	p.register_select_callback = function (f) { 
+		sdump('D_PAGED_TREE','p.register_select_callback(' + f + ')\n');
 		return p._select_callback = f; 
 	}
 
 	p.register_context_builder = function (f) {
+		sdump('D_PAGED_TREE','p.register_context_builder(' + f + ')\n');
 		return p._context_function = f;
 	}
 
@@ -58,25 +63,8 @@ function paged_tree_init(p) {
 	} else {
 		p.display_count = parseInt( p.hits_per_page_menu.getAttribute('value') );
 	}
-	p.hits_per_page_menu.addEventListener(
-		'command',
-		function (ev) {
-			sdump('D_TRACE','In set_hits handler\n');
-			alert('testing123');
-			try {
-				p.display_count = parseInt( p.hits_per_page_menu.getAttribute('value') );
-				paged_tree_update_visibility( p );
-				paged_tree_update_nav( p );
-				paged_tree_flesh_records( p );
-			} catch(E) {
-				sdump('D_ERROR',js2JSON(E)+'\n');
-			}
-			sdump('D_TRACE','Leaving set_hits handler\n');
-		},
-		false
-	);
 
-	p.set_hits_per_page = function () {
+	p.set_hits_per_page = function (ev) {
 		try {
 			p.display_count = parseInt( p.hits_per_page_menu.getAttribute('value') );
 			paged_tree_update_visibility( p );
@@ -86,6 +74,11 @@ function paged_tree_init(p) {
 			sdump('D_ERROR',js2JSON(E)+'\n');
 		}
 	}
+	p.hits_per_page_menu.addEventListener(
+		'command',
+		p.set_hits_per_page,
+		false
+	);
 
 	var cmd_next = p.commandset_node.getElementsByAttribute('id', 'cmd_tree_next' )[0];
 	cmd_next.addEventListener(
@@ -177,6 +170,7 @@ function paged_tree_add_rows( p, tc, ids ) {
 }
 
 function paged_tree_flesh_record(p,treeitem) {
+	sdump('D_PAGED_TREE',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	treeitem.setAttribute('retrieved','true');
 	if (p._flesh_row_function) {
@@ -186,6 +180,7 @@ function paged_tree_flesh_record(p,treeitem) {
 }
 
 function paged_tree_flesh_records(p) {
+	sdump('D_PAGED_TREE',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	for (var i = 0; i < p.tc.childNodes.length; i++) {
 		var treeitem = p.tc.childNodes[i];
@@ -197,6 +192,7 @@ function paged_tree_flesh_records(p) {
 }
 
 function paged_tree_update_nav(p) {
+	sdump('D_PAGED_TREE',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	if (p.results_label)
 		p.results_label.setAttribute('value', p.tc.childNodes.length );
@@ -229,6 +225,7 @@ function paged_tree_update_nav(p) {
 }
 
 function paged_tree_update_visibility(p) {
+	sdump('D_PAGED_TREE',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	for (var i = 0; i < p.tc.childNodes.length; i++) {
 		var treeitem = p.tc.childNodes[i];
@@ -241,6 +238,7 @@ function paged_tree_update_visibility(p) {
 }
 
 function paged_tree_nav_next(p) {
+	sdump('D_PAGED_TREE',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	var proposed_idx = p.current_idx + p.display_count;
 	if (proposed_idx >= p.tc.childNodes.length)
@@ -253,6 +251,7 @@ function paged_tree_nav_next(p) {
 }
 
 function paged_tree_nav_prev(p) {
+	sdump('D_PAGED_TREE',arg_dump(arguments));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	var proposed_idx = p.current_idx - p.display_count;
 	if (proposed_idx < 0)

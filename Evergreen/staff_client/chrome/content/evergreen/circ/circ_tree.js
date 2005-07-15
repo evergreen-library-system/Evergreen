@@ -1,5 +1,24 @@
 sdump('D_TRACE','Loading circ_tree.js\n');
-var circ_cols = [
+
+function checkin_by_copy_barcode(barcode) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
+	try {
+		var check = user_request(
+			'open-ils.circ',
+			'open-ils.circ.checkin.barcode',
+			[ mw.G.auth_ses[0], barcode ]
+		)[0];
+		sdump('D_CIRC_UTILS','check = ' + check + '\n');
+		return check;
+	} catch(E) {
+		sdump('D_ERROR',E);
+		return null;
+	}
+}
+
+
+function circ_cols() {
+	return  [
 		{
 			'id' : 'barcode', 'label' : getString('acp_label_barcode'), 'flex' : 1,
 			'primary' : true, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : '.barcode()'
@@ -77,113 +96,7 @@ var circ_cols = [
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mvr', 'fm_field_render' : '.author()'
 		}
 		
-	];
+	]
+};
 
 
-function circ_tree_init(p) {
-	sdump('D_CIRC_TREE',"TESTING: circ_tree.js: " + mw.G['main_test_variable'] + '\n');
-	sdump('D_TRACE_ENTER',arg_dump(arguments));
-
-	p.w.register_circ_select_callback = function (f) {
-		p.w._circ_select_callback = f;
-	}
-
-	p.w.register_flesh_circ_function = function (f) {
-		p.w._flesh_circ_function = f;
-	}
-
-	p.w.register_context_builder = function (f) {
-		p.w._context_function = f;
-	}
-
-	p.w.map_circ_to_cols = function (circ, treeitem) {
-		circ_tree_map_circ_to_cols(p, circ, treeitem);	
-	}
-
-	consider_Timeout(
-		function() {
-			sdump('D_TIMEOUT','***** timeout occured circ_tree.js');
-		        p.w.tree_win = spawn_paged_tree(
-		                p.w.document, 'new_iframe', p.paged_tree, {
-					'hide_nav' : true,
-					'hits_per_page' : 99999, 
-					'cols' : p.w.circ_cols,
-					'onload' : circ_tree_init_after_paged_tree(p) 
-				}
-		        );
-			consider_Timeout(
-				function () {
-					sdump('D_TIMEOUT','***** timeout timeout occured circ_tree.js');
-				        if (p.onload) {
-				                try {
-							sdump('D_TRACE','trying psuedo-onload: ' + p.onload + '\n');
-				                        p.onload(p.w);
-				                } catch(E) {
-				                        sdump('D_ERROR', js2JSON(E) + '\n' );
-				                }
-				        }
-				}, 0
-			);
-		}, 0
-	);
-
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return;
-}
-
-function circ_tree_init_after_paged_tree(p) {
-	sdump('D_CIRC_TREE',arg_dump(arguments));
-	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	var result = function (tree_win) {
-		sdump('D_TRACE_ENTER',arg_dump(arguments));
-		sdump('D_CIRC_TREE',arg_dump(arguments));
-		tree_win.register_select_callback( p.w._circ_select_callback );
-		tree_win.register_flesh_row_function( p.w._flesh_circ_function );
-		tree_win.register_context_builder( p.w._context_function );
-		p.w.add_circs = tree_win.add_rows;
-		p.w.clear_circs = tree_win.clear_tree;
-		consider_Timeout(
-			function() {
-				sdump('D_TIMEOUT','***** timeout after paged_tree occured circ_tree.js');
-				try {
-					if (p.paged_tree_onload) p.paged_tree_onload(tree_win);
-				} catch(E) {
-		                        sdump('D_ERROR', js2JSON(E) + '\n' );
-				}
-			}, 0
-		);
-		sdump('D_TRACE_EXIT',arg_dump(arguments));
-		return;
-	};
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return result;
-}
-
-function circ_tree_map_circ_to_cols(p, circ, treeitem) {
-	sdump('D_CIRC_TREE',arg_dump(arguments,{1:true}));
-	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	var cols = new Array();
-	for (var i = 0; i < p.w.circ_cols.length; i++) {
-		var hash = p.w.circ_cols[i];
-		sdump('D_CIRC_TREE','Considering ' + js2JSON(hash) + '\n');
-		var obj_string;
-		switch( hash.fm_class ) {
-			case 'acp' : obj_string = 'circ.copy'; break;
-			case 'circ' : obj_string = 'circ.circ'; break;
-			case 'mvr' : obj_string = 'circ.record'; break;
-		}
-		var cmd = parse_render_string( obj_string, hash.fm_field_render );
-		sdump('D_CIRC_TREE','cmd = ' + cmd + '\n');
-		var col = '';
-		try {
-			col = eval( cmd );
-			sdump('D_CIRC_TREE','eval = ' + col + '\n');
-		} catch(E) {
-			sdump('D_ERROR',js2JSON(E) + '\n');
-		}
-		cols.push( col );
-	}
-	sdump('D_CIRC_TREE','cols = ' + js2JSON(cols) + '\n');
-	p.w.tree_win.map_cols_to_treeitem( cols, treeitem );
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
-}
