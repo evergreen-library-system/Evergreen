@@ -176,8 +176,8 @@ sub perl2JSON {
 
 	my $output = '';
 	if (!defined($perl)) {
-		$output = '' unless $strict;
-		$output = 'null' if $strict;
+		$output = '' if $strict;
+		$output = 'null' unless $strict;
 	} elsif (ref($perl) and ref($perl) =~ /^JSON/) {
 		$output .= $perl;
 	} elsif ( ref($perl) && exists($_class_map{classes}{ref($perl)}) ) {
