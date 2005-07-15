@@ -8,7 +8,7 @@ function checkin_by_copy_barcode(barcode) {
 			'open-ils.circ.checkin.barcode',
 			[ mw.G.auth_ses[0], barcode ]
 		)[0];
-		sdump('D_CIRC_UTILS','check = ' + check + '\n');
+		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 		return check;
 	} catch(E) {
 		sdump('D_ERROR',E);
@@ -16,6 +16,21 @@ function checkin_by_copy_barcode(barcode) {
 	}
 }
 
+function renew_by_circ_id(id) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
+	try {
+		var check = user_request(
+			'open-ils.circ',
+			'open-ils.circ.renew',
+			[ mw.G.auth_ses[0], id ]
+		)[0];
+		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		return check;
+	} catch(E) {
+		sdump('D_ERROR',E);
+		return null;
+	}
+}
 
 function circ_cols() {
 	return  [

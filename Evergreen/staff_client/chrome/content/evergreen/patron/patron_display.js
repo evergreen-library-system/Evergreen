@@ -115,19 +115,19 @@ function patron_display_patron_items_init(p) {
 			var patron_items = get_list_from_tree_selection( p.patron_items.paged_tree.tree );
 			var menuitem;
 
-			/*** CHECKIN ***/
+			/*** RENEW ***/
 			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
 			p.patron_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.check_in'));
+			menuitem.setAttribute('label',getString('circ.context_renew'));
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
-					sdump('D_PATRON_DISPLAY','Firing check-in context\n');
+					sdump('D_PATRON_DISPLAY','Firing renew context\n');
 					for (var i = 0; i < patron_items.length; i++) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
-							var copy = p._patron.checkouts()[ idx ].copy;
-							alert( checkin_by_copy_barcode( copy.barcode() ) );
+							var circ = p._patron.checkouts()[ idx ].circ;
+							alert( js2JSON(renew_by_circ_id( circ.id() )) );
 						} catch(E) {
 							alert(E);
 						}
@@ -136,22 +136,55 @@ function patron_display_patron_items_init(p) {
 				false
 			);
 
-			/*** OPAC ***/
+			/*** CHECKIN ***/
 			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
 			p.patron_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label','Open in OPAC');
+			menuitem.setAttribute('label',getString('circ.context_checkin'));
+			menuitem.addEventListener(
+				'command',
+				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing checkin context\n');
+					for (var i = 0; i < patron_items.length; i++) {
+						try {
+							var idx = patron_items[i].getAttribute('record_id'); 
+							var copy = p._patron.checkouts()[ idx ].copy;
+							alert( js2JSON(checkin_by_copy_barcode( copy.barcode() )) );
+						} catch(E) {
+							alert(E);
+						}
+					}
+				},
+				false
+			);
+
+			/* separator */
+			menuitem = p.patron_items.paged_tree.w.document.createElement('menuseparator');
+			p.patron_items.paged_tree.popup.appendChild( menuitem );
+			
+
+			/*** COPY EDITOR ***/
+			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem );
+			menuitem.setAttribute('label',getString('circ.context_edit'));
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
 					for (var i = 0; i < patron_items.length; i++) {
-						spawn_patron_items.display(
-							p.w.app_shell,'new_tab','main_tabbox', 
-							{ 
-								'circ' : retrieve_circ_by_id( 
-									patron_items[i].getAttribute('record_id') 
-								)
-							}
-						);
+						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
+					}
+				},
+				false
+			);
+
+			/*** OPAC ***/
+			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem );
+			menuitem.setAttribute('label',getString('circ.context_opac'));
+			menuitem.addEventListener(
+				'command',
+				function (ev) {
+					for (var i = 0; i < patron_items.length; i++) {
+						sdump('D_PATRON_DISPLAY','Firing opac context\n');
 					}
 				},
 				false
