@@ -25,6 +25,8 @@ open-ils:
 patron:
 	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_items/g | sed s/PagedTree/PatronItems/g > chrome/content/evergreen/patron/patron_items_overlay.xul )
 	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_items.dtd)
+	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_search_results/g | sed s/PagedTree/PatronSearchResults/g > chrome/content/evergreen/patron/patron_search_results_overlay.xul )
+	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_search_results.dtd)
 
 evergreen.xpi: evergreen.jar
 	@echo
@@ -42,6 +44,7 @@ clean:
 	rm -f evergreen.xpi
 	rm -f chrome/evergreen.jar
 	rm -f chrome/content/evergreen/patron/patron_items_overlay.xul chrome/locale/en-US/evergreen/patron_items.dtd
+	rm -f chrome/content/evergreen/patron/patron_search_results_overlay.xul chrome/locale/en-US/evergreen/patron_search_results.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
 	rm -f chrome/content/evergreen/util/fieldmapper.js
 	rm -f chrome/content/evergreen/util/OrgTree.js
