@@ -10,13 +10,8 @@ function OpenILS_init(params) {
 			case 'PagedTree' : paged_tree_init(params); break;
 			case 'Opac' : opac_init(params); break;
 			case 'PatronSearch' : patron_search_init(params); break;
-			case 'PatronSearchForm' : patron_search_form_init(params); break;
-			case 'PatronSearchResults' : patron_search_results_init(params); break;
 			case 'PatronDisplay' : patron_display_init(params); break;
-			case 'PatronDisplayStatus' : patron_display_status_init(params); break;
-			case 'PatronDisplayContact' : patron_display_contact_init(params); break;
-			case 'PatronItems' : patron_items_init(params); break;
-			case 'PatronCheckoutItems' : patron_checkout_items_init(params); break;
+			case 'Checkin' : checkin_init(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
@@ -43,13 +38,8 @@ function OpenILS_exit(params) {
 			case 'PagedTree' : paged_tree_exit(params); break;
 			case 'Opac' : opac_exit(params); break;
 			case 'PatronSearch' : patron_search_exit(params); break;
-			case 'PatronSearchForm' : patron_search_form_exit(params); break;
-			case 'PatronSearchResults' : patron_search_results_exit(params); break;
 			case 'PatronDisplay' : patron_display_exit(params); break;
-			case 'PatronDisplayStatus' : patron_display_status_exit(params); break;
-			case 'PatronDisplayContact' : patron_display_contact_exit(params); break;
-			case 'PatronItems' : patron_items_exit(params); break;
-			case 'PatronCheckoutItems' : patron_checkout_items_exit(params); break;
+			case 'Checkin' : checkin_exit(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }

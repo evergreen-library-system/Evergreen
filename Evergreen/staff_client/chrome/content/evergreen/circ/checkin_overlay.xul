@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/checkin.dtd">
+<overlay id="checkin_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading checkin_overlay.xul\n');</script>
+
+	<?xul-overlay href="chrome://evergreen/content/circ/checkin_items_overlay.xul"?>
+
+<commandset id="universal_cmds">
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+
+</commandset>
+
+<!-- main widget for checkin -->
+<box id="Checkin_main" flex="1" orient="vertical">
+	<groupbox id="Checkin_groupbox" orient="vertical" flex="1">
+		<box id="ClamShell_main" />
+	</groupbox>
+</box>
+
+<deck id="ClamShell_first_deck">
+</deck>
+
+<deck id="ClamShell_second_deck">
+	<box id="CheckinItems_main"/>
+</deck>
+
+<hbox id="CheckinItems_insert1">
+       <label id="checkin_scan_barcode_label" value="&circ.checkin.scan_label;" accesskey="&circ.checkin.scan_label.accesskey;" control="checkin_scan_textbox"/>
+        <textbox id="checkin_barcode_entry_textbox"/>
+        <button id="checkin_submit_barcode_button" value="&circ.checkin.submit_label;" accesskey="&circ.checkin.submit_label.accesskey;"/>
+</hbox>
+
+<hbox id="CheckinItems_insert2" />
+<hbox id="CheckinItems_insert3" />
+<hbox id="CheckinItems_insert4" />
+
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="Checkin_keys">
+</keyset>
+
+</overlay>

@@ -16,13 +16,11 @@
 		<script src="chrome://evergreen/content/patron/patron_search_form.js" />
 		<script src="chrome://evergreen/content/patron/patron_search_results.js" />
 		<script src="chrome://evergreen/content/patron/patron_display.js" />
-		<!--	
-		<script src="chrome://evergreen/content/patron/patron_display_status.js" />
-		<script src="chrome://evergreen/content/patron/patron_display_contact.js" />
-		-->
 		<script src="chrome://evergreen/content/patron/patron_checkout_items.js" />
 		<script src="chrome://evergreen/content/patron/patron_items.js" />
 		<script src="chrome://evergreen/content/circ/circ_utils.js" />
+		<script src="chrome://evergreen/content/circ/checkin.js" />
+		<script src="chrome://evergreen/content/circ/checkin_items.js" />
 	</apps>
 
 </overlay>

@@ -22,7 +22,7 @@ var sdump_levels = {
 	'D_PAGED_TREE' : true,
 	'D_TAB' : false,
 
-	'D_AUTH' : false,
+	'D_AUTH' : true,
 
 	'D_OPAC' : false,
 
@@ -35,6 +35,9 @@ var sdump_levels = {
 	'D_PATRON_DISPLAY_CONTACT' : true,
 
 	'D_PATRON_ITEMS' : true,
+
+	'D_CHECKIN' : true,
+	'D_CHECKIN_ITEMS' : true,
 
 	'D_PATRON_UTILS' : true,
 	

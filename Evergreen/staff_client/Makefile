@@ -30,12 +30,16 @@ patron:
 	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_search_results.dtd)
 	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_checkout_items.dtd)
 
+circ:
+	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/checkin_items/g | sed s/PagedTree/CheckinItems/g > chrome/content/evergreen/circ/checkin_items_overlay.xul )
+	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/checkin_items.dtd)
+
 evergreen.xpi: evergreen.jar
 	@echo
 	@echo make the xpi file
 	zip -r evergreen.xpi chrome/ defaults/ install.js install.rdf Makefile LICENSE README -x \*CVS\* > /dev/null
 
-evergreen.jar: generated open-ils patron
+evergreen.jar: generated open-ils patron circ
 	@echo
 	@echo make the jar file
 	(cd chrome; zip -r evergreen.jar content/ locale/ skin/ -x \*CVS\* > /dev/null )
@@ -48,6 +52,7 @@ clean:
 	rm -f chrome/content/evergreen/patron/patron_items_overlay.xul chrome/locale/en-US/evergreen/patron_items.dtd
 	rm -f chrome/content/evergreen/patron/patron_search_results_overlay.xul chrome/locale/en-US/evergreen/patron_search_results.dtd
 	rm -f chrome/content/evergreen/patron/patron_checkout_items_overlay.xul chrome/locale/en-US/evergreen/patron_checkout_items.dtd
+	rm -f chrome/content/evergreen/circ/checkin_items_overlay.xul chrome/locale/en-US/evergreen/checkin_items.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
 	rm -f chrome/content/evergreen/util/fieldmapper.js
 	rm -f chrome/content/evergreen/util/OrgTree.js

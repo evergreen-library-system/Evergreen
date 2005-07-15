@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- Clamlication: Evergreen Staff Client -->
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/checkin.dtd">
+
+<page id="checkin_win"
+	orient="vertical" style="overflow: auto" width="800" height="500"
+	sizemode="maximized" persist="width height" 
+	onload="params.w = window; 
+		params.app = 'Checkin'; 
+		params.clamshell_node = document.getElementById('ClamShell_main');
+		params.patron_items_node = document.getElementById('PatronItems_main');
+		params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
+		params.commandset_node = document.getElementById('universal_cmds');
+		params.popupset_node = document.getElementById('universal_popupset');
+		mw.focus_widget( document, 'PatronNavBar_refresh' );
+		mw.OpenILS_init(params);"
+	onunload="mw.OpenILS_exit(params);"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading checkin.xul\n');</script>
+
+	<!-- Stylesheets -->
+	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/checkin.css" type="text/css"?>
+	
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/circ/checkin_overlay.xul"?>
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="universal_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="Checkin_keys" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<box id="Checkin_main" />
+
+	<popupset id="universal_popupset" />
+
+</page>
+
