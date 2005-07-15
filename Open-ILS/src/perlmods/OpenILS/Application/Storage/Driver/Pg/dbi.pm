@@ -61,7 +61,7 @@
 	#---------------------------------------------------------------------
 	package money::user_summary;
 	
-	money::billable_transaction_summary->table( 'money.usr_summary' );
+	money::user_summary->table( 'money.usr_summary' );
 
 	#---------------------------------------------------------------------
 	package action::circulation;
