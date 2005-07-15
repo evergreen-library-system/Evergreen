@@ -11,6 +11,9 @@ function patron_display_init(p) {
 	// gives: p.patron_items, p.redraw_patron_items
 	patron_display_patron_items_init(p);
 
+	// gives: p.patron_checkout_items, p.redraw_patron_checkout_items
+	patron_display_patron_checkout_items_init(p);
+
 	p.set_patron = function (au) {
 		return p._patron = au;
 	}
@@ -128,6 +131,7 @@ function patron_display_patron_items_init(p) {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var circ = p._patron.checkouts()[ idx ].circ;
 							alert( js2JSON(renew_by_circ_id( circ.id() )) );
+							p.refresh();
 						} catch(E) {
 							alert(E);
 						}
@@ -149,6 +153,7 @@ function patron_display_patron_items_init(p) {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var copy = p._patron.checkouts()[ idx ].copy;
 							alert( js2JSON(checkin_by_copy_barcode( copy.barcode() )) );
+							p.refresh();
 						} catch(E) {
 							alert(E);
 						}
@@ -184,6 +189,141 @@ function patron_display_patron_items_init(p) {
 				'command',
 				function (ev) {
 					for (var i = 0; i < patron_items.length; i++) {
+						sdump('D_PATRON_DISPLAY','Firing opac context\n');
+					}
+				},
+				false
+			);
+			
+		}
+	);
+}
+
+function patron_display_patron_checkout_items_init(p) {
+	p.patron_checkout_items = patron_checkout_items_init( { 'w' : p.w, 'node' : p.patron_checkout_items_node, 'popupset_node' : p.popupset_node, 'debug' : p.app } );
+
+	var checkouts = [];
+
+	p.attempt_checkout = function(barcode) {
+		try {
+			if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
+			var permit_check = checkout_permit( barcode, p._patron.id(), 0 );
+			if (permit_check.status == 0) {
+				var check = checkout_by_barcode( barcode, p._patron.id() );
+				if (check) {
+					checkouts.push( check );
+					p.patron_checkout_items.add_patron_checkout_items( [ checkouts.length - 1 ] );
+				}
+			} else {
+				throw(permit_check.text);
+			}
+		} catch(E) {
+			handle_error(E);
+		}
+	}
+
+	var tb = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_barcode_entry_textbox')[0];
+	var submit_button = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_submit_barcode_button')[0];
+	tb.addEventListener(
+		'keypress',
+		function(ev) {
+			if (ev.keyCode == 13 || ev.keyCode == 77 ) { p.attempt_checkout( tb.value ); }
+		},
+		false
+	);
+	submit_button.addEventListener(
+		'command',
+		function(ev) {
+			p.attempt_checkout( tb.value );
+		},
+		false
+	);
+
+	p.redraw_patron_checkout_items = function() {
+		p.patron_checkout_items.clear_patron_checkout_items();
+		for (var i = 0; i < checkouts.length; i++) {
+			p.patron_checkout_items.add_patron_checkout_items( [ i ] );
+		}
+	}
+
+	p.patron_checkout_items.register_patron_checkout_items_select_callback(
+		function (ev) {
+			sdump('D_PATRON_DISPLAY','Firing patron_checkout_items_select_callback\n');
+			var patron_checkout_items = get_list_from_tree_selection( p.patron_checkout_items.paged_tree.tree );
+			/* grab cover art for selected item? */
+		}
+	);
+	p.patron_checkout_items.register_flesh_patron_checkout_items_function(
+		function (treeitem) {
+			sdump('D_PATRON_DISPLAY','Firing flesh_patron_checkout_items_function\n');
+			var record_id = treeitem.getAttribute('record_id'); 
+			p.patron_checkout_items.map_patron_checkout_items_to_cols( checkouts[ record_id ], treeitem );
+		}
+	);
+	p.patron_checkout_items.register_context_builder(
+		function (ev) {
+			sdump('D_PATRON_DISPLAY','Firing context_builder\n');
+			empty_widget(p.patron_checkout_items.paged_tree.popup);
+			var patron_checkout_items = get_list_from_tree_selection( p.patron_checkout_items.paged_tree.tree );
+			var menuitem;
+
+			/*** CHECKIN ***/
+			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
+			menuitem.setAttribute('label',getString('circ.context_checkin'));
+			menuitem.addEventListener(
+				'command',
+				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing checkin context\n');
+					var keep_these = [];
+					for (var i = 0; i < patron_checkout_items.length; i++) {
+						try {
+							var idx = patron_checkout_items[i].getAttribute('record_id'); 
+							var copy = checkouts[ idx ].copy;
+							var status = checkin_by_copy_barcode( copy.barcode() );
+							if (!status) { // change this to whatever it takes
+								keep_these.push( checkouts[ idx ] );	
+							}
+							checkouts = keep_these;
+							alert( js2JSON( status ) );
+							p.refresh();
+						} catch(E) {
+							alert(E);
+						}
+					}
+				},
+				false
+			);
+
+			/* separator */
+			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuseparator');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
+			
+
+			/*** COPY EDITOR ***/
+			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
+			menuitem.setAttribute('label',getString('circ.context_edit'));
+			menuitem.addEventListener(
+				'command',
+				function (ev) {
+					for (var i = 0; i < patron_checkout_items.length; i++) {
+						var idx = patron_checkout_items[i].getAttribute('record_id');
+						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
+					}
+				},
+				false
+			);
+
+			/*** OPAC ***/
+			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
+			menuitem.setAttribute('label',getString('circ.context_opac'));
+			menuitem.addEventListener(
+				'command',
+				function (ev) {
+					for (var i = 0; i < patron_checkout_items.length; i++) {
+						var idx = patron_checkout_items[i].getAttribute('record_id');
 						sdump('D_PATRON_DISPLAY','Firing opac context\n');
 					}
 				},

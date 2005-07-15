@@ -81,7 +81,7 @@ function user_request(app,name,params) {
 
 function user_async_request(app,name,params,func) {
 	sdump('D_SES','=-=-=-=-= user_async_request:\n');
-	sdump('D_SES','request '+(app)+' '+(name)+' '+js2JSON(params)+ ' ' + func + '\n');
+	sdump('D_SES','request '+(app)+' '+(name)+' '+js2JSON(params)+ '\n');
 	var request = new RemoteRequest( app, name );
 	for(var index in params) {
 		request.addParam(params[index]);

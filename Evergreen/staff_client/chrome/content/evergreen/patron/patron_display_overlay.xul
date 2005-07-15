@@ -7,6 +7,7 @@
 
 	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_items_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_checkout_items_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_contact.xul"?>
 
@@ -46,7 +47,7 @@
 </deck>
 
 <deck id="ClamShell_second_deck">
-	<box id="PatronCheckout_main"><label value="checkout"/></box>
+	<box id="PatronCheckoutItems_main"/>
 	<box id="PatronItems_main" />
 	<box id="PatronHolds_main"><label value="holds" /></box>
 	<box id="PatronBills_main"><label value="bills" /></box>
@@ -75,6 +76,18 @@
 		label="&patron_navbar.edit;" accesskey="&patron_navbar.edit.accesskey;"/>
 	<button id="PatronNavBar_info" command="cmd_patron_info"
 		label="&patron_navbar.info;" accesskey="&patron_navbar.info.accesskey;"/>
+</hbox>
+
+<hbox id="PatronCheckoutItems_insert1">
+	<label id="patron_checkout_scan_barcode_label" value="&patron_display.checkout.scan_label;" accesskey="&patron_display.checkout.scan_label.accesskey;" control="patron_checkout_scan_textbox"/>
+	<textbox id="patron_checkout_barcode_entry_textbox"/>
+	<button id="patron_checkout_submit_barcode_button" value="&patron_display.checkout.submit_label;" accesskey="&patron_display.checkout.submit_label.accesskey;"/>
+</hbox>
+
+<hbox id="PatronCheckoutItems_insert2">
+</hbox>
+
+<hbox id="PatronCheckoutItems_insert3">
 </hbox>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->

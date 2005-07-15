@@ -1,5 +1,44 @@
 sdump('D_TRACE','Loading circ_tree.js\n');
 
+function is_barcode_valid( barcode ) {
+
+	// consider checkdigit, length, etc.
+
+	return check_checkdigit( barcode );
+}
+
+function checkout_permit(barcode, patron_id, num_of_open_async_checkout_requests) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true,1:true,2:true}));
+	try {
+		var check = user_request(
+			'open-ils.circ',
+			'open-ils.circ.permit_checkout',
+			[ mw.G.auth_ses[0], barcode, patron_id, num_of_open_async_checkout_requests ]
+		)[0];
+		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		return check;	
+	} catch(E) {
+		handle_error(E);
+		return null;
+	}	
+}
+
+function checkout_by_copy_barcode(barcode, patron_id) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true,1:true}));
+	try {
+		var check = user_request(
+			'open-ils.circ',
+			'open-ils.circ.checkout.barcode',
+			[ mw.G.auth_ses[0], barcode, patron_id ]
+		)[0];
+		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		return check;
+	} catch(E) {
+		sdump('D_ERROR',E);
+		return null;
+	}
+}
+
 function checkin_by_copy_barcode(barcode) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
 	try {

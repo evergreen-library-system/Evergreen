@@ -2,6 +2,11 @@
 <!ENTITY patron_display.status.caption 'Status'>
 <!ENTITY patron_display.contact.caption 'Identity &amp; Contact Info'>
 
+<!ENTITY patron_display.checkout.scan_label 'Enter Barcode:'>
+<!ENTITY patron_display.checkout.scan_label.accesskey 'E'>
+<!ENTITY patron_display.checkout.submit_label 'Submit'>
+<!ENTITY patron_display.checkout.submit_label.accesskey 'S'>
+
 <!ENTITY patron_navbar.retrieve 'Retrieve Patron'>
 <!ENTITY patron_navbar.retrieve.accesskey 'R'>
 <!ENTITY patron_navbar.refresh 'Refresh'>
