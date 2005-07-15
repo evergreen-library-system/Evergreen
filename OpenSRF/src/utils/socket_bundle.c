@@ -223,6 +223,10 @@ int socket_send(int sock_fd, const char* data) {
 void socket_disconnect(socket_manager* mgr, int sock_fd) {
 
 	debug_handler("Closing socket %d", sock_fd);
+
+	if( shutdown( sock_fd, SHUT_RDWR ) )
+		warning_handler( "socket_disconnect(): Error shuting down socket, removing anyway" );
+
 	if( close( sock_fd ) == -1 ) 
 		warning_handler( "socket_disconnect(): Error closing socket, removing anyway" );
 
