@@ -34,8 +34,7 @@ package money::billing;
 use base qw/money/;
 __PACKAGE__->table('money_billing');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount billing_ts/);
-__PACKAGE__->columns(Others => qw/note/);
+__PACKAGE__->columns(Essential => qw/xact amount billing_ts note void/);
 #-------------------------------------------------------------------------------
 
 package money::payment;

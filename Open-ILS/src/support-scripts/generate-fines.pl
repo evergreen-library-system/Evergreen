@@ -48,8 +48,9 @@ try {
 			"\tItem was due on or before: ".localtime($due)."\n";
 
 		my $fine = $session->request(
-			'open-ils.storage.direct.money.billing.search.xact',
-			$c->id, { order_by => 'billing_ts DESC', limit => '1' }
+			'open-ils.storage.direct.money.billing.search',
+			{ xact => $c->id, void => 'f' },
+			{ order_by => 'billing_ts DESC', limit => '1' }
 		)->gather(1);
 
 		my $last_fine;
