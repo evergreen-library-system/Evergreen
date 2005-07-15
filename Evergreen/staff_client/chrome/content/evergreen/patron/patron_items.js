@@ -6,7 +6,7 @@ function patron_items_init(p) {
 
 	p.patron_items_cols = circ_cols();
 
-	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'popupset_node' : p.popupset_node, 'commandset_node' : p.commandset_node, 'cols' : p.patron_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
+	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'popupset_node' : p.popupset_node, 'cmd_next' : p.cmd_next, 'cmd_prev' : p.cmd_prev, 'cols' : p.patron_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
 	p.add_patron_items = p.paged_tree.add_rows;
 	p.clear_patron_items = p.paged_tree.clear_tree;
 

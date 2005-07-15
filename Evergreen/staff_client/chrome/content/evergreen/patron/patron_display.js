@@ -84,7 +84,7 @@ function patron_display_clamshell_init(p) {
 }
 
 function patron_display_patron_items_init(p) {
-	p.patron_items = patron_items_init( { 'w' : p.w, 'node' : p.patron_items_node, 'popupset_node' : p.popupset_node, 'commandset_node' : p.commandset_node, 'debug' : p.app } );
+	p.patron_items = patron_items_init( { 'w' : p.w, 'node' : p.patron_items_node, 'popupset_node' : p.popupset_node, 'debug' : p.app } );
 
 	p.redraw_patron_items = function() {
 		p.patron_items.clear_patron_items();

@@ -7,14 +7,6 @@
 
 <commandset id="universal_cmds">
 
-	<command id="cmd_tree_prev" />
-
-	<command id="cmd_tree_next" />
-
-	<!-- For some reason I can't add an event listener to this and have it fire
-		from the menulist below, so using oncommand instead -->
-	<command id="cmd_tree_set_hits_per_page" />
-
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>
 
@@ -50,8 +42,8 @@
 			<menuitem id="ptnm9" label="100" value="100" />
 		</menupopup>
 	</menulist>
-	<button id="PagedTree_button_prev" label="&previous.range;" accesskey="&previous.range.key;" command="cmd_tree_prev" disabled="true" name="button_prev"/>
-	<button id="PagedTree_button_next" label="&next.range;" accesskey="&next.range.key;" command="cmd_tree_next" disabled="true" name="button_next"/>
+	<button id="PagedTree_button_prev" label="&previous.range;" accesskey="&previous.range.key;" disabled="true" name="button_prev"/>
+	<button id="PagedTree_button_next" label="&next.range;" accesskey="&next.range.key;" disabled="true" name="button_next"/>
 </hbox>
 
 <!-- Context menus -->

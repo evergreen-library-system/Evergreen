@@ -54,9 +54,6 @@ function paged_tree_init(p) {
 	p.results_label = p.nav_bar.getElementsByAttribute('name','label_results')[0];
 	p.range_label = p.nav_bar.getElementsByAttribute('name','label_range')[0];
 
-	p.next_button = p.nav_bar.getElementsByAttribute('name','button_next')[0];
-	p.prev_button = p.nav_bar.getElementsByAttribute('name','button_prev')[0];
-
 	p.hits_per_page_menu = p.nav_bar.getElementsByAttribute('name','hits_per_page')[0];
 	if (p.hits_per_page) {
 		p.display_count = parseInt( p.hits_per_page );
@@ -80,8 +77,9 @@ function paged_tree_init(p) {
 		false
 	);
 
-	var cmd_next = p.commandset_node.getElementsByAttribute('id', 'cmd_tree_next' )[0];
-	cmd_next.addEventListener(
+
+	p.next_button = p.nav_bar.getElementsByAttribute('name','button_next')[0];
+	p.next_button.addEventListener(
 		'command',
 		function (ev) {
 			var backup_select_callback = p._select_callback;
@@ -93,8 +91,8 @@ function paged_tree_init(p) {
 		false
 	);
 
-	var cmd_prev = p.commandset_node.getElementsByAttribute('id', 'cmd_tree_prev' )[0];
-	cmd_prev.addEventListener(
+	p.prev_button = p.nav_bar.getElementsByAttribute('name','button_prev')[0];
+	p.prev_button.addEventListener(
 		'command',
 		function (ev) {
 			var backup_select_callback = p._select_callback;
