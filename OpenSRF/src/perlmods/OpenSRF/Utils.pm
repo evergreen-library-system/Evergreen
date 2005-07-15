@@ -33,9 +33,13 @@ use Exporter;
 # This turns errors into warnings, so daemons don't die.
 #$Storable::forgive_me = 1;
 
-%EXPORT_TAGS = (common => [qw(interval_to_seconds seconds_to_interval sendmail)], daemon => [qw(safe_fork set_psname daemonize)]);
+%EXPORT_TAGS = (
+	common		=> [qw(interval_to_seconds seconds_to_interval sendmail)],
+	daemon		=> [qw(safe_fork set_psname daemonize)],
+	datetime	=> [qw(clense_ISO8601 interval_to_seconds seconds_to_interval)],
+);
 
-Exporter::export_ok_tags('common','daemon');  # add aa, cc and dd to @EXPORT_OK
+Exporter::export_ok_tags('common','daemon','datetime');  # add aa, cc and dd to @EXPORT_OK
 
 sub AUTOLOAD {
 	my $self = shift;
@@ -311,7 +315,7 @@ sub seconds_to_interval {
         if ($s = int($mm)) {
                 $string .= ($string ? ', ':'')."$s $second". ($s > 1 ? 's' : '');
         } else {
-                $string = "Brand New!!!" unless ($string);
+                $string = "0s" unless ($string);
         }
         return $string;
 }
@@ -337,8 +341,11 @@ sub set_psname {
 sub clense_ISO8601 {
 	my $self = shift;
 	my $date = shift || $self;
-	if ($date =~ /(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):(\d{2}):(\d{2})\.?\d*((?:-|\+)\d{2,4})?$/) {
-		my $z = $7 || '-00';
+	if ($date =~ /(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):(\d{2}):(\d{2})\.?\d*((?:-|\+)[0-9:]{2,5})?$/) {
+		my $z = $7 || '+00:00';
+		if (length($z) > 3 && $z !~ /:/o) {
+			substr($z,3,0,':');
+		}
 		$date = "$1-$2-$3T$4:$5:$6$z";
 	}
 	return $date;
