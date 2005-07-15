@@ -973,6 +973,7 @@ int router_registrar_handle_app_request(
 
 
 
+
 osrf_message** router_registrar_process_app_request( 
 		transport_router_registrar* router, osrf_message* omsg, int* num_responses ) {
 
@@ -987,18 +988,16 @@ osrf_message** router_registrar_process_app_request(
 
 	if(!strcmp(omsg->method_name,"opensrf.router.info.class.list")) {
 
-		json* result_content = NULL;
+		object* result_content = json_parse_string("[]");
 
 		debug_handler("Processing opensrf.router.info.class.list request");
 
-		result_content = json_object_new_array();
 		server_class_node* cur_class = router->server_class_list;
 		while( cur_class != NULL ) {
 
 			debug_handler("Adding %s to request list", cur_class->server_class);
 
-			json_object_array_add(
-					result_content, json_object_new_string(cur_class->server_class));
+			result_content->push(result_content, new_object(cur_class->server_class));
 			cur_class = cur_class->next;
 		}
 		result_array = safe_malloc(sizeof(osrf_message*));
@@ -1006,9 +1005,9 @@ osrf_message** router_registrar_process_app_request(
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[0], 
-				json_object_to_json_string(result_content) );
-		json_object_put(result_content);
+
+		osrf_message_set_result_content( result_array[0], object_to_json(result_content));
+		free_object(result_content);
 
 
 	} else if(!strcmp(omsg->method_name,"opensrf.router.info.stats")) {
@@ -1019,8 +1018,8 @@ osrf_message** router_registrar_process_app_request(
 
 		debug_handler("Processing opensrf.router.info.stats request");
 
-		json* result_content = NULL;
-		result_content = json_object_new_object();
+		object* result_content = json_parse_string("{}");
+
 		server_class_node* cur_class = router->server_class_list;
 
 		while( cur_class != NULL ) {
@@ -1029,40 +1028,58 @@ osrf_message** router_registrar_process_app_request(
 			server_node* cur_node = start_node;
 			if( cur_node == NULL ) continue; 
 
-			json* server_object = json_object_new_object();
+			object* server_object = json_parse_string("{}");
 
 			do {
 
-				json* node_stats_array = json_object_new_array();
+				object* node_stats_array = json_parse_string("[]");
 
-				json* json_reg_time = json_object_new_object();
-				json_object_object_add( json_reg_time, "reg_time", 
-						json_object_new_int((int)cur_node->reg_time));
-				json_object_array_add(  node_stats_array, json_reg_time );
+				object* json_reg_time = json_parse_string("{}");
 
-				json* json_upd_time = json_object_new_object();
-				json_object_object_add( json_upd_time, "upd_time", 
-						json_object_new_int((int)cur_node->upd_time));
-				json_object_array_add( node_stats_array, json_upd_time );
+				object_add_key( json_reg_time, "reg_time", 
+					new_int_object((int) cur_node->reg_time));
 
-				json* json_la_time = json_object_new_object();
-				json_object_object_add( json_la_time, "la_time", 
-						json_object_new_int((int)cur_node->la_time));
-				json_object_array_add( node_stats_array, json_la_time );
+				object_push(  node_stats_array, json_reg_time );
 
-				json* json_serve_count = json_object_new_object();
-				json_object_object_add( json_serve_count, "serve_count", 
-						json_object_new_int((int)cur_node->serve_count));
-				json_object_array_add( node_stats_array, json_serve_count );
+				object* json_upd_time = json_parse_string("{}");
 
-				json_object_object_add( server_object, cur_node->remote_id, node_stats_array );
+
+				object_add_key( json_upd_time, "upd_time", 
+					new_int_object((int)cur_node->upd_time));
+
+
+
+				object_push( node_stats_array, json_upd_time );
+
+
+
+				object* json_la_time = json_parse_string("{}");
+
+
+
+				object_add_key( json_la_time, "la_time", 
+						new_int_object((int)cur_node->la_time));
+
+
+				object_push( node_stats_array, json_la_time );
+
+				object* json_serve_count = json_parse_string("{}");
+
+
+				object_add_key( json_serve_count, "serve_count", 
+					new_int_object((int)cur_node->serve_count));
+
+				
+				object_push( node_stats_array, json_serve_count );
+
+
+				object_add_key( server_object, cur_node->remote_id, node_stats_array );
 
 				cur_node = cur_node->next;
 	
 			} while( cur_node != start_node );
 
-			json_object_object_add( 
-					result_content, cur_class->server_class, server_object ); 
+			object_add_key( result_content, cur_class->server_class, server_object );
 	
 			cur_class = cur_class->next;
 
@@ -1074,48 +1091,50 @@ osrf_message** router_registrar_process_app_request(
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[0], 
-				json_object_to_json_string(result_content) );
-		json_object_put(result_content);
+
+		osrf_message_set_result_content(result_array[0], object_to_json(result_content));
+
+		free_object(result_content);
 
 
 	} else if(!strcmp(omsg->method_name,"opensrf.system.method.all")) {
 
-		json* content = json_object_new_object();
-		json_object_object_add(content, "api_level", json_object_new_string("1"));
-		json_object_object_add(content, "api_name", json_object_new_string("opensrf.router.info.class.list"));
-		json_object_object_add(content, "server_class", json_object_new_string("router"));
-		json_object_object_add(content, "stream", json_object_new_string("0"));
+		object* content = json_parse_string("{}");
+		object_add_key(content, "api_level", new_object("1"));
+		object_add_key(content, "api_name", new_object("opensrf.router.info.class.list"));
+		object_add_key(content, "server_class", new_object("router"));
+		object_add_key(content, "stream", new_object("0"));
 
-		json* content2 = json_object_new_object();
-		json_object_object_add(content2, "api_level", json_object_new_string("1"));
-		json_object_object_add(content2, "api_name", json_object_new_string("opensrf.router.info.stats"));
-		json_object_object_add(content2, "server_class", json_object_new_string("router"));
-		json_object_object_add(content2, "stream", json_object_new_string("0"));
+		object* content2 = json_parse_string("{}");
+		object_add_key(content2, "api_level", new_object("1"));
+		object_add_key(content2, "api_name", new_object("opensrf.router.info.stats"));
+		object_add_key(content2, "server_class", new_object("router"));
+		object_add_key(content2, "stream", new_object("0"));
 
-		json* content3 = json_object_new_object();
-		json_object_object_add(content3, "api_level", json_object_new_string("1"));
-		json_object_object_add(content3, "api_name", json_object_new_string("opensrf.system.method.all"));
-		json_object_object_add(content3, "server_class", json_object_new_string("router"));
-		json_object_object_add(content3, "stream", json_object_new_string("1"));
+		object* content3 = json_parse_string("{}");
+		object_add_key(content3, "api_level", new_object("1"));
+		object_add_key(content3, "api_name", new_object("opensrf.system.method.all"));
+		object_add_key(content3, "server_class", new_object("router"));
+		object_add_key(content3, "stream", new_object("1"));
 
 		result_array = safe_malloc(3*sizeof(osrf_message*));
 		*num_responses = 3;
 
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[0], json_object_to_json_string(content) );
-		json_object_put(content);
+
+		osrf_message_set_result_content( result_array[0], object_to_json(content));
+		free_object(content);
 
 		result_array[1] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[1], json_object_to_json_string(content2) );
-		json_object_put(content2);
+		osrf_message_set_result_content( result_array[1], object_to_json(content2) );
+		free_object(content2);
 
 		result_array[2] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[1], json_object_to_json_string(content3) );
-		json_object_put(content3);
+		osrf_message_set_result_content( result_array[1], object_to_json(content3) );
+		free_object(content3);
 
 
 	}

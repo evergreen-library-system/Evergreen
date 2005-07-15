@@ -60,7 +60,7 @@ int parse_error( char* words[] );
 int router_query_servers( char* server );
 int srfsh_client_connect();
 int print_help();
-char* json_printer( json* object );
+char* json_printer( char* string );
 char* tabs(int count);
 void sig_child_handler( int s );
 void sig_int_handler( int s );

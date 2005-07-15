@@ -131,6 +131,10 @@ int object_iterator_has_next(object_iterator*);
 	is to be a string.  if not, string should be NULL */
 object* new_object(char* string);
 
+object* new_int_object(long num);
+
+object* new_double_object(double num);
+
 /* utility method for initing an object */
 object* _init_object();
 

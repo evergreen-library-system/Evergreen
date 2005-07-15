@@ -323,6 +323,7 @@ void _osrf_app_session_free( osrf_app_session* session ){
 }
 
 
+/*
 int osrf_app_session_make_request( 
 		osrf_app_session* session, json* params, 
 		char* method_name, int protocol, string_array* param_strings ) {
@@ -330,6 +331,38 @@ int osrf_app_session_make_request(
 
 	osrf_message* req_msg = osrf_message_init( REQUEST, ++(session->thread_trace), protocol );
 	osrf_message_set_request_info( req_msg,  method_name, params );
+
+	if(!req_msg->parse_json_params && param_strings) {
+		int i;
+		for(i = 0; i!= param_strings->size ; i++ ) {
+			osrf_message_add_param(req_msg,
+				string_array_get_string(param_strings,i));
+		}
+	}
+
+	osrf_app_request* req = _osrf_app_request_init( session, req_msg );
+	if(!_osrf_app_session_send( session, req_msg ) ) {
+		warning_handler( "Error sending request message [%d]", session->thread_trace );
+		return -1;
+	}
+
+	_osrf_app_session_push_request( session, req );
+	return req->request_id;
+}
+*/
+
+
+
+
+int osrf_app_session_make_req( 
+		osrf_app_session* session, object* params, 
+		char* method_name, int protocol, string_array* param_strings ) {
+	if(session == NULL) return -1;
+
+	osrf_message* req_msg = osrf_message_init( REQUEST, ++(session->thread_trace), protocol );
+	//osrf_message_set_request_info( req_msg,  method_name, params );
+	osrf_message_set_method(req_msg, method_name);
+	if(params) osrf_message_set_params(req_msg, params);
 
 	/* if we're not parsing the json, shove the strings in manually */
 	if(!req_msg->parse_json_params && param_strings) {
@@ -349,6 +382,8 @@ int osrf_app_session_make_request(
 	_osrf_app_session_push_request( session, req );
 	return req->request_id;
 }
+
+
 
 /** Adds an app_request to the request set */
 void _osrf_app_session_push_request( osrf_app_session* session, osrf_app_request* req ){

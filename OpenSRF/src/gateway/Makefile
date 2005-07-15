@@ -1,5 +1,5 @@
 CC_OPTS	+= -DASSUME_STATELESS
-LD_OPTS	+= -lc_utils -lobjson -lxml2 -lopensrf_transport -lopensrf_stack -ljson 
+LD_OPTS	+= -lc_utils -lobjson -lxml2 -lopensrf_transport -lopensrf_stack 
 
 all: libmod_ils_gateway.so
 

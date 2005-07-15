@@ -1,4 +1,3 @@
-#include "libjson/json.h"
 #include "string_array.h"
 #include "utils.h"
 #include "logging.h"
@@ -65,7 +64,7 @@ struct osrf_message_struct {
 	int is_exception;
 
 	/* if we're a RESULT */
-	json* result_content;
+	//json* result_content;
 	object* _result_content;
 
 	/* unparsed json string */
@@ -73,7 +72,7 @@ struct osrf_message_struct {
 
 	/* if we're a REQUEST */
 	char* method_name;
-	json* params;
+	//json* params;
 	object* _params;
 
 	/* in case anyone wants to make a list of us.  
@@ -88,7 +87,7 @@ typedef struct osrf_message_struct osrf_message;
 
 
 osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protocol );
-void osrf_message_set_request_info( osrf_message*, char* param_name, json* params );
+//void osrf_message_set_request_info( osrf_message*, char* param_name, json* params );
 void osrf_message_set_status_info( osrf_message*, char* status_name, char* status_text, int status_code );
 void osrf_message_set_result_content( osrf_message*, char* json_string );
 void osrf_message_free( osrf_message* );
@@ -107,6 +106,9 @@ void osrf_message_set_json_parse_result( int ibool );
 void osrf_message_set_json_parse_params( int ibool );
 	
 
+void osrf_message_set_params( osrf_message* msg, object* o );
+void osrf_message_set_method( osrf_message* msg, char* method_name );
+void osrf_message_add_object_param( osrf_message* msg, object* o );
 void osrf_message_add_param( osrf_message*, char* param_string );
 
 

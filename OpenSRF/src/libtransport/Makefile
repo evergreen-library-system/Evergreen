@@ -19,10 +19,6 @@ install:
 	@echo "Installing libopensrf_transport..."
 	cp $(TMPDIR)/libopensrf_transport.so $(LIBDIR)/
 	cp $(HEADERS) $(INCLUDEDIR)/$(OPENSRF)
-#	for h in $(TMPDIR)/$(HEADERS); do
-#		mv $$h $(INCLUDEDIR)/$(OPENSRF);
-#	done
-
 
 clean:
 	/bin/rm -f *.o basic_client component

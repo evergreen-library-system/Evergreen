@@ -33,9 +33,11 @@ object* json_parse_string(char* string) {
 	object* obj = new_object(NULL);
 	unsigned long index = 0;
 
+	json_eat_ws(string, &index, 1); /* remove leading whitespace */
+	if(index == current_strlen) return NULL;
+
 	int status = _json_parse_string(string, &index, obj);
-	if(!status)
-		return obj;
+	if(!status) return obj;
 
 	if(status == -2)
 		return NULL;

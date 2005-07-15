@@ -1,4 +1,4 @@
-LD_OPTS	+= -lobjson -lreadline -lxml2 -lopensrf_transport -lopensrf_stack -ljson -lncurses -lc_utils
+LD_OPTS	+= -lobjson -lreadline -lxml2 -lopensrf_transport -lopensrf_stack -lncurses -lc_utils
 
 all: srfsh
 

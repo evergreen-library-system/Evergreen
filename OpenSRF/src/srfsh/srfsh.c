@@ -32,9 +32,6 @@ int main( int argc, char* argv[] ) {
 
 
 	client = osrf_system_get_transport_client();
-	//osrf_message_set_json_parse_result(1);
-	//osrf_message_set_json_parse_result(1);
-
 
 	/* main process loop */
 	char* request;
@@ -187,12 +184,22 @@ int parse_request( char* request ) {
 
 int handle_introspect(char* words[]) {
 
-	if(words[1]) {
+	if(words[1] && words[2]) {
 		fprintf(stderr, "--> %s\n", words[1]);
 		char buf[256];
 		memset(buf,0,256);
-		sprintf( buf, "request %s opensrf.system.method.all", words[1] );
+		sprintf( buf, "request %s opensrf.system.method %s", words[1], words[2] );
 		return parse_request( buf );
+
+	} else {
+	
+		if(words[1]) {
+			fprintf(stderr, "--> %s\n", words[1]);
+			char buf[256];
+			memset(buf,0,256);
+			sprintf( buf, "request %s opensrf.system.method.all", words[1] );
+			return parse_request( buf );
+		}
 	}
 
 	return 0;
@@ -216,19 +223,11 @@ int handle_login( char* words[]) {
 				"request open-ils.auth open-ils.auth.authenticate.init \"%s\"", username );
 		parse_request(buf); 
 
-		//char* hash = json_object_get_string( last_result->result_content );
-
 		char* hash;
 		if(last_result && last_result->_result_content) {
 			object* r = last_result->_result_content;
 			hash = r->string_data;
 		} else return 0;
-
-		/*
-		fprintf(stderr, "HASHES %s : %s\n", hash, hash2);
-		object* r = last_result->_result_content;
-		fprintf(stderr, "%s\n", r->to_json(r));
-		*/
 
 
 		char* pass_buf = md5sum(password);
@@ -248,7 +247,6 @@ int handle_login( char* words[]) {
 
 		parse_request( buf2 );
 
-		//login_session = strdup(json_object_get_string( last_result->result_content ));
 		login_session = strdup(last_result->_result_content->string_data);
 
 		printf("Login Session: %s\n", login_session );
@@ -428,20 +426,26 @@ int send_request( char* server,
 	if( server == NULL || method == NULL )
 		return 0;
 
-	json* params = NULL;
+	object* params = NULL;
 	if( !relay ) {
 		if( buffer != NULL && buffer->n_used > 0 ) 
-			params = json_tokener_parse(buffer->buf);
+			params = json_parse_string(buffer->buf);
 	} else {
-		if(!last_result || ! last_result->result_content) { 
+		if(!last_result || ! last_result->_result_content) { 
 			printf("We're not going to call 'relay' with no result params\n");
 			return 1;
 		}
 		else {
-			json* arr = json_object_new_array();
-			json_object_array_add( arr, last_result->result_content );
-			params = arr;
+			object* o = new_object(NULL);
+			o->push(o, last_result->_result_content );
+			params = o;
 		}
+	}
+
+
+	if(buffer->n_used > 0 && params == NULL) {
+		fprintf(stderr, "JSON error detected, not executing\n");
+		return 1;
 	}
 
 	osrf_app_session* session = osrf_app_client_session_init(server);
@@ -452,7 +456,8 @@ int send_request( char* server,
 	}
 
 	double start = get_timestamp_millis();
-	int req_id = osrf_app_session_make_request( session, params, method, 1, NULL );
+	//int req_id = osrf_app_session_make_request( session, params, method, 1, NULL );
+	int req_id = osrf_app_session_make_req( session, params, method, 1, NULL );
 
 
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 60 );
@@ -472,7 +477,7 @@ int send_request( char* server,
 
 	while(omsg) {
 
-		if(omsg->result_content) {
+		if(omsg->_result_content) {
 
 			debug_handler("srfsh1");
 			osrf_message_free(last_result);
@@ -480,10 +485,11 @@ int send_request( char* server,
 
 			char* content;
 
-			if( pretty_print ) 
-				content = json_printer( omsg->result_content );
-			else
-				//content = json_object_get_string(omsg->result_content);
+			if( pretty_print && omsg->_result_content ) {
+				char* j = object_to_json(omsg->_result_content);
+				content = json_printer(j); 
+				free(j);
+			} else
 				content = object_get_string(omsg->_result_content);
 
 			debug_handler("srfsh2");
@@ -662,11 +668,7 @@ char* tabs(int count) {
 	return final;
 }
 
-char* json_printer( json* object ) {
-
-	if(object == NULL)
-		return NULL;
-	char* string = json_object_get_string(object);
+char* json_printer( char* string ) {
 
 	growing_buffer* buf = buffer_init(64);
 	int i;
@@ -760,12 +762,12 @@ int do_math( int count, int style ) {
 
 	osrf_app_session* session = osrf_app_client_session_init(  "opensrf.math" );
 
-	json* params = json_object_new_array();
-	json_object_array_add(params, json_object_new_string("1"));
-	json_object_array_add(params, json_object_new_string("2"));
+	object* params = json_parse_string("[]");
+	params->push(params,new_object("1"));
+	params->push(params,new_object("2"));
 
 	char* methods[] = { "add", "sub", "mult", "div" };
-	char* answers[] = { "3", "-1", "2", "0.5" };
+	char* answers[] = { "\"3\"", "\"-1\"", "\"2\"", "\"0.5\"" };
 
 	float times[ count * 4 ];
 	memset(times,0,count*4);
@@ -792,8 +794,8 @@ int do_math( int count, int style ) {
 			struct timeb t2;
 
 			ftime(&t1);
-			int req_id = osrf_app_session_make_request( session, params, methods[j], 1, NULL );
-
+			//int req_id = osrf_app_session_make_request( session, params, methods[j], 1, NULL );
+			int req_id = osrf_app_session_make_req( session, params, methods[j], 1, NULL );
 
 			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
 
@@ -806,13 +808,15 @@ int do_math( int count, int style ) {
 
 			if(omsg) {
 	
-				if(omsg->result_content) {
-					char* jsn = json_object_get_string( omsg->result_content );
+				if(omsg->_result_content) {
+					char* jsn = object_to_json(omsg->_result_content);
 					if(!strcmp(jsn, answers[j]))
 						fprintf(stderr, "+");
 					else
 						fprintf(stderr, "\n![%s] - should be %s\n", jsn, answers[j] );
+					free(jsn);
 				}
+
 
 				osrf_message_free(omsg);
 		
@@ -832,7 +836,7 @@ int do_math( int count, int style ) {
 	}
 
 	osrf_app_session_destroy( session );
-	json_object_put( params );
+	free_object(params);
 
 	int c;
 	float total = 0;

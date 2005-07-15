@@ -27,6 +27,23 @@ object* new_object(char* string_value) {
 	return _init_object(string_value);
 }
 
+
+object* new_int_object(long num) {
+	object* o = new_object(NULL);
+	o->is_null = 0;
+	o->is_number = 1;
+	o->num_value = num;
+	return o;
+}
+
+object* new_double_object(double num) {
+	object* o = new_object(NULL);
+	o->is_null = 0;
+	o->is_double = 1;
+	o->double_value = num;
+	return o;
+}
+
 object* _init_object(char* string_value) {
 
 	object* obj			= (object*) safe_malloc(sizeof(object));

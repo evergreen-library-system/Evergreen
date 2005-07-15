@@ -1,5 +1,5 @@
 CC_OPTS		+=  -DASSUME_STATELESS
-EXE_LD_OPTS += -lxml2 -lopensrf_transport  -lopensrf_stack -lobjson -ljson -lc_utils
+EXE_LD_OPTS += -lxml2 -lopensrf_transport  -lopensrf_stack -lobjson -lc_utils
 
 SOURCES = osrf_message.c osrf_app_session.c osrf_stack.c osrf_system.c osrf_config.c
 TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_config.o

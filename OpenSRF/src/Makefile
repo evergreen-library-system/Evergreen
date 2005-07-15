@@ -28,7 +28,7 @@ test: test
 
 install: install-prep transport-install stack-install gateway-install	\
 		router-install srfsh-install jserver-install perl-install			\
-		libjson-install objson-install utils-install bin-install info
+		objson-install utils-install bin-install info
 
 prep:
 	mkdir -p $(TMPDIR)
@@ -49,11 +49,7 @@ objson: c_utils
 	@echo -e "\n + objson"
 	make -C objson
 
-json: prep
-	@echo -e "\n + libjson"
-	make -C libjson
-
-stack: json objson transport 
+stack: objson transport 
 	@echo -e "\n + stack"
 	make -C libstack
 
@@ -92,16 +88,13 @@ install-prep:	install-prep
 transport-install:	install-prep utils-install
 	make -C libtransport install
 
-libjson-install:	install-prep
-	make -C libjson install
-
 utils-install:	install-prep
 	make -C utils install
 
 objson-install:	install-prep utils-install
 	make -C objson install
 
-stack-install:	install-prep transport-install libjson-install objson-install
+stack-install:	install-prep transport-install  objson-install
 	make -C libstack install
 
 gateway-install:	install-prep stack-install	
@@ -145,14 +138,12 @@ info:
 clean:
 	@echo "Cleaning..."
 	make -C libtransport clean
-	make -C libjson clean
 	make -C libstack clean
 	make -C router clean
 	make -C gateway clean
 	make -C jserver clean
 	make -C utils clean
 	make -C objson clean
-	make -C libjson clean
 	make -C srfsh clean
 	/bin/rm -rf $(TMPDIR)
 

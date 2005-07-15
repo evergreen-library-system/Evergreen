@@ -1,9 +1,11 @@
-#include "libjson/json.h"
 #include "opensrf/transport_client.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
 #include "string_array.h"
 #include "osrf_config.h"
+
+#include "objson/object.h"
+#include "objson/json_parser.h"
 
 #ifndef OSRF_APP_SESSION
 #define OSRF_APP_SESSION
@@ -89,9 +91,17 @@ osrf_app_session* osrf_app_session_find_session( char* session_id );
   * the id of the request.  This id is then used to perform work on the
   * requeset.
   */
+
+
+int osrf_app_session_make_req( 
+		osrf_app_session* session, object* params, 
+		char* method_name, int protocol, string_array* param_strings);
+
+/*
 int osrf_app_session_make_request( 
 		osrf_app_session* session, json* params, 
 		char* method_name, int protocol, string_array* arr );
+		*/
 
 /** Sets the given request to complete state */
 void osrf_app_session_set_complete( osrf_app_session* session, int request_id );
