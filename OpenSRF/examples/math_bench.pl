@@ -2,8 +2,6 @@
 use strict;use warnings;
 use OpenSRF::System qw(/pines/conf/client.conf);
 use OpenSRF::Utils::SettingsClient;
-use OpenSRF::DomainObject::oilsMethod;
-use OpenSRF::DomainObject::oilsPrimitive;
 use Time::HiRes qw/time/;
 use OpenSRF::EX qw/:try/;
 
