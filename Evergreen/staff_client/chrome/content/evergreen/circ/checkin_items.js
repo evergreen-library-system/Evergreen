@@ -6,7 +6,7 @@ function checkin_items_init(p) {
 
 	p.checkin_items_cols = circ_cols();
 
-	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'popupset_node' : p.popupset_node, 'cols' : p.checkin_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
+	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.checkin_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
 	p.add_checkout_items = p.paged_tree.add_rows;
 	p.clear_checkout_items = p.paged_tree.clear_tree;
 

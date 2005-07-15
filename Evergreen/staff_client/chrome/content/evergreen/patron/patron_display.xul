@@ -13,7 +13,6 @@
 		params.patron_items_node = document.getElementById('PatronItems_main');
 		params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
 		params.commandset_node = document.getElementById('universal_cmds');
-		params.popupset_node = document.getElementById('universal_popupset');
 		mw.focus_widget( document, 'PatronNavBar_refresh' );
 		mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"

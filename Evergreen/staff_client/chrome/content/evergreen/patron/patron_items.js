@@ -6,7 +6,7 @@ function patron_items_init(p) {
 
 	p.patron_items_cols = circ_cols();
 
-	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'popupset_node' : p.popupset_node, 'cols' : p.patron_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
+	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.patron_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
 	p.add_patron_items = p.paged_tree.add_rows;
 	p.clear_patron_items = p.paged_tree.clear_tree;
 
@@ -20,7 +20,7 @@ function patron_items_init(p) {
 		p.paged_tree.register_flesh_row_function( f );
 	}
 
-	p.register_context_builder = function (f) {
+	p.register_item_context_builder = function (f) {
 		sdump('D_PATRON_ITEMS','p.register_context_builder(' + f + ')\n');
 		p.paged_tree.register_context_builder( f );
 	}

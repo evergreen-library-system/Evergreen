@@ -23,7 +23,10 @@
 </box>
 
 <deck id="ClamShell_first_deck">
-	<box id="PatronSearchForm_main"/>
+	<vbox id="psm_left">
+		<box id="PatronSearchForm_main"/>
+		<box id="PatronDisplayStatus_main"/>
+	</vbox>
 </deck>
 
 <deck id="ClamShell_second_deck">

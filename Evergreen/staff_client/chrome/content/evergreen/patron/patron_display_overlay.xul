@@ -8,8 +8,8 @@
 	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_items_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_checkout_items_overlay.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_contact.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_contact_overlay.xul"?>
 
 <commandset id="universal_cmds">
 

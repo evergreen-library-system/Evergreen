@@ -22,31 +22,31 @@ var sdump_levels = {
 	'D_PAGED_TREE' : true,
 	'D_TAB' : false,
 
-	'D_AUTH' : true,
+	'D_AUTH' : false,
 
 	'D_OPAC' : false,
 
-	'D_PATRON_SEARCH' : true,
-	'D_PATRON_SEARCH_FORM' : true,
-	'D_PATRON_SEARCH_RESULTS' : true,
+	'D_PATRON_SEARCH' : false,
+	'D_PATRON_SEARCH_FORM' : false,
+	'D_PATRON_SEARCH_RESULTS' : false,
 
 	'D_PATRON_DISPLAY' : true,
 	'D_PATRON_DISPLAY_STATUS' : true,
 	'D_PATRON_DISPLAY_CONTACT' : true,
 
 	'D_PATRON_ITEMS' : true,
+	'D_PATRON_CHECKOUT_ITEMS' : true,
 
 	'D_CHECKIN' : true,
 	'D_CHECKIN_ITEMS' : true,
 
-	'D_PATRON_UTILS' : true,
-	
-	'D_CIRC_TREE' : true,
+	'D_PATRON_UTILS' : false,
+	'D_CIRC_UTILS' : false,
 
 	'D_EXPLODE' : false,
 	'D_FM_UTILS' : false,
 	'D_PRINT' : false,
-	'D_SES' : true,
+	'D_SES' : false,
 	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,

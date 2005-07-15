@@ -14,6 +14,9 @@
 
 <!-- main widget for paged_tree -->
 <box id="PagedTree_main" flex="1" orient="vertical">
+	<popupset>
+		<popup id="PagedTree_popup"/>
+	</popupset>
 	<hbox id="PagedTree_insert1" />
 	<hbox id="PagedTree_nav" name="nav"/>
 	<hbox id="PagedTree_insert2" />
@@ -51,7 +54,6 @@
 
 <!-- Context menus -->
 <popupset id="universal_popupset">
-	<popup id="PagedTree_popup" name="tree" />
 </popupset>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->

@@ -31,7 +31,7 @@ function patron_search_results_init(p) {
 		}
 	];
 
-	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'popupset_node' : p.popupset_node, 'cols' : p.patron_cols, 'debug' : p.app } );
+	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.patron_cols, 'debug' : p.app } );
 	p.add_patrons = p.paged_tree.add_rows;
 	p.clear_patrons = p.paged_tree.clear_tree;
 

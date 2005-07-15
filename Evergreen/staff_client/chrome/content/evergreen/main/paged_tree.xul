@@ -9,7 +9,6 @@
 	sizemode="maximized" persist="width height" 
 	onload="
 		params.paged_tree = 'PagedTree_tree'; 
-		params.popup = 'PagedTree_popup';
 		params.nav_bar = 'PagedTree_nav';
 		params.nav_range = 'PagedTree_label_range'; 
 		params.nav_results = 'PagedTree_label_results'; 

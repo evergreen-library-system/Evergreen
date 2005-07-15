@@ -100,6 +100,7 @@ function patron_display_patron_items_init(p) {
 	p.patron_items.register_patron_items_select_callback(
 		function (ev) {
 			sdump('D_PATRON_DISPLAY','Firing patron_items_select_callback\n');
+			sdump('D_PATRON_DISPLAY','ev.target = ' + ev.target + '\n');
 			var patron_items = get_list_from_tree_selection( p.patron_items.paged_tree.tree );
 			/* grab cover art for selected item? */
 		}
@@ -111,21 +112,22 @@ function patron_display_patron_items_init(p) {
 			p.patron_items.map_patron_items_to_cols( p._patron.checkouts()[ record_id ], treeitem );
 		}
 	);
-	p.patron_items.register_context_builder(
+	p.patron_items.register_item_context_builder(
 		function (ev) {
-			sdump('D_PATRON_DISPLAY','Firing context_builder\n');
+			sdump('D_PATRON_DISPLAY','Firing context_builder for patron_items\n');
+			sdump('D_PATRON_DISPLAY','ev.target = ' + ev.target + '\np.patron_items.paged_tree.popup = ' + p.patron_items.paged_tree.popup + '\n');
 			empty_widget(p.patron_items.paged_tree.popup);
 			var patron_items = get_list_from_tree_selection( p.patron_items.paged_tree.tree );
-			var menuitem;
+			sdump('D_PATRON_DISPLAY','patron_items.length = ' + patron_items.length + '\n');
 
 			/*** RENEW ***/
-			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_renew'));
-			menuitem.addEventListener(
+			var menuitem_pi_r = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem_pi_r );
+			menuitem_pi_r.setAttribute('label',getString('circ.context_renew'));
+			menuitem_pi_r.addEventListener(
 				'command',
 				function (ev) {
-					sdump('D_PATRON_DISPLAY','Firing renew context\n');
+					sdump('D_PATRON_DISPLAY','Firing renew context for patron_items\n');
 					for (var i = 0; i < patron_items.length; i++) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
@@ -141,13 +143,13 @@ function patron_display_patron_items_init(p) {
 			);
 
 			/*** CHECKIN ***/
-			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_checkin'));
-			menuitem.addEventListener(
+			var menuitem_pi_c = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem_pi_c );
+			menuitem_pi_c.setAttribute('label',getString('circ.context_checkin'));
+			menuitem_pi_c.addEventListener(
 				'command',
 				function (ev) {
-					sdump('D_PATRON_DISPLAY','Firing checkin context\n');
+					sdump('D_PATRON_DISPLAY','Firing checkin context for patron_items\n');
 					for (var i = 0; i < patron_items.length; i++) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
@@ -163,17 +165,18 @@ function patron_display_patron_items_init(p) {
 			);
 
 			/* separator */
-			menuitem = p.patron_items.paged_tree.w.document.createElement('menuseparator');
-			p.patron_items.paged_tree.popup.appendChild( menuitem );
+			var menuitem_pi_s = p.patron_items.paged_tree.w.document.createElement('menuseparator');
+			p.patron_items.paged_tree.popup.appendChild( menuitem_pi_s );
 			
 
 			/*** COPY EDITOR ***/
-			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_edit'));
-			menuitem.addEventListener(
+			var menuitem_pi_ce = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem_pi_ce );
+			menuitem_pi_ce.setAttribute('label',getString('circ.context_edit'));
+			menuitem_pi_ce.addEventListener(
 				'command',
 				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_items\n');
 					for (var i = 0; i < patron_items.length; i++) {
 						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
 					}
@@ -182,12 +185,13 @@ function patron_display_patron_items_init(p) {
 			);
 
 			/*** OPAC ***/
-			menuitem = p.patron_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_opac'));
-			menuitem.addEventListener(
+			var menuitem_pi_o = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem_pi_o );
+			menuitem_pi_o.setAttribute('label',getString('circ.context_opac'));
+			menuitem_pi_o.addEventListener(
 				'command',
 				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing opac context for patron_items\n');
 					for (var i = 0; i < patron_items.length; i++) {
 						sdump('D_PATRON_DISPLAY','Firing opac context\n');
 					}
@@ -208,13 +212,13 @@ function patron_display_patron_checkout_items_init(p) {
 
 	p.attempt_checkout = function(barcode) {
 		try {
-			if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
+			//if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
 			var permit_check = checkout_permit( barcode, p._patron.id(), 0 );
 			if (permit_check.status == 0) {
-				var check = checkout_by_barcode( barcode, p._patron.id() );
+				var check = checkout_by_copy_barcode( barcode, p._patron.id() );
 				if (check) {
 					checkouts.push( check );
-					p.patron_checkout_items.add_patron_checkout_items( [ checkouts.length - 1 ] );
+					p.patron_checkout_items.add_checkout_items( [ checkouts.length - 1 ] );
 					tb.value = '';
 				}
 			} else {
@@ -245,13 +249,14 @@ function patron_display_patron_checkout_items_init(p) {
 	p.redraw_patron_checkout_items = function() {
 		p.patron_checkout_items.clear_patron_checkout_items();
 		for (var i = 0; i < checkouts.length; i++) {
-			p.patron_checkout_items.add_patron_checkout_items( [ i ] );
+			p.patron_checkout_items.add_checkout_items( [ i ] );
 		}
 	}
 
 	p.patron_checkout_items.register_patron_checkout_items_select_callback(
 		function (ev) {
 			sdump('D_PATRON_DISPLAY','Firing patron_checkout_items_select_callback\n');
+			sdump('D_PATRON_DISPLAY','ev.target = ' + ev.target + '\n');
 			var patron_checkout_items = get_list_from_tree_selection( p.patron_checkout_items.paged_tree.tree );
 			/* grab cover art for selected item? */
 		}
@@ -263,21 +268,21 @@ function patron_display_patron_checkout_items_init(p) {
 			p.patron_checkout_items.map_patron_checkout_items_to_cols( checkouts[ record_id ], treeitem );
 		}
 	);
-	p.patron_checkout_items.register_context_builder(
+	p.patron_checkout_items.register_checkout_context_builder(
 		function (ev) {
-			sdump('D_PATRON_DISPLAY','Firing context_builder\n');
+			sdump('D_PATRON_DISPLAY','Firing context_builder for patron_checkout_items\n');
+			sdump('D_PATRON_DISPLAY','ev.target = ' + ev.target + '\np.patron_checkout_items.paged_tree.popup = ' + p.patron_checkout_items.paged_tree.popup + '\n');
 			empty_widget(p.patron_checkout_items.paged_tree.popup);
 			var patron_checkout_items = get_list_from_tree_selection( p.patron_checkout_items.paged_tree.tree );
-			var menuitem;
 
 			/*** CHECKIN ***/
-			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_checkin'));
-			menuitem.addEventListener(
+			var menuitem_pci_c = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem_pci_c );
+			menuitem_pci_c.setAttribute('label',getString('circ.context_checkin'));
+			menuitem_pci_c.addEventListener(
 				'command',
 				function (ev) {
-					sdump('D_PATRON_DISPLAY','Firing checkin context\n');
+					sdump('D_PATRON_DISPLAY','Firing checkin context for patron_checkout_items\n');
 					var keep_these = [];
 					for (var i = 0; i < patron_checkout_items.length; i++) {
 						try {
@@ -299,17 +304,18 @@ function patron_display_patron_checkout_items_init(p) {
 			);
 
 			/* separator */
-			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuseparator');
-			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
+			var menuitem_pci_s = p.patron_checkout_items.paged_tree.w.document.createElement('menuseparator');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem_pci_s );
 			
 
 			/*** COPY EDITOR ***/
-			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_edit'));
-			menuitem.addEventListener(
+			var menuitem_pci_ce = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem_pci_ce );
+			menuitem_pci_ce.setAttribute('label',getString('circ.context_edit'));
+			menuitem_pci_ce.addEventListener(
 				'command',
 				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_checkout_items\n');
 					for (var i = 0; i < patron_checkout_items.length; i++) {
 						var idx = patron_checkout_items[i].getAttribute('record_id');
 						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
@@ -319,12 +325,13 @@ function patron_display_patron_checkout_items_init(p) {
 			);
 
 			/*** OPAC ***/
-			menuitem = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
-			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem );
-			menuitem.setAttribute('label',getString('circ.context_opac'));
-			menuitem.addEventListener(
+			var menuitem_pci_o = p.patron_checkout_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_checkout_items.paged_tree.popup.appendChild( menuitem_pci_o );
+			menuitem_pci_o.setAttribute('label',getString('circ.context_opac'));
+			menuitem_pci_o.addEventListener(
 				'command',
 				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing opac context for patron_checkout_items\n');
 					for (var i = 0; i < patron_checkout_items.length; i++) {
 						var idx = patron_checkout_items[i].getAttribute('record_id');
 						sdump('D_PATRON_DISPLAY','Firing opac context\n');

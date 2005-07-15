@@ -7,7 +7,7 @@ function paged_tree_init(p) {
 	p.current_idx = 0;
 
 	p.tree = p.node.getElementsByAttribute('name','tree')[0];
-	p.popup = p.popupset_node.getElementsByAttribute('name','tree')[0];
+	p.popup = p.node.getElementsByTagName('popup')[0];
 	p.treecols = p.tree.firstChild;
 	p.tc = p.tree.lastChild;
 
