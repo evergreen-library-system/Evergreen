@@ -68,11 +68,11 @@ sub fast_flesh_sth {
 
 	unless (defined $value) {
 		$value = $field;
-		$field = $class->primary_column;
+		($field) = $class->columns('Primary');
 	}
 
 	unless (defined $field) {
-		$field = $class->primary_column;
+		($field) = $class->columns('Primary');
 	}
 
 	unless ($order->{order_by}) {
@@ -134,7 +134,7 @@ sub retrieve {
 	my $self = shift;
 	my $arg = shift;
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
-		my $col = $arg->primary_column;
+		my ($col) = $self->columns('Primary');
 		$arg = $arg->$col;
 	}
 	$log->debug("Retrieving $self with $arg", INTERNAL);
@@ -185,7 +185,7 @@ sub create_from_fieldmapper {
 	$log->debug("Creating node of type ".ref($fm), DEBUG);
 
 	my $class = ref($obj) || $obj;
-	my $primary = $class->primary_column;
+	my ($primary) = $class->columns('Primary');
 
 	if (ref $fm) {
 		my %hash = map { defined $fm->$_ ?

@@ -323,6 +323,11 @@ sub api_level {
 	return $fieldmap->{$self->class_name}->{api_level};
 }
 
+sub cdbi {
+	my $self = shift;
+	return $fieldmap->{$self->class_name}->{cdbi};
+}
+
 
 sub is_virtual {
 	my $self = shift;
