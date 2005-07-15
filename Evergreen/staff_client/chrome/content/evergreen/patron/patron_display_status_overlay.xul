@@ -14,19 +14,22 @@
 
 <!-- main widget for patron_display_status -->
 <box id="PatronDisplayStatus_main" flex="1" orient="vertical">
+	<hbox id="PatronDisplayStatus_insert1"/>
 	<groupbox id="PatronDisplayStatus_groupbox" flex="1"/>
+	<hbox id="PatronDisplayStatus_insert5"/>
 </box>
 
 <groupbox id="PatronDisplayStatus_groupbox" orient="vertical">
 	<caption label="&patron_display.status.caption;"/>
-	<hbox id="PatronSearch_DisplayStatus_insert1"/>
+	<hbox id="PatronDisplayStatus_insert2"/>
 	<label id="PatronDisplayStatus_home_ou"
 		tooltiptext="&patron_display.home_ou.label;"
 		value=" "
 		render="true" fm_class="au" 
 		render_value="patron_get_home_ou_name($$)" />
+	<hbox id="PatronDisplayStatus_insert3"/>
 	<grid id="PatronDisplayStatus_grid" flex="1"/>
-	<hbox id="PatronSearch_DisplayStatus_insert2"/>
+	<hbox id="PatronDisplayStatus_insert4"/>
 	<label bug="without this here, the label and grid get swapped in the display"/>
 </groupbox>
 

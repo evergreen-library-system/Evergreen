@@ -14,12 +14,14 @@
 
 <!-- main widget for patron_search_form -->
 <box id="PatronSearchForm_main" flex="1" orient="vertical">
-
+	<box id="PatronSearchForm_insert1"/>
 	<groupbox id="psgf_gb">
 		<caption id="psgf_gbc" label='&patron_search_form.caption;' />
+		<box id="PatronSearchForm_insert2"/>
 		<grid id="psg" />
+		<box id="PatronSearchForm_insert3"/>
 	</groupbox>
-	<groupbox id="PatronDisplayStatus_groupbox" name="selection_canvas"/>
+	<box id="PatronSearchForm_insert4"/>
 </box>
 
 <!-- group 0 = user  group 1 = address  group 2 = phone, ident -->

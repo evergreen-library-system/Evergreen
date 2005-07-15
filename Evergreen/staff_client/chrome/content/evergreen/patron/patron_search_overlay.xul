@@ -6,7 +6,7 @@
 	<script>mw.sdump('D_TRACE','Loading patron_search_overlay.xul\n');</script>
 
 	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?> 
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_search_form_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_search_results_overlay.xul"?>
 
@@ -30,15 +30,16 @@
 	<box id="PatronSearchResults_main"/>
 </deck>
 
-<hbox id="PatronSearch_DisplayStatus_insert1">
+<hbox id="PatronDisplayStatus_insert2">
 	<label id="PatronSearch_patron_name" class="patronNameMedium"
 		tooltiptext="&patron_display.name.label;"
 		value=" "
 		render="true" fm_class="au" 
 		render_value="patron_get_full_name($$)" />
 </hbox>
-<hbox id="PatronSearch_DisplayStatus_insert2">
+<hbox id="PatronDisplayStatus_insert4">
 	<button id="PatronSearch_retrieve_button" 
+		disabled="true"
 		label="&patron_navbar.retrieve;" 
 		accesskey="&patron_navbar.retrieve.accesskey;"/>
 </hbox>
