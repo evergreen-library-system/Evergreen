@@ -26,13 +26,14 @@ try {
 	while (!$req->failed && (my $res = $req->recv)) {
 		my $c = $res->content;
 
-		print	"ARG! overdue circ ".$c->id.
+		print	"ARG! Overdue circulation ".$c->id.
 			" for item ".$c->target_copy.
-			" : was due at ".$c->due_date."\n";
+			" (user ".$c->usr.")".
+			" : it was due at ".$c->due_date."\n";
 
 		my $fine = $session->request(
 			'open-ils.storage.direct.money.billing.search.xact',
-			$c->id, { order_by => 'billing_ts DESC' }
+			$c->id, { order_by => 'billing_ts DESC', limit => '1' }
 		)->gather(1);
 
 		my $now = time;
@@ -40,26 +41,26 @@ try {
 
 		my $last_fine;
 		if ($fine) {
-			$last_fine = $parser->parse_datetime( OpenSRF::Utils->clense_ISO8601( $fine->billing_ts ))->epoch;
+			$last_fine = $parser->parse_datetime( OpenSRF::Utils->clense_ISO8601( $fine->billing_ts ) )->epoch;
 		} else {
 			# Use Date::Manip here
-			$last_fine = $parser->parse_datetime( OpenSRF::Utils->clense_ISO8601( $c->due_date ))->epoch;
+			$last_fine = $parser->parse_datetime( OpenSRF::Utils->clense_ISO8601( $c->due_date ) )->epoch;
 			$last_fine += $fine_interval if ($grace);
 		}
 
 		my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
 		next unless($pending_fine_count);
 
-		print "Circ ".$c->id." has $pending_fine_count pending fine(s).\n";
+		print "\t$pending_fine_count pending fine(s)\n";
 
 		for my $bill (1 .. $pending_fine_count) {
 
 			my $total = $session->request(
-				'open-ils.storage.money.billing.billable_transaction_summary',
+				'open-ils.storage.direct.money.billable_transaction_summary.retrieve',
 				$c->id
 			)->gather(1);
 
-			if ($total && $total->{balance_owed} > $c->max_fine) {
+			if ($total && $total->balance_owed > $c->max_fine) {
 				$c->stop_fines('MAXFINES');
 				
 				$session->request(

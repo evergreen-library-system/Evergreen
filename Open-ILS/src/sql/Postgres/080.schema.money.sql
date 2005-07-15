@@ -30,26 +30,28 @@ CREATE TABLE money.payment (
 );
 CREATE INDEX m_p_xact_idx ON money.payment (xact);
 
-CREATE OR REPLACE VIEW money.usr_billable_summary_xact AS
-	SELECT	xact.id AS transaction,
+CREATE OR REPLACE VIEW money.billable_xact_summary AS
+	SELECT	xact.id AS id,
 		xact.usr AS usr,
+		xact.xact_start AS xact_start,
+		xact.xact_finish AS xact_finish,
 		SUM(COALESCE(credit.amount,0)) AS total_paid,
 		MAX(credit.payment_ts) AS last_payment_ts,
 		SUM(COALESCE(debit.amount,0)) AS total_owed,
 		MAX(debit.billing_ts) AS last_billing_ts,
 		SUM(COALESCE(debit.amount,0) - COALESCE(credit.amount,0)) AS balance_owed
 	  FROM	money.billable_xact xact
-	  	JOIN money.billing debit ON (xact.id = debit.xact)
+	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact)
 		LEFT JOIN money.payment credit ON (xact.id = credit.xact)
 	  WHERE	xact.xact_finish IS NULL
-	GROUP BY 1,2;
+	GROUP BY 1,2,3,4;
 
-CREATE OR REPLACE VIEW money.usr_billable_summary_total AS
+CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,
 		SUM(total_paid) AS total_paid,
 		SUM(total_owed) AS total_owed, 
 		SUM(balance_owed) AS balance_owed
-	  FROM money.usr_billable_summary_xact
+	  FROM money.billable_xact_summary
 	  GROUP BY 1;
 
 CREATE TABLE money.bnm_payment (

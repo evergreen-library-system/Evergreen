@@ -1,9 +1,67 @@
 {
 	#---------------------------------------------------------------------
+	package money::billable_transaction;
+	
+	money::billable_transaction->table( 'money.billable_transaction' );
+	money::billable_transaction->sequence( 'money.billable_transaction_id_seq' );
+
+	#---------------------------------------------------------------------
 	package money::billing;
 	
 	money::billing->table( 'money.billing' );
 	money::billing->sequence( 'money.billing_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::payment;
+	
+	money::payment->table( 'money.payment' );
+	money::payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::cash_payment;
+	
+	money::cash_payment->table( 'money.cash_payment' );
+	money::cash_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::check_payment;
+	
+	money::check_payment->table( 'money.check_payment' );
+	money::check_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::credit_payment;
+	
+	money::credit_payment->table( 'money.credit_payment' );
+	money::credit_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::credit_card_payment;
+	
+	money::credit_card_payment->table( 'money.credit_card_payment' );
+	money::credit_card_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::work_payment;
+	
+	money::work_payment->table( 'money.work_payment' );
+	money::work_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::forgive_payment;
+	
+	money::forgive_payment->table( 'money.forgive_payment' );
+	money::forgive_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
+	package money::billable_transaction_summary;
+	
+	money::billable_transaction_summary->table( 'money.billable_xact_summary' );
+
+	#---------------------------------------------------------------------
+	package money::user_summary;
+	
+	money::billable_transaction_summary->table( 'money.usr_summary' );
 
 	#---------------------------------------------------------------------
 	package action::circulation;

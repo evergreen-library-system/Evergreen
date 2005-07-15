@@ -481,76 +481,77 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 	}
 
 
-	# Create the create method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.create' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.create',
-			method		=> 'create_node',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
-	}
+	unless ($fmclass->is_readonly) {
+		# Create the create method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.create' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.create',
+				method		=> 'create_node',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 
-	# Create the batch create method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.create' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.batch.create',
-			method		=> 'batch_call',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
-	}
+		# Create the batch create method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.create' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.batch.create',
+				method		=> 'batch_call',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 
-	# Create the update method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.update' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.update',
-			method		=> 'update_node',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
-	}
+		# Create the update method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.update' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.update',
+				method		=> 'update_node',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 
-	# Create the batch update method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.update' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.batch.update',
-			method		=> 'batch_call',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
-	}
+		# Create the batch update method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.update' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.batch.update',
+				method		=> 'batch_call',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 
-	# Create the delete method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.delete' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.delete',
-			method		=> 'delete_node',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
-	}
+		# Create the delete method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.delete' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.delete',
+				method		=> 'delete_node',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 
-	# Create the batch delete method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.delete' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.batch.delete',
-			method		=> 'batch_call',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
-	}
+		# Create the batch delete method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.delete' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.batch.delete',
+				method		=> 'batch_call',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 
-	# Create the search-based mass delete method
-	unless ( __PACKAGE__->is_registered( $api_prefix.'.mass_delete' ) ) {
-		__PACKAGE__->register_method(
-			api_name	=> $api_prefix.'.mass_delete',
-			method		=> 'mass_delete',
-			api_level	=> 1,
-			cdbi		=> $cdbi,
-		);
+		# Create the search-based mass delete method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.mass_delete' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.mass_delete',
+				method		=> 'mass_delete',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
 	}
-
 }
 
 1;

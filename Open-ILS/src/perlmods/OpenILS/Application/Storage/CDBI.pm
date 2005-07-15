@@ -134,7 +134,8 @@ sub retrieve {
 	my $self = shift;
 	my $arg = shift;
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
-		$arg = $arg->id;
+		my $col = $arg->primary_column;
+		$arg = $arg->$col;
 	}
 	$log->debug("Retrieving $self with $arg", INTERNAL);
 	my $rec;

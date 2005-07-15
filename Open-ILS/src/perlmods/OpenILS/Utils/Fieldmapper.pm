@@ -122,8 +122,22 @@ sub _init {
 								     			     fixed_fields => 1 } },
 		#'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  }, # now it's inside record_entry
 
+		'Fieldmapper::money::payment'			=> { hint => 'mp'  },
 		'Fieldmapper::money::cash_payment'		=> { hint => 'mcp'  },
+		'Fieldmapper::money::check_payment'		=> { hint => 'mckp'  },
+		'Fieldmapper::money::credit_payment'		=> { hint => 'mcrp'  },
+		'Fieldmapper::money::credit_card_payment'	=> { hint => 'mccp'  },
+		'Fieldmapper::money::forgive_payment'		=> { hint => 'mfp'  },
+		'Fieldmapper::money::work_payment'		=> { hint => 'mwp'  },
+
 		'Fieldmapper::money::billing'			=> { hint => 'mb'  },
+		'Fieldmapper::money::billable_transaction'	=> { hint => 'mbt'  },
+
+		'Fieldmapper::money::user_summary'		=> { hint	=> 'mus',
+								     readonly	=> 1 },
+
+		'Fieldmapper::money::billable_transaction_summary'	=> { hint	=> 'mbts',
+									     readonly	=> 1 },
 
 		'Fieldmapper::config::identification_type'	=> { hint => 'cit'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
@@ -315,6 +329,12 @@ sub is_virtual {
 	my $field = shift;
 	return $fieldmap->{$self->class_name}->{proto_fields}->{$field} if ($field);
 	return $fieldmap->{$self->class_name}->{virtual};
+}
+
+sub is_readonly {
+	my $self = shift;
+	my $field = shift;
+	return $fieldmap->{$self->class_name}->{readonly};
 }
 
 sub json_hint {
