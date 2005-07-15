@@ -172,21 +172,22 @@ sub old_JSON2perl {
 }
 
 sub perl2JSON {
-	my ($class, $perl) = @_;
+	my ($class, $perl, $strict) = @_;
 
 	my $output = '';
 	if (!defined($perl)) {
-		$output = 'null';
+		$output = '' unless $strict;
+		$output = 'null' if $strict;
 	} elsif (ref($perl) and ref($perl) =~ /^JSON/) {
 		$output .= $perl;
 	} elsif ( ref($perl) && exists($_class_map{classes}{ref($perl)}) ) {
 		$output .= '/*--S '.$_class_map{classes}{ref($perl)}{hint}.'--*/';
 		if (lc($_class_map{classes}{ref($perl)}{type}) eq 'hash') {
 			my %hash =  %$perl;
-			$output .= perl2JSON(undef,\%hash);
+			$output .= perl2JSON(undef,\%hash, $strict);
 		} elsif (lc($_class_map{classes}{ref($perl)}{type}) eq 'array') {
 			my @array =  @$perl;
-			$output .= perl2JSON(undef,\@array);
+			$output .= perl2JSON(undef,\@array, $strict);
 		}
 		$output .= '/*--E '.$_class_map{classes}{ref($perl)}{hint}.'--*/';
 	} elsif (ref($perl) and ref($perl) =~ /HASH/) {
@@ -195,7 +196,7 @@ sub perl2JSON {
 		for my $key (sort keys %$perl) {
 			$output .= ',' if ($c); 
 			
-			$output .= perl2JSON(undef,$key).':'.perl2JSON(undef,$$perl{$key});
+			$output .= perl2JSON(undef,$key, $strict).':'.perl2JSON(undef,$$perl{$key}, $strict);
 			$c++;
 		}
 		$output .= '}';
@@ -205,7 +206,7 @@ sub perl2JSON {
 		for my $part (@$perl) {
 			$output .= ',' if ($c); 
 			
-			$output .= perl2JSON(undef,$part);
+			$output .= perl2JSON(undef,$part, $strict);
 			$c++;
 		}
 		$output .= ']';
@@ -213,7 +214,7 @@ sub perl2JSON {
 		my $type = $2;
 		my $name = $1;
 		JSON->register_class_hint(name => $name, hint => $name, type => lc($type));
-		$output .= perl2JSON(undef,$perl);
+		$output .= perl2JSON(undef,$perl, $strict);
 	} else {
 		$perl =~ s{\\}{\\\\}sgo;
 		$perl =~ s/"/\\"/sgo;
