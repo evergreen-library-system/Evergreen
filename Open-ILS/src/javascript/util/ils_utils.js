@@ -156,9 +156,9 @@ function modsFormatToMARC(format) {
 		case "sound recording":
 			return "ij";
 		case "sound recording-nonmusical":
-			return "ij";
+			return "i";
 		case "sound recording-musical":
-			return "ij";
+			return "j";
 		case "software, multimedia":
 			return "m";
 		case "still images":
@@ -186,8 +186,10 @@ function MARCFormatToMods(format) {
 			return "moving image";
 
 		case "i":
+			return "sound recording-nonmusical";
+
 		case "j":
-			return "sound recording";
+			return "sound recording-musical";
 
 		case "m":
 			return "software, multimedia";

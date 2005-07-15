@@ -214,13 +214,17 @@ AbstractRecordResultPage.prototype.displayRecord =
 	var resources = record.types_of_resource();
 
 	for( var i in resources ) {
-		var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
-		var res = modsFormatToMARC(resources[i]);
-		var a = elem("a", 
-			{href: prefix + "?target=record_result&mrid=" +
-			record.doc_id() + "&format=" + res +
-			"&page=0&location=" + this.location +
-			"&depth=" + this.depth} );
+
+		var a;
+		if(instanceOf(this,MRResultPage)) {
+			var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
+			var res = modsFormatToMARC(resources[i]);
+			var a = elem("a", 
+				{href: prefix + "?target=record_result&mrid=" +
+				record.doc_id() + "&format=" + res +
+				"&page=0&location=" + this.searchLocation +
+				"&depth=" + this.searchDepth} );
+		}
 		this.buildResourcePic( c, resources[i], a);
 	}
 

@@ -692,6 +692,8 @@ sub biblio_search_class {
 		);
 
 	my $records = $request->gather(1);
+	if(!$records) {return { ids => [] }};
+
 	warn "Search request complete " . time() . "\n";
 
 	my @all_ids;
@@ -855,7 +857,7 @@ sub biblio_mrid_to_record_ids {
 		("search.biblio.metarecord_to_record_ids requires mr id")
 			unless defined( $mrid );
 
-	warn "Searching for record for MR $mrid\n";
+	warn "Searching for record for MR $mrid and format $format\n";
 
 	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( 
 			"open-ils.storage", 
@@ -868,6 +870,9 @@ sub biblio_mrid_to_record_ids {
 	#for my $map (@$mrmaps) { push @ids, $map->source(); }
 	#warn "Recovered id's [@ids] for mr $mrid\n";
 	#my $size = @ids;
+
+	use Data::Dumper;
+	warn Dumper $mrmaps;
 
 	my $size = @$mrmaps;	
 
