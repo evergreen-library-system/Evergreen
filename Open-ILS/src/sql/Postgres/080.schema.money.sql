@@ -18,7 +18,7 @@ CREATE TABLE money.billing (
 	amount		NUMERIC(6,2)			NOT NULL,
 	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	note		TEXT,
-	void		BOOL				NOT NULL DEFALUT FALSE
+	voided		BOOL				NOT NULL DEFALUT FALSE
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
 
@@ -28,7 +28,7 @@ CREATE TABLE money.payment (
 	amount		NUMERIC(6,2)			NOT NULL,
 	payment_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	note		TEXT,
-	void		BOOL				NOT NULL DEFALUT FALSE
+	voided		BOOL				NOT NULL DEFALUT FALSE
 );
 CREATE INDEX m_p_xact_idx ON money.payment (xact);
 
@@ -43,8 +43,8 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 		MAX(debit.billing_ts) AS last_billing_ts,
 		SUM(COALESCE(debit.amount,0) - COALESCE(credit.amount,0)) AS balance_owed
 	  FROM	money.billable_xact xact
-	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.void IS FALSE)
-		LEFT JOIN money.payment credit ON (xact.id = credit.xact AND credit.void IS FALSE)
+	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.voided IS FALSE)
+		LEFT JOIN money.payment credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
 	  WHERE	xact.xact_finish IS NULL
 	GROUP BY 1,2,3,4;
 

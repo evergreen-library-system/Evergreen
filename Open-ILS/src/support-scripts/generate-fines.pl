@@ -49,7 +49,7 @@ try {
 
 		my $fine = $session->request(
 			'open-ils.storage.direct.money.billing.search',
-			{ xact => $c->id, void => 'f' },
+			{ xact => $c->id, voided => 'f' },
 			{ order_by => 'billing_ts DESC', limit => '1' }
 		)->gather(1);
 
