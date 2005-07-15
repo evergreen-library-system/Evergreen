@@ -201,6 +201,8 @@ function patron_display_patron_items_init(p) {
 
 function patron_display_patron_checkout_items_init(p) {
 	p.patron_checkout_items = patron_checkout_items_init( { 'w' : p.w, 'node' : p.patron_checkout_items_node, 'popupset_node' : p.popupset_node, 'debug' : p.app } );
+	var tb = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_barcode_entry_textbox')[0];
+	var submit_button = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_submit_barcode_button')[0];
 
 	var checkouts = [];
 
@@ -213,17 +215,18 @@ function patron_display_patron_checkout_items_init(p) {
 				if (check) {
 					checkouts.push( check );
 					p.patron_checkout_items.add_patron_checkout_items( [ checkouts.length - 1 ] );
+					tb.value = '';
 				}
 			} else {
 				throw(permit_check.text);
 			}
 		} catch(E) {
+			tb.select();
 			handle_error(E);
 		}
+		tb.focus();
 	}
 
-	var tb = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_barcode_entry_textbox')[0];
-	var submit_button = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_submit_barcode_button')[0];
 	tb.addEventListener(
 		'keypress',
 		function(ev) {
