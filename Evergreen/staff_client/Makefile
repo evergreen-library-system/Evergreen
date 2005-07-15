@@ -41,7 +41,7 @@ clean:
 	@echo delete derived files
 	rm -f evergreen.xpi
 	rm -f chrome/evergreen.jar
-	rm -f chrome/content/evergreen/patron/patron_items_overlay.xml chrome/locale/en-US/evergreen/patron_items.dtd
+	rm -f chrome/content/evergreen/patron/patron_items_overlay.xul chrome/locale/en-US/evergreen/patron_items.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
 	rm -f chrome/content/evergreen/util/fieldmapper.js
 	rm -f chrome/content/evergreen/util/OrgTree.js
