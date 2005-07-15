@@ -461,7 +461,12 @@ char* object_to_json(object* obj) {
 		int i;
 		for( i = 0; i!= obj->size; i++ ) {
 			char* data = object_to_json(obj->get_index(obj,i));
+#ifdef STRICT_JSON_WRITE
 			buffer_add(buf, data);
+#else
+			if(strcmp(data,"null")) /* only add the string if it isn't null */
+				buffer_add(buf, data);
+#endif
 			free(data);
 			if(i != obj->size - 1)
 				buffer_add(buf, ",");
@@ -477,7 +482,14 @@ char* object_to_json(object* obj) {
 			buffer_add(buf, tmp->key);
 			buffer_add(buf, "\":");
 			char* data =  object_to_json(tmp->item);
+
+#ifdef STRICT_JSON_WRITE
 			buffer_add(buf, data);
+#else
+			if(strcmp(data,"null")) /* only add the string if it isn't null */
+				buffer_add(buf, data);
+#endif
+
 			if(itr->has_next(itr))
 				buffer_add(buf, ",");
 			free(data);

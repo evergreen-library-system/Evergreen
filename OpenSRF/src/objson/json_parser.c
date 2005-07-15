@@ -249,16 +249,20 @@ int json_parse_json_number(char* string, unsigned long* index, object* obj) {
 int json_parse_json_array(char* string, unsigned long* index, object* obj) {
 	assert(string && obj && index && *index < current_strlen);
 
-	int status;
+	int status = 0;
 	int in_parse = 0; /* true if this array already contains one item */
 	obj->is_array = 1;
 	obj->is_null = 0;
+	int set = 0;
+	int done = 0;
+
 	while(*index < current_strlen) {
 
 		json_eat_ws(string, index, 1);
 
 		if(string[*index] == ']') {
 			(*index)++;
+			done = 1;
 			break;
 		}
 
@@ -273,12 +277,30 @@ int json_parse_json_array(char* string, unsigned long* index, object* obj) {
 		}
 
 		object* item = new_object(NULL);
-		status = _json_parse_string(string, index, item);
+
+#ifndef STRICT_JSON_READ
+		if(*index < current_strlen) {
+			if(string[*index] == ',' || string[*index] == ']') {
+				status = 0;
+				set = 1;
+			}
+		}
+		if(!set)
+			status = _json_parse_string(string, index, item);
+
+#else
+		 status = _json_parse_string(string, index, item);
+#endif
 
 		if(status) return status;
 		obj->push(obj, item);
 		in_parse = 1;
+		set = 0;
 	}
+
+	if(!done)
+		return json_handle_error(string, index,
+			"json_parse_json_array(): array not closed");
 
 	return 0;
 }
@@ -294,6 +316,8 @@ int json_parse_json_object(char* string, unsigned long* index, object* obj) {
 	obj->is_null = 0;
 	int status;
 	int in_parse = 0; /* true if we've already added one item to this object */
+	int set = 0;
+	int done = 0;
 
 	while(*index < current_strlen) {
 
@@ -301,13 +325,14 @@ int json_parse_json_object(char* string, unsigned long* index, object* obj) {
 
 		if(string[*index] == '}') {
 			(*index)++;
+			done = 1;
 			break;
 		}
 
 		if(in_parse) {
 			if(string[*index] != ',') {
 				return json_handle_error(string, index,
-					"json_parse_json_object(): object missing ',' betweenn elements" );
+					"json_parse_json_object(): object missing ',' between elements" );
 			}
 			(*index)++;
 			json_eat_ws(string, index, 1);
@@ -337,14 +362,33 @@ int json_parse_json_object(char* string, unsigned long* index, object* obj) {
 		/* now grab the value object */
 		json_eat_ws(string, index, 1);
 		object* value_obj = new_object(NULL);
-		status = _json_parse_string(string, index, value_obj);
+
+#ifndef STRICT_JSON_READ
+		if(*index < current_strlen) {
+			if(string[*index] == ',' || string[*index] == '}') {
+				status = 0;
+				set = 1;
+			}
+		}
+		if(!set)
+			status = _json_parse_string(string, index, value_obj);
+
+#else
+		 status = _json_parse_string(string, index, value_obj);
+#endif
+
 		if(status) return status;
 
 		/* put the data into the object and continue */
 		obj->add_key(obj, key, value_obj);
 		free_object(key_obj);
 		in_parse = 1;
+		set = 0;
 	}
+
+	if(!done)
+		return json_handle_error(string, index,
+			"json_parse_json_object(): object not closed");
 
 	return 0;
 }

@@ -26,11 +26,23 @@ GNU General Public License for more details.
 int main() {
 
 
+
+	object* o;
+
+
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("[,,{\"key\":,\"key1\":\"a\"}]");
+	char* h = o->to_json(o);
+	printf("\nParsed number: %s\n", h);
+	free_object(o);
+
+
 	/* number, double, and 'null' parsing... */
 	printf("------------------------------------------------------------------\n");
-	object* o = json_parse_string("1");
+	 o = json_parse_string("1");
 	printf("\nParsed number: %ld\n", o->num_value);
 	free_object(o);
+
 
 	printf("------------------------------------------------------------------\n");
 	o = json_parse_string("1.1");
@@ -72,6 +84,11 @@ int main() {
 	printf("More JSON: %s\n", s);
 	free(s);
 	free_object(o);
+
+
+	printf("------------------------------------------------------------------\n");
+	o = json_parse_string("{ Null: trUe }");
+
 
 
 	printf("------------------------------------------------------------------\n");
