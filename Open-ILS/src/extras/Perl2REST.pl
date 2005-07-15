@@ -54,6 +54,9 @@ sub Perl2REST {
 	my $level = shift || 0;
 	return unless defined($obj);
 	if (!ref($obj)) {
+		$obj =~ s/&/&amp;/osg;
+		$obj =~ s/</&lt;/osg;
+		$obj =~ s/</&gt;/osg;
 		$$val .= '  'x$level . "<datum>$obj</datum>\n";
 	} elsif (ref($obj) eq 'ARRAY') {
 		my $next = $level + 1;
@@ -74,16 +77,12 @@ sub Perl2REST {
 		my $class = ref($obj);
 		(my $class_name = $class) =~ s/::/_/go;
 		my $hint = $class->json_hint || $class_name;
-		my $json = JSON->perl2JSON($obj);
-		$json =~ s/&/&amp;/go;
-		$json =~ s/</&lt;/go;
-		$json =~ s/>/&gt;/go;
 		my %hash;
 		for ($obj->properties) {
 			$hash{$_} = $obj->$_;
 		}
 		my $next = $level + 2;
-		$$val .= '  'x$level . "<Fieldmapper hint='$hint' json='$json'>\n";
+		$$val .= '  'x$level . "<Fieldmapper hint='$hint'>\n";
 		for (sort keys %hash) {
 			if ($hash{$_}) {
 				$$val .= '  'x$level . "  <$_>\n";
