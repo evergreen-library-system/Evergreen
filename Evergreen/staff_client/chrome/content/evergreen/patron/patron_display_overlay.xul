@@ -46,7 +46,10 @@
 		<caption id="cssdgb1c" label="&patron_navbar.checkout;"/>
 		<box id="PatronCheckoutItems_main"/>
 	</groupbox>
-	<box id="PatronItems_main" />
+	<groupbox id="cssdgb2">
+		<caption id="cssdgb2c" label="&patron_navbar.items;"/>
+		<box id="PatronItems_main" />
+	</groupbox>
 	<box id="PatronHolds_main"><label value="holds" /></box>
 	<box id="PatronBills_main"><label value="bills" /></box>
 	<box id="PatronEdit_main"><label value="edit" /></box>

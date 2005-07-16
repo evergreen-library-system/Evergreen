@@ -21,7 +21,7 @@
 <!ENTITY patron_navbar.refresh.accesskey 'R'>
 <!ENTITY patron_navbar.checkout 'Check Out'>
 <!ENTITY patron_navbar.checkout.accesskey 'C'>
-<!ENTITY patron_navbar.items 'Items'>
+<!ENTITY patron_navbar.items 'Items Out'>
 <!ENTITY patron_navbar.items.accesskey 'I'>
 <!ENTITY patron_navbar.holds 'Holds'>
 <!ENTITY patron_navbar.holds.accesskey 'H'>
