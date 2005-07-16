@@ -3,6 +3,42 @@ sdump('D_TRACE','Loading ses.js\n');
 //////////////////////////////////////////////////////////////////////////////
 // Sessions, Requests, Methods, Oh My
 
+// These wrap Bill's RemoteRequest.js
+
+function user_request(app,name,params) {
+	sdump('D_SES','=-=-=-=-= user_request('+app+','+name+','+js2JSON(params)+')\n');
+	var request = new RemoteRequest( app, name );
+	for(var index in params) {
+		request.addParam(params[index]);
+	}
+	request.send(true);
+	var result = [];
+	result.push( request.getResultObject() );
+	//sdump('D_SES','=-=-= result = ' + js2JSON(result[0]) + '\n');
+	return result;
+}
+
+function user_async_request(app,name,params,func) {
+	sdump('D_SES','=-=-=-=-= user_async_request('+app+','+name+','+js2JSON(params)+','+func+')\n');
+	var request = new RemoteRequest( app, name );
+	for(var index in params) {
+		request.addParam(params[index]);
+	}
+	request.setCompleteCallback(func);
+	request.send();
+}
+
+function sample_func(request) {
+	var result = [];
+	result.push( request.getResultObject() );
+	/* This callback would be called within the code for the Request object, so you would never see
+	a return value.  Instead, you should _do_ something with the data. */
+	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// The functions below were wrappers for the old jabber way of doing things
+
 function handle_session(app) {
 	//if( ses == null || ! AppSession.transport_handle.connected() ) {
 	sdump('D_TRACE','Calling new AppSession : ' + timer_elapsed('cat') + '\n');
@@ -60,42 +96,6 @@ function handle_request(ses,meth) {
 	sdump('D_SES', 'after req.finish() ses = ' + js2JSON(ses.state) + '\n' );
 	sdump('D_SES','Exiting handle_request : ' + timer_elapsed('cat') + '\n');
 	return result;	
-}
-
-
-
-
-function user_request(app,name,params) {
-	sdump('D_SES','=-=-=-=-= user_request:\n');
-	sdump('D_SES','request '+(app)+' '+(name)+' '+js2JSON(params)+'\n');
-	var request = new RemoteRequest( app, name );
-	for(var index in params) {
-		request.addParam(params[index]);
-	}
-	request.send(true);
-	var result = [];
-	result.push( request.getResultObject() );
-	//sdump('D_SES','=-=-= result = ' + js2JSON(result[0]) + '\n');
-	return result;
-}
-
-function user_async_request(app,name,params,func) {
-	sdump('D_SES','=-=-=-=-= user_async_request:\n');
-	sdump('D_SES','request '+(app)+' '+(name)+' '+js2JSON(params)+ '\n');
-	var request = new RemoteRequest( app, name );
-	for(var index in params) {
-		request.addParam(params[index]);
-	}
-	request.setCompleteCallback(func);
-	request.send();
-}
-
-function sample_func(request) {
-	var result = [];
-	result.push( request.getResultObject() );
-	/* This callback would be called within the code for the Request object, so you would never see
-	a return value.  Instead, you should _do_ something with the data. */
-	return result;
 }
 
 function _user_request(app,name,params) {
