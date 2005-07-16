@@ -6,7 +6,7 @@ sdump('D_TRACE','Loading ses.js\n');
 // These wrap Bill's RemoteRequest.js
 
 function user_request(app,name,params) {
-	sdump('D_SES','=-=-=-=-= user_request('+app+','+name+','+js2JSON(params)+')\n');
+	sdump('D_SES','=-=-=-=-= user_request("'+app+'","'+name+'",'+js2JSON(params)+')\n');
 	var request = new RemoteRequest( app, name );
 	for(var index in params) {
 		request.addParam(params[index]);
@@ -19,7 +19,8 @@ function user_request(app,name,params) {
 }
 
 function user_async_request(app,name,params,func) {
-	sdump('D_SES','=-=-=-=-= user_async_request('+app+','+name+','+js2JSON(params)+','+func+')\n');
+	sdump('D_SES','=-=-=-=-= user_async_request("'+app+'","'+name+'",'+js2JSON(params)+',func)\n');
+	sdump('D_SES_FUNC','func = ' + func + '\n');
 	var request = new RemoteRequest( app, name );
 	for(var index in params) {
 		request.addParam(params[index]);
