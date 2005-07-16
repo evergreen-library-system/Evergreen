@@ -1,3 +1,8 @@
+VERSION=0.0.9
+PACKAGE=Evergreen
+DESCRIPTION=Evergreen Staff Client Pre-Alpha
+BUILD=2005071519
+
 ILS_DIR=${PWD}/../..
 
 RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js
@@ -7,7 +12,20 @@ RETRIEVE_CLIENT_CONFIG=cp ${ILS_DIR}/OpenSRF/examples/math_xul_client/math/conte
 all: evergreen.xpi
 	@echo
 	@echo How do makefiles work again?
+	@echo BUILD = ${BUILD}
 	touch application.ini
+
+stamp: 
+	sed -i s/^Version=.\*/Version=${VERSION}/ application.ini 
+	sed -i s/^BuildID=.\*/BuildID=${BUILD}/ application.ini
+	sed -i s/^Name=.\*/Name=${PACKAGE}/ application.ini 
+	sed -i 's/<em:version>.*<\/em:version>/<em:version>${VERSION}<\/em:version>/' install.rdf 
+	sed -i 's/<em:name>.*<\/em:name>/<em:name>${PACKAGE}<\/em:name>/' install.rdf 
+	sed -i 's/<em:description>.*<\/em:description>/<em:description>${DESCRIPTION}<\/em:description>/' install.rdf 
+	sed -i "s/extVersion: '.\*'/extVersion: '${VERSION}'/" install.js 
+	sed -i "s/extFullName: '.\*'/extFullName: '${DESCRIPTION}'/" install.js 
+	sed -i 's/auth\.title ".*"/auth\.title "${DESCRIPTION}"/' chrome/locale/en-US/evergreen/auth.dtd 
+	sed -i 's/auth\.version ".*"/auth\.version "${VERSION} ${BUILD}"/' chrome/locale/en-US/evergreen/auth.dtd 
 
 generated:
 	@echo
