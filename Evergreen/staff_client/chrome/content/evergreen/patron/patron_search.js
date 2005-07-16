@@ -55,6 +55,8 @@ function patron_search_patron_search_form_init(p) {
 				p.search_results.add_patrons(
 					p.crazy_search( p.search_form.crazy_search_hash )
 				);
+				p.search_results.paged_tree.tree.view.selection.select( 0 );
+				p.search_results.paged_tree.tree.focus();
 			}
 		}
 	);
