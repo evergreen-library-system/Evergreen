@@ -25,7 +25,7 @@ stamp:
 	sed -i "s/extVersion: '.\*'/extVersion: '${VERSION}'/" install.js 
 	sed -i "s/extFullName: '.\*'/extFullName: '${DESCRIPTION}'/" install.js 
 	sed -i 's/auth\.title ".*"/auth\.title "${DESCRIPTION}"/' chrome/locale/en-US/evergreen/auth.dtd 
-	sed -i 's/auth\.version ".*"/auth\.version "${VERSION} ${BUILD}"/' chrome/locale/en-US/evergreen/auth.dtd 
+	sed -i 's/auth\.version ".*"/auth\.version "${PACKAGE} ${VERSION} ${BUILD}"/' chrome/locale/en-US/evergreen/auth.dtd 
 
 generated:
 	@echo
