@@ -76,10 +76,21 @@ function patron_search_patron_search_results_init(p) {
 	p.search_results.register_patron_select_callback(
 		function (ev) {
 			sdump('D_PATRON_SEARCH','Firing patron_select_callback\n');
-			var patrons = get_list_from_tree_selection( p.search_results.paged_tree.tree );
-			p._patron = retrieve_patron_by_id( patrons[ patrons.length - 1 ].getAttribute('record_id') )
+			/* Clear Current Patron */
+			p.retrieve_button.disabled = true; 
+			p._patron = fake_patron();
 			render_fm( p.w.document, { 'au' : p._patron } );
-			p.retrieve_button.disabled = false;
+			/* Get selection */
+			var patrons = get_list_from_tree_selection( p.search_results.paged_tree.tree );
+			retrieve_patron_by_id( 
+				patrons[ patrons.length - 1 ].getAttribute('record_id'),
+				function (request) {
+					/* Set new patron */
+					p._patron = request.getResultObject();
+					render_fm( p.w.document, { 'au' : p._patron } );
+					p.retrieve_button.disabled = false;
+				}
+			 )
 		}
 	);
 	p.search_results.register_flesh_patron_function(

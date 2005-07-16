@@ -1,5 +1,14 @@
 sdump('D_TRACE','Loading patron_utils.js\n');
 
+function fake_patron() {
+	var p = new au(); 
+	p.family_name( 'Retrieving' ); 
+	p.checkouts( [] ); 
+	p.hold_requests( [] ); 
+	p.credit_forward_balance('0.00');
+	return p;
+}
+
 function patron_get_full_name( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	var name = '';
