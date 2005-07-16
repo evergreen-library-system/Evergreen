@@ -222,6 +222,7 @@ function patron_display_patron_checkout_items_init(p) {
 	p.w.document.getElementById('checkout_done').addEventListener(
 		'command',
 		function () {
+			// print receipt call goes here
 			checkouts = []; p.refresh(); tb.focus();
 		},
 		false
@@ -235,6 +236,10 @@ function patron_display_patron_checkout_items_init(p) {
 				if (check) {
 					checkouts.push( check );
 					p.patron_checkout_items.add_checkout_items( [ checkouts.length - 1 ] );
+					var temp = p._patron.checkouts();
+					temp.push( check );
+					p._patron.checkouts( temp );
+					p.display_patron();
 					tb.value = '';
 				}
 			} else {
