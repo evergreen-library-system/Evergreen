@@ -2,6 +2,7 @@
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
 tabpanel { border: 2px groove black; }
+.my_overflow { overflow: auto; }
 
 .text_left { text-align: left; }
 .text_right { text-align: right; }

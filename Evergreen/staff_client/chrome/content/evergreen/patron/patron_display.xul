@@ -13,7 +13,7 @@
 		params.patron_items_node = document.getElementById('PatronItems_main');
 		params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
 		params.commandset_node = document.getElementById('universal_cmds');
-		mw.focus_widget( document, 'PatronNavBar_refresh' );
+		mw.focus_widget( document, 'patron_checkout_barcode_entry_textbox' );
 		mw.OpenILS_init(params);"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -36,7 +36,7 @@
 	<keyset id="PatronDisplay_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
-	<box id="PatronDisplay_main" />
+	<box id="PatronDisplay_main" class="my_overflow" />
 
 	<popupset id="universal_popupset" />
 

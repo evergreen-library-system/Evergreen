@@ -13,7 +13,7 @@
 </commandset>
 
 <!-- main widget for patron_search_form -->
-<box id="PatronSearchForm_main" flex="1" orient="vertical">
+<box id="PatronSearchForm_main" orient="vertical">
 	<box id="PatronSearchForm_insert1"/>
 	<groupbox id="psgf_gb">
 		<caption id="psgf_gbc" label='&patron_search_form.caption;' />

@@ -35,7 +35,7 @@
 	<keyset id="PatronSearch_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
-	<box id="PatronSearch_main" />
+	<box id="PatronSearch_main" class="my_overflow" />
 
 	<popupset id="universal_popupset" />
 

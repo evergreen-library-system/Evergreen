@@ -22,14 +22,15 @@
 	<box id="ClamShell_main" />
 </box>
 
-<deck id="ClamShell_first_deck">
-	<vbox id="psm_left">
-		<box id="PatronSearchForm_main"/>
-		<box id="PatronDisplayStatus_main"/>
+<deck id="ClamShell_first_deck" flex="0">
+	<vbox id="psm_left" flex="1">
+		<box id="PatronSearchForm_main" flex="0"/>
+		<box id="PatronDisplayStatus_main" flex="0"/>
+		<spacer id="psm_left_s1" flex="1"/>
 	</vbox>
 </deck>
 
-<deck id="ClamShell_second_deck">
+<deck id="ClamShell_second_deck" flex="1">
 	<box id="PatronSearchResults_main"/>
 </deck>
 

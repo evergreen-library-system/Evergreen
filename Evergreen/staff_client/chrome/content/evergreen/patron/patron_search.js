@@ -19,7 +19,8 @@ function patron_search_init(p) {
 		return patron_search( crazy_search_hash );
 	};
 
-	p.w.document.getElementById('PatronSearch_retrieve_button').addEventListener(
+	p.retrieve_button = p.w.document.getElementById('PatronSearch_retrieve_button');
+	p.retrieve_button.addEventListener(
 		'command',
 		function (ev) {
 			spawn_patron_display(
@@ -76,6 +77,7 @@ function patron_search_patron_search_results_init(p) {
 			var patrons = get_list_from_tree_selection( p.search_results.paged_tree.tree );
 			p._patron = retrieve_patron_by_id( patrons[ patrons.length - 1 ].getAttribute('record_id') )
 			render_fm( p.w.document, { 'au' : p._patron } );
+			p.retrieve_button.disabled = false;
 		}
 	);
 	p.search_results.register_flesh_patron_function(

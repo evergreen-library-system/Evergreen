@@ -5,7 +5,7 @@ function patron_display_init(p) {
 	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
 
-	// gives: p.clamshell, p.right_panel, p.left_panel, p.inner_left_clamshell, p.inner_top_panel, p.inner_bottom_panel
+	// gives: p.clamshell, p.right_panel, p.left_panel
 	patron_display_clamshell_init(p);
 
 	// gives: p.patron_items, p.redraw_patron_items
@@ -21,6 +21,7 @@ function patron_display_init(p) {
 	p.display_patron = function (au) {
 		if (au) p.set_patron(au);
 		p.redraw_patron_items();
+		p.redraw_patron_checkout_items();
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
 
@@ -39,30 +40,7 @@ function patron_display_init(p) {
 		if (p._patron) p.retrieve_patron_via_id( p._patron.id() );
 	}
 
-	p.commandset_node.getElementsByAttribute('id','cmd_patron_refresh')[0].addEventListener(
-		'command',
-		function (ev) {
-			p.refresh();
-		},
-		false
-	);
-
-	function gen_func(i) {
-		// because otherwise i would be 5 for each closure
-		return function(ev) {
-			dump('i = ' + i + '\n');
-			p.clamshell.set_second_deck(i);
-		};
-	}
-	var cmds = [ 'cmd_patron_checkout', 'cmd_patron_items', 'cmd_patron_holds', 
-		'cmd_patron_bills', 'cmd_patron_edit', 'cmd_patron_info' ]
-	for (var i in cmds) {
-		p.commandset_node.getElementsByAttribute('id',cmds[i])[0].addEventListener(
-			'command',
-			gen_func(i),
-			false
-		);
-	}
+	set_patron_display_widgets(p);
 
 	if (p.patron) {
 		if (typeof(p.patron) == 'object') {
@@ -76,14 +54,45 @@ function patron_display_init(p) {
 	return p;
 }
 
+function set_patron_display_widgets(p) {
+	p.commandset_node.getElementsByAttribute('id','cmd_patron_refresh')[0].addEventListener(
+		'command',
+		function (ev) {
+			p.refresh();
+		},
+		false
+	);
+
+	function gen_func(i) {
+		// because otherwise i would be 5 for each closure
+		return function(ev) {
+			p.clamshell.set_second_deck(i);
+		};
+	}
+	var cmds = [ 'cmd_patron_checkout', 'cmd_patron_items', 'cmd_patron_holds', 
+		'cmd_patron_bills', 'cmd_patron_edit', 'cmd_patron_info' ]
+	for (var i in cmds) {
+		p.commandset_node.getElementsByAttribute('id',cmds[i])[0].addEventListener(
+			'command',
+			gen_func(i),
+			false
+		);
+	}
+	p.commandset_node.getElementsByAttribute('id','cmd_patron_checkout')[0].addEventListener(
+		'command',
+		function () {
+			focus_widget( p.w.document, 'patron_checkout_barcode_entry_textbox' );
+		},
+		false
+	);
+
+}
+
+
 function patron_display_clamshell_init(p) {
 	p.clamshell = clam_shell_init( { 'w' : p.w, 'node' : p.clamshell_node, 'debug' : p.app } );
 	p.left_panel = p.clamshell.first_deck;
 	p.right_panel = p.clamshell.second_deck;
-
-	p.inner_left_clamshell = clam_shell_init( { 'w' : p.w, 'node' : p.left_panel.firstChild, 'debug' : p.app } );
-	p.inner_top_panel = p.inner_left_clamshell.first_deck;
-	p.inner_bottom_panel = p.inner_left_clamshell.second_deck;
 }
 
 function patron_display_patron_items_init(p) {
@@ -210,6 +219,13 @@ function patron_display_patron_checkout_items_init(p) {
 
 	var checkouts = [];
 
+	p.w.document.getElementById('checkout_done').addEventListener(
+		'command',
+		function () {
+			checkouts = []; p.refresh(); tb.focus();
+		},
+		false
+	);
 	p.attempt_checkout = function(barcode) {
 		try {
 			//if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
@@ -247,7 +263,7 @@ function patron_display_patron_checkout_items_init(p) {
 	);
 
 	p.redraw_patron_checkout_items = function() {
-		p.patron_checkout_items.clear_patron_checkout_items();
+		p.patron_checkout_items.clear_checkout_items();
 		for (var i = 0; i < checkouts.length; i++) {
 			p.patron_checkout_items.add_checkout_items( [ i ] );
 		}
@@ -289,7 +305,7 @@ function patron_display_patron_checkout_items_init(p) {
 							var idx = patron_checkout_items[i].getAttribute('record_id'); 
 							var copy = checkouts[ idx ].copy;
 							var status = checkin_by_copy_barcode( copy.barcode() );
-							if (!status) { // change this to whatever it takes
+							if (status == null) { // change this to whatever it takes
 								keep_these.push( checkouts[ idx ] );	
 							}
 							checkouts = keep_these;

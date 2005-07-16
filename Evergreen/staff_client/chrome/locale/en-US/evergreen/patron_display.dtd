@@ -6,6 +6,14 @@
 <!ENTITY patron_display.checkout.scan_label.accesskey 'E'>
 <!ENTITY patron_display.checkout.submit_label 'Submit'>
 <!ENTITY patron_display.checkout.submit_label.accesskey 'S'>
+<!ENTITY patron_display.checkout.print_receipt_label 'Print Receipt'>
+<!ENTITY patron_display.checkout.print_receipt_label.accesskey ''>
+<!ENTITY patron_display.checkout.reprint_receipt_label 'Re-Print Last Receipt'>
+<!ENTITY patron_display.checkout.reprint_receipt_label.accesskey 'L'>
+<!ENTITY patron_display.checkout.auto_print_label 'Auto-Print'>
+<!ENTITY patron_display.checkout.auto_print_label.accesskey 'A'>
+<!ENTITY patron_display.checkout.done_label 'Done'>
+<!ENTITY patron_display.checkout.done_label.accesskey 'D'>
 
 <!ENTITY patron_navbar.retrieve 'Retrieve Patron'>
 <!ENTITY patron_navbar.retrieve.accesskey 'R'>

@@ -16,10 +16,10 @@ var sdump_levels = {
 	'D_TRACE_EXIT' :  false,
 	'D_TIMEOUT' :  false,
 	'D_FILTER' : false,
-	'D_CONSTRUCTOR' : true,
+	'D_CONSTRUCTOR' : false,
 
 	'D_CLAM' : false,
-	'D_PAGED_TREE' : true,
+	'D_PAGED_TREE' : false,
 	'D_TAB' : false,
 
 	'D_AUTH' : false,
@@ -30,15 +30,15 @@ var sdump_levels = {
 	'D_PATRON_SEARCH_FORM' : false,
 	'D_PATRON_SEARCH_RESULTS' : false,
 
-	'D_PATRON_DISPLAY' : true,
-	'D_PATRON_DISPLAY_STATUS' : true,
-	'D_PATRON_DISPLAY_CONTACT' : true,
+	'D_PATRON_DISPLAY' : false,
+	'D_PATRON_DISPLAY_STATUS' : false,
+	'D_PATRON_DISPLAY_CONTACT' : false,
 
-	'D_PATRON_ITEMS' : true,
-	'D_PATRON_CHECKOUT_ITEMS' : true,
+	'D_PATRON_ITEMS' : false,
+	'D_PATRON_CHECKOUT_ITEMS' : false,
 
-	'D_CHECKIN' : true,
-	'D_CHECKIN_ITEMS' : true,
+	'D_CHECKIN' : false,
+	'D_CHECKIN_ITEMS' : false,
 
 	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,
@@ -46,7 +46,7 @@ var sdump_levels = {
 	'D_EXPLODE' : false,
 	'D_FM_UTILS' : false,
 	'D_PRINT' : false,
-	'D_SES' : false,
+	'D_SES' : true,
 	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,
