@@ -73,6 +73,19 @@ function patron_search_patron_search_results_init(p) {
 		}
 	}
 
+	var patron_select_async_count = 0;
+
+	function gen_patron_select_async_function(count) {
+		return function (request) {
+			/* Set new patron */
+			if (count == patron_select_async_count) {
+				p._patron = request.getResultObject();
+				render_fm( p.w.document, { 'au' : p._patron } );
+				p.retrieve_button.disabled = false;
+			};
+		}
+	}
+
 	p.search_results.register_patron_select_callback(
 		function (ev) {
 			sdump('D_PATRON_SEARCH','Firing patron_select_callback\n');
@@ -82,15 +95,11 @@ function patron_search_patron_search_results_init(p) {
 			render_fm( p.w.document, { 'au' : p._patron } );
 			/* Get selection */
 			var patrons = get_list_from_tree_selection( p.search_results.paged_tree.tree );
+			/* Get patron and render status */
 			retrieve_patron_by_id( 
 				patrons[ patrons.length - 1 ].getAttribute('record_id'),
-				function (request) {
-					/* Set new patron */
-					p._patron = request.getResultObject();
-					render_fm( p.w.document, { 'au' : p._patron } );
-					p.retrieve_button.disabled = false;
-				}
-			 )
+				gen_patron_select_async_function( ++patron_select_async_count )
+			);
 		}
 	);
 	p.search_results.register_flesh_patron_function(
