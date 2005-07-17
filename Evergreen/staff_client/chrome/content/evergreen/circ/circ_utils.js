@@ -90,7 +90,7 @@ function checkin_cols() {
 		circ_cols(), 
 		function(o){ if ((o.fm_class == 'acp')||(o.fm_class == 'circ')) o.hidden = true; return o; }
 	);
-	return merge_arrays( cols, std_cols );
+	return cols.concat( std_cols );
 }
 
 function circ_cols() {
