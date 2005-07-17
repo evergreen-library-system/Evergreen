@@ -67,7 +67,7 @@
 		mw.spawn_filter_console(document,'new_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_test" oncommand="
-		mw.spawn_patron_display(document,'new_tab','main_tabbox',{'patron':'21099000006699'}); "/>
+		mw.spawn_checkin(document,'new_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>

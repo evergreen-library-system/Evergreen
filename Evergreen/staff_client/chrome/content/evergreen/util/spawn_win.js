@@ -48,60 +48,29 @@ function spawn_interface(d,placement,place,chrome,label,passthru_params,clone) {
 	return w;
 }
 
-function spawn_batch_copy_editor(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/cat/copy_edit.xul';
-	return spawn_interface(d,placement,place,chrome,getString('copies_editor_interface_label'),passthru_params,clone);
+/* developer utilities */
+
+function spawn_javascript_console(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://global/content/console.xul';
+	return spawn_interface(d,placement,place,chrome,getString('javascript_console_label'),passthru_params,clone);
 }
 
-function spawn_bill_pay(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/bill/bill.xul';
-	return spawn_interface(d,placement,place,chrome,getString('bills_interface_label'),passthru_params,clone);
+function spawn_xuleditor(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/util/xuledit.xul';
+	return spawn_interface(d,placement,place,chrome,getString('xuleditor_label'),passthru_params,clone);
 }
 
-function spawn_check_in(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/circ/checkin.xul';
-	return spawn_interface(d,placement,place,chrome,getString('checkin_interface_label'),passthru_params,clone);
+function spawn_javascript_shell(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/util/shell.html';
+	return spawn_interface(d,placement,place,chrome,getString('javascript_shell_label'),passthru_params,clone);
 }
 
-function spawn_check_out(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/circ/checkout.xul';
-	return spawn_interface(d,placement,place,chrome,getString('checkout_interface_label'),passthru_params,clone);
+function spawn_filter_console(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/util/filter_console.xul';
+	return spawn_interface(d,placement,place,chrome,getString('filter_console_label'),passthru_params,clone);
 }
 
-function spawn_circ_display(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/circ/circ_deck_patron.xul';
-	return spawn_interface(d,placement,place,chrome,getString('display_patron_interface_label'),passthru_params,clone);
-}
-
-function spawn_circ_tree(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/circ/circ_tree.xul';
-	return spawn_interface(d,placement,place,chrome,'circ_tree',passthru_params,clone);
-}
-
-function spawn_circ_list(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/circ/circ_list.xul';
-	return spawn_interface(d,placement,place,chrome,getString('items_out_interface_label'),passthru_params,clone);
-}
-
-function spawn_circ_search(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/circ/circ_deck_search.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params,clone);
-}
-
-function spawn_clamshell(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/main/clam_shell.xul';
-	return spawn_interface(d,placement,place,chrome,'clamshell',passthru_params,clone);
-}
-
-function spawn_clamshell_vertical(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/main/clam_shell_vertical.xul';
-	return spawn_interface(d,placement,place,chrome,'clamshell',passthru_params,clone);
-}
-
-function spawn_copy_browser(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/cat/browse_list.xul';
-	return spawn_interface(d,placement,place,chrome,getString('copy_browser_interface_label'),passthru_params,clone);
-}
+/* current */
 
 function spawn_main() {
 	sdump('D_SPAWN','trying to spawn app_shell\n');
@@ -116,21 +85,50 @@ function spawn_main() {
 		}
 	} catch(E) {
 		dump(js2JSON(E)+'\n');
-		//incr_progressmeter('auth_meter',-100);
-		//alert('Login failed on new_window: ' + js2JSON(E)); enable_login_prompts(); return;
 	}
-	//incr_progressmeter('auth_meter',100);
 }
 
-function spawn_marc_editor(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/cat/marc.xul';
-	return spawn_interface(d,placement,place,chrome,getString('marc_editor_interface_label'),passthru_params,clone);
+function spawn_checkin(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/circ/checkin.xul';
+	return spawn_interface(d,placement,place,chrome,getString('checkin_interface_label'),passthru_params,clone);
 }
 
 function spawn_opac_navigator(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/opac/opac.xul';
 	//var chrome = 'http://google.com/';
 	return spawn_interface(d,placement,place,chrome,getString('opac_navigator_interface_label'),passthru_params,clone);
+}
+
+function spawn_patron_display(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/patron/patron_display.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params,clone);
+}
+
+function spawn_patron_search(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/patron/patron_search.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params,clone);
+}
+
+/* legacy code, may be removed or refactored */
+
+function spawn_batch_copy_editor(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/cat/copy_edit.xul';
+	return spawn_interface(d,placement,place,chrome,getString('copies_editor_interface_label'),passthru_params,clone);
+}
+
+function spawn_bill_pay(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/bill/bill.xul';
+	return spawn_interface(d,placement,place,chrome,getString('bills_interface_label'),passthru_params,clone);
+}
+
+function spawn_copy_browser(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/cat/browse_list.xul';
+	return spawn_interface(d,placement,place,chrome,getString('copy_browser_interface_label'),passthru_params,clone);
+}
+
+function spawn_marc_editor(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/cat/marc.xul';
+	return spawn_interface(d,placement,place,chrome,getString('marc_editor_interface_label'),passthru_params,clone);
 }
 
 function spawn_oclc_import(d,placement,place,passthru_params,clone) {
@@ -160,26 +158,6 @@ function spawn_oclc_import(d,placement,place,passthru_params,clone) {
 	}
 }
 
-function spawn_paged_tree(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/main/paged_tree.xul';
-	return spawn_interface(d,placement,place,chrome,'paged_tree',passthru_params,clone);
-}
-
-function spawn_patron_display(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_display.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params,clone);
-}
-
-function spawn_patron_display_status(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_display_status.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params,clone);
-}
-
-function spawn_patron_display_contact(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_display_contact.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params,clone);
-}
-
 function spawn_patron_edit(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_editor_interface_label'),passthru_params,clone);
@@ -188,21 +166,6 @@ function spawn_patron_edit(d,placement,place,passthru_params,clone) {
 function spawn_patron_register(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/patron/patron_new.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_register_interface_label'),passthru_params,clone);
-}
-
-function spawn_patron_search(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_search.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params,clone);
-}
-
-function spawn_patron_search_form(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_search_form.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params,clone);
-}
-
-function spawn_patron_search_results(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_search_results.xul';
-	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params,clone);
 }
 
 function spawn_copy_stat_cat_edit(d,placement,place,passthru_params,clone) {
@@ -220,28 +183,9 @@ function spawn_survey_admin_wizard(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('survey_admin_interface_label'),passthru_params,clone);
 }
 
-
 function spawn_z3950_import(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/z39_50/z39_50.xul';
 	return spawn_interface(d,placement,place,chrome,getString('z39_50_import_interface_label'),passthru_params,clone);
 }
 
-function spawn_javascript_console(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://global/content/console.xul';
-	return spawn_interface(d,placement,place,chrome,getString('javascript_console_label'),passthru_params,clone);
-}
 
-function spawn_xuleditor(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/util/xuledit.xul';
-	return spawn_interface(d,placement,place,chrome,getString('xuleditor_label'),passthru_params,clone);
-}
-
-function spawn_javascript_shell(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/util/shell.html';
-	return spawn_interface(d,placement,place,chrome,getString('javascript_shell_label'),passthru_params,clone);
-}
-
-function spawn_filter_console(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/util/filter_console.xul';
-	return spawn_interface(d,placement,place,chrome,getString('filter_console_label'),passthru_params,clone);
-}
