@@ -34,7 +34,7 @@
 		mw.spawn_circ_display(document,'replace_tab','main_tabbox',{}); "/>
 
 	<command id="cmd_circ_checkin" oncommand="
-		mw.spawn_check_in(document,'replace_tab','main_tabbox',{}); "/>	
+		mw.spawn_checkin(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_search_opac" oncommand="
 		mw.spawn_opac_navigator(document,'replace_tab','main_tabbox',{}); "/>	

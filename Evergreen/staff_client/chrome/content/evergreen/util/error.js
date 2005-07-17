@@ -37,8 +37,8 @@ var sdump_levels = {
 	'D_PATRON_ITEMS' : false,
 	'D_PATRON_CHECKOUT_ITEMS' : false,
 
-	'D_CHECKIN' : false,
-	'D_CHECKIN_ITEMS' : false,
+	'D_CHECKIN' : true,
+	'D_CHECKIN_ITEMS' : true,
 
 	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,

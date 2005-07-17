@@ -7,14 +7,17 @@
 <page id="checkin_win"
 	orient="vertical" style="overflow: auto" width="800" height="500"
 	sizemode="maximized" persist="width height" 
-	onload="params.w = window; 
+	onload="try {
+		params.w = window; 
 		params.app = 'Checkin'; 
 		params.clamshell_node = document.getElementById('ClamShell_main');
-		params.patron_items_node = document.getElementById('PatronItems_main');
-		params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
+		params.checkin_items_node = document.getElementById('CheckinItems_main');
 		params.commandset_node = document.getElementById('universal_cmds');
-		mw.focus_widget( document, 'PatronNavBar_refresh' );
-		mw.OpenILS_init(params);"
+		mw.focus_widget( document, 'checkin_barcode_entry_textbox' );
+		mw.OpenILS_init(params);
+		} catch(E) {
+			alert(E);
+		}"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

@@ -71,6 +71,28 @@ function renew_by_circ_id(id) {
 	}
 }
 
+function checkin_cols() {
+	var cols = [
+		{
+			'id' : 'checkin_status', 'label' : getString('checkin_label_status'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : '', 'fm_field_render' : '.status.toString()'
+		},
+		{
+			'id' : 'checkin_route_to', 'label' : getString('checkin_label_route_to'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : '', 'fm_field_render' : '.route_to.toString()'
+		},
+		{
+			'id' : 'checkin_text', 'label' : getString('checkin_label_text'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : '', 'fm_field_render' : '.text.toString()'
+		}
+	];
+	var std_cols = map_list( 
+		circ_cols(), 
+		function(o){ if ((o.fm_class == 'acp')||(o.fm_class == 'circ')) o.hidden = true; return o; }
+	);
+	return merge_arrays( cols, std_cols );
+}
+
 function circ_cols() {
 	return  [
 		{

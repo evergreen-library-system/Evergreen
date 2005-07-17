@@ -5,7 +5,9 @@
 
 	<script>mw.sdump('D_TRACE','Loading checkin_overlay.xul\n');</script>
 
+	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/circ/checkin_items_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?>
 
 <commandset id="universal_cmds">
 
@@ -23,21 +25,48 @@
 </box>
 
 <deck id="ClamShell_first_deck">
+	<box id="PatronDisplayStatus_main" />
+	<spacer id="csfds" flex="1" />
 </deck>
 
 <deck id="ClamShell_second_deck">
-	<box id="CheckinItems_main"/>
+	<groupbox id="cssdgb">
+		<caption id="cssdgbc" label="&circ.checkin.caption;"/>
+		<box id="CheckinItems_main"/>
+	</groupbox>
 </deck>
 
 <hbox id="CheckinItems_insert1">
        <label id="checkin_scan_barcode_label" value="&circ.checkin.scan_label;" accesskey="&circ.checkin.scan_label.accesskey;" control="checkin_scan_textbox"/>
         <textbox id="checkin_barcode_entry_textbox"/>
-        <button id="checkin_submit_barcode_button" value="&circ.checkin.submit_label;" accesskey="&circ.checkin.submit_label.accesskey;"/>
+        <button id="checkin_submit_barcode_button" label="&circ.checkin.submit_label;" accesskey="&circ.checkin.submit_label.accesskey;"/>
 </hbox>
 
 <hbox id="CheckinItems_insert2" />
 <hbox id="CheckinItems_insert3" />
 <hbox id="CheckinItems_insert4" />
+
+<hbox id="PatronDisplayStatus_insert2">
+	<label id="PatronSearch_patron_name" class="patronNameMedium"
+		tooltiptext="&checkin_patron.name.label;"
+		value=" "
+		render="true" fm_class="au" 
+		render_value="patron_get_full_name($$)" />
+</hbox>
+<hbox id="PatronDisplayStatus_insert4">
+	<button id="PatronSearch_retrieve_button" 
+		disabled="true"
+		label="&checkin_patron.retrieve;" 
+		accesskey="&checkin_patron.retrieve.accesskey;"/>
+</hbox>
+
+<hbox id="CheckinItems_insert3">
+	<button id="checkin_print" label="&checkin.print_receipt_label;" accesskey="&checkin.print_receipt_label.accesskey;"/>
+	<button id="checkin_reprint" label="&checkin.reprint_receipt_label;" accesskey="&checkin.reprint_receipt_label.accesskey;"/>
+	<spacer id="cii3s" flex="1"/>
+	<checkbox id="checkin_auto" label="&checkin.auto_print_label;" accesskey="&checkin.auto_print_label.accesskey;"/> 
+	<button id="checkin_done" label="&checkin.done_label;" accesskey="&checkin.done_label.accesskey;"/>
+</hbox>
 
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->

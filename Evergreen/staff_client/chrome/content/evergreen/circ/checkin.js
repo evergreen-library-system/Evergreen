@@ -14,6 +14,23 @@ function checkin_init(p) {
 	p.refresh = function() {
 	}
 
+	p.retrieve_button = p.w.document.getElementById('PatronSearch_retrieve_button');
+	p.retrieve_button.addEventListener(
+		'command',
+		function (ev) {
+			spawn_patron_display(
+				p.w.app_shell,'new_tab','main_tabbox',
+				{
+					'patron' : retrieve_patron_by_id(
+						p._patron.id()
+					)
+				}
+			);
+		}
+		,false
+	);
+
+
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return p;
 }
@@ -25,7 +42,7 @@ function checkin_clamshell_init(p) {
 }
 
 function checkin_checkin_items_init(p) {
-	p.checkin_items = checkin_items_init( { 'w' : p.w, 'node' : p.checkin_items_node, 'popupset_node' : p.popupset_node, 'debug' : p.app } );
+	p.checkin_items = checkin_items_init( { 'w' : p.w, 'node' : p.checkin_items_node, 'debug' : p.app } );
 
 	var checkins = [];
 	var tb = p.checkin_items_node.getElementsByAttribute('id','checkin_barcode_entry_textbox')[0];
@@ -33,16 +50,13 @@ function checkin_checkin_items_init(p) {
 
 	p.attempt_checkin = function(barcode) {
 		try {
-			if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
-			var permit_check = checkout_permit( barcode, p._patron.id(), 0 );
-			if (permit_check.status == 0) {
-				var check = checkout_by_barcode( barcode, p._patron.id() );
-				if (check) {
-					checkins.push( check );
-					p.checkin_items.add_checkin_items( [ checkins.length - 1 ] );
-				}
-			} else {
-				throw(permit_check.text);
+			//if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
+			var check = checkin_by_copy_barcode( barcode );
+			if (check) {
+				sdump('D_CHECKIN','check = ' + check + '\n' + pretty_print( js2JSON( check ) ) + '\n');
+				checkins.push( check );
+				p.checkin_items.add_checkin_items( [ checkins.length - 1 ] );
+				tb.value = ''; tb.focus();
 			}
 		} catch(E) {
 			handle_error(E);

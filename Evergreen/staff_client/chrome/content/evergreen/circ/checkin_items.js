@@ -4,11 +4,11 @@ function checkin_items_init(p) {
 	sdump('D_CHECKIN_ITEMS',"TESTING: checkin_items.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
-	p.checkin_items_cols = circ_cols();
+	p.checkin_items_cols = checkin_cols();
 
 	p.paged_tree = paged_tree_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.checkin_items_cols, 'hide_nav' : true, 'hits_per_page' : '9999', 'debug' : p.app } );
-	p.add_checkout_items = p.paged_tree.add_rows;
-	p.clear_checkout_items = p.paged_tree.clear_tree;
+	p.add_checkin_items = p.paged_tree.add_rows;
+	p.clear_checkin_items = p.paged_tree.clear_tree;
 
 	p.register_checkin_items_select_callback = function (f) {
 		sdump('D_CHECKIN_ITEMS','p.register_checkin_items_select_callback(' + f + ')\n');
@@ -41,7 +41,7 @@ function checkin_items_tree_map_checkin_items_to_cols(p, checkin_items, treeitem
 	for (var i = 0; i < p.checkin_items_cols.length; i++) {
 		var hash = p.checkin_items_cols[i];
 		sdump('D_CHECKIN_ITEMS','Considering ' + js2JSON(hash) + '\n');
-		var obj_string;
+		var obj_string = 'checkin_items';
 		switch( hash.fm_class ) {
 			case 'acp' : obj_string = 'checkin_items.copy'; break;
 			case 'circ' : obj_string = 'checkin_items.circ'; break;

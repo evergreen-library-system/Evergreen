@@ -1,0 +1,20 @@
+<!ENTITY circ.checkin.caption 'Check In'>
+<!ENTITY circ.checkin.scan_label 'Enter barcode:'>
+<!ENTITY circ.checkin.scan_label.accesskey 'E'>
+<!ENTITY circ.checkin.submit_label 'Submit'>
+<!ENTITY circ.checkin.submit_label.accesskey 'S'>
+
+<!ENTITY checkin_patron.retrieve 'Retrieve Patron'>
+<!ENTITY checkin_patron.retrieve.accesskey 'R'>
+<!ENTITY checkin_patron.name.label 'Patron Name'>
+
+<!ENTITY checkin.print_receipt_label 'Print List'>
+<!ENTITY checkin.print_receipt_label.accesskey ''>
+<!ENTITY checkin.reprint_receipt_label 'Re-Print Last List'>
+<!ENTITY checkin.reprint_receipt_label.accesskey 'L'>
+<!ENTITY checkin.auto_print_label 'Auto-Print'>
+<!ENTITY checkin.auto_print_label.accesskey 'A'>
+<!ENTITY checkin.done_label 'Done'>
+<!ENTITY checkin.done_label.accesskey 'D'>
+
+

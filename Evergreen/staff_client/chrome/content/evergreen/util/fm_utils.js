@@ -99,26 +99,28 @@ function render_fm(d,obj) {
 		if ( !fm_class ) continue;
 		if ( obj[ fm_class ] ) {
 			sdump('D_FM_UTILS',"We're in:\n\trender_value = " + render_value + "\n\trender_css_style = " + render_css_style + "\n\trender_css_class = " + render_css_class + "\n");
-			var result = '';
 			if (render_value) {
-				var cmd = parse_render_string( 'obj[ fm_class ]', render_value );
-				result = eval( cmd );
-				sdump('D_FM_UTILS','<'+cmd+'> renders <'+result+'>\n');
+				var result = ''; var cmd = '';
+				cmd = parse_render_string( 'obj[ fm_class ]', render_value );
+				try { result = eval( cmd ); } catch(E) { sdump('D_ERROR',E); }
 				set_widget_value_for_display( node, result );
+				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
 			}
 			if (render_css_style) {
-				var cmd = parse_render_string( 'obj[ fm_class ]', render_css_style );
+				var result = ''; var cmd = '';
+				cmd = parse_render_string( 'obj[ fm_class ]', render_css_style );
 				cmd = parse_render_string( 'result', cmd, /\%\%/g );
-				var result = eval(cmd);
-				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
+				try { result = eval(cmd); } catch(E) { sdump('D_ERROR',E); }
 				node.setAttribute('style',result);
+				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
 			}
 			if (render_css_class) {
-				var cmd = parse_render_string( 'obj[ fm_class ]', render_css_class );
+				var result = ''; var cmd = '';
+				cmd = parse_render_string( 'obj[ fm_class ]', render_css_class );
 				cmd = cmd.replace( /\%\%/g, 'result' );
-				var result = eval(cmd);
-				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
+				try { result = eval(cmd); } catch(E) { sdump('D_ERROR',E); }
 				node.setAttribute('class',result);
+				sdump('D_FM_UTILS','\t<'+cmd+'> renders <'+result+'>\n');
 			}
 		}
 	}
