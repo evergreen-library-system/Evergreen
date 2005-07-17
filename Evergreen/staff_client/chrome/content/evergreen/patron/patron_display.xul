@@ -7,15 +7,20 @@
 <page id="patron_display_win"
 	orient="vertical" style="overflow: auto" width="800" height="500"
 	sizemode="maximized" persist="width height" 
-	onload="params.w = window; 
-		params.app = 'PatronDisplay'; 
-		params.clamshell_node = document.getElementById('ClamShell_main');
-		params.patron_items_node = document.getElementById('PatronItems_main');
-		params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
-		params.commandset_node = document.getElementById('universal_cmds');
-		mw.focus_widget( document, 'patron_checkout_barcode_entry_textbox' );
-		mw.OpenILS_init(params);"
-	onunload="mw.OpenILS_exit(params);"
+	onload="try {
+			params.w = window; 
+			params.app = 'PatronDisplay'; 
+			params.clamshell_node = document.getElementById('ClamShell_main');
+			params.patron_items_node = document.getElementById('PatronItems_main');
+			params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
+			params.patron_holds_node = document.getElementById('PatronHolds_main');
+			params.commandset_node = document.getElementById('universal_cmds');
+			mw.focus_widget( document, 'patron_checkout_barcode_entry_textbox' );
+			mw.OpenILS_init(params);
+		} catch(E) {
+			alert(E);
+		}"
+	onunload="try { mw.OpenILS_exit(params); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<script>mw.sdump('D_TRACE','Loading patron_display.xul\n');</script>

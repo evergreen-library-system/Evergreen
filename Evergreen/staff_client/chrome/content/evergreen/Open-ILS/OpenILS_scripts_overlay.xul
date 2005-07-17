@@ -18,6 +18,7 @@
 		<script src="chrome://evergreen/content/patron/patron_display.js" />
 		<script src="chrome://evergreen/content/patron/patron_checkout_items.js" />
 		<script src="chrome://evergreen/content/patron/patron_items.js" />
+		<script src="chrome://evergreen/content/patron/patron_holds.js" />
 		<script src="chrome://evergreen/content/circ/circ_utils.js" />
 		<script src="chrome://evergreen/content/circ/checkin.js" />
 		<script src="chrome://evergreen/content/circ/checkin_items.js" />

@@ -14,14 +14,18 @@ function patron_display_init(p) {
 	// gives: p.patron_checkout_items, p.redraw_patron_checkout_items
 	patron_display_patron_checkout_items_init(p);
 
+	// gives: p.patron_holds, p.redraw_patron_holds
+	patron_display_patron_holds_init(p);
+
 	p.set_patron = function (au) {
 		return p._patron = au;
 	}
 
 	p.display_patron = function (au) {
 		if (au) p.set_patron(au);
-		p.redraw_patron_items();
 		p.redraw_patron_checkout_items();
+		p.redraw_patron_items();
+		p.redraw_patron_holds();
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
 
@@ -96,7 +100,7 @@ function patron_display_clamshell_init(p) {
 }
 
 function patron_display_patron_items_init(p) {
-	p.patron_items = patron_items_init( { 'w' : p.w, 'node' : p.patron_items_node, 'popupset_node' : p.popupset_node, 'debug' : p.app } );
+	p.patron_items = patron_items_init( { 'w' : p.w, 'node' : p.patron_items_node, 'debug' : p.app } );
 
 	p.redraw_patron_items = function() {
 		p.patron_items.clear_patron_items();
@@ -213,7 +217,7 @@ function patron_display_patron_items_init(p) {
 }
 
 function patron_display_patron_checkout_items_init(p) {
-	p.patron_checkout_items = patron_checkout_items_init( { 'w' : p.w, 'node' : p.patron_checkout_items_node, 'popupset_node' : p.popupset_node, 'debug' : p.app } );
+	p.patron_checkout_items = patron_checkout_items_init( { 'w' : p.w, 'node' : p.patron_checkout_items_node, 'debug' : p.app } );
 	var tb = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_barcode_entry_textbox')[0];
 	var submit_button = p.patron_checkout_items_node.getElementsByAttribute('id','patron_checkout_submit_barcode_button')[0];
 
@@ -355,6 +359,74 @@ function patron_display_patron_checkout_items_init(p) {
 					sdump('D_PATRON_DISPLAY','Firing opac context for patron_checkout_items\n');
 					for (var i = 0; i < patron_checkout_items.length; i++) {
 						var idx = patron_checkout_items[i].getAttribute('record_id');
+						sdump('D_PATRON_DISPLAY','Firing opac context\n');
+					}
+				},
+				false
+			);
+			
+		}
+	);
+}
+
+function patron_display_patron_holds_init(p) {
+	p.patron_holds = patron_holds_init( { 'w' : p.w, 'node' : p.patron_holds_node, 'debug' : p.app } );
+
+	p.redraw_patron_holds = function() {
+		p.patron_holds.clear_patron_holds();
+		if (!p._patron.hold_requests()) patron_get_holds( p._patron );
+		for (var i = 0; i < p._patron.hold_requests().length; i++) {
+			p.patron_holds.add_patron_holds( [ i ] );
+		}
+	}
+
+	p.patron_holds.register_patron_holds_select_callback(
+		function (ev) {
+			sdump('D_PATRON_DISPLAY','Firing patron_holds_select_callback\n');
+			sdump('D_PATRON_DISPLAY','ev.target = ' + ev.target + '\n');
+			var patron_holds = get_list_from_tree_selection( p.patron_holds.paged_tree.tree );
+			/* grab cover art for selected item? */
+		}
+	);
+	p.patron_holds.register_flesh_patron_holds_function(
+		function (treeitem) {
+			sdump('D_PATRON_DISPLAY','Firing flesh_patron_holds_function\n');
+			var record_id = treeitem.getAttribute('record_id'); 
+			p.patron_holds.map_patron_holds_to_cols( p._patron.hold_requests()[ record_id ], treeitem );
+		}
+	);
+	p.patron_holds.register_item_context_builder(
+		function (ev) {
+			sdump('D_PATRON_DISPLAY','Firing context_builder for patron_holds\n');
+			sdump('D_PATRON_DISPLAY','ev.target = ' + ev.target + '\np.patron_holds.paged_tree.popup = ' + p.patron_holds.paged_tree.popup + '\n');
+			empty_widget(p.patron_holds.paged_tree.popup);
+			var patron_holds = get_list_from_tree_selection( p.patron_holds.paged_tree.tree );
+			sdump('D_PATRON_DISPLAY','patron_holds.length = ' + patron_holds.length + '\n');
+
+			/*** COPY EDITOR ***/
+			var menuitem_pi_ce = p.patron_holds.paged_tree.w.document.createElement('menuitem');
+			p.patron_holds.paged_tree.popup.appendChild( menuitem_pi_ce );
+			menuitem_pi_ce.setAttribute('label',getString('circ.context_edit'));
+			menuitem_pi_ce.addEventListener(
+				'command',
+				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_holds\n');
+					for (var i = 0; i < patron_holds.length; i++) {
+						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
+					}
+				},
+				false
+			);
+
+			/*** OPAC ***/
+			var menuitem_pi_o = p.patron_holds.paged_tree.w.document.createElement('menuitem');
+			p.patron_holds.paged_tree.popup.appendChild( menuitem_pi_o );
+			menuitem_pi_o.setAttribute('label',getString('circ.context_opac'));
+			menuitem_pi_o.addEventListener(
+				'command',
+				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing opac context for patron_holds\n');
+					for (var i = 0; i < patron_holds.length; i++) {
 						sdump('D_PATRON_DISPLAY','Firing opac context\n');
 					}
 				},

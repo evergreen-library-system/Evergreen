@@ -10,6 +10,7 @@
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_checkout_items_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_contact_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_holds_overlay.xul"?>
 
 <commandset id="universal_cmds">
 
@@ -50,7 +51,10 @@
 		<caption id="cssdgb2c" label="&patron_navbar.items;"/>
 		<box id="PatronItems_main" />
 	</groupbox>
-	<box id="PatronHolds_main"><label value="holds" /></box>
+	<groupbox id="cssdgb3">
+		<caption id="cssdgb3c" label="&patron_navbar.items;"/>
+		<box id="PatronHolds_main" />
+	</groupbox>
 	<box id="PatronBills_main"><label value="bills" /></box>
 	<box id="PatronEdit_main"><label value="edit" /></box>
 	<box id="PatronInfo_main"><label value="info" /></box>

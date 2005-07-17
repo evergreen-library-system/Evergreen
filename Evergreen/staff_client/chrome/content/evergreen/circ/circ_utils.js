@@ -71,6 +71,88 @@ function renew_by_circ_id(id) {
 	}
 }
 
+function hold_cols() {
+	var cols = [
+{
+	'id' : 'capture_time', 'label' : getString('ahr_capture_time_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.capture_time()'
+},
+{
+	'id' : 'current_copy', 'label' : getString('ahr_current_copy_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.current_copy()'
+},
+{
+	'id' : 'email_notify', 'label' : getString('ahr_email_notify_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.email_notify()'
+},
+{
+	'id' : 'expire_time', 'label' : getString('ahr_expire_time_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.expire_time()'
+},
+{
+	'id' : 'fulfillment_time', 'label' : getString('ahr_fulfillment_time_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.fulfillment_time()'
+},
+{
+	'id' : 'hold_type', 'label' : getString('ahr_hold_type_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.hold_type()'
+},
+{
+	'id' : 'holdable_formats', 'label' : getString('ahr_holdable_formats_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.holdable_formats()'
+},
+{
+	'id' : 'id', 'label' : getString('ahr_id_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.id()'
+},
+{
+	'id' : 'ischanged', 'label' : getString('ahr_ischanged_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.ischanged()'
+},
+{
+	'id' : 'isdeleted', 'label' : getString('ahr_isdeleted_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.isdeleted()'
+},
+{
+	'id' : 'isnew', 'label' : getString('ahr_isnew_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.isnew()'
+},
+{
+	'id' : 'phone_notify', 'label' : getString('ahr_phone_notify_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.phone_notify()'
+},
+{
+	'id' : 'pickup_lib', 'label' : getString('ahr_pickup_lib_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.pickup_lib()'
+},
+{
+	'id' : 'prev_check_time', 'label' : getString('ahr_prev_check_time_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.prev_check_time()'
+},
+{
+	'id' : 'request_time', 'label' : getString('ahr_request_time_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.request_time()'
+},
+{
+	'id' : 'requestor', 'label' : getString('ahr_requestor_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.requestor()'
+},
+{
+	'id' : 'selection_depth', 'label' : getString('ahr_selection_depth_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.selection_depth()'
+},
+{
+	'id' : 'target', 'label' : getString('ahr_target_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.target()'
+},
+{
+	'id' : 'usr', 'label' : getString('ahr_usr_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.usr()'
+}
+	];
+	return cols;
+}
+
 function checkin_cols() {
 	var cols = [
 		{
