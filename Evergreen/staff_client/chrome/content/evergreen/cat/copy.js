@@ -2,17 +2,17 @@ var local_stat_cats;
 var local_stat_cat_entries = {};
 
 function my_init() {
-	dump('entering my_init for copy.js\n');
-	dump('TESTING: copy.js: ' + mw.G['main_test_variable'] + '\n');
-	dump('real_parentWindow: ' + real_parentWindow + '\n');
+	mw.sdump('D_CAT','entering my_init for copy.js\n');
+	mw.sdump('D_CAT','TESTING: copy.js: ' + mw.G['main_test_variable'] + '\n');
+	mw.sdump('D_CAT','real_parentWindow: ' + real_parentWindow + '\n');
 	populate_copy_status_list('copy-status-menu','copy-status-popup','0');
 	populate_copy_location_list('shelving-location-menu','shelving-location-popup');
 	populate_lib_list_with_branch('circulating-library-menu','circulating-library-popup', mw.G.user_ou, mw.G.org_tree, true );
-	dump('super_dump cn_list = ' + super_dump_norecurse(cn_list) + '\n');
-	dump('my_init: cn_list = ' + js2JSON(cn_list) + '\n');
+	mw.sdump('D_CAT','super_dump cn_list = ' + super_dump_norecurse(cn_list) + '\n');
+	mw.sdump('D_CAT','my_init: cn_list = ' + js2JSON(cn_list) + '\n');
 	/*cn_list = fixJSON(cn_list);
-	dump('super_dump cn_list = ' + super_dump_norecurse(cn_list) + '\n');
-	dump('my_init: cn_list = ' + js2JSON(cn_list) + '\n');*/
+	mw.sdump('D_CAT','super_dump cn_list = ' + super_dump_norecurse(cn_list) + '\n');
+	mw.sdump('D_CAT','my_init: cn_list = ' + js2JSON(cn_list) + '\n');*/
 	var pertinent_libs = [];
 	for (var i = 0; i < cn_list.length; i++) {
 		var cn = cn_list[i];
@@ -45,7 +45,7 @@ function my_init() {
 
 function transfer_attributes(event) {
 	var items = event.target.selectedItems;
-	dump('selectedItems.length = ' + items.length + '\n');
+	mw.sdump('D_CAT','selectedItems.length = ' + items.length + '\n');
 	if (items.length == 0) { return; }
 
 	// Dump items
@@ -58,9 +58,9 @@ function transfer_attributes(event) {
 		}
 	);
 	for (var i in dump_copies) {
-		dump('\n\n\n,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_\n\n\n');
-		dump( js2JSON(dump_copies[i]) );
-		dump('\n\n\n,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_\n\n\n');
+		mw.sdump('D_CAT','\n\n\n,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_\n\n\n');
+		mw.sdump('D_CAT', js2JSON(dump_copies[i]) );
+		mw.sdump('D_CAT','\n\n\n,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_\n\n\n');
 	}
 
 	// Transfer values from first item to XUL
@@ -99,7 +99,7 @@ function transfer_attributes(event) {
 			menuitem.parentNode.parentNode.selectedItem = menuitem;
 		}
 	}
-	dump('select fired\n');
+	mw.sdump('D_CAT','select fired\n');
 }
 
 
@@ -123,7 +123,7 @@ function apply_attributes() {
 	var opac = document.getElementById('opac_visible_menu').value;
 	var listbox = document.getElementById('ephemeral_listbox');
 	var items = listbox.selectedItems;
-	dump('selectedItems.length = ' + items.length + '\n');
+	mw.sdump('D_CAT','selectedItems.length = ' + items.length + '\n');
 	for (var i = 0; i < items.length; i++) {
 		var listitem = items[i];
 		var cn_pos = listitem.getAttribute('cn_pos');
@@ -143,19 +143,19 @@ function apply_attributes() {
 		copy_node.ischanged(1);
 	}
 
-	dump('changed cn_list: ' + js2JSON(cn_list) + '\n');
+	mw.sdump('D_CAT','changed cn_list: ' + js2JSON(cn_list) + '\n');
 }
 
 function apply_attribute(ev) {
-	dump('Entering apply_attribute with element id = ');
+	mw.sdump('D_CAT','Entering apply_attribute with element id = ');
 	var popup_id;
 	if (ev.target.tagName == 'menuitem') {
 		popup_id = ev.target.parentNode.getAttribute('id');
 	} else {
 		popup_id = ev.target.getAttribute('id');
 	}
-	dump(popup_id + '\n');
-	dump('ev.target = ' + ev.target + '  .tagName = ' + ev.target.tagName + '\n');
+	mw.sdump('D_CAT',popup_id + '\n');
+	mw.sdump('D_CAT','ev.target = ' + ev.target + '  .tagName = ' + ev.target.tagName + '\n');
 
 	var circ_lib = document.getElementById('circulating-library-menu').value;
 	var shelving_loc = document.getElementById('shelving-location-menu').value;
@@ -171,93 +171,93 @@ function apply_attribute(ev) {
 	var listbox = document.getElementById('ephemeral_listbox');
 	var items = listbox.selectedItems;
 
-	dump('selectedItems.length = ' + items.length + '\n');
-	dump('before  cn_list: ' + js2JSON(cn_list) + '\n');
+	mw.sdump('D_CAT','selectedItems.length = ' + items.length + '\n');
+	mw.sdump('D_CAT','before  cn_list: ' + js2JSON(cn_list) + '\n');
 	for (var i = 0; i < items.length; i++) {
 		var listitem = items[i];
 		var cn_pos = listitem.getAttribute('cn_pos');
 		var cp_pos = listitem.getAttribute('cp_pos');
 		var copy_node = cn_list[cn_pos].copies()[cp_pos];
 
-		dump('\n\n\n\n+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+\n\n\n\n');
-		dump('Setting copy ' + copy_node.id() + '...\n');
+		mw.sdump('D_CAT','\n\n\n\n+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+\n\n\n\n');
+		mw.sdump('D_CAT','Setting copy ' + copy_node.id() + '...\n');
 		switch(popup_id) {
 			case 'circulating-library-popup':
-				dump('\tbefore circ_lib = ' + js2JSON(copy_node.circ_lib()) + '\n');
+				mw.sdump('D_CAT','\tbefore circ_lib = ' + js2JSON(copy_node.circ_lib()) + '\n');
 				copy_node.circ_lib(	mw.G.org_tree_hash[ circ_lib ] );
-				dump('\tafter  circ_lib = ' + js2JSON(copy_node.circ_lib()) + '\n');
+				mw.sdump('D_CAT','\tafter  circ_lib = ' + js2JSON(copy_node.circ_lib()) + '\n');
 				break;
 			case 'shelving-location-popup':
-				dump('\tbefore location = ' + js2JSON(copy_node.location()) + '\n');
+				mw.sdump('D_CAT','\tbefore location = ' + js2JSON(copy_node.location()) + '\n');
 				copy_node.location(	mw.G.acpl_hash[ shelving_loc ] );
-				dump('\tafter  location = ' + js2JSON(copy_node.location()) + '\n');
+				mw.sdump('D_CAT','\tafter  location = ' + js2JSON(copy_node.location()) + '\n');
 				break;
 			case 'copy-status-popup':
-				dump('\tbefore status = ' + js2JSON(copy_node.status()) + '\n');
+				mw.sdump('D_CAT','\tbefore status = ' + js2JSON(copy_node.status()) + '\n');
 				copy_node.status(	mw.G.ccs_hash[ copy_status ]);
-				dump('\tafter  status = ' + js2JSON(copy_node.status()) + '\n');
+				mw.sdump('D_CAT','\tafter  status = ' + js2JSON(copy_node.status()) + '\n');
 				break;
 			case 'loan-duration-popup':
-				dump('\tbefore loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
+				mw.sdump('D_CAT','\tbefore loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
 				copy_node.loan_duration(loan_duration);
-				dump('\tafter  loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
+				mw.sdump('D_CAT','\tafter  loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
 				break;
 			case 'fine-level-popup':
-				dump('\tbefore fine_level = ' + js2JSON(copy_node.fine_level()) + '\n');
+				mw.sdump('D_CAT','\tbefore fine_level = ' + js2JSON(copy_node.fine_level()) + '\n');
 				copy_node.fine_level(fine_level);
-				dump('\tafter  fine_level = ' + js2JSON(copy_node.fine_level()) + '\n');
+				mw.sdump('D_CAT','\tafter  fine_level = ' + js2JSON(copy_node.fine_level()) + '\n');
 				break;
 			case 'circulate_popup':
-				dump('\tbefore circulate = ' + js2JSON(copy_node.circulate()) + '\n');
+				mw.sdump('D_CAT','\tbefore circulate = ' + js2JSON(copy_node.circulate()) + '\n');
 				copy_node.circulate(circulate);
-				dump('\tafter  circulate = ' + js2JSON(copy_node.circulate()) + '\n');
+				mw.sdump('D_CAT','\tafter  circulate = ' + js2JSON(copy_node.circulate()) + '\n');
 				break;
 			case 'deposit_popup':
-				dump('\tbefore deposit = ' + js2JSON(copy_node.deposit()) + '\n');
+				mw.sdump('D_CAT','\tbefore deposit = ' + js2JSON(copy_node.deposit()) + '\n');
 				copy_node.deposit(deposit);
-				dump('\tafter  deposit = ' + js2JSON(copy_node.deposit()) + '\n');
+				mw.sdump('D_CAT','\tafter  deposit = ' + js2JSON(copy_node.deposit()) + '\n');
 				break;
 			case 'deposit_amount':
-				dump('\tbefore deposit_amount = ' + js2JSON(copy_node.deposit_amount()) + '\n');
+				mw.sdump('D_CAT','\tbefore deposit_amount = ' + js2JSON(copy_node.deposit_amount()) + '\n');
 				copy_node.deposit_amount(deposit_amount);
-				dump('\tafter  deposit_amount = ' + js2JSON(copy_node.deposit_amount()) + '\n');
+				mw.sdump('D_CAT','\tafter  deposit_amount = ' + js2JSON(copy_node.deposit_amount()) + '\n');
 				break;
 			case 'price':
-				dump('\tbefore price = ' + js2JSON(copy_node.price()) + '\n');
+				mw.sdump('D_CAT','\tbefore price = ' + js2JSON(copy_node.price()) + '\n');
 				copy_node.price(price);
-				dump('\tafter  price = ' + js2JSON(copy_node.price()) + '\n');
+				mw.sdump('D_CAT','\tafter  price = ' + js2JSON(copy_node.price()) + '\n');
 				break;
 			case 'reference_popup':
-				dump('\tbefore ref = ' + js2JSON(copy_node.ref()) + '\n');
+				mw.sdump('D_CAT','\tbefore ref = ' + js2JSON(copy_node.ref()) + '\n');
 				copy_node.ref(ref);
-				dump('\tafter  ref = ' + js2JSON(copy_node.ref()) + '\n');
+				mw.sdump('D_CAT','\tafter  ref = ' + js2JSON(copy_node.ref()) + '\n');
 				break;
 			case 'opac_visible_popup':
-				dump('\tbefore opac_visible = ' + js2JSON(copy_node.opac_visible()) + '\n');
+				mw.sdump('D_CAT','\tbefore opac_visible = ' + js2JSON(copy_node.opac_visible()) + '\n');
 				copy_node.opac_visible(opac);
-				dump('\tafter  opac_visible = ' + js2JSON(copy_node.opac_visible()) + '\n');
+				mw.sdump('D_CAT','\tafter  opac_visible = ' + js2JSON(copy_node.opac_visible()) + '\n');
 				break;
 			default:
-				dump('\t++++++++ Unhandled.. this should be a stat_cat: ' + popup_id + ' / ' + ev.target.tagName + '\n');
+				mw.sdump('D_CAT','\t++++++++ Unhandled.. this should be a stat_cat: ' + popup_id + ' / ' + ev.target.tagName + '\n');
 				update_stat_cat_entry(copy_node,ev.target);
 				break;
 		}
-		dump('\n\n\n\n+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+\n\n\n\n');
+		mw.sdump('D_CAT','\n\n\n\n+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+\n\n\n\n');
 		copy_node.ischanged(1);
 	}
 
-	dump('changed cn_list: ' + js2JSON(cn_list) + '\n');
+	mw.sdump('D_CAT','changed cn_list: ' + js2JSON(cn_list) + '\n');
 }
 
 function update_stat_cat_entry(copy,menuitem) {
-	dump('\tupdate_stat_cat_entry: value = ' + menuitem.value + '\n');
+	mw.sdump('D_CAT','\tupdate_stat_cat_entry: value = ' + menuitem.value + '\n');
 	var entries = copy.stat_cat_entries();
-	//dump('\n\n\ncopy = ' + js2JSON(copy) + '\n');
-	//dump('\n\n\ncopy.stat_cat_entries() = ' + js2JSON(copy.stat_cat_entries()) + '\n');
+	//mw.sdump('D_CAT','\n\n\ncopy = ' + js2JSON(copy) + '\n');
+	//mw.sdump('D_CAT','\n\n\ncopy.stat_cat_entries() = ' + js2JSON(copy.stat_cat_entries()) + '\n');
 	var stat_cat_id = menuitem.getAttribute('stat_cat');
 	var entry = find_attr_object_in_list(entries,'stat_cat',stat_cat_id);
 	if (entry) {
-		dump('\tReplacing old stat_cat_entry with ');
+		mw.sdump('D_CAT','\tReplacing old stat_cat_entry with ');
 
 		entries = filter_list(
 			entries,
@@ -267,15 +267,15 @@ function update_stat_cat_entry(copy,menuitem) {
 		);
 
 	} else {
-		dump('\tAppending new stat_cat_entry = ');
+		mw.sdump('D_CAT','\tAppending new stat_cat_entry = ');
 	}
-	dump(js2JSON(local_stat_cat_entries[menuitem.value]) + '\n');
+	mw.sdump('D_CAT',js2JSON(local_stat_cat_entries[menuitem.value]) + '\n');
 	entries.push( local_stat_cat_entries[ menuitem.value ] );
 	copy.stat_cat_entries( entries );
 }
 
 function add_to_listbox(cn_pos,cp_pos,name,callnumber,barcode) {
-	dump('xul: name = ' + name + ' cn = ' + callnumber + ' bc = ' + barcode + '\n');
+	mw.sdump('D_CAT','xul: name = ' + name + ' cn = ' + callnumber + ' bc = ' + barcode + '\n');
 	var listbox = document.getElementById('ephemeral_listbox');
 	var listitem = document.createElement('listitem');
 		listitem.setAttribute('cn_pos',cn_pos);

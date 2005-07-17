@@ -14,15 +14,15 @@ function pad_fixed(value,field) {
 
 
 function handle_fixed_change(ev) {
-	dump('Entering handle_fixed_change\n');
-	if (ev.target.tagName != 'textbox') { dump('early exit\n'); return; }
+	mw.sdump('D_CAT','Entering handle_fixed_change\n');
+	if (ev.target.tagName != 'textbox') { mw.sdump('D_CAT','early exit\n'); return; }
 	var t = ev.target;
 	var field = t.getAttribute('field');
 	var spos = t.getAttribute('spos');
 	var epos = t.getAttribute('epos');
 	var size = t.getAttribute('size');
 	if ( (epos - spos + 1) != size ) { 
-		dump('Invalid fixed field DTD: field='+field+' spos='+spos+
+		mw.sdump('D_CAT','Invalid fixed field DTD: field='+field+' spos='+spos+
 			' epos='+epos+' size='+size+'\n');
 		alert('Invalid fixed field DTD: field='+field+' spos='+spos+
 			' epos='+epos+' size='+size+'\n');
@@ -37,14 +37,14 @@ function handle_fixed_change(ev) {
 		t.value = t.value + padding;
 	}
 	var fixed = find_textbox('ctrl_rows', field);
-	//dump('length of fixed: ' + fixed.value.length + '\n');
+	//mw.sdump('D_CAT','length of fixed: ' + fixed.value.length + '\n');
 	fixed.value = fixed.value + pad_fixed(fixed.value,field);
-	dump('length of fixed: ' + fixed.value.length + '\n');
+	mw.sdump('D_CAT','length of fixed: ' + fixed.value.length + '\n');
 
-	//dump('field='+field+' spos='+spos+' epos='+epos+' size='+size+' t="'+t.value+'"\n');
-	dump('replacing "'+fixed.value+'"\n');
+	//mw.sdump('D_CAT','field='+field+' spos='+spos+' epos='+epos+' size='+size+' t="'+t.value+'"\n');
+	mw.sdump('D_CAT','replacing "'+fixed.value+'"\n');
 	fixed.value = fixed.value.substr(0,spos) + t.value + fixed.value.substr(1+Number(epos));
-	dump('     with "'+fixed.value+'"\n');
+	mw.sdump('D_CAT','     with "'+fixed.value+'"\n');
 }
 
 function find_textbox(where, field) {
@@ -52,7 +52,7 @@ function find_textbox(where, field) {
 	var ideal_sibling;
 	for (var r in rows) {
 		if (typeof(rows[r])=='object') {
-			//dump(r + ':' + rows[r] + '\n');
+			//mw.sdump('D_CAT',r + ':' + rows[r] + '\n');
 			var t = rows[r].childNodes[0].firstChild;
 			if (t.value == field) {
 				return rows[r].childNodes[1].firstChild;

@@ -1,11 +1,11 @@
 function handle_keyup(ev) {
 	if (ev.target.tagName != 'textbox') { return; }
-	//dump('keyCode:' + ev.keyCode + ' charCode:' + ev.charCode + ' shift:' + ev.shiftKey + ' ctrl:' + ev.ctrlKey + ' meta:' + ev.metaKey + '\n');
+	//mw.sdump('D_CAT','keyCode:' + ev.keyCode + ' charCode:' + ev.charCode + ' shift:' + ev.shiftKey + ' ctrl:' + ev.ctrlKey + ' meta:' + ev.metaKey + '\n');
 	resizeWrapper(ev.target);
 }
 
 function handle_keypress(ev) {
-	dump('keyCode:' + ev.keyCode + ' charCode:' + ev.charCode + ' shift:' + ev.shiftKey + ' ctrl:' + ev.ctrlKey + ' meta:' + ev.metaKey + '\n');
+	mw.sdump('D_CAT','keyCode:' + ev.keyCode + ' charCode:' + ev.charCode + ' shift:' + ev.shiftKey + ' ctrl:' + ev.ctrlKey + ' meta:' + ev.metaKey + '\n');
 	if (ev.target.tagName != 'textbox') { return; }
 	var rstatus = false;
 	if (ev.charCode) {
@@ -74,7 +74,7 @@ function handle_key_c_del(ev) {
 		handle_tag_change(ev);
 		if (! navigate_row_down(t,which_col_am_i(t),false) ) {
 			navigate_row_up(t,which_col_am_i(t),false);
-			dump("let's go up\n");
+			mw.sdump('D_CAT',"let's go up\n");
 		}
 		return true;
 	} else {

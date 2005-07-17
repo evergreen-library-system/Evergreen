@@ -16,7 +16,7 @@
 		alert('Feature Not Yet Implemented');
 	"/>
 	<command id="cmd_batch_edit" oncommand="
-		spawn_copy_editor();	
+		spawn_local_legacy_copy_editor();	
 	"/>
 </commandset>
 

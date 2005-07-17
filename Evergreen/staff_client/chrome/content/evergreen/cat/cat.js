@@ -1,6 +1,6 @@
 function my_init() {
 	document.getElementById('search-entry-box').focus();
-	dump('TESTING: cat.js: ' + mw.G['main_test_variable'] + '\n');
+	mw.sdump('D_CAT','TESTING: cat.js: ' + mw.G['main_test_variable'] + '\n');
 	populate_lib_list(
 		'search-copy-count-menu',
 		'search-copy-count-popup',
@@ -37,9 +37,9 @@ function search(s_type, s_loc, s_fmt, s_ord, s_term) {
 			frame.contentWindow.tabWindow = tabWindow;
 			frame.contentWindow.mw = mw;
 			frame.contentWindow.am_i_a_top_level_tab = false;
-			dump('here ====>\n');
-			frame.contentWindow.addEventListener('load',function (e) { dump('here1<==\n'); this.test_hash['hello1'] = 'boo'; }, false);
-			frame.contentWindow.addEventListener('load',function (e) { dump('here2<==\n'); this.test_hash['hello2'] = 'boo'; }, false);
+			mw.sdump('D_CAT','here ====>\n');
+			frame.contentWindow.addEventListener('load',function (e) { mw.sdump('D_CAT','here1<==\n'); this.test_hash['hello1'] = 'boo'; }, false);
+			frame.contentWindow.addEventListener('load',function (e) { mw.sdump('D_CAT','here2<==\n'); this.test_hash['hello2'] = 'boo'; }, false);
 			break;
 		case 'isbn':
 			alert('Not Yet Implemented');

@@ -16,14 +16,12 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- Overlays for this XUL file -->
-	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/cat/copy_edit_overlay.xul"?>
 
 	<!-- OpenSRF -->
 	<script>var myPackageDir = "evergreen";</script>
-	<script src="chrome://evergreen/content/util/util.js" />
-	<script>timer_init('cat');</script>
 	<OpenSRF id="OpenSRF_js" />
 
 	<!-- The logic for this app -->

@@ -9,8 +9,8 @@
 <window id="copy_display_win" title="hello"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
 	<OpenSRF id="OpenSRF_js"/>
 	<util id="util_js"/>
 

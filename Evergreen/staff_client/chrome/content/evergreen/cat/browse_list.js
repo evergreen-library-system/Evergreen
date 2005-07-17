@@ -8,7 +8,7 @@ var orgs_with_copies_hash = {};
 
 function my_init() {
 	timer_init('cat');
-	dump('TESTING: browse_list.js: ' + mw.G['main_test_variable'] + '\n');
+	mw.sdump('D_CAT','TESTING: browse_list.js: ' + mw.G['main_test_variable'] + '\n');
 	var tc = document.getElementById('browse_list_tree_children');
 	build_tree_branch(tc,mw.G['org_tree'],true);
 	my_treerow = document.getElementById( 'org_unit_' + mw.G.user_ou.shortname() ).firstChild;
@@ -19,7 +19,7 @@ function my_init() {
 }
 
 function refresh_browse_list() {
-	dump('=-=-=-=-=-=-=-=-=\n\n\nrefresh_browse_list()\n');
+	mw.sdump('D_CAT','=-=-=-=-=-=-=-=-=\n\n\nrefresh_browse_list()\n');
 	// Prune tree
 	var nl = document.getElementsByTagName('treeitem');
 	for (var i = 0; i < nl.length; i++) {
@@ -42,7 +42,7 @@ function button_toggle_my_libraries(ev) {
 	// label = Hide My Libraries
 	// alt_label = Show My Libraries
 	var target = document.getElementById('browse_list_button1');
-	if (!target) { dump('eh?\n'); return; }
+	if (!target) { mw.sdump('D_CAT','eh?\n'); return; }
 	swap_attributes('browse_list_button1','label','alt_label');
 	var toggle = cycle_attribute( target,'toggle', [ '1', '2' ] );
 	for (var i in mw.G.my_orgs) {
@@ -62,11 +62,11 @@ function button_toggle_libraries(ev) {
 	// label = Show Other Libraries With Copies
 	// alt_label = Show Just My Libraries
 	var target = document.getElementById('browse_list_button2');
-	if (!target) { dump('eh?\n'); return; }
+	if (!target) { mw.sdump('D_CAT','eh?\n'); return; }
 	swap_attributes('browse_list_button2','label','alt_label');
 	var toggle = cycle_attribute( target,'toggle',['1','2'] );
 	if (toggle == '1') {
-		dump('Showing just my libraries...\n');
+		mw.sdump('D_CAT','Showing just my libraries...\n');
 		/*hide_branch( document.getElementById('org_unit_PINES') );
 		for (var i = 0; i < mw.G.my_orgs.length; i++) {
 			unhide_branch(
@@ -86,17 +86,17 @@ function button_toggle_libraries(ev) {
 			}
 		}
 	} else {
-		dump('Showing other libraries with copies...\n');
+		mw.sdump('D_CAT','Showing other libraries with copies...\n');
 		var nl = document.getElementsByTagName('treeitem');
 		for (var i = 0; i < nl.length; i++) {
 			var item = nl[i];
 			if (item.getAttribute('copies') == 'true') {
 				//item.setAttribute('hidden','false');
-				//dump('\tunhiding ' + item.getAttribute('id') + '\n');
+				//mw.sdump('D_CAT','\tunhiding ' + item.getAttribute('id') + '\n');
 				unhide_branch(item);
 			} else {
 				//item.setAttribute('hidden','true');
-				//dump('\thiding ' + item.getAttribute('id') + '\n');
+				//mw.sdump('D_CAT','\thiding ' + item.getAttribute('id') + '\n');
 				//hide_branch(item);
 			}
 		}
@@ -106,7 +106,7 @@ function button_toggle_libraries(ev) {
 
 function unhide_branch(item,do_open,do_copies) {
 	if (item.getAttribute('id') == 'org_unit_PINES') { return; }
-	//dump('Unhiding ' + item.getAttribute('id') + '\n');
+	//mw.sdump('D_CAT','Unhiding ' + item.getAttribute('id') + '\n');
 	item.setAttribute('hidden','false');
 	if (do_open) {
 		item.setAttribute('open','true');
@@ -124,7 +124,7 @@ function unhide_branch(item,do_open,do_copies) {
 
 function hide_branch(item,do_open,do_copies) {
 	if (item.getAttribute('id') == 'org_unit_PINES') { return; }
-	//dump('Hiding ' + item.getAttribute('id') + '\n');
+	//mw.sdump('D_CAT','Hiding ' + item.getAttribute('id') + '\n');
 	item.setAttribute('hidden','true');
 	if (do_open) {
 		item.setAttribute('open','false');
@@ -142,7 +142,7 @@ function hide_branch(item,do_open,do_copies) {
 
 function gather_copies() {
 	// loop the libs
-	dump('Hello : ' + timer_elapsed('world') + '\n');
+	mw.sdump('D_CAT','Hello : ' + timer_elapsed('world') + '\n');
 /*	user_async_request(
 			'open-ils.cat',
 			'open-ils.cat.asset.copy_tree.global.retrieve',
@@ -177,7 +177,7 @@ function gather_copies() {
 			gather_other_copies();
 		}
 	);
-	dump('((((((((((((((((( Count = ' + counter_incr('world') + '\n');
+	mw.sdump('D_CAT','((((((((((((((((( Count = ' + counter_incr('world') + '\n');
 }
 
 function gather_other_copies() {
@@ -199,7 +199,7 @@ function gather_other_copies() {
 				[ mw.G['auth_ses'][0], find_this_id, bucket ],
 				gather_copies_callback
 			);
-			dump('((((((((((((((((( Count = ' + counter_incr('world') + '\n');
+			mw.sdump('D_CAT','((((((((((((((((( Count = ' + counter_incr('world') + '\n');
 			bucket = new Array();
 			c_s = 0;
 		}
@@ -211,16 +211,16 @@ function gather_other_copies() {
 			[ mw.G['auth_ses'][0], find_this_id, bucket ],
 			gather_copies_callback
 		);
-		dump('((((((((((((((((( Count = ' + counter_incr('world') + '\n');
+		mw.sdump('D_CAT','((((((((((((((((( Count = ' + counter_incr('world') + '\n');
 	}
 	browse_meter_per = 100 / counter_peek('world');
-	dump(timer_elapsed('world') + ' : World : ' + timer_elapsed('gather') + '\n');
+	mw.sdump('D_CAT',timer_elapsed('world') + ' : World : ' + timer_elapsed('gather') + '\n');
 }
 
 function find_my_treerow_index() {
 	var nl = document.getElementById('browse_list_tree').getElementsByTagName('treerow');
 	var count = 0;
-	//dump('find_my_treerow:  count = ' + count + '  nl.length = ' + nl.length + '\n');
+	//mw.sdump('D_CAT','find_my_treerow:  count = ' + count + '  nl.length = ' + nl.length + '\n');
 	for (var i = 0; i < nl.length; i++) {
 		var row = nl[i];
 		var item = row.parentNode;
@@ -229,7 +229,7 @@ function find_my_treerow_index() {
 		}
 		var open_attr = item.getAttribute('open');
 		var hidden_prop = item.hidden;
-		//dump('id = ' + item.getAttribute('id') + '   hidden_attr = ' + hidden_attr + '   hidden_prop = ' + hidden_prop + '\n');
+		//mw.sdump('D_CAT','id = ' + item.getAttribute('id') + '   hidden_attr = ' + hidden_attr + '   hidden_prop = ' + hidden_prop + '\n');
 		if (hidden_prop.toString() == 'false' && open_attr.toString() == 'true') {
 			count++;
 		}
@@ -238,23 +238,23 @@ function find_my_treerow_index() {
 }
 
 function gather_copies_callback(request) {
-	dump('gather_copies_callback : ' + timer_elapsed('gather') + ' : ' + ' count = ' + counter_incr('gather') + '\n');
+	mw.sdump('D_CAT','gather_copies_callback : ' + timer_elapsed('gather') + ' : ' + ' count = ' + counter_incr('gather') + '\n');
 	var result = request.getResultObject();
 	var n_volumes = 0; var n_copies = 0; var flag = false;
-	//dump('copybrowser result = ' + js2JSON(result) + '\n=-=-=\n');
+	//mw.sdump('D_CAT','copybrowser result = ' + js2JSON(result) + '\n=-=-=\n');
 	for (var y in result) {
 		if (result[y] && (typeof(result[y])=='object')) {
 			var volume = result[y]; n_volumes++;
-			//dump('\nvolume = ' + js2JSON(volume) + '\n');
-			dump(' volume id = ' + volume.id() + '\n');
+			//mw.sdump('D_CAT','\nvolume = ' + js2JSON(volume) + '\n');
+			mw.sdump('D_CAT',' volume id = ' + volume.id() + '\n');
 			var lib = find_ou( mw.G.org_tree, volume.owning_lib() );
-			//dump('lib = ' + js2JSON(lib) + '\n');
+			//mw.sdump('D_CAT','lib = ' + js2JSON(lib) + '\n');
 			if ( lib.shortname() == mw.G.user_ou.shortname() ) { flag = true; }
 			var callnumber = volume.label();
 			var copies = volume.copies();
-			//dump('\tcopies = ' + js2JSON(copies) + '\n');
+			//mw.sdump('D_CAT','\tcopies = ' + js2JSON(copies) + '\n');
 			var item = document.getElementById('org_unit_'+lib.shortname());
-			if (!item) { dump('skipping\n'); continue; }
+			if (!item) { mw.sdump('D_CAT','skipping\n'); continue; }
 
 			var item_row = item.firstChild;
 			var volumes_treecell;
@@ -314,10 +314,10 @@ function gather_copies_callback(request) {
 
 			var treechildren = document.createElement('treechildren');
 			cn_treeitem.appendChild(treechildren);
-			//dump( 'org_unit_'+lib+' item = '+item.tagName+'\n');
+			//mw.sdump('D_CAT', 'org_unit_'+lib+' item = '+item.tagName+'\n');
 			for (var j = 0; j < copies.length; j++) {
 				var copy = copies[j]; n_copies++;
-				//dump('barcode: ' + copy.barcode() + '\n');
+				//mw.sdump('D_CAT','barcode: ' + copy.barcode() + '\n');
 
 				var treeitem = document.createElement('treeitem');
 					treeitem.setAttribute('open','true');
@@ -357,19 +357,19 @@ function gather_copies_callback(request) {
 						
 			}
 		} else {
-			dump('gather_copies problem: ' + result[y] + '\n');
+			mw.sdump('D_CAT','gather_copies problem: ' + result[y] + '\n');
 			//throw(result[0]);
 		}
 	}
 	var tree = document.getElementById('browse_list_tree');
 	if (tree.currentIndex != -1) {
-		//dump('currentIndex != -1 = ' + tree.currentIndex + '\n');
+		//mw.sdump('D_CAT','currentIndex != -1 = ' + tree.currentIndex + '\n');
 		//tree.treeBoxObject.scrollToRow( tree.currentIndex );
 		tree.treeBoxObject.ensureRowIsVisible( tree.currentIndex );
 	} else if (flag) {
-		//dump('currentIndex == -1\n');
+		//mw.sdump('D_CAT','currentIndex == -1\n');
 		var find = find_my_treerow_index();
-		dump('find = ' + find + ' n_volumes = ' + n_volumes + ' n_copies = ' + n_copies + '\n');
+		mw.sdump('D_CAT','find = ' + find + ' n_volumes = ' + n_volumes + ' n_copies = ' + n_copies + '\n');
 		//alert('find = ' + find + ' n_volumes = ' + n_volumes + ' n_copies = ' + n_copies + '\n');
 		if (find > 0) { 
 			find = find + n_volumes + n_copies;
@@ -387,7 +387,7 @@ function gather_copies_callback(request) {
 		meter.value = 100;
 		meter.setAttribute('hidden','true');
 	}
-	dump('gather callback   done : ' + timer_elapsed('gather') + '\n');
+	mw.sdump('D_CAT','gather callback   done : ' + timer_elapsed('gather') + '\n');
 }
 
 
@@ -455,8 +455,8 @@ function get_selected_rows_by_object_type(tree,object_type) {
 }
 
 function build_CopyBrowser_Context(ev) {
-	dump('build_CopyBrowser_Context: ev.target.tagName = ' + ev.target.tagName + '\n');
-	dump('this = ' + this.tagName + '\n');
+	mw.sdump('D_CAT','build_CopyBrowser_Context: ev.target.tagName = ' + ev.target.tagName + '\n');
+	mw.sdump('D_CAT','this = ' + this.tagName + '\n');
 
 	var popup = document.getElementById('browse_menu');
 	empty_widget(popup);
@@ -470,7 +470,7 @@ function build_CopyBrowser_Context(ev) {
 		hitlist.view.selection.getRangeAt(t,start,end);
 		for (var v=start.value; v<=end.value; v++){
 			var i = hitlist.contentView.getItemAtIndex(v);
-			//dump(i + ':' + i.firstChild.childNodes.length + '\n');
+			//mw.sdump('D_CAT',i + ':' + i.firstChild.childNodes.length + '\n');
 			switch( i.getAttribute('object_type') ) {
 				case 'volume' : volume_flag++; break;
 				case 'copy' : copy_flag++; break;
@@ -478,7 +478,7 @@ function build_CopyBrowser_Context(ev) {
 			}
 		}
 	}
-	dump('volume_flag = ' + volume_flag + ' copy_flag = ' + copy_flag + ' library_flag = ' + library_flag + '\n');
+	mw.sdump('D_CAT','volume_flag = ' + volume_flag + ' copy_flag = ' + copy_flag + ' library_flag = ' + library_flag + '\n');
 	if (library_flag > 0) {
 		var menuitem = document.createElement('menuitem');
 		popup.appendChild(menuitem);
@@ -545,7 +545,7 @@ function build_CopyBrowser_Context(ev) {
 }
 
 function volume_add(tab,params) {
-	dump('trying to volume_add()\n');
+	mw.sdump('D_CAT','trying to volume_add()\n');
 	params['shortcut'] = 'volume_add';
 	var w;
 	//var items = get_selected_rows(tree);
@@ -563,14 +563,14 @@ function volume_add(tab,params) {
 	} else {
 		w = mw.new_window( chrome );
 	}
-	dump('setting use_this_tree\n');
+	mw.sdump('D_CAT','setting use_this_tree\n');
 	w.tree_items = items;
 	w.record_id = find_this_id;
 	w.params = params;
 }
 
 function copy_add(tab,params) {
-	dump('trying to copy_add()\n');
+	mw.sdump('D_CAT','trying to copy_add()\n');
 	params['shortcut'] = 'copy_add';
 	var w;
 	//var items = get_selected_rows(tree);
@@ -588,14 +588,14 @@ function copy_add(tab,params) {
 	} else {
 		w = mw.new_window( chrome );
 	}
-	dump('setting use_this_tree\n');
+	mw.sdump('D_CAT','setting use_this_tree\n');
 	w.tree_items = items;
 	w.record_id = find_this_id;
 	w.params = params;
 }
 
 function volume_edit(tab,params) {
-	dump('trying to volume_edit()\n');
+	mw.sdump('D_CAT','trying to volume_edit()\n');
 	params['shortcut'] = 'volume_edit';
 	var w;
 	//var items = get_selected_rows(tree);
@@ -613,7 +613,7 @@ function volume_edit(tab,params) {
 	} else {
 		w = mw.new_window( chrome );
 	}
-	dump('setting use_this_tree\n');
+	mw.sdump('D_CAT','setting use_this_tree\n');
 	w.tree_items = items;
 	w.record_id = find_this_id;
 	w.params = params;
@@ -634,7 +634,7 @@ function volume_delete(tab,params) {
 			'open-ils.cat.asset.volume_tree.fleshed.batch.update',
 			[ mw.G['auth_ses'][0], cn_list]
 	);
-	dump('volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
 	refresh_browse_list();
 }
 
@@ -657,6 +657,6 @@ function copy_delete(tab,params) {
 			'open-ils.cat.asset.volume_tree.fleshed.batch.update',
 			[ mw.G['auth_ses'][0], cn_list]
 	);
-	dump('volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
 	refresh_browse_list();
 }

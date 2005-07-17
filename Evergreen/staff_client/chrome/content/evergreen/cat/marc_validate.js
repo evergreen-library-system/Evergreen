@@ -44,7 +44,7 @@ function legend_marc() {
 }
 
 function handle_tag_change(ev) {
-	dump('Entering handle_tag_change: ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Entering handle_tag_change: ' + timer_elapsed('cat') + '\n');
 	rule_warnings = []; disable_widgets('explain_marc');
 	tag_seen = {};
 	var rows = document.getElementById('ctrl_rows').childNodes;
@@ -66,7 +66,7 @@ function handle_tag_change(ev) {
 		}
 	}
 	if (rule_warnings.length > 0) { enable_widgets('explain_marc'); }
-	dump('Exiting handle_tag_change: ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Exiting handle_tag_change: ' + timer_elapsed('cat') + '\n');
 }
 
 function test_tagnumber_rule(r) {
@@ -88,12 +88,12 @@ function test_tagnumber_rule(r) {
 		if ( (rule.repeat == 'NR') && (tag_seen[t.value] > 1) ) {
 			add_css_class(t,'invalid');
 			var s = 'Tag ' + t.value + ' should be Non-Repeating\n';
-			rule_warnings.push(s); dump(s);
+			rule_warnings.push(s); mw.sdump('D_CAT',s);
 		}
 	} else if (t.value != 'LDR') {
 		add_css_class(t,'invalid');
 		var s = 'Tag ' + t.value + ' is unknown.\n';
-		rule_warnings.push(s); dump(s);
+		rule_warnings.push(s); mw.sdump('D_CAT',s);
 	}
 }
 
@@ -107,7 +107,7 @@ function test_ind1_rule(r) {
 		if (! ind1.value.match(eval(regex)) ) {
 			add_css_class(ind1,'invalid');
 			var s = 'Tag ' + tagnumber + ' Indicator 1 should be one of these characters: "' + marc_rules[tagnumber].ind1.allowed + '"\n';
-			rule_warnings.push(s); dump(s);
+			rule_warnings.push(s); mw.sdump('D_CAT',s);
 		}
 	}
 }
@@ -122,7 +122,7 @@ function test_ind2_rule(r) {
 		if (! ind2.value.match(eval(regex)) ) {
 			add_css_class(ind2,'invalid');
 			var s = 'Tag ' + tagnumber + ' Indicator 2 should be one of these characters: "' + marc_rules[tagnumber].ind2.allowed + '"\n';
-			rule_warnings.push(s); dump(s);
+			rule_warnings.push(s); mw.sdump('D_CAT',s);
 		}
 	}
 }
@@ -140,7 +140,7 @@ function test_subfield_rule(r) {
 		} else {
 			add_css_class(data,'invalid');
 			var s = 'DEBUG: Need to add code to make an implicit subfield-a\n';
-			rule_warnings.push(s); dump(s);
+			rule_warnings.push(s); mw.sdump('D_CAT',s);
 			subf_array.shift();
 		}
 		var subf_seen = {};
@@ -148,7 +148,7 @@ function test_subfield_rule(r) {
 			if ((subf_array[i]=='')||(subf_array==null)) { 
 				add_css_class(data,'invalid');
 				var s = 'You have incomplete subfield delimiters.\n';
-				rule_warnings.push(s); dump(s);
+				rule_warnings.push(s); mw.sdump('D_CAT',s);
 				continue;
 			}
 			var s_ind = subf_array[i].substr(0,1);
@@ -158,12 +158,12 @@ function test_subfield_rule(r) {
 				if ( (rule.repeat == 'NR') && (subf_seen[s_ind]>1) ) {
 					add_css_class(data,'invalid');
 					var s = 'Tag ' + tagnumber + ' subfield-' + s_ind + ' should be Non-Repeating\n';
-					rule_warnings.push(s); dump(s);
+					rule_warnings.push(s); mw.sdump('D_CAT',s);
 				}
 			} else {
 				add_css_class(data,'invalid');
 				var s = 'Tag ' + tagnumber + ' does not have a subfield-' + s_ind + '\n';
-				rule_warnings.push(s); dump(s);
+				rule_warnings.push(s); mw.sdump('D_CAT',s);
 			}
 		}
 	}

@@ -2,19 +2,19 @@ var data = {}; var data_backup; var cn_list = [];
 var new_id = -1;
 
 function my_init() {
-	dump('entering my_init for volume.js\n');
-	dump('TESTING: volume.js: ' + mw.G['main_test_variable'] + '\n');
-	dump('record_id = ' + record_id + '\n');
-	dump('tree_items: ' + tree_items + '\n');
+	mw.sdump('D_CAT','entering my_init for volume.js\n');
+	mw.sdump('D_CAT','TESTING: volume.js: ' + mw.G['main_test_variable'] + '\n');
+	mw.sdump('D_CAT','record_id = ' + record_id + '\n');
+	mw.sdump('D_CAT','tree_items: ' + tree_items + '\n');
 	if (params.shortcut == 'volume_add') {
 		build_page_one();
 	} else if (params.shortcut == 'copy_add') {
 		build_page_two();
 	} else {
-		dump('broken\n');
+		mw.sdump('D_CAT','broken\n');
 	}
 	listen_for_enter('volume_add');
-	dump('exiting my_init for volume.js\n');
+	mw.sdump('D_CAT','exiting my_init for volume.js\n');
 }
 
 function listen_for_enter(w) {
@@ -23,9 +23,9 @@ function listen_for_enter(w) {
 	}
 	w.addEventListener('keypress',
 		function (ev) {
-			dump('wizard: ev.target.tagName = ' + ev.target.tagName + '\n');
-			dump('\tev.keyCode = ' + ev.keyCode + '\n');
-			dump('\tev.charCode = ' + ev.charCode + '\n');
+			mw.sdump('D_CAT','wizard: ev.target.tagName = ' + ev.target.tagName + '\n');
+			mw.sdump('D_CAT','\tev.keyCode = ' + ev.keyCode + '\n');
+			mw.sdump('D_CAT','\tev.charCode = ' + ev.charCode + '\n');
 			if ((ev.target.tagName == 'textbox') && (ev.keyCode == 13)) {
 				ev.preventDefault();
 				ev.stopPropagation(); // XBL bindings? bleh
@@ -51,10 +51,10 @@ function page1_add_volume_row(ou) {
 }
 
 function page2_add_volume_row(ou,ti) {
-	dump('page2_add_volume_row...\n');
+	mw.sdump('D_CAT','page2_add_volume_row...\n');
 	var desired_volumes = 
 		document.getElementById('p1_' + ou.id()).lastChild.value;
-	dump('ou = ' + ou.name() + '  desired = ' + desired_volumes + '\n');
+	mw.sdump('D_CAT','ou = ' + ou.name() + '  desired = ' + desired_volumes + '\n');
 	if (desired_volumes > 0) { } else { return; }
 	var rows = document.getElementById('page2_rows');
 	var row = document.createElement('row');
@@ -81,7 +81,7 @@ function page2_add_volume_row(ou,ti) {
 }
 
 function copy_add_page2_add_volume_row(ou,ti) {
-	dump('copy_add_page2_add_volume_row...\n');
+	mw.sdump('D_CAT','copy_add_page2_add_volume_row...\n');
 	var rows = document.getElementById('page2_rows');
 	var row = document.getElementById('page2_row_cn_' + ou.id() );
 	if (!row) {
@@ -146,7 +146,7 @@ function page3_add_volume_row(id,data) {
 }
 
 function page_four_add_volume_row(name,callnumber,barcode) {
-	dump('xul: name = ' + name + ' cn = ' + callnumber + ' bc = ' + barcode + '\n');
+	mw.sdump('D_CAT','xul: name = ' + name + ' cn = ' + callnumber + ' bc = ' + barcode + '\n');
 	var listbox = document.getElementById('ephemeral_listbox');
 	var listitem = document.createElement('listitem');
 	listbox.appendChild(listitem);
@@ -163,7 +163,7 @@ function page_four_add_volume_row(name,callnumber,barcode) {
 }
 
 function build_page_one() {
-	dump('build_page_one\n');
+	mw.sdump('D_CAT','build_page_one\n');
 	for (var i in tree_items) {
 		var ti = tree_items[i];
 		switch( ti.getAttribute('object_type') ) {
@@ -182,10 +182,10 @@ function build_page_one() {
 }
 
 function build_page_two() {
-	dump('build_page_two\n');
+	mw.sdump('D_CAT','build_page_two\n');
 	for (var i in tree_items) {
 		var ti = tree_items[i];
-		dump('Considering item with object_type = ' + ti.getAttribute('object_type') + '\n');
+		mw.sdump('D_CAT','Considering item with object_type = ' + ti.getAttribute('object_type') + '\n');
 		switch( ti.getAttribute('object_type') ) {
 			case 'org_unit' :
 				var shortname = ti.getAttribute('id').split('_')[2];
@@ -208,11 +208,11 @@ function build_page_two() {
 }
 
 function build_page_three() {
-	dump('build_page_three\n');
+	mw.sdump('D_CAT','build_page_three\n');
 	var rows = document.getElementById('page2_rows');
 	for (var i = 0; i < rows.childNodes.length; i++) {
 		var row = rows.childNodes[i];
-		dump(row + '\n');
+		mw.sdump('D_CAT',row + '\n');
 		var ou_id = row.getAttribute('ou_id');
 		var ou_name = row.getAttribute('ou_name');
 		var volume_id = row.getAttribute('volume_id');
@@ -232,13 +232,13 @@ function build_page_three() {
 		}
 	}
 	for (var i in data) {
-		dump('i: ' + i + ' data[i]: ' + js2JSON(data[i]) + '\n');
+		mw.sdump('D_CAT','i: ' + i + ' data[i]: ' + js2JSON(data[i]) + '\n');
 		page3_add_volume_row( i, data[i]);
 	}
 }
 
 function build_page_four() {
-	dump('build page four\n');
+	mw.sdump('D_CAT','build page four\n');
 	document.getElementById('volume_add').canAdvance = false;
 	var new_data = [];
 	var rows = document.getElementById('page3_rows');
@@ -252,7 +252,7 @@ function build_page_four() {
 			var volume_id = t.getAttribute('volume_id');
                         var barcode = t.value;
 			//page_four_add_volume_row(ou_name,callnumber,barcode);
-			dump('t.tagName = ' + t.tagName + ' ou_id = ' + ou_id + ' cn = ' + callnumber + ' volume_id = ' + volume_id + ' bc = ' + barcode + '\n');
+			mw.sdump('D_CAT','t.tagName = ' + t.tagName + ' ou_id = ' + ou_id + ' cn = ' + callnumber + ' volume_id = ' + volume_id + ' bc = ' + barcode + '\n');
 			if (! new_data[ou_id] ) { new_data[ou_id] = {}; }
 			if (! new_data[ou_id][callnumber] ) {
 				new_data[ou_id][callnumber] = [];
@@ -296,9 +296,9 @@ function build_page_four() {
 			cn_list.push(cn);
 		}
 	}
-	dump('Final data object: ' + js2JSON(cn_list) + '\n');
-	dump('Final data object: ' + cn_list + '\n');
-	spawn_copy_editor();
+	mw.sdump('D_CAT','Final data object: ' + js2JSON(cn_list) + '\n');
+	mw.sdump('D_CAT','Final data object: ' + cn_list + '\n');
+	spawn_local_legacy_copy_editor();
 }
 
 function send_to_bill() {
@@ -307,7 +307,7 @@ function send_to_bill() {
 			'open-ils.cat.asset.volume_tree.fleshed.batch.update',
 			[ mw.G['auth_ses'][0], cn_list]
 	);
-	dump('volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
 	refresh_spawning_browse_list();
 }
 
@@ -315,12 +315,12 @@ function refresh_spawning_browse_list() {
 	try {
 		params.refresh_func();
 	} catch(E) {
-		dump('refresh_spawning_browse_list error: ' + js2JSON(E) + '\n');
+		mw.sdump('D_CAT','refresh_spawning_browse_list error: ' + js2JSON(E) + '\n');
 	}
 }
 
-function spawn_copy_editor(tab) {
-	dump('trying to spawn_copy_editor()\n');
+function spawn_local_legacy_copy_editor(tab) {
+	mw.sdump('D_CAT','trying to spawn_copy_editor()\n');
 	var params = { 'select_all' : true };
 	var chrome = 'chrome://evergreen/content/cat/copy.xul';
 	var frame = document.getElementById('page4_iframe');
@@ -329,7 +329,7 @@ function spawn_copy_editor(tab) {
 	frame.contentWindow.cn_list = cn_list;
 	frame.contentWindow.mw = mw;
 	frame.contentWindow.real_parentWindow = this;
-	frame.contentWindow.parentWindow = parentWindow;
+	frame.contentWindow.parentWindow = window.app_shell;
 	frame.contentWindow.params = params;
 }
 
@@ -350,7 +350,7 @@ function check_volume_ou_perm(shortname) {
 // ***************************************************** Batch Volume Edit
 
 function volume_edit_init() {
-	dump('TESTING: volume.js: ' + mw.G['main_test_variable'] + '\n');
+	mw.sdump('D_CAT','TESTING: volume.js: ' + mw.G['main_test_variable'] + '\n');
 	build_batch_edit_page1();
 	listen_for_enter('volume_edit');
 }

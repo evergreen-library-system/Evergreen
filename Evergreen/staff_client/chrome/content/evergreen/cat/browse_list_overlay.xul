@@ -17,7 +17,7 @@
 	<command id="cmd_volume_edit" oncommand="volume_edit(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
 	<command id="cmd_volume_delete" oncommand="volume_delete(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
 	<command id="cmd_copy_add" oncommand="copy_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
-	<command id="cmd_copy_edit" oncommand="spawn_batch_copy_editor(true, { 'tree' : document.getElementById('browse_list_tree') , 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_copy_edit" oncommand="spawn_batch_copy_editor(window.app_shell, 'new_tab', 'main_tabbox', { 'tree' : document.getElementById('browse_list_tree') , 'refresh_func' : refresh_browse_list });"/>
 	<command id="cmd_copy_delete" oncommand="copy_delete(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
 	<command id="cmd_toggle_my_libs" oncommand="button_toggle_my_libraries(event);"/>
 	<command id="cmd_toggle_libs" oncommand="button_toggle_libraries(event);"/>

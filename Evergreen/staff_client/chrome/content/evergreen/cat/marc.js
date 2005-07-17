@@ -1,4 +1,4 @@
-dump('loading marc.js\n');
+mw.sdump('D_CAT','loading marc.js\n');
 
 var character_measure = {};
 var tree;
@@ -6,10 +6,10 @@ var meta;
 var backup_tree;
 
 function my_init() {
-	dump('Entering my_init() : ' + timer_elapsed('cat') + '\n');
-	dump('TESTING: marc.js: ' + mw.G['main_test_variable'] + '\n');
+	mw.sdump('D_CAT','Entering my_init() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','TESTING: marc.js: ' + mw.G['main_test_variable'] + '\n');
 
-	dump("DOC ID " + find_this_id + "\n" );
+	mw.sdump('D_CAT',"DOC ID " + find_this_id + "\n" );
 
 	if (! params.import_tree ) {
 		tree = retrieve_record( find_this_id );
@@ -29,12 +29,14 @@ function my_init() {
 		document.getElementById('meta_tcn_publisher').setAttribute('value',
 			meta.tcn_value()	
 		);
-		var text = document.createTextNode(
-			record_columns[1] + ' / ' + record_columns[2]
-		);
-		document.getElementById('meta_title_author').appendChild(
-			text
-		);
+		if (params.record_columns) {
+			var text = document.createTextNode(
+				params.record_columns[1] + ' / ' + params.record_columns[2]
+			);
+			document.getElementById('meta_title_author').appendChild(
+				text
+			);
+		}
 	} else {
 		tree = params.import_tree;
 		if (tree.name() == 'collection') { 
@@ -46,8 +48,8 @@ function my_init() {
 			); 
 		}
 	}
-	//dump('Retrieved: ' + js2JSON(tree) + '\n');
-	//dump('Retrieved: ' + js2JSON(meta) + '\n');
+	//mw.sdump('D_CAT','Retrieved: ' + js2JSON(tree) + '\n');
+	//mw.sdump('D_CAT','Retrieved: ' + js2JSON(meta) + '\n');
 	build_grid( 
 		document.getElementById('ctrl_rows'), 
 		document.getElementById('data_rows'), 
@@ -59,7 +61,7 @@ function my_init() {
 	window.addEventListener('resize',my_resize_handler,false);
 	handle_tag_change();
 	document.getElementById('data_rows').firstChild.firstChild.firstChild.focus();
-	dump('Exiting my_init() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Exiting my_init() : ' + timer_elapsed('cat') + '\n');
 }
 
 function measure_character(w,c) {
@@ -78,13 +80,13 @@ function measure_character(w,c) {
 }
 
 function my_resize_handler(ev) {
-	dump('resize\n');
+	mw.sdump('D_CAT','resize\n');
 	resizeAllWrappers('ctrl_rows');
 	resizeAllWrappers('data_rows');
 }
 
 function retrieve_record(id) {
-	dump('Entering retrieve_record() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Entering retrieve_record() : ' + timer_elapsed('cat') + '\n');
 	var result = user_request(
 		'open-ils.cat',
 		'open-ils.cat.biblio.record.tree.retrieve',
@@ -98,21 +100,21 @@ function retrieve_record(id) {
 	);*/
 	if (typeof(result[0]) != 'object') {
 		alert( 'user_request gave ' + js2JSON(result) );
-		dump('Exiting retrieve_record() : ' + timer_elapsed('cat') + '\n');
+		mw.sdump('D_CAT','Exiting retrieve_record() : ' + timer_elapsed('cat') + '\n');
 		return 0;
 	} else {
 		/*
-		dump('Entering nodeset2tree() : ' + timer_elapsed('cat') + '\n');
+		mw.sdump('D_CAT','Entering nodeset2tree() : ' + timer_elapsed('cat') + '\n');
 		result[0] = nodeset2tree( result[0] )[0];
-		dump('Exiting nodeset2tree() : ' + timer_elapsed('cat') + '\n');
+		mw.sdump('D_CAT','Exiting nodeset2tree() : ' + timer_elapsed('cat') + '\n');
 		*/
-		dump('Exiting retrieve_record() : ' + timer_elapsed('cat') + '\n');
+		mw.sdump('D_CAT','Exiting retrieve_record() : ' + timer_elapsed('cat') + '\n');
 		return result[0];
 	}
 }
 
 function retrieve_meta_record(id) {
-	dump('Entering retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Entering retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
 	var result = user_request(
 		'open-ils.cat',
 		'open-ils.cat.biblio.record.metadata.retrieve',
@@ -120,10 +122,10 @@ function retrieve_meta_record(id) {
 	);
 	if (typeof(result[0]) != 'object') {
 		alert( 'user_request gave ' + js2JSON(result) );
-		dump('Exiting retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
+		mw.sdump('D_CAT','Exiting retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
 		return 0;
 	} else {
-		dump('Exiting retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
+		mw.sdump('D_CAT','Exiting retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
 		return result[0][0];
 	}
 }
@@ -132,7 +134,7 @@ function retrieve_meta_record(id) {
 
 function empty_me(p) {
 	while (p.lastChild) {
-		//dump('emptying ' + p.lastChild.tagName + '\n');
+		//mw.sdump('D_CAT','emptying ' + p.lastChild.tagName + '\n');
 		empty_me(p.lastChild);
 		p.removeChild(p.lastChild);
 	}
@@ -146,10 +148,10 @@ function empty_grid( ctrl_rows, data_rows ) {
 }
 
 function build_grid( ctrl_rows, data_rows, root ) {
-	dump('Entering build_grid() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Entering build_grid() : ' + timer_elapsed('cat') + '\n');
 	var ctrl_count = 1; var data_count = 1;
-	//dump( 'what is root?\n' + pretty_print(js2JSON(root)) + '\n');
-	dump('root.children.length = ' + root.children.length + '\n');
+	//mw.sdump('D_CAT', 'what is root?\n' + pretty_print(js2JSON(root)) + '\n');
+	mw.sdump('D_CAT','root.children.length = ' + root.children.length + '\n');
 	root_loop: 
 	var children = root.children();
 	for (var i in children) {
@@ -177,19 +179,19 @@ function build_grid( ctrl_rows, data_rows, root ) {
 							);
 						break;
 					default:
-						dump('Unexpected row type: ' + 
+						mw.sdump('D_CAT','Unexpected row type: ' + 
 							js2JSON(node) + '\n');
 						break;
 				}
 				break;
 			default: /* eh? */
-				dump( 'Did not expect node_type = ' + node_type + 
+				mw.sdump('D_CAT', 'Did not expect node_type = ' + node_type + 
 					' : ' + js2JSON(node) + '\n');
 				break;
 		}
-		//dump( i + ' ' + dump_ns_node(node) + '\n');
+		//mw.sdump('D_CAT', i + ' ' + dump_ns_node(node) + '\n');
 	}
-	dump('Exiting build_grid() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Exiting build_grid() : ' + timer_elapsed('cat') + '\n');
 }
 
 function get_row( top ) {
@@ -204,7 +206,7 @@ function get_row( top ) {
 	var id = top.intra_doc_id(); 
 	var children = top.children();
 	row.field.id = id;
-	dump('Making row.... row.field.id = <' + id + '>\n');
+	mw.sdump('D_CAT','Making row.... row.field.id = <' + id + '>\n');
 	if (name == 'leader') { row.tag.value = 'LDR'; row.tag.id = id; }
 	row.type = name;
 	top_loop:
@@ -233,7 +235,7 @@ function get_row( top ) {
 						row.ind2.id = node_id;
 						break;
 					default:
-						dump('\tattribute surprise on node_name = ' +
+						mw.sdump('D_CAT','\tattribute surprise on node_name = ' +
 							node_name + ' : ' 
 							+ js2JSON(node) + '\n');
 						break;
@@ -249,7 +251,7 @@ function get_row( top ) {
 						row.data.id = node_id;
 						break;
 					default:
-						dump('\telement surprise on node_name = ' +
+						mw.sdump('D_CAT','\telement surprise on node_name = ' +
 							node_name + ' : ' 
 							+ js2JSON(node) + '\n');
 						break;
@@ -260,13 +262,13 @@ function get_row( top ) {
 				row.data.id = node_id;
 				break;
 			default: /* eh? */
-				dump('\tunknown type surprise on node_type = ' +
+				mw.sdump('D_CAT','\tunknown type surprise on node_type = ' +
 					node_type + ' : '  +
 					js2JSON(node) + '\n');
 				break;
 		}
 	}
-	//dump(js2JSON(row) + '\n');
+	//mw.sdump('D_CAT',js2JSON(row) + '\n');
 	return row;
 }
 
@@ -279,13 +281,13 @@ function build_xul_row( id, type ) {
 			return build_data_row( id );
 			break;
 		default:
-			dump('Unexpected row type\n');
+			mw.sdump('D_CAT','Unexpected row type\n');
 			break;
 	}
 }
 
 function build_data_row( id ) {
-	//dump('Entering build_xul_row() : ' + timer_elapsed('cat') + '\n');
+	//mw.sdump('D_CAT','Entering build_xul_row() : ' + timer_elapsed('cat') + '\n');
 	var xul_row = document.createElement('row');
 	xul_row.setAttribute('id',id);
 	xul_row.setAttribute('class','field_row data_row');
@@ -336,11 +338,11 @@ function build_data_row( id ) {
 		xul_row.appendChild(wrapper4);
 
 	return xul_row;
-	//dump('Exiting build_xul_row() : ' + timer_elapsed('cat') + '\n');
+	//mw.sdump('D_CAT','Exiting build_xul_row() : ' + timer_elapsed('cat') + '\n');
 }
 
 function build_ctrl_row( id ) {
-	//dump('Entering build_xul_row() : ' + timer_elapsed('cat') + '\n');
+	//mw.sdump('D_CAT','Entering build_xul_row() : ' + timer_elapsed('cat') + '\n');
 	var xul_row = document.createElement('row');
 	xul_row.setAttribute('class','field_row ctrl_row');
 	xul_row.setAttribute('id',id);
@@ -372,7 +374,7 @@ function build_ctrl_row( id ) {
 		xul_row.appendChild(wrapper4);
 
 	return xul_row;
-	//dump('Exiting build_xul_row() : ' + timer_elapsed('cat') + '\n');
+	//mw.sdump('D_CAT','Exiting build_xul_row() : ' + timer_elapsed('cat') + '\n');
 }
 
 
@@ -444,7 +446,7 @@ function populate_xul_row( xul_rows, row, id ) {
 }
 
 function handle_change(ev) {
-	dump('handle_change\n');
+	mw.sdump('D_CAT','handle_change\n');
 	var t = ev.target;
 	// parse subfields
 	resizeWrapper(t);
@@ -465,12 +467,12 @@ function resizeWrapper(t) {
 	if (xrows < 1) { xrows = 1; }
 	var xheight = (xrows * (lheight+5)); 
 
-	//dump(wrapper.parentNode.id + ' wrapper: ' + width + 'x' + height + ' label: ' + lwidth + 'x' + lheight + '\n');
+	//mw.sdump('D_CAT',wrapper.parentNode.id + ' wrapper: ' + width + 'x' + height + ' label: ' + lwidth + 'x' + lheight + '\n');
 	wrapper.setAttribute('style','min-height: ' + xheight + 'px;');
 }
 
 function resizeAllWrappers(rows) {
-	dump('Entering resizeAllWrappers() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Entering resizeAllWrappers() : ' + timer_elapsed('cat') + '\n');
 	var p = document.getElementById(rows);
 	var c = p.childNodes;
 	for (var r in c) {
@@ -482,7 +484,7 @@ function resizeAllWrappers(rows) {
 			}
 		}
 	}
-	dump('Exiting resizeAllWrappers() : ' + timer_elapsed('cat') + '\n');
+	mw.sdump('D_CAT','Exiting resizeAllWrappers() : ' + timer_elapsed('cat') + '\n');
 }
 
 function find_element_with_id(ns_slice,id) {
@@ -490,22 +492,22 @@ function find_element_with_id(ns_slice,id) {
 	// { node id => [lvl 1 index, lvl 2 index, lvl 3 index]  }
 	// with the hash being populated when the tree is generated
 	// and updated when we go to insert nodes
-	//dump('Find ' + id + ' in ' + js2JSON(ns_slice) + '\n');
-	//dump('Find ' + id + '\n');
+	//mw.sdump('D_CAT','Find ' + id + ' in ' + js2JSON(ns_slice) + '\n');
+	//mw.sdump('D_CAT','Find ' + id + '\n');
 	for (i in ns_slice) {
 		if (ns_slice[i].intra_doc_id() == id) {
-			//dump('Found at index ' + i + '\n');
+			//mw.sdump('D_CAT','Found at index ' + i + '\n');
 			return i;
 		}
 	}
-	dump(id + 'not found in' + js2JSON(ns_slice) + '\n');
+	mw.sdump('D_CAT',id + 'not found in' + js2JSON(ns_slice) + '\n');
 }
 
 function delete_children(branch) {
 	var children = branch.children();
 	for (var c in children) {
 		children[c].isdeleted(1);
-		dump( children[c].name() + ':' +
+		mw.sdump('D_CAT', children[c].name() + ':' +
 			children[c].id() + ':' +
 			children[c].intra_doc_id() + '.is_deleted = 1\n');
 		if (children[c].children()) {
@@ -518,33 +520,33 @@ function submit_marc() {
 	// walk through the marc grid and compare with the tree
 	// 1) updates and deletes
 
-dump('Updates and Deletes\n');
+mw.sdump('D_CAT','Updates and Deletes\n');
 	backup_tree = JSON2js( js2JSON( tree ) );
 
 	var tree_fields = tree.children(); // LEVEL 1
 	var ctrl_rows = document.getElementById('ctrl_rows').childNodes;
 	for (var r = 0; r < ctrl_rows.length ; r++) {
 		//if (r == 0) { continue; } // skip leader for now
-		//dump( r + '\n');
+		//mw.sdump('D_CAT', r + '\n');
 		var tag_node_id;
 		try {
 			tag_node_id = ctrl_rows[r].getAttribute('mynode');
 		} catch(E) {
-			dump('Could not find mynode in ctrl_rows[' + r + ']\n');
+			mw.sdump('D_CAT','Could not find mynode in ctrl_rows[' + r + ']\n');
 			continue;
 		}
-		//dump( r + ':' + ctrl_rows[r].tagName + ':' + tag_node_id + '\n' );
+		//mw.sdump('D_CAT', r + ':' + ctrl_rows[r].tagName + ':' + tag_node_id + '\n' );
 		if (tag_node_id) {
-dump('Processing ctrl_rows[' + r + '], tag_node_id = ' + tag_node_id + '\n');
+mw.sdump('D_CAT','Processing ctrl_rows[' + r + '], tag_node_id = ' + tag_node_id + '\n');
 			if (tag_node_id < 0) { continue; } // new node, handle elsewhere
-dump('1st find =========================================\n')
+mw.sdump('D_CAT','1st find =========================================\n')
 			var tree_pos = find_element_with_id(tree_fields,tag_node_id);
 			if (tree_pos == null) { alert('tree_pos problem!'); }
 			var tree_field = tree_fields[tree_pos];
 
 			if (ctrl_rows[r].getAttribute('hidden') == 'true') {
 				tree_field.isdeleted(1);
-				dump( tree_field.name() + ':' +
+				mw.sdump('D_CAT', tree_field.name() + ':' +
 					tree_field.id() + ':' +
 					tree_field.intra_doc_id() + '.isdeleted = 1\n');
 				delete_children(tree_field);
@@ -555,14 +557,14 @@ dump('1st find =========================================\n')
 			var col2 = ctrl_rows[r].childNodes[1].firstChild;
 			var id1 = col1.getAttribute('mynode');
 			var id2 = col2.getAttribute('mynode');
-			dump('id1 = ' + id1 + ' col1.value = ' + col1.value + '  id2 = ' + id2 + ' col2.value = ' + col2.value + '\n');
+			mw.sdump('D_CAT','id1 = ' + id1 + ' col1.value = ' + col1.value + '  id2 = ' + id2 + ' col2.value = ' + col2.value + '\n');
 			var tree_field_children = tree_field.children(); // LEVEL 2
 
 			if (r == 0) { // leader is special.  Only one child
 				if (tree_field_children[0].value() != col2.value) {
 					tree_field_children[0].value(col2.value);
 					tree_field_children[0].ischanged(1);
-					dump( tree_field_children[0].name() + ':' +
+					mw.sdump('D_CAT', tree_field_children[0].name() + ':' +
 						tree_field_children[0].id() + ':' +
 						tree_field_children[0].intra_doc_id() +
 						'.ischanged = 1\n');
@@ -570,16 +572,16 @@ dump('1st find =========================================\n')
 				continue;
 			}
 
-dump('2nd find =========================================\n')
+mw.sdump('D_CAT','2nd find =========================================\n')
 			var tree_tag = find_element_with_id(tree_field_children,id1);
-dump('3rd find =========================================\n')
+mw.sdump('D_CAT','3rd find =========================================\n')
 			var tree_value = find_element_with_id(tree_field_children,id2);
 			if (tree_tag == null) { alert('tree_tag problem!'); }
 			if (tree_value == null) { alert('tree_value problem!'); }
 			if (tree_field_children[tree_tag].value() != col1.value) {
 				tree_field_children[tree_tag].value(col1.value);
 				tree_field_children[tree_tag].ischanged(1);
-				dump( tree_field_children[tree_tag].name() + ':' +
+				mw.sdump('D_CAT', tree_field_children[tree_tag].name() + ':' +
 					tree_field_children[tree_tag].id() + ':' +
 					tree_field_children[tree_tag].intra_doc_id() +
 					'.ischanged = 1\n');
@@ -587,7 +589,7 @@ dump('3rd find =========================================\n')
 			if (tree_field_children[tree_value].value() != col2.value) {
 				tree_field_children[tree_value].value(col2.value);
 				tree_field_children[tree_value].ischanged(1);
-				dump( tree_field_children[tree_value].name() + ':' +
+				mw.sdump('D_CAT', tree_field_children[tree_value].name() + ':' +
 					tree_field_children[tree_value].id() + ':' +
 					tree_field_children[tree_value].intra_doc_id() +
 					'.ischanged = 1\n');
@@ -602,18 +604,18 @@ dump('3rd find =========================================\n')
 		} catch(E) {
 			continue;
 		}
-		//dump( r + ':' + data_rows[r].tagName + ':' + tag_node_id + '\n' );
+		//mw.sdump('D_CAT', r + ':' + data_rows[r].tagName + ':' + tag_node_id + '\n' );
 		if (tag_node_id) {
-dump('Processing data_rows[' + r + '], tag_node_id = ' + tag_node_id + '\n');
+mw.sdump('D_CAT','Processing data_rows[' + r + '], tag_node_id = ' + tag_node_id + '\n');
 			if (tag_node_id < 0) { continue; } // new node, handle elsewhere
-dump('4th find =========================================\n')
+mw.sdump('D_CAT','4th find =========================================\n')
 			var tree_pos = find_element_with_id(tree_fields,tag_node_id);
 			if (tree_pos == null) { alert('tree_pos problem!'); }
 			var tree_field = tree_fields[tree_pos];
 
 			if (data_rows[r].getAttribute('hidden') == 'true') {
 				tree_field.isdeleted(1);
-				dump(tree_field.name() + ':' +
+				mw.sdump('D_CAT',tree_field.name() + ':' +
 					tree_field.id() + ':' +
 					tree_field.intra_doc_id() +
 					'.isdeleted = 1\n');
@@ -630,13 +632,13 @@ dump('4th find =========================================\n')
 			var id3 = col3.getAttribute('mynode');
 			var id4 = col4.getAttribute('mynode');
 			var tree_field_children = tree_field.children(); // LEVEL 2
-dump('5th find =========================================\n')
+mw.sdump('D_CAT','5th find =========================================\n')
 			var tree_tag = find_element_with_id(tree_field_children,id1);
-dump('6th find =========================================\n')
+mw.sdump('D_CAT','6th find =========================================\n')
 			var tree_ind1 = find_element_with_id(tree_field_children,id2);
-dump('7th find =========================================\n')
+mw.sdump('D_CAT','7th find =========================================\n')
 			var tree_ind2 = find_element_with_id(tree_field_children,id3);
-dump('8th find =========================================\n')
+mw.sdump('D_CAT','8th find =========================================\n')
 			var tree_data = find_element_with_id(tree_field_children,id4);
 			if (tree_tag == null) { alert('tree_tag problem!'); }
 			if (tree_ind1 == null) { alert('tree_ind1 problem!'); }
@@ -645,7 +647,7 @@ dump('8th find =========================================\n')
 			if (tree_field_children[tree_tag].value() != col1.value) {
 				tree_field_children[tree_tag].value(col1.value);
 				tree_field_children[tree_tag].ischanged(1);
-				dump( tree_field_children[tree_tag].name() + ':' +
+				mw.sdump('D_CAT', tree_field_children[tree_tag].name() + ':' +
 					tree_field_children[tree_tag].id() + ':' +
 					tree_field_children[tree_tag].intra_doc_id() +
 					'.is_changed = 1\n');
@@ -653,7 +655,7 @@ dump('8th find =========================================\n')
 			if (tree_field_children[tree_ind1].value() != col2.value) {
 				tree_field_children[tree_ind1].value(col2.value);
 				tree_field_children[tree_ind1].ischanged(1);
-				dump( tree_field_children[tree_ind1].name() + ':' +
+				mw.sdump('D_CAT', tree_field_children[tree_ind1].name() + ':' +
 					tree_field_children[tree_ind1].id() + ':' +
 					tree_field_children[tree_ind1].intra_doc_id() +
 					'.is_changed = 1\n');
@@ -661,7 +663,7 @@ dump('8th find =========================================\n')
 			if (tree_field_children[tree_ind2].value() != col3.value) {
 				tree_field_children[tree_ind2].value(col3.value);
 				tree_field_children[tree_ind2].ischanged(1);
-				dump( tree_field_children[tree_ind2].name() + ':' +
+				mw.sdump('D_CAT', tree_field_children[tree_ind2].name() + ':' +
 					tree_field_children[tree_ind2].id() + ':' +
 					tree_field_children[tree_ind2].intra_doc_id() +
 					'.is_changed = 1\n');
@@ -672,7 +674,7 @@ dump('8th find =========================================\n')
 
 
 	// 2) inserts
-dump('Inserts\n');
+mw.sdump('D_CAT','Inserts\n');
 
 	for (var r = 0; r < ctrl_rows.length ; r++) {
 		var newnode;
@@ -682,7 +684,7 @@ dump('Inserts\n');
 			continue;
 		}
 		if (newnode=='true') {
-dump('New node = ctrl_rows[' + r + ']');
+mw.sdump('D_CAT','New node = ctrl_rows[' + r + ']');
 			if (ctrl_rows[r].getAttribute('hidden')=='true') { continue; }
 			var col1 = ctrl_rows[r].childNodes[0].firstChild.value;
 			var col2 = ctrl_rows[r].childNodes[1].firstChild.value;
@@ -696,7 +698,7 @@ dump('New node = ctrl_rows[' + r + ']');
 				level2b.value(col2);
 			level1.children([ level2a, level2b ]);
 			ctrl_rows[r].setAttribute('mynode', level1.intra_doc_id());
-dump(' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
+mw.sdump('D_CAT',' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 			insert_into_tree(tree.children(),ctrl_rows[r],level1);
 		}
 	}
@@ -709,7 +711,7 @@ dump(' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 			continue;
 		}
 		if (newnode=='true') {
-dump('New node = data_rows[' + r + ']');
+mw.sdump('D_CAT','New node = data_rows[' + r + ']');
 			if (data_rows[r].getAttribute('hidden')=='true') { continue; }
 			var col1 = data_rows[r].childNodes[0].firstChild.value;
 			var col2 = data_rows[r].childNodes[1].firstChild.value;
@@ -729,13 +731,13 @@ dump('New node = data_rows[' + r + ']');
 			level1.children([ level2a, level2b, level2c ]);
 			process_subfields(level1.children(),col4);
 			data_rows[r].setAttribute('mynode', level1.intra_doc_id());
-dump(' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
+mw.sdump('D_CAT',' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 			insert_into_tree(tree.children(),data_rows[r],level1);
 		}
 
 	}
-	//dump('******\nSending: ' + pretty_print(js2JSON(tree)) + '\n');
-	dump('Auth session: ' + mw.G['auth_ses'][0] + '\n');
+	//mw.sdump('D_CAT','******\nSending: ' + pretty_print(js2JSON(tree)) + '\n');
+	mw.sdump('D_CAT','Auth session: ' + mw.G['auth_ses'][0] + '\n');
 	try {
 		if (params.import_tree) {
 			tree = user_request(
@@ -752,7 +754,7 @@ dump(' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 			)[0];
 		}
 		if (typeof(tree) == 'object') {
-			dump('\n\n\n\nnew tree = ' + js2JSON(tree) + '\n');
+			mw.sdump('D_CAT','\n\n\n\nnew tree = ' + js2JSON(tree) + '\n');
 			params.import_tree = false;
 			new_node_id = -1;
 			empty_grid('ctrl_rows','data_rows');
@@ -768,7 +770,7 @@ dump(' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 			throw('result: ' + tree + '\n');
 		}
 	} catch(E) {
-		dump('backup_tree\n');
+		mw.sdump('D_CAT','backup_tree\n');
 		tree = backup_tree;
 		handle_tag_change();
 		my_resize_handler();
@@ -779,9 +781,9 @@ dump(' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 function insert_into_tree(branch,r,n) {
 	var s = nextSibling_not_hidden(r);
 	if (s) {
-		dump('9th find =========================================\n')
-		dump('s = ' + s + '\n');
-		dump('s.getAttribute mynode = <' + s.getAttribute('mynode') + '>\n');
+		mw.sdump('D_CAT','9th find =========================================\n')
+		mw.sdump('D_CAT','s = ' + s + '\n');
+		mw.sdump('D_CAT','s.getAttribute mynode = <' + s.getAttribute('mynode') + '>\n');
 		var pos = find_element_with_id(branch,s.getAttribute('mynode'));
 		branch.splice(pos,0,n);
 	} else {
@@ -795,15 +797,15 @@ function populate_node(node,ntype,name) {
 	node.isnew( 1 );
 	node.node_type( ntype );
 	node.name( name );
-	dump( node.name() + ':' + node.intra_doc_id() + '.is_new = 1\n');
+	mw.sdump('D_CAT', node.name() + ':' + node.intra_doc_id() + '.is_new = 1\n');
 }
 
 function process_subfields(tfc,datastring) {
-	dump('process_subfields: <' + tfc + '> <' + datastring + '>\n');
+	mw.sdump('D_CAT','process_subfields: <' + tfc + '> <' + datastring + '>\n');
 	var orig_subfields = [];
-	//dump('\n');
+	//mw.sdump('D_CAT','\n');
 	for (var i in tfc) {
-		dump(i + ' : ' + typeof(tfc[i]) + ' : ' + js2JSON(tfc[i]) + ' : node_type() = ' + tfc[i].node_type() + '\n');
+		mw.sdump('D_CAT',i + ' : ' + typeof(tfc[i]) + ' : ' + js2JSON(tfc[i]) + ' : node_type() = ' + tfc[i].node_type() + '\n');
 		try {
 			if (tfc[i].node_type() == 1) {
 				var orig_data = tfc[i].children()[1].value();
@@ -816,7 +818,7 @@ function process_subfields(tfc,datastring) {
 			}
 
 		} catch(E) {
-			dump('\tan error? gasp: ' + js2JSON(E) + '\n');
+			mw.sdump('D_CAT','\tan error? gasp: ' + js2JSON(E) + '\n');
 			continue;
 		}
 	}
@@ -826,15 +828,15 @@ function process_subfields(tfc,datastring) {
 	// a data string start with the subfield delimiter symbol.  We're
 	// passing the buck of the 'implicit' subfield-a check elsewhere.
 	local_subf_array.shift();
-	dump('orig_subfields = ' + js2JSON(orig_subfields) + '\n');
-	dump('local_subfields = ' + js2JSON(local_subf_array) + '\n');
+	mw.sdump('D_CAT','orig_subfields = ' + js2JSON(orig_subfields) + '\n');
+	mw.sdump('D_CAT','local_subfields = ' + js2JSON(local_subf_array) + '\n');
 	for (var i in local_subf_array) {
 		if ((local_subf_array[i]=='')||(local_subf_array==null)) { continue; }
 		var s_ind = local_subf_array[i].substr(0,1);
 		var s_data = local_subf_array[i].substr(1).replace(/^\s+/,'').replace(/\s+$/,'');
-		dump('Processing code = ' + s_ind + ' and value = ' + s_data + '\n');
+		mw.sdump('D_CAT','Processing code = ' + s_ind + ' and value = ' + s_data + '\n');
 		if (!orig_subfields[i]) { // new subfield
-			dump('making new subfield : i = ' + i + '\n');
+			mw.sdump('D_CAT','making new subfield : i = ' + i + '\n');
 			var level1 = new brn(); 
 				populate_node( level1, 1, 'subfield' );
 			var level2a = new brn(); 
@@ -845,7 +847,7 @@ function process_subfields(tfc,datastring) {
 				level2b.value(s_data);
 			level1.children([ level2a, level2b ]);
 			tfc.push(level1);
-			dump('New node = ' + js2JSON(level1) + '\n');
+			mw.sdump('D_CAT','New node = ' + js2JSON(level1) + '\n');
 		} else {
 			var orig_node = orig_subfields[i][0];
 			var orig_ind = orig_subfields[i][1];
@@ -853,20 +855,20 @@ function process_subfields(tfc,datastring) {
 			if (orig_ind != s_ind) { // update subf indicator
 				tfc[orig_node].children()[0].value(s_ind);
 				tfc[orig_node].children()[0].ischanged(1);
-				dump( tfc[orig_node].children()[0].name() + ':' +
+				mw.sdump('D_CAT', tfc[orig_node].children()[0].name() + ':' +
 					tfc[orig_node].children()[0].id() + ':' +
 					tfc[orig_node].children()[0].intra_doc_id() +
 					'.is_changed = 1\n');
-			dump('Updated node = ' + js2JSON(tfc[orig_node].children()[0]) + '\n');
+			mw.sdump('D_CAT','Updated node = ' + js2JSON(tfc[orig_node].children()[0]) + '\n');
 			}
 			if (orig_data != s_data) { // update subf data
 				tfc[orig_node].children()[1].value(s_data);
 				tfc[orig_node].children()[1].ischanged(1);
-				dump( tfc[orig_node].children()[1].name() + ':' +
+				mw.sdump('D_CAT', tfc[orig_node].children()[1].name() + ':' +
 					tfc[orig_node].children()[1].id() + ':' +
 					tfc[orig_node].children()[1].intra_doc_id() +
 					'.is_changed = 1\n');
-			dump('Updated node = ' + js2JSON(tfc[orig_node].children()[1]) + '\n');
+			mw.sdump('D_CAT','Updated node = ' + js2JSON(tfc[orig_node].children()[1]) + '\n');
 			}
 		}
 	}
@@ -874,7 +876,7 @@ function process_subfields(tfc,datastring) {
 	for (var i = local_subf_array.length; i < orig_subfields.length; i++) {
 		var orig_node = orig_subfields[i][0];
 		tfc[orig_node].isdeleted(1);
-		dump( tfc[orig_node].name() + ':' +
+		mw.sdump('D_CAT', tfc[orig_node].name() + ':' +
 			tfc[orig_node].id() + ':' +
 			tfc[orig_node].intra_doc_id() + '.is_deleted = 1\n');
 		delete_children(tfc[orig_node]);

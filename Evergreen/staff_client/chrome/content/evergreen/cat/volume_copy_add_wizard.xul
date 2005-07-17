@@ -9,8 +9,8 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- Overlays for this XUL file -->
-	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/cat/volume_copy_add_overlay.xul"?>
 
 	<!-- OpenSRF -->
