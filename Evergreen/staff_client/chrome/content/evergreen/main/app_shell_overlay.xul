@@ -66,8 +66,11 @@
 	<command id="cmd_filter_console" oncommand="
 		mw.spawn_filter_console(document,'new_tab','main_tabbox',{}); "/>
 
+	<command id="cmd_fieldmapper" oncommand="
+		mw.spawn_fieldmapper(document,'new_tab','main_tabbox',{}); "/>
+
 	<command id="cmd_test" oncommand="
-		mw.spawn_checkin(document,'new_tab','main_tabbox',{}); "/>
+		mw.spawn_interface(document,'new_tab','main_tabbox','chrome://evergreen/content/util/fm_view.xul','Fieldmapper',{}); "/>
 
 	<command id="cmd_broken" oncommand="
 		alert('Not Yet Implemented'); "/>

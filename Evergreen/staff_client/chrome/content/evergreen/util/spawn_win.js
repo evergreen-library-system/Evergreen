@@ -70,6 +70,11 @@ function spawn_filter_console(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('filter_console_label'),passthru_params,clone);
 }
 
+function spawn_fieldmapper(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/util/fm_view.xul';
+	return spawn_interface(d,placement,place,chrome,getString('fieldmapper_label'),passthru_params,clone);
+}
+
 /* current */
 
 function spawn_main() {

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: About -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<window id="fm_view_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading fm_view.xul\n');</script>
+
+	<script>
+	<![CDATA[
+		function my_init() {
+			var treechildren = window.document.getElementById('tc');
+			var fm = mw.user_request('open-ils.auth','opensrf.open-ils.system.fieldmapper',[])[0];
+			var fma = []; var fmh = {} ; 
+			for (var i in fm) { fmh[ fm[i].hint ] = fm[i]; fma.push( fm[i].hint ); }
+			fma.sort();
+			for (var i = 0; i < fma.length; i++) {
+				var hint = fma[i]; var o = fmh[ hint ];
+				var ti = window.document.createElement('treeitem');
+				treechildren.appendChild( ti );
+				ti.setAttribute( 'container', 'true' );
+				var tr = window.document.createElement('treerow');
+				ti.appendChild( tr );
+				var tc = window.document.createElement('treecell');
+				tr.appendChild( tc );
+				tc.setAttribute('label',hint);
+				tc = window.document.createElement('treecell');
+				tr.appendChild( tc );
+				tc.setAttribute('label','Fieldmapper::' + o.cdbi);
+				var _treechildren = window.document.createElement( 'treechildren' );
+				ti.appendChild( _treechildren );
+				for (var j in o.fields) {
+					var _ti = window.document.createElement( 'treeitem' );
+					_treechildren.appendChild( _ti );
+					var _tr = window.document.createElement( 'treerow' );
+					_ti.appendChild( _tr );
+					var _tc = window.document.createElement( 'treecell' );
+					_tr.appendChild( _tc );
+					_tc.setAttribute('label',j);
+					_tc = window.document.createElement( 'treecell' );
+					_tr.appendChild( _tc );
+					_tc.setAttribute('label','\t         Position: ' + o.fields[j].position + '  Virtual: ' + o.fields[j].virtual);
+				}
+			}
+			var tree = window.document.getElementById('t');
+			tree.view.selection.select( 0 ); tree.focus();
+		}
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Fieldmapper Class Viewer"/>
+			<tree id="t" flex="1">
+				<treecols>
+					<treecol id="tcol1" label="opensrf.open-ils.system.fieldmapper" primary="true" flex="0"/>
+					<treecol id="tcol2" label="" flex="1"/>
+				</treecols>
+				<treechildren id="tc"/>
+			</tree>
+		</groupbox>
+	</vbox>
+
+</window>
+
