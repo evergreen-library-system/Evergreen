@@ -47,7 +47,7 @@ function parse_render_string( obj_string, render_string, regexp ) {
 
 function getString( key ) {
 	var s = '';
-	var bundles = document.getElementById('string_bundles');
+	var bundles = mw.document.getElementById('string_bundles');
 	sdump('D_STRING','bundles = ' + bundles + ' bundles.childNodes.length = ' + bundles.childNodes.length + '\n');
 	for (var i = 0; i < bundles.childNodes.length; i++) {
 		var bundle = bundles.childNodes[i];
@@ -72,7 +72,7 @@ function getString( key ) {
 
 function getFormattedString( key, strArray ) {
 	var s = '';
-	var bundles = document.getElementById('string_bundles');
+	var bundles = mw.document.getElementById('string_bundles');
 	for (var i = i; i < bundles.childNodes.length; i++) {
 		var bundle = bundles[i];
 		try {

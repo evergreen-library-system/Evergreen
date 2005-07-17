@@ -24,7 +24,7 @@ var sdump_levels = {
 
 	'D_AUTH' : false,
 
-	'D_OPAC' : false,
+	'D_OPAC' : true,
 
 	'D_PATRON_SEARCH' : false,
 	'D_PATRON_SEARCH_FORM' : false,
@@ -40,6 +40,8 @@ var sdump_levels = {
 	'D_CHECKIN' : true,
 	'D_CHECKIN_ITEMS' : true,
 
+	'D_CAT' : true,
+
 	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,
 
@@ -48,7 +50,7 @@ var sdump_levels = {
 	'D_PRINT' : false,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
-	'D_SPAWN' : false,
+	'D_SPAWN' : true,
 	'D_STRING' : false,
 	'D_UTIL' : false,
 	'D_WIN' : false,

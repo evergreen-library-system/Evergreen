@@ -3,11 +3,11 @@ function spawn_interface(d,placement,place,chrome,label,passthru_params,clone) {
 	var w;
 	switch(placement) {
 		case 'new_tab' : 
-			new_tab(d,place); 
+			mw.new_tab(d,place); 
 			w = spawn_interface(d,'replace_tab',place,chrome,label,passthru_params,clone); break;
 
 		case 'replace_tab' : 
-			w = replace_tab(d,place,label,chrome); break;
+			w = mw.replace_tab(d,place,label,chrome); break;
 
 		case 'new_window' : 
 			w = new_window( chrome, { 'window_name' : label } ); break;
