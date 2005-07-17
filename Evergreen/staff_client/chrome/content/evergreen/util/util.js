@@ -16,6 +16,16 @@ function consider_Timeout( f, t, b) {
 	}
 }
 
+function merge_arrays() {
+	var new_array = [];
+	for (var i = 0; i < arguments.length; i++) {
+		for (var j = 0; j < arguments[i].length; j++) {
+			new_array.push( arguments[i][j] );
+		}
+	}
+	return new_array;
+}
+
 function parse_render_string( obj_string, render_string, regexp ) {
 	sdump('D_UTIL', arg_dump(arguments,{0:true,1:true}));
 	var cmd;
