@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="browse_list_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="browse_list_js">
+	<!--<script src="chrome://evergreen/content/evergreen/fieldmapper.js" />-->
+	<util id="util_js"/>
+	<script src="browse_list.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="browse_list_cmds">
+	<command id="cmd_edit_browse" oncommand="spawn_editors();"/>
+	<command id="cmd_volume_add" oncommand="volume_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_volume_edit" oncommand="volume_edit(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_volume_delete" oncommand="volume_delete(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_copy_add" oncommand="copy_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_copy_edit" oncommand="spawn_batch_copy_editor(true, { 'tree' : document.getElementById('browse_list_tree') , 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_copy_delete" oncommand="copy_delete(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/>
+	<command id="cmd_toggle_my_libs" oncommand="button_toggle_my_libraries(event);"/>
+	<command id="cmd_toggle_libs" oncommand="button_toggle_libraries(event);"/>
+	<command id="cmd_refresh" oncommand="refresh_browse_list();"/>
+	<command id="cmd_alert" oncommand="alert('Not Yet Implemented');"/>
+</commandset>
+
+<!-- Context menus -->
+<popupset id="browse_list_popupset">
+	<popup id="browse_menu" onpopupshowing="build_CopyBrowser_Context(event);">
+	<!--
+		<menuitem id="browse_menu1" label="Add Volume" command="cmd_volume_add"/>
+		<menuitem id="browse_menu2" label="Edit Volume" command="cmd_alert" disabled="true"/>
+		<menuseparator id="browse_menu_sep1"/>
+		<menuitem id="browse_menu3" label="Add Copy" command="cmd_copy_add" disabled="true"/>
+		<menuitem id="browse_menu4" label="Edit Copy" command="cmd_copy_edit"/>
+		<menuseparator id="browse_menu_sep2"/>
+		<menuitem id="browse_menu5" label="Refresh Display" command="cmd_refresh"/>
+	-->
+	</popup>
+</popupset>
+
+<!-- The top level widget for the cat client -->
+<vbox id="browse_list_vbox" flex="1">
+	<hbox id="browse_list_buttonbox"/>
+	<tree id="browse_list_tree"/>
+</vbox>
+
+<hbox id="browse_list_buttonbox">
+	<!--
+	<button id="browse_list_button1" label="Hide My Libraries" alt_label="Show My Libraries" toggle="1" command="cmd_toggle_my_libs"/>
+	-->
+	<button id="browse_list_button3" label="Refresh" command="cmd_refresh"/>
+	<button id="browse_list_button2" label="Show Other Libraries With Copies" alt_label="Show Just My Libraries" toggle="1" command="cmd_toggle_libs"/>
+	<label id="browse_libs"/>
+	<progressmeter id="browse_meter" mode="normal" value="0" flex="1"/>
+</hbox>
+
+<tree id="browse_list_tree" enableColumnDrag="true" flex="1">
+	<treecols id="browse_list_treecols">
+		<treecol id="browse1" label="&browse_list.location;" flex="2" primary="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse1b" label="Volumes" flex="0"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse1a" label="Copies" flex="0"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse2" label="&browse_list.library;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse3" label="&browse_list.callnumber;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4" label="&browse_list.copy_number;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4aa" label="&browse_list.location2;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4a" label="&browse_list.circ_lib;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4b" label="&browse_list.circulate;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4bb" label="&browse_list.ref;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4bbb" label="&browse_list.opac_visible;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4c" label="&browse_list.circ_as_type;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4d" label="&browse_list.circ_modifier;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4e" label="&browse_list.loan_duration;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse4f" label="&browse_list.fine_level;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse5" label="&browse_list.create_date;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse6" label="&browse_list.creator;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse7" label="&browse_list.edit_date;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse8" label="&browse_list.editor;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse9" label="&browse_list.deposit;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse10" label="&browse_list.deposit_amount;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse11" label="&browse_list.price;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="browse12" label="&browse_list.status;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+	</treecols>
+	<treechildren id="browse_list_tree_children" context="browse_menu"/>
+</tree>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="browse_list_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>

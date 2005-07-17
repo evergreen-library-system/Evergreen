@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- This DTD declaration needs to be fixed for Mozilla locales -->
+<!DOCTYPE wizard SYSTEM "chrome://evergreen/locale/cat.dtd">
+<wizard id="volume_add" title="&copy.wizard.title;" 
+	orient="vertical" style="overflow: auto"
+	onload="my_init();" width="800" height="600"
+	onwizardfinish="send_to_bill();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/cat/volume_copy_add_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+
+	<!-- The logic for this app -->
+	<Evergreen id="volume_js" />
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="volume_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="volume_keys" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<!--<wizardpage id="page1"/>-->
+	<wizardpage id="page2"/>
+	<wizardpage id="page3"/>
+	<wizardpage id="page4"/>
+
+</wizard>
+

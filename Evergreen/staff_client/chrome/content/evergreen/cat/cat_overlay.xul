@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="cat_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="cat_js">
+	<script>var ses;</script>
+	<util id="util_js"/>
+	<script src="cat.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="cat_cmds">
+	<command id="cmd_search" oncommand="
+		search(
+			'search-type-menu',
+			'search-copy-count-menu',
+			'search-format-menu',
+			'search-order-menu',
+			'search-entry-box'
+		);
+	"/>
+	<command id="cmd_test" oncommand="
+		/*spawn_copy_browser( document.getElementById('search-entry-box').value );*/
+		spawn_marc_editor( document.getElementById('search-entry-box').value );
+	"/>
+	<command id="cmd_alert" oncommand="
+		alert('Not Yet Implemented');
+	
+	"/>
+</commandset>
+
+<!-- The top level widget for the cat client -->
+<vbox id="cat_vbox" flex="1" style="min-width: 100px; overflow: scroll;">
+	<vbox id="cat_search_box"/>
+	<vbox id="cat_result_box" flex="1"/>
+</vbox>
+
+<!-- The search box -->
+<vbox id="cat_search_box">
+	<groupbox id="search_groupbox"/>
+</vbox>
+
+<groupbox id="search_groupbox">
+	<caption label="&cat.search_criteria;"/>
+	<grid id="search_grid"/>
+</groupbox>
+
+<grid id="search_grid">
+	<columns> 
+		<column/> <column/> 
+		<column/> <column/> 
+		<column/>
+		<column flex="1"/> 
+	</columns>
+	<rows>
+		<row id="search_row1"/>
+		<row id="search_row2"/>
+		<row id="search_row3"/>
+	</rows>
+</grid>
+
+<row id="search_row1">
+	<label 
+		value="&cat.search_type;" 
+		control="search-type-menu" 
+		accesskey="&cat.search_type.key;"
+	/>
+	<menulist id="search-type-menu"/>
+
+	<label
+		value="&cat.search_term;" 
+		control="search-entry-box" 
+		accesskey="&cat.search_term.key;"
+	/>
+	<textbox id="search-entry-box" flex="1"/>
+
+
+	<!--<label 
+		value="&cat.search_location;" 
+		control="search-location-menu" 
+		accesskey="&cat.search_location.key;"
+	/>
+	<menulist id="search-location-menu"/>-->
+</row>
+<row id="search_row2">
+	<label 
+		value="&cat.search_format;" 
+		control="search-format-menu" 
+		accesskey="&cat.search_format.key;"
+	/>
+	<menulist id="search-format-menu"/>
+	<label 
+		value="&cat.search_count_copy;" 
+		control="search-copy-count-menu" 
+		accesskey="&cat.search_count_copy.key;"
+	/>
+	<menulist id="search-copy-count-menu"/>
+
+</row>
+<row id="search_row3">
+	<label 
+		value="&cat.search_order;" 
+		control="search-order-menu" 
+		accesskey="&cat.search_order.key;"
+	/>
+	<menulist id="search-order-menu"/>
+	<spacer/>
+	<hbox>
+		<button label="&cat.search_submit;" accesskey="&cat.search_submit.key;" command="cmd_search"/>
+		<button label="&cat.search_advanced;" accesskey="&cat.search_advanced.key;" command="cmd_alert"/>
+	</hbox>
+
+
+</row>
+
+<!-- The search location -->
+<!-- This should be populated by a script -->
+<menulist id="search-location-menu">
+	<menupopup id="search-location-popup">
+		<menuitem label="This Library (Athens-Clarke County Library)" value="PINES.ARL.ATH" />
+		<menuitem label="This Library System (Athens Regional Library)" value="PINES.ARL" />
+		<menuitem label="All PINES Libraries" value="PINES" />
+	</menupopup>
+</menulist>
+
+<menulist id="search-copy-count-menu">
+	<menupopup id="search-copy-count-popup"/>
+</menulist>
+
+
+
+<!-- The search format -->
+<menulist id="search-format-menu">
+	<menupopup id="search-format-popup" command="cmd_alert">
+		<menuitem label="&cat.type_of_material;" value="all" />
+		<menuitem label="&cat.fixed.BKS;" value="BKS" />
+		<menuitem label="&cat.fixed.SER;" value="SER" />
+		<menuitem label="&cat.fixed.VIS;" value="VIS" />
+		<menuitem label="&cat.fixed.MIX;" value="MIX" />
+		<menuitem label="&cat.fixed.MAP;" value="MAP" />
+		<menuitem label="&cat.fixed.SCO;" value="SCO" />
+		<menuitem label="&cat.fixed.REC;" value="REC" />
+		<menuitem label="&cat.fixed.COM;" value="COM" />
+	</menupopup>
+</menulist>
+
+<!-- The search order -->
+<menulist id="search-order-menu">
+	<menupopup id="search-order-popup" command="cmd_alert">
+		<menuitem label="&cat.search_title;" value="title" />
+		<menuitem label="&cat.search_author;" value="author" />
+		<menuitem label="&cat.search_pubyear;" value="pubyear" />
+	</menupopup>
+</menulist>
+
+
+<!-- The search type -->
+<menulist id="search-type-menu">
+	<menupopup id="search-type-popup">
+		<menuitem label="&cat.search_barcode;" value="barcode" />
+		<menuitem label="&cat.search_tcn;" value="tcn" />
+		<menuitem label="&cat.search_isbn;" value="isbn" />
+		<menuitem label="&cat.search_title;" value="title" selected="true"/>
+		<menuitem label="&cat.search_author;" value="author" />
+		<menuitem label="&cat.search_subject;" value="subject" />
+		<menuitem label="&cat.search_callnumber;" value="callnumber" />
+		<menuitem label="&cat.search_id;" value="id" />
+		<menuitem label="&cat.search_all;" value="all" />
+	</menupopup>
+</menulist>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="cat_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>

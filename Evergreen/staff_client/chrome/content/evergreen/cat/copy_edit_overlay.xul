@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="copy_edit_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="copy_edit_js">
+	<util id="util_js"/>
+	<!--<script src="chrome://evergreen/content/util/RemoteRequest.js" />
+	<script src="chrome://evergreen/content/util/ses.js" />-->
+	<script src="copy_edit.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="copy_edit_cmds">
+	<command id="cmd_alert" oncommand="
+		alert(event.target.tagName + '  Not Yet Implemented');
+	"/>
+	<command id="cmd_edit_save" oncommand="
+		save_edited_copies();
+	"/>
+	<command id="cmd_refresh_parent" oncommand="
+		refresh_spawning_browse_list();
+	"/>
+</commandset>
+
+<vbox id="copy_edit_vbox" flex="1">
+	<iframe id="copy_edit_frame" flex="1"/>
+	<hbox id="copy_edit_hbox" flex="0">
+		<spacer id="copy_edit_spacer" flex="1"/>
+		<button id="copy_edit_save" label="Save Changes" command="cmd_edit_save"/>
+	</hbox>
+</vbox>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="copy_edit_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>

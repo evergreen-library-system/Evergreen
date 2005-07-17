@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Cataloger's Search Result Screen -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/cat.css" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/cat.dtd">
+
+<page id="record_list_win" title="&record_list.win_title;" 
+	orient="vertical" style="overflow: scroll"
+	onload="my_init();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/cat/record_list_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+
+	<!-- The logic for this app -->
+	<Evergreen id="record_list_js" />
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="record_list_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="record_list_keys" />
+
+	<!-- Context menus -->
+	<popupset id="record_list_popupset" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<vbox id="record_list_vbox" class="test_class"/>
+
+</page>
+

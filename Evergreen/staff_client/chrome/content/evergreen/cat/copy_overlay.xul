@@ -1,0 +1,315 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="copy_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="copy_js">
+	<util id="util_js"/>
+	<!--<script src="chrome://evergreen/content/util/RemoteRequest.js" />
+	<script src="chrome://evergreen/content/util/ses.js" />-->
+	<script src="copy.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="copy_cmds">
+	<command id="cmd_alert" oncommand="
+		alert(event.target.tagName + '  Not Yet Implemented');
+	"/>
+	<command id="cmd_apply" oncommand="
+		apply_attribute(event);
+	"/>
+	<command id="cmd_save" oncommand="
+		save_attributes();
+	"/>
+</commandset>
+
+<!-- The top level widget for the cat client -->
+<vbox id="copy_vbox" flex="1">
+	<vbox flex="1">
+		<hbox flex="1">
+			<deck id="pines_info_deck"/>
+			<splitter collapse="after"> <grippy/> </splitter>
+			<vbox>
+				<deck id="local_info_deck"/>
+				<!--
+				<splitter collapse="after"> <grippy/> </splitter>
+				<vbox>
+					<listbox id="notes_listbox"/>	
+					<hbox id="note_button_box"/>
+				</vbox>
+				-->
+			</vbox>
+		</hbox>
+		<hbox id="copy_button_box"/>
+	</vbox>
+	<splitter collapse="after"> <grippy/> </splitter>
+	<vbox flex="1">
+		<deck id="bottom_deck"/>
+	</vbox>
+</vbox>
+
+<hbox id="copy_button_box">
+	<!--
+	<button label="&copy.save;" accesskey="&copy.save.key;" command="cmd_alert"/>
+	<spacer flex="1"/>
+	<button label="&copy.reload;" accesskey="&copy.reload.key;" command="cmd_alert"/>
+	<button label="&copy.bucket;" accesskey="&copy.bucket.key;" command="cmd_alert"/>
+	<button label="&copy.clone;" accesskey="&copy.clone.key;" command="cmd_alert"/>
+	<button label="&copy.transfer;" accesskey="&copy.transfer.key;" command="cmd_alert"/>
+	<button label="&copy.delete;" accesskey="&copy.delete.key;" command="cmd_alert"/>
+	<button id="apply_attr_button" label="Apply these Attributes to the selected Copies" command="cmd_apply"/>
+	<button id="save_attr_button" label="Save Changes" command="cmd_save"/>
+	-->
+	<description>Any change made above affects the copies selected below.</description>
+</hbox>
+
+<hbox id="note_button_box">
+	<hbox flex="1">
+		<button label="&copy.notes.delete;" accesskey="&copy.notes.delete.key;" command="cmd_alert"/>
+		<button label="&copy.notes.add;" accesskey="&copy.notes.add.key;" command="cmd_alert"/>
+	</hbox>
+	<button label="&copy.close;" accesskey="&copy.close.key;" oncommand="window.close();"/>
+</hbox>
+
+<deck id="bottom_deck" flex="1">
+	<vbox>
+		<listbox id="ephemeral_listbox" flex="1" seltype="multiple" onselect="transfer_attributes(event);">
+			<listhead>
+				<listheader/>
+				<listheader label="Location"/>
+				<listheader label="Call Number"/>
+				<listheader label="Barcode"/>
+			</listhead>
+			<listcols>
+				<listcol/>
+				<listcol flex="1"/>
+				<listcol flex="1"/>
+				<listcol flex="1"/>
+			</listcols>
+		</listbox>
+	</vbox>
+</deck>
+
+
+<deck id="pines_info_deck" flex="1">
+	<vbox>
+		<listbox id="pines_attr_listbox"/>
+	</vbox>
+</deck>
+
+<deck id="local_info_deck" flex="1">
+	<vbox>
+		<listbox id="local_attr_listbox"/>
+		<hbox pack="end"><button disabled="true" label="&copy.edit_categories;" command="cmd_alert"/></hbox>
+	</vbox>
+</deck>
+
+<!-- At some point we will programatically populate these grids and menus -->
+
+<menulist id="shelving-location-menu">
+	<menupopup id="shelving-location-popup" command="cmd_apply">
+		<menuitem id="shelving-location-prompt" label="Select one..." hidden="true"/>
+	</menupopup>
+</menulist>
+
+<listbox id="notes_listbox" flex="1">
+	<listhead>
+		<listheader label="&copy.notes.opac;"/>
+		<listheader label="&copy.notes.date;"/>
+		<listheader label="&copy.notes.from;"/>
+		<listheader label="&copy.notes;"/>
+	</listhead>
+	<listcols>
+		<listcol/>
+		<listcol/>
+		<listcol/>
+		<listcol flex="1"/>
+	</listcols>
+	<!--
+	<listitem allowevents="true">
+		<listcell>
+			<checkbox/>
+		</listcell>
+		<listcell label="2004-12-01"/>
+		<listcell label="Admin"/>
+		<listcell label="Legacy Fields: Item Type = BOOK, Item Cat1 = FICTION, Item Cat2 = ADULT"/>
+	</listitem>
+	-->
+</listbox>
+
+<listbox id="local_attr_listbox" flex="1">
+	<listhead>
+		<listheader />
+		<listheader label="&copy.local.attr;"/>
+		<listheader label="&copy.local.attr.value;"/>
+	</listhead>
+	<listcols>
+		<listcol />
+		<listcol flex="1"/>
+		<listcol flex="2"/>
+	</listcols>
+	<!--
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.stat.genre;"/>
+		<listcell>
+			<menulist id="stat-genre-menu"/>
+			<hbox pack="end" flex="1">
+				<button disabled="true" label="&copy.edit_entries;" command="cmd_alert"/>
+			</hbox>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.stat.audience;"/>
+		<listcell>
+			<menulist id="stat-audience-menu"/>
+			<hbox pack="end" flex="1">
+				<button disabled="true" label="&copy.edit_entries;" command="cmd_alert"/>
+			</hbox>
+		</listcell>
+	</listitem>
+	-->
+</listbox>
+
+<listbox id="pines_attr_listbox" flex="1">
+	<listhead>
+		<listheader label="&copy.pines.attr;"/>
+		<listheader label="&copy.pines.attr.value;"/>
+	</listhead>
+	<listcols>
+		<listcol flex="1"/>
+		<listcol flex="2"/>
+	</listcols>
+	<listitem allowevents="true" hidden="true">
+		<listcell label="&copy.attr.barcode;"/>
+		<listcell label="330620563200"/>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.copy_status;"/>
+		<listcell>
+			<menulist id="copy-status-menu"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.shelving_location;"/>
+		<listcell>
+			<menulist id="shelving-location-menu"/>
+			<!--<hbox pack="end" flex="1">
+				<button disabled="true" label="&copy.edit_entries;" command="cmd_alert"/>
+			</hbox>-->
+		</listcell>
+	</listitem>
+
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.circulating_lib;"/>
+		<listcell>
+			<menulist id="circulating-library-menu"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.loan_duration;"/>
+		<listcell>
+			<menulist id="loan-duration-menu"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.fine_level;"/>
+		<listcell>
+			<menulist id="fine-level-menu"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.circulate;"/>
+		<listcell>
+			<menulist id="circulate_menu"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.deposit;"/>
+		<listcell>
+			<menulist id="deposit_menu"/>
+			<label value="&copy.attr.deposit_amount;"/>
+			<textbox id="deposit_amount" size="6" onchange="apply_attribute(event);" value="0.00"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.price;"/>
+		<listcell>
+			<textbox id="price" size="6" onchange="apply_attribute(event);" value="0.00"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.reference_material;"/>
+		<listcell>
+			<menulist id="reference_menu"/>
+		</listcell>
+	</listitem>
+	<listitem allowevents="true">
+		<listcell label="&copy.attr.opac_visible;"/>
+		<listcell>
+			<menulist id="opac_visible_menu"/>
+		</listcell>
+	</listitem>
+</listbox>
+
+<menulist id="opac_visible_menu">
+	<menupopup id="opac_visible_popup" command="cmd_apply">
+		<menuitem label="&copy.attr.opac_visible.yes;" value="1" selected="true"/>
+		<menuitem label="&copy.attr.opac_visible.no;" value="0"/>
+	</menupopup>
+</menulist>
+
+<menulist id="reference_menu">
+	<menupopup id="reference_popup" command="cmd_apply" >
+		<menuitem label="&copy.attr.reference_material.no;" value="0" selected="true"/>
+		<menuitem label="&copy.attr.reference_material.yes;" value="1"/>
+	</menupopup>
+</menulist>
+
+<menulist id="deposit_menu">
+	<menupopup id="deposit_popup" command="cmd_apply">
+		<menuitem label="&copy.attr.deposit.no;" value="0" selected="true"/>
+		<menuitem label="&copy.attr.deposit.yes;" value="1"/>
+	</menupopup>
+</menulist>
+
+<menulist id="circulate_menu">
+	<menupopup id="circulate_popup" command="cmd_apply">
+		<menuitem label="&copy.attr.circulate.yes;" value="1" selected="true"/>
+		<menuitem label="&copy.attr.circulate.no;" value="0"/>
+	</menupopup>
+</menulist>
+
+<menulist id="fine-level-menu">
+	<menupopup id="fine-level-popup" command="cmd_apply">
+		<menuitem label="&copy.attr.fine_level.normal;" value="2" selected="true"/>
+		<menuitem label="&copy.attr.fine_level.high;" value="3"/>
+		<menuitem label="&copy.attr.fine_level.low;" value="1"/>
+	</menupopup>
+</menulist>
+
+<menulist id="loan-duration-menu">
+	<menupopup id="loan-duration-popup" command="cmd_apply">
+		<menuitem label="&copy.attr.loan_duration.normal;" value="2" selected="true"/>
+		<menuitem label="&copy.attr.loan_duration.long;" value="3"/>
+		<menuitem label="&copy.attr.loan_duration.short;" value="1"/>
+	</menupopup>
+</menulist>
+
+<menulist id="circulating-library-menu">
+	<menupopup id="circulating-library-popup" command="cmd_apply">
+	</menupopup>
+</menulist>
+
+<menulist id="copy-status-menu">
+	<menupopup id="copy-status-popup" command="cmd_apply">
+		<!-- <menuitem label="&copy.attr.copy_status.example1;" value="&copy.attr.copy_status.example1;"/> -->
+	</menupopup>
+</menulist>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="copy_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>

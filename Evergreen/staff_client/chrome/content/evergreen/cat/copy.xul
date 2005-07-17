@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Cataloger's Copy Screen -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/cat.css" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/cat.dtd">
+
+<page id="copy_win" title="&copy.title;" 
+	orient="vertical" style="overflow: scroll" persist="width height"
+	onload="
+		dump('start onload: ' + timer_elapsed('cat') + '\n');
+		my_init();
+		dump('end onload: ' + timer_elapsed('cat') + '\n');
+	"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/cat/copy_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<script src="chrome://evergreen/content/util/util.js" />
+	<script>timer_init('cat');</script>
+	<OpenSRF id="OpenSRF_js" />
+
+	<!-- The logic for this app -->
+	<Evergreen id="copy_js" />
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="copy_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="copy_keys" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<vbox id="copy_vbox" class="test_class"/>
+
+</page>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: About -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<window id="copy_display_win" title="hello"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util.xul"?>
+	<OpenSRF id="OpenSRF_js"/>
+	<util id="util_js"/>
+
+	<vbox id="copy_display_vbox" flex="1" pack="center" align="center">
+		<label name="click_label" datum="1" click_evt="click_evt"/>
+		<label name="edit_date" datum="1" render_filter="^(.){10}" click_evt="click_evt" />
+		<label name="call_number" datum="1" render_path="label" click_evt="click_evt" />
+		<label name="fine_level" datum="1" click_evt="click_evt"/>
+		<label name="creator" datum="1" render_path="usrname" click_evt="click_evt"/>
+		<label name="creator" datum="1" render_path="home_ou/name" click_evt="click_evt"/>
+		<textbox name="status" datum="1" change_evt="edit_evt" click_evt="click_evt"/>
+		<textbox name="circulate" datum="1" change_evt="edit_evt" click_evt="click_evt"/>
+		<label name="circ_as_type" datum="1" click_evt="click_evt"/>
+		<label name="stat_cat_entries" datum="1" click_evt="click_evt"/>
+		<label name="isnew" datum="1" click_evt="click_evt"/>
+		<label name="editor" datum="1" render_path="usrname" click_evt="click_evt"/>
+		<label name="ischanged" datum="1" click_evt="click_evt"/>
+		<label name="id" datum="1" click_evt="click_evt"/>
+		<label name="isdeleted" datum="1" click_evt="click_evt"/>
+		<textbox name="deposit" datum="1" change_evt="edit_evt" click_evt="click_evt"/>
+		<label name="location" datum="1" click_evt="click_evt"/>
+		<label name="loan_duration" datum="1" click_evt="click_evt"/>
+		<label name="ref" datum="1" click_evt="click_evt"/>
+		<label name="create_date" datum="1" click_evt="click_evt"/>
+		<textbox name="barcode" datum="1" change_evt="validate_evt,edit_evt" click_evt="click_evt" />
+		<label name="deposit_amount" datum="1" click_evt="click_evt"/>
+		<textbox name="opac_visible" datum="1" change_evt="edit_evt" click_evt="click_evt"/>
+		<label name="copy_number" datum="1" click_evt="click_evt"/>
+		<textbox name="price" datum="1" change_evt="edit_evt" click_evt="click_evt"/>
+		<label name="circ_modifier" datum="1" click_evt="click_evt"/>
+		<label name="circ_lib" datum="1" render_path="name" click_evt="click_evt"/>
+	</vbox>
+
+</window>
+

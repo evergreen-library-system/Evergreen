@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="volume_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="volume_js">
+	<!--<script src="chrome://evergreen/content/evergreen/fieldmapper.js" />-->
+	<util id="util_js"/>
+	<script src="volume.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="volume_cmds">
+	<command id="cmd_alert" oncommand="
+		alert('Feature Not Yet Implemented');
+	"/>
+</commandset>
+
+<wizardpage id="page1" description="Entering Call Numbers" onpageadvanced="">
+	<groupbox>
+		<caption label="Modify Call Numbers?"/>
+		<grid>
+			<columns> <column flex="0"/> <column flex="0"/> </columns>
+			<rows id="page1_rows"/>
+		</grid>
+	</groupbox>
+</wizardpage>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="volume_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>

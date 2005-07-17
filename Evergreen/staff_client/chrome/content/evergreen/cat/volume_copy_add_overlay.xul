@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="volume_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="volume_js">
+	<!--<script src="chrome://evergreen/content/evergreen/fieldmapper.js" />-->
+	<util id="util_js"/>
+	<script src="volume.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="volume_cmds">
+	<command id="cmd_alert" oncommand="
+		alert('Feature Not Yet Implemented');
+	"/>
+	<command id="cmd_batch_edit" oncommand="
+		spawn_copy_editor();	
+	"/>
+</commandset>
+
+<wizardpage id="page1" description="&volume.wizard.page1;" onpageadvanced="build_page_two();">
+	<groupbox>
+		<caption label="How many volumes?"/>
+		<grid>
+			<columns> <column flex="0"/> <column flex="0"/> </columns>
+			<rows id="page1_rows"/>
+		</grid>
+	</groupbox>
+</wizardpage>
+
+<wizardpage id="page2" description="&volume.wizard.page2;" onpageadvanced="build_page_three()" onpagerewound="var rows = document.getElementById('page2_rows'); while (rows.childNodes.length > 1) { rows.removeChild(rows.lastChild); }">
+	<groupbox>
+		<caption label="What call numbers and how many copies?"/>
+		<grid>
+			<columns>
+				<column flex="0"/>
+				<column flex="0"/>
+				<column flex="0"/>
+			</columns>
+			<rows id="page2_rows">
+				<row>
+					<label />
+					<label value="Call Number" />
+					<label value="# of Copies" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</wizardpage>
+
+<wizardpage id="page3" description="&volume.wizard.page3;" onpageadvanced="backup_data(); build_page_four()" onpagerewound="var rows = document.getElementById('page3_rows'); while (rows.childNodes.length > 1) { rows.removeChild(rows.lastChild); }">
+	<groupbox>
+		<caption label="What are the barcodes?"/>
+		<grid>
+			<columns>
+				<column flex="0"/> <column flex="0"/>
+			</columns>
+			<rows id="page3_rows">
+				<row>
+					<label value="" />
+					<label value="Barcode" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</wizardpage>
+
+<wizardpage id="page4" description="something" onpagerewound="restore_data();" flex="1">
+	<iframe id="page4_iframe" flex="1"/>
+</wizardpage>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="volume_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>

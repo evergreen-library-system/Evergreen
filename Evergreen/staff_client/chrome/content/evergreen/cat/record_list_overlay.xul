@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/cat.dtd">
+<overlay id="record_list_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- The javascript logic for the staff client -->
+<Evergreen id="record_list_js">
+	<!--<script src="chrome://evergreen/content/evergreen/fieldmapper.js" />-->
+	<util id="util_js"/>
+	<script src="record_list.js" />
+</Evergreen>
+
+<!-- Some logic abstracted a bit.  Sort of like an API list -->
+<commandset id="record_list_cmds">
+	<command id="cmd_edit_record" oncommand="spawn_editors(false);"/>
+	<command id="cmd_edit_record_tab" oncommand="spawn_editors(true);"/>
+	<command id="cmd_browse_record" oncommand="spawn_browsers(false);"/>
+	<command id="cmd_browse_record_tab" oncommand="spawn_browsers(true);"/>
+	<command id="cmd_alert" oncommand="alert('Not Yet Implemented');"/>
+</commandset>
+
+<!-- Context menus -->
+<popupset id="record_list_popupset">
+	<popup id="record_menu">
+		<menuitem label="&cat.popup.edit_record.tab;" command="cmd_edit_record_tab"/>
+		<menuitem label="&cat.popup.edit_record.window;" command="cmd_edit_record"/>
+		<menuitem label="&cat.popup.browse_record.tab;" command="cmd_browse_record_tab"/>
+		<menuitem label="&cat.popup.browse_record.window;" command="cmd_browse_record"/>
+		<menuitem label="&cat.popup.add_to_bucket;" oncommand="
+			alert('Not Yet Implemented');
+		"/>
+	</popup>
+</popupset>
+
+<!-- The top level widget for the cat client -->
+<vbox id="record_list_vbox" flex="1">
+	<button id="count_copy_toggle" label="Show Results For All Libraries"/>
+	<tree id="record_list_tree"/>
+</vbox>
+
+<tree id="record_list_tree" enableColumnDrag="true" flex="1">
+	<treecols>
+		<treecol id="record_list_title" label="&record_list.title;" flex="2"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_author" label="&record_list.author;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_tcn" label="&record_list.tcn;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_publisher" label="&record_list.publisher;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_pubyear" label="&record_list.pubyear;" flex="1"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_isbn" label="&record_list.isbn;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_issn" label="&record_list.issn;" flex="1" hidden="true"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="record_list_copy_count" label="&record_list.copy_count;" flex="1" hidden="true"/>
+	</treecols>
+	<treechildren id="record_list_tree_children" context="record_menu"/>
+</tree>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="record_list_keys">
+	<key id="" modifiers="accel" key="A" command="cmd_"/>
+</keyset>
+
+</overlay>
