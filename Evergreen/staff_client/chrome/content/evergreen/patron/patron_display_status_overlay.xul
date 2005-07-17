@@ -15,7 +15,7 @@
 <!-- main widget for patron_display_status -->
 <box id="PatronDisplayStatus_main" flex="1" orient="vertical">
 	<hbox id="PatronDisplayStatus_insert1"/>
-	<groupbox id="PatronDisplayStatus_groupbox" flex="1"/>
+	<groupbox id="PatronDisplayStatus_groupbox" />
 	<hbox id="PatronDisplayStatus_insert5"/>
 </box>
 

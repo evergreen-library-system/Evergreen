@@ -10,7 +10,6 @@
 	onload="params.w = window;
 		params.app = 'PatronSearch'; 
 		params.clamshell_node = document.getElementById('ClamShell_main'); 
-		params.patron_display_status_node = document.getElementById('PatronDisplayStatus_main');
 		params.patron_search_form_node = document.getElementById('PatronSearchForm_main');
 		params.patron_search_results_node = document.getElementById('PatronSearchResults_main');
 		mw.focus_widget( document, 'pst1' );
