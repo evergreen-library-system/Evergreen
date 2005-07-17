@@ -14,6 +14,8 @@
 
 	<script>
 	<![CDATA[
+		var tree;
+
 		function my_init() {
 			var treechildren = window.document.getElementById('tc');
 			var fm = mw.user_request('open-ils.auth','opensrf.open-ils.system.fieldmapper',[])[0];
@@ -38,6 +40,8 @@
 				for (var j in o.fields) {
 					var _ti = window.document.createElement( 'treeitem' );
 					_treechildren.appendChild( _ti );
+					_ti.setAttribute('fm_class',hint);
+					_ti.setAttribute('fm_field',j);
 					var _tr = window.document.createElement( 'treerow' );
 					_ti.appendChild( _tr );
 					var _tc = window.document.createElement( 'treecell' );
@@ -48,8 +52,31 @@
 					_tc.setAttribute('label','\t         Position: ' + o.fields[j].position + '  Virtual: ' + o.fields[j].virtual);
 				}
 			}
-			var tree = window.document.getElementById('t');
+			tree = window.document.getElementById('t');
 			tree.view.selection.select( 0 ); tree.focus();
+		}
+
+		function gen_cols() {
+			var data_url = 'data:application/vnd.mozilla.xul+xml,<?xml version="1.0"?><window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><?xml-stylesheet href="chrome://global/skin" type="text/css"?><vbox flex="1"><textbox id="desc" multiline="true" flex="1"/></vbox></window>';
+			var w = mw.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
+			var css = '<?xml-stylesheet href="data:text/css,#a{-moz-box-flex:1;}"?>';
+			var treeitems = mw.get_list_from_tree_selection( tree );
+			setTimeout(
+				function() {
+					var tb = w.document.getElementById('desc');
+					for (var i = 0; i < treeitems.length; i++) {
+						var hint = treeitems[i].getAttribute('fm_class');
+						var field = treeitems[i].getAttribute('fm_field');
+						var text = (
+							"{\n\t'id' : '" + field + "', 'label' : getString('" + hint + "_" + 
+							field + "_label'), 'flex' : 1,\n" + 
+							"\t'primary' : false, 'hidden' : false, 'fm_class' : '" + hint + 
+							"', 'fm_field_render' : '." + field + "()'\n},\n"
+						);
+						tb.value += text;
+					}
+				}, 0
+			);
 		}
 	]]>
 	</script>
@@ -57,6 +84,7 @@
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
 			<caption label="Fieldmapper Class Viewer"/>
+			<hbox><button label="Generate paged_tree cols for selected fields" accesskey="G" oncommand="gen_cols();"/></hbox>
 			<tree id="t" flex="1">
 				<treecols>
 					<treecol id="tcol1" label="opensrf.open-ils.system.fieldmapper" primary="true" flex="0"/>
