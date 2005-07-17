@@ -1,0 +1,47 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
+@namespace html url("http://www.w3.org/TR/REC-html40"); 
+
+/* * { font-size: x-large; } */
+grid { overflow: auto; }
+.field_row { border: solid thin #262; }
+.ctrl_grid { min-height: 1em; overflow: auto; }
+.ctrl_row { } 
+.data_grid { overflow: auto; }
+.data_row { }
+.fixed_grid { }
+.fixed_grid label:hover { text-decoration: underline; }
+.fixed_columns column { border-right: dotted thin #262; }
+.fixed_rows { }
+.fixed_row { }
+.fixed_label { }
+.fixed_textbox { }
+rows { }
+row { }
+columns { }
+column { }
+textbox { }
+.marc_buttons_box description { font-weight: bold; }
+.marc { 
+	-moz-appearance: none;
+	font-family: monospace;
+	border: none;
+	padding: 0px; 
+	margin: 0px; 
+}
+.marc:hover { background-color: #DDDDDD; }
+.invalid { background-color: #FF8888; }
+.invalid:hover { background-color: #FF8888; }
+*|textarea:focus { background-color: #DDFFDD; }
+.marc_wrapper { min-height: 1.2em; vertical-align: middle; }
+.marc_tag_wrapper { }
+.marc_ind_wrapper { }
+.marc_ind1_wrapper { }
+.marc_ind2_wrapper { }
+.marc_data_wrapper { }
+.marc_tag { min-width: 2.4em; vertical-align: middle; }
+.marc_ind { min-width: 1.2em; vertical-align: middle; }
+.marc_ind1 { }
+.marc_ind2 { }
+.marc_data { min-width: 500px; }
+.resizable { }
+.test_class { }
