@@ -78,13 +78,43 @@
 				}, 0
 			);
 		}
+
+		function gen_properties() {
+			var data_url = 'data:application/vnd.mozilla.xul+xml,<?xml version="1.0"?><window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><?xml-stylesheet href="chrome://global/skin" type="text/css"?><vbox flex="1"><textbox id="desc" multiline="true" flex="1"/></vbox></window>';
+			var w = mw.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
+			var css = '<?xml-stylesheet href="data:text/css,#a{-moz-box-flex:1;}"?>';
+			var treeitems = mw.get_list_from_tree_selection( tree );
+			setTimeout(
+				function() {
+					var tb = w.document.getElementById('desc');
+					for (var i = 0; i < treeitems.length; i++) {
+						var hint = treeitems[i].getAttribute('fm_class');
+						var field = treeitems[i].getAttribute('fm_field');
+						var pretty = mw.map_list(
+							field.split('_'),
+							function (s) {
+								return s.substr(0,1).toUpperCase() + s.substr(1);
+							}
+						).join(' ');
+						var text = (
+							hint + '_' + field + '_label=' + pretty + '\n'
+						);
+						tb.value += text;
+					}
+				}, 0
+			);
+		}
+
 	]]>
 	</script>
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
 			<caption label="Fieldmapper Class Viewer"/>
-			<hbox><button label="Generate paged_tree cols for selected fields" accesskey="G" oncommand="gen_cols();"/></hbox>
+			<hbox>
+				<button label="Generate paged_tree cols for selected fields" accesskey="G" oncommand="gen_cols();"/>
+				<button label="Generate string bundle properties for selected fields" accesskey="P" oncommand="gen_properties();"/>
+			</hbox>
 			<tree id="t" flex="1">
 				<treecols>
 					<treecol id="tcol1" label="opensrf.open-ils.system.fieldmapper" primary="true" flex="0"/>
