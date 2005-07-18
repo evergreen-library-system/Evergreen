@@ -6,8 +6,6 @@ function OpenILS_init(params) {
 		switch(params.app) {
 			case 'Auth' : auth_init(params); break;
 			case 'AppShell' : app_shell_init(params); register_AppShell(params.w); break;
-			case 'ClamShell' : clam_shell_init(params); break;
-			case 'PagedTree' : paged_tree_init(params); break;
 			case 'Opac' : opac_init(params); break;
 			case 'PatronSearch' : patron_search_init(params); break;
 			case 'PatronDisplay' : patron_display_init(params); break;
@@ -34,8 +32,6 @@ function OpenILS_exit(params) {
 		switch(params.app) {
 			case 'Auth' : auth_exit(params); break;
 			case 'AppShell' : app_shell_exit(params); unregister_AppShell(params.w); break;
-			case 'ClamShell' : clam_shell_exit(params); break;
-			case 'PagedTree' : paged_tree_exit(params); break;
 			case 'Opac' : opac_exit(params); break;
 			case 'PatronSearch' : patron_search_exit(params); break;
 			case 'PatronDisplay' : patron_display_exit(params); break;
