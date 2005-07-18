@@ -41,7 +41,7 @@ function patron_get_bills( au ) {
 	try {
 		au.bills = ( user_request(   // FIXME: make bills a virtual field of au
 			'open-ils.actor',
-			'open-ils.actor.user.fines.summary',
+			'open-ils.actor.user.transactions',
 			[ mw.G.auth_ses[0], au.id() ]
 		)[0] );
 		sdump('D_PATRON_UTILS','bills = ' + js2JSON(au.bills) + '\n');
@@ -61,8 +61,9 @@ function patron_get_bills_total( au ) {
 	else {
 		var total = 0;
 		for (var i = 0; i < au.bills.length; i++) {
-			total += parseFloat( au.bills[i].balance(owed) );
+			total += parseFloat( au.bills[i].balance_owed() );
 		}
+		sdump('D_PATRON_UTILS','bills_total $$$ = ' + total + '\n');
 		return '$' + total;
 	}
 
