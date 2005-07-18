@@ -36,6 +36,34 @@ if (my $action = $cgi->param('action')) {
 		}
 	} elsif ( $action eq 'Add New' ) {
 		actor::org_unit->create( { map { defined($cgi->param($_)) ? ($_ => $cgi->param($_)) : () } keys %org_cols } );
+	} elsif ( $action eq 'Save Address' ) {
+		my $org = actor::org_unit->retrieve($cgi->param('org_unit'));
+
+		my $addr = {};
+
+		$$addr{org_unit} = $cgi->param('org_unit');
+		$$addr{street1} = $cgi->param('street1');
+		$$addr{street2} = $cgi->param('street2');
+		$$addr{city} = $cgi->param('city');
+		$$addr{county} = $cgi->param('county');
+		$$addr{state} = $cgi->param('state');
+		$$addr{country} = $cgi->param('country');
+		$$addr{post_code} = $cgi->param('post_code');
+
+		$a_type = $cgi->param('addr_type');
+
+
+		my $a = actor::org_address->retrieve($cgi->param('id'));
+
+		if ($a) {
+			$a->$_($$addr{$_}) for (keys %$addr);
+			$a->update;
+		} else {
+			$a = actor::org_unit->create( $addr );
+		}
+
+		$org->$a_type($a->id);
+		$org->update;
 	}
 }
 
@@ -189,6 +217,74 @@ if (my $action = $cgi->param('action')) {
 
 			print	"</table></form><hr/>";
 
+
+			#-------------------------------------------------------------------------
+			# Address edit form
+			#-------------------------------------------------------------------------
+
+			my %addrs = (	ill_address	=> 'ILL Address',
+					holds_address	=> 'Consortial Holds Address',
+					mailing_address	=> 'Mailing Address',
+					billing_address	=> 'Physical Address'
+			);
+			for my $a (keys %addrs) {
+				my $addr = actor::org_address->retrieve( $node->$a ) if ($node->$a);
+
+				my %ah = (	street1		=> $addr?$addr->street1:'',
+						street2		=> $addr?$addr->street2:'',
+						city		=> $addr?$addr->city:'',
+						county		=> $addr?$addr->count:'',
+						state		=> $addr?$addr->state:'',
+						country		=> $addr?$addr->country:'US',
+						post_code	=> $addr?$addr->post_code:'',
+						org_unit	=> $addr?$addr->org_unit:'',
+						id		=> $addr?$addr->id:'',
+				);
+
+				print <<"				TABLE";
+
+<form method='POST'>
+<table class='table_class'>
+	<tr>
+		<th colspan=2>$addrs{$a}</th>
+	</tr>
+	<tr>
+		<th>*Street 1</th>
+		<td><input type='text' name='street1' value='$ah{street1}'></td>
+	</tr>
+	<tr>
+		<th>Street 2</th>
+		<td><input type='text' name='street2' value='$ah{street2}'></td>
+	</tr>
+	<tr>
+		<th>*City</th>
+		<td><input type='text' name='city' value='$ah{city}'></td>
+	</tr>
+	<tr>
+		<th>County</th>
+		<td><input type='text' name='county' value='$ah{county}'></td>
+	</tr>
+	<tr>
+		<th>*State</th>
+		<td><input type='text' name='state' value='$ah{state}'></td>
+	</tr>
+	<tr>
+		<th>*Country</th>
+		<td><input type='text' name='country' value='$ah{country}'></td>
+	</tr>
+	<tr>
+		<th>*ZIP</th>
+		<td><input type='text' name='post_code' value='$ah{post_code}'></td>
+	</tr>
+</table>
+<input type='hidden' name='org_unit' value='$ah{org_unit}'>
+<input type='hidden' name='id' value='$ah{id}'>
+<input type='hidden' name='addr_type' value='$a'>
+<input type='submit' name='action' value='Save Address'>
+</form>
+
+				TABLE
+			}
 
 			print "<h2>New Child</h2>";
 	
