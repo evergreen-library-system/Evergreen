@@ -21,13 +21,20 @@ __PACKAGE__->columns(Primary => 'usr');
 __PACKAGE__->columns(Essential => qw/total_paid total_owed balance_owed/);
 #-------------------------------------------------------------------------------
 
+package money::user_circulation_summary;
+use base qw/money/;
+__PACKAGE__->table('money_user_summary');
+__PACKAGE__->columns(Primary => 'usr');
+__PACKAGE__->columns(Essential => qw/total_paid total_owed balance_owed/);
+#-------------------------------------------------------------------------------
+
 package money::billable_transaction_summary;
 use base qw/money/;
 __PACKAGE__->table('money_billable_transaction_summary');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr xact_finish total_paid
 				     last_payment_ts total_owed last_billing_ts
-				     balance_owed/);
+				     balance_owed xact_type/);
 #-------------------------------------------------------------------------------
 
 package money::billing;

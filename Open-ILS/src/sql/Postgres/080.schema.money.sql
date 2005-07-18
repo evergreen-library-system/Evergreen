@@ -41,12 +41,14 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 		MAX(credit.payment_ts) AS last_payment_ts,
 		SUM(COALESCE(debit.amount,0)) AS total_owed,
 		MAX(debit.billing_ts) AS last_billing_ts,
-		SUM(COALESCE(debit.amount,0) - COALESCE(credit.amount,0)) AS balance_owed
+		SUM(COALESCE(debit.amount,0) - COALESCE(credit.amount,0)) AS balance_owed,
+		p.relname AS xact_type
 	  FROM	money.billable_xact xact
+	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.voided IS FALSE)
 		LEFT JOIN money.payment credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
 	  WHERE	xact.xact_finish IS NULL
-	GROUP BY 1,2,3,4;
+	GROUP BY 1,2,3,4,10;
 
 CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,
@@ -54,6 +56,15 @@ CREATE OR REPLACE VIEW money.usr_summary AS
 		SUM(total_owed) AS total_owed, 
 		SUM(balance_owed) AS balance_owed
 	  FROM money.billable_xact_summary
+	  GROUP BY 1;
+
+CREATE OR REPLACE VIEW money.usr_circulation_summary AS
+	SELECT	usr,
+		SUM(total_paid) AS total_paid,
+		SUM(total_owed) AS total_owed, 
+		SUM(balance_owed) AS balance_owed
+	  FROM	money.billable_xact_summary
+	  WHERE	xact_type = 'circulation'
 	  GROUP BY 1;
 
 CREATE TABLE money.bnm_payment (
