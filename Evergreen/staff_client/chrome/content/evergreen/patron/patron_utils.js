@@ -6,6 +6,7 @@ function fake_patron() {
 	p.checkouts( [] ); 
 	p.hold_requests( [] ); 
 	p.credit_forward_balance('0.00');
+	p.bills = [];
 	return p;
 }
 
@@ -211,10 +212,10 @@ function patron_get_profile_as_text( au ) {
 		au.profile() && 
 		mw.G.ap_hash &&
 		mw.G.ap_hash[ au.profile() ] && 
-		mw.G.ap_hash[ au.profile() ].value &&
-		mw.G.ap_hash[ au.profile() ].value()
+		mw.G.ap_hash[ au.profile() ].name &&
+		mw.G.ap_hash[ au.profile() ].name()
 	) {
-		return mw.G.ap_hash[ au.profile() ].value();
+		return mw.G.ap_hash[ au.profile() ].name();
 	} else {
 		return null;
 	}
