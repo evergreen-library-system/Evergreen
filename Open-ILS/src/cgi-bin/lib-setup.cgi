@@ -37,11 +37,11 @@ if (my $action = $cgi->param('action')) {
 	} elsif ( $action eq 'Add New' ) {
 		actor::org_unit->create( { map { defined($cgi->param($_)) ? ($_ => $cgi->param($_)) : () } keys %org_cols } );
 	} elsif ( $action eq 'Save Address' ) {
-		my $org = actor::org_unit->retrieve($cgi->param('org_unit'));
+		my $org = actor::org_unit->retrieve($cgi->param('id'));
 
 		my $addr = {};
 
-		$$addr{org_unit} = $cgi->param('org_unit');
+		$$addr{org_unit} = $cgi->param('org_unit') || $org->id;
 		$$addr{street1} = $cgi->param('street1');
 		$$addr{street2} = $cgi->param('street2');
 		$$addr{city} = $cgi->param('city');
@@ -50,16 +50,19 @@ if (my $action = $cgi->param('action')) {
 		$$addr{country} = $cgi->param('country');
 		$$addr{post_code} = $cgi->param('post_code');
 
-		$a_type = $cgi->param('addr_type');
+		my $a_type = $cgi->param('addr_type');
 
 
-		my $a = actor::org_address->retrieve($cgi->param('id'));
+		my $a = actor::org_address->retrieve($cgi->param('aid'));
 
 		if ($a) {
-			$a->$_($$addr{$_}) for (keys %$addr);
+			for (keys %$addr) {
+				next unless $$addr{$_};
+				$a->$_($$addr{$_});
+			}
 			$a->update;
 		} else {
-			$a = actor::org_unit->create( $addr );
+			$a = actor::org_address->create( {map {defined($$addr{$_}) ? ($_ => $$addr{$_}) : ()} keys %$addr} );
 		}
 
 		$org->$a_type($a->id);
@@ -227,17 +230,17 @@ if (my $action = $cgi->param('action')) {
 					mailing_address	=> 'Mailing Address',
 					billing_address	=> 'Physical Address'
 			);
-			for my $a (keys %addrs) {
+			for my $a (qw/billing_address mailing_address holds_address ill_address/) {
 				my $addr = actor::org_address->retrieve( $node->$a ) if ($node->$a);
 
 				my %ah = (	street1		=> $addr?$addr->street1:'',
 						street2		=> $addr?$addr->street2:'',
 						city		=> $addr?$addr->city:'',
-						county		=> $addr?$addr->count:'',
+						county		=> $addr?$addr->county:'',
 						state		=> $addr?$addr->state:'',
 						country		=> $addr?$addr->country:'US',
 						post_code	=> $addr?$addr->post_code:'',
-						org_unit	=> $addr?$addr->org_unit:'',
+						org_unit	=> $addr?$addr->org_unit:$node->id,
 						id		=> $addr?$addr->id:'',
 				);
 
@@ -247,6 +250,10 @@ if (my $action = $cgi->param('action')) {
 <table class='table_class'>
 	<tr>
 		<th colspan=2>$addrs{$a}</th>
+	</tr>
+	<tr>
+		<th>SysID</th>
+		<td><input type='text' name='aid' value='$ah{id}'></td>
 	</tr>
 	<tr>
 		<th>*Street 1</th>
@@ -278,8 +285,8 @@ if (my $action = $cgi->param('action')) {
 	</tr>
 </table>
 <input type='hidden' name='org_unit' value='$ah{org_unit}'>
-<input type='hidden' name='id' value='$ah{id}'>
 <input type='hidden' name='addr_type' value='$a'>
+<input type='hidden' name='id' value='$node'>
 <input type='submit' name='action' value='Save Address'>
 </form>
 

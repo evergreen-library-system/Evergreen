@@ -115,7 +115,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
+__PACKAGE__->columns( Essential => qw/valid address_type org_unit street1 street2
 				      city county state country post_code/ );
 
 #-------------------------------------------------------------------------------
