@@ -379,15 +379,10 @@ sub permit_circ {
 
 	# run the permissibility script
 	run_script();
-	my $obj = $stash->get("circ_objects");
 
-	# turn the biblio record into a friendly object
-	my $u = OpenILS::Utils::ModsParser->new();
-	$u->start_mods_batch( $obj->{title}->marc() );
-	my $mods = $u->finish_mods_batch();
-
+	
 	my $arr = $stash->get("result");
-	return { record => $mods, status => $arr->[0], text => $arr->[1] };
+	return { status => $arr->[0], text => $arr->[1] };
 
 }
 
@@ -418,7 +413,6 @@ sub circulate {
 
 	my $copy = $circ_objects->{copy};
 	my ($circ, $duration, $recurring, $max) =  run_circ_scripts($session);
-
 
 
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = 
@@ -478,7 +472,14 @@ sub circulate {
 	$circ->max_fine_rule($max);
 	$circ->recuring_fine_rule($recurring);
 
-	return $circ;
+	# turn the biblio record into a friendly object
+	my $obj = $stash->get("circ_objects");
+	my $u = OpenILS::Utils::ModsParser->new();
+	$u->start_mods_batch( $circ_objects->{title}->marc() );
+	my $mods = $u->finish_mods_batch();
+
+
+	return { circ => $circ, copy => $copy, record => $mods };
 
 }
 
@@ -600,6 +601,7 @@ sub checkin {
 
 	my $err;
 	my $copy;
+	my $circ;
 
 	try {
 		my $session = $apputils->start_db_session();
@@ -632,7 +634,7 @@ sub checkin {
 			"open-ils.storage.direct.action.circulation.search.atomic",
 			{ target_copy => $copy->id, xact_finish => undef } );
 	
-		my $circ = $circ_req->gather(1)->[0];
+		$circ = $circ_req->gather(1)->[0];
 	
 		if(!$circ) {
 			$err = "No circulation exists for the given barcode";
@@ -679,8 +681,15 @@ sub checkin {
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch( $record->marc() );
 		my $mods = $u->finish_mods_batch();
-		return { record => $mods, status => 0, text => "OK", 
-			route_to => $shelving_locations->{$copy->location} };
+
+		return { 
+			record => $mods, 
+			status => 0, 
+			text => "OK", 
+			circ => $circ,
+			copy => $copy,
+			route_to => $shelving_locations->{$copy->location} 
+		};
 	}
 
 	return 1;

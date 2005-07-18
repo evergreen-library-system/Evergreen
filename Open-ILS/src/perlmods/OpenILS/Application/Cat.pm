@@ -241,6 +241,7 @@ sub biblio_record_tree_commit {
 		throw OpenSRF::EX::ERROR ("Wormizing Failed for $docid" );
 	};
 
+	warn "Committing db session...\n";
 	OpenILS::Application::AppUtils->commit_db_session( $session );
 
 	$nodeset = OpenILS::Utils::FlatXML->new()->xmldoc_to_nodeset($marcxml);
@@ -251,9 +252,10 @@ sub biblio_record_tree_commit {
 
 	warn "Done wormizing\n";
 
-	use Data::Dumper;
-	warn "Returning tree:\n";
-	warn Dumper $tree;
+	#use Data::Dumper;
+	#warn "Returning tree:\n";
+	#warn Dumper $tree;
+
 	return $tree;
 
 }
