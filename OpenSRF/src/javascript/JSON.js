@@ -41,10 +41,20 @@ function object2Array(obj) {
 	return arr;
 }
 
+
 function js2JSON(arg) {
+	try { 
+		return _js2JSON(arg);
+	} catch(E) {
+		//alert(E + "EX");
+		if(arg && arg.toString) return arg.toString();
+		return arg;
+	}
+}
+
+function _js2JSON(arg) {
 	var i, o, u, v;
 
-	try {
 		switch (typeof arg) {
 			case 'object':
 	
@@ -127,8 +137,5 @@ function js2JSON(arg) {
 			default:
 				return '"' + String(arg).replace(/(["\\])/g, '\\$1') + '"';
 		}
-	} catch(E) {
-		if(arg && arg.toString) return arg.toString();
-		return arg;
-	}
+
 }
