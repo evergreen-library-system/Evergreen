@@ -80,7 +80,25 @@ BEGIN
 	FOR u_perm IN SELECT * FROM permission.usr_perm_map WHERE usr = iuser LOOP
 		RETURN NEXT u_perm;
 	END LOOP;
-	
+
+	FOR g_list IN	SELECT	*
+			  FROM	permission.grp_ancestors(
+			  	  (	SELECT	u.profile
+					  FROM	actor.usr u
+					  WHERE	u.id = iuser
+				  )
+				)
+		LOOP
+
+		FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth
+				  FROM	permission.grp_perm_map p
+				  WHERE	p.grp = g_list.id LOOP
+
+			RETURN NEXT u_perm;
+
+		END LOOP;
+	END LOOP;
+
 	FOR grp IN	SELECT	*
 			  FROM	permission.usr_grp_map
 			  WHERE	usr = iuser LOOP
