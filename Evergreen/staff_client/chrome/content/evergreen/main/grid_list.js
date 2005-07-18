@@ -5,12 +5,12 @@ function grid_list_init(p) {
 	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
 	p.grid = p.node.getElementsByAttribute('name','grid')[0];
-	p.popup = p.node.getElementsByTagName('popup')[0];
+	//p.popup = p.node.getElementsByTagName('popup')[0];
 	p.grid_columns = p.grid.firstChild;
 	p.grid_rows = p.grid.lastChild;
 
 	p._context_function = function (ev) { alert('default _context_function'); };
-	p.popup.addEventListener('popupshowing',function (ev) { return p._context_function(ev); },false);
+	//p.popup.addEventListener('popupshowing',function (ev) { return p._context_function(ev); },false);
 
 	grid_list_make_columns( p, p.cols )
 
@@ -66,9 +66,6 @@ function grid_list_make_columns( p, cols ) {
 function grid_list_add_rows( p, new_rows ) {
 	sdump('D_GRID_LIST',arg_dump(arguments,{2:'.length'}));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	var d = p.w.document;
-	var offset = 0;
-	if (p.grid_rows.childNodes.length > 0) { offset = p.grid_rows.lastChild.id; }
 	for (var i = 0; i < new_rows.length; i++) {
 		var new_row = new_rows[i];
 

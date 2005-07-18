@@ -20,12 +20,12 @@ var sdump_levels = {
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
-	'D_GRID_LIST' : true,
+	'D_GRID_LIST' : false,
 	'D_TAB' : false,
 
 	'D_AUTH' : false,
 
-	'D_OPAC' : true,
+	'D_OPAC' : false,
 
 	'D_PATRON_SEARCH' : false,
 	'D_PATRON_SEARCH_FORM' : false,
@@ -37,15 +37,15 @@ var sdump_levels = {
 
 	'D_PATRON_ITEMS' : false,
 	'D_PATRON_CHECKOUT_ITEMS' : false,
-	'D_PATRON_HOLDS' : true,
+	'D_PATRON_HOLDS' : false,
 	'D_PATRON_BILLS' : true,
 
-	'D_CHECKIN' : true,
-	'D_CHECKIN_ITEMS' : true,
+	'D_CHECKIN' : false,
+	'D_CHECKIN_ITEMS' : false,
 
-	'D_CAT' : true,
+	'D_CAT' : false,
 
-	'D_PATRON_UTILS' : false,
+	'D_PATRON_UTILS' : true,
 	'D_CIRC_UTILS' : false,
 
 	'D_EXPLODE' : false,
@@ -53,7 +53,7 @@ var sdump_levels = {
 	'D_PRINT' : false,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
-	'D_SPAWN' : true,
+	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,
 	'D_WIN' : false,

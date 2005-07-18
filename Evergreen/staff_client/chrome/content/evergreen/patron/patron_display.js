@@ -18,7 +18,7 @@ function patron_display_init(p) {
 	patron_display_patron_holds_init(p);
 
 	// gives: p.patron_bills, p.redraw_patron_bills
-	patron_display_patron_bills_init(p);
+	//patron_display_patron_bills_init(p);
 
 	p.set_patron = function (au) {
 		return p._patron = au;
@@ -29,6 +29,7 @@ function patron_display_init(p) {
 		p.redraw_patron_checkout_items();
 		p.redraw_patron_items();
 		p.redraw_patron_holds();
+		//p.redraw_patron_bills();
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
 
@@ -445,31 +446,10 @@ function patron_display_patron_bills_init(p) {
 
 	p.redraw_patron_bills = function() {
 		p.patron_bills.clear_patron_bills();
-		if (!p._patron.bills()) patron_get_bills( p._patron );
-		for (var i = 0; i < p._patron.bills().length; i++) {
-			p.patron_bills.add_patron_bills( [ i ] );
-		}
+		if (!p._patron.bills) patron_get_bills( p._patron );
+		p.patron_bills.add_patron_bills( p._patron.bills );
 	}
 
-	var test = p.patron_bills.w.document.createElement('row');
-	test.setAttribute('style','border: dotted;');
-	var test1 = p.patron_bills.w.document.createElement('checkbox');
-	test.appendChild( test1 );
-	var test2 = p.patron_bills.w.document.createElement('vbox');
-	test.appendChild( test2 );
-	var test2a = p.patron_bills.w.document.createElement('label');
-	test2.appendChild( test2a );
-	test2a.setAttribute('value','Late Fee: Harry Potter');
-	var test2b = p.patron_bills.w.document.createElement('label');
-	test2.appendChild( test2b );
-	test2b.setAttribute('value','Due: 05-19-05  Received: 05-21-05  Original Fee: $0.40');
-	var test3 = p.patron_bills.w.document.createElement('label');
-	test.appendChild( test3 );
-	test3.setAttribute('value','$0.20');
-	var test4 = p.patron_bills.w.document.createElement('textbox');
-	test.appendChild( test4 );
-
-	p.patron_bills.add_patron_bills( [ test ] );
 }
 
 
