@@ -44,86 +44,91 @@ function object2Array(obj) {
 function js2JSON(arg) {
 	var i, o, u, v;
 
-	switch (typeof arg) {
-		case 'object':
-
-			if(arg) {
-
-				if (arg._isfieldmapper) { /* magi-c-ast for fieldmapper objects */
-
-					if( arg.a.constructor != Array ) {
-						var arr = new Array();
-						for( var i  = 0; i < arg.a.length; i++ ) {
-							if( arg.a[i] == null ) {
-								arr[i] = null; continue;
+	try {
+		switch (typeof arg) {
+			case 'object':
+	
+				if(arg) {
+	
+					if (arg._isfieldmapper) { /* magi-c-ast for fieldmapper objects */
+	
+						if( arg.a.constructor != Array ) {
+							var arr = new Array();
+							for( var i  = 0; i < arg.a.length; i++ ) {
+								if( arg.a[i] == null ) {
+									arr[i] = null; continue;
+								}
+	
+								if( typeof arg.a[i] != 'object' ) { 
+									arr[i] = arg.a[i];
+	
+								} else if( typeof arg.a[i] == 'object' 
+											&& arg.a[i]._isfieldmapper) {
+	
+									arr[i] = arg.a[i];
+	
+								} else {
+									arr[i] = object2Array(arg.a[i]);		
+								}
 							}
-
-							if( typeof arg.a[i] != 'object' ) { 
-								arr[i] = arg.a[i];
-
-							} else if( typeof arg.a[i] == 'object' 
-										&& arg.a[i]._isfieldmapper) {
-
-								arr[i] = arg.a[i];
-
-							} else {
-								arr[i] = object2Array(arg.a[i]);		
-							}
+							arg.a = arr;
 						}
-						arg.a = arr;
-					}
-
-					return "/*--S " + arg.classname + " --*/" + js2JSON(arg.a) + "/*--E " + arg.classname + " --*/";
-
-				} else {
-
-					if (arg.constructor == Array) {
-						o = '';
-						for (i = 0; i < arg.length; ++i) {
-							v = js2JSON(arg[i]);
-							if (o) {
-								o += ',';
-							}
-							if (v !== u) {
-								o += v;
-							} else {
-								o += 'null';
-							}
-						}
-						return '[' + o + ']';
-
-					} else if (typeof arg.toString != 'undefined') {
-						o = '';
-						for (i in arg) {
-							v = js2JSON(arg[i]);
-							if (v !== u) {
+	
+						return "/*--S " + arg.classname + " --*/" + js2JSON(arg.a) + "/*--E " + arg.classname + " --*/";
+	
+					} else {
+	
+						if (arg.constructor == Array) {
+							o = '';
+							for (i = 0; i < arg.length; ++i) {
+								v = js2JSON(arg[i]);
 								if (o) {
 									o += ',';
 								}
-								o += js2JSON(i) + ':' + v;
+								if (v !== u) {
+									o += v;
+								} else {
+									o += 'null';
+								}
 							}
+							return '[' + o + ']';
+	
+						} else if (typeof arg.toString != 'undefined') {
+							o = '';
+							for (i in arg) {
+								v = js2JSON(arg[i]);
+								if (v !== u) {
+									if (o) {
+										o += ',';
+									}
+									o += js2JSON(i) + ':' + v;
+								}
+							}
+	
+							o = '{' + o + '}';
+							return o;
+	
+						} else {
+							return;
 						}
-
-						o = '{' + o + '}';
-						return o;
-
-					} else {
-						return;
 					}
 				}
-			}
-			return 'null';
-
-		case 'unknown':
-		case 'number':
-			return arg;
-
-		case 'undefined':
-		case 'function':
-			return u;
-
-		case 'string':
-		default:
-			return '"' + String(arg).replace(/(["\\])/g, '\\$1') + '"';
+				return 'null';
+	
+			case 'unknown':
+			case 'number':
+				return arg;
+	
+			case 'undefined':
+			case 'function':
+				return u;
+	
+			case 'string':
+			default:
+				return '"' + String(arg).replace(/(["\\])/g, '\\$1') + '"';
+		}
+	} catch(E) {
+		if(arg && arg.toString) return arg.toString();
+		return arg;
 	}
 }
