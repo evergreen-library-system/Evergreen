@@ -36,9 +36,36 @@ function patron_get_barcode( au ) {
 	return '???';
 }
 
+function patron_get_bills( au ) {
+	sdump('D_PATRON_UTILS',arg_dump(arguments));
+	try {
+		au.bills = ( user_request(   // FIXME: make bills a virtual field of au
+			'open-ils.actor',
+			'open-ils.actor.user.fines.summary',
+			[ mw.G.auth_ses[0], au.id() ]
+		)[0] );
+		sdump('D_PATRON_UTILS','bills = ' + js2JSON(au.bills) + '\n');
+		return au.bills
+	} catch(E) {
+		sdump('D_ERROR',js2JSON(E) + '\n');
+		return null;
+	}
+
+}
+
 function patron_get_bills_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	return '$0.00';
+	if (! au.bills ) patron_get_bills( au );
+	if (au.bills == null)
+		return '???';
+	else {
+		var total = 0;
+		for (var i = 0; i < au.bills.length; i++) {
+			total += parseFloat( au.bills[i].balance(owed) );
+		}
+		return '$' + total;
+	}
+
 }
 
 function patron_get_credit_total( au ) {
