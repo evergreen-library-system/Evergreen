@@ -12,16 +12,23 @@ function grid_list_init(p) {
 	p._context_function = function (ev) { alert('default _context_function'); };
 	p.popup.addEventListener('popupshowing',function (ev) { return p._context_function(ev); },false);
 
-	grid_list_make_columns( p, p.grid_columns, p.cols )
+	grid_list_make_columns( p, p.cols )
 
 	p.clear_grid = function () {
 		sdump('D_GRID_LIST','p.clear_grid()\n');
-		empty_widget( p.grid_rows );
+		while( p.grid_rows.childNodes.length > 1 ) {
+			p.grid_rows.removeChild( p.grid_rows.lastChild );
+		}
 	}
 
 	p.add_rows = function (new_rows) { 
 		sdump('D_GRID_LIST','p.add_rows()\n');
-		return grid_list_add_rows(p,p.grid_rows,new_rows); 
+		return grid_list_add_rows(p,new_rows); 
+	}
+
+	p.remove_row_by_id = function (id) {
+		sdump('D_GRID_LIST','p.remove_row_by_id()\n');
+		return grid_list_remove_row_by_id(p,id); 
 	}
 
 	p.register_context_builder = function (f) {
@@ -33,41 +40,46 @@ function grid_list_init(p) {
 	return p;
 }
 
-function grid_list_make_columns( p, gridcols, cols ) {
+function grid_list_make_columns( p, cols ) {
 	sdump('D_GRID_LIST',arg_dump(arguments,{2:'.length'}));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	var d = p.w.document;
 	// cols[ idx ] = { 'id':???, 'label':???, 'primary':???, 'flex':??? }
+	var header = p.w.document.createElement('row');
+	p.grid_rows.appendChild( header );
 	for (var i = 0; i < cols.length; i++) {
 		var col = cols[i];
 		sdump('D_GRID_LIST','Col ' + i + ' : ' + js2JSON( col ) + '\n');
 		var gridcol = d.createElement( 'column' );
-		gridcols.appendChild( gridcol );
+		p.grid_columns.appendChild( gridcol );
 		for (var j in col) {
 			gridcol.setAttribute( j, col[j] );
 		}
+		var th = p.w.document.createElement('label');
+		header.appendChild( th );
+		th.setAttribute('value', col.label);
+		th.setAttribute('style','font-weight: bold;');
 	}
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return gridcols;
 }
 
-function grid_list_add_rows( p, grid_rows, new_rows ) {
+function grid_list_add_rows( p, new_rows ) {
 	sdump('D_GRID_LIST',arg_dump(arguments,{2:'.length'}));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
 	var d = p.w.document;
 	var offset = 0;
-	if (grid_rows.childNodes.length > 0) { offset = grid_rows.lastChild.id; }
+	if (p.grid_rows.childNodes.length > 0) { offset = p.grid_rows.lastChild.id; }
 	for (var i = 0; i < new_rows.length; i++) {
 		var new_row = new_rows[i];
 
-		gridrows.appendChild( newrow );
+		p.grid_rows.appendChild( new_row );
 
 	}
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }
 
-function grid_list_remove_row_by_id( p, grid_rows, id ) {
+function grid_list_remove_row_by_id( p, id ) {
 	sdump('D_GRID_LIST',arg_dump(arguments));
-	var row = grid_rows.getElementsByAttribute('id',id)[0];
-	grid_rows.removeChild( row );
+	var row = p.grid_rows.getElementsByAttribute('id',id)[0];
+	p.grid_rows.removeChild( row );
 }

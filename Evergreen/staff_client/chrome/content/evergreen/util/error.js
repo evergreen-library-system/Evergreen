@@ -20,6 +20,7 @@ var sdump_levels = {
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
+	'D_GRID_LIST' : true,
 	'D_TAB' : false,
 
 	'D_AUTH' : false,
@@ -36,6 +37,8 @@ var sdump_levels = {
 
 	'D_PATRON_ITEMS' : false,
 	'D_PATRON_CHECKOUT_ITEMS' : false,
+	'D_PATRON_HOLDS' : true,
+	'D_PATRON_BILLS' : true,
 
 	'D_CHECKIN' : true,
 	'D_CHECKIN_ITEMS' : true,
