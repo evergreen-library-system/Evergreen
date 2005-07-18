@@ -142,9 +142,10 @@ function auth_ses_callback(request) {
 	mw.G.auth_ses = [ auth_ses ];
 	sdump( 'D_AUTH', 'D_AUTH_SES: ' + typeof(mw.G['auth_ses'][0]) + ' : ' + mw.G['auth_ses'][0] + '\n');
 
+	//'open-ils.actor.user.profiles.retrieve',
 	user_async_request(
 		'open-ils.actor',
-		'open-ils.actor.user.profiles.retrieve',
+		'open-ils.actor.groups.retrieve',
 		[],
 		ap_list_callback
 	);
