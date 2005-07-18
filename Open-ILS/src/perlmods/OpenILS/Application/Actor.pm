@@ -838,9 +838,6 @@ sub update_password {
 }
 
 
-# returns undef on success, the first perm_type that failed
-# on permission error
-
 __PACKAGE__->register_method(
 	method	=> "check_user_perms",
 	api_name	=> "open-ils.actor.user.perm.check",
@@ -1026,6 +1023,33 @@ sub user_transactions {
 
 	return \@resp; 
 } 
+
+
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_groups",
+	api_name	=> "open-ils.actor.groups.retrieve",
+	notes		=> <<"	NOTES");
+	Returns a list of user groups
+	NOTES
+sub retrieve_groups {
+	my( $self, $client ) = @_;
+	return $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
+}
+
+
+
+
+
+
+
+
+
+
+
 
 1;
 
