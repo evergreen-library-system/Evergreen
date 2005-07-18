@@ -11,6 +11,7 @@ use OpenILS::EX;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
+use OpenILS::Utils::ModsParser;
 
 my $apputils = "OpenILS::Application::AppUtils";
 sub _d { warn "Patron:\n" . Dumper(shift()); }
@@ -642,6 +643,10 @@ sub get_org_tree {
 		"open-ils.storage", 
 		"open-ils.storage.direct.actor.org_unit.retrieve.all.atomic" );
 
+	if($orglist) {
+		warn "found org list\n";
+	}
+
 	$tree = $self->build_org_tree($orglist);
 	$cache_client->put_cache('orgtree', $tree);
 
@@ -862,9 +867,165 @@ sub check_user_perms {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "user_fines_summary",
+	api_name	=> "open-ils.actor.user.fines.summary",
+	notes		=> <<"	NOTES"
+	Returns a short summary of the users total open fines, excluding voided fines
+	Params are login_session, user_id
+	Returns a 'mus' object.
+	NOTES
+	);
+
+sub user_fines_summary {
+	my( $self, $client, $login_session, $user_id ) = @_;
+
+	my $user_obj = $apputils->check_user_session($login_session); 
+	if($user_obj->id ne $user_id) {
+		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER_FINES_SUMMARY")) {
+			return OpenILS::Perm->new("VIEW_USER_FINES_SUMMARY"); 
+		}
+	}
+
+	return $apputils->simple_scalar_request( 
+		"open-ils.storage",
+		"open-ils.storage.direct.money.user_summary.search.usr",
+		$user_id );
+
+}
 
 
 
+
+__PACKAGE__->register_method(
+	method	=> "user_transactions",
+	api_name	=> "open-ils.actor.user.transactions",
+	notes		=> <<"	NOTES");
+	Returns a list of open user transactions (mbts objects);
+	Params are login_session, user_id
+	Optional third parameter is the transactions type.  defaults to all
+	NOTES
+
+__PACKAGE__->register_method(
+	method	=> "user_transactions",
+	api_name	=> "open-ils.actor.user.transactions.have_charge",
+	notes		=> <<"	NOTES");
+	Returns a list of all open user transactions (mbts objects) that have an initial charge
+	Params are login_session, user_id
+	Optional third parameter is the transactions type.  defaults to all
+	NOTES
+
+__PACKAGE__->register_method(
+	method	=> "user_transactions",
+	api_name	=> "open-ils.actor.user.transactions.have_balance",
+	notes		=> <<"	NOTES");
+	Returns a list of all open user transactions (mbts objects) that have a balance
+	Params are login_session, user_id
+	Optional third parameter is the transactions type.  defaults to all
+	NOTES
+
+__PACKAGE__->register_method(
+	method	=> "user_transactions",
+	api_name	=> "open-ils.actor.user.transactions.fleshed",
+	notes		=> <<"	NOTES");
+	Returns an object/hash of transaction, circ, title where transaction = an open 
+	user transactions (mbts objects), circ is the attached circluation, and title
+	is the title the circ points to
+	Params are login_session, user_id
+	Optional third parameter is the transactions type.  defaults to all
+	NOTES
+
+__PACKAGE__->register_method(
+	method	=> "user_transactions",
+	api_name	=> "open-ils.actor.user.transactions.have_charge.fleshed",
+	notes		=> <<"	NOTES");
+	Returns an object/hash of transaction, circ, title where transaction = an open 
+	user transactions that has an initial charge (mbts objects), circ is the 
+	attached circluation, and title is the title the circ points to
+	Params are login_session, user_id
+	Optional third parameter is the transactions type.  defaults to all
+	NOTES
+
+__PACKAGE__->register_method(
+	method	=> "user_transactions",
+	api_name	=> "open-ils.actor.user.transactions.have_balance.fleshed",
+	notes		=> <<"	NOTES");
+	Returns an object/hash of transaction, circ, title where transaction = an open 
+	user transaction that has a balance (mbts objects), circ is the attached 
+	circluation, and title is the title the circ points to
+	Params are login_session, user_id
+	Optional third parameter is the transaction type.  defaults to all
+	NOTES
+
+
+
+sub user_transactions {
+	my( $self, $client, $login_session, $user_id, $type ) = @_;
+
+	my $user_obj = $apputils->check_user_session($login_session); 
+	if($user_obj->id ne $user_id) {
+		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER_TRANSACTIONS")) {
+			return OpenILS::Perm->new("VIEW_USER_TRANSACTIONS"); 
+		}
+	}
+
+	my $api = $self->api_name();
+	my $trans;
+	my @xact;
+	if(defined($type)) { @xact = (xact_type =>  $type); 
+	} else { @xact = (); }
+
+	if($api =~ /have_charge/) {
+
+		$trans = $apputils->simple_scalar_request( 
+			"open-ils.storage",
+			"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
+			{ usr => $user_id, total_owed => { ">" => 0 }, @xact });
+
+	} elsif($api =~ /have_balance/) {
+
+		$trans =  $apputils->simple_scalar_request( 
+			"open-ils.storage",
+			"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
+			{ usr => $user_id, balance_owed => { ">" => 0 }, @xact });
+
+	} else {
+
+		$trans =  $apputils->simple_scalar_request( 
+			"open-ils.storage",
+			"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
+			{ usr => $user_id, @xact });
+	}
+
+	if($api !~ /fleshed/) { return $trans; }
+
+	warn "API: $api\n";
+
+	my @resp;
+	for my $t (@$trans) {
+			
+		warn $t->id . "\n";
+
+		my $circ = $apputils->simple_scalar_request(
+				"open-ils.storage",
+				"open-ils.storage.direct.action.circulation.retrieve",
+				$t->id );
+
+		my $title = $apputils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
+			$circ->target_copy );
+
+		my $u = OpenILS::Utils::ModsParser->new();
+		$u->start_mods_batch($title->marc());
+		my $mods = $u->finish_mods_batch();
+
+		push @resp, {transaction => $t, circ => $circ, record => $mods };
+
+	}
+
+	return \@resp; 
+} 
 
 1;
 
