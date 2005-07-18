@@ -3,6 +3,23 @@ use base qw/OpenILS::Application::Storage/;
 #use OpenILS::Application::Storage::CDBI::config;
 
 
+sub retrieve_all {
+	my $self = shift;
+	my $client = shift;
+
+	for my $rec ( permission::grp_tree->retrieve_all ) {
+		$client->respond( $rec->to_fieldmapper );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'retrieve_all',
+	api_name	=> 'open-ils.storage.direct.permission.grp_tree.retrieve.all',
+	argc		=> 3,
+	stream		=> 1,
+);
+
 sub usr_has_perm {
 	my $self = shift;
 	my $client = shift;
