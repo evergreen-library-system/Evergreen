@@ -277,6 +277,7 @@ sub wormize {
 	my ($outer_xact) = $in_xact->run;
 	try {
 		unless ($outer_xact) {
+			$log->debug("WoRM isn't inside a transaction, starting one now.", INFO);
 			my ($r) = $begin->run($client);
 			unless (defined $r and $r) {
 				$rollback->run;
@@ -309,9 +310,12 @@ sub wormize {
 		$entry->fingerprint( fingerprint_mods( $mods ) );
 		push @entry_list, $entry;
 
+		$log->debug("Fingerprint for Record Entry ".$docid." is [".$entry->fingerprint."]", INFO);
+
 		unless ($no_map) {
 			my ($mr) = $mr_lookup->run( $entry->fingerprint );
 			if (!@$mr) {
+				$log->debug("No metarecord found for fingerprint [".$entry->fingerprint."]; Creating a new one", INFO);
 				$mr = new Fieldmapper::metabib::metarecord;
 				$mr->fingerprint( $entry->fingerprint );
 				$mr->master_record( $entry->id );
@@ -321,7 +325,7 @@ sub wormize {
 					throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.metabib.metarecord.create!")
 				}
 			} else {
-				$mr = $$mr[0];
+				$log->debug("Retrieved metarecord, id is ".$mr->id, INFO);
 				$mr->mods('');
 				push @mr_list, $mr;
 			}
@@ -417,6 +421,7 @@ sub wormize {
 	}
 
 	unless ($outer_xact) {
+		$log->debug("Commiting transaction started by the WoRM.", INFO);
 		my ($c) = $commit->run;
 		unless (defined $c and $c) {
 			$rollback->run;
