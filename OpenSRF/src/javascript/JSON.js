@@ -43,13 +43,7 @@ function object2Array(obj) {
 
 
 function js2JSON(arg) {
-	try { 
-		return _js2JSON(arg);
-	} catch(E) {
-		//alert(E + "EX");
-		if(arg && arg.toString) return arg.toString();
-		return arg;
-	}
+	return _js2JSON(arg);
 }
 
 function _js2JSON(arg) {
