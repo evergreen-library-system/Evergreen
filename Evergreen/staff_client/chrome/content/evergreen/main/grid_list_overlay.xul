@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<overlay id="grid_list_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading grid_list_overlay.xul\n');</script>
+
+<commandset id="universal_cmds">
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+</commandset>
+
+<!-- main widget for grid_list -->
+<box id="GridList_main" flex="1" orient="vertical">
+	<popupset>
+		<popup id="GridList_popup"/>
+	</popupset>
+	<hbox id="GridList_insert1" />
+	<hbox id="GridList_nav" name="nav"/>
+	<hbox id="GridList_insert2" />
+	<grid id="GridList_grid" flex="1" name="grid">
+		<columns id="GridList_columns" />
+		<rows id="GridList_rows" />
+	</grid>
+	<hbox id="GridList_insert3" />
+</box>
+
+<!-- Context menus -->
+<popupset id="universal_popupset">
+</popupset>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="GridList_keys">
+</keyset>
+
+</overlay>
