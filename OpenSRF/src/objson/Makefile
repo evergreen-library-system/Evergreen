@@ -29,7 +29,7 @@
 OBJS			= object.o json_parser.o utils.o
 UTIL_DIR		= ../utils
 DEST_INCLUDE = objson
-CC_OPTS		+= #-DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
+CC_OPTS		+= -DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
 
 all:	test
 
