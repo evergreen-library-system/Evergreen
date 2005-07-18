@@ -20,11 +20,24 @@ my $utils = "OpenILS::Application::Cat::Utils";
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_import",
 	api_name	=> "open-ils.cat.biblio.record.tree.import",
-);
+	notes		=> <<"	NOTES");
+	Takes a record tree and imports the record into the database.  In this
+	case, the record tree is assumed to be a complete record (i.e. valid
+	MARC.  The title control number is taken from (whichever comes first)
+	tags 001, 020, 022, 010, 035 and whichever does not already exist
+	in the database.
+	user_session must have IMPORT_MARC permissions
+	NOTES
+
 
 sub biblio_record_tree_import {
 	my( $self, $client, $user_session, $tree) = @_;
 	my $user_obj = $apputils->check_user_session($user_session);
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "IMPORT_MARC")) {
+		return OpenILS::Perm->new("IMPORT_MARC"); 
+	}
 
 	warn "importing new record " . Dumper($tree) . "\n";
 
@@ -159,9 +172,12 @@ __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_commit",
 	api_name	=> "open-ils.cat.biblio.record.tree.commit",
 	argc		=> 3, #(session_id, biblio_tree ) 
-	note		=> "Walks the tree and commits any changed nodes " .
-					"adds any new nodes, and deletes any deleted nodes",
-);
+	notes		=> <<"	NOTES");
+	Walks the tree and commits any changed nodes 
+	adds any new nodes, and deletes any deleted nodes
+	The record to commit must already exist or this
+	method will fail
+	NOTES
 
 sub biblio_record_tree_commit {
 
@@ -171,8 +187,13 @@ sub biblio_record_tree_commit {
 		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
 		unless ( $user_session and $tree );
 
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "UPDATE_MARC")) {
+		return OpenILS::Perm->new("UPDATE_MARC"); 
+	}
+
 
 	# capture the doc id
 	my $docid = $tree->owner_doc();
@@ -181,8 +202,7 @@ sub biblio_record_tree_commit {
 	warn "Retrieving biblio record from storage for update\n";
 
 	my $req1 = $session->request(
-			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", 
-			$docid );
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", $docid );
 	my $biblio = $req1->gather(1);
 
 	warn "retrieved doc $docid\n";
@@ -266,7 +286,7 @@ __PACKAGE__->register_method(
 	method	=> "biblio_record_record_metadata",
 	api_name	=> "open-ils.cat.biblio.record.metadata.retrieve",
 	argc		=> 1, #(session_id, biblio_tree ) 
-	note		=> "Walks the tree and commits any changed nodes " .
+	notes		=> "Walks the tree and commits any changed nodes " .
 					"adds any new nodes, and deletes any deleted nodes",
 );
 
@@ -297,8 +317,8 @@ sub biblio_record_record_metadata {
 
 		($creator, $editor) = _get_userid_by_id($creator, $editor);
 
-		$record_entry->creator( $creator );
-		$record_entry->editor( $editor );
+		$record_entry->creator($creator);
+		$record_entry->editor($editor);
 
 		push @$results, $record_entry;
 
@@ -521,7 +541,9 @@ sub volume_tree_fleshed_update {
 
 	my( $self, $client, $user_session, $volumes ) = @_;
 	return undef unless $volumes;
+
 	my $user_obj = $apputils->check_user_session($user_session);
+
 
 	my $session = $apputils->start_db_session();
 	warn "Looping on volumes in fleshed volume tree update\n";
@@ -535,23 +557,26 @@ sub volume_tree_fleshed_update {
 
 
 		if( $volume->isdeleted) {
-			my $status = _delete_volume($session, $volume);
+			my $status = _delete_volume($session, $volume, $user_obj);
 			if(!$status) {
 				throw OpenSRF::EX::ERROR
 					("Volume delete failed for volume " . $volume->id);
 			}
+			if(UNIVERSAL::ISA($status, "OpenILS::Perm")) { return $status; }
 
 		} elsif( $volume->isnew ) {
 
 			$volume->clear_id;
 			$volume->editor($user_obj->id);
 			$volume->creator($user_obj->id);
-			$volume = _add_volume($session, $volume);
+			$volume = _add_volume($session, $volume, $user_obj);
+			if($volume and UNIVERSAL::ISA($volume, "OpenILS::Perm")) { return $volume; }
 
 		} elsif( $volume->ischanged ) {
 
 			$volume->editor($user_obj->id);
-			_update_volume($session, $volume);
+			my $stat = _update_volume($session, $volume, $user_obj);
+			if($stat and UNIVERSAL::ISA($stat, "OpenILS::Perm")) { return $stat; }
 		}
 
 
@@ -580,13 +605,18 @@ sub volume_tree_fleshed_update {
 			}
 		}
 	}
+
 	$apputils->commit_db_session($session);
 	return scalar(@$volumes);
 }
 
 
 sub _delete_volume {
-	my( $session, $volume ) = @_;
+	my( $session, $volume, $user_obj ) = @_;
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "DELETE_VOLUME")) {
+		return OpenILS::Perm->new("DELETE_VOLUME"); }
 
 	#$volume = _find_volume($session, $volume);
 	warn "Deleting volume " . $volume->id . "\n";
@@ -607,7 +637,11 @@ sub _delete_volume {
 
 
 sub _update_volume {
-	my($session, $volume) = @_;
+	my($session, $volume, $user_obj) = @_;
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "UPDATE_VOLUME")) {
+		return OpenILS::Perm->new("UPDATE_VOLUME"); }
+
 	my $req = $session->request(
 		"open-ils.storage.direct.asset.call_number.update",
 		$volume );
@@ -616,7 +650,11 @@ sub _update_volume {
 
 sub _add_volume {
 
-	my($session, $volume) = @_;
+	my($session, $volume, $user_obj) = @_;
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "CREATE_VOLUME")) {
+		return OpenILS::Perm->new("CREATE_VOLUME"); }
 
 	my $request = $session->request( 
 		"open-ils.storage.direct.asset.call_number.create", $volume );
@@ -649,7 +687,7 @@ sub fleshed_copy_update {
 	my $session = $apputils->start_db_session();
 
 	for my $copy (@$copies) {
-		_fleshed_copy_update($session, $copy, $user_obj->id);
+		_fleshed_copy_update($session, $copy, $user_obj);
 	}
 
 	$apputils->commit_db_session($session);
@@ -659,7 +697,12 @@ sub fleshed_copy_update {
 
 
 sub _delete_copy {
-	my($session, $copy) = @_;
+	my($session, $copy, $user_obj) = @_;
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "DELETE_COPY")) {
+		return OpenILS::Perm->new("DELETE_COPY"); }
+
 	warn "Deleting copy " . $copy->id . "\n";
 	my $request = $session->request(
 		"open-ils.storage.direct.asset.copy.delete",
@@ -668,7 +711,11 @@ sub _delete_copy {
 }
 
 sub _create_copy {
-	my($session, $copy) = @_;
+	my($session, $copy, $user_obj) = @_;
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "CREATE_COPY")) {
+		return OpenILS::Perm->new("CREATE_COPY"); }
 
 	my $request = $session->request(
 		"open-ils.storage.direct.asset.copy.create",
@@ -687,7 +734,12 @@ sub _create_copy {
 }
 
 sub _update_copy {
-	my($session, $copy) = @_;
+	my($session, $copy, $user_obj) = @_;
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "UPDATE_COPY")) {
+		return OpenILS::Perm->new("UPDATE_COPY"); }
+
 	my $request = $session->request(
 		"open-ils.storage.direct.asset.copy.update", $copy );
 	my $status = $request->gather(1);
@@ -704,7 +756,7 @@ sub _fleshed_copy_update {
 	my($session, $copy, $editor) = @_;
 
 	my $stat_cat_entries = $copy->stat_cat_entries;
-	$copy->editor($editor);
+	$copy->editor($editor->id);
 	
 	# in case we're fleshed
 	if(ref($copy->status))		{$copy->status( $copy->status->id ); }
@@ -714,11 +766,11 @@ sub _fleshed_copy_update {
 	warn "Updating copy " . Dumper($copy) . "\n";
 
 	if( $copy->isdeleted ) { 
-		return _delete_copy($session, $copy);
+		return _delete_copy($session, $copy, $editor);
 	} elsif( $copy->isnew ) {
-		$copy = _create_copy($session, $copy);
+		$copy = _create_copy($session, $copy, $editor);
 	} elsif( $copy->ischanged ) {
-		_update_copy($session, $copy);
+		_update_copy($session, $copy, $editor);
 	}
 
 	
@@ -732,7 +784,7 @@ sub _fleshed_copy_update {
 	
 	# go through the stat cat update/create process
 	for my $stat_entry (@{$stat_cat_entries}){ 
-		_copy_update_stat_cats( $session, $copy, $stat_maps, $stat_entry );
+		_copy_update_stat_cats( $session, $copy, $stat_maps, $stat_entry, $editor );
 	}
 	
 	return 1;
@@ -767,7 +819,7 @@ sub _delete_stale_maps {
 # for the given entry and copy
 # -----------------------------------------------------------------
 sub _copy_update_stat_cats {
-	my ( $session, $copy, $stat_maps, $entry ) = @_;
+	my ( $session, $copy, $stat_maps, $entry, $editor ) = @_;
 
 	warn "Updating stat maps for copy " . $copy->id . "\n";
 
