@@ -20,10 +20,10 @@
 			var treechildren = window.document.getElementById('tc');
 			var fm = mw.user_request('open-ils.auth','opensrf.open-ils.system.fieldmapper',[])[0];
 			var fma = []; var fmh = {} ; 
-			for (var i in fm) { fmh[ fm[i].hint ] = fm[i]; fma.push( fm[i].hint ); }
+			for (var i in fm) { fmh[ fm[i].hint ] = fm[i]; fma.push( [ fm[i].hint, i ] ); }
 			fma.sort();
 			for (var i = 0; i < fma.length; i++) {
-				var hint = fma[i]; var o = fmh[ hint ];
+				var hint = fma[i][0]; var name = fma[i][1]; var o = fmh[ hint ];
 				var ti = window.document.createElement('treeitem');
 				treechildren.appendChild( ti );
 				ti.setAttribute( 'container', 'true' );
@@ -34,7 +34,7 @@
 				tc.setAttribute('label',hint);
 				tc = window.document.createElement('treecell');
 				tr.appendChild( tc );
-				tc.setAttribute('label','Fieldmapper::' + o.cdbi);
+				tc.setAttribute('label', name );
 				var _treechildren = window.document.createElement( 'treechildren' );
 				ti.appendChild( _treechildren );
 				for (var j in o.fields) {
