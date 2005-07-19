@@ -10,7 +10,7 @@ sub grab_overdue {
 
 	my $c_t = action::circulation->table;
 
-	$grace = ' - (1 * (fine_interval))' if ($grace);
+	$grace = " - ($grace * (fine_interval))" if ($grace);
 
 	my $sql = <<"	SQL";
 		SELECT	*
