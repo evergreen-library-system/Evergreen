@@ -49,7 +49,8 @@ function yns_alert(s,title,b1,b2,b3,c) {
 	//	promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1 +
 	//	promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_2;
 	var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
-		promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1; 
+		promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1 +
+		promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_2; 
 
 	// display the dialog box. The flags set above are passed
 	// as the fourth argument. The next three arguments are custom labels used for
