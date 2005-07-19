@@ -54,8 +54,16 @@ function checkin_checkin_items_init(p) {
 			var check = checkin_by_copy_barcode( barcode );
 			if (check) {
 				sdump('D_CHECKIN','check = ' + check + '\n' + pretty_print( js2JSON( check ) ) + '\n');
-				checkins.push( check );
-				p.checkin_items.add_checkin_items( [ checkins.length - 1 ] );
+
+				if (check.status == 0) {
+					checkins.push( check );
+					p.checkin_items.add_checkin_items( [ checkins.length - 1 ] );
+				} else if (check.status < 0) {
+					s_alert( check.text );
+				} else if (check.status > 0) {
+					s_alert( check.text );
+				}
+
 				tb.value = ''; tb.focus();
 			}
 		} catch(E) {
