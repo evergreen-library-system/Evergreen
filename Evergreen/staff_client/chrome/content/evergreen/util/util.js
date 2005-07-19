@@ -96,7 +96,19 @@ function yesno(value) {
 	}
 }
 
+function dollars_float_to_cents_integer( money ) {
+	// careful to avoid fractions of pennies
+	var money_s = money.toString();
+	var dollars = money_s.split(".")[0];
+	var cents = money_s.split(".")[1];
+	var total = 0;
+	if (parseInt(cents)) total += parseInt(cents);
+	if (parseInt(dollars)) total += (parseInt(dollars) * 100);
+	return total;	
+}
+
 function cents_as_dollars( cents ) {
+	cents = cents.toString();
 	return '$' + cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }
 

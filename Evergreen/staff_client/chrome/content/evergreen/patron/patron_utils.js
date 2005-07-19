@@ -81,10 +81,10 @@ function patron_get_bills_total( au ) {
 	else {
 		var total = 0;
 		for (var i = 0; i < au.bills.length; i++) {
-			total += parseFloat( au.bills[i].balance_owed() );
+			total += dollars_float_to_cents_integer( au.bills[i].balance_owed() );
 		}
-		sdump('D_PATRON_UTILS','bills_total $$$ = ' + total + '\n');
-		return '$' + total;
+		sdump('D_PATRON_UTILS','bills_total $$$ = ' + cents_as_dollars( total ) + '\n');
+		return cents_as_dollars( total );
 	}
 
 }
