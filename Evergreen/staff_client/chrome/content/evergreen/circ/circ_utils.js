@@ -7,15 +7,27 @@ function is_barcode_valid( barcode ) {
 	return check_checkdigit( barcode );
 }
 
-function checkout_permit(barcode, patron_id, num_of_open_async_checkout_requests) {
+function cancel_hold( hold ) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
+	var result = user_request(
+		'open-ils.circ',
+		'open-ils.circ.hold.cancel',
+		[ mw.G.auth_ses[0], hold.id() ]
+	)[0];
+	sdump('D_CIRC_UTILS','result = ' + result + '\n');
+	return result;
+}
+
+function checkout_permit(barcode, patron_id, num_of_open_async_checkout_requests, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true,1:true,2:true}));
 	try {
 		var check = user_request(
 			'open-ils.circ',
 			'open-ils.circ.permit_checkout',
-			[ mw.G.auth_ses[0], barcode, patron_id, num_of_open_async_checkout_requests ]
+			[ mw.G.auth_ses[0], barcode, patron_id, num_of_open_async_checkout_requests ],
+			f
 		)[0];
-		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		if (!f) sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 		return check;	
 	} catch(E) {
 		handle_error(E);
@@ -23,15 +35,16 @@ function checkout_permit(barcode, patron_id, num_of_open_async_checkout_requests
 	}	
 }
 
-function checkout_by_copy_barcode(barcode, patron_id) {
+function checkout_by_copy_barcode(barcode, patron_id, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true,1:true}));
 	try {
 		var check = user_request(
 			'open-ils.circ',
 			'open-ils.circ.checkout.barcode',
-			[ mw.G.auth_ses[0], barcode, patron_id ]
+			[ mw.G.auth_ses[0], barcode, patron_id ],
+			f
 		)[0];
-		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		if (!f) sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 		return check;
 	} catch(E) {
 		sdump('D_ERROR',E);
@@ -39,15 +52,16 @@ function checkout_by_copy_barcode(barcode, patron_id) {
 	}
 }
 
-function checkin_by_copy_barcode(barcode) {
+function checkin_by_copy_barcode(barcode, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
 	try {
 		var check = user_request(
 			'open-ils.circ',
 			'open-ils.circ.checkin.barcode',
-			[ mw.G.auth_ses[0], barcode ]
+			[ mw.G.auth_ses[0], barcode ],
+			f
 		)[0];
-		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		if (!f) sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 		return check;
 	} catch(E) {
 		sdump('D_ERROR',E);
@@ -55,15 +69,16 @@ function checkin_by_copy_barcode(barcode) {
 	}
 }
 
-function renew_by_circ_id(id) {
+function renew_by_circ_id(id, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
 	try {
 		var check = user_request(
 			'open-ils.circ',
 			'open-ils.circ.renew',
-			[ mw.G.auth_ses[0], id ]
+			[ mw.G.auth_ses[0], id ],
+			f
 		)[0];
-		sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
+		if (!f) sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 		return check;
 	} catch(E) {
 		sdump('D_ERROR',E);
@@ -74,8 +89,39 @@ function renew_by_circ_id(id) {
 function hold_cols() {
 	var cols = [
 {
+	'id' : 'request_time', 'label' : getString('ahr_request_time_label'), 'flex' : 0,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 
+	'fm_field_render' : '.request_time().toString().substr(0,10)'
+},
+{
+	'id' : 'status', 'label' : getString('ahr_status_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.status()'
+},
+{
+	'id' : 'hold_type', 'label' : getString('ahr_hold_type_label'), 'flex' : 0,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.hold_type()'
+},
+{
+	'id' : 'pickup_lib', 'label' : getString('ahr_pickup_lib_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 
+	'fm_field_render' : 'mw.G.org_tree_hash[ $$.pickup_lib() ].name()'
+},
+{
+	'id' : 'pickup_lib_shortname', 'label' : getString('ahr_pickup_lib_label'), 'flex' : 0,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 
+	'fm_field_render' : 'mw.G.org_tree_hash[ $$.pickup_lib() ].shortname()'
+},
+		{
+			'id' : 'title', 'label' : getString('mvr_label_title'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : 'mvr', 'fm_field_render' : '.title()'
+		},
+		{
+			'id' : 'author', 'label' : getString('mvr_label_author'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : 'mvr', 'fm_field_render' : '.author()'
+		},
+{
 	'id' : 'capture_time', 'label' : getString('ahr_capture_time_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.capture_time()'
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.capture_time()'
 },
 {
 	'id' : 'current_copy', 'label' : getString('ahr_current_copy_label'), 'flex' : 1,
@@ -83,19 +129,15 @@ function hold_cols() {
 },
 {
 	'id' : 'email_notify', 'label' : getString('ahr_email_notify_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.email_notify()'
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.email_notify()'
 },
 {
 	'id' : 'expire_time', 'label' : getString('ahr_expire_time_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.expire_time()'
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.expire_time()'
 },
 {
 	'id' : 'fulfillment_time', 'label' : getString('ahr_fulfillment_time_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.fulfillment_time()'
-},
-{
-	'id' : 'hold_type', 'label' : getString('ahr_hold_type_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'ahr', 'fm_field_render' : '.hold_type()'
+	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.fulfillment_time()'
 },
 {
 	'id' : 'holdable_formats', 'label' : getString('ahr_holdable_formats_label'), 'flex' : 1,
@@ -106,32 +148,12 @@ function hold_cols() {
 	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.id()'
 },
 {
-	'id' : 'ischanged', 'label' : getString('ahr_ischanged_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.ischanged()'
-},
-{
-	'id' : 'isdeleted', 'label' : getString('ahr_isdeleted_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.isdeleted()'
-},
-{
-	'id' : 'isnew', 'label' : getString('ahr_isnew_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.isnew()'
-},
-{
 	'id' : 'phone_notify', 'label' : getString('ahr_phone_notify_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.phone_notify()'
 },
 {
-	'id' : 'pickup_lib', 'label' : getString('ahr_pickup_lib_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.pickup_lib()'
-},
-{
 	'id' : 'prev_check_time', 'label' : getString('ahr_prev_check_time_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.prev_check_time()'
-},
-{
-	'id' : 'request_time', 'label' : getString('ahr_request_time_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : true, 'fm_class' : 'ahr', 'fm_field_render' : '.request_time()'
 },
 {
 	'id' : 'requestor', 'label' : getString('ahr_requestor_label'), 'flex' : 1,

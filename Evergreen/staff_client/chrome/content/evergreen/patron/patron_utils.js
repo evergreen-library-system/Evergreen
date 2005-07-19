@@ -1,6 +1,7 @@
 sdump('D_TRACE','Loading patron_utils.js\n');
 
 function fake_patron() {
+	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	var p = new au(); 
 	p.family_name( 'Retrieving' ); 
 	p.checkouts( [] ); 
@@ -8,6 +9,20 @@ function fake_patron() {
 	p.credit_forward_balance('0.00');
 	p.bills = [];
 	return p;
+}
+
+function hold_status_as_text( status ) {
+	sdump('D_PATRON_UTILS',arg_dump(arguments));
+	if (typeof(status) == 'object') status = status.status();
+	var text;
+	switch(status) {
+		case "1" : text = getString('holds_status_waiting_for_copy'); break;
+		case "2" : text = getString('holds_status_waiting_for_capture'); break;
+		case "3" : text = getString('holds_status_in_transit'); break;
+		case "4" : text = getString('holds_status_available'); break;
+		default : text = "Eh?"; break;
+	}
+	return text;
 }
 
 function patron_get_full_name( au ) {
@@ -37,16 +52,21 @@ function patron_get_barcode( au ) {
 	return '???';
 }
 
-function patron_get_bills( au ) {
+function patron_get_bills( au, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
-		au.bills = ( user_request(   // FIXME: make bills a virtual field of au
+		var bills = user_request(
 			'open-ils.actor',
 			'open-ils.actor.user.transactions',
-			[ mw.G.auth_ses[0], au.id() ]
-		)[0] );
-		sdump('D_PATRON_UTILS','bills = ' + js2JSON(au.bills) + '\n');
-		return au.bills
+			[ mw.G.auth_ses[0], au.id() ],
+			f
+		)[0];
+
+		if (!f) {
+			sdump('D_PATRON_UTILS','bills = ' + js2JSON(bills) + '\n');
+			au.bills = bills;   // FIXME: make bills a virtual field of au
+			return bills;
+		}
 	} catch(E) {
 		sdump('D_ERROR',js2JSON(E) + '\n');
 		return null;
@@ -56,8 +76,7 @@ function patron_get_bills( au ) {
 
 function patron_get_bills_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au.bills ) patron_get_bills( au );
-	if (au.bills == null)
+	if (au.bills == null || au.bills == undefined)
 		return '???';
 	else {
 		var total = 0;
@@ -76,16 +95,21 @@ function patron_get_credit_total( au ) {
 	return '$' + au.credit_forward_balance();
 }
 
-function patron_get_checkouts( au ) {
+function patron_get_checkouts( au, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
-		au.checkouts( user_request(
+		var checkouts = user_request(
 			'open-ils.circ',
 			'open-ils.circ.actor.user.checked_out',
-			[ mw.G.auth_ses[0], au.id() ]
-		)[0] );
-		sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(au.checkouts()) + '\n');
-		return au.checkouts();
+			[ mw.G.auth_ses[0], au.id() ],
+			f
+		)[0];
+
+		if (!f) {
+			sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(au.checkouts()) + '\n');
+			au.checkouts( checkouts );
+			return checkouts;
+		}
 	} catch(E) {
 		sdump('D_ERROR',js2JSON(E) + '\n');
 		return null;
@@ -94,13 +118,13 @@ function patron_get_checkouts( au ) {
 
 function patron_get_checkouts_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au.checkouts()) patron_get_checkouts( au );
 	if (au.checkouts() == null)
 		return '???';
 	else
 		return au.checkouts().length;
 }
 
+// Need an API call or virtual field to determine this
 function patron_get_checkouts_overdue_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (! au.checkouts()) patron_get_checkouts( au );
@@ -118,16 +142,21 @@ function patron_get_checkouts_overdue_total( au ) {
 	return total;
 }
 
-function patron_get_holds( au ) {
+function patron_get_holds( au, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
-		au.hold_requests( user_request(
+		var hold_requests = user_request(
 			'open-ils.circ',
 			'open-ils.circ.holds.retrieve',
-			[ mw.G.auth_ses[0], au.id() ]
-		)[0] );
-		sdump('D_PATRON_UTILS','holds = ' + js2JSON(au.hold_requests()) + '\n');
-		return au.hold_requests();
+			[ mw.G.auth_ses[0], au.id() ],
+			f
+		)[0];
+
+		if (!f) {
+			sdump('D_PATRON_UTILS','holds = ' + js2JSON(au.hold_requests()) + '\n');
+			au.hold_requests( hold_requests );
+			return hold_requests;
+		}
 	} catch(E) {
 		sdump('D_ERROR',js2JSON(E) + '\n');
 		return null;
@@ -136,16 +165,35 @@ function patron_get_holds( au ) {
 
 function patron_get_holds_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au.hold_requests()) patron_get_holds( au );
 	if (au.hold_requests() == null)
 		return '???';
 	else
 		return au.hold_requests().length;
 }
 
+function patron_get_hold_status( hold, f ) {
+	sdump('D_PATRON_UTILS',arg_dump(arguments));
+	try {
+		var status = user_request(
+			'open-ils.circ',
+			'open-ils.circ.hold.status.retrieve',
+			[ mw.G.auth_ses[0], hold.id() ],
+			f
+		)[0];
+
+		if (!f) {
+			sdump('D_PATRON_UTILS','status = ' + status + '\n');
+			hold.status( status );
+			return status;
+		}
+	} catch(E) {
+		sdump('D_ERROR',js2JSON(E) + '\n');
+		return null;
+	}
+}
+
 function patron_get_holds_available_total( au ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (! au.hold_requests()) patron_get_holds( au );
 	var total = 0;
 	if ( (au.hold_requests() != null) && (typeof(au.hold_requests()) == 'object') ) {
 		for (var i = 0; i < au.hold_requests().length; i++) {
@@ -180,10 +228,10 @@ function patron_get_ident1_type_as_text( au ) {
 		au.ident_type() && 
 		mw.G.cit_hash &&
 		mw.G.cit_hash[ au.ident_type() ] && 
-		mw.G.cit_hash[ au.ident_type() ].value &&
-		mw.G.cit_hash[ au.ident_type() ].value()
+		mw.G.cit_hash[ au.ident_type() ].name &&
+		mw.G.cit_hash[ au.ident_type() ].name()
 	) {
-		return mw.G.cit_hash[ au.ident_type() ].value();
+		return mw.G.cit_hash[ au.ident_type() ].name();
 	} else {
 		return null;
 	}
@@ -196,10 +244,10 @@ function patron_get_ident2_type_as_text( au ) {
 		au.ident_type2() && 
 		mw.G.cit_hash &&
 		mw.G.cit_hash[ au.ident_type2() ] && 
-		mw.G.cit_hash[ au.ident_type2() ].value &&
-		mw.G.cit_hash[ au.ident_type2() ].value()
+		mw.G.cit_hash[ au.ident_type2() ].name &&
+		mw.G.cit_hash[ au.ident_type2() ].name()
 	) {
-		return mw.G.cit_hash[ au.ident_type2() ].value();
+		return mw.G.cit_hash[ au.ident_type2() ].name();
 	} else {
 		return null;
 	}
@@ -250,52 +298,25 @@ function patron_get_standing_css_style( value ) {
 function retrieve_patron_by_barcode( barcode, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (!barcode) return null;
-	return retrieve_patron_by_method( barcode, 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve_by_barcode', f );
+	return user_request( 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve_by_barcode', [ mw.G.auth_ses[0], barcode ], f )[0];
 }
 
 function retrieve_patron_by_id( id, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (!id) return null;
-	return retrieve_patron_by_method( id, 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve', f );
+	return user_request( 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve', [ mw.G.auth_ses[0], id ], f )[0];
 }
 
-function retrieve_patron_by_method( id, app, method, f ) {
-	sdump('D_PATRON_UTILS',arg_dump(arguments));
-	if (!id) return null;
-	if (f) {
-		try {
-			user_async_request(
-				app,
-				method,
-				[ mw.G.auth_ses[0], id ],
-				f
-			);
-		} catch(E) {
-			sdump('D_ERROR',E);
-		}
-	} else {
-		try {
-			var au = user_request(
-				app,
-				method,
-				[ mw.G.auth_ses[0], id ]
-			)[0];
-			return au;
-		} catch(E) {
-			sdump('D_ERROR',E);
-			return null;
-		}
-	}
-}
-
-function save_patron( au ) {
+function save_patron( au, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	try {
 		var result = user_request(
 			'open-ils.actor',
 			'open-ils.actor.patron.update',
-			[ mw.G.auth_ses[0], au ]
+			[ mw.G.auth_ses[0], au ],
+			f
 		)[0];
+		if (!f) sdump('D_PATRON_UTILS','result = ' + js2JSON(result) + '\n');
 		return result;
 	} catch(E) {
 		handle_error(E);

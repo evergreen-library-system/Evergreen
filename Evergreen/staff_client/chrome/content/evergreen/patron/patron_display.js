@@ -396,7 +396,15 @@ function patron_display_patron_holds_init(p) {
 		function (treeitem) {
 			sdump('D_PATRON_DISPLAY','Firing flesh_patron_holds_function\n');
 			var record_id = treeitem.getAttribute('record_id'); 
-			p.patron_holds.map_patron_holds_to_cols( p._patron.hold_requests()[ record_id ], treeitem );
+			var hold = p._patron.hold_requests()[ record_id ];
+			patron_get_hold_status(
+				hold,
+				function (request) {
+					var result = request.getResultObject();
+					hold.status( hold_status_as_text( result ) );
+					p.patron_holds.map_patron_holds_to_cols( hold, treeitem );
+				}
+			);
 		}
 	);
 	p.patron_holds.register_item_context_builder(
@@ -407,11 +415,34 @@ function patron_display_patron_holds_init(p) {
 			var patron_holds = get_list_from_tree_selection( p.patron_holds.paged_tree.tree );
 			sdump('D_PATRON_DISPLAY','patron_holds.length = ' + patron_holds.length + '\n');
 
+			/*** CANCEL HOLD ***/
+			var menuitem_ph_ce = p.patron_holds.paged_tree.w.document.createElement('menuitem');
+			p.patron_holds.paged_tree.popup.appendChild( menuitem_ph_ce );
+			menuitem_ph_ce.setAttribute('label',getString('circ.context_cancel_hold'));
+			menuitem_ph_ce.addEventListener(
+				'command',
+				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing cancel hold context for patron_holds\n');
+					for (var i = 0; i < patron_holds.length; i++) {
+						sdump('D_PATRON_DISPLAY','Firing cancel edit context\n');
+						var record_id = patron_holds[i].getAttribute('record_id');
+						var hold = p._patron.hold_requests()[ record_id ];
+						cancel_hold( hold );
+					}
+					p.refresh();
+				},
+				false
+			);
+
+			/* separator */
+			var menuitem_ph_s = p.patron_holds.paged_tree.w.document.createElement('menuseparator');
+			p.patron_holds.paged_tree.popup.appendChild( menuitem_ph_s );
+			
 			/*** COPY EDITOR ***/
-			var menuitem_pi_ce = p.patron_holds.paged_tree.w.document.createElement('menuitem');
-			p.patron_holds.paged_tree.popup.appendChild( menuitem_pi_ce );
-			menuitem_pi_ce.setAttribute('label',getString('circ.context_edit'));
-			menuitem_pi_ce.addEventListener(
+			var menuitem_ph_ce = p.patron_holds.paged_tree.w.document.createElement('menuitem');
+			p.patron_holds.paged_tree.popup.appendChild( menuitem_ph_ce );
+			menuitem_ph_ce.setAttribute('label',getString('circ.context_edit'));
+			menuitem_ph_ce.addEventListener(
 				'command',
 				function (ev) {
 					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_holds\n');
@@ -423,10 +454,10 @@ function patron_display_patron_holds_init(p) {
 			);
 
 			/*** OPAC ***/
-			var menuitem_pi_o = p.patron_holds.paged_tree.w.document.createElement('menuitem');
-			p.patron_holds.paged_tree.popup.appendChild( menuitem_pi_o );
-			menuitem_pi_o.setAttribute('label',getString('circ.context_opac'));
-			menuitem_pi_o.addEventListener(
+			var menuitem_ph_o = p.patron_holds.paged_tree.w.document.createElement('menuitem');
+			p.patron_holds.paged_tree.popup.appendChild( menuitem_ph_o );
+			menuitem_ph_o.setAttribute('label',getString('circ.context_opac'));
+			menuitem_ph_o.addEventListener(
 				'command',
 				function (ev) {
 					sdump('D_PATRON_DISPLAY','Firing opac context for patron_holds\n');

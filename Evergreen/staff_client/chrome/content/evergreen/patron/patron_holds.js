@@ -34,31 +34,44 @@ function patron_holds_init(p) {
 	return p;
 }
 
-function patron_holds_tree_map_patron_holds_to_cols(p, patron_holds, treeitem) {
+function patron_holds_tree_map_patron_holds_to_cols(p, patron_hold, treeitem) {
 	sdump('D_PATRON_HOLDS',arg_dump(arguments,{1:true}));
 	sdump('D_TRACE_ENTER',arg_dump(arguments));
-	var cols = new Array();
-	for (var i = 0; i < p.patron_holds_cols.length; i++) {
-		var hash = p.patron_holds_cols[i];
-		sdump('D_PATRON_HOLDS','Considering ' + js2JSON(hash) + '\n');
-		var obj_string = 'patron_holds';
-		switch( hash.fm_class ) {
-			case 'acp' : obj_string = 'patron_holds.copy'; break;
-			case 'circ' : obj_string = 'patron_holds.circ'; break;
-			case 'mvr' : obj_string = 'patron_holds.record'; break;
-		}
-		var cmd = parse_render_string( obj_string, hash.fm_field_render );
-		sdump('D_PATRON_HOLDS','cmd = ' + cmd + '\n');
-		var col = '';
-		try {
-			col = eval( cmd );
-			sdump('D_PATRON_HOLDS','eval = ' + col + '\n');
-		} catch(E) {
-			sdump('D_ERROR',js2JSON(E) + '\n');
-		}
-		cols.push( col );
+
+	var app; var method;
+	switch(patron_hold.hold_type()) {
+		case 'M': app = 'open-ils.search'; method = 'open-ils.search.biblio.metarecord.mods_slim.retrieve'; break;
+		default : app = 'open-ils.search'; method = 'open-ils.search.biblio.record.mods_slim.retrieve'; break;
 	}
-	sdump('D_PATRON_HOLDS','cols = ' + js2JSON(cols) + '\n');
-	p.paged_tree.map_cols_to_treeitem( cols, treeitem );
+
+	user_request(
+		app,
+		method,
+		[ patron_hold.target() ],
+		function (request) {			
+			var mvr = request.getResultObject();
+			var cols = new Array();
+			for (var i = 0; i < p.patron_holds_cols.length; i++) {
+				var hash = p.patron_holds_cols[i];
+				sdump('D_PATRON_HOLDS','Considering ' + js2JSON(hash) + '\n');
+				var obj_string = 'patron_hold';
+				switch( hash.fm_class ) {
+					case 'mvr' : obj_string = 'mvr'; break;
+				}
+				var cmd = parse_render_string( obj_string, hash.fm_field_render );
+				sdump('D_PATRON_HOLDS','cmd = ' + cmd + '\n');
+				var col = '';
+				try {
+					col = eval( cmd );
+					sdump('D_PATRON_HOLDS','eval = ' + col + '\n');
+				} catch(E) {
+					sdump('D_ERROR',js2JSON(E) + '\n');
+				}
+				cols.push( col );
+			}
+			sdump('D_PATRON_HOLDS','cols = ' + js2JSON(cols) + '\n');
+			p.paged_tree.map_cols_to_treeitem( cols, treeitem );
+		}
+	);
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 }

@@ -79,11 +79,36 @@ function patron_search_patron_search_results_init(p) {
 		return function (request) {
 			/* Set new patron */
 			if (count == patron_select_async_count) {
+
 				p._patron = request.getResultObject();
-				render_fm( p.w.document, { 'au' : p._patron } );
-				p.retrieve_button.disabled = false;
+
+				patron_get_checkouts( p._patron, function(req) {
+	
+					if (count == patron_select_async_count) {
+
+						p._patron.checkouts( req.getResultObject() );
+
+						patron_get_holds( p._patron, function(req) {
+
+							if (count == patron_select_async_count) {
+
+								p._patron.hold_requests( req.getResultObject() );
+								
+								patron_get_bills( p._patron, function(req) {
+
+									if (count == patron_select_async_count) {
+
+										p._patron.bills = req.getResultObject();
+										render_fm(p.w.document,{'au':p._patron});
+										p.retrieve_button.disabled = false;
+									}
+								});
+							}
+						});
+					}
+				});	
 			};
-		}
+		};
 	}
 
 	p.search_results.register_patron_select_callback(
