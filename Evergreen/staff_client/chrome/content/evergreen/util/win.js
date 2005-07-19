@@ -21,7 +21,7 @@ function s_alert(s) {
 	// particular button. The last two arguments are for an optional check box.
 	var check = {};
 	sdump('D_WIN','s_alert: ' + s);
-	promptService.confirmEx(window,"ALERT",
+	var rv = promptService.confirmEx(window,"ALERT",
 		s,
 		flags, 
 		"Enter", null, null, 
@@ -30,8 +30,50 @@ function s_alert(s) {
 	);
 	if (!check.value) {
 		snd_bad();
-		s_alert(s);
+		return s_alert(s);
 	}
+	return rv;
+}
+
+function yns_alert(s,a,b,c) {
+	// alert() replacement, intended to stop barcode scanners from "scanning through" the dialog
+
+	if (!a) a = "Yes";
+	if (!b) b = "No";
+	if (!c) c = "Maybe";
+
+	// get a reference to the prompt service component.
+	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+		.getService(Components.interfaces.nsIPromptService);
+
+	// set the buttons that will appear on the dialog. It should be
+	// a set of constants multiplied by button position constants. In this case,
+	// three buttons appear, Save, Cancel and a custom button.
+	//var flags=promptService.BUTTON_TITLE_OK * promptService.BUTTON_POS_0 +
+	//	promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1 +
+	//	promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_2;
+	var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
+		promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1 +
+		promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_2;
+
+	// display the dialog box. The flags set above are passed
+	// as the fourth argument. The next three arguments are custom labels used for
+	// the buttons, which are used if BUTTON_TITLE_IS_STRING is assigned to a
+	// particular button. The last two arguments are for an optional check box.
+	var check = {};
+	sdump('D_WIN','yns_alert: ' + s);
+	var rv = promptService.confirmEx(window,"ALERT",
+		s,
+		flags, 
+		a, b, c, 
+		"Check this box to confirm this message", 
+		check
+	);
+	if (!check.value) {
+		snd_bad();
+		return yns_alert(s,a,b,c);
+	}
+	return rv;
 }
 
 function new_window(chrome,params) {
