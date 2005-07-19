@@ -168,15 +168,6 @@ COMMENT ON TABLE actor.usr_setting IS $$
  */
 $$;
 
-
-CREATE TABLE actor.profile (
-	id		SERIAL	PRIMARY KEY,
-	name		TEXT	NOT NULL UNIQUE
-);
-INSERT INTO actor.profile (name) VALUES ('ADULT');
-INSERT INTO actor.profile (name) VALUES ('JUVENILE');
-INSERT INTO actor.profile (name) VALUES ('STAFF');
-
 CREATE TABLE actor.stat_cat (
 	id		SERIAL  PRIMARY KEY,
 	owner		INT     NOT NULL,
@@ -353,13 +344,6 @@ CREATE INDEX actor_org_unit_mailing_address_idx ON actor.org_unit (mailing_addre
 CREATE INDEX actor_org_unit_holds_address_idx ON actor.org_unit (holds_address);
 
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'PINES', 'Georgia PINES Consortium');
-
-CREATE TABLE actor.usr_access_entry (
-	id		BIGSERIAL	PRIMARY KEY,
-	usr		INT		NOT NULL REFERENCES actor.usr (id),
-	org_unit	INT		NOT NULL REFERENCES actor.org_unit (id),
-	CONSTRAINT usr_once_per_ou UNIQUE (usr,org_unit)
-);
 
 CREATE TABLE actor.usr_address (
 	id		SERIAL	PRIMARY KEY,
