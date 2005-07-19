@@ -218,7 +218,7 @@ if (my $action = $cgi->param('action')) {
 
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
 
-			print	"</table></form><hr/>";
+			print	"</table></form><hr/><table cellspacing='20'><tr>";
 
 
 			#-------------------------------------------------------------------------
@@ -244,8 +244,10 @@ if (my $action = $cgi->param('action')) {
 						id		=> $addr?$addr->id:'',
 				);
 
+				print '</tr><tr>' if ($a eq 'holds_address');
 				print <<"				TABLE";
 
+<td>
 <form method='POST'>
 <table class='table_class'>
 	<tr>
@@ -288,12 +290,12 @@ if (my $action = $cgi->param('action')) {
 <input type='hidden' name='addr_type' value='$a'>
 <input type='hidden' name='id' value='$node'>
 <input type='submit' name='action' value='Save Address'>
-</form>
+</form></td>
 
 				TABLE
 			}
 
-			print "<h2>New Child</h2>";
+			print "<tr></table><hr><h2>New Child</h2>";
 	
 			print	"<form method='POST'>".
 				"<table class='table_class'>\n";
