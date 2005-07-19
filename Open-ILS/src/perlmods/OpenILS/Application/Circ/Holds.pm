@@ -168,6 +168,7 @@ is the requestor and if the requestor is different from the user, then
 the requestor must have VIEW_HOLDS permissions.
 NOTE
 
+
 sub retrieve_holds {
 	my($self, $client, $login_session, $user_id) = @_;
 
@@ -181,8 +182,9 @@ sub retrieve_holds {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $req = $session->request(
-		"open-ils.storage.direct.action.hold_request.search.usr.atomic",
-		$user_id );
+		"open-ils.storage.direct.action.hold_request.search.atomic",
+		"usr" =>  $user_id , { order_by => "request_time" });
+
 	my $h = $req->gather(1);
 	$session->disconnect();
 	return $h;
@@ -196,12 +198,20 @@ __PACKAGE__->register_method(
 	Cancels the specified hold.  The login session
 	is the requestor and if the requestor is different from the usr field
 	on the hold, the requestor must have CANCEL_HOLDS permissions.
+	the hold may be either the hold object or the hold id
 	NOTE
 
 sub cancel_hold {
 	my($self, $client, $login_session, $hold) = @_;
 
 	my $user = $apputils->check_user_session($login_session);
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	
+	if(!ref($hold)) {
+		$hold = $session->request(
+			"open-ils.storage.direct.action.hold_request.retrieve", $hold)->gather(1);
+	}
 
 	if($user->id ne $hold->usr) {
 		if($apputils->check_user_perms($user->id, $user->home_ou, "CANCEL_HOLDS")) {
@@ -212,7 +222,6 @@ sub cancel_hold {
 	use Data::Dumper;
 	warn "Cancelling hold: " . Dumper($hold) . "\n";
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $req = $session->request(
 		"open-ils.storage.direct.action.hold_request.delete",
 		$hold );
@@ -255,6 +264,69 @@ sub update_hold {
 	warn "[$h] returned from hold_request update\n";
 	$session->disconnect();
 	return $h;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_hold_status",
+	api_name	=> "open-ils.circ.hold.status.retrieve",
+	notes		=> <<"	NOTE");
+	Calculates the current status of the hold.
+	the requestor must have VIEW_HOLDS permissions if the hold is for a user
+	other than the requestor.
+	Returns -1  on error (for now)
+	Returns 1 for 'waiting for copy to become available'
+	Returns 2 for 'waiting for copy capture'
+	Returns 3 for 'in transit'
+	Returns 4 for 'arrived'
+	NOTE
+
+sub retrieve_hold_status {
+	my($self, $client, $login_session, $hold_id) = @_;
+
+	my $user = $apputils->check_user_session($login_session);
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	my $hold = $session->request(
+		"open-ils.storage.direct.action.hold_request.retrieve", $hold_id )->gather(1);
+	return -1 unless $hold; # should be an exception
+
+
+	if($user->id ne $hold->usr) {
+		if($apputils->check_user_perms($user->id, $user->home_ou, "VIEW_HOLDS")) {
+			return OpenILS::Perm->new("VIEW_HOLDS");
+		}
+	}
+	
+	return 1 unless (defined($hold->current_copy));
+
+	#return 2 unless (defined($hold->capture_time));
+
+	my $copy = $session->request(
+		"open-ils.storage.direct.asset.copy.retrieve", $hold->current_copy )->gather(1);
+	return 1 unless $copy; # should be an exception
+
+	use Data::Dumper;
+	warn "Hold Copy in status check: " . Dumper($copy) . "\n\n";
+
+	return 4 if ($hold->capture_time and $copy->circ_lib eq $hold->pickup_lib);
+
+	my $transit = _fetch_hold_transit($session, $hold->id);
+	return 4 if(ref($transit) and defined($transit->dest_recv_time) ); 
+
+	return 3 if defined($hold->capture_time);
+
+	return 2;
+}
+
+
+sub _fetch_hold_transit {
+	my $session = shift;
+	my $holdid = shift;
+	return $session->request(
+		"open-ils.storage.direct.action.hold_transit_copy.search.hold",
+		$holdid )->gather(1);
 }
 
 

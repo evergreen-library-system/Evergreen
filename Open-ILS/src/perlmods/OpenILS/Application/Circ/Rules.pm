@@ -426,7 +426,7 @@ sub circulate {
 	$circ->due_date($due_date);
 
 	if($isrenew) {
-		warn "Renewing circ....";
+		warn "Renewing circ.... ".$circ->id ." and setting num renews to " . $numrenews - 1 . "\n";
 		$circ->renewal(1);
 		$circ->clear_id;
 		$circ->renewal_remaining($numrenews - 1);
@@ -591,10 +591,17 @@ sub build_circ_object {
 
 }
 
+
 __PACKAGE__->register_method(
 	method	=> "checkin",
 	api_name	=> "open-ils.circ.checkin.barcode",
-);
+	notes		=> <<"	NOTES");
+	Checks in based on barcode
+	Returns record, status, text, circ, copy, route_to 
+	'status' values:
+		0 = OK
+		1 = 'copy required to fulfil a hold'
+	NOTES
 
 sub checkin {
 	my( $self, $client, $user_session, $barcode, $isrenewal ) = @_;
@@ -603,9 +610,12 @@ sub checkin {
 	my $copy;
 	my $circ;
 
+	my $transaction;
+	my $user = $apputils->check_user_session($user_session);
+
 	try {
 		my $session = $apputils->start_db_session();
-	
+			
 		warn "retrieving copy for checkin\n";
 
 		if(!$shelving_locations) {
@@ -621,36 +631,39 @@ sub checkin {
 			$barcode );
 		$copy = $copy_req->gather(1)->[0];
 		if(!$copy) {
-			$client->respond_complete(
-					OpenILS::EX->new("UNKNOWN_BARCODE")->ex);
+			$client->respond_complete(OpenILS::EX->new("UNKNOWN_BARCODE")->ex);
 		}
+
+		
 
 		$copy->status(0);
 	
 		# find circ's where the transaction is still open for the
 		# given copy.  should only be one.
-		warn "Retrieving circ for checking\n";
+		warn "Retrieving circ for checkin\n";
 		my $circ_req = $session->request(
 			"open-ils.storage.direct.action.circulation.search.atomic",
 			{ target_copy => $copy->id, xact_finish => undef } );
 	
 		$circ = $circ_req->gather(1)->[0];
+
 	
 		if(!$circ) {
 			$err = "No circulation exists for the given barcode";
 
 		} else {
+
+			$transaction = $session->request(
+				"open-ils.storage.direct.money.billable_transaction_summary.retrieve", $circ->id)->gather(1);
 	
 			warn "Checking in circ ". $circ->id . "\n";
 		
 			$circ->stop_fines("CHECKIN");
 			$circ->stop_fines("RENEW") if($isrenewal);
-
-			$circ->xact_finish("now");
+			$circ->xact_finish("now") if($transaction->balance_owed <= 0 );
 		
 			my $cp_up = $session->request(
-				"open-ils.storage.direct.asset.copy.update",
-				$copy );
+				"open-ils.storage.direct.asset.copy.update", $copy );
 			$cp_up->gather(1);
 		
 			my $ci_up = $session->request(
@@ -669,10 +682,27 @@ sub checkin {
 	};
 	
 	if($err) {
+
 		return { record => undef, status => -1, text => $err };
 
 	} else {
 
+		my $status = "0";
+		my $status_text = "OK";
+
+		# check to see if the copy is needed to fulfil a hold
+		my $r = $apputils->simple_scalar_request(
+			"open-ils.storage", 
+			"open-ils.storage.direct.action.hold_copy_map.search.target_copy.atomic",
+			$copy->id );
+
+		if(@$r != 0) { 
+			if( $user->id ne $circ->usr ) {
+				$status = "1";
+				$status_text = "Copy needed to fulfill hold";
+			}
+		}
+	
 		my $record = $apputils->simple_scalar_request(
 			"open-ils.storage",
 			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
@@ -684,8 +714,8 @@ sub checkin {
 
 		return { 
 			record => $mods, 
-			status => 0, 
-			text => "OK", 
+			status => $status,
+			text => $status_text,
 			circ => $circ,
 			copy => $copy,
 			route_to => $shelving_locations->{$copy->location} 
@@ -727,11 +757,30 @@ sub renew {
 	my $user = $apputils->check_user_session($login_session);
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $copy = _grab_copy_by_id($session, $circ->target_copy);
+
+	my $r = $session->request(
+		"open-ils.storage.direct.action.hold_copy_map.search.target_copy.atomic",
+		$copy->id )->gather(1);
+
+	if(@$r != 0) { 
+		if( $user->id ne $circ->usr ) {
+			if($apputils->check_user_perms($user->id, $user->home_ou, "RENEW_HOLD_OVERRIDE")) {
+				return OpenILS::Perm->new("RENEW_HOLD_OVERRIDE");
+			}
+		}
+
+		return OpenILS::EX->new("COPY_NEEDED_FOR_HOLD")->ex; 
+	}
+
 
 	if(!ref($circ)) {
 		$circ = $session->request(
 			"open-ils.storage.direct.action.circulation.retrieve", $circ )->gather(1);
 	}
+
+	my $iid = $circ->id;
+	warn "Attempting to renew circ " . $iid . "\n";
 
 	if($user->id ne $circ->usr) {
 		if($apputils->check_user_perms($user->id, $user->home_ou, "RENEW_CIRC")) {
@@ -740,91 +789,29 @@ sub renew {
 	}
 
 	if($circ->renewal_remaining <= 0) {
-		return OpenILS::EX->new("MAX_RENEWALS_REACHED")->ex;
-	}
+		return OpenILS::EX->new("MAX_RENEWALS_REACHED")->ex; }
+
+
 
 	# XXX XXX See if the copy this circ points to is needed to fulfill a hold!
 	# XXX check overdue..?
 
-	my $copy = _grab_copy_by_id($session, $circ->target_copy);
 	my $checkin = $self->method_lookup("open-ils.circ.checkin.barcode");
 	my ($status) = $checkin->run($login_session, $copy->barcode, 1);
 	return $status if ($status->{status} ne "0"); 
+	warn "Renewal checkin completed for $iid\n";
 
 	my $permit_checkout = $self->method_lookup("open-ils.circ.permit_checkout");
 	($status) = $permit_checkout->run($login_session, $copy->barcode, $circ->usr, "renew");
 	return $status if($status->{status} ne "0");
+	warn "Renewal permit checkout completed for $iid\n";
 
 	my $checkout = $self->method_lookup("open-ils.circ.checkout.barcode");
 	($status) = $checkout->run($login_session, $copy->barcode, $circ->usr, 1, $circ->renewal_remaining);
+	warn "Renewal checkout completed for $iid\n";
 	return $status;
 
 }
-
-
-=head
-
-	my $renew_objects = gather_renew_objects( $session, $circ );
-	if(!ref($renew_objects)) {
-		if($renew_objects == NO_COPY) {
-			return { 
-				status => NO_COPY, 
-				text => "No copy available with id " . $circ->target_copy };
-		}
-	}
-
-	$stash = Template::Stash->new(
-			circ_objects			=> $renew_objects,
-			result					=> []);
-
-	$stash->set("run_block", $permit_renew_script);
-
-	# grab the number of copies checked out by the patron as
-	# well as the total fines
-	my $summary = _grab_patron_summary($session, $renew_objects->{patron}->id);
-	$summary->[0] ||= 0;
-	$summary->[1] ||= 0.0;
-
-	$stash->set("patron_copies", $summary->[0] );
-	$stash->set("patron_fines", $summary->[1] );
-
-	# run the permissibility script
-	run_script();
-
-	return $stash->get("result");
-
-}
-
-
-
-sub gather_renew_objects {
-	my($session, $circ) = @_;
-
-	_grab_patron_standings($session);
-	_grab_patron_profiles($session);
-
-	# flesh me
-	my $copy = _grab_copy_by_id($session, $circ->target_copy);
-	if(!$copy) { return NO_COPY; }
-
-	my $renew_objects = {};
-	$renew_objects->{standings} = $patron_standings;
-	$renew_objects->{copy}		= $copy;
-	$renew_objects->{circ}		= $circ;
-	$renew_objects->{title}		= _grab_title_by_copy($session, $copy->id);
-	my $patron						= _grab_user($session, $circ->usr);
-
-	$copy->status( $copy->status->name );
-	$patron->standing($patron_standings->{$patron->standing()});
-	$patron->profile( $patron_profiles->{$patron->profile});
-
-	$renew_objects->{patron}		= $patron;
-
-	return $renew_objects;
-}
-
-=cut
-
 
 
 

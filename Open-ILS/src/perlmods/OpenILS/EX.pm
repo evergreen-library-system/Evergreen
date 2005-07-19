@@ -18,6 +18,7 @@ my %ex_types = (
 	PERMISSION_DENIED						=> 7,
 	UNKNOWN_USER							=> 8, 
 	MAX_RENEWALS_REACHED					=> 9,
+	COPY_NEEDED_FOR_HOLD					=> 10,
 );
 
 use overload ( '""' => sub { $_[0]->ex()->err_msg(); } );

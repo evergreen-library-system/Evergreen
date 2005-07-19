@@ -40,10 +40,19 @@ sub checkouts_by_user {
 
 	if(!$user_id) { $user_id = $user_obj->id(); }
 
+#	my $circs = $session->request(
+#		"open-ils.storage.direct.action.circulation.search.atomic",
+#      { 
+#			usr => $user_id, 
+#			xact_finish => undef, 
+#			stop_fines => [ undef, "MAXFINES", "LONGOVERDUE" ],
+#		}, 
+#		{ order_by => "due_date" } );
+
 	my $circs = $session->request(
-		"open-ils.storage.direct.action.circulation.search.atomic",
-      { usr => $user_id, xact_finish => undef } );
+		"open-ils.storage.direct.action.open_circulation.search.usr.atomic", $user_id );
 	$circs = $circs->gather(1);
+
 
 	my @results;
 	for my $circ (@$circs) {
@@ -60,11 +69,6 @@ sub checkouts_by_user {
 
 		$copy = $copy->gather(1);
 		$record = $record->gather(1);
-
-#		my $due_date = 
-#			OpenSRF::Utils->interval_to_seconds( 
-#		$circ->duration ) + int(time());
-#		$circ->due_date($due_date);
 
 		use Data::Dumper;
 		warn Dumper $circ;
