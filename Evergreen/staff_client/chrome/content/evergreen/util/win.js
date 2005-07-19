@@ -35,12 +35,8 @@ function s_alert(s) {
 	return rv;
 }
 
-function yns_alert(s,a,b,c) {
+function yns_alert(s,title,b1,b2,b3,c) {
 	// alert() replacement, intended to stop barcode scanners from "scanning through" the dialog
-
-	if (!a) a = "Yes";
-	if (!b) b = "No";
-	if (!c) c = "Maybe";
 
 	// get a reference to the prompt service component.
 	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
@@ -62,16 +58,10 @@ function yns_alert(s,a,b,c) {
 	// particular button. The last two arguments are for an optional check box.
 	var check = {};
 	sdump('D_WIN','yns_alert: ' + s);
-	var rv = promptService.confirmEx(window,"ALERT",
-		s,
-		flags, 
-		a, b, c, 
-		"Check this box to confirm this message", 
-		check
-	);
-	if (!check.value) {
+	var rv = promptService.confirmEx(window,title, s, flags, b1, b2, b3, c, check);
+	if (c && !check.value) {
 		snd_bad();
-		return yns_alert(s,a,b,c);
+		return yns_alert(s,title,b1,b2,b3,c);
 	}
 	return rv;
 }
