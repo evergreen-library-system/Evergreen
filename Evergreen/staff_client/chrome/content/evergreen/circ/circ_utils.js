@@ -68,7 +68,7 @@ function checkin_by_copy_barcode(barcode, f) {
 		)[0];
 		if (!f) {
 			sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
-			if (check.status != 0) s_alert('D_CHECKIN',check.text );
+			if (check.status != 0) s_alert(check.text );
 		}
 		return check;
 	} catch(E) {
