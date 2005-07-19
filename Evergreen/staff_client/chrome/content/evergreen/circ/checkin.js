@@ -55,7 +55,7 @@ function checkin_checkin_items_init(p) {
 			if (check) {
 				sdump('D_CHECKIN','check = ' + check + '\n' + pretty_print( js2JSON( check ) ) + '\n');
 
-				if (check.status == 0) {
+				if (check.status > -1) {
 					checkins.push( check );
 					p.checkin_items.add_checkin_items( [ checkins.length - 1 ] );
 				} else {
