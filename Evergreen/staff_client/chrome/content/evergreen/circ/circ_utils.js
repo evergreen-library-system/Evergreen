@@ -9,13 +9,18 @@ function is_barcode_valid( barcode ) {
 
 function cancel_hold( hold ) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
-	var result = user_request(
-		'open-ils.circ',
-		'open-ils.circ.hold.cancel',
-		[ mw.G.auth_ses[0], hold.id() ]
-	)[0];
-	sdump('D_CIRC_UTILS','result = ' + result + '\n');
-	return result;
+	try {
+		var result = user_request(
+			'open-ils.circ',
+			'open-ils.circ.hold.cancel',
+			[ mw.G.auth_ses[0], hold.id() ]
+		)[0];
+		sdump('D_CIRC_UTILS','result = ' + result + '\n');
+		return result;
+	} catch(E) {
+		handle_error(E);
+		return null;
+	}
 }
 
 function checkout_permit(barcode, patron_id, num_of_open_async_checkout_requests, f) {
