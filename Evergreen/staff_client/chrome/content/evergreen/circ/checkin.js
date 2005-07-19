@@ -58,10 +58,8 @@ function checkin_checkin_items_init(p) {
 				if (check.status == 0) {
 					checkins.push( check );
 					p.checkin_items.add_checkin_items( [ checkins.length - 1 ] );
-				} else if (check.status < 0) {
-					s_alert( check.text );
-				} else if (check.status > 0) {
-					s_alert( check.text );
+				} else {
+					// should be handled already
 				}
 
 				tb.value = ''; tb.focus();

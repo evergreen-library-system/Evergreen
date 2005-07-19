@@ -171,7 +171,7 @@ function patron_display_patron_items_init(p) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var copy = p._patron.checkouts()[ idx ].copy;
-							alert( js2JSON(checkin_by_copy_barcode( copy.barcode() )) );
+							checkin_by_copy_barcode( copy.barcode() );
 							p.refresh();
 						} catch(E) {
 							alert(E);
