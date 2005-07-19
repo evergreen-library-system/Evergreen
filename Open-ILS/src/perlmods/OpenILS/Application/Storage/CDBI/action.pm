@@ -49,6 +49,18 @@ __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
 
 #-------------------------------------------------------------------------------
 
+package action::open_circulation;
+use base qw/action/;
+__PACKAGE__->table('action_open_circulation');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
+				     duration duration_rule renewal_remaining
+				     recuring_fine_rule recuring_fine stop_fines
+				     max_fine max_fine_rule fine_interval
+				     stop_fines xact_finish due_date renewal/);
+
+#-------------------------------------------------------------------------------
+
 package action::hold_request;
 use base qw/action/;
 __PACKAGE__->table('action_hold_request');

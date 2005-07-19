@@ -61,6 +61,10 @@ sub _init {
 		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
 		'Fieldmapper::action::circulation'		=> { hint		=> 'circ',
 								     proto_fields	=> {} },
+
+		'Fieldmapper::action::open_circulation'		=> { hint	=> 'aoc',
+								     readonly	=> 1 },
+
 		'Fieldmapper::actor::user'			=> { hint		=> 'au',
 								     proto_fields	=> { cards		=> 1,
 								     			     survey_responses	=> 1,

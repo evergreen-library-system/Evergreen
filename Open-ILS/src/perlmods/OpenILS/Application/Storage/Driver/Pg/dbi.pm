@@ -75,6 +75,11 @@
 	action::circulation->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
+	package action::open_circulation;
+	
+	action::open_circulation->table( 'action.open_circulation' );
+
+	#---------------------------------------------------------------------
 	package action::survey;
 	
 	action::survey->table( 'action.survey' );
