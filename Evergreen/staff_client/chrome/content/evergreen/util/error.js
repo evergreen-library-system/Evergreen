@@ -21,6 +21,7 @@ var sdump_levels = {
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
 	'D_GRID_LIST' : false,
+	'D_HTML_TABLE' : true,
 	'D_TAB' : false,
 
 	'D_AUTH' : false,
@@ -45,7 +46,7 @@ var sdump_levels = {
 
 	'D_CAT' : false,
 
-	'D_PATRON_UTILS' : true,
+	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,
 
 	'D_EXPLODE' : false,

@@ -6,7 +6,6 @@
 	<script>mw.sdump('D_TRACE','Loading patron_display_overlay.xul\n');</script>
 
 	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/main/grid_list_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_items_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_checkout_items_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?>
@@ -58,7 +57,7 @@
 	</groupbox>
 	<groupbox id="cssdgb4">
 		<caption id="cssdgb4c" label="&patron_navbar.bills;"/>
-		<box id="GridList_main" />
+		<box id="PatronBills_main" />
 	</groupbox>
 	<box id="PatronEdit_main"><label value="edit" /></box>
 	<box id="PatronInfo_main"><label value="info" /></box>

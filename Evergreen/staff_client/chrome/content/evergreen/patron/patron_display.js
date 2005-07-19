@@ -18,7 +18,7 @@ function patron_display_init(p) {
 	patron_display_patron_holds_init(p);
 
 	// gives: p.patron_bills, p.redraw_patron_bills
-	//patron_display_patron_bills_init(p);
+	patron_display_patron_bills_init(p);
 
 	p.set_patron = function (au) {
 		return p._patron = au;
@@ -29,7 +29,7 @@ function patron_display_init(p) {
 		p.redraw_patron_checkout_items();
 		p.redraw_patron_items();
 		p.redraw_patron_holds();
-		//p.redraw_patron_bills();
+		p.redraw_patron_bills();
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
 
