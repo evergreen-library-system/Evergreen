@@ -68,7 +68,35 @@ function checkin_by_copy_barcode(barcode, f) {
 		)[0];
 		if (!f) {
 			sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
-			if (check.status != 0) s_alert(check.text );
+			if (check.status != 0) {
+				switch(check.status) {
+					case 1: /* possible hold capture */
+						var rv = yns_alert(
+							check.text,
+							'Check Check In Interrupt',
+							"Capture",
+							"Don't Capture",
+							null,
+							"Check here to confirm this message"
+						);
+						switch(rv) {
+							case 0: /* capture */
+							try {
+								capture_hold( barcode );
+								check.text = 'Captured for Hold';
+
+							} catch(E) { sdump('D_ERROR',E + '\n'); }
+							break;
+							case 1: /* don't capture */
+
+								check.text = 'Not Captured for Hold';
+							break;
+						}
+					break;
+
+					default: s_alert(check.text ); break;
+				}
+			}
 		}
 		return check;
 	} catch(E) {
