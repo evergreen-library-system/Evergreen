@@ -15,7 +15,7 @@
 		<frameset cols='100%'>
 
 			<frame
-				style			= "border:0px;" 
+				style			= "border:0px; overflow:auto" 
 				frameborder	= '0' 
 				scrolling	= 'yes'
 				name			= 'appframe' 

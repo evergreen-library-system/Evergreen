@@ -21,7 +21,7 @@
 
 			WRAPPER html/iframe
 				frameborder	= '0' 
-				style       = 'border:none;'
+				style       = 'border:none; overflow:auto'
 				scrolling	= 'yes'
            	width       = '100%'
 				#height		= '500' 

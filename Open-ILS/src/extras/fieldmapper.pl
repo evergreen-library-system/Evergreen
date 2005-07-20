@@ -10,7 +10,7 @@ my $web = $ARGV[0];
 # List of classes needed by the opac
 my @web_hints = qw/ex mvr au aou aout asv asva asvr asvq 
 		circ acp acpl acn ccs perm_ex ahn ahr aua ac 
-		actscecm crcd crmf crrf mus mbts/;
+		actscecm crcd crmf crrf mus mbts aoc aus/;
 
 print <<JS;
 
@@ -20,6 +20,8 @@ print <<JS;
 //  ----------------------------------------------------------------
 
 function Fieldmapper() {}
+
+var errorstr = "Attempt to build fieldmapper object with non-array";
 
 Fieldmapper.prototype.clone = function() {
 	var obj = new this.constructor();
@@ -50,13 +52,11 @@ Fieldmapper.prototype.clone = function() {
 	return obj;
 }
 
-
-
-function FieldmapperException(message) {
+function FMEX(message) {
 	this.message = message;
 }
 
-FieldmapperException.toString = function() {
+FMEX.toString = function() {
 	return "FieldmapperException: " + this.message + "\\n";
 
 }
@@ -83,11 +83,8 @@ function $short_name(a) {
 	this.classname = "$short_name";
 	this._isfieldmapper = true;
 	if(a) { 
-		if( a.constructor == Array) 
-			this.a = a;  
-		else
-			throw new FieldmapperException(
-				"Attempt to build fieldmapper object with non-array");
+		if( a.constructor == Array) this.a = a;  
+		else throw new FMEX(errorstr);
 	} else this.a = [];
 }
 
@@ -99,7 +96,7 @@ for my $field (keys %{$map->{$object}->{fields}}) {
 my $position = $map->{$object}->{fields}->{$field}->{position};
 
 print <<JS;
-$short_name.prototype.$field = function(n) {if(arguments.length == 1) this.a[$position] = n; return this.a[$position]; }
+$short_name.prototype.$field=function(n){if(arguments.length == 1)this.a[$position]=n;return this.a[$position];}
 JS
 
 }

@@ -26,6 +26,7 @@ MyOPACSPage.prototype.draw = function(type) {
 
 	this.infoPane = getById("my_opac_info_pane");
 	this.infoTable = getById("my_opac_info_table");
+
 	/*
 	removeChildren(this.infoPane);
 	removeChildren(this.infoTable);
@@ -98,18 +99,18 @@ MyOPACSPage.prototype.drawFines = function() {
 	removeChildren(this.infoPane);
 	this.infoPane.appendChild(this.infoTable);
 	this.setLink(this.finesCell);
+	this._drawFines();
 }
 
 function _drawCheckedOut(obj, data) {
 
 	if(data == null) return;
-	//obj.infoPane.appendChild(obj.infoTable);
 	var circRow = obj.infoTable.insertRow(obj.infoTable.rows.length);
 
-	var tcell = circRow.insertCell(circRow.cells.length)
-	tcell.appendChild(mktext("Title"));
 	var dcell = circRow.insertCell(circRow.cells.length);
 	dcell.appendChild(mktext("Due Date"));
+	var tcell = circRow.insertCell(circRow.cells.length)
+	tcell.appendChild(mktext("Title"));
 	var drcell = circRow.insertCell(circRow.cells.length);
 	drcell.appendChild(mktext("Duration"));
 	var bcell = circRow.insertCell(circRow.cells.length);
@@ -147,45 +148,13 @@ function _drawCheckedOut(obj, data) {
 
 
 		var due = circ.due_date();
-		//due = due.substring(0,10) + "T" + due.substring(12,due.length);
 		due = due.replace(/[0-9][0-9]:.*$/,"");
-
-		/*
-		var year = parseInt(due.substring(0,4)) - 1900; 
-		var month =  parseInt(due.substring(5,7)) - 1;
-		var day = parseInt(due.substring(8,10));
-
-		//alert(parseInt(due.substring(0,4)) + " " + parseInt(due.substring(5,7))  + " " + parseInt(due.substring(8,10)));
-
-		//alert(year + " " + month + " "  + day);
-
-		var date = new Date(year, month, day, 0, 0, 0);
-		due = date.toString();
-		//due = due.replace(/[0-9][0-9]:.*$/,"");
-		*/
-
-		//alert(date);
-		/*
-		alert(due);
-		due = new Date(due);
-		alert(due);
-		*/
-
-		/*
-		alert(circ.due_date());
-		alert(new Date(circ.due_date()));
-		*/
 
 		var title_href = createAppElement("a");
 		var prefix = "http://" + globalRootURL + ":" + globalPort + globalRootPath;
 		title_href.setAttribute("href", prefix + "?sub_frame=1&target=record_detail&record=" + record.doc_id() );
 		title_href.setAttribute("target","_top"); /* escape to the outermost frame */
 		title_href.appendChild(mktext(record.title()));
-
-		/*
-		var renewbox = elem("input", 
-			{type:"checkbox", id:"renew_checkbox_" + record.doc_id()});
-			*/
 
 		var renewboxlink = mktext("N/A");
 		if(parseInt(circ.renewal_remaining()) > 0)
@@ -196,8 +165,8 @@ function _drawCheckedOut(obj, data) {
 		org = org.name();
 
 		/* for each circulation, build a row of data */
-		var titleCell			= circRow.insertCell(circRow.cells.length);
 		var dueCell				= circRow.insertCell(circRow.cells.length);
+		var titleCell			= circRow.insertCell(circRow.cells.length);
 		var durationCell		= circRow.insertCell(circRow.cells.length);
 		var barcodeCell		= circRow.insertCell(circRow.cells.length);
 		var circLibCell		= circRow.insertCell(circRow.cells.length);
@@ -247,9 +216,7 @@ function renewCheckout(circ) {
 		globalmyopac.user.session_id, circ );
 	req.send(true);
 
-	try{var ret = req.getResultObject();}catch(E){return;}
-
-	//alert(js2JSON(ret));
+	try{req.getResultObject();}catch(E){return;}
 	alert("Renewal completed successfully");
 	globalmyopac.draw("checked");
 }
@@ -710,6 +677,10 @@ MyOPACSPage.prototype._drawHolds = function() {
 
 	var cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Request Date"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
 	cell.appendChild(mktext("Title"));
 
 	cell = row.insertCell(row.cells.length);
@@ -720,9 +691,6 @@ MyOPACSPage.prototype._drawHolds = function() {
 	add_css_class(cell, "my_opac_info_table_header");
 	cell.appendChild(mktext("Format(s)"));
 
-	cell = row.insertCell(row.cells.length);
-	add_css_class(cell, "my_opac_info_table_header");
-	cell.appendChild(mktext("Pickup Location"));
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_info_table_header");
@@ -730,21 +698,38 @@ MyOPACSPage.prototype._drawHolds = function() {
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Status"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
+	cell.appendChild(mktext("Pickup Location"));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_info_table_header");
 	cell.appendChild(mktext("Cancel"));
 
 	/* ---------------------------------------- */
 	row = table.insertRow(table.rows.length);
+	row.id = "holds_waiting";
 	cell = row.insertCell(row.cells.length);
 	cell.appendChild(mktext("Retrieving holds..."));
 	/* ---------------------------------------- */
 
 	var holds = this.grabHolds();
-	table.firstChild.removeChild(table.firstChild.childNodes[1]);
 
 	for( var idx = 0; idx != holds.length; idx++ ) {
-		debug("Displaying hold " + holds[idx].id());
-		_doCallbackDance(table, holds[idx], this.user.session_id, this);
+		var hold = holds[idx];
+		var r = table.insertRow(table.rows.length);
+		r.id = "hold_display_row_" + hold.id();
+		debug("Displaying hold " + hold.id());
+		_doCallbackDance(table, hold, this.user.session_id, this);
 	}
+
+	if(!holds || holds.length == 0) {
+		var z = getById("holds_waiting");
+		z.firstChild.innerHTML = "No holds currently placed";
+	}
+
 
 }
 
@@ -767,9 +752,16 @@ function _drawHoldsRow(table, hold, record, session_id, obj) {
 	if(record == null || record.length == 0) return;
 	debug("In holds callback with hold " + hold );
 
-	var row = table.insertRow(table.rows.length);
-	var cell = row.insertCell(row.cells.length);
+	//var row = table.insertRow(table.rows.length);
+	var row = getById("hold_display_row_" + hold.id());
 
+	var cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_profile_cell");
+	var t = hold.request_time().replace(/[0-9][0-9]:.*$/,"");
+	cell.appendChild(mktext(t));
+
+
+	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_profile_cell");
 	cell.style.width = "35%";
 
@@ -778,7 +770,6 @@ function _drawHoldsRow(table, hold, record, session_id, obj) {
 			{href:prefix + "?sub_frame=1&target=record_detail&record="+encodeURIComponent(record.doc_id())},
 			null, record.title());
 	tl.setAttribute("target","_top");
-	//cell.appendChild(mktext(record.title()));
 	cell.appendChild(tl);
 
 	cell = row.insertCell(row.cells.length);
@@ -790,7 +781,6 @@ function _drawHoldsRow(table, hold, record, session_id, obj) {
 	al.setAttribute("target","_top");
 	add_css_class(cell, "my_opac_profile_cell");
 
-	//cell.appendChild(mktext(record.author()));
 	cell.appendChild(al);
 
 	cell = row.insertCell(row.cells.length);
@@ -804,9 +794,6 @@ function _drawHoldsRow(table, hold, record, session_id, obj) {
 	cell.noWrap = "nowrap";
 	cell.setAttribute("nowrap", "nowrap");
 
-	cell = row.insertCell(row.cells.length);
-	add_css_class(cell, "my_opac_profile_cell");
-	cell.appendChild(mktext(findOrgUnit(hold.pickup_lib()).name()));
 
 	cell = row.insertCell(row.cells.length);
 	add_css_class(cell, "my_opac_profile_cell");
@@ -815,11 +802,37 @@ function _drawHoldsRow(table, hold, record, session_id, obj) {
 	cell.appendChild(_buildChangePhoneNotify(hold));
 
 	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_profile_cell");
+	var stat = _fetchHoldStatus(hold);
+	cell.appendChild(mktext(stat));
+
+	cell = row.insertCell(row.cells.length);
+	add_css_class(cell, "my_opac_profile_cell");
+	cell.appendChild(mktext(findOrgUnit(hold.pickup_lib()).name()));
+	
+	cell = row.insertCell(row.cells.length);
 	var a = elem("a",{href:"javascript:void(0);",
 			style:"text-decoration:underline"},null, "Cancel");
 	a.onclick = function(){_cancelHoldRequest(hold, a, session_id, obj);};
 	add_css_class(cell, "my_opac_profile_cell");
 	cell.appendChild(a);
+
+	var z = getById("holds_waiting");
+	if(z) table.firstChild.removeChild(z);
+}
+
+function _fetchHoldStatus(hold) {
+	var req = new RemoteRequest(
+		"open-ils.circ",
+		"open-ils.circ.hold.status.retrieve",
+		globalmyopac.user.session_id, hold.id());
+	req.send(true);
+	var stat = req.getResultObject();
+	if(stat == "1") stat = "Waiting for available copy";
+	if(stat == "2") stat = "Copy found, waiting for capture";
+	if(stat == "3") stat = "In Transit";
+	if(stat == "4") stat = "Available";
+	return stat;
 }
 
 
@@ -1296,9 +1309,8 @@ MyOPACSPage.prototype._addCircs = function(data) {
 
 		/* for each circulation, build a small table of data */
 		var table = createAppElement("table");
-		this._mkCircRow(table, "Title",		title_href);
-		//this._mkCircRow(table, "Due Date",	mktext(due));
 		this._mkCircRow(table, "Due Date",	mktext(due));
+		this._mkCircRow(table, "Title",		title_href);
 		this._mkCircRow(table, "Duration",	mktext(circ.duration()));
 		this._mkCircRow(table, "Barcode",	mktext(copy.barcode()));
 		this._mkCircRow(table, "Circulating Library", mktext(org));
@@ -1330,6 +1342,191 @@ MyOPACSPage.prototype._getOrgUnit = function(org_id) {
 	request.send(true);
 	return request.getResultObject();
 }
+
+
+var showTransactions = false;
+MyOPACSPage.prototype._drawFines = function() {
+	this.drawFinesSummary();
+	this.infoPane.appendChild(elem("hr"));
+	this.infoPane.appendChild(elem("br"));
+	if(showTransactions) this.drawTransactions();
+}
+
+
+MyOPACSPage.prototype.drawFinesSummary = function() {
+
+	var bigt = this.infoTable;
+	var table = elem("table");
+	bigt.insertRow(0).insertCell(0).appendChild(table);
+
+	var title = table.insertRow(table.rows.length);
+	var tcell = title.insertCell(0);
+	tcell.setAttribute("style", "font-weight: bolder");
+	tcell.appendChild(mktext("Fines Summary"));
+
+	var torow = table.insertRow(table.rows.length);
+	var tprow = table.insertRow(table.rows.length);
+	var borow = table.insertRow(table.rows.length);
+
+	var to = torow.insertCell(torow.cells.length);	 
+	var tp = tprow.insertCell(tprow.cells.length);	 
+	var bo = borow.insertCell(borow.cells.length);	 
+
+	add_css_class(to, "my_opac_info_table_header");
+	add_css_class(tp, "my_opac_info_table_header");
+	add_css_class(bo, "my_opac_info_table_header");
+
+	to.appendChild(mktext("Total Amount Owed"));
+	tp.appendChild(mktext("Total Amoun Paid"));
+	bo.appendChild(mktext("* Balance Owed"));
+
+	to = torow.insertCell(torow.cells.length);	 
+	tp = tprow.insertCell(tprow.cells.length);	 
+	bo = borow.insertCell(borow.cells.length);	 
+
+	add_css_class(to, "my_opac_profile_cell");
+	add_css_class(tp, "my_opac_profile_cell");
+	add_css_class(bo, "my_opac_profile_cell");
+	
+	var summary = grabUserFinesSummary(
+		globalmyopac.user.session_id, globalmyopac.user.userObject.id());
+
+	var owed; 
+	var paid; 
+	var bowed;
+
+	if(instanceOf(summary, mus)) {
+		showTransactions = true;
+		owed = _finesFormatNumber(summary.total_owed());
+		paid = _finesFormatNumber(summary.total_paid());
+		bowed = _finesFormatNumber(summary.balance_owed());
+
+	} else {
+		showTransactions = false;
+		owed = _finesFormatNumber("0.00");
+		paid = _finesFormatNumber("0.00");
+		bowed = _finesFormatNumber("0.00");
+	}
+
+	to.appendChild(mktext(owed));
+	tp.appendChild(mktext(paid));
+	bo.appendChild(mktext(bowed));
+
+}
+
+function _finesFormatNumber(num) {
+	if(num.length == "1" || !num.match(/\./)) num += ".00";
+	num = "$" + num;
+	return num;
+}
+
+
+MyOPACSPage.prototype.drawTransactions = function() {
+	var table = elem("table");
+	var d = elem("div", {style:"font-weight: bolder"}, null, "Summary of Charges");
+	this.infoPane.appendChild(d);
+	this.infoPane.appendChild(table);
+
+	var row = table.insertRow(table.rows.length);
+
+	var cella = row.insertCell(row.cells.length);
+	var cellb = row.insertCell(row.cells.length);
+	var cellc = row.insertCell(row.cells.length);
+	var celld = row.insertCell(row.cells.length);
+	var celle = row.insertCell(row.cells.length);
+	var cellf = row.insertCell(row.cells.length);
+	var cellg = row.insertCell(row.cells.length);
+
+	add_css_class(cella, "my_opac_info_table_header");
+	add_css_class(cellb, "my_opac_info_table_header");
+	add_css_class(cellc, "my_opac_info_table_header");
+	add_css_class(celld, "my_opac_info_table_header");
+	add_css_class(celle, "my_opac_info_table_header");
+	add_css_class(cellf, "my_opac_info_table_header");
+	add_css_class(cellg, "my_opac_info_table_header");
+
+	cella.appendChild(mktext("Transaction Start Time"));
+	cellb.appendChild(mktext("Last Billing Time"));
+	cellc.appendChild(mktext("Last Payment Time"));
+	celld.appendChild(mktext("Initial Amount Owed"));
+	celle.appendChild(mktext("Total Amount Paid"));
+	cellf.appendChild(mktext("* Balance Owed"));
+	cellg.appendChild(mktext("Type"));
+
+	var transactions = grabUserTransactions(
+		 globalmyopac.user.session_id, globalmyopac.user.userObject.id());
+
+	for( var t in transactions ) _addTransactionRow(table, transactions[t]);
+
+}
+
+
+function _addTransactionRow(table, transaction) {
+
+	var trans = transaction.transaction;
+	var circ = transaction.circ;
+	var record = transaction.record;
+
+	var row = table.insertRow(table.rows.length);
+	var cella = row.insertCell(row.cells.length);
+	var cellb = row.insertCell(row.cells.length);
+	var cellc = row.insertCell(row.cells.length);
+	var celld = row.insertCell(row.cells.length);
+	var celle = row.insertCell(row.cells.length);
+	var cellf = row.insertCell(row.cells.length);
+	var cellg = row.insertCell(row.cells.length);
+
+	add_css_class(cella, "my_opac_profile_cell");
+	add_css_class(cellb, "my_opac_profile_cell");
+	add_css_class(cellc, "my_opac_profile_cell");
+	add_css_class(celld, "my_opac_profile_cell");
+	add_css_class(celle, "my_opac_profile_cell");
+	add_css_class(cellf, "my_opac_profile_cell");
+	add_css_class(cellg, "my_opac_profile_cell");
+
+	var owed = _finesFormatNumber(trans.total_owed());
+	var paid = _finesFormatNumber(trans.total_paid());
+	var bowed = _finesFormatNumber(trans.balance_owed());
+
+	var stime = _trimSeconds(trans.xact_start());
+	var last_bill = _trimSeconds(trans.last_billing_ts());
+	var last_payment = _trimSeconds(trans.last_payment_ts());
+
+	cella.appendChild(mktext(stime));
+	cellb.appendChild(mktext(last_bill));
+	cellc.appendChild(mktext(last_payment));
+	celld.appendChild(mktext(owed));
+	celle.appendChild(mktext(paid));
+	cellf.appendChild(mktext(bowed));
+	cellg.appendChild(mktext(trans.xact_type()));
+
+
+}
+
+function _trimSeconds(time) { if(!time) return ""; return time.replace(/\..*/,""); }
+
+function grabUserTransactions(session, usrid) {
+	var req = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.transactions.have_charge.fleshed",
+		session, usrid );
+	req.send(true);
+	return req.getResultObject();
+}
+
+
+function grabUserFinesSummary(session, usrid) {
+	var req = new RemoteRequest(
+		"open-ils.actor",
+		"open-ils.actor.user.fines.summary",
+		session, usrid );
+	req.send(true);
+	return req.getResultObject();
+}
+
+
+
+
 
 
 

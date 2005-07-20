@@ -64,8 +64,11 @@ HoldsWindow.prototype.sendHoldsRequest = function(formats, org, email, phone) {
 			alert("Please enter the user's barcode");
 		}
 		try {
-			this.recipient = grabUserByBarcode(recip_barcode);
-		} catch(E) { alert(E.err_msg()); }
+			var r = grabUserByBarcode(this.session, recip_barcode);
+			debug("Done grabbing user");
+			alert(js2JSON(r));
+			this.recipient = r;
+		} catch(E) { if(E.err_msg) alert(E.err_msg()); else alert(E); }
 	}
 
 	var hold = new ahr();
@@ -99,11 +102,16 @@ HoldsWindow.prototype.buildWindow = function(node) {
 	var id = this.record;
 
 	var usr = this.recipient;
-	var barcodebox = null;
+	var barcodediv = null;
 
 	if(isXUL()) {
 		/* used by xul to enter the recipient barcode */
-		barcodebox = elem("input",{type:"text",id:"recipient_barcode"});
+		
+		var barcodediv = elem("div",{style:"margin-left: 10px"},null,"2. Enter User Barcode");
+		var barcodebox = elem("input",{style:"margin-left: 10px;", type:"text",id:"recipient_barcode"});
+		barcodediv.appendChild(barcodebox);
+		barcodediv.appendChild(elem("br"));
+
 	} else {
 
 		if(!usr) {
@@ -128,8 +136,10 @@ HoldsWindow.prototype.buildWindow = function(node) {
 	if(this.type == "M")
 		d.appendChild(this.buildResourceSelector());
 
-	if(barcodebox)
-		d.appendChild(barcodebox);
+	if(barcodediv) {
+		d.appendChild(elem("br"));
+		d.appendChild(barcodediv);
+	}
 
 	d.appendChild(this.buildSubmit());
 

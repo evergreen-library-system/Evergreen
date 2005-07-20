@@ -432,6 +432,7 @@ AbstractRecordResultPage.prototype.mkAuthorLink = function(auth) {
 		"&mr_search_depth=" + this.searchDepth +
 		"&mr_search_location=" + this.searchLocation +
 		"&location=" +  this.searchLocation +
+		"&format=" + this.format +
 		"&depth=" +  this.searchDepth);
 
 	href.appendChild(createAppTextNode(auth));
@@ -451,6 +452,7 @@ AbstractRecordResultPage.prototype.mkSeriesLink = function(series) {
 		"&mr_search_depth=" + this.searchDepth +
 		"&mr_search_location=" + this.searchLocation +
 		"&location=" +  this.searchLocation +
+		"&format=" + this.format +
 		"&depth=" +  this.searchDepth);
 
 	href.appendChild(createAppTextNode(series));
@@ -467,6 +469,7 @@ AbstractRecordResultPage.prototype.mkSubjectLink = function(sub) {
 		"&mr_search_depth=" + this.searchDepth +
 		"&mr_search_location=" + this.searchLocation +
 		"&location=" +  this.searchLocation +
+		"&format=" + this.format +
 		"&depth=" +  this.searchDepth);
 
 	href.appendChild(createAppTextNode(sub));

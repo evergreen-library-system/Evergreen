@@ -56,8 +56,8 @@ sub handler {
 
 	warn "here\n";
 
-	if(defined($cgi->param("__param"))) {
-		for my $param ( $cgi->param("__param")) {
+	if(defined($cgi->param("param"))) {
+		for my $param ( $cgi->param("param")) {
 			push( @param_array, JSON->JSON2perl( $param ));
 		}
 	} else {

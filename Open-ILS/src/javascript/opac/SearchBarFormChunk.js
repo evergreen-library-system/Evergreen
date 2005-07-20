@@ -14,7 +14,6 @@ SearchBarFormChunk.prototype.init = function() {
 	this.search_query			= getById("mr_search_query");
 	this.search_type			= getById("mr_search_type");
 	this.search_button		= getById("mr_search_button");
-	this.searchRange			= getById("search_range_select");
 	this.setFormat();
 }
 
@@ -37,7 +36,6 @@ SearchBarFormChunk.prototype.resetPage = function() {
 	this.init();
 
 	this.search_button.onclick		= mrSearchSubmitForm;
-
 	this.search_query.onkeydown	= mrSearchSubmitOnEnter;
 	this.search_type.onkeydown		= mrSearchSubmitOnEnter;
 
@@ -50,8 +48,6 @@ SearchBarFormChunk.prototype.resetPage = function() {
 
 	try{ this.search_query.focus(); } catch(E) {}
 
-//	this.resetRange();
-
 }
 
 
@@ -62,11 +58,8 @@ function mrSearchSubmitForm() {
 	var search_type		= getById("mr_search_type").value;
 	var form					= getById("mr_search_format").value 
 
-	/*
-	var fsel					= getById("mr_search_format");
-	var form					= fsel.options[fsel.selectedIndex].value 
-	*/
-
+	if(search_query == null || search_query == "")
+		return false;
 
 	var depth = globalSearchDepth;
 	var location = globalSelectedLocation;

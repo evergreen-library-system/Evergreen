@@ -210,7 +210,7 @@ RecordResultPage.prototype.doSearch = function() {
 	if(recordResultRedirect) { 
 		/* if the user is just hitting the 'back' button */
 		recordResultRedirect = false;
-		history.back();
+		history.go(-1);
 		return;
 	}
 
@@ -355,13 +355,14 @@ RecordResultPage.prototype.mrSearch = function(mrid) {
 						recordResultRedirect = true;
 						debug("Redirecting to record detail page with record " + obj.recordIDs[0] );
 					url_redirect( [
+							"goto",		"-2",
 							"target", "record_detail",
 							"record", obj.recordIDs[0] ] );
 						return;
 					}
 				} else { 
 					recordResultRedirect = false;
-					history.back();
+					history.go(-1);
 				}
 
 				obj.collectRecords();

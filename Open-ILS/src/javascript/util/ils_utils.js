@@ -337,14 +337,15 @@ function cleanISBN(isbn) {
 }
 
 
-function grabUserByBarcode(barcode) {
+function grabUserByBarcode(login, barcode) {
 	if(!barcode) return null;
 	var req = new RemoteRequest(
 		"open-ils.actor",
 		"open-ils.actor.user.fleshed.retrieve_by_barcode",
-		barcode );
+		login, barcode );
 
-	return req.send(true).getResultObject();
+	req.send(true);
+	return req.getResultObject();
 }
 
 

@@ -143,6 +143,7 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 				"?target=record_result&page=0&mrid=" + id + 
 				"&hits_per_page=" + this.hitsPerPage +
 				"&location=" + this.searchLocation +
+				"&format=" + this.format + 
 				"&depth=" + this.searchDepth );
 
 			href.appendChild(createAppTextNode(value));
@@ -156,6 +157,7 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 				"?target=record_result&page=0&mrid=" + id +
 				"&hits_per_page=" + this.hitsPerPage +
 				"&location=" + this.searchLocation +
+				"&format=" + this.format + 
 				"&depth=" + this.searchDepth );
 
 			href.title = "View titles for " + t + "";
@@ -167,7 +169,9 @@ MRResultPage.prototype.mkLink = function(id, type, value, title) {
 			add_css_class(href,"record_result_author_link");
 			href.setAttribute("href",
 				"?target=mr_result&mr_search_type=author&page=0&mr_search_query=" +
-			     encodeURIComponent(value));
+			     encodeURIComponent(value) + 
+					"&format=" + this.format );
+
 			href.appendChild(createAppTextNode(value));
 			href.title = "Author search for " + t + "";
 			break;
@@ -362,9 +366,9 @@ MRResultPage.prototype.checkSpelling = function() {
 
 		var ref = elem("a", 
 			{
-				href: "?target=mr_result&mr_search_type=" + 
-					this.stype + "&page=0&mr_search_query=" +
-					encodeURIComponent(response)
+				href: "?target=mr_result&mr_search_type=" + this.stype + 
+					"&page=0&mr_search_query=" + encodeURIComponent(response) +
+					"&format=" + this.format
 			} 
 		);
 

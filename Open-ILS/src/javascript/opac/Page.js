@@ -136,6 +136,7 @@ Page.prototype.resetRange = function() {
 					"mr_search_query",		lastSearchString,
 					"mr_search_location",	location,
 					"mr_search_depth",		globalSearchDepth,	
+					"format",					paramObj.__format, 
 					"page",						0
 					] );
 		}
@@ -211,8 +212,10 @@ Page.prototype.buildNavBox = function(full) {
 	arr.push(elem("a", {href: prefix + '?target=advanced_search'}, null, "Advanced Search"));
 
 
-	var mylink = elem("a", {href: "?target=my_opac"}, null, "My OPAC");
-	arr.push(mylink);
+	if(!isXUL()) {
+		var mylink = elem("a", {href: "?target=my_opac"}, null, "My OPAC");
+		arr.push(mylink);
+	}
 
 	/* if user is not logged in, popup the login dialog when they
 		select the myopac link */
