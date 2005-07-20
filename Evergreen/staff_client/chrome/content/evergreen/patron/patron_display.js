@@ -477,9 +477,13 @@ function patron_display_patron_bills_init(p) {
 	p.patron_bills = patron_bills_init( { 'w' : p.w, 'node' : p.patron_bills_node, 'debug' : p.app } );
 
 	p.redraw_patron_bills = function() {
-		p.patron_bills.clear_patron_bills();
-		if (!p._patron.bills) patron_get_bills( p._patron );
-		p.patron_bills.add_patron_bills( p._patron.bills );
+		try {
+			p.patron_bills.clear_patron_bills();
+			if (!p._patron.bills) patron_get_bills( p._patron );
+			p.patron_bills.add_patron_bills( p._patron.bills );
+		} catch(E) {
+			sdump('D_ERROR',js2JSON(E) + '\n');
+		}
 	}
 
 }

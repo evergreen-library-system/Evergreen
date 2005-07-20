@@ -40,18 +40,19 @@ function patron_bills_init(p) {
 }
 
 function list_box_init( p ) {
-	var listbox = p.w.document.createElement('listbox');
-	p.node.appendChild( listbox );
-	listbox.setAttribute('flex','1');
-	listbox.setAttribute('seltype','multiple');
+	p.listbox = p.w.document.createElement('listbox');
+	p.node.appendChild( p.listbox );
+	p.listbox.setAttribute('flex','1');
+	p.listbox.setAttribute('seltype','multiple');
 
 		var listhead = p.w.document.createElement('listhead');
-		listbox.appendChild( listhead );
+		p.listbox.appendChild( listhead );
 
 		var listcols = p.w.document.createElement('listcols');
-		listbox.appendChild( listcols );
+		p.listbox.appendChild( listcols );
 
-			if (window.navigator.userAgent.match( /Firefox/ ))  {
+			/*if (window.navigator.userAgent.match( /Firefox/ ))*/  {
+				sdump('D_FIREFOX','Kludge: Adding extra listheader and listcol\n');
 				var listheader = p.w.document.createElement('listheader');
 				listhead.appendChild( listheader );
 				listheader.setAttribute('label', '');
@@ -73,20 +74,22 @@ function list_box_init( p ) {
 	p.add_row = function (cols, params) {
 
 		var listitem = p.w.document.createElement('listitem');
-		listbox.appendChild( listitem );
+		p.listbox.appendChild( listitem );
 		listitem.setAttribute('allowevents','true');
 		listitem.setAttribute('style','border-bottom: black solid thin');
 		for (var i in params) {
 			listitem.setAttribute( i, params[i] );
 		}
 
-		if (window.navigator.userAgent.match( /Firefox/ ))  {
-			listitem.setAttribute('label','');
+		/* if (window.navigator.userAgent.match( /Firefox/ )) */ {
+			sdump('D_FIREFOX','Kludge: Setting label on listitem\n');
+			listitem.setAttribute('label',' ');
 		}
 
 		for (var i = 0; i < cols.length; i++) {
 
 			try {
+				dump('listitem.append.  i = ' + i + '  cols[i] = ' + cols[i] + '\n');
 				listitem.appendChild( cols[i] );
 			} catch(E) {
 				sdump('D_ERROR', cols[i] + '\n' + E + '\n');
@@ -95,11 +98,7 @@ function list_box_init( p ) {
 	}
 
 	p.clear_rows = function () {
-		var nl = listbox.getElementsByTagName('listitem');
-		for (var i = 0; i < nl.length; i++) {
-			listbox.removeChild(nl[i]);
-		}
-
+		while( p.listbox.getRowCount() > 0 ) { p.listbox.removeItemAt(0); }
 	}
 
 	return p;
@@ -183,7 +182,13 @@ function patron_bills_add_patron_bills(p, bills) {
 		return grid;
 	}
 
+	function gen_timeout_add_row( cols, mbts ) {
+		return function() { p.list_box.add_row( cols, { 'record_id' : mbts.id() } ) };
+	}
+
 	var obj_string ='mbts';
+
+	setTimeout( function(){p.list_box.clear_rows();}, 0 );
 
 	for (var i = 0; i < bills.length; i++) {
 
@@ -225,6 +230,6 @@ function patron_bills_add_patron_bills(p, bills) {
 			}
 			cols.push( listcell );
 		}
-		p.list_box.add_row( cols, { 'record_id' : mbts.id() } );
+		setTimeout( gen_timeout_add_row( cols, mbts), 0);
 	}
 }
