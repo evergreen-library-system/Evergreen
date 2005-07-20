@@ -37,7 +37,7 @@
 </deck>
 
 <hbox id="CheckinItems_insert1">
-       <label id="checkin_scan_barcode_label" value="&circ.checkin.scan_label;" accesskey="&circ.checkin.scan_label.accesskey;" control="checkin_scan_textbox"/>
+       <label id="checkin_scan_barcode_label" value="&circ.checkin.scan_label;" accesskey="&circ.checkin.scan_label.accesskey;" control="checkin_barcode_entry_textbox"/>
         <textbox id="checkin_barcode_entry_textbox"/>
         <button id="checkin_submit_barcode_button" label="&circ.checkin.submit_label;" accesskey="&circ.checkin.submit_label.accesskey;"/>
 </hbox>

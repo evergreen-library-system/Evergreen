@@ -37,7 +37,7 @@
 </deck>
 
 <hbox id="HoldCaptureItems_insert1">
-       <label id="hold_capture_scan_barcode_label" value="&circ.hold_capture.scan_label;" accesskey="&circ.hold_capture.scan_label.accesskey;" control="hold_capture_scan_textbox"/>
+       <label id="hold_capture_scan_barcode_label" value="&circ.hold_capture.scan_label;" accesskey="&circ.hold_capture.scan_label.accesskey;" control="hold_capture_barcode_entry_textbox"/>
         <textbox id="hold_capture_barcode_entry_textbox"/>
         <button id="hold_capture_submit_barcode_button" label="&circ.hold_capture.submit_label;" accesskey="&circ.hold_capture.submit_label.accesskey;"/>
 </hbox>

@@ -87,7 +87,7 @@
 </hbox>
 
 <hbox id="PatronCheckoutItems_insert1">
-	<label id="patron_checkout_scan_barcode_label" value="&patron_display.checkout.scan_label;" accesskey="&patron_display.checkout.scan_label.accesskey;" control="patron_checkout_scan_textbox"/>
+	<label id="patron_checkout_scan_barcode_label" value="&patron_display.checkout.scan_label;" accesskey="&patron_display.checkout.scan_label.accesskey;" control="patron_checkout_barcode_entry_textbox"/>
 	<textbox id="patron_checkout_barcode_entry_textbox"/>
 	<button id="patron_checkout_submit_barcode_button" label="&patron_display.checkout.submit_label;" accesskey="&patron_display.checkout.submit_label.accesskey;"/>
 </hbox>
