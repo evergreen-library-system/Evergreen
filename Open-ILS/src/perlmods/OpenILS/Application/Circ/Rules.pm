@@ -615,6 +615,64 @@ sub build_circ_object {
 
 }
 
+__PACKAGE__->register_method(
+	method	=> "transit_receive",
+	api_name	=> "open-ils.circ.transit.receive",
+	notes		=> <<"	NOTES");
+	NOTES
+
+# status 3 means that this transit is destined for somewhere else
+sub transit_receive {
+	my( $self, $client, $login_session, $copyid ) = @_;
+
+	my $user = $apputils->check_user_session($login_session);
+
+	my $session = $apputils->start_db_session();
+	my $copy = _grab_copy_by_id($session, $copyid);
+	my $transit;
+
+	if(!$copy->status eq "6") {
+		throw OpenSRF::EX::ERROR ("Copy is not in transit");
+	}
+
+	$transit = $session->request(
+		"open-ils.storage.direct.action.transit_copy.search_where",
+		{ target_copy => $copy->id, dest_recv_time => undef } )->gather(1);
+
+	if($transit) {
+
+		if($transit->dest ne $user->home_ou) {
+			return { status => 3, route_to => $transit->dest };
+		}
+
+		$transit->dest_recv_time("now");
+		my $s = $session->request(
+			"open-ils.storage.direct.action.transit_copy.update",
+			$transit );
+
+		my $holdtransit = $session->request(
+			"open-ils.storage.direct.action.hold_transit_copy.retrieve",
+			$transit->id );
+
+		if($holdtransit) {
+
+			my $hold = $session->request(
+				"open-ils.storage.direct.action.hold_request.retrieve",
+				$holdtransit->hold )->gather(1);
+			$copy->status(8); #hold shelf status
+
+			my $s = $session->request(
+				"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
+			if(!$s) {} # blah..
+
+			return { status => 0, route_to => $hold->pickup_lib };
+		}
+
+	} else { } #message...
+
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "checkin",
@@ -628,7 +686,7 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub checkin {
-	my( $self, $client, $user_session, $barcode, $isrenewal ) = @_;
+	my( $self, $client, $user_session, $barcode, $isrenewal, $backdate ) = @_;
 
 	my $err;
 	my $copy;
@@ -641,19 +699,15 @@ sub checkin {
 		return OpenILS::Perm->new("COPY_CHECKIN");
 	}
 
+	my $session = $apputils->start_db_session();
+
+
+
 	try {
-		my $session = $apputils->start_db_session();
 			
 		warn "retrieving copy for checkin\n";
 
-		if(!$shelving_locations) {
-			my $sh_req = $session->request(
-				"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
-			$shelving_locations = $sh_req->gather(1);
-			$shelving_locations = 
-				{ map { (''.$_->id => $_->name) } @$shelving_locations };
-		}
-	
+			
 		my $copy_req = $session->request(
 			"open-ils.storage.direct.asset.copy.search.barcode.atomic", 
 			$barcode );
@@ -662,8 +716,21 @@ sub checkin {
 			$client->respond_complete(OpenILS::EX->new("UNKNOWN_BARCODE")->ex);
 		}
 
-		
+		if($copy->status eq "6") { #copy is in transit, deal with it
+			my $method = $self->method_lookup("open-ils.circ.transit.receive");
+			return $method->run( $user_session, $copy->id );
+		}
 
+
+		if(!$shelving_locations) {
+			my $sh_req = $session->request(
+				"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
+			$shelving_locations = $sh_req->gather(1);
+			$shelving_locations = 
+				{ map { (''.$_->id => $_->name) } @$shelving_locations };
+		}
+
+		
 		$copy->status(0);
 	
 		# find circ's where the transaction is still open for the
@@ -699,7 +766,6 @@ sub checkin {
 				$circ );
 			$ci_up->gather(1);
 		
-			$apputils->commit_db_session($session);
 		
 			warn "Checkin succeeded\n";
 		}
@@ -718,19 +784,19 @@ sub checkin {
 		my $status = "0";
 		my $status_text = "OK";
 
-		# check to see if the copy is needed to fulfil a hold
-		my $r = $apputils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.direct.action.hold_copy_map.search.target_copy.atomic",
-			$copy->id );
+		# see if this copy can fulfill a hold
+		my $hold = OpenILS::Application::Circ::Holds::_find_local_hold_for_copy( $session, $copy, $user );
 
-		if(@$r != 0) { 
-			if( $user->id ne $circ->usr ) {
-				$status = "1";
-				$status_text = "Copy needed to fulfill hold";
-			}
+		my $route_to = $shelving_locations->{$copy->location} 
+
+		if($hold) { 
+			$status = "1";
+			$status_text = "Copy needed to fulfill hold";
+			$route_to = $hold->pickup_lib;
 		}
 	
+		$apputils->commit_db_session($session);
+
 		my $record = $apputils->simple_scalar_request(
 			"open-ils.storage",
 			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
@@ -746,7 +812,7 @@ sub checkin {
 			text => $status_text,
 			circ => $circ,
 			copy => $copy,
-			route_to => $shelving_locations->{$copy->location} 
+			route_to => $routet_to,
 		};
 	}
 

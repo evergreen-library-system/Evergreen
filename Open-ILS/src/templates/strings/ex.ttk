@@ -42,6 +42,9 @@
 	IF type == ex_types.COPY_NEEDED_FOR_HOLD;
 		ret("Copy is needed to fulfill a hold"); END;
 
+	IF type == ex_types.NO_HOLD_FOUND;
+		ret("The requested hold could not be found"); END;
+
 	ret("Unknown exception occured");
 
 -%]

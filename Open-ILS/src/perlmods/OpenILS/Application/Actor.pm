@@ -868,16 +868,24 @@ sub update_password {
 __PACKAGE__->register_method(
 	method	=> "check_user_perms",
 	api_name	=> "open-ils.actor.user.perm.check",
-	notes		=> <<"	NOTES"
-	Takes a user id, an org id, and an array of perm type strings.  For each
+	notes		=> <<"	NOTES");
+	Takes a login session, user id, an org id, and an array of perm type strings.  For each
 	perm type, if the user does *not* have the given permission it is added
 	to a list which is returned from the method.  If all permissions
 	are allowed, an empty list is returned
+	if the logged in user does not match 'user_id', then the logged in user must
+	have VIEW_PERMISSION priveleges.
 	NOTES
-	);
 
 sub check_user_perms {
-	my( $self, $client, $user_id, $org_id, $perm_types ) = @_;
+	my( $self, $client, $login_session, $user_id, $org_id, $perm_types ) = @_;
+	my $user_obj = $apputils->check_user_session($login_session); 
+
+	if($user_obj->id ne $user_id) {
+		if($apputils->check_user_perms($user_obj->id, $org_id, "VIEW_PERMISSION")) {
+			return OpenILS::Perm->new("VIEW_PERMISSION");
+		}
+	}
 
 	my @not_allowed;
 	for my $perm (@$perm_types) {
@@ -894,12 +902,11 @@ sub check_user_perms {
 __PACKAGE__->register_method(
 	method	=> "user_fines_summary",
 	api_name	=> "open-ils.actor.user.fines.summary",
-	notes		=> <<"	NOTES"
+	notes		=> <<"	NOTES");
 	Returns a short summary of the users total open fines, excluding voided fines
 	Params are login_session, user_id
 	Returns a 'mus' object.
 	NOTES
-	);
 
 sub user_fines_summary {
 	my( $self, $client, $login_session, $user_id ) = @_;

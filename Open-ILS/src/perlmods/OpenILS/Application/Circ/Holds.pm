@@ -20,6 +20,7 @@ use strict; use warnings;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 use OpenILS::EX;
+use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 
 
@@ -335,51 +336,36 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTE");
 	Captures a copy to fulfil a hold
 	Params is login session and copy barcode
+	Optional param is 'flesh'.  If set, we also return the
+	relevant copy and title
 	login mus have COPY_CHECKIN permissions (since this is essentially
 	copy checkin)
 	NOTE
 
 sub capture_copy {
-	my( $self, $client, $login_session, $barcode ) = @_;
+	my( $self, $client, $login_session, $barcode, $flesh ) = @_;
 
 	my $user = $apputils->check_user_session($login_session);
 
 	if($apputils->check_user_perms($user->id, $user->home_ou, "COPY_CHECKIN")) {
-		return OpenILS::Perm->new("COPY_CHECKIN");
-	}
+		return OpenILS::Perm->new("COPY_CHECKIN"); }
 
 	my $session = $apputils->start_db_session();
+
 	my $copy = $session->request(
 		"open-ils.storage.direct.asset.copy.search.barcode",
 		$barcode )->gather(1);
+	return OpenILS::EX->new("UNKNOWN_BARCODE")->ex unless $copy;
 
 	warn "Capturing copy " . $copy->id . "\n";
 
-	# retrieve the hold copy maps for this copy
-	my $maps = $session->request(
-		"open-ils.storage.direct.action.hold_copy_map.search.target_copy.atomic",
-		$copy->id)->gather(1);
-
-	my @holdids = map { $_->hold } @$maps;
-
-	use Data::Dumper;
-	warn "Found possible holds\n" . Dumper(\@holdids) . "\n";
-
-	# retrieve sorted list of holds for the given maps and use the first
-	# if there is a hold for this lib, use that
-	my $holds = $session->request(
-		"open-ils.storage.direct.action.hold_request.search_where.atomic",
-		{ id => \@holdids, current_copy => undef }, 
-		{ order_by => "CASE WHEN ". $copy->circ_lib .
-			" = (SELECT a.home_ou FROM actor.usr a where a.id = usr ) THEN 0 ELSE 1 END, request_time" }
-		)->gather(1);
-
-	my $hold = $holds->[0];
+	my $hold = _find_local_hold_for_copy($session, $copy, $user);
+	if(!$hold) {return OpenILS::EX->new("HOLD_NOT_FOUND")->ex;}
 
 	warn "Found hold " . $hold->id . "\n";
 
 	$hold->current_copy($copy->id);
-	$hold->capture_time("now"); # ???
+	$hold->capture_time("now"); 
 
 	#update the hold
 	my $stat = $session->request(
@@ -390,15 +376,7 @@ sub capture_copy {
 
 	# if the staff member capturing this item is not at the pickup lib
 	if( $user->home_ou ne $hold->pickup_lib ) {
-		my $trans = Fieldmapper::action::hold_transit_copy->new;
-		$trans->hold($hold->id);
-		$trans->source($user->home_ou);
-		$trans->dest($hold->pickup_lib);
-		$trans->source_send_time("now");
-		my $meth = $self->method_lookup("open-ils.circ.hold_transit.create");
-		my ($stat) = $meth->run( $login_session, $trans, $session );
-		if(!$stat) { throw OpenSRF::EX ("Error creating new hold transit"); }
-		else { $copy->status(6); } #status in transit 
+		$self->_build_hold_transit( $login_session, $session, $hold, $user, $copy );
 	}
 
 	$copy->editor($user->id);
@@ -407,9 +385,65 @@ sub capture_copy {
 		"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
 	if(!$stat) { throw OpenSRF::EX ("Error updating copy " . $copy->id); }
 
+	
+	my $title = undef;
+	if($flesh) {
+		$title = $session->request(
+			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
+			$copy->id )->gather(1);
+		my $u = OpenILS::Utils::ModsParser->new();
+		$u->start_mods_batch( $title->marc() );
+		$title = $u->finish_mods_batch();
+
+	} else { $copy = undef; }
+
 	$apputils->commit_db_session($session);
 
-	return { route_to => $hold->pickup_lib };
+	return { 
+		copy => $copy,
+		route_to => $hold->pickup_lib,
+		record => $title,
+	};
+
+}
+
+sub _build_hold_transit {
+	my( $self, $login_session, $session, $hold, $user, $copy ) = @_;
+	my $trans = Fieldmapper::action::hold_transit_copy->new;
+	$trans->hold($hold->id);
+	$trans->source($user->home_ou);
+	$trans->dest($hold->pickup_lib);
+	$trans->source_send_time("now");
+	$trans->target_copy($copy->id);
+	my $meth = $self->method_lookup("open-ils.circ.hold_transit.create");
+	my ($stat) = $meth->run( $login_session, $trans, $session );
+	if(!$stat) { throw OpenSRF::EX ("Error creating new hold transit"); }
+	else { $copy->status(6); } #status in transit 
+}
+
+
+sub _find_local_hold_for_copy {
+
+	my $session = shift;
+	my $copy = shift;
+	my $user = shift;
+
+	# first see if this copy has already been selected to fulfill a hold
+	my $hold  = $session->request(
+		"open-ils.storage.direct.action.hold_request.search.current_copy",
+		$copy->id )->gather(1);
+	if($hold) {return $hold;}
+
+	warn "searching for local hold at org " . $user->home_ou . " and copy " . $copy->id . "\n";
+
+	my $holdid = $session->request(
+		"open-ils.storage.action.hold_request.nearest_hold",
+		$user->home_ou, $copy->id )->gather(1);
+
+	warn "found hold id $holdid\n";
+
+	return $session->request(
+		"open-ils.storage.direct.action.hold_request.retrieve", $holdid )->gather(1);
 
 }
 
