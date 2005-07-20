@@ -1,32 +1,40 @@
 #include "srfsh.h"
 
+int is_from_script = 0;
+
 int main( int argc, char* argv[] ) {
 
 
 
 	/* --------------------------------------------- */
-	if( argc < 2 ) {
+	/* see if they have a .srfsh.xml in their home directory */
+	char* home = getenv("HOME");
+	int l = strlen(home) + 36;
+	char fbuf[l];
+	memset(fbuf, 0, l);
+	sprintf(fbuf,"%s/.srfsh.xml",home);
 
-		/* see if they have a .srfsh.xml in their home directory */
-		char* home = getenv("HOME");
-		int l = strlen(home) + 36;
-		char fbuf[l];
-		memset(fbuf, 0, l);
-		sprintf(fbuf,"%s/.srfsh.xml",home);
-
-		if(!access(fbuf, R_OK)) {
-			if( ! osrf_system_bootstrap_client(fbuf) ) 
-				fatal_handler( "Unable to bootstrap client for requests");
-
-		} else {
-			fatal_handler( "No Config file found at %s and none specified. "
-					"\nusage: %s <config_file>", fbuf, argv[0] );
-		}
+	if(!access(fbuf, R_OK)) {
+		if( ! osrf_system_bootstrap_client(fbuf) ) 
+			fatal_handler( "Unable to bootstrap client for requests");
 
 	} else {
-		if( ! osrf_system_bootstrap_client(argv[1]) ) 
-			fatal_handler( "Unable to bootstrap client for requests");
+		fatal_handler( "No Config file found at %s", fbuf );
 	}
+
+	if(argc > 1) {
+		/* for now.. the first arg is used as a script file for processing */
+		int f;
+		if( (f = open(argv[1], O_RDONLY)) == -1 )
+			fatal_handler("Unable to open file %s for reading, exiting...", argv[1]);
+
+		if(dup2(f, STDIN_FILENO) == -1)
+			fatal_handler("Unable to duplicate STDIN, exiting...");
+
+		close(f);
+		is_from_script = 1;
+	}
+		
 	/* --------------------------------------------- */
 	load_history();
 
@@ -85,7 +93,6 @@ int load_history() {
 	history_file = strdup(fbuf);
 
 	if(!access(history_file, W_OK | R_OK )) {
-		//set_history_length(999);
 		history_length = 999;
 		read_history(history_file);
 	}
@@ -470,7 +477,10 @@ int send_request( char* server,
 	
 	signal(SIGPIPE, SIG_IGN);
 
-	FILE* less = popen( "less -EX", "w");
+	FILE* less; 
+	if(!is_from_script) less = popen( "less -EX", "w");
+	else less = stdout;
+
 	if( less == NULL ) { less = stdout; }
 
 	growing_buffer* resp_buffer = buffer_init(4096);
