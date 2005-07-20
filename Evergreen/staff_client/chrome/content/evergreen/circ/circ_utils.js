@@ -92,7 +92,7 @@ function checkin_by_copy_barcode(barcode, f) {
 			sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 			if (check.status != 0) {
 				switch(check.status) {
-					case 1: /* possible hold capture */
+					case '1': case 1: /* possible hold capture */
 						var rv = yns_alert(
 							check.text,
 							'Check Check In Interrupt',
