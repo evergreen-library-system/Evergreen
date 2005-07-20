@@ -538,7 +538,7 @@
 
 	package action::hold_transit_copy;
 
-	action::hold_transit_copy->sequence( 'action.hold_transit_copy_id_seq' );
+	action::hold_transit_copy->sequence( 'action.transit_copy_id_seq' );
 	action::hold_transit_copy->table('action.hold_transit_copy');
 
 	#-------------------------------------------------------------------------------
