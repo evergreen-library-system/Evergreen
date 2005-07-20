@@ -10,6 +10,7 @@ function OpenILS_init(params) {
 			case 'PatronSearch' : patron_search_init(params); break;
 			case 'PatronDisplay' : patron_display_init(params); break;
 			case 'Checkin' : checkin_init(params); break;
+			case 'HoldCapture' : hold_capture_init(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
@@ -36,6 +37,7 @@ function OpenILS_exit(params) {
 			case 'PatronSearch' : patron_search_exit(params); break;
 			case 'PatronDisplay' : patron_display_exit(params); break;
 			case 'Checkin' : checkin_exit(params); break;
+			case 'HoldCapture' : hold_capture_exit(params); break;
 		}
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }

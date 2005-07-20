@@ -53,6 +53,8 @@ patron:
 circ:
 	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/checkin_items/g | sed s/PagedTree/CheckinItems/g > chrome/content/evergreen/circ/checkin_items_overlay.xul )
 	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/checkin_items.dtd)
+	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/hold_capture_items/g | sed s/PagedTree/HoldCaptureItems/g > chrome/content/evergreen/circ/hold_capture_items_overlay.xul )
+	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/hold_capture_items.dtd)
 
 evergreen.xpi: evergreen.jar
 	@echo
@@ -74,6 +76,7 @@ clean:
 	rm -f chrome/content/evergreen/patron/patron_checkout_items_overlay.xul chrome/locale/en-US/evergreen/patron_checkout_items.dtd
 	rm -f chrome/content/evergreen/patron/patron_holds_overlay.xul chrome/locale/en-US/evergreen/patron_holds.dtd
 	rm -f chrome/content/evergreen/circ/checkin_items_overlay.xul chrome/locale/en-US/evergreen/checkin_items.dtd
+	rm -f chrome/content/evergreen/circ/hold_capture_items_overlay.xul chrome/locale/en-US/evergreen/hold_capture_items.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
 	rm -f chrome/content/evergreen/util/fieldmapper.js
 	rm -f chrome/content/evergreen/util/OrgTree.js

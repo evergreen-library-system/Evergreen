@@ -24,6 +24,8 @@
 		<script src="chrome://evergreen/content/circ/circ_utils.js" />
 		<script src="chrome://evergreen/content/circ/checkin.js" />
 		<script src="chrome://evergreen/content/circ/checkin_items.js" />
+		<script src="chrome://evergreen/content/circ/hold_capture.js" />
+		<script src="chrome://evergreen/content/circ/hold_capture_items.js" />
 	</apps>
 
 </overlay>

@@ -62,11 +62,12 @@ function checkin_checkin_items_init(p) {
 					// should be handled already
 				}
 
-				tb.value = ''; tb.focus();
+				tb.value = '';
 			}
 		} catch(E) {
 			handle_error(E);
 		}
+		tb.select(); tb.focus();
 	}
 
 	tb.addEventListener(

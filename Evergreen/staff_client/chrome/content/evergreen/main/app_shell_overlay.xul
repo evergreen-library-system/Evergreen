@@ -36,6 +36,9 @@
 	<command id="cmd_circ_checkin" oncommand="
 		mw.spawn_checkin(document,'replace_tab','main_tabbox',{}); "/>	
 
+	<command id="cmd_circ_hold_capture" oncommand="
+		mw.spawn_hold_capture(document,'replace_tab','main_tabbox',{}); "/>	
+
 	<command id="cmd_search_opac" oncommand="
 		mw.spawn_opac_navigator(document,'replace_tab','main_tabbox',{}); "/>	
 

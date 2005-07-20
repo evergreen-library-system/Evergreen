@@ -1,0 +1,20 @@
+<!ENTITY circ.hold_capture.caption 'Capture Hold'>
+<!ENTITY circ.hold_capture.scan_label 'Enter Barcode:'>
+<!ENTITY circ.hold_capture.scan_label.accesskey 'b'>
+<!ENTITY circ.hold_capture.submit_label 'Submit'>
+<!ENTITY circ.hold_capture.submit_label.accesskey 'S'>
+
+<!ENTITY hold_capture_patron.retrieve 'Retrieve Patron'>
+<!ENTITY hold_capture_patron.retrieve.accesskey 'R'>
+<!ENTITY hold_capture_patron.name.label 'Patron Name'>
+
+<!ENTITY hold_capture.print_receipt_label 'Print List'>
+<!ENTITY hold_capture.print_receipt_label.accesskey ''>
+<!ENTITY hold_capture.reprint_receipt_label 'Re-Print Last List'>
+<!ENTITY hold_capture.reprint_receipt_label.accesskey 'L'>
+<!ENTITY hold_capture.auto_print_label 'Auto-Print'>
+<!ENTITY hold_capture.auto_print_label.accesskey 'A'>
+<!ENTITY hold_capture.done_label 'Done'>
+<!ENTITY hold_capture.done_label.accesskey 'D'>
+
+

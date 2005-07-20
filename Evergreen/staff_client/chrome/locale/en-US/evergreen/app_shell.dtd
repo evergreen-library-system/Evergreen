@@ -35,6 +35,7 @@
 <!-- The Circulation menu on the Main Menubar -->
 <!ENTITY main.menu.circ.checkout.label "Check Out"><!ENTITY main.menu.circ.checkout.key "O">
 <!ENTITY main.menu.circ.checkin.label "Check In"><!ENTITY main.menu.circ.checkin.key "C">
+<!ENTITY main.menu.circ.hold_capture.label "Capture Holds"><!ENTITY main.menu.circ.hold_capture.key "H">
 <!ENTITY main.menu.circ.renew.label "Renew"><!ENTITY main.menu.circ.renew.key "n">
 <!ENTITY main.menu.circ.mark_used.label "Mark Used"><!ENTITY main.menu.circ.mark_used.key "U">
 <!ENTITY main.menu.circ.copy_status.label "Display Item"><!ENTITY main.menu.circ.copy_status.key "I">

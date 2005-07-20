@@ -49,7 +49,7 @@
 	<menupopup id="main.menu.circ.popup">
 		<menuitem label="&main.menu.circ.checkout.label;" accesskey="&main.menu.circ.checkout.key;" command="cmd_circ_checkout"/>
 		<menuitem label="&main.menu.circ.checkin.label;" accesskey="&main.menu.circ.checkin.key;" command="cmd_circ_checkin"/>
-		<menuitem label="&main.menu.circ.renew.label;" accesskey="&main.menu.circ.renew.key;" command="cmd_broken"/>
+		<menuitem label="&main.menu.circ.hold_capture.label;" accesskey="&main.menu.circ.hold_capture.key;" command="cmd_circ_hold_capture"/>
 	<!--
 		<menu id="special-circ-menu" label="&main.menu.circ.special.label;" accesskey="&main.menu.circ.special.key;" command="cmd_broken"/>
 		<menuseparator />

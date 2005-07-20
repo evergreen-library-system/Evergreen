@@ -45,6 +45,9 @@ var sdump_levels = {
 	'D_CHECKIN' : true,
 	'D_CHECKIN_ITEMS' : false,
 
+	'D_HOLD_CAPTURE' : true,
+	'D_HOLD_CAPTURE_ITEMS' : true,
+
 	'D_CAT' : false,
 
 	'D_PATRON_UTILS' : false,

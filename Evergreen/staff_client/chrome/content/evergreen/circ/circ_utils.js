@@ -57,16 +57,16 @@ function checkout_by_copy_barcode(barcode, patron_id, f) {
 	}
 }
 
-function capture_hold( barcode ) {
+function hold_capture_by_copy_barcode( barcode, retrieve_flag ) {
 	try {
-		var ou_id = user_request(
+		var check = user_request(
 			'open-ils.circ',
 			'open-ils.circ.hold.capture_copy.barcode',
-			[ mw.G.auth_ses[0], barcode ]
+			[ mw.G.auth_ses[0], barcode, retrieve_flag ]
 		)[0];
-		return ou_id;
+		return check;
 	} catch(E) {
-		handle_error(E);
+		handle_error(E, true);
 		return null;
 	}
 }
@@ -104,9 +104,10 @@ function checkin_by_copy_barcode(barcode, f) {
 						switch(rv) {
 							case 0: /* capture */
 							try {
-								var ou_id = capture_hold( barcode );
-								check.text = 'Captured for Hold';
-								check.route_to = mw.G.org_tree_hash[ ou_id ].shortname();
+								var check2 = hold_capture_by_copy_barcode( barcode );
+								if (check2) {
+									check.route_to = mw.G.org_tree_hash[ check2.route_to ].shortname();
+								}
 
 							} catch(E) { 
 								sdump('D_ERROR',E + '\n'); 
@@ -130,7 +131,7 @@ function checkin_by_copy_barcode(barcode, f) {
 		}
 		return check;
 	} catch(E) {
-		handle_error(E);
+		handle_error(E, true);
 		return null;
 	}
 }

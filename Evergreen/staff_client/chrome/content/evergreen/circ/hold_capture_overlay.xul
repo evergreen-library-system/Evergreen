@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/hold_capture.dtd">
+<overlay id="hold_capture_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading hold_capture_overlay.xul\n');</script>
+
+	<?xul-overlay href="chrome://evergreen/content/main/clam_shell_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/circ/hold_capture_items_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_display_status_overlay.xul"?>
+
+<commandset id="universal_cmds">
+
+	<command id="cmd_broken" oncommand="
+		alert('Not Yet Implemented'); "/>
+
+
+</commandset>
+
+<!-- main widget for hold_capture -->
+<box id="HoldCapture_main" flex="1" orient="vertical">
+	<groupbox id="HoldCapture_groupbox" orient="vertical" flex="1">
+		<box id="ClamShell_main" />
+	</groupbox>
+</box>
+
+<deck id="ClamShell_first_deck">
+	<box id="PatronDisplayStatus_main" />
+	<spacer id="csfds" flex="1" />
+</deck>
+
+<deck id="ClamShell_second_deck">
+	<groupbox id="cssdgb">
+		<caption id="cssdgbc" label="&circ.hold_capture.caption;"/>
+		<box id="HoldCaptureItems_main"/>
+	</groupbox>
+</deck>
+
+<hbox id="HoldCaptureItems_insert1">
+       <label id="hold_capture_scan_barcode_label" value="&circ.hold_capture.scan_label;" accesskey="&circ.hold_capture.scan_label.accesskey;" control="hold_capture_scan_textbox"/>
+        <textbox id="hold_capture_barcode_entry_textbox"/>
+        <button id="hold_capture_submit_barcode_button" label="&circ.hold_capture.submit_label;" accesskey="&circ.hold_capture.submit_label.accesskey;"/>
+</hbox>
+
+<hbox id="HoldCaptureItems_insert2" />
+<hbox id="HoldCaptureItems_insert3" />
+<hbox id="HoldCaptureItems_insert4" />
+
+<hbox id="PatronDisplayStatus_insert2">
+	<label id="PatronSearch_patron_name" class="patronNameMedium"
+		tooltiptext="&hold_capture_patron.name.label;"
+		value=" "
+		render="true" fm_class="au" 
+		render_value="patron_get_full_name($$)" />
+</hbox>
+<hbox id="PatronDisplayStatus_insert4">
+	<button id="PatronSearch_retrieve_button" 
+		disabled="true"
+		label="&hold_capture_patron.retrieve;" 
+		accesskey="&hold_capture_patron.retrieve.accesskey;"/>
+</hbox>
+
+<hbox id="HoldCaptureItems_insert3">
+	<button id="hold_capture_print" label="&hold_capture.print_receipt_label;" accesskey="&hold_capture.print_receipt_label.accesskey;"/>
+	<button id="hold_capture_reprint" label="&hold_capture.reprint_receipt_label;" accesskey="&hold_capture.reprint_receipt_label.accesskey;"/>
+	<spacer id="cii3s" flex="1"/>
+	<checkbox id="hold_capture_auto" label="&hold_capture.auto_print_label;" accesskey="&hold_capture.auto_print_label.accesskey;"/> 
+	<button id="hold_capture_done" label="&hold_capture.done_label;" accesskey="&hold_capture.done_label.accesskey;"/>
+</hbox>
+
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="HoldCapture_keys">
+</keyset>
+
+</overlay>
