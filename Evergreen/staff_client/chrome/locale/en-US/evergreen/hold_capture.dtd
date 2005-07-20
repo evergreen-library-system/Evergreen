@@ -1,6 +1,6 @@
 <!ENTITY circ.hold_capture.caption 'Capture Hold'>
 <!ENTITY circ.hold_capture.scan_label 'Enter Barcode:'>
-<!ENTITY circ.hold_capture.scan_label.accesskey 'b'>
+<!ENTITY circ.hold_capture.scan_label.accesskey 'a'>
 <!ENTITY circ.hold_capture.submit_label 'Submit'>
 <!ENTITY circ.hold_capture.submit_label.accesskey 'S'>
 

@@ -1,6 +1,6 @@
 <!ENTITY circ.checkin.caption 'Check In'>
 <!ENTITY circ.checkin.scan_label 'Enter Barcode:'>
-<!ENTITY circ.checkin.scan_label.accesskey 'b'>
+<!ENTITY circ.checkin.scan_label.accesskey 'a'>
 <!ENTITY circ.checkin.submit_label 'Submit'>
 <!ENTITY circ.checkin.submit_label.accesskey 'S'>
 
