@@ -93,7 +93,16 @@ package action::hold_transit_copy;
 use base qw/action/;
 __PACKAGE__->table('action_hold_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/hold source dest persistant_transfer
+__PACKAGE__->columns(Essential => qw/hold source dest persistant_transfer target_copy
+				     source_send_time dest_recv_time prev_hop/);
+
+#-------------------------------------------------------------------------------
+
+package action::transit_copy;
+use base qw/action/;
+__PACKAGE__->table('action_transit_copy');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/hold source dest persistant_transfer target_copy
 				     source_send_time dest_recv_time prev_hop/);
 
 #-------------------------------------------------------------------------------

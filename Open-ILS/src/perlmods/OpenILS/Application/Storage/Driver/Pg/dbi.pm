@@ -543,6 +543,13 @@
 
 	#-------------------------------------------------------------------------------
 
+	package action::transit_copy;
+
+	action::transit_copy->sequence( 'action.transit_copy_id_seq' );
+	action::transit_copy->table('action.transit_copy');
+
+	#-------------------------------------------------------------------------------
+
 
 }
 
