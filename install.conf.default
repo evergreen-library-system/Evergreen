@@ -19,29 +19,29 @@
 # --------------------------------------------------------------------
 # Build targets.  Options include:
 # 
-# jserver    - custom 'single-domain' jabber server which may be used
-#              in place of jabberd2
-# router     - jabber router.  
-# gateway    - mod_ils_gateway, Apache module for proxying API calls
-# srfsh      - diagnostic shell interface to OpenSRF
-# marcdumper - utility code for converting MARC to MARCXML
-# opensrf_perl - install the OpenSRF perl modules
-# openils_perl - install the Open-ILS perl modules
-# xul        - client XUL application
-# opensrf	- builds all OpenSRF compenents
-# openils	- builds all OpenILS compenents
-# evergreen	- builds all Evergreen components
+# opensrf_jserver - custom 'single-domain' jabber server which may be used in place of jabberd2
+# opensrf_router  - jabber router.  
+# opensrf_gateway - mod_ils_gateway, Apache module for proxying API calls
+# opensrf_srfsh   - diagnostic shell interface to OpenSRF
+# opensrf_perl		- install the OpenSRF perl modules
+# opensrf_all		- builds all OpenSRF compenents
+#
+# openils_marcdumper - utility code for converting MARC to MARCXML
+# openils_perl			- install the Open-ILS perl modules
+# openils_all			- builds all OpenILS compenents
+# openils_web			- copies over the javascript and html templates to the web root directory
+#
+# evergreen_xul_client   - client XUL application
+# evergreen_all	- builds all Evergreen components
 #
 # When running the server components of OpenSRF/OpenILS, the simplest
-# thing is to build jserver, router, gateway, and srfsh, even if you 
-# don't use all of them.  Build marcdumper only if you need to convert
-# MARC files to MARCXML.  If you only want to build the client app,
-# then just build xul.
+# thing is to build 'opensrf' even if you 
+# don't use all of the components.  
+# Build marcdumper only if you need to convert MARC binary files to MARCXML.  
+# If you only want to build the client app, then just build evergreen_xul_client.
 # --------------------------------------------------------------------
 
-#TARGETS=("jserver" "router" "gateway" "srfsh" "marcdumper" "xul");
-#TARGETS=("router" "gateway" "jserver" "srfsh" "opensrf_perl" "openils_perl");
-TARGETS=("opensrf");
+TARGETS=("opensrf_all");
 
 
 # --------------------------------------------------------------------
@@ -49,12 +49,13 @@ TARGETS=("opensrf");
 # libraries will be installed into PERFIX/lib, etc.  The user 
 # running 'install.sh install' must have write permissions to PREFIX
 # --------------------------------------------------------------------
-PREFIX="/tmp/ilsinstall/";
+PREFIX="/pines/";
 BINDIR="$PREFIX/bin/";
 LIBDIR="$PREFIX/lib/";
 PERLDIR="$LIBDIR/perl5/";
 INCLUDEDIR="$PREFIX/include/";
 ETCDIR="$PREFIX/etc/";
+WEB="$PREFIX/web/";
 
 
 # --------------------------------------------------------------------

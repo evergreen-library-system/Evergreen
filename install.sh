@@ -34,33 +34,6 @@ function fail {
 }
 
 
-function verifyInstallPaths {
-
-	cat <<-WORDS
-
-	-----------------------------------------------------------------------
-	Verify the following install directories are sane.
-	Note: * indicates that you must have write privelages for the location
-	-----------------------------------------------------------------------
-
-	-----------------------------------------------------------------------
-	Install prefix            [$PREFIX]*
-	Temporary files directory [$TMP]*
-	Apache2 apxs binary       [$APXS2]
-	Apache2 header directory  [$APACHE2_HEADERS]
-	Libxml2 header directory  [$LIBXML2_HEADERS]
-	Building targets          [${TARGETS[@]:0}];
-	-----------------------------------------------------------------------
-
-	If these are not OK, use control-c to break out and fix the variables 
-	in install.config.  Otherwise, type enter.
-
-	To disable this message, run "./install.sh force".
-
-	WORDS
-	read OK;
-}
-
 #function postMessage {
 
 #cat <<-WORDS
@@ -68,6 +41,8 @@ function verifyInstallPaths {
 
 
 #}
+
+
 
 # --------------------------------------------------------------------
 # Makes sure the install directories exist and are writable
@@ -132,12 +107,25 @@ function loadConfig {
 }
 
 
+
+
+# install targets
+#
+# opensrf_jserver - custom 'single-domain' jabber server which may be used in place of jabberd2
+# opensrf_router  - jabber router.  
+# opensrf_gateway - mod_ils_gateway, Apache module for proxying API calls
+# opensrf_srfsh   - diagnostic shell interface to OpenSRF
+# opensrf_perl		- install the OpenSRF perl modules
+# opensrf_all		- builds all OpenSRF compenents
+# openils_marcdumper - utility code for converting MARC to MARCXML
+# openils_perl			- install the Open-ILS perl modules
+# openils_all			- builds all OpenILS compenents
+# openils_web			- copies over the javascript and html templates to the web root directory
+# evergreen_xul_client   - client XUL application
+# evergreen_all	- builds all Evergreen components
 function runInstall {
 
 
-	loadConfig;
-	#[ -z "$FORCE" ] && verifyInstallPaths;
-	mkInstallDirs;
 
 	# pass the collected variables to make
 	for target in ${TARGETS[@]:0}; do
@@ -154,36 +142,56 @@ function runInstall {
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
 			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR";
 
-		echo "Passing to sub-makes: $MAKE"
-			
 		case "$target" in
-			
-			"jserver" | "router" | "gateway" | "srfsh" ) 
-				if building; then $MAKE -C "$OPENSRF_DIR" "$target"; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" "$target-install"; fi;
+	
+			# OpenSRF --- 			
+
+			"opensrf_all")
+				if building;	then $MAKE -C "$OPENSRF_DIR" all; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" install; fi;
+				;;
+
+			"opensrf_jserver" )
+				if building;	then $MAKE -C "$OPENSRF_DIR" "jserver"; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" "jserver-install"; fi;
+				;;	
+
+			"opensrf_router" ) 
+				if building;	then $MAKE -C "$OPENSRF_DIR" "router"; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" "router-install"; fi;
+				;;
+
+			"opensrf_gateway" )
+				if building;	then $MAKE -C "$OPENSRF_DIR" "gateway"; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" "gateway-install"; fi;
+				;;
+
+			"opensrf_srfsh" ) 
+				if building;	then $MAKE -C "$OPENSRF_DIR" "srfsh"; fi;
+				if installing; then $MAKE -C "$OPENSRF_DIR" "srfsh-install"; fi;
 				;;
 
 			"opensrf_perl")
 				if installing; then $MAKE -C "$OPENSRF_DIR" "perl-install"; fi;
 				;;
 
+
+			# OpenILS --- 			
+
+			"openils_all")
+				if building;	then $MAKE -C "$OPENILS_DIR" all; fi;
+				if installing; then $MAKE -C "$OPENILS_DIR" install; fi;
+				;;
+
 			"openils_perl")
 				if installing; then $MAKE -C "$OPENILS_DIR" "perl-install"; fi;
 				;;
 
-			"opensrf")
-				if building; then $MAKE -C "$OPENSRF_DIR" all; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" install; fi;
-				;;
 
-			"openils")
-				if building; then $MAKE -C "$OPENILS_DIR" all; fi;
-				if installing; then $MAKE -C "$OPENILS_DIR" install; fi;
-				;;
+			# Evergreen --- 			
 
-			"evergreen")
-				if building; then $MAKE -C "$EVERGREEN_DIR" all; fi;
-				if installing; then $MAKE -C "$EVERGREEN_DIR" install; fi;
+			"evergreen_xul_client")
+				if building;	then $MAKE -C "$EVERGREEN_DIR" xul; fi;
 				;;
 
 
@@ -199,7 +207,8 @@ function runInstall {
 # Checks command line parameters for special behavior
 # Supported params are:
 # clean - cleans all build files
-# force - forces build without the initial message
+# build - builds the specified sources
+# install - installs the specified sources
 # --------------------------------------------------------------------
 function checkParams {
 
@@ -213,9 +222,6 @@ function checkParams {
 
 			"clean") 
 				cleanMe;;
-
-			"force")
-				FORCE="1";;
 
 			"build")
 				BUILDING="1";;
@@ -240,9 +246,16 @@ function cleanMe {
 
 checkParams "$@";
 
+
+if building; then echo "Building..."; fi;
 if installing; then echo "Installing..."; fi;
 
+
+# --------------------------------------------------------------------
 # Kick it off...
+# --------------------------------------------------------------------
+loadConfig;
+mkInstallDirs;
 runInstall;
 
 

@@ -46,6 +46,10 @@ function buildConfig {
 	echo "Type Enter to select the default"
 	echo "-----------------------------------------------------------------------";
 
+	prompt "Temporary files directory [$TMP] "
+	read X;
+	if [ ! -z "$X" ]; then TMP="$X"; fi;
+
 	prompt "Install prefix [$PREFIX] ";
 	read X;
 	if [ ! -z "$X" ]; then 
@@ -76,10 +80,11 @@ function buildConfig {
 	read X;
 	if [ ! -z "$X" ]; then ETCDIR="$X"; fi;
 
-	prompt "Temporary files directory [$TMP] "
+	prompt "Web Root Directory [$WEB] "
 	read X;
-	if [ ! -z "$X" ]; then TMP="$X"; fi;
+	if [ ! -z "$X" ]; then WEB="$X"; fi;
 
+	
 	prompt "Apache2 apxs binary [$APXS2] "
 	read X;
 	if [ ! -z "$X" ]; then APXS2="$X"; fi;
