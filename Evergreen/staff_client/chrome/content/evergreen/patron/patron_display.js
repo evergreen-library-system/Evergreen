@@ -247,7 +247,8 @@ function patron_display_patron_checkout_items_init(p) {
 					var temp = p._patron.checkouts();
 					temp.push( check );
 					p._patron.checkouts( temp );
-					p.display_patron();
+					render_fm(p.w.document, { 'au' : p._patron }); // p.display_patron();
+					p.redraw_patron_items();
 					tb.value = '';
 				}
 			} else {
