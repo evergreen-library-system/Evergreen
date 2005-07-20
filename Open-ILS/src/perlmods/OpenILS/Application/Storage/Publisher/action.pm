@@ -48,6 +48,7 @@ sub nearest_hold {
 		  	AND hm.target_copy = ?
 			AND h.capture_time IS NULL
 		ORDER BY h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.request_time
+		LIMIT 1
 	SQL
 	return $id;
 }
