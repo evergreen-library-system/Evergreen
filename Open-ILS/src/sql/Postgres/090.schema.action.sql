@@ -139,6 +139,7 @@ CREATE TABLE action.hold_copy_map (
 
 CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
+	target_copy		BIGINT				NOT NULL asset.copy (id) ON DELETE CASCADE,`
 	source			INT				NOT NULL REFERENCES actor.org_unit (id),
 	dest			INT				NOT NULL REFERENCES actor.org_unit (id),
 	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE,
