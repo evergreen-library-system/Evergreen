@@ -34,6 +34,29 @@ __PACKAGE__->register_method(
 	method          => 'grab_overdue',
 );
 
+sub nearest_hold {
+	my $self = shift;
+	my $client = shift;
+	my $pl = shift;
+	my $cp = shift;
+
+	my ($id) = action::hold_request->db_Main->selectrow_array(<<"	SQL", {}, $pl,$cp);
+		SELECT	h.id
+		  FROM	action.hold_request h
+		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
+		  WHERE	h.pickup_lib = ?
+		  	AND hm.target_copy = ?
+			AND h.capture_time IS NULL
+		ORDER BY h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.request_time
+	SQL
+	return $id;
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.hold_request.nearest_hold',
+	api_level       => 1,
+	method          => 'nearest_hold',
+);
+
 sub next_resp_group_id {
 	my $self = shift;
 	my $client = shift;
