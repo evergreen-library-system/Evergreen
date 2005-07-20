@@ -93,6 +93,14 @@ function set_patron_display_widgets(p) {
 		},
 		false
 	);
+	p.commandset_node.getElementsByAttribute('id','cmd_patron_bills')[0].addEventListener(
+		'command',
+		function () {
+			focus_widget( p.w.document, 'bill_payment_amount_textbox' );
+		},
+		false
+	);
+
 
 }
 
