@@ -19,20 +19,20 @@
 # --------------------------------------------------------------------
 # Build targets.  Options include:
 # 
+# opensrf_all		- builds all OpenSRF compenents
 # opensrf_jserver - custom 'single-domain' jabber server which may be used in place of jabberd2
 # opensrf_router  - jabber router.  
 # opensrf_gateway - mod_ils_gateway, Apache module for proxying API calls
 # opensrf_srfsh   - diagnostic shell interface to OpenSRF
-# opensrf_perl		- install the OpenSRF perl modules
-# opensrf_all		- builds all OpenSRF compenents
+# opensrf_core		- install the OpenSRF perl modules and core files for running opensrf
 #
-# openils_marcdumper - utility code for converting MARC to MARCXML
-# openils_perl			- install the Open-ILS perl modules
 # openils_all			- builds all OpenILS compenents
-# openils_web			- copies over the javascript and html templates to the web root directory
+# openils_core			- install the Open-ILS perl modules, and core files for running and openils server
+# openils_web			- copies over the javascript and html templates to the web root directory for running the OPAC
+# openils_marcdumper - utility code for converting MARC to MARCXML
 #
-# evergreen_xul_client   - client XUL application
 # evergreen_all	- builds all Evergreen components
+# evergreen_xul_client   - client XUL application
 #
 # When running the server components of OpenSRF/OpenILS, the simplest
 # thing is to build 'opensrf' even if you 

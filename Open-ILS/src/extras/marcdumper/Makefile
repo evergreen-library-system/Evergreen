@@ -11,6 +11,9 @@ all: marcdumper
 marcdumper:  marcdumper.c
 	$(CC) marcdumper.c $(COMP) $(LD) -o $@
 
+install: 
+	cp marcdumper $(BINDIR)
+
 clean:
 	/bin/rm -f *.o marcdumper
 

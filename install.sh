@@ -109,20 +109,6 @@ function loadConfig {
 
 
 
-# install targets
-#
-# opensrf_jserver - custom 'single-domain' jabber server which may be used in place of jabberd2
-# opensrf_router  - jabber router.  
-# opensrf_gateway - mod_ils_gateway, Apache module for proxying API calls
-# opensrf_srfsh   - diagnostic shell interface to OpenSRF
-# opensrf_perl		- install the OpenSRF perl modules
-# opensrf_all		- builds all OpenSRF compenents
-# openils_marcdumper - utility code for converting MARC to MARCXML
-# openils_perl			- install the Open-ILS perl modules
-# openils_all			- builds all OpenILS compenents
-# openils_web			- copies over the javascript and html templates to the web root directory
-# evergreen_xul_client   - client XUL application
-# evergreen_all	- builds all Evergreen components
 function runInstall {
 
 
@@ -140,7 +126,8 @@ function runInstall {
 
 		MAKE="make APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
-			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR";
+			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR \
+			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR";
 
 		case "$target" in
 	
@@ -171,7 +158,7 @@ function runInstall {
 				if installing; then $MAKE -C "$OPENSRF_DIR" "srfsh-install"; fi;
 				;;
 
-			"opensrf_perl")
+			"opensrf_core")
 				if installing; then $MAKE -C "$OPENSRF_DIR" "perl-install"; fi;
 				;;
 
@@ -183,9 +170,23 @@ function runInstall {
 				if installing; then $MAKE -C "$OPENILS_DIR" install; fi;
 				;;
 
-			"openils_perl")
-				if installing; then $MAKE -C "$OPENILS_DIR" "perl-install"; fi;
+			"openils_core")
+				if installing; then 
+					$MAKE -C "$OPENILS_DIR" "perl-install"; 
+					$MAKE -C "$OPENILS_DIR" "string-templates-install"; 
+				fi;
 				;;
+
+			"openils_web")
+				if installing; then 
+					$MAKE -C "$OPENILS_DIR" "javascript-install"; 
+					$MAKE -C "$OPENILS_DIR" "web-templates-install"; 
+				fi;
+				;;
+
+			"openils_marcdumper")
+				if building;	then $MAKE -C "$OPENILS_DIR" "marcdumper"; fi;
+				if installing; then $MAKE -C "$OPENILS_DIR" "marcdumper-install"; fi;
 
 
 			# Evergreen --- 			

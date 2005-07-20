@@ -47,8 +47,7 @@ function buildConfig {
 	echo "-----------------------------------------------------------------------";
 
 	prompt "Temporary files directory [$TMP] "
-	read X;
-	if [ ! -z "$X" ]; then TMP="$X"; fi;
+	read X; if [ ! -z "$X" ]; then TMP="$X"; fi;
 
 	prompt "Install prefix [$PREFIX] ";
 	read X;
@@ -61,69 +60,37 @@ function buildConfig {
 	fi
 
 	prompt "Executables directory [$BINDIR] "
-	read X;
-	if [ ! -z "$X" ]; then BINDIR="$X"; fi;
+	read X; if [ ! -z "$X" ]; then BINDIR="$X"; fi;
 
 	prompt "Lib directory [$LIBDIR] "
-	read X;
-	if [ ! -z "$X" ]; then LIBDIR="$X"; fi;
+	read X; if [ ! -z "$X" ]; then LIBDIR="$X"; fi;
 
 	prompt "Perl directory [$PERLDIR] "
-	read X;
-	if [ ! -z "$X" ]; then PERLDIR="$X"; fi;
+	read X; if [ ! -z "$X" ]; then PERLDIR="$X"; fi;
 
 	prompt "Include files directory [$INCLUDEDIR] "
-	read X;
-	if [ ! -z "$X" ]; then INCLUDEDIR="$X"; fi;
+	read X; if [ ! -z "$X" ]; then INCLUDEDIR="$X"; fi;
 
 	prompt "Config files directory [$ETCDIR] "
-	read X;
-	if [ ! -z "$X" ]; then ETCDIR="$X"; fi;
+	read X; if [ ! -z "$X" ]; then ETCDIR="$X"; fi;
 
-	prompt "Web Root Directory [$WEB] "
-	read X;
-	if [ ! -z "$X" ]; then WEB="$X"; fi;
+	prompt "Web Root Directory [$WEBDIR] "
+	read X; if [ ! -z "$X" ]; then WEBDIR="$X"; fi;
 
-	
+	prompt "Templates directory [$TEMPLATEDIR] "
+	read X; if [ ! -z "$X" ]; then TEMPLATEDIR="$X"; fi;
+
 	prompt "Apache2 apxs binary [$APXS2] "
-	read X;
-	if [ ! -z "$X" ]; then APXS2="$X"; fi;
+	read X; if [ ! -z "$X" ]; then APXS2="$X"; fi;
 
 	prompt "Apache2 headers directory [$APACHE2_HEADERS] "
-	read X;
-	if [ ! -z "$X" ]; then APACHE2_HEADERS="$X"; fi;
+	read X; if [ ! -z "$X" ]; then APACHE2_HEADERS="$X"; fi;
 
 	prompt "Libxml2 headers directory [$LIBXML2_HEADERS] "
-	read X;
-	if [ ! -z "$X" ]; then LIBXML2_HEADERS="$X"; fi;
+	read X; if [ ! -z "$X" ]; then LIBXML2_HEADERS="$X"; fi;
 
 	prompt "Build targets [${TARGETS[@]:0}] "
-	read X;
-	if [ ! -z "$X" ]; then TARGETS=("$X"); fi;
-
-
-	cat <<-WORDS
-
-	-----------------------------------------------------------------------
-	Verify the following install directories are sane.
-	Note: * indicates that you must have write privelages for the location
-	-----------------------------------------------------------------------
-
-	-----------------------------------------------------------------------
-	Install prefix             [$PREFIX]*
-	Temporary files directory  [$TMP]*
-	Apache2 apxs binary        [$APXS2]
-	Apache2 headers directory  [$APACHE2_HEADERS]
-	Libxml2 headers directory  [$LIBXML2_HEADERS]
-	Build targets              [${TARGETS[@]:0}]
-	-----------------------------------------------------------------------
-
-	If these are not OK, use control-c to break out rerun this script.
-	Otherwise, type enter.
-
-	WORDS
-
-	read OK;
+	read X; if [ ! -z "$X" ]; then TARGETS=("$X"); fi;
 
 	writeConfig;
 }
@@ -146,6 +113,9 @@ function writeConfig {
 	_write "APACHE2_HEADERS=\"$APACHE2_HEADERS\"";
 	_write "LIBXML2_HEADERS=\"$LIBXML2_HEADERS\"";
 
+	_write "WEBDIR=\"$WEBDIR\"";
+	_write "TEMPLATEDIR=\"$TEMPLATEDIR\"";
+
 	# print out the targets
 	STR="TARGETS=(";
 	for target in ${TARGETS[@]:0}; do
@@ -157,6 +127,9 @@ function writeConfig {
 	_write "OPENSRF_DIR=\"OpenSRF/src/\"";
 	_write "OPENILS_DIR=\"Open-ILS/src/\"";
 	_write "EVERGREEN_DIR=\"Evergreen/\"";
+
+	prompt "To write a new config, run 'make config'";
+	sleep 2;
 
 }
 
