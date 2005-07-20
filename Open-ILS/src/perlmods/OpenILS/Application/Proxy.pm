@@ -7,6 +7,7 @@ use OpenSRF::EX qw(:try);
 __PACKAGE__->register_method(
 	method	=> "proxy",
 	api_name	=> "open-ils.proxy.proxy",
+	stream	=> 1,
 );
 
 

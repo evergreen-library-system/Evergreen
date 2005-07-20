@@ -43,47 +43,61 @@ sub update_patron {
 
 	my $new_patron;
 
-	#try {
-		# create/update the patron first so we can use his id
-		if($patron->isnew()) {
-			$new_patron = _add_patron(
-					$session, _clone_patron($patron));
-			if(UNIVERSAL::isa($new_patron, "OpenILS::EX")) {
-				$client->respond_complete($new_patron->ex);
-				return undef;
-			}
+	# create/update the patron first so we can use his id
+	if($patron->isnew()) {
 
-		} else { 
-			$new_patron = $patron; 
-		}
+		$new_patron = _add_patron($session, _clone_patron($patron), $user_obj);
 
-		$new_patron = _add_update_addresses($session, $patron, $new_patron);
-		$new_patron = _add_update_cards($session, $patron, $new_patron);
-
-		if(UNIVERSAL::isa($new_patron,"OpenILS::EX")) {
+		if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+			UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
 			$client->respond_complete($new_patron->ex);
 			return undef;
 		}
 
-		$new_patron = _add_survey_responses($session, $patron, $new_patron);
-		$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron);
+	} else { $new_patron = $patron; }
 
-		# re-update the patron if anything has happened to him during this process
-		if($new_patron->ischanged()) {
-			$new_patron = _update_patron($session, $new_patron);
+	$new_patron = _add_update_addresses($session, $patron, $new_patron, $user_obj);
+
+	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+		$client->respond_complete($new_patron->ex);
+		return undef;
+	}
+
+	$new_patron = _add_update_cards($session, $patron, $new_patron, $user_obj);
+
+	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+		$client->respond_complete($new_patron->ex);
+		return undef;
+	}
+
+	$new_patron = _add_survey_responses($session, $patron, $new_patron, $user_obj);
+	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+		$client->respond_complete($new_patron->ex);
+		return undef;
+	}
+
+	$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
+	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+		$client->respond_complete($new_patron->ex);
+		return undef;
+	}
+
+
+	# re-update the patron if anything has happened to him during this process
+	if($new_patron->ischanged()) {
+		$new_patron = _update_patron($session, $new_patron, $user_obj);
+
+		if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+			UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+			$client->respond_complete($new_patron->ex);
+			return undef;
 		}
-		$apputils->commit_db_session($session);
-
-=head
-	} catch Error with { 
-		my $e = shift;
-		$err =  "-*- Failure adding user: $e";
-		$apputils->rollback_db_session($session);
-		warn $err;
-	};
-
-	if($err) { throw OpenSRF::EX::ERROR ($err); }
-=cut
+	}
+	$apputils->commit_db_session($session);
 
 	warn "Patron Update/Create complete\n";
 	return flesh_user($new_patron->id());
@@ -200,6 +214,13 @@ sub _clone_patron {
 sub _add_patron {
 	my $session		= shift;
 	my $patron		= shift;
+	my $user_obj	= shift;
+
+
+	if($apputils->check_user_perms(
+				$user_obj->id, $user_obj->home_ou, "CREATE_USER")) {
+		return OpenILS::Perm->new("CREATE_USER");
+	}
 
 	warn "Creating new patron\n";
 	_d($patron);
@@ -223,7 +244,13 @@ sub _add_patron {
 
 
 sub _update_patron {
-	my( $session, $patron) = @_;
+	my( $session, $patron, $user_obj) = @_;
+
+
+	if($apputils->check_user_perms(
+				$user_obj->id, $user_obj->home_ou, "UPDATE_USER")) {
+		return OpenILS::Perm->new("UPDATE_USER");
+	}
 
 	warn "updating patron " . Dumper($patron) . "\n";
 

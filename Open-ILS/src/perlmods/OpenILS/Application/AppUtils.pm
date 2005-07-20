@@ -242,8 +242,6 @@ sub build_org_tree {
 
 	my( $self, $orglist, $add_types ) = @_;
 
-
-
 	return $orglist unless ( 
 			ref($orglist) and @$orglist > 1 );
 
@@ -271,81 +269,11 @@ sub build_org_tree {
 
 }
 
-	
-sub start_long_request {
 
-	my($self, $service, $method, @params) = @_;
 
-	my $session = OpenSRF::AppSession->create( $service );
-	my $request = $session->request( $method, @params );
-	my $response = $request->recv(30);
 
-	$request->wait_complete;
 
-	if(!$request->complete) {
-		throw $response ("Call to $service for method $method with params @params" . 
-				"\n did not complete successfully");
-	}
 
-	if(!$response) {
-		warn "No response from $service for method $method with params @params";
-	}
-
-	if($response and UNIVERSAL::isa($response,"Error")) {
-		throw $response ("Call to $service for method $method with params @params" . 
-				"\n failed with exception: " . $response->stringify );
-	}
-
-	$request->finish();
-
-	my $value;
-
-	if($response) { $value = $response->content; }
-	else { $value = undef; }
-
-	return [ $session, $value ];
-}
-
-sub long_request {
-
-	my($self, $session, $service, $method, @params) = @_;
-
-	my $request = $session->request( $method, @params );
-	my $response = $request->recv(30);
-
-	$request->wait_complete;
-
-	if(!$request->complete) {
-		throw $response ("Call to $service for method $method with params @params" . 
-				"\n did not complete successfully");
-	}
-
-	if(!$response) {
-		warn "No response from $service for method $method with params @params";
-	}
-
-	if($response and UNIVERSAL::isa($response,"Error")) {
-		throw $response ("Call to $service for method $method with params @params" . 
-				"\n failed with exception: " . $response->stringify );
-	}
-
-	$request->finish();
-
-	my $value;
-
-	if($response) { $value = $response->content; }
-	else { $value = undef; }
-
-	return $value;
-}
-
-sub finish_long_request {
-	my($self, $session) = @_;
-	if($session) {
-		$session->finish();
-		$session->disconnect();
-	}
-}
 
 
 1;

@@ -342,12 +342,13 @@ __PACKAGE__->register_method(
 sub permit_circ {
 	my( $self, $client, $user_session, $barcode, $user_id, $outstanding_count ) = @_;
 
+	my $copy_status_mangled;
+
 	my $renew = 0;
 	if(defined($outstanding_count) && $outstanding_count eq "renew") {
 		$renew = 1;
 		$outstanding_count = 0;
 	} else { $outstanding_count ||= 0; }
-
 
 	my $session	= OpenSRF::AppSession->create("open-ils.storage");
 	
@@ -360,6 +361,13 @@ sub permit_circ {
 			text => "No copy available with barcode $barcode"
 		};
 	}
+	my $copy = $stash->get("circ_objects")->{copy};
+
+	if( $copy->status eq "8" ) { 
+		$copy_status_mangled = 8; 
+		$copy->status(0);
+	}
+
 
 	$stash->set("run_block", $permission_script);
 
@@ -380,8 +388,24 @@ sub permit_circ {
 	# run the permissibility script
 	run_script();
 
-	
 	my $arr = $stash->get("result");
+
+	if( $arr->[0] eq "0" and $copy_status_mangled == 8) {
+		my $hold = $session->request(
+			"open-ils.storage.direct.action.hold_request.search.current_copy",
+			$copy->id )->gather(1);
+		if($hold) {
+			if( $hold->usr eq $user_id ) {
+				return { status => 0, text => "OK" };
+			} else {
+				return { status => 6, 
+					text => "Copy is needed by a different user to fulfill a hold" };
+			}
+		}
+	}
+
+
+	
 	return { status => $arr->[0], text => $arr->[1] };
 
 }
@@ -613,6 +637,10 @@ sub checkin {
 	my $transaction;
 	my $user = $apputils->check_user_session($user_session);
 
+	if($apputils->check_user_perms($user->id, $user->home_ou, "COPY_CHECKIN")) {
+		return OpenILS::Perm->new("COPY_CHECKIN");
+	}
+
 	try {
 		my $session = $apputils->start_db_session();
 			
@@ -730,9 +758,6 @@ sub checkin {
 
 
 
-
-
-
 # ------------------------------------------------------------------------------
 # RENEWALS
 # ------------------------------------------------------------------------------
@@ -763,8 +788,15 @@ sub renew {
 		"open-ils.storage.direct.action.hold_copy_map.search.target_copy.atomic",
 		$copy->id )->gather(1);
 
+	my @holdids = map { $_->hold  } @$r;
+
 	if(@$r != 0) { 
-		if( $user->id ne $circ->usr ) {
+
+		my $holds = $session->request(
+			"open-ils.storage.direct.action.hold_request.search_where", 
+				{ id => \@holdids, current_copy => undef } )->gather(1);
+
+		if( $holds and $user->id ne $circ->usr ) {
 			if($apputils->check_user_perms($user->id, $user->home_ou, "RENEW_HOLD_OVERRIDE")) {
 				return OpenILS::Perm->new("RENEW_HOLD_OVERRIDE");
 			}
