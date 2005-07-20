@@ -165,7 +165,7 @@ function arg_dump(args,dump_these) {
 	}
 }
 
-function handle_error(E) {
+function handle_error(E,annoy) {
 	var s = '';
 	if (instanceOf(E,ex)) {
 		s += E.err_msg();
@@ -180,6 +180,9 @@ function handle_error(E) {
 		if (snd_really_bad) snd_really_bad();
 	}
 	sdump('D_ERROR',s);
-	s_alert(s);
+	if (annoy)
+		s_alert(s);
+	else
+		alert(s);
 }
 
