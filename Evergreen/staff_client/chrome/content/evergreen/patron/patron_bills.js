@@ -102,7 +102,6 @@ function list_box_init( p ) {
 		for (var i = 0; i < count; i++) {
 			p.listbox.removeChild( p.listbox.lastChild );
 		}
-		alert('pause');
 	}
 
 	return p;
