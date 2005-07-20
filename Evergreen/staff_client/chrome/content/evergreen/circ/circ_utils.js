@@ -57,6 +57,20 @@ function checkout_by_copy_barcode(barcode, patron_id, f) {
 	}
 }
 
+function capture_hold( barcode ) {
+	try {
+		var ou_id = user_request(
+			'open-ils.circ',
+			'open-ils.circ.hold.capture_copy.barcode',
+			[ mw.G.auth_ses[0], barcode ]
+		)[0];
+		return ou_id;
+	} catch(E) {
+		handle_error(E);
+		return null;
+	}
+}
+
 function checkin_by_copy_barcode(barcode, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
 	try {
@@ -66,6 +80,14 @@ function checkin_by_copy_barcode(barcode, f) {
 			[ mw.G.auth_ses[0], barcode ],
 			f
 		)[0];
+
+		/*
+		{ // REMOVE_ME, forcing a condition for testing
+			check.status = 1;
+			check.text = 'This copy is the first that could fulfill a hold.  Do it?';
+		}
+		*/
+
 		if (!f) {
 			sdump('D_CIRC_UTILS','check = ' + js2JSON(check) + '\n');
 			if (check.status != 0) {
@@ -82,10 +104,18 @@ function checkin_by_copy_barcode(barcode, f) {
 						switch(rv) {
 							case 0: /* capture */
 							try {
-								capture_hold( barcode );
+								var ou_id = capture_hold( barcode );
 								check.text = 'Captured for Hold';
+								check.route_to = mw.G.org_tree_hash[ ou_id ].shortname();
 
-							} catch(E) { sdump('D_ERROR',E + '\n'); }
+							} catch(E) { 
+								sdump('D_ERROR',E + '\n'); 
+								/* 
+								// demo testing 
+								check.text = 'Captured for Hold';
+								check.route_to = 'ARL-ATH';
+								*/
+							}
 							break;
 							case 1: /* don't capture */
 
@@ -215,7 +245,7 @@ function checkin_cols() {
 	var cols = [
 		{
 			'id' : 'checkin_status', 'label' : getString('checkin_label_status'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : '', 'fm_field_render' : '.status.toString()'
+			'primary' : false, 'hidden' : true, 'fm_class' : '', 'fm_field_render' : '.status.toString()'
 		},
 		{
 			'id' : 'checkin_route_to', 'label' : getString('checkin_label_route_to'), 'flex' : 1,
