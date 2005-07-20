@@ -57,7 +57,7 @@ function patron_get_bills( au, f ) {
 	try {
 		var bills = user_request(
 			'open-ils.actor',
-			'open-ils.actor.user.transactions',
+			'open-ils.actor.user.transactions.have_balance',
 			[ mw.G.auth_ses[0], au.id() ],
 			f
 		)[0];

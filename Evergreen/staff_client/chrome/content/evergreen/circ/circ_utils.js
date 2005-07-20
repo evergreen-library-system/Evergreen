@@ -100,7 +100,7 @@ function checkin_by_copy_barcode(barcode, f) {
 		}
 		return check;
 	} catch(E) {
-		sdump('D_ERROR',E);
+		handle_error(E);
 		return null;
 	}
 }

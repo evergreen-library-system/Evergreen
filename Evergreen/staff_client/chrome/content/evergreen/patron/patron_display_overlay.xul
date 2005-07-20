@@ -57,7 +57,7 @@
 	</groupbox>
 	<groupbox id="cssdgb4">
 		<caption id="cssdgb4c" label="&patron_navbar.bills;"/>
-		<box id="PatronBills_main" />
+		<box id="PatronBills_main" flex="1"/>
 	</groupbox>
 	<box id="PatronEdit_main"><label value="edit" /></box>
 	<box id="PatronInfo_main"><label value="info" /></box>
