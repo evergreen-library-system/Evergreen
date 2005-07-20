@@ -55,7 +55,8 @@ LIBDIR="$PREFIX/lib/";
 PERLDIR="$LIBDIR/perl5/";
 INCLUDEDIR="$PREFIX/include/";
 ETCDIR="$PREFIX/etc/";
-WEB="$PREFIX/web/";
+WEBDIR="$PREFIX/web/";
+TEMPLATEDIR="$PREFIX/templates";
 
 
 # --------------------------------------------------------------------

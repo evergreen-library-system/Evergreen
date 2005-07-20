@@ -158,40 +158,41 @@ function runInstall {
 				if installing; then $MAKE -C "$OPENSRF_DIR" "srfsh-install"; fi;
 				;;
 
-			"opensrf_core")
+			"opensrf_core" )
 				if installing; then $MAKE -C "$OPENSRF_DIR" "perl-install"; fi;
 				;;
 
 
 			# OpenILS --- 			
 
-			"openils_all")
+			"openils_all" )
 				if building;	then $MAKE -C "$OPENILS_DIR" all; fi;
 				if installing; then $MAKE -C "$OPENILS_DIR" install; fi;
 				;;
 
-			"openils_core")
+			"openils_core" )
 				if installing; then 
 					$MAKE -C "$OPENILS_DIR" "perl-install"; 
 					$MAKE -C "$OPENILS_DIR" "string-templates-install"; 
 				fi;
 				;;
 
-			"openils_web")
+			"openils_web" )
 				if installing; then 
 					$MAKE -C "$OPENILS_DIR" "javascript-install"; 
 					$MAKE -C "$OPENILS_DIR" "web-templates-install"; 
 				fi;
 				;;
 
-			"openils_marcdumper")
+			"openils_marcdumper" )
 				if building;	then $MAKE -C "$OPENILS_DIR" "marcdumper"; fi;
 				if installing; then $MAKE -C "$OPENILS_DIR" "marcdumper-install"; fi;
+				;;
 
 
 			# Evergreen --- 			
 
-			"evergreen_xul_client")
+			"evergreen_xul_client" )
 				if building;	then $MAKE -C "$EVERGREEN_DIR" xul; fi;
 				;;
 

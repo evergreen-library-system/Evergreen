@@ -77,7 +77,7 @@ jserver: c_utils
 # --------------------------------------------------------------------------------
 # INSTALL
 # --------------------------------------------------------------------------------
-install-prep:	install-prep
+install-prep:	
 	@echo "Creating install directories"
 	mkdir -p $(LIBDIR)
 	mkdir -p $(BINDIR)

@@ -129,7 +129,7 @@ function writeConfig {
 	_write "EVERGREEN_DIR=\"Evergreen/\"";
 
 	prompt "To write a new config, run 'make config'";
-	sleep 2;
+	prompt "";
 
 }
 
