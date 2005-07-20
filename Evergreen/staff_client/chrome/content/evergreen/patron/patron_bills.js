@@ -5,38 +5,24 @@ function patron_bills_init(p) {
 	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
 	p.patron_bills_cols = [
-	/*
 		{
-			'id' : 'id', 'label' : getString('mbts_id_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 'fm_field_render' : '.id()'
-		},
-	*/
-		{
-			'id' : 'xact_dates', 'label' : getString('bills_xact_dates_label'), 'flex' : 1,
+			'id' : 'xact_dates', 'label' : getString('bills_xact_dates_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 
 			'fm_field_render' : 'xact_dates_box($$)'
 		},
 		{
-			'id' : 'money', 'label' : getString('bills_money_label'), 'flex' : 1,
+			'id' : 'notes', 'label' : getString('mbts_xact_type_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts',
+			'fm_field_render' : '.xact_type()'
+		},
+		{
+			'id' : 'money', 'label' : getString('bills_money_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 
 			'fm_field_render' : 'money_box($$)'
 		},
-	/*
 		{
-			'id' : 'total_owed', 'label' : getString('mbts_total_owed_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 'fm_field_render' : '.total_owed()'
-		},
-		{
-			'id' : 'total_paid', 'label' : getString('mbts_total_paid_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 'fm_field_render' : '.total_paid()'
-		},
-		{
-			'id' : 'balance_owed', 'label' : getString('mbts_balance_owed_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 'fm_field_render' : '.balance_owed()'
-		},
-	*/
-		{
-			'id' : 'current_pay', 'label' : getString('bills_current_payment_label'), 'flex' : 1, 'render_xul' : 'textbox'
+			'id' : 'current_pay', 'label' : getString('bills_current_payment_label'), 'flex' : 0, 
+			'render_xul' : 'textbox'
 		}
 	];
 
@@ -84,11 +70,15 @@ function list_box_init( p ) {
 				listcol.setAttribute('flex', p.cols[i].flex);
 			}
 
-	p.add_row = function (cols) {
+	p.add_row = function (cols, params) {
 
 		var listitem = p.w.document.createElement('listitem');
 		listbox.appendChild( listitem );
 		listitem.setAttribute('allowevents','true');
+		listitem.setAttribute('style','border-bottom: black solid thin');
+		for (var i in params) {
+			listitem.setAttribute( i, params[i] );
+		}
 
 		if (window.navigator.userAgent.match( /Firefox/ ))  {
 			listitem.setAttribute('label','');
@@ -207,7 +197,7 @@ function patron_bills_add_patron_bills(p, bills) {
 			var listcell = p.w.document.createElement('listcell');
 			listcell.setAttribute('pack','start');
 			listcell.setAttribute('align','start');
-			listcell.setAttribute('style','border-bottom: black solid thin');
+			listcell.setAttribute('style','border-left: black solid thin');
 			var col = '';
 			if (hash.fm_field_render) {
 
@@ -235,6 +225,6 @@ function patron_bills_add_patron_bills(p, bills) {
 			}
 			cols.push( listcell );
 		}
-		p.list_box.add_row( cols );
+		p.list_box.add_row( cols, { 'record_id' : mbts.id() } );
 	}
 }
