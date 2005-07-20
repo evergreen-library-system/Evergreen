@@ -4,6 +4,8 @@
 #include "opensrf/osrf_config.h"
 #include <time.h>
 #include <sys/timeb.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "md5.h"
 #include "utils.h"
@@ -33,6 +35,7 @@ char* login_session = NULL;
 
 /* true if we're pretty printing json results */
 int pretty_print = 1;
+int raw_print = 0;
 
 /* our jabber connection */
 transport_client* client = NULL; 

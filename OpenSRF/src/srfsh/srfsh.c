@@ -105,6 +105,7 @@ int parse_error( char* words[] ) {
 	if( ! words )
 		return 0;
 
+
 	int i = 0;
 	char* current;
 	char buffer[256];
@@ -181,8 +182,13 @@ int parse_request( char* request ) {
 	else if (words[0][0] == '!')
 		ret_val = handle_exec( words );
 
-	if(!ret_val)
-		return parse_error( words );
+	if(!ret_val) {
+		#ifdef EXEC_DEFAULT
+			return handle_exec( words );
+		#else
+			return parse_error( words );
+		#endif
+	}
 
 	return 1;
 
@@ -370,27 +376,32 @@ int handle_router( char* words[] ) {
 
 int handle_exec(char* words[]) {
 
-	int len = strlen(words[0]);
-	char command[len];
-	memset(command,0,len);
+	if(!words[0]) return 0;
 
-	int i; /* chop out the ! */
-	for( i=1; i!= len; i++) {
-		command[i-1] = words[0][i];
+	if( words[0] && words[0][0] == '!') {
+		int len = strlen(words[0]);
+		char command[len];
+		memset(command,0,len);
+	
+		int i; /* chop out the ! */
+		for( i=1; i!= len; i++) {
+			command[i-1] = words[0][i];
+		}
+	
+		free(words[0]);
+		words[0] = strdup(command);
 	}
 
-	free(words[0]);
-	words[0] = strdup(command);
 	signal(SIGCHLD,sig_child_handler);
+
 	if(fork()) {
-		while(1) {
-			sleep(100);
-			if(child_dead) {
-				signal(SIGCHLD,sig_child_handler);
-				child_dead = 0;
-				break;
-			}
+
+		waitpid(-1, 0, 0);
+		if(child_dead) {
+			signal(SIGCHLD,sig_child_handler);
+			child_dead = 0;
 		}
+
 	} else {
 		execvp( words[0], words );
 		exit(0);
