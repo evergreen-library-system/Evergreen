@@ -106,6 +106,8 @@ function checkin_by_copy_barcode(barcode, f) {
 							try {
 								var check2 = hold_capture_by_copy_barcode( barcode );
 								if (check2) {
+									sdump('D_CIRC_UTILS','check2 = ' + js2JSON(check2) + '\n');
+									check.copy = check2.copy;
 									check.text = 'Captured for Hold';
 									check.route_to = mw.G.org_tree_hash[ check2.route_to ].shortname();
 								}
