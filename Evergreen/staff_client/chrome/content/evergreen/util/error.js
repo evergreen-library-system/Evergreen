@@ -17,6 +17,7 @@ var sdump_levels = {
 	'D_TIMEOUT' :  false,
 	'D_FILTER' : false,
 	'D_CONSTRUCTOR' : false,
+	'D_FIREFOX' : true,
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
