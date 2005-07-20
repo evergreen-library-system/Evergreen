@@ -89,7 +89,6 @@ function list_box_init( p ) {
 		for (var i = 0; i < cols.length; i++) {
 
 			try {
-				dump('listitem.append.  i = ' + i + '  cols[i] = ' + cols[i] + '\n');
 				listitem.appendChild( cols[i] );
 			} catch(E) {
 				sdump('D_ERROR', cols[i] + '\n' + E + '\n');
