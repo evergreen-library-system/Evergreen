@@ -28,81 +28,14 @@ function patron_bills_init(p) {
 
 	p.list_box = list_box_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.patron_bills_cols, 'debug' : p.app } );
 
+	p.clear_patron_bills = p.list_box.clear_rows;
 
 	p.add_patron_bills = function (bills) {
 		sdump('D_PATRON_BILLS','p.add_patron_bills(' + bills + ')\n');
 		return patron_bills_add_patron_bills(p,bills);
 	}
-	p.clear_patron_bills = p.list_box.clear_rows;
 
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return p;
-}
-
-function list_box_init( p ) {
-	p.listbox = p.w.document.createElement('listbox');
-	p.node.appendChild( p.listbox );
-	p.listbox.setAttribute('flex','1');
-	p.listbox.setAttribute('seltype','multiple');
-
-		var listhead = p.w.document.createElement('listhead');
-		p.listbox.appendChild( listhead );
-
-		var listcols = p.w.document.createElement('listcols');
-		p.listbox.appendChild( listcols );
-
-			/*if (window.navigator.userAgent.match( /Firefox/ ))*/  {
-				//sdump('D_FIREFOX','Kludge: Adding extra listheader and listcol\n');
-				var listheader = p.w.document.createElement('listheader');
-				listhead.appendChild( listheader );
-				listheader.setAttribute('label', '');
-				var listcol = p.w.document.createElement('listcol');
-				listcols.appendChild( listcol );
-			}
-
-			for (var i = 0; i < p.cols.length; i++ ) {
-
-				var listheader = p.w.document.createElement('listheader');
-				listhead.appendChild( listheader );
-				listheader.setAttribute('label', p.cols[i].label);
-
-				var listcol = p.w.document.createElement('listcol');
-				listcols.appendChild( listcol );
-				listcol.setAttribute('flex', p.cols[i].flex);
-			}
-
-	p.add_row = function (cols, params) {
-
-		var listitem = p.w.document.createElement('listitem');
-		p.listbox.appendChild( listitem );
-		listitem.setAttribute('allowevents','true');
-		listitem.setAttribute('style','border-bottom: black solid thin');
-		for (var i in params) {
-			listitem.setAttribute( i, params[i] );
-		}
-
-		/* if (window.navigator.userAgent.match( /Firefox/ )) */ {
-			//sdump('D_FIREFOX','Kludge: Setting label on listitem\n');
-			listitem.setAttribute('label',' ');
-		}
-
-		for (var i = 0; i < cols.length; i++) {
-
-			try {
-				listitem.appendChild( cols[i] );
-			} catch(E) {
-				sdump('D_ERROR', cols[i] + '\n' + E + '\n');
-			}
-		}
-	}
-
-	p.clear_rows = function () {
-		var count = p.listbox.getRowCount();
-		for (var i = 0; i < count; i++) {
-			p.listbox.removeChild( p.listbox.lastChild );
-		}
-	}
-
 	return p;
 }
 
