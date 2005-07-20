@@ -52,7 +52,7 @@ function list_box_init( p ) {
 		p.listbox.appendChild( listcols );
 
 			/*if (window.navigator.userAgent.match( /Firefox/ ))*/  {
-				sdump('D_FIREFOX','Kludge: Adding extra listheader and listcol\n');
+				//sdump('D_FIREFOX','Kludge: Adding extra listheader and listcol\n');
 				var listheader = p.w.document.createElement('listheader');
 				listhead.appendChild( listheader );
 				listheader.setAttribute('label', '');
@@ -82,7 +82,7 @@ function list_box_init( p ) {
 		}
 
 		/* if (window.navigator.userAgent.match( /Firefox/ )) */ {
-			sdump('D_FIREFOX','Kludge: Setting label on listitem\n');
+			//sdump('D_FIREFOX','Kludge: Setting label on listitem\n');
 			listitem.setAttribute('label',' ');
 		}
 
@@ -98,7 +98,11 @@ function list_box_init( p ) {
 	}
 
 	p.clear_rows = function () {
-		while( p.listbox.getRowCount() > 0 ) { p.listbox.removeItemAt(0); }
+		var count = p.listbox.getRowCount();
+		for (var i = 0; i < count; i++) {
+			p.listbox.removeChild( p.listbox.lastChild );
+		}
+		alert('pause');
 	}
 
 	return p;
@@ -182,13 +186,11 @@ function patron_bills_add_patron_bills(p, bills) {
 		return grid;
 	}
 
-	function gen_timeout_add_row( cols, mbts ) {
-		return function() { p.list_box.add_row( cols, { 'record_id' : mbts.id() } ) };
-	}
-
 	var obj_string ='mbts';
 
-	setTimeout( function(){p.list_box.clear_rows();}, 0 );
+	setTimeout(
+		function() {
+	//p.list_box.clear_rows();
 
 	for (var i = 0; i < bills.length; i++) {
 
@@ -230,6 +232,8 @@ function patron_bills_add_patron_bills(p, bills) {
 			}
 			cols.push( listcell );
 		}
-		setTimeout( gen_timeout_add_row( cols, mbts), 0);
+		p.list_box.add_row( cols, { 'record_id' : mbts.id() } ); 
 	}
+		}, 0
+	);
 }
