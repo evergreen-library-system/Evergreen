@@ -54,7 +54,7 @@ int handle_time( char* words[] );
 
 /* handles app level requests */
 int handle_request( char* words[], int relay );
-int handle_exec(char* words[]);
+int handle_exec(char* words[], int new_shell);
 int handle_set( char* words[]);
 int handle_print( char* words[]);
 int send_request( char* server, 

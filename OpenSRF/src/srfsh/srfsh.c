@@ -1,6 +1,8 @@
 #include "srfsh.h"
 
 int is_from_script = 0;
+FILE* shell_writer = NULL;
+FILE* shell_reader = NULL;
 
 int main( int argc, char* argv[] ) {
 
@@ -41,6 +43,10 @@ int main( int argc, char* argv[] ) {
 
 	client = osrf_system_get_transport_client();
 
+	/* open the shell handle */
+	shell_writer = popen( "bash", "w");
+	//shell_reader = popen( "bash", "r");
+
 	/* main process loop */
 	char* request;
 	while((request=readline(prompt))) {
@@ -57,6 +63,10 @@ int main( int argc, char* argv[] ) {
 
 		free(request);
 		free(req_copy);
+
+		fflush(shell_writer);
+		fflush(stderr);
+		fflush(stdout);
 	}
 
 	if(history_file != NULL )
@@ -180,11 +190,11 @@ int parse_request( char* request ) {
 		ret_val = handle_login(words);
 
 	else if (words[0][0] == '!')
-		ret_val = handle_exec( words );
+		ret_val = handle_exec( words, 1 );
 
 	if(!ret_val) {
 		#ifdef EXEC_DEFAULT
-			return handle_exec( words );
+			return handle_exec( words, 0 );
 		#else
 			return parse_error( words );
 		#endif
@@ -374,7 +384,9 @@ int handle_router( char* words[] ) {
 }
 
 
-int handle_exec(char* words[]) {
+/* if new shell, spawn a new child and subshell to do the work,
+	otherwise pipe the request to the currently open (piped) shell */
+int handle_exec(char* words[], int new_shell) {
 
 	if(!words[0]) return 0;
 
@@ -392,20 +404,39 @@ int handle_exec(char* words[]) {
 		words[0] = strdup(command);
 	}
 
-	signal(SIGCHLD,sig_child_handler);
+	if(new_shell) {
+		signal(SIGCHLD, sig_child_handler);
 
-	if(fork()) {
-
-		waitpid(-1, 0, 0);
-		if(child_dead) {
-			signal(SIGCHLD,sig_child_handler);
-			child_dead = 0;
+		if(fork()) {
+	
+			waitpid(-1, 0, 0);
+			if(child_dead) {
+				signal(SIGCHLD,sig_child_handler);
+				child_dead = 0;
+			}
+	
+		} else {
+			execvp( words[0], words );
+			exit(0);
 		}
 
 	} else {
-		execvp( words[0], words );
-		exit(0);
+
+		growing_buffer* b = buffer_init(64);
+		int i = 0;
+		while(words[i]) 
+			buffer_fadd( b, "%s ", words[i++] );
+	
+		buffer_add( b, "\n");
+	
+		fprintf( shell_writer, b->buf );
+		buffer_free(b);
+	
+		fflush(shell_writer);
+		usleep(1000);
 	}
+
+	
 	return 1;
 }
 
