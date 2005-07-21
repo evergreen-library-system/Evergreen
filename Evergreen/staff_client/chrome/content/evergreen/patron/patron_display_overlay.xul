@@ -110,14 +110,14 @@
 	<hbox>
 		<spacer flex="2"/>
 		<grid style="border: solid thin black">
-			<columns><column /><column /></columns>                                 
+			<columns><column /><column /><column /></columns>                                 
 			<rows>
 				<row>
 					<label value="Total Owed"
 						style="font-family: bold" />
 
 					<textbox id="bill_total_owed" value="" 
-						style="font-family: bold" disabled="true" />
+						style="font-family: bold" readonly="true" />
 				</row>
 				<row>
 					<label id="pbi1_l2" value="Payment Type" 
@@ -133,25 +133,43 @@
 					</menulist>
 				</row>
 				<row>
-					<label value="Payment amount" 
+					<label value="Payment received" 
 						accesskey="p" control="pbi1_tb1"
 						style="font-family: bold" />
 		
 					<textbox id="bill_payment_amount_textbox" />
 				</row>
 				<row>
-					<label value="Change" 
-						control="bill_change_amount_textbox" 
+					<label value="- Payment applied" 
 						style="font-family: bold" />
-	
-					<textbox id="bill_change_amount_textbox" />
+		
+					<textbox id="bill_payment_applied_textbox" readonly="true"/>
 				</row>
 				<row>
-
-					<button label="Forward Credit" 
+					<label value="= Change" 
+						control="bill_change_amount_textbox" 
 						style="font-family: bold" />
 
-					<textbox id="bill_credit_amount_textbox" />
+					<textbox id="bill_change_amount_textbox" />
+
+					<button id="convert_change" label="Credit" accesskey="t"/>
+				</row>
+				<row><label value=" "/></row>
+				<row>
+
+					<label value="New Balance" 
+						style="font-family: bold" />
+
+					<textbox id="bill_new_balance_textbox" readonly="true"/>
+
+				</row>
+				<row><label value=" "/></row>
+				<row>
+
+					<label value="Forward Credit" 
+						style="font-family: bold" />
+
+					<textbox id="bill_credit_amount_textbox" readonly="true"/>
 
 				</row>
 				<row>

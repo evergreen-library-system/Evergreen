@@ -100,15 +100,36 @@ function dollars_float_to_cents_integer( money ) {
 	// careful to avoid fractions of pennies
 	var money_s = money.toString();
 	// FIXME: strip miscellaneous characters
-	var dollars = money_s.split(".")[0];
-	var cents = money_s.split(".")[1];
-	if (cents.length > 2) {
-		sdump('D_ERROR',"We don't round money\n");
-		cents = cents.substr(0,2);
+	var marray = money_s.split(".");
+	var dollars = marray[0];
+	var cents = marray[1];
+	try {
+		if (cents.length < 2) {
+			cents = cents + '0';
+		}
+	} catch(E) {
+		// I'm not sure why these are getting thrown, especially with the code still working
+		sdump('D_ERROR',"cents.length? " + E + "\n");
+	}
+	try {
+		if (cents.length > 2) {
+			sdump('D_ERROR',"We don't round money\n");
+			cents = cents.substr(0,2);
+		}
+	} catch(E) {
+		sdump('D_ERROR',"cents.length? " + E + "\n");
 	}
 	var total = 0;
-	if (parseInt(cents)) total += parseInt(cents);
-	if (parseInt(dollars)) total += (parseInt(dollars) * 100);
+	try {
+		if (parseInt(cents)) total += parseInt(cents);
+	} catch(E) {
+		sdump('D_ERROR',"parseInt(cents)? " + E + "\n");
+	}
+	try {
+		if (parseInt(dollars)) total += (parseInt(dollars) * 100);
+	} catch(E) {
+		sdump('D_ERROR',"parseInt(dollars)? " + E + "\n");
+	}
 	return total;	
 }
 

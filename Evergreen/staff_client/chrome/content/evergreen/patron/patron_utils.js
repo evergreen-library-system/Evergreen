@@ -79,11 +79,11 @@ function patron_get_bills_total( au ) {
 	if (au.bills == null || au.bills == undefined)
 		return '???';
 	else {
-		return patron_get_bills_total_from_bills( au.bills );
+		return get_bills_total( au.bills );
 	}
 }
 
-function patron_get_bills_total_from_bills( bills ) {
+function get_bills_total( bills ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	var total = 0;
 	for (var i = 0; i < bills.length; i++) {

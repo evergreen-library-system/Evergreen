@@ -58,6 +58,8 @@ function list_box_init( p ) {
 				sdump('D_ERROR', cols[i] + '\n' + E + '\n');
 			}
 		}
+		
+		return listitem;
 	}
 
 	p.clear_rows = function () {
