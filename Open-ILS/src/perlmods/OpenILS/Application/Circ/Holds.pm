@@ -395,7 +395,7 @@ sub capture_copy {
 		$u->start_mods_batch( $title->marc() );
 		$title = $u->finish_mods_batch();
 
-	} else { $copy = undef; }
+	} 
 
 	$apputils->commit_db_session($session);
 

@@ -619,27 +619,44 @@ __PACKAGE__->register_method(
 	method	=> "transit_receive",
 	api_name	=> "open-ils.circ.transit.receive",
 	notes		=> <<"	NOTES");
+	Receives a copy that is in transit.  
+	Params are login_session and copyid.
+	Logged in user must have COPY_CHECKIN priveleges.
+
+	status 3 means that this transit is destined for somewhere else
+	status 10 means the copy is not in transit
+	status 11 means the transit is complete, does not need processing
+	status 12 means copy is in transit but no tansit was found
+
 	NOTES
 
-# status 3 means that this transit is destined for somewhere else
 sub transit_receive {
 	my( $self, $client, $login_session, $copyid ) = @_;
 
 	my $user = $apputils->check_user_session($login_session);
+
+	if($apputils->check_user_perms($user->id, $user->home_ou, "COPY_CHECKIN")) {
+		return OpenILS::Perm->new("COPY_CHECKIN");
+	}
 
 	my $session = $apputils->start_db_session();
 	my $copy = _grab_copy_by_id($session, $copyid);
 	my $transit;
 
 	if(!$copy->status eq "6") {
-		throw OpenSRF::EX::ERROR ("Copy is not in transit");
+		return { status => 10, route_to => $copy->circ_lib };
 	}
+
 
 	$transit = $session->request(
 		"open-ils.storage.direct.action.transit_copy.search_where",
 		{ target_copy => $copy->id, dest_recv_time => undef } )->gather(1);
 
 	if($transit) {
+
+		if( defined($transit->dest_recv_time) ) {
+			return { status => 11, route_to => $copy->circ_lib };
+		}
 
 		if($transit->dest ne $user->home_ou) {
 			return { status => 3, route_to => $transit->dest };
@@ -659,16 +676,25 @@ sub transit_receive {
 			my $hold = $session->request(
 				"open-ils.storage.direct.action.hold_request.retrieve",
 				$holdtransit->hold )->gather(1);
+			if(!$hold) {
+				throw OpenSRF::EX::ERROR ("No hold found to match transit " . $holdtransit->id);
+			}
+
+			# put copy on the holds shelf
 			$copy->status(8); #hold shelf status
+			$copy->editor($user->id); #hold shelf status
+			$copy->edit_date("now"); #hold shelf status
 
 			my $s = $session->request(
 				"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
-			if(!$s) {} # blah..
+			if(!$s) {throw OpenSRF::EX::ERROR ("Error putting copy on holds shelf ".$copy->id);} # blah..
 
 			return { status => 0, route_to => $hold->pickup_lib };
 		}
 
-	} else { } #message...
+	} else { 
+		return { status => 12, route_to => $copy->circ_lib };
+	} 
 
 }
 
@@ -787,7 +813,7 @@ sub checkin {
 		# see if this copy can fulfill a hold
 		my $hold = OpenILS::Application::Circ::Holds::_find_local_hold_for_copy( $session, $copy, $user );
 
-		my $route_to = $shelving_locations->{$copy->location} 
+		my $route_to = $shelving_locations->{$copy->location};
 
 		if($hold) { 
 			$status = "1";
@@ -812,7 +838,7 @@ sub checkin {
 			text => $status_text,
 			circ => $circ,
 			copy => $copy,
-			route_to => $routet_to,
+			route_to => $route_to,
 		};
 	}
 
