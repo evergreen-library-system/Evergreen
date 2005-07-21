@@ -58,8 +58,8 @@
 	<groupbox id="cssdgb4">
 		<caption id="cssdgb4c" label="&patron_navbar.bills;"/>
 		<box id="PatronBills_insert1" flex="0" />
-		<box id="PatronBills_main" flex="0" />
-		<box id="PatronBills_insert2" flex="1" />
+		<box id="PatronBills_main" flex="1" />
+		<box id="PatronBills_insert2" flex="0" />
 	</groupbox>
 	<box id="PatronEdit_main"><label value="edit" /></box>
 	<box id="PatronInfo_main"><label value="info" /></box>
@@ -103,77 +103,66 @@
 </hbox>
 
 <box id="PatronBills_insert1" orient="vertical">
-	<hbox id="pbi1_hb">
-		<spacer id="pbi1_s1" flex="1" />
-		<grid id="pbi1_g1" style="border: solid thin black">
-			<columns id="pbi1_gc">
-				<column id="pbi1_gc1"/>
-				<column id="pbi1_gc2"/>
-			</columns>                                 
+</box>
+
+<box id="PatronBills_insert2" orient="vertical">
+	<label value=" "/>
+	<hbox>
+		<spacer flex="2"/>
+		<grid style="border: solid thin black">
+			<columns><column /><column /></columns>                                 
 			<rows>
+				<row>
+					<label value="Total Owed"
+						style="font-family: bold" />
+
+					<textbox id="bill_total_owed" value="" 
+						style="font-family: bold" disabled="true" />
+				</row>
 				<row>
 					<label id="pbi1_l2" value="Payment Type" 
 						accesskey="t" control="pbi1_ml" 
 						style="font-family: bold" />
-	
-					<label id="pbi1_l1" value="Payment amount" 
-						accesskey="p" control="pbi1_tb1"
-						style="font-family: bold" />
-				</row>
-				<row>
-					<menulist id="pbi1_ml">
-						<menupopup id="pbi1_mp">
-							<menuitem id="pbi1_mi1" label="Cash" />
-							<menuitem id="pbi1_mi2" label="Credit Card" />
-							<menuitem id="pbi1_mi3" label="Forward Balance" />
-							<menuitem id="pbi1_mi4" label="Forgive" />
+					<menulist id="payment_type_menulist">
+						<menupopup id="payment_type_menupopup">
+							<menuitem id="payment_type_menuitem1" label="Cash" />
+							<menuitem id="payment_type_menuitem2" label="Credit Card" />
+							<menuitem id="payment_type_menuitem3" label="Forward Balance" />
+							<menuitem id="payment_type_menuitem4" label="Forgive" />
 						</menupopup>
 					</menulist>
+				</row>
+				<row>
+					<label value="Payment amount" 
+						accesskey="p" control="pbi1_tb1"
+						style="font-family: bold" />
 		
 					<textbox id="bill_payment_amount_textbox" />
 				</row>
-			</rows>
-		</grid>
-		<spacer id="pbi1_s3" flex="1" />
-	</hbox>
-	<label id="pbi1_s2" value=" "/>
-</box>
-
-<box id="PatronBills_insert2" orient="vertical">
-	<label id="pbi2_s1" value=" "/>
-	<hbox id="pbi2_hb">
-		<spacer id="bpi2_s3" flex="1"/>
-		<grid id="pbi2_g1" style="border: solid thin black">
-			<columns id="pbi2_gc">
-				<column id="pbi2_gc1"/>
-				<column id="pbi2_gc2"/>
-				<column id="pbi2_gc3"/>
-			</columns>                                 
-			<rows>
 				<row>
-					<label id="pbi2_l2" value="Change" 
+					<label value="Change" 
 						control="bill_change_amount_textbox" 
 						style="font-family: bold" />
 	
-					<label id="pbi2_l1" value="Forward Balance" 
-						control="bill_credit_amount_textbox"
-						style="font-family: bold" />
+					<textbox id="bill_change_amount_textbox" />
 				</row>
 				<row>
-					<hbox id="pbi2_hb2">
-						<textbox id="bill_change_amount_textbox" />
-						<button id="convert_change_to_credit_button" label="->" />
-					</hbox>
+
+					<button label="Forward Credit" 
+						style="font-family: bold" />
 
 					<textbox id="bill_credit_amount_textbox" />
 
+				</row>
+				<row>
+					<spacer/>
 					<button id="bill_apply_payment" label="Go!" accesskey="G"/>
 				</row>
 			</rows>
 		</grid>
-		<spacer id="bpi2_s4" flex="1"/>
+		<spacer flex="1" />	
 	</hbox>
-	<spacer id="pbi2_s2" flex="1" />	
+	<spacer flex="1" />	
 </box>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->

@@ -6,6 +6,10 @@ function patron_bills_init(p) {
 
 	p.patron_bills_cols = [
 		{
+			'id' : 'checkbox', 'label' : '', 'flex' : 0, 'primary' : false, 'hidden' : false,
+			'render_xul' : 'checkbox'
+		},
+		{
 			'id' : 'xact_dates', 'label' : getString('bills_xact_dates_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts', 
 			'fm_field_render' : 'xact_dates_box($$)'
@@ -160,6 +164,7 @@ function patron_bills_add_patron_bills(p, bills) {
 			if (hash.render_xul) {
 				var xul = p.w.document.createElement( hash.render_xul );
 				listcell.appendChild( xul );
+				if (hash.render_xul == 'checkbox') xul.setAttribute('checked', 'true');
 			}
 			cols.push( listcell );
 		}

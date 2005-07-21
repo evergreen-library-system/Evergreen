@@ -482,7 +482,13 @@ function patron_display_patron_holds_init(p) {
 }
 
 function patron_display_patron_bills_init(p) {
-	p.patron_bills = patron_bills_init( { 'w' : p.w, 'node' : p.patron_bills_node, 'debug' : p.app } );
+	p.patron_bills = patron_bills_init( { 
+		'w' : p.w, 
+		'node' : p.patron_bills_node, 
+		'debug' : p.app 
+	} );
+
+	p.patron_bills.update_callback = function { p.refresh(); }
 
 	p.redraw_patron_bills = function() {
 		try {
@@ -493,7 +499,6 @@ function patron_display_patron_bills_init(p) {
 			sdump('D_ERROR',js2JSON(E) + '\n');
 		}
 	}
-
 }
 
 
