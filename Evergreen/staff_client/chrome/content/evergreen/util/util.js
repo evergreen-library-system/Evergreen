@@ -136,9 +136,13 @@ function dollars_float_to_cents_integer( money ) {
 function cents_as_dollars( cents ) {
 	cents = cents.toString(); 
 	// FIXME: strip miscellaneous characters
-	switch( cents.length ) {
-		case 0: cents = '000'; break;
-		case 1: cents = '0' + cents; break;
+	try {
+		switch( cents.length ) {
+			case 0: cents = '000'; break;
+			case 1: cents = '00' + cents; break;
+		}
+	} catch(E) {
+		sdump('D_ERROR',"cents_as_dollars: cents.length? " + E + "\n");
 	}
 	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }

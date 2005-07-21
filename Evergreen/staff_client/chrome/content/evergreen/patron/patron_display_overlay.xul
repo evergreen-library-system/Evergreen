@@ -134,7 +134,7 @@
 				</row>
 				<row>
 					<label value="Payment received" 
-						accesskey="p" control="pbi1_tb1"
+						accesskey="a" control="pbi1_tb1"
 						style="font-family: bold" />
 		
 					<textbox id="bill_payment_amount_textbox" />

@@ -76,13 +76,17 @@ function patron_bills_init(p) {
 			var total = dollars_float_to_cents_integer( tb.value );
 			for (var i = 0; i < p.current_payments.length; i++) {
 				var bill = p.current_payments[i];
-				var bo = dollars_float_to_cents_integer( bill.balance_owed );
-				if ( bo > total ) {
-					bill.textbox.value = cents_as_dollars( total );
-					total = 0;
+				if (bill.checkbox.checked) {
+					var bo = dollars_float_to_cents_integer( bill.balance_owed );
+					if ( bo > total ) {
+						bill.textbox.value = cents_as_dollars( total );
+						total = 0;
+					} else {
+						bill.textbox.value = cents_as_dollars( bo );
+						total = total - bo;
+					}
 				} else {
-					bill.textbox.value = cents_as_dollars( bo );
-					total = total - bo;
+					bill.textbox.value = '0.00';
 				}
 			}
 			p.update_payment_applied();
@@ -161,7 +165,16 @@ function patron_bills_list_box_init( p ) {
 	];
 
 	p.list_box = list_box_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.patron_bills_cols, 'debug' : p.app } );
-	p.clear_patron_bills = function () { p.current_payments = []; p.list_box.clear_rows(); };
+	p.clear_patron_bills = function () { 
+		p.current_payments = []; 
+		p.control_box.bill_total_owed.value = 'Calculating...';
+		p.control_box.bill_payment_amount.value = '';
+		p.control_box.bill_payment_applied.value = '0.00';
+		p.control_box.bill_change_amount.value = '0.00';
+		p.control_box.bill_credit_amount.value = '0.00';
+		p.control_box.bill_new_balance.value = 'Calculating...';
+		p.list_box.clear_rows(); 
+	};
 	p.add_patron_bills = function (bills) {
 		sdump('D_PATRON_BILLS','p.add_patron_bills(' + bills + ')\n');
 		return patron_bills_add_patron_bills(p,bills);
@@ -172,7 +185,9 @@ function patron_bills_add_patron_bills(p, bills) {
 	sdump('D_PATRON_BILLS',arg_dump(arguments,{1:true}));
 
 	p.control_box.bill_total_owed.setAttribute('value',get_bills_total( bills ));
+	p.control_box.bill_total_owed.value = get_bills_total( bills );
 	p.control_box.bill_new_balance.setAttribute('value',get_bills_total( bills ));
+	p.control_box.bill_new_balance.value = get_bills_total( bills );
 
 	function xact_dates_box( mbts ) {
 		var grid = p.w.document.createElement('grid');
