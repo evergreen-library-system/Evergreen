@@ -34,7 +34,7 @@ __PACKAGE__->table('money_billable_transaction_summary');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr xact_finish total_paid
 				     last_payment_ts total_owed last_billing_ts
-				     balance_owed xact_type/);
+				     balance_owed xact_type last_billing_note/);
 #-------------------------------------------------------------------------------
 
 package money::billing;
