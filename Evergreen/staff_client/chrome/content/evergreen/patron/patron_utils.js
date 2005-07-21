@@ -79,14 +79,18 @@ function patron_get_bills_total( au ) {
 	if (au.bills == null || au.bills == undefined)
 		return '???';
 	else {
-		var total = 0;
-		for (var i = 0; i < au.bills.length; i++) {
-			total += dollars_float_to_cents_integer( au.bills[i].balance_owed() );
-		}
-		sdump('D_PATRON_UTILS','bills_total $$$ = ' + cents_as_dollars( total ) + '\n');
-		return cents_as_dollars( total );
+		return patron_get_bills_total_from_bills( au.bills );
 	}
+}
 
+function patron_get_bills_total_from_bills( bills ) {
+	sdump('D_PATRON_UTILS',arg_dump(arguments));
+	var total = 0;
+	for (var i = 0; i < bills.length; i++) {
+		total += dollars_float_to_cents_integer( bills[i].balance_owed() );
+	}
+	sdump('D_PATRON_UTILS','bills_total $$$ = ' + cents_as_dollars( total ) + '\n');
+	return cents_as_dollars( total );
 }
 
 function patron_get_credit_total( au ) {

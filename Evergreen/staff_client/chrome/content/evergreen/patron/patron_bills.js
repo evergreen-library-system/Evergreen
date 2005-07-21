@@ -4,6 +4,32 @@ function patron_bills_init(p) {
 	sdump('D_PATRON_BILLS',"TESTING: patron_bills.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
+	patron_bills_list_box_init( p );
+
+	patron_bills_control_box_init( p );
+
+	p.control_box.bill_apply_payment.addEventListener(
+		'command',
+		function() { alert('Fatal error.. gasp.. arggg.. choke... cough.. sputter'); },
+		false
+	);
+
+	sdump('D_TRACE_EXIT',arg_dump(arguments));
+	return p;
+}
+
+function patron_bills_control_box_init( p ) {
+	p.control_box = {};
+	p.control_box.node = p.node.nextSibling;
+	p.control_box.bill_total_owed = p.control_box.node.getElementsByAttribute('id','bill_total_owed')[0];
+	p.control_box.payment_type = p.control_box.node.getElementsByAttribute('id','payment_type_menulist')[0];
+	p.control_box.bill_payment_amount = p.control_box.node.getElementsByAttribute('id','bill_payment_amount_textbox')[0];
+	p.control_box.bill_change_amount = p.control_box.node.getElementsByAttribute('id','bill_change_amount_textbox')[0];
+	p.control_box.bill_credit_amount = p.control_box.node.getElementsByAttribute('id','bill_credit_amount_textbox')[0];
+	p.control_box.bill_apply_payment = p.control_box.node.getElementsByAttribute('id','bill_apply_payment')[0];
+}
+
+function patron_bills_list_box_init( p ) {
 	p.patron_bills_cols = [
 		{
 			'id' : 'checkbox', 'label' : '', 'flex' : 0, 'primary' : false, 'hidden' : false,
@@ -31,20 +57,17 @@ function patron_bills_init(p) {
 	];
 
 	p.list_box = list_box_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.patron_bills_cols, 'debug' : p.app } );
-
 	p.clear_patron_bills = p.list_box.clear_rows;
-
 	p.add_patron_bills = function (bills) {
 		sdump('D_PATRON_BILLS','p.add_patron_bills(' + bills + ')\n');
 		return patron_bills_add_patron_bills(p,bills);
 	}
-
-	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	return p;
 }
 
 function patron_bills_add_patron_bills(p, bills) {
 	sdump('D_PATRON_BILLS',arg_dump(arguments,{1:true}));
+
+	p.control_box.bill_total_owed.setAttribute('value','');
 
 	function xact_dates_box( mbts ) {
 		var grid = p.w.document.createElement('grid');
