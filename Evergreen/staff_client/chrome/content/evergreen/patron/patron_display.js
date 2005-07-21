@@ -488,7 +488,7 @@ function patron_display_patron_bills_init(p) {
 		'debug' : p.app 
 	} );
 
-	p.patron_bills.update_callback = function() { p.refresh(); }
+	p.patron_bills.refresh = function() { p.refresh(); }
 
 	p.redraw_patron_bills = function() {
 		try {

@@ -117,7 +117,34 @@ function patron_bills_init(p) {
 
 	p.control_box.bill_apply_payment.addEventListener(
 		'command',
-		function() { alert('Fatal error.. gasp.. arggg.. choke... cough.. sputter'); },
+		function() { 
+			//alert(p.control_box.payment_type.value);	
+			var payment_blob = {};
+			payment_blob.payment_type = p.control_box.payment_type.value;
+			payment_blob.payments = [];
+			for (var i = 0; i < p.current_payments.length; i++) {
+				var tb = p.current_payments[ i ].textbox;
+				if ( !(tb.value == '0.00' || tb.value == '') ) {
+					payment_blob.payments.push( 
+						[
+							p.current_payments[ i ].mbts_id,
+							tb.value
+						]
+					);
+				}
+			}
+			try {
+				if ( patron_pay_bills( payment_blob ) ) {
+
+					if (p.refresh) p.refresh();
+
+				}
+
+			} catch(E) {
+
+				handle_error(E);
+			}
+		},
 		false
 	);
 

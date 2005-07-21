@@ -142,10 +142,12 @@
 							accesskey="t" control="payment_type_menulist" />
 						<menulist id="payment_type_menulist">
 							<menupopup id="payment_type_menupopup">
-								<menuitem id="payment_type_menuitem1" label="Cash" />
-								<menuitem id="payment_type_menuitem2" label="Credit Card" />
-								<menuitem id="payment_type_menuitem3" label="Patron Credit" />
-								<menuitem id="payment_type_menuitem4" label="Forgive" />
+								<menuitem id="payment_type_menuitem1" label="Cash" value="cash_payment"/>
+								<menuitem id="payment_type_menuitem2" label="Check" value="check_payment"/>
+								<menuitem id="payment_type_menuitem3" label="Credit Card" value="credit_card_payment"/>
+								<menuitem id="payment_type_menuitem4" label="Patron Credit" value="credit_payment" />
+								<menuitem id="payment_type_menuitem5" label="Work" value="work_payment"/>
+								<menuitem id="payment_type_menuitem6" label="Forgive" value="forgive_payment"/>
 							</menupopup>
 						</menulist>
 					</row>

@@ -299,6 +299,17 @@ function patron_get_standing_css_style( value ) {
 	}
 }
 
+function patron_pay_bills( payment_blob ) {
+	sdump('D_PATRON_UTILS',arg_dump(arguments,{0:true}));
+	try {
+		alert("Bill's API call goes here.  payment_blob = \n" + pretty_print( js2JSON( payment_blob ) ) + '\n');
+		return true;
+	} catch(E) {
+		handle_error(E);
+		return false;
+	}
+}
+
 function retrieve_patron_by_barcode( barcode, f ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments));
 	if (!barcode) return null;
