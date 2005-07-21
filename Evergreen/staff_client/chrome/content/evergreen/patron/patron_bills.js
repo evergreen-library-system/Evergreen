@@ -118,10 +118,10 @@ function patron_bills_init(p) {
 	p.control_box.bill_apply_payment.addEventListener(
 		'command',
 		function() { 
-			//alert(p.control_box.payment_type.value);	
 			var payment_blob = {};
 			payment_blob.payment_type = p.control_box.payment_type.value;
 			payment_blob.payments = [];
+			payment_blob.patron_credit = p.control_box.bill_credit_amount.value;
 			for (var i = 0; i < p.current_payments.length; i++) {
 				var tb = p.current_payments[ i ].textbox;
 				if ( !(tb.value == '0.00' || tb.value == '') ) {
