@@ -108,8 +108,8 @@ function dollars_float_to_cents_integer( money ) {
 }
 
 function cents_as_dollars( cents ) {
-	cents = cents.toString();
-	return '$' + cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
+	cents = cents.toString(); if (cents.length == 1) cents = '0' + cents;
+	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }
 
 function formatted_date(date,format) {
