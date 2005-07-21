@@ -592,15 +592,15 @@ sub volume_tree_fleshed_update {
 					$copy->clear_id;
 					$copy->call_number($volume->id);
 					$copy->creator($user_obj->id);
-					$copy = _fleshed_copy_update($session,$copy,$user_obj->id);
+					$copy = _fleshed_copy_update($session,$copy,$user_obj);
 	
 				} elsif( $copy->ischanged ) {
 					$copy->call_number($volume->id);
-					$copy = _fleshed_copy_update($session, $copy, $user_obj->id);
+					$copy = _fleshed_copy_update($session, $copy, $user_obj);
 	
 				} elsif( $copy->isdeleted ) {
 					warn "Deleting copy " . $copy->id . " for volume " . $volume->id . "\n";
-					my $status = _fleshed_copy_update($session, $copy, $user_obj->id);
+					my $status = _fleshed_copy_update($session, $copy, $user_obj);
 					warn "Copy delete returned a status of $status\n";
 				}
 			}
