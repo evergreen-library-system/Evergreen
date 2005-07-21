@@ -1436,6 +1436,7 @@ MyOPACSPage.prototype.drawTransactions = function() {
 	var celle = row.insertCell(row.cells.length);
 	var cellf = row.insertCell(row.cells.length);
 	var cellg = row.insertCell(row.cells.length);
+	var cellh = row.insertCell(row.cells.length);
 
 	add_css_class(cella, "my_opac_info_table_header");
 	add_css_class(cellb, "my_opac_info_table_header");
@@ -1444,6 +1445,7 @@ MyOPACSPage.prototype.drawTransactions = function() {
 	add_css_class(celle, "my_opac_info_table_header");
 	add_css_class(cellf, "my_opac_info_table_header");
 	add_css_class(cellg, "my_opac_info_table_header");
+	add_css_class(cellh, "my_opac_info_table_header");
 
 	cella.appendChild(mktext("Transaction Start Time"));
 	cellb.appendChild(mktext("Last Billing Time"));
@@ -1452,6 +1454,7 @@ MyOPACSPage.prototype.drawTransactions = function() {
 	celle.appendChild(mktext("Total Amount Paid"));
 	cellf.appendChild(mktext("* Balance Owed"));
 	cellg.appendChild(mktext("Type"));
+	cellh.appendChild(mktext("Extra Info"));
 
 	var transactions = grabUserTransactions(
 		 globalmyopac.user.session_id, globalmyopac.user.userObject.id());
@@ -1475,6 +1478,7 @@ function _addTransactionRow(table, transaction) {
 	var celle = row.insertCell(row.cells.length);
 	var cellf = row.insertCell(row.cells.length);
 	var cellg = row.insertCell(row.cells.length);
+	var cellh = row.insertCell(row.cells.length);
 
 	add_css_class(cella, "my_opac_profile_cell");
 	add_css_class(cellb, "my_opac_profile_cell");
@@ -1483,6 +1487,7 @@ function _addTransactionRow(table, transaction) {
 	add_css_class(celle, "my_opac_profile_cell");
 	add_css_class(cellf, "my_opac_profile_cell");
 	add_css_class(cellg, "my_opac_profile_cell");
+	add_css_class(cellh, "my_opac_profile_cell");
 
 	var owed = _finesFormatNumber(trans.total_owed());
 	var paid = _finesFormatNumber(trans.total_paid());
@@ -1499,9 +1504,24 @@ function _addTransactionRow(table, transaction) {
 	celle.appendChild(mktext(paid));
 	cellf.appendChild(mktext(bowed));
 	cellg.appendChild(mktext(trans.xact_type()));
+	var extrainfo = "N/A";
+	if(trans.xact_type() == "circulation")
+		extrainfo = "Title: " + _grabTitleFromCircTransaction(trans);
+	cellh.appendChild(mktext(extrainfo));
 
 
 }
+
+function _grabTitleFromCircTransaction(trans) {
+	var req = new RemoteRequest(
+		"open-ils.circ", 
+		"open-ils.circ.circ_transaction.find_title",
+		globalmyopac.user.session_id, trans.id() );
+	req.send(true);
+	return req.getResultObject().title();
+
+}
+
 
 function _trimSeconds(time) { if(!time) return ""; return time.replace(/\..*/,""); }
 
