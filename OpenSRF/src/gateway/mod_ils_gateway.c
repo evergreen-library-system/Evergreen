@@ -318,6 +318,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			buffer_add( exc_buffer, "\nStatus: " );
 			buffer_add( exc_buffer, omsg->status_text );
 			buffer_add( exc_buffer, "\nStatus: " );
+
 			char code[16];
 			memset(code, 0, 16);
 			sprintf( code, "%d", omsg->status_code );
@@ -330,9 +331,10 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			json_object_object_add( exception, 
 					"err_msg", json_object_new_string(exc_buffer->buf));
 					*/
+
 			exception = json_parse_string("{}");
 			exception->add_key(exception, "is_err", json_parse_string("1"));
-			exception->add_key(exception, "err_msg", json_parse_string(exc_buffer->buf));
+			exception->add_key(exception, "err_msg", new_object(exc_buffer->buf) );
 
 			warning_handler("*** Looks like we got a "
 					"server exception\n%s", exc_buffer->buf );
