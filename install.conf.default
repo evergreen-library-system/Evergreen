@@ -41,7 +41,7 @@
 # If you only want to build the client app, then just build evergreen_xul_client.
 # --------------------------------------------------------------------
 
-TARGETS=("opensrf_all");
+TARGETS=("opensrf_all" "openils_all" );
 
 
 # --------------------------------------------------------------------
@@ -94,7 +94,7 @@ LIBXML2_HEADERS="/usr/include/libxml2/";
 # These point to the top level makefiles for each of the sub 
 # projects.  Only change these if you have relocated the directories.
 # --------------------------------------------------------------------
-OPENSRF_DIR="OpenSRF/src/";
-OPENILS_DIR="Open-ILS/src/";
-EVERGREEN_DIR="Evergreen/";
+OPENSRFDIR="OpenSRF/src/";
+OPENILSDIR="Open-ILS/src/";
+EVERGREENDIR="Evergreen/";
 

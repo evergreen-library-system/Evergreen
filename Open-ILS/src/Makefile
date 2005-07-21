@@ -9,12 +9,17 @@ marcdumper-install:
 	make -C extras/marcdumper install
 
 perl-install:
+	mkdir -p $(PERLDIR)
 	cp -r perlmods/* $(PERLDIR)
 
 javascript-install:
+	mkdir -p $(WEBDIR)
 	cp -r javascript/* $(WEBDIR)
+	cp ../../$(OPENSRFDIR)/javascript/JSON.js $(WEBDIR)/util/
+	cp ../../$(OPENSRFDIR)/javascript/md5.js $(WEBDIR)/util/
 
 web-templates-install:
+	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/opac $(TEMPLATEDIR)
 	cp -r templates/html $(TEMPLATEDIR)
 

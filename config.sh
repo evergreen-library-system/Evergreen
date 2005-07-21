@@ -57,6 +57,9 @@ function buildConfig {
 		LIBDIR="$PREFIX/lib/";
 		PERLDIR="$LIBDIR/perl5/";
 		INCLUDEDIR="$PREFIX/include/";
+		WEBDIR="$PREFIX/web";
+		ETCDIR="$PREFIX/etc";
+		TEMPLATEDIR="$PREFIX/templates";
 	fi
 
 	prompt "Executables directory [$BINDIR] "
@@ -115,6 +118,7 @@ function writeConfig {
 
 	_write "WEBDIR=\"$WEBDIR\"";
 	_write "TEMPLATEDIR=\"$TEMPLATEDIR\"";
+	_write "ETCDIR=\"$ETCDIR\"";
 
 	# print out the targets
 	STR="TARGETS=(";
@@ -124,9 +128,9 @@ function writeConfig {
 	STR="$STR)";
 	_write "$STR";
 
-	_write "OPENSRF_DIR=\"OpenSRF/src/\"";
-	_write "OPENILS_DIR=\"Open-ILS/src/\"";
-	_write "EVERGREEN_DIR=\"Evergreen/\"";
+	_write "OPENSRFDIR=\"OpenSRF/src/\"";
+	_write "OPENILSDIR=\"Open-ILS/src/\"";
+	_write "EVERGREENDIR=\"Evergreen/\"";
 
 	prompt "To write a new config, run 'make config'";
 	prompt "";

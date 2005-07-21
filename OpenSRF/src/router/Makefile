@@ -9,6 +9,7 @@ all: router
 
 install: 
 	cp router $(BINDIR)
+	cp router_config.xml.example $(ETCDIR)
 
 router:  router.c $(LIB_SOURCES)
 	$(CC) $(LD_OPTS) -D_ROUTER $(CC_OPTS)	$(LIB_SOURCES) router.c -o $@ 

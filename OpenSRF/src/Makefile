@@ -84,6 +84,8 @@ install-prep:
 	mkdir -p $(PERLDIR)
 	mkdir -p $(INCLUDEDIR)
 	mkdir -p $(INCLUDEDIR)/$(OPENSRF)
+	mkdir -p $(ETCDIR)
+	mkdir -p $(TEMPLATEDIR)
 
 transport-install:	install-prep utils-install
 	make -C libtransport install

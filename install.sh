@@ -127,66 +127,67 @@ function runInstall {
 		MAKE="make APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
 			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR \
-			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR";
+			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR ETCDIR=$ETCDIR \
+			OPENSRFDIR=$OPENSRFDIR OPENILSDIR=$OPENILSDIR EVERGREENDIR=$EVERGREENDIR";
 
 		case "$target" in
 	
 			# OpenSRF --- 			
 
 			"opensrf_all")
-				if building;	then $MAKE -C "$OPENSRF_DIR" all; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" install; fi;
+				if building;	then $MAKE -C "$OPENSRFDIR" all; fi;
+				if installing; then $MAKE -C "$OPENSRFDIR" install; fi;
 				;;
 
 			"opensrf_jserver" )
-				if building;	then $MAKE -C "$OPENSRF_DIR" "jserver"; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" "jserver-install"; fi;
+				if building;	then $MAKE -C "$OPENSRFDIR" "jserver"; fi;
+				if installing; then $MAKE -C "$OPENSRFDIR" "jserver-install"; fi;
 				;;	
 
 			"opensrf_router" ) 
-				if building;	then $MAKE -C "$OPENSRF_DIR" "router"; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" "router-install"; fi;
+				if building;	then $MAKE -C "$OPENSRFDIR" "router"; fi;
+				if installing; then $MAKE -C "$OPENSRFDIR" "router-install"; fi;
 				;;
 
 			"opensrf_gateway" )
-				if building;	then $MAKE -C "$OPENSRF_DIR" "gateway"; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" "gateway-install"; fi;
+				if building;	then $MAKE -C "$OPENSRFDIR" "gateway"; fi;
+				if installing; then $MAKE -C "$OPENSRFDIR" "gateway-install"; fi;
 				;;
 
 			"opensrf_srfsh" ) 
-				if building;	then $MAKE -C "$OPENSRF_DIR" "srfsh"; fi;
-				if installing; then $MAKE -C "$OPENSRF_DIR" "srfsh-install"; fi;
+				if building;	then $MAKE -C "$OPENSRFDIR" "srfsh"; fi;
+				if installing; then $MAKE -C "$OPENSRFDIR" "srfsh-install"; fi;
 				;;
 
 			"opensrf_core" )
-				if installing; then $MAKE -C "$OPENSRF_DIR" "perl-install"; fi;
+				if installing; then $MAKE -C "$OPENSRFDIR" "perl-install"; fi;
 				;;
 
 
 			# OpenILS --- 			
 
 			"openils_all" )
-				if building;	then $MAKE -C "$OPENILS_DIR" all; fi;
-				if installing; then $MAKE -C "$OPENILS_DIR" install; fi;
+				if building;	then $MAKE -C "$OPENILSDIR" all; fi;
+				if installing; then $MAKE -C "$OPENILSDIR" install; fi;
 				;;
 
 			"openils_core" )
 				if installing; then 
-					$MAKE -C "$OPENILS_DIR" "perl-install"; 
-					$MAKE -C "$OPENILS_DIR" "string-templates-install"; 
+					$MAKE -C "$OPENILSDIR" "perl-install"; 
+					$MAKE -C "$OPENILSDIR" "string-templates-install"; 
 				fi;
 				;;
 
 			"openils_web" )
 				if installing; then 
-					$MAKE -C "$OPENILS_DIR" "javascript-install"; 
-					$MAKE -C "$OPENILS_DIR" "web-templates-install"; 
+					$MAKE -C "$OPENILSDIR" "javascript-install"; 
+					$MAKE -C "$OPENILSDIR" "web-templates-install"; 
 				fi;
 				;;
 
 			"openils_marcdumper" )
-				if building;	then $MAKE -C "$OPENILS_DIR" "marcdumper"; fi;
-				if installing; then $MAKE -C "$OPENILS_DIR" "marcdumper-install"; fi;
+				if building;	then $MAKE -C "$OPENILSDIR" "marcdumper"; fi;
+				if installing; then $MAKE -C "$OPENILSDIR" "marcdumper-install"; fi;
 				;;
 
 
@@ -241,9 +242,9 @@ function checkParams {
 
 function cleanMe {
 	loadConfig;
-	make -C "$OPENSRF_DIR" clean;
-	make -C "$OPENILS_DIR"  clean;
-	make -C "$EVERGREEN_DIR" clean;
+	make -C "$OPENSRFDIR" clean;
+	make -C "$OPENILSDIR"  clean;
+	make -C "$EVERGREENDIR" clean;
 }
 
 checkParams "$@";

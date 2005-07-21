@@ -12,6 +12,7 @@ marcdumper:  marcdumper.c
 	$(CC) marcdumper.c $(COMP) $(LD) -o $@
 
 install: 
+	mkdir -p $(BINDIR)
 	cp marcdumper $(BINDIR)
 
 clean:
