@@ -339,3 +339,146 @@ function save_patron( au, f ) {
 		return null;
 	}
 }
+
+function patron_edit_rows() {
+	var rows = [
+{
+	'id' : 'active', 'label' : getString('au_active_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.active()'
+},
+{
+	'id' : 'addresses', 'label' : getString('au_addresses_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.addresses()'
+},
+{
+	'id' : 'alert_message', 'label' : getString('au_alert_message_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.alert_message()'
+},
+{
+	'id' : 'billing_address', 'label' : getString('au_billing_address_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.billing_address()'
+},
+{
+	'id' : 'card', 'label' : getString('au_card_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.card()'
+},
+{
+	'id' : 'cards', 'label' : getString('au_cards_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.cards()'
+},
+{
+	'id' : 'create_date', 'label' : getString('au_create_date_label'), 'flex' : 1, 'readonly' : 'true',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.create_date()'
+},
+{
+	'id' : 'day_phone', 'label' : getString('au_day_phone_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.day_phone()'
+},
+{
+	'id' : 'dob', 'label' : getString('au_dob_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.dob()'
+},
+{
+	'id' : 'email', 'label' : getString('au_email_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.email()'
+},
+{
+	'id' : 'evening_phone', 'label' : getString('au_evening_phone_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.evening_phone()'
+},
+{
+	'id' : 'expire_date', 'label' : getString('au_expire_date_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.expire_date()'
+},
+{
+	'id' : 'family_name', 'label' : getString('au_family_name_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.family_name()'
+},
+{
+	'id' : 'first_given_name', 'label' : getString('au_first_given_name_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.first_given_name()'
+},
+{
+	'id' : 'home_ou', 'label' : getString('au_home_ou_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.home_ou()'
+},
+{
+	'id' : 'ident_type', 'label' : getString('au_ident_type_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_type()'
+},
+{
+	'id' : 'ident_type2', 'label' : getString('au_ident_type2_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_type2()'
+},
+{
+	'id' : 'ident_value', 'label' : getString('au_ident_value_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_value()'
+},
+{
+	'id' : 'ident_value2', 'label' : getString('au_ident_value2_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_value2()'
+},
+{
+	'id' : 'mailing_address', 'label' : getString('au_mailing_address_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.mailing_address()'
+},
+{
+	'id' : 'master_account', 'label' : getString('au_master_account_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.master_account()'
+},
+{
+	'id' : 'net_access_level', 'label' : getString('au_net_access_level_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.net_access_level()'
+},
+{
+	'id' : 'other_phone', 'label' : getString('au_other_phone_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.other_phone()'
+},
+{
+	'id' : 'passwd', 'label' : getString('au_passwd_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.passwd()'
+},
+{
+	'id' : 'photo_url', 'label' : getString('au_photo_url_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.photo_url()'
+},
+{
+	'id' : 'prefix', 'label' : getString('au_prefix_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.prefix()'
+},
+{
+	'id' : 'profile', 'label' : getString('au_profile_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.profile()'
+},
+{
+	'id' : 'second_given_name', 'label' : getString('au_second_given_name_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.second_given_name()'
+},
+{
+	'id' : 'standing', 'label' : getString('au_standing_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.standing()'
+},
+{
+	'id' : 'stat_cat_entries', 'label' : getString('au_stat_cat_entries_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.stat_cat_entries()'
+},
+{
+	'id' : 'suffix', 'label' : getString('au_suffix_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.suffix()'
+},
+{
+	'id' : 'survey_responses', 'label' : getString('au_survey_responses_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.survey_responses()'
+},
+{
+	'id' : 'usrgroup', 'label' : getString('au_usrgroup_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.usrgroup()'
+},
+{
+	'id' : 'usrname', 'label' : getString('au_usrname_label'), 'flex' : 1,
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.usrname()'
+},
+];
+
+	return rows;
+}

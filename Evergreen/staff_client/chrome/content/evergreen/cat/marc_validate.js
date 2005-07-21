@@ -71,6 +71,7 @@ function handle_tag_change(ev) {
 
 function test_tagnumber_rule(r) {
 	// rows (rows) -> row (r) -> wrapper (w) -> textbox (t)
+	try {
 	var t = r.firstChild.firstChild;
 	if (t.value.length > 3) { 
 		t.value = t.value.substr(0,3); 
@@ -94,6 +95,9 @@ function test_tagnumber_rule(r) {
 		add_css_class(t,'invalid');
 		var s = 'Tag ' + t.value + ' is unknown.\n';
 		rule_warnings.push(s); mw.sdump('D_CAT',s);
+	}
+	} catch(E) {
+		handle_error();
 	}
 }
 

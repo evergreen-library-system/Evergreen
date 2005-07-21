@@ -53,7 +53,8 @@ function getString( key ) {
 			}
 
 		} catch(E) {
-			sdump('D_ERROR',E + '\n');
+			sdump('D_ERROR','string: ' + key + ' not found\n');
+			s = key;
 		}
 	}
 	sdump('D_STRING',key + '=' + s + '\n');
@@ -72,7 +73,8 @@ function getFormattedString( key, strArray ) {
 				s = string;
 
 		} catch(E) {
-			sdump('D_ERROR',E + '\n');
+			sdump('D_ERROR','string: ' + key + ' not found\n');
+			s = key;
 		}
 	}
 	sdump('D_STRING',key + '(' + strArray + ')=' + s + '\n');

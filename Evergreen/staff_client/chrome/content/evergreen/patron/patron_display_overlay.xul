@@ -61,7 +61,12 @@
 		<box id="PatronBills_main" flex="1" />
 		<box name="insert2" id="PatronBills_insert2" flex="0" />
 	</groupbox>
-	<box id="PatronEdit_main"><label value="edit" /></box>
+	<groupbox id="cssdgb5">
+		<caption id="cssdgb5c" label="&patron_navbar.edit;"/>
+		<box name="insert1" id="PatronEdit_insert1" flex="0" />
+		<box id="PatronEdit_main" flex="1"/>
+		<box name="insert2" id="PatronEdit_insert2" flex="0" />
+	</groupbox>
 	<box id="PatronInfo_main"><label value="info" /></box>
 </deck>
 

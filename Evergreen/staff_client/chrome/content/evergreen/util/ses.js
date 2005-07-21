@@ -12,16 +12,23 @@ function user_request(app,name,params,f) {
 		return [];
 
 	} else {
-		sdump('D_SES','=-=-=-=-= user_request("'+app+'","'+name+'",'+js2JSON(params)+')\n');
-		var request = new RemoteRequest( app, name );
-		for(var index in params) {
-			request.addParam(params[index]);
+		try {
+			sdump('D_SES','=-=-=-=-= user_request("'+app+'","'+name+'",'+js2JSON(params)+')\n');
+			var request = new RemoteRequest( app, name );
+			for(var index in params) {
+				request.addParam(params[index]);
+			}
+			request.send(true);
+			var result = [];
+			result.push( request.getResultObject() );
+			sdump('D_SES_RESULT','=-=-= result = ' + js2JSON(result[0]) + '\n');
+			return result;
+		} catch(E) {
+			if (instanceOf(E,perm_ex)) {
+				alert('permission exception: ' + js2JSON(E));
+			}
+			throw(E);
 		}
-		request.send(true);
-		var result = [];
-		result.push( request.getResultObject() );
-		sdump('D_SES_RESULT','=-=-= result = ' + js2JSON(result[0]) + '\n');
-		return result;
 	}
 }
 

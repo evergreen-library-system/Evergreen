@@ -4,7 +4,6 @@ function patron_display_init(p) {
 	sdump('D_PATRON_DISPLAY',"TESTING: patron_display.js: " + mw.G['main_test_variable'] + '\n');
 	sdump('D_CONSTRUCTOR',arg_dump(arguments));
 
-
 	// gives: p.clamshell, p.right_panel, p.left_panel
 	patron_display_clamshell_init(p);
 
@@ -20,7 +19,11 @@ function patron_display_init(p) {
 	// gives: p.patron_bills, p.redraw_patron_bills
 	patron_display_patron_bills_init(p);
 
+	// gives: p.patron_edit, p.redraw_patron_edit
+	patron_display_patron_edit_init(p);
+
 	p.set_patron = function (au) {
+		p.patron_edit._patron = au;
 		return p._patron = au;
 	}
 
@@ -52,7 +55,8 @@ function patron_display_init(p) {
 
 	if (p.patron) {
 		if (typeof(p.patron) == 'object') {
-			p._patron = p.patron;
+			//p._patron = p.patron;
+			p.set_patron( p.patron );
 			p.display_patron();
 		} else
 			p.retrieve_patron_via_barcode( p.patron );
@@ -501,4 +505,22 @@ function patron_display_patron_bills_init(p) {
 	}
 }
 
+function patron_display_patron_edit_init(p) {
+	p.patron_edit = patron_edit_init( { 
+		'w' : p.w, 
+		'node' : p.patron_edit_node, 
+		'debug' : p.app
+	} );
+
+	p.patron_edit.refresh = function() { p.refresh(); }
+
+	p.redraw_patron_edit = function() {
+		try {
+			p.patron_edit.clear_patron_edit();
+			p.patron_edit.add_rows( patron_edit_rows() );
+		} catch(E) {
+			sdump('D_ERROR',js2JSON(E) + '\n');
+		}
+	}
+}
 

@@ -15,6 +15,7 @@
 			params.patron_checkout_items_node = document.getElementById('PatronCheckoutItems_main');
 			params.patron_holds_node = document.getElementById('PatronHolds_main');
 			params.patron_bills_node = document.getElementById('PatronBills_main');
+			params.patron_edit_node = document.getElementById('PatronEdit_main');
 			params.commandset_node = document.getElementById('universal_cmds');
 			mw.focus_widget( document, 'patron_checkout_barcode_entry_textbox' );
 			mw.OpenILS_init(params);
