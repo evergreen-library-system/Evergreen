@@ -36,7 +36,9 @@
 	COPY_NOCIRC					= 3;
 	COPY_UNAVAIL				= 4;
 	COPY_LOCATION				= 5;
+	NOT_HOLD_USER				= 6; 
 	NO_COPY						= 100; # used by container code
+
 
 	PATRON_STANDING			= 10;
 	PATRON_FINE					= 11;
