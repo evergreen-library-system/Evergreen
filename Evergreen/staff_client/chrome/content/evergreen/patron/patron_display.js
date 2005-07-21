@@ -179,7 +179,7 @@ function patron_display_patron_items_init(p) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var copy = p._patron.checkouts()[ idx ].copy;
-							checkin_by_copy_barcode( copy.barcode() );
+							checkin_by_copy_barcode( copy.barcode(), null );
 							p.refresh();
 						} catch(E) {
 							alert(E);
@@ -326,7 +326,7 @@ function patron_display_patron_checkout_items_init(p) {
 						try {
 							var idx = patron_checkout_items[i].getAttribute('record_id'); 
 							var copy = checkouts[ idx ].copy;
-							var status = checkin_by_copy_barcode( copy.barcode() );
+							var status = checkin_by_copy_barcode( copy.barcode(), null );
 							if (status == null) { // change this to whatever it takes
 								keep_these.push( checkouts[ idx ] );	
 							}

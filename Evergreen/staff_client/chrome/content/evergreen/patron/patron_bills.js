@@ -28,6 +28,7 @@ function patron_bills_init(p) {
 			total_payment = total_applied;
 			p.control_box.bill_payment_amount.value = cents_as_dollars( total_applied );
 		}
+		p.control_box.bill_payment_applied.setAttribute('value', cents_as_dollars( total_applied ));
 		p.control_box.bill_payment_applied.value = cents_as_dollars( total_applied );
 		p.control_box.bill_credit_amount.value = '';
 		if (total_payment > total_applied ) {
@@ -126,7 +127,8 @@ function patron_bills_init(p) {
 
 function patron_bills_control_box_init( p ) {
 	p.control_box = {};
-	p.control_box.node = p.node.nextSibling;
+	p.control_box.node = p.node.previousSibling;
+	p.control_box.node2 = p.node.nextSibling;
 	p.control_box.bill_total_owed = p.control_box.node.getElementsByAttribute('id','bill_total_owed')[0];
 	p.control_box.payment_type = p.control_box.node.getElementsByAttribute('id','payment_type_menulist')[0];
 	p.control_box.bill_payment_amount = p.control_box.node.getElementsByAttribute('id','bill_payment_amount_textbox')[0];
@@ -149,9 +151,9 @@ function patron_bills_list_box_init( p ) {
 			'fm_field_render' : 'xact_dates_box($$)'
 		},
 		{
-			'id' : 'notes', 'label' : getString('mbts_xact_type_label'), 'flex' : 1,
+			'id' : 'notes', 'label' : getString('bills_information'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts',
-			'fm_field_render' : '.xact_type()'
+			'fm_field_render' : '.last_billing_note()'
 		},
 		{
 			'id' : 'money', 'label' : getString('bills_money_label'), 'flex' : 0,
@@ -167,11 +169,17 @@ function patron_bills_list_box_init( p ) {
 	p.list_box = list_box_init( { 'w' : p.w, 'node' : p.node, 'cols' : p.patron_bills_cols, 'debug' : p.app } );
 	p.clear_patron_bills = function () { 
 		p.current_payments = []; 
+		p.control_box.bill_total_owed.setAttribute('value', 'Calculating...');
 		p.control_box.bill_total_owed.value = 'Calculating...';
+		p.control_box.bill_payment_amount.setAttribute('value', '');
 		p.control_box.bill_payment_amount.value = '';
+		p.control_box.bill_payment_applied.setAttribute('value', '0.00');
 		p.control_box.bill_payment_applied.value = '0.00';
+		p.control_box.bill_change_amount.setAttribute('value', '0.00');
 		p.control_box.bill_change_amount.value = '0.00';
+		p.control_box.bill_credit_amount.setAttribute('value', '0.00');
 		p.control_box.bill_credit_amount.value = '0.00';
+		p.control_box.bill_new_balance.setAttribute('value', 'Calculating...');
 		p.control_box.bill_new_balance.value = 'Calculating...';
 		p.list_box.clear_rows(); 
 	};

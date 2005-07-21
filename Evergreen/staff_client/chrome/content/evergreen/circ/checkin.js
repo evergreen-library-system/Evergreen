@@ -45,13 +45,32 @@ function checkin_checkin_items_init(p) {
 	p.checkin_items = checkin_items_init( { 'w' : p.w, 'node' : p.checkin_items_node, 'debug' : p.app } );
 
 	var checkins = [];
+
+	var backdate_tb = p.checkin_items_node.getElementsByAttribute('id','checkin_effective_date_textbox')[0];
+	backdate_tb.value = formatted_date( new Date(), '%Y-%m-%d');
+	backdate_tb.addEventListener(
+		'change',
+		function () {
+			var flag = false;
+			var darray = backdate_tb.value.split('-');
+			var year = darray[0]; if ( (!year) || (year.length != 4) || (!parseInt(year)) ) flag = true;
+			var month = darray[1]; if ( (!month) || (month.length !=2) || (!parseInt(month)) ) flag = true;
+			var day = darray[2]; if ( (!day) || (day.length !=2) || (!parseInt(day)) ) flag = true;
+			if (flag) {
+				snd_bad();
+				backdate_tb.value = formatted_date( new Date(), '%Y-%m-%d');
+			}
+		},
+		false
+	);
+
 	var tb = p.checkin_items_node.getElementsByAttribute('id','checkin_barcode_entry_textbox')[0];
 	var submit_button = p.checkin_items_node.getElementsByAttribute('id','checkin_submit_barcode_button')[0];
 
 	p.attempt_checkin = function(barcode) {
 		try {
 			//if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
-			var check = checkin_by_copy_barcode( barcode );
+			var check = checkin_by_copy_barcode( barcode, backdate_tb.value );
 			if (check) {
 				sdump('D_CHECKIN','check = ' + check + '\n' + pretty_print( js2JSON( check ) ) + '\n');
 

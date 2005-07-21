@@ -40,6 +40,9 @@
        <label id="checkin_scan_barcode_label" value="&circ.checkin.scan_label;" accesskey="&circ.checkin.scan_label.accesskey;" control="checkin_barcode_entry_textbox"/>
         <textbox id="checkin_barcode_entry_textbox"/>
         <button id="checkin_submit_barcode_button" label="&circ.checkin.submit_label;" accesskey="&circ.checkin.submit_label.accesskey;"/>
+	<spacer flex="1"/>
+	<label value="Effective Date:" control="checkin_effective_date_textbox"/>
+	<textbox id="checkin_effective_date_textbox"/>
 </hbox>
 
 <hbox id="CheckinItems_insert2" />

@@ -71,13 +71,15 @@ function hold_capture_by_copy_barcode( barcode, retrieve_flag ) {
 	}
 }
 
-function checkin_by_copy_barcode(barcode, f) {
+function checkin_by_copy_barcode(barcode, backdate, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
 	try {
+		if (backdate && (backdate == formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
+
 		var check = user_request(
 			'open-ils.circ',
 			'open-ils.circ.checkin.barcode',
-			[ mw.G.auth_ses[0], barcode ],
+			[ mw.G.auth_ses[0], barcode, null, backdate ],
 			f
 		)[0];
 

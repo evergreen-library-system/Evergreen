@@ -57,9 +57,9 @@
 	</groupbox>
 	<groupbox id="cssdgb4">
 		<caption id="cssdgb4c" label="&patron_navbar.bills;"/>
-		<box id="PatronBills_insert1" flex="0" />
+		<box name="insert1" id="PatronBills_insert1" flex="0" />
 		<box id="PatronBills_main" flex="1" />
-		<box id="PatronBills_insert2" flex="0" />
+		<box name="insert2" id="PatronBills_insert2" flex="0" />
 	</groupbox>
 	<box id="PatronEdit_main"><label value="edit" /></box>
 	<box id="PatronInfo_main"><label value="info" /></box>
@@ -102,85 +102,87 @@
 	<button id="checkout_done" label="&patron_display.checkout.done_label;" accesskey="&patron_display.checkout.done_label.accesskey;"/>
 </hbox>
 
-<box id="PatronBills_insert1" orient="vertical">
+<box id="PatronBills_insert2" orient="vertical">
 </box>
 
-<box id="PatronBills_insert2" orient="vertical">
-	<label value=" "/>
+<box id="PatronBills_insert1" orient="vertical">
+	<hbox>
+		<groupbox>
+			<caption label="Summary"/>
+			<grid>
+				<columns><column /><column /></columns>                                 
+				<rows>
+					<row>
+						<label value="Total Owed" />
+	
+						<textbox id="bill_total_owed" value="" readonly="true" />
+					</row>
+					<row>
+						<label value="- Payment applied" />
+			
+						<textbox id="bill_payment_applied_textbox" readonly="true"/>
+					</row>
+					<row>
+						<label value="= New Balance" 
+							style="font-family: bold" />
+	
+						<textbox id="bill_new_balance_textbox" readonly="true"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		<spacer flex="2"/>
+		<groupbox>
+			<caption label="Pay Bill"/>
+			<grid>
+				<columns><column /><column /></columns>                                 
+				<rows>
+					<row>
+						<label value="Payment Type" 
+							accesskey="t" control="payment_type_menulist" />
+						<menulist id="payment_type_menulist">
+							<menupopup id="payment_type_menupopup">
+								<menuitem id="payment_type_menuitem1" label="Cash" />
+								<menuitem id="payment_type_menuitem2" label="Credit Card" />
+								<menuitem id="payment_type_menuitem3" label="Patron Credit" />
+								<menuitem id="payment_type_menuitem4" label="Forgive" />
+							</menupopup>
+						</menulist>
+					</row>
+					<row>
+						<label value="Payment received" style="font-weight: bold"
+							accesskey="a" control="bill_payment_amount_textbox" />
+			
+						<textbox id="bill_payment_amount_textbox" style="border: solid thick black"/>
+					</row>
+					<row>
+						<label value="- Payment applied" />
+			
+						<textbox id="bpato" observes="bill_payment_applied_textbox" />
+					</row>
+					<row>
+						<label value="= Change" control="bill_change_amount_textbox" />
+	
+						<hbox>
+							<textbox id="bill_change_amount_textbox" />
+						</hbox>
+					</row>
+					<row>
+						<label value="or Patron Credit" 
+							style="font-family: bold" />
+	
+						<textbox id="bill_credit_amount_textbox" readonly="true"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</hbox>
 	<hbox>
 		<spacer flex="2"/>
-		<grid style="border: solid thin black">
-			<columns><column /><column /><column /></columns>                                 
-			<rows>
-				<row>
-					<label value="Total Owed"
-						style="font-family: bold" />
-
-					<textbox id="bill_total_owed" value="" 
-						style="font-family: bold" readonly="true" />
-				</row>
-				<row>
-					<label id="pbi1_l2" value="Payment Type" 
-						accesskey="t" control="pbi1_ml" 
-						style="font-family: bold" />
-					<menulist id="payment_type_menulist">
-						<menupopup id="payment_type_menupopup">
-							<menuitem id="payment_type_menuitem1" label="Cash" />
-							<menuitem id="payment_type_menuitem2" label="Credit Card" />
-							<menuitem id="payment_type_menuitem3" label="Forward Balance" />
-							<menuitem id="payment_type_menuitem4" label="Forgive" />
-						</menupopup>
-					</menulist>
-				</row>
-				<row>
-					<label value="Payment received" 
-						accesskey="a" control="pbi1_tb1"
-						style="font-family: bold" />
-		
-					<textbox id="bill_payment_amount_textbox" />
-				</row>
-				<row>
-					<label value="- Payment applied" 
-						style="font-family: bold" />
-		
-					<textbox id="bill_payment_applied_textbox" readonly="true"/>
-				</row>
-				<row>
-					<label value="= Change" 
-						control="bill_change_amount_textbox" 
-						style="font-family: bold" />
-
-					<textbox id="bill_change_amount_textbox" />
-
-					<button id="convert_change" label="Credit" accesskey="t"/>
-				</row>
-				<row><label value=" "/></row>
-				<row>
-
-					<label value="New Balance" 
-						style="font-family: bold" />
-
-					<textbox id="bill_new_balance_textbox" readonly="true"/>
-
-				</row>
-				<row><label value=" "/></row>
-				<row>
-
-					<label value="Forward Credit" 
-						style="font-family: bold" />
-
-					<textbox id="bill_credit_amount_textbox" readonly="true"/>
-
-				</row>
-				<row>
-					<spacer/>
-					<button id="bill_apply_payment" label="Go!" accesskey="G"/>
-				</row>
-			</rows>
-		</grid>
-		<spacer flex="1" />	
+		<button id="change_to_credit" label="Convert Change to Patron Credit"/>
+		<button id="bill_apply_payment" label="Go!" accesskey="G"/>
 	</hbox>
-	<spacer flex="1" />	
+	<label value=" "/>
 </box>
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
