@@ -32,6 +32,12 @@ CREATE TABLE money.payment (
 );
 CREATE INDEX m_p_xact_idx ON money.payment (xact);
 
+CREATE OR REPLACE VIEW money.payment_view AS
+	SELECT	p.*,c.relname AS payment_type
+	  FROM	money.payment p
+	  	JOIN pg_class c ON (p.tableoid = c.oid);
+
+
 CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	SELECT	xact.id AS id,
 		xact.usr AS usr,

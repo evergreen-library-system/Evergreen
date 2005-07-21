@@ -48,7 +48,7 @@ package money::payment;
 use base qw/money/;
 __PACKAGE__->table('money_payment');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount payment_ts/);
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts payment_type/);
 __PACKAGE__->columns(Others => qw/note/);
 #-------------------------------------------------------------------------------
 

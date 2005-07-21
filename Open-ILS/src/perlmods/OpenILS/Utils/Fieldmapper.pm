@@ -128,7 +128,9 @@ sub _init {
 								     			     fixed_fields => 1 } },
 		#'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  }, # now it's inside record_entry
 
-		'Fieldmapper::money::payment'			=> { hint => 'mp'  },
+		'Fieldmapper::money::payment'			=> { hint => 'mp',
+								     readonly	=> 1 },
+
 		'Fieldmapper::money::cash_payment'		=> { hint => 'mcp'  },
 		'Fieldmapper::money::check_payment'		=> { hint => 'mckp'  },
 		'Fieldmapper::money::credit_payment'		=> { hint => 'mcrp'  },

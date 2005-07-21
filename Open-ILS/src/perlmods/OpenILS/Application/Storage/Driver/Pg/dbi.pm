@@ -14,8 +14,7 @@
 	#---------------------------------------------------------------------
 	package money::payment;
 	
-	money::payment->table( 'money.payment' );
-	money::payment->sequence( 'money.payment_id_seq' );
+	money::payment->table( 'money.payment_view' );
 
 	#---------------------------------------------------------------------
 	package money::cash_payment;
