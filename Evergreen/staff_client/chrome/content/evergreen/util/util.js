@@ -99,6 +99,7 @@ function yesno(value) {
 function dollars_float_to_cents_integer( money ) {
 	// careful to avoid fractions of pennies
 	var money_s = money.toString();
+	// FIXME: strip miscellaneous characters
 	var dollars = money_s.split(".")[0];
 	var cents = money_s.split(".")[1];
 	if (cents.length > 2) {
@@ -113,6 +114,7 @@ function dollars_float_to_cents_integer( money ) {
 
 function cents_as_dollars( cents ) {
 	cents = cents.toString(); 
+	// FIXME: strip miscellaneous characters
 	switch( cents.length ) {
 		case 0: cents = '000'; break;
 		case 1: cents = '0' + cents; break;
