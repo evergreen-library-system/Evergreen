@@ -30,7 +30,7 @@ IF patron.profile == "JUVENILE" && patron_copies > 5;
 IF ! copy.circulate;	
 	ret(COPY_NOCIRC, "Copy is not allowed to circulate"); END; 
 
-IF copy.status != "Available";         
+IF copy.status != "Available" && copy.status != "On holds shelf";
 	ret(COPY_UNAVAIL, "Copy is unavailable: ${copy.status}"); END;
 
 IF !copy.location.circulate;		
