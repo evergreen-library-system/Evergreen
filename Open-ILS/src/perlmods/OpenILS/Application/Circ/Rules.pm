@@ -256,7 +256,7 @@ sub permit_hold {
 # circ matrix.
 # ----------------------------------------------------------------
 sub gather_circ_objects {
-	my( $session, $barcode_string, $patron_id ) = @_;
+	my( $session, $barcode_string, $patron_id, $copy ) = @_;
 
 	throw OpenSRF::EX::ERROR 
 		("gather_circ_objects needs data")
@@ -283,8 +283,10 @@ sub gather_circ_objects {
 	_grab_patron_profiles($session);
 
 
-	my $copy = _grab_copy_by_barcode($session, $barcode_string);
-	if(!$copy) { return NO_COPY; }
+	if(!$copy) {
+		$copy = _grab_copy_by_barcode($session, $barcode_string);
+		if(!$copy) { return NO_COPY; }
+	}
 
 	my $patron = _grab_user($session, $patron_id);
 
@@ -343,6 +345,7 @@ sub permit_circ {
 	my( $self, $client, $user_session, $barcode, $user_id, $outstanding_count ) = @_;
 
 	my $copy_status_mangled;
+	my $hold;
 
 	my $renew = 0;
 	if(defined($outstanding_count) && $outstanding_count eq "renew") {
@@ -361,13 +364,12 @@ sub permit_circ {
 			text => "No copy available with barcode $barcode"
 		};
 	}
+
 	my $copy = $stash->get("circ_objects")->{copy};
 
-	if( $copy->status eq "8" ) { 
-		$copy_status_mangled = 8; 
-		$copy->status(0);
-	}
+	warn "Found copy in permit: " . $copy->id . "\n";
 
+	warn "Copy status in checkout is " . $stash->get("circ_objects")->{copy}->status . "\n";
 
 	$stash->set("run_block", $permission_script);
 
@@ -376,6 +378,7 @@ sub permit_circ {
 	my $summary_req = $session->request(
 		"open-ils.storage.action.circulation.patron_summary",
 		$stash->get("circ_objects")->{patron}->id );
+
 	my $summary = $summary_req->gather(1);
 
 	$summary->[0] ||= 0;
@@ -390,21 +393,33 @@ sub permit_circ {
 
 	my $arr = $stash->get("result");
 
-	if( $arr->[0] eq "0" and $copy_status_mangled == 8) {
+	if( $arr->[0]  eq "0" ) { # and $copy_status_mangled == 8) {
+
+		# see if this copy is needed to fulfil a hold
+
+		warn "Searching for hold for checkout of copy " . $copy->id . "\n";
+
 		my $hold = $session->request(
-			"open-ils.storage.direct.action.hold_request.search.current_copy",
-			$copy->id )->gather(1);
+			"open-ils.storage.direct.action.hold_request.search.atomic",
+			 current_copy =>  $copy->id , fulfillment_time => undef )->gather(1);
+
+		$hold = $hold->[0];
+
+		if($hold) { warn "Found hold in circ permit with id " . $hold->id . "\n"; }
+
 		if($hold) {
+
+			warn "Found unfulfilled hold in permit ". $hold->id . "\n";
+
 			if( $hold->usr eq $user_id ) {
 				return { status => 0, text => "OK" };
+
 			} else {
 				return { status => 6, 
 					text => "Copy is needed by a different user to fulfill a hold" };
 			}
-		}
+		} 
 	}
-
-
 	
 	return { status => $arr->[0], text => $arr->[1] };
 
@@ -421,9 +436,15 @@ sub circulate {
 	my( $self, $client, $user_session, $barcode, $patron, $isrenew, $numrenews ) = @_;
 
 
+	my $user = $apputils->check_user_session($user_session);
 	my $session = $apputils->start_db_session();
 
-	gather_circ_objects( $session, $barcode, $patron );
+	my $copy =  _grab_copy_by_barcode($session, $barcode);
+	my $realstatus = $copy->status->id;
+
+	warn "Checkout copy status is $realstatus\n";
+
+	gather_circ_objects( $session, $barcode, $patron, $copy );
 
 	# grab the copy statuses if we don't already have them
 	if(!$copy_statuses) {
@@ -435,7 +456,7 @@ sub circulate {
 	# put copy statuses into the stash
 	$stash->set("copy_statuses", $copy_statuses );
 
-	my $copy = $circ_objects->{copy};
+	$copy = $circ_objects->{copy};
 	my ($circ, $duration, $recurring, $max) =  run_circ_scripts($session);
 
 
@@ -448,6 +469,7 @@ sub circulate {
 
 	warn "Setting due date to $due_date\n";
 	$circ->due_date($due_date);
+	$circ->circ_lib($user->home_ou);
 
 	if($isrenew) {
 		warn "Renewing circ.... ".$circ->id ." and setting num renews to " . $numrenews - 1 . "\n";
@@ -459,8 +481,7 @@ sub circulate {
 
 	# commit new circ object to db
 	my $commit = $session->request(
-		"open-ils.storage.direct.action.circulation.create",
-		$circ );
+		"open-ils.storage.direct.action.circulation.create", $circ );
 	my $id = $commit->gather(1);
 
 	if(!$id) {
@@ -478,6 +499,26 @@ sub circulate {
 		"open-ils.storage.direct.asset.copy.update",
 		$copy );
 	$copy_update->gather(1);
+
+
+	if( $realstatus eq "8" ) { # on holds shelf
+
+
+		warn "Searching for hold for checkout of copy " . $copy->id . "\n";
+
+		my $hold = $session->request(
+			"open-ils.storage.direct.action.hold_request.search.atomic",
+			 current_copy =>  $copy->id , fulfillment_time => undef )->gather(1);
+		$hold = $hold->[0];
+
+		if($hold) {
+
+			$hold->fulfillment_time("now");
+				my $s = $session->request(
+					"open-ils.storage.direct.action.hold_request.update", $hold )->gather(1);
+				if(!$s) { throw OpenSRF::EX::ERROR ("Error updating hold");}
+		}
+	}
 
 	$apputils->commit_db_session($session);
 
@@ -639,8 +680,11 @@ sub transit_receive {
 		return OpenILS::Perm->new("COPY_CHECKIN");
 	}
 
+	warn "Receiving copy for transit $copyid\n";
+
 	my $session = $apputils->start_db_session();
-	my $copy = _grab_copy_by_id($session, $copyid);
+	my $copy = $session->request(
+			"open-ils.storage.direct.asset.copy.retrieve", $copyid)->gather(1);
 	my $transit;
 
 	if(!$copy->status eq "6") {
@@ -654,28 +698,36 @@ sub transit_receive {
 
 	if($transit) {
 
+		warn "Found transit for copy $copyid\n";
+
 		if( defined($transit->dest_recv_time) ) {
-			return { status => 11, route_to => $copy->circ_lib };
+			return { status => 11, route_to => $copy->circ_lib, 
+				text => "Transit is already complete for this copy" };
 		}
 
 		if($transit->dest ne $user->home_ou) {
-			return { status => 3, route_to => $transit->dest };
+			return { status => 3, route_to => $transit->dest, 
+				text => "Copy is destined for a different location" };
 		}
 
 		$transit->dest_recv_time("now");
 		my $s = $session->request(
-			"open-ils.storage.direct.action.transit_copy.update",
-			$transit );
+			"open-ils.storage.direct.action.transit_copy.update", $transit )->gather(1);
+
+		if(!$s) { throw OpenSRF::EX::ERROR ("Error updating transit " . $transit->id . "\n"); }
 
 		my $holdtransit = $session->request(
 			"open-ils.storage.direct.action.hold_transit_copy.retrieve",
-			$transit->id );
+			$transit->id )->gather(1);
 
 		if($holdtransit) {
+
+			warn "Found hold transit for copy $copyid\n";
 
 			my $hold = $session->request(
 				"open-ils.storage.direct.action.hold_request.retrieve",
 				$holdtransit->hold )->gather(1);
+
 			if(!$hold) {
 				throw OpenSRF::EX::ERROR ("No hold found to match transit " . $holdtransit->id);
 			}
@@ -689,11 +741,13 @@ sub transit_receive {
 				"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
 			if(!$s) {throw OpenSRF::EX::ERROR ("Error putting copy on holds shelf ".$copy->id);} # blah..
 
-			return { status => 0, route_to => $hold->pickup_lib };
+			$apputils->commit_db_session($session);
+
+			return { status => 0, route_to => $hold->pickup_lib, text => "Transit Complete" };
 		}
 
 	} else { 
-		return { status => 12, route_to => $copy->circ_lib };
+		return { status => 12, route_to => $copy->circ_lib, text => "No transit found" };
 	} 
 
 }
@@ -726,7 +780,7 @@ sub checkin {
 	}
 
 	my $session = $apputils->start_db_session();
-
+	my $transit_return;
 
 
 	try {
@@ -744,63 +798,67 @@ sub checkin {
 
 		if($copy->status eq "6") { #copy is in transit, deal with it
 			my $method = $self->method_lookup("open-ils.circ.transit.receive");
-			return $method->run( $user_session, $copy->id );
-		}
-
-
-		if(!$shelving_locations) {
-			my $sh_req = $session->request(
-				"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
-			$shelving_locations = $sh_req->gather(1);
-			$shelving_locations = 
-				{ map { (''.$_->id => $_->name) } @$shelving_locations };
-		}
-
-		
-		$copy->status(0);
-	
-		# find circ's where the transaction is still open for the
-		# given copy.  should only be one.
-		warn "Retrieving circ for checkin\n";
-		my $circ_req = $session->request(
-			"open-ils.storage.direct.action.circulation.search.atomic",
-			{ target_copy => $copy->id, xact_finish => undef } );
-	
-		$circ = $circ_req->gather(1)->[0];
-
-	
-		if(!$circ) {
-			$err = "No circulation exists for the given barcode";
+			($transit_return) = $method->run( $user_session, $copy->id );
 
 		} else {
 
-			$transaction = $session->request(
-				"open-ils.storage.direct.money.billable_transaction_summary.retrieve", $circ->id)->gather(1);
+
+			if(!$shelving_locations) {
+				my $sh_req = $session->request(
+					"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
+				$shelving_locations = $sh_req->gather(1);
+				$shelving_locations = 
+					{ map { (''.$_->id => $_->name) } @$shelving_locations };
+			}
 	
-			warn "Checking in circ ". $circ->id . "\n";
+			
+			$copy->status(0);
 		
-			$circ->stop_fines("CHECKIN");
-			$circ->stop_fines("RENEW") if($isrenewal);
-			$circ->xact_finish("now") if($transaction->balance_owed <= 0 );
+			# find circ's where the transaction is still open for the
+			# given copy.  should only be one.
+			warn "Retrieving circ for checkin\n";
+			my $circ_req = $session->request(
+				"open-ils.storage.direct.action.circulation.search.atomic",
+				{ target_copy => $copy->id, xact_finish => undef } );
 		
-			my $cp_up = $session->request(
-				"open-ils.storage.direct.asset.copy.update", $copy );
-			$cp_up->gather(1);
+			$circ = $circ_req->gather(1)->[0];
+	
 		
-			my $ci_up = $session->request(
-				"open-ils.storage.direct.action.circulation.update",
-				$circ );
-			$ci_up->gather(1);
+			if(!$circ) {
+				$err = "No circulation exists for the given barcode";
+	
+			} else {
+	
+				$transaction = $session->request(
+					"open-ils.storage.direct.money.billable_transaction_summary.retrieve", $circ->id)->gather(1);
 		
-		
-			warn "Checkin succeeded\n";
+				warn "Checking in circ ". $circ->id . "\n";
+			
+				$circ->stop_fines("CHECKIN");
+				$circ->stop_fines("RENEW") if($isrenewal);
+				$circ->xact_finish("now") if($transaction->balance_owed <= 0 );
+			
+				my $cp_up = $session->request(
+					"open-ils.storage.direct.asset.copy.update", $copy );
+				$cp_up->gather(1);
+			
+				my $ci_up = $session->request(
+					"open-ils.storage.direct.action.circulation.update",
+					$circ );
+				$ci_up->gather(1);
+			
+			
+				warn "Checkin succeeded\n";
+			}
 		}
-	
+		
 	} catch Error with {
 		my $e = shift;
 		$err = "Error checking in: $e";
 	};
 	
+	if($transit_return) { return $transit_return; }
+
 	if($err) {
 
 		return { record => undef, status => -1, text => $err };

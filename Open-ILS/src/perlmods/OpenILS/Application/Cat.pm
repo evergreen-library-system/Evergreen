@@ -11,6 +11,7 @@ use OpenILS::Utils::Fieldmapper;
 use XML::LibXML;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
+use OpenILS::Perm;
 
 my $apputils = "OpenILS::Application::AppUtils";
 
@@ -562,7 +563,7 @@ sub volume_tree_fleshed_update {
 				throw OpenSRF::EX::ERROR
 					("Volume delete failed for volume " . $volume->id);
 			}
-			if(UNIVERSAL::ISA($status, "OpenILS::Perm")) { return $status; }
+			if(UNIVERSAL::isa($status, "OpenILS::Perm")) { return $status; }
 
 		} elsif( $volume->isnew ) {
 
@@ -570,13 +571,13 @@ sub volume_tree_fleshed_update {
 			$volume->editor($user_obj->id);
 			$volume->creator($user_obj->id);
 			$volume = _add_volume($session, $volume, $user_obj);
-			if($volume and UNIVERSAL::ISA($volume, "OpenILS::Perm")) { return $volume; }
+			if($volume and UNIVERSAL::isa($volume, "OpenILS::Perm")) { return $volume; }
 
 		} elsif( $volume->ischanged ) {
 
 			$volume->editor($user_obj->id);
 			my $stat = _update_volume($session, $volume, $user_obj);
-			if($stat and UNIVERSAL::ISA($stat, "OpenILS::Perm")) { return $stat; }
+			if($stat and UNIVERSAL::isa($stat, "OpenILS::Perm")) { return $stat; }
 		}
 
 

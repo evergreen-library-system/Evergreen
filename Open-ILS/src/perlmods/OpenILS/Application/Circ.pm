@@ -30,7 +30,10 @@ sub initialize {
 __PACKAGE__->register_method(
 	method	=> "checkouts_by_user",
 	api_name	=> "open-ils.circ.actor.user.checked_out",
-);
+	NOTES		=> <<"	NOTES");
+	Returns a list of open circulations as a pile of objects.  each object
+	contains the relevant copy, circ, and record
+	NOTES
 
 sub checkouts_by_user {
 	my( $self, $client, $user_session, $user_id ) = @_;
@@ -40,19 +43,9 @@ sub checkouts_by_user {
 
 	if(!$user_id) { $user_id = $user_obj->id(); }
 
-#	my $circs = $session->request(
-#		"open-ils.storage.direct.action.circulation.search.atomic",
-#      { 
-#			usr => $user_id, 
-#			xact_finish => undef, 
-#			stop_fines => [ undef, "MAXFINES", "LONGOVERDUE" ],
-#		}, 
-#		{ order_by => "due_date" } );
-
 	my $circs = $session->request(
 		"open-ils.storage.direct.action.open_circulation.search.usr.atomic", $user_id );
 	$circs = $circs->gather(1);
-
 
 	my @results;
 	for my $circ (@$circs) {
@@ -85,6 +78,37 @@ sub checkouts_by_user {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "title_from_transaction",
+	api_name	=> "open-ils.circ.circ_transaction.find_title",
+	NOTES		=> <<"	NOTES");
+	Returns a mods object for the title that is linked to from the 
+	copy from the hold that created the given transaction
+	NOTES
+
+sub title_from_transaction {
+
+	my( $self, $client, $login_session, $transactionid ) = @_;
+	my $user = $apputils->check_user_session($login_session); 
+	my $session = OpenSRF::AppSession->create('open-ils.storage');
+
+	my $circ = $session->request(
+		"open-ils.storage.direct.action.circulation.retrieve", $transactionid )->gather(1);
+
+	if($circ) {
+		my $title = $session->request(
+			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
+			$circ->target_copy )->gather(1);
+
+		if($title) {
+			my $u = OpenILS::Utils::ModsParser->new();
+			$u->start_mods_batch( $title->marc );
+			return $u->finish_mods_batch();
+		}
+	}
+
+	return undef;	
+}
 
 
 

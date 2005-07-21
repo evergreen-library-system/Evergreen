@@ -184,7 +184,7 @@ sub retrieve_holds {
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $req = $session->request(
 		"open-ils.storage.direct.action.hold_request.search.atomic",
-		"usr" =>  $user_id , { order_by => "request_time" });
+		"usr" =>  $user_id , fulfillment_time => undef, { order_by => "request_time" });
 
 	my $h = $req->gather(1);
 	$session->disconnect();
@@ -439,6 +439,8 @@ sub _find_local_hold_for_copy {
 	my $holdid = $session->request(
 		"open-ils.storage.action.hold_request.nearest_hold",
 		$user->home_ou, $copy->id )->gather(1);
+
+	if(!$holdid) { return undef; }
 
 	warn "found hold id $holdid\n";
 
