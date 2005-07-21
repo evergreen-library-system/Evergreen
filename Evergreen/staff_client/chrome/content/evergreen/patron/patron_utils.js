@@ -110,7 +110,8 @@ function patron_get_checkouts( au, f ) {
 		)[0];
 
 		if (!f) {
-			sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(au.checkouts()) + '\n');
+			sdump('D_PATRON_UTILS','checkouts = ' + js2JSON(checkouts) + '\n');
+			if (!checkouts) checkouts = [];
 			au.checkouts( checkouts );
 			return checkouts;
 		}
