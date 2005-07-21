@@ -1,0 +1,21 @@
+<!-- Bootstrap config file for the C opensrf_stack library -->
+<config>
+	<bootstrap>
+		<settings_config>/path/to/opensrf.xml</settings_config>
+		<debug>INFO</debug>
+		<router_name>router</router_name>
+
+		<domains>
+			<domain1>host.example.com</domain1>
+		</domains>
+
+		<username>my_jabber_login</username>
+		<passwd>my_jabber_password</passwd>
+		<port>5222</port>
+
+	</bootstrap>
+	<logs>
+		<client>/path/to/log/gateway.log</client>
+	</logs>
+
+</config>
