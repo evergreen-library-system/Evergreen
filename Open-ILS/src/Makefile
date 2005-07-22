@@ -1,4 +1,4 @@
-all: extras
+all: 
 
 install:	perl-install javascript-install web-templates-install string-templates-install
 

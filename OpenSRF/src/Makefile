@@ -28,7 +28,7 @@ test: test
 
 install: install-prep transport-install stack-install gateway-install	\
 		router-install srfsh-install jserver-install perl-install			\
-		objson-install utils-install bin-install info
+		objson-install utils-install info
 
 prep:
 	mkdir -p $(TMPDIR)
@@ -113,8 +113,7 @@ jserver-install:	install-prep utils-install
 
 perl-install:	install-prep
 	cp -r perlmods/* $(PERLDIR)/
-
-bin-install: install-prep
+	cp ../examples/bootstrap.conf.example $(ETCDIR)
 	cp ../bin/opensrf_ctl $(BINDIR)
 
 
