@@ -24,7 +24,7 @@ function patron_edit_list_box_init( p ) {
 		},
 		{
 			'id' : 'new_value', 'label' : getString('patron_edit_new_value'), 'flex' : 0, 
-			'render_xul' : 'textbox'
+			'fm_class' : 'row', 'fm_field_render' : 'create_entry_widget($$)'
 		}
 	];
 
@@ -33,22 +33,21 @@ function patron_edit_list_box_init( p ) {
 		p.list_box.clear_rows(); 
 	};
 
-	p.add_rows = function (edit) {
-		sdump('D_PATRON_EDIT','p.add_row(' + edit + ')\n');
-		return patron_edit_add_rows(p,edit);
+	p.add_rows = function (au) {
+		sdump('D_PATRON_EDIT','p.add_row(' + au + ')\n');
+		return patron_edit_add_rows(p,au);
 	}
-
-	p.add_rows( patron_edit_rows() );
 }
 
-function patron_edit_add_rows(p, edit) {
+function patron_edit_add_rows(p, au) {
 	sdump('D_PATRON_EDIT',arg_dump(arguments,{1:true}));
-
-	var au = p._patron;
 
 	var obj_string ='au';
 
+	var edit = patron_edit_rows();
+
 	function evil_eval( hint, render_code ) {
+		sdump('D_PATRON_EDIT',arg_dump(arguments));
 		var cmd = parse_render_string( hint, render_code );
 		var col = '';
 		sdump('D_PATRON_EDIT','evil_cmd = ' + cmd + '\n');
@@ -59,6 +58,54 @@ function patron_edit_add_rows(p, edit) {
 			sdump('D_ERROR',E + '\n');
 		}
 		return col;
+	}
+
+	function create_entry_widget(row) {
+		var obj;
+		try {
+			sdump('D_PATRON_EDIT',arg_dump(arguments));
+			if (row.rdefault) {
+				row.rdefault = evil_eval( row.fm_class, row.rdefault );
+			}
+			if (row.entry_widget) {
+				obj = p.w.document.createElement( row.entry_widget );
+				obj.setAttribute('flex','1');
+				if (row.entry_widget_attributes) {
+					for (var i in row.entry_widget_attributes) {
+						obj.setAttribute( i, row.entry_widget_attributes[i] );
+					}
+				}
+				switch(row.entry_widget) {
+					case 'menulist':
+						if (row.populate_with) {
+							var menupopup = p.w.document.createElement('menupopup');
+							obj.appendChild( menupopup );
+
+							for (var i in row.populate_with) {
+
+								var menuitem = p.w.document.createElement('menuitem');
+								menupopup.appendChild( menuitem );
+								menuitem.setAttribute('label', i );
+								menuitem.setAttribute('value', row.populate_with[ i ] );
+								if (row.rdefault) {
+									if ( (row.rdefault == i) || (row.rdefault == row.populate_with[ i ]) ) {
+										sdump('D_PATRON_EDIT','Selected ' + i + '\n');
+										menuitem.setAttribute('selected','true');
+									}
+								}
+							}
+						}
+						break;
+					default:
+						if (row.rdefault) obj.setAttribute('value', row.rdefault);
+						break;
+				}
+			}
+		} catch(E) {
+			sdump('D_ERROR',E + '\n');
+			obj = 'error';
+		}
+		return obj;
 	}
 
 	setTimeout(
@@ -95,13 +142,12 @@ function patron_edit_add_rows(p, edit) {
 						if (typeof(col) == 'string') {
 							listcell.setAttribute('label',col);
 						} else {
-							listcell.appendChild( col );
+							if (col==null) {
+								listcell.setAttribute('label','');
+							} else {
+								listcell.appendChild( col );
+							}
 						}
-					}
-					if (hash.render_xul) {
-						var xul = p.w.document.createElement( hash.render_xul );
-						listcell.appendChild( xul );
-						if (hash.render_xul == 'checkbox') xul.setAttribute('checked', 'true');
 					}
 					cols.push( listcell );
 				}

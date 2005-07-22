@@ -33,6 +33,7 @@ function patron_display_init(p) {
 		p.redraw_patron_items();
 		p.redraw_patron_holds();
 		p.redraw_patron_bills();
+		p.redraw_patron_edit();
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
 
@@ -517,7 +518,7 @@ function patron_display_patron_edit_init(p) {
 	p.redraw_patron_edit = function() {
 		try {
 			p.patron_edit.clear_patron_edit();
-			p.patron_edit.add_rows( patron_edit_rows() );
+			p.patron_edit.add_rows( p._patron );
 		} catch(E) {
 			sdump('D_ERROR',js2JSON(E) + '\n');
 		}
