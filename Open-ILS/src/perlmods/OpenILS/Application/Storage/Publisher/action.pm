@@ -400,6 +400,8 @@ sub hold_copy_targeter {
 		$year, $mon, $mday, $hour, $min, $sec
 	);
 
+	$self->method_lookup( 'open-ils.storage.transaction.begin')->run($client);
+
 	($statuses) = $self->method_lookup('open-ils.storage.direct.config.copy_status.search.holdable.atomic')->run('t');
 
 	($locations) = $self->method_lookup('open-ils.storage.direct.asset.copy_location.search.holdable.atomic')->run('t');
@@ -419,65 +421,91 @@ sub hold_copy_targeter {
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
 							{ order_by => 'request_time,prev_check_time' } );
-			push @$holds, @{
-				$self->method_lookup('open-ils.storage.direct.action.hold_request.search.atomic')
+			push @$holds, $self->method_lookup('open-ils.storage.direct.action.hold_request.search')
 						->run(
 							{ capture_time => undef,
 				  			  prev_check_time => undef },
-							{ order_by => 'request_time' } ) };
+							{ order_by => 'request_time' } );
 		}
 	} catch Error with {
 		my $e = shift;
 		die "Could not retrieve uncaptured hold requests:\n\n$e\n";
 	};
 
-	$_->clear_current_copy for (@$holds);
-
 	for my $hold (@$holds) {
-		my $copies;
+		try {
+			my $copies;
 
-		my @captured_copies = [ map {$_->current_copy} @$holds ];
-
-		if (0) { # hold isn't check-expired
-			# get the copies from the hold-map
-			# and filter on "avialable"
-		} else {
 			$copies = $self->metarecord_hold_capture($hold) if ($hold->hold_type eq 'M');
 			$copies = $self->title_hold_capture($hold) if ($hold->hold_type eq 'T');
 			$copies = $self->volume_hold_capture($hold) if ($hold->hold_type eq 'V');
 			$copies = $self->copy_hold_capture($hold) if ($hold->hold_type eq 'C');
-		}
 
-		next unless (ref $copies);
+			$client->respond("Processing hold ".$hold->id."...\n");
+			unless (ref $copies) {
+				$client->respond("\tNo copies available for targeting!\n");
+				next;
+			}
 
-		my @good_copies;
-		for my $c (@$copies) {
-			next if ( grep {$c->id == $_} @captured_copies);
-			push @good_copies, $c;
-		}
+			my @good_copies;
+			for my $c (@$copies) {
+				next if ( grep {$c->id == $hold->current_copy} @good_copies);
+				push @good_copies, $c if ($c);
+			}
 
-		my $prox_list;
-		$$prox_list[0] = [grep {$_->circ_lib == $hold->pickup_lib } @$copies];
-		$copies = [grep {$_->circ_lib != $hold->pickup_lib } @$copies];
+			$client->respond("\t".scalar(@good_copies)." (non-current) copies available for targeting...\n");
 
-		my $best = $self->choose_nearest_copy($hold, $prox_list);
+			my $old_best = $hold->current_copy;
+			$hold->clear_current_copy;
+	
+			if (!scalar(@good_copies)) {
+				if ( $old_best && grep {$c->id == $hold->current_copy} @$copies ) {
+					$client->respond("\tPushing current_copy back onto the targeting list\n");
+				push @good_copies, $self->method_lookup('open-ils.storage.direct.asset.copy.retrieve')->run( $old_best );
+				} else {
+					$client->respond("\tcurrent_copy is no longer available for targeting... NEXT!\n");
+					next;
+				}
+			}
 
-		if (!$best) {
-			$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
-			$best = $self->choose_nearest_copy($hold, $prox_list);
-		}
+			my $prox_list;
+			$$prox_list[0] = [grep {$_->circ_lib == $hold->pickup_lib } @good_copies];
+			$copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
 
-		if ($best) {
-			$hold->current_copy( $best->id );
-		}
+			my $best = $self->choose_nearest_copy($hold, $prox_list);
 
-		$hold->prev_check_time( 'now');
-		my ($r) = $self->method_lookup('open-ils.storage.direct.action.hold_request.update')->run( $hold );
+			if (!$best) {
+				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
+				$best = $self->choose_nearest_copy($hold, $prox_list);
+			}
 
-		$client->respond("Processed hold ".$hold->id.".  ".
-			do{ $hold->current_copy ? "Targeting copy ".$hold->current_copy." for capture." : ''; }.
-			"\n"
-		);
+			if ($old_best) {
+				# hold wasn't fulfilled, record the fact
+			
+				$client->respond("\tHold was not (but should have been) fulfilled by ".$old_best->id.".\n");
+				my $ufh = new Fieldmapper::action::unfulfilled_hold_list;
+				$ufh->hold( $hold->id );
+				$ufh->current_copy( $old_best->id );
+				$ufh->circ_lib( $old_best->circ_lib );
+				$self->method_lookup('open-ils.storage.direct.action.unfulfilled_hold_list.create')->run( $ufh );
+			}
+
+			if ($best) {
+				$hold->current_copy( $best->id );
+				$client->respond("\tTargeting copy ".$best->id." for hold fulfillment.\n");
+			}
+
+			$hold->prev_check_time( 'now' );
+			my ($r) = $self->method_lookup('open-ils.storage.direct.action.hold_request.update')->run( $hold );
+
+			$client->respond("\tProcessing of hold ".$hold->id." complete.\n");
+			$self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+		} otherwise {
+			my $e = shift;
+			$client->respond("\tProcessing of hold ".$hold->id." failed!.\n\t\t$e\n");
+			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+		};
 	}
 	return undef;
 }
@@ -509,8 +537,9 @@ sub copy_hold_capture {
 	my @copies = grep { $_->holdable == 1  and $_->ref == 0 } @$cps;
 
 	for (my $i = 0; $i < @copies; $i++) {
+		next unless $copies[$i];
 		
-		my $cn = $cache{cns}{$copies[0]->call_number};
+		my $cn = $cache{cns}{$copies[$i]->call_number};
 		my $rec = $cache{titles}{$cn->record};
 		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->status eq $_->id}@$statuses);
 		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->location eq $_->id}@$locations);
@@ -526,9 +555,9 @@ sub copy_hold_capture {
 
 	return unless ($count);
 	
-	my ($old_maps) = $self->method_lookup('open-ils.storage.direct.action.hold_copy_map.search.hold.atomic')->run( $hold->id );
+	my @old_maps = $self->method_lookup('open-ils.storage.direct.action.hold_copy_map.search.hold')->run( $hold->id );
 
-	$self->method_lookup('open-ils.storage.direct.action.hold_copy_map.batch.delete')->run(@$old_maps );
+	$self->method_lookup('open-ils.storage.direct.action.hold_copy_map.batch.delete')->run(@old_maps );
 	
 	my @maps;
 	for my $c (@copies) {
@@ -650,8 +679,8 @@ sub metarecord_hold_capture {
 
 	try {
 		my @recs = map {$_->record}
-				@{$self->method_lookup('open-ils.storage.direct.metabib.record_descriptor.search.atomic')
-						->run( record => $titles, item_type => [split '', $hold->holdable_formats] )}; 
+				$self->method_lookup('open-ils.storage.direct.metabib.record_descriptor.search')
+						->run( record => $titles, item_type => [split '', $hold->holdable_formats] ); 
 
 		$titles = [];
 		($titles) = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.search.id.atomic')->run( \@recs );

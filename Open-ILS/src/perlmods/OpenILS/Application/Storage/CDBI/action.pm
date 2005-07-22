@@ -107,5 +107,13 @@ __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
 
 #-------------------------------------------------------------------------------
 
+package action::unfulfilled_hold_list;
+use base qw/action/;
+__PACKAGE__->table('action_.unfulfilled_hold_list');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/hold current_copy circ_lib fail_time /);
+
+#-------------------------------------------------------------------------------
+
 1;
 

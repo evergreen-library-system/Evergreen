@@ -549,6 +549,13 @@
 
 	#-------------------------------------------------------------------------------
 
+	package action::unfulfilled_hold_list;
+
+	action::unfulfilled_hold_list->sequence( 'action.unfulfilled_hold_list_id_seq' );
+	action::unfulfilled_hold_list->table('action.unfulfilled_hold_list');
+
+	#-------------------------------------------------------------------------------
+
 
 }
 

@@ -152,5 +152,13 @@ CREATE TABLE action.hold_transit_copy (
 	hold			INT				REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (action.transit_copy);
 
+CREATE TABLE action.unfulfilled_hold_list (
+	id		BIGSERIAL	PRIMARY KEY,
+	hold		INT				NOT NULL,
+	current_copy	BIGINT				NOT NULL,
+	circ_lib	INT				NOT NULL,
+	fail_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
+);
+
 COMMIT;
 

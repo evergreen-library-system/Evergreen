@@ -37,25 +37,47 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	  FROM	money.payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
+CREATE OR REPLACE VIEW money.transaction_billing_summary AS
+	SELECT	xact,
+		note AS last_billing_note,
+		MAX(billing_ts) AS last_billing_ts,
+		SUM(COALESCE(amount,0)) AS total_owed
+	  FROM	money.billing
+	  WHERE	voided IS FALSE
+	  GROUP BY xact,note
+	  ORDER BY MAX(billing_ts);
+
+CREATE OR REPLACE VIEW money.transaction_payment_summary AS
+	SELECT	xact,
+		note AS last_payment_note,
+		MAX(payment_ts) as last_payment_ts,
+		SUM(COALESCE(amount,0)) AS total_paid
+	  FROM	money.payment
+	  WHERE	voided IS FALSE
+	  GROUP BY xact,note
+	  ORDER BY MAX(payment_ts);
 
 CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	SELECT	xact.id AS id,
 		xact.usr AS usr,
 		xact.xact_start AS xact_start,
 		xact.xact_finish AS xact_finish,
-		SUM(COALESCE(credit.amount,0)) AS total_paid,
-		MAX(credit.payment_ts) AS last_payment_ts,
-		SUM(COALESCE(debit.amount,0)) AS total_owed,
-		MAX(debit.billing_ts) AS last_billing_ts,
-		COALESCE(debit.note,'') AS last_billing_note,
-		SUM(COALESCE(debit.amount,0) - COALESCE(credit.amount,0)) AS balance_owed,
+		credit.total_paid,
+		credit.last_payment_ts,
+		credit.last_payment_note,
+		debit.total_owed,
+		debit.last_billing_ts,
+		debit.last_billing_note,
+		COALESCE(debit.total_owed,0) - COALESCE(credit.total_paid,0) AS balance_owed,
 		p.relname AS xact_type
-	  FROM	money.billable_xact xact
-	  	JOIN pg_class p ON (xact.tableoid = p.oid)
-	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.voided IS FALSE)
-		LEFT JOIN money.payment credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
+	  FROM	money.billable_xact xact,
+	  	pg_class p,
+	  	money.transaction_billing_summary debit,
+	  	money.transaction_payment_summary credit
 	  WHERE	xact.xact_finish IS NULL
-	GROUP BY 1,2,3,4,9,11;
+		AND xact.tableoid = p.oid
+		AND xact.id = debit.xact
+		AND xact.id = credit.xact;
 
 CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,
