@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/stat_cat.dtd">
+<overlay id="stat_cat_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<vbox id="copy_stat_cat_editor" class="test_class" flex="1">
+		<grid id="copy_stat_cat_grid" flex="1" style="overflow: auto;"/>
+		<hbox id="copy_stat_cat_hbox2" flex="0">
+			<button id="copy_stat_cat_new" label="New Stat Cat" oncommand="new_copy_stat_cat(event);"/>
+			<spacer id="copy_stat_cat_spacer1" flex="1"/>
+			<button id="copy_stat_cat_save" label="Save Changes" oncommand="save_copy_changes(event);"/>	
+		</hbox>
+	</vbox>
+	
+	<grid id="copy_stat_cat_grid">
+		<columns id="cscg_columns">
+			<column id="cscg_label_column"/>
+			<column id="cscg_textbox_column"/>
+			<column id="cscg_checkbox_column"/>
+			<column id="cscg_menulist_column"/>
+		</columns>
+		<rows id="cscg_rows"/>
+	</grid>
+
+	<vbox id="patron_stat_cat_editor" class="test_class" flex="1">
+		<grid id="patron_stat_cat_grid" flex="1" style="overflow: auto;"/>
+		<hbox id="patron_stat_cat_hbox2" flex="0">
+			<button id="patron_stat_cat_new" label="New Stat Cat" oncommand="new_patron_stat_cat(event);"/>
+			<spacer id="patron_stat_cat_spacer1" flex="1"/>
+			<button id="patron_stat_cat_save" label="Save Changes" oncommand="save_patron_changes(event);"/>	
+		</hbox>
+	</vbox>
+	
+	<grid id="patron_stat_cat_grid">
+		<columns id="pscg_columns">
+			<column id="pscg_label_column"/>
+			<column id="pscg_textbox_column"/>
+			<column id="pscg_checkbox_column"/>
+			<column id="pscg_menulist_column"/>
+		</columns>
+		<rows id="pscg_rows"/>
+	</grid>
+	
+</overlay>
+

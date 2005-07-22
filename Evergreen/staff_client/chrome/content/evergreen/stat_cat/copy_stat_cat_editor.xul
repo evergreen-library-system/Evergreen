@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/stat_cat.css" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/stat_cat.dtd">
+
+<page id="stat_cat_win" title="Copy Stat-Cat Editor" 
+	orient="vertical" style="overflow: auto;"  persist="width height"
+	onload="copy_stat_cat_editor_init();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script src="chrome://evergreen/content/OpenSRF/JSON.js" />
+
+	<!-- Overlays for this XUL file -->
+	<!-- <?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?> -->
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/stat_cat/stat_cat_bundle.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+
+	<vbox id="copy_stat_cat_editor" class="test_class"/>
+
+</page>
+

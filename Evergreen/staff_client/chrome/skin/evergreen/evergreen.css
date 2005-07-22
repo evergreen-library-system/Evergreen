@@ -18,3 +18,6 @@ caption { font-weight: bold; }
 .cadet_blue { background-color: #5F9EA0; }
 .dark_salmon { background-color: #E9967A; }
 .coral { background-color: #FF7F50; }
+
+.deleted_address { background-color: red; }
+

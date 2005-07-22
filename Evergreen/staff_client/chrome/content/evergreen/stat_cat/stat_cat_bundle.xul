@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/stat_cat.dtd">
+<overlay id="stat_cat_bundle" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>dump('stat_cat_bundle\n');</script>
+
+	<?xul-overlay href="chrome://evergreen/content/stat_cat/stat_cat_overlay.xul"?>
+
+	<script src="stat_cat.js" />
+
+</overlay>
