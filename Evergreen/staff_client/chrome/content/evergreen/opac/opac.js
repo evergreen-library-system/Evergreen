@@ -28,6 +28,8 @@ function opac_init(p) {
 	p.opac_iframe.contentWindow.xulEvtRecordDetailDisplayed 
 		= p.xulEvtRecordDetailDisplayed;
 
+	p.opac_iframe.contentWindow.xulEvtViewMARC = p.xulEvtViewMARC;
+
 	/* shove BIG G in so global variables may be accessed */
 	p.opac_iframe.contentWindow.G = mw.G;
 
@@ -104,4 +106,37 @@ function opac_build_callbacks(p) {
 			}
 		);
 	}
+
+	p.xulEvtViewMARC = function( node, record ) {
+		node.onclick = buildViewMARCWindow(record);
+	}
+
 }
+
+
+function buildViewMARCWindow(record) {
+
+   debug("Setting up view marc with record " + record.doc_id());
+
+   var func = function() {
+
+      var req = new RemoteRequest(
+            "open-ils.search",
+            "open-ils.search.biblio.record.html",
+            record.doc_id());
+
+      req.send(true);
+
+      var html = req.getResultObject();
+      var id = record.doc_id();
+		var win = new_window("data:text/html," + html);
+      win.document.title = "View MARC";
+      win.focus();
+
+   }
+
+   return func;
+}
+
+
+
