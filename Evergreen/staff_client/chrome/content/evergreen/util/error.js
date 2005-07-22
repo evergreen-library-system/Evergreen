@@ -60,6 +60,7 @@ var sdump_levels = {
 	'D_PRINT' : false,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
+	'D_SES_RESULT' : true,
 	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,

@@ -1,0 +1,211 @@
+dump('Loading survey.js\n');
+
+var SURVEY = {};
+
+function survey_init() {
+        dump('TESTING: survey.js: ' + mw.G.main_test_variable + '\n');
+	populate_lib_list_with_branch('lib_menulist','lib_menupopup',mw.G.user_ou,mw.G.user_ou); 
+	SURVEY['asv'] = new asv(); SURVEY['asv'].isnew('1');
+	SURVEY['num_of_questions'] = 0;
+	document.getElementById('survey_name').focus();
+}
+
+function save_survey() {
+	SURVEY.asv.description(
+		document.getElementById('survey_description').value
+	);
+	SURVEY.asv.name(
+		document.getElementById('survey_name').value
+	);
+	SURVEY.asv.owner(
+		document.getElementById('lib_menulist').value
+	);
+	var survey_start = document.getElementById('survey_start').value;
+	if (survey_start) {
+		SURVEY.asv.start_date(
+			survey_start
+		);
+	} else {
+		SURVEY.asv.start_date(
+			null
+		);
+	}
+	var survey_end = document.getElementById('survey_end').value;
+	if (survey_end) {
+		SURVEY.asv.end_date(
+			survey_end
+		);
+	} else {
+		SURVEY.asv.end_date(
+			null
+		);
+	}
+	if ( document.getElementById('required_checkbox').checked ) {
+		SURVEY.asv.required('1');
+	} else {
+		SURVEY.asv.required('0');
+	}
+	if ( document.getElementById('opac_checkbox').checked ) {
+		SURVEY.asv.opac('1');
+	} else {
+		SURVEY.asv.opac('0');
+	}
+	if ( document.getElementById('poll_checkbox').checked ) {
+		SURVEY.asv.poll('1');
+	} else {
+		SURVEY.asv.poll('0');
+	}
+
+	if ( document.getElementById('patron_summary_checkbox').checked ) {
+		SURVEY.asv.usr_summary('1');
+	} else {
+		SURVEY.asv.usr_summary('0');
+	}
+	dump('before survey = ' + js2JSON( SURVEY.asv ) + '\n');
+	try {
+		var result = user_request(
+			'open-ils.circ',
+			'open-ils.circ.survey.create',
+			[ mw.G.auth_ses[0], SURVEY.asv ]
+		)[0];
+		dump('result = ' + js2JSON( result ) + '\n');
+		if (! (result instanceof asv) ) {
+			throw('save_survey: result not an asv');
+		}
+	} catch(E) {
+		dump('Survey failed: ' + js2JSON(E) + '\n');
+		alert('Survey failed: ' + js2JSON(E) + '\n');
+		throw(E);
+	}
+	dump('after  survey = ' + js2JSON( SURVEY.asv ) + '\n');
+}
+
+function setDescription(e,t) {
+	var page = document.getElementById(e);
+	var desc = page.getAttribute('description');
+	var value = document.getElementById(t).value;
+	page.setAttribute('description',desc + ' ' + value); 
+}
+
+var new_id = -1;
+function add_answer(e, my_asvq_id) {
+	var row = e.target.parentNode;
+	var rows = row.parentNode;
+	var answer = e.target.previousSibling; answer.select();
+
+	if (! answer.value ) { return; }
+	
+	/* XUL */
+	var n_row = document.createElement('row');
+	rows.insertBefore( n_row, row );
+	var label_1 = document.createElement('label');
+	n_row.appendChild( label_1 );
+	var label_2 = document.createElement('label');
+		label_2.setAttribute('value', answer.value );
+	n_row.appendChild( label_2 );
+
+	/* OBJECT */
+
+	var my_asva = new asva(); my_asva.isnew('1'); my_asva.id( new_id-- );
+	my_asva.answer( answer.value );
+
+	var my_asvq = find_id_object_in_list( SURVEY.asv.questions(), my_asvq_id );
+	if (my_asvq.answers() == null) {
+		my_asvq.answers( [] );
+	}
+
+	my_asvq.answers().push( my_asva );
+
+	var num_of_answers = my_asvq.answers().length;
+	var last_number = 96 + num_of_answers;
+	var next_number = 97 + num_of_answers;
+	var last_letter = String.fromCharCode( last_number );
+	var next_letter = String.fromCharCode( next_number );
+	label_1.setAttribute('value', last_letter + ')' );
+	row.firstChild.setAttribute('value', next_letter + ')' );
+
+	if (num_of_answers == 26) {
+		rows.removeChild(row);
+	}
+}
+
+function add_question() {
+	SURVEY.num_of_questions++;
+	var question = document.getElementById('new_question');
+
+	if (! question.value ) { return; }
+
+	document.getElementById('survey_add').canAdvance = true;
+
+	var my_asvq = new asvq(); my_asvq.isnew('1'); my_asvq.id( new_id-- );
+	my_asvq.question( question.value );
+
+	if ( SURVEY.asv.questions() == null ) {
+		SURVEY.asv.questions( [] );
+	}
+
+	SURVEY.asv.questions().push( my_asvq );
+
+	add_question_row(my_asvq);
+
+	document.getElementById('new_question_label').setAttribute('value', '#' + (SURVEY.num_of_questions + 1) );
+	question.select();
+}
+
+function add_question_row(my_asvq) {
+	var rows = document.getElementById('page2_grid1_rows');
+	var row = document.createElement('row');
+	rows.insertBefore(row, document.getElementById('page2_grid1_row1'));
+
+	var label_number = document.createElement('label');
+		label_number.setAttribute('value','#' + SURVEY['num_of_questions']);
+	row.appendChild(label_number);
+
+	var grid = document.createElement('grid');
+	row.appendChild(grid);
+	var g_cols = document.createElement('columns');
+	grid.appendChild(g_cols);
+	var g_col_1 = document.createElement('column');
+	g_cols.appendChild(g_col_1);
+	var g_col_2 = document.createElement('column');
+		g_col_2.setAttribute('flex','1');
+	g_cols.appendChild(g_col_2);
+	var g_col_3 = document.createElement('column');
+	g_cols.appendChild(g_col_3);
+	var g_rows = document.createElement('rows');
+	grid.appendChild(g_rows);
+	var g_row_1 = document.createElement('row');
+	g_rows.appendChild(g_row_1);
+	var g_label_1 = document.createElement('label');
+	g_row_1.appendChild(g_label_1);
+	var g_label_2 = document.createElement('label');
+		g_label_2.setAttribute('value', my_asvq.question() );
+	g_row_1.appendChild(g_label_2);
+	var g_row_2 = document.createElement('row');
+	g_rows.appendChild(g_row_2);
+	var g_label2_1 = document.createElement('label');
+		g_label2_1.setAttribute('value', 'a)' );
+	g_row_2.appendChild(g_label2_1);
+	var g_tb = document.createElement('textbox');
+		g_tb.setAttribute('flex','1');
+	g_row_2.appendChild(g_tb);
+	var g_b = document.createElement('button');
+		g_b.setAttribute('label','Save this Response');
+		g_b.setAttribute('oncommand','add_answer(event,' + my_asvq.id() + ');');
+	g_row_2.appendChild(g_b);
+
+	var blank = document.createElement('row');
+	rows.insertBefore( blank , document.getElementById('page2_grid1_row1') );
+	var blank2 = document.createElement('label');
+		blank2.setAttribute('value', ' ');
+	blank.appendChild( blank2 );
+}
+
+function page1_check_advance() {
+	if ( document.getElementById('survey_name').value ) {
+		document.getElementById('survey_add').canAdvance = true;
+	} else {
+		document.getElementById('survey_add').canAdvance = false;
+	}
+}
+

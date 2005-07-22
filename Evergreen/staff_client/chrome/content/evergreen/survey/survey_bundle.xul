@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/survey.dtd">
+<overlay id="survey_bundle" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>dump('survey_bundle\n');</script>
+
+	<?xul-overlay href="chrome://evergreen/content/survey/survey_overlay.xul"?>
+
+	<script src="survey.js" />
+
+</overlay>
