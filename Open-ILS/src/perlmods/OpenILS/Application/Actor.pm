@@ -43,6 +43,10 @@ sub update_patron {
 
 	my $new_patron;
 
+	if(ref($patron->card)) { $patron->card( $patron->card->id ); }
+	if(ref($patron->billing_address)) { $patron->billing_address( $patron->billing_address->id ); }
+	if(ref($patron->mailing_address)) { $patron->mailing_address( $patron->mailing_address->id ); }
+
 	# create/update the patron first so we can use his id
 	if($patron->isnew()) {
 
@@ -113,6 +117,11 @@ __PACKAGE__->register_method(
 sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $user_session, $user_id ) = @_;
 	my $user_obj = $apputils->check_user_session( $user_session ); 
+
+	if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
+		return OpenILS::Perm->new("VIEW_USER");
+	}
+
 	return flesh_user($user_id);
 }
 
@@ -379,6 +388,7 @@ sub _add_update_cards {
 				return $card;
 			}
 
+			#if(ref($patron->card)) { $patron->card($patron->card->id); }
 			if($patron->card() == $virtual_id) {
 				$new_patron->card($card->id());
 				$new_patron->ischanged(1);
@@ -456,14 +466,19 @@ sub _add_survey_responses {
 	warn "updating responses for user " . $new_patron->id . "\n";
 
 	my $responses = $patron->survey_responses;
-	for my $resp( @$responses ) {
-		$resp->usr($new_patron->id);
-	}
 
-	my $status = $apputils->simple_scalar_request(
-		"open-ils.circ", 
-		"open-ils.circ.survey.submit.user_id",
-		$responses );
+	if($responses) {
+
+		for my $resp( @$responses ) {
+			$resp->usr($new_patron->id);
+		}
+
+		my $status = $apputils->simple_scalar_request(
+			"open-ils.circ", 
+			"open-ils.circ.survey.submit.user_id",
+			$responses );
+
+	}
 
 	return $new_patron;
 }

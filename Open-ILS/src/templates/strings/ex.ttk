@@ -45,6 +45,9 @@
 	IF type == ex_types.NO_HOLD_FOUND;
 		ret("The requested hold could not be found"); END;
 
+	IF type == ex_types.NO_TRANSACTION_FOUND;
+		ret("The requested transaction could not be found"); END;
+
 	ret("Unknown exception occured");
 
 -%]
