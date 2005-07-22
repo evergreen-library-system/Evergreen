@@ -119,6 +119,7 @@ function patron_bills_init(p) {
 		'command',
 		function() { 
 			var payment_blob = {};
+			payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
 			payment_blob.payment_type = p.control_box.payment_type.value;
 			payment_blob.payments = [];
 			payment_blob.patron_credit = p.control_box.bill_credit_amount.value;

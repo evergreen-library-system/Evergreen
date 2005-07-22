@@ -1,7 +1,7 @@
 VERSION=0.0.9
 PACKAGE=Evergreen
 DESCRIPTION=Evergreen Staff Client Pre-Alpha
-BUILD=2005071911
+BUILD=2005072208
 
 ILS_DIR=${PWD}/../..
 
@@ -59,7 +59,7 @@ circ:
 evergreen.xpi: evergreen.jar
 	@echo
 	@echo make the xpi file
-	zip -r evergreen.xpi chrome/ defaults/ install.js install.rdf Makefile LICENSE README -x \*CVS\* > /dev/null
+	zip -r evergreen.xpi chrome/ defaults/ install.js install.rdf application.ini Makefile LICENSE README -x \*CVS\* > /dev/null
 
 evergreen.jar: generated open-ils patron circ
 	@echo

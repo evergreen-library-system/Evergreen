@@ -101,7 +101,11 @@ function patron_edit_add_rows(p, au) {
 						break;
 				}
 			}
+			if (row.entry_event && row.entry_code) {
+				obj.addEventListener( row.entry_event, new Function('ev',row.entry_code), false);
+			}
 		} catch(E) {
+			alert(E + '\n' + js2JSON(E) + '\n');
 			sdump('D_ERROR',E + '\n');
 			obj = 'error';
 		}
@@ -152,8 +156,10 @@ function patron_edit_add_rows(p, au) {
 					cols.push( listcell );
 				}
 
+				if (!row['style']) row['style'] = '';
+				if (!row['class']) row['class'] = '';
 				var listitem = p.list_box.add_row(
-					cols, {}
+					cols, { 'style' : row['style'], 'class' : row['class'] }
 				);
 
 				if (p.list_box.apply_to_each_listitem) {

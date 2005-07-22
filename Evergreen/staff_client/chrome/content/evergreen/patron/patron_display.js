@@ -27,29 +27,31 @@ function patron_display_init(p) {
 		return p._patron = au;
 	}
 
-	p.display_patron = function (au) {
-		if (au) p.set_patron(au);
-		p.redraw_patron_checkout_items();
-		p.redraw_patron_items();
-		p.redraw_patron_holds();
-		p.redraw_patron_bills();
-		p.redraw_patron_edit();
+	p.display_patron = function (exceptions) {
+		if (!exceptions) exceptions = {};
+		if (!exceptions.all) {
+			if (!exceptions.patron_checkout_items) p.redraw_patron_checkout_items();
+			if (!exceptions.patron_items) p.redraw_patron_items();
+			if (!exceptions.patron_holds) p.redraw_patron_holds();
+			if (!exceptions.patron_bills) p.redraw_patron_bills();
+			if (!exceptions.patron_edit) p.redraw_patron_edit();
+		}
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
 
 	p.retrieve_patron_via_barcode = function (barcode) {
 		if (!barcode) barcode = patron_get_barcode( p._patron );
 		p.set_patron( retrieve_patron_by_barcode( barcode ) );
-		return p.display_patron();
+		return p.display_patron( {} );
 	}
 
-	p.retrieve_patron_via_id = function (id) {
+	p.retrieve_patron_via_id = function (id, exceptions) {
 		p.set_patron( retrieve_patron_by_id( id ) );
-		return p.display_patron();
+		return p.display_patron(exceptions);
 	}
 
-	p.refresh = function() {
-		if (p._patron) p.retrieve_patron_via_id( p._patron.id() );
+	p.refresh = function(exceptions) {
+		if (p._patron) p.retrieve_patron_via_id( p._patron.id(), exceptions );
 	}
 
 	set_patron_display_widgets(p);
@@ -513,7 +515,8 @@ function patron_display_patron_edit_init(p) {
 		'debug' : p.app
 	} );
 
-	p.patron_edit.refresh = function() { p.refresh(); }
+	p.patron_edit.redisplay = function() { p.display_patron( {'patron_edit':true} ); }
+	p.patron_edit.refresh = function() { p.refresh( {'patron_edit':true} ); }
 
 	p.redraw_patron_edit = function() {
 		try {

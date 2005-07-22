@@ -11,7 +11,31 @@
 	<OpenILS id="OpenILS_js">
 
 		<!-- OpenSRF -->
-		<script>var myPackageDir = "evergreen"; var ses; dump('Loading all the js in the OpenILS overlay...\n');</script>
+		<script>
+		<![CDATA[
+			var myPackageDir = "evergreen"; var ses; dump('Loading all the js in the OpenILS overlay...\n');
+			Components.classes['@mozilla.org/consoleservice;1'].getService(Components.interfaces.nsIConsoleService).registerListener(
+				{ 
+					observe: function( msg ) { 
+						if (! msg.message.match( /delta/ ) ) {
+							var s = '';
+							for (var i in msg) {
+								s += 'msg.' + i + ' = ' + msg[i] + '\n';
+							}
+							alert(s); 
+						}
+					},
+					QueryInterface: function (iid) { 
+						if (!iid.equals(Components.interfaces.nsIConsoleListener) 
+							&& !iid.equals(Components.interfaces.nsISupports)) { 
+							throw Components.results.NS_ERROR_NO_INTERFACE; 
+						} 
+						return this; 
+					}
+				}
+			);
+		]]>
+		</script>
 		<OpenSRF id="OpenSRF_js" />
 
 		<util id="util_js" />

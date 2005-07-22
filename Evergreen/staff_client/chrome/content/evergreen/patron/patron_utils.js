@@ -303,7 +303,13 @@ function patron_get_standing_css_style( value ) {
 function patron_pay_bills( payment_blob ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments,{0:true}));
 	try {
-		alert("Bill's API call goes here.  payment_blob = \n" + pretty_print( js2JSON( payment_blob ) ) + '\n');
+		//alert("Bill's API call goes here.  payment_blob = \n" + pretty_print( js2JSON( payment_blob ) ) + '\n');
+		var result = user_request(
+			'open-ils.circ',
+			'open-ils.circ.money.payment',
+			[ mw.G.auth_ses[0], payment_blob ]
+		)[0];
+		alert( pretty_print( js2JSON( result ) ) );
 		return true;
 	} catch(E) {
 		handle_error(E);
@@ -343,166 +349,197 @@ function save_patron( au, f ) {
 function patron_edit_rows() {
 	var rows = [
 {
-	'id' : 'create_date', 'label' : getString('au_create_date_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.create_date()',
-	'entry_widget' : 'textbox', 'entry_widget_attributes' : { 'readonly' : 'true' }, 'rdefault' : '.create_date()'
+	'id' : 'standing', 'label' : getString('au_standing_label'), 'flex' : 1, 'class' : 'pale_violet_red',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.cst_hash[ $$.standing() ].value()',
+	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.cst_hash,function(key,value){return [value.value(), key];}),
+	'entry_event' : 'command', 'entry_code' : '{ au.standing( ev.target.value ); }',
+	'rdefault' : '.standing()'
 },
 {
-	'id' : 'expire_date', 'label' : getString('au_expire_date_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.expire_date()',
-	'entry_widget' : 'textbox', 'rdefault' : '.expire_date()'
-},
-{
-	'id' : 'active', 'label' : getString('au_active_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'yesno($$.active())',
-	'entry_widget' : 'menulist', 'populate_with' : { 'Yes' : 1 , 'No' : 0 }, 'rdefault' : '.active()'
-},
-{
-	'id' : 'card', 'label' : getString('au_card_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.card().barcode()',
-	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'New Card', 'oncommand' : 'alert("test");' }
-},
-{
-	'id' : 'alert_message', 'label' : getString('au_alert_message_label'), 'flex' : 1,
+	'id' : 'alert_message', 'label' : getString('au_alert_message_label'), 'flex' : 1, 'class' : 'pale_violet_red',
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.alert_message()',
-	'entry_widget' : 'textbox', 'rdefault' : '.alert_message()'
+	'entry_widget' : 'textbox', 'rdefault' : '.alert_message()',
+	'entry_event' : 'change', 'entry_code' : '{ alert(js2JSON(au)); au.alert_message( ev.target.value ); }'
 },
 {
-	'id' : 'ident_type', 'label' : getString('au_ident_type_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.cit_hash[ $$.ident_type() ].name()',
-	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.cit_hash,function(key,value){return [value.name(), key];}), 
-	'rdefault' : '.ident_type()'
+	'id' : 'create_date', 'label' : getString('au_create_date_label'), 'flex' : 1, 'class' : 'peach_puff',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.create_date()',
+	'entry_widget' : 'textbox', 'entry_widget_attributes' : { 'readonly' : 'true' }, 'rdefault' : '.create_date()',
+	'entry_event' : 'change', 'entry_code' : '{ au.create_date( ev.target.value ); }'
 },
 {
-	'id' : 'ident_value', 'label' : getString('au_ident_value_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_value()',
-	'entry_widget' : 'textbox', 'rdefault' : '.ident_value()'
+	'id' : 'expire_date', 'label' : getString('au_expire_date_label'), 'flex' : 1, 'class' : 'peach_puff',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.expire_date()',
+	'entry_widget' : 'textbox', 'rdefault' : '.expire_date()',
+	'entry_event' : 'change', 'entry_code' : '{ au.expire_date( ev.target.value ); }'
 },
 {
-	'id' : 'ident_type2', 'label' : getString('au_ident_type2_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.cit_hash[ $$.ident_type2() ].name()',
-	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.cit_hash,function(key,value){return [value.name(), key];}), 
-	'rdefault' : '.ident_type2()'
+	'id' : 'active', 'label' : getString('au_active_label'), 'flex' : 1, 'class' : 'peach_puff',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'yesno($$.active())',
+	'entry_widget' : 'menulist', 'populate_with' : { 'Yes' : 1 , 'No' : 0 }, 'rdefault' : '.active()',
+	'entry_event' : 'command', 'entry_code' : '{ au.active( ev.target.value ); }'
 },
 {
-	'id' : 'ident_value2', 'label' : getString('au_ident_value2_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_value2()',
-	'entry_widget' : 'textbox', 'rdefault' : '.ident_value2()'
+	'id' : 'card', 'label' : getString('au_card_label'), 'flex' : 1, 'class' : 'peach_puff',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.card().barcode()',
+	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'New Card', 'oncommand' : 'alert("test");' },
+	'entry_event' : 'command', 'entry_code' : '{ new_card(au); }'
 },
 {
-	'id' : 'family_name', 'label' : getString('au_family_name_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.family_name()',
-	'entry_widget' : 'textbox', 'rdefault' : '.family_name()'
-},
-{
-	'id' : 'first_given_name', 'label' : getString('au_first_given_name_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.first_given_name()',
-	'entry_widget' : 'textbox', 'rdefault' : '.first_given_name()'
-},
-{
-	'id' : 'second_given_name', 'label' : getString('au_second_given_name_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.second_given_name()',
-	'entry_widget' : 'textbox', 'rdefault' : '.second_given_name()'
-},
-{
-	'id' : 'prefix', 'label' : getString('au_prefix_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.prefix()',
-	'entry_widget' : 'menulist', 'entry_widget_attributes' : { 'editable' : 'true' },
-	'populate_with' : { 'Mr.' : 'Mr.' , 'Mrs.' : 'Mrs.' }, 'rdefault' : '.prefix()'
-},
-{
-	'id' : 'suffix', 'label' : getString('au_suffix_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.suffix()',
-	'entry_widget' : 'menulist', 'entry_widget_attributes' : { 'editable' : 'true' },
-	'populate_with' : { 'Sr.' : 'Sr.' , 'Jr.' : 'Jr.' }, 'rdefault' : '.suffix()'
-},
-{
-	'id' : 'home_ou', 'label' : getString('au_home_ou_label'), 'flex' : 1,
+	'id' : 'home_ou', 'label' : getString('au_home_ou_label'), 'flex' : 1, 'class' : 'peach_puff',
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.org_tree_hash[ $$.home_ou() ].shortname()',
 	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.org_tree_hash,function(key,value){return [value.shortname(), key];}),
+	'entry_event' : 'command', 'entry_code' : '{ au.home_ou( ev.target.value ); }',
 	'rdefault' : '.home_ou()'
 },
 {
-	'id' : 'profile', 'label' : getString('au_profile_label'), 'flex' : 1,
+	'id' : 'profile', 'label' : getString('au_profile_label'), 'flex' : 1, 'class' : 'peach_puff',
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'ap_hash[ $$.profile() ].name()',
 	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.ap_hash,function(key,value){return [value.name(), key];}),
+	'entry_event' : 'command', 'entry_code' : '{ au.profile( ev.target.value ); }',
 	'rdefault' : '.profile()'
 },
 {
-	'id' : 'addresses', 'label' : getString('au_addresses_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.addresses().length + " addresses"',
-	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'Edit' }
+	'id' : 'prefix', 'label' : getString('au_prefix_label'), 'flex' : 1, 'class' : 'dark_salmon',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.prefix()',
+	'entry_widget' : 'menulist', 'entry_widget_attributes' : { 'editable' : 'true' },
+	'entry_event' : 'command', 'entry_code' : '{ au.prefix( ev.target.value ); }',
+	'populate_with' : { 'Mr.' : 'Mr.' , 'Mrs.' : 'Mrs.' }, 'rdefault' : '.prefix()'
 },
 {
-	'id' : 'day_phone', 'label' : getString('au_day_phone_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.day_phone()',
-	'entry_widget' : 'textbox', 'rdefault' : '.day_phone()'
+	'id' : 'family_name', 'label' : getString('au_family_name_label'), 'flex' : 1, 'class' : 'dark_salmon',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.family_name()',
+	'entry_widget' : 'textbox', 'rdefault' : '.family_name()',
+	'entry_event' : 'change', 'entry_code' : '{ au.family_name( ev.target.value ); }'
 },
 {
-	'id' : 'evening_phone', 'label' : getString('au_evening_phone_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.evening_phone()',
-	'entry_widget' : 'textbox', 'rdefault' : '.evening_phone()'
+	'id' : 'first_given_name', 'label' : getString('au_first_given_name_label'), 'flex' : 1, 'class' : 'dark_salmon',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.first_given_name()',
+	'entry_widget' : 'textbox', 'rdefault' : '.first_given_name()',
+	'entry_event' : 'change', 'entry_code' : '{ au.frist_given_name( ev.target.value ); }'
 },
 {
-	'id' : 'other_phone', 'label' : getString('au_other_phone_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.other_phone()',
-	'entry_widget' : 'textbox', 'rdefault' : '.other_phone()'
+	'id' : 'second_given_name', 'label' : getString('au_second_given_name_label'), 'flex' : 1, 'class' : 'dark_salmon',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.second_given_name()',
+	'entry_widget' : 'textbox', 'rdefault' : '.second_given_name()',
+	'entry_event' : 'change', 'entry_code' : '{ au.second_given_name( ev.target.value ); }'
 },
 {
-	'id' : 'email', 'label' : getString('au_email_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.email()',
-	'entry_widget' : 'textbox', 'rdefault' : '.email()'
+	'id' : 'suffix', 'label' : getString('au_suffix_label'), 'flex' : 1, 'class' : 'dark_salmon',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.suffix()',
+	'entry_widget' : 'menulist', 'entry_widget_attributes' : { 'editable' : 'true' },
+	'populate_with' : { 'Sr.' : 'Sr.' , 'Jr.' : 'Jr.' }, 'rdefault' : '.suffix()',
+	'entry_event' : 'command', 'entry_code' : '{ au.suffix( ev.target.value ); }'
 },
 {
-	'id' : 'dob', 'label' : getString('au_dob_label'), 'flex' : 1,
+	'id' : 'dob', 'label' : getString('au_dob_label'), 'flex' : 1, 'class' : 'cadet_blue',
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.dob()',
-	'entry_widget' : 'textbox', 'rdefault' : '.dob()'
+	'entry_widget' : 'textbox', 'rdefault' : '.dob()',
+	'entry_event' : 'change', 'entry_code' : '{ au.dob( ev.target.value ); }'
+},
+{
+	'id' : 'ident_type', 'label' : getString('au_ident_type_label'), 'flex' : 1, 'class' : 'cadet_blue',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.cit_hash[ $$.ident_type() ].name()',
+	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.cit_hash,function(key,value){return [value.name(), key];}), 
+	'rdefault' : '.ident_type()',
+	'entry_event' : 'command', 'entry_code' : '{ au.ident_type( ev.target.value ); }'
+},
+{
+	'id' : 'ident_value', 'label' : getString('au_ident_value_label'), 'flex' : 1, 'class' : 'cadet_blue',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_value()',
+	'entry_widget' : 'textbox', 'rdefault' : '.ident_value()',
+	'entry_event' : 'change', 'entry_code' : '{ au.ident_value( ev.target.value ); }'
+},
+{
+	'id' : 'ident_type2', 'label' : getString('au_ident_type2_label'), 'flex' : 1, 'class' : 'cadet_blue',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.cit_hash[ $$.ident_type2() ].name()',
+	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.cit_hash,function(key,value){return [value.name(), key];}), 
+	'rdefault' : '.ident_type2()',
+	'entry_event' : 'command', 'entry_code' : '{ au.ident_type2( ev.target.value ); }'
+},
+{
+	'id' : 'ident_value2', 'label' : getString('au_ident_value2_label'), 'flex' : 1, 'class' : 'cadet_blue',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.ident_value2()',
+	'entry_widget' : 'textbox', 'rdefault' : '.ident_value2()',
+	'entry_event' : 'change', 'entry_code' : '{ au.ident_value2( ev.target.value ); }'
+},
+{
+	'id' : 'addresses', 'label' : getString('au_addresses_label'), 'flex' : 1, 'class' : 'coral',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.addresses().length + " addresses"',
+	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'View/Edit/New' },
+	'entry_event' : 'command', 'entry_code' : '{ edit_addresses(au); }'
+},
+{
+	'id' : 'day_phone', 'label' : getString('au_day_phone_label'), 'flex' : 1, 'class' : 'coral',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.day_phone()',
+	'entry_widget' : 'textbox', 'rdefault' : '.day_phone()',
+	'entry_event' : 'change', 'entry_code' : '{ au.day_phone( ev.target.value ); }'
+},
+{
+	'id' : 'evening_phone', 'label' : getString('au_evening_phone_label'), 'flex' : 1, 'class' : 'coral',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.evening_phone()',
+	'entry_widget' : 'textbox', 'rdefault' : '.evening_phone()',
+	'entry_event' : 'change', 'entry_code' : '{ au.evening_phone( ev.target.value ); }'
+},
+{
+	'id' : 'other_phone', 'label' : getString('au_other_phone_label'), 'flex' : 1, 'class' : 'coral',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.other_phone()',
+	'entry_widget' : 'textbox', 'rdefault' : '.other_phone()',
+	'entry_event' : 'change', 'entry_code' : '{ au.other_phone( ev.target.value ); }'
+},
+{
+	'id' : 'email', 'label' : getString('au_email_label'), 'flex' : 1, 'class' : 'coral',
+	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.email()',
+	'entry_widget' : 'textbox', 'rdefault' : '.email()',
+	'entry_event' : 'change', 'entry_code' : '{ au.email( ev.target.value ); }'
 },
 {
 	'id' : 'master_account', 'label' : getString('au_master_account_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.master_account()',
-	'entry_widget' : 'textbox', 'rdefault' : '.master_account()'
+	'entry_widget' : 'textbox', 'rdefault' : '.master_account()',
+	'entry_event' : 'change', 'entry_code' : '{ au.master_account( ev.target.value ); }'
 },
 {
 	'id' : 'net_access_level', 'label' : getString('au_net_access_level_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.net_access_level()',
-	'entry_widget' : 'textbox', 'rdefault' : '.net_access_level()'
+	'entry_widget' : 'textbox', 'rdefault' : '.net_access_level()',
+	'entry_event' : 'change', 'entry_code' : '{ au.net_access_level( ev.target.value ); }'
 },
 {
 	'id' : 'passwd', 'label' : getString('au_passwd_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.passwd()',
-	'entry_widget' : 'textbox', 'rdefault' : '.passwd()'
+	'entry_widget' : 'textbox', 'rdefault' : '.passwd()',
+	'entry_event' : 'change', 'entry_code' : '{ au.passwd( ev.target.value ); }'
 },
 {
 	'id' : 'photo_url', 'label' : getString('au_photo_url_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.photo_url()',
-	'entry_widget' : 'textbox', 'rdefault' : '.photo_url()'
-},
-{
-	'id' : 'standing', 'label' : getString('au_standing_label'), 'flex' : 1,
-	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : 'mw.G.cst_hash[ $$.standing() ].value()',
-	'entry_widget' : 'menulist', 'populate_with' : map_object(mw.G.cst_hash,function(key,value){return [value.value(), key];}),
-	'rdefault' : '.standing()'
+	'entry_widget' : 'textbox', 'rdefault' : '.photo_url()',
+	'entry_event' : 'change', 'entry_code' : '{ au.photo_url( ev.target.value ); }'
 },
 {
 	'id' : 'stat_cat_entries', 'label' : getString('au_stat_cat_entries_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.stat_cat_entries().length + " entries"',
-	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'Edit' }
+	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'View/Edit' },
+	'entry_event' : 'command', 'entry_code' : '{ edit_stat_cat_entries(au); }'
 },
 {
 	'id' : 'survey_responses', 'label' : getString('au_survey_responses_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.survey_responses().length + " responses"',
-	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'Edit' }
+	'entry_widget' : 'button', 'entry_widget_attributes' : { 'label' : 'View/New' },
+	'entry_event' : 'command', 'entry_code' : '{ new_survey_responses(au); }'
 },
 {
 	'id' : 'usrgroup', 'label' : getString('au_usrgroup_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.usrgroup()',
-	'entry_widget' : 'textbox', 'rdefault' : '.usrgroup()'
+	'entry_widget' : 'textbox', 'rdefault' : '.usrgroup()',
+	'entry_event' : 'change', 'entry_code' : '{ au.usrgroup( ev.target.value ); }'
 },
 {
 	'id' : 'usrname', 'label' : getString('au_usrname_label'), 'flex' : 1,
 	'primary' : false, 'hidden' : false, 'fm_class' : 'au', 'fm_field_render' : '.usrname()',
-	'entry_widget' : 'textbox', 'rdefault' : '.usrname()'
+	'entry_widget' : 'textbox', 'rdefault' : '.usrname()',
+	'entry_event' : 'change', 'entry_code' : '{ au.usrname( ev.target.value ); }'
 },
 ];
 
