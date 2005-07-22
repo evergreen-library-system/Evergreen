@@ -35,6 +35,7 @@ char* login_session = NULL;
 
 /* true if we're pretty printing json results */
 int pretty_print = 1;
+/* true if we're bypassing 'less' */
 int raw_print = 0;
 
 /* our jabber connection */

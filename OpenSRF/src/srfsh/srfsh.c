@@ -330,6 +330,20 @@ int handle_set( char* words[]) {
 					return 1;
 				} 
 			}
+
+			if(!strcmp(variable,"raw_print")) {
+				if(!strcmp(val,"true")) {
+					raw_print = 1;
+					printf("raw_print = true\n");
+					return 1;
+				} 
+				if(!strcmp(val,"false")) {
+					raw_print = 0;
+					printf("raw_print = false\n");
+					return 1;
+				} 
+			}
+
 		}
 	}
 
@@ -422,6 +436,7 @@ int handle_exec(char* words[], int new_shell) {
 
 	} else {
 
+
 		growing_buffer* b = buffer_init(64);
 		int i = 0;
 		while(words[i]) 
@@ -429,11 +444,25 @@ int handle_exec(char* words[], int new_shell) {
 	
 		buffer_add( b, "\n");
 	
+		//int reader;
+		//int reader = dup2(STDOUT_FILENO, reader);
+		//int reader = dup(STDOUT_FILENO);
+		//close(STDOUT_FILENO);
+
 		fprintf( shell_writer, b->buf );
 		buffer_free(b);
 	
 		fflush(shell_writer);
 		usleep(1000);
+
+		/*
+		char c[4096];
+		bzero(c, 4096);
+		read( reader, c, 4095 );
+		fprintf(stderr, "read %s", c);
+		dup2(reader, STDOUT_FILENO);
+		*/
+
 	}
 
 	
@@ -510,8 +539,6 @@ int send_request( char* server,
 
 
 	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 60 );
-	debug_handler("srfsh0");
-
 
 	if(!omsg) 
 		printf("\nReceived no data from server\n");
@@ -529,39 +556,73 @@ int send_request( char* server,
 
 	while(omsg) {
 
-		if(omsg->_result_content) {
+		if(raw_print) {
 
-			debug_handler("srfsh1");
-			osrf_message_free(last_result);
-			last_result = omsg;
+			if(omsg->_result_content) {
+	
+				osrf_message_free(last_result);
+				last_result = omsg;
+	
+				char* content;
+	
+				if( pretty_print && omsg->_result_content ) {
+					char* j = object_to_json(omsg->_result_content);
+					content = json_printer(j); 
+					free(j);
+				} else
+					content = object_get_string(omsg->_result_content);
+	
+				printf( "\nReceived Data: %s\n", content ); 
+				free(content);
+	
+			} else {
 
-			char* content;
+				char code[16];
+				memset(code, 0, 16);
+				sprintf( code, "%d", omsg->status_code );
+				buffer_add( resp_buffer, code );
 
-			if( pretty_print && omsg->_result_content ) {
-				char* j = object_to_json(omsg->_result_content);
-				content = json_printer(j); 
-				free(j);
-			} else
-				content = object_get_string(omsg->_result_content);
+				printf( "\nReceived Exception:\nName: %s\nStatus: %s\nStatus: %s\n", 
+						omsg->status_name, omsg->status_text, code );
 
-			debug_handler("srfsh2");
-
-			buffer_add( resp_buffer, "\nReceived Data: " ); 
-			buffer_add( resp_buffer, content );
-			buffer_add( resp_buffer, "\n" );
-			free(content);
+				fflush(stdout);
+			}
 
 		} else {
 
-			buffer_add( resp_buffer, "\nReceived Exception:\nName: " );
-			buffer_add( resp_buffer, omsg->status_name );
-			buffer_add( resp_buffer, "\nStatus: " );
-			buffer_add( resp_buffer, omsg->status_text );
-			buffer_add( resp_buffer, "\nStatus: " );
-			char code[16];
-			memset(code, 0, 16);
-			sprintf( code, "%d", omsg->status_code );
-			buffer_add( resp_buffer, code );
+			if(omsg->_result_content) {
+	
+				osrf_message_free(last_result);
+				last_result = omsg;
+	
+				char* content;
+	
+				if( pretty_print && omsg->_result_content ) {
+					char* j = object_to_json(omsg->_result_content);
+					content = json_printer(j); 
+					free(j);
+				} else
+					content = object_get_string(omsg->_result_content);
+	
+				debug_handler("srfsh2");
+	
+				buffer_add( resp_buffer, "\nReceived Data: " ); 
+				buffer_add( resp_buffer, content );
+				buffer_add( resp_buffer, "\n" );
+				free(content);
+	
+			} else {
+	
+				buffer_add( resp_buffer, "\nReceived Exception:\nName: " );
+				buffer_add( resp_buffer, omsg->status_name );
+				buffer_add( resp_buffer, "\nStatus: " );
+				buffer_add( resp_buffer, omsg->status_text );
+				buffer_add( resp_buffer, "\nStatus: " );
+				char code[16];
+				memset(code, 0, 16);
+				sprintf( code, "%d", omsg->status_code );
+				buffer_add( resp_buffer, code );
+			}
 		}
 
 
