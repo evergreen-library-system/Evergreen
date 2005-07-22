@@ -235,7 +235,7 @@ CREATE TABLE actor.stat_cat_entry_usr_map (
 	stat_cat_entry	TEXT		NOT NULL,
 	stat_cat	INT		NOT NULL,
 	target_usr	INT		NOT NULL,
-	CONSTRAINT sce_once_per_copy UNIQUE (target_usr,stat_cat)
+	CONSTRAINT sc_once_per_usr UNIQUE (target_usr,stat_cat)
 );
 COMMENT ON TABLE actor.stat_cat_entry_usr_map IS $$
 /*

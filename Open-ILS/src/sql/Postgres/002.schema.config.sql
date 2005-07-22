@@ -369,7 +369,7 @@ INSERT INTO config.copy_status (name)			VALUES ('Bindery');
 INSERT INTO config.copy_status (name)			VALUES ('Lost');
 INSERT INTO config.copy_status (name)			VALUES ('Missing');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('In process','t');
-INSERT INTO config.copy_status (name)			VALUES ('In transit');
+INSERT INTO config.copy_status (name,holdable)		VALUES ('In transit','t');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('Reshelving','t');
 INSERT INTO config.copy_status (name)			VALUES ('On holds shelf');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('On order','t');
