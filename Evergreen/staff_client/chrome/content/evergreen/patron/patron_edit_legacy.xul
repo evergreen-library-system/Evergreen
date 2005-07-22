@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/patron.css" type="text/css"?>
+
+<page id="patron_new_win" orient="vertical" style="overflow: auto;" persist="width height"
+	onload="patron_init(); patron_edit_init();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>
+		dump('patron_new_win\n');
+	</script>
+
+	<script src="chrome://evergreen/content/OpenSRF/JSON.js" />
+
+	<!-- Initial Overlays for this XUL file -->
+	<!--
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_bundle.xul"?>
+	-->
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/patron/patron_edit_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+
+	<script src="chrome://evergreen/content/patron/patron_edit_legacy.js"/>
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<vbox id="patron_edit_vbox" class="test_class"/>
+
+</page>
+

@@ -509,6 +509,7 @@ function patron_display_patron_bills_init(p) {
 }
 
 function patron_display_patron_edit_init(p) {
+	/*
 	p.patron_edit = patron_edit_init( { 
 		'w' : p.w, 
 		'node' : p.patron_edit_node, 
@@ -525,6 +526,24 @@ function patron_display_patron_edit_init(p) {
 		} catch(E) {
 			sdump('D_ERROR',js2JSON(E) + '\n');
 		}
+	}
+	*/
+	/* shoehorn in the old legacy stuff */
+	p.patron_edit = {};
+	p.redraw_patron_edit = function() { 
+		empty_widget( p.patron_edit_node );
+		setTimeout(
+			function() {
+				var frame = p.w.document.createElement('iframe');
+				p.patron_edit_node.appendChild( frame );
+				frame.setAttribute('flex','1');
+				frame.setAttribute('src','chrome://evergreen/content/patron/patron_edit_legacy.xul');
+				frame.contentWindow.mw = mw;
+				frame.contentWindow.params = {};
+				var barcode = patron_get_barcode( p._patron );
+				frame.contentWindow.params.barcode = barcode;
+			}, 0
+		);
 	}
 }
 

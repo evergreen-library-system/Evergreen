@@ -84,6 +84,8 @@ function populate_rows_with_local_stat_cats(local_stat_cats,local_stat_cat_entri
 
 		var stat_cat = local_stat_cats[i];
 
+		//alert('local stat_cat = ' + js2JSON(stat_cat) );
+
 		var row = document.createElement('row');
 		rows.appendChild(row);
 
@@ -95,6 +97,7 @@ function populate_rows_with_local_stat_cats(local_stat_cats,local_stat_cat_entri
 		row.appendChild(menulist);
 		if (editable) { menulist.setAttribute('editable','true'); }
 		menulist.setAttribute('id','menulist_stat_cat_'+stat_cat.id());
+		//alert('menulist_stat_cat_'+stat_cat.id());
 		menulist.setAttribute('stat_cat_id',stat_cat.id());
 		sdump('D_POPULATE','\tmenulist = ' + menulist + '\n');
 
@@ -125,7 +128,7 @@ function populate_rows_with_local_stat_cats(local_stat_cats,local_stat_cat_entri
 
 	}
 
-	//sdump('D_POPULATE','local_stat_cat_entries = ' + pretty_print( js2JSON( local_stat_cat_entries ) ) + '\n');
+	sdump('D_POPULATE','local_stat_cat_entries = ' + pretty_print( js2JSON( local_stat_cat_entries ) ) + '\n');
 
 }
 
@@ -338,7 +341,7 @@ function populate_ident_types(menulist,menupopup,repeatid,defaultcit) {
 			//sdump('D_POPULATE','pop_cit_list: i = ' + i + ' cit = ' + mw.G.cit_list[i] + ' = ' + js2JSON(mw.G.cit_list[i]) + '\n');
 			popup.appendChild(menuitem);
 		}
-		if (list && defaultcit) {
+		if (menulist && defaultcit) {
 			if (typeof defaultcit == 'object') {
 				defaultcit = defaultcit.id();	
 			}

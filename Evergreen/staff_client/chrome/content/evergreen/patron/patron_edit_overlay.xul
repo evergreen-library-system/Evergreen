@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<overlay id="patron_edit_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>dump('patron_edit_overlay\n');</script>
+
+	<vbox id="patron_edit_vbox" flex="1">
+		<commandset id="patron_edit_cmds"/>
+		<vbox id="patron_edit_vbox2" flex="1"/>
+		<hbox id="patron_edit_hbox2" pack="end" flex="0">
+			<button id="patron_edit_print" label='Print' command='cmd_broken'/>
+			<button id="patron_edit_save" label='Save Changes' command='cmd_patron_save'/>
+		</hbox>
+	</vbox>
+
+	<commandset id="patron_edit_cmds">
+		<command id="cmd_broken" oncommand=" 
+			alert('Not Yet Implemented');
+		"/>
+		<command id="cmd_patron_save" oncommand="
+			PATRON.save();
+		"/>
+		<command id="cmd_apply" oncommand="
+			alert('cmd_apply');
+		"/>
+	</commandset>
+
+	<vbox id="patron_edit_vbox2" align="stretch" style="overflow: auto;" flex="1">
+		<vbox id="patron_edit_vbox2a" style="" flex="0">
+			<groupbox id="patron_edit_system_groupbox" flex="0"/>
+		</vbox>
+		<vbox id="patron_edit_vbox2b" style="" flex="0">
+			<groupbox id="patron_edit_contact_groupbox" flex="0"/>
+		</vbox>
+		<vbox id="patron_edit_vbox2c" style="" flex="0">
+			<groupbox id="patron_edit_survey_groupbox" flex="0"/>
+		</vbox>
+		<vbox id="patron_edit_vbox2d" style="" flex="0">
+			<groupbox id="patron_edit_stat_cat_groupbox" flex="0"/>
+		</vbox>
+	</vbox>
+	
+	<groupbox id="patron_edit_system_groupbox">
+		<caption id="patron_edit_system_caption" label="User Info" />
+		<hbox id="patron_edit_system_groupbox_hbox">
+			<menulist id="patron_edit_system_library_menulist"/>
+		</hbox>
+		<grid id="patron_edit_system_grid"/>
+	</groupbox>
+
+	<groupbox id="patron_edit_contact_groupbox">
+		<caption id="patron_edit_contact_caption" label="Contact Info" />
+		<grid id="patron_edit_contact_phone_grid" />
+		<grid id="patron_edit_contact_address_grid" />
+	</groupbox>
+
+	<groupbox id="patron_edit_survey_groupbox">
+		<caption id="patron_edit_survey_caption" label="Required Surveys" />
+		<vbox id="patron_edit_survey_vbox" />
+	</groupbox>
+
+	<groupbox id="patron_edit_stat_cat_groupbox">
+		<caption id="patron_edit_stat_cat_caption" label="Statistical Categories" />
+		<grid id="patron_edit_stat_cat_grid">
+			<columns id="pescg_columns">
+				<column id="pescg_c1"/>
+				<column id="pescg_c2" flex="1"/>
+			</columns>
+			<rows id="pescg_rows"/>
+		</grid>
+	</groupbox>
+
+	<grid id="patron_edit_system_grid" flex="1">
+		<columns id="patron_edit_system_columns">
+			<column id="patron_edit_system_column1"/>
+			<column id="patron_edit_system_column2"/>
+			<column id="patron_edit_system_column3"/>
+			<column id="patron_edit_system_column4"/>
+			<column id="patron_edit_system_column5"/>
+			<column id="patron_edit_system_column6"/>
+		</columns>
+		<rows id="patron_edit_system_rows">
+			<row id="patron_edit_system_row0"/>
+			<row id="patron_edit_system_row0b"/>
+			<row id="patron_edit_system_row0a"/>
+			<row id="patron_edit_system_row1"/>
+			<row id="patron_edit_system_row2"/>
+			<row id="patron_edit_system_row2a"/>
+			<row id="patron_edit_system_row3"/>
+			<row id="patron_edit_system_row4"/>
+			<row id="patron_edit_system_row5"/>
+			<row id="patron_edit_system_row5a"/>
+			<row id="patron_edit_system_row6"/>
+			<row id="patron_edit_system_row7"/>
+			<row id="patron_edit_system_row8"/>
+		</rows>
+	</grid>
+
+	<row id="patron_edit_system_row0">
+		<label id="patron_edit_system_barcode_label" value="Barcode"/>	
+		<hbox id="patron_edit_system_barcode_box">
+			<textbox id="patron_edit_system_barcode_textbox" size="20"/>	
+		</hbox>
+		<label id="patron_edit_system_profile_label" value="Profile"/>	
+		<menulist id="patron_edit_system_profile_menulist"/>	
+	</row>
+
+	<row id="patron_edit_system_row0b">
+		<label id="patron_edit_system_usrname_label" value="Login Name"/>	
+		<hbox id="patron_edit_system_usrname_box">
+			<textbox id="patron_edit_system_usrname_textbox" size="20"/>	
+		</hbox>
+		<label id="patron_edit_system_disable_label" value="Disable"/>	
+		<checkbox id="patron_edit_system_disable_checkbox"/>	
+	</row>
+
+	<row id="patron_edit_system_row0a">
+		<separator id="patron_edit_system_row0a_separator"/>
+	</row>
+
+	<row id="patron_edit_system_row1">
+		<label id="patron_edit_system_family_name_label" value="Last Name"/>	
+		<textbox id="patron_edit_system_family_name_textbox" size="20"/>	
+		<label id="patron_edit_system_first_given_name_label" value="First"/>	
+		<textbox id="patron_edit_system_first_given_name_textbox" size="10"/>	
+		<label id="patron_edit_system_second_given_name_label" value="Middle"/>	
+		<textbox id="patron_edit_system_second_given_name_textbox" size="5"/>	
+	</row>
+
+	<row id="patron_edit_system_row2">
+		<label id="patron_edit_system_prefix_label" value="Prefix"/>	
+		<menulist id="patron_edit_system_prefix_menulist"/>
+		<label id="patron_edit_system_suffix_label" value="Suffix"/>	
+		<menulist id="patron_edit_system_suffix_menulist"/>
+	</row>
+
+	<row id="patron_edit_system_row2a">
+		<separator id="patron_edit_system_row2a_separator"/>
+	</row>
+
+	<row id="patron_edit_system_row3">
+		<label id="patron_edit_system_id1value_label" value="ID #1:"/>	
+		<textbox id="patron_edit_system_id1value_textbox" size="20"/>
+		<label id="patron_edit_system_id1type_label" value="Type"/>	
+		<menulist id="patron_edit_system_id1type_menulist"/>
+	</row>
+
+	<row id="patron_edit_system_row4">
+		<label id="patron_edit_system_id2value_label" value="ID #2:"/>	
+		<textbox id="patron_edit_system_id2value_textbox" size="20"/>
+		<label id="patron_edit_system_id2type_label" value="Type"/>	
+		<menulist id="patron_edit_system_id2type_menulist"/>
+	</row>
+
+	<row id="patron_edit_system_row5">
+		<label id="patron_edit_system_dob_label" value="DOB:"/>	
+		<textbox id="patron_edit_system_dob_textbox" size="20"/>
+	</row>
+
+	<row id="patron_edit_system_row5a">
+		<separator id="patron_edit_system_row5a_separator"/>
+	</row>
+
+	<row id="patron_edit_system_row6">
+		<label id="patron_edit_system_new_passwd_label" value="New Password:"/>	
+		<textbox id="patron_edit_system_new_passwd_textbox" value="UNCHANGED" size="20"/>
+	</row>
+
+	<row id="patron_edit_system_row7">
+		<separator id="patron_edit_system_row7_separator"/>
+	</row>
+
+	<row id="patron_edit_system_row8">
+		<label id="patron_edit_system_alert_message_label" value="Alert Message:"/>	
+		<textbox id="patron_edit_system_alert_message_textbox" value="" multiline="true" rows="5"/>
+	</row>
+
+	<menulist id="patron_edit_system_id1type_menulist">
+		<menupopup id="patron_edit_system_id1type_menupopup">
+		</menupopup>
+	</menulist>
+
+	<menulist id="patron_edit_system_id2type_menulist">
+		<menupopup id="patron_edit_system_id2type_menupopup">
+		</menupopup>
+	</menulist>
+
+	<menulist id="patron_edit_system_prefix_menulist">
+		<menupopup id="patron_edit_system_prefix_menupopup">
+		</menupopup>
+	</menulist>
+
+	<menulist id="patron_edit_system_suffix_menulist">
+		<menupopup id="patron_edit_system_suffix_menupopup">
+		</menupopup>
+	</menulist>
+	
+	<menulist id="patron_edit_system_profile_menulist">
+		<menupopup id="patron_edit_system_profile_menupopup">
+		</menupopup>
+	</menulist>
+	
+	<menulist id="patron_edit_system_library_menulist">
+		<menupopup id="patron_edit_system_library_menupopup">
+		</menupopup>
+	</menulist>
+
+	<grid id="patron_edit_contact_phone_grid" flex="0">
+		<columns id="patron_edit_contact_phone_columns">
+			<column id="patron_edit_contact_phone_column1"/>
+			<column id="patron_edit_contact_phone_column2"/>
+			<column id="patron_edit_contact_phone_column3"/>
+			<column id="patron_edit_contact_phone_column4"/>
+		</columns>
+		<rows id="patron_edit_phone_rows">
+			<row id="patron_edit_phone_row0a"/>
+			<row id="patron_edit_phone_row0"/>
+			<row id="patron_edit_phone_row1"/>
+			<row id="patron_edit_phone_row2"/>
+		</rows>
+
+	</grid>
+
+	<row id="patron_edit_phone_row0a">
+		<label id="patron_edit_contact_email_label" value="Email"/>
+		<textbox id="patron_edit_contact_email_textbox"  size="20"/>
+		<label id="patron_edit_contact_email_invalid_label" value="Invalid" command="cmd_broken"/>
+		<checkbox id="patron_edit_contact_email_invalid_checkbox" />
+	</row>
+	<row id="patron_edit_phone_row0">
+		<label id="patron_edit_contact_dayphone_label" value="Day Phone"/>
+		<textbox id="patron_edit_contact_dayphone_textbox"  size="20"/>
+		<label id="patron_edit_contact_dayphone_invalid_label" value="Invalid" command="cmd_broken"/>
+		<checkbox id="patron_edit_contact_dayphone_invalid_checkbox" />
+	</row>
+	<row id="patron_edit_phone_row1">
+		<label id="patron_edit_contact_eveningphone_label" value="Evening Phone"/>
+		<textbox id="patron_edit_contact_eveningphone_textbox"  size="20"/>
+		<label id="patron_edit_contact_eveningphone_invalid_label" value="Invalid" command="cmd_broken"/>
+		<checkbox id="patron_edit_contact_eveningphone_invalid_checkbox" />
+	</row>
+	<row id="patron_edit_phone_row2">
+		<label id="patron_edit_contact_otherphone_label" value="Other Phone"/>
+		<textbox id="patron_edit_contact_otherphone_textbox" size="20"/>
+		<label id="patron_edit_contact_otherphone_invalid_label" value="Invalid" command="cmd_broken"/>
+		<checkbox id="patron_edit_contact_otherphone_invalid_checkbox" />
+	</row>
+	
+	<grid id="patron_edit_contact_address_grid" flex="0">
+		<columns id="patron_edit_contact_address_columns">
+			<column id="patron_edit_contact_address_column1"/>
+			<column id="patron_edit_contact_address_column2"/>
+		</columns>
+		<rows id="patron_edit_address_rows"/>
+	</grid>
+
+</overlay>
+
