@@ -49,7 +49,7 @@ CREATE TABLE actor.usr (
 	other_phone		TEXT,
 	mailing_address		INT,
 	billing_address		INT,
-	home_ou			INT,
+	home_ou			INT		NOT NULL,
 	dob			DATE		NOT NULL,
 	active			BOOL		NOT NULL DEFAULT TRUE,
 	master_account		BOOL		NOT NULL DEFAULT FALSE,
@@ -129,12 +129,8 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 3, 1,'admin', 'open-ils', 'Administrator', '', '1979-01-22', TRUE, TRUE, 1, 'identification' );
-INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 2, 2,'demo', 'demo', 'demo', 'user', '1979-01-22', FALSE, TRUE, 1, 'identification' );
-INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value )
-	VALUES ( 1, 3,'athens', 'athens', 'athens', 'user', '1979-01-22', FALSE, TRUE, 1, 'identification' );
+INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou )
+	VALUES ( 1, 1,'admin', 'open-ils', 'Administrator', '', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 
 
 CREATE TABLE actor.usr_setting (
@@ -303,8 +299,6 @@ $$;
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
 
 INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
-INSERT INTO actor.card (usr, barcode) VALUES (2,'101010101010102');
-INSERT INTO actor.card (usr, barcode) VALUES (3,'101010101010103');
 
 
 CREATE TABLE actor.org_unit_type (
@@ -319,7 +313,7 @@ CREATE TABLE actor.org_unit_type (
 CREATE INDEX actor_org_unit_type_parent_idx ON actor.org_unit_type (parent);
 
 -- The PINES levels
-INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium','All of PINES', 0, NULL, FALSE, FALSE );
+INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES ( 'Consortium','Everywhere', 0, NULL, FALSE, FALSE );
 INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES ( 'System','Local Library System', 1, 1, FALSE, FALSE );
 INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES ( 'Branch','This Branch', 2, 2 );
 INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES ( 'Sub-lib','This Specialized Library', 3, 3 );
@@ -343,7 +337,15 @@ CREATE INDEX actor_org_unit_billing_address_idx ON actor.org_unit (billing_addre
 CREATE INDEX actor_org_unit_mailing_address_idx ON actor.org_unit (mailing_address);
 CREATE INDEX actor_org_unit_holds_address_idx ON actor.org_unit (holds_address);
 
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'PINES', 'Georgia PINES Consortium');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (NULL, 1, 'CONS', 'Example Consortium');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (1, 2, 'SYS1', 'Example System 1');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (1, 2, 'SYS2', 'Example System 2');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (2, 3, 'BR1', 'Example Branch 1');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (2, 3, 'BR2', 'Example Branch 2');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, 'BR3', 'Example Branch 3');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, 'BR4', 'Example Branch 4');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (4, 4, 'SL4', 'Example Sub-lib 1');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (6, 5, 'BM4', 'Example Bookmobile 1');
 
 CREATE TABLE actor.usr_address (
 	id		SERIAL	PRIMARY KEY,
@@ -381,5 +383,7 @@ CREATE TABLE actor.org_address (
 	post_code	TEXT	NOT NULL
 );
 
+INSERT INTO actor.org_address (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
+UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
 
 COMMIT;

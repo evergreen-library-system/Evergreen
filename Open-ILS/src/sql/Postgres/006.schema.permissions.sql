@@ -8,8 +8,43 @@ CREATE TABLE permission.perm_list (
 	code	TEXT	NOT NULL UNIQUE
 );
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
-INSERT INTO permission.perm_list VALUES (DEFAULT,'EVERYTHING');
-INSERT INTO permission.perm_list VALUES (DEFAULT,'OPAC_LOGIN');
+
+INSERT INTO permission.perm_list VALUES (-1,'EVERYTHING');
+INSERT INTO permission.perm_list VALUES (2, 'OPAC_LOGIN');
+INSERT INTO permission.perm_list VALUES (4, 'STAFF_LOGIN');
+INSERT INTO permission.perm_list VALUES (5, 'MR_HOLDS');
+INSERT INTO permission.perm_list VALUES (6, 'TITLE_HOLDS');
+INSERT INTO permission.perm_list VALUES (7, 'VOLUME_HOLDS');
+INSERT INTO permission.perm_list VALUES (8, 'COPY_HOLDS');
+INSERT INTO permission.perm_list VALUES (9, 'REQUEST_HOLDS');
+INSERT INTO permission.perm_list VALUES (10, 'REQUEST_HOLDS_OVERRIDE');
+INSERT INTO permission.perm_list VALUES (11, 'VIEW_HOLDS');
+INSERT INTO permission.perm_list VALUES (13, 'DELETE_HOLDS');
+INSERT INTO permission.perm_list VALUES (14, 'UPDATE_HOLDS');
+INSERT INTO permission.perm_list VALUES (15, 'RENEW_CIRC');
+INSERT INTO permission.perm_list VALUES (16, 'VIEW_USER_FINES_SUMMARY');
+INSERT INTO permission.perm_list VALUES (17, 'VIEW_USER_TRANSACTIONS');
+INSERT INTO permission.perm_list VALUES (18, 'UPDATE_MARC');
+INSERT INTO permission.perm_list VALUES (19, 'CREATE_ORIGINAL_MARC');
+INSERT INTO permission.perm_list VALUES (20, 'IMPORT_MARC');
+INSERT INTO permission.perm_list VALUES (21, 'CREATE_VOLUME');
+INSERT INTO permission.perm_list VALUES (22, 'UPDATE_VOLUME');
+INSERT INTO permission.perm_list VALUES (23, 'DELETE_VOLUME');
+INSERT INTO permission.perm_list VALUES (24, 'CREATE_COPY');
+INSERT INTO permission.perm_list VALUES (25, 'UPDATE_COPY');
+INSERT INTO permission.perm_list VALUES (26, 'DELETE_COPY');
+INSERT INTO permission.perm_list VALUES (27, 'RENEW_HOLD_OVERRIDE');
+INSERT INTO permission.perm_list VALUES (28, 'CREATE_USER');
+INSERT INTO permission.perm_list VALUES (29, 'UPDATE_USER');
+INSERT INTO permission.perm_list VALUES (30, 'DELETE_USER');
+INSERT INTO permission.perm_list VALUES (31, 'VIEW_USER');
+INSERT INTO permission.perm_list VALUES (32, 'COPY_CHECKIN');
+INSERT INTO permission.perm_list VALUES (33, 'CREATE_TRANSIT');
+INSERT INTO permission.perm_list VALUES (34, 'VIEW_PERMISSION');
+INSERT INTO permission.perm_list VALUES (35, 'CHECKIN_BYPASS_HOLD_FULFILL');
+INSERT INTO permission.perm_list VALUES (36, 'CREATE_PAYMENT');
+
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 37);
 
 CREATE TABLE permission.grp_tree (
 	id	SERIAL	PRIMARY KEY,
@@ -17,47 +52,73 @@ CREATE TABLE permission.grp_tree (
 	parent	INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT
 );
 CREATE INDEX grp_tree_parent ON permission.grp_tree (parent);
-INSERT INTO permission.grp_tree VALUES (DEFAULT,'Users');
-INSERT INTO permission.grp_tree VALUES (DEFAULT,'Admin',1);
+
+INSERT INTO grp_tree VALUES (1, 'Users', NULL);
+INSERT INTO grp_tree VALUES (2, 'Patrons', 1);
+INSERT INTO grp_tree VALUES (3, 'Staff', 1);
+INSERT INTO grp_tree VALUES (4, 'Catalogers', 3);
+INSERT INTO grp_tree VALUES (5, 'Circulators', 3);
+
+SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, 6);
 
 CREATE TABLE permission.grp_perm_map (
 	id	SERIAL	PRIMARY KEY,
-	grp	INT	NOT NULL REFERENCES permission.grp_tree (id),
-	perm	INT	NOT NULL REFERENCES permission.perm_list (id),
+	grp	INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE,
+	perm	INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
 	depth	INT	NOT NULL,
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
 );
-INSERT INTO permission.grp_perm_map VALUES (DEFAULT,1,2,0);
-INSERT INTO permission.grp_perm_map VALUES (DEFAULT,2,1,0);
+
+INSERT INTO permission.grp_perm_map VALUES (1, 1, 2, 0); 
+INSERT INTO permission.grp_perm_map VALUES (12, 1, 5, 0);
+INSERT INTO permission.grp_perm_map VALUES (13, 1, 6, 0);
+INSERT INTO permission.grp_perm_map VALUES (15, 4, 8, 2);
+INSERT INTO permission.grp_perm_map VALUES (22, 4, 18, 0);
+INSERT INTO permission.grp_perm_map VALUES (23, 4, 19, 0);
+INSERT INTO permission.grp_perm_map VALUES (24, 4, 20, 0);
+INSERT INTO permission.grp_perm_map VALUES (38, 4, 21, 2);
+INSERT INTO permission.grp_perm_map VALUES (34, 4, 22, 2);
+INSERT INTO permission.grp_perm_map VALUES (39, 4, 23, 2);
+INSERT INTO permission.grp_perm_map VALUES (40, 4, 24, 2);
+INSERT INTO permission.grp_perm_map VALUES (35, 4, 25, 2);
+INSERT INTO permission.grp_perm_map VALUES (11, 3, 4, 0);
+INSERT INTO permission.grp_perm_map VALUES (14, 3, 7, 2);
+INSERT INTO permission.grp_perm_map VALUES (16, 3, 9, 0);
+INSERT INTO permission.grp_perm_map VALUES (17, 3, 11, 0);
+INSERT INTO permission.grp_perm_map VALUES (19, 3, 15, 0);
+INSERT INTO permission.grp_perm_map VALUES (20, 3, 16, 0);
+INSERT INTO permission.grp_perm_map VALUES (21, 3, 17, 0);
+INSERT INTO permission.grp_perm_map VALUES (26, 3, 27, 0);
+INSERT INTO permission.grp_perm_map VALUES (27, 3, 28, 0);
+INSERT INTO permission.grp_perm_map VALUES (28, 3, 29, 0);
+INSERT INTO permission.grp_perm_map VALUES (29, 3, 30, 0);
+INSERT INTO permission.grp_perm_map VALUES (44, 3, 31, 0);
+INSERT INTO permission.grp_perm_map VALUES (30, 3, 32, 0);
+INSERT INTO permission.grp_perm_map VALUES (31, 3, 33, 0);
+INSERT INTO permission.grp_perm_map VALUES (32, 3, 34, 0);
+INSERT INTO permission.grp_perm_map VALUES (33, 3, 35, 0);
+INSERT INTO permission.grp_perm_map VALUES (41, 3, 36, 0);
+
+SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, 44);
+
 
 CREATE TABLE permission.usr_perm_map (
 	id	SERIAL	PRIMARY KEY,
-	usr	INT	NOT NULL REFERENCES actor.usr (id),
-	perm	INT	NOT NULL REFERENCES permission.perm_list (id),
+	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
+	perm	INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
 	depth	INT	NOT NULL,
 		CONSTRAINT perm_usr_once UNIQUE (usr,perm)
 );
 
 CREATE TABLE permission.usr_grp_map (
 	id	SERIAL	PRIMARY KEY,
-	usr	INT	NOT NULL REFERENCES actor.usr (id),
-	grp     INT     NOT NULL REFERENCES permission.grp_tree (id),
+	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
+	grp     INT     NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE,
 		CONSTRAINT usr_grp_once UNIQUE (usr,grp)
 );
 
-INSERT INTO permission.usr_grp_map (usr,grp)
-	SELECT id, (SELECT id FROM permission.grp_tree WHERE parent IS NULL LIMIT 1) FROM actor.usr;
-
-INSERT INTO permission.usr_grp_map (usr,grp)
-	SELECT 1, id FROM permission.grp_tree WHERE name = 'Admin';
-
-CREATE OR REPLACE RULE add_usr_to_group AS
-	ON INSERT TO actor.usr DO ALSO
-		INSERT	INTO permission.usr_grp_map (usr, grp) VALUES (
-			NEW.id,
-			(SELECT id FROM permission.grp_tree WHERE parent IS NULL LIMIT 1)
-		);
-
+-- Admin user
+INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
 
 CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permission.grp_tree AS $$
 	SELECT	a.*
@@ -133,7 +194,8 @@ BEGIN
 			  FROM	permission.usr_perms(iuser) p
 				JOIN permission.perm_list l
 					ON (l.id = p.perm)
-			  WHERE	l.code = tperm LOOP
+			  WHERE	l.code = tperm
+			  	OR p.perm = -1 LOOP
 
 		PERFORM	*
 		  FROM	actor.org_unit_descendants(target,r_perm.depth)

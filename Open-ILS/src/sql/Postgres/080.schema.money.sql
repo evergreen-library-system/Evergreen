@@ -70,14 +70,11 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 		debit.last_billing_note,
 		COALESCE(debit.total_owed,0) - COALESCE(credit.total_paid,0) AS balance_owed,
 		p.relname AS xact_type
-	  FROM	money.billable_xact xact,
-	  	pg_class p,
-	  	money.transaction_billing_summary debit,
-	  	money.transaction_payment_summary credit
-	  WHERE	xact.xact_finish IS NULL
-		AND xact.tableoid = p.oid
-		AND xact.id = debit.xact
-		AND xact.id = credit.xact;
+	  FROM	money.billable_xact xact
+	  	JOIN pg_class p ON (xact.tableoid = p.oid)
+	  	LEFT JOIN money.transaction_billing_summary debit ON (xact.id = debit.xact)
+	  	LEFT JOIN money.transaction_payment_summary credit ON (xact.id = credit.xact)
+	  WHERE	xact.xact_finish IS NULL;
 
 CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,

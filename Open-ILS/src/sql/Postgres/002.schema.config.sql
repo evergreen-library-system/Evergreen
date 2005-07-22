@@ -89,9 +89,10 @@ COMMENT ON TABLE config.standing IS $$
  */
 $$;
 
-
 INSERT INTO config.standing (value) VALUES ('Good');
 INSERT INTO config.standing (value) VALUES ('Barred');
+
+
 
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
@@ -139,7 +140,7 @@ INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject'
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'name', $$//mods:mods/mods:subject/mods:name$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'temporal', $$//mods:mods/mods:subject/mods:temporal$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'topic', $$//mods:mods/mods:subject/mods:topic$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
+-- INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */
 
 CREATE TABLE config.identification_type (
@@ -210,6 +211,8 @@ COMMENT ON TABLE config.rule_circ_duration IS $$
  */
 $$;
 
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '2wk_default', '21 days', '14 days', '7 days', 2);
+
 
 CREATE TABLE config.rule_max_fine (
 	id	SERIAL		PRIMARY KEY,
@@ -240,6 +243,8 @@ COMMENT ON TABLE config.rule_max_fine IS $$
  * GNU General Public License for more details.
  */
 $$;
+
+INSERT INTO rule_max_fine VALUES (DEFAULT, 'books', 50.00);
 
 
 CREATE TABLE config.rule_recuring_fine (
@@ -277,6 +282,8 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  */
 $$;
 
+INSERT INTO rule_recuring_fine VALUES (1, 'books', 0.50, 0.10, 0.10, '1 day');
+
 
 CREATE TABLE config.rule_age_hold_protect (
 	id	SERIAL		PRIMARY KEY,
@@ -312,11 +319,14 @@ COMMENT ON TABLE config.rule_age_hold_protect IS $$
  */
 $$;
 
+INSERT INTO rule_age_hold_protect VALUES (DEFAULT, '3month', '3 mons', 3);
+INSERT INTO rule_age_hold_protect VALUES (DEFAULT, '6month', '6 mons', 2);
+
 
 CREATE TABLE config.copy_status (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE,
-	holdable	BOOL	NOT NULL DEFAULT 'F'
+	holdable	BOOL	NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.copy_status IS $$
 /*
@@ -353,20 +363,20 @@ COMMENT ON TABLE config.copy_status IS $$
  */
 $$;
 
-INSERT INTO config.copy_status (id,name,holdable) VALUES (0,'Available','t');
-INSERT INTO config.copy_status (name,holdable) VALUES ('Checked out','t');
-INSERT INTO config.copy_status (name) VALUES ('Bindery');
-INSERT INTO config.copy_status (name) VALUES ('Lost');
-INSERT INTO config.copy_status (name) VALUES ('Missing');
-INSERT INTO config.copy_status (name,holdable) VALUES ('In process','t');
-INSERT INTO config.copy_status (name) VALUES ('In transit');
-INSERT INTO config.copy_status (name,holdable) VALUES ('Reshelving','t');
-INSERT INTO config.copy_status (name) VALUES ('On holds shelf');
-INSERT INTO config.copy_status (name,holdable) VALUES ('On order','t');
-INSERT INTO config.copy_status (name) VALUES ('ILL');
-INSERT INTO config.copy_status (name) VALUES ('Cataloging');
-INSERT INTO config.copy_status (name) VALUES ('Reserves');
-INSERT INTO config.copy_status (name) VALUES ('Discard/Weed');
+INSERT INTO config.copy_status (id,name,holdable)	VALUES (0,'Available','t');
+INSERT INTO config.copy_status (name,holdable)		VALUES ('Checked out','t');
+INSERT INTO config.copy_status (name)			VALUES ('Bindery');
+INSERT INTO config.copy_status (name)			VALUES ('Lost');
+INSERT INTO config.copy_status (name)			VALUES ('Missing');
+INSERT INTO config.copy_status (name,holdable)		VALUES ('In process','t');
+INSERT INTO config.copy_status (name)			VALUES ('In transit');
+INSERT INTO config.copy_status (name,holdable)		VALUES ('Reshelving','t');
+INSERT INTO config.copy_status (name)			VALUES ('On holds shelf');
+INSERT INTO config.copy_status (name,holdable)		VALUES ('On order','t');
+INSERT INTO config.copy_status (name)			VALUES ('ILL');
+INSERT INTO config.copy_status (name)			VALUES ('Cataloging');
+INSERT INTO config.copy_status (name)			VALUES ('Reserves');
+INSERT INTO config.copy_status (name)			VALUES ('Discard/Weed');
 
 SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);
 
@@ -403,50 +413,5 @@ INSERT INTO config.net_access_level (name) VALUES ('Restricted');
 INSERT INTO config.net_access_level (name) VALUES ('Full');
 INSERT INTO config.net_access_level (name) VALUES ('None');
 
-
-
-/*
-
-CREATE TABLE config.new_metabib_field (
-	id		SERIAL	PRIMARY KEY,
-	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
-	name		TEXT	NOT NULL UNIQUE,
-	search_xpath	TEXT	NOT NULL,
-	browse_xpath	TEXT
-);
-
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
-	VALUES ( 'series', 'seriestitle', $$//mods/relatedItem[@type="series"]/titleInfo$$, $$//mods/relatedItem[@type="series"]/titleInfo/title$$ );
-
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
-	VALUES ( 'title', 'abbreviated', $$//mods/titleInfo[title and (@type='abreviated')]$$, $$//mods/titleInfo[title and (@type='abreviated')]/title$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
-	VALUES ( 'title', 'translated', $$//mods/titleInfo[title and (@type='translated')]$$, $$//mods/titleInfo[title and (@type='translated')]/title$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
-	VALUES ( 'title', 'uniform', $$//mods/titleInfo[title and (@type='uniform')]$$, $$//mods/titleInfo[title and (@type='uniform')]/title$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath, browse_xpath )
-	VALUES ( 'title', 'proper', $$//mods/titleInfo[title and not (@type)]$$, $$//mods/titleInfo[title and not (@type)]/title$$ );
-
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'author', 'corporate', $$//mods/name[@type='corporate']/namePart[../role/text[text()='creator']]$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'author', 'personal', $$//mods/name[@type='personal']/namePart[../role/text[text()='creator']]$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'author', 'conference', $$//mods/name[@type='conference']/namePart[../role/text[text()='creator']]$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'author', 'other', $$//mods/name[@type='personal']/namePart[not(../role)]$$ );
-
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'subject', 'geographic', $$//mods/subject/geographic$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'subject', 'name', $$//mods/subject/name$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'subject', 'temporal', $$//mods/subject/temporal$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'subject', 'topic', $$//mods/subject/topic$$ );
-INSERT INTO config.new_metabib_field ( field_class, name, search_xpath )
-	VALUES ( 'keyword', 'keyword', $$//mods/*[not(local-name()='originInfo')]$$ ); 
-
-*/
 
 COMMIT;
