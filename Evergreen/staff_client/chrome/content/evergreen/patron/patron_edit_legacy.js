@@ -103,7 +103,7 @@ function patron_new_init() {
 		card.usr( PATRON.au.id() );
 		hash_ac[ card.id() ] =  card;
 
-	PATRON.au.card( card.id() );
+	PATRON.au.card( card );
 	PATRON.au.cards( [ card ] );
 	PATRON.related_refresh(PATRON.au.id());
 

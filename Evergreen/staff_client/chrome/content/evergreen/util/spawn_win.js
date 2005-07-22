@@ -174,7 +174,7 @@ function spawn_patron_edit(d,placement,place,passthru_params,clone) {
 }
 
 function spawn_patron_register(d,placement,place,passthru_params,clone) {
-	var chrome = 'chrome://evergreen/content/patron/patron_new.xul';
+	var chrome = 'chrome://evergreen/content/patron/patron_new_legacy.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_register_interface_label'),passthru_params,clone);
 }
 
