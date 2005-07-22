@@ -2,8 +2,8 @@
 	#---------------------------------------------------------------------
 	package money::billable_transaction;
 	
-	money::billable_transaction->table( 'money.billable_transaction' );
-	money::billable_transaction->sequence( 'money.billable_transaction_id_seq' );
+	money::billable_transaction->table( 'money.billable_xact' );
+	money::billable_transaction->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
 	package money::billing;

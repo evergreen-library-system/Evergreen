@@ -392,11 +392,11 @@ sub hold_copy_targeter {
 	$check_expire ||= '12h';
 	$check_expire = interval_to_seconds( $check_expire );
 
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time - $check_expire);
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
 	$year += 1900;
 	$mon += 1;
 	my $expire_threshold = sprintf(
-		'%s-%0.2d-%0.2dT%s:%0.2d:%0.s2-00',
+		'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
 		$year, $mon, $mday, $hour, $min, $sec
 	);
 
