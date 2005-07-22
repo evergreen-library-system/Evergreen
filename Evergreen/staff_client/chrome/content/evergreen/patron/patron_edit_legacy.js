@@ -295,7 +295,7 @@ function populate_patron_survey_grid(grid) {
 			var survey = result[i];
 			survey_hash[ survey.id() ] = survey; 
 			if ( (survey.required() == '0') && (survey.usr_summary() == '0') ) { continue; }
-			//mw.sdump('D_LEGACY','Survey: ' + survey.id() + ' : ' + survey.name() + '\n');
+			mw.sdump('D_LEGACY','Survey: ' + survey.id() + ' : ' + survey.name() + '\n');
 			var row = document.createElement('row');
 			rows.appendChild(row);
 			desc_1[ survey.id() ] = document.createElement('description');
@@ -314,7 +314,7 @@ function populate_patron_survey_grid(grid) {
 			} else {
 				row.setAttribute('hidden','true');
 			}
-			//mw.sdump('D_LEGACY','creating desc_1: ' + desc_1 + '\n');
+			mw.sdump('D_LEGACY','creating desc_1: ' + desc_1 + '\n');
 			var result2 = mw.user_async_request(
 				'open-ils.circ',
 				'open-ils.circ.survey.response.retrieve',
@@ -324,8 +324,8 @@ function populate_patron_survey_grid(grid) {
 					mw.sdump('D_LEGACY','result2 = ' + js2JSON(result2) + '\n');
 					if (result2.length > 0) {
 						var last_response = result2.pop();
-						//mw.sdump('D_LEGACY','desc_1 = ' + desc_1[ last_response.survey() ] + '\n');
-						//mw.sdump('D_LEGACY','effective_date = [' + last_response.effective_date() + ']  answer_date = [' + last_response.answer_date() + ']\n');
+						mw.sdump('D_LEGACY','desc_1 = ' + desc_1[ last_response.survey() ] + '\n');
+						mw.sdump('D_LEGACY','effective_date = [' + last_response.effective_date() + ']  answer_date = [' + last_response.answer_date() + ']\n');
 						var date = last_response.effective_date().substr(0,10);
 						if (!date) { date = last_response.answer_date().substr(0,10); }
 						var first_answer = '';
@@ -342,7 +342,7 @@ function populate_patron_survey_grid(grid) {
 						}
 						desc_1[ last_response.survey() ].setAttribute('value', date);
 						desc_3[ last_response.survey() ].setAttribute('value', first_answer);
-						//mw.sdump('D_LEGACY','desc_1 = ' + date + '\n');
+						mw.sdump('D_LEGACY','desc_1 = ' + date + '\n');
 					}
 				}
 			);
@@ -1348,33 +1348,41 @@ function populate_patron_edit_surveys_build_callback( survey ) {
 
 
 function survey_render(vbox,survey_id,commit_callback,submit_callback) {
-	return; // remove me -- testing XULRUNNER
 	if (typeof(vbox) != 'object') { vbox = document.getElementById(vbox); }
 	var frame = document.createElement('iframe');
 	vbox.appendChild(frame);
-	frame.setAttribute('flex','1'); frame.setAttribute('src','about:blank');
+	frame.setAttribute('flex','1'); frame.setAttribute('src','data:text/html,<html><head><LINK href="http://spacely.georgialibraries.org/css/box.css" rel="stylesheet" type="text/css"><LINK href="http://spacely.georgialibraries.org/css/survey.css" rel="stylesheet" type="text/css"></head><body></body></html>');
+	
 	var doc = frame.contentWindow.document;
 	HTMLdoc = doc;
-	mw.sdump('D_LEGACY', 'before: ' + super_mw.sdump('D_LEGACY', doc ) + '\n');
-	doc.write(
-		'<body>' + 
-		'<LINK href="http://spacely.georgialibraries.org/css/box.css" rel="stylesheet" type="text/css">' +
-		'<LINK href="http://spacely.georgialibraries.org/css/survey.css" rel="stylesheet" type="text/css">' +
-		'</body>'
-	);
-	doc.close();
-	mw.sdump('D_LEGACY', 'after : ' + super_mw.sdump('D_LEGACY', doc ) + '\n');
 	Survey.retrieveById( 
 		mw.G.auth_ses[0] , 
 		survey_id,
 		function(sur) { 
+dump('1a\n');
 			sur.setUser( PATRON.au.id() ); 
+dump('2a\n');
 			if (submit_callback) sur.setSubmitCallback( submit_callback );
+dump('3a\n');
 			if (commit_callback) sur.commitCallback = commit_callback;
+dump('4a\n');
 			mw.sdump('D_LEGACY','survey id: ' + sur.survey.id() + '\n');
-			doc.body.appendChild( sur.getNode() ); 
+dump('5a\n');
+
+			var node = sur.getNode();
+
+			try {
+				dump( super_dump( node ) );
+			} catch(E) {
+				dump( js2JSON(E) );
+			}
+
+			doc.body.appendChild( node ); 
+dump('6a\n');
 			frame.setAttribute('style','height: ' + (30+doc.height) + 'px;');
+dump('7a\n');
 			frame.setAttribute('id','patron_survey_frame_' + sur.survey.id());
+dump('8a\n');
 		} 
 	);
 
@@ -1384,18 +1392,9 @@ function survey_render_with_results(vbox,survey_id,callback) {
 	if (typeof(vbox) != 'object') { vbox = document.getElementById(vbox); }
 	var frame = document.createElement('iframe');
 	frame.setAttribute('id','patron_survey_frame'); vbox.appendChild(frame);
-	frame.setAttribute('flex','1'); frame.setAttribute('src','about:blank');
+	frame.setAttribute('flex','1'); frame.setAttribute('src','data:text/html,<html><head><LINK href="http://spacely.georgialibraries.org/css/box.css" rel="stylesheet" type="text/css"><LINK href="http://spacely.georgialibraries.org/css/survey.css" rel="stylesheet" type="text/css"></head><body></body></html>');
 	var doc = frame.contentWindow.document;
 	HTMLdoc = doc;
-	mw.sdump('D_LEGACY', 'before: ' + super_mw.sdump('D_LEGACY', doc ) + '\n');
-	doc.write(
-		'<body>' + 
-		'<LINK href="http://spacely.georgialibraries.org/css/box.css" rel="stylesheet" type="text/css">' +
-		'<LINK href="http://spacely.georgialibraries.org/css/survey.css" rel="stylesheet" type="text/css">' +
-		'</body>'
-	);
-	doc.close();
-	mw.sdump('D_LEGACY', 'after : ' + super_mw.sdump('D_LEGACY', doc ) + '\n');
 	Survey.retrieveById( 
 		mw.G.auth_ses[0] , 
 		survey_id,
@@ -1403,13 +1402,21 @@ function survey_render_with_results(vbox,survey_id,callback) {
 			sur.setUser( PATRON.au.id() ); 
 			sur.setSubmitCallback( callback );
 			mw.sdump('D_LEGACY','survey id: ' + sur.survey.id() + '\n');
+dump('1\n');
 			doc.body.appendChild( sur.getNode() ); 
+dump('2\n');
 			var span = doc.createElement('blockquote');
+dump('3\n');
 			span.setAttribute('id','survey_response_' + sur.survey.id());
+dump('4\n');
 			span.setAttribute('class','survey');
+dump('5\n');
 			var warning = doc.createTextNode('Retrieving Responses...');
+dump('6\n');
 			span.appendChild(warning);
+dump('7\n');
 			doc.body.appendChild(span);
+dump('8\n');
 			mw.user_async_request(
 				'open-ils.circ',
 				'open-ils.circ.survey.response.retrieve',

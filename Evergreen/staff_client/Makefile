@@ -38,6 +38,7 @@ open-ils:
 	cp ../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
 	cp ../../Open-ILS/src/javascript/util/*.js chrome/content/evergreen/Open-ILS/util/
 	cp ../../Open-ILS/src/javascript/widgets/*.js chrome/content/evergreen/Open-ILS/widgets/
+	cp chrome/content/evergreen/Open-ILS/widgets/Survey.js~ chrome/content/evergreen/Open-ILS/widgets/Survey.js
 	cp ../../Open-ILS/src/javascript/widgets/menu/*.js chrome/content/evergreen/Open-ILS/widgets/menu/
 
 patron:
