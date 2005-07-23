@@ -169,7 +169,6 @@ function close_all_windows() {
 		sdump('D_WIN','\n');
 	}
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
-	mw.close();
 }
 
 function register_document(d) {
