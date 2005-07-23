@@ -1359,15 +1359,10 @@ function survey_render(vbox,survey_id,commit_callback,submit_callback) {
 		mw.G.auth_ses[0] , 
 		survey_id,
 		function(sur) { 
-dump('1a\n');
 			sur.setUser( PATRON.au.id() ); 
-dump('2a\n');
 			if (submit_callback) sur.setSubmitCallback( submit_callback );
-dump('3a\n');
 			if (commit_callback) sur.commitCallback = commit_callback;
-dump('4a\n');
 			mw.sdump('D_LEGACY','survey id: ' + sur.survey.id() + '\n');
-dump('5a\n');
 
 			var node = sur.getNode();
 
@@ -1377,12 +1372,9 @@ dump('5a\n');
 				dump( js2JSON(E) );
 			}
 
-			doc.body.appendChild( node ); 
-dump('6a\n');
+			doc.getElementsByTagName('body')[0].appendChild(node);
 			frame.setAttribute('style','height: ' + (30+doc.height) + 'px;');
-dump('7a\n');
 			frame.setAttribute('id','patron_survey_frame_' + sur.survey.id());
-dump('8a\n');
 		} 
 	);
 
@@ -1402,21 +1394,13 @@ function survey_render_with_results(vbox,survey_id,callback) {
 			sur.setUser( PATRON.au.id() ); 
 			sur.setSubmitCallback( callback );
 			mw.sdump('D_LEGACY','survey id: ' + sur.survey.id() + '\n');
-dump('1\n');
-			doc.body.appendChild( sur.getNode() ); 
-dump('2\n');
-			var span = doc.createElement('blockquote');
-dump('3\n');
+			doc.getElementsByTagName('body')[0].appendChild( sur.getNode() ); 
+			var span = doc.createElementNS('http://www.w3.org/1999/xhtml','blockquote');
 			span.setAttribute('id','survey_response_' + sur.survey.id());
-dump('4\n');
 			span.setAttribute('class','survey');
-dump('5\n');
 			var warning = doc.createTextNode('Retrieving Responses...');
-dump('6\n');
 			span.appendChild(warning);
-dump('7\n');
-			doc.body.appendChild(span);
-dump('8\n');
+			doc.getElementsByTagName('body')[0].appendChild(span);
 			mw.user_async_request(
 				'open-ils.circ',
 				'open-ils.circ.survey.response.retrieve',
@@ -1426,28 +1410,28 @@ dump('8\n');
 					span.removeChild( warning );
 					if (result.length == 0) { return; }
 					//span.appendChild( doc.createTextNode('Previous Responses:') );
-					//span.appendChild( doc.createElement('br') );
+					//span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
 					//span.setAttribute('style','border: black solid thin;');
 					var num_of_q = sur.survey.questions().length;
 					var current_q = 0;
 					span.appendChild( doc.createTextNode(
 						'Previous Responses:'
 					) );
-					span.appendChild( doc.createElement('br') );
-					span.appendChild( doc.createElement('br') );
+					span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
+					span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
 					var block;
 					for (var i = 0; i < result.length; i++) {
 						if (++current_q > num_of_q) { current_q = 1; }
 						mw.sdump('D_LEGACY','current_q = ' + current_q + '  num_of_q = ' + num_of_q + '\n');
 						if (current_q == 1) {
-							block = doc.createElement('blockquote');
+							block = doc.createElementNS('http://www.w3.org/1999/xhtml','blockquote');
 							span.appendChild( doc.createTextNode(
 								'Answer Date: ' + 
 								result[i].answer_date() +
 								', Effective Date: ' + 
 								result[i].effective_date()
 							) );
-							span.appendChild( doc.createElement('br') );
+							span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
 							span.appendChild(block);
 						}
 						block.appendChild(
@@ -1463,7 +1447,7 @@ dump('8\n');
 							)
 						);
 					}
-					span.appendChild( doc.createElement('br') );
+					span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
 					frame.setAttribute('style','height: ' + (30+doc.height) + 'px;');
 				}
 			);
@@ -1472,7 +1456,7 @@ dump('8\n');
 }
 
 function createAppElement(name) {
-	return HTMLdoc.createElement(name);
+	return HTMLdoc.createElementNS('http://www.w3.org/1999/xhtml',name);
 }
 
 function createAppTextNode(value) {
