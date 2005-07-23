@@ -1353,8 +1353,10 @@ function survey_render(vbox,survey_id,commit_callback,submit_callback) {
 	vbox.appendChild(frame);
 	frame.setAttribute('flex','1'); frame.setAttribute('src','data:text/html,<html><head><LINK href="http://spacely.georgialibraries.org/css/box.css" rel="stylesheet" type="text/css"><LINK href="http://spacely.georgialibraries.org/css/survey.css" rel="stylesheet" type="text/css"></head><body></body></html>');
 	
+	setTimeout(function(){
 	var doc = frame.contentWindow.document;
-	HTMLdoc = doc;
+	window.createAppElement = function (name) { return doc.createElement(name); }
+	window.createTextNode = function (value) { return doc.createTextNode(value); }
 	Survey.retrieveById( 
 		mw.G.auth_ses[0] , 
 		survey_id,
@@ -1372,12 +1374,12 @@ function survey_render(vbox,survey_id,commit_callback,submit_callback) {
 				dump( js2JSON(E) );
 			}
 
-			doc.getElementsByTagName('body')[0].appendChild(node);
+			doc.body.appendChild( node ); 
 			frame.setAttribute('style','height: ' + (30+doc.height) + 'px;');
 			frame.setAttribute('id','patron_survey_frame_' + sur.survey.id());
 		} 
 	);
-
+	},0);
 }
 
 function survey_render_with_results(vbox,survey_id,callback) {
@@ -1387,6 +1389,8 @@ function survey_render_with_results(vbox,survey_id,callback) {
 	frame.setAttribute('flex','1'); frame.setAttribute('src','data:text/html,<html><head><LINK href="http://spacely.georgialibraries.org/css/box.css" rel="stylesheet" type="text/css"><LINK href="http://spacely.georgialibraries.org/css/survey.css" rel="stylesheet" type="text/css"></head><body></body></html>');
 	var doc = frame.contentWindow.document;
 	HTMLdoc = doc;
+	window.createAppElement = function (name) { return HTMLdoc.createElement(name); }
+	window.createTextNode = function (value) { return HTMLdoc.createTextNode(value); }
 	Survey.retrieveById( 
 		mw.G.auth_ses[0] , 
 		survey_id,
@@ -1394,13 +1398,13 @@ function survey_render_with_results(vbox,survey_id,callback) {
 			sur.setUser( PATRON.au.id() ); 
 			sur.setSubmitCallback( callback );
 			mw.sdump('D_LEGACY','survey id: ' + sur.survey.id() + '\n');
-			doc.getElementsByTagName('body')[0].appendChild( sur.getNode() ); 
-			var span = doc.createElementNS('http://www.w3.org/1999/xhtml','blockquote');
+			doc.body.appendChild( sur.getNode() ); 
+			var span = doc.createElement('blockquote');
 			span.setAttribute('id','survey_response_' + sur.survey.id());
 			span.setAttribute('class','survey');
 			var warning = doc.createTextNode('Retrieving Responses...');
 			span.appendChild(warning);
-			doc.getElementsByTagName('body')[0].appendChild(span);
+			doc.body.appendChild(span);
 			mw.user_async_request(
 				'open-ils.circ',
 				'open-ils.circ.survey.response.retrieve',
@@ -1410,28 +1414,28 @@ function survey_render_with_results(vbox,survey_id,callback) {
 					span.removeChild( warning );
 					if (result.length == 0) { return; }
 					//span.appendChild( doc.createTextNode('Previous Responses:') );
-					//span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
+					//span.appendChild( doc.createElement('br') );
 					//span.setAttribute('style','border: black solid thin;');
 					var num_of_q = sur.survey.questions().length;
 					var current_q = 0;
 					span.appendChild( doc.createTextNode(
 						'Previous Responses:'
 					) );
-					span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
-					span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
+					span.appendChild( doc.createElement('br') );
+					span.appendChild( doc.createElement('br') );
 					var block;
 					for (var i = 0; i < result.length; i++) {
 						if (++current_q > num_of_q) { current_q = 1; }
 						mw.sdump('D_LEGACY','current_q = ' + current_q + '  num_of_q = ' + num_of_q + '\n');
 						if (current_q == 1) {
-							block = doc.createElementNS('http://www.w3.org/1999/xhtml','blockquote');
+							block = doc.createElement('blockquote');
 							span.appendChild( doc.createTextNode(
 								'Answer Date: ' + 
 								result[i].answer_date() +
 								', Effective Date: ' + 
 								result[i].effective_date()
 							) );
-							span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
+							span.appendChild( doc.createElement('br') );
 							span.appendChild(block);
 						}
 						block.appendChild(
@@ -1447,20 +1451,12 @@ function survey_render_with_results(vbox,survey_id,callback) {
 							)
 						);
 					}
-					span.appendChild( doc.createElementNS('http://www.w3.org/1999/xhtml','br') );
+					span.appendChild( doc.createElement('br') );
 					frame.setAttribute('style','height: ' + (30+doc.height) + 'px;');
 				}
 			);
 		} 
 	);
-}
-
-function createAppElement(name) {
-	return HTMLdoc.createElementNS('http://www.w3.org/1999/xhtml',name);
-}
-
-function createAppTextNode(value) {
-	return HTMLdoc.createTextNode(value);
 }
 
 
