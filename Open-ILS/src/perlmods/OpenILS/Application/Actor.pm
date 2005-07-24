@@ -212,8 +212,8 @@ sub _clone_patron {
 	$new_patron->clear_cards();
 	$new_patron->clear_id();
 	$new_patron->clear_isnew();
-	$new_patron->clear_changed();
-	$new_patron->clear_deleted();
+	$new_patron->clear_ischanged();
+	$new_patron->clear_isdeleted();
 	$new_patron->clear_stat_cat_entries();
 
 	return $new_patron;
