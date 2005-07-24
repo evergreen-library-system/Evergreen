@@ -21,6 +21,7 @@ javascript-install:
 storage-bootstrap:
 	mkdir -p $(CGIDIR)
 	cp -r cgi-bin/* $(CGIDIR)
+	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
 
 web-templates-install:
 	mkdir -p $(TEMPLATEDIR)

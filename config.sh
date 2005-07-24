@@ -123,7 +123,7 @@ function prompt { echo ""; echo -n "$*"; }
 function writeConfig {
 
 	rm -f "$CONFIG_FILE";
-	echo "Writing config to $CONFIG_FILE...";
+	echo "Writing installation config to $CONFIG_FILE...";
 
 	_write "PREFIX=\"$PREFIX\"";
 	_write "BINDIR=\"$BINDIR\"";
@@ -156,6 +156,7 @@ function writeConfig {
 	# Now we'll write out the DB bootstrapping config
 	CONFIG_FILE='Open-ILS/src/cgi-bin/setup.pl';
 	rm -f "$CONFIG_FILE";
+	echo "Writing bootstrapping config to $CONFIG_FILE...";
 
 	STR='$main::config{dsn} =';
 		STR="$STR 'dbi:${DBDRVR}:host=";
@@ -173,6 +174,18 @@ function writeConfig {
 	
 	_write '$main::config{index} = "config.html";';
 
+
+	prompt "";
+	prompt "";
+	prompt "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+	prompt "!! Before running 'make install' you MUST !!";
+	prompt "!! create a database for Open-ILS.  Use   !!";
+	prompt "!! the settings that you listed above and !!";
+	prompt "!! the install scripts will create the    !!";
+	prompt "!! database for you.  -miker              !!";
+	prompt "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+	prompt "";
+	prompt "";
 
 	prompt "To write a new config, run 'make config'";
 	prompt "";
