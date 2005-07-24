@@ -152,11 +152,20 @@ sub handler {
 					$e = $e->stringify();
 				} 
 				my $sess_id = $session->session_id;
+
+				my $stack = "-=-=-=-=-=- Stack Backtrace (5) -=-=-=-=-=-\n";
+				for my $lvl ( 1 .. 5 ) {
+					my ($package, $filename, $line, $subroutine, $hasargs,
+					    $wantarray, $evaltext, $is_require, $hints, $bitmask) = caller($lvl);
+					$stack .= "PKG[$package]|FILE[$filename]|LINE[$line]|SUB[$subroutine]\n";
+				}
+				
 				$session->status(
 					OpenSRF::DomainObject::oilsMethodException->new(
 							statusCode	=> STATUS_INTERNALSERVERERROR(),
 							status		=> " *** Call to [$method_name] failed for session ".
-									   "[$sess_id], thread trace [".$appreq->threadTrace."]:\n$e"
+									   "[$sess_id], thread trace ".
+									   "[".$appreq->threadTrace."]:\n$e\n\n$stack"
 					)
 				);
 			};
@@ -243,7 +252,7 @@ sub register_method {
 
 	throw OpenSRF::DomainObject::oilsMethodException unless ($args{method});
 
-	$args{api_level} ||= 1;
+	$args{api_level} = 1 unless(defined($args{api_level}));
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
 	$args{package} ||= $app;                
