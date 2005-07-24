@@ -552,6 +552,10 @@ function patron_display_patron_edit_init(p) {
 				var barcode = patron_get_barcode( p._patron );
 				frame.contentWindow.params.barcode = barcode;
 				frame.contentWindow.params._patron = p._patron;
+				frame.contentWindow.patron_save_callback = function ( params ) {
+					p._patron = params.au;
+					p.display_patron();
+				}
 				p.patron_edit.frame = frame;
 			}, 0
 		);

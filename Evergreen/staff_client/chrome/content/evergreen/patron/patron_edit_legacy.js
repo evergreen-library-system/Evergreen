@@ -385,7 +385,6 @@ function retrieve_patron_by_barcode(barcode,method) {
 	if (!method) method = 'open-ils.actor.user.fleshed.retrieve_by_barcode';
 	try {
 		if (params._patron) {
-			alert('yay');
 			result = [ params._patron ];
 		} else {
 			result = mw.user_request(
@@ -562,7 +561,7 @@ function save_patron() {
 	mw.sdump('D_LEGACY','after  PATRON.au = ' + js2JSON(PATRON.au) + '\n');
 	//PATRON.barcode = find_id_object_in_list(PATRON.au.cards(),PATRON.au.card()).barcode();
 	PATRON.summary_refresh();
-	patron_callback('save');
+	patron_callback('save', { 'au' : PATRON.au });
 	var refresh_result = PATRON.related_refresh(PATRON.au.id());
 	alert('Patron successfully updated.');
 	return refresh_result;
@@ -655,7 +654,7 @@ function patron_callback(s,params) {
 			case 'scan_submit' : return patron_scan_submit_callback(params); break;
 			case 'related_refresh' : return patron_related_refresh_callback(params); break;
 			case 'retrieve_patron' : return patron_retrieve_patron_callback(params); break;
-			case 'save' : alert('here2'); return patron_save_callback(params); break;
+			case 'save' : return patron_save_callback(params); break;
 			default : return patron_default_callback(s,params); break;
 		}
 	} catch(E) {
