@@ -57,7 +57,7 @@ var sdump_levels = {
 
 	'D_EXPLODE' : false,
 	'D_FM_UTILS' : false,
-	'D_PRINT' : false,
+	'D_PRINT' : true,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
 	'D_SES_RESULT' : true,

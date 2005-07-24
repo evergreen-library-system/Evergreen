@@ -1,6 +1,7 @@
-sdump('D_WIN','Loading win.js\n');
+sdump('D_TRACE','Loading win.js\n');
 
 function s_alert(s) {
+	sdump('D_WIN',arg_dump(arguments));
 	// alert() replacement, intended to stop barcode scanners from "scanning through" the dialog
 
 	// get a reference to the prompt service component.
@@ -36,6 +37,7 @@ function s_alert(s) {
 }
 
 function yns_alert(s,title,b1,b2,b3,c) {
+	sdump('D_WIN',arg_dump(arguments));
 	// alert() replacement, intended to stop barcode scanners from "scanning through" the dialog
 
 	// get a reference to the prompt service component.
@@ -67,6 +69,7 @@ function yns_alert(s,title,b1,b2,b3,c) {
 }
 
 function new_window(chrome,params) {
+	sdump('D_WIN',arg_dump(arguments));
 	var name = self.name + '_' + ++mw.G['window_name_increment'];
 	var options = 'chrome,resizable=yes,scrollbars=yes,width=800,height=600,fullscreen=yes';
 	try {
@@ -102,6 +105,7 @@ function new_window(chrome,params) {
 // Modified to return window handler, and do errors differently
 function SafeWindowOpen(url,title,features)
 {
+	sdump('D_WIN',arg_dump(arguments));
 	var w;
 
    netscape.security.PrivilegeManager

@@ -5,6 +5,7 @@ var print_crlf = '<br />\r\n';
 // Higher-level
 
 function print_checkout_receipt(params) {
+	sdump('D_PRINT',arg_dump(arguments));
 
 
 }
@@ -12,33 +13,18 @@ function print_checkout_receipt(params) {
 // Lower-level
 
 function sPrint(s) {
-	//var w = window.open('about:blank','print_win','alwaysLowered,minimizable,resizable,height=100,width=100,sizemode=minimized');
-	//var w = SafeWindowOpen('about:blank','print_win','alwaysLowered,minimizable,resizable,height=100,width=100,sizemode=minimized');
-	var w = new_window('data:text/html,<html>' + s + '</html>\r\n');
+	sdump('D_PRINT',arg_dump(arguments));
+	var w = new_window('data:text/html,<html>' + s + '</html>\r\n', { 'window_name':'LastPrint' });
+	w.minimize(); mw.minimize();
 	this.focus();
 	NSPrint(w);
-	w.close();
-}
-
-function sPrint_old(s) {
-	sdump('D_PRINT','Printing "' + s + '"\n');
-	//var deck = mw.document.getElementById('main_deck');
-	var iframe = mw.document.getElementById('print_frame');
-	//deck.appendChild(iframe);
-	iframe.setAttribute('src','about:blank');
-	/*while (iframe.contentWindow.document.lastChild) { 
-		iframe.contentWindow.document.removeChild(
-			iframe.contentWindow.document.lastChild
-		);
-	}*/
-	//iframe.contentDocument.write(s);
-	iframe.contentWindow.document.write(s);
-	NSPrint2(iframe.contentWindow);
-	//deck.removeChild(iframe);
+	w.minimize(); mw.minimize();
+	//w.close();
 }
 
 function NSPrint(w)
 {
+	sdump('D_PRINT',arg_dump(arguments));
 	if (!w) { w = this; }
 	try {
 		var webBrowserPrint = w
@@ -47,7 +33,6 @@ function NSPrint(w)
 		if (webBrowserPrint) {
 			var gPrintSettings = GetPrintSettings();
 			gPrintSettings.printSilent = true;
-			webBrowserPrint.print(gPrintSettings, null);
                         gPrintSettings.marginTop = 0;
                         gPrintSettings.marginLeft = 0;
                         gPrintSettings.marginBottom = 0;
@@ -58,6 +43,7 @@ function NSPrint(w)
                         gPrintSettings.footerStrLeft = '';
                         gPrintSettings.footerStrCenter = '';
                         gPrintSettings.footerStrRight = '';
+			webBrowserPrint.print(gPrintSettings, null);
 			//alert('Should be printing\n');
 		} else {
 			//alert('Should not be printing\n');
@@ -69,34 +55,13 @@ function NSPrint(w)
 	// Unfortunately this will also consume helpful failures, so add a
 	 	sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
 	}
-}
-
-function NSPrint2(w) {
-	if (!w) { w = this; }
-	try {
-		var webBrowserPrint = w
-			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIWebBrowserPrint);
-		if (webBrowserPrint) {
-			webBrowserPrint.print(null, null);
-			//alert('Should be printing\n');
-		} else {
-			//alert('Should not be printing\n');
-		}
-	} catch (e) {
-		//alert('Probably not printing: ' + e);
-	// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
-	// causing an exception to be thrown which we catch here.
-	// Unfortunately this will also consume helpful failures, so add a
-	 	sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
-	}
-
 }
 
 var gPrintSettings = null;
 
 function GetPrintSettings()
  {
+	sdump('D_PRINT',arg_dump(arguments));
    try {
      if (gPrintSettings == null) {
        var pref = Components.classes["@mozilla.org/preferences-service;1"]
@@ -125,6 +90,7 @@ function GetPrintSettings()
 
 function setPrinterDefaultsForSelectedPrinter(aPrintService)
  {
+	sdump('D_PRINT',arg_dump(arguments));
    if (gPrintSettings.printerName == "") {
      gPrintSettings.printerName = aPrintService.defaultPrinterName;
    }
