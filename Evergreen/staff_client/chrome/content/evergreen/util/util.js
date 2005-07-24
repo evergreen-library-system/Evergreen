@@ -154,15 +154,22 @@ function formatted_date(date,format) {
 	if (typeof(date) == 'string') {
 		date = new Date( parseInt( date + '000' ) );
 	}
-	var mm = date.getMonth() + 1;
-	mm = mm.toString();
-	if (mm.length == 1) mm = '0' +mm;
-	var dd = date.getDate().toString();
-	if (dd.length == 1) dd = '0' +dd;
+	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
+	var dd = date.getDate().toString(); if (dd.length == 1) dd = '0' +dd;
 	var yyyy = date.getFullYear().toString();
-	var s = format.replace( /%m/g, mm );
+	var yy = yyyy.substr(2);
+	var H = date.getHours(); H = H.toString(); if (H.length == 1) H = '0' + H;
+	var I = date.getHours(); if (I > 12) I -= 12; I = I.toString();
+	var M = date.getMinutes(); M = M.toString(); if (M.length == 1) M = '0' + M;
+	var s = format;
+	s = s.replace( /%m/g, mm );
 	s = s.replace( /%d/g, dd );
 	s = s.replace( /%Y/g, yyyy );
+	s = s.replace( /%D/g, mm + '/' + dd + '/' + yy );
+	s = s.replace( /%F/g, YYYY + '-' + mm + '-' + dd );
+	s = s.replace( /%H/g, H );
+	s = s.replace( /%I/g, I );
+	s = s.replace( /%M/g, M );
 	return s;
 }
 
