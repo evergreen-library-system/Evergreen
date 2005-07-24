@@ -166,7 +166,7 @@ function formatted_date(date,format) {
 	s = s.replace( /%d/g, dd );
 	s = s.replace( /%Y/g, yyyy );
 	s = s.replace( /%D/g, mm + '/' + dd + '/' + yy );
-	s = s.replace( /%F/g, YYYY + '-' + mm + '-' + dd );
+	s = s.replace( /%F/g, yyyy + '-' + mm + '-' + dd );
 	s = s.replace( /%H/g, H );
 	s = s.replace( /%I/g, I );
 	s = s.replace( /%M/g, M );
