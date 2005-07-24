@@ -337,10 +337,10 @@ function circ_cols() {
 		},
 		{
 			'id' : 'due_date', 'label' : getString('circ_label_due_date'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : 'circ', 'fm_field_render' : '.due_date()'
+			'primary' : false, 'hidden' : false, 'fm_class' : 'circ', 'fm_field_render' : '.due_date().substr(0,10)'
 		},
 		{
-			'id' : 'title', 'label' : getString('mvr_label_title'), 'flex' : 1,
+			'id' : 'title', 'label' : getString('mvr_label_title'), 'flex' : 2,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mvr', 'fm_field_render' : '.title()'
 		},
 		{
