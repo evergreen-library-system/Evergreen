@@ -220,7 +220,7 @@ function populate_patron_edit_profile_menu() {
 }
 
 function set_patron_edit_profile_menu() {
-	var menuitem_id = 'profileitem' + PATRON.au.profile();
+	var menuitem_id = 'apitem' + PATRON.au.profile();
 	var menuitem = document.getElementById(
 		menuitem_id
 	);
@@ -242,7 +242,7 @@ function populate_patron_edit_ident_type_menu() {
 }
 
 function set_patron_edit_ident_type_menu() {
-	var menuitem_id = 'ident1item' + PATRON.au.ident_type();
+	var menuitem_id = 'cit1item' + PATRON.au.ident_type();
 	var menuitem = document.getElementById(
 		menuitem_id
 	);
@@ -264,7 +264,7 @@ function populate_patron_edit_ident_type_menu2() {
 }
 
 function set_patron_edit_ident_type_menu2() {
-	var menuitem_id = 'ident2item' + PATRON.au.ident_type2();
+	var menuitem_id = 'cit2item' + PATRON.au.ident_type2();
 	var menuitem = document.getElementById(
 		menuitem_id
 	);
