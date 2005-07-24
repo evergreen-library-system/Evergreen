@@ -21,51 +21,100 @@ function print_checkout_receipt(params) {
 }
 
 function print_template_replace(s,params) {
-		try{s=s.replace(/%LIBRARY%/g,params.lib.name());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%PINES_CODE%/g,params.lib.shortname());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 
-		try{s=s.replace(/%PATRON_LASTNAME%/g,params.au.family_name());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%PATRON_FIRSTNAME%/g,params.au.first_given_name());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%PATRON_MIDDLENAME%/g,params.au.second_given_name());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%PATRON_BARCODE%/g,params.au.card().barcode());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		function trunc(t) {
+			if (params.truncate) {
+				try {
+					return t.toString().substr(0,params.truncate);
+				} catch(E) {
+					return t;
+				}
+			} else {
+				return t;
+			}
+		}
+		function ttrunc(t) {
+			if (params.title_truncate) {
+				try {
+					return t.toString().substr(0,params.title_truncate);
+				} catch(E) {
+					return t;
+				}
+			} else {
+				return t;
+			}
+		}
+		function atrunc(t) {
+			if (params.author_truncate) {
+				try {
+					return t.toString().substr(0,params.author_truncate);
+				} catch(E) {
+					return t;
+				}
+			} else {
+				return t;
+			}
+		}
 
-		try{s=s.replace(/%TODAY%/g,new Date());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_m%/g,formatted_date(new Date(),'%m'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_d%/g,formatted_date(new Date(),'%d'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_Y%/g,formatted_date(new Date(),'%Y'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_H%/g,formatted_date(new Date(),'%H'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_I%/g,formatted_date(new Date(),'%I'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_M%/g,formatted_date(new Date(),'%M'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_D%/g,formatted_date(new Date(),'%D'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_F%/g,formatted_date(new Date(),'%F'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+
+
+		var b = s.match( /%TRUNC.{0,3}:\s*(\d+)%/ );
+		if (b) params.truncate = b[1];
+
+		try{s=s.replace(/%TRUNC.{0,3}:\s*\d+%/g,'');}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%LIBRARY%/g,trunc(params.lib.name()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%PINES_CODE%/g,trunc(params.lib.shortname()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+
+		try{s=s.replace(/%PATRON_LASTNAME%/g,trunc(params.au.family_name()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%PATRON_FIRSTNAME%/g,trunc(params.au.first_given_name()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%PATRON_MIDDLENAME%/g,trunc(params.au.second_given_name()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%PATRON_BARCODE%/g,trunc(params.au.card().barcode()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+
+		try{s=s.replace(/%TODAY%/g,trunc(new Date()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_m%/g,trunc(formatted_date(new Date(),'%m')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_d%/g,trunc(formatted_date(new Date(),'%d')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_Y%/g,trunc(formatted_date(new Date(),'%Y')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_H%/g,trunc(formatted_date(new Date(),'%H')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_I%/g,trunc(formatted_date(new Date(),'%I')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_M%/g,trunc(formatted_date(new Date(),'%M')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_D%/g,trunc(formatted_date(new Date(),'%D')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_F%/g,trunc(formatted_date(new Date(),'%F')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 		
-		try{s=s.replace(/%OUT%/g,params.current_circ.xact_start());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_m%/g,formatted_date(params.current_circ.xact_start(),'%m'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_d%/g,formatted_date(params.current_circ.xact_start(),'%d'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_Y%/g,formatted_date(params.current_circ.xact_start(),'%Y'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_H%/g,formatted_date(params.current_circ.xact_start(),'%H'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_I%/g,formatted_date(params.current_circ.xact_start(),'%I'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_M%/g,formatted_date(params.current_circ.xact_start(),'%M'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_D%/g,formatted_date(params.current_circ.xact_start(),'%D'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%OUT_F%/g,formatted_date(params.current_circ.xact_start(),'%F'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT%/g,trunc(params.current_circ.xact_start()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_m%/g,trunc(formatted_date(params.current_circ.xact_start(),'%m')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_d%/g,trunc(formatted_date(params.current_circ.xact_start(),'%d')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_Y%/g,trunc(formatted_date(params.current_circ.xact_start(),'%Y')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_H%/g,trunc(formatted_date(params.current_circ.xact_start(),'%H')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_I%/g,trunc(formatted_date(params.current_circ.xact_start(),'%I')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_M%/g,trunc(formatted_date(params.current_circ.xact_start(),'%M')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_D%/g,trunc(formatted_date(params.current_circ.xact_start(),'%D')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%OUT_F%/g,trunc(formatted_date(params.current_circ.xact_start(),'%F')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 
-		try{s=s.replace(/%DUE%/g,params.current_circ.due_date());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_m%/g,formatted_date(params.current_circ.due_date(),'%m'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_d%/g,formatted_date(params.current_circ.due_date(),'%d'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_Y%/g,formatted_date(params.current_circ.due_date(),'%Y'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_H%/g,formatted_date(params.current_circ.due_date(),'%H'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_I%/g,formatted_date(params.current_circ.due_date(),'%I'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_M%/g,formatted_date(params.current_circ.due_date(),'%M'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_D%/g,formatted_date(params.current_circ.due_date(),'%D'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%DUE_F%/g,formatted_date(params.current_circ.due_date(),'%F'));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE%/g,trunc(params.current_circ.due_date()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_m%/g,trunc(formatted_date(params.current_circ.due_date(),'%m')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_d%/g,trunc(formatted_date(params.current_circ.due_date(),'%d')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_Y%/g,trunc(formatted_date(params.current_circ.due_date(),'%Y')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_H%/g,trunc(formatted_date(params.current_circ.due_date(),'%H')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_I%/g,trunc(formatted_date(params.current_circ.due_date(),'%I')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_M%/g,trunc(formatted_date(params.current_circ.due_date(),'%M')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_D%/g,trunc(formatted_date(params.current_circ.due_date(),'%D')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DUE_F%/g,trunc(formatted_date(params.current_circ.due_date(),'%F')));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 
-		try{s=s.replace(/%DURATION%/g,params.curent_circ.duration());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%DURATION%/g,trunc(params.current_circ.duration()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 		
-		try{s=s.replace(/%COPY_BARCODE%/g,params.curent_copy.barcode());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%TITLE%/g,params.current_mvr.title());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%AUTHOR%/g,params.current_mvr.author());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%PUBLISHER%/g,params.current_mvr.publisher());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
-		try{s=s.replace(/%PUBDATE%/g,params.current_mvr.pubdate());}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%COPY_BARCODE%/g,trunc(params.current_copy.barcode()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		
+		var tb = s.match( /%TITLE:?\s*(\d*)%/ );
+		if (tb) params.title_truncate = tb[1];
+
+		try{s=s.replace(/%TITLE:?\s*\d*%/g,ttrunc(params.current_mvr.title()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+
+		var ab = s.match( /%AUTHOR:?\s*(\d*)%/ );
+		if (ab) params.author_truncate = ab[1];
+
+		try{s=s.replace(/%AUTHOR%/g,atrunc(params.current_mvr.author()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%PUBLISHER%/g,trunc(params.current_mvr.publisher()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
+		try{s=s.replace(/%PUBDATE%/g,trunc(params.current_mvr.pubdate()));}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 
 		try{s=s.replace(/%NUMBER%/g,params.current_index);}catch(E){sdump('D_ERROR',js2JSON(E)+'\n');}
 
