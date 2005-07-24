@@ -8,8 +8,8 @@
 		<commandset id="patron_edit_cmds"/>
 		<vbox id="patron_edit_vbox2" flex="1"/>
 		<hbox id="patron_edit_hbox2" pack="end" flex="0">
-			<button id="patron_edit_print" label='Print' command='cmd_broken'/>
-			<button id="patron_edit_save" label='Save Changes' command='cmd_patron_save'/>
+			<button id="patron_edit_print" label='Print' accesskey="P" oncommand='window.print()'/>
+			<button id="patron_edit_save" label='Save Changes' accesskey="S" command='cmd_patron_save'/>
 		</hbox>
 	</vbox>
 
