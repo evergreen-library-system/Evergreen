@@ -149,10 +149,24 @@ function cents_as_dollars( cents ) {
 	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }
 
+function db_date2Date(date) {
+	var y  = date.substr(0,4);
+	var mo = date.substr(5,2);
+	var d  = date.substr(8,2);
+	var h  = date.substr(11,2);
+	var mi = date.substr(14,2);
+	var s  = date.substr(17,2);
+	return new Date(y,mo,d,h,mi,s);
+}
+
 function formatted_date(date,format) {
-	// pass in a Date object or epoch seconds
+	// pass in a Date object or epoch seconds or a postgres style date string (2005-07-19 10:38:25.211964-04)
 	if (typeof(date) == 'string') {
-		date = new Date( parseInt( date + '000' ) );
+		if (date.match(/:/) || date.match(/-/)) {
+			date = db_date2Date(date);
+		} else {
+			date = new Date( parseInt( date + '000' ) );
+		}
 	}
 	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
 	var dd = date.getDate().toString(); if (dd.length == 1) dd = '0' +dd;
