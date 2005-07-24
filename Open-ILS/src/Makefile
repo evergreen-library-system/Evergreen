@@ -1,6 +1,6 @@
 all: 
 
-install:	perl-install javascript-install web-templates-install string-templates-install
+install:	perl-install javascript-install web-templates-install string-templates-install storage-bootstrap
 
 marcdumper:
 	make -C extras/marcdumper
@@ -17,6 +17,10 @@ javascript-install:
 	cp -r javascript/* $(WEBDIR)
 	cp ../../$(OPENSRFDIR)/javascript/JSON.js $(WEBDIR)/util/
 	cp ../../$(OPENSRFDIR)/javascript/md5.js $(WEBDIR)/util/
+
+storage-bootstrap:
+	mkdir -p $(CGIDIR)
+	cp -r cgi-bin/* $(CGIDIR)
 
 web-templates-install:
 	mkdir -p $(TEMPLATEDIR)

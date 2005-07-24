@@ -56,6 +56,7 @@ PERLDIR="$LIBDIR/perl5/";
 INCLUDEDIR="$PREFIX/include/";
 ETCDIR="$PREFIX/etc/";
 WEBDIR="$PREFIX/web/";
+CGIDIR="$PREFIX/cgi-bin/";
 TEMPLATEDIR="$PREFIX/templates";
 
 
@@ -97,4 +98,17 @@ LIBXML2_HEADERS="/usr/include/libxml2/";
 OPENSRFDIR="OpenSRF/src/";
 OPENILSDIR="Open-ILS/src/";
 EVERGREENDIR="Evergreen/";
+
+
+
+
+# --------------------------------------------------------------------
+# These are used to create the perl DBI DSN for the bootstrapping
+# scripts.
+# --------------------------------------------------------------------
+DBDRVR="Pg";
+DBHOST="127.0.0.1";
+DBNAME="demo-dev";
+DBUSER="postgres";
+DBPW="";
 

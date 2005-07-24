@@ -2,6 +2,7 @@
 # --------------------------------------------------------------------
 # Copyright (C) 2005  Georgia Public Library Service 
 # Bill Erickson <highfalutin@gmail.com>
+# Mike Rylander <mrylander@gmail.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -58,6 +59,7 @@ function buildConfig {
 		PERLDIR="$LIBDIR/perl5/";
 		INCLUDEDIR="$PREFIX/include/";
 		WEBDIR="$PREFIX/web";
+		CGIDIR="$PREFIX/cgi-bin";
 		ETCDIR="$PREFIX/etc";
 		TEMPLATEDIR="$PREFIX/templates";
 	fi
@@ -80,6 +82,9 @@ function buildConfig {
 	prompt "Web Root Directory [$WEBDIR] "
 	read X; if [ ! -z "$X" ]; then WEBDIR="$X"; fi;
 
+	prompt "Web CGI Directory [$CGIDIR] "
+	read X; if [ ! -z "$X" ]; then CGIDIR="$X"; fi;
+
 	prompt "Templates directory [$TEMPLATEDIR] "
 	read X; if [ ! -z "$X" ]; then TEMPLATEDIR="$X"; fi;
 
@@ -94,6 +99,21 @@ function buildConfig {
 
 	prompt "Build targets [${TARGETS[@]:0}] "
 	read X; if [ ! -z "$X" ]; then TARGETS=("$X"); fi;
+
+	prompt "Bootstrapping Database Driver [$DBDRVR] "
+	read X; if [ ! -z "$X" ]; then DBDRVR="$X"; fi;
+
+	prompt "Bootstrapping Database Host [$DBHOST] "
+	read X; if [ ! -z "$X" ]; then DBHOST="$X"; fi;
+
+	prompt "Bootstrapping Database Name [$DBNAME] "
+	read X; if [ ! -z "$X" ]; then DBNAME="$X"; fi;
+
+	prompt "Bootstrapping Database User [$DBUSER] "
+	read X; if [ ! -z "$X" ]; then DBUSER="$X"; fi;
+
+	prompt "Bootstrapping Database Password [$DBPW] "
+	read X; if [ ! -z "$X" ]; then DBPW="$X"; fi;
 
 	writeConfig;
 }
@@ -131,6 +151,28 @@ function writeConfig {
 	_write "OPENSRFDIR=\"OpenSRF/src/\"";
 	_write "OPENILSDIR=\"Open-ILS/src/\"";
 	_write "EVERGREENDIR=\"Evergreen/\"";
+
+
+	# Now we'll write out the DB bootstrapping config
+	CONFIG_FILE='Open-ILS/src/cgi-bin/setup.pl';
+	rm -f "$CONFIG_FILE";
+
+	STR='$main::config{dsn} =';
+		STR="$STR 'dbi:${DBDRVR}:host=";
+		STR="${STR}${DBHOST};dbname=";
+		STR="${STR}${DBNAME}';";
+	_write "$STR"
+
+	STR='$main::config{usr} =';
+		STR="$STR '$DBUSER';";
+	_write "$STR"
+	
+	STR='$main::config{pw} =';
+		STR="$STR '$DBPW';";
+	_write "$STR"
+	
+	_write '$main::config{index} = "config.html";';
+
 
 	prompt "To write a new config, run 'make config'";
 	prompt "";

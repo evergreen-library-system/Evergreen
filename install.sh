@@ -190,6 +190,12 @@ function runInstall {
 				if installing; then $MAKE -C "$OPENILSDIR" "marcdumper-install"; fi;
 				;;
 
+			"openils_db" )
+				if installing; then 
+					$MAKE -C "$OPENILSDIR" "storage-bootstrap"; 
+				fi;
+				;;
+
 
 			# Evergreen --- 			
 

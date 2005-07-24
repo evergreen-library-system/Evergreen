@@ -12,7 +12,7 @@ use CGI qw/:standard start_*/;
 our %config;
 do '../setup.pl';
 
-OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr});
+OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr},$config{pw});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
 
 my $cgi = new CGI;
