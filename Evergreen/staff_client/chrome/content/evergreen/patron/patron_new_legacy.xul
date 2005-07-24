@@ -8,9 +8,7 @@
 
 <page id="patron_new_win" orient="vertical" style="overflow: auto;" persist="width height"
 	onload="try {
-			function patron_save_callback(p) {
-				alert('got here');
-			}
+			window.patron_save_callback = function patron_save_callback(p) { alert('got here'); };
 			patron_init(); patron_new_init(); patron_edit_init();
 		} catch(E) {
 			alert('onload patron_new_win: ' + E);

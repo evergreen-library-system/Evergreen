@@ -34,7 +34,7 @@ function patron_display_init(p) {
 			if (!exceptions.patron_items) p.redraw_patron_items();
 			if (!exceptions.patron_holds) p.redraw_patron_holds();
 			if (!exceptions.patron_bills) p.redraw_patron_bills();
-			if (!exceptions.patron_edit) p.redraw_patron_edit();
+			//if (!exceptions.patron_edit) p.redraw_patron_edit();
 		}
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
@@ -107,6 +107,15 @@ function set_patron_display_widgets(p) {
 		},
 		false
 	);
+	p.commandset_node.getElementsByAttribute('id','cmd_patron_edit')[0].addEventListener(
+		'command',
+		function () {
+			p.redraw_patron_edit();
+		},
+		false
+	);
+
+
 
 
 }
@@ -542,6 +551,8 @@ function patron_display_patron_edit_init(p) {
 				frame.contentWindow.params = {};
 				var barcode = patron_get_barcode( p._patron );
 				frame.contentWindow.params.barcode = barcode;
+				frame.contentWindow.params._patron = p._patron;
+				p.patron_edit.frame = frame;
 			}, 0
 		);
 	}

@@ -71,6 +71,7 @@ function patron_init() {
 }
 
 function patron_handle_keypress(ev) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	if (ev.keyCode && ev.keyCode == 13) {
 		switch(this) {
 			case document.getElementById('patron_scan_textbox') :
@@ -84,6 +85,7 @@ function patron_handle_keypress(ev) {
 }
 
 function patron_new_init() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	mw.sdump('D_LEGACY','**** TESTING: patron.js: patron_new_init(): ' + mw.G.main_test_variable + '\n');
 	mw.sdump('D_LEGACY','PATRON = ' + js2JSON(PATRON) + '\n');
 	PATRON.au = new au();
@@ -137,6 +139,7 @@ function patron_edit_init() {
 }
 
 function patron_init_if_barcode() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		if ( params.barcode ) {
 			mw.sdump('D_LEGACY','patron_init(): patron.refresh()\n');
@@ -151,6 +154,7 @@ function patron_init_if_barcode() {
 }
 
 function populate_patron_edit_library_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		//populate_lib_list(
 		populate_lib_list_with_branch(
@@ -167,6 +171,7 @@ function populate_patron_edit_library_menu() {
 }
 
 function set_patron_edit_library_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var menuitem_id = 
 		'libitem' +
 		find_ou(
@@ -184,6 +189,7 @@ function set_patron_edit_library_menu() {
 }
 
 function populate_patron_edit_prefix_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		populate_name_prefix(
 			'patron_edit_system_prefix_menulist',
@@ -196,6 +202,7 @@ function populate_patron_edit_prefix_menu() {
 }
 
 function populate_patron_edit_suffix_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		populate_name_suffix(
 			'patron_edit_system_suffix_menulist',	
@@ -208,6 +215,7 @@ function populate_patron_edit_suffix_menu() {
 }
 
 function populate_patron_edit_profile_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		populate_user_profile(
 			'patron_edit_system_profile_menulist',	
@@ -220,6 +228,7 @@ function populate_patron_edit_profile_menu() {
 }
 
 function set_patron_edit_profile_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var menuitem_id = 'apitem' + PATRON.au.profile();
 	var menuitem = document.getElementById(
 		menuitem_id
@@ -229,6 +238,7 @@ function set_patron_edit_profile_menu() {
 }
 
 function populate_patron_edit_ident_type_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		populate_ident_types(
 			'patron_edit_system_id1type_menulist',	
@@ -242,6 +252,7 @@ function populate_patron_edit_ident_type_menu() {
 }
 
 function set_patron_edit_ident_type_menu() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var menuitem_id = 'cit1item' + PATRON.au.ident_type();
 	var menuitem = document.getElementById(
 		menuitem_id
@@ -251,6 +262,7 @@ function set_patron_edit_ident_type_menu() {
 }
 
 function populate_patron_edit_ident_type_menu2() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		populate_ident_types(
 			'patron_edit_system_id2type_menulist',	
@@ -264,6 +276,7 @@ function populate_patron_edit_ident_type_menu2() {
 }
 
 function set_patron_edit_ident_type_menu2() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var menuitem_id = 'cit2item' + PATRON.au.ident_type2();
 	var menuitem = document.getElementById(
 		menuitem_id
@@ -273,6 +286,7 @@ function set_patron_edit_ident_type_menu2() {
 }
 
 function populate_patron_survey_grid(grid) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	if (typeof(grid) != 'object') {
 		grid = document.getElementById(grid);
 	}
@@ -354,6 +368,7 @@ function populate_patron_survey_grid(grid) {
 }
 
 function toggle_patron_survey_grid_rows(e,grid) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var label = e.target.getAttribute('label');
 	var alt_label = e.target.getAttribute('alt_label');
 	e.target.setAttribute('label',alt_label);
@@ -362,17 +377,23 @@ function toggle_patron_survey_grid_rows(e,grid) {
 }
 
 function retrieve_patron_by_barcode(barcode,method) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	if (!barcode) { barcode = PATRON.barcode(); }
 	mw.sdump('D_LEGACY','Entering PATRON.retrieve_patron() with barcode: ' + barcode + '\n');
 	//unregister_patron_window(this);
 	var result;
 	if (!method) method = 'open-ils.actor.user.fleshed.retrieve_by_barcode';
 	try {
-		result = mw.user_request(
+		if (params._patron) {
+			alert('yay');
+			result = [ params._patron ];
+		} else {
+			result = mw.user_request(
 				'open-ils.actor',
 				method,
 				[ mw.G.auth_ses[0], barcode ]
 			);
+		}
 		if (typeof(result[0]) != 'object') {
 			mw.sdump('D_LEGACY','unexpected result1 : ' + typeof(result[0]) + ' : ' + js2JSON(result) + '\n');
 			throw('unexpected result1 : ' + typeof(result[0]) + ' : ' + js2JSON(result) + '\n');
@@ -401,6 +422,7 @@ PATRON.retrieve_via_method = retrieve_patron_by_barcode;
 PATRON.refresh = retrieve_patron_by_barcode;
 
 function get_barcode() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		//mw.sdump('D_LEGACY','PATRON.au.array.length = ' + PATRON.au.array.length + '\n');
 		//mw.sdump('D_LEGACY','get_barcode: PATRON.au = ' + js2JSON(PATRON.au) + '\n.cards() = ' + js2JSON(PATRON.au.cards()) + '\n.card() = ' + js2JSON(PATRON.au.card()) + '\n');
@@ -414,6 +436,7 @@ function get_barcode() {
 PATRON.barcode = get_barcode;
 
 function validate_patron() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	//mw.sdump('D_LEGACY','validate_patron: PATRON.au = ' + js2JSON(PATRON.au) + '\nPATRON.au.array.length = ' + PATRON.au.array.length + '\n');
 	var s = '';
 	if ( PATRON.barcode() == 'REQUIRED') {
@@ -472,10 +495,12 @@ function validate_patron() {
 }
 
 function backup_patron(P) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	backup_au = P.au.clone();
 }
 
 function restore_patron(P) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	P.au = backup_au.clone();
 	//hash_ac[ P.au.card() ] = find_id_object_in_list( P.au.cards(), P.au.card() );
 	hash_ac[ P.au.card().id() ] = P.au.card();
@@ -483,6 +508,7 @@ function restore_patron(P) {
 }
 
 function save_patron() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	mw.sdump('D_LEGACY','Entering PATRON.save()\n\n=-=-=-=-=-=-=-=\n\n');
 	mw.sdump('D_LEGACY','PATRON.au = ' + js2JSON(PATRON.au) + '\n');
 	mw.sdump('D_LEGACY','PATRON.au.a.length = ' + PATRON.au.a.length + '\n\n');
@@ -544,6 +570,7 @@ function save_patron() {
 PATRON.save = save_patron;
 
 function check_for_new_addresses() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	for (var id in hash_aua) {
 		if ( (id < 0) && ( hash_aua[id].ischanged() ) ) {
 			mw.sdump('D_LEGACY','Pushing new address\n');
@@ -554,6 +581,7 @@ function check_for_new_addresses() {
 }
 
 function check_for_new_stat_cats() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var entries = new Array();
 	var grid = document.getElementById('patron_edit_stat_cat_grid');
 	var nl = grid.getElementsByTagName('menulist');
@@ -582,6 +610,7 @@ function check_for_new_stat_cats() {
 }
 
 function retrieve_patron_related_info(id) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	if (!id) { id = PATRON.au.id(); }
 	mw.sdump('D_LEGACY','Entering PATRON.related_refresh() with id: ' + id + '\n');
 	/*
@@ -620,12 +649,13 @@ PATRON.related_refresh = retrieve_patron_related_info;
 /* patron_scan_overlay functions */
 
 function patron_callback(s,params) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	try {
 		switch(s) {
 			case 'scan_submit' : return patron_scan_submit_callback(params); break;
 			case 'related_refresh' : return patron_related_refresh_callback(params); break;
 			case 'retrieve_patron' : return patron_retrieve_patron_callback(params); break;
-			case 'save' : return patron_save_callback(params); break;
+			case 'save' : alert('here2'); return patron_save_callback(params); break;
 			default : return patron_default_callback(s,params); break;
 		}
 	} catch(E) {
@@ -635,6 +665,7 @@ function patron_callback(s,params) {
 }
 
 function patron_advanced_button(ev) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var deck = document.getElementById('patron_scan_deck');
 	if (deck) { deck.setAttribute('selectedIndex','2'); }
 	focus_widget( 'patron_search_family_name_textbox' );
@@ -645,6 +676,7 @@ function patron_advanced_button(ev) {
 PATRON.advanced_search = patron_advanced_button;
 
 function patron_scan_submit(ev) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	mw.sdump('D_LEGACY','Entering PATRON.scan_submit() with target: ' + ev.target + '\n');
 	try {
 		var rc = PATRON.retrieve_patron( document.getElementById('patron_scan_textbox').value );
@@ -671,6 +703,7 @@ function patron_scan_submit(ev) {
 PATRON.scan_submit = patron_scan_submit;
 
 function patron_scan_search(ev) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	mw.sdump('D_LEGACY','Entering PATRON.scan_search() with target: ' + ev.target + '\n');
 	//mw.sdump('D_LEGACY','PATRON.search = ' + pretty_print(js2JSON(PATRON.search)) + '\n');
 	try {
@@ -691,6 +724,7 @@ PATRON.scan_search = patron_scan_search;
 /* patron_summary_overlay functions */
 
 function make_barcode_handler(card_id,user_id) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	return function (ev) {
 		magic_field_edit(ev,'ac',card_id,'barcode');
 		PATRON.au.ischanged('1');
@@ -708,6 +742,7 @@ function make_barcode_handler(card_id,user_id) {
 }
 
 function patron_summary_refresh(ev) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	//alert( mw.arg_dump(arguments) );
 	// This function needs to be broken up.. it sets the patron edit section as well
 	if (!PATRON.au) { return; }
@@ -1023,6 +1058,7 @@ function patron_summary_refresh(ev) {
 PATRON.summary_refresh = patron_summary_refresh;
 
 function rows_append_address( rows, address, edit ) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 
 
 	// patron_summary
@@ -1199,6 +1235,7 @@ function rows_append_address( rows, address, edit ) {
 }
 
 function invalid_checkbox(e,id) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	if (e.target.checked) {
 		mw.sdump('D_LEGACY','Marking address ' + id + ' invalid\n');
 		mw.sdump('D_LEGACY','\tbefore address: ' + js2JSON(hash_aua[id]) + '\n');
@@ -1215,6 +1252,7 @@ function invalid_checkbox(e,id) {
 }
 
 function toggle_address(e,id) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var groupbox = document.getElementById('groupbox_address_' + id);
 	//var address = find_id_object_in_list( hash_aua, id );
 	var address = hash_aua[id];
@@ -1255,6 +1293,7 @@ function toggle_address(e,id) {
 }
 
 function find_available_address_for(which) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	mw.sdump('D_LEGACY','entering find_avialable_address_for(' + which + ')\n');
 	var addresses = PATRON.au.addresses();
 	mw.sdump('D_LEGACY','considering existing addresses...\n');
@@ -1292,6 +1331,7 @@ function find_available_address_for(which) {
 }
 
 function survey_test(ev,survey_id) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 
 	document.getElementById('circ_deck_deck').setAttribute('selectedIndex','5');
 	var vbox = document.getElementById('patron_survey_vbox');
@@ -1306,6 +1346,7 @@ function survey_test(ev,survey_id) {
 }
 
 function populate_patron_edit_surveys() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var vbox = document.getElementById('patron_edit_survey_vbox');
 	if (!vbox) return;
 
@@ -1336,6 +1377,7 @@ function populate_patron_edit_surveys() {
 }
 
 function populate_patron_edit_surveys_build_callback( survey ) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	return function (responses) {
 		for (var i in responses) {
 			response_list.push( responses[i] );
@@ -1470,6 +1512,7 @@ function survey_render_with_results(vbox,survey_id,callback) {
 
 
 function handle_patron_search_textbox(ev,group) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var id = ev.target.getAttribute('id');
 	var field = id.split(/_/).slice(2,-1).join('_');
 	mw.sdump('D_LEGACY','field = ' + field + ' value = ' + ev.target.value + '\n');
@@ -1477,6 +1520,7 @@ function handle_patron_search_textbox(ev,group) {
 }
 
 function build_patron_search_result_deck() {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	var label = document.getElementById('patron_search_results_label');
 	if (label) {
 		var s = 'Found ' + PATRON.search_results.length + ' matches.  ';
@@ -1496,6 +1540,7 @@ function build_patron_search_result_deck() {
 }
 
 function build_patron_search_result_page(deck,patron_ids,remaining) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	mw.sdump('D_LEGACY','build_patron_search_result_page()\n');
 	if (typeof(deck)!='object') deck = document.getElementById(deck);
 	if (!deck) return;
@@ -1622,6 +1667,7 @@ function build_patron_search_result_page(deck,patron_ids,remaining) {
 }
 
 function build_patron_retrieve_for_search_callback(treerow) {
+	mw.sdump('D_LEGACY',arg_dump(arguments));
 	return function (request) {
 		mw.sdump('D_LEGACY','Running callback... count = ' + counter_incr('patron_callback') + '\n');
 		var result = request.getResultObject();
