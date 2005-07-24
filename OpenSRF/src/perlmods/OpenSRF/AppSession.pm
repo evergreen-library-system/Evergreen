@@ -842,7 +842,7 @@ sub queue_size {
 	
 sub send {
 	my $self = shift;
-	return unless ($self and $self->session);
+	return unless ($self and $self->session and !$self->complete);
 	$self->session->send(@_);
 }
 
@@ -916,8 +916,7 @@ sub payload { return shift()->{payload}; }
 
 sub resend {
 	my $self = shift;
-	return unless ($self and $self->session);
-	return if $self->complete;
+	return unless ($self and $self->session and !$self->complete);
 	OpenSRF::Utils::Logger->debug(
 		"I'm resending the request for threadTrace ". $self->threadTrace, DEBUG);
 	if($self->payload) {
@@ -929,14 +928,14 @@ sub resend {
 sub status {
 	my $self = shift;
 	my $msg = shift;
-	return unless ($self and $self->session);
+	return unless ($self and $self->session and !$self->complete);
 	$self->session->send( 'STATUS',$msg, $self->threadTrace );
 }
 
 sub respond {
 	my $self = shift;
 	my $msg = shift;
-	return unless ($self and $self->session);
+	return unless ($self and $self->session and !$self->complete);
 
 	my $response;
 	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
@@ -952,6 +951,7 @@ sub respond {
 sub respond_complete {
 	my $self = shift;
 	my $msg = shift;
+	return unless ($self and $self->session and !$self->complete);
 
 	my $response;
 	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
@@ -965,9 +965,9 @@ sub respond_complete {
 		statusCode => STATUS_COMPLETE(),
 		status => 'Request Complete' );
 
-	return unless ($self and $self->session);
-	$self->session->send( 'RESULT' => $response, 'STATUS' => $stat, $self->threadTrace);
 
+	$self->session->send( 'RESULT' => $response, 'STATUS' => $stat, $self->threadTrace);
+	$self->complete(1);
 }
 
 sub register_death_callback {
