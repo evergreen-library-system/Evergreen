@@ -1,11 +1,21 @@
 sdump('D_TRACE','Loading print.js\n');
 
+var print_crlf = '<br />\r\n';
+
+// Higher-level
+
+function print_checkout_receipt(params) {
+
+
+}
+
+// Lower-level
+
 function sPrint(s) {
 	//var w = window.open('about:blank','print_win','alwaysLowered,minimizable,resizable,height=100,width=100,sizemode=minimized');
-	var w = SafeWindowOpen('about:blank','print_win','alwaysLowered,minimizable,resizable,height=100,width=100,sizemode=minimized');
+	//var w = SafeWindowOpen('about:blank','print_win','alwaysLowered,minimizable,resizable,height=100,width=100,sizemode=minimized');
+	var w = new_window('data:text/html,<html>' + s + '</html>\r\n');
 	this.focus();
-	w.document.write(s);
-	//w.print();
 	NSPrint(w);
 	w.close();
 }
