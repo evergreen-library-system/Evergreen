@@ -768,7 +768,7 @@ function patron_summary_refresh(ev) {
 	}
 	var usrname_e = document.getElementById('patron_edit_system_usrname_textbox');
 	if (usrname_e) {
-		usrname_e.value = PATRON.au.usrname();
+		if (PATRON.au.usrname()) usrname_e.value = PATRON.au.usrname();
 		usrname_e.setAttribute("onchange",
 			"magic_field_edit(event,'au'," + PATRON.au.id() + ",'usrname');");
 	}
@@ -826,34 +826,34 @@ function patron_summary_refresh(ev) {
 	}
 	var email_e = document.getElementById('patron_edit_contact_email_textbox');
 	if (email_e) {
-		email_e.value = PATRON.au.email();
+		if (PATRON.au.email()) email_e.value = PATRON.au.email();
 		email_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'email');");
 	}
 	var dayphone_e = document.getElementById('patron_contact_dayphone_data');
 	if (dayphone_e) {
-		dayphone_e.setAttribute('value', PATRON.au.day_phone() );
+		if (PATRON.au.day_phone()) dayphone_e.setAttribute('value', PATRON.au.day_phone() );
 	}
 	dayphone_e = document.getElementById('patron_edit_contact_dayphone_textbox');
 	if (dayphone_e) {
-		dayphone_e.value = PATRON.au.day_phone();
+		if (PATRON.au.day_phone()) dayphone_e.value = PATRON.au.day_phone();
 		dayphone_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'day_phone');");
 	}
 	var eveningphone_e = document.getElementById('patron_contact_eveningphone_data');
 	if (eveningphone_e) {
-		eveningphone_e.setAttribute('value', PATRON.au.evening_phone() );
+		if (PATRON.au.evening_phone()) eveningphone_e.setAttribute('value', PATRON.au.evening_phone() );
 	}
 	eveningphone_e = document.getElementById('patron_edit_contact_eveningphone_textbox');
 	if (eveningphone_e) {
-		eveningphone_e.value = PATRON.au.evening_phone();
+		if (PATRON.au.evening_phone()) eveningphone_e.value = PATRON.au.evening_phone();
 		eveningphone_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'evening_phone');");
 	}
 	var otherphone_e = document.getElementById('patron_contact_otherphone_data');
 	if (otherphone_e) {
-		otherphone_e.setAttribute('value', PATRON.au.other_phone() );
+		if (PATRON.au.other_phone()) otherphone_e.setAttribute('value', PATRON.au.other_phone() );
 	}
 	otherphone_e = document.getElementById('patron_edit_contact_otherphone_textbox');
 	if (otherphone_e) {
-		otherphone_e.value = PATRON.au.other_phone();
+		if (PATRON.au.other_phone()) otherphone_e.value = PATRON.au.other_phone();
 		otherphone_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'other_phone');");
 	}
 	var standing_e = document.getElementById('patron_status_data_standing');
@@ -911,12 +911,12 @@ function patron_summary_refresh(ev) {
 	}
 	var id1value_e = document.getElementById('patron_edit_system_id1value_textbox');
 	if (id1value_e) {
-		id1value_e.setAttribute('value',PATRON.au.ident_value());
+		if (PATRON.au.ident_value()) id1value_e.setAttribute('value',PATRON.au.ident_value());
 		id1value_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'ident_value');");
 	}
 	var id2value_e = document.getElementById('patron_edit_system_id2value_textbox');
 	if (id2value_e) {
-		id2value_e.setAttribute('value',PATRON.au.ident_value2());
+		if (PATRON.au.ident_value2()) id2value_e.setAttribute('value',PATRON.au.ident_value2());
 		id2value_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'ident_value2');");
 	}
 	var id1type_e = document.getElementById('patron_edit_system_id1type_menulist');
@@ -931,7 +931,7 @@ function patron_summary_refresh(ev) {
 	}
 	var dob_e = document.getElementById('patron_edit_system_dob_textbox');
 	if (dob_e) {
-		dob_e.setAttribute('value',PATRON.au.dob());
+		if (PATRON.au.dob()) dob_e.setAttribute('value',PATRON.au.dob());
 		dob_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'dob',false);");
 	}
 	//populate_patron_survey_grid('patron_survey_grid');
@@ -990,7 +990,7 @@ function patron_summary_refresh(ev) {
 
 	var alert_message_e = document.getElementById('patron_edit_system_alert_message_textbox');
 	if (alert_message_e) {
-		alert_message_e.setAttribute('value',PATRON.au.alert_message());
+		if (PATRON.au.alert_message()) alert_message_e.setAttribute('value',PATRON.au.alert_message());
 		alert_message_e.setAttribute("onchange","magic_field_edit(event,'au'," + PATRON.au.id() + ",'alert_message',false);");
 	}
 	var stat_cats_e = document.getElementById('patron_statcat_rows');
