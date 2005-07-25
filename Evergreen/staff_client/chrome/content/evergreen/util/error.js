@@ -183,7 +183,7 @@ function handle_error(E,annoy) {
 	} else {
 		s += '\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n';
 		s += 'This is a bug that we will fix later.\n\n';
-		s += js2JSON(E).substr(0,200) + '\n\n';
+		s += mw.js2JSON(E).substr(0,200) + '\n\n';
 		if (snd_really_bad) snd_really_bad();
 	}
 	sdump('D_ERROR',s);
