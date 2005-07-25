@@ -115,6 +115,7 @@ perl-install:	install-prep
 	cp -r perlmods/* $(PERLDIR)/
 	cp ../examples/bootstrap.conf.example $(ETCDIR)
 	cp ../bin/opensrf_ctl $(BINDIR)
+	cp ../examples/opensrf.xml.example $(ETCDIR)
 
 
 # --------------------------------------------------------------------------------
