@@ -57,7 +57,7 @@
 	<command id="cmd_receipt_template_editor" oncommand="
 		mw.spawn_receipt_template_editor(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_z39_50_import_old" oncommand="
+	<command id="cmd_z39_50_import" oncommand="
 		mw.spawn_z3950_import(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_console" oncommand="

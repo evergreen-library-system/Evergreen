@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/z39_50.css" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE page SYSTEM "chrome://evergreen/locale/z39_50.dtd">
+
+<page id="z39_50_win" orient="vertical" style="overflow: auto;" persist="width height"
+	onload="z39_50_init();" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>dump('z39_50_win\n');</script>
+
+	<!-- Initial Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/z39_50/z39_50_bundle.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+	<!-- other javascript -->
+	<Util/>
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<vbox id="z39_50_vbox" class="test_class"/>
+
+</page>
+

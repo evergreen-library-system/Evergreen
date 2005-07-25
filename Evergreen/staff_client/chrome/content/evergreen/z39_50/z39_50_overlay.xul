@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/z39_50.dtd">
+<overlay id="z39_50_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>dump('z39_50_overlay\n');</script>
+
+	<vbox id="z39_50_vbox" flex="1">
+		<description id="d1">
+			This screen will likely evolve into a federated z39.50 search interface that will allow you to search a range of z39.50 servers using all of the search operators defined by the z39.50 spec.  For now, however, you may enter an Ascession ID to pull an OCLC record into our MARC editor.
+		</description>
+		<hbox id="z39_50_hbox">
+			<label id="l1" value="Ascession ID (or TCN): "/>
+			<textbox id="t1" />
+			<button id="b1" label="Retrieve" oncommand="
+				spawn_oclc_import(parent.document,'replace_tab','main_tabbox', { 'tcn' : document.getElementById('t1').value });
+			"/>
+		</hbox>
+	</vbox>
+
+</overlay>

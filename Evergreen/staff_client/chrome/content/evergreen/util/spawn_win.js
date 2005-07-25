@@ -155,24 +155,26 @@ function spawn_oclc_import(d,placement,place,passthru_params,clone) {
 	sdump('D_SPAWN','trying to spawn_oclc_import('+js2JSON(passthru_params)+')\n');
 	// sample TCN: 03715963 
 	try {
-		if (params.tcn.length < 6) {
+		if (passthru_params.tcn.length < 6) {
 			throw("Too short.  At the moment, we're really doing a search rather than a retrieve, and it's a substring search at that.  We grab the result that matches exactly.  But sending a short query would just be mean. :)");
 		}
 		var result = user_request(
 			'open-ils.search',
 			'open-ils.search.z3950.import',
-			[ G.auth_ses[0], params.tcn ]
+			[ mw.G.auth_ses[0], passthru_params.tcn ]
 		)[0];
-		if (typeof result == 'object') {
-			if (result.records.length > 0) {	
-				params['import_tree'] = result.records[0];
+		if (result) {
+			if (typeof result == 'object') {
+				if (result.records && result.records.length > 0) {	
+					passthru_params['import_tree'] = result.records[0];
+				} else {
+					throw('no records. result = ' + js2JSON(result) + '\n');
+				}
 			} else {
-				throw('no records. result = ' + js2JSON(result) + '\n');
+				throw('result: ' + js2JSON(result) + '\n');
 			}
-		} else {
-			throw('result: ' + js2JSON(result) + '\n');
+			spawn_marc_editor(d,placement,place,passthru_params);
 		}
-		spawn_marc_editor(d,placement,place,params);
 	} catch(E) {
 		handle_error(E);
 	}

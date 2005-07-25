@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/z39_50.dtd">
+<overlay id="z39_50_bundle" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>dump('z39_50_bundle\n');</script>
+
+	<?xul-overlay href="chrome://evergreen/content/z39_50/z39_50_overlay.xul"?>
+
+	<script src="z39_50.js" />
+
+</overlay>
