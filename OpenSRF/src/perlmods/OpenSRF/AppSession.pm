@@ -96,6 +96,10 @@ sub server_build {
 	my $remote_id = shift;
 	my $service = shift;
 
+	warn "Missing args to server_build():\n" .
+		"sess_id: $sess_id, remote_id: $remote_id, service: $service\n" 
+		unless ($sess_id and $remote_id and $service);
+
 	return undef unless ($sess_id and $remote_id and $service);
 
 	if ( my $thingy = $class->find($sess_id) ) {
@@ -109,8 +113,13 @@ sub server_build {
 	if( $service eq "client" ) {
 		#throw OpenSRF::EX::PANIC ("Attempting to build a client session as a server" .
 		#	" Session ID [$sess_id], remote_id [$remote_id]");
+
+		warn "Attempting to build a client session as ".
+				"a server Session ID [$sess_id], remote_id [$remote_id]";
+
 		$logger->debug("Attempting to build a client session as ".
 				"a server Session ID [$sess_id], remote_id [$remote_id]", ERROR );
+
 		return undef;
 	}
 
