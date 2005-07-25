@@ -51,7 +51,7 @@ function hold_capture_hold_capture_items_init(p) {
 	p.attempt_hold_capture = function(barcode) {
 		try {
 			//if (! is_barcode_valid(barcode) ) throw('Invalid Barcode');
-			var check = hold_capture_by_copy_barcode( barcode, true );
+			var check = hold_capture_by_copy_barcode( barcode, true );  // barcode, flesh
 			if (check) {
 				sdump('D_HOLD_CAPTURE','check = ' + check + '\n' + pretty_print( js2JSON( check ) ) + '\n');
 

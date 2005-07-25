@@ -64,6 +64,8 @@ function hold_capture_by_copy_barcode( barcode, retrieve_flag ) {
 			'open-ils.circ.hold.capture_copy.barcode',
 			[ mw.G.auth_ses[0], barcode, retrieve_flag ]
 		)[0];
+		check.text = 'Captured for Hold';
+		if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
 		return check;
 	} catch(E) {
 		handle_error(E, true);
@@ -97,7 +99,7 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 					case '1': case 1: /* possible hold capture */
 						var rv = yns_alert(
 							check.text,
-							'Check Check In Interrupt',
+							'Alert',
 							"Capture",
 							"Don't Capture",
 							null,
@@ -110,8 +112,9 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 								if (check2) {
 									sdump('D_CIRC_UTILS','check2 = ' + js2JSON(check2) + '\n');
 									check.copy = check2.copy;
-									check.text = 'Captured for Hold';
-									check.route_to = mw.G.org_tree_hash[ check2.route_to ].shortname();
+									check.text = check2.text;
+									check.route_to = check2.route_to;
+									sPrint(check.record.title() + '<br />\r\n' + check.text + '\r\n<br />Barcode: ' + barcode + '  Route to: ' + check.route_to + '\r\n' );
 								}
 
 							} catch(E) { 
@@ -130,10 +133,25 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 						}
 					break;
 
-					default: s_alert(check.text ); break;
+					default: 
+						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
+						var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;
+						var pcheck = yns_alert(
+							msg,
+							'Alert',
+							'Print Receipt',
+							"Don't Print",
+							null,
+							"Check here to confirm this message"
+						); 
+						if (pcheck == 0) {
+							sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+						}
+					break;
 				}
 			}
 		}
+		if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
 		return check;
 	} catch(E) {
 		handle_error(E, true);
@@ -273,7 +291,7 @@ function circ_cols() {
 	return  [
 		{
 			'id' : 'barcode', 'label' : getString('acp_label_barcode'), 'flex' : 1,
-			'primary' : true, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : '.barcode()'
+			'primary' : false, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : '.barcode()'
 		},
 		{
 			'id' : 'call_number', 'label' : getString('acp_label_call_number'), 'flex' : 1,

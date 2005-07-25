@@ -195,19 +195,19 @@ function last_sPrint() {
 	sPrint( mw.G.last_receipt );
 }
 
-function sPrint(s) {
+function sPrint(s,silent) {
 	sdump('D_PRINT',arg_dump(arguments));
 	mw.G.last_receipt = s;
 	var w = new_window('data:text/html,<html>' + s + '</html>\r\n', { 'window_name':'LastPrint' });
 	w.minimize(); mw.minimize();
 	setTimeout(
 		function() {
-			NSPrint(w); w.minimize(); w.close(); mw.minimize();
+			NSPrint(w,silent); w.minimize(); w.close(); mw.minimize();
 		},0
 	);
 }
 
-function NSPrint(w)
+function NSPrint(w,silent)
 {
 	sdump('D_PRINT',arg_dump(arguments));
 	if (!w) { w = this; }
@@ -217,7 +217,8 @@ function NSPrint(w)
 			.getInterface(Components.interfaces.nsIWebBrowserPrint);
 		if (webBrowserPrint) {
 			var gPrintSettings = GetPrintSettings();
-			gPrintSettings.printSilent = true;
+			if (silent) gPrintSettings.printSilent = true;
+			else gPrintSettings.printSilent = false;
 			/*
                         gPrintSettings.marginTop = 0;
                         gPrintSettings.marginLeft = 0;

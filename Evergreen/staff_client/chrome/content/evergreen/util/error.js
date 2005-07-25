@@ -17,8 +17,8 @@ var sdump_levels = {
 	'D_TIMEOUT' :  false,
 	'D_FILTER' : false,
 	'D_CONSTRUCTOR' : false,
-	'D_FIREFOX' : true,
-	'D_LEGACY' : true,
+	'D_FIREFOX' : false,
+	'D_LEGACY' : false,
 
 	'D_CLAM' : false,
 	'D_PAGED_TREE' : false,
@@ -30,25 +30,25 @@ var sdump_levels = {
 
 	'D_OPAC' : false,
 
-	'D_PATRON_SEARCH' : true,
-	'D_PATRON_SEARCH_FORM' : true,
-	'D_PATRON_SEARCH_RESULTS' : true,
+	'D_PATRON_SEARCH' : false,
+	'D_PATRON_SEARCH_FORM' : false,
+	'D_PATRON_SEARCH_RESULTS' : false,
 
-	'D_PATRON_DISPLAY' : true,
-	'D_PATRON_DISPLAY_STATUS' : true,
-	'D_PATRON_DISPLAY_CONTACT' : true,
+	'D_PATRON_DISPLAY' : false,
+	'D_PATRON_DISPLAY_STATUS' : false,
+	'D_PATRON_DISPLAY_CONTACT' : false,
 
-	'D_PATRON_ITEMS' : true,
-	'D_PATRON_CHECKOUT_ITEMS' : true,
+	'D_PATRON_ITEMS' : false,
+	'D_PATRON_CHECKOUT_ITEMS' : false,
 	'D_PATRON_HOLDS' : true,
-	'D_PATRON_BILLS' : true,
-	'D_PATRON_EDIT' : true,
+	'D_PATRON_BILLS' : false,
+	'D_PATRON_EDIT' : false,
 
 	'D_CHECKIN' : true,
-	'D_CHECKIN_ITEMS' : true,
+	'D_CHECKIN_ITEMS' : false,
 
 	'D_HOLD_CAPTURE' : true,
-	'D_HOLD_CAPTURE_ITEMS' : true,
+	'D_HOLD_CAPTURE_ITEMS' : false,
 
 	'D_CAT' : false,
 
