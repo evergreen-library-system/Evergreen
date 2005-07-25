@@ -1,0 +1,197 @@
+<?xml version='1.0'?>
+
+<opensrf version='0.0.1'>
+
+		<!-- 
+
+		There is one <host> entry for each server on the network.  Settings for the
+		'default' host are used for every setting that isn't overridden within a given 
+		host's config.  
+
+		To specify which applications a host is serving, list those applications
+		within that host's config section.  If the defaults are acceptible, then
+		that's all that needs to be added/changed.
+
+		Any valid XML may be added to the <default> block and server components will have 
+		acces to it.
+
+		-->
+
+	<default>
+	
+		<dirs>
+
+			<!-- opensrf log files go in this directory -->
+			<log>/path/to/log</log>
+
+			<!-- opensrf unix domaind socket files go here -->
+			<sock>/path/to/sock</sock>
+
+			<!-- opensrf pids go here -->
+			<pid>/path/to/pid</pid>
+
+			<!-- global config directory -->
+			<conf>/path/to/conf</conf>
+
+		</dirs>
+
+		<!-- prefork, simple. prefork is suggested -->
+		<server_type>prefork</server_type>
+
+		<!-- Default doesn't host any apps -->
+		<activeapps/> 
+
+		<cache>
+			<global>
+				<servers>
+					<!-- memcached server ip:port -->
+					<server>127.0.0.1:10101</server>
+				</servers>
+				<!-- maximun time that anything may stay in the cache -->
+				<max_cache_time>86400</max_cache_time>
+			</global>
+		</cache>
+
+		<!-- These are the defaults for every served app.  Each server should 
+			duplicate the node layout for any nodes that need changing.
+			Any settings that are overridden in the server specific section 
+			will be used as the config values for that server.  Any settings that are
+			not overridden will fall back on the defaults
+			Note that overriding 'stateless' will break things -->
+
+		<apps>
+
+			<opensrf.persist>
+
+				<!-- How many seconds to wait between server 
+					requests before timing out a stateful server session. -->
+				<keepalive>1</keepalive>
+
+				<!-- if 1, then we support stateless sessions (no connect required), if
+						0 then we don't -->
+				<stateless>1</stateless>
+
+				<!-- Module the implements this application -->
+				<implementation>OpenSRF::Application::Persist</implementation>
+
+				<!-- max stateful requests before a session automatically disconnects a client -->
+				<max_requests>97</max_requests>
+
+				<!-- settings for the backend application drones.  These are probably sane defaults -->
+
+				<unix_config>
+					<!-- unix socket file -->
+					<unix_sock>opensrf.persist_unix.sock</unix_sock>
+
+					<!-- pid file -->
+					<unix_pid>opensrf.persist_unix.pid</unix_pid>
+
+					<!-- max requests per process backend before a child is recycled -->
+					<max_requests>1000</max_requests>
+
+					<!-- log file for this application -->
+					<unix_log>opensrf.persist_unix.log</unix_log>
+
+					<!-- Number of children to pre-fork -->
+					<min_children>5</min_children>
+
+					<!-- maximun number of children to fork -->
+					<max_children>25</max_children>
+
+					<!-- minimun number of spare forked children -->
+					<min_spare_children>2</min_spare_children>
+
+					<!-- max number of spare forked children -->
+					<max_spare_children>5</max_spare_children>
+
+				</unix_config>
+
+				<!-- Any additional setting for a particular application go in the app_settings node -->
+				<app_settings>
+
+					<!-- sqlite database file -->
+					<dbfile>/path/to/dbfile/persist.db</dbfile>
+				</app_settings>
+
+			</opensrf.persist>
+
+			<opensrf.math>
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenSRF::Application::Demo::Math</implementation>
+				<max_requests>97</max_requests>
+				<unix_config>
+					<unix_sock>opensrf.math_unix.sock</unix_sock>
+					<unix_pid>opensrf.math_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.math_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+			</opensrf.math>
+			
+			<opensrf.dbmath> 
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenSRF::Application::Demo::MathDB</implementation>
+				<max_requests>99</max_requests>
+				<unix_config>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.dbmath_unix.log</unix_log>
+					<unix_sock>opensrf.dbmath_unix.sock</unix_sock>
+					<unix_pid>opensrf.dbmath_unix.pid</unix_pid>
+					<min_children>5</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>2</min_spare_children> <max_spare_children>5</max_spare_children>
+				</unix_config>
+			</opensrf.dbmath>
+
+			<opensrf.settings>
+				<keepalive>1</keepalive>
+				<stateless>0</stateless>
+				<implementation>OpenSRF::Application::Settings</implementation>
+				<max_requests>17</max_requests>
+				<unix_config>
+					<unix_sock>opensrf.settings_unix.sock</unix_sock>
+					<unix_pid>opoensrf.settings_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.settings_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>3</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+			</opensrf.settings>
+
+		</apps>
+
+	</default>
+
+	<hosts>
+
+		<!-- Host specific settings. the name of the node (server)  must match the output of 'hostname -f' -->
+		<myhost.mydomain.org>
+
+			<!-- List all of the apps this server will be running -->
+			<activeapps>
+				<appname>opensrf.persist</appname> 
+				<appname>opensrf.settings</appname> 
+				<appname>opensrf.math</appname> 
+				<appname>opensrf.dbmath</appname> 
+			</activeapps>
+
+			<apps> <!-- Example of an app-specific setting override -->
+				<opensrf.persist>
+					<app_settings>
+						<dbfile>/different/path/to/dbfile/persist.db</dbfile>
+					</app_settings>
+				</opensrf.persist>
+			</apps>
+
+		</myhost.mydomain.org> 
+
+	</hosts>
+
+</opensrf>
