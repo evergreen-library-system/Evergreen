@@ -38,6 +38,9 @@
 <deck id="ClamShell_first_deck" flex="0">
 	<vbox id="csfdvb1" flex="1">
 		<groupbox id="PatronDisplayStatus_groupbox" flex="0"/>
+		<groupbox id="PatronDisplaySurvey_groupbox" flex="0">
+			<caption id="pdsgbc" label="Surveys" />
+		</groupbox>
 		<groupbox id="PatronDisplayContact_groupbox" flex="1"/>
 	</vbox>
 </deck>

@@ -22,6 +22,8 @@ function patron_display_init(p) {
 	// gives: p.patron_edit, p.redraw_patron_edit
 	patron_display_patron_edit_init(p);
 
+	//patron_display_survey_init(p);
+
 	p.set_patron = function (au) {
 		p.patron_edit._patron = au;
 		return p._patron = au;
@@ -34,6 +36,7 @@ function patron_display_init(p) {
 			if (!exceptions.patron_items) p.redraw_patron_items();
 			if (!exceptions.patron_holds) p.redraw_patron_holds();
 			if (!exceptions.patron_bills) p.redraw_patron_bills();
+			if (!exceptions.patron_display_survey) patron_display_survey_init(p);
 			//if (!exceptions.patron_edit) p.redraw_patron_edit();
 		}
 		return render_fm(p.w.document, { 'au' : p._patron });
@@ -606,3 +609,58 @@ function patron_display_patron_edit_init(p) {
 	}
 }
 
+function patron_display_survey_init(p) {
+	var gb = p.w.document.getElementById('PatronDisplaySurvey_groupbox');
+	var count = gb.childNodes.length; for (var i = 1; i < count; i++) { gb.removeChild( gb.lastChild ); } // all but caption
+	mw.user_request(
+		'open-ils.circ', 'open-ils.circ.survey.retrieve.required', [ mw.G.auth_ses[0] ],
+		function (request) {
+			var surveys = request.getResultObject();
+			for (var i = 0; i < surveys.length; i++) {
+
+				var survey = a_get(surveys, i);
+			
+				var hbox = document.createElement('hbox');
+				gb.appendChild(hbox);
+
+				var name_label = document.createElement('label');
+				name_label.setAttribute('value',survey.name());
+				hbox.appendChild(name_label);
+
+				var answer_label = document.createElement('label');
+				answer_label.setAttribute('value','');
+				hbox.appendChild(answer_label);
+
+				var taken_label = document.createElement('label');
+				taken_label.setAttribute('value','Not Taken');
+				hbox.appendChild(taken_label);
+
+				mw.user_request(
+					'open-ils.circ', 'open-ils.circ.survey.response.retrieve',
+					[ mw.G.auth_ses[0], survey.id(), p._patron.id() ],
+					function (request) {
+						var responses = request.getResultObject();
+						if (responses.length > 0) {
+							var response = responses.pop(); // last response
+							var date;
+							if (response.effective_date()) {
+								date = formatted_date( response.effective_date(), '%D' );
+							} else {
+								date = formatted_date( response.answer_date(), '%D' );
+							}
+							taken_label.setAttribute('value',date);
+							var answer = find_id_object_in_list( // first answer
+								find_id_object_in_list(
+									survey.questions(),
+									response.question()
+								).answers(),
+								response.answer()
+							).answer();
+							answer_label.setAttribute('value',answer);
+						}
+					}
+				);
+			}
+		}
+	);
+}
