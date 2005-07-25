@@ -5,13 +5,26 @@ var print_crlf = '<br />\r\n';
 // Higher-level
 
 function print_itemsout_receipt(params,sample_view) {
+	print_circ_receipt('itemsout',params,sample_view);
+}
+
+function print_checkout_receipt(params,sample_view) {
+	print_circ_receipt('checkout',params,sample_view);
+}
+
+function print_circ_receipt(circ_type,params,sample_view) {
 	sdump('D_PRINT',arg_dump(arguments));
 	var s = ''; params.current_circ = new circ(); params.current_copy = new acp(); params.current_mvr = new mvr();
 	if (params.header) { s += print_template_replace(params.header, params); }
-	for (var i = 0; i < params.au.checkouts().length; i++) {
-		params.current_circ = params.au.checkouts()[i].circ;
-		params.current_copy = params.au.checkouts()[i].copy;
-		params.current_mvr = params.au.checkouts()[i].record;
+	var circs;
+	switch(circ_type) {
+		case 'itemsout' : circs = params.au.checkouts(); break;
+		case 'checkout' : circs = params.au._current_checkouts; break;
+	}
+	for (var i = 0; i < circs.length; i++) {
+		params.current_circ = circs()[i].circ;
+		params.current_copy = circs()[i].copy;
+		params.current_mvr = circs()[i].record;
 		params.current_index = i;
 		s += print_template_replace(params.line_item, params); 
 	}

@@ -36,6 +36,10 @@ G['itemsout_header'] = 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have th
 G['itemsout_line_item'] = '<li>%TITLE: 50%\r\nBarcode: %COPY_BARCODE% Due: %DUE_D%\r\n';
 G['itemsout_footer'] = '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%';
 
+G['checkout_header'] = 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou checked out the following items:<hr/><ol>';
+G['checkout_line_item'] = '<li>%TITLE%\r\nBarcode: %COPY_BARCODE% Due: %DUE_D%\r\n';
+G['checkout_footer'] = '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%';
+
 var mw = G['main_window'];
 var auth_meter_incr = 10;
 

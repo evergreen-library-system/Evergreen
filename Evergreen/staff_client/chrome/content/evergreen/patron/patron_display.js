@@ -266,11 +266,25 @@ function patron_display_patron_checkout_items_init(p) {
 
 	var checkouts = [];
 
+	function print_receipt() {
+		p._current_checkouts = checkouts;
+		var params = { 
+			'au' : p._patron, 
+			'lib' : mw.G.user_ou,
+			'staff' : mw.G.user,
+			'header' : mw.G.itemsout_header,
+			'line_item' : mw.G.itemsout_line_item,
+			'footer' : mw.G.itemsout_footer
+		};
+		mw.print_checkout_receipt( params );
+	}
+
+	p.w.document.getElementById('checkout_print').addEventListener( 'command',print_receipt, false);
+
 	p.w.document.getElementById('checkout_done').addEventListener(
 		'command',
 		function () {
-			// print receipt call goes here
-			checkouts = []; p.refresh(); tb.focus();
+			print_receipt(); checkouts = []; p.redraw(); tb.focus();
 		},
 		false
 	);
