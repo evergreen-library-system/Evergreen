@@ -310,7 +310,6 @@ For non-core config info, see the inline documentation within this file
 			<activeapps>
 
 				<!-- opensrf builtin apps -->
-				<appname>opensrf.persist</appname> 
 				<appname>opensrf.math</appname> 
 				<appname>opensrf.dbmath</appname> 
 				<appname>opensrf.settings</appname> 

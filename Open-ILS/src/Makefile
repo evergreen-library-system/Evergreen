@@ -13,6 +13,7 @@ marcdumper-install:
 perl-install:
 	mkdir -p $(PERLDIR)
 	cp -r perlmods/* $(PERLDIR)
+	cp ../examples/openils.xml.example $(ETCDIR)
 
 javascript-install:
 	mkdir -p $(JSDIR)
