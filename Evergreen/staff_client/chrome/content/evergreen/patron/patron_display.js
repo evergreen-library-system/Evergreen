@@ -211,7 +211,12 @@ function patron_display_patron_items_init(p) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var copy = p._patron.checkouts()[ idx ].copy;
-							checkin_by_copy_barcode( copy.barcode(), null );
+							var check = checkin_by_copy_barcode( copy.barcode(), null );
+							if (check.status == 0) {
+								alert('Check In: ' + check.text + '  Route To: ' + check.route_to);
+							} else {
+								alert('Check In: ' + check.text + '  Route To: ' + mw.G.org_tree_hash[check.route_to].shortname());
+							}
 							p.refresh();
 						} catch(E) {
 							alert(E);
@@ -377,12 +382,16 @@ function patron_display_patron_checkout_items_init(p) {
 						try {
 							var idx = patron_checkout_items[i].getAttribute('record_id'); 
 							var copy = checkouts[ idx ].copy;
-							var status = checkin_by_copy_barcode( copy.barcode(), null );
-							if (status == null) { // change this to whatever it takes
+							var check = checkin_by_copy_barcode( copy.barcode(), null );
+							if (check == null) { // change this to whatever it takes
 								keep_these.push( checkouts[ idx ] );	
 							}
 							checkouts = keep_these;
-							alert( js2JSON( status ) );
+							if (check.status == 0) {
+								alert('Check In: ' + check.text + '  Route To: ' + check.route_to);
+							} else {
+								alert('Check In: ' + check.text + '  Route To: ' + mw.G.org_tree_hash[check.route_to].shortname());
+							}
 							p.refresh();
 						} catch(E) {
 							alert(E);
