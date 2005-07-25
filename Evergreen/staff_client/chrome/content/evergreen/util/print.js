@@ -4,7 +4,7 @@ var print_crlf = '<br />\r\n';
 
 // Higher-level
 
-function print_itemsout_receipt(params) {
+function print_itemsout_receipt(params,sample_view) {
 	sdump('D_PRINT',arg_dump(arguments));
 	var s = ''; params.current_circ = new circ(); params.current_copy = new acp(); params.current_mvr = new mvr();
 	if (params.header) { s += print_template_replace(params.header, params); }
@@ -17,7 +17,11 @@ function print_itemsout_receipt(params) {
 	}
 	if (params.footer) { s += print_template_replace(params.footer, params); }
 	s = s.replace( /\n/g, print_crlf );
-	sPrint( s );
+	if (sample_view) {
+		sample_view.setAttribute( 'src', 'data:text/html,<html>' + s + '</html>\r\n' );
+	} else {
+		sPrint( s );
+	}
 }
 
 function print_template_replace(s,params) {

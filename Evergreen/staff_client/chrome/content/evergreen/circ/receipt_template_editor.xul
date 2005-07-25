@@ -29,9 +29,10 @@
 			document.getElementById('holds_header_tb').value = mw.G.holds_header;
 			document.getElementById('holds_line_item_tb').value = mw.G.holds_line_item;
 			document.getElementById('holds_footer_tb').value = mw.G.holds_footer;
+			test_itemsout(document.getElementById('sample_view'));
 		}
 
-		function test_itemsout() {
+		function test_itemsout(sample_view) {
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
@@ -39,7 +40,7 @@
 				'line_item' : document.getElementById('itemsout_line_item_tb').value,
 				'footer' : document.getElementById('itemsout_footer_tb').value
 			};
-			mw.print_itemsout_receipt( params );
+			mw.print_itemsout_receipt( params, sample_view );
 		}
 
 		function save_itemsout() {
@@ -48,7 +49,7 @@
 			mw.G.itemsout_footer = document.getElementById('itemsout_footer_tb').value;
 		}
 
-		function test_checkout() {
+		function test_checkout(sample_view) {
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
@@ -56,7 +57,7 @@
 				'line_item' : document.getElementById('checkout_line_item_tb').value,
 				'footer' : document.getElementById('checkout_footer_tb').value
 			};
-			mw.print_checkout_receipt( params );
+			mw.print_checkout_receipt( params, sample_view );
 		}
 
 		function save_checkout() {
@@ -65,7 +66,7 @@
 			mw.G.checkout_footer = document.getElementById('checkout_footer_tb').value;
 		}
 
-		function test_checkin() {
+		function test_checkin(sample_view) {
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
@@ -73,7 +74,7 @@
 				'line_item' : document.getElementById('checkin_line_item_tb').value,
 				'footer' : document.getElementById('checkin_footer_tb').value
 			};
-			mw.print_checkin_receipt( params );
+			mw.print_checkin_receipt( params, sample_view );
 		}
 
 		function save_checkin() {
@@ -82,7 +83,7 @@
 			mw.G.checkin_footer = document.getElementById('checkin_footer_tb').value;
 		}
 
-		function test_holds() {
+		function test_holds(sample_view) {
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
@@ -90,13 +91,27 @@
 				'line_item' : document.getElementById('holds_line_item_tb').value,
 				'footer' : document.getElementById('holds_footer_tb').value
 			};
-			mw.print_holds_receipt( params );
+			mw.print_holds_receipt( params, sample_view );
 		}
 
 		function save_holds() {
 			mw.G.holds_header = document.getElementById('holds_header_tb').value;
 			mw.G.holds_line_item = document.getElementById('holds_line_item_tb').value;
 			mw.G.holds_footer = document.getElementById('holds_footer_tb').value;
+		}
+
+		function switch_sample_view() {
+			try {
+				var sv = document.getElementById('sample_view');
+				switch( document.getElementById('tps').selectedPanel.id ) {
+					case 'itemsout' : test_itemsout(sv); break;
+					case 'checkout' : test_checkout(sv); break;
+					case 'checkin' : test_checkin(sv); break;
+					case 'holds' : test_holds(sv); break;
+				}
+			} catch(E) {
+				mw.sdump('D_ERROR',mw.js2JSON(E));
+			}
 		}
 
 	]]>
@@ -107,101 +122,120 @@
 			<caption label="Receipt Template Editor"/>
 			<hbox flex="1">
 				<groupbox orient="vertical" flex="1">
-					<caption label="DESCRIPTION" />
-					<hbox flex="1">
-						<iframe flex="1" src="data:text/html,&lt;html&gt;&lt;p&gt;Please note that this interface is for testing purposes, and that modifications you make here will not persist between different invocations of the staff client.  In future versions of the software, you will be able to save and share named templates.&lt;/p&gt;&lt;p&gt;The following macros get evaluated and substituted for each receipt printed: %LIBRARY% %PINES_CODE% %PATRON_LASTNAME% %PATRON_FIRSTNAME% %PATRON_MIDDLENAME% %PATRON_BARCODE% %TODAY% %OUT% %DUE% %DURATION% %COPY_BARCODE% %TITLE% %AUTHOR% %PUBLISHER% %PUBDATE% %NUMBER%&lt;/p&gt;&lt;p&gt;If there's a specific macro you would like to see, please let us know.  There will be variations on these for handling truncation and date formats.  See the examples.&lt;/p&gt;&lt;/html&gt;" />;
-					</hbox>
+					<caption label="HELP" />
+					<tabbox flex="1">
+						<tabs>
+							<tab label="Description"/>
+							<tab label="Sample View"/>
+						</tabs>
+						<tabpanels flex="1">
+							<tabpanel flex="1">
+								<hbox flex="1">
+									<iframe flex="1" src="data:text/html,&lt;html&gt;&lt;p&gt;Please note that this interface is for testing purposes, and that modifications you make here will not persist between different invocations of the staff client.  In future versions of the software, you will be able to save and share named templates.  Also note that the Sample View is not intended to be a print preview of the receipt.  You should print the test receipt to determine how your template will actually look.&lt;/p&gt;&lt;p&gt;The following macros get evaluated and substituted for each receipt printed: %LIBRARY% %PINES_CODE% %PATRON_LASTNAME% %PATRON_FIRSTNAME% %PATRON_MIDDLENAME% %PATRON_BARCODE% %TODAY% %OUT% %DUE% %DURATION% %COPY_BARCODE% %TITLE% %AUTHOR% %PUBLISHER% %PUBDATE% %NUMBER%&lt;/p&gt;&lt;p&gt;If there's a specific macro you would like to see, please let us know.  There will be variations on these for handling truncation and date formats.  See the examples.&lt;/p&gt;&lt;/html&gt;" />;
+								</hbox>
+							</tabpanel>
+							<tabpanel flex="1">
+								<hbox flex="1">
+									<iframe flex="1" id="sample_view" />
+								</hbox>
+							</tabpanel>
+						</tabpanels>
+					</tabbox>
 				</groupbox>
 				<groupbox orient="vertical" flex="1">
 					<caption label="TEMPLATES" />
 				<tabbox flex="1">
 					<tabs>
 						<tab label="Items Out"/>
-						<tab label="Holds"/>
 						<tab label="Check Out"/>
 						<tab label="Check In"/>
+						<tab label="Holds"/>
 					</tabs>
-					<tabpanels flex="1">
-						<tabpanel>
+					<tabpanels id="tps" flex="1" onselect="switch_sample_view();">
+						<tabpanel id="itemsout">
 							<vbox flex="1">
 								<groupbox orient="vertical" flex="1">
 									<caption label="Header"/>
-									<textbox id="itemsout_header_tb" multiline="true" flex="1"/>
+									<textbox id="itemsout_header_tb" multiline="true" flex="1" onchange="test_itemsout(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Line Item"/>
-									<textbox id="itemsout_line_item_tb" multiline="true" flex="1"/>
+									<textbox id="itemsout_line_item_tb" multiline="true" flex="1" onchange="test_itemsout(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Footer"/>
-									<textbox id="itemsout_footer_tb" multiline="true" flex="1"/>
+									<textbox id="itemsout_footer_tb" multiline="true" flex="1" onchange="test_itemsout(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<hbox>
 									<spacer flex="1"/>
-									<button label="Test" accesskey="T" oncommand="test_itemsout();"/>
+									<button label="Update Sample View" accesskey="V" />
+									<button label="Test Print" accesskey="T" oncommand="test_itemsout();"/>
 									<button label="Save" accesskey="S" oncommand="save_itemsout();"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
-						<tabpanel>
+						<tabpanel id="checkout">
 							<vbox flex="1">
 								<groupbox orient="vertical" flex="1">
 									<caption label="Header"/>
-									<textbox id="checkout_header_tb" multiline="true" flex="1"/>
+									<textbox id="checkout_header_tb" multiline="true" flex="1" onchange="test_checkout(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Line Item"/>
-									<textbox id="checkout_line_item_tb" multiline="true" flex="1"/>
+									<textbox id="checkout_line_item_tb" multiline="true" flex="1" onchange="test_checkout(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Footer"/>
-									<textbox id="checkout_footer_tb" multiline="true" flex="1"/>
+									<textbox id="checkout_footer_tb" multiline="true" flex="1" onchange="test_checkout(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<hbox>
 									<spacer flex="1"/>
-									<button label="Test" accesskey="T" oncommand="test_checkout();"/>
+									<button label="Update Sample View" accesskey="V" />
+									<button label="Test Print" accesskey="T" oncommand="test_checkout();"/>
 									<button label="Save" accesskey="S" oncommand="save_checkout();"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
-						<tabpanel>
+						<tabpanel id="checkin">
 							<vbox flex="1">
 								<groupbox orient="vertical" flex="1">
 									<caption label="Header"/>
-									<textbox id="checkin_header_tb" multiline="true" flex="1"/>
+									<textbox id="checkin_header_tb" multiline="true" flex="1" onchange="test_checkin(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Line Item"/>
-									<textbox id="checkin_line_item_tb" multiline="true" flex="1"/>
+									<textbox id="checkin_line_item_tb" multiline="true" flex="1" onchange="test_checkin(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Footer"/>
-									<textbox id="checkin_footer_tb" multiline="true" flex="1"/>
+									<textbox id="checkin_footer_tb" multiline="true" flex="1" onchange="test_checkin(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<hbox>
 									<spacer flex="1"/>
-									<button label="Test" accesskey="T" oncommand="test_checkin();"/>
+									<button label="Update Sample View" accesskey="V" />
+									<button label="Test Print" accesskey="T" oncommand="test_checkin();"/>
 									<button label="Save" accesskey="S" oncommand="save_checkin();"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
-						<tabpanel>
+						<tabpanel id="holds">
 							<vbox flex="1">
 								<groupbox orient="vertical" flex="1">
 									<caption label="Header"/>
-									<textbox id="holds_header_tb" multiline="true" flex="1"/>
+									<textbox id="holds_header_tb" multiline="true" flex="1" onchange="test_holds(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Line Item"/>
-									<textbox id="holds_line_item_tb" multiline="true" flex="1"/>
+									<textbox id="holds_line_item_tb" multiline="true" flex="1" onchange="test_holds(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<groupbox orient="vertical" flex="1">
 									<caption label="Footer"/>
-									<textbox id="holds_footer_tb" multiline="true" flex="1"/>
+									<textbox id="holds_footer_tb" multiline="true" flex="1" onchange="test_holds(document.getElementById('sample_view'));"/>
 								</groupbox>
 								<hbox>
 									<spacer flex="1"/>
-									<button label="Test" accesskey="T" oncommand="test_holds();"/>
+									<button label="Update Sample View" accesskey="V" />
+									<button label="Test Print" accesskey="T" oncommand="test_holds();"/>
 									<button label="Save" accesskey="S" oncommand="save_holds();"/>
 								</hbox>
 							</vbox>
