@@ -80,6 +80,8 @@ function patron_init() {
 				hash_ac[ card.id() ] =  card; 
 				PATRON.au.card( card ); 
 				var cards = PATRON.au.cards(); cards.push( card ); PATRON.au.cards( cards );
+				var barcode_e = document.getElementById('patron_edit_system_barcode_textbox');
+				barcode_e.disabled = false; barcode.value = 'REQUIRED';
 			}
 		},
 		false
