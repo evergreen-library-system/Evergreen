@@ -53,7 +53,7 @@
 		<groupbox orient="vertical" flex="1">
 			<caption label="Enter Patron Barcode" />
 			<hbox>
-				<label value="Patron Barcode" accesskey="B" control="barcode_tb"/>
+				<label value="Patron Barcode:" accesskey="B" control="barcode_tb"/>
 				<textbox id="barcode_tb" />
 				<button label="Submit" accesskey="S" oncommand="spawn();"/>
 			</hbox>
