@@ -29,8 +29,10 @@
 		<iframe id="print_frame" flex="1"/>
 		<iframe id="scratch_pad" flex="1"/>
 	</deck>
+	<!--
 	<button label="Console" accesskey="C" oncommand="try {mw.spawn_javascript_console(mw.document,'new_window','',{}); } catch(E) { alert(E); }"/>
 	<button label="FConsole" accesskey="F" oncommand="try {mw.spawn_filter_console(mw.document,'new_window','',{}); } catch(E) { alert(E); }"/>
+	-->
 </box>
 
 <groupbox id="main_groupbox" flex="1">
