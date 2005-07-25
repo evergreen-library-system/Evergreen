@@ -38,6 +38,7 @@ function patron_display_init(p) {
 		}
 		return render_fm(p.w.document, { 'au' : p._patron });
 	}
+	p.redraw = p.display_patron;
 
 	p.retrieve_patron_via_barcode = function (barcode) {
 		if (!barcode) barcode = patron_get_barcode( p._patron );
@@ -272,9 +273,9 @@ function patron_display_patron_checkout_items_init(p) {
 			'au' : p._patron, 
 			'lib' : mw.G.user_ou,
 			'staff' : mw.G.user,
-			'header' : mw.G.itemsout_header,
-			'line_item' : mw.G.itemsout_line_item,
-			'footer' : mw.G.itemsout_footer
+			'header' : mw.G.checkout_header,
+			'line_item' : mw.G.checkout_line_item,
+			'footer' : mw.G.checkout_footer
 		};
 		mw.print_checkout_receipt( params );
 	}
@@ -284,7 +285,7 @@ function patron_display_patron_checkout_items_init(p) {
 	p.w.document.getElementById('checkout_done').addEventListener(
 		'command',
 		function () {
-			print_receipt(); checkouts = []; p.redraw(); tb.focus();
+			print_receipt(); checkouts = []; p.display_patron(); tb.focus();
 		},
 		false
 	);
