@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::Publisher::action;
 use base qw/OpenILS::Application::Storage/;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use DateTime;
@@ -378,7 +379,6 @@ __PACKAGE__->register_method(
 
 my $locations;
 my $statuses;
-my $user_filter;
 my %cache = (titles => {}, cns => {});
 sub hold_copy_targeter {
 	my $self = shift;
@@ -386,7 +386,8 @@ sub hold_copy_targeter {
 	my $check_expire = shift;
 	my $one_hold = shift;
 
-	$user_filter ||= $self->method_lookup('open-ils.circ.permit_hold');
+	$self->{user_filter} = OpenSRF::AppSession->create('open-ils.circ');
+	$self->{user_filter}->connect;
 
 	my $time = time;
 	$check_expire ||= '12h';
@@ -507,6 +508,9 @@ sub hold_copy_targeter {
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 		};
 	}
+	$self->{user_filter}->disconnect;
+	$self->{user_filter}->finish;
+	delete $$self{user_filter};
 	return undef;
 }
 __PACKAGE__->register_method(
@@ -545,7 +549,11 @@ sub copy_hold_capture {
 		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->location eq $_->id}@$locations);
 		$copies[$i] = undef if (
 			$copies[$i] &&
-			!($user_filter->run( $hold, $copies[$i], { title => $rec, call_number => $cn } ))[0]
+			!$self->{user_filter}->request(
+				'open-ils.circ.permit_hold',
+				$hold => $copies[$i],
+				{ title => $rec, call_number => $cn }
+			)->gather(1)
 		);
 	}
 
