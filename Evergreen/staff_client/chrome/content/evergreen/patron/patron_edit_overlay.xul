@@ -100,6 +100,7 @@
 		<label id="patron_edit_system_barcode_label" value="Barcode"/>	
 		<hbox id="patron_edit_system_barcode_box">
 			<textbox id="patron_edit_system_barcode_textbox" size="20"/>	
+			<button id="patron_new_card_button" label="New" hidden="true"/>
 		</hbox>
 		<label id="patron_edit_system_profile_label" value="Profile"/>	
 		<menulist id="patron_edit_system_profile_menulist"/>	

@@ -176,7 +176,7 @@ function spawn_oclc_import(d,placement,place,passthru_params,clone) {
 			spawn_marc_editor(d,placement,place,passthru_params);
 		}
 	} catch(E) {
-		handle_error(E);
+		mw.handle_error(E);
 	}
 }
 

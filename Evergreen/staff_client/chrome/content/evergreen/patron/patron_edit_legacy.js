@@ -68,6 +68,22 @@ function patron_init() {
 	sidebar.
 	*/
 	patron_init_if_barcode();
+	document.getElementById('patron_new_card_button').addEventListener(
+		'command',
+		function(ev) { 
+			var a = yns_alert('Activate a new PINES card?','PINES Card','Yes - Previous card lost/stolen','No',null,'Check here to confirm'); 
+			if (a == 0) {
+				find_id_object_in_list(PATRON.au.cards(), PATRON.au.card().id()).active(0);
+		                var card = new ac(); card.id( new_id-- ); card.isnew( '1' ); 
+				card.barcode( 'REQUIRED' ); //PATRON.barcode = 'REQUIRED'; 
+				card.usr( PATRON.au.id() ); 
+				hash_ac[ card.id() ] =  card; 
+				PATRON.au.card( card ); 
+				var cards = PATRON.au.cards(); cards.push( card ); PATRON.au.cards( cards );
+			}
+		},
+		false
+	);
 }
 
 function patron_handle_keypress(ev) {
@@ -750,6 +766,7 @@ function patron_summary_refresh(ev) {
 	//PATRON.barcode = find_id_object_in_list(PATRON.au.cards(),PATRON.au.card()).barcode();
 	/* just redraw the display with the PATRON object as is */
 	var barcode_e = document.getElementById('patron_edit_system_barcode_textbox');
+	var newcard_e = document.getElementById('patron_new_card_button');
 	if (barcode_e) {
 		//var barcode_v = find_id_object_in_list(PATRON.au.cards(),PATRON.au.card());
 		var barcode_v = PATRON.au.card();
@@ -757,6 +774,7 @@ function patron_summary_refresh(ev) {
 			barcode_e.value = barcode_v.barcode();
 			if (barcode_e.value != 'REQUIRED') {
 				barcode_e.disabled = true;
+				newcard_e.hidden = false;	
 			} else {
 				barcode_e.addEventListener(
 					"change",
