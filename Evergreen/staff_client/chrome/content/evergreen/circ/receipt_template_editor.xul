@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: About -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<window id="itemsout_receipt_template_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading itemsout_receipt_template.xul\n');</script>
+
+	<script>
+	<![CDATA[
+		var test_patron = mw.JSON2js('/*--S au --*/[null,null,null,[/*--S aua --*/[null,null,null,"work","CITY","USA","Fulton","13","30043","GA","123 street road","#AR54","18","1"]/*--E aua --*/,/*--S aua --*/[null,null,null,"Vacation","PC Beach","USA","PC County","42","01010","FL","111 A Street","Unit #12A","18","1"]/*--E aua --*/],[/*--S ac --*/[null,null,null,"1","21099000006699","14","18"]/*--E ac --*/],[{"circ":/*--S aoc --*/[null,null,null,"212","2005-07-05 04:58:02-04","14 days","2wk_default","1 day","134","50.00","books","0.10","books","1","1",null,"11","18",null,"2005-07-19 10:38:25.211964-04"]/*--E aoc --*/,"copy":/*--S acp --*/[null,null,null,null,"31041005404709","11",null,"212",null,"1","1","2005-05-06 11:13:05.063398-04","1","0","0.00","2005-05-06 11:13:05.063398-04","1","2","1","11","2","1","1","0.00","0","1"]/*--E acp --*/,"record":/*--S mvr --*/[null,null,null,"Albrand, Martha.",[],null,"3",null,null,"",[],"1959","Random House",null,[],[],null,"PIN01000004 ","A  day in Monte Carlo",["text"]]/*--E mvr --*/},{"circ":/*--S aoc --*/[null,null,null,"12","2005-08-04 11:31:02-04","14 days","2wk_default","1 day","171","50.00","books","0.10","books","0","2",null,"2139800","18",null,"2005-07-21 17:11:44.203345-04"]/*--E aoc --*/,"copy":/*--S acp --*/[null,null,null,null,"33207000838641","1938753",null,"10",null,"1","1","2005-05-06 11:13:05.063398-04","1","0","0.00","2005-07-21 17:08:53.504341-04","1","2","1","2139800","2","1","1","10.00","0","1"]/*--E acp --*/,"record":/*--S mvr --*/[null,null,null,"Sproule, Anna.",[],null,"330278",null,null,"0531182150 (lib. bdg.)",[],"1988","Bookwright Press",null,["Know your pet"],[["Dogs"],["Dog breeds"]],"Discusses how to choose and care for a pet dog and provides information on various breeds.","PIN03092988 ","Dogs",["text"]]/*--E mvr --*/},{"circ":/*--S aoc --*/[null,null,null,"1","2005-08-05 14:36:02-04","14 days","2wk_default","1 day","173","50.00","books","0.10","books","0","2",null,"1329873","18",null,"2005-07-22 20:17:07.199888-04"]/*--E aoc --*/,"copy":/*--S acp --*/[null,null,null,null,"34520000676111","1187974",null,"182",null,"1","1","2005-05-06 11:13:05.063398-04","1","0","0.00","2005-05-06 11:13:05.063398-04","1","2","1","1329873","2","1","1","0.00","0","1"]/*--E acp --*/,"record":/*--S mvr --*/[null,null,null,"Margolis, Matthew.",[],null,"97448",null,"1st Vintage Books ed.","0394711742 (pbk.) :",[],"1982, c1979","Vintage Books",null,[],[["Dogs"]],null,"PIN02040633 ","The  dog in your life a complete guide to choosing, raising, feeding, training, and caring for your dog plus sections on show dogs, hunting dogs, coursing dogs, herd dogs, sled dogs, guard dogs, guide dogs, and a discussion of common canine illnesses",["text"]]/*--E mvr --*/}],[/*--S ahr --*/[null,null,null,"Copy found, waiting for capture",null,"3601016","email2@somewheres.info",null,null,"T",null,"45","800.555.0000","12","2005-07-24 15:47:42.091479-04","2005-07-21 16:35:16.026892-04","18","0","847314","18"]/*--E ahr --*/,/*--S ahr --*/[null,null,null,"Copy found, waiting for capture",null,"1386122","email2@somewheres.info",null,null,"T",null,"46","800.555.0000","12","2005-07-24 15:47:45.240195-04","2005-07-21 16:40:12.783469-04","18","0","152833","18"]/*--E ahr --*/,/*--S ahr --*/[null,null,null,"Available","2005-07-21 17:04:11.853992-04","548582","email2@somewheres.info",null,null,"T",null,"47","800.555.0000","12","2005-07-21 17:03:49.248665-04","2005-07-21 17:03:10.523049-04","18","0","23932","18"]/*--E ahr --*/],null,[/*--S actscecm --*/[null,null,null,"40","17","Yes","18"]/*--E actscecm --*/,/*--S actscecm --*/[null,null,null,"14","2","Yes","18"]/*--E actscecm --*/,/*--S actscecm --*/[null,null,null,"46","18","test2","18"]/*--E actscecm --*/,/*--S actscecm --*/[null,null,null,"42","16","","18"]/*--E actscecm --*/],null,"1",null,/*--S aua --*/[null,null,null,"Vacation","PC Beach","USA","PC County","42","01010","FL","111 A Street","Unit #12A","18","1"]/*--E aua --*/,/*--S ac --*/[null,null,null,"1","21099000006699","14","18"]/*--E ac --*/,"0","2005-05-13","0.00","800.555.0000","1900-01-02","email2@somewheres.info",null,"2008-05-13","Erickson","Bill","10","18","5","2","345","365","1122211188.708583190.17503114108",/*--S aua --*/[null,null,null,"work","CITY","USA","Fulton","13","30043","GA","123 street road","#AR54","18","1"]/*--E aua --*/,"0","1",null,null,null,"Councilperson","3",null,"1","Jr","0","18","erickson"]/*--E au --*/');
+
+		function my_init() {
+			document.getElementById('itemsout_header_tb').value = mw.G.itemsout_header;
+			document.getElementById('itemsout_line_item_tb').value = mw.G.itemsout_line_item;
+			document.getElementById('itemsout_footer_tb').value = mw.G.itemsout_footer;
+			document.getElementById('checkout_header_tb').value = mw.G.checkout_header;
+			document.getElementById('checkout_line_item_tb').value = mw.G.checkout_line_item;
+			document.getElementById('checkout_footer_tb').value = mw.G.checkout_footer;
+			document.getElementById('checkin_header_tb').value = mw.G.checkin_header;
+			document.getElementById('checkin_line_item_tb').value = mw.G.checkin_line_item;
+			document.getElementById('checkin_footer_tb').value = mw.G.checkin_footer;
+			document.getElementById('holds_header_tb').value = mw.G.holds_header;
+			document.getElementById('holds_line_item_tb').value = mw.G.holds_line_item;
+			document.getElementById('holds_footer_tb').value = mw.G.holds_footer;
+		}
+
+		function test_itemsout() {
+			var params = { 
+				'au' : test_patron, 
+				'lib' : mw.G.user_ou,
+				'header' : document.getElementById('itemsout_header_tb').value,
+				'line_item' : document.getElementById('itemsout_line_item_tb').value,
+				'footer' : document.getElementById('itemsout_footer_tb').value
+			};
+			mw.print_itemsout_receipt( params );
+		}
+
+		function save_itemsout() {
+			mw.G.itemsout_header = document.getElementById('itemsout_header_tb').value;
+			mw.G.itemsout_line_item = document.getElementById('itemsout_line_item_tb').value;
+			mw.G.itemsout_footer = document.getElementById('itemsout_footer_tb').value;
+		}
+
+		function test_checkout() {
+			var params = { 
+				'au' : test_patron, 
+				'lib' : mw.G.user_ou,
+				'header' : document.getElementById('checkout_header_tb').value,
+				'line_item' : document.getElementById('checkout_line_item_tb').value,
+				'footer' : document.getElementById('checkout_footer_tb').value
+			};
+			mw.print_checkout_receipt( params );
+		}
+
+		function save_checkout() {
+			mw.G.checkout_header = document.getElementById('checkout_header_tb').value;
+			mw.G.checkout_line_item = document.getElementById('checkout_line_item_tb').value;
+			mw.G.checkout_footer = document.getElementById('checkout_footer_tb').value;
+		}
+
+		function test_checkin() {
+			var params = { 
+				'au' : test_patron, 
+				'lib' : mw.G.user_ou,
+				'header' : document.getElementById('checkin_header_tb').value,
+				'line_item' : document.getElementById('checkin_line_item_tb').value,
+				'footer' : document.getElementById('checkin_footer_tb').value
+			};
+			mw.print_checkin_receipt( params );
+		}
+
+		function save_checkin() {
+			mw.G.checkin_header = document.getElementById('checkin_header_tb').value;
+			mw.G.checkin_line_item = document.getElementById('checkin_line_item_tb').value;
+			mw.G.checkin_footer = document.getElementById('checkin_footer_tb').value;
+		}
+
+		function test_holds() {
+			var params = { 
+				'au' : test_patron, 
+				'lib' : mw.G.user_ou,
+				'header' : document.getElementById('holds_header_tb').value,
+				'line_item' : document.getElementById('holds_line_item_tb').value,
+				'footer' : document.getElementById('holds_footer_tb').value
+			};
+			mw.print_holds_receipt( params );
+		}
+
+		function save_holds() {
+			mw.G.holds_header = document.getElementById('holds_header_tb').value;
+			mw.G.holds_line_item = document.getElementById('holds_line_item_tb').value;
+			mw.G.holds_footer = document.getElementById('holds_footer_tb').value;
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Receipt Template Editor"/>
+			<hbox flex="1">
+				<groupbox orient="vertical" flex="1">
+					<caption label="DESCRIPTION" />
+					<hbox flex="1">
+						<iframe flex="1" src="data:text/html,&lt;html&gt;&lt;p&gt;Please note that this interface is for testing purposes, and that modifications you make here will not persist between different invocations of the staff client.  In future versions of the software, you will be able to save and share named templates.&lt;/p&gt;&lt;p&gt;The following macros get evaluated and substituted for each receipt printed: %LIBRARY% %PINES_CODE% %PATRON_LASTNAME% %PATRON_FIRSTNAME% %PATRON_MIDDLENAME% %PATRON_BARCODE% %TODAY% %OUT% %DUE% %DURATION% %COPY_BARCODE% %TITLE% %AUTHOR% %PUBLISHER% %PUBDATE% %NUMBER%&lt;/p&gt;&lt;p&gt;If there's a specific macro you would like to see, please let us know.  There will be variations on these for handling truncation and date formats.  See the examples.&lt;/p&gt;&lt;/html&gt;" />;
+					</hbox>
+				</groupbox>
+				<groupbox orient="vertical" flex="1">
+					<caption label="TEMPLATES" />
+				<tabbox flex="1">
+					<tabs>
+						<tab label="Items Out"/>
+						<tab label="Holds"/>
+						<tab label="Check Out"/>
+						<tab label="Check In"/>
+					</tabs>
+					<tabpanels flex="1">
+						<tabpanel>
+							<vbox flex="1">
+								<groupbox orient="vertical" flex="1">
+									<caption label="Header"/>
+									<textbox id="itemsout_header_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Line Item"/>
+									<textbox id="itemsout_line_item_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Footer"/>
+									<textbox id="itemsout_footer_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<hbox>
+									<spacer flex="1"/>
+									<button label="Test" accesskey="T" oncommand="test_itemsout();"/>
+									<button label="Save" accesskey="S" oncommand="save_itemsout();"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+						<tabpanel>
+							<vbox flex="1">
+								<groupbox orient="vertical" flex="1">
+									<caption label="Header"/>
+									<textbox id="checkout_header_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Line Item"/>
+									<textbox id="checkout_line_item_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Footer"/>
+									<textbox id="checkout_footer_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<hbox>
+									<spacer flex="1"/>
+									<button label="Test" accesskey="T" oncommand="test_checkout();"/>
+									<button label="Save" accesskey="S" oncommand="save_checkout();"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+						<tabpanel>
+							<vbox flex="1">
+								<groupbox orient="vertical" flex="1">
+									<caption label="Header"/>
+									<textbox id="checkin_header_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Line Item"/>
+									<textbox id="checkin_line_item_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Footer"/>
+									<textbox id="checkin_footer_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<hbox>
+									<spacer flex="1"/>
+									<button label="Test" accesskey="T" oncommand="test_checkin();"/>
+									<button label="Save" accesskey="S" oncommand="save_checkin();"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+						<tabpanel>
+							<vbox flex="1">
+								<groupbox orient="vertical" flex="1">
+									<caption label="Header"/>
+									<textbox id="holds_header_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Line Item"/>
+									<textbox id="holds_line_item_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<groupbox orient="vertical" flex="1">
+									<caption label="Footer"/>
+									<textbox id="holds_footer_tb" multiline="true" flex="1"/>
+								</groupbox>
+								<hbox>
+									<spacer flex="1"/>
+									<button label="Test" accesskey="T" oncommand="test_holds();"/>
+									<button label="Save" accesskey="S" oncommand="save_holds();"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+				</groupbox>
+			</hbox>
+		</groupbox>
+	</vbox>
+
+</window>
+

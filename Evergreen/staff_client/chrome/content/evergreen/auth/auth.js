@@ -32,6 +32,11 @@ G['asc_list'] = []; // asset::stat_cat
 G['actsc_list'] = []; // actor::stat_cat
 G['actsc_hash']; // actor::stat_cat
 
+G['itemsout_header'] = 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%! <br /> Today is %TODAY_D%<br /> <ol>';
+G['itemsout_line_item'] = '<li>%TITLE: 40% <br />Barcode: %COPY_BARCODE% Due: %DUE_D%<br />';
+G['itemsout_footer'] = '</ol> Thanks!';
+
+
 var mw = G['main_window'];
 var auth_meter_incr = 10;
 

@@ -119,6 +119,11 @@ function spawn_patron_search(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('patron_search_interface_label'),passthru_params,clone);
 }
 
+function spawn_receipt_template_editor(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/circ/receipt_template_editor.xul';
+	return spawn_interface(d,placement,place,chrome,getString('receipt_template_editor_interface_label'),passthru_params,clone);
+}
+
 /* legacy code, may be removed or refactored */
 
 function spawn_batch_copy_editor(d,placement,place,passthru_params,clone) {
