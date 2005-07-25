@@ -13,7 +13,7 @@
 			<label id="l1" value="Ascession ID (or TCN): "/>
 			<textbox id="t1" />
 			<button id="b1" label="Retrieve" oncommand="
-				spawn_oclc_import(parent.document,'replace_tab','main_tabbox', { 'tcn' : document.getElementById('t1').value });
+				mw.spawn_oclc_import(parent.document,'replace_tab','main_tabbox', { 'tcn' : document.getElementById('t1').value });
 			"/>
 		</hbox>
 	</vbox>

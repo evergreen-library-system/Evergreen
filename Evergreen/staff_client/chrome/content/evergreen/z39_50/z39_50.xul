@@ -15,15 +15,7 @@
 	<script>dump('z39_50_win\n');</script>
 
 	<!-- Initial Overlays for this XUL file -->
-	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
-	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
 	<?xul-overlay href="chrome://evergreen/content/z39_50/z39_50_bundle.xul"?>
-
-	<!-- OpenSRF -->
-	<script>var myPackageDir = "evergreen";</script>
-	<OpenSRF id="OpenSRF_js" />
-	<!-- other javascript -->
-	<Util/>
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<vbox id="z39_50_vbox" class="test_class"/>
