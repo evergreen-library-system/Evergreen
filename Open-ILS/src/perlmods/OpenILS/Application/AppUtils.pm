@@ -37,13 +37,15 @@ sub start_db_session {
 sub check_user_perms {
 	my($self, $user_id, $org_id, @perm_types ) = @_;
 
+	warn "Checking perm with user : $user_id , org: $org_id, @perm_types\n";
+
 	throw OpenSRF::EX::ERROR ("Invalid call to check_user_perms()")
 		unless( defined($user_id) and defined($org_id) and @perm_types); 
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	for my $type (@perm_types) {
 		my $req = $session->request(
-			"open-ils.storage.permission.user_has_perm",
+			"open-ils.storage.permission.user_has_perm", 
 			$user_id, $type, $org_id );
 		my $resp = $req->gather(1);
 		if(!$resp) { 
@@ -109,7 +111,7 @@ sub check_user_session {
 	my $response = $request->recv();
 
 	if(!$response) {
-		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
+		throw OpenSRF::EX::User ("Session [$user_session] cannot be authenticated" );
 	}
 
 	if($response->isa("OpenSRF::EX")) {

@@ -13,6 +13,8 @@ use OpenILS::Utils::FlatXML;
 use OpenILS::Application::Cat::Utils;
 use OpenILS::Application::AppUtils;
 
+use OpenSRF::EX qw(:try);
+
 my $utils = "OpenILS::Application::Cat::Utils";
 my $apputils = "OpenILS::Application::AppUtils";
 
@@ -100,14 +102,29 @@ sub z39_search_by_string {
 					"http://www.loc.gov/MARC21/slim", undef, 1);
 		}
 
-		warn $doc->toString . "\n";
+		warn "Z3950 XML doc:\n" . $doc->toString . "\n";
 
-		my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
+		warn "Turning doc into a nodeset...\n";
 
-		warn "turning nodeset into tree\n";
-		my $tree = $utils->nodeset2tree( $nodes->nodeset );
+		my $tree;
+		my $err;
 
-		push @$records, $tree;
+		try {
+			my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
+			#use Data::Dumper;
+			#warn Dumper $nodes;
+			warn "turning nodeset into tree\n";
+			$tree = $utils->nodeset2tree( $nodes->nodeset );
+		} catch Error with {
+			$err = shift;
+		};
+
+		if($err) {
+			warn "Error turning doc into nodeset/node tree: $err\n";
+		} else {
+			push @$records, $tree;
+		}
+
 	}
 
 	use Data::Dumper;

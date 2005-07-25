@@ -20,6 +20,7 @@
 	perm_map.REQUEST_HOLDS = "Requesting a hold for another user";
 	perm_map.REQUEST_HOLDS_OVERRIDE = "Requesting a dissallowed hold for another user";
 	perm_map.RENEW_HOLD_OVERRIDE = "Requesting renew for copy needed for hold";
+	perm_map.CREATE_VOLUME = "Creating a new volume";
 
 
 	ret(perm_map.$type);

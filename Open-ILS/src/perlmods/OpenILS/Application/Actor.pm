@@ -7,6 +7,7 @@ use Digest::MD5 qw(md5_hex);
 
 use OpenSRF::EX qw(:try);
 use OpenILS::EX;
+use OpenILS::Perm;
 
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
@@ -36,7 +37,6 @@ sub update_patron {
 				$user_session ); #throws EX on error
 
 	# XXX does this user have permission to add/create users.  Granularity?
-
 	# $new_patron is the patron in progress.  $patron is the original patron
 	# passed in with the method.  new_patron will change as the components
 	# of patron are added/updated.
@@ -83,13 +83,6 @@ sub update_patron {
 		return undef;
 	}
 
-	$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
-
 
 	# re-update the patron if anything has happened to him during this process
 	if($new_patron->ischanged()) {
@@ -101,7 +94,17 @@ sub update_patron {
 			return undef;
 		}
 	}
+
 	$apputils->commit_db_session($session);
+
+	$session = OpenSRF::AppSession->create("open-ils.storage");
+	$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
+	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+		$client->respond_complete($new_patron->ex);
+		return undef;
+	}
+
 
 	warn "Patron Update/Create complete\n";
 	return flesh_user($new_patron->id());
@@ -118,8 +121,10 @@ sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $user_session, $user_id ) = @_;
 	my $user_obj = $apputils->check_user_session( $user_session ); 
 
-	if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
-		return OpenILS::Perm->new("VIEW_USER");
+	if( $user_obj->id ne $user_id ) {
+		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
+			return OpenILS::Perm->new("VIEW_USER");
+		}
 	}
 
 	return flesh_user($user_id);
@@ -497,6 +502,7 @@ sub _create_stat_maps {
 		my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
 		if($map->isnew()) {
 			$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.create";
+			$map->clear_id;
 		}
 
 		$map->target_usr($new_patron->id);
@@ -512,6 +518,7 @@ sub _create_stat_maps {
 			throw OpenSRF::EX::ERROR 
 				("Error updating stat map with method $method");	
 		}
+
 	}
 
 	return $new_patron;

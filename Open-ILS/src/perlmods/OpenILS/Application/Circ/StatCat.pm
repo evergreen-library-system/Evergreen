@@ -37,13 +37,14 @@ __PACKAGE__->register_method(
 sub retrieve_stat_cats {
 	my( $self, $client, $user_session, $orgid ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
-	if(!$orgid) { $orgid = $user_obj->home_ou; }
-
 	my $method = "open-ils.storage.ranged.fleshed.actor.stat_cat.all.atomic"; 
 	if( $self->api_name =~ /asset/ ) {
 		$method = "open-ils.storage.ranged.fleshed.asset.stat_cat.all.atomic"; 
 	}
+
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+	if(!$orgid) { $orgid = $user_obj->home_ou; }
 
 	return $apputils->simple_scalar_request(
 				"open-ils.storage", $method, $orgid );
@@ -80,6 +81,10 @@ __PACKAGE__->register_method(
 sub retrieve_ranged_union_stat_cats {
 	my( $self, $client, $user_session, $orglist ) = @_;
 
+	my	$method = "open-ils.storage.multiranged.union.fleshed.asset.stat_cat.all.atomic";
+	use Data::Dumper;
+	warn "Retrieving stat_cats with method $method and orgs " . Dumper($orglist) . "\n";
+
 	my $user_obj = $apputils->check_user_session($user_session); 
 	if(!$orglist) { $orglist = [ $user_obj->home_ou ]; }
 
@@ -89,7 +94,6 @@ sub retrieve_ranged_union_stat_cats {
 
 	warn "range: @$orglist\n";
 
-	my	$method = "open-ils.storage.multiranged.union.fleshed.asset.stat_cat.all.atomic";
 	return $apputils->simple_scalar_request(
 				"open-ils.storage", $method, $orglist );
 }

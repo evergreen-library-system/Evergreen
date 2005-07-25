@@ -265,17 +265,17 @@ sub gather_circ_objects {
 	warn "Gathering circ objects with barcode $barcode_string and patron id $patron_id\n";
 
 	# see if all of the circ objects are in cache
-	my $cache_key =  "circ_object_" . md5_hex( $barcode_string, $patron_id );
-	$circ_objects = $cache_handle->get_cache($cache_key);
+#	my $cache_key =  "circ_object_" . md5_hex( $barcode_string, $patron_id );
+#	$circ_objects = $cache_handle->get_cache($cache_key);
 
-	if($circ_objects) { 
-		$stash = Template::Stash->new(
-			circ_objects			=> $circ_objects,
-			result					=> [],
-			target_copy_status	=> 1,
-			);
-		return;
-	}
+#	if($circ_objects) { 
+#		$stash = Template::Stash->new(
+#			circ_objects			=> $circ_objects,
+#			result					=> [],
+#			target_copy_status	=> 1,
+#			);
+#		return;
+#	}
 
 	# only necessary if the circ objects have not been built yet
 
@@ -300,7 +300,7 @@ sub gather_circ_objects {
 
 	#$circ_objects->{title} = $title_req->gather(1);
 	$circ_objects->{title} = _grab_title_by_copy($session, $circ_objects->{copy}->id);
-	$cache_handle->put_cache( $cache_key, $circ_objects, 30 );
+#	$cache_handle->put_cache( $cache_key, $circ_objects, 30 );
 
 	$stash = Template::Stash->new(
 			circ_objects			=> $circ_objects,
@@ -737,6 +737,8 @@ sub transit_receive {
 			$copy->editor($user->id); #hold shelf status
 			$copy->edit_date("now"); #hold shelf status
 
+			warn "Updating copy " . $copy->id . " with new status, editor, and edit date\n";
+
 			my $s = $session->request(
 				"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
 			if(!$s) {throw OpenSRF::EX::ERROR ("Error putting copy on holds shelf ".$copy->id);} # blah..
@@ -837,6 +839,29 @@ sub checkin {
 				$circ->stop_fines("CHECKIN");
 				$circ->stop_fines("RENEW") if($isrenewal);
 				$circ->xact_finish("now") if($transaction->balance_owed <= 0 );
+
+				if($backdate) { 
+					$circ->xact_finish($backdate); 
+
+					# void any bills the resulted after the backdate time
+					my $bills = $session->request(
+						"open-ils.storage.direct.money.billing.search_where.atomic",
+						billing_ts => { ">=" => $backdate })->gather(1);
+
+					if($bills) {
+						for my $bill (@$bills) {
+
+							$bill->voided('t');
+							my $s = $session->request(
+								"open-ils.storage.direct.money.billing.update", $bill)->gather(1);
+
+							if(!$s) { 
+								throw OpenSRF::EX::ERROR 
+									("Error voiding bill on checkin with backdate : $backdate, circ id: " . $circ->id);
+							}
+						}
+					}
+				}
 			
 				my $cp_up = $session->request(
 					"open-ils.storage.direct.asset.copy.update", $copy );

@@ -345,6 +345,8 @@ __PACKAGE__->register_method(
 sub capture_copy {
 	my( $self, $client, $login_session, $barcode, $flesh ) = @_;
 
+	warn "Capturing copy with barcode $barcode, flesh=$flesh \n";
+
 	my $user = $apputils->check_user_session($login_session);
 
 	if($apputils->check_user_perms($user->id, $user->home_ou, "COPY_CHECKIN")) {
@@ -355,12 +357,15 @@ sub capture_copy {
 	my $copy = $session->request(
 		"open-ils.storage.direct.asset.copy.search.barcode",
 		$barcode )->gather(1);
+
+	warn "Found copy $copy\n";
+
 	return OpenILS::EX->new("UNKNOWN_BARCODE")->ex unless $copy;
 
 	warn "Capturing copy " . $copy->id . "\n";
 
 	my $hold = _find_local_hold_for_copy($session, $copy, $user);
-	if(!$hold) {return OpenILS::EX->new("HOLD_NOT_FOUND")->ex;}
+	if(!$hold) {return OpenILS::EX->new("NO_HOLD_FOUND")->ex;}
 
 	warn "Found hold " . $hold->id . "\n";
 

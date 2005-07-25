@@ -589,11 +589,11 @@ sub biblio_search_class_count {
 	my $session = OpenSRF::AppSession->create('open-ils.storage');
 
 	my $request = $session->request( $method, 
-			term => $string, 
-			org_unit => $org_id, 
-			cache_page_size => 1,
-			depth =>$org_type,
-			format => $format );
+			term					=> $string, 
+			org_unit				=> $org_id, 
+			cache_page_size	=> 1,
+			depth					=> $org_type,
+			format				=> $format );
 
 	my $count = $request->gather(1);
 	warn "Received count $count\n";
@@ -850,6 +850,11 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.biblio.metarecord_to_records",
 );
 
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_to_record_ids",
+	api_name	=> "open-ils.search.biblio.metarecord_to_records.staff",
+);
+
 sub biblio_mrid_to_record_ids {
 	my( $self, $client, $mrid, $format ) = @_;
 
@@ -859,10 +864,15 @@ sub biblio_mrid_to_record_ids {
 
 	warn "Searching for record for MR $mrid and format $format\n";
 
+	my $method = "open-ils.storage.ordered.metabib.metarecord.records.atomic";
+	if($self and $self->api_name =~ /staff/) { $method =~ s/atomic/staff\.atomic/; }
+	warn "Performing record retrieval with method $method\n";
+
+
 	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( 
 			"open-ils.storage", 
 			#"open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord", $mrid );
-			"open-ils.storage.ordered.metabib.metarecord.records.atomic", 
+			$method, 
 			$mrid, $format );
 
 

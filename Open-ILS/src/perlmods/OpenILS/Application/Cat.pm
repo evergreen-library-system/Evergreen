@@ -91,6 +91,9 @@ sub biblio_record_tree_import {
 		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
 	}
 
+	$tcn =~ s/^\s+//g;
+	$tcn =~ s/\s+$//g;
+
 	warn "Record import with tcn: $tcn and source $tcn_source\n";
 
 	my $record = Fieldmapper::biblio::record_entry->new;
@@ -104,16 +107,24 @@ sub biblio_record_tree_import {
 
 
 	my $req = $session->request(
-		"open-ils.storage.direct.biblio.record_entry.create",
-		$record );
+		"open-ils.storage.direct.biblio.record_entry.create", $record );
+
 	my $id = $req->gather(1);
 
-	my $wreq = $session->request("open-ils.worm.wormize", $id);
-	$wreq->gather(1);
+	if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new record_entry from import"); }
+	warn "received id: $id from record_entry create\n";
 
 	$apputils->commit_db_session($session);
 
+	$session = OpenSRF::AppSession->create("open-ils.storage");
+
+	my $wreq = $session->request("open-ils.worm.wormize", $id)->gather(1);
+	warn "Done worming record $id\n";
+
+	if(!$wreq) { throw OpenSRF::EX::ERROR ("Unable to wormize imported record"); }
+
 	return $self->biblio_record_tree_retrieve($client, $id);
+
 }
 
 sub _tcn_exists {
@@ -563,7 +574,7 @@ sub volume_tree_fleshed_update {
 				throw OpenSRF::EX::ERROR
 					("Volume delete failed for volume " . $volume->id);
 			}
-			if(UNIVERSAL::isa($status, "OpenILS::Perm")) { return $status; }
+			if(UNIVERSAL::isa($status, "Fieldmapper::perm_ex")) { return $status; }
 
 		} elsif( $volume->isnew ) {
 
@@ -571,13 +582,15 @@ sub volume_tree_fleshed_update {
 			$volume->editor($user_obj->id);
 			$volume->creator($user_obj->id);
 			$volume = _add_volume($session, $volume, $user_obj);
-			if($volume and UNIVERSAL::isa($volume, "OpenILS::Perm")) { return $volume; }
+			use Data::Dumper;
+			warn Dumper $volume;
+			if($volume and UNIVERSAL::isa($volume, "Fieldmapper::perm_ex")) { return $volume; }
 
 		} elsif( $volume->ischanged ) {
 
 			$volume->editor($user_obj->id);
 			my $stat = _update_volume($session, $volume, $user_obj);
-			if($stat and UNIVERSAL::isa($stat, "OpenILS::Perm")) { return $stat; }
+			if($stat and UNIVERSAL::isa($stat, "Fieldmapper::perm_ex")) { return $stat; }
 		}
 
 
@@ -655,7 +668,9 @@ sub _add_volume {
 
 	if($apputils->check_user_perms(
 			$user_obj->id, $user_obj->home_ou, "CREATE_VOLUME")) {
-		return OpenILS::Perm->new("CREATE_VOLUME"); }
+		warn "User does not have priveleges to create new volumes\n";
+		return OpenILS::Perm->new("CREATE_VOLUME"); 
+	}
 
 	my $request = $session->request( 
 		"open-ils.storage.direct.asset.call_number.create", $volume );
