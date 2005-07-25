@@ -285,7 +285,8 @@ function patron_display_patron_checkout_items_init(p) {
 	p.w.document.getElementById('checkout_done').addEventListener(
 		'command',
 		function () {
-			print_receipt(); checkouts = []; p.display_patron(); tb.focus();
+			if (p.w.document.getElementById('checkout_auto').checked) print_receipt(); 
+			checkouts = []; p.display_patron(); tb.focus();
 		},
 		false
 	);
