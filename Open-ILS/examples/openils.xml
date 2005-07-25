@@ -1,0 +1,331 @@
+<?xml version='1.0'?>
+
+<!-- 
+Example opensrf config file for OpenILS
+See opensrf.xml.example for core config documentation 
+For non-core config info, see the inline documentation within this file
+-->
+
+<opensrf version='0.0.1'>
+
+
+	<default>
+	
+		<dirs>
+			<log>/path/to/log</log>
+			<sock>/path/to/sock</sock>
+			<pid>/path/to/pid</pid>
+
+			<!-- xsl stylesheets go here -->
+			<xsl>/path/to/xsl</xsl>
+			<conf>/path/to/conf</conf>
+		</dirs>
+
+		<server_type>prefork</server_type>
+
+		<!-- script for exception strings -->
+		<ex_script>/path/to/templates/strings/ex.ttk</ex_script>
+		<perm_script>/path/to/templates/strings/perm.ttk</perm_script>
+
+		<z3950>
+
+			<!-- OpenILS currently only searches the 'oclc' database when
+					doing Z39.50 importing... -->
+			<oclc>
+				<host>zcat.oclc.org</host>
+				<port>210</port>
+				<db>OLUCWorldCat</db>
+				<attr>12</attr> <!-- which @attr (tcn search) we're searching -->
+				<username>my_username</username>
+				<password>my_password</password>
+			</oclc>
+
+			<loc> <!-- loc has not been incorporated into the system yet -->
+				<name>loc</name>
+				<host>z3950.loc.gov</host>
+				<port>7090</port>
+				<db>Voyager</db>
+				<username></username>
+				<password></password>
+			</loc>
+
+		</z3950>
+
+
+		<activeapps/> 
+
+		<cache>
+			<global>
+				<servers>
+					<server>127.0.0.1:1010</server>
+				</servers>
+				<max_cache_time>86400</max_cache_time>
+			</global>
+		</cache>
+
+		<apps>
+
+			<opensrf.persist>
+				<keepalive>1</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenSRF::Application::Persist</implementation>
+				<max_requests>97</max_requests>
+				<unix_config>
+					<unix_sock>opensrf.persist_unix.sock</unix_sock>
+					<unix_pid>opensrf.persist_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.persist_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>25</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+
+				<app_settings>
+					<dbfile>/path/to/dbfile/persist.db</dbfile>
+				</app_settings>
+
+			</opensrf.persist>
+
+			<!-- Authentication server -->
+			<open-ils.auth>
+				<keepalive>5</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenILS::Application::Auth</implementation>
+				<max_requests>93</max_requests>
+
+				<unix_config>
+					<unix_sock>open-ils.auth_unix.sock</unix_sock>
+					<unix_pid>open-ils.auth_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>open-ils.auth_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>35</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+
+				<app_settings>
+					<!-- if true, user sessions will be persisted via the OpenSRF persist 
+							server in addition to memcache -->
+					<persist_users>0</persist_users>
+				</app_settings>
+
+			</open-ils.auth>
+
+
+			<!-- Generic search server -->
+			<open-ils.search>
+				<keepalive>5</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenILS::Application::Search</implementation>
+				<max_requests>93</max_requests>
+
+				<unix_config>
+					<unix_sock>open-ils.search_unix.sock</unix_sock>
+					<unix_pid>open-ils.search_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>open-ils.search_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>35</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+
+				<app_settings>
+					<memcache>127.0.0.1:10101</memcache>
+					<max_cache_time>3600</max_cache_time>
+					<marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+				</app_settings>
+
+			</open-ils.search>
+
+
+			<!-- server for accessing user info -->
+			<open-ils.actor>
+				<keepalive>5</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenILS::Application::Actor</implementation>
+				<max_requests>93</max_requests>
+
+				<unix_config>
+					<unix_sock>open-ils.actor_unix.sock</unix_sock>
+					<unix_pid>open-ils.actor_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>open-ils.actor_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>35</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+
+			</open-ils.actor>
+
+
+
+			<!-- server for editing title, etc... -->
+			<open-ils.cat>
+				<keepalive>5</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenILS::Application::Cat</implementation>
+				<max_requests>199</max_requests>
+
+				<unix_config>
+					<unix_sock>open-ils.cat_unix.sock</unix_sock>
+					<unix_pid>open-ils.cat_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>open-ils.cat_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>25</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+
+			</open-ils.cat>
+
+
+			<opensrf.math>
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenSRF::Application::Demo::Math</implementation>
+				<max_requests>97</max_requests>
+				<unix_config>
+					<unix_sock>opensrf.math_unix.sock</unix_sock>
+					<unix_pid>opensrf.math_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.math_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+			</opensrf.math>
+			
+			<opensrf.dbmath> 
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenSRF::Application::Demo::MathDB</implementation>
+				<max_requests>99</max_requests>
+				<unix_config>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.dbmath_unix.log</unix_log>
+					<unix_sock>opensrf.dbmath_unix.sock</unix_sock>
+					<unix_pid>opensrf.dbmath_unix.pid</unix_pid>
+					<min_children>5</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>2</min_spare_children> <max_spare_children>5</max_spare_children>
+				</unix_config>
+			</opensrf.dbmath>
+
+			<!-- Circulation server -->
+			<open-ils.circ> 
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenILS::Application::Circ</implementation>
+				<max_requests>99</max_requests>
+				<unix_config>
+					<max_requests>1000</max_requests>
+					<unix_log>open-ils.circ_unix.log</unix_log>
+					<unix_sock>open-ils.circ_unix.sock</unix_sock>
+					<unix_pid>open-ils.circ_unix.pid</unix_pid>
+					<min_children>5</min_children>
+					<max_children>25</max_children>
+					<min_spare_children>2</min_spare_children> <max_spare_children>5</max_spare_children>
+				</unix_config>
+
+				<app_settings>
+					<rules>
+						<main>/path/to/circ/circ_main.rules</main>
+						<permission>/path/to/circ/permit_circ.rules</permission>
+						<duration>/path/to/circ/calculate_duration.rules</duration>
+						<recurring_fines>/path/to/circ/calculate_recurring_fines.rules</recurring_fines>
+						<max_fines>/path/to/circ/calculate_max_fines.rules</max_fines>
+						<permit_hold>/path/to/circ/permit_hold.rules</permit_hold>
+						<permit_renew>/path/to/circ/permit_renew.rules</permit_renew>
+					</rules>
+				</app_settings>
+
+			</open-ils.circ>
+
+			<!-- Database storage server -->
+			<open-ils.storage>
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<implementation>OpenILS::Application::Storage</implementation>
+				<unix_config>
+					<max_requests>1000</max_requests>
+					<unix_log>storage_unix.log</unix_log>
+					<unix_sock>storage_unix.sock</unix_sock>
+					<unix_pid>storage_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<min_children>10</min_children>
+					<max_children>50</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+					
+				<app_settings>
+					<databases>
+						<driver>Pg</driver>
+						<database>
+							<type>master</type>
+							<weight>2</weight>
+							<user>postgres</user>
+							<host>127.0.0.1</host>
+							<pw>postgres</pw>
+							<db>demo-dev</db>
+							<client_encoding>SQL_ASCII</client_encoding>
+						</database>
+					</databases>
+				</app_settings>
+
+			</open-ils.storage>
+
+			<opensrf.settings>
+				<keepalive>1</keepalive>
+				<stateless>0</stateless>
+				<implementation>OpenSRF::Application::Settings</implementation>
+				<max_requests>17</max_requests>
+				<unix_config>
+					<unix_sock>opensrf.settings_unix.sock</unix_sock>
+					<unix_pid>opoensrf.settings_unix.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<unix_log>opensrf.settings_unix.log</unix_log>
+					<min_children>5</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>3</min_spare_children>
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+			</opensrf.settings>
+
+		</apps>
+
+	</default>
+
+	<hosts>
+
+
+		<!-- single host install, everything goes into one host section -->
+		<myhost.mydomain.com> <!-- must match 'hostname -f' -->
+			<activeapps>
+
+				<!-- opensrf builtin apps -->
+				<appname>opensrf.persist</appname> 
+				<appname>opensrf.math</appname> 
+				<appname>opensrf.dbmath</appname> 
+				<appname>opensrf.settings</appname> 
+
+				<!-- openils apps -->
+				<appname>open-ils.cat</appname> 
+				<appname>open-ils.search</appname> 
+				<appname>open-ils.circ</appname> 
+				<appname>open-ils.actor</appname> 
+				<appname>open-ils.auth</appname> 
+				<appname>open-ils.storage</appname>  
+
+			</activeapps>
+		</myhost.mydomain.com> 
+
+	</hosts>
+
+</opensrf>
