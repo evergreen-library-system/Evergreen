@@ -20,6 +20,7 @@ function print_circ_receipt(circ_type,params,sample_view) {
 	switch(circ_type) {
 		case 'itemsout' : circs = params.au.checkouts(); break;
 		case 'checkout' : circs = params.au._current_checkouts; break;
+		default: alert('bad!'); break;
 	}
 	for (var i = 0; i < circs.length; i++) {
 		params.current_circ = circs[i].circ;

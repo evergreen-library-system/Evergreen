@@ -30,6 +30,7 @@
 			document.getElementById('holds_line_item_tb').value = mw.G.holds_line_item;
 			document.getElementById('holds_footer_tb').value = mw.G.holds_footer;
 			test_itemsout(document.getElementById('sample_view'));
+			test_patron._current_checkouts = test_patron.checkouts();
 		}
 
 		function test_itemsout(sample_view) {
