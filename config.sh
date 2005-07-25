@@ -172,7 +172,7 @@ function writeConfig {
 		STR="$STR '$DBPW';";
 	_write "$STR"
 	
-	_write '$main::config{index} = "config.html";';
+	_write '$main::config{index} = "config.cgi";';
 
 
 	prompt "";
