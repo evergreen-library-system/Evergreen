@@ -726,8 +726,7 @@ sub recv {
 
 	if( exists( $args{timeout} ) ) {
 		$args{timeout} = int($args{timeout});
-	} else {
-		$args{timeout} = 10;
+		$self->{recv_timeout} = $args{timeout};
 	}
 
 	#$args{timeout} = 0 if ($self->complete);
@@ -737,14 +736,18 @@ sub recv {
 	$args{count} ||= 1;
 
 	my $avail = @{ $self->{recv_queue} };
-	my $time_remaining = $args{timeout};
+	$self->{remaining_recv_timeout} = $self->{recv_timeout};
 
-	while ( $avail < $args{count} and $time_remaining > 0 ) {
+	while ( $self->{remaining_recv_timeout} > 0 and $avail < $args{count} ) {
 		last if $self->complete;
 		my $starttime = time;
-		$self->queue_wait($time_remaining);
+		$self->queue_wait($self->{remaining_recv_timeout});
 		my $endtime = time;
-		$time_remaining -= ($endtime - $starttime);
+		if ($self->{timeout_reset}) {
+			$self->{timeout_reset} = 0;
+		} else {
+			$self->{remaining_recv_timeout} -= ($endtime - $starttime)
+		}
 		$avail = @{ $self->{recv_queue} };
 	}
 
@@ -806,6 +809,14 @@ sub status {
 	$self->send( 'STATUS', @_ );
 }
 
+sub reset_request_timeout {
+	my $self = shift;
+	my $tt = shift;
+	my $req = $self->app_request($tt);
+	$req->{remaining_recv_timeout} = $req->{recv_timeout};
+	$req->{timout_reset} = 1;
+}
+
 #-------------------------------------------------------------------------------
 
 package OpenSRF::AppRequest;
@@ -821,11 +832,14 @@ sub new {
 	my $threadTrace = $session->session_threadTrace || $session->last_threadTrace;
 	my $payload = shift;
 	
-	my $self = {	session	    => $session,
-			threadTrace => $threadTrace,
-			payload	    => $payload,
-			complete    => 0,
-			recv_queue  => [],
+	my $self = {	session			=> $session,
+			threadTrace		=> $threadTrace,
+			payload			=> $payload,
+			complete		=> 0,
+			timeout_reset		=> 0,
+			recv_timeout		=> 30,
+			remaining_recv_timeout	=> 30,
+			recv_queue		=> [],
 	};
 
 	bless $self => $class;

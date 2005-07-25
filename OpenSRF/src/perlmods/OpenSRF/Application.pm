@@ -440,7 +440,7 @@ sub run {
 	} else {
 		my $session = OpenSRF::AppSession->create($self->{server_class});
 		try {
-			$session->connect or OpenSRF::EX::WARN->throw("Connection to [$$self{server_class}] timed out");
+			#$session->connect or OpenSRF::EX::WARN->throw("Connection to [$$self{server_class}] timed out");
 			my $remote_req = $session->request( $self->{api_name}, @params );
 			while (my $remote_resp = $remote_req->recv) {
 				OpenSRF::Utils::Logger->debug("Remote Subrequest Received " . $remote_resp, INTERNAL );
@@ -450,14 +450,17 @@ sub run {
 				$req->respond( $remote_resp->content );
 			}
 			$remote_req->finish();
-			$session->disconnect();
-			$session->finish();
 
 		} catch Error with {
 			my $e = shift;
 			$log->debug( "Remote subrequest returned an error:\n". $e );
 			return undef;
 		};
+
+		if ($session) {
+			$session->disconnect();
+			$session->finish();
+		}
 
 		$log->debug( "Remote Subrequest Responses " . join(" ", $req->responses), INTERNAL );
 

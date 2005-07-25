@@ -256,6 +256,7 @@ sub do_client {
 		if ($self->payload->statusCode == STATUS_TIMEOUT) {
 			$session->state( $session->DISCONNECTED );
 			$session->reset;
+			$session->connect;
 			$session->push_resend( $session->app_request($self->threadTrace) );
 			$log->debug("Disconnected because of timeout", WARN);
 			return 0;
@@ -263,6 +264,7 @@ sub do_client {
 		} elsif ($self->payload->statusCode == STATUS_REDIRECTED) {
 			$session->state( $session->DISCONNECTED );
 			$session->reset;
+			$session->connect;
 			$session->push_resend( $session->app_request($self->threadTrace) );
 			$log->debug("Disconnected because of redirect", WARN);
 			return 0;
@@ -275,6 +277,7 @@ sub do_client {
 			return 0;
 
 		} elsif ($self->payload->statusCode == STATUS_CONTINUE) {
+			$session->reset_request_timeout($self->threadTrace);
 			return 0;
 
 		} elsif ($self->payload->statusCode == STATUS_COMPLETE) {
