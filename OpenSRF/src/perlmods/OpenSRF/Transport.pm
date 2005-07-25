@@ -90,6 +90,12 @@ sub handler {
 	my $body	= $helper->get_body();
 	my $type	= $helper->get_msg_type();
 
+
+	if (defined($type) and $type eq 'error') {
+		throw OpenSRF::EX::Session ("$remote_id IS NOT CONNECTED TO THE NETWORK!!!");
+
+	}
+
 	$logger->transport( 
 			"Transport building/retrieving session: $service, $remote_id, $sess_id", DEBUG );
 
