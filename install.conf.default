@@ -31,7 +31,7 @@
 # openils_web			- copies over the javascript and html templates to the web root directory for running the OPAC
 # openils_marcdumper - utility code for converting MARC to MARCXML
 #
-# evergreen_all	- builds all Evergreen components
+# evergreen_cor		- builds core Evergreen components (does not build evergreen_xul_client!)
 # evergreen_xul_client   - client XUL application
 #
 # When running the server components of OpenSRF/OpenILS, the simplest
@@ -41,7 +41,7 @@
 # If you only want to build the client app, then just build evergreen_xul_client.
 # --------------------------------------------------------------------
 
-TARGETS=("opensrf_all" "openils_all" );
+TARGETS=("opensrf_all" "openils_all" "evergreen_all");
 
 
 # --------------------------------------------------------------------

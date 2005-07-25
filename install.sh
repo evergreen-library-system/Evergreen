@@ -201,8 +201,12 @@ function runInstall {
 
 			# Evergreen --- 			
 
+			"evergreen_core" )
+				if installing;	then $MAKE -C "$EVERGREENDIR" "images-install"; fi;
+				;;	
+
 			"evergreen_xul_client" )
-				if building;	then $MAKE -C "$EVERGREEN_DIR" xul; fi;
+				if building;	then $MAKE -C "$EVERGREENDIR" xul; fi;
 				;;
 
 
