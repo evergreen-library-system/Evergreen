@@ -831,6 +831,11 @@ function patron_summary_refresh(ev) {
 		if (PATRON.au.suffix()) { name_e.value = PATRON.au.suffix(); }
 		name_e.setAttribute("oncommand","magic_field_edit(event,'au'," + PATRON.au.id() + ",'suffix');");
 	}
+	var disable_e = document.getElementById('patron_edit_system_disable_checkbox');
+	if (disable_e) {
+		disable_e.checked = (PATRON.au.active() != 1);
+		disable_e.setAttribute("oncommand","try{if (PATRON.au.active() == 1) {PATRON.au.active('0');} else {PATRON.au.active('1');}}catch(E){alert(E);}");
+	}
 	var profile_e = document.getElementById('patron_status_data_profile');
 	if (profile_e) {
 		//profile_e.setAttribute('value',find_id_object_in_list(mw.G.ap_list, PATRON.au.profile() ).name() );
