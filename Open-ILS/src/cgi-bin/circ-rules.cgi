@@ -86,10 +86,10 @@ my @fine_display_order = ( qw/name recurance_interval normal high low/ );
 my %age_cols = (
 	name	=> "Name",
 	age	=> "Item Age",
-	radius	=> "Holdable Radius",
+	prox	=> "Holdable Radius",
 );
 
-my @age_display_order = ( qw/name age radius/ );
+my @age_display_order = ( qw/name age prox/ );
 
 my %max_fine_cols = (
 	name	=> "Name",
@@ -280,11 +280,7 @@ if (my $action = $cgi->param('action')) {
 	for my $row ( config::rules::age_hold_protect->retrieve_all ) {
 		print "</tr><tr class='row_class'>\n";
 		for my $col ( @age_display_order ) {
-			if ($col eq 'radius') {
-				print td($row->$col->name);
-			} else {
-				print td($row->$col);
-			}
+			print td($row->$col);
 		}
 		print	"<td><input type='checkbox' value='$row' name='remove_me'</td>";
 	}
@@ -292,16 +288,7 @@ if (my $action = $cgi->param('action')) {
 	print "</tr><tr class='new_row_class'>\n";
 	
 	for my $col ( @age_display_order ) {
-		if ($col eq 'radius') {
-			print "<td><select name='$col'>";
-			for my $radius ( actor::org_unit_type->retrieve_all ) {
-				print	"<option value='".$radius->id."'>".
-					$radius->name."</option>";
-			}
-			print "</select></td>";
-		} else {
-			print td("<input type='text' name='$col'>");
-		}
+		print td("<input type='text' name='$col'>");
 	}
 	
 	
