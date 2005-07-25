@@ -44,7 +44,7 @@
 		<hbox id="copy_button_box"/>
 	</vbox>
 	<splitter collapse="after"> <grippy/> </splitter>
-	<vbox flex="1">
+	<vbox flex="1" hidden="true">
 		<deck id="bottom_deck"/>
 	</vbox>
 </vbox>

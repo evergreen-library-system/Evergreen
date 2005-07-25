@@ -39,7 +39,7 @@ function copy_edit_init() {
 
 function spawn_legacy_copy_editor() {
 	mw.sdump('D_CAT','trying to spawn_copy_editor()\n');
-	var params = { 'select_all' : false };
+	var params = { 'select_all' : true };
 	var chrome = 'chrome://evergreen/content/cat/copy.xul';
 	var frame = document.getElementById('copy_edit_frame');
 	frame.setAttribute('src',chrome);
