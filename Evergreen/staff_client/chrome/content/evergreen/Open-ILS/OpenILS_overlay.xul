@@ -14,6 +14,7 @@
 		<script>
 		<![CDATA[
 			var myPackageDir = "evergreen"; var ses; dump('Loading all the js in the OpenILS overlay...\n');
+			/*
 			Components.classes['@mozilla.org/consoleservice;1'].getService(Components.interfaces.nsIConsoleService).registerListener(
 				{ 
 					observe: function( msg ) { 
@@ -34,6 +35,7 @@
 					}
 				}
 			);
+			*/
 		]]>
 		</script>
 		<OpenSRF id="OpenSRF_js" />

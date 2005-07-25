@@ -180,14 +180,10 @@ function print_template_replace(s,params) {
 function sPrint(s) {
 	sdump('D_PRINT',arg_dump(arguments));
 	var w = new_window('data:text/html,<html>' + s + '</html>\r\n', { 'window_name':'LastPrint' });
+	w.minimize(); mw.minimize();
 	setTimeout(
 		function() {
-			w.minimize(); mw.minimize();
-			this.focus();
-			NSPrint(w);
-			w.minimize(); mw.minimize();
-			w.close();
-			this.focus();
+			NSPrint(w); w.minimize(); w.close(); mw.minimize();
 		},0
 	);
 }
