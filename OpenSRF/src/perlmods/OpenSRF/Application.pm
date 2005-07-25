@@ -338,7 +338,7 @@ sub populate_remote_method_cache {
 sub method_lookup {             
 	my $self = shift;
 	my $method = shift;
-	my $proto = shift;
+	my $proto = shift || 1;
 	my $no_recurse = shift || 0;
 	my $no_remote = shift || 0;
 
