@@ -65,9 +65,9 @@ HEADER
 # setup part
 #-------------------------------------------------------------------------------
 
-my %cs_cols = ( qw/id SysID name Name/ );
+my %cs_cols = ( qw/id SysID name Name holdable Unholdable/ );
 
-my @col_display_order = ( qw/id name/ );
+my @col_display_order = ( qw/id name holdable/ );
 
 #-------------------------------------------------------------------------------
 # Logic part
@@ -83,6 +83,7 @@ if (my $action = $cgi->param('action')) {
 		for my $id ( ($cgi->param('id')) ) {
 			my $u = config::copy_status->retrieve($id);
 			$u->name( $cgi->param("name_$id") );
+			$u->holdable( $cgi->param("holdable_$id") );
 			$u->update;
 		}
 	} elsif ( $action eq 'Add New' ) {
@@ -111,6 +112,7 @@ if (my $action = $cgi->param('action')) {
 		print Tr(
 			td( $row->id() ),
 			td("<input type='text' name='name_$row' value='". $row->name() ."'>"),
+			td("<input type='checkbox' name='holdable_$row' value='f'". do {'checked' unless $row->holdable()} .">"),
 			td("<input type='checkbox' value='$row' name='id'>"),
 		);
 	}
@@ -118,6 +120,7 @@ if (my $action = $cgi->param('action')) {
 	print "<tr class='new_row_class'>",
 		td(),
 		td("<input type='text' name='name'>"),
+		td("<input type='checkbox' name='holdable' value='f'>"),
 		td(),
 		"</tr>";
 
