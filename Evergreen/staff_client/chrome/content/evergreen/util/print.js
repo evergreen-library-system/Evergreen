@@ -34,7 +34,7 @@ function print_circ_receipt(circ_type,params,sample_view) {
 	if (sample_view) {
 		sample_view.setAttribute( 'src', 'data:text/html,<html>' + s + '</html>\r\n' );
 	} else {
-		sPrint( s );
+		sPrint( s, true );
 	}
 }
 
@@ -192,7 +192,7 @@ function print_template_replace(s,params) {
 // Lower-level
 
 function last_sPrint() {
-	sPrint( mw.G.last_receipt );
+	sPrint( mw.G.last_receipt, true );
 }
 
 function sPrint(s,silent) {
