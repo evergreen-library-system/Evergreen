@@ -9,7 +9,11 @@ function my_init() {
 	mw.sdump('D_CAT','Entering my_init() : ' + timer_elapsed('cat') + '\n');
 	mw.sdump('D_CAT','TESTING: marc.js: ' + mw.G['main_test_variable'] + '\n');
 
-	mw.sdump('D_CAT',"DOC ID " + find_this_id + "\n" );
+	try {
+		mw.sdump('D_CAT',"DOC ID " + find_this_id + "\n" );
+	} catch(E) {
+		
+	}
 
 	if (! params.import_tree ) {
 		tree = retrieve_record( find_this_id );
