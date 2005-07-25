@@ -61,7 +61,6 @@
 	<button id="apply_attr_button" label="Apply these Attributes to the selected Copies" command="cmd_apply"/>
 	<button id="save_attr_button" label="Save Changes" command="cmd_save"/>
 	-->
-	<description>Any change made above affects the copies selected below.</description>
 </hbox>
 
 <hbox id="note_button_box">
