@@ -18,7 +18,7 @@ CREATE TABLE money.billing (
 	amount		NUMERIC(6,2)			NOT NULL,
 	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	note		TEXT,
-	voided		BOOL				NOT NULL DEFALUT FALSE
+	voided		BOOL				NOT NULL DEFAULT FALSE
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
 
@@ -28,7 +28,7 @@ CREATE TABLE money.payment (
 	amount		NUMERIC(6,2)			NOT NULL,
 	payment_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	note		TEXT,
-	voided		BOOL				NOT NULL DEFALUT FALSE
+	voided		BOOL				NOT NULL DEFAULT FALSE
 );
 CREATE INDEX m_p_xact_idx ON money.payment (xact);
 

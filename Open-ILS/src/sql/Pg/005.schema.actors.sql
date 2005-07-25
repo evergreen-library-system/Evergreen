@@ -383,7 +383,7 @@ CREATE TABLE actor.org_address (
 	post_code	TEXT	NOT NULL
 );
 
-INSERT INTO actor.org_address (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
+INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
 
 COMMIT;

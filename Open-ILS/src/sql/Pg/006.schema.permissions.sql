@@ -53,11 +53,11 @@ CREATE TABLE permission.grp_tree (
 );
 CREATE INDEX grp_tree_parent ON permission.grp_tree (parent);
 
-INSERT INTO grp_tree VALUES (1, 'Users', NULL);
-INSERT INTO grp_tree VALUES (2, 'Patrons', 1);
-INSERT INTO grp_tree VALUES (3, 'Staff', 1);
-INSERT INTO grp_tree VALUES (4, 'Catalogers', 3);
-INSERT INTO grp_tree VALUES (5, 'Circulators', 3);
+INSERT INTO permission.grp_tree VALUES (1, 'Users', NULL);
+INSERT INTO permission.grp_tree VALUES (2, 'Patrons', 1);
+INSERT INTO permission.grp_tree VALUES (3, 'Staff', 1);
+INSERT INTO permission.grp_tree VALUES (4, 'Catalogers', 3);
+INSERT INTO permission.grp_tree VALUES (5, 'Circulators', 3);
 
 SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, 6);
 

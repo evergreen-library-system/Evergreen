@@ -244,7 +244,7 @@ COMMENT ON TABLE config.rule_max_fine IS $$
  */
 $$;
 
-INSERT INTO rule_max_fine VALUES (DEFAULT, 'books', 50.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'books', 50.00);
 
 
 CREATE TABLE config.rule_recuring_fine (
@@ -282,7 +282,7 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  */
 $$;
 
-INSERT INTO rule_recuring_fine VALUES (1, 'books', 0.50, 0.10, 0.10, '1 day');
+INSERT INTO config.rule_recuring_fine VALUES (1, 'books', 0.50, 0.10, 0.10, '1 day');
 
 
 CREATE TABLE config.rule_age_hold_protect (
@@ -319,8 +319,8 @@ COMMENT ON TABLE config.rule_age_hold_protect IS $$
  */
 $$;
 
-INSERT INTO rule_age_hold_protect VALUES (DEFAULT, '3month', '3 mons', 3);
-INSERT INTO rule_age_hold_protect VALUES (DEFAULT, '6month', '6 mons', 2);
+INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '3month', '3 mons', 3);
+INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '6month', '6 mons', 2);
 
 
 CREATE TABLE config.copy_status (
