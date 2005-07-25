@@ -202,19 +202,19 @@ function NSPrint(w)
 			.getInterface(Components.interfaces.nsIWebBrowserPrint);
 		if (webBrowserPrint) {
 			var gPrintSettings = GetPrintSettings();
-			/*
 			gPrintSettings.printSilent = true;
+			/*
                         gPrintSettings.marginTop = 0;
                         gPrintSettings.marginLeft = 0;
                         gPrintSettings.marginBottom = 0;
                         gPrintSettings.marginRight = 0;
+			*/
                         gPrintSettings.headerStrLeft = '';
                         gPrintSettings.headerStrCenter = '';
                         gPrintSettings.headerStrRight = '';
                         gPrintSettings.footerStrLeft = '';
                         gPrintSettings.footerStrCenter = '';
                         gPrintSettings.footerStrRight = '';
-			*/
 			webBrowserPrint.print(gPrintSettings, null);
 			//alert('Should be printing\n');
 		} else {
