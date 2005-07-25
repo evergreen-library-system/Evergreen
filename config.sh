@@ -153,6 +153,17 @@ function writeConfig {
 	_write "EVERGREENDIR=\"Evergreen/\"";
 
 
+	_write "CGIDIR=\"$CGIDIR\"";
+
+	# db vars
+	_write "DBDRVR=\"$DBDRVR\"";
+	_write "DBHOST=\"$DBHOST\"";
+	_write "DBNAME=\"$DBNAME\"";
+	_write "DBUSER=\"$DBUSER\"";
+	_write "DBPW=\"$DBPW\"";
+
+
+
 	# Now we'll write out the DB bootstrapping config
 	CONFIG_FILE='Open-ILS/src/cgi-bin/setup.pl';
 	rm -f "$CONFIG_FILE";
