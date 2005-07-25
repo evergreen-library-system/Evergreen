@@ -162,6 +162,42 @@ B<OpenSRF::DomainObject::oilsStatus>
 $status = 'Connection Successful';
 $statusCode = STATUS_OK;
 
+
+
+
+package OpenSRF::DomainObject::oilsContinueStatus;
+use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use base 'OpenSRF::DomainObject::oilsStatus';
+use vars qw/$status $statusCode/;
+
+=head1 NAME
+
+OpenSRF::DomainObject::oilsContinueStatus
+
+=head1 SYNOPSIS
+
+use OpenSRF::DomainObject::oilsResponse;
+
+...
+
+# something happens.
+
+$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+=head1 ABSTRACT
+
+Implements the STATUS_CONTINUE message, informing the client that it should
+continue to wait for a response to it's request.
+
+=head1 SEE ALSO
+
+B<OpenSRF::DomainObject::oilsStatus>
+
+=cut
+
+$status = 'Please hold.  Creating response...';
+$statusCode = STATUS_CONTINUE;
+
 1;
 
 
