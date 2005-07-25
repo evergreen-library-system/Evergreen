@@ -1,7 +1,7 @@
 VERSION=0.0.9
 PACKAGE=Evergreen
-DESCRIPTION=Evergreen Staff Client Pre-Alpha
-BUILD=2005072208
+DESCRIPTION=Evergreen Staff Client almost-Alpha
+BUILD=2005072516
 
 ILS_DIR=${PWD}/../..
 
