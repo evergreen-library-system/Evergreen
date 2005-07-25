@@ -500,12 +500,26 @@ __PACKAGE__->register_method(
 	method => 'introspect',
 	api_name => 'opensrf.system.method.all'
 );
-
 __PACKAGE__->register_method(
 	stream => 1,
 	method => 'introspect',
 	argc => 1,
 	api_name => 'opensrf.system.method'
+);
+
+sub echo_method {
+	my $self = shift;
+	my $client = shift;
+	my @args = @_;
+
+	$client->respond( $_ ) for (@args);
+	return undef;
+}
+__PACKAGE__->register_method(
+	stream => 1,
+	method => 'echo_method',
+	argc => 1,
+	api_name => 'opensrf.system.echo'
 );
 
 sub make_stream_atomic {
