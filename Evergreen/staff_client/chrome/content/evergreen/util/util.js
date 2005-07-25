@@ -4,6 +4,8 @@ var timer = {};
 var counter = {};
 var consider_Timeout_default = false;
 
+function a_get( obj, i ) { return obj[i]; } // for use in closures inside loops
+
 function consider_Timeout( f, t, b) {
 	sdump('D_TIMEOUT', arg_dump(arguments,{0:true,1:true,2:true}));
 	if (b) {
