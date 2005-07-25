@@ -22,9 +22,9 @@ function print_circ_receipt(circ_type,params,sample_view) {
 		case 'checkout' : circs = params.au._current_checkouts; break;
 	}
 	for (var i = 0; i < circs.length; i++) {
-		params.current_circ = circs()[i].circ;
-		params.current_copy = circs()[i].copy;
-		params.current_mvr = circs()[i].record;
+		params.current_circ = circs[i].circ;
+		params.current_copy = circs[i].copy;
+		params.current_mvr = circs[i].record;
 		params.current_index = i;
 		s += print_template_replace(params.line_item, params); 
 	}

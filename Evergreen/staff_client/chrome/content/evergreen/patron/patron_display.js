@@ -267,7 +267,7 @@ function patron_display_patron_checkout_items_init(p) {
 	var checkouts = [];
 
 	function print_receipt() {
-		p._current_checkouts = checkouts;
+		p._patron._current_checkouts = checkouts;
 		var params = { 
 			'au' : p._patron, 
 			'lib' : mw.G.user_ou,
@@ -309,7 +309,11 @@ function patron_display_patron_checkout_items_init(p) {
 			}
 		} catch(E) {
 			tb.select();
-			handle_error(E);
+			if (typeof(E) == 'object') {
+				handle_error(E,true);
+			} else {
+				s_alert(E);
+			}
 		}
 		tb.focus();
 	}
