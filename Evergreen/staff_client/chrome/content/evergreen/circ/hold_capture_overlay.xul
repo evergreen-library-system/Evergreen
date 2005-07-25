@@ -62,7 +62,7 @@
 
 <hbox id="HoldCaptureItems_insert3">
 	<button id="hold_capture_print" label="&hold_capture.print_receipt_label;" accesskey="&hold_capture.print_receipt_label.accesskey;"/>
-	<button id="hold_capture_reprint" label="&hold_capture.reprint_receipt_label;" accesskey="&hold_capture.reprint_receipt_label.accesskey;"/>
+	<button id="hold_capture_reprint" label="&hold_capture.reprint_receipt_label;" accesskey="&hold_capture.reprint_receipt_label.accesskey;" oncommand="mw.last_sPrint();"/>
 	<spacer id="cii3s" flex="1"/>
 	<checkbox id="hold_capture_auto" label="&hold_capture.auto_print_label;" accesskey="&hold_capture.auto_print_label.accesskey;"/> 
 	<button id="hold_capture_done" label="&hold_capture.done_label;" accesskey="&hold_capture.done_label.accesskey;"/>

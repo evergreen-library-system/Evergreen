@@ -191,8 +191,13 @@ function print_template_replace(s,params) {
 
 // Lower-level
 
+function last_sPrint() {
+	sPrint( mw.G.last_receipt );
+}
+
 function sPrint(s) {
 	sdump('D_PRINT',arg_dump(arguments));
+	mw.G.last_receipt = s;
 	var w = new_window('data:text/html,<html>' + s + '</html>\r\n', { 'window_name':'LastPrint' });
 	w.minimize(); mw.minimize();
 	setTimeout(
