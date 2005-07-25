@@ -109,6 +109,11 @@ function spawn_opac_navigator(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('opac_navigator_interface_label'),passthru_params,clone);
 }
 
+function spawn_patron_barcode_entry(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/patron/patron_barcode_entry.xul';
+	return spawn_interface(d,placement,place,chrome,getString('patron_barcode_entry_interface_label'),passthru_params,clone);
+}
+
 function spawn_patron_display(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/patron/patron_display.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_display_interface_label'),passthru_params,clone);

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: About -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<window id="patron_barcode_entry_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script>mw.sdump('D_TRACE','Loading patron_barcode_entry.xul\n');</script>
+
+	<script>
+	<![CDATA[
+
+		function my_init() {
+			var tb = document.getElementById('barcode_tb');
+			tb.addEventListener(
+				'keypress',
+				function(ev) {
+					if (ev.keyCode == 13 || ev.keyCode == 77) {
+						spawn();
+					}
+				},
+				false
+			);
+			tb.focus();
+		}
+
+		function spawn() {
+			var tb = document.getElementById('barcode_tb');
+			var barcode = tb.value;
+			var patron = mw.retrieve_patron_by_barcode( barcode );
+			if (mw.instanceOf(patron,mw.au)) {
+				mw.spawn_patron_display(
+					parent.document, 
+					'replace_tab', 'main_tabbox', { 'patron' : patron }
+				);
+			} else {
+				mw.snd_bad();
+				var label = document.getElementById('status');
+				label.value = 'Patron not found.';
+				tb.select(); tb.focus();
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Enter Patron Barcode" />
+			<hbox>
+				<label value="Patron Barcode" accesskey="B" control="barcode_tb"/>
+				<textbox id="barcode_tb" />
+				<button label="Submit" accesskey="S" oncommand="spawn();"/>
+			</hbox>
+			<hbox>
+				<label id="status"/>
+			</hbox>
+		</groupbox>
+	</vbox>
+
+</window>
+
