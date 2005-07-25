@@ -64,11 +64,11 @@
 </hbox>
 
 <hbox id="CheckinItems_insert3">
-	<button id="checkin_print" label="&checkin.print_receipt_label;" accesskey="&checkin.print_receipt_label.accesskey;"/>
+	<button id="checkin_print" label="&checkin.print_receipt_label;" accesskey="&checkin.print_receipt_label.accesskey;" command="cmd_broken"/>
 	<button id="checkin_reprint" label="&checkin.reprint_receipt_label;" accesskey="&checkin.reprint_receipt_label.accesskey;" oncommand="mw.last_sPrint();"/>
 	<spacer id="cii3s" flex="1"/>
 	<checkbox id="checkin_auto" label="&checkin.auto_print_label;" accesskey="&checkin.auto_print_label.accesskey;"/> 
-	<button id="checkin_done" label="&checkin.done_label;" accesskey="&checkin.done_label.accesskey;"/>
+	<button id="checkin_done" label="&checkin.done_label;" accesskey="&checkin.done_label.accesskey;" command="cmd_broken"/>
 </hbox>
 
 
