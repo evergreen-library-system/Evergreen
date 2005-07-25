@@ -388,6 +388,7 @@ sub hold_copy_targeter {
 
 	$self->{user_filter} = OpenSRF::AppSession->create('open-ils.circ');
 	$self->{user_filter}->connect;
+	$self->{client} = $client;
 
 	my $time = time;
 	$check_expire ||= '12h';
@@ -438,14 +439,19 @@ sub hold_copy_targeter {
 			my $copies;
 
 			$copies = $self->metarecord_hold_capture($hold) if ($hold->hold_type eq 'M');
+			$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
 			$copies = $self->title_hold_capture($hold) if ($hold->hold_type eq 'T');
+			$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			
 			$copies = $self->volume_hold_capture($hold) if ($hold->hold_type eq 'V');
+			$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			
 			$copies = $self->copy_hold_capture($hold) if ($hold->hold_type eq 'C');
 
 			$client->respond("Processing hold ".$hold->id."...\n");
-			unless (ref $copies) {
-				$client->respond("\tNo copies available for targeting!\n");
-				next;
+			unless (ref $copies || !@$copies) {
+				$client->respond("\tNo copies available for targeting at all!\n");
 			}
 
 			my @good_copies;
@@ -460,11 +466,12 @@ sub hold_copy_targeter {
 			$hold->clear_current_copy;
 	
 			if (!scalar(@good_copies)) {
+				$client->respond("\tNo (non-current) copies available to fill the hold.\n");
 				if ( $old_best && grep {$c->id == $hold->current_copy} @$copies ) {
 					$client->respond("\tPushing current_copy back onto the targeting list\n");
-				push @good_copies, $self->method_lookup('open-ils.storage.direct.asset.copy.retrieve')->run( $old_best );
+					push @good_copies, $self->method_lookup('open-ils.storage.direct.asset.copy.retrieve')->run( $old_best );
 				} else {
-					$client->respond("\tcurrent_copy is no longer available for targeting... NEXT!\n");
+					$client->respond("\tcurrent_copy is no longer available for targeting... NEXT HOLD, PLEASE!\n");
 					next;
 				}
 			}
@@ -548,13 +555,14 @@ sub copy_hold_capture {
 		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->status eq $_->id}@$statuses);
 		$copies[$i] = undef if ($copies[$i] && !grep{ $copies[$i]->location eq $_->id}@$locations);
 		$copies[$i] = undef if (
-			$copies[$i] &&
+			!$copies[$i] ||
 			!$self->{user_filter}->request(
 				'open-ils.circ.permit_hold',
 				$hold => $copies[$i],
 				{ title => $rec, call_number => $cn }
 			)->gather(1)
 		);
+		$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
 	}
 
 	@copies = grep { defined $_ } @copies;
