@@ -79,7 +79,7 @@ function patron_init() {
 				hash_ac[ card.id() ] =  card; 
 				PATRON.au.card( card ); 
 				var cards = PATRON.au.cards(); 
-				for (var i = 0; i < cards.length; i++) { cards[i].active('0'); }
+				for (var i = 0; i < cards.length; i++) { cards[i].active('0'); cards[i].ischanged('1'); }
 				cards.push( card ); PATRON.au.cards( cards );
 				var barcode_e = document.getElementById('patron_edit_system_barcode_textbox');
 				barcode_e.disabled = false; barcode_e.value = 'REQUIRED';
