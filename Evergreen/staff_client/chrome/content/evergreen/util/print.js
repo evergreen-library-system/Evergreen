@@ -81,6 +81,15 @@ function print_template_replace(s,params) {
 		try{s=s.replace(/%PATRON_BARCODE%/g,trunc(params.au.card().barcode()));}
 			catch(E){sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
+		try{s=s.replace(/%STAFF_LASTNAME%/g,trunc(params.staff.family_name()));}
+			catch(E){sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s=s.replace(/%STAFF_FIRSTNAME%/g,trunc(params.staff.first_given_name()));}
+			catch(E){sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s=s.replace(/%STAFF_MIDDLENAME%/g,trunc(params.staff.second_given_name()));}
+			catch(E){sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s=s.replace(/%STAFF_BARCODE%/g,trunc(params.staff.card().barcode()));}
+			catch(E){sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+
 		try{s=s.replace(/%TODAY%/g,trunc(new Date()));}
 			catch(E){sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s=s.replace(/%TODAY_m%/g,trunc(formatted_date(new Date(),'%m')));}

@@ -36,6 +36,7 @@
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
+				'staff' : mw.G.user,
 				'header' : document.getElementById('itemsout_header_tb').value,
 				'line_item' : document.getElementById('itemsout_line_item_tb').value,
 				'footer' : document.getElementById('itemsout_footer_tb').value
@@ -53,6 +54,7 @@
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
+				'staff' : mw.G.user,
 				'header' : document.getElementById('checkout_header_tb').value,
 				'line_item' : document.getElementById('checkout_line_item_tb').value,
 				'footer' : document.getElementById('checkout_footer_tb').value
@@ -70,6 +72,7 @@
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
+				'staff' : mw.G.user,
 				'header' : document.getElementById('checkin_header_tb').value,
 				'line_item' : document.getElementById('checkin_line_item_tb').value,
 				'footer' : document.getElementById('checkin_footer_tb').value
@@ -87,6 +90,7 @@
 			var params = { 
 				'au' : test_patron, 
 				'lib' : mw.G.user_ou,
+				'staff' : mw.G.user,
 				'header' : document.getElementById('holds_header_tb').value,
 				'line_item' : document.getElementById('holds_line_item_tb').value,
 				'footer' : document.getElementById('holds_footer_tb').value
@@ -131,7 +135,7 @@
 						<tabpanels flex="1">
 							<tabpanel flex="1">
 								<hbox flex="1">
-									<iframe flex="1" src="data:text/html,&lt;html&gt;&lt;p&gt;Please note that this interface is for testing purposes, and that modifications you make here will not persist between different invocations of the staff client.  In future versions of the software, you will be able to save and share named templates.  Also note that the Sample View is not intended to be a print preview of the receipt.  You should print the test receipt to determine how your template will actually look.&lt;/p&gt;&lt;p&gt;The following macros get evaluated and substituted for each receipt printed: %LIBRARY% %PINES_CODE% %PATRON_LASTNAME% %PATRON_FIRSTNAME% %PATRON_MIDDLENAME% %PATRON_BARCODE% %TODAY% %OUT% %DUE% %DURATION% %COPY_BARCODE% %TITLE% %AUTHOR% %PUBLISHER% %PUBDATE% %NUMBER%&lt;/p&gt;&lt;p&gt;If there's a specific macro you would like to see, please let us know.  There will be variations on these for handling truncation and date formats.  See the examples.&lt;/p&gt;&lt;/html&gt;" />;
+									<iframe flex="1" src="data:text/html,&lt;html&gt;&lt;p&gt;Please note that this interface is for testing purposes, and that modifications you make here will not persist between different invocations of the staff client.  In future versions of the software, you will be able to save and share named templates.  Also note that the Sample View is not intended to be a print preview of the receipt.  You should print the test receipt to determine how your template will actually look.&lt;/p&gt;&lt;p&gt;The following macros get evaluated and substituted for each receipt printed: %LIBRARY% %PINES_CODE% %PATRON_LASTNAME% %PATRON_FIRSTNAME% %PATRON_MIDDLENAME% %PATRON_BARCODE% %TODAY% %OUT% %DUE% %DURATION% %COPY_BARCODE% %TITLE% %AUTHOR% %PUBLISHER% %PUBDATE% %NUMBER% %STAFF_LASTNAME% %STAFF_FIRSTNAME% %STAFF_MIDDLENAME% %STAFF BARCODE%&lt;/p&gt;&lt;p&gt;If there's a specific macro you would like to see, please let us know.  There will be variations on these for handling truncation and date formats.  You may also include HTML markup in your template, but how that renders will depend on your printer and print driver.  Please see the examples:&lt;/p&gt;&lt;/html&gt;" />;
 								</hbox>
 							</tabpanel>
 							<tabpanel flex="1">
