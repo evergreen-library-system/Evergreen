@@ -30,6 +30,10 @@ struct osrf_app_request_struct {
 	/** List of responses to our request */
 	osrf_message* result;
 
+	/* if set to true, then a call that is waiting on a response, will reset the 
+		timeout and set this variable back to false */
+	int reset_timeout;
+
 	/** So we can be listified */
 	struct osrf_app_request_struct* next;
 };
@@ -177,6 +181,9 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout );
 /** Resend this requests original request message */
 int _osrf_app_request_resend( osrf_app_request* req );
 
+
+/* tells the request to reset it's wait timeout */
+void osrf_app_session_request_reset_timeout( osrf_app_session* session, int req_id );
 
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------

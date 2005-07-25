@@ -74,6 +74,15 @@ void osrf_app_session_request_finish(
 	_osrf_app_request_free( req );
 }
 
+
+void osrf_app_session_request_reset_timeout( osrf_app_session* session, int req_id ) {
+	if(session == NULL) return;
+	debug_handler("Resetting timeout %d", req_id );
+	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
+	if(req == NULL) return;
+	req->reset_timeout = 1;
+}
+
 /** Checks the receive queue for messages.  If any are found, the first
   * is popped off and returned.  Otherwise, this method will wait at most timeout 
   * seconds for a message to appear in the receive queue.  Once it arrives it is returned.
@@ -125,7 +134,13 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 		if( req->complete )
 			return NULL;
 
-		remaining -= (int) (time(NULL) - start);
+		if(req->reset_timeout) {
+			remaining = (time_t) timeout;
+			req->reset_timeout = 0;
+			debug_handler("Recevied a timeout reset");
+		} else {
+			remaining -= (int) (time(NULL) - start);
+		}
 	}
 
 	debug_handler("Returning NULL from app_request_recv after timeout");

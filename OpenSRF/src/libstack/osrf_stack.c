@@ -128,6 +128,10 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 				osrf_app_session_set_complete( session, msg->thread_trace );
 				return NULL;
 
+			case OSRF_STATUS_CONTINUE:
+				osrf_app_session_request_reset_timeout( session, msg->thread_trace );
+				return NULL;
+
 			case OSRF_STATUS_REDIRECTED:
 				osrf_app_session_reset_remote( session );
 				session->state = OSRF_SESSION_DISCONNECTED;
