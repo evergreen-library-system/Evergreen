@@ -7,7 +7,7 @@ IMAGE=$(WEBDIR)/images
 all:	xul 
 
 
-install:	images-install
+install:	images-install circ-install
 
 xul:
 	make -C staff_client
@@ -28,6 +28,10 @@ images-install:
 	ln -sf $(IMAGE)/camera.gif $(IMAGE)/"still images.jpg"
 	ln -sf $(IMAGE)/open_book.gif $(IMAGE)/text.jpg
 	ln -sf $(IMAGE)/book_icon.jpeg $(IMAGE)/"three dimensional object.jpg"
+
+circ-install:
+	mkdir -p $(CIRCRULESDIR)
+	cp circ_rules/*.rules $(CIRCRULESDIR)/
 
 clean:
 	make -C staff_client clean

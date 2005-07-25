@@ -51,18 +51,17 @@ function buildConfig {
 	read X; if [ ! -z "$X" ]; then TMP="$X"; fi;
 
 	prompt "Install prefix [$PREFIX] ";
-	read X;
-	if [ ! -z "$X" ]; then 
-		PREFIX="$X"; 
-		BINDIR="$PREFIX/bin/";
-		LIBDIR="$PREFIX/lib/";
-		PERLDIR="$LIBDIR/perl5/";
-		INCLUDEDIR="$PREFIX/include/";
-		WEBDIR="$PREFIX/web";
-		CGIDIR="$PREFIX/cgi-bin";
-		ETCDIR="$PREFIX/etc";
-		TEMPLATEDIR="$PREFIX/templates";
-	fi
+	read X; if [ ! -z "$X" ]; then PREFIX="$X"; fi
+
+	BINDIR="$PREFIX/bin/";
+	LIBDIR="$PREFIX/lib/";
+	PERLDIR="$LIBDIR/perl5/";
+	INCLUDEDIR="$PREFIX/include/";
+	WEBDIR="$PREFIX/web";
+	CGIDIR="$PREFIX/cgi-bin";
+	ETCDIR="$PREFIX/etc";
+	TEMPLATEDIR="$PREFIX/templates";
+	CIRCRULESDIR="$PREFIX/circ";
 
 	prompt "Executables directory [$BINDIR] "
 	read X; if [ ! -z "$X" ]; then BINDIR="$X"; fi;
@@ -87,6 +86,9 @@ function buildConfig {
 
 	prompt "Templates directory [$TEMPLATEDIR] "
 	read X; if [ ! -z "$X" ]; then TEMPLATEDIR="$X"; fi;
+
+	prompt "Custom circulation rules directory [$CIRCRULESDIR] "
+	read X; if [ ! -z "$X" ]; then CIRCRULESDIR="$X"; fi;
 
 	prompt "Apache2 apxs binary [$APXS2] "
 	read X; if [ ! -z "$X" ]; then APXS2="$X"; fi;
@@ -139,6 +141,7 @@ function writeConfig {
 	_write "WEBDIR=\"$WEBDIR\"";
 	_write "TEMPLATEDIR=\"$TEMPLATEDIR\"";
 	_write "ETCDIR=\"$ETCDIR\"";
+	_write "CIRCRULESDIR=\"$CIRCRULESDIR\"";
 
 	# print out the targets
 	STR="TARGETS=(";
@@ -189,6 +192,7 @@ function writeConfig {
 	prompt "";
 	prompt "";
 	prompt "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+	prompt "!! If installing openils_all / openils_db !!";
 	prompt "!! Before running 'make install' you MUST !!";
 	prompt "!! create a database for Open-ILS.  Use   !!";
 	prompt "!! the settings that you listed above and !!";
