@@ -45,22 +45,44 @@ sub ordered_records_from_metarecord {
 	my $sql = <<"	SQL";
 	 SELECT	*
 	   FROM	(
-		SELECT	cn.record,
+		SELECT	rd.record,
 			rd.item_type,
 			rd.item_form,
+	SQL
+
+	if ($copies_visible) {
+		$sql .= <<"		SQL"; 
                         sum((SELECT	count(cp.id)
 	                       FROM	$cp_table cp
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 	                       WHERE	cn.id = cp.call_number
 	                                $copies_visible
 			  )) AS count
+		SQL
+	} else {
+		$sql .= '0 AS count';
+	}
+
+	if ($copies_visible) {
+		$sql .= <<"		SQL";
 		  FROM	$cn_table cn,
 			$sm_table sm,
 			$rd_table rd
-		  WHERE	cn.record = sm.source
+		  WHERE	rd.record = sm.source
 		  	AND cn.record = rd.record
 			AND sm.metarecord = ?
-		  GROUP BY cn.record, rd.item_type, rd.item_form
+		SQL
+	} else {
+		$sql .= <<"		SQL";
+		  FROM	$sm_table sm,
+			$rd_table rd
+		  WHERE	rd.record = sm.source
+			AND sm.metarecord = ?
+		SQL
+	}
+
+	$sql .= <<"	SQL";
+		  GROUP BY rd.record, rd.item_type, rd.item_form
 		  ORDER BY
 			CASE
 				WHEN rd.item_type IS NULL -- default
@@ -88,8 +110,11 @@ sub ordered_records_from_metarecord {
 			END,
 			count DESC
 		) x
-	  WHERE	x.count > 0
 	SQL
+
+	if ($copies_visible) {
+		$sql .= ' WHERE x.count > 0'
+	}
 
 	if (@types) {
 		$sql .= ' AND x.item_type IN ('.join(',',map{'?'}@types).')';
@@ -334,29 +359,46 @@ sub search_class_fts {
 
 	$rank_calc = ',1 , 1' if ($self->api_name =~ /unordered/o);
 
-	my $select = <<"	SQL";
-		SELECT	m.metarecord $rank_calc $visible_count
-	  	  FROM	$search_table f,
-			$metabib_metarecord_source_map_table m,
-			$asset_call_number_table cn,
-			$asset_copy_table cp,
-			$cs_table cs,
-			$metabib_record_descriptor rd,
-			$descendants d
-	  	  WHERE	$fts_where
-		  	AND m.source = f.source
-			AND cn.record = m.source
-			AND rd.record = m.source
-			AND cp.status = cs.id
-			$has_vols
-			$has_copies
-			$copies_visible
-			$t_filter
-			$f_filter
-	  	  GROUP BY m.metarecord $visible_count_test
-	  	  ORDER BY 2 DESC,3
-		  $limit_clause $offset_clause
-	SQL
+	if ($copies_visible) {
+		$select = <<"		SQL";
+			SELECT	m.metarecord $rank_calc $visible_count
+	  	  	FROM	$search_table f,
+				$metabib_metarecord_source_map_table m,
+				$asset_call_number_table cn,
+				$asset_copy_table cp,
+				$cs_table cs,
+				$metabib_record_descriptor rd,
+				$descendants d
+	  	  	WHERE	$fts_where
+		  		AND m.source = f.source
+				AND cn.record = m.source
+				AND rd.record = m.source
+				AND cp.status = cs.id
+				$has_vols
+				$has_copies
+				$copies_visible
+				$t_filter
+				$f_filter
+	  	  	GROUP BY m.metarecord $visible_count_test
+	  	  	ORDER BY 2 DESC,3
+		  	$limit_clause $offset_clause
+		SQL
+	} else {
+		$select .= <<"		SQL";
+			SELECT	m.metarecord $rank_calc, 0
+	  	  	FROM	$search_table f,
+				$metabib_metarecord_source_map_table m,
+				$metabib_record_descriptor rd
+	  	  	WHERE	$fts_where
+		  		AND m.source = f.source
+				AND rd.record = m.source
+				$t_filter
+				$f_filter
+	  	  	GROUP BY 1, 4 
+	  	  	ORDER BY 2 DESC,3
+		  	$limit_clause $offset_clause
+		SQL
+	}
 
 	$log->debug("Field Search SQL :: [$select]",DEBUG);
 
@@ -474,7 +516,9 @@ sub search_class_fts_count {
 	}
 
 	# XXX test an "EXISTS version of descendant checking...
-	my $select = <<"	SQL";
+	my $select;
+	if ($copies_visible) {
+		$select = <<"		SQL";
 		SELECT	count(distinct  m.metarecord)
 	  	  FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
@@ -493,7 +537,20 @@ sub search_class_fts_count {
 			$copies_visible
 			$t_filter
 			$f_filter
-	SQL
+		SQL
+	} else {
+		$select = <<"		SQL";
+		SELECT	count(distinct  m.metarecord)
+	  	  FROM	$search_table f,
+			$metabib_metarecord_source_map_table m,
+			$metabib_record_descriptor rd
+	  	  WHERE	$fts_where
+		  	AND m.source = f.source
+			AND rd.record = m.source
+			$t_filter
+			$f_filter
+		SQL
+	}
 
 	$log->debug("Field Search Count SQL :: [$select]",DEBUG);
 
