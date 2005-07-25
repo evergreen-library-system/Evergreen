@@ -145,6 +145,11 @@ sub bootstrap {
 		my $apps = $client->config_value("activeapps", "appname");
 		if(!ref($apps) eq "ARRAY") { $apps = [$apps]; }
 
+		if(@$apps == 0) {
+			print "No apps to load, exiting...";
+			return;
+		}
+
 		for my $app (@$apps) {
 			# verify we are a settings server and launch 
 			if( $app eq "opensrf.settings" ) {
@@ -161,6 +166,12 @@ sub bootstrap {
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	my $apps = $client->config_value("activeapps", "appname" );
 	if(!ref($apps)) { $apps = [$apps]; }
+
+	if(@$apps == 0) {
+		print "No apps to load, exiting...";
+		return;
+	}
+
 	my $server_type = $client->config_value("server_type");
 	$server_type ||= "basic";
 
@@ -348,6 +359,8 @@ sub launch_listener {
 	my( $self, $apps ) = @_;
 
 	foreach my $app ( @$apps ) {
+
+		next unless defined($app);
 
 		if( $app eq "opensrf.settings" ) { next; }
 
