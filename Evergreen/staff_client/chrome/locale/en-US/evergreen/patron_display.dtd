@@ -15,6 +15,9 @@
 <!ENTITY patron_display.checkout.done_label 'Done'>
 <!ENTITY patron_display.checkout.done_label.accesskey 'D'>
 
+<!ENTITY patron_display.items.print_receipt_label 'Print Receipt'>
+<!ENTITY patron_display.items.print_receipt_label.accesskey 'P'>
+
 <!ENTITY patron_navbar.retrieve 'Retrieve Patron'>
 <!ENTITY patron_navbar.retrieve.accesskey 'R'>
 <!ENTITY patron_navbar.refresh 'Refresh'>

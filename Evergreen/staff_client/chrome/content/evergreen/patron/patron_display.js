@@ -130,6 +130,21 @@ function patron_display_clamshell_init(p) {
 function patron_display_patron_items_init(p) {
 	p.patron_items = patron_items_init( { 'w' : p.w, 'node' : p.patron_items_node, 'debug' : p.app } );
 
+	p.w.document.getElementById('item_print').addEventListener(
+		'command',
+		function(ev) {
+			var params = { 
+				'au' : p._patron, 
+				'lib' : mw.G.user_ou,
+				'staff' : mw.G.user,
+				'header' : mw.G.itemsout_header,
+				'line_item' : mw.G.itemsout_line_item,
+				'footer' : mw.G.itemsout_footer
+			};
+			mw.print_itemsout_receipt( params );
+		}, false
+	);
+
 	p.redraw_patron_items = function() {
 		p.patron_items.clear_patron_items();
 		if (!p._patron.checkouts()) patron_get_checkouts( p._patron );

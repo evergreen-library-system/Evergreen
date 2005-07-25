@@ -186,7 +186,8 @@ function sPrint(s) {
 			this.focus();
 			NSPrint(w);
 			w.minimize(); mw.minimize();
-			//w.close();
+			w.close();
+			this.focus();
 		},0
 	);
 }
