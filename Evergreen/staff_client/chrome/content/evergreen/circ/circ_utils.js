@@ -146,7 +146,14 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 									check.copy = check2.copy;
 									check.text = check2.text;
 									check.route_to = check2.route_to;
-									sPrint(check.record.title() + '<br />\r\n' + check.text + '\r\n<br />Barcode: ' + barcode + '  Route to: ' + check.route_to + '\r\n' );
+									var patron = retrieve_patron_by_id( check.hold.usr() );
+									sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+										check.record.title() + '  Author: ' + check.record.author() + 
+										'<br />\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
+										patron.barcode() + ' ' + patron.family_name() + ', ' + 
+										patron.first_given_name() + '<br />\r\n'
+									);
+
 								}
 
 							} catch(E) { 
@@ -164,7 +171,27 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 							break;
 						}
 					break;
+					case '2': case 2: /* LOST??? */
+					break;
+					case '3': case 3: /* TRANSIT ELSEWHERE */
+						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
+						var pcheck = yns_alert(
+							msg,
+							'Alert',
+							'Print Receipt',
+							"Don't Print",
+							null,
+							"Check here to confirm this message"
+						); 
+						if (pcheck == 0) {
+							sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+								check.record.title() + '  Author: ' + check.record.author() + 
+								'<br />\r\n' + 'Route To: ' + check.route_to +
+								'<br />\r\n'
+							);
+						}
 
+					break;
 					default: 
 						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
 						var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;

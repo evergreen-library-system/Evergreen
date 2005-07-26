@@ -61,6 +61,14 @@ function hold_capture_hold_capture_items_init(p) {
 				hold_captures.push( check );
 				p.hold_capture_items.add_hold_capture_items( [ hold_captures.length - 1 ] );
 
+				var patron = retrieve_patron_by_id( check.hold.usr() );
+
+				sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + check.record.title() + 
+					'  Author: ' + check.record.author() + '<br />\r\n' +
+					'Route To: ' + check.route_to + 
+					'  Patron: ' + patron.barcode() + ' ' + patron.family_name() + ', ' + patron.first_given_name() + 
+					'<br />\r\n'
+				);
 				tb.value = ''; 
 			}
 		} catch(E) {
