@@ -12,7 +12,7 @@ function snd_bad() {
 }
 
 function snd_really_bad() {
-	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/die.wav') );
+	mw.G.sound.play( xp_url_init('chrome://evergreen/skin/media/sounds/gong.wav') );
 }
 
 function snd_good() {
