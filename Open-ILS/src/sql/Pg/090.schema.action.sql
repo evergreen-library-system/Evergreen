@@ -71,17 +71,17 @@ CREATE TABLE action.circulation (
 ) INHERITS (money.billable_xact);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 
-CREATE VIEW action.open_circulation AS
+CREATE OR REPLACE VIEW action.open_circulation AS
 	SELECT	*
 	  FROM	action.circulation
 	  WHERE	xact_finish IS NULL
 	  	AND (	stop_fines IS NULL OR
-		  	stop_fines IN ('CLAIMSRETURNED','MAXFINES','LONGOVERDUE')
+		  	stop_fines NOT IN ('CHECKIN','RENEW')
 		)
 	  ORDER BY due_date;
 		
 
-CREATE OR REPLACE VIEW action.open_cirulations AS
+CREATE OR REPLACE VIEW action.billable_cirulations AS
 	SELECT	*
 	  FROM	action.circulation
 	  WHERE	xact_finish IS NULL;
@@ -93,9 +93,6 @@ BEGIN
 	END IF;
 	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'LOST' THEN
 		UPDATE asset.copy SET status = 3 WHERE id = NEW.target_copy;
-	END IF;
-	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'MISSING' THEN
-		UPDATE asset.copy SET status = 4 WHERE id = NEW.target_copy;
 	END IF;
 	RETURN NEW;
 END;
