@@ -44,8 +44,11 @@ INSERT INTO permission.perm_list VALUES (33, 'CREATE_TRANSIT');
 INSERT INTO permission.perm_list VALUES (34, 'VIEW_PERMISSION');
 INSERT INTO permission.perm_list VALUES (35, 'CHECKIN_BYPASS_HOLD_FULFILL');
 INSERT INTO permission.perm_list VALUES (36, 'CREATE_PAYMENT');
+INSERT INTO permission.perm_list VALUES (37, 'SET_CIRC_LOST');
+INSERT INTO permission.perm_list VALUES (38, 'SET_CIRC_MISSING');
+INSERT INTO permission.perm_list VALUES (39, 'SET_CIRC_CLAIMS_RETURNED');
 
-SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 37);
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 40);
 
 CREATE TABLE permission.grp_tree (
 	id		SERIAL	PRIMARY KEY,
@@ -100,8 +103,11 @@ INSERT INTO permission.grp_perm_map VALUES (31, 3, 33, 0);
 INSERT INTO permission.grp_perm_map VALUES (32, 3, 34, 0);
 INSERT INTO permission.grp_perm_map VALUES (33, 3, 35, 0);
 INSERT INTO permission.grp_perm_map VALUES (41, 3, 36, 0);
+INSERT INTO permission.grp_perm_map VALUES (45, 3, 37, 0);
+INSERT INTO permission.grp_perm_map VALUES (46, 3, 38, 0);
+INSERT INTO permission.grp_perm_map VALUES (47, 3, 39, 0);
 
-SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, 44);
+SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, 48);
 
 
 CREATE TABLE permission.usr_perm_map (
