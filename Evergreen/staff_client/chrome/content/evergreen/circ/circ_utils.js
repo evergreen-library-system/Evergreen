@@ -150,7 +150,7 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 									sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 										check.record.title() + '  Author: ' + check.record.author() + 
 										'<br />\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
-										patron.barcode() + ' ' + patron.family_name() + ', ' + 
+										patron.card().barcode() + ' ' + patron.family_name() + ', ' + 
 										patron.first_given_name() + '<br />\r\n'
 									);
 

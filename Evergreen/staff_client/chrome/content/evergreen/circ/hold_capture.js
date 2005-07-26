@@ -66,7 +66,7 @@ function hold_capture_hold_capture_items_init(p) {
 				sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + check.record.title() + 
 					'  Author: ' + check.record.author() + '<br />\r\n' +
 					'Route To: ' + check.route_to + 
-					'  Patron: ' + patron.barcode() + ' ' + patron.family_name() + ', ' + patron.first_given_name() + 
+					'  Patron: ' + patron.card().barcode() + ' ' + patron.family_name() + ', ' + patron.first_given_name() + 
 					'<br />\r\n'
 				);
 				tb.value = ''; 
