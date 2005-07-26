@@ -37,18 +37,24 @@ function my_init() {
 		'open-ils.circ.stat_cat.asset.multirange.intersect.retrieve',
 		false
 	);
+	/*
 	if (params.select_all) {
 		document.getElementById('ephemeral_listbox').selectAll();
 		apply_attributes();
 	}
+	*/
 }
 
 function transfer_attributes(event) {
+	/*
 	var items = event.target.selectedItems;
 	mw.sdump('D_CAT','selectedItems.length = ' + items.length + '\n');
 	if (items.length == 0) { return; }
+	*/
 
 	// Dump items
+
+	/*
 	var dump_copies = map_list(
 		items,
 		function (obj) {
@@ -57,6 +63,15 @@ function transfer_attributes(event) {
 			return cn_list[cnp].copies()[cpp];
 		}
 	);
+	*/
+
+	var dump_copies = map_flat_list(
+		cn_list,
+		function (cn) {
+			return cn.copies();
+		}
+	);
+
 	for (var i in dump_copies) {
 		mw.sdump('D_CAT','\n\n\n,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_\n\n\n');
 		mw.sdump('D_CAT', js2JSON(dump_copies[i]) );
@@ -75,6 +90,7 @@ function transfer_attributes(event) {
 		copy.location().id();
 	if (copy.status()) document.getElementById('copy-status-menu').value =
 		copy.status().id();
+	alert('inside copy.js: transferring copy.loan_duration() to xul loan-duration-menu.\ncopy.loan_duration() = ' + copy.loan_duration() + '\ndocument.getElementById("loan-duration-menu").value = ' + document.getElementById('loan-duration-menu').value + '\n');
 	if (copy.loan_duration()) document.getElementById('loan-duration-menu').value =
 		copy.loan_duration();
 	if (copy.fine_level()) document.getElementById('fine-level-menu').value =
@@ -121,26 +137,34 @@ function apply_attributes() {
 	var price = document.getElementById('price').value;
 	var ref = document.getElementById('reference_menu').value;
 	var opac = document.getElementById('opac_visible_menu').value;
+	/*
 	var listbox = document.getElementById('ephemeral_listbox');
 	var items = listbox.selectedItems;
 	mw.sdump('D_CAT','selectedItems.length = ' + items.length + '\n');
-	for (var i = 0; i < items.length; i++) {
-		var listitem = items[i];
-		var cn_pos = listitem.getAttribute('cn_pos');
-		var cp_pos = listitem.getAttribute('cp_pos');
-		var copy_node = cn_list[cn_pos].copies()[cp_pos];
-		copy_node.circ_lib(	mw.G.org_tree_hash[ circ_lib ]);
-		copy_node.location(	mw.G.acpl_hash[ shelving_loc ]);
-		copy_node.status(	mw.G.ccs_hash[ copy_status ]);
-		copy_node.loan_duration(loan_duration);
-		copy_node.fine_level(fine_level);
-		copy_node.circulate(circulate);
-		copy_node.deposit(deposit);
-		copy_node.deposit_amount(deposit_amount);
-		copy_node.price(price);
-		copy_node.ref(ref);
-		copy_node.opac_visible(opac);
-		copy_node.ischanged(1);
+	*/
+	for (var i = 0; i < cn_list.length; i++) {
+		for (var j = 0; j < cn_list[i].copies().length; j++) {
+			/*
+			var listitem = items[i];
+			var cn_pos = listitem.getAttribute('cn_pos');
+			var cp_pos = listitem.getAttribute('cp_pos');
+			var copy_node = cn_list[cn_pos].copies()[cp_pos];
+			*/
+			var copy_node = cn_list[i].copies()[j];
+			copy_node.circ_lib(	mw.G.org_tree_hash[ circ_lib ]);
+			copy_node.location(	mw.G.acpl_hash[ shelving_loc ]);
+			copy_node.status(	mw.G.ccs_hash[ copy_status ]);
+			alert('inside copy.js:  applying loan-duration-menu.value (' + loan_duration + ') to copy ' + copy_node.barcode() + '\n');
+			copy_node.loan_duration(loan_duration);
+			copy_node.fine_level(fine_level);
+			copy_node.circulate(circulate);
+			copy_node.deposit(deposit);
+			copy_node.deposit_amount(deposit_amount);
+			copy_node.price(price);
+			copy_node.ref(ref);
+			copy_node.opac_visible(opac);
+			copy_node.ischanged(1);
+		}
 	}
 
 	mw.sdump('D_CAT','changed cn_list: ' + js2JSON(cn_list) + '\n');
@@ -168,16 +192,22 @@ function apply_attribute(ev) {
 	var price = document.getElementById('price').value;
 	var ref = document.getElementById('reference_menu').value;
 	var opac = document.getElementById('opac_visible_menu').value;
+	/*
 	var listbox = document.getElementById('ephemeral_listbox');
 	var items = listbox.selectedItems;
 
 	mw.sdump('D_CAT','selectedItems.length = ' + items.length + '\n');
+	*/
 	mw.sdump('D_CAT','before  cn_list: ' + js2JSON(cn_list) + '\n');
-	for (var i = 0; i < items.length; i++) {
+	for (var i = 0; i < cn_list.length; i++) {
+	for (var j = 0; j < cn_list[i].copies().length; j++) {
+		/*
 		var listitem = items[i];
 		var cn_pos = listitem.getAttribute('cn_pos');
 		var cp_pos = listitem.getAttribute('cp_pos');
 		var copy_node = cn_list[cn_pos].copies()[cp_pos];
+		*/
+		var copy_node = cn_list[i].copies()[j];
 
 		mw.sdump('D_CAT','\n\n\n\n+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+\n\n\n\n');
 		mw.sdump('D_CAT','Setting copy ' + copy_node.id() + '...\n');
@@ -198,6 +228,7 @@ function apply_attribute(ev) {
 				mw.sdump('D_CAT','\tafter  status = ' + js2JSON(copy_node.status()) + '\n');
 				break;
 			case 'loan-duration-popup':
+				alert('inside copy.js: apply_attibute() : setting copy.loan_duration (currently ' + copy_node.loan_duration() + ') to ' + loan_duration + '\n');
 				mw.sdump('D_CAT','\tbefore loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
 				copy_node.loan_duration(loan_duration);
 				mw.sdump('D_CAT','\tafter  loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
@@ -244,6 +275,7 @@ function apply_attribute(ev) {
 		}
 		mw.sdump('D_CAT','\n\n\n\n+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+\n\n\n\n');
 		copy_node.ischanged(1);
+	}
 	}
 
 	mw.sdump('D_CAT','changed cn_list: ' + js2JSON(cn_list) + '\n');
