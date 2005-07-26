@@ -184,10 +184,7 @@ function runInstall {
 				;;
 
 			"openils_web" )
-				if installing; then 
-					$MAKE -C "$OPENILSDIR" "javascript-install"; 
-					$MAKE -C "$OPENILSDIR" "web-templates-install"; 
-				fi;
+				if installing; then $MAKE -C "$OPENILSDIR" "web-install"; fi;
 				;;
 
 			"openils_marcdumper" )
@@ -207,6 +204,7 @@ function runInstall {
 			"evergreen_core" )
 				if installing;	then $MAKE -C "$EVERGREENDIR" "images-install"; fi;
 				if installing;	then $MAKE -C "$EVERGREENDIR" "circ-install"; fi;
+				if installing;	then $MAKE -C "$EVERGREENDIR" "css-install"; fi;
 				;;	
 
 			"evergreen_xul_client" )
