@@ -21,9 +21,14 @@ my $init_ttk = "opac/logic/page_init.ttk";
 my $bootstrap = "/pines/conf/bootstrap.conf";
 my $child_init_ttk = "opac/logic/child_init.ttk";
 
-my $includes = [  
-				'/pines/cvs/ILS/Open-ILS/src/templates'
-			];
+my $includes = [];  # [  '/pines/cvs/ILS/Open-ILS/src/templates' ];
+
+sub import {
+	my( $self, $tdir ) = @_;
+	$includes = [ $tdir ];
+}
+
+
 
 my $plugin_base = 'OpenILS::Template::Plugin';
 
