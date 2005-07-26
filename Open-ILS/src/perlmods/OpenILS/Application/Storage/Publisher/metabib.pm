@@ -384,7 +384,7 @@ sub search_class_fts {
 		  	$limit_clause $offset_clause
 		SQL
 	} else {
-		$select .= <<"		SQL";
+		$select = <<"		SQL";
 			SELECT	m.metarecord $rank_calc, 0
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
