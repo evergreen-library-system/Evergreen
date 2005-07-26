@@ -358,7 +358,7 @@ sub load_config {
 	my $self = shift;
 	my $config = new FileHandle $self->FILE, 'r';
 	unless ($config) {
-		OpenSRF::Utils::Log->error("Could not open ".$self->FILE.": $!\n");
+		OpenSRF::Utils::Logger->error("Could not open ".$self->FILE.": $!\n");
 		die "Could not open ".$self->FILE.": $!\n";
 	}
 	my @stripped_config = $self->__strip_comments($config) if (defined $config);
