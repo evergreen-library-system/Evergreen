@@ -123,6 +123,7 @@ function SafeWindowOpen(url,title,features)
      blocked = PB.getBoolPref("dom.disable_open_during_load");
      if(blocked)
        PB.setBoolPref("dom.disable_open_during_load",false);
+
      w = window.open(url,title,features);
    }
    catch(e)

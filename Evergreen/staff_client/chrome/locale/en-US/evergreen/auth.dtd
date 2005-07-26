@@ -1,5 +1,5 @@
-<!ENTITY auth.title "Evergreen Staff Client almost-Alpha">
-<!ENTITY auth.version "Evergreen 0.0.9 2005072613">
+<!ENTITY auth.title "Evergreen Staff Client almost-almost-Alpha">
+<!ENTITY auth.version "Evergreen 0.0.9 2005072617">
 
 <!ENTITY auth.login_header "Login">
 <!ENTITY auth.name_prompt "Name:"><!ENTITY auth.name_prompt.key "N">
