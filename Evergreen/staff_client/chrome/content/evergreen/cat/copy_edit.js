@@ -20,11 +20,16 @@ function copy_edit_init() {
 		}
 	);
 	mw.sdump('D_CAT','id_mapped_list.length = ' + id_mapped_list.length + '\n');
-	var result = user_request(
-		'open-ils.search',
-		'open-ils.search.asset.copy.fleshed.batch.retrieve', 
-		[ id_mapped_list ]
-	)[0];
+	var result = [];
+	try {
+		result = user_request(
+			'open-ils.search',
+			'open-ils.search.asset.copy.fleshed.batch.retrieve', 
+			[ id_mapped_list ]
+		)[0];
+	} catch(E) {
+		handle_error(E);
+	}
 	mw.sdump('D_CAT','result.length = ' + result.length + '\n');
 	cn_list = new Array();
 	for (var i in result) {

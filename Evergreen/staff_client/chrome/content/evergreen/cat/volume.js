@@ -302,12 +302,16 @@ function build_page_four() {
 }
 
 function send_to_bill() {
-	var result = user_request(
-			'open-ils.cat',
-			'open-ils.cat.asset.volume_tree.fleshed.batch.update',
-			[ mw.G['auth_ses'][0], cn_list]
-	);
-	mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	try {
+		var result = user_request(
+				'open-ils.cat',
+				'open-ils.cat.asset.volume_tree.fleshed.batch.update',
+				[ mw.G['auth_ses'][0], cn_list]
+		);
+		mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	} catch(E) {
+		handle_error(E);
+	}
 	refresh_spawning_browse_list();
 }
 

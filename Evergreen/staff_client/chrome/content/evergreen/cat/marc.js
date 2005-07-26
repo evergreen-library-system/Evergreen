@@ -91,11 +91,16 @@ function my_resize_handler(ev) {
 
 function retrieve_record(id) {
 	mw.sdump('D_CAT','Entering retrieve_record() : ' + timer_elapsed('cat') + '\n');
-	var result = user_request(
-		'open-ils.cat',
-		'open-ils.cat.biblio.record.tree.retrieve',
-		[ id ]
-	);
+	var result;
+	try {
+		result = user_request(
+			'open-ils.cat',
+			'open-ils.cat.biblio.record.tree.retrieve',
+			[ id ]
+		);
+	} catch(E) {
+		handle_error(E);
+	}
 	//var result = [ JSON2js( test_nodeset() ) ];
 	/*var result = user_request(
 		'open-ils.cat',
@@ -119,11 +124,16 @@ function retrieve_record(id) {
 
 function retrieve_meta_record(id) {
 	mw.sdump('D_CAT','Entering retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');
-	var result = user_request(
-		'open-ils.cat',
-		'open-ils.cat.biblio.record.metadata.retrieve',
-		[ id ]
-	);
+	var result;
+	try {
+		result = user_request(
+			'open-ils.cat',
+			'open-ils.cat.biblio.record.metadata.retrieve',
+			[ id ]
+		);
+	} catch(E) {
+		handle_error(E);
+	}
 	if (typeof(result[0]) != 'object') {
 		alert( 'user_request gave ' + js2JSON(result) );
 		mw.sdump('D_CAT','Exiting retrieve_meta_record() : ' + timer_elapsed('cat') + '\n');

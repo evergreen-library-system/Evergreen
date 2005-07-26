@@ -48,18 +48,26 @@ function search() {
 	mw.sdump('D_CAT','search_type = ' + search_type + '  search_order = ' + search_order + '  search_term = ' + search_term + '\n');
 	switch(search_type) {
 		case 'tcn':
-			result = user_request(
-				'open-ils.search',
-				'open-ils.search.cat.biblio.tcn',
-				[ search_term ]
-			);
+			try {
+				result = user_request(
+					'open-ils.search',
+					'open-ils.search.cat.biblio.tcn',
+					[ search_term ]
+				);
+			} catch(E) {
+				handle_error(E);
+			}
 			break;
 		default:
-			result = user_request(
-				'open-ils.search',
-				'open-ils.search.cat.biblio.class',
-				[ search_location, search_type, search_order, search_term ]
-			);
+			try {
+				result = user_request(
+					'open-ils.search',
+					'open-ils.search.cat.biblio.class',
+					[ search_location, search_type, search_order, search_term ]
+				);
+			} catch(E) {
+				handle_error(E);
+			}
 			break;
 	}
 	// populate record_list with results

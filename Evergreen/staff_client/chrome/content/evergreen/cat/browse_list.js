@@ -150,11 +150,16 @@ function gather_copies() {
 			gather_copies_callback
 		);
 */
-	var orgs_with_copies = user_request(
-		'open-ils.cat',
-		'open-ils.cat.actor.org_unit.retrieve_by_title',
-		[ find_this_id ]
-	)[0];
+	var orgs_with_copies = [];
+	try {
+		orgs_with_copies = user_request(
+			'open-ils.cat',
+			'open-ils.cat.actor.org_unit.retrieve_by_title',
+			[ find_this_id ]
+		)[0];
+	} catch(E) {
+		handle_error(E);
+	}
 	for (var i = 0; i < orgs_with_copies.length; i++) {
 		orgs_with_copies_hash[ orgs_with_copies[i] ] = true;
 	}
@@ -629,12 +634,16 @@ function volume_delete(tab,params) {
 		cn.isdeleted( '1' );
 		cn_list.push( cn );
 	}
-	var result = user_request(
-			'open-ils.cat',
-			'open-ils.cat.asset.volume_tree.fleshed.batch.update',
-			[ mw.G['auth_ses'][0], cn_list]
-	);
-	mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	try {
+		var result = user_request(
+				'open-ils.cat',
+				'open-ils.cat.asset.volume_tree.fleshed.batch.update',
+				[ mw.G['auth_ses'][0], cn_list]
+		);
+		mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	} catch(E) {
+		handle_error(E);
+	}
 	refresh_browse_list();
 }
 
@@ -652,11 +661,15 @@ function copy_delete(tab,params) {
 		cn.copies( [ cp ] );
 		cn_list.push( cn );
 	}
-	var result = user_request(
-			'open-ils.cat',
-			'open-ils.cat.asset.volume_tree.fleshed.batch.update',
-			[ mw.G['auth_ses'][0], cn_list]
-	);
-	mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	try {
+		var result = user_request(
+				'open-ils.cat',
+				'open-ils.cat.asset.volume_tree.fleshed.batch.update',
+				[ mw.G['auth_ses'][0], cn_list]
+		);
+		mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
+	} catch(E) {
+		handle_error(E);
+	}
 	refresh_browse_list();
 }
