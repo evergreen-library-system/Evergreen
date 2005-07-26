@@ -215,10 +215,15 @@ function patron_display_patron_items_init(p) {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var copy = p._patron.checkouts()[ idx ].copy;
 							var check = checkin_by_copy_barcode( copy.barcode(), null );
-							if (check.status == 0) {
+							if (check != null) {
+								if (parseInt(check.route_to)) {
+									try {
+										check.route_to = mw.G.org_tree_hash[check.route_to].shortname();
+									} catch(E) {
+										sdump('D_ERROR',js2JSON(E) + '\n');
+									}
+								}
 								alert('Check In: ' + check.text + '  Route To: ' + check.route_to);
-							} else {
-								alert('Check In: ' + check.text + '  Route To: ' + mw.G.org_tree_hash[check.route_to].shortname());
 							}
 							p.refresh();
 						} catch(E) {
@@ -410,13 +415,18 @@ function patron_display_patron_checkout_items_init(p) {
 							var check = checkin_by_copy_barcode( copy.barcode(), null );
 							if (check == null) { // change this to whatever it takes
 								keep_these.push( checkouts[ idx ] );	
-							}
-							checkouts = keep_these;
-							if (check.status == 0) {
-								alert('Check In: ' + check.text + '  Route To: ' + check.route_to);
 							} else {
-								alert('Check In: ' + check.text + '  Route To: ' + mw.G.org_tree_hash[check.route_to].shortname());
+								if (parseInt(check.route_to)) {
+									try {
+										check.route_to = mw.G.org_tree_hash[check.route_to].shortname();
+									} catch(E) {
+										sdump('D_ERROR',js2JSON(E) + '\n');
+									}
+								}
+								alert('Check In: ' + check.text + '  Route To: ' + check.route_to);
 							}
+
+							checkouts = keep_these;
 							p.refresh();
 						} catch(E) {
 							alert(E);

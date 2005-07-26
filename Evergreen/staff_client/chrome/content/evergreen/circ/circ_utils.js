@@ -390,10 +390,6 @@ function circ_cols() {
 			'primary' : false, 'hidden' : true, 'fm_class' : 'circ', 'fm_field_render' : '.xact_finish()'
 		},
 		{
-			'id' : 'renewal_remaining', 'label' : getString('circ_label_renewal_remaining'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'fm_class' : 'circ', 'fm_field_render' : '.renewal_remaining()'
-		},
-		{
 			'id' : 'due_date', 'label' : getString('circ_label_due_date'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'circ', 'fm_field_render' : '.due_date().substr(0,10)'
 		},
@@ -404,6 +400,10 @@ function circ_cols() {
 		{
 			'id' : 'author', 'label' : getString('mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mvr', 'fm_field_render' : '.author()'
+		},
+		{
+			'id' : 'renewal_remaining', 'label' : getString('circ_label_renewal_remaining'), 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'fm_class' : 'circ', 'fm_field_render' : '.renewal_remaining()'
 		},
 		{
 			'id' : 'status', 'label' : getString('acp_label_status'), 'flex' : 1,
