@@ -198,7 +198,7 @@ sub global_record_copy_count {
 
 		SELECT	owning_lib, sum(avail), sum(tot)
  		  FROM	(
-        			SELECT	cp.owning_lib, count(cp.id) as avail, 0 as tot
+        			SELECT	cn.owning_lib, count(cp.id) as avail, 0 as tot
 				  FROM	$cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $cs_table cs ON (cs.id = cp.status)
@@ -208,7 +208,7 @@ sub global_record_copy_count {
 				  	$copies_visible
 				  GROUP BY 1
                         			UNION
-        			SELECT	cp.owning_lib, 0 as avail, count(cp.id) as tot
+        			SELECT	cn.owning_lib, 0 as avail, count(cp.id) as tot
 				  FROM	$cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $cs_table cs ON (cs.id = cp.status)
