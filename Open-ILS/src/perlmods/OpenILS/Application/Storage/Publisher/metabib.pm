@@ -32,12 +32,13 @@ sub ordered_records_from_metarecord {
 		@forms = split '', $f;
 	}
 
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
 	my $sm_table = metabib::metarecord_source_map->table;
 	my $rd_table = metabib::record_descriptor->table;
 	my $cn_table = asset::call_number->table;
+	my $cl_table = asset::copy_location->table;
 	my $cp_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
 	my $out_table = actor::org_unit_type->table;
@@ -55,6 +56,7 @@ sub ordered_records_from_metarecord {
                         sum((SELECT	count(cp.id)
 	                       FROM	$cp_table cp
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
+			       		JOIN $cl_table cl ON (cp.location = cl.id)
 	                       WHERE	cn.id = cp.call_number
 	                                $copies_visible
 			  )) AS count
@@ -157,12 +159,13 @@ sub metarecord_copy_count {
 	my $sm_table = metabib::metarecord_source_map->table;
 	my $cn_table = asset::call_number->table;
 	my $cp_table = asset::copy->table;
+	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 	my $out_table = actor::org_unit_type->table;
 	my $descendants = "actor.org_unit_descendants(u.id)";
 	my $ancestors = "actor.org_unit_ancestors(?)";
 
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
 	my $sql = <<"	SQL";
@@ -174,6 +177,7 @@ sub metarecord_copy_count {
 					JOIN $cn_table cn ON (cn.record = r.source)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
+			       		JOIN $cl_table cl ON (cp.location = cl.id)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
 				  	$copies_visible
@@ -185,6 +189,7 @@ sub metarecord_copy_count {
 					JOIN $cn_table cn ON (cn.record = r.source)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
+			       		JOIN $cl_table cl ON (cp.location = cl.id)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
 				  	AND cp.status = 0
@@ -324,6 +329,7 @@ sub search_class_fts {
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
+	my $cl_table = asset::copy_location->table;
 
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
@@ -337,7 +343,7 @@ sub search_class_fts {
 
 	my $has_vols = 'AND cn.owning_lib = d.id';
 	my $has_copies = 'AND cp.call_number = cn.id';
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 
 	my $visible_count = ', count(DISTINCT cp.id)';
 	my $visible_count_test = 'HAVING count(DISTINCT cp.id) > 0';
@@ -367,6 +373,7 @@ sub search_class_fts {
 				$asset_call_number_table cn,
 				$asset_copy_table cp,
 				$cs_table cs,
+				$cl_table cl,
 				$metabib_record_descriptor rd,
 				$descendants d
 	  	  	WHERE	$fts_where
@@ -374,6 +381,7 @@ sub search_class_fts {
 				AND cn.record = m.source
 				AND rd.record = m.source
 				AND cp.status = cs.id
+				AND cp.location = cl.id
 				$has_vols
 				$has_copies
 				$copies_visible
@@ -498,6 +506,7 @@ sub search_class_fts_count {
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
+	my $cl_table = asset::copy_location->table;
 
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
@@ -508,7 +517,7 @@ sub search_class_fts_count {
 
 	my $has_vols = 'AND cn.owning_lib = d.id';
 	my $has_copies = 'AND cp.call_number = cn.id';
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	if ($self->api_name =~ /staff/o) {
 		$copies_visible = '';
 		$has_vols = '' if ($ou_type == 0);
@@ -525,6 +534,7 @@ sub search_class_fts_count {
 			$asset_call_number_table cn,
 			$asset_copy_table cp,
 			$cs_table cs,
+			$cl_table cl,
 			$metabib_record_descriptor rd,
 			$descendants d
 	  	  WHERE	$fts_where
@@ -532,6 +542,7 @@ sub search_class_fts_count {
 			AND cn.record = m.source
 			AND rd.record = m.source
 			AND cp.status = cs.id
+			AND cp.location = cl.id
 			$has_vols
 			$has_copies
 			$copies_visible
