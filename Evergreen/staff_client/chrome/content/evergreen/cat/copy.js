@@ -40,9 +40,10 @@ function my_init() {
 	/*
 	if (params.select_all) {
 		document.getElementById('ephemeral_listbox').selectAll();
-		apply_attributes();
 	}
 	*/
+	transfer_attributes();
+	apply_attributes();
 }
 
 function transfer_attributes(event) {
@@ -80,33 +81,57 @@ function transfer_attributes(event) {
 
 	// Transfer values from first item to XUL
 
+	/*
 	var cp_pos = items[0].getAttribute('cp_pos');
 	var cn_pos = items[0].getAttribute('cn_pos');
 	var cp_list = cn_list[cn_pos].copies();
 	var copy = cp_list[cp_pos];
-	if (copy.circ_lib()) document.getElementById('circulating-library-menu').value =
-		copy.circ_lib().id();
-	if (copy.location()) document.getElementById('shelving-location-menu').value = 
-		copy.location().id();
-	if (copy.status()) document.getElementById('copy-status-menu').value =
-		copy.status().id();
-	alert('inside copy.js: transferring copy.loan_duration() to xul loan-duration-menu.\ncopy.loan_duration() = ' + copy.loan_duration() + '\ndocument.getElementById("loan-duration-menu").value = ' + document.getElementById('loan-duration-menu').value + '\n');
-	if (copy.loan_duration()) document.getElementById('loan-duration-menu').value =
-		copy.loan_duration();
-	if (copy.fine_level()) document.getElementById('fine-level-menu').value =
-		copy.fine_level();
-	if (copy.circulate()) document.getElementById('circulate_menu').value =
-		copy.circulate();
-	if (copy.deposit()) document.getElementById('deposit_menu').value =
-		copy.deposit();
-	if (copy.deposit_amount()) document.getElementById('deposit_amount').value =
-		copy.deposit_amount();
-	if (copy.price()) document.getElementById('price').value =
-		copy.price();
-	if (copy.ref()) document.getElementById('reference_menu').value =
-		copy.ref();
-	if (copy.opac_visible()) document.getElementById('opac_visible_menu').value =
-		copy.opac_visible();
+	*/
+	var copy = cn_list[0].copies()[0];
+	if (copy.circ_lib()) set_widget_value_for_display(
+		document.getElementById('circulating-library-menu'),
+		copy.circ_lib().id()
+	);
+	if (copy.location()) set_widget_value_for_display(
+		document.getElementById('shelving-location-menu'),
+		copy.location().id()
+	);
+	if (copy.status()) set_widget_value_for_display(
+		document.getElementById('copy-status-menu'),
+		copy.status().id()
+	);
+	if (copy.loan_duration()) set_widget_value_for_display(
+		document.getElementById('loan-duration-menu'),
+		copy.loan_duration()
+	);
+	if (copy.fine_level()) set_widget_value_for_display(
+		document.getElementById('fine-level-menu'),
+		copy.fine_level()
+	);
+	if (copy.circulate()) set_widget_value_for_display(
+		document.getElementById('circulate_menu'),
+		copy.circulate()
+	);
+	if (copy.deposit()) set_widget_value_for_display(
+		document.getElementById('deposit_menu'),
+		copy.deposit()
+	);
+	if (copy.deposit_amount()) set_widget_value_for_display(
+		document.getElementById('deposit_amount'),
+		copy.deposit_amount()
+	);
+	if (copy.price()) set_widget_value_for_display(
+		document.getElementById('price'),
+		copy.price()
+	);
+	if (copy.ref()) set_widget_value_for_display(
+		document.getElementById('reference_menu'),
+		copy.ref()
+	);
+	if (copy.opac_visible()) set_widget_value_for_display(
+		document.getElementById('opac_visible_menu'),
+		copy.opac_visible()
+	);
 
 	for (var i in copy.stat_cat_entries()) {
 		var entry = copy.stat_cat_entries()[i];
@@ -154,7 +179,6 @@ function apply_attributes() {
 			copy_node.circ_lib(	mw.G.org_tree_hash[ circ_lib ]);
 			copy_node.location(	mw.G.acpl_hash[ shelving_loc ]);
 			copy_node.status(	mw.G.ccs_hash[ copy_status ]);
-			alert('inside copy.js:  applying loan-duration-menu.value (' + loan_duration + ') to copy ' + copy_node.barcode() + '\n');
 			copy_node.loan_duration(loan_duration);
 			copy_node.fine_level(fine_level);
 			copy_node.circulate(circulate);
@@ -228,7 +252,6 @@ function apply_attribute(ev) {
 				mw.sdump('D_CAT','\tafter  status = ' + js2JSON(copy_node.status()) + '\n');
 				break;
 			case 'loan-duration-popup':
-				alert('inside copy.js: apply_attibute() : setting copy.loan_duration (currently ' + copy_node.loan_duration() + ') to ' + loan_duration + '\n');
 				mw.sdump('D_CAT','\tbefore loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
 				copy_node.loan_duration(loan_duration);
 				mw.sdump('D_CAT','\tafter  loan_duration = ' + js2JSON(copy_node.loan_duration()) + '\n');
