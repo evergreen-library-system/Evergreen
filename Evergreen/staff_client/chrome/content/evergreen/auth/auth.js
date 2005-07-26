@@ -7,6 +7,7 @@ G['win_list'] = [];
 G['appshell_list'] = [];
 G['doc_list'] = [];
 G['window_name_increment'] = 0;
+G['appshell_name_increment'] = 0;
 G['auth_ses'] = '';
 G['user_ou'] = '';
 G['main_test_variable'] = 'Hello World';

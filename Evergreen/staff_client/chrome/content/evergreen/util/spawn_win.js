@@ -80,10 +80,9 @@ function spawn_fieldmapper(d,placement,place,passthru_params,clone) {
 function spawn_main() {
 	sdump('D_SPAWN','trying to spawn app_shell\n');
 	try {
-		var w = new_window('chrome://evergreen/content/main/app_shell.xul');
+		var w = new_window('chrome://evergreen/content/main/app_shell.xul', {});
 		if (!w) { throw('window ref == null'); }
 		try {
-			w.document.title = G.user.usrname() + '@' + G.user_ou.name();
 			w.params = {};
 		} catch(E) {
 			alert('Hrmm. ' + pretty_print( js2JSON(E) ) );

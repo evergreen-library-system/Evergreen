@@ -70,7 +70,7 @@ function yns_alert(s,title,b1,b2,b3,c) {
 
 function new_window(chrome,params) {
 	sdump('D_WIN',arg_dump(arguments));
-	var name = self.name + '_' + ++mw.G['window_name_increment'];
+	var name = ++mw.G['window_name_increment'];
 	var options = 'chrome,resizable=yes,scrollbars=yes,width=800,height=600,fullscreen=yes';
 	try {
 		if (params) {

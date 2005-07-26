@@ -7,7 +7,13 @@
 <window id="app_shell_win"
 	orient="vertical" style="overflow: auto" width="800" height="500"
 	sizemode="maximized" persist="width height" 
-	onload="params.tabbox = 'main_tabbox'; params.w = window; params.app = 'AppShell'; mw.OpenILS_init(params);"
+	onload="
+		params.tabbox = 'main_tabbox'; 
+		params.w = window; 
+		params.app = 'AppShell'; 
+		mw.OpenILS_init(params); 
+		window.document.title = mw.G.user.usrname() + '@' + mw.G.user_ou.name() + ' : ' + (++mw.G.appshell_name_increment);
+	"
 	onunload="mw.OpenILS_exit(params);"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
