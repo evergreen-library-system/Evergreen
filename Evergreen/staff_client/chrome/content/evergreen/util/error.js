@@ -50,7 +50,7 @@ var sdump_levels = {
 	'D_HOLD_CAPTURE' : true,
 	'D_HOLD_CAPTURE_ITEMS' : false,
 
-	'D_CAT' : false,
+	'D_CAT' : true,
 
 	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,

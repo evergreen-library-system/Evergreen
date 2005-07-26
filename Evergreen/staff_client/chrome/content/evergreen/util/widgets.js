@@ -423,7 +423,7 @@ function set_widget_value_for_display(e,v) {
 		case 'label' : e.setAttribute('value',v); break;
 		case 'image' : e.setAttribute('src',v); break;
 		case 'menulist' : e.value = v;
-			var menupopup = menulist.firstChild;
+			var menupopup = e.firstChild;
 			var menuitem;
 			for (var i = 0; i < menupopup.childNodes.length; i++) {
 				if (menupopup.childNodes[i].getAttribute('value') == v ) menuitem = menupopup.childNodes[i];
