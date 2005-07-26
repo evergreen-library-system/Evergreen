@@ -525,9 +525,11 @@ sub _build_volume_list {
 
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
 		my $creq = $session->request(
-			"open-ils.storage.direct.asset.copy.search.call_number.atomic", 
-			$volume->id );
+			"open-ils.storage.direct.asset.copy.search.call_number.atomic", $volume->id );
+
 		my $copies = $creq->gather(1);
+
+		$copies = [ sort { $a->barcode cmp $b->barcode } @$copies  ];
 
 		$volume->copies($copies);
 

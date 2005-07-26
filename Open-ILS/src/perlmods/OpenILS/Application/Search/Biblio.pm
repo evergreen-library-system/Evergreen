@@ -965,12 +965,21 @@ __PACKAGE__->register_method(
 	method	=> "copy_counts_per_org",
 	api_name	=> "open-ils.search.biblio.copy_counts.retrieve");
 
+__PACKAGE__->register_method(
+	method	=> "copy_counts_per_org",
+	api_name	=> "open-ils.search.biblio.copy_counts.retrieve.staff");
+
 sub copy_counts_per_org {
 	my( $self, $client, $record_id ) = @_;
+
+	warn "Retreiveing copy copy counts for record $record_id and method " . $self->api_name . "\n";
+
+	my $method = "open-ils.storage.biblio.record_entry.global_copy_count.atomic";
+	if($self->api_name =~ /staff/) { $method =~ s/atomic/staff\.atomic/; }
+
 	my $counts = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.biblio.record_entry.global_copy_count.atomic",
-		$record_id );
+		"open-ils.storage", $method, $record_id );
+
 	$counts = [ sort {$a->[0] <=> $b->[0]} @$counts ];
 	return $counts;
 }
