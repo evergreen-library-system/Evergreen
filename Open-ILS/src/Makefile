@@ -1,6 +1,9 @@
 all: 
 
-install:	perl-install javascript-install web-templates-install string-templates-install storage-bootstrap xsl-install
+web-install:	web-templates-install javascript-install autojs-install
+
+install:	perl-install web-install string-templates-install storage-bootstrap xsl-install
+
 
 JSDIR=$(WEBDIR)/js
 
@@ -29,6 +32,12 @@ storage-bootstrap:
 	cp -r cgi-bin/* $(CGIDIR)
 	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
 
+
+autojs-install:
+	cp extras/fieldmapper.pl $(BINDIR)
+	cp extras/org_tree_js.pl $(BINDIR)
+	cp extras/autogen.sh $(BINDIR)
+
 web-templates-install:
 	@echo "Installing web templates to $(TEMPLATEDIR)"
 	mkdir -p $(TEMPLATEDIR)
@@ -39,6 +48,9 @@ string-templates-install:
 	@echo "Installing string templates to $(TEMPLATEDIR)"
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/strings $(TEMPLATEDIR)
+
+
+
 
 xsl-install:	
 	@echo "Installing XSL files to $(XSLDIR)"

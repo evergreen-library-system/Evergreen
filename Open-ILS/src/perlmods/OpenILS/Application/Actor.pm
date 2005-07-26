@@ -14,9 +14,13 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Utils::ModsParser;
 
+use OpenSRF::Utils::Cache;
+
 my $apputils = "OpenILS::Application::AppUtils";
+
 sub _d { warn "Patron:\n" . Dumper(shift()); }
-my $cache_client = OpenSRF::Utils::Cache->new("global", 0);
+
+my $cache_client;
 
 
 __PACKAGE__->register_method(
@@ -680,6 +684,9 @@ __PACKAGE__->register_method(
 sub get_org_tree {
 	my( $self, $client) = @_;
 
+	if(!$cache_client) {
+		$cache_client = OpenSRF::Utils::Cache->new("global", 0);
+	}
 	# see if it's in the cache
 	warn "Getting ORG Tree\n";
 	my $tree = $cache_client->get_cache('orgtree');

@@ -139,8 +139,8 @@ static void add_session( char* service, osrf_app_session* session ) {
 */
 
 static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
-	if( ! osrf_system_bootstrap_client( 
-		"/pines/cvs/ILS/OpenSRF/src/gateway/gateway.xml") ) { /* config option */
+	if( ! osrf_system_bootstrap_client( "/openils/conf/gateway.xml") ) { 
+		fatal_handler("Unable to load gateway config file...");
 	}
 
 	/* we don't want to waste time parsing json that we're not going to look at*/

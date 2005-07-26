@@ -11,13 +11,7 @@ use Data::Dumper;
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
-my $xslt_doc	= $parser->parse_file(
-	OpenSRF::Utils::SettingsClient
-		->new
-		->config_value(dirs => 'xsl') .  "/MARC21slim2MODS3.xsl"
-);
-
-my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+my $mods_sheet;
 
 # ----------------------------------------------------------------------------------------
 # XPATH for extracting info from a MODS doc
@@ -264,6 +258,14 @@ sub mods_values_to_mods_slim {
 sub start_mods_batch {
 
 	my( $self, $master_doc ) = @_;
+
+
+	if(!$mods_sheet) {
+		 my $xslt_doc = $parser->parse_file(
+			OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS3.xsl");
+		$mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+	}
+
 
 	my $xmldoc = $parser->parse_string($master_doc);
 	my $mods = $mods_sheet->transform($xmldoc);

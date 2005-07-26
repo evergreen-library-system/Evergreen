@@ -41,6 +41,10 @@ images-install:
 	ln -sf $(IMAGE)/open_book.gif $(IMAGE)/text.jpg
 	ln -sf $(IMAGE)/book_icon.jpeg $(IMAGE)/"three dimensional object.jpg"
 
+css-install:
+	mkdir -p $(WEBDIR)
+	cp -r css $(WEBDIR)
+
 circ-install:
 	mkdir -p $(CIRCRULESDIR)
 	cp circ_rules/*.rules $(CIRCRULESDIR)/

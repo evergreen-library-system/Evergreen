@@ -19,9 +19,7 @@ my $xml_util	= OpenILS::Utils::FlatXML->new();
 
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
-my $xslt_doc	=	$parser->parse_file( "/home/miker/cvs/OpenILS/app_server/stylesheets/MARC21slim2MODS.xsl" );
-#my $xslt_doc	= $parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
-my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+my $mods_sheet;
 
 use open qw/:utf8/;
 
@@ -298,6 +296,12 @@ sub wormize {
 	for my $entry ( $lookup->run(@docids) ) {
 		# step -1: grab the doc from storage
 		next unless ($entry);
+
+		if(!$mods_sheet) {
+		 	my $xslt_doc = $parser->parse_file(
+				OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS.xsl");
+			$mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+		}
 
 		my $xml = $entry->marc;
 		my $docid = $entry->id;

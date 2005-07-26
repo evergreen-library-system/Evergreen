@@ -4,7 +4,8 @@
 use OpenSRF::AppSession;
 use OpenSRF::System;
 use JSON;
-OpenSRF::System->bootstrap_client(config_file => "/pines/conf/client.conf");
+die "usage: perl org_tree_js.pl <bootstrap_config>" unless $ARGV[0];
+OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
 my $ses = OpenSRF::AppSession->create("open-ils.actor");
 my $req = $ses->request("open-ils.actor.org_tree.retrieve");
