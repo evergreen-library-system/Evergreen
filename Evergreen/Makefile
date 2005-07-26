@@ -4,13 +4,25 @@
 
 IMAGE=$(WEBDIR)/images
 
+# A kludge until we move the generic parts of the staff client to Open-ILS
+
 all:	xul 
 
 
 install:	images-install circ-install
 
 xul:
-	make -C staff_client
+	cp -R staff_client local_staff_client
+	find local_staff_client/ -type f -exec sed -i s/evergreen/${NEW_XUL_PACKAGE_NAME}/g {} \;
+	find local_staff_client/ -type f -exec sed -i s/Evergreen/${NEW_XUL_PACKAGE_LABEL}/g {} \;
+	(cd local_staff_client/chrome/skin/evergreen; mv evergreen.css ${NEW_XUL_PACKAGE_NAME}.css)
+	(cd local_staff_client/defaults/preferences; mv evergreen.js ${NEW_XUL_PACKAGE_NAME}.js)
+	(cd local_staff_client/chrome/content; mv evergreen ${NEW_XUL_PACKAGE_NAME})
+	(cd local_staff_client/chrome/locale/en-US/; mv evergreen ${NEW_XUL_PACKAGE_NAME})
+	(cd local_staff_client/chrome/skin; mv evergreen ${NEW_XUL_PACKAGE_NAME})
+	make -C local_staff_client build
+	find local_staff_client/ -type f -exec sed -i s/gapines.org/${NEW_OPAC_URL}/g {} \;
+	make -C local_staff_client package
 
 images-install:
 	@echo "Installing images to $(IMAGE)";
@@ -34,4 +46,4 @@ circ-install:
 	cp circ_rules/*.rules $(CIRCRULESDIR)/
 
 clean:
-	make -C staff_client clean
+	make -C local_staff_client clean

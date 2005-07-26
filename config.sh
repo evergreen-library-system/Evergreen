@@ -85,6 +85,15 @@ function buildConfig {
 	prompt "Web CGI Directory [$CGIDIR] "
 	read X; if [ ! -z "$X" ]; then CGIDIR="$X"; fi;
 
+	prompt "Web domain for OPAC in Staff Client [$NEW_OPAC_URL] "
+	read X; if [ ! -z "$X" ]; then NEW_OPAC_URL="$X"; fi;
+
+	prompt "Package Name for Staff Client [$NEW_XUL_PACKAGE_NAME] "
+	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_NAME="$X"; fi;
+
+	prompt "Package Label for Staff Client [$NEW_XUL_PACKAGE_LABEL] "
+	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_LABEL="$X"; fi;
+
 	prompt "Templates directory [$TEMPLATEDIR] "
 	read X; if [ ! -z "$X" ]; then TEMPLATEDIR="$X"; fi;
 
@@ -147,6 +156,10 @@ function writeConfig {
 	_write "ETCDIR=\"$ETCDIR\"";
 	_write "CIRCRULESDIR=\"$CIRCRULESDIR\"";
 	_write "XSLDIR=\"$XSLDIR\"";
+
+	_write "NEW_OPAC_URL=\"$NEW_OPAC_URL\"";
+	_write "NEW_XUL_PACKAGE_NAME=\"$NEW_XUL_PACKAGE_NAME\"";
+	_write "NEW_XUL_PACKAGE_LABEL=\"$NEW_XUL_PACKAGE_LABEL\"";
 
 	# print out the targets
 	STR="TARGETS=(";
