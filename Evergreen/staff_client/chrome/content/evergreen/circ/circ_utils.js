@@ -322,6 +322,18 @@ function checkin_cols() {
 function circ_cols() {
 	return  [
 		{
+			'id' : 'acp_id', 'label' : getString('acp_label_id'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'fm_class' : 'acp', 'fm_field_render' : '.id()'
+		},
+		{
+			'id' : 'circ_id', 'label' : getString('circ_label_id'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'fm_class' : 'circ', 'fm_field_render' : '.id()'
+		},
+		{
+			'id' : 'mvr_doc_id', 'label' : getString('mvr_label_doc_id'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'fm_class' : 'mvr', 'fm_field_render' : '.doc_id()'
+		},
+		{
 			'id' : 'barcode', 'label' : getString('acp_label_barcode'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : '.barcode()'
 		},
@@ -332,10 +344,6 @@ function circ_cols() {
 		{
 			'id' : 'copy_number', 'label' : getString('acp_label_copy_number'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'fm_class' : 'acp', 'fm_field_render' : '.copy_number()'
-		},
-		{
-			'id' : 'status', 'label' : getString('acp_label_status'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'fm_class' : 'acp', 'fm_field_render' : '.status()'
 		},
 		{
 			'id' : 'location', 'label' : getString('acp_label_location'), 'flex' : 1,
@@ -396,7 +404,11 @@ function circ_cols() {
 		{
 			'id' : 'author', 'label' : getString('mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mvr', 'fm_field_render' : '.author()'
-		}
+		},
+		{
+			'id' : 'status', 'label' : getString('acp_label_status'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : 'mw.G.ccs_hash[ $$.status() ].name()'
+		},
 		
 	]
 };
