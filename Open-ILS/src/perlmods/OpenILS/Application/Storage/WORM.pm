@@ -314,7 +314,7 @@ sub wormize {
 
 		unless ($no_map) {
 			my ($mr) = $mr_lookup->run( $entry->fingerprint );
-			if (!@$mr) {
+			if (!$mr || !@$mr) {
 				$log->debug("No metarecord found for fingerprint [".$entry->fingerprint."]; Creating a new one", INFO);
 				$mr = new Fieldmapper::metabib::metarecord;
 				$mr->fingerprint( $entry->fingerprint );

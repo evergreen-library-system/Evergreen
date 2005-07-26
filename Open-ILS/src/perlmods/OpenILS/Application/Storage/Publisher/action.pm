@@ -402,7 +402,6 @@ sub hold_copy_targeter {
 		$year, $mon, $mday, $hour, $min, $sec
 	);
 
-	$self->method_lookup( 'open-ils.storage.transaction.begin')->run($client);
 
 	($statuses) = $self->method_lookup('open-ils.storage.direct.config.copy_status.search.holdable.atomic')->run('t');
 
@@ -436,6 +435,9 @@ sub hold_copy_targeter {
 
 	for my $hold (@$holds) {
 		try {
+			$self->method_lookup( 'open-ils.storage.transaction.begin')->run($client);
+			$client->respond("Processing hold ".$hold->id."...\n");
+
 			my $copies;
 
 			$copies = $self->metarecord_hold_capture($hold) if ($hold->hold_type eq 'M');
@@ -449,7 +451,6 @@ sub hold_copy_targeter {
 			
 			$copies = $self->copy_hold_capture($hold) if ($hold->hold_type eq 'C');
 
-			$client->respond("Processing hold ".$hold->id."...\n");
 			unless (ref $copies || !@$copies) {
 				$client->respond("\tNo copies available for targeting at all!\n");
 			}
@@ -504,6 +505,7 @@ sub hold_copy_targeter {
 			}
 
 			$hold->prev_check_time( 'now' );
+			$client->respond("\tUpdating hold ".$hold->id." with new 'current_copy' for hold fulfillment.\n");
 			my ($r) = $self->method_lookup('open-ils.storage.direct.action.hold_request.update')->run( $hold );
 
 			$client->respond("\tProcessing of hold ".$hold->id." complete.\n");
@@ -514,6 +516,7 @@ sub hold_copy_targeter {
 			$client->respond("\tProcessing of hold ".$hold->id." failed!.\n\t\t$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 		};
+		$self->method_lookup( 'open-ils.storage.transaction.commit')->run($client);
 	}
 	$self->{user_filter}->disconnect;
 	$self->{user_filter}->finish;
@@ -571,12 +574,11 @@ sub copy_hold_capture {
 
 	return unless ($count);
 	
-	my @old_maps = $self->method_lookup('open-ils.storage.direct.action.hold_copy_map.search.hold')->run( $hold->id );
-
-	$self->method_lookup('open-ils.storage.direct.action.hold_copy_map.batch.delete')->run(@old_maps );
+	$self->method_lookup('open-ils.storage.direct.action.hold_copy_map.mass_delete')->run( { hold => $hold->id } );
 	
 	my @maps;
 	for my $c (@copies) {
+		$self->{client}->respond( "\tCreating hold-copy map for ".$hold->id." <-> ".$c->id."\n");
 		my $m = new Fieldmapper::action::hold_copy_map;
 		$m->hold( $hold->id );
 		$m->target_copy( $c->id );
