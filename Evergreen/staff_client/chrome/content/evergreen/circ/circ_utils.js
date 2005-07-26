@@ -408,8 +408,7 @@ function circ_cols() {
 		{
 			'id' : 'status', 'label' : getString('acp_label_status'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'acp', 'fm_field_render' : 'mw.G.ccs_hash[ $$.status() ].name()'
-		},
-		
+		}
 	]
 };
 
