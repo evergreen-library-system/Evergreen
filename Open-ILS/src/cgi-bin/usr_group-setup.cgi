@@ -21,9 +21,9 @@ my $cgi = new CGI;
 # setup part
 #-------------------------------------------------------------------------------
 
-my %org_cols = ( qw/id GroupID name Name parent ParentGroup/ );
+my %org_cols = ( qw/id GroupID name Name parent ParentGroup description Description/ );
 
-my @col_display_order = ( qw/id name parent/ );
+my @col_display_order = ( qw/id name parent description/ );
 
 if (my $action = $cgi->param('action')) {
 	if ( $action eq 'Update' ) {
@@ -188,6 +188,10 @@ if (my $action = $cgi->param('action')) {
 						$out;
 					}."</select><input type='hidden' value='$node' name='id'>"),
 			);
+			print Tr(
+				th($org_cols{description}),
+				td("<input type='text' name='description_$node' value=\"". $node->description() ."\">"),
+			);
 
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
 
@@ -259,6 +263,10 @@ if (my $action = $cgi->param('action')) {
 			print Tr(
 				th($org_cols{name}),
 				td("<input type='text' name='name'>"),
+			);
+			print Tr(
+				th($org_cols{description}),
+				td("<input type='text' name='description'>"),
 			);
 			print Tr( "<td colspan='2'><input type='hidden' value='$node' name='parent'>",
 				  "<input type='submit' name='action' value='Add New'/></td>" );

@@ -66,9 +66,9 @@ HEADER
 # setup part
 #-------------------------------------------------------------------------------
 
-my %profile_cols = ( qw/id SysID code Name/ );
+my %profile_cols = ( qw/id SysID code Name description Description/ );
 
-my @col_display_order = ( qw/id cod3/ );
+my @col_display_order = ( qw/id code description/ );
 
 #-------------------------------------------------------------------------------
 # Logic part
@@ -83,10 +83,15 @@ if (my $action = $cgi->param('action')) {
 		for my $id ( ($cgi->param('id')) ) {
 			my $u = permission::perm_list->retrieve($id);
 			$u->code( $cgi->param("code_$id") );
+			$u->description( $cgi->param("description_$id") );
 			$u->update;
 		}
 	} elsif ( $action eq 'Add New' ) {
-		permission::perm_list->create( { code => $cgi->param("code") } );
+		permission::perm_list->create(
+			{ code		=> $cgi->param("code"),
+			  description	=> $cgi->param("description")
+			}
+		);
 	}
 }
 
@@ -111,6 +116,7 @@ if (my $action = $cgi->param('action')) {
 		print Tr(
 			td( $row->id() ),
 			td("<input type='text' name='code_$row' value='". $row->code() ."'>"),
+			td("<input type='text' name='description_$row' value='". $row->description() ."'>"),
 			td("<input type='checkbox' value='$row' name='id'>"),
 		);
 	}
@@ -118,6 +124,7 @@ if (my $action = $cgi->param('action')) {
 	print "<tr class='new_row_class'>",
 		td(),
 		td("<input type='text' name='code'>"),
+		td("<input type='text' name='description'>"),
 		td(),
 		"</tr>";
 	print	"</table>";
