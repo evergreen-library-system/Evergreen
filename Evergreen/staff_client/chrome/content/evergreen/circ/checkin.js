@@ -139,6 +139,7 @@ function checkin_checkin_items_init(p) {
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
+					alert('Not Yet Implemented');
 					for (var i = 0; i < checkin_items.length; i++) {
 						var idx = checkin_items[i].getAttribute('record_id');
 						sdump('D_CHECKIN','Firing copy edit context\n');
@@ -154,6 +155,7 @@ function checkin_checkin_items_init(p) {
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
+					alert('Not Yet Implemented');
 					for (var i = 0; i < checkin_items.length; i++) {
 						var idx = checkin_items[i].getAttribute('record_id');
 						sdump('D_CHECKIN','Firing opac context\n');

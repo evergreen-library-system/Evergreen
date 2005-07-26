@@ -127,6 +127,7 @@ function hold_capture_hold_capture_items_init(p) {
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
+					alert('Not Yet Implemented');
 					for (var i = 0; i < hold_capture_items.length; i++) {
 						var idx = hold_capture_items[i].getAttribute('record_id');
 						sdump('D_HOLD_CAPTURE','Firing copy edit context\n');
@@ -142,6 +143,7 @@ function hold_capture_hold_capture_items_init(p) {
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
+					alert('Not Yet Implemented');
 					for (var i = 0; i < hold_capture_items.length; i++) {
 						var idx = hold_capture_items[i].getAttribute('record_id');
 						sdump('D_HOLD_CAPTURE','Firing opac context\n');
