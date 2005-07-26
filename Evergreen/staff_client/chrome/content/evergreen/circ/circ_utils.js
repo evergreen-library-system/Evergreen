@@ -23,6 +23,38 @@ function cancel_hold( hold ) {
 	}
 }
 
+function mark_circ_as_lost(circ) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
+	try {
+		var result = user_request(
+			'open-ils.circ',
+			'open-ils.circ.circulation.set_lost',
+			[ mw.G.auth_ses[0], circ.id() ]
+		)[0];
+		sdump('D_CIRC_UTILS','result = ' + result + '\n');
+		return result;
+	} catch(E) {
+		handle_error(E);
+		return null;
+	}
+}
+
+function mark_circ_as_missing(circ) {
+	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true}));
+	try {
+		var result = user_request(
+			'open-ils.circ',
+			'open-ils.circ.circulation.set_missing',
+			[ mw.G.auth_ses[0], circ.id() ]
+		)[0];
+		sdump('D_CIRC_UTILS','result = ' + result + '\n');
+		return result;
+	} catch(E) {
+		handle_error(E);
+		return null;
+	}
+}
+
 function checkout_permit(barcode, patron_id, num_of_open_async_checkout_requests, f) {
 	sdump('D_CIRC_UTILS',arg_dump(arguments,{0:true,1:true,2:true}));
 	try {

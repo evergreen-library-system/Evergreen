@@ -192,7 +192,7 @@ function patron_display_patron_items_init(p) {
 						try {
 							var idx = patron_items[i].getAttribute('record_id'); 
 							var circ = p._patron.checkouts()[ idx ].circ;
-							alert( js2JSON(renew_by_circ_id( circ.id() )) );
+							renew_by_circ_id( circ.id() );
 							p.refresh();
 						} catch(E) {
 							alert(E);
@@ -220,6 +220,28 @@ function patron_display_patron_items_init(p) {
 							} else {
 								alert('Check In: ' + check.text + '  Route To: ' + mw.G.org_tree_hash[check.route_to].shortname());
 							}
+							p.refresh();
+						} catch(E) {
+							alert(E);
+						}
+					}
+				},
+				false
+			);
+
+			/*** LOST ***/
+			var menuitem_pi_r = p.patron_items.paged_tree.w.document.createElement('menuitem');
+			p.patron_items.paged_tree.popup.appendChild( menuitem_pi_r );
+			menuitem_pi_r.setAttribute('label',getString('circ.context_lost'));
+			menuitem_pi_r.addEventListener(
+				'command',
+				function (ev) {
+					sdump('D_PATRON_DISPLAY','Firing lost context for patron_items\n');
+					for (var i = 0; i < patron_items.length; i++) {
+						try {
+							var idx = patron_items[i].getAttribute('record_id'); 
+							var circ = p._patron.checkouts()[ idx ].circ;
+							mark_circ_as_lost( circ ) ;
 							p.refresh();
 						} catch(E) {
 							alert(E);
