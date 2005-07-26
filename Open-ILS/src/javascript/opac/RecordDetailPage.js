@@ -133,10 +133,12 @@ RecordDetailPage.prototype.draw = function() {
 
 RecordDetailPage.prototype.buildCustomOrgTree = function(record) {
 
+	var method = "open-ils.search.biblio.copy_counts.retrieve";
+
+	if(isXUL()) method += ".staff";
+
 	var req = new RemoteRequest(
-		"open-ils.search",
-		"open-ils.search.biblio.copy_counts.retrieve",
-		record.doc_id() );
+		"open-ils.search", method, record.doc_id() );
 
 	var obj = this;
 	req.setCompleteCallback(
@@ -252,7 +254,9 @@ RecordDetailPage.prototype.setViewMarc = function(record) {
 	debug(".ou_type()Setting up view marc callback with record " + record.doc_id());
 
 	var func = buildViewMARCWindow(record);
+
 	marcb.onclick = func;
+	if(isXUL()) { xulEvtViewMARC(marcb, record); }
 	this.viewMarc.appendChild(marcb);
 }
 

@@ -10,6 +10,7 @@
 		[% 
 			top_target	= cgi.param("top_target"); 
 			sub_frame	= cgi.param("sub_frame");
+			location		= cgi.param("location");
 		%]
 
 		<frameset cols='100%'>
@@ -40,7 +41,8 @@
 					ELSE; 
 				%]
 
-				src			= '/opac/?target=[%- IF top_target; top_target; ELSE; "start";END; %]'
+				src			= '/opac/?target=[%- IF top_target; top_target; ELSE; "start";END; %]
+										[%- IF location; "&location=" _ location; END %]'
 
 				[% END; %] 
 			/>	

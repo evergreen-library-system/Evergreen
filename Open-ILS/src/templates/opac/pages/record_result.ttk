@@ -52,6 +52,7 @@
 
 				WRAPPER html/row id='hourglass_row';
 					cell(style="text-align:center", content=img(src="http://www.filleacgil.it/Animate/book_b.gif"));
+					#cell(style="text-align:center", content=img(src="/images/computer.gif"));
 				END;
 
 				

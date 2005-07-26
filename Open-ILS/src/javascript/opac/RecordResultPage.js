@@ -336,6 +336,8 @@ RecordResultPage.prototype.mrSearch = function(mrid) {
 
 	var request;
 	var method = "open-ils.search.biblio.metarecord_to_records";
+	if(isXUL()) method += ".staff";
+
 	if(this.format == "all")
 		request = new RemoteRequest("open-ils.search", method, mrid );
 	else

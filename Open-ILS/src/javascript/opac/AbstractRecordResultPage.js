@@ -287,6 +287,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 	author_cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	author_cell.appendChild(this.mkLink(record.doc_id(), "author", author ));
 
+	/*
 	var marcd = null;
 	if(instanceOf(this, RecordResultPage)) {
 		var span = createAppElement("span");
@@ -316,6 +317,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 		marcd.appendChild(marcb);
 
 	}
+	*/
 
 	var holddiv = null;
 	if(instanceOf(this, RecordResultPage)) {
@@ -345,14 +347,8 @@ AbstractRecordResultPage.prototype.displayRecord =
 		holds.onclick = function() { win.toggle(holds); }
 		holddiv = elem("div");
 	
-		//if(instanceOf(this,RecordResultPage))
 		holddiv.setAttribute("style", "float:right");
-	
 		holddiv.appendChild(holds);
-		//var space = elem("span", {style:"padding:5px"},null, " ");
-		//c.appendChild(space)
-		//c.appendChild(mktext(" "))
-		//c.appendChild(holddiv)
 	}
 	
 	var tab = elem("table",{style:"float:right"});
@@ -365,7 +361,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 
 	if(holddiv) tc.appendChild(holddiv);
 	tc2.appendChild(mktext(" "));
-	if(marcd) tc3.appendChild(marcd);
+	//if(marcd) tc3.appendChild(marcd);
 
 	c.appendChild(tab);
 

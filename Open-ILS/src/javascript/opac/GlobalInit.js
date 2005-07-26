@@ -127,12 +127,22 @@ function globalInit() {
 	globalPage.init();
 
 	if(paramObj.__location != null) {
+		debug("Someone passed us a location ID of " + paramObj.__location);
+
 		globalSelectedLocation = findOrgUnit(paramObj.__location);
+
+		if(paramObj.__depth == null) {
+			paramObj.__depth = findOrgType(globalSelectedLocation.ou_type()).depth();
+		}
+
 		if(globalSelectedLocation == null) 
 			debug("Invalid location in url : " + paramObj.__location);
 		else
 			debug("Setting selected location to " + globalSelectedLocation.name() );
-	} 
+
+	} else {
+		debug("No location provided in URL");
+	}
 
 
 	if(paramObj.__depth != null) {

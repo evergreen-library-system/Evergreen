@@ -65,8 +65,8 @@ HoldsWindow.prototype.sendHoldsRequest = function(formats, org, email, phone) {
 		}
 		try {
 			var r = grabUserByBarcode(this.session, recip_barcode);
-			debug("Done grabbing user");
-			alert(js2JSON(r));
+			//debug("Done grabbing user");
+			//alert(js2JSON(r));
 			this.recipient = r;
 		} catch(E) { if(E.err_msg) alert(E.err_msg()); else alert(E); }
 	}

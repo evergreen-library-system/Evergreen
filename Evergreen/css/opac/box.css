@@ -1,5 +1,4 @@
 .box {
-/*	width: 200px; */
 	width: 100%;
 	margin: 3px;
 }
@@ -7,8 +6,6 @@
 .box_title {
 	text-align: center;
 	width: 98%;
-	/*background: #C99;*/
-	/*background: #445533;*/
 	background: #556644;
 	padding: 2px;
 	color: #EFF;

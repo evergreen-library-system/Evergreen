@@ -33,10 +33,8 @@ RemoteRequest.prunePending = function(id) {
 			var req = RemoteRequest.pending[x];
 			if( req.id != id )
 				tmpArray.push(req);
-			else {
-				//debug("Cleaning " + req.id );
+			else 
 				req.clean();
-			}
 		}
 	}
 	RemoteRequest.pending = tmpArray;
@@ -295,6 +293,11 @@ RemoteRequest.prototype.getResultObject = function() {
 	}
 
 	if(obj.is_err) { 
+		if( obj.err_msg.match("OpenSRF::EX::User") ) {
+			alert("Session has timed out or cannot be authenticated.\nPlease log out and log back in if necessary.");
+			return;
+		}
+
 		debug("Something's Wrong: " + js2JSON(obj));
 		throw new EXCommunication(obj.err_msg); 
 	}
@@ -316,6 +319,7 @@ RemoteRequest.prototype.getResultObject = function() {
 		if(!isXUL()) alert(obj.err_msg());
 		throw obj;
 	}
+
 
 	return obj;
 }
