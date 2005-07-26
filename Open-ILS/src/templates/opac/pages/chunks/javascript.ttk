@@ -1,0 +1,94 @@
+[%
+
+	util_batch = [ 
+			"js/util/md5.js",
+			"js/util/webutils.js",
+			"js/util/Cookie.js",
+			"js/util/browser.js",
+		];
+
+	ils_batch = [
+			"js/util/web_fieldmapper.js", 
+			"js/util/ils_utils.js",
+			"js/util/RemoteRequest.js"
+			"js/util/ex.js",
+			"js/util/UserSession.js",
+		];
+
+	widget_batch = [
+			"js/widgets/xtree.js",
+			"js/widgets/menu/ContextMenu.js",
+			"js/widgets/menu/ContextMenuManager.js",
+			"js/widgets/ProgressBar.js",
+			"js/widgets/Box.js",
+			"js/widgets/ListBox.js",
+			"js/widgets/SideBar.js",
+			"js/widgets/Survey.js",
+			"js/opac/HoldsWindow.js",
+			"js/opac/LoginDialog.js",
+			"js/widgets/PopupBox.js",
+		];
+
+	page_batch = [
+			"js/opac/Page.js",
+			"js/opac/GlobalInit.js",
+			"js/opac/SearchBarFormChunk.js",
+			"js/opac/SearchBarChunk.js",
+			"js/opac/LocationTree.js",
+
+			"js/opac/OPACStartPage.js",
+			"js/opac/LoginPage.js",
+			"js/opac/AbstractRecordResultPage.js",
+			"js/opac/MRResultPage.js",
+			"js/opac/RecordResultPage.js",
+			"js/opac/RecordDetailPage.js",
+			"js/opac/LogoutPage.js",
+			"js/opac/AboutPage.js",
+			"js/opac/AdvancedSearchPage.js",
+			"js/opac/MyOPACPage.js",
+
+			"js/opac/AddedContent.js",
+		];
+
+
+%]
+
+[% BLOCK FASTJS;
+		"<script language='javascript' src='/fastjs?";
+		FOR file IN batch; 
+			IF ! loop.first; "&"; END;
+			"file=" _ file;
+		END;
+		"'></script>";
+	END;
+%]
+
+[% BLOCK JS;
+		FOR file IN batch; 
+			"<script language='javascript' src='/$file'></script>";
+		END;
+	END;
+%] 
+
+[% BLOCK ALL_JS %]
+	<script language='javascript' src='/js/util/JSON.js'></script>
+
+	[%
+		IF 0; #cgi.user_agent("MSIE");
+			INCLUDE FASTJS batch=ils_batch; 
+			INCLUDE FASTJS batch=util_batch; 
+			INCLUDE FASTJS batch=widget_batch; 
+			INCLUDE FASTJS batch=page_batch; 
+
+		ELSE;
+			INCLUDE JS batch=util_batch;
+			INCLUDE JS batch=ils_batch;
+			INCLUDE JS batch=widget_batch;
+			INCLUDE JS batch=page_batch;
+		END;
+	%]
+
+	<script language='javascript' src='/js/util/OrgTree.js'></script>
+
+[% END; %]
+
