@@ -88,16 +88,16 @@ CREATE OR REPLACE VIEW action.billable_cirulations AS
 
 CREATE OR REPLACE FUNCTION action.circulation_claims_returned () RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'CLAIMSRETURNED' THEN
+	IF NEW.stop_fines = 'CLAIMSRETURNED' THEN
 		UPDATE actor.usr SET claims_returned_count = claims_returned_count + 1 WHERE id = NEW.usr;
 	END IF;
-	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'LOST' THEN
+	IF NEW.stop_fines = 'LOST' THEN
 		UPDATE asset.copy SET status = 3 WHERE id = NEW.target_copy;
 	END IF;
 	RETURN NEW;
 END;
 $$ LANGUAGE 'plpgsql';
-CREATE TRIGGER action_circulation_claims_returned
+CREATE TRIGGER action_circulation_stop_fines_tgr
 	BEFORE UPDATE ON action.circulation
 	FOR EACH ROW
 	EXECUTE PROCEDURE action.circulation_claims_returned ();
