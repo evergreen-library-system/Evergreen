@@ -408,6 +408,7 @@ sub capture_copy {
 		copy => $copy,
 		route_to => $hold->pickup_lib,
 		record => $title,
+		hold => $hold, 
 	};
 
 }
@@ -435,8 +436,9 @@ sub _find_local_hold_for_copy {
 
 	# first see if this copy has already been selected to fulfill a hold
 	my $hold  = $session->request(
-		"open-ils.storage.direct.action.hold_request.search.current_copy",
-		$copy->id )->gather(1);
+		"open-ils.storage.direct.action.hold_request.search_where",
+		{ current_copy => $copy->id, capture_time => undef } )->gather(1);
+
 	if($hold) {return $hold;}
 
 	warn "searching for local hold at org " . $user->home_ou . " and copy " . $copy->id . "\n";

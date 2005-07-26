@@ -696,18 +696,19 @@ sub transit_receive {
 		"open-ils.storage.direct.action.transit_copy.search_where",
 		{ target_copy => $copy->id, dest_recv_time => undef } )->gather(1);
 
+
+	my $record = _grab_title_by_copy($session, $copy->id);
+	my $u = OpenILS::Utils::ModsParser->new();
+	$u->start_mods_batch( $record->marc() );
+	$record = $u->finish_mods_batch();
+
 	if($transit) {
 
-		warn "Found transit for copy $copyid\n";
+		warn "Found transit " . $transit->id . " for copy $copyid\n";
 
 		if( defined($transit->dest_recv_time) ) {
 			return { status => 11, route_to => $copy->circ_lib, 
 				text => "Transit is already complete for this copy" };
-		}
-
-		if($transit->dest ne $user->home_ou) {
-			return { status => 3, route_to => $transit->dest, 
-				text => "Copy is destined for a different location" };
 		}
 
 		$transit->dest_recv_time("now");
@@ -715,6 +716,8 @@ sub transit_receive {
 			"open-ils.storage.direct.action.transit_copy.update", $transit )->gather(1);
 
 		if(!$s) { throw OpenSRF::EX::ERROR ("Error updating transit " . $transit->id . "\n"); }
+
+		warn "Searching for hold transit with id " . $transit->id . "\n";
 
 		my $holdtransit = $session->request(
 			"open-ils.storage.direct.action.hold_transit_copy.retrieve",
@@ -745,10 +748,41 @@ sub transit_receive {
 
 			$apputils->commit_db_session($session);
 
-			return { status => 0, route_to => $hold->pickup_lib, text => "Transit Complete" };
+			return { status => 4, route_to => "Holds Shelf", 
+				text => "Transit Complete", record => $record, copy => $copy  };
+
+
+		} else {
+
+			if($transit->dest eq $user->home_ou) {
+
+				$copy->status(0); 
+				$copy->editor($user->id); 
+				$copy->edit_date("now"); 
+
+				my $s = $session->request(
+					"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
+				if(!$s) {throw OpenSRF::EX::ERROR ("Error putting copy on holds shelf ".$copy->id);} # blah..
+				$apputils->commit_db_session($session);
+
+				return { status => 0, route_to => $user->home_ou, text => "Transit Complete", record => $record, copy => $copy  };
+
+			} else {
+
+				$apputils->rollback_db_session($session);
+				return { 
+					copy => $copy, record => $record, 
+					status => 3, route_to => $transit->dest, 
+					text => "Transit needs to be routed" };
+
+			}
+
 		}
 
+
 	} else { 
+
+		$apputils->rollback_db_session($session);
 		return { status => 12, route_to => $copy->circ_lib, text => "No transit found" };
 	} 
 
@@ -765,6 +799,9 @@ __PACKAGE__->register_method(
 	'status' values:
 		0 = OK
 		1 = 'copy required to fulfil a hold'
+		2 = "copy is marked as lost"
+		3 = "transit copy"
+		4 = "transit for hold complete, put on holds shelf"
 	NOTES
 
 sub checkin {
@@ -773,6 +810,11 @@ sub checkin {
 	my $err;
 	my $copy;
 	my $circ;
+	my $iamlost;
+
+	my $status = "0";
+	my $status_text = "OK";
+	my $route_to = "";
 
 	my $transaction;
 	my $user = $apputils->check_user_session($user_session);
@@ -796,6 +838,11 @@ sub checkin {
 		$copy = $copy_req->gather(1)->[0];
 		if(!$copy) {
 			$client->respond_complete(OpenILS::EX->new("UNKNOWN_BARCODE")->ex);
+		}
+
+
+		if($copy->status eq "3") { #if copy is lost
+			$iamlost = 1;
 		}
 
 		if($copy->status eq "6") { #copy is in transit, deal with it
@@ -868,10 +915,10 @@ sub checkin {
 				$cp_up->gather(1);
 			
 				my $ci_up = $session->request(
-					"open-ils.storage.direct.action.circulation.update",
-					$circ );
+					"open-ils.storage.direct.action.circulation.update", $circ );
+
+
 				$ci_up->gather(1);
-			
 			
 				warn "Checkin succeeded\n";
 			}
@@ -890,19 +937,55 @@ sub checkin {
 
 	} else {
 
-		my $status = "0";
-		my $status_text = "OK";
 
 		# see if this copy can fulfill a hold
 		my $hold = OpenILS::Application::Circ::Holds::_find_local_hold_for_copy( $session, $copy, $user );
 
-		my $route_to = $shelving_locations->{$copy->location};
+		$route_to = $shelving_locations->{$copy->location};
 
 		if($hold) { 
+			warn "We found a hold that can be fulfilled by copy " . $copy->id . "\n";
 			$status = "1";
 			$status_text = "Copy needed to fulfill hold";
 			$route_to = $hold->pickup_lib;
 		}
+
+		if($iamlost) {
+			$status = "2";
+			$status_text = "Copy is marked as LOST";
+		}
+
+		if(!$hold and $copy->circ_lib ne $user->home_ou) {
+
+			warn "Checked in copy needs to be transited " . $copy->id . "\n";
+
+			my $transit = Fieldmapper::action::transit_copy->new;
+			$transit->source($user->home_ou);
+			$transit->dest($copy->circ_lib);
+			$transit->target_copy($copy->id);
+			$transit->source_send_time("now");
+
+			my $s = $session->request(
+				"open-ils.storage.direct.action.transit_copy.create", $transit )->gather(1);
+
+			if(!$s){ throw OpenSRF::EX::ERROR 
+				("Unable to create new transit for copy " . $copy->id ); }
+
+			warn "Putting copy into in transit state \n";
+			$copy->status(6); 
+			$copy->editor($user->id); 
+			$copy->edit_date("now"); 
+
+			$s = $session->request(
+				"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
+			if(!$s) {throw OpenSRF::EX::ERROR ("Error updating copy ".$copy->id);} # blah..
+
+			$status = 3;
+			$status_text = "Copy needs to be routed to a different location";
+			$route_to = $copy->circ_lib;
+		}
+
+
 	
 		$apputils->commit_db_session($session);
 
@@ -916,11 +999,11 @@ sub checkin {
 		my $mods = $u->finish_mods_batch();
 
 		return { 
-			record => $mods, 
-			status => $status,
-			text => $status_text,
-			circ => $circ,
-			copy => $copy,
+			record	=> $mods, 
+			status	=> $status,
+			text		=> $status_text,
+			circ		=> $circ,
+			copy		=> $copy,
 			route_to => $route_to,
 		};
 	}
