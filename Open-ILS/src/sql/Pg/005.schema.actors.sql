@@ -138,7 +138,7 @@ CREATE TABLE actor.usr_setting (
 	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
 	name	TEXT		NOT NULL,
 	value	TEXT		NOT NULL,
-	CONSTRAINT name_once_per_value UNIQUE (usr,name)
+	CONSTRAINT usr_once_per_key UNIQUE (usr,name)
 );
 COMMENT ON TABLE actor.usr_setting IS $$
 /*
@@ -355,7 +355,7 @@ CREATE TABLE actor.org_unit_setting (
 	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE,
 	name		TEXT		NOT NULL,
 	value		TEXT		NOT NULL,
-	CONSTRAINT name_once_per_value UNIQUE (org_unit,name)
+	CONSTRAINT ou_once_per_key UNIQUE (org_unit,name)
 );
 COMMENT ON TABLE actor.org_unit_setting IS $$
 /*
