@@ -395,7 +395,7 @@ function my_actsc_list_callback(request) {
 	try {
 		actsc_list = request.getResultObject();
 		if (!actsc_list) { throw('null result'); }
-		if (actsc_list.length == 0) { throw('zero length result'); }
+		//if (actsc_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
 		alert('Login failed on actsc_list: ' + js2JSON(E)); 
 		if (!debug_ignore_auth_failures) {
