@@ -7,14 +7,14 @@ CREATE SCHEMA action;
 CREATE TABLE action.survey (
 	id		SERIAL	PRIMARY KEY,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
-	name		TEXT	NOT NULL,
-	description	TEXT	NOT NULL,
 	start_date	DATE	NOT NULL DEFAULT NOW(),
 	end_date	DATE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
 	usr_summary	BOOL	NOT NULL DEFAULT FALSE,
 	opac		BOOL	NOT NULL DEFAULT FALSE,
 	poll		BOOL	NOT NULL DEFAULT FALSE,
-	required	BOOL	NOT NULL DEFAULT FALSE
+	required	BOOL	NOT NULL DEFAULT FALSE,
+	name		TEXT	NOT NULL,
+	description	TEXT	NOT NULL
 );
 CREATE UNIQUE INDEX asv_once_per_owner_idx ON action.survey (owner,name);
 
@@ -56,17 +56,17 @@ CREATE TRIGGER action_survey_response_answer_date_fixup_tgr
 
 CREATE TABLE action.circulation (
 	target_copy		BIGINT				NOT NULL, -- asset.copy.id
-	renewal			BOOL				NOT NULL DEFAULT FALSE,
 	circ_lib		INT				NOT NULL, -- actor.org_unit.id
-	duration_rule		TEXT				NOT NULL, -- name of "circ duration" rule
-	duration		INTERVAL			NOT NULL, -- derived from "circ duration" rule
 	renewal_remaining	INT				NOT NULL, -- derived from "circ duration" rule
-	recuring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
-	recuring_fine		NUMERIC(6,2)			NOT NULL, -- derived from "circ fine" rule
-	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
-	max_fine		NUMERIC(6,2)			NOT NULL, -- derived from "max fine" rule
-	fine_interval		INTERVAL			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
+	renewal			BOOL				NOT NULL DEFAULT FALSE,
 	due_date		TIMESTAMP WITH TIME ZONE	NOT NULL,
+	duration		INTERVAL			NOT NULL, -- derived from "circ duration" rule
+	fine_interval		INTERVAL			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
+	recuring_fine		NUMERIC(6,2)			NOT NULL, -- derived from "circ fine" rule
+	max_fine		NUMERIC(6,2)			NOT NULL, -- derived from "max fine" rule
+	duration_rule		TEXT				NOT NULL, -- name of "circ duration" rule
+	recuring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
+	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
 	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE'))
 ) INHERITS (money.billable_xact);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
@@ -91,6 +91,12 @@ BEGIN
 	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'CLAIMSRETURNED' THEN
 		UPDATE actor.usr SET claims_returned_count = claims_returned_count + 1 WHERE id = NEW.usr;
 	END IF;
+	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'LOST' THEN
+		UPDATE asset.copy SET status = 3 WHERE id = NEW.target_copy;
+	END IF;
+	IF NEW.stop_fines <> OLD.stop_fines AND NEW.stop_fines = 'MISSING' THEN
+		UPDATE asset.copy SET status = 4 WHERE id = NEW.target_copy;
+	END IF;
 	RETURN NEW;
 END;
 $$ LANGUAGE 'plpgsql';
@@ -109,16 +115,16 @@ CREATE TABLE action.hold_request (
 	return_time		TIMESTAMP WITH TIME ZONE,
 	prev_check_time		TIMESTAMP WITH TIME ZONE,
 	expire_time		TIMESTAMP WITH TIME ZONE,
+	hold_type		"char"				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
+	target			BIGINT				NOT NULL, -- see hold_type
+	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL,
 	requestor		INT				NOT NULL REFERENCES actor.usr (id),
 	usr			INT				NOT NULL REFERENCES actor.usr (id),
-	hold_type		CHAR				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
-	holdable_formats	TEXT,
-	phone_notify		TEXT,
-	email_notify		TEXT,
-	target			BIGINT				NOT NULL, -- see hold_type
 	selection_depth		INT				NOT NULL DEFAULT 0,
 	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit,
-	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL
+	holdable_formats	TEXT,
+	phone_notify		TEXT,
+	email_notify		TEXT
 );
 
 
@@ -139,23 +145,23 @@ CREATE TABLE action.hold_copy_map (
 
 CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
+	source_send_time	TIMESTAMP WITH TIME ZONE,
+	dest_recv_time		TIMESTAMP WITH TIME ZONE,
 	target_copy		BIGINT				NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
 	source			INT				NOT NULL REFERENCES actor.org_unit (id),
 	dest			INT				NOT NULL REFERENCES actor.org_unit (id),
-	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE,
-	source_send_time	TIMESTAMP WITH TIME ZONE,
-	dest_recv_time		TIMESTAMP WITH TIME ZONE,
-	prev_hop		INT				REFERENCES action.transit_copy (id)
+	prev_hop		INT				REFERENCES action.transit_copy (id),
+	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE action.hold_transit_copy (
-	hold			INT				REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
+	hold	INT	REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (action.transit_copy);
 
 CREATE TABLE action.unfulfilled_hold_list (
-	id		BIGSERIAL	PRIMARY KEY,
-	hold		INT				NOT NULL,
+	id		BIGSERIAL			PRIMARY KEY,
 	current_copy	BIGINT				NOT NULL,
+	hold		INT				NOT NULL,
 	circ_lib	INT				NOT NULL,
 	fail_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );

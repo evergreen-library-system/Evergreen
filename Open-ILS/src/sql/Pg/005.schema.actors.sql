@@ -130,7 +130,7 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 
 -- Just so that there is a user...
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou )
-	VALUES ( 1, 1,'admin', 'open-ils', 'Administrator', '', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
+	VALUES ( 1, 1,'admin', 'open-ils', 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 
 
 CREATE TABLE actor.usr_setting (
@@ -145,7 +145,7 @@ COMMENT ON TABLE actor.usr_setting IS $$
  * Copyright (C) 2005  Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
- * User objects
+ * User settings
  *
  * This table contains any arbitrary settings that a client
  * program would like to save for a user.
@@ -163,6 +163,9 @@ COMMENT ON TABLE actor.usr_setting IS $$
  * GNU General Public License for more details.
  */
 $$;
+
+CREATE INDEX actor_usr_setting_usr_idx ON actor.usr_setting (usr);
+
 
 CREATE TABLE actor.stat_cat (
 	id		SERIAL  PRIMARY KEY,
@@ -344,8 +347,42 @@ INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (2, 3, '
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (2, 3, 'BR2', 'Example Branch 2');
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, 'BR3', 'Example Branch 3');
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, 'BR4', 'Example Branch 4');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (4, 4, 'SL4', 'Example Sub-lib 1');
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (6, 5, 'BM4', 'Example Bookmobile 1');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (4, 4, 'SL1', 'Example Sub-lib 1');
+INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (6, 5, 'BM1', 'Example Bookmobile 1');
+
+CREATE TABLE actor.org_unit_setting (
+	id		BIGSERIAL	PRIMARY KEY,
+	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE,
+	name		TEXT		NOT NULL,
+	value		TEXT		NOT NULL,
+	CONSTRAINT name_once_per_value UNIQUE (org_unit,name)
+);
+COMMENT ON TABLE actor.org_unit_setting IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Org Unit settings
+ *
+ * This table contains any arbitrary settings that a client
+ * program would like to save for an org unit.
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
+CREATE INDEX actor_org_unit_setting_usr_idx ON actor.org_unit_setting (org_unit);
+
 
 CREATE TABLE actor.usr_address (
 	id		SERIAL	PRIMARY KEY,
@@ -360,6 +397,8 @@ CREATE TABLE actor.usr_address (
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL
 );
+
+CREATE INDEX actor_usr_addr_usr_idx ON actor.usr_address (usr);
 
 CREATE INDEX actor_usr_addr_street1_idx ON actor.usr_address (lower(street1));
 CREATE INDEX actor_usr_addr_street2_idx ON actor.usr_address (lower(street2));
@@ -382,6 +421,8 @@ CREATE TABLE actor.org_address (
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL
 );
+
+CREATE INDEX actor_org_address_org_unit_idx ON actor.org_address (org_unit);
 
 INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;

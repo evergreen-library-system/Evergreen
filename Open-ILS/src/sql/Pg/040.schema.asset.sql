@@ -43,19 +43,19 @@ CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number) WHERE status = 0;
 
 CREATE TABLE asset.copy_transparency (
 	id		SERIAL		PRIMARY KEY,
-	name		TEXT		NOT NULL,
+	deposit_amount	NUMERIC(6,2),
 	owner		INT		NOT NULL REFERENCES actor.org_unit (id),
 	circ_lib	INT		REFERENCES actor.org_unit (id),
-	holdable	BOOL,
 	loan_duration	INT		CHECK ( loan_duration IN (1,2,3) ),
 	fine_level	INT		CHECK ( fine_level IN (1,2,3) ),
+	holdable	BOOL,
 	circulate	BOOL,
 	deposit		BOOL,
-	deposit_amount	NUMERIC(6,2),
 	ref		BOOL,
+	opac_visible	BOOL,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,
-	opac_visible	BOOL,
+	name		TEXT		NOT NULL,
 	CONSTRAINT scte_name_once_per_lib UNIQUE (owner,name)
 );
 
@@ -77,8 +77,8 @@ CREATE TABLE asset.stat_cat_entry_transparency_map (
 CREATE TABLE asset.stat_cat (
 	id		SERIAL	PRIMARY KEY,
 	owner		INT	NOT NULL,
+	opac_visible	BOOL	NOT NULL DEFAULT FALSE,
 	name		TEXT	NOT NULL,
-	opac_visible	BOOL NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 
@@ -114,8 +114,8 @@ CREATE TABLE asset.call_number (
 	editor		BIGINT				NOT NULL,
 	edit_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	record		bigint				NOT NULL,
-	label		TEXT				NOT NULL,
 	owning_lib	INT				NOT NULL,
+	label		TEXT				NOT NULL,
 	CONSTRAINT asset_call_number_label_once_per_lib UNIQUE (record, owning_lib, label)
 );
 CREATE INDEX asset_call_number_record_idx ON asset.call_number (record);

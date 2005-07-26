@@ -15,20 +15,20 @@ CREATE INDEX m_b_x_open_xacts_idx ON money.billable_xact (usr) WHERE xact_finish
 CREATE TABLE money.billing (
 	id		BIGSERIAL			PRIMARY KEY,
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
-	amount		NUMERIC(6,2)			NOT NULL,
 	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	note		TEXT,
-	voided		BOOL				NOT NULL DEFAULT FALSE
+	voided		BOOL				NOT NULL DEFAULT FALSE,
+	amount		NUMERIC(6,2)			NOT NULL,
+	note		TEXT
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
 
 CREATE TABLE money.payment (
 	id		BIGSERIAL			PRIMARY KEY,
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
-	amount		NUMERIC(6,2)			NOT NULL,
 	payment_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	note		TEXT,
-	voided		BOOL				NOT NULL DEFAULT FALSE
+	voided		BOOL				NOT NULL DEFAULT FALSE,
+	amount		NUMERIC(6,2)			NOT NULL,
+	note		TEXT
 );
 CREATE INDEX m_p_xact_idx ON money.payment (xact);
 

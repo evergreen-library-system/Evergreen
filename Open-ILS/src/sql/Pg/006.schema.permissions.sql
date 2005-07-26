@@ -4,8 +4,9 @@ BEGIN;
 CREATE SCHEMA permission;
 
 CREATE TABLE permission.perm_list (
-	id	SERIAL	PRIMARY KEY,
-	code	TEXT	NOT NULL UNIQUE
+	id		SERIAL	PRIMARY KEY,
+	code		TEXT	NOT NULL UNIQUE,
+	description	TEXT
 );
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
 
@@ -47,9 +48,10 @@ INSERT INTO permission.perm_list VALUES (36, 'CREATE_PAYMENT');
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 37);
 
 CREATE TABLE permission.grp_tree (
-	id	SERIAL	PRIMARY KEY,
-	name	TEXT	NOT NULL UNIQUE,
-	parent	INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT
+	id		SERIAL	PRIMARY KEY,
+	name		TEXT	NOT NULL UNIQUE,
+	parent		INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT,
+	description	TEXT
 );
 CREATE INDEX grp_tree_parent ON permission.grp_tree (parent);
 
@@ -182,13 +184,22 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION permission.usr_has_perm ( iuser INT, tperm TEXT, target INT ) RETURNS BOOL AS $$
+CREATE OR REPLACE FUNCTION permission.usr_has_perm ( iuser INT, tperm TEXT, target_ou INT ) RETURNS BOOL AS $$
 DECLARE
 	r_usr	actor.usr%ROWTYPE;
 	r_perm	permission.usr_perm_map%ROWTYPE;
 BEGIN
 
 	SELECT * INTO r_usr FROM actor.usr WHERE id = iuser;
+
+	IF r_usr.active = FALSE THEN
+		RETURN FALSE;
+	END IF;
+
+	IF r_usr.super_user = TRUE THEN
+		RETURN TRUE;
+	END IF;
+
 
 	FOR r_perm IN	SELECT	*
 			  FROM	permission.usr_perms(iuser) p
@@ -198,7 +209,7 @@ BEGIN
 			  	OR p.perm = -1 LOOP
 
 		PERFORM	*
-		  FROM	actor.org_unit_descendants(target,r_perm.depth)
+		  FROM	actor.org_unit_descendants(target_ou,r_perm.depth)
 		  WHERE	id = r_usr.home_ou;
 
 		IF FOUND THEN
