@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
-use OpenSRF::System qw(/pines/conf/client.conf);
+use OpenSRF::System qw(/openils/conf/bootstrap.conf);
 use OpenSRF::Utils::SettingsClient;
 use Time::HiRes qw/time/;
 use OpenSRF::EX qw/:try/;
