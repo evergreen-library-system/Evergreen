@@ -1,0 +1,47 @@
+[%
+	# --------------------------------------------------------------------------------- 
+	# Text Map - Defines all of the static text
+	# The basic layout:
+	#		global.textmap.opac.$page.$field = $value;
+	# --------------------------------------------------------------------------------- 
+
+
+	# --------------------------------------------------------------------------------- 
+	# Change to suit orginization
+	# --------------------------------------------------------------------------------- 
+	global.textmap.opac.basic_search.page_title		= "Evergreen OPAC";
+	global.textmap.opac.advanced_search.page_title	= "Evergreen Advanced Search";
+	global.textmap.opac.mr_result.page_title			= "Evergreen Search Results";
+	global.textmap.opac.search_bar.about				= "About PINES"
+
+	# --------------------------------------------------------------------------------- 
+	# Basic English text by page
+	# --------------------------------------------------------------------------------- 
+
+
+	# search_bar ---------------------------------------------------------------------- 
+	global.textmap.opac.search_bar.title				= "Title";
+	global.textmap.opac.search_bar.author				= "Author";
+	global.textmap.opac.search_bar.subject				= "Subject";
+	global.textmap.opac.search_bar.keyword				= "Keyword";
+	global.textmap.opac.search_bar.search				= "Search";
+	global.textmap.opac.search_bar.text_area			= "Basic Search";
+	global.textmap.opac.search_bar.advanced			= "Advanced Search";
+	global.textmap.opac.search_bar.my_opac				= "My OPAC";
+	global.textmap.opac.search_bar.login				= "Login";
+	global.textmap.opac.search_bar.logout				= "Logout";
+
+	# mr_result ---------------------------------------------------------------------- 
+	global.textmap.opac.mr_result.hit_count			= "Hits: ";
+
+	# login -------------------------------------------------------------------------- 
+	global.textmap.opac.login.username					= "User Barcode";
+	global.textmap.opac.login.password					= "Password";
+	global.textmap.opac.login.login						= "Login";
+	global.textmap.opac.login.success					= "Login Succeeded";
+	global.textmap.opac.login.failure					= "Login Failed";
+	global.textmap.opac.login.logout_success			= "You have been successfully logged out.";
+	global.textmap.opac.login.remember					= "Remember me";
+
+%]
+	
