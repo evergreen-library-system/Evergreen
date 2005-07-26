@@ -57,11 +57,12 @@ function buildConfig {
 	LIBDIR="$PREFIX/lib/";
 	PERLDIR="$LIBDIR/perl5/";
 	INCLUDEDIR="$PREFIX/include/";
-	WEBDIR="$PREFIX/web";
-	CGIDIR="$PREFIX/cgi-bin";
-	ETCDIR="$PREFIX/etc";
-	TEMPLATEDIR="$PREFIX/templates";
-	CIRCRULESDIR="$PREFIX/circ";
+	ETCDIR="$PREFIX/conf";
+	WEBDIR="$PREFIX/var/web";
+	CGIDIR="$PREFIX/var/cgi-bin";
+	TEMPLATEDIR="$PREFIX/var/templates";
+	CIRCRULESDIR="$PREFIX/var/circ";
+	XSLDIR="$PREFIX/var/xsl";
 
 	prompt "Executables directory [$BINDIR] "
 	read X; if [ ! -z "$X" ]; then BINDIR="$X"; fi;
@@ -86,6 +87,9 @@ function buildConfig {
 
 	prompt "Templates directory [$TEMPLATEDIR] "
 	read X; if [ ! -z "$X" ]; then TEMPLATEDIR="$X"; fi;
+
+	prompt "XSL Stylesheets directory [$XSLDIR] "
+	read X; if [ ! -z "$X" ]; then XSLDIR="$X"; fi;
 
 	prompt "Custom circulation rules directory [$CIRCRULESDIR] "
 	read X; if [ ! -z "$X" ]; then CIRCRULESDIR="$X"; fi;
@@ -142,6 +146,7 @@ function writeConfig {
 	_write "TEMPLATEDIR=\"$TEMPLATEDIR\"";
 	_write "ETCDIR=\"$ETCDIR\"";
 	_write "CIRCRULESDIR=\"$CIRCRULESDIR\"";
+	_write "XSLDIR=\"$XSLDIR\"";
 
 	# print out the targets
 	STR="TARGETS=(";
@@ -164,7 +169,6 @@ function writeConfig {
 	_write "DBNAME=\"$DBNAME\"";
 	_write "DBUSER=\"$DBUSER\"";
 	_write "DBPW=\"$DBPW\"";
-
 
 
 	# Now we'll write out the DB bootstrapping config

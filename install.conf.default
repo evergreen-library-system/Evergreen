@@ -49,7 +49,7 @@ TARGETS=("opensrf_all" "openils_all" "evergreen_core");
 # libraries will be installed into PERFIX/lib, etc.  The user 
 # running 'install.sh install' must have write permissions to PREFIX
 # --------------------------------------------------------------------
-PREFIX="/pines/";
+PREFIX="/openils/";
 BINDIR="$PREFIX/bin/";
 LIBDIR="$PREFIX/lib/";
 PERLDIR="$LIBDIR/perl5/";
