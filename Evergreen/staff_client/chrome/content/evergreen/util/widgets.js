@@ -422,6 +422,14 @@ function set_widget_value_for_display(e,v) {
 		case 'textbox' : e.value = v; break;
 		case 'label' : e.setAttribute('value',v); break;
 		case 'image' : e.setAttribute('src',v); break;
+		case 'menulist' : e.value = v;
+			var menupopup = menulist.firstChild;
+			var menuitem;
+			for (var i = 0; i < menupopup.childNodes.length; i++) {
+				if (menupopup.childNodes[i].getAttribute('value') == v ) menuitem = menupopup.childNodes[i];
+			}
+			if (menuitem) e.selectedItem = menuitem;
+			break;
 		default: try {e.setAttribute('value',v); e.value = v;} catch(E) {} break;
 	}
 }
