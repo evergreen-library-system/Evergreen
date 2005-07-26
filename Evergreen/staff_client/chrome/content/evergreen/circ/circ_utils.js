@@ -175,6 +175,10 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 					break;
 					case '3': case 3: /* TRANSIT ELSEWHERE */
 						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
+						var msg = check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+								check.record.title() + '  Author: ' + check.record.author() + 
+								'<br />\r\n' + 'Route To: ' + check.route_to +
+								'<br />\r\n';
 						var pcheck = yns_alert(
 							msg,
 							'Alert',
@@ -184,14 +188,30 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 							"Check here to confirm this message"
 						); 
 						if (pcheck == 0) {
-							sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-								check.record.title() + '  Author: ' + check.record.author() + 
-								'<br />\r\n' + 'Route To: ' + check.route_to +
-								'<br />\r\n'
-							);
+							sPrint(msg);
 						}
 
 					break;
+					case '4': case 4: /* transit for hold is complete */
+						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
+						var msg = check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+								check.record.title() + '  Author: ' + check.record.author() + 
+								'<br />\r\n' + 'Route To: ' + check.route_to +
+								'<br />\r\n';
+						var pcheck = yns_alert(
+							msg,
+							'Alert',
+							'Print Receipt',
+							"Don't Print",
+							null,
+							"Check here to confirm this message"
+						); 
+						if (pcheck == 0) {
+							sPrint(msg);
+						}
+
+					break;
+
 					default: 
 						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
 						var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;
@@ -208,9 +228,16 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 						}
 					break;
 				}
+			} else {  // status == 0
+				if (parseInt(check.route_to)) {
+					if (check.route_to != mw.G.user_ou.id()) {
+						check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
+					} else {
+						check.route_to = mw.G.acpl_hash[ check.copy.location() ].name();
+					}
+				}
 			}
 		}
-		if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
 		return check;
 	} catch(E) {
 		handle_error(E, true);
