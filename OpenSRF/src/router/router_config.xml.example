@@ -18,6 +18,11 @@
 
 	</trusted_domains>
 
+
+	<!-- jabber connection information. Note that unix socket connectes are
+			not yet implemented with any of the C libraries so port will 
+			have to be a port number -->
+
 	<transport>
 		<server>jabber_server.domain.com</server>
 		<port>5222</port>
@@ -27,6 +32,7 @@
 		<connect_timeout>10</connect_timeout>
 		<max_reconnect_attempts>5</max_reconnect_attempts>
 	</transport>
+
 
 	<log>
 		<file>/pines/log/router.log</file>

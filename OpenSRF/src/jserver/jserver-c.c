@@ -182,6 +182,9 @@ void _jserver_remove_client_id(jserver* js, int id) {
 
 	jclient_node* node = js->client;
 
+	debug_handler("Searching for jclient to remove with id %d", id);
+	debug_handler("First node in list has id %d", node->id );
+
 	if(node->id == id) {
 		js->client = node->next;
 		debug_handler("Removing the first jserver client");
@@ -190,11 +193,11 @@ void _jserver_remove_client_id(jserver* js, int id) {
 		return;
 	}
 
-	debug_handler("Searching for jclient to remove");
 	jclient_node* tail_node = node;
 	node = node->next;
 
 	while(node) {
+		debug_handler("Checking node %d to remove", node->id);
 		if(node->id == id) {
 			tail_node->next = node->next;
 			debug_handler("Removing a jserver client");

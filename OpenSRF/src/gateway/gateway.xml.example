@@ -1,19 +1,27 @@
 <!-- Bootstrap config file for the C opensrf_stack library -->
 <config>
 	<bootstrap>
-		<settings_config>/path/to/opensrf.xml</settings_config>
+		<!-- log level (WARN, INFO, DEBUG) -->
 		<debug>INFO</debug>
+
+		<!-- best to leave this untouched if possible -->
 		<router_name>router</router_name>
 
+		<!-- jabber domains to connect to (domain1, domain2, ...) -->
 		<domains>
 			<domain1>host.example.com</domain1>
 		</domains>
 
+		<!-- jabber connection information. Note that unix socket connectes are
+				not yet implemented with any of the C libraries so port will 
+				have to be a port number -->
 		<username>my_jabber_login</username>
 		<passwd>my_jabber_password</passwd>
 		<port>5222</port>
 
 	</bootstrap>
+
+	<!-- log file location -->
 	<logs>
 		<client>/path/to/log/gateway.log</client>
 	</logs>

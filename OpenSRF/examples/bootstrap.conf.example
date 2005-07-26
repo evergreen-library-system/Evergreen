@@ -3,22 +3,38 @@
 # ----------------------------------------------------------
 [bootstrap]
 
+# location of the opensrf.xml config file
 settings_config	= /path/to/opensrf.xml
+
+# log files directory
 log_dir				= /path/to/log
 
+# log level
 debug					= ERROR
 #debug				= INFO
 #debug				= DEBUG
 #debug				= INTERNAL
 
+# the jabber login of the router (changing this will likely cause problems)
 router_name			= router
+
+# all jabber domains we want our app to connect to
 list:domains		= router1.domain.com, router2.domain.com
+
+# jabber login
 username				= jabber_username
+
+# jabber password
 passwd				= jabber_password
+
+# if port is non-numeric (e.g. /tmp/mysock.sock) then we will attempt to
+# connect to the specified string as a unix socket file 
+# This works with Chop Chop jabber only (opensrf custom jabber server)
 port					= 5222
 
 # --------------------------------------
 
+# log file names
 [logs]
 debug					= debug.log
 error					= error.log

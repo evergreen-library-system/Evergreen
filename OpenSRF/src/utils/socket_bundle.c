@@ -299,6 +299,8 @@ int _socket_route_data(
 
 	if(mgr == NULL) return -1;
 
+	int last_failed_id = -1;
+
 
 	/* come back here if someone yanks a socket_node from beneath us */
 	while(1) {
@@ -310,9 +312,20 @@ int _socket_route_data(
 		while(node && (handled < num_active)) {
 	
 			int sock_fd = node->sock_fd;
+			
+			if(last_failed_id != -1) {
+				/* in case it was not removed by our overlords */
+				debug_handler("Attempting to remove last_failed_id of %d", last_failed_id);
+				socket_remove_node( mgr, last_failed_id );
+				last_failed_id = -1;
+				status = -1;
+				break;
+			}
+
 	
 			/* does this socket have data? */
 			if( FD_ISSET( sock_fd, read_set ) ) {
+
 	
 				debug_handler("Socket %d active", sock_fd);
 				handled++;
@@ -327,6 +340,7 @@ int _socket_route_data(
 				/* someone may have yanked a socket_node out from under 
 					us...start over with the first socket */
 				if(status == -1)  {
+					last_failed_id = sock_fd;
 					debug_handler("Backtracking back to start of loop because "
 							"of -1 return code from _socket_handle_client_data()");
 				}

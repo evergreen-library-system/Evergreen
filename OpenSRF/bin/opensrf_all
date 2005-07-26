@@ -1,0 +1,140 @@
+#!/bin/bash
+# --------------------------------------------------------------------
+# Copyright (C) 2005  Georgia Public Library Service 
+# Bill Erickson <highfalutin@gmail.com>
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# --------------------------------------------------------------------
+
+
+# --------------------------------------------------------------------------
+# Utility script for starting the jserver (the opensrf jabber server), the
+# opensrf router, and opensrf proper.
+# see vars below for ways to alter the behavior and directory locations
+# --------------------------------------------------------------------------
+
+
+
+# --------------------------------------------------------------------------
+# Change to suit
+# --------------------------------------------------------------------------
+PREFIX=/openils;
+ETCDIR="$PREFIX/conf";  # config files are found here
+LOGDIR="$PREFIX/var/log";	# logs go here
+BINDIR="$PREFIX/bin";	# executables are found here
+BOOTSTRAP="$ETCDIR/bootstrap.conf";	# opensrf config is here
+
+# should these be started? set to "" or nothing to disable them
+JSERVER="1";
+ROUTER="1";
+OPENSRF="1";
+
+JSERVERSOCK="$PREFIX/var/sock/jserver.sock";	# jabber server socket file 
+JSERVERLOG="$LOGDIR/jserver.log" # jabber server log 
+JSERVERPORT=5222;						# jabber server port 
+JSERVERLEVEL=4; # can be 1-4, 4 is the highest
+ROUTERLOG="$LOGDIR/router.log"	# jabber router log
+# --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+
+JSERVERBIN="jserver-c" 
+export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH";
+export PERL5LIB="$PREFIX/lib/perl5:$PERL5LIB";
+export PATH="$PREFIX/bin:$PATH";
+
+
+function fail { echo "$0 exited: $*"; exit 99; }
+
+
+function startJserver {
+
+	ACTIVE=$(netstat -an | grep $JSERVERPORT);
+	
+	if [ ! -z "$ACTIVE" ]; then
+
+		echo "Port $JSERVERPORT is busy. Waiting 60 seconds for the port to clear up..."
+
+		for ((i=0; i!= 60; i++)) {
+			ACTIVE=$(netstat -an | grep $JSERVERPORT);
+			[ -z "$ACTIVE" ] && break; 
+			echo -n "+";
+			sleep 1;
+		}
+		echo "";
+		ACTIVE=$(netstat -an | grep $JSERVERPORT);
+		[ ! -z "$ACTIVE" ] && fail "Port $JSERVERPORT is busy...exiting";
+	fi;
+	
+	rm -f "$JSERVERSOCK";
+	nohup "$BINDIR/$JSERVERBIN" $JSERVERPORT "$JSERVERSOCK" "$JSERVERLEVEL" "$JSERVERLOG" &
+}
+
+
+function startRouter {
+	nohup "$BINDIR/router" "$ETCDIR/router_config.xml" &
+}
+
+function startOpenSRF {
+	 "$BINDIR/opensrf_ctl" start "$BOOTSTRAP";
+}
+
+
+
+function makeMeGo {
+	
+	if [ ! -z "$JSERVER" ]; then
+		echo "Starting Chop Chop, Jabber (jserver-c)...";
+		startJserver;
+		echo "Chop Chop started OK";
+	fi
+
+	sleep 1;
+
+	if [ ! -z "$ROUTER" ]; then
+		echo "Starting router...";
+		startRouter;
+		echo "Router started OK";
+	fi
+
+	sleep 1;
+
+	if [ ! -z "$OPENSRF" ]; then
+		echo "Starting OpenSRF...";
+		startOpenSRF;
+		echo "OpenSRF started OK";
+	fi
+		
+}
+
+
+function stopMe {
+
+	echo "Stopping OpenSRF...";
+	"$BINDIR/opensrf_ctl" stop;
+	sleep 2;
+	
+	echo "Stopping The Router...";
+	killall router;
+	
+	sleep 2;
+	
+	echo "Stopping Chop Chop...";
+	killall jserver-c;
+}
+
+
+
+[ "$1" = "stop" ] && stopMe && exit;
+[ "$1" = "restart" ] && stopMe && makeMeGo && exit;
+
+makeMeGo;
+
+

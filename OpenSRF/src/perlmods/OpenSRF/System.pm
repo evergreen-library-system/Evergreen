@@ -145,7 +145,7 @@ sub bootstrap {
 		my $apps = $client->config_value("activeapps", "appname");
 		if(!ref($apps) eq "ARRAY") { $apps = [$apps]; }
 
-		if(@$apps == 0) {
+		if(!defined($apps) || @$apps == 0) {
 			print "No apps to load, exiting...";
 			return;
 		}
@@ -167,7 +167,7 @@ sub bootstrap {
 	my $apps = $client->config_value("activeapps", "appname" );
 	if(!ref($apps)) { $apps = [$apps]; }
 
-	if(@$apps == 0) {
+	if(!defined($apps) || @$apps == 0) {
 		print "No apps to load, exiting...";
 		return;
 	}
