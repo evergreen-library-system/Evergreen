@@ -7,11 +7,19 @@ RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js
 RETRIEVE_ORG_TREE=wget -N http://gapines.org/js/util/OrgTree.js
 RETRIEVE_CLIENT_CONFIG=cp ../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
 
-all: evergreen.xpi
+all: build package
 	@echo
 	@echo How do makefiles work again?
 	@echo BUILD = ${BUILD}
 	touch application.ini
+
+build: generated open-ils patron circ
+	@echo
+	@echo Everything before packaging
+
+package: evergreen.xpi
+	@echo
+	@echo Packaging
 
 stamp: 
 	sed -i s/^Version=.\*/Version=${VERSION}/ application.ini 
@@ -59,7 +67,7 @@ evergreen.xpi: evergreen.jar
 	@echo make the xpi file
 	zip -r evergreen.xpi chrome/ defaults/ install.js install.rdf application.ini Makefile LICENSE README -x \*CVS\* > /dev/null
 
-evergreen.jar: generated open-ils patron circ
+evergreen.jar: build
 	@echo
 	@echo make the jar file
 	(cd chrome; zip -r evergreen.jar content/ locale/ skin/ -x \*CVS\* > /dev/null )
