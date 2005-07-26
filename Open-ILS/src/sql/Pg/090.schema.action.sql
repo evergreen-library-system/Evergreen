@@ -88,11 +88,13 @@ CREATE OR REPLACE VIEW action.billable_cirulations AS
 
 CREATE OR REPLACE FUNCTION action.circulation_claims_returned () RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.stop_fines = 'CLAIMSRETURNED' THEN
-		UPDATE actor.usr SET claims_returned_count = claims_returned_count + 1 WHERE id = NEW.usr;
-	END IF;
-	IF NEW.stop_fines = 'LOST' THEN
-		UPDATE asset.copy SET status = 3 WHERE id = NEW.target_copy;
+	IF OLD.stop_fines IS NULL OR OLD.stop_fines <> NEW.stop_fines THEN
+		IF NEW.stop_fines = 'CLAIMSRETURNED' THEN
+			UPDATE actor.usr SET claims_returned_count = claims_returned_count + 1 WHERE id = NEW.usr;
+		END IF;
+		IF NEW.stop_fines = 'LOST' THEN
+			UPDATE asset.copy SET status = 3 WHERE id = NEW.target_copy;
+		END IF;
 	END IF;
 	RETURN NEW;
 END;
