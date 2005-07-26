@@ -319,7 +319,7 @@ COMMENT ON TABLE config.rule_age_hold_protect IS $$
  */
 $$;
 
-INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '3month', '3 mons', 3);
+INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '3month', '3 mons', 0);
 INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '6month', '6 mons', 2);
 
 
