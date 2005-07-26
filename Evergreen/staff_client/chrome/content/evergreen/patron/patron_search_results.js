@@ -6,8 +6,12 @@ function patron_search_results_init(p) {
 
 	p.patron_cols = [
 		{ 
+			'active' : 'id_col', 'label' : getString('au_label_active'), 'flex' : 1, 
+			'primary' : false, 'hidden' : false, 'fm_field_render' : 'yesno( $$.active() )'
+		},
+		{ 
 			'id' : 'id_col', 'label' : getString('au_label_id'), 'flex' : 1, 
-			'primary' : true, 'hidden' : false, 'fm_field_render' : '.id()'
+			'primary' : false, 'hidden' : false, 'fm_field_render' : '.id()'
 		},
 		{ 
 			'id' : 'prefix_col', 'label' : getString('au_label_prefix'), 'flex' : 1, 
@@ -66,7 +70,7 @@ function patron_search_results_map_patron_to_cols(p, patron, treeitem) {
 	for (var i = 0; i < p.patron_cols.length; i++) {
 		var hash = p.patron_cols[i];
 		sdump('D_PATRON_SEARCH_RESULTS','Considering ' + js2JSON(hash) + '\n');
-		var cmd = 'patron'+hash.fm_field_render;
+		var cmd = parse_render_string('patron',hash.fm_field_render);
 		sdump('D_PATRON_SEARCH_RESULTS','cmd = ' + cmd + '\n');
 		var col = '';
 		try {
