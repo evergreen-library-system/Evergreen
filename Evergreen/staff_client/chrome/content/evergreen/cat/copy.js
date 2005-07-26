@@ -329,8 +329,17 @@ function update_stat_cat_entry(copy,menuitem) {
 	copy.stat_cat_entries( entries );
 }
 
+var add_to_listbox_first_comma = 0;
+
 function add_to_listbox(cn_pos,cp_pos,name,callnumber,barcode) {
 	mw.sdump('D_CAT','xul: name = ' + name + ' cn = ' + callnumber + ' bc = ' + barcode + '\n');
+	var desc = document.getElementById('description_box');
+	if (add_to_listbox_first_comma++ == 0) {
+		desc.appendChild( document.createTextNode( ' ' + barcode ) );
+	} else {
+		desc.appendChild( document.createTextNode( ', ' + barcode ) );
+	}
+	/*
 	var listbox = document.getElementById('ephemeral_listbox');
 	var listitem = document.createElement('listitem');
 		listitem.setAttribute('cn_pos',cn_pos);
@@ -345,5 +354,6 @@ function add_to_listbox(cn_pos,cp_pos,name,callnumber,barcode) {
 	var listcell3 = document.createElement('listcell');
 		listcell3.setAttribute('label',barcode);
 	listitem.appendChild(listcell3);
+	*/
 }
 

@@ -44,7 +44,7 @@
 		<hbox id="copy_button_box"/>
 	</vbox>
 	<splitter collapse="after"> <grippy/> </splitter>
-	<vbox flex="1" hidden="true">
+	<vbox flex="1" hidden="false">
 		<deck id="bottom_deck"/>
 	</vbox>
 </vbox>
@@ -73,7 +73,8 @@
 
 <deck id="bottom_deck" flex="1">
 	<vbox>
-		<listbox id="ephemeral_listbox" flex="1" seltype="multiple" onselect="transfer_attributes(event);">
+		<description id="description_box">Modifying the following copies:</description>
+		<listbox id="ephemeral_listbox" flex="1" seltype="multiple" onselect="transfer_attributes(event);" hidden="true">
 			<listhead>
 				<listheader/>
 				<listheader label="Location"/>
