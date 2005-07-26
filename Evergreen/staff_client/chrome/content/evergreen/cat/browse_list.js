@@ -20,22 +20,26 @@ function my_init() {
 
 function refresh_browse_list() {
 	mw.sdump('D_CAT','=-=-=-=-=-=-=-=-=\n\n\nrefresh_browse_list()\n');
-	// Prune tree
-	var nl = document.getElementsByTagName('treeitem');
-	for (var i = 0; i < nl.length; i++) {
-		var v_treeitem = nl[i];
-		if (v_treeitem.getAttribute('object_type') == 'volume') {
-			var org_treechildren = v_treeitem.parentNode;
-			var org_treeitem = org_treechildren.parentNode;
-			org_treeitem.removeChild(org_treechildren);
-			var org_treerow = org_treeitem.firstChild;
-			org_treerow.childNodes[1].setAttribute('label','0');
-			org_treerow.childNodes[2].setAttribute('label','0');
-		}
-	}
-	document.getElementById('browse_meter').value = 0;
-	document.getElementById('browse_meter').setAttribute('real', '0.0');
-	gather_copies();
+	setTimeout(
+		function() {
+			// Prune tree
+			var nl = document.getElementsByTagName('treeitem');
+			for (var i = 0; i < nl.length; i++) {
+				var v_treeitem = nl[i];
+				if (v_treeitem.getAttribute('object_type') == 'volume') {
+					var org_treechildren = v_treeitem.parentNode;
+					var org_treeitem = org_treechildren.parentNode;
+					org_treeitem.removeChild(org_treechildren);
+					var org_treerow = org_treeitem.firstChild;
+					org_treerow.childNodes[1].setAttribute('label','0');
+					org_treerow.childNodes[2].setAttribute('label','0');
+				}
+			}
+			document.getElementById('browse_meter').value = 0;
+			document.getElementById('browse_meter').setAttribute('real', '0.0');
+			gather_copies();
+		}, 0
+	);
 }
 
 function button_toggle_my_libraries(ev) {
