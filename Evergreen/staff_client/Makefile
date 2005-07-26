@@ -3,11 +3,9 @@ PACKAGE=Evergreen
 DESCRIPTION=Evergreen Staff Client almost-almost-Alpha
 BUILD=2005072617
 
-ILS_DIR=${PWD}/../..
-
 RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js
 RETRIEVE_ORG_TREE=wget -N http://gapines.org/js/util/OrgTree.js
-RETRIEVE_CLIENT_CONFIG=cp ${ILS_DIR}/OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
+RETRIEVE_CLIENT_CONFIG=cp ../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
 
 all: evergreen.xpi
 	@echo
