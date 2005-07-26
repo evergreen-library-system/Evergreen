@@ -202,7 +202,7 @@ sub global_record_copy_count {
 				  FROM	$cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $cs_table cs ON (cs.id = cp.status)
-					JOIN $cl_table cs ON (cl.id = cp.location)
+					JOIN $cl_table cl ON (cl.id = cp.location)
 				  WHERE	cn.record = ?
 				  	AND cp.status = 0
 				  	$copies_visible
@@ -212,7 +212,7 @@ sub global_record_copy_count {
 				  FROM	$cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $cs_table cs ON (cs.id = cp.status)
-					JOIN $cl_table cs ON (cl.id = cp.location)
+					JOIN $cl_table cl ON (cl.id = cp.location)
 				  WHERE	cn.record = ?
 				  	$copies_visible
 				  GROUP BY 1
