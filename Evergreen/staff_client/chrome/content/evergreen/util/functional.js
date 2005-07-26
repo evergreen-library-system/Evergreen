@@ -45,7 +45,7 @@ function map_list(list,f) {
 function map_flat_list(list,f) {
 	var new_list = [];
 	for (var i in list) {
-		new_list = new_list.concat( f( list[i] );
+		new_list = new_list.concat( f( list[i] ) );
 	}
 	return new_list;
 }
