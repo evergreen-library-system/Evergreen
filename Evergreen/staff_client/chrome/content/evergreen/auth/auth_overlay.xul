@@ -38,7 +38,7 @@
 <groupbox id="main_groupbox" flex="1">
 	<caption id="main_caption" label="&auth.login_header;"/>
 	<label value="&auth.version;"/>
-	<label value="Alpha Version"/>
+	<label value="Development Version"/>
 	<label value=" "/>
 	<grid>
 		<columns>
