@@ -176,6 +176,7 @@ AbstractRecordResultPage.prototype.displayRecord =
 	function( record, search_id, page_id ) {
 
 	if(record == null) return;
+
 	debug("Displaying record " + record.doc_id());
 
 	if(!instanceOf(record, Fieldmapper)) {
