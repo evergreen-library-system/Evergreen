@@ -338,7 +338,7 @@ sub populate_remote_method_cache {
 sub method_lookup {             
 	my $self = shift;
 	my $method = shift;
-	my $proto = shift || 1;
+	my $proto = shift;
 	my $no_recurse = shift || 0;
 	my $no_remote = shift || 0;
 
@@ -348,7 +348,7 @@ sub method_lookup {
 	my $class = ref($self) || $self;
 
 	$log->debug("Lookup of [$method] by [$class] in api_level [$proto]", DEBUG);
-	#$log->debug("Available methods\n".Dumper(\@_METHODS), INTERNAL);
+	$log->debug("Available methods\n\t".join("\n\t", keys %{ $_METHODS[$proto] }), INTERNAL);
 
 	my $meth;
 	if (__PACKAGE__->thunk) {
@@ -372,6 +372,7 @@ sub method_lookup {
 		}
 
 	} elsif (!$no_recurse) {
+		$log->debug("We didn't find [$method], asking everyone else.", DEBUG);
 		retrieve_remote_apis($method);
 		$meth = $self->method_lookup($method,$proto,1);
 	}
