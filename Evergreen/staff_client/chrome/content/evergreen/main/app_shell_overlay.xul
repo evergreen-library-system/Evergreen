@@ -57,6 +57,9 @@
 	<command id="cmd_z39_50_import" oncommand="
 		mw.spawn_z3950_import(document,'replace_tab','main_tabbox',{}); "/>	
 
+	<command id="cmd_create_new_marc_book" oncommand="
+		mw.spawn_new_marc_creation(document,'replace_tab','main_tabbox',{}); "/>	
+
 	<command id="cmd_console" oncommand="
 		mw.spawn_javascript_console(document,'new_tab','main_tabbox',{}); "/>
 

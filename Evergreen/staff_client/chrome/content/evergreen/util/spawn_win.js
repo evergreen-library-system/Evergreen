@@ -179,6 +179,23 @@ function spawn_oclc_import(d,placement,place,passthru_params,clone) {
 	}
 }
 
+function spawn_new_marc_creation(d,placement,place,passthru_params,clone) {
+	sdump('D_SPAWN','trying to spawn_new_marc_creation('+js2JSON(passthru_params)+')\n');
+	if (! passthru_params.type) passthru_params.type = 'book';
+	try {
+		var record = user_request(
+			'open-ils.cat',
+			'open-ils.cat.biblio.marc_template.retrieve',
+			[ passthru_params.type ]
+		)[0];
+		passthru_params['import_tree'] = record;
+		passthru_params['new_tree'] = true;
+		spawn_marc_editor(d,placement,place,passthru_params);
+	} catch(E) {
+		mw.handle_error(E);
+	}
+}
+
 function spawn_patron_edit(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_editor_interface_label'),passthru_params,clone);

@@ -81,6 +81,7 @@
 		<menuitem label="&main.menu.cat.bib_search.label;" accesskey="&main.menu.cat.bib_search.key;" observes="cmd_search_opac"/>
 		<menuseparator />
 		<menuitem disabled="true" label="&main.menu.cat.dedup.label;" accesskey="&main.menu.cat.dedup.key;" observes="cmd_broken"/>
+		<menuitem label="Create New Marc Record" accesskey="n" observes="cmd_create_new_marc_book"/>
 		<menuitem label="Z39.50 Import" accesskey="Z" observes="cmd_z39_50_import"/>
 	</menupopup>
 </menu>

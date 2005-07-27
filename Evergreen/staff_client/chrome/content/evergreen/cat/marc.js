@@ -754,12 +754,20 @@ mw.sdump('D_CAT',' with intra_doc_id = ' + level1.intra_doc_id() + '\n');
 	mw.sdump('D_CAT','Auth session: ' + mw.G['auth_ses'][0] + '\n');
 	try {
 		if (params.import_tree) {
-			tree = user_request(
+
+			if (params.new_tree) {
+				tree = user_request(
+					'open-ils.cat',
+					'open-ils.cat.biblio.record_tree.create',
+					[ mw.G.auth_ses[0], tree ]
+				)[0];
+			} else {
+				tree = user_request(
 					'open-ils.cat',
 					'open-ils.cat.biblio.record.tree.import',
 					[ mw.G['auth_ses'][0], tree ]
-			)[0];
-	
+				)[0];
+			}
 		} else {
 			tree = user_request(
 					'open-ils.cat',
