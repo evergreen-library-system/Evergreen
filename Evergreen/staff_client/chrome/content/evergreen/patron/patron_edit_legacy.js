@@ -499,6 +499,16 @@ function validate_patron() {
 			textbox.select(); textbox.focus();
 		}
 		s += ('Date of Birth required\n');
+	} else {
+		var date = PATRON.au.dob();
+		var flag = false;
+		var darray = date.split('-');
+		var year = darray[0]; if ( (!year) || (year.length != 4) || (!parseInt(year)) ) flag = true;
+		var month = darray[1]; if ( (!month) || (month.length !=2) || (!parseInt(month)) ) flag = true;
+		var day = darray[2]; if ( (!day) || (day.length !=2) || (!parseInt(day)) ) flag = true;
+		if (flag) {
+			s += ('Date Format is YYYY-MM-DD');
+		}
 	}
 	if ( ! PATRON.au.mailing_address() ) {
 		s += ('Mailing Address required\n');
