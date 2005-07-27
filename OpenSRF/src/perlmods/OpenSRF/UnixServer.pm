@@ -152,6 +152,8 @@ sub serve {
 
 	$0 = "OpenSRF master [$app]";
 
+	system("rm -f /tmp/opensrf_unix_*");
+
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	$logger->transport("Max Req: " . $client->config_value("apps", $app, "unix_config", "max_requests" ), INFO );
 
@@ -167,7 +169,7 @@ sub serve {
 	my $pid_file =	join("/", $client->config_value("dirs", "pid"),
 				$client->config_value("apps", $app, "unix_config", "unix_pid" ));
 
-	my $file = "/tmp/" . time . rand( $$ ) . "_$$";
+	my $file = "/tmp/" . "opensrf_unix_" . time . rand( $$ ) . "_$$";
 	my $file_string = "min_servers $min_servers\nmax_servers $max_servers\n" .
 		"min_spare_servers $min_spare\nmax_spare_servers $max_spare\n" .
 		"max_requests $max_requests\nlog_file $log_file\nproto unix\n" . 
