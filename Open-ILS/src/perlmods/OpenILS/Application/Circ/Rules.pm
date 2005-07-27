@@ -767,12 +767,32 @@ sub transit_receive {
 				my($status, $status_text) = (0, "Transit Complete");
 
 				my $circ;
+
 				if($transit->copy_status eq "3") { #if copy is lost
 					$status = 2;
 					$status_text = "Copy is marked as LOST";
+
 					$circ = $session->request(
 						"open-ils.storage.direct.action.circulation.search_where",
-						{ target_copy => $copy->id, xact_finish => undef } )->gather(1);
+						{ target_copy => $copy->id, xact_finish => undef }, 
+						{ order_by => "xact_start desc", limit => 1 } )->gather(1);
+
+
+					if($circ) {
+
+						my $transaction = $session->request(
+							"open-ils.storage.direct.money.billable_transaction_summary.retrieve", $circ->id)->gather(1);
+
+						$circ->xact_finish("now") if($transaction->balance_owed <= 0);
+
+						my $s = $session->request(
+							"open-ils.storage.direct.action.circulation.update", $circ )->gather(1);
+
+						if(!$s) {
+							throw OpenSRF::EX::ERROR ("Error updating circulation " . $circ->id);
+						}
+					}
+
 				}
 
 				$apputils->commit_db_session($session);
@@ -891,7 +911,8 @@ sub checkin {
 			warn "Retrieving circ for checkin\n";
 			my $circ_req = $session->request(
 				"open-ils.storage.direct.action.circulation.search.atomic",
-				{ target_copy => $copy->id, xact_finish => undef } );
+				{ target_copy => $copy->id, xact_finish => undef }, 
+				{ order_by => "xact_start desc", limit => 1 } );
 		
 			$circ = $circ_req->gather(1)->[0];
 	
@@ -908,7 +929,8 @@ sub checkin {
 			
 				$circ->stop_fines("CHECKIN");
 				$circ->stop_fines("RENEW") if($isrenewal);
-				$circ->xact_finish("now") if($transaction->balance_owed <= 0 );
+				$circ->stop_fines("LOST") if($iamlost);
+				$circ->xact_finish("now") if($transaction->balance_owed <= 0 and !$iamlost);
 
 				if($backdate) { 
 					$circ->xact_finish($backdate); 
