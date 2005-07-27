@@ -416,11 +416,14 @@ sub capture_copy {
 sub _build_hold_transit {
 	my( $self, $login_session, $session, $hold, $user, $copy ) = @_;
 	my $trans = Fieldmapper::action::hold_transit_copy->new;
+
 	$trans->hold($hold->id);
 	$trans->source($user->home_ou);
 	$trans->dest($hold->pickup_lib);
 	$trans->source_send_time("now");
 	$trans->target_copy($copy->id);
+	$trans->copy_status($copy->status);
+
 	my $meth = $self->method_lookup("open-ils.circ.hold_transit.create");
 	my ($stat) = $meth->run( $login_session, $trans, $session );
 	if(!$stat) { throw OpenSRF::EX ("Error creating new hold transit"); }

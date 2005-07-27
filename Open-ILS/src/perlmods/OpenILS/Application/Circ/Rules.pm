@@ -762,14 +762,28 @@ sub transit_receive {
 
 				my $s = $session->request(
 					"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
-				if(!$s) {throw OpenSRF::EX::ERROR ("Error putting copy on holds shelf ".$copy->id);} # blah..
+				if(!$s) {throw OpenSRF::EX::ERROR ("Error updating copy ".$copy->id);} # blah..
 				$apputils->commit_db_session($session);
 
-				return { status => 0, route_to => $user->home_ou, text => "Transit Complete", record => $record, copy => $copy  };
+				my($status, $status_text) = (0, "Transit Complete");
+
+				if($transit->copy_status eq "3") { #if copy is lost
+					$status = 2;
+					$status_text = "Copy is marked as LOST";
+				}
+
+				return { 
+					status => $status, 
+					route_to => $user->home_ou, 
+					text => $status_text, 
+					record => $record, 
+					copy => $copy  };
 
 			} else {
 
 				$apputils->rollback_db_session($session);
+
+
 				return { 
 					copy => $copy, record => $record, 
 					status => 3, route_to => $transit->dest, 
@@ -826,6 +840,8 @@ sub checkin {
 	my $session = $apputils->start_db_session();
 	my $transit_return;
 
+	my $orig_copy_status;
+
 
 	try {
 			
@@ -861,6 +877,7 @@ sub checkin {
 			}
 	
 			
+			$orig_copy_status = $copy->status;
 			$copy->status(0);
 		
 			# find circ's where the transaction is still open for the
@@ -964,6 +981,7 @@ sub checkin {
 			$transit->dest($copy->circ_lib);
 			$transit->target_copy($copy->id);
 			$transit->source_send_time("now");
+			$transit->copy_status($orig_copy_status);
 
 			my $s = $session->request(
 				"open-ils.storage.direct.action.transit_copy.create", $transit )->gather(1);
