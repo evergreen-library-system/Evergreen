@@ -139,10 +139,15 @@ function checkin_checkin_items_init(p) {
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
-					alert('Not Yet Implemented');
 					for (var i = 0; i < checkin_items.length; i++) {
 						var idx = checkin_items[i].getAttribute('record_id');
+						var copy = checkins[idx].copy;
 						sdump('D_CHECKIN','Firing copy edit context\n');
+						spawn_batch_copy_editor(
+							p.w.app_shell,'new_tab','main_tabbox',{ 
+								'copy_ids' : [ copy.id() ]
+							}
+						);
 					}
 				},
 				false

@@ -26,7 +26,7 @@ function copy_edit_init() {
 		mw.sdump('D_CAT','id_mapped_list.length = ' + id_mapped_list.length + '\n');
 	}
 	if (params.copy_ids) {
-		id_mapped_list = id_mapped_list.concat( copy_ids );
+		id_mapped_list = id_mapped_list.concat( params.copy_ids );
 	}
 	var result = [];
 	try {
@@ -42,8 +42,8 @@ function copy_edit_init() {
 	cn_list = new Array();
 	for (var i in result) {
 		cn_list[i] = new acn();
-		cn_list[i].label( filtered_list[i].getAttribute('callnumber') );
-		cn_list[i].owning_lib( filtered_list[i].getAttribute('ou_id') );
+		try { cn_list[i].label( filtered_list[i].getAttribute('callnumber') ); } catch(E) { cn_list[i].label( 'dummy callnumber' ); }
+		try { cn_list[i].owning_lib( filtered_list[i].getAttribute('ou_id') ); } catch(E) { cn_list[i].owning_lib( 1 ); }
 		cn_list[i].copies( [ result[i] ] );
 	}
 	mw.sdump('D_CAT','cn_list = ' + js2JSON(cn_list) + '\n');

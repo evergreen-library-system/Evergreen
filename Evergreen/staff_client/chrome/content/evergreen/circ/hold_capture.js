@@ -127,10 +127,15 @@ function hold_capture_hold_capture_items_init(p) {
 			menuitem.addEventListener(
 				'command',
 				function (ev) {
-					alert('Not Yet Implemented');
 					for (var i = 0; i < hold_capture_items.length; i++) {
 						var idx = hold_capture_items[i].getAttribute('record_id');
+						var copy = hold_captures[idx].copy;
 						sdump('D_HOLD_CAPTURE','Firing copy edit context\n');
+						spawn_batch_copy_editor(
+							p.w.app_shell,'new_tab','main_tabbox',{ 
+								'copy_ids' : [ copy.id() ]
+							}
+						);
 					}
 				},
 				false

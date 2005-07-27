@@ -271,10 +271,16 @@ function patron_display_patron_items_init(p) {
 			menuitem_pi_ce.addEventListener(
 				'command',
 				function (ev) {
-					alert('Not Yet Implemented');
 					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_items\n');
 					for (var i = 0; i < patron_items.length; i++) {
 						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
+						var idx = patron_items[i].getAttribute('record_id'); 
+						var copy = p._patron.checkouts()[ idx ].copy;
+						spawn_batch_copy_editor(
+							p.w.app_shell,'new_tab','main_tabbox',{ 
+								'copy_ids' : [ copy.id() ]
+							}
+						);
 					}
 				},
 				false
@@ -447,11 +453,16 @@ function patron_display_patron_checkout_items_init(p) {
 			menuitem_pci_ce.addEventListener(
 				'command',
 				function (ev) {
-					alert('Not Yet Implemented');
 					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_checkout_items\n');
 					for (var i = 0; i < patron_checkout_items.length; i++) {
 						var idx = patron_checkout_items[i].getAttribute('record_id');
+						var copy = checkouts[ idx ].copy;
 						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
+						spawn_batch_copy_editor(
+							p.w.app_shell,'new_tab','main_tabbox',{ 
+								'copy_ids' : [ copy.id() ]
+							}
+						);
 					}
 				},
 				false
@@ -550,10 +561,16 @@ function patron_display_patron_holds_init(p) {
 			menuitem_ph_ce.addEventListener(
 				'command',
 				function (ev) {
-					alert('Not Yet Implemented');
 					sdump('D_PATRON_DISPLAY','Firing copy editor context for patron_holds\n');
 					for (var i = 0; i < patron_holds.length; i++) {
 						sdump('D_PATRON_DISPLAY','Firing copy edit context\n');
+						var idx = patron_holds[i].getAttribute('record_id'); 
+						var copy = p._patron.hold_requests()[ idx ].copy;
+						spawn_batch_copy_editor(
+							p.w.app_shell,'new_tab','main_tabbox',{ 
+								'copy_ids' : [ copy.id() ]
+							}
+						);
 					}
 				},
 				false
