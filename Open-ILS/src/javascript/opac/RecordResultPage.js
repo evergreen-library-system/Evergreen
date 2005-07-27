@@ -171,7 +171,7 @@ RecordResultPage.prototype.mkLink = function(id, type, value) {
 			href = createAppElement("a");
 			add_css_class(href,"record_result_image_link");
 			href.setAttribute("href",
-					"?target=record_detail&page=0&mrid=" + id  +
+					"?target=record_detail&page=0&record=" + id  +
 				"&location=" + org.id() +
 				"&depth=" + globalSearchDepth );
 			href.title = "View title details for " + value;
