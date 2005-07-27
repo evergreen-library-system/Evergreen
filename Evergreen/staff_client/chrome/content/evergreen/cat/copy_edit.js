@@ -4,22 +4,30 @@ function copy_edit_init() {
 	mw.sdump('D_CAT','entering my_init for copy_edit.js\n');
 	mw.sdump('D_CAT','TESTING: copy_edit.js: ' + mw.G['main_test_variable'] + '\n');
 	mw.sdump('D_CAT','Gathering copies to put in the acn object...\n');
-	var list = get_list_from_tree_selection( params.tree );
-	mw.sdump('D_CAT','list.length = ' + list.length + '\n');
-	var filtered_list = filter_list(
-		list,
-		function (obj) {
-			return (obj.getAttribute('object_type') == 'copy');
-		}
-	);
-	mw.sdump('D_CAT','filtered_list.length = ' + filtered_list.length + '\n');
-	var id_mapped_list  = map_list(
-		filtered_list,
-		function (obj) {
-			return obj.getAttribute('copy_id');
-		}
-	);
-	mw.sdump('D_CAT','id_mapped_list.length = ' + id_mapped_list.length + '\n');
+	var id_mapped_list = [];
+	if (params.tree) {
+		var list = get_list_from_tree_selection( params.tree );
+		mw.sdump('D_CAT','list.length = ' + list.length + '\n');
+		var filtered_list = filter_list(
+			list,
+			function (obj) {
+				return (obj.getAttribute('object_type') == 'copy');
+			}
+		);
+		mw.sdump('D_CAT','filtered_list.length = ' + filtered_list.length + '\n');
+		id_mapped_list.concat(
+			map_list(
+				filtered_list,
+				function (obj) {
+					return obj.getAttribute('copy_id');
+				}
+			)
+		);
+		mw.sdump('D_CAT','id_mapped_list.length = ' + id_mapped_list.length + '\n');
+	}
+	if (params.copy_ids) {
+		id_mapped_list = id_mapped_list.concat( copy_ids );
+	}
 	var result = [];
 	try {
 		result = user_request(
