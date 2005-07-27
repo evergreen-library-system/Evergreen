@@ -6,6 +6,9 @@ function patron_search_form_init(p) {
 
 	p.crazy_search_hash = {}; // hash[ field ] = { 'value' : ???, 'group' : ??? }
 
+	var search_button = p.node.getElementsByAttribute('name','button_search')[0];
+	var clear_button = p.node.getElementsByAttribute('name','button_clear')[0];
+
 	var nl = p.node.getElementsByTagName('textbox');
 	for (var i = 0; i < nl.length; i++) {
 		nl[i].addEventListener(
@@ -17,10 +20,14 @@ function patron_search_form_init(p) {
 				); 
 			},false
 		);
+		nl[i].addEventListener(
+			'keypress',
+			function (ev) {
+				patron_search_form_textbox_handler( ev.target, p.crazy_search_hash );
+				if ((ev.keyCode == 13)||(ev.keyCode == 77)) search_button.doCommand();
+			}, false
+		);
 	}
-
-	var search_button = p.node.getElementsByAttribute('name','button_search')[0];
-	var clear_button = p.node.getElementsByAttribute('name','button_clear')[0];
 
 	p.register_search_callback = function (f) { search_button.addEventListener( 'command',f,false ); };
 
