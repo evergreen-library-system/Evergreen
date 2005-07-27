@@ -102,7 +102,7 @@
 		<splitter class="tree-splitter"/>
 		<treecol id="browse11" label="&browse_list.price;" flex="1" hidden="true"/>
 		<splitter class="tree-splitter"/>
-		<treecol id="browse12" label="&browse_list.status;" flex="1" hidden="true"/>
+		<treecol id="browse12" label="&browse_list.status;" flex="1" hidden="false"/>
 		<splitter class="tree-splitter"/>
 	</treecols>
 	<treechildren id="browse_list_tree_children" context="browse_menu"/>

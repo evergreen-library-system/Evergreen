@@ -355,7 +355,7 @@ function gather_copies_callback(request) {
 					yesno( copy.opac_visible() ) , copy.circ_as_type() , copy.circ_modifier() ,
 					copy.loan_duration() , copy.fine_level() , copy.create_date() ,
 					copy.creator() , copy.edit_date() , copy.editor() , copy.deposit() ,
-					copy.deposit_amount() , copy.price() , copy.status()
+					copy.deposit_amount() , copy.price() , mw.G.ccs_hash[ copy.status() ].name()
 				];
 
 				for (var i = 0; i < list.length; i++ ) {
