@@ -1,7 +1,7 @@
 VERSION=0.0.9
 PACKAGE=Evergreen
-DESCRIPTION=Evergreen Staff Client almost-almost-Alpha
-BUILD=2005072617
+DESCRIPTION=Evergreen Staff Client Alpha RC1
+BUILD=2005072619
 
 RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js
 RETRIEVE_ORG_TREE=wget -N http://gapines.org/js/util/OrgTree.js
