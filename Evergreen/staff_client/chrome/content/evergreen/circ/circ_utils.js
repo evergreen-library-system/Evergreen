@@ -172,6 +172,9 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 						}
 					break;
 					case '2': case 2: /* LOST??? */
+						var msg = pretty_print( js2JSON( check ) );
+						sdump('D_CIRC_UTILS',msg);
+						alert(msg);
 					break;
 					case '3': case 3: /* TRANSIT ELSEWHERE */
 						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
