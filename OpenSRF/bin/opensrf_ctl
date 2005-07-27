@@ -32,7 +32,7 @@ function startSystem {
 	
 		"stop")
 			PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
-			if [ -z $PID ]; then
+			if [ -z "$PID" ]; then
 				echo "OpenSRF System is not running";
 				exit;
 			fi
@@ -43,7 +43,7 @@ function startSystem {
 	
 		"status")
 			PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
-			if [ -z $PID ]; then
+			if [ -z "$PID" ]; then
 				echo "OpenSRF System is not running";
 				exit 0;
 			fi

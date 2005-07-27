@@ -33,31 +33,30 @@ __PACKAGE__->register_method(
 
 sub retrieve_marc_template {
 	my( $self, $client, $type ) = @_;
+
+	return $marctemplates{$type} if defined($marctemplates{$type});
+
 	my $xml = _load_marc_template($type);
+
 	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $xml ); 
-	return $utils->nodeset2tree( $nodes->nodeset );
+	$marctemplates{$type} = $utils->nodeset2tree( $nodes->nodeset );
+	return $marctemplates{$type};
 }
 
 sub _load_marc_template {
 	my $type = shift;
 
-	if(!defined( $marctemplates{$type} )) {
-		if(!$conf) { $conf = OpenSRF::Utils::SettingsClient->new; }
+	if(!$conf) { $conf = OpenSRF::Utils::SettingsClient->new; }
 
-		my $template = $conf->config_value(					
-			"apps", "open-ils.cat","app_settings", "marctemplates", $type );
-		warn "Opening template file $template\n";
+	my $template = $conf->config_value(					
+		"apps", "open-ils.cat","app_settings", "marctemplates", $type );
+	warn "Opening template file $template\n";
 
-		open( F, $template );
-		my @xml = <F>;
-		close(F);
-		$marctemplates{$type} = join('', @xml);
+	open( F, $template );
+	my @xml = <F>;
+	close(F);
+	return join('', @xml);
 
-	}
-
-	warn "Loaded MARC template XML:\n" . $marctemplates{$type} . "\n";
-
-	return $marctemplates{$type};
 }
 
 
