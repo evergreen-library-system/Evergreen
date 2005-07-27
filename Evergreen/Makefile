@@ -3,6 +3,9 @@
 # ------------------------------------------------------------------------
 
 IMAGE=$(WEBDIR)/images
+NEW_OPAC_URL=myopac.domain
+NEW_XUL_PACKAGE_NAME=openils
+NEW_XUL_PACKAGE_LABEL=OpenILS
 
 # A kludge until we move the generic parts of the staff client to Open-ILS
 
