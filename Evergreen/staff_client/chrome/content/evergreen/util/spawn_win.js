@@ -84,6 +84,7 @@ function spawn_main() {
 		if (!w) { throw('window ref == null'); }
 		try {
 			w.params = {};
+			return w;
 		} catch(E) {
 			alert('Hrmm. ' + pretty_print( js2JSON(E) ) );
 		}

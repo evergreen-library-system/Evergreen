@@ -172,9 +172,29 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 						}
 					break;
 					case '2': case 2: /* LOST??? */
-						var msg = pretty_print( js2JSON( check ) );
-						sdump('D_CIRC_UTILS',msg);
-						alert(msg);
+						var patron = retrieve_patron_by_id( check.circ.usr() );
+						var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+								check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
+								'Patron: ' + patron.card().barcode() + ' ' + patron.family_name() + ', ' +
+								patron.first_given_name();
+						var pcheck = yns_alert(
+							msg,
+							'Lost Item',
+							'Edit Copy & Patron',
+							"Just Continue",
+							null,
+							"Check here to confirm this message"
+						); 
+						if (pcheck == 0) {
+							var w = mw.spawn_main();
+							setTimeout(
+								function() {
+									mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':patron});
+									mw.spawn_batch_copy_editor(w.document,'new_tab','main_tabbox',
+										{'copy_ids':[ check.copy.id() ]});
+								}, 0
+							);
+						}
 					break;
 					case '3': case 3: /* TRANSIT ELSEWHERE */
 						if (parseInt(check.route_to)) check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
@@ -231,12 +251,12 @@ function checkin_by_copy_barcode(barcode, backdate, f) {
 					break;
 				}
 			} else {  // status == 0
-				if (parseInt(check.route_to)) {
-					if (check.route_to != mw.G.user_ou.id()) {
-						check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
-					} else {
-						check.route_to = mw.G.acpl_hash[ check.copy.location() ].name();
-					}
+			}
+			if (parseInt(check.route_to)) {
+				if (check.route_to != mw.G.user_ou.id()) {
+					check.route_to = mw.G.org_tree_hash[ check.route_to ].shortname();
+				} else {
+					check.route_to = mw.G.acpl_hash[ check.copy.location() ].name();
 				}
 			}
 		}
