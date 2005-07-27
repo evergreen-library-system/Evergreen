@@ -740,7 +740,9 @@ sub recv {
 
 	#$args{timeout} = 0 if ($self->complete);
 
-	$logger->debug( ref($self) ."->recv with timeout " . $args{timeout}, INTERNAL );
+	if(defined($args{timeout})) {
+		$logger->debug( ref($self) ."->recv with timeout " . $args{timeout}, INTERNAL );
+	}
 
 	$args{count} ||= 1;
 

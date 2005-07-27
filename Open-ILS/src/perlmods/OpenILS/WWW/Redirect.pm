@@ -3,12 +3,12 @@ use strict; use warnings;
 use Socket;
 
 use Apache2 ();
-use Apache::Log;
-use Apache::Const -compile => qw(OK REDIRECT :log);
+use Apache2::Log;
+use Apache2::Const -compile => qw(OK REDIRECT :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use Template qw(:template);
-use Apache::RequestRec ();
-use Apache::RequestIO ();
+use Apache2::RequestRec ();
+use Apache2::RequestIO ();
 use CGI ();
 
 use OpenSRF::AppSession;
@@ -127,7 +127,7 @@ sub print_page {
 	</html>
 	HTML
 
-	return Apache::OK;
+	return Apache2::Const::OK;
 }
 
 

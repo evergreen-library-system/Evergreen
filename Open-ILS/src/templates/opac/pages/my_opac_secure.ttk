@@ -12,6 +12,7 @@
 			js( src='http://gapines.org/js/util/JSON.js' );
 			js( src='http://gapines.org/js/opac/Page.js' );
 			js( src='http://gapines.org/js/opac/MyOPACSPage.js' );
+			js( src='http://gapines.org/js/opac/LoginDialog.js' );
 			js( src='http://gapines.org/js/util/RemoteRequest.js' );
 			js( src='http://gapines.org/js/util/webutils.js' );
 			js( src='http://gapines.org/js/util/ils_utils.js' );
