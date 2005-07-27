@@ -45,6 +45,7 @@
 				PrintError => 1,
 				Taint => 1,
 				pg_enable_utf8 => 1,
+				pg_server_prepare => 0,
 				FetchHashKeyName => 'NAME_lc',
 				ChopBlanks => 1,
 		);
