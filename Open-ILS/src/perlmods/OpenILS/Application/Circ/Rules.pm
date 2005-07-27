@@ -763,20 +763,26 @@ sub transit_receive {
 				my $s = $session->request(
 					"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
 				if(!$s) {throw OpenSRF::EX::ERROR ("Error updating copy ".$copy->id);} # blah..
-				$apputils->commit_db_session($session);
 
 				my($status, $status_text) = (0, "Transit Complete");
 
+				my $circ;
 				if($transit->copy_status eq "3") { #if copy is lost
 					$status = 2;
 					$status_text = "Copy is marked as LOST";
+					$circ = $session->request(
+						"open-ils.storage.direct.action.circulation.search_where",
+						{ target_copy => $copy->id, xact_finish => undef } )->gather(1);
 				}
+
+				$apputils->commit_db_session($session);
 
 				return { 
 					status => $status, 
 					route_to => $user->home_ou, 
 					text => $status_text, 
 					record => $record, 
+					circ	=> $circ,
 					copy => $copy  };
 
 			} else {
