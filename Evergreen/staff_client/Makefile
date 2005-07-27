@@ -1,6 +1,6 @@
 VERSION=0.0.9
 PACKAGE=Evergreen
-DESCRIPTION=Evergreen Staff Client Alpha RC1
+DESCRIPTION=Evergreen Alpha RC2
 BUILD=2005072619
 
 RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js

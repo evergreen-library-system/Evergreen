@@ -8,16 +8,16 @@
 <!-- The File menu on the main menu -->
 <menu id="main.menu.file" label="&main.menu.file.label;" accesskey="&main.menu.file.key;" >
 	<menupopup id="main.menu.file.popup">
-		<menuitem label="&main.menu.file.new.label;" accesskey="&main.menu.file.new.key;" key="file-new-key" command="cmd_new_window"/>
-		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="file-new-tab-key" command="cmd_new_tab"/>
+		<menuitem label="&main.menu.file.new.label;" accesskey="&main.menu.file.new.key;" key="file-new-key" observes="cmd_new_window"/>
+		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="file-new-tab-key" observes="cmd_new_tab"/>
 		<menuseparator />
 	<!--
-		<menuitem label="&main.menu.file.open.label;" accesskey="&main.menu.file.open.key;" key="file-open-key" command="cmd_broken" disabled="true"/>
-		<menuitem label="&main.menu.file.save.label;" accesskey="&main.menu.file.save.key;" key="file-save-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.file.open.label;" accesskey="&main.menu.file.open.key;" key="file-open-key" observes="cmd_broken" disabled="true"/>
+		<menuitem label="&main.menu.file.save.label;" accesskey="&main.menu.file.save.key;" key="file-save-key" observes="cmd_broken"/>
 		<menuseparator />
 	-->
-		<menuitem label="&main.menu.file.close_tab.label;" accesskey="&main.menu.file.close_tab.key;" key="file-close-tab-key" command="cmd_close_tab"/>
-		<menuitem label="&main.menu.file.close.label;" accesskey="&main.menu.file.close.key;" key="file-close-key" command="cmd_close_window"/>
+		<menuitem label="&main.menu.file.close_tab.label;" accesskey="&main.menu.file.close_tab.key;" key="file-close-tab-key" observes="cmd_close_tab"/>
+		<menuitem label="&main.menu.file.close.label;" accesskey="&main.menu.file.close.key;" key="file-close-key" observes="cmd_close_window"/>
 	</menupopup>
 </menu>
 
@@ -26,20 +26,20 @@
 	<menupopup id="main.menu.edit.popup">
 		<menuitem label="stub"/>
 	<!--
-		<menuitem label="&main.menu.edit.undo.label;" accesskey="&main.menu.edit.undo.key;" key="edit-undo-key" command="cmd_broken"/>
-		<menuitem label="&main.menu.edit.redo.label;" accesskey="&main.menu.edit.redo.key;" key="edit-redo-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.edit.undo.label;" accesskey="&main.menu.edit.undo.key;" key="edit-undo-key" observes="cmd_broken"/>
+		<menuitem label="&main.menu.edit.redo.label;" accesskey="&main.menu.edit.redo.key;" key="edit-redo-key" observes="cmd_broken"/>
 		<menuseparator />
-		<menuitem label="&main.menu.edit.cut.label;" accesskey="&main.menu.edit.cut.key;" key="edit-cut-key" command="cmd_broken"/>
-		<menuitem label="&main.menu.edit.copy.label;" accesskey="&main.menu.edit.copy.key;" key="edit-copy-key" command="cmd_broken"/>
-		<menuitem label="&main.menu.edit.paste.label;" accesskey="&main.menu.edit.paste.key;" key="edit-paste-key" command="cmd_broken"/>
-		<menuitem label="&main.menu.edit.delete.label;" accesskey="&main.menu.edit.delete.key;" key="edit-delete-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.edit.cut.label;" accesskey="&main.menu.edit.cut.key;" key="edit-cut-key" observes="cmd_broken"/>
+		<menuitem label="&main.menu.edit.copy.label;" accesskey="&main.menu.edit.copy.key;" key="edit-copy-key" observes="cmd_broken"/>
+		<menuitem label="&main.menu.edit.paste.label;" accesskey="&main.menu.edit.paste.key;" key="edit-paste-key" observes="cmd_broken"/>
+		<menuitem label="&main.menu.edit.delete.label;" accesskey="&main.menu.edit.delete.key;" key="edit-delete-key" observes="cmd_broken"/>
 		<menuseparator />
-		<menuitem label="&main.menu.edit.buckets.label;" accesskey="&main.menu.edit.buckets.key;" command="cmd_broken"/>
+		<menuitem label="&main.menu.edit.buckets.label;" accesskey="&main.menu.edit.buckets.key;" observes="cmd_broken"/>
 		<menuseparator />
-		<menuitem label="&main.menu.edit.select_all.label;" accesskey="&main.menu.edit.select_all.key;" key="edit-select-all-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.edit.select_all.label;" accesskey="&main.menu.edit.select_all.key;" key="edit-select-all-key" observes="cmd_broken"/>
 		<menuseparator />
-		<menuitem label="&main.menu.edit.find.label;" accesskey="&main.menu.edit.find.key;" key="edit-find-key" command="cmd_broken"/>
-		<menuitem label="&main.menu.edit.find_again.label;" accesskey="&main.menu.edit.find_again.key;" key="edit-find-again-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.edit.find.label;" accesskey="&main.menu.edit.find.key;" key="edit-find-key" observes="cmd_broken"/>
+		<menuitem label="&main.menu.edit.find_again.label;" accesskey="&main.menu.edit.find_again.key;" key="edit-find-again-key" observes="cmd_broken"/>
 	-->
 	</menupopup>
 </menu>
@@ -47,49 +47,49 @@
 <!-- The Circulation menu on the main menu -->
 <menu id="main.menu.circ" label="&main.menu.circ.label;" accesskey="&main.menu.circ.key;">
 	<menupopup id="main.menu.circ.popup">
-		<menuitem label="&main.menu.circ.checkout.label;" accesskey="&main.menu.circ.checkout.key;" command="cmd_circ_checkout"/>
-		<menuitem label="&main.menu.circ.checkin.label;" accesskey="&main.menu.circ.checkin.key;" command="cmd_circ_checkin"/>
-		<menuitem label="&main.menu.circ.hold_capture.label;" accesskey="&main.menu.circ.hold_capture.key;" command="cmd_circ_hold_capture"/>
+		<menuitem label="&main.menu.circ.checkout.label;" accesskey="&main.menu.circ.checkout.key;" observes="cmd_circ_checkout"/>
+		<menuitem label="&main.menu.circ.checkin.label;" accesskey="&main.menu.circ.checkin.key;" observes="cmd_circ_checkin"/>
+		<menuitem label="&main.menu.circ.hold_capture.label;" accesskey="&main.menu.circ.hold_capture.key;" observes="cmd_circ_hold_capture"/>
 	<!--
-		<menu id="special-circ-menu" label="&main.menu.circ.special.label;" accesskey="&main.menu.circ.special.key;" command="cmd_broken"/>
+		<menu id="special-circ-menu" label="&main.menu.circ.special.label;" accesskey="&main.menu.circ.special.key;" observes="cmd_broken"/>
 		<menuseparator />
-		<menuitem label="&main.menu.circ.place_hold.label;" accesskey="&main.menu.circ.place_hold.key;" key="circ-place-hold-key" command="cmd_broken"/>
+		<menuitem label="&main.menu.circ.place_hold.label;" accesskey="&main.menu.circ.place_hold.key;" key="circ-place-hold-key" observes="cmd_broken"/>
 	-->
 		<menuseparator />
-		<menuitem label="&main.menu.circ.copy_status.label;" accesskey="&main.menu.circ.copy_status.key;" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.patron_status.label;" accesskey="&main.menu.circ.patron_status.key;" command="cmd_circ_display"/>
+		<menuitem label="&main.menu.circ.copy_status.label;" accesskey="&main.menu.circ.copy_status.key;" observes="cmd_broken"/>
+		<menuitem label="&main.menu.circ.patron_status.label;" accesskey="&main.menu.circ.patron_status.key;" observes="cmd_circ_checkout"/>
 		<menuseparator />
-		<menuitem label="&main.menu.circ.patron_registration.label;" accesskey="&main.menu.circ.patron_registration.key;" command="cmd_patron_register"/>
+		<menuitem label="&main.menu.circ.patron_registration.label;" accesskey="&main.menu.circ.patron_registration.key;" observes="cmd_patron_register"/>
 	</menupopup>
 </menu>
 
 <!-- The Special Circulation submenu in the Circulation menu -->
 <menu id="special-circ-menu">
 	<menupopup id="special-circ-popup">
-		<menuitem label="&main.menu.circ.mark_used.label;" accesskey="&main.menu.circ.mark_used.key;" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.lost.label;" accesskey="&main.menu.circ.lost.key;" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.missing.label;" accesskey="&main.menu.circ.missing.key;" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.found.label;" accesskey="&main.menu.circ.found.key;" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.claimed_returned.label;" accesskey="&main.menu.circ.claimed_returned.key;" command="cmd_broken"/>
-		<menuitem label="&main.menu.circ.quick_add.label;" accesskey="&main.menu.circ.quick_add.key;" command="cmd_broken"/>
+		<menuitem label="&main.menu.circ.mark_used.label;" accesskey="&main.menu.circ.mark_used.key;" observes="cmd_broken"/>
+		<menuitem label="&main.menu.circ.lost.label;" accesskey="&main.menu.circ.lost.key;" observes="cmd_broken"/>
+		<menuitem label="&main.menu.circ.missing.label;" accesskey="&main.menu.circ.missing.key;" observes="cmd_broken"/>
+		<menuitem label="&main.menu.circ.found.label;" accesskey="&main.menu.circ.found.key;" observes="cmd_broken"/>
+		<menuitem label="&main.menu.circ.claimed_returned.label;" accesskey="&main.menu.circ.claimed_returned.key;" observes="cmd_broken"/>
+		<menuitem label="&main.menu.circ.quick_add.label;" accesskey="&main.menu.circ.quick_add.key;" observes="cmd_broken"/>
 	</menupopup>
 </menu>
 
 <!-- The Cataloging menu on the main menu -->
 <menu id="main.menu.cat" label="&main.menu.cat.label;" accesskey="&main.menu.cat.key;">
 	<menupopup id="main.menu.cat.popup">
-		<menuitem label="&main.menu.cat.bib_search.label;" accesskey="&main.menu.cat.bib_search.key;" command="cmd_cat_main"/>
+		<menuitem label="&main.menu.cat.bib_search.label;" accesskey="&main.menu.cat.bib_search.key;" observes="cmd_search_opac"/>
 		<menuseparator />
-		<menuitem disabled="true" label="&main.menu.cat.dedup.label;" accesskey="&main.menu.cat.dedup.key;" command="cmd_broken"/>
-		<menuitem label="Z39.50 Import" accesskey="Z" command="cmd_z39_50_import"/>
+		<menuitem disabled="true" label="&main.menu.cat.dedup.label;" accesskey="&main.menu.cat.dedup.key;" observes="cmd_broken"/>
+		<menuitem label="Z39.50 Import" accesskey="Z" observes="cmd_z39_50_import"/>
 	</menupopup>
 </menu>
 
 <!-- The Search menu on the main menu -->
 <menu id="main.menu.search" label="&main.menu.search.label;" accesskey="&main.menu.search.key;">
 	<menupopup id="main.menu.search.popup">
-		<menuitem label="Catalog" accesskey="C" command="cmd_search_opac" />
-		<menuitem label="Patrons" accesskey="P" command="cmd_circ_search" />
+		<menuitem label="Catalog" accesskey="C" observes="cmd_search_opac" />
+		<menuitem label="Patrons" accesskey="P" observes="cmd_patron_search" />
 	</menupopup>
 </menu>
 
@@ -124,17 +124,17 @@
 <!-- The Help menu on the main menu -->
 <menu id="main.menu.admin" label="&main.menu.admin.label;" accesskey="&main.menu.admin.key;">
 	<menupopup id="main.menu.admin.popup">
-		<menuitem label="Receipt Template Editor" accesskey="R" command="cmd_receipt_template_editor"/>
-		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
-		<menuitem label="Copy Stat-Cat Editor" accesskey="C" command="cmd_copy_stat_cat_edit"/>
-		<menuitem label="Patron Stat-Cat Editor" accesskey="P" command="cmd_patron_stat_cat_edit"/>
+		<menuitem label="Receipt Template Editor" accesskey="R" observes="cmd_receipt_template_editor"/>
+		<menuitem label="Survey Wizard" accesskey="S" observes="cmd_survey_wizard"/>
+		<menuitem label="Copy Stat-Cat Editor" accesskey="C" observes="cmd_copy_stat_cat_edit"/>
+		<menuitem label="Patron Stat-Cat Editor" accesskey="P" observes="cmd_patron_stat_cat_edit"/>
 		<menuseparator />
-		<menuitem label="Test Module" accesskey="T" command="cmd_test"/>
-		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
-		<menuitem label="Fieldmapper" accesskey="m" command="cmd_fieldmapper"/>
-		<menuitem label="Filterable Console" accesskey="F" command="cmd_filter_console"/>
-		<menuitem label="Javscript Console" accesskey="J" command="cmd_console"/>
-		<menuitem label="Javscript Shell" accesskey="H" command="cmd_shell"/>
+		<menuitem label="Test Module" accesskey="T" observes="cmd_test"/>
+		<menuitem label="XUL Test" accesskey="X" observes="cmd_xuleditor"/>
+		<menuitem label="Fieldmapper" accesskey="m" observes="cmd_fieldmapper"/>
+		<menuitem label="Filterable Console" accesskey="F" observes="cmd_filter_console"/>
+		<menuitem label="Javscript Console" accesskey="J" observes="cmd_console"/>
+		<menuitem label="Javscript Shell" accesskey="H" observes="cmd_shell"/>
 	</menupopup>
 </menu>
 

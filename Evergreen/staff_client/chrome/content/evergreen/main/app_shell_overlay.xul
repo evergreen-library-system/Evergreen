@@ -9,40 +9,37 @@
 
 <commandset id="universal_cmds">
 
-	<command id="cmd_close_window" oncommand="
+	<command id="cmd_close_window" key="close-window-key" oncommand="
 		window.close();" />
 
-	<command id="cmd_new_window" oncommand="
+	<command id="cmd_new_window" key="new-window-key" oncommand="
 		mw.spawn_main();" />
 
-	<command id="cmd_new_tab" oncommand="
+	<command id="cmd_new_tab" key="new-tab-key" oncommand="
 		mw.new_tab(document,'main_tabbox');" />
 
-	<command id="cmd_close_tab" oncommand="
+	<command id="cmd_close_tab" key="close-tab-key" oncommand="
 		mw.close_tab(document,'main_tabbox');" />
 
-	<command id="cmd_cat_main" oncommand="
+	<command id="cmd_cat_main" key="cat-main-key" oncommand="
 		mw.spawn_opac_navigator(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_circ_checkout" oncommand="
+	<command id="cmd_circ_checkout" key="circ-checkout-key" oncommand="
 		mw.spawn_patron_barcode_entry(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_circ_search" oncommand="
+	<command id="cmd_patron_search" key="patron-search-key" oncommand="
 		mw.spawn_patron_search(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_circ_display" oncommand="
-		mw.spawn_patron_barcode_entry(document,'replace_tab','main_tabbox',{}); "/>
-
-	<command id="cmd_circ_checkin" oncommand="
+	<command id="cmd_circ_checkin" key="circ-checkin-key" oncommand="
 		mw.spawn_checkin(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_circ_hold_capture" oncommand="
+	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" oncommand="
 		mw.spawn_hold_capture(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_search_opac" oncommand="
+	<command id="cmd_search_opac" key="search-opac-key" oncommand="
 		mw.spawn_opac_navigator(document,'replace_tab','main_tabbox',{}); "/>	
 
-	<command id="cmd_patron_register" oncommand="
+	<command id="cmd_patron_register" key="patron-register-key" oncommand="
 		mw.spawn_patron_register(document,'replace_tab','main_tabbox',{}); "/>	
 
 	<command id="cmd_survey_wizard" oncommand="
@@ -75,10 +72,10 @@
 	<command id="cmd_fieldmapper" oncommand="
 		mw.spawn_fieldmapper(document,'new_tab','main_tabbox',{}); "/>
 
-	<command id="cmd_test" oncommand="
+	<command id="cmd_test" disabled="true" oncommand="
 		mw.spawn_interface(document,'new_tab','main_tabbox','chrome://evergreen/content/util/fm_view.xul','Fieldmapper',{}); "/>
 
-	<command id="cmd_broken" oncommand="
+	<command id="cmd_broken" disabled="true" oncommand="
 		alert('Not Yet Implemented'); "/>
 
 </commandset>
@@ -188,12 +185,12 @@
 
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 <keyset id="AppShell_keys">
-	<key id="file-new-key" modifiers="accel" key="N" command="cmd_new_window"/>
-	<key id="file-new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
-	<key id="file-open-key" modifiers="accel" key="O" command=""/>
-	<key id="file-save-key" modifiers="accel" key="S" command=""/>
-	<key id="file-close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
-	<key id="file-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+	<key id="new-window-key" modifiers="accel" key="N" command="cmd_new_window"/>
+	<key id="new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
+	<key id="open-key" modifiers="accel" key="O" command=""/>
+	<key id="save-key" modifiers="accel" key="S" command=""/>
+	<key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
+	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
 	<!--
 	<key id="edit-undo-key" modifiers="accel" key="Z" command=""/>
 	<key id="edit-redo-key" modifiers="accel" key="Y" command=""/>
@@ -213,7 +210,12 @@
 	<key id="circ-place-hold-key" keycode="VK_F5" command=""/>
 	<key id="circ-patron-registration-key" keycode="VK_F12" command=""/>
 	-->
-	<key id="circ-check-out-key" keycode="VK_F1" command="cmd_circ_checkout"/>
+	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
+	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
+	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
+	<key id="circ-hold-capture-key" keycode="VK_F5" command="cmd_circ_hold_capture"/>
+	<key id="patron-register-key" keycode="VK_F12" command="cmd_patron_registration"/>
 </keyset>
 
 </overlay>
