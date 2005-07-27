@@ -172,7 +172,9 @@ function modsFormatToMARC(format) {
 		case "three dimensional object":
 			return "r";
 	}
-	throw new EXLogic("Invalid format provided form modsFormatToMARC: " + format);
+
+	return "at";
+	//throw new EXLogic("Invalid format provided form modsFormatToMARC: " + format);
 }
 
 function MARCFormatToMods(format) {
@@ -212,7 +214,10 @@ function MARCFormatToMods(format) {
 		case "r":
 			return "three dimensional object";
 	}
-	throw new EXLogic("Invalid format provided for MARCFormatToMods: " + format);
+
+	return "text";
+
+	//throw new EXLogic("Invalid format provided for MARCFormatToMods: " + format);
 }
 
 
