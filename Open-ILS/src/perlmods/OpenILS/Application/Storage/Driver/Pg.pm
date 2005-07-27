@@ -50,11 +50,21 @@
 		);
 
 		my $master = shift @$_db_params;
-		$master_db = DBI->connect("dbi:Pg:host=$$master{host};dbname=$$master{db}",$$master{user},$$master{pw}, \%attrs);
+		$log->debug("Attmpting to connet to $$master{db} at $$master{host}", INFO);
+
+		try {
+			$master_db = DBI->connect("dbi:Pg:host=$$master{host};dbname=$$master{db}",$$master{user},$$master{pw}, \%attrs) ||
+				throw OpenSRF::EX::ERROR ("Couldn't connect to $$master{db} on $$master{host} as $$master{user}!!");
+		} catch Error with {
+			my $e = shift;
+			$log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
+			throw $e;
+		};
+
+		$log->debug("Connected to MASTER db $$master{db} at $$master{host}", INFO);
+		
 		$master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
 
-		$log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
-		
 		for my $db (@$_db_params) {
 			push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
 			$slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});

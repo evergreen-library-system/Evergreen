@@ -40,7 +40,13 @@ sub initialize {
 	@OpenILS::Application::Storage::CDBI::ISA = ( $driver );
 
 	eval 'use OpenILS::Application::Storage::Publisher;';
+	if ($@) {
+		$log->debug("FAILURE LOADING Publisher!  $@", ERROR);
+	}
 	eval 'use OpenILS::Application::Storage::WORM;';
+	if ($@) {
+		$log->debug("FAILURE LOADING WORM!  $@", ERROR);
+	}
 }
 
 sub child_init {
@@ -59,6 +65,7 @@ sub child_init {
 		$log->debug("Success initializing driver!", DEBUG);
 		return 1;
 	}
+	$log->debug("FAILURE initializing driver!", ERROR);
 	return 0;
 }
 

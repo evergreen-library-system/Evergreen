@@ -3,7 +3,7 @@ use base qw/OpenILS::Application::Storage/;
 our $VERSION = 1;
 
 use Digest::MD5 qw/md5_hex/;
-use OpenSRF::EX qw/:try/;;
+use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Utils::Fieldmapper;
@@ -312,6 +312,12 @@ use OpenILS::Application::Storage::Publisher::metabib;
 use OpenILS::Application::Storage::Publisher::money;
 use OpenILS::Application::Storage::Publisher::permission;
 ';
+
+if ($@) {
+	$log->debug("ARG! Couldn't load (at least one) class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load (at least one) class Publisher: $@");
+}
+
 
 for my $fmclass ( (Fieldmapper->classes) ) {
 
