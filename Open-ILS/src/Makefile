@@ -18,6 +18,8 @@ perl-install:
 	mkdir -p $(PERLDIR)
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/openils.xml.example $(ETCDIR)
+	mkdir -p $(TEMPLATEDIR)
+	cp -r templates/marc $(TEMPLATEDIR)
 
 javascript-install:
 	@echo "Installing javascript to $(JSDIR)"

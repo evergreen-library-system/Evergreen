@@ -12,10 +12,75 @@ use XML::LibXML;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
 use OpenILS::Perm;
+use OpenSRF::Utils::SettingsClient;
 
 my $apputils = "OpenILS::Application::AppUtils";
 
 my $utils = "OpenILS::Application::Cat::Utils";
+
+my $conf;
+
+my %marctemplates;
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_marc_template",
+	api_name	=> "open-ils.cat.biblio.marc_template.retrieve",
+	notes		=> <<"	NOTES");
+	Returns a MARC 'record tree' based on a set of pre-defined templates.
+	Templates include : book
+	NOTES
+
+sub retrieve_marc_template {
+	my( $self, $client, $type ) = @_;
+	my $xml = _load_marc_template($type);
+	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $xml ); 
+	return $utils->nodeset2tree( $nodes->nodeset );
+}
+
+sub _load_marc_template {
+	my $type = shift;
+
+	if(!defined( $marctemplates{$type} )) {
+		if(!$conf) { $conf = OpenSRF::Utils::SettingsClient->new; }
+		my $template = $conf->config_value(					
+			"apps", "open-ils.cat","app_settings", "marctemplates", $type );
+		open( F, $template );
+		my @xml = <F>;
+		$marctemplates{$type} = join('', @xml);
+	}
+
+	warn "Loaded MARC template XML:\n" . $marctemplates{$type} . "\n";
+
+	return $marctemplates{$type};
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "create_record_tree",
+	api_name	=> "open-ils.cat.biblio.record_tree.create",
+	notes		=> <<"	NOTES");
+	Inserts a new MARC 'record tree' into the system
+	NOTES
+
+sub create_record_tree {
+	my( $self, $client, $login, $tree ) = @_;
+
+	my $user_obj = $apputils->check_user_session($login);
+
+	if($apputils->check_user_perms(
+			$user_obj->id, $user_obj->home_ou, "CREATE_MARC")) {
+		return OpenILS::Perm->new("CREATE_MARC"); 
+	}
+
+	warn "Creating a new record tree entry...";
+	my $meth = $self->method_lookup("open-ils.cat.biblio.record.tree.import");
+	my ($s) = $meth->run($login, $tree);
+	return $s;
+}
+
+
 
 
 __PACKAGE__->register_method(

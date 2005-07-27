@@ -181,6 +181,13 @@ For non-core config info, see the inline documentation within this file
 					<max_spare_children>5</max_spare_children>
 				</unix_config>
 
+				<app_settings>
+					<marctemplates>
+						<book>/path/to/templates/marc/book.xml</book>
+					</marctemplates>
+				</app_settings>
+
+
 			</open-ils.cat>
 
 
