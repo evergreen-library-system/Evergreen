@@ -93,8 +93,9 @@ package action::hold_transit_copy;
 use base qw/action/;
 __PACKAGE__->table('action_hold_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/hold source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop/);
+__PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
+				     source_send_time dest_recv_time prev_hop
+				     copy_status hold/);
 
 #-------------------------------------------------------------------------------
 
@@ -103,13 +104,14 @@ use base qw/action/;
 __PACKAGE__->table('action_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop/);
+				     source_send_time dest_recv_time prev_hop
+				     copy_status/);
 
 #-------------------------------------------------------------------------------
 
 package action::unfulfilled_hold_list;
 use base qw/action/;
-__PACKAGE__->table('action_.unfulfilled_hold_list');
+__PACKAGE__->table('action_unfulfilled_hold_list');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/hold current_copy circ_lib fail_time /);
 

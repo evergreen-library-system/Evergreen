@@ -150,6 +150,7 @@ CREATE TABLE action.transit_copy (
 	source			INT				NOT NULL REFERENCES actor.org_unit (id),
 	dest			INT				NOT NULL REFERENCES actor.org_unit (id),
 	prev_hop		INT				REFERENCES action.transit_copy (id),
+	copy_status		INT				NOT NULL REFERENCES config.copy_status (id),
 	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE
 );
 
