@@ -18,7 +18,7 @@
 
 <!-- Some logic abstracted a bit.  Sort of like an API list -->
 <commandset id="marc_cmds">
-	<command id="cmd_marc_validate" oncommand="
+	<command id="cmd_marc_validate" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		validate_marc();
 	"/>
@@ -28,11 +28,11 @@
 	<command id="cmd_marc_submit" oncommand="
 		submit_marc();
 	"/>
-	<command id="cmd_marc_reload" oncommand="
+	<command id="cmd_marc_reload" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		reload_marc();
 	"/>
-	<command id="cmd_marc_export" oncommand="
+	<command id="cmd_marc_export" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		export_marc();
 	"/>
@@ -40,12 +40,7 @@
 		legend_marc();
 	"/>
 	<command id="cmd_close_window" oncommand="
-		dump('close editor\n');
-		if (am_i_a_top_level_tab) {
-			tabWindow.close_tab('main_tabbox');
-		} else {
-			window.close();
-		}
+		mw.close_tab(app_shell,'main_tabbox');
 	"/>
 	<command id="cmd_marc_fixed_BKS" oncommand="
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
@@ -55,32 +50,32 @@
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','SER');
 	"/>
-	<command id="cmd_marc_fixed_VIS" oncommand="
+	<command id="cmd_marc_fixed_VIS" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','VIS');
 	"/>
-	<command id="cmd_marc_fixed_MIX" oncommand="
+	<command id="cmd_marc_fixed_MIX" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','MIX');
 	"/>
-	<command id="cmd_marc_fixed_MAP" oncommand="
+	<command id="cmd_marc_fixed_MAP" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','MAP');
 	"/>
-	<command id="cmd_marc_fixed_SCO" oncommand="
+	<command id="cmd_marc_fixed_SCO" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','SCO');
 	"/>
-	<command id="cmd_marc_fixed_REC" oncommand="
+	<command id="cmd_marc_fixed_REC" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','REC');
 	"/>
-	<command id="cmd_marc_fixed_COM" oncommand="
+	<command id="cmd_marc_fixed_COM" disabled="true" oncommand="
 		alert('Feature Not Yet Implemented');
 		document.getElementById('ctrl_deck').setAttribute('selectedIndex',0);
 		fixed_fields_show_only('fixed_grid','COM');
@@ -124,9 +119,9 @@
 </vbox>
 
 <hbox id="marc_buttons_box" class="marc_buttons_box">
-	<button label="&marc.file.close;" accesskey="&marc.file.close.key;" key="file-close-key" command="cmd_close_window"/>
-	<button label="&marc.file.reload;" accesskey="&marc.file.reload.key;" key="file-reload-key" command="cmd_marc_reload"/>
-	<button label="&marc.file.publish;" accesskey="&marc.file.publish.key;" key="file-publish-key" command="cmd_marc_submit"/>
+	<button label="&marc.file.close;" accesskey="&marc.file.close.key;" key="file-close-key" observes="cmd_close_window"/>
+	<button label="&marc.file.reload;" accesskey="&marc.file.reload.key;" key="file-reload-key" observes="cmd_marc_reload"/>
+	<button label="&marc.file.publish;" accesskey="&marc.file.publish.key;" key="file-publish-key" observes="cmd_marc_submit"/>
 </hbox>
 
 <!-- The main top level menubar -->
@@ -140,34 +135,34 @@
 <!-- The File menu on the marc menu -->
 <menu id="marc-file">
 	<menupopup id="marc-popup">
-		<menuitem label="&marc.file.validate;" accesskey="&marc.file.validate.key;" key="file-validate-key" command="cmd_marc_validate"/>
+		<menuitem label="&marc.file.validate;" accesskey="&marc.file.validate.key;" key="file-validate-key" observes="cmd_marc_validate"/>
 		<menuseparator />
-		<menuitem label="&marc.file.reload;" accesskey="&marc.file.reload.key;" key="file-reload-key" command="cmd_marc_reload"/>
-		<menuitem label="&marc.file.export;" accesskey="&marc.file.export.key;" key="file-export-key" command="cmd_marc_export"/>
-		<menuitem label="&marc.file.publish;" accesskey="&marc.file.publish.key;" key="file-publish-key" command="cmd_marc_submit"/>
+		<menuitem label="&marc.file.reload;" accesskey="&marc.file.reload.key;" key="file-reload-key" observes="cmd_marc_reload"/>
+		<menuitem label="&marc.file.export;" accesskey="&marc.file.export.key;" key="file-export-key" observes="cmd_marc_export"/>
+		<menuitem label="&marc.file.publish;" accesskey="&marc.file.publish.key;" key="file-publish-key" observes="cmd_marc_submit"/>
 		<menuseparator />
-		<menuitem label="&marc.file.close;" accesskey="&marc.file.close.key;" key="file-close-key" command="cmd_close_window"/>
+		<menuitem label="&marc.file.close;" accesskey="&marc.file.close.key;" key="file-close-key" observes="cmd_close_window"/>
 	</menupopup>
 </menu>
 
 <!-- The Display menu on the marc menu -->
 <menu id="marc-display">
 	<menupopup id="display-popup">
-		<menuitem id="explain_marc" label="&marc.display.explain;" accesskey="&marc.display.explain.key;" key="display-explain-key" command="cmd_marc_explain"/>
-		<menuitem label="&marc.display.legend;" accesskey="&marc.display.legend.key;" key="file-legend-key" command="cmd_marc_legend"/>
+		<menuitem id="explain_marc" label="&marc.display.explain;" accesskey="&marc.display.explain.key;" key="display-explain-key" observes="cmd_marc_explain"/>
+		<menuitem label="&marc.display.legend;" accesskey="&marc.display.legend.key;" key="file-legend-key" observes="cmd_marc_legend"/>
 		<menuseparator />
-		<menuitem label="&marc.display.cover_art;" accesskey="&marc.display.cover_art.key;" key="file-cover-art-key" command="cmd_marc_cover_art"/>
-		<menuitem label="&marc.display.meta_data;" accesskey="&marc.display.meta_data.key;" key="file-meta-data-key" command="cmd_marc_meta_data"/>
-		<menuitem label="&marc.display.control_fields;" accesskey="&marc.display.control_fields.key;" key="file-control-fields-key" command="cmd_marc_control_fields"/>
+		<menuitem label="&marc.display.cover_art;" accesskey="&marc.display.cover_art.key;" key="file-cover-art-key" observes="cmd_marc_cover_art"/>
+		<menuitem label="&marc.display.meta_data;" accesskey="&marc.display.meta_data.key;" key="file-meta-data-key" observes="cmd_marc_meta_data"/>
+		<menuitem label="&marc.display.control_fields;" accesskey="&marc.display.control_fields.key;" key="file-control-fields-key" observes="cmd_marc_control_fields"/>
 		<menuseparator />
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.BKS;" accesskey="&marc.display.fixed.BKS.key;" key="file-fixed-BKS-key" command="cmd_marc_fixed_BKS"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.SER;" accesskey="&marc.display.fixed.SER.key;" key="file-fixed-SER-key" command="cmd_marc_fixed_SER"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.VIS;" accesskey="&marc.display.fixed.VIS.key;" key="file-fixed-VIS-key" command="cmd_marc_fixed_VIS"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.MIX;" accesskey="&marc.display.fixed.MIX.key;" key="file-fixed-MIX-key" command="cmd_marc_fixed_MIX"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.MAP;" accesskey="&marc.display.fixed.MAP.key;" key="file-fixed-MAP-key" command="cmd_marc_fixed_MAP"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.SCO;" accesskey="&marc.display.fixed.SCO.key;" key="file-fixed-SCO-key" command="cmd_marc_fixed_SCO"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.REC;" accesskey="&marc.display.fixed.REC.key;" key="file-fixed-REC-key" command="cmd_marc_fixed_REC"/>
-		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.COM;" accesskey="&marc.display.fixed.COM.key;" key="file-fixed-COM-key" command="cmd_marc_fixed_COM"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.BKS;" accesskey="&marc.display.fixed.BKS.key;" key="file-fixed-BKS-key" observes="cmd_marc_fixed_BKS"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.SER;" accesskey="&marc.display.fixed.SER.key;" key="file-fixed-SER-key" observes="cmd_marc_fixed_SER"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.VIS;" accesskey="&marc.display.fixed.VIS.key;" key="file-fixed-VIS-key" observes="cmd_marc_fixed_VIS"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.MIX;" accesskey="&marc.display.fixed.MIX.key;" key="file-fixed-MIX-key" observes="cmd_marc_fixed_MIX"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.MAP;" accesskey="&marc.display.fixed.MAP.key;" key="file-fixed-MAP-key" observes="cmd_marc_fixed_MAP"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.SCO;" accesskey="&marc.display.fixed.SCO.key;" key="file-fixed-SCO-key" observes="cmd_marc_fixed_SCO"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.REC;" accesskey="&marc.display.fixed.REC.key;" key="file-fixed-REC-key" observes="cmd_marc_fixed_REC"/>
+		<menuitem type="radio" name="fixed_field_display" label="&marc.display.fixed.COM;" accesskey="&marc.display.fixed.COM.key;" key="file-fixed-COM-key" observes="cmd_marc_fixed_COM"/>
 	</menupopup>
 </menu>
 
@@ -930,7 +925,6 @@
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 <keyset id="marc_keys">
 	<key id="marc-close-editor-key" modifiers="accel" key="&marc.close.editor.key;" command="cmd_close_window"/>
-	<key id="" modifiers="accel" key="A" command="cmd_"/>
 </keyset>
 
 </overlay>
