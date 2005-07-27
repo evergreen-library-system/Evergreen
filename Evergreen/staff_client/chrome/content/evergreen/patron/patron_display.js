@@ -428,7 +428,7 @@ function patron_display_patron_checkout_items_init(p) {
 								keep_these.push( checkouts[ idx ] );	
 							}
 							if (check != null && check.status == 0) {
-								check.route_to = mw.G.org_tree_hash[check.route_to].shortname();
+								//check.route_to = mw.G.org_tree_hash[check.route_to].shortname();
 								alert('Check In: ' + check.text + '  Route To: ' + check.route_to);
 							}
 							checkouts = keep_these;
