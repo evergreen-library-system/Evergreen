@@ -43,11 +43,16 @@ sub _load_marc_template {
 
 	if(!defined( $marctemplates{$type} )) {
 		if(!$conf) { $conf = OpenSRF::Utils::SettingsClient->new; }
+
 		my $template = $conf->config_value(					
 			"apps", "open-ils.cat","app_settings", "marctemplates", $type );
+		warn "Opening template file $template\n";
+
 		open( F, $template );
 		my @xml = <F>;
+		close(F);
 		$marctemplates{$type} = join('', @xml);
+
 	}
 
 	warn "Loaded MARC template XML:\n" . $marctemplates{$type} . "\n";
