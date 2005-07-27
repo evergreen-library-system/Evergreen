@@ -747,6 +747,10 @@ __PACKAGE__->register_method(
 	method	=> "biblio_mrid_to_modsbatch",
 	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve");
 
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_to_modsbatch",
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve.staff");
+
 sub biblio_mrid_to_modsbatch {
 	my( $self, $client, $mrid ) = @_;
 
@@ -775,13 +779,20 @@ sub biblio_mrid_to_modsbatch {
 
 
 	warn "Creating mods batch for metarecord $mrid\n";
-	my $id_hash = biblio_mrid_to_record_ids( undef, undef,  $mrid );
+	my $meth = "open-ils.search.biblio.metarecord_to_records";
+	if( $self->api_name =~ /staff/ ) { $meth .= ".staff";}
+	$meth = $self->method_lookup($meth);
+
+	my ($id_hash) = $meth->run($mrid);
+
 	my @ids = @{$id_hash->{ids}};
 
 	if(@ids < 1) { return undef; }
 
 	warn "Master ID is $master_id\n";
 	# grab the master record to start the mods batch 
+
+	$meth = "open-ils.storage.direct.biblio.record_entry.retrieve";
 
 	my $record = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
 			"open-ils.storage.direct.biblio.record_entry.retrieve", $master_id );
