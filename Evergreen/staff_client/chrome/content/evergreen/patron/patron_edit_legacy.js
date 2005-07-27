@@ -1078,6 +1078,7 @@ function patron_summary_refresh(ev) {
 			mw.handle_error(E);
 		}
 	}
+	/*
 	if (PATRON.au.alert_message()) {
 		snd_bad(); snd_bad();
 		s_alert(
@@ -1086,6 +1087,7 @@ function patron_summary_refresh(ev) {
 			'\n\n\n\nTo remove this alert permanently, Edit the patron and erase the message in "Alert Message".\n\n'
 		);
 	}
+	*/
 }
 PATRON.summary_refresh = patron_summary_refresh;
 

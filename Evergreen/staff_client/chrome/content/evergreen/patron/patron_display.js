@@ -69,6 +69,15 @@ function patron_display_init(p) {
 			p.retrieve_patron_via_barcode( p.patron );
 	}
 
+	if (p._patron && p._patron.alert_message()) {
+		//snd_bad(); snd_bad();
+		s_alert(
+			'PATRON ALERT MESSAGE\n\n\n\n' +
+			p._patron.alert_message() +
+			'\n\n\n\nTo remove this alert permanently, Edit the patron and erase the message in "Alert Message".\n\n'
+		);
+	}
+
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return p;
 }
