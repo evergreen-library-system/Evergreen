@@ -4,6 +4,7 @@ use strict; use warnings;
 
 use OpenSRF::EX qw/:try/;
 
+use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/:level/;
 my $log = 'OpenSRF::Utils::Logger';
 

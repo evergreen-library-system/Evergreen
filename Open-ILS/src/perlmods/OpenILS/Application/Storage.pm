@@ -42,11 +42,15 @@ sub initialize {
 	eval 'use OpenILS::Application::Storage::Publisher;';
 	if ($@) {
 		$log->debug("FAILURE LOADING Publisher!  $@", ERROR);
+		throw OpenILS::EX::PANIC ( "FAILURE LOADING Publisher!  :  $@" );
 	}
 	eval 'use OpenILS::Application::Storage::WORM;';
 	if ($@) {
 		$log->debug("FAILURE LOADING WORM!  $@", ERROR);
+		throw OpenILS::EX::PANIC ( "FAILURE LOADING WoRM!  :  $@" );
 	}
+
+	$log->debug("We seem to be OK...",DEBUG);
 }
 
 sub child_init {
