@@ -52,15 +52,10 @@ Fieldmapper.prototype.clone = function() {
 	return obj;
 }
 
-function FMEX(message) {
-	this.message = message;
-}
+function FMEX(message) { this.message = message; }
+FMEX.toString = function() { return "FieldmapperException: " + this.message + "\\n"; }
 
-FMEX.toString = function() {
-	return "FieldmapperException: " + this.message + "\\n";
-
-}
-
+var _c = {};
 
 JS
 
@@ -69,36 +64,48 @@ for my $object (keys %$map) {
 	if($web) {
 		my $hint = $map->{$object}->{hint};
 		next unless (grep { $_ eq $hint } @web_hints );
-		#next unless( $hint eq "mvr" or $hint eq "aou" or $hint eq "aout" );
 	}
 
-my $short_name = $map->{$object}->{hint};
+	my $short_name = $map->{$object}->{hint};
 
-print	<<JS;
-$short_name.prototype					= new Fieldmapper();
-$short_name.prototype.constructor	= $short_name;
-$short_name.baseClass					= Fieldmapper.constructor;
+	my @fields;
+	for my $field (keys %{$map->{$object}->{fields}}) {
+		my $position = $map->{$object}->{fields}->{$field}->{position};
+		$fields[$position] = $field;
+	}
 
-function $short_name(a) {
-	this.classname = "$short_name";
-	this._isfieldmapper = true;
-	if(a) { 
-		if( a.constructor == Array) this.a = a;  
-		else throw new FMEX(errorstr);
-	} else this.a = [];
+	print "_c[\"$short_name\"] = [";
+	for my $f (@fields) { print "\"$f\","; }
+	print "];\n"
+
+
+
 }
-
-$short_name._isfieldmapper = true;
-JS
-
-for my $field (keys %{$map->{$object}->{fields}}) {
-
-my $position = $map->{$object}->{fields}->{$field}->{position};
 
 print <<JS;
-$short_name.prototype.$field=function(n){if(arguments.length == 1)this.a[$position]=n;return this.a[$position];}
-JS
 
-}
-}
+	var string = "";
+	for( var cl in _c ) {
+		string += cl + ".prototype = new Fieldmapper(); " + 
+							cl + ".prototype.constructor = " + cl + ";" +
+							cl + ".baseClass = Fieldmapper.constructor;" +
+							"function " + cl + "(a) { " +
+								"this.classname = \\\"" + cl + "\\\";" +
+								"this._isfieldmapper = true;" +
+								"if(a) { if(a.constructor == Array) this.a = a; else throw new FMEX(errorstr);} else this.a = []}"; 
+
+		string += cl + "._isfieldmapper=true;";
+
+		for( var pos in _c[cl] ) {
+			var field = _c[cl][pos];
+			string += cl + ".prototype." + field + 
+				"=function(n){if(arguments.length == 1)this.a[" + 
+				pos + "]=n;return this.a[" + pos + "];};";
+		}
+
+	}
+
+	eval(string);
+
+JS
 
