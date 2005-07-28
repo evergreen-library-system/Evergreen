@@ -223,7 +223,11 @@ sub perl2JSON {
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
 		$perl =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
-		$output = '"'.$perl.'"';
+		if ($perl =~ /^(?:\+|-)?\d*\.?\d+$/) {
+			$output = $perl;
+		} else {
+			$output = '"'.$perl.'"';
+		}
 	}
 
 	return $output;
