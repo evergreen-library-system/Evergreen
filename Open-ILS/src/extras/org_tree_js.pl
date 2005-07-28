@@ -19,8 +19,12 @@ my $types = $req2->gather(1);
 my $tree_string = JSON->perl2JSON($tree);
 my $types_string = JSON->perl2JSON($types);
 
+$tree_string =~ s/\"([0-9]+)\"/$1/g;
+$tree_string =~ s/null//g;
+
 $tree_string =~ s/\"/\\\"/g;
 $types_string =~ s/\"/\\\"/g;
+
 
 $tree_string = "var globalOrgTree = JSON2js(\"$tree_string\");";
 $types_string = "var globalOrgTypes = JSON2js(\"$types_string\");";
