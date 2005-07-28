@@ -14,7 +14,7 @@ echo "Updating web_fieldmapper";
 perl fieldmapper.pl 1	> "$JSDIR/web_fieldmapper.js";
 
 echo "Updating OrgTree";
-perl org_tree_js.pl "$CONFIG" | sed 's/null//g'	> "$JSDIR/OrgTree.js";
+perl org_tree_js.pl "$CONFIG" > "$JSDIR/OrgTree.js";
 
 echo "Done";
 
