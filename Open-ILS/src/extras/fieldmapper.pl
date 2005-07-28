@@ -51,7 +51,9 @@ Fieldmapper.prototype.clone = function() {
 	}
 	return obj;
 }
-
+Fieldmapper.prototype.isnew = function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; }
+Fieldmapper.prototype.ischanged = function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; }
+Fieldmapper.prototype.isdeleted = function(a) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; }
 function FMEX(message) { this.message = message; }
 FMEX.toString = function() { return "FieldmapperException: " + this.message + "\\n"; }
 
@@ -75,7 +77,11 @@ for my $object (keys %$map) {
 	}
 
 	print "_c[\"$short_name\"] = [";
-	for my $f (@fields) { print "\"$f\","; }
+	for my $f (@fields) { 
+		if( $f ne "isnew" and $f ne "ischanged" and $f ne "isdeleted" ) {
+			print "\"$f\","; 
+		}
+	}
 	print "];\n"
 
 
@@ -97,10 +103,11 @@ print <<JS;
 		string += cl + "._isfieldmapper=true;";
 
 		for( var pos in _c[cl] ) {
+			var p = parseInt(pos) + 3;
 			var field = _c[cl][pos];
 			string += cl + ".prototype." + field + 
 				"=function(n){if(arguments.length == 1)this.a[" + 
-				pos + "]=n;return this.a[" + pos + "];};";
+				p + "]=n;return this.a[" + p + "];};";
 		}
 
 	}
