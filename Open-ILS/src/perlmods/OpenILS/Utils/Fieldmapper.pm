@@ -74,6 +74,7 @@ sub _init {
 								     			     settings		=> 1,
 								     			     addresses		=> 1 } },
 		'Fieldmapper::actor::user_setting'		=> { hint => 'aus'    },
+		'Fieldmapper::actor::org_unit_setting'		=> { hint => 'aous'    },
 		'Fieldmapper::actor::user_address'		=> { hint => 'aua'    },
 		'Fieldmapper::actor::org_address'		=> { hint => 'aoa'    },
 		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },

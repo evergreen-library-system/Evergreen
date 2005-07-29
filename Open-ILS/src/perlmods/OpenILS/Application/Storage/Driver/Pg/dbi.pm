@@ -235,6 +235,12 @@
 	actor::user->sequence( 'actor.usr_id_seq' );
 
 	#---------------------------------------------------------------------
+	package actor::org_unit_setting;
+	
+	actor::org_unit_setting->table( 'actor.org_unit_setting' );
+	actor::org_unit_setting->sequence( 'actor.org_unit_setting_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::user_setting;
 	
 	actor::user_setting->table( 'actor.usr_setting' );
