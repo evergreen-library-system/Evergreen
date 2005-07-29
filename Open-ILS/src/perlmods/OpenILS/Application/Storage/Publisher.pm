@@ -287,7 +287,7 @@ sub merge_node {
 
 	my $success = 1;
 	try {
-		$success = $cdbi->merge($node);
+		$success = $cdbi->merge($node)->id;
 	} catch Error with {
 		$success = 0;
 	};
@@ -315,6 +315,8 @@ sub batch_call {
 	my $client = shift;
 	my @nodes = @_;
 
+	my $unwrap = $self->{unwrap};
+
 	my $cdbi = $self->{cdbi};
 	my $api_name = $self->api_name;
 	(my $single_call_api_name = $api_name) =~ s/batch\.//o;
@@ -324,7 +326,7 @@ sub batch_call {
 
 	my @success;
 	while ( my $node = shift(@nodes) ) {
-		my ($res) = $method->run( $node ); 
+		my ($res) = $method->run( ($unwrap ? (@$node) : ($node)) ); 
 		push(@success, 1) if ($res >= 0);
 	}
 
@@ -595,6 +597,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			__PACKAGE__->register_method(
 				api_name	=> $api_prefix.'.batch.merge',
 				method		=> 'batch_call',
+				unwrap		=> 1,
 				api_level	=> 1,
 				cdbi		=> $cdbi,
 			);
@@ -616,6 +619,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				api_name	=> $api_prefix.'.batch.remote_update',
 				method		=> 'batch_call',
 				api_level	=> 1,
+				unwrap		=> 1,
 				cdbi		=> $cdbi,
 			);
 		}

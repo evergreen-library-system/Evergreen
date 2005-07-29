@@ -11,10 +11,8 @@ use DateTime::Format::ISO8601;
 my $parser = DateTime::Format::ISO8601->new;
 my $log = 'OpenSRF::Utils::Logger';
 
-sub grab_overdue {
-	my $self = shift;
-	my $client = shift;
-	my $grace = shift || '';
+sub overdue_circs {
+	my $grace = shift;
 
 	my $c_t = action::circulation->table;
 
@@ -30,7 +28,16 @@ sub grab_overdue {
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute;
 
-	$client->respond( $_->to_fieldmapper ) for ( map { action::circulation->construct($_) } $sth->fetchall_hash );
+	return ( map { action::circulation->construct($_) } $sth->fetchall_hash );
+
+}
+
+sub grab_overdue {
+	my $self = shift;
+	my $client = shift;
+	my $grace = shift || '';
+
+	$client->respond( $_->to_fieldmapper ) for ( overdue_circs($grace) );
 
 	return undef;
 
@@ -270,12 +277,9 @@ sub generate_fines {
 	
 	my @circs;
 	if ($circ) {
-		push @circs,
-			$self->method_lookup(
-				'open-ils.storage.direct.action.circulation.search_where'
-			)->run( { id => $circ, stop_fines => undef } );
+		push @circs, action::circulation->search_where( { id => $circ, stop_fines => undef } );
 	} else {
-		push @circs, $self->method_lookup('open-ils.storage.action.circulation.overdue')->run( $grace );
+		push @circs, overdue_circs($grace);
 	}
 
 	for my $c (@circs) {
@@ -303,8 +307,8 @@ sub generate_fines {
 				" (user ".$c->usr.").\n".
 				"\tItem was due on or before: ".localtime($due)."\n");
 	
-			my ($fine) = $self->method_lookup('open-ils.storage.direct.money.billing.search')->run(
-				{ xact => $c->id, voided => 'f' },
+			my ($fine) = money::billing->search(
+				xact => $c->id, voided => 'f',
 				{ order_by => 'billing_ts DESC', limit => '1' }
 			);
 	
@@ -331,11 +335,10 @@ sub generate_fines {
 	
 			for my $bill (1 .. $pending_fine_count) {
 	
-				my ($total) = $self->method_lookup('open-ils.storage.direct.money.billable_transaction_summary.retrieve')->run( $c->id );
+				my ($total) = money::billable_transaction_summary->retrieve( $c->id );
 	
 				if ($total && $total->balance_owed > $c->max_fine) {
-					$c->stop_fines('MAXFINES');
-					$self->method_lookup('open-ils.storage.direct.action.circulation.update')->run( $c );
+					$c->update({stop_fines => 'MAXFINES'});
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
 						" reached for this circulation.\n".
@@ -343,13 +346,12 @@ sub generate_fines {
 					last;
 				}
 	
-				my $billing = new Fieldmapper::money::billing;
-				$billing->xact( $c->id );
-				$billing->note( "Overdue Fine" );
-				$billing->amount( $c->recuring_fine );
-	
-				$billing->billing_ts(
-					DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill )->strftime('%FT%T%z')
+				my $billing = money::billing->create(
+					{ xact		=> ''.$c->id,
+					  note		=> "Overdue Fine",
+					  amount	=> ''.$c->recuring_fine,
+					  billing_ts	=> DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill )->strftime('%FT%T%z')
+					}
 				);
 	
 				$client->respond(
@@ -359,8 +361,6 @@ sub generate_fines {
 							clense_ISO8601( $billing->billing_ts )
 						)->epoch
 					)."\n" );
-	
-				$self->method_lookup('open-ils.storage.direct.money.billing.create')->run( $billing );
 			}
 		} catch Error with {
 			my $e = shift;
@@ -403,9 +403,9 @@ sub hold_copy_targeter {
 	);
 
 
-	($statuses) = $self->method_lookup('open-ils.storage.direct.config.copy_status.search.holdable.atomic')->run('t');
+	$statuses ||= [ config::copy_status->search(holdable => 't') ];
 
-	($locations) = $self->method_lookup('open-ils.storage.direct.asset.copy_location.search.holdable.atomic')->run('t');
+	$locations ||= [ asset::copy_location->search(holdable => 't') ];
 
 	my $holds;
 
@@ -413,19 +413,16 @@ sub hold_copy_targeter {
 
 	try {
 		if ($one_hold) {
-			($holds) = $self->method_lookup('open-ils.storage.direct.action.hold_request.search.atomic')
-						->run(id => $one_hold);
+			$holds = [ action::hold_request->search(id => $one_hold) ];
 		} else {
-			($holds) = $self->method_lookup('open-ils.storage.direct.action.hold_request.search_where.atomic')
-						->run(
+			$holds = [ action::hold_request->search_where(
 							{ capture_time => undef,
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
-							{ order_by => 'request_time,prev_check_time' } );
-			push @$holds, $self->method_lookup('open-ils.storage.direct.action.hold_request.search')
-						->run(
-							{ capture_time => undef,
-				  			  prev_check_time => undef },
+							{ order_by => 'request_time,prev_check_time' } ) ];
+			push @$holds, action::hold_request->search(
+							capture_time => undef,
+				  			prev_check_time => undef,
 							{ order_by => 'request_time' } );
 		}
 	} catch Error with {
@@ -434,8 +431,8 @@ sub hold_copy_targeter {
 	};
 
 	for my $hold (@$holds) {
+		action::hold_request->db_Main->begin_work;
 		try {
-			$self->method_lookup( 'open-ils.storage.transaction.begin')->run($client);
 			$client->respond("Processing hold ".$hold->id."...\n");
 
 			my $copies;
@@ -464,13 +461,13 @@ sub hold_copy_targeter {
 			$client->respond("\t".scalar(@good_copies)." (non-current) copies available for targeting...\n");
 
 			my $old_best = $hold->current_copy;
-			$hold->clear_current_copy;
+			$hold->update({ current_copy => undef });
 	
 			if (!scalar(@good_copies)) {
 				$client->respond("\tNo (non-current) copies available to fill the hold.\n");
 				if ( $old_best && grep {$c->id == $hold->current_copy} @$copies ) {
 					$client->respond("\tPushing current_copy back onto the targeting list\n");
-					push @good_copies, $self->method_lookup('open-ils.storage.direct.asset.copy.retrieve')->run( $old_best );
+					push @good_copies, asset::copy->retrieve( $old_best );
 				} else {
 					$client->respond("\tcurrent_copy is no longer available for targeting... NEXT HOLD, PLEASE!\n");
 					next;
@@ -492,32 +489,33 @@ sub hold_copy_targeter {
 				# hold wasn't fulfilled, record the fact
 			
 				$client->respond("\tHold was not (but should have been) fulfilled by ".$old_best->id.".\n");
-				my $ufh = new Fieldmapper::action::unfulfilled_hold_list;
-				$ufh->hold( $hold->id );
-				$ufh->current_copy( $old_best->id );
-				$ufh->circ_lib( $old_best->circ_lib );
-				$self->method_lookup('open-ils.storage.direct.action.unfulfilled_hold_list.create')->run( $ufh );
+				action::unfulfilled_hold_list->create(
+						{ hold => ''.$hold->id,
+						  current_copy => ''.$old_best->id,
+						  circ_lib => ''.$old_best->circ_lib,
+						});
 			}
 
 			if ($best) {
-				$hold->current_copy( $best->id );
+				$hold->update( { current_copy => ''.$best->id } );
 				$client->respond("\tTargeting copy ".$best->id." for hold fulfillment.\n");
 			}
 
-			$hold->prev_check_time( 'now' );
+			$hold->update( { prev_check_time => 'now' } );
 			$client->respond("\tUpdating hold ".$hold->id." with new 'current_copy' for hold fulfillment.\n");
-			my ($r) = $self->method_lookup('open-ils.storage.direct.action.hold_request.update')->run( $hold );
 
 			$client->respond("\tProcessing of hold ".$hold->id." complete.\n");
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
+			action::hold_request->dbi_commit;
+
 		} otherwise {
 			my $e = shift;
 			$client->respond("\tProcessing of hold ".$hold->id." failed!.\n\t\t$e\n");
-			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			action::hold_request->dbi_rollback;
 		};
-		$self->method_lookup( 'open-ils.storage.transaction.commit')->run($client);
 	}
+
 	$self->{user_filter}->disconnect;
 	$self->{user_filter}->finish;
 	delete $$self{user_filter};
@@ -539,16 +537,14 @@ sub copy_hold_capture {
 
 	if (!defined($cps)) {
 		try {
-			($cps) = $self->method_lookup('open-ils.storage.direct.asset.copy.search.id.atomic')
-						->run( $hold->target );
-	
+			$cps = [ asset::copy->search( id => $hold->target ) ];
 		} catch Error with {
 			my $e = shift;
 			die "Could not retrieve initial volume list:\n\n$e\n";
 		};
 	}
 
-	my @copies = grep { $_->holdable == 1  and $_->ref == 0 } @$cps;
+	my @copies = grep { $_->holdable and !$_->ref } @$cps;
 
 	for (my $i = 0; $i < @copies; $i++) {
 		next unless $copies[$i];
@@ -561,32 +557,34 @@ sub copy_hold_capture {
 			!$copies[$i] ||
 			!$self->{user_filter}->request(
 				'open-ils.circ.permit_hold',
-				$hold => $copies[$i],
-				{ title => $rec, call_number => $cn }
-			)->gather(1)
+				$hold->to_fieldmapper, do {
+					my $cp_fm = $copies[$i]->to_fieldmapper;
+					$cp_fm->circ_lib( $copies[$i]->circ_lib->to_fieldmapper );
+					$cp_fm->location( $copies[$i]->location->to_fieldmapper );
+					$cp_fm->status( $copies[$i]->status->to_fieldmapper );
+					$cp_fm;
+				},
+				{ title => $rec->to_fieldmapper,
+				  usr => actor::user->retrieve($hold->usr)->to_fieldmapper,
+				  requestor => actor::user->retrieve($hold->requestor)->to_fieldmapper,
+				})->gather(1)
 		);
 		$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
 	}
 
-	@copies = grep { defined $_ } @copies;
+	@copies = grep { $_ } @copies;
 
 	my $count = @copies;
 
 	return unless ($count);
 	
-	$self->method_lookup('open-ils.storage.direct.action.hold_copy_map.mass_delete')->run( { hold => $hold->id } );
+	action::hold_copy_map->search( { hold => $hold->id } )->delete_all;
 	
 	my @maps;
+	$self->{client}->respond( "\tMapping ".scalar(@copies)." eligable copies for hold ".$hold->id."\n");
 	for my $c (@copies) {
-		$self->{client}->respond( "\tCreating hold-copy map for ".$hold->id." <-> ".$c->id."\n");
-		my $m = new Fieldmapper::action::hold_copy_map;
-		$m->hold( $hold->id );
-		$m->target_copy( $c->id );
-		$m->isnew( 1 );
-		push @maps, $m;
+		push @maps, action::hold_copy_map->create( { hold => ''.$hold->id, target_copy => ''.$c->id } );
 	}
-
-	$self->method_lookup('open-ils.storage.direct.action.hold_copy_map.batch.create')->run( @maps );
 
 	return \@copies;
 }
@@ -626,10 +624,8 @@ sub volume_hold_capture {
 
 	if (!defined($vols)) {
 		try {
-			($vols) = $self->method_lookup('open-ils.storage.direct.asset.call_number.search.id.atomic')->run( $hold->target );
-	
+			$vols = [ asset::call_number->search( id => $hold->target ) ];
 			$cache{cns}{$_->id} = $_ for (@$vols);
-
 		} catch Error with {
 			my $e = shift;
 			die "Could not retrieve initial volume list:\n\n$e\n";
@@ -640,7 +636,7 @@ sub volume_hold_capture {
 
 	my $cp_list;
 	try {
-		($cp_list) = $self->method_lookup('open-ils.storage.direct.asset.copy.search.call_number.atomic')->run( \@v_ids );
+		$cp_list = [ asset::copy->search( call_number => \@v_ids ) ];
 	
 	} catch Error with {
 		my $e = shift;
@@ -657,10 +653,8 @@ sub title_hold_capture {
 
 	if (!defined($titles)) {
 		try {
-			($titles) = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.search.id.atomic')->run( $hold->target );
-	
+			$titles = [ biblio::record_entry->search( id => $hold->target ) ];
 			$cache{titles}{$_->id} = $_ for (@$titles);
-	
 		} catch Error with {
 			my $e = shift;
 			die "Could not retrieve initial title list:\n\n$e\n";
@@ -688,7 +682,7 @@ sub metarecord_hold_capture {
 
 	my $titles;
 	try {
-		($titles) = $self->method_lookup('open-ils.storage.ordered.metabib.metarecord.records.atomic')->run( $hold->target );
+		$titles = [ metabib::metarecord_source_map->search( metarecord => $hold->target) ];
 	
 	} catch Error with {
 		my $e = shift;
@@ -696,12 +690,9 @@ sub metarecord_hold_capture {
 	};
 
 	try {
-		my @recs = map {$_->record}
-				$self->method_lookup('open-ils.storage.direct.metabib.record_descriptor.search')
-						->run( record => $titles, item_type => [split '', $hold->holdable_formats] ); 
+		my @recs = map {$_->record} metabib::record_descriptor->search( record => $titles, item_type => [split '', $hold->holdable_formats] ); 
 
-		$titles = [];
-		($titles) = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.search.id.atomic')->run( \@recs );
+		$titles = [ biblio::record_entry->search( id => \@recs ) ];
 	
 	} catch Error with {
 		my $e = shift;
@@ -710,7 +701,6 @@ sub metarecord_hold_capture {
 
 
 	$cache{titles}{$_->id} = $_ for (@$titles);
-
 	$self->title_hold_capture($hold,$titles) if (ref $titles and @$titles);
 }
 

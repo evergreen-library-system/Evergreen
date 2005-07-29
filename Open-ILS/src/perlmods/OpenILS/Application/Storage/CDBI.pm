@@ -172,11 +172,13 @@ sub merge {
 
 	delete $$arg{$_} for (keys %$search);
 
-	my @objs = $self->search_where($search);
+	my @objs = ($self);
+	@objs = $self->search_where($search) unless (ref $self);
+
 	if (@objs == 1) {
-		return $objs[0]->update($arg)->id;
+		return $objs[0]->update($arg);
 	} elsif (@objs == 0) {
-		return $self->create($arg)->id;
+		return $self->create($arg);
 	} else {
 		throw OpenSRF::EX::WARN ("Non-unique search key for merge.  Perhaps you meant to use remote_update?");
 	}
@@ -204,7 +206,7 @@ sub create {
 
 	$log->debug("\$arg is $arg (".ref($arg).")",DEBUG);
 
-	if (ref($arg)) {
+	if (ref($arg) && UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		return $self->create_from_fieldmapper($arg,@_);
 	}
 
@@ -221,24 +223,16 @@ sub create_from_fieldmapper {
 	my $class = ref($obj) || $obj;
 	my ($primary) = $class->columns('Primary');
 
-	if (ref($fm)) {
-		my %hash;
-		if (UNIVERSAL::isa($fm => 'Fieldmapper')) {
-			%hash = map { defined $fm->$_ ?
-						($_ => $fm->$_) :
-						()
-					} grep { $_ ne $primary } $class->columns('All');
+	if (ref($fm) &&UNIVERSAL::isa($fm => 'Fieldmapper')) {
+		my %hash = map { defined $fm->$_ ?
+					($_ => $fm->$_) :
+					()
+				} grep { $_ ne $primary } $class->columns('All');
 
-			if ($class->find_column( 'last_xact_id' )) {
-				my $xact_id = $class->current_xact_id;
-				throw Error unless ($xact_id);
-				$hash{last_xact_id} = $xact_id;
-			}
-		} else {
-			%hash = map { exists $fm->{$_} ?
-						($_ => $fm->{$_}) :
-						()
-					} grep { $_ ne $primary } $class->columns('All');
+		if ($class->find_column( 'last_xact_id' )) {
+			my $xact_id = $class->current_xact_id;
+			throw Error unless ($xact_id);
+			$hash{last_xact_id} = $xact_id;
 		}
 
 		return $class->create( \%hash, @params );
@@ -296,6 +290,7 @@ sub modify_from_fieldmapper {
 	$log->debug("Modifying object using fieldmapper", DEBUG);
 
 	my $class = ref($obj) || $obj;
+	my ($primary) = $class->columns('Primary');
 
 	if (!ref($obj)) {
 		$obj = $class->retrieve($fm);
@@ -311,7 +306,7 @@ sub modify_from_fieldmapper {
 		%hash = map { defined $fm->$_ ?
 				($_ => ''.$fm->$_) :
 				()
-			} $fm->real_fields;
+			} grep { $_ ne $primary } $class->columns('All');
 	} else {
 		%hash = %{$fm};
 	}
