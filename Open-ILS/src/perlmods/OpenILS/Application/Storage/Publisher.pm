@@ -262,6 +262,38 @@ sub mass_delete {
 	return $success;
 }
 
+sub remote_update_node {
+	my $self = shift;
+	my $client = shift;
+	my $node = shift;
+
+	my $cdbi = $self->{cdbi};
+
+	my $success = 1;
+	try {
+		$success = $cdbi->remote_update($node);
+	} catch Error with {
+		$success = 0;
+	};
+	return $success;
+}
+
+sub merge_node {
+	my $self = shift;
+	my $client = shift;
+	my $node = shift;
+
+	my $cdbi = $self->{cdbi};
+
+	my $success = 1;
+	try {
+		$success = $cdbi->merge($node);
+	} catch Error with {
+		$success = 0;
+	};
+	return $success;
+}
+
 sub delete_node {
 	my $self = shift;
 	my $client = shift;
@@ -542,6 +574,46 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.delete' ) ) {
 			__PACKAGE__->register_method(
 				api_name	=> $api_prefix.'.batch.delete',
+				method		=> 'batch_call',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
+
+		# Create the merge method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.merge' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.merge',
+				method		=> 'merge_node',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
+
+		# Create the batch merge method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.merge' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.batch.merge',
+				method		=> 'batch_call',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
+
+		# Create the remote_update method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.remote_update' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.remote_update',
+				method		=> 'remote_update_node',
+				api_level	=> 1,
+				cdbi		=> $cdbi,
+			);
+		}
+
+		# Create the batch remote_update method
+		unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.remote_update' ) ) {
+			__PACKAGE__->register_method(
+				api_name	=> $api_prefix.'.batch.remote_update',
 				method		=> 'batch_call',
 				api_level	=> 1,
 				cdbi		=> $cdbi,

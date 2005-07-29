@@ -165,13 +165,46 @@ sub to_fieldmapper {
 	return $fm;
 }
 
+sub merge {
+	my $self = shift;
+	my $search = shift;
+	my $arg = shift;
+
+	delete $$arg{$_} for (keys %$search);
+
+	my @objs = $self->search_where($search);
+	if (@objs == 1) {
+		return $objs[0]->update($arg)->id;
+	} elsif (@objs == 0) {
+		return $self->create($arg)->id;
+	} else {
+		throw OpenSRF::EX::WARN ("Non-unique search key for merge.  Perhaps you meant to use remote_update?");
+	}
+}
+
+sub remote_update {
+	my $self = shift;
+	my $search = shift;
+	my $arg = shift;
+
+	delete $$arg{$_} for (keys %$search);
+
+	my @objs = $self->search_where($search);
+	if (@objs == 0) {
+		throw OpenSRF::EX::WARN ("No objects found for remote_update.  Perhaps you meant to use merge?");
+	} else {
+		$_->update($arg) for (@objs);
+		return scalar(@objs);
+	}
+}
+
 sub create {
 	my $self = shift;
 	my $arg = shift;
 
 	$log->debug("\$arg is $arg (".ref($arg).")",DEBUG);
 
-	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+	if (ref($arg)) {
 		return $self->create_from_fieldmapper($arg,@_);
 	}
 
@@ -188,16 +221,24 @@ sub create_from_fieldmapper {
 	my $class = ref($obj) || $obj;
 	my ($primary) = $class->columns('Primary');
 
-	if (ref $fm) {
-		my %hash = map { defined $fm->$_ ?
-					($_ => $fm->$_) :
-					()
-				} grep { $_ ne $primary } $class->columns('All');
+	if (ref($fm)) {
+		my %hash;
+		if (UNIVERSAL::isa($fm => 'Fieldmapper')) {
+			%hash = map { defined $fm->$_ ?
+						($_ => $fm->$_) :
+						()
+					} grep { $_ ne $primary } $class->columns('All');
 
-		if ($class->find_column( 'last_xact_id' )) {
-			my $xact_id = $class->current_xact_id;
-			throw Error unless ($xact_id);
-			$hash{last_xact_id} = $xact_id;
+			if ($class->find_column( 'last_xact_id' )) {
+				my $xact_id = $class->current_xact_id;
+				throw Error unless ($xact_id);
+				$hash{last_xact_id} = $xact_id;
+			}
+		} else {
+			%hash = map { exists $fm->{$_} ?
+						($_ => $fm->{$_}) :
+						()
+					} grep { $_ ne $primary } $class->columns('All');
 		}
 
 		return $class->create( \%hash, @params );
@@ -237,7 +278,7 @@ sub update {
 
 	$log->debug("Attempting to update using $arg", DEBUG) if ($arg);
 
-	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+	if (ref($arg)) {
 		$self = $self->modify_from_fieldmapper($arg);
 		$log->debug("Modification of $self seems to have failed....", DEBUG);
 		return undef unless (defined $self);
@@ -264,10 +305,16 @@ sub modify_from_fieldmapper {
 		}
 	}
 
-	my %hash = map { defined $fm->$_ ?
+	my %hash;
+	
+	if (ref($fm) and UNIVERSAL::isa($fm => 'Fieldmapper')) {
+		%hash = map { defined $fm->$_ ?
 				($_ => ''.$fm->$_) :
 				()
 			} $fm->real_fields;
+	} else {
+		%hash = %{$fm};
+	}
 
 	my $au = $obj->autoupdate;
 	$obj->autoupdate(0);
