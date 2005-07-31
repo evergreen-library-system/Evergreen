@@ -3,12 +3,12 @@ use strict;
 use warnings;
 
 use Apache2 ();
-use Apache::Log;
-use Apache::Const -compile => qw(OK REDIRECT :log);
+use Apache2::Log;
+use Apache2::Const -compile => qw(OK REDIRECT :log);
 use APR::Const    -compile => qw(:error SUCCESS);
-use Apache::RequestRec ();
-use Apache::RequestIO ();
-use Apache::RequestUtil;
+use Apache2::RequestRec ();
+use Apache2::RequestIO ();
+use Apache2::RequestUtil;
 use LWP::UserAgent;
 
 use CGI ();
@@ -43,7 +43,7 @@ sub handler {
 			ABSOLUTE			=> 1, 
 			RELATIVE			=> 1,
 			PLUGIN_BASE		=> 'OpenILS::Template::Plugin',
-			INCLUDE_PATH	=> ['/pines/cvs/ILS/Open-ILS/src/extras'], 
+			INCLUDE_PATH	=> ['/openils/var/templates/'],
 			PRE_CHOMP		=> 1,
 			POST_CHOMP		=> 1,
 			} 
@@ -66,7 +66,7 @@ sub handler {
 			return;
 		};
 	}
-	return Apache::OK;
+	return Apache2::Const::OK;
 }
 
 1;
