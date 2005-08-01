@@ -152,7 +152,7 @@ CODE
 		$fstring_string .= <<CODE;
 		tmp = new_object(NULL);
 		tmp->is_null = 1;
-		obj->add_index(obj, $position, tmp);
+		obj->set_index(obj, $position, tmp);
 CODE
 
 		$header_string .= <<CODE;
@@ -178,7 +178,7 @@ CODE
 
 	void fm_${short_name}_set_$field(fm_$short_name* fm, object* obj) {
 		if(!fm || !fm->array || !obj) return;
-		fm->array->add_index(fm->array, $position, obj);
+		fm->array->set_index(fm->array, $position, obj);
 	}
 CODE
 
