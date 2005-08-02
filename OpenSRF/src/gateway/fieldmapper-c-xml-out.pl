@@ -78,7 +78,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 	int i;
 	
 
-	if(fm_class ) {
+	if(fm_class) {
 		tag = _lookup_fm_field(fm_class,fm_index);
 	} else {
 		tag = strdup("datum");
@@ -109,13 +109,20 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
 
 	else if (obj->is_array) {
-		if (!obj->classname)
+		if(!fm_class)
                		buffer_add(buf,"<array>");
+		else
+               		buffer_fadd(buf,"<%s>",tag);
+
 	       	for( i = 0; i!= obj->size; i++ ) {
 			_rest_xml_output(buf, obj->get_index(obj,i), obj->classname, i);
 		}
-		if (!obj->classname)
-                	buffer_add(buf,"</array>");
+
+		if(!fm_class)
+               		buffer_add(buf,"</array>");
+		else
+               		buffer_fadd(buf,"</%s>",tag);
+
         } else if (obj->is_hash) {
                	buffer_add(buf,"<hash>");
                 object_iterator* itr = new_iterator(obj);
