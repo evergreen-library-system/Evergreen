@@ -157,7 +157,6 @@ function runInstall {
 				if building;	then $MAKE -C "$OPENSRFDIR" "gateway"; fi;
 				if building;	then $MAKE -C "$OPENSRFDIR" "rest_gateway"; fi;
 				if installing; then $MAKE -C "$OPENSRFDIR" "gateway-install"; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" "rest_gateway-install"; fi;
 				;;
 
 			"opensrf_srfsh" ) 

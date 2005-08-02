@@ -39,7 +39,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #ifdef RESTGATEWAY
 #include "rest_xml.h"
-#endif
 
 /*
  * This function is registered as a handler for HTTP methods and will
@@ -48,7 +47,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * STDERR (which httpd redirects to logs/error_log).  A real module
   * would do *alot* more at this point.
    */
+#define MODULE_NAME "ils_rest_gateway_module"
+#else
 #define MODULE_NAME "ils_gateway_module"
+#endif
 
 /*
 struct session_list_struct {
@@ -185,9 +187,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		fatal_handler("Bootstrap Failed, no transport client");
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
-
-	/* set content type to text/plain for passing around JSON objects */
-	ap_set_content_type(r, "text/plain");
 
 
 
@@ -370,8 +369,14 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		free_object(exception);
 	} else {
 #ifdef RESTGATEWAY
+		/* set content type to text/xml for passing around XML objects */
+		ap_set_content_type(r, "text/xml");
+
 		content = json_string_to_xml( buffer_data(result_data) );
 #else
+		/* set content type to text/plain for passing around JSON objects */
+		ap_set_content_type(r, "text/plain");
+
 		content = buffer_data(result_data); 
 #endif
 	}
@@ -413,6 +418,21 @@ static void mod_ils_gateway_register_hooks (apr_pool_t *p) {
  * only "glue" between the httpd core and the module.
   */
 
+#ifdef RESTGATEWAY
+
+module AP_MODULE_DECLARE_DATA ils_rest_gateway_module =
+{
+STANDARD20_MODULE_STUFF,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+mod_ils_gateway_register_hooks,
+};
+
+#else
+
 module AP_MODULE_DECLARE_DATA ils_gateway_module =
 {
 STANDARD20_MODULE_STUFF,
@@ -423,4 +443,6 @@ NULL,
 NULL,
 mod_ils_gateway_register_hooks,
 };
+
+#endif
 

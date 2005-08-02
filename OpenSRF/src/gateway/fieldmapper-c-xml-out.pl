@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict; use warnings;
 use lib '../../../Open-ILS/src/perlmods/';
+use lib '../perlmods/';
 use OpenILS::Utils::Fieldmapper;  
 
 
