@@ -112,13 +112,13 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
 	} else if (obj->is_string) {
 		if (obj->classname)
-			buffer_add(buf,"%s",obj->string_data);
+			buffer_add(buf,obj->string_data);
 		else
 			buffer_fadd(buf,"<%s>%s</%s>",tag,obj->string_data,tag);
 
 	} else if(obj->is_number) {
 		if (obj->classname)
-			buffer_add(buf,"%ld",obj->num_value);
+			buffer_fadd(buf,"%ld",obj->num_value);
 		else
 			buffer_fadd(buf,"<%s>%ld</%s>",tag,obj->num_value,tag);
 
