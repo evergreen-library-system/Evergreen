@@ -37,6 +37,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "objson/object.h"
 #include "objson/json_parser.h"
 
+#ifdef RESTGATEWAY
+#include "rest_xml.h"
+#endif
+
 /*
  * This function is registered as a handler for HTTP methods and will
   * therefore be invoked for all GET requests (and others).  Regardless
@@ -364,8 +368,13 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		//json_object_put(exception);
 		content = strdup(exception->to_json(exception));
 		free_object(exception);
-	} else 
+	} else {
+#ifdef RESTGATEWAY
+		content = json_string_to_xml( buffer_data(result_data) );
+#else
 		content = buffer_data(result_data); 
+#endif
+	}
 	
 
 	buffer_free(result_data);

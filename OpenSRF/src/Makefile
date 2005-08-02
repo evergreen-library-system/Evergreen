@@ -21,7 +21,7 @@ export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) 
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
 
-all: test prep router srfsh jserver gateway
+all: test prep router srfsh jserver gateway rest_gateway
 
 test: test
 	echo "TEST TEST TEST"
@@ -68,6 +68,10 @@ srfsh: stack
 gateway:	stack 
 	@echo -e "\n + gateway"
 	make -C gateway
+
+rest_gateway:	stack 
+	@echo -e "\n + rest_gateway"
+	make -e -C gateway rest_gateway
 
 jserver: c_utils
 	@echo -e "\n + jserver"
