@@ -87,10 +87,10 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
         /* add class hints if we have a class name */
         if(obj->classname) {
         	if(obj->is_null) {
-			buffer_fadd(buf,"<Object class_hint=\\\"%s\\\"/>", obj->classname);
+			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\"/></%s>", tag, obj->classname, tag);
 			return;
 		} else {
-			buffer_fadd(buf,"<Object class_hint=\\\"%s\\\">", obj->classname);
+			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\">", tag, obj->classname);
 		}
 	}
 
@@ -186,7 +186,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 	}
 
         if(obj->classname)
-                buffer_add(buf,"</Object>");
+                buffer_fadd(buf,"</Object></%s>",tag);
 }
 
 char * _lookup_fm_field(char * class, int pos) {
