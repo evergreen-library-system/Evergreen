@@ -39,7 +39,10 @@ struct growing_buffer_struct {
 typedef struct growing_buffer_struct growing_buffer;
 
 growing_buffer* buffer_init( int initial_num_bytes);
-int buffer_addchar(growing_buffer* gb, char c);
+
+// XXX This isn't defined in utils.c!! removing for now...
+//int buffer_addchar(growing_buffer* gb, char c);
+
 int buffer_add(growing_buffer* gb, char* c);
 int buffer_fadd(growing_buffer* gb, const char* format, ... );
 int buffer_reset( growing_buffer* gb);
