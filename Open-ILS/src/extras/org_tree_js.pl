@@ -4,33 +4,55 @@
 use OpenSRF::AppSession;
 use OpenSRF::System;
 use JSON;
+use OpenILS::Utils::Fieldmapper;
+
 die "usage: perl org_tree_js.pl <bootstrap_config>" unless $ARGV[0];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
-my $ses = OpenSRF::AppSession->create("open-ils.actor");
-my $req = $ses->request("open-ils.actor.org_tree.retrieve");
+my $ses = OpenSRF::AppSession->create("open-ils.storage");
+my $tree = $ses->request("open-ils.storage.direct.actor.org_unit.retrieve.all.atomic")->gather(1);
+my $types = $ses->request("open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic")->gather(1);
 
-my $tree = $req->gather(1);
-
-my $ses2 = OpenSRF::AppSession->create("open-ils.storage");
-my $req2 = $ses2->request("open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic");
-my $types = $req2->gather(1);
-
-my $tree_string = JSON->perl2JSON($tree);
 my $types_string = JSON->perl2JSON($types);
-
-$tree_string =~ s/\"([0-9]+)\"/$1/g;
-$tree_string =~ s/null//g;
-
-$tree_string =~ s/\"/\\\"/g;
 $types_string =~ s/\"/\\\"/g;
 
+my $pile = "var _l = [";
 
-$tree_string = "var globalOrgTree = JSON2js(\"$tree_string\");";
-$types_string = "var globalOrgTypes = JSON2js(\"$types_string\");";
+my @array;
+for my $o (@$tree) {
+	my ($i,$t,$p,$n) = ($o->id,$o->ou_type,$o->parent_ou,$o->name);
+	push @array, "[$i,$t,$p,\"$n\"]";
+}
+$pile .= join ',', @array;
+$pile .= <<JS;
+];
+var orgArraySearcher = {};
+var globalOrgTree;
+for (var i in _l) {
+	var x = new aou();
+	x.id(_l[i][0]);
+	x.ou_type(_l[i][1]);
+	x.parent_ou(_l[i][2]);
+	x.name(_l[i][3]);
+	orgArraySearcher[x.id()] = x;
+}
+for (var i in orgArraySearcher) {
+	var x = orgArraySearcher[i];
+	if (x.parent_ou() == null || x.parent_ou() == '') {
+		globalOrgTree = x;
+		continue;
+	} else {
+		x.parent_ou(orgArraySearcher[x.parent_ou()]);
+	}
+	if (!x.parent_ou().children()) 
+		x.parent_ou().children(new Array());
+	x.parent_ou().children().push(x);
+}
+JS
 
-print "$tree_string\n\n$types_string\n";
+$pile .= "var globalOrgTypes = JSON2js(\"$types_string\");";
+
+print $pile;
 
 
 $ses->disconnect();
-$ses2->disconnect();
