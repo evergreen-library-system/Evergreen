@@ -1,0 +1,88 @@
+body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 75%; } 
+body a			{ color: black; }
+body a:visited { color: black; }
+body a:hover	{ color: red; text-decoration: underline;}
+body table		{ font-size: inherit; }
+
+.main_header	{ width: 100%; }
+.space			{ padding-right:5px; }
+.vert_space		{ padding-top: 85px; width: 100%;}
+.right			{ position:absolute; right: 0px; }
+.hide_me			{display:none; visibility: hidden;}
+.show_me			{display:block; visibility: visible;}
+.show_me_inline	{display:inline; visibility: visible;}
+
+/* ---------------------------------------------------------------------- */
+.canvas { float:right; width: 80%; text-align: left;}
+#loading_div { width: 100%; background: #FFCDAA;}
+
+.logo { height: 80px; width: 200px; position: absolute; top: 0px; left: 0px; }
+
+/* ---------------------------------------------------------------------- */
+.sidebar_div { float: left; width: 19%; }
+.side_bar_item { padding-left: 15px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px; }
+.side_bar_item_active { background: #FFCDAA; }
+.sidebar_chunk {background: #FFE6D4; border-right: 1px solid lightgrey;}
+
+/* ---------------------------------------------------------------------- */
+#searchbar { position: absolute; text-align: right; top: 2px; right: 3px; }
+
+#searchbar_tag_on { color: red; }
+
+.searchbar_item { text-align: center; color: black; padding: 3px; } 
+
+.searchbar_tag { font-size: 90%; text-align: right; background: #68CE76; 
+	padding-left: 5px; padding-right: 5px; padding-bottom: 3px; } 
+
+#searchbar_main { background: #68CE76; text-align: right; 
+	padding-top: 2px; padding-bottom: 3px; padding-right: 2px; padding-left: 3px; }
+
+.searchbar_extra_td { padding-top: 10px; }
+#searchbar_table { border-collapse: collapse; }
+
+/* ---------------------------------------------------------------------- */
+
+#login_box { background: #FFE6D4; border-top: 1px solid #808080; 
+	border-bottom: 1px solid #808080; width: 60%; padding-bottom: 4px;}
+
+.login_text { margin: 6px; }
+.login_link { margin: 10px; }
+.login_word { margin: 10px; }
+.login_links_div { padding-left: 30px; }
+
+/* ---------------------------------------------------------------------- */
+#result_table_div { text-align: left; width: 100%; }
+
+#search_nav_links { width: 100%; }
+#result_info_box { text-align: left; }
+#next_prev_links { text-align: right; padding-left: 2px; padding-right: 2px;}
+#goto_page_links { text-align: left; padding-left: 2px; padding-right: 2px;}
+
+#offset_start { font-weight: 600; }
+#offset_end { font-weight: 600; }
+#result_count { font-weight: 600; } 
+
+#next_prev_links_dead { color: #808080; text-decoration: 
+	none;padding-left: 5px; padding-right: 5px; color: #808080;}
+
+.nav_link_active { text-decoration: underline; font-weight: 600;}
+
+#res_table { width: 100%; }
+
+.search_link { text-decoration: none; }
+
+.result_table_pic_cell { width: 43px;}
+.result_table_pic { height: 50px; width: 40px; }
+.result_table_pic_header { width: 43px; }
+
+.result_table_row { text-align: left; }
+.result_table_subtable { width: 100%; border-top: 1px solid #E0E0E0; border-collapse: collapse;}
+.result_table_subtbody { height: 100%; width: 100%; }
+.result_table_title_cell { text-align: left; }
+
+.copy_count_cell { font-size: 75%; width: 8%; text-align: center; padding: 0px; margin: 0px;}
+.copy_count_cell_even { border: 1px solid #E0E0E0; }
+
+/* ---------------------------------------------------------------------- */
+
+
