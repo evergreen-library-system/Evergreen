@@ -105,10 +105,18 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 
 	if(!gb || !format) return 0; 
 
+	int len = 0;
 	va_list args;
+	va_list a_copy;
 
-	va_start(args, format);
-	int len = vsnprintf(NULL, 0, format, args);
+	char* f_copy = strdup(format);
+
+	va_copy(a_copy,args);
+
+	va_start(a_copy, f_copy);
+	len = vsnprintf(NULL, 0, f_copy, a_copy);
+	va_end(a_copy);
+
 	len += 1;
 
 	char buf[len];
@@ -117,6 +125,8 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	va_start(args, format);
 	vsnprintf(buf, len - 1, format, args);
 	va_end(args);
+
+	free(f_copy);
 
 	return buffer_add(gb, buf);
 
