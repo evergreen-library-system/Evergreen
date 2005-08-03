@@ -136,10 +136,13 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 			buffer_fadd(buf, "<%s>false</%s>",tag,tag);
 
 	} else if (obj->is_string) {
-		if (notag)
-			buffer_add(buf,_escape_xml(obj->string_data));
-		else
-			buffer_fadd(buf,"<%s>%s</%s>",tag,_escape_xml(obj->string_data),tag);
+		if (notag) {
+			//buffer_add(buf,_escape_xml(obj->string_data));
+			buffer_add(buf,obj->string_data);
+		} else {
+			//buffer_fadd(buf,"<%s>%s</%s>",tag,_escape_xml(obj->string_data),tag);
+			buffer_fadd(buf,"<%s>%s</%s>",tag,obj->string_data,tag);
+		}
 
 	} else if(obj->is_number) {
 		if (notag)
