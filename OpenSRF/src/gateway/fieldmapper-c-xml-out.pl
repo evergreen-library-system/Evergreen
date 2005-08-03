@@ -41,6 +41,7 @@ print SOURCE <<C;
 
 /* and the JSON parser, so we can read the response we're XMLizing */
 #include <string.h>
+#include <stdio.h>
 #include "objson/object.h"
 #include "objson/json_parser.h"
 #include "opensrf/utils.h"
@@ -83,16 +84,18 @@ char* _escape_xml (char* text) {
 	int i;
 	for (i = 0; i < len; i++) {
 		if (text[i] == '&')
-			buffer_add(b,strdup("&amp;"));
+			buffer_add(b,"&amp;");
 		else if (text[i] == '<')
-			buffer_add(b,strdup("&lt;"));
+			buffer_add(b,"&lt;");
 		else if (text[i] == '>')
-			buffer_add(b,strdup("&gt;"));
+			buffer_add(b,"&gt;");
 		else
 			buffer_add_char(b,text[i]);
 	}
 	out = buffer_data(b);
 	buffer_free(b);
+	fprintf(stderr," XXX Escaped string: %s\\n", out);
+	fflush(stderr);
 	return out;
 }
 
@@ -137,11 +140,13 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
 	} else if (obj->is_string) {
 		if (notag) {
-			//buffer_add(buf,_escape_xml(obj->string_data));
-			buffer_add(buf,obj->string_data);
+			char * t = _escape_xml(obj->string_data);
+			buffer_add(buf,t);
+			free(t);
 		} else {
-			//buffer_fadd(buf,"<%s>%s</%s>",tag,_escape_xml(obj->string_data),tag);
-			buffer_fadd(buf,"<%s>%s</%s>",tag,obj->string_data,tag);
+			char * t = _escape_xml(obj->string_data);
+			buffer_fadd(buf,"<%s>%s</%s>",tag,t,tag);
+			free(t);
 		}
 
 	} else if(obj->is_number) {
@@ -216,6 +221,8 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
 	if (obj->classname)
                 buffer_fadd(buf,"</Object></%s>",tag);
+
+	free(tag);
 }
 
 char * _lookup_fm_field(char * class, int pos) {
