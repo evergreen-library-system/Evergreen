@@ -25,7 +25,7 @@
 
 	<div class='login_links_div'>
 		<span class='login_link'><a href="javascript:void(0);" id='login_button'> Login </a></span>
-		<span class=''><a href='javascript:void(0);'> Cancel </a></span>
+		<span class=''><a href='javascript:void(0);' id='login_cancel_button'> Cancel </a></span>
 	</div>
 
 </div>

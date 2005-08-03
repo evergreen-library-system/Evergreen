@@ -92,7 +92,7 @@ function orgNodeTrail(node) {
 }
 
 
-/* returns an array of sibling org units /
+/* returns an array of sibling org units */
 function findSiblingOrgs(node) {
 	return findOrgUnit(node.parent_ou()).children();
 }

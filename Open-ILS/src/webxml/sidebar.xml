@@ -44,6 +44,11 @@
 			<span>Title Results</span>
 		</div>
 
+		<div id='logged_in_as_div' Title="Logged In As..." class="side_bar_item hide_me">
+			<span >You are logged in as <b id='username_dest'> </b></span>
+		</div>
+
+
 	</div>
 
 </div>

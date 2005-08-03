@@ -1,36 +1,61 @@
 
 function init() {
+
+	loadUIObjects();
 	initParams();
-	var page = findCurrentPage();
-	initSideBar(config.ids.sidebar[page]);
+	initSideBar();
 	searchBarInit();
 
-	var login_div = getId(config.ids.sidebar.login);
-	if(login_div) login_div.onclick = initLogin;
+	var login = G.ui.sidebar.login
+	if(login) login.onclick = initLogin;
 
-	switch(page) {
+	if(grabUser()) {
+		unHideMe(G.ui.sidebar.logged_in_as);
+		G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+	}
+
+	var page = findCurrentPage();
+	switch(findCurrentPage()) {
 		case MRESULT: mresultDoSearch(); break;
 		case RRESULT: rresultDoSearch(); break;
 	}
 
 }
 
+/* sets up the login ui components */
 function initLogin() {
-	config.ids.login.button.onclick = function(){doLogin();}
-	addCSSClass(getId(config.ids.canvas_main), config.css.hide_me);
-	removeCSSClass(getId(config.ids.login.box), config.css.hide_me);
+
+
+	G.ui.login.button.onclick = function(){
+		if(doLogin()) {
+			unHideMe(G.ui.all.canvas_main);
+			hideMe(G.ui.login.box);
+			hideMe(G.ui.all.loading);
+
+			unHideMe(G.ui.sidebar.logged_in_as);
+			G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+		}
+	}
+
+	hideMe(G.ui.all.canvas_main);
+	unHideMe(G.ui.login.box);
+
+	G.ui.login.cancel.onclick = function(){
+		unHideMe(G.ui.all.canvas_main);
+		hideMe(G.ui.login.box);
+		hideMe(G.ui.all.loading);
+	}
 }
 
 
 /* set up the colors in the sidebar */
 function initSideBar() {
-	for( var p in config.ids.sidebar ) {
-		var page = config.ids.sidebar[p];
-		removeCSSClass(getId(page), config.css.sidebar.item.active);
-	}
+	for( var p in G.ui.sidebar ) 
+		removeCSSClass(p, config.css.sidebar.item.active);
+
 	var page = findCurrentPage();
-	addCSSClass(getId(config.ids.sidebar[page]), config.css.sidebar.item.active);
-	removeCSSClass(getId(config.ids.sidebar[page]), config.css.hide_me);
+	addCSSClass(G.ui.sidebar[page], config.css.sidebar.item.active);
+	removeCSSClass(G.ui.sidebar[page], config.css.hide_me);
 }
 
 

@@ -14,7 +14,8 @@ var PARAM_MRID					= "mrid";		/* metarecord id */
 var PARAM_RID					= "rid";			/* metarecord id */
 
 /* cookies */
-var PARAM_SEARCHBAR_EXTRAS	= "searchbar_extras"
+var COOKIE_SB = "sbe";
+var COOKIE_SES = "ses";
 
 /* these are the actual param values - set on page load */
 
@@ -26,6 +27,33 @@ var ADVANCED	= "advanced";
 var HOME			= "home";
 var PREFS		= "prefs";
 
+/* search type (STYPE) options */
+STYPE_AUTHOR	= "author";
+STYPE_TITLE		= "title";
+STYPE_SUBJECT	= "subject";
+STYPE_SERIES	= "series";
+STYPE_KEYWORD	= "keyword";
+
+
+/* container for global variables shared accross pages */
+var G		= {};
+G.user	= null; /* global user object */
+G.ui		= {} /* cache of UI components */
+
+
+/* call me after page init and I will load references 
+	to all of the ui object id's defined below 
+	They will be stored in G.ui.<page>.<thingy>
+ */
+function loadUIObjects() {
+	for( var p in config.ids ) {
+		G.ui[p] = {};
+		for( var o in config.ids[p] ) 
+			G.ui[p][o] = getId(config.ids[p][o]);
+	}
+}
+
+
 
 /* ---------------------------------------------------------------------------- */
 /* Set up ID's and CSS classes */
@@ -36,18 +64,19 @@ config.text = {};
 config.ids = {};
 config.names = {};
 
-config.ids.loading	= "loading_div";
-config.ids.canvas		= "canvas";	
-config.ids.canvas_main		= "canvas_main";	
+config.ids.all = {};
+config.ids.all.loading		= "loading_div";	/* generic 'loading..' message */
+config.ids.all.canvas		= "canvas";			/* outer UI canvas that holds the main canvas and any other hidden help components*/	
+config.ids.all.canvas_main	= "canvas_main";	/* main data display canvas */
 
 config.css = {};
 config.css.hide_me = "hide_me";
 
 config.page = {};
-config.page[HOME]		= "/webxml/index.xml";
+config.page[HOME]			= "/webxml/index.xml";
 config.page[ADVANCED]	= "/webxml/advanced.xml";
-config.page[MRESULT]	= "/webxml/mresult.xml";
-config.page[RRESULT]	= "/webxml/rresult.xml";
+config.page[MRESULT]		= "/webxml/mresult.xml";
+config.page[RRESULT]		= "/webxml/rresult.xml";
 config.page[PREFS]		= "/webxml/webprefs.xml"
 config.page[MYOPAC]		= "/webxml/myopac/index.xml"
 
@@ -81,10 +110,11 @@ config.names.result.count_cell	= "copy_count_cell";
 
 config.ids.login = {};
 config.css.login = {};
-config.ids.login.box = "login_box";
+config.ids.login.box			= "login_box";
 config.ids.login.username	= "login_username";
 config.ids.login.password	= "login_password";
 config.ids.login.button		= "login_button";
+config.ids.login.cancel		= "login_cancel_button";
 
 
 
@@ -116,5 +146,9 @@ config.css.sidebar.item.active	= 'side_bar_item_active';
 config.ids.sidebar.mresult			= 'mresult_link_div';
 config.ids.sidebar.rresult			= 'result_link_div';
 config.ids.sidebar.login			= 'login_link';
+config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
+config.ids.sidebar.username_dest	= 'username_dest';
+
+
 
 

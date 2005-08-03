@@ -8,3 +8,5 @@ function Request(type) {
 Request.prototype.callback = function(cal) { this.request.setCallback(cal); }
 Request.prototype.send		= function(block){this.request.send(block);}
 Request.prototype.result	= function(){return this.request.getResultObject();}
+
+alert(Request.prototype.result);

@@ -12,6 +12,7 @@ function Request(type) {
 
 Request.prototype.callback = function(cal) { this.request.setCompleteCallback(cal); }
 Request.prototype.send		= function(block){this.request.send(block);}
+Request.prototype.result	= function(){return this.request.getResultObject();}
 /* ----------------------------------------------------------------------- */
 
 
@@ -105,8 +106,6 @@ function cleanISBN(isbn) {
 }       
 
 
-function doLogin() {
-}
 
 
 /* ----------------------------------------------------------------------- */
@@ -134,12 +133,85 @@ function buildAuthorLink(rec, link) {
 	var args = {};
 	args.page = MRESULT;
 	args[PARAM_OFFSET] = 0;
-	args[PARAM_STYPE] = "author";
+	args[PARAM_STYPE] = STYPE_AUTHOR;
 	args[PARAM_TERM] = rec.author();
 	link.setAttribute("href", buildOPACLink(args));
 
 }
 /* ----------------------------------------------------------------------- */
+
+
+
+/* ----------------------------------------------------------------------- */
+/* user session handling */
+/* ----------------------------------------------------------------------- */
+
+/* session is the login session.  If no session is provided, we attempt
+	to find one in the cookies.  
+	If 'force' is true we retrieve the 
+	user from the server even if there is already a global user present.
+	if ses != G.user.session, we also force a grab */
+var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
+function grabUser(ses, force) {
+
+	if(!ses) ses = cookie.get(COOKIE_SES);
+	if(!ses) return false;
+
+	if(!force) {
+		if(G.user && G.user.session == ses)
+			return G.user;
+	}
+
+		
+   var req = new Request(FETCH_FLESHED_USER, ses);
+  	req.send(true);
+
+  	G.user = req.result();
+
+	if(!G.user || G.user.length == 0) { 
+		G.user = null; return false; 
+		cookie.remove(COOKIE_SES);
+	}
+
+	G.user.session = ses;
+	cookie.put(COOKIE_SES, ses);
+	return G.user;
+
+}
+
+
+/* returns a fleshed G.user on success, false on failure */
+function doLogin() {
+
+	var uname = G.ui.login.username.value;
+	var passwd = G.ui.login.password.value;	
+
+	var init_request = new Request( LOGIN_INIT, uname );
+   init_request.send(true);
+   var seed = init_request.result();
+
+   if( ! seed || seed == '0') {
+      alert( "Error Communicating with Authentication Server" );
+      return null;
+   }
+
+   var auth_request = new Request( LOGIN_COMPLETE, 
+		uname, hex_md5(seed + hex_md5(passwd)), "opac");
+
+   auth_request.send(true);
+   var auth_result = auth_request.result();
+
+   if(auth_result == '0' || auth_result == null || auth_request.length == 0) { return false; }
+
+	return grabUser(auth_result);
+}
+
+
+function hideMe(obj) { addCSSClass(obj, config.css.hide_me); } 
+function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
+
+
+
 
 
 
