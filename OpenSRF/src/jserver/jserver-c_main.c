@@ -39,10 +39,6 @@ void sig_int_handler( int a ) {
 /* loads the command line settings and launches the server */
 int main(int argc, char* argv[]) {
 
-	signal(SIGHUP, &sig_hup_handler);
-	signal(SIGINT, &sig_int_handler);
-	signal(SIGTERM, &sig_int_handler);
-
 	char* prog			= argv[0];
 	char* sport			= argv[1];	
 	unix_sock_file		= argv[2];	
@@ -73,6 +69,15 @@ int main(int argc, char* argv[]) {
 
 	fprintf(stderr, "Launching with port %d, unix sock %s, log level %d, log file %s\n",
 			port, unix_sock_file, log_level, log_file );
+
+	if (daemonize() == -1) {
+		fprintf(stderr, "!!! Error forking the daemon!  Going away now... :(\n");
+		exit(2);
+	}
+
+	signal(SIGHUP, &sig_hup_handler);
+	signal(SIGINT, &sig_int_handler);
+	signal(SIGTERM, &sig_int_handler);
 
 	launch_server();
 	return 0;

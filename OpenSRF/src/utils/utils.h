@@ -26,6 +26,8 @@ GNU General Public License for more details.
 
 #define BUFFER_MAX_SIZE 10485760 
 
+int daemonize();
+
 void* safe_malloc(int size);
 
 // ---------------------------------------------------------------------------------

@@ -1,8 +1,10 @@
+#define _GNU_SOURCE
+
 #include "utils.h"
 #include "logging.h"
 
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>

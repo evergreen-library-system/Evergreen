@@ -80,7 +80,11 @@ int main( int argc, char* argv[] ) {
 	free(con_timeout);
 	free(max_retries);
 
+	daemonize();
+
 	signal(SIGHUP,sig_hup_handler);
+	signal(SIGINT,sig_hup_handler);
+	signal(SIGTERM,sig_hup_handler);
 
 
 	int counter = 0;

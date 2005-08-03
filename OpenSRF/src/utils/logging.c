@@ -1,4 +1,6 @@
+#include <stdio.h>
 #include "logging.h"
+
 
 void get_timestamp( char buf_36chars[]) {
 
@@ -14,14 +16,16 @@ void get_timestamp( char buf_36chars[]) {
 	free(localtime);
 }
 
-static FILE* log_file = NULL;
+static char* lf = NULL;
 static int log_level = -1;
 static int logging = 0;
 
-void log_free() { if( log_file != NULL ) fclose(log_file ); }
+void log_free() { if( lf != NULL ) free(lf); }
 
 int fatal_handler( char* msg, ... ) {
-		
+
+	FILE * log_file;
+
 	char buf[36];
 	memset( buf, 0, 36 );
 	get_timestamp( buf );
@@ -29,19 +33,25 @@ int fatal_handler( char* msg, ... ) {
 	va_list args;
 
 	if( logging ) {
-
 		if( log_level < LOG_ERROR )
 			return -1;
 
-		fprintf( log_file, "[%s %d] [%s] ", buf, pid, "ERR " );
-	
-		va_start(args, msg);
-		vfprintf(log_file, msg, args);
-		va_end(args);
-	
-		fprintf(log_file, "\n");
-		fflush( log_file );
+		log_file = fopen( lf, "a" );
+		if( log_file == NULL ) {
+			perror( "Unable to open log file for appending\n" );
+		} else {
 
+			fprintf( log_file, "[%s %d] [%s] ", buf, pid, "ERR " );
+	
+			va_start(args, msg);
+			vfprintf(log_file, msg, args);
+			va_end(args);
+	
+			fprintf(log_file, "\n");
+			fflush( log_file );
+
+			fclose(log_file);
+		}
 	}
 	
 	/* also log to stderr  for ERRORS*/
@@ -57,26 +67,40 @@ int fatal_handler( char* msg, ... ) {
 
 int warning_handler( char* msg, ... ) {
 
+	FILE * log_file;
+
 	char buf[36];
 	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;
 	
+	if( log_level < LOG_WARNING )
+		return -1;
+
 	if(logging) {
 
-		if( log_level < LOG_WARNING )
-			return -1;
+		log_file = fopen( lf, "a" );
+		if( log_file == NULL ) {
+			perror( "Unable to open log file for appending\n" );
+			fprintf( stderr, "[%s %d] [%s] ", buf, pid, "WARN" );
+			va_start(args, msg);
+			vfprintf(stderr, msg, args);
+			va_end(args);
+			fprintf( stderr, "\n" );
+		} else {
 
-		fprintf( log_file, "[%s %d] [%s] ", buf, pid, "WARN" );
+			fprintf( log_file, "[%s %d] [%s] ", buf, pid, "WARN" );
 	
-		va_start(args, msg);
-		vfprintf(log_file, msg, args);
-		va_end(args);
+			va_start(args, msg);
+			vfprintf(log_file, msg, args);
+			va_end(args);
 	
-		fprintf(log_file, "\n");
-		fflush( log_file );
+			fprintf(log_file, "\n");
+			fflush( log_file );
 
+			fclose(log_file);
+		}
 	} else {
 
 		fprintf( stderr, "[%s %d] [%s] ", buf, pid, "WARN" );
@@ -91,25 +115,40 @@ int warning_handler( char* msg, ... ) {
 
 int info_handler( char* msg, ... ) {
 
+	FILE * log_file;
+
 	char buf[36];
 	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;
 
+	if( log_level < LOG_INFO )
+		return -1;
+
 	if(logging) {
 
-		if( log_level < LOG_INFO )
-			return -1;
-		fprintf( log_file, "[%s %d] [%s] ", buf, pid, "INFO" );
+		log_file = fopen( lf, "a" );
+		if( log_file == NULL ) {
+			perror( "Unable to open log file for appending\n" );
+			fprintf( stderr, "[%s %d] [%s] ", buf, pid, "INFO" );
+			va_start(args, msg);
+			vfprintf(stderr, msg, args);
+			va_end(args);
+			fprintf( stderr, "\n" );
+			fflush(stderr);
+		} else {
 
-		va_start(args, msg);
-		vfprintf(log_file, msg, args);
-		va_end(args);
+			fprintf( log_file, "[%s %d] [%s] ", buf, pid, "INFO" );
+
+			va_start(args, msg);
+			vfprintf(log_file, msg, args);
+			va_end(args);
 	
-		fprintf(log_file, "\n");
-		fflush( log_file );
-
+			fprintf(log_file, "\n");
+			fflush( log_file );
+			fclose(log_file);
+		}
 	} else {
 
 		fprintf( stderr, "[%s %d] [%s] ", buf, pid, "INFO" );
@@ -126,26 +165,39 @@ int info_handler( char* msg, ... ) {
 
 int debug_handler( char* msg, ... ) {
 
+	FILE * log_file;
+
 	char buf[36];
 	memset( buf, 0, 36 );
 	get_timestamp( buf );
 	pid_t  pid = getpid();
 	va_list args;
 	
+	if( log_level < LOG_DEBUG )
+		return -1;
+
 	if(logging) {
 
-		if( log_level < LOG_DEBUG )
-			return -1;
-
-		fprintf( log_file, "[%s %d] [%s] ", buf, pid, "DEBG" );
+		log_file = fopen( lf, "a" );
+		if( log_file == NULL ) {
+			perror( "Unable to open log file for appending\n" );
+			fprintf( stderr, "[%s %d] [%s] ", buf, pid, "DEBG" );
+			va_start(args, msg);
+			vfprintf(stderr, msg, args);
+			va_end(args);
+			fprintf( stderr, "\n" );
+		} else {
+			fprintf( log_file, "[%s %d] [%s] ", buf, pid, "DEBG" );
 	
-		va_start(args, msg);
-		vfprintf(log_file, msg, args);
-		va_end(args);
+			va_start(args, msg);
+			vfprintf(log_file, msg, args);
+			va_end(args);
 	
-		fprintf(log_file, "\n");
-		fflush( log_file );
-
+			fprintf(log_file, "\n");
+			fflush( log_file );
+		
+			fclose(log_file);
+		}
 	} else {
 
 		fprintf( stderr, "[%s %d] [%s] ", buf, pid, "DEBG" );
@@ -167,16 +219,12 @@ int log_init( int llevel, char* lfile ) {
 		return 0;
 	}
 
-	log_level = llevel;
-
 	/* log to stderr */
 	if(lfile == NULL) return 0;
 
-	log_file = fopen( lfile, "a" );
-	if( log_file == NULL ) {
-		fprintf( stderr, "Unable to open log file %s for appending\n", lfile );
-		return 0;
-	}
+	log_level = llevel;
+	lf = strdup(lfile);
+
 	logging = 1;
 	return 1;
 

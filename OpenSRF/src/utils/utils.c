@@ -15,6 +15,8 @@ GNU General Public License for more details.
 */
 
 #include <stdio.h>
+
+#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -300,4 +302,21 @@ char* uescape( const char* string, int size, int full_escape ) {
 	buffer_free(buf);
 	return d;
 }
-	
+
+// A function to turn a process into a daemon and set it's process name in ps/top
+int daemonize() {
+	int f = fork();
+	if (f == -1) {
+		perror("Failed to fork!");
+		return -1;
+	} else if (f == 0) {
+		// We're in the child now...
+		setsid();
+		return 0;
+	} else {
+		// We're in the parent...
+		exit(0);
+	}
+}
+
+
