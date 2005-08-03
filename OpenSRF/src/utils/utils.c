@@ -107,7 +107,10 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 
 	va_list args;
 
-	int len = strlen(format) + 1024;
+	va_start(args, format);
+	int len = vsnprintf(NULL, 0, format, args);
+	len += 1;
+
 	char buf[len];
 	memset(buf, 0, len);
 
@@ -118,7 +121,6 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	return buffer_add(gb, buf);
 
 }
-
 
 int buffer_add(growing_buffer* gb, char* data) {
 
