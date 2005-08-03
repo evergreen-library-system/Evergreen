@@ -1,11 +1,11 @@
 SO=mod_xinclude.so
 
 # --------------------------------------------------------
-#TMPDIR = /tmp/ilstmp/opensrf
-#LIBDIR = /openils/lib
-#CC_OPTS = -Wall -O2 -fPIC -I /usr/include/libxml2 -I /opt/include
-#LD_OPTS = -lxml2 
-#APXS2 = /opt/bin/apxs
+TMPDIR = /tmp/ilstmp/opensrf
+LIBDIR = /openils/lib
+CC_OPTS = -Wall -O2 -fPIC -I /usr/include/libxml2 -I /opt/include
+LD_OPTS = -lxml2 
+APXS2 = /opt/bin/apxs
 # --------------------------------------------------------
 
 all: $(SO)

@@ -74,12 +74,12 @@ function startJserver {
 	fi;
 	
 	rm -f "$JSERVERSOCK";
-	nohup "$BINDIR/$JSERVERBIN" $JSERVERPORT "$JSERVERSOCK" "$JSERVERLEVEL" "$JSERVERLOG" &
+	"$BINDIR/$JSERVERBIN" $JSERVERPORT "$JSERVERSOCK" "$JSERVERLEVEL" "$JSERVERLOG"
 }
 
 
 function startRouter {
-	nohup "$BINDIR/router" "$ETCDIR/router_config.xml" &
+	"$BINDIR/router" "$ETCDIR/router_config.xml" 
 }
 
 function startOpenSRF {

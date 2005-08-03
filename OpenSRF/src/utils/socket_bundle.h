@@ -76,9 +76,12 @@ int socket_open_unix_server(socket_manager* mgr, char* path);
 
 /* creates a client socket and adds it to the socket set.
 	returns 0 on success.  -1 on failure.
-	socket_type is one of INET or UNIX  */
+	socket_type is one of INET or UNIX  
+	port is the INET port number
+	sock_path is the UNIX socket file
+ */
 int socket_open_client(socket_manager*, 
-		int socket_type, int port, char* dest_addr);
+		int socket_type, int port, char* sock_path, char* dest_addr);
 
 /* returns the socket_node with the given sock_fd */
 socket_node* socket_find_node(socket_manager*, int sock_fd);

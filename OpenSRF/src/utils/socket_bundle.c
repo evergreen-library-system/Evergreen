@@ -142,7 +142,7 @@ int socket_open_unix_server(socket_manager* mgr, char* path) {
 	returns 0 on success.  -1 on failure.
 	socket_type is one of INET or UNIX  */
 int socket_open_client(socket_manager* mgr, 
-		int socket_type, int port, char* dest_addr) {
+		int socket_type, int port, char* sock_path, char* dest_addr) {
 	return 0;
 }
 
@@ -398,14 +398,6 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	debug_handler("Socket buf before read %s", buf);
 	while( (read_bytes = recv(sock_fd, buf, BUFSIZE-1, 0) ) > 0 ) {
 		debug_handler("Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);
-
-		/*
-		int l = strlen(buf); 
-		if(l > 1) {buf[l-1] = '\0';buf[l-2] = '\0';}
-		debug_handler("Socket data after cleanup: %s", sock_fd, read_bytes, buf);
-		*/
-
-
 		if(mgr->data_received)
 			mgr->data_received(mgr->blob, mgr, sock_fd, buf, node->parent_id);
 

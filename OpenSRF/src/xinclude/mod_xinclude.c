@@ -25,6 +25,7 @@ static int mod_xinclude_handler (request_rec *r) {
 
 	if(!file) { 
 		fprintf(stderr, "No XML file to parse");
+		fflush(stderr);
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
@@ -33,6 +34,7 @@ static int mod_xinclude_handler (request_rec *r) {
 
 	if(!doc) {
 		fprintf(stderr, "Error parsing XML file %s\n", file);
+		fflush(stderr);
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
@@ -41,6 +43,7 @@ static int mod_xinclude_handler (request_rec *r) {
 	
 	if(status < 0) {
 		fprintf(stderr, "Error processing XIncludes in  XML file %s\n", file);
+		fflush(stderr);
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
