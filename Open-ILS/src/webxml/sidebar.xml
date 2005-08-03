@@ -1,0 +1,50 @@
+<?xml version='1.0'?>
+
+<!-- Navigation bar -->
+
+<div id="sidebar_div" class="sidebar_div" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<div class='sidebar_chunk'>
+
+		<div title="Go to the Home Page" 
+			id='home_link_div' class="side_bar_item">
+			<a href='/webxml/index.xml'>Home</a>
+		</div>
+	
+		<div title="Go to the Advanced Search Page"
+			id='advanced_link_div' class="side_bar_item">
+			<a href='/webxml/advanced.xml'>Advanced Search</a>
+		</div>
+
+		<div title="Log in"
+			id='login_link_div' class="side_bar_item">
+			<a id='login_link' href='javascript:void(0);'>Login</a>
+		</div>
+
+	
+		<div title="Got to the MyOPAC Page"
+			id='myopac_link_div' class="side_bar_item">
+			<a  href='/webxml/myopac/index.xml'>My OPAC</a>
+		</div>
+	
+		<!--
+		<div title="Go to the Web Preferences Page"
+			id='prefs_link_div' class="side_bar_item">
+			<a href='/webxml/webprefs.xml'>My Preferences</a>
+		</div>
+		-->
+
+		<div title="Title Group Results Page" 
+			id='mresult_link_div' class="side_bar_item hide_me">
+			<span>Title Group Results</span>
+		</div>
+	
+		<div Title="Title Results Page"
+			id='result_link_div' class="side_bar_item hide_me">
+			<span>Title Results</span>
+		</div>
+
+	</div>
+
+</div>
+

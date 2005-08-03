@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" lang="en">
+
+	<head>
+		<title>Evergreen: Titles</title>
+		<link rel='stylesheet' type='text/css' href='/css/opac/opac.css'/>
+		<xi:include href="js_common.xml"/>
+		<script language='javascript' src='/lib/js/opac/rresult.js'> </script>
+		<script language='javascript' src='/lib/js/opac/result_common.js'> </script>
+	</head>
+
+	<body onload="init();">
+		<xi:include href="header.xml"/> 
+		<div id='canvas' class='canvas'>
+			<xi:include href="login.xml"/> 
+			<xi:include href="result_common.xml"/>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,33 @@
+<?xml version='1.0'?>
+
+
+<div id='login_box' class='hide_me'>
+
+	<div class='login_text'>
+		<span> Login in with your username and password. </span>
+	</div>
+
+	<br/>
+	
+	<div>
+		<span class='login_word'>Username</span>
+		<span class=''><input id='login_username' type='text' size='16'> </input></span>
+	</div>
+
+	<br/>
+
+	<div>
+		<span class='login_word'>Password</span>
+		<span class=''><input id='login_password' type='password' size='16'> </input></span>
+	</div>
+
+	<br/>
+
+	<div class='login_links_div'>
+		<span class='login_link'><a href="javascript:void(0);" id='login_button'> Login </a></span>
+		<span class=''><a href='javascript:void(0);'> Cancel </a></span>
+	</div>
+
+</div>
+
+

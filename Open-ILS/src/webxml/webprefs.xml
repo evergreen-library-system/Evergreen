@@ -1,0 +1,26 @@
+<?xml version='1.0'?>
+
+<!-- Page for defining various web preferences -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" lang="en">
+
+	<head>
+		<title>Evergreen: Web Preferences</title>
+		<link rel='stylesheet' type='text/css' href='/css/opac/opac.css'/>
+		<xi:include href="js_common.xml"/>
+	</head>
+
+	<body onload="init()">
+		<xi:include href="logo.xml"/>
+		<xi:include href="searchbar.xml"/> 
+		<div class="vert_space"> </div>
+		<xi:include href="sidebar.xml"/> 
+
+		<div id='canvas' class='canvas'>
+			<span>Browser display preferences</span>
+		</div>
+
+	</body>
+
+</html>

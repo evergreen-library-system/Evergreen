@@ -1,0 +1,47 @@
+<?xml version='1.0'?>
+
+<div id='canvas_main' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<table id='search_nav_links'>
+		<tbody>
+			<tr>
+
+				<!-- talk about the number of hits, etc. -->
+				<td id='result_info_box'>
+					<span> Results </span> 
+					<span id='offset_start'> </span>
+					<span> - </span>
+					<span id='offset_end'> </span>
+					<span> of </span>
+					<span id='result_count'> </span>
+					<span> (page </span>
+					<span id='current_page'> </span>
+					<span> of </span>
+					<span id='num_pages'> </span>
+
+				</td>
+				
+				<!-- simple next/prev type navigation links -->
+				<td id='next_prev_links'>
+					<a id='home_link' title="First results page">Start</a>
+					<span>&#160;</span>
+					<a id='prev_link' title='Previus page'> &lt;&lt; </a>
+					<span>&#160;</span>
+					<span id='page_numbers'> </span>
+					<a id='next_link' title='Next Page'> &gt;&gt; </a>
+					<span>&#160;</span>
+					<a id='end_link' title="Last results page">End</a>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Load the result table -->
+	<xi:include href="result_table.xml"/>
+
+	<div id='loading_div'>Loading Results ...</div>
+
+</div>
+
+
