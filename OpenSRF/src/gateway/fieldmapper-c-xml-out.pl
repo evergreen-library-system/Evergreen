@@ -94,8 +94,6 @@ char* _escape_xml (char* text) {
 	}
 	out = buffer_data(b);
 	buffer_free(b);
-	fprintf(stderr," XXX Escaped string: %s\\n", out);
-	fflush(stderr);
 	return out;
 }
 
