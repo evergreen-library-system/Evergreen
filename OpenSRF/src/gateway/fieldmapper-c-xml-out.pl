@@ -1,8 +1,13 @@
 #!/usr/bin/perl
-use strict; use warnings;
-use lib '../../../Open-ILS/src/perlmods/';
+use strict;
 use lib '../perlmods/';
-use OpenILS::Utils::Fieldmapper;  
+
+my $map = {};
+eval "
+	use lib '../../../Open-ILS/src/perlmods/';
+	use OpenILS::Utils::Fieldmapper;  
+";
+$map = $Fieldmapper::fieldmap unless ($@);
 
 
 if(!$ARGV[1]) {
@@ -19,10 +24,7 @@ print $ARGV[1] . "\n";
 open(HEADER, ">$ARGV[0]");
 open(SOURCE, ">$ARGV[1]");
 
-
 warn "Generating fieldmapper-c code...\n";
-
-my $map = $Fieldmapper::fieldmap;
 
 print HEADER <<C;
 #ifndef _TOXML_H_
@@ -44,8 +46,9 @@ print SOURCE <<C;
 #include "opensrf/utils.h"
 
 char* json_string_to_xml(char*);
-void _rest_xml_output(growing_buffer*, object*, char*, int);
+void _rest_xml_output(growing_buffer*, object*, char*, int, int);
 char * _lookup_fm_field(char*,int);
+char* _escape_xml (char*);
 
 char* json_string_to_xml(char* content) {
 	object * obj;
@@ -62,7 +65,7 @@ char* json_string_to_xml(char* content) {
 	buffer_add(res_xml, "<response>");
 
 	for( i = 0; i!= obj->size; i++ ) {
-		_rest_xml_output(res_xml, obj->get_index(obj,i), NULL, 0);
+		_rest_xml_output(res_xml, obj->get_index(obj,i), NULL, 0,0);
 	}
 
 	buffer_add(res_xml, "</response>");
@@ -73,10 +76,32 @@ char* json_string_to_xml(char* content) {
 	return output;
 }
 
-void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_index) {
+char* _escape_xml (char* text) {
+	char* out;
+	growing_buffer* b = buffer_init(256);
+	int len = strlen(text);
+	int i;
+	for (i = 0; i < len; i++) {
+		if (text[i] == '&')
+			buffer_add(b,strdup("&amp;"));
+		else if (text[i] == '<')
+			buffer_add(b,strdup("&lt;"));
+		else if (text[i] == '>')
+			buffer_add(b,strdup("&gt;"));
+		else
+			buffer_add_char(b,text[i]);
+	}
+	out = buffer_data(b);
+	buffer_free(b);
+	return out;
+}
+
+void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_index, int notag) {
 	char * tag;
 	int i;
 	
+	if (obj->classname)
+		notag = 1;
 
 	if(fm_class) {
 		tag = _lookup_fm_field(fm_class,fm_index);
@@ -95,42 +120,42 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 	}
 
 	/* now add the data */
-	if(obj->is_null)
-		buffer_fadd(buf, "<%s/>",tag);
-                
-	else if(obj->is_bool && obj->bool_value) {
-		if (obj->classname)
+	if(obj->is_null) {
+		if (!notag)
+			buffer_fadd(buf, "<%s/>",tag);
+	} else if(obj->is_bool && obj->bool_value) {
+		if (notag)
 			buffer_add(buf, "true");
 		else
 			buffer_fadd(buf, "<%s>true</%s>",tag,tag);
                 
 	} else if(obj->is_bool && ! obj->bool_value) {
-		if (obj->classname)
+		if (notag)
 			buffer_add(buf, "false");
 		else
 			buffer_fadd(buf, "<%s>false</%s>",tag,tag);
 
 	} else if (obj->is_string) {
-		if (obj->classname)
-			buffer_add(buf,obj->string_data);
+		if (notag)
+			buffer_add(buf,_escape_xml(obj->string_data));
 		else
-			buffer_fadd(buf,"<%s>%s</%s>",tag,obj->string_data,tag);
+			buffer_fadd(buf,"<%s>%s</%s>",tag,_escape_xml(obj->string_data),tag);
 
 	} else if(obj->is_number) {
-		if (obj->classname)
+		if (notag)
 			buffer_fadd(buf,"%ld",obj->num_value);
 		else
 			buffer_fadd(buf,"<%s>%ld</%s>",tag,obj->num_value,tag);
 
 	} else if(obj->is_double) {
-		if (obj->classname)
+		if (notag)
 			buffer_fadd(buf,"%lf",tag,obj->double_value,tag);
 		else
 			buffer_fadd(buf,"<%s>%lf</%s>",tag,obj->double_value,tag);
 
 
 	} else if (obj->is_array) {
-		if(!obj->classname) {
+		if (!notag) {
 			if(!fm_class)
         	       		buffer_add(buf,"<array>");
 			else
@@ -138,10 +163,10 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 		}
 
 	       	for( i = 0; i!= obj->size; i++ ) {
-			_rest_xml_output(buf, obj->get_index(obj,i), obj->classname, i);
+			_rest_xml_output(buf, obj->get_index(obj,i), obj->classname, i,0);
 		}
 
-		if(!obj->classname) {
+		if (!notag) {
 			if(!fm_class)
         	       		buffer_add(buf,"</array>");
 			else
@@ -150,7 +175,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
         } else if (obj->is_hash) {
 
-       		if(!obj->classname) {
+		if (!notag) {
 			if(!fm_class)
         	       		buffer_add(buf,"<hash>");
 			else
@@ -160,23 +185,24 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
                 object_iterator* itr = new_iterator(obj);
                 object_node* tmp;
                 while( (tmp = itr->next(itr)) ) {
-			if (obj->classname) {
+			if (notag) {
 				buffer_fadd(buf,"<%s>",tmp->key);
 			} else {
 				buffer_add(buf,"<pair>");
 				buffer_fadd(buf,"<key>%s</key><value>",tmp->key);
 			}
 
-                        _rest_xml_output(buf, tmp->item, NULL,0);
+                        _rest_xml_output(buf, tmp->item, NULL,0,notag);
 
-			if (obj->classname) {
+			if (notag) {
 				buffer_fadd(buf,"</%s>",tmp->key);
 			} else {
 				buffer_add(buf,"</value></pair>");
 			}
                 }
                 free_iterator(itr);
-		if(!obj->classname) {
+
+		if (!notag) {
 			if(!fm_class)
         	       		buffer_add(buf,"</hash>");
 			else
@@ -185,7 +211,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
 	}
 
-        if(obj->classname)
+	if (obj->classname)
                 buffer_fadd(buf,"</Object></%s>",tag);
 }
 

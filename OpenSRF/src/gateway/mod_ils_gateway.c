@@ -368,15 +368,14 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		content = strdup(exception->to_json(exception));
 		free_object(exception);
 	} else {
+
 #ifdef RESTGATEWAY
 		/* set content type to text/xml for passing around XML objects */
 		ap_set_content_type(r, "text/xml");
-
 		content = json_string_to_xml( buffer_data(result_data) );
 #else
 		/* set content type to text/plain for passing around JSON objects */
 		ap_set_content_type(r, "text/plain");
-
 		content = buffer_data(result_data); 
 #endif
 	}
