@@ -119,7 +119,7 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	len = vsnprintf(NULL, 0, f_copy, a_copy);
 	va_end(a_copy);
 
-	len += 1;
+	len += 2;
 
 	char buf[len];
 	memset(buf, 0, len);
@@ -303,6 +303,7 @@ char* uescape( const char* string, int size, int full_escape ) {
 	return d;
 }
 
+
 // A function to turn a process into a daemon and set it's process name in ps/top
 int daemonize() {
 	int f = fork();
@@ -319,4 +320,13 @@ int daemonize() {
 	}
 }
 
+int stringisnum(char* s) {
+	char* w = (char*) malloc(strlen(s) * sizeof(char*));
+	bzero(w, strlen(s));
+	long blah = strtol(s, &w, 10);
+	if(strlen(w) > 0)  
+		return 0;
+	return 1;
+}
+	
 

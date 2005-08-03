@@ -76,6 +76,10 @@ int clr_fl( int fd, int flags );
 double get_timestamp_millis();
 
 
+/* returns true if the whole string is a number */
+int stringisnum(char* s);
+
+
 
 
 #endif
