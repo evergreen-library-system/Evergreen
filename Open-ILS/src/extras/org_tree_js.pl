@@ -48,6 +48,15 @@ for (var i in orgArraySearcher) {
 		x.parent_ou().children(new Array());
 	x.parent_ou().children().push(x);
 }
+function _tree_killer () {
+	globalOrgTree = null;
+	for (var i in orgArraySearcher) {
+		x=orgArraySearcher[i];
+		x.children(null);
+		x.parent_ou(null);
+		orgArraySearcher[i]=null;
+	}
+}
 JS
 
 $pile .= "var globalOrgTypes = JSON2js(\"$types_string\");";
