@@ -115,6 +115,27 @@ function patron_bills_init(p) {
 		false
 	);
 
+	p.control_box.change_to_credit.addEventListener(
+		'command',
+		function() {
+			var tb = p.control_box.bill_change_amount;
+			var proposed_change = 0;
+			var proposed_credit = dollars_float_to_cents_integer( tb.value );
+			p.update_payment_applied();
+			var real_change = dollars_float_to_cents_integer( tb.value );
+			if ( proposed_change > real_change ) {
+				sdump('D_ERROR','Someone wanted more money than they deserved\n');
+				proposed_change = real_change;
+			} else if ( real_change > proposed_change ) {
+				proposed_credit = real_change - proposed_change;
+			}
+			tb.value = cents_as_dollars( proposed_change );
+			p.control_box.bill_credit_amount.value = cents_as_dollars( proposed_credit );
+
+		},
+		false
+	);
+
 	p.control_box.bill_apply_payment.addEventListener(
 		'command',
 		function() { 
@@ -163,6 +184,7 @@ function patron_bills_control_box_init( p ) {
 	p.control_box.bill_payment_applied = p.control_box.node.getElementsByAttribute('id','bill_payment_applied_textbox')[0];
 	p.control_box.bill_change_amount = p.control_box.node.getElementsByAttribute('id','bill_change_amount_textbox')[0];
 	p.control_box.bill_credit_amount = p.control_box.node.getElementsByAttribute('id','bill_credit_amount_textbox')[0];
+	p.control_box.change_to_credit = p.control_box.node.getElementsByAttribute('id','change_to_credit')[0];
 	p.control_box.bill_apply_payment = p.control_box.node.getElementsByAttribute('id','bill_apply_payment')[0];
 	p.control_box.bill_new_balance = p.control_box.node.getElementsByAttribute('id','bill_new_balance_textbox')[0];
 }
