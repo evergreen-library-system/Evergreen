@@ -223,7 +223,7 @@ sub perl2JSON {
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
 		$perl =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
-		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/) {
+		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
 		} else {
 			$output = '"'.$perl.'"';
@@ -303,6 +303,11 @@ sub perl2prettyJSON {
 		$perl =~ s/\n/\\n/sgo;
 		$perl =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
 		$output .= "   "x$depth unless($nospace);
+		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
+			$output = $perl;
+		} else {
+			$output = '"'.$perl.'"';
+		}
 		$output .= '"'.$perl.'"';
 	}
 
