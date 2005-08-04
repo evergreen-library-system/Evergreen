@@ -633,6 +633,11 @@ int json_eat_comment(char* string, unsigned long* index, char** buffer, int pars
 					(*index)--; /* this will get incremented at the bottom of the loop */
 					in_hint = 1;
 					break;
+				} 
+
+				if(second_dash && in_hint) {
+					buffer_add_char(buf, c);
+					break;
 				}
 
 			case 'E':
@@ -642,6 +647,11 @@ int json_eat_comment(char* string, unsigned long* index, char** buffer, int pars
 					json_eat_ws(string, index, 1);
 					(*index)--; /* this will get incremented at the bottom of the loop */
 					in_hint = 1;
+					break;
+				}
+
+				if(second_dash && in_hint) {
+					buffer_add_char(buf, c);
 					break;
 				}
 
