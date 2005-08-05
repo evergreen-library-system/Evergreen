@@ -117,50 +117,7 @@ p.buildViewMARCWindow = function(record) {
 
    debug("Setting up view marc with record " + record.doc_id());
 
-   var func = function() {
-
-      var req = new RemoteRequest(
-            "open-ils.search",
-            "open-ils.search.biblio.record.html",
-            record.doc_id());
-
-      req.send(true);
-
-	var html = req.getResultObject();
-	html = html.replace( /<table/, '<div id="this_div"><input id="copy_btn" type="submit" value="Copy Browser" /><input id="marc_btn" type="submit" value="MARC Editor" /></div><table' );
-	dump( pretty_print( html ) );
-	var id = record.doc_id();
-	var win = new_window("data:text/html," + html);
-	setTimeout(
-		function() {
-			win.document.title = "View MARC";
-			win.focus();
-			win.document.getElementById('marc_btn').addEventListener(
-				'click',
-				function(ev) {
-					spawn_marc_editor( 
-						p.w.app_shell, 'new_tab', 'main_tabbox', { 
-							'find_this_id' : record.doc_id() 
-						} 
-					).find_this_id = record.doc_id();
-				},
-				false
-			);
-			win.document.getElementById('copy_btn').addEventListener(
-				'click',
-				function(ev) {
-					spawn_copy_browser( 
-						p.w.app_shell, 'new_tab', 'main_tabbox', { 
-							'find_this_id' : record.doc_id() 
-						} 
-					).find_this_id = record.doc_id();
-				},
-				false
-			);
-		}, 0
-	);
-   }
-
+   var func = function() { marc_view(p.w.app_shell,record.doc_id()); }
    return func;
 }
 

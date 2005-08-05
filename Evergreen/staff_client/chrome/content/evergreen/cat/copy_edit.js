@@ -103,3 +103,17 @@ function refresh_spawning_browse_list() {
 		mw.sdump('D_CAT','refresh_spawning_browse_list error: ' + js2JSON(E) + '\n');
 	}
 }
+
+function spawn_marc_from_copy_editor() {
+	try {
+		var record_id = user_request(
+			'open-ils.search',
+			'open-ils.search.biblio.find_by_barcode',
+			[ cn_list[0].copies()[0].barcode() ]
+		)[0].ids[0];
+		marc_view(app_shell,record_id);
+	} catch(E) {
+		handle_error(E);
+	}
+}
+

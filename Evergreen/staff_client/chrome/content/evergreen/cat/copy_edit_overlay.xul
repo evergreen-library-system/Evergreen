@@ -19,6 +19,12 @@
 	<command id="cmd_edit_save" oncommand="
 		save_edited_copies();
 	"/>
+	<command id="cmd_edit_close" oncommand="
+		mw.close_tab(app_shell,'main_tabbox');
+	"/>
+	<command id="cmd_view_marc" oncommand="
+		spawn_marc_from_copy_editor();
+	"/>
 	<command id="cmd_refresh_parent" oncommand="
 		refresh_spawning_browse_list();
 	"/>
@@ -27,6 +33,8 @@
 <vbox id="copy_edit_vbox" flex="1">
 	<iframe id="copy_edit_frame" flex="1"/>
 	<hbox id="copy_edit_hbox" flex="0">
+		<button id="copy_edit_close" label="Close Editor" command="cmd_edit_close"/>
+		<button id="copy_edit_marc" label="View MARC" command="cmd_view_marc"/>
 		<spacer id="copy_edit_spacer" flex="1"/>
 		<button id="copy_edit_save" label="Save Changes" command="cmd_edit_save"/>
 	</hbox>

@@ -197,6 +197,49 @@ function spawn_new_marc_creation(d,placement,place,passthru_params,clone) {
 	}
 }
 
+function marc_view(app_shell,record_id) {
+	try {
+		var html = user_request(
+			"open-ils.search",
+			"open-ils.search.biblio.record.html",
+			[ record_id ]
+		)[0];
+		html = html.replace( /<table/, '<div id="this_div"><input id="copy_btn" type="submit" value="Copy Browser" /><input id="marc_btn" type="submit" value="MARC Editor" /></div><table' );
+		var id = record_id;
+		var win = new_window("data:text/html," + html);
+		setTimeout(
+			function() {
+				win.document.title = "View MARC";
+				win.focus();
+				win.document.getElementById('marc_btn').addEventListener(
+					'click',
+					function(ev) {
+						spawn_marc_editor( 
+							app_shell, 'new_tab', 'main_tabbox', { 
+								'find_this_id' : record_id 
+							} 
+						).find_this_id = record_id;
+					},
+					false
+				);
+				win.document.getElementById('copy_btn').addEventListener(
+					'click',
+					function(ev) {
+						spawn_copy_browser( 
+							app_shell, 'new_tab', 'main_tabbox', { 
+								'find_this_id' : record_id 
+							} 
+						).find_this_id = record_id;
+					},
+					false
+				);
+			}, 0
+		);
+	} catch(E) {
+		handle_error(E);
+	}
+}
+
 function spawn_patron_edit(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/patron/patron_edit.xul';
 	return spawn_interface(d,placement,place,chrome,getString('patron_editor_interface_label'),passthru_params,clone);
