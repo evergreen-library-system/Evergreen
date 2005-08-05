@@ -125,6 +125,8 @@ sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $user_session, $user_id ) = @_;
 	my $user_obj = $apputils->check_user_session( $user_session ); 
 
+	if(!defined($user_id)) { $user_id = $user_obj->id; }
+
 	if( $user_obj->id ne $user_id ) {
 		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
 			return OpenILS::Perm->new("VIEW_USER");

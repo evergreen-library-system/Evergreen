@@ -161,8 +161,7 @@ sub _grab_copy_by_barcode {
 	my($session, $barcode) = @_;
 	warn "Searching for copy with barcode $barcode\n";
 	my $copy_req	= $session->request(
-		"open-ils.storage.fleshed.asset.copy.search.barcode", 
-		$barcode );
+		"open-ils.storage.fleshed.asset.copy.search.barcode", $barcode );
 	return $copy_req->gather(1);
 }
 
@@ -186,15 +185,15 @@ sub gather_hold_objects {
 
 
 	# flesh me
-	$copy = _grab_copy_by_barcode($session, $copy->barcode);
+	$copy = _grab_copy_by_barcode($session, $copy->barcode) unless ref($copy->circ_lib);
 
 	my $hold_objects = {};
 	$hold_objects->{standings} = $patron_standings;
 	$hold_objects->{copy}		= $copy;
 	$hold_objects->{hold}		= $hold;
 	$hold_objects->{title}		= $$args{title} || _grab_title_by_copy($session, $copy->id);
-	$hold_objects->{requestor} = _grab_user($session, $hold->requestor);
-	my $patron						= _grab_user($session, $hold->usr);
+	$hold_objects->{requestor} = $$args{requestor} || _grab_user($session, $hold->requestor);
+	my $patron						= $$args{usr} || _grab_user($session, $hold->usr);
 
 	$copy->status( $copy->status->name );
 	$patron->standing($patron_standings->{$patron->standing()});

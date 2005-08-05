@@ -149,6 +149,7 @@ sub complete_authenticate {
 		# password is correct... do they have permission to login here?
 
 		my $timeout = 28800; #staff login timeout - different for opac?
+		my $opactimeout = 604800; # 14 days
 
 		if($type eq "opac") {
 			# 1 is the top level org unit (we should probably load the tree and get id from it)
