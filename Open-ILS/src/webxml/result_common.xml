@@ -1,4 +1,5 @@
 <?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "locale/en-US/lang.dtd"> %ent; ] >
 
 <div id='canvas_main' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
@@ -24,12 +25,12 @@
 				<!-- simple next/prev type navigation links -->
 				<td id='next_prev_links'>
 					<a id='home_link' title="First results page">Start</a>
-					<span>&#160;</span>
+					<span> &nbsp; </span>
 					<a id='prev_link' title='Previus page'> &lt;&lt; </a>
-					<span>&#160;</span>
+					<span> </span>
 					<span id='page_numbers'> </span>
 					<a id='next_link' title='Next Page'> &gt;&gt; </a>
-					<span>&#160;</span>
+					<span> </span>
 					<a id='end_link' title="Last results page">End</a>
 				</td>
 

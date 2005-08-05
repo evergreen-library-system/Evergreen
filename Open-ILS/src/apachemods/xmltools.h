@@ -11,8 +11,6 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
 
-#include "apachetools.h"
-
 
 #ifndef XMLTOOLS_H
 #define XMLTOOLS_H

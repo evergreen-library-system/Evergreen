@@ -49,9 +49,6 @@ static int mod_xmltools_handler (request_rec* r) {
 	char* locale_dir = cfg->locale_dir;
 	char* default_locale = cfg->default_locale;
 
-	fprintf(stderr, "%s : %s\n", locale_dir, default_locale );
-	fflush(stderr);
-
 	/* we accept get/post requests */
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
@@ -75,6 +72,8 @@ static int mod_xmltools_handler (request_rec* r) {
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
+	fflush(stderr);
+
 	/* process xincludes */
 	if( xmlXIncludeProcess(doc) < 0 ) {
 		fprintf(stderr, "\n ^-- Error processing XIncludes for file %s\n", file);
@@ -82,6 +81,7 @@ static int mod_xmltools_handler (request_rec* r) {
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
+	fflush(stderr);
 
 	/* replace the DTD */
 	if(xmlReplaceDtd(doc, dtdfile) < 0) {

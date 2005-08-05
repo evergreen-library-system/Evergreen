@@ -1,0 +1,9 @@
+<!ENTITY nbsp "  ">
+
+<!-- Navigations links -->
+<!ENTITY navigate.home "Home">
+<!ENTITY navigate.home.title "Go to the Home page">
+<!ENTITY navigate.advanced "Advanced Search">
+<!ENTITY navigate.advanced.title "Go to the Advanced Search Page">
+
+

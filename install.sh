@@ -154,8 +154,11 @@ function runInstall {
 				;;
 
 			"opensrf_gateway" )
-				if building;	then $MAKE -C "$OPENSRFDIR" "gateway"; fi;
-				if building;	then $MAKE -C "$OPENSRFDIR" "rest_gateway"; fi;
+				if building;	then 
+					$MAKE -C "$OPENSRFDIR" "gateway"; 
+					$MAKE -C "$OPENSRFDIR" "rest_gateway"; 
+				fi;
+
 				if installing; then $MAKE -C "$OPENSRFDIR" "gateway-install"; fi;
 				;;
 
@@ -185,6 +188,7 @@ function runInstall {
 				;;
 
 			"openils_web" )
+				if building; then $MAKE -C "$OPENILSDIR" "mod_xmltools"; fi;
 				if installing; then $MAKE -C "$OPENILSDIR" "web-install"; fi;
 				;;
 

@@ -1,4 +1,5 @@
 <?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "locale/en-US/lang.dtd"> %ent; ] >
 
 <!-- Navigation bar -->
 
@@ -6,14 +7,14 @@
 
 	<div class='sidebar_chunk'>
 
-		<div title="Go to the Home Page" 
+		<div title="&navigate.home.title;" 
 			id='home_link_div' class="side_bar_item">
-			<a href='/webxml/index.xml'>Home</a>
+			<a href='/webxml/index.xml'>&navigate.home;</a>
 		</div>
 	
-		<div title="Go to the Advanced Search Page"
+		<div title="&navigate.advanced.title;"
 			id='advanced_link_div' class="side_bar_item">
-			<a href='/webxml/advanced.xml'>Advanced Search</a>
+			<a href='/webxml/advanced.xml'>&navigate.advanced;</a>
 		</div>
 
 		<div title="Got to the MyOPAC Page"

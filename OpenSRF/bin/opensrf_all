@@ -40,7 +40,7 @@ OPENSRF="1";
 JSERVERSOCK="$PREFIX/var/sock/jserver.sock";	# jabber server socket file 
 JSERVERLOG="$LOGDIR/jserver.log" # jabber server log 
 JSERVERPORT=5222;						# jabber server port 
-JSERVERLEVEL=4; # can be 1-4, 4 is the highest
+JSERVERLEVEL=3; # can be 1-4, 4 is the highest
 ROUTERLOG="$LOGDIR/router.log"	# jabber router log
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------

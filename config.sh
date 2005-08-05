@@ -27,16 +27,6 @@ DEFAULT_CONFIG_FILE="install.conf.default";
 
 function buildConfig {
 
-#	if [ -f "$CONFIG_FILE" ]; then
-#		echo "";
-#		echo "Using existing config file \"$CONFIG_FILE\""; 
-#		echo "To generate a new config, remove \"$CONFIG_FILE\"";
-#		echo "";
-#		sleep 3;	
-#		exit 0;
-#	fi
-
-
 	if [ -f "$DEFAULT_CONFIG_FILE" ]; then
 		source "$DEFAULT_CONFIG_FILE";
 	fi;

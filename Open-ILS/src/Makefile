@@ -1,8 +1,14 @@
-all: 
+export TMPDIR			= $(TMP)/opensrf
+export LD_OPTS			= -L $(TMPDIR) -L .
+export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
+								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
-web-install:	web-templates-install javascript-install autojs-install
+all: mod_xmltools
+
 
 install:	perl-install web-install string-templates-install storage-bootstrap xsl-install
+
+web-install:	web-templates-install javascript-install autojs-install  mod_xmltools-install webxml-install
 
 
 JSDIR=$(WEBDIR)/js
@@ -12,6 +18,16 @@ marcdumper:
 
 marcdumper-install:
 	make -C extras/marcdumper install
+
+mod_xmltools:
+	make -C apachemods mod_xmltools.so
+
+mod_xmltools-install:
+	make -C apachemods mod_xmltools-install
+
+webxml-install:
+	mkdir -p $(WEBDIR)
+	cp -r webxml $(WEBDIR)
 
 perl-install:
 	@echo "Installing Perl modules to $(PERLDIR)"
@@ -52,8 +68,6 @@ string-templates-install:
 	cp -r templates/strings $(TEMPLATEDIR)
 
 
-
-
 xsl-install:	
 	@echo "Installing XSL files to $(XSLDIR)"
 	mkdir -p $(XSLDIR)
@@ -62,3 +76,4 @@ xsl-install:
 clean:
 	@echo "Cleaning..."
 	make -C extras clean
+

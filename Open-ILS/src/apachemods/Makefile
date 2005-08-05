@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------------
-CC_OPTS = -I /usr/include/libxml2 -I /opt/include -g
-APXS2 = /home/erickson/sandbox/apache2/bin/apxs
+#CC_OPTS = -I /usr/include/libxml2 -I /opt/include -g
+#APXS2 = /home/erickson/sandbox/apache2/bin/apxs
 # ---------------------------------------------------------------------------------
 
 LD_OPTS	+= -lxml2 -lc_utils
@@ -27,6 +27,8 @@ mod_xmltools-install:
 		LoadModule mod_xmltools_module modules/mod_xmltools.so \n \
 		to this: \n \
 		LoadModule mod_xmltools    modules/mod_xmltools.so"
+	@echo "Also, you can add \nXMLToolsDefaultLocale <locale>\nand\n \
+			XMLToolsLocaleDir  <web-locale-dir> to httpd.conf"
 	@echo "-----------------------------------------------";
 	@sleep 3;
 
