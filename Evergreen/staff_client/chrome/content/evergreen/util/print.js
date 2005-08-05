@@ -192,7 +192,7 @@ function print_template_replace(s,params) {
 // Lower-level
 
 function last_sPrint() {
-	sPrint( mw.G.last_receipt, true );
+	if (mw.G.last_receipt) sPrint( mw.G.last_receipt, false );
 }
 
 function sPrint(s,silent) {
