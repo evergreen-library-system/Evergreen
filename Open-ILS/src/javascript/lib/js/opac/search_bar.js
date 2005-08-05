@@ -11,26 +11,26 @@ var formSelector;
 
 function searchBarInit() {
 
-	getId(config.ids.searchbar.text).focus();
-	getId(config.ids.searchbar.text).onkeydown = 
+	G.ui.searchbar.text.focus();
+	G.ui.searchbar.text.onkeydown = 
 		function(evt) {if(userPressedEnter(evt)) searchBarSubmit();};
-	getId(config.ids.searchbar.submit).onclick = searchBarSubmit;
+	G.ui.searchbar.submit.onclick = searchBarSubmit;
 
-	searchBarTable		= getId(config.ids.searchbar.table);
-	searchBarTagLink	= getId(config.ids.searchbar.tag);
-	searchBarExtraRow = getId(config.ids.searchbar.extra_row);
-	searchBarMainRow	= getId(config.ids.searchbar.main_row);
+	searchBarTable		= G.ui.searchbar.table;
+	searchBarTagLink	= G.ui.searchbar.tag;
+	searchBarExtraRow = G.ui.searchbar.extra_row;
+	searchBarMainRow	= G.ui.searchbar.main_row;
 
-	typeSelector = getId(config.ids.searchbar.type_selector);
-	depthSelector = getId(config.ids.searchbar.depth_selector);
-	formSelector = getId(config.ids.searchbar.form_selector);
+	typeSelector = G.ui.searchbar.type_selector;
+	depthSelector = G.ui.searchbar.depth_selector;
+	formSelector = G.ui.searchbar.form_selector;
 
 	searchBarTagLink.onclick = function(){searchBarToggle();}
 
 	/* set up the selector objects, etc */
 	var t = getTerm();
 	if(t == null) t = "";
-	getId(config.ids.searchbar.text).value = t;
+	G.ui.searchbar.text.value = t;
 	setSelector(typeSelector,	getStype());
 	setSelector(depthSelector, getDepth());
 	setSelector(formSelector,	getForm());
@@ -69,9 +69,9 @@ function searchBarSelectorChanged(type) {
 */
 
 function searchBarSubmit() {
-	var text = getId(config.ids.searchbar.text).value;
+	var text = G.ui.searchbar.text.value;
 	if(!text || text == "") return;
-	var type_s = getId(config.ids.searchbar.type_selector);
+	var type_s = G.ui.searchbar.type_selector;
 
 	var args = {};
 	args.page = MRESULT;
@@ -89,18 +89,18 @@ function searchBarToggle() {
 
 	if(searchBarExpanded) {
 
-		addCSSClass(searchBarExtraRow,config.css.hide_me);
+		hideMe(searchBarExtraRow);
 		searchBarExpanded = false;
-		getId(config.ids.searchbar.tag_off).className = "show_me_inline";
-		getId(config.ids.searchbar.tag_on).className = "hide_me";
+		G.ui.searchbar.tag_off.className = "show_me_inline";
+		hideMe(G.ui.searchbar.tag_on);
 		//SEARCHBAR_EXTRAS = 0; set cookie...
 
 	} else {
 
 		removeCSSClass(searchBarExtraRow,config.css.hide_me);
 		searchBarExpanded = true;
-		getId(config.ids.searchbar.tag_off).className = "hide_me";
-		getId(config.ids.searchbar.tag_on).className = "show_me_inline";
+		hideMe(G.ui.searchbar.tag_off);
+		G.ui.searchbar.tag_on.className = "show_me_inline";
 		//SEARCHBAR_EXTRAS = 1; set cookie...
 	}
 }

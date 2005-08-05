@@ -5,8 +5,8 @@ var rowtemplate;
 
 function mresultDoSearch() {
 
-	table = getId(config.ids.result.main_table);
-	rowtemplate = table.removeChild(getId(config.ids.result.row_template));
+	table = G.ui.result.main_table;
+	rowtemplate = table.removeChild(G.ui.result.row_template);
 	removeChildren(table);
 
 	if(getOffset() == 0 || getHitCount() == null ) {
@@ -15,7 +15,6 @@ function mresultDoSearch() {
 	} else { 
 		resultSetInfo();
 		mresultCollectIds();
-		mresultCollectRecords(); 
 	}
 }
 
@@ -35,7 +34,10 @@ function mresultCollectIds() {
 			getLocation(), getDepth(), getDisplayCount(), getOffset(), getForm() );
 	req.callback( function(r) {
 		mresultSetRecords(r.getResultObject().ids);
-		mresultCollectRecords(); });
+		mresultCollectRecords(); 
+		req.request = null;
+		r.callback = null;
+	});
 	req.send();
 }
 
@@ -62,8 +64,8 @@ function mresultCollectRecords() {
 
 		/*		
 		if( x == (getDisplayCount() + getOffset()) - 1 ) {
-			getId(config.ids.result.top_div).appendChild(
-				getId(config.ids.result.nav_links).cloneNode(true));
+			G.ui.result.top_div.appendChild(
+				G.ui.result.nav_links.cloneNode(true));
 		}
 		*/
 	}

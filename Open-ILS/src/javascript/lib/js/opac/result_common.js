@@ -5,8 +5,8 @@ function resultSetInfo() {
 	else c = getDisplayCount() + getOffset();
 
 	var pages = parseInt(getHitCount() / getDisplayCount()) + 1;
-	getId(config.ids.result.current_page).appendChild(text( (getOffset()/getDisplayCount()) + 1));
-	getId(config.ids.result.num_pages).appendChild(text(pages + ")"));
+	G.ui.result.current_page.appendChild(text( (getOffset()/getDisplayCount()) + 1));
+	G.ui.result.num_pages.appendChild(text(pages + ")"));
 
 	var o = getOffset();
 
@@ -14,29 +14,29 @@ function resultSetInfo() {
 
 		var args = {};
 		args[PARAM_OFFSET] = o + getDisplayCount();
-		getId(config.ids.result.next_link).setAttribute("href", buildOPACLink(args)); 
-		addCSSClass(getId(config.ids.result.next_link), config.css.result.nav_active);
+		G.ui.result.next_link.setAttribute("href", buildOPACLink(args)); 
+		addCSSClass(G.ui.result.next_link, config.css.result.nav_active);
 
 		args[PARAM_OFFSET] = getHitCount() - (getHitCount() % getDisplayCount());
-		getId(config.ids.result.end_link).setAttribute("href", buildOPACLink(args)); 
-		addCSSClass(getId(config.ids.result.end_link), config.css.result.nav_active);
+		G.ui.result.end_link.setAttribute("href", buildOPACLink(args)); 
+		addCSSClass(G.ui.result.end_link, config.css.result.nav_active);
 	}
 
 	if( o > 0 ) {
 
 		var args = {};
 		args[PARAM_OFFSET] = o - getDisplayCount();
-		getId(config.ids.result.prev_link).setAttribute( "href", buildOPACLink(args)); 
-		addCSSClass(getId(config.ids.result.prev_link), config.css.result.nav_active);
+		G.ui.result.prev_link.setAttribute( "href", buildOPACLink(args)); 
+		addCSSClass(G.ui.result.prev_link, config.css.result.nav_active);
 
 		args[PARAM_OFFSET] = 0;
-		getId(config.ids.result.home_link).setAttribute( "href", buildOPACLink(args)); 
-		addCSSClass(getId(config.ids.result.home_link), config.css.result.nav_active);
+		G.ui.result.home_link.setAttribute( "href", buildOPACLink(args)); 
+		addCSSClass(G.ui.result.home_link, config.css.result.nav_active);
 	}
 
-	getId(config.ids.result.offset_start).appendChild(text(o + 1));
-	getId(config.ids.result.offset_end).appendChild(text(c));
-	getId(config.ids.result.result_count).appendChild(text(getHitCount()));
+	G.ui.result.offset_start.appendChild(text(o + 1));
+	G.ui.result.offset_end.appendChild(text(c));
+	G.ui.result.result_count.appendChild(text(getHitCount()));
 
 
 }
@@ -44,10 +44,10 @@ function resultSetInfo() {
 
 function resultDisplayRecord(rec, rowtemplate, is_mr) {
 
-	if(rec == null) rec = {};
+	if(rec == null) rec = new mvr(); /* if we return we won't build some important UI components */
 
 	/* hide the 'now loading...' message */
-	addCSSClass(getId(config.ids.loading), config.css.hide_me);
+	hideMe(G.ui.all.loading);
 
 	var r = rowtemplate.cloneNode(true);
 

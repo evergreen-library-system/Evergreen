@@ -157,9 +157,17 @@ function grabUser(ses, force) {
 	if(!ses) ses = cookie.get(COOKIE_SES);
 	if(!ses) return false;
 
-	if(!force) {
+	if(!force) 
 		if(G.user && G.user.session == ses)
 			return G.user;
+
+
+	/* first make sure the session is valid */
+	var request = new Request(FETCH_SESSION, ses );
+	request.send(true);
+	var user = request.result();
+	if( !(typeof user == 'object' && user._isfieldmapper) ) {
+		return false;
 	}
 
 		
@@ -175,6 +183,8 @@ function grabUser(ses, force) {
 
 	G.user.session = ses;
 	cookie.put(COOKIE_SES, ses);
+	cookie.write();
+
 	return G.user;
 
 }
@@ -203,7 +213,25 @@ function doLogin() {
 
    if(auth_result == '0' || auth_result == null || auth_request.length == 0) { return false; }
 
-	return grabUser(auth_result);
+	return grabUser(auth_result, true);
+}
+
+function doLogout() {
+
+	/* be nice and delete the session from the server */
+	if(G.user && G.user.session) { 
+		var req = new Request(LOGIN_DELETE, G.user.session);
+      req.send(true);
+		try { req.result(); } catch(E){}
+    }
+
+	G.user = null;
+	cookie.remove(COOKIE_SES);
+
+	hideMe(G.ui.sidebar.logoutbox);
+	unHideMe(G.ui.sidebar.loginbox);
+	hideMe(G.ui.sidebar.logged_in_as);
+
 }
 
 

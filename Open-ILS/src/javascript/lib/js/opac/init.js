@@ -1,18 +1,12 @@
 
 function init() {
 
+	document.body.onunload = unload;
+
 	loadUIObjects();
 	initParams();
 	initSideBar();
 	searchBarInit();
-
-	var login = G.ui.sidebar.login
-	if(login) login.onclick = initLogin;
-
-	if(grabUser()) {
-		unHideMe(G.ui.sidebar.logged_in_as);
-		G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
-	}
 
 	var page = findCurrentPage();
 	switch(findCurrentPage()) {
@@ -22,9 +16,58 @@ function init() {
 
 }
 
+function unload() {
+
+	_tree_killer();
+
+	if(G.ui.sidebar.login)
+		G.ui.sidebar.login.onclick		= null;
+	if(G.ui.sidebar.logout)
+		G.ui.sidebar.logout.onclick	= null;
+	if(G.ui.login.button)
+		G.ui.login.button.onclick		= null;
+	if(G.ui.login.cancel)
+		G.ui.login.cancel.onclick		= null;
+	if(G.ui.searchbar.submit)
+		G.ui.searchbar.submit.onclick = null;
+	if(G.ui.searchbar.tag)
+		G.ui.searchbar.tag.onclick		= null;
+
+	clearUIObjects();
+
+	if(IE) {
+		window.CollectGarbage();
+	}
+}
+
+
+/* set up the colors in the sidebar 
+	Disables/Enables certain components based on various state data 
+ */
+function initSideBar() {
+
+	for( var p in G.ui.sidebar ) 
+		removeCSSClass(p, config.css.sidebar.item.active);
+
+	var page = findCurrentPage();
+	unHideMe(G.ui.sidebar[page]);
+	addCSSClass(G.ui.sidebar[page], config.css.sidebar.item.active);
+
+	/* if we're logged in, show it and replace the Login link with the Logout link */
+	if(grabUser()) {
+		G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+		unHideMe(G.ui.sidebar.logoutbox);
+		unHideMe(G.ui.sidebar.logged_in_as);
+		hideMe(G.ui.sidebar.loginbox);
+	}
+
+	if(G.ui.sidebar.login) G.ui.sidebar.login.onclick = initLogin;
+	if(G.ui.sidebar.logout) G.ui.sidebar.logout.onclick = doLogout; 
+
+}
+
 /* sets up the login ui components */
 function initLogin() {
-
 
 	G.ui.login.button.onclick = function(){
 		if(doLogin()) {
@@ -32,8 +75,10 @@ function initLogin() {
 			hideMe(G.ui.login.box);
 			hideMe(G.ui.all.loading);
 
-			unHideMe(G.ui.sidebar.logged_in_as);
 			G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+			unHideMe(G.ui.sidebar.logoutbox);
+			unHideMe(G.ui.sidebar.logged_in_as);
+			hideMe(G.ui.sidebar.loginbox);
 		}
 	}
 
@@ -47,16 +92,6 @@ function initLogin() {
 	}
 }
 
-
-/* set up the colors in the sidebar */
-function initSideBar() {
-	for( var p in G.ui.sidebar ) 
-		removeCSSClass(p, config.css.sidebar.item.active);
-
-	var page = findCurrentPage();
-	addCSSClass(G.ui.sidebar[page], config.css.sidebar.item.active);
-	removeCSSClass(G.ui.sidebar[page], config.css.hide_me);
-}
 
 
 /* sets all of the params values */

@@ -16,23 +16,26 @@
 			<a href='/webxml/advanced.xml'>Advanced Search</a>
 		</div>
 
-		<div title="Log in"
-			id='login_link_div' class="side_bar_item">
-			<a id='login_link' href='javascript:void(0);'>Login</a>
-		</div>
-
-	
 		<div title="Got to the MyOPAC Page"
 			id='myopac_link_div' class="side_bar_item">
 			<a  href='/webxml/myopac/index.xml'>My OPAC</a>
 		</div>
-	
-		<!--
-		<div title="Go to the Web Preferences Page"
-			id='prefs_link_div' class="side_bar_item">
-			<a href='/webxml/webprefs.xml'>My Preferences</a>
+
+		<div title="Login"
+			id='login_link_div' class="side_bar_item">
+			<a id='login_link' href='javascript:void(0);'>Login</a>
 		</div>
-		-->
+
+		<div title="Log out"
+			id='logout_link_div' class="side_bar_item hide_me">
+			<a id='logout_link' href='javascript:void(0);'>Log out</a>
+		</div>
+
+		<!-- Informational sidebar components -->
+
+		<div id='logged_in_as_div' Title="Logged In As..." class="side_bar_item hide_me">
+			<span >You are logged in as <b id='username_dest'> </b></span>
+		</div>
 
 		<div title="Title Group Results Page" 
 			id='mresult_link_div' class="side_bar_item hide_me">
@@ -43,11 +46,6 @@
 			id='result_link_div' class="side_bar_item hide_me">
 			<span>Title Results</span>
 		</div>
-
-		<div id='logged_in_as_div' Title="Logged In As..." class="side_bar_item hide_me">
-			<span >You are logged in as <b id='username_dest'> </b></span>
-		</div>
-
 
 	</div>
 

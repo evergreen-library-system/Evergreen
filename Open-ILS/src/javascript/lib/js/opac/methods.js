@@ -13,7 +13,9 @@ if(isXUL()) FETCH_MR_COPY_COUNTS += ".staff";
 
 var FETCH_FLESHED_USER = "open-ils.actor:open-ils.actor.user.fleshed.retrieve";
 
+var FETCH_SESSION		= "open-ils.auth:open-ils.auth.session.retrieve";
 var LOGIN_INIT 		= "open-ils.auth:open-ils.auth.authenticate.init";
 var LOGIN_COMPLETE 	= "open-ils.auth:open-ils.auth.authenticate.complete";
+var LOGIN_DELETE		= "open-ils.auth:open-ils.auth.session.delete";
 
 

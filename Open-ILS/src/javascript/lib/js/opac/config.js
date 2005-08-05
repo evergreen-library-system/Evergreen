@@ -53,6 +53,14 @@ function loadUIObjects() {
 	}
 }
 
+function clearUIObjects() {
+	for( var p in config.ids ) {
+		for( var o in config.ids[p] ) 
+			G.ui[p][o] = null;
+		G.ui[p] = null;
+	}
+}
+
 
 
 /* ---------------------------------------------------------------------------- */
@@ -146,6 +154,9 @@ config.css.sidebar.item.active	= 'side_bar_item_active';
 config.ids.sidebar.mresult			= 'mresult_link_div';
 config.ids.sidebar.rresult			= 'result_link_div';
 config.ids.sidebar.login			= 'login_link';
+config.ids.sidebar.logout			= 'logout_link';
+config.ids.sidebar.logoutbox		= 'logout_link_div';
+config.ids.sidebar.loginbox		= 'login_link_div';
 config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
 config.ids.sidebar.username_dest	= 'username_dest';
 

@@ -31,48 +31,11 @@ function findOrgType(type_id) {
 }
 
 
-/* locates a specific org unit by id, acts as a cache of orgs*/
-var orgArraySearcher = null;
-
-/* flatten the org tree for faster searching */
-function _flattenOrgs(node) { 
-
-	if(node == null) {
-		node = globalOrgTree;
-		orgArraySearcher = new Object();
-	}
-
-	orgArraySearcher[node.id()] = node;
-	for(var idx in node.children()) {
-		_flattenOrgs(node.children()[idx]);
-	}
-}
-
 /* returns an org unit by id.  if an object is passed in as the id,
 	then the object is assumed to be an org unit and is returned */
-function findOrgUnit(org_id, branch) {
-
+function findOrgUnit(org_id) {
 	if(org_id == null) return null;
 	if(typeof org_id == 'object') return org_id;
-
-	/* if we don't have the global org tree, grab the org unit from the server */
-	var tree_exists = false;
-	try{if(globalOrgTree != null) tree_exists = true;}catch(E){}
-
-	if(!tree_exists) {
-		var org = orgArraySearcher[org_id];
-		if(org) return org;
-		var r = new RemoteRequest(
-			"open-ils.actor",
-			"open-ils.actor.org_unit.retrieve", null, org_id);
-		r.send(true);
-		orgArraySearcher[org_id] = r.getResultObject();
-		return orgArraySearcher[org_id];
-	}
-
-	if(orgArraySearcher == null)
-		_flattenOrgs();
-
 	return orgArraySearcher[org_id];
 }
 

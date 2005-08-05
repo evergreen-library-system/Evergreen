@@ -58,9 +58,6 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 		return null;
 	}
 
-	if( this.callback )
-		this.setCompleteCallback( this.callback );
-
 	return true;
 }
 
@@ -70,13 +67,11 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 RemoteRequest.prototype.setCompleteCallback = function(callback) {
 
 	if(this.cancelled) return;
-
 	var object = this;
-	var obj = this.xmlhttp;
-	this.callback = callback;
+	var xml = this.xmlhttp;
 
-	this.xmlhttp.onreadystatechange = function() {
-		if( obj.readyState == 4 ) {
+	xml.onreadystatechange = function() {
+		if( xml.readyState == 4 ) {
 
 			try {
 				if(object.cancelled) return;
@@ -106,10 +101,15 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 					//alert("Exception: " + E);
 					throw E;
 				}
-			} 
 
-			/* on success, remove the request from the pending cache */
-			//RemoteRequest.prunePending(object.id);
+			}  finally {
+
+				object.callback = null;
+				object.xmlhttp.onreadystatechange = function(){};
+				object.xmlhttp = null;
+				object.params = null;
+				object.param_string = null;
+			}
 		}
 	}
 }
@@ -178,6 +178,7 @@ RemoteRequest.prototype.isReady = function() {
 
 /* returns the JSON->js result object  */
 RemoteRequest.prototype.getResultObject = function() {
+	//this.callback = null;
 	if(this.cancelled) return null;
 
 	var text = this.xmlhttp.responseText;
