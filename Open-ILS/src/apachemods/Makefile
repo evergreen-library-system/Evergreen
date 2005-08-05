@@ -1,6 +1,13 @@
+# ---------------------------------------------------------------------------------
+CC_OPTS = -I /usr/include/libxml2 -I /opt/include -g
+APXS2 = /home/erickson/sandbox/apache2/bin/apxs
+# ---------------------------------------------------------------------------------
+
 LD_OPTS	+= -lxml2 -lc_utils
 
 all: mod_xmltools.so
+
+install:	mod_xmltools-install
 
 mod_xmltools.so: apachetools.o  xmltools.o
 	$(CC) -c $(CC_OPTS) mod_xmltools.c 
@@ -13,7 +20,7 @@ xmltools.o:	xmltools.c xmltools.h
 	$(CC) -c $(CC_OPTS) xmltools.c -o $@
 
 
-install:
+mod_xmltools-install:
 	$(APXS2) -i -a -n mod_xmltools mod_xmltools.so
 	@echo "-----------------------------------------------";
 	@echo -e "* Important * : Change httpd.conf from this: \n \

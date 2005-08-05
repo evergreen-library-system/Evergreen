@@ -1,43 +1,56 @@
-#include "apachetools.h"
-#include "xmltools.h"
-
-#define MODULE_NAME		"mod_xmltools" /* our module name */
-#define PARAM_LOCALE		"locale"			/* the URL param for the local directory */
-#define LANG_DTD			"lang.dtd"		/* the DTD for the test entities */
-
-/* these should be config directives */
-#define LOCALE_DIR		"/home/erickson/sandbox/apachemods/locale"		/* The root directory where the local files are stored */
-#define DEFAULT_LOCALE	"en-US"			/* If no locale data is provided */
+#include "mod_xmltools.h"
 
 
-/* Child Init */
+/* Configuration handlers -------------------------------------------------------- */
+static const char* mod_xmltools_set_locale_dir(cmd_parms *parms, void *config, const char *arg) {
+	mod_xmltools_config  *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	cfg->locale_dir = (char*) arg;
+	return NULL;
+}
+
+static const char* mod_xmltools_set_default_locale(cmd_parms *parms, void *config, const char *arg) {
+	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	cfg->default_locale = (char*) arg;
+	return NULL;
+}
+
+/* tell apache about our commands */
+static const command_rec mod_xmltools_cmds[] = {
+	AP_INIT_TAKE1( "XMLToolsDefaultLocale", mod_xmltools_set_default_locale,
+		NULL, RSRC_CONF, "XMLToolsDefaultLocale - Test"),
+	AP_INIT_TAKE1( "XMLToolsLocaleDir", mod_xmltools_set_locale_dir,
+		NULL, RSRC_CONF, "XMLToolsLocaleDir - Test"),
+	{NULL}
+};
+
+/* build the config object */
+static void* mod_xmltools_create_config( apr_pool_t* p, server_rec* s) {
+	mod_xmltools_config* cfg = 
+		(mod_xmltools_config*) apr_palloc(p, sizeof(mod_xmltools_config));
+	cfg->default_locale = DEFAULT_LOCALE;
+	cfg->locale_dir = DEFAULT_LOCALE_DIR;
+	return (void*) cfg;
+}
+
+
+/* Child Init handler  ----------------------------------------------------------- */
 static void mod_xmltools_child_init(apr_pool_t *p, server_rec *s) {
 }
 
-/* allocates a char* to hold the name of the DTD language file 
-	Prints to stderr and returns NULL if there was an error loading the file 
-	*/
 
-static char* get_dtd_lang_file(string_array* params) {
-
-	char* localedir = apacheGetFirstParamValue(params, PARAM_LOCALE);
-	if(!localedir) localedir = strdup(DEFAULT_LOCALE);
-
-	int len = strlen(LANG_DTD) + strlen(localedir) + strlen(LOCALE_DIR) + 1;
-	char dtdfile[len];
-	bzero(dtdfile, len);
-
-	if(localedir)
-		sprintf(dtdfile, "%s/%s/%s",  LOCALE_DIR, localedir, LANG_DTD );
-
-	return strdup(dtdfile);
-}
-
+/* Request handler  -------------------------------------------------------------- */
 static int mod_xmltools_handler (request_rec* r) {
 
 	/* make sure we're needed first thing*/
 	if (strcmp(r->handler, MODULE_NAME )) 
 		return DECLINED;
+
+	mod_xmltools_config *cfg = ap_get_module_config(r->server->module_config, &mod_xmltools);
+	char* locale_dir = cfg->locale_dir;
+	char* default_locale = cfg->default_locale;
+
+	fprintf(stderr, "%s : %s\n", locale_dir, default_locale );
+	fflush(stderr);
 
 	/* we accept get/post requests */
 	r->allowed |= (AP_METHOD_BIT << M_GET);
@@ -48,7 +61,7 @@ static int mod_xmltools_handler (request_rec* r) {
 	string_array* params = apacheParseParms(r);
 
 	char* file = r->filename;
-	char* dtdfile = get_dtd_lang_file(params);
+	char* dtdfile = get_dtd_lang_file(params, default_locale, locale_dir );
 
 	xmlDocPtr doc;
 
@@ -99,18 +112,42 @@ static int mod_xmltools_handler (request_rec* r) {
 }
 
 
+/* register callbacks */
 static void mod_xmltools_register_hooks (apr_pool_t *p) {
 	ap_hook_handler(mod_xmltools_handler, NULL, NULL, APR_HOOK_MIDDLE);
 	ap_hook_child_init(mod_xmltools_child_init,NULL,NULL,APR_HOOK_MIDDLE);
 }
 
+
+/* finally, flesh the module */
 module AP_MODULE_DECLARE_DATA mod_xmltools = {
 	STANDARD20_MODULE_STUFF,
 	NULL,
 	NULL,
+	mod_xmltools_create_config,
 	NULL,
-	NULL,
-	NULL,
+	mod_xmltools_cmds,
 	mod_xmltools_register_hooks,
 };
+
+
+
+/* UTILITY FUNCTIONS ----------------------------------------------------- */
+char* get_dtd_lang_file(string_array* params, char* default_locale, char* locale_dir) {
+
+	/* if no locale is provided via URL, we use the default */
+	char* locale = apacheGetFirstParamValue(params, PARAM_LOCALE);
+	if(!locale) locale = default_locale;
+	if(!locale) return NULL;
+
+	int len = strlen(LANG_DTD) + strlen(locale) + strlen(locale_dir) + 1;
+	char dtdfile[len];
+	bzero(dtdfile, len);
+
+	if(locale)
+		sprintf(dtdfile, "%s/%s/%s",  locale_dir, locale, LANG_DTD );
+
+	return strdup(dtdfile);
+}
+
 
