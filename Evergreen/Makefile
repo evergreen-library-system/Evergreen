@@ -54,4 +54,5 @@ circ-install:
 	cp circ_rules/*.rules $(CIRCRULESDIR)/
 
 clean:
-	make -C local_staff_client clean
+	if [ -d local_staff_client ]; then make -C local_staff_client clean; fi;
+
