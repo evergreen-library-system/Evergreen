@@ -44,16 +44,6 @@ int tcp_connect( transport_socket* sock_obj ){
 	struct hostent *hptr;
 	int sock_fd;
 
-	#ifdef WIN32
-	WSADATA data;
-	char bfr;
-	if( WSAStartup(MAKEWORD(1,1), &data) ) {
-		fatal_handler( "somethin's broke with windows socket startup" );
-		return -1;
-	}
-	#endif
-
-
 	// ------------------------------------------------------------------
 	// Create the socket
 	// ------------------------------------------------------------------

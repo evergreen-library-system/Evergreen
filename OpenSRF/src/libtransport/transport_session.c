@@ -33,7 +33,6 @@ transport_session* init_transport(  char* server, int port, void* user_data, int
 	session->router_command_buffer	= buffer_init( JABBER_JID_BUFSIZE );
 
 
-
 	if(	session->body_buffer		== NULL || session->subject_buffer	 == NULL	||
 			session->thread_buffer	== NULL || session->from_buffer		 == NULL	||
 			session->status_buffer	== NULL || session->recipient_buffer == NULL ||
@@ -65,6 +64,8 @@ transport_session* init_transport(  char* server, int port, void* user_data, int
 
 	return session;
 }
+
+
 
 /* XXX FREE THE BUFFERS */
 int session_free( transport_session* session ) {
@@ -141,16 +142,6 @@ int session_connect( transport_session* session,
 		warning_handler( "session is null in connect" );
 		return 0; 
 	}
-
-
-	/*
-	session->state_machine->connected = 
-		tcp_connected( session->sock_obj );
-
-	if( session->state_machine->connected ) {
-		return 1;
-	}
-	*/
 
 
 	char* server = session->sock_obj->server;
