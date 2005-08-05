@@ -17,8 +17,8 @@ void launch_server();
 void sig_hup_handler( int a ) { 
 	warning_handler(" +++ Re-launching server for SIGHUP");
 
-	log_free();
 	jserver_free(js);
+	log_free();
 	unlink(unix_sock_file);
 
 	launch_server();
@@ -28,8 +28,8 @@ void sig_hup_handler( int a ) {
 /* die gracefully */
 void sig_int_handler( int a ) { 
 	warning_handler(" +++ Shutting down because of user signal");
-	log_free();
 	jserver_free(js);
+	log_free();
 	unlink(unix_sock_file);
 	exit(0); 
 }
