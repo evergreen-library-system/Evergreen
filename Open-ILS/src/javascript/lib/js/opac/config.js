@@ -53,10 +53,15 @@ function loadUIObjects() {
 	}
 }
 
+/* try our best to free memory */
 function clearUIObjects() {
 	for( var p in config.ids ) {
-		for( var o in config.ids[p] ) 
-			G.ui[p][o] = null;
+		for( var o in config.ids[p] ) {
+			if(G.ui[p][o]) {
+				G.ui[p][o].onclick = null;
+				G.ui[p][o] = null;
+			}
+		}
 		G.ui[p] = null;
 	}
 }
@@ -72,13 +77,17 @@ config.text = {};
 config.ids = {};
 config.names = {};
 
-config.ids.all = {};
-config.ids.all.loading		= "loading_div";	/* generic 'loading..' message */
-config.ids.all.canvas		= "canvas";			/* outer UI canvas that holds the main canvas and any other hidden help components*/	
-config.ids.all.canvas_main	= "canvas_main";	/* main data display canvas */
+config.ids.common = {};
+config.ids.common.loading		= "loading_div";		/* generic 'loading..' message */
+config.ids.common.canvas		= "canvas";				/* outer UI canvas that holds the main canvas and any other hidden help components*/	
+config.ids.common.canvas_main	= "canvas_main";		/* main data display canvas */
+config.ids.common.org_tree		= "org_tree";			/* org tree selector thingy */
 
 config.css = {};
 config.css.hide_me = "hide_me";
+config.css.color_1 = "color_1";
+config.css.color_2 = "color_2";
+config.css.color_3 = "color_3";
 
 config.page = {};
 config.page[HOME]			= "/webxml/index.xml";
@@ -110,12 +119,15 @@ config.ids.result.current_page	= 'current_page';
 config.css.result.nav_active		= "nav_link_active";
 config.ids.result.top_div			= "result_table_div";
 config.ids.result.nav_links		= "search_nav_links";
+config.ids.result.info				= "result_info_div";
+
 config.names.result.item_jacket	= "item_jacket";
 config.names.result.item_title	= "item_title";
 config.names.result.item_author	= "item_author";
 config.names.result.counts_row	= "counts_row";
 config.names.result.count_cell	= "copy_count_cell";
 
+/* login page */
 config.ids.login = {};
 config.css.login = {};
 config.ids.login.box			= "login_box";
@@ -140,6 +152,7 @@ config.ids.searchbar.table				= 'searchbar_table';
 config.ids.searchbar.tag				= 'search_tag_link';
 config.ids.searchbar.tag_on			= 'searchbar_tag_on';
 config.ids.searchbar.tag_off			= 'searchbar_tag_off';
+config.ids.searchbar.location_tag	= 'search_location_tag_link';
 
 
 /*  sidebar */
@@ -150,7 +163,6 @@ config.ids.sidebar.home				= 'home_link_div';
 config.ids.sidebar.advanced		= 'advanced_link_div';
 config.ids.sidebar.myopac			= 'myopac_link_div';
 config.ids.sidebar.prefs			= 'prefs_link_div';
-config.css.sidebar.item.active	= 'side_bar_item_active';
 config.ids.sidebar.mresult			= 'mresult_link_div';
 config.ids.sidebar.rresult			= 'result_link_div';
 config.ids.sidebar.login			= 'login_link';
@@ -159,6 +171,15 @@ config.ids.sidebar.logoutbox		= 'logout_link_div';
 config.ids.sidebar.loginbox		= 'login_link_div';
 config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
 config.ids.sidebar.username_dest	= 'username_dest';
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* These are pages that may replace the canvas */
+/* ---------------------------------------------------------------------------- */
+config.ids.altcanvas = {};
+config.ids.altcanvas.login		= config.ids.login.box;
+config.ids.altcanvas.org_tree	 = config.ids.common.org_tree;
 
 
 

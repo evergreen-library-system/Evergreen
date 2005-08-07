@@ -7,8 +7,8 @@ function init() {
 	initParams();
 	initSideBar();
 	searchBarInit();
+	G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
 
-	var page = findCurrentPage();
 	switch(findCurrentPage()) {
 		case MRESULT: mresultDoSearch(); break;
 		case RRESULT: rresultDoSearch(); break;
@@ -16,28 +16,11 @@ function init() {
 
 }
 
+/* free whatever memory we can */
 function unload() {
-
 	_tree_killer();
-
-	if(G.ui.sidebar.login)
-		G.ui.sidebar.login.onclick		= null;
-	if(G.ui.sidebar.logout)
-		G.ui.sidebar.logout.onclick	= null;
-	if(G.ui.login.button)
-		G.ui.login.button.onclick		= null;
-	if(G.ui.login.cancel)
-		G.ui.login.cancel.onclick		= null;
-	if(G.ui.searchbar.submit)
-		G.ui.searchbar.submit.onclick = null;
-	if(G.ui.searchbar.tag)
-		G.ui.searchbar.tag.onclick		= null;
-
 	clearUIObjects();
-
-	if(IE) {
-		window.CollectGarbage();
-	}
+	if(IE) window.CollectGarbage();
 }
 
 
@@ -47,11 +30,11 @@ function unload() {
 function initSideBar() {
 
 	for( var p in G.ui.sidebar ) 
-		removeCSSClass(p, config.css.sidebar.item.active);
+		removeCSSClass(p, config.css.color_2);
 
 	var page = findCurrentPage();
 	unHideMe(G.ui.sidebar[page]);
-	addCSSClass(G.ui.sidebar[page], config.css.sidebar.item.active);
+	addCSSClass(G.ui.sidebar[page], config.css.color_2);
 
 	/* if we're logged in, show it and replace the Login link with the Logout link */
 	if(grabUser()) {
@@ -67,14 +50,12 @@ function initSideBar() {
 }
 
 /* sets up the login ui components */
+var loginBoxVisible = false;
 function initLogin() {
 
-	G.ui.login.button.onclick = function(){
+	var loginDance = function() {
 		if(doLogin()) {
-			unHideMe(G.ui.all.canvas_main);
-			hideMe(G.ui.login.box);
-			hideMe(G.ui.all.loading);
-
+			showCanvas();
 			G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
 			unHideMe(G.ui.sidebar.logoutbox);
 			unHideMe(G.ui.sidebar.logged_in_as);
@@ -82,14 +63,20 @@ function initLogin() {
 		}
 	}
 
-	hideMe(G.ui.all.canvas_main);
-	unHideMe(G.ui.login.box);
+	G.ui.login.button.onclick = loginDance;
+	G.ui.login.username.onkeydown = 
+		function(evt) {if(userPressedEnter(evt)) loginDance();};
+	G.ui.login.password.onkeydown = 
+		function(evt) {if(userPressedEnter(evt)) loginDance();};
 
-	G.ui.login.cancel.onclick = function(){
-		unHideMe(G.ui.all.canvas_main);
-		hideMe(G.ui.login.box);
-		hideMe(G.ui.all.loading);
+	if(loginBoxVisible) {
+		showCanvas();
+	} else {
+		swapCanvas(G.ui.login.box);
+		G.ui.login.username.focus();
 	}
+	loginBoxVisible = !loginBoxVisible;
+	G.ui.login.cancel.onclick = showCanvas;
 }
 
 

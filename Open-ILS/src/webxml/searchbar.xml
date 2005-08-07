@@ -7,7 +7,7 @@
 	<!-- load my js -->
 	<script language='javascript' src='/lib/js/opac/search_bar.js'> </script>
 
-	<div id='searchbar_main'>
+	<div id='searchbar_main' class='color_1'>
 
 		<table>
 
@@ -80,14 +80,14 @@
 	</div>
 
 	<!-- Search location changer -->
-	<span class='searchbar_tag'>
-		<a id='search_location_tag_link' href='javascript:alert("boo");'>
+	<span class='searchbar_tag color_1'>
+		<a id='search_location_tag_link' href='javascript:void(0);'>
 			<span> Search Location </span>
 		</a>
 	</span>
 	
 	<!-- Link for expanding/contracting the extra search options -->
-	<span class='searchbar_tag'>
+	<span class='searchbar_tag color_1'>
 		<a id='search_tag_link' href='javascript:void(0);'>
 			<span id='searchbar_tag_off'> More Options </span>
 			<span id='searchbar_tag_on' class='hide_me'> Less Options </span>

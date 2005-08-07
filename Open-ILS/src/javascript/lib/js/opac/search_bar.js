@@ -8,6 +8,11 @@ var searchBarMainRow;
 var typeSelector;
 var depthSelector;
 var formSelector;
+var orgTreeVisible = false;
+
+/* if set by the org selector, this will be the location used the
+	next time the search is submitted */
+var newSearchLocation; 
 
 function searchBarInit() {
 
@@ -40,6 +45,12 @@ function searchBarInit() {
 	//formSelector.onchange	= function(){searchBarSelectorChanged("form");};
 
 	if(getSearchBarExtras()) searchBarToggle();
+
+	G.ui.searchbar.location_tag.onclick = function() {
+		if(orgTreeVisible) showCanvas();	
+		 else swapCanvas(G.ui.common.org_tree);
+		orgTreeVisible = !orgTreeVisible;
+	}
 }
 
 /*
@@ -78,6 +89,7 @@ function searchBarSubmit() {
 	args[PARAM_OFFSET] = 0;
 	args[PARAM_TERM] = text;
 	args[PARAM_STYPE] = type_s.options[type_s.selectedIndex].value;
+	args[PARAM_LOCATION] = newSearchLocation;
 
 	args[PARAM_DEPTH] = parseInt(depthSelector.options[depthSelector.selectedIndex].value);
 	args[PARAM_FORM] = formSelector.options[formSelector.selectedIndex].value;
@@ -91,8 +103,8 @@ function searchBarToggle() {
 
 		hideMe(searchBarExtraRow);
 		searchBarExpanded = false;
-		G.ui.searchbar.tag_off.className = "show_me_inline";
 		hideMe(G.ui.searchbar.tag_on);
+		unHideMe(G.ui.searchbar.tag_off);
 		//SEARCHBAR_EXTRAS = 0; set cookie...
 
 	} else {
@@ -100,7 +112,7 @@ function searchBarToggle() {
 		removeCSSClass(searchBarExtraRow,config.css.hide_me);
 		searchBarExpanded = true;
 		hideMe(G.ui.searchbar.tag_off);
-		G.ui.searchbar.tag_on.className = "show_me_inline";
+		unHideMe(G.ui.searchbar.tag_on);
 		//SEARCHBAR_EXTRAS = 1; set cookie...
 	}
 }

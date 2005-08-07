@@ -16,6 +16,29 @@ Request.prototype.result	= function(){return this.request.getResultObject();}
 /* ----------------------------------------------------------------------- */
 
 
+/* ----------------------------------------------------------------------- */
+/* Functions for showing the canvas (and hiding any other shown stuff) */
+/* ----------------------------------------------------------------------- */
+function showCanvas() {
+	for( var x in G.ui.altcanvas ) {
+		hideMe(G.ui.altcanvas[x]);
+	}
+	hideMe(G.ui.common.loading);
+	unHideMe(G.ui.common.canvas_main);
+	G.ui.searchbar.text.focus(); /* focus the searchbar */
+}
+
+function swapCanvas(newNode) {
+	for( var x in G.ui.altcanvas ) 
+		hideMe(G.ui.altcanvas[x]);
+
+	hideMe(G.ui.common.loading);
+	hideMe(G.ui.common.canvas_main);
+	unHideMe(newNode);
+}
+/* ----------------------------------------------------------------------- */
+
+
 /* finds the name of the current page */
 function findCurrentPage() {
 	for( var p in config.page ) {
@@ -239,7 +262,36 @@ function hideMe(obj) { addCSSClass(obj, config.css.hide_me); }
 function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
 
 
+/* ----------------------------------------------------------------------- */
+/* build the org tree */
+/* ----------------------------------------------------------------------- */
+	
+var orgTreeSelector;
+function buildOrgSelector() {
+	var tree = new dTree("orgTreeSelector"); 
+	for( var i in orgArraySearcher ) { 
+		var node = orgArraySearcher[i];
+		if( node == null ) continue;
+		if(node.parent_ou() == null)
+			tree.add(node.id(), -1, node.name(), 
+				"javascript:orgSelect(" + node.id() + ");", node.name());
+		else {
+			tree.add(node.id(), node.parent_ou().id(), node.name(), 
+				"javascript:orgSelect(" + node.id() + ");", node.name());
+		}
+	}
+	orgTreeSelector = tree;
+	return tree;
+}
 
+function orgSelect(id) {
+	showCanvas();
+	newSearchLocation = id;
+}
+
+
+
+/* ----------------------------------------------------------------------- */
 
 
 

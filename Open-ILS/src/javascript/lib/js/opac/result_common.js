@@ -37,7 +37,7 @@ function resultSetInfo() {
 	G.ui.result.offset_start.appendChild(text(o + 1));
 	G.ui.result.offset_end.appendChild(text(c));
 	G.ui.result.result_count.appendChild(text(getHitCount()));
-
+	unHideMe(G.ui.result.info);
 
 }
 
@@ -47,7 +47,7 @@ function resultDisplayRecord(rec, rowtemplate, is_mr) {
 	if(rec == null) rec = new mvr(); /* if we return we won't build some important UI components */
 
 	/* hide the 'now loading...' message */
-	hideMe(G.ui.all.loading);
+	hideMe(G.ui.common.loading);
 
 	var r = rowtemplate.cloneNode(true);
 

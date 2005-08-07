@@ -5,7 +5,7 @@
 
 <div id="sidebar_div" class="sidebar_div" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<div class='sidebar_chunk'>
+	<div class='sidebar_chunk color_1'>
 
 		<div title="&navigate.home.title;" 
 			id='home_link_div' class="side_bar_item">
