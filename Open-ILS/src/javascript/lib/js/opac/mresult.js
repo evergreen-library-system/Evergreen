@@ -58,7 +58,7 @@ function mresultCollectRecords() {
 		req.callback(function(r){
 				var rec = r.getResultObject();
 				resultDisplayRecord(rec, rowtemplate, true);
-				mresultCollectCopyCounts(rec);
+				resultCollectCopyCounts(rec, FETCH_MR_COPY_COUNTS);
 		});
 		req.send();
 
@@ -70,25 +70,5 @@ function mresultCollectRecords() {
 		*/
 	}
 }
-
-function mresultCollectCopyCounts(rec) {
-	if(rec == null) return;
-	if(rec.doc_id() == null) return;
-
-	var req = new Request(FETCH_MR_COPY_COUNTS, getLocation(), rec.doc_id() );
-	req.callback(function(r){ mresultDisplayCopyCounts(rec, r.getResultObject()); });
-	req.send();
-}
-
-function mresultDisplayCopyCounts(rec, copy_counts) {
-	if(copy_counts == null || rec == null) return;
-	var i = 0;
-	while(copy_counts[i] != null) {
-		var cell = getId("copy_count_cell_" + i +"_" + rec.doc_id());
-		cell.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
-		i++;
-	}
-}
-
 
 

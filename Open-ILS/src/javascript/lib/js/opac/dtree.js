@@ -41,20 +41,20 @@ function dTree(objName) {
 		inOrder					: false
 	}
 	this.icon = {
-		root				: '/images/opac/img/base.gif',
-		folder			: '/images/opac/img/folder.gif',
-		folderOpen	: '/images/opac/img/folderopen.gif',
-		node				: '/images/opac/img/page.gif',
-		empty				: '/images/opac/img/empty.gif',
-		line				: '/images/opac/img/line.gif',
-		join				: '/images/opac/img/join.gif',
-		joinBottom	: '/images/opac/img/joinbottom.gif',
-		plus				: '/images/opac/img/plus.gif',
-		plusBottom	: '/images/opac/img/plusbottom.gif',
-		minus				: '/images/opac/img/minus.gif',
-		minusBottom	: '/images/opac/img/minusbottom.gif',
-		nlPlus			: '/images/opac/img/nolines_plus.gif',
-		nlMinus			: '/images/opac/img/nolines_minus.gif'
+		root				: '/images/opac/orgtree/base.gif',
+		folder			: '/images/opac/orgtree/folder.gif',
+		folderOpen		: '/images/opac/orgtree/folderopen.gif',
+		node				: '/images/opac/orgtree/page.gif',
+		empty				: '/images/opac/orgtree/empty.gif',
+		line				: '/images/opac/orgtree/line.gif',
+		join				: '/images/opac/orgtree/join.gif',
+		joinBottom		: '/images/opac/orgtree/joinbottom.gif',
+		plus				: '/images/opac/orgtree/plus.gif',
+		plusBottom		: '/images/opac/orgtree/plusbottom.gif',
+		minus				: '/images/opac/orgtree/minus.gif',
+		minusBottom		: '/images/opac/orgtree/minusbottom.gif',
+		nlPlus			: '/images/opac/orgtree/nolines_plus.gif',
+		nlMinus			: '/images/opac/orgtree/nolines_minus.gif'
 	};
 	this.obj = objName;
 	this.aNodes = [];

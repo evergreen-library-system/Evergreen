@@ -22,10 +22,10 @@ var COOKIE_SES = "ses";
 /* pages */
 var MRESULT		= "mresult";
 var RRESULT		= "rresult";
+var RDETAIL		= "rdetail";
 var MYOPAC		= "myopac";
 var ADVANCED	= "advanced";
 var HOME			= "home";
-var PREFS		= "prefs";
 
 /* search type (STYPE) options */
 STYPE_AUTHOR	= "author";
@@ -82,6 +82,7 @@ config.ids.common.loading		= "loading_div";		/* generic 'loading..' message */
 config.ids.common.canvas		= "canvas";				/* outer UI canvas that holds the main canvas and any other hidden help components*/	
 config.ids.common.canvas_main	= "canvas_main";		/* main data display canvas */
 config.ids.common.org_tree		= "org_tree";			/* org tree selector thingy */
+config.ids.common.org_container	= "org_container";			/* org tree selector thingy */
 
 config.css = {};
 config.css.hide_me = "hide_me";
@@ -94,8 +95,8 @@ config.page[HOME]			= "/webxml/index.xml";
 config.page[ADVANCED]	= "/webxml/advanced.xml";
 config.page[MRESULT]		= "/webxml/mresult.xml";
 config.page[RRESULT]		= "/webxml/rresult.xml";
-config.page[PREFS]		= "/webxml/webprefs.xml"
-config.page[MYOPAC]		= "/webxml/myopac/index.xml"
+config.page[MYOPAC]		= "/webxml/myopac/index.xml";
+config.page[RDETAIL]		= "/webxml/rdetail.xml";
 
 
 /* mresult */
@@ -179,7 +180,30 @@ config.ids.sidebar.username_dest	= 'username_dest';
 /* ---------------------------------------------------------------------------- */
 config.ids.altcanvas = {};
 config.ids.altcanvas.login		= config.ids.login.box;
-config.ids.altcanvas.org_tree	 = config.ids.common.org_tree;
+config.ids.altcanvas.org_tree	 = config.ids.common.org_container;
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Methods are defined as service:method 
+	An optional 3rd component is when a method is followed by a :1, such methods
+	have a staff counterpart and should have ".staff" appended to the method 
+	before the method is called when in XUL mode */
+
+var FETCH_MRCOUNT				= "open-ils.search:open-ils.search.biblio.class.count:1";
+var FETCH_MRIDS				= "open-ils.search:open-ils.search.biblio.class:1";
+var FETCH_MRMODS				= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
+var FETCH_MR_COPY_COUNTS	= "open-ils.search:open-ils.search.biblio.metarecord.copy_count:1";
+var FETCH_RIDS					= "open-ils.search:open-ils.search.biblio.metarecord_to_records:1";
+var FETCH_RMODS				= "open-ils.search:open-ils.search.biblio.record.mods_slim.retrieve";
+var FETCH_R_COPY_COUNTS		= "open-ils.search:open-ils.search.biblio.record.copy_count";
+var FETCH_FLESHED_USER		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve";
+var FETCH_SESSION				= "open-ils.auth:open-ils.auth.session.retrieve";
+var LOGIN_INIT					= "open-ils.auth:open-ils.auth.authenticate.init";
+var LOGIN_COMPLETE			= "open-ils.auth:open-ils.auth.authenticate.complete";
+var LOGIN_DELETE				= "open-ils.auth:open-ils.auth.session.delete";
+/* ---------------------------------------------------------------------------- */
+
 
 
 

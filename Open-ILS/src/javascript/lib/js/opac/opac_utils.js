@@ -5,6 +5,7 @@ function isXUL() { return IAMXUL; }
 /* - Request ------------------------------------------------------------- */
 function Request(type) {
 	var s = type.split(":");
+	if(s[2] == "1" && isXUL()) s[1] += ".staff";
 	this.request = new RemoteRequest(s[0], s[1]);
 	for( var x = 1; x!= arguments.length; x++ ) 
 		this.request.addParam(arguments[x]);
@@ -19,7 +20,8 @@ Request.prototype.result	= function(){return this.request.getResultObject();}
 /* ----------------------------------------------------------------------- */
 /* Functions for showing the canvas (and hiding any other shown stuff) */
 /* ----------------------------------------------------------------------- */
-function showCanvas() {
+function showCanvas() { setTimeout(_showCanvas, 200); }
+function _showCanvas() {
 	for( var x in G.ui.altcanvas ) {
 		hideMe(G.ui.altcanvas[x]);
 	}
@@ -28,13 +30,16 @@ function showCanvas() {
 	G.ui.searchbar.text.focus(); /* focus the searchbar */
 }
 
-function swapCanvas(newNode) {
+
+var newCanvasNode;
+function swapCanvas(newNode) { newCanvasNode = newNode; setTimeout(_swapCanvas, 200); }
+function _swapCanvas() {
 	for( var x in G.ui.altcanvas ) 
 		hideMe(G.ui.altcanvas[x]);
 
 	hideMe(G.ui.common.loading);
 	hideMe(G.ui.common.canvas_main);
-	unHideMe(newNode);
+	unHideMe(newCanvasNode);
 }
 /* ----------------------------------------------------------------------- */
 
@@ -146,6 +151,19 @@ function buildTitleLink(rec, link) {
 	link.setAttribute("href", buildOPACLink(args));
 }
 
+function buildTitleDetailLink(rec, link) {
+
+	var t = rec.title(); 
+	t = normalize(truncate(t, 65));
+	link.appendChild(text(t));
+
+	var args = {};
+	args.page = RDETAIL;
+	args[PARAM_OFFSET] = 0;
+	args[PARAM_RID] = rec.doc_id();
+	link.setAttribute("href", buildOPACLink(args));
+}
+
 /* builds an author search link */
 function buildAuthorLink(rec, link) {
 
@@ -234,9 +252,12 @@ function doLogin() {
    auth_request.send(true);
    var auth_result = auth_request.result();
 
-   if(auth_result == '0' || auth_result == null || auth_request.length == 0) { return false; }
+   if(auth_result == '0' || auth_result == null || auth_result.length == 0) { return false; }
 
-	return grabUser(auth_result, true);
+	var u = grabUser(auth_result, true);
+	if(u) updateLoc(u.home_ou(), findOrgDepth(u.home_ou()));
+
+	return u;
 }
 
 function doLogout() {
@@ -286,7 +307,7 @@ function buildOrgSelector() {
 
 function orgSelect(id) {
 	showCanvas();
-	newSearchLocation = id;
+	updateLoc(id);
 }
 
 
