@@ -159,6 +159,7 @@ config.ids.searchbar.location_tag	= 'search_location_tag_link';
 /*  sidebar */
 config.ids.sidebar = {};
 config.css.sidebar = {};
+config.names.sidebar = {};
 config.css.sidebar.item = {};
 config.ids.sidebar.home				= 'home_link_div';
 config.ids.sidebar.advanced		= 'advanced_link_div';
@@ -172,6 +173,9 @@ config.ids.sidebar.logoutbox		= 'logout_link_div';
 config.ids.sidebar.loginbox		= 'login_link_div';
 config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
 config.ids.sidebar.username_dest	= 'username_dest';
+config.ids.sidebar.subject			= 'subject_sidebar';
+
+config.names.sidebar.subject		= "subject_item";
 
 
 

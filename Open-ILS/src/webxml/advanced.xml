@@ -9,7 +9,7 @@
 	<head>
 		<title>Evergreen: Advanced Search</title>
 		<xi:include href="css_common.xml#xpointer(//link)"/>
-		<xi:include href="js_common.xml"/>
+		<xi:include href="js_common.xml#xpointer(//script)"/>
 	</head>
 
 	<body onload="init();">

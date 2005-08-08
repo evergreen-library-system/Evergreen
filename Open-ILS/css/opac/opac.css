@@ -14,16 +14,9 @@ body table		{ font-size: inherit; }
 
 /* Our color scheme */
 
-/*
-.color_1 { background: #FFE6D4; color: #000000; }
-.color_2 { background: #FFCDAA; color: #000000; }
-.color_3 { background: #FFE6D4; color: #000000; }
-*/
-
 .color_1 { background: #A7EA9D; color: #000000; }
 .color_2 { background: #64EA4F; color: #000000; }
 .color_3 { background: #D8B4BE; color: #000000; }
-
 
 /* ---------------------------------------------------------------------- */
 .canvas { float:right; width: 80%; text-align: left;}
@@ -34,10 +27,14 @@ body table		{ font-size: inherit; }
 .org_tree { height: 500px; padding-left: 2px; padding-right: 2px;
 				   overflow:-moz-scrollbars-vertical; overflow-y:scroll; overflow-x:hidden; }            
 
+.org_link { font-size: 92%; padding-right: 15px; }
+#org_link_container { margin-bottom: 5px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px; width 100%; }
+
 /* ---------------------------------------------------------------------- */
 .sidebar_div { float: left; width: 19%; }
 .side_bar_item { padding-left: 15px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px; }
 .sidebar_chunk {border-right: 1px solid lightgrey;}
+.sidebar_extra_item { font-size: 90%; padding: 3px; }
 
 /* ---------------------------------------------------------------------- */
 #searchbar { position: absolute; text-align: right; top: 2px; right: 3px; }
@@ -49,8 +46,6 @@ body table		{ font-size: inherit; }
 .searchbar_tag { font-size: 90%; text-align: right;  
 	padding-left: 5px; padding-right: 5px; padding-bottom: 3px; } 
 
-/*background: #68CE76; */
-
 #searchbar_main { text-align: right; 
 	padding-top: 2px; padding-bottom: 3px; padding-right: 2px; padding-left: 3px; }
 
@@ -58,12 +53,10 @@ body table		{ font-size: inherit; }
 #searchbar_table { border-collapse: collapse; }
 
 /* ---------------------------------------------------------------------- */
-
 #login_box { border-top: 1px solid #808080; 
 	border-bottom: 1px solid #808080; width: 60%; padding: 5px;}
 
 .login_text { margin-left: 8px; }
-/*.login_links_div { padding-left: 30px; }*/
 
 /* ---------------------------------------------------------------------- */
 #result_table_div { text-align: left; width: 100%; }
@@ -95,7 +88,7 @@ body table		{ font-size: inherit; }
 .result_table_subtbody { height: 100%; width: 100%; }
 .result_table_title_cell { text-align: left; }
 
-.copy_count_cell { font-size: 75%; width: 8%; text-align: center; padding: 0px; margin: 0px;}
+.copy_count_cell { font-size: 80%; width: 8%; text-align: center; padding: 0px; margin: 0px;}
 .copy_count_cell_even { border: 1px solid #E0E0E0; }
 
 .search_page_nav_link { margin-right: 5px; }

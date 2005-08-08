@@ -50,5 +50,11 @@
 
 	</div>
 
+
+	<div id='subject_sidebar' class='sidebar_chunk hide_me'> 
+		<div class='sidebar_extra_item'><a href='javascript:void(0)' name='subject_item'> </a></div>
+	</div>
+	
+
 </div>
 

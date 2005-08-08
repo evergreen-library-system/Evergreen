@@ -7,7 +7,9 @@ function resultSetInfo() {
 	if( getDisplayCount() > (getHitCount() - getOffset()))  c = getHitCount();
 	else c = getDisplayCount() + getOffset();
 
-	var pages = parseInt(getHitCount() / getDisplayCount()) + 1;
+	var pages = getHitCount() / getDisplayCount();
+	if(pages % 1) pages = parseInt(pages) + 1;
+
 	G.ui.result.current_page.appendChild(text( (getOffset()/getDisplayCount()) + 1));
 	G.ui.result.num_pages.appendChild(text(pages + ")"));
 
@@ -48,9 +50,7 @@ function resultSetInfo() {
 /* display the record info in the record display table */
 function resultDisplayRecord(rec, rowtemplate, is_mr) {
 
-	if(rec == null) rec = new mvr(); /* if we return we won't build some important UI components */
-
-	//alert("building record " + rec.title());
+	if(rec == null) rec = new mvr(); /* so the page won't die */
 
 	/* hide the 'now loading...' message */
 	hideMe(G.ui.common.loading);
@@ -59,7 +59,6 @@ function resultDisplayRecord(rec, rowtemplate, is_mr) {
 
 	var pic = findNodeByName(r, config.names.result.item_jacket);
 	pic.setAttribute("src", buildISBNSrc(cleanISBN(rec.isbn())));
-
 
 	var title_link = findNodeByName(r, config.names.result.item_title);
 	var author_link = findNodeByName(r, config.names.result.item_author);

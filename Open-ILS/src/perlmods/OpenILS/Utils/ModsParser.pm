@@ -233,11 +233,16 @@ sub mods_values_to_mods_slim {
 	}
 
 	$tmp = $modsperl->{subject};
-	if(!$tmp) { $subject = []; } 
+	if(!$tmp) { $subject = {}; } 
 	else {
 		for my $key( keys %{$tmp}) {
 			push(@$subject, @{$tmp->{$key}}) if ($tmp->{$key});
 		}
+		my $subh = {};
+		for my $s (@$subject) {
+			if(defined($subh->{$s})) { $subh->{$s->[0]}++ } else { $subh->{$s->[0]} = 1;}
+		}
+		$subject = $subh
 	}
 
 	$tmp = $modsperl->{'series'};
@@ -322,8 +327,16 @@ sub push_mods_batch {
 	my $xmlperl = $self->modsdoc_to_values( $mods );
 	$xmlperl = $self->mods_values_to_mods_slim( $xmlperl );
 
-	for my $subject( @{$xmlperl->{subject}} ) {
-		push @{$self->{master_doc}->{subject}}, $subject;
+	# for backwards compatibility, remove the array part when all is decided
+	if(ref($xmlperl->{subject}) eq 'ARRAY' ) {
+		for my $subject( @{$xmlperl->{subject}} ) {
+			push @{$self->{master_doc}->{subject}}, $subject;
+		}
+	} else {
+		for my $subject ( keys %{$xmlperl->{subject}} ) {
+			my $s = $self->{master_doc}->{subject};
+			if(defined($s->{$subject})) { $s->{$subject}++; } else { $s->{$subject} = 1; }
+		}
 	}
 
 	push( @{$self->{master_doc}->{type_of_resource}}, 

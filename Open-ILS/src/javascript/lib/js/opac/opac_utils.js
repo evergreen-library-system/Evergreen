@@ -139,11 +139,8 @@ function cleanISBN(isbn) {
 /* ----------------------------------------------------------------------- */
 /* builds a link that goes to the title listings for a metarecord */
 function buildTitleLink(rec, link) {
-
-	var t = rec.title(); 
-	t = normalize(truncate(t, 65));
-	link.appendChild(text(t));
-
+	if(!rec) return;
+	link.appendChild(text(normalize(truncate(rec.title(), 65))));
 	var args = {};
 	args.page = RRESULT;
 	args[PARAM_OFFSET] = 0;
@@ -152,11 +149,8 @@ function buildTitleLink(rec, link) {
 }
 
 function buildTitleDetailLink(rec, link) {
-
-	var t = rec.title(); 
-	t = normalize(truncate(t, 65));
-	link.appendChild(text(t));
-
+	if(!rec) return;
+	link.appendChild(text(normalize(truncate(rec.title(), 65))));
 	var args = {};
 	args.page = RDETAIL;
 	args[PARAM_OFFSET] = 0;
@@ -166,11 +160,8 @@ function buildTitleDetailLink(rec, link) {
 
 /* builds an author search link */
 function buildAuthorLink(rec, link) {
-
-	var a = rec.author(); 
-	a = normalize(truncate(a, 65));
-	link.appendChild(text(a));
-
+	if(!rec) return; 
+	link.appendChild(text(normalize(truncate(rec.author(), 65))));
 	var args = {};
 	args.page = MRESULT;
 	args[PARAM_OFFSET] = 0;
@@ -178,6 +169,17 @@ function buildAuthorLink(rec, link) {
 	args[PARAM_TERM] = rec.author();
 	link.setAttribute("href", buildOPACLink(args));
 
+}
+
+function buildSubjectLink(subject, link) {
+	if(subject == null) return;
+	link.appendChild(text(normalize(truncate(subject, 35))));
+	var args = {};
+	args.page = MRESULT;
+	args[PARAM_OFFSET] = 0;
+	args[PARAM_STYPE] = STYPE_SUBJECT;
+	args[PARAM_TERM] = subject;
+	link.setAttribute("href", buildOPACLink(args));
 }
 /* ----------------------------------------------------------------------- */
 

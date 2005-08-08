@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 
-<!-- Javascript shared accross all pages -->
+<!-- Javascript shared across all pages -->
 
 <div xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" lang="en">
 
@@ -17,10 +17,8 @@
 	<script language='javascript' src='/lib/js/opac/RemoteRequest.js'> </script>
 	<script language='javascript' src='/lib/js/opac/JSON.js'> </script>
 	<script language='javascript' src='/lib/js/opac/web_fieldmapper.js'> </script>
-	<script language='javascript' src='/lib/js/opac/methods.js'> </script>
 	<script language='javascript' src='/lib/js/opac/OrgTree.js'> </script>
 	<script language='javascript' src='/lib/js/opac/added_content.js'> </script>
-	<script language='javascript' src='/lib/js/opac/org_utils.js'> </script>
 
 </div>
 
