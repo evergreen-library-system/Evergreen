@@ -14,12 +14,32 @@ static const char* mod_xmltools_set_default_locale(cmd_parms *parms, void *confi
 	return NULL;
 }
 
+static const char* mod_xmltools_set_pre_xsl(cmd_parms *parms, void *config, const char *arg) {
+	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	cfg->pre_xsl = xsltParseStylesheetFile( (xmlChar*) arg );
+	if(cfg->pre_xsl == NULL) {
+		fprintf(stderr, "Unable to parse PreXSL stylesheet %s\n", (char*) arg );
+		fflush(stderr);
+	}
+	return NULL;
+}
+
+static const char* mod_xmltools_set_post_xsl(cmd_parms *parms, void *config, const char *arg) {
+	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	cfg->post_xsl = xsltParseStylesheetFile( (xmlChar*) arg );
+	if(cfg->post_xsl == NULL) {
+		fprintf(stderr, "Unable to parse PostXSL stylesheet %s\n", (char*) arg );
+		fflush(stderr);
+	}
+	return NULL;
+}
+
 /* tell apache about our commands */
 static const command_rec mod_xmltools_cmds[] = {
-	AP_INIT_TAKE1( "XMLToolsDefaultLocale", mod_xmltools_set_default_locale,
-		NULL, RSRC_CONF, "XMLToolsDefaultLocale - Test"),
-	AP_INIT_TAKE1( "XMLToolsLocaleDir", mod_xmltools_set_locale_dir,
-		NULL, RSRC_CONF, "XMLToolsLocaleDir - Test"),
+	AP_INIT_TAKE1( CONFIG_LOCALE, mod_xmltools_set_default_locale, NULL, RSRC_CONF, "default locale"),
+	AP_INIT_TAKE1( CONFIG_LOCALE_DIR, mod_xmltools_set_locale_dir, NULL, RSRC_CONF, "locale directory"),
+	AP_INIT_TAKE1( CONFIG_PRE_XSL, mod_xmltools_set_pre_xsl, NULL, RSRC_CONF, "pre xsl"),
+	AP_INIT_TAKE1( CONFIG_POST_XSL, mod_xmltools_set_post_xsl, NULL, RSRC_CONF, "post xsl"),
 	{NULL}
 };
 
@@ -48,6 +68,8 @@ static int mod_xmltools_handler (request_rec* r) {
 	mod_xmltools_config *cfg = ap_get_module_config(r->server->module_config, &mod_xmltools);
 	char* locale_dir = cfg->locale_dir;
 	char* default_locale = cfg->default_locale;
+	xsltStylesheetPtr pre_xsl = cfg->pre_xsl;
+	xsltStylesheetPtr post_xsl = cfg->post_xsl;
 
 	/* we accept get/post requests */
 	r->allowed |= (AP_METHOD_BIT << M_GET);
@@ -74,6 +96,17 @@ static int mod_xmltools_handler (request_rec* r) {
 
 	fflush(stderr);
 
+	if(pre_xsl) {
+		xmlDocPtr newdoc;
+		newdoc = xsltApplyStylesheet(pre_xsl, doc, NULL );
+		if(newdoc == NULL) {
+			fprintf(stderr, "Error applying PreXSL stylesheet\n");
+			fflush(stderr);
+		}
+		xmlFreeDoc(doc);
+		doc = newdoc;
+	}
+
 	/* process xincludes */
 	if( xmlXIncludeProcess(doc) < 0 ) {
 		fprintf(stderr, "\n ^-- Error processing XIncludes for file %s\n", file);
@@ -93,6 +126,17 @@ static int mod_xmltools_handler (request_rec* r) {
 
 	/* force DTD entity replacement */
 	doc = xmlProcessDtdEntities(doc);
+
+	if(post_xsl) {
+		xmlDocPtr newdoc;
+		newdoc = xsltApplyStylesheet(post_xsl, doc, NULL );
+		if(newdoc == NULL) {
+			fprintf(stderr, "Error applying PostXSL stylesheet\n");
+			fflush(stderr);
+		}
+		xmlFreeDoc(doc);
+		doc = newdoc;
+	}
 
 	/* stringify */
 	char* xml = xmlDocToString(doc, 0);

@@ -1,10 +1,12 @@
 #include "apachetools.h"
 #include "xmltools.h"
+#include <libxslt/xslt.h>
+#include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
 
 #define MODULE_NAME		"mod_xmltools" /* our module name */
 #define PARAM_LOCALE		"locale"			/* the URL param for the local directory */
 #define LANG_DTD			"lang.dtd"		/* the DTD for the test entities */
-
 
 
 /* ------------------------------------------------------------------------------ */
@@ -16,6 +18,12 @@
 #define DEFAULT_LOCALE			"en-US"			
 /* ------------------------------------------------------------------------------ */
 
+#define CONFIG_LOCALE "XMLToolsDefaultLocale"
+#define CONFIG_LOCALE_DIR "XMLToolsLocaleDir"
+#define CONFIG_PRE_XSL "XMLToolsPreXSL"
+#define CONFIG_POST_XSL "XMLToolsPostXSL"
+
+
 
 /* This module */
 module AP_MODULE_DECLARE_DATA mod_xmltools;
@@ -23,9 +31,13 @@ module AP_MODULE_DECLARE_DATA mod_xmltools;
 
 /* our config structure */
 typedef struct {
-	/* directory on disk where the locale directories live */
-	char* locale_dir;
+
+	char* locale_dir;				/* directory on disk where the locale directories live */
 	char* default_locale;
+
+	xsltStylesheetPtr pre_xsl;
+	xsltStylesheetPtr post_xsl;
+
 } mod_xmltools_config;
 
 
