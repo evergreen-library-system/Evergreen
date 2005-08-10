@@ -128,7 +128,6 @@ function resultAddCopyCounts(countsrow, rec) {
 			ccell.title = type.opac_label();
 			countsrow.insertBefore(ccell, lastcell);
 			lastcell = ccell;
-
 		}
 	}
 
@@ -136,13 +135,17 @@ function resultAddCopyCounts(countsrow, rec) {
 
 }
 
-
 /* collect copy counts for a record using method 'methodName' */
 function resultCollectCopyCounts(rec, methodName) {
 	if(rec == null || rec.doc_id() == null) return;
 	var req = new Request(methodName, getLocation(), rec.doc_id() );
-	req.callback(function(r){ resultDisplayCopyCounts(rec, r.getResultObject()); });
+	req.request.userdata = rec;
+	req.callback(resultHandleCopyCounts);
 	req.send();
+}
+
+function resultHandleCopyCounts(r) {
+	resultDisplayCopyCounts(r.userdata, r.getResultObject()); 
 }
 
 

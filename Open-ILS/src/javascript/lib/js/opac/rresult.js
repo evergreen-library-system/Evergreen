@@ -11,23 +11,28 @@ function rresultDoSearch() {
 
 function rresultCollectIds() {
 	var req = new Request(FETCH_RIDS, getMrid(), getForm() );
-	req.callback( function(r) {
-		var res = r.getResultObject();
-		HITCOUNT = parseInt(res.count);
-		resultSetInfo();
-		rresultCollectRecords(res.ids); });
+	req.callback( rresultHandleRIds );
 	req.send();
+}
+
+function rresultHandleRIds(r) {
+	var res = r.getResultObject();
+	HITCOUNT = parseInt(res.count);
+	resultSetInfo();
+	rresultCollectRecords(res.ids);
 }
 
 function rresultCollectRecords(ids) {
 	for( var i = getOffset(); i!= getDisplayCount() + getOffset(); i++ ) {
 		var req = new Request(FETCH_RMODS, parseInt(ids[i]));
-		req.callback( function(r) {
-			var rec = r.getResultObject();
-			resultDisplayRecord(rec, rowtemplate, false);
-			resultCollectCopyCounts(rec, FETCH_R_COPY_COUNTS);
-		});
+		req.callback(rresultHandleMods);
 		req.send();
 	}
+}
+
+function rresultHandleMods(r) {
+	var rec = r.getResultObject();
+	resultDisplayRecord(rec, rowtemplate, false);
+	resultCollectCopyCounts(rec, FETCH_R_COPY_COUNTS);
 }
 

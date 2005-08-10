@@ -13,7 +13,7 @@
 		<div id='org_link_container' class='color_1'>
 			<span class='org_link'><a onclick='orgTreeSelector.openAll();' href='javascript:void(0);'>Expand All</a></span>
 			<span class='org_link'><a onclick='orgTreeSelector.closeAll();' href='javascript:void(0);'>Close All</a></span>
-			<span class='org_link'><a onclick='showCanvas();' href='javascript:void(0);'>Exit</a></span>
+			<span class='org_link'><a onclick='showCanvas();' href='javascript:void(0);'> Exit </a></span>
 		</div>
 		<div id='org_tree' class='org_tree'> </div>
 	</div>

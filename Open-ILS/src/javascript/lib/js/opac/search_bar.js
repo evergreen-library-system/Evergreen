@@ -18,19 +18,20 @@ function searchBarInit() {
 		function(evt) {if(userPressedEnter(evt)) searchBarSubmit();};
 
 	G.ui.searchbar.submit.onclick = searchBarSubmit;
-	G.ui.searchbar.tag.onclick = function(){searchBarToggle();}
+	G.ui.searchbar.tag.onclick = searchBarToggle;
 
 	/* set up the selector objects, etc */
 	G.ui.searchbar.text.value = (getTerm() != null) ? getTerm() : "";
 	setSelector(_ts,	getStype());
 	setSelector(_ds,	getDepth());
 	setSelector(_fs,	getForm());
+	G.ui.searchbar.location_tag.onclick = _opacHandleLocationTagClick;
+}
 
-	G.ui.searchbar.location_tag.onclick = function() {
-		orgTreeSelector.openTo(  
-			(newSearchLocation != null) ? parseInt(newSearchLocation) : getLocation(), true );
-		swapCanvas(G.ui.common.org_container);
-	}
+function _opacHandleLocationTagClick() {
+	orgTreeSelector.openTo(  
+		(newSearchLocation != null) ? parseInt(newSearchLocation) : getLocation(), true );
+	swapCanvas(G.ui.common.org_container);
 }
 
 function updateLoc(location, depth) {

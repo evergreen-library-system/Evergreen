@@ -213,8 +213,26 @@ function grabUser(ses, force) {
 		return false;
 	}
 
-		
-   var req = new Request(FETCH_FLESHED_USER, ses);
+	G.user = user;
+	G.user.fleshed = false;
+	G.user.session = ses;
+	cookie.put(COOKIE_SES, ses);
+	cookie.write();
+
+	return G.user;
+
+}
+
+function grabFleshedUser() {
+
+	if(!G.user || !G.user.session) {
+		grabUser();	
+		if(!G.user || !G.user.session) return null;
+	}
+
+	if(G.user.fleshed) return G.user;
+
+   var req = new Request(FETCH_FLESHED_USER, G.user.session);
   	req.send(true);
 
   	G.user = req.result();
@@ -225,11 +243,12 @@ function grabUser(ses, force) {
 	}
 
 	G.user.session = ses;
-	cookie.put(COOKIE_SES, ses);
+	G.user.fleshed = true;
+
+	cookie.put(COOKIE_SES, ses); /*  update the cookie */
 	cookie.write();
 
 	return G.user;
-
 }
 
 

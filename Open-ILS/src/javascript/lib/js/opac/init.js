@@ -2,6 +2,7 @@
 function init() {
 
 	document.body.onunload = unload;
+	window.onunload = unload;
 
 	loadUIObjects();
 	initParams();
@@ -20,7 +21,8 @@ function init() {
 function unload() {
 	_tree_killer();
 	clearUIObjects();
-	if(IE) window.CollectGarbage();
+	cleanRemoteRequests();
+	try{mresultUnload();} catch(E){}
 }
 
 

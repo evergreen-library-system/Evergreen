@@ -3,6 +3,9 @@ var ranks = new Array();
 var table;
 var rowtemplate;
 
+function mresultUnload() { removeChildren(table); table = null;}
+
+
 function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
@@ -21,10 +24,13 @@ function mresultDoSearch() {
 function mresultGetCount() {
 	var req = new Request(FETCH_MRCOUNT, 
 			getStype(), getTerm(), getLocation(), getDepth(), getForm() );
-	req.callback( function(r) {
-		HITCOUNT = parseInt(r.getResultObject());
-		resultSetInfo(); });
+	req.callback(mresultHandleCount);
 	req.send();
+}
+
+function mresultHandleCount(r) {
+	HITCOUNT = parseInt(r.getResultObject());
+	resultSetInfo(); 
 }
 
 
@@ -32,13 +38,13 @@ function mresultGetCount() {
 function mresultCollectIds() {
 	var req = new Request(FETCH_MRIDS, getStype(), getTerm(), 
 			getLocation(), getDepth(), getDisplayCount(), getOffset(), getForm() );
-	req.callback( function(r) {
-		mresultSetRecords(r.getResultObject().ids);
-		mresultCollectRecords(); 
-		req.request = null;
-		r.callback = null;
-	});
+	req.callback(mresultHandleMRIds);
 	req.send();
+}
+
+function mresultHandleMRIds(r) {
+	mresultSetRecords(r.getResultObject().ids);
+	mresultCollectRecords(); 
 }
 
 function mresultSetRecords(idstruct) {
@@ -49,25 +55,19 @@ function mresultSetRecords(idstruct) {
 	}
 }
 
+function mresultHandleMods(r) {
+	var rec = r.getResultObject();
+	resultDisplayRecord(rec, rowtemplate, true);
+	resultCollectCopyCounts(rec, FETCH_MR_COPY_COUNTS);
+}
+
 
 function mresultCollectRecords() {
 	for( var x = getOffset(); x!= getDisplayCount() + getOffset(); x++ ) {
 		if(isNull(records[x])) break;
-
 		var req = new Request(FETCH_MRMODS, records[x]);
-		req.callback(function(r){
-				var rec = r.getResultObject();
-				resultDisplayRecord(rec, rowtemplate, true);
-				resultCollectCopyCounts(rec, FETCH_MR_COPY_COUNTS);
-		});
+		req.callback(mresultHandleMods);
 		req.send();
-
-		/*		
-		if( x == (getDisplayCount() + getOffset()) - 1 ) {
-			G.ui.result.top_div.appendChild(
-				G.ui.result.nav_links.cloneNode(true));
-		}
-		*/
 	}
 }
 

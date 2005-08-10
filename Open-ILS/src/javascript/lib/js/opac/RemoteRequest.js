@@ -2,9 +2,24 @@ var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
+var _allrequests = new Array();
+
+function cleanRemoteRequests() {
+	for( var i = 0; i!= _allrequests.length; i++ ) {
+		var r = _allrequests[i];
+		r.xmlhttp.onreadystatechange = function(){};
+		r.xmlhttp 			= null;
+		r.callback 			= null;
+		r.userdata			= null;
+		_allrequests[i] 	= null;
+	}
+}
+
 /* ----------------------------------------------------------------------- */
 /* Request object */
 function RemoteRequest( service, method ) {
+
+	_allrequests.push(this);
 
 	this.service	= service;
 	this.method		= method;
@@ -95,21 +110,8 @@ RemoteRequest.prototype.setCompleteCallback = function(callback) {
 						object.send();
 						return;
 					}
-				} else {
-					/* any other exception is alerted for now */
-					//RemoteRequest.prunePending(object.id);
-					//alert("Exception: " + E);
-					throw E;
-				}
-
-			}  finally {
-
-				object.callback = null;
-				object.xmlhttp.onreadystatechange = function(){};
-				object.xmlhttp = null;
-				object.params = null;
-				object.param_string = null;
-			}
+				} else { throw E; }
+			} finally { object = null; }  
 		}
 	}
 }
