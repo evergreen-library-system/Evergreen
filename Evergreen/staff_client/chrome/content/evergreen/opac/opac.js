@@ -8,12 +8,16 @@ var OPAC_URL = "http://gapines.org/opac/?top_target=advanced_search";
 function opac_init(p) {
 	sdump('D_OPAC',"Initing OPAC\n");
 
-	var box = p.w.document.getElementById('opac_vbox');
-	p.opac_iframe = box.appendChild(document.createElement("browser"));
+	//var box = p.w.document.getElementById('opac_vbox');
+	//p.opac_iframe = p.w.document.createElement("browser");
+	//box.appendChild( p.opac_iframe );
 
-	p.opac_iframe.setAttribute("type", "content-primary");
-	p.opac_iframe.setAttribute("id", "opac_opac_iframe");
-	p.opac_iframe.setAttribute("flex", "1");
+	p.opac_iframe = p.w.document.getElementById('opac_iframe');
+
+	//p.opac_iframe.setAttribute("type", "content-primary");
+	//p.opac_iframe.type = "content-primary";
+	//p.opac_iframe.setAttribute("id", "opac_opac_iframe");
+	//p.opac_iframe.setAttribute("flex", "1");
 	p.opac_iframe.setAttribute("src", OPAC_URL) 
 
 	opac_build_callbacks(p);

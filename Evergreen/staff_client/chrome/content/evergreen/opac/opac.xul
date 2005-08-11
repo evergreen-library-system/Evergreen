@@ -18,8 +18,7 @@
 	<?xml-stylesheet href="chrome://evergreen/skin/opac.css" type="text/css"?>
 
 	<vbox id="opac_vbox" flex="1">
-		<hbox id="opac_hbox">
-		</hbox>
+		<browser id="opac_iframe" type="content-primary" flex="1"/>
 	</vbox>
 
 </page>
