@@ -752,17 +752,14 @@ sub recv {
 		$avail = @{ $self->{recv_queue} };
 	}
 
-	#$logger->debug( ref($self)." queue after wait: " . $self->_print_queue(), INTERNAL );
-		
+
 	my @list;
 	while ( my $msg = shift @{ $self->{recv_queue} } ) {
 		push @list, $msg;
 		last if (scalar(@list) >= $args{count});
 	}
 
-#	$self->{recv_queue} = [@unlist, @{ $self->{recv_queue} }];
 	$logger->debug( "Number of matched responses: " . @list, DEBUG );
-
 	$self->queue_wait(0); # check for statuses
 	
 	return $list[0] unless (wantarray);
@@ -948,7 +945,7 @@ sub respond {
 	return unless ($self and $self->session and !$self->complete);
 
 	my $response;
-	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
+	if (ref($msg) && UNIVERSAL::isa($msg, 'OpenSRF::DomainObject::oilsResult')) {
 		$response = $msg;
 	} else {
 		$response = new OpenSRF::DomainObject::oilsResult;
@@ -964,7 +961,7 @@ sub respond_complete {
 	return unless ($self and $self->session and !$self->complete);
 
 	my $response;
-	if (ref($msg) && UNIVERSAL::can($msg, 'getAttribute') && $msg->getAttribute('name') =~ /oilsResult/) {
+	if (ref($msg) && UNIVERSAL::isa($msg, 'OpenSRF::DomainObject::oilsResult')) {
 		$response = $msg;
 	} else {
 		$response = new OpenSRF::DomainObject::oilsResult;
