@@ -79,8 +79,8 @@ sub toString {
 }
 
 sub new {
-	my $name = shift;
-	$name = ref($class) || $class;
+	my $class = shift;
+	$class = ref($class) || $class;
 
 	my $default_status = eval "\$${class}::status";
 	my $default_statusCode = eval "\$${class}::statusCode";
@@ -304,7 +304,7 @@ sub message {
 }
 
 sub new {
-	my $name = shift;
+	my $class = shift;
 	return $class->OpenSRF::DomainObject::oilsResponse::new( @_ );
 }
 

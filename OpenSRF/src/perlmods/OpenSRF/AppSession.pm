@@ -504,18 +504,8 @@ sub send {
 			$connecting++; 
 		}
 
-		if( $payload ) {
-			$logger->debug( "Payload is ".$payload->toString, INTERNAL );
-		}
-	
-	
 		my $msg = OpenSRF::DomainObject::oilsMessage->new();
-		$logger->debug( "AppSession after creating oilsMessage $msg", INTERNAL );
-		
 		$msg->type($msg_type);
-		$logger->debug( "AppSession after adding type" . $msg->toString(), INTERNAL );
-	
-		#$msg->userAuth($self->client_auth) if ($self->endpoint == CLIENT && $msg_type eq 'CONNECT');
 	
 		no warnings;
 		$msg->threadTrace( $tT || int($self->session_threadTrace) || int($self->last_threadTrace) );
@@ -923,7 +913,6 @@ sub push_queue {
 		#return; eventually...
 	}
 	push @{ $self->{recv_queue} }, $resp;
-	OpenSRF::Utils::Logger->debug( "AppRequest pushed ".$resp->toString(), INTERNAL );
 }
 
 sub failed {
@@ -942,11 +931,7 @@ sub payload { return shift()->{payload}; }
 sub resend {
 	my $self = shift;
 	return unless ($self and $self->session and !$self->complete);
-	OpenSRF::Utils::Logger->debug(
-		"I'm resending the request for threadTrace ". $self->threadTrace, DEBUG);
-	if($self->payload) {
-		OpenSRF::Utils::Logger->debug($self->payload->toString,INTERNAL);
-	}
+	OpenSRF::Utils::Logger->debug( "I'm resending the request for threadTrace ". $self->threadTrace, DEBUG);
 	return $self->session->send('REQUEST', $self->payload, $self->threadTrace );
 }
 

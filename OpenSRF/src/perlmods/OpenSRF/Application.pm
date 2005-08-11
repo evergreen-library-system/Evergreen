@@ -85,8 +85,6 @@ sub handler {
 	if( $app ) {
 		$log->debug( "Application is $app", DEBUG);
 	}
-	$log->debug( "Message is ".$app_msg->toString(1), INTERNAL);
-
 
 	if ($session->last_message_type eq 'REQUEST') {
 		$log->debug( "We got a REQUEST: ". $app_msg->method, INFO );
@@ -139,7 +137,6 @@ sub handler {
 				my $time = sprintf '%.3f', time() - $start;
 				$log->debug( "Method duration for {$method_name -> ".join(', ', @args)."}:  ". $time, DEBUG );
 				if( defined( $resp ) ) {
-					#$log->debug( "Calling respond_complete: ". $resp->toString(), INTERNAL );
 					$appreq->respond_complete( $resp );
 				} else {
 				        $appreq->status( OpenSRF::DomainObject::oilsConnectStatus->new(
@@ -186,7 +183,6 @@ sub handler {
 
 					$appreq = $aref->[0];	
 					if( ref( $response ) ) {
-						#$log->debug( "Calling respond_complete: ". $response->toString(), INTERNAL );
 						$appreq->respond_complete( $response );
 					} else {
 					        $appreq->status( OpenSRF::DomainObject::oilsConnectStatus->new(
@@ -219,7 +215,6 @@ sub handler {
 		return 1;
 
 	} else {
-		$log->debug( "Pushing ". $app_msg->toString ." onto queue", INTERNAL );
 		$session->push_queue([ $app_msg, $session->last_threadTrace ]);
 	}
 

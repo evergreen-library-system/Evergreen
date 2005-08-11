@@ -158,11 +158,9 @@ sub handler {
 	# up to the message layer for processing.
 	for my $msg (@$doc) {
 
-		$logger->transport( 
-				"Transport::handler()passing to message handler \n".$msg->toString(1), DEBUG );
+		$logger->transport( "Transport::handler()passing to message handler", DEBUG );
 
-		$logger->transport( 
-				"Transport passing up ".$msg->type." from ".
+		$logger->transport( "Transport passing up ".$msg->type." from ".
 				$app_session->remote_id . " with threadTrace [" . $msg->threadTrace."]", INFO );
 
 		next unless (	$msg && UNIVERSAL::isa($msg => 'OpenSRF::DomainObject::oilsMessage'));
