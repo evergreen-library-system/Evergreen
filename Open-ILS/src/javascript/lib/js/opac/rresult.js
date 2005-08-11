@@ -2,10 +2,13 @@ var records = new Array();
 var table;
 var rowtemplate;
 
+function rresultUnload() { removeChildren(table); table = null;}
+
 function rresultDoSearch() {
 	table = G.ui.result.main_table;
-	rowtemplate = table.removeChild(G.ui.result.row_template);
-	removeChildren(table);
+	hideMe(G.ui.result.row_template);
+	while( table.parentNode.rows.length < getDisplayCount() ) 
+		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
 	rresultCollectIds();
 }
 
@@ -23,16 +26,18 @@ function rresultHandleRIds(r) {
 }
 
 function rresultCollectRecords(ids) {
+	var x = 0;
 	for( var i = getOffset(); i!= getDisplayCount() + getOffset(); i++ ) {
 		var req = new Request(FETCH_RMODS, parseInt(ids[i]));
 		req.callback(rresultHandleMods);
+		req.request.userdata = x++;
 		req.send();
 	}
 }
 
 function rresultHandleMods(r) {
 	var rec = r.getResultObject();
-	resultDisplayRecord(rec, rowtemplate, false);
+	resultDisplayRecord(rec, rowtemplate, r.userdata, false);
 	resultCollectCopyCounts(rec, FETCH_R_COPY_COUNTS);
 }
 

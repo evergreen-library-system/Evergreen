@@ -158,29 +158,19 @@ function buildTitleDetailLink(rec, link) {
 	link.setAttribute("href", buildOPACLink(args));
 }
 
-/* builds an author search link */
-function buildAuthorLink(rec, link) {
-	if(!rec) return; 
-	link.appendChild(text(normalize(truncate(rec.author(), 65))));
+/* 'type' is one of STYPE_AUTHOR, STYPE_SUBJECT, ... found in config.js 
+	'trunc' is the number of characters to show in the string, defaults to 65 */
+function buildSearchLink(type, string, linknode, trunc) {
+	if(!trunc) trunc = 65;
 	var args = {};
 	args.page = MRESULT;
 	args[PARAM_OFFSET] = 0;
-	args[PARAM_STYPE] = STYPE_AUTHOR;
-	args[PARAM_TERM] = rec.author();
-	link.setAttribute("href", buildOPACLink(args));
-
+	args[PARAM_TERM] = string;
+	args[PARAM_STYPE] = type;
+	linknode.appendChild(text(normalize(truncate(string, trunc))));
+	linknode.setAttribute("href", buildOPACLink(args));
 }
 
-function buildSubjectLink(subject, link) {
-	if(subject == null) return;
-	link.appendChild(text(normalize(truncate(subject, 35))));
-	var args = {};
-	args.page = MRESULT;
-	args[PARAM_OFFSET] = 0;
-	args[PARAM_STYPE] = STYPE_SUBJECT;
-	args[PARAM_TERM] = subject;
-	link.setAttribute("href", buildOPACLink(args));
-}
 /* ----------------------------------------------------------------------- */
 
 

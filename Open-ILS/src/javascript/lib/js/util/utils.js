@@ -201,7 +201,8 @@ function normalize(val) {
 
 /* returns true if n is null or stringifies to 'undefined' */
 function isNull(n) {
-	if( n == null || n == "undefined" )
+	if( n == null || n.toString().toLowerCase() == "undefined" 
+		|| n.toString().toLowerCase() == "null" )
 		return true;
 	return false;
 }

@@ -2,24 +2,26 @@ var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
-var _allrequests = new Array();
+var _allrequests = {};
 
 function cleanRemoteRequests() {
-	for( var i = 0; i!= _allrequests.length; i++ ) {
-		var r = _allrequests[i];
-		r.xmlhttp.onreadystatechange = function(){};
-		r.xmlhttp 			= null;
-		r.callback 			= null;
-		r.userdata			= null;
-		_allrequests[i] 	= null;
-	}
+	for( var i in _allrequests ) 
+		destroyRequest(_allrequests[i]);
+}
+
+function destroyRequest(r) {
+	if(r == null) return;
+	r.xmlhttp.onreadystatechange = function(){};
+	r.xmlhttp				= null;
+	r.callback				= null;
+	r.userdata				= null;
+	_allrequests[r.id] 	= null;
 }
 
 /* ----------------------------------------------------------------------- */
 /* Request object */
 function RemoteRequest( service, method ) {
 
-	_allrequests.push(this);
 
 	this.service	= service;
 	this.method		= method;
@@ -30,6 +32,8 @@ function RemoteRequest( service, method ) {
 	this.type		= "POST"; /* default */
 	this.id			= service + method + Math.random();
 	this.cancelled = false;
+
+	_allrequests[this.id] = this;
 
 	var i = 2;
 	this.params = ""; 
@@ -77,43 +81,45 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 }
 
 
+function _remoteRequestCallback(id) {
+
+	var object = _allrequests[id];
+	if(object.cancelled) return;
+
+	if( object.xmlhttp.readyState == 4 ) {
+		try {
+			object.callback(object);
+		} catch(E) {
+
+			/* if we receive a communication error, retry the request up
+				to XML_HTTP_MAX_TRIES attempts */
+			if( instanceOf(E, EXCommunication) ) {
+
+				if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
+					if(isXUL()) throw object;
+					 else alert("Arrrgghh, Matey! Error communicating:\n" + E  + "\n" + object.param_string);
+				} else {
+					object.buildXMLRequest();
+					object.send();
+					return;
+				}
+			} else { throw E; }
+
+		} finally { 
+			destroyRequest(object); 
+			object = null; 
+		}  
+	}
+}
+
+
 /* define the callback we use when this request has received
 	all of its data */
 RemoteRequest.prototype.setCompleteCallback = function(callback) {
-
 	if(this.cancelled) return;
-	var object = this;
-	var xml = this.xmlhttp;
-
-	xml.onreadystatechange = function() {
-		if( xml.readyState == 4 ) {
-
-			try {
-				if(object.cancelled) return;
-				callback(object);
-
-			} catch(E) {
-
-				/* if we receive a communication error, retry the request up
-					to XML_HTTP_MAX_TRIES attempts */
-				if( instanceOf(E, EXCommunication) ) {
-
-					if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
-						if(isXUL()) {
-							throw object;
-						} else {
-							alert("Arrrgghh, Matey! Error communicating:\n" +
-								 E  + "\n" + object.param_string);
-						}
-					} else {
-						object.buildXMLRequest();
-						object.send();
-						return;
-					}
-				} else { throw E; }
-			} finally { object = null; }  
-		}
-	}
+	this.callback = callback;
+	var id = this.id;
+	this.xmlhttp.onreadystatechange = function() { _remoteRequestCallback(id); }
 }
 
 

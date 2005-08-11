@@ -52,7 +52,18 @@
 
 
 	<div id='subject_sidebar' class='sidebar_chunk hide_me'> 
-		<div class='sidebar_extra_item'><a href='javascript:void(0)' name='subject_item'> </a></div>
+		<div class='sidebar_header color_1'> Related Subjects </div>
+		<div id='subject_item' class='sidebar_extra_item'><a class='sidebar_extra_link' name='subject_item'> </a></div>
+	</div>
+
+	<div id='author_sidebar' class='sidebar_chunk hide_me'> 
+		<div class='sidebar_header color_1'> Related Authors </div>
+		<div id='author_item' class='sidebar_extra_item'><a class='sidebar_extra_link' name='author_item'> </a></div>
+	</div>
+
+	<div id='series_sidebar' class='sidebar_chunk hide_me'> 
+		<div class='sidebar_header color_1'> Related Series </div>
+		<div id='series_item' class='sidebar_extra_item'><a class='sidebar_extra_link' name='series_item'> </a></div>
 	</div>
 	
 

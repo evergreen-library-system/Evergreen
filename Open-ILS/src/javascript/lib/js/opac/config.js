@@ -59,6 +59,7 @@ function clearUIObjects() {
 		for( var o in config.ids[p] ) {
 			if(G.ui[p][o]) {
 				G.ui[p][o].onclick = null;
+				G.ui[p][o].onkeydown = null;
 				G.ui[p][o] = null;
 			}
 		}
@@ -174,8 +175,15 @@ config.ids.sidebar.loginbox		= 'login_link_div';
 config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
 config.ids.sidebar.username_dest	= 'username_dest';
 config.ids.sidebar.subject			= 'subject_sidebar';
+config.ids.sidebar.subject_item	= 'subject_item';
+config.ids.sidebar.author			= 'author_sidebar';
+config.ids.sidebar.author_item	= 'author_item';
+config.ids.sidebar.series			= 'series_sidebar';
+config.ids.sidebar.series_item	= 'series_item';
 
-config.names.sidebar.subject		= "subject_item";
+config.names.sidebar.subject_item	= 'subject_item';
+config.names.sidebar.author_item	= 'author_item';
+config.names.sidebar.series_item	= 'series_item';
 
 
 

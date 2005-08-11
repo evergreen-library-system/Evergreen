@@ -1,4 +1,6 @@
-
+var subjectCache = {};
+var authorCache = {};
+var seriesCache = {};
 
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
@@ -47,15 +49,17 @@ function resultSetInfo() {
 }
 
 
-/* display the record info in the record display table */
-function resultDisplayRecord(rec, rowtemplate, is_mr) {
+/* display the record info in the record display table 
+	'pos' is the zero based position the record should have in the
+	display table */
+function resultDisplayRecord(rec, rowtemplate, pos, is_mr) {
 
 	if(rec == null) rec = new mvr(); /* so the page won't die */
 
 	/* hide the 'now loading...' message */
 	hideMe(G.ui.common.loading);
 
-	var r = rowtemplate.cloneNode(true);
+	var r = table.rows[pos];
 
 	var pic = findNodeByName(r, config.names.result.item_jacket);
 	pic.setAttribute("src", buildISBNSrc(cleanISBN(rec.isbn())));
@@ -65,7 +69,20 @@ function resultDisplayRecord(rec, rowtemplate, is_mr) {
 
 	if( is_mr )  buildTitleLink(rec, title_link); 
 	else  buildTitleDetailLink(rec, title_link); 
-	buildAuthorLink(rec, author_link); 
+	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
+
+	/* grab subjects, authors, and series from the record */
+	for( var s in rec.subject() ) 
+		subjectCache[s] == null ? subjectCache[s] = 1 : subjectCache[s]++;
+	authorCache[rec.author()] = 1;
+	for( var s in rec.series() ) seriesCache[rec.series()[s]] = 1;
+
+	if(resultPageIsDone(pos)) {
+		resultDrawSubjects();
+		resultDrawAuthors();
+		resultDrawSeries();
+	}
+
 
 	var countsrow = findNodeByName(r, config.names.result.counts_row);
 
@@ -73,8 +90,12 @@ function resultDisplayRecord(rec, rowtemplate, is_mr) {
 	findNodeByName(r, "result_table_title_cell").width = 
 		resultAddCopyCounts(countsrow, rec) + "%";
 
-	table.appendChild(r);
+	unHideMe(r);
 
+}
+
+function resultPageIsDone(pos) {
+	return ((pos+1) == getDisplayCount() || (pos+1 + getOffset()) == getHitCount());
 }
 
 
@@ -83,14 +104,9 @@ function resultDisplayRecord(rec, rowtemplate, is_mr) {
 	'countsrow' is the row into which we will add TD's to hold
 	the copy counts 
 	This code generates copy count cells with an id of
-
-	'copy_count_cell_<depth>_<record_id>' for later insertion
-	of copy counts
-
+	'copy_count_cell_<depth>_<record_id>' for later insertion of copy counts
 	return the percent width left over after the each count is added. 
-	if 3 counts are added, returns 100 - (cell.width * 3)
- */
-
+	if 3 counts are added, returns 100 - (cell.width * 3) */
 function resultAddCopyCounts(countsrow, rec) {
 
 	var ccell = findNodeByName(countsrow, config.names.result.count_cell);
@@ -102,7 +118,6 @@ function resultAddCopyCounts(countsrow, rec) {
 	ccell.id = "copy_count_cell_" + type.depth() + "_" + rec.doc_id();
 	ccell.title = type.opac_label();
 	addCSSClass(ccell, "copy_count_cell_even");
-
 
 	var lastcell = ccell;
 
@@ -158,6 +173,77 @@ function resultDisplayCopyCounts(rec, copy_counts) {
 		cell.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
 		i++;
 	}
+}
+
+function resultSortSubjects(a, b) { return -(a.count - b.count); } /* sort in reverse */
+
+function resultDrawSubjects() {
+
+	var subjs = [];
+	for( var s in subjectCache )
+		subjs.push( { sub : s, count : subjectCache[s] } );
+	subjs.sort(resultSortSubjects);
+
+	var template = G.ui.sidebar.subject.removeChild(G.ui.sidebar.subject_item);
+	var x = 0;
+	var newnode = template.cloneNode(true);
+
+	var found = false;
+	for( var s in subjs ) {
+		if(isNull(subjs[s])) continue;
+		if(x++ > 7) break;
+		buildSearchLink(STYPE_SUBJECT, subjs[s].sub, 
+			findNodeByName(newnode, config.names.sidebar.subject_item), 30);
+		G.ui.sidebar.subject.appendChild(newnode);
+		newnode = template.cloneNode(true);
+		found = true;
+	}
+	if(found) unHideMe(G.ui.sidebar.subject);
+}
+
+function resultDrawAuthors() {
+
+	var template = G.ui.sidebar.author.removeChild(G.ui.sidebar.author_item);
+	var x = 0;
+	var newnode = template.cloneNode(true);
+
+	var auths = new Array();
+	for( var s in authorCache ) auths.push(s);
+	auths = auths.sort();
+
+	var found = false;
+	for( var i in auths ) {
+		if(isNull(auths[i])) continue;
+		if(x++ > 7) break;
+		buildSearchLink(STYPE_AUTHOR, auths[i], findNodeByName(newnode, config.names.sidebar.author_item), 30);
+		G.ui.sidebar.author.appendChild(newnode);
+		newnode = template.cloneNode(true);
+		found = true;
+	}
+	if(found) unHideMe(G.ui.sidebar.author);
+}
+
+
+function resultDrawSeries() {
+	var template = G.ui.sidebar.series.removeChild(G.ui.sidebar.series_item);
+	var x = 0;
+	var newnode = template.cloneNode(true);
+
+	var sers = new Array();
+	for( var s in seriesCache ) sers.push(s);
+	sers = sers.sort();
+
+	var found = false;
+	for( var i in sers ) {
+		if(isNull(sers[i])) continue;
+		if(x++ > 7) break;
+		buildSearchLink(STYPE_SERIES, sers[i], findNodeByName(newnode, config.names.sidebar.series_item), 30);
+		G.ui.sidebar.series.appendChild(newnode);
+		newnode = template.cloneNode(true);
+		found = true;
+	}
+	if(found) unHideMe(G.ui.sidebar.series);
+
 }
 
 

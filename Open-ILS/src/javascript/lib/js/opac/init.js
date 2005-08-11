@@ -1,7 +1,5 @@
 
 function init() {
-
-	document.body.onunload = unload;
 	window.onunload = unload;
 
 	loadUIObjects();
@@ -14,7 +12,6 @@ function init() {
 		case MRESULT: mresultDoSearch(); break;
 		case RRESULT: rresultDoSearch(); break;
 	}
-
 }
 
 /* free whatever memory we can */
@@ -23,12 +20,12 @@ function unload() {
 	clearUIObjects();
 	cleanRemoteRequests();
 	try{mresultUnload();} catch(E){}
+	try{rresultUnload();} catch(E){}
 }
 
 
 /* set up the colors in the sidebar 
-	Disables/Enables certain components based on various state data 
- */
+	Disables/Enables certain components based on various state data */
 function initSideBar() {
 
 	for( var p in G.ui.sidebar ) 

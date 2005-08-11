@@ -9,8 +9,10 @@ function mresultUnload() { removeChildren(table); table = null;}
 function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
-	rowtemplate = table.removeChild(G.ui.result.row_template);
-	removeChildren(table);
+
+	hideMe(G.ui.result.row_template);
+	while( table.parentNode.rows.length <= getDisplayCount() )  /* add an extra so IE and safari won't complain */
+		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
 		mresultGetCount();
@@ -57,15 +59,17 @@ function mresultSetRecords(idstruct) {
 
 function mresultHandleMods(r) {
 	var rec = r.getResultObject();
-	resultDisplayRecord(rec, rowtemplate, true);
+	resultDisplayRecord(rec, rowtemplate, r.userdata, true);
 	resultCollectCopyCounts(rec, FETCH_MR_COPY_COUNTS);
 }
 
 
 function mresultCollectRecords() {
+	var i = 0;
 	for( var x = getOffset(); x!= getDisplayCount() + getOffset(); x++ ) {
 		if(isNull(records[x])) break;
 		var req = new Request(FETCH_MRMODS, records[x]);
+		req.request.userdata = i++;
 		req.callback(mresultHandleMods);
 		req.send();
 	}
