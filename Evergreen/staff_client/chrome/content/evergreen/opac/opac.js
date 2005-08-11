@@ -12,7 +12,7 @@ function opac_init(p) {
 	//p.opac_iframe = p.w.document.createElement("browser");
 	//box.appendChild( p.opac_iframe );
 
-	p.opac_iframe = p.w.document.getElementById('opac_iframe');
+	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
 
 	//p.opac_iframe.setAttribute("type", "content-primary");
 	//p.opac_iframe.type = "content-primary";
