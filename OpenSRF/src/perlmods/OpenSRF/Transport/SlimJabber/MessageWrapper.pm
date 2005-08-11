@@ -14,7 +14,7 @@ sub new {
 	} else {
 		$doc = XML::LibXML::Document->createDocument;
 		$msg = $doc->createElement( 'message' );
-		$doc->documentElement->appendChild( $msg );
+		$doc->setDocumentElement( $msg );
 	}
 
 	

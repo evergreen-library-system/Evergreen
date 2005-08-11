@@ -5,7 +5,7 @@ use JSON;
 use base qw/Exporter/;
 use OpenSRF::Utils::Logger qw/:level/;
 
-JSON->register_class_hint( hint => 'osrfResponse', class => 'OpenSRF::DomainObject::oilsResponse' );
+JSON->register_class_hint( hint => 'osrfResponse', name => 'OpenSRF::DomainObject::oilsResponse', type => 'hash' );
 
 BEGIN {
 @EXPORT_OK = qw/STATUS_CONTINUE STATUS_OK STATUS_ACCEPTED
@@ -79,8 +79,8 @@ sub toString {
 }
 
 sub new {
-	my $class = shift;
-	$class = ref($class) || $class;
+	my $name = shift;
+	$name = ref($class) || $class;
 
 	my $default_status = eval "\$${class}::status";
 	my $default_statusCode = eval "\$${class}::statusCode";
@@ -115,6 +115,7 @@ package OpenSRF::DomainObject::oilsStatus;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use base 'OpenSRF::DomainObject::oilsResponse';
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfStatus', name => 'OpenSRF::DomainObject::oilsStatus', type => 'hash' );
 
 =head1 NAME
 
@@ -145,6 +146,7 @@ package OpenSRF::DomainObject::oilsConnectStatus;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use base 'OpenSRF::DomainObject::oilsStatus';
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfConnectStatus', name => 'OpenSRF::DomainObject::oilsConnectStatus', type => 'hash' );
 
 =head1 NAME
 
@@ -182,6 +184,7 @@ package OpenSRF::DomainObject::oilsContinueStatus;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use base 'OpenSRF::DomainObject::oilsStatus';
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfContinueStatus', name => 'OpenSRF::DomainObject::oilsContinueStatus', type => 'hash' );
 
 =head1 NAME
 
@@ -224,6 +227,7 @@ use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::DomainObject::oilsPrimitive;
 use base 'OpenSRF::DomainObject::oilsResponse';
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfResult', name => 'OpenSRF::DomainObject::oilsResult', type => 'hash' );
 
 
 $status = 'OK';
@@ -292,6 +296,7 @@ use OpenSRF::EX;
 use base qw/OpenSRF::EX OpenSRF::DomainObject::oilsResponse/;
 use vars qw/$status $statusCode/;
 use Error;
+JSON->register_class_hint( hint => 'osrfException', name => 'OpenSRF::DomainObject::oilsException', type => 'hash' );
 
 sub message {
 	my $self = shift;
@@ -299,7 +304,7 @@ sub message {
 }
 
 sub new {
-	my $class = shift;
+	my $name = shift;
 	return $class->OpenSRF::DomainObject::oilsResponse::new( @_ );
 }
 
@@ -334,6 +339,7 @@ use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::EX;
 use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfConnectException', name => 'OpenSRF::DomainObject::oilsConnectException', type => 'hash' );
 
 =head1 NAME
 
@@ -369,6 +375,7 @@ package OpenSRF::DomainObject::oilsMethodException;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use base 'OpenSRF::DomainObject::oilsException';
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfMethodException', name => 'OpenSRF::DomainObject::oilsMethodException', type => 'hash' );
 
 =head1 NAME
 
@@ -407,6 +414,7 @@ package OpenSRF::DomainObject::oilsServerError;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use base 'OpenSRF::DomainObject::oilsException';
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfServerError', name => 'OpenSRF::DomainObject::oilsServerError', type => 'hash' );
 
 $status = 'Internal Server Error';
 $statusCode = STATUS_INTERNALSERVERERROR;
@@ -422,6 +430,7 @@ use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::EX;
 use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfBrokenSession', name => 'OpenSRF::DomainObject::oilsBrokenSession', type => 'hash' );
 $status = "Request on Disconnected Session";
 $statusCode = STATUS_EXPFAILED;
 
@@ -430,6 +439,7 @@ use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::EX;
 use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
 use vars qw/$status $statusCode/;
+JSON->register_class_hint( hint => 'osrfXMLParseError', name => 'OpenSRF::DomainObject::oilsXMLParseError', type => 'hash' );
 $status = "XML Parse Error";
 $statusCode = STATUS_EXPFAILED;
 
@@ -437,6 +447,7 @@ package OpenSRF::DomainObject::oilsAuthException;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::EX;
 use base qw/OpenSRF::DomainObject::oilsException OpenSRF::EX::ERROR/;
+JSON->register_class_hint( hint => 'osrfAuthException', name => 'OpenSRF::DomainObject::oilsAuthException', type => 'hash' );
 use vars qw/$status $statusCode/;
 $status = "Authentication Failure";
 $statusCode = STATUS_FORBIDDEN;
