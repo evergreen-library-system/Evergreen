@@ -507,7 +507,10 @@ function validate_patron() {
 		var month = darray[1]; if ( (!month) || (month.length !=2) || (!parseInt(month)) ) flag = true;
 		var day = darray[2]; if ( (!day) || (day.length !=2) || (!parseInt(day)) ) flag = true;
 		if (flag) {
-			s += ('Date Format is YYYY-MM-DD');
+			s += ('Date Format is YYYY-MM-DD\n');
+		}
+		if (!valid_year_month_day(year,month,day)) {
+			s += ('Invalid Date\n');
 		}
 	}
 	if ( ! PATRON.au.mailing_address() ) {

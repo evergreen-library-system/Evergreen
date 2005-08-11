@@ -1,5 +1,14 @@
 sdump('D_TRACE',"Loading validate.js\n");
 
+function valid_year_month_day(year,month,day) {
+	var date = new Date(year,month-1,day);
+	return (
+		(date.getFullYear() == year) &&
+		(date.getMonth()+1 == month) &&
+		(date.getDate() == day)
+	);
+}
+
 function textbox_checkdigit(ev) {
 	if ( check_checkdigit( ev.target.value ) ) {
 		sdump('D_VALIDATE', 'success\n');
