@@ -16,6 +16,7 @@ var PARAM_RID					= "rid";			/* metarecord id */
 /* cookies */
 var COOKIE_SB = "sbe";
 var COOKIE_SES = "ses";
+var COOKIE_IDS	= "ids";
 
 /* these are the actual param values - set on page load */
 

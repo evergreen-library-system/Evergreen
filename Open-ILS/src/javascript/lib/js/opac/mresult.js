@@ -1,7 +1,8 @@
-var records = new Array();
-var ranks = new Array();
+var records = {};
+var ranks = {};
 var table;
 var rowtemplate;
+var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
 
 function mresultUnload() { removeChildren(table); table = null;}
 
@@ -15,10 +16,11 @@ function mresultDoSearch() {
 		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
-		mresultGetCount();
-		mresultCollectIds();
+		mresultGetCount(); /* get the hit count */
+		mresultCollectIds(); /* do the actual search */
 	} else { 
 		resultSetInfo();
+		//mresultCollectRecords();  /* grab the records if we have the id's cached */
 		mresultCollectIds();
 	}
 }
@@ -38,10 +40,22 @@ function mresultHandleCount(r) {
 
 /* performs the actual search */
 function mresultCollectIds() {
-	var req = new Request(FETCH_MRIDS, getStype(), getTerm(), 
-			getLocation(), getDepth(), getDisplayCount(), getOffset(), getForm() );
-	req.callback(mresultHandleMRIds);
-	req.send();
+
+	var c = JSON2js(idsCookie.get(COOKIE_IDS));
+	if(c && c.recs) { records = c.recs; ranks = c.ranks; } 
+
+	if( records[getOffset()] != null && 
+			records[getOffset() + getDisplayCount() - 1] != null) {
+	//		alert("cached!");
+			mresultCollectRecords(); 
+
+	} else {
+
+		var req = new Request(FETCH_MRIDS, getStype(), getTerm(), 
+			getLocation(), getDepth(), getDisplayCount() * 5, getOffset(), getForm() );
+		req.callback(mresultHandleMRIds);
+		req.send();
+	}
 }
 
 function mresultHandleMRIds(r) {
@@ -55,6 +69,8 @@ function mresultSetRecords(idstruct) {
 		records[x] = idstruct[x - o][0];
 		ranks[x] = idstruct[x - o][1];
 	}
+	idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
+	idsCookie.write();
 }
 
 function mresultHandleMods(r) {

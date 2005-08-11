@@ -3,6 +3,8 @@ body a			{ color: black; }
 body a:visited { color: black; }
 body a:hover	{ color: red; text-decoration: underline;}
 body table		{ font-size: inherit; }
+* { -moz-user-select : normal };
+
 
 .main_header	{ width: 100%; }
 .space			{ padding-right:5px; }

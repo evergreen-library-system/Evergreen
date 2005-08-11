@@ -1,6 +1,7 @@
 var subjectCache = {};
 var authorCache = {};
 var seriesCache = {};
+var recordsHandled = 0;
 
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
@@ -55,6 +56,7 @@ function resultSetInfo() {
 function resultDisplayRecord(rec, rowtemplate, pos, is_mr) {
 
 	if(rec == null) rec = new mvr(); /* so the page won't die */
+	recordsHandled++;
 
 	/* hide the 'now loading...' message */
 	hideMe(G.ui.common.loading);
@@ -77,7 +79,8 @@ function resultDisplayRecord(rec, rowtemplate, pos, is_mr) {
 	authorCache[rec.author()] = 1;
 	for( var s in rec.series() ) seriesCache[rec.series()[s]] = 1;
 
-	if(resultPageIsDone(pos)) {
+	if(resultPageIsDone() && !subjectsAreDrawn) {
+		subjectsAreDrawn = true;
 		resultDrawSubjects();
 		resultDrawAuthors();
 		resultDrawSeries();
@@ -94,8 +97,10 @@ function resultDisplayRecord(rec, rowtemplate, pos, is_mr) {
 
 }
 
+var subjectsAreDrawn = false;
 function resultPageIsDone(pos) {
-	return ((pos+1) == getDisplayCount() || (pos+1 + getOffset()) == getHitCount());
+	return (recordsHandled == getDisplayCount() 
+		|| recordsHandled + getOffset() == getHitCount());
 }
 
 
