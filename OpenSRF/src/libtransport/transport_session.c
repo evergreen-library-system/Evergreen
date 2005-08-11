@@ -421,14 +421,6 @@ void endElementHandler( void *session, const xmlChar *name) {
 	if( strcmp( name, "message" ) == 0 ) {
 
 
-		/*
-		int			bufsize;
-		xmlChar*		xmlbuf;
-		xmlDocDumpFormatMemory( ses->parser_ctxt->myDoc, &xmlbuf, &bufsize, 0 );
-		debug_handler("endElementHandler SAX Doc:\n%s\n", (char*) xmlbuf );
-		xmlFree(xmlbuf);
-		*/
-
 		/* pass off the message info the callback */
 		if( ses->message_callback ) {
 
