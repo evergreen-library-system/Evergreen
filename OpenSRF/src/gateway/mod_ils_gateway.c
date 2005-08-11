@@ -307,9 +307,11 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	/* gather result data */
 	while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
 
-		if( omsg->result_string ) {
-			buffer_add(result_data, omsg->result_string);
+		if( omsg->_result_content ) {
+			char* content = object_to_json(omsg->_result_content);
+			buffer_add(result_data, content);
 			buffer_add( result_data, ",");
+			free(content);
 
 		} else {
 

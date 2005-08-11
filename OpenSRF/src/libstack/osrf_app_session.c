@@ -375,16 +375,18 @@ int osrf_app_session_make_req(
 	if(session == NULL) return -1;
 
 	osrf_message* req_msg = osrf_message_init( REQUEST, ++(session->thread_trace), protocol );
-	//osrf_message_set_request_info( req_msg,  method_name, params );
 	osrf_message_set_method(req_msg, method_name);
-	if(params) osrf_message_set_params(req_msg, params);
+	if(params) {
+		osrf_message_set_params(req_msg, params);
 
-	/* if we're not parsing the json, shove the strings in manually */
-	if(!req_msg->parse_json_params && param_strings) {
-		int i;
-		for(i = 0; i!= param_strings->size ; i++ ) {
-			osrf_message_add_param(req_msg,
-				string_array_get_string(param_strings,i));
+	} else {
+
+		if(param_strings) {
+			int i;
+			for(i = 0; i!= param_strings->size ; i++ ) {
+				osrf_message_add_param(req_msg,
+					string_array_get_string(param_strings,i));
+			}
 		}
 	}
 
@@ -637,18 +639,19 @@ int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
 		}
 	}
 
-	char* xml =  osrf_message_to_xml(msg);
+	//char* xml =  osrf_message_to_xml(msg);
+	char* string =  osrf_message_serialize(msg);
 
 	debug_handler("[%s] [%s] Remote Id: %s", 
 			session->remote_service, session->session_id, session->remote_id );
 
 	transport_message* t_msg = message_init( 
-			xml, "", session->session_id, session->remote_id, NULL );
+			string, "", session->session_id, session->remote_id, NULL );
 
 	debug_handler("Session [%s] [%s]  sending to %s \nXML:\n%s", 
-			session->remote_service, session->session_id, t_msg->recipient, xml );
+			session->remote_service, session->session_id, t_msg->recipient, string );
 	ret_val = client_send_message( session->transport_handle, t_msg );
-	free(xml);
+	free(string);
 	message_free( t_msg );
 
 	return ret_val; 

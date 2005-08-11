@@ -36,33 +36,12 @@ osrf_message* osrf_message_init( enum M_TYPE type, int thread_trace, int protoco
 
 
 void osrf_message_set_json_parse_result( int ibool ) {
-	parse_json_result = ibool;
+//	parse_json_result = ibool;
 }
 
 void osrf_message_set_json_parse_params( int ibool ) {
-	parse_json_params = ibool;
+//	parse_json_params = ibool;
 }
-
-/*
-void osrf_message_set_request_info( 
-		osrf_message* msg, char* method_name, json* json_params ) {
-
-	if( msg == NULL || method_name == NULL )
-		fatal_handler( "Bad params to osrf_message_set_request_params()" );
-
-	if(msg->parse_json_params) {
-		if( json_params != NULL ) {
-			msg->params = json_tokener_parse(json_object_to_json_string(json_params));
-			msg->_params = json_parse_string(json_object_to_json_string(json_params));
-		} else {
-			msg->params = json_tokener_parse("[]");
-			msg->_params = json_parse_string("[]");
-		}
-	}
-
-	msg->method_name = strdup( method_name );
-}
-*/
 
 void osrf_message_set_method( osrf_message* msg, char* method_name ) {
 	if( msg == NULL || method_name == NULL ) return;
@@ -100,12 +79,16 @@ void osrf_message_set_params( osrf_message* msg, object* o ) {
 }
 
 
-/* only works of parse_json_params is false */
+/* only works if parse_json_params is false */
 void osrf_message_add_param( osrf_message* msg, char* param_string ) {
-	if(msg == NULL || param_string == NULL)
-		return;
+	if(msg == NULL || param_string == NULL) return;
+	if(!msg->_params) msg->_params = new_object(NULL);
+	msg->_params->push(msg->_params, json_parse_string(param_string));
+
+	/*
 	if(!msg->parse_json_params)
 		string_array_add(msg->parray, param_string);
+		*/
 }
 
 
@@ -130,27 +113,10 @@ void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
 		warning_handler( "Bad params to osrf_message_set_result_content()" );
 
 	msg->result_string =	strdup(json_string);
-
-	/* ----------------------------------------------------- */
-	/*
-	object* o = json_parse_string(json_string);
-	char* string = o->to_json(o);
-	debug_handler("---------------------------------------------------");
-	debug_handler("Parsed JSON string \n%s\n", string);
-	if(o->classname)
-		debug_handler("Class is %s\n", o->classname);
-	debug_handler("---------------------------------------------------");
-	free_object(o);
-	free(string);
-	*/
-	/* ----------------------------------------------------- */
-
 	debug_handler( "Message Parse JSON result is set to: %d",  msg->parse_json_result );
 
-	if(msg->parse_json_result) {
-		//msg->result_content = json_tokener_parse(msg->result_string);
+	if(msg->parse_json_result) 
 		msg->_result_content = json_parse_string(msg->result_string);
-	} 
 }
 
 
@@ -165,11 +131,6 @@ void osrf_message_free( osrf_message* msg ) {
 	if( msg->status_text != NULL )
 		free(msg->status_text);
 
-	/*
-	if( msg->result_content != NULL )
-		json_object_put( msg->result_content );
-		*/
-
 	if( msg->_result_content != NULL )
 		free_object( msg->_result_content );
 
@@ -179,31 +140,175 @@ void osrf_message_free( osrf_message* msg ) {
 	if( msg->method_name != NULL )
 		free(msg->method_name);
 
-	/*
-	if( msg->params != NULL )
-		json_object_put( msg->params );
-		*/
-
 	if( msg->_params != NULL )
 		free_object(msg->_params);
-
 
 	string_array_destroy(msg->parray);
 
 	free(msg);
 }
 
+char* osrf_message_serialize(osrf_message* msg) {
+	if( msg == NULL ) return NULL;
+	object* json = new_object(NULL);
+	json->set_class(json, "osrfMessage");
+	object* payload;
+	char sc[64]; memset(sc,0,64);
+
+	char* str;
+
+	char tt[64];
+	memset(tt,0,64);
+	sprintf(tt,"%d",msg->thread_trace);
+	json->add_key(json, "threadTrace", new_object(tt));
+
+	switch(msg->m_type) {
+		
+		case CONNECT: 
+			json->add_key(json, "type", new_object("CONNECT"));
+			break;
+
+		case DISCONNECT: 
+			json->add_key(json, "type", new_object("DISCONNECT"));
+			break;
+
+		case STATUS:
+			json->add_key(json, "type", new_object("STATUS"));
+			payload = new_object(NULL);
+			payload->set_class(payload, msg->status_name);
+			payload->add_key(payload, "status", new_object(msg->status_text));
+         sprintf(sc,"%d",msg->status_code);
+			payload->add_key(payload, "statusCode", new_object(sc));
+			json->add_key(json, "payload", payload);
+			break;
+
+		case REQUEST:
+			json->add_key(json, "type", new_object("REQUEST"));
+			payload = new_object(NULL);
+			payload->set_class(payload, "osrfMethod");
+			payload->add_key(payload, "method", new_object(msg->method_name));
+			str = object_to_json(msg->_params);
+			payload->add_key(payload, "params", json_parse_string(str));
+			free(str);
+			json->add_key(json, "payload", payload);
+
+			break;
+
+		case RESULT:
+			json->add_key(json, "type", new_object("RESULT"));
+			payload = new_object(NULL);
+			payload->set_class(payload,"osrfResult");
+			payload->add_key(payload, "status", new_object(msg->status_text));
+         sprintf(sc,"%d",msg->status_code);
+			payload->add_key(payload, "statusCode", new_object(sc));
+			str = object_to_json(msg->_result_content);
+			payload->add_key(payload, "content", json_parse_string(str));
+			free(str);
+			json->add_key(json, "payload", payload);
+			break;
+	}
+	
+	object* wrapper = new_object(NULL);
+	wrapper->push(wrapper, json);
+	char* j = wrapper->to_json(wrapper);
+	free_object(wrapper);
+	return j;
+}
+
+
+int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
+	if(!string || !msgs || count <= 0) return 0;
+	int numparsed = 0;
+	object* json = json_parse_string(string);
+	if(json == NULL) return 0;
+	int x;
+
+
+	for( x = 0; x < json->size && x < count; x++ ) {
+
+		object* message = json->get_index(json, x);
+
+		if(message && !message->is_null && 
+			message->classname && !strcmp(message->classname, "osrfMessage")) {
+
+			osrf_message* new_msg = safe_malloc(sizeof(osrf_message));
+
+			object* tmp = message->get_key(message, "type");
+
+			if(tmp && tmp->string_data) {
+				char* t = tmp->string_data;
+
+				if(!strcmp(t, "CONNECT")) 		new_msg->m_type = CONNECT;
+				if(!strcmp(t, "DISCONNECT")) 	new_msg->m_type = DISCONNECT;
+				if(!strcmp(t, "STATUS")) 		new_msg->m_type = STATUS;
+				if(!strcmp(t, "REQUEST")) 		new_msg->m_type = REQUEST;
+				if(!strcmp(t, "RESULT")) 		new_msg->m_type = RESULT;
+			}
+
+			tmp = message->get_key(message, "threadTrace");
+			if(tmp) {
+				if(tmp->is_number)
+					new_msg->thread_trace = tmp->num_value;
+				if(tmp->is_string)
+					new_msg->thread_trace = atoi(tmp->string_data);
+			}
+
+
+			tmp = message->get_key(message, "protocol");
+			if(tmp) {
+				if(tmp->is_number)
+					new_msg->protocol = tmp->num_value;
+				if(tmp->is_string)
+					new_msg->protocol = atoi(tmp->string_data);
+			}
+
+			tmp = message->get_key(message, "payload");
+			if(tmp) {
+				if(tmp->classname)
+					new_msg->status_name = strdup(tmp->classname);
+
+				object* tmp0 = tmp->get_key(tmp,"method");
+				if(tmp0 && tmp0->string_data)
+					new_msg->method_name = strdup(tmp0->string_data);
+
+				tmp0 = tmp->get_key(tmp,"params");
+				if(tmp0) {
+					char* s = tmp0->to_json(tmp0);
+					new_msg->_params = json_parse_string(s);
+					free(s);
+				}
+
+				tmp0 = tmp->get_key(tmp,"status");
+				if(tmp0 && tmp0->string_data)
+					new_msg->status_text = strdup(tmp0->string_data);
+
+				tmp0 = tmp->get_key(tmp,"statusCode");
+				if(tmp0) {
+					if(tmp0->is_string && tmp0->string_data)
+						new_msg->status_code = atoi(tmp0->string_data);
+					if(tmp0->is_number)
+						new_msg->status_code = tmp0->num_value;
+				}
+
+				tmp0 = tmp->get_key(tmp,"content");
+				if(tmp0) {
+					char* s = tmp0->to_json(tmp0);
+					new_msg->_result_content = json_parse_string(s);
+					free(s);
+				}
+
+			}
+			msgs[numparsed++] = new_msg;
+		}
+	}
+	return numparsed;
+}
 
 		
 /* here's where things get interesting */
 char* osrf_message_to_xml( osrf_message* msg ) {
 
-	if( msg == NULL )
-		return NULL;
-
-	//int			bufsize;
-	//xmlChar*		xmlbuf;
-	//char*			encoded_msg;
+	if( msg == NULL ) return NULL;
 
 	xmlKeepBlanksDefault(0);
 

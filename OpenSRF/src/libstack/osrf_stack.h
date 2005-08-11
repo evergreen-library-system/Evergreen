@@ -7,7 +7,7 @@
 #define OSRF_STACK_H
 
 /* the max number of oilsMessage blobs present in any one root packet */
-#define OSRF_MAX_MSGS_PER_PACKET 16 
+#define OSRF_MAX_MSGS_PER_PACKET 64  
 // -----------------------------------------------------------------------------
 
 int osrf_stack_transport_handler( transport_message* msg );

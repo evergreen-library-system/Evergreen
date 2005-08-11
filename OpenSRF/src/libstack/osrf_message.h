@@ -92,6 +92,12 @@ void osrf_message_set_status_info( osrf_message*, char* status_name, char* statu
 void osrf_message_set_result_content( osrf_message*, char* json_string );
 void osrf_message_free( osrf_message* );
 char* osrf_message_to_xml( osrf_message* );
+char* osrf_message_serialize(osrf_message*);
+
+/* count is the max number of messages we'll put into msgs[] */
+int osrf_message_deserialize(char* json, osrf_message* msgs[], int count);
+
+
 /** Pushes any message retreived from the xml into the 'msgs' array.
   * it is assumed that 'msgs' has beenn pre-allocated.
   * Returns the number of message that are in the buffer.

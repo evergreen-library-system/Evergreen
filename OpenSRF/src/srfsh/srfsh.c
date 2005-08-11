@@ -880,7 +880,7 @@ int do_math( int count, int style ) {
 	params->push(params,new_object("2"));
 
 	char* methods[] = { "add", "sub", "mult", "div" };
-	char* answers[] = { "\"3\"", "\"-1\"", "\"2\"", "\"0.5\"" };
+	char* answers[] = { "3", "-1", "2", "0.500000" };
 
 	float times[ count * 4 ];
 	memset(times,0,count*4);
@@ -911,6 +911,7 @@ int do_math( int count, int style ) {
 			int req_id = osrf_app_session_make_req( session, params, methods[j], 1, NULL );
 
 			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
+
 
 			ftime(&t2);
 

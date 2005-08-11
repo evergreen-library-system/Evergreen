@@ -31,7 +31,8 @@ int main() {
 
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("[,,{\"key\":,\"key1\":\"a\"}]");
+	//o = json_parse_string("-1");
+	o = json_parse_string("{\"key\":-1}");
 	char* h = o->to_json(o);
 	printf("\nParsed number: %s\n", h);
 	free_object(o);

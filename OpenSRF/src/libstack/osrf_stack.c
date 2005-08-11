@@ -38,6 +38,7 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 
 	if( session == NULL ) {  /* we must be a server, build a new session */
 		info_handler( "Received message for nonexistant session. Dropping..." );
+		//osrf_app_server_session_init( msg->thread, 
 		message_free( msg );
 		return 1;
 	}
@@ -47,7 +48,8 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 	osrf_app_session_set_remote( session, msg->sender );
 	osrf_message* arr[OSRF_MAX_MSGS_PER_PACKET];
 	memset(arr, 0, OSRF_MAX_MSGS_PER_PACKET );
-	int num_msgs = osrf_message_from_xml( msg->body, arr );
+	//int num_msgs = osrf_message_from_xml( msg->body, arr );
+	int num_msgs = osrf_message_deserialize(msg->body, arr, OSRF_MAX_MSGS_PER_PACKET);
 
 	debug_handler( "We received %d messages from %s", num_msgs, msg->sender );
 
@@ -180,6 +182,9 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 	if(session == NULL || msg == NULL)
 		return NULL;
+
+
+	if( msg->m_type == STATUS ) { return NULL; }
 
 	warning_handler( "We dont' do servers yet !!" );
 

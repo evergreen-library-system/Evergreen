@@ -207,10 +207,13 @@ int json_parse_json_number(char* string, unsigned long* index, object* obj) {
 	/* negative number? */
 	if(c == '-') { buffer_add(buf, "-"); (*index)++; }
 
+	c = string[*index];
+
 	while(*index < current_strlen) {
 
-		if(is_number(c))
+		if(is_number(c)) {
 			buffer_add_char(buf, c);
+		}
 
 		else if( c == '.' ) {
 			if(dot_seen) {
@@ -222,6 +225,7 @@ int json_parse_json_number(char* string, unsigned long* index, object* obj) {
 		} else {
 			done = 1; break;
 		}
+
 		(*index)++;
 		c = string[*index];
 		if(done) break;
