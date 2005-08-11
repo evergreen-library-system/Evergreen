@@ -2,8 +2,10 @@ package OpenSRF::DomainObject::oilsResponse;
 use vars qw/@EXPORT_OK %EXPORT_TAGS/;
 use Exporter;
 use JSON;
-use base qw/OpenSRF::DomainObject Exporter/;
+use base qw/Exporter/;
 use OpenSRF::Utils::Logger qw/:level/;
+
+JSON->register_class_hint( hint => 'osrfResponse', class => 'OpenSRF::DomainObject::oilsResponse' );
 
 BEGIN {
 @EXPORT_OK = qw/STATUS_CONTINUE STATUS_OK STATUS_ACCEPTED
@@ -69,6 +71,13 @@ sub STATUS_VERSIONNOTSUPPORTED	{ return 505 }
 
 my $log = 'OpenSRF::Utils::Logger';
 
+sub toString {
+	my $self = shift;
+	my $pretty = shift;
+	return JSON->perl2prettyJSON($self) if ($pretty);
+	return JSON->perl2JSON($self);
+}
+
 sub new {
 	my $class = shift;
 	$class = ref($class) || $class;
@@ -80,17 +89,21 @@ sub new {
 			statusCode => $default_statusCode,
 			@_ );
 	
-	return $class->SUPER::new( %args );
+	return bless( \%args => $class );
 }
 
 sub status {
 	my $self = shift;
-	return $self->_attr_get_set( status => shift );
+	my $val = shift;
+	$self->{status} = $val if (defined $val);
+	return $self->{status};
 }
 
 sub statusCode {
 	my $self = shift;
-	return $self->_attr_get_set( statusCode => shift );
+	my $val = shift;
+	$self->{statusCode} = $val if (defined $val);
+	return $self->{statusCode};
 }
 
 
@@ -253,21 +266,10 @@ of (sub)type domainObject or domainObjectCollection.
 
 sub content {
         my $self = shift;
-	my $new_content = shift;
+	my $val = shift;
 
-	my ($content) = $self->getChildrenByTagName('oils:domainObject');
-
-	if (defined $new_content) {
-		$new_content = OpenSRF::DomainObject::oilsScalar->new( JSON->perl2JSON( $new_content ) );
-
-		$self->removeChild($content) if ($content);
-		$self->appendChild($new_content);
-	}
-
-
-	$new_content = $content if ($content);
-
-	return JSON->JSON2perl($new_content->textContent) if $new_content;
+	$self->{content} = $val if (defined $val);
+	return $self->{content};
 }
 
 =head1 SEE ALSO

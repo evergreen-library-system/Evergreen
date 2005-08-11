@@ -1,5 +1,5 @@
 package OpenSRF::Transport::SlimJabber::MessageWrapper;
-use OpenSRF::DOM;
+use XML::LibXML;
 
 sub new {
 	my $class = shift;
@@ -9,10 +9,10 @@ sub new {
 
 	my ($doc, $msg);
 	if ($xml) {
-		$doc = OpenSRF::DOM->new->parse_string($xml);
+		$doc = XML::LibXML->new->parse_string($xml);
 		$msg = $doc->documentElement;
 	} else {
-		$doc = OpenSRF::DOM->createDocument;
+		$doc = XML::LibXML::Document->createDocument;
 		$msg = $doc->createElement( 'message' );
 		$doc->documentElement->appendChild( $msg );
 	}

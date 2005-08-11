@@ -1,8 +1,15 @@
 package OpenSRF::DomainObject::oilsMethod;
-use OpenSRF::DOM::Element::params;
-#use OpenSRF::DOM::Element::param;
+
 use JSON;
-use base 'OpenSRF::DomainObject';
+JSON->register_class_hint(hint => 'osrfMethod', class => 'OpenSRF::DomainObject::oilsMethod');
+
+sub toString {
+	my $self = shift;
+	my $pretty = shift;
+	return JSON->perl2prettyJSON($self) if ($pretty);
+	return JSON->perl2JSON($self);
+}
+
 
 =head1 NAME
 
@@ -36,7 +43,9 @@ oilsMethod object.
 
 sub method {
 	my $self = shift;
-	return $self->_attr_get_set( method => shift );
+	my $val = shift;
+	$self->{method} = $val if (defined $val);
+	return $self->{method};
 }
 
 =head2 OpenSRF::DomainObject::oilsMethod->return_type( [$new_return_type] )
@@ -56,10 +65,12 @@ used as a suggestion when more than one return type or format is possible.
 
 sub return_type {
 	my $self = shift;
-	return $self->_attr_get_set( return_type => shift );
+	my $val = shift;
+	$self->{return_type} = $val if (defined $val);
+	return $self->{return_type};
 }
 
-=head2 OpenSRF::DomainObject::oilsMethod->params( [@new_params] )
+=head2 OpenSRF::DomainObject::oilsMethod->params( @new_params )
 
 =over 4
 
@@ -74,27 +85,8 @@ parameters, or DOM nodes of any type.
 sub params {
 	my $self = shift;
 	my @args = @_;
-
-	my ($old_params) = $self->getChildrenByTagName('oils:params');
-
-	my $params;
-	if (@args) {
-
-		$self->removeChild($old_params) if ($old_params);
-
-		my $params = OpenSRF::DOM::Element::params->new;
-		$self->appendChild($params);
-		$params->appendTextNode( JSON->perl2JSON( \@args ) );
-
-		$old_params = $params unless ($old_params);
-	}
-
-	if ($old_params) {
-		$params = JSON->JSON2perl( $old_params->textContent );
-		return @$params;
-	}
-
-	return @args;
+	$self->{params} = \@args if (@args);
+	return @{ $self->{params} };
 }
 
 1;

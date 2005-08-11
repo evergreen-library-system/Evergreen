@@ -482,7 +482,7 @@ sub send {
 		return undef; 
 	}
 
-	my $doc = OpenSRF::DOM->createDocument();
+	my @doc = ();
 
 	$logger->debug( "In send2", INTERNAL );
 
@@ -533,7 +533,7 @@ sub send {
 		$msg->api_level($self->api_level);
 		$msg->payload($payload) if $payload;
 	
-		$doc->documentElement->appendChild( $msg );
+		push @doc, $msg;
 
 	
 		$logger->debug( "AppSession sending ".$msg->type." to ".$self->remote_id.
@@ -568,13 +568,13 @@ sub send {
 		}
 
 	} 
-	$logger->debug( "AppSession sending doc: " . $doc->toString(), INTERNAL );
+	$logger->debug( "AppSession sending doc: " . JSON->perl2JSON(\@doc), INTERNAL );
 
 
 	$self->{peer_handle}->send( 
 					to     => $self->remote_id,
 				   thread => $self->session_id,
-				   body   => $doc->toString );
+				   body   => JSON->perl2JSON(\@doc) );
 
 	if( $disconnect) {
 		$self->state( DISCONNECTED );

@@ -2,7 +2,6 @@ package OpenSRF::Transport;
 use strict; use warnings;
 use base 'OpenSRF';
 use Time::HiRes qw/time/;
-use OpenSRF::DOM;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
@@ -119,14 +118,14 @@ sub handler {
 		throw OpenSRF::EX::Session ("Transport::handler(): No AppSession object returned from server_build()");
 	}
 
-	# Create a document from the XML contained within the message 
+	# Create a document from the JSON contained within the message 
 	my $doc; 
-	eval { $doc = OpenSRF::DOM->new->parse_string($body); };
+	eval { $doc = JSON->JSON2perl($body); };
 	if( $@ ) {
 
-		$logger->transport( "Received bogus XML", INFO );
-		$logger->transport( "Bogus XML data: \n $body \n", INTERNAL );
-		my $res = OpenSRF::DomainObject::oilsXMLParseError->new( status => "XML Parse Error --- $body" );
+		$logger->transport( "Received bogus JSON: $@", INFO );
+		$logger->transport( "Bogus JSON data: \n $body \n", INTERNAL );
+		my $res = OpenSRF::DomainObject::oilsXMLParseError->new( status => "JSON Parse Error --- $body\n\n$@" );
 
 		$app_session->status($res);
 		#$app_session->kill_me;
@@ -157,7 +156,7 @@ sub handler {
 
 	# cycle through and pass each oilsMessage contained in the message
 	# up to the message layer for processing.
-	for my $msg ($doc->documentElement->childNodes) {
+	for my $msg (@$doc) {
 
 		$logger->transport( 
 				"Transport::handler()passing to message handler \n".$msg->toString(1), DEBUG );
@@ -166,8 +165,7 @@ sub handler {
 				"Transport passing up ".$msg->type." from ".
 				$app_session->remote_id . " with threadTrace [" . $msg->threadTrace."]", INFO );
 
-		next unless (	$msg->nodeName eq 'oils:domainObject' &&
-				$msg->getAttribute('name') eq 'oilsMessage' );
+		next unless (	$msg && UNIVERSAL::isa($msg => 'OpenSRF::DomainObject::oilsMessage'));
 
 		if( $app_session->endpoint == $app_session->SERVER() ) {
 

@@ -1,10 +1,20 @@
 package OpenSRF::DomainObject::oilsMessage;
-use base 'OpenSRF::DomainObject';
+use JSON;
 use OpenSRF::AppSession;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
 use OpenSRF::Utils::Logger qw/:level/;
 use warnings; use strict;
 use OpenSRF::EX qw/:try/;
+
+JSON->register_class_hint(hint => 'osrfMessage', class => 'OpenSRF::DomainObject::oilsMessage');
+
+sub toString {
+	my $self = shift;
+	my $pretty = shift;
+	return JSON->perl2prettyJSON($self) if ($pretty);
+	return JSON->perl2JSON($self);
+}
+
 
 =head1 NAME
 
@@ -44,7 +54,9 @@ B<CONNECT, REQUEST, RESULT, STATUS, ERROR, or DISCONNECT>.
 
 sub type {
 	my $self = shift;
-	return $self->_attr_get_set( type => shift );
+	my $val = shift;
+	$self->{type} = $val if (defined $val);
+	return $self->{type};
 }
 
 =head2 OpenSRF::DomainObject::oilsMessage->api_level( [$new_api_level] )
@@ -62,7 +74,9 @@ REQUEST message.
 
 sub api_level {
 	my $self = shift;
-	return $self->_attr_get_set( api_level => shift );
+	my $val = shift;
+	$self->{api_level} = $val if (defined $val);
+	return $self->{api_level};
 }
 
 =head2 OpenSRF::DomainObject::oilsMessage->threadTrace( [$new_threadTrace] );
@@ -78,7 +92,9 @@ for a message.  Useful as a debugging aid, but that's about it.
 
 sub threadTrace {
 	my $self = shift;
-	return $self->_attr_get_set( threadTrace => shift );
+	my $val = shift;
+	$self->{threadTrace} = $val if (defined $val);
+	return $self->{threadTrace};
 }
 
 =head2 OpenSRF::DomainObject::oilsMessage->update_threadTrace
@@ -119,17 +135,9 @@ of (sub)type domainObject or domainObjectCollection.
 
 sub payload {
 	my $self = shift;
-	my $new_pl = shift;
-
-	my ($payload) = $self->getChildrenByTagName('oils:domainObjectCollection') ||
-				$self->getChildrenByTagName('oils:domainObject');
-	if ($new_pl) {
-		$payload = $self->removeChild($payload) if ($payload);
-		$self->appendChild($new_pl);
-		return $new_pl unless ($payload);
-	}
-
-	return OpenSRF::DOM::upcast($payload)->upcast if ($payload);
+	my $val = shift;
+	$self->{payload} = $val if (defined $val);
+	return $self->{payload};
 }
 
 =head2 OpenSRF::DomainObject::oilsMessage->handler( $session_id )
@@ -292,7 +300,7 @@ sub do_client {
 		# This should be changed to check the type of response (is it a connectException?, etc.)
 	}
 
-	if( $self->payload and $self->payload->class->isa( "OpenSRF::EX" ) ) { 
+	if( $self->payload and $self->payload->isa( "OpenSRF::EX" ) ) { 
 		$self->payload->throw();
 	}
 
