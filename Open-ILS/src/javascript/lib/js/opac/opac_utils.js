@@ -318,7 +318,7 @@ function buildOrgSelector() {
 
 function orgSelect(id) {
 	showCanvas();
-	updateLoc(id);
+	updateLoc(id, findOrgDepth(id));
 }
 
 
