@@ -28,6 +28,7 @@ function rresultHandleRIds(r) {
 function rresultCollectRecords(ids) {
 	var x = 0;
 	for( var i = getOffset(); i!= getDisplayCount() + getOffset(); i++ ) {
+		if(ids[i] == null) break;
 		var req = new Request(FETCH_RMODS, parseInt(ids[i]));
 		req.callback(rresultHandleMods);
 		req.request.userdata = x++;

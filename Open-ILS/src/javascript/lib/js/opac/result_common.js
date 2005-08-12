@@ -3,6 +3,12 @@ var authorCache = {};
 var seriesCache = {};
 var recordsHandled = 0;
 
+function resultFinalPageIndex() {
+	if(getHitCount() < (getOffset() + getDisplayCount())) 
+		return getHitCount() - 1;
+	return getOffset() + getDisplayCount() - 1;
+}
+
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
 function resultSetInfo() { 

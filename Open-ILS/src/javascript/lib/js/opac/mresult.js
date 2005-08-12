@@ -6,7 +6,6 @@ var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
 
 function mresultUnload() { removeChildren(table); table = null;}
 
-
 function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
@@ -20,7 +19,6 @@ function mresultDoSearch() {
 		mresultCollectIds(); /* do the actual search */
 	} else { 
 		resultSetInfo();
-		//mresultCollectRecords();  /* grab the records if we have the id's cached */
 		mresultCollectIds();
 	}
 }
@@ -41,12 +39,18 @@ function mresultHandleCount(r) {
 /* performs the actual search */
 function mresultCollectIds() {
 
-	var c = JSON2js(idsCookie.get(COOKIE_IDS));
-	if(c && c.recs) { records = c.recs; ranks = c.ranks; } 
 
-	if( records[getOffset()] != null && 
-			records[getOffset() + getDisplayCount() - 1] != null) {
-	//		alert("cached!");
+	if(getOffset() == 0) {
+		idsCookie.put(COOKIE_IDS,"");
+		idsCookie.write();
+	} else {
+		var c = JSON2js(idsCookie.get(COOKIE_IDS));
+		if(c && c.recs) { records = c.recs; ranks = c.ranks; } 
+	}
+
+	if(	getOffset() != 0 && 
+			records[getOffset()] != null && 
+			records[resultFinalPageIndex()] != null) {
 			mresultCollectRecords(); 
 
 	} else {
@@ -65,9 +69,10 @@ function mresultHandleMRIds(r) {
 
 function mresultSetRecords(idstruct) {
 	var o = getOffset();
-	for( var x = o; x!= idstruct.length + o; x++ ) {
-		records[x] = idstruct[x - o][0];
-		ranks[x] = idstruct[x - o][1];
+	for( var x = o; x < idstruct.length + o; x++ ) {
+		if(idstruct[x-o] == null) break;
+		records[x] = parseInt(idstruct[x - o][0]);
+		ranks[x] = parseFloat(idstruct[x - o][1]);
 	}
 	idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
 	idsCookie.write();
