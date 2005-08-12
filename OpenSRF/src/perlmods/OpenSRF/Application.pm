@@ -128,14 +128,14 @@ sub handler {
 
 			$in_request++;
 
-			$log->debug( "Executing coderef for {$method_name -> ".join(', ', @args)."}", INTERNAL );
+			$log->debug( "Executing coderef for {$method_name}", INTERNAL );
 
 			my $resp;
 			try {
 				my $start = time();
 				$resp = $coderef->run( $appreq, @args); 
 				my $time = sprintf '%.3f', time() - $start;
-				$log->debug( "Method duration for {$method_name -> ".join(', ', @args)."}:  ". $time, DEBUG );
+				$log->debug( "Method duration for {$method_name}:  ". $time, INFO );
 				if( defined( $resp ) ) {
 					$appreq->respond_complete( $resp );
 				} else {
