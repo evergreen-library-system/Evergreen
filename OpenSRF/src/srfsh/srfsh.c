@@ -604,8 +604,6 @@ int send_request( char* server,
 				} else
 					content = object_get_string(omsg->_result_content);
 	
-				debug_handler("srfsh2");
-	
 				buffer_add( resp_buffer, "\nReceived Data: " ); 
 				buffer_add( resp_buffer, content );
 				buffer_add( resp_buffer, "\n" );
