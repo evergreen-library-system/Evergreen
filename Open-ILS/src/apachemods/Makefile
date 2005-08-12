@@ -3,7 +3,7 @@
 #APXS2 = /home/erickson/sandbox/apache2/bin/apxs
 # ---------------------------------------------------------------------------------
 
-LD_OPTS	+= -lxml2 -lc_utils
+LD_OPTS	+= -lxml2 -lc_utils -lxslt
 
 all: mod_xmltools.so
 

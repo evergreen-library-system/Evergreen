@@ -8,13 +8,14 @@ int main(int argc, char* argv[]) {
 	char* file = argv[1];
 	char* dtdfile = argv[2];
 
+
+	printf("\n%s\n", xmlDocToString(xmlParseEntity(file), 1));
+
 	xmlDocPtr doc;
 
-
-	/*
-	xmlSubstituteEntitiesDefault(0);
+	xmlSubstituteEntitiesDefault(1);
 	xmlParserCtxtPtr ctxt = xmlNewParserCtxt();
-	doc = xmlCtxtReadFile(ctxt, file, NULL, XML_PARSE_NOENT | XML_PARSE_RECOVER | XML_PARSE_XINCLUDE | XML_PARSE_NOERROR | XML_PARSE_NOWARNING );
+	doc = xmlCtxtReadFile(ctxt, file, NULL, XML_PARSE_NOENT | XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING );
 	if(doc != NULL) 
 		fprintf(stderr, "What we have so far:\n%s\n", xmlDocToString(doc, 1));
 	else {
@@ -22,15 +23,14 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	exit(99);
-	*/
-
 	/* parse the doc */
+	/*
 	if( (doc = xmlParseFile(file)) == NULL) {
 		fprintf(stderr, "\n ^-- Error parsing XML file %s\n", file);
 		fflush(stderr);
 		return 99;
 	}
+	*/
 
 	/* process xincludes */
 	if( xmlXIncludeProcessFlags(doc, XML_PARSE_NOENT) < 0 ) {
@@ -42,12 +42,23 @@ int main(int argc, char* argv[]) {
 	}
 
 
+
 	/* replace the DTD */
+	/*
 	if(xmlReplaceDtd(doc, dtdfile) < 0) {
 		fprintf(stderr, "Error replacing DTD file with file %s\n", dtdfile);
 		fflush(stderr);
 		return 99;
 	}
+	*/
+
+	//
+	xmlAddDocEntity(doc, "test", XML_INTERNAL_GENERAL_ENTITY, NULL, NULL, "Here is my test");
+
+	xmlSubstituteEntitiesDefault(1);
+	printf("---------------------------------\n%s\n", xmlDocToString(doc,1));
+	exit(99);
+	//
 
 	/* force DTD entity replacement */
 	doc = xmlProcessDtdEntities(doc);
@@ -58,7 +69,6 @@ int main(int argc, char* argv[]) {
 	fprintf(stderr, "%s\n", xml);
 
 	/* deallocate */
-	free(dtdfile);
 	free(xml);
 	xmlFreeDoc(doc);
 	xmlCleanupCharEncodingHandlers();
@@ -112,6 +122,8 @@ int xmlReplaceDtd(xmlDocPtr doc, char* dtdfile) {
 
 char* xmlDocToString(xmlDocPtr doc, int full) {
 
+	if(!doc) return NULL;
+
 	char* xml;
 
 	if(full) {
@@ -132,5 +144,6 @@ char* xmlDocToString(xmlDocPtr doc, int full) {
 		return xml;
 
 	}
-
 }
+
+
