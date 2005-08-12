@@ -47,7 +47,8 @@ for my $object (keys %$map) {
 	}
 	print "];\n";
 
-	print "fmclasses = _c;\n";
 
 }
+
+print "fmclasses = _c;\n";
 

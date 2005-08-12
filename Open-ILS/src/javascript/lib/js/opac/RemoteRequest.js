@@ -45,38 +45,31 @@ function RemoteRequest( service, method ) {
 
 	if(!this.params) { this.params = ""; }
 	this.param_string = "service=" + service + "&method=" + method + this.params;
-
-	if( ! this.type || ! this.service || ! this.method ) {
-		alert( "ERROR IN REQUEST PARAMS");
-		return null;
-	}
-
-	if( this.buildXMLRequest() == null )
-		alert("NEWER BROWSER");
+	if( this.buildXMLRequest() == null ) alert("Browser is not supported!");
 }
 
 /* constructs our XMLHTTPRequest object */
 RemoteRequest.prototype.buildXMLRequest = function() {
 
+	var x;
 	try { 
-		this.xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); 
+		x = new ActiveXObject("Msxml2.XMLHTTP"); 
 	} catch (e) {
 		try { 
-			this.xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); 
+			x = new ActiveXObject("Microsoft.XMLHTTP"); 
 		} catch (E) {
-			this.xmlhttp = false;
+			x = false;
 		}
 	}
 
-	if (!this.xmlhttp && typeof XMLHttpRequest!='undefined') {
-		this.xmlhttp = new XMLHttpRequest();
-	}
+	if (!x && typeof XMLHttpRequest!='undefined') x = new XMLHttpRequest();
 
-	if(!this.xmlhttp) {
+	if(!x) {
 		alert("NEEDS NEWER JAVASCRIPT for XMLHTTPRequest()");
 		return null;
 	}
 
+	this.xmlhttp = x;
 	return true;
 }
 
@@ -129,13 +122,6 @@ RemoteRequest.prototype.setSecure = function(bool) {
 	this.secure = bool; 
 }
 
-/** Send the request 
-  * By default, all calls are asynchronous.  if 'blocking' is
-  * set to true, then the call will block until a response
-  * is received.  If blocking, callbacks will not be called.
-  * In other words, you can assume the data is avaiable 
-  * (getResponseObject()) as soon as the send call returns. 
-  */
 RemoteRequest.prototype.send = function(blocking) {
 
 	if(this.cancelled) return;
@@ -186,26 +172,17 @@ RemoteRequest.prototype.isReady = function() {
 
 /* returns the JSON->js result object  */
 RemoteRequest.prototype.getResultObject = function() {
-	//this.callback = null;
 	if(this.cancelled) return null;
 
 	var text = this.xmlhttp.responseText;
 	var obj = JSON2js(text);
 
-	if(obj == null) {
-		return null;
-	}
-
-	if(obj.is_err) { 
-		throw new EXCommunication(obj.err_msg); 
-	}
-
-	if( obj[0] != null && obj[1] == null ) 
-		obj = obj[0];
+	if(obj == null) return null;
+	if(obj.is_err)  throw new EXCommunication(obj.err_msg); 
+	if( obj[0] != null && obj[1] == null ) obj = obj[0];
 
 	/* these are user level exceptions from the server code */
 	if(instanceOf(obj, ex)) {
-		/* the opac will go ahead and spit out the error msg */
 		if(!isXUL()) alert(obj.err_msg());
 		throw obj;
 	}

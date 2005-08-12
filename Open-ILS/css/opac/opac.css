@@ -36,7 +36,7 @@ body table		{ font-size: inherit; }
 .sidebar_div { float: left; width: 19%; }
 .side_bar_item { padding-left: 15px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px; }
 .sidebar_chunk {border-right: 1px solid lightgrey; margin-bottom: 2px;}
-.sidebar_extra_item { font-size: 95%; padding: 3px; }
+.sidebar_extra_item { font-size: 95%; padding: 2px; }
 .sidebar_extra_link { text-decoration: none; }
 .sidebar_header { margin-top: 10px; padding-left: 3px; }
 

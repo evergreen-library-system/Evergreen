@@ -16,10 +16,6 @@ Request.prototype.send		= function(block){this.request.send(block);}
 Request.prototype.result	= function(){return this.request.getResultObject();}
 /* ----------------------------------------------------------------------- */
 
-
-/* ----------------------------------------------------------------------- */
-/* Functions for showing the canvas (and hiding any other shown stuff) */
-/* ----------------------------------------------------------------------- */
 function showCanvas() { setTimeout(_showCanvas, 200); }
 function _showCanvas() {
 	for( var x in G.ui.altcanvas ) {
@@ -27,9 +23,8 @@ function _showCanvas() {
 	}
 	hideMe(G.ui.common.loading);
 	unHideMe(G.ui.common.canvas_main);
-	G.ui.searchbar.text.focus(); /* focus the searchbar */
+	G.ui.searchbar.text.focus(); 
 }
-
 
 var newCanvasNode;
 function swapCanvas(newNode) { newCanvasNode = newNode; setTimeout(_swapCanvas, 200); }
@@ -41,8 +36,6 @@ function _swapCanvas() {
 	hideMe(G.ui.common.canvas_main);
 	unHideMe(newCanvasNode);
 }
-/* ----------------------------------------------------------------------- */
-
 
 /* finds the name of the current page */
 function findCurrentPage() {
@@ -60,8 +53,7 @@ function findCurrentPage() {
 
 
 /* builds an opac URL.  If no page is defined, the current page is used
-	if slim, then only everything after the ? is returned (no host portion)
- */
+	if slim, then only everything after the ? is returned (no host portion) */
 function  buildOPACLink(args, slim) {
 
 	if(!args) args = {};
@@ -100,30 +92,15 @@ function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 }
 
 
-
-
-
-/* ----------------------------------------------------------------------- */
-/* some useful exceptions */
 function EX(message) { this.init(message); }
-
-EX.prototype.init = function(message) {
-   this.message = message;
-}
-
-EX.prototype.toString = function() {
-   return "\n *** Exception Occured \n" + this.message;
-}  
-
+EX.prototype.init = function(message) { this.message = message; }
+EX.prototype.toString = function() { return "\n *** Exception Occured \n" + this.message; }  
 EXCommunication.prototype              = new EX();
 EXCommunication.prototype.constructor  = EXCommunication;
 EXCommunication.baseClass              = EX.prototype.constructor;
+function EXCommunication(message) { this.init("EXCommunication: " + message); }                          
 
-function EXCommunication(message) {
-   this.init("EXCommunication: " + message);
-}                          
 /* ----------------------------------------------------------------------- */
-
 function cleanISBN(isbn) {
    if(isbn) {
       isbn = isbn.toString().replace(/^\s+/,"");
@@ -136,7 +113,6 @@ function cleanISBN(isbn) {
 
 
 
-/* ----------------------------------------------------------------------- */
 /* builds a link that goes to the title listings for a metarecord */
 function buildTitleLink(rec, link) {
 	if(!rec) return;
@@ -171,17 +147,13 @@ function buildSearchLink(type, string, linknode, trunc) {
 	linknode.setAttribute("href", buildOPACLink(args));
 }
 
-/* ----------------------------------------------------------------------- */
-
-
 
 /* ----------------------------------------------------------------------- */
 /* user session handling */
 /* ----------------------------------------------------------------------- */
 
 /* session is the login session.  If no session is provided, we attempt
-	to find one in the cookies.  
-	If 'force' is true we retrieve the 
+	to find one in the cookies.  If 'force' is true we retrieve the 
 	user from the server even if there is already a global user present.
 	if ses != G.user.session, we also force a grab */
 var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
@@ -193,7 +165,6 @@ function grabUser(ses, force) {
 	if(!force) 
 		if(G.user && G.user.session == ses)
 			return G.user;
-
 
 	/* first make sure the session is valid */
 	var request = new Request(FETCH_SESSION, ses );

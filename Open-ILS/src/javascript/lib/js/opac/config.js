@@ -69,7 +69,6 @@ function clearUIObjects() {
 }
 
 
-
 /* ---------------------------------------------------------------------------- */
 /* Set up ID's and CSS classes */
 /* ---------------------------------------------------------------------------- */
@@ -80,11 +79,11 @@ config.ids = {};
 config.names = {};
 
 config.ids.common = {};
-config.ids.common.loading		= "loading_div";		/* generic 'loading..' message */
-config.ids.common.canvas		= "canvas";				/* outer UI canvas that holds the main canvas and any other hidden help components*/	
-config.ids.common.canvas_main	= "canvas_main";		/* main data display canvas */
-config.ids.common.org_tree		= "org_tree";			/* org tree selector thingy */
-config.ids.common.org_container	= "org_container";			/* org tree selector thingy */
+config.ids.common.loading		= "loading_div";		
+config.ids.common.canvas		= "canvas";				
+config.ids.common.canvas_main	= "canvas_main";		
+config.ids.common.org_tree		= "org_tree";			
+config.ids.common.org_container	= "org_container";
 
 config.css = {};
 config.css.hide_me = "hide_me";
@@ -99,7 +98,6 @@ config.page[MRESULT]		= "/webxml/mresult.xml";
 config.page[RRESULT]		= "/webxml/rresult.xml";
 config.page[MYOPAC]		= "/webxml/myopac/index.xml";
 config.page[RDETAIL]		= "/webxml/rdetail.xml";
-
 
 /* mresult */
 config.ids.mresult = {};
@@ -138,7 +136,6 @@ config.ids.login.username	= "login_username";
 config.ids.login.password	= "login_password";
 config.ids.login.button		= "login_button";
 config.ids.login.cancel		= "login_cancel_button";
-
 
 
 /* searchbar ids and css */

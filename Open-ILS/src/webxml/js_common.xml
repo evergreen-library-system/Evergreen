@@ -12,11 +12,15 @@
 
 	<script language='javascript' src='/lib/js/opac/dtree.js'> </script>
 
+
 	<script language='javascript' src='/lib/js/opac/init.js'> </script>
 	<script language='javascript' src='/lib/js/opac/opac_utils.js'> </script>
 	<script language='javascript' src='/lib/js/opac/RemoteRequest.js'> </script>
 	<script language='javascript' src='/lib/js/opac/JSON.js'> </script>
-	<script language='javascript' src='/lib/js/opac/web_fieldmapper.js'> </script>
+
+	<script language='javascript' src='/lib/js/opac/fmcore.js'> </script>
+	<script language='javascript' src='/lib/js/opac/fmgen.js'> </script>
+
 	<script language='javascript' src='/lib/js/opac/OrgTree.js'> </script>
 	<script language='javascript' src='/lib/js/opac/added_content.js'> </script>
 

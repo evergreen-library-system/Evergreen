@@ -158,7 +158,6 @@ function resultAddCopyCounts(countsrow, rec) {
 	}
 
 	return 100 - (nodes.length * 8);
-
 }
 
 /* collect copy counts for a record using method 'methodName' */
@@ -187,74 +186,48 @@ function resultDisplayCopyCounts(rec, copy_counts) {
 }
 
 function resultSortSubjects(a, b) { return -(a.count - b.count); } /* sort in reverse */
-
 function resultDrawSubjects() {
-
 	var subjs = [];
 	for( var s in subjectCache )
 		subjs.push( { sub : s, count : subjectCache[s] } );
 	subjs.sort(resultSortSubjects);
 
-	var template = G.ui.sidebar.subject.removeChild(G.ui.sidebar.subject_item);
-	var x = 0;
-	var newnode = template.cloneNode(true);
-
-	var found = false;
-	for( var s in subjs ) {
-		if(isNull(subjs[s])) continue;
-		if(x++ > 7) break;
-		buildSearchLink(STYPE_SUBJECT, subjs[s].sub, 
-			findNodeByName(newnode, config.names.sidebar.subject_item), 30);
-		G.ui.sidebar.subject.appendChild(newnode);
-		newnode = template.cloneNode(true);
-		found = true;
-	}
-	if(found) unHideMe(G.ui.sidebar.subject);
+	var ss = [];
+	for( var s in subjs ) ss.push(subjs[s].sub);
+	resultDrawSidebarStuff(STYPE_SUBJECT, G.ui.sidebar.subject_item,  
+		config.names.sidebar.subject_item, ss, G.ui.sidebar.subject);
 }
 
 function resultDrawAuthors() {
-
-	var template = G.ui.sidebar.author.removeChild(G.ui.sidebar.author_item);
-	var x = 0;
-	var newnode = template.cloneNode(true);
-
 	var auths = new Array();
 	for( var s in authorCache ) auths.push(s);
-	auths = auths.sort();
-
-	var found = false;
-	for( var i in auths ) {
-		if(isNull(auths[i])) continue;
-		if(x++ > 7) break;
-		buildSearchLink(STYPE_AUTHOR, auths[i], findNodeByName(newnode, config.names.sidebar.author_item), 30);
-		G.ui.sidebar.author.appendChild(newnode);
-		newnode = template.cloneNode(true);
-		found = true;
-	}
-	if(found) unHideMe(G.ui.sidebar.author);
+	resultDrawSidebarStuff(STYPE_AUTHOR, G.ui.sidebar.author_item,  
+		config.names.sidebar.author_item, auths.sort(), G.ui.sidebar.author);
 }
 
-
 function resultDrawSeries() {
-	var template = G.ui.sidebar.series.removeChild(G.ui.sidebar.series_item);
-	var x = 0;
-	var newnode = template.cloneNode(true);
-
 	var sers = new Array();
 	for( var s in seriesCache ) sers.push(s);
-	sers = sers.sort();
+	resultDrawSidebarStuff(STYPE_SERIES, G.ui.sidebar.series_item,  
+		config.names.sidebar.series_item, sers.sort(), G.ui.sidebar.series);
+}
 
+/* search type, template node, href link name, array of text, node to unhide */
+function resultDrawSidebarStuff(stype, node, linkname, items, wrapperNode) {
+	var parent = node.parentNode;
+	var template = parent.removeChild(node);
+	var x = 0;
+	var newnode = template.cloneNode(true);
 	var found = false;
-	for( var i in sers ) {
-		if(isNull(sers[i])) continue;
+	for( var i in items ) {
+		if(isNull(items[i])) continue;
 		if(x++ > 7) break;
-		buildSearchLink(STYPE_SERIES, sers[i], findNodeByName(newnode, config.names.sidebar.series_item), 30);
-		G.ui.sidebar.series.appendChild(newnode);
+		buildSearchLink(stype, items[i], findNodeByName(newnode, linkname), 100);
+		parent.appendChild(newnode);
 		newnode = template.cloneNode(true);
 		found = true;
 	}
-	if(found) unHideMe(G.ui.sidebar.series);
-
+	if(found) unHideMe(wrapperNode);
 }
 
 
