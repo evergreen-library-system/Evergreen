@@ -51,9 +51,6 @@ struct osrf_message_struct {
 	int thread_trace;
 	int protocol;
 
-	int parse_json_result;
-	int parse_json_params;
-	
 	/* if we're a STATUS message */
 	char* status_name;
 
@@ -79,7 +76,6 @@ struct osrf_message_struct {
 		we won't touch this variable */
 	struct osrf_message_struct* next;
 
-	string_array* parray;
 	char* full_param_string;
 
 };
@@ -103,14 +99,6 @@ int osrf_message_deserialize(char* json, osrf_message* msgs[], int count);
   * Returns the number of message that are in the buffer.
   */
 int osrf_message_from_xml( char* xml, osrf_message* msgs[] );
-
-/* decides whether all message automatically parse incoming json data */
-/* to change a single message, set msg->parse_json accordingly */
-//void osrf_message_set_json_parse( int bool );
-
-void osrf_message_set_json_parse_result( int ibool );
-void osrf_message_set_json_parse_params( int ibool );
-	
 
 void osrf_message_set_params( osrf_message* msg, object* o );
 void osrf_message_set_method( osrf_message* msg, char* method_name );
