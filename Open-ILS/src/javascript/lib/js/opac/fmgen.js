@@ -35,7 +35,7 @@ Fieldmapper.prototype.clone = function() {
 }
 Fieldmapper.prototype.isnew = function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; }
 Fieldmapper.prototype.ischanged = function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; }
-Fieldmapper.prototype.isdeleted = function(a) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; }
+Fieldmapper.prototype.isdeleted = function(a) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
 function FMEX(message) { this.message = message; }
 FMEX.toString = function() { return "FieldmapperException: " + this.message + "\n"; }
 
