@@ -13,7 +13,8 @@ function rresultDoSearch() {
 }
 
 function rresultCollectIds() {
-	var req = new Request(FETCH_RIDS, getMrid(), getForm() );
+	var form = (getForm() == "all") ? null : getForm();
+	var req = new Request(FETCH_RIDS, getMrid(), form );
 	req.callback( rresultHandleRIds );
 	req.send();
 }

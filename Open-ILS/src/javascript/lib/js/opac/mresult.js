@@ -15,17 +15,18 @@ function mresultDoSearch() {
 		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
-		mresultGetCount(); /* get the hit count */
-		mresultCollectIds(); /* do the actual search */
+	//	mresultGetCount(); 
+		mresultCollectIds(FETCH_MRIDS_FULL); 
 	} else { 
 		resultSetInfo();
-		mresultCollectIds();
+		mresultCollectIds(FETCH_MRIDS);
 	}
 }
 
 function mresultGetCount() {
+	var form = (getForm() == "all") ? null : getForm();
 	var req = new Request(FETCH_MRCOUNT, 
-			getStype(), getTerm(), getLocation(), getDepth(), getForm() );
+			getStype(), getTerm(), getLocation(), getDepth(), form );
 	req.callback(mresultHandleCount);
 	req.send();
 }
@@ -37,7 +38,7 @@ function mresultHandleCount(r) {
 
 
 /* performs the actual search */
-function mresultCollectIds() {
+function mresultCollectIds(method) {
 
 
 	if(getOffset() == 0) {
@@ -55,15 +56,22 @@ function mresultCollectIds() {
 
 	} else {
 
-		var req = new Request(FETCH_MRIDS, getStype(), getTerm(), 
-			getLocation(), getDepth(), getDisplayCount() * 5, getOffset(), getForm() );
+		var req = new Request(method, getStype(), getTerm(), 
+			getLocation(), getDepth(), getDisplayCount() * 20, getOffset(), getForm() );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
 }
 
 function mresultHandleMRIds(r) {
-	mresultSetRecords(r.getResultObject().ids);
+	var res = r.getResultObject();
+
+	if(res.count != null) {
+		HITCOUNT = res.count;
+		resultSetInfo();
+	} 
+
+	mresultSetRecords(res.ids);
 	mresultCollectRecords(); 
 }
 

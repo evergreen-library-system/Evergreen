@@ -553,14 +553,6 @@ sub biblio_search_class_count {
 		"depth: $org_type\n"		.
 		"format: $format\n";
 
-#	my $bool = ($class eq "subject" || $class eq "keyword");
-#	$string = OpenILS::Application::Search->filter_search($string, $bool);
-
-#	if(!$string) { 
-#		return OpenILS::EX->new("SEARCH_TOO_LARGE")->ex;
-#	}
-
-		
 	if( !defined($org_id) or !$class or !$string ) {
 		warn "not enbough args to metarecord search\n";
 		throw OpenSRF::EX::InvalidArg 
@@ -609,18 +601,28 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class.unordered",
+	api_name	=> "open-ils.search.biblio.class.full",
 );
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_class",
+	api_name	=> "open-ils.search.biblio.class.full.staff",
+);
+
+#__PACKAGE__->register_method(
+#	method	=> "biblio_search_class",
+#	api_name	=> "open-ils.search.biblio.class.unordered",
+#);
 
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class",
 	api_name	=> "open-ils.search.biblio.class.staff",
 );
 
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class.unordered.staff",
-);
+#__PACKAGE__->register_method(
+#	method	=> "biblio_search_class",
+#	api_name	=> "open-ils.search.biblio.class.unordered.staff",
+#);
 
 sub biblio_search_class {
 
@@ -628,6 +630,10 @@ sub biblio_search_class {
 			$org_id, $org_type, $limit, $offset, $format ) = @_;
 
 	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
+
+
+# new method:  metabib.<class>.new_search_fts.metarecord.<staff>
+
 
 	$offset		= 0	unless (defined($offset) and $offset > 0);
 	$limit		= 100 unless (defined($limit) and $limit > 0);
@@ -661,17 +667,20 @@ sub biblio_search_class {
 		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
 	}
 
-	#my $method = "open-ils.storage.metabib.$class.search_fts.metarecord.atomic";
 	my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic";
 
-	if($self->api_name =~ /order/) {
-		$method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.unordered.atomic",
-		#$method = "open-ils.storage.metabib.$class.search_fts.metarecord.unordered.atomic";
-	}
+#	if($self->api_name =~ /order/) {
+#		$method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.unordered.atomic",
+#	}
 
 	if($self->api_name =~ /staff/) { 
 		$method =~ s/atomic/staff\.atomic/og;
 		$method =~ s/\.cachable//o;
+	}
+
+	if($self->api_name =~ /full/) { 
+		$method =~ s/search_fts/new_search_fts/o;
+		$method =~ s/\.cachable//o; #XXX testing..
 	}
 
 	warn "Performing search method $method\n";
@@ -702,6 +711,7 @@ sub biblio_search_class {
 	warn "Received " . scalar(@$records) . " id's from class search\n";
 
 	# if we just get one, it won't be wrapped in an array
+
 	if(!ref($records->[0])) {
 		$records = [$records]; } 
 	for my $i (@$records) { 
@@ -716,9 +726,18 @@ sub biblio_search_class {
 	$session->finish();
 	$session->disconnect();
 
-	return { ids => \@ids };
+	my $count = undef;
+	if($self->api_name =~ /full/) { 
+		if(ref($records) && $records->[0]) {
+			$count = $records->[0]->[3];
+		}
+	}
+
+	return { ids => \@ids, count => $count };
 
 }
+
+
 
 
 __PACKAGE__->register_method(
@@ -881,16 +900,7 @@ sub biblio_mrid_to_record_ids {
 
 
 	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( 
-			"open-ils.storage", 
-			#"open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord", $mrid );
-			$method, 
-			$mrid, $format );
-
-
-	#my @ids;
-	#for my $map (@$mrmaps) { push @ids, $map->source(); }
-	#warn "Recovered id's [@ids] for mr $mrid\n";
-	#my $size = @ids;
+			"open-ils.storage", $method, $mrid, $format );
 
 	use Data::Dumper;
 	warn Dumper $mrmaps;
@@ -900,7 +910,6 @@ sub biblio_mrid_to_record_ids {
 	return { count => $size, ids => $mrmaps };
 
 }
-
 
 
 __PACKAGE__->register_method(

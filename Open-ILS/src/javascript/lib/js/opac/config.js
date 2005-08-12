@@ -205,6 +205,7 @@ config.ids.altcanvas.org_tree	 = config.ids.common.org_container;
 
 var FETCH_MRCOUNT				= "open-ils.search:open-ils.search.biblio.class.count:1";
 var FETCH_MRIDS				= "open-ils.search:open-ils.search.biblio.class:1";
+var FETCH_MRIDS_FULL			= "open-ils.search:open-ils.search.biblio.class.full:1";
 var FETCH_MRMODS				= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
 var FETCH_MR_COPY_COUNTS	= "open-ils.search:open-ils.search.biblio.metarecord.copy_count:1";
 var FETCH_RIDS					= "open-ils.search:open-ils.search.biblio.metarecord_to_records:1";
