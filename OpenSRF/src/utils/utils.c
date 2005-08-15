@@ -37,9 +37,10 @@ inline void* safe_malloc( int size ) {
 /* utility method for profiling */
 double get_timestamp_millis() {
 	struct timeb t;
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
 	ftime(&t);
-	double time	= ( 
-		(int)t.time	+ ( ((double)t.millitm) / 1000 ) );
+	double time	= (int)t.time	+ ( ((double)t.millitm) / 1000 )  + ( ((double)tv.tv_usec / 1000000) );
 	return time;
 }
 
@@ -323,7 +324,7 @@ int daemonize() {
 int stringisnum(char* s) {
 	char* w = (char*) malloc(strlen(s) * sizeof(char*));
 	bzero(w, strlen(s));
-	long blah = strtol(s, &w, 10);
+	strtol(s, &w, 10);
 	if(strlen(w) > 0)  
 		return 0;
 	return 1;
