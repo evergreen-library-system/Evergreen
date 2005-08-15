@@ -4,6 +4,8 @@ var table;
 var rowtemplate;
 var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
 
+G.evt.mresult.idsReceived.push(mresultSetRecords, mresultCollectRecords); 
+
 function mresultUnload() { removeChildren(table); table = null;}
 
 function mresultDoSearch() {
@@ -11,14 +13,14 @@ function mresultDoSearch() {
 	table = G.ui.result.main_table;
 
 	hideMe(G.ui.result.row_template);
-	while( table.parentNode.rows.length <= getDisplayCount() )  /* add an extra so IE and safari won't complain */
+	while( table.parentNode.rows.length <= getDisplayCount() )  /* add an extra row so IE and safari won't complain */
 		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
 	//	mresultGetCount(); 
 		mresultCollectIds(FETCH_MRIDS_FULL); 
 	} else { 
-		resultSetInfo();
+		runEvent(G.evt.result.hitCountReceived);
 		mresultCollectIds(FETCH_MRIDS);
 	}
 }
@@ -33,17 +35,17 @@ function mresultGetCount() {
 
 function mresultHandleCount(r) {
 	HITCOUNT = parseInt(r.getResultObject());
-	resultSetInfo(); 
+	runEvent(G.evt.result.hitCountReceived);
 }
 
 
 /* performs the actual search */
 function mresultCollectIds(method) {
 
-
 	if(getOffset() == 0) {
 		idsCookie.put(COOKIE_IDS,"");
 		idsCookie.write();
+
 	} else {
 		var c = JSON2js(idsCookie.get(COOKIE_IDS));
 		if(c && c.recs) { records = c.recs; ranks = c.ranks; } 
@@ -57,8 +59,9 @@ function mresultCollectIds(method) {
 	} else {
 
 		var req = new Request(method, getStype(), getTerm(), 
-			getLocation(), getDepth(), getDisplayCount() * 20, getOffset(), getForm() );
+			getLocation(), getDepth(), getDisplayCount() * 10, getOffset(), getForm() );
 		req.callback(mresultHandleMRIds);
+		/* idsRetrieved */
 		req.send();
 	}
 }
@@ -68,11 +71,9 @@ function mresultHandleMRIds(r) {
 
 	if(res.count != null) {
 		HITCOUNT = res.count;
-		resultSetInfo();
+		runEvent(G.evt.result.hitCountReceived);
 	} 
-
-	mresultSetRecords(res.ids);
-	mresultCollectRecords(); 
+	runEvent(G.evt.mresult.idsReceived, res.ids);
 }
 
 function mresultSetRecords(idstruct) {
@@ -86,13 +87,6 @@ function mresultSetRecords(idstruct) {
 	idsCookie.write();
 }
 
-function mresultHandleMods(r) {
-	var rec = r.getResultObject();
-	resultDisplayRecord(rec, rowtemplate, r.userdata, true);
-	resultCollectCopyCounts(rec, FETCH_MR_COPY_COUNTS);
-}
-
-
 function mresultCollectRecords() {
 	var i = 0;
 	for( var x = getOffset(); x!= getDisplayCount() + getOffset(); x++ ) {
@@ -102,6 +96,13 @@ function mresultCollectRecords() {
 		req.callback(mresultHandleMods);
 		req.send();
 	}
+}
+
+function mresultHandleMods(r) {
+	var rec = r.getResultObject();
+	var pagePosition = r.userdata;
+	runEvent(G.evt.result.recordReceived, rec, pagePosition, true);
+	resultCollectCopyCounts(rec, pagePosition, FETCH_MR_COPY_COUNTS);
 }
 
 

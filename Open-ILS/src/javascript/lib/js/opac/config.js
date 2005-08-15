@@ -121,6 +121,7 @@ config.css.result.nav_active		= "nav_link_active";
 config.ids.result.top_div			= "result_table_div";
 config.ids.result.nav_links		= "search_nav_links";
 config.ids.result.info				= "result_info_div";
+config.css.result.cc_cell_even	= "copy_count_cell_even";
 
 config.names.result.item_jacket	= "item_jacket";
 config.names.result.item_title	= "item_title";
@@ -214,6 +215,35 @@ var LOGIN_INIT					= "open-ils.auth:open-ils.auth.authenticate.init";
 var LOGIN_COMPLETE			= "open-ils.auth:open-ils.auth.authenticate.complete";
 var LOGIN_DELETE				= "open-ils.auth:open-ils.auth.session.delete";
 /* ---------------------------------------------------------------------------- */
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* event callback functions. Other functions may be appended to these vars to
+	for added functionality.  */
+
+function runEvent(evt, a, b, c, d, e, f, g) { /* if we need more args than 7, we'll add them ;) */
+	for( var i in evt ) evt[i](a, b, c, d, e, f, g);	
+}
+
+
+G.evt				= {};
+G.evt.xul		= {};
+G.evt.mresult	= {};
+G.evt.rresult	= {};
+G.evt.result	= {};
+
+
+G.evt.mresult.idsReceived			= []; /* f(ids) */
+G.evt.rresult.idsReceived			= []; /* f(ids) */
+
+G.evt.result.hitCountReceived		= [];	/* f() : display hit info, pagination, etc. */
+G.evt.result.recordReceived		= []; /* f(mvr, pagePosition, isMr) : display the record*/
+G.evt.result.copyCountsReceived	= [];	/* f(mvr, pagePosition, copyCountInfo) : display copy counts*/
+G.evt.result.allRecordsReceived	= [];	/* f(mvrsArray) : add other page stuff, sidebars, etc.*/
+
+
+
 
 
 

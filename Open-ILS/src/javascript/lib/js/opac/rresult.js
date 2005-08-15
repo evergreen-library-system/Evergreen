@@ -2,6 +2,8 @@ var records = new Array();
 var table;
 var rowtemplate;
 
+G.evt.rresult.idsReceived.push(rresultCollectRecords); 
+
 function rresultUnload() { removeChildren(table); table = null;}
 
 function rresultDoSearch() {
@@ -22,8 +24,8 @@ function rresultCollectIds() {
 function rresultHandleRIds(r) {
 	var res = r.getResultObject();
 	HITCOUNT = parseInt(res.count);
-	resultSetInfo();
-	rresultCollectRecords(res.ids);
+	runEvent(G.evt.result.hitCountReceived);
+	runEvent(G.evt.rresult.idsReceived, res.ids);
 }
 
 function rresultCollectRecords(ids) {
@@ -39,7 +41,7 @@ function rresultCollectRecords(ids) {
 
 function rresultHandleMods(r) {
 	var rec = r.getResultObject();
-	resultDisplayRecord(rec, rowtemplate, r.userdata, false);
-	resultCollectCopyCounts(rec, FETCH_R_COPY_COUNTS);
+	runEvent(G.evt.result.recordReceived, rec, r.userdata, false);
+	resultCollectCopyCounts(rec, r.userdata, FETCH_R_COPY_COUNTS);
 }
 
