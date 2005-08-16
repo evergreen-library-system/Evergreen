@@ -101,6 +101,7 @@ void socket_disconnect(socket_manager*, int sock_fd);
 socket_node*  _socket_add_node(socket_manager* mgr, 
 		int endpoint, int addr_type, int sock_fd, int parent_id );
 
+/* XXX This only works if 'sock_fd' is a client socket... */
 int socket_wait(socket_manager* mgr, int timeout, int sock_fd);
 
 /* waits on all sockets for incoming data.  
@@ -115,6 +116,9 @@ int socket_wait_all(socket_manager* mgr, int timeout);
 	Any new data read is is passed off to the data_received callback
 	as it arrives */
 int _socket_route_data(socket_manager* mgr, int num_active, fd_set* read_set);
+
+/* routes data from a single known socket */
+int _socket_route_data_id( socket_manager* mgr, int sock_id);
 
 /* utility function for displaying the currently attached sockets */
 void _socket_print_list(socket_manager* mgr);

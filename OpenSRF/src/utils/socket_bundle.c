@@ -329,8 +329,35 @@ int socket_connected(int sock_fd) {
 
 }
 
+/* this only waits on the server socket and does not handle the actual
+	data coming in from the client..... XXX */
 int socket_wait(socket_manager* mgr, int timeout, int sock_fd) {
-	return 0;
+
+	int retval = 0;
+	fd_set read_set;
+	FD_ZERO( &read_set );
+	FD_SET( sock_fd, &read_set );
+
+	struct timeval tv;
+	tv.tv_sec = timeout;
+	tv.tv_usec = 0;
+
+	if( timeout < 0 ) {  
+
+		// If timeout is -1, we block indefinitely
+		if( (retval = select( sock_fd + 1, &read_set, NULL, NULL, NULL)) == -1 ) {
+			return warning_handler("Call to select interrupted");
+		}
+
+	} else if( timeout > 0 ) { /* timeout of 0 means don't block */
+
+		if( (retval = select( sock_fd + 1, &read_set, NULL, NULL, &tv)) == -1 ) {
+			return warning_handler( "Call to select interrupted" );
+		}
+	}
+
+	debug_handler("%d active sockets after select()", retval);
+	return _socket_route_data_id(mgr, sock_fd);
 }
 
 
@@ -356,7 +383,7 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 	tv.tv_sec = timeout;
 	tv.tv_usec = 0;
 
-	if( timeout == -1 ) {  
+	if( timeout < 0 ) {  
 
 		// If timeout is -1, there is no timeout passed to the call to select
 		if( (retval = select( max_fd, &read_set, NULL, NULL, NULL)) == -1 ) {
@@ -403,11 +430,9 @@ int _socket_route_data(
 				status = -1;
 				break;
 			}
-
 	
 			/* does this socket have data? */
 			if( FD_ISSET( sock_fd, read_set ) ) {
-
 	
 				debug_handler("Socket %d active", sock_fd);
 				handled++;
@@ -441,12 +466,27 @@ int _socket_route_data(
 }
 
 
+int _socket_route_data_id( socket_manager* mgr, int sock_id) {
+	socket_node* node = socket_find_node(mgr, sock_id);	
+	int status = 0;
+
+	if(node) {
+		if(node->endpoint == SERVER_SOCKET) 
+			_socket_handle_new_client(mgr, node);
+	
+		if(node->endpoint == CLIENT_SOCKET ) 
+			status = _socket_handle_client_data(mgr, node);
+
+		if(status == -1) socket_remove_node(mgr, sock_id);
+		return 0;
+	} 
+
+	return -1;
+}
+
+
 int _socket_handle_new_client(socket_manager* mgr, socket_node* node) {
 	if(mgr == NULL || node == NULL) return -1;
-
-	//struct sockaddr_in client_addr_in; 
-	//struct sockaddr_un client_addr_un; 
-	//int client_len, new_sock_fd; 
 
 	int new_sock_fd;
 	new_sock_fd = accept(node->sock_fd, NULL, NULL);
