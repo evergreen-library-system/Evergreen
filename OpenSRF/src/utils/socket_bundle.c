@@ -137,14 +137,89 @@ int socket_open_unix_server(socket_manager* mgr, char* path) {
 }
 
 
+int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
 
-/* creates a client socket and adds it to the socket set.
-	returns 0 on success.  -1 on failure.
-	socket_type is one of INET or UNIX  */
-int socket_open_client(socket_manager* mgr, 
-		int socket_type, int port, char* sock_path, char* dest_addr) {
-	return 0;
+	struct sockaddr_in remoteAddr, localAddr;
+   struct hostent *hptr;
+   int sock_fd;
+
+   // ------------------------------------------------------------------
+   // Create the socket
+   // ------------------------------------------------------------------
+   if( (sock_fd = socket( AF_INET, SOCK_STREAM, 0 )) < 0 ) {
+      fatal_handler( "tcp_connect(): Cannot create socket" );
+      return -1;
+   }
+
+   // ------------------------------------------------------------------
+   // Get the hostname
+   // ------------------------------------------------------------------
+   if( (hptr = gethostbyname( dest_addr ) ) == NULL ) {
+      fatal_handler( "tcp_connect(): Unknown Host => %s", dest_addr );
+      return -1;
+   }
+
+   // ------------------------------------------------------------------
+   // Construct server info struct
+   // ------------------------------------------------------------------
+   memset( &remoteAddr, 0, sizeof(remoteAddr));
+   remoteAddr.sin_family = AF_INET;
+   remoteAddr.sin_port = htons( port );
+   memcpy( (char*) &remoteAddr.sin_addr.s_addr,
+         hptr->h_addr_list[0], hptr->h_length );
+
+   // ------------------------------------------------------------------
+   // Construct local info struct
+   // ------------------------------------------------------------------
+   memset( &localAddr, 0, sizeof( localAddr ) );
+   localAddr.sin_family = AF_INET;
+   localAddr.sin_addr.s_addr = htonl( INADDR_ANY );
+   localAddr.sin_port = htons(0);
+
+   // ------------------------------------------------------------------
+   // Bind to a local port
+   // ------------------------------------------------------------------
+   if( bind( sock_fd, (struct sockaddr *) &localAddr, sizeof( localAddr ) ) < 0 ) {
+      fatal_handler( "tcp_connect(): Cannot bind to local port" );
+      return -1;
+   }
+
+   // ------------------------------------------------------------------
+   // Connect to server
+   // ------------------------------------------------------------------
+   if( connect( sock_fd, (struct sockaddr*) &remoteAddr, sizeof( struct sockaddr_in ) ) < 0 ) {
+      fatal_handler( "tcp_connect(): Cannot connect to server %s", dest_addr );
+      return -1;
+   }
+
+	_socket_add_node(mgr, CLIENT_SOCKET, INET, sock_fd, -1 );
+
+   return sock_fd;
 }
+
+
+int socket_open_unix_client(socket_manager* mgr, char* sock_path) {
+
+	int sock_fd, len;
+   struct sockaddr_un usock;
+
+   if( (sock_fd = socket( AF_UNIX, SOCK_STREAM, 0 )) < 0 )
+      return warning_handler( "Cannot create socket" );
+
+   usock.sun_family = AF_UNIX;
+   strcpy( usock.sun_path, sock_path );
+
+   len = sizeof( usock.sun_family ) + strlen( usock.sun_path );
+
+   if( connect( sock_fd, (struct sockaddr *) &usock, len ) < 0 )
+      return warning_handler( "Error connecting to unix socket" );
+
+	_socket_add_node(mgr, CLIENT_SOCKET, UNIX, sock_fd, -1 );
+
+   return sock_fd;
+}
+
+
 
 /* returns the socket_node with the given sock_fd */
 socket_node* socket_find_node(socket_manager* mgr, int sock_fd) {
@@ -210,6 +285,7 @@ int socket_send(int sock_fd, const char* data) {
 	debug_handler( "socket_bundle sending to %d data %s",
 		sock_fd, data);
 
+	info_handler("%d : Sending data at %lf\n", getpid(), get_timestamp_millis());
 	signal(SIGPIPE, SIG_IGN); /* in case a unix socket was closed */
 	if( send( sock_fd, data, strlen(data), 0 ) < 0 ) {
 		return warning_handler( "tcp_server_send(): Error sending data" );
@@ -395,7 +471,8 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	set_fl(sock_fd, O_NONBLOCK);
 	debug_handler("Gathering client data for %d", node->sock_fd);
 
-	debug_handler("Socket buf before read %s", buf);
+	info_handler("%d : Received data at %lf\n", getpid(), get_timestamp_millis());
+
 	while( (read_bytes = recv(sock_fd, buf, BUFSIZE-1, 0) ) > 0 ) {
 		debug_handler("Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);
 		if(mgr->data_received)
