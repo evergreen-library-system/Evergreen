@@ -18,6 +18,7 @@
 		<username>my_jabber_login</username>
 		<passwd>my_jabber_password</passwd>
 		<port>5222</port>
+		<unixpath>/path/to/unix_sock_file</unixpath>
 
 	</bootstrap>
 
