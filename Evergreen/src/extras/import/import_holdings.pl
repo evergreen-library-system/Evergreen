@@ -5,33 +5,17 @@ use Time::HiRes qw/time/;
 use Getopt::Long;
 use Data::Dumper;
 use Error qw/:try/;
+use DBI;
 use open qw/:utf8/;
 
-$|=1;
-
-my ($userid, $sourceid, $cn_id, $cp_id, $cp_file, $cn_file, $map_file, $lib_map_file) =
-	(1, 2, 1, 1, 'asset_copy.sql','asset_volume.sql','record_id_map.pl','lib-map.pl');
-
-GetOptions (	
-	"sourceid"		=> \$sourceid,
-	"copy_file=s"		=> \$cp_file,
-	"volume_file=s"		=> \$cn_file,
-	"tcn_map_file=s"	=> \$map_file,
-	"lib_map_file=s"	=> \$lib_map_file,
-	"userid=i"		=> \$userid,
-	"first_volume=i"	=> \$cn_id,
-	"first_copy=i"		=> \$cp_id,
-);
-
-my $tcn_map;
-my $lib_map;
-
-eval `cat $map_file`;
-eval `cat $lib_map_file`;
-
-open CP, ">$cp_file" or die "Can't open $cp_file!  $!\n";
-open CN, ">$cn_file" or die "Can't open $cn_file!  $!\n";
-
+#-------------------------------------------------------------------------------
+#  The keys of this hash should be the string values stored in your legacy
+#  system that map to the copy statuses in Open-ILS.  If you don't see a
+#  legacy status here that you need to carry over to your new Open-ILS install
+#  you can use the "Copy Statuses" bootstrapping CGI to create an entry for it.
+#  Then simply a key for the legacy status that points to the SysID of the new
+#  Open-ILS Copy Status.
+#-------------------------------------------------------------------------------
 my %status_map = (
 	''		=> 0,
 	CHECKEDOUT	=> 1,
@@ -41,13 +25,70 @@ my %status_map = (
 	INPROCESS	=> 5,
 	INTRANSIT	=> 6,
 	RESHELVING	=> 7,
-	'ON HOLDS SHELF' => 8,
+	'ON HOLDS SHELF'=> 8,
 	'ON-ORDER'	=> 9,
 	ILL		=> 10,
 	CATALOGING	=> 11,
 	RESERVES	=> 12,
 	DISCARD		=> 13,
 );
+
+
+$|=1;
+
+my ($userid,$cn_id,$cp_id,$cp_file,$cn_file,$map_file,$lib_map_field,$id_tag) =
+	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','record_id_map.pl','shortname','/*/*/*[@tag="035"][1]');
+
+my ($holding_tag,$bc,$lbl,$own,$pr,$cpn,$avail) =
+	('/*/*/*[@tag="999"]','i','a','m','p','c','k');
+
+my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
+	('Pg','localhost','demo-dev','postgres','postgres');
+
+GetOptions (	
+	"copy_file=s"		=> \$cp_file,
+	"volume_file=s"		=> \$cn_file,
+	"tcn_map_file=s"	=> \$map_file,
+	"userid=i"		=> \$userid,
+	"first_volume=i"	=> \$cn_id,
+	"first_copy=i"		=> \$cp_id,
+	"db_driver=s"		=> \$db_driver,
+	"db_host=s"		=> \$db_host,
+	"db_name=s"		=> \$db_name,
+	"db_user=s"		=> \$db_user,
+	"db_pw=s"		=> \$db_pw,
+	"lib_map_field=s"	=> \$lib_map_field,
+	"id_tag_xpath=s"	=> \$id_tag,
+	"holding_tag_xpath=s"	=> \$holding_tag,
+	"item_barcode=s"	=> \$bc,
+	"item_call_number=s"	=> \$lbl,
+	"item_owning_lib=s"	=> \$own,
+	"item_price=s"		=> \$pr,
+	"item_copy_number=s"	=> \$cpn,
+	"item_copy_status=s"	=> \$avail,
+
+);
+
+my $dsn = "dbi:$db_driver:host=$db_host;dbname=$db_name";
+my $dbh = DBI->connect($dsn,$db_user,$db_pw);
+
+my $t = 'actor_org_unit';
+if ($db_driver eq 'Pg') {
+	$t = 'actor.org_unit';
+}
+my $sth = $dbh->prepare("SELECT $lib_map_field,id FROM $t");
+$sth->execute;
+
+my $lib_map = {};
+while (my $lib = $sth->fetchrow_arrayref) {
+	$$lib_map{$$lib[0]} = $$lib[1];
+}
+	
+my $tcn_map;
+eval `cat $map_file`;
+
+open CP, ">$cp_file" or die "Can't open $cp_file!  $!\n";
+open CN, ">$cn_file" or die "Can't open $cn_file!  $!\n";
 
 
 print CP <<SQL;
@@ -101,13 +142,13 @@ while ( $xml .= <STDIN> ) {
 
 	my $rec_id = $$tcn_map{$tcn};
 
-	for my $node ($doc->documentElement->findnodes('/*/*[@tag="999"]')) {
-		my $barcode = $node->findvalue( '*[@code="i"]' );
-		my $label = $node->findvalue( '*[@code="a"]' );
-		my $owning_lib = $$lib_map{ $node->findvalue( '*[@code="m"]' ) };
-		my $price = $node->findvalue( '*[@code="p"]' );
-		my $copy_number = $node->findvalue( '*[@code="c"]' );
-		my $available = $node->findvalue( '*[@code="k"]' ) || '';
+	for my $node ($doc->documentElement->findnodes($holding_tag)) {
+		my $barcode = $node->findvalue( "*[\@code=\"$bc\"]" );
+		my $label = $node->findvalue( "*[\@code=\"$lbl\"]" );
+		my $owning_lib = $$lib_map{ $node->findvalue( "*[\@code=\"$own\"]" ) };
+		my $price = $node->findvalue( "*[\@code=\"$pr\"]" );
+		my $copy_number = $node->findvalue( "*[\@code=\"$cpn\"]" ) || 0;
+		my $available = $node->findvalue( "*[\@code=\"$avail\"]" ) || '';
 
 		my $status = $status_map{$available} || 0;
 

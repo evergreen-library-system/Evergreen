@@ -9,14 +9,15 @@ use open qw/:utf8/;
 
 $|=1;
 
-my ($userid, $sourceid, $rec_id, $entry_file, $map_file) = (1, 2, 1, 'record_entry.sql','record_id_map.pl');
+my ($userid,$sourceid,$rec_id,$entry_file,$map_file,$id_tag) = (1,2,1,'record_entry.sql','record_id_map.pl','/*/*/*[@tag="035"][1]');
 
 GetOptions (	
 	"sourceid"		=> \$sourceid,
-	"entry_file=s"		=> \$entry_file,
-	"tcn_map_file=s"	=> \$map_file,
+	"sql_output=s"		=> \$entry_file,
+	"tcn_output=s"		=> \$map_file,
 	"userid=i"		=> \$userid,
 	"first=i"		=> \$rec_id,
+	"id_tag_xpath=s"	=> \$id_tag,
 );
 
 my $tcn_map;
@@ -37,11 +38,16 @@ while ( $xml .= <STDIN> ) {
 	chomp $xml;
 	next unless $xml;
 
-	my $tcn;
+	my $tcn = '';
 	my $success = 0;
 	try {
 		my $doc = $parser->parse_string($xml);;
-		$tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"][1]' );
+		my @nodes = $doc->documentElement->findnodes( $id_tag );
+		for my $n (@nodes) {
+			$tcn .= $n->textContent;
+		}
+		$tcn =~ s/^\s*(\.+)\s*/$1/o;
+		$tcn =~ s/\s+/_/go;
 		$success = 1;
 	} catch Error with {
 		my $e = shift;
