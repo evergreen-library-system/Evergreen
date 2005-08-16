@@ -41,6 +41,7 @@ JSERVERSOCK="$PREFIX/var/sock/jserver.sock";	# jabber server socket file
 JSERVERLOG="$LOGDIR/jserver.log" # jabber server log 
 JSERVERPORT=5222;						# jabber server port 
 JSERVERLEVEL=3; # can be 1-4, 4 is the highest
+JSERVERIP="*"; # can be "*" or a specific local IP address
 ROUTERLOG="$LOGDIR/router.log"	# jabber router log
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
@@ -74,7 +75,7 @@ function startJserver {
 	fi;
 	
 	rm -f "$JSERVERSOCK";
-	"$BINDIR/$JSERVERBIN" $JSERVERPORT "$JSERVERSOCK" "$JSERVERLEVEL" "$JSERVERLOG"
+	"$BINDIR/$JSERVERBIN" $JSERVERPORT "$JSERVERIP" "$JSERVERSOCK" "$JSERVERLEVEL" "$JSERVERLOG"
 }
 
 
