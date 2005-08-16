@@ -1,7 +1,7 @@
 # set this shell variable prior to calling make to run with malloc_check enabled
 #MALLOC_CHECK_=1 # XXX debug only
 
-LD_OPTS	+= -lxml2 -lopensrf_transport -lc_utils 
+LD_OPTS	+= -lxml2 -lc_utils 
 
 SOURCES	= transport_socket.c transport_session.c transport_message.c transport_client.c
 TARGETS	= transport_socket.o transport_message.o transport_session.o transport_client.o 
