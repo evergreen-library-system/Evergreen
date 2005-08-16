@@ -111,7 +111,7 @@ FOREACH mr_id IN mr_list;
 %]
 		&lt;b&gt;Subjects:&lt;/b&gt; 
 [%
-	FOREACH sub IN mods.subject();
+	FOREACH sub IN mods.subject().keys;
 		IF loop.count() > 3;
 			', ...';
 			LAST;
@@ -120,7 +120,7 @@ FOREACH mr_id IN mr_list;
 			', ';
 		END;
 		-%]
-&lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=subject&amp;mr_search_query=[% sub.list.0 | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% sub.list.0 | html %]&lt;/a&gt;[%
+&lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=subject&amp;mr_search_query=[% sub | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% sub | html %]&lt;/a&gt;[%
 	END;
 %]
 &lt;br&gt;
