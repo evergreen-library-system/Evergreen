@@ -509,22 +509,22 @@ int _socket_handle_new_client(socket_manager* mgr, socket_node* node) {
 int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	if(mgr == NULL || node == NULL) return -1;
 
-	char buf[BUFSIZE];
+	char buf[RBUFSIZE];
 	int read_bytes;
 	int sock_fd = node->sock_fd;
 
-	memset(buf, 0, BUFSIZE);
+	memset(buf, 0, RBUFSIZE);
 	set_fl(sock_fd, O_NONBLOCK);
 	debug_handler("Gathering client data for %d", node->sock_fd);
 
 	info_handler("%d : Received data at %lf\n", getpid(), get_timestamp_millis());
 
-	while( (read_bytes = recv(sock_fd, buf, BUFSIZE-1, 0) ) > 0 ) {
+	while( (read_bytes = recv(sock_fd, buf, RBUFSIZE-1, 0) ) > 0 ) {
 		debug_handler("Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);
 		if(mgr->data_received)
 			mgr->data_received(mgr->blob, mgr, sock_fd, buf, node->parent_id);
 
-		memset(buf, 0, BUFSIZE);
+		memset(buf, 0, RBUFSIZE);
 	}
 
 	if(socket_find_node(mgr, sock_fd)) {  /* someone may have closed this socket */

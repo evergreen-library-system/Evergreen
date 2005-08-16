@@ -116,15 +116,11 @@ function runInstall {
 	# pass the collected variables to make
 	for target in ${TARGETS[@]:0}; do
 
-		cat <<-MSG
+		echo ""
+		echo "-------------- [ $target ] -------------------------------------------";
+		echo ""
 
-		--------------------------------------------------------------------
-		Building $target
-		--------------------------------------------------------------------
-
-		MSG
-
-		MAKE="make APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
+		MAKE="make -s APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
 			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR \
 			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR ETCDIR=$ETCDIR \
@@ -261,9 +257,9 @@ function checkParams {
 
 function cleanMe {
 	loadConfig;
-	make -C "$OPENSRFDIR" clean;
-	make -C "$OPENILSDIR"  clean;
-	make -C "$EVERGREENDIR" clean;
+	make -s -C "$OPENSRFDIR" clean;
+	make -s -C "$OPENILSDIR"  clean;
+	make -s -C "$EVERGREENDIR" clean;
 }
 
 checkParams "$@";

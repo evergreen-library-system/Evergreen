@@ -634,7 +634,7 @@ int osrf_app_session_queue_wait( osrf_app_session* session, int timeout ){
 	if(session == NULL) return 0;
 	int ret_val = 0;
 	debug_handler( "AppSession in queue_wait with timeout %d", timeout );
-	ret_val = osrf_stack_process(session->transport_handle, timeout );
+	ret_val = osrf_stack_process(session->transport_handle, timeout);
 	return ret_val;
 }
 

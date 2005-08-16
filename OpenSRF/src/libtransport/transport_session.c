@@ -6,7 +6,8 @@
 // returns a built and allocated transport_session object.
 // This codes does no network activity, only memory initilization
 // ---------------------------------------------------------------------------------
-transport_session* init_transport(  char* server, int port, void* user_data, int component ) {
+transport_session* init_transport(  char* server, 
+	int port, char* unix_path, void* user_data, int component ) {
 
 	/* create the session struct */
 	transport_session* session = 
@@ -52,15 +53,26 @@ transport_session* init_transport(  char* server, int port, void* user_data, int
 	session->parser_ctxt = xmlCreatePushParserCtxt(SAXHandler, session, "", 0, NULL);
 
 	/* initialize the transport_socket structure */
-	session->sock_obj = (transport_socket*) safe_malloc( sizeof(transport_socket) );
+	//session->sock_obj = (transport_socket*) safe_malloc( sizeof(transport_socket) );
+	session->sock_mgr = (socket_manager*) safe_malloc( sizeof(socket_manager) );
 
 	//int serv_size = strlen( server );
+/*
 	session->sock_obj->server = server;
 	session->sock_obj->port = port;
 	session->sock_obj->data_received_callback = &grab_incoming;
+*/
+
+	session->sock_mgr->data_received = &grab_incoming;
+	session->sock_mgr->blob	= session;
+	
+	session->port = port;
+	session->server = strdup(server);
+	session->unix_path = strdup(unix_path);
+	session->sock_id = 0;
 
 	/* this will be handed back to us in callbacks */
-	session->sock_obj->user_data = session; 
+	//session->sock_obj->user_data = session; 
 
 	return session;
 }
@@ -71,8 +83,11 @@ transport_session* init_transport(  char* server, int port, void* user_data, int
 int session_free( transport_session* session ) {
 	if( ! session ) { return 0; }
 
-	if( session->sock_obj ) 
-		free( session->sock_obj );
+	//if( session->sock_obj ) 
+	//	free( session->sock_obj );
+
+	if(session->sock_mgr)
+		socket_manager_free(session->sock_mgr);
 
 	if( session->state_machine ) free( session->state_machine );
 	if( session->parser_ctxt) {
@@ -95,6 +110,8 @@ int session_free( transport_session* session ) {
 	buffer_free(session->router_command_buffer);
 	buffer_free(session->session_id);
 
+	free(session->server);
+	free(session->unix_path);
 
 	free( session );
 	return 1;
@@ -102,11 +119,13 @@ int session_free( transport_session* session ) {
 
 
 int session_wait( transport_session* session, int timeout ) {
-	if( ! session || ! session->sock_obj ) {
+	if( ! session || ! session->sock_mgr ) {
 		return 0;
 	}
-	int ret =  tcp_wait( session->sock_obj, timeout );
-	if( ! ret ) {
+
+	int ret =  socket_wait( session->sock_mgr, timeout, session->sock_id );
+
+	if( ret ) {
 		session->state_machine->connected = 0;
 	}
 	return ret;
@@ -123,7 +142,8 @@ int session_send_msg(
 	}
 
 	message_prepare_xml( msg );
-	tcp_send( session->sock_obj, msg->msg_xml );
+	//tcp_send( session->sock_obj, msg->msg_xml );
+	socket_send( session->sock_id, msg->msg_xml );
 
 	return 1;
 
@@ -144,15 +164,21 @@ int session_connect( transport_session* session,
 	}
 
 
-	char* server = session->sock_obj->server;
+	//char* server = session->sock_obj->server;
+	char* server = session->server;
 
-	if( ! session->sock_obj ) {
-		return 0;
-	}
+	if( ! session->sock_id ) {
 
-	if( ! session->sock_obj->connected ) {
-		if( ! tcp_connect( session->sock_obj ))
+		if(session->port > 0) {
+			if( (session->sock_id = socket_open_tcp_client(
+				session->sock_mgr, session->port, session->server)) <= 0 ) 
 			return 0;
+
+		} else if(session->unix_path != NULL) {
+			if( (session->sock_id = socket_open_unix_client(
+				session->sock_mgr, session->unix_path)) <= 0 ) 
+			return 0;
+		}
 	}
 
 	if( session->component ) {
@@ -169,13 +195,16 @@ int session_connect( transport_session* session,
 
 		/* send the first stanze */
 		session->state_machine->connecting = CONNECTING_1;
-		if( ! tcp_send( session->sock_obj, stanza1 ) ) {
+
+//		if( ! tcp_send( session->sock_obj, stanza1 ) ) {
+		if( socket_send( session->sock_id, stanza1 ) ) {
 			warning_handler("error sending");
 			return 0;
 		}
 	
 		/* wait for reply */
-		tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+		//tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+		socket_wait(session->sock_mgr, connect_timeout, session->sock_id);
 	
 		/* server acknowledges our existence, now see if we can login */
 		if( session->state_machine->connecting == CONNECTING_2 ) {
@@ -191,7 +220,8 @@ int session_connect( transport_session* session,
 			memset( stanza2, 0, size2 );
 			sprintf( stanza2, "<handshake>%s</handshake>", hash );
 	
-			if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+			//if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+			if( socket_send( session->sock_id, stanza2 )  ) {
 				warning_handler("error sending");
 				return 0;
 			}
@@ -211,14 +241,16 @@ int session_connect( transport_session* session,
 
 		/* send the first stanze */
 		session->state_machine->connecting = CONNECTING_1;
-		if( ! tcp_send( session->sock_obj, stanza1 ) ) {
+		//if( ! tcp_send( session->sock_obj, stanza1 ) ) {
+		if( socket_send( session->sock_id, stanza1 ) ) {
 			warning_handler("error sending");
 			return 0;
 		}
 
 
 		/* wait for reply */
-		tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+		//tcp_wait( session->sock_obj, connect_timeout ); /* make the timeout smarter XXX */
+		socket_wait( session->sock_mgr, connect_timeout, session->sock_id ); /* make the timeout smarter XXX */
 
 		if( auth_type == AUTH_PLAIN ) {
 
@@ -234,7 +266,8 @@ int session_connect( transport_session* session,
 	
 			/* server acknowledges our existence, now see if we can login */
 			if( session->state_machine->connecting == CONNECTING_2 ) {
-				if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+				//if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+				if( socket_send( session->sock_id, stanza2 )  ) {
 					warning_handler("error sending");
 					return 0;
 				}
@@ -261,7 +294,8 @@ int session_connect( transport_session* session,
 	
 			/* server acknowledges our existence, now see if we can login */
 			if( session->state_machine->connecting == CONNECTING_2 ) {
-				if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+				//if( ! tcp_send( session->sock_obj, stanza2 )  ) {
+				if( socket_send( session->sock_id, stanza2 )  ) {
 					warning_handler("error sending");
 					return 0;
 				}
@@ -273,7 +307,8 @@ int session_connect( transport_session* session,
 
 
 	/* wait for reply */
-	tcp_wait( session->sock_obj, connect_timeout );
+	//tcp_wait( session->sock_obj, connect_timeout );
+	socket_wait( session->sock_mgr, connect_timeout, session->sock_id );
 
 	if( session->state_machine->connected ) {
 		/* yar! */
@@ -286,12 +321,11 @@ int session_connect( transport_session* session,
 // ---------------------------------------------------------------------------------
 // TCP data callback. Shove the data into the push parser.
 // ---------------------------------------------------------------------------------
-void grab_incoming( void * session, char* data ) {
-	transport_session* ses = (transport_session*) session;
+//void grab_incoming( void * session, char* data ) {
+void grab_incoming(void* blob, socket_manager* mgr, int sockid, char* data, int parent) {
+	transport_session* ses = (transport_session*) blob;
 	if( ! ses ) { return; }
-	debug_handler("Parsing incoming XML chunk");
 	xmlParseChunk(ses->parser_ctxt, data, strlen(data), 0);
-	debug_handler("Completed parsing incoming XML chunk");
 }
 
 
@@ -590,7 +624,10 @@ void  parseErrorHandler( void *session, const char* msg, ... ){
 
 int session_disconnect( transport_session* session ) {
 	if( session == NULL ) { return 0; }
-	tcp_send( session->sock_obj, "</stream:stream>");
-	return tcp_disconnect( session->sock_obj );
+	//tcp_send( session->sock_obj, "</stream:stream>");
+	socket_send(session->sock_id, "</stream:stream>");
+	socket_disconnect(session->sock_mgr, session->sock_id);
+	return 0;
+	//return tcp_disconnect( session->sock_obj );
 }
 

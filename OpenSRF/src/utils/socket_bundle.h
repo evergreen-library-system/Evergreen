@@ -34,7 +34,7 @@
 #define UNIX 11 
 
 /* buffer used to read from the sockets */
-#define BUFSIZE 1024 
+#define RBUFSIZE 1024 
 
 
 /* models a single socket connection */

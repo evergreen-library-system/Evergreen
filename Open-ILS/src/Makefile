@@ -14,22 +14,28 @@ web-install:	web-templates-install javascript-install autojs-install  mod_xmltoo
 JSDIR=$(WEBDIR)/js
 
 marcdumper:
+	echo $@
 	make -C extras/marcdumper
 
 marcdumper-install:
+	echo $@
 	make -C extras/marcdumper install
 
 mod_xmltools:
+	echo $@
 	make -C apachemods mod_xmltools.so
 
 mod_xmltools-install:
+	echo $@
 	make -C apachemods mod_xmltools-install
 
 webxml-install:
+	echo $@
 	mkdir -p $(WEBDIR)
 	cp -r webxml $(WEBDIR)
 
 perl-install:
+	echo $@
 	@echo "Installing Perl modules to $(PERLDIR)"
 	mkdir -p $(PERLDIR)
 	cp -r perlmods/* $(PERLDIR)
@@ -38,6 +44,7 @@ perl-install:
 	cp -r templates/marc $(TEMPLATEDIR)
 
 javascript-install:
+	echo $@
 	@echo "Installing javascript to $(JSDIR)"
 	mkdir -p $(JSDIR)
 	cp -r javascript/* $(JSDIR)
@@ -45,6 +52,7 @@ javascript-install:
 	cp ../../$(OPENSRFDIR)/javascript/md5.js $(JSDIR)/util/
 
 storage-bootstrap:
+	echo $@
 	@echo "Installing cgi's to $(CGIDIR)"
 	mkdir -p $(CGIDIR)
 	cp -r cgi-bin/* $(CGIDIR)
@@ -52,28 +60,32 @@ storage-bootstrap:
 
 
 autojs-install:
+	echo $@
 	cp extras/fieldmapper.pl $(BINDIR)
 	cp extras/org_tree_js.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
 
 web-templates-install:
+	echo $@
 	@echo "Installing web templates to $(TEMPLATEDIR)"
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/opac $(TEMPLATEDIR)
 	cp -r templates/html $(TEMPLATEDIR)
 
 string-templates-install:
+	echo $@
 	@echo "Installing string templates to $(TEMPLATEDIR)"
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/strings $(TEMPLATEDIR)
 
 
 xsl-install:	
+	echo $@
 	@echo "Installing XSL files to $(XSLDIR)"
 	mkdir -p $(XSLDIR)
 	cp ../xsl/*.xsl $(XSLDIR)
 
 clean:
-	@echo "Cleaning..."
+	echo $@
 	make -C extras clean
 

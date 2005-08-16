@@ -9,7 +9,6 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 	debug_handler( "Received message from transport code from %s", msg->sender );
 	int status = osrf_stack_transport_handler( msg );
 
-	/* see if there are multiple message to be received */
 	while(1) {
 		transport_message* m = client_recv( client, 0 );
 		if(m) {
@@ -52,16 +51,15 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 
 	debug_handler( "We received %d messages from %s", num_msgs, msg->sender );
 
-	/* XXX ERROR CHECKING, BAD XML, ETC... */
+	/* XXX ERROR CHECKING, BAD JSON, ETC... */
 	int i;
 	for( i = 0; i != num_msgs; i++ ) {
-
 
 		/* if we've received a jabber layer error message (probably talking to 
 			someone who no longer exists) and we're not talking to the original
 			remote id for this server, consider it a redirect and pass it up */
 		if(msg->is_error) {
-			warning_handler( "Received Jabber layer error message" ); 
+			warning_handler( " !!! Received Jabber layer error message" ); 
 
 			if(strcmp(session->remote_id,session->orig_remote_id)) {
 				warning_handler( "Treating jabber error as redirect for tt [%d] "
@@ -77,10 +75,8 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 		}
 
 		osrf_stack_message_handler( session, arr[i] );
-		debug_handler("transport layer: message_handler returned, do we have more?");
 	}
 
-	debug_handler("transport layer: no more messages to process in this batch");
 	message_free( msg );
 	debug_handler("after msg delete");
 

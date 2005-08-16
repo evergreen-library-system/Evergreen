@@ -66,6 +66,7 @@ struct jabber_connect_struct {
 	char* username;
 	char* password;
 	char* resource;
+	char* unixpath;
 	int connect_timeout;
 
 	transport_client* t_client;
@@ -136,7 +137,7 @@ typedef struct transport_router_registrar_struct transport_router_registrar;
 // attempt for the top level connection.
 // ----------------------------------------------------------------------
 transport_router_registrar* router_registrar_init( char* server, 
-		int port, char* username, char* password, char* resource, 
+		int port, char* unixpath, char* username, char* password, char* resource, 
 		int client_timeout, int connect_timeout, int component );
 
 // ----------------------------------------------------------------------
@@ -155,7 +156,7 @@ int j_connect( jabber_connect* jabber );
 // for freeing the memory with jabber_connect_free();
 // ----------------------------------------------------------------------
 jabber_connect* jabber_connect_init( char* server, 
-		int port, char* username, char* password, 
+		int port, char* unixpath, char* username, char* password, 
 		char* resource, int connect_timeout, int component );
 
 // ----------------------------------------------------------------------

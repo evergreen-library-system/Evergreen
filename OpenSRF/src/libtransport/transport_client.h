@@ -38,8 +38,10 @@ typedef struct transport_client_struct transport_client;
 // Allocates and initializes and transport_client.  This does no connecting
 // The user must call client_free(client) when finished with the allocated
 // object.
+// if port > 0 => connect via TCP
+// else if unix_path != NULL => connect via UNIX socket
 // ---------------------------------------------------------------------------
-transport_client* client_init( char* server, int port, int component );
+transport_client* client_init( char* server, int port, char* unix_path, int component );
 
 
 // ---------------------------------------------------------------------------

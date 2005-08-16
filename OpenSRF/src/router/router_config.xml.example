@@ -26,6 +26,7 @@
 	<transport>
 		<server>jabber_server.domain.com</server>
 		<port>5222</port>
+		<unixpath>/path/to/unix_sock</unixpath>
 		<username>router</username>
 		<password>my_password</password>
 		<resource>router</resource>

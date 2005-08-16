@@ -5,16 +5,36 @@ SOURCES = osrf_message.c osrf_app_session.c osrf_stack.c osrf_system.c osrf_conf
 TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_config.o
 HEADERS = osrf_message.h osrf_app_session.h osrf_stack.h osrf_system.h osrf_config.h
 
-all: lib 
+all: msg libopensrf_stack.so 
 
-lib: $(SOURCES) $(HEADERS)
-	$(CC) -c $(CC_OPTS)	$(SOURCES)  
+msg: 
+	echo "-> $$(pwd)"	
+
+libopensrf_stack.so: $(TARGETS)
+	echo $@
+	$(CC) -shared -W1 $(TARGETS) -o libopensrf_stack.so
 	$(CC) -shared -W1 $(TARGETS) -o $(TMPDIR)/libopensrf_stack.so
 	cp $(HEADERS) $(TMPDIR)/
 
+osrf_message.o:	osrf_message.c osrf_message.h
+	echo $@; $(CC) -c $(CC_OPTS) osrf_message.c -o $@
+
+osrf_app_session.o:	osrf_app_session.c osrf_app_session.h
+	echo $@; $(CC) -c $(CC_OPTS) osrf_app_session.c -o $@
+
+osrf_stack.o:	osrf_stack.c osrf_stack.h
+	echo $@; $(CC) -c $(CC_OPTS) osrf_stack.c -o $@
+
+osrf_system.o:	osrf_system.c osrf_system.h
+	echo $@; $(CC) -c $(CC_OPTS) osrf_system.c -o $@
+
+osrf_config.o:	osrf_config.c osrf_config.h
+	echo $@; $(CC) -c $(CC_OPTS) osrf_config.c -o $@
+
 install:
+	echo installing libopensrf_stack.so
 	cp $(HEADERS) $(INCLUDEDIR)/$(OPENSRF)
 	cp $(TMPDIR)/libopensrf_stack.so $(LIBDIR)/
 
 clean:
-	/bin/rm -f *.o 
+	/bin/rm -f *.o libopensrf_stack.so

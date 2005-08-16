@@ -192,7 +192,9 @@ int strprintsha(char *dest, int *hashval)
 		snprintf(hashstr, 9, "%08x", hashval[x]);
 		hashstr+=8;
 	}
-	snprintf(hashstr++, 1, "\0");
+	//snprintf(hashstr++, 1, "\0");
+	hashstr[0] = '\0';
+	hashstr++;
 
 	return 0;
 }

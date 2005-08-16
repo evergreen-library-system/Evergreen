@@ -16,21 +16,20 @@
 
 all: build
 
-
 config:	
-	./config.sh
+	@./config.sh
 
 oldconfig:	install.conf
 
 install.conf:	
-	./config.sh
+	@./config.sh
 
 build:	oldconfig
-	./install.sh build
+	@./install.sh build
 
 install:
-	./install.sh install
+	@./install.sh install
 
 clean:
-	./install.sh clean
+	@./install.sh clean
 	

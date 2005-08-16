@@ -23,9 +23,6 @@ export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) 
 
 all: test prep router srfsh jserver gateway rest_gateway
 
-test: test
-	echo "TEST TEST TEST"
-
 install: install-prep transport-install stack-install gateway-install	\
 		router-install srfsh-install jserver-install perl-install			\
 		objson-install utils-install info
@@ -37,20 +34,15 @@ prep:
 # LIBS 
 # --------------------------------------------------------------------------------
 c_utils: prep
-	echo APXS2=$(APXS2) PREFIX=$(PREFIX) TMP=$(TMP) APCHE2_HEADERS=$(APACHE2_HEADERS) LIBXML2_HEADERS=$(LIBXML2_HEADERS)
-	@echo -e "\n + c_utils"
 	make -C utils
 
 transport: c_utils
-	@echo -e "\n + transport"
 	make -C libtransport
 
 objson: c_utils
-	@echo -e "\n + objson"
 	make -C objson
 
 stack: objson transport 
-	@echo -e "\n + stack"
 	make -C libstack
 
 
@@ -58,23 +50,18 @@ stack: objson transport
 # BINARIES
 # --------------------------------------------------------------------------------
 router: stack 
-	@echo -e "\n + router"
 	make -C router 
 
 srfsh: stack
-	@echo -e "\n + srfsh"
 	make -C srfsh
 
 gateway:	stack 
-	@echo -e "\n + gateway"
 	make -C gateway
 
 rest_gateway:	stack 
-	@echo -e "\n + rest_gateway"
 	make -e -C gateway rest_gateway
 
 jserver: c_utils
-	@echo -e "\n + jserver"
 	make -C jserver
 
 
@@ -143,7 +130,6 @@ info:
 # CLEAN	
 # --------------------------------------------------------------------------------
 clean:
-	@echo "Cleaning..."
 	make -C libtransport clean
 	make -C libstack clean
 	make -C router clean

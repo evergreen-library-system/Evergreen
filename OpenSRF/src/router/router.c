@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#define ROUTER_MAX_MSGS_PER_PACKET 12
+#define ROUTER_MAX_MSGS_PER_PACKET 256
 char* router_resource;
 transport_router_registrar* routt;
 void _build_trusted_sites( transport_router_registrar* router );
@@ -30,6 +30,7 @@ int main( int argc, char* argv[] ) {
 	/* laod the config options */
 	char* server			= config_value("opensrf.router", "//router/transport/server");
 	char* port				= config_value("opensrf.router", "//router/transport/port");
+	char* unixpath			= config_value("opensrf.router", "//router/transport/unixpath");
 	char* username			= config_value("opensrf.router", "//router/transport/username");
 	char* password			= config_value("opensrf.router", "//router/transport/password");
 	router_resource		= config_value("opensrf.router", "//router/transport/resource");
@@ -51,30 +52,27 @@ int main( int argc, char* argv[] ) {
 	free(level);
 	free(log_file);
 
-	fprintf(stderr, "Router connecting as \nserver: %s \nport: %s \nuser:%s \nresource:%s\n", 
-			server, port, username, router_resource );
+	fprintf(stderr, "Router connecting as \nserver: %s \nport: %s \nunixpath: %s\nuser:%s \nresource:%s\n", 
+			server, port, unixpath, username, router_resource );
 
-	int iport			= atoi( port );
+	int iport = 0;
+	if(port)	iport = atoi( port );
+
 	int con_itimeout	= atoi( con_timeout );
 	int max_retries_	= atoi(max_retries);
 	int icomponent = 0;
 	if(component) 
 		icomponent = atoi(component);
 
-	if( iport < 1 ) { 
-		fatal_handler( "Port is negative or 0" );
-		return 99;
-	}
-
-
 	/* build the router_registrar */
 	transport_router_registrar* router_registrar = 
-		router_registrar_init( server, iport, username, password, router_resource, 0, con_itimeout, icomponent ); 
+		router_registrar_init( server, iport, unixpath, username, password, router_resource, 0, con_itimeout, icomponent ); 
 
 	routt = router_registrar;
 
 	free(server);
 	free(port);
+	free(unixpath);
 	free(username);
 	free(password);
 	free(con_timeout);
@@ -114,7 +112,7 @@ int main( int argc, char* argv[] ) {
 }
 
 transport_router_registrar* router_registrar_init( char* server, 
-		int port, char* username, char* password, 
+		int port, char* unixpath, char* username, char* password, 
 		char* resource, int client_timeout, int con_timeout, int component ) {
 
 	if( server == NULL ) { return NULL; }
@@ -124,7 +122,7 @@ transport_router_registrar* router_registrar_init( char* server,
 	transport_router_registrar* router_registrar = (transport_router_registrar*) safe_malloc( size );
 
 	router_registrar->client_timeout	= client_timeout;
-	router_registrar->jabber = jabber_connect_init( server, port, username, password, resource, con_timeout, component );
+	router_registrar->jabber = jabber_connect_init( server, port, unixpath, username, password, resource, con_timeout, component );
 	_build_trusted_sites( router_registrar );
 	info_handler( "Trusted stuff %s, %s, %s", router_registrar->trusted_servers[0], 
 		router_registrar->trusted_clients[0], router_registrar->trusted_clients[1] );
@@ -164,14 +162,16 @@ void _build_trusted_sites( transport_router_registrar* router ) {
 }
 
 
-jabber_connect* jabber_connect_init( char* server, 
-		int port, char* username, char* password, char* resource, int connect_timeout, int component ) {
+jabber_connect* jabber_connect_init( 	
+	char* server, int port, char* unixpath, char* username, 
+		char* password, char* resource, int connect_timeout, int component ) {
 
 	size_t len = sizeof(jabber_connect);
 	jabber_connect* jabber = (jabber_connect*) safe_malloc( len );
 
 	jabber->port				= port;
 	jabber->connect_timeout	= connect_timeout;
+	jabber->unixpath			= strdup(unixpath);
 
 	jabber->server				= strdup(server);
 	jabber->username			= strdup(username);
@@ -185,7 +185,7 @@ jabber_connect* jabber_connect_init( char* server,
 	}
 
 	/* build the transport client */
-	jabber->t_client = client_init( jabber->server, jabber->port, component );
+	jabber->t_client = client_init( jabber->server, jabber->port, unixpath, component );
 
 	return jabber;
 }
@@ -208,13 +208,13 @@ int fill_fd_set( transport_router_registrar* router, fd_set* set ) {
 	int max_fd;
 	FD_ZERO(set);
 
-	int router_fd = router->jabber->t_client->session->sock_obj->sock_fd;
+	int router_fd = router->jabber->t_client->session->sock_id;
 	max_fd = router_fd;
 	FD_SET( router_fd, set );
 
 	server_class_node* cur_node = router->server_class_list;
 	while( cur_node != NULL ) {
-		int cur_class_fd = cur_node->jabber->t_client->session->sock_obj->sock_fd;
+		int cur_class_fd = cur_node->jabber->t_client->session->sock_id;
 		if( cur_class_fd > max_fd ) 
 			max_fd = cur_class_fd;
 		FD_SET( cur_class_fd, set );
@@ -232,7 +232,7 @@ void listen_loop( transport_router_registrar* router ) {
 		return;
 
 	int select_ret;
-	int router_fd = router->jabber->t_client->session->sock_obj->sock_fd;
+	int router_fd = router->jabber->t_client->session->sock_id;
 	transport_message* cur_msg;
 
 	while(1) {
@@ -244,7 +244,7 @@ void listen_loop( transport_router_registrar* router ) {
 			fatal_handler( "fill_fd_set return bogus max_fd: %d", max_fd );
 
 		int num_handled = 0;
-		info_handler( "Going into select" );
+		info_handler( "Router going into select() wait..." );
 
 		if( (select_ret=select(max_fd+ 1, &listen_set, NULL, NULL, NULL)) < 0 ) {
 
@@ -307,12 +307,15 @@ void listen_loop( transport_router_registrar* router ) {
 			server_class_node* cur_node = router->server_class_list;
 			while( cur_node != NULL ) {
 				debug_handler( "Checking File Descriptor" );
-				int cur_fd = cur_node->jabber->t_client->session->sock_obj->sock_fd;
+				int cur_fd = cur_node->jabber->t_client->session->sock_id;
+
+				debug_handler("Router checking file descriptor %d", cur_fd);
 
 				if( FD_ISSET(cur_fd, &listen_set) ) {
 					++num_handled;
 					FD_CLR(cur_fd,&listen_set);
 
+					debug_handler("Router has data on file descriptor %d", cur_fd);
 					cur_msg = client_recv( cur_node->jabber->t_client, 1 );
 
 					if(cur_msg) {
@@ -328,11 +331,9 @@ void listen_loop( transport_router_registrar* router ) {
 						} else if( handle_ret == 0 ) {
 							/* delete and continue */
 							warning_handler( "server_class_handle_msg() returned 0" );
-							//server_class_node* tmp_node = cur_node->next;
 							remove_server_class( router, cur_node );	
 							debug_handler( "Removed Server Class" );
 							cur_node = router->server_class_list; /*start over*/
-							//cur_node = tmp_node;
 							continue;
 						} 
 	
@@ -642,7 +643,7 @@ server_class_node* init_server_class(
 	server_class_node* node = (server_class_node*) safe_malloc( len );
 
 	node->jabber = jabber_connect_init( router->jabber->server,
-			router->jabber->port, router->jabber->username, 
+			router->jabber->port, router->jabber->unixpath, router->jabber->username, 
 			router->jabber->password, server_class, router->jabber->connect_timeout, router->component );
 
 
@@ -667,7 +668,7 @@ server_class_node* init_server_class(
 	}
 
 	info_handler( "Jabber address in init for %s : address %x : username %s : resource %s", 
-			node->server_class, node->jabber->t_client->session->sock_obj->sock_fd, 
+			node->server_class, node->jabber->t_client->session->sock_id, 
 			node->jabber->username,  node->jabber->resource );
 
 	return node;
@@ -888,7 +889,8 @@ int router_registrar_handle_app_request(
 
 	osrf_message* arr[ROUTER_MAX_MSGS_PER_PACKET];
 	memset(arr, 0, ROUTER_MAX_MSGS_PER_PACKET );
-	int num_msgs = osrf_message_from_xml( msg->body, arr );
+	//int num_msgs = osrf_message_from_xml( msg->body, arr );
+	int num_msgs = osrf_message_deserialize( msg->body, arr, ROUTER_MAX_MSGS_PER_PACKET );
 
 	int i;
 	for( i = 0; i != num_msgs; i++ ) {
@@ -898,9 +900,9 @@ int router_registrar_handle_app_request(
 		osrf_message** result = NULL;
 		int num_responses;
 
-		char* newxml =  osrf_message_to_xml(omsg);
-		debug_handler( "Received potential app request from client:\n%s\n", newxml ); 
-		free(newxml);
+		//char* newxml =  osrf_message_to_xml(omsg);
+		//debug_handler( "Received potential app request from client:\n%s\n", newxml ); 
+		//free(newxml);
 
 		if(omsg->m_type == CONNECT) {
 
@@ -929,7 +931,8 @@ int router_registrar_handle_app_request(
 		/* now send our new message back */
 		if(success) {
 
-			char* xml =  osrf_message_to_xml(success);
+			//char* xml =  osrf_message_to_xml(success);
+			char* xml	= osrf_message_serialize(success);
 			debug_handler( "Sending XML to client app request:\n%s\n", xml );
 			transport_message* return_m = message_init( 
 				xml, "", msg->thread, msg->sender, "" );
@@ -943,7 +946,8 @@ int router_registrar_handle_app_request(
 			int i;
 
 			for(i=0; i!= num_responses; i++){
-				char* xml =  osrf_message_to_xml(result[i]);
+				//char* xml =  osrf_message_to_xml(result[i]);
+				char* xml =  osrf_message_serialize(result[i]);
 				debug_handler( "Sending XML to client app request:\n%s\n", xml );
 				transport_message* return_m = message_init( 
 					xml, "", msg->thread, msg->sender, "" );
@@ -959,7 +963,8 @@ int router_registrar_handle_app_request(
 				STATUS, result[i-1]->thread_trace, result[i-1]->protocol );
 			osrf_message_set_status_info( complete, 
 					"oilsConnectStatus", "Request Complete", OSRF_STATUS_COMPLETE );
-			char* complete_xml = osrf_message_to_xml(complete);
+			//char* complete_xml = osrf_message_to_xml(complete);
+			char* complete_xml = osrf_message_serialize(complete);
 			transport_message* complete_m = message_init( 
 					complete_xml, "", msg->thread, msg->sender, "" );
 			client_send_message(router->jabber->t_client, complete_m);
@@ -1163,7 +1168,7 @@ int router_registrar_free( transport_router_registrar* router_registrar ) {
 		debug_handler( "Removed server classes in registrar free");
 	}
 
-	transport_router_registrar* router = router_registrar;
+	//transport_router_registrar* router = router_registrar;
 
 	/* make this better 
 	int i = 0;
@@ -1212,6 +1217,7 @@ int server_node_free( server_node* node ) {
 int jabber_connect_free( jabber_connect* jabber ) {
 	if( jabber == NULL ) { return 0; }
 	client_free( jabber->t_client );
+	free( jabber->unixpath );
 	free( jabber->username );
 	free( jabber->password );
 	free( jabber->resource );

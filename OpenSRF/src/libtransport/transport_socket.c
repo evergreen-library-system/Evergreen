@@ -56,7 +56,7 @@ int tcp_connect( transport_socket* sock_obj ){
 	// Get the hostname
 	// ------------------------------------------------------------------
 	if( (hptr = gethostbyname( sock_obj->server ) ) == NULL ) {
-		fatal_handler( "tcp_connect(): Unknown Host" );
+		fatal_handler( "tcp_connect(): Unknown Host => %s", sock_obj->server );
 		return -1;
 	}
 

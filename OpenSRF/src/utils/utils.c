@@ -112,24 +112,24 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	va_list args;
 	va_list a_copy;
 
-	char* f_copy = strdup(format);
+	//char* f_copy = strdup(format);
 
-	va_copy(a_copy,args);
+	va_copy(a_copy, args);
 
-	va_start(a_copy, f_copy);
-	len = vsnprintf(NULL, 0, f_copy, a_copy);
-	va_end(a_copy);
+	va_start(args, format);
+	len = vsnprintf(NULL, 0, format, a_copy);
+	va_end(args);
 
 	len += 2;
 
 	char buf[len];
 	memset(buf, 0, len);
 
-	va_start(args, format);
+	va_start(a_copy, format);
 	vsnprintf(buf, len - 1, format, args);
-	va_end(args);
+	va_end(a_copy);
 
-	free(f_copy);
+	//free(f_copy);
 
 	return buffer_add(gb, buf);
 

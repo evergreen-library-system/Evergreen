@@ -45,7 +45,7 @@ int main( int argc, char** argv ) {
 */
 
 
-transport_client* client_init( char* server, int port, int component ) {
+transport_client* client_init( char* server, int port, char* unix_path, int component ) {
 
 	if(server == NULL) return NULL;
 
@@ -58,7 +58,7 @@ transport_client* client_init( char* server, int port, int component ) {
 	client->m_list = (transport_message_list*) safe_malloc( l_size );
 
 	client->m_list->type = MESSAGE_LIST_HEAD;
-	client->session = init_transport( server, port, client, component );
+	client->session = init_transport( server, port, unix_path, client, component );
 
 
 	if(client->session == NULL) {
@@ -133,14 +133,14 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 		int wait_ret;
 		while( client->m_list->next == NULL && remaining >= 0 ) {
 
-			if( ! (wait_ret= session_wait( client->session, remaining)) ) 
+			if( (wait_ret= session_wait( client->session, remaining)) ) 
 				return NULL;
 
 			++counter;
 
 #ifdef _ROUTER
 			// session_wait returns -1 if there is no more data and we're a router
-			if( remaining == 0 && wait_ret == -1 ) {
+			if( remaining == 0 ) { // && wait_ret == -1 ) {
 				break;
 			}
 #else

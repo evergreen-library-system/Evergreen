@@ -31,30 +31,39 @@ UTIL_DIR		= ../utils
 DEST_INCLUDE = objson
 CC_OPTS		+= -DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
 
-all:	test
+all:	msg test
 
-test: lib 
+msg: 
+	echo "-> $$(pwd)"	
+
+test: libobjson.so
+	echo $@
 	$(CC) $(CC_OPTS) $(LD_OPTS) -lobjson objson_test.c -o $@
 
 install:
+	echo installing libobjson.so
 	mkdir -p $(INCLUDEDIR)/$(DEST_INCLUDE)
 	cp $(TMPDIR)/$(DEST_INCLUDE)/*.h $(INCLUDEDIR)/objson/
 	cp $(TMPDIR)/libobjson.so $(LIBDIR)/libobjson.so
 
-lib:	$(OBJS)
+libobjson.so:	$(OBJS)
+	echo $@
 	$(CC) -shared -W1 $(OBJS) -o $(TMPDIR)/libobjson.so
 	$(CC) -shared -W1 $(OBJS) -o libobjson.so
 	mkdir -p $(TMPDIR)/$(DEST_INCLUDE)/
 	cp *.h $(TMPDIR)/$(DEST_INCLUDE)/
 
 object.o:	object.h object.c
+	echo $@
 	$(CC) -c $(CC_OPTS) object.c -o $@
 
 json_parser.o:	json_parser.h json_parser.c
+	echo $@
 	$(CC) -c $(CC_OPTS) json_parser.c -o $@
 
 utils.o:	$(UTIL_DIR)/utils.h $(UTIL_DIR)/utils.c
+	echo $@
 	$(CC) -c $(CC_OPTS) $(UTIL_DIR)/utils.c -o $@
 
 clean:
-	/bin/rm -f *.o *.so test
+	/bin/rm -f *.o *.so test libobjson.so

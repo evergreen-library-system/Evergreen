@@ -8,6 +8,7 @@
 
 #include "utils.h"
 #include "logging.h"
+#include "socket_bundle.h"
 
 #include "sha.h"
 
@@ -36,7 +37,8 @@
 // ---------------------------------------------------------------------------------
 // Takes data from the socket handler and pushes it directly into the push parser
 // ---------------------------------------------------------------------------------
-void grab_incoming( void * session, char* data );
+//void grab_incoming( void * session, char* data );
+void grab_incoming(void* blob, socket_manager* mgr, int sockid, char* data, int parent);
 
 // ---------------------------------------------------------------------------------
 // Callback for handling the startElement event.  Much of the jabber logic occurs
@@ -133,7 +135,9 @@ enum TRANSPORT_AUTH_TYPE { AUTH_PLAIN, AUTH_DIGEST };
 struct transport_session_struct {
 
 	/* our socket connection */
-	transport_socket* sock_obj;
+	//transport_socket* sock_obj;
+	socket_manager* sock_mgr;
+
 	/* our Jabber state machine */
 	jabber_machine* state_machine;
 	/* our SAX push parser context */
@@ -162,6 +166,11 @@ struct transport_session_struct {
 		left untouched.  */
 	void* user_data;
 
+	char* server;
+	char* unix_path;
+	int	port;
+	int sock_id;
+
 	int component; /* true if we're a component */
 
 	/* the Jabber message callback */
@@ -174,8 +183,11 @@ typedef struct transport_session_struct transport_session;
 // ------------------------------------------------------------------
 // Allocates and initializes the necessary transport session
 // data structures.
+// If port > 0, then this session uses  TCP connection.  Otherwise,
+// if unix_path != NULL, it uses a UNIX domain socket.
 // ------------------------------------------------------------------
-transport_session* init_transport( char* server, int port, void* user_data, int component );
+transport_session* init_transport( char* server, int port, 
+	char* unix_path, void* user_data, int component );
 
 // ------------------------------------------------------------------
 // Returns the value of the given XML attribute
