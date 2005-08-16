@@ -29,10 +29,12 @@ void jserver_socket_closed(void* blob, int sock_id);
 void jserver_free();
 
 /* opens the inet and unix sockets that we're listening on 
+	listen_ip is the IP address the server should listen on.
+	if listen_ip is NULL, jserver will bind to all local IP's. 
 	if(port < 1) no inet socket is opened
 	if unix_path == NULL no unix socket is opened
 	returns -1 on error */
-int jserver_connect(jserver* js, int port, char* unix_path);
+int jserver_connect(jserver* js, int port, char* listen_ip, char* unix_path);
 
 /* allocates a new client node */
 jclient_node* _new_jclient_node(int id);

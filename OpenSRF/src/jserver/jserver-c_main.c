@@ -8,6 +8,7 @@ int		port				= -1;
 char*		unix_sock_file = NULL;
 int		log_level		= -1;
 char*		log_file			= NULL;
+char* 	listen_ip		= NULL;
 
 /* starts the logging and server processes */
 void launch_server();
@@ -41,15 +42,17 @@ int main(int argc, char* argv[]) {
 
 	char* prog			= argv[0];
 	char* sport			= argv[1];	
-	unix_sock_file		= argv[2];	
-	char* slog_level	= argv[3];
-	log_file				= argv[4];
+	listen_ip			= argv[2];
+	unix_sock_file		= argv[3];	
+	char* slog_level	= argv[4];
+	log_file				= argv[5];
 
 	if(!sport || !unix_sock_file || !slog_level) {
 		fprintf(stderr, 
-			"usage: %s <port> <path_to_unix_sock_file> <log_level [1-4]"
+			"usage: %s <port> <listen_ip> <path_to_unix_sock_file> <log_level [1-4]"
 			"(4 is the highest)> [log_file (optional, goes to stderr otherwise)]\n"
-			"e.g: %s 5222 /tmp/server.sock 1 /tmp/server.log\n",
+			"e.g: %s 5222 10.0.0.100 /tmp/server.sock 1 /tmp/server.log\n"
+			"if listen_ip is '*', then we will listen on all addresses",
 			prog, prog);
 		return 99;
 	}
@@ -89,9 +92,11 @@ void launch_server() {
 	info_handler("Booting jserver-c on port %d and "
 			"sock file %s", port, unix_sock_file);
 
+	if(!strcmp(listen_ip,"*")) listen_ip = NULL;
+
 	js = jserver_init();
 	unlink(unix_sock_file);
-	if(jserver_connect(js, port, unix_sock_file) < 0)
+	if(jserver_connect(js, port, listen_ip, unix_sock_file) < 0)
 		fatal_handler("Could not connect...");
 
 	jserver_wait(js);

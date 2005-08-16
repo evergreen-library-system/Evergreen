@@ -42,12 +42,12 @@ void jserver_socket_closed(void* blob, int sock_id) {
 }
 
 /* opens the inet and unix sockets that we're listening on */
-int jserver_connect(jserver* js, int port, char* unix_path) {
+int jserver_connect(jserver* js, int port, char* listen_ip, char* unix_path) {
 	if(js == NULL || js->mgr == NULL) return -1;
 	int status = 0;
 
 	if(port > 0) {
-		status = socket_open_tcp_server(js->mgr, port);
+		status = socket_open_tcp_server(js->mgr, port, listen_ip);
 		if(status == -1) return status;
 	}
 
