@@ -85,7 +85,8 @@ Returns a MARC::Record object serialized in XML.
 
 sub MARC::Record::as_xml {
     my $record = shift;
-    return(  MARC::File::XML::encode( $record ) );
+    my $enc = shift;
+    return(  MARC::File::XML::encode( $record, $enc ) );
 }
 
 =head2 new_from_xml()
