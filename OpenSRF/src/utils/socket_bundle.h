@@ -70,7 +70,7 @@ void socket_manager_free(socket_manager* mgr);
 /* creates a new server socket node and adds it to the socket set.
 	returns socket id on success.  -1 on failure.
 	socket_type is one of INET or UNIX  */
-int socket_open_tcp_server(socket_manager*, int port);
+int socket_open_tcp_server(socket_manager*, int port, char* listen_ip );
 
 int socket_open_unix_server(socket_manager* mgr, char* path);
 

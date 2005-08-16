@@ -82,7 +82,7 @@ socket_node* _socket_add_node(socket_manager* mgr,
 /* creates a new server socket node and adds it to the socket set.
 	returns new socket fd on success.  -1 on failure.
 	socket_type is one of INET or UNIX  */
-int socket_open_tcp_server(socket_manager* mgr, int port) {
+int socket_open_tcp_server(socket_manager* mgr, int port, char* listen_ip) {
 
 	if( mgr == NULL ) return warning_handler("socket_open_tcp_server(): NULL mgr"); 
 
@@ -95,7 +95,13 @@ int socket_open_tcp_server(socket_manager* mgr, int port) {
 		return warning_handler("tcp_server_connect(): Unable to create socket");
 
 	server_addr.sin_family = AF_INET;
-	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	if(listen_ip != NULL) {
+		server_addr.sin_addr.s_addr = inet_addr(listen_ip);
+	} else {
+		server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	}
+
 	server_addr.sin_port = htons(port);
 
 	if(bind( sock_fd, (struct sockaddr*) &server_addr, sizeof(server_addr)) < 0)
