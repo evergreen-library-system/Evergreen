@@ -57,7 +57,7 @@ For non-core config info, see the inline documentation within this file
 		<cache>
 			<global>
 				<servers>
-					<server>127.0.0.1:1010</server>
+					<server>127.0.0.1:10101</server>
 				</servers>
 				<max_cache_time>86400</max_cache_time>
 			</global>
