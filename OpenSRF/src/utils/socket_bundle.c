@@ -140,8 +140,10 @@ int socket_open_unix_server(socket_manager* mgr, char* path) {
 	debug_handler("unix socket successfully opened");
 	
 	int i = 1;
-	debug_handler("Setting SO_REUSEADDR");
-	setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
+
+	/* causing problems with router for some reason ... */
+	//debug_handler("Setting SO_REUSEADDR");
+	//setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
 	
 	debug_handler("Setting TCP_NODELAY");
 	setsockopt(sock_fd, IPPROTO_TCP, TCP_NODELAY, &i, sizeof(i));
