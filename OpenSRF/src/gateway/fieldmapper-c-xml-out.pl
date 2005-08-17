@@ -44,7 +44,7 @@ print SOURCE <<C;
 #include <stdio.h>
 #include "objson/object.h"
 #include "objson/json_parser.h"
-#include "opensrf/utils.h"
+#include "utils.h"
 
 char* json_string_to_xml(char*);
 void _rest_xml_output(growing_buffer*, object*, char*, int, int);
@@ -65,14 +65,19 @@ char* json_string_to_xml(char* content) {
 	
 	buffer_add(res_xml, "<response>");
 
-	for( i = 0; i!= obj->size; i++ ) {
-		_rest_xml_output(res_xml, obj->get_index(obj,i), NULL, 0,0);
+	if(obj->is_array) {
+		for( i = 0; i!= obj->size; i++ ) {
+			_rest_xml_output(res_xml, obj->get_index(obj,i), NULL, 0,0);
+		}
+	} else {
+		_rest_xml_output(res_xml, obj, NULL, 0,0);
 	}
 
 	buffer_add(res_xml, "</response>");
 
 	output = buffer_data(res_xml);
 	buffer_free(res_xml);
+	free_object(obj);
 
 	return output;
 }
@@ -101,6 +106,8 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 	char * tag;
 	int i;
 	
+	if(!obj) return;
+
 	if (obj->classname)
 		notag = 1;
 
@@ -109,16 +116,18 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 	} else {
 		tag = strdup("datum");
 	}
+
         
-        /* add class hints if we have a class name */
-        if(obj->classname) {
-        	if(obj->is_null) {
+   /* add class hints if we have a class name */
+   if(obj->classname) {
+     	if(obj->is_null) {
 			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\"/></%s>", tag, obj->classname, tag);
 			return;
 		} else {
 			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\">", tag, obj->classname);
 		}
 	}
+
 
 	/* now add the data */
 	if(obj->is_null) {
@@ -148,10 +157,12 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 		}
 
 	} else if(obj->is_number) {
+
 		if (notag)
 			buffer_fadd(buf,"%ld",obj->num_value);
 		else
 			buffer_fadd(buf,"<%s>%ld</%s>",tag,obj->num_value,tag);
+
 
 	} else if(obj->is_double) {
 		if (notag)

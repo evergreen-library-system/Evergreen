@@ -9,7 +9,7 @@
 #include "opensrf/transport_client.h"
 #include "opensrf/osrf_message.h"
 #include "opensrf/osrf_app_session.h"
-#include "opensrf/string_array.h"
+#include "string_array.h"
 #include "md5.h"
 #include "objson/object.h"
 #include "objson/json_parser.h"
@@ -199,22 +199,29 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	char* content = NULL;
 
-	/* round up our data */
 	if(exception) {
-		content = strdup(exception->to_json(exception));
+		content = exception->to_json(exception);
 		free_object(exception);
-	} else {
+	} 
 
 #ifdef RESTGATEWAY
-		/* set content type to text/xml for passing around XML objects */
-		ap_set_content_type(r, "text/xml");
-		content = json_string_to_xml( buffer_data(result_data) );
+	/* set content type to text/xml for passing around XML objects */
+	ap_set_content_type(r, "text/xml");
+	if(content) { /* exception... */
+		char* tmp = content;
+		content = json_string_to_xml( tmp );
+		free(tmp);
+	} else {
+		content = json_string_to_xml( result_data->buf );
+	}
+
 #else
-		/* set content type to text/plain for passing around JSON objects */
+	/* set content type to text/plain for passing around JSON objects */
+	if(!content) {
 		ap_set_content_type(r, "text/plain");
 		content = buffer_data(result_data); 
-#endif
 	}
+#endif
 	
 
 	buffer_free(result_data);

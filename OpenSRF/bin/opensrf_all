@@ -54,6 +54,8 @@ export PATH="$PREFIX/bin:$PATH";
 
 function fail { echo "$0 exited: $*"; exit 99; }
 
+function usage { echo "$0 [ start | stop | restart ]"; }
+
 
 function startJserver {
 
@@ -137,7 +139,7 @@ function stopMe {
 
 [ "$1" = "stop" ] && stopMe && exit;
 [ "$1" = "restart" ] && stopMe && makeMeGo && exit;
+[ "$1" = "start" ] && makeMeGo && exit;
 
-makeMeGo;
 
-
+usage;

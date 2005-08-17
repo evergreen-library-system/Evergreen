@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <stdlib.h>
 #include <string.h>
 
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include "utils.h"
 
 inline void* safe_malloc( int size ) {
@@ -36,11 +36,12 @@ inline void* safe_malloc( int size ) {
 
 /* utility method for profiling */
 double get_timestamp_millis() {
-	struct timeb t;
+	//struct timeb t;
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-	ftime(&t);
-	double time	= (int)t.time	+ ( ((double)t.millitm) / 1000 )  + ( ((double)tv.tv_usec / 1000000) );
+	//ftime(&t);
+//	double time	= (int)t.time	+ ( ((double)t.millitm) / 1000 )  + ( ((double)tv.tv_usec / 1000000) );
+	double time	= (int)tv.tv_sec	+ ( ((double)tv.tv_usec / 1000000) );
 	return time;
 }
 
@@ -117,7 +118,7 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	va_copy(a_copy, args);
 
 	va_start(args, format);
-	len = vsnprintf(NULL, 0, format, a_copy);
+	len = vsnprintf(NULL, 0, format, args);
 	va_end(args);
 
 	len += 2;
@@ -126,7 +127,7 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	memset(buf, 0, len);
 
 	va_start(a_copy, format);
-	vsnprintf(buf, len - 1, format, args);
+	vsnprintf(buf, len - 1, format, a_copy);
 	va_end(a_copy);
 
 	//free(f_copy);

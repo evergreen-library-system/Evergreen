@@ -21,7 +21,7 @@ export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) 
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
 
-all: test prep router srfsh jserver gateway rest_gateway
+all: prep router srfsh jserver gateway rest_gateway
 
 install: install-prep transport-install stack-install gateway-install	\
 		router-install srfsh-install jserver-install perl-install			\
