@@ -3,6 +3,8 @@
 #include "utils.h"
 #include "logging.h"
 
+#include "jstrings.h"
+
 #include <stdio.h>
 #include <string.h>
 

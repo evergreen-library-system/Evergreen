@@ -83,13 +83,9 @@ void sax_start_element(
 			debug_handler("jserver-c_session received opening stream from client on domain %s", 
 				session->current_domain);
 
-			char buf[512];
-			memset(buf,0,512);
-
-			/* reply with the stock jabber login response */
-			sprintf(buf, "<?xml version='1.0'?><stream:stream xmlns:stream='http://etherx.jabber.org/streams' " 
-				"xmlns='jabber:client' from='%s' to='%s' version='1.0' id='d253et09iw1fv8a2noqc38f28sb0y5fc7kfmegvx'>",
-				session->current_domain, from_domain);
+			char buf[1024];
+			memset(buf,0,1024);
+			snprintf(buf, 1023, JSTRING_START_STREAM, session->current_domain, from_domain);
 
 			debug_handler("Session Sending: %s", buf);
 

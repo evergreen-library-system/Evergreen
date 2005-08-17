@@ -1,16 +1,5 @@
 #include "jserver-c.h"
 
-/* ------------------------------------------------
-	some pre-packaged Jabber XML
-	------------------------------------------------ */
-static const char* xml_parse_error = "<stream:stream xmlns:stream='http://etherx.jabber.org/streams'" 
-	"version='1.0'><stream:error xmlns:stream='http://etherx.jabber.org/streams'>"
-	"<xml-not-well-formed xmlns='urn:ietf:params:xml:ns:xmpp-streams'/>"
-	"<text xmlns='urn:ietf:params:xml:ns:xmpp-streams'>syntax error</text></stream:error></stream:stream>";
-
-static const char* xml_login_ok = "<iq xmlns='jabber:client' id='asdfjkl' type='result'/>";
-
-
 jserver* jserver_init() {
 	jserver* js					= safe_malloc(sizeof(jserver));
 	js->mgr						= safe_malloc(sizeof(socket_manager));
@@ -112,7 +101,8 @@ void jserver_client_login_ok(void* blob) {
 	jclient_node* node = (jclient_node*) blob;
 	if(node == NULL) return;
 	info_handler("Client logging in ok => %d", node->id);
-	jserver_send_id(node->id, xml_login_ok);
+	//jserver_send_id(node->id, xml_login_ok);
+	jserver_send_id(node->id, JSTRING_LOGIN_OK);
 }
 
 void jserver_client_handle_msg( 
@@ -249,10 +239,13 @@ int jserver_send(jserver* js, int from_id, char* to_addr, const char* msg_xml) {
 				info_handler("replying with error...");
 				char buf[2048];
 				memset(buf, 0, 2048);
+				/*
 				snprintf(buf, 2047, "<message xmlns='jabber:client' type='error' from='%s' "
 					"to='%s'><error type='cancel' code='404'><item-not-found "
 					"xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/></error>"
 					"<body>NOT ADDING BODY</body></message>", to_addr, from->addr );
+					*/
+				snprintf(buf, 2047, JSTRING_NO_RECIPIENT, to_addr, from->addr );
 				jserver_send_id(from_id, buf);
 			}
 		}
@@ -299,7 +292,8 @@ void jserver_handle_request(void* js_blob,
 
 	if(_jserver_push_client_data(node, data) == -1) {
 		warning_handler("Client sent bad data, disconnecting...");
-		jserver_send_id(node->id, xml_parse_error);
+		//jserver_send_id(node->id, xml_parse_error);
+		jserver_send_id(node->id, JSTRING_PARSE_ERROR);
 		_jserver_remove_client(js, node->addr);		
 
 	} else {
@@ -307,7 +301,6 @@ void jserver_handle_request(void* js_blob,
 	}
 
 }
-
 
 
 

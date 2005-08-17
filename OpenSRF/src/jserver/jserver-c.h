@@ -2,6 +2,7 @@
 #include "logging.h"
 #include "socket_bundle.h"
 #include "jserver-c_session.h"
+#include "jstrings.h"
 
 
 
