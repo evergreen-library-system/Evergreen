@@ -138,6 +138,14 @@ int socket_open_unix_server(socket_manager* mgr, char* path) {
 		return warning_handler("socket_open_unix_server(): listen() returned error");
 
 	debug_handler("unix socket successfully opened");
+	
+	int i = 1;
+	debug_handler("Setting SO_REUSEADDR");
+	setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
+	
+	debug_handler("Setting TCP_NODELAY");
+	setsockopt(sock_fd, IPPROTO_TCP, TCP_NODELAY, &i, sizeof(i));
+
 	_socket_add_node(mgr, SERVER_SOCKET, UNIX, sock_fd, 0);
 	return sock_fd;
 }
@@ -156,6 +164,11 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
       fatal_handler( "tcp_connect(): Cannot create socket" );
       return -1;
    }
+
+	int i = 1;
+	debug_handler("Setting TCP_NODELAY");
+	setsockopt(sock_fd, IPPROTO_TCP, TCP_NODELAY, &i, sizeof(i));
+
 
    // ------------------------------------------------------------------
    // Get the hostname
