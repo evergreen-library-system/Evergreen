@@ -1,0 +1,13 @@
+body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 50%; } 
+body table		{ font-size: inherit; }
+
+.org_link { font-size: 92%; }
+.sidebar_extra_item { font-size: 95%; }
+.searchbar_tag { font-size: 90%; } 
+#offset_start { font-weight: 600; }
+#offset_end { font-weight: 600; }
+#result_count { font-weight: 600; } 
+.nav_link_active { font-weight: 600;}
+.copy_count_cell { font-size: 80%; }
+
+
