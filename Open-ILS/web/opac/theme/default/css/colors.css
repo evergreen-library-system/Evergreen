@@ -1,0 +1,22 @@
+body a			{ color: black; }
+body a:visited { color: black; }
+body a:hover	{ color: red; text-decoration: underline;}
+
+.color_1 { background: #A7EA9D; color: #000000; }
+.color_2 { background: #64EA4F; color: #000000; }
+.color_3 { background: #D8B4BE; color: #000000; }
+
+/* ---------------------------------------------------------------------- */
+.sidebar_chunk {border-right: 1px solid lightgrey;}
+.sidebar_extra_link { text-decoration: none; }
+#searchbar_tag_on { color: red; }
+.searchbar_item { color: black; } 
+#login_box { border-top: 1px solid #808080; border-bottom: 1px solid #808080; }
+#next_prev_links_dead { color: #808080; text-decoration: none; }
+.nav_link_active { text-decoration: underline; }
+.search_link { text-decoration: none; }
+.result_table_subtable { border-top: 1px solid #E0E0E0; }
+.copy_count_cell_even { border: 1px solid #E0E0E0; }
+/* ---------------------------------------------------------------------- */
+
+

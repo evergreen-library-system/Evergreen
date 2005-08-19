@@ -1,0 +1,85 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<!-- Navigation bar -->
+
+<div id="sidebar_div" class="sidebar_div" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<script language='javascript' src='../js/sidebar.js'> </script>
+
+	<div class='sidebar_chunk color_1'>
+
+		<div title="&navigate.home.title;" 
+			id='home_link_div' class="side_bar_item">
+			<a id='home_link' href='index.xml'>&navigate.home;</a>
+		</div>
+	
+		<div title="&navigate.advanced.title;"
+			id='advanced_link_div' class="side_bar_item">
+			<a id='advanced_link' href='advanced.xml'>&navigate.advanced;</a>
+		</div>
+
+		<div title="&navigate.myopac.title;"
+			id='myopac_link_div' class="side_bar_item">
+			<a  id='myopac_link' href='myopac/myopac.xml'>&navigate.myopac;</a>
+		</div>
+
+		<div title="&navigate.login.title;"
+			id='login_link_div' class="side_bar_item">
+			<a id='login_link' href='javascript:void(0);'>&navigate.login;</a>
+		</div>
+
+		<div title="&navigate.logout.title;"
+			id='logout_link_div' class="side_bar_item hide_me">
+			<a id='logout_link' href='javascript:void(0);'>&navigate.logout;</a>
+		</div>
+
+		<!-- Informational sidebar components -->
+
+		<div id='logged_in_as_div' title="&navigate.loggedinas.title;" class="side_bar_item hide_me">
+			<span >&navigate.loggedinas; <b id='username_dest'> </b></span>
+		</div>
+
+		<div title="&navigate.titleGroupResults;" 
+			id='mresult_link_div' class="side_bar_item hide_me">
+			<span>&navigate.titleGroupResults;</span>
+		</div>
+	
+		<div title="&navigate.titleResults;"
+			id='result_link_div' class="side_bar_item hide_me">
+			<span>&navigate.titleResults;</span>
+		</div>
+
+	</div>
+
+
+	<div id='subject_sidebar' class='sidebar_chunk hide_me'> 
+		<div class='sidebar_header color_1'>&sidebar.relevantSubjects.headerLabel;</div>
+		<ul style='margin-left: 1em; padding-left: 1em;'>
+			<li id='subject_item' class='sidebar_extra_item'>
+				<a class='sidebar_extra_link' name='subject_item'> </a>
+			</li>
+		</ul>
+	</div>
+
+	<div id='author_sidebar' class='sidebar_chunk hide_me'> 
+		<div class='sidebar_header color_1'>&sidebar.relevantAuthors.headerLabel;</div>
+		<ul style='margin-left: 1em; padding-left: 1em;'>
+			<li id='author_item' class='sidebar_extra_item'>
+				<a class='sidebar_extra_link' name='author_item'> </a>
+			</li>
+		</ul>
+	</div>
+
+	<div id='series_sidebar' class='sidebar_chunk hide_me'> 
+		<div class='sidebar_header color_1'>&sidebar.relevantSeries.headerLabel;</div>
+		<ul style='margin-left: 1em; padding-left: 1em;'>
+			<li id='series_item' class='sidebar_extra_item'>
+				<a class='sidebar_extra_link' name='series_item'> </a>
+			</li>
+		</ul>
+	</div>
+	
+
+</div>
+

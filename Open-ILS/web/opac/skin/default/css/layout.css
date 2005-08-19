@@ -1,0 +1,72 @@
+.main_header	{ width: 100%; }
+.space			{ padding-right:5px; }
+.vert_space		{ padding-top: 82px; width: 100%;}
+.right			{ position:absolute; right: 0px; }
+.hide_me			{display:none; visibility: hidden;}
+
+/* ---------------------------------------------------------------------- */
+.canvas { float:right; width: 80%; text-align: left;}
+#loading_div { width: 100%;}
+
+.logo { height: 80px; width: 200px; position: absolute; top: 0px; left: 0px; }
+
+.org_tree { height: 500px; padding-left: 2px; padding-right: 2px;
+				   overflow:-moz-scrollbars-vertical; overflow-y:scroll; overflow-x:hidden; }            
+
+.org_link { padding-right: 15px; }
+#org_link_container { margin-bottom: 5px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px; width: 100%; }
+
+/* ---------------------------------------------------------------------- */
+.sidebar_div { float: left; width: 19%; }
+.side_bar_item { padding-left: 15px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px; }
+.sidebar_chunk {margin-bottom: 2px;}
+.sidebar_extra_item { padding: 2px; }
+.sidebar_header { margin-top: 10px; padding-left: 3px; }
+
+/* ---------------------------------------------------------------------- */
+#searchbar { position: absolute; text-align: right; top: 2px; right: 3px; }
+
+.searchbar_item { text-align: center; padding: 3px; } 
+
+.searchbar_tag { text-align: right;  
+	padding-left: 5px; padding-right: 5px; padding-bottom: 3px; } 
+
+#searchbar_main { text-align: right; 
+	padding-top: 2px; padding-bottom: 3px; padding-right: 2px; padding-left: 3px; }
+
+.searchbar_extra_td { padding-top: 10px; }
+#searchbar_table { border-collapse: collapse; }
+
+/* ---------------------------------------------------------------------- */
+#login_box { width: 60%; padding: 5px;}
+
+.login_text { margin-left: 8px; }
+
+/* ---------------------------------------------------------------------- */
+#result_table_div { text-align: left; width: 100%; }
+
+#search_nav_links { width: 100%; }
+#result_info_box { text-align: left; }
+#next_prev_links { text-align: right; padding-left: 2px; padding-right: 2px;}
+#goto_page_links { text-align: left; padding-left: 2px; padding-right: 2px;}
+
+#next_prev_links_dead {padding-left: 5px; padding-right: 5px;}
+
+#res_table { width: 100%; }
+
+.result_table_pic_cell { width: 43px;}
+.result_table_pic { height: 50px; width: 40px; }
+.result_table_pic_header { width: 43px; }
+
+.result_table_row { text-align: left; }
+.result_table_subtable { width: 100%; border-collapse: collapse;}
+.result_table_subtbody { height: 100%; width: 100%; }
+.result_table_title_cell { text-align: left; }
+
+.copy_count_cell { width: 8%; text-align: center; padding: 0px; margin: 0px;}
+
+.search_page_nav_link { margin-right: 5px; }
+
+/* ---------------------------------------------------------------------- */
+
+

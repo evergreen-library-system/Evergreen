@@ -1,0 +1,65 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<!-- Search results are spit into this table -->
+
+<div id='result_table_div' xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<table id='res_table'> 
+
+		<!-- for some reason, this is the only way i can force the cell widths -->
+		<thead><td class='result_table_pic_header'></td><td/></thead>
+
+		<tbody id='result_table'>
+
+			<!-- Template for displaying a search result.  This row template is cloned and inserted
+					for each result returned -->
+
+			<tr id='result_table_template'>
+
+				<!-- Jacket image goes here -->
+				<td width="10%"><a><img name='item_jacket' class='result_table_pic'/></a></td>
+
+				<td class='result_table_row'>
+					<table class='result_table_subtable'>
+						<tbody class='result_table_subtbody'>
+
+							<tr name='counts_row'>
+
+								<td class='result_table_title_cell' name='result_table_title_cell'>
+									<a title="View titles for this record" name='item_title' class='search_link'> 
+										<!-- Title goes here -->
+									</a>
+								</td>
+
+								<!-- Copy this td for each copy count appended -->
+								<td nowrap='nowrap' name="copy_count_cell" class='copy_count_cell' rowspan='3'> </td>
+
+							</tr>
+		
+							<tr>
+								<td class='result_table_author_cell'>
+									<a title="Perform an Author Search" name='item_author' class='search_link'> 
+										<!-- Author goes here -->
+									</a>
+								</td>
+							</tr>
+
+							<tr>
+								<td class='result_table_format_cell'>
+									<a class='search_link'> 
+										<!-- Item formats go here -->
+									</a>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+

@@ -1,0 +1,34 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+
+<div id='login_box' class='hide_me color_1'>
+
+	<div class='login_text'>
+		<span> Login in with your username and password. </span>
+	</div>
+
+	<br/>
+	
+	<div>
+		<span class='login_text'><input id='login_username' type='text' size='16'> </input></span>
+		<span class='login_text'>Username</span>
+	</div>
+
+	<br/>
+
+	<div>
+		<span class='login_text'><input id='login_password' type='password' size='16'> </input></span>
+		<span class='login_text'>Password</span>
+	</div>
+
+	<br/>
+
+	<div class='login_links_div'>
+		<span class='login_text'><a href="javascript:void(0);" id='login_button'> Login </a></span>
+		<span class='login_text'><a href='javascript:void(0);' id='login_cancel_button'> Cancel </a></span>
+	</div>
+
+</div>
+
+

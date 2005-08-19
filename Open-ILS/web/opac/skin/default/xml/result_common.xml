@@ -1,0 +1,46 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='canvas_main' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<table id='search_nav_links'>
+		<tbody>
+			<tr>
+
+				<!-- talk about the number of hits, etc. -->
+				<td id='result_info_box'>
+					<div class='hide_me' id='result_info_div'>
+						<span> Results </span> 
+						<span id='offset_start'> </span>
+						<span> - </span>
+						<span id='offset_end'> </span>
+						<span> of </span>
+						<span id='result_count'> </span>
+						<span> (page </span>
+						<span id='current_page'> </span>
+						<span> of </span>
+						<span id='num_pages'> </span>
+					</div>
+				</td>
+				
+				<!-- simple next/prev type navigation links -->
+				<td id='next_prev_links'>
+					<a class='search_page_nav_link' id='search_home_link' title="First results page">Start</a>
+					<a class='search_page_nav_link' id='prev_link' title='Previus page'> &lt;&lt; </a>
+					<span class='search_page_nav_link' id='page_numbers'> </span>
+					<a  class='search_page_nav_link' id='next_link' title='Next Page'> &gt;&gt; </a>
+					<a  class='search_page_nav_link' id='end_link' title="Last results page">End</a>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Load the result table -->
+	<xi:include href="result_table.xml"/>
+
+	<div id='loading_div' class='color_1'> Loading Results... </div>
+
+</div>
+
+

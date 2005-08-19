@@ -1,0 +1,105 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<!-- Searchbar for doing metarecord searches -->
+
+<div id='searchbar'>
+
+	<!-- load my js -->
+	<script language='javascript' src='../js/search_bar.js'> </script>
+
+	<div id='searchbar_main' class='color_1'>
+
+		<table>
+
+			<tbody id='searchbar_table'>
+
+				<tr id='searchbar_main_row'>
+		
+					<!-- Search query text box -->
+					<td align='left' class='searchbar_main_td'>
+						<span class="searchbar_item">
+							<input id='search_box' type='text' size='19'/>
+						</span>
+					</td>
+		
+
+					<!-- Selector for choosing the search type -->
+					<td align='left' class='searchbar_main_td'>
+						<span class="searchbar_item">
+							<select id='search_type_selector'>
+								<option value='title' selected='selected'>Title</option>
+								<option value='author'>Author</option>
+								<option value='subject'>Subject</option>
+								<option value='series'>Series</option>
+								<option value='keyword'>Keyword</option>
+							</select>
+						</span>
+	
+						<!-- Submit Search Button -->
+						<span class="searchbar_item" style='padding-left: 15px;'>
+							<input type='button' id='search_submit' value='Go!' />
+						</span>
+					</td>
+	
+				</tr>	
+		
+				<!-- Row of extra search options -->
+				<tr id='searchbar_extra' class='hide_me'>
+		
+					<!-- Search format selector -->
+					<td align='left' class='searchbar_extra_td'>
+						<span class="searchbar_item">
+							<select id='form_selector'>
+								<option value='all'>All Formats</option>
+								<option value='at'>Books</option>
+								<option value='at-d'>Large Print Books</option>
+								<option value='i'>Audiobooks</option>
+								<option value='g'>Video Recording</option>
+								<option value='j'>Music</option>
+								<option value='m'>Electronic Resources</option>
+							</select>
+						</span>
+					</td>
+		
+					<!-- Search 'range' selector -->
+					<td  align='left' class='searchbar_extra_td'>
+						<span class="searchbar_item">
+							<select id='depth_selector'>
+								<option value='2' selected='selected'>In This Library</option>
+								<option value='1'>In This Region</option>
+								<option value='0'>In All PINES Libraries</option>
+							</select>
+						</span>
+					</td>
+		
+				</tr>
+		
+			</tbody>
+		</table>
+
+	</div>
+
+	<!-- Search location changer -->
+	<span class='searchbar_tag color_1'>
+		<a id='search_location_tag_link' href='javascript:void(0);'>
+			<span> Search Location </span>
+		</a>
+	</span>
+	
+	<!-- Link for expanding/contracting the extra search options -->
+	<span class='searchbar_tag color_1'>
+		<a id='search_tag_link' href='javascript:void(0);'>
+			<span id='searchbar_tag_off'> More Options </span>
+			<span id='searchbar_tag_on' class='hide_me'> Less Options </span>
+		</a>
+	</span>
+
+
+</div>
+
+
+
+
+
+

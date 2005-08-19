@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+
+<!-- These are the UI components that may be needed on any given page.  The must be
+	set to class += 'hide_me' by default -->
+
+<div id='not_the_canvas' xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<!-- the login page -->
+	<xi:include href="login.xml"/> 
+
+	<!-- The org tree -->
+	<xi:include href="orgtree.xml"/> 
+
+</div>
