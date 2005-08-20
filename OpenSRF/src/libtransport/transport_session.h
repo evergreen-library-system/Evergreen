@@ -3,7 +3,6 @@
 // a SAX push parser as it arrives.  When key Jabber documetn elements are met, 
 // logic ensues.
 // ---------------------------------------------------------------------------------
-#include "transport_socket.h"
 #include "transport_message.h"
 
 #include "utils.h"

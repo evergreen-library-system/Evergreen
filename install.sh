@@ -203,9 +203,7 @@ function runInstall {
 			# Evergreen --- 			
 
 			"evergreen_core" )
-				if installing;	then $MAKE -C "$EVERGREENDIR" "images-install"; fi;
 				if installing;	then $MAKE -C "$EVERGREENDIR" "circ-install"; fi;
-				if installing;	then $MAKE -C "$EVERGREENDIR" "css-install"; fi;
 				;;	
 
 			"evergreen_xul_client" )

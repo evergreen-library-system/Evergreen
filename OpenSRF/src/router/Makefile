@@ -3,7 +3,7 @@
 
 LD_OPTS		+= -lc_utils -lxml2 -lopensrf_stack -lobjson
 LP				= ../libtransport
-LIB_SOURCES = $(LP)/transport_socket.c $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c 
+LIB_SOURCES = $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c 
 
 all: msg router 
 

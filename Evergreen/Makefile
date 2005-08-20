@@ -2,7 +2,6 @@
 # Evergreen makefile
 # ------------------------------------------------------------------------
 
-IMAGE=$(WEBDIR)/images
 NEW_OPAC_URL=myopac.domain
 NEW_XUL_PACKAGE_NAME=openils
 NEW_XUL_PACKAGE_LABEL=OpenILS
@@ -11,8 +10,7 @@ NEW_XUL_PACKAGE_LABEL=OpenILS
 
 all:	xul 
 
-
-install:	images-install circ-install
+install:	circ-install
 
 xul:
 	cp -R staff_client local_staff_client
@@ -26,28 +24,6 @@ xul:
 	make -C local_staff_client build
 	find local_staff_client/ -type f -exec sed -i s/gapines.org/${NEW_OPAC_URL}/g {} \;
 	make -C local_staff_client package
-
-images-install:
-	@echo "Installing images to $(IMAGE)";
-	mkdir -p $(WEBDIR)
-	cp -r images $(WEBDIR)
-	ln -sf $(IMAGE)/pics/map.jpg $(IMAGE)/cartographic.jpg
-	ln -sf $(IMAGE)/bigpinesLogo.jpg $(IMAGE)/main_logo.jpg
-	ln -sf $(IMAGE)/pics/open_book.gif $(IMAGE)/"mixed material.jpg"
-	ln -sf $(IMAGE)/pics/movie.jpg $(IMAGE)/"moving image.jpg"
-	ln -sf $(IMAGE)/pics/music_icon.jpg $(IMAGE)/"notated music.jpg"
-	ln -sf $(IMAGE)/smallpinesLogo.jpg $(IMAGE)/"small_logo.jpg"
-	ln -sf $(IMAGE)/pics/computer.jpg $(IMAGE)/"software, multimedia.jpg"
-	ln -sf $(IMAGE)/pics/speaker.gif $(IMAGE)/"sound recording-musical.jpg"
-	ln -sf $(IMAGE)/pics/speaker.gif $(IMAGE)/"sound recording-nonmusical.jpg"
-	ln -sf $(IMAGE)/pics/speaker.gif $(IMAGE)/"sound recording.jpg"
-	ln -sf $(IMAGE)/pics/camera.gif $(IMAGE)/"still images.jpg"
-	ln -sf $(IMAGE)/pics/open_book.gif $(IMAGE)/text.jpg
-	ln -sf $(IMAGE)/pics/book_icon.jpeg $(IMAGE)/"three dimensional object.jpg"
-
-css-install:
-	mkdir -p $(WEBDIR)/css
-	cp -r css/opac/* $(WEBDIR)/css
 
 circ-install:
 	mkdir -p $(CIRCRULESDIR)

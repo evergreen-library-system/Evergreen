@@ -8,10 +8,30 @@ all: mod_xmltools
 
 install:	perl-install web-install string-templates-install storage-bootstrap xsl-install
 
-web-install:	web-templates-install javascript-install autojs-install  mod_xmltools-install webxml-install
+web-install:	webcore-install autojs-install  mod_xmltools-install 
 
 
-JSDIR=$(WEBDIR)/js
+# -----------------------------------------------------------------------------------
+# Web stuff
+# -----------------------------------------------------------------------------------
+mod_xmltools:
+	echo $@
+	make -C apachemods mod_xmltools.so
+
+mod_xmltools-install:
+	echo $@
+	make -C apachemods mod_xmltools-install
+
+webcore-install:
+	mkdir -p $(WEBDIR)
+	cp -r ../web/* $(WEBDIR)
+
+autojs-install:
+	echo $@
+	cp extras/fieldmapper.pl $(BINDIR)
+	cp extras/org_tree_js.pl $(BINDIR)
+	cp extras/autogen.sh $(BINDIR)
+# -----------------------------------------------------------------------------------
 
 marcdumper:
 	echo $@
@@ -21,18 +41,7 @@ marcdumper-install:
 	echo $@
 	make -C extras/marcdumper install
 
-mod_xmltools:
-	echo $@
-	make -C apachemods mod_xmltools.so
-
-mod_xmltools-install:
-	echo $@
-	make -C apachemods mod_xmltools-install
-
-webxml-install:
-	echo $@
-	mkdir -p $(WEBDIR)
-	cp -r webxml $(WEBDIR)
+# -----------------------------------------------------------------------------------
 
 perl-install:
 	echo $@
@@ -43,13 +52,7 @@ perl-install:
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
 
-javascript-install:
-	echo $@
-	@echo "Installing javascript to $(JSDIR)"
-	mkdir -p $(JSDIR)
-	cp -r javascript/* $(JSDIR)
-	cp ../../$(OPENSRFDIR)/javascript/JSON.js $(JSDIR)/util/
-	cp ../../$(OPENSRFDIR)/javascript/md5.js $(JSDIR)/util/
+# -----------------------------------------------------------------------------------
 
 storage-bootstrap:
 	echo $@
@@ -58,26 +61,14 @@ storage-bootstrap:
 	cp -r cgi-bin/* $(CGIDIR)
 	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
 
+# -----------------------------------------------------------------------------------
 
-autojs-install:
-	echo $@
-	cp extras/fieldmapper.pl $(BINDIR)
-	cp extras/org_tree_js.pl $(BINDIR)
-	cp extras/autogen.sh $(BINDIR)
-
-web-templates-install:
-	echo $@
-	@echo "Installing web templates to $(TEMPLATEDIR)"
-	mkdir -p $(TEMPLATEDIR)
-	cp -r templates/opac $(TEMPLATEDIR)
-	cp -r templates/html $(TEMPLATEDIR)
 
 string-templates-install:
 	echo $@
 	@echo "Installing string templates to $(TEMPLATEDIR)"
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/strings $(TEMPLATEDIR)
-
 
 xsl-install:	
 	echo $@

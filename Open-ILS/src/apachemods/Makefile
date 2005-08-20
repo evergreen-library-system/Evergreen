@@ -22,7 +22,6 @@ xmltools.o:	xmltools.c xmltools.h
 	echo $@
 	$(CC) -c $(CC_OPTS) xmltools.c -o $@
 
-
 mod_xmltools-install:
 	echo $@
 	$(APXS2) -i -a -n mod_xmltools mod_xmltools.so
@@ -31,8 +30,11 @@ mod_xmltools-install:
 		LoadModule mod_xmltools_module modules/mod_xmltools.so \n \
 		to this: \n \
 		LoadModule mod_xmltools    modules/mod_xmltools.so"
-	@echo "Also, you can add \nXMLToolsDefaultLocale <locale>\nand\n \
-			XMLToolsLocaleDir  <web-locale-dir> to httpd.conf"
+	@echo -e "Supported configuration options:\
+			\nXMLToolsDefaultLocale <locale>\
+			\nXMLToolsLocaleDir  <web-locale-dir>\
+			\nXMLToolsPreXSL <pre_xsl_file>\
+			\nXMLToolsPostXSL <post_xsl_file>"
 	@echo "-----------------------------------------------";
 	@sleep 3;
 
