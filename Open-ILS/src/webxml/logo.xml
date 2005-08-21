@@ -1,8 +1,0 @@
-<?xml version='1.0'?>
-<div id='logo_div'>
-
-	<a href='/webxml/index.xml'>
-		<img border='0' src='/images/opac/main_logo.jpg' class='logo'/>
-	</a>
-
-</div>

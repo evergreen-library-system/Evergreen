@@ -1,8 +1,0 @@
-<?xml version='1.0'?>
-
-<div xmlns:xi="http://www.w3.org/2001/XInclude">
-	<xi:include href="logo.xml"/>
-	<xi:include href="searchbar.xml"/> 
-	<div class="vert_space"> </div>
-	<xi:include href="sidebar.xml"/> 
-</div>

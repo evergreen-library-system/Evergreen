@@ -1,7 +1,0 @@
-[%
-	string = "";
-	FOR word IN strings;
-		string = string _ word;
-	END;
-	string;
-%]

@@ -1,7 +1,0 @@
-[%
-	WRAPPER html/div class='sidebar_box';
-		box(id="record_" _ type _ "_sidebar_box_label", class="sidebar_label hide_me", content = label );
-		box(id="record_" _ type _ "_sidebar_box", class="record_sidebar_content_box hide_me");
-	END;
-%]
-

@@ -1,7 +1,0 @@
-[%# html/bar: table containing a single row 
-  # ARGS:
-  #	as per html/table and html/row
--%]
-[% WRAPPER html/table + html/row %]
-[% content %]
-[% END %]

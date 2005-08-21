@@ -1,8 +1,0 @@
-<?xml version='1.0'?>
-
-<!-- CSS shared across pages goes here --> 
-
-<css>
-	<link rel='stylesheet' type='text/css' href='/css/opac/opac.css'/>
-	<link rel='stylesheet' type='text/css' href='/css/opac/dtree.css'/>
-</css>
