@@ -3,6 +3,9 @@
 osrf_message* _do_client( osrf_app_session*, osrf_message* );
 osrf_message* _do_server( osrf_app_session*, osrf_message* );
 
+/* tell osrf_app_session where the stack entry is */
+int (*osrf_stack_entry_point) (transport_client*, int)  = &osrf_stack_process;
+
 int osrf_stack_process( transport_client* client, int timeout ) {
 	transport_message* msg = client_recv( client, timeout );
 	if(msg == NULL) return 0;

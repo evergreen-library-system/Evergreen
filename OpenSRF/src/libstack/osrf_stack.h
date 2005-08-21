@@ -16,4 +16,5 @@ int osrf_stack_message_handler( osrf_app_session* session, osrf_message* msg );
 int osrf_stack_application_handler( osrf_app_session* session, osrf_message* msg );
 
 
+
 #endif

@@ -17,6 +17,9 @@
 enum OSRF_SESSION_STATE { OSRF_SESSION_CONNECTING, OSRF_SESSION_CONNECTED, OSRF_SESSION_DISCONNECTED };
 enum OSRF_SESSION_TYPE { OSRF_SESSION_SERVER, OSRF_SESSION_CLIENT };
 
+/* entry point for data into the stack.  gets set in osrf_stack.c */
+int (*osrf_stack_entry_point) (transport_client* client, int timeout );
+
 struct osrf_app_request_struct {
 	/** Our controlling session */
 	struct osrf_app_session_struct* session;

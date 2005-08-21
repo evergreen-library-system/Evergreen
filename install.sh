@@ -228,7 +228,7 @@ function runInstall {
 # --------------------------------------------------------------------
 function checkParams {
 
-	if [ -z "$1" ]; then return; fi;
+	if [ -z "$1" ]; then usage; fi;
 
 	for arg in "$@"; do
 
@@ -245,7 +245,7 @@ function checkParams {
 			"install")
 				INSTALLING="1";;
 
-			*) fail "Unknown command line argument: $arg";;
+			*) fail "Unknown option => $arg";
 		esac
 	done
 
@@ -260,8 +260,12 @@ function cleanMe {
 	make -s -C "$EVERGREENDIR" clean;
 }
 
-checkParams "$@";
+function usage {
+	echo "usage: $0 [ build | install | clean ]";
+	exit;
+}
 
+checkParams "$@";
 
 if building; then echo "Building..."; fi;
 if installing; then echo "Installing..."; fi;
