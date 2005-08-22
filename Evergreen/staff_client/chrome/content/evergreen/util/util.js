@@ -150,15 +150,14 @@ function cents_as_dollars( cents ) {
 	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }
 
-/*
 function debug() {
 	var s = '';
 	for (var i = 0; i < arguments.length; i++) {
 		s = s + arguments[i];
 	}
 	//sdump('D_UTIL','debug:' + s + '\n');
+	dump('debug:' + s + '\n');
 }
-*/
 
 function counter_init(id) {
 	counter[id] = 0;
