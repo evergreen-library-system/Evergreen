@@ -18,7 +18,6 @@ msg:
 	echo "-> $$(pwd)"	
 
 install: 
-	cp gateway.xml.example $(ETCDIR)
 	echo installing ils_gateway
 	$(APXS2) -i -a -n ils_gateway libmod_ils_gateway.so
 	echo installing ils_rest_gateway

@@ -17,7 +17,7 @@ int main( int argc, char* argv[] ) {
 	sprintf(fbuf,"%s/.srfsh.xml",home);
 
 	if(!access(fbuf, R_OK)) {
-		if( ! osrf_system_bootstrap_client(fbuf) ) 
+		if( ! osrf_system_bootstrap_client(fbuf, "srfsh") ) 
 			fatal_handler( "Unable to bootstrap client for requests");
 
 	} else {

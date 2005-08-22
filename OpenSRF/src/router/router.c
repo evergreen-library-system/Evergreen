@@ -27,7 +27,7 @@ int main( int argc, char* argv[] ) {
 	config_reader_init( "opensrf.router", argv[1] );	
 	if( conf_reader == NULL ) fatal_handler( "main(): Config is NULL" ); 
 
-	/* laod the config options */
+	/* load the config options */
 	char* server			= config_value("opensrf.router", "//router/transport/server");
 	char* port				= config_value("opensrf.router", "//router/transport/port");
 	char* unixpath			= config_value("opensrf.router", "//router/transport/unixpath");
@@ -38,10 +38,14 @@ int main( int argc, char* argv[] ) {
 	char* max_retries		= config_value("opensrf.router", "//router/transport/max_reconnect_attempts" );
 	char* component		= config_value("opensrf.router", "//router/component" );
 
+	fprintf(stderr, "Router connecting with uname %s, server %s, port %s, unixpath %s",
+		username, server, port, unixpath );
+
 
 	/* set up the logger */
-	char* level = config_value("opensrf.router","//log/level");
-	char* log_file = config_value("opensrf.router","//log/file");
+	char* level = config_value("opensrf.router","//router/loglevel");
+	char* log_file = config_value("opensrf.router","//router/logfile");
+
 	int llevel = atoi(level);
 	fprintf(stderr, "Level %d; file %s\n", llevel, log_file );
 

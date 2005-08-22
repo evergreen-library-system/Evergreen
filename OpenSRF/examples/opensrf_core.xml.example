@@ -1,0 +1,89 @@
+<?xml version='1.0'?>
+
+<!-- Bootstrap config file for the C opensrf_stack library -->
+<config>
+
+	<!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
+	<gateway>
+
+		<!--  the routers's name on the network -->
+		<router_name>router</router_name>
+
+		<!-- jabber domains to connect to (domain1, domain2, ...) -->
+		<domains>
+			<domain1>127.0.0.1</domain1>
+		</domains>
+
+		<!-- jabber login info -->
+		<username>mylogin</username>
+		<passwd>mypassword</passwd>
+
+		<!-- If the port is a positive number,
+			we will connect via TCP port, if not and unixpath is defined,
+			we will connect via UNIX domain socket with the given path -->
+		<port>5222</port>
+		<unixpath>/openils/var/sock/jserver.sock</unixpath>
+	
+		<!-- log file location -->
+		<logfile>/openils/var/log/gateway.log</logfile>
+		<!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug -->
+		<loglevel>3</loglevel>
+
+	</gateway>
+
+	<rest_gateway>
+		<router_name>router</router_name>
+		<domains>
+			<domain1>127.0.0.1</domain1>
+		</domains>
+		<username>mylogin</username>
+		<passwd>mypassword</passwd>
+		<port>5222</port>
+		<unixpath>/openils/var/sock/jserver.sock</unixpath>
+		<logfile>/openils/var/log/gateway.log</logfile>
+		<loglevel>3</loglevel>
+	</rest_gateway>
+
+
+	<!-- ======================================================================================== -->
+
+	<router>
+		<component>0</component> <!-- leave disabled for now -->
+	
+		<trusted_domains>
+			<!-- Trusted servers are allowed to register apps with the router -->
+			<server1>127.0.0.1</server1>
+			<!-- Trusted clients are allowed to send packets through the router -->
+			<client1>127.0.0.1</client1>
+		</trusted_domains>
+	
+		<transport>
+			<!-- jabber server are we connecting to -->
+			<server>127.0.0.1</server>
+			<!-- If the port is a positive number,
+				we will connect via TCP port, if not and unixpath is defined,
+				we will connect via UNIX domain socket with the given path -->
+			<port>5222</port>
+			<unixpath>/openils/var/sock/unix_sock</unixpath>
+
+			<!-- router's name on the network -->
+			<username>router</username>
+			<password>mypassword</password>
+			<!-- router's jabber resource --> 
+			<resource>router</resource>
+			<connect_timeout>10</connect_timeout>
+			<max_reconnect_attempts>5</max_reconnect_attempts>
+		</transport>
+	
+		<logfile>/openils/var/log/router.log</logfile>
+		<loglevel>3</loglevel>
+	
+	</router>
+
+	<!-- ======================================================================================== -->
+
+</config>
+
+
+
+

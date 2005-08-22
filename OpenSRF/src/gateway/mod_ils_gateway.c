@@ -24,7 +24,11 @@
 
 
 static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
-	if( ! osrf_system_bootstrap_client( "/openils/conf/gateway.xml") ) 
+	char* context = "gateway";
+	#ifdef RESTGATEWAY
+	context = "rest_gateway";
+	#endif
+	if( ! osrf_system_bootstrap_client( "/home/erickson/sandbox/openils/conf/opensrf_core.xml", context) ) 
 		fatal_handler("Unable to load gateway config file...");
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);

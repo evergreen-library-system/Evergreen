@@ -42,7 +42,6 @@ JSERVERLOG="$LOGDIR/jserver.log" # jabber server log
 JSERVERPORT=5222;						# jabber server port 
 JSERVERLEVEL=3; # can be 1-4, 4 is the highest
 JSERVERIP="*"; # can be "*" or a specific local IP address
-ROUTERLOG="$LOGDIR/router.log"	# jabber router log
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 
@@ -82,7 +81,7 @@ function startJserver {
 
 
 function startRouter {
-	"$BINDIR/router" "$ETCDIR/router_config.xml" 
+	"$BINDIR/router" "$ETCDIR/opensrf_core.xml" 
 }
 
 function startOpenSRF {

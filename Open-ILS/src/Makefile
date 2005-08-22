@@ -23,6 +23,8 @@ mod_xmltools-install:
 	make -C apachemods mod_xmltools-install
 
 webcore-install:
+	echo $@
+	echo "Copying web into $(WEBDIR)"
 	mkdir -p $(WEBDIR)
 	cp -r ../web/* $(WEBDIR)
 

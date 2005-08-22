@@ -247,8 +247,8 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	char target_buf[512];
 	memset(target_buf,0,512);
-	char* domain	= config_value( "opensrf.bootstrap", "//bootstrap/domains/domain1" ); /* just the first for now */
-	char* router_name = config_value( "opensrf.bootstrap", "//bootstrap/router_name" );
+	char* domain	= config_value( "opensrf.bootstrap", "//%s/domains/domain1", osrf_config_context ); /* just the first for now */
+	char* router_name = config_value( "opensrf.bootstrap", "//%s/router_name", osrf_config_context );
 	sprintf( target_buf, "%s@%s/%s",  router_name, domain, remote_service );
 	free(domain);
 	free(router_name);

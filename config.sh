@@ -37,9 +37,6 @@ function buildConfig {
 	echo "Type Enter to select the default"
 	echo "-----------------------------------------------------------------------";
 
-	prompt "Temporary files directory [$TMP] "
-	read X; if [ ! -z "$X" ]; then TMP="$X"; fi;
-
 	prompt "Install prefix [$PREFIX] ";
 	read X; if [ ! -z "$X" ]; then PREFIX="$X"; fi
 
@@ -53,27 +50,7 @@ function buildConfig {
 	TEMPLATEDIR="$PREFIX/var/templates";
 	CIRCRULESDIR="$PREFIX/var/circ";
 	XSLDIR="$PREFIX/var/xsl";
-
-	prompt "Executables directory [$BINDIR] "
-	read X; if [ ! -z "$X" ]; then BINDIR="$X"; fi;
-
-	prompt "Lib directory [$LIBDIR] "
-	read X; if [ ! -z "$X" ]; then LIBDIR="$X"; fi;
-
-	prompt "Perl directory [$PERLDIR] "
-	read X; if [ ! -z "$X" ]; then PERLDIR="$X"; fi;
-
-	prompt "Include files directory [$INCLUDEDIR] "
-	read X; if [ ! -z "$X" ]; then INCLUDEDIR="$X"; fi;
-
-	prompt "Config files directory [$ETCDIR] "
-	read X; if [ ! -z "$X" ]; then ETCDIR="$X"; fi;
-
-	prompt "Web Root Directory [$WEBDIR] "
-	read X; if [ ! -z "$X" ]; then WEBDIR="$X"; fi;
-
-	prompt "Web CGI Directory [$CGIDIR] "
-	read X; if [ ! -z "$X" ]; then CGIDIR="$X"; fi;
+	TMP="$(pwd)/.tmp";
 
 	prompt "Web domain for OPAC in Staff Client [$NEW_OPAC_URL] "
 	read X; if [ ! -z "$X" ]; then NEW_OPAC_URL="$X"; fi;
@@ -83,15 +60,6 @@ function buildConfig {
 
 	prompt "Package Label for Staff Client [$NEW_XUL_PACKAGE_LABEL] "
 	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_LABEL="$X"; fi;
-
-	prompt "Templates directory [$TEMPLATEDIR] "
-	read X; if [ ! -z "$X" ]; then TEMPLATEDIR="$X"; fi;
-
-	prompt "XSL Stylesheets directory [$XSLDIR] "
-	read X; if [ ! -z "$X" ]; then XSLDIR="$X"; fi;
-
-	prompt "Custom circulation rules directory [$CIRCRULESDIR] "
-	read X; if [ ! -z "$X" ]; then CIRCRULESDIR="$X"; fi;
 
 	prompt "Apache2 apxs binary [$APXS2] "
 	read X; if [ ! -z "$X" ]; then APXS2="$X"; fi;
@@ -211,6 +179,8 @@ function writeConfig {
 
 	prompt "To write a new config, run 'make config'";
 	prompt "";
+	prompt "To edit individual install locations (e.g. changing the lib directory),"
+	prompt "edit the install.conf file generated from this script"
 
 }
 

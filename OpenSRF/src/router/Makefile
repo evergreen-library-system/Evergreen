@@ -13,7 +13,6 @@ msg:
 install: 
 	echo installing router
 	cp router $(BINDIR)
-	cp router_config.xml.example $(ETCDIR)
 
 router:  router.c $(LIB_SOURCES)
 	echo $@
