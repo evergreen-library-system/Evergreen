@@ -109,6 +109,7 @@ perl-install:	install-prep
 	cp ../bin/opensrf_all $(BINDIR)
 	cp ../examples/opensrf.xml.example $(ETCDIR)
 	cp ../examples/opensrf_core.xml.example $(ETCDIR)
+	cp ../examples/srfsh.xml.example $(ETCDIR)
 
 
 # --------------------------------------------------------------------------------
