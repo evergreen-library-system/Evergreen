@@ -105,8 +105,45 @@ Content-type: text/html
                         padding: 2px;
 		}
 
+
+/*--------------------------------------------------|
+| dTree 2.05 | www.destroydrop.com/javascript/tree/ |
+|---------------------------------------------------|
+| Copyright (c) 2002-2003 Geir Landrö               |
+|--------------------------------------------------*/
+
+.dtree {
+        font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #666;
+        white-space: nowrap;
+}
+.dtree img {
+        border: 0px;
+        vertical-align: middle;
+}
+.dtree a {
+        color: #333;
+        text-decoration: none;
+}
+.dtree a.node, .dtree a.nodeSel {
+        white-space: nowrap;
+        padding: 1px 2px 1px 2px;
+}
+.dtree a.node:hover, .dtree a.nodeSel:hover {
+        color: #333;
+        text-decoration: underline;
+}
+.dtree a.nodeSel {
+        background-color: #c0d2ec;
+}
+.dtree .clip {
+        overflow: hidden;
+}
+
+
 	</style>
-	<script language='javascript' src='/js/widgets/xtree.js'></script>
+	<script language='javascript' src='support/dtree.js'></script>
 </head>
 
 <body style='padding: 25px;'>
@@ -123,37 +160,27 @@ my $top;
 for my $lib ( actor::org_unit->search( {parent_ou=>undef} ) ) {
 	my $name = $lib->name;
 	$name =~ s/'/\\'/og;
+	$top = $lib->id;
 	print <<"	HEADER";
 <div style="float: left;">
 	<script language='javascript'>
-
-		function getById (id) { return document.getElementById(id); }
-		function createAppElement (el) { return document.createElement(el); }
-		function createAppTextNode (txt) { return document.createTextNode(txt); }
-	
-		var node_$lib = new WebFXTree('$name','$uri?action=child&id=$lib');
+	var tree = new dTree("tree");
+	tree.add($lib, -1, "$name", "$uri?action=child&id=$lib", "$name");
 	HEADER
 	$top = $lib->id;
 	last;
 }
 
-for my $lib ( actor::org_unit->search_like( {parent_ou => '%'}, {order_by => 'id'} ) ) {
+for my $lib ( actor::org_unit->search_like( {parent_ou => '%'}, {order_by => 'name'} ) ) {
 	my $name = $lib->name;
 	$name =~ s/'/\\'/og;
 	my $parent = $lib->parent_ou;
-	print <<"	JS"
-		var node_$lib = new WebFXTreeItem('$name','$uri?action=child&id=$lib');
-	JS
-}for my $lib ( sort {$a->name cmp $b->name} actor::org_unit->retrieve_all ) {
-	my $parent = $lib->parent_ou;
-	next unless $parent;
-	print <<"	JS"
-		node_$parent.add(node_$lib);
-	JS
+	print "\ttree.add($lib, $parent, \"$name\", \"$uri?action=child&id=$lib\", \"$name\");\n";
 }
 
 print <<HEADER;
-		document.write(node_$top);
+		tree.closeAllChildren($top);
+		document.write(tree.toString());
 	</script>
 </div>
 <div>

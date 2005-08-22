@@ -93,8 +93,44 @@ Content-type: text/html
                         padding: 2px;
 		}
 
+/*--------------------------------------------------|
+| dTree 2.05 | www.destroydrop.com/javascript/tree/ |
+|---------------------------------------------------|
+| Copyright (c) 2002-2003 Geir Landrö               |
+|--------------------------------------------------*/
+
+.dtree {
+        font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #666;
+        white-space: nowrap;
+}
+.dtree img {
+        border: 0px;
+        vertical-align: middle;
+}
+.dtree a {
+        color: #333;
+        text-decoration: none;
+}
+.dtree a.node, .dtree a.nodeSel {
+        white-space: nowrap;
+        padding: 1px 2px 1px 2px;
+}
+.dtree a.node:hover, .dtree a.nodeSel:hover {
+        color: #333;
+        text-decoration: underline;
+}
+.dtree a.nodeSel {
+        background-color: #c0d2ec;
+}
+.dtree .clip {
+        overflow: hidden;
+}
+
+
 	</style>
-	<script language='javascript' src='/js/widgets/xtree.js'></script>
+	<script language='javascript' src='support/dtree.js'></script>
 </head>
 
 <body style='padding: 25px;'>
@@ -110,16 +146,13 @@ my $uri = $cgi->url(-relative=>1);
 my $top;
 for my $grp ( permission::grp_tree->search( {parent=>undef} ) ) {
 	my $name = $grp->name;
+	$top = $grp->id;
 	$name =~ s/'/\\'/og;
 	print <<"	HEADER";
 <div style="float: left;">
 	<script language='javascript'>
-
-		function getById (id) { return document.getElementById(id); }
-		function createAppElement (el) { return document.createElement(el); }
-		function createAppTextNode (txt) { return document.createTextNode(txt); }
-	
-		var node_$grp = new WebFXTree('$name','$uri?action=child&id=$grp');
+        var tree = new dTree("tree");
+	tree.add($grp, -1, "$name", "$uri?action=child&id=$grp", "$name");
 	HEADER
 	$top = $grp->id;
 	last;
@@ -129,25 +162,15 @@ for my $grp ( permission::grp_tree->search_like( {parent => '%'}, {order_by => '
 	my $name = $grp->name;
 	$name =~ s/'/\\'/og;
 	my $parent = $grp->parent;
-	print <<"	JS"
-		var node_$grp = new WebFXTreeItem('$name','$uri?action=child&id=$grp');
-	JS
-}
-
-for my $grp ( sort {$a->name cmp $b->name} permission::grp_tree->retrieve_all ) {
-	my $parent = $grp->parent;
-	next unless $parent;
-	print <<"	JS"
-		node_$parent.add(node_$grp);
-	JS
+	print "\ttree.add($grp, $parent, \"$name\", \"$uri?action=child&id=$grp\", \"$name\");\n";
 }
 
 print <<HEADER;
-		document.write(node_$top);
+	tree.closeAllChildren($top);
+	document.write(tree.toString());
 	</script>
 </div>
 <div style="float:right; width:50%;">
-
 HEADER
 
 #-------------------------------------------------------------------------------
