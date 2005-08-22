@@ -81,4 +81,5 @@ xsl-install:
 clean:
 	echo $@
 	make -C extras clean
+	make -C apachemods clean
 

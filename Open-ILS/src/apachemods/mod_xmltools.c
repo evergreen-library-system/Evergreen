@@ -49,6 +49,8 @@ static void* mod_xmltools_create_config( apr_pool_t* p, server_rec* s) {
 		(mod_xmltools_config*) apr_palloc(p, sizeof(mod_xmltools_config));
 	cfg->default_locale = DEFAULT_LOCALE;
 	cfg->locale_dir = DEFAULT_LOCALE_DIR;
+	cfg->pre_xsl = NULL;
+	cfg->post_xsl = NULL;
 	return (void*) cfg;
 }
 
@@ -96,6 +98,7 @@ static int mod_xmltools_handler (request_rec* r) {
 
 	fflush(stderr);
 
+
 	if(pre_xsl) {
 		xmlDocPtr newdoc;
 		newdoc = xsltApplyStylesheet(pre_xsl, doc, NULL );
@@ -107,14 +110,14 @@ static int mod_xmltools_handler (request_rec* r) {
 		doc = newdoc;
 	}
 
+	fflush(stderr);
+
 	/* process xincludes */
 	if( xmlXIncludeProcess(doc) < 0 ) {
 		fprintf(stderr, "\n ^-- Error processing XIncludes for file %s\n", file);
 		fflush(stderr);
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
-
-	fflush(stderr);
 
 	/* replace the DTD */
 	if(xmlReplaceDtd(doc, dtdfile) < 0) {

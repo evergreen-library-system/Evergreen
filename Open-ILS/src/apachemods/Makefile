@@ -9,7 +9,7 @@ all: mod_xmltools.so
 
 install:	mod_xmltools-install
 
-mod_xmltools.so: apachetools.o  xmltools.o
+mod_xmltools.so: apachetools.o  xmltools.o mod_xmltools.c mod_xmltools.h
 	echo $@
 	$(CC) -c $(CC_OPTS) mod_xmltools.c 
 	$(CC) $(LD_OPTS) -shared -W1 apachetools.o xmltools.o mod_xmltools.o -o $@
@@ -40,4 +40,4 @@ mod_xmltools-install:
 
 clean:
 	echo $@
-	/bin/rm -f *.o xmltools
+	/bin/rm -f *.o xmltools mod_xmltools.so

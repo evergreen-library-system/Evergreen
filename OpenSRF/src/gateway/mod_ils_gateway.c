@@ -1,34 +1,49 @@
-#include "httpd.h"
-#include "http_config.h"
-#include "http_core.h"
-#include "http_protocol.h"
-#include "apr_compat.h"
-#include "apr_strings.h"
+#include "mod_ils_gateway.h"
 
-/* our stuff */
-#include "opensrf/transport_client.h"
-#include "opensrf/osrf_message.h"
-#include "opensrf/osrf_app_session.h"
-#include "string_array.h"
-#include "md5.h"
-#include "objson/object.h"
-#include "objson/json_parser.h"
+char* ils_gateway_config_file;
+char* ils_rest_gateway_config_file;
 
-#ifdef RESTGATEWAY
-#include "rest_xml.h"
+static const char* ils_gateway_set_config(cmd_parms *parms, void *config, const char *arg) {
+	ils_gateway_config  *cfg;
 
-#define MODULE_NAME "ils_rest_gateway_module"
-#else
-#define MODULE_NAME "ils_gateway_module"
-#endif
+	#ifdef RESTGATEWAY
+	cfg = ap_get_module_config(parms->server->module_config, &ils_rest_gateway_module);
+	#else
+	cfg = ap_get_module_config(parms->server->module_config, &ils_gateway_module);
+	#endif
+
+	cfg->configfile = (char*) arg;
+	#ifdef RESTGATEWAY
+	ils_rest_gateway_config_file = (char*) arg;
+	#else
+	ils_gateway_config_file = (char*) arg;
+	#endif
+
+	return NULL;
+}
+
+/* tell apache about our commands */
+static const command_rec ils_gateway_cmds[] = {
+	AP_INIT_TAKE1( GATEWAY_CONFIG, ils_gateway_set_config, NULL, RSRC_CONF, "gateway config file"),
+	{NULL}
+};
+
+/* build the config object */
+static void* ils_gateway_create_config( apr_pool_t* p, server_rec* s) {
+	ils_gateway_config* cfg = (ils_gateway_config*) apr_palloc(p, sizeof(ils_gateway_config));
+	cfg->configfile = GATEWAY_DEFAULT_CONFIG;
+	return (void*) cfg;
+}
 
 
 static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
-	char* context = "gateway";
+
+	char* cfg = ils_gateway_config_file;
 	#ifdef RESTGATEWAY
-	context = "rest_gateway";
+	cfg = ils_gateway_config_file;
 	#endif
-	if( ! osrf_system_bootstrap_client( "/home/erickson/sandbox/openils/conf/opensrf_core.xml", context) ) 
+
+	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) 
 		fatal_handler("Unable to load gateway config file...");
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);
@@ -36,11 +51,9 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 
 static int mod_ils_gateway_method_handler (request_rec *r) {
 
-
 	/* make sure we're needed first thing*/
 	if (strcmp(r->handler, MODULE_NAME )) 
 		return DECLINED;
-
 
 	apr_pool_t *p = r->pool;	/* memory pool */
 	char* arg = r->args;			/* url query string */
@@ -245,25 +258,28 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 }
 
-/*
- * This function is a callback and it declares what other functions
-  * should be called for request processing and configuration requests.
-   * This callback function declares the Handlers for other events.  */
 static void mod_ils_gateway_register_hooks (apr_pool_t *p) {
-// I think this is the call to make to register a handler for method calls (GET PUT et. al.).
-// We will ask to be last so that the comment has a higher tendency to
-// go at the end.
 	ap_hook_handler(mod_ils_gateway_method_handler, NULL, NULL, APR_HOOK_MIDDLE);
 	ap_hook_child_init(mod_ils_gateway_child_init,NULL,NULL,APR_HOOK_MIDDLE);
 }
 
-/*
- * Declare and populate the module's data structure.  The
-  * name of this structure ('tut1_module') is important - it
-   * must match the name of the module.  This structure is the
- * only "glue" between the httpd core and the module.
-  */
 
+#ifdef RESTGATEWAY
+module AP_MODULE_DECLARE_DATA ils_rest_gateway_module = {
+#else
+module AP_MODULE_DECLARE_DATA ils_gateway_module = {
+#endif
+	STANDARD20_MODULE_STUFF,
+	NULL,
+	NULL,
+	ils_gateway_create_config,
+	NULL,
+	ils_gateway_cmds,
+	mod_ils_gateway_register_hooks,
+};
+
+
+/*
 #ifdef RESTGATEWAY
 
 module AP_MODULE_DECLARE_DATA ils_rest_gateway_module =
@@ -271,9 +287,9 @@ module AP_MODULE_DECLARE_DATA ils_rest_gateway_module =
 STANDARD20_MODULE_STUFF,
 NULL,
 NULL,
+ils_gateway_create_config,
 NULL,
-NULL,
-NULL,
+ils_gateway_cmds,
 mod_ils_gateway_register_hooks,
 };
 
@@ -284,11 +300,12 @@ module AP_MODULE_DECLARE_DATA ils_gateway_module =
 STANDARD20_MODULE_STUFF,
 NULL,
 NULL,
+ils_gateway_create_config,
 NULL,
-NULL,
-NULL,
+ils_gateway_cmds,
 mod_ils_gateway_register_hooks,
 };
 
 #endif
+*/
 
