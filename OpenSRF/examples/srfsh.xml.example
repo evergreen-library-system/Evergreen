@@ -1,0 +1,12 @@
+<!-- This file follows the standard C stack bootstrap config file layout -->
+<srfsh>
+	<router_name>router</router_name>
+	<domains>
+		<domain1>127.0.0.1</domain1> 
+	</domains>
+	<username>myusername</username>
+	<passwd>mypassword</passwd>
+	<port>5222</port>
+	<logfile>/path/to/log/srfsh.log</logfile>
+	<loglevel>4</loglevel>
+</srfsh>
