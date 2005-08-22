@@ -22,9 +22,9 @@
 	<script src="fieldmapper.js" /> <!-- our Objects for things like patrons, books, etc.  This is generated. -->
 	<script src="OrgTree.js" />	<!-- our Organization Hierarchy.  This is generated. -->
 
-	<script src="chrome://evergreen/content/Open-ILS/util/webutils.js" />		<!-- Bill's grab bag of useful functions.  want to eliminate overlap -->
+	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />		<!-- Bill's grab bag of useful functions.  want to eliminate overlap -->
 	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />	<!-- XMLHttpRequest -->
-	<script src="chrome://evergreen/content/Open-ILS/util/ex.js" />			<!-- error/exception handling -->
+	<script src="chrome://evergreen/content/Open-ILS/util/opac_utils.js" />			<!-- error/exception handling -->
 
 	<script src="ses.js" />		<!-- my wrapper over the OpenSRF communication layer.. Jabber and XMLHttpRequest -->
 	<script src="explode.js" />	<!-- original attempt at linking widgets to data.  Want to use something more OO -->
