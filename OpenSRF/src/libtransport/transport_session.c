@@ -68,7 +68,10 @@ transport_session* init_transport(  char* server,
 	
 	session->port = port;
 	session->server = strdup(server);
-	session->unix_path = strdup(unix_path);
+	if(unix_path)
+		session->unix_path = strdup(unix_path);
+	session->unix_path = NULL;
+
 	session->sock_id = 0;
 
 	/* this will be handed back to us in callbacks */

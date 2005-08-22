@@ -33,6 +33,7 @@ int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
 	info_handler("Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
 
 	transport_client* client = client_init( domain, iport, unixpath, 0 );
+	
 	char buf[256];
 	memset(buf,0,256);
 	char* host = getenv("HOSTNAME");
