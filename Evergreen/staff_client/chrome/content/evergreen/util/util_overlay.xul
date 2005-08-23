@@ -28,25 +28,19 @@
 	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/config.js" />
-	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/CGI.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/Cookie.js" />
-	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/md5.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/JSON.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/OrgTree.js" />
-	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/dtree.js" />
-	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/fmcore.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/fmgen.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/opac_utils.js" />
-	<script>IAMXUL = true;</script>
-	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/init.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/added_content.js" />
-	-->
+	<script>IAMXUL = true;</script>
 
 	<script src="ses.js" />		<!-- my wrapper over the OpenSRF communication layer.. Jabber and XMLHttpRequest -->
 	<script src="explode.js" />	<!-- original attempt at linking widgets to data.  Want to use something more OO -->
