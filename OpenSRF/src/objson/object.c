@@ -23,6 +23,9 @@ GNU General Public License for more details.
 /* See object.h for function info */
 /* ---------------------------------------------------------------------- */
 
+
+char* __tabs(int count);
+
 object* new_object(char* string_value) {
 	return _init_object(string_value);
 }
@@ -461,12 +464,14 @@ char* object_to_json(object* obj) {
 		int i;
 		for( i = 0; i!= obj->size; i++ ) {
 			char* data = object_to_json(obj->get_index(obj,i));
+
 #ifdef STRICT_JSON_WRITE
 			buffer_add(buf, data);
 #else
 			if(strcmp(data,"null")) /* only add the string if it isn't null */
 				buffer_add(buf, data);
 #endif
+
 			free(data);
 			if(i != obj->size - 1)
 				buffer_add(buf, ",");
@@ -474,9 +479,11 @@ char* object_to_json(object* obj) {
 		buffer_add(buf, "]");
 
 	} else if(obj->is_hash) {
+
 		buffer_add(buf, "{");
 		object_iterator* itr = new_iterator(obj);
 		object_node* tmp;
+
 		while( (tmp = itr->next(itr)) ) {
 			buffer_add(buf, "\"");
 			buffer_add(buf, tmp->key);
@@ -531,6 +538,100 @@ void object_clear_type(object* obj) {
 void object_set_comment(object* obj, char* com) {
 	assert(obj && com);
 	obj->comment = strdup(com);
+}
+
+
+char* __tabs(int count) {
+	growing_buffer* buf = buffer_init(24);
+	int i;
+	for(i=0;i!=count;i++) buffer_add(buf, "  ");
+	char* final = buffer_data( buf );
+	buffer_free( buf );
+	return final;
+}
+
+char* json_string_format(char* string) {
+
+	growing_buffer* buf = buffer_init(64);
+	int i;
+	int tab_var = 0;
+	for(i=0; i!= strlen(string); i++) {
+
+		if( string[i] == '{' ) {
+
+			buffer_add( buf, " {");
+			buffer_add(buf, "\n");
+			char* tab = __tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+
+			tab_var++;
+			buffer_add( buf, "\n" );	
+			tab = __tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == '[' ) {
+
+			buffer_add( buf, "[");
+			buffer_add(buf, "\n");
+			char* tab = __tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			tab_var++;
+			buffer_add( buf, "\n" );	
+			tab = __tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == '}' ) {
+
+			tab_var--;
+			buffer_add(buf, "\n");
+			char* tab = __tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			buffer_add( buf, "}");
+			buffer_add( buf, "\n" );	
+			tab = __tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == ']' ) {
+
+			tab_var--;
+			buffer_add(buf, "\n");
+			char* tab = __tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+			buffer_add( buf, "]");
+			buffer_add( buf, "\n" );	
+			tab = __tabs(tab_var);
+			buffer_add( buf, tab );	
+			free(tab);
+
+		} else if( string[i] == ',' ) {
+
+			buffer_add( buf, ",");
+			buffer_add( buf, "\n" );	
+			char* tab = __tabs(tab_var);
+			buffer_add(buf, tab);
+			free(tab);
+
+		} else {
+
+			char b[2];
+			b[0] = string[i];
+			b[1] = '\0';
+			buffer_add( buf, b ); 
+		}
+
+	}
+
+	char* result = buffer_data(buf);
+	buffer_free(buf);
+	return result;
+
 }
 
 

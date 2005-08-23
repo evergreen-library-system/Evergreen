@@ -31,7 +31,7 @@ GNU General Public License for more details.
 #ifndef OBJECT_H
 #define OBJECT_H
 
-/* top level generic object structuure */
+/* top level generic object structure */
 struct object_struct {
 
 	/* how many sub-objects do we contain.  Note that this includes null
@@ -213,6 +213,8 @@ void object_set_comment(object*, char*);
  */
 void object_shift_index(object*, unsigned long index);
 
+/* formats a JSON string from printing.  User must free returned string */
+char* json_string_format(char* json);
 
 
 #endif
