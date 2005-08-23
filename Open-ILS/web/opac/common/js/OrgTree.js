@@ -14,14 +14,13 @@ for (var i in orgArraySearcher) {
 	if (x.parent_ou() == null || x.parent_ou() == '') {
 		globalOrgTree = x;
 		continue;
-	} else {
-		x.parent_ou(orgArraySearcher[x.parent_ou()]);
-	}
-	if (!x.parent_ou().children()) 
-		x.parent_ou().children(new Array());
+	} 
 
-	x.parent_ou().children().push(x.id());
+	var parent = findOrgUnit(x.parent_ou());
+	if (!parent.children()) parent.children(new Array());
+	parent.children().push(x);
 }
+
 function _tree_killer () {
 	for (var i in orgArraySearcher) {
 		x=orgArraySearcher[i];
@@ -35,3 +34,5 @@ function _tree_killer () {
 }
 
 var globalOrgTypes = JSON2js("[/*--S aout--*/[null,null,null,null,0,0,0,1,\"Consortium\",\"Everywhere in PINES\"]/*--E aout--*/,/*--S aout--*/[null,null,null,null,0,0,1,2,\"System\",\"Local Library System\",1]/*--E aout--*/,/*--S aout--*/[null,null,null,null,1,1,2,3,\"Branch\",\"This Branch\",2]/*--E aout--*/,/*--S aout--*/[null,null,null,null,1,1,3,5,\"Bookmobile\",\"Your Bookmobile\",3]/*--E aout--*/,/*--S aout--*/[null,null,null,null,1,1,3,4,\"Sub-lib\",\"This Specialized Library\",3]/*--E aout--*/]");
+
+alert(js2JSON(globalOrgTree));

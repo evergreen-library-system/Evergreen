@@ -169,6 +169,7 @@ function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 }
 
 
+/*
 function EX(message) { this.init(message); }
 EX.prototype.init = function(message) { this.message = message; }
 EX.prototype.toString = function() { return "\n *** Exception Occured \n" + this.message; }  
@@ -176,6 +177,7 @@ EXCommunication.prototype              = new EX();
 EXCommunication.prototype.constructor  = EXCommunication;
 EXCommunication.baseClass              = EX.prototype.constructor;
 function EXCommunication(message) { this.init("EXCommunication: " + message); }                          
+*/
 
 /* ----------------------------------------------------------------------- */
 function cleanISBN(isbn) {
@@ -361,7 +363,7 @@ function buildOrgSelector() {
 			tree.add(node.id(), -1, node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		else {
-			tree.add(node.id(), node.parent_ou().id(), node.name(), 
+			tree.add(node.id(), findOrgUnit(node.parent_ou()).id(), node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		}
 	}
