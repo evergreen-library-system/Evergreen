@@ -12,6 +12,7 @@ attachEvt("common", "unload", cleanRemoteRequests);
 
 function init() {
 	runEvt('common','init');
+	scaleFont("medium");
 	switch(findCurrentPage()) {
 		case MRESULT: runEvt('mresult', 'run'); break;
 		case RRESULT: runEvt('rresult', 'run'); break;

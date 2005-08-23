@@ -5,4 +5,4 @@ _c["ex"] = ["err_msg","type",];
 _c["mvr"] = ["author","call_numbers","copy_count","doc_id","doc_type","edition","isbn","online_loc","pubdate","publisher","serials","series","subject","synopsis","tcn","title","types_of_resource",];
 _c["aou"] = ["children","billing_address","holds_address","id","ill_address","mailing_address","name","ou_type","parent_ou","shortname",];
 _c["aout"] = ["children","can_have_users","can_have_vols","depth","id","name","opac_label","parent",];
-fmclasses = _c;
+var fmclasses = _c;
