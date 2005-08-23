@@ -17,7 +17,7 @@ function append_treeitem() {
 	if (typeof(e) != 'object') { throw('typeof e != object : typeof e = ' + typeof(e)); }
 	var treechildren = e;
 
-	if (!treechildren) { sdump('D_WIDGETS','No ' + id + ' to append to\n'); return; }
+	if (!treechildren) { sdump('D_WIDGETS','No ' + id + ' to append to\n'); return null; }
 
 	var treeitem = elem('treeitem'); treechildren.appendChild(treeitem);
 	var treerow = elem('treerow'); treeitem.appendChild(treerow);
@@ -115,7 +115,7 @@ function empty_listbox() {
 		e = arguments[1];
 		if (typeof(e) != 'object') { e = d.getElementById(e); }
 	}
-	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_listbox\n'); return; }
+	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_listbox\n'); return null; }
 	var nl = e.getElementsByTagName('listitem');
 	for (var i = 0; i < nl.length; i++) {
 		e.removeChild(nl[i]);
@@ -133,7 +133,7 @@ function empty_widget() {
 		e = arguments[1];
 		if (typeof(e) != 'object') { e = d.getElementById(e); }
 	}
-	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_widget\n'); return; }
+	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on empty_widget\n'); return null; }
 	while (e.lastChild) { e.removeChild(e.lastChild); }
 }
 
@@ -315,7 +315,7 @@ function incr_progressmeter() {
 	if (typeof(meter)!='object') 
 		meter = d.getElementById(meter);
 	if (typeof(meter)!='object')
-		return;
+		return null;
 
 	var real = meter.getAttribute('_real');
 
@@ -449,7 +449,7 @@ function swap_attributes() {
 		a2 = arguments[3];
 		if (typeof(e) != 'object') { e = d.getElementById(e); }
 	}
-	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on swap_attributes\n'); return; }
+	if (typeof(e) != 'object') { sdump('D_WIDGETS','Failed on swap_attributes\n'); return null; }
 	var a1_v = e.getAttribute(a1);
 	var a2_v = e.getAttribute(a2);
 	e.setAttribute(a1,a2_v);
@@ -470,8 +470,8 @@ function toggle_hidden_grid_rows() {
 	if (typeof(grid) != 'object') {
 		grid = d.getElementById(grid);
 	}
-	if (!grid) { return; }
-	var rows = grid.lastChild; if (!rows) { return; }
+	if (!grid) { return null; }
+	var rows = grid.lastChild; if (!rows) { return null; }
 	for (var r = 0; r < rows.childNodes.length; r++ ) {
 		var row = rows.childNodes[r];
 		if (typeof(row) == 'object') {

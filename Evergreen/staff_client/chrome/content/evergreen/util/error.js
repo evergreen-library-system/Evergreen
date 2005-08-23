@@ -103,7 +103,7 @@ function sdump(level,msg) {
 	try {
 		var now = new Date();
 		var message = now.valueOf() + '\tdelta = ' + (now.valueOf() - sdump_last_time.valueOf()) + '\n' + level + '\n' + msg;
-		if (sdump_levels['D_NONE']) return;
+		if (sdump_levels['D_NONE']) return null;
 		if (sdump_levels[level]||sdump_levels['D_ALL']) {
 			sdump_last_time = now;
 			if (debugDump)
