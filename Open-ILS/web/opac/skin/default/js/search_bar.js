@@ -12,6 +12,10 @@ var newSearchLocation;
 
 function searchBarInit() {
 
+	/* ----------------------------------- */
+	//setActivateStyleSheet("color_test");
+	/* ----------------------------------- */
+
 	_ts = G.ui.searchbar.type_selector;
 	_ds = G.ui.searchbar.depth_selector;
 	_fs = G.ui.searchbar.form_selector;

@@ -85,6 +85,9 @@ config.page[RRESULT]		= "rresult.xml";
 config.page[MYOPAC]		= "myopac.xml";
 config.page[RDETAIL]		= "rdetail.xml";
 
+/* themes */
+config.themes = {};
+
 
 /* set up images  */
 config.images = {};
@@ -124,6 +127,8 @@ config.ids.common.canvas			= "canvas";
 config.ids.common.canvas_main		= "canvas_main";		
 config.ids.common.org_tree			= "org_tree";			
 config.ids.common.org_container	= "org_container";
+
+config.ids.xul = {};
 
 
 /* shared CSS */
@@ -168,7 +173,9 @@ G.evt				= {}; /* events container */
 
 function runEvt(scope, name, a, b, c, d, e, f, g) {
 	var evt = G.evt[scope][name];
-	for( var i in evt ) evt[i](a, b, c, d, e, f, g);	
+	for( var i in evt ) {
+		evt[i](a, b, c, d, e, f, g);	
+	}
 }
 
 /* creates a new event if it doesn't already exist */
@@ -186,15 +193,17 @@ function attachEvt(scope, name, action) {
 createEvt("common", "init");						/* f() : what happens on page init */
 createEvt("common", "pageRendered");			/* f() : what happens when the page is done (up to the skin to call this even)*/
 createEvt("common", "unload");					/* f() : what happens on window unload (clean memory, etc.)*/
-createEvt("mresult", "run");						/* f() : kick of the page*/
+createEvt("common", "run");						/* f() : make the page do stuff */
 createEvt("mresult", "idsReceived");			/* f(ids) */
-createEvt("rresult", "run");						/* f() : kick of the page*/
 createEvt("rresult", "idsReceived");			/* f(ids) */	
 
 createEvt("result", "hitCountReceived");		/* f() : display hit info, pagination, etc. */
 createEvt("result", "recordReceived");			/* f(mvr, pagePosition, isMr) : display the record*/
 createEvt("result", "copyCountsReceived");	/* f(mvr, pagePosition, copyCountInfo) : display copy counts*/
 createEvt("result", "allRecordsReceived");	/* f(mvrsArray) : add other page stuff, sidebars, etc.*/
+
+createEvt("rdetail", "recordDrawn");			/* f() : the record has been drawn */
+
 
 
 

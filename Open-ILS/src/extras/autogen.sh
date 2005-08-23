@@ -8,10 +8,13 @@ CONFIG="$1";
 JSDIR="/openils/var/web/js/util";
 
 echo "Updating fieldmapper";
-perl fieldmapper.pl		> "$JSDIR/fieldmapper.js";
+perl fieldmapper.pl		> "$JSDIR/fmall.js";
 
 echo "Updating web_fieldmapper";
-perl fieldmapper.pl 1	> "$JSDIR/web_fieldmapper.js";
+perl fieldmapper.pl "web_core"	> "$JSDIR/fmcore.js";
+
+echo "Updating web_fieldmapper";
+perl fieldmapper.pl "web"	> "$JSDIR/fmextcore.js";
 
 echo "Updating OrgTree";
 perl org_tree_js.pl "$CONFIG" > "$JSDIR/OrgTree.js";

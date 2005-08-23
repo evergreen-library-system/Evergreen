@@ -1,8 +1,10 @@
-body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 75%;} 
-body table		{ font-size: inherit; }
+body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 95%;} 
+
+/*body table tr td	{ font-size: inherit; }*/
+/*body table tr td	{ font-size: 95%;}*/
 
 .org_link { font-size: 92%; }
-.sidebar_extra_item { font-size: 95%; }
+.sidebar_extra_item { font-size: 97%; }
 .searchbar_tag { font-size: 90%; } 
 #offset_start { font-weight: 600; }
 #offset_end { font-weight: 600; }

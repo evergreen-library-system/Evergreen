@@ -2,8 +2,8 @@ var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "spacely.georgialibraries.org:8080";
 var XML_HTTP_MAX_TRIES = 3;
 
-var IAMXUL = false;
-function isXUL() { return IAMXUL; }
+//var IAMXUL = false;
+function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
 /* some communication exceptions */
 function EX(message) { this.init(message); }

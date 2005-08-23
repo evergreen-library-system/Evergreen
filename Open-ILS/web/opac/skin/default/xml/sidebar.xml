@@ -34,6 +34,9 @@
 			<a id='logout_link' href='javascript:void(0);'>&navigate.logout;</a>
 		</div>
 
+
+		<xi:include href="xulsidebar.xml"/>
+
 		<!-- Informational sidebar components -->
 
 		<div id='logged_in_as_div' title="&navigate.loggedinas.title;" class="side_bar_item hide_me">
@@ -48,6 +51,11 @@
 		<div title="&navigate.titleResults;"
 			id='result_link_div' class="side_bar_item hide_me">
 			<span>&navigate.titleResults;</span>
+		</div>
+
+		<div title="Record Details"
+			id='rdetail_link_div' class="side_bar_item hide_me">
+			<span>Record Details</span>
 		</div>
 
 	</div>

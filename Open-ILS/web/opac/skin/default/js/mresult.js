@@ -4,9 +4,11 @@ var table;
 var rowtemplate;
 var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
 
-G.evt.common.unload.push(mresultUnload);
-G.evt.mresult.run.push(mresultDoSearch);
-G.evt.mresult.idsReceived.push(mresultSetRecords, mresultCollectRecords); 
+attachEvt("common", "unload", mresultUnload);
+attachEvt("common", "run", mresultDoSearch);
+attachEvt("mresult", "idsReceived", mresultSetRecords); 
+attachEvt("mresult", "idsReceived", mresultCollectRecords); 
+
 
 function mresultUnload() { removeChildren(table); table = null;}
 

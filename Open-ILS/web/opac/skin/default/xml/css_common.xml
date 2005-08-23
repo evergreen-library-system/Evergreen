@@ -9,19 +9,13 @@
 
 	<!-- Our font CSS's -->
 	<link type='text/css' rel='stylesheet'					
-		href='../../../common/css/mediumfont.css' csstype='font'/>
-
-	<link type='text/css' rel='alternate stylesheet'	
-		href='../../../common/css/smallfont.css' title='Small Fonts' csstype='font'/>
-
-	<link type='text/css' rel='alternate stylesheet'	
-		href='../../../common/css/largefont.css' title='Large Fonts' csstype='font'/>
+		href='../../../common/css/mediumfont.css' name='meduim_fonts' csstype='font'/>
 
 	<!-- Our colors -->
 	<link type='text/css' rel="stylesheet" href="../../../theme/default/css/colors.css"  
-		name='default_colors' csstype='color'/>
+		name='Default' csstype='color'/>
 
-	<link type='text/css' rel="alternate stylesheet" href="../../../theme/blackonwhite/css/colors.css" 
-		title='Color Test' name='color_test' csstype="color" />
+	<link type='text/css' rel="alternate stylesheet" href="../../../theme/test/css/colors.css" 
+		title='Color Test' name='ColorTest' csstype="color" />
 
 </css>

@@ -4,9 +4,9 @@ var rowtemplate;
 
 function rresultUnload() { removeChildren(table); table = null;}
 
-G.evt.common.unload.push(rresultUnload);
-G.evt.rresult.run.push(rresultDoSearch);
-G.evt.rresult.idsReceived.push(rresultCollectRecords); 
+attachEvt("common", "unload", rresultUnload);
+attachEvt("common", "run", rresultDoSearch);
+attachEvt("rresult", "idsReceived", rresultCollectRecords); 
 
 function rresultDoSearch() {
 	table = G.ui.result.main_table;

@@ -26,37 +26,6 @@ for my $o (@$tree) {
 $pile .= join ',', @array;
 $pile .= <<JS;
 ];
-var orgArraySearcher = {};
-var globalOrgTree;
-for (var i in _l) {
-	var x = new aou();
-	x.id(_l[i][0]);
-	x.ou_type(_l[i][1]);
-	x.parent_ou(_l[i][2]);
-	x.name(_l[i][3]);
-	orgArraySearcher[x.id()] = x;
-}
-for (var i in orgArraySearcher) {
-	var x = orgArraySearcher[i];
-	if (x.parent_ou() == null || x.parent_ou() == '') {
-		globalOrgTree = x;
-		continue;
-	} else {
-		x.parent_ou(orgArraySearcher[x.parent_ou()]);
-	}
-	if (!x.parent_ou().children()) 
-		x.parent_ou().children(new Array());
-	x.parent_ou().children().push(x);
-}
-function _tree_killer () {
-	globalOrgTree = null;
-	for (var i in orgArraySearcher) {
-		x=orgArraySearcher[i];
-		x.children(null);
-		x.parent_ou(null);
-		orgArraySearcher[i]=null;
-	}
-}
 JS
 
 $pile .= "var globalOrgTypes = JSON2js(\"$types_string\");";

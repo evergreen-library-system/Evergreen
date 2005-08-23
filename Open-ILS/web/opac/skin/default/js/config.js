@@ -7,6 +7,9 @@ config.css.color_1 = "color_1";
 config.css.color_2 = "color_2";
 config.css.color_3 = "color_3";
 
+config.themes.def = "Default";
+config.themes.test = "ColorTest";
+
 /* result */
 config.ids.result = {};
 config.css.result = {};
@@ -72,6 +75,7 @@ config.ids.sidebar.myopac			= 'myopac_link_div';
 config.ids.sidebar.prefs			= 'prefs_link_div';
 config.ids.sidebar.mresult			= 'mresult_link_div';
 config.ids.sidebar.rresult			= 'result_link_div';
+config.ids.sidebar.rdetail			= "rdetail_link_div"; 
 config.ids.sidebar.login			= 'login_link';
 config.ids.sidebar.logout			= 'logout_link';
 config.ids.sidebar.logoutbox		= 'logout_link_div';
@@ -92,6 +96,16 @@ config.ids.sidebar.myopac_link	= 'myopac_link'
 config.names.sidebar.subject_item	= 'subject_item';
 config.names.sidebar.author_item	= 'author_item';
 config.names.sidebar.series_item	= 'series_item';
+
+/* record detail */
+config.ids.rdetail = {};
+
+
+/* XUL */
+config.ids.xul.marc_editor_link = "marc_editor_link";
+config.ids.xul.copy_browser_link = "copy_browser_link";
+config.ids.xul.marc_editor			= "marc_editor_div";
+config.ids.xul.copy_browser		= "copy_browser_div";
 
 
 /* ---------------------------------------------------------------------------- */

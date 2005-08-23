@@ -16,6 +16,8 @@
 .org_link { padding-right: 15px; }
 #org_link_container { margin-bottom: 5px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px; width: 100%; }
 
+#fonts_div { position: absolute; left: 220px; top: 10px; }
+
 /* ---------------------------------------------------------------------- */
 .sidebar_div { float: left; width: 19%; }
 .side_bar_item { padding-left: 15px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px; }

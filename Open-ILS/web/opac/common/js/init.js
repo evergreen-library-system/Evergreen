@@ -14,10 +14,14 @@ attachEvt("common", "unload", cleanRemoteRequests);
 function init() {
 	runEvt('common','init');
 	setFontSize(getFontSize());
+	runEvt("common", "run");
+
+	/*
 	switch(findCurrentPage()) {
 		case MRESULT: runEvt('mresult', 'run'); break;
 		case RRESULT: runEvt('rresult', 'run'); break;
 	}
+	*/
 }
 
 function windowUnload() { runEvt("common", "unload"); }

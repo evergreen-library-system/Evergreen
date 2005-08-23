@@ -8,6 +8,11 @@
 	<!-- load my js -->
 	<script language='javascript' src='../js/search_bar.js'> </script>
 
+	<!--
+	<a onclick="scaleFont(prompt('scale fonts...'));">CLICK</a>
+	-->
+
+
 	<div id='searchbar_main' class='color_1'>
 
 		<table>

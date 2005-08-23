@@ -14,9 +14,10 @@
 	<script language='javascript' src='../../../common/js/JSON.js'> </script>
 	<script language='javascript' src='../../../common/js/fmcore.js'> </script>
 	<script language='javascript' src='../../../common/js/fmgen.js'> </script>
-	<script language='javascript' src='../../../common/js/OrgTree.js'> </script>
-	<script language='javascript' src='../../../common/js/RemoteRequest.js'> </script>
 	<script language='javascript' src='../../../common/js/opac_utils.js'> </script>
+	<script language='javascript' src='../../../common/js/OrgTree.js'> </script>
+	<script language='javascript' src='../../../common/js/org_utils.js'> </script>
+	<script language='javascript' src='../../../common/js/RemoteRequest.js'> </script>
 	<script language='javascript' src='../../../common/js/init.js'> </script>
 	<script language='javascript' src='../../../common/js/added_content.js'> </script>
 
