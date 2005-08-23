@@ -39,6 +39,8 @@ function orgNodeTrail(node) {
 	return na.reverse();
 }
 
+function findSiblingOrgs(node) { return findOrgUnit(node.parent_ou()).children(); }
+
 
 
 var orgArraySearcher = {};
@@ -74,3 +76,6 @@ function _tree_killer () {
 	orgArraySearcher = null;
 	globalOrgTypes = null;
 }
+
+
+

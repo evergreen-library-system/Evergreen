@@ -236,33 +236,37 @@ function findNodeByName(root, nodeName) {
 function truncate(string, size) {
 	if(string && size != null && 
 			size > -1 && string.length > size) 
-		return string.substr(0, size) + "..."; 
+		return string.substr(0, size) + "... "; 
 	return string;
 }
 
 
 /* style sheets must have a 'name' attribute for these functions to work */
-function setActiveStyleSheet(name) {
+function setActivateStyleSheet(name) {
 	var i, a, main;
 	for (i = 0; (a = document.getElementsByTagName ("link")[i]); i++) {
 		if (a.getAttribute ("rel").indexOf ("style") != -1 && a.getAttribute ("name")) {
+			a.disabled = true;
 			if (a.getAttribute ("name").indexOf(name) != -1)
 				a.disabled = false;
 		}
 	}
 }
 
-function swapStyleSheet(newname, oldname) {
-	var i, a, main;
-	for (i = 0; (a = document.getElementsByTagName ("link")[i]); i++) {
-		if (a.getAttribute ("rel").indexOf ("style") != -1 && a.getAttribute ("name")) {
-			if (a.getAttribute ("name").indexOf(newsheet) != -1)
-				a.disabled = false;
-			if (a.getAttribute ("name").indexOf(oldsheet) != -1)
-				a.disabled = true;
-		}
+
+/* ----------------------------------------------------- */
+function scaleFonts(type) {
+
+	var size = "";
+	switch(type) {
+		case "large": size = "113%"; break;
+		case "small": size = "87%"; break;
 	}
+
+	document.body.style.fontSize = size;
+	for (i = 0; (a = document.getElementsByTagName ("table")[i]); i++) a.style.fontSize = size;
 }
+
 
 
 

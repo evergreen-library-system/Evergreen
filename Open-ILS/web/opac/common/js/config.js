@@ -16,6 +16,7 @@ var PARAM_RID					= "rid";			/* record id */
 var COOKIE_SB = "sbe";
 var COOKIE_SES = "ses";
 var COOKIE_IDS	= "ids";
+var COOKIE_FONT = "fnt";
 
 /* these are the actual param values - set on page load */
 
@@ -183,6 +184,7 @@ function attachEvt(scope, name, action) {
 }
 
 createEvt("common", "init");						/* f() : what happens on page init */
+createEvt("common", "pageRendered");			/* f() : what happens when the page is done (up to the skin to call this even)*/
 createEvt("common", "unload");					/* f() : what happens on window unload (clean memory, etc.)*/
 createEvt("mresult", "run");						/* f() : kick of the page*/
 createEvt("mresult", "idsReceived");			/* f(ids) */
