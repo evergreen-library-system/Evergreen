@@ -2,6 +2,9 @@ var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
+var IAMXUL = false;
+function isXUL() { return IAMXUL; }
+
 var _allrequests = {};
 
 function cleanRemoteRequests() {

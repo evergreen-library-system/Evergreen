@@ -1,5 +1,3 @@
-var IAMXUL = false;
-function isXUL() { return IAMXUL; }
 
 
 /* - Request ------------------------------------------------------------- */
