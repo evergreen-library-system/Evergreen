@@ -22,7 +22,10 @@
 		<iframe id="opac_opac_iframe" type="content-primary" flex="1"/> 
 		<iframe id="opac_opac_iframe" type="content" flex="1"/>
 		-->
+		<!--
 		<iframe id="opac_opac_iframe" flex="1"/>
+		-->
+		<browser id="opac_opac_iframe" flex="1"/>
 	</vbox>
 
 </page>

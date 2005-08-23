@@ -1,45 +1,74 @@
 sdump('D_OPAC','Loading opac.js\n');
 
-//var OPAC_URL = "http://gapines.org:8080/opac/?top_target=advanced_search";
-var OPAC_URL = "http://gapines.org/opac/?top_target=advanced_search";
-//var OPAC_URL = "http://google.com/";
+var OPAC_URL = "http://spacely.georgialibraries.org:8080/";
+var opac_page_thing;
+
+
+/* listen for page changes */
+var progressListener = new Object();
+progressListener.onProgressChange	= function(){}
+progressListener.onLocationChange	= function(){}
+progressListener.onStatusChange		= function(){}
+progressListener.onSecurityChange	= function(){}
+progressListener.QueryInterface = function qi(iid) { return this; }
+progressListener.onStateChange = 
+	function client_statechange ( webProgress, request, stateFlags, status) {
+		if( stateFlags == 131088 ) set_opac_vars();
+};
+
 
 /* init the opac */
 function opac_init(p) {
 	sdump('D_OPAC',"Initing OPAC\n");
-
-	//var box = p.w.document.getElementById('opac_vbox');
-	//p.opac_iframe = p.w.document.createElement("browser");
-	//box.appendChild( p.opac_iframe );
-
+	opac_page_thing = p;
 	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
-
-	//p.opac_iframe.setAttribute("type", "content-primary");
-	//p.opac_iframe.type = "content-primary";
-	//p.opac_iframe.setAttribute("id", "opac_opac_iframe");
-	//p.opac_iframe.setAttribute("flex", "1");
+	p.opac_iframe.addProgressListener(progressListener, 
+		Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 	p.opac_iframe.setAttribute("src", OPAC_URL) 
+}
 
-	opac_build_callbacks(p);
-
+/* shoves data into the OPAC's space */
+function set_opac_vars() {
+	var p = opac_page_thing;
+	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
 	p.opac_iframe.contentWindow.IAMXUL = true;
-	p.opac_iframe.contentWindow.xulEvtRecordResultDisplayed 
-		= p.xulEvtRecordResultDisplayed;
+	p.opac_iframe.contentWindow.makeXULLink = makeXULLink;
+	p.opac_iframe.contentWindow.xulG = mw.G;
+}
 
-	p.opac_iframe.contentWindow.xulEvtMRResultDisplayed 
-		= p.xulEvtMRResultDisplayed;
+/* build a XUL specific link within the OPAC.
+	@param type The type of link to build
+	@param node The DOM node (<a>..</a>, most likely) whose onclick you wish to set
+	@param thing The data need to set the action for the specific type.  For
+		example, 'thing' is the record id for 'marc' and 'copy' types.
+*/
+function makeXULLink(type, node, thing) {
 
-	p.opac_iframe.contentWindow.xulEvtRecordDetailDisplayed 
-		= p.xulEvtRecordDetailDisplayed;
+	var p = opac_page_thing;
+	switch(type) {
 
-	p.opac_iframe.contentWindow.xulEvtViewMARC = p.xulEvtViewMARC;
+		case "marc":
+			node.onclick = function(thing) { 
+				spawn_marc_editor( 
+					p.w.app_shell, 'new_tab', 'main_tabbox', 
+						{ 'find_this_id' : thing } ).find_this_id = thing;
+			};
+			break;
 
-	/* shove BIG G in so global variables may be accessed */
-	p.opac_iframe.contentWindow.G = mw.G;
-
+		case "copy":
+			node.onclick = function(thing) { 
+				spawn_copy_browser(
+					p.w.app_shell, 'new_tab', 'main_tabbox', 
+						{ 'find_this_id' : thing }).find_this_id = thing;
+			};
+			break;
+	}
 }
 
 
+/* -------------------------------------------------------------------------- 
+	back-forward
+ 	-------------------------------------------------------------------------- */
 function opac_build_navigation(p) {
 	p.webForward = function webForward() {
 		try {
@@ -60,10 +89,16 @@ function opac_build_navigation(p) {
 	}
 }
 
+
+
+
+
+
 /* -------------------------------------------------------------------------- 
 	XUL Callbacks
 	-------------------------------------------------------------------------- */
 
+/*
 function opac_build_callbacks(p) {
 	p.xulEvtRecordResultDisplayed = function(ui_obj, record) {
 		ui_obj.addItem("Edit MARC", function() { 
@@ -117,13 +152,14 @@ function opac_build_callbacks(p) {
 
 
 
-p.buildViewMARCWindow = function(record) {
+	p.buildViewMARCWindow = function(record) {
+	
+   	debug("Setting up view marc with record " + record.doc_id());
+	
+   	var func = function() { marc_view(p.w.app_shell,record.doc_id()); }
+   	return func;
+	}
 
-   debug("Setting up view marc with record " + record.doc_id());
 
-   var func = function() { marc_view(p.w.app_shell,record.doc_id()); }
-   return func;
 }
-
-
-}
+*/
