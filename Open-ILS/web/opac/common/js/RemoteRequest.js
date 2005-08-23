@@ -5,6 +5,17 @@ var XML_HTTP_MAX_TRIES = 3;
 var IAMXUL = false;
 function isXUL() { return IAMXUL; }
 
+/* some communication exceptions */
+function EX(message) { this.init(message); }
+EX.prototype.init = function(message) { this.message = message; }
+EX.prototype.toString = function() { return "\n *** Exception Occured \n" + this.message; }  
+EXCommunication.prototype              = new EX();
+EXCommunication.prototype.constructor  = EXCommunication;
+EXCommunication.baseClass              = EX.prototype.constructor;
+function EXCommunication(message) { this.classname="EXCommunication"; this.init("EXCommunication: " + message); }                          
+/* ------------------------------------------------ */
+
+
 var _allrequests = {};
 
 function cleanRemoteRequests() {
@@ -89,7 +100,7 @@ function _remoteRequestCallback(id) {
 
 			/* if we receive a communication error, retry the request up
 				to XML_HTTP_MAX_TRIES attempts */
-			if( instanceOf(E, EXCommunication) ) {
+			if( E && E.classname == "EXCommunication" ) {
 
 				if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
 					if(isXUL()) throw object;
@@ -185,12 +196,12 @@ RemoteRequest.prototype.getResultObject = function() {
 	if( obj[0] != null && obj[1] == null ) obj = obj[0];
 
 	/* these are user level exceptions from the server code */
-	if(instanceOf(obj, ex)) {
+	if(obj.__isfieldmapper && obj.classname == "ex") {
 		if(!isXUL()) alert(obj.err_msg());
 		throw obj;
 	}
 
-	if(instanceOf(obj, perm_ex)) {
+	if(obj.__isfieldmapper && obj.classname == "perm_ex") {
 		/* the opac will go ahead and spit out the error msg */
 		if(!isXUL()) alert(obj.err_msg());
 		throw obj;
