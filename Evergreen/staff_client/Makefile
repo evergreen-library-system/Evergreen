@@ -3,8 +3,9 @@ PACKAGE=Evergreen
 DESCRIPTION=Evergreen Staff Client 
 BUILD=2005072719
 
-RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/js/util/fieldmapper.js
-RETRIEVE_ORG_TREE=wget -N http://gapines.org/js/util/OrgTree.js
+RETRIEVE_FIELDMAPPER=wget -N http://spacely.georgialibraries.org:8080/opac/common/js/util/fieldmapper.js
+RETRIEVE_FM_ALL=wget -N http://spacely.georgialibraries.org:8080/opac/common/js/fmall.js
+RETRIEVE_ORG_TREE=wget -N http://spacely.georgialibraries.org:8080/opac/common/js/OrgTree.js
 RETRIEVE_CLIENT_CONFIG=cp ../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
 
 all: build package
@@ -36,9 +37,10 @@ stamp:
 generated:
 	@echo
 	@echo These things are installation specific.  The staff client is the last thing you should try to build.
-	(cd chrome/content/evergreen/util ; ${RETRIEVE_FIELDMAPPER} );
+	#(cd chrome/content/evergreen/util ; ${RETRIEVE_FIELDMAPPER} );
 	(cd chrome/content/evergreen/util ; ${RETRIEVE_ORG_TREE} );
 	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
+	(cd chrome/content/evergreen/Open-ILS/util/ ; ${RETRIEVE_FM_ALL} );
 
 open-ils:
 	cp ../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/

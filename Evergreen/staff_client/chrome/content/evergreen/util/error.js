@@ -8,7 +8,7 @@ var debugDump = true;
 var arg_dump_full = false;
 
 var sdump_levels = {
-	'D_NONE' : false,
+	'D_NONE' : true,
 	'D_ALL' : false,
 	'D_ERROR' : true,
 	'D_TRACE' :  false,
@@ -155,7 +155,8 @@ function arg_dump(args,dump_these) {
 				} else {
 					s += '\targ #' + i + ' = ';
 					try {
-						s += js2JSON( arg );
+						//s += js2JSON( arg );
+						s += arg;
 					} catch(E) {
 						s += arg;
 					}

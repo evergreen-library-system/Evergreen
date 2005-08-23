@@ -61,6 +61,12 @@ function flatten_ou_branch(branch) {
 	return my_array;
 }
 
+/*
+function findOrgUnit(id) {
+	return find_ou(globalOrgTree, id);
+}
+*/
+
 function find_ou(tree,id) {
 	if (typeof(id)=='object') { id = id.id(); }
 	if (tree.id()==id) {

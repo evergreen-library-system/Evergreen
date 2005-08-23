@@ -148,7 +148,7 @@ function unregister_AppShell(w) {
 }
 
 function register_window(w) {
-	sdump('D_WIN',arg_dump(arguments,{0:true}));
+	sdump('D_WIN',arg_dump(arguments,{0:false}));
 	mw.G.win_list.push(w);
 	mw.G.last_win = w;
 	sdump('D_TRACE_EXIT',arg_dump(arguments));

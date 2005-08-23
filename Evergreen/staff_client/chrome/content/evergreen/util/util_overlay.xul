@@ -19,13 +19,11 @@
 	<script src="validate.js" />	<!-- some validation functions -->
 	<script src="widgets.js" />	<!-- some convenience functions for XUL/HTML elements.  want to eliminate overlap with webutils -->
 	<script src="populate.js" />	<!-- populate widgets (like menus) with values -->
-	<script src="fieldmapper.js" /> <!-- our Objects for things like patrons, books, etc.  This is generated. -->
 	<!--
-	<script src="OrgTree.js" />
-	--><!-- our Organization Hierarchy.  This is generated. -->
+	<script src="fieldmapper.js" /> 
+	-->	<!-- our Objects for things like patrons, books, etc.  This is generated. -->
 
 	<!--
-	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/config.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/CGI.js" />
@@ -35,11 +33,27 @@
 	<script src="chrome://evergreen/content/Open-ILS/util/OrgTree.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/dtree.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/fmcore.js" />
-	<script src="chrome://evergreen/content/Open-ILS/util/fmgen.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/opac_utils.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/init.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/added_content.js" />
+	-->
+	<script src="chrome://evergreen/content/Open-ILS/util/md5.js" />
+	<script src="chrome://evergreen/content/Open-ILS/util/JSON.js" />
+	<script>dump('fmall LOADING++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script src="chrome://evergreen/content/Open-ILS/util/fmall.js" />
+	<script>dump('fmgen LOADING++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script src="chrome://evergreen/content/Open-ILS/util/fmgen.js" />
+	<script>dump('remoterequest LOADING++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
+	<script>dump('ORGTREE LOADING++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script src="chrome://evergreen/content/Open-ILS/util/OrgTree.js" />
+	<script>dump('ORGTREE FINISHED++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script>dump('ORG_utilS LOADING++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script src="chrome://evergreen/content/Open-ILS/util/org_utils.js" />
+	<script>dump('ORG_utilS FINISHED++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
+	<script>dump('orgtree = ' + js2JSON( globalOrgTree ) + '\n');</script>
+	<script>dump('0++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n');</script>
 	<script>IAMXUL = true;</script>
 
 	<script src="ses.js" />		<!-- my wrapper over the OpenSRF communication layer.. Jabber and XMLHttpRequest -->
@@ -50,12 +64,23 @@
 	<script src="print.js" />	<!-- some xpcom for printing -->
 	<script src="sound.js" />	<!-- some xpcom for sound -->
 
-	<!--<script src="chrome://evergreen/content/Open-ILS/util/browser.js" />-->	<!-- browser detection.. am I not using Mozilla? doh :) -->
+	<!--
+	<script src="chrome://evergreen/content/Open-ILS/util/browser.js" />
+	-->	<!-- browser detection.. am I not using Mozilla? doh :) -->
 
-	<!--<script src="chrome://evergreen/content/Open-ILS/widgets/Box.js" />-->		<!-- shared code between OPAC and staff client for surveys -->
-	<!--<script src="chrome://evergreen/content/Open-ILS/widgets/ListBox.js" />-->
-	<!--<script src="chrome://evergreen/content/Open-ILS/widgets/Survey.js" />-->
+	<!--
+	<script src="chrome://evergreen/content/Open-ILS/widgets/Box.js" />
+	-->		<!-- shared code between OPAC and staff client for surveys -->
+	<!--
+	<script src="chrome://evergreen/content/Open-ILS/widgets/ListBox.js" />
+	-->
+	<!--
+	<script src="chrome://evergreen/content/Open-ILS/widgets/Survey.js" />
+	-->
 
+	<script>
+		dump('Finished all the js in the util overlay...\n');
+	</script>
 </util>
 
 </overlay>
