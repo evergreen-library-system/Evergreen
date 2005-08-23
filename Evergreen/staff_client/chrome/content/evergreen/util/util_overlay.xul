@@ -25,8 +25,8 @@
 	--><!-- our Organization Hierarchy.  This is generated. -->
 
 	<!--
-	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />
 	-->
+	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/config.js" />
 	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/CGI.js" />
@@ -41,8 +41,9 @@
 	<script src="chrome://evergreen/content/Open-ILS/util/fmcore.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/fmgen.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
-	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/opac_utils.js" />
+	<script>IAMXUL = true;</script>
+	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/init.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/added_content.js" />
 	-->
