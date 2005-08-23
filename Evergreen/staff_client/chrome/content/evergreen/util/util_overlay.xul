@@ -20,26 +20,32 @@
 	<script src="widgets.js" />	<!-- some convenience functions for XUL/HTML elements.  want to eliminate overlap with webutils -->
 	<script src="populate.js" />	<!-- populate widgets (like menus) with values -->
 	<script src="fieldmapper.js" /> <!-- our Objects for things like patrons, books, etc.  This is generated. -->
-	<script src="OrgTree.js" />	<!-- our Organization Hierarchy.  This is generated. -->
+	<!--
+	<script src="OrgTree.js" />
+	--><!-- our Organization Hierarchy.  This is generated. -->
 
-	<!--<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />-->		<!-- Bill's grab bag of useful functions.  want to eliminate overlap -->
-	<!--<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />-->	<!-- XMLHttpRequest -->
-	<!--<script src="chrome://evergreen/content/Open-ILS/util/opac_utils.js" />-->			<!-- error/exception handling -->
-
+	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />
+	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/config.js" />
+	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/CGI.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/Cookie.js" />
+	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/md5.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/JSON.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/OrgTree.js" />
+	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/dtree.js" />
+	-->
 	<script src="chrome://evergreen/content/Open-ILS/util/fmcore.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/fmgen.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/RemoteRequest.js" />
+	<!--
 	<script src="chrome://evergreen/content/Open-ILS/util/opac_utils.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/init.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/added_content.js" />
+	-->
 
 	<script src="ses.js" />		<!-- my wrapper over the OpenSRF communication layer.. Jabber and XMLHttpRequest -->
 	<script src="explode.js" />	<!-- original attempt at linking widgets to data.  Want to use something more OO -->

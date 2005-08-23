@@ -6,6 +6,7 @@
 
 <OpenSRF id="OpenSRF_js">
 	<script>dump('Loading all the js in the OpenSRF overlay...\n');</script>
+	<!--
 	<script src="JSON.js" />
 	<script src="md5.js" />
 	<script src="opensrf_utils.js" />
@@ -16,6 +17,7 @@
 	<script src="opensrf_jabber_transport.js" />
 	<script src="opensrf_msg_stack.js" />
 	<script src="opensrf_app_session.js" />
+	-->
 </OpenSRF>
 
 </overlay>
