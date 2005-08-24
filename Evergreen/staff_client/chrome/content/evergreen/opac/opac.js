@@ -32,37 +32,13 @@ function set_opac_vars() {
 	var p = opac_page_thing;
 	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
 	p.opac_iframe.contentWindow.IAMXUL = true;
-	p.opac_iframe.contentWindow.makeXULLink = makeXULLink;
 	p.opac_iframe.contentWindow.xulG = mw.G;
+	p.opac_iframe.contentWindow.attachEvt("rresult", "recordDrawn", opac_make_details_page);
 }
 
-/* build a XUL specific link within the OPAC.
-	@param type The type of link to build
-	@param node The DOM node (<a>..</a>, most likely) whose onclick you wish to set
-	@param thing The data need to set the action for the specific type.  For
-		example, 'thing' is the record id for 'marc' and 'copy' types.
-*/
-function makeXULLink(type, node, thing) {
-
-	var p = opac_page_thing;
-	switch(type) {
-
-		case "marc":
-			node.onclick = function(thing) { 
-				spawn_marc_editor( 
-					p.w.app_shell, 'new_tab', 'main_tabbox', 
-						{ 'find_this_id' : thing } ).find_this_id = thing;
-			};
-			break;
-
-		case "copy":
-			node.onclick = function(thing) { 
-				spawn_copy_browser(
-					p.w.app_shell, 'new_tab', 'main_tabbox', 
-						{ 'find_this_id' : thing }).find_this_id = thing;
-			};
-			break;
-	}
+function opac_make_details_page(id, node) {
+	//dump("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id);
+	//alert("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id);
 }
 
 
@@ -94,72 +70,4 @@ function opac_build_navigation(p) {
 
 
 
-/* -------------------------------------------------------------------------- 
-	XUL Callbacks
-	-------------------------------------------------------------------------- */
 
-/*
-function opac_build_callbacks(p) {
-	p.xulEvtRecordResultDisplayed = function(ui_obj, record) {
-		ui_obj.addItem("Edit MARC", function() { 
-				spawn_marc_editor( 
-					p.w.app_shell, 'new_tab', 'main_tabbox', { 
-						'find_this_id' : record.doc_id() 
-					} 
-				).find_this_id = record.doc_id();
-			}
-		);
-
-		ui_obj.addItem("Open Copy Browser", function() { 
-				spawn_copy_browser(
-					p.w.app_shell, 'new_tab', 'main_tabbox', {
-						'find_this_id' : record.doc_id()
-					}
-				).find_this_id = record.doc_id();
-			}
-		);
-
-	}
-
-	p.xulEvtMRResultDisplayed = function(ui_obj, record) {
-		sdump('D_OPAC',"xulEvtMRRsultsDisplayed()\n");
-	}
-
-
-	p.xulEvtRecordDetailDisplayed = function(ui_obj, record) {
-		ui_obj.addItem("Edit MARC", function() { 
-				spawn_marc_editor( 
-					p.w.app_shell, 'new_tab', 'main_tabbox', { 
-						'find_this_id' : record.doc_id() 
-					} 
-				).find_this_id = record.doc_id();
-			}
-		);
-
-		ui_obj.addItem("Open Copy Browser", function() { 
-				spawn_copy_browser(
-					p.w.app_shell, 'new_tab', 'main_tabbox', {
-						'find_this_id' : record.doc_id()
-					}
-				).find_this_id = record.doc_id();
-			}
-		);
-	}
-
-	p.xulEvtViewMARC = function( node, record ) {
-		node.onclick = p.buildViewMARCWindow(record);
-	}
-
-
-
-	p.buildViewMARCWindow = function(record) {
-	
-   	debug("Setting up view marc with record " + record.doc_id());
-	
-   	var func = function() { marc_view(p.w.app_shell,record.doc_id()); }
-   	return func;
-	}
-
-
-}
-*/
