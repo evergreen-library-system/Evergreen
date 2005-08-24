@@ -544,7 +544,7 @@ void object_set_comment(object* obj, char* com) {
 char* __tabs(int count) {
 	growing_buffer* buf = buffer_init(24);
 	int i;
-	for(i=0;i!=count;i++) buffer_add(buf, "  ");
+	for(i=0;i!=count;i++) buffer_add(buf, "   ");
 	char* final = buffer_data( buf );
 	buffer_free( buf );
 	return final;
@@ -552,79 +552,39 @@ char* __tabs(int count) {
 
 char* json_string_format(char* string) {
 
+	if(!string) return strdup("");
+
 	growing_buffer* buf = buffer_init(64);
 	int i;
-	int tab_var = 0;
+	int depth = 0;
+
 	for(i=0; i!= strlen(string); i++) {
 
-		if( string[i] == '{' ) {
+		if( string[i] == '{' || string[i] == '[' ) {
 
-			buffer_add( buf, " {");
-			buffer_add(buf, "\n");
-			char* tab = __tabs(tab_var);
-			buffer_add(buf, tab);
+			char* tab = __tabs(++depth);
+			buffer_fadd( buf, "%c\n%s", string[i], tab);
 			free(tab);
 
-			tab_var++;
-			buffer_add( buf, "\n" );	
-			tab = __tabs(tab_var);
-			buffer_add( buf, tab );	
+		} else if( string[i] == '}' || string[i] == ']' ) {
+
+			char* tab = __tabs(--depth);
+			buffer_fadd( buf, "\n%s%c", tab, string[i]);
 			free(tab);
 
-		} else if( string[i] == '[' ) {
-
-			buffer_add( buf, "[");
-			buffer_add(buf, "\n");
-			char* tab = __tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			tab_var++;
-			buffer_add( buf, "\n" );	
-			tab = __tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
-
-		} else if( string[i] == '}' ) {
-
-			tab_var--;
-			buffer_add(buf, "\n");
-			char* tab = __tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			buffer_add( buf, "}");
-			buffer_add( buf, "\n" );	
-			tab = __tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
-
-		} else if( string[i] == ']' ) {
-
-			tab_var--;
-			buffer_add(buf, "\n");
-			char* tab = __tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			buffer_add( buf, "]");
-			buffer_add( buf, "\n" );	
-			tab = __tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
+			if(string[i+1] != ',') {
+				tab = __tabs(depth);
+				buffer_fadd( buf, "\n%s", tab );	
+				free(tab);
+			}
 
 		} else if( string[i] == ',' ) {
 
-			buffer_add( buf, ",");
-			buffer_add( buf, "\n" );	
-			char* tab = __tabs(tab_var);
-			buffer_add(buf, tab);
+			char* tab = __tabs(depth);
+			buffer_fadd(buf, ",\n%s", tab);
 			free(tab);
 
-		} else {
-
-			char b[2];
-			b[0] = string[i];
-			b[1] = '\0';
-			buffer_add( buf, b ); 
-		}
+		} else { buffer_add_char(buf, string[i]); }
 
 	}
 
@@ -632,6 +592,15 @@ char* json_string_format(char* string) {
 	buffer_free(buf);
 	return result;
 
+}
+
+
+object* object_clone(object* o) {
+	if(!o) return NULL;
+	char* json = o->to_json(o);
+	object* newo = json_parse_string(json);
+	free(json);
+	return newo;
 }
 
 

@@ -567,7 +567,8 @@ int send_request( char* server,
 	
 				if( pretty_print && omsg->_result_content ) {
 					char* j = object_to_json(omsg->_result_content);
-					content = json_printer(j); 
+					//content = json_printer(j); 
+					content = json_string_format(j);
 					free(j);
 				} else
 					content = object_get_string(omsg->_result_content);
@@ -599,7 +600,8 @@ int send_request( char* server,
 	
 				if( pretty_print && omsg->_result_content ) {
 					char* j = object_to_json(omsg->_result_content);
-					content = json_printer(j); 
+					//content = json_printer(j); 
+					content = json_string_format(j);
 					free(j);
 				} else
 					content = object_get_string(omsg->_result_content);
@@ -772,94 +774,11 @@ char* tabs(int count) {
 	growing_buffer* buf = buffer_init(24);
 	int i;
 	for(i=0;i!=count;i++)
-		buffer_add(buf, "   ");
+		buffer_add(buf, "  ");
 
 	char* final = buffer_data( buf );
 	buffer_free( buf );
 	return final;
-}
-
-char* json_printer( char* string ) {
-
-	growing_buffer* buf = buffer_init(64);
-	int i;
-	int tab_var = 0;
-	for(i=0; i!= strlen(string); i++) {
-
-		if( string[i] == '{' ) {
-
-			buffer_add(buf, "\n");
-			char* tab = tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			buffer_add( buf, "{");
-			tab_var++;
-			buffer_add( buf, "\n" );	
-			tab = tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
-
-		} else if( string[i] == '[' ) {
-
-			buffer_add(buf, "\n");
-			char* tab = tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			buffer_add( buf, "[");
-			tab_var++;
-			buffer_add( buf, "\n" );	
-			tab = tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
-
-		} else if( string[i] == '}' ) {
-
-			tab_var--;
-			buffer_add(buf, "\n");
-			char* tab = tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			buffer_add( buf, "}");
-			buffer_add( buf, "\n" );	
-			tab = tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
-
-		} else if( string[i] == ']' ) {
-
-			tab_var--;
-			buffer_add(buf, "\n");
-			char* tab = tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-			buffer_add( buf, "]");
-			buffer_add( buf, "\n" );	
-			tab = tabs(tab_var);
-			buffer_add( buf, tab );	
-			free(tab);
-
-		} else if( string[i] == ',' ) {
-
-			buffer_add( buf, ",");
-			buffer_add( buf, "\n" );	
-			char* tab = tabs(tab_var);
-			buffer_add(buf, tab);
-			free(tab);
-
-		} else {
-
-			char b[2];
-			b[0] = string[i];
-			b[1] = '\0';
-			buffer_add( buf, b ); 
-		}
-
-	}
-
-	char* result = buffer_data(buf);
-	buffer_free(buf);
-	return result;
-
 }
 
 int handle_math( char* words[] ) {

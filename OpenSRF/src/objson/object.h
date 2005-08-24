@@ -216,5 +216,7 @@ void object_shift_index(object*, unsigned long index);
 /* formats a JSON string from printing.  User must free returned string */
 char* json_string_format(char* json);
 
+object* object_clone(object* o);
+
 
 #endif
