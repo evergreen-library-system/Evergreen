@@ -7,6 +7,7 @@ function rresultUnload() { removeChildren(table); table = null;}
 attachEvt("common", "unload", rresultUnload);
 attachEvt("common", "run", rresultDoSearch);
 attachEvt("rresult", "idsReceived", rresultCollectRecords); 
+attachEvt("result", "recordDrawn", rresultLaunchDrawn); 
 
 function rresultDoSearch() {
 	table = G.ui.result.main_table;
@@ -47,3 +48,7 @@ function rresultHandleMods(r) {
 	resultCollectCopyCounts(rec, r.userdata, FETCH_R_COPY_COUNTS);
 }
 
+
+function rresultLaunchDrawn(id, node) {
+	runEvt("rresult", "recordDrawn", id, node);
+}

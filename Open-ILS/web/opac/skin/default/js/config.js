@@ -102,10 +102,12 @@ config.ids.rdetail = {};
 
 
 /* XUL */
+/*
 config.ids.xul.marc_editor_link = "marc_editor_link";
 config.ids.xul.copy_browser_link = "copy_browser_link";
 config.ids.xul.marc_editor			= "marc_editor_div";
 config.ids.xul.copy_browser		= "copy_browser_div";
+*/
 
 
 /* ---------------------------------------------------------------------------- */

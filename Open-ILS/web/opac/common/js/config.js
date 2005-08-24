@@ -196,9 +196,11 @@ createEvt("common", "unload");					/* f() : what happens on window unload (clean
 createEvt("common", "run");						/* f() : make the page do stuff */
 createEvt("mresult", "idsReceived");			/* f(ids) */
 createEvt("rresult", "idsReceived");			/* f(ids) */	
+createEvt("rresult", "recordDrawn");			/* f(recordid, linkDOMNode) : after record is drawn, allow others (xul) to plugin actions */
 
 createEvt("result", "hitCountReceived");		/* f() : display hit info, pagination, etc. */
 createEvt("result", "recordReceived");			/* f(mvr, pagePosition, isMr) : display the record*/
+createEvt("result", "recordDrawn");				/* f(recordid, linkDOMNode) : after record is drawn, allow others (xul) to plugin actions */
 createEvt("result", "copyCountsReceived");	/* f(mvr, pagePosition, copyCountInfo) : display copy counts*/
 createEvt("result", "allRecordsReceived");	/* f(mvrsArray) : add other page stuff, sidebars, etc.*/
 

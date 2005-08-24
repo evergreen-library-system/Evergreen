@@ -95,6 +95,8 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		100 - (orgNodeTrail(findOrgUnit(getLocation())).length * 8) + "%";
 
 	unHideMe(r);
+	
+	runEvt("result", "recordDrawn", rec.doc_id(), title_link);
 
 	if(resultPageIsDone()) 
 		runEvt('result', 'allRecordsReceived', recordsCache);
