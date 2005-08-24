@@ -4,7 +4,7 @@ function OpenILS_init(params) {
 	try {
 
 		switch(params.app) {
-			case 'Auth' : auth_init(params); dump('after auth_init\n'); break;
+			case 'Auth' : auth_init(params); break;
 			case 'AppShell' : app_shell_init(params); register_AppShell(params.w); break;
 			case 'Opac' : opac_init(params); break;
 			case 'PatronSearch' : patron_search_init(params); break;
@@ -18,9 +18,7 @@ function OpenILS_init(params) {
 	try {
 
 		//register_document(params.w.document);
-		dump('before register_window\n');
 		register_window(params.w);
-		dump('after register_window\n');
 
 	} catch(E) { sdump('D_ERROR',js2JSON(E)+'\n'); }
 	sdump('D_TRACE_EXIT',arg_dump(arguments));

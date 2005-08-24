@@ -47,25 +47,15 @@ var auth_meter_incr = 10;
 function auth_init() {
 	sdump('D_AUTH','TESTING: auth.js: ' + mw.G['main_test_variable'] + '\n');
 	sdump('D_AUTH',arg_dump(arguments));
-dump('a1\n');
 	var np = document.getElementById('name_prompt');
-dump('a2\n');
 	np.addEventListener("keypress",handle_keypress,false);
-dump('a3\n');
 	np.focus();
-dump('a4\n');
 	var pp = document.getElementById('password_prompt');
-dump('a5\n');
 	pp.addEventListener("keypress",handle_keypress,false);
-dump('a6\n');
 	self.addEventListener("unload",nice_shutdown,false);
-dump('a7\n');
 	G['sound'] = xp_sound_init(); 
-dump('a8\n');
 	//G.sound.beep();
-dump('a9\n');
 	snd_logon();
-dump('a10\n');
 }
 
 function handle_keypress(ev) {

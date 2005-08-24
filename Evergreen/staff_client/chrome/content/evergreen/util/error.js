@@ -8,7 +8,7 @@ var debugDump = true;
 var arg_dump_full = false;
 
 var sdump_levels = {
-	'D_NONE' : true,
+	'D_NONE' : false,
 	'D_ALL' : false,
 	'D_ERROR' : true,
 	'D_TRACE' :  false,
@@ -28,7 +28,7 @@ var sdump_levels = {
 
 	'D_AUTH' : false,
 
-	'D_OPAC' : false,
+	'D_OPAC' : true,
 
 	'D_PATRON_SEARCH' : false,
 	'D_PATRON_SEARCH_FORM' : false,

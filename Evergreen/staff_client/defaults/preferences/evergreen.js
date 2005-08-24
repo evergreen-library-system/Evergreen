@@ -12,4 +12,4 @@ pref("network.http.max-persistent-connections-per-server",8);
 // However, it's better than POEM, which I wasted a day on :)
 pref("dom.max_script_run_time",60);
 
-pref("javascript.options.strict",true);
+pref("javascript.options.strict",false);
