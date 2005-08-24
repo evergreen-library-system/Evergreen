@@ -23,6 +23,112 @@ sub _d { warn "Patron:\n" . Dumper(shift()); }
 my $cache_client;
 
 
+my $set_user_settings;
+my $set_ou_settings;
+
+__PACKAGE__->register_method(
+	method	=> "set_user_settings",
+	api_name	=> "open-ils.actor.patron.settings.update",
+);
+sub set_user_settings {
+	my( $self, $client, $user_session, $uid, $settings ) = @_;
+	
+	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
+
+	if (ref($uid) eq 'HASH') {
+		$settings = $uid;
+		$uid = undef;
+	}
+	$uid ||= $user_obj->id;
+
+	if( $user_obj->id != $uid ) {
+		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "UPDATE_USER")) {
+			return OpenILS::Perm->new("UPDATE_USER");
+		}
+	}
+
+	$set_user_settings ||=
+		$self->method_lookup('open-ils.storage.direct.actor.user_setting.batch.merge');
+
+	return $set_user_settings->run(map { [{ usr => $uid, name => $_}, {value => $$settings{$_}}] } keys %$settings);
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "set_ou_settings",
+	api_name	=> "open-ils.actor.org_unit.settings.update",
+);
+sub set_ou_settings {
+	my( $self, $client, $user_session, $ouid, $settings ) = @_;
+	
+	throw OpenSRF::EX::InvalidArg ("OrgUnit ID and Settings hash required for setting OrgUnit settings") unless ($ouid && $settings);
+
+	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
+
+	if($apputils->check_user_perms($user_obj->id, $ouid, "UPDATE_ORG_UNIT")) {
+		return OpenILS::Perm->new("UPDATE_ORG_UNIT");
+	}
+
+
+	$set_ou_settings ||=
+		$self->method_lookup('open-ils.storage.direct.actor.org_unit_setting.merge');
+
+	return $set_ou_settings->run(map { [{ org_unit => $ouid, name => $_}, {value => $$settings{$_}}] } keys %$settings);
+}
+
+
+
+
+my $fetch_user_settings;
+my $fetch_ou_settings;
+
+__PACKAGE__->register_method(
+	method	=> "user_settings",
+	api_name	=> "open-ils.actor.patron.settings.retrieve",
+);
+sub user_settings {
+	my( $self, $client, $user_session, $uid ) = @_;
+	
+	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
+
+	$uid ||= $user_obj->id;
+
+	if( $user_obj->id != $uid ) {
+		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
+			return OpenILS::Perm->new("VIEW_USER");
+		}
+	}
+
+	$fetch_user_settings ||=
+		$self->method_lookup('open-ils.storage.direct.actor.user_setting.search.usr.atomic');
+
+	my ($s) = $fetch_user_settings->run($uid);
+
+	return { map { ($_->name,$_->value) } @$s };
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "ou_settings",
+	api_name	=> "open-ils.actor.org_unit.settings.retrieve",
+);
+sub ou_settings {
+	my( $self, $client, $ouid ) = @_;
+	
+	throw OpenSRF::EX::InvalidArg ("OrgUnit ID required for lookup of OrgUnit settings") unless ($ouid);
+
+	$fetch_ou_settings ||=
+		$self->method_lookup('open-ils.storage.direct.actor.org_unit_setting.search.org_unit.atomic');
+
+	my ($s) = $fetch_ou_settings->run($ouid);
+
+	return { map { ($_->name,$_->value) } @$s };
+}
+
+
+
 __PACKAGE__->register_method(
 	method	=> "update_patron",
 	api_name	=> "open-ils.actor.patron.update",);
@@ -205,15 +311,18 @@ sub flesh_user {
 sub _clone_patron {
 	my $patron = shift;
 
-	my $new_patron = Fieldmapper::actor::user->new();
+	my $new_patron = $patron->clone;
 
-	my $fmap = $Fieldmapper::fieldmap;
-	no strict; # shallow clone, may be useful in the fieldmapper
-	for my $field 
-		(keys %{$fmap->{"Fieldmapper::actor::user"}->{'fields'}}) {
-			$new_patron->$field( $patron->$field() );
-	}
-	use strict;
+	# Using the Fieldmapper clone method
+	#my $new_patron = Fieldmapper::actor::user->new();
+
+	#my $fmap = $Fieldmapper::fieldmap;
+	#no strict; # shallow clone, may be useful in the fieldmapper
+	#for my $field 
+	#	(keys %{$fmap->{"Fieldmapper::actor::user"}->{'fields'}}) {
+	#		$new_patron->$field( $patron->$field() );
+	#}
+	#use strict;
 
 	# clear these
 	$new_patron->clear_billing_address();
