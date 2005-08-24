@@ -290,7 +290,7 @@ For non-core config info, see the inline documentation within this file
 
 			<opensrf.settings>
 				<keepalive>1</keepalive>
-				<stateless>0</stateless>
+				<stateless>1</stateless>
 				<implementation>OpenSRF::Application::Settings</implementation>
 				<max_requests>17</max_requests>
 				<unix_config>
