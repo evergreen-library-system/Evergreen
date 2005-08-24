@@ -914,7 +914,7 @@ int router_registrar_handle_app_request(
 					STATUS, omsg->thread_trace, omsg->protocol );
 
 			osrf_message_set_status_info( 
-					success, "oilsConnectStatus", "Connection Successful", OSRF_STATUS_OK );
+					success, "osrfConnectStatus", "Connection Successful", OSRF_STATUS_OK );
 
 		} else if( omsg->m_type == REQUEST ) {
 
@@ -928,14 +928,13 @@ int router_registrar_handle_app_request(
 			success = osrf_message_init( 
 					STATUS, omsg->thread_trace, omsg->protocol );
 			osrf_message_set_status_info( 
-					success, "oilsMethodException", "Method Not Found", OSRF_STATUS_NOTFOUND );
+					success, "osrfMethodException", "Method Not Found", OSRF_STATUS_NOTFOUND );
 		}
 
 
 		/* now send our new message back */
 		if(success) {
 
-			//char* xml =  osrf_message_to_xml(success);
 			char* xml	= osrf_message_serialize(success);
 			debug_handler( "Sending XML to client app request:\n%s\n", xml );
 			transport_message* return_m = message_init( 
@@ -950,7 +949,6 @@ int router_registrar_handle_app_request(
 			int i;
 
 			for(i=0; i!= num_responses; i++){
-				//char* xml =  osrf_message_to_xml(result[i]);
 				char* xml =  osrf_message_serialize(result[i]);
 				debug_handler( "Sending XML to client app request:\n%s\n", xml );
 				transport_message* return_m = message_init( 
@@ -966,8 +964,7 @@ int router_registrar_handle_app_request(
 			osrf_message* complete = osrf_message_init(
 				STATUS, result[i-1]->thread_trace, result[i-1]->protocol );
 			osrf_message_set_status_info( complete, 
-					"oilsConnectStatus", "Request Complete", OSRF_STATUS_COMPLETE );
-			//char* complete_xml = osrf_message_to_xml(complete);
+					"osrfConnectStatus", "Request Complete", OSRF_STATUS_COMPLETE );
 			char* complete_xml = osrf_message_serialize(complete);
 			transport_message* complete_m = message_init( 
 					complete_xml, "", msg->thread, msg->sender, "" );
