@@ -265,13 +265,14 @@ sub mass_delete {
 sub remote_update_node {
 	my $self = shift;
 	my $client = shift;
-	my $node = shift;
+	my $keys = shift;
+	my $vals = shift;
 
 	my $cdbi = $self->{cdbi};
 
 	my $success = 1;
 	try {
-		$success = $cdbi->remote_update($node);
+		$success = $cdbi->remote_update($keys,$vals);
 	} catch Error with {
 		$success = 0;
 	};
@@ -281,13 +282,14 @@ sub remote_update_node {
 sub merge_node {
 	my $self = shift;
 	my $client = shift;
-	my $node = shift;
+	my $keys = shift;
+	my $vals = shift;
 
 	my $cdbi = $self->{cdbi};
 
 	my $success = 1;
 	try {
-		$success = $cdbi->merge($node)->id;
+		$success = $cdbi->merge($keys,$vals)->id;
 	} catch Error with {
 		$success = 0;
 	};

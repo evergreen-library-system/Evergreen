@@ -178,7 +178,7 @@ sub merge {
 	if (@objs == 1) {
 		return $objs[0]->update($arg);
 	} elsif (@objs == 0) {
-		return $self->create($arg);
+		return $self->create({%$search,%$arg});
 	} else {
 		throw OpenSRF::EX::WARN ("Non-unique search key for merge.  Perhaps you meant to use remote_update?");
 	}
