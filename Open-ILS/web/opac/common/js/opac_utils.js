@@ -24,15 +24,13 @@ function _showCanvas() {
 	G.ui.searchbar.text.focus(); 
 }
 
-var newCanvasNode;
-function swapCanvas(newNode) { newCanvasNode = newNode; setTimeout(_swapCanvas, 200); }
-function _swapCanvas() {
+function swapCanvas(newNode) {
 	for( var x in G.ui.altcanvas ) 
 		hideMe(G.ui.altcanvas[x]);
 
 	hideMe(G.ui.common.loading);
 	hideMe(G.ui.common.canvas_main);
-	unHideMe(newCanvasNode);
+	unHideMe(newNode);
 }
 
 /* finds the name of the current page */
@@ -66,9 +64,6 @@ function findCurrentPage() {
 
 
 /* sets all of the params values  ----------------------------- */
-var TERM,  STYPE,  LOCATION,  DEPTH,  FORM, OFFSET,  COUNT,  
-	 HITCOUNT,  RANKS, SEARCHBAR_EXTRAS, FONTSIZE;
-
 function initParams() {
 	var cgi	= new CGI();	
 
@@ -77,6 +72,7 @@ function initParams() {
 	FORM	= cgi.param(PARAM_FORM);
 
 	LOCATION	= parseInt(cgi.param(PARAM_LOCATION));
+	ORIGLOC	= parseInt(cgi.param(PARAM_ORIGLOC));
 	DEPTH		= parseInt(cgi.param(PARAM_DEPTH));
 	OFFSET	= parseInt(cgi.param(PARAM_OFFSET));
 	COUNT		= parseInt(cgi.param(PARAM_COUNT));
@@ -90,15 +86,16 @@ function initParams() {
 	if(isNaN(OFFSET))		OFFSET	= 0;
 	if(isNaN(COUNT))		COUNT		= 10;
 	if(isNaN(HITCOUNT))	HITCOUNT	= 0;
-	if(isNaN(SEARCHBAR_EXTRAS))	SEARCHBAR_EXTRAS	= 0;
 	if(isNaN(MRID))		MRID		= 0;
 	if(isNaN(RID))			RID		= 0;
+	if(isNaN(ORIGLOC))	ORIGLOC	= 0;
 }
 
 function initCookies() {
 	FONTSIZE = "medium";
 	var font = fontCookie.get(COOKIE_FONT);
 	if(font) FONTSIZE = font;
+	SKIN = skinCookie.get(COOKIE_SKIN);
 }
 
 /* URL param accessors */
@@ -110,11 +107,13 @@ function getForm(){return FORM;}
 function getOffset(){return OFFSET;}
 function getDisplayCount(){return COUNT;}
 function getHitCount(){return HITCOUNT;}
-function getSearchBarExtras(){return SEARCHBAR_EXTRAS;}
 function getMrid(){return MRID;};
 function getRid(){return RID;};
+function getOrigLocation(){return ORIGLOC;}
 
+function getSearchBarExtras(){return SBEXTRAS;}
 function getFontSize(){return FONTSIZE;};
+function getSkin(){return SKIN;};
 
 
 
@@ -271,6 +270,17 @@ function grabUser(ses, force) {
 
 }
 
+/* sets the 'prefs' field of the user object to their preferences 
+	and returns the preferences */
+function grabUserPrefs(user, force) {
+	if(user == null) user = G.user;
+	if(!force && user.prefs) return user.prefs;	
+	var req = new Request(FETCH_USER_PREFS, user.session, user.id());
+	req.send(true);
+	user.prefs = req.result();
+	return user.prefs;
+}
+
 function grabFleshedUser() {
 
 	if(!G.user || !G.user.session) {
@@ -297,6 +307,59 @@ function grabFleshedUser() {
 	cookie.write();
 
 	return G.user;
+}
+
+var skinCookie = new cookieObject("skin", 1, "/", COOKIE_SKIN);
+function checkUserSkin(new_skin) {
+
+	var user_skin = getSkin();
+	var cur_skin = grabSkinFromURL();
+
+	if(new_skin) user_skin = new_skin;
+
+	if(isNull(user_skin)) {
+
+		if(grabUser()) {
+			if(grabUserPrefs()) {
+				user_skin = G.user.prefs["opac.skin"];
+				skinCookie.put( COOKIE_SKIN, user_skin );
+				skinCookie.write();
+			}
+		}
+	}
+
+	if(isNull(user_skin)) return;
+
+	if( cur_skin != user_skin ) {
+		var url = buildOPACLink();
+		goTo(url.replace(cur_skin, user_skin));
+	}
+}
+
+function updateUserSetting(setting, value, user) {
+	if(user == null) user = G.user;
+	var a = {};
+	a[setting] = value;
+	var req = new Request( UPDATE_USER_PREFS, user.session, a );
+	req.send(true);
+	return req.result();
+}
+
+function grabSkinFromURL() {
+	var path = findBasePath();
+	path = path.replace("/xml/", "");
+	var skin = "";
+	for( var i = path.length - 1; i >= 0; i-- ) {
+		var ch = path.charAt(i);
+		if(ch == "/") break;
+		skin += ch;
+	}
+
+	var skin2 = "";
+	for( i = skin.length - 1; i >= 0; i--)
+		skin2 += skin.charAt(i);
+
+	return skin2;
 }
 
 
@@ -326,6 +389,8 @@ function doLogin() {
 	var u = grabUser(auth_result, true);
 	if(u) updateLoc(u.home_ou(), findOrgDepth(u.home_ou()));
 
+	checkUserSkin();
+
 	return u;
 }
 
@@ -344,7 +409,9 @@ function doLogout() {
 	hideMe(G.ui.sidebar.logoutbox);
 	unHideMe(G.ui.sidebar.loginbox);
 	hideMe(G.ui.sidebar.logged_in_as);
+	skinCookie.remove(COOKIE_SKIN);
 
+	checkUserSkin("default");
 }
 
 

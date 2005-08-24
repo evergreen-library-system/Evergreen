@@ -1,22 +1,42 @@
 /* Export some constants  ----------------------------------------------------- */
 
-/* URL params */
-var PARAM_TERM					= "term";		/* search term */
-var PARAM_STYPE				= "stype";		/* search type */
-var PARAM_LOCATION			= "location"	/* current location */;
-var PARAM_DEPTH				= "depth";		/* search depth */
-var PARAM_FORM					= "format";		/* search format */
-var PARAM_OFFSET				= "offset";		/* search offset */
-var PARAM_COUNT				= "count";		/* hits per page */
-var PARAM_HITCOUNT			= "hitcount";	/* hits per page */
-var PARAM_MRID					= "mrid";		/* metarecord id */
-var PARAM_RID					= "rid";			/* record id */
+/* URL param names */
+var PARAM_TERM			= "term";		/* search term */
+var PARAM_STYPE		= "stype";		/* search type */
+var PARAM_LOCATION	= "location"	/* current location */;
+var PARAM_DEPTH		= "depth";		/* search depth */
+var PARAM_FORM			= "format";		/* search format */
+var PARAM_OFFSET		= "offset";		/* search offset */
+var PARAM_COUNT		= "count";		/* hits per page */
+var PARAM_HITCOUNT	= "hitcount";	/* hits per page */
+var PARAM_MRID			= "mrid";		/* metarecord id */
+var PARAM_RID			= "rid";			/* record id */
+var PARAM_ORIGLOC		= "orgloc"		/* the original location */
+
+/* URL param values (see comments above) */
+var TERM;  
+var STYPE;  
+var LOCATION;  
+var DEPTH;  
+var FORM; 
+var OFFSET;
+var COUNT;  
+var HITCOUNT;  
+var RANKS; 
+var FONTSIZE;
+var ORIGLOC;
+
+/* cookie values */
+var SBEXTRAS; 
+var SKIN;
+
 
 /* cookies */
 var COOKIE_SB = "sbe";
 var COOKIE_SES = "ses";
 var COOKIE_IDS	= "ids";
 var COOKIE_FONT = "fnt";
+var COOKIE_SKIN = "skin";
 
 /* these are the actual param values - set on page load */
 
@@ -29,11 +49,11 @@ var ADVANCED	= "advanced";
 var HOME			= "home";
 
 /* search type (STYPE) options */
-STYPE_AUTHOR	= "author";
-STYPE_TITLE		= "title";
-STYPE_SUBJECT	= "subject";
-STYPE_SERIES	= "series";
-STYPE_KEYWORD	= "keyword";
+var STYPE_AUTHOR	= "author";
+var STYPE_TITLE		= "title";
+var STYPE_SUBJECT	= "subject";
+var STYPE_SERIES	= "series";
+var STYPE_KEYWORD	= "keyword";
 
 
 /* container for global variables shared accross pages */
@@ -87,7 +107,6 @@ config.page[RDETAIL]		= "rdetail.xml";
 
 /* themes */
 config.themes = {};
-
 
 /* set up images  */
 config.images = {};
@@ -161,6 +180,8 @@ var FETCH_SESSION				= "open-ils.auth:open-ils.auth.session.retrieve";
 var LOGIN_INIT					= "open-ils.auth:open-ils.auth.authenticate.init";
 var LOGIN_COMPLETE			= "open-ils.auth:open-ils.auth.authenticate.complete";
 var LOGIN_DELETE				= "open-ils.auth:open-ils.auth.session.delete";
+var FETCH_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.retrieve"; 
+var UPDATE_USER_PREFS		= "open-ils.actor:open-ils.actor.patron.settings.update"; 
 /* ---------------------------------------------------------------------------- */
 
 

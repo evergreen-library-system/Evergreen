@@ -7,21 +7,16 @@ attachEvt("common", "init", loadUIObjects);
 attachEvt("common", "init", initParams);
 attachEvt("common", "init", initCookies);
 attachEvt("common", "init", drawOrgTree); 
-attachEvt("common", "unload", _tree_killer);
-attachEvt("common", "unload", clearUIObjects);
-attachEvt("common", "unload", cleanRemoteRequests);
+
+//attachEvt("common", "unload", _tree_killer);
+//attachEvt("common", "unload", clearUIObjects);
+//attachEvt("common", "unload", cleanRemoteRequests);
 
 function init() {
 	runEvt('common','init');
 	setFontSize(getFontSize());
 	runEvt("common", "run");
-
-	/*
-	switch(findCurrentPage()) {
-		case MRESULT: runEvt('mresult', 'run'); break;
-		case RRESULT: runEvt('rresult', 'run'); break;
-	}
-	*/
+	checkUserSkin();
 }
 
 function windowUnload() { runEvt("common", "unload"); }

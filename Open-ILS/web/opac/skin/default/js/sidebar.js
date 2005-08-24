@@ -52,6 +52,7 @@ function initLogin() {
 		swapCanvas(G.ui.login.box);
 		G.ui.login.username.focus();
 	}
+
 	loginBoxVisible = !loginBoxVisible;
 	G.ui.login.cancel.onclick = showCanvas;
 }
