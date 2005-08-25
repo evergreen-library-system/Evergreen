@@ -93,7 +93,7 @@ function populate_local_copy_stat_cats_grid(grid) {
 		rows.appendChild(row1);
 		row1.setAttribute('asc_id',copy_stat_cat.id());
 		row1.setAttribute('object_type','asc');
-		add_css_class(row1,'row' + i % 2);
+		addCSSClass(row1,'row' + i % 2);
 
 			var label1 = document.createElement('label'); 
 			row1.appendChild(label1);
@@ -134,7 +134,7 @@ function populate_local_copy_stat_cats_grid(grid) {
 		rows.appendChild(row2);
 		row2.setAttribute('asc_id',copy_stat_cat.id());
 		row2.setAttribute('object_type','asc');
-		add_css_class(row2,'row' + i % 2);
+		addCSSClass(row2,'row' + i % 2);
 
 			var label2 = document.createElement('label');
 			row2.appendChild(label2);
@@ -161,7 +161,7 @@ function populate_local_copy_stat_cats_grid(grid) {
 			row.setAttribute('asc_id',copy_stat_cat.id());
 			row.setAttribute('asce_id',stat_entry.id());
 			row.setAttribute('object_type','asce');
-			add_css_class(row,'row' + i % 2);
+			addCSSClass(row,'row' + i % 2);
 
 				var label = document.createElement('label');
 				row.appendChild(label);
@@ -204,7 +204,7 @@ function populate_local_copy_stat_cats_grid(grid) {
 		row3.setAttribute('asc_id',copy_stat_cat.id());
 		row3.setAttribute('object_type','asce');
 		row3.setAttribute('new','true');
-		add_css_class(row3,'row' + i % 2);
+		addCSSClass(row3,'row' + i % 2);
 
 			var label3 = document.createElement('label');
 			row3.appendChild(label3);
@@ -234,7 +234,7 @@ function populate_local_copy_stat_cats_grid(grid) {
 
 		var row4 = document.createElement('row');
 		rows.appendChild(row4);
-		add_css_class(row4,'row' + i % 2);
+		addCSSClass(row4,'row' + i % 2);
 
 			var label4 = document.createElement('label');
 			row4.appendChild(label4);
@@ -541,7 +541,7 @@ function populate_local_patron_stat_cats_grid(grid) {
 		rows.appendChild(row1);
 		row1.setAttribute('actsc_id',patron_stat_cat.id());
 		row1.setAttribute('object_type','actsc');
-		add_css_class(row1,'row' + i % 2);
+		addCSSClass(row1,'row' + i % 2);
 
 			var label1 = document.createElement('label'); 
 			row1.appendChild(label1);
@@ -582,7 +582,7 @@ function populate_local_patron_stat_cats_grid(grid) {
 		rows.appendChild(row2);
 		row2.setAttribute('actsc_id',patron_stat_cat.id());
 		row2.setAttribute('object_type','actsc');
-		add_css_class(row2,'row' + i % 2);
+		addCSSClass(row2,'row' + i % 2);
 
 			var label2 = document.createElement('label');
 			row2.appendChild(label2);
@@ -609,7 +609,7 @@ function populate_local_patron_stat_cats_grid(grid) {
 			row.setAttribute('actsc_id',patron_stat_cat.id());
 			row.setAttribute('actsce_id',stat_entry.id());
 			row.setAttribute('object_type','actsce');
-			add_css_class(row,'row' + i % 2);
+			addCSSClass(row,'row' + i % 2);
 
 				var label = document.createElement('label');
 				row.appendChild(label);
@@ -652,7 +652,7 @@ function populate_local_patron_stat_cats_grid(grid) {
 		row3.setAttribute('actsc_id',patron_stat_cat.id());
 		row3.setAttribute('object_type','actsce');
 		row3.setAttribute('new','true');
-		add_css_class(row3,'row' + i % 2);
+		addCSSClass(row3,'row' + i % 2);
 
 			var label3 = document.createElement('label');
 			row3.appendChild(label3);
@@ -682,7 +682,7 @@ function populate_local_patron_stat_cats_grid(grid) {
 
 		var row4 = document.createElement('row');
 		rows.appendChild(row4);
-		add_css_class(row4,'row' + i % 2);
+		addCSSClass(row4,'row' + i % 2);
 
 			var label4 = document.createElement('label');
 			row4.appendChild(label4);

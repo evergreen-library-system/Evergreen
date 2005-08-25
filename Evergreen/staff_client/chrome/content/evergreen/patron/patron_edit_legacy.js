@@ -912,7 +912,7 @@ function patron_summary_refresh(ev) {
 		mw.sdump('D_LEGACY','standing = ' + js2JSON(standing) + '\n');
 		standing_e.setAttribute( 'value', standing.value() );
 		if (standing.value() == 'Good') {
-			add_css_class(standing_e,'good');
+			addCSSClass(standing_e,'good');
 		} else {
 			removeCSSClass(standing_e,'good');	
 		}
@@ -1314,7 +1314,7 @@ function toggle_address(e,id) {
 	if (toggle == '0') {
 		button.setAttribute('toggle','1');
 		mw.sdump('D_LEGACY','original node = ' + js2JSON(address) + '\n');
-		add_css_class(groupbox,'deleted_address');
+		addCSSClass(groupbox,'deleted_address');
 		address.isdeleted('1');
 		mw.sdump('D_LEGACY','updated  node = ' + js2JSON(address) + '\n');
 		mw.sdump('D_LEGACY','PATRON.au.mailing_address() = ' + PATRON.au.mailing_address() + ' address.id() = ' + address.id() + '\n');
