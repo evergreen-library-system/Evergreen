@@ -194,17 +194,18 @@ sub perl2JSON {
 		$output .= '{';
 		my $c = 0;
 		for my $key (sort keys %$perl) {
+			my $outkey = $key;
 			$output .= ',' if ($c); 
 
-			$key =~ s{\\}{\\\\}sgo;
-			$key =~ s/"/\\"/sgo;
-			$key =~ s/\t/\\t/sgo;
-			$key =~ s/\f/\\f/sgo;
-			$key =~ s/\r/\\r/sgo;
-			$key =~ s/\n/\\n/sgo;
-			$key =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
+			$outkey =~ s{\\}{\\\\}sgo;
+			$outkey =~ s/"/\\"/sgo;
+			$outkey =~ s/\t/\\t/sgo;
+			$outkey =~ s/\f/\\f/sgo;
+			$outkey =~ s/\r/\\r/sgo;
+			$outkey =~ s/\n/\\n/sgo;
+			$outkey =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
 
-			$output .= '"'.$key.'":'.key2JSON(undef,$$perl{$key}, $strict);
+			$output .= '"'.$outkey.'":'.key2JSON(undef,$$perl{$key}, $strict);
 			$c++;
 		}
 		$output .= '}';
