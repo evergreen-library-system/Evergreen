@@ -173,9 +173,9 @@ function build_grid( ctrl_rows, data_rows, root ) {
 		var node_type = node.node_type();
 		var row = {};
 		switch(node_type) {
-			case '18': /* namespace */ 
+			case 18: case '18': /* namespace */ 
 				break;
-			case '1': /* element */
+			case 1: case '1': /* element */
 				row = get_row(node);
 				switch(row.type) {
 					case 'leader': case 'controlfield':
@@ -232,9 +232,9 @@ function get_row( top ) {
 		var node_id = node.intra_doc_id();
 		var node_children = node.children();
 		switch(node_type) {
-			case '18': /* namespace */ 
+			case 18: case '18': /* namespace */ 
 				continue top_loop;
-			case '2': /* attribute */ 
+			case 2: case '2': /* attribute */ 
 				switch(node_name) {
 					case 'tag':
 						row.tag.value = node_value;
@@ -255,7 +255,7 @@ function get_row( top ) {
 						break;
 				}
 				break;
-			case '1': /* element */
+			case 1: case '1': /* element */
 				switch(node_name) {
 					case 'subfield':
 						row.data.value = row.data.value + 
@@ -271,7 +271,7 @@ function get_row( top ) {
 						break;
 				}
 				break;
-			case '3': /* textNode */
+			case 3: case '3': /* textNode */
 				row.data.value = node_value;
 				row.data.id = node_id;
 				break;
