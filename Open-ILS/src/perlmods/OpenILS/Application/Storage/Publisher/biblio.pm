@@ -278,13 +278,13 @@ sub record_copy_status_count {
 	for my $row (@{$sth->fetchall_arrayref}) {
 		if ($cn and $cn ne $$row[1]) {
 			my $i = 0;
-			$client->respond( [$ou, $cn, \%data] );
+			$client->respond( [$ou, $cn, {%data}] );
 			%data = ();
 		}
 		($ou,$cn) = ($$row[0],$$row[1]);
 		$data{$$row[2]} = $$row[3];
 	}
-	return [$ou, $cn, \%data] if ($ou);
+	return [$ou, $cn, {%data}] if ($ou);
 	return undef;
 }
 __PACKAGE__->register_method(
