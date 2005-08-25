@@ -914,7 +914,7 @@ function patron_summary_refresh(ev) {
 		if (standing.value() == 'Good') {
 			add_css_class(standing_e,'good');
 		} else {
-			remove_css_class(standing_e,'good');	
+			removeCSSClass(standing_e,'good');	
 		}
 	}
 	var claims_returned_e = document.getElementById('patron_status_data_claims_returned');
@@ -1328,7 +1328,7 @@ function toggle_address(e,id) {
 	} else {
 		button.setAttribute('toggle','0');
 		mw.sdump('D_LEGACY','original node = ' + js2JSON(address) + '\n');
-		remove_css_class(groupbox,'deleted_address');
+		removeCSSClass(groupbox,'deleted_address');
 		address.isdeleted('0');
 		mw.sdump('D_LEGACY','updated  node = ' + js2JSON(address) + '\n');
 	}

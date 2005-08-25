@@ -82,7 +82,7 @@ function test_tagnumber_rule(r) {
 			case 0: t.value = '000'; break;
 		}
 	}
-	remove_css_class(t,'invalid');
+	removeCSSClass(t,'invalid');
 	if (marc_rules[t.value]) {
 		var rule = marc_rules[t.value];
 		if (tag_seen[t.value]) { tag_seen[t.value]++; } else { tag_seen[t.value] = 1; }
@@ -105,7 +105,7 @@ function test_ind1_rule(r) {
 	// rows (rows) -> row (r) -> wrapper (w) -> textbox (t)
 	var tagnumber = r.childNodes[0].firstChild.value;
 	var ind1 = r.childNodes[1].firstChild;
-	remove_css_class(ind1,'invalid');
+	removeCSSClass(ind1,'invalid');
 	if ((marc_rules[tagnumber]) && (marc_rules[tagnumber].ind1)) {
 		var regex = '/^[' + marc_rules[tagnumber].ind1.allowed + ']$/';
 		if (! ind1.value.match(eval(regex)) ) {
@@ -120,7 +120,7 @@ function test_ind2_rule(r) {
 	// rows (rows) -> row (r) -> wrapper (w) -> textbox (t)
 	var tagnumber = r.childNodes[0].firstChild.value;
 	var ind2 = r.childNodes[2].firstChild;
-	remove_css_class(ind2,'invalid');
+	removeCSSClass(ind2,'invalid');
 	if ((marc_rules[tagnumber]) && (marc_rules[tagnumber].ind2)) {
 		var regex = '/^[' + marc_rules[tagnumber].ind2.allowed + ']$/';
 		if (! ind2.value.match(eval(regex)) ) {
@@ -135,7 +135,7 @@ function test_subfield_rule(r) {
 	// rows (rows) -> row (r) -> wrapper (w) -> textbox (t)
 	var tagnumber = r.childNodes[0].firstChild.value;
 	var data = r.childNodes[3].firstChild;
-	remove_css_class(data,'invalid');
+	removeCSSClass(data,'invalid');
 	if (marc_rules[tagnumber]) {
 		var datastring = data.value.replace(/^\s+/,'').replace(/\s+$/,'');
 		var subf_array = datastring.split(String.fromCharCode(8225));
