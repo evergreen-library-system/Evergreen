@@ -205,7 +205,7 @@ sub perl2JSON {
 			$outkey =~ s/\n/\\n/sgo;
 			$outkey =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
 
-			$output .= '"'.$outkey.'":'.key2JSON(undef,$$perl{$key}, $strict);
+			$output .= '"'.$outkey.'":'. perl2JSON(undef,$$perl{$key}, $strict);
 			$c++;
 		}
 		$output .= '}';
