@@ -5,7 +5,7 @@ SOURCES = osrf_message.c osrf_app_session.c osrf_stack.c osrf_system.c osrf_conf
 TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_config.o osrf_settings.o
 HEADERS = osrf_message.h osrf_app_session.h osrf_stack.h osrf_system.h osrf_config.h osrf_settings.h
 
-all: msg libopensrf_stack.so  test
+all: msg libopensrf_stack.so  
 
 msg: 
 	echo "-> $$(pwd)"	
