@@ -85,12 +85,14 @@ function set_opac_vars(p) {
 function opac_make_details_page(p, id, node) {
 	sdump('D_OPAC',arg_dump(arguments));
 	dump("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
-	var f = function() {
+	var f = function(ev) {
 		spawn_copy_browser(
 			p.w.app_shell, 'new_tab', 'main_tabbox', {
 				'find_this_id' : id
 			}
 		).find_this_id = id;
+		ev.preventDefault();
+		ev.stopPropagation();
 		return true;
 	}
 	node.addEventListener( 'click', f, false );

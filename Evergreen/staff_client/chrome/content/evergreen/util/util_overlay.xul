@@ -20,6 +20,7 @@
 	<script src="widgets.js" />	<!-- some convenience functions for XUL/HTML elements.  want to eliminate overlap with webutils -->
 	<script src="populate.js" />	<!-- populate widgets (like menus) with values -->
 
+	<script src="chrome://evergreen/content/Open-ILS/util/utils.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/md5.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/JSON.js" />
 	<script src="chrome://evergreen/content/Open-ILS/util/fmall.js" />
