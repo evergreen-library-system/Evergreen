@@ -9,7 +9,7 @@ BEGIN
 	EXECUTE $$
 			CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
 				audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
-				audit_action	CHAR(1)				NOT NULL,
+				audit_action	"char"				NOT NULL,
 				LIKE $$ || sch || $$.$$ || tbl || $$
 			);
 	$$;
@@ -29,6 +29,15 @@ BEGIN
 			CREATE TRIGGER audit_$$ || sch || $$_$$ || tbl || $$_update_trigger
 				AFTER UPDATE OR DELETE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
 				EXECUTE PROCEDURE auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ();
+	$$;
+
+	EXECUTE $$
+			CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
+				SELECT	now() as audit_time, 'C' as audit_action, *
+				  FROM	$$ || sch || $$.$$ || tbl || $$
+				  	UNION ALL
+				SELECT	*
+				  FROM	auditor.$$ || sch || $$_$$ || tbl || $$_history;
 	$$;
 	RETURN TRUE;
 END;
