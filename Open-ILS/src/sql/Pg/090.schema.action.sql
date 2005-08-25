@@ -114,13 +114,13 @@ CREATE TABLE action.hold_request (
 	return_time		TIMESTAMP WITH TIME ZONE,
 	prev_check_time		TIMESTAMP WITH TIME ZONE,
 	expire_time		TIMESTAMP WITH TIME ZONE,
-	hold_type		"char"				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	target			BIGINT				NOT NULL, -- see hold_type
 	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL,
 	requestor		INT				NOT NULL REFERENCES actor.usr (id),
 	usr			INT				NOT NULL REFERENCES actor.usr (id),
 	selection_depth		INT				NOT NULL DEFAULT 0,
 	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit,
+	hold_type		"char"				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
 	email_notify		TEXT
@@ -130,8 +130,8 @@ CREATE TABLE action.hold_request (
 CREATE TABLE action.hold_notification (
 	id		SERIAL				PRIMARY KEY,
 	hold		INT				NOT NULL REFERENCES action.hold_request (id),
-	method		TEXT				NOT NULL, -- eh...
 	notify_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	method		TEXT				NOT NULL, -- eh...
 	note		TEXT
 );
 
