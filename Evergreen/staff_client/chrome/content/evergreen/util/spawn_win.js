@@ -98,6 +98,11 @@ function spawn_checkin(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('checkin_interface_label'),passthru_params,clone);
 }
 
+function spawn_record_details(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/cat/details.xul';
+	return spawn_interface(d,placement,place,chrome,'DETAILS',passthru_params,clone);
+}
+
 function spawn_hold_capture(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/circ/hold_capture.xul';
 	return spawn_interface(d,placement,place,chrome,getString('hold_capture_interface_label'),passthru_params,clone);

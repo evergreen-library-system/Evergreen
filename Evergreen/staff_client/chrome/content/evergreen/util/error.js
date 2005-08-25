@@ -184,7 +184,15 @@ function handle_error(E,annoy) {
 	} else {
 		s += '\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n';
 		s += 'This is a bug that we will fix later.\n\n';
-		s += mw.js2JSON(E).substr(0,1024) + '\n\n';
+		try {
+			s += mw.js2JSON(E).substr(0,1024) + '\n\n';
+		} catch(E2) {
+			try {
+				s += E.substr(0,1024) + '\n\n';
+			} catch(E3) {
+				s += E + '\n\n';
+			}
+		}
 		if (snd_really_bad) snd_really_bad();
 	}
 	sdump('D_ERROR',s);

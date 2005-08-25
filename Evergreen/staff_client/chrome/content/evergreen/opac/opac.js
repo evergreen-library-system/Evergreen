@@ -86,7 +86,7 @@ function opac_make_details_page(p, id, node) {
 	sdump('D_OPAC',arg_dump(arguments));
 	dump("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
 	var f = function(ev) {
-		spawn_copy_browser(
+		spawn_record_details(
 			p.w.app_shell, 'new_tab', 'main_tabbox', {
 				'find_this_id' : id
 			}
