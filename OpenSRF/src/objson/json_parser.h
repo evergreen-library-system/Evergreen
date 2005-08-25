@@ -33,6 +33,7 @@ GNU General Public License for more details.
  */
 object* json_parse_string(char* string);
 
+object* json_parse_file(char* filename);
 
 
 

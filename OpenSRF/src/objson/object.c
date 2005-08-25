@@ -639,3 +639,112 @@ int object_iterator_has_next(object_iterator* itr) {
 }
 
 
+object* object_find_path(object* obj, char* format, ...) {
+	if(!obj || !format || strlen(format) < 1) return NULL;	
+
+	/* build the string from the variable args */
+	long len = 0;
+	va_list args, a_copy;
+
+	va_copy(a_copy, args);
+
+	va_start(args, format);
+	len = va_list_size(format, args);
+	char buf[len];
+	bzero(buf, len);
+
+	va_start(a_copy, format);
+	vsnprintf(buf, len - 1, format, a_copy);
+	va_end(a_copy);
+	/* -------------------------------------------- */
+
+
+	/* tmp storage for strtok_r */
+	char tokbuf[len];		
+	bzero(tokbuf, len);
+
+	char* token = NULL;
+	char* t = buf;
+	char* tt = tokbuf;
+
+	char* pathcopy = strdup(buf);
+
+	/* grab the root of the path */
+	token = strtok_r(t, "/", &tt);
+	t = NULL;
+	if(!token) return NULL;
+
+	/* special case where path starts with //  (start anywhere) */
+	if(strlen(pathcopy) > 2 && pathcopy[0] == '/' && pathcopy[1] == '/') {
+		object* it = _object_find_path_recurse(obj, token, pathcopy + 1);
+		free(pathcopy);
+		return it;
+	}
+
+	free(pathcopy);
+
+	do { 
+		obj = obj->get_key(obj, token);
+	} while( (token = strtok_r(NULL, "/", &tt)) && obj);
+
+	return object_clone(obj);
+}
+
+
+
+object* _object_find_path_recurse(object* obj, char* root, char* path) {
+
+	if(!obj || ! root) return NULL;
+	object* arr = __object_find_path_recurse(obj, root);
+	object* newarr = json_parse_string("[]");
+
+	int i;
+
+	/* path is just /root or /root/ */
+	if( strlen(root) + 2 >= strlen(path) ) {
+		return arr;
+	} else {
+
+		for( i = 0; i < arr->size; i++ ) {
+			/*
+			fprintf(stderr, "Searching root %s and path %s and size %ld\n", root, path + strlen(root) + 1, arr->size);
+			*/
+			object* a = arr->get_index(arr, i);
+			object* thing = object_find_path(a , path + strlen(root) + 1); 
+			if(thing) newarr->push(newarr, thing);
+		}
+	}
+	
+	free_object(arr);
+	return newarr;
+}
+
+object* __object_find_path_recurse(object* obj, char* root) {
+
+	object* arr = json_parse_string("[]");
+	if(!obj) return arr;
+	object* o = obj->get_key(obj, root);
+	if(o) arr->push(arr, object_clone(o));
+
+	object_node* tmp = NULL;
+	object* childarr;
+	object_iterator* itr = new_iterator(obj);
+
+	while( (tmp = itr->next(itr)) ) {
+		childarr = __object_find_path_recurse(tmp->item, root);
+		if(childarr && childarr->size > 0) {
+			int i;
+			for( i = 0; i!= childarr->size; i++ ) {
+				arr->push(arr, object_clone(childarr->get_index(childarr, i)));
+			}
+		}
+
+		free_object(childarr);
+	}
+
+	free_iterator(itr);
+
+	return arr;
+}
+
+

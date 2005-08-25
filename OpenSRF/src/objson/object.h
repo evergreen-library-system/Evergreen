@@ -219,4 +219,19 @@ char* json_string_format(char* json);
 object* object_clone(object* o);
 
 
+/* provide an XPATH style path (e.g. /some/node/here) and this will 
+	return the object at that location if one exists.  Naturally,  
+	every element in the path must be a proper object ("hash" / {}).
+	Returns NULL if the specified node is not found 
+	Note also that the object returned is a clone and
+	must be freed by the caller
+*/
+object* object_find_path(object* obj, char* format, ...);
+
+
+/* returns an object array of matches */
+object* _object_find_path_recurse(object* obj, char* root, char* path);
+object* __object_find_path_recurse(object* obj, char* root);
+
+
 #endif

@@ -83,16 +83,22 @@ int clr_fl( int fd, int flags ) {
 	return 0;
 }
 
+long va_list_size(const char* format, va_list args) {
+	int len = 0;
+	len = vsnprintf(NULL, 0, format, args);
+	va_end(args);
+	len += 2;
+	return len;
+}
+
+
 // ---------------------------------------------------------------------------------
 // Flesh out a ubiqitous growing string buffer
 // ---------------------------------------------------------------------------------
 
 growing_buffer* buffer_init(int num_initial_bytes) {
 
-	if( num_initial_bytes > BUFFER_MAX_SIZE ) {
-		return NULL;
-	}
-
+	if( num_initial_bytes > BUFFER_MAX_SIZE ) return NULL;
 
 	size_t len = sizeof(growing_buffer);
 
@@ -105,23 +111,19 @@ growing_buffer* buffer_init(int num_initial_bytes) {
 	return gb;
 }
 
+
 int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 
 	if(!gb || !format) return 0; 
 
-	int len = 0;
+	long len = 0;
 	va_list args;
 	va_list a_copy;
-
-	//char* f_copy = strdup(format);
 
 	va_copy(a_copy, args);
 
 	va_start(args, format);
-	len = vsnprintf(NULL, 0, format, args);
-	va_end(args);
-
-	len += 2;
+	len = va_list_size(format, args);
 
 	char buf[len];
 	memset(buf, 0, len);
@@ -129,8 +131,6 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 	va_start(a_copy, format);
 	vsnprintf(buf, len - 1, format, a_copy);
 	va_end(a_copy);
-
-	//free(f_copy);
 
 	return buffer_add(gb, buf);
 
@@ -309,15 +309,16 @@ char* uescape( const char* string, int size, int full_escape ) {
 // A function to turn a process into a daemon and set it's process name in ps/top
 int daemonize() {
 	int f = fork();
+
 	if (f == -1) {
 		perror("Failed to fork!");
 		return -1;
-	} else if (f == 0) {
-		// We're in the child now...
+
+	} else if (f == 0) { // We're in the child now...
 		setsid();
 		return 0;
-	} else {
-		// We're in the parent...
+
+	} else { // We're in the parent...
 		exit(0);
 	}
 }
@@ -331,4 +332,30 @@ int stringisnum(char* s) {
 	return 1;
 }
 	
+
+
+char* file_to_string(char* filename) {
+
+	if(!filename) return NULL;
+
+	int len = 1024;
+	char buf[len];
+	bzero(buf, len);
+	growing_buffer* gb = buffer_init(len);
+
+	FILE* file = fopen(filename, "r");
+	if(!file) {
+		perror("Unable to open file in json_parse_file()");
+		return NULL;
+	}
+
+	while(fgets(buf, len - 1, file)) {
+		buffer_add(gb, buf);
+		bzero(buf, len);
+	}
+
+	char* data = buffer_data(gb);
+	buffer_free(gb);
+	return data;
+}
 

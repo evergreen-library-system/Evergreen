@@ -52,6 +52,11 @@ char* buffer_data( growing_buffer* gb);
 int buffer_free( growing_buffer* gb );
 int buffer_add_char(growing_buffer* gb, char c);
 
+/* returns the size needed to fill in the vsnprintf buffer.  
+	* ! this calls va_end on the va_list argument*
+	*/
+long va_list_size(const char* format, va_list);
+
 
 /* string escape utility method.  escapes unicode embeded characters.
 	escapes the usual \n, \t, etc. 
@@ -78,6 +83,11 @@ double get_timestamp_millis();
 
 /* returns true if the whole string is a number */
 int stringisnum(char* s);
+
+/* reads a file and returns the string version of the file
+	user is responsible for freeing the returned char*
+	*/
+char* file_to_string(char* filename);
 
 
 

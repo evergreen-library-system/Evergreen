@@ -722,3 +722,14 @@ int json_handle_error(char* string, unsigned long* index, char* err_msg) {
 }
 
 
+object* json_parse_file(char* filename) {
+	if(!filename) return NULL;
+	char* data = file_to_string(filename);
+	object* o = json_parse_string(data);
+	free(data);
+	return o;
+}
+
+
+
+
