@@ -146,13 +146,14 @@ my $uri = $cgi->url(-relative=>1);
 my $top;
 for my $grp ( permission::grp_tree->search( {parent=>undef} ) ) {
 	my $name = $grp->name;
+	my $desc = $grp->description || $grp->name;
 	$top = $grp->id;
 	$name =~ s/'/\\'/og;
 	print <<"	HEADER";
 <div style="float: left;">
 	<script language='javascript'>
         var tree = new dTree("tree");
-	tree.add($grp, -1, "$name", "$uri?action=child&id=$grp", "$name");
+	tree.add($grp, -1, "$name", "$uri?action=child&id=$grp", "$desc");
 	HEADER
 	$top = $grp->id;
 	last;
@@ -160,9 +161,10 @@ for my $grp ( permission::grp_tree->search( {parent=>undef} ) ) {
 
 for my $grp ( permission::grp_tree->search_like( {parent => '%'}, {order_by => 'id'} ) ) {
 	my $name = $grp->name;
+	my $desc = $grp->description || $grp->name;
 	$name =~ s/'/\\'/og;
 	my $parent = $grp->parent;
-	print "\ttree.add($grp, $parent, \"$name\", \"$uri?action=child&id=$grp\", \"$name\");\n";
+	print "\ttree.add($grp, $parent, \"$name\", \"$uri?action=child&id=$grp\", \"$desc\");\n";
 }
 
 print <<HEADER;
