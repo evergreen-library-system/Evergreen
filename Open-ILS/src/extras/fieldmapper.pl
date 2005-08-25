@@ -14,7 +14,7 @@ my @web_hints = qw/asv asva asvr asvq
 		circ acp acpl acn ccs ahn ahr aua ac 
 		actscecm crcd crmf crrf mus mbts aoc aus/;
 
-my @web_core = qw/ aou au perm_ex ex aout mvr /;
+my @web_core = qw/ aou au perm_ex ex aout mvr ccs /;
 
 
 print "var _c = {};\n";

@@ -71,4 +71,13 @@
 
 /* ---------------------------------------------------------------------- */
 
+#rdetail_detail_main { width 100%; }
+#rdetail_details_table { padding-top: 10px; width: 100%; padding: 30px; border-collapse: collapse;}
+.rdetail_header { padding: 3px; padding-left: 10px; font-weight: 600; }
+.rdetail_desc { padding-left: 5px; }
+.rdetail_item { width: 75%; padding-left: 10px; }
+#rdetail_image { padding-right: 10px; }
+#rdetail_copy_info_table { padding: 4px; width: 100%; border-collapse: collapse; }
+
+
 

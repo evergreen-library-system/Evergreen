@@ -454,6 +454,10 @@ sub _add_address {
 	my($session, $address) = @_;
 	$address->clear_id();
 
+	use Data::Dumper;
+	warn "Adding Address:\n";
+	warn Dumper($address);
+
 	# put the address into the database
 	my $req = $session->request(
 		"open-ils.storage.direct.actor.user_address.create",

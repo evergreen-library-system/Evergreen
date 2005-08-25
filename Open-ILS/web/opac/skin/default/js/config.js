@@ -94,11 +94,23 @@ config.ids.sidebar.advanced_link	= 'advanced_link'
 config.ids.sidebar.myopac_link	= 'myopac_link'
 
 config.names.sidebar.subject_item	= 'subject_item';
-config.names.sidebar.author_item	= 'author_item';
-config.names.sidebar.series_item	= 'series_item';
+config.names.sidebar.author_item		= 'author_item';
+config.names.sidebar.series_item		= 'series_item';
 
 /* record detail */
+/*
 config.ids.rdetail = {};
+config.ids.rdetail.details_body	= 'rdetail_details_body'; 
+config.ids.rdetail.title			= 'rdetail_title';
+config.ids.rdetail.author			= 'rdetail_author';
+config.ids.rdetail.isbn				= 'rdetail_isbn';
+config.ids.rdetail.edition			= 'rdetail_edition';
+config.ids.rdetail.pubdate			= 'rdetail_pubdate';
+config.ids.rdetail.publisher		= 'rdetail_publisher';
+config.ids.rdetail.tor				= 'rdetail_tor';
+config.ids.rdetail.abstr			= 'rdetail_abstract';
+config.ids.rdetail.image			= 'rdetail_image';
+*/
 
 
 /* XUL */

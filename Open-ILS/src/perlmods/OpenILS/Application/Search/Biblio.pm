@@ -1005,6 +1005,27 @@ sub copy_counts_per_org {
 }
 
 
+__PACKAGE__->register_method(
+	method		=> "copy_count_summary",
+	api_name	=> "open-ils.search.biblio.copy_counts.summary.retrieve",
+	notes 		=> <<"	NOTES");
+	returns an array of these:
+		[ org_id, callnumber_label, <status1_count>, <status2_cout>,...]
+		where statusx is a copy status name.  the statuses are sorted
+		by id.
+	NOTES
+
+sub copy_count_summary {
+	my( $self, $client, $rid ) = @_;
+	my $method = "open-ils.storage.biblio.record_entry.status_copy_count.atomic";
+	return $apputils->simple_scalar_request( "open-ils.storage", $method, $rid );
+}
+
+
+
+
+
+
 
 
 1;

@@ -1,6 +1,3 @@
-var subjectCache = {};
-var authorCache = {};
-var seriesCache = {};
 
 var recordsHandled = 0;
 var recordsCache = [];
@@ -180,6 +177,11 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 
 
 /* captures extraneous info from each record */
+
+var subjectCache = {};
+var authorCache = {};
+var seriesCache = {};
+
 function resultBuildCaches(records) {
 	for( var r in records ) {
 		var rec = records[r];
@@ -189,7 +191,6 @@ function resultBuildCaches(records) {
 		for( var s in rec.series() ) seriesCache[rec.series()[s]] = 1;
 	}
 }
-
 
 function resultSortSubjects(a, b) { return -(a.count - b.count); } /* sort in reverse */
 function resultDrawSubjects() {

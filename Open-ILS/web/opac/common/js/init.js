@@ -8,9 +8,9 @@ attachEvt("common", "init", initParams);
 attachEvt("common", "init", initCookies);
 attachEvt("common", "init", drawOrgTree); 
 
-//attachEvt("common", "unload", _tree_killer);
+attachEvt("common", "unload", _tree_killer);
 //attachEvt("common", "unload", clearUIObjects);
-//attachEvt("common", "unload", cleanRemoteRequests);
+attachEvt("common", "unload", cleanRemoteRequests);
 
 function init() {
 	runEvt('common','init');

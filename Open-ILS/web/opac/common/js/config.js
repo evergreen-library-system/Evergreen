@@ -167,23 +167,24 @@ config.ids.altcanvas = {};
 	have a staff counterpart and should have ".staff" appended to the method 
 	before the method is called when in XUL mode */
 
-var FETCH_MRCOUNT				= "open-ils.search:open-ils.search.biblio.class.count:1";
-var FETCH_MRIDS				= "open-ils.search:open-ils.search.biblio.class:1";
-var FETCH_MRIDS_FULL			= "open-ils.search:open-ils.search.biblio.class.full:1";
-var FETCH_MRMODS				= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
-var FETCH_MR_COPY_COUNTS	= "open-ils.search:open-ils.search.biblio.metarecord.copy_count:1";
-var FETCH_RIDS					= "open-ils.search:open-ils.search.biblio.metarecord_to_records:1";
-var FETCH_RMODS				= "open-ils.search:open-ils.search.biblio.record.mods_slim.retrieve";
-var FETCH_R_COPY_COUNTS		= "open-ils.search:open-ils.search.biblio.record.copy_count";
-var FETCH_FLESHED_USER		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve";
-var FETCH_SESSION				= "open-ils.auth:open-ils.auth.session.retrieve";
-var LOGIN_INIT					= "open-ils.auth:open-ils.auth.authenticate.init";
-var LOGIN_COMPLETE			= "open-ils.auth:open-ils.auth.authenticate.complete";
-var LOGIN_DELETE				= "open-ils.auth:open-ils.auth.session.delete";
-var FETCH_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.retrieve"; 
-var UPDATE_USER_PREFS		= "open-ils.actor:open-ils.actor.patron.settings.update"; 
+var FETCH_MRCOUNT					= "open-ils.search:open-ils.search.biblio.class.count:1";
+var FETCH_MRIDS					= "open-ils.search:open-ils.search.biblio.class:1";
+var FETCH_MRIDS_FULL				= "open-ils.search:open-ils.search.biblio.class.full:1";
+var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
+var FETCH_MR_COPY_COUNTS		= "open-ils.search:open-ils.search.biblio.metarecord.copy_count:1";
+var FETCH_RIDS						= "open-ils.search:open-ils.search.biblio.metarecord_to_records:1";
+var FETCH_RMODS					= "open-ils.search:open-ils.search.biblio.record.mods_slim.retrieve";
+var FETCH_R_COPY_COUNTS			= "open-ils.search:open-ils.search.biblio.record.copy_count";
+var FETCH_FLESHED_USER			= "open-ils.actor:open-ils.actor.user.fleshed.retrieve";
+var FETCH_SESSION					= "open-ils.auth:open-ils.auth.session.retrieve";
+var LOGIN_INIT						= "open-ils.auth:open-ils.auth.authenticate.init";
+var LOGIN_COMPLETE				= "open-ils.auth:open-ils.auth.authenticate.complete";
+var LOGIN_DELETE					= "open-ils.auth:open-ils.auth.session.delete";
+var FETCH_USER_PREFS				= "open-ils.actor:open-ils.actor.patron.settings.retrieve"; 
+var UPDATE_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.update"; 
+var FETCH_COPY_STATUSES			= "open-ils.search:open-ils.search.config.copy_status.retrieve.all";
+var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.summary.retrieve";
 /* ---------------------------------------------------------------------------- */
-
 
 
 /* ---------------------------------------------------------------------------- */
