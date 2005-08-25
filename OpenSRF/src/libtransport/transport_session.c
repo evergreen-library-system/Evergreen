@@ -53,29 +53,18 @@ transport_session* init_transport(  char* server,
 	session->parser_ctxt = xmlCreatePushParserCtxt(SAXHandler, session, "", 0, NULL);
 
 	/* initialize the transport_socket structure */
-	//session->sock_obj = (transport_socket*) safe_malloc( sizeof(transport_socket) );
 	session->sock_mgr = (socket_manager*) safe_malloc( sizeof(socket_manager) );
-
-	//int serv_size = strlen( server );
-/*
-	session->sock_obj->server = server;
-	session->sock_obj->port = port;
-	session->sock_obj->data_received_callback = &grab_incoming;
-*/
 
 	session->sock_mgr->data_received = &grab_incoming;
 	session->sock_mgr->blob	= session;
 	
 	session->port = port;
 	session->server = strdup(server);
-	if(unix_path)
+	if(unix_path) 	
 		session->unix_path = strdup(unix_path);
-	session->unix_path = NULL;
+	else session->unix_path = NULL;
 
 	session->sock_id = 0;
-
-	/* this will be handed back to us in callbacks */
-	//session->sock_obj->user_data = session; 
 
 	return session;
 }
@@ -86,18 +75,17 @@ transport_session* init_transport(  char* server,
 int session_free( transport_session* session ) {
 	if( ! session ) { return 0; }
 
-	//if( session->sock_obj ) 
-	//	free( session->sock_obj );
-
 	if(session->sock_mgr)
 		socket_manager_free(session->sock_mgr);
 
 	if( session->state_machine ) free( session->state_machine );
 	if( session->parser_ctxt) {
-		xmlCleanupCharEncodingHandlers();
 		xmlFreeDoc( session->parser_ctxt->myDoc );
 		xmlFreeParserCtxt(session->parser_ctxt);
 	}
+
+	xmlCleanupCharEncodingHandlers();
+	xmlDictCleanup();
 	xmlCleanupParser();
 
 	buffer_free(session->body_buffer);

@@ -1,6 +1,7 @@
 #include "osrf_system.h"
 
 transport_client* global_client;
+char* system_config = NULL;
 
 transport_client* osrf_system_get_transport_client() {
 	return global_client;
@@ -8,12 +9,15 @@ transport_client* osrf_system_get_transport_client() {
 
 int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
 
-	if( config_file == NULL )
+	if( !config_file || !contextnode )
 		fatal_handler("No Config File Specified\n" );
 
+	free(system_config);
+	free(osrf_config_context);
+	system_config = strdup(config_file);
+	osrf_config_context = strdup(contextnode);
+
 	config_reader_init( "opensrf.bootstrap", config_file );	
-	
-	osrf_config_context = contextnode;
 
 	char* log_file		= config_value( "opensrf.bootstrap", "//%s/logfile", contextnode );
 	char* log_level	= config_value( "opensrf.bootstrap", "//%s/loglevel", contextnode );
@@ -57,12 +61,20 @@ int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
 	return 0;
 }
 
-int osrf_system_shutdown() {
-	config_reader_free();
-	log_free();
+int osrf_system_disconnect_client() {
 	client_disconnect( global_client );
 	client_free( global_client );
 	global_client = NULL;
+	return 0;
+}
+
+int osrf_system_shutdown() {
+	config_reader_free();
+	osrf_system_disconnect_client();
+	free(system_config);
+	free(osrf_config_context);
+	osrf_settings_free_host_config(NULL);
+	log_free();
 	return 1;
 }
 

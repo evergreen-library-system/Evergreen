@@ -4,17 +4,15 @@
 # ------------------------------------------------------------------------
 
 
-LD_OPTS	+= -lc_utils
-CC_OPTS -= -Wall
-
 UTIL_SOURCES = logging.c utils.c socket_bundle.c md5.c sha.c string_array.c
 UTIL_HEADERS = logging.h utils.h socket_bundle.h md5.h sha.h string_array.h
 UTIL_OBJECTS = logging.o utils.o socket_bundle.o md5.o sha.o string_array.o
 
-all:	msg libc_utils.so
+all:	msg libc_utils.so 
 
 msg:
 	echo "-> $$(pwd)"	
+
 
 install: 
 	echo installing libc_utils.so
@@ -51,8 +49,9 @@ string_array.o: string_array.c string_array.h
 	@echo $@
 	$(CC) -c $(CC_OPTS) string_array.c -o $@ 
 
+
 clean:
-	/bin/rm -f *.o socket_test libc_utils.so
+	/bin/rm -f *.o socket_test libc_utils.so test
 
 
 

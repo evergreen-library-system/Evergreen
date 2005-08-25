@@ -219,6 +219,9 @@ char* json_string_format(char* json);
 object* object_clone(object* o);
 
 
+/* ------------------------------------------------------------------------ */
+/* XPATH */
+
 /* provide an XPATH style path (e.g. /some/node/here) and this will 
 	return the object at that location if one exists.  Naturally,  
 	every element in the path must be a proper object ("hash" / {}).
@@ -229,9 +232,14 @@ object* object_clone(object* o);
 object* object_find_path(object* obj, char* format, ...);
 
 
-/* returns an object array of matches */
+/* Utility method. finds any object in the tree that matches the path.  
+	Use this for finding paths that start with '//' */
 object* _object_find_path_recurse(object* obj, char* root, char* path);
+
+/* returns a list of object whose key is 'root'.  These are used as
+	potential objects when doing a // search */
 object* __object_find_path_recurse(object* obj, char* root);
 
+/* ------------------------------------------------------------------------ */
 
 #endif

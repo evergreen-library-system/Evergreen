@@ -1,18 +1,5 @@
 #include "osrf_config.h"
 
-//object* config_object = NULL;
-
-/*
-char* osrf_config_value(char* path) {
-}
-
-
-void _osrf_config_grab_config() {
-	if(config_object) return;
-}
-*/
-
-
 void config_reader_init( char* name, char* config_file ) {
 
 	if( name == NULL || config_file == NULL || strlen(config_file) == 0 ) {

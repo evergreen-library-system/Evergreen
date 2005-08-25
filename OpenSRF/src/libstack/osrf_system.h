@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "logging.h"
 #include "osrf_config.h"
+//#include "osrf_settings.h"
 
 #ifndef OSRF_SYSTEM_H
 #define OSRF_SYSTEM_H
@@ -15,6 +16,8 @@ char* osrf_config_context;
 int osrf_system_bootstrap_client( char* config_file, char* contextnode );
 transport_client* osrf_system_get_transport_client();
 
+/* disconnects and destroys the current client connection */
+int osrf_system_disconnect_client();
 int osrf_system_shutdown(); 
 
 

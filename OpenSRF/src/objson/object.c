@@ -667,11 +667,11 @@ object* object_find_path(object* obj, char* format, ...) {
 	char* t = buf;
 	char* tt = tokbuf;
 
+	/* copy the path before strtok_r destroys it */
 	char* pathcopy = strdup(buf);
 
 	/* grab the root of the path */
 	token = strtok_r(t, "/", &tt);
-	t = NULL;
 	if(!token) return NULL;
 
 	/* special case where path starts with //  (start anywhere) */
@@ -683,6 +683,7 @@ object* object_find_path(object* obj, char* format, ...) {
 
 	free(pathcopy);
 
+	t = NULL;
 	do { 
 		obj = obj->get_key(obj, token);
 	} while( (token = strtok_r(NULL, "/", &tt)) && obj);
@@ -695,20 +696,22 @@ object* object_find_path(object* obj, char* format, ...) {
 object* _object_find_path_recurse(object* obj, char* root, char* path) {
 
 	if(!obj || ! root) return NULL;
-	object* arr = __object_find_path_recurse(obj, root);
-	object* newarr = json_parse_string("[]");
 
+	/* collect all of the potential objects */
+	object* arr = __object_find_path_recurse(obj, root);
+
+	/* container for fully matching objects */
+	object* newarr = json_parse_string("[]");
 	int i;
 
 	/* path is just /root or /root/ */
 	if( strlen(root) + 2 >= strlen(path) ) {
 		return arr;
+
 	} else {
 
+		/* gather all of the sub-objects that match the full path */
 		for( i = 0; i < arr->size; i++ ) {
-			/*
-			fprintf(stderr, "Searching root %s and path %s and size %ld\n", root, path + strlen(root) + 1, arr->size);
-			*/
 			object* a = arr->get_index(arr, i);
 			object* thing = object_find_path(a , path + strlen(root) + 1); 
 			if(thing) newarr->push(newarr, thing);
@@ -723,6 +726,10 @@ object* __object_find_path_recurse(object* obj, char* root) {
 
 	object* arr = json_parse_string("[]");
 	if(!obj) return arr;
+
+	int i;
+
+	/* if the current object has a node that matches, add it */
 	object* o = obj->get_key(obj, root);
 	if(o) arr->push(arr, object_clone(o));
 
@@ -730,15 +737,14 @@ object* __object_find_path_recurse(object* obj, char* root) {
 	object* childarr;
 	object_iterator* itr = new_iterator(obj);
 
+	/* recurse through the children and find all potential nodes */
 	while( (tmp = itr->next(itr)) ) {
 		childarr = __object_find_path_recurse(tmp->item, root);
 		if(childarr && childarr->size > 0) {
-			int i;
 			for( i = 0; i!= childarr->size; i++ ) {
 				arr->push(arr, object_clone(childarr->get_index(childarr, i)));
 			}
 		}
-
 		free_object(childarr);
 	}
 
