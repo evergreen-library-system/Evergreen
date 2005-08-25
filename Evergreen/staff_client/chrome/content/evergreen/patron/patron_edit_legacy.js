@@ -1182,7 +1182,7 @@ function rows_append_address( rows, address, edit ) {
 				checkbox_invalid.setAttribute('oncommand','invalid_checkbox(event,' + address.id() + ');');
 			hbox.appendChild(checkbox_invalid);
 			mw.sdump('D_LEGACY','address ' + address.id() + ' valid = ' + address.valid() + '\n');
-			if ( address.valid() == '1' ) {
+			if ( address.valid() == '1' || address.valid() == 't' ) {
 				checkbox_invalid.checked = false;
 			} else {
 				checkbox_invalid.checked = true;
@@ -1286,13 +1286,15 @@ function invalid_checkbox(e,id) {
 	if (e.target.checked) {
 		mw.sdump('D_LEGACY','Marking address ' + id + ' invalid\n');
 		mw.sdump('D_LEGACY','\tbefore address: ' + js2JSON(hash_aua[id]) + '\n');
-		hash_aua[id].valid( '0' );
+		//hash_aua[id].valid( '0' );
+		hash_aua[id].valid( 'f' );
 		hash_aua[id].ischanged( '1' );
 		mw.sdump('D_LEGACY','\tafter  address: ' + js2JSON(hash_aua[id]) + '\n');
 	} else {
 		mw.sdump('D_LEGACY','Marking address ' + id + ' valid\n');
 		mw.sdump('D_LEGACY','\tbefore address: ' + js2JSON(hash_aua[id]) + '\n');
-		hash_aua[id].valid( '1' );
+		//hash_aua[id].valid( '1' );
+		hash_aua[id].valid( 't' );
 		hash_aua[id].ischanged( '1' );
 		mw.sdump('D_LEGACY','\tafter  address: ' + js2JSON(hash_aua[id]) + '\n');
 	}
