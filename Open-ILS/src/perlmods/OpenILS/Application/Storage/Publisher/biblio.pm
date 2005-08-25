@@ -258,7 +258,7 @@ sub record_copy_status_count {
 		  FROM	$cp_table cp,
 		  	$cn_table cn,
 			$cl_table cl,
-			$cs_table cs,
+			$cs_table cs
 		  WHERE	cn.record = ?
 		  	AND cp.call_number = cn.id
 		  	AND cp.location = cl.id
@@ -274,16 +274,17 @@ sub record_copy_status_count {
 	$sth->execute("$rec");
 
 	my ($ou,$cn) = (0,'');
-	my @data = ();
+	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {
 		if ($cn and $cn ne $$row[1]) {
-			$client->respond( [$ou, $cn, @data] );
-			@data = ();
+			my $i = 0;
+			$client->respond( [$ou, $cn, \%data] );
+			%data = ();
 		}
 		($ou,$cn) = ($$row[0],$$row[1]);
-		push @data, $$row[3];
+		$data{$$row[2]} = $$row[3];
 	}
-	return [$ou, $cn, @data] if ($ou);
+	return [$ou, $cn, \%data] if ($ou);
 	return undef;
 }
 __PACKAGE__->register_method(
