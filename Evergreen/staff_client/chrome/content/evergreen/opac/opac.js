@@ -6,12 +6,11 @@ var OPAC_URL = "http://spacely.georgialibraries.org:8080/";
 
 function buildProgressListener(p) {
 	sdump('D_OPAC',arg_dump(arguments));
-	return {
+	var progressListener = {
 		onProgressChange	: function(){},
 		onLocationChange	: function(){},
 		onStatusChange		: function(){},
 		onSecurityChange	: function(){},
-		QueryInterface 		: function(){return this;},
 		onStateChange 		: function ( webProgress, request, stateFlags, status) {
 			const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 			const nsIChannel = Components.interfaces.nsIChannel;
@@ -47,14 +46,18 @@ function buildProgressListener(p) {
 			}
 		}
 	}
+	progressListener.QueryInterface = function(){return this;};
+	return progressListener;
 }
 
 /* init the opac */
 function opac_init(p) {
 	sdump('D_OPAC',"Initing OPAC\n");
 
+	p.opac_progressListener = buildProgressListener(p);
+
 	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
-	p.opac_iframe.addProgressListener(buildProgressListener(p), 
+	p.opac_iframe.addProgressListener(p.opac_progressListener, 
 		Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 	p.opac_iframe.setAttribute("src", OPAC_URL) 
 }
@@ -64,7 +67,8 @@ function set_opac_vars(p) {
 	sdump('D_OPAC',arg_dump(arguments));
 	p.opac_iframe.contentWindow.IAMXUL = true;
 	p.opac_iframe.contentWindow.xulG = mw.G;
-	p.opac_iframe.contentWindow.attachEvt("rresult", "recordDrawn", opac_make_details_page);
+	p.opac_iframe.contentWindow.attachEvt("rresult", "recordDrawn", 
+		function(id,node){opac_make_details_page(p,id,node)});
 	dump('p.opac_iframe = ' + p.opac_iframe + '\n');
 	dump('p.opac_iframe.contentWindow = ' + p.opac_iframe.contentWindow + '\n');
 	dump('p.opac_iframe.contentWindow = ' + p.opac_iframe.contentWindow + '\n');
@@ -72,18 +76,25 @@ function set_opac_vars(p) {
 	dump('p.opac_iframe.contentWindow.G.evt = ' + p.opac_iframe.contentWindow.G.evt + '\n');
 	dump('p.opac_iframe.contentWindow.G.evt.rresult = ' + p.opac_iframe.contentWindow.G.evt.rresult + '\n');
 	dump('p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn = ' + p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn + '\n');
-	var a = p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn;
-	for (var i in a) {
-		dump('\t'+i+'\t'+a[i]+'\n');	
-	}
+	p.opac_iframe.removeProgressListener(p.opac_progressListener);
+	p.opac_iframe.addProgressListener(p.opac_progressListener, 
+		Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT );
+
 }
 
-function opac_make_details_page(id, node) {
+function opac_make_details_page(p, id, node) {
 	sdump('D_OPAC',arg_dump(arguments));
 	dump("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
-	alert("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
+	var f = function() {
+		spawn_copy_browser(
+			p.w.app_shell, 'new_tab', 'main_tabbox', {
+				'find_this_id' : id
+			}
+		).find_this_id = id;
+		return true;
+	}
+	node.addEventListener( 'click', f, false );
 }
-
 
 /* -------------------------------------------------------------------------- 
 	back-forward
