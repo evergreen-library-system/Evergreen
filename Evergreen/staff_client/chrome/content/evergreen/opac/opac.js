@@ -1,83 +1,85 @@
 sdump('D_OPAC','Loading opac.js\n');
 
 var OPAC_URL = "http://spacely.georgialibraries.org:8080/";
-var opac_page_thing;
-
 
 /* listen for page changes */
 
 function buildProgressListener(p) {
-///*
-//	var progressListener = 
+	sdump('D_OPAC',arg_dump(arguments));
 	return {
-	onProgressChange	: function(){},
-	onLocationChange	: function(){},
-	onStatusChange		: function(){},
-	onSecurityChange	: function(){},
-	QueryInterface 		: function(){return this;},
-	onStateChange 		: function ( webProgress, request, stateFlags, status) {
-		const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
-		const nsIChannel = Components.interfaces.nsIChannel;
-		if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
-		dump('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
-		if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
-			dump('\tSTATE_IS_REQUEST\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT) {
-			dump('\tSTATE_IS_DOCUMENT\n');
-			if( stateFlags & nsIWebProgressListener.STATE_STOP ) set_opac_vars(p); 
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
-			dump('\tSTATE_IS_NETWORK\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_IS_WINDOW) {
-			dump('\tSTATE_IS_WINDOW\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_START) {
-			dump('\tSTATE_START\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_REDIRECTING) {
-			dump('\tSTATE_REDIRECTING\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_TRANSFERING) {
-			dump('\tSTATE_TRANSFERING\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_NEGOTIATING) {
-			dump('\tSTATE_NEGOTIATING\n');
-		}
-		if (stateFlags & nsIWebProgressListener.STATE_STOP) {
-			dump('\tSTATE_STOP\n');
+		onProgressChange	: function(){},
+		onLocationChange	: function(){},
+		onStatusChange		: function(){},
+		onSecurityChange	: function(){},
+		QueryInterface 		: function(){return this;},
+		onStateChange 		: function ( webProgress, request, stateFlags, status) {
+			const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
+			const nsIChannel = Components.interfaces.nsIChannel;
+			if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
+			dump('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
+			if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
+				dump('\tSTATE_IS_REQUEST\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT) {
+				dump('\tSTATE_IS_DOCUMENT\n');
+				if( stateFlags & nsIWebProgressListener.STATE_STOP ) set_opac_vars(p); 
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
+				dump('\tSTATE_IS_NETWORK\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_IS_WINDOW) {
+				dump('\tSTATE_IS_WINDOW\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_START) {
+				dump('\tSTATE_START\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_REDIRECTING) {
+				dump('\tSTATE_REDIRECTING\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_TRANSFERING) {
+				dump('\tSTATE_TRANSFERING\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_NEGOTIATING) {
+				dump('\tSTATE_NEGOTIATING\n');
+			}
+			if (stateFlags & nsIWebProgressListener.STATE_STOP) {
+				dump('\tSTATE_STOP\n');
+			}
 		}
 	}
-}
-//*/
-	//return progressListener;
 }
 
 /* init the opac */
 function opac_init(p) {
 	sdump('D_OPAC',"Initing OPAC\n");
-	opac_page_thing = p;
 
 	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
 	p.opac_iframe.addProgressListener(buildProgressListener(p), 
 		Components.interfaces.nsIWebProgress.NOTIFY_ALL );
-	//p.opac_iframe.addProgressListener(progressListener, 
-	//	Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 	p.opac_iframe.setAttribute("src", OPAC_URL) 
 }
 
 /* shoves data into the OPAC's space */
 function set_opac_vars(p) {
-	if (!p) p = opac_page_thing;
-	//var p = opac_page_thing;
-	//p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
+	sdump('D_OPAC',arg_dump(arguments));
 	p.opac_iframe.contentWindow.IAMXUL = true;
 	p.opac_iframe.contentWindow.xulG = mw.G;
 	p.opac_iframe.contentWindow.attachEvt("rresult", "recordDrawn", opac_make_details_page);
+	dump('p.opac_iframe = ' + p.opac_iframe + '\n');
+	dump('p.opac_iframe.contentWindow = ' + p.opac_iframe.contentWindow + '\n');
+	dump('p.opac_iframe.contentWindow = ' + p.opac_iframe.contentWindow + '\n');
+	dump('p.opac_iframe.contentWindow.G = ' + p.opac_iframe.contentWindow.G + '\n');
+	dump('p.opac_iframe.contentWindow.G.evt = ' + p.opac_iframe.contentWindow.G.evt + '\n');
+	dump('p.opac_iframe.contentWindow.G.evt.rresult = ' + p.opac_iframe.contentWindow.G.evt.rresult + '\n');
+	dump('p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn = ' + p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn + '\n');
+	var a = p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn;
+	for (var i in a) {
+		dump('\t'+i+'\t'+a[i]+'\n');	
+	}
 }
 
 function opac_make_details_page(id, node) {
+	sdump('D_OPAC',arg_dump(arguments));
 	dump("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
 	alert("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
 }
