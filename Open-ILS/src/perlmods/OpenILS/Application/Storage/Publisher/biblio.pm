@@ -241,4 +241,60 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+sub record_copy_status_count {
+	my $self = shift;
+	my $client = shift;
+
+	my $rec = shift;
+
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+	my $cl_table = asset::copy_location->table;
+	my $cs_table = config::copy_status->table;
+
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	$copies_visible = '' if ($self->api_name =~ /staff/o);
+
+	my $sql = <<"	SQL";
+
+		SELECT	cp.circ_lib, cn.label, cp.status, count(cp.id)
+		  FROM	$cp_table cp,
+		  	$cn_table cn,
+			$cl_table cl,
+			$cs_table cs,
+		  WHERE	cn.record = ?
+		  	AND cp.call_number = cn.id
+		  	AND cp.location = cl.id
+		  	AND cp.status = cs.id
+			AND cl.opac_visible IS TRUE
+			AND cp.opac_visible IS TRUE
+			AND cs.holdable
+		  GROUP BY 1,2,3
+		  ORDER BY 1,2,3
+	SQL
+
+	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
+	$sth->execute("$rec", "$rec");
+
+	my ($ou,$cn) = (0,'');
+	my @data = ();
+	for my $row (@{$sth->fetchall_arrayref}) {
+		if ($cn and $cn ne $$row[1]) {
+			$client->respond( [$ou, $cn, @data] );
+			@data = ();
+		}
+		($ou,$cn) = ($$row[0],$$row[1]);
+		push @data, $$row[3];
+	}
+	return [$ou, $cn, @data] if ($ou);
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.status_copy_count',
+	method		=> 'global_record_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 1;
