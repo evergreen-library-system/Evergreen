@@ -196,7 +196,7 @@ sub perl2JSON {
 		for my $key (sort keys %$perl) {
 			$output .= ',' if ($c); 
 			
-			$output .= perl2JSON(undef,$key, $strict).':'.perl2JSON(undef,$$perl{$key}, $strict);
+			$output .= '"'.$key.'":'.perl2JSON(undef,$$perl{$key}, $strict);
 			$c++;
 		}
 		$output .= '}';
