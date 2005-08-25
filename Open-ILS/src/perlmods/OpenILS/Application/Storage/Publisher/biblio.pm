@@ -252,9 +252,6 @@ sub record_copy_status_count {
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
-	$copies_visible = '' if ($self->api_name =~ /staff/o);
-
 	my $sql = <<"	SQL";
 
 		SELECT	cp.circ_lib, cn.label, cp.status, count(cp.id)
@@ -270,11 +267,11 @@ sub record_copy_status_count {
 			AND cp.opac_visible IS TRUE
 			AND cs.holdable
 		  GROUP BY 1,2,3
-		  ORDER BY 1,2,3
+		  ORDER BY 1,2,3;
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
-	$sth->execute("$rec", "$rec");
+	$sth->execute("$rec");
 
 	my ($ou,$cn) = (0,'');
 	my @data = ();
@@ -291,7 +288,7 @@ sub record_copy_status_count {
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.biblio.record_entry.status_copy_count',
-	method		=> 'global_record_copy_count',
+	method		=> 'record_copy_status_count',
 	api_level	=> 1,
 	stream		=> 1,
 	cachable	=> 1,
