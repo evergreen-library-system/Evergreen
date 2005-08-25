@@ -195,8 +195,16 @@ sub perl2JSON {
 		my $c = 0;
 		for my $key (sort keys %$perl) {
 			$output .= ',' if ($c); 
-			
-			$output .= '"'.$key.'":'.perl2JSON(undef,$$perl{$key}, $strict);
+
+			$key =~ s{\\}{\\\\}sgo;
+			$key =~ s/"/\\"/sgo;
+			$key =~ s/\t/\\t/sgo;
+			$key =~ s/\f/\\f/sgo;
+			$key =~ s/\r/\\r/sgo;
+			$key =~ s/\n/\\n/sgo;
+			$key =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
+
+			$output .= '"'.$key.'":'.key2JSON(undef,$$perl{$key}, $strict);
 			$c++;
 		}
 		$output .= '}';
