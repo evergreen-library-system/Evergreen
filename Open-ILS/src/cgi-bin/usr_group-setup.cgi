@@ -159,7 +159,7 @@ for my $grp ( permission::grp_tree->search( {parent=>undef} ) ) {
 	last;
 }
 
-for my $grp ( permission::grp_tree->search_like( {parent => '%'}, {order_by => 'id'} ) ) {
+for my $grp ( permission::grp_tree->search_like( {parent => '%'}, {order_by => 'name'} ) ) {
 	my $name = $grp->name;
 	my $desc = $grp->description || $grp->name;
 	$name =~ s/'/\\'/og;
