@@ -116,7 +116,7 @@ if (my $action = $cgi->param('action')) {
 		print Tr(
 			td( $row->id() ),
 			td("<input type='text' name='code_$row' value='". $row->code() ."'>"),
-			td("<input type='text' name='description_$row' value='". $row->description() ."'>"),
+			td("<input type='text' size='50' name='description_$row' value='". $row->description() ."'>"),
 			td("<input type='checkbox' value='$row' name='id'>"),
 		);
 	}
@@ -124,7 +124,7 @@ if (my $action = $cgi->param('action')) {
 	print "<tr class='new_row_class'>",
 		td(),
 		td("<input type='text' name='code'>"),
-		td("<input type='text' name='description'>"),
+		td("<input type='text' size='50' name='description'>"),
 		td(),
 		"</tr>";
 	print	"</table>";
