@@ -33,9 +33,13 @@
 <!ENTITY rdetail.detailMain.edition "Edition">
 <!ENTITY rdetail.detailMain.pubdate "Publication Date">
 <!ENTITY rdetail.detailMain.publisher "Publisher">
-<!ENTITY rdetail.detailMain.tor "Type of Resource">
+<!ENTITY rdetail.detailMain.tor "Format">
 <!ENTITY rdetail.detailMain.subjects "Subjects">
 <!ENTITY rdetail.detailMain.abstract "Abstract">
 <!ENTITY rdetail.copyInfo.headerLabel "Copy Information">
 <!ENTITY rdetail.copyInfo.library "Library">
 <!ENTITY rdetail.copyInfo.callnumber "Callnumber">
+<!ENTITY rdetail.copyInfo.local "View Copy Information for this library only">
+<!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
+<!ENTITY rdetail.loading "Loading copy infomation...">
+<!ENTITY rdetail.noneAvailable " * There are no copies in this library">
