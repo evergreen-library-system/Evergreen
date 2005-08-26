@@ -14,14 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 
-#include <stdio.h>
-
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-
-//#include <sys/timeb.h>
 #include "utils.h"
 
 inline void* safe_malloc( int size ) {
@@ -33,6 +25,8 @@ inline void* safe_malloc( int size ) {
 	memset( ptr, 0, size );
 	return ptr;
 }
+
+
 
 /* utility method for profiling */
 double get_timestamp_millis() {
@@ -91,6 +85,26 @@ long va_list_size(const char* format, va_list args) {
 	return len;
 }
 
+
+char* va_list_to_string(const char* format, ...) {
+
+	long len = 0;
+	va_list args;
+	va_list a_copy;
+
+	va_copy(a_copy, args);
+
+	va_start(args, format);
+	len = va_list_size(format, args);
+
+	char buf[len];
+	memset(buf, 0, len);
+
+	va_start(a_copy, format);
+	vsnprintf(buf, len - 1, format, a_copy);
+	va_end(a_copy);
+	return strdup(buf);
+}
 
 // ---------------------------------------------------------------------------------
 // Flesh out a ubiqitous growing string buffer

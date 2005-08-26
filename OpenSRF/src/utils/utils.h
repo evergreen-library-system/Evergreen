@@ -17,12 +17,18 @@ GNU General Public License for more details.
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <stdio.h>
 #include <stdarg.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <string.h>
+//#include <sys/timeb.h>
+
 
 #define BUFFER_MAX_SIZE 10485760 
 
@@ -57,6 +63,10 @@ int buffer_add_char(growing_buffer* gb, char c);
 	*/
 long va_list_size(const char* format, va_list);
 
+/* turns a va list into a string, caller must free the 
+	allocated char */
+char* va_list_to_string(const char* format, ...);
+
 
 /* string escape utility method.  escapes unicode embeded characters.
 	escapes the usual \n, \t, etc. 
@@ -88,6 +98,7 @@ int stringisnum(char* s);
 	user is responsible for freeing the returned char*
 	*/
 char* file_to_string(char* filename);
+
 
 
 

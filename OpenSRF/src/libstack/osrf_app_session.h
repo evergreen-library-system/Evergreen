@@ -54,7 +54,8 @@ struct osrf_app_session_struct {
 	/** The current remote id of the remote service we're talking to */
 	char* remote_id;
 
-	/** Who we're talking to */
+	/** Who we're talking to if we're a client.  
+		what app we're serving if we're a server */
 	char* remote_service;
 
 	/** The current request thread_trace */
@@ -90,7 +91,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service );
   * is checked to see if this session already exists, if so, it's returned 
   */
 osrf_app_session* osrf_app_server_session_init( 
-		char* session_id, char* our_app, char* remote_service, char* remote_id );
+		char* session_id, char* our_app, char* remote_id );
 
 /** returns a session from the global session hash */
 osrf_app_session* osrf_app_session_find_session( char* session_id );

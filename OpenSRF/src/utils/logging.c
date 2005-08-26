@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "logging.h"
 
-
 void get_timestamp( char buf_36chars[]) {
 
 	struct timeb tb;

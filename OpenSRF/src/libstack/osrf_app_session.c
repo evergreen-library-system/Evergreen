@@ -247,8 +247,8 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	char target_buf[512];
 	memset(target_buf,0,512);
-	char* domain	= config_value( "opensrf.bootstrap", "//%s/domains/domain1", osrf_config_context ); /* just the first for now */
-	char* router_name = config_value( "opensrf.bootstrap", "//%s/router_name", osrf_config_context );
+	char* domain	= config_value( "opensrf.bootstrap", "//%s/domains/domain1", osrf_get_config_context() ); /* just the first for now */
+	char* router_name = config_value( "opensrf.bootstrap", "//%s/router_name", osrf_get_config_context() );
 	sprintf( target_buf, "%s@%s/%s",  router_name, domain, remote_service );
 	free(domain);
 	free(router_name);
@@ -284,7 +284,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 }
 
 osrf_app_session* osrf_app_server_session_init( 
-		char* session_id, char* our_app, char* remote_service, char* remote_id ) {
+		char* session_id, char* our_app, char* remote_id ) {
 
 	osrf_app_session* session = osrf_app_session_find_session( session_id );
 	if(session)
@@ -302,7 +302,7 @@ osrf_app_session* osrf_app_server_session_init(
 	session->remote_id = strdup(remote_id);
 	session->orig_remote_id = strdup(remote_id);
 	session->session_id = strdup(session_id);
-	session->remote_service = strdup(remote_service);
+	session->remote_service = strdup(our_app);
 
 	#ifdef ASSUME_STATELESS
 	session->stateless = 1;

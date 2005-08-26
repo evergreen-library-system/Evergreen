@@ -10,13 +10,13 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 	transport_message* msg = client_recv( client, timeout );
 	if(msg == NULL) return 0;
 	debug_handler( "Received message from transport code from %s", msg->sender );
-	int status = osrf_stack_transport_handler( msg );
+	int status = osrf_stack_transport_handler( msg, NULL );
 
 	while(1) {
 		transport_message* m = client_recv( client, 0 );
 		if(m) {
 			debug_handler( "Received additional message from transport code");
-			status = osrf_stack_transport_handler( m );
+			status = osrf_stack_transport_handler( m, NULL );
 		} else  {
 			debug_handler( "osrf_stack_process returning with only 1 received message" );
 			break;
@@ -31,7 +31,7 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 // -----------------------------------------------------------------------------
 // Entry point into the stack
 // -----------------------------------------------------------------------------
-int osrf_stack_transport_handler( transport_message* msg ) { 
+int osrf_stack_transport_handler( transport_message* msg, char* my_service ) { 
 
 	debug_handler( "Transport handler received new message \nfrom %s "
 			"to %s with body \n\n%s\n", msg->sender, msg->recipient, msg->body );
@@ -40,12 +40,12 @@ int osrf_stack_transport_handler( transport_message* msg ) {
 
 	if( session == NULL ) {  /* we must be a server, build a new session */
 		info_handler( "Received message for nonexistant session. Dropping..." );
-		//osrf_app_server_session_init( msg->thread, 
-		message_free( msg );
-		return 1;
+		osrf_app_server_session_init( msg->thread, my_service, msg->sender);
+		//message_free( msg );
+		//return 1;
 	}
 
-	debug_handler("Session [%s] found, building message", msg->thread );
+	//debug_handler("Session [%s] found, building message", msg->thread );
 
 	osrf_app_session_set_remote( session, msg->sender );
 	osrf_message* arr[OSRF_MAX_MSGS_PER_PACKET];
@@ -180,7 +180,6 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 	if(session == NULL || msg == NULL)
 		return NULL;
-
 
 	if( msg->m_type == STATUS ) { return NULL; }
 

@@ -361,12 +361,14 @@ int socket_wait(socket_manager* mgr, int timeout, int sock_fd) {
 
 		// If timeout is -1, we block indefinitely
 		if( (retval = select( sock_fd + 1, &read_set, NULL, NULL, NULL)) == -1 ) {
+			warning_handler("Sys Error: %s", strerror(errno));
 			return warning_handler("Call to select interrupted");
 		}
 
 	} else if( timeout > 0 ) { /* timeout of 0 means don't block */
 
 		if( (retval = select( sock_fd + 1, &read_set, NULL, NULL, &tv)) == -1 ) {
+			warning_handler("Sys Error: %s", strerror(errno));
 			return warning_handler( "Call to select interrupted" );
 		}
 	}
@@ -402,12 +404,14 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 
 		// If timeout is -1, there is no timeout passed to the call to select
 		if( (retval = select( max_fd, &read_set, NULL, NULL, NULL)) == -1 ) {
+			warning_handler("Sys Error: %s", strerror(errno));
 			return warning_handler("Call to select interrupted");
 		}
 
 	} else if( timeout != 0 ) { /* timeout of 0 means don't block */
 
 		if( (retval = select( max_fd, &read_set, NULL, NULL, &tv)) == -1 ) {
+			warning_handler("Sys Error: %s", strerror(errno));
 			return warning_handler( "Call to select interrupted" );
 		}
 	}

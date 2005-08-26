@@ -2,20 +2,35 @@
 
 transport_client* global_client;
 char* system_config = NULL;
+char* config_context = NULL;
+char* bootstrap_config = NULL;
 
 transport_client* osrf_system_get_transport_client() {
 	return global_client;
 }
 
+
+char* osrf_get_config_context() {
+	return config_context;
+}
+
+char* osrf_get_bootstrap_config() {
+	return bootstrap_config;
+}
+
 int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
+	return osrf_system_bootstrap_client_resc(config_file, contextnode, NULL);
+}
+
+int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, char* resource ) {
 
 	if( !config_file || !contextnode )
 		fatal_handler("No Config File Specified\n" );
 
-	free(system_config);
-	free(osrf_config_context);
-	system_config = strdup(config_file);
-	osrf_config_context = strdup(contextnode);
+	config_context = strdup(contextnode);
+	bootstrap_config = strdup(config_file);
+
+	debug_handler("Bootstrapping client with config %s and context node %s", config_file, contextnode);
 
 	config_reader_init( "opensrf.bootstrap", config_file );	
 
@@ -37,13 +52,18 @@ int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
 	info_handler("Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
 
 	transport_client* client = client_init( domain, iport, unixpath, 0 );
-	
-	char buf[256];
-	memset(buf,0,256);
-	char* host = getenv("HOSTNAME");
-	sprintf(buf, "client_%s_%d", host, getpid() );
 
+	char* host = getenv("HOSTNAME");
+
+	if(!resource) resource = "";
+	int len = strlen(resource) + 256;
+	char buf[len];
+	memset(buf,0,len);
+	snprintf(buf, len - 1, "opensrf_%s_%s_%d", resource, host, getpid() );
+	
 	if(client_connect( client, username, password, buf, 10, AUTH_DIGEST )) {
+		/* child nodes will leak the parents client... but we can't free
+			it without disconnecting the parents client :( */
 		global_client = client;
 	}
 
@@ -71,8 +91,8 @@ int osrf_system_disconnect_client() {
 int osrf_system_shutdown() {
 	config_reader_free();
 	osrf_system_disconnect_client();
-	free(system_config);
-	free(osrf_config_context);
+	//free(system_config);
+	//free(config_context);
 	osrf_settings_free_host_config(NULL);
 	log_free();
 	return 1;
