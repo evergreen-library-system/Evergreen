@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Cataloger's Search Result Screen -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/cat.css" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/cat.dtd">
+
+<window id="details_win" title="Record Details" 
+	orient="vertical" style="overflow: scroll" width="800" height="500"
+	onload="my_init();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+
+	<script>
+	<![CDATA[
+		var myPackageDir = "evergreen";
+
+		function my_init() {
+
+			chain_exec(
+				my_init_spawn_marc_view,
+				my_init_spawn_marc_editor,
+				my_init_spawn_copy_browser,
+				my_init_spawn_opac_view
+			);
+
+		}
+
+		function my_init_spawn_marc_view() {
+			var html = user_request(
+				"open-ils.search",
+				"open-ils.search.biblio.record.html",
+				[ find_this_id ]
+			)[0];
+			dump('html = ' + html + '\n');
+			spawn_interface(
+				document, 'replace_browser', 'marc_view',
+				'data:text/html,' + html,
+				'MARC View2', {}
+			);
+		}
+
+		function my_init_spawn_marc_editor() {
+			spawn_marc_editor(
+				document, 'replace_iframe', 'marc_edit', {
+					'find_this_id' : find_this_id
+				}
+			).find_this_id = find_this_id;
+		}
+
+		function my_init_spawn_copy_browser() {
+			spawn_copy_browser(
+				document, 'replace_iframe', 'copy_browser', {
+					'find_this_id' : find_this_id
+				}
+			).find_this_id = find_this_id;
+		}
+
+		function my_init_spawn_opac_view() {
+		}
+	]]>
+	</script>
+
+	<tabbox flex="1">
+		<tabs>
+			<tab label="MARC View"/>
+			<tab label="MARC Edit"/>
+			<tab label="Copy Browser"/>
+			<tab label="OPAC View"/>
+		</tabs>
+		<tabpanels flex="1">
+			<tabpanel id="marc_view"/>
+			<tabpanel id="marc_edit"/>
+			<tabpanel id="copy_browser"/>
+			<tabpanel id="opac_view"/>
+		</tabpanels>
+	</tabbox>
+
+</window>
+

@@ -3,9 +3,9 @@ PACKAGE=Evergreen
 DESCRIPTION=Evergreen Staff Client 
 BUILD=2005072719
 
-RETRIEVE_FIELDMAPPER=wget -N http://spacely.georgialibraries.org:8080/opac/common/js/util/fieldmapper.js
-RETRIEVE_FM_ALL=wget -N http://spacely.georgialibraries.org:8080/opac/common/js/fmall.js
-RETRIEVE_ORG_TREE=wget -N http://spacely.georgialibraries.org:8080/opac/common/js/OrgTree.js
+RETRIEVE_FIELDMAPPER=wget -N http://spacely.georgialibraries.org/opac/common/js/util/fieldmapper.js
+RETRIEVE_FM_ALL=wget -N http://spacely.georgialibraries.org/opac/common/js/fmall.js
+RETRIEVE_ORG_TREE=wget -N http://spacely.georgialibraries.org/opac/common/js/OrgTree.js
 RETRIEVE_CLIENT_CONFIG=cp ../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
 
 all: build package

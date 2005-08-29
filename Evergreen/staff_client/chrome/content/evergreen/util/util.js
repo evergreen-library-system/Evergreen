@@ -5,6 +5,26 @@ var consider_Timeout_default = false;
 
 function a_get( obj, i ) { return obj[i]; } // for use in closures inside loops
 
+// This executes a series of functions, but tries to give other events/functions a chance to
+// execute between each one.
+function chain_exec() {
+	sdump('D_UTIL',arg_dump(arguments));
+	var args = [];
+	for (var i = 0; i < arguments.length; i++) {
+		var arg = arguments[i];
+		if (typeof(arg)=='function') args.push( arg );
+		else for (var j = 0; j < arg.length; j++) {
+			if (typeof(arg[j])=='function') args.push( arg[j] );
+		}
+	}
+	if (args.length > 0) setTimeout(
+		function() {
+			args[0]();
+			if (args.length > 1 ) chain_exec( args.slice(1) );
+		}, 0
+	);
+}
+
 function consider_Timeout( f, t, b) {
 	sdump('D_TIMEOUT', arg_dump(arguments,{0:true,1:true,2:true}));
 	if (b) {
