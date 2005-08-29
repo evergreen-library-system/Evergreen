@@ -1,6 +1,6 @@
 sdump('D_OPAC','Loading opac.js\n');
 
-var OPAC_URL = "http://spacely.georgialibraries.org/";
+var OPAC_URL = "http://gapines.org/"
 
 /* listen for page changes */
 
