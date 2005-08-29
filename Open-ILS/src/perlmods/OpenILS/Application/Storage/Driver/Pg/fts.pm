@@ -3,11 +3,12 @@
 	#-------------------------------------------------------------------------------
 	package OpenILS::Application::Storage::FTS;
 	use OpenSRF::Utils::Logger qw/:level/;
+	use Unicode::Normalize;
 	my $log = 'OpenSRF::Utils::Logger';
 
 	sub compile {
 		my $self = shift;
-		my $term = shift;
+		my $term = NFD(shift());
 
 		$log->debug("Raw term: $term",DEBUG);
 
@@ -17,7 +18,7 @@
 		$self = ref($self) || $self;
 		$self = bless {} => $self;
 
-		$term =~ s/\pM//gos;
+		$term =~ s/(\pM+)//gos;
 		$self->decompose($term);
 
 		my $newterm = join('&', $self->words);

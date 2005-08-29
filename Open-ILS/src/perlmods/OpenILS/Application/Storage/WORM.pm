@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::WORM;
 use base qw/OpenILS::Application::Storage/;
 use strict; use warnings;
 
+use Unicode::Normalize;
 use OpenSRF::EX qw/:try/;
 
 use OpenSRF::Utils::SettingsClient;
@@ -49,13 +50,13 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> '
 							do {
-								$text = lc($text);
+								$text = lc(NFD($text));
+								$text =~ s/\pM+//gso;
 								$text =~ s/\s+/ /sgo;
 								$text =~ s/^\s*(.+)\s*$/$1/sgo;
 								$text =~ s/\b(?:the|an?)\b//sgo;
 								$text =~ s/\[.[^\]]+\]//sgo;
 								$text =~ s/\s*[;\/\.]*$//sgo;
-								$text =~ s/\pM+//gso;
 							};
 					',
 			},
@@ -66,7 +67,8 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> '
 							do {
-								$text = lc($text);
+								$text = lc(NFD($text));
+								$text =~ s/\pM+//gso;
 								$text =~ s/\s+/ /sgo;
 								$text =~ s/^\s*(.+)\s*$/$1/sgo;
 								$text =~ s/,?\s+.*$//sgo;
@@ -90,7 +92,8 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> '
 							do {
-								$text = lc($text);
+								$text = lc(NFD($text));
+								$text =~ s/\pM+//gso;
 								$text =~ s/\s+/ /sgo;
 								$text =~ s/^\s*(.+)\s*$/$1/sgo;
 								$text =~ s/\b(?:the|an?)\b//sgo;
@@ -109,7 +112,8 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> '
 							do {
-								$text = lc($text);
+								$text = lc(NFD($text));
+								$text =~ s/\pM+//gso;
 								$text =~ s/\s+/ /sgo;
 								$text =~ s/^\s*(.+)\s*$/$1/sgo;
 								$text =~ s/,?\s+.*$//sgo;
@@ -479,8 +483,8 @@ sub _marcxml_to_full_rows {
 		my $ns = new Fieldmapper::metabib::full_rec;
 
 		$ns->tag( 'LDR' );
-		my $val = $tagline->textContent;
-		$val =~ s/(\pM)//gso;
+		my $val = NFD($tagline->textContent);
+		$val =~ s/(\pM+)//gso;
 		$ns->value( $val );
 
 		push @ns_list, $ns;
@@ -492,8 +496,8 @@ sub _marcxml_to_full_rows {
 		my $ns = new Fieldmapper::metabib::full_rec;
 
 		$ns->tag( $tagline->getAttribute( "tag" ) );
-		my $val = $tagline->textContent;
-		$val =~ s/(\pM)//gso;
+		my $val = NFD($tagline->textContent);
+		$val =~ s/(\pM+)//gso;
 		$ns->value( $val );
 
 		push @ns_list, $ns;
@@ -515,8 +519,8 @@ sub _marcxml_to_full_rows {
 			$ns->ind1( $ind1 );
 			$ns->ind2( $ind2 );
 			$ns->subfield( $data->getAttribute( "code" ) );
-			my $val = $data->textContent;
-			$val =~ s/(\pM)//gso;
+			my $val = NFD($data->textContent);
+			$val =~ s/(\pM+)//gso;
 			$ns->value( lc($val) );
 
 			push @ns_list, $ns;
@@ -548,6 +552,7 @@ sub _get_field_value {
 			$string .= $value->textContent . " ";
 		}
 	}
+	$string = NFD($string);
 	$string =~ s/(\pM)//gso;
 	return lc($string);
 }
