@@ -14,7 +14,7 @@
 #include "objson/object.h"
 #include "objson/json_parser.h"
 
-#include "rest_xml.h"
+#include "json_xml.h"
 #define GATEWAY_CONFIG "ILSRestGatewayConfig"
 #define MODULE_NAME "ils_rest_gateway_module"
 #define CONFIG_CONTEXT "rest_gateway"

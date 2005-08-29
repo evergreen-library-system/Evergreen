@@ -5,6 +5,7 @@ use lib '../perlmods/';
 my $map = {};
 eval "
 	use lib '../perlmods/';
+	use lib '../../../OpenSRF/src/perlmods/';
 	use OpenILS::Utils::Fieldmapper;  
 ";
 $map = $Fieldmapper::fieldmap unless ($@);
@@ -55,19 +56,19 @@ print SOURCE <<C;
 }
 
 int isFieldmapper(char* class) {
-	if (class == NULL) return NULL;
+	if (class == NULL) return 0;
 C
 
 for my $object (keys %$map) {
 	my $short_name= $map->{$object}->{hint};
-	print SOURCE "	else if (!strcmp(class, \"$short_name\")) return 1;";
+	print SOURCE "	else if (!strcmp(class, \"$short_name\")) return 1;\n";
 }
 print SOURCE <<C;
-	return NULL;
+	return 0;
 }
 
-int fm_ntop(char* class, char* field);
-	if (class == NULL) return NULL;
+int fm_ntop(char* class, char* field) {
+	if (class == NULL) return 0;
 C
 
 
@@ -81,6 +82,6 @@ for my $object (keys %$map) {
 	print SOURCE "	}\n"
 }
 
-print SOURCE "	return -1;\n}";
+print SOURCE "	return -1;\n}\n";
 warn  "done\n";
 

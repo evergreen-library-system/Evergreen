@@ -1,4 +1,4 @@
-#include "mod_ils_gateway.h"
+#include "mod_rest_gateway.h"
 
 char* ils_rest_gateway_config_file;
 

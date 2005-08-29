@@ -3,17 +3,25 @@ export LD_OPTS			= -L $(TMPDIR) -L .
 export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
-all: mod_xmltools
+all: mod_xmltools mod_ils_rest_gateway
 
 
 install:	perl-install web-install string-templates-install storage-bootstrap xsl-install
 
-web-install:	webcore-install autojs-install  mod_xmltools-install 
+web-install:	webcore-install autojs-install  mod_xmltools-install mod_ils_rest_gateway-install
 
 
 # -----------------------------------------------------------------------------------
 # Web stuff
 # -----------------------------------------------------------------------------------
+mod_ils_rest_gateway:
+	echo $@
+	make -C apachemods mod_ils_rest_gateway.so
+
+mod_ils_rest_gateway-install:
+	echo $@
+	make -C apachemods mod_ils_rest_gateway-install
+
 mod_xmltools:
 	echo $@
 	make -C apachemods mod_xmltools.so
