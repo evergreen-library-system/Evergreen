@@ -11,7 +11,7 @@ function my_init() {
 	mw.sdump('D_CAT','TESTING: browse_list.js: ' + mw.G['main_test_variable'] + '\n');
 	var tc = document.getElementById('browse_list_tree_children');
 	build_tree_branch(tc,mw.G['org_tree'],true);
-	my_treerow = document.getElementById( 'org_unit_' + mw.G.user_ou.shortname() ).firstChild;
+	my_treerow = document.getElementById( 'org_unit_' + mw.G.user_ou.id() ).firstChild;
 	document.getElementById('browse_meter').value = 0;
 	document.getElementById('browse_meter').setAttribute('real', '0.0');
 	gather_copies();
@@ -51,7 +51,7 @@ function button_toggle_my_libraries(ev) {
 	var toggle = cycle_attribute( target,'toggle', [ '1', '2' ] );
 	for (var i in mw.G.my_orgs) {
 		var lib = mw.G.my_orgs[i];
-		var item = document.getElementById('org_unit_'+lib.shortname());
+		var item = document.getElementById('org_unit_'+lib.id());
 		if (item) {
 			if (toggle == '2') {
 				hide_branch(item);
@@ -74,7 +74,7 @@ function button_toggle_libraries(ev) {
 		/*hide_branch( document.getElementById('org_unit_PINES') );
 		for (var i = 0; i < mw.G.my_orgs.length; i++) {
 			unhide_branch(
-				document.getElementById( 'org_unit_' + mw.G.my_orgs[i].shortname() )
+				document.getElementById( 'org_unit_' + mw.G.my_orgs[i].id() )
 			);
 		}*/
 		var nl = document.getElementsByTagName('treeitem');
@@ -233,7 +233,7 @@ function find_my_treerow_index() {
 	for (var i = 0; i < nl.length; i++) {
 		var row = nl[i];
 		var item = row.parentNode;
-		if (item.getAttribute('id') == 'org_unit_' + mw.G.user_ou.shortname() ) {
+		if (item.getAttribute('id') == 'org_unit_' + mw.G.user_ou.id() ) {
 			return count;
 		}
 		var open_attr = item.getAttribute('open');
@@ -258,11 +258,11 @@ function gather_copies_callback(request) {
 			mw.sdump('D_CAT',' volume id = ' + volume.id() + '\n');
 			var lib = find_ou( mw.G.org_tree, volume.owning_lib() );
 			//mw.sdump('D_CAT','lib = ' + js2JSON(lib) + '\n');
-			if ( lib.shortname() == mw.G.user_ou.shortname() ) { flag = true; }
+			if ( lib.id() == mw.G.user_ou.id() ) { flag = true; }
 			var callnumber = volume.label();
 			var copies = volume.copies();
 			//mw.sdump('D_CAT','\tcopies = ' + js2JSON(copies) + '\n');
-			var item = document.getElementById('org_unit_'+lib.shortname());
+			var item = document.getElementById('org_unit_'+lib.id());
 			if (!item) { mw.sdump('D_CAT','skipping\n'); continue; }
 
 			var item_row = item.firstChild;
@@ -406,7 +406,7 @@ function build_tree_branch(treechildren,org,hide) {
 	var shortname = org.shortname(); org_shortname2id[shortname] = id;
 	var children = org.children();
 	var flag = mw.G.aout_hash[ org.ou_type() ].can_have_vols() == '1';
-	var item = make_treeitem('org_unit_' + shortname, name, flag);
+	var item = make_treeitem('org_unit_' + id, name, flag);
 	item.setAttribute('hidden',hide);
 	item.setAttribute('ou_id',org.id());
 	//if ( find_id_object_in_list( mw.G.my_orgs, id ) ) { 
