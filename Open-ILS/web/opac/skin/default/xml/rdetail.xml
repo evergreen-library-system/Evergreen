@@ -117,6 +117,31 @@
 					<div id='rdetail_copy_info_none' class='hide_me'>&rdetail.noneAvailable;</div>
 				</div> <!-- copy info -->
 			</div>
+
+			<script language='javascript'>
+				config.ids.rdetail = {};
+				config.ids.rdetail.details_body		= 'rdetail_details_body'; 
+				config.ids.rdetail.title				= 'rdetail_title';
+				config.ids.rdetail.author				= 'rdetail_author';
+				config.ids.rdetail.isbn					= 'rdetail_isbn';
+				config.ids.rdetail.edition				= 'rdetail_edition';
+				config.ids.rdetail.pubdate				= 'rdetail_pubdate';
+				config.ids.rdetail.publisher			= 'rdetail_publisher';
+				config.ids.rdetail.tor					= 'rdetail_tor';
+				config.ids.rdetail.abstr				= 'rdetail_abstract';
+				config.ids.rdetail.image				= 'rdetail_image';
+				config.ids.rdetail.cp_status			= "rdetail_copy_info_status";
+				config.ids.rdetail.cp_info_row		= "rdetail_copy_info_row";
+				config.ids.rdetail.cp_info_loading	= "rdetail_copy_info_loading";
+				config.ids.rdetail.cp_info_local		= "copy_info_local_link";
+				config.ids.rdetail.cp_info_all		= "copy_info_all_link";
+				config.ids.rdetail.cp_info_none		= "rdetail_copy_info_none";
+				
+				config.names.rdetail.lib_cell			= "rdetail_library_cell";
+				config.names.rdetail.cn_cell			= "rdetail_callnumber_cell";
+				config.names.rdetail.cp_count_cell	= "rdetail_copy_count_cell";
+			</script>
+
 		</div>
 	</body>
 </html>

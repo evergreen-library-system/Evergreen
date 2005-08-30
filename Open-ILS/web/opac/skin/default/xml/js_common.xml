@@ -22,5 +22,12 @@
 	<script language='javascript' src='../../../common/js/init.js'> </script>
 	<script language='javascript' src='../../../common/js/added_content.js'> </script>
 
+	<!-- Some global js -->
+	<script language='javascript'>
+		config.css.color_1 = "color_1";
+		config.css.color_2 = "color_2";
+		config.css.color_3 = "color_3";
+	</script>
+
 </div>
 
