@@ -144,7 +144,7 @@ function get_frame_in_tab( d, tabbox, idx, all_or_visible ) {
 }
 
 function new_tab( d, tabbox ) {
-	sdump('D_TAB',arg_dump(arguments));
+	sdump('D_TAB',arg_dump(arguments,{1:true}));
 	if (typeof(tabbox)!='object')
 		tabbox = d.getElementById(tabbox);
 	if (typeof(tabbox)!='object')
