@@ -792,7 +792,7 @@ sub biblio_mrid_to_modsbatch {
 		return $m;
 	}
 
-	return biblio_mrid_make_modsbatch( $client, $mr ); 
+	return $self->biblio_mrid_make_modsbatch( $client, $mr ); 
 }
 
 # converts a metarecord to an mvr
@@ -858,6 +858,7 @@ sub biblio_mrid_make_modsbatch {
 	my $mr; 
 	if(ref($mrid)) { $mr = $mrid; }
 	else { $mr = _grab_metarecord($mrid); }
+	$mrid = $mr->id;
 
 	warn "Forcing mvr creation for mr " . $mr->id . "\n";
 	my $master_id = $mr->master_record;

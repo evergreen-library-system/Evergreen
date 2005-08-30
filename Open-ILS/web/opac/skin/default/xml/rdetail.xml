@@ -15,133 +15,16 @@
 		<xi:include href="header.xml"/> 
 		<div id='canvas' class='canvas'>
 			<xi:include href="altcanvas.xml"/>
-
 			<div id='canvas_main'>
-
 				<div>
 					<div class='rdetail_header color_1'>
 						<span>&rdetail.detailMain.headerLabel;</span>
 					</div>
-
-					<!-- This holds the basic user friendly record information, e.g. title, author, etc. -->
-					<div>
-						<table id='rdetail_details_table'>
-							<tbody id='rdetail_details_tbody'>
-
-								<tr>
-									<td id='rdetail_image_cell' rowspan='8'><img id='rdetail_image'> </img></td>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.title;</td>		
-									<td class='rdetail_item' id='rdetail_title'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.author;</td>		
-									<td class='rdetail_item' id='rdetail_author'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.isbn;</td>			
-									<td class='rdetail_item' id='rdetail_isbn'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.edition;</td>		
-									<td class='rdetail_item' id='rdetail_edition'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.pubdate;</td>		
-									<td class='rdetail_item' id='rdetail_pubdate'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.publisher;</td>		
-									<td class='rdetail_item' id='rdetail_publisher'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.tor;</td>			
-									<td class='rdetail_item' id='rdetail_tor'> </td>
-								</tr>
-
-								<tr>
-									<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.abstract;</td>	
-									<td class='rdetail_item' id='rdetail_abstract'> </td>
-								</tr>
-
-							</tbody>
-						</table>
-					</div> <!-- details_body -->
-				</div> <!-- details_main -->
-
+					<xi:include href="rdetail_summary.xml"/>
+				</div> 
 				<br/><br/>
-
-				<!-- This holds information for copies attached to this record -->
-				<div>
-
-
-					<!-- header bar for the copy info table.  this allows you to select local
-							or global copy information -->
-					<table class='color_1 rdetail_header' width='100%' >
-						<tbody>
-							<tr>
-								<td align='left'>&rdetail.copyInfo.headerLabel;</td>
-								<td align='right'>
-									<a href='javascript:void(0);' id='copy_info_local_link' 
-										class='rdetail_copy_nav_link hide_me'>&rdetail.copyInfo.local;</a>
-								</td>
-								<td align='right'>
-									<a href='javascript:void(0);' id='copy_info_all_link' 
-										class='rdetail_copy_nav_link'>&rdetail.copyInfo.all;</a>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table id='rdetail_copy_info_table'>
-						<tbody>
-							<tr>
-								<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.library;</td>
-								<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.callnumber;</td>
-								<td  nowrap='nowrap' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> </td>
-							</tr>
-							<tr id='rdetail_copy_info_row'>
-								<td name='rdetail_library_cell'> </td>
-								<td name='rdetail_callnumber_cell'> </td>
-								<td nowrap='nowrap' class='rdetail_copy_count_cell' name='rdetail_copy_count_cell'> </td>
-							</tr>
-							<tr id='rdetail_copy_info_loading'>
-								<td>&rdetail.loading;</td>
-							</tr>
-													</tbody>
-					</table>
-					<div id='rdetail_copy_info_none' class='hide_me'>&rdetail.noneAvailable;</div>
-				</div> <!-- copy info -->
+				<xi:include href="rdetail_copyinfo.xml"/>
 			</div>
-
-			<script language='javascript'>
-				config.ids.rdetail = {};
-				config.ids.rdetail.details_body		= 'rdetail_details_body'; 
-				config.ids.rdetail.title				= 'rdetail_title';
-				config.ids.rdetail.author				= 'rdetail_author';
-				config.ids.rdetail.isbn					= 'rdetail_isbn';
-				config.ids.rdetail.edition				= 'rdetail_edition';
-				config.ids.rdetail.pubdate				= 'rdetail_pubdate';
-				config.ids.rdetail.publisher			= 'rdetail_publisher';
-				config.ids.rdetail.tor					= 'rdetail_tor';
-				config.ids.rdetail.abstr				= 'rdetail_abstract';
-				config.ids.rdetail.image				= 'rdetail_image';
-				config.ids.rdetail.cp_status			= "rdetail_copy_info_status";
-				config.ids.rdetail.cp_info_row		= "rdetail_copy_info_row";
-				config.ids.rdetail.cp_info_loading	= "rdetail_copy_info_loading";
-				config.ids.rdetail.cp_info_local		= "copy_info_local_link";
-				config.ids.rdetail.cp_info_all		= "copy_info_all_link";
-				config.ids.rdetail.cp_info_none		= "rdetail_copy_info_none";
-				
-				config.names.rdetail.lib_cell			= "rdetail_library_cell";
-				config.names.rdetail.cn_cell			= "rdetail_callnumber_cell";
-				config.names.rdetail.cp_count_cell	= "rdetail_copy_count_cell";
-			</script>
-
 		</div>
 	</body>
 </html>

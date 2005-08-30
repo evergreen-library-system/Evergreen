@@ -39,7 +39,7 @@
 <!ENTITY rdetail.copyInfo.headerLabel "Copy Information">
 <!ENTITY rdetail.copyInfo.library "Library">
 <!ENTITY rdetail.copyInfo.callnumber "Callnumber">
-<!ENTITY rdetail.copyInfo.local "View Copy Information for this library only">
+<!ENTITY rdetail.copyInfo.local "View Copy Information for this location only">
 <!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
 <!ENTITY rdetail.loading "Loading copy infomation...">
 <!ENTITY rdetail.noneAvailable " * There are no copies in this library">

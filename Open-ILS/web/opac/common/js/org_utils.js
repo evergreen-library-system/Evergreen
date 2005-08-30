@@ -41,6 +41,16 @@ function orgNodeTrail(node) {
 
 function findSiblingOrgs(node) { return findOrgUnit(node.parent_ou()).children(); }
 
+/* true if 'org' is 'me' or a child of mine */
+function orgIsMine(me, org) {
+	if(me.id() == org.id()) return true;
+	for( var i in me.children() ) {
+		if(orgIsMine(me.children()[i], org))
+			return true;
+	}
+	return false;
+}
+
 
 
 var orgArraySearcher = {};
