@@ -23,13 +23,30 @@
 		var myPackageDir = "evergreen";
 
 		function my_init() {
+
+			var mods = user_request(
+				'open-ils.search',
+				'open-ils.search.biblio.record.mods_slim.retrieve',
+				[ find_this_id ]
+			)[0];
+
+			document.getElementById('title').setAttribute('value',mods.title());
+			document.getElementById('author').setAttribute('value',mods.author());
+			var s = '';
+			if (mods.edition()) s = mods.edition();
+			if (mods.pubdate()) s += ' ' + mods.pubdate();
+			document.getElementById('edition').setAttribute('value',s);
+			document.getElementById('tcn').setAttribute('value',mods.tcn());
+
 			user_request(
 				'open-ils.cat',
 				'open-ils.cat.biblio.record.metadata.retrieve',
 				[ find_this_id ],
 				function (req) {
 					var meta = req.getResultObject()[0];
-					dump('META = ' + js2JSON(meta) + '\n');
+					document.getElementById('creator').setAttribute('value',meta.creator());
+					document.getElementById('editor').setAttribute('value',meta.editor());
+					document.getElementById('edit_date').setAttribute('value',formatted_date(meta.edit_date(),"%D"));
 				}
 			);
 		}
@@ -39,7 +56,17 @@
 
 	<groupbox flex="1">
 		<caption label="Record Details"/>
-
+		<hbox flex="1">
+			<label style="font-weight: bold;" value="Title:" /><label id="title" /> 
+			<label style="font-weight: bold;" value="Author:" /><label id="author" />
+			<label style="font-weight: bold;" value="Edition:" /> <label id="edition" />
+		</hbox>
+		<hbox flex="1">
+			<label style="font-weight: bold;" value="TCN:" /> <label id="tcn" />
+			<label style="font-weight: bold;" value="Created By:" /> <label id="creator" />
+			<label style="font-weight: bold;" value="Last Edited By:" /> <label id="editor" />
+			<label style="font-weight: bold;" value="Last Edited On:" /> <label id="edit_date" />
+		</hbox>
 	</groupbox>
 
 </window>
