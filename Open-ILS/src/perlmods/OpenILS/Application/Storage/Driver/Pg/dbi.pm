@@ -211,6 +211,12 @@
 	asset::stat_cat_entry_copy_map->sequence( 'asset.stat_cat_entry_copy_map_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package authority::record_entry;
+	
+	authority::record_entry->table( 'authority.record_entry' );
+	authority::record_entry->sequence( 'authority.record_entry_id_seq' );
+
+	#---------------------------------------------------------------------
 	package biblio::record_entry;
 	
 	biblio::record_entry->table( 'biblio.record_entry' );
@@ -222,6 +228,12 @@
 	#biblio::record_marc->table( 'biblio.record_marc' );
 	#biblio::record_marc->sequence( 'biblio.record_marc_id_seq' );
 	#
+	#---------------------------------------------------------------------
+	package authority::record_note;
+	
+	authority::record_note->table( 'authority.record_note' );
+	authority::record_note->sequence( 'authority.record_note_id_seq' );
+
 	#---------------------------------------------------------------------
 	package biblio::record_note;
 	
@@ -451,6 +463,20 @@
 
 
 	#-------------------------------------------------------------------------------
+	package authority::record_descriptor;
+
+	authority::record_descriptor->table( 'authority.rec_descriptor' );
+	authority::record_descriptor->sequence( 'authority.rec_descriptor_id_seq' );
+
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.direct.authority.record_descriptor.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'authority::record_descriptor',
+	);
+
+	#-------------------------------------------------------------------------------
 	package metabib::record_descriptor;
 
 	metabib::record_descriptor->table( 'metabib.rec_descriptor' );
@@ -465,6 +491,22 @@
 	);
 
 	#-------------------------------------------------------------------------------
+
+
+	#-------------------------------------------------------------------------------
+	package authority::full_rec;
+
+	authority::full_rec->table( 'authority.full_rec' );
+	authority::full_rec->sequence( 'authority.full_rec_id_seq' );
+	authority::full_rec->columns( 'FTS' => 'index_vector' );
+
+	OpenILS::Application::Storage->register_method(
+		api_name	=> 'open-ils.storage.direct.authority.full_rec.batch.create',
+		method		=> 'copy_create',
+		api_level	=> 1,
+		'package'	=> 'OpenILS::Application::Storage',
+		cdbi		=> 'authority::full_rec',
+	);
 
 
 	#-------------------------------------------------------------------------------

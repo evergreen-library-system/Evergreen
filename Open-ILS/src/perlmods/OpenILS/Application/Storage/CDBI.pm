@@ -6,6 +6,7 @@ use Class::DBI::AbstractSearch;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::action;
 use OpenILS::Application::Storage::CDBI::asset;
+use OpenILS::Application::Storage::CDBI::authority;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
@@ -393,15 +394,20 @@ sub modify_from_fieldmapper {
 	asset::call_number->has_a( creator => 'actor::user' );
 	asset::call_number->has_a( editor => 'actor::user' );
 
+	authority::record_note->has_a( record => 'authority::record_entry' );
 	biblio::record_note->has_a( record => 'biblio::record_entry' );
 	
+	authority::record_entry->has_a( creator => 'actor::user' );
+	authority::record_entry->has_a( editor => 'actor::user' );
 	biblio::record_entry->has_a( creator => 'actor::user' );
 	biblio::record_entry->has_a( editor => 'actor::user' );
 	
 	metabib::metarecord->has_a( master_record => 'biblio::record_entry' );
 	
+	authority::record_descriptor->has_a( record => 'authority::record_entry' );
 	metabib::record_descriptor->has_a( record => 'biblio::record_entry' );
 	
+	authority::full_rec->has_a( record => 'authority::record_entry' );
 	metabib::full_rec->has_a( record => 'biblio::record_entry' );
 	
 	metabib::title_field_entry->has_a( source => 'biblio::record_entry' );
@@ -448,6 +454,9 @@ sub modify_from_fieldmapper {
 	asset::copy->has_many( notes => 'asset::copy_note' );
 	asset::call_number->has_many( copies => 'asset::copy' );
 	asset::call_number->has_many( notes => 'asset::call_number_note' );
+
+	authority::record_entry->has_many( record_descriptor => 'authority::record_descriptor' );
+	authority::record_entry->has_many( notes => 'authority::record_note' );
 
 	biblio::record_entry->has_many( record_descriptor => 'metabib::record_descriptor' );
 	biblio::record_entry->has_many( notes => 'biblio::record_note' );
