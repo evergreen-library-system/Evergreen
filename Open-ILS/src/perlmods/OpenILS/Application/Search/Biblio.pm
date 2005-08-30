@@ -766,48 +766,110 @@ sub biblio_mrid_to_modsbatch_batch {
 
 __PACKAGE__->register_method(
 	method	=> "biblio_mrid_to_modsbatch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve");
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve",
+	notes		=> <<"	NOTES");
+	Returns the mvr associated with a given metarecod. If none exists, 
+	it is created.
+	NOTES
 
 __PACKAGE__->register_method(
 	method	=> "biblio_mrid_to_modsbatch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve.staff");
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve.staff",
+	notes		=> <<"	NOTES");
+	Returns the mvr associated with a given metarecod. If none exists, 
+	it is created.
+	NOTES
 
 sub biblio_mrid_to_modsbatch {
 	my( $self, $client, $mrid ) = @_;
 
-	throw OpenSRF::EX::InvalidArg 
-		("search.biblio.metarecord_to_mods requires mr id")
-			unless defined( $mrid );
+	warn "Grabbing mvr for $mrid\n";
 
+	my $mr = _grab_metarecord($mrid);
+	return undef unless $mr;
 
-	my $metarecord = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-			"open-ils.storage.direct.metabib.metarecord.retrieve", $mrid );
-
-	if(!$metarecord) {
-		throw OpenSRF::EX::ERROR ("No metarecord exists with the given id: $mrid");
+	if($self->biblio_mrid_check_mods($client, $mr)) {
+		return _mr_to_mvr($mr);
 	}
 
-	my $master_id = $metarecord->master_record();
+	return biblio_mrid_make_modsbatch( $client, $mr ); 
+}
 
+# converts a metarecord to an mvr
+sub _mr_to_mvr {
+	my $mr = shift;
+	my $perl = JSON->JSON2perl($mr->mods());
+	return Fieldmapper::metabib::virtual_record->new($perl);
+}
 
-	# check for existing mods
-	if($metarecord->mods()){
-		warn "We already have mods for " . $metarecord->id . "\n";
-		my $perl = JSON->JSON2perl($metarecord->mods());
-		return Fieldmapper::metabib::virtual_record->new($perl);
+# checks to see if a metarecord has mods, if so returns true;
+
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_check_mvr",
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.check",
+	notes		=> <<"	NOTES");
+	Takes a metarecord ID or a metarecord object and returns true
+	if the metarecord already has an mvr associated with it.
+	NOTES
+
+sub biblio_mrid_check_mods {
+	my( $self, $client, $mrid ) = @_;
+	my $mr; 
+
+	if(ref($mrid)) { $mr = $mrid; } 
+	else { $mr = _grab_metarecord($mrid); }
+
+	warn "Checking mvr for mr " . $mr->id . "\n";
+
+	return 1 if $mr->mods();
+	return 0;
+}
+
+sub _grab_metarecord {
+
+	my $mrid = shift;
+	warn "Grabbing MR $mrid\n";
+
+	my $mr = OpenILS::Application::AppUtils->simple_scalar_request( 
+		"open-ils.storage", 
+		"open-ils.storage.direct.metabib.metarecord.retrieve", $mrid );
+
+	if(!$mr) {
+		throw OpenSRF::EX::ERROR 
+			("No metarecord exists with the given id: $mrid");
 	}
 
+	return $mr;
+}
 
+__PACKAGE__->register_method(
+	method	=> "biblio_mrid_make_modsbatch",
+	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.create",
+	notes		=> <<"	NOTES");
+	Takes either a metarecord ID or a metarecord object.
+	Forces the creations of an mvr for the given metarecord.
+	The created mvr is returned.
+	NOTES
 
+sub biblio_mrid_make_modsbatch {
+
+	my( $self, $client, $mrid ) = @_;
+
+	my $mr; 
+	if(ref($mrid)) { $mr = $mrid; }
+	else { $mr = _grab_metarecord($mrid); }
+
+	warn "Forcing mvr creation for mr " . $mr->id . "\n";
+	my $master_id = $mr->master_record;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	# grab the records attached to this metarecod 
 	warn "Creating mods batch for metarecord $mrid\n";
-	my $meth = "open-ils.search.biblio.metarecord_to_records";
-	if( $self->api_name =~ /staff/ ) { $meth .= ".staff";}
+	my $meth = "open-ils.search.biblio.metarecord_to_records.staff";
 	$meth = $self->method_lookup($meth);
-
 	my ($id_hash) = $meth->run($mrid);
-
 	my @ids = @{$id_hash->{ids}};
-
 	if(@ids < 1) { return undef; }
 
 	warn "Master ID is $master_id\n";
@@ -815,12 +877,15 @@ sub biblio_mrid_to_modsbatch {
 
 	$meth = "open-ils.storage.direct.biblio.record_entry.retrieve";
 
-	my $record = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
+	my $record = $session->request(
 			"open-ils.storage.direct.biblio.record_entry.retrieve", $master_id );
+	$record = $record->gather(1);
+
+	#my $record = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
 
 	if(!$record) {
+		warn "No record returned with id $master_id";
 		throw OpenSRF::EX::ERROR 
-			("No record returned with id $master_id");
 	}
 
 	my $u = OpenILS::Utils::ModsParser->new();
@@ -831,7 +896,6 @@ sub biblio_mrid_to_modsbatch {
 	@ids = grep { $_ ne $master_id } @ids;
 
 	# now we have to collect all of the marc objects and push them into a mods batch
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $request = $session->request(
 		"open-ils.storage.direct.biblio.record_entry.batch.retrieve",  @ids );
 
@@ -857,20 +921,17 @@ sub biblio_mrid_to_modsbatch {
 
 	my $mods_string = JSON->perl2JSON($mods->decast);
 
-	$metarecord->mods($mods_string);
+	$mr->mods($mods_string);
 
 	my $req = $session->request( 
-			"open-ils.storage.direct.metabib.metarecord.update", 
-			$metarecord );
+		"open-ils.storage.direct.metabib.metarecord.update", $mr );
 
 
 	$req->gather(1);
-
 	$session->finish();
 	$session->disconnect();
 
 	return undef;
-
 }
 
 
