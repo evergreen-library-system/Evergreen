@@ -124,6 +124,8 @@ sub _init {
 											     serials	        => 1,
 											   } },
 
+		'Fieldmapper::authority::record_entry'		=> { hint		=> 'are', },
+		'Fieldmapper::authority::record_note'		=> { hint		=> 'arn', },
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
 								     proto_fields	=> { call_numbers => 1,
 								     			     fixed_fields => 1 } },
@@ -157,6 +159,9 @@ sub _init {
 		'Fieldmapper::config::rules::recuring_fine'	=> { hint => 'crrf'  },
 		'Fieldmapper::config::rules::circ_duration'	=> { hint => 'crcd'  },
 		'Fieldmapper::config::rules::max_fine'		=> { hint => 'crmf'  },
+
+		'Fieldmapper::authority::full_rec'		=> { hint => 'afr'  },
+		'Fieldmapper::authority::record_descriptor'	=> { hint => 'ard'  },
 
 		'Fieldmapper::metabib::metarecord'		=> { hint => 'mmr'  },
 		'Fieldmapper::metabib::title_field_entry'	=> { hint => 'mtfe' },
