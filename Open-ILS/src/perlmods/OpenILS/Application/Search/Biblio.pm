@@ -788,8 +788,8 @@ sub biblio_mrid_to_modsbatch {
 	my $mr = _grab_metarecord($mrid);
 	return undef unless $mr;
 
-	if($self->biblio_mrid_check_mods($client, $mr)) {
-		return _mr_to_mvr($mr);
+	if( my $m = $self->biblio_mrid_check_mvr($client, $mr)) {
+		return $m;
 	}
 
 	return biblio_mrid_make_modsbatch( $client, $mr ); 
@@ -812,7 +812,7 @@ __PACKAGE__->register_method(
 	if the metarecord already has an mvr associated with it.
 	NOTES
 
-sub biblio_mrid_check_mods {
+sub biblio_mrid_check_mvr {
 	my( $self, $client, $mrid ) = @_;
 	my $mr; 
 
@@ -821,8 +821,8 @@ sub biblio_mrid_check_mods {
 
 	warn "Checking mvr for mr " . $mr->id . "\n";
 
-	return 1 if $mr->mods();
-	return 0;
+	return _mr_to_mvr($mr) if $mr->mods();
+	return undef;
 }
 
 sub _grab_metarecord {
