@@ -89,6 +89,7 @@ sub _records_to_mods {
 			$u->start_mods_batch( $last_content->marc );
 			my $mods = $u->finish_mods_batch();
 			$mods->doc_id($last_content->id());
+			$mods->tcn($last_content->tcn_value);
 			warn "Turning doc " . $mods->doc_id() . " into MODS\n";
 			$last_content = undef;
 			push @results, $mods;
@@ -109,6 +110,7 @@ sub _records_to_mods {
 		$u->start_mods_batch( $last_content->marc );
 		my $mods = $u->finish_mods_batch();
 		$mods->doc_id($last_content->id());
+		$mods->tcn($last_content->tcn_value);
 		push @results, $mods;
 	}
 
