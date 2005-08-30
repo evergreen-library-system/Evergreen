@@ -309,12 +309,30 @@ function user_callback(request) {
 	mw.G.user_ou = user.home_ou();
 	sdump('D_AUTH', "user: " + js2JSON(mw.G['user']) + '\n');
 	sdump('D_AUTH', "user_ou: " + js2JSON(mw.G['user_ou']) + '\n');
-	/*user_async_request(
-		'open-ils.search',
-		'open-ils.search.actor.org_tree.retrieve',
+	user_async_request(
+		'open-ils.actor',
+		'open-ils.actor.org_tree.retrieve',
 		[],
 		org_tree_callback
-	);*/
+	);
+	incr_progressmeter(document,'auth_meter',auth_meter_incr);
+}
+
+function org_tree_callback(request) {
+	var org_tree;
+	try {
+		org_tree = request.getResultObject();
+		if (!org_tree) { throw('null result'); }
+		if (typeof(org_tree) != 'object') { throw('result not an object' + org_tree); }
+	} catch(E) {
+		alert('Login failed on org_tree: ' + js2JSON(E)); enable_login_prompts(); return;
+	}
+
+	//mw.G.org_tree = globalOrgTree;
+	mw.G.org_tree = org_tree;
+	mw.G.org_tree_hash = convert_object_list_to_hash( flatten_ou_branch( mw.G.org_tree ) );
+	mw.G.user_ou = find_ou( mw.G.org_tree, mw.G.user_ou );
+
 	/*user_async_request(
 		'open-ils.actor',
 		'open-ils.actor.org_types.retrieve',
@@ -322,7 +340,6 @@ function user_callback(request) {
 		org_type_callback
 	);*/
 	org_type_callback();
-	incr_progressmeter(document,'auth_meter',auth_meter_incr);
 }
 
 function org_type_callback(request) {
@@ -337,15 +354,7 @@ function org_type_callback(request) {
 		alert('Login failed on aout_list: ' + js2JSON(E)); enable_login_prompts(); return;
 	}*/
 	mw.G.aout_list = aout_list;
-	dump('auth 0\n');
 	mw.G.aout_hash = convert_object_list_to_hash( aout_list );
-	dump('auth 1\n');
-	mw.G.org_tree = globalOrgTree;
-	dump('auth 2\n');
-	mw.G.org_tree_hash = convert_object_list_to_hash( flatten_ou_branch( globalOrgTree ) );
-	dump('auth 3\n');
-	mw.G.user_ou = find_ou( mw.G.org_tree, mw.G.user_ou );
-	dump('auth 4\n');
 
 	user_async_request(
 		'open-ils.actor',
@@ -354,7 +363,6 @@ function org_type_callback(request) {
 		my_orgs_callback
 	);
 	incr_progressmeter(document,'auth_meter',auth_meter_incr);
-
 }
 
 function my_orgs_callback(request) {

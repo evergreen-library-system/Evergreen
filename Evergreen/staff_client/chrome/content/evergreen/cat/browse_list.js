@@ -257,7 +257,7 @@ function gather_copies_callback(request) {
 			//mw.sdump('D_CAT','\nvolume = ' + js2JSON(volume) + '\n');
 			mw.sdump('D_CAT',' volume id = ' + volume.id() + '\n');
 			var lib = find_ou( mw.G.org_tree, volume.owning_lib() );
-			//mw.sdump('D_CAT','lib = ' + js2JSON(lib) + '\n');
+			mw.sdump('D_CAT','+++++++++++++++++++++++++++++++++++++++++++++++++++++++lib = ' + js2JSON(lib) + '\n');
 			if ( lib.id() == mw.G.user_ou.id() ) { flag = true; }
 			var callnumber = volume.label();
 			var copies = volume.copies();
@@ -346,16 +346,29 @@ function gather_copies_callback(request) {
 				treeitem.appendChild(treerow);
 
 				var list = [ 
-					copy.barcode() , '', '', lib.shortname() , callnumber , copy.copy_number() ,
-					//find_id_object_in_list( mw.G.acpl_list, copy.location() ).name() , 
-					mw.G.acpl_hash[ copy.location() ].name() ,
-					//find_ou( mw.G.org_tree, copy.circ_lib() ).shortname() , 
-					mw.G.org_tree_hash[ copy.circ_lib() ].shortname(),
-					yesno( copy.circulate() ) , yesno( copy.ref() ) ,
-					yesno( copy.opac_visible() ) , copy.circ_as_type() , copy.circ_modifier() ,
-					copy.loan_duration() , copy.fine_level() , copy.create_date() ,
-					copy.creator() , copy.edit_date() , copy.editor() , copy.deposit() ,
-					copy.deposit_amount() , copy.price() , mw.G.ccs_hash[ copy.status() ].name()
+					copy.barcode() ,
+					'',
+					'',
+					lib.shortname() ,
+					callnumber ,
+					copy.copy_number() ,
+					copy.location(), //mw.G.acpl_hash[ copy.location() ].name() ,
+					copy.circ_lib(), //mw.G.org_tree_hash[ copy.circ_lib() ].shortname(),
+					yesno( copy.circulate() ) ,
+					yesno( copy.ref() ) ,
+					yesno( copy.opac_visible() ) ,
+					copy.circ_as_type() ,
+					copy.circ_modifier() ,
+					copy.loan_duration() ,
+					copy.fine_level() ,
+					copy.create_date() ,
+					copy.creator() ,
+					copy.edit_date() ,
+					copy.editor() ,
+					yesno( copy.deposit() ),
+					copy.deposit_amount() ,
+					copy.price() ,
+					mw.G.ccs_hash[ copy.status() ].name()
 				];
 
 				for (var i = 0; i < list.length; i++ ) {

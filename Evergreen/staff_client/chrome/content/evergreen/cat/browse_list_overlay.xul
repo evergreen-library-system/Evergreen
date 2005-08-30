@@ -58,52 +58,29 @@
 
 <tree id="browse_list_tree" enableColumnDrag="true" flex="1">
 	<treecols id="browse_list_treecols">
-		<treecol id="browse1" label="&browse_list.location;" flex="2" primary="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse1b" label="Volumes" flex="0"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse1a" label="Copies" flex="0"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse2" label="&browse_list.library;" flex="1"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse3" label="&browse_list.callnumber;" flex="1"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4" label="&browse_list.copy_number;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4aa" label="&browse_list.location2;" flex="1"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4a" label="&browse_list.circ_lib;" flex="1"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4b" label="&browse_list.circulate;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4bb" label="&browse_list.ref;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4bbb" label="&browse_list.opac_visible;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4c" label="&browse_list.circ_as_type;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4d" label="&browse_list.circ_modifier;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4e" label="&browse_list.loan_duration;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse4f" label="&browse_list.fine_level;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse5" label="&browse_list.create_date;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse6" label="&browse_list.creator;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse7" label="&browse_list.edit_date;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse8" label="&browse_list.editor;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse9" label="&browse_list.deposit;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse10" label="&browse_list.deposit_amount;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse11" label="&browse_list.price;" flex="1" hidden="true"/>
-		<splitter class="tree-splitter"/>
-		<treecol id="browse12" label="&browse_list.status;" flex="1" hidden="false"/>
-		<splitter class="tree-splitter"/>
+		<treecol id="browse1" label="&browse_list.location;" flex="2" primary="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse1b" label="Volumes" flex="0"/> <splitter class="tree-splitter"/>
+		<treecol id="browse1a" label="Copies" flex="0"/> <splitter class="tree-splitter"/>
+		<treecol id="browse2" label="&browse_list.library;" flex="1"/> <splitter class="tree-splitter"/>
+		<treecol id="browse3" label="&browse_list.callnumber;" flex="1"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4" label="&browse_list.copy_number;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4aa" label="&browse_list.location2;" flex="1"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4a" label="&browse_list.circ_lib;" flex="1"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4b" label="&browse_list.circulate;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4bb" label="&browse_list.ref;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4bbb" label="&browse_list.opac_visible;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4c" label="&browse_list.circ_as_type;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4d" label="&browse_list.circ_modifier;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4e" label="&browse_list.loan_duration;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse4f" label="&browse_list.fine_level;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse5" label="&browse_list.create_date;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse6" label="&browse_list.creator;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse7" label="&browse_list.edit_date;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse8" label="&browse_list.editor;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse9" label="&browse_list.deposit;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse10" label="&browse_list.deposit_amount;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse11" label="&browse_list.price;" flex="1" hidden="true"/> <splitter class="tree-splitter"/>
+		<treecol id="browse12" label="&browse_list.status;" flex="1" hidden="false"/> <splitter class="tree-splitter"/>
 	</treecols>
 	<treechildren id="browse_list_tree_children" context="browse_menu"/>
 </tree>
