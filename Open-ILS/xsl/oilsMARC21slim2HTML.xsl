@@ -5,6 +5,23 @@
 	<xsl:template match="/">
 		<html>
 			<head>
+
+				<style>
+
+					.marc_table {}
+					.marc_tag_row {}
+					.marc_tag_data {}
+					.marc_tag_col {}
+					.marc_tag_ind {}
+					.marc_subfields {}
+					.marc_subfield_code { 
+						color: blue; 
+						padding-left: 5px;
+						padding-right: 5px; 
+					}
+
+				</style>
+
 				<link href='/css/opac_marc.css' rel='stylesheet' type='text/css'></link>
 			</head>
 			<xsl:apply-templates/>
@@ -57,7 +74,9 @@
 	</xsl:template>
 	
 	<xsl:template match="marc:subfield">
-		<span class='marc_subfield_code'>&#8225;<xsl:value-of select="@code"/></span><xsl:value-of select="."/>	
+		<span class='marc_subfield_code' > 
+			&#8225;<xsl:value-of select="@code"/>
+		</span><xsl:value-of select="."/>	
 	</xsl:template>
 
 </xsl:stylesheet>
