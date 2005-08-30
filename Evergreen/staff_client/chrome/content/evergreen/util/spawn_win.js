@@ -151,6 +151,11 @@ function spawn_copy_browser(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('copy_browser_interface_label'),passthru_params,clone);
 }
 
+function spawn_brief_view(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/cat/brief.xul';
+	return spawn_interface(d,placement,place,chrome,'BRIEF VIEW',passthru_params,clone);
+}
+
 function spawn_marc_editor(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/cat/marc.xul';
 	return spawn_interface(d,placement,place,chrome,getString('marc_editor_interface_label'),passthru_params,clone);

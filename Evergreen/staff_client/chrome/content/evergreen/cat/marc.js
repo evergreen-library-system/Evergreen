@@ -17,6 +17,7 @@ function my_init() {
 
 	if (! params.import_tree ) {
 		tree = retrieve_record( find_this_id );
+		/*
 		meta = retrieve_meta_record( find_this_id );
 		document.getElementById('meta_create_date').setAttribute('value',
 			meta.create_date().split('.')[0]	
@@ -41,17 +42,19 @@ function my_init() {
 				text
 			);
 		}
+		*/
 	} else {
 		tree = params.import_tree;
-		if (tree.name() == 'collection') { 
-			tree = find_list(
-				tree.children(),
-				function (obj) {
-					return (obj.name() == 'record');
-				}
-			); 
-		}
 	}
+	if (tree.name() == 'collection') { 
+		tree = find_list(
+			tree.children(),
+			function (obj) {
+				return (obj.name() == 'record');
+			}
+		); 
+	}
+
 	//mw.sdump('D_CAT','Retrieved: ' + js2JSON(tree) + '\n');
 	//mw.sdump('D_CAT','Retrieved: ' + js2JSON(meta) + '\n');
 	build_grid( 

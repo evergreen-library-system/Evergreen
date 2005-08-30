@@ -69,13 +69,6 @@ function set_opac_vars(p) {
 	p.opac_iframe.contentWindow.xulG = mw.G;
 	p.opac_iframe.contentWindow.attachEvt("rresult", "recordDrawn", 
 		function(id,node){opac_make_details_page(p,id,node)});
-	dump('p.opac_iframe = ' + p.opac_iframe + '\n');
-	dump('p.opac_iframe.contentWindow = ' + p.opac_iframe.contentWindow + '\n');
-	dump('p.opac_iframe.contentWindow = ' + p.opac_iframe.contentWindow + '\n');
-	dump('p.opac_iframe.contentWindow.G = ' + p.opac_iframe.contentWindow.G + '\n');
-	dump('p.opac_iframe.contentWindow.G.evt = ' + p.opac_iframe.contentWindow.G.evt + '\n');
-	dump('p.opac_iframe.contentWindow.G.evt.rresult = ' + p.opac_iframe.contentWindow.G.evt.rresult + '\n');
-	dump('p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn = ' + p.opac_iframe.contentWindow.G.evt.rresult.recordDrawn + '\n');
 	p.opac_iframe.removeProgressListener(p.opac_progressListener);
 	p.opac_iframe.addProgressListener(p.opac_progressListener, 
 		Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT );
@@ -88,7 +81,7 @@ function opac_make_details_page(p, id, node) {
 	var f = function(ev) {
 		spawn_record_details(
 			p.w.app_shell, 'new_tab', 'main_tabbox', {
-				'find_this_id' : id
+				'find_this_id' : id, 'opac_url' : node.getAttribute('href')
 			}
 		).find_this_id = id;
 		ev.preventDefault();

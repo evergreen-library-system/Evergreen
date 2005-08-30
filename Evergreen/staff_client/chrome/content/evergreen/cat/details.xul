@@ -25,12 +25,21 @@
 		function my_init() {
 
 			chain_exec(
+				my_init_spawn_brief_view,
 				my_init_spawn_marc_view,
-				my_init_spawn_marc_editor,
 				my_init_spawn_copy_browser,
+				my_init_spawn_marc_editor,
 				my_init_spawn_opac_view
 			);
 
+		}
+
+		function my_init_spawn_brief_view() {
+			spawn_brief_view(
+				document, 'replace_iframe', 'brief_view', {
+					'find_this_id' : find_this_id
+				}
+			).find_this_id = find_this_id;
 		}
 
 		function my_init_spawn_marc_view() {
@@ -39,7 +48,6 @@
 				"open-ils.search.biblio.record.html",
 				[ find_this_id ]
 			)[0];
-			dump('html = ' + html + '\n');
 			spawn_interface(
 				document, 'replace_browser', 'marc_view',
 				'data:text/html,' + html,
@@ -64,24 +72,32 @@
 		}
 
 		function my_init_spawn_opac_view() {
+			dump('trying to spawn: ' + params.opac_url + '\n');
+			spawn_interface(
+				document, 'replace_browser', 'opac_view',
+				params.opac_url, 'OPAC View', {}
+			);
 		}
 	]]>
 	</script>
 
-	<tabbox flex="1">
-		<tabs>
-			<tab label="MARC View"/>
-			<tab label="MARC Edit"/>
-			<tab label="Copy Browser"/>
-			<tab label="OPAC View"/>
-		</tabs>
-		<tabpanels flex="1">
-			<tabpanel id="marc_view"/>
-			<tabpanel id="marc_edit"/>
-			<tabpanel id="copy_browser"/>
-			<tabpanel id="opac_view"/>
-		</tabpanels>
-	</tabbox>
+	<vbox flex="1">
+		<hbox id="brief_view"/>
+		<tabbox flex="1">
+			<tabs>
+				<tab label="MARC View"/>
+				<tab label="MARC Edit"/>
+				<tab label="Copy Browser"/>
+				<tab label="OPAC View"/>
+			</tabs>
+			<tabpanels flex="1">
+				<tabpanel id="marc_view"/>
+				<tabpanel id="marc_edit"/>
+				<tabpanel id="copy_browser"/>
+				<tabpanel id="opac_view"/>
+			</tabpanels>
+		</tabbox>
+	</vbox>
 
 </window>
 
