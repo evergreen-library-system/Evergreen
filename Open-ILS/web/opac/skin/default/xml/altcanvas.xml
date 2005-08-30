@@ -11,4 +11,11 @@
 	<!-- The org tree -->
 	<xi:include href="orgtree.xml"/> 
 
+	<!-- ============================================================================= -->
+	<!-- Register the alternate canvases  -->
+	<script language='javascript'>
+		config.ids.altcanvas.login		= config.ids.login.box;
+		config.ids.altcanvas.org_tree	 = config.ids.common.org_container;
+	</script>
+
 </div>

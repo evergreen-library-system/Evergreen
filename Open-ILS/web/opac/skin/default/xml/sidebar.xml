@@ -5,8 +5,6 @@
 
 <div id="sidebar_div" class="sidebar_div" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<script language='javascript' src='../js/sidebar.js'> </script>
-
 	<div class='sidebar_chunk color_1'>
 
 		<div title="&navigate.home.title;" 
@@ -87,7 +85,45 @@
 			</li>
 		</ul>
 	</div>
-	
+
+
+	<!-- ============================================================================= -->
+	<!-- Our javascript -->
+	<script language='javascript' src='../js/sidebar.js'> </script>
+
+	<script language='javascript'>
+		config.ids.sidebar = {};
+		config.css.sidebar = {};
+		config.names.sidebar = {};
+		config.css.sidebar.item = {};
+		config.ids.sidebar.home				= 'home_link_div';
+		config.ids.sidebar.advanced		= 'advanced_link_div';
+		config.ids.sidebar.myopac			= 'myopac_link_div';
+		config.ids.sidebar.prefs			= 'prefs_link_div';
+		config.ids.sidebar.mresult			= 'mresult_link_div';
+		config.ids.sidebar.rresult			= 'result_link_div';
+		config.ids.sidebar.rdetail			= "rdetail_link_div"; 
+		config.ids.sidebar.login			= 'login_link';
+		config.ids.sidebar.logout			= 'logout_link';
+		config.ids.sidebar.logoutbox		= 'logout_link_div';
+		config.ids.sidebar.loginbox		= 'login_link_div';
+		config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
+		config.ids.sidebar.username_dest	= 'username_dest';
+		config.ids.sidebar.subject			= 'subject_sidebar';
+		config.ids.sidebar.subject_item	= 'subject_item';
+		config.ids.sidebar.author			= 'author_sidebar';
+		config.ids.sidebar.author_item	= 'author_item';
+		config.ids.sidebar.series			= 'series_sidebar';
+		config.ids.sidebar.series_item	= 'series_item';
+		
+		config.ids.sidebar.home_link		= 'home_link'
+		config.ids.sidebar.advanced_link	= 'advanced_link'
+		config.ids.sidebar.myopac_link	= 'myopac_link'
+		
+		config.names.sidebar.subject_item	= 'subject_item';
+		config.names.sidebar.author_item		= 'author_item';
+		config.names.sidebar.series_item		= 'series_item';
+	</script>
 
 </div>
 

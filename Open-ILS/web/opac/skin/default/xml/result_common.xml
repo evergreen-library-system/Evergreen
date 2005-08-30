@@ -3,6 +3,34 @@
 
 <div id='canvas_main' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
+	<script language='javascript'>
+		config.ids.result = {};
+		config.css.result = {};
+		config.names.result = {};
+		config.ids.result.offset_start	= "offset_start";
+		config.ids.result.offset_end		= "offset_end";
+		config.ids.result.result_count	= "result_count";
+		config.ids.result.next_link		= 'next_link';
+		config.ids.result.prev_link		= 'prev_link';
+		config.ids.result.home_link		= 'search_home_link';
+		config.ids.result.end_link			= 'end_link';
+		config.ids.result.main_table		= 'result_table';
+		config.ids.result.row_template	= 'result_table_template';
+		config.ids.result.num_pages		= 'num_pages';
+		config.ids.result.current_page	= 'current_page';
+		config.css.result.nav_active		= "nav_link_active";
+		config.ids.result.top_div			= "result_table_div";
+		config.ids.result.nav_links		= "search_nav_links";
+		config.ids.result.info				= "result_info_div";
+		config.css.result.cc_cell_even	= "copy_count_cell_even";
+		config.names.result.item_jacket	= "item_jacket";
+		config.names.result.item_title	= "item_title";
+		config.names.result.item_author	= "item_author";
+		config.names.result.counts_row	= "counts_row";
+		config.names.result.count_cell	= "copy_count_cell";
+	</script>
+
+
 	<table id='search_nav_links'>
 		<tbody>
 			<tr>

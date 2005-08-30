@@ -62,3 +62,5 @@ function setSidebarLinks() {
 	G.ui.sidebar.advanced_link.setAttribute("href", buildOPACLink({page:ADVANCED}));
 	G.ui.sidebar.myopac_link.setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));
 }
+
+

@@ -8,9 +8,22 @@
 	<!-- load my js -->
 	<script language='javascript' src='../js/search_bar.js'> </script>
 
-	<!--
-	<a onclick="scaleFont(prompt('scale fonts...'));">CLICK</a>
-	-->
+	<script language='javascript'>
+		config.ids.searchbar = {};
+		config.css.searchbar = {};
+		config.ids.searchbar.text				= 'search_box';	
+		config.ids.searchbar.submit			= 'search_submit';	
+		config.ids.searchbar.type_selector	= 'search_type_selector';
+		config.ids.searchbar.depth_selector	= 'depth_selector';
+		config.ids.searchbar.form_selector	= 'form_selector';
+		config.ids.searchbar.extra_row		= 'searchbar_extra';
+		config.ids.searchbar.main_row			= 'searchbar_main_row';
+		config.ids.searchbar.table				= 'searchbar_table';
+		config.ids.searchbar.tag				= 'search_tag_link';
+		config.ids.searchbar.tag_on			= 'searchbar_tag_on';
+		config.ids.searchbar.tag_off			= 'searchbar_tag_off';
+		config.ids.searchbar.location_tag	= 'search_location_tag_link';
+	</script>
 
 
 	<div id='searchbar_main' class='color_1'>

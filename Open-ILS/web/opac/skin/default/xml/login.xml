@@ -4,6 +4,16 @@
 
 <div id='login_box' class='hide_me color_1'>
 
+	<script language='javascript'>
+		config.ids.login = {};
+		config.css.login = {};
+		config.ids.login.box			= "login_box";
+		config.ids.login.username	= "login_username";
+		config.ids.login.password	= "login_password";
+		config.ids.login.button		= "login_button";
+		config.ids.login.cancel		= "login_cancel_button";
+	</script>
+
 	<div class='login_text'>
 		<span> Login in with your username and password. </span>
 	</div>

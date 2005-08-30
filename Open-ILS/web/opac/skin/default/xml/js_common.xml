@@ -3,6 +3,7 @@
 <!-- Javascript shared across all pages -->
 
 <div xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" lang="en">
+
 	<script language='javascript' src='../../../common/js/utils.js'> </script>
 	<script language='javascript' src='../../../common/js//config.js'> </script>
 	<script language='javascript' src='../../../common/js/CGI.js'> </script>
@@ -21,7 +22,5 @@
 	<script language='javascript' src='../../../common/js/init.js'> </script>
 	<script language='javascript' src='../../../common/js/added_content.js'> </script>
 
-	<!-- our config settings -->
-	<script language='javascript' src='../js/config.js'> </script>
 </div>
 
