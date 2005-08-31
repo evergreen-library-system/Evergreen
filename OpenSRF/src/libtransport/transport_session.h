@@ -5,9 +5,9 @@
 // ---------------------------------------------------------------------------------
 #include "transport_message.h"
 
-#include "utils.h"
-#include "logging.h"
-#include "socket_bundle.h"
+#include "opensrf/utils.h"
+#include "opensrf/logging.h"
+#include "opensrf/socket_bundle.h"
 
 #include "sha.h"
 

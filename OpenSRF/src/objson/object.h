@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include <stdlib.h>
 #include <string.h>
 
-#include "utils.h"
+#include "opensrf/utils.h"
 
 /* json object types */
 #define JSON_HASH 	0

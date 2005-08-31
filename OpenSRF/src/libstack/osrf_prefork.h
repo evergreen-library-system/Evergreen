@@ -7,7 +7,7 @@
 #include <sys/select.h>
 #include <sys/wait.h>
 
-#include "utils.h"
+#include "opensrf/utils.h"
 #include "opensrf/transport_message.h"
 #include "osrf_stack.h"
 #include "osrf_settings.h"

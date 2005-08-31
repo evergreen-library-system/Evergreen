@@ -6,8 +6,8 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
 
-#include "utils.h"
-#include "logging.h"
+#include "opensrf/utils.h"
+#include "opensrf/logging.h"
 
 #ifndef TRANSPORT_MESSAGE_H
 #define TRANSPORT_MESSAGE_H

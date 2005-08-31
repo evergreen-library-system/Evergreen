@@ -1,6 +1,6 @@
 #include "transport_session.h"
-#include "utils.h"
-#include "logging.h"
+#include "opensrf/utils.h"
+#include "opensrf/logging.h"
 
 #include <time.h>
 

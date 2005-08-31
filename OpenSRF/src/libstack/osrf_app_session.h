@@ -4,8 +4,7 @@
 #include "opensrf/transport_client.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
-#include "string_array.h"
-//#include "osrf_config.h"
+#include "opensrf/string_array.h"
 #include "osrfConfig.h"
 
 #include "objson/object.h"

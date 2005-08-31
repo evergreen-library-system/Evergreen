@@ -2,9 +2,9 @@
 #include "opensrf/transport_message.h"
 #include "opensrf/osrf_message.h"
 
-#include "utils.h"
-#include "logging.h"
-#include "osrfConfig.h"
+#include "opensrf/utils.h"
+#include "opensrf/logging.h"
+#include "opensrf/osrfConfig.h"
 
 #include <time.h>
 #include <sys/select.h>

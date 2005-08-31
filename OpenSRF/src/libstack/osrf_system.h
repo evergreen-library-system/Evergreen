@@ -2,9 +2,8 @@
 #define OSRF_SYSTEM_H
 
 #include "opensrf/transport_client.h"
-#include "utils.h"
-#include "logging.h"
-//#include "osrf_config.h"
+#include "opensrf/utils.h"
+#include "opensrf/logging.h"
 #include "osrf_settings.h"
 #include "osrfConfig.h"
 

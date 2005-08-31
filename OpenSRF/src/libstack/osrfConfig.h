@@ -17,8 +17,8 @@ GNU General Public License for more details.
 #define _OSRF_CONFIG_H
 
 #include "xml_utils.h"
-#include "utils.h"
-#include "string_array.h"
+#include "opensrf/utils.h"
+#include "opensrf/string_array.h"
 #include "objson/object.h"
 
 typedef struct {

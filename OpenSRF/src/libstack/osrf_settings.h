@@ -8,8 +8,8 @@
 #include <time.h>
 #include <stdarg.h>
 
-#include "logging.h"
-#include "utils.h"
+#include "opensrf/logging.h"
+#include "opensrf/utils.h"
 #include "objson/object.h"
 #include "objson/json_parser.h"
 #include "osrf_app_session.h"

@@ -44,7 +44,7 @@ print SOURCE <<C;
 #include <stdio.h>
 #include "objson/object.h"
 #include "objson/json_parser.h"
-#include "utils.h"
+#include "opensrf/utils.h"
 
 char* json_string_to_xml(char*);
 void _rest_xml_output(growing_buffer*, object*, char*, int, int);
