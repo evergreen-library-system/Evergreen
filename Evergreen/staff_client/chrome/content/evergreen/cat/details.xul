@@ -64,11 +64,13 @@
 		}
 
 		function my_init_spawn_copy_browser() {
-			spawn_copy_browser(
+			var w = spawn_copy_browser(
 				document, 'replace_iframe', 'copy_browser', {
 					'find_this_id' : find_this_id
 				}
-			).find_this_id = find_this_id;
+			);
+			w.find_this_id = find_this_id;
+			w.parent_window = window;
 		}
 
 		function my_init_spawn_opac_view() {
@@ -85,16 +87,22 @@
 		<hbox id="brief_view"/>
 		<tabbox flex="1">
 			<tabs>
+				<tab label="OPAC View"/>
 				<tab label="MARC View"/>
 				<tab label="MARC Edit"/>
 				<tab label="Copy Browser"/>
-				<tab label="OPAC View"/>
+				<tab label="Copy Editor" disabled="true"/>
 			</tabs>
 			<tabpanels flex="1">
+				<tabpanel id="opac_view"/>
 				<tabpanel id="marc_view"/>
 				<tabpanel id="marc_edit"/>
 				<tabpanel id="copy_browser"/>
-				<tabpanel id="opac_view"/>
+				<tabpanel id="copy_editor">
+					<description>
+						Select some copies in the Copy Browser tab to edit.
+					</description>
+				</tabpanel>
 			</tabpanels>
 		</tabbox>
 	</vbox>

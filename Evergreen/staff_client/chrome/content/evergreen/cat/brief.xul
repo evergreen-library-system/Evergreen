@@ -30,13 +30,11 @@
 				[ find_this_id ]
 			)[0];
 
-			document.getElementById('title').setAttribute('value',mods.title());
-			document.getElementById('author').setAttribute('value',mods.author());
-			var s = '';
-			if (mods.edition()) s = mods.edition();
-			if (mods.pubdate()) s += ' ' + mods.pubdate();
-			document.getElementById('edition').setAttribute('value',s);
-			document.getElementById('tcn').setAttribute('value',mods.tcn());
+			if (mods.title()) document.getElementById('title').setAttribute('value',mods.title());
+			if (mods.author()) document.getElementById('author').setAttribute('value',mods.author());
+			if (mods.edition()) document.getElementById('edition').setAttribute('value',mods.edition());
+			if (mods.pubdate()) document.getElementById('pubdate').setAttribute('value',mods.pubdate());
+			if (mods.tcn()) document.getElementById('tcn').setAttribute('value',mods.tcn());
 
 			user_request(
 				'open-ils.cat',
@@ -60,6 +58,7 @@
 			<label style="font-weight: bold;" value="Title:" /><label id="title" /> 
 			<label style="font-weight: bold;" value="Author:" /><label id="author" />
 			<label style="font-weight: bold;" value="Edition:" /> <label id="edition" />
+			<label style="font-weight: bold;" value="Pub Date:" /> <label id="pubdate" />
 		</hbox>
 		<hbox flex="1">
 			<label style="font-weight: bold;" value="TCN:" /> <label id="tcn" />

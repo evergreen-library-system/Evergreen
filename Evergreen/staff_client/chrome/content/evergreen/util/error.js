@@ -9,7 +9,7 @@ var arg_dump_full = false;
 
 var sdump_levels = {
 	'D_NONE' : false,
-	'D_ALL' : false,
+	'D_ALL' : true,
 	'D_ERROR' : true,
 	'D_TRACE' :  false,
 	'D_TRACE_ENTER' :  false,
@@ -24,7 +24,7 @@ var sdump_levels = {
 	'D_PAGED_TREE' : false,
 	'D_GRID_LIST' : false,
 	'D_HTML_TABLE' : false,
-	'D_TAB' : true,
+	'D_TAB' : false,
 
 	'D_AUTH' : false,
 
@@ -50,7 +50,7 @@ var sdump_levels = {
 	'D_HOLD_CAPTURE' : true,
 	'D_HOLD_CAPTURE_ITEMS' : false,
 
-	'D_CAT' : true,
+	'D_CAT' : false,
 
 	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,
@@ -60,8 +60,8 @@ var sdump_levels = {
 	'D_PRINT' : true,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
-	'D_SES_RESULT' : true,
-	'D_SPAWN' : true,
+	'D_SES_RESULT' : false,
+	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,
 	'D_WIN' : false,
