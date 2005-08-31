@@ -4,7 +4,7 @@ LD_OPTS += -lxml2 -lopensrf_transport  -lopensrf_stack -lobjson -lc_utils
 TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_settings.o osrf_prefork.o osrfConfig.o xml_utils.o
 HEADERS = osrf_message.h osrf_app_session.h osrf_stack.h osrf_system.h osrf_settings.h osrf_prefork.h osrfConfig.h xml_utils.h
 
-all: msg xml_utils.o libopensrf_stack.so  test
+all: msg xml_utils.o libopensrf_stack.so  
 
 msg: 
 	echo "-> $$(pwd)"	
