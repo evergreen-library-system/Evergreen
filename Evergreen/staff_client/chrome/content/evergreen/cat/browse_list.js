@@ -257,7 +257,7 @@ function gather_copies_callback(request) {
 			//mw.sdump('D_CAT','\nvolume = ' + js2JSON(volume) + '\n');
 			mw.sdump('D_CAT',' volume id = ' + volume.id() + '\n');
 			var lib = find_ou( mw.G.org_tree, volume.owning_lib() );
-			mw.sdump('D_CAT','+++++++++++++++++++++++++++++++++++++++++++++++++++++++lib = ' + js2JSON(lib) + '\n');
+			mw.sdump('D_CAT','lib = ' + js2JSON(lib) + '\n');
 			if ( lib.id() == mw.G.user_ou.id() ) { flag = true; }
 			var callnumber = volume.label();
 			var copies = volume.copies();
