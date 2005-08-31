@@ -4,6 +4,8 @@
 .right			{ position:absolute; right: 0px; }
 .hide_me			{display:none; visibility: hidden;}
 
+/*.vertical {writing-mode: tb-rl; filter: flipv fliph; }*/
+
 /* ---------------------------------------------------------------------- */
 .canvas { float:right; width: 80%; text-align: left;}
 #loading_div { width: 100%;}
@@ -71,7 +73,7 @@
 
 /* ---------------------------------------------------------------------- */
 
-#rdetail_detail_main { width 100%; }
+#rdetail_detail_main { width: 100%; }
 #rdetail_details_table { padding-top: 10px; width: 100%; padding: 30px; border-collapse: collapse;}
 .rdetail_header { padding: 3px; padding-left: 10px; font-weight: 600; }
 .rdetail_desc { padding: 2px; padding-left: 4px; padding-right: 4px;}

@@ -21,7 +21,7 @@ function searchBarInit() {
 	_fs = G.ui.searchbar.form_selector;
 
 	G.ui.searchbar.text.focus();
-	G.ui.searchbar.text.onkeydown = 
+	G.ui.searchbar.text.onkeypress = 
 		function(evt) {if(userPressedEnter(evt)) searchBarSubmit();};
 
 	G.ui.searchbar.submit.onclick = searchBarSubmit;

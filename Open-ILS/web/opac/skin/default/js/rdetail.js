@@ -1,4 +1,5 @@
 /* */
+
 attachEvt("common", "run", rdetailDraw);
 attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
 attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
@@ -9,6 +10,7 @@ var cp_statuses = null;
 var copyRowParent = null;
 var copyRow = null;
 var statusRow = null;
+var numStatuses = null;
 
 function rdetailDraw() {
 
@@ -71,14 +73,13 @@ function _rdetailDraw(r) {
 }
 
 
-
 function rdetailBuildInfoRows() {
 	var req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id())
 	req.callback(_rdetailBuildInfoRows);
 	req.send();
 }
 
-/* pre-allocate the copy info table with all org units */
+/* pre-allocate the copy info table with all org units in correct order */
 function _rdetailRows(node) {
 
 	if(node) {
@@ -93,10 +94,8 @@ function _rdetailRows(node) {
 		libtd.setAttribute("style", "padding-left: " + ((findOrgDepth(node) - 1)  * 9) + "px;");
 	
 		if(!findOrgType(node.ou_type()).can_have_vols()) {
-			var c = 2;
-			for(x in _statusPositions) c++;
-			libtd.setAttribute("colspan", c );
-			libtd.colSpan = c;
+			libtd.setAttribute("colspan", numStatuses + 2 );
+			libtd.colSpan = numStatuses + 2;
 			row.removeChild(cntd);
 			row.removeChild(cpctd);
 			addCSSClass(row, config.css.color_3);
@@ -116,20 +115,15 @@ function _rdetailBuildInfoRows(r) {
 	_rdetailRows();
 
 	var summary = r.getResultObject();
-	var curLoc = getLocation();
 
-	/* remove the 'now loading' thingy */
 	G.ui.rdetail.cp_info_loading.parentNode.removeChild(
 		G.ui.rdetail.cp_info_loading);
-
-	var curLoc = getLocation();
 
 	for( var i = 0; i < summary.length; i++ ) {
 
 		var arr = summary[i];
-		var rowNode = copyRow.cloneNode(true);
-		var rowNode = getId("cp_info_" + arr[0]);
-
+		var thisOrg = findOrgUnit(arr[0]);
+		var rowNode = getId("cp_info_" + thisOrg.id());
 
 		if(rowNode.getAttribute("used")) {
 
@@ -138,49 +132,49 @@ function _rdetailBuildInfoRows(r) {
 			else
 				rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
 			var n = findNodeByName( rowNode, config.names.rdetail.lib_cell );
-			n.appendChild(text(findOrgUnit(arr[0]).name()));
-			n.setAttribute("style", "padding-left: " + ((findOrgDepth(arr[0]) - 1)  * 9) + "px;");
+			n.appendChild(text(thisOrg.name()));
+			n.setAttribute("style", "padding-left: " + ((findOrgDepth(thisOrg) - 1)  * 9) + "px;");
 
-		} else {
-			rowNode.setAttribute("used", "1");
-		}
+		} else rowNode.setAttribute("used", "1");
 
-		rowNode.setAttribute("hasinfo", "1");
-		var p = getId("cp_info_" + findOrgUnit(arr[0]).parent_ou());
-		if(p) p.setAttribute("hasinfo", "1");
+		findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(text(arr[1]));
 
-		if( orgIsMine( findOrgUnit(curLoc), findOrgUnit(arr[0]) ) ) {
-			unHideMe(rowNode);
-			unHideMe(getId("cp_info_" + findOrgUnit(arr[0]).parent_ou()));
-			rowNode.setAttribute("local", "1");
-		}
+		var cpc_temp = rowNode.removeChild(
+			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
-		var cntd = findNodeByName( rowNode, config.names.rdetail.cn_cell );
-		cntd.appendChild(text(arr[1]));
-		var cpc_temp = rowNode.removeChild(findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
+		rdetailApplyStatuses(rowNode, cpc_temp, arr[2]);
 
-		for( var j in _statusPositions ) {
-			var stat = _statusPositions[j];
-			var val = arr[2][stat.id()];
-			var nn = cpc_temp.cloneNode(true);
-			if(val) nn.appendChild(text(val));
-			else nn.appendChild(text(0));
-			rowNode.appendChild(nn);	
-		}
+		var isLocal = false;
+		if( orgIsMine( findOrgUnit(getLocation()), thisOrg ) ) isLocal = true;
+		rdetailSetPath( thisOrg, isLocal );
 
 	}
 
-	/* unhide the path to me */
-	var nodeTrail = orgNodeTrail(findOrgUnit(curLoc));
-	for( var i = 0; i != nodeTrail.length; i++ ) {
-		var n = getId("cp_info_" + nodeTrail[i].id());
-		if(n) {
-			unHideMe(n);
-			n.setAttribute("local", "1");
-		}
-	}
 }
 
+/* sets the path to org as 'active' and displays the 
+	path if it's local */
+function rdetailSetPath(org, local) {
+	if( findOrgDepth(org) == 0 ) return;
+	var row = getId("cp_info_" + org.id());
+	row.setAttribute("hasinfo", "1");
+	if(local) {
+		unHideMe(row);
+		row.setAttribute("local", "1");
+	}
+	rdetailSetPath(findOrgUnit(org.parent_ou()), local);
+}
+
+function rdetailApplyStatuses( row, template, statuses ) {
+	for( var j in _statusPositions ) {
+		var stat = _statusPositions[j];
+		var val = statuses[stat.id()];
+		var nn = template.cloneNode(true);
+		if(val) nn.appendChild(text(val));
+		else nn.appendChild(text(0));
+		row.appendChild(nn);	
+	}
+}
 
 
 /* --------------------------------------------------------------------- */
@@ -194,14 +188,31 @@ function rdetailBuildStatusColumns() {
 
 	var i = 0;
 	for( i = 0; i < cp_statuses.length; i++ ) {
+
 		var c = cp_statuses[i];
+
 		if(c && c.holdable()) {
+
+			var name = c.name();
 			_statusPositions[i] = c;
 			var node = template.cloneNode(true);
-			node.appendChild(text("#" + c.name()));
+			var data = findNodeByName( node, config.names.rdetail.cp_status);
+
+			data.appendChild(text(name));
+			
+/*
+			for( var x = 0; x < name.length; x++ ) {
+				var c = name.charAt(x);
+				data.appendChild(text(c));
+				data.appendChild(document.createElement("br"));
+			}	
+*/
 			parent.appendChild(node);
 		}	
 	}	
+
+	numStatuses = 0;
+	for(x in _statusPositions) numStatuses++; 
 }
 
 function rdetailGrabCopyStatuses() {

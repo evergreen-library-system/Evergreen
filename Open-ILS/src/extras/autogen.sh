@@ -5,7 +5,7 @@ CONFIG="$1";
 [ -z "$CONFIG" ] && echo "usage: $0 <bootstrap_config>" && exit;
 
 
-JSDIR="/openils/var/web/js/util";
+JSDIR="/openils/var/web/opac/common/js/";
 
 echo "Updating fieldmapper";
 perl fieldmapper.pl		> "$JSDIR/fmall.js";
