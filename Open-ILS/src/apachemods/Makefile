@@ -61,7 +61,7 @@ mod_ils_rest_gateway-install:
 		to this: \n \
 		LoadModule mod_ils_rest_gateway    modules/mod_ils_rest_gateway.so"
 	echo -e "Supported configuration options:\
-			\nILSRestGatewayConfig <config-file>\
+			\nILSRestGatewayConfig <config-file>"
 	echo "-----------------------------------------------";
 	echo ""
 
