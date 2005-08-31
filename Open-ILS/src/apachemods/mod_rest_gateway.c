@@ -50,7 +50,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* method					= NULL;	/* method to perform */
 
 	//json* exception				= NULL; /* returned in error conditions */
-	object* exception				= NULL; /* returned in error conditions */
+	jsonObject* exception				= NULL; /* returned in error conditions */
 	string_array* sarray			= init_string_array(12); /* method parameters */
 
 	growing_buffer* buffer		= NULL;	/* POST data */
@@ -157,7 +157,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
 
 		if( omsg->_result_content ) {
-			char* content = object_to_json(omsg->_result_content);
+			char* content = jsonObjectToJSON(omsg->_result_content);
 			buffer_add(result_data, content);
 			buffer_add( result_data, ",");
 			free(content);
@@ -179,8 +179,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			buffer_add( exc_buffer, code );
 
 			exception = json_parse_string("{}");
-			exception->add_key(exception, "is_err", json_parse_string("1"));
-			exception->add_key(exception, "err_msg", new_object(exc_buffer->buf) );
+			jsonObjectSetKey(exception, "is_err", json_parse_string("1"));
+			jsonObjectSetKey(exception, "err_msg", jsonNewObject(exc_buffer->buf) );
 
 			warning_handler("*** Looks like we got a "
 					"server exception\n%s", exc_buffer->buf );
@@ -205,8 +205,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* content = NULL;
 
 	if(exception) {
-		content = exception->to_json(exception);
-		free_object(exception);
+		content = jsonObjectToJSON(exception);
+		jsonObjectFree(exception);
 	} 
 
 	/* set content type to text/xml for passing around XML objects */
