@@ -15,8 +15,6 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "json_parser.h"
-#include <fcntl.h>
-
 
 
 /* ---------------------------------------------------------------------- */
@@ -26,87 +24,59 @@ GNU General Public License for more details.
 
 char* __tabs(int count);
 
-object* new_object(char* string_value) {
-	return _init_object(string_value);
-}
+jsonObject* jsonNewObject( const char* stringValue ) { 
 
-
-object* new_int_object(long num) {
-	object* o = new_object(NULL);
-	o->is_null = 0;
-	o->is_number = 1;
-	o->num_value = num;
-	return o;
-}
-
-object* new_double_object(double num) {
-	object* o = new_object(NULL);
-	o->is_null = 0;
-	o->is_double = 1;
-	o->double_value = num;
-	return o;
-}
-
-object* _init_object(char* string_value) {
-
-	object* obj			= (object*) safe_malloc(sizeof(object));
+	jsonObject* obj	= (jsonObject*) safe_malloc(sizeof(jsonObject));
 	obj->size			= 0;
-	obj->data			= NULL;
+	obj->type = JSON_NULL;
 
-	obj->push			= &object_push;
-	obj->set_index		= &object_set_index;
-	obj->add_key		= &object_add_key;
-	obj->get_index		= &object_get_index;
-	obj->get_key		= &object_get_key;
-	obj->get_string	= &object_get_string;
-	obj->set_string	= &object_set_string;
-	obj->set_number	= &object_set_number;
-	obj->set_class		= &object_set_class;
-	obj->set_double	= &object_set_double;
-	obj->remove_index = &object_remove_index;
-	obj->remove_key	= &object_remove_key;
-	obj->to_json		= &object_to_json;
-	obj->set_comment	= &object_set_comment;
-
-	if(string_value) {
-		obj->is_string = 1;
-		obj->string_data = strdup(string_value);
-	} else
-		obj->is_null = 1;
+	if(stringValue) {
+		obj->type = JSON_STRING;
+		obj->value.s = strdup(stringValue);
+	}
 
 	return obj;
 }
 
-object_node* new_object_node(object* obj) {
-	object_node* node = (object_node*) safe_malloc(sizeof(object_node));
+
+
+
+jsonObject* jsonNewNumberObject( double num ) {
+	jsonObject* o = jsonNewObject(NULL);
+	o->type = JSON_NUMBER;
+	o->value.n = num;
+	return o;
+
+}
+
+
+jsonObjectNode* jsonNewObjectNode( jsonObject* obj ) {
+	jsonObjectNode* node = (jsonObjectNode*) safe_malloc(sizeof(jsonObjectNode));
 	node->item = obj;
 	node->next = NULL;
 	node->index = -1;
 	return node;
 }
 
-unsigned long object_push(object* obj, object* new_obj) {
-	assert(obj != NULL);
-	object_clear_type(obj);
-	obj->is_array = 1;
+unsigned long jsonObjectPush( jsonObject* obj, jsonObject* new_obj) {
+	if(!obj) return -1;
+
+	obj->type = JSON_ARRAY;
 
 	if(new_obj == NULL) {
-		new_obj = new_object(NULL);
-		new_obj->is_null = 1;
+		new_obj = jsonNewObject(NULL);
+		new_obj->type = JSON_NULL;
 	}
 
-	object_node* node = new_object_node(new_obj);
+	jsonObjectNode* node = jsonNewObjectNode(new_obj);
 	node->index = obj->size++;
 
-	if( obj->size > MAX_OBJECT_NODES )
-		return -1;
-
-	if(obj->data == NULL) {
-		obj->data = node;
+	if(obj->value.c == NULL) {
+		obj->value.c = node;
 
 	} else {
 		/* append the node onto the end */
-		object_node* tmp = obj->data;
+		jsonObjectNode* tmp = obj->value.c;
 		while(tmp) {
 			if(tmp->next == NULL) break;
 			tmp = tmp->next;
@@ -116,45 +86,44 @@ unsigned long object_push(object* obj, object* new_obj) {
 	return obj->size;
 }
 
-unsigned long  object_set_index(object* obj, unsigned long index, object* new_obj) {
-	assert(obj != NULL && index <= MAX_OBJECT_NODES);
-	object_clear_type(obj);
-	obj->is_array = 1;
+unsigned long  jsonObjectSetIndex( jsonObject* obj, unsigned long index, jsonObject* new_obj) {
+	if( obj == NULL ) return -1;
+	obj->type = JSON_ARRAY;
 
 	if(obj->size <= index)
 		obj->size = index + 1;
 
 	if(new_obj == NULL) {
-		new_obj = new_object(NULL);
-		new_obj->is_null = 1;
+		new_obj = jsonNewObject(NULL);
+		new_obj->type = JSON_NULL;
 	}
 
-	object_node* node = new_object_node(new_obj);
+	jsonObjectNode* node = jsonNewObjectNode(new_obj);
 	node->index = index;
 	
-	if( obj->data == NULL ) {
-		obj->data = node;
+	if( obj->value.c == NULL ) {
+		obj->value.c = node;
 
 	} else {
 
-		if(obj->data->index == index) {
-			object_node* tmp = obj->data->next;
-			free_object_node(obj->data);
-			obj->data = node;
+		if(obj->value.c->index == index) {
+			jsonObjectNode* tmp = obj->value.c->next;
+			jsonObjectNodeFree(obj->value.c);
+			obj->value.c = node;
 			node->next = tmp;
 
 		} else {
 		
-			object_node* prev = obj->data;
-			object_node* cur = prev->next;
+			jsonObjectNode* prev = obj->value.c;
+			jsonObjectNode* cur = prev->next;
 			int inserted = 0;
 
 			while(cur != NULL) {
 
 				/* replace an existing node */
 				if( cur->index == index ) {
-					object_node* tmp = cur->next;
-					free_object_node(cur);
+					jsonObjectNode* tmp = cur->next;
+					jsonObjectNodeFree(cur);
 					node->next = tmp;
 					prev->next = node;
 					inserted = 1;
@@ -181,14 +150,15 @@ unsigned long  object_set_index(object* obj, unsigned long index, object* new_ob
 }
 
 
-void object_shift_index(object* obj, unsigned long index) {
-	assert(obj && index <= MAX_OBJECT_NODES);
-	if(obj->data == NULL) {
+void _jsonObjectShifIndex( jsonObject* obj, unsigned long index) {
+	if( obj == NULL || index < 0 ) return;
+
+	if(obj->value.c == NULL) {
 		obj->size = 0;
 		return;
 	}
 
-	object_node* data = obj->data;
+	jsonObjectNode* data = obj->value.c;
 	while(data) {
 		if(data->index >= index)
 			data->index--;
@@ -197,29 +167,30 @@ void object_shift_index(object* obj, unsigned long index) {
 	obj->size--;
 }
 
-unsigned long object_remove_index(object* obj, unsigned long index) {
-	assert(obj != NULL && index <= MAX_OBJECT_NODES);
-	if(obj->data == NULL) return 0;
+unsigned long jsonObjectRemoveIndex( jsonObject* obj, unsigned long index) {
+	if( obj == NULL || index < 0 ) return -1;
+
+	if(obj->value.c == NULL) return 0;
 
 	/* removing the first item in the list */
-	if(obj->data->index == index) {
-		object_node* tmp = obj->data->next;
-		free_object_node(obj->data);
-		obj->data = tmp;
-		object_shift_index(obj,index);
+	if(obj->value.c->index == index) {
+		jsonObjectNode* tmp = obj->value.c->next;
+		jsonObjectNodeFree(obj->value.c);
+		obj->value.c = tmp;
+		_jsonObjectShiftIndex(obj,index);
 		return obj->size;
 	}
 
 
-	object_node* prev = obj->data;
-	object_node* cur = prev->next;
+	jsonObjectNode* prev = obj->value.c;
+	jsonObjectNode* cur = prev->next;
 
 	while(cur) {
 		if(cur->index == index) {
-			object_node* tmp = cur->next;
-			free_object_node(cur);
+			jsonObjectNode* tmp = cur->next;
+			jsonObjectNodeFree(cur);
 			prev->next = tmp;
-			object_shift_index(obj,index);
+			_jsonObjectShiftIndex(obj, index);
 			break;
 		}
 		prev = cur;
@@ -230,28 +201,49 @@ unsigned long object_remove_index(object* obj, unsigned long index) {
 }
 
 
-unsigned long object_remove_key(object* obj, char* key) {
-	assert(obj && key);
-	if(obj->data == NULL) return 0;
+void _jsonObjectShiftIndex(jsonObject* obj, unsigned long index) {
+
+	if( ! obj ) return;
+
+	if(obj->value.c == NULL) {
+		obj->size = 0;
+		return;
+	}
+
+	jsonObjectNode* data = obj->value.c;
+	while(data) {
+		if(data->index >= index)
+			data->index--;
+		data = data->next;
+	}
+	obj->size--;
+}
+
+
+unsigned long jsonObjectRemoveKey( jsonObject* obj, const char* key) {
+	if( obj == NULL || key == NULL ) return -1;
+
+	if(obj->value.c == NULL) return 0;
 
 	/* removing the first item in the list */
-	if(!strcmp(obj->data->key, key)) {
-		object_node* tmp = obj->data->next;
-		free_object_node(obj->data);
-		obj->data = tmp;
-		if(!obj->data) 
-			obj->size = 0;
+	if(!strcmp(obj->value.c->key, key)) {
 
+		jsonObjectNode* tmp = obj->value.c->next;
+		jsonObjectNodeFree(obj->value.c);
+
+		obj->value.c = tmp;
+		if(!obj->value.c) obj->size = 0;
 		return obj->size;
 	}
 
-	object_node* prev = obj->data;
-	object_node* cur = prev->next;
+	jsonObjectNode* prev = obj->value.c;
+	jsonObjectNode* cur = prev->next;
 
 	while(cur) {
 		if(!strcmp(cur->key,key)) {
-			object_node* tmp = cur->next;
-			free_object_node(cur);
+
+			jsonObjectNode* tmp = cur->next;
+			jsonObjectNodeFree(cur);
 			prev->next = tmp;
 			obj->size--;
 			break;
@@ -264,46 +256,43 @@ unsigned long object_remove_key(object* obj, char* key) {
 }
 
 
-unsigned long object_add_key(object* obj, char* key, object* new_obj) {
-
-	assert(obj != NULL && key != NULL);
-	object_clear_type(obj);
-	obj->is_hash = 1;
-
+unsigned long jsonObjectSetKey( jsonObject* obj, const char* key, jsonObject* new_obj ) {
+	if( obj == NULL || key == NULL ) return -1;
+	obj->type = JSON_HASH;
 
 	if(new_obj == NULL) {
-		new_obj = new_object(NULL);
-		new_obj->is_null = 1;
+		new_obj = jsonNewObject(NULL);
+		new_obj->type = JSON_NULL;
 	}
 
-	object_node* node = new_object_node(new_obj);
+	jsonObjectNode* node = jsonNewObjectNode(new_obj);
 	node->key = strdup(key);
 	
-	if( obj->data == NULL ) {
-		obj->data = node;
+	if( obj->value.c == NULL ) {
+		obj->value.c = node;
 		obj->size++;
 
 	} else {
 
 		/* replace the first node */
-		if(!strcmp(obj->data->key, key)) {
-			object_node* tmp = obj->data->next;
-			free_object_node(obj->data);
-			obj->data = node;
+		if(!strcmp(obj->value.c->key, key)) {
+			jsonObjectNode* tmp = obj->value.c->next;
+			jsonObjectNodeFree(obj->value.c);
+			obj->value.c = node;
 			node->next = tmp;
 
 		} else {
 		
-			object_node* prev = obj->data;
-			object_node* cur = prev->next;
+			jsonObjectNode* prev = obj->value.c;
+			jsonObjectNode* cur = prev->next;
 			int inserted = 0;
 
 			while(cur != NULL) {
 
 				/* replace an existing node */
 				if( !strcmp(cur->key, key) ) {
-					object_node* tmp = cur->next;
-					free_object_node(cur);
+					jsonObjectNode* tmp = cur->next;
+					jsonObjectNodeFree(cur);
 					node->next = tmp;
 					prev->next = node;
 					inserted = 1;
@@ -326,94 +315,101 @@ unsigned long object_add_key(object* obj, char* key, object* new_obj) {
 }
 
 
-void free_object(object* obj) {
-
+void jsonObjectFree( jsonObject* obj) {
 	if(obj == NULL) return;
-	if(obj->classname) free(obj->classname);
-	if(obj->comment) free(obj->comment);
 
-	while(obj->data) {
-		object_node* tmp = obj->data->next;
-		free_object_node(obj->data);
-		obj->data = tmp;
+	free(obj->classname);
+	free(obj->comment);
+
+	if( obj->type == JSON_ARRAY || obj->type == JSON_HASH ) {
+		while(obj->value.c) {
+			jsonObjectNode* tmp = obj->value.c->next;
+			jsonObjectNodeFree(obj->value.c);
+			obj->value.c = tmp;
+		}
 	}
 
-	if(obj->string_data) 
-		free(obj->string_data);
+	if(obj->type == JSON_STRING)
+		free(obj->value.s);
+
 	free(obj);
 }
 
-void free_object_node(object_node* node) {
+void jsonObjectNodeFree( jsonObjectNode* node ) {
 	if(node == NULL) return;
-	if(node->key) free(node->key);
-	free_object(node->item);
+	free(node->key);
+	jsonObjectFree(node->item);
 	free(node);
 }
 
-object* object_get_index( object* obj, unsigned long index ) {
-	assert(obj != NULL && index <= MAX_OBJECT_NODES);
-	object_node* node = obj->data;
-	while(node) {
-		if(node->index == index)
-			return node->item;
-		node = node->next;
+jsonObject* jsonObjectGetIndex( const jsonObject* obj, unsigned long index ) {
+
+	if( obj && index >= 0 && obj->type == JSON_ARRAY ) {
+
+		jsonObjectNode* node = obj->value.c;
+		while(node) {
+			if(node->index == index)
+				return node->item;
+			node = node->next;
+		}
 	}
-	return NULL;
-}
-
-object* object_get_key( object* obj, char* key ) {
-	assert(obj && key);
-	object_node* node = obj->data;
-
-	while(node) {
-		if(node->key && !strcmp(node->key, key))
-			return node->item;
-		node = node->next;
-	}	
 
 	return NULL;
 }
 
-char* object_get_string(object* obj) {
-	assert(obj != NULL);
-	return obj->string_data;
+jsonObject* jsonObjectGetKey( const jsonObject* obj, const char* key ) {
+
+	if( obj && key && obj->type == JSON_HASH ) {
+
+		jsonObjectNode* node = obj->value.c;
+	
+		while(node) {
+			if(node->key && !strcmp(node->key, key))
+				return node->item;
+			node = node->next;
+		}	
+	}
+
+	return NULL;
 }
 
-void object_set_string(object* obj, char* string) {
-	assert(obj);
-	object_clear_type(obj);
-	obj->is_string = 1;
-	if(string)
-		obj->string_data = strdup(string);
+char* jsonObjectGetString( const jsonObject* obj ) {
+	if( obj && obj->type == JSON_STRING ) return obj->value.s;
+	return NULL;
+}
+
+double jsonObjectGetNumber( const jsonObject* obj ) {
+	if( obj && obj->type == JSON_NUMBER ) return obj->value.n;
+	return 0;
+}
+
+void jsonObjectSetString( jsonObject* obj, const char* string) {
+	if( obj ) {
+		obj->type = JSON_STRING;
+		if(string) obj->value.s = strdup(string);
+		else obj->value.s = NULL; 
+	}
 }
 
 
-void object_set_number(object* obj, long num) {
-	assert(obj);
-	object_clear_type(obj);
-	obj->is_number = 1;
-	obj->num_value = num;
-}
-
-void object_set_double(object* obj, double num) {
-	assert(obj);
-	object_clear_type(obj);
-	obj->is_double = 1;
-	obj->double_value = num;
+void jsonObjectSetNumber( jsonObject* obj, double num) {
+	if(obj) {
+		obj->type = JSON_NUMBER;
+		obj->value.n = num;
+	}
 }
 
 
-void object_set_class(object* obj, char* classname) {
-	assert(obj && classname);
+void jsonObjectSetClass( jsonObject* obj, const char* classname) {
+	if( obj == NULL || classname == NULL ) return;
 	obj->classname = strdup(classname);
 }
 
 
 
-char* object_to_json(object* obj) {
+char* jsonObjectToJSON( const jsonObject* obj ) {
 
-	if(obj == NULL)
-		return strdup("null");
+	if(obj == NULL) return strdup("null");
 
 	growing_buffer* buf = buffer_init(64);
 
@@ -424,85 +420,98 @@ char* object_to_json(object* obj) {
 		buffer_add(buf, "--*/");
 	}
 
-	if(obj->is_bool && obj->bool_value)
-			buffer_add(buf, "true"); 
+	switch( obj->type ) {
 
-	else if(obj->is_bool && ! obj->bool_value)
-			buffer_add(buf, "false"); 
+		case JSON_BOOL: 
+			if(obj->value.b) buffer_add(buf, "true"); 
+			else buffer_add(buf, "false"); 
+			break;
 
-	else if(obj->is_number) {
-		char b[128];
-		memset(b, 0, 128);
-		sprintf(b, "%ld", obj->num_value);
-		buffer_add(buf, b);
-	}
+		case JSON_NUMBER: {
+			double x = obj->value.n;
 
-	else if(obj->is_double) {
-		char b[128];
-		memset(b, 0, 128);
-		sprintf(b, "%lf", obj->double_value);
-		buffer_add(buf, b);
-	}
+			/* if the number does not need to be a double,
+				turn it into an int on the way out */
+			if( x == (int) x ) {
+				INT_TO_STRING((int)x);	
+				buffer_add(buf, INTSTR);
 
-	else if(obj->is_null)
-		buffer_add(buf, "null");
-
-	else if (obj->is_string) {
-
-		buffer_add(buf, "\"");
-		char* data = obj->string_data;
-		int len = strlen(data);
-		
-		char* output = uescape(data, len, 1);
-		buffer_add(buf, output);
-		free(output);
-		buffer_add(buf, "\"");
-
-	}  else if(obj->is_array) {
-
-		buffer_add(buf, "[");
-		int i;
-		for( i = 0; i!= obj->size; i++ ) {
-			char* data = object_to_json(obj->get_index(obj,i));
-
-#ifdef STRICT_JSON_WRITE
-			buffer_add(buf, data);
-#else
-			if(strcmp(data,"null")) /* only add the string if it isn't null */
-				buffer_add(buf, data);
-#endif
-
-			free(data);
-			if(i != obj->size - 1)
-				buffer_add(buf, ",");
+			} else {
+				DOUBLE_TO_STRING(x);
+				buffer_add(buf, DOUBLESTR);
+			}
+			break;
 		}
-		buffer_add(buf, "]");
 
-	} else if(obj->is_hash) {
+		case JSON_NULL:
+			buffer_add(buf, "null");
+			break;
 
-		buffer_add(buf, "{");
-		object_iterator* itr = new_iterator(obj);
-		object_node* tmp;
-
-		while( (tmp = itr->next(itr)) ) {
+		case JSON_STRING:
 			buffer_add(buf, "\"");
-			buffer_add(buf, tmp->key);
-			buffer_add(buf, "\":");
-			char* data =  object_to_json(tmp->item);
+			char* data = obj->value.s;
+			int len = strlen(data);
+			
+			char* output = uescape(data, len, 1);
+			buffer_add(buf, output);
+			free(output);
+			buffer_add(buf, "\"");
+			break;
+
+		case JSON_ARRAY:
+			buffer_add(buf, "[");
+			int i;
+			for( i = 0; i!= obj->size; i++ ) {
+				const jsonObject* x = jsonObjectGetIndex(obj,i);
+				char* data = jsonObjectToJSON(x);
+	
+#ifdef STRICT_JSON_WRITE
+				buffer_add(buf, data);
+#else
+				if(strcmp(data,"null")) /* only add the string if it isn't null */
+					buffer_add(buf, data);
+#endif
+	
+				free(data);
+				if(i != obj->size - 1)
+					buffer_add(buf, ",");
+			}
+			buffer_add(buf, "]");
+			break;	
+
+		case JSON_HASH:
+	
+			buffer_add(buf, "{");
+			jsonObjectIterator* itr = jsonNewObjectIterator(obj);
+			jsonObjectNode* tmp;
+	
+			while( (tmp = jsonObjectIteratorNext(itr)) ) {
+
+				buffer_add(buf, "\"");
+				buffer_add(buf, tmp->key);
+				buffer_add(buf, "\":");
+				char* data =  jsonObjectToJSON(tmp->item);
 
 #ifdef STRICT_JSON_WRITE
-			buffer_add(buf, data);
-#else
-			if(strcmp(data,"null")) /* only add the string if it isn't null */
 				buffer_add(buf, data);
+#else
+				if(strcmp(data,"null")) /* only add the string if it isn't null */
+					buffer_add(buf, data);
 #endif
 
-			if(itr->has_next(itr))
-				buffer_add(buf, ",");
-			free(data);
-		}
-		free_iterator(itr);
-		buffer_add(buf, "}");
+				if(jsonObjectIteratorHasNext(itr))
+					buffer_add(buf, ",");
+				free(data);
+			}
+
+			jsonObjectIteratorFree(itr);
+			buffer_add(buf, "}");
+			break;
+		
+			default:
+				fprintf(stderr, "Unknown object type %d\n", obj->type);
+				break;
+				
 	}
 
 	/* close out the object hint */
@@ -525,18 +534,8 @@ char* object_to_json(object* obj) {
 }
 
 
-void object_clear_type(object* obj) {
-	if(obj == NULL) return;
-	obj->is_string = 0;
-	obj->is_hash	= 0;
-	obj->is_array	= 0;
-	obj->is_bool	= 0;
-	obj->is_null	= 0;
-}
-
-
-void object_set_comment(object* obj, char* com) {
-	assert(obj && com);
+void jsonObjectSetComment( jsonObject* obj, const char* com) {
+	if( obj == NULL || com == NULL ) return;
 	obj->comment = strdup(com);
 }
 
@@ -550,25 +549,26 @@ char* __tabs(int count) {
 	return final;
 }
 
-char* json_string_format(char* string) {
+char* jsonFormatString( const char* string ) {
 
 	if(!string) return strdup("");
 
 	growing_buffer* buf = buffer_init(64);
 	int i;
 	int depth = 0;
+	char* tab = NULL;
 
 	for(i=0; i!= strlen(string); i++) {
 
 		if( string[i] == '{' || string[i] == '[' ) {
 
-			char* tab = __tabs(++depth);
+			tab = __tabs(++depth);
 			buffer_fadd( buf, "%c\n%s", string[i], tab);
 			free(tab);
 
 		} else if( string[i] == '}' || string[i] == ']' ) {
 
-			char* tab = __tabs(--depth);
+			tab = __tabs(--depth);
 			buffer_fadd( buf, "\n%s%c", tab, string[i]);
 			free(tab);
 
@@ -580,7 +580,7 @@ char* json_string_format(char* string) {
 
 		} else if( string[i] == ',' ) {
 
-			char* tab = __tabs(depth);
+			tab = __tabs(depth);
 			buffer_fadd(buf, ",\n%s", tab);
 			free(tab);
 
@@ -595,10 +595,10 @@ char* json_string_format(char* string) {
 }
 
 
-object* object_clone(object* o) {
+jsonObject* jsonObjectClone(const jsonObject* o) {
 	if(!o) return NULL;
-	char* json = o->to_json(o);
-	object* newo = json_parse_string(json);
+	char* json = jsonObjectToJSON(o);
+	jsonObject* newo = jsonParseString(json);
 	free(json);
 	return newo;
 }
@@ -608,56 +608,42 @@ object* object_clone(object* o) {
 /* ---------------------------------------------------------------------- */
 /* Iterator */
 
-object_iterator* new_iterator(object* obj) {
-	object_iterator* iter = safe_malloc(sizeof(object_iterator));
+jsonObjectIterator* jsonNewObjectIterator(const jsonObject* obj) {
+
+	if(!obj) return NULL;
+	jsonObjectIterator* iter = safe_malloc(sizeof(jsonObjectIterator));
 	iter->obj = obj;
-	iter->current = obj->data;
-	iter->next = &object_iterator_next;
-	iter->has_next = &object_iterator_has_next;
+
+	if( obj->type ==  JSON_HASH || obj->type == JSON_ARRAY ) 
+		iter->current = obj->value.c;
+	else iter->current = NULL;
 	return iter;
 }
 
-object_node* object_iterator_next(object_iterator* itr) {
-	assert( itr != NULL );
+jsonObjectNode* jsonObjectIteratorNext( jsonObjectIterator* itr ) {
+	if( itr == NULL ) return NULL;
 
-	object_node* tmp = itr->current;
+	jsonObjectNode* tmp = itr->current;
 	if(tmp == NULL) return NULL;
 	itr->current = itr->current->next;
 
 	return tmp;
 }
 
-void free_iterator(object_iterator* iter) { 
-	if(iter == NULL) return;
+void jsonObjectIteratorFree(jsonObjectIterator* iter) { 
 	free(iter);
 }
 
-int object_iterator_has_next(object_iterator* itr) {
-	assert(itr);
-	if(itr->current) return 1;
-	return 0;
+int jsonObjectIteratorHasNext(const jsonObjectIterator* itr) {
+	return (itr && itr->current);
 }
 
 
-object* object_find_path(object* obj, char* format, ...) {
+jsonObject* jsonObjectFindPath( const jsonObject* obj, char* format, ...) {
 	if(!obj || !format || strlen(format) < 1) return NULL;	
 
-	/* build the string from the variable args */
-	long len = 0;
-	va_list args, a_copy;
-
-	va_copy(a_copy, args);
-
-	va_start(args, format);
-	len = va_list_size(format, args);
-	char buf[len];
-	bzero(buf, len);
-
-	va_start(a_copy, format);
-	vsnprintf(buf, len - 1, format, a_copy);
-	va_end(a_copy);
-	/* -------------------------------------------- */
-
+	VA_LIST_TO_STRING(format);
+	char* buf = VA_BUF;
 
 	/* tmp storage for strtok_r */
 	char tokbuf[len];		
@@ -676,7 +662,7 @@ object* object_find_path(object* obj, char* format, ...) {
 
 	/* special case where path starts with //  (start anywhere) */
 	if(strlen(pathcopy) > 2 && pathcopy[0] == '/' && pathcopy[1] == '/') {
-		object* it = _object_find_path_recurse(obj, token, pathcopy + 1);
+		jsonObject* it = _jsonObjectFindPathRecurse(obj, token, pathcopy + 1);
 		free(pathcopy);
 		return it;
 	}
@@ -685,23 +671,25 @@ object* object_find_path(object* obj, char* format, ...) {
 
 	t = NULL;
 	do { 
-		obj = obj->get_key(obj, token);
+		obj = jsonObjectGetKey(obj, token);
 	} while( (token = strtok_r(NULL, "/", &tt)) && obj);
 
-	return object_clone(obj);
+	return jsonObjectClone(obj);
 }
 
+/* --------------------------------------------------------------- */
 
 
-object* _object_find_path_recurse(object* obj, char* root, char* path) {
 
-	if(!obj || ! root) return NULL;
+jsonObject* _jsonObjectFindPathRecurse(const jsonObject* obj, char* root, char* path) {
+
+	if(!obj || ! root || !path) return NULL;
 
 	/* collect all of the potential objects */
-	object* arr = __object_find_path_recurse(obj, root);
+	jsonObject* arr = __jsonObjectFindPathRecurse(obj, root);
 
 	/* container for fully matching objects */
-	object* newarr = json_parse_string("[]");
+	jsonObject* newarr = jsonParseString("[]");
 	int i;
 
 	/* path is just /root or /root/ */
@@ -712,45 +700,66 @@ object* _object_find_path_recurse(object* obj, char* root, char* path) {
 
 		/* gather all of the sub-objects that match the full path */
 		for( i = 0; i < arr->size; i++ ) {
-			object* a = arr->get_index(arr, i);
-			object* thing = object_find_path(a , path + strlen(root) + 1); 
-			if(thing) newarr->push(newarr, thing);
+			jsonObject* a = jsonObjectGetIndex(arr, i);
+			jsonObject* thing = jsonObjectFindPath(a , path + strlen(root) + 1); 
+			if(thing) jsonObjectPush(newarr, thing);
 		}
 	}
 	
-	free_object(arr);
+	jsonObjectFree(arr);
 	return newarr;
 }
 
-object* __object_find_path_recurse(object* obj, char* root) {
+jsonObject* __jsonObjectFindPathRecurse(const jsonObject* obj, char* root) {
 
-	object* arr = json_parse_string("[]");
+	jsonObject* arr = jsonParseString("[]");
 	if(!obj) return arr;
 
 	int i;
 
 	/* if the current object has a node that matches, add it */
-	object* o = obj->get_key(obj, root);
-	if(o) arr->push(arr, object_clone(o));
 
-	object_node* tmp = NULL;
-	object* childarr;
-	object_iterator* itr = new_iterator(obj);
+	jsonObject* o = jsonObjectGetKey(obj, root);
+	if(o) jsonObjectPush( arr, jsonObjectClone(o) );
+
+	jsonObjectNode* tmp = NULL;
+	jsonObject* childarr;
+	jsonObjectIterator* itr = jsonNewObjectIterator(obj);
 
 	/* recurse through the children and find all potential nodes */
-	while( (tmp = itr->next(itr)) ) {
-		childarr = __object_find_path_recurse(tmp->item, root);
+	while( (tmp = jsonObjectIteratorNext(itr)) ) {
+		childarr = __jsonObjectFindPathRecurse(tmp->item, root);
 		if(childarr && childarr->size > 0) {
 			for( i = 0; i!= childarr->size; i++ ) {
-				arr->push(arr, object_clone(childarr->get_index(childarr, i)));
+				jsonObjectPush( arr, jsonObjectClone(jsonObjectGetIndex(childarr, i)) );
 			}
 		}
-		free_object(childarr);
+		jsonObjectFree(childarr);
 	}
 
-	free_iterator(itr);
+	jsonObjectIteratorFree(itr);
 
 	return arr;
+}
+
+
+char* jsonObjectToSimpleString( const jsonObject* o ) {
+	char* value = NULL;
+
+	if(o) {
+		switch( o->type ) {
+
+			case JSON_NUMBER: {
+				DOUBLE_TO_STRING(o->value.n);
+				value = strdup(DOUBLESTR);
+				break;
+			}
+
+			case JSON_STRING:
+				value = strdup(o->value.s);
+		}
+	}	
+	return value;
 }
 
 

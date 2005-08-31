@@ -1,7 +1,6 @@
 #include "opensrf/transport_client.h"
 #include "opensrf/osrf_message.h"
 #include "opensrf/osrf_app_session.h"
-#include "opensrf/osrf_config.h"
 #include <time.h>
 #include <sys/timeb.h>
 #include <sys/types.h>

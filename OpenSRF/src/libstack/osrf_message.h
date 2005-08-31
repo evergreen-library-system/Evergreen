@@ -1,7 +1,6 @@
 #include "string_array.h"
 #include "utils.h"
 #include "logging.h"
-#include "osrf_config.h"
 #include "objson/object.h"
 #include "objson/json_parser.h"
 
@@ -62,7 +61,7 @@ struct osrf_message_struct {
 
 	/* if we're a RESULT */
 	//json* result_content;
-	object* _result_content;
+	jsonObject* _result_content;
 
 	/* unparsed json string */
 	char* result_string;
@@ -70,7 +69,7 @@ struct osrf_message_struct {
 	/* if we're a REQUEST */
 	char* method_name;
 	//json* params;
-	object* _params;
+	jsonObject* _params;
 
 	/* in case anyone wants to make a list of us.  
 		we won't touch this variable */
@@ -100,9 +99,9 @@ int osrf_message_deserialize(char* json, osrf_message* msgs[], int count);
   */
 int osrf_message_from_xml( char* xml, osrf_message* msgs[] );
 
-void osrf_message_set_params( osrf_message* msg, object* o );
+void osrf_message_set_params( osrf_message* msg, jsonObject* o );
 void osrf_message_set_method( osrf_message* msg, char* method_name );
-void osrf_message_add_object_param( osrf_message* msg, object* o );
+void osrf_message_add_object_param( osrf_message* msg, jsonObject* o );
 void osrf_message_add_param( osrf_message*, char* param_string );
 
 

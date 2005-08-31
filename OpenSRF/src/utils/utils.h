@@ -30,6 +30,49 @@ GNU General Public License for more details.
 //#include <sys/timeb.h>
 
 
+/* turns a va_list into a string */
+#define VA_LIST_TO_STRING(x) \
+	unsigned long len = 0;\
+	va_list args; \
+	va_list a_copy;\
+	va_copy(a_copy, args); \
+	va_start(args, x); \
+	len = vsnprintf(NULL, 0, x, args); \
+	va_end(args); \
+	len += 2; \
+	char _b[len]; \
+	bzero(_b, len); \
+	va_start(a_copy, x); \
+	vsnprintf(_b, len - 1, x, a_copy); \
+	va_end(a_copy); \
+	char* VA_BUF = _b; \
+
+/* turns a long into a string */
+#define LONG_TO_STRING(l) \
+	unsigned int __len = snprintf(NULL, 0, "%ld", l) + 2;\
+	char __b[__len]; \
+	bzero(__b, __len); \
+	snprintf(__b, __len - 1, "%ld", l); \
+	char* LONGSTR = __b;
+
+#define DOUBLE_TO_STRING(l) \
+	unsigned int __len = snprintf(NULL, 0, "%lf", l) + 2; \
+	char __b[__len]; \
+	bzero(__b, __len); \
+	snprintf(__b, __len - 1, "%lf", l); \
+	char* DOUBLESTR = __b;
+
+#define INT_TO_STRING(l) \
+	unsigned int __len = snprintf(NULL, 0, "%d", l) + 2; \
+	char __b[__len]; \
+	bzero(__b, __len); \
+	snprintf(__b, __len - 1, "%d", l); \
+	char* INTSTR = __b;
+
+
+	
+
+
 #define BUFFER_MAX_SIZE 10485760 
 
 int daemonize();
@@ -97,7 +140,7 @@ int stringisnum(char* s);
 /* reads a file and returns the string version of the file
 	user is responsible for freeing the returned char*
 	*/
-char* file_to_string(char* filename);
+char* file_to_string(const char* filename);
 
 
 

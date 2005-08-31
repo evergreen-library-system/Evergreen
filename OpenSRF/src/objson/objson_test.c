@@ -27,77 +27,85 @@ int main() {
 
 
 
-	object* o;
+	jsonObject* o;
+
+
+	o = jsonParseString("[  1, 4, 6, 9 ]");
+	jsonObjectIterator* itr = jsonNewObjectIterator(o);
+	jsonObjectNode* tmp = NULL;
+	while( (tmp = jsonObjectIteratorNext(itr)) ) {
+		char* q = jsonObjectToJSON(tmp->item);
+		printf("Iterator thing => %s\n", q);
+		free(q);
+	}
+	jsonObjectIteratorFree(itr);
+	jsonObjectFree(o);
+	
 
 
 	printf("------------------------------------------------------------------\n");
-	//o = json_parse_string("-1");
-	o = json_parse_string("{\"key\":-1}");
-	char* h = o->to_json(o);
+	o = jsonParseString("{\"key\":-1}");
+	char* h = jsonObjectToJSON(o);
 	printf("\nParsed number: %s\n", h);
-	free_object(o);
+	free(h);
+	jsonObjectFree(o);
 
 
 	/* number, double, and 'null' parsing... */
 	printf("------------------------------------------------------------------\n");
-	 o = json_parse_string("1");
-	printf("\nParsed number: %ld\n", o->num_value);
-	free_object(o);
+	o = jsonParseString("1");
+	printf("\nParsed number: %lf\n", jsonObjectGetNumber(o));
+	jsonObjectFree(o);
 
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("1.1");
-	printf("\nDouble number: %lf\n", o->double_value);
-	free_object(o);
-
-	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("nUlL");
-	char* s = o->to_json(o);
-	free_object(o);
-
+	o = jsonParseString("nUlL");
+	char* s = jsonObjectToJSON(o);
 	printf("\nJSON Null: %s\n", s);
 	free(s);
+	jsonObjectFree(o);
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("[1, .5, null]");
-	s  = o->to_json(o);
+	o = jsonParseString("[1, .5, null]");
+	s  = jsonObjectToJSON(o);
 	printf("\nJSON MIX: %s\n", s );
 	free(s);
-	free_object(o);
+	jsonObjectFree(o);
 
 	printf("------------------------------------------------------------------\n");
 	/* simulate an error.. */
 	printf("\nShould print error msg: \n");
-	o = json_parse_string("[1, .5. null]");
+	o = jsonParseString("[1, .5. null]");
 	if( o == NULL ) printf("\n"); 
+	jsonObjectFree(o);
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("[ Null, trUe, falSE, 1, 12.9, \"true\" ]");
-	s = o->to_json(o);
+	o = jsonParseString("[ Null, trUe, falSE, 1, 12.9, \"true\" ]");
+	s = jsonObjectToJSON(o);
 	printf("More JSON: %s\n", s);
 	free(s);
-	free_object(o);
+	jsonObjectFree(o);
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("[ Null, trUe, falSE, 1, 12.9, \"true\", "
+	o = jsonParseString("[ Null, trUe, falSE, 1, 12.9, \"true\", "
 			"{\"key\":[0,0.0,1],\"key2\":null},NULL, { }, [] ]");
-	s = o->to_json(o);
+	s = jsonObjectToJSON(o);
 	printf("More JSON: %s\n", s);
 	free(s);
-	free_object(o);
+	jsonObjectFree(o);
 
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("{ Null: trUe }");
+	o = jsonParseString("{ Null: trUe }");
 
 
 
 	printf("------------------------------------------------------------------\n");
-	o = json_parse_string("\"Pin\\u0303ata\"");
-	s = o->to_json(o);
-	printf("UNICODE:: %s\n", o->string_data);
+	o = jsonParseString("\"Pin\\u0303ata\"");
+	s = jsonObjectToJSON(o);
+	printf("UNICODE:: %s\n", o->value.s);
 	printf("Back to JSON: %s\n", s);
-	free_object(o);
+	jsonObjectFree(o);
 	free(s);
 
 
@@ -109,41 +117,41 @@ int main() {
 	printf("\nOriginal JSON\n%s\n", jsons); 
 
 	/* parse the JSON string */
-	object* yuk = json_parse_string(jsons); 
+	jsonObject* yuk = jsonParseString(jsons); 
 
 	/* grab the class name from the object */
 	printf("------------------------------------------------------------------\n");
 	printf("\nParsed object with class %s\n", yuk->classname );
 
 	/* turn the resulting object back into JSON */
-	char* ccc = yuk->to_json(yuk); 
+	char* ccc = jsonObjectToJSON(yuk); 
 	
 	/* extract a sub-object from the object and print its data*/
-	o = yuk->get_index(yuk, 11);
-	printf("\nRandom unicode string => %s\n", o->string_data);
+	o = jsonObjectGetIndex(yuk, 11);
+	printf("\nRandom unicode string => %s\n", jsonObjectGetString(o));
 
 	/* parse the new JSON string to build yet another object */
-	object* yuk2 = json_parse_string(ccc);
+	jsonObject* yuk2 = jsonParseString(ccc);
 
 	printf("------------------------------------------------------------------\n");
 	/* turn that one back into JSON and print*/
-	char* cccc = yuk2->to_json(yuk2);
+	char* cccc = jsonObjectToJSON(yuk2);
 	printf("\nFinal JSON: \n%s\n", cccc);
 
 	char* string2 = strdup(jsons);
 
 	printf("------------------------------------------------------------------\n");
 	int x = 0;
-	int count = 3000;
+	int count = 30;
 	printf("\nParsing %d round trips at %f...\n", count, get_timestamp_millis());
 
 	/* parse and stringify many times in a loop to check speed */
 	while(x++ < count) {
 
-		object* o = json_parse_string(string2); 
+		jsonObject* o = jsonParseString(string2); 
 		free(string2);
-		string2 = o->to_json(o);
-		free_object(o);
+		string2 = jsonObjectToJSON(o);
+		jsonObjectFree(o);
 
 		if(!(x % 500))
 			fprintf(stderr, "Round trip at %d\n", x);
@@ -152,15 +160,14 @@ int main() {
 	printf("After Loop: %f\n", get_timestamp_millis());
 
 
-	/* to_json() generates a string that must be freed by the caller */
 	free(string2);
 	free(ccc); 
 	free(cccc); 
 
 	/* only free the top level objects.  objects that are 'children'
 		of other objects should not be freed */
-	free_object(yuk); 
-	free_object(yuk2); 
+	jsonObjectFree(yuk); 
+	jsonObjectFree(yuk2); 
 
 
 
@@ -172,6 +179,7 @@ int main() {
 		perror("unable to open test.json for testing");
 		exit(99);
 	}
+	fclose(F);
 
 	char buf[10240];
 	char smallbuf[512];
@@ -184,15 +192,15 @@ int main() {
 	/* dig our way into the JSON object we parsed, see test.json to get
 	   an idea of the object structure */
 	printf("------------------------------------------------------------------\n");
-	object* big = json_parse_string(buf);
-	object* k = big->get_key(big,"web-app");
-	object* k2 = k->get_key(k,"servlet");
-	object* k3 = k2->get_index(k2, 0);
-	object* k4 = k3->get_key(k3,"servlet-class");
+	jsonObject* big = jsonParseString(buf);
+	jsonObject* k = jsonObjectGetKey(big,"web-app");
+	jsonObject* k2 = jsonObjectGetKey(k,"servlet");
+	jsonObject* k3 = jsonObjectGetIndex(k2, 0);
+	jsonObject* k4 = jsonObjectGetKey(k3,"servlet-class");
 
-	printf("\nValue for object with key 'servlet-class' in the JSON file => %s\n", k4->get_string(k4));
+	jsonObjectFree(big);
 
-
+	printf("\nValue for object with key 'servlet-class' in the JSON file => %s\n", jsonObjectGetString(k4));
 	
 
 	return 0;

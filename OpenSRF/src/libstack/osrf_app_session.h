@@ -1,14 +1,16 @@
+#ifndef _OSRF_APP_SESSION
+#define _OSRF_APP_SESSION
+
 #include "opensrf/transport_client.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
 #include "string_array.h"
-#include "osrf_config.h"
+//#include "osrf_config.h"
+#include "osrfConfig.h"
 
 #include "objson/object.h"
 #include "objson/json_parser.h"
 
-#ifndef OSRF_APP_SESSION
-#define OSRF_APP_SESSION
 
 
 #define	DEF_RECV_TIMEOUT 6 /* receive timeout */
@@ -101,7 +103,7 @@ osrf_app_session* osrf_app_session_find_session( char* session_id );
   * requeset.
   */
 int osrf_app_session_make_req( 
-		osrf_app_session* session, object* params, 
+		osrf_app_session* session, jsonObject* params, 
 		char* method_name, int protocol, string_array* param_strings);
 
 /** Sets the given request to complete state */

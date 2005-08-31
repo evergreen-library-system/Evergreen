@@ -18,28 +18,27 @@ int osrf_prefork_run(char* appname) {
 
 	info_handler("Loading config in osrf_forker for app %s", appname);
 
-	object* max_req = osrf_settings_host_value_object("/apps/%s/unix_config/max_requests", appname);
-	object* min_children = osrf_settings_host_value_object("/apps/%s/unix_config/min_children", appname);
-	object* max_children = osrf_settings_host_value_object("/apps/%s/unix_config/max_children", appname);
+	jsonObject* max_req = osrf_settings_host_value_object("/apps/%s/unix_config/max_requests", appname);
+	jsonObject* min_children = osrf_settings_host_value_object("/apps/%s/unix_config/min_children", appname);
+	jsonObject* max_children = osrf_settings_host_value_object("/apps/%s/unix_config/max_children", appname);
 
 	if(!max_req) warning_handler("Max requests not defined, assuming 1000");
-	else maxr = max_req->num_value;
+	else maxr = (int) jsonObjectGetNumber(max_req);
 
 	if(!min_children) warning_handler("Min children not defined, assuming 3");
-	else minc = min_children->num_value;
+	else minc = (int) jsonObjectGetNumber(min_children);
 
 	if(!max_children) warning_handler("Max children not defined, assuming 10");
-	else maxc = max_children->num_value;
+	else maxc = (int) jsonObjectGetNumber(max_children);
 
-	free_object(max_req);
-	free_object(min_children);
-	free_object(max_children);
+	jsonObjectFree(max_req);
+	jsonObjectFree(min_children);
+	jsonObjectFree(max_children);
 	/* --------------------------------------------------- */
 
 	char* resc = va_list_to_string("%s_listener", appname);
 
-	if(!osrf_system_bootstrap_client_resc(
-		osrf_get_bootstrap_config(), osrf_get_config_context(), resc)) 
+	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc ))
 		fatal_handler("Unable to bootstrap client for osrf_prefork_run()");
 	free(resc);
 
@@ -71,8 +70,7 @@ void prefork_child_init_hook(prefork_child* child) {
 	if(!child) return;
 	info_handler("Child init hook for child %d", child->pid);
 	char* resc = va_list_to_string("%s_drone",child->appname);
-	if(!osrf_system_bootstrap_client_resc(
-		osrf_get_bootstrap_config(), osrf_get_config_context(), resc)) 
+	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) 
 		fatal_handler("Unable to bootstrap client for osrf_prefork_run()");
 	free(resc);
 }

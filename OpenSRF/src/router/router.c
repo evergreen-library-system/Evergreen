@@ -10,7 +10,7 @@ void _build_trusted_sites( transport_router_registrar* router );
 
 void sig_hup_handler( int a ) { 
 	router_registrar_free( routt );	
-	config_reader_free();	
+	osrfConfigCleanup();
 	log_free();
 	free( router_resource );
 	exit(0); 
@@ -24,27 +24,26 @@ int main( int argc, char* argv[] ) {
 		exit(0);
 	}
 
-	config_reader_init( "opensrf.router", argv[1] );	
-	if( conf_reader == NULL ) fatal_handler( "main(): Config is NULL" ); 
+	osrfConfig* cfg = osrfConfigInit( argv[1], "router" );
+	osrfConfigSetDefaultConfig(cfg);
 
 	/* load the config options */
-	char* server			= config_value("opensrf.router", "//router/transport/server");
-	char* port				= config_value("opensrf.router", "//router/transport/port");
-	char* unixpath			= config_value("opensrf.router", "//router/transport/unixpath");
-	char* username			= config_value("opensrf.router", "//router/transport/username");
-	char* password			= config_value("opensrf.router", "//router/transport/password");
-	router_resource		= config_value("opensrf.router", "//router/transport/resource");
-	char* con_timeout		= config_value("opensrf.router", "//router/transport/connect_timeout" );
-	char* max_retries		= config_value("opensrf.router", "//router/transport/max_reconnect_attempts" );
-	char* component		= config_value("opensrf.router", "//router/component" );
+	char* server			= osrfConfigGetValue(NULL, "/transport/server");
+	char* port				= osrfConfigGetValue(NULL, "/transport/port");
+	char* unixpath			= osrfConfigGetValue(NULL, "/transport/unixpath");
+	char* username			= osrfConfigGetValue(NULL, "/transport/username");
+	char* password			= osrfConfigGetValue(NULL, "/transport/password");
+	router_resource		= osrfConfigGetValue(NULL, "/transport/resource");
+	char* con_timeout		= osrfConfigGetValue(NULL, "/transport/connect_timeout" );
+	char* max_retries		= osrfConfigGetValue(NULL, "/transport/max_reconnect_attempts" );
+	char* component		= osrfConfigGetValue(NULL, "/component" );
 
 	fprintf(stderr, "Router connecting with uname %s, server %s, port %s, unixpath %s",
 		username, server, port, unixpath );
 
-
 	/* set up the logger */
-	char* level = config_value("opensrf.router","//router/loglevel");
-	char* log_file = config_value("opensrf.router","//router/logfile");
+	char* level = osrfConfigGetValue(NULL, "/loglevel");
+	char* log_file = osrfConfigGetValue(NULL, "/logfile");
 
 	int llevel = atoi(level);
 	fprintf(stderr, "Level %d; file %s\n", llevel, log_file );
@@ -110,7 +109,6 @@ int main( int argc, char* argv[] ) {
 
 
 	router_registrar_free( router_registrar );
-	config_reader_free();	
 	return 1;
 
 }
@@ -128,40 +126,19 @@ transport_router_registrar* router_registrar_init( char* server,
 	router_registrar->client_timeout	= client_timeout;
 	router_registrar->jabber = jabber_connect_init( server, port, unixpath, username, password, resource, con_timeout, component );
 	_build_trusted_sites( router_registrar );
-	info_handler( "Trusted stuff %s, %s, %s", router_registrar->trusted_servers[0], 
-		router_registrar->trusted_clients[0], router_registrar->trusted_clients[1] );
-	return router_registrar;
 
+	return router_registrar;
 }
 
 void _build_trusted_sites( transport_router_registrar* router ) {
 
-	router->trusted_servers = (char**) safe_malloc(sizeof(char**));
-	router->trusted_clients = (char**) safe_malloc(sizeof(char**));
+	router->trusted_servers = osrfNewStringArray(4);
+	router->trusted_clients = osrfNewStringArray(4);
+	osrfConfigGetValueList(NULL, router->trusted_servers, "/trusted_domains/server" );
+	osrfConfigGetValueList(NULL, router->trusted_clients, "/trusted_domains/client" );
 
-	*(router->trusted_servers) = (char*) safe_malloc(ROUTER_MAX_TRUSTED);
-	*(router->trusted_clients) = (char*) safe_malloc(ROUTER_MAX_TRUSTED);
-
-	int i = 0;
-	while( ++i ) {
-		char* server = config_value("opensrf.router","//router/trusted_domains/server%d", i );
-		if(server == NULL)
-			break;
-		
-		router->trusted_servers[i-1] = server;
-	}
-
-	i = 0;
-	while( ++i ) {
-		char* client = config_value( "opensrf.router","//router/trusted_domains/client%d", i );
-		if(client == NULL)
-			break;
-		router->trusted_clients[i-1] = client;
-	}
-
-	if( router->trusted_servers[0] == NULL ||
-			router->trusted_clients[0] == NULL )
-
+	if(router->trusted_servers->size < 1 ||
+		router->trusted_clients->size < 1 )
 		fatal_handler( "You must specify at least one trusted server and client in the config file");
 }
 
@@ -270,7 +247,7 @@ void listen_loop( transport_router_registrar* router ) {
 					message came from one of those servers */
 				if(cur_msg) {
 
-					if(router->trusted_servers && router->trusted_servers[0]) {
+					if( router->trusted_servers->size > 0 ) {
 
 						int i = 0;
 						int found = 0;
@@ -284,11 +261,12 @@ void listen_loop( transport_router_registrar* router ) {
 							info_handler("Received top level message from %s", server_buf );
 		
 							while(1) {
-								if(router->trusted_servers[i] == NULL)
-									break;
-								if(!strcmp(router->trusted_servers[i], server_buf)) {
-									found = 1;
-									break;
+								char* domain = osrfStringArrayGetString(router->trusted_servers, i);
+								if(domain) {
+									if(!strcmp(domain, server_buf)) {
+										found = 1;
+										break;
+									}
 								}
 								i++;
 							}
@@ -998,7 +976,7 @@ osrf_message** router_registrar_process_app_request(
 
 	if(!strcmp(omsg->method_name,"opensrf.router.info.class.list")) {
 
-		object* result_content = json_parse_string("[]");
+		jsonObject* result_content = jsonParseString("[]");
 
 		debug_handler("Processing opensrf.router.info.class.list request");
 
@@ -1007,7 +985,7 @@ osrf_message** router_registrar_process_app_request(
 
 			debug_handler("Adding %s to request list", cur_class->server_class);
 
-			result_content->push(result_content, new_object(cur_class->server_class));
+			jsonObjectPush(result_content, jsonNewObject(cur_class->server_class));
 			cur_class = cur_class->next;
 		}
 		result_array = safe_malloc(sizeof(osrf_message*));
@@ -1016,8 +994,8 @@ osrf_message** router_registrar_process_app_request(
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
 
-		osrf_message_set_result_content( result_array[0], object_to_json(result_content));
-		free_object(result_content);
+		osrf_message_set_result_content( result_array[0], jsonObjectToJSON(result_content));
+		jsonObjectFree(result_content);
 
 
 	} else if(!strcmp(omsg->method_name,"opensrf.router.info.stats")) {
@@ -1028,7 +1006,7 @@ osrf_message** router_registrar_process_app_request(
 
 		debug_handler("Processing opensrf.router.info.stats request");
 
-		object* result_content = json_parse_string("{}");
+		jsonObject* result_content = jsonParseString("{}");
 
 		server_class_node* cur_class = router->server_class_list;
 
@@ -1038,58 +1016,58 @@ osrf_message** router_registrar_process_app_request(
 			server_node* cur_node = start_node;
 			if( cur_node == NULL ) continue; 
 
-			object* server_object = json_parse_string("{}");
+			jsonObject* server_object = jsonParseString("{}");
 
 			do {
 
-				object* node_stats_array = json_parse_string("[]");
+				jsonObject* node_stats_array = jsonParseString("[]");
 
-				object* json_reg_time = json_parse_string("{}");
+				jsonObject* json_reg_time = jsonParseString("{}");
 
-				object_add_key( json_reg_time, "reg_time", 
-					new_int_object((int) cur_node->reg_time));
+				jsonObjectSetKey( json_reg_time, "reg_time", 
+					jsonNewNumberObject((double) cur_node->reg_time));
 
-				object_push(  node_stats_array, json_reg_time );
+				jsonObjectPush(  node_stats_array, json_reg_time );
 
-				object* json_upd_time = json_parse_string("{}");
-
-
-				object_add_key( json_upd_time, "upd_time", 
-					new_int_object((int)cur_node->upd_time));
+				jsonObject* json_upd_time = jsonParseString("{}");
 
 
-
-				object_push( node_stats_array, json_upd_time );
+				jsonObjectSetKey( json_upd_time, "upd_time", 
+					jsonNewNumberObject((int)cur_node->upd_time));
 
 
 
-				object* json_la_time = json_parse_string("{}");
+				jsonObjectPush( node_stats_array, json_upd_time );
 
 
 
-				object_add_key( json_la_time, "la_time", 
-						new_int_object((int)cur_node->la_time));
+				jsonObject* json_la_time = jsonParseString("{}");
 
 
-				object_push( node_stats_array, json_la_time );
 
-				object* json_serve_count = json_parse_string("{}");
+				jsonObjectSetKey( json_la_time, "la_time", 
+						jsonNewNumberObject((int)cur_node->la_time));
 
 
-				object_add_key( json_serve_count, "serve_count", 
-					new_int_object((int)cur_node->serve_count));
+				jsonObjectPush( node_stats_array, json_la_time );
+
+				jsonObject* json_serve_count = jsonParseString("{}");
+
+
+				jsonObjectSetKey( json_serve_count, "serve_count", 
+					jsonNewNumberObject((int)cur_node->serve_count));
 
 				
-				object_push( node_stats_array, json_serve_count );
+				jsonObjectPush( node_stats_array, json_serve_count );
 
 
-				object_add_key( server_object, cur_node->remote_id, node_stats_array );
+				jsonObjectSetKey( server_object, cur_node->remote_id, node_stats_array );
 
 				cur_node = cur_node->next;
 	
 			} while( cur_node != start_node );
 
-			object_add_key( result_content, cur_class->server_class, server_object );
+			jsonObjectSetKey( result_content, cur_class->server_class, server_object );
 	
 			cur_class = cur_class->next;
 
@@ -1102,30 +1080,30 @@ osrf_message** router_registrar_process_app_request(
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
 
-		osrf_message_set_result_content(result_array[0], object_to_json(result_content));
+		osrf_message_set_result_content(result_array[0], jsonObjectToJSON(result_content));
 
-		free_object(result_content);
+		jsonObjectFree(result_content);
 
 
 	} else if(!strcmp(omsg->method_name,"opensrf.system.method.all")) {
 
-		object* content = json_parse_string("{}");
-		object_add_key(content, "api_level", new_object("1"));
-		object_add_key(content, "api_name", new_object("opensrf.router.info.class.list"));
-		object_add_key(content, "server_class", new_object("router"));
-		object_add_key(content, "stream", new_object("0"));
+		jsonObject* content = jsonParseString("{}");
+		jsonObjectSetKey(content, "api_level", jsonNewObject("1"));
+		jsonObjectSetKey(content, "api_name", jsonNewObject("opensrf.router.info.class.list"));
+		jsonObjectSetKey(content, "server_class", jsonNewObject("router"));
+		jsonObjectSetKey(content, "stream", jsonNewObject("0"));
 
-		object* content2 = json_parse_string("{}");
-		object_add_key(content2, "api_level", new_object("1"));
-		object_add_key(content2, "api_name", new_object("opensrf.router.info.stats"));
-		object_add_key(content2, "server_class", new_object("router"));
-		object_add_key(content2, "stream", new_object("0"));
+		jsonObject* content2 = jsonParseString("{}");
+		jsonObjectSetKey(content2, "api_level", jsonNewObject("1"));
+		jsonObjectSetKey(content2, "api_name", jsonNewObject("opensrf.router.info.stats"));
+		jsonObjectSetKey(content2, "server_class", jsonNewObject("router"));
+		jsonObjectSetKey(content2, "stream", jsonNewObject("0"));
 
-		object* content3 = json_parse_string("{}");
-		object_add_key(content3, "api_level", new_object("1"));
-		object_add_key(content3, "api_name", new_object("opensrf.system.method.all"));
-		object_add_key(content3, "server_class", new_object("router"));
-		object_add_key(content3, "stream", new_object("1"));
+		jsonObject* content3 = jsonParseString("{}");
+		jsonObjectSetKey(content3, "api_level", jsonNewObject("1"));
+		jsonObjectSetKey(content3, "api_name", jsonNewObject("opensrf.system.method.all"));
+		jsonObjectSetKey(content3, "server_class", jsonNewObject("router"));
+		jsonObjectSetKey(content3, "stream", jsonNewObject("1"));
 
 		result_array = safe_malloc(3*sizeof(osrf_message*));
 		*num_responses = 3;
@@ -1133,18 +1111,18 @@ osrf_message** router_registrar_process_app_request(
 		result_array[0] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
 
-		osrf_message_set_result_content( result_array[0], object_to_json(content));
-		free_object(content);
+		osrf_message_set_result_content( result_array[0], jsonObjectToJSON(content));
+		jsonObjectFree(content);
 
 		result_array[1] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[1], object_to_json(content2) );
-		free_object(content2);
+		osrf_message_set_result_content( result_array[1], jsonObjectToJSON(content2) );
+		jsonObjectFree(content2);
 
 		result_array[2] = osrf_message_init(
 			RESULT, omsg->thread_trace, omsg->protocol );
-		osrf_message_set_result_content( result_array[1], object_to_json(content3) );
-		free_object(content3);
+		osrf_message_set_result_content( result_array[1], jsonObjectToJSON(content3) );
+		jsonObjectFree(content3);
 
 
 	}
@@ -1169,23 +1147,8 @@ int router_registrar_free( transport_router_registrar* router_registrar ) {
 		debug_handler( "Removed server classes in registrar free");
 	}
 
-	//transport_router_registrar* router = router_registrar;
-
-	/* make this better 
-	int i = 0;
-	while(1) {
-
-		if( router->trusted_servers[i] == NULL &&
-				router->trusted_clients[i] == NULL )
-			break;
-
-		if(router->trusted_servers[i] != NULL)
-			free(router->trusted_servers[i]);
-		if(router->trusted_clients[i] != NULL)
-			free(router->trusted_clients[i]);
-		i++;
-	}
-	*/
+	osrfStringArrayFree(router_registrar->trusted_servers);
+	osrfStringArrayFree(router_registrar->trusted_clients);
 
 	free( router_registrar );
 	return 1;

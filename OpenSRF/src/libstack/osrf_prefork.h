@@ -11,6 +11,7 @@
 #include "opensrf/transport_message.h"
 #include "osrf_stack.h"
 #include "osrf_settings.h"
+#include "osrfConfig.h"
 
 #define READ_BUFSIZE 4096
 #define MAX_BUFSIZE 10485760 /* 10M enough? ;) */

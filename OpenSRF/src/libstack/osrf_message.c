@@ -21,27 +21,27 @@ void osrf_message_set_method( osrf_message* msg, char* method_name ) {
 }
 
 
-void osrf_message_add_object_param( osrf_message* msg, object* o ) {
+void osrf_message_add_object_param( osrf_message* msg, jsonObject* o ) {
 	if(!msg|| !o) return;
 	if(!msg->_params)
-		msg->_params = json_parse_string("[]");
-	char* j = o->to_json(o);
-	msg->_params->push(msg->_params, json_parse_string(j));
+		msg->_params = jsonParseString("[]");
+	char* j = jsonObjectToJSON(o);
+	jsonObjectPush(msg->_params, jsonParseString(j));
 	free(j);
 }
 
-void osrf_message_set_params( osrf_message* msg, object* o ) {
+void osrf_message_set_params( osrf_message* msg, jsonObject* o ) {
 	if(!msg || !o) return;
 
-	if(!o->is_array) {
+	if(!o->type == JSON_ARRAY) {
 		warning_handler("passing non-array to osrf_message_set_params()");
 		return;
 	}
 
-	if(msg->_params) free_object(msg->_params);
+	if(msg->_params) jsonObjectFree(msg->_params);
 
-	char* j = o->to_json(o);
-	msg->_params = json_parse_string(j);
+	char* j = jsonObjectToJSON(o);
+	msg->_params = jsonParseString(j);
 	free(j);
 }
 
@@ -49,8 +49,8 @@ void osrf_message_set_params( osrf_message* msg, object* o ) {
 /* only works if parse_json_params is false */
 void osrf_message_add_param( osrf_message* msg, char* param_string ) {
 	if(msg == NULL || param_string == NULL) return;
-	if(!msg->_params) msg->_params = new_object(NULL);
-	msg->_params->push(msg->_params, json_parse_string(param_string));
+	if(!msg->_params) msg->_params = jsonNewObject(NULL);
+	jsonObjectPush(msg->_params, jsonParseString(param_string));
 }
 
 
@@ -75,7 +75,7 @@ void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
 		warning_handler( "Bad params to osrf_message_set_result_content()" );
 
 	msg->result_string =	strdup(json_string);
-	if(json_string) msg->_result_content = json_parse_string(json_string);
+	if(json_string) msg->_result_content = jsonParseString(json_string);
 }
 
 
@@ -91,7 +91,7 @@ void osrf_message_free( osrf_message* msg ) {
 		free(msg->status_text);
 
 	if( msg->_result_content != NULL )
-		free_object( msg->_result_content );
+		jsonObjectFree( msg->_result_content );
 
 	if( msg->result_string != NULL )
 		free( msg->result_string);
@@ -100,100 +100,110 @@ void osrf_message_free( osrf_message* msg ) {
 		free(msg->method_name);
 
 	if( msg->_params != NULL )
-		free_object(msg->_params);
+		jsonObjectFree(msg->_params);
 
 	free(msg);
 }
 
 char* osrf_message_serialize(osrf_message* msg) {
 	if( msg == NULL ) return NULL;
-	object* json = new_object(NULL);
-	json->set_class(json, "osrfMessage");
-	object* payload;
+	jsonObject* json = jsonNewObject(NULL);
+	jsonObjectSetClass(json, "osrfMessage");
+	jsonObject* payload;
 	char sc[64]; memset(sc,0,64);
 
 	char* str;
 
-	char tt[64];
-	memset(tt,0,64);
-	sprintf(tt,"%d",msg->thread_trace);
-	json->add_key(json, "threadTrace", new_object(tt));
+	INT_TO_STRING(msg->thread_trace);
+	jsonObjectSetKey(json, "threadTrace", jsonNewObject(INTSTR));
 
 	switch(msg->m_type) {
 		
 		case CONNECT: 
-			json->add_key(json, "type", new_object("CONNECT"));
+			jsonObjectSetKey(json, "type", jsonNewObject("CONNECT"));
 			break;
 
 		case DISCONNECT: 
-			json->add_key(json, "type", new_object("DISCONNECT"));
+			jsonObjectSetKey(json, "type", jsonNewObject("DISCONNECT"));
 			break;
 
 		case STATUS:
-			json->add_key(json, "type", new_object("STATUS"));
-			payload = new_object(NULL);
-			payload->set_class(payload, msg->status_name);
-			payload->add_key(payload, "status", new_object(msg->status_text));
+			jsonObjectSetKey(json, "type", jsonNewObject("STATUS"));
+			payload = jsonNewObject(NULL);
+			jsonObjectSetClass(payload, msg->status_name);
+			jsonObjectSetKey(payload, "status", jsonNewObject(msg->status_text));
          sprintf(sc,"%d",msg->status_code);
-			payload->add_key(payload, "statusCode", new_object(sc));
-			json->add_key(json, "payload", payload);
+			jsonObjectSetKey(payload, "statusCode", jsonNewObject(sc));
+			jsonObjectSetKey(json, "payload", payload);
 			break;
 
 		case REQUEST:
-			json->add_key(json, "type", new_object("REQUEST"));
-			payload = new_object(NULL);
-			payload->set_class(payload, "osrfMethod");
-			payload->add_key(payload, "method", new_object(msg->method_name));
-			str = object_to_json(msg->_params);
-			payload->add_key(payload, "params", json_parse_string(str));
+			jsonObjectSetKey(json, "type", jsonNewObject("REQUEST"));
+			payload = jsonNewObject(NULL);
+			jsonObjectSetClass(payload, "osrfMethod");
+			jsonObjectSetKey(payload, "method", jsonNewObject(msg->method_name));
+			str = jsonObjectToJSON(msg->_params);
+			jsonObjectSetKey(payload, "params", jsonParseString(str));
 			free(str);
-			json->add_key(json, "payload", payload);
+			jsonObjectSetKey(json, "payload", payload);
 
 			break;
 
 		case RESULT:
-			json->add_key(json, "type", new_object("RESULT"));
-			payload = new_object(NULL);
-			payload->set_class(payload,"osrfResult");
-			payload->add_key(payload, "status", new_object(msg->status_text));
+			jsonObjectSetKey(json, "type", jsonNewObject("RESULT"));
+			payload = jsonNewObject(NULL);
+			jsonObjectSetClass(payload,"osrfResult");
+			jsonObjectSetKey(payload, "status", jsonNewObject(msg->status_text));
          sprintf(sc,"%d",msg->status_code);
-			payload->add_key(payload, "statusCode", new_object(sc));
-			str = object_to_json(msg->_result_content);
-			payload->add_key(payload, "content", json_parse_string(str));
+			jsonObjectSetKey(payload, "statusCode", jsonNewObject(sc));
+			str = jsonObjectToJSON(msg->_result_content);
+			jsonObjectSetKey(payload, "content", jsonParseString(str));
 			free(str);
-			json->add_key(json, "payload", payload);
+			jsonObjectSetKey(json, "payload", payload);
 			break;
 	}
 	
-	object* wrapper = new_object(NULL);
-	wrapper->push(wrapper, json);
-	char* j = wrapper->to_json(wrapper);
-	free_object(wrapper);
+	jsonObject* wrapper = jsonNewObject(NULL);
+	jsonObjectPush(wrapper, json);
+	char* j = jsonObjectToJSON(wrapper);
+	jsonObjectFree(wrapper);
 	return j;
 }
 
 
 int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
+
 	if(!string || !msgs || count <= 0) return 0;
 	int numparsed = 0;
-	object* json = json_parse_string(string);
-	if(json == NULL) return 0;
-	int x;
 
+	jsonObject* json = jsonParseString(string);
+
+	if(!json) {
+		warning_handler(
+			"osrf_message_deserialize() unable to parse data: \n%s\n", string);
+		return 0;
+	}
+
+	int x;
 
 	for( x = 0; x < json->size && x < count; x++ ) {
 
-		object* message = json->get_index(json, x);
+		jsonObject* message = jsonObjectGetIndex(json, x);
 
-		if(message && !message->is_null && 
+		char* j =  jsonObjectToJSON(message);
+		debug_handler("deserialize parsed message \n%s\n", j );
+		free(j);
+	
+
+		if(message && message->type != JSON_NULL && 
 			message->classname && !strcmp(message->classname, "osrfMessage")) {
 
 			osrf_message* new_msg = safe_malloc(sizeof(osrf_message));
 
-			object* tmp = message->get_key(message, "type");
+			jsonObject* tmp = jsonObjectGetKey(message, "type");
 
-			if(tmp && tmp->string_data) {
-				char* t = tmp->string_data;
+			char* t;
+			if( ( t = jsonObjectGetString(tmp)) ) {
 
 				if(!strcmp(t, "CONNECT")) 		new_msg->m_type = CONNECT;
 				if(!strcmp(t, "DISCONNECT")) 	new_msg->m_type = DISCONNECT;
@@ -202,63 +212,66 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 				if(!strcmp(t, "RESULT")) 		new_msg->m_type = RESULT;
 			}
 
-			tmp = message->get_key(message, "threadTrace");
+			tmp = jsonObjectGetKey(message, "threadTrace");
 			if(tmp) {
-				if(tmp->is_number)
-					new_msg->thread_trace = tmp->num_value;
-				if(tmp->is_string)
-					new_msg->thread_trace = atoi(tmp->string_data);
+				if(tmp->type == JSON_NUMBER)
+					new_msg->thread_trace = (int) jsonObjectGetNumber(tmp);
+				if(tmp->type == JSON_STRING)
+					new_msg->thread_trace = atoi(jsonObjectGetString(tmp));
 			}
 
 
-			tmp = message->get_key(message, "protocol");
+			tmp = jsonObjectGetKey(message, "protocol");
+
 			if(tmp) {
-				if(tmp->is_number)
-					new_msg->protocol = tmp->num_value;
-				if(tmp->is_string)
-					new_msg->protocol = atoi(tmp->string_data);
+				if(tmp->type == JSON_NUMBER)
+					new_msg->protocol = (int) jsonObjectGetNumber(tmp);
+				if(tmp->type == JSON_STRING)
+					new_msg->protocol = atoi(jsonObjectGetString(tmp));
 			}
 
-			tmp = message->get_key(message, "payload");
+			tmp = jsonObjectGetKey(message, "payload");
 			if(tmp) {
 				if(tmp->classname)
 					new_msg->status_name = strdup(tmp->classname);
 
-				object* tmp0 = tmp->get_key(tmp,"method");
-				if(tmp0 && tmp0->string_data)
-					new_msg->method_name = strdup(tmp0->string_data);
+				jsonObject* tmp0 = jsonObjectGetKey(tmp,"method");
+				if(jsonObjectGetString(tmp0))
+					new_msg->method_name = strdup(jsonObjectGetString(tmp0));
 
-				tmp0 = tmp->get_key(tmp,"params");
+				tmp0 = jsonObjectGetKey(tmp,"params");
 				if(tmp0) {
-					char* s = tmp0->to_json(tmp0);
-					new_msg->_params = json_parse_string(s);
+					char* s = jsonObjectToJSON(tmp0);
+					new_msg->_params = jsonParseString(s);
 					free(s);
 				}
 
-				tmp0 = tmp->get_key(tmp,"status");
-				if(tmp0 && tmp0->string_data)
-					new_msg->status_text = strdup(tmp0->string_data);
+				tmp0 = jsonObjectGetKey(tmp,"status");
+				if(jsonObjectGetString(tmp0))
+					new_msg->status_text = strdup(jsonObjectGetString(tmp0));
 
-				tmp0 = tmp->get_key(tmp,"statusCode");
+				tmp0 = jsonObjectGetKey(tmp,"statusCode");
 				if(tmp0) {
-					if(tmp0->is_string && tmp0->string_data)
-						new_msg->status_code = atoi(tmp0->string_data);
-					if(tmp0->is_number)
-						new_msg->status_code = tmp0->num_value;
+					if(jsonObjectGetString(tmp0))
+						new_msg->status_code = atoi(jsonObjectGetString(tmp0));
+					if(tmp0->type == JSON_NUMBER)
+						new_msg->status_code = (int) jsonObjectGetNumber(tmp0);
 				}
 
-				tmp0 = tmp->get_key(tmp,"content");
+				tmp0 = jsonObjectGetKey(tmp,"content");
 				if(tmp0) {
-					char* s = tmp0->to_json(tmp0);
-					new_msg->_result_content = json_parse_string(s);
+					char* s = jsonObjectToJSON(tmp0);
+					new_msg->_result_content = jsonParseString(s);
 					free(s);
 				}
 
 			}
 			msgs[numparsed++] = new_msg;
+			debug_handler("deserialize has parsed %d messages", numparsed);
 		}
 	}
-	free_object(json);
+
+	jsonObjectFree(json);
 	return numparsed;
 }
 

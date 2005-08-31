@@ -1,11 +1,13 @@
+#ifndef OSRF_SYSTEM_H
+#define OSRF_SYSTEM_H
+
 #include "opensrf/transport_client.h"
 #include "utils.h"
 #include "logging.h"
-#include "osrf_config.h"
-//#include "osrf_settings.h"
+//#include "osrf_config.h"
+#include "osrf_settings.h"
+#include "osrfConfig.h"
 
-#ifndef OSRF_SYSTEM_H
-#define OSRF_SYSTEM_H
 
 /** Connects to jabber.  Returns 1 on success, 0 on failure 
 	contextnode is the location in the config file where we collect config info

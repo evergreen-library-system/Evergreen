@@ -348,7 +348,7 @@ int stringisnum(char* s) {
 	
 
 
-char* file_to_string(char* filename) {
+char* file_to_string(const char* filename) {
 
 	if(!filename) return NULL;
 
@@ -367,6 +367,8 @@ char* file_to_string(char* filename) {
 		buffer_add(gb, buf);
 		bzero(buf, len);
 	}
+
+	fclose(file);
 
 	char* data = buffer_data(gb);
 	buffer_free(gb);

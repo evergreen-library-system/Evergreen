@@ -247,10 +247,17 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	char target_buf[512];
 	memset(target_buf,0,512);
-	char* domain	= config_value( "opensrf.bootstrap", "//%s/domains/domain1", osrf_get_config_context() ); /* just the first for now */
-	char* router_name = config_value( "opensrf.bootstrap", "//%s/router_name", osrf_get_config_context() );
+	//char* domain	= config_value( "opensrf.bootstrap", "//%s/domains/domain1", osrf_get_config_context() ); /* just the first for now */
+	//char* router_name = config_value( "opensrf.bootstrap", "//%s/router_name", osrf_get_config_context() );
+
+	osrfStringArray* arr = osrfNewStringArray(8);
+	osrfConfigGetValueList(NULL, arr, "/domains/domain");
+	char* domain = osrfStringArrayGetString(arr, 0);
+	char* router_name = osrfConfigGetValue(NULL, "/router_name");
+	osrfStringArrayFree(arr);
+	
 	sprintf( target_buf, "%s@%s/%s",  router_name, domain, remote_service );
-	free(domain);
+	//free(domain);
 	free(router_name);
 
 	session->request_queue = NULL;
@@ -338,7 +345,7 @@ void _osrf_app_session_free( osrf_app_session* session ){
 }
 
 int osrf_app_session_make_req( 
-		osrf_app_session* session, object* params, 
+		osrf_app_session* session, jsonObject* params, 
 		char* method_name, int protocol, string_array* param_strings ) {
 	if(session == NULL) return -1;
 

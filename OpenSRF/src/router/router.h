@@ -4,7 +4,7 @@
 
 #include "utils.h"
 #include "logging.h"
-#include "osrf_config.h"
+#include "osrfConfig.h"
 
 #include <time.h>
 #include <sys/select.h>
@@ -121,8 +121,11 @@ struct transport_router_registrar_struct {
 	/* true if we connect to jabber as a jabber component */
 	int component;
 
-	char** trusted_servers;
-	char** trusted_clients;
+	osrfStringArray* trusted_servers;
+	osrfStringArray* trusted_clients;
+
+	//char** trusted_servers;
+	//char** trusted_clients;
 
 
 };

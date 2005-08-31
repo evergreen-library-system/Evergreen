@@ -11,7 +11,7 @@
 
 		<!-- jabber domains to connect to (domain1, domain2, ...) -->
 		<domains>
-			<domain1>127.0.0.1</domain1>
+			<domain>127.0.0.1</domain>
 		</domains>
 
 		<!-- jabber login info -->
@@ -34,7 +34,7 @@
 	<rest_gateway>
 		<router_name>router</router_name>
 		<domains>
-			<domain1>127.0.0.1</domain1>
+			<domain>127.0.0.1</domain>
 		</domains>
 		<username>mylogin</username>
 		<passwd>mypassword</passwd>
@@ -44,7 +44,6 @@
 		<loglevel>3</loglevel>
 	</rest_gateway>
 
-
 	<!-- ======================================================================================== -->
 
 	<router>
@@ -52,9 +51,9 @@
 	
 		<trusted_domains>
 			<!-- Trusted servers are allowed to register apps with the router -->
-			<server1>127.0.0.1</server1>
+			<server>127.0.0.1</server>
 			<!-- Trusted clients are allowed to send packets through the router -->
-			<client1>127.0.0.1</client1>
+			<client>127.0.0.1</client>
 		</trusted_domains>
 	
 		<transport>

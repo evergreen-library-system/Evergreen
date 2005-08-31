@@ -31,6 +31,12 @@ UTIL_DIR		= ../utils
 DEST_INCLUDE = objson
 CC_OPTS		+= -DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
 
+# -------------
+#CC_OPTS		+= -I ../utils/
+#LD_OPTS += -L .
+#TMPDIR = .
+# -------------
+
 all:	msg test
 
 msg: 

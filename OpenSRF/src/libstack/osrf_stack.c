@@ -36,13 +36,18 @@ int osrf_stack_transport_handler( transport_message* msg, char* my_service ) {
 	debug_handler( "Transport handler received new message \nfrom %s "
 			"to %s with body \n\n%s\n", msg->sender, msg->recipient, msg->body );
 
+	if(! msg->thread  && ! msg->is_error ) {
+		warning_handler("Received a non-error message with no thread trace... dropping");
+		message_free( msg );
+	}
+
 	osrf_app_session* session = osrf_app_session_find_session( msg->thread );
 
 	if( session == NULL ) {  /* we must be a server, build a new session */
 		info_handler( "Received message for nonexistant session. Dropping..." );
-		osrf_app_server_session_init( msg->thread, my_service, msg->sender);
-		//message_free( msg );
-		//return 1;
+		//osrf_app_server_session_init( msg->thread, my_service, msg->sender);
+		message_free( msg );
+		return 1;
 	}
 
 	//debug_handler("Session [%s] found, building message", msg->thread );

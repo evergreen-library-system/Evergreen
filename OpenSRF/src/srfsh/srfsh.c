@@ -6,8 +6,6 @@ FILE* shell_reader = NULL;
 
 int main( int argc, char* argv[] ) {
 
-
-
 	/* --------------------------------------------- */
 	/* see if they have a .srfsh.xml in their home directory */
 	char* home = getenv("HOME");
@@ -71,12 +69,10 @@ int main( int argc, char* argv[] ) {
 
 	if(history_file != NULL )
 		write_history(history_file);
+
 	free(request);
-	client_disconnect( client );
-	client_free( client );	
-	config_reader_free();	
-	log_free();
-		
+
+	osrf_system_shutdown();
 	return 0;
 }
 
@@ -248,8 +244,8 @@ int handle_login( char* words[]) {
 
 		char* hash;
 		if(last_result && last_result->_result_content) {
-			object* r = last_result->_result_content;
-			hash = r->string_data;
+			jsonObject* r = last_result->_result_content;
+			hash = jsonObjectGetString(r);
 		} else return 0;
 
 
@@ -270,7 +266,9 @@ int handle_login( char* words[]) {
 
 		parse_request( buf2 );
 
-		login_session = strdup(last_result->_result_content->string_data);
+		char* x = jsonObjectGetString(last_result->_result_content);
+		if(x) login_session = strdup(x);
+		else login_session = NULL;
 
 		printf("Login Session: %s\n", login_session );
 		
@@ -504,7 +502,7 @@ int send_request( char* server,
 	if( server == NULL || method == NULL )
 		return 0;
 
-	object* params = NULL;
+	jsonObject* params = NULL;
 	if( !relay ) {
 		if( buffer != NULL && buffer->n_used > 0 ) 
 			params = json_parse_string(buffer->buf);
@@ -514,8 +512,8 @@ int send_request( char* server,
 			return 1;
 		}
 		else {
-			object* o = new_object(NULL);
-			o->push(o, last_result->_result_content );
+			jsonObject* o = jsonNewObject(NULL);
+			jsonObjectPush(o, last_result->_result_content );
 			params = o;
 		}
 	}
@@ -566,12 +564,12 @@ int send_request( char* server,
 				char* content;
 	
 				if( pretty_print && omsg->_result_content ) {
-					char* j = object_to_json(omsg->_result_content);
+					char* j = jsonObjectToJSON(omsg->_result_content);
 					//content = json_printer(j); 
-					content = json_string_format(j);
+					content = jsonFormatString(j);
 					free(j);
 				} else
-					content = object_get_string(omsg->_result_content);
+					content = jsonObjectGetString(omsg->_result_content);
 	
 				printf( "\nReceived Data: %s\n", content ); 
 				free(content);
@@ -599,12 +597,12 @@ int send_request( char* server,
 				char* content;
 	
 				if( pretty_print && omsg->_result_content ) {
-					char* j = object_to_json(omsg->_result_content);
+					char* j = jsonObjectToJSON(omsg->_result_content);
 					//content = json_printer(j); 
-					content = json_string_format(j);
+					content = jsonFormatString(j);
 					free(j);
 				} else
-					content = object_get_string(omsg->_result_content);
+					content = jsonObjectGetString(omsg->_result_content);
 	
 				buffer_add( resp_buffer, "\nReceived Data: " ); 
 				buffer_add( resp_buffer, content );
@@ -792,9 +790,9 @@ int do_math( int count, int style ) {
 
 	osrf_app_session* session = osrf_app_client_session_init(  "opensrf.math" );
 
-	object* params = json_parse_string("[]");
-	params->push(params,new_object("1"));
-	params->push(params,new_object("2"));
+	jsonObject* params = json_parse_string("[]");
+	jsonObjectPush(params,jsonNewObject("1"));
+	jsonObjectPush(params,jsonNewObject("2"));
 
 	char* methods[] = { "add", "sub", "mult", "div" };
 	char* answers[] = { "3", "-1", "2", "0.500000" };
@@ -840,7 +838,7 @@ int do_math( int count, int style ) {
 			if(omsg) {
 	
 				if(omsg->_result_content) {
-					char* jsn = object_to_json(omsg->_result_content);
+					char* jsn = jsonObjectToJSON(omsg->_result_content);
 					if(!strcmp(jsn, answers[j]))
 						fprintf(stderr, "+");
 					else
@@ -867,7 +865,7 @@ int do_math( int count, int style ) {
 	}
 
 	osrf_app_session_destroy( session );
-	free_object(params);
+	jsonObjectFree(params);
 
 	int c;
 	float total = 0;

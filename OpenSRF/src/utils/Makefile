@@ -17,6 +17,7 @@ msg:
 install: 
 	echo installing libc_utils.so
 	cp $(UTIL_HEADERS) $(INCLUDEDIR)/
+	cp xml_utils.h $(INCLUDEDIR)/
 	cp $(TMPDIR)/libc_utils.so $(LIBDIR)/
 
 libc_utils.so: $(UTIL_OBJECTS) 

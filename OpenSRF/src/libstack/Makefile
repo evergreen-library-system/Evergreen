@@ -1,11 +1,10 @@
 CC_OPTS		+=  -DASSUME_STATELESS 
 LD_OPTS += -lxml2 -lopensrf_transport  -lopensrf_stack -lobjson -lc_utils
 
-SOURCES = osrf_message.c osrf_app_session.c osrf_stack.c osrf_system.c osrf_config.c osrf_settings.c osrf_prefork.c
-TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_config.o osrf_settings.o osrf_prefork.o
-HEADERS = osrf_message.h osrf_app_session.h osrf_stack.h osrf_system.h osrf_config.h osrf_settings.h osrf_prefork.h
+TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_settings.o osrf_prefork.o osrfConfig.o xml_utils.o
+HEADERS = osrf_message.h osrf_app_session.h osrf_stack.h osrf_system.h osrf_settings.h osrf_prefork.h osrfConfig.h xml_utils.h
 
-all: msg libopensrf_stack.so  test
+all: msg xml_utils.o libopensrf_stack.so  test
 
 msg: 
 	echo "-> $$(pwd)"	
@@ -45,9 +44,6 @@ osrf_stack.o:	osrf_stack.c osrf_stack.h
 osrf_system.o:	osrf_system.c osrf_system.h
 	echo $@; $(CC) -c $(CC_OPTS) osrf_system.c -o $@
 
-osrf_config.o:	osrf_config.c osrf_config.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_config.c -o $@
-
 osrf_settings.o:	osrf_settings.c osrf_settings.h
 	echo $@; $(CC) -c $(CC_OPTS) osrf_settings.c -o $@
 
@@ -55,10 +51,13 @@ osrf_prefork.o:	osrf_prefork.c osrf_prefork.h
 	echo $@; $(CC) -c $(CC_OPTS) osrf_prefork.c -o $@
 
 
+osrfConfig.o:	osrfConfig.c osrfConfig.h xml_utils.o
+	echo $@; $(CC) -c $(CC_OPTS) osrfConfig.c -o $@
+
 install:
 	echo installing libopensrf_stack.so
 	cp $(HEADERS) $(INCLUDEDIR)/$(OPENSRF)
 	cp $(TMPDIR)/libopensrf_stack.so $(LIBDIR)/
 
 clean:
-	/bin/rm -f *.o libopensrf_stack.so test
+	/bin/rm -f *.o libopensrf_stack.so test xml_utils.h xml_utils.c
