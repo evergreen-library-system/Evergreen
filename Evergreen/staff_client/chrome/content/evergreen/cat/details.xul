@@ -24,6 +24,7 @@
 
 		function my_init() {
 
+			document.getElementById('copy_editor_tab').disabled = true;
 			chain_exec(
 				my_init_spawn_brief_view,
 				my_init_spawn_marc_view,
@@ -91,7 +92,7 @@
 				<tab label="MARC View"/>
 				<tab label="MARC Edit"/>
 				<tab label="Copy Browser"/>
-				<tab label="Copy Editor" disabled="true"/>
+				<tab label="Copy Editor" id="copy_editor_tab" disabled="true"/>
 			</tabs>
 			<tabpanels flex="1">
 				<tabpanel id="opac_view"/>
