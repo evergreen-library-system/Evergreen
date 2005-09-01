@@ -16,6 +16,9 @@
 
 all: build
 
+verbose:	oldconfig
+	@./install.sh build verbose
+
 config:	
 	@./config.sh
 

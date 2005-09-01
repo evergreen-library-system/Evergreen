@@ -20,6 +20,7 @@
 # --------------------------------------------------------------------
 CONFIG_FILE="install.conf";
 DEFAULT_CONFIG_FILE="install.conf.default";
+verbose="-s" #clear this to get full build output
 
 
 # --------------------------------------------------------------------
@@ -120,7 +121,7 @@ function runInstall {
 		echo "-------------- [ $target ] -------------------------------------------";
 		echo ""
 
-		MAKE="make -s APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
+		MAKE="make $verbose APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP \
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
 			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR \
 			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR ETCDIR=$ETCDIR \
@@ -241,6 +242,9 @@ function checkParams {
 
 			"install")
 				INSTALLING="1";;
+			
+			"verbose")
+				verbose="";;
 
 			*) fail "Unknown option => $arg";
 		esac
@@ -252,9 +256,9 @@ function checkParams {
 
 function cleanMe {
 	loadConfig;
-	make -s -C "$OPENSRFDIR" clean;
-	make -s -C "$OPENILSDIR"  clean;
-	make -s -C "$EVERGREENDIR" clean;
+	make "TMP=$TMP" -s -C "$OPENSRFDIR" clean;
+	make "TMP=$TMP" -s -C "$OPENILSDIR"  clean;
+	make "TMP=$TMP" -s -C "$EVERGREENDIR" clean;
 }
 
 function usage {

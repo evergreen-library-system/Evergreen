@@ -1,63 +1,27 @@
-CC_OPTS		+=  -DASSUME_STATELESS 
-LD_OPTS += -lxml2 -lopensrf_transport  -lopensrf_stack -lobjson -lc_utils
+
+CFLAGS	+=  -DASSUME_STATELESS 
+LDLIBS	+= -lxml2 -lobjson 
 
 TARGETS = osrf_message.o osrf_app_session.o osrf_stack.o osrf_system.o osrf_settings.o osrf_prefork.o osrfConfig.o xml_utils.o
 HEADERS = osrf_message.h osrf_app_session.h osrf_stack.h osrf_system.h osrf_settings.h osrf_prefork.h osrfConfig.h xml_utils.h
 
-all: msg xml_utils.o libopensrf_stack.so  
-
-msg: 
-	echo "-> $$(pwd)"	
-
-test:	test.o
-	echo $@
-	$(CC) $(LD_OPTS) test.o xml_utils.o -o $@
-
-test.o:	test.c xml_utils.o
-	echo $@
-	$(CC) -c $(CC_OPTS) test.c -o $@ 
+all: xml_utils.o $(TARGETS) copy
 
 xml_utils.o:
-	echo $@
 	cp ../utils/xml_utils.h .
 	cp ../utils/xml_utils.c .
-	$(CC) -c $(CC_OPTS) xml_utils.c -o $@ 
+	$(CC) -c $(CFLAGS) xml_utils.c -o $@ 
 
-# -------------------------------------------------------------
-
-
-libopensrf_stack.so: $(TARGETS)
-	echo $@
-	$(CC) -shared -W1 $(TARGETS) -o libopensrf_stack.so
-	$(CC) -shared -W1 $(TARGETS) -o $(TMPDIR)/libopensrf_stack.so
+copy:
 	cp $(HEADERS) $(TMPDIR)/
 
 osrf_message.o:	osrf_message.c osrf_message.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_message.c -o $@
-
 osrf_app_session.o:	osrf_app_session.c osrf_app_session.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_app_session.c -o $@
-
 osrf_stack.o:	osrf_stack.c osrf_stack.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_stack.c -o $@
-
 osrf_system.o:	osrf_system.c osrf_system.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_system.c -o $@
-
 osrf_settings.o:	osrf_settings.c osrf_settings.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_settings.c -o $@
-
 osrf_prefork.o:	osrf_prefork.c osrf_prefork.h
-	echo $@; $(CC) -c $(CC_OPTS) osrf_prefork.c -o $@
-
-
 osrfConfig.o:	osrfConfig.c osrfConfig.h xml_utils.o
-	echo $@; $(CC) -c $(CC_OPTS) osrfConfig.c -o $@
-
-install:
-	echo installing libopensrf_stack.so
-	cp $(HEADERS) $(INCLUDEDIR)/$(OPENSRF)
-	cp $(TMPDIR)/libopensrf_stack.so $(LIBDIR)/
 
 clean:
 	/bin/rm -f *.o libopensrf_stack.so test xml_utils.h xml_utils.c

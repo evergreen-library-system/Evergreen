@@ -26,50 +26,37 @@
 #
 # --------------------------------------------------------------------
 
-OBJS			= object.o json_parser.o utils.o
-UTIL_DIR		= ../utils
-DEST_INCLUDE = objson
-CC_OPTS		+= -DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
+OBJS				= utils.o object.o json_parser.o 
+UTIL_DIR			= ../utils
+DEST_INCLUDE	= objson
+CFLAGS			+= -DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
 
-# -------------
-#CC_OPTS		+= -I ../utils/
-#LD_OPTS += -L .
-#TMPDIR = .
-# -------------
+JSON_HEADERS = object.h json_parser.h
 
-all:	msg test
+all:	test
 
-msg: 
-	echo "-> $$(pwd)"	
+test: libobjson.so objson_test.o
 
-test: libobjson.so
-	echo $@
-	$(CC) $(CC_OPTS) $(LD_OPTS) -lobjson objson_test.c -o $@
+objson_test.o: objson_test.c 
+object.o:	object.h object.c
+json_parser.o:	json_parser.h json_parser.c
 
 install:
-	echo installing libobjson.so
 	mkdir -p $(INCLUDEDIR)/$(DEST_INCLUDE)
 	cp $(TMPDIR)/$(DEST_INCLUDE)/*.h $(INCLUDEDIR)/objson/
 	cp $(TMPDIR)/libobjson.so $(LIBDIR)/libobjson.so
 
 libobjson.so:	$(OBJS)
-	echo $@
 	$(CC) -shared -W1 $(OBJS) -o $(TMPDIR)/libobjson.so
 	$(CC) -shared -W1 $(OBJS) -o libobjson.so
 	mkdir -p $(TMPDIR)/$(DEST_INCLUDE)/
-	cp *.h $(TMPDIR)/$(DEST_INCLUDE)/
-
-object.o:	object.h object.c
-	echo $@
-	$(CC) -c $(CC_OPTS) object.c -o $@
-
-json_parser.o:	json_parser.h json_parser.c
-	echo $@
-	$(CC) -c $(CC_OPTS) json_parser.c -o $@
+	cp $(JSON_HEADERS) $(TMPDIR)/$(DEST_INCLUDE)/
 
 utils.o:	$(UTIL_DIR)/utils.h $(UTIL_DIR)/utils.c
-	echo $@
-	$(CC) -c $(CC_OPTS) $(UTIL_DIR)/utils.c -o $@
+	cp $(UTIL_DIR)/utils.h .
+	cp $(UTIL_DIR)/utils.c .
+	$(CC) -c $(CFLAGS) utils.c -o $@
 
 clean:
-	/bin/rm -f *.o *.so test libobjson.so
+	/bin/rm -f *.o *.so utils.c utils.h libobjson.so
+

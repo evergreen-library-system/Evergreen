@@ -24,7 +24,7 @@ GNU General Public License for more details.
 
 #include <stdio.h>
 #include "object.h"
-#include "opensrf/utils.h"
+#include "utils.h"
 
 
 

@@ -1,22 +1,15 @@
-# set this shell variable prior to calling make to run with malloc_check enabled
 #MALLOC_CHECK_=1 # XXX debug only
 
-LD_OPTS		+= -lc_utils -lxml2 -lopensrf_stack -lobjson
-LP				= ../libtransport
-LIB_SOURCES = $(LP)/transport_session.c $(LP)/transport_message.c $(LP)/transport_client.c 
+LDLIBS	+= -lxml2 -lopensrf -lobjson
+CFLAGS	+= -D_ROUTER
 
-all: msg router 
-
-msg: 
-	echo "-> $$(pwd)"	
+all: router 
 
 install: 
-	echo installing router
 	cp router $(BINDIR)
 
-router:  router.c $(LIB_SOURCES)
-	echo $@
-	$(CC) $(LD_OPTS) -D_ROUTER $(CC_OPTS)	$(LIB_SOURCES) router.c -o $@ 
+router:	router.o 
+router.o:	router.c router.h
 
 clean:
 	/bin/rm -f *.o router

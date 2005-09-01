@@ -83,5 +83,4 @@ for my $object (keys %$map) {
 }
 
 print SOURCE "	return -1;\n}\n";
-warn  "done\n";
 

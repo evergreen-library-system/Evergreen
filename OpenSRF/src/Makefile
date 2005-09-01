@@ -1,12 +1,4 @@
 # TOP level 'src' makefile for OpenSRF
-#
-#
-
-# Change to suit...
-#export PREFIX				= /usr
-#export APXS2					= /pines/apps/apache2/bin/apxs
-#export TMP					= /tmp/opensrf_build
-#export APACHE2_HEADERS	= /pines/apps/apache2/include 
 
 
 export TMPDIR			= $(TMP)/opensrf
@@ -15,50 +7,97 @@ export BINDIR			= $(PREFIX)/bin
 export LIBDIR			= $(PREFIX)/lib
 export PERLDIR			= $(LIBDIR)/perl5
 export INCLUDEDIR		= $(PREFIX)/include
-export CC				= gcc
-export LD_OPTS			= -L $(TMPDIR) -L .
-export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
+
+export LDLIBS			+= 
+export LDFLAGS			+= -L $(TMPDIR) -L .
+export CFLAGS			+= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
+LIBOPENSRF				= libopensrf.so
 
-all: prep router srfsh jserver gateway
+OPENSRF_TARGETS = libtransport/transport_session.o \
+						libtransport/transport_client.o \
+						libtransport/transport_message.o \
+						libstack/osrf_app_session.o \
+						libstack/osrf_stack.o \
+						libstack/osrfConfig.o \
+						libstack/osrf_settings.o \
+						libstack/osrf_message.o \
+						libstack/osrf_prefork.o \
+						libstack/osrf_system.o \
+						libstack/xml_utils.o \
+						utils/socket_bundle.o \
+						utils/string_array.o \
+						utils/utils.o \
+						utils/logging.o \
+						utils/md5.o \
+						utils/sha.o \
 
-install: install-prep transport-install stack-install gateway-install	\
-		router-install srfsh-install jserver-install perl-install			\
-		objson-install utils-install info
+OPENSRF_HEADERS = libtransport/transport_session.h \
+						libtransport/transport_client.h \
+						libtransport/transport_message.h \
+						libstack/osrf_app_session.h \
+						libstack/osrf_stack.h \
+						libstack/osrfConfig.h \
+						libstack/osrf_settings.h \
+						libstack/osrf_message.h \
+						libstack/osrf_prefork.h \
+						libstack/osrf_system.h \
+						libstack/xml_utils.h \
+						utils/socket_bundle.h \
+						utils/string_array.h \
+						utils/utils.h \
+						utils/logging.h \
+						utils/md5.h \
+						utils/sha.h \
+
+
+all: prep libopensrf.so router srfsh jserver gateway
+
+install: install-prep opensrf-install gateway-install	router-install \
+		srfsh-install jserver-install perl-install objson-install
 
 prep:
 	mkdir -p $(TMPDIR)
 
-# --------------------------------------------------------------------------------
-# LIBS 
-# --------------------------------------------------------------------------------
-c_utils: prep
+libopensrf.so:	objson/libobjson.so
+	@echo utils
 	make -C utils
-
-transport: c_utils
+	@echo transport
 	make -C libtransport
-
-objson: c_utils
-	make -C objson
-
-stack: objson transport 
+	@echo stack
 	make -C libstack
+	@echo $@
+	$(CC) -shared -W1 $(LDFLAGS) -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
 
+
+opensrf-install:
+	@echo $@
+	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)/$(LIBOPENSRF)
+	cp $(OPENSRF_HEADERS) $(INCLUDEDIR)/opensrf/
+
+
+objson/libobjson.so: 
+	@echo $@
+	make -C objson
 
 # --------------------------------------------------------------------------------
 # BINARIES
 # --------------------------------------------------------------------------------
-router: stack 
+router: libopensrf.so
+	@echo $@
 	make -C router 
 
-srfsh: stack
+srfsh: libopensrf.so
+	@echo $@
 	make -C srfsh
 
-gateway:	stack 
+gateway:	libopensrf.so
+	@echo $@
 	make -C gateway
 
-jserver: c_utils
+jserver:	libopensrf.so
+	@echo $@
 	make -C jserver
 
 
@@ -66,7 +105,7 @@ jserver: c_utils
 # INSTALL
 # --------------------------------------------------------------------------------
 install-prep:	
-	@echo "Creating install directories"
+	@echo $@
 	mkdir -p $(LIBDIR)
 	mkdir -p $(BINDIR)
 	mkdir -p $(PERLDIR)
@@ -75,31 +114,32 @@ install-prep:
 	mkdir -p $(ETCDIR)
 	mkdir -p $(TEMPLATEDIR)
 
-transport-install:	install-prep utils-install
-	make -C libtransport install
-
-utils-install:	install-prep
-	make -C utils install
-
-objson-install:	install-prep utils-install
+objson-install:	install-prep 
+	@echo $@
 	make -C objson install
 
-stack-install:	install-prep transport-install  objson-install
-	make -C libstack install
+libopensrf-install:	install-prep
+	@echo $@
+	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)
 
-gateway-install:	install-prep stack-install	
+gateway-install:	install-prep opensrf-install	
+	@echo $@
 	make -C gateway install
 
-router-install:	install-prep stack-install
+router-install:	install-prep opensrf-install
+	@echo $@
 	make -C router install
 
-srfsh-install:	install-prep stack-install 
+srfsh-install:	install-prep opensrf-install 
+	@echo $@
 	make -C srfsh install
 
-jserver-install:	install-prep utils-install
+jserver-install:	install-prep 
+	@echo $@
 	make -C jserver install
 
 perl-install:	install-prep
+	@echo $@
 	cp -r perlmods/* $(PERLDIR)/
 	cp ../examples/bootstrap.conf.example $(ETCDIR)
 	cp ../bin/opensrf_ctl $(BINDIR)
@@ -110,25 +150,10 @@ perl-install:	install-prep
 
 
 # --------------------------------------------------------------------------------
-# INFO
-# --------------------------------------------------------------------------------
-info:
-	@echo
-	@echo "OpenSRF is installed in $(PREFIX)"
-	@echo ""
-	@echo "It may be helpful to set some environment variables if the install "
-	@echo "was set to a non-standard location.  These include:"
-	@echo ""
-	@echo "export LD_LIBRARY_PATH=$(LIBDIR):\$$LD_LIBRARY_PATH"
-	@echo "export PERL5LIB=$(PERLDIR):\$$PERL5LIB"
-	@echo "export PATH=$(BINDIR):\$$PATH"
-	@echo ""
-
-
-# --------------------------------------------------------------------------------
 # CLEAN	
 # --------------------------------------------------------------------------------
 clean:
+	@echo $@
 	make -C libtransport clean
 	make -C libstack clean
 	make -C router clean
@@ -137,6 +162,7 @@ clean:
 	make -C utils clean
 	make -C objson clean
 	make -C srfsh clean
+	echo "Removing directory [$(TMPDIR)]"
 	/bin/rm -rf $(TMPDIR)
 
 

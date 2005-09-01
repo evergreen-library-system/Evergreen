@@ -1,6 +1,7 @@
+
 export TMPDIR			= $(TMP)/opensrf
-export LD_OPTS			= -L $(TMPDIR) -L .
-export CC_OPTS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
+export LDFLAGS			= -L $(TMPDIR) -L .
+export CFLAGS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
 all: mod_xmltools mod_ils_rest_gateway
@@ -15,46 +16,46 @@ web-install:	webcore-install autojs-install  mod_xmltools-install mod_ils_rest_g
 # Web stuff
 # -----------------------------------------------------------------------------------
 mod_ils_rest_gateway:
-	echo $@
+	@echo $@
 	make -C apachemods mod_ils_rest_gateway.so
 
 mod_ils_rest_gateway-install:
-	echo $@
+	@echo $@
 	make -C apachemods mod_ils_rest_gateway-install
 
 mod_xmltools:
-	echo $@
+	@echo $@
 	make -C apachemods mod_xmltools.so
 
 mod_xmltools-install:
-	echo $@
+	@echo $@
 	make -C apachemods mod_xmltools-install
 
 webcore-install:
-	echo $@
+	@echo $@
 	echo "Copying web into $(WEBDIR)"
 	mkdir -p $(WEBDIR)
 	cp -r ../web/* $(WEBDIR)
 
 autojs-install:
-	echo $@
+	@echo $@
 	cp extras/fieldmapper.pl $(BINDIR)
 	cp extras/org_tree_js.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
 # -----------------------------------------------------------------------------------
 
 marcdumper:
-	echo $@
+	@echo $@
 	make -C extras/marcdumper
 
 marcdumper-install:
-	echo $@
+	@echo $@
 	make -C extras/marcdumper install
 
 # -----------------------------------------------------------------------------------
 
 perl-install:
-	echo $@
+	@echo $@
 	@echo "Installing Perl modules to $(PERLDIR)"
 	mkdir -p $(PERLDIR)
 	cp -r perlmods/* $(PERLDIR)
@@ -65,7 +66,6 @@ perl-install:
 # -----------------------------------------------------------------------------------
 
 storage-bootstrap:
-	echo $@
 	@echo "Installing cgi's to $(CGIDIR)"
 	mkdir -p $(CGIDIR)
 	cp -r cgi-bin/* $(CGIDIR)
@@ -75,19 +75,17 @@ storage-bootstrap:
 
 
 string-templates-install:
-	echo $@
 	@echo "Installing string templates to $(TEMPLATEDIR)"
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/strings $(TEMPLATEDIR)
 
 xsl-install:	
-	echo $@
 	@echo "Installing XSL files to $(XSLDIR)"
 	mkdir -p $(XSLDIR)
 	cp ../xsl/*.xsl $(XSLDIR)
 
 clean:
-	echo $@
+	@echo $@
 	make -C extras clean
 	make -C apachemods clean
 
