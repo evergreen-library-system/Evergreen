@@ -61,9 +61,9 @@ CREATE TRIGGER circ_stats_copy_dim_id_trigger
 
 
 CREATE TABLE circ_stats.circ_dim (
-	circ_lib		INT				NOT NULL,
-	circ_staff		INT,
 	circ_opac_renewal	BOOL,
+	circ_desk_renewal	BOOL,
+	circ_phone_renewal	BOOL,
 	circ_self_checkout	BOOL,
 	circ_recuring_fine	NUMERIC(6,2)			NOT NULL,
 	circ_max_fine		NUMERIC(6,2)			NOT NULL,
@@ -85,6 +85,8 @@ CREATE TRIGGER circ_stats_circ_dim_id_trigger
 CREATE TABLE circ_stats.checkout_fact (
 	-- circulation info
 	circ_id			BIGINT				PRIMARY KEY,
+	circ_lib		INT				NOT NULL,
+	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
 	circ_dim		TEXT				NOT NULL REFERECES circ_stats.circ_dim (id),
 
@@ -106,6 +108,8 @@ CREATE INDEX circ_stats_checkout_fact_bib_dim_idx	ON circ_stats.checkout_fact (b
 CREATE TABLE circ_stats.renewal_fact (
 	-- circulation info
 	circ_id			BIGINT				PRIMARY KEY,
+	circ_lib		INT				NOT NULL,
+	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
 	circ_dim		TEXT				NOT NULL REFERECES circ_stats.circ_dim (id),
 
@@ -127,6 +131,8 @@ CREATE INDEX circ_stats_renewal_fact_bib_dim_idx	ON circ_stats.renewal_fact (bib
 CREATE TABLE circ_stats.checkin_fact (
 	-- circulation info
 	circ_id			BIGINT				PRIMARY KEY,
+	circ_lib		INT				NOT NULL,
+	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
 	circ_dim		TEXT				NOT NULL REFERECES circ_stats.circ_dim (id),
 

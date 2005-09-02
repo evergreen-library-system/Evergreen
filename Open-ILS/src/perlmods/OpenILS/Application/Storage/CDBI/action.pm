@@ -45,7 +45,10 @@ __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
 				     duration duration_rule renewal_remaining
 				     recuring_fine_rule recuring_fine stop_fines
 				     max_fine max_fine_rule fine_interval
-				     stop_fines xact_finish due_date renewal/);
+				     stop_fines xact_finish due_date opac_renewal
+				     checkin_staff circ_staff circ_lib checkin_lib
+				     stop_fines_time checkin_time desk_renewal
+				     phone_renewal/);
 
 #-------------------------------------------------------------------------------
 
@@ -57,7 +60,10 @@ __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
 				     duration duration_rule renewal_remaining
 				     recuring_fine_rule recuring_fine stop_fines
 				     max_fine max_fine_rule fine_interval
-				     stop_fines xact_finish due_date renewal/);
+				     stop_fines xact_finish due_date opac_renewal
+				     checkin_staff circ_staff circ_lib checkin_lib
+				     stop_fines_time checkin_time desk_renewal
+				     phone_renewal/);
 
 #-------------------------------------------------------------------------------
 
@@ -69,7 +75,8 @@ __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 				     prev_check_time expire_time requestor usr
 				     hold_type holdable_formats target
 				     phone_notify email_notify selection_depth
-				     pickup_lib current_copy/);
+				     pickup_lib current_copy request_lib
+				     fulfillment_staff fulfillment_lib/);
 
 #-------------------------------------------------------------------------------
 
