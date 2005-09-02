@@ -21,16 +21,6 @@ int childInit() {
 
 int osrfMathRun( osrfMethodDispatcher* d ) {
 
-	/*
-		OSRF_METHOD_VERIFY_DISPATCHER(d)	
-		Verifies viability of the dispatcher components.
-		Checks for NULLness of key components.
-		Creates local variables :
-		session - the app session ( osrfAppSession* )
-		method - the method ( osrfMethod* )
-		params - the methd parameters ( jsonObject* )
-		request - the request id ( int ) */
-
 	OSRF_METHOD_VERIFY_DISPATCHER(d);	
 
 	jsonObject* x = jsonObjectGetIndex(params, 0);
@@ -43,21 +33,21 @@ int osrfMathRun( osrfMethodDispatcher* d ) {
 
 		if( a && b ) {
 
-			double i = strtod(a, NULL);
-			double j = strtod(b, NULL);
-			double r = 0;
-
-			if(!strcmp(method->name, "add"))		r = i + j;
-			if(!strcmp(method->name, "sub"))		r = i - j;
-			if(!strcmp(method->name, "mult"))	r = i * j;
-			if(!strcmp(method->name, "div"))		r = i / j;
-
-			jsonObject* resp = jsonNewNumberObject(r);
-			osrfAppRequestRespond( session, request, resp );
-			jsonObjectFree(resp);
+			jsonObject* new_params = jsonParseString("[]");
+			jsonObjectPush(new_params, jsonNewObject(a));
+			jsonObjectPush(new_params, jsonNewObject(b));
 
 			free(a); free(b);
-			return 0;
+
+			osrfAppSession* ses = osrfAppSessionClientInit("opensrf.dbmath");
+			int req_id = osrfAppSessionMakeRequest( ses, new_params, method->name, 1, NULL );
+			osrf_message* omsg = osrfAppSessionRequestRecv( ses, req_id, 60 );
+
+			if(omsg) {
+				osrfAppRequestRespond( session, request, omsg->_result_content ); 
+				osrf_message_free(omsg);
+				return 0;
+			}
 		}
 	}
 

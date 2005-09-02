@@ -235,6 +235,10 @@ void _osrf_app_session_remove_session( char* session_id ) {
 
 /** Allocates a initializes a new app_session */
 
+osrf_app_session* osrfAppSessionClientInit( char* remote_service ) {
+	return osrf_app_client_session_init( remote_service );
+}
+
 osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	osrf_app_session* session = safe_malloc(sizeof(osrf_app_session));	
@@ -341,6 +345,14 @@ void _osrf_app_session_free( osrf_app_session* session ){
 	free(session->session_id);
 	free(session->remote_service);
 	free(session);
+}
+
+int osrfAppSessionMakeRequest(
+		osrf_app_session* session, jsonObject* params, 
+		char* method_name, int protocol, string_array* param_strings ) {
+
+	return osrf_app_session_make_req( session, params, 
+			method_name, protocol, param_strings );
 }
 
 int osrf_app_session_make_req( 
@@ -673,6 +685,10 @@ void osrf_app_session_destroy ( osrf_app_session* session ){
 	_osrf_app_session_free( session );
 }
 
+osrf_message* osrfAppSessionRequestRecv(
+		osrf_app_session* session, int req_id, int timeout ) {
+	return osrf_app_session_request_recv( session, req_id, timeout );
+}
 osrf_message* osrf_app_session_request_recv( 
 		osrf_app_session* session, int req_id, int timeout ) {
 	if(req_id < 0 || session == NULL)

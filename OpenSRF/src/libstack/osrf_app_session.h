@@ -89,6 +89,7 @@ typedef struct osrf_app_session_struct osrfAppSession;
 // -------------------------------------------------------------------------- 
 
 /** Allocates a initializes a new app_session */
+osrf_app_session* osrfAppSessionClientInit( char* remote_service );
 osrf_app_session* osrf_app_client_session_init( char* remote_service );
 
 /** Allocates and initializes a new server session.  The global session cache
@@ -104,6 +105,10 @@ osrf_app_session* osrf_app_session_find_session( char* session_id );
   * the id of the request.  This id is then used to perform work on the
   * requeset.
   */
+int osrfAppSessionMakeRequest(
+		osrf_app_session* session, jsonObject* params, 
+		char* method_name, int protocol, string_array* param_strings);
+
 int osrf_app_session_make_req( 
 		osrf_app_session* session, jsonObject* params, 
 		char* method_name, int protocol, string_array* param_strings);
@@ -115,6 +120,8 @@ void osrf_app_session_set_complete( osrf_app_session* session, int request_id );
 int osrf_app_session_request_complete( osrf_app_session* session, int request_id );
 
 /** Does a recv call on the given request */
+osrf_message* osrfAppSessionRequestRecv(
+		osrf_app_session* session, int request_id, int timeout );
 osrf_message* osrf_app_session_request_recv( 
 		osrf_app_session* session, int request_id, int timeout );
 
