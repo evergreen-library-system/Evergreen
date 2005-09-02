@@ -2,6 +2,7 @@
 #define _OSRF_APP_SESSION
 
 #include "opensrf/transport_client.h"
+#include "objson/object.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
 #include "opensrf/string_array.h"
@@ -42,6 +43,7 @@ struct osrf_app_request_struct {
 	struct osrf_app_request_struct* next;
 };
 typedef struct osrf_app_request_struct osrf_app_request;
+typedef struct osrf_app_request_struct osrfAppRequest;
 
 struct osrf_app_session_struct {
 
@@ -78,6 +80,7 @@ struct osrf_app_session_struct {
 
 };
 typedef struct osrf_app_session_struct osrf_app_session;
+typedef struct osrf_app_session_struct osrfAppSession;
 
 
 
@@ -208,5 +211,10 @@ void _osrf_app_session_remove_request( osrf_app_session*, osrf_app_request* req 
 
 /** Send the given message */
 int _osrf_app_session_send( osrf_app_session*, osrf_message* msg );
+
+int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data ); 
+
+int osrfAppSessionStatus( osrfAppSession* ses, int type, int reqId, char* message );
+
 
 #endif

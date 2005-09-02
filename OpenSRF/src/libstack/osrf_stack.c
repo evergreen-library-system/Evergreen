@@ -1,4 +1,5 @@
 #include "osrf_stack.h"
+#include "osrf_application.h"
 
 osrf_message* _do_client( osrf_app_session*, osrf_message* );
 osrf_message* _do_server( osrf_app_session*, osrf_message* );
@@ -33,6 +34,8 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 // -----------------------------------------------------------------------------
 int osrf_stack_transport_handler( transport_message* msg, char* my_service ) { 
 
+	if(!msg) return -1;
+
 	debug_handler( "Transport handler received new message \nfrom %s "
 			"to %s with body \n\n%s\n", msg->sender, msg->recipient, msg->body );
 
@@ -43,14 +46,11 @@ int osrf_stack_transport_handler( transport_message* msg, char* my_service ) {
 
 	osrf_app_session* session = osrf_app_session_find_session( msg->thread );
 
-	if( session == NULL ) {  /* we must be a server, build a new session */
-		info_handler( "Received message for nonexistant session. Dropping..." );
-		//osrf_app_server_session_init( msg->thread, my_service, msg->sender);
-		message_free( msg );
-		return 1;
-	}
+	if( session == NULL ) 
+		session = osrf_app_server_session_init( msg->thread, my_service, msg->sender);
 
-	//debug_handler("Session [%s] found, building message", msg->thread );
+	if(!msg->is_error)
+		debug_handler("Session [%s] found or built", session->session_id );
 
 	osrf_app_session_set_remote( session, msg->sender );
 	osrf_message* arr[OSRF_MAX_MSGS_PER_PACKET];
@@ -96,14 +96,17 @@ int osrf_stack_message_handler( osrf_app_session* session, osrf_message* msg ) {
 		return 0;
 
 	osrf_message* ret_msg = NULL;
+
 	if( session->type ==  OSRF_SESSION_CLIENT )
 		 ret_msg = _do_client( session, msg );
 	else
 		ret_msg= _do_server( session, msg );
 
-	if(ret_msg)
+	if(ret_msg) {
+		debug_handler("passing message %d / session %s to app handler", 
+				msg->thread_trace, session->session_id );
 		osrf_stack_application_handler( session, ret_msg );
-	else
+	} else
 		osrf_message_free(msg);
 
 	return 1;
@@ -146,7 +149,8 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 			case OSRF_STATUS_EXPFAILED: 
 				osrf_app_session_reset_remote( session );
 				session->state = OSRF_SESSION_DISCONNECTED;
-				osrf_app_session_request_resend( session, msg->thread_trace );
+				/* set the session to 'stateful' then resend */
+			//	osrf_app_session_request_resend( session, msg->thread_trace );
 				return NULL;
 
 			case OSRF_STATUS_TIMEOUT:
@@ -183,30 +187,58 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
   * if we return NULL, we're finished for now...
   */
 osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
-	if(session == NULL || msg == NULL)
-		return NULL;
 
-	if( msg->m_type == STATUS ) { return NULL; }
+	if(session == NULL || msg == NULL) return NULL;
 
-	warning_handler( "We dont' do servers yet !!" );
+	debug_handler("Server received message of type %d", msg->m_type );
 
-	return msg;
+	switch( msg->m_type ) {
+
+		case STATUS:
+				return NULL;
+
+		case DISCONNECT:
+				osrf_app_session_destroy(session);	
+				return NULL;
+
+		case CONNECT:
+				/* handle connect message */
+				return NULL;
+
+		case REQUEST:
+
+				debug_handler("server passing message %d to application handler "
+						"for session %s", msg->thread_trace, session->session_id );
+				return msg;
+
+		default:
+			warning_handler("Server cannot handle message of type %d", msg->m_type );
+			return NULL;
+
+	}
 }
 
 
 
 
 int osrf_stack_application_handler( osrf_app_session* session, osrf_message* msg ) {
-	if(session == NULL || msg == NULL)
-		return 0;
 
-	if(msg->m_type == RESULT) {
+	if(session == NULL || msg == NULL) return 0;
+
+	if(msg->m_type == RESULT && session->type == OSRF_SESSION_CLIENT) {
 		osrf_app_session_push_queue( session, msg ); 
 		return 1;
 	}
 
-	warning_handler( "application_handler can't handle whatever you sent, type %d", msg->m_type);
+	if(msg->m_type != REQUEST) return 1;
 
+	char* method = msg->method_name;
+	char* app	= session->remote_service;
+	jsonObject* params = msg->_params;
+
+	osrfAppRunMethod( app, method,  session, msg->thread_trace, params );
+		
 	return 1;
 
 }
+

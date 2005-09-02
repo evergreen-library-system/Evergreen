@@ -9,6 +9,7 @@
 
 #include "opensrf/utils.h"
 #include "opensrf/transport_message.h"
+#include "opensrf/transport_client.h"
 #include "osrf_stack.h"
 #include "osrf_settings.h"
 #include "osrfConfig.h"
@@ -86,5 +87,8 @@ void prefork_child_wait( prefork_child* child );
 
 int prefork_free( prefork_simple* );
 int prefork_child_free( prefork_child* );
+
+
+void osrf_prefork_register_routers( char* appname );
 
 

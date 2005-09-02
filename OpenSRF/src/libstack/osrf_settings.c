@@ -21,7 +21,8 @@ int osrf_settings_retrieve(char* hostname) {
 	if(!config) {
 
 		osrf_app_session* session = osrf_app_client_session_init("opensrf.settings");
-		jsonObject* params = jsonNewObject(hostname);
+		jsonObject* params = jsonNewObject(NULL);
+		jsonObjectPush(params, jsonNewObject(hostname));
 		int req_id = osrf_app_session_make_req( 
 			session, params, "opensrf.settings.host_config.get", 1, NULL );
 		osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 60 );

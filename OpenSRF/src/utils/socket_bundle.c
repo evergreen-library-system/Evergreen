@@ -306,7 +306,7 @@ int socket_send(int sock_fd, const char* data) {
 	debug_handler( "socket_bundle sending to %d data %s",
 		sock_fd, data);
 
-	info_handler("%d : Sending data at %lf\n", getpid(), get_timestamp_millis());
+	debug_handler("%d : Sending data at %lf\n", getpid(), get_timestamp_millis());
 	signal(SIGPIPE, SIG_IGN); /* in case a unix socket was closed */
 	if( send( sock_fd, data, strlen(data), 0 ) < 0 ) {
 		return warning_handler( "tcp_server_send(): Error sending data" );
@@ -536,7 +536,7 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	set_fl(sock_fd, O_NONBLOCK);
 	debug_handler("Gathering client data for %d", node->sock_fd);
 
-	info_handler("%d : Received data at %lf\n", getpid(), get_timestamp_millis());
+	debug_handler("%d : Received data at %lf\n", getpid(), get_timestamp_millis());
 
 	while( (read_bytes = recv(sock_fd, buf, RBUFSIZE-1, 0) ) > 0 ) {
 		debug_handler("Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);

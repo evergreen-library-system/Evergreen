@@ -25,6 +25,7 @@ OPENSRF_TARGETS = libtransport/transport_session.o \
 						libstack/osrf_message.o \
 						libstack/osrf_prefork.o \
 						libstack/osrf_system.o \
+						libstack/osrf_application.o \
 						libstack/xml_utils.o \
 						utils/socket_bundle.o \
 						utils/string_array.o \
@@ -43,6 +44,7 @@ OPENSRF_HEADERS = libtransport/transport_session.h \
 						libstack/osrf_message.h \
 						libstack/osrf_prefork.h \
 						libstack/osrf_system.h \
+						libstack/osrf_application.h \
 						libstack/xml_utils.h \
 						utils/socket_bundle.h \
 						utils/string_array.h \
@@ -52,7 +54,7 @@ OPENSRF_HEADERS = libtransport/transport_session.h \
 						utils/sha.h \
 
 
-all: prep libopensrf.so router srfsh jserver gateway
+all: prep libopensrf.so libstack/opensrf router srfsh jserver gateway
 
 install: install-prep opensrf-install gateway-install	router-install \
 		srfsh-install jserver-install perl-install objson-install
@@ -69,12 +71,15 @@ libopensrf.so:	objson/libobjson.so
 	make -C libstack
 	@echo $@
 	$(CC) -shared -W1 $(LDFLAGS) -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
+	@echo apps
+	make -C  c-apps
 
 
 opensrf-install:
 	@echo $@
 	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)/$(LIBOPENSRF)
 	cp $(OPENSRF_HEADERS) $(INCLUDEDIR)/opensrf/
+	make -C c-apps install
 
 
 objson/libobjson.so: 
@@ -84,6 +89,11 @@ objson/libobjson.so:
 # --------------------------------------------------------------------------------
 # BINARIES
 # --------------------------------------------------------------------------------
+libstack/opensrf.o:	libstack/opensrf.c
+libstack/opensrf:	libstack/opensrf.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
+	
+
 router: libopensrf.so
 	@echo $@
 	make -C router 
@@ -162,7 +172,8 @@ clean:
 	make -C utils clean
 	make -C objson clean
 	make -C srfsh clean
+	make -C c-apps clean
 	echo "Removing directory [$(TMPDIR)]"
-	/bin/rm -rf $(TMPDIR)
+	/bin/rm -rf $(TMPDIR) *.o
 
 

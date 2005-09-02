@@ -293,10 +293,11 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 osrf_app_session* osrf_app_server_session_init( 
 		char* session_id, char* our_app, char* remote_id ) {
 
-	osrf_app_session* session = osrf_app_session_find_session( session_id );
-	if(session)
-		return session;
+	info_handler("Initing server session with session id %s, service %s,"
+			" and remote_id %s", session_id, our_app, remote_id );
 
+	osrf_app_session* session = osrf_app_session_find_session( session_id );
+	if(session) return session;
 
 	session = safe_malloc(sizeof(osrf_app_session));	
 
@@ -305,6 +306,7 @@ osrf_app_session* osrf_app_server_session_init(
 		warning_handler("No transport client for service '%s'", our_app );
 		return NULL;
 	}
+
 	session->request_queue = NULL;
 	session->remote_id = strdup(remote_id);
 	session->orig_remote_id = strdup(remote_id);
@@ -317,12 +319,9 @@ osrf_app_session* osrf_app_server_session_init(
 	session->stateless = 0;
 	#endif
 
-	debug_handler( "Building a new server session [%s] with id [%s]", 
-			session->remote_service,  session_id );
-
 	session->thread_trace = 0;
 	session->state = OSRF_SESSION_DISCONNECTED;
-	session->type = OSRF_SESSION_CLIENT;
+	session->type = OSRF_SESSION_SERVER;
 	session->next = NULL;
 
 	_osrf_app_session_push_session( session );
@@ -682,4 +681,39 @@ osrf_message* osrf_app_session_request_recv(
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	return _osrf_app_request_recv( req, timeout );
 }
+
+
+
+int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data ) {
+	if(!ses || ! data ) return -1;
+
+	osrf_message* msg = osrf_message_init( RESULT, requestId, 1 );
+	char* json = jsonObjectToJSON( data );
+	osrf_message_set_result_content( msg, json );
+	_osrf_app_session_send( ses, msg ); 
+
+	free(json);
+	osrf_message_free( msg );
+
+	return 0;
+}
+
+
+
+int osrfAppSessionStatus( osrfAppSession* ses, int type, int reqId, char* message ) {
+
+	if(ses) {
+		osrf_message* msg = osrf_message_init( STATUS, reqId, 1);
+		osrf_message_set_status_info( msg, "Server Error", message, type );
+		_osrf_app_session_send( ses, msg ); 
+		osrf_message_free( msg );
+		return 0;
+	}
+	return -1;
+}
+
+
+
+
+
 

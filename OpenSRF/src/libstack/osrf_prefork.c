@@ -43,7 +43,7 @@ int osrf_prefork_run(char* appname) {
 	free(resc);
 
 	prefork_simple* forker = prefork_simple_init(
-		osrf_system_get_transport_client(), maxr, minc, maxc);
+		osrfSystemGetTransportClient(), maxr, minc, maxc);
 
 	forker->appname = strdup(appname);
 
@@ -51,6 +51,8 @@ int osrf_prefork_run(char* appname) {
 		fatal_handler("osrf_prefork_run() failed to create prefork_simple object");
 
 	prefork_launch_children(forker);
+
+	osrf_prefork_register_routers(appname);
 	
 	info_handler("Launching osrf_forker for app %s", appname);
 	prefork_run(forker);
@@ -61,8 +63,34 @@ int osrf_prefork_run(char* appname) {
 
 }
 
-void osrf_prefork_register_routers() {
-	//char* router = osrf_config_value("//%s/
+void osrf_prefork_register_routers( char* appname ) {
+
+	osrfStringArray* arr = osrfNewStringArray(4);
+
+	int c = osrfConfigGetValueList( NULL, arr, "/routers/router" );
+	char* routerName = osrfConfigGetValue( NULL, "/router_name" );
+	transport_client* client = osrfSystemGetTransportClient();
+
+	info_handler("router name is %s and we have %d routers to connect to", routerName, c );
+
+	while( c ) {
+		char* domain = osrfStringArrayGetString(arr, --c);
+		if(domain) {
+
+			char* jid = va_list_to_string( "%s@%s/router", routerName, domain );
+			info_handler("Registering with router %s", jid );
+
+			transport_message* msg = message_init("registering", NULL, NULL, jid, NULL );
+			message_set_router_info( msg, NULL, NULL, appname, "register", 0 );
+
+			client_send_message( client, msg );
+			message_free( msg );
+			free(jid);
+		}
+	}
+
+	free(routerName);
+	osrfStringArrayFree(arr);
 }
 
 void prefork_child_init_hook(prefork_child* child) {
@@ -228,10 +256,9 @@ void prefork_run(prefork_simple* forker) {
 		}
 
 		debug_handler("Forker going into wait for data...");
-		sleep(2);
 		cur_msg = client_recv( forker->connection, -1 );
 
-		fprintf(stderr, "Got Data %f\n", get_timestamp_millis() );
+		//fprintf(stderr, "Got Data %f\n", get_timestamp_millis() );
 
 		if( cur_msg == NULL ) continue;
 		
@@ -260,14 +287,14 @@ void prefork_run(prefork_simple* forker) {
 					debug_handler( "Writing to child fd %d", cur_child->write_data_fd );
 
 					int written = 0;
-					fprintf(stderr, "Writing Data %f\n", get_timestamp_millis() );
+					//fprintf(stderr, "Writing Data %f\n", get_timestamp_millis() );
 					if( (written = write( cur_child->write_data_fd, data, strlen(data) + 1 )) < 0 ) {
 						warning_handler("Write returned error %d", errno);
 						cur_child = cur_child->next;
 						continue;
 					}
 
-					fprintf(stderr, "Wrote %d bytes to child\n", written);
+					//fprintf(stderr, "Wrote %d bytes to child\n", written);
 
 					forker->first_child = cur_child->next;
 					honored = 1;
@@ -305,7 +332,7 @@ void prefork_run(prefork_simple* forker) {
 				reap_children(forker);
 
 
-			fprintf(stderr, "Parent done with request %f\n", get_timestamp_millis() );
+			//fprintf(stderr, "Parent done with request %f\n", get_timestamp_millis() );
 
 		} // honored?
 
@@ -358,7 +385,7 @@ void check_children( prefork_simple* forker ) {
 	for( j = 0; j!= forker->current_num_children && num_handled < select_ret ; j++ ) {
 
 		if( FD_ISSET( cur_child->read_status_fd, &read_set ) ) {
-			printf( "Server received status from a child %d\n", cur_child->pid );
+			//printf( "Server received status from a child %d\n", cur_child->pid );
 			debug_handler( "Server received status from a child %d", cur_child->pid );
 
 			num_handled++;
@@ -394,16 +421,16 @@ void prefork_child_wait( prefork_child* child ) {
 			buffer_add( gbuf, buf );
 			memset( buf, 0, READ_BUFSIZE );
 
-			fprintf(stderr, "Child read %d bytes\n", n);
+			//fprintf(stderr, "Child read %d bytes\n", n);
 
 			if( n == READ_BUFSIZE ) { 
-				fprintf(stderr, "We read READ_BUFSIZE data....\n");
+				//fprintf(stderr, "We read READ_BUFSIZE data....\n");
 				/* XXX */
 				/* either we have exactly READ_BUFSIZE data, 
 					or there's more waiting that we need to grab*/
 				/* must set to non-block for reading more */
 			} else {
-				fprintf(stderr, "Read Data %f\n", get_timestamp_millis() );
+				//fprintf(stderr, "Read Data %f\n", get_timestamp_millis() );
 				prefork_child_process_request(child, gbuf->buf);
 				buffer_reset( gbuf );
 				break;

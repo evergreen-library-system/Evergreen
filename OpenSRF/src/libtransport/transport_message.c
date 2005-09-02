@@ -55,10 +55,15 @@ transport_message* new_message_from_xml( const char* msg_xml ) {
 	xmlChar* router_class= xmlGetProp( root, BAD_CAST "router_class" );
 	xmlChar* broadcast	= xmlGetProp( root, BAD_CAST "broadcast" );
 
-	if( sender ) {
-		new_msg->sender		= strdup((char*)sender);
-		xmlFree(sender);
+	if( router_from ) {
+		new_msg->sender		= strdup((char*)router_from);
+	} else {
+		if( sender ) {
+			new_msg->sender		= strdup((char*)sender);
+			xmlFree(sender);
+		}
 	}
+
 	if( recipient ) {
 		new_msg->recipient	= strdup((char*)recipient);
 		xmlFree(recipient);

@@ -122,12 +122,12 @@ function stopMe {
 
 	echo "Stopping OpenSRF...";
 	"$BINDIR/opensrf_ctl" stop;
-	sleep 2;
+	sleep 1;
 	
 	echo "Stopping The Router...";
 	killall router;
 	
-	sleep 2;
+	sleep 1;
 	
 	echo "Stopping Chop Chop...";
 	killall jserver-c;

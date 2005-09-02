@@ -1,6 +1,15 @@
 #include "osrf_system.h"
+#include <signal.h>
+#include "osrf_application.h"
+#include "osrf_prefork.h"
+
+void __osrfSystemSignalHandler( int sig );
 
 transport_client* __osrfGlobalTransportClient;
+
+transport_client* osrfSystemGetTransportClient() {
+	return __osrfGlobalTransportClient;
+}
 
 transport_client* osrf_system_get_transport_client() {
 	return __osrfGlobalTransportClient;
@@ -10,10 +19,79 @@ int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
 	return osrf_system_bootstrap_client_resc(config_file, contextnode, NULL);
 }
 
+int osrfSystemBootstrapClientResc( char* config_file, char* contextnode, char* resource ) {
+	return osrf_system_bootstrap_client_resc( config_file, contextnode, resource );
+}
+
+
+int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
+	if( !(configfile && contextNode) ) return -1;
+
+	/* first we grab the settings */
+	if(!osrfSystemBootstrapClientResc(configfile, contextNode, "settings_grabber" )) {
+		return fatal_handler("Unable to bootstrap");
+	}
+
+	osrf_settings_retrieve(hostname);
+	osrf_system_disconnect_client();
+
+	jsonObject* apps = osrf_settings_host_value_object("/activeapps/appname");
+	osrfStringArray* arr = osrfNewStringArray(8);
+
+	if(apps) {
+		int i = 0;
+
+		if(apps->type == JSON_STRING) {
+			osrfStringArrayAdd(arr, jsonObjectGetString(apps));
+
+		} else {
+			jsonObject* app;
+			while( (app = jsonObjectGetIndex(apps, i++)) ) 
+				osrfStringArrayAdd(arr, jsonObjectGetString(app));
+		}
+
+		char* appname = NULL;
+		i = 0;
+		while( (appname = osrfStringArrayGetString(arr, i++)) ) {
+
+			char* libfile = osrf_settings_host_value("/apps/%s/implementation", appname);
+			info_handler("Launching application %s with implementation %s", appname, libfile);
+	
+			if(! (appname && libfile) ) {
+				warning_handler("Missing appname / libfile in settings config");
+				continue;
+			}
+	
+			int pid;
+	
+			if( (pid = fork()) ) { 
+				// storage pid in local table for re-launching dead children...
+				info_handler("Launched application child %d", pid);
+
+			} else {
+	
+				osrfAppRegisterApplication( appname, libfile );
+				osrf_prefork_run(appname);
+				exit(0);
+			}
+		}
+	}
+
+	/** daemonize me **/
+
+	/* let our children do their thing */
+	while(1) {
+		signal(SIGCHLD, __osrfSystemSignalHandler);
+		sleep(10000);
+	}
+	
+	return 0;
+}
+
 int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, char* resource ) {
 
 	if( !( config_file && contextnode ) && ! osrfConfigHasDefaultConfig() )
-		fatal_handler("No Config File Specified\n" );
+		return fatal_handler("No Config File Specified\n" );
 
 	if( config_file ) {
 		osrfConfigCleanup();
@@ -91,3 +169,14 @@ int osrf_system_shutdown() {
 
 
 
+void __osrfSystemSignalHandler( int sig ) {
+
+	pid_t pid;
+	int status;
+
+	while( (pid = waitpid(-1, &status, WNOHANG)) > 0) {
+		warning_handler("We lost child %d", pid);
+	}
+
+	/** relaunch the server **/
+}

@@ -143,7 +143,7 @@ sub bootstrap {
 
 		my $client = OpenSRF::Utils::SettingsClient->new();
 		my $apps = $client->config_value("activeapps", "appname");
-		if(!ref($apps) eq "ARRAY") { $apps = [$apps]; }
+		if(ref($apps) ne "ARRAY") { $apps = [$apps]; }
 
 		if(!defined($apps) || @$apps == 0) {
 			print "No apps to load, exiting...";
