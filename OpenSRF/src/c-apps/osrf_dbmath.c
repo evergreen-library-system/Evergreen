@@ -21,16 +21,6 @@ int childInit() {
 
 int osrfMathRun( osrfMethodDispatcher* d ) {
 
-	/*
-		OSRF_METHOD_VERIFY_DISPATCHER(d)	
-		Verifies viability of the dispatcher components.
-		Checks for NULLness of key components.
-		Creates local variables :
-		session - the app session ( osrfAppSession* )
-		method - the method ( osrfMethod* )
-		params - the methd parameters ( jsonObject* )
-		request - the request id ( int ) */
-
 	OSRF_METHOD_VERIFY_DISPATCHER(d);	
 
 	jsonObject* x = jsonObjectGetIndex(params, 0);

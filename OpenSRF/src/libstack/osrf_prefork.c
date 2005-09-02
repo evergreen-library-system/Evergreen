@@ -111,27 +111,6 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 	transport_message* msg = new_message_from_xml( data );
 
 	osrf_stack_transport_handler(msg, child->appname);
-
-	/*
-	transport_message* ret_msg = message_init(
-			msg->body, msg->subject, msg->thread, msg->sender, NULL );
-
-	client_send_message(child->connection, ret_msg);
-	message_free( ret_msg );
-
-	printf("Message body size %d\n", strlen(msg->body));
-
-	printf( "Message Info\n" );
-	printf( "%s\n", msg->sender );
-	printf( "%s\n", msg->recipient );
-	printf( "%s\n", msg->thread );
-	printf( "%s\n", msg->body );
-	printf( "%s\n", msg->subject );
-	printf( "%s\n", msg->router_from );
-	printf( "%d\n", msg->broadcast );
-
-	message_free( msg );
-	*/
 }
 
 
@@ -248,6 +227,7 @@ void prefork_run(prefork_simple* forker) {
 
 	transport_message* cur_msg = NULL;
 
+
 	while(1) {
 
 		if( forker->first_child == NULL ) {/* no more children */
@@ -261,7 +241,7 @@ void prefork_run(prefork_simple* forker) {
 		//fprintf(stderr, "Got Data %f\n", get_timestamp_millis() );
 
 		if( cur_msg == NULL ) continue;
-		
+
 		int honored = 0;	/* true if we've serviced the request */
 
 		while( ! honored ) {
@@ -280,9 +260,11 @@ void prefork_run(prefork_simple* forker) {
 			
 				if( cur_child->available ) {
 					debug_handler( "sending data to %d", cur_child->pid );
+
 					message_prepare_xml( cur_msg );
 					char* data = cur_msg->msg_xml;
 					if( ! data || strlen(data) < 1 ) break;
+
 					cur_child->available = 0;
 					debug_handler( "Writing to child fd %d", cur_child->write_data_fd );
 
@@ -335,6 +317,8 @@ void prefork_run(prefork_simple* forker) {
 			//fprintf(stderr, "Parent done with request %f\n", get_timestamp_millis() );
 
 		} // honored?
+
+		message_free( cur_msg );
 
 	} /* top level listen loop */
 

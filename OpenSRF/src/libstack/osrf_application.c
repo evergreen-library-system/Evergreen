@@ -143,7 +143,9 @@ int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int 
 
 
 	if(ret == -1) {
-		/* return an internal server error ? */
+		osrfAppSessionStatus( ses, OSRF_STATUS_INTERNALSERVERERROR, 
+					reqId, "An unknown server error occurred" );
+		return -1;
 	}
 
 	return 0;

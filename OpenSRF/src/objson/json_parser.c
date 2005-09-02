@@ -22,8 +22,9 @@ GNU General Public License for more details.
 int current_strlen; /* XXX need to move this into the function params for thread support */
 
 
-jsonObject* jsonParseString( char* string ) {
-	return json_parse_string( string );
+jsonObject* jsonParseString( char* string, ... ) {
+	VA_LIST_TO_STRING(string);
+	return json_parse_string( VA_BUF );
 }
 
 //jsonObject* (*jsonParseString) (char* str) = &_jsonParseString;

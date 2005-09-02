@@ -34,7 +34,7 @@ GNU General Public License for more details.
 
 jsonObject* json_parse_string(char* string);
 
-jsonObject* jsonParseString( char* string );
+jsonObject* jsonParseString( char* string, ... );
 
 jsonObject* json_parse_file( const char* filename );
 

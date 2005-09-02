@@ -8,6 +8,8 @@ int osrfMathRun( osrfMethodDispatcher* );
 
 
 int initialize() {
+
+	/* tell the server about the methods we handle */
 	osrfAppRegisterMethod( "opensrf.math", "add", "osrfMathRun", "send 2 numbers and I'll add them", 2 );
 	osrfAppRegisterMethod( "opensrf.math", "sub", "osrfMathRun", "send 2 numbers and I'll divide them", 2 );
 	osrfAppRegisterMethod( "opensrf.math", "mult", "osrfMathRun", "send 2 numbers and I'll multiply them", 2 );
@@ -21,31 +23,37 @@ int childInit() {
 
 int osrfMathRun( osrfMethodDispatcher* d ) {
 
-	OSRF_METHOD_VERIFY_DISPATCHER(d);	
+	OSRF_METHOD_VERIFY_DISPATCHER(d); /* see osrf_application.h */
 
+	/* collect the request params */
 	jsonObject* x = jsonObjectGetIndex(params, 0);
 	jsonObject* y = jsonObjectGetIndex(params, 1);
 
 	if( x && y ) {
 
+		/* pull out the params as strings since they may be either
+			strings or numbers depending on the client */
 		char* a = jsonObjectToSimpleString(x);
 		char* b = jsonObjectToSimpleString(y);
 
 		if( a && b ) {
 
-			jsonObject* new_params = jsonParseString("[]");
-			jsonObjectPush(new_params, jsonNewObject(a));
-			jsonObjectPush(new_params, jsonNewObject(b));
-
+			/* construct a new params object to send to dbmath */
+			jsonObject* newParams = jsonParseString( "[ %s, %s ]", a, b );
 			free(a); free(b);
 
+			/* connect to db math */
 			osrfAppSession* ses = osrfAppSessionClientInit("opensrf.dbmath");
-			int req_id = osrfAppSessionMakeRequest( ses, new_params, method->name, 1, NULL );
-			osrf_message* omsg = osrfAppSessionRequestRecv( ses, req_id, 60 );
+
+			/* dbmath uses the same method names that math does */
+			int req_id = osrfAppSessionMakeRequest( ses, newParams, method->name, 1, NULL );
+			osrfMessage* omsg = osrfAppSessionRequestRecv( ses, req_id, 60 );
 
 			if(omsg) {
-				osrfAppRequestRespond( session, request, omsg->_result_content ); 
-				osrf_message_free(omsg);
+
+				/* return dbmath's response to the user */
+				osrfAppRequestRespond( session, request, osrfMessageGetResult(omsg) ); 
+				osrfMessageFree(omsg);
 				return 0;
 			}
 		}

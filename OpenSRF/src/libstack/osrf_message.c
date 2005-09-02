@@ -80,6 +80,10 @@ void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
 
 
 
+void osrfMessageFree( osrfMessage* msg ) {
+	osrf_message_free( msg );
+}
+
 void osrf_message_free( osrf_message* msg ) {
 	if( msg == NULL )
 		return;
@@ -275,4 +279,10 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 	return numparsed;
 }
 
+
+
+jsonObject* osrfMessageGetResult( osrfMessage* msg ) {
+	if(msg) return msg->_result_content;
+	return NULL;
+}
 
