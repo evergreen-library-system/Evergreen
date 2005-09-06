@@ -1,3 +1,4 @@
+
 package JSON::number;
 sub new {
 	my $class = shift;
@@ -26,6 +27,7 @@ use overload ( '0+' => sub { 0 } );
 sub toString { 'false' }
 
 package JSON;
+use Unicode::Normalize;
 use vars qw/%_class_map/;
 
 sub register_class_hint {
@@ -225,6 +227,7 @@ sub perl2JSON {
 		JSON->register_class_hint(name => $name, hint => $name, type => lc($type));
 		$output .= perl2JSON(undef,$perl, $strict);
 	} else {
+		$perl = NFD($perl);
 		$perl =~ s{\\}{\\\\}sgo;
 		$perl =~ s/"/\\"/sgo;
 		$perl =~ s/\t/\\t/sgo;
@@ -304,6 +307,7 @@ sub perl2prettyJSON {
 		register_class_hint(undef, name => $name, hint => $name, type => lc($type));
 		$output .= perl2prettyJSON(undef,$perl);
 	} else {
+		$perl = NFD($perl);
 		$perl =~ s/\\/\\\\/sgo;
 		$perl =~ s/"/\\"/sgo;
 		$perl =~ s/\t/\\t/sgo;
