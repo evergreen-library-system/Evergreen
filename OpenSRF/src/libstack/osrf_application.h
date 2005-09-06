@@ -6,21 +6,13 @@
 #include "objson/object.h"
 #include "osrf_app_session.h"
 
-#define OSRF_METHOD_CHECK_PARAMS(x,y) \
-	if( ! x  || ! y ) return -1; \
-	if(y->type != JSON_ARRAY ) return -1; \
-	char* __j = jsonObjectToJSON(y);\
-	if(__j) { \
-		debug_handler("Service: %s | Params: %s", x->remote_service, __j);free(__j);}
-
-
 /** 
   This macro verifies methods receive the correct parameters 
   It also creates local variables "session", "method",
   "params", and "request" 
   */
 
-#define OSRF_METHOD_VERIFY_DISPATCHER(__d) \
+#define OSRF_METHOD_VERIFY_CONTEXT(__d) \
 	if(!__d) return -1; \
 	\
 	osrfAppSession* session = __d->session; \
@@ -59,13 +51,13 @@ struct _osrfMethodStruct {
 }; 
 typedef struct _osrfMethodStruct osrfMethod;
 
-struct _osrfMethodDispatcherStruct {
+struct _osrfMethodContextStruct {
 	osrfAppSession* session;
 	osrfMethod* method;
 	jsonObject* params;
 	int request;
 };
-typedef struct _osrfMethodDispatcherStruct osrfMethodDispatcher;
+typedef struct _osrfMethodContextStruct osrfMethodContext;
 
 
 /** 

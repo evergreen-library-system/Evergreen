@@ -10,7 +10,7 @@
 // -----------------------------------------------------------------------------
 
 int osrf_stack_process( transport_client* client, int timeout );
-int osrf_stack_transport_handler( transport_message* msg, char* my_service );
+osrfAppSession*  osrf_stack_transport_handler( transport_message* msg, char* my_service );
 int osrf_stack_message_handler( osrf_app_session* session, osrf_message* msg );
 int osrf_stack_application_handler( osrf_app_session* session, osrf_message* msg );
 

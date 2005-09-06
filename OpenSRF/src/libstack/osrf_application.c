@@ -107,20 +107,24 @@ osrfMethod* _osrfAppFindMethod( char* appName, char* methodName ) {
 
 
 int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int reqId, jsonObject* params ) {
-	if(!appName || ! methodName || ! ses) return -1;
+	if( !(appName && methodName && ses) ) return -1;
+
 	char* error;
+	osrfApplication* app;
+	osrfMethod* method;
+	osrfMethodContext context;
+
+	/* this is the method we're gonna run */
+	int (*meth) (osrfMethodContext*);	
 
 	info_handler("Running method [%s] for app [%s] with request id %d and "
 			"thread trace %s", methodName, appName, reqId, ses->session_id );
 
-	osrfApplication* app = _osrfAppFindApplication(appName);
-	if(!app) return warning_handler( "Application not found: %s", appName );
+	if( !(app = _osrfAppFindApplication(appName)) )
+		return warning_handler( "Application not found: %s", appName );
 
-	osrfMethod* method = __osrfAppFindMethod( app, methodName );
-	if(!method) return warning_handler( "NOT FOUND: app %s / method %s", appName, methodName );
-
-	/* this is the method we're gonna run */
-	int (*meth) (osrfMethodDispatcher*);	
+	if( !(method = __osrfAppFindMethod( app, methodName )) )
+		return warning_handler( "NOT FOUND: app %s / method %s", appName, methodName );
 
 	/* open the method */
 	*(void **) (&meth) = dlsym(app->handle, method->symbol);
@@ -130,14 +134,13 @@ int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int 
 				"for method %s and app %s", method->symbol, method->name, app->name );
 	}
 
-	osrfMethodDispatcher d;
-	d.session = ses;
-	d.method = method;
-	d.params = params;
-	d.request = reqId;
+	context.session = ses;
+	context.method = method;
+	context.params = params;
+	context.request = reqId;
 
 	/* run the method */
-	int ret = (*meth) (&d);
+	int ret = (*meth) (&context);
 
 	debug_handler("method returned %d", ret );
 

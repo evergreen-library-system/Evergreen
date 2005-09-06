@@ -8,23 +8,16 @@ osrf_message* _do_server( osrf_app_session*, osrf_message* );
 int (*osrf_stack_entry_point) (transport_client*, int)  = &osrf_stack_process;
 
 int osrf_stack_process( transport_client* client, int timeout ) {
-	transport_message* msg = client_recv( client, timeout );
-	if(msg == NULL) return 0;
-	debug_handler( "Received message from transport code from %s", msg->sender );
-	int status = osrf_stack_transport_handler( msg, NULL );
+	if( !client ) return -1;
+	transport_message* msg = NULL;
 
-	while(1) {
-		transport_message* m = client_recv( client, 0 );
-		if(m) {
-			debug_handler( "Received additional message from transport code");
-			status = osrf_stack_transport_handler( m, NULL );
-		} else  {
-			debug_handler( "osrf_stack_process returning with only 1 received message" );
-			break;
-		}
+	while( (msg = client_recv( client, timeout )) ) {
+		debug_handler( "Received message from transport code from %s", msg->sender );
+		osrf_stack_transport_handler( msg, NULL );
+		timeout = 0;
 	}
 
-	return status;
+	return 0;
 }
 
 
@@ -32,9 +25,9 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 // -----------------------------------------------------------------------------
 // Entry point into the stack
 // -----------------------------------------------------------------------------
-int osrf_stack_transport_handler( transport_message* msg, char* my_service ) { 
+osrfAppSession* osrf_stack_transport_handler( transport_message* msg, char* my_service ) { 
 
-	if(!msg) return -1;
+	if(!msg) return NULL;
 
 	debug_handler( "Transport handler received new message \nfrom %s "
 			"to %s with body \n\n%s\n", msg->sender, msg->recipient, msg->body );
@@ -46,8 +39,10 @@ int osrf_stack_transport_handler( transport_message* msg, char* my_service ) {
 
 	osrf_app_session* session = osrf_app_session_find_session( msg->thread );
 
-	if( session == NULL ) 
+	if( !session ) 
 		session = osrf_app_server_session_init( msg->thread, my_service, msg->sender);
+
+	if( !session ) return NULL;
 
 	if(!msg->is_error)
 		debug_handler("Session [%s] found or built", session->session_id );
@@ -59,7 +54,6 @@ int osrf_stack_transport_handler( transport_message* msg, char* my_service ) {
 
 	debug_handler( "We received %d messages from %s", num_msgs, msg->sender );
 
-	/* XXX ERROR CHECKING, BAD JSON, ETC... */
 	int i;
 	for( i = 0; i != num_msgs; i++ ) {
 
@@ -88,7 +82,7 @@ int osrf_stack_transport_handler( transport_message* msg, char* my_service ) {
 	message_free( msg );
 	debug_handler("after msg delete");
 
-	return 1;
+	return session;
 }
 
 int osrf_stack_message_handler( osrf_app_session* session, osrf_message* msg ) {
@@ -202,7 +196,8 @@ osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 				return NULL;
 
 		case CONNECT:
-				/* handle connect message */
+				osrfAppSessionStatus( session, 
+						OSRF_STATUS_OK, msg->thread_trace, "Connection Successful" );
 				return NULL;
 
 		case REQUEST:

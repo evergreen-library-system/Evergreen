@@ -75,6 +75,11 @@ GNU General Public License for more details.
 
 #define BUFFER_MAX_SIZE 10485760 
 
+/* these are evil and should be condemned */
+int init_proc_title( int argc, char* argv[] );
+int set_proc_title( char* format, ... );
+
+
 int daemonize();
 
 void* safe_malloc(int size);

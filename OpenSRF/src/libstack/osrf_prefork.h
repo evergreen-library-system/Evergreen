@@ -54,7 +54,6 @@ struct prefork_child_struct {
 	int max_requests;
 	char* appname;
 	struct prefork_child_struct* next;
-	transport_client* connection;
 };
 
 typedef struct prefork_child_struct prefork_child;

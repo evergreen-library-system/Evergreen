@@ -27,14 +27,35 @@ inline void* safe_malloc( int size ) {
 }
 
 
+char** __global_argv = NULL;
+int __global_argv_size = 0;
+
+int init_proc_title( int argc, char* argv[] ) {
+
+	__global_argv = argv;
+
+	int i = 0;
+	while( i < argc ) {
+		int len = strlen( __global_argv[i]);
+		bzero( __global_argv[i++], len );
+		__global_argv_size += len;
+	}
+
+	__global_argv_size -= 2;
+	return 0;
+}
+
+int set_proc_title( char* format, ... ) {
+	VA_LIST_TO_STRING(format);
+	bzero( *(__global_argv), __global_argv_size );
+	return snprintf( *(__global_argv), __global_argv_size, VA_BUF );
+}
+
 
 /* utility method for profiling */
 double get_timestamp_millis() {
-	//struct timeb t;
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-	//ftime(&t);
-//	double time	= (int)t.time	+ ( ((double)t.millitm) / 1000 )  + ( ((double)tv.tv_usec / 1000000) );
 	double time	= (int)tv.tv_sec	+ ( ((double)tv.tv_usec / 1000000) );
 	return time;
 }

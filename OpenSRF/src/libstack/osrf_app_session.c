@@ -604,44 +604,66 @@ int osrf_app_session_request_resend( osrf_app_session* session, int req_id ) {
 	return _osrf_app_request_resend( req );
 }
 
-/** Send the given message */
-int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
-	if(session == NULL) return 0;
-	int ret_val= 0;
 
-	osrf_app_session_queue_wait( session, 0 );
-	debug_handler( "AppSession sending type %d, and thread_trace %d",
-			msg->m_type, msg->thread_trace );
+int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int size ) {
 
-	if(session->stateless) {
-		osrf_app_session_reset_remote(session);
+	if( !(session && msgs && size > 0) ) return 0;
+	int retval = 0;
 
-	} else {
 
-		if( (msg->m_type != CONNECT) && (msg->m_type != DISCONNECT) &&
+	osrfMessage* msg = msgs[0];
+
+	if(msg) {
+
+		osrf_app_session_queue_wait( session, 0 );
+
+		/* if we're not stateless and the first message is not a connect
+			message, then we do the connect first */
+		if(session->stateless) {
+				osrf_app_session_reset_remote(session);
+
+		} else {
+
+			if( (msg->m_type != CONNECT) && (msg->m_type != DISCONNECT) &&
 				(session->state != OSRF_SESSION_CONNECTED) ) {
-			if(!osrf_app_session_connect( session )) 
-				return 0;
+				if(!osrf_app_session_connect( session )) 
+					return 0;
+			}
 		}
 	}
 
-	//char* xml =  osrf_message_to_xml(msg);
-	char* string =  osrf_message_serialize(msg);
+	char* string = osrfMessageSerializeBatch(msgs, size);
 
-	debug_handler("[%s] [%s] Remote Id: %s", 
-			session->remote_service, session->session_id, session->remote_id );
+	if( string ) {
 
-	transport_message* t_msg = message_init( 
-			string, "", session->session_id, session->remote_id, NULL );
+		transport_message* t_msg = message_init( 
+				string, "", session->session_id, session->remote_id, NULL );
+	
+		debug_handler("Session [%s] [%s]  sending to %s \nXML:\n%s", 
+				session->remote_service, session->session_id, t_msg->recipient, string );
 
-	debug_handler("Session [%s] [%s]  sending to %s \nXML:\n%s", 
-			session->remote_service, session->session_id, t_msg->recipient, string );
-	ret_val = client_send_message( session->transport_handle, t_msg );
-	free(string);
-	message_free( t_msg );
+		retval = client_send_message( session->transport_handle, t_msg );
+	
+		free(string);
+		message_free( t_msg );
+	}
 
-	return ret_val; 
+	return retval; 
+
+
 }
+
+
+
+int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
+	if( !(session && msg) ) return 0;
+	osrfMessage* a[1];
+	a[0] = msg;
+	return osrfAppSessionSendBatch( session, a, 1 );
+}
+
+
+
 
 /**  Waits up to 'timeout' seconds for some data to arrive.
   * Any data that arrives will be processed according to its
@@ -710,6 +732,34 @@ int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data 
 
 	free(json);
 	osrf_message_free( msg );
+
+	return 0;
+}
+
+
+int osrfAppRequestRespondComplete( 
+		osrfAppSession* ses, int requestId, jsonObject* data ) {
+
+	osrf_message* payload = osrf_message_init( RESULT, requestId, 1 );
+	osrf_message_set_status_info( payload, NULL, "OK", OSRF_STATUS_OK );
+
+	char* json = jsonObjectToJSON( data );
+	osrf_message_set_result_content( payload, json );
+	free(json);
+
+	osrf_message* status = osrf_message_init( STATUS, requestId, 1);
+	osrf_message_set_status_info( status, "osrfConnectStatus", "Request Complete", OSRF_STATUS_COMPLETE );
+
+	osrfMessage* ms[2];
+	ms[0] = payload;
+	ms[1] = status;
+
+	osrfAppSessionSendBatch( ses, ms, 2 );
+
+	osrf_message_free( payload );
+	osrf_message_free( status );
+
+	/* join and free */
 
 	return 0;
 }

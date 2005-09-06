@@ -219,7 +219,10 @@ void _osrf_app_session_remove_request( osrf_app_session*, osrf_app_request* req 
 /** Send the given message */
 int _osrf_app_session_send( osrf_app_session*, osrf_message* msg );
 
+int osrfAppSessionSendBatch( osrf_app_session*, osrf_message* msgs[], int size );
+
 int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data ); 
+int osrfAppRequestRespondComplete( osrfAppSession* ses, int requestId, jsonObject* data ); 
 
 int osrfAppSessionStatus( osrfAppSession* ses, int type, int reqId, char* message );
 

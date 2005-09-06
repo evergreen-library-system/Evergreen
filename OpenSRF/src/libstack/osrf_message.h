@@ -94,6 +94,7 @@ char* osrf_message_serialize(osrf_message*);
 int osrf_message_deserialize(char* json, osrf_message* msgs[], int count);
 
 
+
 /** Pushes any message retreived from the xml into the 'msgs' array.
   * it is assumed that 'msgs' has beenn pre-allocated.
   * Returns the number of message that are in the buffer.
@@ -107,6 +108,14 @@ void osrf_message_add_param( osrf_message*, char* param_string );
 
 
 jsonObject* osrfMessageGetResult( osrfMessage* msg );
+
+/**
+  Returns the message as a jsonObject
+  @return The jsonObject which must be freed by the caller.
+  */
+jsonObject* osrfMessageToJSON( osrfMessage* msg );
+
+char* osrfMessageSerializeBatch( osrfMessage* msgs [], int count );
 
 
 #endif

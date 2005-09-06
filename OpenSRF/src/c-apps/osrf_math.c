@@ -4,7 +4,7 @@
 
 int initialize();
 int childInit();
-int osrfMathRun( osrfMethodDispatcher* );
+int osrfMathRun( osrfMethodContext* );
 
 
 int initialize() {
@@ -21,9 +21,9 @@ int childInit() {
 	return 0;
 }
 
-int osrfMathRun( osrfMethodDispatcher* d ) {
+int osrfMathRun( osrfMethodContext* c ) {
 
-	OSRF_METHOD_VERIFY_DISPATCHER(d); /* see osrf_application.h */
+	OSRF_METHOD_VERIFY_CONTEXT(c); /* see osrf_application.h */
 
 	/* collect the request params */
 	jsonObject* x = jsonObjectGetIndex(params, 0);
@@ -52,7 +52,7 @@ int osrfMathRun( osrfMethodDispatcher* d ) {
 			if(omsg) {
 
 				/* return dbmath's response to the user */
-				osrfAppRequestRespond( session, request, osrfMessageGetResult(omsg) ); 
+				osrfAppRequestRespondComplete( session, request, osrfMessageGetResult(omsg) ); 
 				osrfMessageFree(omsg);
 				return 0;
 			}

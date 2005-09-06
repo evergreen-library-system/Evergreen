@@ -4,7 +4,7 @@
 
 int initialize();
 int childInit();
-int osrfMathRun( osrfMethodDispatcher* );
+int osrfMathRun( osrfMethodContext* );
 
 
 int initialize() {
@@ -19,9 +19,9 @@ int childInit() {
 	return 0;
 }
 
-int osrfMathRun( osrfMethodDispatcher* d ) {
+int osrfMathRun( osrfMethodContext* d ) {
 
-	OSRF_METHOD_VERIFY_DISPATCHER(d);	
+	OSRF_METHOD_VERIFY_CONTEXT(d);	
 
 	jsonObject* x = jsonObjectGetIndex(params, 0);
 	jsonObject* y = jsonObjectGetIndex(params, 1);
@@ -43,7 +43,7 @@ int osrfMathRun( osrfMethodDispatcher* d ) {
 			if(!strcmp(method->name, "div"))		r = i / j;
 
 			jsonObject* resp = jsonNewNumberObject(r);
-			osrfAppRequestRespond( session, request, resp );
+			osrfAppRequestRespondComplete( session, request, resp );
 			jsonObjectFree(resp);
 
 			free(a); free(b);

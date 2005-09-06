@@ -1,5 +1,6 @@
 #include "osrf_prefork.h"
 #include <signal.h>
+#include "osrf_app_session.h"
 
 /* true if we just deleted a child.  This will allow us to make sure we're
 	not trying to use freed memory */
@@ -11,6 +12,8 @@ void sigchld_handler( int sig );
 int osrf_prefork_run(char* appname) {
 
 	if(!appname) fatal_handler("osrf_prefork_run requires an appname to run!");
+
+	set_proc_title( "opensrf listener [%s]", appname );
 
 	int maxr = 1000; 
 	int maxc = 10;
@@ -101,16 +104,22 @@ void prefork_child_init_hook(prefork_child* child) {
 	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) 
 		fatal_handler("Unable to bootstrap client for osrf_prefork_run()");
 	free(resc);
+
+	set_proc_title( "opensrf drone [%s]", child->appname );
 }
 
 void prefork_child_process_request(prefork_child* child, char* data) {
-	if(!child && child->connection) return;
+	if( !child ) return;
 
 	/* construct the message from the xml */
-	debug_handler("Child %d received data from parent:\n%s\n", child->pid, data);
 	transport_message* msg = new_message_from_xml( data );
 
-	osrf_stack_transport_handler(msg, child->appname);
+	osrfAppSession* session = osrf_stack_transport_handler(msg, child->appname);
+
+	if( ! session->stateless ) { /* keepalive loop for stateful sessions */
+
+		debug_handler("Entering keepalive loop for session %s", session->session_id );
+	}
 }
 
 

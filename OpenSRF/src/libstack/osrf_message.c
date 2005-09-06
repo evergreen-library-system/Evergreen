@@ -109,8 +109,45 @@ void osrf_message_free( osrf_message* msg ) {
 	free(msg);
 }
 
+
+char* osrfMessageSerializeBatch( osrfMessage* msgs [], int count ) {
+	if( !msgs ) return NULL;
+
+	char* j;
+	int i = 0;
+	osrfMessage* msg = NULL;
+	jsonObject* wrapper = jsonNewObject(NULL);
+
+	while( ((msg = msgs[i]) && (i++ < count)) ) 
+		jsonObjectPush(wrapper, osrfMessageToJSON( msg ));
+
+	j = jsonObjectToJSON(wrapper);
+	jsonObjectFree(wrapper);
+
+	return j;	
+}
+
+
 char* osrf_message_serialize(osrf_message* msg) {
+
 	if( msg == NULL ) return NULL;
+	char* j = NULL;
+
+	jsonObject* json = osrfMessageToJSON( msg );
+
+	if(json) {
+		jsonObject* wrapper = jsonNewObject(NULL);
+		jsonObjectPush(wrapper, json);
+		j = jsonObjectToJSON(wrapper);
+		jsonObjectFree(wrapper);
+	}
+
+	return j;
+}
+
+
+jsonObject* osrfMessageToJSON( osrfMessage* msg ) {
+
 	jsonObject* json = jsonNewObject(NULL);
 	jsonObjectSetClass(json, "osrfMessage");
 	jsonObject* payload;
@@ -166,12 +203,8 @@ char* osrf_message_serialize(osrf_message* msg) {
 			jsonObjectSetKey(json, "payload", payload);
 			break;
 	}
-	
-	jsonObject* wrapper = jsonNewObject(NULL);
-	jsonObjectPush(wrapper, json);
-	char* j = jsonObjectToJSON(wrapper);
-	jsonObjectFree(wrapper);
-	return j;
+
+	return json;
 }
 
 
@@ -194,11 +227,6 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 
 		jsonObject* message = jsonObjectGetIndex(json, x);
 
-		char* j =  jsonObjectToJSON(message);
-		debug_handler("deserialize parsed message \n%s\n", j );
-		free(j);
-	
-
 		if(message && message->type != JSON_NULL && 
 			message->classname && !strcmp(message->classname, "osrfMessage")) {
 
@@ -218,20 +246,35 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 
 			tmp = jsonObjectGetKey(message, "threadTrace");
 			if(tmp) {
+				char* tt = jsonObjectToSimpleString(tmp);
+				if(tt) {
+					new_msg->thread_trace = atoi(tt);
+					free(tt);
+				}
+				/*
 				if(tmp->type == JSON_NUMBER)
 					new_msg->thread_trace = (int) jsonObjectGetNumber(tmp);
 				if(tmp->type == JSON_STRING)
 					new_msg->thread_trace = atoi(jsonObjectGetString(tmp));
+					*/
 			}
 
 
 			tmp = jsonObjectGetKey(message, "protocol");
 
 			if(tmp) {
+				char* proto = jsonObjectToSimpleString(tmp);
+				if(proto) {
+					new_msg->protocol = atoi(proto);
+					free(proto);
+				}
+
+				/*
 				if(tmp->type == JSON_NUMBER)
 					new_msg->protocol = (int) jsonObjectGetNumber(tmp);
 				if(tmp->type == JSON_STRING)
 					new_msg->protocol = atoi(jsonObjectGetString(tmp));
+					*/
 			}
 
 			tmp = jsonObjectGetKey(message, "payload");
@@ -271,7 +314,6 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 
 			}
 			msgs[numparsed++] = new_msg;
-			debug_handler("deserialize has parsed %d messages", numparsed);
 		}
 	}
 
