@@ -11,14 +11,35 @@
 		<script language='javascript' src='../js/rdetail.js'> </script>
 	</head>
 
+	<script language='javascript'>
+		config.ids.rdetail = {};
+		config.ids.rdetail.view_marc = "rdetail_view_marc";
+	</script>
+
 	<body onload="init();">
 		<xi:include href="header.xml"/> 
+
+		
 		<div id='canvas' class='canvas'>
+
 			<xi:include href="altcanvas.xml"/>
+			<xi:include href="rdetail_altcanvas.xml"/>
+
 			<div id='canvas_main'>
 				<div>
 					<div class='rdetail_header color_1'>
-						<span>&rdetail.detailMain.headerLabel;</span>
+						<table width='100%'>
+							<tbody>
+								<tr>
+									<td>
+										<span>&rdetail.detailMain.headerLabel;</span>
+									</td>
+									<td align='right'>
+										<a href="javascript:void(0);" id='rdetail_view_marc'>&rdetail.detailMain.viewMarc;</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 					<xi:include href="rdetail_summary.xml"/>
 				</div> 

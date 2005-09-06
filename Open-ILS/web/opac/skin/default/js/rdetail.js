@@ -21,10 +21,25 @@ function rdetailDraw() {
 
 	G.ui.rdetail.cp_info_local.onclick = rdetailShowLocalCopies;
 	G.ui.rdetail.cp_info_all.onclick = rdetailShowAllCopies;
+	G.ui.rdetail.view_marc.onclick = rdetailViewMarc;
+	G.ui.rdetail.hide_marc.onclick = showCanvas;
 	var req = new Request(FETCH_RMODS, getRid());
 	req.callback(_rdetailDraw);
 	req.send();
 }
+
+function rdetailViewMarc() {
+	if(!record) return;
+
+	if( G.ui.rdetail.view_marc_box.innerHTML.indexOf("style") == -1 ) {
+		var req = new Request( FETCH_MARC_HTML, record.doc_id() );
+		req.send(true);
+		var html = req.result();
+		G.ui.rdetail.view_marc_box.innerHTML = html;
+	}
+	swapCanvas(G.ui.rdetail.view_marc_div);
+}
+
 
 function rdetailShowLocalCopies() {
 
@@ -65,7 +80,8 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.edition.appendChild(text(record.edition()));
 	G.ui.rdetail.pubdate.appendChild(text(record.pubdate()));
 	G.ui.rdetail.publisher.appendChild(text(record.publisher()));
-	G.ui.rdetail.tor.appendChild(text(record.types_of_resource()));
+	G.ui.rdetail.tor.appendChild(text(record.types_of_resource()[0]));
+	setResourcePic( G.ui.rdetail.tor_pic, record.types_of_resource()[0]);
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
@@ -86,6 +102,7 @@ function _rdetailRows(node) {
 
 		var row = copyRow.cloneNode(true);
 		row.id = "cp_info_" + node.id();
+
 		var libtd = findNodeByName( row, config.names.rdetail.lib_cell );
 		var cntd = findNodeByName( row, config.names.rdetail.cn_cell );
 		var cpctd = findNodeByName( row, config.names.rdetail.cp_count_cell );
@@ -94,10 +111,12 @@ function _rdetailRows(node) {
 		libtd.setAttribute("style", "padding-left: " + ((findOrgDepth(node) - 1)  * 9) + "px;");
 	
 		if(!findOrgType(node.ou_type()).can_have_vols()) {
-			libtd.setAttribute("colspan", numStatuses + 2 );
-			libtd.colSpan = numStatuses + 2;
+
 			row.removeChild(cntd);
 			row.removeChild(cpctd);
+
+			libtd.setAttribute("colspan", numStatuses + 2 );
+			libtd.colSpan = numStatuses + 2;
 			addCSSClass(row, config.css.color_3);
 		} 
 	

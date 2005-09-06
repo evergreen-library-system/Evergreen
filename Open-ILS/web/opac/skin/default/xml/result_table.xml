@@ -46,8 +46,9 @@
 							</tr>
 
 							<tr>
-								<td class='result_table_format_cell'>
-									<a class='search_link'> 
+								<td name='result_table_format_cell' class='result_table_format_cell'>
+									<a name='resource_link' class='search_link'> 
+										<img name='format_pic' class='tor_pic'> </img>
 										<!-- Item formats go here -->
 									</a>
 								</td>
@@ -56,10 +57,16 @@
 						</tbody>
 					</table>
 				</td>
-
 			</tr>
 		</tbody>
 	</table>
+
+	<script language='javascript'>
+		config.names.result.format_cell = 'result_table_format_cell';
+		config.names.result.format_link = 'resource_link'
+		config.names.result.format_pic = 'format_pic'
+	</script>
+
 </div>
 
 

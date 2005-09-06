@@ -91,6 +91,8 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	findNodeByName(r, "result_table_title_cell").width = 
 		100 - (orgNodeTrail(findOrgUnit(getLocation())).length * 8) + "%";
 
+	resultBuildFormatIcons( r, rec );
+
 	unHideMe(r);
 	
 	runEvt("result", "recordDrawn", rec.doc_id(), title_link);
@@ -98,6 +100,29 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	if(resultPageIsDone()) 
 		runEvt('result', 'allRecordsReceived', recordsCache);
 }
+
+function resultBuildFormatIcons( row, rec ) {
+
+	var td = findNodeByName( row, config.names.result.format_cell );
+	var linkt = td.removeChild(findNodeByName( row, config.names.result.format_link ));
+	var resources = rec.types_of_resource();
+
+	for( var i in resources ) {
+		var link = linkt.cloneNode(true);
+
+		var args = {};
+		args.page = RRESULT;
+		args[PARAM_OFFSET] = 0;
+		args[PARAM_MRID] = rec.doc_id();
+		args[PARAM_FORM] = modsFormatToMARC(resources[i]);
+		link.setAttribute("href", buildOPACLink(args));
+
+		var img = findNodeByName(link, config.names.result.format_pic);
+		setResourcePic( img, resources[i] );
+		td.appendChild(link);
+	}
+}
+
 
 function resultPageIsDone(pos) {
 	return (recordsHandled == getDisplayCount() 

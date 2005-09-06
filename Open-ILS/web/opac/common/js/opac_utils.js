@@ -14,8 +14,7 @@ Request.prototype.send		= function(block){this.request.send(block);}
 Request.prototype.result	= function(){return this.request.getResultObject();}
 /* ----------------------------------------------------------------------- */
 
-function showCanvas() { setTimeout(_showCanvas, 200); }
-function _showCanvas() {
+function showCanvas() {
 	for( var x in G.ui.altcanvas ) {
 		hideMe(G.ui.altcanvas[x]);
 	}
@@ -422,8 +421,6 @@ function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
 /* ----------------------------------------------------------------------- */
 /* build the org tree */
 /* ----------------------------------------------------------------------- */
-
-
 function drawOrgTree() {
 	G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
 }
@@ -459,7 +456,85 @@ function setFontSize(size) {
 }
 
 
+/* ----------------------------------------------------------------------- */
+/* resource icon code */
+/* ----------------------------------------------------------------------- */
 
+var resourceFormats = [
+   "text",
+   "moving image",
+   "sound recording", "software, multimedia",
+   "still images",
+   "cartographic",
+   "mixed material",
+   "notated music",
+   "three dimensional object" ];
+
+
+function modsFormatToMARC(format) {
+   switch(format) {
+      case "text":
+         return "at";
+      case "moving image":
+         return "g";
+      case "sound recording":
+         return "ij";
+      case "sound recording-nonmusical":
+         return "i";
+      case "sound recording-musical":
+         return "j";
+      case "software, multimedia":
+         return "m";
+      case "still images":
+         return "k";
+      case "cartographic":
+         return "ef";
+      case "mixed material":
+         return "op";
+      case "notated music":
+         return "cd";
+      case "three dimensional object":
+         return "r";
+   }
+   return "at";
+}
+
+
+function MARCFormatToMods(format) {
+   switch(format) {
+      case "a":
+      case "t":
+         return "text";
+      case "g":
+         return "moving image";
+      case "i":
+         return "sound recording-nonmusical";
+      case "j":
+         return "sound recording-musical";
+      case "m":
+         return "software, multimedia";
+      case "k":
+         return "still images";
+      case "e":
+      case "f":
+         return "cartographic";
+      case "o":
+      case "p":
+         return "mixed material";
+      case "c":
+      case "d":
+         return "notated music";
+      case "r":
+         return "three dimensional object";
+   }
+   return "text";
+}
+
+
+function setResourcePic( img, resource ) {
+	img.setAttribute( "src", "../../../images/tor/" + resource + ".jpg");
+	img.title = resource;
+}
 
 
 

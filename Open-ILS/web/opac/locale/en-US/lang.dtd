@@ -5,10 +5,10 @@
 <!ENTITY navigate.home.title "Go to the Home page">
 <!ENTITY navigate.advanced "Advanced Search">
 <!ENTITY navigate.advanced.title "Go to the Advanced Search Page">
-<!ENTITY navigate.myopac "My OPAC">
+<!ENTITY navigate.myopac "My Account">
 <!ENTITY navigate.myopac.title "Go to My OPAC">
-<!ENTITY navigate.login "Log in for personalized features">
-<!ENTITY navigate.login.title "Log in">
+<!ENTITY navigate.login "Log in">
+<!ENTITY navigate.login.title "Log in for personalized features">
 <!ENTITY navigate.logout "Log out">
 <!ENTITY navigate.logout.title "Log out">
 
@@ -43,3 +43,5 @@
 <!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
 <!ENTITY rdetail.loading "Loading copy infomation...">
 <!ENTITY rdetail.noneAvailable " * There are no copies in this library">
+<!ENTITY rdetail.detailMain.viewMarc "View MARC">
+<!ENTITY rdetail.detailMain.hideMarc "Return to title summary view">

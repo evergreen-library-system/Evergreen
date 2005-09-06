@@ -46,11 +46,11 @@
 					<td align='left' class='searchbar_main_td'>
 						<span class="searchbar_item">
 							<select id='search_type_selector'>
-								<option value='title' selected='selected'>Title</option>
+								<option value='keyword' selected='selected'>Keyword</option>
+								<option value='title'>Title</option>
 								<option value='author'>Author</option>
 								<option value='subject'>Subject</option>
 								<option value='series'>Series</option>
-								<option value='keyword'>Keyword</option>
 							</select>
 						</span>
 	
