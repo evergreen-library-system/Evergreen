@@ -28,9 +28,9 @@ libfieldmapper.so:	fieldmapper_lookup.o
 	echo $@
 	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 fieldmapper_lookup.o -o $@
 
-mod_ils_rest_gateway.so:	libfieldmapper.so ils_rest_gateway.o
+mod_ils_rest_gateway.so:	libfieldmapper.so ils_rest_gateway.o json_xml.o
 	echo $@
-	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 ils_rest_gateway.o -lfieldmapper -o $@
+	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 json_xml.o ils_rest_gateway.o -lfieldmapper -o $@
 
 # ------------------------------------------------------
 
@@ -43,7 +43,7 @@ libfieldmapper-install:	libfieldmapper.so
 
 
 mod_ils_rest_gateway-install:
-	$(APXS2) -i -a -n mod_ils_rest_gateway mod_ils_rest_gateway.so
+	$(APXS2) -i -a -n ils_rest_gateway mod_ils_rest_gateway.so
 	echo "-----------------------------------------------";
 	echo -e "* Important * : Change httpd.conf from this: \n \
 		LoadModule mod_ils_rest_gateway_module modules/mod_ils_rest_gateway.so \n \

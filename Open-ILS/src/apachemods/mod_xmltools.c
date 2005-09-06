@@ -77,7 +77,7 @@ static int mod_xmltools_handler (request_rec* r) {
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
 
-	ap_set_content_type(r, "text/html");
+	ap_set_content_type(r, "text/html; charset=utf-8");
 
 	string_array* params = apacheParseParms(r);
 

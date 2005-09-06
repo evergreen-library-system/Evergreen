@@ -1,11 +1,11 @@
 #include "json_xml.h"
 #include "fieldmapper_lookup.h"
 
-void _rest_xml_output(growing_buffer*, object*, char*, int, int);
+void _rest_xml_output(growing_buffer*, jsonObject*, char*, int, int);
 char* _escape_xml (char*);
 
 char* json_string_to_xml(char* content) {
-	object * obj;
+	jsonObject * obj;
 	growing_buffer * res_xml;
 	char * output;
 	int i;
@@ -18,9 +18,9 @@ char* json_string_to_xml(char* content) {
 	
 	buffer_add(res_xml, "<response>");
 
-	if(obj->is_array) {
+	if(obj->type == JSON_ARRAY ) {
 		for( i = 0; i!= obj->size; i++ ) {
-			_rest_xml_output(res_xml, obj->get_index(obj,i), NULL, 0,0);
+			_rest_xml_output(res_xml, jsonObjectGetIndex(obj,i), NULL, 0,0);
 		}
 	} else {
 		_rest_xml_output(res_xml, obj, NULL, 0,0);
@@ -30,7 +30,7 @@ char* json_string_to_xml(char* content) {
 
 	output = buffer_data(res_xml);
 	buffer_free(res_xml);
-	free_object(obj);
+	jsonObjectFree(obj);
 
 	return output;
 }
@@ -55,7 +55,7 @@ char* _escape_xml (char* text) {
 	return out;
 }
 
-void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int arr_index, int notag) {
+void _rest_xml_output(growing_buffer* buf, jsonObject* obj, char * obj_class, int arr_index, int notag) {
 	char * tag;
 	int i;
 	
@@ -75,7 +75,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int ar
         
    /* add class hints if we have a class name */
    if(obj->classname) {
-     	if(obj->is_null) {
+     	if(obj->type == JSON_NULL) {
 			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\"/></%s>", tag, obj->classname, tag);
 			return;
 		} else {
@@ -85,48 +85,40 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int ar
 
 
 	/* now add the data */
-	if(obj->is_null) {
+	if(obj->type == JSON_NULL) {
 		if (!notag)
 			buffer_fadd(buf, "<%s/>",tag);
-	} else if(obj->is_bool && obj->bool_value) {
+	} else if(obj->type == JSON_BOOL && obj->value.b) {
 		if (notag)
 			buffer_add(buf, "true");
 		else
 			buffer_fadd(buf, "<%s>true</%s>",tag,tag);
                 
-	} else if(obj->is_bool && ! obj->bool_value) {
+	} else if(obj->type == JSON_BOOL && ! obj->value.b) {
 		if (notag)
 			buffer_add(buf, "false");
 		else
 			buffer_fadd(buf, "<%s>false</%s>",tag,tag);
 
-	} else if (obj->is_string) {
+	} else if (obj->type == JSON_STRING) {
 		if (notag) {
-			char * t = _escape_xml(obj->string_data);
+			char * t = _escape_xml(jsonObjectGetString(obj));
 			buffer_add(buf,t);
 			free(t);
 		} else {
-			char * t = _escape_xml(obj->string_data);
+			char * t = _escape_xml(jsonObjectGetString(obj));
 			buffer_fadd(buf,"<%s>%s</%s>",tag,t,tag);
 			free(t);
 		}
 
-	} else if(obj->is_number) {
-
+	} else if(obj->type == JSON_NUMBER) {
 		if (notag)
-			buffer_fadd(buf,"%ld",obj->num_value);
+			buffer_fadd(buf,"%lf",tag, jsonObjectGetNumber(obj),tag);
 		else
-			buffer_fadd(buf,"<%s>%ld</%s>",tag,obj->num_value,tag);
+			buffer_fadd(buf,"<%s>%lf</%s>",tag, jsonObjectGetNumber(obj),tag);
 
 
-	} else if(obj->is_double) {
-		if (notag)
-			buffer_fadd(buf,"%lf",tag,obj->double_value,tag);
-		else
-			buffer_fadd(buf,"<%s>%lf</%s>",tag,obj->double_value,tag);
-
-
-	} else if (obj->is_array) {
+	} else if (obj->type == JSON_ARRAY) {
 		if (!notag) {
 			if(!isFieldmapper(obj_class))
         	       		buffer_add(buf,"<array>");
@@ -135,7 +127,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int ar
 		}
 
 	       	for( i = 0; i!= obj->size; i++ ) {
-			_rest_xml_output(buf, obj->get_index(obj,i), obj->classname, i,0);
+			_rest_xml_output(buf, jsonObjectGetIndex(obj,i), obj->classname, i,0);
 		}
 
 		if (!notag) {
@@ -145,7 +137,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int ar
                			buffer_fadd(buf,"</%s>",tag);
 		}
 
-        } else if (obj->is_hash) {
+        } else if (obj->type == JSON_HASH) {
 
 		if (!notag) {
 			if(!obj_class)
@@ -154,9 +146,9 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int ar
                			buffer_fadd(buf,"<%s>",tag);
 		}
 
-                object_iterator* itr = new_iterator(obj);
-                object_node* tmp;
-                while( (tmp = itr->next(itr)) ) {
+                jsonObjectIterator* itr = jsonNewObjectIterator(obj);
+                jsonObjectNode* tmp;
+                while( (tmp = jsonObjectIteratorNext(itr)) ) {
 			if (notag) {
 				buffer_fadd(buf,"<%s>",tmp->key);
 			} else {
@@ -172,7 +164,7 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * obj_class, int ar
 				buffer_add(buf,"</value></pair>");
 			}
                 }
-                free_iterator(itr);
+                jsonObjectIteratorFree(itr);
 
 		if (!notag) {
 			if(!obj_class)
