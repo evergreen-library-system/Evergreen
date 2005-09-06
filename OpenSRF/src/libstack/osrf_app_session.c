@@ -311,16 +311,21 @@ osrf_app_session* osrf_app_server_session_init(
 		return NULL;
 	}
 
+	int stateless = 0;
+	char* statel = osrf_settings_host_value("/apps/%s/stateless", our_app );
+	if(statel) stateless = atoi(statel);
+	free(statel);
+
+
 	session->request_queue = NULL;
 	session->remote_id = strdup(remote_id);
 	session->orig_remote_id = strdup(remote_id);
 	session->session_id = strdup(session_id);
 	session->remote_service = strdup(our_app);
+	session->stateless = stateless;
 
 	#ifdef ASSUME_STATELESS
 	session->stateless = 1;
-	#else
-	session->stateless = 0;
 	#endif
 
 	session->thread_trace = 0;

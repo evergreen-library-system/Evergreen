@@ -27,6 +27,9 @@ int main( int argc, char* argv[] ) {
 	osrfConfig* cfg = osrfConfigInit( argv[1], "router" );
 	osrfConfigSetDefaultConfig(cfg);
 
+	init_proc_title( argc, argv );
+	set_proc_title( "OpenSRF Router" );
+
 	/* load the config options */
 	char* server			= osrfConfigGetValue(NULL, "/transport/server");
 	char* port				= osrfConfigGetValue(NULL, "/transport/port");

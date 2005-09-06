@@ -3,13 +3,15 @@
 LDLIBS	+= -lxml2 -lopensrf -lobjson
 CFLAGS	+= -D_ROUTER
 
-all: router 
+all: opensrf_router 
 
 install: 
-	cp router $(BINDIR)
+	cp opensrf_router $(BINDIR)
 
-router:	router.o 
+opensrf_router:	router.o 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) router.o -o $@
 router.o:	router.c router.h
 
 clean:
-	/bin/rm -f *.o router
+	/bin/rm -f *.o opensrf_router
+

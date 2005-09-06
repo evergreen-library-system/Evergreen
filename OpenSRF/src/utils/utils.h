@@ -75,7 +75,14 @@ GNU General Public License for more details.
 
 #define BUFFER_MAX_SIZE 10485760 
 
-/* these are evil and should be condemned */
+/* these are evil and should be condemned 
+	! Only use these if you are done with argv[].
+	call init_proc_title() first, then call
+	set_proc_title. 
+	the title is only allowed to be as big as the
+	initial process name of the process (full size of argv[]).
+	truncation may occurr.
+ */
 int init_proc_title( int argc, char* argv[] );
 int set_proc_title( char* format, ... );
 

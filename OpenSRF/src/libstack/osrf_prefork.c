@@ -13,7 +13,7 @@ int osrf_prefork_run(char* appname) {
 
 	if(!appname) fatal_handler("osrf_prefork_run requires an appname to run!");
 
-	set_proc_title( "opensrf listener [%s]", appname );
+	set_proc_title( "OpenSRF Listener [%s]", appname );
 
 	int maxr = 1000; 
 	int maxc = 10;
@@ -25,6 +25,7 @@ int osrf_prefork_run(char* appname) {
 	jsonObject* min_children = osrf_settings_host_value_object("/apps/%s/unix_config/min_children", appname);
 	jsonObject* max_children = osrf_settings_host_value_object("/apps/%s/unix_config/max_children", appname);
 
+	
 	if(!max_req) warning_handler("Max requests not defined, assuming 1000");
 	else maxr = (int) jsonObjectGetNumber(max_req);
 
@@ -105,7 +106,7 @@ void prefork_child_init_hook(prefork_child* child) {
 		fatal_handler("Unable to bootstrap client for osrf_prefork_run()");
 	free(resc);
 
-	set_proc_title( "opensrf drone [%s]", child->appname );
+	set_proc_title( "OpenSRF Drone [%s]", child->appname );
 }
 
 void prefork_child_process_request(prefork_child* child, char* data) {
@@ -116,10 +117,11 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 
 	osrfAppSession* session = osrf_stack_transport_handler(msg, child->appname);
 
-	if( ! session->stateless ) { /* keepalive loop for stateful sessions */
+	if( session->stateless && session->state != OSRF_SESSION_CONNECTED ) return;
+
+	/* keepalive loop for stateful sessions */
 
 		debug_handler("Entering keepalive loop for session %s", session->session_id );
-	}
 }
 
 

@@ -82,6 +82,9 @@ int main(int argc, char* argv[]) {
 	signal(SIGINT, &sig_int_handler);
 	signal(SIGTERM, &sig_int_handler);
 
+	//init_proc_title( argc, argv );
+	//set_proc_title( "opensrf jabber" );
+
 	launch_server();
 	return 0;
 }

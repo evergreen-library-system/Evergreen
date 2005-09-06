@@ -128,7 +128,7 @@ sub bootstrap {
 
 	# Start a process group and make me the captain
 	setpgrp( 0, 0 ); 
-	$0 = "System";
+	$0 = "OpenSRF System";
 
 	# -----------------------------------------------
 	# Launch the settings sever if necessary...

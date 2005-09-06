@@ -81,7 +81,7 @@ function startJserver {
 
 
 function startRouter {
-	"$BINDIR/router" "$ETCDIR/opensrf_core.xml" 
+	"$BINDIR/opensrf_router" "$ETCDIR/opensrf_core.xml" 
 }
 
 function startOpenSRF {
@@ -125,7 +125,7 @@ function stopMe {
 	sleep 1;
 	
 	echo "Stopping The Router...";
-	killall router;
+	killall opensrf_router;
 	
 	sleep 1;
 	

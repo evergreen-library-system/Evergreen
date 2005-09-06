@@ -31,18 +31,22 @@ function startSystem {
 			;;
 	
 		"stop")
-			PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
+			PID=$(ps ax | grep -i "opensrf system" | grep -v grep | awk '{print $1}');
+
 			if [ -z "$PID" ]; then
 				echo "OpenSRF System is not running";
 				exit;
+
+			else
+				echo "Killing System...$PID";
+				kill -s INT $PID;
 			fi
-			echo "Killing System...$PID";
-			kill -s INT $PID;
+
 			echo "Done";
 			;;
 	
 		"status")
-			PID=$(ps ax | grep "[0-9] System$" | awk '{print $1}');
+			PID=$(ps ax | grep -i "opensrf system" | grep -v grep | awk '{print $1}');
 			if [ -z "$PID" ]; then
 				echo "OpenSRF System is not running";
 				exit 0;
