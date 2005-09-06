@@ -70,8 +70,10 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 			} else {
 	
-				osrfAppRegisterApplication( appname, libfile );
-				osrf_prefork_run(appname);
+				if( osrfAppRegisterApplication( appname, libfile ) == 0 ) 
+					osrf_prefork_run(appname);
+
+				debug_handler("Server exiting for app %s and library %s", appname, libfile );
 				exit(0);
 			}
 		}
