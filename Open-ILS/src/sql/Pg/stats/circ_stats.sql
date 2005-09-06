@@ -48,7 +48,6 @@ CREATE TABLE circ_stats.copy_dim (
 	copy_location		INT	NOT NULL,
 	copy_fine_level		INT	NOT NULL,
 	copy_loan_duration	INT	NOT NULL,
-	copy_location		INT	NOT NULL,
 	id			TEXT	PRIMARY KEY,
 	copy_circ_modifer	TEXT,
 	copy_circ_as_type	TEXT,
@@ -88,18 +87,18 @@ CREATE TABLE circ_stats.checkout_fact (
 	circ_lib		INT				NOT NULL,
 	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	circ_dim		TEXT				NOT NULL REFERECES circ_stats.circ_dim (id),
+	circ_dim		TEXT				NOT NULL REFERENCES circ_stats.circ_dim (id),
 
 	-- patron info
-	usr_dim			TEXT				NOT NULL REFERECES circ_stats.usr_dim (id),
+	usr_dim			TEXT				NOT NULL REFERENCES circ_stats.usr_dim (id),
 
 	-- copy info
-	copy_dim		TEXT				NOT NULL REFERECES circ_stats.copy_dim (id),
+	copy_dim		TEXT				NOT NULL REFERENCES circ_stats.copy_dim (id),
 
 	-- bib record info
-	bib_dim			TEXT				NOT NULL REFERECES circ_stats.record_dim (id)
+	bib_dim			TEXT				NOT NULL REFERENCES circ_stats.record_dim (id)
 ) WITHOUT OIDS;
-CREATE INDEX circ_stats_checkout_fact_time_idx		ON circ_stats.checkout_fact (circ_time);
+CREATE INDEX circ_stats_checkout_fact_time_idx		ON circ_stats.checkout_fact (circ_timestamp);
 CREATE INDEX circ_stats_checkout_fact_circ_dim_idx	ON circ_stats.checkout_fact (circ_dim);
 CREATE INDEX circ_stats_checkout_fact_usr_dim_idx	ON circ_stats.checkout_fact (usr_dim);
 CREATE INDEX circ_stats_checkout_fact_copy_dim_idx	ON circ_stats.checkout_fact (copy_dim);
@@ -111,18 +110,18 @@ CREATE TABLE circ_stats.renewal_fact (
 	circ_lib		INT				NOT NULL,
 	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	circ_dim		TEXT				NOT NULL REFERECES circ_stats.circ_dim (id),
+	circ_dim		TEXT				NOT NULL REFERENCES circ_stats.circ_dim (id),
 
 	-- patron info
-	usr_dim			TEXT				NOT NULL REFERECES circ_stats.usr_dim (id),
+	usr_dim			TEXT				NOT NULL REFERENCES circ_stats.usr_dim (id),
 
 	-- copy info
-	copy_dim		TEXT				NOT NULL REFERECES circ_stats.copy_dim (id),
+	copy_dim		TEXT				NOT NULL REFERENCES circ_stats.copy_dim (id),
 
 	-- bib record info
-	bib_dim			TEXT				NOT NULL REFERECES circ_stats.record_dim (id)
+	bib_dim			TEXT				NOT NULL REFERENCES circ_stats.record_dim (id)
 ) WITHOUT OIDS;
-CREATE INDEX circ_stats_renewal_fact_time_idx		ON circ_stats.renewal_fact (circ_time);
+CREATE INDEX circ_stats_renewal_fact_time_idx		ON circ_stats.renewal_fact (circ_timestamp);
 CREATE INDEX circ_stats_renewal_fact_circ_dim_idx	ON circ_stats.renewal_fact (circ_dim);
 CREATE INDEX circ_stats_renewal_fact_usr_dim_idx	ON circ_stats.renewal_fact (usr_dim);
 CREATE INDEX circ_stats_renewal_fact_copy_dim_idx	ON circ_stats.renewal_fact (copy_dim);
@@ -134,24 +133,24 @@ CREATE TABLE circ_stats.checkin_fact (
 	circ_lib		INT				NOT NULL,
 	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	circ_dim		TEXT				NOT NULL REFERECES circ_stats.circ_dim (id),
+	circ_dim		TEXT				NOT NULL REFERENCES circ_stats.circ_dim (id),
 
 	-- patron info
-	usr_dim			TEXT				NOT NULL REFERECES circ_stats.usr_dim (id),
+	usr_dim			TEXT				NOT NULL REFERENCES circ_stats.usr_dim (id),
 
 	-- copy info
-	copy_dim		TEXT				NOT NULL REFERECES circ_stats.copy_dim (id),
+	copy_dim		TEXT				NOT NULL REFERENCES circ_stats.copy_dim (id),
 
 	-- bib record info
-	bib_dim			TEXT				NOT NULL REFERECES circ_stats.record_dim (id)
+	bib_dim			TEXT				NOT NULL REFERENCES circ_stats.record_dim (id)
 ) WITHOUT OIDS;
-CREATE INDEX circ_stats_checkin_fact_time_idx		ON circ_stats.checkin_fact (circ_time);
+CREATE INDEX circ_stats_checkin_fact_time_idx		ON circ_stats.checkin_fact (circ_timestamp);
 CREATE INDEX circ_stats_checkin_fact_circ_dim_idx	ON circ_stats.checkin_fact (circ_dim);
 CREATE INDEX circ_stats_checkin_fact_usr_dim_idx	ON circ_stats.checkin_fact (usr_dim);
 CREATE INDEX circ_stats_checkin_fact_copy_dim_idx	ON circ_stats.checkin_fact (copy_dim);
 CREATE INDEX circ_stats_checkin_fact_bib_dim_idx	ON circ_stats.checkin_fact (bib_dim);
 
-CREATE OR REPLACE circ_stats.checkout_full_view AS
+CREATE OR REPLACE VIEW circ_stats.checkout_full_view AS
 	SELECT	circ_id,
 		circ_timestamp,
 
@@ -182,7 +181,6 @@ CREATE OR REPLACE circ_stats.checkout_full_view AS
 		copy_circulate,
 		copy_opac_visible,
 		copy_circ_lib,
-		copy_location,
 		copy_fine_level,
 		copy_loan_duration,
 		copy_location,
@@ -200,15 +198,15 @@ CREATE OR REPLACE circ_stats.checkout_full_view AS
 		bib_cat_form,
 		bib_pub_status,
 		bib_pub_date,
-		bib_item_lang,
+		bib_item_lang
 
 	  FROM	circ_stats.checkout_fact f
 		JOIN circ_stats.circ_dim cd ON (f.circ_dim = cd.id)
 		JOIN circ_stats.usr_dim ud ON (f.usr_dim = ud.id)
 		JOIN circ_stats.copy_dim cpd ON (f.copy_dim = cpd.id)
-		JOIN circ_stats.bib_dim bd ON (f.bib_dim = bd.id);
+		JOIN circ_stats.record_dim bd ON (f.bib_dim = bd.id);
 
-CREATE OR REPLACE circ_stats.checkin_full_view AS
+CREATE OR REPLACE VIEW circ_stats.checkin_full_view AS
 	SELECT	circ_id,
 		circ_timestamp,
 
@@ -239,7 +237,6 @@ CREATE OR REPLACE circ_stats.checkin_full_view AS
 		copy_circulate,
 		copy_opac_visible,
 		copy_circ_lib,
-		copy_location,
 		copy_fine_level,
 		copy_loan_duration,
 		copy_location,
@@ -257,15 +254,15 @@ CREATE OR REPLACE circ_stats.checkin_full_view AS
 		bib_cat_form,
 		bib_pub_status,
 		bib_pub_date,
-		bib_item_lang,
+		bib_item_lang
 
 	  FROM	circ_stats.checkin_fact f
 		JOIN circ_stats.circ_dim cd ON (f.circ_dim = cd.id)
 		JOIN circ_stats.usr_dim ud ON (f.usr_dim = ud.id)
 		JOIN circ_stats.copy_dim cpd ON (f.copy_dim = cpd.id)
-		JOIN circ_stats.bib_dim bd ON (f.bib_dim = bd.id);
+		JOIN circ_stats.record_dim bd ON (f.bib_dim = bd.id);
 
-CREATE OR REPLACE circ_stats.renewal_full_view AS
+CREATE OR REPLACE VIEW circ_stats.renewal_full_view AS
 	SELECT	circ_id,
 		circ_timestamp,
 
@@ -296,7 +293,6 @@ CREATE OR REPLACE circ_stats.renewal_full_view AS
 		copy_circulate,
 		copy_opac_visible,
 		copy_circ_lib,
-		copy_location,
 		copy_fine_level,
 		copy_loan_duration,
 		copy_location,
@@ -314,13 +310,13 @@ CREATE OR REPLACE circ_stats.renewal_full_view AS
 		bib_cat_form,
 		bib_pub_status,
 		bib_pub_date,
-		bib_item_lang,
+		bib_item_lang
 
 	  FROM	circ_stats.renewal_fact f
 		JOIN circ_stats.circ_dim cd ON (f.circ_dim = cd.id)
 		JOIN circ_stats.usr_dim ud ON (f.usr_dim = ud.id)
 		JOIN circ_stats.copy_dim cpd ON (f.copy_dim = cpd.id)
-		JOIN circ_stats.bib_dim bd ON (f.bib_dim = bd.id);
+		JOIN circ_stats.record_dim bd ON (f.bib_dim = bd.id);
 
 
 COMMIT;
