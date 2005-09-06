@@ -13,7 +13,12 @@
 	</head>
 
 	<body onload="init();">
-		<xi:include href="header.xml"/> 
+		<div xmlns:xi="http://www.w3.org/2001/XInclude">
+			<xi:include href="logo.xml"/>
+			<xi:include href="fonts.xml"/>
+			<xi:include href="sidebar.xml"/>
+		</div>
+
 		<div id='canvas' class='canvas'>
 			<xi:include href="altcanvas.xml"/>
 			<div id='canvas_main'>Advanced Search Goes Here</div>
