@@ -59,6 +59,7 @@ CREATE TABLE action.circulation (
 	circ_lib		INT				NOT NULL, -- actor.org_unit.id
 	circ_staff		INT				NOT NULL, -- actor.usr.id
 	checkin_staff		INT,					  -- actor.usr.id
+	checkin_lib		INT,					  -- actor.org_unit.id
 	renewal_remaining	INT				NOT NULL, -- derived from "circ duration" rule
 	due_date		TIMESTAMP WITH TIME ZONE	NOT NULL,
 	stop_fines_time		TIMESTAMP WITH TIME ZONE,
@@ -119,6 +120,9 @@ CREATE TABLE action.hold_request (
 	expire_time		TIMESTAMP WITH TIME ZONE,
 	target			BIGINT				NOT NULL, -- see hold_type
 	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL,
+	fulfillment_staff	INT				REFERENCES actor.usr (id),
+	fulfillment_lib		INT				REFERENCES actor.org_unit (id),
+	request_lib		INT				NOT NULL REFERENCES actor.org_unit (id),
 	requestor		INT				NOT NULL REFERENCES actor.usr (id),
 	usr			INT				NOT NULL REFERENCES actor.usr (id),
 	selection_depth		INT				NOT NULL DEFAULT 0,
