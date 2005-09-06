@@ -234,7 +234,7 @@ sub perl2JSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
-		$perl =~ s/(\P{L}|\P{N})/sprintf('\u%0.4x',ord($1))/sgoe;
+		$perl =~ s/(\pM|\pS|\pC)/sprintf('\u%0.4x',ord($1))/sgoe;
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
 		} else {
@@ -314,7 +314,7 @@ sub perl2prettyJSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
-		$perl =~ s/(\P{L}|\P{N}|\P{P})/sprintf('\u%0.4x',ord($1))/sgoe;
+		$perl =~ s/(\pM|\pS|\pC)/sprintf('\u%0.4x',ord($1))/sgoe;
 		$output .= "   "x$depth unless($nospace);
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
