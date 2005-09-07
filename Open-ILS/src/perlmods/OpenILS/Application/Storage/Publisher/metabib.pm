@@ -367,7 +367,7 @@ sub search_class_fts {
 
 	if ($copies_visible) {
 		$select = <<"		SQL";
-			SELECT	m.metarecord $rank_calc $visible_count
+			SELECT	m.metarecord $rank_calc $visible_count, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
 				$asset_call_number_table cn,
@@ -387,13 +387,13 @@ sub search_class_fts {
 				$copies_visible
 				$t_filter
 				$f_filter
-	  	  	GROUP BY m.metarecord $visible_count_test
+	  	  	GROUP BY 1 $visible_count_test
 	  	  	ORDER BY 2 DESC,3
 		  	$limit_clause $offset_clause
 		SQL
 	} else {
 		$select = <<"		SQL";
-			SELECT	m.metarecord $rank_calc, 0
+			SELECT	m.metarecord $rank_calc, 0, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
 				$metabib_record_descriptor rd
@@ -402,7 +402,7 @@ sub search_class_fts {
 				AND rd.record = m.source
 				$t_filter
 				$f_filter
-	  	  	GROUP BY 1, 4 
+	  	  	GROUP BY 1, 4
 	  	  	ORDER BY 2 DESC,3
 		  	$limit_clause $offset_clause
 		SQL
@@ -424,7 +424,7 @@ sub search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond($_) for (map { [@$_[0,1,3]] } @$recs);
+	$client->respond($_) for (map { [@$_[0,1,3,4]] } @$recs);
 	return undef;
 }
 
@@ -683,7 +683,7 @@ sub new_search_class_fts {
 
 	if ($copies_visible) {
 		$select = <<"		SQL";
-			SELECT	m.metarecord $rank_calc $visible_count
+			SELECT	m.metarecord $rank_calc $visible_count, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
 				$asset_call_number_table cn,
@@ -708,7 +708,7 @@ sub new_search_class_fts {
 		SQL
 	} else {
 		$select = <<"		SQL";
-			SELECT	m.metarecord $rank_calc, 0
+			SELECT	m.metarecord $rank_calc, 0, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
 				$metabib_record_descriptor rd
@@ -739,7 +739,7 @@ sub new_search_class_fts {
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
 	my $count = scalar(@$recs);
-	$client->respond($_) for (map { [@$_[0,1,3],$count] } @$recs[$offset .. $offset + $limit]);
+	$client->respond($_) for (map { [@$_[0,1,3],$count,$$_[4]] } @$recs[$offset .. $offset + $limit]);
 	return undef;
 }
 
