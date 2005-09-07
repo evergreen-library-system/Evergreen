@@ -29,10 +29,10 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 
 	/* see if we can run the initialize method */
 	int (*init) (void);
-	*(void **) (&init) = dlsym(app->handle, "initialize");
+	*(void **) (&init) = dlsym(app->handle, "osrfAppInitialize");
 
 	if( (error = dlerror()) != NULL ) {
-		warning_handler("! Unable to locate method symbol [initialize] for app %s: %s", appName, error );
+		warning_handler("! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
 
 	} else {
 
@@ -40,7 +40,7 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 		int ret;
 		if( (ret = (*init)()) ) {
 			warning_handler("Application %s returned non-zero value from "
-					"'initialize', not registering...", appName );
+					"'osrfAppInitialize', not registering...", appName );
 			//free(app->name); /* need a method to remove an application from the list */
 			//free(app);
 			return ret;

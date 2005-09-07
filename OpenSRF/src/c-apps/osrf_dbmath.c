@@ -2,12 +2,12 @@
 #include "opensrf/osrf_application.h"
 #include "objson/object.h"
 
-int initialize();
-int childInit();
+int osrfAppInitialize();
+int osrfAppChildInit();
 int osrfMathRun( osrfMethodContext* );
 
 
-int initialize() {
+int osrfAppInitialize() {
 	osrfAppRegisterMethod( "opensrf.dbmath", "add", "osrfMathRun", "send 2 numbers and I'll add them", 2 );
 	osrfAppRegisterMethod( "opensrf.dbmath", "sub", "osrfMathRun", "send 2 numbers and I'll divide them", 2 );
 	osrfAppRegisterMethod( "opensrf.dbmath", "mult", "osrfMathRun", "send 2 numbers and I'll multiply them", 2 );
@@ -15,7 +15,7 @@ int initialize() {
 	return 0;
 }
 
-int childInit() {
+int osrfAppChildInit() {
 	return 0;
 }
 
