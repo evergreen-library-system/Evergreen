@@ -7,7 +7,7 @@ export CFLAGS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 all: mod_xmltools mod_ils_rest_gateway
 
 
-install:	perl-install web-install string-templates-install storage-bootstrap xsl-install
+install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install
 
 web-install:	webcore-install autojs-install  mod_xmltools-install mod_ils_rest_gateway-install
 
@@ -65,10 +65,16 @@ perl-install:
 
 # -----------------------------------------------------------------------------------
 
-storage-bootstrap:
+cgi-bootstrap:
 	@echo "Installing cgi's to $(CGIDIR)"
+	mkdir -p $(TMP)/cgi-bin
 	mkdir -p $(CGIDIR)
-	cp -r cgi-bin/* $(CGIDIR)
+	for i in cgi-bin/*cgi; do perl -pe "s{##CONFIG##}{$(ETCDIR)}" < $i > $(TMP)/$i; done
+	cp $(TMP)/cgi-bin/*cgi $(CGIDIR)
+	cp -r cgi-bin/support $(CGIDIR)
+	cp cgi-bin/setup.pl $(ETCDIR)
+
+storage-bootstrap:
 	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
 
 # -----------------------------------------------------------------------------------
