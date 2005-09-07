@@ -196,17 +196,41 @@ int fill_fd_set( transport_router_registrar* router, fd_set* set ) {
 	max_fd = router_fd;
 	FD_SET( router_fd, set );
 
-	server_class_node* cur_node = router->server_class_list;
-	while( cur_node != NULL ) {
-		int cur_class_fd = cur_node->jabber->t_client->session->sock_id;
-		if( cur_class_fd > max_fd ) 
-			max_fd = cur_class_fd;
-		FD_SET( cur_class_fd, set );
-		cur_node = cur_node->next;
+	while(1) {
+
+		server_class_node* cur_node = router->server_class_list;
+		while( cur_node != NULL ) {
+			int cur_class_fd = cur_node->jabber->t_client->session->sock_id;
+	
+			if( check_fd(cur_class_fd) < 0 ) {
+				warning_handler("Found a dead node for %s", cur_node->server_class);
+				remove_server_class( router, cur_node );
+				break;
+
+			} else {
+				if( cur_class_fd > max_fd ) max_fd = cur_class_fd;
+				FD_SET( cur_class_fd, set );
+			}
+			cur_node = cur_node->next;
+		}
+		if( cur_node == NULL ) break;
 	}
 
 	FD_CLR( 0, set );
 	return max_fd;
+}
+
+int check_fd( int fd ) {
+
+	fd_set tmpset;
+	FD_ZERO(&tmpset);
+	FD_SET(fd, &tmpset);
+
+	struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = 0;
+
+	return select(fd + 1, &tmpset, NULL, NULL, &tv);
 }
 
 

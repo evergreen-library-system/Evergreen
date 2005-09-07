@@ -253,6 +253,10 @@ osrf_message** router_registrar_process_app_request(
 		transport_router_registrar* , osrf_message* omsg, int* num_responses );
 
 
+/* returns < 0 if the fd is not valid */
+int check_fd( int fd );
+
+
 // ----------------------------------------------------------------------
 // Adds a handler for the SIGUSR1 that we send to wake all the 
 // listening threads.
