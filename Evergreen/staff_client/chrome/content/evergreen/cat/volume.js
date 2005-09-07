@@ -169,9 +169,9 @@ function build_page_one() {
 		switch( ti.getAttribute('object_type') ) {
 			case 'org_unit' :
 				if (params.shortcut == 'volume_add') {
-					var shortname = ti.getAttribute('id').split('_')[2];
-					var ou = find_ou_by_shortname(mw.G['org_tree'],shortname);
-					var check_ou = check_volume_ou_perm( shortname );
+					var id = ti.getAttribute('id').split('_')[2];
+					var ou = mw.G.org_tree_hash[id];
+					var check_ou = check_volume_ou_perm( id );
 					if ( check_ou ) {
 						page1_add_volume_row( check_ou );
 					}
@@ -188,9 +188,9 @@ function build_page_two() {
 		mw.sdump('D_CAT','Considering item with object_type = ' + ti.getAttribute('object_type') + '\n');
 		switch( ti.getAttribute('object_type') ) {
 			case 'org_unit' :
-				var shortname = ti.getAttribute('id').split('_')[2];
-				var ou = find_ou_by_shortname(mw.G['org_tree'],shortname);
-				var check_ou = check_volume_ou_perm( shortname );
+				var id = ti.getAttribute('id').split('_')[2];
+				var ou = mw.G.org_tree_hash[id];
+				var check_ou = check_volume_ou_perm( id );
 				if ( check_ou ) {
 					page2_add_volume_row( check_ou, ti );
 				}
@@ -270,7 +270,7 @@ function build_page_four() {
 	for (var ou_id in new_data) {
 		for (var cnum in new_data[ou_id]) {
 			//var ou_shortname = find_ou(mw.G['org_tree'],ou_id).shortname();
-			var ou_shortname = mw.G.org_tree_hash[ou_id].shortname();
+			//var ou_shortname = mw.G.org_tree_hash[ou_id].shortname();
 			var cn = new acn();
 			cn.label(cnum);
 			cn.owning_lib(ou_id);
@@ -345,9 +345,9 @@ function restore_data() {
 	data = data_backup;
 }
 
-function check_volume_ou_perm(shortname) {
-	var top_ou = find_ou(mw.G['org_tree'],mw.G.user_ou.id());
-	var check_ou = find_ou_by_shortname(top_ou, shortname);
+function check_volume_ou_perm(id) {
+	var top_ou = mw.G.org_tree_hash[ mw.G.user_ou.id() ];
+	var check_ou = find_ou(top_ou, id);
 	return check_ou;
 }
 

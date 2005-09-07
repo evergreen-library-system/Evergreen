@@ -9,7 +9,7 @@ var arg_dump_full = false;
 
 var sdump_levels = {
 	'D_NONE' : false,
-	'D_ALL' : true,
+	'D_ALL' : false,
 	'D_ERROR' : true,
 	'D_TRACE' :  false,
 	'D_TRACE_ENTER' :  false,
@@ -60,7 +60,7 @@ var sdump_levels = {
 	'D_PRINT' : true,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
-	'D_SES_RESULT' : false,
+	'D_SES_RESULT' : true,
 	'D_SPAWN' : false,
 	'D_STRING' : false,
 	'D_UTIL' : false,
