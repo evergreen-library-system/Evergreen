@@ -13,6 +13,7 @@
 
 	<script src="error.js" />	<!-- more like output handling -->
 	<script src="util.js" />	<!-- miscellaneous scripts.  want to make this empty -->
+	<script src="file.js" />	<!-- file IO -->
 	<script src="datetime.js" />	<!-- date & time related functions -->
 	<script src="functional.js" />	<!-- neat use of first-class functions, and some predecessors -->
 	<script src="fm_utils.js" />	<!-- some convenience functions for fieldmapper objects -->

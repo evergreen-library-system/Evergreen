@@ -40,14 +40,14 @@ var sdump_levels = {
 
 	'D_PATRON_ITEMS' : false,
 	'D_PATRON_CHECKOUT_ITEMS' : false,
-	'D_PATRON_HOLDS' : true,
+	'D_PATRON_HOLDS' : false,
 	'D_PATRON_BILLS' : false,
 	'D_PATRON_EDIT' : false,
 
-	'D_CHECKIN' : true,
+	'D_CHECKIN' : false,
 	'D_CHECKIN_ITEMS' : false,
 
-	'D_HOLD_CAPTURE' : true,
+	'D_HOLD_CAPTURE' : false,
 	'D_HOLD_CAPTURE_ITEMS' : false,
 
 	'D_CAT' : false,
@@ -57,7 +57,7 @@ var sdump_levels = {
 
 	'D_EXPLODE' : false,
 	'D_FM_UTILS' : false,
-	'D_PRINT' : true,
+	'D_PRINT' : false,
 	'D_SES' : true,
 	'D_SES_FUNC' : false,
 	'D_SES_RESULT' : true,
