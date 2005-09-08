@@ -276,7 +276,7 @@ sub record_copy_status_count {
 	my ($ou,$cn) = (0,'');
 	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {
-		if ($cn and $cn ne $$row[1]) {
+		if ($ou and $ou ne $$row[0]) {
 			my $i = 0;
 			$client->respond( [$ou, $cn, {%data}] );
 			%data = ();
