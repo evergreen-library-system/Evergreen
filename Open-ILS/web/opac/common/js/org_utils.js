@@ -7,6 +7,14 @@ function findOrgDepth(org_id_or_node) {
 	return findOrgType(findOrgUnit(org_id_or_node).ou_type()).depth();
 }
 
+function findOrgTypeFromDepth(depth) {
+	if( depth == null ) return null;
+	for( var type in globalOrgTypes ) {
+		var t = globalOrgTypes[type];
+		if( t.depth() == depth ) return t;
+	}
+}
+
 /* takes the org type id from orgunit.ou_type() field and returns
 	the org type object */
 function findOrgType(type_id) {

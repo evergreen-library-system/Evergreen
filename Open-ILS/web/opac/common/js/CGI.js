@@ -43,9 +43,8 @@ function CGI() {
  */
 CGI.prototype.param = function(p) {
 	if(this.data[p] == null) return null;
-
-	if(this.data[p].length == 1)
-		return this.data[p][0];
+	//if(this.data[p].length == 1)
+		//return this.data[p][0];
 	return this.data[p];
 }
 

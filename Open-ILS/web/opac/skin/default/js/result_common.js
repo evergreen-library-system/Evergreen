@@ -84,8 +84,16 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var title_link = findNodeByName(r, config.names.result.item_title);
 	var author_link = findNodeByName(r, config.names.result.item_author);
 
-	if( is_mr )  buildTitleLink(rec, title_link); 
-	else  buildTitleDetailLink(rec, title_link); 
+	if( is_mr )  {
+		var onlyrec = onlyrecord[ getOffset() + pos ];
+		if(onlyrec) {
+			var id = rec.doc_id();
+			rec.doc_id(onlyrec);
+			buildTitleDetailLink(rec, title_link); 
+			rec.doc_id(id);
+		} else buildTitleLink(rec, title_link); 
+	} else  buildTitleDetailLink(rec, title_link); 
+
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
 
 	findNodeByName(r, "result_table_title_cell").width = 
@@ -103,24 +111,33 @@ function resultDisplayRecord(rec, pos, is_mr) {
 
 function resultBuildFormatIcons( row, rec ) {
 
-	var td = findNodeByName( row, config.names.result.format_cell );
-	var linkt = td.removeChild(findNodeByName( row, config.names.result.format_link ));
-	var resources = rec.types_of_resource();
+	var ress = rec.types_of_resource();
 
-	for( var i in resources ) {
-		var link = linkt.cloneNode(true);
+	for( var i in ress ) {
+
+		var res = ress[i];
+		var link = findNodeByName(row, res + "_link");
+		link.title = res;
+		var img = link.getElementsByTagName("img")[0];
+		removeCSSClass( img, config.css.dim );
+
+		var f = getForm();
+		if( f != "all" ) {
+			if( f != modsFormatToMARC(res) ) 
+				addCSSClass( img, config.css.dim2);
+		}
+
 
 		var args = {};
 		args.page = RRESULT;
 		args[PARAM_OFFSET] = 0;
 		args[PARAM_MRID] = rec.doc_id();
-		args[PARAM_FORM] = modsFormatToMARC(resources[i]);
+		args[PARAM_FORM] = modsFormatToMARC(res);
+
 		link.setAttribute("href", buildOPACLink(args));
 
-		var img = findNodeByName(link, config.names.result.format_pic);
-		setResourcePic( img, resources[i] );
-		td.appendChild(link);
 	}
+
 }
 
 

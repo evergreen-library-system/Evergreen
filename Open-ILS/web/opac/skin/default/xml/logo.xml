@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
 <div id='logo_div'>
 	<script language='javascript'>config.ids.common.top_logo = "top_left_logo";</script>
-	<img id='top_left_logo' border='0' class='logo'> </img>
+	<img src='../../../images/main_logo_cropped.jpg' id='top_left_logo' border='0' class='logo'> </img>
 </div>

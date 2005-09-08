@@ -18,6 +18,9 @@
 <!ENTITY navigate.titleGroupResults "Title Group Results">
 <!ENTITY navigate.titleResults "Title Results">
 
+<!ENTITY common.nowSearching "Now searching ">
+<!ENTITY common.at " at ">
+
 
 <!-- Sidebar Header Labels -->
 <!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">

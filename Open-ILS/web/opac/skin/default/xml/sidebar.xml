@@ -33,7 +33,9 @@
 		</div>
 
 
+		<!--
 		<xi:include href="xulsidebar.xml"/>
+		-->
 
 		<!-- Informational sidebar components -->
 
@@ -41,10 +43,6 @@
 			<span >&navigate.loggedinas; <b id='username_dest'> </b></span>
 		</div>
 
-		<div title="&navigate.titleGroupResults;" 
-			id='mresult_link_div' class="side_bar_item hide_me">
-			<span>&navigate.titleGroupResults;</span>
-		</div>
 	
 		<div title="&navigate.titleResults;"
 			id='result_link_div' class="side_bar_item hide_me">
@@ -56,8 +54,19 @@
 			<span>Record Details</span>
 		</div>
 
+		<div title="&navigate.titleGroupResults;" 
+			id='mresult_link_div' class="side_bar_item hide_me">
+			<span>&navigate.titleGroupResults;</span>
+		</div>
+
 	</div>
 
+	<!--
+	<br/>
+	<div style='padding-top: 3px;'>
+		<xi:include href="searchbar.xml"/> 
+	</div>
+	-->
 
 	<div id='subject_sidebar' class='sidebar_chunk hide_me'> 
 		<div class='sidebar_header color_1'>&sidebar.relevantSubjects.headerLabel;</div>
@@ -123,6 +132,8 @@
 		config.names.sidebar.subject_item	= 'subject_item';
 		config.names.sidebar.author_item		= 'author_item';
 		config.names.sidebar.series_item		= 'series_item';
+
+		config.css.encircled				= 'encircled';
 	</script>
 
 </div>

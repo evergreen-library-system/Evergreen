@@ -5,16 +5,12 @@ var _ts, _fs, _ds;
 
 G.evt.common.init.push(searchBarInit);
 
-
 /* if set by the org selector, this will be the location used the
 	next time the search is submitted */
 var newSearchLocation; 
+var newSearchDepth = null;
 
 function searchBarInit() {
-
-	/* ----------------------------------- */
-	//setActivateStyleSheet("color_test");
-	/* ----------------------------------- */
 
 	_ts = G.ui.searchbar.type_selector;
 	_ds = G.ui.searchbar.depth_selector;
@@ -25,14 +21,23 @@ function searchBarInit() {
 		function(evt) {if(userPressedEnter(evt)) searchBarSubmit();};
 
 	G.ui.searchbar.submit.onclick = searchBarSubmit;
-	G.ui.searchbar.tag.onclick = searchBarToggle;
+
+	_ds.onchange = depthSelectorChanged;
+
+	if( getLocation() == globalOrgTree.id() ) {
+		unHideMe( G.ui.searchbar.lib_sel_span );
+		G.ui.searchbar.lib_sel_link.onclick = _opacHandleLocationTagClick;
+	} else {
+		unHideMe( G.ui.searchbar.depth_sel_span );
+		buildLocationSelector();
+	}
 
 	/* set up the selector objects, etc */
 	G.ui.searchbar.text.value = (getTerm() != null) ? getTerm() : "";
 	setSelector(_ts,	getStype());
 	setSelector(_ds,	getDepth());
 	setSelector(_fs,	getForm());
-	G.ui.searchbar.location_tag.onclick = _opacHandleLocationTagClick;
+
 }
 
 function _opacHandleLocationTagClick() {
@@ -41,17 +46,52 @@ function _opacHandleLocationTagClick() {
 	swapCanvas(G.ui.common.org_container);
 }
 
+function depthSelectorChanged() {
+	var i = _ds.selectedIndex;
+	if( i == _ds.options.length - 1 ) {
+		setSelector( _ds, getDepth() );
+		_opacHandleLocationTagClick();
+	}
+}
+
+function buildLocationSelector() {
+
+	if( getLocation() == globalOrgTree.id() ) return;
+
+	var selector = G.ui.searchbar.depth_selector
+	var node = selector.removeChild(selector.getElementsByTagName("option")[0]);
+	
+	var location = findOrgUnit(getLocation());
+	var type = findOrgType(location.ou_type());
+
+	while( type && location ) {
+		var n = node.cloneNode(true);	
+		n.setAttribute("value", type.depth());
+		removeChildren(n);
+		n.appendChild(text(type.opac_label()));
+		selector.appendChild(n);
+		location = findOrgUnit(location.parent_ou());
+		if(location) type = findOrgType(location.ou_type());
+		else type = null;
+	}
+
+	selector.appendChild(node);
+}
+
 function updateLoc(location, depth) {
 	if( location != null )
 		newSearchLocation = location;
-	if( depth != null ) 
+	if( depth != null ) {
 		setSelector(G.ui.searchbar.depth_selector, depth);
+		newSearchDepth = depth;
+	}
 }
+
+
 function searchBarSubmit() {
 
 	var text = G.ui.searchbar.text.value;
 	if(!text || text == "") return;
-
 
 	var args = {};
 	args.page				= MRESULT;
@@ -59,24 +99,10 @@ function searchBarSubmit() {
 	args[PARAM_TERM]		= text;
 	args[PARAM_STYPE]		= _ts.options[_ts.selectedIndex].value;
 	args[PARAM_LOCATION] = newSearchLocation;
-	args[PARAM_DEPTH]		= parseInt(_ds.options[_ds.selectedIndex].value);
+	args[PARAM_DEPTH]		= (newSearchDepth != null) ? newSearchDepth : parseInt(_ds.options[_ds.selectedIndex].value);
 	args[PARAM_FORM]		= _fs.options[_fs.selectedIndex].value;
 
 	goTo(buildOPACLink(args));
-}
-
-
-function searchBarToggle() {
-	if(searchBarExpanded) {
-		hideMe(G.ui.searchbar.extra_row);
-		hideMe(G.ui.searchbar.tag_on);
-		unHideMe(G.ui.searchbar.tag_off);
-	} else {
-		unHideMe(G.ui.searchbar.extra_row);
-		hideMe(G.ui.searchbar.tag_off);
-		unHideMe(G.ui.searchbar.tag_on);
-	}
-	searchBarExpanded = !searchBarExpanded;
 }
 
 

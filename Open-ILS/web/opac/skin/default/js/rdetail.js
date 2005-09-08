@@ -218,14 +218,6 @@ function rdetailBuildStatusColumns() {
 			var data = findNodeByName( node, config.names.rdetail.cp_status);
 
 			data.appendChild(text(name));
-			
-/*
-			for( var x = 0; x < name.length; x++ ) {
-				var c = name.charAt(x);
-				data.appendChild(text(c));
-				data.appendChild(document.createElement("br"));
-			}	
-*/
 			parent.appendChild(node);
 		}	
 	}	

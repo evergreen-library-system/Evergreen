@@ -1,17 +1,20 @@
-body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 95%;} 
+body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 9pt;} 
+table { font-size: 9pt; }
+table tr { font-size: 9pt; }
+table tr td { font-size: 9pt; }
 
-/*body table tr td	{ font-size: inherit; }*/
+body table tr td	{ font-size: inherit; }
 /*body table tr td	{ font-size: 95%;}*/
 
-.org_link { font-size: 92%; }
-.sidebar_extra_item { font-size: 97%; }
-.searchbar_tag { font-size: 90%; } 
-#offset_start { font-weight: 600; }
-#offset_end { font-weight: 600; }
-#result_count { font-weight: 600; } 
-.nav_link_active { font-weight: 600;}
-.copy_count_cell { font-size: 80%; }
+.org_link { font-size: 9pt; }
+.sidebar_extra_item { font-size: 9pt; }
+.searchbar_tag { font-size: 9pt; } 
+#offset_start { font-weight: 600; font-size: 9pt;}
+#offset_end { font-weight: 600;  font-size; 9pt;}
+#result_count { font-weight: 600;  font-size; 9pt;} 
+.nav_link_active { font-weight: 600; font-size; 9pt;}
+.copy_count_cell { font-size: 80%; font-size; 9pt; }
 
-#rdetail_copy_info_table { font-size: 92%; }
-.rdetail_copy_nav_link { font-weight: normal; font-size: 95%; }
-#rdetail_view_marc { font-size: 90%; }
+#rdetail_copy_info_table { font-size: 9pt; }
+.rdetail_copy_nav_link { font-weight: normal; font-size: 9pt; }
+#rdetail_view_marc { font-size: 9pt; }

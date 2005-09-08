@@ -258,13 +258,22 @@ function setActivateStyleSheet(name) {
 function scaleFonts(type) {
 
 	var size = "";
+	var ssize = "";
+	var a;
+
 	switch(type) {
-		case "large": size = "113%"; break;
-		case "small": size = "87%"; break;
+		case "large": 
+			size = "148%"; 
+			ssize = "94%";
+			break;
 	}
 
 	document.body.style.fontSize = size;
-	for (i = 0; (a = document.getElementsByTagName ("table")[i]); i++) a.style.fontSize = size;
+	for (i = 0; (a = document.getElementsByTagName ("td")[i]); i++) a.style.fontSize = size;;
+	for (i = 0; (a = document.getElementsByTagName ("div")[i]); i++) a.style.fontSize = ssize;
+	for (i = 0; (a = document.getElementsByTagName ("option")[i]); i++) a.style.fontSize = ssize;
+	for (i = 0; (a = document.getElementsByTagName ("li")[i]); i++) a.style.fontSize = ssize;
+	for (i = 0; (a = document.getElementsByTagName ("span")[i]); i++) a.style.fontSize = ssize;
 }
 
 

@@ -5,13 +5,10 @@ attachEvt("common", "init", initSideBar);
 attachEvt("common", "init", setSidebarLinks);
 
 function initSideBar() {
-
-	for( var p in G.ui.sidebar ) 
-		removeCSSClass(p, config.css.color_2);
-
 	var page = findCurrentPage();
 	unHideMe(G.ui.sidebar[page]);
 	addCSSClass(G.ui.sidebar[page], config.css.color_2);
+	addCSSClass(G.ui.sidebar[page], config.css.encircled);
 
 	/* if we're logged in, show it and replace the Login link with the Logout link */
 	if(grabUser()) {
@@ -23,7 +20,6 @@ function initSideBar() {
 
 	if(G.ui.sidebar.login) G.ui.sidebar.login.onclick = initLogin;
 	if(G.ui.sidebar.logout) G.ui.sidebar.logout.onclick = doLogout; 
-	G.ui.common.top_logo.setAttribute("src", buildImageLink(config.images.logo));
 }
 
 /* sets up the login ui components */

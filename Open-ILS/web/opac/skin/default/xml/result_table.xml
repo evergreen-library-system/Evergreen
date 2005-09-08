@@ -18,7 +18,7 @@
 			<tr id='result_table_template'>
 
 				<!-- Jacket image goes here -->
-				<td width="10%"><a><img name='item_jacket' class='result_table_pic'/></a></td>
+				<td width="10%" class='result_table_pic_header'><a><img name='item_jacket' class='result_table_pic'/></a></td>
 
 				<td class='result_table_row'>
 					<table class='result_table_subtable'>
@@ -47,10 +47,51 @@
 
 							<tr>
 								<td name='result_table_format_cell' class='result_table_format_cell'>
-									<a name='resource_link' class='search_link'> 
-										<img name='format_pic' class='tor_pic'> </img>
-										<!-- Item formats go here -->
+
+									<a name='text_link' class='search_link'> 
+										<img src='../../../images/tor/text.jpg' class='dim tor_pic'> </img>
 									</a>
+
+									<a name='sound recording-nonmusical_link' class='search_link'> 
+										<img src='../../../images/tor/sound recording-nonmusical.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='moving image_link' class='search_link'> 
+										<img src='../../../images/tor/moving image.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='software, multimedia_link' class='search_link'> 
+										<img src='../../../images/tor/software, multimedia.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='sound recording-musical_link' class='search_link'> 
+										<img src='../../../images/tor/sound recording-musical.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='cartographic_link' class='search_link'> 
+										<img src='../../../images/tor/cartographic.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='mixed material_link' class='search_link'> 
+										<img src='../../../images/tor/mixed material.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='notated music_link' class='search_link'> 
+										<img src='../../../images/tor/notated music.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='sound recording_link' class='search_link'> 
+										<img src='../../../images/tor/sound recording.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='still images_link' class='search_link'> 
+										<img src='../../../images/tor/still images.jpg' class='dim tor_pic'> </img>
+									</a>
+
+									<a name='three dimensional object_link' class='search_link'> 
+										<img src='../../../images/tor/three dimensional object.jpg' class='dim tor_pic'> </img>
+									</a>
+
 								</td>
 							</tr>
 

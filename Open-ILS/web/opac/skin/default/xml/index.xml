@@ -1,12 +1,6 @@
 <?xml version='1.0'?>
 <!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
-<!--
-<!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-	-->
-
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
@@ -17,12 +11,12 @@
 
 	<body onload="init();">
 		<xi:include href="header.xml"/> 
-
 		<div id='canvas' class='canvas'>
+			<xi:include href="searchbar.xml"/>
+			<xi:include href="statusbar.xml"/>
 			<xi:include href="altcanvas.xml"/>
 			<div id='canvas_main'>Home is here, show something interesting...</div>
 		</div>
-
 	</body>
 
 </html>

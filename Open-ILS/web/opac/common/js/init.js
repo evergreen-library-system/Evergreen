@@ -17,6 +17,7 @@ function init() {
 	setFontSize(getFontSize());
 	runEvt("common", "run");
 	checkUserSkin();
+	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));
 }
 
 function windowUnload() { runEvt("common", "unload"); }

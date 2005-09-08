@@ -152,6 +152,8 @@ config.ids.xul = {};
 
 /* shared CSS */
 config.css.hide_me = "hide_me";
+config.css.dim = "dim";
+config.css.dim2 = "dim2";
 
 
 /* ---------------------------------------------------------------------------- */

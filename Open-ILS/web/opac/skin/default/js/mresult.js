@@ -1,5 +1,6 @@
 var records = {};
 var ranks = {};
+var onlyrecord = {};
 var table;
 var rowtemplate;
 var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
@@ -62,8 +63,9 @@ function mresultCollectIds(method) {
 
 	} else {
 
+		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(method, getStype(), getTerm(), 
-			getLocation(), getDepth(), getDisplayCount() * 10, getOffset(), getForm() );
+			getLocation(), getDepth(), getDisplayCount() * 10, getOffset(), form );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
@@ -85,6 +87,7 @@ function mresultSetRecords(idstruct) {
 		if(idstruct[x-o] == null) break;
 		records[x] = parseInt(idstruct[x - o][0]);
 		ranks[x] = parseFloat(idstruct[x - o][1]);
+		onlyrecord[x] = parseInt(idstruct[x - o][4]);
 	}
 	idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
 	idsCookie.write();
