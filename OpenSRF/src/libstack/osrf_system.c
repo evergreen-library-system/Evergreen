@@ -24,6 +24,37 @@ int osrfSystemBootstrapClientResc( char* config_file, char* contextnode, char* r
 }
 
 
+int _osrfSystemInitCache() {
+
+	jsonObject* cacheServers = osrf_settings_host_value_object("/cache/global/servers/server");
+	char* maxCache = osrf_settings_host_value("/cache/global/max_cache_time");
+
+	if( cacheServers && maxCache) {
+
+		if( cacheServers->type == JSON_ARRAY ) {
+			int i;
+			char* servers[cacheServers->size];
+			for( i = 0; i != cacheServers->size; i++ ) {
+				servers[i] = jsonObjectGetString( jsonObjectGetIndex(cacheServers, i) );
+				info_handler("Adding cache server %s", servers[i]);
+			}
+			osrfCacheInit( servers, cacheServers->size, atoi(maxCache) );
+
+		} else {
+			char* servers[] = { jsonObjectGetString(cacheServers) };		
+			info_handler("Adding cache server %s", servers[0]);
+			osrfCacheInit( servers, 1, atoi(maxCache) );
+		}
+
+	} else {
+		fatal_handler( "Missing config value for /cache/global/servers/server _or_ "
+			"/cache/global/max_cache_time");
+	}
+
+	return 0;
+}
+
+
 int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 	if( !(configfile && contextNode) ) return -1;
 
@@ -37,6 +68,9 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 	jsonObject* apps = osrf_settings_host_value_object("/activeapps/appname");
 	osrfStringArray* arr = osrfNewStringArray(8);
+	
+	_osrfSystemInitCache();
+	return 0;
 
 	if(apps) {
 		int i = 0;

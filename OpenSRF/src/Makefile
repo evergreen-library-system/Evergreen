@@ -26,6 +26,7 @@ OPENSRF_TARGETS = libtransport/transport_session.o \
 						libstack/osrf_prefork.o \
 						libstack/osrf_system.o \
 						libstack/osrf_application.o \
+						libstack/osrf_cache.o \
 						libstack/xml_utils.o \
 						utils/socket_bundle.o \
 						utils/string_array.o \
@@ -45,6 +46,7 @@ OPENSRF_HEADERS = libtransport/transport_session.h \
 						libstack/osrf_prefork.h \
 						libstack/osrf_system.h \
 						libstack/osrf_application.h \
+						libstack/osrf_cache.h \
 						libstack/xml_utils.h \
 						utils/socket_bundle.h \
 						utils/string_array.h \
@@ -70,7 +72,7 @@ libopensrf.so:	objson/libobjson.so
 	@echo stack
 	make -C libstack
 	@echo $@
-	$(CC) -shared -W1 $(LDFLAGS) -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
+	$(CC) -shared -W1 $(LDFLAGS) -lmemcache -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
 	@echo apps
 	make -C  c-apps
 

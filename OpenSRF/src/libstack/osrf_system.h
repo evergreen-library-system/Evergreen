@@ -6,6 +6,7 @@
 #include "opensrf/logging.h"
 #include "osrf_settings.h"
 #include "osrfConfig.h"
+#include "osrf_cache.h"
 
 
 /** Connects to jabber.  Returns 1 on success, 0 on failure 
@@ -42,5 +43,7 @@ transport_client* osrf_system_get_transport_client();
 /* disconnects and destroys the current client connection */
 int osrf_system_disconnect_client();
 int osrf_system_shutdown(); 
+
+int _osrfSystemInitCache();
 
 #endif

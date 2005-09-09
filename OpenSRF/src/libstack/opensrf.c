@@ -1,10 +1,9 @@
 #include "osrf_system.h"
-#include "opensrf/utils.h"
 
 int main( int argc, char* argv[] ) {
 
 	if( argc < 4 ) {
-		fprintf(stderr, "Host, Bootstrap, and context required\n");
+		fprintf(stderr, "Usage: %s <host> <bootstrap_config> <config_context>\n", argv[0]);
 		return 1;
 	}
 
