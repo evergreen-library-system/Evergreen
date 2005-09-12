@@ -1,3 +1,15 @@
+CREATE OR REPLACE FUNCTION asset.call_number_dewey( TEXT ) RETURNS TEXT AS $$
+	my $txt = shift;
+	$txt =~ s/^\s+//o;
+	$txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//o;
+	$txt =~ s/\s+$//o;
+	if (/(\d{3}(?:\.\d+)?)/o) {
+		return $1;
+	} else {
+		return (split /\s+/, $txt)[0];
+	}
+$$ LANGUAGE 'plperl' STRICT IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION public.text_concat ( TEXT, TEXT ) RETURNS TEXT AS $$
 SELECT
 	CASE	WHEN $1 IS NULL
@@ -98,4 +110,9 @@ CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS 
 	) z;
 $$ LANGUAGE SQL STABLE;
 
-
+CREATE AGGREGATE array_accum (
+	sfunc = array_append,
+	basetype = anyelement,
+	stype = anyarray,
+	initcond = '{}'
+);
