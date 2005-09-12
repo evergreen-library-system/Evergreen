@@ -224,6 +224,149 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+sub multi_search_full_rec {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;	
+	my $class_join = $args{class_join} || 'AND';
+	my @binds;
+	my @selects;
+
+	for my $arg (@{ $args{searches} }) {
+		my $term = $$arg{term};
+		my $limiters = $$arg{restrict};
+
+		my ($index_col) = metabib::full_rec->columns('FTS');
+		$index_col ||= 'value';
+		my $search_table = metabib::full_rec->table;
+
+		my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
+
+		my $fts_where = $fts->sql_where_clause();
+		my @fts_ranks = $fts->fts_rank;
+
+		my $rank = join(' + ', @fts_ranks);
+
+		my @wheres;
+		for my $limit (@$limiters) {
+			push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
+			push @binds, $$limit{tag}, $$limit{subfield};
+ 			$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
+		}
+		my $where = join(' OR ', @wheres);
+
+		push @selects, "SELECT record, sum($rank) FROM $search_table WHERE $where GROUP BY 1 ORDER BY 2 DESC";
+
+	}
+
+	my $descendants = defined($args{depth}) ?
+				"actor.org_unit_descendants($args{org_unit}, $args{depth})" :
+				defined($args{depth}) ?
+					"actor.org_unit_descendants($args{org_unit})" :
+					"actor.org_unit";
+
+
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
+	my $metabib_metarecord = metabib::metarecord->table;
+	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
+	my $asset_call_number_table = asset::call_number->table;
+	my $asset_copy_table = asset::copy->table;
+	my $cs_table = config::copy_status->table;
+	my $cl_table = asset::copy_location->table;
+
+	my $cj = ''; $cj = 'HAVING COUNT(x.record) > 1' if ($class_join eq 'AND');
+	my $search_table = '(SELECT x.record, sum(x.sum) FROM (('.join(') UNION ALL (', @selects).")) x GROUP BY 1 $cj )";
+
+	my $has_vols = 'AND cn.owning_lib = d.id';
+	my $has_copies = 'AND cp.call_number = cn.id';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+
+	if ($self->api_name =~ /staff/o) {
+		$copies_visible = '';
+		$has_copies = '' if ($ou_type == 0);
+		$has_vols = '' if ($ou_type == 0);
+	}
+
+	my ($t_filter, $f_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		my @types = split '', $t;
+		my @forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+		push @binds, @types, @forms;
+	}
+
+
+	if ($copies_visible) {
+		$select = <<"		SQL";
+			SELECT	m.metarecord, sum(f.sum), count(DISTINCT cp.id), CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
+	  	  	FROM	$search_table f,
+				$metabib_metarecord_source_map_table m,
+				$asset_call_number_table cn,
+				$asset_copy_table cp,
+				$cs_table cs,
+				$cl_table cl,
+				$metabib_record_descriptor rd,
+				$descendants d
+	  	  	WHERE	m.source = f.record
+				AND cn.record = m.source
+				AND rd.record = m.source
+				AND cp.status = cs.id
+				AND cp.location = cl.id
+				$has_vols
+				$has_copies
+				$copies_visible
+				$t_filter
+				$f_filter
+	  	  	GROUP BY m.metarecord HAVING count(DISTINCT cp.id) > 0
+	  	  	ORDER BY 2 DESC,3 DESC
+		SQL
+	} else {
+		$select = <<"		SQL";
+			SELECT	m.metarecord, 1, 0, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
+	  	  	FROM	$search_table f,
+				$metabib_metarecord_source_map_table m,
+				$metabib_record_descriptor rd
+	  	  	WHERE	m.source = f.record
+				AND rd.record = m.source
+				$t_filter
+				$f_filter
+	  	  	GROUP BY 1,2,3 
+		SQL
+	}
+
+
+	$log->debug("Search SQL :: [$select]",DEBUG);
+
+	my $recs = metabib::full_rec->db_Main->selectall_arrayref("$select;", {}, @binds);
+	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
+
+	$client->respond($_) for (@$recs);
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.metabib.full_rec.multi_search',
+	method		=> 'multi_search_full_rec',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.metabib.full_rec.multi_search.staff',
+	method		=> 'multi_search_full_rec',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 sub search_full_rec {
 	my $self = shift;
 	my $client = shift;
@@ -324,7 +467,6 @@ sub search_class_fts {
 
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
 	my $metabib_metarecord = metabib::metarecord->table;
-	my $metabib_full_rec = metabib::full_rec->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
@@ -640,7 +782,6 @@ sub new_search_class_fts {
 
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
 	my $metabib_metarecord = metabib::metarecord->table;
-	my $metabib_full_rec = metabib::full_rec->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
@@ -778,6 +919,13 @@ for my $class ( qw/title author subject keyword series/ ) {
 	);
 }
 
+
+my $_cdbi = {	title	=> "metabib::title_field_entry",
+		author	=> "metabib::author_field_entry",
+		subject	=> "metabib::subject_field_entry",
+		keyword	=> "metabib::keyword_field_entry",
+		series	=> "metabib::series_field_entry",
+};
 
 
 
