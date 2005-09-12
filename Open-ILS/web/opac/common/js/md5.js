@@ -7,36 +7,19 @@
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-/*
- * Configurable variables. You may need to tweak these to be compatible with
- * the server-side, but the defaults work in most cases.
- */
 var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
 var b64pad  = ""; /* base-64 pad character. "=" for strict RFC compliance   */
 var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
-
-/*
- * These are the functions you'll usually want to call
- * They take string arguments and return either hex or base-64 encoded strings
- */
 function hex_md5(s){ return binl2hex(core_md5(str2binl(s), s.length * chrsz));}
 function b64_md5(s){ return binl2b64(core_md5(str2binl(s), s.length * chrsz));}
 function str_md5(s){ return binl2str(core_md5(str2binl(s), s.length * chrsz));}
 function hex_hmac_md5(key, data) { return binl2hex(core_hmac_md5(key, data)); }
 function b64_hmac_md5(key, data) { return binl2b64(core_hmac_md5(key, data)); }
 function str_hmac_md5(key, data) { return binl2str(core_hmac_md5(key, data)); }
-
-/*
- * Perform a simple self-test to see if the VM is working
- */
 function md5_vm_test()
 {
   return hex_md5("abc") == "900150983cd24fb0d6963f7d28e17f72";
 }
-
-/*
- * Calculate the MD5 of an array of little-endian words, and a bit length
- */
 function core_md5(x, len)
 {
   /* append padding */
@@ -131,10 +114,6 @@ function core_md5(x, len)
   return Array(a, b, c, d);
 
 }
-
-/*
- * These functions implement the four basic operations the algorithm uses.
- */
 function md5_cmn(q, a, b, x, s, t)
 {
   return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
@@ -155,10 +134,6 @@ function md5_ii(a, b, c, d, x, s, t)
 {
   return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
 }
-
-/*
- * Calculate the HMAC-MD5, of a key and some data
- */
 function core_hmac_md5(key, data)
 {
   var bkey = str2binl(key);
@@ -174,30 +149,16 @@ function core_hmac_md5(key, data)
   var hash = core_md5(ipad.concat(str2binl(data)), 512 + data.length * chrsz);
   return core_md5(opad.concat(hash), 512 + 128);
 }
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
 function safe_add(x, y)
 {
   var lsw = (x & 0xFFFF) + (y & 0xFFFF);
   var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
   return (msw << 16) | (lsw & 0xFFFF);
 }
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
 function bit_rol(num, cnt)
 {
   return (num << cnt) | (num >>> (32 - cnt));
 }
-
-/*
- * Convert a string to an array of little-endian words
- * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
- */
 function str2binl(str)
 {
   var bin = Array();
@@ -206,10 +167,6 @@ function str2binl(str)
     bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (i%32);
   return bin;
 }
-
-/*
- * Convert an array of little-endian words to a string
- */
 function binl2str(bin)
 {
   var str = "";
@@ -218,10 +175,6 @@ function binl2str(bin)
     str += String.fromCharCode((bin[i>>5] >>> (i % 32)) & mask);
   return str;
 }
-
-/*
- * Convert an array of little-endian words to a hex string.
- */
 function binl2hex(binarray)
 {
   var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
@@ -233,10 +186,6 @@ function binl2hex(binarray)
   }
   return str;
 }
-
-/*
- * Convert an array of little-endian words to a base-64 string
- */
 function binl2b64(binarray)
 {
   var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

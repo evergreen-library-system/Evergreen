@@ -2,6 +2,8 @@ var searchBarExpanded = false;
 /* our search selector boxes */
 var _ts, _fs, _ds;
 
+attachEvt( "common", "locationChanged", updateLoc );
+
 
 G.evt.common.init.push(searchBarInit);
 
@@ -51,7 +53,9 @@ function depthSelectorChanged() {
 	if( i == _ds.options.length - 1 ) {
 		setSelector( _ds, getDepth() );
 		_opacHandleLocationTagClick();
-	}
+
+	} else searchBarSubmit();
+
 }
 
 function buildLocationSelector() {
@@ -85,6 +89,7 @@ function updateLoc(location, depth) {
 		setSelector(G.ui.searchbar.depth_selector, depth);
 		newSearchDepth = depth;
 	}
+	searchBarSubmit();
 }
 
 

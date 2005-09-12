@@ -14,7 +14,7 @@ attachEvt("common", "unload", cleanRemoteRequests);
 
 function init() {
 	runEvt('common','init');
-	setFontSize(getFontSize());
+	//setFontSize(getFontSize());
 	runEvt("common", "run");
 	checkUserSkin();
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));

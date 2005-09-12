@@ -3,11 +3,13 @@ var recordsHandled = 0;
 var recordsCache = [];
 
 /* set up the event handlers */
-G.evt.result.hitCountReceived.push(resultSetHitInfo, resultPaginate);
+G.evt.result.hitCountReceived.push(resultSetHitInfo);
 G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
 
+/* do this after we have ID's so the rank for mr pages will be correct */
+attachEvt("result", "preCollectRecords", resultPaginate);
 
 /* returns the last 'index' postion ocurring in this page */
 function resultFinalPageIndex() {
@@ -77,6 +79,15 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	hideMe(G.ui.common.loading);
 
 	var r = table.rows[pos];
+	
+	try {
+		var rank = parseFloat(ranks[pos + getOffset()]);
+		rank = ( rank / getTopRank() ) * 100;
+		rank = parseInt(rank) + "%";
+		var relspan = findNodeByName(r, "relevancy_span");
+		relspan.appendChild(text(rank));
+		unHideMe(relspan.parentNode);
+	} catch(e){ }
 
 	var pic = findNodeByName(r, config.names.result.item_jacket);
 	pic.setAttribute("src", buildISBNSrc(cleanISBN(rec.isbn())));
@@ -95,9 +106,6 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	} else  buildTitleDetailLink(rec, title_link); 
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
-
-	findNodeByName(r, "result_table_title_cell").width = 
-		100 - (orgNodeTrail(findOrgUnit(getLocation())).length * 8) + "%";
 
 	resultBuildFormatIcons( r, rec );
 
@@ -146,6 +154,8 @@ function resultPageIsDone(pos) {
 		|| recordsHandled + getOffset() == getHitCount());
 }
 
+var resultCCHeaderApplied = false;
+
 /* -------------------------------------------------------------------- */
 /* dynamically add the copy count rows based on the org type 'countsrow' 
 	is the row into which we will add TD's to hold the copy counts 
@@ -162,9 +172,22 @@ function resultAddCopyCounts(rec, pagePosition) {
 	var type = findOrgType(node.ou_type());
 	ccell.id = "copy_count_cell_" + type.depth() + "_" + pagePosition;
 	ccell.title = type.opac_label();
-	addCSSClass(ccell, config.css.result.cc_cell_even);
+	//addCSSClass(ccell, config.css.result.cc_cell_even);
 
 	var lastcell = ccell;
+	var lastheadcell = null;
+
+	var cchead = null;
+	var ccheadcell = null;
+	if(!resultCCHeaderApplied) {
+		ccrow = getId('result_thead_row');
+		ccheadcell =  ccrow.removeChild(findNodeByName(ccrow, "result_thead_ccell"));
+		var t = ccheadcell.cloneNode(true);
+		lastheadcell = t;
+		t.appendChild(text(type.opac_label()));
+		ccrow.appendChild(t);
+		resultCCHeaderApplied = true;
+	}
 
 	if(nodes[1]) {
 
@@ -176,10 +199,8 @@ function resultAddCopyCounts(rec, pagePosition) {
 	
 			ccell = ccell.cloneNode(true);
 
-			if((i % 2))
-				removeCSSClass(ccell, "copy_count_cell_even");
-			else
-				addCSSClass(ccell, "copy_count_cell_even");
+			//if((i % 2)) removeCSSClass(ccell, "copy_count_cell_even");
+			//else addCSSClass(ccell, "copy_count_cell_even");
 
 			var node = nodes[x++];
 			var type = findOrgType(node.ou_type());
@@ -188,6 +209,13 @@ function resultAddCopyCounts(rec, pagePosition) {
 			ccell.title = type.opac_label();
 			countsrow.insertBefore(ccell, lastcell);
 			lastcell = ccell;
+
+			if(ccheadcell) {
+				var t = ccheadcell.cloneNode(true);
+				t.appendChild(text(type.opac_label()));
+				ccrow.insertBefore(t, lastheadcell);
+				lastheadcell = t;
+			}
 		}
 	}
 }
@@ -212,7 +240,8 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = getId("copy_count_cell_" + i +"_" + pagePosition);
-		cell.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
+		var span = cell.getElementsByTagName("div")[0];
+		span.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
 		i++;
 	}
 }

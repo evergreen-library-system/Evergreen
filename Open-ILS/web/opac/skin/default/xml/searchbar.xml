@@ -52,7 +52,7 @@
 					</span>
 
 					<span style='padding-right:9px;'>
-					<select id='form_selector' style='width: 130px;' >
+					<select id='form_selector' >
 						<option value='all'>All Formats</option>
 						<option value='at'>Books</option>
 						<option value='at-d'>Large Print Books</option>

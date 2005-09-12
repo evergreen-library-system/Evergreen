@@ -5,26 +5,94 @@
 
 <div id='result_table_div' xmlns:xi="http://www.w3.org/2001/XInclude">
 
+	<table id='search_nav_links'>
+		<tbody>
+			<tr>
+				<td valign='bottom' id='result_info_box'>
+					<!--
+					<div class='hide_me' id='result_info_div' style='font-size: 8pt;'>
+						<span> Results </span> 
+						<span id='offset_start'> </span>
+						<span> - </span>
+						<span id='offset_end'> </span>
+						<span> of </span>
+						<span id='result_count'> </span>
+						<span style='padding-left: 6px;'> (page </span>
+						<span id='current_page'> </span>
+						<span> of </span>
+						<span id='num_pages'> </span>
+					</div>
+					-->
+				</td>
+				<td width="36%" 
+					style='padding-bottom: 4px; text-align:center; border-bottom: 1px solid #A0A0A0;'>
+					<span style='font-size: 8pt;'> <b>Available copies / Total copies </b></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<table id='result_thead' width='100%' style='margin-right: 16px;'>
+		<tbody>
+			<tr id='result_thead_row'>
+
+				<td style='vertical-align: middle;'  id='next_prev_links' valign='bottom'>
+					<a class='search_page_nav_link' id='search_home_link' title="First results page">Start</a>
+					<a class='search_page_nav_link' id='prev_link' title='Previus page'> &lt;&lt; </a>
+					<span class='search_page_nav_link' id='page_numbers'> </span>
+					<a  class='search_page_nav_link' id='next_link' title='Next Page'> &gt;&gt; </a>
+					<a  class='search_page_nav_link' id='end_link' title="Last results page">End</a>
+				</td>
+
+				<td align='left' style='padding-left: 10px;'>
+					<div class='hide_me' id='result_info_div' style='font-size: 9pt;'>
+						<span> Results </span> 
+						<span id='offset_start'> </span>
+						<span> - </span>
+						<span id='offset_end'> </span>
+						<span> of </span>
+						<span id='result_count'> </span>
+						<span style='padding-left: 6px;'> (page </span>
+						<span id='current_page'> </span>
+						<span> of </span>
+						<span id='num_pages'> </span>
+					</div>
+				</td>
+
+
+				<td> </td>
+				<td style='font-size: 8pt; padding-top: 4px;' width='12%' align='center' name='result_thead_ccell'> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	
+
 	<table id='res_table'> 
 
+
 		<!-- for some reason, this is the only way i can force the cell widths -->
-		<thead><td class='result_table_pic_header'></td><td/></thead>
+		<thead id='result_thead'>
+			<td class='result_table_pic_header'></td>
+			<td> </td>
+		</thead>
 
 		<tbody id='result_table'>
 
 			<!-- Template for displaying a search result.  This row template is cloned and inserted
 					for each result returned -->
 
-			<tr id='result_table_template'>
+			<tr id='result_table_template' class='hide_me'>
 
 				<!-- Jacket image goes here -->
-				<td width="10%" class='result_table_pic_header'><a><img name='item_jacket' class='result_table_pic'/></a></td>
+				<td  class='result_table_pic_header'><a><img name='item_jacket' class='result_table_pic'/></a></td>
 
 				<td class='result_table_row'>
 					<table class='result_table_subtable'>
 						<tbody class='result_table_subtbody'>
 
-							<tr name='counts_row'>
+							<tr style='height: 1em' name='counts_row'>
 
 								<td class='result_table_title_cell' name='result_table_title_cell'>
 									<a title="View titles for this record" name='item_title' class='search_link'> 
@@ -33,11 +101,14 @@
 								</td>
 
 								<!-- Copy this td for each copy count appended -->
-								<td nowrap='nowrap' name="copy_count_cell" class='copy_count_cell' rowspan='3'> </td>
+								<td align='center' valign='middle' nowrap='nowrap' 
+									name="copy_count_cell" class='copy_count_cell' rowspan='3'> 
+									<div  class='copy_count_div'> </div>
+								</td>
 
 							</tr>
 		
-							<tr>
+							<tr style='height: 1em' >
 								<td class='result_table_author_cell'>
 									<a title="Perform an Author Search" name='item_author' class='search_link'> 
 										<!-- Author goes here -->
@@ -45,7 +116,7 @@
 								</td>
 							</tr>
 
-							<tr>
+							<tr style='height:1em;' >
 								<td name='result_table_format_cell' class='result_table_format_cell'>
 
 									<a name='text_link' class='search_link'> 
@@ -91,6 +162,10 @@
 									<a name='three dimensional object_link' class='search_link'> 
 										<img src='../../../images/tor/three dimensional object.jpg' class='dim tor_pic'> </img>
 									</a>
+
+									<span class='hide_me' style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 
+										<span>Relevancy </span><span name='relevancy_span'> </span>
+									</span>
 
 								</td>
 							</tr>

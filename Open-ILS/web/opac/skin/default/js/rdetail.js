@@ -75,7 +75,7 @@ function _rdetailDraw(r) {
 	record = r.getResultObject();
 
 	G.ui.rdetail.title.appendChild(text(record.title()));
-	G.ui.rdetail.author.appendChild(text(record.author()));
+	buildSearchLink(STYPE_AUTHOR, record.author(), G.ui.rdetail.author);
 	G.ui.rdetail.isbn.appendChild(text(cleanISBN(record.isbn())));
 	G.ui.rdetail.edition.appendChild(text(record.edition()));
 	G.ui.rdetail.pubdate.appendChild(text(record.pubdate()));
@@ -83,6 +83,8 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.tor.appendChild(text(record.types_of_resource()[0]));
 	setResourcePic( G.ui.rdetail.tor_pic, record.types_of_resource()[0]);
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
+
+
 
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
 	runEvt("rdetail", "recordDrawn");

@@ -6,7 +6,7 @@ function rresultUnload() { removeChildren(table); table = null;}
 
 attachEvt("common", "unload", rresultUnload);
 attachEvt("common", "run", rresultDoSearch);
-attachEvt("rresult", "idsReceived", rresultCollectRecords); 
+attachEvt("result", "idsReceived", rresultCollectRecords); 
 attachEvt("result", "recordDrawn", rresultLaunchDrawn); 
 
 function rresultDoSearch() {
@@ -28,10 +28,11 @@ function rresultHandleRIds(r) {
 	var res = r.getResultObject();
 	HITCOUNT = parseInt(res.count);
 	runEvt('result', 'hitCountReceived');
-	runEvt('rresult', 'idsReceived', res.ids);
+	runEvt('result', 'idsReceived', res.ids);
 }
 
 function rresultCollectRecords(ids) {
+	runEvt("result", "preCollectRecords");
 	var x = 0;
 	for( var i = getOffset(); i!= getDisplayCount() + getOffset(); i++ ) {
 		if(ids[i] == null) break;

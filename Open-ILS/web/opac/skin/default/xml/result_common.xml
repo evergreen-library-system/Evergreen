@@ -31,12 +31,11 @@
 	</script>
 
 
+	<!--
 	<table id='search_nav_links'>
 		<tbody>
 			<tr>
-
-				<!-- talk about the number of hits, etc. -->
-				<td id='result_info_box'>
+				<td valign='bottom' id='result_info_box'>
 					<div class='hide_me' id='result_info_div'>
 						<span> Results </span> 
 						<span id='offset_start'> </span>
@@ -50,19 +49,13 @@
 						<span id='num_pages'> </span>
 					</div>
 				</td>
-				
-				<!-- simple next/prev type navigation links -->
-				<td id='next_prev_links'>
-					<a class='search_page_nav_link' id='search_home_link' title="First results page">Start</a>
-					<a class='search_page_nav_link' id='prev_link' title='Previus page'> &lt;&lt; </a>
-					<span class='search_page_nav_link' id='page_numbers'> </span>
-					<a  class='search_page_nav_link' id='next_link' title='Next Page'> &gt;&gt; </a>
-					<a  class='search_page_nav_link' id='end_link' title="Last results page">End</a>
+				<td style='text-align:right; padding-right: 10px;'>
+					<span> Avaible copies / Total copies </span>
 				</td>
-
 			</tr>
 		</tbody>
 	</table>
+	-->
 
 	<!-- Load the result table -->
 	<xi:include href="result_table.xml"/>

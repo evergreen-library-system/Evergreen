@@ -10,10 +10,10 @@ body table tr td	{ font-size: inherit; }
 .sidebar_extra_item { font-size: 9pt; }
 .searchbar_tag { font-size: 9pt; } 
 #offset_start { font-weight: 600; font-size: 9pt;}
-#offset_end { font-weight: 600;  font-size; 9pt;}
-#result_count { font-weight: 600;  font-size; 9pt;} 
-.nav_link_active { font-weight: 600; font-size; 9pt;}
-.copy_count_cell { font-size: 80%; font-size; 9pt; }
+#offset_end { font-weight: 600;  font-size: 9pt;}
+#result_count { font-weight: 600;  font-size: 9pt;} 
+.nav_link_active { font-weight: 600; font-size: 9pt;}
+.copy_count_cell { font-size: 8pt; }
 
 #rdetail_copy_info_table { font-size: 9pt; }
 .rdetail_copy_nav_link { font-weight: normal; font-size: 9pt; }

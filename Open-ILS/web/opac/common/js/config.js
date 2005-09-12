@@ -12,6 +12,7 @@ var PARAM_HITCOUNT	= "hitcount";	/* hits per page */
 var PARAM_MRID			= "mrid";		/* metarecord id */
 var PARAM_RID			= "rid";			/* record id */
 var PARAM_ORIGLOC		= "orgloc"		/* the original location */
+var PARAM_TOPRANK		= "toprank"		/* this highest ranking rank */
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -25,6 +26,7 @@ var HITCOUNT;
 var RANKS; 
 var FONTSIZE;
 var ORIGLOC;
+var TOPRANK;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -218,10 +220,12 @@ function attachEvt(scope, name, action) {
 createEvt("common", "init");						/* f() : what happens on page init */
 createEvt("common", "pageRendered");			/* f() : what happens when the page is done (up to the skin to call this even)*/
 createEvt("common", "unload");					/* f() : what happens on window unload (clean memory, etc.)*/
+createEvt("common", "locationChanged");		/* f() : what happens when the location has changed */
+
 createEvt("common", "run");						/* f() : make the page do stuff */
-createEvt("mresult", "idsReceived");			/* f(ids) */
-createEvt("rresult", "idsReceived");			/* f(ids) */	
+createEvt("result", "idsReceived");				/* f(ids) */
 createEvt("rresult", "recordDrawn");			/* f(recordid, linkDOMNode) : after record is drawn, allow others (xul) to plugin actions */
+createEvt("result", "preCollectRecords");		/* f() we're about to go and grab the recs */
 
 createEvt("result", "hitCountReceived");		/* f() : display hit info, pagination, etc. */
 createEvt("result", "recordReceived");			/* f(mvr, pagePosition, isMr) : display the record*/

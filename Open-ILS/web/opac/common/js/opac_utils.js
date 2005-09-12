@@ -1,5 +1,3 @@
-
-
 /* - Request ------------------------------------------------------------- */
 function Request(type) {
 	var s = type.split(":");
@@ -12,7 +10,6 @@ function Request(type) {
 Request.prototype.callback = function(cal) { this.request.setCompleteCallback(cal); }
 Request.prototype.send		= function(block){this.request.send(block);}
 Request.prototype.result	= function(){return this.request.getResultObject();}
-/* ----------------------------------------------------------------------- */
 
 function showCanvas() {
 	for( var x in G.ui.altcanvas ) {
@@ -57,7 +54,6 @@ function findCurrentPage() {
 			return p;
 		}
 	}
-
 	return null;
 }
 
@@ -78,6 +74,7 @@ function initParams() {
 	HITCOUNT	= parseInt(cgi.param(PARAM_HITCOUNT));
 	MRID		= parseInt(cgi.param(PARAM_MRID));
 	RID		= parseInt(cgi.param(PARAM_RID));
+	TOPRANK  = parseFloat(cgi.param(PARAM_TOPRANK));
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -88,6 +85,7 @@ function initParams() {
 	if(isNaN(MRID))		MRID		= 0;
 	if(isNaN(RID))			RID		= 0;
 	if(isNaN(ORIGLOC))	ORIGLOC	= 0;
+	if(isNaN(TOPRANK))	TOPRANK	= 1;
 }
 
 function initCookies() {
@@ -109,15 +107,13 @@ function getHitCount(){return HITCOUNT;}
 function getMrid(){return MRID;};
 function getRid(){return RID;};
 function getOrigLocation(){return ORIGLOC;}
+function getTopRank(){return TOPRANK;}
 
 function getSearchBarExtras(){return SBEXTRAS;}
 function getFontSize(){return FONTSIZE;};
 function getSkin(){return SKIN;};
 
 
-
-/* builds an opac URL.  If no page is defined, the current page is used
-	if slim, then only everything after the ? is returned (no host portion) */
 function findBasePath() {
 	var path = location.pathname;
 	if(!path.match(/.*\.xml$/)) path += "index.xml"; 
@@ -164,6 +160,8 @@ function  buildOPACLink(args, slim, ssl) {
 	string += _appendParam(HITCOUNT, PARAM_HITCOUNT, args, getHitCount, string);
 	string += _appendParam(MRID,		PARAM_MRID, args, getMrid, string);
 	string += _appendParam(RID,		PARAM_RID, args, getRid, string);
+	string += _appendParam(TOPRANK,	PARAM_TOPRANK, args, getTopRank, string);
+
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
 
@@ -174,17 +172,6 @@ function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 	return ret;
 }
 
-
-/*
-function EX(message) { this.init(message); }
-EX.prototype.init = function(message) { this.message = message; }
-EX.prototype.toString = function() { return "\n *** Exception Occured \n" + this.message; }  
-EXCommunication.prototype              = new EX();
-EXCommunication.prototype.constructor  = EXCommunication;
-EXCommunication.baseClass              = EX.prototype.constructor;
-function EXCommunication(message) { this.init("EXCommunication: " + message); }                          
-*/
-
 /* ----------------------------------------------------------------------- */
 function cleanISBN(isbn) {
    if(isbn) {
@@ -194,8 +181,6 @@ function cleanISBN(isbn) {
    } else isbn = "";
    return isbn;
 }       
-
-
 
 
 /* builds a link that goes to the title listings for a metarecord */
@@ -236,7 +221,6 @@ function buildSearchLink(type, string, linknode, trunc) {
 /* ----------------------------------------------------------------------- */
 /* user session handling */
 /* ----------------------------------------------------------------------- */
-
 /* session is the login session.  If no session is provided, we attempt
 	to find one in the cookies.  If 'force' is true we retrieve the 
 	user from the server even if there is already a global user present.
@@ -445,7 +429,7 @@ function buildOrgSelector() {
 
 function orgSelect(id) {
 	showCanvas();
-	updateLoc(id, findOrgDepth(id));
+	runEvt("common", "locationChanged", id, findOrgDepth(id) );
 }
 
 var fontCookie = new cookieObject("fonts", 1, "/", COOKIE_FONT);
@@ -455,10 +439,6 @@ function setFontSize(size) {
 	fontCookie.write();
 }
 
-
-/* ----------------------------------------------------------------------- */
-/* resource icon code */
-/* ----------------------------------------------------------------------- */
 
 var resourceFormats = [
    "text",
@@ -529,7 +509,6 @@ function MARCFormatToMods(format) {
    }
    return "text";
 }
-
 
 function setResourcePic( img, resource ) {
 	img.setAttribute( "src", "../../../images/tor/" + resource + ".jpg");

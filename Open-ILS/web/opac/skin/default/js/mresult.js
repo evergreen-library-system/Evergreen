@@ -2,13 +2,12 @@ var records = {};
 var ranks = {};
 var onlyrecord = {};
 var table;
-var rowtemplate;
 var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
 
 attachEvt("common", "unload", mresultUnload);
 attachEvt("common", "run", mresultDoSearch);
-attachEvt("mresult", "idsReceived", mresultSetRecords); 
-attachEvt("mresult", "idsReceived", mresultCollectRecords); 
+attachEvt("result", "idsReceived", mresultSetRecords); 
+attachEvt("result", "idsReceived", mresultCollectRecords); 
 
 
 function mresultUnload() { removeChildren(table); table = null;}
@@ -17,9 +16,8 @@ function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
 
-	hideMe(G.ui.result.row_template);
 	while( table.parentNode.rows.length <= getDisplayCount() )  /* add an extra row so IE and safari won't complain */
-		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
+		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
 	//	mresultGetCount(); 
@@ -65,7 +63,7 @@ function mresultCollectIds(method) {
 
 		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(method, getStype(), getTerm(), 
-			getLocation(), getDepth(), getDisplayCount() * 10, getOffset(), form );
+			getLocation(), getDepth(), getDisplayCount() * 5, getOffset(), form );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
@@ -78,7 +76,7 @@ function mresultHandleMRIds(r) {
 		HITCOUNT = res.count;
 		runEvt('result', 'hitCountReceived');
 	} 
-	runEvt('mresult', 'idsReceived', res.ids);
+	runEvt('result', 'idsReceived', res.ids);
 }
 
 function mresultSetRecords(idstruct) {
@@ -91,9 +89,11 @@ function mresultSetRecords(idstruct) {
 	}
 	idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
 	idsCookie.write();
+	TOPRANK = ranks[getOffset()];
 }
 
 function mresultCollectRecords() {
+	runEvt("result", "preCollectRecords");
 	var i = 0;
 	for( var x = getOffset(); x!= getDisplayCount() + getOffset(); x++ ) {
 		if(isNull(records[x])) break;

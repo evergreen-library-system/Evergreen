@@ -1,5 +1,4 @@
 /*
-
 DISCLAIMER: THESE JAVASCRIPT FUNCTIONS ARE SUPPLIED 'AS IS', WITH 
 NO WARRANTY EXPRESSED OR IMPLIED. YOU USE THEM AT YOUR OWN RISK. 
 PAUL STEPHENS DOES NOT ACCEPT ANY LIABILITY FOR 
@@ -29,7 +28,7 @@ this.accessPath = accessPath
 this.rawValue = ""
 this.fields = new Array()
 this.fieldnames = new Array() 
-if (arguments.length > 3) { // field name(s) specified
+if (arguments.length > 3) { 
   j = 0
   for (i = 3; i < arguments.length; i++) {
     this.fieldnames[j] = arguments[i]    
@@ -38,16 +37,13 @@ if (arguments.length > 3) { // field name(s) specified
   this.fields.length = this.fieldnames.length 
 }
 this.read = ucRead
-
 this.write = ucWrite
-
 this.remove = ucDelete
 this.get = ucFieldGet
 this.put = ucFieldPut
 this.namepos = ucNamePos
 this.read()
 }
-
 
 function ucFieldGet(fieldname) {
 var i = this.namepos(fieldname)
@@ -57,19 +53,15 @@ if (i >=0) {
   return "BadFieldName!"
 }
 }
-
 function ucFieldPut (fieldname, fieldval) {
 var i = this.namepos(fieldname)
-
 if(i < 0) {
 	i = this.fieldnames.length;
 	this.fieldnames[i] = fieldname;
 }
-
 this.fields[i] = fieldval
 return true
 }
-
 function ucNamePos(fieldname) {
 var i 
 for (i = 0; i < this.fieldnames.length; i++) {
@@ -79,44 +71,29 @@ for (i = 0; i < this.fieldnames.length; i++) {
 }
 return -1
 }
-
-
 function ucWrite() {      
   var cookietext = this.name + "=" 
-
-// concatenate array elements into cookie string
-// Special case - single-field cookie, so write without # terminator
 if (this.fields.length == 1) {
   cookietext += escape(this.fields[0])
-  } else { // multi-field cookie
+  } else { 
     for (i= 0; i < this.fields.length; i++) {
       cookietext += escape(this.fields[i]) + this.fieldSeparator }
   }
-
-
-// Set expiry parameter, if specified
     if (this.expires != null) {  
-      if (typeof(this.expires) == "number") { // Expiry period in days specified  
+      if (typeof(this.expires) == "number") { 
         var today=new Date()     
         var expiredate = new Date()      
         expiredate.setTime(today.getTime() + 1000*60*60*24*this.expires)
         cookietext += "; expires=" + expiredate.toGMTString()
-      } else { // assume it's a date object
+      } else { 
         cookietext +=  "; expires=" + this.expires.toGMTString()
-      } // end of typeof(this.expires) if
-    } // end of this.expires != null if 
-   
-// add path, if specified
+      } 
+    } 
    if (this.accessPath != null) {
    cookietext += "; PATH="+this.accessPath }
-
-// write cookie
-   // alert("writing "+cookietext)
    document.cookie = cookietext 
    return null  
 }
-
-
 function ucRead() {
   var search = this.name + "="                       
   var CookieString = document.cookie            
@@ -128,27 +105,20 @@ function ucRead() {
     if (offset != -1) {                         
       offset += search.length                   
       end = CookieString.indexOf(";", offset)   
-      if (end == -1) {  // cookie is last item in the string, so no terminator                        
+      if (end == -1) {  
        end = CookieString.length }              
       this.rawValue = CookieString.substring(offset, end)                                   
       this.found = true 
       } 
     }
-   
 if (this.rawValue != null) { // unpack into fields
-
   var sl = this.rawValue.length
   var startidx = 0
   var endidx = 0
   var i = 0
-
-// Special case - single-field cookies written by other functions,
-// so without a '#' terminator
-
 if (this.rawValue.substr(sl-1, 1) != this.fieldSeparator) {
   this.fields[0] = unescape(this.rawValue)
-  } else { // separate fields
-
+  } else { 
   do  
   {
    endidx = this.rawValue.indexOf(this.fieldSeparator, startidx)
@@ -159,15 +129,11 @@ if (this.rawValue.substr(sl-1, 1) != this.fieldSeparator) {
   }
   while (endidx !=-1 & endidx != (this.rawValue.length -1));
 }
-} // end of unpack into fields if block
+} 
   return this.found
-} // end of function
-
-
+} 
 function ucDelete() {
   this.expires = -10
   this.write()
   return this.read()
 }
-
-
