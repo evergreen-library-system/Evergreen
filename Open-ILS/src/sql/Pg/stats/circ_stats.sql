@@ -4,7 +4,42 @@ BEGIN;
 
 CREATE SCHEMA circ_stats;
 
+CREATE TABLE circ_stats.circulation (
+    id			BIGSERIAL			PRIMARY KEY,
+    target_copy		BIGINT				NOT NULL,
+    usr			INT				NOT NULL,
+    circ_lib		INT				NOT NULL,
+    renewal_remaining	INT				NOT NULL,
+    circ_staff		INT,
+    checkin_staff	INT,
+    checkin_lib		INT,
+    xact_start		TIMESTAMP WITH TIME ZONE	NOT NULL,
+    xact_finish		TIMESTAMP WITH TIME ZONE,
+    due_date		TIMESTAMP WITH TIME ZONE	NOT NULL,
+    stop_fines_time	TIMESTAMP WITH TIME ZONE,
+    checkin_time	TIMESTAMP WITH TIME ZONE,
+    duration		INTERVAL			NOT NULL,
+    fine_interval	INTERVAL			NOT NULL,
+    recuring_fine	NUMERIC(6,2)			NOT NULL,
+    max_fine		NUMERIC(6,2)			NOT NULL,
+    opac_renewal	BOOL				NOT NULL,
+    phone_renewal	BOOL				NOT NULL,
+    desk_renewal	BOOL				NOT NULL,
+    duration_rule	TEXT				NOT NULL,
+    recuring_fine_rule	TEXT				NOT NULL,
+    max_fine_rule	TEXT				NOT NULL,
+    stop_fines		TEXT
+) WITHOUT OIDS;
+
+CREATE TABLE circ_stats.circulation_checkin () INHERITS (circ_stats.circulation);
+CREATE TABLE circ_stats.circulation_claimsreturned () INHERITS (circ_stats.circulation);
+CREATE TABLE circ_stats.circulation_lost () INHERITS (circ_stats.circulation);
+CREATE TABLE circ_stats.circulation_maxfines () INHERITS (circ_stats.circulation);
+CREATE TABLE circ_stats.circulation_renew () INHERITS (circ_stats.circulation);
+
+
 CREATE TABLE circ_stats.record_dim (
+	id			BIGSERIAL	PRIMARY KEY,
 	bib_item_type		"char"	NOT NULL DEFAULT '?',
 	bib_item_form		"char"	NOT NULL DEFAULT '?',
 	bib_level		"char"	NOT NULL DEFAULT '?',
@@ -12,11 +47,12 @@ CREATE TABLE circ_stats.record_dim (
 	bib_char_encoding	"char"	NOT NULL DEFAULT '?',
 	bib_enc_level		"char"	NOT NULL DEFAULT '?',
 	bib_audience		"char"	NOT NULL DEFAULT '?',
-	id			TEXT	PRIMARY KEY,
 	bib_cat_form		TEXT	NOT NULL DEFAULT '?',
 	bib_pub_status		TEXT	NOT NULL DEFAULT '?',
 	bib_pub_date		TEXT	NOT NULL DEFAULT '?',
-	bib_item_lang		TEXT	NOT NULL DEFAULT '?'
+	bib_item_lang		TEXT	NOT NULL DEFAULT '?',
+	bib_title		TEXT	NOT NULL DEFAULT '?',
+	bib_author		TEXT	NOT NULL DEFAULT '?'
 ) WITHOUT OIDS;
 CREATE TRIGGER circ_stats_record_dim_id_trigger
 	BEFORE INSERT ON circ_stats.record_dim
@@ -24,11 +60,11 @@ CREATE TRIGGER circ_stats_record_dim_id_trigger
 	EXECUTE PROCEDURE dim_row_hash ();
 
 CREATE TABLE circ_stats.usr_dim (
+	id			BIGSERIAL	PRIMARY KEY,
 	usr_id			INT	NOT NULL DEFAULT 0,
 	usr_grp			INT	NOT NULL, -- aka profile
 	usr_standing		INT	NOT NULL,
 	usr_home_ou		INT	NOT NULL,
-	id			TEXT	PRIMARY KEY,
 	usr_county		TEXT,
 	usr_city		TEXT,
 	usr_post_code		TEXT	NOT NULL
@@ -40,6 +76,7 @@ CREATE TRIGGER circ_stats_usr_dim_id_trigger
 
 
 CREATE TABLE circ_stats.copy_dim (
+	id			BIGSERIAL	PRIMARY KEY,
 	copy_holdable		BOOL	NOT NULL,
 	copy_ref		BOOL	NOT NULL,
 	copy_circulate		BOOL	NOT NULL,
@@ -48,7 +85,6 @@ CREATE TABLE circ_stats.copy_dim (
 	copy_location		INT	NOT NULL,
 	copy_fine_level		INT	NOT NULL,
 	copy_loan_duration	INT	NOT NULL,
-	id			TEXT	PRIMARY KEY,
 	copy_circ_modifer	TEXT,
 	copy_circ_as_type	TEXT,
 	copy_call_number_label	TEXT	NOT NULL
@@ -60,6 +96,7 @@ CREATE TRIGGER circ_stats_copy_dim_id_trigger
 
 
 CREATE TABLE circ_stats.circ_dim (
+	id			BIGSERIAL				PRIMARY KEY,
 	circ_opac_renewal	BOOL,
 	circ_desk_renewal	BOOL,
 	circ_phone_renewal	BOOL,
@@ -69,7 +106,6 @@ CREATE TABLE circ_stats.circ_dim (
 	circ_fine_interval	INTERVAL			NOT NULL,
 	circ_duration		INTERVAL			NOT NULL,
 	circ_due_date		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	id			TEXT				PRIMARY KEY,
 	circ_duration_rule	TEXT				NOT NULL,
 	circ_recuring_fine_rule	TEXT				NOT NULL,
 	circ_max_fine_rule	TEXT				NOT NULL,
@@ -87,16 +123,16 @@ CREATE TABLE circ_stats.checkout_fact (
 	circ_lib		INT				NOT NULL,
 	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	circ_dim		TEXT				NOT NULL REFERENCES circ_stats.circ_dim (id),
+	circ_dim		INT				NOT NULL REFERENCES circ_stats.circ_dim (id),
 
 	-- patron info
-	usr_dim			TEXT				NOT NULL REFERENCES circ_stats.usr_dim (id),
+	usr_dim			INT				NOT NULL REFERENCES circ_stats.usr_dim (id),
 
 	-- copy info
-	copy_dim		TEXT				NOT NULL REFERENCES circ_stats.copy_dim (id),
+	copy_dim		INT				NOT NULL REFERENCES circ_stats.copy_dim (id),
 
 	-- bib record info
-	bib_dim			TEXT				NOT NULL REFERENCES circ_stats.record_dim (id)
+	bib_dim			INT				NOT NULL REFERENCES circ_stats.record_dim (id)
 ) WITHOUT OIDS;
 CREATE INDEX circ_stats_checkout_fact_time_idx		ON circ_stats.checkout_fact (circ_timestamp);
 CREATE INDEX circ_stats_checkout_fact_circ_dim_idx	ON circ_stats.checkout_fact (circ_dim);
@@ -110,16 +146,16 @@ CREATE TABLE circ_stats.renewal_fact (
 	circ_lib		INT				NOT NULL,
 	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	circ_dim		TEXT				NOT NULL REFERENCES circ_stats.circ_dim (id),
+	circ_dim		INT				NOT NULL REFERENCES circ_stats.circ_dim (id),
 
 	-- patron info
-	usr_dim			TEXT				NOT NULL REFERENCES circ_stats.usr_dim (id),
+	usr_dim			INT				NOT NULL REFERENCES circ_stats.usr_dim (id),
 
 	-- copy info
-	copy_dim		TEXT				NOT NULL REFERENCES circ_stats.copy_dim (id),
+	copy_dim		INT				NOT NULL REFERENCES circ_stats.copy_dim (id),
 
 	-- bib record info
-	bib_dim			TEXT				NOT NULL REFERENCES circ_stats.record_dim (id)
+	bib_dim			INT				NOT NULL REFERENCES circ_stats.record_dim (id)
 ) WITHOUT OIDS;
 CREATE INDEX circ_stats_renewal_fact_time_idx		ON circ_stats.renewal_fact (circ_timestamp);
 CREATE INDEX circ_stats_renewal_fact_circ_dim_idx	ON circ_stats.renewal_fact (circ_dim);
@@ -133,16 +169,16 @@ CREATE TABLE circ_stats.checkin_fact (
 	circ_lib		INT				NOT NULL,
 	circ_staff		INT,
 	circ_timestamp		TIMESTAMP WITH TIME ZONE	NOT NULL,
-	circ_dim		TEXT				NOT NULL REFERENCES circ_stats.circ_dim (id),
+	circ_dim		INT				NOT NULL REFERENCES circ_stats.circ_dim (id),
 
 	-- patron info
-	usr_dim			TEXT				NOT NULL REFERENCES circ_stats.usr_dim (id),
+	usr_dim			INT				NOT NULL REFERENCES circ_stats.usr_dim (id),
 
 	-- copy info
-	copy_dim		TEXT				NOT NULL REFERENCES circ_stats.copy_dim (id),
+	copy_dim		INT				NOT NULL REFERENCES circ_stats.copy_dim (id),
 
 	-- bib record info
-	bib_dim			TEXT				NOT NULL REFERENCES circ_stats.record_dim (id)
+	bib_dim			INT				NOT NULL REFERENCES circ_stats.record_dim (id)
 ) WITHOUT OIDS;
 CREATE INDEX circ_stats_checkin_fact_time_idx		ON circ_stats.checkin_fact (circ_timestamp);
 CREATE INDEX circ_stats_checkin_fact_circ_dim_idx	ON circ_stats.checkin_fact (circ_dim);
@@ -320,4 +356,5 @@ CREATE OR REPLACE VIEW circ_stats.renewal_full_view AS
 
 
 COMMIT;
+
 
