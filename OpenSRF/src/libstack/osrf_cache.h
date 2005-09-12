@@ -58,20 +58,20 @@ int osrfCachePutString( char* key, const char* value, time_t seconds);
   @param key The cache key
   @return The object (which must be freed) if it exists, otherwise returns NULL
   */
-jsonObject* osrfCacheGetObject( char* key );
+jsonObject* osrfCacheGetObject( char* key, ... );
 
 /**
   Grabs a string from the cache.
   @param key The cache key
   @return The string (which must be freed) if it exists, otherwise returns NULL
   */
-char* osrfCacheGetString( char* key );
+char* osrfCacheGetString( char* key, ... );
 
 /**
   Removes the item with the given key from the cache.
   @return 0 on success, -1 on error.
   */
-int osrfCacheRemove( char* key );
+int osrfCacheRemove( char* key, ... );
 
 
 

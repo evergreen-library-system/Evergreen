@@ -26,7 +26,7 @@
 #
 # --------------------------------------------------------------------
 
-OBJS				= utils.o object.o json_parser.o 
+OBJS				= md5.o utils.o object.o json_parser.o 
 UTIL_DIR			= ../utils
 DEST_INCLUDE	= objson
 CFLAGS			+= -DSTRICT_JSON_WRITE #-DSTRICT_JSON_READ
@@ -56,6 +56,12 @@ utils.o:	$(UTIL_DIR)/utils.h $(UTIL_DIR)/utils.c
 	cp $(UTIL_DIR)/utils.h .
 	cp $(UTIL_DIR)/utils.c .
 	$(CC) -c $(CFLAGS) utils.c -o $@
+
+md5.o:	$(UTIL_DIR)/md5.h $(UTIL_DIR)/md5.c
+	cp $(UTIL_DIR)/md5.h .
+	cp $(UTIL_DIR)/md5.c .
+	$(CC) -c $(CFLAGS) md5.c -o $@
+
 
 clean:
 	/bin/rm -f *.o *.so utils.c utils.h libobjson.so

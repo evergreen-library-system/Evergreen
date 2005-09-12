@@ -70,7 +70,6 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 	osrfStringArray* arr = osrfNewStringArray(8);
 	
 	_osrfSystemInitCache();
-	return 0;
 
 	if(apps) {
 		int i = 0;

@@ -118,7 +118,10 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 	osrfAppSession* session = osrf_stack_transport_handler(msg, child->appname);
 	if(!session) return;
 
-	if( session->stateless && session->state != OSRF_SESSION_CONNECTED ) return;
+	if( session->stateless && session->state != OSRF_SESSION_CONNECTED ) {
+		osrfAppSessionFree( session );
+		return;
+	}
 
 	/* keepalive loop for stateful sessions */
 

@@ -279,35 +279,6 @@ int handle_login( char* words[]) {
 	return 0;
 }
 
-char* md5sum( char* text ) {
-
-	struct md5_ctx ctx;
-	unsigned char digest[16];
-
-	MD5_start (&ctx);
-
-	int i;
-	for ( i=0 ; i != strlen(text) ; i++ )
-		MD5_feed (&ctx, text[i]);
-
-	MD5_stop (&ctx, digest);
-
-	char buf[16];
-	memset(buf,0,16);
-
-	char final[256];
-	memset(final,0,256);
-
-	for ( i=0 ; i<16 ; i++ ) {
-		sprintf(buf, "%02x", digest[i]);
-		strcat( final, buf );
-	}
-
-	return strdup(final);
-
-}
-
-
 int handle_set( char* words[]) {
 
 	char* variable;

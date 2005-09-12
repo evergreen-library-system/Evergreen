@@ -47,10 +47,11 @@ int osrfCachePutString( char* key, const char* value, time_t seconds ) {
 	return 0;
 }
 
-jsonObject* osrfCacheGetObject( char* key ) {
+jsonObject* osrfCacheGetObject( char* key, ... ) {
 	jsonObject* obj = NULL;
 	if( key ) {
-		char* data = (char*) mc_aget( __osrfCache, key, strlen(key) );
+		VA_LIST_TO_STRING(key);
+		char* data = (char*) mc_aget( __osrfCache, VA_BUF, strlen(VA_BUF) );
 		if( data ) {
 			obj = jsonParseString( data );
 			return obj;
@@ -59,14 +60,20 @@ jsonObject* osrfCacheGetObject( char* key ) {
 	return NULL;
 }
 
-char* osrfCacheGetString( char* key ) {
-	if( key ) return (char*) mc_aget(__osrfCache, key, strlen(key) );
+char* osrfCacheGetString( char* key, ... ) {
+	if( key ) {
+		VA_LIST_TO_STRING(key);
+		return (char*) mc_aget(__osrfCache, VA_BUF, strlen(VA_BUF) );
+	}
 	return NULL;
 }
 
 
-int osrfCacheRemove( char* key ) {
-	if( key ) return mc_delete(__osrfCache, key, strlen(key), 0 );
+int osrfCacheRemove( char* key, ... ) {
+	if( key ) {
+		VA_LIST_TO_STRING(key);
+		return mc_delete(__osrfCache, VA_BUF, strlen(VA_BUF), 0 );
+	}
 	return -1;
 }
 

@@ -1,6 +1,6 @@
 
-UTIL_HEADERS = logging.h utils.h socket_bundle.h md5.h sha.h string_array.h xml_utils.h
-UTIL_OBJECTS = logging.o utils.o socket_bundle.o md5.o sha.o string_array.o 
+UTIL_HEADERS = md5.h logging.h utils.h socket_bundle.h sha.h string_array.h xml_utils.h
+UTIL_OBJECTS = md5.o logging.o utils.o socket_bundle.o sha.o string_array.o 
 
 all:	$(UTIL_OBJECTS) copy
 

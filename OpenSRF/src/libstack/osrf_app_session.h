@@ -162,6 +162,7 @@ int osrf_app_session_queue_wait( osrf_app_session*, int timeout );
   * session is completey done.
   */
 void osrf_app_session_destroy ( osrf_app_session* );
+void osrfAppSessionFree( osrfAppSession* );
 
 
 

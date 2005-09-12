@@ -9,7 +9,7 @@ export PERLDIR			= $(LIBDIR)/perl5
 export INCLUDEDIR		= $(PREFIX)/include
 
 export LDLIBS			+= 
-export LDFLAGS			+= -L $(TMPDIR) -L .
+export LDFLAGS			+= -L $(TMPDIR) -L . -L /opt/lib
 export CFLAGS			+= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
@@ -28,6 +28,7 @@ OPENSRF_TARGETS = libtransport/transport_session.o \
 						libstack/osrf_application.o \
 						libstack/osrf_cache.o \
 						libstack/xml_utils.o \
+						libstack/osrf_log.o \
 						utils/socket_bundle.o \
 						utils/string_array.o \
 						utils/utils.o \
@@ -48,6 +49,7 @@ OPENSRF_HEADERS = libtransport/transport_session.h \
 						libstack/osrf_application.h \
 						libstack/osrf_cache.h \
 						libstack/xml_utils.h \
+						libstack/osrf_log.h \
 						utils/socket_bundle.h \
 						utils/string_array.h \
 						utils/utils.h \

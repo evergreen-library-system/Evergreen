@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "md5.h"
 #include "utils.h"
 #include "logging.h"
 
@@ -72,4 +71,3 @@ int handle_math( char* words[] );
 int do_math( int count, int style );
 int handle_introspect(char* words[]);
 int handle_login( char* words[]);
-char* md5sum( char* text ); 

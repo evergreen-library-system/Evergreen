@@ -47,13 +47,12 @@ void _osrf_app_request_free( osrf_app_request * req ){
 	*/
 
 	free( req );
-	debug_handler("after request free");
 }
 
 /** Pushes the given message onto the list of 'responses' to this request */
 void _osrf_app_request_push_queue( osrf_app_request* req, osrf_message* result ){
 	if(req == NULL || result == NULL) return;
-	debug_handler( "App Session pushing [%d] onto request queue", result->thread_trace );
+	debug_handler( "App Session pushing request [%d] onto request queue", result->thread_trace );
 	if(req->result == NULL)
 		req->result = result;
 	else {
@@ -67,7 +66,6 @@ void osrf_app_session_request_finish(
 		osrf_app_session* session, int req_id ){
 
 	if(session == NULL) return;
-	debug_handler("Finishing request %d", req_id );
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	if(req == NULL) return;
 	_osrf_app_session_remove_request( req->session, req );
@@ -77,7 +75,7 @@ void osrf_app_session_request_finish(
 
 void osrf_app_session_request_reset_timeout( osrf_app_session* session, int req_id ) {
 	if(session == NULL) return;
-	debug_handler("Resetting timeout %d", req_id );
+	debug_handler("Resetting request timeout %d", req_id );
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	if(req == NULL) return;
 	req->reset_timeout = 1;
@@ -93,7 +91,6 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 	if(req == NULL) return NULL;
 
 	if( req->result != NULL ) {
-		debug_handler("app_request receive already has a message, returning it");
 		/* pop off the first message in the list */
 		osrf_message* tmp_msg = req->result;
 		req->result = req->result->next;
@@ -167,7 +164,6 @@ int _osrf_app_request_resend( osrf_app_request* req ) {
 /** returns a session from the global session hash */
 osrf_app_session* osrf_app_session_find_session( char* session_id ) {
 	osrf_app_session* ptr = app_session_cache;
-	debug_handler("Searching for session in global cache with id [%s]", session_id );
 	while( ptr != NULL ) {
 		if( !strcmp(ptr->session_id,session_id) )
 			return ptr;
@@ -186,8 +182,6 @@ void _osrf_app_session_push_session( osrf_app_session* session ) {
 	}
 
 	osrf_app_session* ptr = app_session_cache;
-	debug_handler( "Pushing [%s] [%s] onto global session cache", 
-			session->remote_service, session->session_id );
 	while( ptr != NULL ) {
 		if( !strcmp(ptr->session_id, session->session_id) )
 			return;
@@ -271,10 +265,10 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	#ifdef ASSUME_STATELESS
 	session->stateless = 1;
-	debug_handler("session is stateless");
+	debug_handler("%s session is stateless", remote_service );
 	#else
 	session->stateless = 0;
-	debug_handler("session is NOT stateless");
+	debug_handler("%s session is NOT stateless", remote_service );
 	#endif
 
 	/* build a chunky, random session id */
@@ -473,7 +467,6 @@ osrf_app_request* _osrf_app_session_get_request(
 	if(session == NULL)
 		return NULL;
 
-	debug_handler( "App Session searching for request [%d] in request queue",request_id );
 	osrf_app_request* req = session->request_queue;
 	while( req != NULL ) {
 		if(req->request_id == request_id)
@@ -512,19 +505,12 @@ int osrf_app_session_push_queue(
 	if(session == NULL || msg == NULL)
 		return 0;
 
-	debug_handler( "AppSession pushing result for [%d] onto request payload queue",
-			msg->thread_trace );
-
 	osrf_app_request* req = session->request_queue;
 
-	if(req == NULL) {
-		warning_handler( "app_session has no app_requests in its queue yet we have a result for [%d]", msg->thread_trace );
-		return 0;
-	}
+	if(req == NULL) return 0;
 
 	while( req != NULL ) {
 		if(req->request_id == msg->thread_trace) {
-			debug_handler( "Found app_request for tt [%d]", msg->thread_trace );
 			_osrf_app_request_push_queue( req, msg );
 			return 1;
 		}
@@ -542,7 +528,6 @@ int osrf_app_session_connect(osrf_app_session* session){
 		return 0;
 
 	if(session->state == OSRF_SESSION_CONNECTED) {
-		debug_handler("Already Connected, returning");
 		return 1;
 	}
 
@@ -567,7 +552,7 @@ int osrf_app_session_connect(osrf_app_session* session){
 	}
 
 	if(session->state == OSRF_SESSION_CONNECTED)
-		debug_handler(" * Connected Successfully");
+		debug_handler(" * Connected Successfully to %s", session->remote_service );
 
 	if(session->state != OSRF_SESSION_CONNECTED)
 		return 0;
@@ -604,7 +589,6 @@ int osrf_app_session_disconnect( osrf_app_session* session){
 }
 
 int osrf_app_session_request_resend( osrf_app_session* session, int req_id ) {
-	debug_handler("In reqeust resend searching for resend-able messages");
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	return _osrf_app_request_resend( req );
 }
@@ -644,7 +628,7 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 		transport_message* t_msg = message_init( 
 				string, "", session->session_id, session->remote_id, NULL );
 	
-		debug_handler("Session [%s] [%s]  sending to %s \nXML:\n%s", 
+		debug_handler("Session [%s] [%s]  sending to %s \nData: %s", 
 				session->remote_service, session->session_id, t_msg->recipient, string );
 
 		retval = client_send_message( session->transport_handle, t_msg );
@@ -686,7 +670,12 @@ int osrf_app_session_queue_wait( osrf_app_session* session, int timeout ){
 /** Disconnects (if client) and removes the given session from the global session cache 
   * ! This free's all attached app_requests ! 
   */
-void osrf_app_session_destroy ( osrf_app_session* session ){
+void osrfAppSessionFree( osrfAppSession* ses ) {
+	osrf_app_session_destroy( ses );
+}
+
+
+void osrf_app_session_destroy( osrf_app_session* session ){
 	if(session == NULL) return;
 
 	debug_handler( "AppSession [%s] [%s] destroying self and deleting requests", 
@@ -699,8 +688,6 @@ void osrf_app_session_destroy ( osrf_app_session* session ){
 	}
 	//session->state = OSRF_SESSION_DISCONNECTED;
 	_osrf_app_session_remove_session(session->session_id);
-	debug_handler("AppSession [%s] [%s] removed from cache", 
-			session->remote_service, session->session_id );
 
 	osrf_app_request* req;
 	while( session->request_queue != NULL ) {
@@ -720,7 +707,6 @@ osrf_message* osrf_app_session_request_recv(
 		osrf_app_session* session, int req_id, int timeout ) {
 	if(req_id < 0 || session == NULL)
 		return NULL;
-	debug_handler("somebody callled recv");
 	osrf_app_request* req = _osrf_app_session_get_request( session, req_id );
 	return _osrf_app_request_recv( req, timeout );
 }

@@ -197,7 +197,7 @@ osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 				return NULL;
 
 		case DISCONNECT:
-				osrf_app_session_destroy(session);	
+				/* session will be freed by the forker */
 				return NULL;
 
 		case CONNECT:
@@ -237,6 +237,8 @@ int osrf_stack_application_handler( osrf_app_session* session, osrf_message* msg
 	jsonObject* params = msg->_params;
 
 	osrfAppRunMethod( app, method,  session, msg->thread_trace, params );
+
+	osrfMessageFree(msg);
 		
 	return 1;
 

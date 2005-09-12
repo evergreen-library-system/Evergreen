@@ -1,6 +1,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
 #include "objson/object.h"
+#include "opensrf/osrf_log.h"
 
 int osrfAppInitialize();
 int osrfAppChildInit();
@@ -8,7 +9,7 @@ int osrfMathRun( osrfMethodContext* );
 
 
 int osrfAppInitialize() {
-
+	osrfLogInit("opensrf.math");
 	/* tell the server about the methods we handle */
 	osrfAppRegisterMethod( "opensrf.math", "add", "osrfMathRun", "send 2 numbers and I'll add them", 2 );
 	osrfAppRegisterMethod( "opensrf.math", "sub", "osrfMathRun", "send 2 numbers and I'll divide them", 2 );
@@ -21,13 +22,15 @@ int osrfAppChildInit() {
 	return 0;
 }
 
-int osrfMathRun( osrfMethodContext* c ) {
+int osrfMathRun( osrfMethodContext* ctx ) {
 
-	OSRF_METHOD_VERIFY_CONTEXT(c); /* see osrf_application.h */
+	OSRF_METHOD_VERIFY_CONTEXT(ctx); /* see osrf_application.h */
+
+	osrfLog( OSRF_DEBUG, "Running opensrf.math %s", ctx->method->name );
 
 	/* collect the request params */
-	jsonObject* x = jsonObjectGetIndex(params, 0);
-	jsonObject* y = jsonObjectGetIndex(params, 1);
+	jsonObject* x = jsonObjectGetIndex(ctx->params, 0);
+	jsonObject* y = jsonObjectGetIndex(ctx->params, 1);
 
 	if( x && y ) {
 
@@ -46,16 +49,18 @@ int osrfMathRun( osrfMethodContext* c ) {
 			osrfAppSession* ses = osrfAppSessionClientInit("opensrf.dbmath");
 
 			/* dbmath uses the same method names that math does */
-			int req_id = osrfAppSessionMakeRequest( ses, newParams, method->name, 1, NULL );
+			int req_id = osrfAppSessionMakeRequest( ses, newParams, ctx->method->name, 1, NULL );
 			osrfMessage* omsg = osrfAppSessionRequestRecv( ses, req_id, 60 );
 
 			if(omsg) {
-
 				/* return dbmath's response to the user */
-				osrfAppRequestRespondComplete( session, request, osrfMessageGetResult(omsg) ); 
+				osrfAppRequestRespondComplete( ctx->session, ctx->request, osrfMessageGetResult(omsg) ); 
 				osrfMessageFree(omsg);
+				osrfAppSessionFree(ses);
 				return 0;
 			}
+
+			osrfAppSessionFree(ses);
 		}
 	}
 

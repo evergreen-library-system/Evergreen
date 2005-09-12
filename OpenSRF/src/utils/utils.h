@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include <string.h>
 //#include <sys/timeb.h>
 
+#include "md5.h"
 
 /* turns a va_list into a string */
 #define VA_LIST_TO_STRING(x) \
@@ -68,6 +69,26 @@ GNU General Public License for more details.
 	bzero(__b, __len); \
 	snprintf(__b, __len - 1, "%d", l); \
 	char* INTSTR = __b;
+
+
+/*
+#define MD5SUM(s) \
+	struct md5_ctx ctx; \
+	unsigned char digest[16];\
+	MD5_start (&ctx);\
+	int i;\
+	for ( i=0 ; i != strlen(text) ; i++ ) MD5_feed (&ctx, text[i]);\
+	MD5_stop (&ctx, digest);\
+	char buf[16];\
+	memset(buf,0,16);\
+	char final[256];\
+	memset(final,0,256);\
+	for ( i=0 ; i<16 ; i++ ) {\
+		sprintf(buf, "%02x", digest[i]);\
+		strcat( final, buf );\
+	}\
+	char* MD5STR = final;
+	*/
 
 
 	
@@ -156,6 +177,11 @@ char* file_to_string(const char* filename);
 
 
 
+/** 
+  Calculates the md5 of the text provided.
+  The returned string must be freed by the caller.
+  */
+char* md5sum( char* text );
 
 
 #endif
