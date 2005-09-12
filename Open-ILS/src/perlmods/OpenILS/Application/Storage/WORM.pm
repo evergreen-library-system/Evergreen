@@ -22,6 +22,7 @@ my $xml_util	= OpenILS::Utils::FlatXML->new();
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
 my $mods_sheet;
+my $mads_sheet;
 
 use open qw/:utf8/;
 
@@ -466,12 +467,169 @@ __PACKAGE__->register_method(
 );
 
 
+my $ain_xact;
+my $abegin;
+my $acommit;
+my $arollback;
+my $alookup;
+my $aupdate_entry;
+my $amr_lookup;
+my $amr_update;
+my $amr_create;
+my $acreate_source_map;
+my $asm_lookup;
+my $arm_old_rd;
+my $arm_old_sm;
+my $arm_old_fr;
+my $arm_old_tr;
+my $arm_old_ar;
+my $arm_old_sr;
+my $arm_old_kr;
+my $arm_old_ser;
+
+my $afr_create;
+my $ard_create;
+my $acreate = {};
+
+sub authority_wormize {
+
+	my $self = shift;
+	my $client = shift;
+	my @docids = @_;
+
+	my $no_map = 0;
+	if ($self->api_name =~ /no_map/o) {
+		$no_map = 1;
+	}
+
+	$in_xact = $self->method_lookup( 'open-ils.storage.transaction.current')
+		unless ($in_xact);
+	$begin = $self->method_lookup( 'open-ils.storage.transaction.begin')
+		unless ($begin);
+	$commit = $self->method_lookup( 'open-ils.storage.transaction.commit')
+		unless ($commit);
+	$rollback = $self->method_lookup( 'open-ils.storage.transaction.rollback')
+		unless ($rollback);
+	$alookup = $self->method_lookup('open-ils.storage.direct.authority.record_entry.batch.retrieve')
+		unless ($alookup);
+	$aupdate_entry = $self->method_lookup('open-ils.storage.direct.authority.record_entry.batch.update')
+		unless ($aupdate_entry);
+	$arm_old_rd = $self->method_lookup( 'open-ils.storage.direct.authority.record_descriptor.mass_delete')
+		unless ($arm_old_rd);
+	$arm_old_fr = $self->method_lookup( 'open-ils.storage.direct.authority.full_rec.mass_delete')
+		unless ($arm_old_fr);
+	$ard_create = $self->method_lookup( 'open-ils.storage.direct.authority.record_descriptor.batch.create')
+		unless ($ard_create);
+	$afr_create = $self->method_lookup( 'open-ils.storage.direct.authority.full_rec.batch.create')
+		unless ($afr_create);
+
+
+	my ($outer_xact) = $in_xact->run;
+	try {
+		unless ($outer_xact) {
+			$log->debug("WoRM isn't inside a transaction, starting one now.", INFO);
+			my ($r) = $begin->run($client);
+			unless (defined $r and $r) {
+				$rollback->run;
+				throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!")
+			}
+		}
+	} catch Error with {
+		throw OpenSRF::EX::PANIC ("WoRM Couldn't BEGIN transaction!")
+	};
+
+	my @source_maps;
+	my @entry_list;
+	my @mr_list;
+	my @rd_list;
+	my @ns_list;
+	my @mads_data;
+	my $ret = 0;
+	for my $entry ( $lookup->run(@docids) ) {
+		# step -1: grab the doc from storage
+		next unless ($entry);
+
+		#if(!$mads_sheet) {
+		# 	my $xslt_doc = $parser->parse_file(
+		#		OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS.xsl");
+		#	$mads_sheet = $xslt->parse_stylesheet( $xslt_doc );
+		#}
+
+		my $xml = $entry->marc;
+		my $docid = $entry->id;
+		my $marcdoc = $parser->parse_string($xml);
+		#my $madsdoc = $mads_sheet->transform($marcdoc);
+
+		#my $mads = $madsdoc->documentElement;
+		#$mads->setNamespace( "http://www.loc.gov/mads/", "mads", 1 );
+
+		push @entry_list, $entry;
+
+		my $ldr = $marcdoc->documentElement->getChildrenByTagName('leader')->pop->textContent;
+		my $oo8 = $marcdoc->documentElement->findvalue('//*[local-name()="controlfield" and @tag="008"]');
+
+		my $rd_obj = Fieldmapper::authority::record_descriptor->new;
+		for my $rd_field ( keys %descriptor_code ) {
+			$rd_obj->$rd_field( eval "$descriptor_code{$rd_field};" );
+		}
+		$rd_obj->record( $docid );
+		push @rd_list, $rd_obj;
+
+		# step 2: build the KOHA rows
+		my @tmp_list = _marcxml_to_full_rows( $marcdoc, 'Fieldmapper::authority::full_rec' );
+		$_->record( $docid ) for (@tmp_list);
+		push @ns_list, @tmp_list;
+
+		$ret++;
+
+		last unless ($self->api_name =~ /batch$/o);
+	}
+
+	$arm_old_rd->run( { record => \@docids } );
+	$arm_old_fr->run( { record => \@docids } );
+
+	my ($rd) = $ard_create->run(@rd_list);
+	unless (defined $rd) {
+		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.authority.record_descriptor.batch.create!")
+	}
+
+	my ($fr) = $fr_create->run(@ns_list);
+	unless (defined $fr) {
+		throw OpenSRF::EX::PANIC ("Couldn't run open-ils.storage.direct.authority.full_rec.batch.create!")
+	}
+
+	unless ($outer_xact) {
+		$log->debug("Commiting transaction started by the WoRM.", INFO);
+		my ($c) = $commit->run;
+		unless (defined $c and $c) {
+			$rollback->run;
+			throw OpenSRF::EX::PANIC ("Couldn't COMMIT changes!")
+		}
+	}
+
+	return $ret;
+}
+__PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.authortiy.wormize",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method( 
+	api_name	=> "open-ils.worm.authority.wormize.batch",
+	method		=> "wormize",
+	api_level	=> 1,
+	argc		=> 1,
+);
+
+
 # --------------------------------------------------------------------------------
 
 
 sub _marcxml_to_full_rows {
 
 	my $marcxml = shift;
+	my $type = shift || 'Fieldmapper::metabib::full_rec';
 
 	my @ns_list;
 	
@@ -513,7 +671,7 @@ sub _marcxml_to_full_rows {
 		for my $data ( $tagline->childNodes ) {
 			next unless $data;
 
-			my $ns = new Fieldmapper::metabib::full_rec;
+			my $ns = $type->new;
 
 			$ns->tag( $tag );
 			$ns->ind1( $ind1 );
