@@ -1,5 +1,5 @@
 
-CFLAGS	+=  -DASSUME_STATELESS  -rdynamic -fno-strict-aliasing
+CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -rdynamic -fno-strict-aliasing
 LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache
 
 TARGETS = osrf_message.o \

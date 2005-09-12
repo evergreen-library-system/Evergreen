@@ -6,6 +6,7 @@
 #include "objson/object.h"
 #include "osrf_app_session.h"
 
+
 /** 
   This macro verifies methods receive the correct parameters 
   */
@@ -26,12 +27,18 @@
 	_OSRF_METHOD_VERIFY_CONTEXT(d); \
 	char* __j = jsonObjectToJSON(d->params);\
 	if(__j) { \
-		osrfLog( OSRF_DEBUG, "[%s:%s] params: %s", d->session->remote_service, d->method->name, __j);\
+		osrfLog( OSRF_INFO, "[%s:%s] params: %s", d->session->remote_service, d->method->name, __j);\
 		free(__j); \
 	} 
 #else
 #define OSRF_METHOD_VERIFY_CONTEXT(d) _OSRF_METHOD_VERIFY_CONTEXT(d); 
 #endif
+
+
+
+
+#define OSRF_SYSMETHOD_INTROSPECT "opensrf.system.method"
+#define OSRF_SYSMETHOD_INTROSPECT_ALL "opensrf.system.method.all"
 
 
 	
@@ -122,5 +129,16 @@ osrfMethod* __osrfAppFindMethod( osrfApplication* app, char* methodName );
   */
 int osrfAppRunMethod( char* appName, char* methodName, 
 		osrfAppSession* ses, int reqId, jsonObject* params );
+
+
+/**
+  Trys to run the requested method as a system method.
+  A system method is a well known method that all
+  servers implement.  
+  @param context The current method context
+  @return 0 if the method is run, -1 otherwise
+  */
+int __osrfAppRunSystemMethod(osrfMethodContext* context);
+
 
 

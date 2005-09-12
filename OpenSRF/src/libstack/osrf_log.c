@@ -59,6 +59,9 @@ void osrfLog( enum OSRF_LOG_LEVEL level, char* msg, ... ) {
 	VA_LIST_TO_STRING(msg);
 	fprintf(file, "[%s.%s %d %d] %s\n", timebuf, millis + 2, getpid(), level, VA_BUF );
 	fclose(file);
+
+	if( level == OSRF_ERROR )
+		fprintf(stderr, "[%s.%s %d %d] %s\n", timebuf, millis + 2, getpid(), level, VA_BUF );
 }
 
 

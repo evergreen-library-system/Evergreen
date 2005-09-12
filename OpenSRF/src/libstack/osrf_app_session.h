@@ -225,7 +225,7 @@ int osrfAppSessionSendBatch( osrf_app_session*, osrf_message* msgs[], int size )
 int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data ); 
 int osrfAppRequestRespondComplete( osrfAppSession* ses, int requestId, jsonObject* data ); 
 
-int osrfAppSessionStatus( osrfAppSession* ses, int type, int reqId, char* message );
+int osrfAppSessionStatus( osrfAppSession* ses, int type, char* name, int reqId, char* message );
 
 
 #endif

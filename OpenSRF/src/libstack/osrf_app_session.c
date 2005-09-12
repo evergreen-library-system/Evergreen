@@ -757,11 +757,11 @@ int osrfAppRequestRespondComplete(
 
 
 
-int osrfAppSessionStatus( osrfAppSession* ses, int type, int reqId, char* message ) {
+int osrfAppSessionStatus( osrfAppSession* ses, int type, char* name, int reqId, char* message ) {
 
 	if(ses) {
 		osrf_message* msg = osrf_message_init( STATUS, reqId, 1);
-		osrf_message_set_status_info( msg, "Server Error", message, type );
+		osrf_message_set_status_info( msg, name, message, type );
 		_osrf_app_session_send( ses, msg ); 
 		osrf_message_free( msg );
 		return 0;

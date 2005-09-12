@@ -201,8 +201,8 @@ osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 				return NULL;
 
 		case CONNECT:
-				osrfAppSessionStatus( session, 
-						OSRF_STATUS_OK, msg->thread_trace, "Connection Successful" );
+				osrfAppSessionStatus( session, OSRF_STATUS_OK, 
+						"osrfConnectStatus", msg->thread_trace, "Connection Successful" );
 				return NULL;
 
 		case REQUEST:

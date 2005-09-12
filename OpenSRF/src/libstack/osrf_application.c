@@ -1,5 +1,6 @@
-
 #include "osrf_application.h"
+#include "osrf_log.h"
+#include "objson/object.h"
 
 osrfApplication* __osrfAppList = NULL; 
 
@@ -114,6 +115,10 @@ int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int 
 	osrfMethod* method;
 	osrfMethodContext context;
 
+	context.session = ses;
+	context.params = params;
+	context.request = reqId;
+
 	/* this is the method we're gonna run */
 	int (*meth) (osrfMethodContext*);	
 
@@ -123,9 +128,25 @@ int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int 
 	if( !(app = _osrfAppFindApplication(appName)) )
 		return warning_handler( "Application not found: %s", appName );
 
-	if( !(method = __osrfAppFindMethod( app, methodName )) )
+	
+	if( !(method = __osrfAppFindMethod( app, methodName )) ) {
+		/* see if the unfound method is a system method */
+		info_handler("Method %s not found, checking to see if it's a system method...", methodName );
+		osrfMethod meth;
+		meth.name = methodName;
+		context.method = &meth;
+		int sysres = __osrfAppRunSystemMethod(&context);
+		if(sysres == 0) return 0;
+		if(sysres > 0) {
+			osrfAppSessionStatus( ses, OSRF_STATUS_COMPLETE,  "osrfConnectStatus", reqId, "Request Complete" );
+			return 0;
+		}
 		return warning_handler( "NOT FOUND: app %s / method %s", appName, methodName );
+	}
 
+
+	context.method = method;
+	
 	/* open the method */
 	*(void **) (&meth) = dlsym(app->handle, method->symbol);
 
@@ -134,25 +155,55 @@ int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int 
 				"for method %s and app %s", method->symbol, method->name, app->name );
 	}
 
-	context.session = ses;
-	context.method = method;
-	context.params = params;
-	context.request = reqId;
-
 	/* run the method */
 	int ret = (*meth) (&context);
 
 	debug_handler("method returned %d", ret );
 
-
 	if(ret == -1) {
-		osrfAppSessionStatus( ses, OSRF_STATUS_INTERNALSERVERERROR, 
-					reqId, "An unknown server error occurred" );
+		osrfAppSessionStatus( ses, OSRF_STATUS_INTERNALSERVERERROR,  
+			"Server Error", reqId, "An unknown server error occurred" );
 		return -1;
 	}
 
+	if( ret > 0 ) 
+		osrfAppSessionStatus( ses, OSRF_STATUS_COMPLETE,  "osrfConnectStatus", reqId, "Request Complete" );
+
 	return 0;
 }
+
+
+
+int __osrfAppRunSystemMethod(osrfMethodContext* ctx) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	if( !strcmp(ctx->method->name, OSRF_SYSMETHOD_INTROSPECT_ALL )) {
+
+		jsonObject* resp = NULL;
+		osrfApplication* app = _osrfAppFindApplication( ctx->session->remote_service );
+		if(app) {
+			osrfMethod* method = app->methods;
+			while(method) {
+				resp = jsonNewObject(NULL);
+				jsonObjectSetKey(resp, "api_name", jsonNewObject(method->name));
+				jsonObjectSetKey(resp, "method", jsonNewObject(method->symbol));
+				jsonObjectSetKey(resp, "service", jsonNewObject(ctx->session->remote_service));
+				jsonObjectSetKey(resp, "notes", jsonNewObject(method->notes));
+				jsonObjectSetKey(resp, "argc", jsonNewNumberObject(method->argc));
+				osrfAppRequestRespond(ctx->session, ctx->request, resp);
+				method = method->next;
+				jsonObjectSetClass(resp, "method");
+				jsonObjectFree(resp);
+			}
+			return 1;
+		}
+
+		return -1;
+	}
+
+	return -1;
+}
+
 
 
 
