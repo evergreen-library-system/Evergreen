@@ -75,7 +75,7 @@ cgi-bootstrap:
 	for i in cgi-bin/*cgi; do perl -pe "s{##CONFIG##}{$(ETCDIR)}" < $$i > $(TMP)/$$i; done
 	cp $(TMP)/cgi-bin/*cgi $(CGIDIR)
 	cp -r cgi-bin/support $(CGIDIR)
-	cp cgi-bin/setup.pl $(ETCDIR)
+	cp cgi-bin/setup.pl $(ETCDIR)/live-db-setup.pl
 
 storage-bootstrap:
 	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
