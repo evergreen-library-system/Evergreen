@@ -10,9 +10,10 @@ table { border-collapse: collapse; }
 
 .encircled { border: 1px solid black; }
 
-#main_table { width: 100%; }
-#main_left_cell { width: 20%; vertical-align: top; }
-#main_right_cell { width: 80%; padding-left: 6px; vertical-align: top; }
+#main_table { border-collapse: collapse; width: 100%; height: 100%; }
+#main_left_cell { height: 100%; width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
+#main_right_cell { height: 100%; width: 80%; vertical-align: top; margin: 0px; padding:0px;}
+
 
 /*.vertical {writing-mode: tb-rl; filter: flipv fliph; }*/
 
@@ -20,6 +21,16 @@ table { border-collapse: collapse; }
 /*
 .canvas { float:right; width: 79%; text-align: left;}
 */
+
+.canvas { min-height: 300px; }
+#not_the_canvas {}
+
+#canvas_main {min-height: 300px; border-left: 3px solid #A7EA9D; border-bottom: 3px solid #A7EA9D; 
+	border-top: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
+
+.non_canvas { min-height: 300px; border-left: 3px solid #A7EA9D; border-top: 3px solid #A7EA9D; 
+	border-bottom: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
+
 #loading_div { width: 100%;}
 .logo { height: 65px; width: 180px; }
 .org_tree { height: 500px; padding-left: 2px; padding-right: 2px; }            
@@ -29,10 +40,17 @@ table { border-collapse: collapse; }
 #statusbar {}
 
 /* ---------------------------------------------------------------------- */
-.sidebar_div { width: 100%; font-size: 9pt; }
-.side_bar_item { padding-left: 8px; padding-right: 8px; padding-top: 4px; padding-bottom: 4px; }
-.sidebar_extra_item { padding: 0px; }
-.sidebar_header { margin-top: 10px; padding-left: 3px; }
+.sidebar_div { width: 100%; font-size: 9pt; margin-top: 12px; }
+.sidebar_header { margin-top: 10px; padding-left: 3px; margin-right: 6px; }
+
+.sidebar_extra_item { padding: 0px; margin-right: 8px;}
+.side_bar_item { padding-left: 8px; padding-right: 8px; padding-top: 4px; padding-bottom: 4px; margin-right: 8px; }
+.sidebar_item_active { background: #A7EA9D; margin-right: 0px; }
+.sidebar_chunk { width: 100%; }
+
+/*
+border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0;}
+*/
 
 /* ---------------------------------------------------------------------- */
 
@@ -70,7 +88,7 @@ table { border-collapse: collapse; }
 .result_table_title_cell { text-align: left; }
 
 .copy_count_cell { width: 12%; vertical-align: middle; text-align: center; }
-.copy_count_div { text-align: center; vertical-align: middle; width:  4em; height: 100%; }
+.copy_count_div { width:  4em; height: 99%; vertical-align: middle; text-align: center; }
 
 .search_page_nav_link { margin-right: 5px; }
 

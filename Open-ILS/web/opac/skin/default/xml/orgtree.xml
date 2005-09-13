@@ -2,7 +2,7 @@
 <!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ]>
 
 <!-- the org tree -->
-<div id='org_container' class='hide_me'>
+<div id='org_container' class='hide_me non_canvas'>
 	<div id='org_link_container' class='color_1'>
 		<span class='org_link'><a onclick='orgTreeSelector.openAll();' href='javascript:void(0);'>Expand All</a></span>
 		<span class='org_link'><a onclick='orgTreeSelector.closeAll();' href='javascript:void(0);'>Collapse All</a></span>

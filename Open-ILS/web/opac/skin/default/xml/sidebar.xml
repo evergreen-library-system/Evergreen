@@ -5,30 +5,30 @@
 
 <div id="sidebar_div" class="sidebar_div" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<div class='sidebar_chunk color_1'>
+	<div class='sidebar_chunk'>
 
 		<div title="&navigate.home.title;" 
-			id='home_link_div' class="side_bar_item">
+			id='home_link_div' class="side_bar_item ">
 			<a id='home_link' href='index.xml'>&navigate.home;</a>
 		</div>
 	
 		<div title="&navigate.advanced.title;"
-			id='advanced_link_div' class="side_bar_item">
+			id='advanced_link_div' class="side_bar_item ">
 			<a id='advanced_link' href='advanced.xml'>&navigate.advanced;</a>
 		</div>
 
 		<div title="&navigate.myopac.title;"
-			id='myopac_link_div' class="side_bar_item">
+			id='myopac_link_div' class="side_bar_item ">
 			<a  id='myopac_link' href='myopac/myopac.xml'>&navigate.myopac;</a>
 		</div>
 
 		<div title="&navigate.login.title;"
-			id='login_link_div' class="side_bar_item">
+			id='login_link_div' class="side_bar_item ">
 			<a id='login_link' href='javascript:void(0);'>&navigate.login;</a>
 		</div>
 
 		<div title="&navigate.logout.title;"
-			id='logout_link_div' class="side_bar_item hide_me">
+			id='logout_link_div' class="side_bar_item hide_me ">
 			<a id='logout_link' href='javascript:void(0);'>&navigate.logout;</a>
 		</div>
 

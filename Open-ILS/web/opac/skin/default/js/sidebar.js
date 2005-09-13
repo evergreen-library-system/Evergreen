@@ -7,8 +7,10 @@ attachEvt("common", "init", setSidebarLinks);
 function initSideBar() {
 	var page = findCurrentPage();
 	unHideMe(G.ui.sidebar[page]);
-	addCSSClass(G.ui.sidebar[page], config.css.color_2);
-	addCSSClass(G.ui.sidebar[page], config.css.encircled);
+
+	//addCSSClass(G.ui.sidebar[page], config.css.color_2);
+	//addCSSClass(G.ui.sidebar[page], config.css.encircled);
+	addCSSClass(G.ui.sidebar[page], "sidebar_item_active");
 
 	/* if we're logged in, show it and replace the Login link with the Logout link */
 	if(grabUser()) {

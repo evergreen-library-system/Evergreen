@@ -30,7 +30,7 @@
 		<tbody>
 			<tr>
 
-				<td  align='center' style='width: 240px; padding: 3px; border: 1px solid #A0A0A0;' class='color_2'>
+				<td  nowrap='nowrap' align='center' style='width: 240px; padding: 3px; border: 1px solid #A0A0A0;' class='color_2'>
 					<input id='search_box' style='width: 190px;' type='text' />
 					<span style='padding-left: 6px;'>
 						<input type='button' style='width: 40px;' id='search_submit' value='Go!' />

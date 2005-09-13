@@ -7,7 +7,7 @@ body a:hover	{ color: red; text-decoration: underline;}
 .color_3 { background: #CCFFFF; color: #000000; }
 
 /* ---------------------------------------------------------------------- */
-.sidebar_chunk {border-right: 1px solid lightgrey;}
+.sidebar_chunk {}
 .sidebar_extra_link { text-decoration: none; }
 #searchbar_tag_on { color: red; }
 .searchbar_item { color: black; } 
@@ -16,14 +16,9 @@ body a:hover	{ color: red; text-decoration: underline;}
 .nav_link_active { text-decoration: underline; }
 .search_link { text-decoration: none; }
 .result_table_subtable { border-top: 1px solid #E0E0E0; }
-/*
-.copy_count_cell_even { border: 1px solid #E0E0E0; }
-*/
-/*
-.copy_count_cell_even { background: #E0F6E0; }
-*/
 
-.copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0;> 
+.copy_count_cell { border-right: 1px solid #E0E0E0; }
+.copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
 
 .rdetail_desc { border: 1px solid #A7EA9D; }
 .rdetail_item { border: 1px solid #A7EA9D; }

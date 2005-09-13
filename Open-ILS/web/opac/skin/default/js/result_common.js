@@ -78,7 +78,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	/* hide the 'now loading...' message */
 	hideMe(G.ui.common.loading);
 
-	var r = table.rows[pos];
+	var r = table.rows[pos + 1];
 	
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);
@@ -163,7 +163,7 @@ var resultCCHeaderApplied = false;
 	'copy_count_cell_<depth>_<pagePosition>'  */
 function resultAddCopyCounts(rec, pagePosition) {
 
-	var r = table.rows[pagePosition];
+	var r = table.rows[pagePosition + 1];
 	var countsrow = findNodeByName(r, config.names.result.counts_row );
 	var ccell = findNodeByName(countsrow, config.names.result.count_cell);
 
@@ -218,6 +218,8 @@ function resultAddCopyCounts(rec, pagePosition) {
 			}
 		}
 	}
+
+	unHideMe(getId("search_info_table"));
 }
 
 /* collect copy counts for a record using method 'methodName' */
@@ -240,8 +242,11 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = getId("copy_count_cell_" + i +"_" + pagePosition);
+		/*
 		var span = cell.getElementsByTagName("div")[0];
-		span.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
+		*/
+		cell.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
+
 		i++;
 	}
 }
