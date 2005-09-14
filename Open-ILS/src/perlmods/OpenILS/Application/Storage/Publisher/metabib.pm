@@ -747,7 +747,7 @@ sub new_search_class_fts {
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
 	my $limit = $args{limit};
-	my $offset = $args{offset} ||= 0;
+	my $offset = $args{offset} || 0;
 
 	my $limit_clause = '';
 	my $offset_clause = '';
@@ -798,68 +798,64 @@ sub new_search_class_fts {
 
 	my $rank = join(' + ', @fts_ranks);
 
-	my $has_vols = 'AND cn.owning_lib = d.id';
-	my $has_copies = 'AND cp.call_number = cn.id';
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
-
-	my $visible_count = ', count(DISTINCT cp.id)';
-	my $visible_count_test = 'HAVING count(DISTINCT cp.id) > 0';
-
-	if ($self->api_name =~ /staff/o) {
-		$copies_visible = '';
-		$visible_count_test = '';
-		$has_copies = '' if ($ou_type == 0);
-		$has_vols = '' if ($ou_type == 0);
-	}
-
-	my $rank_calc = <<"	RANK";
-		, (SUM(	$rank
-			* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
-			* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
-			* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
-		)/COUNT(m.source)), MIN(COALESCE(CHAR_LENGTH(f.value),1))
-	RANK
-
-	$rank_calc = ',1 , 1' if ($self->api_name =~ /unordered/o);
-
-	if ($copies_visible) {
+	if ($self->api_name !~ /staff/o) {
 		$select = <<"		SQL";
-			SELECT	m.metarecord $rank_calc $visible_count, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
+			SELECT	m.metarecord, 
+				(SUM(	$rank
+					* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
+					* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
+					* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
+				)/COUNT(m.source)),
+				CASE WHEN COUNT(mr.source) = 1 THEN MIN(m.source) ELSE 0 END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
-				$asset_call_number_table cn,
-				$asset_copy_table cp,
-				$cs_table cs,
-				$cl_table cl,
-				$metabib_record_descriptor rd,
-				$descendants d
-	  	  	WHERE	$fts_where
-		  		AND m.source = f.source
-				AND cn.record = m.source
-				AND rd.record = m.source
-				AND cp.status = cs.id
-				AND cp.location = cl.id
-				$has_vols
-				$has_copies
-				$copies_visible
-				$t_filter
-				$f_filter
-	  	  	GROUP BY m.metarecord $visible_count_test
-	  	  	ORDER BY 2 DESC,3
-		SQL
-	} else {
-		$select = <<"		SQL";
-			SELECT	m.metarecord $rank_calc, 0, CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MAX(m.source) ELSE MAX(0) END
-	  	  	FROM	$search_table f,
-				$metabib_metarecord_source_map_table m,
+				$metabib_metarecord_source_map_table mr,
 				$metabib_record_descriptor rd
 	  	  	WHERE	$fts_where
 		  		AND m.source = f.source
+				AND mr.metarecord = m.metarecord
+				AND rd.record = mr.source
+				$t_filter
+				$f_filter
+				AND EXISTS (
+					SELECT	TRUE
+					  FROM	$asset_call_number_table cn,
+						$asset_copy_table cp,
+						$cs_table cs,
+						$cl_table cl,
+						$descendants d
+					  WHERE	cn.record = mr.source
+						AND cp.status = cs.id
+						AND cp.location = cl.id
+						AND cn.owning_lib = d.id
+						AND cp.call_number = cn.id
+						AND cp.opac_visible IS TRUE
+						AND cs.holdable IS TRUE
+						AND cl.opac_visible IS TRUE )
+	  	  	GROUP BY m.metarecord
+	  	  	ORDER BY 2 DESC, MIN(COALESCE(CHAR_LENGTH(f.value),1))
+		SQL
+	} else {
+		$select = <<"		SQL";
+			SELECT	m.metarecord,
+				(SUM(	$rank
+					* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
+					* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
+					* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
+				)/COUNT(m.source)),
+				CASE WHEN COUNT(mr.source) = 1 THEN MIN(m.source) ELSE 0 END
+	  	  	FROM	$search_table f,
+				$metabib_metarecord_source_map_table m,
+				$metabib_metarecord_source_map_table mr,
+				$metabib_record_descriptor rd
+	  	  	WHERE	$fts_where
+		  		AND m.source = f.source
+		  		AND m.metarecord = mr.metarecord
 				AND rd.record = m.source
 				$t_filter
 				$f_filter
-	  	  	GROUP BY 1, 4 
-	  	  	ORDER BY 2 DESC,3
+	  	  	GROUP BY m.metarecord
+	  	  	ORDER BY 2 DESC, MIN(COALESCE(CHAR_LENGTH(f.value),1))
 		SQL
 	}
 
@@ -880,7 +876,10 @@ sub new_search_class_fts {
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
 	my $count = scalar(@$recs);
-	$client->respond($_) for (map { [@$_[0,1,3],$count,$$_[4]] } @$recs[$offset .. $offset + $limit]);
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		my ($mrid,$rank,$skip) = @$rec;
+		$client->respond( [$mrid, sprintf('%0.3f',$rank), $skip, $count] );
+	}
 	return undef;
 }
 
@@ -894,23 +893,7 @@ for my $class ( qw/title author subject keyword series/ ) {
 		cachable	=> 1,
 	);
 	__PACKAGE__->register_method(
-		api_name	=> "open-ils.storage.metabib.$class.new_search_fts.metarecord.unordered",
-		method		=> 'new_search_class_fts',
-		api_level	=> 1,
-		stream		=> 1,
-		cdbi		=> "metabib::${class}_field_entry",
-		cachable	=> 1,
-	);
-	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.new_search_fts.metarecord.staff",
-		method		=> 'new_search_class_fts',
-		api_level	=> 1,
-		stream		=> 1,
-		cdbi		=> "metabib::${class}_field_entry",
-		cachable	=> 1,
-	);
-	__PACKAGE__->register_method(
-		api_name	=> "open-ils.storage.metabib.$class.new_search_fts.metarecord.staff.unordered",
 		method		=> 'new_search_class_fts',
 		api_level	=> 1,
 		stream		=> 1,
