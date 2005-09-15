@@ -75,7 +75,6 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	recordsHandled++;
 	recordsCache.push(rec);
 
-
 	var r = table.rows[pos + 1];
 	
 	try {
@@ -100,8 +99,30 @@ function resultDisplayRecord(rec, pos, is_mr) {
 			rec.doc_id(onlyrec);
 			buildTitleDetailLink(rec, title_link); 
 			rec.doc_id(id);
-		} else buildTitleLink(rec, title_link); 
-	} else  buildTitleDetailLink(rec, title_link); 
+
+			var args = {};
+			args.page = RDETAIL;
+			args[PARAM_OFFSET] = 0;
+			args[PARAM_RID] = onlyrec;
+			pic.parentNode.setAttribute("href", buildOPACLink(args));
+			
+		} else {
+			buildTitleLink(rec, title_link); 
+			var args = {};
+			args.page = RRESULT;
+			args[PARAM_OFFSET] = 0;
+			args[PARAM_MRID] = rec.doc_id();
+			pic.parentNode.setAttribute("href", buildOPACLink(args));
+		}
+
+	} else {
+		buildTitleDetailLink(rec, title_link); 
+		var args = {};
+		args.page = RDETAIL;
+		args[PARAM_OFFSET] = 0;
+		args[PARAM_RID] = rec.doc_id();
+		pic.parentNode.setAttribute("href", buildOPACLink(args));
+	}
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
 
