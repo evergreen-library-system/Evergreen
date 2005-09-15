@@ -125,7 +125,7 @@ function stopMe {
 	sleep 1;
 	
 	echo "Stopping The Router...";
-	killall opensrf_router;
+	killall "OpenSRF Router"
 	
 	sleep 1;
 	

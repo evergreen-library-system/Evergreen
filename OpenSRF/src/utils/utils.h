@@ -181,7 +181,7 @@ char* file_to_string(const char* filename);
   Calculates the md5 of the text provided.
   The returned string must be freed by the caller.
   */
-char* md5sum( char* text );
+char* md5sum( char* text, ... );
 
 
 #endif

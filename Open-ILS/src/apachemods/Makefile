@@ -21,15 +21,18 @@ fieldmapper_lookup.c:
 # ------------------------------------------------------
 
 mod_xmltools.so: mod_xmltools.o apachetools.o  xmltools.o 
-	echo $@
+	@echo $@
 	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 apachetools.o xmltools.o mod_xmltools.o -o $@
 
 libfieldmapper.so:	fieldmapper_lookup.o
-	echo $@
+	@echo $@
+	mkdir -p $(TMPDIR)/openils/
+	cp fieldmapper_lookup.h $(TMPDIR)/openils/
 	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 fieldmapper_lookup.o -o $@
+	cp libfieldmapper.so $(TMPDIR)/libfieldmapper.so
 
 mod_ils_rest_gateway.so:	libfieldmapper.so ils_rest_gateway.o json_xml.o
-	echo $@
+	@echo $@
 	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 json_xml.o ils_rest_gateway.o -lfieldmapper -o $@
 
 # ------------------------------------------------------
@@ -37,8 +40,9 @@ mod_ils_rest_gateway.so:	libfieldmapper.so ils_rest_gateway.o json_xml.o
 
 libfieldmapper-install:	libfieldmapper.so
 	echo installing libfieldmapper.so
-	mkdir -p $(INCLUDEDIR)/
-	cp fieldmapper_lookup.h $(INCLUDEDIR)/
+	mkdir -p $(INCDIR)/
+	@echo "Copying fieldmapper_lookup.h to $(INCDIR)"
+	cp fieldmapper_lookup.h $(INCDIR)/
 	cp libfieldmapper.so $(LIBDIR)/libfieldmapper.so
 
 

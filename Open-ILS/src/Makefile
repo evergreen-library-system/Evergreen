@@ -4,12 +4,13 @@ export LDFLAGS			= -L $(TMPDIR) -L .
 export CFLAGS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
-export INCLUDEDIR += "/openils/"
+export INCDIR = "$(INCLUDEDIR)/openils/"
 
-all: mod_xmltools mod_ils_rest_gateway
+all: msg mod_xmltools mod_ils_rest_gateway c_apps
 
 
-install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install
+
+install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install
 
 web-install:	webcore-install autojs-install  mod_xmltools-install mod_ils_rest_gateway-install
 
@@ -37,8 +38,17 @@ mod_xmltools-install:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
+	# XXX put these back
 	#mkdir -p $(WEBDIR)
 	#cp -r ../web/* $(WEBDIR)
+
+c_apps:	mod_ils_rest_gateway
+	@echo $@
+	make -C c-apps
+
+c_apps-install:
+	@echo $@
+	make -C c-apps install
 
 autojs-install:
 	@echo $@

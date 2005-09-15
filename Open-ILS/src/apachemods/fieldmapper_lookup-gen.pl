@@ -68,7 +68,7 @@ print SOURCE <<C;
 }
 
 int fm_ntop(char* class, char* field) {
-	if (class == NULL) return 0;
+	if (class == NULL) return -1;
 C
 
 

@@ -397,16 +397,18 @@ char* file_to_string(const char* filename) {
 }
 
 
-char* md5sum( char* text ) {
+char* md5sum( char* text, ... ) {
 
 	struct md5_ctx ctx;
 	unsigned char digest[16];
 
 	MD5_start (&ctx);
 
+	VA_LIST_TO_STRING(text);
+
 	int i;
-	for ( i=0 ; i != strlen(text) ; i++ )
-		MD5_feed (&ctx, text[i]);
+	for ( i=0 ; i != strlen(VA_BUF) ; i++ )
+		MD5_feed (&ctx, VA_BUF[i]);
 
 	MD5_stop (&ctx, digest);
 
