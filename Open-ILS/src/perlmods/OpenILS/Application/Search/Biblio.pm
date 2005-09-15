@@ -611,20 +611,10 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.biblio.class.full.staff",
 );
 
-#__PACKAGE__->register_method(
-#	method	=> "biblio_search_class",
-#	api_name	=> "open-ils.search.biblio.class.unordered",
-#);
-
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class",
 	api_name	=> "open-ils.search.biblio.class.staff",
 );
-
-#__PACKAGE__->register_method(
-#	method	=> "biblio_search_class",
-#	api_name	=> "open-ils.search.biblio.class.unordered.staff",
-#);
 
 sub biblio_search_class {
 
@@ -632,9 +622,6 @@ sub biblio_search_class {
 			$org_id, $org_type, $limit, $offset, $format ) = @_;
 
 	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
-
-
-# new method:  metabib.<class>.new_search_fts.metarecord.<staff>
 
 
 	$offset		= 0	unless (defined($offset) and $offset > 0);
@@ -669,11 +656,8 @@ sub biblio_search_class {
 		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
 	}
 
-	my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic";
-
-#	if($self->api_name =~ /order/) {
-#		$method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.unordered.atomic",
-#	}
+	#my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic";
+	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord.atomic";
 
 	if($self->api_name =~ /staff/) { 
 		$method =~ s/atomic/staff\.atomic/og;
@@ -705,37 +689,24 @@ sub biblio_search_class {
 	my $records = $request->gather(1);
 	if(!$records) {return { ids => [] }};
 
-	warn "Search request complete " . time() . "\n";
+	#my @all_ids;
 
-	my @all_ids;
-
-	use Data::Dumper;
 	warn "Received " . scalar(@$records) . " id's from class search\n";
+	use Data::Dumper;
+	warn Dumper $records;
 
-	# if we just get one, it won't be wrapped in an array
-
-	if(!ref($records->[0])) {
-		$records = [$records]; } 
-	for my $i (@$records) { 
-		if(defined($i)) {
-			push @all_ids, $i; 
-		}
-	}
-
-	my @ids = @all_ids;
-	@ids = grep { defined($_->[0]) } @ids;
+#	for my $i (@$records) { if(defined($i)) { push @all_ids, $i; } }
+#	my @ids = @all_ids;
+#	@ids = grep { defined($_->[0]) } @ids;
 
 	$session->finish();
 	$session->disconnect();
 
 	my $count = undef;
-	if($self->api_name =~ /full/) { 
-		if(ref($records) && $records->[0]) {
-			$count = $records->[0]->[3];
-		}
-	}
+	if( $records->[0] && defined($records->[0]->[3])) { $count = $records->[0]->[3];}
 
-	return { ids => \@ids, count => $count };
+	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
+	return { ids => $records, count => $count };
 
 }
 

@@ -62,7 +62,7 @@
 				<xsl:value-of select="@ind1"/>
 			</td>
 
-			<td class='marc_tag_ind' style='border-left: 1px solid black; padding-left: 3px;'>
+			<td class='marc_tag_ind' style='border-left: 1px solid #A0A0A0; padding-left: 3px;'>
 				<xsl:value-of select="@ind2"/>
 				<span style='color:#FFF'>.</span> 
 			</td>

@@ -400,7 +400,8 @@ void startElementHandler(
 		ses->state_machine->in_message_error = 1;
 		buffer_add( ses->message_error_type, get_xml_attr( atts, "type" ) );
 		ses->message_error_code = atoi( get_xml_attr( atts, "code" ) );
-		warning_handler( "Received <error> message" );
+		warning_handler( "Received <error> message with type %s and code %s", 
+			get_xml_attr( atts, "type"), get_xml_attr( atts, "code") );
 		return;
 	}
 
