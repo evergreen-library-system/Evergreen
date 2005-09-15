@@ -85,7 +85,7 @@ function mresultSetRecords(idstruct) {
 		if(idstruct[x-o] == null) break;
 		records[x] = parseInt(idstruct[x - o][0]);
 		ranks[x] = parseFloat(idstruct[x - o][1]);
-		onlyrecord[x] = parseInt(idstruct[x - o][4]);
+		onlyrecord[x] = parseInt(idstruct[x - o][2]);
 	}
 	idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
 	idsCookie.write();

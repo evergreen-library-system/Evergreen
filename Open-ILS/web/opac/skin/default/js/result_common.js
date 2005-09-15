@@ -75,8 +75,6 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	recordsHandled++;
 	recordsCache.push(rec);
 
-	/* hide the 'now loading...' message */
-	hideMe(G.ui.common.loading);
 
 	var r = table.rows[pos + 1];
 	
@@ -107,14 +105,35 @@ function resultDisplayRecord(rec, pos, is_mr) {
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
 
+	if(! is_mr ) {
+	
+		if(!isNull(rec.edition()))	{
+			unHideMe( findNodeByName(r, "result_table_extra_span"));
+			findNodeByName(r, "result_table_edition_span").appendChild( text( rec.edition()) );
+		}
+		if(!isNull(rec.pubdate())) {
+			unHideMe( findNodeByName(r, "result_table_extra_span"));
+			unHideMe(findNodeByName(r, "result_table_pub_span"));
+			findNodeByName(r, "result_table_pub_span").appendChild( text( rec.pubdate() ));
+		}
+		if(!isNull(rec.publisher()) ) {
+			unHideMe( findNodeByName(r, "result_table_extra_span"));
+			unHideMe(findNodeByName(r, "result_table_pub_span"));
+			findNodeByName(r, "result_table_pub_span").appendChild( text( " " + rec.publisher() ));
+		}
+	}
+
 	resultBuildFormatIcons( r, rec );
 
 	unHideMe(r);
 	
 	runEvt("result", "recordDrawn", rec.doc_id(), title_link);
 
-	if(resultPageIsDone()) 
+	if(resultPageIsDone())  {
+		/* hide the 'now loading...' message */
+		hideMe(G.ui.common.loading);
 		runEvt('result', 'allRecordsReceived', recordsCache);
+	}
 }
 
 function resultBuildFormatIcons( row, rec ) {

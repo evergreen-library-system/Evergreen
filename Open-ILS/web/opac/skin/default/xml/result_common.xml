@@ -57,10 +57,10 @@
 	</table>
 	-->
 
+	<div id='loading_div' class='color_1'> Loading Results... </div>
 	<!-- Load the result table -->
 	<xi:include href="result_table.xml"/>
 
-	<div id='loading_div' class='color_1'> Loading Results... </div>
 
 </div>
 

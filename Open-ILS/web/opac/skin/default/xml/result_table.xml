@@ -102,6 +102,14 @@
 									<a title="Perform an Author Search" name='item_author' class='search_link'> 
 										<!-- Author goes here -->
 									</a>
+									<span name='result_table_extra_span' class='hide_me'>
+										<span name='result_table_edition_span' style='padding-left: 10px;'> -- </span>
+										<span name='result_table_pub_box' style='padding-left: 10px;'> 
+											<span> [ </span>
+											<span name='result_table_pub_span'> </span>
+											<span> ] </span>
+										</span>
+									</span>
 								</td>
 							</tr>
 
