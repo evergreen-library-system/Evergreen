@@ -13,14 +13,15 @@ int osrfVersion( osrfMethodContext* );
 
 int osrfAppInitialize() {
 	osrfLogInit("opensrf.version");
+
 	osrfAppRegisterMethod( 
 			"opensrf.version", 
 			"opensrf.version.verify", 
 			"osrfVersion", 
-			"Send the service, method, and params as paramters to this method "
-			"The data for this service/method/params combination will be retrieved "
+			"The data for a service/method/params combination will be retrieved "
 			"from the necessary server and the MD5 sum of the total values received "
-			"will be returned", 2 );
+			"will be returned", 
+			"( serviceName, methodName, [param1, ...] )", 2 );
 	
 	return 0;
 }

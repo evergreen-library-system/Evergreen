@@ -35,7 +35,8 @@ int osrfCachePutObject( char* key, const jsonObject* obj, time_t seconds ) {
 	if( !(key && obj) ) return -1;
 	char* s = jsonObjectToJSON( obj );
 	if( seconds < 0 ) seconds = __osrfCacheMaxSeconds;
-	mc_add(__osrfCache, key, strlen(key), s, strlen(s), seconds, 0);
+
+	mc_set(__osrfCache, key, strlen(key), s, strlen(s), seconds, 0);
 	free(s);
 	return 0;
 }
@@ -43,7 +44,7 @@ int osrfCachePutObject( char* key, const jsonObject* obj, time_t seconds ) {
 int osrfCachePutString( char* key, const char* value, time_t seconds ) {
 	if( !(key && value) ) return -1;
 	if( seconds < 0 ) seconds = __osrfCacheMaxSeconds;
-	mc_add(__osrfCache, key, strlen(key), value, strlen(value), seconds, 0 );
+	mc_set(__osrfCache, key, strlen(key), value, strlen(value), seconds, 0);
 	return 0;
 }
 

@@ -48,6 +48,7 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 		}
 	}
 
+	__osrfAppRegisterSysMethods(appName);
 
 	info_handler("Application %s registered successfully", appName );
 
@@ -55,25 +56,68 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 	return 0;
 }
 
-
 int osrfAppRegisterMethod( char* appName, 
-		char* methodName, char* symbolName, char* notes, int argc ) {
+		char* methodName, char* symbolName, char* notes, char* params, int argc ) {
+
 	if( !appName || ! methodName || ! symbolName ) return -1;
 
 	osrfApplication* app = _osrfAppFindApplication(appName);
 	if(!app) return warning_handler("Unable to locate application %s", appName );
 
-	debug_handler("Registering method %s for app %s", appName, methodName );
+	debug_handler("Registering method %s for app %s", methodName, appName );
 
-	osrfMethod* method = safe_malloc(sizeof(osrfMethod));
-	method->name = strdup(methodName);
-	method->symbol = strdup(symbolName);
-	if(notes) method->notes = strdup(notes);
-	method->argc = argc;
+	osrfMethod* method = _osrfAppBuildMethod(
+		methodName, symbolName, notes, params, argc, 0 );		
 
 	/* plug the method into the list of methods */
 	method->next = app->methods;
 	app->methods = method;
+	return 0;
+}
+
+
+osrfMethod* _osrfAppBuildMethod( char* methodName, 
+	char* symbolName, char* notes, char* params, int argc, int sysmethod ) {
+
+	osrfMethod* method					= safe_malloc(sizeof(osrfMethod));
+	if(methodName) method->name		= strdup(methodName);
+	if(symbolName) method->symbol		= strdup(symbolName);
+	if(notes) method->notes				= strdup(notes);
+	if(params) method->paramNotes		= strdup(params);
+	method->argc							= argc;
+	method->sysmethod						= sysmethod;
+	return method;
+}
+
+
+int _osrfAppRegisterSystemMethod( char* appName, char* methodName, 
+		char* notes, char* params, int argc ) {
+	if(!(appName && methodName)) return -1;
+	osrfApplication* app = _osrfAppFindApplication(appName);
+	if(!app) return warning_handler("Unable to locate application %s", appName );
+	debug_handler("Registering system method %s for app %s", methodName, appName );
+	osrfMethod* method = _osrfAppBuildMethod(
+		methodName, NULL, notes, params, argc, 1 );		
+
+	/* plug the method into the list of methods */
+	method->next = app->methods;
+	app->methods = method;
+	return 0;
+
+}
+
+int __osrfAppRegisterSysMethods( char* app ) {
+
+	_osrfAppRegisterSystemMethod( 
+			app, OSRF_SYSMETHOD_INTROSPECT, 
+			"Return a list of methods whose names have the same initial "
+			"substring as that of the provided method name",
+			"( methodNameSubstring )", 1 );
+
+	_osrfAppRegisterSystemMethod( 
+			app, OSRF_SYSMETHOD_INTROSPECT_ALL, 
+			"Returns a complete list of methods", "()", 0 ); 
+
 	return 0;
 }
 
@@ -105,9 +149,9 @@ osrfMethod* _osrfAppFindMethod( char* appName, char* methodName ) {
 }
 
 
+int osrfAppRunMethod( char* appName, char* methodName, 
+		osrfAppSession* ses, int reqId, jsonObject* params ) {
 
-
-int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int reqId, jsonObject* params ) {
 	if( !(appName && methodName && ses) ) return -1;
 
 	char* error;
@@ -126,50 +170,79 @@ int osrfAppRunMethod( char* appName, char* methodName, osrfAppSession* ses, int 
 			"thread trace %s", methodName, appName, reqId, ses->session_id );
 
 	if( !(app = _osrfAppFindApplication(appName)) )
-		return warning_handler( "Application not found: %s", appName );
-
+		return osrfAppRequestRespondException( ses, 
+				reqId, "Application not found: %s", appName );
 	
-	if( !(method = __osrfAppFindMethod( app, methodName )) ) {
-		/* see if the unfound method is a system method */
-		info_handler("Method %s not found, checking to see if it's a system method...", methodName );
-		osrfMethod meth;
-		meth.name = methodName;
-		context.method = &meth;
+	if( !(method = __osrfAppFindMethod( app, methodName )) ) 
+		return osrfAppRequestRespondException( ses, reqId, 
+				"Method [%s] not found for service %s", methodName, appName );
+
+	context.method = method;
+
+	#ifdef OSRF_STRICT_PARAMS
+	if( method->argc > 0 ) {
+		if(!params || params->type != JSON_ARRAY || params->size < method->argc )
+			return osrfAppRequestRespondException( ses, reqId, 
+				"Not enough params for method %s / service %s", methodName, appName );
+	}
+	#endif
+
+	if( method->sysmethod ) {
+
 		int sysres = __osrfAppRunSystemMethod(&context);
 		if(sysres == 0) return 0;
-		if(sysres > 0) {
-			osrfAppSessionStatus( ses, OSRF_STATUS_COMPLETE,  "osrfConnectStatus", reqId, "Request Complete" );
-			return 0;
-		}
-		return warning_handler( "NOT FOUND: app %s / method %s", appName, methodName );
+
+		if(sysres > 0) 
+			return osrfAppSessionStatus( ses, OSRF_STATUS_COMPLETE,  
+					"osrfConnectStatus", reqId, "Request Complete" );
+
+		if(sysres < 0) 
+			return osrfAppRequestRespondException( 
+				ses, reqId, "An unknown server error occurred" );
 	}
 
 
-	context.method = method;
-	
 	/* open the method */
 	*(void **) (&meth) = dlsym(app->handle, method->symbol);
 
 	if( (error = dlerror()) != NULL ) {
-		return warning_handler("Unable to locate method symbol [%s] "
-				"for method %s and app %s", method->symbol, method->name, app->name );
+		return osrfAppRequestRespondException( ses, reqId, 
+				"Unable to execute method [%s]  for service %s", methodName, appName );
 	}
 
 	/* run the method */
-	int ret = (*meth) (&context);
-
-	debug_handler("method returned %d", ret );
-
-	if(ret == -1) {
-		osrfAppSessionStatus( ses, OSRF_STATUS_INTERNALSERVERERROR,  
-			"Server Error", reqId, "An unknown server error occurred" );
-		return -1;
-	}
+	int ret;
+	if( (ret = (*meth) (&context)) < 0 )
+		return osrfAppRequestRespondException( 
+				ses, reqId, "An unknown server error occurred" );
 
 	if( ret > 0 ) 
-		osrfAppSessionStatus( ses, OSRF_STATUS_COMPLETE,  "osrfConnectStatus", reqId, "Request Complete" );
+		osrfAppSessionStatus( ses, OSRF_STATUS_COMPLETE,  
+				"osrfConnectStatus", reqId, "Request Complete" );
 
 	return 0;
+}
+
+int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg, ... ) {
+	if(!ses) return -1;
+	if(!msg) msg = "";
+	VA_LIST_TO_STRING(msg);
+	osrfLog( OSRF_WARN, "Returning method exception with message: %s", VA_BUF );
+	osrfAppSessionStatus( ses, OSRF_STATUS_NOTFOUND, "osrfMethodException", request,  VA_BUF );
+	return 0;
+}
+
+
+static void __osrfAppSetIntrospectMethod( osrfMethodContext* ctx, osrfMethod* method, jsonObject* resp ) {
+	if(!(ctx && resp)) return;
+	jsonObjectSetKey(resp, "api_name", jsonNewObject(method->name));
+	jsonObjectSetKey(resp, "method", jsonNewObject(method->symbol));
+	jsonObjectSetKey(resp, "service", jsonNewObject(ctx->session->remote_service));
+	jsonObjectSetKey(resp, "notes", jsonNewObject(method->notes));
+	jsonObjectSetKey(resp, "argc", jsonNewNumberObject(method->argc));
+	jsonObjectSetKey(resp, "params", jsonNewObject(method->paramNotes) );
+	jsonObjectSetKey(resp, "sysmethod", jsonNewNumberObject(method->sysmethod) );
+	jsonObjectSetClass(resp, "method");
 }
 
 
@@ -185,15 +258,39 @@ int __osrfAppRunSystemMethod(osrfMethodContext* ctx) {
 			osrfMethod* method = app->methods;
 			while(method) {
 				resp = jsonNewObject(NULL);
-				jsonObjectSetKey(resp, "api_name", jsonNewObject(method->name));
-				jsonObjectSetKey(resp, "method", jsonNewObject(method->symbol));
-				jsonObjectSetKey(resp, "service", jsonNewObject(ctx->session->remote_service));
-				jsonObjectSetKey(resp, "notes", jsonNewObject(method->notes));
-				jsonObjectSetKey(resp, "argc", jsonNewNumberObject(method->argc));
+				__osrfAppSetIntrospectMethod( ctx, method, resp );
 				osrfAppRequestRespond(ctx->session, ctx->request, resp);
-				method = method->next;
-				jsonObjectSetClass(resp, "method");
 				jsonObjectFree(resp);
+				method = method->next;
+			}
+			return 1;
+		}
+
+		return -1;
+	}
+
+
+	if( !strcmp(ctx->method->name, OSRF_SYSMETHOD_INTROSPECT )) {
+
+		jsonObject* resp = NULL;
+		char* methodSubstring = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0) );
+		osrfApplication* app = _osrfAppFindApplication( ctx->session->remote_service );
+		int len = 0;
+
+		if(!methodSubstring) return 1; /* respond with no methods */
+
+		if(app) {
+			osrfMethod* method = app->methods;
+			while(method) {
+				if( (len = strlen(methodSubstring)) <= strlen(method->name) ) {
+					if( !strncmp( method->name, methodSubstring, len) ) {
+						resp = jsonNewObject(NULL);
+						__osrfAppSetIntrospectMethod( ctx, method, resp );
+						osrfAppRequestRespond(ctx->session, ctx->request, resp);
+						jsonObjectFree(resp);
+					}
+				}
+				method = method->next;
 			}
 			return 1;
 		}

@@ -1,5 +1,8 @@
+# OSRF_LOG_PARAMS log all incoming method params at OSRF_INFO log level. 
+# OSRF_STRICT_PARAMS instructs the app handler to return an error if the number of method arguments
+#	provided to any method is not at least as large as the 'argc' setting for the method
 
-CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -rdynamic -fno-strict-aliasing
+CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -DOSRF_STRICT_PARAMS -rdynamic -fno-strict-aliasing
 LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache
 
 TARGETS = osrf_message.o \

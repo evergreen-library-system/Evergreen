@@ -33,16 +33,18 @@ void osrf_message_add_object_param( osrf_message* msg, jsonObject* o ) {
 void osrf_message_set_params( osrf_message* msg, jsonObject* o ) {
 	if(!msg || !o) return;
 
-	if(!o->type == JSON_ARRAY) {
-		warning_handler("passing non-array to osrf_message_set_params()");
+	if(o->type != JSON_ARRAY) {
+		warning_handler("passing non-array to osrf_message_set_params(), fixing...");
+		jsonObject* clone = jsonObjectClone(o);
+		o = jsonNewObject(NULL);
+		jsonObjectPush(o, clone);
+		if(msg->_params) jsonObjectFree(msg->_params);
+		msg->_params = o;
 		return;
 	}
 
 	if(msg->_params) jsonObjectFree(msg->_params);
-
-	char* j = jsonObjectToJSON(o);
-	msg->_params = jsonParseString(j);
-	free(j);
+	msg->_params = jsonObjectClone(o);
 }
 
 

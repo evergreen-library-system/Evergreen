@@ -3,18 +3,44 @@
 #include "objson/object.h"
 #include "opensrf/osrf_log.h"
 
+#define MODULENAME "opensrf.math"
+
 int osrfAppInitialize();
 int osrfAppChildInit();
 int osrfMathRun( osrfMethodContext* );
 
 
 int osrfAppInitialize() {
-	osrfLogInit("opensrf.math");
-	/* tell the server about the methods we handle */
-	osrfAppRegisterMethod( "opensrf.math", "add", "osrfMathRun", "send 2 numbers and I'll add them", 2 );
-	osrfAppRegisterMethod( "opensrf.math", "sub", "osrfMathRun", "send 2 numbers and I'll divide them", 2 );
-	osrfAppRegisterMethod( "opensrf.math", "mult", "osrfMathRun", "send 2 numbers and I'll multiply them", 2 );
-	osrfAppRegisterMethod( "opensrf.math", "div", "osrfMathRun", "send 2 numbers and I'll subtract them", 2 );
+	osrfLogInit(MODULENAME);
+
+	osrfAppRegisterMethod( 
+			MODULENAME, 
+			"add", 
+			"osrfMathRun", 
+			"Addss two numbers",
+			"( num1, num2 )", 2 );
+
+	osrfAppRegisterMethod( 
+			MODULENAME, 
+			"sub", 
+			"osrfMathRun", 
+			"Subtracts two numbers",
+			"( num1, num2 )", 2 );
+
+	osrfAppRegisterMethod( 
+			MODULENAME, 
+			"mult", 
+			"osrfMathRun", 
+			"Multiplies two numbers",
+			"( num1, num2 )", 2 );
+
+	osrfAppRegisterMethod( 
+			MODULENAME, 
+			"div", 
+			"osrfMathRun", 
+			"Divides two numbers",
+			"( num1, num2 )", 2 );
+
 	return 0;
 }
 

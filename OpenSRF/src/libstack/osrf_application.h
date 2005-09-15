@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <dlfcn.h>
 #include "opensrf/utils.h"
@@ -7,10 +6,21 @@
 #include "osrf_app_session.h"
 
 
-/** 
-  This macro verifies methods receive the correct parameters 
+/**
+  All OpenSRF methods take the signature
+  int methodName( osrfMethodContext* );
+  If a negative number is returned, it means an unknown error occured and an exception
+  will be returned to the client automatically.
+  If a positive number is returned, it means that libopensrf should send a 'Request Complete'
+  message following any messages sent by the method.
+  If 0 is returned, it tells libopensrf that the method completed successfully and 
+  there is no need to send any further data to the client.
   */
 
+
+
+/** 
+  This macro verifies methods receive the correct parameters */
 #define _OSRF_METHOD_VERIFY_CONTEXT(d) \
 	if(!d) return -1; \
 	if(!d->session) { osrfLog( OSRF_ERROR, "Session is NULL in app reqeust" ); return -1; }\
@@ -20,7 +30,6 @@
 		osrfLog( OSRF_ERROR, "'params' is not a JSON array for method %s", d->method->name);\
 		return -1; }\
 	if( !d->method->name ) { osrfLog(OSRF_ERROR, "Method name is NULL"); return -1; } 
-
 
 #ifdef OSRF_LOG_PARAMS 
 #define OSRF_METHOD_VERIFY_CONTEXT(d) \
@@ -37,40 +46,52 @@
 
 
 
+/* used internally to make sure the method description provided is OK */
+#define OSRF_METHOD_VERIFY_DESCRIPTION(app, d) \
+	if(!app) return -1; \
+	if(!d) return -1;\
+	if(!d->name) { osrfLog( OSRF_ERROR, "No method name provided in description" ), return -1; } \
+	if(!d->symbol) { osrfLog( OSRF_ERROR, "No method symbol provided in description" ), return -1; } \
+	if(!d->notes) d->notes = ""; \
+	if(!d->paramNotes) d->paramNotes = "";\
+	if(!d->returnNotes) d->returnNotes = "";
+
+
+
+/* Some well known parameters */
 #define OSRF_SYSMETHOD_INTROSPECT "opensrf.system.method"
 #define OSRF_SYSMETHOD_INTROSPECT_ALL "opensrf.system.method.all"
-
-
-	
 
 	
 
 struct _osrfApplicationStruct {
-	char* name; /* the name of our application */
-	void* handle; /* the lib handle */
-	struct _osrfMethodStruct* methods;	/* list of methods */
-	struct _osrfApplicationStruct* next; /* next application */
+	char* name;										/* the name of our application */
+	void* handle;									/* the lib handle */
+	struct _osrfMethodStruct* methods;		/* list of methods */
+	struct _osrfApplicationStruct* next;	/* next application */
 };
 typedef struct _osrfApplicationStruct osrfApplication;
 
 
 struct _osrfMethodStruct {
-	char* name;				/* the method name */
-	char* symbol;			/* the symbol name (function) */
-	char* notes;			/* public method documentation */
-	int argc;				/* how many args this method expects */
-	void* methodHandle;	/* cached version of the method handle */
-	struct _osrfMethodStruct* next;
+	char* name;					/* the method name */
+	char* symbol;				/* the symbol name (function) */
+	char* notes;				/* public method documentation */
+	int argc;					/* how many args this method expects */
+	char* paramNotes;			/* Description of the params expected for this method */
+	struct _osrfMethodStruct* next; /* nest method in the list */
+	int sysmethod;				/* true if this is a system method */
 }; 
 typedef struct _osrfMethodStruct osrfMethod;
 
 struct _osrfMethodContextStruct {
-	osrfAppSession* session;
-	osrfMethod* method;
-	jsonObject* params;
-	int request;
+	osrfAppSession* session;	/* the current session */
+	osrfMethod* method;			/* the requested method */	
+	jsonObject* params;			/* the params to the method */
+	int request;					/* request id */
 };
 typedef struct _osrfMethodContextStruct osrfMethodContext;
+
 
 
 /** 
@@ -87,11 +108,28 @@ int osrfAppRegisterApplication( char* appName, char* soFile );
   @param methodName The fully qualified name of the method
   @param symbolName The symbol name (function) that implements the method
   @param notes Public documentation for this method.
+  @params params String description description of the params expected
   @params argc The number of arguments this method expects 
   @return 0 on success, -1 on error
   */
 int osrfAppRegisterMethod( char* appName, 
-		char* methodName, char* symbolName, char* notes, int argc );
+		char* methodName, char* symbolName, char* notes, char* params, int argc );
+
+int _osrfAppRegisterSystemMethod( char* appName, char* methodName, 
+		char* notes, char* params, int argc );
+
+osrfMethod* _osrfAppBuildMethod( char* methodName, 
+		char* symbolName, char* notes, char* params, int argc, int sysmethod );
+
+/**
+  Registher a method
+  @param appName The name of the application that implements the method
+  @params desc The method description
+  @return 0 on success, -1 on error
+  */
+/*
+int osrfAppRegisterMethod( char* appName, osrfMethodDescription* desc );
+*/
 
 /**
   Finds the given app in the list of apps
@@ -136,9 +174,27 @@ int osrfAppRunMethod( char* appName, char* methodName,
   A system method is a well known method that all
   servers implement.  
   @param context The current method context
-  @return 0 if the method is run, -1 otherwise
+  @return 0 if the method is run successfully, return < 0 means
+  the method was not run, return > 0 means the method was run
+  and the application code now needs to send a 'request complete' 
+  message
   */
 int __osrfAppRunSystemMethod(osrfMethodContext* context);
 
+/**
+  Registers all of the system methods for this app so that they may be
+  treated the same as other methods */
+int __osrfAppRegisterSysMethods( char* app );
+
+
+
+/**
+  Responds to the client with a method exception
+  @param ses The current session
+  @param request The request id
+  @param msg The debug message to send to the client
+  @return 0 on successfully sending of the message, -1 otherwise
+  */
+int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg, ... );
 
 
