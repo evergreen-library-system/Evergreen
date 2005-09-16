@@ -25,10 +25,10 @@ table { border-collapse: collapse; }
 .canvas { min-height: 300px; }
 #not_the_canvas {}
 
-#canvas_main {min-height: 300px; border-left: 3px solid #A7EA9D; border-bottom: 3px solid #A7EA9D; 
+#canvas_main { min-height: 300px; border-left: 3px solid #A7EA9D; border-bottom: 3px solid #A7EA9D; 
 	border-top: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
 
-.non_canvas { min-height: 300px; border-left: 3px solid #A7EA9D; border-top: 3px solid #A7EA9D; 
+.non_canvas {  min-height: 300px; border-left: 3px solid #A7EA9D; border-top: 3px solid #A7EA9D; 
 	border-bottom: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
 
 #loading_div { width: 100%;}
@@ -38,6 +38,9 @@ table { border-collapse: collapse; }
 #org_link_container { margin-bottom: 5px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px; width: 100%; }
 #left_div { float:left; width: 20%; }
 #statusbar {}
+
+#frontsearch_table { }
+#frontsearch_table tr { margin: 6px; }
 
 /* ---------------------------------------------------------------------- */
 .sidebar_div { width: 100%; font-size: 9pt; margin-top: 12px; }
@@ -107,6 +110,7 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 
 .tor_pic { width: 17px; height: 17px; border: none;}
 
+.dim2_border { border: 1px solid #F06000; -moz-border-radius: 3px;}
 .dim2 { filter:alpha(opacity=50); -moz-opacity:0.5; opacity: 0.5; text-decoration: none; }
 .dim { filter:alpha(opacity=10); -moz-opacity:0.1; opacity: 0.1; text-decoration: none; }
 

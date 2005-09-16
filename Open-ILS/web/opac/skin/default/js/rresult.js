@@ -12,7 +12,7 @@ attachEvt("result", "recordDrawn", rresultLaunchDrawn);
 function rresultDoSearch() {
 	table = G.ui.result.main_table;
 	hideMe(G.ui.result.row_template);
-	while( table.parentNode.rows.length < getDisplayCount() ) 
+	while( table.parentNode.rows.length <= (getDisplayCount() +1) ) 
 		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
 	rresultCollectIds();
 }

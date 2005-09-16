@@ -4,6 +4,8 @@ var _ts, _fs, _ds;
 
 attachEvt( "common", "locationChanged", updateLoc );
 
+var isFrontPage = false;
+
 
 G.evt.common.init.push(searchBarInit);
 
@@ -54,18 +56,26 @@ function depthSelectorChanged() {
 		setSelector( _ds, getDepth() );
 		_opacHandleLocationTagClick();
 
-	} else searchBarSubmit();
+	} else {
+		if(!isFrontPage)
+			searchBarSubmit();
+	}
 
 }
 
-function buildLocationSelector() {
+function buildLocationSelector(newLoc) {
 
-	if( getLocation() == globalOrgTree.id() ) return;
+	var loc;
+	if(newLoc != null) loc = newLoc;
+	else loc = getLocation();
+
+	if( loc == globalOrgTree.id() ) return;
 
 	var selector = G.ui.searchbar.depth_selector
 	var node = selector.removeChild(selector.getElementsByTagName("option")[0]);
+	removeChildren(selector);
 	
-	var location = findOrgUnit(getLocation());
+	var location = findOrgUnit(loc);
 	var type = findOrgType(location.ou_type());
 
 	while( type && location ) {
@@ -85,11 +95,25 @@ function buildLocationSelector() {
 function updateLoc(location, depth) {
 	if( location != null )
 		newSearchLocation = location;
+
 	if( depth != null ) {
+		if(depth != 0 ){
+			G.ui.searchbar.lib_sel_link.onclick = _opacHandleLocationTagClick;
+			if( location == globalOrgTree.id() ) {
+				hideMe( G.ui.searchbar.depth_sel_span );
+				unHideMe( G.ui.searchbar.lib_sel_span );
+			} else {
+				buildLocationSelector(location);
+				hideMe( G.ui.searchbar.lib_sel_span );
+				unHideMe( G.ui.searchbar.depth_sel_span );
+			}
+		}
+
 		setSelector(G.ui.searchbar.depth_selector, depth);
 		newSearchDepth = depth;
 	}
-	searchBarSubmit();
+	if(!isFrontPage)
+		searchBarSubmit();
 }
 
 

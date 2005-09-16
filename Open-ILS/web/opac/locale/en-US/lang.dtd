@@ -15,8 +15,8 @@
 <!-- Informational items -->
 <!ENTITY navigate.loggedinas "You are logged in as ">
 <!ENTITY navigate.loggedinas.title "Logged in as...">
-<!ENTITY navigate.titleGroupResults "Title Group Results">
-<!ENTITY navigate.titleResults "Title Results">
+<!ENTITY navigate.titleGroupResults "My Search Results">
+<!ENTITY navigate.titleResults "My Title Results">
 
 <!ENTITY common.nowSearching "Now searching ">
 <!ENTITY common.at " at ">
@@ -29,7 +29,7 @@
 
 
 <!-- Record Details -->
-<!ENTITY rdetail.detailMain.headerLabel "Record Details">
+<!ENTITY rdetail.detailMain.headerLabel "Title Details">
 <!ENTITY rdetail.detailMain.title "Title">
 <!ENTITY rdetail.detailMain.author "Author">
 <!ENTITY rdetail.detailMain.isbn "ISBN">

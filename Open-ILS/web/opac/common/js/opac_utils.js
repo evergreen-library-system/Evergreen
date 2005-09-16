@@ -430,6 +430,9 @@ function buildOrgSelector() {
 function orgSelect(id) {
 	showCanvas();
 	runEvt("common", "locationChanged", id, findOrgDepth(id) );
+
+	removeChildren(G.ui.common.now_searching);
+	G.ui.common.now_searching.appendChild(text(findOrgUnit(id).name()));
 }
 
 var fontCookie = new cookieObject("fonts", 1, "/", COOKIE_FONT);

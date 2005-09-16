@@ -6,6 +6,24 @@ attachEvt("common", "init", setSidebarLinks);
 
 function initSideBar() {
 	var page = findCurrentPage();
+
+	if( page == MRESULT ) 
+		unHideMe(getId("sidebar_results_wrapper"));
+
+	if( page == RRESULT ) {
+		unHideMe(getId("sidebar_results_wrapper"));
+		unHideMe(G.ui.sidebar[MRESULT]);
+		getId("sidebar_title_group_results").setAttribute("href", buildOPACLink({ page: MRESULT }));
+	}
+
+	if( page == RDETAIL ) {
+		unHideMe(getId("sidebar_results_wrapper"));
+		getId("sidebar_title_group_results").setAttribute("href", buildOPACLink({ page: MRESULT }));
+		unHideMe(G.ui.sidebar[MRESULT]);
+		getId("sidebar_title_results").setAttribute("href", buildOPACLink({ page : RRESULT }));
+		unHideMe(G.ui.sidebar[RRESULT]);
+	}
+
 	unHideMe(G.ui.sidebar[page]);
 
 	//addCSSClass(G.ui.sidebar[page], config.css.color_2);

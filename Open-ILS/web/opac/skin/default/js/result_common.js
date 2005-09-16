@@ -95,16 +95,21 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	if( is_mr )  {
 		var onlyrec = onlyrecord[ getOffset() + pos ];
 		if(onlyrec) {
+			/*
 			var id = rec.doc_id();
 			rec.doc_id(onlyrec);
 			buildTitleDetailLink(rec, title_link); 
 			rec.doc_id(id);
+			*/
 
 			var args = {};
 			args.page = RDETAIL;
 			args[PARAM_OFFSET] = 0;
 			args[PARAM_RID] = onlyrec;
+			args[PARAM_MRID] = rec.doc_id();
 			pic.parentNode.setAttribute("href", buildOPACLink(args));
+			title_link.setAttribute("href", buildOPACLink(args));
+			title_link.appendChild(text(normalize(truncate(rec.title(), 65))));
 			
 		} else {
 			buildTitleLink(rec, title_link); 
@@ -171,8 +176,14 @@ function resultBuildFormatIcons( row, rec ) {
 
 		var f = getForm();
 		if( f != "all" ) {
+			/*
 			if( f != modsFormatToMARC(res) ) 
 				addCSSClass( img, config.css.dim2);
+			else
+				addCSSClass( img, "dim2_border");
+				*/
+			if( f == modsFormatToMARC(res) ) 
+				addCSSClass( img, "dim2_border");
 		}
 
 

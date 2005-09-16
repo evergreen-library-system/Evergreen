@@ -24,7 +24,7 @@ body a:hover	{ color: red; text-decoration: underline;}
 .rdetail_item { border: 1px solid #A7EA9D; }
 #rdetail_details_table { border: 1px solid #A7EA9D; }
 #rdetail_image_cell { border: 1px solid white; border-right: 1px solid #A7EA9D;}
-.rdetail_header { border: 1px solid #FCC; }
+.rdetail_header {  }
 #rdetail_copy_info_table td { border: 1px solid #A7EA9D;}
 .rdetail_copy_info_header_cell { border: 1px solid #A7EA9D; }
 .rdetail_copy_info_alt { background: #A7EA9D; }

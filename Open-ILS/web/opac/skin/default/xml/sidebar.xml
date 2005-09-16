@@ -40,24 +40,29 @@
 		<!-- Informational sidebar components -->
 
 		<div id='logged_in_as_div' title="&navigate.loggedinas.title;" class="side_bar_item hide_me">
-			<span >&navigate.loggedinas; <b id='username_dest'> </b></span>
+			<span>&navigate.loggedinas; <b id='username_dest'> </b></span>
 		</div>
 
+<!--
+style='border: 1px solid #A7EA9D;'
+-->
+		<div id='sidebar_results_wrapper' class='hide_me'  style='border: 1px solid #A7EA9D;'>
+			<div title="&navigate.titleGroupResults;" 
+				id='mresult_link_div' class="side_bar_item hide_me">
+				<a id='sidebar_title_group_results'>&navigate.titleGroupResults;</a>
+			</div>
+		
+			<div title="&navigate.titleResults;"
+				id='result_link_div' class="side_bar_item hide_me">
+				<a id='sidebar_title_results'>&navigate.titleResults;</a>
+			</div>
 	
-		<div title="&navigate.titleResults;"
-			id='result_link_div' class="side_bar_item hide_me">
-			<span>&navigate.titleResults;</span>
+			<div title="Record Details"
+				id='rdetail_link_div' class="side_bar_item hide_me">
+				<span>My Title Details</span>
+			</div>
 		</div>
 
-		<div title="Record Details"
-			id='rdetail_link_div' class="side_bar_item hide_me">
-			<span>Record Details</span>
-		</div>
-
-		<div title="&navigate.titleGroupResults;" 
-			id='mresult_link_div' class="side_bar_item hide_me">
-			<span>&navigate.titleGroupResults;</span>
-		</div>
 
 	</div>
 

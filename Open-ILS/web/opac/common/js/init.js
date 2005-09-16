@@ -9,12 +9,10 @@ attachEvt("common", "init", initCookies);
 attachEvt("common", "init", drawOrgTree); 
 
 attachEvt("common", "unload", _tree_killer);
-//attachEvt("common", "unload", clearUIObjects);
-attachEvt("common", "unload", cleanRemoteRequests);
+try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
 
 function init() {
 	runEvt('common','init');
-	//setFontSize(getFontSize());
 	runEvt("common", "run");
 	checkUserSkin();
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));

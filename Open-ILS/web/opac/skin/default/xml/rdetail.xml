@@ -33,13 +33,13 @@
 							<xi:include href="rdetail_altcanvas.xml"/>
 	
 							<div id='canvas_main'>
-								<table style='margin-top: 10px;' class='rdetail_header color_1' width='100%'>
+								<table style='' class='rdetail_header color_1' width='100%'>
 									<tbody>
 										<tr>
 											<td>
 												<span>&rdetail.detailMain.headerLabel;</span>
 											</td>
-											<td align='right'>
+											<td align='right' style='padding-right: 7px;'>
 												<a href="javascript:void(0);" id='rdetail_view_marc'>&rdetail.detailMain.viewMarc;</a>
 											</td>
 										</tr>

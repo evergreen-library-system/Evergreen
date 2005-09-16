@@ -16,7 +16,7 @@ function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
 
-	while( table.parentNode.rows.length <= getDisplayCount() + 1)  /* add an extra row so IE and safari won't complain */
+	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  /* add an extra row so IE and safari won't complain */
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
