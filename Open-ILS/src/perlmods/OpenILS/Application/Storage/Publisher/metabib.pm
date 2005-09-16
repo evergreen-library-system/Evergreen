@@ -157,6 +157,7 @@ sub metarecord_copy_count {
 	my %args = @_;
 
 	my $sm_table = metabib::metarecord_source_map->table;
+	my $rd_table = metabib::record_descriptor->table;
 	my $cn_table = asset::call_number->table;
 	my $cp_table = asset::copy->table;
 	my $cl_table = asset::copy_location->table;
@@ -168,6 +169,22 @@ sub metarecord_copy_count {
 	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
+	my (@types,@forms);
+	my ($t_filter, $f_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+	}
+
 	my $sql = <<"	SQL";
 		SELECT	t.depth,
 			u.id AS org_unit,
@@ -175,18 +192,22 @@ sub metarecord_copy_count {
 				(SELECT count(cp.id)
 				  FROM  $sm_table r
 					JOIN $cn_table cn ON (cn.record = r.source)
+					JOIN $rd_table rd ON (cn.record = rd.record)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
 				  	$copies_visible
+					$t_filter
+					$f_filter
 				)
 			) AS count,
 			sum(
 				(SELECT count(cp.id)
 				  FROM  $sm_table r
 					JOIN $cn_table cn ON (cn.record = r.source)
+					JOIN $rd_table rd ON (cn.record = rd.record)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
@@ -194,6 +215,8 @@ sub metarecord_copy_count {
 				  WHERE r.metarecord = ?
 				  	AND cp.status = 0
 					$copies_visible
+					$t_filter
+					$f_filter
 				)
 			) AS available
 
@@ -203,7 +226,12 @@ sub metarecord_copy_count {
 	SQL
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
-	$sth->execute(''.$args{metarecord}, ''.$args{metarecord}, ''.$args{org_unit});
+	$sth->execute(	''.$args{metarecord},
+			''.$args{metarecord},
+			''.$args{org_unit}, 
+			@types, 
+			@forms ); 
+
 	while ( my $row = $sth->fetchrow_hashref ) {
 		$client->respond( $row );
 	}
@@ -806,7 +834,7 @@ sub new_search_class_fts {
 					* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
 					* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
 				)/COUNT(m.source)),
-				CASE WHEN COUNT(mr.source) = 1 THEN MIN(m.source) ELSE 0 END
+				CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
 				$metabib_metarecord_source_map_table mr,
@@ -843,7 +871,7 @@ sub new_search_class_fts {
 					* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
 					* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
 				)/COUNT(m.source)),
-				CASE WHEN COUNT(mr.source) = 1 THEN MIN(m.source) ELSE 0 END
+				CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END
 	  	  	FROM	$search_table f,
 				$metabib_metarecord_source_map_table m,
 				$metabib_metarecord_source_map_table mr,
