@@ -245,6 +245,7 @@ sub create_from_fieldmapper {
 sub delete {
 	my $self = shift;
 	my $arg = shift;
+	my $orig = $self;
 
 	my $class = ref($self) || $self;
 
@@ -258,7 +259,13 @@ sub delete {
 
 	if ($class->find_column( 'last_xact_id' )) {
 		my $xact_id = $self->current_xact_id;
-		throw Error unless ($xact_id);
+		
+		throw Error ("Deleting from $class requires a transaction be established")
+			unless ($xact_id);
+		
+		throw Error ("The row you are attempting to delete has been changed since you read it")
+			unless ( $orig->last_xact_id eq $self->last_xact_id);
+
 		$self->last_xact_id( $class->current_xact_id );
 		$self->SUPER::update;
 	}
@@ -287,6 +294,7 @@ sub update {
 sub modify_from_fieldmapper {
 	my $obj = shift;
 	my $fm = shift;
+	my $orig = $obj;
 
 	$log->debug("Modifying object using fieldmapper", DEBUG);
 
@@ -322,7 +330,10 @@ sub modify_from_fieldmapper {
 
 	if ($class->find_column( 'last_xact_id' ) and $obj->is_changed) {
 		my $xact_id = $obj->current_xact_id;
-		throw Error unless ($xact_id);
+		throw Error ("Updating $class requires a transaction be established")
+			unless ($xact_id);
+		throw Error ("The row you are attempting to delete has been changed since you read it")
+			unless ( $orig->last_xact_id eq $self->last_xact_id);
 		$obj->last_xact_id( $xact_id );
 	} else {
 		$obj->autoupdate($au)
