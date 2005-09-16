@@ -227,10 +227,13 @@ sub metarecord_copy_count {
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
 	$sth->execute(	''.$args{metarecord},
-			''.$args{metarecord},
-			''.$args{org_unit}, 
 			@types, 
-			@forms ); 
+			@forms,
+			''.$args{metarecord},
+			@types, 
+			@forms,
+			''.$args{org_unit}, 
+	); 
 
 	while ( my $row = $sth->fetchrow_hashref ) {
 		$client->respond( $row );
