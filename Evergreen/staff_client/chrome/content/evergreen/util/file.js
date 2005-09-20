@@ -42,7 +42,9 @@ function create_output_stream(file) {
 function get_file( fname ) {
 	try {
 		file = dirService.get( "AChrom",  Components.interfaces.nsIFile );
-		file.append(mw.myPackageDir); file.append("content"); file.append("conf"); file.append("fname");
+		file.append(mw.myPackageDir); file.append("content"); file.append("conf"); file.append(fname);
+		sdump('D_FILE','get_file( ' + fname + ').path = ' + file.path + '\n');
+		alert('get_file( ' + fname + ').path = ' + file.path + '\n');
 		return file;
 	} catch(E) {
 		sdump('D_ERROR', E);
