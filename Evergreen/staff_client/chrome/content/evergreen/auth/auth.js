@@ -2,6 +2,7 @@ var G = {}; // the master Global variable
 
 var debug_ignore_auth_failures = false;
 
+G.offline = false;
 G['main_window'] = self;
 G['win_list'] = [];
 G['appshell_list'] = [];
@@ -116,10 +117,9 @@ function auth_init_callback(request) {
 		auth_init = request.getResultObject();
 		if (!auth_init) { throw('null result'); }
 	} catch(E) {
-		alert('Login failed on auth_init: ' + js2JSON(E)); 
-		if (!debug_ignore_auth_failures) {
-			enable_login_prompts(); return;
-		}
+		G.offline = true;
+		sdump('D_ERROR','Error trying to communicate with the server.  Entering OFFLINE mode.\n');
+		s_alert('Error trying to communicate with the server.  Entering OFFLINE mode.\n');
 	}
 
 	sdump( 'D_AUTH', 'D_AUTH_INIT: ' + typeof(auth_init) + ' : ' + auth_init + '\n');
@@ -142,6 +142,9 @@ function auth_ses_callback(request) {
 		auth_ses = request.getResultObject();
 		if (!auth_ses) { throw('null result'); }
 		if (auth_ses == 0) { throw('0 result'); }
+		if (instanceOf(auth_ses,ex)) {
+			throw(auth_ses.err_msg());
+		}
 	} catch(E) {
 		alert('Login failed on auth_ses: ' + js2JSON(E)); 
 		if (!debug_ignore_auth_failures) {

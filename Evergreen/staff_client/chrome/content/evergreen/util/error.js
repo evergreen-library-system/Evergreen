@@ -26,7 +26,7 @@ var sdump_levels = {
 	'D_HTML_TABLE' : false,
 	'D_TAB' : false,
 
-	'D_AUTH' : false,
+	'D_AUTH' : true,
 
 	'D_OPAC' : true,
 
