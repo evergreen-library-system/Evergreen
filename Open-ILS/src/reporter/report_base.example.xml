@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reporter xmlns:xi="http://www.w3.org/2001/XInclude">
+	<classes>
+		<class
+		  name="silly-base"
+		  fact-table="silly.fact">
+			<description>Silly Report base</description>
+			<dims>
+				<dim include="silly_word_dim"/>
+				<dim include="silly_sayer_dim"/>
+			</dims>
+		</class>
+	</classes>
+
+	<tables>
+
+		<table id="silly.fact" partition="true">
+			<tablename>stats.silly_fact</tablename>
+
+			<partition>
+				<field>said_when</field>
+				<!-- Valid options:  month, year, woy (week of year), doy (day of year) -->
+				<chunk>month</chunk>
+				<start>2005-09-01</start>
+				<end>2005-12-31</end>
+			</partition>
+
+			<fields>
+				<field
+				  name="silly_word_dim"
+				  datatype="int"
+				  indexed="true">
+					<label>Silly word dim</label>
+					<description>Silly word entry dimension link</description>
+				</field>
+				<field
+				  name="silly_sayer_dim"
+				  datatype="int"
+				  indexed="true">
+					<label>Silly sayer dim</label>
+					<description>Silly sayer entry dimension link</description>
+				</field>
+				<field
+				  name="said_when"
+				  datatype="timestamptz"
+				  core="true"
+				  indexed="true"
+				  default="now()">
+					<label>Silly word timestamp</label>
+					<description>Silly word entry timestamp</description>
+				</field>
+			</fields>
+			<links>
+				<link
+				  field="silly_word_dim"
+				  table="silly.word_dim"
+				  type="has_a"/>
+				<link
+				  field="silly_sayer_dim"
+				  table="silly.sayer_dim"
+				  type="has_a"/>
+			</links>
+		</table>
+
+		<table id="silly.word_dim">
+			<tablename>stats.words</tablename>
+			<fields>
+				<field
+				  name="id"
+				  primary="1"
+				  create-type="serial"
+				  datatype="int"/>
+				<field
+				  name="word"
+				  datatype="text"
+				  indexed="true"
+				  index-type="BTREE"/>
+			</fields>
+		</table>
+
+		<table id="silly.sayer_dim">
+			<tablename>stats.silly_sayers</tablename>
+			<fields>
+				<field
+				  name="id"
+				  primary="1"
+				  create-type="serial"
+				  datatype="int"/>
+				<field
+				  name="sayer"
+				  datatype="text"
+				  indexed="true"
+				  index-type="BTREE"/>
+			</fields>
+		</table>
+
+	</tables>
+</reporter>
