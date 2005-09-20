@@ -125,6 +125,7 @@ function auth_init_callback(request) {
 	sdump( 'D_AUTH', 'D_AUTH_INIT: ' + typeof(auth_init) + ' : ' + auth_init + '\n');
 	var name = document.getElementById('name_prompt').value;
 	var pw = document.getElementById('password_prompt').value;
+	G.name = name; G.pw = pw;
 
 	user_async_request(
 		'open-ils.auth',
@@ -140,7 +141,7 @@ function auth_ses_callback(request) {
 	var auth_ses;
 	try {
 		auth_ses = request.getResultObject();
-		if (!auth_ses) { throw('null result'); }
+		if (!auth_ses) { if (!G.offline) { throw('null result'); } }
 		if (auth_ses == 0) { throw('0 result'); }
 		if (instanceOf(auth_ses,ex)) {
 			throw(auth_ses.err_msg());
@@ -169,7 +170,14 @@ function ap_list_callback(request) {
 	var ap_list;
 	try {
 		ap_list = request.getResultObject();
-		if (!ap_list) { throw('null result'); }
+		if (!ap_list) { 
+			if (!G.offline) {
+				throw('null result'); 
+			} else {
+				var f = create_input_stream('ap_list');
+				ap_list = JSON2js( f.read(-1) ); f.close();
+			}
+		}
 		if (ap_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
 		alert('Login failed on ap_list: ' + js2JSON(E)); 
@@ -177,6 +185,9 @@ function ap_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
+	var f = create_output_stream('ap_list');
+	var ap_list_json = js2JSON( ap_list );
+	f.write( ap_list_json, ap_list_json.length ); f.close();
 	mw.G.ap_list = ap_list;
 	mw.G.ap_hash = convert_object_list_to_hash( ap_list );
 

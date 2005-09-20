@@ -55,6 +55,7 @@ var sdump_levels = {
 	'D_PATRON_UTILS' : false,
 	'D_CIRC_UTILS' : false,
 
+	'D_FILE' : true,
 	'D_EXPLODE' : false,
 	'D_FM_UTILS' : false,
 	'D_PRINT' : false,
