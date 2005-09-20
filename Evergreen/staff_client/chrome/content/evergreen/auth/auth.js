@@ -1,22 +1,52 @@
-var G = {}; // the master Global variable
+// the master Global variable
+var G = { 
+/////////////////////////////////////////////////////////////////////////////////////
+
+	// pointer to the auth window
+	'main_window' : self, 	
+
+	// list of open window references, used for debugging in shell
+	'win_list' : [],	
+
+	// list of Top Level menu interface window references
+	'appshell_list' : [],	
+
+	// list of documents for debugging.  BROKEN
+	'doc_list' : [],	
+
+	// Windows need unique names.  This number helps.
+	'window_name_increment' : 0, 
+
+	// This number gets put into the title bar for Top Level menu interface windows
+	'appshell_name_increment' : 0,
+
+	// I was using this to make sure I could shove references into new windows
+	// correctly.  However, it's JSON that tends to behave weirdly when crossing
+	// window boundaries.  [ 'a', 'b', 'c' ] could turn into { '1' : 'a', '2' : 'b',
+	'main_test_variable' : 'Hello World',
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+	// Flag for whether the staff client should act as if it were offline or not
+	'offline' : false,
+
+	// Array of Session Keys.  This is an array mostly by accident, we usually
+	// only deal with one session.  But this could be useful for implementing
+	// overrides with other logins.
+	'auth_ses' = [],
+
+	// Org Unit for the login user
+	'user_ou' : ''
+
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+};
 
 var debug_ignore_auth_failures = false;
 
-G.offline = false;
-G['main_window'] = self;
-G['win_list'] = [];
-G['appshell_list'] = [];
-G['doc_list'] = [];
-G['window_name_increment'] = 0;
-G['appshell_name_increment'] = 0;
-G['auth_ses'] = '';
-G['user_ou'] = '';
-G['main_test_variable'] = 'Hello World';
 G['org_tree'] = '';
 G['my_orgs'] = [];
 G['my_orgs_hash'] = {};
-G['fieldmap'] = '';
-G['patrons'] = {};
 
 G['ap_list'] = []; // actor::profile
 G['ap_hash'] = {};
