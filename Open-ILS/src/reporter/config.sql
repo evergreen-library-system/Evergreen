@@ -1,11 +1,28 @@
-DROP SCEMA reporter CASCADE;
+DROP SCHEMA reporter CASCADE;
+
 CREATE SCHEMA reporter;
 
 BEGIN;
 
+CREATE TABLE reporter.stage1 (
+	id		serial				primary key,
+	filename	text				not null,
+	owner		int				not null,
+	pub		bool				not null
+							default true,
+	create_date	timestamp with time zone	not null
+							default now(),
+	edit_date	timestamp with time zone	not null
+							default now()
+);
+
 CREATE TABLE reporter.stage2 (
 	id		serial				primary key,
-	stage1		text				not null,
+	stage1		int				not null 
+							references reporter.stage1 (id)
+								on delete restrict
+								deferrable
+								initially deferred,
 	filename	text				not null,
 	owner		int				not null,
 	pub		bool				not null
