@@ -44,14 +44,15 @@ for my $table ($doc->findnodes('/reporter/tables/table')) {
 	warn "\n";
 	print	"DROP TABLE $tname CASCADE;\n";
 	print	"CREATE TABLE $tname (\n\t".
-		join(",\n\t",
-			map { join("\t", @$_) } (@primary, @other)
-		). ",\n\tCONSTRAINT $pkey_name PRIMARY KEY (".join(", ", map { $$_[0] } @primary).
-		")\n);\n";
+		join(",\n\t", map { join("\t", @$_) } (@primary, @other))."\n".
+		do {
+			@primary ?
+				",\tCONSTRAINT $pkey_name PRIMARY KEY (".
+					join(", ", map { $$_[0] } @primary). ")\n" :
+				''
+		}.
+		");\n";
 
-	for my $i (@indexed) {
-		print	"CREATE INDEX \"${tname}_$$i[0]_idx\" ON $tname USING $$i[1] ($$i[0]);\n";
-	}
 	print "\n";
 
 	if ($table->getAttribute('partition')) {
@@ -79,6 +80,10 @@ for my $table ($doc->findnodes('/reporter/tables/table')) {
 					"ON ${tname}_${chunk}_$tpart USING $$i[1] ($$i[0]);\n";
 			}
 			print "\n";
+		}
+	} else {
+		for my $i (@indexed) {
+			print	"CREATE INDEX \"${tname}_$$i[0]_idx\" ON $tname USING $$i[1] ($$i[0]);\n";
 		}
 	}
 	print "\n";
