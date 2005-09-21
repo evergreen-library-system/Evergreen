@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reporter xmlns:xi="http://www.w3.org/2001/XInclude">
+	<report
+	  type="stage1"
+	  name="silly-all"
+	  fact-table="silly.fact">
+		<description>Silly Report base</description>
+		<dims>
+			<dim include="silly_word_dim"/>
+			<dim include="silly_sayer_dim"/>
+		</dims>
+	</report>
+</reporter>
+

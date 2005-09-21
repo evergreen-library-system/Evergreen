@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <reporter xmlns:xi="http://www.w3.org/2001/XInclude">
-	<classes>
 
-		<class
-		  name="silly-all"
-		  fact-table="silly.fact">
-			<description>Silly Report base</description>
-			<dims>
-				<dim include="silly_word_dim"/>
-				<dim include="silly_sayer_dim"/>
-			</dims>
-		</class>
-
-		<class
-		  name="silly-words"
-		  fact-table="silly.fact">
-			<description>Silly Word Report base</description>
-			<dims>
-				<dim include="silly_word_dim"/>
-			</dims>
-		</class>
-	</classes>
+	<setup>
+		<files>
+			<stage1>/tmp/</stage1>
+			<stage2>/tmp/</stage2>
+			<stage3>/tmp/</stage3>
+		</files>
+		<database>
+			<host>10.0.0.2</host>
+			<user>postgres</user>
+			<password/>
+		</database>
+	</setup>
 
 	<tables>
 
