@@ -76,10 +76,10 @@ void _rest_xml_output(growing_buffer* buf, jsonObject* obj, char * obj_class, in
    /* add class hints if we have a class name */
    if(obj->classname) {
      	if(obj->type == JSON_NULL) {
-			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\"/></%s>", tag, obj->classname, tag);
+			buffer_fadd(buf,"<%s><Object class_hint=\"%s\"/></%s>", tag, obj->classname, tag);
 			return;
 		} else {
-			buffer_fadd(buf,"<%s><Object class_hint=\\\"%s\\\">", tag, obj->classname);
+			buffer_fadd(buf,"<%s><Object class_hint=\"%s\">", tag, obj->classname);
 		}
 	}
 
