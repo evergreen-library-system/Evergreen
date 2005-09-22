@@ -33,7 +33,7 @@ var G = {
 	// Array of Session Keys.  This is an array mostly by accident, we usually
 	// only deal with one session.  But this could be useful for implementing
 	// overrides with other logins.
-	'auth_ses' = [],
+	'auth_ses' : [],
 
 	// Org Unit for the login user
 	'user_ou' : ''
