@@ -2,7 +2,7 @@
 <reporter xmlns:xi="http://www.w3.org/2001/XInclude">
 	<report
 	  type="stage1"
-	  name="silly-all"
+	  name="Silly"
 	  fact-table="silly.fact">
 		<description>Silly Report base</description>
 		<dims>

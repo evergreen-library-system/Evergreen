@@ -3,12 +3,13 @@
 
 	<setup>
 		<files>
-			<stage1>/tmp/</stage1>
-			<stage2>/tmp/</stage2>
-			<stage3>/tmp/</stage3>
+			<stage1>/tmp/reporter/</stage1>
+			<stage2>/tmp/reporter/</stage2>
+			<stage3>/tmp/reporter/</stage3>
 		</files>
 		<database>
 			<host>10.0.0.2</host>
+			<name>demo-dev</name>
 			<user>postgres</user>
 			<password/>
 		</database>
@@ -67,6 +68,7 @@
 		</table>
 
 		<table id="silly.word_dim">
+			<name>Silly word list</name>
 			<tablename>stats.words</tablename>
 			<fields>
 				<field
@@ -83,6 +85,7 @@
 		</table>
 
 		<table id="silly.sayer_dim">
+			<name>Silly word sayer list</name>
 			<tablename>stats.silly_sayers</tablename>
 			<fields>
 				<field
