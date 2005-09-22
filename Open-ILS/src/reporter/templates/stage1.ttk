@@ -9,6 +9,7 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 %]
 
 [%
+	USE CGI;
 	USE DBI;
 	USE WebSession;
 	USE utils = WebUtils;
@@ -40,8 +41,11 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 
 
 
+
+
+
 [% BLOCK PRINT_STAGE1 %]
-		<table border=1>
+		<table width="50%">
 [%			FOR s1 IN DBI.query("select * from reporter.stage1 where pub is true;");
 				file = dir _ '/' _ s1.filename;
 				USE doc = XML.LibXML(file);
@@ -50,21 +54,117 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 %]
 
 				<tr>
-					<td>
-						Name:
+					<td align="right">
+						<b>Name:</b>
 					</td>
 					<td>
 						[%doc.findvalue('/reporter/report/@name')%]
 					</td>
 				</tr>
 				<tr>
-					<td>
-						Description:
+					<td align="right">
+						<b>Description:</b>
 					</td>
 					<td>
 						[%doc.findvalue('/reporter/report/description')%]
 					</td>
 				</tr>
+
+[%				PROCESS stage1_detail IF CGI.param('detail') == 1 %]
+
+[%			END %]
+		</table>
+[% END %]
+
+[% PROCESS stage2_new IF CGI.param('create_stage2') == 1 %]
+
+
+
+
+
+[%
+BLOCK stage2_new;
+	col_xpath = "/reporter/tables/table[@id='" _ fact_table _ "']/fields/field[@core='true']";
+	logme(col_xpath);
+
+	'<h3><u>Core report limiters</u></h3>';
+
+	FOR col IN config.findnodes(col_xpath);
+		logme(col.findvalue('@name'));
+		widget = col.findvalue('@widget') or col.findvalue('@datatype');
+		INCLUDE "draw_$widget" column = col; 
+	END;
+
+END;
+%]
+
+
+
+
+[% BLOCK draw_timestamptz %]
+
+<b>[% column.findvalue('label') %]</b><br/><br/>
+<table border=1 width="100%">
+	<tr>
+		<td colspan=2>
+			<b>[% column.findvalue('description') %]</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Report Range Size:
+		</td>
+		<td>
+			<select
+				name="[% column.parentNode.parentNode.findvalue('tablename') _ '.' _
+							column.findvalue('@name') _ ':range_size' %]" >
+				<option value="">User Selectable</option>
+				<option value="hour">Hour</option>
+				<option value="day">Day</option>
+				<option value="week">Week</option>
+				<option value="month">Month</option>
+				<option value="year">Year</option>
+				<option value="decade">Decade</option>
+			</select>
+		</td>
+	</tr>
+[% END %]
+
+
+
+
+[% BLOCK dim_description %]
+
+<tr>
+	<td>Name:</td>
+	<td>[% dim.findvalue('name') %]</td>
+</tr>
+[% PROCESS table_fields table = dim %]
+[% END %]
+
+
+
+
+
+
+[% BLOCK table_fields %]
+[%		FOR f IN table.findnodes('fields/field') %]
+<tr>
+	<td>Field:</td>
+	<td>[% f.findvalue('@name') %] ([% f.findvalue('@datatype') %])</td>
+</tr>
+[%		END %]
+
+[% END %]
+
+
+
+
+
+
+
+
+[% BLOCK stage1_detail %]
 				<tr>
 					<td>
 						Visible Stage2 reports:
@@ -77,7 +177,8 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 						END %]
 					</td>
 				</tr>
-[% INCLUDE table_fields table = config.findnodes("/reporter/tables/table[@id='$fact_table']") %]
+
+[% PROCESS table_fields table = config.findnodes("/reporter/tables/table[@id='$fact_table']") %]
 				<tr>
 					<td>
 						Report Attributes<br/>(dimensions):
@@ -87,7 +188,7 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 						incs = doc.findnodes('//report/dims/dim/@include');
 
 						FOR dim IN incs;
-							'<table border=1>';
+							'<table border=1 width="100%">';
 
 							link_xpath = '/reporter/tables/table[@id="' _ fact_table _'"]'_
 												'/links/link[@field="' _ dim.value() _ '"]/@table';
@@ -100,32 +201,12 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 							
 							dim_def = config.findnodes(dim_xpath);
 
-							INCLUDE dim_description dim = dim_def;
+							PROCESS dim_description dim = dim_def;
 							'</table>';
 						END
 %]
 					</td>
 				</tr>
-
 [%			END %]
-		</table>
-[% END %]
 
-[% BLOCK dim_description %]
 
-<tr>
-	<td>Name:</td>
-	<td>[% dim.findvalue('name') %]</td>
-</tr>
-[% INCLUDE table_fields table = dim %]
-[% END %]
-
-[% BLOCK table_fields %]
-[%		FOR f IN table.findnodes('fields/field') %]
-<tr>
-	<td>Field:</td>
-	<td>[% f.findvalue('@name') %] ([% f.findvalue('@datatype') %])</td>
-</tr>
-[%		END %]
-
-[% END %]
