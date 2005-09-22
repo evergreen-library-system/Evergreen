@@ -79,14 +79,14 @@ libopensrf.so:	objson/libobjson.so
 	make -C  c-apps
 
 
-opensrf-install:
+opensrf-install:	objson-install
 	@echo $@
 	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)/$(LIBOPENSRF)
 	cp $(OPENSRF_HEADERS) $(INCLUDEDIR)/opensrf/
 	make -C c-apps install
 
 
-objson/libobjson.so: 
+objson/libobjson.so:	prep
 	@echo $@
 	make -C objson
 
