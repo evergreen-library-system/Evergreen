@@ -1,0 +1,131 @@
+[%
+
+BLOCK logme_block;
+	"\n\t<!-- " _ x _ " -->\n";
+END;
+
+MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
+
+%]
+
+[%
+	USE DBI;
+	USE WebSession;
+	USE utils = WebUtils;
+	USE config = XML.LibXML(config_xml);
+
+	userid = 1;
+
+	dir = '/reporter/setup/files/' _ stage_dir;
+	dir = config.findvalue(dir);
+
+	dbname = config.findvalue('/reporter/setup/database/name');
+	dbhost = config.findvalue('/reporter/setup/database/host');
+	d_u = config.findvalue('/reporter/setup/database/user');
+	d_p = config.findvalue('/reporter/setup/database/password');
+
+	dsn = "dbi:Pg:dbname=" _ dbname _';host=' _ dbhost;
+
+	logme([dsn,d_u,d_p]);
+	
+	DBI.connect(dsn,d_u,d_p);
+%]
+
+<html>
+	<body>
+		[% PROCESS PRINT_STAGE1 %]
+	</body>
+</html>
+
+
+
+
+[% BLOCK PRINT_STAGE1 %]
+		<table border=1>
+[%			FOR s1 IN DBI.query("select * from reporter.stage1 where pub is true;");
+				file = dir _ '/' _ s1.filename;
+				USE doc = XML.LibXML(file);
+				fact_table = doc.findvalue('//report/@fact-table');
+				logme(fact_table);
+%]
+
+				<tr>
+					<td>
+						Name:
+					</td>
+					<td>
+						[%doc.findvalue('/reporter/report/@name')%]
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Description:
+					</td>
+					<td>
+						[%doc.findvalue('/reporter/report/description')%]
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Visible Stage2 reports:
+					</td>
+					<td>
+						[% q = 'select count(*) as x from reporter.stage2 ' _
+								'where pub is true or owner = ' _ userid;
+						FOR r IN DBI.query(q);
+							r.x;
+						END %]
+					</td>
+				</tr>
+[% INCLUDE table_fields table = config.findnodes("/reporter/tables/table[@id='$fact_table']") %]
+				<tr>
+					<td>
+						Report Attributes<br/>(dimensions):
+					</td>
+					<td>
+[%
+						incs = doc.findnodes('//report/dims/dim/@include');
+
+						FOR dim IN incs;
+							'<table border=1>';
+
+							link_xpath = '/reporter/tables/table[@id="' _ fact_table _'"]'_
+												'/links/link[@field="' _ dim.value() _ '"]/@table';
+							logme(link_xpath);
+
+							dim_table = config.findvalue(link_xpath);
+
+							dim_xpath = '/reporter/tables/table[@id="' _ dim_table _'"]';
+							logme(dim_xpath);
+							
+							dim_def = config.findnodes(dim_xpath);
+
+							INCLUDE dim_description dim = dim_def;
+							'</table>';
+						END
+%]
+					</td>
+				</tr>
+
+[%			END %]
+		</table>
+[% END %]
+
+[% BLOCK dim_description %]
+
+<tr>
+	<td>Name:</td>
+	<td>[% dim.findvalue('name') %]</td>
+</tr>
+[% INCLUDE table_fields table = dim %]
+[% END %]
+
+[% BLOCK table_fields %]
+[%		FOR f IN table.findnodes('fields/field') %]
+<tr>
+	<td>Field:</td>
+	<td>[% f.findvalue('@name') %] ([% f.findvalue('@datatype') %])</td>
+</tr>
+[%		END %]
+
+[% END %]
