@@ -1,0 +1,74 @@
+<html>
+
+	<head>
+
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+		<script language='javascript' src='/opac/common/js/md5.js'> </script>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+
+
+		<script language='javascript'>
+
+			var COOKIE_SES = "ses";
+			var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
+
+
+			function doLogin() {
+
+   			var uname = document.getElementById("reports_login_username").value;
+   			var passwd = document.getElementById("reports_login_password").value;
+			
+   			var init_request = new RemoteRequest( 
+					"open-ils.auth", 
+					"open-ils.auth.authenticate.init", uname );
+	
+   			init_request.send(true);
+   			var seed = init_request.getResultObject();
+			
+   			if( ! seed || seed == '0') {
+      			alert( "Error Communicating with Authentication Server" );
+      			return null;
+   			}
+			
+   			var auth_request = new RemoteRequest( 
+					"open-ils.auth", "open-ils.auth.authenticate.complete",
+      			uname, hex_md5(seed + hex_md5(passwd)), "staff");
+			
+   			auth_request.send(true);
+   			var auth_result = auth_request.getResultObject();
+			
+   			if(auth_result == '0' || auth_result == null || auth_result.length == 0) { 
+					alert("Login failed");
+					return false; 
+				}
+	
+				cookie.put(COOKIE_SES, auth_result);
+				cookie.write();
+				location.href = "stage1";
+		
+			}
+
+		</script>
+	</head>
+
+	<body>
+		<br/><br/>
+		<h3> Reports Login </h3>
+		<table style='padding: 4px; border: 2px solid #E0E0E0;'>
+			<tr>
+				<td >Username: </td>
+				<td ><input type='text'  id='reports_login_username'/></td>
+			</tr>
+			<tr>
+				<td >Password: </td>
+				<td ><input type='password'  id='reports_login_password'/></td>
+			<tr>
+			</tr>
+				<td><input type='submit' value='Login' onclick='doLogin();'/></td>
+			</tr>
+		</table>
+	</body>
+</html>
+
