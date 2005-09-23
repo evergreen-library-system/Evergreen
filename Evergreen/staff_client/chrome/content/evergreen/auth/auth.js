@@ -384,7 +384,7 @@ function user_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('user_ou',user_ou); } catch(E) { handle_error(E); }
+	try { set_object_in_file('user_ou',user.home_ou()); } catch(E) { handle_error(E); }
 	mw.G.user = user;
 	mw.G.user_ou = user.home_ou();
 	sdump('D_AUTH', "user: " + js2JSON(mw.G['user']) + '\n');
