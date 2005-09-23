@@ -11,7 +11,7 @@ function set_object_in_file(file,obj) {
 			if (typeof(file)=='string') file = get_file( file );
 			var f = create_output_stream(file);
 			var obj_json = js2JSON( obj );
-			f.write( obj_json, obj_json.length ); f.close();
+			f.write( obj_json, String( obj_json ).length ); f.close();
 		} else {
 			throw('Tried setting obj = ' + obj + '\n');
 		}
