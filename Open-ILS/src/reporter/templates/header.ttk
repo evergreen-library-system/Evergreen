@@ -1,0 +1,14 @@
+
+<head>
+
+	<!-- Load our JS libs -->
+	<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	<script language='javascript' src='/opac/common/js/md5.js'> </script>
+	<script language='javascript' src='/opac/common/js/utils.js'> </script>
+	<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+	<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+
+	<title>[% title %]</title>
+
+</head>
+

@@ -1,18 +1,16 @@
 <html>
 
-	<head>
+	[% INCLUDE header.ttk title="Login" %]
 
-		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-		<script language='javascript' src='/opac/common/js/md5.js'> </script>
-		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
-		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-
+	<body>
 
 		<script language='javascript'>
 
 			var COOKIE_SES = "ses";
 			var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
+
+			function checkInputClicks() {
+			}
 
 
 			function doLogin() {
@@ -51,9 +49,7 @@
 			}
 
 		</script>
-	</head>
 
-	<body>
 		<br/><br/>
 		<h3> Reports Login </h3>
 		<table style='padding: 4px; border: 2px solid #E0E0E0;'>
@@ -70,5 +66,9 @@
 			</tr>
 		</table>
 	</body>
+
+	[% INCLUDE footer.ttk %]
+
 </html>
+
 

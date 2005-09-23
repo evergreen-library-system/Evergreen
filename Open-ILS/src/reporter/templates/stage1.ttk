@@ -32,10 +32,14 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 	DBI.connect(dsn,d_u,d_p);
 %]
 
+
 <html>
+	[% INCLUDE header.ttk title="Basic Report Types" %]	
 	<body>
+		[% INCLUDE logout.ttk %]
 		[% PROCESS PRINT_STAGE1 %]
 	</body>
+	[% INCLUDE footer.ttk %]	
 </html>
 
 
