@@ -18,6 +18,8 @@
 	<tables>
 
 		<table id="silly.fact" partition="true">
+			<name>Silly Fact table</name>
+			<description>Silly Fact table</description>
 			<tablename>stats.silly_fact</tablename>
 
 			<partition>
@@ -69,6 +71,7 @@
 
 		<table id="silly.word_dim">
 			<name>Silly word list</name>
+			<description>Silly word list</description>
 			<tablename>stats.words</tablename>
 			<fields>
 				<field
@@ -86,6 +89,7 @@
 
 		<table id="silly.sayer_dim">
 			<name>Silly word sayer list</name>
+			<description>Silly word sayer list</description>
 			<tablename>stats.silly_sayers</tablename>
 			<fields>
 				<field
