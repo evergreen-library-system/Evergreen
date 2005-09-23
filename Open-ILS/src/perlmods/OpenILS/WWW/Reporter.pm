@@ -17,6 +17,7 @@ use OpenSRF::System;
 use XML::LibXML;
 
 use OpenSRF::Utils::SettingsParser;
+use OpenILS::Utils::Fieldmapper;
 
 
 
@@ -121,7 +122,7 @@ sub _process_template {
 
 }
 
-# returns 1 if the session is valid, 0 otherwise
+# returns the user object if the session is valid, 0 otherwise
 sub verify_login {
 	my $auth_token = shift;
 	return 0 unless $auth_token;
@@ -130,7 +131,7 @@ sub verify_login {
 	my $req = $session->request("open-ils.auth.session.retrieve", $auth_token );
 	my $user = $req->gather(1);
 
-	return 1 if ref($user);
+	return $user if ref($user);
 	return 0;
 }
 
