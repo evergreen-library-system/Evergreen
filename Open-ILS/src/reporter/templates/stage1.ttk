@@ -15,8 +15,6 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 	USE utils = WebUtils;
 	USE config = XML.LibXML(config_xml);
 
-	userid = 1;
-
 	dir = '/reporter/setup/files/' _ stage_dir;
 	dir = config.findvalue(dir);
 
@@ -37,7 +35,15 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 	[% INCLUDE header.ttk title="Basic Report Types" %]	
 	<body>
 		[% INCLUDE logout.ttk %]
-		[% PROCESS PRINT_STAGE1 %]
+		[% IF !CGI.param('id') %]
+			[%	IF CGI.param('detail') %]
+				|<a href="?detail=0">No Details (All)</a>
+			[% ELSE %]
+				|<a href="?detail=1">Details (All)</a>
+			[% END %]
+			[% PROCESS all_stage1 %]
+		[% END %]
+		[% PROCESS one_stage1 IF CGI.param('id') %]
 	</body>
 	[% INCLUDE footer.ttk %]	
 </html>
@@ -48,42 +54,80 @@ MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
 
 
 
-[% BLOCK PRINT_STAGE1 %]
-		<table width="50%">
-[%			FOR s1 IN DBI.query("select * from reporter.stage1 where pub is true;");
-				file = dir _ '/' _ s1.filename;
-				USE doc = XML.LibXML(file);
-				fact_table = doc.findvalue('//report/@fact-table');
-				logme(fact_table);
+[% BLOCK one_stage1 %]
+	|<a href="[% CGI.
+						url('-absolute',1,'-path_info',1,'-query',1).
+						replace('&?id=\d+','') %]">Show all</a>
+[%	uid = DBI.quote(user.id());
+	rid = DBI.quote(CGI.param('id'));
+	q = "select * from reporter.stage1 where (pub is true or owner = $uid) and id = $rid;";
+	FOR s1 IN DBI.query(q);
+		file = dir _ '/' _ s1.filename;
+		USE doc = XML.LibXML(file);
+
+		fact_table = doc.findvalue('//report/@fact-table');
+		logme(fact_table);
+
+		PROCESS stage1_summary;
+		PROCESS stage2_new IF CGI.param('create_stage2') == 1;
+
+	END;
+END;
 %]
 
-				<tr>
-					<td align="right">
-						<b>Name:</b>
-					</td>
-					<td>
-						[%doc.findvalue('/reporter/report/@name')%]
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<b>Description:</b>
-					</td>
-					<td>
-						[%doc.findvalue('/reporter/report/description')%]
-					</td>
-				</tr>
+[%
+BLOCK all_stage1;
+	uid = DBI.quote(user.id());
+	FOR s1 IN DBI.query("select * from reporter.stage1 where pub is true or owner = $uid;");
+		file = dir _ '/' _ s1.filename;
+		USE doc = XML.LibXML(file);
 
-[%				PROCESS stage1_detail IF CGI.param('detail') == 1 %]
+		fact_table = doc.findvalue('//report/@fact-table');
+		logme(fact_table);
 
-[%			END %]
-		</table>
-[% END %]
+		PROCESS stage1_summary links = 1;
 
-[% PROCESS stage2_new IF CGI.param('create_stage2') == 1 %]
+		IF loop.count != loop.size;
+			'<hr>';
+		END;
+	END;
+END;
+%]
 
-
-
+[% BLOCK stage1_summary  links=0 %]
+<table width="100%">
+	<tr>
+		<td align="right">
+			<b>Name:</b>
+		</td>
+		<td>
+			[%doc.findvalue('/reporter/report/@name')%]
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<b>Description:</b>
+		</td>
+		<td>
+			[%doc.findvalue('/reporter/report/description')%]
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<b>Actions:</b>
+		</td>
+		<td>
+			[% IF CGI.param('detail') %]
+				<a href="?detail=0&id=[% s1.id %]">No Details</a>
+			[% ELSE %]
+				<a href="?detail=1&id=[% s1.id %]">Details</a>
+			[% END %]
+			|<a href="?create_stage2=1&id=[% s1.id %]">New Report Template</a>
+		</td>
+	</tr>
+[%	PROCESS stage1_detail IF CGI.param('detail') == 1 %]
+</table>
+[%	END %]
 
 
 [%
@@ -106,6 +150,7 @@ END;
 
 
 [% BLOCK draw_timestamptz %]
+[% varname = column.parentNode.parentNode.findvalue('tablename') _ '.' _ column.findvalue('@name') %]
 
 <b>[% column.findvalue('label') %]</b><br/><br/>
 <table border=1 width="100%">
@@ -120,27 +165,26 @@ END;
 		</td>
 		<td>
 			<select
-				name="[% column.parentNode.parentNode.findvalue('tablename') _ '.' _
-							column.findvalue('@name') _ ':range_size' %]" >
-				<option value="">User Selectable</option>
-				<option value="hour">Hour</option>
-				<option value="day">Day</option>
-				<option value="week">Week</option>
-				<option value="month">Month</option>
-				<option value="year">Year</option>
-				<option value="decade">Decade</option>
+				name="range_size" >
+				<option value="[% varname %]:">Any</option>
+				<option value="[% varname %]:hour">Hour</option>
+				<option value="[% varname %]:day">Day</option>
+				<option value="[% varname %]:week">Week</option>
+				<option value="[% varname %]:month">Month</option>
+				<option value="[% varname %]:year">Year</option>
+				<option value="[% varname %]:decade">Decade</option>
 			</select>
 		</td>
 	</tr>
+</table>
 [% END %]
 
 
 
 
 [% BLOCK dim_description %]
-
 <tr>
-	<td>Name:</td>
+	<td align="right">Name:</td>
 	<td>[% dim.findvalue('name') %]</td>
 </tr>
 [% PROCESS table_fields table = dim %]
@@ -154,14 +198,11 @@ END;
 [% BLOCK table_fields %]
 [%		FOR f IN table.findnodes('fields/field') %]
 <tr>
-	<td>Field:</td>
+	<td align="right">Field:</td>
 	<td>[% f.findvalue('@name') %] ([% f.findvalue('@datatype') %])</td>
 </tr>
 [%		END %]
-
 [% END %]
-
-
 
 
 
@@ -170,12 +211,12 @@ END;
 
 [% BLOCK stage1_detail %]
 				<tr>
-					<td>
+					<td align="right">
 						Visible Stage2 reports:
 					</td>
 					<td>
 						[% q = 'select count(*) as x from reporter.stage2 ' _
-								'where pub is true or owner = ' _ userid;
+								'where pub is true or owner = ' _ DBI.quote(user.id());
 						FOR r IN DBI.query(q);
 							r.x;
 						END %]
@@ -183,8 +224,9 @@ END;
 				</tr>
 
 [% PROCESS table_fields table = config.findnodes("/reporter/tables/table[@id='$fact_table']") %]
+
 				<tr>
-					<td>
+					<td align="right">
 						Report Attributes<br/>(dimensions):
 					</td>
 					<td>
