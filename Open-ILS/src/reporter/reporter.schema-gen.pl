@@ -1,7 +1,14 @@
 #!/usr/bin/perl
 use strict; use warnings;
 use XML::LibXML;
-use Date::Manip;
+use OpenSRF::Utils qw/:datetime/;
+use DateTime;
+use DateTime::Duration;
+use DateTime::Format::ISO8601;
+
+my $dt_parser = DateTime::Format::ISO8601->new;
+my $log = 'OpenSRF::Utils::Logger';
+
 
 my %chunkmap =
 	(	doy => '%j',
@@ -64,22 +71,34 @@ for my $table ($doc->findnodes('/reporter/tables/table')) {
 
 		$field = $field->textContent;
 		$chunk = $chunk->textContent;
-		$start = UnixDate(ParseDate($start->textContent),$chunkmap{$chunk});
-		$end = UnixDate(ParseDate($end->textContent),$chunkmap{$chunk});
+		$start = $dt_parser->parse_datetime( $start->textContent );
+		$end = $dt_parser->parse_datetime( $end->textContent );
 
-		for my $tpart ( $start .. $end ) {
+
+		while ( $start->epoch < $end->epoch ) {
+
+			my $chunk_end = $start->clone;
+			$chunk_end->add( DateTime::Duration->new( $chunk => 1 ) );
+			$chunk_end->subtract( DateTime::Duration->new( seconds => 1 ) );
+
+			my $tpart = $start->epoch;
+
+			my $where = "BETWEEN '".$start->strftime('%FT%T%z').
+					"' AND '".$chunk_end->strftime('%FT%T%z')."'";
+
 			print	"CREATE TABLE ${tname}_${chunk}_$tpart () INHERITS ($tname);\n";
 			print	"ALTER TABLE ${tname}_${chunk}_$tpart\n".
 				"\tADD CONSTRAINT \"${tname}_${chunk}_${tpart}_test\"\n".
-				"\tCHECK (EXTRACT('$chunk' FROM $field) = $tpart);\n";
+				"\tCHECK ($field $where);\n";
 			print	"CREATE RULE \"${tname}_${chunk}_${tpart}_ins_rule\" AS\n\tON INSERT TO ".
-				"$tname \n\tWHERE EXTRACT('$chunk' FROM NEW.$field) = $tpart ".
+				"$tname \n\tWHERE NEW.$field $where".
 				"\n\tDO INSTEAD INSERT INTO ${tname}_${chunk}_$tpart VALUES (NEW.*);\n";
 			for my $i (@indexed) {
 				print	"CREATE INDEX \"${tname}_${chunk}_${tpart}_$$i[0]_idx\" ".
 					"ON ${tname}_${chunk}_$tpart USING $$i[1] ($$i[0]);\n";
 			}
 			print "\n";
+			$start->add( DateTime::Duration->new( $chunk => 1 ) );
 		}
 	} else {
 		for my $i (@indexed) {

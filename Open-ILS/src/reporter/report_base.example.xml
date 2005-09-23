@@ -22,8 +22,8 @@
 
 			<partition>
 				<field>said_when</field>
-				<!-- Valid options:  month, year, woy (week of year), doy (day of year) -->
-				<chunk>month</chunk>
+				<!-- Valid options:  years, months, weeks, days, hours, minutes, seconds  -->
+				<chunk>months</chunk>
 				<start>2005-09-01</start>
 				<end>2005-12-31</end>
 			</partition>
