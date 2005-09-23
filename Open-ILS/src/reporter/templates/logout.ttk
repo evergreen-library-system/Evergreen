@@ -16,7 +16,7 @@
 
    cookie.remove(COOKIE_SES);
 
-	location.href="login";
+	location.href = location.href.replace( /\w+\/?$/, "" );
 
 }
 

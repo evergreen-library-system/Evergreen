@@ -2,14 +2,20 @@
 
 	[% INCLUDE header.ttk title="Login" %]
 
-	<body>
+	<body onload='initPage();'>
 
 		<script language='javascript'>
 
 			var COOKIE_SES = "ses";
 			var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
 
-			function checkInputClicks() {
+			function initPage() {
+   			document.getElementById("reports_login_username").onkeypress = checkInputClicks;
+   			document.getElementById("reports_login_password").onkeypress = checkInputClicks;
+			}
+
+			function checkInputClicks(evt) {
+				if(userPressedEnter(evt)) doLogin();
 			}
 
 
@@ -44,7 +50,7 @@
 	
 				cookie.put(COOKIE_SES, auth_result);
 				cookie.write();
-				location.href = "stage1";
+				location.href = location.href;
 		
 			}
 
@@ -55,11 +61,11 @@
 		<table style='padding: 4px; border: 2px solid #E0E0E0;'>
 			<tr>
 				<td >Username: </td>
-				<td ><input type='text'  id='reports_login_username'/></td>
+				<td ><input type='text' id='reports_login_username'/></td>
 			</tr>
 			<tr>
 				<td >Password: </td>
-				<td ><input type='password'  id='reports_login_password'/></td>
+				<td ><input type='password' id='reports_login_password'/></td>
 			<tr>
 			</tr>
 				<td><input type='submit' value='Login' onclick='doLogin();'/></td>
@@ -70,5 +76,7 @@
 	[% INCLUDE footer.ttk %]
 
 </html>
+
+
 
 
