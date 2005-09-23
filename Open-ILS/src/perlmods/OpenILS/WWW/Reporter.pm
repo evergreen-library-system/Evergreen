@@ -56,9 +56,10 @@ sub handler {
 	(my $ttk = $path) =~ s{^/?([a-zA-Z0-9_]+).*?$}{$1}o;
 
 	$ttk = "s1" unless $ttk;
+	my $user;
 
 	# if the user is not logged in via cookie, route them to the login page
-	if(!(verify_login( $cgi->cookie("ses") ))) {
+	if(! ($user = verify_login($cgi->cookie("ses"))) ) {
 		$ttk = "login";
 	}
 
@@ -67,7 +68,11 @@ sub handler {
 	_process_template(
 			apache		=> $apache,
 			template		=> "$ttk.ttk",
-			params		=> { stage_dir => $ttk, config_xml => $base_xml },
+			params		=> { 
+				user => $user, 
+				stage_dir => $ttk, 
+				config_xml => $base_xml, 
+				},
 			);
 
 	return Apache2::Const::OK;
