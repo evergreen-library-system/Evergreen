@@ -241,13 +241,13 @@ sub interval_to_seconds {
         $interval =~ s/,/ /g;
 
         my $amount = 0;
-        while ($interval =~ /\s*\+?\s*(\d+)\s*(\w{1})\w*\s*/g) {
-                $amount += $1 if ($2 eq 's');
-                $amount += 60 * $1 if ($2 eq 'm');
-                $amount += 60 * 60 * $1 if ($2 eq 'h');
-                $amount += 60 * 60 * 24 * $1 if ($2 eq 'd');
-                $amount += 60 * 60 * 24 * 7 * $1 if ($2 eq 'w');
-                $amount += ((60 * 60 * 24 * 365)/12) * $1 if ($2 eq 'M');
+        while ($interval =~ /\s*\+?\s*(\d+)\s*((\w{1})\w*)\s*/g) {
+                $amount += $1 if ($3 eq 's');
+                $amount += 60 * $1 if ($3 eq 'm' || $2 =~ /^mi/io);
+                $amount += 60 * 60 * $1 if ($3 eq 'h');
+                $amount += 60 * 60 * 24 * $1 if ($3 eq 'd');
+                $amount += 60 * 60 * 24 * 7 * $1 if ($3 eq 'w');
+                $amount += ((60 * 60 * 24 * 365)/12) * $1 if ($3 eq 'M' || $2 =~ /^mo/io);
                 $amount += 60 * 60 * 24 * 365 * $1 if ($2 eq 'y');
         }
         return $amount;
@@ -341,7 +341,7 @@ sub set_psname {
 sub clense_ISO8601 {
 	my $self = shift;
 	my $date = shift || $self;
-	if ($date =~ /(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):(\d{2}):(\d{2})\.?\d*((?:-|\+)[0-9:]{2,5})?$/) {
+	if ($date =~ /^\s*(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):(\d{2}):(\d{2})\.?\d*((?:-|\+)[0-9:]{2,5})?\s*$/o) {
 		my $z = $7 || '+00:00';
 		if (length($z) > 3 && $z !~ /:/o) {
 			substr($z,3,0,':');
