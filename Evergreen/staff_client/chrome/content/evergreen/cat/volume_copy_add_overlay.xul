@@ -44,9 +44,13 @@
 					<label />
 					<label value="Call Number" />
 					<label value="# of Copies" />
+					<label value="# of Spine Labels" />
 				</row>
 			</rows>
 		</grid>
+		<hbox>
+			<button label="Edit and Print Spine Labels" accesskey="E" oncommand="spine_labels()"/>
+		</hbox>
 	</groupbox>
 </wizardpage>
 

@@ -77,6 +77,10 @@ function page2_add_volume_row(ou,ti) {
 			cn_text2.setAttribute('size','4');
 			cn_text2.setAttribute('value','0');
 		cn_row.appendChild( cn_text2 );
+		var cn_text3 = document.createElement('textbox');
+			cn_text3.setAttribute('size','4');
+			cn_text3.setAttribute('value','0');
+		cn_row.appendChild( cn_text3 );
 	}
 }
 
@@ -109,6 +113,10 @@ function copy_add_page2_add_volume_row(ou,ti) {
 			cn_text2.setAttribute('size','4');
 			cn_text2.setAttribute('value','0');
 		cn_row.appendChild( cn_text2 );
+		var cn_text3 = document.createElement('textbox');
+			cn_text3.setAttribute('size','4');
+			cn_text3.setAttribute('value','0');
+		cn_row.appendChild( cn_text3 );
 }
 
 function page3_add_volume_row(id,data) {
@@ -407,4 +415,8 @@ function submit_edited_volumes() {
 		cn_list.push( cn );
 	}
 	send_to_bill();
+}
+
+function spine_labels() {
+	alert('wizard goes here');
 }
