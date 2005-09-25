@@ -134,6 +134,11 @@ function spawn_receipt_template_editor(d,placement,place,passthru_params,clone) 
 	return spawn_interface(d,placement,place,chrome,getString('receipt_template_editor_interface_label'),passthru_params,clone);
 }
 
+function spawn_spine_label_wizard(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/cat/spine_label_wizard.xul';
+	return spawn_interface(d,placement,place,chrome,getString('spine_label_wizard'),passthru_params,clone);
+}
+
 /* legacy code, may be removed or refactored */
 
 function spawn_batch_copy_editor(d,placement,place,passthru_params,clone) {

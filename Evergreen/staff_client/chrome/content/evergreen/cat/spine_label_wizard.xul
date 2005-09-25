@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- This DTD declaration needs to be fixed for Mozilla locales -->
+<!DOCTYPE wizard SYSTEM "chrome://evergreen/locale/cat.dtd">
+<wizard id="spine_label" title="Spine Label Wizard"
+	orient="vertical" style="overflow: auto"
+	onload="spine_label_init()" width="800" height="600"
+	onwizardfinish=""
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+
+	<script>
+	<![CDATA[
+
+		function spine_label_init() {
+			var spine_labels; try { spine_labels = params.spine_labels; } catch(E) { sdump('D_ERROR',js2JSON(E) + '\n'); }
+			if (!spine_labels) spine_labels = [ [ 'A Call Number', '1' ] ];
+			var rows = document.getElementById('page1_rows');
+			for (var i = 0; i < spine_labels.length; i++) {
+				var sl = spine_labels[i];
+				var label = sl[0];
+				var count = sl[1];
+				var row = document.createElement('row'); rows.appendChild(row);
+				var btn = document.createElement('button'); row.appendChild(btn);
+					btn.setAttribute('label','Test Print');
+				var label_tb = document.createElement('textbox'); row.appendChild(label_tb);
+					label_tb.setAttribute('multiline','true');
+					label_tb.setAttribute('value',label);
+				var count_tb = document.createElement('textbox'); row.appendChild(count_tb);
+					count_tb.setAttribute('multiline','true');
+					count_tb.setAttribute('value',count);
+			}
+		}
+
+	]]>
+	</script>
+
+
+	<wizardpage id="page1" description="Printing Spine Labels" onpageadvanced="">
+		<grid>
+			<columns> <column flex="0" /> <column flex="1" /> <column flex="0" /> </columns>
+			<rows id="page1_rows">
+				<row><spacer/><label value="Label" /><label value="Print This Many"/></row>
+			</rows>
+		</grid>
+	</wizardpage>
+
+</wizard>
+
+
