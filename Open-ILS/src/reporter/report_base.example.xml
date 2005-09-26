@@ -6,6 +6,7 @@
 			<stage1>/tmp/reporter/</stage1>
 			<stage2>/tmp/reporter/</stage2>
 			<stage3>/tmp/reporter/</stage3>
+			<widget-family>/tmp/reporter/</widget-family>
 		</files>
 		<database>
 			<host>10.0.0.2</host>
@@ -15,95 +16,11 @@
 		</database>
 	</setup>
 
-	<tables>
+	<xi:include href="tables.example.xml">
+		This file sucks in table definitions
+	</xi:include>
+	<xi:include href="widgets.example.xml">
+		This file sucks in widget definitions
+	</xi:include>
 
-		<table id="silly.fact" partition="true">
-			<name>Silly Fact table</name>
-			<description>Silly Fact table</description>
-			<tablename>stats.silly_fact</tablename>
-
-			<partition>
-				<field>said_when</field>
-				<!-- Valid options:  years, months, weeks, days, hours, minutes, seconds  -->
-				<chunk>months</chunk>
-				<start>2005-09-01</start>
-				<end>2005-12-31</end>
-			</partition>
-
-			<fields>
-				<field
-				  name="silly_word_dim"
-				  datatype="int"
-				  indexed="true">
-					<label>Silly word dim</label>
-					<description>Silly word entry dimension link</description>
-				</field>
-				<field
-				  name="silly_sayer_dim"
-				  datatype="int"
-				  indexed="true">
-					<label>Silly sayer dim</label>
-					<description>Silly sayer entry dimension link</description>
-				</field>
-				<field
-				  name="said_when"
-				  datatype="timestamptz"
-				  core="true"
-				  indexed="true"
-				  default="now()">
-					<label>Silly word timestamp</label>
-					<description>Silly word entry timestamp</description>
-				</field>
-			</fields>
-			<links>
-				<link
-				  field="silly_word_dim"
-				  table="silly.word_dim"
-				  key="id"
-				  type="has_a"/>
-				<link
-				  field="silly_sayer_dim"
-				  table="silly.sayer_dim"
-				  key="id"
-				  type="has_a"/>
-			</links>
-		</table>
-
-		<table id="silly.word_dim">
-			<name>Silly word list</name>
-			<description>Silly word list</description>
-			<tablename>stats.words</tablename>
-			<fields>
-				<field
-				  name="id"
-				  primary="1"
-				  create-type="serial"
-				  datatype="int"/>
-				<field
-				  name="word"
-				  datatype="text"
-				  indexed="true"
-				  index-type="BTREE"/>
-			</fields>
-		</table>
-
-		<table id="silly.sayer_dim">
-			<name>Silly word sayer list</name>
-			<description>Silly word sayer list</description>
-			<tablename>stats.silly_sayers</tablename>
-			<fields>
-				<field
-				  name="id"
-				  primary="1"
-				  create-type="serial"
-				  datatype="int"/>
-				<field
-				  name="sayer"
-				  datatype="text"
-				  indexed="true"
-				  index-type="BTREE"/>
-			</fields>
-		</table>
-
-	</tables>
 </reporter>

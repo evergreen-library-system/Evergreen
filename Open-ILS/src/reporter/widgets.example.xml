@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets>
+	
+	<!-- String selection from user input -->
+	<widget-family name="string-input" datatype="text">
+		<label>String matching from user input</label>
+	
+		<widget name="exact">
+			<label>Exactly match a user supplied string</label>
+			<description>
+				This widget filters a column based on an exact string
+				match.
+			</description>
+		</widget>
+	
+		<widget name="multistring">
+			<label>Exactly match one of several user supplied strings</label>
+			<description>
+				This widget filters a column based on an set of strings.
+			</description>
+		</widget>
+	
+		<widget name="initial-substring">
+			<label>Match the begining of a string from user input</label>
+			<description>
+				This widget filters a column based on an initial substring
+				match.
+			</description>
+		</widget>
+	</widget-family>
+	
+	
+	<!-- String selection from in-database data -->
+	<widget-family name="string-choose" datatype="text">
+		<label>String filter from known data</label>
+	
+		<widget name="dropdown">
+			<label>Exactly match a string chosen from a dropdown</label>
+			<description>
+				This widget filters a column based on an exact string match.
+			</description>
+		</widget>
+		
+		<widget name="multiselect">
+			<label>Match multiple strings chosen from a multiselect box</label>
+			<description>
+				This widget filters a column based on multiple strings.
+			</description>
+		</widget>
+	</widget-family>
+	
+	
+	<!-- Specific time range selection family -->
+	<widget-family name="specifc-timerange" datatype="timestamptz">
+		<label>Specific time-range widgets</label>
+	
+		<widget name="any">
+			<label>User defined time range</label>
+			<description>
+				This widget allows the user to pick an arbitrary time range
+				on which to report.
+			</description>
+		</widget>
+		
+		<widget name="day">
+			<label>Choose a specific date</label>
+			<description>
+				This widget allows the user to pick a specific date on which
+				to report.
+			</description>
+		</widget>
+	
+		<widget name="week">
+			<label>Choose a specific week of the year</label>
+			<description>
+				This widget allows the user to pick a specific week of the year
+				on which to report.
+			</description>
+		</widget>
+		
+		<widget name="multiweek">
+			<label>Choose a range of weeks of the year</label>
+			<description>
+				This widget allows the user to pick a range of weeks of the year
+				on which to report.
+			</description>
+		</widget>
+		
+		<widget name="month">
+			<label>Choose a specific year and month</label>
+			<description>
+				This widget allows the user to pick a specific year and month
+				on which to report.
+			</description>
+		</widget>
+		
+		<widget name="multimonth">
+			<label>Choose a range of months</label>
+			<description>
+				This widget allows the user to pick a range of month on which to
+				report.
+			</description>
+		</widget>
+		
+		<widget name="quarter">
+			<label>Choose a specific year and quarter</label>
+			<description>
+				This widget allows the user to pick a specific year and
+				quarter on which to report.
+			</description>
+		</widget>
+		
+		<widget name="multiquarter">
+			<label>Choose a range of quarters</label>
+			<description>
+				This widget allows the user to pick a range of quarter on which
+				to report.
+			</description>
+		</widget>
+		
+		<widget name="year">
+			<label>Choose a specific year</label>
+			<description>
+				This widget allows the user to pick a specific year on which to
+				report.
+			</description>
+		</widget>
+		
+		<widget name="multiyear">
+			<label>Choose a range of years</label>
+			<description>
+				This widget allows the user to pick a range of years on which to
+				report.
+			</description>
+		</widget>
+	</widget-family>
+	
+	<!-- Specific time range selection family -->
+	<widget-family name="relative-timerange" datatype="timestamptz">
+		<label>Relative time-range widgets</label>
+		
+		<widget name="day">
+			<label>Choose a date relative to the report runtime</label>
+			<description>
+				This widget allows the user to pick a date relative to the
+				report runtime on which to report.
+			</description>
+		</widget>
+		
+		<widget name="week">
+			<label>Choose a week (sun-sat) relative to the report runtime</label>
+			<description>
+				This widget allows the user to pick a week (sun-sat)  relative
+				to the report runtime on which to report.
+			</description>
+		</widget>
+		
+		<widget name="month">
+			<label>Choose a month relative to the report runtime</label>
+			<description>
+				This widget allows the user to pick a month relative to the
+				report runtime on which to report.
+			</description>
+		</widget>
+		
+		<widget name="quarter">
+			<label>Choose a quarter relative to the report runtime</label>
+			<description>
+				This widget allows the user to pick a quarter relative to the
+				report runtime on which to report.
+			</description>
+		</widget>
+		
+		<widget name="year">
+			<label>Choose a year relative to the report runtime</label>
+			<description>
+				This widget allows the user to pick a year relative to the
+				report runtime on which to report.
+			</description>
+		</widget>
+	</widget-family>
+</widgets>
+
