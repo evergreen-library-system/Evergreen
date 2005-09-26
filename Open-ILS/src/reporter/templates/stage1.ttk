@@ -53,24 +53,20 @@ END;
 
 BLOCK one_stage1;
 	%]|<a href="[%
-	CGI.url('-absolute',1,'-path_info',1,'-query',1).replace('&?id=\d+','');
+	CGI.url('-absolute',1,'-path_info',1,'-query',1).replace('[&\?;]?id=[\w\.]+','');
 	%]">Show all</a>[%
 
-	uid = DBI.quote(user.id());
-	rid = DBI.quote(CGI.param('id'));
+	table_xpath =
+		'/reporter/tables/table[@id="' _
+		CGI.param('id') _ '"]';
+	table = config.findnodes(table_xpath);
 
-	q = "select * from reporter.stage1 where (pub is true or owner = $uid) and id = $rid;";
-	FOR s1 IN DBI.query(q);
-		file = dir _ '/' _ s1.filename;
-		USE doc = XML.LibXML(file);
+	fact_table = table.findvalue('@id');
+	logme(fact_table);
 
-		fact_table = doc.findvalue('//report/@fact-table');
-		logme(fact_table);
+	INCLUDE stage1_summary;
+	INCLUDE stage2_new IF CGI.param('create_stage2') == 1;
 
-		PROCESS stage1_summary;
-		PROCESS stage2_new IF CGI.param('create_stage2') == 1;
-
-	END;
 END;
 
 
@@ -78,19 +74,18 @@ END;
 
 BLOCK all_stage1;
 	'<ul>';
-	uid = DBI.quote(user.id());
-	FOR s1 IN DBI.query("select * from reporter.stage1 where pub is true or owner = $uid;");
+
+	FOR tab IN config.findnodes("//tables/table[@fact-table='true']");
+
+		fact_table = tab.findvalue("@id");
+		logme("Fact Table is $fact_table");
+
 		'<li>';
-		file = dir _ '/' _ s1.filename;
-		USE doc = XML.LibXML(file);
 
-		fact_table = doc.findvalue('//report/@fact-table');
-		logme(fact_table);
-
-		PROCESS stage1_summary links = 1;
+		INCLUDE stage1_summary links = 1 table = tab;
 
 		IF loop.count != loop.size;
-			'<hr>';
+		'<hr>';
 		END;
 	END;
 	'</ul>';
@@ -100,13 +95,14 @@ END;
 
 
 BLOCK stage1_summary links=0;
+	fact_table = table.findvalue('@id');
 	WRAPPER html/table width="100%";
 		WRAPPER html/row;
 			WRAPPER html/cell align="right";
 				%]<b>Name:</b>[%
 			END;
 			WRAPPER html/cell;
-				doc.findvalue('/reporter/report/@name');
+				table.findvalue('label');
 			END;
 		END;
 		WRAPPER html/row;
@@ -114,7 +110,7 @@ BLOCK stage1_summary links=0;
 				%]<b>Description:</b>[%
 			END;
 			WRAPPER html/cell;
-				doc.findvalue('/reporter/report/description');
+				table.findvalue('description');
 			END;
 		END;
 		WRAPPER html/row;
@@ -123,11 +119,11 @@ BLOCK stage1_summary links=0;
 			END;
 			WRAPPER html/cell;
 				IF CGI.param('detail');
-					%]<a href="?detail=0&id=[% s1.id %]">No Details</a>[%
+					%]<a href="?detail=0&id=[% fact_table %]">No Details</a>[%
 				ELSE;
-					%]<a href="?detail=1&id=[% s1.id %]">Details</a>[%
+					%]<a href="?detail=1&id=[% fact_table %]">Details</a>[%
 				END;
-				%]|<a href="?create_stage2=1&id=[% s1.id %]">New Report Template</a>[%
+				%]|<a href="?create_stage2=1&id=[% fact_table %]">New Report Template</a>[%
 			END;
 		END;
 		PROCESS stage1_detail IF CGI.param('detail') == 1;
@@ -338,7 +334,7 @@ BLOCK dim_description;
 			%]Name:[%
 		END;
 		WRAPPER html/cell;
-			dim.findvalue('name');
+			dim.findvalue('label');
 		END;
 	END;
 	PROCESS table_fields table = dim;
@@ -389,7 +385,12 @@ BLOCK stage1_detail;
 			%]Report Attributes<br/>(dimensions):[%
 		END;
 		WRAPPER html/cell;
-			incs = doc.findnodes('//report/dims/dim/@include');
+			incs_xpath =
+				'/reporter/tables/table[@id="' _ fact_table _'"]'_
+				'/links/link/@field';
+			logme(incs_xpath);
+
+			incs = config.findnodes(incs_xpath);
 
 			FOR dim IN incs;
 				%]<table border=1 width="100%">[%

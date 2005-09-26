@@ -3,7 +3,7 @@
 
 	<table id="silly.fact" partition="true" fact-table="true">
 		<label>Silly Fact table</label>
-		<description>Silly Fact table</description>
+		<description>Base table for creating reports on silly words</description>
 		<tablename>stats.silly_fact</tablename>
 
 		<partition>
