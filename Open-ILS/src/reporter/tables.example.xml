@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tables>
 
-	<table id="silly.fact" partition="true">
-		<name>Silly Fact table</name>
+	<table id="silly.fact" partition="true" fact-table="true">
+		<label>Silly Fact table</label>
 		<description>Silly Fact table</description>
 		<tablename>stats.silly_fact</tablename>
 
@@ -62,7 +62,7 @@
 	</table>
 
 	<table id="silly.word_dim">
-		<name>Silly word list</name>
+		<label>Silly word list</label>
 		<description>Silly word list</description>
 		<tablename>stats.words</tablename>
 		<fields>
@@ -70,17 +70,21 @@
 			  name="id"
 			  primary="true"
 			  create-type="serial"
-			  datatype="int"/>
+			  datatype="int">
+				<label>Silly word id</label>
+			</field>
 			<field
 			  name="word"
 			  datatype="text"
 			  indexed="true"
-			  index-type="BTREE"/>
+			  index-type="BTREE">
+				<label>Silly word</label>
+			</field>
 		</fields>
 	</table>
 
 	<table id="silly.sayer_dim">
-		<name>Silly word sayer list</name>
+		<label>Silly word sayer list</label>
 		<description>Silly word sayer list</description>
 		<tablename>stats.silly_sayers</tablename>
 		<fields>
@@ -88,13 +92,17 @@
 			  name="id"
 			  primary="true"
 			  create-type="serial"
-			  datatype="int"/>
+			  datatype="int">
+				<label>Silly person id</label>
+			</field>
 			<field
 			  name="sayer"
 			  widget-family="string-choose"
 			  datatype="text"
 			  indexed="true"
-			  index-type="BTREE"/>
+			  index-type="BTREE">
+				<label>Silly person</label>
+			</field>
 		</fields>
 	</table>
 

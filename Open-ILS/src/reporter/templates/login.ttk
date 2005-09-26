@@ -71,6 +71,12 @@
 				<td><input type='submit' value='Login' onclick='doLogin();'/></td>
 			</tr>
 		</table>
+
+		<br/><br/>
+		<span> Org Test </span>
+		<br/><br/>
+		[% INCLUDE orgtree.ttk %]
+
 	</body>
 
 	[% INCLUDE footer.ttk %]
