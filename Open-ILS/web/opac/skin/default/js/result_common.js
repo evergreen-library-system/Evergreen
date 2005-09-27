@@ -276,7 +276,7 @@ function resultAddCopyCounts(rec, pagePosition) {
 /* collect copy counts for a record using method 'methodName' */
 function resultCollectCopyCounts(rec, pagePosition, methodName) {
 	if(rec == null || rec.doc_id() == null) return;
-	var req = new Request(methodName, getLocation(), rec.doc_id() );
+	var req = new Request(methodName, getLocation(), rec.doc_id(), getForm() );
 	req.request.userdata = [ rec, pagePosition ];
 	req.callback(resultHandleCopyCounts);
 	req.send();
