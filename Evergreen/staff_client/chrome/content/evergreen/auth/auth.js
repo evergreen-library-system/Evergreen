@@ -169,8 +169,8 @@ function auth_init_callback(request) {
 		if (!auth_init) { throw('null result'); }
 	} catch(E) {
 		G.offline = true;
-		sdump('D_ERROR','Error trying to communicate with the server.  Entering OFFLINE mode.\n');
-		s_alert('Error trying to communicate with the server.  Entering OFFLINE mode.\n');
+		sdump('D_ERROR','Error trying to communicate with the server.  Entering OFFLINE mode.\n' + js2JSON(E) + '\n');
+		s_alert('Error trying to communicate with the server.  Entering OFFLINE mode.\n' + js2JSON(E) + '\n');
 	}
 
 	sdump( 'D_AUTH', 'D_AUTH_INIT: ' + typeof(auth_init) + ' : ' + auth_init + '\n');
