@@ -123,9 +123,9 @@ function findBasePath() {
 
 function findBaseURL(ssl) {
 	var path = findBasePath();
-	var proto = location.protocol;
-	if(ssl) proto = "https:";
+	var proto = (ssl) ? "https:" : "http:";
 	return proto + "//" + location.host + path;
+	dump( 'ssl: ' + ssl + 'proto ' + proto );
 }
 
 function buildImageLink(name, ssl) {
