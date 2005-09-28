@@ -97,7 +97,10 @@ BLOCK view_stage2;
 				INCLUDE anchor
 					text=config.findvalue( s1_name_xpath )
 					href="stage1?id=" _ params.stage1;
-				' :: ' _ params.templatename;
+				' :: ' _ params.templatename _ '<br>';
+				INCLUDE anchor
+					text="Create a report from this template"
+					href=CGI.url('-path', 1, '-query', 1) _ '&action=run';
 			END;
 		END;
 
@@ -146,7 +149,71 @@ END;
 
 
 BLOCK run_stage2;
+	logme(tmpl.params);
+	params = utils.JSON2perl( tmpl.params );
 
+   %]<br/><form id="stage3_new" name="stage3_new" action="stage3" method="POST">[%
+
+	WRAPPER html/table border=0 width='100%';
+		WRAPPER html/row;
+			WRAPPER html/cell colspan=4 align='center';
+				s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
+				INCLUDE anchor
+					text=config.findvalue( s1_name_xpath )
+					href="stage1?id=" _ params.stage1;
+				' :: ' _ params.templatename;
+			END;
+		END;
+
+		WRAPPER html/row;
+			INCLUDE html/cell colspan=4 content="Filters:";
+		END;
+
+		FOR f_table IN params.filter.keys;
+			logme([f_table]);
+			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+			WRAPPER html/row;
+				INCLUDE html/cell;
+				INCLUDE html/cell colspan=3 align='left' content=table.findvalue( 'label' );
+			END;
+
+			FOR f_field IN params.filter.$f_table.keys;
+				logme([f_table,f_field]);
+				FOR f_fam IN params.filter.$f_table.$f_field.keys;
+					logme([f_table,f_field,f_fam]);
+					f_widget = params.filter.$f_table.$f_field.$f_fam;
+					logme([f_table,f_field,f_fam,f_widget]);
+
+					WRAPPER html/row;
+						field = table.findnodes( "fields/field[@name='$f_field']" );
+						fam = config.findnodes( "/reporter/widgets/widget-family[@name='$f_fam']" );
+						widget = fam.findnodes( "widget[@name='$f_widget']" );
+
+						w_file = 'widgets/' _ fam.findvalue('@name') _ '.' _ widget.findvalue('@name');
+						INCLUDE html/cell colspan=2;
+						INCLUDE html/cell align='right' content=field.findvalue( 'label' );
+
+						WRAPPER html/cell align='center';
+							TRY;
+									INCLUDE $w_file;
+							CATCH;
+								%]ARG!! Couldn't render widget [% $w_file %] ([% error.info %])!!![%
+							END;
+						END;
+					END;
+				END;
+			END;
+		END;
+
+		WRAPPER html/row;
+			INCLUDE html/cell colspan=5 content="Available Attributes:";
+		END;
+
+	END;
+
+	INCLUDE submit name="action" value="schedule";
+
+	%]</form>[%
 END;
 
 %]

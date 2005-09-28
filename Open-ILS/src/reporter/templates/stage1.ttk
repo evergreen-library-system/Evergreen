@@ -106,9 +106,7 @@ BLOCK stage1_summary links=0;
 			END;
 		END;
 		WRAPPER html/row;
-			WRAPPER html/cell align="right" valign='top';
-				%]Report Templates:[%
-			END;
+			INCLUDE html/cell align="right" valign='top' content='Report Templates:';
 			WRAPPER html/cell;
 				q = 'select * from reporter.stage2 ' _
 					'where pub is true or owner = ' _ DBI.quote(user.id());
