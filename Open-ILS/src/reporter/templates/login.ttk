@@ -10,6 +10,7 @@
 			var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
 
 			function initPage() {
+   			document.getElementById("reports_login_username").focus();
    			document.getElementById("reports_login_username").onkeypress = checkInputClicks;
    			document.getElementById("reports_login_password").onkeypress = checkInputClicks;
 			}
@@ -56,7 +57,8 @@
 
 		</script>
 
-		<br/><br/>
+		<br/>
+		<center>
 		<h3> Reports Login </h3>
 		<table style='padding: 4px; border: 2px solid #E0E0E0;'>
 			<tr>
@@ -71,11 +73,7 @@
 				<td><input type='submit' value='Login' onclick='doLogin();'/></td>
 			</tr>
 		</table>
-
-		<br/><br/>
-		<span> Org Test </span>
-		<br/><br/>
-		[% INCLUDE orgtree.ttk %]
+		</center>
 
 	</body>
 

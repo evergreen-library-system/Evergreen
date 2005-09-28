@@ -1,0 +1,152 @@
+[%
+
+PROCESS inputs;
+PROCESS logic_header.ttk;
+
+templates = DBI.tie('reporter.stage2', 'id')
+tmpl = {};
+
+
+IF CGI.param('id');
+	tid = CGI.param('id');
+	tmpl = templates.$tid;
+END;
+
+
+WRAPPER html/html;
+   INCLUDE header.ttk title="Report Templates";
+   WRAPPER html/body;
+      INCLUDE logout.ttk;
+      IF CGI.param('action') == 'save';
+         PROCESS save_stage2;
+      ELSIF CGI.param('action') == 'edit';
+         PROCESS edit_stage2;
+      ELSIF CGI.param('action') == 'run';
+         PROCESS run_stage2;
+		ELSE;
+         PROCESS view_stage2;
+      END;
+   END;
+   INCLUDE footer.ttk;
+END;
+
+
+
+
+BLOCK save_stage2;
+	stage1 = CGI.param('stage1');
+	pub = CGI.param('publictemplate') OR 'f';
+	owner = user.id();
+
+	p_obj = {};
+	FOR p IN CGI.param();
+
+		logme([p,CGI.param(p)]);
+
+		parts = p.split(':');
+		p1 = parts.0;
+		p2 = parts.1;
+		p3 = parts.2;
+		p4 = parts.3;
+		
+		IF p4
+			AND (CGI.param("$p1:$p2:$p3") == p4)
+			AND (CGI.param("$p1:$p2").list.grep("^$p3$"))
+			AND (CGI.param("$p1").list.grep("^$p2$"));
+
+			p_obj.$p1.$p2.$p3.$p4 = CGI.param(p);
+
+		ELSIF p1 != 'filter';
+			p_obj.$p1 = CGI.param(p);
+		END;
+
+	END;
+
+	params = utils.perl2JSON( p_obj );
+
+	logme([stage1, params, owner, pub]);
+
+	q = DBI.prepare( stage2_insert );
+	junk = q.execute(stage1, params, owner, pub);
+
+	FOR new_s2 = DBI.query("SELECT * FROM reporter.stage2_id_seq;");
+		tid = new_s2.last_value;
+		INCLUDE view_stage2 tmpl = templates.$tid;
+	END;
+END;
+
+
+
+
+BLOCK edit_stage2;
+
+END;
+
+
+
+
+
+BLOCK view_stage2;
+	logme(tmpl.params);
+	params = utils.JSON2perl( tmpl.params );
+
+	WRAPPER html/table border=0 width='100%';
+		WRAPPER html/row;
+			WRAPPER html/cell colspan=5 align='center';
+				s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
+				INCLUDE anchor
+					text=config.findvalue( s1_name_xpath )
+					href="stage1?id=" _ params.stage1;
+				' :: ' _ params.templatename;
+			END;
+		END;
+
+		WRAPPER html/row;
+			INCLUDE html/cell colspan=5 content="Filters:";
+		END;
+
+		FOR f_table IN params.filter.keys;
+			logme([f_table]);
+			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+			WRAPPER html/row;
+				INCLUDE html/cell;
+				INCLUDE html/cell colspan=4 align='left' content=table.findvalue( 'label' );
+			END;
+
+			FOR f_field IN params.filter.$f_table.keys;
+				logme([f_table,f_field]);
+				FOR f_fam IN params.filter.$f_table.$f_field.keys;
+					logme([f_table,f_field,f_fam]);
+					f_widget = params.filter.$f_table.$f_field.$f_fam;
+					logme([f_table,f_field,f_fam,f_widget]);
+
+					WRAPPER html/row;
+						field = table.findnodes( "fields/field[@name='$f_field']" );
+						fam = config.findnodes( "/reporter/widgets/widget-family[@name='$f_fam']" );
+						widget = fam.findnodes( "widget[@name='$f_widget']" );
+
+						INCLUDE html/cell colspan=2;
+						INCLUDE html/cell align='right' content=field.findvalue( 'label' );
+						INCLUDE html/cell align='center' content=fam.findvalue( 'label' );
+						INCLUDE html/cell align='left' content=widget.findvalue( 'label' );
+					END;
+				END;
+			END;
+		END;
+
+		WRAPPER html/row;
+			INCLUDE html/cell colspan=5 content="Available Attributes:";
+		END;
+
+	END;
+END;
+
+
+
+
+
+BLOCK run_stage2;
+
+END;
+
+%]

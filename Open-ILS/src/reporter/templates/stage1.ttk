@@ -1,35 +1,14 @@
 [%
 
-BLOCK logme_block;
-	"\n\t<!-- " _ x _ " -->\n";
-END;
-
-MACRO logme(a) PROCESS logme_block x = a.list.join(', ');
-
-USE CGI;
-USE DBI;
-USE WebSession;
-USE utils = WebUtils;
-USE config = XML.LibXML(config_xml, expand_xinclude => 1);
-
-dir = '/reporter/setup/files/' _ stage_dir;
-dir = config.findvalue(dir);
-
-dbname = config.findvalue('/reporter/setup/database/name');
-dbhost = config.findvalue('/reporter/setup/database/host');
-d_u = config.findvalue('/reporter/setup/database/user');
-d_p = config.findvalue('/reporter/setup/database/password');
-
-dsn = "dbi:Pg:dbname=" _ dbname _';host=' _ dbhost;
-
-logme([dsn,d_u,d_p]);
-	
-DBI.connect(dsn,d_u,d_p);
-
+PROCESS inputs;
+PROCESS logic_header.ttk;
 
 WRAPPER html/html;
 	INCLUDE header.ttk title="Basic Report Types";
-	WRAPPER html/body;
+	WRAPPER html/body html.body.onload=
+								"if (document.getElementById('templatename')) {" _
+								"document.getElementById('templatename').focus();" _
+								"document.getElementById('templatename').select();}";
 		INCLUDE logout.ttk;
 		IF !CGI.param('id');
 			IF CGI.param('detail');
@@ -126,6 +105,22 @@ BLOCK stage1_summary links=0;
 				%]|<a href="?create_stage2=1&id=[% fact_table %]">New Report Template</a>[%
 			END;
 		END;
+		WRAPPER html/row;
+			WRAPPER html/cell align="right" valign='top';
+				%]Report Templates:[%
+			END;
+			WRAPPER html/cell;
+				q = 'select * from reporter.stage2 ' _
+					'where pub is true or owner = ' _ DBI.quote(user.id());
+				FOR r IN DBI.query(q);
+					INCLUDE anchor
+						href="stage2?id=" _ r.id
+						text=utils.JSON2perl(r.params).templatename;
+						'<br>';
+				END;
+			END;
+		END;
+
 		PROCESS stage1_detail IF CGI.param('detail') == 1;
 	END;
 END;
@@ -137,12 +132,21 @@ BLOCK stage2_new;
 	col_xpath = "/reporter/tables/table[@id='" _ fact_table _ "']/fields/field[@core='true']";
 	logme(col_xpath);
 
+	%]<br/><form id="stage2_new" name="stage2_new" action="stage2" method="POST">
+		<input type="hidden" name="action" value="save">
+			<input type="hidden" name="stage1" value="[% CGI.param('id') %]">
+			<input type="text" name="templatename" id="templatename"
+				size="40" value="Template name (required)"><br/>
+			<input type="checkbox" name="publictemplate" value="t">
+				Public template<br><br>[%
+
+	
 	WRAPPER html/table width="100%" border=1;
 		WRAPPER html/row;
 			WRAPPER html/cell colspan=2;
 				# hidden input here ...
 				table = config.findnodes("/reporter/tables/table[@id='$fact_table']");
-				INCLUDE hidden name="filtertable" value=fact_table;
+				INCLUDE hidden name="filter" value=fact_table;
 				table.findvalue('label');
 				' Core Columns';
 			END;
@@ -159,7 +163,7 @@ BLOCK stage2_new;
 			WRAPPER html/row;
 				WRAPPER html/cell colspan=2;
 					# checkbox input here ...
-					INCLUDE checkbox name="filtertable" value=dim_table checked=1;
+					INCLUDE checkbox name="filter" value=dim_table checked=1;
 					dimension.findvalue('label');
 					' Dimension';
 				END;
@@ -167,6 +171,10 @@ BLOCK stage2_new;
 			INCLUDE widget_selector tableid=dim_table;
 		END;
 	END;
+
+	INCLUDE submit name='button' value='Save';
+
+	%]</form>[%
 
 END;
 
@@ -193,10 +201,10 @@ BLOCK widget_selector;
 		column_name=column.findvalue('@name');
 
 		WRAPPER html/row;
-			WRAPPER html/cell valign='top';
+			WRAPPER html/cell valign='top' align='right';
 				# checkbox for column filter here ...
 				INCLUDE $column_input_type
-					name="filtercolumn:$tableid"
+					name="filter:$tableid"
 					value=column_name
 					checked=1; 
 				column.findvalue('label');
@@ -234,7 +242,7 @@ BLOCK widget_selector;
 					# radio for widget family here ...
 					'<LI>';
 					INCLUDE $fam_input
-						name="filterfamily:$tableid:$column_name"
+						name="filter:$tableid:$column_name"
 						value= fam_name;
 					fam.findvalue('label');
 					'<UL>';
@@ -309,6 +317,20 @@ BLOCK checkbox;
 	%]<INPUT TYPE="checkbox" NAME="[% name %]" VALUE="[% value %]" [% IF checked %]CHECKED[% END %]>[%
 END;
 
+BLOCK submit;
+	%]<INPUT TYPE="submit" NAME="[% name %]" VALUE="[% value %]">[%
+END;
+
+BLOCK anchor;
+	%]<a
+		href="[%href%]"
+		title="[%title%]"
+		class="[%class%]"
+		target="[%target%]"
+		onclick="[%onclick%]"
+		alt="[%alt%]">[%text%]</a>[%
+END;
+
 
 
 
@@ -365,19 +387,6 @@ END;
 
 
 BLOCK stage1_detail;
-	WRAPPER html/row;
-		WRAPPER html/cell align="right";
-			%]Visible Stage2 reports:[%
-		END;
-		WRAPPER html/cell;
-			q = 'select count(*) as x from reporter.stage2 ' _
-				'where pub is true or owner = ' _ DBI.quote(user.id());
-			FOR r IN DBI.query(q);
-				r.x;
-			END;
-		END;
-	END;
-
 	PROCESS table_fields table = config.findnodes("/reporter/tables/table[@id='$fact_table']");
 
 	WRAPPER html/row;
@@ -401,7 +410,7 @@ BLOCK stage1_detail;
 
 				dim_table = config.findvalue(link_xpath);
 
-				dim_xpath = '/reporter/tables/table[@id="' _ dim_table _'"]';
+				dim_xpath = '/reporter/tables/table[@id="' _ dim_table _ '"]';
 				logme(dim_xpath);
 							
 				dim_def = config.findnodes(dim_xpath);
