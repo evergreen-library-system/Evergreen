@@ -112,11 +112,18 @@ void _rest_xml_output(growing_buffer* buf, jsonObject* obj, char * obj_class, in
 		}
 
 	} else if(obj->type == JSON_NUMBER) {
-		if (notag)
-			buffer_fadd(buf,"%lf",tag, jsonObjectGetNumber(obj),tag);
-		else
-			buffer_fadd(buf,"<%s>%lf</%s>",tag, jsonObjectGetNumber(obj),tag);
-
+		double x = jsonObjectGetNumber(obj);
+		if (notag) {
+			if (x == (int)x)
+				buffer_fadd(buf,"%d",tag, x,tag);
+			else
+				buffer_fadd(buf,"%lf",tag, x,tag);
+		} else {
+			if (x == (int)x)
+				buffer_fadd(buf,"<%s>%d</%s>",tag, x,tag);
+			else
+				buffer_fadd(buf,"<%s>%lf</%s>",tag, x,tag);
+		}
 
 	} else if (obj->type == JSON_ARRAY) {
 		if (!notag) {
