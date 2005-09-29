@@ -11,6 +11,7 @@ var sdump_levels = {
 	'D_NONE' : false,
 	'D_ALL' : false,
 	'D_ERROR' : true,
+	'D_DEBUG' : true,
 	'D_TRACE' :  false,
 	'D_TRACE_ENTER' :  false,
 	'D_TRACE_EXIT' :  false,

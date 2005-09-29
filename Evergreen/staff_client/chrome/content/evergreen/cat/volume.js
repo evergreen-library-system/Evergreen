@@ -67,23 +67,25 @@ function page2_add_volume_row(ou,ti) {
 			//cn_row.setAttribute('id','p2_'+ou.id());
 			cn_row.setAttribute('ou_name',ou.name());
 			cn_row.setAttribute('ou_id',ou.id());
-			cn_row.setAttribute('spine_row','1');
+			//cn_row.setAttribute('spine_row','1');
 		rows.appendChild(cn_row);
 		cn_row.appendChild( document.createElement('label') );
 		var cn_text1 = document.createElement('textbox');
 			cn_text1.setAttribute('size','20');
 			cn_text1.setAttribute('value','A Call Number');
-			cn_text1.setAttribute('spine_cn','1');
+			//cn_text1.setAttribute('spine_cn','1');
 		cn_row.appendChild( cn_text1 );
 		var cn_text2 = document.createElement('textbox');
 			cn_text2.setAttribute('size','4');
 			cn_text2.setAttribute('value','0');
 		cn_row.appendChild( cn_text2 );
+		/*
 		var cn_text3 = document.createElement('textbox');
 			cn_text3.setAttribute('size','4');
 			cn_text3.setAttribute('value','0');
 			cn_text3.setAttribute('spine_label_count','1');
 		cn_row.appendChild( cn_text3 );
+		*/
 	}
 }
 
@@ -104,25 +106,27 @@ function copy_add_page2_add_volume_row(ou,ti) {
 			cn_row.setAttribute('ou_name',ou.name());
 			cn_row.setAttribute('ou_id',ou.id());
 			cn_row.setAttribute('volume_id',ti.getAttribute('volume_id'));
-			cn_row.setAttribute('spine_row','1');
+			//cn_row.setAttribute('spine_row','1');
 		rows.appendChild(cn_row);
 		cn_row.appendChild( document.createElement('label') );
 		var cn_text1 = document.createElement('textbox');
 			cn_text1.setAttribute('size','20');
 			cn_text1.setAttribute('volume_id',ti.getAttribute('volume_id'));
 			cn_text1.setAttribute('value',ti.getAttribute('callnumber'));
-			cn_text1.setAttribute('spine_cn','1');
+			//cn_text1.setAttribute('spine_cn','1');
 		cn_row.appendChild( cn_text1 );
 		cn_text1.disabled = true;
 		var cn_text2 = document.createElement('textbox');
 			cn_text2.setAttribute('size','4');
 			cn_text2.setAttribute('value','0');
 		cn_row.appendChild( cn_text2 );
+		/*
 		var cn_text3 = document.createElement('textbox');
 			cn_text3.setAttribute('size','4');
 			cn_text3.setAttribute('value','0');
 			cn_text3.setAttribute('spine_label_count','1');
 		cn_row.appendChild( cn_text3 );
+		*/
 }
 
 function page3_add_volume_row(id,data) {
@@ -316,6 +320,7 @@ function build_page_four() {
 }
 
 function send_to_bill() {
+	mw.sdump('D_DEBUG','cn_list = \n' + js2JSON( cn_list ) + '\n');
 	try {
 		var result = user_request(
 				'open-ils.cat',
@@ -325,6 +330,20 @@ function send_to_bill() {
 		mw.sdump('D_CAT','volume_tree.fleshed.batch.update result: ' + js2JSON(result) + '\n');
 	} catch(E) {
 		handle_error(E);
+	}
+	var spine_labels = mw.map_list( 
+		cn_list, 
+		function(cn) { 
+			var label = cn.label(); var copies = cn.copies();
+			if (copies) { copies = copies.length; } else { copies = 0; }
+			return [ label, copies ]; 
+		} 
+	);
+	alert( window.app_shell );
+	try {
+		spawn_spine_label_wizard(document,'new_window','',{ 'spine_labels' : spine_labels }); 
+	} catch(E) {
+		sdump('D_ERROR', 'spine label: ' + js2JSON(E) + '\n');
 	}
 	refresh_spawning_browse_list();
 }
@@ -421,6 +440,7 @@ function submit_edited_volumes() {
 		cn_list.push( cn );
 	}
 	send_to_bill();
+	mw.sdump('D_DEBUG','cn_list = \n' + js2JSON(cn_list) + '\n');
 }
 
 function spine_labels() {
