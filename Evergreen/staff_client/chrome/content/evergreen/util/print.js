@@ -202,7 +202,9 @@ function sPrint(s,silent) {
 	w.minimize(); mw.minimize();
 	setTimeout(
 		function() {
-			NSPrint(w,silent); w.minimize(); w.close(); mw.minimize();
+			if (!mw.printDebug) {
+				NSPrint(w,silent); w.minimize(); w.close(); mw.minimize();
+			}
 		},0
 	);
 }
