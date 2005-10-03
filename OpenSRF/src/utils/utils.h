@@ -184,4 +184,11 @@ char* file_to_string(const char* filename);
 char* md5sum( char* text, ... );
 
 
+/**
+  Checks the validity of the file descriptor
+  returns -1 if the file descriptor is invalid
+  returns 0 if the descriptor is OK
+  */
+int osrfUtilsCheckFileDescriptor( int fd );
+
 #endif

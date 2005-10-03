@@ -125,18 +125,16 @@ int session_wait( transport_session* session, int timeout ) {
 int session_send_msg( 
 		transport_session* session, transport_message* msg ) {
 
-	if( ! session ) { return 0; }
+	if( ! session ) { return -1; }
 
 	if( ! session->state_machine->connected ) {
 		warning_handler("State machine is not connected in send_msg()");
-		return 0;
+		return -1;
 	}
 
 	message_prepare_xml( msg );
 	//tcp_send( session->sock_obj, msg->msg_xml );
-	socket_send( session->sock_id, msg->msg_xml );
-
-	return 1;
+	return socket_send( session->sock_id, msg->msg_xml );
 
 }
 

@@ -64,8 +64,24 @@ void osrfStringArrayFree(osrfStringArray* arr) {
 void string_array_destroy(string_array* arr) {
 	if(arr) {
 		int i = 0;
-		while( i++ < arr->size ) free(arr->array[i]);
+		while( i < arr->size ) free(arr->array[i++]);
 		free(arr->array);
 		free(arr);
 	}
 }
+
+
+int osrfStringArrayContains( osrfStringArray* arr, char* string ) {
+	if(!(arr && string)) return 0;
+	
+	int i;
+	for( i = 0; i != arr->size; i++ ) {
+		char* str = osrfStringArrayGetString(arr, i);
+		if(str) {
+			if(!strcmp(str, string)) return 1;
+		}
+	}
+
+	return 0;
+}
+

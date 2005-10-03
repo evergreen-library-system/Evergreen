@@ -3,7 +3,7 @@
 #	provided to any method is not at least as large as the 'argc' setting for the method
 
 CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -DOSRF_STRICT_PARAMS -rdynamic -fno-strict-aliasing
-LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache
+LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache -LJudy
 
 TARGETS = osrf_message.o \
 			 osrf_app_session.o \
@@ -15,6 +15,9 @@ TARGETS = osrf_message.o \
 			 osrf_application.o \
 			 osrf_cache.o \
 			 osrf_log.o \
+			 osrf_transgroup.o \
+			 osrf_list.o \
+			 osrf_hash.o \
 			 xml_utils.o
 
 HEADERS = osrf_message.h \
@@ -27,6 +30,9 @@ HEADERS = osrf_message.h \
 			 osrf_application.h \
 			 osrf_cache.h \
 			 osrf_log.h \
+			 osrf_transgroup.h \
+			 osrf_list.h \
+			 osrf_hash.h \
 			 xml_utils.h
 
 all: xml_utils.o $(TARGETS) copy 
@@ -49,6 +55,9 @@ osrfConfig.o:	osrfConfig.c osrfConfig.h xml_utils.o
 osrf_application.o: osrf_application.c osrf_application.h
 osrf_cache.o:	osrf_cache.c osrf_cache.h
 osrf_log.o:	osrf_log.c osrf_log.h
+osrf_list.o:	osrf_list.c osrf_list.h
+osrf_hash.o:	osrf_hash.c osrf_hash.h
+
 
 clean:
 	/bin/rm -f *.o libopensrf_stack.so xml_utils.h xml_utils.c

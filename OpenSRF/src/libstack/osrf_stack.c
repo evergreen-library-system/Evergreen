@@ -34,12 +34,14 @@ osrfAppSession* osrf_stack_transport_handler( transport_message* msg, char* my_s
 
 	if( msg->is_error && ! msg->thread ) {
 		warning_handler("!! Received jabber layer error for %s ... exiting\n", msg->sender );
+		message_free( msg );
 		return NULL;
 	}
 
 	if(! msg->thread  && ! msg->is_error ) {
 		warning_handler("Received a non-error message with no thread trace... dropping");
 		message_free( msg );
+		return NULL;
 	}
 
 	osrf_app_session* session = osrf_app_session_find_session( msg->thread );

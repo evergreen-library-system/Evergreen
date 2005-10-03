@@ -26,6 +26,9 @@ void osrfStringArrayAdd(osrfStringArray*, char* string);
 char* string_array_get_string(osrfStringArray* arr, int index);
 char* osrfStringArrayGetString(osrfStringArray* arr, int index);
 
+/* returns true if this array contains the given string */
+int osrfStringArrayContains( osrfStringArray* arr, char* string );
+
 
 void string_array_destroy(osrfStringArray*);
 void osrfStringArrayFree(osrfStringArray*);

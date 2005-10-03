@@ -144,7 +144,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	char* port			= osrfConfigGetValue( NULL, "/port" );
 	char* unixpath		= osrfConfigGetValue( NULL, "/unixpath" );
 
-	char* domain = osrfStringArrayGetString( arr, 0 ); /* just the first for now */
+	char* domain = strdup(osrfStringArrayGetString( arr, 0 )); /* just the first for now */
 	osrfStringArrayFree(arr);
 
 

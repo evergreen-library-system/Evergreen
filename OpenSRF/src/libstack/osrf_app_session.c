@@ -245,16 +245,14 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	char target_buf[512];
 	memset(target_buf,0,512);
-	//char* domain	= config_value( "opensrf.bootstrap", "//%s/domains/domain1", osrf_get_config_context() ); /* just the first for now */
-	//char* router_name = config_value( "opensrf.bootstrap", "//%s/router_name", osrf_get_config_context() );
 
 	osrfStringArray* arr = osrfNewStringArray(8);
 	osrfConfigGetValueList(NULL, arr, "/domains/domain");
 	char* domain = osrfStringArrayGetString(arr, 0);
 	char* router_name = osrfConfigGetValue(NULL, "/router_name");
-	osrfStringArrayFree(arr);
 	
 	sprintf( target_buf, "%s@%s/%s",  router_name, domain, remote_service );
+	osrfStringArrayFree(arr);
 	//free(domain);
 	free(router_name);
 
@@ -376,7 +374,7 @@ int osrf_app_session_make_req(
 	}
 
 	osrf_app_request* req = _osrf_app_request_init( session, req_msg );
-	if(!_osrf_app_session_send( session, req_msg ) ) {
+	if(_osrf_app_session_send( session, req_msg ) ) {
 		warning_handler( "Error sending request message [%d]", session->thread_trace );
 		return -1;
 	}
@@ -541,7 +539,7 @@ int osrf_app_session_connect(osrf_app_session* session){
 	session->state = OSRF_SESSION_CONNECTING;
 	int ret = _osrf_app_session_send( session, con_msg );
 	osrf_message_free(con_msg);
-	if(!ret)	return 0;
+	if(ret)	return 0;
 
 	time_t start = time(NULL);	
 	time_t remaining = (time_t) timeout;

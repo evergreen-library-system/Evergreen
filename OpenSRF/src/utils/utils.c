@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 
 #include "utils.h"
+#include <errno.h>
 
 inline void* safe_malloc( int size ) {
 	void* ptr = (void*) malloc( size );
@@ -427,4 +428,20 @@ char* md5sum( char* text, ... ) {
 
 }
 
+int osrfUtilsCheckFileDescriptor( int fd ) {
+
+	fd_set tmpset;
+	FD_ZERO(&tmpset);
+	FD_SET(fd, &tmpset);
+
+	struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = 0;
+
+	if( select(fd + 1, &tmpset, NULL, NULL, &tv) == -1 ) {
+		if( errno == EBADF ) return -1;
+	}
+
+	return 0;
+}
 
