@@ -1,6 +1,8 @@
 [%
 
 PROCESS inputs;
+PROCESS class_manip;
+PROCESS widget_manip;
 PROCESS logic_header.ttk;
 
 templates = DBI.tie('reporter.stage2', 'id')
@@ -51,11 +53,14 @@ BLOCK save_stage2;
 		
 		IF p4
 			AND (CGI.param("$p1:$p2:$p3") == p4)
-			AND (CGI.param("$p1:$p2").list.grep("^$p3$"))
-			AND (CGI.param("$p1").list.grep("^$p2$"));
+			AND (CGI.param("$p1:$p2").list.grep(p3).size > 0)
+			AND (CGI.param("$p1").list.grep(p2).size > 0);
 
 			p_obj.$p1.$p2.$p3.$p4 = CGI.param(p);
 
+		ELSIF p2
+			AND (CGI.param("$p1").list.grep(p2).size > 0);
+			p_obj.dims.$p2 = 1;
 		ELSIF p1 != 'filter';
 			p_obj.$p1 = CGI.param(p);
 		END;
@@ -67,7 +72,7 @@ BLOCK save_stage2;
 	logme([stage1, params, owner, pub]);
 
 	q = DBI.prepare( stage2_insert );
-	junk = q.execute(stage1, params, owner, pub);
+	CALL q.execute(stage1, params, owner, pub);
 
 	FOR new_s2 = DBI.query("SELECT * FROM reporter.stage2_id_seq;");
 		tid = new_s2.last_value;
@@ -100,12 +105,12 @@ BLOCK view_stage2;
 				' :: ' _ params.templatename _ '<br>';
 				INCLUDE anchor
 					text="Create a report from this template"
-					href=CGI.url('-path', 1, '-query', 1) _ '&action=run';
+					href=CGI.url('-path', 1) _ '?action=run&id=' _ tmpl.id;
 			END;
 		END;
 
 		WRAPPER html/row;
-			INCLUDE html/cell colspan=5 content="Filters:";
+			INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
 		END;
 
 		FOR f_table IN params.filter.keys;
@@ -138,7 +143,37 @@ BLOCK view_stage2;
 		END;
 
 		WRAPPER html/row;
-			INCLUDE html/cell colspan=5 content="Available Attributes:";
+			INCLUDE html/cell colspan=5 content="<br>";
+		END;
+
+		WRAPPER html/row;
+			INCLUDE html/cell colspan=5 content="<b>Attributes Available for Output</b>";
+		END;
+
+		FOR f_table IN params.dims.keys;
+			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+			tname = table.findvalue( "label" );
+			tdesc = table.findvalue( "desription" );
+
+			NEXT IF table.findvalue('@fact-table') == 'true';
+			
+			WRAPPER html/row;
+				INCLUDE html/cell;
+				INCLUDE html/cell colspan=4 align='left' content=tname;
+			END;
+
+
+			FOR field IN table.findnodes('fields/field[not(@primary) or @primary != "true"]');
+				fname = field.findvalue( "label" );
+				fdesc = field.findvalue( "desription" );
+
+				WRAPPER html/row;
+
+					INCLUDE html/cell colspan=2;
+					INCLUDE html/cell align='right' content=fname;
+					INCLUDE html/cell colspan=2 align='center' content=fdesc;
+				END;
+			END;
 		END;
 
 	END;
@@ -166,7 +201,7 @@ BLOCK run_stage2;
 		END;
 
 		WRAPPER html/row;
-			INCLUDE html/cell colspan=4 content="Filters:";
+			INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
 		END;
 
 		FOR f_table IN params.filter.keys;
@@ -195,7 +230,14 @@ BLOCK run_stage2;
 
 						WRAPPER html/cell align='center';
 							TRY;
-									INCLUDE $w_file;
+									classname = table.findvalue('@id');
+									fieldname = field.findvalue('@name');
+									widgetname = widget.findvalue('@name');
+									famname = fam.findvalue('@name');
+
+									input_prefix = "$famname:$widgetname:$classname:$fieldname";
+
+									INCLUDE $w_file widget_family=fam;
 							CATCH;
 								%]ARG!! Couldn't render widget [% $w_file %] ([% error.info %])!!![%
 							END;
@@ -206,7 +248,37 @@ BLOCK run_stage2;
 		END;
 
 		WRAPPER html/row;
-			INCLUDE html/cell colspan=5 content="Available Attributes:";
+			INCLUDE html/cell colspan=5 content="<br>";
+		END;
+
+		WRAPPER html/row;
+			INCLUDE html/cell colspan=5 content="<b>Attributes Available for Output</b>";
+		END;
+
+		FOR f_table IN params.dims.keys;
+			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+			tname = table.findvalue( "label" );
+			tdesc = table.findvalue( "desription" );
+
+			NEXT IF table.findvalue('@fact-table') == 'true';
+			
+			WRAPPER html/row;
+				INCLUDE html/cell;
+				INCLUDE html/cell colspan=4 align='left' content=tname;
+			END;
+
+
+			FOR field IN table.findnodes('fields/field[not(@primary) or @primary != "true"]');
+				fname = field.findvalue( "label" );
+
+				WRAPPER html/row;
+
+					INCLUDE html/cell colspan=2;
+					INCLUDE html/cell align='right' content=fname;
+					WRAPPER html/cell align='center';
+					END;
+				END;
+			END;
 		END;
 
 	END;

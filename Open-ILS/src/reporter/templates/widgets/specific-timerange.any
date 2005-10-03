@@ -1,1 +1,79 @@
-<b>don't mind me, just a placeholder</b>
+[%
+
+USE date;
+USE start = DateTime(now = 1);
+USE end = DateTime(now = 1);
+
+PROCESS inputs;
+
+WRAPPER html/table ;
+	WRAPPER html/row;
+		INCLUDE html/cell colspan=6 align='center' content='Start time';
+	END;
+
+	WRAPPER html/row;
+		INCLUDE html/cell content='Year';
+		INCLUDE html/cell content='Month';
+		INCLUDE html/cell content='Day';
+		INCLUDE html/cell content='Hour';
+		INCLUDE html/cell content='Minute';
+		INCLUDE html/cell content='Second';
+	END;
+
+	WRAPPER html/row;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':start:year' size=4 value=start.year;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':start:month' size=4 value=start.month;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':start:day' size=4 value=start.day;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':start:hour' size=4 value=start.hour;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':start:minute' size=4 value=start.minute;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':start:second' size=4 value=start.second;
+		END;
+	END;
+
+	WRAPPER html/row;
+		INCLUDE html/cell colspan=6 align='center' content='End time';
+	END;
+
+	WRAPPER html/row;
+		INCLUDE html/cell content='Year';
+		INCLUDE html/cell content='Month';
+		INCLUDE html/cell content='Day';
+		INCLUDE html/cell content='Hour';
+		INCLUDE html/cell content='Minute';
+		INCLUDE html/cell content='Second';
+	END;
+
+	WRAPPER html/row;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':end:year' size=4 value=end.year;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':end:month' size=4 value=end.month;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':end:day' size=4 value=end.day;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':end:hour' size=4 value=end.hour;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':end:minute' size=4 value=end.minute;
+		END;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':end:second' size=4 value=end.second;
+		END;
+	END;
+END;
+
+%]

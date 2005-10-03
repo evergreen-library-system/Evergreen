@@ -1,6 +1,8 @@
 [%
 
 PROCESS inputs;
+PROCESS class_manip;
+PROCESS widget_manip;
 PROCESS logic_header.ttk;
 
 WRAPPER html/html;
@@ -16,9 +18,9 @@ WRAPPER html/html;
 			ELSE;
 				%]|<a href="?detail=1">Details (All)</a>[%
 			END;
-			PROCESS all_stage1;
+			INCLUDE all_stage1;
 		ELSE;
-			PROCESS one_stage1;
+			INCLUDE one_stage1;
 		END;
 	END;
 	INCLUDE footer.ttk;
@@ -32,7 +34,9 @@ END;
 
 BLOCK one_stage1;
 	%]|<a href="[%
-	CGI.url('-absolute',1,'-path_info',1,'-query',1).replace('[&\?;]?id=[\w\.]+','');
+	CGI.url('-absolute',1,'-path_info',1,'-query',1)
+		.replace('[&\?;]?id=[\w\.]+','')
+		.replace('[&\?;]?create_stage2=1','');
 	%]">Show all</a>[%
 
 	table_xpath =
@@ -43,7 +47,8 @@ BLOCK one_stage1;
 	fact_table = table.findvalue('@id');
 	logme(fact_table);
 
-	INCLUDE stage1_summary;
+	INCLUDE class_table class=table;
+
 	INCLUDE stage2_new IF CGI.param('create_stage2') == 1;
 
 END;
@@ -61,7 +66,7 @@ BLOCK all_stage1;
 
 		'<li>';
 
-		INCLUDE stage1_summary links = 1 table = tab;
+		INCLUDE class_table class=tab;
 
 		IF loop.count != loop.size;
 		'<hr>';
@@ -73,58 +78,6 @@ END;
 
 
 
-BLOCK stage1_summary links=0;
-	fact_table = table.findvalue('@id');
-	WRAPPER html/table width="100%";
-		WRAPPER html/row;
-			WRAPPER html/cell align="right";
-				%]<b>Name:</b>[%
-			END;
-			WRAPPER html/cell;
-				table.findvalue('label');
-			END;
-		END;
-		WRAPPER html/row;
-			WRAPPER html/cell align="right";
-				%]<b>Description:</b>[%
-			END;
-			WRAPPER html/cell;
-				table.findvalue('description');
-			END;
-		END;
-		WRAPPER html/row;
-			WRAPPER html/cell align="right";
-				%]<b>Actions:</b>[%
-			END;
-			WRAPPER html/cell;
-				IF CGI.param('detail');
-					%]<a href="?detail=0&id=[% fact_table %]">No Details</a>[%
-				ELSE;
-					%]<a href="?detail=1&id=[% fact_table %]">Details</a>[%
-				END;
-				%]|<a href="?create_stage2=1&id=[% fact_table %]">New Report Template</a>[%
-			END;
-		END;
-		WRAPPER html/row;
-			INCLUDE html/cell align="right" valign='top' content='Report Templates:';
-			WRAPPER html/cell;
-				q = 'select * from reporter.stage2 ' _
-					'where pub is true or owner = ' _ DBI.quote(user.id());
-				FOR r IN DBI.query(q);
-					INCLUDE anchor
-						href="stage2?id=" _ r.id
-						text=utils.JSON2perl(r.params).templatename;
-						'<br>';
-				END;
-			END;
-		END;
-
-		PROCESS stage1_detail IF CGI.param('detail') == 1;
-	END;
-END;
-
-
-%][%
 
 BLOCK stage2_new;
 	col_xpath = "/reporter/tables/table[@id='" _ fact_table _ "']/fields/field[@core='true']";
@@ -139,7 +92,18 @@ BLOCK stage2_new;
 				Public template<br><br>[%
 
 	
-	WRAPPER html/table width="100%" border=1;
+	WRAPPER html/table width="100%" style='border-top: 1px solid black';
+		WRAPPER html/row;
+			WRAPPER html/cell;
+				WRAPPER html/table + html/row width='100%';
+					INCLUDE html/cell content='<b>Report Base</b>';
+				END;
+				WRAPPER html/table + html/row width='100%';
+					INCLUDE html/cell content='<b>Attribute</b>' align='right';
+				END;
+			END;
+			INCLUDE html/cell content='<b>Widget</b>' align='center';
+		END;
 		WRAPPER html/row;
 			WRAPPER html/cell colspan=2;
 				# hidden input here ...
@@ -157,7 +121,20 @@ BLOCK stage2_new;
 		dim_table = dim_table.value();
 		dimension = config.findnodes("/reporter/tables/table[@id='$dim_table']");
 
-		WRAPPER html/table width="100%" border=1;
+		'<br/><br/>';
+
+		WRAPPER html/table width="100%" style='border-top: 1px solid black';
+			WRAPPER html/row;
+				WRAPPER html/cell;
+					WRAPPER html/table + html/row width='100%';
+						INCLUDE html/cell content='<b>Dimension</b>';
+					END;
+					WRAPPER html/table + html/row width='100%';
+						INCLUDE html/cell content='<b>Attribute</b>' align='right';
+					END;
+				END;
+				INCLUDE html/cell content='<b>Widget</b>' align='center';
+			END;
 			WRAPPER html/row;
 				WRAPPER html/cell colspan=2;
 					# checkbox input here ...
@@ -174,250 +151,6 @@ BLOCK stage2_new;
 
 	%]</form>[%
 
-END;
-
-
-BLOCK widget_selector;
-
-	logme("widget_selector called for table $tableid");
-
-	#   if we got some columns, use them. if not, get all non-primary columns
-	IF ! columns;
-		columns_xpath =
-			'/reporter/tables/table[@id="' _ tableid _
-			'"]/fields/field[not(@primary) or @primary!="true"]'
-		columns = config.findnodes(columns_xpath);
-		logme("widget_selector had to grab columns for table $tableid!");
-	END;
-
-	column_input_type="checkbox";
-	IF force;
-		column_input_type="hidden";
-	END;
-
-	FOR column IN columns;
-		column_name=column.findvalue('@name');
-
-		WRAPPER html/row;
-			WRAPPER html/cell valign='top' align='right';
-				# checkbox for column filter here ...
-				INCLUDE $column_input_type
-					name="filter:$tableid"
-					value=column_name
-					checked=1; 
-				column.findvalue('label');
-			END;
-			WRAPPER html/cell;
-
-				col_widget_fams_xpath =
-					'/reporter/widgets/widget-family[@datatype="' _
-					column.findvalue('@datatype') _ '"]';
-
-				IF column.findnodes('@widget-family');
-					col_widget_fams_xpath =
-						'/reporter/widgets/widget-family[@name="' _
-						column.findvalue('@widget-family') _ '"]';
-				END;
-
-				logme("finding widget families using $col_widget_fams_xpath");
-
-				widget_fams = config.findnodes(col_widget_fams_xpath);
-
-				'<UL>';
-				FOR fam IN widget_fams;
-
-					fam_input = 'radio';
-					IF loop.size == 1;
-						fam_input = 'hidden';
-					END;
-
-					checked = 0;
-					IF loop.count == 1;
-						checked = 1;
-					END;
-
-					fam_name = fam.findvalue('@name');
-					# radio for widget family here ...
-					'<LI>';
-					INCLUDE $fam_input
-						name="filter:$tableid:$column_name"
-						value= fam_name;
-					fam.findvalue('label');
-					'<UL>';
-					
-					FOR widget IN fam.findnodes('widget');
-
-						fam_input = 'radio';
-						IF loop.size == 1;
-							fam_input = 'hidden';
-						END;
-
-						checked = 0;
-						IF loop.count == 1;
-							checked = 1;
-						END;
-
-						widget_name = widget.findvalue('@name');
-						# radio for widget here ...
-						'<LI>';
-						INCLUDE $fam_input
-							name="filter:$tableid:$column_name:$fam_name"
-							value= widget_name;
-						widget.findvalue('label');
-						'</LI>';
-					END;
-					'</UL>';
-					'</LI>';
-				END;
-				'</UL>';
-			END;
-		END;
-	END;
-END;
-
-
-
-
-
-%][%
-
-
-
-
-BLOCK text;
-	%]<INPUT TYPE="text" NAME="[%
-		name;
-		%]" VALUE="[%
-		value;
-		%]" [%
-		IF sz;
-			%]SIZE="[% sz %]" [%
-		END;
-		IF mx;
-			%]MAXLENGTH="[% mx %]" [%
-		END;
-		%]>[%
-END;
-
-BLOCK textarea;
-	%]<TEXTAREA NAME="[% name %]">[% value %]</TEXTAREA>[%
-END;
-
-BLOCK hidden;
-	%]<INPUT TYPE="hidden" NAME="[% name %]" VALUE="[% value %]">[%
-END;
-
-BLOCK radio;
-	%]<INPUT TYPE="radio" NAME="[% name %]" VALUE="[% value %]" [% IF checked %]CHECKED[% END %]>[%
-END;
-
-BLOCK checkbox;
-	%]<INPUT TYPE="checkbox" NAME="[% name %]" VALUE="[% value %]" [% IF checked %]CHECKED[% END %]>[%
-END;
-
-BLOCK submit;
-	%]<INPUT TYPE="submit" NAME="[% name %]" VALUE="[% value %]">[%
-END;
-
-BLOCK anchor;
-	%]<a
-		href="[%href%]"
-		title="[%title%]"
-		class="[%class%]"
-		target="[%target%]"
-		onclick="[%onclick%]"
-		alt="[%alt%]">[%text%]</a>[%
-END;
-
-
-
-
-BLOCK render_dimension;
-	INCLUDE checkbox checked = 1 name = 's2_dim_table' value = dim_object.findvalue('@id');
-	%]<b>[% dim_object.findvalue('name') %]</b><br>[%
-	
-	WRAPPER html/table width="100%" ;
-		WRAPPER html/row;
-			WRAPPER html/cell align="right";
-			END;
-		END;
-	END;
-END;
-
-
-
-
-
-BLOCK dim_description;
-	WRAPPER html/row;
-		WRAPPER html/cell align="right";
-			%]Name:[%
-		END;
-		WRAPPER html/cell;
-			dim.findvalue('label');
-		END;
-	END;
-	PROCESS table_fields table = dim;
-END; 
-
-
-
-
-
-
-BLOCK table_fields;
-	FOR f IN table.findnodes('fields/field');
-		WRAPPER html/row;
-			WRAPPER html/cell align="right";
-				%]Field:[%
-			END;
-			WRAPPER html/cell;
-				f.findvalue('@name');
-				%] ([% f.findvalue('@datatype') %])[%
-			END;
-		END;
-	END;
-END;
-
-
-
-
-
-
-BLOCK stage1_detail;
-	PROCESS table_fields table = config.findnodes("/reporter/tables/table[@id='$fact_table']");
-
-	WRAPPER html/row;
-		WRAPPER html/cell align="right";
-			%]Report Attributes<br/>(dimensions):[%
-		END;
-		WRAPPER html/cell;
-			incs_xpath =
-				'/reporter/tables/table[@id="' _ fact_table _'"]'_
-				'/links/link/@field';
-			logme(incs_xpath);
-
-			incs = config.findnodes(incs_xpath);
-
-			FOR dim IN incs;
-				%]<table border=1 width="100%">[%
-
-				link_xpath = '/reporter/tables/table[@id="' _ fact_table _'"]'_
-									'/links/link[@field="' _ dim.value() _ '"]/@table';
-				logme(link_xpath);
-
-				dim_table = config.findvalue(link_xpath);
-
-				dim_xpath = '/reporter/tables/table[@id="' _ dim_table _ '"]';
-				logme(dim_xpath);
-							
-				dim_def = config.findnodes(dim_xpath);
-
-				PROCESS dim_description dim = dim_def;
-				%]</table>[%
-			END;
-		END;
-	END;
 END;
 
 %]

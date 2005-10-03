@@ -51,7 +51,7 @@
 	
 	
 	<!-- Specific time range selection family -->
-	<widget-family name="specifc-timerange" datatype="timestamptz">
+	<widget-family name="specific-timerange" datatype="timestamptz">
 		<label>Specific time-range widgets</label>
 	
 		<widget name="any">

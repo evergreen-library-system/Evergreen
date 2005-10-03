@@ -1,0 +1,13 @@
+[%
+
+PROCESS inputs;
+
+q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' ORDER BY ' _ fieldname _ ';';
+
+WRAPPER select name=input_prefix;
+	FOR name = DBI.query(q);
+		INCLUDE option value=name.$fieldname;
+	END;
+END;
+
+%]
