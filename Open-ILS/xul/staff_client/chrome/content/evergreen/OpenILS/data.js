@@ -25,21 +25,28 @@ OpenILS.data = function (mw,G) {
 
 	function a_get(obj,i) { return [i, obj[i]]; }  // funkiness with loops and closures
 
-	for (var i in this._cacheable_fm_objects) {
-		var classname = a_get(this._cacheable_fm_objects,i)[0];
-		var data = a_get(this._cacheable_fm_objects,i)[1];
+	JSAN.use('util.file');
+
+	function gen_fm_retrieval_func(classname,data) {
 		var app = data[0]; var method = data[1]; var params = data[2];
-		this.chain.push(
-			function() {
-				try {
-					obj.list[classname] = obj.G.network.request( app, method, params);
-					// store an offline copy
-				} catch(E) {
-					// try offline
-				}
-				//obj.hash[classname] = convert_object_list_to_hash( obj.list[classname] );
+		return function () {
+			try {
+				obj.list[classname] = obj.G.network.request( app, method, params);
+				// store an offline copy
+				var file = new util.file( obj.mw, obj.G, classname );
+				file.set_object( obj.list[classname] );
+
+			} catch(E) {
+				// try offline
 			}
-		);
+			//obj.hash[classname] = convert_object_list_to_hash( obj.list[classname] );
+		}
+	}
+
+	obj.G.error.sdump('D_DEBUG','_cacheable_fm_objects = ' + js2JSON(this._cacheable_fm_objects) + '\n');
+
+	for (var i in this._cacheable_fm_objects) {
+		this.chain.push( gen_fm_retrieval_func(i,this._cacheable_fm_objects[i]) );
 	}
 
 	/*

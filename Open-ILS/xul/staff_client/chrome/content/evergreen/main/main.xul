@@ -20,12 +20,12 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true;</script>
 	<script type="text/javascript" src="../OpenILS/util/utils.js"></script>
 	<script type="text/javascript" src="../OpenILS/util/md5.js"></script>
 	<script type="text/javascript" src="../OpenILS/util/JSON.js"></script>
 	<script type="text/javascript" src="../OpenILS/util/fmall.js"></script>
 	<script type="text/javascript" src="../OpenILS/util/fmgen.js"></script>
-	<script type="text/javascript">var IAMXUL = true;</script>
 	<script type="text/javascript" src="../OpenILS/util/RemoteRequest.js"></script>
 	<script type="text/javascript" src="../OpenILS/util/OrgTree.js"></script>
 	<script type="text/javascript" src="../OpenILS/util/org_utils.js"></script>
