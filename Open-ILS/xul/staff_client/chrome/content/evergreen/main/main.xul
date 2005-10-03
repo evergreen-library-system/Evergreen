@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Main, Authentication Window -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!-- Localization -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/auth.dtd">
+
+<window id="main_win" 
+	onload="main_init()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- PRESENTATION -->
+	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+	<?xml-stylesheet href="chrome://evergreen/skin/auth.css" type="text/css"?>
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript" src="../OpenILS/util/utils.js"></script>
+	<script type="text/javascript" src="../OpenILS/util/md5.js"></script>
+	<script type="text/javascript" src="../OpenILS/util/JSON.js"></script>
+	<script type="text/javascript" src="../OpenILS/util/fmall.js"></script>
+	<script type="text/javascript" src="../OpenILS/util/fmgen.js"></script>
+	<script type="text/javascript">var IAMXUL = true;</script>
+	<script type="text/javascript" src="../OpenILS/util/RemoteRequest.js"></script>
+	<script type="text/javascript" src="../OpenILS/util/OrgTree.js"></script>
+	<script type="text/javascript" src="../OpenILS/util/org_utils.js"></script>
+
+	<script type="text/javascript" src="JSAN.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+
+	<commandset id="auth_cmds">
+		<command id="cmd_login"/>
+		<command id="cmd_logoff"/>
+		<command id="cmd_close_window"/>
+	</commandset>
+
+	<keyset id="auth_keys">
+		<key id="auth-login-key" modifiers="accel" key="S" command="cmd_login"/>
+		<key id="auth-logoff-key" modifiers="accel" key="L" command="cmd_logoff"/>
+		<key id="auth-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+	</keyset>
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- CONTENT -->
+	<groupbox id="main_groupbox" flex="1">
+		<caption id="main_caption" label="&auth.login_header;"/>
+		<label value="&auth.version;"/>
+		<label value="Development Version"/>
+		<label value=" "/>
+		<grid>
+			<columns>
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label value="&auth.name_prompt;" control="name_prompt" accesskey="&auth.name_prompt.key;"/>
+					<textbox id="name_prompt" value=""/>
+				</row>
+				<row>
+					<label value="&auth.password_prompt;" control="password_prompt" accesskey="&auth.password_prompt.key;"/>
+					<textbox id="password_prompt" value="" type="password"/>
+				</row>
+				<row>
+					<label/>
+					<hbox>
+					<button id="submit_button" label="&auth.submit_prompt;" accesskey="&auth.submit_prompt.key;" command="cmd_login"/>
+					<button label="&auth.logoff_prompt;" accesskey="&auth.logoff_prompt.key;" command="cmd_logoff"/>
+					</hbox>
+				</row>
+				<row>
+					<label/>
+					<label/>
+				</row>
+				<row>
+					<label/>
+					<button label="&auth.quit_prompt;" accesskey="&auth.quit_prompt.key;" command="cmd_close_window"/>
+				</row>
+			</rows>
+		</grid>
+		<progressmeter id="auth_meter" mode="normal" value="0"/>
+	</groupbox>
+
+</window>
+
