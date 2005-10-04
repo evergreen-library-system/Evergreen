@@ -12,35 +12,33 @@ int osrfMathRun( osrfMethodContext* );
 
 int osrfAppInitialize() {
 
-	osrfLogInit(MODULENAME);
-
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"add", 
 			"osrfMathRun", 
 			"Addss two numbers",
-			"[ num1, num2 ]", 2 );
+			"[ num1, num2 ]", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"sub", 
 			"osrfMathRun", 
 			"Subtracts two numbers",
-			"[ num1, num2 ]", 2 );
+			"[ num1, num2 ]", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"mult", 
 			"osrfMathRun", 
 			"Multiplies two numbers",
-			"[ num1, num2 ]", 2 );
+			"[ num1, num2 ]", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"div", 
 			"osrfMathRun", 
 			"Divides two numbers",
-			"[ num1, num2 ]", 2 );
+			"[ num1, num2 ]", 2, 0 );
 
 	return 0;
 }
@@ -73,7 +71,7 @@ int osrfMathRun( osrfMethodContext* ctx ) {
 			if(!strcmp(ctx->method->name, "div"))	r = i / j;
 
 			jsonObject* resp = jsonNewNumberObject(r);
-			osrfAppRequestRespondComplete( ctx->session, ctx->request, resp );
+			osrfAppRespondComplete( ctx, resp );
 			jsonObjectFree(resp);
 
 			free(a); free(b);

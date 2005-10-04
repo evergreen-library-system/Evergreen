@@ -42,11 +42,17 @@ webcore-install:
 	#mkdir -p $(WEBDIR)
 	#cp -r ../web/* $(WEBDIR)
 
-c_apps:	mod_ils_rest_gateway
+libfieldmapper:	
+	make -C apachemods libfieldmapper.so
+
+libfieldmapper-install:	
+	make -C apachemods libfieldmapper-install
+
+c_apps:	libfieldmapper
 	@echo $@
 	make -C c-apps
 
-c_apps-install:
+c_apps-install:	libfieldmapper-install
 	@echo $@
 	make -C c-apps install
 

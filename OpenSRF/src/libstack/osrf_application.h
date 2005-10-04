@@ -4,6 +4,7 @@
 #include "opensrf/logging.h"
 #include "objson/object.h"
 #include "osrf_app_session.h"
+#include "osrf_hash.h"
 
 
 /**
@@ -36,13 +37,12 @@
 	_OSRF_METHOD_VERIFY_CONTEXT(d); \
 	char* __j = jsonObjectToJSON(d->params);\
 	if(__j) { \
-		osrfLog( OSRF_INFO, "[%s:%s] params: %s", d->session->remote_service, d->method->name, __j);\
+		osrfLog( OSRF_INFO, "%s %s - %s", d->session->remote_service, d->method->name, __j);\
 		free(__j); \
 	} 
 #else
 #define OSRF_METHOD_VERIFY_CONTEXT(d) _OSRF_METHOD_VERIFY_CONTEXT(d); 
 #endif
-
 
 
 
@@ -58,17 +58,26 @@
 
 
 
+
 /* Some well known parameters */
-#define OSRF_SYSMETHOD_INTROSPECT "opensrf.system.method"
-#define OSRF_SYSMETHOD_INTROSPECT_ALL "opensrf.system.method.all"
+#define OSRF_SYSMETHOD_INTROSPECT				"opensrf.system.method"
+#define OSRF_SYSMETHOD_INTROSPECT_ATOMIC		"opensrf.system.method.atomic"
+#define OSRF_SYSMETHOD_INTROSPECT_ALL			"opensrf.system.method.all"
+#define OSRF_SYSMETHOD_INTROSPECT_ALL_ATOMIC	"opensrf.system.method.all.atomic"
+#define OSRF_SYSMETHOD_ECHO						"opensrf.system.echo"
+#define OSRF_SYSMETHOD_ECHO_ATOMIC				"opensrf.system.echo.atomic"
+
+//#define OSRF_METHOD_ATOMIC 1
+//#define OSRF_METHOD_CACHABLE 2
 
 	
 
 struct _osrfApplicationStruct {
-	char* name;										/* the name of our application */
+	//char* name;										/* the name of our application */
 	void* handle;									/* the lib handle */
-	struct _osrfMethodStruct* methods;		/* list of methods */
-	struct _osrfApplicationStruct* next;	/* next application */
+	osrfHash* methods;
+	//struct _osrfMethodStruct* methods;		/* list of methods */
+//	struct _osrfApplicationStruct* next;	/* next application */
 };
 typedef struct _osrfApplicationStruct osrfApplication;
 
@@ -79,8 +88,11 @@ struct _osrfMethodStruct {
 	char* notes;				/* public method documentation */
 	int argc;					/* how many args this method expects */
 	char* paramNotes;			/* Description of the params expected for this method */
-	struct _osrfMethodStruct* next; /* nest method in the list */
+//	struct _osrfMethodStruct* next; /* nest method in the list */
 	int sysmethod;				/* true if this is a system method */
+	int streaming;				/* true if this is a streamable method */
+	int atomic;					/* true if the method is an atomic method */
+	int cachable;				/* true if the method is cachable */
 }; 
 typedef struct _osrfMethodStruct osrfMethod;
 
@@ -89,6 +101,7 @@ struct _osrfMethodContextStruct {
 	osrfMethod* method;			/* the requested method */	
 	jsonObject* params;			/* the params to the method */
 	int request;					/* request id */
+	jsonObject* responses;		/* array of cached responses. */
 };
 typedef struct _osrfMethodContextStruct osrfMethodContext;
 
@@ -110,16 +123,17 @@ int osrfAppRegisterApplication( char* appName, char* soFile );
   @param notes Public documentation for this method.
   @params params String description description of the params expected
   @params argc The number of arguments this method expects 
+  @param streaming True if this is a streaming method that requires an atomic version
   @return 0 on success, -1 on error
   */
-int osrfAppRegisterMethod( char* appName, 
-		char* methodName, char* symbolName, char* notes, char* params, int argc );
+int osrfAppRegisterMethod( char* appName, char* methodName, 
+		char* symbolName, char* notes, char* params, int argc, int streaming );
 
-int _osrfAppRegisterSystemMethod( char* appName, char* methodName, 
-		char* notes, char* params, int argc );
+int _osrfAppRegisterMethod( char* appName, char* methodName, 
+		char* symbolName, char* notes, char* params, int argc, int streaming, int system );
 
 osrfMethod* _osrfAppBuildMethod( char* methodName, 
-		char* symbolName, char* notes, char* params, int argc, int sysmethod );
+		char* symbolName, char* notes, char* params, int argc, int sysmethod, int streaming );
 
 /**
   Registher a method
@@ -196,5 +210,18 @@ int __osrfAppRegisterSysMethods( char* app );
   @return 0 on successfully sending of the message, -1 otherwise
   */
 int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg, ... );
+
+int __osrfAppPostProcess( osrfMethodContext* context, int retcode );
+
+
+int osrfAppRespond( osrfMethodContext* context, jsonObject* data );
+int _osrfAppRespond( osrfMethodContext* context, jsonObject* data, int complete );
+int osrfAppRespondComplete( osrfMethodContext* context, jsonObject* data );
+
+/* OSRF_METHOD_ATOMIC and/or OSRF_METHOD_CACHABLE and/or 0 for no special options */
+//int osrfAppProcessMethodOptions( char* method );
+
+int osrfAppIntrospect( osrfMethodContext* ctx );
+int osrfAppIntrospectAll( osrfMethodContext* ctx );
 
 

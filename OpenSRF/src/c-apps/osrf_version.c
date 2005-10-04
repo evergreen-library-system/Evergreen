@@ -12,7 +12,6 @@ int osrfVersion( osrfMethodContext* );
 
 
 int osrfAppInitialize() {
-	osrfLogInit("opensrf.version");
 
 	osrfAppRegisterMethod( 
 			"opensrf.version", 
@@ -21,7 +20,7 @@ int osrfAppInitialize() {
 			"The data for a service/method/params combination will be retrieved "
 			"from the necessary server and the MD5 sum of the total values received "
 			"will be returned", 
-			"( serviceName, methodName, [param1, ...] )", 2 );
+			"( serviceName, methodName, [param1, ...] )", 2, 0 );
 	
 	return 0;
 }
@@ -43,7 +42,7 @@ int osrfVersion( osrfMethodContext* ctx ) {
 	if( cachedmd5 ) {
 		osrfLog( OSRF_DEBUG, "Found %s object in cache, returning....", cachedmd5 );
 		jsonObject* resp = jsonNewObject(cachedmd5);
-		osrfAppRequestRespondComplete( ctx->session, ctx->request, resp  );
+		osrfAppRespondComplete( ctx, resp  );
 		jsonObjectFree(resp);
 		free(paramsmd5);
 		free(cachedmd5);
@@ -77,7 +76,7 @@ int osrfVersion( osrfMethodContext* ctx ) {
 
 			if( resultmd5 ) {
 				jsonObject* resp = jsonNewObject(resultmd5);
-				osrfAppRequestRespondComplete( ctx->session, ctx->request, resp );
+				osrfAppRespondComplete( ctx, resp );
 				jsonObjectFree(resp);
 				osrfAppSessionFree(ses);
 				osrfLog(OSRF_DEBUG, "Found version string %s, caching and returning...", resultmd5 );

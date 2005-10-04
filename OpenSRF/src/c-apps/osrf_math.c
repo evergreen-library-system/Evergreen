@@ -11,35 +11,36 @@ int osrfMathRun( osrfMethodContext* );
 
 
 int osrfAppInitialize() {
-	osrfLogInit(MODULENAME);
 
 	osrfAppRegisterMethod( 
-			MODULENAME, 
-			"add", 
-			"osrfMathRun", 
-			"Addss two numbers",
-			"( num1, num2 )", 2 );
+			MODULENAME,				/* which application has this method */
+			"add",					/* the name of the method */
+			"osrfMathRun",			/* the symbol that runs the method */
+			"Adds two numbers",	/* description of the method */
+			"( num1, num2 )",		/* description of the method params */
+			2,							/* the minimum number of params required to run the method */
+			0 );						/* streaming method? yes / no */
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"sub", 
 			"osrfMathRun", 
 			"Subtracts two numbers",
-			"( num1, num2 )", 2 );
+			"( num1, num2 )", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"mult", 
 			"osrfMathRun", 
 			"Multiplies two numbers",
-			"( num1, num2 )", 2 );
+			"( num1, num2 )", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"div", 
 			"osrfMathRun", 
 			"Divides two numbers",
-			"( num1, num2 )", 2 );
+			"( num1, num2 )", 2, 0 );
 
 	return 0;
 }
@@ -80,7 +81,7 @@ int osrfMathRun( osrfMethodContext* ctx ) {
 
 			if(omsg) {
 				/* return dbmath's response to the user */
-				osrfAppRequestRespondComplete( ctx->session, ctx->request, osrfMessageGetResult(omsg) ); 
+				osrfAppRespondComplete( ctx, osrfMessageGetResult(omsg) ); 
 				osrfMessageFree(omsg);
 				osrfAppSessionFree(ses);
 				return 0;

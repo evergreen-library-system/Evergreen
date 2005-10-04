@@ -16,35 +16,33 @@ int osrfMathRun( osrfMethodContext* );
 
 int osrfAppInitialize() {
 
-	osrfLogInit(MODULENAME);
-
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.authenticate.init", 
 		"oilsAuthInit", 
 		"Start the authentication process and returns the intermediate authentication seed",
-		" [ username ]", 1 );
+		" [ username ]", 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.authenticate.complete", 
 		"oilsAuthComplete", 
 		"Completes the authentication process and returns the auth token",
-		"[ username, md5sum( seed + password ) ]", 2 );
+		"[ username, md5sum( seed + password ) ]", 2, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.session.retrieve", 
 		"oilsAuthSessionRetrieve", 
 		"Returns the user object (password blanked) for the given login session",
-		"[ authToken ]", 1 );
+		"[ authToken ]", 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.session.delete", 
 		"oilsAuthSessionDelete", 
 		"Destroys the given login session",
-		"[ authToken ]",  1 );
+		"[ authToken ]",  1, 0 );
 
 	return 0;
 }
@@ -73,7 +71,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 		osrfLog( OSRF_DEBUG, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
 
 		resp = jsonNewObject(md5seed);	
-		osrfAppRequestRespondComplete( ctx->session, ctx->request, resp );
+		osrfAppRespondComplete( ctx, resp );
 
 		jsonObjectFree(resp);
 		free(seed);
@@ -151,17 +149,19 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			char* string = va_list_to_string( "%d.%d.%s", getpid(), time(NULL), uname ); /**/
 			char* authToken = md5sum(string); /**/
 			char* authKey = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
+
 			oilsFMSetString( userObj, "passwd", "" );
 			osrfCachePutObject( authKey, userObj, 28800 ); /* XXX config value */
 			response = jsonNewObject( authToken );
 			free(string); free(authToken); free(authKey);
 
 		} else {
+
 			osrfLog( OSRF_INFO, "Login failed for for %s", uname );
 			response = jsonNewNumberObject(0);
 		}
 
-		osrfAppRequestRespondComplete( ctx->session, ctx->request, response ); 
+		osrfAppRespondComplete( ctx, response ); 
 		jsonObjectFree(response);
 		osrfMessageFree(omsg);
 		osrfAppSessionFree(session);
@@ -187,7 +187,7 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 		free(key);
 	}
 
-	osrfAppRequestRespondComplete( ctx->session, ctx->request, userObj );
+	osrfAppRespondComplete( ctx, userObj );
 	jsonObjectFree(userObj);
 	return 0;
 }
@@ -205,7 +205,7 @@ int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 		free(key);
 	}
 
-	osrfAppRequestRespondComplete( ctx->session, ctx->request, resp );
+	osrfAppRespondComplete( ctx, resp );
 	jsonObjectFree(resp);
 	return 0;
 }
