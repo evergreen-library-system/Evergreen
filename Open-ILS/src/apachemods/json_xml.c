@@ -115,12 +115,12 @@ void _rest_xml_output(growing_buffer* buf, jsonObject* obj, char * obj_class, in
 		double x = jsonObjectGetNumber(obj);
 		if (notag) {
 			if (x == (int)x)
-				buffer_fadd(buf,"%d",tag, x,tag);
+				buffer_fadd(buf,"%d",tag, (int)x,tag);
 			else
 				buffer_fadd(buf,"%lf",tag, x,tag);
 		} else {
 			if (x == (int)x)
-				buffer_fadd(buf,"<%s>%d</%s>",tag, x,tag);
+				buffer_fadd(buf,"<%s>%d</%s>",tag, (int)x,tag);
 			else
 				buffer_fadd(buf,"<%s>%lf</%s>",tag, x,tag);
 		}
