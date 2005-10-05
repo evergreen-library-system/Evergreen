@@ -49,8 +49,9 @@ OpenILS.data = function (mw,G) {
 					} catch(E) {
 						throw(E);
 					}
+				} else {
+					throw(E); // for now
 				}
-				//throw(E); // for now
 			}
 		}
 	}
@@ -58,15 +59,24 @@ OpenILS.data = function (mw,G) {
 	this.chain = [];
 
 	this.chain.push(
-		gen_fm_retrieval_func(
-			'au',
-			[
-				'open-ils.search',
-				'open-ils.search.actor.user.session',
-				[ obj.G.auth.session.key ],
-				true
-			]
-		)
+		function() {
+			var f = gen_fm_retrieval_func(
+				'au',
+				[
+					'open-ils.search',
+					'open-ils.search.actor.user.session',
+					[ obj.G.auth.session.key ],
+					false
+				]
+			);
+			try {
+				f();
+			} catch(E) {
+				// Probably the one thing we should not cache, so what do we do?
+				obj.list.au = new au();
+				obj.list.au.home_lib( '1' );
+			}
+		}
 	);
 
 	obj.G.error.sdump('D_DEBUG','_fm_objects = ' + js2JSON(this._fm_objects) + '\n');
