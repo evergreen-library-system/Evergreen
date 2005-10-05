@@ -29,10 +29,10 @@ my $base_xml;
 #my $base_xml_doc;
 
 sub import {
-	my( $self, $bs_config, $tdir, $core_xml ) = @_;
+	my( $self, $bs_config, $core_xml, @incs ) = @_;
 	$bootstrap = $bs_config;
 	$base_xml = $core_xml;
-	$includes = [ $tdir ];
+	$includes = [ @incs ];
 }
 
 
@@ -44,6 +44,8 @@ sub child_init {
 
 	#parse the base xml file
 	#my $parser = XML::LibXML->new;
+	#$parser->expand_xinclude(1);
+
 	#$base_xml_doc = $parser->parse_file($base_xml);
 
 }
@@ -128,7 +130,8 @@ sub verify_login {
 	return 0 unless $auth_token;
 
 	my $session = OpenSRF::AppSession->create("open-ils.auth");
-	my $req = $session->request("open-ils.auth.session.retrieve", $auth_token );
+	my $req = $session->request(
+		"open-ils.auth.session.retrieve", $auth_token );
 	my $user = $req->gather(1);
 
 	return $user if ref($user);

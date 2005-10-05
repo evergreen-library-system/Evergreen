@@ -26,12 +26,17 @@ sub XML2perl {
 
 sub perl2JSON {
 	my( $self, $perl ) = @_;
-	return JSON->perl2JSON($perl);
+	my $json = JSON->perl2JSON($perl);
+	warn "Created JSON from perl:\n$json\n";
+	return $json;
 }
 	
 sub JSON2perl {
 	my( $self, $perl ) = @_;
-	return JSON->JSON2perl($perl);
+	warn "Turning JSON into perl:\n$perl\n";
+	my $obj = JSON->JSON2perl($perl);
+	warn "Created Perl from JSON: $obj \n";
+	return $obj;
 }
 
 sub perl2prettyJSON {
