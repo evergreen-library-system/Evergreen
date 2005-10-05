@@ -244,7 +244,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	buffer_free(result_data);
 
 	if(content) {
-		debug_handler( "APACHE writing data to web client: %s", content );
+		info_handler( "APACHE writing data to web client: %s", content );
 		ap_rputs(content,r);
 		free(content);
 	} 
