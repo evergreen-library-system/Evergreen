@@ -36,6 +36,7 @@ BOOTSTRAP="$ETCDIR/bootstrap.conf";	# opensrf config is here
 JSERVER="1";
 ROUTER="1";
 OPENSRF="1";
+OPENSRFC="1";
 
 JSERVERSOCK="$PREFIX/var/sock/jserver.sock";	# jabber server socket file 
 JSERVERLOG="$LOGDIR/jserver.log" # jabber server log 
@@ -85,9 +86,16 @@ function startRouter {
 }
 
 function startOpenSRF {
-	 "$BINDIR/opensrf_ctl" start "$BOOTSTRAP";
-}
 
+	"$BINDIR/opensrf_ctl" start "$BOOTSTRAP";
+
+	if [ ! -z "$OPENSRFC" ]; then
+		echo "Starting OpenSRF-C...";
+		# localhost will need to be changed...
+		"$BINDIR/opensrf-c" localhost "$ETCDIR//opensrf_core.xml" "opensrf"
+		echo "OpenSRF-C started OK";
+	fi
+}
 
 
 function makeMeGo {
@@ -113,8 +121,8 @@ function makeMeGo {
 		startOpenSRF;
 		echo "OpenSRF started OK";
 	fi
+
 	return 0;
-		
 }
 
 
@@ -122,6 +130,7 @@ function stopMe {
 
 	echo "Stopping OpenSRF...";
 	"$BINDIR/opensrf_ctl" stop;
+	killall -9 opensrf-c;
 	sleep 1;
 	
 	echo "Stopping The Router...";

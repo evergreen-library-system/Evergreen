@@ -20,29 +20,29 @@ int osrfAppInitialize() {
 		MODULENAME, 
 		"open-ils.auth.authenticate.init", 
 		"oilsAuthInit", 
-		"Start the authentication process and returns the intermediate authentication seed",
-		" [ username ]", 1, 0 );
+		"Start the authentication process and returns the intermediate authentication seed"
+		" PARAMS( username )", 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.authenticate.complete", 
 		"oilsAuthComplete", 
-		"Completes the authentication process and returns the auth token",
-		"[ username, md5sum( seed + password ) ]", 2, 0 );
+		"Completes the authentication process and returns the auth token "
+		"PARAMS(username, md5sum( seed + password ) )", 2, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.session.retrieve", 
 		"oilsAuthSessionRetrieve", 
-		"Returns the user object (password blanked) for the given login session",
-		"[ authToken ]", 1, 0 );
+		"Returns the user object (password blanked) for the given login session "
+		"PARAMS( authToken )", 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.session.delete", 
 		"oilsAuthSessionDelete", 
-		"Destroys the given login session",
-		"[ authToken ]",  1, 0 );
+		"Destroys the given login session "
+		"PARAMS( authToken )",  1, 0 );
 
 	return 0;
 }

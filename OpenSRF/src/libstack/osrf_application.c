@@ -59,14 +59,7 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 
 
 int osrfAppRegisterMethod( char* appName, char* methodName, 
-		char* symbolName, char* notes, char* params, int argc, int streaming ) {
-
-	return _osrfAppRegisterMethod(appName, methodName, 
-			symbolName, notes, params, argc, streaming, 0 );
-}
-
-int _osrfAppRegisterMethod( char* appName, char* methodName, 
-		char* symbolName, char* notes, char* params, int argc, int streaming, int system ) {
+		char* symbolName, char* notes, int argc, int options ) {
 
 	if( !appName || ! methodName  ) return -1;
 
@@ -76,15 +69,16 @@ int _osrfAppRegisterMethod( char* appName, char* methodName,
 	debug_handler("Registering method %s for app %s", methodName, appName );
 
 	osrfMethod* method = _osrfAppBuildMethod(
-		methodName, symbolName, notes, params, argc, system, 0 );		
-	method->streaming = streaming;
+		methodName, symbolName, notes, argc, options );		
+	method->options = options;
 
 	/* plug the method into the list of methods */
 	osrfHashSet( app->methods, method, method->name );
 
-	if( streaming ) { /* build the atomic counterpart */
+	if( options & OSRF_METHOD_STREAMING ) { /* build the atomic counterpart */
+		int newops = options | OSRF_METHOD_ATOMIC;
 		osrfMethod* atomicMethod = _osrfAppBuildMethod(
-			methodName, symbolName, notes, params, argc, system, 1 );		
+			methodName, symbolName, notes, argc, newops );		
 		osrfHashSet( app->methods, atomicMethod, atomicMethod->name );
 	}
 
@@ -94,29 +88,24 @@ int _osrfAppRegisterMethod( char* appName, char* methodName,
 
 
 osrfMethod* _osrfAppBuildMethod( char* methodName, 
-	char* symbolName, char* notes, char* params, int argc, int sysmethod, int atomic ) {
+	char* symbolName, char* notes, int argc, int options ) {
 
 	osrfMethod* method					= safe_malloc(sizeof(osrfMethod));
 
 	if(methodName) method->name		= strdup(methodName);
 	if(symbolName) method->symbol		= strdup(symbolName);
 	if(notes) method->notes				= strdup(notes);
-	if(params) method->paramNotes		= strdup(params);
 
 	method->argc							= argc;
-	method->sysmethod						= sysmethod;
-	method->atomic							= atomic;
-	method->cachable						= 0;
+	method->options						= options;
 
-	if(atomic) { /* add ".atomic" to the end of the name */
+	if(options & OSRF_METHOD_ATOMIC) { /* add ".atomic" to the end of the name */
 		char mb[strlen(method->name) + 8];
 		sprintf(mb, "%s.atomic", method->name);
 		free(method->name);
 		method->name = strdup(mb);
-		method->streaming = 1;
+		method->options |= OSRF_METHOD_STREAMING;
 	}
-
-	debug_handler("Built method %s", method->name );
 
 	return method;
 }
@@ -124,20 +113,21 @@ osrfMethod* _osrfAppBuildMethod( char* methodName,
 
 int __osrfAppRegisterSysMethods( char* app ) {
 
-	_osrfAppRegisterMethod( 
+	osrfAppRegisterMethod( 
 			app, OSRF_SYSMETHOD_INTROSPECT, NULL, 
 			"Return a list of methods whose names have the same initial "
-			"substring as that of the provided method name",
-			"( methodNameSubstring )", 1, 1 , 1);
+			"substring as that of the provided method name PARAMS( methodNameSubstring )", 
+			1, OSRF_METHOD_SYSTEM | OSRF_METHOD_STREAMING );
 
-	_osrfAppRegisterMethod( 
+	osrfAppRegisterMethod( 
 			app, OSRF_SYSMETHOD_INTROSPECT_ALL, NULL, 
-			"Returns a complete list of methods", "()", 0, 1, 1 ); 
+			"Returns a complete list of methods. PARAMS()", 0, 
+			OSRF_METHOD_SYSTEM | OSRF_METHOD_STREAMING );
 
-	_osrfAppRegisterMethod( 
+	osrfAppRegisterMethod( 
 			app, OSRF_SYSMETHOD_ECHO, NULL, 
-			"Echos all data sent to the server back to the client", 
-			"([a, b, ...])", 0, 1, 1);
+			"Echos all data sent to the server back to the client. PARAMS([a, b, ...])", 0, 
+			OSRF_METHOD_SYSTEM | OSRF_METHOD_STREAMING );
 
 	return 0;
 }
@@ -199,7 +189,7 @@ int osrfAppRunMethod( char* appName, char* methodName,
 
 	int retcode = 0;
 
-	if( method->sysmethod ) {
+	if( method->options & OSRF_METHOD_SYSTEM ) {
 		retcode = __osrfAppRunSystemMethod(&context);
 
 	} else {
@@ -235,7 +225,7 @@ int osrfAppRespondComplete( osrfMethodContext* context, jsonObject* data ) {
 int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 	if(!(ctx && ctx->method)) return -1;
 
-	if( ctx->method->atomic ) {
+	if( ctx->method->options & OSRF_METHOD_ATOMIC ) {
 		osrfLog( OSRF_DEBUG, 
 			"Adding responses to stash for atomic method %s", ctx->method );
 
@@ -245,7 +235,9 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 	}
 
 
-	if( !ctx->method->atomic && ! ctx->method->cachable ) {
+	if(	!(ctx->method->options & OSRF_METHOD_ATOMIC) && 
+			!(ctx->method->options & OSRF_METHOD_CACHABLE) ) {
+
 		if(complete) 
 			osrfAppRequestRespondComplete( ctx->session, ctx->request, data );
 		else
@@ -265,7 +257,7 @@ int __osrfAppPostProcess( osrfMethodContext* ctx, int retcode ) {
 	osrfLog( OSRF_DEBUG, "Postprocessing method %s with retcode %d",
 			ctx->method->name, retcode );
 
-	if(ctx->responses) { /* we have cached responses to return */
+	if(ctx->responses) { /* we have cached responses to return (no responses have been sent) */
 
 		osrfAppRequestRespondComplete( ctx->session, ctx->request, ctx->responses );
 		jsonObjectFree(ctx->responses);
@@ -294,15 +286,20 @@ int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg,
 
 static void __osrfAppSetIntrospectMethod( osrfMethodContext* ctx, osrfMethod* method, jsonObject* resp ) {
 	if(!(ctx && resp)) return;
+
 	jsonObjectSetKey(resp, "api_name",	jsonNewObject(method->name));
 	jsonObjectSetKey(resp, "method",		jsonNewObject(method->symbol));
 	jsonObjectSetKey(resp, "service",	jsonNewObject(ctx->session->remote_service));
 	jsonObjectSetKey(resp, "notes",		jsonNewObject(method->notes));
 	jsonObjectSetKey(resp, "argc",		jsonNewNumberObject(method->argc));
-	jsonObjectSetKey(resp, "params",		jsonNewObject(method->paramNotes) );
-	jsonObjectSetKey(resp, "sysmethod", jsonNewNumberObject(method->sysmethod) );
-	jsonObjectSetKey(resp, "atomic",		jsonNewNumberObject(method->atomic) );
-	jsonObjectSetKey(resp, "cachable",	jsonNewNumberObject(method->cachable) );
+
+	jsonObjectSetKey(resp, "sysmethod", 
+			jsonNewNumberObject( (method->options & OSRF_METHOD_SYSTEM) ? 1 : 0 ));
+	jsonObjectSetKey(resp, "atomic",		
+			jsonNewNumberObject( (method->options & OSRF_METHOD_ATOMIC) ? 1 : 0 ));
+	jsonObjectSetKey(resp, "cachable",	
+			jsonNewNumberObject( (method->options & OSRF_METHOD_CACHABLE) ? 1 : 0 ));
+
 	jsonObjectSetClass(resp, "method");
 }
 

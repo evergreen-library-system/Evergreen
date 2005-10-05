@@ -67,17 +67,16 @@
 #define OSRF_SYSMETHOD_ECHO						"opensrf.system.echo"
 #define OSRF_SYSMETHOD_ECHO_ATOMIC				"opensrf.system.echo.atomic"
 
-//#define OSRF_METHOD_ATOMIC 1
-//#define OSRF_METHOD_CACHABLE 2
+#define OSRF_METHOD_SYSTEM			1
+#define OSRF_METHOD_STREAMING		2
+#define OSRF_METHOD_ATOMIC			4
+#define OSRF_METHOD_CACHABLE		8
 
 	
 
 struct _osrfApplicationStruct {
-	//char* name;										/* the name of our application */
 	void* handle;									/* the lib handle */
 	osrfHash* methods;
-	//struct _osrfMethodStruct* methods;		/* list of methods */
-//	struct _osrfApplicationStruct* next;	/* next application */
 };
 typedef struct _osrfApplicationStruct osrfApplication;
 
@@ -87,12 +86,15 @@ struct _osrfMethodStruct {
 	char* symbol;				/* the symbol name (function) */
 	char* notes;				/* public method documentation */
 	int argc;					/* how many args this method expects */
-	char* paramNotes;			/* Description of the params expected for this method */
-//	struct _osrfMethodStruct* next; /* nest method in the list */
-	int sysmethod;				/* true if this is a system method */
-	int streaming;				/* true if this is a streamable method */
-	int atomic;					/* true if the method is an atomic method */
-	int cachable;				/* true if the method is cachable */
+	//char* paramNotes;			/* Description of the params expected for this method */
+	int options;				/* describes the various options for this method */
+
+	/*
+	int sysmethod;				
+	int streaming;				
+	int atomic;					
+	int cachable;				
+	*/
 }; 
 typedef struct _osrfMethodStruct osrfMethod;
 
@@ -117,33 +119,22 @@ int osrfAppRegisterApplication( char* appName, char* soFile );
 
 /**
   Register a method
+  Any method with  the OSRF_METHOD_STREAMING option set will have a ".atomic"
+  version of the method registered automatically
   @param appName The name of the application that implements the method
   @param methodName The fully qualified name of the method
   @param symbolName The symbol name (function) that implements the method
   @param notes Public documentation for this method.
-  @params params String description description of the params expected
   @params argc The number of arguments this method expects 
   @param streaming True if this is a streaming method that requires an atomic version
   @return 0 on success, -1 on error
   */
 int osrfAppRegisterMethod( char* appName, char* methodName, 
-		char* symbolName, char* notes, char* params, int argc, int streaming );
+		char* symbolName, char* notes, int argc, int options );
 
-int _osrfAppRegisterMethod( char* appName, char* methodName, 
-		char* symbolName, char* notes, char* params, int argc, int streaming, int system );
 
 osrfMethod* _osrfAppBuildMethod( char* methodName, 
-		char* symbolName, char* notes, char* params, int argc, int sysmethod, int streaming );
-
-/**
-  Registher a method
-  @param appName The name of the application that implements the method
-  @params desc The method description
-  @return 0 on success, -1 on error
-  */
-/*
-int osrfAppRegisterMethod( char* appName, osrfMethodDescription* desc );
-*/
+		char* symbolName, char* notes, int argc, int options );
 
 /**
   Finds the given app in the list of apps

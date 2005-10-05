@@ -17,30 +17,26 @@ int osrfAppInitialize() {
 			"add",					/* the name of the method */
 			"osrfMathRun",			/* the symbol that runs the method */
 			"Adds two numbers",	/* description of the method */
-			"( num1, num2 )",		/* description of the method params */
 			2,							/* the minimum number of params required to run the method */
-			0 );						/* streaming method? yes / no */
+			0 );						/* method options, 0 for not special options */
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"sub", 
 			"osrfMathRun", 
-			"Subtracts two numbers",
-			"( num1, num2 )", 2, 0 );
+			"Subtracts two numbers", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"mult", 
 			"osrfMathRun", 
-			"Multiplies two numbers",
-			"( num1, num2 )", 2, 0 );
+			"Multiplies two numbers", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"div", 
 			"osrfMathRun", 
-			"Divides two numbers",
-			"( num1, num2 )", 2, 0 );
+			"Divides two numbers", 2, 0 );
 
 	return 0;
 }

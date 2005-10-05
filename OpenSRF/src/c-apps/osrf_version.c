@@ -19,8 +19,8 @@ int osrfAppInitialize() {
 			"osrfVersion", 
 			"The data for a service/method/params combination will be retrieved "
 			"from the necessary server and the MD5 sum of the total values received "
-			"will be returned", 
-			"( serviceName, methodName, [param1, ...] )", 2, 0 );
+			"will be returned. PARAMS( serviceName, methodName, [param1, ...] )", 
+			2, 0 );
 	
 	return 0;
 }

@@ -16,29 +16,25 @@ int osrfAppInitialize() {
 			MODULENAME, 
 			"add", 
 			"osrfMathRun", 
-			"Addss two numbers",
-			"[ num1, num2 ]", 2, 0 );
+			"Addss two numbers", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"sub", 
 			"osrfMathRun", 
-			"Subtracts two numbers",
-			"[ num1, num2 ]", 2, 0 );
+			"Subtracts two numbers", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"mult", 
 			"osrfMathRun", 
-			"Multiplies two numbers",
-			"[ num1, num2 ]", 2, 0 );
+			"Multiplies two numbers", 2, 0 );
 
 	osrfAppRegisterMethod( 
 			MODULENAME, 
 			"div", 
 			"osrfMathRun", 
-			"Divides two numbers",
-			"[ num1, num2 ]", 2, 0 );
+			"Divides two numbers", 2, 0 );
 
 	return 0;
 }

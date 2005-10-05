@@ -89,6 +89,7 @@ opensrf-install:	objson-install
 	@echo $@
 	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)/$(LIBOPENSRF)
 	cp $(OPENSRF_HEADERS) $(INCLUDEDIR)/opensrf/
+	cp libstack/opensrf $(BINDIR)/opensrf-c
 	make -C c-apps install
 
 
@@ -101,7 +102,7 @@ objson/libobjson.so:	prep
 # --------------------------------------------------------------------------------
 libstack/opensrf.o:	libstack/opensrf.c
 libstack/opensrf:	libstack/opensrf.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) -lJudy -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
 	
 
 router: libopensrf.so

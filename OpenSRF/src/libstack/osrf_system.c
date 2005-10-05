@@ -103,6 +103,7 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 			} else {
 	
+				fprintf(stderr, " * Running application %s\n", appname);
 				if( osrfAppRegisterApplication( appname, libfile ) == 0 ) 
 					osrf_prefork_run(appname);
 
@@ -114,7 +115,8 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 	/** daemonize me **/
 
-	/* let our children do their thing */
+	/* background and let our children do their thing */
+	daemonize();
 	while(1) {
 		signal(SIGCHLD, __osrfSystemSignalHandler);
 		sleep(10000);
@@ -215,3 +217,5 @@ void __osrfSystemSignalHandler( int sig ) {
 
 	/** relaunch the server **/
 }
+
+
