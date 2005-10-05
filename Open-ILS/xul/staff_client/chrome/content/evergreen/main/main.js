@@ -29,6 +29,12 @@ function main_init() {
 		JSAN.use('main.network');
 		G.network = new main.network( mw, G );
 
+		G.test_array = [ "a", "b", "c" ];
+		G.test_object = { "a" : "b", "c" : "d", "e" : "f" };
+		G.test = function(t) {
+			dump(js2JSON( t ) + '\n');
+		}
+
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( mw, G );
 
@@ -38,7 +44,7 @@ function main_init() {
 			G.OpenILS.data = new OpenILS.data( mw, G );
 			G.OpenILS.data.on_complete = function () {
 
-				alert('spawn app_shell');
+				G.window.open('http://gapines.org/xul/test.xul','test','chrome');
 			}
 			G.OpenILS.data.init();
 		}

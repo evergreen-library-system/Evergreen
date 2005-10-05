@@ -49,7 +49,7 @@ util.error.prototype = {
 
 		'D_FILE' : true, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : false, 'D_SES' : true,
 		'D_SES_FUNC' : false, 'D_SES_RESULT' : true, 'D_SPAWN' : false, 'D_STRING' : false,
-		'D_UTIL' : false, 'D_WIN' : false, 'D_WIDGETS' : false
+		'D_UTIL' : false, 'D_WIN' : true, 'D_WIDGETS' : false
 	},
 
 	'filter_console_init' : function (p) {

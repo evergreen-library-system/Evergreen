@@ -14,8 +14,8 @@ OpenILS.data = function (mw,G) {
 	function gen_fm_retrieval_func(classname,data) {
 		var app = data[0]; var method = data[1]; var params = data[2]; var cacheable = data[3];
 		return function () {
-			try {
-				obj.list[classname] = obj.G.network.request( app, method, params);
+
+			function convert() {
 				try {
 					if (obj.list[classname].constructor.name == 'Array') {
 						obj.hash[classname] = 
@@ -27,6 +27,12 @@ OpenILS.data = function (mw,G) {
 
 					obj.G.error.sdump('D_ERROR',E + '\n');
 				}
+
+			}
+
+			try {
+				obj.list[classname] = obj.G.network.request( app, method, params);
+				convert();
 				// if cacheable, store an offline copy
 				if (cacheable) {
 					var file = new util.file( obj.mw, obj.G, classname );
@@ -36,8 +42,15 @@ OpenILS.data = function (mw,G) {
 			} catch(E) {
 				// if cacheable, try offline
 				if (cacheable) {
+					try {
+						var file = new util.file( obj.mw, obj.G, classname );
+						obj.list[classname] = file.get_object();
+						convert();
+					} catch(E) {
+						throw(E);
+					}
 				}
-				throw(E); // for now
+				//throw(E); // for now
 			}
 		}
 	}
@@ -51,7 +64,7 @@ OpenILS.data = function (mw,G) {
 				'open-ils.search',
 				'open-ils.search.actor.user.session',
 				[ obj.G.auth.session.key ],
-				false
+				true
 			]
 		)
 	);

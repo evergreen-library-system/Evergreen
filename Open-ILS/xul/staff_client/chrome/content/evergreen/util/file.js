@@ -79,7 +79,7 @@ util.file.prototype = {
 			if (this._input_stream || this._output_stream) throw('Must .close() first.');
 			
 			this._create_input_stream();
-			var data = this._input_stream(-1);
+			var data = this._input_stream.read(-1);
 			this.close();
 	
 			var obj; try { obj = JSON2js( data ); } catch(E) { throw('Could not js-ify the JSON: '+E); }
@@ -100,7 +100,7 @@ util.file.prototype = {
 	
 			var f = Components.classes["@mozilla.org/network/file-input-stream;1"]
 				.createInstance(Components.interfaces.nsIFileInputStream);
-			f.init(file, 0x01, 0, 0);
+			f.init(this._file, 0x01, 0, 0);
 			this._input_stream = Components.classes["@mozilla.org/scriptableinputstream;1"]
 				.createInstance(Components.interfaces.nsIScriptableInputStream);
 			if (f) {

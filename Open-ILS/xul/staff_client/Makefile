@@ -41,7 +41,7 @@ generated:
 	#(cd chrome/content/evergreen/util ; ${RETRIEVE_FIELDMAPPER} );
 	#(cd chrome/content/evergreen/util ; ${RETRIEVE_ORG_TREE} );
 	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
-	(cd chrome/content/evergreen/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
+	#(cd chrome/content/evergreen/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
 
 open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/

@@ -65,7 +65,11 @@ auth.session.prototype = {
 				this.on_init_error(E);
 			}
 
-			throw(E);
+			//throw(E);
+			if (typeof this.on_init == 'function') {
+				this.G.error.sdump('D_AUTH','auth.session.on_init() despite error\n');
+				this.on_init();
+			}
 		}
 
 	},
