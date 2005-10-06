@@ -13,3 +13,7 @@ pref("network.http.max-persistent-connections-per-server",8);
 pref("dom.max_script_run_time",60);
 
 pref("javascript.options.strict",false);
+
+// This lets remote xul access link to local chrome
+pref("security.checkloaduri", false);
+pref("signed.applets.codebase_principal_support", true);
