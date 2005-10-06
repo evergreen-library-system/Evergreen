@@ -5,14 +5,14 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<scripts id="openils_util_scripts">
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/utils.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/md5.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/JSON.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/fmall.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/fmgen.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/RemoteRequest.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/OrgTree.js" />
-		<script type="text/javascript" src="chrome://evergreen/content/OpenILS/util/org_utils.js" />   
+		<script type="text/javascript" src="util/utils.js" />
+		<script type="text/javascript" src="util/md5.js" />
+		<script type="text/javascript" src="util/JSON.js" />
+		<script type="text/javascript" src="util/fmall.js" />
+		<script type="text/javascript" src="util/fmgen.js" />
+		<script type="text/javascript" src="util/RemoteRequest.js" />
+		<script type="text/javascript" src="util/OrgTree.js" />
+		<script type="text/javascript" src="util/org_utils.js" />   
 	</scripts>
 
 </overlay>
