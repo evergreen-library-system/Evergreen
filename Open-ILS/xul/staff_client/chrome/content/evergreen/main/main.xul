@@ -18,20 +18,16 @@
 	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
 	<?xml-stylesheet href="chrome://evergreen/skin/auth.css" type="text/css"?>
 
+	<!-- OVERLAYS -->
+	<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
+
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
 	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true;</script>
-	<script type="text/javascript" src="../OpenILS/util/utils.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/md5.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/JSON.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/fmall.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/fmgen.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/RemoteRequest.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/OrgTree.js"></script>
-	<script type="text/javascript" src="../OpenILS/util/org_utils.js"></script>
+	<scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="JSAN.js"></script>
-	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
+	<script type="text/javascript" src="chrome://evergreen/content/main/main.js"/>
 
 	<commandset id="auth_cmds">
 		<command id="cmd_login"/>
