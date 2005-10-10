@@ -116,7 +116,10 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 	if( timeout == -1 ) {  /* wait potentially forever for data to arrive */
 
 		while( client->m_list->next == NULL ) {
-			if( ! session_wait( client->session, -1 ) ) {
+		//	if( ! session_wait( client->session, -1 ) ) {
+			int x;
+			if( (x = session_wait( client->session, -1 )) ) {
+				warning_handler("session_wait returned failure code %d\n", x);
 				return NULL;
 			}
 		}
@@ -161,6 +164,7 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 		msg = node->message;
 		free( node );
 		return msg;
+
 	} else {
 		return NULL;
 	}

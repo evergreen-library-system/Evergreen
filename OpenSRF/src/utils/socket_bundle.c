@@ -163,7 +163,7 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // Create the socket
    // ------------------------------------------------------------------
    if( (sock_fd = socket( AF_INET, SOCK_STREAM, 0 )) < 0 ) {
-      fatal_handler( "tcp_connect(): Cannot create socket" );
+      warning_handler( "tcp_connect(): Cannot create socket" );
       return -1;
    }
 
@@ -176,7 +176,7 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // Get the hostname
    // ------------------------------------------------------------------
    if( (hptr = gethostbyname( dest_addr ) ) == NULL ) {
-      fatal_handler( "tcp_connect(): Unknown Host => %s", dest_addr );
+      warning_handler( "tcp_connect(): Unknown Host => %s", dest_addr );
       return -1;
    }
 
@@ -201,7 +201,7 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // Bind to a local port
    // ------------------------------------------------------------------
    if( bind( sock_fd, (struct sockaddr *) &localAddr, sizeof( localAddr ) ) < 0 ) {
-      fatal_handler( "tcp_connect(): Cannot bind to local port" );
+      warning_handler( "tcp_connect(): Cannot bind to local port" );
       return -1;
    }
 
@@ -209,7 +209,7 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // Connect to server
    // ------------------------------------------------------------------
    if( connect( sock_fd, (struct sockaddr*) &remoteAddr, sizeof( struct sockaddr_in ) ) < 0 ) {
-      fatal_handler( "tcp_connect(): Cannot connect to server %s", dest_addr );
+      warning_handler( "tcp_connect(): Cannot connect to server %s", dest_addr );
       return -1;
    }
 

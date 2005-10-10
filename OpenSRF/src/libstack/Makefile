@@ -61,3 +61,4 @@ osrf_hash.o:	osrf_hash.c osrf_hash.h
 
 clean:
 	/bin/rm -f *.o libopensrf_stack.so xml_utils.h xml_utils.c opensrf
+

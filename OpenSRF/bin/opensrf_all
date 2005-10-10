@@ -38,15 +38,15 @@ ROUTER="1";
 OPENSRF="1";
 OPENSRFC="1";
 
-JSERVERSOCK="$PREFIX/var/sock/jserver.sock";	# jabber server socket file 
-JSERVERLOG="$LOGDIR/jserver.log" # jabber server log 
+#JSERVERSOCK="$PREFIX/var/sock/jserver.sock";	# jabber server socket file 
+#JSERVERLOG="$LOGDIR/jserver.log" # jabber server log 
 JSERVERPORT=5222;						# jabber server port 
-JSERVERLEVEL=3; # can be 1-4, 4 is the highest
-JSERVERIP="*"; # can be "*" or a specific local IP address
+#JSERVERLEVEL=3; # can be 1-4, 4 is the highest
+#JSERVERIP="*"; # can be "*" or a specific local IP address
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 
-JSERVERBIN="jserver-c" 
+JSERVERBIN="chopchop" 
 export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH";
 export PERL5LIB="$PREFIX/lib/perl5:$PERL5LIB";
 export PATH="$PREFIX/bin:$PATH";
@@ -76,8 +76,7 @@ function startJserver {
 		[ ! -z "$ACTIVE" ] && fail "Port $JSERVERPORT is busy...exiting";
 	fi;
 	
-	rm -f "$JSERVERSOCK";
-	"$BINDIR/$JSERVERBIN" $JSERVERPORT "$JSERVERIP" "$JSERVERSOCK" "$JSERVERLEVEL" "$JSERVERLOG"
+	"$BINDIR/$JSERVERBIN" "$ETCDIR/opensrf_core.xml" "chopchop"; 
 }
 
 
@@ -139,7 +138,7 @@ function stopMe {
 	sleep 1;
 	
 	echo "Stopping Chop Chop...";
-	killall -9 jserver-c;
+	killall -9 chopchop;
 	return 0;
 }
 

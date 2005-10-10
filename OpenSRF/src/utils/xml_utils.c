@@ -85,3 +85,31 @@ char* xmlDocToString(xmlDocPtr doc, int full) {
 }
 
 
+
+
+char* xmlSaxAttr( const xmlChar** atts, char* name ) {
+	if( atts && name ) {
+		int i;
+		for(i = 0; (atts[i] != NULL); i++) {
+			if(!strcmp(atts[i], name)) {
+				if(atts[++i]) return (char*) atts[i];
+			}
+		}
+	}
+	return NULL;
+}
+
+
+int xmlAddAttrs( xmlNodePtr node, const xmlChar** atts ) {
+	if( node && atts ) {
+		int i;
+		for(i = 0; (atts[i] != NULL); i++) {
+			if(atts[i+1]) {
+				xmlSetProp(node, atts[i], atts[i+1]);
+				i++;
+			}
+		}
+	}
+	return 0;
+}
+

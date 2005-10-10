@@ -80,7 +80,7 @@ libopensrf.so:	objson/libobjson.so
 	@echo stack
 	make -C libstack
 	@echo $@
-	$(CC) -shared -W1 $(LDFLAGS) -lJudy -lmemcache -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
+	$(CC) -shared -W1 $(LDFLAGS) -lJudy -lxml2 -lmemcache -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
 	@echo apps
 	make -C  c-apps
 

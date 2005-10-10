@@ -751,8 +751,8 @@ char* tabs(int count) {
 }
 
 int handle_math( char* words[] ) {
-	if( words[1] && words[2] ) 
-		return do_math( atoi(words[1]), atoi(words[2]) );
+	if( words[1] )
+		return do_math( atoi(words[1]), 0 );
 	return 0;
 }
 
