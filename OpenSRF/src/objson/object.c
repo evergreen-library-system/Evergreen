@@ -702,7 +702,17 @@ jsonObject* _jsonObjectFindPathRecurse(const jsonObject* obj, char* root, char* 
 		for( i = 0; i < arr->size; i++ ) {
 			jsonObject* a = jsonObjectGetIndex(arr, i);
 			jsonObject* thing = jsonObjectFindPath(a , path + strlen(root) + 1); 
-			if(thing) jsonObjectPush(newarr, thing);
+
+			if(thing) { //jsonObjectPush(newarr, thing);
+         	if(thing->type == JSON_ARRAY) {
+            	int i;
+					for( i = 0; i != thing->size; i++ )
+						jsonObjectPush(newarr, jsonObjectGetIndex(thing,i));
+
+				} else {
+					jsonObjectPush(newarr, thing);
+				}                                         	
+			}
 		}
 	}
 	
