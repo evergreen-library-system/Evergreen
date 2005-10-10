@@ -1,19 +1,17 @@
 LDLIBS	+= -lopensrf -lobjson -lxml2
-OBJECTS	= jserver-c.o jserver-c_main.o jserver-c_session.o
+CFLAGS	+= -D_GNU_SOURCE
 
-all: jserver-c 
+all: chopchop
 
-jserver-c: $(OBJECTS)
-#	$(CC) $(LD_OPTS) $(OBJECTS) -o $@
+chopchop: osrf_chat.o osrf_chat_main.o
+	$(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) osrf_chat.o osrf_chat_main.o -o $@
 
-jserver-c_main.o: jserver-c_main.c 
-jserver-c.o: jserver-c.c jserver-c.h
-jserver-c_session.o: jserver-c_session.c jserver-c_session.h
-
+osrf_chat.o: osrf_chat.c osrf_chat.h
+osrf_chat_main.o: osrf_chat_main.c
 
 install: 
-	cp jserver-c $(BINDIR)
+	cp chopchop $(BINDIR)
 
 clean:
-	/bin/rm -f *.o jserver-c 
+	/bin/rm -f *.o chopchop
 
