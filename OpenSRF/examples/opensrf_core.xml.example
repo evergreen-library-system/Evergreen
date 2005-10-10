@@ -3,6 +3,18 @@
 <!-- Bootstrap config file for the C opensrf_stack library -->
 <config>
 
+
+	<chopchop> <!-- Our jabber server -->
+		<domain>127.0.0.1</domain>
+		<secret>secret</secret>
+		<port>5222</port>
+		<s2sport>5269</s2sport>
+		<listen_address>10.0.0.3</listen_address>
+		<loglevel>3</loglevel>
+		<logfile>/openils/var/log/jabber.log</logfile>
+	</chopchop>
+
+
 	<!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
 	<gateway>
 
