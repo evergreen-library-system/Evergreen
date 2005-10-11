@@ -27,6 +27,7 @@ static int eq(const char* a, const char* b) { return (a && b && !strcmp(a,b)); }
 static void chatdbg( osrfChatServer* server ) {
 
 	if(!server) return;
+	return; /* heavy logging, should only be used in heavy debug mode */
 
 	growing_buffer* buf = buffer_init(256);
 
@@ -270,6 +271,7 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 
 	if( eq( dombuf, cs->domain ) ) { /* this is to a user we host */
 
+		info_handler("Sending message on local connection\nfrom: %s\nto: %s", fromAddr, toAddr );
 		osrfChatNode* tonode = osrfHashGet(cs->nodeHash, toAddr);
 		if(tonode) {
 			osrfChatSendRaw( tonode, msgXML );
@@ -675,6 +677,8 @@ void osrfChatEndElement( void* blob, const xmlChar* name ) {
 				node->xmlstate &= ~OSRF_CHAT_STATE_INIQ;
 				node->remote = va_list_to_string( 
 						"%s@%s/%s", node->username, node->domain, node->resource );
+
+				info_handler("%s successfully logged in", node->remote );
 
 				debug_handler("Setting remote address to %s", node->remote );
 				osrfChatSendRaw( node, OSRF_CHAT_LOGIN_OK );
