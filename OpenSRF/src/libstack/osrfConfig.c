@@ -89,7 +89,7 @@ int osrfConfigGetValueList(osrfConfig* cfg, osrfStringArray* arr, char* path, ..
 
 	if(!arr || !path) return 0;
 	if(!cfg) cfg = __osrfConfigDefault;
-	if(!cfg) { return warning_handler("No Confif object!"); }
+	if(!cfg) { return warning_handler("No Config object!"); }
 
 	VA_LIST_TO_STRING(path);
 

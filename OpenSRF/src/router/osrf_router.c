@@ -12,7 +12,7 @@ osrfRouter* osrfNewRouter(
 		char* resource, char* password, int port, 
 		osrfStringArray* trustedClients, osrfStringArray* trustedServers ) {
 
-	if(!( domain && name && resource && password && port )) return NULL;
+	if(!( domain && name && resource && password && port && trustedClients && trustedServers )) return NULL;
 
 	osrfRouter* router	= safe_malloc(sizeof(osrfRouter));
 	router->domain			= strdup(domain);
@@ -24,6 +24,7 @@ osrfRouter* osrfNewRouter(
 	router->trustedClients = trustedClients;
 	router->trustedServers = trustedServers;
 
+	
 	router->classes = osrfNewHash(); 
 	router->classes->freeItem = &osrfRouterClassFree;
 

@@ -78,6 +78,9 @@ int __setupRouter( char* config, char* context ) {
 	for( i = 0; i != tclients->size; i++ ) 
 		info_handler( "Router adding trusted client: %s", osrfStringArrayGetString( tclients, i ) );
 
+	if( tclients->size == 0 || tservers->size == 0 )
+		fatal_handler("We need trusted servers and trusted client to run the router...");
+
 	osrfRouter* router = osrfNewRouter( server, 
 			username, resource, password, iport, tclients, tservers );
 	
