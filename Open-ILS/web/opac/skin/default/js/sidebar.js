@@ -44,6 +44,21 @@ function initSideBar() {
 
 /* sets up the login ui components */
 var loginBoxVisible = false;
+
+/*
+function loginDance() {
+	if(doLogin()) {
+		showCanvas();
+		G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+		unHideMe(G.ui.sidebar.logoutbox);
+		unHideMe(G.ui.sidebar.logged_in_as);
+		hideMe(G.ui.sidebar.loginbox);
+		return true;
+	}
+	return false;
+}
+*/
+
 function initLogin() {
 
 	var loginDance = function() {
@@ -53,6 +68,7 @@ function initLogin() {
 			unHideMe(G.ui.sidebar.logoutbox);
 			unHideMe(G.ui.sidebar.logged_in_as);
 			hideMe(G.ui.sidebar.loginbox);
+			runEvt("common", "loggedIn");
 		}
 	}
 
@@ -66,7 +82,7 @@ function initLogin() {
 		showCanvas();
 	} else {
 		swapCanvas(G.ui.login.box);
-		G.ui.login.username.focus();
+		try{G.ui.login.username.focus();}catch(e){}
 	}
 
 	loginBoxVisible = !loginBoxVisible;

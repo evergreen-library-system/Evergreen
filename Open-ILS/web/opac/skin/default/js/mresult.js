@@ -23,7 +23,7 @@ function mresultDoSearch() {
 	//	mresultGetCount(); 
 		mresultCollectIds(FETCH_MRIDS_FULL); 
 	} else { 
-		runEvt('result', 'hitCountReceived');
+		//runEvt('result', 'hitCountReceived');
 		mresultCollectIds(FETCH_MRIDS);
 	}
 }
@@ -57,13 +57,14 @@ function mresultCollectIds(method) {
 	if(	getOffset() != 0 && 
 			records[getOffset()] != null && 
 			records[resultFinalPageIndex()] != null) {
+			runEvt('result', 'hitCountReceived');
 			mresultCollectRecords(); 
 
 	} else {
 
 		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(method, getStype(), getTerm(), 
-			getLocation(), getDepth(), getDisplayCount() * 5, getOffset(), form );
+			getLocation(), getDepth(), 100, getOffset(), form );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
@@ -73,7 +74,7 @@ function mresultHandleMRIds(r) {
 	var res = r.getResultObject();
 
 	if(res.count != null) {
-		HITCOUNT = res.count;
+		if( getOffset() == 0 ) HITCOUNT = res.count;
 		runEvt('result', 'hitCountReceived');
 	} 
 	runEvt('result', 'idsReceived', res.ids);
@@ -97,6 +98,7 @@ function mresultCollectRecords() {
 	var i = 0;
 	for( var x = getOffset(); x!= getDisplayCount() + getOffset(); x++ ) {
 		if(isNull(records[x])) break;
+		if(isNaN(records[x])) continue;
 		var req = new Request(FETCH_MRMODS, records[x]);
 		req.request.userdata = i++;
 		req.callback(mresultHandleMods);

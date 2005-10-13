@@ -295,12 +295,14 @@ function grabFleshedUser() {
 var skinCookie = new cookieObject("skin", 1, "/", COOKIE_SKIN);
 function checkUserSkin(new_skin) {
 
+	return; /* XXX do some debugging with this... */
+
 	var user_skin = getSkin();
 	var cur_skin = grabSkinFromURL();
 
 	if(new_skin) user_skin = new_skin;
 
-	if(isNull(user_skin)) {
+	if(!user_skin) {
 
 		if(grabUser()) {
 			if(grabUserPrefs()) {
@@ -311,7 +313,7 @@ function checkUserSkin(new_skin) {
 		}
 	}
 
-	if(isNull(user_skin)) return;
+	if(!user_skin) return;
 
 	if( cur_skin != user_skin ) {
 		var url = buildOPACLink();
@@ -364,13 +366,17 @@ function doLogin() {
    var auth_request = new Request( LOGIN_COMPLETE, 
 		uname, hex_md5(seed + hex_md5(passwd)), "opac");
 
+
    auth_request.send(true);
    var auth_result = auth_request.result();
 
-   if(auth_result == '0' || auth_result == null || auth_result.length == 0) { return false; }
+   if(auth_result == '0' || auth_result == null || auth_result.length == 0) { 
+		alert("Login failed");
+		return false; 
+	}
 
 	var u = grabUser(auth_result, true);
-	if(u) updateLoc(u.home_ou(), findOrgDepth(u.home_ou()));
+	if(u) runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
 
 	checkUserSkin();
 
@@ -388,13 +394,22 @@ function doLogout() {
 
 	G.user = null;
 	cookie.remove(COOKIE_SES);
+	skinCookie.remove(COOKIE_SKIN);
+	checkUserSkin("default");
 
+	var args = {};
+	args[PARAM_TERM] = "";
+	args[PARAM_LOCATION] = globalOrgTree.id();
+	args[PARAM_DEPTH] = findOrgDepth(globalOrgTree);
+	args.page = "home";
+
+	goTo(buildOPACLink(args));
+
+	/*
 	hideMe(G.ui.sidebar.logoutbox);
 	unHideMe(G.ui.sidebar.loginbox);
 	hideMe(G.ui.sidebar.logged_in_as);
-	skinCookie.remove(COOKIE_SKIN);
-
-	checkUserSkin("default");
+	*/
 }
 
 
@@ -518,6 +533,13 @@ function setResourcePic( img, resource ) {
 	img.title = resource;
 }
 
+
+
+function msg( text ) {
+	try {
+		alert( text );
+	} catch(e) {}
+}
 
 
 

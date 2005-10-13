@@ -112,8 +112,16 @@ function updateLoc(location, depth) {
 		setSelector(G.ui.searchbar.depth_selector, depth);
 		newSearchDepth = depth;
 	}
-	if(!isFrontPage)
+
+	if(!isFrontPage && (findCurrentPage() != MYOPAC))
 		searchBarSubmit();
+
+	alert(findCurrentPage());
+	/*
+	alert(MYOPAC);
+	alert(findCurrentPage() == MYOPAC);
+	*/
+
 }
 
 

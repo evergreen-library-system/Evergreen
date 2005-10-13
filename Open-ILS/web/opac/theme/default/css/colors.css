@@ -6,6 +6,12 @@ body a:hover	{ color: red; text-decoration: underline;}
 .color_2 { background: #64EA4F; color: #000000; }
 .color_3 { background: #CCFFFF; color: #000000; }
 
+/*
+.color_1 { background: #4D8444; color: #000000; }
+.color_2 { background: #168405; color: #000000; }
+.color_3 { background: #035E47; color: #000000; }
+*/
+
 /* ---------------------------------------------------------------------- */
 .sidebar_chunk {}
 .sidebar_extra_link { text-decoration: none; }

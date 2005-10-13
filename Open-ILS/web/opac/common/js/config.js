@@ -189,6 +189,7 @@ var UPDATE_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.update"
 var FETCH_COPY_STATUSES			= "open-ils.search:open-ils.search.config.copy_status.retrieve.all";
 var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.summary.retrieve";
 var FETCH_MARC_HTML				= "open-ils.search:open-ils.search.biblio.record.html";
+var FETCH_CHECKED_OUT			= "open-ils.circ:open-ils.circ.actor.user.checked_out";
 /* ---------------------------------------------------------------------------- */
 
 
@@ -234,6 +235,8 @@ createEvt("result", "copyCountsReceived");	/* f(mvr, pagePosition, copyCountInfo
 createEvt("result", "allRecordsReceived");	/* f(mvrsArray) : add other page stuff, sidebars, etc.*/
 
 createEvt("rdetail", "recordDrawn");			/* f() : the record has been drawn */
+
+createEvt("common", "loggedIn");					/* f() : user has just logged in */
 
 
 

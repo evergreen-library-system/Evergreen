@@ -10,6 +10,8 @@ table { border-collapse: collapse; }
 
 .encircled { border: 1px solid black; }
 
+.light_border { border: 1px solid #E0E0E0; }
+
 #main_table { border-collapse: collapse; width: 100%; height: 100%; }
 #main_left_cell { height: 100%; width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
 #main_right_cell { height: 100%; width: 80%; vertical-align: top; margin: 0px; padding:0px;}
@@ -48,7 +50,12 @@ table { border-collapse: collapse; }
 
 .sidebar_extra_item { padding: 0px; margin-right: 8px;}
 .side_bar_item { padding-left: 8px; padding-right: 8px; padding-top: 4px; padding-bottom: 4px; margin-right: 8px; }
+
 .sidebar_item_active { background: #A7EA9D; margin-right: 0px; }
+
+/*
+.sidebar_item_active { background: #035E47; margin-right: 0px; }
+*/
 .sidebar_chunk { width: 100%; }
 
 /*
@@ -114,5 +121,11 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 .dim2 { filter:alpha(opacity=50); -moz-opacity:0.5; opacity: 0.5; text-decoration: none; }
 .dim { filter:alpha(opacity=10); -moz-opacity:0.1; opacity: 0.1; text-decoration: none; }
 
+/* ---------------------------------------------------------------------- */
+
+.myopac_link { width: 25%; margin: 3px; padding: 3px; text-align: center; vertical-align: middle; }
+
+.myopac_table thead { padding: 2px; font-weight: 600;}
+.myopac_table td { padding: 3px; };
 
 

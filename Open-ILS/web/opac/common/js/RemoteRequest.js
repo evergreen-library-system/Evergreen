@@ -102,6 +102,9 @@ function _remoteRequestCallback(id) {
 				to XML_HTTP_MAX_TRIES attempts */
 			if( E && E.classname == "EXCommunication" ) {
 
+				//try { dump('Communication Error: ' + E ); } catch(e){}
+				alert('Debug:  Communication Error: ' + E );
+
 				if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
 					if(isXUL()) throw object;
 					 else alert("Arrrgghh, Matey! Error communicating:\n" + E  + "\n" + object.param_string);
@@ -169,7 +172,8 @@ RemoteRequest.prototype.send = function(blocking) {
 				'application/x-www-form-urlencoded');
 	}
 
-	this.xmlhttp.send( data );
+	try{ this.xmlhttp.send( data ); } catch(e){}
+
 	this.sendCount += 1;
 	return this;
 }
@@ -187,6 +191,7 @@ RemoteRequest.prototype.isReady = function() {
 /* returns the JSON->js result object  */
 RemoteRequest.prototype.getResultObject = function() {
 	if(this.cancelled) return null;
+	if(!this.xmlhttp) return null;
 
 	var text = this.xmlhttp.responseText;
 	var obj = JSON2js(text);

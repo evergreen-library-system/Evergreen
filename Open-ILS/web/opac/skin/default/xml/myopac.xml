@@ -7,6 +7,18 @@
 		<title>Evergreen: My OPAC</title>
 		<xi:include href="css_common.xml#xpointer(//link)"/>
 		<xi:include href="js_common.xml#xpointer(//script)"/>
+		<script language='javascript' src='../js/myopac.js'> </script>
+
+		<!-- overwrite the fieldmapper code with the extended fieldmapper code -->
+		<script language='javascript' src='../../../common/js/fmextcore.js'> </script>
+		<script language='javascript' src='../../../common/js/fmgen.js'> </script>
+
+		<script language='javascript'>
+			config.ids.myopac = {};
+			config.css.myopac = {};
+			config.names.myopac = {};
+		</script>
+
 	</head>
 
 	<body onload="init();">
@@ -18,12 +30,53 @@
 						<xi:include href="sidebar.xml"/> 
 					</td>
 					<td style='padding-left: 6px;' valign='top' width='80%'>
+
 						<div id='canvas' class='canvas'>
-						<xi:include href="searchbar.xml"/>
-						<xi:include href="statusbar.xml"/>
-						<xi:include href="altcanvas.xml"/>
-						<div id='canvas_main'>My OPAC Goes Here</div>
-					</div>
+							<xi:include href="searchbar.xml"/>
+							<xi:include href="statusbar.xml"/>
+							<xi:include href="altcanvas.xml"/>
+							<div id='canvas_main'>
+
+								<table style='width: 70%'>
+									<tbody>
+										<tr id='myopac_nav_row' style='border: 1px solid #E0E0E0;'>
+	
+											<td class='myopac_link color_3' id='myopac_checked_td' >
+												<a href='javascript:void(0);' 
+													onclick='myOPACChangePage("checked");'> Checked Out</a>
+											</td>
+	
+											<td class='myopac_link' id='myopac_holds_td' >
+												<a href='javascript:void(0);' 
+													onclick='myOPACChangePage("holds");'>Holds</a>
+											</td>
+	
+											<td class='myopac_link' id='myopac_fines_td' >
+												<a href='javascript:void(0);' 
+													onclick='myOPACChangePage("fines");'>Fines</a>
+											</td>
+	
+											<td class='myopac_link' id='myopac_prefs_td' >
+												<a href='javascript:void(0);' 
+													onclick='myOPACChangePage("prefs");'>Account Preferences</a>
+											</td>
+	
+										</tr>
+									</tbody>
+								</table>
+	
+								<br/><br/>
+	
+								<div id='myopac_main_div'>
+									<xi:include href="myopac_checked.xml"/>
+									<xi:include href="myopac_holds.xml"/>
+									<xi:include href="myopac_fines.xml"/>
+									<xi:include href="myopac_prefs.xml"/>
+								</div>
+	
+							</div>
+
+						</div> <!-- canvas -->
 					</td>
 				</tr>
 			</tbody>
