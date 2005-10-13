@@ -189,6 +189,8 @@ BLOCK run_stage2;
 
    %]<br/><form id="stage3_new" name="stage3_new" action="stage3" method="POST">[%
 
+	INCLUDE hidden name='stage2' value=CGI.param('id');
+
 	WRAPPER html/table border=0 width='100%';
 		WRAPPER html/row;
 			WRAPPER html/cell colspan=4 align='center';
@@ -208,7 +210,6 @@ BLOCK run_stage2;
 			logme([f_table]);
 			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
 			WRAPPER html/row;
-				INCLUDE html/cell;
 				INCLUDE html/cell colspan=3 align='left' content=table.findvalue( 'label' );
 			END;
 
@@ -225,7 +226,7 @@ BLOCK run_stage2;
 						widget = fam.findnodes( "widget[@name='$f_widget']" );
 
 						w_file = 'widgets/' _ fam.findvalue('@name') _ '.' _ widget.findvalue('@name');
-						INCLUDE html/cell colspan=2;
+						INCLUDE html/cell;
 						INCLUDE html/cell align='right' content=field.findvalue( 'label' );
 
 						WRAPPER html/cell align='center';
@@ -235,7 +236,7 @@ BLOCK run_stage2;
 									widgetname = widget.findvalue('@name');
 									famname = fam.findvalue('@name');
 
-									input_prefix = "$famname:$widgetname:$classname:$fieldname";
+									input_prefix = "filter:$famname:$widgetname:$classname:$fieldname";
 
 									INCLUDE $w_file widget_family=fam;
 							CATCH;
@@ -248,42 +249,66 @@ BLOCK run_stage2;
 		END;
 
 		WRAPPER html/row;
-			INCLUDE html/cell colspan=5 content="<br>";
+			INCLUDE html/cell colspan=4 content="<br>";
 		END;
 
 		WRAPPER html/row;
-			INCLUDE html/cell colspan=5 content="<b>Attributes Available for Output</b>";
+			INCLUDE html/cell colspan=4 content="<b>Attributes Available for Output</b>";
 		END;
 
 		FOR f_table IN params.dims.keys;
 			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+			classname = table.findvalue( "@id" );
 			tname = table.findvalue( "label" );
 			tdesc = table.findvalue( "desription" );
-
-			NEXT IF table.findvalue('@fact-table') == 'true';
 			
 			WRAPPER html/row;
-				INCLUDE html/cell;
 				INCLUDE html/cell colspan=4 align='left' content=tname;
 			END;
 
 
-			FOR field IN table.findnodes('fields/field[not(@primary) or @primary != "true"]');
+			fields_xpath =
+				'fields/field[not(@primary) or @primary != "true"]';
+			FOR field IN table.findnodes(fields_xpath);
+				link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
+				logme(['link_test',link_test]);
+				NEXT IF field.findnodes( link_test );
+
 				fname = field.findvalue( "label" );
+				fid = field.findvalue( "@name" );
 
 				WRAPPER html/row;
 
-					INCLUDE html/cell colspan=2;
+					WRAPPER html/cell align='right';
+						INCLUDE checkbox name="output:$classname:$fid" value="include";
+					END;
 					INCLUDE html/cell align='right' content=fname;
 					WRAPPER html/cell align='center';
+						'Output Transformation: ';
+						dtype = field.findvalue('@datatype');
+						WRAPPER select name="xform:type:$classname:$fid";
+							INCLUDE option value='' content='None' selected=1;
+							FOR xform IN dtype_xform_map.$dtype;
+								xform_label = dtype_xforms.$xform.label;
+								IF dtype_xforms.$xform.param;
+									xform_label = "$xform_label (*)";
+								END;
+								INCLUDE option value=xform content=xform_label;
+							END;
+						END;
+						'<br/>';
+						'<small><super>*</super>Output Tranformation Parameter: </small>';
+						INCLUDE text name="xform:param:$classname:$fid";
 					END;
 				END;
 			END;
 		END;
-
 	END;
 
-	INCLUDE submit name="action" value="schedule";
+	INCLUDE checkbox name="publicreport" value="t";
+	'Public Report<br>';
+	INCLUDE submit name="action" value="Run Now";
+	INCLUDE submit name="action" value="Schedule";
 
 	%]</form>[%
 END;

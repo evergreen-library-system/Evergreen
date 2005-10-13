@@ -7,9 +7,6 @@ USE end = DateTime(now = 1);
 PROCESS inputs;
 
 WRAPPER html/table ;
-	WRAPPER html/row;
-		INCLUDE html/cell colspan=2 align='center' content='Start time';
-	END;
 
 	WRAPPER html/row;
 		INCLUDE html/cell content='Year';
@@ -18,30 +15,13 @@ WRAPPER html/table ;
 
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':start:year' size=4 value=start.year;
+			INCLUDE text name=input_prefix _ ':start-year' size=4 value=start.year;
 		END;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':start:month' size=4 value=start.month;
+			INCLUDE text name=input_prefix _ ':start-month' size=4 value=start.month;
 		END;
 	END;
 
-	WRAPPER html/row;
-		INCLUDE html/cell colspan=2 align='center' content='End time';
-	END;
-
-	WRAPPER html/row;
-		INCLUDE html/cell content='Year';
-		INCLUDE html/cell content='Month';
-	END;
-
-	WRAPPER html/row;
-		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':end:year' size=4 value=end.year;
-		END;
-		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':end:month' size=4 value=end.month;
-		END;
-	END;
 END;
 
 %]

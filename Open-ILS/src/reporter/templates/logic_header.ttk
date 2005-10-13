@@ -28,4 +28,7 @@ DBI.connect(dsn,d_u,d_p);
 
 stage2_insert = 'INSERT INTO reporter.stage2 (stage1, params, owner, pub)' _
 						' VALUES ( ?,?,?,? )';
+
+stage3_insert = 'INSERT INTO reporter.stage3 (stage2, params, owner, pub, runtime)' _
+						' VALUES ( ?,?,?,?,? )';
 %]
