@@ -145,7 +145,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	}
 
-	info_handler("Performing(%d):  service %s | method %s | \n",
+	info_handler("\nPerforming(%d):  service %s | method %s |",
 			getpid(), service, method );
 
 	int k;
