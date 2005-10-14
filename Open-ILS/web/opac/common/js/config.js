@@ -190,6 +190,7 @@ var FETCH_COPY_STATUSES			= "open-ils.search:open-ils.search.config.copy_status.
 var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.summary.retrieve";
 var FETCH_MARC_HTML				= "open-ils.search:open-ils.search.biblio.record.html";
 var FETCH_CHECKED_OUT			= "open-ils.circ:open-ils.circ.actor.user.checked_out";
+var FETCH_HOLDS					= "open-ils.circ:open-ils.circ.holds.retrieve";
 /* ---------------------------------------------------------------------------- */
 
 

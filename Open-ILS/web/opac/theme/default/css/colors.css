@@ -1,5 +1,5 @@
-body a			{ color: black; }
-body a:visited { color: black; }
+body a			{ color: black; text-decoration: none;}
+body a:visited { color: black; text-decoration: none;}
 body a:hover	{ color: red; text-decoration: underline;}
 
 .color_1 { background: #A7EA9D; color: #000000; }

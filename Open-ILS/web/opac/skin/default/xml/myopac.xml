@@ -35,13 +35,17 @@
 							<xi:include href="searchbar.xml"/>
 							<xi:include href="statusbar.xml"/>
 							<xi:include href="altcanvas.xml"/>
+
 							<div id='canvas_main'>
 
-								<table style='width: 70%'>
+								<br/>
+								<table style='width: 100%; text-align: center;'>
 									<tbody>
-										<tr id='myopac_nav_row' style='border: 1px solid #E0E0E0;'>
+										<tr id='myopac_nav_row'>
 	
-											<td class='myopac_link color_3' id='myopac_checked_td' >
+											<td width='10%' style='border-right: 1px solid #808080;'></td>
+
+											<td class='myopac_link' id='myopac_checked_td' >
 												<a href='javascript:void(0);' 
 													onclick='myOPACChangePage("checked");'> Checked Out</a>
 											</td>
@@ -60,12 +64,15 @@
 												<a href='javascript:void(0);' 
 													onclick='myOPACChangePage("prefs");'>Account Preferences</a>
 											</td>
+
+											<td width='10%' style='border-left: 1px solid #808080;'></td>
 	
 										</tr>
 									</tbody>
 								</table>
+
+								<br/>
 	
-								<br/><br/>
 	
 								<div id='myopac_main_div'>
 									<xi:include href="myopac_checked.xml"/>

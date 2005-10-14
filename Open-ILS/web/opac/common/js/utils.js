@@ -1,5 +1,11 @@
+
 function getId(id) {
 	return document.getElementById(id);
+}
+
+function swapCSSClass(obj, old, newc ) {
+	removeCSSClass(obj, old );
+	addCSSClass(obj, newc );
 }
 
 
@@ -18,7 +24,7 @@ function addCSSClass(e,c) {
 		if(css_class_array[css_class] !=null)
 			string_ip += css_class_array[css_class] + " ";
 	}
-	string_ip = string_ip + c;
+	string_ip += c;
 	e.className = string_ip;
 }
 
@@ -134,7 +140,7 @@ function text(t) {
 }
 
 function elem(name, attrs, text) {
-    var e = createAppElement(name);
+    var e = document.createElement(name);
     if (attrs) {
         for (key in attrs) {
 			  if( key == 'id') e.id = attrs[key];

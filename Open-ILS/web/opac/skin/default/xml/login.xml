@@ -30,6 +30,7 @@
 				<td><span class='login_text'>Password</span></td>
 				<td><span class='login_text'><input id='login_password' type='password' size='16'> </input></span></td>
 			</tr>
+			<tr><td><br/></td></tr>
 			<tr>
 				<td><span class='login_text'><a href="javascript:void(0);" id='login_button'> Login </a></span></td>
 				<td><span class='login_text'><a href='javascript:void(0);' id='login_cancel_button'> Cancel </a></span></td>
