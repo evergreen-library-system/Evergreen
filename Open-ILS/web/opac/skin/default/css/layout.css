@@ -28,7 +28,7 @@ table { border-collapse: collapse; }
 #not_the_canvas {}
 
 #canvas_main { min-height: 300px; border-left: 3px solid #A7EA9D; border-bottom: 3px solid #A7EA9D; 
-	border-top: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
+	border-top: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px; padding-bottom: 10px; }
 
 .non_canvas {  min-height: 300px; border-left: 3px solid #A7EA9D; border-top: 3px solid #A7EA9D; 
 	border-bottom: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
@@ -125,7 +125,7 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 
 .myopac_link { width: 25%; margin: 3px; padding: 3px; text-align: center; vertical-align: middle; }
 
-.myopac_table thead { padding: 2px; font-weight: 600;}
+.myopac_table thead tr td { padding: 2px; font-weight: 600; border: 1px solid #808080;}
 .myopac_table td { padding: 3px; };
 
 

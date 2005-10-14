@@ -25,11 +25,11 @@
 		<table width='100%'>
 			<tbody>
 				<tr>
-					<td valign='top' width='20%'>
+					<td id='main_left_cell'>
 						<xi:include href="logo.xml"/>
 						<xi:include href="sidebar.xml"/> 
 					</td>
-					<td style='padding-left: 6px;' valign='top' width='80%'>
+					<td id='main_right_cell'>
 
 						<div id='canvas' class='canvas'>
 							<xi:include href="searchbar.xml"/>

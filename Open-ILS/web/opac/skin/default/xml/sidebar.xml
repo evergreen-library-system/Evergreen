@@ -33,19 +33,12 @@
 		</div>
 
 
-		<!--
-		<xi:include href="xulsidebar.xml"/>
-		-->
-
 		<!-- Informational sidebar components -->
 
 		<div id='logged_in_as_div' title="&navigate.loggedinas.title;" class="side_bar_item hide_me">
-			<span>&navigate.loggedinas; <b id='username_dest'> </b></span>
+			<span>&navigate.loggedinas;<b id='username_dest'> </b></span>
 		</div>
 
-<!--
-style='border: 1px solid #A7EA9D;'
--->
 		<div id='sidebar_results_wrapper' class='hide_me'  style='border: 1px solid #A7EA9D;'>
 			<div title="&navigate.titleGroupResults;" 
 				id='mresult_link_div' class="side_bar_item hide_me">
@@ -65,13 +58,6 @@ style='border: 1px solid #A7EA9D;'
 
 
 	</div>
-
-	<!--
-	<br/>
-	<div style='padding-top: 3px;'>
-		<xi:include href="searchbar.xml"/> 
-	</div>
-	-->
 
 	<div id='subject_sidebar' class='sidebar_chunk hide_me'> 
 		<div class='sidebar_header color_1'>&sidebar.relevantSubjects.headerLabel;</div>

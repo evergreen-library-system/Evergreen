@@ -404,12 +404,6 @@ function doLogout() {
 	args.page = "home";
 
 	goTo(buildOPACLink(args));
-
-	/*
-	hideMe(G.ui.sidebar.logoutbox);
-	unHideMe(G.ui.sidebar.loginbox);
-	hideMe(G.ui.sidebar.logged_in_as);
-	*/
 }
 
 

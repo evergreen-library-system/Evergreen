@@ -45,6 +45,6 @@
 <!ENTITY rdetail.copyInfo.local "View Copy Information for this location only">
 <!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
 <!ENTITY rdetail.loading "Loading copy infomation...">
-<!ENTITY rdetail.noneAvailable " * There are no copies in this library">
+<!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.detailMain.viewMarc "View MARC">
 <!ENTITY rdetail.detailMain.hideMarc "Return to title summary view">

@@ -23,6 +23,11 @@ function rdetailDraw() {
 	G.ui.rdetail.cp_info_all.onclick = rdetailShowAllCopies;
 	G.ui.rdetail.view_marc.onclick = rdetailViewMarc;
 	G.ui.rdetail.hide_marc.onclick = showCanvas;
+
+
+	if(getLocation() == globalOrgTree.id())
+		hideMe(G.ui.rdetail.cp_info_all);
+
 	var req = new Request(FETCH_RMODS, getRid());
 	req.callback(_rdetailDraw);
 	req.send();
@@ -140,6 +145,7 @@ function _rdetailBuildInfoRows(r) {
 	G.ui.rdetail.cp_info_loading.parentNode.removeChild(
 		G.ui.rdetail.cp_info_loading);
 
+	var found = false;
 	for( var i = 0; i < summary.length; i++ ) {
 
 		var arr = summary[i];
@@ -166,10 +172,12 @@ function _rdetailBuildInfoRows(r) {
 		rdetailApplyStatuses(rowNode, cpc_temp, arr[2]);
 
 		var isLocal = false;
-		if( orgIsMine( findOrgUnit(getLocation()), thisOrg ) ) isLocal = true;
+		if( orgIsMine( findOrgUnit(getLocation()), thisOrg ) ) { found = true; isLocal = true; }
 		rdetailSetPath( thisOrg, isLocal );
 
 	}
+
+	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
 
 }
 

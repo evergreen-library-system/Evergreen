@@ -65,7 +65,10 @@ function userPressedEnter(evt) {
 }   
 
 
-function goTo(url) {location.href = url;}
+function goTo(url) {
+	/* setTimeout because ie sux */
+	setTimeout( function(){ location.href = url; }, 0 );
+}
 
 
 function removeChildren(dom) {

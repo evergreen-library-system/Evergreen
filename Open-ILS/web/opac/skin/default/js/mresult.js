@@ -81,6 +81,7 @@ function mresultHandleMRIds(r) {
 }
 
 function mresultSetRecords(idstruct) {
+	if(!idstruct) return;
 	var o = getOffset();
 	for( var x = o; x < idstruct.length + o; x++ ) {
 		if(idstruct[x-o] == null) break;

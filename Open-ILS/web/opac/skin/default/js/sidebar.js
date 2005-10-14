@@ -25,9 +25,6 @@ function initSideBar() {
 	}
 
 	unHideMe(G.ui.sidebar[page]);
-
-	//addCSSClass(G.ui.sidebar[page], config.css.color_2);
-	//addCSSClass(G.ui.sidebar[page], config.css.encircled);
 	addCSSClass(G.ui.sidebar[page], "sidebar_item_active");
 
 	/* if we're logged in, show it and replace the Login link with the Logout link */
@@ -45,7 +42,6 @@ function initSideBar() {
 /* sets up the login ui components */
 var loginBoxVisible = false;
 
-/*
 function loginDance() {
 	if(doLogin()) {
 		showCanvas();
@@ -53,24 +49,11 @@ function loginDance() {
 		unHideMe(G.ui.sidebar.logoutbox);
 		unHideMe(G.ui.sidebar.logged_in_as);
 		hideMe(G.ui.sidebar.loginbox);
-		return true;
+		runEvt("common", "loggedIn");
 	}
-	return false;
 }
-*/
 
 function initLogin() {
-
-	var loginDance = function() {
-		if(doLogin()) {
-			showCanvas();
-			G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
-			unHideMe(G.ui.sidebar.logoutbox);
-			unHideMe(G.ui.sidebar.logged_in_as);
-			hideMe(G.ui.sidebar.loginbox);
-			runEvt("common", "loggedIn");
-		}
-	}
 
 	G.ui.login.button.onclick = loginDance;
 	G.ui.login.username.onkeydown = 
