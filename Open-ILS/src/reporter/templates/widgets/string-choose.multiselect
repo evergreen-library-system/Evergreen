@@ -4,7 +4,7 @@ PROCESS inputs;
 
 q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' ORDER BY ' _ fieldname _ ';';
 
-WRAPPER select name=input_prefix;
+WRAPPER select name=input_prefix multi=1 size=3;
 	FOR f = DBI.query(q);
 		INCLUDE option value=f.$fieldname;
 	END;

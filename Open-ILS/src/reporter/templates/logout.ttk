@@ -22,7 +22,4 @@
 
 </script>
 
-<span>
-	<a href='javascript:void(0);' onclick='doLogout();'>Logout</a>
-</span>
 

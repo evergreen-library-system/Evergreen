@@ -1,0 +1,12 @@
+<span class='navbar'>
+   <a href='javascript:void(0);' onclick='doLogout();'>Logout</a> |
+   <a href='dashboard'>Dashboard</a>
+	[% IF links.list.size > 0;
+			' | ';
+			links.list.join(' | ');
+		END; %]
+</span>
+
+<br>
+<br>
+

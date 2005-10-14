@@ -1,0 +1,190 @@
+[%
+
+PROCESS inputs;
+PROCESS class_manip;
+PROCESS widget_manip;
+PROCESS logic_header.ttk;
+INCLUDE logout.ttk;
+
+templates = DBI.tie('reporter.stage2', 'id')
+reports = DBI.tie('reporter.stage3', 'id')
+rpt = {};
+tmpl = {};
+
+
+IF CGI.param('id');
+	tid = CGI.param('stage2');
+	tmpl = templates.$tid;
+	rid = CGI.param('id');
+	rpt = reports.$rid;
+END;
+
+
+WRAPPER html/html;
+   INCLUDE header.ttk + navbar.ttk title="Reports";
+   WRAPPER html/body;
+      IF CGI.param('action') == 'Schedule';
+         PROCESS schedule_stage3;
+      ELSIF CGI.param('action') == 'Save';
+         PROCESS save_stage3;
+      ELSIF CGI.param('action') == 'Run Now';
+         PROCESS save_stage3;
+		ELSIF CGI.param('id');
+			PROCESS view_stage3;
+		ELSE;
+			PROCESS list_stage3s;
+      END;
+   END;
+   INCLUDE footer.ttk;
+END;
+
+
+BLOCK schedule_stage3;
+	WRAPPER form method='POST';
+		'Run Date:';
+		INCLUDE text name='runtime' value='yyyy/mm/dd';
+		'<br>';
+
+		'Optional Recurrence:';
+		INCLUDE text name='recurrence-count' value='0';
+		WRAPPER select name='recurrence-interval';
+			INCLUDE option value='days' content='Day(s)';
+			INCLUDE option value='weeks' content='Weeks(s)';
+			INCLUDE option value='months' content='Months(s)';
+		END;
+
+		FOR p IN CGI.param();
+			NEXT IF p == 'action';
+			NEXT IF p == 'runtime';
+			INCLUDE hidden name=p value=CGI.param(p);
+		END;
+		'<br>';
+		INCLUDE submit name='action' value='Save';
+	END;
+END;
+
+BLOCK list_stage3s;
+END;
+
+
+BLOCK save_stage3;
+	stage2 = CGI.param('stage2');
+	runtime = CGI.param('runtime') OR 'now';
+	pub = CGI.param('publicreport') OR 'f';
+	owner = user.id();
+
+	p_obj = {};
+	FOR p IN CGI.param();
+
+		logme([p,CGI.param(p)]);
+
+		parts = p.split(':');
+		p1 = parts.0;
+		p2 = parts.1;
+		p3 = parts.2;
+		p4 = parts.3;
+		p5 = parts.4;
+		p6 = parts.5;
+		
+		IF p6;
+
+			IF p_obj.$p1.$p2.$p3.$p4.$p5.$p6.defined;
+				IF p_obj.$p1.$p2.$p3.$p4.$p5.$p6.size > 1;
+					p_obj.$p1.$p2.$p3.$p4.$p5.$p6.push(CGI.param(p));
+				ELSE;
+					tmp = [ p_obj.$p1.$p2.$p3.$p4.$p5.$p6, CGI.param(p) ];
+					p_obj.$p1.$p2.$p3.$p4.$p5.$p6 = tmp;
+				END;
+			ELSE;
+				p_obj.$p1.$p2.$p3.$p4.$p5.$p6 = CGI.param(p);
+			END;
+
+		ELSIF p5;
+
+			IF p_obj.$p1.$p2.$p3.$p4.$p5.defined;
+				IF p_obj.$p1.$p2.$p3.$p4.$p5.size > 1;
+					p_obj.$p1.$p2.$p3.$p4.$p5.push(CGI.param(p));
+				ELSE;
+					tmp = [ p_obj.$p1.$p2.$p3.$p4.$p5, CGI.param(p) ];
+					p_obj.$p1.$p2.$p3.$p4.$p5 = tmp;
+				END;
+			ELSE;
+				p_obj.$p1.$p2.$p3.$p4.$p5 = CGI.param(p);
+			END;
+
+		ELSIF p4;
+
+			IF p_obj.$p1.$p2.$p3.$p4.defined;
+				IF p_obj.$p1.$p2.$p3.$p4.size > 1;
+					p_obj.$p1.$p2.$p3.$p4.push(CGI.param(p));
+				ELSE;
+					tmp = [ p_obj.$p1.$p2.$p3.$p4, CGI.param(p) ];
+					p_obj.$p1.$p2.$p3.$p4 = tmp;
+				END;
+			ELSE;
+				p_obj.$p1.$p2.$p3.$p4 = CGI.param(p);
+			END;
+
+		ELSIF p3;
+
+			IF p_obj.$p1.$p2.$p3.defined;
+				IF p_obj.$p1.$p2.$p3.size > 1;
+					p_obj.$p1.$p2.$p3.push(CGI.param(p));
+				ELSE;
+					tmp = [ p_obj.$p1.$p2.$p3, CGI.param(p) ];
+					p_obj.$p1.$p2.$p3 = tmp;
+				END;
+			ELSE;
+				p_obj.$p1.$p2.$p3 = CGI.param(p);
+			END;
+
+		ELSIF p2;
+
+			IF p_obj.$p1.$p2.defined;
+				IF p_obj.$p1.$p2.size > 1;
+					p_obj.$p1.$p2.push(CGI.param(p));
+				ELSE;
+					tmp = [ p_obj.$p1.$p2, CGI.param(p) ];
+					p_obj.$p1.$p2 = tmp;
+				END;
+			ELSE;
+				p_obj.$p1.$p2 = CGI.param(p);
+			END;
+
+		ELSE;
+
+			p_obj.$p = CGI.param(p);
+
+		END;
+	END;
+
+	params = utils.perl2JSON( p_obj );
+
+	recurrence = '0 sec';
+	IF CGI.param('recurrence-count') > 0;
+		recurrence = CGI.param('recurrence-count') _ ' ' _ CGI.param('recurrence-interval');
+	END;
+
+	logme([stage2, params, owner, pub]);
+
+	q = DBI.prepare( stage3_insert );
+	CALL q.execute(stage2, params, owner, pub, runtime, recurrence);
+
+	FOR new_s3 = DBI.query("SELECT * FROM reporter.stage3_id_seq;");
+		tid = new_s3.last_value;
+		INCLUDE view_stage3 rpt = reports.$tid;
+	END;
+END;
+
+
+
+
+BLOCK view_stage3;
+	logme(rpt.params);
+	params = utils.JSON2perl( rpt.params );
+
+	# stuff goes here ...
+
+END;
+
+%]

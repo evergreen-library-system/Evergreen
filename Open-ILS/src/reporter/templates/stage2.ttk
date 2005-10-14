@@ -4,6 +4,7 @@ PROCESS inputs;
 PROCESS class_manip;
 PROCESS widget_manip;
 PROCESS logic_header.ttk;
+INCLUDE logout.ttk;
 
 templates = DBI.tie('reporter.stage2', 'id')
 tmpl = {};
@@ -16,9 +17,8 @@ END;
 
 
 WRAPPER html/html;
-   INCLUDE header.ttk title="Report Templates";
+   INCLUDE header.ttk + navbar.ttk title="Report Templates";
    WRAPPER html/body;
-      INCLUDE logout.ttk;
       IF CGI.param('action') == 'save';
          PROCESS save_stage2;
       ELSIF CGI.param('action') == 'edit';
@@ -100,11 +100,11 @@ BLOCK view_stage2;
 			WRAPPER html/cell colspan=5 align='center';
 				s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
 				INCLUDE anchor
-					text=config.findvalue( s1_name_xpath )
+					content=config.findvalue( s1_name_xpath )
 					href="stage1?id=" _ params.stage1;
 				' :: ' _ params.templatename _ '<br>';
 				INCLUDE anchor
-					text="Create a report from this template"
+					content="Create a report from this template"
 					href=CGI.url('-path', 1) _ '?action=run&id=' _ tmpl.id;
 			END;
 		END;
@@ -187,130 +187,133 @@ BLOCK run_stage2;
 	logme(tmpl.params);
 	params = utils.JSON2perl( tmpl.params );
 
-   %]<br/><form id="stage3_new" name="stage3_new" action="stage3" method="POST">[%
+   '<br/>';
+	WRAPPER form id="stage3_new" name="stage3_new" action="stage3" method="POST";
+		INCLUDE hidden name='stage2' value=CGI.param('id');
 
-	INCLUDE hidden name='stage2' value=CGI.param('id');
+		'<br>Name:';
+		INCLUDE text name='reportname';
 
-	WRAPPER html/table border=0 width='100%';
-		WRAPPER html/row;
-			WRAPPER html/cell colspan=4 align='center';
-				s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
-				INCLUDE anchor
-					text=config.findvalue( s1_name_xpath )
-					href="stage1?id=" _ params.stage1;
-				' :: ' _ params.templatename;
-			END;
-		END;
-
-		WRAPPER html/row;
-			INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
-		END;
-
-		FOR f_table IN params.filter.keys;
-			logme([f_table]);
-			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+		WRAPPER html/table border=0 width='100%';
 			WRAPPER html/row;
-				INCLUDE html/cell colspan=3 align='left' content=table.findvalue( 'label' );
+				WRAPPER html/cell colspan=4 align='center';
+					s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
+					INCLUDE anchor
+						content=config.findvalue( s1_name_xpath )
+						href="stage1?id=" _ params.stage1;
+					' :: ' _ params.templatename;
+				END;
 			END;
 
-			FOR f_field IN params.filter.$f_table.keys;
-				logme([f_table,f_field]);
-				FOR f_fam IN params.filter.$f_table.$f_field.keys;
-					logme([f_table,f_field,f_fam]);
-					f_widget = params.filter.$f_table.$f_field.$f_fam;
-					logme([f_table,f_field,f_fam,f_widget]);
+			WRAPPER html/row;
+				INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
+			END;
+
+			FOR f_table IN params.filter.keys;
+				logme([f_table]);
+				table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+				WRAPPER html/row;
+					INCLUDE html/cell colspan=3 align='left' content=table.findvalue( 'label' );
+				END;
+
+				FOR f_field IN params.filter.$f_table.keys;
+					logme([f_table,f_field]);
+					FOR f_fam IN params.filter.$f_table.$f_field.keys;
+						logme([f_table,f_field,f_fam]);
+						f_widget = params.filter.$f_table.$f_field.$f_fam;
+						logme([f_table,f_field,f_fam,f_widget]);
+
+						WRAPPER html/row;
+							field = table.findnodes( "fields/field[@name='$f_field']" );
+							fam = config.findnodes( "/reporter/widgets/widget-family[@name='$f_fam']" );
+							widget = fam.findnodes( "widget[@name='$f_widget']" );
+
+							w_file = 'widgets/' _ fam.findvalue('@name') _ '.' _ widget.findvalue('@name');
+							INCLUDE html/cell;
+							INCLUDE html/cell align='right' content=field.findvalue( 'label' );
+
+							WRAPPER html/cell align='center';
+								TRY;
+										classname = table.findvalue('@id');
+										fieldname = field.findvalue('@name');
+										widgetname = widget.findvalue('@name');
+										famname = fam.findvalue('@name');
+	
+										input_prefix = "filter:$classname:$fieldname:$famname:$widgetname";
+	
+										INCLUDE $w_file widget_family=fam;
+								CATCH;
+									%]ARG!! Couldn't render widget [% $w_file %] ([% error.info %])!!![%
+								END;
+							END;
+						END;
+					END;
+				END;
+			END;
+	
+			WRAPPER html/row;
+				INCLUDE html/cell colspan=4 content="<br>";
+			END;
+
+			WRAPPER html/row;
+				INCLUDE html/cell colspan=4 content="<b>Attributes Available for Output</b>";
+			END;
+
+			FOR f_table IN params.dims.keys;
+				table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+				classname = table.findvalue( "@id" );
+				tname = table.findvalue( "label" );
+				tdesc = table.findvalue( "desription" );
+			
+				WRAPPER html/row;
+					INCLUDE html/cell colspan=4 align='left' content=tname;
+				END;
+
+
+				fields_xpath =
+					'fields/field[not(@primary) or @primary != "true"]';
+				FOR field IN table.findnodes(fields_xpath);
+					link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
+					logme(['link_test',link_test]);
+					NEXT IF field.findnodes( link_test );
+	
+					fname = field.findvalue( "label" );
+					fid = field.findvalue( "@name" );
 
 					WRAPPER html/row;
-						field = table.findnodes( "fields/field[@name='$f_field']" );
-						fam = config.findnodes( "/reporter/widgets/widget-family[@name='$f_fam']" );
-						widget = fam.findnodes( "widget[@name='$f_widget']" );
 
-						w_file = 'widgets/' _ fam.findvalue('@name') _ '.' _ widget.findvalue('@name');
-						INCLUDE html/cell;
-						INCLUDE html/cell align='right' content=field.findvalue( 'label' );
-
+						WRAPPER html/cell align='right';
+							INCLUDE checkbox name="output:$classname:$fid" value="include";
+						END;
+						INCLUDE html/cell align='right' content=fname;
 						WRAPPER html/cell align='center';
-							TRY;
-									classname = table.findvalue('@id');
-									fieldname = field.findvalue('@name');
-									widgetname = widget.findvalue('@name');
-									famname = fam.findvalue('@name');
-
-									input_prefix = "filter:$famname:$widgetname:$classname:$fieldname";
-
-									INCLUDE $w_file widget_family=fam;
-							CATCH;
-								%]ARG!! Couldn't render widget [% $w_file %] ([% error.info %])!!![%
-							END;
-						END;
-					END;
-				END;
-			END;
-		END;
-
-		WRAPPER html/row;
-			INCLUDE html/cell colspan=4 content="<br>";
-		END;
-
-		WRAPPER html/row;
-			INCLUDE html/cell colspan=4 content="<b>Attributes Available for Output</b>";
-		END;
-
-		FOR f_table IN params.dims.keys;
-			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
-			classname = table.findvalue( "@id" );
-			tname = table.findvalue( "label" );
-			tdesc = table.findvalue( "desription" );
-			
-			WRAPPER html/row;
-				INCLUDE html/cell colspan=4 align='left' content=tname;
-			END;
-
-
-			fields_xpath =
-				'fields/field[not(@primary) or @primary != "true"]';
-			FOR field IN table.findnodes(fields_xpath);
-				link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
-				logme(['link_test',link_test]);
-				NEXT IF field.findnodes( link_test );
-
-				fname = field.findvalue( "label" );
-				fid = field.findvalue( "@name" );
-
-				WRAPPER html/row;
-
-					WRAPPER html/cell align='right';
-						INCLUDE checkbox name="output:$classname:$fid" value="include";
-					END;
-					INCLUDE html/cell align='right' content=fname;
-					WRAPPER html/cell align='center';
-						'Output Transformation: ';
-						dtype = field.findvalue('@datatype');
-						WRAPPER select name="xform:type:$classname:$fid";
-							INCLUDE option value='' content='None' selected=1;
-							FOR xform IN dtype_xform_map.$dtype;
-								xform_label = dtype_xforms.$xform.label;
-								IF dtype_xforms.$xform.param;
-									xform_label = "$xform_label (*)";
+							'Output Transformation: ';
+							dtype = field.findvalue('@datatype');
+							WRAPPER select name="xform:type:$classname:$fid";
+								INCLUDE option value='' content='None' selected=1;
+								FOR xform IN dtype_xform_map.$dtype;
+									xform_label = dtype_xforms.$xform.label;
+									IF dtype_xforms.$xform.param;
+										xform_label = "$xform_label (*)";
+									END;
+									INCLUDE option value=xform content=xform_label;
 								END;
-								INCLUDE option value=xform content=xform_label;
 							END;
+							'<br/>';
+							'<small><super>*</super>Output Tranformation Parameter: </small>';
+							INCLUDE text name="xform:param:$classname:$fid";
 						END;
-						'<br/>';
-						'<small><super>*</super>Output Tranformation Parameter: </small>';
-						INCLUDE text name="xform:param:$classname:$fid";
 					END;
 				END;
 			END;
 		END;
+	
+		INCLUDE checkbox name="publicreport" value="t";
+		'Public Report<br>';
+		INCLUDE submit name="action" value="Run Now";
+		INCLUDE submit name="action" value="Schedule";
+
 	END;
-
-	INCLUDE checkbox name="publicreport" value="t";
-	'Public Report<br>';
-	INCLUDE submit name="action" value="Run Now";
-	INCLUDE submit name="action" value="Schedule";
-
-	%]</form>[%
 END;
 
 %]

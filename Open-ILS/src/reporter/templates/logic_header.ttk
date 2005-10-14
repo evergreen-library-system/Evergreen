@@ -1,3 +1,8 @@
+<style>
+*  {	font-family: sans-serif;
+		font-size: 10pt;
+}
+</style>
 [%
 
 BLOCK logme_block;
@@ -29,6 +34,6 @@ DBI.connect(dsn,d_u,d_p);
 stage2_insert = 'INSERT INTO reporter.stage2 (stage1, params, owner, pub)' _
 						' VALUES ( ?,?,?,? )';
 
-stage3_insert = 'INSERT INTO reporter.stage3 (stage2, params, owner, pub, runtime)' _
-						' VALUES ( ?,?,?,?,? )';
+stage3_insert = 'INSERT INTO reporter.stage3 (stage2, params, owner, pub, runtime, recurrence)' _
+						' VALUES ( ?,?,?,?,?,? )';
 %]

@@ -1,0 +1,104 @@
+[%
+
+PROCESS inputs;
+
+BLOCK widget_selector;
+
+	logme("widget_selector called for table $tableid");
+
+	#   if we got some columns, use them. if not, get all non-primary columns
+	IF ! columns;
+		columns_xpath =
+			'/reporter/tables/table[@id="' _ tableid _
+			'"]/fields/field[not(@primary) or @primary!="true"]'
+		columns = config.findnodes(columns_xpath);
+		logme("widget_selector had to grab columns for table $tableid!");
+	END;
+
+	column_input_type="checkbox";
+	IF force;
+		column_input_type="hidden";
+	END;
+
+	FOR column IN columns;
+		column_name=column.findvalue('@name');
+
+		WRAPPER html/row;
+			WRAPPER html/cell valign='top' align='right';
+				# checkbox for column filter here ...
+				INCLUDE $column_input_type
+					name="filter:$tableid"
+					value=column_name
+					checked=1; 
+				column.findvalue('label');
+			END;
+			WRAPPER html/cell;
+
+				col_widget_fams_xpath =
+					'/reporter/widgets/widget-family[@datatype="' _
+					column.findvalue('@datatype') _ '"]';
+
+				IF column.findnodes('@widget-family');
+					col_widget_fams_xpath =
+						'/reporter/widgets/widget-family[@name="' _
+						column.findvalue('@widget-family') _ '"]';
+				END;
+
+				logme("finding widget families using $col_widget_fams_xpath");
+
+				widget_fams = config.findnodes(col_widget_fams_xpath);
+
+				'<UL>';
+				FOR fam IN widget_fams;
+
+					fam_input = 'radio';
+					IF loop.size == 1;
+						fam_input = 'hidden';
+					END;
+
+					checked = 0;
+					IF loop.count == 1;
+						checked = 1;
+					END;
+
+					fam_name = fam.findvalue('@name');
+					# radio for widget family here ...
+					'<LI>';
+					INCLUDE $fam_input
+						name="filter:$tableid:$column_name"
+						value= fam_name;
+					fam.findvalue('label');
+					'<UL>';
+					
+					FOR widget IN fam.findnodes('widget');
+
+						fam_input = 'radio';
+						IF loop.size == 1;
+							fam_input = 'hidden';
+						END;
+
+						checked = 0;
+						IF loop.count == 1;
+							checked = 1;
+						END;
+
+						widget_name = widget.findvalue('@name');
+						# radio for widget here ...
+						'<LI>';
+						INCLUDE $fam_input
+							name="filter:$tableid:$column_name:$fam_name"
+							value= widget_name;
+						widget.findvalue('label');
+						'</LI>';
+					END;
+					'</UL>';
+					'</LI>';
+				END;
+				'</UL>';
+			END;
+		END;
+	END;
+END;
+
+%]
+

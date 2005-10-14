@@ -4,19 +4,19 @@ PROCESS inputs;
 PROCESS class_manip;
 PROCESS widget_manip;
 PROCESS logic_header.ttk;
+INCLUDE logout.ttk;
 
 WRAPPER html/html;
-	INCLUDE header.ttk title="Basic Report Types";
+	INCLUDE header.ttk + navbar.ttk title="Basic Report Types";
 	WRAPPER html/body html.body.onload=
 								"if (document.getElementById('templatename')) {" _
 								"document.getElementById('templatename').focus();" _
 								"document.getElementById('templatename').select();}";
-		INCLUDE logout.ttk;
 		IF !CGI.param('id');
 			IF CGI.param('detail');
-				%]|<a href="?detail=0">No Details (All)</a>[%
+				%]<a href="?detail=0">No Details (All)</a>[%
 			ELSE;
-				%]|<a href="?detail=1">Details (All)</a>[%
+				%]<a href="?detail=1">Details (All)</a>[%
 			END;
 			INCLUDE all_stage1;
 		ELSE;
@@ -33,7 +33,7 @@ END;
 
 
 BLOCK one_stage1;
-	%]|<a href="[%
+	%]<a href="[%
 	CGI.url('-absolute',1,'-path_info',1,'-query',1)
 		.replace('[&\?;]?id=[\w\.]+','')
 		.replace('[&\?;]?create_stage2=1','');

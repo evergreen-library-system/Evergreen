@@ -41,7 +41,9 @@ CREATE TABLE reporter.stage3 (
 	pub		bool				not null
 							default false,
 	create_date	timestamp with time zone	not null
-							default now()
+							default now(),
+	runtime	timestamp with time zone	default now(),
+	recurrence	interval
 );
 
 COMMIT;

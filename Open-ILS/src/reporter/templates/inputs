@@ -1,0 +1,89 @@
+[%
+
+BLOCK form;
+	'<form ';
+
+	IF name;
+		'name="' _ name _ '" ';
+	END;
+
+	IF id;
+		'id="' _ id _ '" ';
+	END;
+
+	IF action;
+		'action="' _ action _ '" ';
+	END;
+
+	IF method;
+		'method="' _ method _ '" ';
+	END;
+
+	'>' _ content _ '</form>';
+END;
+
+BLOCK text;
+	%]<INPUT TYPE="text" NAME="[%
+		name;
+		%]" VALUE="[%
+		value;
+		%]" [%
+		IF size;
+			%]SIZE="[% size %]" [%
+		END;
+		IF max;
+			%]MAXLENGTH="[% max %]" [%
+		END;
+		%]>[%
+END;
+
+BLOCK textarea;
+	%]<TEXTAREA NAME="[% name %]">[% value %]</TEXTAREA>[%
+END;
+
+BLOCK select;
+	%]<select name="[% name %]" size="[% size %]"[% IF multi %] multiple="multiple" [% END %]>[%
+		content;
+	%]</select>[%
+END;
+
+BLOCK option;
+	%]<option value="[% value %]"[% IF selected %] selected="selected" [% END %]>[%
+		IF content;
+			content;
+		ELSE;
+			value;
+		END;
+	%]</option>[%
+END;
+
+BLOCK hidden;
+	%]<INPUT TYPE="hidden" NAME="[% name %]" VALUE="[% value %]">[%
+END;
+
+BLOCK radio;
+	%]<INPUT TYPE="radio" NAME="[% name %]" VALUE="[% value %]" [% IF checked %]CHECKED[% END %]>[%
+END;
+
+BLOCK checkbox;
+	%]<INPUT TYPE="checkbox" NAME="[% name %]" VALUE="[% value %]" [% IF checked %]CHECKED[% END %]>[%
+END;
+
+BLOCK submit;
+	%]<INPUT TYPE="submit" NAME="[% name %]" VALUE="[% value %]">[%
+END;
+
+MACRO link INCLUDE anchor;
+
+BLOCK anchor;
+	%]<a
+		href="[%href%]"
+		title="[%title%]"
+		class="[%class%]"
+		target="[%target%]"
+		onclick="[%onclick%]"
+		alt="[%alt%]">[%content%]</a>[%
+END;
+
+%]
+

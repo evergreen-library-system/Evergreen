@@ -1,0 +1,177 @@
+[%
+
+PROCESS inputs;
+
+dtype_xforms = {
+	'avg'		=> {
+		'name'	=> 'Average per group',
+		'select'	=> 'AVG(?COLNAME?)',
+		'group'	=> 0 },
+	'stddev'	=> {
+		'label'	=> 'Standard Deviation per group',
+		'select'	=> 'STDDEV(?COLNAME?)',
+		'group'	=> 0 },
+	'sum'		=> {
+		'label'	=> 'Sum per group',
+		'select'	=> 'SUM(?COLNAME?)',
+		'group'	=> 0 },
+	'count'		=> {
+		'label'	=> 'Count per group',
+		'select'	=> 'COUNT(?COLNAME?)',
+		'group'	=> 0 },
+	'count_dist'		=> {
+		'label'	=> 'Distinct Count per group',
+		'select'	=> 'COUNT(DISTINCT ?COLNAME?)',
+		'group'	=> 0 },
+	'lower'		=> {
+		'label'	=> 'Transform string to lower case',
+		'select'	=> 'LOWER(?COLNAME?)',
+		'group'	=> 1 },
+	'upper'		=> {
+		'label'	=> 'Transform string to upper case',
+		'select'	=> 'UPPER(?COLNAME?)',
+		'group'	=> 1 },
+	'substr'		=> {
+		'label'	=> 'Trim string length',
+		'select'	=> 'substr(?COLNAME?,1,?PARAM?)',
+		'param'	=> 1,
+		'group'	=> 1 },
+	'age'		=> {
+		'label'	=> 'Age as of runtime -- day granularity',
+		'select'	=> 'AGE(?COLNAME?::DATE)',
+		'group'	=> 1 },
+	'dateformat'		=> { # see http://www.postgresql.org/docs/8.0/interactive/functions-formatting.html
+		'label'	=> 'Format date and time',
+		'select'	=> 'TO_CHAR(?COLNAME?,?PARAM?)',
+		'param'	=> 1,
+		'group'	=> 1 },
+	'numformat'		=> { # see http://www.postgresql.org/docs/8.0/interactive/functions-formatting.html
+		'label'	=> 'Format Numeric data',
+		'select'	=> 'TO_CHAR(?COLNAME?,?PARAM?)',
+		'param'	=> 1,
+		'group'	=> 1 },
+};
+
+dtype_xform_map = {
+	'int'			=> [ 'avg','stddev','sum','count','count_dist','numformat'], 
+	'numeric'	=> [ 'avg','stddev','sum','count','count_dist','numformat'], 
+	'float'	=> [ 'avg','stddev','sum','count','count_dist','numformat'], 
+	'time'	=> [ 'count', 'dateformat'], 
+	'date'	=> [ 'count', 'age','dateformat'], 
+	'timestamp'	=> [ 'count', 'age','dateformat'], 
+	'timestamptz'	=> [ 'count', 'age','dateformat'], 
+	'text'	=> [ 'count','count_dist','lower','upper','substr'],
+};
+
+BLOCK class_table;
+	WRAPPER html/table width='100%' style='border-top: 1px solid black';
+		WRAPPER html/row;
+			WRAPPER html/cell align="right" width="30%";
+				%]<b>Name:</b>[%
+			END;
+			WRAPPER html/cell;
+				class.findvalue('label');
+			END;
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell align="right";
+				%]<b>Description:</b>[%
+			END;
+			WRAPPER html/cell;
+				class.findvalue('description');
+			END;
+		END;
+		IF class.findvalue('@fact-table') == 'true' AND CGI.param('create_stage2') != 1;
+			WRAPPER html/row;
+				WRAPPER html/cell align="right";
+					%]<b>Actions:</b>[%
+				END;
+				WRAPPER html/cell;
+					IF CGI.param('detail');
+						%]<a href="?detail=0&id=[% fact_table %]">No Details</a>[%
+					ELSE;
+						%]<a href="?detail=1&id=[% fact_table %]">Details</a>[%
+					END;
+					%]|<a href="?create_stage2=1&id=[% fact_table %]">New Report Template</a>[%
+				END;
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell align="right" valign='top' content='<b>Report Templates:</b>';
+				WRAPPER html/cell;
+					q = 'select * from reporter.stage2 ' _
+						'where pub is true or owner = ' _ DBI.quote(user.id());
+					FOR r IN DBI.query(q);
+						INCLUDE anchor
+							href="stage2?id=" _ r.id
+							content=utils.JSON2perl(r.params).templatename;
+							'<br>';
+					END;
+				END;
+			END;
+		END;
+
+		INCLUDE class_detail IF CGI.param('detail') == 1;
+	END;
+END; 
+
+
+
+
+
+
+BLOCK class_fields;
+	FOR f IN class.findnodes('fields/field');
+		WRAPPER html/row;
+			WRAPPER html/cell align="right";
+				f.findvalue('label');
+			END;
+			WRAPPER html/cell;
+				%] ([%
+				IF f.findvalue('description');
+					f.findvalue('description');
+					%] -- [%
+				END;
+				f.findvalue('@name')%]::[%f.findvalue('@datatype') %])[%
+			END;
+		END;
+	END;
+END;
+
+
+
+
+
+
+BLOCK class_detail;
+
+	INCLUDE class_fields;
+
+	IF class.findvalue('@fact-table') == 'true' AND nosub != 1;
+		WRAPPER html/row;
+			WRAPPER html/cell align="right";
+				%]<b>Report Dimensions<br>and Attributes:</b>[%
+			END;
+			WRAPPER html/cell;
+				incs = class.findnodes('links/link/@field');
+
+				FOR dim IN incs;
+					link_xpath = '/reporter/tables/table[@id="' _ fact_table _'"]'_
+										'/links/link[@field="' _ dim.value() _ '"]/@table';
+					logme(link_xpath);
+
+					dim_table = config.findvalue(link_xpath);
+
+					dim_xpath = '/reporter/tables/table[@id="' _ dim_table _ '"]';
+					logme(dim_xpath);
+							
+					dim_def = config.findnodes(dim_xpath);
+
+					INCLUDE class_table class = dim_def;
+				END;
+			END;
+		END;
+	END;
+END;
+
+%]
+
