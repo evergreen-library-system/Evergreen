@@ -1186,10 +1186,14 @@ sub user_transactions {
 				"open-ils.storage.direct.action.circulation.retrieve",
 				$t->id );
 
+		next unless $circ;
+
 		my $title = $apputils->simple_scalar_request(
 			"open-ils.storage", 
 			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
 			$circ->target_copy );
+
+		next unless $title;
 
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch($title->marc());
