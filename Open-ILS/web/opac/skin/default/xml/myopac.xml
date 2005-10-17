@@ -43,7 +43,12 @@
 									<tbody>
 										<tr id='myopac_nav_row'>
 	
-											<td width='10%' style='border-right: 1px solid #808080;'></td>
+											<td width='5%' style='border-right: 1px solid #808080;'></td>
+
+											<td class='myopac_link' id='myopac_summary_td' >
+												<a href='javascript:void(0);' 
+													onclick='myOPACChangePage("summary");'> Account Summary</a>
+											</td>
 
 											<td class='myopac_link' id='myopac_checked_td' >
 												<a href='javascript:void(0);' 
@@ -62,10 +67,10 @@
 	
 											<td class='myopac_link' id='myopac_prefs_td' >
 												<a href='javascript:void(0);' 
-													onclick='myOPACChangePage("prefs");'>Account Preferences</a>
+													onclick='myOPACChangePage("prefs");'>Preferences</a>
 											</td>
 
-											<td width='10%' style='border-left: 1px solid #808080;'></td>
+											<td width='5%' style='border-left: 1px solid #808080;'></td>
 	
 										</tr>
 									</tbody>
@@ -75,6 +80,7 @@
 	
 	
 								<div id='myopac_main_div'>
+									<xi:include href="myopac_summary.xml"/>
 									<xi:include href="myopac_checked.xml"/>
 									<xi:include href="myopac_holds.xml"/>
 									<xi:include href="myopac_fines.xml"/>

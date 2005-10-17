@@ -39,7 +39,9 @@
 
 				<td nowrap='nowrap' style='padding: 3px;' align='right' >
 
+					<!--
 					<span style='margin-left: 3px; margin-right: 6px;'> Options:  </span>
+					-->
 
 					<span style='padding-right:9px;'>
 					<select id='search_type_selector'>
@@ -70,7 +72,7 @@
 							</select>
 						</span>
 						<span class='hide_me' id='lib_selector_span'>
-							<a id='lib_selector_link' href='javascript:void(0)'>Choose a library to search</a>
+							<a id='lib_selector_link' href='javascript:void(0)'>* Choose a library to search</a>
 						</span>
 					</span>
 
