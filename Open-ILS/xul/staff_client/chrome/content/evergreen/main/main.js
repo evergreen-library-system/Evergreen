@@ -22,6 +22,8 @@ function main_init() {
 
 		JSAN.use('util.error');
 		G.error = new util.error( mw, G );
+		G.error.sdump('D_ERROR','Testing');
+		dump('direct dump\n');
 
 		JSAN.use('main.window');
 		G.window = new main.window( mw, G );
@@ -44,7 +46,8 @@ function main_init() {
 			G.OpenILS.data = new OpenILS.data( mw, G );
 			G.OpenILS.data.on_complete = function () {
 
-				G.window.open('http://gapines.org/xul/server/test.xul','test','chrome');
+				alert('test');
+				//G.window.open('http://gapines.org/xul/server/test.xul','test','chrome');
 			}
 			G.OpenILS.data.init();
 		}
