@@ -112,7 +112,7 @@ void osrfRouterHandleIncoming( osrfRouter* router ) {
 			int len = strlen(msg->sender) + 1;
 			char domain[len];
 			bzero(domain, len);
-			jid_get_domain( msg->sender, domain );
+			jid_get_domain( msg->sender, domain, len - 1 );
 
 			if(osrfStringArrayContains( router->trustedServers, domain)) 
 				osrfRouterHandleMessage( router, msg );
@@ -138,7 +138,7 @@ int osrfRouterClassHandleIncoming( osrfRouter* router, char* classname, osrfRout
 			int len = strlen(msg->sender) + 1;
 			char domain[len];
 			bzero(domain, len);
-			jid_get_domain( msg->sender, domain );
+			jid_get_domain( msg->sender, domain, len - 1 );
 
 			if(osrfStringArrayContains( router->trustedClients, domain)) {
 

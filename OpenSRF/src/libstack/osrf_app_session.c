@@ -604,8 +604,8 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 
 		osrf_app_session_queue_wait( session, 0 );
 
-		/* if we're not stateless and the first message is not a connect
-			message, then we do the connect first */
+		/* if we're not stateless and not connected and the first 
+			message is not a connect message, then we do the connect first */
 		if(session->stateless) {
 				osrf_app_session_reset_remote(session);
 
@@ -636,7 +636,6 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 	}
 
 	return retval; 
-
 
 }
 

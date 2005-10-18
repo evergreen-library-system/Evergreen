@@ -267,7 +267,7 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 	int l = strlen(toAddr);
 	char dombuf[l];
 	bzero(dombuf, l);
-	jid_get_domain( toAddr, dombuf );	
+	jid_get_domain( toAddr, dombuf, l );	
 
 	if( eq( dombuf, cs->domain ) ) { /* this is to a user we host */
 

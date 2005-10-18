@@ -308,13 +308,6 @@ char* message_to_xml( const transport_message* msg ) {
 		xmlAddChild( message_node, body_node ); 
 	}
 
-
-	/*
-	xmlBufferPtr buf = xmlBufferCreate();
-	int status = xmlNodeDump( buf, doc, xmlDocGetRootElement(doc) , 1, 0 ); 
-	*/
-
-	//xmlDocDumpFormatMemory( doc, &xmlbuf, &bufsize, 0 );
 	xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
 
 	encoded_body = strdup( (char*) xmlbuf );
@@ -357,7 +350,7 @@ char* message_to_xml( const transport_message* msg ) {
 
 
 
-void jid_get_username( const char* jid, char buf[] ) {
+void jid_get_username( const char* jid, char buf[], int size ) {
 
 	if( jid == NULL ) { return; }
 
@@ -366,6 +359,7 @@ void jid_get_username( const char* jid, char buf[] ) {
 	int i;
 	for( i = 0; i != len; i++ ) {
 		if( jid[i] == 64 ) { /*ascii @*/
+			if(i > size)  i = size;
 			strncpy( buf, jid, i );
 			return;
 		}
@@ -373,18 +367,21 @@ void jid_get_username( const char* jid, char buf[] ) {
 }
 
 
-void jid_get_resource( const char* jid, char buf[])  {
+void jid_get_resource( const char* jid, char buf[], int size)  {
 	if( jid == NULL ) { return; }
 	int len = strlen( jid );
 	int i;
 	for( i = 0; i!= len; i++ ) {
 		if( jid[i] == 47 ) { /* ascii / */
-			strncpy( buf, jid + i + 1, len - (i+1) );
+			const char* start = jid + i + 1; /* right after the '/' */
+			int rlen = len - (i+1);
+			if(rlen > size) rlen = size;
+			strncpy( buf, start, rlen );
 		}
 	}
 }
 
-void jid_get_domain( const char* jid, char buf[] ) {
+void jid_get_domain( const char* jid, char buf[], int size ) {
 
 	if(jid == NULL) return;
 
@@ -399,8 +396,12 @@ void jid_get_domain( const char* jid, char buf[] ) {
 		else if(jid[i] == 47 && index1 != 0) /* ascii / */
 			index2 = i;
 	}
-	if( index1 > 0 && index2 > 0 && index2 > index1 )
-		memcpy( buf, jid + index1, index2 - index1 );
+
+	if( index1 > 0 && index2 > 0 && index2 > index1 ) {
+		int dlen = index2 - index1;
+		if(dlen > size) dlen = size;
+		memcpy( buf, jid + index1, dlen );
+	}
 }
 
 void set_msg_error( transport_message* msg, char* type, int err_code ) {

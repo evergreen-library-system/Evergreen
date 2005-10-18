@@ -78,16 +78,16 @@ int message_free( transport_message* msg );
 // Determines the username of a Jabber ID.  This expects a pre-allocated char 
 // array for the return value.
 // ---------------------------------------------------------------------------------
-void jid_get_username( const char* jid, char buf[] );
+void jid_get_username( const char* jid, char buf[], int size );
 
 // ---------------------------------------------------------------------------------
 // Determines the resource of a Jabber ID.  This expects a pre-allocated char 
 // array for the return value.
 // ---------------------------------------------------------------------------------
-void jid_get_resource( const char* jid, char buf[] );
+void jid_get_resource( const char* jid, char buf[], int size );
 
 /** Puts the domain portion of the given jid into the pre-allocated buffer */
-void jid_get_domain( const char* jid, char buf[] );
+void jid_get_domain( const char* jid, char buf[], int size );
 
 void set_msg_error( transport_message*, char* error_type, int error_code);
 

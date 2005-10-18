@@ -1,22 +1,18 @@
 #include "opensrf/transport_client.h"
 #include "opensrf/transport_message.h"
 #include "osrf_list.h"
+#include "osrf_hash.h"
 #include "osrfConfig.h"
 #include "opensrf/utils.h"
 #include <time.h>
 
 /**
-  Maintains a set of transport clients for redundancy
+  Maintains a set of transport clients 
   */
 
-//enum osrfTGType { OSRF_SERVER_NODE, OSRF_CLIENT_NODE };
-
 struct __osrfTransportGroupStruct {
-	osrfList* list;	/* our lisit of nodes */
-	char* router;							/* the login username of the router on this network */
-	int currentNode;	/* which node are we currently on.  Used for client failover and
-								only gets updated on client messages where a server failed 
-								and we need to move to the next server in the list */
+	osrfHash* nodes;						/* our hash of nodes keyed by domain */
+	osrfHashIterator* itr;				/* points to the next node in the list */
 };
 typedef struct __osrfTransportGroupStruct osrfTransportGroup;
 
@@ -65,19 +61,27 @@ int osrfTransportGroupConnect( osrfTransportGroup* grp );
 
 
 /**
-  Sends a transport message
-  If the message is destined for a domain that this group does not have a connection
-  for, then the message is sent out through the currently selected domain.
+  Sends a transport message by going to the next domain in the set.
+  if we have a connection for the recipient domain, then we consider it to be
+  a 'local' message.  Local messages have their recipient domains re-written to
+  match the domain of the next server in the set and they are sent directly to 
+  that server.  If we do not have a connection for the recipient domain, it is 
+  considered a 'remote' message and the message is sent directly (unchanged)
+  to the next connection in the set.
+
   @param grp The transport group
-  @param type Whether this is a client request or a server response
   @param msg The message to send 
-  @param newdomain A pre-allocated buffer in which to write the name of the 
-  new domain if a the expected domain could not be sent to.
-  @return 0 on normal successful send.  Returns 1 if the message was sent
-  to a new domain (note: this can only happen when type == OSRF_CLIENT_NODE)
+  @return 0 on normal successful send.  
   Returns -1 if the message cannot be sent.  
   */
-int osrfTransportGroupSend( osrfTransportGroup* grp, transport_message* msg, char* newdomain );
+int osrfTransportGroupSend( osrfTransportGroup* grp, transport_message* msg );
+
+/**
+  Sends the message to the exact recipient.  No failover is attempted.
+  @return 0 on success, -1 on error.
+  */
+int osrfTransportGroupSendMatch( osrfTransportGroup* grp, transport_message* msg );
+
 
 int _osrfTGServerSend( osrfTransportGroup* grp, char* domain, transport_message* msg );
 int _osrfTGClientSend( osrfTransportGroup* grp, char* domain, transport_message* msg );
@@ -101,7 +105,7 @@ transport_message* osrfTransportGroupRecvAll( osrfTransportGroup* grp, int timeo
 transport_message* osrfTransportGroupRecv( osrfTransportGroup* grp, char* domain, int timeout );
 
 /**
-  Tells the group that the connect to the last message sent to the provided
+  Tells the group that a message to the given domain failed
   domain did not make it through;
   @param grp The transport group
   @param comain The failed domain
