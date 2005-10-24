@@ -75,7 +75,13 @@ function mkInstallDirs {
 		fi
 	fi
 
-	
+
+	# add the opensrf user and group
+	 if [ ! $(grep "^opensrf:" /etc/group) ]; then groupadd opensrf; fi
+	 if [ ! $(grep "^opensrf:" /etc/passwd) ]; then useradd opensrf; fi
+
+	 # add opensrf to the opensrf group
+	 gpasswd -a opensrf opensrf
 
 }
 
@@ -217,6 +223,10 @@ function runInstall {
 		esac
 
 	done
+
+	if installing; then
+		echo -e "\nNow run: chown -R opensrf:opensrf $PREFIX"
+	fi
 }
 
 

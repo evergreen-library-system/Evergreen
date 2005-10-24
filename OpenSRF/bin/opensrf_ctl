@@ -12,6 +12,8 @@ function usage {
 
 function startSystem {
 
+	i=$(whoami) && [ "$i" == "root" ] && echo "Cannot run as root.  Exiting..." && exit;
+
 	case $1 in 
 	
 		"start")

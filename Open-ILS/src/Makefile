@@ -38,9 +38,8 @@ mod_xmltools-install:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
-	# XXX put these back
-	#mkdir -p $(WEBDIR)
-	#cp -r ../web/* $(WEBDIR)
+	mkdir -p $(WEBDIR)
+	cp -r ../web/* $(WEBDIR)
 
 libfieldmapper:	
 	make -C apachemods libfieldmapper.so
