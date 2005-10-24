@@ -12,7 +12,7 @@ function usage {
 
 function startSystem {
 
-	i=$(whoami) && [ "$i" == "root" ] && echo "Cannot run as root.  Exiting..." && exit;
+	i=$(whoami) && [ "$i" != "opensrf" ] && echo "Must be run as user 'opensrf'.  Exiting..." && exit;
 
 	case $1 in 
 	

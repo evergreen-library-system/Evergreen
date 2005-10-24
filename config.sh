@@ -103,6 +103,8 @@ function writeConfig {
 	_write "LIBDIR=\"$LIBDIR\"";
 	_write "PERLDIR=\"$PERLDIR\"";
 	_write "INCLUDEDIR=\"$INCLUDEDIR\"";
+	_write "SOCK=\"$PREFIX/var/sock\"";
+	_write "PID=\"$PREFIX/var/pid\"";
 
 	_write "TMP=\"$TMP\"";
 	_write "APXS2=\"$APXS2\"";

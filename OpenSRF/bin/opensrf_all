@@ -99,7 +99,7 @@ function startOpenSRF {
 
 function makeMeGo {
 	
-	i=$(whoami) && [ "$i" == "root" ] && echo "Cannot run as root.  Exiting..." && exit;
+	i=$(whoami) && [ "$i" != "opensrf" ] && echo "Must be run as user 'opensrf'.  Exiting..." && exit;
 	
 	if [ ! -z "$JSERVER" ]; then
 		echo "Starting Chop Chop, Jabber (jserver-c)...";

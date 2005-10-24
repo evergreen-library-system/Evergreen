@@ -75,6 +75,28 @@ function mkInstallDirs {
 		fi
 	fi
 
+	if installing; then
+		mkdir -p "$SOCK";
+		if [ "$?" != "0" ]; then
+			fail "Error creating $SOCK";
+		fi
+
+		if [ ! -w "$SOCK" ]; then
+			fail "We don't have write access to $SOCK";
+		fi
+	fi
+
+	if installing; then
+		mkdir -p "$PID";
+		if [ "$?" != "0" ]; then
+			fail "Error creating $PID";
+		fi
+		if [ ! -w "$PID" ]; then
+			fail "We don't have write access to $PID";
+		fi
+	fi
+
+
 
 	# add the opensrf user and group
 	 if [ ! $(grep "^opensrf:" /etc/group) ]; then groupadd opensrf; fi

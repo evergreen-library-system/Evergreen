@@ -1,7 +1,7 @@
 
 export TMPDIR			= $(TMP)/opensrf
 export LDFLAGS			= -L $(TMPDIR) -L .
-export CFLAGS			= -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
+export CFLAGS			= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
