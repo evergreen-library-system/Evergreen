@@ -4,6 +4,22 @@
 <config>
 
 
+	<opensrf> <!-- bootstrap config for the C apps -->
+      <router_name>router</router_name>
+      <routers>
+         <router>127.0.0.1</router>
+      </routers>
+      <domains>
+         <domain>127.0.0.1</domain>
+      </domains>
+      <username>client</username>
+      <passwd>mypass</passwd>
+      <port>5222</port>
+      <logfile>/openils/var/log/osrfsys.log</logfile>
+      <loglevel>3</loglevel>
+   </opensrf>
+
+
 	<chopchop> <!-- Our jabber server -->
 		<domain>127.0.0.1</domain>
 		<secret>secret</secret>
