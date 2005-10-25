@@ -608,7 +608,7 @@ int send_request( char* server,
 		fprintf(less, "Request Completed Successfully\n");
 
 
-	fprintf(less, "Request Time in seconds: %.3f\n", end - start );
+	fprintf(less, "Request Time in seconds: %.6f\n", end - start );
 	fprintf(less, "------------------------------------\n");
 
 	pclose(less); 
@@ -789,20 +789,11 @@ int do_math( int count, int style ) {
 		for(j=0; j != 4; j++) {
 
 			++running;
-			struct timeb t1;
-			struct timeb t2;
 
-			ftime(&t1);
-			//int req_id = osrf_app_session_make_request( session, params, methods[j], 1, NULL );
+			double start = get_timestamp_millis();
 			int req_id = osrf_app_session_make_req( session, params, methods[j], 1, NULL );
-
 			osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 5 );
-
-
-			ftime(&t2);
-
-			double start	= ( (int)t1.time	+ ( ((float)t1.millitm) / 1000 ) );
-			double end		= ( (int)t2.time	+ ( ((float)t2.millitm) / 1000 ) );
+			double end = get_timestamp_millis();
 
 			times[(4*i) + j] = end - start;
 
