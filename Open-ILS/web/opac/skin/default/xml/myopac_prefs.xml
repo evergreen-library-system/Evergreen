@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='myopac_prefs_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<table width='100%' class='light_border myopac_table'>
+
+		<br/>
+		<thead class='color_3'>
+			<tr><td style='background: none;' align='center' colspan='4'><b>Preferences</b></td></tr>
+			<tr>
+				<td width=''>More To Come...</td>
+			</tr>
+		</thead>
+
+		<tbody id='myopac_prefs_tbody'>
+			<tr id='myopac_prefs_loading'><td>Loading...</td></tr>
+			<tr id='myopac_prefs_row' class='light_border hide_me'>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+

@@ -1,0 +1,73 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<!-- This holds the record summary information -->
+<div>
+	<table id='rdetail_details_table'>
+		<tbody id='rdetail_details_tbody'>
+
+			<tr>
+				<td id='rdetail_image_cell' rowspan='8'><img id='rdetail_image'> </img></td>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.title;</td>		
+				<td class='rdetail_item' id='rdetail_title'> </td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.author;</td>		
+				<td class='rdetail_item'>
+					<a title='Perform an author search' id='rdetail_author'> </a>
+				</td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.isbn;</td>			
+				<td class='rdetail_item' id='rdetail_isbn'> </td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.edition;</td>		
+				<td class='rdetail_item' id='rdetail_edition'> </td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.pubdate;</td>		
+				<td class='rdetail_item' id='rdetail_pubdate'> </td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.publisher;</td>		
+				<td class='rdetail_item' id='rdetail_publisher'> </td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.tor;</td>			
+				<td class='rdetail_item'>
+					<img id='rdetail_tor_pic' class='tor_pic'> </img>
+					<span id='rdetail_tor' style='padding-left: 5px;'> </span>
+				</td>
+			</tr>
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.abstract;</td>	
+				<td class='rdetail_item' id='rdetail_abstract'> </td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<script language='javascript'>
+		config.ids.rdetail.details_body		= 'rdetail_details_body'; 
+		config.ids.rdetail.title				= 'rdetail_title';
+		config.ids.rdetail.author				= 'rdetail_author';
+		config.ids.rdetail.isbn					= 'rdetail_isbn';
+		config.ids.rdetail.edition				= 'rdetail_edition';
+		config.ids.rdetail.pubdate				= 'rdetail_pubdate';
+		config.ids.rdetail.publisher			= 'rdetail_publisher';
+		config.ids.rdetail.tor					= 'rdetail_tor';
+		config.ids.rdetail.abstr				= 'rdetail_abstract';
+		config.ids.rdetail.image				= 'rdetail_image';
+		config.ids.rdetail.tor_pic				= 'rdetail_tor_pic';
+	</script>
+
+</div> <!-- details_body -->
+

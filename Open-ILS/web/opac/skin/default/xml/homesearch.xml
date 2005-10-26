@@ -1,0 +1,125 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='canvas_main' 
+	style='border: 3px solid #A7EA9D; -moz-border-radius: 6px; padding: 6px; margin-top: 65px;' 
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<!-- load my js -->
+	<script language='javascript' src='../js/search_bar.js'> </script>
+
+	<script language='javascript'>
+		config.ids.searchbar = {};
+		config.css.searchbar = {};
+		config.ids.searchbar.text				= 'search_box';	
+		config.ids.searchbar.submit			= 'search_submit';	
+		config.ids.searchbar.type_selector	= 'search_type_selector';
+		config.ids.searchbar.depth_selector	= 'depth_selector';
+		config.ids.searchbar.form_selector	= 'form_selector';
+		config.ids.searchbar.extra_row		= 'searchbar_extra';
+		config.ids.searchbar.main_row			= 'searchbar_main_row';
+		config.ids.searchbar.table				= 'searchbar_table';
+		config.ids.searchbar.location_tag	= 'search_location_tag_link';
+		config.ids.searchbar.lib_sel_span	= 'lib_selector_span';
+		config.ids.searchbar.lib_sel_link	= 'lib_selector_link';
+		config.ids.searchbar.depth_sel_span	= 'depth_selector_span';
+	</script>
+
+
+	<div style='width: 100%; text-align: center'>
+		<img src='../../../images/main_logo.jpg' />
+	</div>
+
+
+
+	<table id='frontsearch_table' height='100%' width='100%' 
+		style='margin-top: 10px; border-collapse: collapse;'>
+		<tbody>
+
+			<tr style='background: #E0F6E0'>
+
+				<script language='javascript'>
+					config.ids.common.now_searching = 'now_searching_location';
+				</script>
+
+				<td style='padding: 6px; border: 1px solid #D0D0D0;' class='' align='center'>
+					<span> Now searching </span>
+					<span style='padding: 1px;' id='now_searching_location'>  </span>
+				</td>
+			</tr>
+
+
+			<tr><td><br/></td></tr>
+
+			<tr>
+				<td nowrap='nowrap' align='center' style='border: 1px solid #D0D0D0;' class='color_1'>
+					<input id='search_box' style='width: 300px;' type='text' />
+					<span style='padding-left: 6px;'>
+						<input type='button' style='width: 40px;' id='search_submit' value='Go!' />
+					</span>
+				</td>
+			</tr>
+
+			<tr><td><br/></td></tr>
+
+			<tr style='border: 1px solid #D0D0D0; background: #E0F6E0'>
+
+				<td nowrap='nowrap' align='center' style='padding: 4px;'>
+
+					<span style='padding-right:9px;'>
+						<span> Type: </span>
+						<select id='search_type_selector'>
+							<option value='keyword' selected='selected'> Keyword </option>
+							<option value='title'>Title</option>
+							<option value='author'>Author</option>
+							<option value='subject'>Subject</option>
+							<option value='series'>Series</option>
+						</select>
+					</span>
+
+					<span style='padding-right:9px;'>
+						<span> Format: </span>
+					<select id='form_selector' >
+						<option value='all'>All Formats</option>
+						<option value='at'>Books</option>
+						<option value='at-d'>Large Print Books</option>
+						<option value='i'>Audiobooks</option>
+						<option value='g'>Video Recording</option>
+						<option value='j'>Music</option>
+						<option value='m'>Electronic Resources</option>
+					</select>
+					</span>
+
+				</td>
+			</tr>
+
+			<tr><td><br/></td></tr>
+
+			<tr class='color_1' style='border: 1px solid #D0D0D0;'>
+				<td align='center' style='padding: 4px; padding-bottom: 6px;'>
+					<span style='padding-right: 15px;'><a id='home_adv_search_link' href='javascript:void(0);'>Advanced Search</a></span>
+					<span>
+						<span class='hide_me' id='depth_selector_span'>
+							<select id='depth_selector' >
+								<option value='new'>Choose a different library...</option>
+							</select>
+						</span>
+						<span class='hide_me' id='lib_selector_span'>
+							<a id='lib_selector_link' href='javascript:void(0)'>Choose a library to search</a>
+						</span>
+					</span>
+					<span style='padding-left: 15px;'><a id='home_myopac_link' href='javascript:void(0);'>My Account</a></span>
+
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+</div>
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='myopac_fines_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<br/>
+	<table width='100%' class='light_border myopac_table'>
+
+		<thead class='color_3'>
+			<tr><td colspan='3' align='center' style='background: none'><b>Summary</b></td></tr>
+			<tr>
+				<td width='33%'>Total Owed</td>
+				<td width='33%'>Total Paid</td>
+				<td width='33%'>Balance Owed</td>
+			</tr>
+		</thead>
+
+		<tbody id='myopac_fines_summary_tbody'>
+			<tr id='myopac_fines_summary_loading'><td>Loading...</td></tr>
+			<tr id='myopac_fines_summary_row' class='light_border hide_me'>
+				<td align='center' id='myopac_fines_summary_total' class='light_border'>$</td>
+				<td align='center' id='myopac_fines_summary_paid' class='light_border'>$</td>
+				<td align='center' id='myopac_fines_summary_balance' class='light_border' style='color:red;font-weight: bold;'>$</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br/>
+	<br/>
+	<br/>
+
+	<table width='100%' class='light_border myopac_table hide_me' id='myopac_trans_table'>
+
+		<thead class='color_3'>
+			<tr><td colspan='8' align='center' style='background: none'><b>Transaction Details</b></td></tr>
+			<tr>
+				<td width='12%'>Transaction Start Time</td>
+				<td width='12%'>Last Billing Time</td>
+				<td width='12%'>Last Payment Time</td>
+				<td width='12%'>Initial Amount Owed</td>
+				<td width='12%'>Total Amount Paid</td>
+				<td width='12%'>Balance Owed</td>
+				<td width='12%'>Type</td>
+				<td width='12%'>Extra Info</td>
+			</tr>
+		</thead>
+
+		<tbody id='myopac_fines_tbody'>
+			<tr id='myopac_trans_row' class='light_border'>
+				<td align='center' name='myopac_trans_start' class='light_border'> </td>
+				<td align='center' name='myopac_trans_last_bill' class='light_border'> </td>
+				<td align='center' name='myopac_trans_last_payment' class='light_border'> </td>
+				<td align='center' name='myopac_trans_init_amount' class='light_border'>$</td>
+				<td align='center' name='myopac_trans_total_paid' class='light_border'>$</td>
+				<td align='center' name='myopac_trans_balance' class='light_border' style='color:red; font-weight: bold;'>$</td>
+				<td align='center' name='myopac_trans_type' class='light_border'> </td>
+				<td align='center' name='myopac_trans_extra' class='light_border'> </td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+

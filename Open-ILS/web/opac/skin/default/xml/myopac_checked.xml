@@ -1,0 +1,51 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='myopac_checked_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<script language='javascript'>
+	</script>
+
+
+	<table width='100%' class='light_border myopac_table'>
+
+		<thead class='color_3'>
+			<tr>
+				<td width='50%'>Title</td>
+				<td width='20%'>Author</td>
+				<td width='10%' nowrap='nowrap' align='center'>Due Data</td>
+				<td width='10%' nowrap='nowrap' align='center'>Renewals Remaining</td>
+				<td width='10%' nowrap='nowrap' align='center'>Renew</td>
+			</tr>
+		</thead>
+
+		<tbody id='myopac_checked_tbody'>
+
+			<tr id='myopac_checked_none' class='hide_me'><td>You have no items checked out at this time</td></tr>
+			<tr id='myopac_checked_loading'><td>Loading...</td></tr>
+
+			<tr id='myopac_checked_row' class='light_border hide_me'>
+
+				<td name='myopac_checked_title' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_checked_title_link'> </a>
+				</td>
+
+				<td name='myopac_checked_author' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_checked_author_link'> </a>
+				</td>
+
+				<td align='center' name='myopac_checked_due' class='light_border'> </td>
+				<td align='center' name='myopac_checked_renewals' class='light_border'> </td>
+
+				<td align='center' name='myopac_checked_renew' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_checked_renew_link'>Renew</a>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+
+
+</div>
+
+

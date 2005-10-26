@@ -1,0 +1,62 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='myopac_holds_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<script language='javascript'>
+	</script>
+
+
+	<table width='100%' class='light_border myopac_table'>
+
+		<thead class='color_3'>
+			<tr>
+				<td width='40%'>Title</td>
+				<td width='20%'>Author</td>
+				<td>Formats</td>
+				<td align='center' nowrap='nowrap'>Pickup Location</td>
+				<td align='center' nowrap='nowrap'>Email Notify</td>
+				<td align='center' nowrap='nowrap'>Phone Notify</td>
+				<td align='center' nowrap='nowrap'>Cancel</td>
+			</tr>
+		</thead>
+
+		<tbody id='myopac_holds_tbody'>
+
+			<tr id='myopac_holds_none' class='hide_me'><td>You have no items on hold at this time</td></tr>
+			<tr id='myopac_holds_loading'><td>Loading...</td></tr>
+
+			<tr id='myopac_holds_row' class='light_border hide_me'>
+
+				<td name='myopac_holds_title' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_holds_title_link'> </a>
+				</td>
+
+				<td name='myopac_holds_author' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_holds_author_link'> </a>
+				</td>
+
+				<td align='center' name='myopac_holds_formats' class='light_border'> </td>
+
+				<td align='center' name='myopac_holds_location' class='light_border'> </td>
+
+				<td align='center' name='myopac_holds_email' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_holds_email_link'></a>
+				</td>
+
+				<td align='center' name='myopac_holds_phone' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_holds_phone_link'></a>
+				</td>
+
+				<td align='center' name='myopac_holds_cancel' class='light_border'>
+					<a href='javascript:void(0);' name='myopac_holds_cancel_link'>Cancel</a>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+
+
+</div>
+
+

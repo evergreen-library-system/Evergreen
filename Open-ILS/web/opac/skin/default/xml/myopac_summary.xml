@@ -1,0 +1,106 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<div id='myopac_summary_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<br/>
+
+	<table width='60%' class='light_border myopac_table'>
+
+		<tbody id='myopac_summary_tbody'>
+			<tr>
+				<td class='color_3 light_border'>First Name</td>
+				<td class='light_border' id='myopac_summary_first'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Middle Name</td>
+				<td class='light_border' id='myopac_summary_middle'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Last Name</td>
+				<td class='light_border' id='myopac_summary_last'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Day Phone</td>
+				<td class='light_border' id='myopac_summary_dayphone'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Evening Phone</td>
+				<td class='light_border' id='myopac_summary_eveningphone'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Other Phone</td>
+				<td class='light_border' id='myopac_summary_otherphone'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Username</td>
+				<td class='light_border' id='myopac_summary_username'> </td>
+				<td class='light_border'><a href='javascript:void(0);' 
+					id='myopac_summary_username_change' style='text-decoration: underline;'>Change</a></td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Password</td>
+				<td class='light_border' id='myopac_summary_password'>(not shown)</td>
+				<td class='light_border'><a href='javascript:void(0);' 
+					id='myopac_summary_password_change' style='text-decoration: underline;'>Change</a></td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Email Address</td>
+				<td class='light_border' id='myopac_summary_email'> </td>
+				<td class='light_border'><a href='javascript:void(0);' id='myopac_summary_email_change' style='text-decoration: underline;'>Change</a></td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Primary Identification</td>
+				<td class='light_border' id='myopac_summary_ident1'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Secondary Identification</td>
+				<td class='light_border' id='myopac_summary_ident2'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Active Barcode</td>
+				<td class='light_border' id='myopac_summary_barcode'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Home Library</td>
+				<td class='light_border' id='myopac_summary_homelib'> </td>
+			</tr>
+			<tr>
+				<td class='color_3 light_border'>Account Creation Date</td>
+				<td class='light_border' id='myopac_summary_create_date'> </td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<br/><br/><br/>
+
+
+	<table width='100%' class='light_border myopac_table'>
+		<thead class='color_3'>
+			<tr><td style='background: none; border-bottom: none' align='center' colspan='7'><b>Addresses</b></td></tr>
+			<tr>
+				<td width='16%'>Address Type</td>
+				<td width='16%'>Street</td>
+				<td width='16%'>City</td>
+				<td width='16%'>County</td>
+				<td width='16%'>State</td>
+				<td width='16%'>Zip</td>
+			</tr>
+		</thead>
+
+		<tbody id='myopac_addr_tbody'>
+			<tr id='myopac_addr_row' class='light_border'>
+				<td name='myopac_addr_type'> </td>
+				<td name='myopac_addr_street'> </td>
+				<td name='myopac_addr_city'> </td>
+				<td name='myopac_addr_county'> </td>
+				<td name='myopac_addr_state'> </td>
+				<td name='myopac_addr_zip'> </td>
+			</tr>
+		</tbody>
+
+	</table>
+</div>
+
+

@@ -1,0 +1,69 @@
+<?xml version='1.0'?>
+<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
+
+<!-- This holds information for copies attached to this record -->
+<div>
+
+	<!-- header bar for the copy info table.  this allows you to select local
+			or global copy information -->
+	<table class='color_1 rdetail_header' width='100%' >
+		<tbody>
+			<tr>
+				<td align='left'>&rdetail.copyInfo.headerLabel;</td>
+				<td align='right'>
+					<a href='javascript:void(0);' id='copy_info_local_link' 
+						class='rdetail_copy_nav_link hide_me'>&rdetail.copyInfo.local;</a>
+				</td>
+				<td align='right'>
+					<a href='javascript:void(0);' id='copy_info_all_link' 
+						class='rdetail_copy_nav_link'>&rdetail.copyInfo.all;</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table id='rdetail_copy_info_table'>
+		<tbody>
+
+			<tr>
+				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.library;</td>
+				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.callnumber;</td>
+				<td  nowrap='nowarp' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
+					<div name='rdetail_status_cell'> </div>
+					<!--
+					<div name='rdetail_status_cell' style="width: 1em; overflow:auto;"> </div>
+					-->
+				</td>
+			</tr>
+
+			<tr id='rdetail_copy_info_row' class='hide_me'>
+				<td name='rdetail_library_cell'> </td>
+				<td name='rdetail_callnumber_cell'> </td>
+				<td nowrap='nowrap' class='rdetail_copy_count_cell vertical' name='rdetail_copy_count_cell'> </td>
+			</tr>
+
+			<tr id='rdetail_copy_info_loading'><td>&rdetail.loading;</td></tr>
+
+		</tbody>
+	</table>
+
+	<br/><br/>
+
+	<div id='rdetail_copy_info_none' class='hide_me'>&rdetail.noneAvailable;</div>
+
+	<script language='javascript'>
+		config.ids.rdetail.cp_status			= "rdetail_copy_info_status";
+		config.ids.rdetail.cp_info_row		= "rdetail_copy_info_row";
+		config.ids.rdetail.cp_info_loading	= "rdetail_copy_info_loading";
+		config.ids.rdetail.cp_info_local		= "copy_info_local_link";
+		config.ids.rdetail.cp_info_all		= "copy_info_all_link";
+		config.ids.rdetail.cp_info_none		= "rdetail_copy_info_none";
+		config.names.rdetail.lib_cell			= "rdetail_library_cell";
+		config.names.rdetail.cn_cell			= "rdetail_callnumber_cell";
+		config.names.rdetail.cp_count_cell	= "rdetail_copy_count_cell";
+		config.names.rdetail.cp_status		= 'rdetail_status_cell';
+	</script>
+
+</div> <!-- copy info -->
+
+
