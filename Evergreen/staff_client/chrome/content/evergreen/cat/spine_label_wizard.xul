@@ -36,6 +36,11 @@
 				var count_tb = document.createElement('textbox'); row.appendChild(count_tb);
 					count_tb.setAttribute('multiline','true');
 					count_tb.setAttribute('value',count);
+				btn.addEventListener('command',
+					function() {
+						sPrint(label_tb.value + '<br />', false);	
+					}, false
+				);
 			}
 		}
 
