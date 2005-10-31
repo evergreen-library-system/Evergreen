@@ -1,11 +1,11 @@
 dump('entering auth/session.js\n');
 
 if (typeof auth == 'undefined') auth = {};
-auth.session = function (controller) {
+auth.session = function (view) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('main.network'); this.network = new main.network();
-	this.controller = controller;
+	this.view = view;
 
 	return this;
 };
@@ -18,7 +18,7 @@ auth.session.prototype = {
 			var init = this.network.request(
 				'open-ils.auth',
 				'open-ils.auth.authenticate.init',
-				[ this.controller.view.name_prompt.value ]
+				[ this.view.name_prompt.value ]
 			);
 
 			if (init) {
@@ -27,11 +27,11 @@ auth.session.prototype = {
 					'open-ils.auth',
 					'open-ils.auth.authenticate.complete',
 					[ 
-						this.controller.view.name_prompt.value,
+						this.view.name_prompt.value,
 						hex_md5(
 							init +
 							hex_md5(
-								this.controller.view.password_prompt.value
+								this.view.password_prompt.value
 							)
 						)
 					]
@@ -54,7 +54,10 @@ auth.session.prototype = {
 
 				var error = 'open-ils.auth.authenticate.init returned false\n';
 				this.error.sdump('D_ERROR',error);
-				this.controller.logoff();
+				if (typeof this.on_error == 'function') {
+					this.error.sdump('D_AUTH','auth.session.on_error()\n');
+					this.on_error();
+				}
 				throw(error);
 			}
 

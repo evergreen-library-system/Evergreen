@@ -17,7 +17,7 @@ auth.controller.prototype = {
 
 		// This talks to our ILS
 		JSAN.use('auth.session');
-		obj.session = new auth.session(obj);
+		obj.session = new auth.session(obj.view);
 
 		// Attach this object to the XUL through event listeners
 
@@ -85,6 +85,7 @@ auth.controller.prototype = {
 				this.error.sdump('D_AUTH','auth.controller.session.on_init = ' +
 					'auth.controller.on_login\n');
 				this.session.on_init = this.on_login;
+				this.session.on_error = this.on_logoff;
 			}
 			
 			this.session.init();
