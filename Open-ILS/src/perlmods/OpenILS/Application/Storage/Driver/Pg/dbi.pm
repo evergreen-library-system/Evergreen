@@ -65,7 +65,7 @@
 	#---------------------------------------------------------------------
 	package money::user_circulation_summary;
 	
-	money::user_summary->table( 'money.usr_circulation_summary' );
+	money::user_circulation_summary->table( 'money.usr_circulation_summary' );
 
 	#---------------------------------------------------------------------
 	package action::circulation;

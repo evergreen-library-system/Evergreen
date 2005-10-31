@@ -357,9 +357,9 @@ if ($@) {
 
 for my $fmclass ( (Fieldmapper->classes) ) {
 
-	next if ($fmclass->is_virtual);
-
 	$log->debug("Generating methods for Fieldmapper class $fmclass", DEBUG);
+
+	next if ($fmclass->is_virtual);
 
 	(my $cdbi = $fmclass) =~ s/^Fieldmapper:://o;
 	(my $class = $cdbi) =~ s/::.*//o;
