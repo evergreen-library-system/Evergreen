@@ -1,16 +1,13 @@
 dump('entering main/window.js\n');
 
 if (typeof main == 'undefined') main = {};
-main.window = function (mw,G) {
-	this.main_window = mw; this.mw = mw; this.G = G;
+main.window = function () {
+	JSAN.use('util.error'); this.error = new util.error();
 	return this;
 };
 
 main.window.prototype = {
 	
-	// pointer to the auth window
-	'main_window' : null, 	
-
 	// list of open window references, used for debugging in shell
 	'win_list' : [],	
 
@@ -44,7 +41,7 @@ main.window.prototype = {
 
 			w = window.open(url,title,features);
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','window.SafeWindowOpen: ' + E + '\n');
+			this.error.sdump('D_ERROR','window.SafeWindowOpen: ' + E + '\n');
 			throw(E);
 		}
 		if(blocked) PB.setBoolPref("dom.disable_open_during_load",true);
@@ -53,10 +50,9 @@ main.window.prototype = {
 	},
 
 	'open' : function(url,title,features) {
-		this.G.error.sdump('D_WIN',
+		this.error.sdump('D_WIN',
 			'opening ' + url + ', ' + title + ', ' + features + ' from ' + window + '\n');
 		var w = this.SafeWindowOpen(url,title,features);
-		w.mw = this.mw; w.G = this.G;
 		/*
 		setTimeout( 
 			function() { 

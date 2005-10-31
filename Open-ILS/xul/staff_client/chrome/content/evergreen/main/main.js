@@ -21,15 +21,14 @@ function main_init() {
 		G.OpenSRF = {};
 
 		JSAN.use('util.error');
-		G.error = new util.error( mw, G );
+		G.error = new util.error();
 		G.error.sdump('D_ERROR','Testing');
-		dump('direct dump\n');
 
 		JSAN.use('main.window');
-		G.window = new main.window( mw, G );
+		G.window = new main.window();
 
 		JSAN.use('main.network');
-		G.network = new main.network( mw, G );
+		G.network = new main.network();
 
 		G.test_array = [ "a", "b", "c" ];
 		G.test_object = { "a" : "b", "c" : "d", "e" : "f" };
@@ -38,16 +37,15 @@ function main_init() {
 		}
 
 		JSAN.use('auth.controller');
-		G.auth = new auth.controller( mw, G );
+		G.auth = new auth.controller( mw );
 
 		G.auth.on_login = function() {
 
 			JSAN.use('OpenILS.data');
-			G.OpenILS.data = new OpenILS.data( mw, G );
+			G.OpenILS.data = new OpenILS.data( G.auth );
 			G.OpenILS.data.on_complete = function () {
 
-				alert('test');
-				//G.window.open('http://gapines.org/xul/server/test.xul','test','chrome');
+				G.window.open('http://gapines.org/xul/server/test.xul','test','chrome');
 			}
 			G.OpenILS.data.init();
 		}

@@ -1,9 +1,9 @@
 dump('entering util/file.js\n');
 
 if (typeof util == 'undefined') util = {};
-util.file = function (mw,G,fname) {
+util.file = function (fname) {
 
-	this.mw = mw; this.G = G;
+	JSAN.use('util.error'); this.error = new util.error();
 
 	this.dirService = Components.classes["@mozilla.org/file/directory_service;1"].
 		getService( Components.interfaces.nsIProperties );
@@ -14,6 +14,8 @@ util.file = function (mw,G,fname) {
 };
 
 util.file.prototype = {
+
+	'myPackageDir' : 'evergreen',
 
 	'name' : '',
 	'_file' : null,
@@ -26,17 +28,17 @@ util.file.prototype = {
 			if (!fname) throw('Must specify a filename.');
 
 			this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );
-			this._file.append(this.mw.myPackageDir); 
+			this._file.append(myPackageDir); 
 			this._file.append("content"); 
 			this._file.append("conf"); 
 			this._file.append(fname);
 	
-			this.G.error.sdump('D_FILE',this._file.path);
+			this.error.sdump('D_FILE',this._file.path);
 
 			return this._file;
 
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','util.file.get(): ' + E);
+			this.error.sdump('D_ERROR','util.file.get(): ' + E);
 			throw(E);
 		}
 	},
@@ -48,7 +50,7 @@ util.file.prototype = {
 			if (this._output_stream) { this._output_stream.close(); this._output_stream = null; }
 
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','util.file.close(): ' + E);
+			this.error.sdump('D_ERROR','util.file.close(): ' + E);
 			throw(E);
 		}
 	},
@@ -67,7 +69,7 @@ util.file.prototype = {
 			this.close();
 
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','util.file.set_object(): ' + E);
+			this.error.sdump('D_ERROR','util.file.set_object(): ' + E);
 			throw(E);
 		}
 	},
@@ -87,7 +89,7 @@ util.file.prototype = {
 			return obj;
 
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','util.file.get_object(): ' + E);
+			this.error.sdump('D_ERROR','util.file.get_object(): ' + E);
 			throw(E);
 		}
 	},
@@ -111,7 +113,7 @@ util.file.prototype = {
 			}
 
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','util.file._create_input_stream(): ' + E);
+			this.error.sdump('D_ERROR','util.file._create_input_stream(): ' + E);
 			throw(E);
 		}
 	},
@@ -130,7 +132,7 @@ util.file.prototype = {
 			return this._output_stream;
 
 		} catch(E) {
-			this.G.error.sdump('D_ERROR','util.file._create_output_stream(): ' + E);
+			this.error.sdump('D_ERROR','util.file._create_output_stream(): ' + E);
 			throw(E);
 		}
 	}

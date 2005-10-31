@@ -1,9 +1,12 @@
 dump('entering OpenILS/data.js\n');
 
 if (typeof OpenILS == 'undefined') OpenILS = {};
-OpenILS.data = function (mw,G) {
+OpenILS.data = function (auth) {
 
-	this.mw = mw; this.G = G;
+	this.auth = auth;
+
+	JSAN.use('util.error'); this.error = new util.error();
+	JSAN.use('main.network'); this.network = new main.network();
 
 	var obj = this;
 
@@ -25,17 +28,17 @@ OpenILS.data = function (mw,G) {
 					}
 				} catch(E) {
 
-					obj.G.error.sdump('D_ERROR',E + '\n');
+					obj.error.sdump('D_ERROR',E + '\n');
 				}
 
 			}
 
 			try {
-				obj.list[classname] = obj.G.network.request( app, method, params);
+				obj.list[classname] = obj.network.request( app, method, params);
 				convert();
 				// if cacheable, store an offline copy
 				if (cacheable) {
-					var file = new util.file( obj.mw, obj.G, classname );
+					var file = new util.file( classname );
 					file.set_object( obj.list[classname] );
 				}
 
@@ -43,7 +46,7 @@ OpenILS.data = function (mw,G) {
 				// if cacheable, try offline
 				if (cacheable) {
 					try {
-						var file = new util.file( obj.mw, obj.G, classname );
+						var file = new util.file( classname );
 						obj.list[classname] = file.get_object();
 						convert();
 					} catch(E) {
@@ -65,7 +68,7 @@ OpenILS.data = function (mw,G) {
 				[
 					'open-ils.search',
 					'open-ils.search.actor.user.session',
-					[ obj.G.auth.session.key ],
+					[ obj.auth.session.key ],
 					false
 				]
 			);
@@ -79,7 +82,7 @@ OpenILS.data = function (mw,G) {
 		}
 	);
 
-	obj.G.error.sdump('D_DEBUG','_fm_objects = ' + js2JSON(this._fm_objects) + '\n');
+	obj.error.sdump('D_DEBUG','_fm_objects = ' + js2JSON(this._fm_objects) + '\n');
 
 	for (var i in this._fm_objects) {
 		this.chain.push( gen_fm_retrieval_func(i,this._fm_objects[i]) );
@@ -99,7 +102,7 @@ OpenILS.data = function (mw,G) {
 			[ 
 				'open-ils.actor', 
 				'open-ils.actor.org_unit.full_path.retrieve', 
-				[ obj.G.auth.session.key ],
+				[ obj.auth.session.key ],
 				true
 			]
 		)
@@ -114,7 +117,7 @@ OpenILS.data = function (mw,G) {
 				[ 
 					'open-ils.circ', 
 					'open-ils.circ.stat_cat.actor.retrieve.all', 
-					[ obj.G.auth.session.key, obj.list.au.home_ou() ],
+					[ obj.auth.session.key, obj.list.au.home_ou() ],
 					true
 				]
 			)();

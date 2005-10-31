@@ -1,7 +1,7 @@
 dump('entering util/error.js\n');
 
 if (typeof util == 'undefined') util = {};
-util.error = function (mw,G) {
+util.error = function () {
 
 	this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
 		.getService(Components.interfaces.nsIConsoleService);
