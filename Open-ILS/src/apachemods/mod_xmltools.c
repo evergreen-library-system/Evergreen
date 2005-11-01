@@ -3,19 +3,19 @@
 
 /* Configuration handlers -------------------------------------------------------- */
 static const char* mod_xmltools_set_locale_dir(cmd_parms *parms, void *config, const char *arg) {
-	mod_xmltools_config  *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	mod_xmltools_config  *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools_module);
 	cfg->locale_dir = (char*) arg;
 	return NULL;
 }
 
 static const char* mod_xmltools_set_default_locale(cmd_parms *parms, void *config, const char *arg) {
-	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools_module);
 	cfg->default_locale = (char*) arg;
 	return NULL;
 }
 
 static const char* mod_xmltools_set_pre_xsl(cmd_parms *parms, void *config, const char *arg) {
-	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools_module);
 	cfg->pre_xsl = xsltParseStylesheetFile( (xmlChar*) arg );
 	if(cfg->pre_xsl == NULL) {
 		fprintf(stderr, "Unable to parse PreXSL stylesheet %s\n", (char*) arg );
@@ -25,7 +25,7 @@ static const char* mod_xmltools_set_pre_xsl(cmd_parms *parms, void *config, cons
 }
 
 static const char* mod_xmltools_set_post_xsl(cmd_parms *parms, void *config, const char *arg) {
-	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools);
+	mod_xmltools_config *cfg = ap_get_module_config(parms->server->module_config, &mod_xmltools_module);
 	cfg->post_xsl = xsltParseStylesheetFile( (xmlChar*) arg );
 	if(cfg->post_xsl == NULL) {
 		fprintf(stderr, "Unable to parse PostXSL stylesheet %s\n", (char*) arg );
@@ -67,7 +67,7 @@ static int mod_xmltools_handler (request_rec* r) {
 	if (strcmp(r->handler, MODULE_NAME )) 
 		return DECLINED;
 
-	mod_xmltools_config *cfg = ap_get_module_config(r->server->module_config, &mod_xmltools);
+	mod_xmltools_config *cfg = ap_get_module_config(r->server->module_config, &mod_xmltools_module);
 	char* locale_dir = cfg->locale_dir;
 	char* default_locale = cfg->default_locale;
 	xsltStylesheetPtr pre_xsl = cfg->pre_xsl;
@@ -167,7 +167,7 @@ static void mod_xmltools_register_hooks (apr_pool_t *p) {
 
 
 /* finally, flesh the module */
-module AP_MODULE_DECLARE_DATA mod_xmltools = {
+module AP_MODULE_DECLARE_DATA mod_xmltools_module = {
 	STANDARD20_MODULE_STUFF,
 	NULL,
 	NULL,

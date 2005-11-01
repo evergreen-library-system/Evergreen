@@ -4,7 +4,7 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
-#define MODULE_NAME		"mod_xmltools" /* our module name */
+#define MODULE_NAME		"mod_xmltools_module" /* our module name */
 #define PARAM_LOCALE		"locale"			/* the URL param for the local directory */
 #define LANG_DTD			"lang.dtd"		/* the DTD for the test entities */
 
@@ -26,7 +26,7 @@
 
 
 /* This module */
-module AP_MODULE_DECLARE_DATA mod_xmltools;
+module AP_MODULE_DECLARE_DATA mod_xmltools_module;
 
 
 /* our config structure */
