@@ -48,62 +48,29 @@ function fail {
 # --------------------------------------------------------------------
 # Makes sure the install directories exist and are writable
 # --------------------------------------------------------------------
+
+function mkDir {
+	mkdir -p "$1";
+	[ "$?" != "0" ] && fail "Error creating $1";
+	[ ! -w "$1" ] && fail "We don't have write access to $1";
+}
+
 function mkInstallDirs {
 
-	if installing; then
-
-		mkdir -p "$PREFIX";
-		if [ "$?" != "0" ]; then
-			fail "Error creating $PREFIX";
-		fi
-
-		if [ ! -w "$PREFIX" ]; then
-			fail "We don't have write access to $PREFIX";
-		fi
-
-	fi
-
-	if building; then
-
-		mkdir -p "$TMP";
-		if [ "$?" != "0" ]; then
-			fail "Error creating $TMP";
-		fi
-
-		if [ ! -w "$TMP" ]; then
-			fail "We don't have write access to $TMP";
-		fi
-	fi
-
-	if installing; then
-		mkdir -p "$SOCK";
-		if [ "$?" != "0" ]; then
-			fail "Error creating $SOCK";
-		fi
-
-		if [ ! -w "$SOCK" ]; then
-			fail "We don't have write access to $SOCK";
-		fi
-	fi
-
-	if installing; then
-		mkdir -p "$PID";
-		if [ "$?" != "0" ]; then
-			fail "Error creating $PID";
-		fi
-		if [ ! -w "$PID" ]; then
-			fail "We don't have write access to $PID";
-		fi
-	fi
-
+	installing 	&& mkDir "$PREFIX";
+	building 	&& mkDir "$TMP";
+	installing 	&& mkDir "$SOCK";
+	installing 	&& mkDir "$PID";
+	installing 	&& mkDir "$LOG";
 
 
 	# add the opensrf user and group
-	 if [ ! $(grep "^opensrf:" /etc/group) ]; then groupadd opensrf; fi
-	 if [ ! $(grep "^opensrf:" /etc/passwd) ]; then useradd opensrf; fi
-
-	 # add opensrf to the opensrf group
-	 gpasswd -a opensrf opensrf
+	 if installing; then
+	 	if [ ! $(grep "^opensrf:" /etc/group) ]; then groupadd opensrf; fi
+	 	if [ ! $(grep "^opensrf:" /etc/passwd) ]; then useradd opensrf; fi
+	 	# add opensrf to the opensrf group
+	 	gpasswd -a opensrf opensrf
+	fi;
 
 }
 
