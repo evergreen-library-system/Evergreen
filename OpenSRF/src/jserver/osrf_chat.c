@@ -205,6 +205,9 @@ void osrfChatHandleData( void* cs,
 
 	osrfChatNode* node = osrfListGetIndex( server->nodeList, sockid );
 
+	if(node)
+		debug_handler("Found node for sockid %d with state %d", sockid, node->state);
+
 	if(!node) {
 		debug_handler("Adding new connection for sockid %d", sockid );
 		node = osrfChatAddNode( server, sockid );
@@ -362,7 +365,8 @@ int osrfChatPushData( osrfChatServer* server, osrfChatNode* node, char* data ) {
 
 	chatdbg(server);
 
-	debug_handler("pushing data into xml parser for node %d:\n%s", node->sockid, data);
+	debug_handler("pushing data into xml parser for node %d with state %d:\n%s", 
+						 node->sockid, node->state, data);
 	node->inparse = 1;
 	xmlParseChunk(node->parserCtx, data, strlen(data), 0);
 	node->inparse = 0;
@@ -397,12 +401,14 @@ void osrfChatStartElement( void* blob, const xmlChar *name, const xmlChar **atts
 	int status = -1;
 	char* nm = (char*) name;
 
-	debug_handler("Starting element %s with namespace %s", nm, xmlSaxAttr(atts, "xmlns") );
+	debug_handler("Starting element %s with namespace %s and node state %d", 
+						 nm, xmlSaxAttr(atts, "xmlns"), node->state );
 
 	switch( node->state ) {
 
 		case OSRF_CHAT_STATE_NONE:
 			status = osrfChatHandleNewConnection( node, nm, atts );
+			debug_handler("After NewConnection we have state %d", node->state);
 			break;
 
 		case OSRF_CHAT_STATE_CONNECTING:
@@ -523,6 +529,9 @@ int osrfChatHandleNewConnection( osrfChatNode* node, const char* name, const xml
 	
 		char* buf = va_list_to_string( OSRF_CHAT_START_STREAM, domain, node->authkey );
 		node->state = OSRF_CHAT_STATE_CONNECTING;
+
+		debug_handler("Server node %d setting state to OSRF_CHAT_STATE_CONNECTING[%d]",
+							 node->sockid, node->state );
 	
 		debug_handler("Server responding to connect message with\n%s\n", buf );
 		osrfChatSendRaw( node, buf );
