@@ -191,7 +191,7 @@ BLOCK run_stage2;
 	WRAPPER form id="stage3_new" name="stage3_new" action="stage3" method="POST";
 		INCLUDE hidden name='stage2' value=CGI.param('id');
 
-		'<br>Name:';
+		'<br>Report Name:';
 		INCLUDE text name='reportname';
 
 		WRAPPER html/table border=0 width='100%';
@@ -269,6 +269,20 @@ BLOCK run_stage2;
 					INCLUDE html/cell colspan=4 align='left' content=tname;
 				END;
 
+				IF loop.first;
+					pkey_field = table.findnodes('fields/field[@primary = "true"]');
+					pid = pkey_field.findvalue('@name');
+					plabel = pkey_field.findvalue('label');
+					
+					WRAPPER html/row;
+						WRAPPER html/cell align='right';
+							INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include";
+							INCLUDE hidden name="xform:type:$classname:$pid" value="count_dist";
+						END;
+						INCLUDE html/cell align='right' content="Per group count of $plabel";
+						INCLUDE html/cell align='center';
+					END;
+				END;
 
 				fields_xpath =
 					'fields/field[not(@primary) or @primary != "true"]';

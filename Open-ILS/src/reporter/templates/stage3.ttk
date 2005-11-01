@@ -42,15 +42,15 @@ END;
 BLOCK schedule_stage3;
 	WRAPPER form method='POST';
 		'Run Date:';
-		INCLUDE text name='runtime' value='yyyy/mm/dd';
+		INCLUDE text name='runtime' value='yyyy-mm-dd';
 		'<br>';
 
 		'Optional Recurrence:';
 		INCLUDE text name='recurrence-count' value='0';
 		WRAPPER select name='recurrence-interval';
 			INCLUDE option value='days' content='Day(s)';
-			INCLUDE option value='weeks' content='Weeks(s)';
-			INCLUDE option value='months' content='Months(s)';
+			INCLUDE option value='weeks' content='Week(s)';
+			INCLUDE option value='months' content='Month(s)';
 		END;
 
 		FOR p IN CGI.param();
