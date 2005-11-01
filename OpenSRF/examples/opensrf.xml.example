@@ -71,6 +71,10 @@
 						0 then we don't -->
 				<stateless>1</stateless>
 
+				<!-- Tells the servers which language this implementation is coded in 
+					In this case non "perl" servers will not be able to load the module -->
+				<language>perl</language>
+
 				<!-- Module the implements this application -->
 				<implementation>OpenSRF::Application::Persist</implementation>
 
@@ -118,6 +122,7 @@
 			<opensrf.math>
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Demo::Math</implementation>
 				<max_requests>97</max_requests>
 				<unix_config>
@@ -135,6 +140,7 @@
 			<opensrf.dbmath> 
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Demo::MathDB</implementation>
 				<max_requests>99</max_requests>
 				<unix_config>
@@ -151,6 +157,7 @@
 			<opensrf.settings>
 				<keepalive>1</keepalive>
 				<stateless>0</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Settings</implementation>
 				<max_requests>17</max_requests>
 				<unix_config>
