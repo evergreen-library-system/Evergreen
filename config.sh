@@ -105,6 +105,7 @@ function writeConfig {
 	_write "INCLUDEDIR=\"$INCLUDEDIR\"";
 	_write "SOCK=\"$PREFIX/var/sock\"";
 	_write "PID=\"$PREFIX/var/pid\"";
+	_write "LOG=\"$PREFIX/var/log\"";
 
 	_write "TMP=\"$TMP\"";
 	_write "APXS2=\"$APXS2\"";
@@ -183,6 +184,7 @@ function writeConfig {
 	prompt "";
 	prompt "To edit individual install locations (e.g. changing the lib directory),"
 	prompt "edit the install.conf file generated from this script"
+	prompt ""
 
 }
 
