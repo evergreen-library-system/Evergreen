@@ -3,8 +3,14 @@ dump('entering util/error.js\n');
 if (typeof util == 'undefined') util = {};
 util.error = function () {
 
-	this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
-		.getService(Components.interfaces.nsIConsoleService);
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
+			.getService(Components.interfaces.nsIConsoleService);
+	} catch(E) {
+		this.consoleDump = false;
+		dump('util.error constructor: ' + E + '\n');
+	}
 
 	this.sdump_last_time = new Date();
 
