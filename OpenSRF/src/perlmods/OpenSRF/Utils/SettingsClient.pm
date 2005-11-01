@@ -72,7 +72,6 @@ sub grab_host_config {
 	my $host = shift;
 
 	warn "Grabbing Host config for $host\n";
-	OpenSRF::System->bootstrap_client(client_name => "system_client");
 	$session = OpenSRF::AppSession->create( "opensrf.settings" ) unless $session;
 	my $bsconfig = OpenSRF::Utils::Config->current;
 
