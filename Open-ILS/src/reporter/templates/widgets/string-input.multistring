@@ -1,0 +1,4 @@
+[%
+PROCESS inputs;
+INCLUDE textarea name=input_prefix;
+%]

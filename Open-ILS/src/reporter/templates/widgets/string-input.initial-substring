@@ -1,0 +1,4 @@
+[%
+PROCESS inputs;
+INCLUDE text name=input_prefix size=20;
+%]

@@ -1,0 +1,45 @@
+[%
+
+USE date;
+USE start = DateTime(now = 1);
+
+PROCESS inputs;
+
+WRAPPER html/table;
+
+	WRAPPER html/row;
+		WRAPPER html/cell;
+			'Year: ';
+			INCLUDE name=input_prefix _ ':year' text size=4 value=start.year;
+		END;
+	END;
+
+	WRAPPER html/row;
+		WRAPPER html/cell;
+			'Start week of year: ';
+			WRAPPER select name=input_prefix _ ':start';
+				count = 1;
+				WHILE count < 53;
+					INCLUDE option value=count;
+					count = count + 1;
+				END;
+			END;
+		END;
+	END;
+
+	WRAPPER html/row;
+		WRAPPER html/cell;
+			'End week of year: ';
+			WRAPPER select name=input_prefix _ ':end';
+				count = 1;
+				WHILE count < 53;
+					INCLUDE option value=count;
+					count = count + 1;
+				END;
+			END;
+		END;
+	END;
+END;
+
+
+%]

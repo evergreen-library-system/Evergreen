@@ -1,0 +1,14 @@
+[%
+
+PROCESS inputs;
+
+WRAPPER select name=input_prefix;
+	count = 1;
+	WHILE count < 53;
+		INCLUDE option value=count;
+		count = count + 1;
+	END;
+END;
+' weeks before runtime';
+
+%]

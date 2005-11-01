@@ -1,0 +1,27 @@
+[%
+
+USE date;
+USE start = DateTime(now = 1);
+
+PROCESS inputs;
+
+WRAPPER html/table ;
+
+	WRAPPER html/row;
+		INCLUDE html/cell content='Year';
+	END;
+
+	WRAPPER html/row;
+		WRAPPER html/cell;
+			INCLUDE text name=input_prefix _ ':year' size=4 value=start.year;
+		END;
+		WRAPPER html/cell;
+			'For ';
+			INCLUDE text name=input_prefix _ ':year-count' value=2;
+			' years';
+		END;
+	END;
+
+END;
+
+%]
