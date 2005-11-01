@@ -121,7 +121,7 @@ CREATE TABLE asset.call_number (
 CREATE INDEX asset_call_number_record_idx ON asset.call_number (record);
 CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
 CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
-CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (asset.call_number_dewey(label));
+CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_number_dewey(label));
 
 CREATE TABLE asset.call_number_note (
 	id		BIGSERIAL			PRIMARY KEY,

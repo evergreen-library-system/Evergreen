@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION asset.call_number_dewey( TEXT ) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	my $txt = shift;
 	$txt =~ s/^\s+//o;
 	$txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//o;
