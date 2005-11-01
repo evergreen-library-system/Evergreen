@@ -19,3 +19,6 @@ pref("javascript.options.showInConsole",true);
 pref("security.checkloaduri", false);
 pref("signed.applets.codebase_principal_support", true);
 
+//user_pref("capability.principal.codebase.p0.granted", "UniversalXPConnect");
+//user_pref("capability.principal.codebase.p0.id", "http://gapines.org");
+

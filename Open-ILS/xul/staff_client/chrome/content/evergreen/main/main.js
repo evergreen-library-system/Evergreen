@@ -3,6 +3,14 @@ dump('entering main/main.js\n');
 function main_init() {
 	dump('entering main_init()\n');
 	try {
+
+		var pref = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefBranch);
+		if (pref) {
+			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect");
+			pref.setCharPref("capability.principal.codebase.p0.id", "http://gapines.org");
+		}
+
 		if (typeof JSAN == 'undefined') {
 			throw(
 				"The JSAN library object is missing."
