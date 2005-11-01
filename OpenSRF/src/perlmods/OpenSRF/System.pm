@@ -152,7 +152,9 @@ sub bootstrap {
 
 		for my $app (@$apps) {
 			# verify we are a settings server and launch 
-			if( $app eq "opensrf.settings" ) {
+			if( $app eq "opensrf.settings" and 
+				$client->config_value("apps","opensrf.settings", "language") =~ /perl/i ) {
+
 				$are_settings_server = 1;
 				$self->launch_settings();
 				sleep 1;
@@ -331,10 +333,15 @@ sub launch_settings_listener {
 sub launch_unix {
 	my( $self, $apps ) = @_;
 
-	foreach my $app ( @$apps ) {
-		next unless $app;
+	my $client = OpenSRF::Utils::SettingsClient->new();
 
-		if( $app eq "opensrf.settings" ) { next; }
+	foreach my $app ( @$apps ) {
+
+		next unless $app;
+		my $lang = $client->config_value( "apps", $app, "language");
+
+		next unless $lang =~ /perl/i;
+		next unless $app ne "opensrf.settings";
 
 		_log( " * Starting UnixServer for $app..." );
 

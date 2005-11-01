@@ -8,8 +8,6 @@ export INCDIR = "$(INCLUDEDIR)/openils/"
 
 all: mod_xmltools mod_ils_rest_gateway c_apps
 
-
-
 install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install
 
 web-install:	webcore-install autojs-install  mod_xmltools-install mod_ils_rest_gateway-install

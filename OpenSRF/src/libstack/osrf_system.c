@@ -87,30 +87,36 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 		i = 0;
 		while( (appname = osrfStringArrayGetString(arr, i++)) ) {
 
-			char* libfile = osrf_settings_host_value("/apps/%s/implementation", appname);
-			info_handler("Launching application %s with implementation %s", appname, libfile);
-	
-			if(! (appname && libfile) ) {
-				warning_handler("Missing appname / libfile in settings config");
-				continue;
-			}
-	
-			int pid;
-	
-			if( (pid = fork()) ) { 
-				// storage pid in local table for re-launching dead children...
-				info_handler("Launched application child %d", pid);
+			char* lang = osrf_settings_host_value("/apps/%s/language", appname);
 
-			} else {
-	
-				fprintf(stderr, " * Running application %s\n", appname);
-				if( osrfAppRegisterApplication( appname, libfile ) == 0 ) 
-					osrf_prefork_run(appname);
+			if(lang && !strcasecmp(lang,"c"))  {
 
-				debug_handler("Server exiting for app %s and library %s", appname, libfile );
-				exit(0);
-			}
-		}
+				char* libfile = osrf_settings_host_value("/apps/%s/implementation", appname);
+		
+				if(! (appname && libfile) ) {
+					warning_handler("Missing appname / libfile in settings config");
+					continue;
+				}
+
+				info_handler("Launching application %s with implementation %s", appname, libfile);
+		
+				int pid;
+		
+				if( (pid = fork()) ) { 
+					// storage pid in local table for re-launching dead children...
+					info_handler("Launched application child %d", pid);
+	
+				} else {
+		
+					fprintf(stderr, " * Running application %s\n", appname);
+					if( osrfAppRegisterApplication( appname, libfile ) == 0 ) 
+						osrf_prefork_run(appname);
+	
+					debug_handler("Server exiting for app %s and library %s", appname, libfile );
+					exit(0);
+				}
+			} // language == c
+		} 
 	}
 
 	/** daemonize me **/

@@ -91,7 +91,7 @@ function startOpenSRF {
 	if [ ! -z "$OPENSRFC" ]; then
 		echo "Starting OpenSRF-C...";
 		# localhost will need to be changed...
-		"$BINDIR/opensrf-c" localhost "$ETCDIR//opensrf_core.xml" "opensrf"
+		"$BINDIR/opensrf-c" $(hostname -f) "$ETCDIR//opensrf_core.xml" "opensrf"
 		echo "OpenSRF-C started OK";
 	fi
 }

@@ -68,6 +68,7 @@ For non-core config info, see the inline documentation within this file
 			<opensrf.persist>
 				<keepalive>1</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Persist</implementation>
 				<max_requests>97</max_requests>
 				<unix_config>
@@ -91,6 +92,7 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.auth>
 				<keepalive>5</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenILS::Application::Auth</implementation>
 				<max_requests>93</max_requests>
 
@@ -118,6 +120,7 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.search>
 				<keepalive>5</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenILS::Application::Search</implementation>
 				<max_requests>93</max_requests>
 
@@ -145,6 +148,7 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.actor>
 				<keepalive>5</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenILS::Application::Actor</implementation>
 				<max_requests>93</max_requests>
 
@@ -167,6 +171,7 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.cat>
 				<keepalive>5</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenILS::Application::Cat</implementation>
 				<max_requests>199</max_requests>
 
@@ -194,6 +199,7 @@ For non-core config info, see the inline documentation within this file
 			<opensrf.math>
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Demo::Math</implementation>
 				<max_requests>97</max_requests>
 				<unix_config>
@@ -211,6 +217,7 @@ For non-core config info, see the inline documentation within this file
 			<opensrf.dbmath> 
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Demo::MathDB</implementation>
 				<max_requests>99</max_requests>
 				<unix_config>
@@ -228,6 +235,7 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.circ> 
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenILS::Application::Circ</implementation>
 				<max_requests>99</max_requests>
 				<unix_config>
@@ -258,6 +266,7 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.storage>
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenILS::Application::Storage</implementation>
 				<unix_config>
 					<max_requests>1000</max_requests>
@@ -291,6 +300,7 @@ For non-core config info, see the inline documentation within this file
 			<opensrf.settings>
 				<keepalive>1</keepalive>
 				<stateless>1</stateless>
+				<language>perl</language>
 				<implementation>OpenSRF::Application::Settings</implementation>
 				<max_requests>17</max_requests>
 				<unix_config>

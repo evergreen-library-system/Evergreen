@@ -101,7 +101,6 @@ int __setupRouter( char* config, char* context ) {
 	osrfRouterRun( router );
 
 	return -1;
-
 }
 
 
