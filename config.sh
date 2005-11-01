@@ -67,6 +67,9 @@ function buildConfig {
 	prompt "Apache2 headers directory [$APACHE2_HEADERS] "
 	read X; if [ ! -z "$X" ]; then APACHE2_HEADERS="$X"; fi;
 
+	prompt "Apache2 APR headers directory [$APR_HEADERS] "
+	read X; if [ ! -z "$X" ]; then APR_HEADERS="$X"; fi;
+
 	prompt "Libxml2 headers directory [$LIBXML2_HEADERS] "
 	read X; if [ ! -z "$X" ]; then LIBXML2_HEADERS="$X"; fi;
 
@@ -110,6 +113,7 @@ function writeConfig {
 	_write "TMP=\"$TMP\"";
 	_write "APXS2=\"$APXS2\"";
 	_write "APACHE2_HEADERS=\"$APACHE2_HEADERS\"";
+	_write "APR_HEADERS=\"$APR_HEADERS\"";
 	_write "LIBXML2_HEADERS=\"$LIBXML2_HEADERS\"";
 
 	_write "WEBDIR=\"$WEBDIR\"";

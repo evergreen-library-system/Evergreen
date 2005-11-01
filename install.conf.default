@@ -78,11 +78,12 @@ APXS2="/opt/bin/apxs";
 
 
 # --------------------------------------------------------------------
-# Directory where the Apache2 header files are located.  This must 
+# Directories where the Apache2 header files are located.  These must 
 # be set when building the mod_ils_gateway C plugin for allowing web 
 # access to the published API.
 # --------------------------------------------------------------------
 APACHE2_HEADERS="/opt/include/";
+APR_HEADERS="/opt/include/";
 
 
 # --------------------------------------------------------------------
