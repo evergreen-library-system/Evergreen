@@ -141,7 +141,6 @@ sub bootstrap {
 		$OpenSRF::Utils::SettingsClient::host_config = 
 			$parser->get_server_config($bsconfig->env->hostname);
 
-		OpenSRF::System->bootstrap_client(client_name => "system_client");
 		my $client = OpenSRF::Utils::SettingsClient->new();
 		my $apps = $client->config_value("activeapps", "appname");
 		if(ref($apps) ne "ARRAY") { $apps = [$apps]; }
@@ -166,6 +165,7 @@ sub bootstrap {
 	}
 
 	# Launch everything else
+	OpenSRF::System->bootstrap_client(client_name => "system_client");
 	my $client = OpenSRF::Utils::SettingsClient->new();
 	my $apps = $client->config_value("activeapps", "appname" );
 	if(!ref($apps)) { $apps = [$apps]; }
