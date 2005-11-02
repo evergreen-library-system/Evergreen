@@ -125,9 +125,12 @@ auth.controller.prototype = {
 	
 		this.error.sdump('D_AUTH','close' + this.w + '\n');
 		this.logoff();
-		for (var w in this.G.window.appshell_list) {
-			this.G.window.appshell_list[w].close();
-		}
+		//Basically, we want to close all the windows for this application (and in case we're running this as
+		//a firefox extension, we don't want to merely shutdown mozilla).  I'll probably create an XPCOM for
+		//tracking the windows.
+		//for (var w in this.G.window.appshell_list) {
+		//	this.G.window.appshell_list[w].close();
+		//}
 		this.w.close(); /* Probably won't go any further */
 
 		if (typeof this.on_close == 'function') {

@@ -82,9 +82,9 @@ auth.session.prototype = {
 	'close' : function () { 
 		this.error.sdump('D_AUTH','auth.session.close()\n'); 
 		this.key = null;
-		if (typeof this.G.on_close == 'function') {
+		if (typeof this.on_close == 'function') {
 			this.error.sdump('D_AUTH','auth.session.on_close()\n');
-			this.G.on_close();
+			this.on_close();
 		}
 	}
 
