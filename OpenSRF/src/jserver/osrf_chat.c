@@ -691,6 +691,10 @@ void osrfChatEndElement( void* blob, const xmlChar* name ) {
 
 				debug_handler("Setting remote address to %s", node->remote );
 				osrfChatSendRaw( node, OSRF_CHAT_LOGIN_OK );
+				if(osrfHashGet( node->parent->nodeHash, node->remote ) ) {
+					warning_handler("New node replaces existing node for remote id %s", node->remote);
+					osrfHashRemove(node->parent->nodeHash, node->remote);
+				}
 				osrfHashSet( node->parent->nodeHash, node, node->remote );
 				node->state = OSRF_CHAT_STATE_CONNECTED;
 			}

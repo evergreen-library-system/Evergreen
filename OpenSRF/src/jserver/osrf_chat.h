@@ -90,8 +90,8 @@ GNU General Public License for more details.
 #define OSRF_CHAT_STATE_INIQ				2
 #define OSRF_CHAT_STATE_INUSERNAME		4
 #define OSRF_CHAT_STATE_INRESOURCE		8
-#define OSRF_CHAT_STATE_INS2SRESULT		8
-#define OSRF_CHAT_STATE_INS2SVERIFY		8
+#define OSRF_CHAT_STATE_INS2SRESULT		16
+#define OSRF_CHAT_STATE_INS2SVERIFY		32
 
 
 struct __osrfChatNodeStruct {
