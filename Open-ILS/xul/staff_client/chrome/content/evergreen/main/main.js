@@ -53,7 +53,7 @@ function main_init() {
 			G.OpenILS.data = new OpenILS.data( G.auth );
 			G.OpenILS.data.on_complete = function () {
 
-				G.window.open('http://gapines.org/xul/server/test.xul','test','chrome');
+				G.window.open('http://gapines.org/xul/server/main/menu_frame.xul','test','chrome');
 			}
 			G.OpenILS.data.init();
 		}
