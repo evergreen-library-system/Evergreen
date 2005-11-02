@@ -7,6 +7,7 @@ RETRIEVE_FIELDMAPPER=wget -N http://gapines.org/opac/common/js/util/fieldmapper.
 RETRIEVE_FM_ALL=wget -N http://gapines.org/opac/common/js/fmall.js
 RETRIEVE_ORG_TREE=wget -N http://gapines.org/opac/common/js/OrgTree.js
 RETRIEVE_CLIENT_CONFIG=cp ../../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
+MOZILLA_SPECIAL_RESOURCE=/home/phasefx/work/mozilla/dist/bin/res/dtd
 
 all: build package
 	@echo
@@ -67,6 +68,7 @@ circ:
 
 custom:
 	#(cd chrome/content/evergreen/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
+	cp chrome/locale/en-US/evergreen/*.* ${MOZILLA_SPECIAL_RESOURCE}
 
 evergreen.xpi: evergreen.jar
 	@echo

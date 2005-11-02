@@ -1,0 +1,73 @@
+<!ENTITY main.menu.title "Evergreen Staff Client">
+
+<!-- The Main Menubar -->
+<!ENTITY main.menu.file.label "File"><!ENTITY main.menu.file.key "F">
+<!ENTITY main.menu.edit.label "Edit"><!ENTITY main.menu.edit.key "E">
+<!ENTITY main.menu.circ.label "Circulation"><!ENTITY main.menu.circ.key "C">
+<!ENTITY main.menu.cat.label "Cataloging"><!ENTITY main.menu.cat.key "a">
+<!ENTITY main.menu.serials.label "Serials"><!ENTITY main.menu.serials.key "l">
+<!ENTITY main.menu.acquisitions.label "Acquisitions"><!ENTITY main.menu.acquisitions.key "q">
+<!ENTITY main.menu.search.label "Search"><!ENTITY main.menu.search.key "r">
+<!ENTITY main.menu.reports.label "Reports"><!ENTITY main.menu.reports.key "">
+<!ENTITY main.menu.help.label "Help"><!ENTITY main.menu.help.key "H">
+<!ENTITY main.menu.admin.label "Admin"><!ENTITY main.menu.admin.key "i">
+
+<!-- The File menu on the Main Menubar -->
+<!ENTITY main.menu.file.new.label "New Window"><!ENTITY main.menu.file.new.key "N">
+<!ENTITY main.menu.file.new_tab.label "New Tab"><!ENTITY main.menu.file.new_tab.key "T">
+<!ENTITY main.menu.file.open.label "Open Session"><!ENTITY main.menu.file.open.key "O">
+<!ENTITY main.menu.file.save.label "Save Session"><!ENTITY main.menu.file.save.key "S">
+<!ENTITY main.menu.file.close_tab.label "Close Tab"><!ENTITY main.menu.file.close_tab.key "">
+<!ENTITY main.menu.file.close.label "Close Window"><!ENTITY main.menu.file.close.key "C">
+
+<!-- The Edit menu on the Main Menubar -->
+<!ENTITY main.menu.edit.undo.label "Undo"><!ENTITY main.menu.edit.undo.key "U">
+<!ENTITY main.menu.edit.redo.label "Redo"><!ENTITY main.menu.edit.redo.key "R">
+<!ENTITY main.menu.edit.cut.label "Cut"><!ENTITY main.menu.edit.cut.key "t">
+<!ENTITY main.menu.edit.copy.label "Copy"><!ENTITY main.menu.edit.copy.key "C">
+<!ENTITY main.menu.edit.paste.label "Paste"><!ENTITY main.menu.edit.paste.key "P">
+<!ENTITY main.menu.edit.delete.label "Delete"><!ENTITY main.menu.edit.delete.key "D">
+<!ENTITY main.menu.edit.select_all.label "Select All"><!ENTITY main.menu.edit.select_all.key "A">
+<!ENTITY main.menu.edit.find.label "Find"><!ENTITY main.menu.edit.find.key "F">
+<!ENTITY main.menu.edit.find_again.label "Find Again"><!ENTITY main.menu.edit.find_again.key "g">
+<!ENTITY main.menu.edit.buckets.label "Manage Buckets"><!ENTITY main.menu.edit.buckets.key "B">
+
+<!-- The Circulation menu on the Main Menubar -->
+<!ENTITY main.menu.circ.checkout.label "Check Out"><!ENTITY main.menu.circ.checkout.key "O">
+<!ENTITY main.menu.circ.checkin.label "Check In"><!ENTITY main.menu.circ.checkin.key "C">
+<!ENTITY main.menu.circ.hold_capture.label "Capture Holds"><!ENTITY main.menu.circ.hold_capture.key "H">
+<!ENTITY main.menu.circ.renew.label "Renew"><!ENTITY main.menu.circ.renew.key "n">
+<!ENTITY main.menu.circ.mark_used.label "Mark Used"><!ENTITY main.menu.circ.mark_used.key "U">
+<!ENTITY main.menu.circ.copy_status.label "Display Item"><!ENTITY main.menu.circ.copy_status.key "I">
+<!ENTITY main.menu.circ.patron_status.label "Display Patron"><!ENTITY main.menu.circ.patron_status.key "P">
+<!ENTITY main.menu.circ.patron_registration.label "Register Patron"><!ENTITY main.menu.circ.patron_registration.key "R">
+<!ENTITY main.menu.circ.place_hold.label "Place Hold"><!ENTITY main.menu.circ.place_hold.key "H">
+
+<!-- The Special Circulation submenu in the Circulation Menu -->
+<!ENTITY main.menu.circ.special.label "Special Circulation"><!ENTITY main.menu.circ.special.key "S">
+<!ENTITY main.menu.circ.lost.label "Mark Lost"><!ENTITY main.menu.circ.lost.key "L">
+<!ENTITY main.menu.circ.missing.label "Mark Missing"><!ENTITY main.menu.circ.missing.key "M">
+<!ENTITY main.menu.circ.found.label "Mark Found"><!ENTITY main.menu.circ.found.key "F">
+<!ENTITY main.menu.circ.quick_add.label "Quick Add"><!ENTITY main.menu.circ.quick_add.key "Q">
+<!ENTITY main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'><!ENTITY main.menu.circ.claimed_returned.key "C">
+
+<!-- The Cataloging menu on the Main Menubar -->
+<!ENTITY main.menu.cat.add_copy.label "Add Item"><!ENTITY main.menu.cat.add_copy.key "I">
+<!ENTITY main.menu.cat.add_volume.label "Add Volume"><!ENTITY main.menu.cat.add_volume.key "V">
+<!ENTITY main.menu.cat.add_bib.label "Add Bib Record"><!ENTITY main.menu.cat.add_bib.key "B">
+<!ENTITY main.menu.cat.copy_status.label "Display Item"><!ENTITY main.menu.cat.copy_status.key "I">
+<!ENTITY main.menu.cat.volume_status.label "Display Volume"><!ENTITY main.menu.cat.volume_status.key "V">
+<!ENTITY main.menu.cat.bib_status.label "Display Bib Record"><!ENTITY main.menu.cat.bib_status.key "B">
+<!ENTITY main.menu.cat.bib_search.label "Search Catalog"><!ENTITY main.menu.cat.bib_search.key "S">
+<!ENTITY main.menu.cat.dedup.label "Merge/Transfer Interface"><!ENTITY main.menu.cat.dedup.key "M">
+
+<!-- The Entity Menubar -->
+<!ENTITY main.menu.entity.patron.label "Patrons"><!ENTITY main.menu.entity.patron.key "">
+<!ENTITY main.menu.entity.copy.label "Items"><!ENTITY main.menu.entity.copy.key "">
+<!ENTITY main.menu.entity.volume.label "Volumes"><!ENTITY main.menu.entity.volume.key "">
+<!ENTITY main.menu.entity.bib.label "Bib Records"><!ENTITY main.menu.entity.bib.key "">
+
+<!-- The Patron menu on the Entity Menubar -->
+<!-- Re-use main.menu.copy.patron_registration for menuitem label -->
+<!ENTITY main.menu.entity.patron.register.key "R">
+
