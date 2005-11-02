@@ -1,3 +1,7 @@
+#ifndef OSRF_LIST_H
+#define OSRF_LIST_H
+
+
 #include <stdio.h>
 #include "opensrf/utils.h"
 #include <Judy.h>
@@ -114,3 +118,4 @@ void __osrfListSetSize( osrfList* list );
 unsigned long osrfListGetCount( osrfList* list );
 
 
+#endif

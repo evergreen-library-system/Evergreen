@@ -56,7 +56,9 @@ osrfTransportGroup* osrfNewTransportGroup( osrfTransportGroupNode* nodes[], int 
   @param grp The transport group
   @return The number of nodes successfully connected
   */
-int osrfTransportGroupConnect( osrfTransportGroup* grp );
+int osrfTransportGroupConnectAll( osrfTransportGroup* grp );
+
+void osrfTransportGroupDisconnectAll( osrfTransportGroup* grp );
 
 
 /**

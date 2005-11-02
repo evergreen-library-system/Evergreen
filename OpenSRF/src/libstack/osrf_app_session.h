@@ -7,6 +7,8 @@
 #include "osrf_system.h"
 #include "opensrf/string_array.h"
 #include "osrfConfig.h"
+#include "osrf_hash.h"
+#include "osrf_list.h"
 
 #include "objson/object.h"
 #include "objson/json_parser.h"
@@ -38,9 +40,6 @@ struct osrf_app_request_struct {
 	/* if set to true, then a call that is waiting on a response, will reset the 
 		timeout and set this variable back to false */
 	int reset_timeout;
-
-	/** So we can be listified */
-	struct osrf_app_request_struct* next;
 };
 typedef struct osrf_app_request_struct osrf_app_request;
 typedef struct osrf_app_request_struct osrfAppRequest;
@@ -50,7 +49,10 @@ struct osrf_app_session_struct {
 	/** Our messag passing object */
 	transport_client* transport_handle;
 	/** Cache of active app_request objects */
-	osrf_app_request* request_queue;
+
+	//osrf_app_request* request_queue;
+
+	osrfList* request_queue;
 
 	/** The original remote id of the remote service we're talking to */
 	char* orig_remote_id;
@@ -74,10 +76,6 @@ struct osrf_app_session_struct {
 
 	/** SERVER or CLIENT */
 	enum OSRF_SESSION_TYPE type;
-
-	/** So we can be listified */
-	struct osrf_app_session_struct* next;
-
 };
 typedef struct osrf_app_session_struct osrf_app_session;
 typedef struct osrf_app_session_struct osrfAppSession;
@@ -175,7 +173,7 @@ void osrfAppSessionFree( osrfAppSession* );
 osrf_app_request* _osrf_app_request_init( osrf_app_session* session, osrf_message* msg );
 
 /** Frees memory used by an app_request object */
-void _osrf_app_request_free( osrf_app_request * req );
+void _osrf_app_request_free( void * req );
 
 /** Pushes the given message onto the list of 'responses' to this request */
 void _osrf_app_request_push_queue( osrf_app_request*, osrf_message* payload );
@@ -207,9 +205,6 @@ void _osrf_app_session_free( osrf_app_session* );
 
 /** adds a session to the global session cache */
 void _osrf_app_session_push_session( osrf_app_session* );
-
-/** removes from global session cache */
-void _osrf_app_session_remove_session( char* session_id );
 
 /** Adds an app_request to the request set */
 void _osrf_app_session_push_request( osrf_app_session*, osrf_app_request* req );

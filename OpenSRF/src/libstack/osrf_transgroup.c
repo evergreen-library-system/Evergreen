@@ -33,6 +33,7 @@ osrfTransportGroup* osrfNewTransportGroup( osrfTransportGroupNode* nodes[], int 
 	for( i = 0; i != count; i++ ) {
 		if(!(nodes[i] && nodes[i]->domain) ) return NULL;
 		osrfHashSet( grp->nodes, nodes[i], nodes[i]->domain );
+		debug_handler("Adding domain %s to TransportGroup", nodes[i]->domain);
 	}
 
 	return grp;
@@ -40,7 +41,7 @@ osrfTransportGroup* osrfNewTransportGroup( osrfTransportGroupNode* nodes[], int 
 
 
 /* connect all of the nodes to their servers */
-int osrfTransportGroupConnect( osrfTransportGroup* grp ) {
+int osrfTransportGroupConnectAll( osrfTransportGroup* grp ) {
 	if(!grp) return -1;
 	int active = 0;
 
@@ -48,15 +49,39 @@ int osrfTransportGroupConnect( osrfTransportGroup* grp ) {
 	osrfHashIteratorReset(grp->itr);
 
 	while( (node = osrfHashIteratorNext(grp->itr)) ) {
+		info_handler("TransportGroup attempting to connect to domain %s", 
+							 node->connection->session->server);
+
 		if(client_connect( node->connection, node->username, 
 					node->password, node->resource, 10, AUTH_DIGEST )) {
 			node->active = 1;
 			active++;
+			info_handler("TransportGroup successfully connected to domain %s", 
+							 node->connection->session->server);
+		} else {
+			warning_handler("TransportGroup unable to connect to domain %s", 
+							 node->connection->session->server);
 		}
 	}
 
 	osrfHashIteratorReset(grp->itr);
 	return active;
+}
+
+void osrfTransportGroupDisconnectAll( osrfTransportGroup* grp ) {
+	if(!grp) return;
+
+	osrfTransportGroupNode* node;
+	osrfHashIteratorReset(grp->itr);
+
+	while( (node = osrfHashIteratorNext(grp->itr)) ) {
+		info_handler("TransportGroup disconnecting from domain %s", 
+							 node->connection->session->server);
+		client_disconnect(node->connection);
+		node->active = 0;
+	}
+
+	osrfHashIteratorReset(grp->itr);
 }
 
 

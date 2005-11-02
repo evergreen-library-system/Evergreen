@@ -1,3 +1,6 @@
+#ifndef OSRF_HASH_H
+#define OSRF_HASH_H
+
 #include <Judy.h>
 #include "opensrf/utils.h"
 #include "opensrf/string_array.h"
@@ -81,3 +84,4 @@ void osrfHashIteratorFree( osrfHashIterator* itr );
 
 void osrfHashIteratorReset( osrfHashIterator* itr );
 
+#endif
