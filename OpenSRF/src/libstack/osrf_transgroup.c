@@ -13,6 +13,7 @@ osrfTransportGroupNode* osrfNewTransportGroupNode(
 	node->username = strdup(username);
 	node->password = strdup(password);
 	node->domain	= strdup(domain);
+	node->resource	= strdup(resource);
 	node->active	= 0;
 	node->lastsent	= 0;
 	node->connection = client_init( domain, port, NULL, 0 );
@@ -21,8 +22,8 @@ osrfTransportGroupNode* osrfNewTransportGroupNode(
 }
 
 
-osrfTransportGroup* osrfNewTransportGroup( char* router, osrfTransportGroupNode* nodes[], int count ) {
-	if(!nodes || !router || count < 1) return NULL;
+osrfTransportGroup* osrfNewTransportGroup( osrfTransportGroupNode* nodes[], int count ) {
+	if(!nodes || count < 1) return NULL;
 
 	osrfTransportGroup* grp = safe_malloc(sizeof(osrfTransportGroup));
 	grp->nodes					= osrfNewHash();
@@ -95,10 +96,9 @@ int osrfTransportGroupSend( osrfTransportGroup* grp, transport_message* msg ) {
 	char* firstdomain = NULL;
 	char newrcp[1024];
 
-
 	int updateRecip = 1;
 	/* if we don't host this domain, don't update the recipient but send it as is */
-	if(osrfHashGet(grp->nodes, domain)) updateRecip = 0;
+	if(!osrfHashGet(grp->nodes, domain)) updateRecip = 0;
 
 	osrfTransportGroupNode* node;
 
@@ -120,14 +120,13 @@ int osrfTransportGroupSend( osrfTransportGroup* grp, transport_message* msg ) {
 		}
 
 		/* update the recipient domain if necessary */
-		bzero(newrcp, 1024);
-		if(updateRecip)
-			sprintf(newrcp, "%s@%s/%s", msgrecip, node->domain, msgres);
-		else
-			sprintf(newrcp, msg->recipient);
 
-		free(msg->recipient);
-		msg->recipient = strdup(newrcp);
+		if(updateRecip) {
+			bzero(newrcp, 1024);
+			sprintf(newrcp, "%s@%s/%s", msgrecip, node->domain, msgres);
+			free(msg->recipient);
+			msg->recipient = strdup(newrcp);
+		}
 
 		if( (client_send_message( node->connection, msg )) == 0 ) 
 			return 0;
@@ -214,19 +213,5 @@ void osrfTransportGroupSetInactive( osrfTransportGroup* grp, char* domain ) {
 	osrfTransportGroupNode* node = osrfHashGet(grp->nodes, domain );
 	if(node) node->active = 0;
 }
-
-/*
-osrfTransportGroupNode* __osrfTransportGroupFindNode( osrfTransportGroup* grp, char* domain ) {
-	if(!(grp && grp->list && domain)) return NULL;
-	int i = 0; 
-	osrfTransportGroupNode* node = NULL;
-
-	while( (node = (osrfTransportGroupNode*) osrfListGetIndex( grp->list, i++ )) ) 
-		if(!strcmp(node->domain, domain)) return node;
-	return NULL;
-}
-*/
-
-
 
 

@@ -47,10 +47,9 @@ osrfTransportGroupNode* osrfNewTransportGroupNode(
 /**
   Allocates and initializes a new transport group.
   The first node in the array is the default node for client connections.
-  @param router The router name shared accross the networks
   @param nodes The nodes in the group.
   */
-osrfTransportGroup* osrfNewTransportGroup( char* router, osrfTransportGroupNode* nodes[], int count );
+osrfTransportGroup* osrfNewTransportGroup( osrfTransportGroupNode* nodes[], int count );
 
 /**
   Attempts to connect all of the nodes in this group.
