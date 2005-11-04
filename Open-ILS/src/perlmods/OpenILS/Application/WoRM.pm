@@ -67,11 +67,16 @@ sub post_init {
 }
 
 
+sub in_transaction {
+	OpenILS::Application::WoRM->post_init();
+	return __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
+}
 
-sub ensure_transaction {
+sub begin_transaction {
 	my $self = shift;
 	my $client = shift;
 	
+	OpenILS::Application::WoRM->post_init();
 	my $outer_xact = __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
 	
 	try {
@@ -96,6 +101,7 @@ sub commit_transaction {
 	my $self = shift;
 	my $client = shift;
 
+	OpenILS::Application::WoRM->post_init();
 	my $outer_xact = __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
 
 	try {
@@ -112,7 +118,89 @@ sub commit_transaction {
 	} catch Error with {
 		throw OpenSRF::EX::PANIC ("WoRM Couldn't COMMIT transaction!")
 	};
+
+	return 1;
 }
+
+sub storage_req {
+	my $self = shift;
+	__PACKAGE__->st_sess->request( @_ )->gather(1);
+}
+
+sub scrub_authority_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	my $commit = 0;
+	if (!OpenILS::Application::WoRM->in_transaction) {
+		OpenILS::Application::WoRM->begin_transaction || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		$commit = 1;
+	}
+
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.full_rec.mass_delete', { record => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.record_descriptor.mass_delete', { record => $rec } );
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit);
+	return 1;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.scrub.authority",
+	method		=> "scrub_authority_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+
+sub scrub_metabib_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	my $commit = 0;
+	if (!OpenILS::Application::WoRM->in_transaction) {
+		OpenILS::Application::WoRM->begin_transaction || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		$commit = 1;
+	}
+
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.full_rec.mass_delete', { record => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.mass_delete', { source => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.record_descriptor.mass_delete', { record => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.title_field_entry.mass_delete', { source => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.author_field_entry.mass_delete', { source => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.subject_field_entry.mass_delete', { source => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.keyword_field_entry.mass_delete', { source => $rec } );
+	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.series_field_entry.mass_delete', { source => $rec } );
+
+	my $mr = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search_where', { master_record => $rec } );
+
+	if ($mr) {
+		my $others = OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.metarecord_source_map.search_where.atomic',
+				{ metarecord => $mr->id }
+		);
+
+		if (@$others) {
+			$mr->master_record($others->[0]->source);
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.metarecord.remote_update',
+				{ id => $mr->id },
+				{ master_record => $others->[0]->source }
+			);
+		} else {
+			OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.delete', $mr->id );
+		}
+	}
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit);
+	return 1;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.scrub.biblio",
+	method		=> "scrub_metabib_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
 
 
 # --------------------------------------------------------------------------------
@@ -160,24 +248,31 @@ sub class_all_index_string_xml {
 	my $client = shift;
 	my $xml = shift;
 	my $class = shift;
-	my $type = shift;
 
 	OpenILS::Application::WoRM->post_init();
 	$xml = $parser->parse_string($xml) unless (ref $xml);
-	$client->respond($_)
-		for ( map { 
-			{ $_ => _xpath_to_string(
+	
+	my $class_constructor = "Fieldmapper::metabib::${class}_field_entry";
+	for my $type ( keys %{ $xpathset->{$class} } ) {
+		my $value =  _xpath_to_string(
 				$mods_sheet->transform($xml)->documentElement,
-				$xpathset->{$class}->{$_}->{xpath},
+				$xpathset->{$class}->{$type}->{xpath},
 				"http://www.loc.gov/mods/",
-				"mods", 1 ) }
-			} keys %{ $xpathset->{$class} }
+				"mods",
+				1
 		);
 
+		next unless $value;
+
+		my $fm = $class_constructor->new;
+		$fm->value( $value );
+		$fm->field( $xpathset->{$class}->{$type}->{id} );
+		$client->respond($fm);
+	}
 	return undef;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.xpath.class.xml",
+	api_name	=> "open-ils.worm.field_entry.class.xml",
 	method		=> "class_all_index_string_xml",
 	api_level	=> 1,
 	argc		=> 1,
@@ -193,11 +288,14 @@ sub class_all_index_string_record {
 	OpenILS::Application::WoRM->post_init();
 	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
 
-	$client->respond($_) for ($self->method_lookup("open-ils.worm.xpath.class.xml")->run($r->marc, $class => $type));
+	for my $fm ($self->method_lookup("open-ils.worm.field_entry.class.xml")->run($r->marc, $class)) {
+		$fm->source($rec);
+		$client->respond($fm);
+	}
 	return undef;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.xpath.class.record",
+	api_name	=> "open-ils.worm.field_entry.class.record",
 	method		=> "class_all_index_string_record",
 	api_level	=> 1,
 	argc		=> 1,
@@ -217,7 +315,7 @@ sub class_index_string_xml {
 	return _xpath_to_string( $mods_sheet->transform($xml)->documentElement, $xpathset->{$class}->{$type}->{xpath}, "http://www.loc.gov/mods/", "mods", 1 );
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.xpath.xml",
+	api_name	=> "open-ils.worm.class.type.xml",
 	method		=> "class_index_string_xml",
 	api_level	=> 1,
 	argc		=> 1,
@@ -233,13 +331,56 @@ sub class_index_string_record {
 	OpenILS::Application::WoRM->post_init();
 	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
 
-	my ($d) = $self->method_lookup("open-ils.worm.xpath.xml")->run($r->marc, $class => $type);
+	my ($d) = $self->method_lookup("open-ils.worm.class.type.xml")->run($r->marc, $class => $type);
 	$log->debug("XPath $class->$type for bib rec $rec returns ($d)", DEBUG);
 	return $d;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.xpath.record",
+	api_name	=> "open-ils.worm.class.type.record",
 	method		=> "class_index_string_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+sub xml_xpath {
+	my $self = shift;
+	my $client = shift;
+	my $xml = shift;
+	my $xpath = shift;
+	my $uri = shift;
+	my $prefix = shift;
+	my $unique = shift;
+
+	OpenILS::Application::WoRM->post_init();
+	$xml = $parser->parse_string($xml) unless (ref $xml);
+	return _xpath_to_string( $xml->documentElement, $xpath, $uri, $prefix, $unique );
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.xpath.xml",
+	method		=> "xml_xpath",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+sub record_xpath {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+	my $xpath = shift;
+	my $uri = shift;
+	my $prefix = shift;
+	my $unique = shift;
+
+	OpenILS::Application::WoRM->post_init();
+	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
+
+	my ($d) = $self->method_lookup("open-ils.worm.xpath.xml")->run($r->marc, $xpath, $uri, $prefix, $unique );
+	$log->debug("XPath [$xpath] bib rec $rec returns ($d)", DEBUG);
+	return $d;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.xpath.record",
+	method		=> "record_xpath",
 	api_level	=> 1,
 	argc		=> 1,
 );                      
@@ -625,7 +766,7 @@ sub fingerprint_bibrec {
 
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.fingerprint.bib_record",
+	api_name	=> "open-ils.worm.fingerprint.record",
 	method		=> "fingerprint_bibrec",
 	api_level	=> 1,
 	argc		=> 1,
