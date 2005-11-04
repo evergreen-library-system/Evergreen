@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Main, Menu and Tab Navigation -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/menu_frame.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "/xul/server/locale/menu_frame.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/main/menu_frame_overlay.xul"?>
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="menu_frame_win"
+	onload="my_init()"
+	orient="vertical" style="overflow: auto" width="800" height="500"
+	sizemode="maximized" persist="width height" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript">
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for menu_frame.xul');
+
+				JSAN.use('main.menu'); g.menu = new main.menu();
+				g.menu.init();
+	
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+	]]>
+	</script>
+
+	<commandset id="universal_cmds">
+		<command id="cmd_test_button" oncommand="alert('beep');" />
+	</commandset>
+
+	<keyset id="menu_frame_keys" />
+
+	<popupset id="universal_popupset" />
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- CONTENT -->
+
+	<box id="menu_frame_main" />
+
+	<button id="test_button2" label="test" command="cmd_close_window" />
+
+</window>
+

@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "/xul/server/locale/menu_frame.dtd">
+<?xul-overlay href="/xul/server/main/menu_frame_menus.xul"?>
+<overlay id="menu_frame_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+
+<commandset id="universal_cmds">
+	<command id="cmd_close_window" key="close-window-key" />
+	<command id="cmd_new_window" key="new-window-key" />
+	<command id="cmd_new_tab" key="new-tab-key" />
+	<command id="cmd_close_tab" key="close-tab-key" />
+
+	<command id="cmd_cat_main" key="cat-main-key" />
+	<command id="cmd_circ_checkout" key="circ-checkout-key" />
+	<command id="cmd_patron_search" key="patron-search-key" />
+	<command id="cmd_circ_checkin" key="circ-checkin-key" />
+	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
+	<command id="cmd_search_opac" key="search-opac-key" />
+	<command id="cmd_patron_register" key="patron-register-key" />
+	<command id="cmd_survey_wizard" />
+	<command id="cmd_copy_stat_cat_edit" />
+	<command id="cmd_patron_stat_cat_edit" />
+	<command id="cmd_receipt_template_editor" />
+	<command id="cmd_z39_50_import" />
+	<command id="cmd_create_new_marc_book" />
+
+	<command id="cmd_console" />
+	<command id="cmd_shell" />
+	<command id="cmd_xuleditor" />
+	<command id="cmd_filter_console" />
+	<command id="cmd_fieldmapper" />
+
+	<command id="cmd_test" disabled="true" />
+	<command id="cmd_broken" disabled="true" />
+</commandset>
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="menu_frame_keys">
+	<key id="new-window-key" modifiers="accel" key="N" command="cmd_new_window"/>
+	<key id="new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
+	<key id="open-key" modifiers="accel" key="O" command=""/>
+	<key id="save-key" modifiers="accel" key="S" command=""/>
+	<key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
+	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+	<!--
+	<key id="edit-undo-key" modifiers="accel" key="Z" command=""/>
+	<key id="edit-redo-key" modifiers="accel" key="Y" command=""/>
+	<key id="edit-cut-key" modifiers="accel" key="X" command=""/>
+	<key id="edit-copy-key" modifiers="accel" key="C" command=""/>
+	<key id="edit-paste-key" modifiers="accel" key="V" command=""/>
+	<key id="edit-delete-key" modifiers="" keycode="VK_DELETE" command=""/>
+	<key id="edit-select-all-key" modifiers="accel" key="A" command=""/>
+	<key id="edit-find-key" modifiers="accel" key="F" command=""/>
+	<key id="edit-find-again-key" modifiers="accel" key="G" command=""/>
+
+	<key id="circ-patron-status-key" keycode="VK_F11" command="cmd_circ_display"/>
+	<key id="circ-copy-status-key" keycode="VK_F9" command=""/>
+	<key id="circ-check-in-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="circ-renew-key" keycode="VK_F3" command=""/>
+	<key id="circ-mark-used-key" keycode="VK_F4" command=""/>
+	<key id="circ-place-hold-key" keycode="VK_F5" command=""/>
+	<key id="circ-patron-registration-key" keycode="VK_F12" command=""/>
+	-->
+	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
+	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
+	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
+	<key id="circ-hold-capture-key" keycode="VK_F5" command="cmd_circ_hold_capture"/>
+	<key id="patron-register-key" keycode="VK_F12" command="cmd_patron_registration"/>
+</keyset>
+
+<!-- The top level widget for the staff client -->
+<box id="menu_frame_main" flex="1" orient="vertical">
+	<toolbox id="main_toolbox"/>
+	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
+		<tabs id="main_tabs" closebutton="true">
+			<tab id="tab_1" accesskey="1" label="Tab 1" hidden="true" />
+			<tab id="tab_2" accesskey="2" label="Tab 2" hidden="true" />
+			<tab id="tab_3" accesskey="3" label="Tab 3" hidden="true" />
+			<tab id="tab_4" accesskey="4" label="Tab 4" hidden="true" />
+			<tab id="tab_5" accesskey="5" label="Tab 5" hidden="true" />
+			<tab id="tab_6" accesskey="6" label="Tab 6" hidden="true" />
+			<tab id="tab_7" accesskey="7" label="Tab 7" hidden="true" />
+			<tab id="tab_8" accesskey="8" label="Tab 8" hidden="true" />
+			<tab id="tab_9" accesskey="9" label="Tab 9" hidden="true" />
+		</tabs>
+		<tabpanels id="main_panels" flex="1">
+			<tabpanel id="panel_1"><label value="panel_1"/></tabpanel>
+			<tabpanel id="panel_2"><label value="panel_2"/></tabpanel>
+			<tabpanel id="panel_3"><label value="panel_3"/></tabpanel>
+			<tabpanel id="panel_4"><label value="panel_4"/></tabpanel>
+			<tabpanel id="panel_5"><label value="panel_5"/></tabpanel>
+			<tabpanel id="panel_6"><label value="panel_6"/></tabpanel>
+			<tabpanel id="panel_7"><label value="panel_7"/></tabpanel>
+			<tabpanel id="panel_8"><label value="panel_8"/></tabpanel>
+			<tabpanel id="panel_9"><label value="panel_9"/></tabpanel>
+		</tabpanels>
+	</tabbox>
+	<toolbox id="entity_toolbox"/>
+</box>
+
+<!-- The main top level menubar -->
+<toolbox id="main_toolbox">
+	<menubar id="main_menubar">
+		<menu id="main.menu.file" />
+		<menu id="main.menu.edit" />
+		<menu id="main.menu.search" />
+		<menu id="main.menu.circ" />
+		<menu id="main.menu.cat" />
+		<menu id="main.menu.serials" />
+		<menu id="main.menu.acquisitions" />
+		<menu id="main.menu.reports" />
+		<spacer flex="1" />
+		<menu id="main.menu.admin" />
+		<menu id="main.menu.help" />
+	</menubar>
+</toolbox>
+
+<!-- The Entity top level menubar -->
+<!--
+<toolbox id="entity_toolbox">
+	<menubar id="entity_menubar">
+		<menu id="patron-menu" label="&main.menu.entity.patron.label;" accesskey="&main.menu.entity.patron.key;" command="cmd_broken"/>
+		<menu id="copy-menu" label="&main.menu.entity.copy.label;" accesskey="&main.menu.entity.copy.key;" command="cmd_broken"/>
+		<menu id="volume-menu" label="&main.menu.entity.volume.label;" accesskey="&main.menu.entity.volume.key;" command="cmd_broken"/>
+		<menu id="bib-menu" label="&main.menu.entity.bib.label;" accesskey="&main.menu.entity.bib.key;" command="cmd_broken"/>
+	</menubar>
+</toolbox>
+-->
+
+<!-- The Patron menu on the Entity menubar -->
+<!--
+<menu id="patron-menu">
+	<menupopup id="patron-popup">
+		<menuitem label="&main.menu.circ.patron_registration.label;" accesskey="&main.menu.entity.patron.register.key;" command="cmd_patron_register"/>
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+-->
+
+<!-- The Items menu on the Entity menubar -->
+<!--
+<menu id="copy-menu">
+	<menupopup id="copy-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+-->
+
+<!-- The Volumes menu on the Entity menubar -->
+<!--
+<menu id="volume-menu">
+	<menupopup id="volume-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+-->
+
+<!-- The Bib Records menu on the Entity menubar -->
+<!--
+<menu id="bib-menu">
+	<menupopup id="bib-popup">
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+		<menuitem label="stub" />
+	</menupopup>
+</menu>
+-->
+
+</overlay>
