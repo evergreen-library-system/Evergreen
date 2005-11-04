@@ -7,7 +7,7 @@ function main_init() {
 		var pref = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefBranch);
 		if (pref) {
-			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect");
+			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
 			pref.setCharPref("capability.principal.codebase.p0.id", "http://gapines.org");
 		}
 

@@ -30,7 +30,6 @@ main.window.prototype = {
 		var w;
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		alert('pause');
 		const CI = Components.interfaces;
 		const PB = Components.classes["@mozilla.org/preferences-service;1"].getService(CI.nsIPrefBranch);
 
