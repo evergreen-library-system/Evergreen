@@ -30,6 +30,11 @@ main.window.prototype = {
 		var w;
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalPreferencesRead");
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalPreferencesWrite");
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
+
 		const CI = Components.interfaces;
 		const PB = Components.classes["@mozilla.org/preferences-service;1"].getService(CI.nsIPrefBranch);
 
@@ -38,7 +43,6 @@ main.window.prototype = {
 			// pref 'dom.disable_open_during_load' is the main popup blocker preference
 			blocked = PB.getBoolPref("dom.disable_open_during_load");
 			if(blocked) PB.setBoolPref("dom.disable_open_during_load",false);
-
 			w = this.win.open(url,title,features);
 		} catch(E) {
 			this.error.sdump('D_ERROR','window.SafeWindowOpen: ' + E + '\n');
@@ -50,6 +54,7 @@ main.window.prototype = {
 	},
 
 	'open' : function(url,title,features) {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		this.error.sdump('D_WIN',
 			'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');
 		var w = this.SafeWindowOpen(url,title,features);

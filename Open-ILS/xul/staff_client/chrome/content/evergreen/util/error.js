@@ -4,6 +4,7 @@ if (typeof util == 'undefined') util = {};
 util.error = function () {
 
 	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
 			.getService(Components.interfaces.nsIConsoleService);
 	} catch(E) {
@@ -94,8 +95,10 @@ util.error.prototype = {
 				this.sdump_last_time = now;
 				if (this.debugDump)
 					this.debug(message);
-				if (this.consoleDump)
+				if (this.consoleDump) {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					this.consoleService.logStringMessage(message);
+				}
 			}
 		} catch(E) {
 			dump('Calling sdump but ' + E + '\n');
