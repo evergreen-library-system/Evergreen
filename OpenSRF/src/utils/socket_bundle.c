@@ -425,7 +425,7 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 int _socket_route_data(
 	socket_manager* mgr, int num_active, fd_set* read_set) {
 
-	if(mgr == NULL) return -1;
+	if(!(mgr && read_set)) return -1;
 
 	int last_failed_id = -1;
 
@@ -460,7 +460,7 @@ int _socket_route_data(
 				if(node->endpoint == SERVER_SOCKET) 
 					_socket_handle_new_client(mgr, node);
 	
-				if(node->endpoint == CLIENT_SOCKET ) 
+				else
 					status = _socket_handle_client_data(mgr, node);
 	
 				/* someone may have yanked a socket_node out from under 
@@ -552,7 +552,8 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 			if( errno != EAGAIN ) 
 				warning_handler( " * Error reading socket with errno %d", errno );
 		}
-	}
+
+	} else { return -1; } /* inform the caller that this node has been tampered with */
 
 	if(read_bytes == 0) {  /* socket closed by client */
 		if(mgr->on_socket_closed) {
