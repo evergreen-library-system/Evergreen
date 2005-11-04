@@ -2,7 +2,7 @@ dump('entering main/window.js\n');
 
 if (typeof main == 'undefined') main = {};
 main.window = function () {
-	JSAN.use('util.error'); this.error = new util.error();
+	JSAN.use('util.error'); this.error = new util.error(); this.win = window;
 	return this;
 };
 
@@ -30,6 +30,7 @@ main.window.prototype = {
 		var w;
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		alert('pause');
 		const CI = Components.interfaces;
 		const PB = Components.classes["@mozilla.org/preferences-service;1"].getService(CI.nsIPrefBranch);
 
@@ -39,7 +40,7 @@ main.window.prototype = {
 			blocked = PB.getBoolPref("dom.disable_open_during_load");
 			if(blocked) PB.setBoolPref("dom.disable_open_during_load",false);
 
-			w = window.open(url,title,features);
+			w = this.win.open(url,title,features);
 		} catch(E) {
 			this.error.sdump('D_ERROR','window.SafeWindowOpen: ' + E + '\n');
 			throw(E);
@@ -51,7 +52,7 @@ main.window.prototype = {
 
 	'open' : function(url,title,features) {
 		this.error.sdump('D_WIN',
-			'opening ' + url + ', ' + title + ', ' + features + ' from ' + window + '\n');
+			'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');
 		var w = this.SafeWindowOpen(url,title,features);
 		/*
 		setTimeout( 
