@@ -340,9 +340,8 @@ sub launch_unix {
 
 		next unless $app;
 		my $lang = $client->config_value( "apps", $app, "language");
-
 		next unless $lang =~ /perl/i;
-		next unless $app ne "opensrf.settings";
+		next if $app eq "opensrf.settings";
 
 		_log( " * Starting UnixServer for $app..." );
 
@@ -365,12 +364,14 @@ sub launch_unix {
 sub launch_listener {
 
 	my( $self, $apps ) = @_;
+	my $client = OpenSRF::Utils::SettingsClient->new();
 
 	foreach my $app ( @$apps ) {
 
-		next unless defined($app);
-
-		if( $app eq "opensrf.settings" ) { next; }
+		next unless $app;
+		my $lang = $client->config_value( "apps", $app, "language");
+		next unless $lang =~ /perl/i;
+		next if $app eq "opensrf.settings";
 
 		_log( " * Starting Listener for $app..." );
 
