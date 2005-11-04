@@ -35,15 +35,6 @@ function main_init() {
 		JSAN.use('main.window');
 		G.window = new main.window();
 
-		JSAN.use('main.network');
-		G.network = new main.network();
-
-		G.test_array = [ "a", "b", "c" ];
-		G.test_object = { "a" : "b", "c" : "d", "e" : "f" };
-		G.test = function(t) {
-			dump(js2JSON( t ) + '\n');
-		}
-
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( mw );
 

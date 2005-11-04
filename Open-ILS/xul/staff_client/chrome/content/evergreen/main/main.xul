@@ -2,24 +2,24 @@
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Main, Authentication Window -->
 
-<!-- Stylesheets -->
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/auth.css" type="text/css"?>
 
-<!-- Localization -->
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
 <!DOCTYPE window SYSTEM "chrome://evergreen/locale/auth.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
 
 <window id="main_win" 
 	onload="main_init()"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- PRESENTATION -->
-	<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-	<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
-	<?xml-stylesheet href="chrome://evergreen/skin/auth.css" type="text/css"?>
-
-	<!-- OVERLAYS -->
-	<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
