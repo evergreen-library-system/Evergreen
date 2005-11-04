@@ -117,7 +117,7 @@ while ( $xml .= <STDIN> ) {
 	my $success = 0;
 	try {
 		$doc = $parser->parse_string($xml);;
-		$tcn = $doc->documentElement->findvalue( '/*/*[@tag="035"][1]' );
+		$tcn = $doc->documentElement->findvalue( '//*[@tag="035"][1]' );
 		$success = 1;
 	} catch Error with {
 		my $e = shift;
@@ -133,6 +133,7 @@ while ( $xml .= <STDIN> ) {
 		$xml = '';
 		next;
 	}
+	$tcn = "_$tcn";
 
 	unless (exists($$tcn_map{$tcn})) {
 		warn "\n !! TCN $tcn not in the map!\n";

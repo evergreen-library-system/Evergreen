@@ -58,9 +58,9 @@ while ($marc) {
 	}
 
 	my $string = $doc->toStringC14N;
-	$string =~ s/>\n\s*</></gso;
-	$string =~ s/\n/\\n /gso;
-	$string =~ s/\t/\\t/gso;
+	$string =~ s/\n/ /gso;
+	$string =~ s/\t/ /gso;
+	$string =~ s/>\s+</></gso;
 
 	print "$string\n";
 	
