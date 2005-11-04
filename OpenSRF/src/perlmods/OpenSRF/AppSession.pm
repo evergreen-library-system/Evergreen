@@ -62,6 +62,10 @@ sub transport_connected {
 	return $self->{peer_handle}->tcp_connected();
 }
 
+sub connected {
+	my $self = shift;
+	return $self->state == CONNECTED;
+}
 # ----------------------------------------------------------------------------
 # Clears the transport buffers
 # call this if you are not through with the sesssion, but you want 
