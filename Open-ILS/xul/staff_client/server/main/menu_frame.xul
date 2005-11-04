@@ -53,9 +53,7 @@
 	]]>
 	</script>
 
-	<commandset id="universal_cmds">
-		<command id="cmd_test_button" oncommand="alert('beep');" />
-	</commandset>
+	<commandset id="universal_cmds" />
 
 	<keyset id="menu_frame_keys" />
 
@@ -65,8 +63,6 @@
 	<!-- CONTENT -->
 
 	<box id="menu_frame_main" />
-
-	<button id="test_button2" label="test" command="cmd_close_window" />
 
 </window>
 

@@ -4,6 +4,7 @@
 <overlay id="menu_frame_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+<script>dump('loading menu_frame_overlay.xul\n');</script>
 
 <commandset id="universal_cmds">
 	<command id="cmd_close_window" key="close-window-key" />
