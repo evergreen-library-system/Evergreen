@@ -310,7 +310,11 @@ sub wormize_biblio_record {
 
 			#update the fingerprint
 			my ($fp) = $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $xml );
-			OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.biblio.record_entry.remote_update', { id => $r->id }, { fingerprint => $fp } );
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.biblio.record_entry.remote_update',
+				{ id => $r->id },
+				{ fingerprint => $fp }
+			) if ($fp ne $r->fingerprint);
 
 			unless ($self->api_name =~ /nomap/o) {
 				my $mr = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search.fingerprint.atomic', $fp  )->[0];
