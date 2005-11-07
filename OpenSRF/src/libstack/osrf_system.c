@@ -3,6 +3,8 @@
 #include "osrf_application.h"
 #include "osrf_prefork.h"
 
+char* __osrfSystemHostname = NULL;
+
 void __osrfSystemSignalHandler( int sig );
 
 transport_client* __osrfGlobalTransportClient;
@@ -56,7 +58,9 @@ int _osrfSystemInitCache() {
 
 
 int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
-	if( !(configfile && contextNode) ) return -1;
+	if( !(hostname && configfile && contextNode) ) return -1;
+
+	__osrfSystemHostname = strdup(hostname);
 
 	/* first we grab the settings */
 	if(!osrfSystemBootstrapClientResc(configfile, contextNode, "settings_grabber" )) {
@@ -167,7 +171,10 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 
 	transport_client* client = client_init( domain, iport, unixpath, 0 );
 
-	char* host = getenv("HOSTNAME");
+	char* host;
+	if(__osrfSystemHostname) host = __osrfSystemHostname;
+	else host = getenv("HOSTNAME");
+	if( host == NULL ) = "";
 
 	if(!resource) resource = "";
 	int len = strlen(resource) + 256;
