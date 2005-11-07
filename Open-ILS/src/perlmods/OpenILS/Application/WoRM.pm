@@ -224,7 +224,7 @@ sub scrub_metabib_record {
 				OpenILS::Application::WoRM->storage_req(
 					'open-ils.storage.direct.metabib.metarecord.remote_update',
 					{ id => $mr->id },
-					{ master_record => $others->[0]->source }
+					{ master_record => $others->[0]->source, mods => undef }
 				);
 			} else {
 				warn "Removing metarecord whose master is $rec";
@@ -513,6 +513,10 @@ sub class_all_index_string_xml {
 		);
 
 		next unless $value;
+
+		$value =~ s/(\pM|\pC)//sgoe;
+		$value =~ s/[\x80-\xff]//sgoe;
+		$value = lc($value);
 
 		my $fm = $class_constructor->new;
 		$fm->value( $value );
