@@ -205,7 +205,8 @@ sub perl2JSON {
 			$outkey =~ s/\f/\\f/sgo;
 			$outkey =~ s/\r/\\r/sgo;
 			$outkey =~ s/\n/\\n/sgo;
-			$outkey =~ s/(\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
+			$outkey =~ s/(\pM|\pS)/sprintf('\u%0.4x',ord($1))/sgoe;
+			$outkey =~ s/[\x80-\xff]//sgoe;
 
 			$output .= '"'.$outkey.'":'. perl2JSON(undef,$$perl{$key}, $strict);
 			$c++;
@@ -234,7 +235,8 @@ sub perl2JSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
-		$perl =~ s/(\pM|\pC)/sprintf('\u%0.4x',ord($1))/sgoe;
+		$perl =~ s/(\pM|\pC|\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
+		$perl =~ s/[\x80-\xff]//sgoe;
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
 		} else {
@@ -315,6 +317,7 @@ sub perl2prettyJSON {
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
 		$perl =~ s/(\pM|\pC)/sprintf('\u%0.4x',ord($1))/sgoe;
+		$perl =~ s/[\x80-\xff]//sgoe;
 		$output .= "   "x$depth unless($nospace);
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
