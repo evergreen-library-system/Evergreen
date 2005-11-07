@@ -7,6 +7,7 @@ PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 002.schema.config.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 005.schema.actors.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 006.schema.permissions.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 010.schema.biblio.sql
+PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 011.schema.authority.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 020.schema.functions.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 030.schema.metabib.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 040.schema.asset.sql
