@@ -2,12 +2,13 @@
 use strict;
 use Getopt::Long;
 
-my ($start, $stop, $count, $group, $out) = (1,1,1,50,'dynamic-wormizer-script.sfsh');
+my ($start, $stop, $count, $group, $out, $method) = (1,1,1,50,'dynamic-wormizer-script.sfsh', 'pen-ils.worm.wormize.biblio.nomap.noscrub');
 GetOptions (	"start=i" => \$start,
 		"end=i"   => \$stop,
 		"groupsize=i"   => \$group,
 		"count=i"   => \$count,
 		"output=s"   => \$out,
+		"method=s" => \$method,
 );
 
 $stop = $start + $count unless ($stop);
@@ -20,7 +21,7 @@ for my $i ( $start .. $stop ) {
 		push @list, $i;
 		next;
 	}
-	print SFSH "request open-ils.storage open-ils.worm.wormize.no_map.batch ".join(',', @list)."\n" if (@list);
+	print SFSH "request open-ils.storage $method [".join(',', @list)."]\n" if (@list);
 	@list = ($i);
 }
-print SFSH "request open-ils.storage open-ils.worm.wormize.no_map.no_map.batch ".join(',', @list)."\n" if (@list);
+print SFSH "request open-ils.storage $method [".join(',', @list)."]\n" if (@list);
