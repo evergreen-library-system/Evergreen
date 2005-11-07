@@ -156,6 +156,7 @@ function runInstall {
 				;;
 
 			"opensrf_core" )
+				if building; then $MAKE -C "$OPENSRFDIR" libstack/opensrf; fi;
 				if installing; then $MAKE -C "$OPENSRFDIR" "perl-install"; fi;
 				;;
 

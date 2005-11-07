@@ -16,59 +16,71 @@ export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEA
 
 LIBOPENSRF				= libopensrf.so
 
-OPENSRF_TARGETS = libtransport/transport_session.o \
-						libtransport/transport_client.o \
-						libtransport/transport_message.o \
-						libstack/osrf_app_session.o \
-						libstack/osrf_stack.o \
-						libstack/osrfConfig.o \
-						libstack/osrf_settings.o \
-						libstack/osrf_message.o \
-						libstack/osrf_prefork.o \
-						libstack/osrf_system.o \
-						libstack/osrf_application.o \
-						libstack/osrf_cache.o \
-						libstack/xml_utils.o \
-						libstack/osrf_transgroup.o \
-						libstack/osrf_list.o \
-						libstack/osrf_hash.o \
-						libstack/osrf_log.o \
-						utils/socket_bundle.o \
-						utils/string_array.o \
-						utils/utils.o \
-						utils/logging.o \
-						utils/md5.o \
-						utils/sha.o \
+OPENSRF_TARGETS = 	libtransport/transport_session.o \
+			libtransport/transport_client.o \
+			libtransport/transport_message.o \
+			libstack/osrf_app_session.o \
+			libstack/osrf_stack.o \
+			libstack/osrfConfig.o \
+			libstack/osrf_settings.o \
+			libstack/osrf_message.o \
+			libstack/osrf_prefork.o \
+			libstack/osrf_system.o \
+			libstack/osrf_application.o \
+			libstack/osrf_cache.o \
+			libstack/xml_utils.o \
+			libstack/osrf_transgroup.o \
+			libstack/osrf_list.o \
+			libstack/osrf_hash.o \
+			libstack/osrf_log.o \
+			utils/socket_bundle.o \
+			utils/string_array.o \
+			utils/utils.o \
+			utils/logging.o \
+			utils/md5.o \
+			utils/sha.o \
 
-OPENSRF_HEADERS = libtransport/transport_session.h \
-						libtransport/transport_client.h \
-						libtransport/transport_message.h \
-						libstack/osrf_app_session.h \
-						libstack/osrf_stack.h \
-						libstack/osrfConfig.h \
-						libstack/osrf_settings.h \
-						libstack/osrf_message.h \
-						libstack/osrf_prefork.h \
-						libstack/osrf_system.h \
-						libstack/osrf_application.h \
-						libstack/osrf_cache.h \
-						libstack/xml_utils.h \
-						libstack/osrf_log.h \
-						libstack/osrf_transgroup.h \
-						libstack/osrf_list.h \
-						libstack/osrf_hash.h \
-						utils/socket_bundle.h \
-						utils/string_array.h \
-						utils/utils.h \
-						utils/logging.h \
-						utils/md5.h \
-						utils/sha.h \
+OPENSRF_HEADERS = 	libtransport/transport_session.h \
+			libtransport/transport_client.h \
+			libtransport/transport_message.h \
+			libstack/osrf_app_session.h \
+			libstack/osrf_stack.h \
+			libstack/osrfConfig.h \
+			libstack/osrf_settings.h \
+			libstack/osrf_message.h \
+			libstack/osrf_prefork.h \
+			libstack/osrf_system.h \
+			libstack/osrf_application.h \
+			libstack/osrf_cache.h \
+			libstack/xml_utils.h \
+			libstack/osrf_log.h \
+			libstack/osrf_transgroup.h \
+			libstack/osrf_list.h \
+			libstack/osrf_hash.h \
+			utils/socket_bundle.h \
+			utils/string_array.h \
+			utils/utils.h \
+			utils/logging.h \
+			utils/md5.h \
+			utils/sha.h \
 
 
-all: prep libopensrf.so libstack/opensrf router srfsh jserver gateway
+all: 	prep \
+	libopensrf.so \
+	libstack/opensrf \
+	router \
+	srfsh \
+	jserver \
+	gateway
 
-install: install-prep opensrf-install gateway-install	router-install \
-		srfsh-install jserver-install perl-install objson-install
+install: 	install-prep \
+		opensrf-install \
+		gateway-install	\
+		router-install \
+		srfsh-install \
+		jserver-install \
+		perl-install \
+		objson-install
 
 prep:
 	mkdir -p $(TMPDIR)
@@ -101,7 +113,7 @@ objson/libobjson.so:	prep
 # --------------------------------------------------------------------------------
 # BINARIES
 # --------------------------------------------------------------------------------
-libstack/opensrf.o:	libstack/opensrf.c
+libstack/opensrf.o:	libstack/opensrf.c libopensrf.so
 libstack/opensrf:	libstack/opensrf.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -lJudy -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
 	
