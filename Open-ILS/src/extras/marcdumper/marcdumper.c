@@ -107,9 +107,9 @@ int main (int argc, char **argv) {
 			case 'O':
 				xml = YAZ_MARC_OAIMARC;
 				break;
-			case 'e': /* not supported on older versions of yaz */
-				xml = YAZ_MARC_XCHANGE;
-				break;
+			//case 'e': /* not supported on older versions of yaz */
+			//	xml = YAZ_MARC_XCHANGE;
+			//	break;
 			case 'X':
 				xml = YAZ_MARC_MARCXML;
 				break;

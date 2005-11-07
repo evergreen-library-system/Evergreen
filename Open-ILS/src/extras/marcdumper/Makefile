@@ -4,7 +4,7 @@
 
 CC = gcc
 LD = -lxml2 -lyaz 
-COMP = -O2 -I /usr/include/libxml2/ 
+COMP = -O2 -I /usr/include/libxml2/ -I /usr/include/yaz
 
 all: marcdumper
 
