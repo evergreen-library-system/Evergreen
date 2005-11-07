@@ -27,7 +27,7 @@ while ($marc) {
 	my ($next,$xml,$doc,@nodes);
 
 	try {
-		$xml = $marc->as_xml($out_enc);
+		$xml = $marc->as_xml();
 	} otherwise {
 		print STDERR "\n ARG! I couldn't parse the MARC record (number $counter): $@\n";
 		$marc = $batch->next;
