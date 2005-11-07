@@ -9,7 +9,7 @@ use open qw/:utf8/;
 
 $|=1;
 
-my ($userid,$sourceid,$rec_id,$entry_file,$map_file,$id_tag) = (1,2,1,'record_entry.sql','record_id_map.pl','/*/*/*[@tag="035"][1]');
+my ($userid,$sourceid,$rec_id,$entry_file,$map_file,$id_tag) = (1,2,1,'record_entry.sql','record_id_map.pl','//*[@tag="035"][1]');
 
 GetOptions (	
 	"sourceid"		=> \$sourceid,

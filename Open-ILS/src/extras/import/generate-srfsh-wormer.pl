@@ -2,7 +2,7 @@
 use strict;
 use Getopt::Long;
 
-my ($start, $stop, $count, $group, $out, $method) = (1,1,1,50,'dynamic-wormizer-script.sfsh', 'pen-ils.worm.wormize.biblio.nomap.noscrub');
+my ($start, $stop, $count, $group, $out, $method) = (1,1,1,50,'dynamic-wormizer-script.sfsh', 'open-ils.worm.wormize.biblio.nomap.noscrub');
 GetOptions (	"start=i" => \$start,
 		"end=i"   => \$stop,
 		"groupsize=i"   => \$group,
