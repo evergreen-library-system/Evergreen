@@ -174,7 +174,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	char* host;
 	if(__osrfSystemHostname) host = __osrfSystemHostname;
 	else host = getenv("HOSTNAME");
-	if( host == NULL ) = "";
+	if( host == NULL ) host = "";
 
 	if(!resource) resource = "";
 	int len = strlen(resource) + 256;
