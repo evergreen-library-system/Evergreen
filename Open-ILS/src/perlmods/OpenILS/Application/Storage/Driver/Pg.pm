@@ -44,6 +44,7 @@
 				AutoCommit => 1,
 				PrintError => 1,
 				Taint => 1,
+				#TraceLevel => "1|SQL",
 				pg_enable_utf8 => 1,
 				pg_server_prepare => 0,
 				FetchHashKeyName => 'NAME_lc',

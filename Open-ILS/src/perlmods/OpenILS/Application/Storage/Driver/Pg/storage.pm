@@ -100,6 +100,7 @@
 
 		my $xact_id = $pg->current_xact_id;
 
+		my $success = 1;
 		try {
 			$log->debug("Committing trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
 			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
@@ -108,7 +109,7 @@
 		} catch Error with {
 			my $e = shift;
 			$log->debug("Failed to commit trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
-			return 0;
+			$success = 0;
 		};
 		
 		$pg->current_xact_session->unregister_callback( death => 
@@ -123,7 +124,7 @@
 
 		$pg->unset_xact_session;
 
-		return 1;
+		return $success;
 		
 	}
 	__PACKAGE__->register_method(
@@ -137,6 +138,8 @@
 		my $self = shift;
 
 		my $xact_id = $pg->current_xact_id;
+
+		my $success = 1;
 		try {
 			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
 			$log->debug("Rolling back a trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
@@ -145,7 +148,7 @@
 		} catch Error with {
 			my $e = shift;
 			$log->debug("Failed to roll back trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
-			return 0;
+			$success = 0;
 		};
 	
 		$pg->current_xact_session->unregister_callback( death =>
@@ -160,7 +163,7 @@
 
 		$pg->unset_xact_session;
 
-		return 1;
+		return $success;
 	}
 	__PACKAGE__->register_method(
 		method		=> 'pg_rollback_xaction',
@@ -168,6 +171,46 @@
 		api_level	=> 1,
 		argc		=> 0,
 	);
+
+	sub set_savepoint {
+		my $self = shift;
+		my $client = shift;
+		my $sp = shift || 'osrf_savepoint';
+		return OpenILS::Application::Storage::CDBI->db_Main->pg_savepoint($sp);
+	}
+	__PACKAGE__->register_method(
+        	method          => 'set_savepoint',
+	        api_name        => 'open-ils.storage.savepoint.set',
+        	api_level       => 1,
+	        argc            => 1,
+	);
+
+	sub release_savepoint {
+		my $self = shift;
+		my $client = shift;
+		my $sp = shift || 'osrf_savepoint';
+		return OpenILS::Application::Storage::CDBI->db_Main->pg_release($sp);
+	}
+	__PACKAGE__->register_method(
+        	method          => 'release_savepoint',
+	        api_name        => 'open-ils.storage.savepoint.release',
+        	api_level       => 1,
+	        argc            => 1,
+	);
+
+	sub rollback_to_savepoint {
+		my $self = shift;
+		my $client = shift;
+		my $sp = shift || 'osrf_savepoint';
+		return OpenILS::Application::Storage::CDBI->db_Main->pg_rollback_to($sp);
+	}
+	__PACKAGE__->register_method(
+        	method          => 'rollback_to_savepoint',
+	        api_name        => 'open-ils.storage.savepoint.rollback',
+        	api_level       => 1,
+	        argc            => 1,
+	);
+
 
 	sub copy_create {
 		my $self = shift;
@@ -192,10 +235,12 @@
 			next unless ($node);
 			my $line = join("\t", map { defined($node->$_()) ? $node->$_() : '\N' } @cols);
 			$log->debug("COPY line: [$line]",DEBUG);
-			$dbh->func($line."\n", 'putline');
+			$dbh->pg_putline($line."\n");
 		}
 
-		$dbh->func('endcopy');
+		$dbh->pg_endcopy || $log->debug("Could not end COPY with pg_endcopy", WARN);
+
+		$log->debug('COPY import for '.$cdbi->table." ($col_list) complete", DEBUG);
 
 		return scalar(@fm_nodes);
 	}

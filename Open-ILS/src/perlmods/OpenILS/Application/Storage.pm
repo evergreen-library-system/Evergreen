@@ -44,7 +44,8 @@ sub initialize {
 		$log->debug("FAILURE LOADING Publisher!  $@", ERROR);
 		throw OpenILS::EX::PANIC ( "FAILURE LOADING Publisher!  :  $@" );
 	}
-	eval 'use OpenILS::Application::Storage::WORM;';
+	#eval 'use OpenILS::Application::Storage::WORM;';
+	eval 'use OpenILS::Application::WoRM;';
 	if ($@) {
 		$log->debug("FAILURE LOADING WORM!  $@", ERROR);
 		throw OpenILS::EX::PANIC ( "FAILURE LOADING WoRM!  :  $@" );
@@ -65,7 +66,8 @@ sub child_init {
 	);
 
 	if (OpenILS::Application::Storage::CDBI->db_Main()) {
-		OpenILS::Application::Storage::WORM->child_init();
+		#OpenILS::Application::Storage::WORM->child_init();
+		OpenILS::Application::WoRM->child_init();
 		$log->debug("Success initializing driver!", DEBUG);
 		return 1;
 	}
@@ -95,6 +97,28 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.transaction.begin',
 	api_level	=> 1,
 	argc		=> 0,
+);
+
+sub savepoint_placeholder {
+	return 1;
+}
+__PACKAGE__->register_method(
+	method		=> 'savepoint_placeholder',
+	api_name	=> 'open-ils.storage.savepoint.set',
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	method		=> 'savepoint_placeholder',
+	api_name	=> 'open-ils.storage.savepoint.release',
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	method		=> 'savepoint_placeholder',
+	api_name	=> 'open-ils.storage.savepoint.rollback',
+	api_level	=> 1,
+	argc		=> 1,
 );
 
 sub commit_xaction {

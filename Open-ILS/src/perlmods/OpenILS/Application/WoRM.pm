@@ -50,15 +50,14 @@ sub post_init {
 		$mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 	}
 
-	if (!__PACKAGE__->st_sess()) {
-		$log->debug("Creating cached storage server session", DEBUG);
-		__PACKAGE__->st_sess( OpenSRF::AppSession->create('open-ils.storage') );
-	}
+	#if (!__PACKAGE__->st_sess()) {
+	#	$log->debug("Creating cached storage server session", DEBUG);
+	#	__PACKAGE__->st_sess( OpenSRF::AppSession->create('open-ils.storage') );
+	#}
 
 	unless (keys %$xpathset) {
-		my $req = __PACKAGE__->st_sess()->request('open-ils.storage.direct.config.metabib_field.retrieve.all');
-		while (my $resp = $req->recv) {
-			my $f = $resp->content;
+		my $req = __PACKAGE__->storage_req('open-ils.storage.direct.config.metabib_field.retrieve.all.atomic');
+		for my $f (@$req) {
 			$xpathset->{ $f->field_class }->{ $f->name }->{xpath} = $f->xpath;
 			$xpathset->{ $f->field_class }->{ $f->name }->{id} = $f->id;
 			$log->debug("Loaded XPath from DB: ".$f->field_class." => ".$f->name." : ".$f->xpath, DEBUG);
@@ -69,7 +68,7 @@ sub post_init {
 
 sub in_transaction {
 	OpenILS::Application::WoRM->post_init();
-	return __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
+	return __PACKAGE__->storage_req( 'open-ils.storage.transaction.current' );
 }
 
 sub begin_transaction {
@@ -77,24 +76,44 @@ sub begin_transaction {
 	my $client = shift;
 	
 	OpenILS::Application::WoRM->post_init();
-	my $outer_xact = __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
+	my $outer_xact = __PACKAGE__->storage_req( 'open-ils.storage.transaction.current' );
 	
 	try {
 		if (!$outer_xact) {
 			$log->debug("WoRM isn't inside a transaction, starting one now.", INFO);
-			__PACKAGE__->st_sess->connect;
-			my $r = __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.begin' )->gather(1);
+			#__PACKAGE__->st_sess->connect;
+			my $r = __PACKAGE__->storage_req( 'open-ils.storage.transaction.begin', $client );
 			unless (defined $r and $r) {
-				__PACKAGE__->st_sess->request( 'open-ils.storage.transaction.rollback' )->gather(1);
-				__PACKAGE__->st_sess->disconnect;
+				__PACKAGE__->storage_req( 'open-ils.storage.transaction.rollback' );
+				#__PACKAGE__->st_sess->disconnect;
 				throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!")
 			}
 		}
-	} catch Error with {
+	} otherwise {
 		$log->debug("WoRM Couldn't BEGIN transaction!", ERROR)
 	};
 
-	return __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
+	return __PACKAGE__->storage_req( 'open-ils.storage.transaction.current' );
+}
+
+sub rollback_transaction {
+	my $self = shift;
+	my $client = shift;
+
+	OpenILS::Application::WoRM->post_init();
+	my $outer_xact = __PACKAGE__->storage_req( 'open-ils.storage.transaction.current' );
+
+	try {
+		if ($outer_xact) {
+			__PACKAGE__->storage_req( 'open-ils.storage.transaction.rollback' );
+		} else {
+			$log->debug("WoRM isn't inside a transaction.", INFO);
+		}
+	} catch Error with {
+		throw OpenSRF::EX::PANIC ("WoRM Couldn't COMMIT transaction!")
+	};
+
+	return 1;
 }
 
 sub commit_transaction {
@@ -102,16 +121,17 @@ sub commit_transaction {
 	my $client = shift;
 
 	OpenILS::Application::WoRM->post_init();
-	my $outer_xact = __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.current' )->gather(1);
+	my $outer_xact = __PACKAGE__->storage_req( 'open-ils.storage.transaction.current' );
 
 	try {
-		if (__PACKAGE__->st_sess->connected && $outer_xact) {
-			my $r = __PACKAGE__->st_sess->request( 'open-ils.storage.transaction.commit' )->gather(1);
+		#if (__PACKAGE__->st_sess->connected && $outer_xact) {
+		if ($outer_xact) {
+			my $r = __PACKAGE__->storage_req( 'open-ils.storage.transaction.commit' );
 			unless (defined $r and $r) {
-				__PACKAGE__->st_sess->request( 'open-ils.storage.transaction.rollback' )->gather(1);
+				__PACKAGE__->storage_req( 'open-ils.storage.transaction.rollback' );
 				throw OpenSRF::EX::PANIC ("Couldn't COMMIT transaction!")
 			}
-			__PACKAGE__->st_sess->disconnect;
+			#__PACKAGE__->st_sess->disconnect;
 		} else {
 			$log->debug("WoRM isn't inside a transaction.", INFO);
 		}
@@ -124,7 +144,9 @@ sub commit_transaction {
 
 sub storage_req {
 	my $self = shift;
-	__PACKAGE__->st_sess->request( @_ )->gather(1);
+	my $method = shift;
+	my @res = __PACKAGE__->method_lookup( $method )->run( @_ );
+	return shift( @res );
 }
 
 sub scrub_authority_record {
@@ -134,15 +156,27 @@ sub scrub_authority_record {
 
 	my $commit = 0;
 	if (!OpenILS::Application::WoRM->in_transaction) {
-		OpenILS::Application::WoRM->begin_transaction || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		OpenILS::Application::WoRM->begin_transaction($client) || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
 		$commit = 1;
 	}
 
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.full_rec.mass_delete', { record => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.record_descriptor.mass_delete', { record => $rec } );
+	my $success = 1;
+	try {
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'scrub_authority_record' );
 
-	OpenILS::Application::WoRM->commit_transaction if ($commit);
-	return 1;
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.full_rec.mass_delete', { record => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.record_descriptor.mass_delete', { record => $rec } );
+
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'scrub_authority_record' );
+	} otherwise {
+		$log->debug('Scrubbing failed : '.shift(), ERROR);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.rollback', 'scrub_authority_record' );
+		$success = 0;
+	};
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit && $success);
+	OpenILS::Application::WoRM->rollback_transaction if ($commit && !$success);
+	return $success;
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.scrub.authority",
@@ -159,41 +193,59 @@ sub scrub_metabib_record {
 
 	my $commit = 0;
 	if (!OpenILS::Application::WoRM->in_transaction) {
-		OpenILS::Application::WoRM->begin_transaction || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		OpenILS::Application::WoRM->begin_transaction($client) || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
 		$commit = 1;
 	}
 
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.full_rec.mass_delete', { record => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.mass_delete', { source => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.record_descriptor.mass_delete', { record => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.title_field_entry.mass_delete', { source => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.author_field_entry.mass_delete', { source => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.subject_field_entry.mass_delete', { source => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.keyword_field_entry.mass_delete', { source => $rec } );
-	OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.series_field_entry.mass_delete', { source => $rec } );
+	my $success = 1;
+	try {
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'scrub_metabib_record' );
+		
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.full_rec.mass_delete', { record => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.mass_delete', { source => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.record_descriptor.mass_delete', { record => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.title_field_entry.mass_delete', { source => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.author_field_entry.mass_delete', { source => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.subject_field_entry.mass_delete', { source => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.keyword_field_entry.mass_delete', { source => $rec } );
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.series_field_entry.mass_delete', { source => $rec } );
 
-	my $mr = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search_where', { master_record => $rec } );
+		$log->debug( "Looking for metarecords whose master is $rec", DEBUG);
+		my $masters = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search.master_record.atomic', $rec );
 
-	if ($mr) {
-		my $others = OpenILS::Application::WoRM->storage_req(
-				'open-ils.storage.direct.metabib.metarecord_source_map.search_where.atomic',
-				{ metarecord => $mr->id }
-		);
+		for my $mr (@$masters) {
+			$log->debug( "Found metarecord whose master is $rec", DEBUG);
+			my $others = OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic', $mr->id );
 
-		if (@$others) {
-			$mr->master_record($others->[0]->source);
-			OpenILS::Application::WoRM->storage_req(
-				'open-ils.storage.direct.metabib.metarecord.remote_update',
-				{ id => $mr->id },
-				{ master_record => $others->[0]->source }
-			);
-		} else {
-			OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.delete', $mr->id );
+			if (@$others) {
+				$log->debug("Metarecord ".$mr->id." had master of $rec, setting to ".$others->[0]->source, DEBUG);
+				$mr->master_record($others->[0]->source);
+				OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.metabib.metarecord.remote_update',
+					{ id => $mr->id },
+					{ master_record => $others->[0]->source }
+				);
+			} else {
+				warn "Removing metarecord whose master is $rec";
+				$log->debug( "Removing metarecord whose master is $rec", DEBUG);
+				OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.delete', $mr->id );
+				warn "Metarecord removed";
+				$log->debug( "Metarecord removed", DEBUG);
+			}
 		}
-	}
 
-	OpenILS::Application::WoRM->commit_transaction if ($commit);
-	return 1;
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'scrub_metabib_record' );
+
+	} otherwise {
+		$log->debug('Scrubbing failed : '.shift(), ERROR);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.rollback', 'scrub_metabib_record' );
+		$success = 0;
+	};
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit && $success);
+	OpenILS::Application::WoRM->rollback_transaction if ($commit && !$success);
+	return $success;
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.scrub.biblio",
@@ -202,12 +254,206 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );                      
 
+sub wormize_biblio_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	my $commit = 0;
+	if (!OpenILS::Application::WoRM->in_transaction) {
+		OpenILS::Application::WoRM->begin_transaction($client) || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		$commit = 1;
+	}
+
+	my $success = 1;
+	try {
+		# clean up the cruft
+		unless ($self->api_name =~ /noscrub/o) {
+			$self->method_lookup( 'open-ils.worm.scrub.biblio' )->run( $rec ) || throw OpenSRF::EX::PANIC ("Couldn't scrub record $rec!");
+		}
+
+		# now redo 'em
+		my $bibs = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.biblio.record_entry.search.id.atomic', $rec );
+
+		my @full_rec = ();
+		my @rec_descriptor = ();
+		my %field_entry = (
+			title	=> [],
+			author	=> [],
+			subject	=> [],
+			keyword	=> [],
+			series	=> [],
+		);
+		my @metarecord = ();
+		my @source_map = ();
+		for my $r (@$bibs) {
+			my $xml = $parser->parse_string($r->marc);
+
+			# the full_rec stuff
+			for my $fr ( $self->method_lookup( 'open-ils.worm.flat_marc.biblio.xml' )->run( $xml ) ) {
+				$fr->record( $r->id );
+				push @full_rec, $fr;
+			}
+
+			# the rec_descriptor stuff
+			my ($rd) = $self->method_lookup( 'open-ils.worm.biblio_leader.xml' )->run( $xml );
+			$rd->record( $r->id );
+			push @rec_descriptor, $rd;
+			
+			# the indexing field entry stuff
+			for my $class ( qw/title author subject keyword series/ ) {
+				for my $fe ( $self->method_lookup( 'open-ils.worm.field_entry.class.xml' )->run( $xml, $class ) ) {
+					$fe->source( $r->id );
+					push @{$field_entry{$class}}, $fe;
+				}
+			}
+
+			#update the fingerprint
+			my ($fp) = $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $xml );
+			OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.biblio.record_entry.remote_update', { id => $r->id }, { fingerprint => $fp } );
+
+			unless ($self->api_name =~ /nomap/o) {
+				my $mr = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search.fingerprint.atomic', $fp  )->[0];
+				
+				unless ($mr) {
+					$mr = Fieldmapper::metabib::metarecord->new;
+					$mr->fingerprint( $fp );
+					$mr->master_record( $r->id );
+					$mr->id( OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.create', $mr) );
+				}
+
+				my $mr_map = Fieldmapper::metabib::metarecord_source_map->new;
+				$mr_map->metarecord( $mr->id );
+				$mr_map->source( $r->id );
+				push @source_map, $mr_map;
+			}
+
+		}
+
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'wormize_record' );
+
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.batch.create', @source_map ) if (@source_map);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.record_descriptor.batch.create', @rec_descriptor ) if (@rec_descriptor);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.full_rec.batch.create', @full_rec ) if (@full_rec);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.title_field_entry.batch.create', @{ $field_entry{title} } ) if (@{ $field_entry{title} });
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.author_field_entry.batch.create', @{ $field_entry{author} } ) if (@{ $field_entry{author} });
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.subject_field_entry.batch.create', @{ $field_entry{subject} } ) if (@{ $field_entry{subject} });
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create', @{ $field_entry{keyword} } ) if (@{ $field_entry{keyword} });
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.series_field_entry.batch.create', @{ $field_entry{series} } ) if (@{ $field_entry{series} });
+
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'wormize_record' );
+
+	} otherwise {
+		$log->debug('Wormization failed : '.shift(), ERROR);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.rollback', 'wormize_record' );
+		$success = 0;
+	};
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit && $success);
+	OpenILS::Application::WoRM->rollback_transaction if ($commit && !$success);
+	return $success;
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.biblio",
+	method		=> "wormize_biblio_record",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.biblio.nomap",
+	method		=> "wormize_biblio_record",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.biblio.noscrub",
+	method		=> "wormize_biblio_record",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.biblio.nomap.noscrub",
+	method		=> "wormize_biblio_record",
+	api_level	=> 1,
+	argc		=> 1,
+);
+
+sub wormize_authority_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	my $commit = 0;
+	if (!OpenILS::Application::WoRM->in_transaction) {
+		OpenILS::Application::WoRM->begin_transaction($client) || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		$commit = 1;
+	}
+
+	my $success = 1;
+	try {
+		# clean up the cruft
+		unless ($self->api_name =~ /noscrub/o) {
+			$self->method_lookup( 'open-ils.worm.scrub.authority' )->run( $rec ) || throw OpenSRF::EX::PANIC ("Couldn't scrub record $rec!");
+		}
+
+		# now redo 'em
+		my $bibs = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.record_entry.search.id.atomic', $rec );
+
+		my @full_rec = ();
+		my @rec_descriptor = ();
+		for my $r (@$bibs) {
+			my $xml = $parser->parse_string($r->marc);
+
+			# the full_rec stuff
+			for my $fr ( $self->method_lookup( 'open-ils.worm.flat_marc.authority.xml' )->run( $xml ) ) {
+				$fr->record( $r->id );
+				push @full_rec, $fr;
+			}
+
+			# the rec_descriptor stuff -- XXX What does this mean for authority records?
+			#my ($rd) = $self->method_lookup( 'open-ils.worm.authority_leader.xml' )->run( $xml );
+			#$rd->record( $r->id );
+			#push @rec_descriptor, $rd;
+			
+		}
+
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'wormize_authority_record' );
+
+		#OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.record_descriptor.batch.create', @rec_descriptor ) if (@rec_descriptor);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.authority.full_rec.batch.create', @full_rec ) if (@full_rec);
+
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'wormize_authority_record' );
+
+	} otherwise {
+		$log->debug('Wormization failed : '.shift(), ERROR);
+		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.rollback', 'wormize_authority_record' );
+		$success = 0;
+	};
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit && $success);
+	OpenILS::Application::WoRM->rollback_transaction if ($commit && !$success);
+	return $success;
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.authority",
+	method		=> "wormize_authority_record",
+	api_level	=> 1,
+	argc		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.authority.noscrub",
+	method		=> "wormize_authority_record",
+	api_level	=> 1,
+	argc		=> 1,
+);
+
 
 # --------------------------------------------------------------------------------
 # MARC index extraction
 
 package OpenILS::Application::WoRM::XPATH;
 use base qw/OpenILS::Application::WoRM/;
+use Unicode::Normalize;
 
 # give this a MODS documentElement and an XPATH expression
 sub _xpath_to_string {
@@ -286,7 +532,7 @@ sub class_all_index_string_record {
 	my $class = shift;
 
 	OpenILS::Application::WoRM->post_init();
-	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
+	my $r = OpenILS::Application::WoRM->storage_req( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec );
 
 	for my $fm ($self->method_lookup("open-ils.worm.field_entry.class.xml")->run($r->marc, $class)) {
 		$fm->source($rec);
@@ -329,7 +575,7 @@ sub class_index_string_record {
 	my $type = shift;
 
 	OpenILS::Application::WoRM->post_init();
-	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
+	my $r = OpenILS::Application::WoRM->storage_req( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec );
 
 	my ($d) = $self->method_lookup("open-ils.worm.class.type.xml")->run($r->marc, $class => $type);
 	$log->debug("XPath $class->$type for bib rec $rec returns ($d)", DEBUG);
@@ -372,7 +618,7 @@ sub record_xpath {
 	my $unique = shift;
 
 	OpenILS::Application::WoRM->post_init();
-	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
+	my $r = OpenILS::Application::WoRM->storage_req( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec );
 
 	my ($d) = $self->method_lookup("open-ils.worm.xpath.xml")->run($r->marc, $xpath, $uri, $prefix, $unique );
 	$log->debug("XPath [$xpath] bib rec $rec returns ($d)", DEBUG);
@@ -391,8 +637,9 @@ __PACKAGE__->register_method(
 
 package OpenILS::Application::WoRM::Biblio::Leader;
 use base qw/OpenILS::Application::WoRM/;
+use Unicode::Normalize;
 
-our %descriptor_code = (
+our %biblio_descriptor_code = (
 	item_type => sub { substr($ldr,6,1); },
 	item_form => sub { (substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/o) ? substr($oo8,29,1) : substr($oo8,23,1); },
 	bib_level => sub { substr($ldr,7,1); },
@@ -406,43 +653,43 @@ our %descriptor_code = (
 	audience => sub { substr($oo8,22,1); },
 );
 
-sub _extract_descriptors {
+sub _extract_biblio_descriptors {
 	my $xml = shift;
 
 	local $ldr = $xml->findvalue('//*[local-name()="leader"]');
 	local $oo8 = $xml->findvalue('//*[local-name()="controlfield" and @tag="008"]');
 
 	my $rd_obj = Fieldmapper::metabib::record_descriptor->new;
-	for my $rd_field ( keys %descriptor_code ) {
-		$rd_obj->$rd_field( $descriptor_code{$rd_field}->() );
+	for my $rd_field ( keys %biblio_descriptor_code ) {
+		$rd_obj->$rd_field( $biblio_descriptor_code{$rd_field}->() );
 	}
 
 	return $rd_obj;
 }
 
-sub extract_desc_xml {
+sub extract_biblio_desc_xml {
 	my $self = shift;
 	my $client = shift;
 	my $xml = shift;
 
 	$xml = $parser->parse_string($xml) unless (ref $xml);
 
-	return _extract_descriptors( $xml );
+	return _extract_biblio_descriptors( $xml );
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.biblio_leader.xml",
-	method		=> "extract_desc_xml",
+	method		=> "extract_biblio_desc_xml",
 	api_level	=> 1,
 	argc		=> 1,
 );                      
 
-sub extract_desc_record {
+sub extract_biblio_desc_record {
 	my $self = shift;
 	my $client = shift;
 	my $rec = shift;
 
 	OpenILS::Application::WoRM->post_init();
-	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec )->gather(1);
+	my $r = OpenILS::Application::WoRM->storage_req( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec );
 
 	my ($d) = $self->method_lookup("open-ils.worm.biblio_leader.xml")->run($r->marc);
 	$log->debug("Record descriptor for bib rec $rec is ".JSON->perl2JSON($d), DEBUG);
@@ -450,7 +697,7 @@ sub extract_desc_record {
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.biblio_leader.record",
-	method		=> "extract_desc_record",
+	method		=> "extract_biblio_desc_record",
 	api_level	=> 1,
 	argc		=> 1,
 );                      
@@ -460,6 +707,7 @@ __PACKAGE__->register_method(
 
 package OpenILS::Application::WoRM::FlatMARC;
 use base qw/OpenILS::Application::WoRM/;
+use Unicode::Normalize;
 
 
 sub _marcxml_to_full_rows {
@@ -479,7 +727,8 @@ sub _marcxml_to_full_rows {
 		my $ns = $type->new;
 
 		$ns->tag( 'LDR' );
-		my $val = NFD($tagline->textContent);
+		my $val = $tagline->textContent;
+		NFD($val);
 		$val =~ s/(\pM+)//gso;
 		$ns->value( $val );
 
@@ -492,7 +741,8 @@ sub _marcxml_to_full_rows {
 		my $ns = $type->new;
 
 		$ns->tag( $tagline->getAttribute( "tag" ) );
-		my $val = NFD($tagline->textContent);
+		my $val = $tagline->textContent;
+		NFD($val);
 		$val =~ s/(\pM+)//gso;
 		$ns->value( $val );
 
@@ -515,7 +765,8 @@ sub _marcxml_to_full_rows {
 			$ns->ind1( $ind1 );
 			$ns->ind2( $ind2 );
 			$ns->subfield( $data->getAttribute( "code" ) );
-			my $val = NFD($data->textContent);
+			my $val = $data->textContent;
+			NFD($val);
 			$val =~ s/(\pM+)//gso;
 			$ns->value( lc($val) );
 
@@ -566,7 +817,7 @@ sub flat_marc_record {
 	$type = 'authority' if ($self->api_name =~ /authority/o);
 
 	OpenILS::Application::WoRM->post_init();
-	my $r = OpenILS::Application::WoRM->st_sess->request( "open-ils.storage.direct.${type}.record_entry.retrieve" => $rec )->gather(1);
+	my $r = OpenILS::Application::WoRM->storage_req( "open-ils.storage.direct.${type}.record_entry.retrieve" => $rec );
 
 	$client->respond($_) for ($self->method_lookup("open-ils.worm.flat_marc.$type.xml")->run($r->marc));
 	return undef;
@@ -592,6 +843,8 @@ __PACKAGE__->register_method(
 
 package OpenILS::Application::WoRM::Biblio::Fingerprint;
 use base qw/OpenILS::Application::WoRM/;
+use Unicode::Normalize;
+use OpenSRF::EX qw/:try/;
 
 my @fp_mods_xpath = (
 	'//mods:mods/mods:typeOfResource[text()="text"]' => [
@@ -751,6 +1004,41 @@ sub _fp_mods {
 	return undef;
 }
 
+sub refingerprint_bibrec {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	my $commit = 0;
+	if (!OpenILS::Application::WoRM->in_transaction) {
+		OpenILS::Application::WoRM->begin_transaction($client) || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
+		$commit = 1;
+	}
+
+	my $success = 1;
+	try {
+		my $bibs = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.biblio.record_entry.search.id.atomic', $rec );
+		OpenILS::Application::WoRM->storage_req(
+			'open-ils.storage.direct.biblio.record_entry.remote_update',
+			{ id => $_->id },
+			{ fingerprint => $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $_->marc ) }
+		) for (@$bibs);
+	} otherwise {
+		$log->debug('Fingerprinting failed : '.shift(), ERROR);
+		$success = 0;
+	};
+
+	OpenILS::Application::WoRM->commit_transaction if ($commit && $success);
+	OpenILS::Application::WoRM->rollback_transaction if ($commit && !$success);
+	return $success;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.fingerprint.record.update",
+	method		=> "refingerprint_bibrec",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
 
 sub fingerprint_bibrec {
 	my $self = shift;
@@ -758,7 +1046,7 @@ sub fingerprint_bibrec {
 	my $rec = shift;
 
 	OpenILS::Application::WoRM->post_init();
-	my $r = OpenILS::Application::WoRM->st_sess->request( 'open-ils.storage.direct.biblio.record_entry.retrieve' => $rec )->gather(1);
+	my $r = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.biblio.record_entry.retrieve' => $rec );
 
 	my ($fp) = $self->method_lookup('open-ils.worm.fingerprint.marc')->run($r->marc);
 	$log->debug("Returning [$fp] as fingerprint for record $rec", INFO);
@@ -876,10 +1164,6 @@ sub wormize {
 		unless ($mr_lookup);
 	$mr_update = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.batch.update')
 		unless ($mr_update);
-	$mr_create = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.create')
-		unless ($mr_create);
-	$create_source_map = $self->method_lookup('open-ils.storage.direct.metabib.metarecord_source_map.batch.create')
-		unless ($create_source_map);
 	$lookup = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.batch.retrieve')
 		unless ($lookup);
 	$update_entry = $self->method_lookup('open-ils.storage.direct.biblio.record_entry.batch.update')
@@ -900,6 +1184,10 @@ sub wormize {
 		unless ($rm_old_kr);
 	$rm_old_ser = $self->method_lookup( 'open-ils.storage.direct.metabib.series_field_entry.mass_delete')
 		unless ($rm_old_ser);
+	$mr_create = $self->method_lookup('open-ils.storage.direct.metabib.metarecord.create')
+		unless ($mr_create);
+	$create_source_map = $self->method_lookup('open-ils.storage.direct.metabib.metarecord_source_map.batch.create')
+		unless ($create_source_map);
 	$rd_create = $self->method_lookup( 'open-ils.storage.direct.metabib.record_descriptor.batch.create')
 		unless ($rd_create);
 	$fr_create = $self->method_lookup( 'open-ils.storage.direct.metabib.full_rec.batch.create')

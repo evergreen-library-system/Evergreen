@@ -13,6 +13,7 @@ use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::CDBI::money;
 use OpenILS::Application::Storage::CDBI::permission;
 
+use JSON;
 use OpenSRF::Utils::Logger;
 use OpenSRF::EX qw/:try/;
 
@@ -173,6 +174,9 @@ sub merge {
 
 	delete $$arg{$_} for (keys %$search);
 
+	$log->debug("CDBI->merge: \$search is $search (".ref($search)." : ".join(',',map{"$_ => $$search{$_}"}keys(%$search)).")",DEBUG);
+	$log->debug("CDBI->merge: \$arg is $arg (".ref($arg)." : ".join(',',map{"$_ => $$arg{$_}"}keys(%$arg)).")",DEBUG);
+
 	my @objs = ($self);
 	@objs = $self->search_where($search) unless (ref $self);
 
@@ -192,20 +196,32 @@ sub remote_update {
 
 	delete $$arg{$_} for (keys %$search);
 
-	my @objs = $self->search_where($search);
-	if (@objs == 0) {
-		throw OpenSRF::EX::WARN ("No objects found for remote_update.  Perhaps you meant to use merge?");
-	} else {
-		$_->update($arg) for (@objs);
-		return scalar(@objs);
-	}
+	$log->debug("CDBI->remote_update: \$search is $search (".ref($search)." : ".join(',',map{"$_ => $$search{$_}"}keys(%$search)).")",DEBUG);
+	$log->debug("CDBI->remote_update: \$arg is $arg (".ref($arg)." : ".join(',',map{"$_ => $$arg{$_}"}keys(%$arg)).")",DEBUG);
+
+	my @finds = sort keys %$search;
+	my @sets = sort keys %$arg;
+
+	my @find_vals = @$search{@finds};
+	my @set_vals = @$arg{@sets};
+
+	my $sql = 'UPDATE %s SET %s WHERE %s';
+
+	my $table = $self->table;
+	my $set = join(', ', map { "$_=?" } @sets);
+	my $where = join(', ', map { "$_=?" } @finds);
+
+	my $sth = $self->db_Main->prepare(sprintf($sql, $table, $set, $where));
+	$sth->execute(@set_vals,@find_vals);
+	return $sth->rows;
+
 }
 
 sub create {
 	my $self = shift;
 	my $arg = shift;
 
-	$log->debug("\$arg is $arg (".ref($arg).")",DEBUG);
+	$log->debug("CDBI->create: \$arg is $arg (".ref($arg)." : ".JSON->perl2JSON($arg).")",DEBUG);
 
 	if (ref($arg) && UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		return $self->create_from_fieldmapper($arg,@_);
@@ -249,14 +265,18 @@ sub delete {
 
 	my $class = ref($self) || $self;
 
+	warn "HERE 1 --";
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
-		$self = $self->retrieve($arg);
-		unless (defined $self) {
-			$log->debug("ARG! Couldn't retrieve record ".$arg->id, DEBUG);
-			throw OpenSRF::EX::WARN ("ARG! Couldn't retrieve record ");
-		}
+		$arg = $arg->id;
 	}
 
+	$self = $self->retrieve($arg);
+	unless (defined $self) {
+		$log->debug("ARG! Couldn't retrieve record ".$arg->id, DEBUG);
+		throw OpenSRF::EX::WARN ("ARG! Couldn't retrieve record ");
+	}
+
+	warn "HERE 2 --";
 	if ($class->find_column( 'last_xact_id' )) {
 		my $xact_id = $self->current_xact_id;
 		
@@ -270,7 +290,10 @@ sub delete {
 		$self->SUPER::update;
 	}
 
+	warn "HERE 3 --";
 	$self->SUPER::delete;
+	warn "HERE 4 --";
+
 	return 1;
 }
 
