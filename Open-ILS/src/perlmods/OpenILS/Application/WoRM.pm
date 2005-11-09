@@ -488,9 +488,7 @@ sub _xpath_to_string {
 			$string .= $value->textContent . " ";
 		}
 	}
-	NFD($string);
-	$string =~ s/(\pM)//gso;
-	return $string;
+	return NFC($string);
 }
 
 sub class_all_index_string_xml {
@@ -736,7 +734,7 @@ sub _marcxml_to_full_rows {
 
 		$ns->tag( 'LDR' );
 		my $val = $tagline->textContent;
-		NFD($val);
+		$val = NFD($val);
 		$val =~ s/(\pM+)//gso;
 		$ns->value( $val );
 
@@ -750,7 +748,7 @@ sub _marcxml_to_full_rows {
 
 		$ns->tag( $tagline->getAttribute( "tag" ) );
 		my $val = $tagline->textContent;
-		NFD($val);
+		$val = NFD($val);
 		$val =~ s/(\pM+)//gso;
 		$ns->value( $val );
 
@@ -774,7 +772,7 @@ sub _marcxml_to_full_rows {
 			$ns->ind2( $ind2 );
 			$ns->subfield( $data->getAttribute( "code" ) );
 			my $val = $data->textContent;
-			NFD($val);
+			$val = NFD($val);
 			$val =~ s/(\pM+)//gso;
 			$ns->value( lc($val) );
 
@@ -865,7 +863,7 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> sub {
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
-							NFD($text);
+							$text = NFD($text);
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
 							$text =~ s/\pM+//gso;
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
@@ -890,7 +888,7 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> sub {
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
-							NFD($text);
+							$text = NFD($text);
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
 							$text =~ s/\pM+//gso;
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
@@ -920,7 +918,7 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> sub {
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
-							NFD($text);
+							$text = NFD($text);
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
 							$text =~ s/\pM+//gso;
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
@@ -947,7 +945,7 @@ my @fp_mods_xpath = (
 					],
 					fixup	=> sub {
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
-							NFD($text);
+							$text = NFD($text);
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
 							$text =~ s/\pM+//gso;
 							$log->debug("Fingerprint text /durring/ fixup : [$text]", INTERNAL);
