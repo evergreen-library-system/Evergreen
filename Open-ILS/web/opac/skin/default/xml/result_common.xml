@@ -1,5 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <div id='canvas_main' xmlns:xi="http://www.w3.org/2001/XInclude" >
 

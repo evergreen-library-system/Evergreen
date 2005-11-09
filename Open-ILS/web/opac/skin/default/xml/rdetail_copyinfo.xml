@@ -1,5 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <!-- This holds information for copies attached to this record -->
 <div>

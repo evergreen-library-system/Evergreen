@@ -93,7 +93,6 @@ static int xmlBuilderHandler( request_rec* r ) {
 	if(locale) __xmlBuilderDynamicLocale = locale;
 	char* XMLFile = r->filename;
 
-	apacheDebug("Processing file %s", XMLFile);
 	xmlDocPtr doc = xmlBuilderProcessFile( XMLFile, config );
 	if(!doc) return apacheError( "Unable to parse XML file %s", XMLFile );
 
@@ -161,7 +160,6 @@ xmlDocPtr xmlBuilderProcessFile( char* filename, xmlBuilderConfig* config ) {
 
 
 void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar **atts ) {
-	apacheDebug( "Starting element: %s", name );
 	xmlBuilderContext* ctx = (xmlBuilderContext*) context;
 
 	xmlNodePtr node = NULL;
@@ -189,7 +187,6 @@ void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar *
 			}
 
 
-			apacheDebug( "Processing xinclude %s", href );
 			xmlDocPtr subDoc = xmlBuilderProcessFile( href, ctx->config );
 			node = xmlDocGetRootElement( subDoc );
 		}
@@ -274,7 +271,6 @@ void xmlBuilderAddDtd( const char* sysId, xmlBuilderContext* context ) {
 	char buf[len]; bzero(buf,len);
 	snprintf( buf, len, "%s/%s/%s", context->config->baseDir, locale, sysId );
 
-	apacheDebug("Parsing DTD file %s", buf);
 	xmlDtdPtr dtd = xmlParseDTD(NULL, buf);
 
 
@@ -315,25 +311,5 @@ module AP_MODULE_DECLARE_DATA xmlbuilder_module = {
 
 
 
-
-
-
-/*
-char* get_dtd_lang_file(string_array* params, char* default_locale, char* locale_dir) {
-
-	char* locale = apacheGetFirstParamValue(params, PARAM_LOCALE);
-	if(!locale) locale = default_locale;
-	if(!locale) return NULL;
-
-	int len = strlen(LANG_DTD) + strlen(locale) + strlen(locale_dir) + 1;
-	char dtdfile[len];
-	bzero(dtdfile, len);
-
-	if(locale)
-		sprintf(dtdfile, "%s/%s/%s",  locale_dir, locale, LANG_DTD );
-
-	return strdup(dtdfile);
-}
-*/
 
 

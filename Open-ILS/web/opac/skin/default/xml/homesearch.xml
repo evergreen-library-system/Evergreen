@@ -1,5 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <div id='canvas_main' 
 	style='border: 3px solid #A7EA9D; -moz-border-radius: 6px; padding: 6px; margin-top: 65px;' 

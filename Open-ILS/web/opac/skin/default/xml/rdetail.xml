@@ -1,13 +1,12 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <html xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" lang="en">
 
 	<head>
 		<title>Evergreen: Titles</title>
-		<xi:include href="css_common.xml#xpointer(//link)"/>
-		<xi:include href="js_common.xml#xpointer(//script)"/>
+		<xi:include href="css_common.xml"/>
+		<xi:include href="js_common.xml"/>
 		<script language='javascript' src='../js/rdetail.js'> </script>
 	</head>
 

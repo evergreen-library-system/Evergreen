@@ -1,5 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <div id='statusbar' style='margin-bottom: 6px; margin-top: 6px;'>
 

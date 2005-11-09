@@ -15,7 +15,9 @@
 	<link type='text/css' rel="stylesheet" href="../../../theme/default/css/colors.css"  
 		name='Default' csstype='color'/>
 
+	<!--
 	<link type='text/css' rel="alternate stylesheet" href="../../../theme/test/css/colors.css" 
 		title='Color Test' name='ColorTest' csstype="color" />
+		-->
 
 </css>

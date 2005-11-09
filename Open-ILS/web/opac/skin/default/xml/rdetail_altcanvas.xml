@@ -1,5 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <!-- record details alternate canvases -->
 <div class=''>

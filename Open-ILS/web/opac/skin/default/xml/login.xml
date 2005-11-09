@@ -1,6 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
-
 
 <div id='login_box' class='hide_me color_1 non_canvas' style='margin-top: 6px;'>
 

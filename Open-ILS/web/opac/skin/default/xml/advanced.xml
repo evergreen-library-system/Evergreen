@@ -1,5 +1,4 @@
 <?xml version='1.0'?>
-<!DOCTYPE x [ <!ENTITY % ent SYSTEM "../../../locale/en-US/lang.dtd"> %ent; ] >
 
 <!-- Advanced search page -->
 
@@ -8,8 +7,8 @@
 
 	<head>
 		<title>Evergreen: Advanced Search</title>
-		<xi:include href="css_common.xml#xpointer(//link)"/>
-		<xi:include href="js_common.xml#xpointer(//script)"/>
+		<xi:include href="css_common.xml"/>
+		<xi:include href="js_common.xml"/>
 	</head>
 
 	<body onload="init();">
