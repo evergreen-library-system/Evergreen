@@ -179,7 +179,7 @@ function runInstall {
 				;;
 
 			"openils_web" )
-				if building; then $MAKE -C "$OPENILSDIR" "mod_xmltools"; fi;
+				if building; then $MAKE -C "$OPENILSDIR" "mod_xmlbuilder"; fi;
 				if building; then $MAKE -C "$OPENILSDIR" "mod_ils_rest_gateway"; fi;
 				if installing; then $MAKE -C "$OPENILSDIR" "web-install"; fi;
 				if installing; then $MAKE -C "$OPENILSDIR" "cgi-bootstrap"; fi;
