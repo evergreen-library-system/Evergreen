@@ -128,6 +128,12 @@ unsigned long osrfListGetCount( osrfList* list ) {
 }
 
 
+void* osrfListPop( osrfList* list ) {
+	if(!list) return NULL;
+	return osrfListRemove( list, list->size - 1 );
+}
+
+
 osrfListIterator* osrfNewListIterator( osrfList* list ) {
 	if(!list) return NULL;
 	osrfListIterator* itr = safe_malloc(sizeof(osrfListIterator));

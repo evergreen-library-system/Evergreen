@@ -64,6 +64,14 @@ osrfList* osrfNewList();
   */
 int osrfListPush( osrfList* list, void* item );
 
+
+/**
+ * Removes the last item in the list
+ * See osrfListRemove for details on how the removed item is handled
+ * @return The item, unless 'freeItem' exists, then returns NULL
+ */
+void* osrfListPop( osrfList* list );
+
 /**
   Puts the given item into the list at the specified position.  If there
   is already an item at the given position and the list has it's 
@@ -111,6 +119,7 @@ int osrfListFind( osrfList* list, void* addr );
 
 
 void __osrfListSetSize( osrfList* list );
+
 
 /**
   @return The number of non-null items in the list

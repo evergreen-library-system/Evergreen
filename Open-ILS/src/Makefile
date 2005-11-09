@@ -6,11 +6,11 @@ export CFLAGS			= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEAD
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
 
-all: mod_xmltools mod_ils_rest_gateway c_apps
+all: mod_xmlbuilder mod_ils_rest_gateway c_apps
 
 install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install
 
-web-install:	webcore-install autojs-install  mod_xmltools-install mod_ils_rest_gateway-install
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install
 
 
 # -----------------------------------------------------------------------------------
@@ -25,13 +25,13 @@ mod_ils_rest_gateway-install:
 	make -C apachemods libfieldmapper-install
 	make -C apachemods mod_ils_rest_gateway-install
 
-mod_xmltools:
+mod_xmlbuilder:
 	@echo $@
-	make -C apachemods mod_xmltools.so
+	make -C apachemods mod_xmlbuilder.so
 
-mod_xmltools-install:
+mod_xmlbuilder-install:
 	@echo $@
-	make -C apachemods mod_xmltools-install
+	make -C apachemods mod_xmlbuilder-install
 
 webcore-install:
 	@echo $@

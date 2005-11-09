@@ -15,7 +15,6 @@ sha.o: sha.c sha.h
 string_array.o: string_array.c string_array.h
 
 
-
 clean:
 	/bin/rm -f *.o 
 
