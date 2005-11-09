@@ -196,8 +196,10 @@ void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar *
 
 		if(!node) {
 			apacheError("Unable to parse xinclude: %s", href );
+			free(href);
 			return;
 		}
+		free(href);
 
 	} else {
 		node = xmlNewNode(NULL, name);
