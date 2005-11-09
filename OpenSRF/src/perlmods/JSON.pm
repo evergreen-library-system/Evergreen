@@ -82,7 +82,7 @@ sub JSON2perl {
 	s/(?<!\\)\%/\\\%/gmo; # fixup % for later
 
 	# Convert JSON Unicode...
-	s/\\u(\d{4})/chr(hex($1))/esog;
+	s/\\u([0-9a-fA-F]{4})/chr(hex($1))/esog;
 
 	# handle class blessings
 	s/\/\*--\s*S\w*?\s+\S+\s*--\*\// bless(/sog;
@@ -196,17 +196,17 @@ sub perl2JSON {
 		$output .= '{';
 		my $c = 0;
 		for my $key (sort keys %$perl) {
-			my $outkey = $key;
+			my $outkey = NFD($key);
 			$output .= ',' if ($c); 
 
+			$outkey = NFD($perl);
 			$outkey =~ s{\\}{\\\\}sgo;
 			$outkey =~ s/"/\\"/sgo;
 			$outkey =~ s/\t/\\t/sgo;
 			$outkey =~ s/\f/\\f/sgo;
 			$outkey =~ s/\r/\\r/sgo;
 			$outkey =~ s/\n/\\n/sgo;
-			$outkey =~ s/(\pM|\pS)/sprintf('\u%0.4x',ord($1))/sgoe;
-			$outkey =~ s/[\x80-\xff]//sgoe;
+			$outkey =~ s/(\PM\pM)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
 
 			$output .= '"'.$outkey.'":'. perl2JSON(undef,$$perl{$key}, $strict);
 			$c++;
@@ -235,8 +235,7 @@ sub perl2JSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
-		$perl =~ s/(\pM|\pC|\pM)/sprintf('\u%0.4x',ord($1))/sgoe;
-		$perl =~ s/[\x80-\xff]//sgoe;
+		$perl =~ s/(\PM\pM+)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
 		} else {
@@ -316,8 +315,7 @@ sub perl2prettyJSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
-		$perl =~ s/(\pM|\pC)/sprintf('\u%0.4x',ord($1))/sgoe;
-		$perl =~ s/[\x80-\xff]//sgoe;
+		$perl =~ s/(\PM\pM)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
 		$output .= "   "x$depth unless($nospace);
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
