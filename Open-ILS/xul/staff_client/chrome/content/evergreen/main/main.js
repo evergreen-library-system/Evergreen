@@ -8,7 +8,7 @@ function main_init() {
 			.getService(Components.interfaces.nsIPrefBranch);
 		if (pref) {
 			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
-			pref.setCharPref("capability.principal.codebase.p0.id", "http://gapines.org");
+			pref.setCharPref("capability.principal.codebase.p0.id", "http://dev.gapines.org");
 		}
 
 		if (typeof JSAN == 'undefined') {
@@ -44,7 +44,7 @@ function main_init() {
 			G.OpenILS.data = new OpenILS.data( G.auth );
 			G.OpenILS.data.on_complete = function () {
 
-				G.window.open('http://gapines.org/xul/server/main/menu_frame.xul','test','chrome');
+				G.window.open('http://dev.gapines.org/xul/server/main/menu_frame.xul','test','chrome');
 			}
 			G.OpenILS.data.init();
 		}
