@@ -110,4 +110,20 @@ char* apacheGetFirstParamValue(string_array* params, char* key) {
 	return NULL;
 }
 
-	
+
+int apacheDebug( char* msg, ... ) {
+	VA_LIST_TO_STRING(msg);
+	fprintf(stderr, "%s\n", VA_BUF);
+	fflush(stderr);
+	return 0;
+}
+
+
+int apacheError( char* msg, ... ) {
+	VA_LIST_TO_STRING(msg);
+	fprintf(stderr, "%s\n", VA_BUF);
+	fflush(stderr);
+	return HTTP_INTERNAL_SERVER_ERROR; 
+}
+
+

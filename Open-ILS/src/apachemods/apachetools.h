@@ -4,9 +4,12 @@
 #include "http_protocol.h"
 #include "apr_compat.h"
 #include "apr_strings.h"
+#include "apr_reslist.h"
+
 
 #include "string_array.h"
 #include "utils.h"
+#include "opensrf/utils.h"
 
 #ifndef APACHE_TOOLS_H
 #define APACHE_TOOLS_H
@@ -32,6 +35,13 @@ string_array* apacheGetParamValues(string_array* params, char* key);
 /* returns the first value found for the given param.  
 	char* must be freed by the caller */
 char* apacheGetFirstParamValue(string_array* params, char* key);
+
+/* Writes msg to stderr, flushes stderr, and returns 0 */
+int apacheDebug( char* msg, ... );
+
+/* Writes to stderr, flushe stderr, and returns HTTP_INTERNAL_SERVER_ERROR; 
+ */
+int apacheError( char* msg, ... );
 
 
 #endif

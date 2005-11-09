@@ -1,14 +1,13 @@
 
 LDLIBS	+= -lxml2 -lopensrf -lxslt
 
-all:	mod_xmltools.so mod_ils_rest_gateway.so
+all:	mod_xmlbuilder.so mod_ils_rest_gateway.so
 
-install:	mod_xmltools-install mod_ils_rest_gateway-install libfieldmapper-install
+install:	mod_xmlbuilder-install mod_ils_rest_gateway-install libfieldmapper-install
 
 
-mod_xmltools.o: mod_xmltools.c mod_xmltools.h
+mod_xmlbuilder.o: mod_xmlbuilder.h mod_xmlbuilder.c
 apachetools.o: apachetools.c apachetools.h
-xmltools.o:	xmltools.c xmltools.h
 json_xml.o:	json_xml.c json_xml.h
 fieldmapper_lookup.o:	fieldmapper_lookup.c fieldmapper_lookup.h
 ils_rest_gateway.o:	mod_rest_gateway.c mod_rest_gateway.h
@@ -20,9 +19,9 @@ fieldmapper_lookup.c:
 
 # ------------------------------------------------------
 
-mod_xmltools.so: mod_xmltools.o apachetools.o  xmltools.o 
+mod_xmlbuilder.so: mod_xmlbuilder.o apachetools.o 
 	@echo $@
-	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 apachetools.o xmltools.o mod_xmltools.o -o $@
+	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 apachetools.o mod_xmlbuilder.o -o $@
 
 libfieldmapper.so:	fieldmapper_lookup.o
 	@echo $@
@@ -58,23 +57,12 @@ mod_ils_rest_gateway-install:
 	echo "-----------------------------------------------";
 	echo ""
 
-mod_xmltools-install:
-	$(APXS2) -i -a -n mod_xmltools mod_xmltools.so
-	echo "-----------------------------------------------";
-	echo -e "* Important * : Change httpd.conf from this: \n \
-		LoadModule mod_xmltools_module modules/mod_xmltools.so \n \
-		to this: \n \
-		LoadModule mod_xmltools    modules/mod_xmltools.so"
-	echo -e "Supported configuration options:\
-			\nXMLToolsDefaultLocale <locale>\
-			\nXMLToolsLocaleDir  <web-locale-dir>\
-			\nXMLToolsPreXSL <pre_xsl_file>\
-			\nXMLToolsPostXSL <post_xsl_file>"
-	echo "-----------------------------------------------";
-	echo ""
+mod_xmlbuilder-install:
+	$(APXS2) -i -a -n xmlbuilder mod_xmlbuilder.so
+
 
 clean:
 	echo $@
-	/bin/rm -f *.o xmltools mod_xmltools.so libfieldmapper.so mod_ils_rest_gateway.so
+	/bin/rm -f *.o mod_xmlbuilder.so libfieldmapper.so mod_ils_rest_gateway.so
 	/bin/rm -f fieldmapper_lookup.c
 
