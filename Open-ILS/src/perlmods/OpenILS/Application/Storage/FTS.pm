@@ -119,7 +119,7 @@ sub sql_exact_phrase_match {
 	for my $phrase ( $self->phrases ) {
 		$phrase =~ s/%/\\%/go;
 		$phrase =~ s/_/\\_/go;
-		$phrase =~ s/'/\\_/go;
+		$phrase =~ s/'/\\'/go;
 		$log->debug("Adding phrase [$phrase] to the match list", DEBUG);
 		$output .= " AND $column ILIKE '\%$phrase\%'";
 	}
