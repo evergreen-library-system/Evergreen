@@ -41,6 +41,7 @@ sub crossref_authority {
 		}
 		next if (lc($string) eq lc($term));
 		$hash{$string}++;
+		$hash{$string}++ if (lc($$x[0]) eq lc($term));
 	}
 	my $from = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 
@@ -57,6 +58,7 @@ sub crossref_authority {
 		}
 		next if (lc($string) eq lc($term));
 		$hash{$string}++;
+		$hash{$string}++ if (lc($$x[0]) eq lc($term));
 	}
 	my $also = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 

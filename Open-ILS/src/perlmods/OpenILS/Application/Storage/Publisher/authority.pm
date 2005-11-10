@@ -37,7 +37,7 @@ sub find_authority_marc {
 	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
 
 	my $fts_where = $fts->sql_where_clause;
-	my $fts_words = join '%', map { s/([\%\_'])/\\$1/go; }$fts->words;
+	my $fts_words = join '%', $fts->words;
 	my $fts_words_where = "f.value LIKE '$fts_words\%'";
 
 
@@ -46,7 +46,7 @@ sub find_authority_marc {
   	  	FROM	$search_table f,
 			$marc_table a
   	  	WHERE	$fts_where
-			AND $fts_words_where
+			-- AND $fts_words_where
 			$tag_where
 			$sf_where
 	  		AND a.id = f.record
@@ -97,9 +97,11 @@ sub find_see_from_controlled {
 	my $term = shift;
 
 	(my $class = $self->api_name) =~ s/^.+authority.([^\.]+)\.see.+$/$1/o;
+	my $sf = 'a';
+	$sf = 't' if ($class eq 'title');
 
 	my @marc = $self->method_lookup('open-ils.storage.authority.search.marc')
-			->run( term => $term, tag => '4%', subfield => 'a' );
+			->run( term => $term, tag => '4%', subfield => $sf );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*');
@@ -124,9 +126,11 @@ sub find_see_also_from_controlled {
 	my $term = shift;
 
 	(my $class = $self->api_name) =~ s/^.+authority.([^\.]+)\.see.+$/$1/o;
+	my $sf = 'a';
+	$sf = 't' if ($class eq 'title');
 
 	my @marc = $self->method_lookup('open-ils.storage.authority.search.marc')
-			->run( term => $term, tag => '5%', subfield => 'a' );
+			->run( term => $term, tag => '5%', subfield => $sf );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*');
