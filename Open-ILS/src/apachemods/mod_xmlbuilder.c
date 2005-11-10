@@ -272,7 +272,7 @@ void xmlBuilderAddDtd( const char* sysId, xmlBuilderContext* context ) {
 	snprintf( buf, len, "%s/%s/%s", context->config->baseDir, locale, sysId );
 
 	xmlDtdPtr dtd = xmlParseDTD(NULL, buf);
-
+	if(!dtd) return;
 
 	/* cycle through entities and push them into the entity hash */
 	xmlNodePtr node = dtd->children;
