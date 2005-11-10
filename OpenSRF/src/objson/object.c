@@ -760,8 +760,16 @@ char* jsonObjectToSimpleString( const jsonObject* o ) {
 		switch( o->type ) {
 
 			case JSON_NUMBER: {
-				DOUBLE_TO_STRING(o->value.n);
-				value = strdup(DOUBLESTR);
+
+				if( o->value.n == (int) o->value.n ) {
+					INT_TO_STRING((int) o->value.n);	
+					value = strdup(INTSTR);
+	
+				} else {
+					DOUBLE_TO_STRING(o->value.n);
+					value = strdup(DOUBLESTR);
+				}
+
 				break;
 			}
 
