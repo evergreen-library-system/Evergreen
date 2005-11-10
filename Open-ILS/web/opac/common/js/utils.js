@@ -139,7 +139,7 @@ function text(t) {
 	return document.createTextNode(t);
 }
 
-function elem(name, attrs, text) {
+function elem(name, attrs, txt) {
     var e = document.createElement(name);
     if (attrs) {
         for (key in attrs) {
@@ -147,7 +147,7 @@ function elem(name, attrs, text) {
 			  else e.setAttribute(key, attrs[key]);
         }
     }
-    if (text) e.appendChild(text(text));
+    if (txt) e.appendChild(text(txt));
     return e;
 }                   
 
