@@ -11,6 +11,7 @@ use OpenSRF::Utils::Cache;
 
 #use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Biblio;
+use OpenILS::Application::Search::Authority;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
 

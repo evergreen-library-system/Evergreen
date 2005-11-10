@@ -96,28 +96,34 @@ sub find_see_from_controlled {
 	my $client = shift;
 	my $term = shift;
 
+	(my $class = $self->api_name) =~ s/^.+authority.([^\.]+)\.see.+$/$1/o;
+
 	my @marc = $self->method_lookup('open-ils.storage.authority.search.marc')
 			->run( term => $term, tag => '4%', subfield => 'a' );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*');
 		my $list = [ map { $_->textContent } @nodes ];
-		$client->respond( $list ) if (_empty_check($$list[0], 'metabib::subject_field_entry'));
+		$client->respond( $list ) if (_empty_check($$list[0], "metabib::${class}_field_entry"));
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	api_name	=> "open-ils.storage.authority.see_from.controlled",
-	method		=> 'find_see_from_controlled',
-	api_level	=> 1,
-	stream		=> 1,
-	cachable	=> 1,
-);
+for my $class ( qw/title author subject keyword series/ ) {
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.authority.$class.see_from.controlled",
+		method		=> 'find_see_from_controlled',
+		api_level	=> 1,
+		stream		=> 1,
+		cachable	=> 1,
+	);
+}
 
 sub find_see_also_from_controlled {
 	my $self = shift;
 	my $client = shift;
 	my $term = shift;
+
+	(my $class = $self->api_name) =~ s/^.+authority.([^\.]+)\.see.+$/$1/o;
 
 	my @marc = $self->method_lookup('open-ils.storage.authority.search.marc')
 			->run( term => $term, tag => '5%', subfield => 'a' );
@@ -125,17 +131,19 @@ sub find_see_also_from_controlled {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*');
 		my $list = [ map { $_->textContent } @nodes ];
-		$client->respond( $list ) if (_empty_check($$list[0], 'metabib::subject_field_entry'));
+		$client->respond( $list ) if (_empty_check($$list[0], "metabib::${class}_field_entry"));
 	}
 	return undef;
 }
-__PACKAGE__->register_method(
-	api_name	=> "open-ils.storage.authority.see_also_from.controlled",
-	method		=> 'find_see_also_from_controlled',
-	api_level	=> 1,
-	stream		=> 1,
-	cachable	=> 1,
-);
+for my $class ( qw/title author subject keyword series/ ) {
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.authority.$class.see_also_from.controlled",
+		method		=> 'find_see_also_from_controlled',
+		api_level	=> 1,
+		stream		=> 1,
+		cachable	=> 1,
+	);
+}
 
 
 1;
