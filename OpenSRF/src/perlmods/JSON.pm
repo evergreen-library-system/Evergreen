@@ -199,7 +199,7 @@ sub perl2JSON {
 			my $outkey = NFD($key);
 			$output .= ',' if ($c); 
 
-			$outkey = NFD($perl);
+			$outkey = NFD($outkey);
 			$outkey =~ s{\\}{\\\\}sgo;
 			$outkey =~ s/"/\\"/sgo;
 			$outkey =~ s/\t/\\t/sgo;
