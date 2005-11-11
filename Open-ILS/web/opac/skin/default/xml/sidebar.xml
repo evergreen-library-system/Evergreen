@@ -61,7 +61,8 @@
 		<div id='subject_sidebar_tree_div'> </div>
 		<script language='javascript'>
 			var subjectSidebarTree = new SlimTree(
-				document.getElementById('subject_sidebar_tree_div'));
+				document.getElementById('subject_sidebar_tree_div'),
+				'subjectSidebarTree', '../../../images/slimtree/related.jpg');
 			subjectSidebarTree.addNode( 'subjectSidebarTreeRoot', -1, 
 				"&sidebar.relevantSubjects.headerLabel;", null);
 		</script>
@@ -71,7 +72,8 @@
 		<div id='author_sidebar_tree_div'> </div>
 		<script language='javascript'>
 			var authorSidebarTree = new SlimTree(
-				document.getElementById('author_sidebar_tree_div'));
+				document.getElementById('author_sidebar_tree_div'),
+				'authorSidebarTree','../../../images/slimtree/people.jpg');
 			authorSidebarTree.addNode( 'authorSidebarTreeRoot', -1, 
 				"&sidebar.relevantAuthors.headerLabel;", null);
 		</script>
@@ -81,7 +83,8 @@
 		<div id='series_sidebar_tree_div'> </div>
 		<script language='javascript'>
 			var seriesSidebarTree = new SlimTree(
-				document.getElementById('series_sidebar_tree_div'));
+				document.getElementById('series_sidebar_tree_div'),
+				'seriesSidebarTree','../../../images/slimtree/houses.jpg');
 			seriesSidebarTree.addNode( 'seriesSidebarTreeRoot', -1, 
 				"&sidebar.relevantSeries.headerLabel;", null);
 		</script>
