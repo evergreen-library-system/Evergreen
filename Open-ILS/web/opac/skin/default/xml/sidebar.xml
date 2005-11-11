@@ -69,6 +69,7 @@
 	</div>
 
 	<div id='author_tree_sidebar' class='sidebar_chunk hide_me'> 
+		<hr/>
 		<div id='author_sidebar_tree_div'> </div>
 		<script language='javascript'>
 			var authorSidebarTree = new SlimTree(
@@ -80,6 +81,7 @@
 	</div>
 
 	<div id='series_tree_sidebar' class='sidebar_chunk hide_me'> 
+		<hr/>
 		<div id='series_sidebar_tree_div'> </div>
 		<script language='javascript'>
 			var seriesSidebarTree = new SlimTree(

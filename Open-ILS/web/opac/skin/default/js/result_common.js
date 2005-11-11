@@ -368,6 +368,7 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 
 		if(isNull(items[i])) continue;
 		if(x++ > 7) break;
+		found = true;
 
 		var item = normalize(truncate(items[i], 65));
 		var trunc = 65;
@@ -375,17 +376,30 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		var href = resultQuickLink( items[i], stype );
 		tree.addNode( stype + "_" + items[i], treeName + 'Root', item, href );
 
-		var req = new Request(FETCH_CROSSREF, stype, items[i]);
-		req.request._tree = tree;
-		req.request._item = items[i];
-		req.request._stype = stype;
-		req.callback(resultAppendCrossRef);
-		req.send();	
-
-		found = true;
+		/*
+		if(!IE)
+			setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");',200);
+			*/
+		if(!IE) resultFireXRefReq(treeName, stype, items[i]);
 	}
-	if(found) unHideMe(wrapperNode);
+
+	if(found) {
+		unHideMe(wrapperNode);
+		tree.close(tree.rootid);
+	}
 }
+
+function resultFireXRefReq( treeName, stype, item ) {
+	var tree;
+	eval('tree=' + treeName);
+	var req = new Request(FETCH_CROSSREF, stype, item);
+	req.request._tree = tree;
+	req.request._item = item;
+	req.request._stype = stype;
+	req.callback(resultAppendCrossRef);
+	req.send();
+}
+
 
 function resultQuickLink( term, type ) {
 	var args = {};
