@@ -113,7 +113,7 @@ sub find_see_from_controlled {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*[@code="a" or @code="d" or @code="x"]');
 		my $list = [ map { $_->textContent } @nodes ];
-		$client->respond( $list ) if (_empty_check($$list[0], "metabib::${class}_field_entry"));
+		$client->respond( $list ) if (_empty_check(join(' ',@$list), "metabib::${class}_field_entry"));
 	}
 	return undef;
 }
@@ -142,7 +142,7 @@ sub find_see_also_from_controlled {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*[@code="a" or @code="d" or @code="x"]');
 		my $list = [ map { $_->textContent } @nodes ];
-		$client->respond( $list ) if (_empty_check($$list[0], "metabib::${class}_field_entry"));
+		$client->respond( $list ) if (_empty_check(join(' ',@$list), "metabib::${class}_field_entry"));
 	}
 	return undef;
 }
