@@ -38,6 +38,8 @@ my $xpathset = {
 			"//mods:mods/mods:titleInfo[mods:title and (\@type='uniform')]",
 		proper =>
 			"//mods:mods/mods:titleInfo[mods:title and not (\@type)]",
+		any =>
+			"//mods:mods/mods:titleInfo",
 	},
 
 	author => {
@@ -163,7 +165,7 @@ sub modsdoc_to_values {
 			for my $arr (@value) {
 				if( ref($arr) ) {
 					$data->{$class}->{$type} = shift @$arr;
-					$data->{$class}->{$type} = shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
+					$data->{$class}->{$type} .= shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
 					for my $t (@$arr) {
 						$data->{$class}->{$type} .= ' : ' if ($data->{$class}->{$type} =~ /\w\s*$/o);
 						$data->{$class}->{$type} .= " $t";
@@ -225,7 +227,8 @@ sub mods_values_to_mods_slim {
 		($title = $tmp->{proper}) ||
 		($title = $tmp->{translated}) ||
 		($title = $tmp->{abbreviated}) ||
-		($title = $tmp->{uniform});
+		($title = $tmp->{uniform}) ||
+		($title = $tmp->{any});
 	}
 
 	$tmp = $modsperl->{author};
