@@ -26,7 +26,14 @@ sub find_authority_marc {
 	my $subfield = $args{subfield};
 
 	my $tag_where = "AND f.tag LIKE '$tag'";
+	if (ref $tag) {
+		$tag_where = "AND f.tag IN ('".join("','",@$tag)."')";
+	}
+
 	my $sf_where = "AND f.subfield = '$subfield'";
+	if (ref $subfield) {
+		$sf_where = "AND f.subfield IN ('".join("','",@$subfield)."')";
+	}
 
 	my $search_table = authority::full_rec->table;
 	my $marc_table = authority::record_entry->table;
@@ -104,7 +111,7 @@ sub find_see_from_controlled {
 			->run( term => $term, tag => '4%', subfield => $sf );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
-		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*');
+		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*[@code="a" or @code="d" or @code="x"]');
 		my $list = [ map { $_->textContent } @nodes ];
 		$client->respond( $list ) if (_empty_check($$list[0], "metabib::${class}_field_entry"));
 	}
@@ -133,7 +140,7 @@ sub find_see_also_from_controlled {
 			->run( term => $term, tag => '5%', subfield => $sf );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
-		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*');
+		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*[@code="a" or @code="d" or @code="x"]');
 		my $list = [ map { $_->textContent } @nodes ];
 		$client->respond( $list ) if (_empty_check($$list[0], "metabib::${class}_field_entry"));
 	}

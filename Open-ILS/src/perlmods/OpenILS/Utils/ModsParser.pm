@@ -162,7 +162,12 @@ sub modsdoc_to_values {
 			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
 			for my $arr (@value) {
 				if( ref($arr) ) {
-					$data->{$class}->{$type} = join(" ", @$arr);
+					$data->{$class}->{$type} = shift @$arr;
+					$data->{$class}->{$type} = shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
+					for my $t (@$arr) {
+						$data->{$class}->{$type} .= ' : ' if ($data->{$class}->{$type} =~ /\w\s*$/o);
+						$data->{$class}->{$type} .= " $t";
+					}
 				} else {
 					$data->{$class}->{$type} = $arr;
 				}
