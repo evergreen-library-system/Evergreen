@@ -656,8 +656,8 @@ sub biblio_search_class {
 		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
 	}
 
-	#my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord.atomic";
-	my $method = "open-ils.storage.metabib.$class.search_fts.metarecord.atomic";
+	#my $method = "open-ils.storage.cachable.metabib.$class.post_filter.search_fts.metarecord.atomic";
+	my $method = "open-ils.storage.metabib.$class.post_filter.search_fts.metarecord.atomic";
 
 	if($self->api_name =~ /staff/) { 
 		$method =~ s/atomic/staff\.atomic/og;
@@ -665,7 +665,6 @@ sub biblio_search_class {
 	}
 
 	if($self->api_name =~ /full/) { 
-		$method =~ s/search_fts/new_search_fts/o;
 		$method =~ s/\.cachable//o; #XXX testing..
 	}
 
