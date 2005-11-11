@@ -385,7 +385,7 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 
 	if(found) {
 		unHideMe(wrapperNode);
-		tree.close(tree.rootid);
+		//tree.close(tree.rootid);
 	}
 }
 

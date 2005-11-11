@@ -18,7 +18,7 @@ function SlimTree(context, handle, rootimg) {
 	this.handle		= handle;
 	this.cache		= new Object();
 	if(rootimg) 
-		this.rootimg = elem('img', {src:rootimg,border:0});
+		this.rootimg = elem('img', {src:rootimg,border:0,style:'padding-right: 4px;'});
 }
 
 SlimTree.prototype.cacheMe = function( id, pid, name, action, title ) {
