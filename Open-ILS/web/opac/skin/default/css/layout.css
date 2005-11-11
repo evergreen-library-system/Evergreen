@@ -92,7 +92,7 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 .result_table_pic { height: 50px; width: 40px;  border: none;}
 .result_table_pic_header { width: 43px; }
 
-.result_table_row { text-align: left; }
+.result_table_row { text-align: left; width: 100%;}
 .result_table_subtable { width: 100%; border-collapse: collapse; vertical-align: top;}
 .result_table_subtbody { height: 100%; width: 100%; }
 .result_table_title_cell { text-align: left; }

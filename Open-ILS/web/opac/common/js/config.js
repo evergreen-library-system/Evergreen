@@ -193,6 +193,7 @@ var FETCH_CHECKED_OUT			= "open-ils.circ:open-ils.circ.actor.user.checked_out";
 var FETCH_HOLDS					= "open-ils.circ:open-ils.circ.holds.retrieve";
 var FETCH_FINES_SUMMARY			= "open-ils.actor:open-ils.actor.user.fines.summary";
 var FETCH_TRANSACTIONS			= "open-ils.actor:open-ils.actor.user.transactions.have_charge.fleshed";
+var FETCH_CROSSREF				= "open-ils.search:open-ils.search.authority.crossref";
 /* ---------------------------------------------------------------------------- */
 
 

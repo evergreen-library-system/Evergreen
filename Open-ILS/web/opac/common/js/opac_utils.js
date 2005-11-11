@@ -416,11 +416,13 @@ function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
 /* ----------------------------------------------------------------------- */
 function drawOrgTree() {
 	G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
+	//buildOrgSelector(G.ui.common.org_tree);
 }
 	
 var orgTreeSelector;
-function buildOrgSelector() {
+function buildOrgSelector(node) {
 	var tree = new dTree("orgTreeSelector"); 
+	//var tree = new SlimTree(node);
 	for( var i in orgArraySearcher ) { 
 		var node = orgArraySearcher[i];
 		if( node == null ) continue;

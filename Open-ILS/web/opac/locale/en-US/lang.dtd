@@ -1,7 +1,7 @@
 <!ENTITY nbsp "  ">
 <!ENTITY space "&nsbp;">
 <!ENTITY llt "&lt;">
-<!ENTITY gt ">">
+<!ENTITY ggt "&gt;">
 
 <!-- Navigations links -->
 <!ENTITY navigate.home "Home">

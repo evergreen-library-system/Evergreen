@@ -329,40 +329,96 @@ function resultDrawSubjects() {
 
 	var ss = [];
 	for( var s in subjs ) ss.push(subjs[s].sub);
-	resultDrawSidebarStuff(STYPE_SUBJECT, G.ui.sidebar.subject_item,  
-		config.names.sidebar.subject_item, ss, G.ui.sidebar.subject);
+
+	resultDrawSidebarTrees( 
+		STYPE_SUBJECT, 
+		"subjectSidebarTree", ss, 
+		getId("subject_tree_sidebar"), 
+		getId("subject_sidebar_tree_div") );
 }
 
 function resultDrawAuthors() {
 	var auths = new Array();
 	for( var s in authorCache ) auths.push(s);
-	resultDrawSidebarStuff(STYPE_AUTHOR, G.ui.sidebar.author_item,  
-		config.names.sidebar.author_item, auths.sort(), G.ui.sidebar.author);
+
+	resultDrawSidebarTrees( 
+		STYPE_AUTHOR, 
+		"authorSidebarTree", auths.sort(), 
+		getId("author_tree_sidebar"), 
+		getId("author_sidebar_tree_div") );
 }
 
 function resultDrawSeries() {
 	var sers = new Array();
 	for( var s in seriesCache ) sers.push(s);
-	resultDrawSidebarStuff(STYPE_SERIES, G.ui.sidebar.series_item,  
-		config.names.sidebar.series_item, sers.sort(), G.ui.sidebar.series);
+	resultDrawSidebarTrees( 
+		STYPE_SERIES, 
+		"seriesSidebarTree", sers.sort(), 
+		getId("series_tree_sidebar"), 
+		getId("series_sidebar_tree_div") );
 }
 
-/* search type, template node, href link name, array of text, node to unhide */
-function resultDrawSidebarStuff(stype, node, linkname, items, wrapperNode) {
-	var parent = node.parentNode;
-	var template = parent.removeChild(node);
-	var x = 0;
-	var newnode = template.cloneNode(true);
+function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode ) {
+	var tree;
+	eval("tree = " + treeName);
+
 	var found = false;
+	var x = 0;
 	for( var i in items ) {
+
 		if(isNull(items[i])) continue;
 		if(x++ > 7) break;
-		buildSearchLink(stype, items[i], findNodeByName(newnode, linkname), 100);
-		parent.appendChild(newnode);
-		newnode = template.cloneNode(true);
+
+		var item = normalize(truncate(items[i], 65));
+		var trunc = 65;
+		var args = {};
+		var href = resultQuickLink( items[i], stype );
+		tree.addNode( stype + "_" + items[i], treeName + 'Root', item, href );
+
+		var req = new Request(FETCH_CROSSREF, stype, items[i]);
+		req.request._tree = tree;
+		req.request._item = items[i];
+		req.request._stype = stype;
+		req.callback(resultAppendCrossRef);
+		req.send();	
+
 		found = true;
 	}
 	if(found) unHideMe(wrapperNode);
+}
+
+function resultQuickLink( term, type ) {
+	var args = {};
+	args.page = MRESULT;
+	args[PARAM_OFFSET] = 0;
+	args[PARAM_TERM] = term;
+	args[PARAM_STYPE] = type;
+	return buildOPACLink(args);
+}
+
+
+function resultAppendCrossRef(r) {
+	var tree		= r._tree
+	var item		= r._item
+	var stype	= r._stype;
+	var result	= r.getResultObject();
+	var froms	= result['from'];
+	var alsos	= result['also'];
+
+	var total = 0;
+
+	for( var i = 0; (total++ < 5 && i < froms.length); i++ ) {
+		var string = normalize(truncate(froms[i], 45));
+		if(getId(stype + '_' + froms[i])) continue;
+		tree.addNode(stype + '_' + froms[i], 
+			stype + '_' + item, string, resultQuickLink(froms[i],stype));
+	}
+	for( var i = 0; (total++ < 10 && i < alsos.length); i++ ) {
+		var string = normalize(truncate(alsos[i], 45));
+		if(getId(stype + '_' + alsos[i])) continue;
+		tree.addNode(stype + '_' + alsos[i], 
+			stype + '_' + item, string, resultQuickLink(alsos[i],stype));
+	}
 }
 
 

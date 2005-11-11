@@ -29,38 +29,8 @@
 		config.names.result.count_cell	= "copy_count_cell";
 	</script>
 
-
-	<!--
-	<table id='search_nav_links'>
-		<tbody>
-			<tr>
-				<td valign='bottom' id='result_info_box'>
-					<div class='hide_me' id='result_info_div'>
-						<span> Results </span> 
-						<span id='offset_start'> </span>
-						<span> - </span>
-						<span id='offset_end'> </span>
-						<span> of </span>
-						<span id='result_count'> </span>
-						<span> (page </span>
-						<span id='current_page'> </span>
-						<span> of </span>
-						<span id='num_pages'> </span>
-					</div>
-				</td>
-				<td style='text-align:right; padding-right: 10px;'>
-					<span> Avaible copies / Total copies </span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	-->
-
 	<div id='loading_div' class='color_1'> Loading Results... </div>
-	<!-- Load the result table -->
 	<xi:include href="result_table.xml"/>
-
-
 </div>
 
 
