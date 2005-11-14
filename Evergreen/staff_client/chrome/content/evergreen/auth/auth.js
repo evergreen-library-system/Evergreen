@@ -220,12 +220,12 @@ function auth_ses_callback(request) {
 
 function ap_list_callback(request) {
 	sdump('D_AUTH',arg_dump(arguments));
-	var ap_file = get_file('ap_list');
+	//var ap_file = get_file('ap_list');
 	var ap_list;
 	try {
 		ap_list = request.getResultObject();
 		if (!ap_list && G.offline) { 
-			ap_list = get_object_in_file('ap_list');
+			//ap_list = get_object_in_file('ap_list');
 		}
 		if (!ap_list) { throw('null result'); }
 		if (ap_list.length == 0) { throw('zero length result'); }
@@ -235,7 +235,7 @@ function ap_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('ap_list',ap_list); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('ap_list',ap_list); } catch(E) { handle_error(E); }
 	mw.G.ap_list = ap_list;
 	mw.G.ap_hash = convert_object_list_to_hash( ap_list );
 
@@ -254,7 +254,7 @@ function cit_list_callback(request) {
 	var cit_list;
 	try {
 		cit_list = request.getResultObject();
-		if (!cit_list && G.offline) { cit_list = get_object_in_file('cit_list'); }
+		//if (!cit_list && G.offline) { cit_list = get_object_in_file('cit_list'); }
 		if (!cit_list) { throw('null result'); }
 		if (cit_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
@@ -263,7 +263,7 @@ function cit_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('cit_list',cit_list); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('cit_list',cit_list); } catch(E) { handle_error(E); }
 	mw.G.cit_list = cit_list;
 	mw.G.cit_hash = convert_object_list_to_hash( cit_list );
 	
@@ -283,7 +283,7 @@ function cst_list_callback(request) {
 	var cst_list;
 	try {
 		cst_list = request.getResultObject();
-		if (!cst_list && G.offline) { cst_list = get_object_in_file('cst_list'); }
+		//if (!cst_list && G.offline) { cst_list = get_object_in_file('cst_list'); }
 		if (!cst_list) { throw('null result'); }
 		if (cst_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
@@ -292,7 +292,7 @@ function cst_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('cst_list',cst_list); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('cst_list',cst_list); } catch(E) { handle_error(E); }
 	mw.G.cst_list = cst_list;
 	mw.G.cst_hash = convert_object_list_to_hash( cst_list );
 	sdump('D_AUTH', 'cst_list = ' + js2JSON(cst_list) + '\n');
@@ -313,7 +313,7 @@ function acpl_list_callback(request) {
 	var acpl_list;
 	try {
 		acpl_list = request.getResultObject();
-		if (!acpl_list && G.offline) { acpl_list = get_object_in_file('acpl_list'); }
+		//if (!acpl_list && G.offline) { acpl_list = get_object_in_file('acpl_list'); }
 		if (!acpl_list) { throw('null result'); }
 		if (acpl_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
@@ -322,7 +322,7 @@ function acpl_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('acpl_list',acpl_list); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('acpl_list',acpl_list); } catch(E) { handle_error(E); }
 	mw.G.acpl_list = acpl_list;
 	mw.G.acpl_hash = convert_object_list_to_hash( acpl_list );
 	sdump('D_AUTH', 'acpl_list = ' + js2JSON(acpl_list) + '\n');
@@ -342,7 +342,7 @@ function ccs_list_callback(request) {
 	var ccs_list;
 	try {
 		ccs_list = request.getResultObject();
-		if (!ccs_list && G.offline) { ccs_list = get_object_in_file('ccs_list'); }
+		//if (!ccs_list && G.offline) { ccs_list = get_object_in_file('ccs_list'); }
 		if (!ccs_list) { throw('null result'); }
 		if (ccs_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
@@ -351,7 +351,7 @@ function ccs_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('ccs_list',ccs_list); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('ccs_list',ccs_list); } catch(E) { handle_error(E); }
 	mw.G.ccs_list = ccs_list;
 	mw.G.ccs_hash = convert_object_list_to_hash( ccs_list );
 	sdump('D_AUTH', 'ccs_list = ' + js2JSON(ccs_list) + '\n');
@@ -373,8 +373,8 @@ function user_callback(request) {
 	try {
 		user = request.getResultObject();
 		if (!user && G.offline) { 
-			user = new au(); 
-			user.home_ou( get_object_in_file('user_ou') );
+			//user = new au(); 
+			//user.home_ou( get_object_in_file('user_ou') );
 		}
 		if (!user) { throw('null result'); }
 		if (typeof(user) != 'object') { throw('result not an object' + user); }
@@ -384,7 +384,7 @@ function user_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('user_ou',user.home_ou()); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('user_ou',user.home_ou()); } catch(E) { handle_error(E); }
 	mw.G.user = user;
 	mw.G.user_ou = user.home_ou();
 	sdump('D_AUTH', "user: " + js2JSON(mw.G['user']) + '\n');
@@ -404,7 +404,7 @@ function org_tree_callback(request) {
 	var org_tree;
 	try {
 		org_tree = request.getResultObject();
-		if (!org_tree && G.offline) { org_tree = get_object_in_file('org_tree'); }
+		//if (!org_tree && G.offline) { org_tree = get_object_in_file('org_tree'); }
 		if (!org_tree) { throw('null result'); }
 		if (typeof(org_tree) != 'object') { throw('result not an object' + org_tree); }
 	} catch(E) {
@@ -412,7 +412,7 @@ function org_tree_callback(request) {
 	}
 
 	//mw.G.org_tree = globalOrgTree;
-	try { set_object_in_file('org_tree',org_tree); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('org_tree',org_tree); } catch(E) { handle_error(E); }
 	mw.G.org_tree = org_tree;
 	mw.G.org_tree_hash = convert_object_list_to_hash( flatten_ou_branch( mw.G.org_tree ) );
 	mw.G.user_ou = find_ou( mw.G.org_tree, mw.G.user_ou );
@@ -456,7 +456,7 @@ function my_orgs_callback(request) {
 	var my_orgs;
 	try {
 		my_orgs = request.getResultObject();
-		if (!my_orgs && G.offline) { my_orgs = get_object_in_file('my_orgs'); }
+		//if (!my_orgs && G.offline) { my_orgs = get_object_in_file('my_orgs'); }
 		if (!my_orgs) { throw('null result'); }
 		if (typeof(my_orgs) != 'object') { throw('result not an object' + my_orgs); }
 		if (my_orgs.length == 0) { throw('empty my_orgs'); }
@@ -467,7 +467,7 @@ function my_orgs_callback(request) {
 		}
 	}
 
-	try { set_object_in_file('my_orgs',my_orgs); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('my_orgs',my_orgs); } catch(E) { handle_error(E); }
 	mw.G.my_orgs = my_orgs;
 	mw.G.my_orgs_hash = convert_object_list_to_hash( my_orgs );
 	sdump('D_AUTH','my_orgs = ' + js2JSON(my_orgs) + '\n');
@@ -497,7 +497,7 @@ function my_actsc_list_callback(request) {
 	var actsc_list;
 	try {
 		actsc_list = request.getResultObject();
-		if (!actsc_list && G.offline) { actsc_list = get_object_in_file('actsc_list'); }
+		//if (!actsc_list && G.offline) { actsc_list = get_object_in_file('actsc_list'); }
 		if (!actsc_list) { throw('null result'); }
 		//if (actsc_list.length == 0) { throw('zero length result'); }
 	} catch(E) {
@@ -506,7 +506,7 @@ function my_actsc_list_callback(request) {
 			enable_login_prompts(); return;
 		}
 	}
-	try { set_object_in_file('actsc_list',actsc_list); } catch(E) { handle_error(E); }
+	//try { set_object_in_file('actsc_list',actsc_list); } catch(E) { handle_error(E); }
 	mw.G.actsc_list = actsc_list;
 	mw.G.actsc_hash = convert_object_list_to_hash( actsc_list );
 	sdump('D_AUTH', 'actsc_list = ' + js2JSON(actsc_list) + '\n');
