@@ -1,6 +1,6 @@
 sdump('D_OPAC','Loading opac.js\n');
 
-var OPAC_URL = "http://gapines.org/"
+var OPAC_URL = "http://dev.gapines.org/"
 
 /* listen for page changes */
 

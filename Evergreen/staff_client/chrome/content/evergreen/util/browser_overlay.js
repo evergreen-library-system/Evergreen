@@ -7,9 +7,9 @@ function startEvergreenStaffClient() {
 
 function startEvergreenOPAC() {
 	var text = evergreenGetSelectedText();
-	var url = 'http://gapines.org/';
+	var url = 'http://dev.gapines.org/';
 	if (text) {
-		url = 'http://gapines.org/opac/'
+		url = 'http://dev.gapines.org/opac/'
 		+ '?target=mr_result'
 		+ '&mr_search_type=keyword'
 		+ '&mr_search_query=' + encodeURIComponent( text )
@@ -18,8 +18,8 @@ function startEvergreenOPAC() {
 		+ '&page=0'
 		+ '&sub_frame=1';
 	}
-	if (! window.open(url,'gapines.org') )
-		alert('Could not load http://gapines.org/');
+	if (! window.open(url,'dev.gapines.org') )
+		alert('Could not load http://dev.gapines.org/');
 }
 
 function evergreenGetSelectedText() {
