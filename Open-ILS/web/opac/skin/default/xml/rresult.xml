@@ -28,7 +28,7 @@
 						<xi:include href="result_common.xml"/>
 					</div>
 					<br/>
-					<div id='tips' class='tips'><span style="font-weight: bold;">Tip:  </span></div>
+					<xi:include href="tips.xml"/>
 					</td>
 				</tr>
 			</tbody>

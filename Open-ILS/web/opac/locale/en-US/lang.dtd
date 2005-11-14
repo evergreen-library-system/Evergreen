@@ -23,6 +23,12 @@
 
 <!ENTITY common.nowSearching "Now searching ">
 <!ENTITY common.at " at ">
+<!ENTITY common.ofAtLeast " of at least ">
+<!ENTITY common.relevancy "Relevancy ">
+
+<!ENTITY common.tips "Tips:">
+<!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
+<!ENTITY common.tips.tip2 "If you don't find what you want try expanding your search using the range selector at the right of the search bar">
 
 
 <!-- Sidebar Header Labels -->
