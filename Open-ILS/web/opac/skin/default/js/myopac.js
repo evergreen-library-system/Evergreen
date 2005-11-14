@@ -20,17 +20,17 @@ function myOPACInit() {
 
 function myOPACChangePage( page ) {
 	
-	var s = getId("myopac_summary_td");
-	var c = getId("myopac_checked_td");
-	var f = getId("myopac_fines_td");
-	var h = getId("myopac_holds_td");
-	var p = getId("myopac_prefs_td");
+	var s = $("myopac_summary_td");
+	var c = $("myopac_checked_td");
+	var f = $("myopac_fines_td");
+	var h = $("myopac_holds_td");
+	var p = $("myopac_prefs_td");
 
-	var ss = getId("myopac_summary_div");
-	var cc = getId("myopac_checked_div");
-	var ff = getId("myopac_fines_div");
-	var hh = getId("myopac_holds_div");
-	var pp = getId("myopac_prefs_div");
+	var ss = $("myopac_summary_div");
+	var cc = $("myopac_checked_div");
+	var ff = $("myopac_fines_div");
+	var hh = $("myopac_holds_div");
+	var pp = $("myopac_prefs_div");
 
 	var cls = "myopac_link";
 	var acls = "myopac_link_active";
@@ -78,8 +78,10 @@ function myOPACChangePage( page ) {
 			break;
 	}
 
+	/*
 	alert('Classes:\n' + s.className + '\n' + c.className + 
 		'\n' + h.className + '\n' + f.className + '\n' + p.className);
+		*/
 }
 
 function myOPACShowChecked() {
@@ -94,12 +96,12 @@ function myOPACDrawCheckedOut(r) {
 
 
 	var checked			= r.getResultObject();
-	var tbody			= getId("myopac_checked_tbody");
-	var loading			= getId("myopac_checked_loading");
-	var none				= getId("myopac_checked_none");
+	var tbody			= $("myopac_checked_tbody");
+	var loading			= $("myopac_checked_loading");
+	var none				= $("myopac_checked_none");
 
 	if(checkedRowTemplate) return;
-	checkedRowTemplate = tbody.removeChild(getId("myopac_checked_row"));
+	checkedRowTemplate = tbody.removeChild($("myopac_checked_row"));
 
 	clearNodes( tbody, [ loading, none ] );
 
@@ -144,15 +146,15 @@ function myOPACShowHolds() {
 var holdsTemplateRow;
 function myOPACDrawHolds(r) {
 
-	var tbody = getId("myopac_holds_tbody");
+	var tbody = $("myopac_holds_tbody");
 	if(holdsTemplateRow) return;
-	holdsTemplateRow = tbody.removeChild(getId("myopac_holds_row"));
+	holdsTemplateRow = tbody.removeChild($("myopac_holds_row"));
 
-	hideMe(getId('myopac_holds_loading'));
+	hideMe($('myopac_holds_loading'));
 
 	var holds = r.getResultObject();
 
-	if(!holds || holds.length < 1) unHideMe(getId('myopac_holds_none'));
+	if(!holds || holds.length < 1) unHideMe($('myopac_holds_none'));
 	for( var i = 0; i != holds.length; i++ ) {
 
 		var h = holds[i];
@@ -164,9 +166,12 @@ function myOPACDrawHolds(r) {
 		form.id = "myopac_holds_form_" + h.target();
 		if(formats) form.appendChild(text(formats));
 
-		findNodeByName(row, "myopac_holds_location").appendChild(text(findOrgUnit(h.pickup_lib()).name()));
-		findNodeByName(row, "myopac_holds_email_link").appendChild(text(h.email_notify()));
-		findNodeByName(row, "myopac_holds_phone_link").appendChild(text(h.phone_notify()));
+		findNodeByName(row, "myopac_holds_location").
+			appendChild(text(findOrgUnit(h.pickup_lib()).name()));
+		findNodeByName(row, "myopac_holds_email_link").
+			appendChild(text(h.email_notify()));
+		findNodeByName(row, "myopac_holds_phone_link").
+			appendChild(text(h.phone_notify()));
 		tbody.appendChild(row);
 		unHideMe(row);
 
@@ -186,14 +191,14 @@ function myOPACDrawHoldTitle(hold) {
 function myOPACFleshHoldTitle(r) {
 
 	var record = r.getResultObject();
-	var row = getId("myopac_holds_row_" + record.doc_id());
+	var row = $("myopac_holds_row_" + record.doc_id());
 	var title_link = findNodeByName(row, "myopac_holds_title_link");
 	var author_link = findNodeByName(row, "myopac_holds_author_link");
 
 	buildTitleDetailLink(record, title_link);
 	buildSearchLink(STYPE_AUTHOR, record.author(), author_link);
 
-	var form = getId("myopac_holds_form_" + record.doc_id());
+	var form = $("myopac_holds_form_" + record.doc_id());
 
 	if(form) {
 		var img = elem("img");
@@ -212,8 +217,8 @@ function myOPACShowFines() {
 }
 
 function _myOPACShowFines(r) {
-	hideMe(getId('myopac_fines_summary_loading'));
-	unHideMe(getId('myopac_fines_summary_row'));
+	hideMe($('myopac_fines_summary_loading'));
+	unHideMe($('myopac_fines_summary_row'));
 
 	var summary = r.getResultObject();
 	var total	= "0.00"; /* localization? */
@@ -230,9 +235,9 @@ function _myOPACShowFines(r) {
 		req.send();
 	}
 
-	getId('myopac_fines_summary_total').appendChild(text(total));
-	getId('myopac_fines_summary_paid').appendChild(text(paid));
-	getId('myopac_fines_summary_balance').appendChild(text(balance));
+	$('myopac_fines_summary_total').appendChild(text(total));
+	$('myopac_fines_summary_paid').appendChild(text(paid));
+	$('myopac_fines_summary_balance').appendChild(text(balance));
 }
 
 function _finesFormatNumber(num) {
@@ -250,13 +255,13 @@ var transTemplate;
 function myOPACShowTransactions(r) {
 
 	if(transTemplate) return;
-	var tbody = getId('myopac_fines_tbody');
-	unHideMe(getId('myopac_trans_table'));
-	transTemplate = tbody.removeChild(getId('myopac_trans_row'));
+	var tbody = $('myopac_fines_tbody');
+	unHideMe($('myopac_trans_table'));
+	transTemplate = tbody.removeChild($('myopac_trans_row'));
 
 	var transactions = r.getResultObject();
 
-	alert(js2JSON(transactions));
+	//alert(js2JSON(transactions));
 
 	for( var idx in transactions ) {
 
@@ -264,12 +269,18 @@ function myOPACShowTransactions(r) {
 		var record = transactions[idx].record;
 		var row = transTemplate.cloneNode(transTemplate);
 
-		findNodeByName(row,'myopac_trans_start').appendChild(text(_trimSeconds(trans.xact_start())));
-		findNodeByName(row,'myopac_trans_last_bill').appendChild(text(_trimSeconds(trans.last_billing_ts())));
-		findNodeByName(row,'myopac_trans_last_payment').appendChild(text(_trimSeconds(trans.last_payment_ts())));
-		findNodeByName(row,'myopac_trans_init_amount').appendChild(text(_finesFormatNumber(trans.total_owed())));
-		findNodeByName(row,'myopac_trans_total_paid').appendChild(text(_finesFormatNumber(trans.total_paid())));
-		findNodeByName(row,'myopac_trans_balance').appendChild(text(_finesFormatNumber(trans.balance_owed())));
+		findNodeByName(row,'myopac_trans_start').
+			appendChild(text(_trimSeconds(trans.xact_start())));
+		findNodeByName(row,'myopac_trans_last_bill').
+			appendChild(text(_trimSeconds(trans.last_billing_ts())));
+		findNodeByName(row,'myopac_trans_last_payment').
+			appendChild(text(_trimSeconds(trans.last_payment_ts())));
+		findNodeByName(row,'myopac_trans_init_amount').
+			appendChild(text(_finesFormatNumber(trans.total_owed())));
+		findNodeByName(row,'myopac_trans_total_paid').
+			appendChild(text(_finesFormatNumber(trans.total_paid())));
+		findNodeByName(row,'myopac_trans_balance').
+			appendChild(text(_finesFormatNumber(trans.balance_owed())));
 
 		var extra = "";
 		var type = trans.xact_type();
@@ -298,22 +309,22 @@ function _myOPACSummaryShowUer(r) {
 	var user = r.getResultObject();
 	fleshedUser = user;
 
-	getId('myopac_summary_first').appendChild(text(user.first_given_name()));
-	getId('myopac_summary_middle').appendChild(text(user.second_given_name()));
-	getId('myopac_summary_dayphone').appendChild(text(user.day_phone()));
-	getId('myopac_summary_eveningphone').appendChild(text(user.evening_phone()));
-	getId('myopac_summary_otherphone').appendChild(text(user.other_phone()));
-	getId('myopac_summary_last').appendChild(text(user.family_name()));
-	getId('myopac_summary_username').appendChild(text(user.usrname()));
-	getId('myopac_summary_email').appendChild(text(user.email()));
-	getId('myopac_summary_barcode').appendChild(text(user.card().barcode()));
-	getId('myopac_summary_ident1').appendChild(text(user.ident_value()));
-	getId('myopac_summary_ident2').appendChild(text(user.ident_value2()));
-	getId('myopac_summary_homelib').appendChild(text(findOrgUnit(user.home_ou()).name()));
-	getId('myopac_summary_create_date').appendChild(text(user.create_date()));
+	$('myopac_summary_first').appendChild(text(user.first_given_name()));
+	$('myopac_summary_middle').appendChild(text(user.second_given_name()));
+	$('myopac_summary_dayphone').appendChild(text(user.day_phone()));
+	$('myopac_summary_eveningphone').appendChild(text(user.evening_phone()));
+	$('myopac_summary_otherphone').appendChild(text(user.other_phone()));
+	$('myopac_summary_last').appendChild(text(user.family_name()));
+	$('myopac_summary_username').appendChild(text(user.usrname()));
+	$('myopac_summary_email').appendChild(text(user.email()));
+	$('myopac_summary_barcode').appendChild(text(user.card().barcode()));
+	$('myopac_summary_ident1').appendChild(text(user.ident_value()));
+	$('myopac_summary_ident2').appendChild(text(user.ident_value2()));
+	$('myopac_summary_homelib').appendChild(text(findOrgUnit(user.home_ou()).name()));
+	$('myopac_summary_create_date').appendChild(text(user.create_date()));
 
-	var tbody = getId('myopac_addr_tbody');
-	var template = tbody.removeChild(getId('myopac_addr_row'));
+	var tbody = $('myopac_addr_tbody');
+	var template = tbody.removeChild($('myopac_addr_row'));
 	for( var a in user.addresses() ) {
 		var row = template.cloneNode(true);
 		myOPACDrawAddr(row, user.addresses()[a]);

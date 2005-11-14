@@ -46,7 +46,7 @@ function mresultHandleCount(r) {
 function mresultCollectIds(method) {
 
 	if(getOffset() == 0) {
-		idsCookie.put(COOKIE_IDS,"");
+		idsCookie.put(COOKIE_IDS,"[]");
 		idsCookie.write();
 
 	} else {

@@ -150,7 +150,7 @@ function _rdetailBuildInfoRows(r) {
 
 		var arr = summary[i];
 		var thisOrg = findOrgUnit(arr[0]);
-		var rowNode = getId("cp_info_" + thisOrg.id());
+		var rowNode = $("cp_info_" + thisOrg.id());
 
 		if(rowNode.getAttribute("used")) {
 
@@ -185,7 +185,7 @@ function _rdetailBuildInfoRows(r) {
 	path if it's local */
 function rdetailSetPath(org, local) {
 	if( findOrgDepth(org) == 0 ) return;
-	var row = getId("cp_info_" + org.id());
+	var row = $("cp_info_" + org.id());
 	row.setAttribute("hasinfo", "1");
 	if(local) {
 		unHideMe(row);

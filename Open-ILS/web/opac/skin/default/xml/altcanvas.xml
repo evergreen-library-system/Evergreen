@@ -16,6 +16,9 @@
 	<script language='javascript'>
 		config.ids.altcanvas.login		= config.ids.login.box;
 		config.ids.altcanvas.org_tree	 = config.ids.common.org_container;
+		config.ids.altcanvas.holds			= 'holds_box';
 	</script>
+
+	<xi:include href='holds.xml'/>
 
 </div>

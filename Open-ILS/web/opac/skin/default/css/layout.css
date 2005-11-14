@@ -154,3 +154,5 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 .myopac_form_pic { width: 20px; height: 20px; }
 
 .tips { padding: 2px; text-align: center; border: solid #E0E0E0 3px; -moz-border-radius: 3px; width: 99%; }
+
+.holds_cell { border: 1px solid #E0E0E0; padding: 5px; width: 50%;}

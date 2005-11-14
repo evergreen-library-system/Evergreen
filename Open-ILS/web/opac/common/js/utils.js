@@ -219,6 +219,8 @@ function isNull(n) {
 
 /* find nodes with an attribute of 'name' that equals nodeName */
 
+function $n( root, nodeName ) { return findNodeByName(root,nodeName); }
+
 function findNodeByName(root, nodeName) {
 	if( !root || !nodeName) return null;
 

@@ -83,27 +83,20 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		var rank = parseFloat(ranks[pos + getOffset()]);
 		rank = ( rank / getTopRank() ) * 100;
 		rank = parseInt(rank) + "%";
-		var relspan = findNodeByName(r, "relevancy_span");
+		var relspan = $n(r, "relevancy_span");
 		relspan.appendChild(text(rank));
 		unHideMe(relspan.parentNode);
 	} catch(e){ }
 
-	var pic = findNodeByName(r, config.names.result.item_jacket);
+	var pic = $n(r, config.names.result.item_jacket);
 	pic.setAttribute("src", buildISBNSrc(cleanISBN(rec.isbn())));
 
-	var title_link = findNodeByName(r, config.names.result.item_title);
-	var author_link = findNodeByName(r, config.names.result.item_author);
+	var title_link = $n(r, config.names.result.item_title);
+	var author_link = $n(r, config.names.result.item_author);
 
 	if( is_mr )  {
 		var onlyrec = onlyrecord[ getOffset() + pos ];
 		if(onlyrec) {
-			/*
-			var id = rec.doc_id();
-			rec.doc_id(onlyrec);
-			buildTitleDetailLink(rec, title_link); 
-			rec.doc_id(id);
-			*/
-
 			var args = {};
 			args.page = RDETAIL;
 			args[PARAM_OFFSET] = 0;
@@ -129,6 +122,10 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		args[PARAM_OFFSET] = 0;
 		args[PARAM_RID] = rec.doc_id();
 		pic.parentNode.setAttribute("href", buildOPACLink(args));
+
+		unHideMe($n(r,'place_hold_span'));
+		$n(r,'place_hold_link').setAttribute(
+			'href','javascript:resultDrawHoldsWindow("'+rec.doc_id()+'");');
 	}
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
@@ -136,18 +133,18 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	if(! is_mr ) {
 	
 		if(!isNull(rec.edition()))	{
-			unHideMe( findNodeByName(r, "result_table_extra_span"));
-			findNodeByName(r, "result_table_edition_span").appendChild( text( rec.edition()) );
+			unHideMe( $n(r, "result_table_extra_span"));
+			$n(r, "result_table_edition_span").appendChild( text( rec.edition()) );
 		}
 		if(!isNull(rec.pubdate())) {
-			unHideMe( findNodeByName(r, "result_table_extra_span"));
-			unHideMe(findNodeByName(r, "result_table_pub_span"));
-			findNodeByName(r, "result_table_pub_span").appendChild( text( rec.pubdate() ));
+			unHideMe( $n(r, "result_table_extra_span"));
+			unHideMe($n(r, "result_table_pub_span"));
+			$n(r, "result_table_pub_span").appendChild( text( rec.pubdate() ));
 		}
 		if(!isNull(rec.publisher()) ) {
-			unHideMe( findNodeByName(r, "result_table_extra_span"));
-			unHideMe(findNodeByName(r, "result_table_pub_span"));
-			findNodeByName(r, "result_table_pub_span").appendChild( text( " " + rec.publisher() ));
+			unHideMe( $n(r, "result_table_extra_span"));
+			unHideMe($n(r, "result_table_pub_span"));
+			$n(r, "result_table_pub_span").appendChild( text( " " + rec.publisher() ));
 		}
 	}
 
@@ -166,6 +163,131 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	}
 }
 
+function _resultFindRec(id) {
+	for( var i = 0; i != recordsCache.length; i++ ) {
+		var rec = recordsCache[i];
+		if( rec && rec.doc_id() == id )
+			return rec;
+	}
+	return null;
+}
+
+var currentHoldRecord;
+var holdsOrgSelectorBuilt = false;
+function resultDrawHoldsWindow(recid) {
+
+	if(recid == null) {
+		recid = currentHoldRecord;
+		if(recid == null) return;
+	}
+	currentHoldRecord = recid;
+
+	if(!(G.user && G.user.session)) {
+
+		attachEvt('common','loggedIn', resultDrawHoldsWindow)
+		initLogin();
+		return;
+	}
+	swapCanvas($('holds_box'));
+
+	var rec = _resultFindRec(recid);
+
+	if(!holdsOrgSelectorBuilt) {
+		resultBuildHoldsSelector(null, 0);
+		holdsOrgSelectorBuilt = true;
+	}
+
+	removeChildren($('holds_title'));
+	removeChildren($('holds_author'));
+	removeChildren($('holds_format'));
+	removeChildren($('holds_email'));
+	removeChildren($('holds_email'));
+
+	$('holds_title').appendChild(text(rec.title()));
+	$('holds_author').appendChild(text(rec.author()));
+
+	for( var i in rec.types_of_resource() ) {
+		var res = rec.types_of_resource()[i];
+		var img = elem("img");
+		setResourcePic(img, res);
+		$('holds_format').appendChild(text(' '+res+' '));
+		$('holds_format').appendChild(img);
+		$('holds_format').appendChild(text(' '));
+	}
+
+	$('holds_phone').appendChild(text(G.user.day_phone()));
+	$('holds_email').appendChild(text(G.user.email()));
+	$('holds_cancel').onclick = showCanvas;
+	$('holds_submit').onclick = resultPlaceHold; 
+}
+
+
+function resultBuildHoldsSelector(node, depth) {
+
+	if(!node) {
+		node = globalOrgTree;
+		depth = 0;
+	}
+
+	var selector = $('holds_org_selector');
+	var index = selector.options.length;
+
+	if(IE) {
+		var pre = elem("pre");
+		for(var x=2; x <= findOrgType(node.ou_type()).depth(); x++) {
+			pre.appendChild(text("    "));
+		}
+		pre.appendChild(text(node.name()));
+		var select = new Option("", node.id());
+		selector.options[index] = select;
+		select.appendChild(pre);
+	
+	} else {
+		var pad = (findOrgType(node.ou_type()).depth() - 1) * 12;
+		var select = new Option(node.name(), node.id());
+		select.setAttribute("style", "padding-left: " + pad);
+		selector.options[index] = select;
+	}	
+
+	if( node.id() == getLocation() ) {
+		selector.selectedIndex = index;
+		selector.options[index].selected = true;	
+	}
+
+	for( var i in node.children() ) {
+		var child = node.children()[i];
+		if(child) {
+			resultBuildHoldsSelector(child, depth+1);
+		}
+	}
+}
+
+function resultPlaceHold() {
+	//alert("placing hold for " + currentHoldRecord );
+
+	var hold = new ahr();
+	hold.pickup_lib( 1 ); /* */
+	hold.requestor(G.user.id());
+	hold.usr(G.user.id());
+	hold.hold_type('T');
+	hold.email_notify(G.user.email());
+	hold.phone_notify(G.user.day_phone());
+	hold.target(currentHoldRecord);
+	
+	var req = new Request( CREATE_HOLD, G.user.session, hold );
+	req.send(true);
+	var res = req.result();
+
+	/* XMLize me */
+	if( res == '1' ) {
+		alert('ok');
+	} else {
+		alert('hold failed');
+	}
+}
+
+
+
 function resultBuildFormatIcons( row, rec ) {
 
 	var ress = rec.types_of_resource();
@@ -173,7 +295,7 @@ function resultBuildFormatIcons( row, rec ) {
 	for( var i in ress ) {
 
 		var res = ress[i];
-		var link = findNodeByName(row, res + "_link");
+		var link = $n(row, res + "_link");
 		link.title = res;
 		var img = link.getElementsByTagName("img")[0];
 		removeCSSClass( img, config.css.dim );
@@ -219,8 +341,8 @@ var resultCCHeaderApplied = false;
 function resultAddCopyCounts(rec, pagePosition) {
 
 	var r = table.rows[pagePosition + 1];
-	var countsrow = findNodeByName(r, config.names.result.counts_row );
-	var ccell = findNodeByName(countsrow, config.names.result.count_cell);
+	var countsrow = $n(r, config.names.result.counts_row );
+	var ccell = $n(countsrow, config.names.result.count_cell);
 
 	var nodes = orgNodeTrail(findOrgUnit(getLocation()));
 	var node = nodes[0];
@@ -235,8 +357,8 @@ function resultAddCopyCounts(rec, pagePosition) {
 	var cchead = null;
 	var ccheadcell = null;
 	if(!resultCCHeaderApplied) {
-		ccrow = getId('result_thead_row');
-		ccheadcell =  ccrow.removeChild(findNodeByName(ccrow, "result_thead_ccell"));
+		ccrow = $('result_thead_row');
+		ccheadcell =  ccrow.removeChild($n(ccrow, "result_thead_ccell"));
 		var t = ccheadcell.cloneNode(true);
 		lastheadcell = t;
 		t.appendChild(text(type.opac_label()));
@@ -274,7 +396,7 @@ function resultAddCopyCounts(rec, pagePosition) {
 		}
 	}
 
-	unHideMe(getId("search_info_table"));
+	unHideMe($("search_info_table"));
 }
 
 /* collect copy counts for a record using method 'methodName' */
@@ -296,7 +418,7 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	if(copy_counts == null || rec == null) return;
 	var i = 0;
 	while(copy_counts[i] != null) {
-		var cell = getId("copy_count_cell_" + i +"_" + pagePosition);
+		var cell = $("copy_count_cell_" + i +"_" + pagePosition);
 		/*
 		var span = cell.getElementsByTagName("div")[0];
 		*/
@@ -337,8 +459,8 @@ function resultDrawSubjects() {
 	resultDrawSidebarTrees( 
 		STYPE_SUBJECT, 
 		"subjectSidebarTree", ss, 
-		getId("subject_tree_sidebar"), 
-		getId("subject_sidebar_tree_div") );
+		$("subject_tree_sidebar"), 
+		$("subject_sidebar_tree_div") );
 }
 
 function resultDrawAuthors() {
@@ -348,8 +470,8 @@ function resultDrawAuthors() {
 	resultDrawSidebarTrees( 
 		STYPE_AUTHOR, 
 		"authorSidebarTree", auths.sort(), 
-		getId("author_tree_sidebar"), 
-		getId("author_sidebar_tree_div") );
+		$("author_tree_sidebar"), 
+		$("author_sidebar_tree_div") );
 }
 
 function resultDrawSeries() {
@@ -358,8 +480,8 @@ function resultDrawSeries() {
 	resultDrawSidebarTrees( 
 		STYPE_SERIES, 
 		"seriesSidebarTree", sers.sort(), 
-		getId("series_tree_sidebar"), 
-		getId("series_sidebar_tree_div") );
+		$("series_tree_sidebar"), 
+		$("series_sidebar_tree_div") );
 }
 
 function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode ) {
@@ -428,13 +550,13 @@ function resultAppendCrossRef(r) {
 
 	for( var i = 0; (total++ < 5 && i < froms.length); i++ ) {
 		var string = normalize(truncate(froms[i], 45));
-		if(getId(stype + '_' + froms[i])) continue;
+		if($(stype + '_' + froms[i])) continue;
 		tree.addNode(stype + '_' + froms[i], 
 			stype + '_' + item, string, resultQuickLink(froms[i],stype));
 	}
 	for( var i = 0; (total++ < 10 && i < alsos.length); i++ ) {
 		var string = normalize(truncate(alsos[i], 45));
-		if(getId(stype + '_' + alsos[i])) continue;
+		if($(stype + '_' + alsos[i])) continue;
 		tree.addNode(stype + '_' + alsos[i], 
 			stype + '_' + item, string, resultQuickLink(alsos[i],stype));
 	}

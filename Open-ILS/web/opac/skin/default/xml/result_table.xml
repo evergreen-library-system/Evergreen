@@ -55,7 +55,9 @@
 
 								<td  colspan='5' 
 									style='padding-bottom: 4px; text-align:center; vertical-align: top; border-bottom: 1px solid #E0E0E0;'>
-										<span id='search_info_table' class='hide_me' style='font-size: 8pt;'> <b>Available copies / Total copies </b></span>
+										<span id='search_info_table' class='hide_me' style='font-size: 8pt;'>
+											<b>Available copies / Total copies </b>
+										</span>
 								</td>
 							</tr>
 
@@ -64,7 +66,6 @@
 								<td rowspan='2' style='font-size: 8pt; padding-top: 4px;' class='copy_count_cell' 
 									width='12%' align='center' name='result_thead_ccell'> </td>
 							</tr>
-
 
 						</tbody>
 					</table>
@@ -87,7 +88,9 @@
 
 							<tr style='height: 1em' name='counts_row'>
 
-								<td  rowspan='3' class='result_table_pic_header'><a><img name='item_jacket' class='result_table_pic'/></a></td>
+								<td  rowspan='3' class='result_table_pic_header'>
+									<a><img name='item_jacket' class='result_table_pic'/></a>
+								</td>
 
 								<td class='result_table_title_cell' name='result_table_title_cell'>
 									<a title="View titles for this record" name='item_title' class='search_link'> 
@@ -164,8 +167,13 @@
 										<img src='../../../images/tor/three dimensional object.jpg' class='dim tor_pic'> </img>
 									</a>
 
-									<span class='hide_me' style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 
+									<span class='hide_me' 
+										style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 
 										<span>&common.relevancy; </span><span name='relevancy_span'> </span>
+									</span>
+
+									<span class='hide_me' name='place_hold_span'>
+										<a href='javascript:void(0);' name='place_hold_link'>Place Hold</a>
 									</span>
 
 								</td>

@@ -194,6 +194,7 @@ var FETCH_HOLDS					= "open-ils.circ:open-ils.circ.holds.retrieve";
 var FETCH_FINES_SUMMARY			= "open-ils.actor:open-ils.actor.user.fines.summary";
 var FETCH_TRANSACTIONS			= "open-ils.actor:open-ils.actor.user.transactions.have_charge.fleshed";
 var FETCH_CROSSREF				= "open-ils.search:open-ils.search.authority.crossref";
+var CREATE_HOLD					= "open-ils.circ:open-ils.circ.holds.create";
 /* ---------------------------------------------------------------------------- */
 
 
@@ -221,6 +222,10 @@ function createEvt(scope, name) {
 function attachEvt(scope, name, action) {
 	createEvt(scope, name);
 	G.evt[scope][name].push(action);
+}
+
+function detachEvt(scope, name) {
+	G.evt[scope][name] = null;
 }
 
 createEvt("common", "init");						/* f() : what happens on page init */
