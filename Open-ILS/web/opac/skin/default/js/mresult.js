@@ -46,8 +46,8 @@ function mresultHandleCount(r) {
 function mresultCollectIds(method) {
 
 	if(getOffset() == 0) {
-		//idsCookie.put(COOKIE_IDS,"");
-		//idsCookie.write();
+		idsCookie.put(COOKIE_IDS,"");
+		idsCookie.write();
 
 	} else {
 		var c = JSON2js(idsCookie.get(COOKIE_IDS));
@@ -89,8 +89,8 @@ function mresultSetRecords(idstruct) {
 		ranks[x] = parseFloat(idstruct[x - o][1]);
 		onlyrecord[x] = parseInt(idstruct[x - o][2]);
 	}
-	//idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
-	//idsCookie.write();
+	idsCookie.put(COOKIE_IDS, js2JSON({ recs: records, ranks : ranks }) );
+	idsCookie.write();
 	TOPRANK = ranks[getOffset()];
 }
 
