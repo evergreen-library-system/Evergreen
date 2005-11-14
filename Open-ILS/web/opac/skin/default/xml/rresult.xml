@@ -9,6 +9,7 @@
 		<xi:include href="js_common.xml"/>
 		<script language='javascript' src='../js/rresult.js'> </script>
 		<script language='javascript' src='../js/result_common.js'> </script>
+		<script language='javascript' src='../js/tips.js'> </script>
 	</head>
 
 	<body onload="init();">
@@ -26,6 +27,8 @@
 						<xi:include href="altcanvas.xml"/>
 						<xi:include href="result_common.xml"/>
 					</div>
+					<br/>
+					<div id='tips' class='tips'><span style="font-weight: bold;">Tip:  </span></div>
 					</td>
 				</tr>
 			</tbody>
