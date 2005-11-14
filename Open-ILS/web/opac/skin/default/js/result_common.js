@@ -64,6 +64,8 @@ function resultPaginate() {
 		G.ui.result.home_link.setAttribute( "href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.home_link, config.css.result.nav_active);
 	}
+	if(getDisplayCount() < getHitCount())
+		unHideMe($('start_end_links_span'));
 }
 
 

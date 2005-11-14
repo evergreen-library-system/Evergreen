@@ -38,12 +38,17 @@
 										<span id='num_pages'> </span>
 									</span>
 
-									<span style='padding-left: 40px;' >
-										<a class='search_page_nav_link' id='search_home_link' title="First results page">Start</a>
-										<a class='search_page_nav_link' id='prev_link' title='Previus page'> &llt;&llt; </a>
+									<span id='start_end_links_span' class='hide_me' 
+											style='padding-left: 40px;' >
+										<a class='search_page_nav_link' id='search_home_link' 
+											title="First results page">Start</a>
+										<a class='search_page_nav_link' id='prev_link' 
+											title='Previus page'> &llt;&llt; </a>
 										<span class='search_page_nav_link' id='page_numbers'> </span>
-										<a  class='search_page_nav_link' id='next_link' title='Next Page'> &ggt;&ggt; </a>
-										<a  class='search_page_nav_link' id='end_link' title="Last results page">End</a>
+										<a  class='search_page_nav_link' id='next_link' 
+											title='Next Page'> &ggt;&ggt; </a>
+										<a  class='search_page_nav_link' id='end_link' 
+											title="Last results page">End</a>
 									</span>
 
 								</td>
