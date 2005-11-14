@@ -4,6 +4,8 @@
 attachEvt("common", "init", initSideBar);
 attachEvt("common", "init", setSidebarLinks);
 
+attachEvt("common", "unload", sidebarTreesFree );
+
 function initSideBar() {
 	var page = findCurrentPage();
 
@@ -78,4 +80,12 @@ function setSidebarLinks() {
 	G.ui.sidebar.myopac_link.setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));
 }
 
+function sidebarTreesFree() {
+	removeChildren($(subjectSidebarTree.rootid));
+	removeChildren($(authorSidebarTree.rootid));
+	removeChildren($(seriesSidebarTree.rootid));
+	subjectSidebarTree = null;
+	authorSidebarTree = null;
+	seriesSidebarTree = null;
+}
 

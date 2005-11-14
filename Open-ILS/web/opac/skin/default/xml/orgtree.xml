@@ -2,11 +2,27 @@
 
 <!-- the org tree -->
 <div id='org_container' class='hide_me non_canvas'>
+
 	<div id='org_link_container' class='color_1'>
-		<span class='org_link'><a onclick='orgTreeSelector.openAll();' href='javascript:void(0);'>Expand All</a></span>
-		<span class='org_link'><a onclick='orgTreeSelector.closeAll();' href='javascript:void(0);'>Collapse All</a></span>
-		<span class='org_link'><a onclick='showCanvas();' href='javascript:void(0);'> Cancel </a></span>
+		<span class='org_link'>
+			<a onclick='orgTreeSelector.expandAll();' 
+				href='javascript:void(0);'>&common.org.openAll;</a>
+		</span>
+		<span class='org_link'>
+			<a onclick='orgTreeSelector.closeAll();' 
+				href='javascript:void(0);'>&common.org.closeAll;</a>
+		</span>
+		<span class='org_link'>
+			<a onclick='showCanvas();' href='javascript:void(0);'>&common.org.cancel;</a>
+		</span>
 	</div>
+
+	<div id='org_loading_div'><br/><span>&common.org.loading;</span></div>
+	<br/>
+	<div id='org_selector_tip' class='tips hide_me'><b>&common.org.note;</b>
+		<span>&common.org.notetext;</span>
+	</div>
+	<br/>
 	<div id='org_tree' class='org_tree'> </div>
 	<br/>
 </div>

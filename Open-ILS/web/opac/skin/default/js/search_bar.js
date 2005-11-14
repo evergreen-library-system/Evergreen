@@ -45,12 +45,20 @@ function searchBarInit() {
 
 }
 
+var orgTreeIsBuilt = false;
 function _opacHandleLocationTagClick() {
 	/*
 	orgTreeSelector.openTo(  
 		(newSearchLocation != null) ? parseInt(newSearchLocation) : getLocation(), true );
 		*/
 	swapCanvas(G.ui.common.org_container);
+
+	if(!orgTreeIsBuilt) {
+		drawOrgTree();
+		orgTreeIsBuilt = true;
+		//hideMe($('org_loading_div'));
+	}
+
 }
 
 function depthSelectorChanged() {
@@ -78,7 +86,8 @@ function buildLocationSelector(newLoc) {
 
 	var selector = G.ui.searchbar.depth_selector
 	if(!chooseAnotherNode) 
-		chooseAnotherNode = selector.removeChild(selector.getElementsByTagName("option")[0]);
+		chooseAnotherNode = selector.removeChild(
+			selector.getElementsByTagName("option")[0]);
 	var node = chooseAnotherNode;
 	removeChildren(selector);
 	

@@ -416,7 +416,8 @@ function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
 /* ----------------------------------------------------------------------- */
 function drawOrgTree() {
 	//G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
-	buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);
+	//buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);
+	setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 10 );
 }
 	
 var orgTreeSelector;
@@ -435,6 +436,8 @@ function buildOrgSelector(node) {
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		}
 	}
+	hideMe($('org_loading_div'));
+	unHideMe($('org_selector_tip'));
 	return tree;
 }
 

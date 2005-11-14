@@ -29,7 +29,9 @@
 		config.names.result.count_cell	= "copy_count_cell";
 	</script>
 
+	<!--
 	<div id='loading_div' class='color_1'> Loading Results... </div>
+	-->
 	<xi:include href="result_table.xml"/>
 </div>
 

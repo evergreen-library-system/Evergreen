@@ -157,7 +157,9 @@ function resultDisplayRecord(rec, pos, is_mr) {
 
 	if(resultPageIsDone())  {
 		/* hide the 'now loading...' message */
+		/*
 		hideMe(G.ui.common.loading);
+		*/
 		runEvt('result', 'allRecordsReceived', recordsCache);
 	}
 }

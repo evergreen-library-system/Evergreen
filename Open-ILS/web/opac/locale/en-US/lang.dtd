@@ -31,6 +31,12 @@
 <!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
 <!ENTITY common.tips.tip2 "If you don't find what you want try expanding your search using the range selector at the right of the search bar">
 
+<!ENTITY common.org.openAll "Expand All">
+<!ENTITY common.org.closeAll "Close All">
+<!ENTITY common.org.cancel "Cancel">
+<!ENTITY common.org.loading "Loading library selector...">
+<!ENTITY common.org.note "Tip:">
+<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a region.">
 
 <!-- Sidebar Header Labels -->
 <!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">

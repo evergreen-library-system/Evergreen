@@ -6,7 +6,7 @@ window.onunload = windowUnload;
 attachEvt("common", "init", loadUIObjects);
 attachEvt("common", "init", initParams);
 attachEvt("common", "init", initCookies);
-attachEvt("common", "init", drawOrgTree); 
+//attachEvt("common", "init", drawOrgTree); 
 
 attachEvt("common", "unload", _tree_killer);
 try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
