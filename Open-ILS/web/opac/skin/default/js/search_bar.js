@@ -46,8 +46,10 @@ function searchBarInit() {
 }
 
 function _opacHandleLocationTagClick() {
+	/*
 	orgTreeSelector.openTo(  
 		(newSearchLocation != null) ? parseInt(newSearchLocation) : getLocation(), true );
+		*/
 	swapCanvas(G.ui.common.org_container);
 }
 

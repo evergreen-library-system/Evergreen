@@ -415,26 +415,26 @@ function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
 /* build the org tree */
 /* ----------------------------------------------------------------------- */
 function drawOrgTree() {
-	G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
-	//buildOrgSelector(G.ui.common.org_tree);
+	//G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
+	buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);
 }
 	
 var orgTreeSelector;
 function buildOrgSelector(node) {
-	var tree = new dTree("orgTreeSelector"); 
-	//var tree = new SlimTree(node);
+	//var tree = new dTree("orgTreeSelector"); 
+	var tree = new SlimTree(node,'orgTreeSelector');
+	orgTreeSelector = tree;
 	for( var i in orgArraySearcher ) { 
 		var node = orgArraySearcher[i];
 		if( node == null ) continue;
 		if(node.parent_ou() == null)
-			tree.add(node.id(), -1, node.name(), 
+			tree.addNode(node.id(), -1, node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		else {
-			tree.add(node.id(), findOrgUnit(node.parent_ou()).id(), node.name(), 
+			tree.addNode(node.id(), findOrgUnit(node.parent_ou()).id(), node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		}
 	}
-	orgTreeSelector = tree;
 	return tree;
 }
 

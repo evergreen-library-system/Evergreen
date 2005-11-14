@@ -416,6 +416,7 @@ function resultAppendCrossRef(r) {
 	var item		= r._item
 	var stype	= r._stype;
 	var result	= r.getResultObject();
+	if(!result) return;
 	var froms	= result['from'];
 	var alsos	= result['also'];
 

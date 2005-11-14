@@ -64,7 +64,9 @@
 				document.getElementById('subject_sidebar_tree_div'),
 				'subjectSidebarTree', '../../../images/slimtree/related.jpg');
 			subjectSidebarTree.addNode( 'subjectSidebarTreeRoot', -1, 
-				"&sidebar.relevantSubjects.headerLabel;", null);
+				"&sidebar.relevantSubjects.headerLabel;", 
+				'javascript:subjectSidebarTree.toggle(' +
+					'"subjectSidebarTreeRoot");');
 		</script>
 	</div>
 
@@ -76,7 +78,9 @@
 				document.getElementById('author_sidebar_tree_div'),
 				'authorSidebarTree','../../../images/slimtree/people.jpg');
 			authorSidebarTree.addNode( 'authorSidebarTreeRoot', -1, 
-				"&sidebar.relevantAuthors.headerLabel;", null);
+				"&sidebar.relevantAuthors.headerLabel;", 
+				'javascript:authorSidebarTree.toggle(' +
+					'"authorSidebarTreeRoot");');
 		</script>
 	</div>
 
@@ -86,9 +90,12 @@
 		<script language='javascript'>
 			var seriesSidebarTree = new SlimTree(
 				document.getElementById('series_sidebar_tree_div'),
-				'seriesSidebarTree','../../../images/slimtree/houses.jpg');
+				'seriesSidebarTree',
+				'../../../images/slimtree/houses.jpg');
 			seriesSidebarTree.addNode( 'seriesSidebarTreeRoot', -1, 
-				"&sidebar.relevantSeries.headerLabel;", null);
+				"&sidebar.relevantSeries.headerLabel;", 
+				'javascript:seriesSidebarTree.toggle(' +
+					'"seriesSidebarTreeRoot");');
 		</script>
 	</div>
 

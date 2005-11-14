@@ -18,39 +18,25 @@ function SlimTree(context, handle, rootimg) {
 	this.handle		= handle;
 	this.cache		= new Object();
 	if(rootimg) 
-		this.rootimg = elem('img', {src:rootimg,border:0,style:'padding-right: 4px;'});
+		this.rootimg = elem('img', 
+			{src:rootimg,border:0,style:'padding-right: 4px;'});
 }
 
-SlimTree.prototype.cacheMe = function( id, pid, name, action, title ) {
-	if(this.cache[id]) return;
-	this.cache[id]				= {};
-	this.cache[id].pid		= pid
-	this.cache[id].name		= name
-	this.cache[id].action	= action
-	this.cache[id].title		= title
-}
-
-SlimTree.prototype.flushCache = function() {
-	for( var c in this.cache ) {
-		var obj = this.cache[c];
-		if(obj && getId(obj.pid)) {
-			this.cache[c] = null;
-			this.addNode(c,obj.pid, obj.name, obj.action,obj.title);
-		}
-	}
+SlimTree.prototype.addCachedChildren = function(pid) {
+	var child;
+	while( child = this.cache[pid].shift() ) 
+		this.addNode( child.id, child.pid, 
+			child.name, child.action, child.title );
+	this.cache[pid] = null;
 }
 
 SlimTree.prototype.addNode = function( id, pid, name, action, title ) {
 
-	if( pid != -1 && !getId(pid)) {
-		if(this.cache[pid]) {
-			var obj = this.cache[pid];
-			this.addNode(pid, obj.pid,obj.name, obj.action,obj.title );
-			this.cache[pid] = null;
-		} else {
-			this.cacheMe(id, pid, name, action, title);
-			return;
-		}
+	if( pid != -1 && !$(pid)) {
+		if(!this.cache[pid]) this.cache[pid] = new Array();
+		this.cache[pid].push(
+			{id:id,pid:pid,name:name,action:action,title:title });
+		return;
 	}
 
 	var div			= elem('div',{id:id});
@@ -68,22 +54,25 @@ SlimTree.prototype.addNode = function( id, pid, name, action, title ) {
 	_apc(div,contdiv);
 
 	if( pid == -1 ) { 
+
 		this.rootid = id;
 		_apc(this.context,div);
 		if(this.rootimg) _apc(link,this.rootimg.cloneNode(true));
 		else _apc(link,stimgblank.cloneNode(true));
+
 	} else {
+
 		if(pid == this.rootid) this.open(pid);
 		else this.close(pid);
-		getId(pid).setAttribute('haschild','1');
+		$(pid).setAttribute('haschild','1');
 		_apc(link,stimgblank.cloneNode(true));
 		div.style.paddingLeft = '18px';
 		div.style.backgroundImage = 'url('+stpicjoinb+')';
 		div.style.backgroundRepeat = 'no-repeat';
-		_apc(getId('stcont_' + pid), div);
+		_apc($('stcont_' + pid), div);
 		if (div.previousSibling) stMakePaths(div);
 	}
-	this.flushCache();
+	if(this.cache[id]) this.addCachedChildren(id);
 }
 
 function stMakePaths(div) {
@@ -100,33 +89,41 @@ SlimTree.prototype.closeAll = function() { this.flex(this.rootid,'close'); }
 SlimTree.prototype.flex = function(id, type) {
 	if(type=='open') this.open(id);
 	else { if (id != this.rootid) this.close(id); }
-	var n = getId('stcont_' + id);
+	var n = $('stcont_' + id);
 	for( var c = 0; c != n.childNodes.length; c++ ) {
 		var ch = n.childNodes[c];
 		if(ch.nodeName.toLowerCase() == 'div') {
-			if(getId(ch.id).getAttribute('haschild') == '1') 
+			if($(ch.id).getAttribute('haschild') == '1') 
 				this.flex(ch.id, type);
 		}
 	}
 }
 
+SlimTree.prototype.toggle = function(id) {
+	if($(id).getAttribute('ostate') == '1') this.open(id);
+	else if($(id).getAttribute('ostate') == '2') this.close(id);
+}
+
 SlimTree.prototype.open = function(id) {
-	var link = getId('stlink_' + id);
+	if($(id).getAttribute('ostate') == '2') return;
+	var link = $('stlink_' + id);
 	if(id != this.rootid || !this.rootimg) {
 		removeChildren(link);
 		_apc(link,stimgclose.cloneNode(true));
 	}
 	link.setAttribute('href','javascript:' + this.handle + '.close("'+id+'");');
-	unHideMe(getId('stcont_' + id));
+	unHideMe($('stcont_' + id));
+	$(id).setAttribute('ostate','2');
 }
 
 SlimTree.prototype.close = function(id) {
-	var link = getId('stlink_' + id);
+	var link = $('stlink_' + id);
 	if(id != this.rootid || !this.rootimg) {
 		removeChildren(link);
 		_apc(link,stimgopen.cloneNode(true));
 	}
 	link.setAttribute('href','javascript:' + this.handle + '.open("'+id+'");');
-	hideMe(getId('stcont_' + id));
+	hideMe($('stcont_' + id));
+	$(id).setAttribute('ostate','1');
 }
 
