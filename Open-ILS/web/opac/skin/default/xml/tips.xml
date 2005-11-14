@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 
-<div id='tips' class='tips'>
+<div id='tips' class='tips hide_me'>
 	<div class='hide_me'>
 		<span>&common.tips.tip1;</span>
 		<span>&common.tips.tip2;</span>

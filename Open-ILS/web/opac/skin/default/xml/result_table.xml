@@ -34,7 +34,7 @@
 										<span id='result_count'> </span>
 										<span style='padding-left: 6px;'> (page </span>
 										<span id='current_page'> </span>
-										<span> &common.ofAtLeast; </span>
+										<span> &common.of; </span>
 										<span id='num_pages'> </span>
 									</span>
 

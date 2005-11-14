@@ -1,4 +1,4 @@
-attachEvt('common', 'run', insertTip);
+attachEvt('result', 'allRecordsReceived', insertTip);
 
 /*
 var user_tips = [
@@ -13,6 +13,7 @@ function insertTip () {
 		var tips = tip_div.getElementsByTagName('div')[0].getElementsByTagName('span');
 		var index = Math.floor(Math.random() * tips.length);
 		tip_div.appendChild( tips[index] );
+		removeCSSClass(tip_div, 'hide_me');
 	}
 }
 

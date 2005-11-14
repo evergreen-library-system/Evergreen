@@ -23,6 +23,7 @@
 
 <!ENTITY common.nowSearching "Now searching ">
 <!ENTITY common.at " at ">
+<!ENTITY common.of " of ">
 <!ENTITY common.ofAtLeast " of at least ">
 <!ENTITY common.relevancy "Relevancy ">
 
