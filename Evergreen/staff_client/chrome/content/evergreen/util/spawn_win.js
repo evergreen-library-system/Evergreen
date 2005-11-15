@@ -44,7 +44,11 @@ function spawn_interface(d,placement,place,chrome,label,passthru_params,clone) {
 	}
 	w.params = passthru_params;
 	w.mw = mw;
-	if (placement == 'new_tab' || placement == 'replace_tab') w.app_shell = d; else w.app_shell = app_shell;
+	if (placement == 'new_tab' || placement == 'replace_tab') {
+		w.app_shell = d;
+	} else {
+		if (typeof app_shell != 'undefined') w.app_shell = app_shell;
+	}
 	return w;
 }
 

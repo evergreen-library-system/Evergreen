@@ -339,7 +339,7 @@ function send_to_bill() {
 			return [ label, copies ]; 
 		} 
 	);
-	alert( window.app_shell );
+	//alert( window.app_shell );
 	try {
 		spawn_spine_label_wizard(document,'new_window','',{ 'spine_labels' : spine_labels }); 
 	} catch(E) {
