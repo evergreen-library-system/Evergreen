@@ -106,6 +106,12 @@ function auth_init() {
 	self.addEventListener("unload",nice_shutdown,false);
 
 	G['sound'] = xp_sound_init(); snd_logon();
+	var pref = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefBranch);
+	if (pref) {
+		pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
+		pref.setCharPref("capability.principal.codebase.p0.id", "http://dev.gapines.org");
+	}
 }
 
 function handle_keypress(ev) {
