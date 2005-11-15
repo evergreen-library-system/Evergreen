@@ -121,7 +121,8 @@ sub _grab_patron_profiles {
 	my $session = shift;
 	if(!$patron_profiles) {
 		my $profile_req = $session->request(
-			"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
+			#"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
+			"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
 		$patron_profiles = $profile_req->gather(1);
 		$patron_profiles =
 			{ map { (''.$_->id => $_->name) } @$patron_profiles };
@@ -475,6 +476,9 @@ sub circulate {
 		$circ->opac_renewal(1); # XXX different for different types ! 
 		$circ->clear_id;
 		$circ->renewal_remaining($numrenews - 1);
+		$circ->circ_staff($patron->id);
+	} else {
+		$circ->circ_staff($user->id);
 	}
 
 
@@ -1131,18 +1135,25 @@ sub renew {
 	# XXX XXX See if the copy this circ points to is needed to fulfill a hold!
 	# XXX check overdue..?
 
+	use Data::Dumper;
 	my $checkin = $self->method_lookup("open-ils.circ.checkin.barcode");
 	my ($status) = $checkin->run($login_session, $copy->barcode, 1);
+	warn 'checkin status: ' . Dumper($status) . '\n';
+	return $status if ref($status) eq "Fieldmapper::perm_ex";
 	return $status if ($status->{status} ne "0"); 
 	warn "Renewal checkin completed for $iid\n";
 
 	my $permit_checkout = $self->method_lookup("open-ils.circ.permit_checkout");
 	($status) = $permit_checkout->run($login_session, $copy->barcode, $circ->usr, "renew");
+	warn 'permit checkout status: ' . Dumper($status) . '\n';
+	return $status if ref($status) eq "Fieldmapper::perm_ex";
 	return $status if($status->{status} ne "0");
 	warn "Renewal permit checkout completed for $iid\n";
 
 	my $checkout = $self->method_lookup("open-ils.circ.checkout.barcode");
 	($status) = $checkout->run($login_session, $copy->barcode, $circ->usr, 1, $circ->renewal_remaining);
+	warn 'renew checkout status: ' . Dumper($status) . '\n';
+	return $status if ref($status) eq "Fieldmapper::perm_ex";
 	warn "Renewal checkout completed for $iid\n";
 	return $status;
 
