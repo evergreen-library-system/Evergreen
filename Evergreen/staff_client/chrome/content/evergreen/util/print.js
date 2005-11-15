@@ -249,7 +249,8 @@ function NSPrint(w,silent)
 	// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
 	// causing an exception to be thrown which we catch here.
 	// Unfortunately this will also consume helpful failures, so add a
-	 	sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n'); // if you need to debug
+	 	sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+	// if you need to debug
 	}
 }
 
