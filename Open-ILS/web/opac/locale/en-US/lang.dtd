@@ -63,4 +63,4 @@
 <!ENTITY rdetail.loading "Loading copy infomation...">
 <!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.detailMain.viewMarc "View MARC">
-<!ENTITY rdetail.detailMain.hideMarc "Return to title summary view">
+<!ENTITY rdetail.detailMain.hideMarc "Return to title details">

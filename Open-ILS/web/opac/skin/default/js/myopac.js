@@ -118,11 +118,11 @@ function myOPACDrawCheckedOut(r) {
  		var due = circ.due_date();
       due = due.replace(/[0-9][0-9]:.*$/,"");
 
-		var tlink = findNodeByName( row, "myopac_checked_title_link" );
-		var alink = findNodeByName( row, "myopac_checked_author_link" );
-		var dlink = findNodeByName( row, "myopac_checked_due" );
-		var rlink = findNodeByName( row, "myopac_checked_renewals" );
-		var rnlink = findNodeByName( row, "myopac_checked_renew_link" );
+		var tlink = $n( row, "myopac_checked_title_link" );
+		var alink = $n( row, "myopac_checked_author_link" );
+		var dlink = $n( row, "myopac_checked_due" );
+		var rlink = $n( row, "myopac_checked_renewals" );
+		var rnlink = $n( row, "myopac_checked_renew_link" );
 
 		buildTitleDetailLink(record, tlink);
 		buildSearchLink(STYPE_AUTHOR, record.author(), alink);
@@ -143,12 +143,19 @@ function myOPACShowHolds() {
 	req.send();
 }
 
+var holdsTemplateRowOrig;
 var holdsTemplateRow;
 function myOPACDrawHolds(r) {
 
 	var tbody = $("myopac_holds_tbody");
 	if(holdsTemplateRow) return;
-	holdsTemplateRow = tbody.removeChild($("myopac_holds_row"));
+	if(holdsTemplateRowOrig) {
+		holdsTemplateRow = holdsTemplateRowOrig;
+		removeChildren(tbody);
+	} else {
+		holdsTemplateRow = tbody.removeChild($("myopac_holds_row"));
+		holdsTemplateRowOrig = holdsTemplateRow;
+	}
 
 	hideMe($('myopac_holds_loading'));
 
@@ -162,22 +169,35 @@ function myOPACDrawHolds(r) {
 		row.id = "myopac_holds_row_" + h.target();
 
 		var formats = (h.holdable_formats()) ? h.holdable_formats() : null;
-		var form = findNodeByName(row, "myopac_holds_formats");
+		var form = $n(row, "myopac_holds_formats");
 		form.id = "myopac_holds_form_" + h.target();
 		if(formats) form.appendChild(text(formats));
 
-		findNodeByName(row, "myopac_holds_location").
+		$n(row, "myopac_holds_location").
 			appendChild(text(findOrgUnit(h.pickup_lib()).name()));
-		findNodeByName(row, "myopac_holds_email_link").
+		$n(row, "myopac_holds_email_link").
 			appendChild(text(h.email_notify()));
-		findNodeByName(row, "myopac_holds_phone_link").
+		$n(row, "myopac_holds_phone_link").
 			appendChild(text(h.phone_notify()));
 		tbody.appendChild(row);
+
+		$n(row,'myopac_holds_cancel_link').setAttribute(
+			'href','javascript:myOPACCancelHold("'+ h.id()+'");'); 
 		unHideMe(row);
 
 		myOPACDrawHoldTitle(h);
 	}
 }
+
+function myOPACCancelHold(holdid) {
+	if( confirm($('myopac_holds_cancel_verify').innerHTML) ) {
+		holdsCancel(holdid);
+		holdsTemplateRow = null
+		myOPACShowHolds();
+	}
+}
+
+
 
 function myOPACDrawHoldTitle(hold) {
 	var method;
@@ -192,8 +212,8 @@ function myOPACFleshHoldTitle(r) {
 
 	var record = r.getResultObject();
 	var row = $("myopac_holds_row_" + record.doc_id());
-	var title_link = findNodeByName(row, "myopac_holds_title_link");
-	var author_link = findNodeByName(row, "myopac_holds_author_link");
+	var title_link = $n(row, "myopac_holds_title_link");
+	var author_link = $n(row, "myopac_holds_author_link");
 
 	buildTitleDetailLink(record, title_link);
 	buildSearchLink(STYPE_AUTHOR, record.author(), author_link);
@@ -269,24 +289,24 @@ function myOPACShowTransactions(r) {
 		var record = transactions[idx].record;
 		var row = transTemplate.cloneNode(transTemplate);
 
-		findNodeByName(row,'myopac_trans_start').
+		$n(row,'myopac_trans_start').
 			appendChild(text(_trimSeconds(trans.xact_start())));
-		findNodeByName(row,'myopac_trans_last_bill').
+		$n(row,'myopac_trans_last_bill').
 			appendChild(text(_trimSeconds(trans.last_billing_ts())));
-		findNodeByName(row,'myopac_trans_last_payment').
+		$n(row,'myopac_trans_last_payment').
 			appendChild(text(_trimSeconds(trans.last_payment_ts())));
-		findNodeByName(row,'myopac_trans_init_amount').
+		$n(row,'myopac_trans_init_amount').
 			appendChild(text(_finesFormatNumber(trans.total_owed())));
-		findNodeByName(row,'myopac_trans_total_paid').
+		$n(row,'myopac_trans_total_paid').
 			appendChild(text(_finesFormatNumber(trans.total_paid())));
-		findNodeByName(row,'myopac_trans_balance').
+		$n(row,'myopac_trans_balance').
 			appendChild(text(_finesFormatNumber(trans.balance_owed())));
 
 		var extra = "";
 		var type = trans.xact_type();
-		findNodeByName(row,'myopac_trans_type').appendChild(text(type));
+		$n(row,'myopac_trans_type').appendChild(text(type));
 		if( type == "circulation" ) extra = record.title();
-		findNodeByName(row, 'myopac_trans_extra').appendChild(text(extra));
+		$n(row, 'myopac_trans_extra').appendChild(text(extra));
 
 		tbody.appendChild(row);
 	}
@@ -333,13 +353,13 @@ function _myOPACSummaryShowUer(r) {
 }
 
 function myOPACDrawAddr(row, addr) {
-	findNodeByName(row, 'myopac_addr_type').appendChild(text(addr.address_type()));
+	$n(row, 'myopac_addr_type').appendChild(text(addr.address_type()));
 	var street = (addr.street2()) ? addr.street1() + ", " + addr.street2() : addr.street1();
-	findNodeByName(row, 'myopac_addr_street').appendChild(text(street));
-	findNodeByName(row, 'myopac_addr_city').appendChild(text(addr.city()));
-	findNodeByName(row, 'myopac_addr_county').appendChild(text(addr.county()));
-	findNodeByName(row, 'myopac_addr_state').appendChild(text(addr.state()));
-	findNodeByName(row, 'myopac_addr_zip').appendChild(text(addr.post_code()));
+	$n(row, 'myopac_addr_street').appendChild(text(street));
+	$n(row, 'myopac_addr_city').appendChild(text(addr.city()));
+	$n(row, 'myopac_addr_county').appendChild(text(addr.county()));
+	$n(row, 'myopac_addr_state').appendChild(text(addr.state()));
+	$n(row, 'myopac_addr_zip').appendChild(text(addr.post_code()));
 }
 
 

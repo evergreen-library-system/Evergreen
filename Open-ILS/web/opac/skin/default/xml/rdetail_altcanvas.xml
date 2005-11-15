@@ -12,9 +12,11 @@
 
 	<div class='hide_me non_canvas' id='view_marc_div'> 
 		<div>
-			<table width='100%'><tbody><tr><td class='color_1' align='right' style='padding-right: 7px;'>
-				<a href="javascript:void(0);" id='rdetail_hide_marc'>&rdetail.detailMain.hideMarc;</a>
-			</td></tr></tbody></table>
+			<table width='100%'><tbody><tr>
+				<td class='color_1' align='left' style='padding-left: 7px;text-decoration: underline;'>
+					<a href="javascript:void(0);" id='rdetail_hide_marc'>&rdetail.detailMain.hideMarc;</a>
+				</td>
+			</tr></tbody></table>
 		</div>
 		<br/>
 		<div id='rdetail_view_marc_box'> </div>

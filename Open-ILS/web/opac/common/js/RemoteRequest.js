@@ -1,5 +1,5 @@
 var XML_HTTP_GATEWAY = "gateway";
-var XML_HTTP_SERVER = "gapines.org";
+var XML_HTTP_SERVER = "dev.gapines.org";
 var XML_HTTP_MAX_TRIES = 3;
 
 //var IAMXUL = false;
@@ -159,6 +159,12 @@ RemoteRequest.prototype.send = function(blocking) {
 		url +=  "?" + this.param_string; 
 	}
 
+
+	try {
+		dump( 'Remote Request URL: ' + url + '\n');
+	} catch(E){}
+
+
 	if(blocking) {
 		this.xmlhttp.open(this.type, url, false);
 	} else {
@@ -171,6 +177,10 @@ RemoteRequest.prototype.send = function(blocking) {
 		this.xmlhttp.setRequestHeader('Content-Type',
 				'application/x-www-form-urlencoded');
 	}
+
+	try {
+		dump( 'Remote Request URL: ' + url + '\n');
+	} catch(E){}
 
 	try{ this.xmlhttp.send( data ); } catch(e){}
 

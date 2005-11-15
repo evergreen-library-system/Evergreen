@@ -195,6 +195,7 @@ var FETCH_FINES_SUMMARY			= "open-ils.actor:open-ils.actor.user.fines.summary";
 var FETCH_TRANSACTIONS			= "open-ils.actor:open-ils.actor.user.transactions.have_charge.fleshed";
 var FETCH_CROSSREF				= "open-ils.search:open-ils.search.authority.crossref";
 var CREATE_HOLD					= "open-ils.circ:open-ils.circ.holds.create";
+var CANCEL_HOLD					= "open-ils.circ:open-ils.circ.hold.cancel";
 /* ---------------------------------------------------------------------------- */
 
 

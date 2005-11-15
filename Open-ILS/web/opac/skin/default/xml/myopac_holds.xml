@@ -2,9 +2,7 @@
 
 <div id='myopac_holds_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript'>
-	</script>
-
+	<script language='javascript' src='../js/holds.js'> </script>
 
 	<table width='100%' class='light_border myopac_table'>
 
@@ -54,6 +52,8 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<div class='hide_me' id='myopac_holds_cancel_verify'>Are you sure you wish to cancel the selected hold?</div>
 
 
 </div>
