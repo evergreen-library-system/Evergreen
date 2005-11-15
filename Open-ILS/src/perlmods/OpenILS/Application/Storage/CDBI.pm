@@ -139,7 +139,12 @@ sub retrieve {
 		my ($col) = $self->primary_column;
 		$log->debug("Using field $col as the primary key", INTERNAL);
 		$arg = $arg->$col;
+	} elsif (ref $arg) {
+		my ($col) = $self->primary_column;
+		$log->debug("Using field $col as the primary key", INTERNAL);
+		$arg = $arg->{$col};
 	}
+		
 	$log->debug("Retrieving $self with $arg", INTERNAL);
 	my $rec;
 	try {
@@ -198,6 +203,13 @@ sub remote_update {
 
 	$log->debug("CDBI->remote_update: \$search is $search (".ref($search)." : ".join(',',map{"$_ => $$search{$_}"}keys(%$search)).")",DEBUG);
 	$log->debug("CDBI->remote_update: \$arg is $arg (".ref($arg)." : ".join(',',map{"$_ => $$arg{$_}"}keys(%$arg)).")",DEBUG);
+
+#	my @objs = $self->search_where($search);
+#	throw OpenSRF::EX::WARN ("No objects found for remote_update.  Perhaps you meant to use merge?")
+#		if (@objs == 0);
+
+#	$_->update($arg) for (@objs);
+#	return scalar(@objs);
 
 	my @finds = sort keys %$search;
 	my @sets = sort keys %$arg;
@@ -265,7 +277,6 @@ sub delete {
 
 	my $class = ref($self) || $self;
 
-	warn "HERE 1 --";
 	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		$arg = $arg->id;
 	}
@@ -276,7 +287,6 @@ sub delete {
 		throw OpenSRF::EX::WARN ("ARG! Couldn't retrieve record ");
 	}
 
-	warn "HERE 2 --";
 	if ($class->find_column( 'last_xact_id' )) {
 		my $xact_id = $self->current_xact_id;
 		
@@ -290,12 +300,35 @@ sub delete {
 		$self->SUPER::update;
 	}
 
-	warn "HERE 3 --";
 	$self->SUPER::delete;
-	warn "HERE 4 --";
 
 	return 1;
 }
+
+sub debug_object {
+	my $obj = shift;
+	my $string = '';
+
+	$string .= "Object type:\t".ref($obj)."\n";
+	$string .= "Object string:\t$obj\n";
+
+	if (ref($obj) && ref($obj) =~ /Fieldmapper/o ) {
+		$string .= "Object fields:\n";
+		for my $col ($obj->real_fields()) {
+			$string .= "\t$col\t=>".$obj->$col."\n";
+		}
+	} elsif (ref($obj)) {
+		$string .= "Object cols:\n";
+		for my $col ($obj->columns('All')) {
+			$string .= "\t$col\t=>".$obj->$col."\n";
+		}
+	}
+
+	$string .= "\n";
+	
+	$log->debug($string,DEBUG);
+}
+
 
 sub update {
 	my $self = shift;
@@ -310,6 +343,9 @@ sub update {
 	}
 
 	$log->debug("Calling Class::DBI->update on modified object $self", DEBUG);
+
+	debug_object($self);
+
 	return $self->SUPER::update if ($self->is_changed);
 	return 0;
 }
@@ -319,13 +355,18 @@ sub modify_from_fieldmapper {
 	my $fm = shift;
 	my $orig = $obj;
 
+	debug_object($obj);
+	debug_object($fm);
+
 	$log->debug("Modifying object using fieldmapper", DEBUG);
 
 	my $class = ref($obj) || $obj;
 	my ($primary) = $class->columns('Primary');
 
+
 	if (!ref($obj)) {
 		$obj = $class->retrieve($fm);
+		debug_object($obj);
 		unless ($obj) {
 			$log->debug("Retrieve of $class using $fm (".$fm->id.") failed! -- ".shift(), ERROR);
 			throw OpenSRF::EX::WARN ("No $class with id of ".$fm->id."!!");
@@ -346,17 +387,19 @@ sub modify_from_fieldmapper {
 	my $au = $obj->autoupdate;
 	$obj->autoupdate(0);
 	
+	debug_object($obj);
+
 	for my $field ( keys %hash ) {
 		$obj->$field( $hash{$field} ) if ($obj->$field ne $hash{$field});
 		$log->debug("Setting field $field on $obj to $hash{$field}",INTERNAL);
 	}
 
 	if ($class->find_column( 'last_xact_id' ) and $obj->is_changed) {
-		my $xact_id = $obj->current_xact_id;
+		my ($xact_id) = OpenILS::Application::Storage->method_lookup('open-ils.storage.transaction.current')->run();
 		throw Error ("Updating $class requires a transaction be established")
 			unless ($xact_id);
 		throw Error ("The row you are attempting to delete has been changed since you read it")
-			unless ( $orig->last_xact_id eq $self->last_xact_id);
+			unless ( $fm->last_xact_id eq $obj->last_xact_id);
 		$obj->last_xact_id( $xact_id );
 	} else {
 		$obj->autoupdate($au)
