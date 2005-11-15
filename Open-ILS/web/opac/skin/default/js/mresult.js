@@ -19,13 +19,10 @@ function mresultDoSearch() {
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  /* add an extra row so IE and safari won't complain */
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
-	if(getOffset() == 0 || getHitCount() == null ) {
-	//	mresultGetCount(); 
+	if(getOffset() == 0 || getHitCount() == null ) 
 		mresultCollectIds(FETCH_MRIDS_FULL); 
-	} else { 
-		//runEvt('result', 'hitCountReceived');
+	else  
 		mresultCollectIds(FETCH_MRIDS);
-	}
 }
 
 function mresultGetCount() {

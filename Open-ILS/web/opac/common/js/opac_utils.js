@@ -540,6 +540,20 @@ function msg( text ) {
 	} catch(e) {}
 }
 
+function findRecord(id,type) {
+	try {
+		for( var i = 0; i != recordsCache.length; i++ ) {
+			var rec = recordsCache[i];
+			if( rec && rec.doc_id() == id ) return rec;
+		}
+	} catch(E){}
+	var meth = FETCH_RMODS
+	if(type == 'M') meth = FETCH_MRMODS;
+	var req = new Request(meth, id);
+	req.send(true);
+	return req.result();
+}
+
 
 
 

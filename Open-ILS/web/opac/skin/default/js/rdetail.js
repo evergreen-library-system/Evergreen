@@ -6,6 +6,7 @@ attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
 
 var record = null;
 var cp_statuses = null;
+var recordsCache = [];
 
 var copyRowParent = null;
 var copyRow = null;
@@ -27,6 +28,8 @@ function rdetailDraw() {
 
 	if(getLocation() == globalOrgTree.id())
 		hideMe(G.ui.rdetail.cp_info_all);
+
+
 
 	var req = new Request(FETCH_RMODS, getRid());
 	req.callback(_rdetailDraw);
@@ -90,9 +93,12 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
 
+	$('rdetail_place_hold').setAttribute(
+		'href','javascript:holdsDrawWindow("'+record.doc_id()+'");');
 
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
 	runEvt("rdetail", "recordDrawn");
+	recordsCache.push(record);
 }
 
 

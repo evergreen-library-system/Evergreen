@@ -56,7 +56,6 @@ function _opacHandleLocationTagClick() {
 	if(!orgTreeIsBuilt) {
 		drawOrgTree();
 		orgTreeIsBuilt = true;
-		//hideMe($('org_loading_div'));
 	}
 
 }
@@ -129,10 +128,14 @@ function updateLoc(location, depth) {
 		newSearchDepth = depth;
 	}
 
+	runEvt('common','locationUpdated');
+
+	/*
 	if(!isFrontPage && (findCurrentPage() != MYOPAC) 
 				&& (newSearchLocation != getLocation()) ) {
 		searchBarSubmit();
 	}
+	*/
 }
 
 

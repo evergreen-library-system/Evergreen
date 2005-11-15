@@ -8,6 +8,9 @@ G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
 
+attachEvt( "common", "locationUpdated", resultSBSubmit );
+function resultSBSubmit(){searchBarSubmit();}
+
 /* do this after we have ID's so the rank for mr pages will be correct */
 attachEvt("result", "preCollectRecords", resultPaginate);
 
@@ -125,7 +128,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 
 		unHideMe($n(r,'place_hold_span'));
 		$n(r,'place_hold_link').setAttribute(
-			'href','javascript:resultDrawHoldsWindow("'+rec.doc_id()+'");');
+			'href','javascript:holdsDrawWindow("'+rec.doc_id()+'");');
 	}
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
@@ -172,6 +175,7 @@ function _resultFindRec(id) {
 	return null;
 }
 
+/*
 var currentHoldRecord;
 var holdsOrgSelectorBuilt = false;
 function resultDrawHoldsWindow(recid) {
@@ -182,10 +186,16 @@ function resultDrawHoldsWindow(recid) {
 	}
 	currentHoldRecord = recid;
 
+	detachEvt('common','locationUpdated', resultSBSubmit );
+	attachEvt( "common", "locationUpdated", resultSBSubmit );
+
 	if(!(G.user && G.user.session)) {
 
+		detachEvt('common','locationUpdated', resultSBSubmit );
 		attachEvt('common','loggedIn', resultDrawHoldsWindow)
+		//alert(G.evt['common']['locationUpdated']);
 		initLogin();
+		//attachEvt( "common", "locationUpdated", resultSBSubmit );
 		return;
 	}
 	swapCanvas($('holds_box'));
@@ -244,8 +254,9 @@ function resultBuildHoldsSelector(node, depth) {
 	
 	} else {
 		var pad = (findOrgType(node.ou_type()).depth() - 1) * 12;
+		if(pad < 0) pad = 0;
 		var select = new Option(node.name(), node.id());
-		select.setAttribute("style", "padding-left: " + pad);
+		select.setAttribute("style", "padding-left: "+pad+'px;');
 		selector.options[index] = select;
 	}	
 
@@ -263,10 +274,8 @@ function resultBuildHoldsSelector(node, depth) {
 }
 
 function resultPlaceHold() {
-	//alert("placing hold for " + currentHoldRecord );
-
 	var hold = new ahr();
-	hold.pickup_lib( 1 ); /* */
+	hold.pickup_lib( 1 ); 
 	hold.requestor(G.user.id());
 	hold.usr(G.user.id());
 	hold.hold_type('T');
@@ -278,13 +287,13 @@ function resultPlaceHold() {
 	req.send(true);
 	var res = req.result();
 
-	/* XMLize me */
 	if( res == '1' ) {
 		alert('ok');
 	} else {
 		alert('hold failed');
 	}
 }
+*/
 
 
 
@@ -302,16 +311,9 @@ function resultBuildFormatIcons( row, rec ) {
 
 		var f = getForm();
 		if( f != "all" ) {
-			/*
-			if( f != modsFormatToMARC(res) ) 
-				addCSSClass( img, config.css.dim2);
-			else
-				addCSSClass( img, "dim2_border");
-				*/
 			if( f == modsFormatToMARC(res) ) 
 				addCSSClass( img, "dim2_border");
 		}
-
 
 		var args = {};
 		args.page = RRESULT;
@@ -322,7 +324,6 @@ function resultBuildFormatIcons( row, rec ) {
 		link.setAttribute("href", buildOPACLink(args));
 
 	}
-
 }
 
 

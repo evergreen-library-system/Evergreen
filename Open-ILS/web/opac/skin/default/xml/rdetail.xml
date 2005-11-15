@@ -8,6 +8,7 @@
 		<xi:include href="css_common.xml"/>
 		<xi:include href="js_common.xml"/>
 		<script language='javascript' src='../js/rdetail.js'> </script>
+		<script language='javascript' src='../js/holds.js'> </script>
 	</head>
 
 	<script language='javascript'>
@@ -39,6 +40,9 @@
 												<span>&rdetail.detailMain.headerLabel;</span>
 											</td>
 											<td align='right' style='padding-right: 7px;'>
+												<span style='padding-right: 15px;'>
+													<a id='rdetail_place_hold'>Place Hold</a>
+												</span>
 												<a href="javascript:void(0);" id='rdetail_view_marc'>&rdetail.detailMain.viewMarc;</a>
 											</td>
 										</tr>

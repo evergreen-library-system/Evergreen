@@ -224,14 +224,16 @@ function attachEvt(scope, name, action) {
 	G.evt[scope][name].push(action);
 }
 
-function detachEvt(scope, name) {
-	G.evt[scope][name] = null;
+function detachAllEvt(scope, name) {
+	G.evt[scope][name] = [];
 }
+
 
 createEvt("common", "init");						/* f() : what happens on page init */
 createEvt("common", "pageRendered");			/* f() : what happens when the page is done (up to the skin to call this even)*/
 createEvt("common", "unload");					/* f() : what happens on window unload (clean memory, etc.)*/
 createEvt("common", "locationChanged");		/* f() : what happens when the location has changed */
+createEvt("common", "locationUpdated");		/* f() : what happens when the location has updated by the code */
 
 createEvt("common", "run");						/* f() : make the page do stuff */
 createEvt("result", "idsReceived");				/* f(ids) */

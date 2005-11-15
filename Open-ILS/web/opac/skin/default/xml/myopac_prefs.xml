@@ -13,7 +13,9 @@
 		</thead>
 
 		<tbody id='myopac_prefs_tbody'>
+			<!--
 			<tr id='myopac_prefs_loading'><td>Loading...</td></tr>
+			-->
 			<tr id='myopac_prefs_row' class='light_border hide_me'>
 			</tr>
 		</tbody>
