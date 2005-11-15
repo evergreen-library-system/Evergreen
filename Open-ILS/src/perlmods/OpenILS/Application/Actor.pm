@@ -1001,7 +1001,7 @@ sub update_password {
 	}
 
 	my $session = $apputils->start_db_session();
-	$user_obj = _update_patron($session, $user_obj);
+	$user_obj = _update_patron($session, $user_obj, $user_obj);
 	$apputils->commit_db_session($session);
 
 	if($user_obj) { return 1; }
