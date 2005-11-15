@@ -13,13 +13,13 @@
 IF patron.standing != "Good";
 	ret(PATRON_STANDING, "Patron not in good standing: ${patron.standing}"); END;
 
-IF patron.profile == "STAFF" && patron_copies > 50;
+IF patron.profile == "Staff" && patron_copies > 50;
 	ret(PATRON_CHECKOUT_COUNT, "Patron checkout count exceeds limit"); END;	
 
-IF patron.profile == "ADULT" && patron_copies > 10;
+IF patron.profile == "Patrons" && patron_copies > 10;
 	ret(PATRON_CHECKOUT_COUNT, "Patron checkout count exceeds limit"); END;	
 
-IF patron.profile == "JUVENILE" && patron_copies > 5;
+IF patron.profile == "Users" && patron_copies > 5;
 	ret(PATRON_CHECKOUT_COUNT, "Patron checkout count exceeds limit"); END;	
 
 
