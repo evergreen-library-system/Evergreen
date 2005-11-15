@@ -204,6 +204,8 @@ function sPrint(s,silent) {
 		function() {
 			if (!mw.printDebug) {
 				NSPrint(w,silent); w.minimize(); w.close(); mw.minimize();
+			} else {
+				sdump('D_PRINT','Not printing due to printDebug flag.');
 			}
 		},0
 	);
@@ -217,6 +219,7 @@ function NSPrint(w,silent)
 		var webBrowserPrint = w
 			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 			.getInterface(Components.interfaces.nsIWebBrowserPrint);
+		sdump('D_PRINT','webBrowserPrint = ' + webBrowserPrint);
 		if (webBrowserPrint) {
 			var gPrintSettings = GetPrintSettings();
 			if (silent) gPrintSettings.printSilent = true;
@@ -233,10 +236,13 @@ function NSPrint(w,silent)
                         gPrintSettings.footerStrLeft = '';
                         gPrintSettings.footerStrCenter = '';
                         gPrintSettings.footerStrRight = '';
+			sdump('D_PRINT','gPrintSettings = ' + js2JSON(gPrintSettings));
 			webBrowserPrint.print(gPrintSettings, null);
 			//alert('Should be printing\n');
+			sdump('D_PRINT','Should be printing\n');
 		} else {
 			//alert('Should not be printing\n');
+			sdump('D_PRINT','Should not be printing\n');
 		}
 	} catch (e) {
 		//alert('Probably not printing: ' + e);
