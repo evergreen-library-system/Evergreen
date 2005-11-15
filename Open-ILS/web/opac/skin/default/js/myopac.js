@@ -93,6 +93,7 @@ function myOPACShowChecked() {
 
 var checkedRowTemplate;
 var circsCache = new Array();
+var checkedDrawn = false;
 function myOPACDrawCheckedOut(r) {
 
 
@@ -101,8 +102,9 @@ function myOPACDrawCheckedOut(r) {
 	var loading			= $("myopac_checked_loading");
 	var none				= $("myopac_checked_none");
 
-	if(checkedRowTemplate) return;
-	checkedRowTemplate = tbody.removeChild($("myopac_checked_row"));
+	if(checkedDrawn) return;
+	if(!checkedRowTemplate) 
+		checkedRowTemplate = tbody.removeChild($("myopac_checked_row"));
 
 	clearNodes( tbody, [ loading, none ] );
 
@@ -146,8 +148,11 @@ function myOPACRenewCirc(circid) {
 	alert('renewing ' + circ.id());
 	var req = new Request(RENEW_CIRC, G.user.session, circ );
 	req.send(true);
-	req.result();
+	var res = req.result();
+	alert('renew result: ' + js2JSON(res));
 	alert($('myopac_renew_success').innerHTML);	
+	checkedDrawn = false;
+	myOPACShowChecked();
 }
 
 
