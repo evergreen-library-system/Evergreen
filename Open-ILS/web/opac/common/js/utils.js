@@ -83,6 +83,11 @@ function removeChildren(dom) {
 		dom.removeChild(dom.childNodes[0]);
 }
 
+function appendClear(node, child) {
+	removeChildren(node);
+	node.appendChild(child);
+}
+
 
 function instanceOf(object, constructorFunction) {
 
@@ -226,10 +231,8 @@ function findNodeByName(root, nodeName) {
 
 	if(root.nodeType != 1) return null;
 
-	if(root.getAttribute("name") == nodeName ||
-			root.name == nodeName ) {
+	if(root.getAttribute("name") == nodeName || root.name == nodeName ) 
 		return root;
-	}
 
 	var children = root.childNodes;
 
@@ -239,7 +242,6 @@ function findNodeByName(root, nodeName) {
 	}
 
 	return null;
-
 }
 
 

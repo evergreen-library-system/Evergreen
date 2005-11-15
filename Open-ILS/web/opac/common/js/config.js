@@ -196,6 +196,10 @@ var FETCH_TRANSACTIONS			= "open-ils.actor:open-ils.actor.user.transactions.have
 var FETCH_CROSSREF				= "open-ils.search:open-ils.search.authority.crossref";
 var CREATE_HOLD					= "open-ils.circ:open-ils.circ.holds.create";
 var CANCEL_HOLD					= "open-ils.circ:open-ils.circ.hold.cancel";
+var UPDATE_USERNAME				= "open-ils.actor:open-ils.actor.user.username.update";
+var UPDATE_PASSWORD				= "open-ils.actor:open-ils.actor.user.password.update";
+var UPDATE_EMAIL					= "open-ils.actor:open-ils.actor.user.email.update";
+var RENEW_CIRC						= "open-ils.circ:open-ils.circ.renew";
 /* ---------------------------------------------------------------------------- */
 
 

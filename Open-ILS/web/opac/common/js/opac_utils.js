@@ -253,6 +253,7 @@ function grabUser(ses, force) {
 
 }
 
+
 /* sets the 'prefs' field of the user object to their preferences 
 	and returns the preferences */
 function grabUserPrefs(user, force) {

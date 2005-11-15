@@ -92,6 +92,7 @@ function myOPACShowChecked() {
 
 
 var checkedRowTemplate;
+var circsCache = new Array();
 function myOPACDrawCheckedOut(r) {
 
 
@@ -129,10 +130,24 @@ function myOPACDrawCheckedOut(r) {
 		dlink.appendChild(text(due));
 		rlink.appendChild(text(circ.renewal_remaining()));
 		unHideMe(row);
-		//rnlink /* set the renew action */
+		rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
+		circsCache.push(circ);
 
 		tbody.appendChild(row);
 	}
+}
+
+function myOPACRenewCirc(circid) {
+	var circ;
+	for( var i = 0; i != circsCache.length; i++ ) 
+		if(circsCache[i].id() == circid)
+			circ = circsCache[i];
+
+	alert('renewing ' + circ.id());
+	var req = new Request(RENEW_CIRC, G.user.session, circ );
+	req.send(true);
+	req.result();
+	alert($('myopac_renew_success').innerHTML);	
 }
 
 
@@ -324,27 +339,36 @@ function myOPACShowSummary() {
 	req.send();
 }
 
+var addrRowTemplate;
 function _myOPACSummaryShowUer(r) {
 
 	var user = r.getResultObject();
 	fleshedUser = user;
 
-	$('myopac_summary_first').appendChild(text(user.first_given_name()));
-	$('myopac_summary_middle').appendChild(text(user.second_given_name()));
-	$('myopac_summary_dayphone').appendChild(text(user.day_phone()));
-	$('myopac_summary_eveningphone').appendChild(text(user.evening_phone()));
-	$('myopac_summary_otherphone').appendChild(text(user.other_phone()));
-	$('myopac_summary_last').appendChild(text(user.family_name()));
-	$('myopac_summary_username').appendChild(text(user.usrname()));
-	$('myopac_summary_email').appendChild(text(user.email()));
-	$('myopac_summary_barcode').appendChild(text(user.card().barcode()));
-	$('myopac_summary_ident1').appendChild(text(user.ident_value()));
-	$('myopac_summary_ident2').appendChild(text(user.ident_value2()));
-	$('myopac_summary_homelib').appendChild(text(findOrgUnit(user.home_ou()).name()));
-	$('myopac_summary_create_date').appendChild(text(user.create_date()));
+	appendClear($('myopac_summary_first'),text(user.first_given_name()));
+	appendClear($('myopac_summary_middle'),text(user.second_given_name()));
+	appendClear($('myopac_summary_dayphone'),text(user.day_phone()));
+	appendClear($('myopac_summary_eveningphone'),text(user.evening_phone()));
+	appendClear($('myopac_summary_otherphone'),text(user.other_phone()));
+	appendClear($('myopac_summary_last'),text(user.family_name()));
+	appendClear($('myopac_summary_username'),text(user.usrname()));
+	appendClear($('myopac_summary_email'),text(user.email()));
+	appendClear($('myopac_summary_barcode'),text(user.card().barcode()));
+	appendClear($('myopac_summary_ident1'),text(user.ident_value()));
+	appendClear($('myopac_summary_ident2'),text(user.ident_value2()));
+	appendClear($('myopac_summary_homelib'),text(findOrgUnit(user.home_ou()).name()));
+	appendClear($('myopac_summary_create_date'),text(user.create_date()));
 
 	var tbody = $('myopac_addr_tbody');
-	var template = tbody.removeChild($('myopac_addr_row'));
+	var template;
+
+	if(addrRowTemplate) { 
+		template = addrRowTemplate;
+	} else {
+		template = tbody.removeChild($('myopac_addr_row'));
+		addrRowTemplate = template;
+	}
+
 	for( var a in user.addresses() ) {
 		var row = template.cloneNode(true);
 		myOPACDrawAddr(row, user.addresses()[a]);
@@ -353,13 +377,80 @@ function _myOPACSummaryShowUer(r) {
 }
 
 function myOPACDrawAddr(row, addr) {
-	$n(row, 'myopac_addr_type').appendChild(text(addr.address_type()));
+
+	appendClear($n(row, 'myopac_addr_type'),text(addr.address_type()));
 	var street = (addr.street2()) ? addr.street1() + ", " + addr.street2() : addr.street1();
-	$n(row, 'myopac_addr_street').appendChild(text(street));
-	$n(row, 'myopac_addr_city').appendChild(text(addr.city()));
-	$n(row, 'myopac_addr_county').appendChild(text(addr.county()));
-	$n(row, 'myopac_addr_state').appendChild(text(addr.state()));
-	$n(row, 'myopac_addr_zip').appendChild(text(addr.post_code()));
+	appendClear($n(row, 'myopac_addr_street'),text(street));
+	appendClear($n(row, 'myopac_addr_city'),text(addr.city()));
+	appendClear($n(row, 'myopac_addr_county'),text(addr.county()));
+	appendClear($n(row, 'myopac_addr_state'),text(addr.state()));
+	appendClear($n(row, 'myopac_addr_zip'),text(addr.post_code()));
+}
+
+
+function myOPACUpdateUsername() {
+	var username = $('myopac_new_username').value;
+	if(username == null || username == "") {
+		alert($('myopac_username_error').innerHTML);
+		return;
+	}
+	var req = new Request(UPDATE_USERNAME, G.user.session, username );
+	req.send(true);
+	if(req.result()) {
+		G.user.usrname(username);
+		hideMe($('myopac_update_username_row'));
+		userShown = false;
+		myOPACShowSummary();
+		return;
+	}
+
+	alert($('myopac_username_failure').innerHTML);
+}
+
+function myOPACUpdateEmail() {
+	var email = $('myopac_new_email').value;
+	if(email == null || email == "") {
+		alert($('myopac_email_error').innerHTML);
+		return;
+	}
+
+	var req = new Request(UPDATE_EMAIL, G.user.session, email );
+	req.send(true);
+	if(req.result()) {
+		G.user.usrname(email);
+		hideMe($('myopac_update_email_row'));
+		userShown = false;
+		myOPACShowSummary();
+		return;
+	}
+
+	alert($('myopac_email_failure').innerHTML);
+}
+
+
+function myOPACUpdatePassword() {
+	var curpassword = $('myopac_current_password').value;
+	var password = $('myopac_new_password').value;
+	var password2 = $('myopac_new_password2').value;
+
+	if(	curpassword == null || curpassword == "" || 
+			password == null || password == "" || 
+			password2 == null || password2 == "" || password != password2 ) {
+		alert($('myopac_password_error').innerHTML);
+		return;
+	}
+
+	var req = new Request(UPDATE_PASSWORD, G.user.session, password, curpassword );
+	req.send(true);
+	if(req.result()) {
+		G.user.usrname(password);
+		hideMe($('myopac_update_password_row'));
+		userShown = false;
+		myOPACShowSummary();
+		return;
+	}
+
+	alert($('myopac_password_failure').innerHTML);
 }
 
 
