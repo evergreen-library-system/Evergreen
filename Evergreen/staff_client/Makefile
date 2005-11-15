@@ -38,7 +38,7 @@ generated:
 	@echo
 	@echo These things are installation specific.  The staff client is the last thing you should try to build.
 	#(cd chrome/content/evergreen/util ; ${RETRIEVE_FIELDMAPPER} );
-	(cd chrome/content/evergreen/util ; ${RETRIEVE_ORG_TREE} );
+	(cd chrome/content/evergreen/Open-ILS/util/ ; ${RETRIEVE_ORG_TREE} );
 	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
 	(cd chrome/content/evergreen/Open-ILS/util/ ; ${RETRIEVE_FM_ALL} );
 
