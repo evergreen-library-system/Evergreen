@@ -19,6 +19,8 @@
 	<script>
 	<![CDATA[
 
+		var cols = 20; var rows = 3; var divider = 0;
+
 		function spine_label_init() {
 			var spine_labels; try { spine_labels = params.spine_labels; } catch(E) { sdump('D_ERROR',js2JSON(E) + '\n'); }
 			if (!spine_labels) spine_labels = [ [ 'A Call Number', '1' ] ];
@@ -38,10 +40,21 @@
 					count_tb.setAttribute('value',count);
 				btn.addEventListener('command',
 					function() {
-						sPrint(label_tb.value + '<br />', false);	
+						sPrint(label2html(label_tb.value), false);	
 					}, false
 				);
 			}
+		}
+
+		function label2html(s) {
+			var html = '';
+			var a = s.split('\n');
+			for (var i in a) {
+				if (i < rows) {
+					html += a[i].substr(0,cols) + print_crlf;
+				}
+			}
+			return html;
 		}
 
 	]]>
