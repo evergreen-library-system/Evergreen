@@ -28,6 +28,8 @@ function formatted_date(date,format) {
 		} else {
 			date = new Date( parseInt( date + '000' ) );
 		}
+	} else if (typeof(date) == 'undefined') {
+		date = new Date( parseInt( date + '000' ) );
 	}
 	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
 	var dd = date.getDate().toString(); if (dd.length == 1) dd = '0' +dd;
