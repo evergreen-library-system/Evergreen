@@ -10,6 +10,26 @@ CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	}
 $$ LANGUAGE 'plperl' STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION public.first_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
+	SELECT CASE WHEN $1 IS NULL THEN $2 ELSE $1 END;
+$$ LANGUAGE SQL STABLE;
+
+CREATE AGGREGATE public.first (
+	sfunc	 = public.first_agg,
+	basetype = anyelement,
+	stype	 = anyelement
+);
+
+CREATE OR REPLACE FUNCTION public.last_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
+	SELECT $2;
+$$ LANGUAGE SQL STABLE;
+
+CREATE AGGREGATE public.last (
+	sfunc	 = public.last_agg,
+	basetype = anyelement,
+	stype	 = anyelement
+);
+
 CREATE OR REPLACE FUNCTION public.text_concat ( TEXT, TEXT ) RETURNS TEXT AS $$
 SELECT
 	CASE	WHEN $1 IS NULL
