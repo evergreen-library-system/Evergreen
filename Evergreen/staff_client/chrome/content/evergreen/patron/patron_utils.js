@@ -310,7 +310,6 @@ function patron_pay_bills( payment_blob ) {
 			'open-ils.circ.money.payment',
 			[ mw.G.auth_ses[0], payment_blob ]
 		)[0];
-		alert( pretty_print( js2JSON( result ) ) );
 		return true;
 	} catch(E) {
 		handle_error(E);
