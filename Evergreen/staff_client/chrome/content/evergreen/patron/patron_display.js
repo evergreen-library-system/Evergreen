@@ -26,6 +26,7 @@ function patron_display_init(p) {
 
 	p.set_patron = function (au) {
 		p.patron_edit._patron = au;
+		p.patron_bills._patron = au;
 		return p._patron = au;
 	}
 
