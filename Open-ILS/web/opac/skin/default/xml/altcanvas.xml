@@ -14,11 +14,35 @@
 	<!-- ============================================================================= -->
 	<!-- Register the alternate canvases  -->
 	<script language='javascript'>
-		config.ids.altcanvas.login		= config.ids.login.box;
-		config.ids.altcanvas.org_tree	 = config.ids.common.org_container;
+		config.ids.altcanvas.login			= config.ids.login.box;
+		config.ids.altcanvas.org_tree		= config.ids.common.org_container;
 		config.ids.altcanvas.holds			= 'holds_box';
+		config.ids.altcanvas.loading		= 'loading_alt';
 	</script>
 
 	<xi:include href='holds.xml'/>
+
+	<div id='loading_alt' class='hide_me non_canvas' style='margin-top: 6px;'>
+		<div style='margin-top: 30px; text-align: left; font-weight: 700;' class='color_3'>
+			<span > Loading </span>
+			<span id='loading_alt_span'> </span>
+			<script language='javascript'>
+				var __id;
+				var __count = 300;
+				var __dot;
+				var __idx = 0;
+				var __slashes = [ '-', '\\\\', '|', '/' ];
+				function __loading() { 
+					if( __count-- == 0 ) return;
+					__dot = __slashes[__idx++];
+					if(__idx == 4) __idx = 0;
+					__id = setTimeout(
+						"appendClear($('loading_alt_span'), text('"+__dot+"'));__loading();", 100);
+				}
+				__loading();
+				function __killPinwheel(){ __count = 0; }
+			</script>
+		</div>
+	</div>
 
 </div>

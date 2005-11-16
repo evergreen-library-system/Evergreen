@@ -331,6 +331,13 @@ function updateUserSetting(setting, value, user) {
 	return req.result();
 }
 
+function commitUserPrefs() {
+	var req = new Request( 
+		UPDATE_USER_PREFS, G.user.session, G.user.prefs );
+	req.send(true);
+	return req.result();
+}
+
 function grabSkinFromURL() {
 	var path = findBasePath();
 	path = path.replace("/xml/", "");

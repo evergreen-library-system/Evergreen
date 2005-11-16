@@ -332,8 +332,36 @@ function myOPACShowTransactions(r) {
 	}
 }
 
+function myOPACSavePrefs() {
+	G.user.prefs['opac.hits_per_page'] = 
+		$('prefs_hits_per').options[$('prefs_hits_per').selectedIndex].value;
+	if(commitUserPrefs())
+		alert($('prefs_update_success').innerHTML);
+	else alert($('prefs_update_failure').innerHTML);
+}
+
 
 function myOPACShowPrefs() {
+	grabUserPrefs();
+	myOPACShowHitsPer();
+	hideMe($('myopac_prefs_loading'));
+	unHideMe($('myopac_prefs_row'));
+}
+
+function myOPACShowHitsPer() {
+	var hits = 10;
+	if(G.user.prefs['opac.hits_per_page'])
+		hits = G.user.prefs['opac.hits_per_page'];
+
+	var hitsSel = $('prefs_hits_per');
+
+	for( var o in hitsSel.options ) {
+		var opt = hitsSel.options[o];
+		if( hits == opt.value ) {
+			opt.selected = true;
+			hitsSel.selectedIndex = o;
+		}
+	}
 }
 
 var userShown = false;

@@ -2,24 +2,54 @@
 
 <div id='myopac_prefs_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<table width='100%' class='light_border myopac_table'>
+	<table width='100%' class='data_grid'>
 
 		<br/>
-		<thead class='color_3'>
-			<tr><td style='background: none;' align='center' colspan='4'><b>Preferences</b></td></tr>
+		<thead>
 			<tr>
-				<td width=''>More To Come...</td>
+				<td colspan='2' align='center'>
+					<b>Preferences</b>
+				</td>
 			</tr>
+			<!--
+			<tr>
+				<td >More To Come...</td>
+			</tr>
+			-->
 		</thead>
 
 		<tbody id='myopac_prefs_tbody'>
-			<!--
 			<tr id='myopac_prefs_loading'><td>Loading...</td></tr>
-			-->
 			<tr id='myopac_prefs_row' class='light_border hide_me'>
+				<td width='50%'>Search hits per page</td>
+				<td>
+					<select id='prefs_hits_per'>
+						<option>5</option>
+						<option>10</option>
+						<option>15</option>
+						<option>20</option>
+						<option>25</option>
+						<option>50</option>
+					</select>
+				</td>
 			</tr>
+
+			<tr>
+				<td align='middle' colspan='2'>
+					<button onclick='myOPACSavePrefs();' 
+						id='myopac_prefs_submit'>Save Changes</button>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan='2' align='center'><br/><b> * More To Come...</b></td>
+			</tr>
+
 		</tbody>
 	</table>
+
+	<div class='hide_me' id='prefs_update_success'>Preferences successfully updated</div>
+	<div class='hide_me' id='prefs_update_failure'>Preferences update failed!</div>
 
 </div>
 

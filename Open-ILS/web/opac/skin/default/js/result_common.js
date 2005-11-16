@@ -75,6 +75,8 @@ function resultPaginate() {
 /* display the record info in the record display table 'pos' is the 
 		zero based position the record should have in the display table */
 function resultDisplayRecord(rec, pos, is_mr) {
+	showCanvas();
+	try{killPinwheel();}catch(E){}
 
 	if(rec == null) rec = new mvr(); /* so the page won't die if there was an error */
 	recordsHandled++;
@@ -158,6 +160,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	runEvt("result", "recordDrawn", rec.doc_id(), title_link);
 
 	if(resultPageIsDone())  {
+		//showCanvas();
 		/* hide the 'now loading...' message */
 		/*
 		hideMe(G.ui.common.loading);
