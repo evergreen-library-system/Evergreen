@@ -135,7 +135,9 @@ sub fast_fieldmapper {
 sub retrieve {
 	my $self = shift;
 	my $arg = shift;
-	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
+	if (ref($arg) &&
+		(UNIVERSAL::isa($arg => 'Fieldmapper') ||
+		 UNIVERSAL::isa($arg => 'Class::DBI')) ) {
 		my ($col) = $self->primary_column;
 		$log->debug("Using field $col as the primary key", INTERNAL);
 		$arg = $arg->$col;
@@ -277,11 +279,7 @@ sub delete {
 
 	my $class = ref($self) || $self;
 
-	if (ref($arg) and UNIVERSAL::isa($arg => 'Fieldmapper')) {
-		$arg = $arg->id;
-	}
-
-	$self = $self->retrieve($arg);
+	$self = $self->retrieve($arg) if (!ref($self));
 	unless (defined $self) {
 		$log->debug("ARG! Couldn't retrieve record ".$arg->id, DEBUG);
 		throw OpenSRF::EX::WARN ("ARG! Couldn't retrieve record ");
