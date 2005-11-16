@@ -47,10 +47,17 @@ sub set_user_settings {
 		}
 	}
 
-	$set_user_settings ||=
-		$self->method_lookup('open-ils.storage.direct.actor.user_setting.batch.merge');
+#	$set_user_settings ||=
+#		$self->method_lookup('open-ils.storage.direct.actor.user_setting.batch.merge');
 
-	return $set_user_settings->run(map { [{ usr => $uid, name => $_}, {value => $$settings{$_}}] } keys %$settings);
+#	return $set_user_settings->run(map { [{ usr => $uid, name => $_}, {value => $$settings{$_}}] } keys %$settings);
+
+	return $apputils->simple_scalar_request(
+		'open-ils.storage',
+		'open-ils.storage.direct.actor.user_setting.batch.merge',
+		map { [{ usr => $uid, name => $_}, {value => $$settings{$_}}] } keys %$settings );
+
+	
 }
 
 
@@ -100,10 +107,10 @@ sub user_settings {
 		}
 	}
 
-	$fetch_user_settings ||=
-		$self->method_lookup('open-ils.storage.direct.actor.user_setting.search.usr.atomic');
-
-	my ($s) = $fetch_user_settings->run($uid);
+	warn "fetching user settings for $uid...\n";
+	my $s = $apputils->simple_scalar_request(
+		'open-ils.storage',
+		'open-ils.storage.direct.actor.user_setting.search.usr.atomic',$uid );
 
 	return { map { ($_->name,$_->value) } @$s };
 }
