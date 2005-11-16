@@ -5,7 +5,7 @@
 <wizard id="spine_label" title="Spine Label Wizard"
 	orient="vertical" style="overflow: auto"
 	onload="spine_label_init()" width="800" height="600"
-	onwizardfinish=""
+	onwizardfinish="print_all_labels()"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- Overlays for this XUL file -->
@@ -19,10 +19,10 @@
 	<script>
 	<![CDATA[
 
-		var cols = 20; var rows = 3; var divider = 0;
+		var spine_labels;
 
 		function spine_label_init() {
-			var spine_labels; try { spine_labels = params.spine_labels; } catch(E) { sdump('D_ERROR',js2JSON(E) + '\n'); }
+			try { spine_labels = params.spine_labels; } catch(E) { sdump('D_ERROR',js2JSON(E) + '\n'); }
 			if (!spine_labels) spine_labels = [ [ 'A Call Number', '1' ] ];
 			var rows = document.getElementById('page1_rows');
 			for (var i = 0; i < spine_labels.length; i++) {
@@ -35,9 +35,11 @@
 				var label_tb = document.createElement('textbox'); row.appendChild(label_tb);
 					label_tb.setAttribute('multiline','true');
 					label_tb.setAttribute('value',label);
+					label_tb.setAttribute('name','label_' + i);
 				var count_tb = document.createElement('textbox'); row.appendChild(count_tb);
 					count_tb.setAttribute('multiline','true');
 					count_tb.setAttribute('value',count);
+					count_tb.setAttribute('name','count_' + i);
 				btn.addEventListener('command',
 					function() {
 						sPrint(label2html(label_tb.value), false);	
@@ -46,13 +48,29 @@
 			}
 		}
 
+		function print_all_labels() {
+			var html = '';
+			for (var i = 0; i < spine_labels.length; i++) {
+				var label = document.getElementsByAttribute('name','label_'+i)[0].value;
+				var count = document.getElementsByAttribute('name','count_'+i)[0].value;
+				for (var j = 0; j < count; j++) {
+					html += label2html(label);
+				}
+			}
+			sPrint(html, false);
+		}
+
 		function label2html(s) {
 			var html = '';
 			var a = s.split('\n');
-			for (var i in a) {
-				if (i < rows) {
-					html += a[i].substr(0,cols) + print_crlf;
+			for (var i = 0; i < document.getElementById('rows').value; i++) {
+				if (typeof a[i] != 'undefined' ) {
+					html += a[i].substr(0,document.getElementById('cols').value);
 				}
+				html += print_crlf;
+			}
+			for (var i = 0; i < document.getElementById('between').value; i++) {
+				html += print_crlf;
 			}
 			return html;
 		}
@@ -65,6 +83,8 @@
 		<grid>
 			<columns> <column flex="0" /> <column flex="1" /> <column flex="0" /> </columns>
 			<rows id="page1_rows">
+				<row><spacer/><description>For this Pre-Beta release, we're focusing on the dot-matrix printers used by PINES.  In the future, we will support all manner of label sheets with various printers.  We'll also have optional template variables for things like shelving location, copy number, and barcode.  For now, please check the character dimensions for a spine label and the number of lines between labels:</description><grid><columns><column/><column/></columns><rows><row><label value="Columns"/><textbox id="cols" value="30"/></row><row><label value="Rows"/><textbox id="rows" value="3"/></row><row><label value="Lines Between"/><textbox id="between" value="2"/></row></rows></grid></row>
+				<row><spacer/></row>
 				<row><spacer/><label value="Label" /><label value="Print This Many"/></row>
 			</rows>
 		</grid>

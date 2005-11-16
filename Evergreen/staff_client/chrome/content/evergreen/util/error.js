@@ -3,7 +3,7 @@ sdump('D_TRACE',"Loading error.js\n");
 var consoleService = Components.classes['@mozilla.org/consoleservice;1']
 	.getService(Components.interfaces.nsIConsoleService);
 
-var printDebug = false;
+var printDebug = true;
 var consoleDump = true;
 var debugDump = true;
 var arg_dump_full = false;
