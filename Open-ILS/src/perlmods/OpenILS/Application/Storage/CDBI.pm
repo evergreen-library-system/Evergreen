@@ -310,15 +310,20 @@ sub debug_object {
 	$string .= "Object type:\t".ref($obj)."\n";
 	$string .= "Object string:\t$obj\n";
 
-	if (ref($obj) && ref($obj) =~ /Fieldmapper/o ) {
+	if (ref($obj) && UNIVERSAL::isa($obj => 'Fieldmapper')) {
 		$string .= "Object fields:\n";
 		for my $col ($obj->real_fields()) {
-			$string .= "\t$col\t=>".$obj->$col."\n";
+			$string .= "\t$col\t=> ".$obj->$col."\n";
 		}
-	} elsif (ref($obj)) {
+	} elsif (ref($obj) && UNIVERSAL::isa($obj => 'Class::DBI')) {
 		$string .= "Object cols:\n";
 		for my $col ($obj->columns('All')) {
-			$string .= "\t$col\t=>".$obj->$col."\n";
+			$string .= "\t$col\t=> ".$obj->$col."\n";
+		}
+	} elsif (ref($obj) && UNIVERSAL::isa($obj => 'HASH')) {
+		$string .= "Object keys and vals:\n";
+		for my $col (keys %$obj) {
+			$string .= "\t$col\t=> $$obj{$col}\n";
 		}
 	}
 
