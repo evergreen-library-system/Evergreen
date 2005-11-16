@@ -18,6 +18,7 @@ CREATE TABLE money.billing (
 	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	voided		BOOL				NOT NULL DEFAULT FALSE,
 	amount		NUMERIC(6,2)			NOT NULL,
+	billing_type	TEXT				NOT NULL,
 	note		TEXT
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
@@ -39,22 +40,24 @@ CREATE OR REPLACE VIEW money.payment_view AS
 
 CREATE OR REPLACE VIEW money.transaction_billing_summary AS
 	SELECT	xact,
-		note AS last_billing_note,
+		billing_type AS last_billing_type,
+		LAST(note) AS last_billing_note,
 		MAX(billing_ts) AS last_billing_ts,
 		SUM(COALESCE(amount,0)) AS total_owed
 	  FROM	money.billing
 	  WHERE	voided IS FALSE
-	  GROUP BY xact,note
+	  GROUP BY xact,billing_type
 	  ORDER BY MAX(billing_ts);
 
 CREATE OR REPLACE VIEW money.transaction_payment_summary AS
 	SELECT	xact,
-		note AS last_payment_note,
+		payment_type AS last_payment_type,
+		LAST(note) AS last_payment_note,
 		MAX(payment_ts) as last_payment_ts,
 		SUM(COALESCE(amount,0)) AS total_paid
-	  FROM	money.payment
+	  FROM	money.payment_view
 	  WHERE	voided IS FALSE
-	  GROUP BY xact,note
+	  GROUP BY xact,payment_type
 	  ORDER BY MAX(payment_ts);
 
 CREATE OR REPLACE VIEW money.billable_xact_summary AS
@@ -65,9 +68,11 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 		credit.total_paid,
 		credit.last_payment_ts,
 		credit.last_payment_note,
+		credit.last_payment_type,
 		debit.total_owed,
 		debit.last_billing_ts,
 		debit.last_billing_note,
+		debit.last_billing_type,
 		COALESCE(debit.total_owed,0) - COALESCE(credit.total_paid,0) AS balance_owed,
 		p.relname AS xact_type
 	  FROM	money.billable_xact xact
