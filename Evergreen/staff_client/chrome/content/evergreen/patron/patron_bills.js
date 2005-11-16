@@ -172,7 +172,7 @@ function patron_bills_init(p) {
 		false
 	);
 
-	p.control_box.bill_apply_payment.addEventListener(
+	p.control_box.bill_wizard.addEventListener(
 		'command',
 		function() {
 			spawn_bill_wizard(
