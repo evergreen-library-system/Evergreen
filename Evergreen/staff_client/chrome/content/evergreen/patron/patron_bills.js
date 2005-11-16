@@ -170,6 +170,16 @@ function patron_bills_init(p) {
 		false
 	);
 
+	p.control_box.bill_apply_payment.addEventListener(
+		'command',
+		function() {
+			spawn_bill_wizard(
+				p.w.document, 'new_window', '', {}
+			);
+		},
+		false
+	);
+
 	sdump('D_TRACE_EXIT',arg_dump(arguments));
 	return p;
 }
@@ -178,6 +188,7 @@ function patron_bills_control_box_init( p ) {
 	p.control_box = {};
 	p.control_box.node = p.node.previousSibling;
 	p.control_box.node2 = p.node.nextSibling;
+	p.control_box.bill_wizard = p.control_box.node.getElementsByAttribute('id','bill_wizard')[0];
 	p.control_box.bill_total_owed = p.control_box.node.getElementsByAttribute('id','bill_total_owed')[0];
 	p.control_box.payment_type = p.control_box.node.getElementsByAttribute('id','payment_type_menulist')[0];
 	p.control_box.bill_payment_amount = p.control_box.node.getElementsByAttribute('id','bill_payment_amount_textbox')[0];
