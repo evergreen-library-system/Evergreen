@@ -144,12 +144,18 @@ sub _init {
 		'Fieldmapper::money::billing'			=> { hint => 'mb'  },
 		'Fieldmapper::money::billable_transaction'	=> { hint => 'mbt'  },
 
+		'Fieldmapper::money::open_user_summary'		=> { hint	=> 'mous',
+								     readonly	=> 1 },
 		'Fieldmapper::money::user_summary'		=> { hint	=> 'mus',
 								     readonly	=> 1 },
 
+		'Fieldmapper::money::open_user_circulation_summary'	=> { hint	=> 'moucs',
+									     readonly	=> 1 },
 		'Fieldmapper::money::user_circulation_summary'	=> { hint	=> 'mucs',
 								     readonly	=> 1 },
 
+		'Fieldmapper::money::open_billable_transaction_summary'	=> { hint	=> 'mobts',
+									     readonly	=> 1 },
 		'Fieldmapper::money::billable_transaction_summary'	=> { hint	=> 'mbts',
 									     readonly	=> 1 },
 

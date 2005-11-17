@@ -38,7 +38,7 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	  FROM	money.payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
-CREATE OR REPLACE VIEW money.transaction_billing_summary AS
+CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	SELECT	xact,
 		billing_type AS last_billing_type,
 		LAST(note) AS last_billing_note,
@@ -49,15 +49,59 @@ CREATE OR REPLACE VIEW money.transaction_billing_summary AS
 	  GROUP BY xact,billing_type
 	  ORDER BY MAX(billing_ts);
 
+CREATE OR REPLACE VIEW money.transaction_billing_summary AS
+	SELECT	xact,
+		LAST(billing_type) AS last_billing_type,
+		LAST(note) AS last_billing_note,
+		MAX(billing_ts) AS last_billing_ts,
+		SUM(COALESCE(amount,0)) AS total_owed
+	  FROM	money.billing
+	  WHERE	voided IS FALSE
+	  GROUP BY xact
+	  ORDER BY MAX(billing_ts);
+
 CREATE OR REPLACE VIEW money.transaction_payment_summary AS
 	SELECT	xact,
-		payment_type AS last_payment_type,
+		LAST(payment_type) AS last_payment_type,
 		LAST(note) AS last_payment_note,
 		MAX(payment_ts) as last_payment_ts,
 		SUM(COALESCE(amount,0)) AS total_paid
 	  FROM	money.payment_view
 	  WHERE	voided IS FALSE
-	  GROUP BY xact,payment_type
+	  GROUP BY xact
+	  ORDER BY MAX(payment_ts);
+
+CREATE OR REPLACE VIEW money.open_transaction_billing_type_summary AS
+	SELECT	xact,
+		billing_type AS last_billing_type,
+		LAST(note) AS last_billing_note,
+		MAX(billing_ts) AS last_billing_ts,
+		SUM(COALESCE(amount,0)) AS total_owed
+	  FROM	money.billing
+	  WHERE	voided IS FALSE
+	  GROUP BY xact,billing_type
+	  ORDER BY MAX(billing_ts);
+
+CREATE OR REPLACE VIEW money.open_transaction_billing_summary AS
+	SELECT	xact,
+		LAST(billing_type) AS last_billing_type,
+		LAST(note) AS last_billing_note,
+		MAX(billing_ts) AS last_billing_ts,
+		SUM(COALESCE(amount,0)) AS total_owed
+	  FROM	money.billing
+	  WHERE	voided IS FALSE
+	  GROUP BY xact
+	  ORDER BY MAX(billing_ts);
+
+CREATE OR REPLACE VIEW money.open_transaction_payment_summary AS
+	SELECT	xact,
+		LAST(payment_type) AS last_payment_type,
+		LAST(note) AS last_payment_note,
+		MAX(payment_ts) as last_payment_ts,
+		SUM(COALESCE(amount,0)) AS total_paid
+	  FROM	money.payment_view
+	  WHERE	voided IS FALSE
+	  GROUP BY xact
 	  ORDER BY MAX(payment_ts);
 
 CREATE OR REPLACE VIEW money.billable_xact_summary AS
@@ -78,8 +122,45 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	  FROM	money.billable_xact xact
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 	  	LEFT JOIN money.transaction_billing_summary debit ON (xact.id = debit.xact)
+	  	LEFT JOIN money.transaction_payment_summary credit ON (xact.id = credit.xact);
+
+CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
+	SELECT	xact.id AS id,
+		xact.usr AS usr,
+		xact.xact_start AS xact_start,
+		xact.xact_finish AS xact_finish,
+		credit.total_paid,
+		credit.last_payment_ts,
+		credit.last_payment_note,
+		credit.last_payment_type,
+		debit.total_owed,
+		debit.last_billing_ts,
+		debit.last_billing_note,
+		debit.last_billing_type,
+		COALESCE(debit.total_owed,0) - COALESCE(credit.total_paid,0) AS balance_owed,
+		p.relname AS xact_type
+	  FROM	money.billable_xact xact
+	  	JOIN pg_class p ON (xact.tableoid = p.oid)
+	  	LEFT JOIN money.transaction_billing_summary debit ON (xact.id = debit.xact)
 	  	LEFT JOIN money.transaction_payment_summary credit ON (xact.id = credit.xact)
 	  WHERE	xact.xact_finish IS NULL;
+
+CREATE OR REPLACE VIEW money.open_usr_summary AS
+	SELECT	usr,
+		SUM(total_paid) AS total_paid,
+		SUM(total_owed) AS total_owed, 
+		SUM(balance_owed) AS balance_owed
+	  FROM money.open_billable_xact_summary
+	  GROUP BY 1;
+
+CREATE OR REPLACE VIEW money.open_usr_circulation_summary AS
+	SELECT	usr,
+		SUM(total_paid) AS total_paid,
+		SUM(total_owed) AS total_owed, 
+		SUM(balance_owed) AS balance_owed
+	  FROM	money.open_billable_xact_summary
+	  WHERE	xact_type = 'circulation'
+	  GROUP BY 1;
 
 CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,

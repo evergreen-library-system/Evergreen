@@ -53,14 +53,29 @@
 	money::forgive_payment->sequence( 'money.payment_id_seq' );
 
 	#---------------------------------------------------------------------
+	package money::open_billable_transaction_summary;
+	
+	money::open_billable_transaction_summary->table( 'money.open_billable_xact_summary' );
+
+	#---------------------------------------------------------------------
 	package money::billable_transaction_summary;
 	
 	money::billable_transaction_summary->table( 'money.billable_xact_summary' );
 
 	#---------------------------------------------------------------------
+	package money::open_user_summary;
+	
+	money::open_user_summary->table( 'money.open_usr_summary' );
+
+	#---------------------------------------------------------------------
 	package money::user_summary;
 	
 	money::user_summary->table( 'money.usr_summary' );
+
+	#---------------------------------------------------------------------
+	package money::open_user_circulation_summary;
+	
+	money::open_user_circulation_summary->table( 'money.open_usr_circulation_summary' );
 
 	#---------------------------------------------------------------------
 	package money::user_circulation_summary;

@@ -14,9 +14,23 @@ __PACKAGE__->columns(Essential => qw/xact_start usr/);
 __PACKAGE__->columns(Others => qw/xact_finish/);
 #-------------------------------------------------------------------------------
 
+package money::open_user_summary;
+use base qw/money/;
+__PACKAGE__->table('money_open_user_summary');
+__PACKAGE__->columns(Primary => 'usr');
+__PACKAGE__->columns(Essential => qw/total_paid total_owed balance_owed/);
+#-------------------------------------------------------------------------------
+
 package money::user_summary;
 use base qw/money/;
 __PACKAGE__->table('money_user_summary');
+__PACKAGE__->columns(Primary => 'usr');
+__PACKAGE__->columns(Essential => qw/total_paid total_owed balance_owed/);
+#-------------------------------------------------------------------------------
+
+package money::open_user_circulation_summary;
+use base qw/money/;
+__PACKAGE__->table('money_open_user_circulation_summary');
 __PACKAGE__->columns(Primary => 'usr');
 __PACKAGE__->columns(Essential => qw/total_paid total_owed balance_owed/);
 #-------------------------------------------------------------------------------
@@ -26,6 +40,16 @@ use base qw/money/;
 __PACKAGE__->table('money_user_circulation_summary');
 __PACKAGE__->columns(Primary => 'usr');
 __PACKAGE__->columns(Essential => qw/total_paid total_owed balance_owed/);
+#-------------------------------------------------------------------------------
+
+package money::open_billable_transaction_summary;
+use base qw/money/;
+__PACKAGE__->table('money_open_billable_transaction_summary');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact_start usr xact_finish total_paid
+				     last_payment_ts total_owed last_billing_ts
+				     balance_owed xact_type last_billing_note last_billing_type
+				     last_payment_note last_payment_type/);
 #-------------------------------------------------------------------------------
 
 package money::billable_transaction_summary;
