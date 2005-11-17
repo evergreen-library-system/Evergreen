@@ -41,9 +41,10 @@
 											</td>
 											<td align='right' style='padding-right: 7px;'>
 												<span style='padding-right: 15px;'>
-													<a id='rdetail_place_hold'>Place Hold</a>
+													<a id='rdetail_place_hold' class='classic_link'>Place Hold</a>
 												</span>
-												<a href="javascript:void(0);" id='rdetail_view_marc'>&rdetail.detailMain.viewMarc;</a>
+												<a href="javascript:void(0);" id='rdetail_view_marc'
+													class='classic_link'>&rdetail.detailMain.viewMarc;</a>
 											</td>
 										</tr>
 									</tbody>

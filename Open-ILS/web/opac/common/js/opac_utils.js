@@ -249,6 +249,10 @@ function grabUser(ses, force) {
 	cookie.put(COOKIE_SES, ses);
 	cookie.write();
 
+	grabUserPrefs();
+	if(G.user.prefs['opac.hits_per_page'])
+		COUNT = parseInt(G.user.prefs['opac.hits_per_page']);
+
 	return G.user;
 
 }

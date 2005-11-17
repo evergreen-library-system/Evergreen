@@ -170,4 +170,7 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 .myopac_update_cell { border: 3px solid #E0E0E0; width:100%; padding-top: 4px; padding-bottom: 4px;}
 .myopac_update_span { padding: 5px;}
 
-#result_low_hits { border-top: 2px solid #A7EA9D; text-align: center; }
+#result_low_hits { border-top: 2px solid #A7EA9D }
+
+.lowhits_div { width: 100%; border-top: 1px solid #E0E0E0; text-align: center; 
+	padding-top: 8px; padding-bottom: 8px; }/*margin-top:15px; vertical-align: middle; }*/

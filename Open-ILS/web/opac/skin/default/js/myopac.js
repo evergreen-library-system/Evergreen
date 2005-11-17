@@ -266,7 +266,7 @@ function _myOPACShowFines(r) {
 	var total	= "0.00"; /* localization? */
 	var paid		= "0.00";
 	var balance = "0.00";
-	if( instanceOf(summary,mus) ) {
+	if( instanceOf(summary,mous) ) {
 
 		total		= _finesFormatNumber(summary.total_owed());
 		paid		= _finesFormatNumber(summary.total_paid());
@@ -403,6 +403,7 @@ function _myOPACSummaryShowUer(r) {
 		template = tbody.removeChild($('myopac_addr_row'));
 		addrRowTemplate = template;
 	}
+	removeChildren(tbody);
 
 	for( var a in user.addresses() ) {
 		var row = template.cloneNode(true);
