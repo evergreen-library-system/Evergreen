@@ -1,12 +1,16 @@
 
 var recordsHandled = 0;
 var recordsCache = [];
+var lowHitCount = 4;
 
 /* set up the event handlers */
 G.evt.result.hitCountReceived.push(resultSetHitInfo);
 G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
+
+attachEvt('result','lowHits',resultLowHits);
+attachEvt('result','zeroHits',resultZeroHits);
 
 attachEvt( "common", "locationUpdated", resultSBSubmit );
 function resultSBSubmit(){searchBarSubmit();}
@@ -24,6 +28,13 @@ function resultFinalPageIndex() {
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
 function resultSetHitInfo() { 
+	if(getHitCount() <= lowHitCount)
+		runEvt('result', 'lowHits');
+	if(getHitCount() == 0) {
+		runEvt('result', 'zeroHits');
+		return;
+	}
+
 	var c;  
 	if( getDisplayCount() > (getHitCount() - getOffset()))  c = getHitCount();
 	else c = getDisplayCount() + getOffset();
@@ -38,6 +49,134 @@ function resultSetHitInfo() {
 	G.ui.result.offset_end.appendChild(text(c));
 	G.ui.result.result_count.appendChild(text(getHitCount()));
 	unHideMe(G.ui.result.info);
+}
+
+function resultLowHits() {
+	try{searchTimer.stop()}catch(e){}
+	showCanvas();
+	unHideMe($('result_low_hits'));
+	if(getHitCount() > 0)
+		unHideMe($('result_low_hits_msg'));
+
+	var sreq = new Request(CHECK_SPELL, getTerm());
+	sreq.callback(resultSuggestSpelling);
+	sreq.send();
+
+	var words = getTerm().split(' ');
+	var word;
+	while( word = words.shift() ) {
+		var areq = new Request(FETCH_CROSSREF, getStype(), getTerm() );
+		areq.callback(resultLowHitXRef);
+		areq.send();
+	}
+
+	if( !(getForm() == null || getForm() == 'all' || getForm == "") ) {
+		var a = {};
+		a[PARAM_FORM] = "all";
+		$('low_hits_remove_format_link').setAttribute('href',buildOPACLink(a));
+		unHideMe($('low_hits_remove_format'));
+	}
+}
+
+var lowHitsXRefLink;
+var lowHitsXRefLinkParent;
+function resultLowHitXRef(r) {
+	if(!lowHitsXRefLink){
+		lowHitsXRefLinkParent = $('low_hits_xref_link').parentNode;
+		lowHitsXRefLink = lowHitsXRefLinkParent.removeChild($('low_hits_xref_link'));
+	}
+	var res = r.getResultObject();
+	var arr = res.from;
+	arr.concat(res.also);
+	if(arr && arr.length > 0) {
+		unHideMe($('low_hits_cross_ref'));
+		var word;
+		var c = 0;
+		while( word = arr.shift() ) {
+			if(c++ > 20) break;
+			var a = {};
+			a[PARAM_TERM] = word;
+			var template = lowHitsXRefLink.cloneNode(true);
+			template.setAttribute('href',buildOPACLink(a));
+			template.appendChild(text(word));
+			lowHitsXRefLinkParent.appendChild(template);
+			lowHitsXRefLinkParent.appendChild(text(' '));
+		}
+	}
+}
+
+function resultZeroHits() {
+	unHideMe($('result_zero_hits_msg'));
+	resultExpandSearch();
+	resultSuggestSearchClass();
+}
+
+function resultExpandSearch() {
+	var top = findOrgDepth(globalOrgTree);
+	if(getDepth() == top) return;
+	unHideMe($('low_hits_expand_range'));
+	var par = $('low_hits_expand_link').parentNode;
+	var template = par.removeChild($('low_hits_expand_link'));
+
+	var bottom = getDepth();
+	while( top < bottom ) {
+		var a = {};
+		a[PARAM_DEPTH] = top;
+		var temp = template.cloneNode(true);
+		temp.appendChild(text(findOrgTypeFromDepth(top).opac_label()))
+		temp.setAttribute('href',buildOPACLink(a));
+		par.appendChild(temp);
+		top++;
+	}
+}
+
+function resultSuggestSearchClass() {
+	var stype = getStype();
+	if(stype == STYPE_KEYWORD) return;
+	var a = {}; var ref;
+	unHideMe($('low_hits_search_type'));
+	if(stype != STYPE_TITLE) {
+		ref = $('low_hits_title_search');
+		unHideMe(ref);
+		a[PARAM_STYPE] = STYPE_TITLE;
+		ref.setAttribute('href',buildOPACLink(a));
+	}
+	if(stype != STYPE_AUTHOR) {
+		ref = $('low_hits_author_search');
+		unHideMe(ref);
+		a[PARAM_STYPE] = STYPE_AUTHOR;
+		ref.setAttribute('href',buildOPACLink(a));
+	}
+	if(stype != STYPE_SUBJECT) {
+		ref = $('low_hits_subject_search');
+		unHideMe(ref);
+		a[PARAM_STYPE] = STYPE_SUBJECT;
+		ref.setAttribute('href',buildOPACLink(a));
+	}
+	if(stype != STYPE_KEYWORD) {
+		ref = $('low_hits_keyword_search');
+		unHideMe(ref);
+		a[PARAM_STYPE] = STYPE_KEYWORD;
+		ref.setAttribute('href',buildOPACLink(a));
+	}
+	if(stype != STYPE_SERIES) {
+		ref = $('low_hits_series_search');
+		unHideMe(ref);
+		a[PARAM_STYPE] = STYPE_SERIES;
+		ref.setAttribute('href',buildOPACLink(a));
+	}
+}
+
+function resultSuggestSpelling(r) {
+	var res = r.getResultObject();
+	if(res) {
+		unHideMe($('did_you_mean'));
+		var arg = {};
+		arg[PARAM_TERM] = res;
+		$('spell_check_link').setAttribute(
+			'href', buildOPACLink(arg) );
+		$('spell_check_link').appendChild(text(res));
+	}
 }
 
 
@@ -69,14 +208,15 @@ function resultPaginate() {
 	}
 	if(getDisplayCount() < getHitCount())
 		unHideMe($('start_end_links_span'));
+
+	showCanvas();
+	try{searchTimer.stop()}catch(e){}
 }
 
 
 /* display the record info in the record display table 'pos' is the 
 		zero based position the record should have in the display table */
 function resultDisplayRecord(rec, pos, is_mr) {
-	showCanvas();
-	try{killPinwheel();}catch(E){}
 
 	if(rec == null) rec = new mvr(); /* so the page won't die if there was an error */
 	recordsHandled++;

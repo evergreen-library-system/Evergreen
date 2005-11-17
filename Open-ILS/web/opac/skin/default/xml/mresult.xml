@@ -22,13 +22,13 @@
 					</td>
 					<td id='main_right_cell'>
 						<div id='canvas' class='canvas'>
-						<xi:include href="searchbar.xml"/>
-						<xi:include href="statusbar.xml"/>
-						<xi:include href="altcanvas.xml"/>
-						<xi:include href="result_common.xml"/>
-					</div>
-					<br/>
-					<xi:include href="tips.xml"/>
+							<xi:include href="searchbar.xml"/>
+							<xi:include href="statusbar.xml"/>
+							<xi:include href="altcanvas.xml"/>
+							<xi:include href="result_common.xml"/>
+						</div>
+						<br/>
+						<xi:include href="tips.xml"/>
 					</td>
 				</tr>
 			</tbody>

@@ -200,6 +200,7 @@ var UPDATE_USERNAME				= "open-ils.actor:open-ils.actor.user.username.update";
 var UPDATE_PASSWORD				= "open-ils.actor:open-ils.actor.user.password.update";
 var UPDATE_EMAIL					= "open-ils.actor:open-ils.actor.user.email.update";
 var RENEW_CIRC						= "open-ils.circ:open-ils.circ.renew";
+var CHECK_SPELL					= "open-ils.search:open-ils.search.spell_check";
 /* ---------------------------------------------------------------------------- */
 
 
@@ -254,6 +255,8 @@ createEvt("result", "allRecordsReceived");	/* f(mvrsArray) : add other page stuf
 createEvt("rdetail", "recordDrawn");			/* f() : the record has been drawn */
 
 createEvt("common", "loggedIn");					/* f() : user has just logged in */
+createEvt('result', 'zeroHits');
+createEvt('result', 'lowHits');
 
 
 

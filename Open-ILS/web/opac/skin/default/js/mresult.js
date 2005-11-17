@@ -3,6 +3,7 @@ var ranks = {};
 var onlyrecord = {};
 var table;
 var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
+var searchTimer;
 
 attachEvt("common", "unload", mresultUnload);
 attachEvt("common", "run", mresultDoSearch);
@@ -14,8 +15,11 @@ function mresultUnload() { removeChildren(table); table = null;}
 
 function mresultDoSearch() {
 
-	if(getOffset() == 0)
-		setTimeout("swapCanvas($('loading_alt'))",100);
+	if(getOffset() == 0) {
+		swapCanvas($('loading_alt'));
+		searchTimer = new Timer('searchTimer',$('loading_alt_span'));
+		searchTimer.start();
+	}
 
 	table = G.ui.result.main_table;
 
@@ -95,7 +99,7 @@ function mresultSetRecords(idstruct) {
 }
 
 function mresultCollectRecords() {
-	runEvt("result", "preCollectRecords");
+	if(getHitCount() > 0 ) runEvt("result", "preCollectRecords");
 	var i = 0;
 	for( var x = getOffset(); x!= getDisplayCount() + getOffset(); x++ ) {
 		if(isNull(records[x])) break;

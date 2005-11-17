@@ -562,6 +562,26 @@ function findRecord(id,type) {
 	return req.result();
 }
 
+function Timer(name, node){
+	this.name = name;
+	this.count = 1;
+	this.node = node;
+}
+Timer.prototype.start = 
+	function(){_timerRun(this.name);}
+Timer.prototype.stop = 
+	function(){this.done = true;}
+function _timerRun(tname) {
+	var _t;
+	eval('_t='+tname);
+	if(_t.done) return;
+	var str = ' . ';
+	if( (_t.count % 5) == 0 ) 
+		str = _t.count / 5;
+	_t.node.appendChild(text(str));
+	setTimeout("_timerRun('"+tname+"');", 200);
+	_t.count++;
+}
 
 
 

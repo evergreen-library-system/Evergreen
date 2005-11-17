@@ -30,6 +30,8 @@
 	</script>
 
 	<xi:include href="result_table.xml"/>
+	<xi:include href='result_lowhits.xml'/>
+
 </div>
 
 

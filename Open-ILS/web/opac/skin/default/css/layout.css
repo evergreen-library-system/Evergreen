@@ -14,6 +14,9 @@ table { border-collapse: collapse; }
 .data_grid thead td { border-bottom: 1px solid #808080; }
 .data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
 
+.classic_link { text-decoration: underline; color: blue;}
+.classic_link:visited { text-decoration: underline; color: blue;}
+
 
 
 .encircled { border: 1px solid black; }
@@ -167,4 +170,4 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 .myopac_update_cell { border: 3px solid #E0E0E0; width:100%; padding-top: 4px; padding-bottom: 4px;}
 .myopac_update_span { padding: 5px;}
 
-
+#result_low_hits { border-top: 2px solid #A7EA9D; text-align: center; }
