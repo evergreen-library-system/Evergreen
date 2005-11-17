@@ -145,11 +145,13 @@ function myOPACRenewCirc(circid) {
 		if(circsCache[i].id() == circid)
 			circ = circsCache[i];
 
-	alert('renewing ' + circ.id());
 	var req = new Request(RENEW_CIRC, G.user.session, circ );
 	req.send(true);
 	var res = req.result();
-	alert('renew result: ' + js2JSON(res));
+	if(res.status) {
+		alert(res.text);
+		return;
+	}
 	alert($('myopac_renew_success').innerHTML);	
 	checkedDrawn = false;
 	myOPACShowChecked();

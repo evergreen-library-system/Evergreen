@@ -178,10 +178,6 @@ RemoteRequest.prototype.send = function(blocking) {
 				'application/x-www-form-urlencoded');
 	}
 
-	try {
-		dump( 'Remote Request URL: ' + url + '\n');
-	} catch(E){}
-
 	try{ this.xmlhttp.send( data ); } catch(e){}
 
 	this.sendCount += 1;
@@ -211,7 +207,7 @@ RemoteRequest.prototype.getResultObject = function() {
 	if( obj[0] != null && obj[1] == null ) obj = obj[0];
 
 	/* these are user level exceptions from the server code */
-	if(obj.__isfieldmapper && obj.classname == "ex") {
+	if(obj._isfieldmapper && obj.classname == "ex") {
 		if(!isXUL()) alert(obj.err_msg());
 		throw obj;
 	}

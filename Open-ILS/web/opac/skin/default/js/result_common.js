@@ -78,6 +78,8 @@ function resultLowHits() {
 		$('low_hits_remove_format_link').setAttribute('href',buildOPACLink(a));
 		unHideMe($('low_hits_remove_format'));
 	}
+
+	resultSuggestSearchClass();
 }
 
 var lowHitsXRefLink;
@@ -110,7 +112,6 @@ function resultLowHitXRef(r) {
 function resultZeroHits() {
 	unHideMe($('result_zero_hits_msg'));
 	resultExpandSearch();
-	resultSuggestSearchClass();
 }
 
 function resultExpandSearch() {
