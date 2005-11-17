@@ -28,11 +28,13 @@ function resultFinalPageIndex() {
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
 function resultSetHitInfo() { 
-	if(getHitCount() <= lowHitCount)
-		runEvt('result', 'lowHits');
-	if(getHitCount() == 0) {
-		runEvt('result', 'zeroHits');
-		return;
+	if( findCurrentPage() == MRESULT ) {
+		if(getHitCount() <= lowHitCount)
+			runEvt('result', 'lowHits');
+		if(getHitCount() == 0) {
+			runEvt('result', 'zeroHits');
+			return;
+		}
 	}
 
 	var c;  
