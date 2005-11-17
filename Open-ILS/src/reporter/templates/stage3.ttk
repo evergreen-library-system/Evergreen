@@ -53,7 +53,7 @@ BLOCK schedule_stage3;
 			INCLUDE option value='months' content='Month(s)';
 		END;
 
-		FOR p IN CGI.param();
+		FOR p = CGI.param();
 			NEXT IF p == 'action';
 			NEXT IF p == 'runtime';
 			INCLUDE hidden name=p value=CGI.param(p);
@@ -74,7 +74,7 @@ BLOCK save_stage3;
 	owner = user.id();
 
 	p_obj = {};
-	FOR p IN CGI.param();
+	FOR p = CGI.param();
 
 		logme([p,CGI.param(p)]);
 

@@ -47,7 +47,7 @@ BLOCK one_stage1;
 	fact_table = table.findvalue('@id');
 	logme(fact_table);
 
-	INCLUDE class_table class=table;
+	INCLUDE class_table classname=table;
 
 	INCLUDE stage2_new IF CGI.param('create_stage2') == 1;
 
@@ -59,14 +59,14 @@ END;
 BLOCK all_stage1;
 	'<ul>';
 
-	FOR tab IN config.findnodes("//tables/table[@fact-table='true']");
+	FOR tab = config.findnodes("/reporter/tables/table[@fact-table='true']");
 
 		fact_table = tab.findvalue("@id");
 		logme("Fact Table is $fact_table");
 
 		'<li>';
 
-		INCLUDE class_table class=tab;
+		INCLUDE class_table classname=tab;
 
 		IF loop.count != loop.size;
 		'<hr>';
@@ -116,9 +116,10 @@ BLOCK stage2_new;
 		INCLUDE widget_selector tableid=fact_table columns=config.findnodes(col_xpath) force=1;
 	END;
 
-	dim_xpath = "/reporter/tables/table[@id='$fact_table']/links/link/@table";
-	FOR dim_table IN config.findnodes(dim_xpath);
-		dim_table = dim_table.value();
+	dim_xpath = "/reporter/tables/table[@id='$fact_table']/links/link";
+	FOR dim_link = config.findnodes(dim_xpath);
+		dim_table = dim_link.findvalue('@table');
+		link_id = dim_link.findvalue('@id');
 		dimension = config.findnodes("/reporter/tables/table[@id='$dim_table']");
 
 		'<br/><br/>';
@@ -138,12 +139,17 @@ BLOCK stage2_new;
 			WRAPPER html/row;
 				WRAPPER html/cell colspan=2;
 					# checkbox input here ...
-					INCLUDE checkbox name="filter" value=dim_table checked=1;
+					INCLUDE checkbox name="filter" value=link_id checked=1;
+
+					link_label_xpath = '../../fields/field[@name="' _ dim_link.findvalue('@field') _ '"]/label';
+					dim_link.findvalue(link_label_xpath);
+
+					' -- ';
 					dimension.findvalue('label');
 					' Dimension';
 				END;
 			END;
-			INCLUDE widget_selector tableid=dim_table;
+			INCLUDE widget_selector tableid=link_id;
 		END;
 	END;
 

@@ -81,6 +81,17 @@ perl-install:
 
 # -----------------------------------------------------------------------------------
 
+reporter-install:
+	@echo $@
+	@echo "Installing Reporter templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
+	cp reporter/report_base.example.xml $(ETCDIR)/reporter.example.xml
+	cp reporter/tables.example.xml $(ETCDIR)
+	cp reporter/widgets.example.xml $(ETCDIR)
+	mkdir -p $(REPORTERDIR)
+	cp -r reporter/templates/* $(REPORTERDIR)
+
+# -----------------------------------------------------------------------------------
+
 cgi-bootstrap:
 	@echo "Installing cgi's to $(CGIDIR)"
 	mkdir -p $(TMP)/cgi-bin

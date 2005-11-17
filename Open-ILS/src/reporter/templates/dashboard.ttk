@@ -193,7 +193,9 @@ BLOCK fact_tables;
 			INCLUDE html/cell content='Fact table' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 			INCLUDE html/cell content='Description' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 		END;
- 		FOR tab IN config.findnodes("/reporter/tables/table[@fact-table='true']");
+
+		fact_table_xpath = "/reporter/tables/table[@fact-table='true']";
+ 		FOR tab = config.findnodes(fact_table_xpath);
 			tid = tab.findvalue('@id');
 			bg='lightblue';
 			IF loop.count % 2;
@@ -203,7 +205,7 @@ BLOCK fact_tables;
 				p = utils.JSON2perl( template.params );
 				INCLUDE html/cell
 					col=bg
-					content=link(content=tab.findvalue('tablename'),href="stage1?id=$tid") style='border:solid gray 1px;';
+					content=link(content=tab.findvalue('label'),href="stage1?id=$tid") style='border:solid gray 1px;';
 				INCLUDE html/cell content=tab.findvalue('description') style='border:solid gray 1px;';
 			END;
 		END;

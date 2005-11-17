@@ -2,7 +2,7 @@
 
 PROCESS inputs;
 
-q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' ORDER BY ' _ fieldname _ ';';
+q = 'SELECT DISTINCT ' _ fieldname _ ' FROM ' _ table.findvalue('tablename') _ ' ORDER BY ' _ fieldname _ ';';
 
 WRAPPER select name=input_prefix multi=1 size=3;
 	FOR f = DBI.query(q);

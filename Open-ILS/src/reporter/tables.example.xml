@@ -1,7 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tables>
 
-	<table id="silly.fact" partition="true" fact-table="true">
+	<table id="wide-copy" partition="false" fact-table="true">
+		<label>Wide Copy info</label>
+		<description>Base table for creating snapshot reports on copy information</description>
+		<tablename>stats.fleshed_copy</tablename>
+
+		<fields>
+			<field
+			  name="id"
+			  primary="true"
+			  create-type="serial"
+			  datatype="int">
+				<label>ID</label>
+				<description>Copy ID</description>
+			</field>
+			<field
+			  name="barcode"
+			  datatype="text">
+				<label>Barcode</label>
+				<description>Copy Barcode</description>
+			</field>
+			<field
+			  name="owning_lib"
+			  datatype="int"
+			  indexed="true">
+				<label>Owner</label>
+				<description>ID of the Owning Library</description>
+			</field>
+			<field
+			  name="circ_lib"
+			  datatype="int"
+			  indexed="true">
+				<label>Circulator</label>
+				<description>ID of the Circulating Library</description>
+			</field>
+			<field
+			  name="create_date"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Create Date</label>
+				<description>Timestamp of the copy's cataloging</description>
+			</field>
+			<field
+			  name="item_lang"
+			  datatype="text">
+				<label>Language</label>
+				<description>MARC Item Language</description>
+			</field>
+			<field
+			  name="item_form"
+			  datatype="text">
+				<label>Form</label>
+				<description>MARC Item Form of Material</description>
+			</field>
+			<field
+			  name="item_type"
+			  datatype="text">
+				<label>Type</label>
+				<description>MARC Item Type</description>
+			</field>
+			<field
+			  name="call_number_label"
+			  datatype="text">
+				<label>Call Number</label>
+				<description>Copy Call Number Label</description>
+			</field>
+		</fields>
+
+		<links>
+			<link
+			  field="owning_lib"
+			  table="org_unit"
+			  id="copy_owning_lib"
+			  key="id"
+			  type="has_a"/>
+			<link
+			  field="circ_lib"
+			  table="org_unit"
+			  id="copy_circ_lib"
+			  key="id"
+			  type="has_a"/>
+		</links>
+
+	</table>
+		
+	<table id="org_unit" partition="false" fact-table="false">
+		<label>Organizational Units</label>
+		<description>Table containing library hierarchy definition</description>
+		<tablename>actor.org_unit</tablename>
+
+		<fields>
+			<field
+			  name="id"
+			  primary="true"
+			  create-type="serial"
+			  datatype="int">
+				<label>ID</label>
+				<description>Library ID</description>
+			</field>
+			<field
+			  name="name"
+			  datatype="text">
+				<label>Name</label>
+				<description>Library Name</description>
+			</field>
+			<field
+			  name="shortname"
+			  datatype="text">
+				<label>Short Name</label>
+				<description>Library Short (Policy) Name</description>
+			</field>
+		</fields>
+	</table>
+
+	<table id="silly.fact" partition="true" fact-table="false">
 		<label>Silly Fact table</label>
 		<description>Base table for creating reports on silly words</description>
 		<tablename>stats.silly_fact</tablename>

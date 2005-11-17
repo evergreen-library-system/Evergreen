@@ -5,6 +5,8 @@
 </style>
 [%
 
+PROCESS utils;
+
 BLOCK logme_block;
 	"\n\t<!-- " _ x _ " -->\n";
 END;
@@ -17,15 +19,17 @@ USE WebSession;
 USE utils = WebUtils;
 USE config = XML.LibXML(config_xml, expand_xinclude => 1);
 
+
 dir = '/reporter/setup/files/' _ stage_dir;
 dir = config.findvalue(dir);
 
+dbdriver = config.findvalue('/reporter/setup/database/driver');
 dbname = config.findvalue('/reporter/setup/database/name');
 dbhost = config.findvalue('/reporter/setup/database/host');
 d_u = config.findvalue('/reporter/setup/database/user');
 d_p = config.findvalue('/reporter/setup/database/password');
 
-dsn = "dbi:Pg:dbname=" _ dbname _';host=' _ dbhost;
+dsn = "dbi:" _ dbdriver _ ":dbname=" _ dbname _';host=' _ dbhost;
 
 logme([dsn,d_u,d_p]);
 

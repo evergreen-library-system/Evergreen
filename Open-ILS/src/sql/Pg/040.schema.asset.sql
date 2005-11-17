@@ -133,4 +133,24 @@ CREATE TABLE asset.call_number_note (
 );
 
 
+CREATE VIEW stats.fleshed_copy AS 
+        SELECT  cp.*,
+                cn.label as call_number_label,
+                cn.owning_lib,
+                rd.item_lang,
+                rd.item_type,
+                rd.item_form
+        FROM    asset.copy cp
+                JOIN asset.call_number cn ON (cp.call_number = cn.id)
+                JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
+
+CREATE VIEW stats.fleshed_call_number AS 
+        SELECT  cn.*,
+                rd.item_lang,
+                rd.item_type,
+                rd.item_form
+        FROM    asset.call_number cn
+                JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
+
+
 COMMIT;

@@ -1,0 +1,25 @@
+[%
+
+	#--------------------------------------------------------------------------------- 
+	#html/body: <body>...</body> element for HTML pages
+	#
+	# ARGS:
+	#
+	# content         # body content
+	#--------------------------------------------------------------------------------- 
+
+	"<body";
+
+	IF onload; " onload='$onload'"; END;
+	IF onclick; " onclick='$onclick'"; END;
+	IF style; " style='$style'"; END;
+	IF class; " class='$class'"; END;
+	IF id; " id='$id'"; END;
+
+	">";
+
+	content;
+
+	"</body>";
+
+%]

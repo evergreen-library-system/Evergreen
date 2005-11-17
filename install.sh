@@ -119,7 +119,7 @@ function runInstall {
 		MAKE="make $verbose APXS2=$APXS2 PREFIX=$PREFIX TMP=$TMP APR_HEADERS=$APR_HEADERS \
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS \
 			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR \
-			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR ETCDIR=$ETCDIR \
+			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR ETCDIR=$ETCDIR REPORTERDIR=$REPORTERDIR\
 			OPENSRFDIR=$OPENSRFDIR OPENILSDIR=$OPENILSDIR EVERGREENDIR=$EVERGREENDIR \
 			CIRCRULESDIR=$CIRCRULESDIR CGIDIR=$CGIDIR DBDRVR=$DBDRVR DBHOST=$DBHOST \
 			DBNAME=$DBNAME DBUSER=$DBUSER DBPW=$DBPW XSLDIR=$XSLDIR NEW_OPAC_URL=$NEW_OPAC_URL \
@@ -181,8 +181,11 @@ function runInstall {
 			"openils_web" )
 				if building; then $MAKE -C "$OPENILSDIR" "mod_xmlbuilder"; fi;
 				if building; then $MAKE -C "$OPENILSDIR" "mod_ils_rest_gateway"; fi;
-				if installing; then $MAKE -C "$OPENILSDIR" "web-install"; fi;
-				if installing; then $MAKE -C "$OPENILSDIR" "cgi-bootstrap"; fi;
+				if installing; then
+					$MAKE -C "$OPENILSDIR" "web-install";
+					$MAKE -C "$OPENILSDIR" "cgi-bootstrap";
+					$MAKE -C "$OPENILSDIR" "reporter-install";
+				fi;
 				;;
 
 			"openils_marcdumper" )
@@ -196,6 +199,11 @@ function runInstall {
 				fi;
 				;;
 
+			"openils_reporter" )
+				if installing; then 
+					$MAKE -C "$OPENILSDIR" "reporter-install";
+				fi;
+				;;
 
 			# Evergreen --- 			
 

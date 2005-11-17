@@ -1,6 +1,8 @@
 package OpenILS::WWW::Reporter;
 use strict; use warnings;
 
+use vars qw/$dtype_xform_map $dtype_xform/;
+
 use Apache2 ();
 use Apache2::Log;
 use Apache2::Const -compile => qw(OK REDIRECT :log);
@@ -18,7 +20,7 @@ use XML::LibXML;
 
 use OpenSRF::Utils::SettingsParser;
 use OpenILS::Utils::Fieldmapper;
-
+use OpenILS::WWW::Reporter::transforms;
 
 
 # set the bootstrap config and template include directory when 
@@ -88,6 +90,8 @@ sub _process_template {
 	my $ttk				= $params{template}		|| return undef;
 	my $apache			= $params{apache}			|| undef;
 	my $param_hash		= $params{params}			|| {};
+	$$param_hash{dtype_xform_map} = $OpenILS::WWW::Reporter::dtype_xform_map;
+	$$param_hash{dtype_xform} = $OpenILS::WWW::Reporter::dtype_xform;
 
 	my $template;
 

@@ -3,12 +3,10 @@
 
 	<setup>
 		<files>
-			<stage1>/tmp/reporter/</stage1>
-			<stage2>/tmp/reporter/</stage2>
-			<stage3>/tmp/reporter/</stage3>
-			<widget-family>/tmp/reporter/</widget-family>
+			<output_base>/tmp/reporter/</output_base>
 		</files>
 		<database>
+			<driver>Pg</driver>
 			<host>10.0.0.2</host>
 			<name>demo-dev</name>
 			<user>postgres</user>

@@ -46,5 +46,30 @@ CREATE TABLE reporter.stage3 (
 	recurrence	interval
 );
 
+CREATE TABLE reporter.run_queue (
+	id		serial				primary key,
+	stage3		int				not null
+							references reporter.stage3 (id)
+								on delete restrict
+								deferrable
+								initially deferred,
+	queue_time	timestamp with time zone	not null default now(),
+	run_time	timestamp with time zone,
+	complete_time	timestamp with time zone,
+	state		text				check (state in ('wait','running','complete'))
+);
+
+CREATE TABLE reporter.output (
+	id		int		primary key,
+	stage3		int		not null
+					references reporter.stage3 (id)
+						on delete restrict
+						deferrable
+						initially deferred,
+	queue_time	timestamp with time zone	not null default now(),
+	run_time	timestamp with time zone	not null,
+	complete_time	timestamp with time zone	not null
+);
+
 COMMIT;
 

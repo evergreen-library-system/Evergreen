@@ -50,6 +50,7 @@ function buildConfig {
 	TEMPLATEDIR="$PREFIX/var/templates";
 	CIRCRULESDIR="$PREFIX/var/circ";
 	XSLDIR="$PREFIX/var/xsl";
+	REPORTERDIR="$PREFIX/var/reporter";
 	TMP="$(pwd)/.tmp";
 
 	prompt "Web domain for OPAC in Staff Client [$NEW_OPAC_URL] "
@@ -90,6 +91,9 @@ function buildConfig {
 
 	prompt "Bootstrapping Database Password [$DBPW] "
 	read X; if [ ! -z "$X" ]; then DBPW="$X"; fi;
+
+	prompt "Reporter Template Directory [$REPORTERDIR] "
+	read X; if [ ! -z "$X" ]; then REPORTERDIR="$X"; fi;
 
 	writeConfig;
 }

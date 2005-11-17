@@ -41,7 +41,7 @@ BLOCK save_stage2;
 	owner = user.id();
 
 	p_obj = {};
-	FOR p IN CGI.param();
+	FOR p = CGI.param();
 
 		logme([p,CGI.param(p)]);
 
@@ -52,9 +52,9 @@ BLOCK save_stage2;
 		p4 = parts.3;
 		
 		IF p4
-			AND (CGI.param("$p1:$p2:$p3") == p4)
-			AND (CGI.param("$p1:$p2").list.grep(p3).size > 0)
-			AND (CGI.param("$p1").list.grep(p2).size > 0);
+			AND (CGI.param("$p1").list.grep("^$p2$").size > 0)
+			AND (CGI.param("$p1:$p2").list.grep("^$p3$").size > 0)
+			AND (CGI.param("$p1:$p2:$p3").list.grep("^$p4$").size > 0);
 
 			p_obj.$p1.$p2.$p3.$p4 = CGI.param(p);
 
@@ -113,19 +113,43 @@ BLOCK view_stage2;
 			INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
 		END;
 
-		FOR f_table IN params.filter.keys;
-			logme([f_table]);
+		core_table = params.stage1;
+
+		tables = params.filter.keys;
+		tables.unshift(core_table);
+		tables = tables.unique;
+
+		FOR t = tables;
+			logme(['table id or link id', t]);
+
+			f_table = INCLUDE find_table_id id=t;
+
 			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
 			WRAPPER html/row;
 				INCLUDE html/cell;
-				INCLUDE html/cell colspan=4 align='left' content=table.findvalue( 'label' );
+				WRAPPER html/cell colspan=4 align='left';
+
+					IF t != f_table;
+						link_xpath = '//*[@id="' _ t _ '"]';
+						dim_link = config.findnodes(link_xpath);
+
+						link_label_xpath =
+							'../../fields/field[@name="' _
+							dim_link.findvalue('@field') _ '"]/label';
+						dim_link.findvalue(link_label_xpath);
+
+						' -- ';
+					END;
+
+					table.findvalue( 'label' );
+				END;
 			END;
 
-			FOR f_field IN params.filter.$f_table.keys;
+			FOR f_field = params.filter.$t.keys;
 				logme([f_table,f_field]);
-				FOR f_fam IN params.filter.$f_table.$f_field.keys;
+				FOR f_fam = params.filter.$t.$f_field.keys;
 					logme([f_table,f_field,f_fam]);
-					f_widget = params.filter.$f_table.$f_field.$f_fam;
+					f_widget = params.filter.$t.$f_field.$f_fam;
 					logme([f_table,f_field,f_fam,f_widget]);
 
 					WRAPPER html/row;
@@ -150,20 +174,44 @@ BLOCK view_stage2;
 			INCLUDE html/cell colspan=5 content="<b>Attributes Available for Output</b>";
 		END;
 
-		FOR f_table IN params.dims.keys;
+		tables = params.dims.keys;
+		tables.unshift(core_table);
+		tables = tables.unique;
+
+		FOR t = tables;
+
+			f_table = INCLUDE find_table_id id=t;
+			
 			table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
 			tname = table.findvalue( "label" );
 			tdesc = table.findvalue( "desription" );
 
-			NEXT IF table.findvalue('@fact-table') == 'true';
+			#NEXT IF table.findvalue('@fact-table') == 'true';
 			
 			WRAPPER html/row;
 				INCLUDE html/cell;
-				INCLUDE html/cell colspan=4 align='left' content=tname;
+				WRAPPER html/cell colspan=4 align='left';
+					IF t != f_table;
+						link_xpath = '//*[@id="' _ t _ '"]';
+						dim_link = config.findnodes(link_xpath);
+
+						link_label_xpath =
+							'../../fields/field[@name="' _
+							dim_link.findvalue('@field') _ '"]/label';
+						dim_link.findvalue(link_label_xpath);
+
+						' -- ';
+					END;
+					tname;
+				END;
 			END;
 
 
-			FOR field IN table.findnodes('fields/field[not(@primary) or @primary != "true"]');
+			FOR field = table.findnodes('fields/field[not(@primary) or @primary != "true"]');
+				link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
+				logme(['link_test',link_test]);
+				NEXT IF field.findnodes( link_test );
+
 				fname = field.findvalue( "label" );
 				fdesc = field.findvalue( "desription" );
 
@@ -178,9 +226,6 @@ BLOCK view_stage2;
 
 	END;
 END;
-
-
-
 
 
 BLOCK run_stage2;
@@ -209,18 +254,38 @@ BLOCK run_stage2;
 				INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
 			END;
 
-			FOR f_table IN params.filter.keys;
+			core_table = params.stage1;
+
+			tables = params.filter.keys;
+			tables.unshift(core_table);
+			tables = tables.unique;
+
+			FOR t = tables;
+				f_table = INCLUDE find_table_id id=t;
 				logme([f_table]);
 				table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
 				WRAPPER html/row;
-					INCLUDE html/cell colspan=3 align='left' content=table.findvalue( 'label' );
+					WRAPPER html/cell colspan=3 align='left';
+						IF t != f_table;
+							link_xpath = '//*[@id="' _ t _ '"]';
+							dim_link = config.findnodes(link_xpath);
+
+							link_label_xpath =
+								'../../fields/field[@name="' _
+								dim_link.findvalue('@field') _ '"]/label';
+							dim_link.findvalue(link_label_xpath);
+
+							' -- ';
+						END;
+						table.findvalue( 'label' );
+					END;
 				END;
 
-				FOR f_field IN params.filter.$f_table.keys;
+				FOR f_field = params.filter.$t.keys;
 					logme([f_table,f_field]);
-					FOR f_fam IN params.filter.$f_table.$f_field.keys;
+					FOR f_fam = params.filter.$t.$f_field.keys;
 						logme([f_table,f_field,f_fam]);
-						f_widget = params.filter.$f_table.$f_field.$f_fam;
+						f_widget = params.filter.$t.$f_field.$f_fam;
 						logme([f_table,f_field,f_fam,f_widget]);
 
 						WRAPPER html/row;
@@ -239,7 +304,7 @@ BLOCK run_stage2;
 										widgetname = widget.findvalue('@name');
 										famname = fam.findvalue('@name');
 	
-										input_prefix = "filter:$classname:$fieldname:$famname:$widgetname";
+										input_prefix = "filter:$t:$fieldname:$famname:$widgetname";
 	
 										INCLUDE $w_file widget_family=fam;
 								CATCH;
@@ -259,66 +324,39 @@ BLOCK run_stage2;
 				INCLUDE html/cell colspan=4 content="<b>Attributes Available for Output</b>";
 			END;
 
-			FOR f_table IN params.dims.keys;
-				table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
-				classname = table.findvalue( "@id" );
-				tname = table.findvalue( "label" );
-				tdesc = table.findvalue( "desription" );
-			
-				WRAPPER html/row;
-					INCLUDE html/cell colspan=4 align='left' content=tname;
+			table = config.findnodes( "/reporter/tables/table[@id='$core_table']" );
+			classname = table.findvalue( "@id" );
+			tname = table.findvalue( "label" );
+			tdesc = table.findvalue( "desription" );
+
+			WRAPPER html/row;
+				INCLUDE html/cell colspan=4 align='left' content=tname;
+			END;
+
+			pkey_field = table.findnodes('fields/field[@primary = "true"]');
+			pid = pkey_field.findvalue('@name');
+			plabel = pkey_field.findvalue('label');
+		
+			WRAPPER html/row;
+				WRAPPER html/cell align='right';
+					INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include";
+					INCLUDE hidden name="xform:type:$classname:$pid" value="count_dist";
 				END;
+				INCLUDE html/cell align='right' content="Per group count of $plabel";
+				INCLUDE html/cell align='center';
+			END;
 
-				IF loop.first;
-					pkey_field = table.findnodes('fields/field[@primary = "true"]');
-					pid = pkey_field.findvalue('@name');
-					plabel = pkey_field.findvalue('label');
-					
-					WRAPPER html/row;
-						WRAPPER html/cell align='right';
-							INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include";
-							INCLUDE hidden name="xform:type:$classname:$pid" value="count_dist";
-						END;
-						INCLUDE html/cell align='right' content="Per group count of $plabel";
-						INCLUDE html/cell align='center';
-					END;
-				END;
 
-				fields_xpath =
-					'fields/field[not(@primary) or @primary != "true"]';
-				FOR field IN table.findnodes(fields_xpath);
-					link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
-					logme(['link_test',link_test]);
-					NEXT IF field.findnodes( link_test );
-	
-					fname = field.findvalue( "label" );
-					fid = field.findvalue( "@name" );
+			tables = params.dims.keys;
+			tables.unshift(core_table);
+			tables = tables.unique;
 
-					WRAPPER html/row;
+			core_done = 0;
 
-						WRAPPER html/cell align='right';
-							INCLUDE checkbox name="output:$classname:$fid" value="include";
-						END;
-						INCLUDE html/cell align='right' content=fname;
-						WRAPPER html/cell align='center';
-							'Output Transformation: ';
-							dtype = field.findvalue('@datatype');
-							WRAPPER select name="xform:type:$classname:$fid";
-								INCLUDE option value='' content='None' selected=1;
-								FOR xform IN dtype_xform_map.$dtype;
-									xform_label = dtype_xforms.$xform.label;
-									IF dtype_xforms.$xform.param;
-										xform_label = "$xform_label (*)";
-									END;
-									INCLUDE option value=xform content=xform_label;
-								END;
-							END;
-							'<br/>';
-							'<small><super>*</super>Output Tranformation Parameter: </small>';
-							INCLUDE text name="xform:param:$classname:$fid";
-						END;
-					END;
-				END;
+			FOR f_table = tables;
+				noheader = 0;
+				noheader = 1 IF f_table == core_table;
+				INCLUDE show_filter_atts;
 			END;
 		END;
 	
@@ -330,4 +368,67 @@ BLOCK run_stage2;
 	END;
 END;
 
+BLOCK show_filter_atts;
+	t = f_table;
+	f_table = INCLUDE find_table_id id=t;
+	table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+	classname = table.findvalue( "@id" );
+	tname = table.findvalue( "label" );
+	tdesc = table.findvalue( "desription" );
+
+	IF ! noheader;
+		WRAPPER html/row;
+			WRAPPER html/cell colspan=4 align='left';
+				IF t != f_table;
+					link_xpath = '//*[@id="' _ t _ '"]';
+					dim_link = config.findnodes(link_xpath);
+
+					link_label_xpath =
+						'../../fields/field[@name="' _
+						dim_link.findvalue('@field') _ '"]/label';
+					dim_link.findvalue(link_label_xpath);
+
+					' -- ';
+				END;
+				tname;
+			END;
+		END;
+	END;
+
+	fields_xpath = 'fields/field[not(@primary) or @primary != "true"]';
+
+	FOR field = table.findnodes(fields_xpath);
+		link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
+		logme(['link_test',link_test]);
+		NEXT IF field.findnodes( link_test );
+
+		fname = field.findvalue( "label" );
+		fid = field.findvalue( "@name" );
+
+		WRAPPER html/row;
+
+			WRAPPER html/cell align='right';
+				INCLUDE checkbox name="output:$t:$fid" value="include";
+			END;
+			INCLUDE html/cell align='right' content=fname;
+			WRAPPER html/cell align='center';
+				'Output Transformation: ';
+				dtype = field.findvalue('@datatype');
+				WRAPPER select name="xform:type:$t:$fid";
+					INCLUDE option value='' content='None' selected=1;
+					FOR xform = dtype_xform_map.$dtype;
+						xform_label = dtype_xforms.$xform.label;
+						IF dtype_xforms.$xform.param;
+							xform_label = "$xform_label (*)";
+						END;
+						INCLUDE option value=xform content=xform_label;
+					END;
+				END;
+				'<br/>';
+				'<small><super>*</super>Output Tranformation Parameter: </small>';
+				INCLUDE text name="xform:param:$t:$fid";
+			END;
+		END;
+	END;
+END;
 %]

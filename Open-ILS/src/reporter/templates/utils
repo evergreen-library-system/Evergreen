@@ -1,0 +1,18 @@
+[%
+
+BLOCK find_table_id;
+        xpath = '//*[@id="' _ id _ '"]';
+        node = config.findnodes(xpath);
+        IF node;
+                t = node.findvalue('@table');
+                IF t;
+                        xpath = '//*[@id="' _ t _ '"]';
+                        node = config.findnodes(xpath);
+                END;
+                node.findvalue('@id');
+        ELSE;
+                logme(['arrrrrgggg!!!',id]);
+        END;
+END;
+
+%]

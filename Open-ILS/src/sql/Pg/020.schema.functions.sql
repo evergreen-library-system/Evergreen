@@ -10,6 +10,10 @@ CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	}
 $$ LANGUAGE 'plperl' STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT, INT ) RETURNS TEXT AS $$
+	SELECT SUBSTRING(call_number_dewey($1) FROM 1 FOR $2);
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION public.first_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
 	SELECT CASE WHEN $1 IS NULL THEN $2 ELSE $1 END;
 $$ LANGUAGE SQL STABLE;
