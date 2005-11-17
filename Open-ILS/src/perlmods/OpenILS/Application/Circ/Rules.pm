@@ -472,11 +472,11 @@ sub circulate {
 	$circ->circ_lib($user->home_ou);
 
 	if($isrenew) {
-		warn "Renewing circ.... ".$circ->id ." and setting num renews to " . $numrenews - 1 . "\n";
+		warn "Renewing circ.... and setting num renews to " . $numrenews - 1 . "\n";
 		$circ->opac_renewal(1); # XXX different for different types ! 
 		$circ->clear_id;
 		$circ->renewal_remaining($numrenews - 1);
-		$circ->circ_staff($patron->id);
+		$circ->circ_staff($patron);
 	} else {
 		$circ->circ_staff($user->id);
 	}
