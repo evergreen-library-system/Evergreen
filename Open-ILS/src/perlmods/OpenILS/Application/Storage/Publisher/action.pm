@@ -349,6 +349,7 @@ sub generate_fines {
 				my $billing = money::billing->create(
 					{ xact		=> ''.$c->id,
 					  note		=> "Overdue Fine",
+					  billing_type	=> "Overdue materials",
 					  amount	=> ''.$c->recuring_fine,
 					  billing_ts	=> DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill )->strftime('%FT%T%z')
 					}
