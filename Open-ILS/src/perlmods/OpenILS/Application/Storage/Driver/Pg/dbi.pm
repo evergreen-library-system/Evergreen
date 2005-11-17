@@ -1,5 +1,11 @@
 {
 	#---------------------------------------------------------------------
+	package money::grocery;
+	
+	money::grocery->table( 'money.grocery' );
+	money::grocery->sequence( 'money.billable_xact_id_seq' );
+
+	#---------------------------------------------------------------------
 	package money::billable_transaction;
 	
 	money::billable_transaction->table( 'money.billable_xact' );

@@ -553,6 +553,9 @@ sub modify_from_fieldmapper {
 	money::billable_transaction->has_many( billings => 'money::billing' );
 	money::billable_transaction->has_many( payments => 'money::payment' );
 
+	money::grocery->has_many( billings => 'money::billing' );
+	money::grocery->has_many( payments => 'money::payment' );
+
 	money::billing->has_a( xact => 'money::billable_transaction' );
 	money::payment->has_a( xact => 'money::billable_transaction' );
 

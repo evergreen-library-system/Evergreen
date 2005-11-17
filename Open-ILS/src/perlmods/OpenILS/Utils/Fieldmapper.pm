@@ -143,6 +143,7 @@ sub _init {
 
 		'Fieldmapper::money::billing'			=> { hint => 'mb'  },
 		'Fieldmapper::money::billable_transaction'	=> { hint => 'mbt'  },
+		'Fieldmapper::money::grocery'			=> { hint => 'mg'  },
 
 		'Fieldmapper::money::open_user_summary'		=> { hint	=> 'mous',
 								     readonly	=> 1 },

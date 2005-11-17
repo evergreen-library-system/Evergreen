@@ -12,6 +12,11 @@ CREATE TABLE money.billable_xact (
 );
 CREATE INDEX m_b_x_open_xacts_idx ON money.billable_xact (usr) WHERE xact_finish IS NULL;
 
+CREATE TABLE money.grocery ( -- Catchall table for local billing
+	billing_location	INT	NOT NULL, -- library creating transaction
+	note			TEXT
+) INHERITS (money.billable_xact);
+
 CREATE TABLE money.billing (
 	id		BIGSERIAL			PRIMARY KEY,
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id

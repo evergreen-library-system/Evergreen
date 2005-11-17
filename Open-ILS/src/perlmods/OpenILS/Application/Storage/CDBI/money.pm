@@ -10,8 +10,14 @@ package money::billable_transaction;
 use base qw/money/;
 __PACKAGE__->table('money_billable_xact');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact_start usr/);
-__PACKAGE__->columns(Others => qw/xact_finish/);
+__PACKAGE__->columns(Essential => qw/xact_start usr xact_finish/);
+#-------------------------------------------------------------------------------
+
+package money::grocery;
+use base qw/money/;
+__PACKAGE__->table('money_grocery');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact_start usr billing_location note xact_finish/);
 #-------------------------------------------------------------------------------
 
 package money::open_user_summary;
