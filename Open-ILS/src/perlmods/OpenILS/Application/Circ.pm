@@ -46,7 +46,7 @@ sub checkouts_by_user {
 
 	my $circs = $session->request(
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
-		{ usr => $user_id, stop_fines => undef } );
+		{ usr => $user_id } );
 	$circs = $circs->gather(1);
 
 	my @results;

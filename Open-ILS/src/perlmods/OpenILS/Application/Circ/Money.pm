@@ -68,7 +68,7 @@ sub make_payments {
 		my $transid = $pay->[0];
 		my $amount = $pay->[1];
 		my $trans = $session->request(
-			"open-ils.storage.direct.money.billable_transaction_summary.retrieve", 
+			"open-ils.storage.direct.money.open_billable_transaction_summary.retrieve", 
 			$transid )->gather(1);
 
 		return OpenILS::EX->new("NO_TRANSACTION_FOUND")->ex unless $trans; 
@@ -135,6 +135,93 @@ sub _update_patron_credit {
 		throw OpenSRF::EX("Error updating patron credit");
 	}
 }
+
+
+
+__PACKAGE__->register_method(
+	method	=> "create_bill",
+	api_name	=> "open-ils.circ.money.grocery.create",
+	notes		=> <<"	NOTE");
+	Creates a new grocery transaction using the transaction object provided
+	PARAMS: (login_session, money.grocery (mg) object)
+	NOTE
+
+sub create_grocery_bill {
+	my( $self, $client, $login, $transaction ) = @_;
+
+	my $staff = $apputils->check_user_session($login);
+	if($apputils->check_user_perms($staff->id, 
+			$transaction->billing_location, "CREATE_TRANSACTION")) {
+		return OpenILS::Perm->new("CREATE_TRANSACTION");
+	}
+
+	my $session = $apputils->start_db_session;
+	my $transid = $session->request(
+		'open-ils.storage.direct.money.grocery.create', $transaction)->gather(1);
+
+	if(!$transid) {
+		throw OpenSRF::EX ("Error creating new money.grocery");
+	}
+
+	warn "created new grocery transaction $transid\n";
+	
+	$apputils->commit_db_session($session);
+
+	return $transid;
+}
+
+__PACKAGE__->register_method(
+	method	=> "billing_items",
+	api_name	=> "open-ils.circ.money.billing.retrieve.all",
+	notes		=><<"	NOTE");
+	Returns a list of billing items for the given transaction.
+	PARAMS( login, transaction_id )
+	NOTE
+
+sub billing_items {
+	my( $self, $client, $login, $transid ) = @_;
+
+	my $staff = $apputils->check_user_session($login);
+	if($apputils->check_user_perms($staff->id, 
+			$staff->home_ou, "VIEW_TRANSACTION")) {
+		return OpenILS::Perm->new("VIEW_TRANSACTION");
+	}
+
+	return $apputils->simple_scalar_request(
+		'open-ils.storage',
+		'open-ils.storage.direct.money.billing.search.xact.atomic', $transid )
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "billing_items_create",
+	api_name	=> "open-ils.circ.money.billing.create",
+	notes		=><<"	NOTE");
+	Creates a new billing line item
+	PARAMS( login, bill_object (mb) )
+	NOTE
+
+sub billing_items_create {
+	my( $self, $client, $login, $billing ) = @_;
+
+	my $staff = $apputils->check_user_session($login);
+	if($apputils->check_user_perms($staff->id, 
+			$staff->home_ou, "CREATE_BILL")) {
+		return OpenILS::Perm->new("CREATE_BILL");
+	}
+
+	my $session = $apputils->start_db_session;
+
+	my $id = $session->request(
+		'open-ils.storage.direct.money.billing.create', $billing )->gather(1);
+
+	if(!$id) {
+		throw OpenSRF::EX ("Error creating new bill");
+	}
+
+	return $id;
+}
+
 
 
 

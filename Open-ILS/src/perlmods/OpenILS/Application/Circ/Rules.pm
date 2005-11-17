@@ -784,7 +784,7 @@ sub transit_receive {
 					if($circ) {
 
 						my $transaction = $session->request(
-							"open-ils.storage.direct.money.billable_transaction_summary.retrieve", $circ->id)->gather(1);
+							"open-ils.storage.direct.money.open_billable_transaction_summary.retrieve", $circ->id)->gather(1);
 
 						$circ->xact_finish("now") if($transaction->balance_owed <= 0);
 
@@ -926,7 +926,7 @@ sub checkin {
 			} else {
 	
 				$transaction = $session->request(
-					"open-ils.storage.direct.money.billable_transaction_summary.retrieve", $circ->id)->gather(1);
+					"open-ils.storage.direct.money.open_billable_transaction_summary.retrieve", $circ->id)->gather(1);
 		
 				warn "Checking in circ ". $circ->id . "\n";
 			
@@ -934,6 +934,9 @@ sub checkin {
 				$circ->stop_fines("RENEW") if($isrenewal);
 				$circ->stop_fines("LOST") if($iamlost);
 				$circ->xact_finish("now") if($transaction->balance_owed <= 0 and !$iamlost);
+				$circ->stop_fines_time('now');
+				$circ->checkin_time('now');
+				$circ->checkin_staff($user->id);
 
 				if($backdate) { 
 					$circ->xact_finish($backdate); 

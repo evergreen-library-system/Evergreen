@@ -383,9 +383,11 @@ sub _update_patron {
 	my( $session, $patron, $user_obj) = @_;
 
 
-	if($apputils->check_user_perms(
-				$user_obj->id, $user_obj->home_ou, "UPDATE_USER")) {
-		return OpenILS::Perm->new("UPDATE_USER");
+	if($patron->id ne $user_obj->id) {
+		if($apputils->check_user_perms(
+					$user_obj->id, $user_obj->home_ou, "UPDATE_USER")) {
+			return OpenILS::Perm->new("UPDATE_USER");
+		}
 	}
 
 	warn "updating patron " . Dumper($patron) . "\n";
@@ -1056,7 +1058,7 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a short summary of the users total open fines, excluding voided fines
 	Params are login_session, user_id
-	Returns a 'mus' object.
+	Returns a 'mous' object.
 	NOTES
 
 sub user_fines_summary {
@@ -1071,7 +1073,7 @@ sub user_fines_summary {
 
 	return $apputils->simple_scalar_request( 
 		"open-ils.storage",
-		"open-ils.storage.direct.money.user_summary.search.usr",
+		"open-ils.storage.direct.money.open_user_summary.search.usr",
 		$user_id );
 
 }
@@ -1161,21 +1163,21 @@ sub user_transactions {
 
 		$trans = $apputils->simple_scalar_request( 
 			"open-ils.storage",
-			"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
+			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
 			{ usr => $user_id, total_owed => { ">" => 0 }, @xact });
 
 	} elsif($api =~ /have_balance/) {
 
 		$trans =  $apputils->simple_scalar_request( 
 			"open-ils.storage",
-			"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
+			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
 			{ usr => $user_id, balance_owed => { ">" => 0 }, @xact });
 
 	} else {
 
 		$trans =  $apputils->simple_scalar_request( 
 			"open-ils.storage",
-			"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
+			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
 			{ usr => $user_id, @xact });
 	}
 

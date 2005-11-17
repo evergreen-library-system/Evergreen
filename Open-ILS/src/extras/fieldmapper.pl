@@ -12,7 +12,7 @@ if(!$web) { $web = ""; }
 # List of classes needed by the opac
 my @web_hints = qw/asv asva asvr asvq 
 		circ acp acpl acn ccs ahn aua ac 
-		actscecm crcd crmf crrf mus mbts aoc aus/;
+		actscecm crcd crmf crrf mbts aoc aus mous/;
 
 my @web_core = qw/ aou au perm_ex ex aout mvr ccs ahr /;
 
