@@ -216,7 +216,7 @@ function patron_bills_list_box_init( p ) {
 		{
 			'id' : 'notes', 'label' : getString('bills_information'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts',
-			'fm_field_render' : '.last_billing_note()'
+			'fm_field_render' : 'info_box($$)'
 		},
 		{
 			'id' : 'money', 'label' : getString('bills_money_label'), 'flex' : 0,
@@ -333,6 +333,18 @@ function patron_bills_add_patron_bills(p, bills) {
 					label_r3_2.setAttribute('style','font-weight: bold');
 
 		return grid;
+	}
+
+	function info_box( mbts ) {
+		var vbox = p.w.document.createElement('vbox');
+			var label = p.w.document.createElement('label');
+				vbox.appendChild( label );
+				label.setAttribute( 'value', mbts.last_billing_note() );
+			var btn = p.w.document.createElement('button');
+				vbox.appendChild( btn );
+				btn.setAttribute( 'label', 'Details' );
+				btn.setAttribute( 'bill_id', mbts.id() );
+		return vbox;
 	}
 
 	var obj_string ='mbts';
