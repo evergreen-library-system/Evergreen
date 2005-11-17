@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------
 # Copyright (C) 2005  Georgia Public Library Service 
-# Bill Erickson <highfalutin@gmail.com>
+# Bill Erickson <billserickson@gmail.com>
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@ use strict; use warnings;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 
-use OpenILS::EX;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 
@@ -30,8 +29,17 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.circ.money.payment",
 	notes		=> <<"	NOTE");
 	Pass in a structure like so:
-		{ cash_drawer: <string>, payment_type : <string>, 
-		payments: [ [trans_id, amt, note], [...] ], patron_credit : <credit amt> }
+		{ 
+			cash_drawer: <string>, 
+			payment_type : <string>, 
+			note : <string>, 
+			userid : <id>,
+			payments: [ 
+				[trans_id, amt], 
+				[...]
+			], 
+			patron_credit : <credit amt> 
+		}
 	login must have CREATE_PAYMENT priveleges.
 	If any payments fail, all are reverted back.
 	NOTE
@@ -52,19 +60,23 @@ sub make_payments {
 	my $type		= $payments->{payment_type};
 	my $credit	= $payments->{patron_credit};
 	my $drawer	= $payments->{cash_drawer};
+	my $userid	= $payments->{userid};
+	my $note		= $payments->{note};
 
 	for my $pay (@{$payments->{payments}}) {
 
 		my $transid = $pay->[0];
 		my $amount = $pay->[1];
-		my $note = $pay->[2];
-
 		my $trans = $session->request(
 			"open-ils.storage.direct.money.billable_transaction_summary.retrieve", 
 			$transid )->gather(1);
 
-
 		return OpenILS::EX->new("NO_TRANSACTION_FOUND")->ex unless $trans; 
+
+		if($trans->usr != $userid) { # XXX exception
+			warn "Userid $userid does not match the user " . $trans->usr .
+				"attached to transaction " . $trans->id . "\n";
+		}
 
 		my $payobj = "Fieldmapper::money::$type";
 		$payobj = $payobj->new;
@@ -99,9 +111,29 @@ sub make_payments {
 
 	}
 
+	_update_patron_credit( $session, $userid, $credit );
+
 	$apputils->commit_db_session($session);
 	return 1;
 		
+}
+
+sub _update_patron_credit {
+	my( $session, $userid, $credit ) = @_;
+	return if $credit < 0;
+
+	my $patron = $session->request( 
+		'open-ils.storage.direct.actor.user.retrieve', $userid )->gather(1);
+
+	$patron->credit_forward_balance( 
+		$patron->credit_forward_balance + $credit);
+
+	my $res = $session->request(
+		'open-ils.storage.direct.actor.user.update', $patron )->gather(1);
+
+	if(!$res) {
+		throw OpenSRF::EX("Error updating patron credit");
+	}
 }
 
 

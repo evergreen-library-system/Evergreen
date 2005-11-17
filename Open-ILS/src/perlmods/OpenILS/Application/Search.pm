@@ -118,7 +118,7 @@ sub check_spelling {
 	for my $word (split(' ',$phrase) ) {
 		if( ! $speller->check($word) ) {
 			if( $speller->suggest($word) ) { $return_something = 1; }
-			$return_something = 1;
+#			$return_something = 1;
 			my $word_stuff = {};
 			$word_stuff->{'word'} = $word;
 			$word_stuff->{'suggestions'} = [ $speller->suggest( $word ) ];
