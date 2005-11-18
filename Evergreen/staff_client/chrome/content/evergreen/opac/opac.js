@@ -67,7 +67,7 @@ function set_opac_vars(p) {
 	sdump('D_OPAC',arg_dump(arguments));
 	p.opac_iframe.contentWindow.IAMXUL = true;
 	p.opac_iframe.contentWindow.xulG = mw.G;
-	p.opac_iframe.contentWindow.attachEvt("rresult", "recordDrawn", 
+	p.opac_iframe.contentWindow.attachEvt("rdetail", "recordRetrieved", 
 		function(id,node){opac_make_details_page(p,id,node)});
 	p.opac_iframe.removeProgressListener(p.opac_progressListener);
 	p.opac_iframe.addProgressListener(p.opac_progressListener, 
@@ -77,7 +77,7 @@ function set_opac_vars(p) {
 
 function opac_make_details_page(p, id) {
 	sdump('D_OPAC',arg_dump(arguments));
-	dump("Node HREF attribute is: " + node.getAttribute("href") + "\n and doc id is " + id +'\n');
+	dump("OPAC doc id is " + id +'\n');
 	var f = function(ev) {
 		spawn_record_details(
 			p.w.app_shell, 'new_tab', 'main_tabbox', {
@@ -89,7 +89,7 @@ function opac_make_details_page(p, id) {
 		ev.stopPropagation();
 		return true;
 	}
-	node.addEventListener( 'click', f, false );
+	//node.addEventListener( 'click', f, false );
 }
 
 /* -------------------------------------------------------------------------- 
