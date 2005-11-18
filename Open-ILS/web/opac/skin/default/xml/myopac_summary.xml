@@ -4,35 +4,35 @@
 
 	<br/>
 
-	<table width='100%' class='light_border myopac_table'>
+	<table width='100%' class='light_border data_grid'>
 
 		<tbody id='myopac_summary_tbody'>
 			<tr>
-				<td class='color_3 light_border' width='20%'>First Name</td>
+				<td class='color_4 light_border' width='20%'>First Name</td>
 				<td class='light_border' id='myopac_summary_first'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Middle Name</td>
+				<td class='color_4 light_border'>Middle Name</td>
 				<td class='light_border' id='myopac_summary_middle'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Last Name</td>
+				<td class='color_4 light_border'>Last Name</td>
 				<td class='light_border' id='myopac_summary_last'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Day Phone</td>
+				<td class='color_4 light_border'>Day Phone</td>
 				<td class='light_border' id='myopac_summary_dayphone'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Evening Phone</td>
+				<td class='color_4 light_border'>Evening Phone</td>
 				<td class='light_border' id='myopac_summary_eveningphone'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Other Phone</td>
+				<td class='color_4 light_border'>Other Phone</td>
 				<td class='light_border' id='myopac_summary_otherphone'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Username</td>
+				<td class='color_4 light_border'>Username</td>
 				<td class='light_border' id='myopac_summary_username'> </td>
 				<td class='light_border'><a href='javascript:void(0);' 
 					onclick='unHideMe($("myopac_update_username_row"));$("myopac_new_username").focus();'
@@ -55,7 +55,7 @@
 
 
 			<tr>
-				<td class='color_3 light_border'>Password</td>
+				<td class='color_4 light_border'>Password</td>
 				<td class='light_border' id='myopac_summary_password'>(not shown)</td>
 				<td class='light_border'><a href='javascript:void(0);' 
 					onclick='unHideMe($("myopac_update_password_row"));$("myopac_current_password").focus();'
@@ -93,7 +93,7 @@
 			</tr>
 
 			<tr>
-				<td class='color_3 light_border'>Email Address</td>
+				<td class='color_4 light_border'>Email Address</td>
 				<td class='light_border' id='myopac_summary_email'> </td>
 				<td class='light_border'><a href='javascript:void(0);' 
 					onclick='unHideMe($("myopac_update_email_row"));$("myopac_new_email").focus();'
@@ -115,23 +115,23 @@
 			</tr>
 
 			<tr>
-				<td class='color_3 light_border'>Primary Identification</td>
+				<td class='color_4 light_border'>Primary Identification</td>
 				<td class='light_border' id='myopac_summary_ident1'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Secondary Identification</td>
+				<td class='color_4 light_border'>Secondary Identification</td>
 				<td class='light_border' id='myopac_summary_ident2'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Active Barcode</td>
+				<td class='color_4 light_border'>Active Barcode</td>
 				<td class='light_border' id='myopac_summary_barcode'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Home Library</td>
+				<td class='color_4 light_border'>Home Library</td>
 				<td class='light_border' id='myopac_summary_homelib'> </td>
 			</tr>
 			<tr>
-				<td class='color_3 light_border'>Account Creation Date</td>
+				<td class='color_4 light_border'>Account Creation Date</td>
 				<td class='light_border' id='myopac_summary_create_date'> </td>
 			</tr>
 
@@ -140,8 +140,8 @@
 
 
 	<br/><br/><br/>
-	<table width='100%' class='light_border myopac_table'>
-		<thead class='color_3'>
+	<table width='100%' class='light_border data_grid'>
+		<thead class='color_4'>
 			<tr><td style='background: none; border-bottom: none' align='center' colspan='7'><b>Addresses</b></td></tr>
 			<tr>
 				<td width='16%'>Address Type</td>

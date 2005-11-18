@@ -51,7 +51,10 @@
 								</table>
 								<xi:include href="rdetail_summary.xml"/>
 								<br/><br/>
+								<!--
 								<xi:include href="rdetail_copyinfo.xml"/>
+								-->
+								<xi:include href='rdetail_extras.xml'/>
 							</div>
 						</div>
 					</td>

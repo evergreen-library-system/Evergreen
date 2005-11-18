@@ -42,6 +42,7 @@
 <!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">
 <!ENTITY sidebar.relevantAuthors.headerLabel "Relevant Authors">
 <!ENTITY sidebar.relevantSeries.headerLabel "Relevant Series">
+<!ENTITY sidebar.relevantReviews.headerLabel "Reviews">
 
 
 <!-- Record Details -->

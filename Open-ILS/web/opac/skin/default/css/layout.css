@@ -10,8 +10,9 @@ table { border-collapse: collapse; }
 
 /* generic CSS for a table with data */
 .data_grid { font-weight: 500; }
-.data_grid thead tr { background: #CCFFFF; color: #000000; border: 1px solid #808080; }
-.data_grid thead td { border-bottom: 1px solid #808080; }
+/*.data_grid thead tr { background: #CCFFFF; color: #000000; border: 1px solid #808080; }*/
+.data_grid thead tr { background: #E0F0E0; color: #000000; border: 1px solid #808080; }
+.data_grid thead td { border-bottom: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
 .data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
 
 .classic_link { text-decoration: underline; color: blue;}
@@ -140,26 +141,7 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 	border-bottom: 1px solid #808080; 
 	border-top: 1px solid #808080; }
 
-/*
-.myopac_link { 
-	width: 18%; margin: 3px; padding: 3px; 
-	text-align: center; vertical-align: middle; 
-	border-top: 1px solid #808080; }
-	*/
-
-/*
-.myopac_link_active { background: #CCFFFF; border-bottom: 6px solid green;} 
-*/
-
-.myopac_link_active { background: #CCFFFF; font-weight: 700;}
-
-
-/*
-.color_1 { background: #A7EA9D; color: #000000; }
-.color_2 { background: #64EA4F; color: #000000; }
-.color_3 { background: #CCFFFF; color: #000000; }
-*/
-
+.myopac_link_active { background: #E0F0E0; font-weight: 700;}
 .myopac_table thead tr td { padding: 2px; font-weight: 500; border: 1px solid #808080;}
 .myopac_table td { padding: 3px; }
 .myopac_form_pic { width: 20px; height: 20px; }
@@ -173,4 +155,15 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 #result_low_hits { border-top: 2px solid #A7EA9D }
 
 .lowhits_div { width: 100%; border-top: 1px solid #E0E0E0; text-align: center; 
-	padding-top: 8px; padding-bottom: 8px; }/*margin-top:15px; vertical-align: middle; }*/
+	padding-top: 8px; padding-bottom: 8px; }
+
+.rdetail_extras_div {
+	border-top: 2px solid #E0E0E0;
+}
+
+.copy_info_region_row {
+	padding: 6px;
+	border: 2px solid #E0E0E0;
+	font-weight: 600;
+	background: #E0F0E0;
+}

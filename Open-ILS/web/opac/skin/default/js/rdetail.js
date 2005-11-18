@@ -99,6 +99,68 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
 	runEvt("rdetail", "recordDrawn");
 	recordsCache.push(record);
+
+	var req = new Request(FETCH_ACONT_SUMMARY, cleanISBN(record.isbn()));
+	req.callback(rdetailHandleAddedContent);
+	req.send();
+
+}
+
+function rdetailShowExtra(type) {
+
+	hideMe($('rdetail_copy_info_div'));
+	hideMe($('rdetail_reviews_div'));
+	hideMe($('rdetail_toc_div'));
+
+	switch(type) {
+		case "copyinfo": unHideMe($('rdetail_copy_info_div')); break;
+		case "reviews": unHideMe($('rdetail_reviews_div')); break;
+		case "tocs": unHideMe($('rdetail_tocs_div')); break;
+	}
+}
+
+function rdetailHandleAddedContent(r) {
+	var resp = r.getResultObject();
+
+	if( resp.Review == 'true' ) { 
+		var req = new Request(FETCH_REVIEWS, cleanISBN(record.isbn()));
+		req.callback(rdetailShowReviews);
+		req.send();
+	}
+
+	if( resp.TOC == 'true' ) { 
+		var req = new Request(FETCH_TOC, cleanISBN(record.isbn()));
+		req.callback(rdetailShowTOC);
+		req.send();
+	}
+
+}
+
+
+function rdetailShowReviews(r) {
+	var res = r.getResultObject();
+	var par = $('rdetail_reviews_div');
+	var template = par.removeChild($('rdetail_review_template'));
+	if( res && res.length > 0 ) {
+		unHideMe($('rdetail_reviews_link'));
+		for( var i = 0; i != res.length; i++ ) {
+			var rev = res[i];	
+			if( rev.text && rev.info ) {
+				var node = template.cloneNode(true);
+				$n(node, 'review_header').appendChild(text(rev.info));
+				$n(node, 'review_text').appendChild(text(rev.text));
+				par.appendChild(node);
+			}
+		}
+	}
+}
+
+function rdetailShowTOC(r) {
+	var resp = r.getResultObject();
+	if(resp) {
+		unHideMe($('rdetail_toc_link'));
+		$('rdetail_toc_div').appendChild(text(resp));
+	}
 }
 
 
@@ -130,7 +192,8 @@ function _rdetailRows(node) {
 
 			libtd.setAttribute("colspan", numStatuses + 2 );
 			libtd.colSpan = numStatuses + 2;
-			addCSSClass(row, config.css.color_3);
+			//addCSSClass(row, config.css.color_3);
+			addCSSClass(row, 'copy_info_region_row');
 		} 
 	
 		copyRowParent.appendChild(row);

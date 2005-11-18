@@ -3,7 +3,7 @@
 <div id='myopac_fines_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
 	<br/>
-	<table width='100%' class='light_border myopac_table'>
+	<table width='100%' class='light_border data_grid'>
 
 		<thead class='color_3'>
 			<tr><td colspan='3' align='center' style='background: none'><b>Summary</b></td></tr>

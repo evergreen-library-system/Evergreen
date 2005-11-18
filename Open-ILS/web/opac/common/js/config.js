@@ -201,6 +201,9 @@ var UPDATE_PASSWORD				= "open-ils.actor:open-ils.actor.user.password.update";
 var UPDATE_EMAIL					= "open-ils.actor:open-ils.actor.user.email.update";
 var RENEW_CIRC						= "open-ils.circ:open-ils.circ.renew";
 var CHECK_SPELL					= "open-ils.search:open-ils.search.spell_check";
+var FETCH_REVIEWS					= "open-ils.search:open-ils.search.added_content.review.retrieve.all";
+var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve";
+var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
 /* ---------------------------------------------------------------------------- */
 
 

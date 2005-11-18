@@ -1,21 +1,23 @@
 <?xml version='1.0'?>
 
 <!-- This holds information for copies attached to this record -->
-<div>
+<div id='rdetail_copy_info_div'>
 
 	<!-- header bar for the copy info table.  this allows you to select local
 			or global copy information -->
-	<table class='color_1 rdetail_header' width='100%' >
+	<table class='rdetail_extras_div' width='100%' >
 		<tbody>
 			<tr>
+				<!--
 				<td align='left'>&rdetail.copyInfo.headerLabel;</td>
-				<td align='right'>
+				-->
+				<td align='center' width=''>
 					<a href='javascript:void(0);' id='copy_info_local_link' 
-						class='rdetail_copy_nav_link hide_me'>&rdetail.copyInfo.local;</a>
+						class='rdetail_copy_nav_link hide_me classic_link'>&rdetail.copyInfo.local;</a>
 				</td>
-				<td align='right'>
+				<td align='center' width=''>
 					<a href='javascript:void(0);' id='copy_info_all_link' 
-						class='rdetail_copy_nav_link'>&rdetail.copyInfo.all;</a>
+						class='rdetail_copy_nav_link classic_link'>&rdetail.copyInfo.all;</a>
 				</td>
 			</tr>
 		</tbody>
