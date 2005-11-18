@@ -214,7 +214,7 @@ function patron_bills_list_box_init( p ) {
 			'fm_field_render' : 'xact_dates_box($$)'
 		},
 		{
-			'id' : 'notes', 'label' : getString('bills_information'), 'flex' : 1,
+			'id' : 'notes', 'label' : getString('bills_information'), 'flex' : 0,
 			'primary' : false, 'hidden' : false, 'fm_class' : 'mbts',
 			'fm_field_render' : 'info_box($$)'
 		},
@@ -337,12 +337,53 @@ function patron_bills_add_patron_bills(p, bills) {
 
 	function info_box( mbts ) {
 		var vbox = p.w.document.createElement('vbox');
-			var label = p.w.document.createElement('label');
-				vbox.appendChild( label );
-				label.setAttribute( 'value', mbts.last_billing_note() );
+			var grid = p.w.document.createElement('grid');
+				vbox.appendChild( grid );
+
+				var cols = p.w.document.createElement('columns');
+					grid.appendChild( cols );
+					cols.appendChild( p.w.document.createElement('column') );
+					cols.appendChild( p.w.document.createElement('column') );
+				var rows = p.w.document.createElement('rows');
+					grid.appendChild( rows );
+
+			var xact_type = p.w.document.createElement('row');
+			rows.appendChild( xact_type );
+
+				var xt_label = p.w.document.createElement('label');
+					xact_type.appendChild( xt_label );
+					xt_label.setAttribute( 'value', 'Type' );
+				var xt_value = p.w.document.createElement('label');
+					xact_type.appendChild( xt_value );
+					xt_value.setAttribute( 'value', mbts.xact_type() );
+
+			var last_billing = p.w.document.createElement('row');
+			rows.appendChild( last_billing );
+
+				var lb_label = p.w.document.createElement('label');
+					last_billing.appendChild( lb_label );
+					lb_label.setAttribute( 'value', 'Last Billing:' );
+
+				var lb_value = p.w.document.createElement('label');
+					last_billing.appendChild( lb_value );
+					if (mbts.last_billing_type()) 
+						lb_value.setAttribute( 'value', mbts.last_billing_type() );
+
+			var last_payment = p.w.document.createElement('row');
+			rows.appendChild( last_payment );
+
+				var lp_label = p.w.document.createElement('label');
+					last_payment.appendChild( lp_label );
+					lp_label.setAttribute( 'value', 'Last Payment:' );
+
+				var lp_value = p.w.document.createElement('label');
+					last_payment.appendChild( lp_value );
+					if (mbts.last_payment_type()) 
+						lp_value.setAttribute( 'value', mbts.last_payment_type() );
+
 			var btn = p.w.document.createElement('button');
 				vbox.appendChild( btn );
-				btn.setAttribute( 'label', 'Details' );
+				btn.setAttribute( 'label', 'Full Details' );
 				btn.setAttribute( 'bill_id', mbts.id() );
 		return vbox;
 	}
