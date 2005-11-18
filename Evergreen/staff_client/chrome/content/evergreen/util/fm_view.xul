@@ -18,7 +18,7 @@
 
 		function my_init() {
 			var treechildren = window.document.getElementById('tc');
-			var fm = mw.user_request('open-ils.auth','opensrf.open-ils.system.fieldmapper',[])[0];
+			var fm = mw.user_request('open-ils.actor','opensrf.open-ils.system.fieldmapper',[])[0];
 			var fma = []; var fmh = {} ; 
 			for (var i in fm) { fmh[ fm[i].hint ] = fm[i]; fma.push( [ fm[i].hint, i ] ); }
 			fma.sort();
