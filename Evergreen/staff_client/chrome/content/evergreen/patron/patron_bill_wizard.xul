@@ -45,7 +45,7 @@
 						billing.note( document.getElementById('bill_note').value );
 						billing.xact( mg_id );
 						billing.amount( document.getElementById('bill_amount').value );
-						billing.billing_type( 'ad-hoc' );
+						billing.billing_type( document.getElementById('billing_type').value );
 					var mb_id = user_request(
 						'open-ils.circ',
 						'open-ils.circ.money.billing.create',
