@@ -24,7 +24,7 @@
 
 		function my_init() {
 
-			document.getElementById('copy_editor_tab').disabled = true;
+			/*document.getElementById('copy_editor_tab').disabled = true;*/
 			chain_exec(
 				my_init_spawn_brief_view,
 				my_init_spawn_marc_view,
