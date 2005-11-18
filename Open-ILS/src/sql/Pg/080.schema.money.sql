@@ -22,6 +22,8 @@ CREATE TABLE money.billing (
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
 	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	voided		BOOL				NOT NULL DEFAULT FALSE,
+	voider		INT,
+	void_time	TIMESTAMP WITH TIME ZONE,
 	amount		NUMERIC(6,2)			NOT NULL,
 	billing_type	TEXT				NOT NULL,
 	note		TEXT
