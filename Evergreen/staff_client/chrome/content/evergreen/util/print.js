@@ -224,13 +224,13 @@ function NSPrint(w,silent,params)
 			var gPrintSettings = GetPrintSettings();
 			if (silent) gPrintSettings.printSilent = true;
 			else gPrintSettings.printSilent = false;
-			/*
-                        gPrintSettings.marginTop = 0;
-                        gPrintSettings.marginLeft = 0;
-                        gPrintSettings.marginBottom = 0;
-                        gPrintSettings.marginRight = 0;
-			*/
-                        if (params.marginLeft) gPrintSettings.marginLeft = params.marginLeft;
+			if (params) {
+	                        gPrintSettings.marginTop = 0;
+				gPrintSettings.marginLeft = 0;
+				gPrintSettings.marginBottom = 0;
+				gPrintSettings.marginRight = 0;
+				if (params.marginLeft) gPrintSettings.marginLeft = params.marginLeft;
+			}
                         gPrintSettings.headerStrLeft = '';
                         gPrintSettings.headerStrCenter = '';
                         gPrintSettings.headerStrRight = '';
@@ -238,6 +238,7 @@ function NSPrint(w,silent,params)
                         gPrintSettings.footerStrCenter = '';
                         gPrintSettings.footerStrRight = '';
 			sdump('D_PRINT','gPrintSettings = ' + js2JSON(gPrintSettings));
+			alert('gPrintSettings = ' + js2JSON(gPrintSettings));
 			webBrowserPrint.print(gPrintSettings, null);
 			//alert('Should be printing\n');
 			sdump('D_PRINT','Should be printing\n');
