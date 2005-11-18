@@ -13,10 +13,10 @@ tmpl = {};
 
 
 IF CGI.param('id');
-	tid = CGI.param('stage2');
-	tmpl = templates.$tid;
 	rid = CGI.param('id');
 	rpt = reports.$rid;
+	tid = rpt.stage2;
+	tmpl = templates.$tid;
 END;
 
 
@@ -182,9 +182,99 @@ END;
 BLOCK view_stage3;
 	logme(rpt.params);
 	params = utils.JSON2perl( rpt.params );
+	s2_params = utils.JSON2perl( tmpl.params );
 
-	# stuff goes here ...
 
+	WRAPPER html/center;
+		WRAPPER html/table style="border-collapse:collapse";
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Report Name</b>" style="border:solid gray 1px;";
+				INCLUDE html/cell content=params.reportname style="border:solid gray 1px;";
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Based on Template</b>" style="border:solid gray 1px;";
+				INCLUDE html/cell content=s2_params.templatename style="border:solid gray 1px;";
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Creation Time</b>" style="border:solid gray 1px;";
+				INCLUDE html/cell content=rpt.create_date style="border:solid gray 1px;";
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Scheduled Run Time</b>" style="border:solid gray 1px;";
+				INCLUDE html/cell content=rpt.runtime style="border:solid gray 1px;";
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Recurrence Interval</b>" style="border:solid gray 1px;";
+				INCLUDE html/cell content=rpt.recurrence style="border:solid gray 1px;";
+			END;
+		END;
+	END;
+
+	'<br><br>';
+
+	type_map = { 'csv' => 'csv', 'excel' => 'xls', 'html' => 'html' };
+
+	WRAPPER html/center;
+		'<b>Report Runs:</b>';
+		run_q = DBI.prepare("SELECT * FROM reporter.output WHERE stage3 = ? ORDER BY queue_time DESC");
+		FOR run = run_q.execute(rpt.id);
+			WRAPPER html/table style="border-collapse:collapse";
+				WRAPPER html/row;
+					INCLUDE html/cell content="<b>Current State</b>" style="border:solid gray 1px;" width="20%";
+					WRAPPER html/cell style="border:solid gray 1px;";
+						run.state;
+						IF run.state == 'complete';
+							'<br>';
+							FOR f = params.output_format.list;
+								h = tmpl.stage1 _ '/' _ tmpl.id _
+									'/' _ rpt.id _ '/' _ run.id _
+									'/report-data.' _ type_map.$f;
+								link(content=f, href=h);
+								IF !loop.last;
+									'  |  ';
+								END;
+							END;
+						END;
+					END;
+				END;
+				WRAPPER html/row;
+					INCLUDE html/cell content="<b>Queue Time</b>" style="border:solid gray 1px;";
+					INCLUDE html/cell content=run.queue_time style="border:solid gray 1px;";
+				END;
+				IF run.run_time;
+					WRAPPER html/row;
+						INCLUDE html/cell content="<b>Run Time</b>" style="border:solid gray 1px;";
+						INCLUDE html/cell content=run.run_time style="border:solid gray 1px;";
+					END;
+				END;
+				IF run.complete_time;
+					WRAPPER html/row;
+						INCLUDE html/cell content="<b>Complete Time</b>" style="border:solid gray 1px;";
+						INCLUDE html/cell content=run.complete_time style="border:solid gray 1px;";
+					END;
+				END;
+				IF run.query;
+					WRAPPER html/row;
+						INCLUDE html/cell content="<b>Query</b>" style="border:solid gray 1px;";
+						INCLUDE html/cell content=run.query style="border:solid gray 1px;";
+					END;
+				END;
+				IF run.error;
+					WRAPPER html/row;
+						INCLUDE html/cell content="<b>Error</b>" style="border:solid gray 1px;";
+						INCLUDE html/cell content=run.error style="border:solid gray 1px;";
+					END;
+				END;
+				IF run.error_time;
+					WRAPPER html/row;
+						INCLUDE html/cell content="<b>Error Time</b>" style="border:solid gray 1px;";
+						INCLUDE html/cell content=run.error_time style="border:solid gray 1px;";
+					END;
+				END;
+			END;
+			'<br><br>';
+		END;
+	END;
 END;
 
 %]

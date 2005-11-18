@@ -42,7 +42,7 @@ BLOCK textarea;
 END;
 
 BLOCK select;
-	%]<select name="[% name %]" size="[% size %]"[% IF multi %] multiple="multiple" [% END %]>[%
+	%]<select id="[% id %]" name="[% name %]" size="[% size %]"[% IF multi %] multiple="multiple" [% END %]>[%
 		content;
 	%]</select>[%
 END;
@@ -66,11 +66,15 @@ BLOCK radio;
 END;
 
 BLOCK checkbox;
-	%]<INPUT TYPE="checkbox" NAME="[% name %]" VALUE="[% value %]" [% IF checked %]CHECKED[% END %]>[%
+	%]<INPUT TYPE="checkbox" NAME="[% name %]" VALUE="[% value %]" [% IF onclick %]onclick="[% onclick %]"[% END %] [% IF checked %]CHECKED[% END %]>[%
 END;
 
 BLOCK submit;
-	%]<INPUT TYPE="submit" NAME="[% name %]" VALUE="[% value %]">[%
+	%]<INPUT TYPE="submit" onclick="[% onclick %]" NAME="[% name %]" VALUE="[% value %]">[%
+END;
+
+BLOCK button;
+	%]<button NAME="[% name %]" VALUE="[% value %]" onclick="[% onclick %]">[% content %]</button>[%
 END;
 
 MACRO link INCLUDE anchor;

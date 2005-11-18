@@ -55,18 +55,25 @@ sub child_init {
 sub handler {
 
 	my $apache = shift;
+	return Apache2::Const::DECLINED if (-e $apache->filename);
+
 	my $cgi = CGI->new;
 
 	my $path = $apache->path_info;
 	(my $ttk = $path) =~ s{^/?([a-zA-Z0-9_]+).*?$}{$1}o;
 
-	$ttk = "s1" unless $ttk;
+	$ttk = $apache->filename unless $ttk;
+	$ttk = "dashboard" unless $ttk;
+
+	$ttk = (split '/', $ttk)[-1];
+	
 	my $user;
 
 	# if the user is not logged in via cookie, route them to the login page
 	if(! ($user = verify_login($cgi->cookie("ses"))) ) {
 		$ttk = "login";
 	}
+
 
 	print "Content-type: text/html; charset=utf-8\n\n";
 
@@ -91,7 +98,7 @@ sub _process_template {
 	my $apache			= $params{apache}			|| undef;
 	my $param_hash		= $params{params}			|| {};
 	$$param_hash{dtype_xform_map} = $OpenILS::WWW::Reporter::dtype_xform_map;
-	$$param_hash{dtype_xform} = $OpenILS::WWW::Reporter::dtype_xform;
+	$$param_hash{dtype_xforms} = $OpenILS::WWW::Reporter::dtype_xforms;
 
 	my $template;
 

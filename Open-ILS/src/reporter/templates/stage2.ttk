@@ -1,24 +1,27 @@
 [%
 
-PROCESS inputs;
-PROCESS class_manip;
-PROCESS widget_manip;
-PROCESS logic_header.ttk;
-INCLUDE logout.ttk;
-
-templates = DBI.tie('reporter.stage2', 'id')
-tmpl = {};
-
-
-IF CGI.param('id');
-	tid = CGI.param('id');
-	tmpl = templates.$tid;
-END;
-
-
 WRAPPER html/html;
-   INCLUDE header.ttk + navbar.ttk title="Report Templates";
+   WRAPPER header.ttk + navbar.ttk title="Report Templates";
+	PROCESS inputs;
+	PROCESS class_manip;
+	PROCESS widget_manip;
+	PROCESS logic_header.ttk;
+	INCLUDE logout.ttk;
+   END;
+
    WRAPPER html/body;
+
+	PROCESS select_sorter.js;
+
+	templates = DBI.tie('reporter.stage2', 'id')
+	tmpl = {};
+
+
+	IF CGI.param('id');
+		tid = CGI.param('id');
+		tmpl = templates.$tid;
+	END;
+
       IF CGI.param('action') == 'save';
          PROCESS save_stage2;
       ELSIF CGI.param('action') == 'edit';
@@ -232,40 +235,90 @@ BLOCK run_stage2;
 	logme(tmpl.params);
 	params = utils.JSON2perl( tmpl.params );
 
-   '<br/>';
+	%]
+		<script language="javascript">
+			var outputs = {};
+		</script>
+   		<br/>
+	[%
+
+	WRAPPER html/table width="100%";
+		WRAPPER html/row;
+			WRAPPER html/cell align='center';
+				s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
+				INCLUDE anchor
+					content=config.findvalue( s1_name_xpath )
+					href="stage1?id=" _ params.stage1;
+				' :: ' _ params.templatename;
+			END;
+		END;
+	END;
+
+	'<br/><br/>';
+
 	WRAPPER form id="stage3_new" name="stage3_new" action="stage3" method="POST";
 		INCLUDE hidden name='stage2' value=CGI.param('id');
 
-		'<br>Report Name:';
-		INCLUDE text name='reportname';
+		'<br/><center><b>Report Name:</b>';
+		INCLUDE text name='reportname' size="50";
+		'</center><br/><br/>';
+
+		WRAPPER html/table width="100%";
+			WRAPPER html/row  style="border-top: solid black 2px;";
+				INCLUDE html/cell colspan=2 content='<b>Output and Sort Order</b>' style="border-top: solid black 2px;";
+				INCLUDE html/cell colspan=2 content='<b>Output Formats</b>' align="center" style="border-top: solid black 2px;";
+			END;
+			WRAPPER html/row;
+				WRAPPER html/cell rowspan=3 width="25%";
+					INCLUDE select multi=1 size=5 id='output_order' name='output_order';
+				END;
+				WRAPPER html/cell;
+					INCLUDE anchor href='javascript:void(0);' content='Up' onclick="Widget.Select.moveSelectedOptionsUp('output_order')";
+				END;
+
+				WRAPPER html/cell align="right";
+					INCLUDE checkbox name='output_format' value='csv';
+				END;
+				INCLUDE html/cell content="CSV" align="left";
+			END;
+			WRAPPER html/row;
+				WRAPPER html/cell;
+					INCLUDE anchor href='javascript:void(0);' content='Down' onclick="Widget.Select.moveSelectedOptionsDown('output_order')";
+				END;
+
+				WRAPPER html/cell align="right";
+					INCLUDE checkbox name='output_format' value='excel';
+				END;
+				INCLUDE html/cell content="Excel" align="left";
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell;
+				WRAPPER html/cell align="right";
+					INCLUDE checkbox name='output_format' value='html';
+				END;
+				INCLUDE html/cell content="HTML" align="left";
+			END;
+		END;
+
+		'<br/><br/>';
 
 		WRAPPER html/table border=0 width='100%';
 			WRAPPER html/row;
-				WRAPPER html/cell colspan=4 align='center';
-					s1_name_xpath = '/reporter/tables/table[@id="' _ params.stage1 _ '"]/label';
-					INCLUDE anchor
-						content=config.findvalue( s1_name_xpath )
-						href="stage1?id=" _ params.stage1;
-					' :: ' _ params.templatename;
-				END;
-			END;
-
-			WRAPPER html/row;
-				INCLUDE html/cell colspan=4 content="<b>Filterable Attributes:</b>";
+				INCLUDE html/cell colspan=4 content="<b>Filterable Attributes</b><br/><br/>" style="border-top: solid black 2px;";
 			END;
 
 			core_table = params.stage1;
 
 			tables = params.filter.keys;
-			tables.unshift(core_table);
+			tables.unshift(core_table) IF tables.grep("^$core_table$");
 			tables = tables.unique;
 
 			FOR t = tables;
+				NEXT UNLESS params.filter.$t.keys;
 				f_table = INCLUDE find_table_id id=t;
-				logme([f_table]);
 				table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
 				WRAPPER html/row;
-					WRAPPER html/cell colspan=3 align='left';
+					WRAPPER html/cell colspan=3 align='center' style="border: solid black 1px; background: lightgray;";
 						IF t != f_table;
 							link_xpath = '//*[@id="' _ t _ '"]';
 							dim_link = config.findnodes(link_xpath);
@@ -321,7 +374,7 @@ BLOCK run_stage2;
 			END;
 
 			WRAPPER html/row;
-				INCLUDE html/cell colspan=4 content="<b>Attributes Available for Output</b>";
+				INCLUDE html/cell colspan=4 content="<b>Attributes Available for Output</b><br/><br/>" style="border-top: solid black 2px;";
 			END;
 
 			table = config.findnodes( "/reporter/tables/table[@id='$core_table']" );
@@ -330,7 +383,7 @@ BLOCK run_stage2;
 			tdesc = table.findvalue( "desription" );
 
 			WRAPPER html/row;
-				INCLUDE html/cell colspan=4 align='left' content=tname;
+				INCLUDE html/cell colspan=4 align='center' content=tname style="border: solid black 1px; background: lightgray;";
 			END;
 
 			pkey_field = table.findnodes('fields/field[@primary = "true"]');
@@ -339,8 +392,14 @@ BLOCK run_stage2;
 		
 			WRAPPER html/row;
 				WRAPPER html/cell align='right';
-					INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include";
+					INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include" onclick="field_add_remove(this)";
 					INCLUDE hidden name="xform:type:$classname:$pid" value="count_dist";
+					%]
+						<script language="javascript">
+							outputs['[% "output:$classname:$pid" %]'] = '[% "Per group count of $plabel" %]';
+							Widget.Select.addOption('output_order','[% "output:$classname:$pid" %]', '[% "Per group count of $plabel" %]');
+						</script>
+					[%
 				END;
 				INCLUDE html/cell align='right' content="Per group count of $plabel";
 				INCLUDE html/cell align='center';
@@ -357,13 +416,17 @@ BLOCK run_stage2;
 				noheader = 0;
 				noheader = 1 IF f_table == core_table;
 				INCLUDE show_filter_atts;
+				WRAPPER html/row;
+					INCLUDE html/cell colspan=4 content="<br/><br/>";
+				END;
 			END;
 		END;
 	
+
 		INCLUDE checkbox name="publicreport" value="t";
 		'Public Report<br>';
-		INCLUDE submit name="action" value="Run Now";
-		INCLUDE submit name="action" value="Schedule";
+		INCLUDE submit name="action" value="Run Now" onclick="Widget.Select.selectAll('output_order');this.form.submit();";
+		INCLUDE submit name="action" value="Schedule" onclick="Widget.Select.selectAll('output_order');this.form.submit();";
 
 	END;
 END;
@@ -378,7 +441,7 @@ BLOCK show_filter_atts;
 
 	IF ! noheader;
 		WRAPPER html/row;
-			WRAPPER html/cell colspan=4 align='left';
+			WRAPPER html/cell colspan=4 align='center' style="border: solid black 1px; background: lightgray;";
 				IF t != f_table;
 					link_xpath = '//*[@id="' _ t _ '"]';
 					dim_link = config.findnodes(link_xpath);
@@ -397,6 +460,9 @@ BLOCK show_filter_atts;
 
 	fields_xpath = 'fields/field[not(@primary) or @primary != "true"]';
 
+
+	count = 1;
+
 	FOR field = table.findnodes(fields_xpath);
 		link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
 		logme(['link_test',link_test]);
@@ -405,13 +471,24 @@ BLOCK show_filter_atts;
 		fname = field.findvalue( "label" );
 		fid = field.findvalue( "@name" );
 
+		bg_color = 'white';
+		IF count % 2;
+			bg_color = 'lightcyan';
+		END;
+
 		WRAPPER html/row;
 
-			WRAPPER html/cell align='right';
-				INCLUDE checkbox name="output:$t:$fid" value="include";
+			WRAPPER html/cell align='right' col=bg_color;
+				INCLUDE checkbox name="output:$t:$fid" value="include" onclick="field_add_remove(this)";
+				%]
+					<script language="javascript">
+						outputs['[% "output:$t:$fid" %]'] = '[% fname %]';
+					</script>
+				[%
+
 			END;
-			INCLUDE html/cell align='right' content=fname;
-			WRAPPER html/cell align='center';
+			INCLUDE html/cell align='right' content=fname col=bg_color;
+			WRAPPER html/cell align='right' col=bg_color;
 				'Output Transformation: ';
 				dtype = field.findvalue('@datatype');
 				WRAPPER select name="xform:type:$t:$fid";
@@ -429,6 +506,7 @@ BLOCK show_filter_atts;
 				INCLUDE text name="xform:param:$t:$fid";
 			END;
 		END;
+		count = count + 1;
 	END;
 END;
 %]

@@ -14,6 +14,7 @@
     [%- IF colspan %] colspan="[% colspan %]"[% END %]
     [%- IF rowspan %] rowspan="[% rowspan %]"[% END %]
     [%- IF  align %] align="[% align %]"[% END %]
+    [%- IF  padding %] padding="[% padding %]"[% END %]
     [%- IF  class %] class="[% class %]"[% END %]
     [%- IF  id %] id="[% id %]"[% END %]
     [%- IF  valign %] valign="[% valign %]"[% END %]

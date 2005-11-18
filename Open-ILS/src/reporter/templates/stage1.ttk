@@ -13,11 +13,6 @@ WRAPPER html/html;
 								"document.getElementById('templatename').focus();" _
 								"document.getElementById('templatename').select();}";
 		IF !CGI.param('id');
-			IF CGI.param('detail');
-				%]<a href="?detail=0">No Details (All)</a>[%
-			ELSE;
-				%]<a href="?detail=1">Details (All)</a>[%
-			END;
 			INCLUDE all_stage1;
 		ELSE;
 			INCLUDE one_stage1;
@@ -33,12 +28,6 @@ END;
 
 
 BLOCK one_stage1;
-	%]<a href="[%
-	CGI.url('-absolute',1,'-path_info',1,'-query',1)
-		.replace('[&\?;]?id=[\w\.]+','')
-		.replace('[&\?;]?create_stage2=1','');
-	%]">Show all</a>[%
-
 	table_xpath =
 		'/reporter/tables/table[@id="' _
 		CGI.param('id') _ '"]';
@@ -85,27 +74,16 @@ BLOCK stage2_new;
 
 	%]<br/><form id="stage2_new" name="stage2_new" action="stage2" method="POST">
 		<input type="hidden" name="action" value="save">
-			<input type="hidden" name="stage1" value="[% CGI.param('id') %]">
-			<input type="text" name="templatename" id="templatename"
-				size="40" value="Template name (required)"><br/>
-			<input type="checkbox" name="publictemplate" value="t">
-				Public template<br><br>[%
+		<input type="hidden" name="stage1" value="[% CGI.param('id') %]">
+		<center>
+			<b>Template name (required):</b> <input type="text" name="templatename" id="templatename" size="40" ><br/><br><br>
+		</center>
+		<b>Select Filter Widgets</b><br>[%
 
 	
 	WRAPPER html/table width="100%" style='border-top: 1px solid black';
 		WRAPPER html/row;
-			WRAPPER html/cell;
-				WRAPPER html/table + html/row width='100%';
-					INCLUDE html/cell content='<b>Report Base</b>';
-				END;
-				WRAPPER html/table + html/row width='100%';
-					INCLUDE html/cell content='<b>Attribute</b>' align='right';
-				END;
-			END;
-			INCLUDE html/cell content='<b>Widget</b>' align='center';
-		END;
-		WRAPPER html/row;
-			WRAPPER html/cell colspan=2;
+			WRAPPER html/cell colspan=2  align='center' style="border: solid black 1px; background: lightgray;";
 				# hidden input here ...
 				table = config.findnodes("/reporter/tables/table[@id='$fact_table']");
 				INCLUDE hidden name="filter" value=fact_table;
@@ -113,6 +91,10 @@ BLOCK stage2_new;
 				' Core Columns';
 			END;
 		END;
+		#WRAPPER html/row;
+		#	INCLUDE html/cell content='<b>Attribute</b>' align='right';
+		#	INCLUDE html/cell content='<b>Widget</b>' align='center';
+		#END;
 		INCLUDE widget_selector tableid=fact_table columns=config.findnodes(col_xpath) force=1;
 	END;
 
@@ -126,18 +108,7 @@ BLOCK stage2_new;
 
 		WRAPPER html/table width="100%" style='border-top: 1px solid black';
 			WRAPPER html/row;
-				WRAPPER html/cell;
-					WRAPPER html/table + html/row width='100%';
-						INCLUDE html/cell content='<b>Dimension</b>';
-					END;
-					WRAPPER html/table + html/row width='100%';
-						INCLUDE html/cell content='<b>Attribute</b>' align='right';
-					END;
-				END;
-				INCLUDE html/cell content='<b>Widget</b>' align='center';
-			END;
-			WRAPPER html/row;
-				WRAPPER html/cell colspan=2;
+				WRAPPER html/cell colspan=2 align='center' style="border: solid black 1px; background: lightgray;";
 					# checkbox input here ...
 					INCLUDE checkbox name="filter" value=link_id checked=1;
 
@@ -153,9 +124,12 @@ BLOCK stage2_new;
 		END;
 	END;
 
+	%]
+		<input type="checkbox" name="publictemplate" value="t">Public template<br><br>
+	[%
 	INCLUDE submit name='button' value='Save';
 
-	%]</form>[%
+	'</form>';
 
 END;
 
