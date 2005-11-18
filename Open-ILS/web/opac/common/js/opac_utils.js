@@ -229,7 +229,10 @@ var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
 function grabUser(ses, force) {
 
 	if(!ses) ses = cookie.get(COOKIE_SES);
+	try{if(!ses && isXUL()) ses = xulG['auth_ses'][0];}catch(e){}
 	if(!ses) return false;
+
+	//alert(ses);
 
 	if(!force) 
 		if(G.user && G.user.session == ses)

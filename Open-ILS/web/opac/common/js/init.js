@@ -14,7 +14,7 @@ try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
 function init() {
 	runEvt('common','init');
 	runEvt("common", "run");
-	checkUserSkin();
+	//checkUserSkin();
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));
 }
 

@@ -15,6 +15,7 @@ var numStatuses = null;
 
 function rdetailDraw() {
 
+
 	copyRowParent = G.ui.rdetail.cp_info_row.parentNode;
 	copyRow = copyRowParent.removeChild(G.ui.rdetail.cp_info_row);
 	statusRow = G.ui.rdetail.cp_status.parentNode;
@@ -28,8 +29,6 @@ function rdetailDraw() {
 
 	if(getLocation() == globalOrgTree.id())
 		hideMe(G.ui.rdetail.cp_info_all);
-
-
 
 	var req = new Request(FETCH_RMODS, getRid());
 	req.callback(_rdetailDraw);
@@ -81,6 +80,8 @@ function rdetailShowAllCopies() {
 
 function _rdetailDraw(r) {
 	record = r.getResultObject();
+
+	runEvt('rdetail', 'recordRetrieved', record.doc_id());
 
 	G.ui.rdetail.title.appendChild(text(record.title()));
 	buildSearchLink(STYPE_AUTHOR, record.author(), G.ui.rdetail.author);

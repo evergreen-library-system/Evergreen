@@ -260,6 +260,7 @@ createEvt("rdetail", "recordDrawn");			/* f() : the record has been drawn */
 createEvt("common", "loggedIn");					/* f() : user has just logged in */
 createEvt('result', 'zeroHits');
 createEvt('result', 'lowHits');
+createEvt('rdetail', 'recordRetrieved');			/* we are about to draw the rdetail page */
 
 
 

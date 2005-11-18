@@ -147,28 +147,23 @@ RemoteRequest.prototype.send = function(blocking) {
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
 	if(isXUL()) {
-		if(this.secure)
+		if(this.secure || url.match(/^https:/) )
 			url =	"https://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 		else
 			url =	"http://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 	}
 
 	var data = null;
-
-	if( this.type == 'GET' ) { 
-		url +=  "?" + this.param_string; 
-	}
-
+	if( this.type == 'GET' ) url +=  "?" + this.param_string; 
 
 	try {
-		dump( 'Remote Request URL: ' + url + '\n');
-	} catch(E){}
 
-
-	if(blocking) {
-		this.xmlhttp.open(this.type, url, false);
-	} else {
-		this.xmlhttp.open(this.type, url, true);
+		if(blocking) this.xmlhttp.open(this.type, url, false);
+		else this.xmlhttp.open(this.type, url, true);
+		
+	} catch(E) {
+		alert("Fatal error opening XMLHTTPRequest for URL:\n" + url + '\n');
+		return;
 	}
 
 
