@@ -384,7 +384,18 @@ function patron_bills_add_patron_bills(p, bills) {
 			var btn = p.w.document.createElement('button');
 				vbox.appendChild( btn );
 				btn.setAttribute( 'label', 'Full Details' );
-				btn.setAttribute( 'bill_id', mbts.id() );
+				btn.setAttribute( 'name', 'full_details' );
+				btn.setAttribute( 'mbts_id', mbts.id() );	
+				btn.addEventListener(
+					'command',
+					function(ev) {
+						spawn_patron_bill_details(
+							p.w.document, 'new_window', '', { 'mbts' : mbts }
+						);
+					},
+					false
+				);
+
 		return vbox;
 	}
 

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+
+<!-- Stylesheets -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/patron.dtd">
+<window id="patron_bill_details" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+	<script src="patron_utils.js" />
+
+	<script>
+	<![CDATA[
+
+		function my_init() {
+			try {
+
+				var mb_list = user_request(
+					'open-ils.circ',
+					'open-ils.circ.money.billing.retrieve.all',
+					[ mw.G.auth_ses[0], params.mbts.id() ]
+				)[0];
+
+				var rows = document.getElementById('g_rows');
+				for (var i = 0; i < mb_list.length; i++) {
+
+					var row = document.createElement('row');
+					rows.appendChild(row);
+
+						var c1 = document.createElement('label');
+						row.appendChild(c1);
+						c1.setAttribute('value', yesno( mb_list[0].voided() ));
+
+						var c2 = document.createElement('label');
+						row.appendChild(c2);
+						c2.setAttribute('value', formatted_date( mb_list[0].billing_ts(),'%F' ));
+
+						var c3 = document.createElement('label');
+						row.appendChild(c3);
+						c3.setAttribute('value', mb_list[0].billing_type());
+
+						var c4 = document.createElement('label');
+						row.appendChild(c4);
+						c4.setAttribute('value', mb_list[0].amount());
+
+						var c5 = document.createElement('label');
+						row.appendChild(c5);
+						c5.setAttribute('value', mb_list[0].note());
+				}
+
+			} catch(E) {
+				handle_error(E);
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Full Details"/>
+			<grid>
+				<columns> <column /> <column /> <column /> <column /> </columns>
+				<rows id="g_rows">
+					<row><label value="Voided" /><label value="When"/><label value="Type" /><label value="Amount" /><label value="Note"/></row>
+				</rows>
+			</grid>
+		</groupbox>
+	</vbox>
+
+</window>
+

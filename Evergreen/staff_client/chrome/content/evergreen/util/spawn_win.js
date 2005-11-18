@@ -155,6 +155,11 @@ function spawn_patron_bill_wizard(d,placement,place,passthru_params,clone) {
 	return spawn_interface(d,placement,place,chrome,getString('bills_wizard_label'),passthru_params,clone);
 }
 
+function spawn_patron_bill_details(d,placement,place,passthru_params,clone) {
+	var chrome = 'chrome://evergreen/content/patron/patron_bill_details.xul';
+	return spawn_interface(d,placement,place,chrome,getString('bill_details_label'),passthru_params,clone);
+}
+
 function spawn_copy_browser(d,placement,place,passthru_params,clone) {
 	var chrome = 'chrome://evergreen/content/cat/browse_list.xul';
 	return spawn_interface(d,placement,place,chrome,getString('copy_browser_interface_label'),passthru_params,clone);
