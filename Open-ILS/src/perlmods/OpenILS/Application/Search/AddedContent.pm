@@ -36,6 +36,7 @@ sub initialize {
 # If not data is retrieved (or timeout occurs), undef is returned
 sub retrieve_added_content {
 	my( $type, $isbn, $summary ) = @_;
+	return undef unless ( $isbn && $isbn ne "" );
 
 	my $func = "fnDetailByItemKey";
 	if($summary) { $func = "fnContentByItemKey"; }
@@ -80,6 +81,7 @@ __PACKAGE__->register_method(
 sub summary {
 	my( $self, $client, $isbn ) = @_;
 	my $data = retrieve_added_content( "member", $isbn, 1 );
+	return {} unless $data;
 	my $doc = XML::LibXML->new->parse_string($data);
 	my $summary = {};
 	return $summary unless $doc;
@@ -116,6 +118,7 @@ sub reviews {
 	my( $self, $client, $isbn ) = @_;
 
 	my $data = retrieve_added_content( "review", $isbn );
+	return undef unless $data;
 	my $doc = XML::LibXML->new->parse_string($data);
 	my $ret = [];
 
@@ -161,8 +164,8 @@ sub toc {
 	my( $self, $client, $isbn ) = @_;
 
 	my $data = retrieve_added_content( "toc", $isbn );
+	return undef unless $data;
 	my $doc = XML::LibXML->new->parse_string($data);
-	my $ret = {};
 
 	my @nodes =  $doc->findnodes("//*[local-name()='TOCText']")->get_nodelist();
 		
