@@ -195,7 +195,7 @@ function last_sPrint() {
 	if (mw.G.last_receipt) sPrint( mw.G.last_receipt, false );
 }
 
-function sPrint(s,silent) {
+function sPrint(s,silent,params) {
 	sdump('D_PRINT',arg_dump(arguments));
 	mw.G.last_receipt = s;
 	var w = new_window('data:text/html,<html>' + s + '</html>\r\n', { 'window_name':'LastPrint' });
@@ -203,7 +203,7 @@ function sPrint(s,silent) {
 	setTimeout(
 		function() {
 			if (!mw.printDebug) {
-				NSPrint(w,silent); w.minimize(); w.close(); mw.minimize();
+				NSPrint(w,silent,params); w.minimize(); w.close(); mw.minimize();
 			} else {
 				sdump('D_PRINT','Not printing due to printDebug flag.');
 			}
@@ -211,7 +211,7 @@ function sPrint(s,silent) {
 	);
 }
 
-function NSPrint(w,silent)
+function NSPrint(w,silent,params)
 {
 	sdump('D_PRINT',arg_dump(arguments));
 	if (!w) { w = this; }
@@ -230,6 +230,7 @@ function NSPrint(w,silent)
                         gPrintSettings.marginBottom = 0;
                         gPrintSettings.marginRight = 0;
 			*/
+                        if (params.marginLeft) gPrintSettings.marginLeft = params.marginLeft;
                         gPrintSettings.headerStrLeft = '';
                         gPrintSettings.headerStrCenter = '';
                         gPrintSettings.headerStrRight = '';
