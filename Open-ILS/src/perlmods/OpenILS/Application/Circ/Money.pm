@@ -137,9 +137,30 @@ sub _update_patron_credit {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_payments",
+	api_name	=> "open-ils.circ.money.payment.retrieve.all",
+	notes		=> "Returns a list of payments attached to a given transaction"
+	);
+	
+sub retrieve_payments {
+	my( $self, $client, $login, $transid ) = @_;
+
+	my $staff = $apputils->check_user_session($login);
+	if($apputils->check_user_perms($staff->id, 
+			$staff->home_ou, "VIEW_TRANSACTION")) {
+		return OpenILS::Perm->new("VIEW_TRANSACTION");
+	}
+
+	return $apputils->simple_scalar_request(
+		'open-ils.storage',
+		'open-ils.storage.direct.money.payment.search.xact.atomic', $transid );
+}
+
+
 
 __PACKAGE__->register_method(
-	method	=> "create_bill",
+	method	=> "create_grocery_bill",
 	api_name	=> "open-ils.circ.money.grocery.create",
 	notes		=> <<"	NOTE");
 	Creates a new grocery transaction using the transaction object provided
@@ -155,6 +176,10 @@ sub create_grocery_bill {
 		return OpenILS::Perm->new("CREATE_TRANSACTION");
 	}
 
+	use Data::Dumper;
+	warn "Grocery Transaction: " . Dumper($transaction) ."\n";
+
+	$transaction->clear_id;
 	my $session = $apputils->start_db_session;
 	my $transid = $session->request(
 		'open-ils.storage.direct.money.grocery.create', $transaction)->gather(1);
@@ -218,6 +243,8 @@ sub billing_items_create {
 	if(!$id) {
 		throw OpenSRF::EX ("Error creating new bill");
 	}
+
+	$apputils->commit_db_session($session);
 
 	return $id;
 }
