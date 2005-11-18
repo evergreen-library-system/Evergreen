@@ -59,7 +59,7 @@ function opac_init(p) {
 	p.opac_iframe = p.w.document.getElementById('opac_opac_iframe');
 	p.opac_iframe.addProgressListener(p.opac_progressListener, 
 		Components.interfaces.nsIWebProgress.NOTIFY_ALL );
-	p.opac_iframe.setAttribute("src", OPAC_URL) 
+	p.opac_iframe.setAttribute("src", OPAC_URL + '?location=' + mw.G.user.home_ou()) 
 }
 
 /* shoves data into the OPAC's space */
