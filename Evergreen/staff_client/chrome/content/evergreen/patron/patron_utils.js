@@ -304,7 +304,7 @@ function patron_pay_bills( payment_blob ) {
 	sdump('D_PATRON_UTILS',arg_dump(arguments,{0:true}));
 	try {
 		//alert("Bill's API call goes here.  payment_blob = \n" + pretty_print( js2JSON( payment_blob ) ) + '\n');
-		alert( 'payment_blob\n' + js2JSON( payment_blob ) );
+		//alert( 'payment_blob\n' + js2JSON( payment_blob ) );
 		var result = user_request(
 			'open-ils.circ',
 			'open-ils.circ.money.payment',

@@ -175,8 +175,8 @@ function patron_bills_init(p) {
 	p.control_box.bill_wizard.addEventListener(
 		'command',
 		function() {
-			spawn_bill_wizard(
-				p.w.document, 'new_window', '', {}
+			spawn_patron_bill_wizard(
+				p.w.document, 'new_window', '', { 'patron' : p._patron }
 			);
 		},
 		false
