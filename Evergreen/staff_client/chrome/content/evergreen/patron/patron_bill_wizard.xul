@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- This DTD declaration needs to be fixed for Mozilla locales -->
+<!DOCTYPE wizard SYSTEM "chrome://evergreen/locale/patron.dtd">
+<wizard id="patron_bill" title="Bill Patron Wizard"
+	orient="vertical" style="overflow: auto"
+	onload="patron_bill_init()" width="800" height="600"
+	onwizardfinish="patron_bill_finish()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenSRF/OpenSRF_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+
+	<!-- OpenSRF -->
+	<script>var myPackageDir = "evergreen";</script>
+	<OpenSRF id="OpenSRF_js" />
+	<script src="patron_utils.js" />
+
+	<script>
+	<![CDATA[
+
+		function patron_bill_init() {
+			document.getElementById('patron_name').setAttribute('value',
+				patron_get_full_name(params.patron) + ' : ' + patron_get_barcode(params.patron) );
+			document.getElementById('billing_location').setAttribute('value',
+				mw.G.user_ou.name() );
+		}
+
+		function patron_bill_finish() {
+			try {
+				var grocery = new mg();
+					grocery.isnew('1');
+					grocery.billing_location( mw.G.user_ou.id() );
+					grocery.usr( params.patron.id() );
+					grocery.note( document.getElementById('bill_note').value );
+				var mg_id = user_request(
+					'open-ils.circ',
+					'open-ils.circ.money.grocery.create',
+					[ mw.G.auth_ses[0], grocery ]
+				)[0];
+				if (mg_id) {
+					var billing = new mb();
+						billing.isnew('1');
+						billing.note( document.getElementById('bill_note').value );
+						billing.xact( mg_id );
+						billing.amount( document.getElementById('bill_amount').value );
+						billing.billing_type( 'ad-hoc' );
+					var mb_id = user_request(
+						'open-ils.circ',
+						'open-ils.circ.money.billing.create',
+						[ mw.G.auth_ses[0], billing ]
+					)[0];
+					if (mb_id) {
+					} else {
+						throw('mb_id = ' + mb_id);
+					}
+				} else {
+					throw('mg_id = ' + mg_id);
+				}
+			} catch(E) {
+				handle_error(E);
+			}
+		}
+
+	]]>
+	</script>
+
+
+	<wizardpage id="page1" description="Billing Patron" onpageadvanced="">
+		<label id="patron_name"/>
+		<grid>
+			<columns> <column flex="0" /> <column flex="0" /> </columns>
+			<rows id="page1_rows">
+				<row><label value="Location"/><textbox id="billing_location" disabled="true" /></row>
+				<row><label value="Transaction Type"/>
+					<menulist id="xact_type">
+						<menupopup>
+							<menuitem label="Grocery" value="grocery" selected="true"/>
+						</menupopup>
+					</menulist>
+				</row>
+				<row><label value="Billing Type"/>
+					<menulist id="billing_type">
+						<menupopup>
+							<menuitem value="Miscellaneous" label="Miscellaneous" />
+							<menuitem value="Overdue materials" label="Overdue materials" />
+							<menuitem value="Fee for placing a hold" label="Fee for placing a hold" />
+							<menuitem value="Fee for checking out a book" label="Fee for checking out a book" />
+							<menuitem value="Fee for library card" label="Fee for library card" />
+							<menuitem value="Miscellaneous charges" label="Miscellaneous charges" />
+							<menuitem value="Lost materials" label="Lost materials" />
+							<menuitem value="Damaged material" label="Damaged material" />
+							<menuitem value="Overdue Reserves charge" label="Overdue Reserves charge" />
+							<menuitem value="Recall overdue" label="Recall overdue" />
+							<menuitem value="Fee for processing lost library materials" label="Fee for processing lost library materials" />
+							<menuitem value="Fee for sending patron bills to collection agency" label="Fee for sending patron bills to collection agency" />
+							<menuitem value="Fee for interlibrary loan" label="Fee for interlibrary loan" />
+							<menuitem value="Fee for copies" label="Fee for copies" />
+							<menuitem value="Money advanced to pay for telephone use" label="Money advanced to pay for telephone use" />
+							<menuitem value="Deposit fee" label="Deposit fee" />
+							<menuitem value="Fee for disk" label="Fee for disk" />
+							<menuitem value="Fee for faxing" label="Fee for faxing" />
+							<menuitem value="Fee for laminating" label="Fee for laminating" />
+							<menuitem value="Fee for room cleaning" label="Fee for room cleaning" />
+							<menuitem value="Deposit returned; fee refund" label="Deposit returned; fee refund" />
+							<menuitem value="Sale items" label="Sale items" />
+							<menuitem value="Fee for lost card" label="Fee for lost card" />
+							<menuitem value="Long overdue items" label="Long overdue items" />
+							<menuitem value="Lost/Replacement Cassette" label="Lost/Replacement Cassette" />
+							<menuitem value="Returned Check" label="Returned Check" />
+						</menupopup>
+					</menulist>
+				</row>
+				<row><label value="Amount"/><textbox id="bill_amount" /></row>
+				<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
+			</rows>
+		</grid>
+	</wizardpage>
+
+</wizard>
+
+
