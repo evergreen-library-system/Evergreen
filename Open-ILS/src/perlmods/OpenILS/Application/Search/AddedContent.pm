@@ -164,12 +164,13 @@ sub toc {
 	my $doc = XML::LibXML->new->parse_string($data);
 	my $ret = {};
 
-	my $reviews = $doc->findnodes("//*[local-name()='Review']");
+	my @nodes =  $doc->findnodes("//*[local-name()='TOCText']")->get_nodelist();
+		
+	if($nodes[0]) {
+		return $nodes[0]->textContent;
+	}
 
-	# XXX
-	$ret->{text} = $reviews->toString();
-
-	return $ret;
+	return "";
 }
 
 

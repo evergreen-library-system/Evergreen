@@ -115,7 +115,7 @@ function rdetailShowExtra(type) {
 	switch(type) {
 		case "copyinfo": unHideMe($('rdetail_copy_info_div')); break;
 		case "reviews": unHideMe($('rdetail_reviews_div')); break;
-		case "tocs": unHideMe($('rdetail_tocs_div')); break;
+		case "toc": unHideMe($('rdetail_toc_div')); break;
 	}
 }
 
@@ -159,7 +159,7 @@ function rdetailShowTOC(r) {
 	var resp = r.getResultObject();
 	if(resp) {
 		unHideMe($('rdetail_toc_link'));
-		$('rdetail_toc_div').appendChild(text(resp));
+		$('rdetail_toc_div').innerHTML = resp;
 	}
 }
 
