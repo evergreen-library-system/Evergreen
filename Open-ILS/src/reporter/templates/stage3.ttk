@@ -171,8 +171,11 @@ BLOCK save_stage3;
 	CALL q.execute(stage2, params, owner, pub, runtime, recurrence);
 
 	FOR new_s3 = DBI.query("SELECT * FROM reporter.stage3_id_seq;");
-		tid = new_s3.last_value;
-		INCLUDE view_stage3 rpt = reports.$tid;
+		rid = new_s3.last_value;
+		rpt = reports.$rid;
+		tid = rpt.stage2;
+		tmpl = templates.$tid;
+		INCLUDE view_stage3;
 	END;
 END;
 

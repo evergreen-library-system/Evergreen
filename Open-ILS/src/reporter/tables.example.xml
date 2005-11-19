@@ -77,6 +77,12 @@
 			  key="id"
 			  type="has_a"/>
 			<link
+			  field="item_lang"
+			  table="marc_lang_map"
+			  id="copy_language"
+			  key="code"
+			  type="has_a"/>
+			<link
 			  field="circ_lib"
 			  table="org_unit"
 			  id="copy_circ_lib"
@@ -111,6 +117,28 @@
 			  datatype="text">
 				<label>Short Name</label>
 				<description>Library Short (Policy) Name</description>
+			</field>
+		</fields>
+	</table>
+
+	<table id="marc_lang_map" partition="false" fact-table="false">
+		<label>MARC Language Codes</label>
+		<description>Table mapping MARC three character codes to language names</description>
+		<tablename>config.language_map</tablename>
+
+		<fields>
+			<field
+			  name="code"
+			  primary='true'
+			  datatype="text">
+				<label>Code</label>
+				<description>MARC Language Code</description>
+			</field>
+			<field
+			  name="value"
+			  datatype="text">
+				<label>Language Name</label>
+				<description>Name associated with the MARC code</description>
 			</field>
 		</fields>
 	</table>

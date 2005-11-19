@@ -5,12 +5,12 @@ WRAPPER html/html;
 	PROCESS inputs;
 	PROCESS class_manip;
 	PROCESS widget_manip;
-	PROCESS logic_header.ttk;
 	INCLUDE logout.ttk;
    END;
 
    WRAPPER html/body;
 
+	PROCESS logic_header.ttk;
 	PROCESS select_sorter.js;
 
 	templates = DBI.tie('reporter.stage2', 'id')
@@ -238,6 +238,26 @@ BLOCK run_stage2;
 	%]
 		<script language="javascript">
 			var outputs = {};
+			var filters = {};
+			function send_it (f) {
+				var bad_filters = [];
+				for (var i in filters) {
+					if (!f.elements[i].value) {
+						bad_filters.push(filters[i]); 
+					}
+				}
+				if (bad_filters.length) {
+					var fstring = '';
+					for (var i in bad_filters)
+						fstring = fstring + "\n\t" + bad_filters[i];
+
+					alert('You must choose a filter value for these filter:\n' + fstring);
+					return false;
+				}
+
+				Widget.Select.selectAll('output_order');
+				return true;
+			}
 		</script>
    		<br/>
 	[%
@@ -256,7 +276,7 @@ BLOCK run_stage2;
 
 	'<br/><br/>';
 
-	WRAPPER form id="stage3_new" name="stage3_new" action="stage3" method="POST";
+	WRAPPER form id="stage3_new" name="stage3_new" action="stage3" onsubmit="return send_it(this);" method="POST";
 		INCLUDE hidden name='stage2' value=CGI.param('id');
 
 		'<br/><center><b>Report Name:</b>';
@@ -277,7 +297,7 @@ BLOCK run_stage2;
 				END;
 
 				WRAPPER html/cell align="right";
-					INCLUDE checkbox name='output_format' value='csv';
+					INCLUDE checkbox name='output_format' value='csv' checked='checked';
 				END;
 				INCLUDE html/cell content="CSV" align="left";
 			END;
@@ -287,16 +307,41 @@ BLOCK run_stage2;
 				END;
 
 				WRAPPER html/cell align="right";
-					INCLUDE checkbox name='output_format' value='excel';
+					INCLUDE checkbox name='output_format' value='excel' checked='checked';
 				END;
 				INCLUDE html/cell content="Excel" align="left";
 			END;
 			WRAPPER html/row;
 				INCLUDE html/cell;
-				WRAPPER html/cell align="right";
-					INCLUDE checkbox name='output_format' value='html';
+				WRAPPER html/cell align="right" valign='top';
+					INCLUDE checkbox name='output_format' value='html' checked='checked';
 				END;
-				INCLUDE html/cell content="HTML" align="left";
+				WRAPPER html/cell align="left";
+					'HTML<br/>';
+					WRAPPER html/table;
+						WRAPPER html/row + html/cell colspan=2;
+							"<i>Graph types</i>";
+						END;
+						WRAPPER html/row;
+							WRAPPER html/cell;
+								INCLUDE checkbox name='html_graph_type' value='bar';
+							END;
+							INCLUDE html/cell content='Bar';
+						END;
+						WRAPPER html/row;
+							WRAPPER html/cell;
+								INCLUDE checkbox name='html_graph_type' value='pie';
+							END;
+							INCLUDE html/cell content='Pie';
+						END;
+						WRAPPER html/row;
+							WRAPPER html/cell;
+								INCLUDE checkbox name='html_graph_type' value='line';
+							END;
+							INCLUDE html/cell content='Line';
+						END;
+					END;
+				END;
 			END;
 		END;
 
@@ -317,6 +362,9 @@ BLOCK run_stage2;
 				NEXT UNLESS params.filter.$t.keys;
 				f_table = INCLUDE find_table_id id=t;
 				table = config.findnodes( "/reporter/tables/table[@id='$f_table']");
+
+				table_label = table.findvalue( 'label' );
+
 				WRAPPER html/row;
 					WRAPPER html/cell colspan=3 align='center' style="border: solid black 1px; background: lightgray;";
 						IF t != f_table;
@@ -326,11 +374,10 @@ BLOCK run_stage2;
 							link_label_xpath =
 								'../../fields/field[@name="' _
 								dim_link.findvalue('@field') _ '"]/label';
-							dim_link.findvalue(link_label_xpath);
 
-							' -- ';
+							table_label = table_label _ ' -- ' _ dim_link.findvalue(link_label_xpath);
 						END;
-						table.findvalue( 'label' );
+						table_label;
 					END;
 				END;
 
@@ -350,7 +397,7 @@ BLOCK run_stage2;
 							INCLUDE html/cell;
 							INCLUDE html/cell align='right' content=field.findvalue( 'label' );
 
-							WRAPPER html/cell align='center';
+							WRAPPER html/cell align='right';
 								TRY;
 										classname = table.findvalue('@id');
 										fieldname = field.findvalue('@name');
@@ -425,8 +472,8 @@ BLOCK run_stage2;
 
 		INCLUDE checkbox name="publicreport" value="t";
 		'Public Report<br>';
-		INCLUDE submit name="action" value="Run Now" onclick="Widget.Select.selectAll('output_order');this.form.submit();";
-		INCLUDE submit name="action" value="Schedule" onclick="Widget.Select.selectAll('output_order');this.form.submit();";
+		INCLUDE submit name="action" value="Run Now";
+		INCLUDE submit name="action" value="Schedule";
 
 	END;
 END;

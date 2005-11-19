@@ -4,6 +4,8 @@ PROCESS inputs;
 
 q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' ORDER BY ' _ fieldname _ ';';
 
+'<script language="javascript">filters["' _ input_prefix _ '"] = "' _ table_label _ ' -- ' _ field.findvalue('label') _ '";</script>';
+
 WRAPPER select name=input_prefix;
 	FOR f = DBI.query(q);
 		INCLUDE option value=f.$fieldname;

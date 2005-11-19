@@ -15,6 +15,12 @@ use Spreadsheet::WriteExcel;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:daemon/;
 use OpenSRF::Utils::Logger qw/:level/;
+use POSIX;
+use GD::Graph::pie;
+use GD::Graph::bars3d;
+use GD::Graph::lines;
+
+use open ':utf8';
 
 my $current_time = DateTime->from_epoch( epoch => time() )->strftime('%FT%T%z');
 
@@ -45,7 +51,7 @@ daemonize("Clark Kent, waiting for trouble") if ($daemon);
 
 DAEMON:
 
-$dbh = DBI->connect($dsn,$db_user,$db_pw);
+$dbh = DBI->connect($dsn,$db_user,$db_pw, {pg_enable_utf8 => 1, RaiseError => 1});
 
 # Move new reports into the run queue
 $dbh->do(<<'SQL', {}, $current_time);
@@ -73,6 +79,13 @@ SELECT	count(*)
 SQL
 
 if ($count <= $running) {
+	if ($daemon) {
+		$dbh->disconnect;
+		sleep 1;
+		POSIX::waitpid( -1, POSIX::WNOHANG );
+		sleep 60;
+		goto DAEMON;
+	}
 	print "Already running maximum ($running) concurrent reports\n";
 	exit 1;
 }
@@ -120,10 +133,9 @@ for my $r ( @reports ) {
 	my $p = JSON->JSON2perl( $r->{stage3}->{params} );
 	daemonize("Clark Kent reporting: $p->{reportname}");
 
-	$dbh = DBI->connect($dsn,$db_user,$db_pw);
+	$dbh = DBI->connect($dsn,$db_user,$db_pw, {pg_enable_utf8 => 1, RaiseError => 1});
 
 	try {
-
 		$dbh->do(<<'		SQL',{}, $r->{sql}->{'select'}, $$, $r->{id});
 			UPDATE	reporter.output
 			  SET	state = 'running',
@@ -205,6 +217,8 @@ for my $r ( @reports ) {
 }
 
 if ($daemon) {
+	sleep 1;
+	POSIX::waitpid( -1, POSIX::WNOHANG );
 	sleep 60;
 	goto DAEMON;
 }
@@ -229,7 +243,11 @@ sub build_excel {
 	my $p = JSON->JSON2perl( $r->{stage3}->{params} );
 
 	my $xls = Spreadsheet::WriteExcel->new($file);
-	my $sheet = $xls->add_worksheet($p->{reportname});
+
+	my $sheetname = substr($p->{reportname},1,31);
+	$sheetname =~ s/\W/_/gos;
+	
+	my $sheet = $xls->add_worksheet($sheetname);
 
 	$sheet->write_row('A1', $r->{sql}->{columns});
 
@@ -238,7 +256,219 @@ sub build_excel {
 	$xls->close;
 }
 
-sub build_html {}
+sub build_html {
+	my $file = shift;
+	my $r = shift;
+	my $p = JSON->JSON2perl( $r->{stage3}->{params} );
+
+	my $index = new FileHandle (">$file");
+	my $raw = new FileHandle (">$file.raw.html");
+	
+	# index header
+	print $index <<"	HEADER";
+<html>
+	<head>
+		<title>$$p{reportname}</title>
+		<style>
+			table { border-collapse: collapse; }
+			th { background-color: lightgray; }
+			td,th { border: solid black 1px; }
+			* { font-family: sans-serif; font-size: 10px; }
+		</style>
+	</head>
+	<body>
+		<h2><u>$$p{reportname}</u></h2>
+	HEADER
+
+	
+	# add a link to the raw output html
+	print $index "<a href='report-data.html.raw.html'>Raw output data</a><br/><br/><br/><br/>";
+
+	# create the raw output html file
+	print $raw "<html><head><title>$$p{reportname}</title>";
+
+	print $raw <<'	CSS';
+		<style>
+			table { border-collapse: collapse; }
+			th { background-color: lightgray; }
+			td,th { border: solid black 1px; }
+			* { font-family: sans-serif; font-size: 10px; }
+		</style>
+	CSS
+
+	print $raw "</head><body><table>";
+	print $raw "<tr><th>".join('</th><th>',@{$r->{sql}->{columns}}).'</th></tr>';
+
+	print $raw "<tr><td>".join('</td><td>',@$_).'</td></tr>' for (@{$r->{data}});
+
+	print $raw '</table></body></html>';
+	
+	$raw->close;
+
+	# get the graph types
+	my @graphs;
+	if (ref $$p{html_graph_type}) {
+		@graphs = @{ $$p{html_graph_type} };
+	} else {
+		@graphs = ( $$p{html_graph_type} );
+	}
+
+	# Time for a pie chart
+	if (grep {$_ eq 'pie'} @graphs) {
+		my $pics = draw_pie($r, $p, $file);
+		for my $pic (@$pics) {
+			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+		}
+	}
+
+	# Time for a bar chart
+	if (grep {$_ eq 'bar'} @graphs) {
+		my $pics = draw_bars($r, $p, $file);
+		for my $pic (@$pics) {
+			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+		}
+	}
+
+
+	# and that's it!
+	print $index '</body></html>';
+	
+	$index->close;
+}
+
+sub draw_pie {
+	my $r = shift;
+	my $p = shift;
+	my $file = shift;
+	my $data = $r->{data};
+	my $settings = $r->{sql};
+
+	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+	
+	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
+	delete @values[@groups];
+	
+	my @pics;
+	for my $vcol (@values) {
+		next unless (defined $vcol);
+
+		my @pic_data;
+		for my $row (@$data) {
+			next if ($$row[$vcol] == 0);
+			push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
+			push @{$pic_data[1]}, $$row[$vcol];
+		}
+
+		my $pic = new GD::Graph::pie;
+
+		$pic->set(
+			label		=> $p->{reportname}." -- ".$settings->{columns}->[$vcol],
+			start_angle	=> 180,
+			legend_placement=> 'R'
+		);
+
+		my $format = $pic->export_format;
+
+		open(IMG, ">$file.pie.$vcol.$format");
+		binmode IMG;
+
+		my $forgetit = 0;
+		try {
+			$pic->plot(\@pic_data) or die $pic->error;
+			print IMG $pic->gd->$format;
+		} otherwise {
+			my $e = shift;
+			warn "Couldn't draw $file.pie.$vcol.$format : $e";
+			$forgetit = 1;
+		};
+
+		close IMG;
+
+		next if ($forgetit);
+
+		push @pics,
+			{ file => "pie.$vcol.$format",
+			  name => $p->{reportname}." -- ".$settings->{columns}->[$vcol].' (Pie)',
+			};
+
+	}
+	
+	return \@pics;
+}
+
+sub draw_bars {
+	my $r = shift;
+	my $p = shift;
+	my $file = shift;
+	my $data = $r->{data};
+	my $settings = $r->{sql};
+
+	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+	
+	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
+	delete @values[@groups];
+	
+	my @pic_data;
+	for my $row (@$data) {
+		push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
+	}
+
+	my @leg;
+	my $set = 1;
+
+	my $max_y = 0;
+	for my $vcol (@values) {
+		next unless (defined $vcol);
+
+		push @leg, $settings->{columns}->[$vcol];
+
+		for my $row (@$data) {
+			my $val = $$row[$vcol] ? $$row[$vcol] : 0;
+			push @{$pic_data[$set]}, $val;
+			$max_y = $val if ($val > $max_y);
+		}
+
+		$set++;
+	}
+
+	my $pic = new GD::Graph::bars3d (100 + 10 * scalar(@$data), 500);
+
+	$pic->set(
+		title			=> $p->{reportname},
+		x_labels_vertical	=> 1,
+		shading			=> 1,
+		bar_depth		=> 5,
+		bar_spacing		=> 2,
+		y_max_value		=> $max_y,
+		legend_placement	=> 'BL',
+		boxclr			=> 'lgray',
+	);
+	$pic->set_legend(@leg);
+
+	my $format = $pic->export_format;
+
+	open(IMG, ">$file.bar.$format");
+	binmode IMG;
+
+	my $forgetit = 0;
+	try {
+		$pic->plot(\@pic_data) or die $pic->error;
+		print IMG $pic->gd->$format;
+	} otherwise {
+		my $e = shift;
+		warn "Couldn't draw $file.bar.$format : $e";
+		$forgetit = 1;
+	};
+
+	close IMG;
+
+	next if ($forgetit);
+
+	return [{ file => "bar.$format",
+		  name => $p->{reportname}.' (Bar)',
+		}];
+
+}
 
 sub table_by_id {
 	my $id = shift;
@@ -295,7 +525,13 @@ sub generate_query {
 		'(SELECT ' . join(',', @dim_select) .
 		'  FROM ' . join(',', @dim_from) . ') AS dims';
 	
-	my @output_order = map { { (split ':')[1] => (split ':')[2] } } @{ $$p{output_order} };
+	my @opord;
+	if (ref $$p{output_order}) {
+		@opord = @{ $$p{output_order} };
+	} else {
+		@opord = ( $$p{output_order} );
+	}
+	my @output_order = map { { (split ':')[1] => (split ':')[2] } } @opord;
 	
 	my $col = 1;
 	my @groupby;
@@ -388,14 +624,15 @@ sub generate_query {
 	my $t = table_by_id($core)->findvalue('tablename');
 	my $from = " FROM $t AS \"$core\" RIGHT JOIN $d_select ON (". join(' AND ', @join).")";
 	my $select =
-		"SELECT ".join(',', @output).
-		  $from.
-		  ' WHERE '.join(' AND ', @where).
-		  ' GROUP BY '.join(',',@groupby);
+		"SELECT ".join(',', @output). $from;
+
+	$select .= ' WHERE '.join(' AND ', @where) if (@where);
+	$select .= ' GROUP BY '.join(',',@groupby) if (@groupby);
 
 	$r->{sql}->{'select'}	= $select;
 	$r->{sql}->{'bind'}	= \@bind;
 	$r->{sql}->{columns}	= \@columns;
+	$r->{sql}->{groupby}	= \@groupby;
 	
 }
 

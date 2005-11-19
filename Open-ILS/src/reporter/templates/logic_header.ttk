@@ -33,7 +33,7 @@ dsn = "dbi:" _ dbdriver _ ":dbname=" _ dbname _';host=' _ dbhost;
 
 logme([dsn,d_u,d_p]);
 
-DBI.connect(dsn,d_u,d_p);
+DBI.connect(dsn,d_u,d_p,pg_enable_utf8=1);
 
 stage2_insert = 'INSERT INTO reporter.stage2 (stage1, params, owner, pub)' _
 						' VALUES ( ?,?,?,? )';

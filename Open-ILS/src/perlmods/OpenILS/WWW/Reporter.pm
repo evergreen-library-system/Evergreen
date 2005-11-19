@@ -76,6 +76,7 @@ sub handler {
 
 
 	print "Content-type: text/html; charset=utf-8\n\n";
+	#print "Content-type: text/html\n\n";
 
 	_process_template(
 			apache		=> $apache,

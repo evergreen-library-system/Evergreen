@@ -11,6 +11,10 @@ BLOCK form;
 		'id="' _ id _ '" ';
 	END;
 
+	IF onsubmit;
+		'onsubmit="' _ onsubmit _ '" ';
+	END;
+
 	IF action;
 		'action="' _ action _ '" ';
 	END;
