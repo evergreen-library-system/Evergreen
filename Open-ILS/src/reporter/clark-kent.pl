@@ -416,22 +416,38 @@ sub draw_bars {
 	my @leg;
 	my $set = 1;
 
+	my %trim_candidates;
+
 	my $max_y = 0;
 	for my $vcol (@values) {
 		next unless (defined $vcol);
 
 		push @leg, $settings->{columns}->[$vcol];
 
+		my $pos = 0;
 		for my $row (@$data) {
 			my $val = $$row[$vcol] ? $$row[$vcol] : 0;
 			push @{$pic_data[$set]}, $val;
 			$max_y = $val if ($val > $max_y);
+			$trim_candidates{$pos}++ if ($val == 0);
+			$pos++;
 		}
 
 		$set++;
 	}
+	my $set_count = scalar(@pic_data) - 1;
+	my @trim_cols = grep { $trim_candidates{$_} == $set_count } keys %trim_candidates;
 
-	my $pic = new GD::Graph::bars3d (100 + 10 * scalar(@$data), 500);
+	for my $dataset (@pic_data) {
+		for my $col (reverse sort { $a <=> $b } @trim_cols) {
+			splice(@$dataset,$col,1);
+		}
+	}
+
+	my $w = 100 + 10 * scalar(@{$pic_data[0]});
+	$w = 400 if ($w < 400);
+
+	my $pic = new GD::Graph::bars3d ($w, 500);
 
 	$pic->set(
 		title			=> $p->{reportname},
