@@ -206,7 +206,7 @@ sub perl2JSON {
 			$outkey =~ s/\f/\\f/sgo;
 			$outkey =~ s/\r/\\r/sgo;
 			$outkey =~ s/\n/\\n/sgo;
-			$outkey =~ s/(\PM\pM)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
+			$outkey =~ s/(\PM\pM+)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
 
 			$output .= '"'.$outkey.'":'. perl2JSON(undef,$$perl{$key}, $strict);
 			$c++;
@@ -315,7 +315,7 @@ sub perl2prettyJSON {
 		$perl =~ s/\f/\\f/sgo;
 		$perl =~ s/\r/\\r/sgo;
 		$perl =~ s/\n/\\n/sgo;
-		$perl =~ s/(\PM\pM)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
+		$perl =~ s/(\PM\pM+)/sprintf('\u%0.4x',ord(NFC($1)))/sgoe;
 		$output .= "   "x$depth unless($nospace);
 		if (length($perl) < 10 and $perl =~ /^(?:\+|-)?\d*\.?\d+$/o and $perl !~ /^(?:\+|-)?0\d+/o ) {
 			$output = $perl;
