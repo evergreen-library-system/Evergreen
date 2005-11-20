@@ -2,10 +2,13 @@
 
 function field_add_remove (x) {
 	var field = x.name;
-	if (x.checked)
+	if (x.checked) {
 		Widget.Select.addOption('output_order',field, outputs[field]);
-	else
+		Widget.Select.addOption('pivot_col',field, outputs[field]);
+	} else {
 		Widget.Select.removeOption('output_order',field);
+		Widget.Select.removeOption('pivot_col',field);
+	}
 	return true;
 }
 

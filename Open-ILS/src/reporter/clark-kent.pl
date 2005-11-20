@@ -150,6 +150,8 @@ for my $r ( @reports ) {
 		$sth->execute(@{ $r->{sql}->{'bind'} });
 		$r->{data} = $sth->fetchall_arrayref;
 
+		pivot_data($r, $p);
+
 		my $base = $doc->findvalue('/reporter/setup/files/output_base');
 		my $s1 = $r->{stage3}->{stage2}->{stage1};
 		my $s2 = $r->{stage3}->{stage2}->{id};
@@ -224,6 +226,71 @@ if ($daemon) {
 }
 
 #-------------------------------------------------------------------
+
+sub pivot_data {
+	my $r = shift;
+	my $p = shift;
+	my $settings = $r->{sql};
+	my $data = $r->{data};
+
+	return unless (defined($settings->{pivot}));
+
+	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+
+	# remove pivot from group-by
+	my $count = 0;
+	my $pivot_groupby;
+	while ($count < scalar(@{$settings->{groupby}})) {
+		if (defined $pivot_groupby) {
+			$settings->{groupby}->[$count] -= 1;
+		} elsif ($settings->{groupby}->[$count] == $settings->{pivot} + 1) {
+			$pivot_groupby = $count;
+		}
+		$count++;
+	}
+
+
+	# grab positions of non-group-bys
+	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
+	splice(@values,$_,1) for (reverse @groups);
+	
+	# we're only doing one "value" for now, so grab that and remove from headings
+	my ($val_col) = @values;
+
+	my @remove_me = sort
+		{ $b <=> $a }
+		($val_col, $settings->{groupby}->[$pivot_groupby] - 1);
+
+	my %p_header;
+	for my $row (@$data) {
+		$p_header{ $$row[$settings->{pivot}] }++;
+		push @values, $$row[$val_col];
+		splice(@$row,$_,1) for (@remove_me);
+	}
+	push @{ $settings->{columns} }, sort keys %p_header;
+
+	# remove from headings;
+	splice(@{$settings->{columns}},$_,1) for (@remove_me);
+
+	# remove pivot from groupby
+	splice(@{$settings->{groupby}}, $pivot_groupby, 1);
+	@groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+
+	$count = scalar(keys %p_header);
+	my %seenit;
+	my @new_data;
+	for my $row (@$data) {
+		my $fingerprint = join('',@$row[@groups]);
+		next if $seenit{$fingerprint};
+		$seenit{$fingerprint}++;
+		push @$row, splice(@values,0,$count);
+		push @new_data, [@$row];
+	}
+
+	#replace old data with new
+	$r->{data} = \@new_data;
+
+}
 
 sub build_csv {
 	my $file = shift;
@@ -347,6 +414,8 @@ sub draw_pie {
 	
 	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
 	delete @values[@groups];
+
+	my $logo = $doc->findvalue('/reporter/setup/files/chart_logo');
 	
 	my @pics;
 	for my $vcol (@values) {
@@ -354,7 +423,7 @@ sub draw_pie {
 
 		my @pic_data;
 		for my $row (@$data) {
-			next if ($$row[$vcol] == 0);
+			next if (!defined($$row[$vcol]) || $$row[$vcol] == 0);
 			push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
 			push @{$pic_data[1]}, $$row[$vcol];
 		}
@@ -362,9 +431,13 @@ sub draw_pie {
 		my $pic = new GD::Graph::pie;
 
 		$pic->set(
-			label		=> $p->{reportname}." -- ".$settings->{columns}->[$vcol],
-			start_angle	=> 180,
-			legend_placement=> 'R'
+			label			=> $p->{reportname}." -- ".$settings->{columns}->[$vcol],
+			start_angle		=> 180,
+			legend_placement	=> 'R',
+			logo			=> $logo,
+			logo_position		=> 'TL',
+			logo_resize		=> 0.5,
+			show_values		=> 1,
 		);
 
 		my $format = $pic->export_format;
@@ -403,14 +476,19 @@ sub draw_bars {
 	my $data = $r->{data};
 	my $settings = $r->{sql};
 
+	my $logo = $doc->findvalue('/reporter/setup/files/chart_logo');
+
 	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
 	
 	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
 	delete @values[@groups];
+	@values = grep {defined $_} @values;
 	
 	my @pic_data;
-	for my $row (@$data) {
-		push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
+	{	no warnings;
+		for my $row (@$data) {
+			push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
+		}
 	}
 
 	my @leg;
@@ -447,7 +525,11 @@ sub draw_bars {
 	my $w = 100 + 10 * scalar(@{$pic_data[0]});
 	$w = 400 if ($w < 400);
 
-	my $pic = new GD::Graph::bars3d ($w, 500);
+	my $h = 10 * (scalar(@pic_data) - 30);
+
+	$h = 0 if ($h < 0);
+
+	my $pic = new GD::Graph::bars3d ($w + 250, $h + 500);
 
 	$pic->set(
 		title			=> $p->{reportname},
@@ -456,8 +538,13 @@ sub draw_bars {
 		bar_depth		=> 5,
 		bar_spacing		=> 2,
 		y_max_value		=> $max_y,
-		legend_placement	=> 'BL',
+		legend_placement	=> 'TR',
 		boxclr			=> 'lgray',
+		logo			=> $logo,
+		logo_position		=> 'R',
+		logo_resize		=> 0.5,
+		show_values		=> 1,
+		overwrite		=> 1,
 	);
 	$pic->set_legend(@leg);
 
@@ -466,19 +553,15 @@ sub draw_bars {
 	open(IMG, ">$file.bar.$format");
 	binmode IMG;
 
-	my $forgetit = 0;
 	try {
 		$pic->plot(\@pic_data) or die $pic->error;
 		print IMG $pic->gd->$format;
 	} otherwise {
 		my $e = shift;
 		warn "Couldn't draw $file.bar.$format : $e";
-		$forgetit = 1;
 	};
 
 	close IMG;
-
-	next if ($forgetit);
 
 	return [{ file => "bar.$format",
 		  name => $p->{reportname}.' (Bar)',
@@ -548,7 +631,9 @@ sub generate_query {
 		@opord = ( $$p{output_order} );
 	}
 	my @output_order = map { { (split ':')[1] => (split ':')[2] } } @opord;
-	
+	my @p_col = split(':',$p->{pivot_col}) if $p->{pivot_col};
+	my $pivot;
+
 	my $col = 1;
 	my @groupby;
 	my @output;
@@ -588,6 +673,7 @@ sub generate_query {
 
 			push @output, "$full_col AS \"$label\"";
 			push @columns, $label;
+			$pivot = scalar(@columns) - 1 if (@p_col && $t eq $p_col[1] && $c eq $p_col[2]);
 			$col++;
 		}
 
@@ -645,6 +731,7 @@ sub generate_query {
 	$select .= ' WHERE '.join(' AND ', @where) if (@where);
 	$select .= ' GROUP BY '.join(',',@groupby) if (@groupby);
 
+	$r->{sql}->{'pivot'}	= $pivot;
 	$r->{sql}->{'select'}	= $select;
 	$r->{sql}->{'bind'}	= \@bind;
 	$r->{sql}->{columns}	= \@columns;

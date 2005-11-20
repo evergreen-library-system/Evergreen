@@ -3,12 +3,13 @@
 
 	<setup>
 		<files>
-			<output_base>/tmp/reporter/</output_base>
+			<output_base>/openils/var/web/reporter/</output_base>
+			<chart_logo>/openils/var/web/opac/images/small_logo.png</chart_logo>
 		</files>
 		<database>
 			<driver>Pg</driver>
-			<host>10.0.0.2</host>
-			<name>demo-dev</name>
+			<host>127.0.0.1</host>
+			<name>develooper</name>
 			<user>postgres</user>
 			<password/>
 		</database>

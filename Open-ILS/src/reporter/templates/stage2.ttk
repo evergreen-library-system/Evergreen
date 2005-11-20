@@ -345,6 +345,10 @@ BLOCK run_stage2;
 			END;
 		END;
 
+		'<br/><br/><b>Pivot Column:</b> ';
+		WRAPPER select id='pivot_col' name='pivot_col';
+			INCLUDE option value='' content='No Pivot';
+		END;
 		'<br/><br/>';
 
 		WRAPPER html/table border=0 width='100%';
