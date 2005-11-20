@@ -30,7 +30,6 @@
 							<xi:include href="searchbar.xml"/>
 							<xi:include href="statusbar.xml"/>
 							<xi:include href="altcanvas.xml"/>
-							<xi:include href="rdetail_altcanvas.xml"/>
 	
 							<div id='canvas_main'>
 								<table style='' class='rdetail_header color_1' width='100%'>
@@ -40,20 +39,15 @@
 												<span>&rdetail.detailMain.headerLabel;</span>
 											</td>
 											<td align='right' style='padding-right: 7px;'>
-												<span style='padding-right: 15px;'>
+												<span style='padding-right: 5px;'>
 													<a id='rdetail_place_hold' class='classic_link'>Place Hold</a>
 												</span>
-												<a href="javascript:void(0);" id='rdetail_view_marc'
-													class='classic_link'>&rdetail.detailMain.viewMarc;</a>
 											</td>
 										</tr>
 									</tbody>
 								</table>
 								<xi:include href="rdetail_summary.xml"/>
 								<br/><br/>
-								<!--
-								<xi:include href="rdetail_copyinfo.xml"/>
-								-->
 								<xi:include href='rdetail_extras.xml'/>
 							</div>
 						</div>

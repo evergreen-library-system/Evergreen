@@ -37,8 +37,8 @@
 				<td align='center' name='myopac_checked_renewals' class='light_border'> </td>
 
 				<td align='center' name='myopac_checked_renew' class='light_border'>
-					<a style='text-decoration:underline;' 
-						href='javascript:void(0);' name='myopac_checked_renew_link'>Renew</a>
+					<a style='text-decoration:underline;' href='javascript:void(0);' 
+						name='myopac_checked_renew_link' class='class_link'>Renew</a>
 				</td>
 
 			</tr>

@@ -9,14 +9,13 @@ body { margin: 6px; }
 table { border-collapse: collapse; }
 
 /* generic CSS for a table with data */
-.data_grid { font-weight: 500; }
-/*.data_grid thead tr { background: #CCFFFF; color: #000000; border: 1px solid #808080; }*/
-.data_grid thead tr { background: #E0F0E0; color: #000000; border: 1px solid #808080; }
-.data_grid thead td { border-bottom: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
+.data_grid { font-weight: 500; border-collapse: collapse;}
+.data_grid thead tr { background: #E0F0E0; color: #000000; }
+.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
 .data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
 
-.classic_link { text-decoration: underline; color: blue;}
-.classic_link:visited { text-decoration: underline; color: blue;}
+.classic_link { text-decoration: underline; color: black;}
+.classic_link:visited { text-decoration: underline; color: black;}
 
 
 
@@ -28,13 +27,6 @@ table { border-collapse: collapse; }
 #main_left_cell { height: 100%; width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
 #main_right_cell { height: 100%; width: 80%; vertical-align: top; margin: 0px; padding:0px;}
 
-
-/*.vertical {writing-mode: tb-rl; filter: flipv fliph; }*/
-
-/* ---------------------------------------------------------------------- */
-/*
-.canvas { float:right; width: 79%; text-align: left;}
-*/
 
 .canvas { min-height: 300px; }
 #not_the_canvas {}
@@ -65,14 +57,7 @@ table { border-collapse: collapse; }
 
 .sidebar_item_active { background: #A7EA9D; margin-right: 0px; }
 
-/*
-.sidebar_item_active { background: #035E47; margin-right: 0px; }
-*/
 .sidebar_chunk { width: 100%; }
-
-/*
-border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0;}
-*/
 
 /* ---------------------------------------------------------------------- */
 
@@ -158,12 +143,15 @@ border-left: 1px solid #E0E0E0; border-top: 1px solid #E0E0E0; border-bottom: 1p
 	padding-top: 8px; padding-bottom: 8px; }
 
 .rdetail_extras_div {
-	border-top: 2px solid #E0E0E0;
-}
+	border-top: 3px solid #E0E0E0;margin-top: 3px; padding-top: 5px;}
 
 .copy_info_region_row {
 	padding: 6px;
 	border: 2px solid #E0E0E0;
 	font-weight: 600;
-	background: #E0F0E0;
+	/*background: #F0F0F0;*/
 }
+
+.rdetail_extras_td { padding-right: 15px; padding-left: 15px; border-right: 1px solid #888; }
+
+

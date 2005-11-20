@@ -3,6 +3,7 @@
 <!-- record details alternate canvases -->
 <div class=''>
 
+	<!--
 	<script language='javascript'>
 		config.ids.rdetail.view_marc_div = 'view_marc_div';
 		config.ids.altcanvas.view_marc_div = config.ids.rdetail.view_marc_div; 
@@ -22,6 +23,7 @@
 		<div id='rdetail_view_marc_box'> </div>
 		<br/><br/>
 	</div>
+	-->
 	
 </div>
 

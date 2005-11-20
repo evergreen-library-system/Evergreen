@@ -23,9 +23,6 @@ function rdetailDraw() {
 
 	G.ui.rdetail.cp_info_local.onclick = rdetailShowLocalCopies;
 	G.ui.rdetail.cp_info_all.onclick = rdetailShowAllCopies;
-	G.ui.rdetail.view_marc.onclick = rdetailViewMarc;
-	G.ui.rdetail.hide_marc.onclick = showCanvas;
-
 
 	if(getLocation() == globalOrgTree.id())
 		hideMe(G.ui.rdetail.cp_info_all);
@@ -35,16 +32,10 @@ function rdetailDraw() {
 	req.send();
 }
 
-function rdetailViewMarc() {
-	if(!record) return;
-
-	if( G.ui.rdetail.view_marc_box.innerHTML.indexOf("style") == -1 ) {
-		var req = new Request( FETCH_MARC_HTML, record.doc_id() );
-		req.send(true);
-		var html = req.result();
-		G.ui.rdetail.view_marc_box.innerHTML = html;
-	}
-	swapCanvas(G.ui.rdetail.view_marc_div);
+var rdeatilMarcFetched = false;
+function rdetailViewMarc(r) {
+	hideMe($('rdetail_extras_loading'));
+	$('rdetail_view_marc_box').innerHTML = r.getResultObject();
 }
 
 
@@ -107,38 +98,64 @@ function _rdetailDraw(r) {
 
 }
 
+var rdetailTocFetched		= false;
+var rdetailReviewFetched	= false;
+var rdetailMarcFetched		= false;
+
 function rdetailShowExtra(type) {
 
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
+	hideMe($('rdetail_marc_div'));
 
+	var req;
 	switch(type) {
-		case "copyinfo": unHideMe($('rdetail_copy_info_div')); break;
-		case "reviews": unHideMe($('rdetail_reviews_div')); break;
-		case "toc": unHideMe($('rdetail_toc_div')); break;
+		case "copyinfo": 
+			unHideMe($('rdetail_copy_info_div')); 
+			break;
+
+		case "reviews": 
+			unHideMe($('rdetail_reviews_div')); 
+			if(rdetailReviewFetched) break;
+			unHideMe($('rdetail_extras_loading'));
+			rdetailReviewFetched = true;
+			req = new Request(FETCH_REVIEWS, cleanISBN(record.isbn()));
+			req.callback(rdetailShowReviews);
+			req.send();
+			break;
+
+		case "toc": 
+			unHideMe($('rdetail_toc_div'));
+			if(rdetailTocFetched) break;
+			unHideMe($('rdetail_extras_loading'));
+			rdetailTocFetched = true;
+			var req = new Request(FETCH_TOC, cleanISBN(record.isbn()));
+			req.callback(rdetailShowTOC);
+			req.send();
+			break;
+
+		case "marc": 
+			unHideMe($('rdetail_marc_div')); 
+			if(rdetailMarcFetched) return;
+			unHideMe($('rdetail_extras_loading'));
+			rdetailMarcFetched = true;
+			var req = new Request( FETCH_MARC_HTML, record.doc_id() );
+			req.callback(rdetailViewMarc); 
+			req.send();
+			break;
 	}
 }
 
 function rdetailHandleAddedContent(r) {
 	var resp = r.getResultObject();
-
-	if( resp.Review == 'true' ) { 
-		var req = new Request(FETCH_REVIEWS, cleanISBN(record.isbn()));
-		req.callback(rdetailShowReviews);
-		req.send();
-	}
-
-	if( resp.TOC == 'true' ) { 
-		var req = new Request(FETCH_TOC, cleanISBN(record.isbn()));
-		req.callback(rdetailShowTOC);
-		req.send();
-	}
-
+	if( resp.Review == 'true' ) unHideMe($('rdetail_reviews_link'));
+	if( resp.TOC == 'true' ) unHideMe($('rdetail_toc_link'));
 }
 
 
 function rdetailShowReviews(r) {
+	hideMe($('rdetail_extras_loading'));
 	var res = r.getResultObject();
 	var par = $('rdetail_reviews_div');
 	var template = par.removeChild($('rdetail_review_template'));
@@ -157,6 +174,7 @@ function rdetailShowReviews(r) {
 }
 
 function rdetailShowTOC(r) {
+	hideMe($('rdetail_extras_loading'));
 	var resp = r.getResultObject();
 	if(resp) {
 		unHideMe($('rdetail_toc_link'));
@@ -193,7 +211,6 @@ function _rdetailRows(node) {
 
 			libtd.setAttribute("colspan", numStatuses + 2 );
 			libtd.colSpan = numStatuses + 2;
-			//addCSSClass(row, config.css.color_3);
 			addCSSClass(row, 'copy_info_region_row');
 		} 
 	

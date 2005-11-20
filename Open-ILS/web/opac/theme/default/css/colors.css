@@ -7,12 +7,6 @@ body a:hover	{ color: red; text-decoration: underline;}
 .color_3 { background: #CCFFFF; color: #000000; }
 .color_4 { background: #E0F0E0; color: #000000; }
 
-/*
-.color_1 { background: #4D8444; color: #000000; }
-.color_2 { background: #168405; color: #000000; }
-.color_3 { background: #035E47; color: #000000; }
-*/
-
 /* ---------------------------------------------------------------------- */
 .sidebar_chunk {}
 .sidebar_extra_link { text-decoration: none; }
@@ -24,17 +18,12 @@ body a:hover	{ color: red; text-decoration: underline;}
 .search_link { text-decoration: none; }
 .result_table_subtable { border-top: 1px solid #E0E0E0; }
 
-.copy_count_cell { border-right: 1px solid #E0E0E0; }
+.copy_count_cell { border-right: 1px solid #E0E0E0; } 
 .copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
 
 .rdetail_desc { border: 1px solid #A7EA9D; }
 .rdetail_item { border: 1px solid #A7EA9D; }
-#rdetail_details_table { border: 1px solid #A7EA9D; }
 #rdetail_image_cell { border: 1px solid white; border-right: 1px solid #A7EA9D;}
 .rdetail_header {  }
-#rdetail_copy_info_table td { border: 1px solid #A7EA9D;}
-.rdetail_copy_info_header_cell { border: 1px solid #A7EA9D; }
-.rdetail_copy_info_alt { background: #A7EA9D; }
-/* ---------------------------------------------------------------------- */
 
 

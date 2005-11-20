@@ -1,46 +1,37 @@
 <?xml version='1.0'?>
 
 <!-- This holds information for copies attached to this record -->
-<div id='rdetail_copy_info_div'>
+<div id='rdetail_copy_info_div' class='rdetail_extras_div'>
 
-	<!-- header bar for the copy info table.  this allows you to select local
-			or global copy information -->
-	<table class='rdetail_extras_div' width='100%' >
-		<tbody>
-			<tr>
-				<!--
-				<td align='left'>&rdetail.copyInfo.headerLabel;</td>
-				-->
-				<td align='center' width=''>
-					<a href='javascript:void(0);' id='copy_info_local_link' 
-						class='rdetail_copy_nav_link hide_me classic_link'>&rdetail.copyInfo.local;</a>
-				</td>
-				<td align='center' width=''>
-					<a href='javascript:void(0);' id='copy_info_all_link' 
-						class='rdetail_copy_nav_link classic_link'>&rdetail.copyInfo.all;</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div style='width: 100%; text-align: center; padding-bottom: 5px;'>
+		<span>
+			<a href='javascript:void(0);' id='copy_info_local_link' 
+				class='rdetail_copy_nav_link hide_me classic_link'>&rdetail.copyInfo.local;</a>
+		</span>
+		<span width=''>
+			<a href='javascript:void(0);' id='copy_info_all_link' 
+				class='rdetail_copy_nav_link classic_link'>&rdetail.copyInfo.all;</a>
+		</span>
+	</div>
 
-	<table id='rdetail_copy_info_table'>
-		<tbody>
+	<table id='rdetail_copy_info_table' class='data_grid'>
+		<thead>
 
 			<tr>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.library;</td>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.callnumber;</td>
 				<td  nowrap='nowarp' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
 					<div name='rdetail_status_cell'> </div>
-					<!--
-					<div name='rdetail_status_cell' style="width: 1em; overflow:auto;"> </div>
-					-->
 				</td>
 			</tr>
 
+		</thead>
+		<tbody>
 			<tr id='rdetail_copy_info_row' class='hide_me'>
 				<td name='rdetail_library_cell'> </td>
 				<td name='rdetail_callnumber_cell'> </td>
-				<td nowrap='nowrap' class='rdetail_copy_count_cell vertical' name='rdetail_copy_count_cell'> </td>
+				<td nowrap='nowrap' class='rdetail_copy_count_cell vertical' 
+					name='rdetail_copy_count_cell'> </td>
 			</tr>
 
 			<tr id='rdetail_copy_info_loading'><td>&rdetail.loading;</td></tr>

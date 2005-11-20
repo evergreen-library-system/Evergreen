@@ -173,7 +173,8 @@
 									</span>
 
 									<span class='hide_me' name='place_hold_span'>
-										<a href='javascript:void(0);' name='place_hold_link'>Place Hold</a>
+										<a style='padding-left: 8px;' href='javascript:void(0);' 
+											class='classic_link' name='place_hold_link'>Place Hold</a>
 									</span>
 
 								</td>
