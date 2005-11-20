@@ -321,127 +321,6 @@ function _resultFindRec(id) {
 	return null;
 }
 
-/*
-var currentHoldRecord;
-var holdsOrgSelectorBuilt = false;
-function resultDrawHoldsWindow(recid) {
-
-	if(recid == null) {
-		recid = currentHoldRecord;
-		if(recid == null) return;
-	}
-	currentHoldRecord = recid;
-
-	detachEvt('common','locationUpdated', resultSBSubmit );
-	attachEvt( "common", "locationUpdated", resultSBSubmit );
-
-	if(!(G.user && G.user.session)) {
-
-		detachEvt('common','locationUpdated', resultSBSubmit );
-		attachEvt('common','loggedIn', resultDrawHoldsWindow)
-		//alert(G.evt['common']['locationUpdated']);
-		initLogin();
-		//attachEvt( "common", "locationUpdated", resultSBSubmit );
-		return;
-	}
-	swapCanvas($('holds_box'));
-
-	var rec = _resultFindRec(recid);
-
-	if(!holdsOrgSelectorBuilt) {
-		resultBuildHoldsSelector(null, 0);
-		holdsOrgSelectorBuilt = true;
-	}
-
-	removeChildren($('holds_title'));
-	removeChildren($('holds_author'));
-	removeChildren($('holds_format'));
-	removeChildren($('holds_email'));
-	removeChildren($('holds_email'));
-
-	$('holds_title').appendChild(text(rec.title()));
-	$('holds_author').appendChild(text(rec.author()));
-
-	for( var i in rec.types_of_resource() ) {
-		var res = rec.types_of_resource()[i];
-		var img = elem("img");
-		setResourcePic(img, res);
-		$('holds_format').appendChild(text(' '+res+' '));
-		$('holds_format').appendChild(img);
-		$('holds_format').appendChild(text(' '));
-	}
-
-	$('holds_phone').appendChild(text(G.user.day_phone()));
-	$('holds_email').appendChild(text(G.user.email()));
-	$('holds_cancel').onclick = showCanvas;
-	$('holds_submit').onclick = resultPlaceHold; 
-}
-
-
-function resultBuildHoldsSelector(node, depth) {
-
-	if(!node) {
-		node = globalOrgTree;
-		depth = 0;
-	}
-
-	var selector = $('holds_org_selector');
-	var index = selector.options.length;
-
-	if(IE) {
-		var pre = elem("pre");
-		for(var x=2; x <= findOrgType(node.ou_type()).depth(); x++) {
-			pre.appendChild(text("    "));
-		}
-		pre.appendChild(text(node.name()));
-		var select = new Option("", node.id());
-		selector.options[index] = select;
-		select.appendChild(pre);
-	
-	} else {
-		var pad = (findOrgType(node.ou_type()).depth() - 1) * 12;
-		if(pad < 0) pad = 0;
-		var select = new Option(node.name(), node.id());
-		select.setAttribute("style", "padding-left: "+pad+'px;');
-		selector.options[index] = select;
-	}	
-
-	if( node.id() == getLocation() ) {
-		selector.selectedIndex = index;
-		selector.options[index].selected = true;	
-	}
-
-	for( var i in node.children() ) {
-		var child = node.children()[i];
-		if(child) {
-			resultBuildHoldsSelector(child, depth+1);
-		}
-	}
-}
-
-function resultPlaceHold() {
-	var hold = new ahr();
-	hold.pickup_lib( 1 ); 
-	hold.requestor(G.user.id());
-	hold.usr(G.user.id());
-	hold.hold_type('T');
-	hold.email_notify(G.user.email());
-	hold.phone_notify(G.user.day_phone());
-	hold.target(currentHoldRecord);
-	
-	var req = new Request( CREATE_HOLD, G.user.session, hold );
-	req.send(true);
-	var res = req.result();
-
-	if( res == '1' ) {
-		alert('ok');
-	} else {
-		alert('hold failed');
-	}
-}
-*/
-
-
 
 function resultBuildFormatIcons( row, rec ) {
 
@@ -653,7 +532,9 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		if(!IE)
 			setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");',200);
 			*/
-		if(!IE) resultFireXRefReq(treeName, stype, items[i]);
+		//if(!IE) resultFireXRefReq(treeName, stype, items[i]);
+		//resultFireXRefReq(treeName, stype, items[i]);
+		setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");', 100);
 	}
 
 	if(found) {

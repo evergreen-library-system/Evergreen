@@ -1,0 +1,52 @@
+<?xml version='1.0'?>
+
+<div id='result_low_hits' class='hide_me'>
+
+	<br/><br/><br/>
+
+	<div style='text-align: center; padding-bottom: 8px;'>
+		<div id='result_low_hits_msg' class='hide_me'>Few hits were returned for your search.</div>
+		<div id='result_zero_hits_msg' class='hide_me'>Zero hits were returned for your search.</div>
+	</div>
+
+	<!-- spell checker -->
+	<div id='did_you_mean' class='lowhits_div hide_me'>
+		<span>Did you mean</span>
+		<a class='classic_link' id='spell_check_link'> </a>
+		<span>?</span>
+	</div>
+
+	<div id='low_hits_remove_format' class='lowhits_div hide_me'>
+		<span>You will find more hits when searching all item formats: </span>
+		<a id='low_hits_remove_format_link' class='classic_link'>Search again with all formats?</a>
+	</div>
+
+	<div id='low_hits_cross_ref' class='lowhits_div hide_me'>
+		<span>You may also like to try these related searches:</span>
+		<div style='padding: 5px;'>
+			<a id='low_hits_xref_link' class='classic_link' style='padding-right: 5px;'> </a>
+		</div>
+	</div>
+
+	<div id='low_hits_expand_range' class='lowhits_div hide_me'>
+		<span>You may also wish to expand you search range to: </span>
+		<a id='low_hits_expand_link' class='classic_link' style='padding-right: 5px;'> </a>
+	</div>
+
+	<div id='low_hits_search_type' class='lowhits_div hide_me'>
+		<span>Would you like to try searching the same terms by</span>
+		<a id='low_hits_title_search' class='hide_me classic_link' 
+			style='padding-right: 5px;'>title</a>
+		<a id='low_hits_author_search' class='hide_me classic_link' 
+			style='padding-right: 5px;'>author</a>
+		<a id='low_hits_subject_search' class='hide_me classic_link' 
+			style='padding-right: 5px;'>subject</a>
+		<a id='low_hits_series_search' class='hide_me classic_link' 
+				style='padding-right: 5px;'>series</a>
+		<a id='low_hits_keyword_search' class='hide_me classic_link' 
+			style='padding-right: 5px;'>keyword</a>
+		<span>?</span>
+	</div>
+
+</div>
+

@@ -128,6 +128,12 @@ function findBaseURL(ssl) {
 	dump( 'ssl: ' + ssl + 'proto ' + proto );
 }
 
+/*
+function buildISBNSrc(isbn) {
+	return "http://" + location.host + "/jackets/" + isbn;
+}
+*/
+
 function buildImageLink(name, ssl) {
 	return findBaseURL(ssl) + "../../../images/" + name;
 }
@@ -411,6 +417,7 @@ function doLogout() {
 	cookie.remove(COOKIE_SES);
 	skinCookie.remove(COOKIE_SKIN);
 	checkUserSkin("default");
+	COUNT = 10;
 
 	var args = {};
 	args[PARAM_TERM] = "";

@@ -1,0 +1,51 @@
+<?xml version='1.0'?>
+
+<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+
+	<br/><br/>
+	<table width='75%'>
+		<tbody>
+			<tr>
+				<td class='holds_cell color_1' 
+					align='center' colspan='2'>Place a hold on the following item</td>
+			</tr>
+			<tr>
+				<td class='holds_cell'>Title:</td>
+				<td class='holds_cell' id='holds_title'> </td>
+			</tr>
+			<tr>
+				<td class='holds_cell'>Author:</td>
+				<td class='holds_cell' id='holds_author'> </td>
+			</tr>
+			<tr>
+				<td class='holds_cell'>Format:</td>
+				<td class='holds_cell' id='holds_format'> </td>
+			</tr>
+			<tr>
+				<td class='holds_cell'>Contact Telephone Number:</td>
+				<td class='holds_cell' id='holds_phone'> </td>
+			</tr>
+			<tr>
+				<td class='holds_cell'>Contact Email:</td>
+				<td class='holds_cell' id='holds_email'> </td>
+			</tr>
+			<tr>
+				<td class='holds_cell'>Pickup Location</td>
+				<td class='holds_cell'>
+					<select id='holds_org_selector'> </select>
+				</td>
+			</tr>
+			<tr>
+				<td class='holds_cell' align='center' colspan='2'>
+					<button id='holds_submit'>Place Hold</button>
+					<span style='padding: 20px;'> </span>
+					<button id='holds_cancel'>Cancel</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class='hide_me' id='holds_success'>Hold was successfully placed</div>
+	<div class='hide_me' id='holds_failure'>Hold was not successfully placed</div>
+
+</div>
