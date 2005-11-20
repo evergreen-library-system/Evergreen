@@ -525,7 +525,7 @@ sub draw_bars {
 	my $w = 100 + 10 * scalar(@{$pic_data[0]});
 	$w = 400 if ($w < 400);
 
-	my $h = 10 * (scalar(@pic_data) - 30);
+	my $h = 10 * (scalar(@pic_data) / 2);
 
 	$h = 0 if ($h < 0);
 
