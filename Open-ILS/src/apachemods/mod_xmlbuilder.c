@@ -51,6 +51,14 @@ static const char* xmlBuilderSetPostXSL(
 	return NULL;
 }
 
+static const char* xmlBuilderSetContentType(
+					 cmd_parms* params, void* cfg, const char* arg ) {
+	xmlBuilderConfig* config = ap_get_module_config(
+		params->server->module_config, &xmlbuilder_module );
+	config->contentType = (char*) arg;
+	return NULL;
+}
+
 static const command_rec xmlBuilderCommands[] = {
 	AP_INIT_TAKE1( MODXMLB_CONFIG_LOCALE, 
 			xmlBuilderSetDefaultLocale, NULL, ACCESS_CONF, "Default Locale"),
@@ -62,6 +70,8 @@ static const command_rec xmlBuilderCommands[] = {
 			xmlBuilderSetDefaultDtd, NULL, ACCESS_CONF, "Default DTD"),
 	AP_INIT_TAKE1( MODXMLB_CONFIG_LOCALE_PARAM,
 			xmlBuilderSetLocaleParam, NULL, ACCESS_CONF, "Default DTD"),
+	AP_INIT_TAKE1( MODXMLB_CONFIG_CONTENT_TYPE,
+			xmlBuilderSetContentType, NULL, ACCESS_CONF, "Content Type"),
 	{NULL}
 };
 
@@ -72,6 +82,7 @@ static void* xmlBuilderCreateConfig( apr_pool_t* p, server_rec* s ) {
 	config->defaultLocale	= MODXMLB_DEFAULT_LOCALE;
 	config->defaultDtd		= NULL;
 	config->postXSL			= NULL;
+	config->contentType		= NULL;
 	config->localeParam		= MODXMLB_DEFAULT_LOCALE_PARAM;
 	return (void*) config;
 }
@@ -90,7 +101,10 @@ static int xmlBuilderHandler( request_rec* r ) {
 	
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
-	ap_set_content_type(r, "text/html; charset=utf-8");
+	char* ct = config->contentType;
+	if(!config->contentType) ct = "text/html; charset=utf-8";
+	ap_set_content_type(r, ct);
+
 	//ap_table_set(r->headers_out, "Cache-Control", "max-age=15552000");
 
 	char* dates = apr_pcalloc(r->pool, MAX_STRING_LEN);
@@ -219,7 +233,7 @@ void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar *
 
 	} else {
 		node = xmlNewNode(NULL, name);
-		xmlAddAttrs( node, atts );
+		xmlBuilderAddAtts( ctx, node, atts );
 	}
 
 
@@ -230,6 +244,32 @@ void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar *
 	else xmlDocSetRootElement(ctx->doc, node);
 	
 	osrfListPush( ctx->nodeList, node );
+}
+
+
+void xmlBuilderAddAtts( xmlBuilderContext* ctx, xmlNodePtr node, const xmlChar** atts ) {
+	if(!(ctx && node && atts)) return;
+	int i;
+	for(i = 0; (atts[i] != NULL); i++) {
+		if(atts[i+1]) {
+			const xmlChar* name = atts[i];
+			const xmlChar* prop = atts[i+1];
+			int nl = strlen(prop);
+			char* _prop = NULL;
+
+			if( prop[0] == '&' && prop[nl-1] == ';' ) { /* replace the entity if we are one */
+				char buf[nl+1];
+				bzero(buf, nl+1);
+				strncat(buf, prop + 1, nl - 2);
+				xmlEntityPtr ent = osrfHashGet( ctx->entHash, buf );
+				if(ent && ent->content) _prop = strdup(ent->content);
+			} else { _prop = strdup(prop); }
+
+			xmlSetProp( node, name, _prop );
+			i++;
+			free(_prop);
+		}
+	}
 }
 
 void xmlBuilderEndElement( void* context, const xmlChar* name ) {
@@ -261,8 +301,8 @@ void xmlBuilderParseError( void* context, const char* msg, ... ) {
 
 xmlEntityPtr xmlBuilderGetEntity( void* context, const xmlChar* name ) {
 	xmlBuilderContext* ctx = (xmlBuilderContext*) context;
-	//apacheDebug("Replacing entity: %s", name);
-	return osrfHashGet( ctx->entHash, name );
+	xmlEntityPtr ent = osrfHashGet( ctx->entHash, name );
+	return ent;
 }
 
 

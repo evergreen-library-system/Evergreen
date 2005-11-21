@@ -24,6 +24,7 @@
 #define MODXMLB_CONFIG_POST_XSL 		"XMLBuilderPostXSL"
 #define MODXMLB_CONFIG_DEFAULT_DTD	"XMLBuilderDefaultDTD"
 #define MODXMLB_CONFIG_LOCALE_PARAM "XMLBuilderLocaleParam"
+#define MODXMLB_CONFIG_CONTENT_TYPE "XMLBuilderContentType"
 
 
 
@@ -38,6 +39,7 @@ typedef struct {
 	char* defaultLocale;			/* locale dir from config or default */
 	char* defaultDtd;				/* if defined, we load this DTD only */
 	char* localeParam;			/* the CGI param used to choose the locale dir dynamically */
+	char* contentType;			/* what content type to serve our files as (derfault is text/html) */
 	xsltStylesheetPtr postXSL;	/* if defined, run this XSL after parsing */
 
 } xmlBuilderConfig;
@@ -57,7 +59,7 @@ typedef struct {
 xmlDocPtr xmlBuilderProcessFile( char* XMLFile, xmlBuilderConfig* config );
 
 void xmlBuilderAddDtd( const char* sysId, xmlBuilderContext* context );
-
+void xmlBuilderAddAtts( xmlBuilderContext* ctx, xmlNodePtr ptr, const xmlChar** atts );
 
 /* SAX Callbacks */
 void xmlBuilderStartElement( void* blob, const xmlChar *name, const xmlChar **atts );
@@ -68,12 +70,13 @@ xmlEntityPtr xmlBuilderGetEntity( void* blob, const xmlChar* name );
 void xmlBuilderExtSubset( void* blob, const xmlChar* name, const xmlChar* extId, const xmlChar* sysId );
 void xmlBuilderProcInstruction( void* blob, const xmlChar* name, const xmlChar* data );
 
+
 static xmlSAXHandler xmlBuilderSaxHandlerStruct = {
    NULL,								/* internalSubset */
    NULL,								/* isStandalone */
    NULL,								/* hasInternalSubset */
    NULL,								/* hasExternalSubset */
-   NULL,								/* resolveEntity */
+	NULL,								/* resolveEntity */
    xmlBuilderGetEntity,			/* getEntity */
    NULL, 							/* entityDecl */
    NULL,								/* notationDecl */
