@@ -151,6 +151,7 @@ function writeConfig {
 	_write "DBNAME=\"$DBNAME\"";
 	_write "DBUSER=\"$DBUSER\"";
 	_write "DBPW=\"$DBPW\"";
+	_write "REPORTERDIR=\"$REPORTERDIR\"";
 
 
 	# Now we'll write out the DB bootstrapping config
