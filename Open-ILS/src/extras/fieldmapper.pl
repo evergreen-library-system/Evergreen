@@ -16,6 +16,8 @@ my @web_hints = qw/asv asva asvr asvq
 
 my @web_core = qw/ aou au perm_ex ex aout mvr ccs ahr /;
 
+my @reports = qw/ perm_ex ex ao aou aout /;
+
 
 print "var _c = {};\n";
 
@@ -30,6 +32,12 @@ for my $object (keys %$map) {
 		my $hint = $map->{$object}->{hint};
 		next unless (grep { $_ eq $hint } @web_core );
 	}
+
+	if($web eq "reports") {
+		my $hint = $map->{$object}->{hint};
+		next unless (grep { $_ eq $hint } @web_core );
+	}
+
 
 	my $short_name = $map->{$object}->{hint};
 
