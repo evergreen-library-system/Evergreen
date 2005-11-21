@@ -115,6 +115,7 @@ objson/libobjson.so:	prep
 # --------------------------------------------------------------------------------
 libstack/opensrf.o:	libstack/opensrf.c libopensrf.so
 libstack/opensrf:	libstack/opensrf.o
+	@echo $@
 	$(CC) $(CFLAGS) $(LDFLAGS) -lJudy -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
 	
 
