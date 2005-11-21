@@ -5,7 +5,7 @@ use vars qw/$dtype_xform_map $dtype_xform/;
 
 use Apache2 ();
 use Apache2::Log;
-use Apache2::Const -compile => qw(OK REDIRECT :log);
+use Apache2::Const -compile => qw(OK REDIRECT DECLINED :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use Apache2::RequestRec ();
 use Apache2::RequestIO ();
