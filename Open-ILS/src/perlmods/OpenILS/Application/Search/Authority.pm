@@ -29,13 +29,14 @@ sub crossref_authority {
 	my $al = $areq->gather(1);
 	$session->disconnect;
 
-	return _auth_flatten( $term, $fr, $al );
+	return _auth_flatten( $term, $fr, $al, 1 );
 }
 
 sub _auth_flatten {
 	my $term = shift;
 	my $fr = shift;
 	my $al = shift;
+	my $limit = shift;
 
 	my %hash = ();
 	for my $x (@$fr) {
@@ -54,6 +55,8 @@ sub _auth_flatten {
 	}
 	my $from = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 
+	$from = [ @$from[0..4] ] if $limit;
+
 	%hash = ();
 	for my $x (@$al) {
 		my $string = $$x[0];
@@ -70,6 +73,8 @@ sub _auth_flatten {
 		$hash{$string}++ if (lc($$x[0]) eq lc($term));
 	}
 	my $also = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
+
+	$also = [ @$also[0..4] ] if $limit;
 
 
 	return { from => $from, also => $also };
@@ -100,49 +105,6 @@ __PACKAGE__->register_method(
 	}
 	NOTE
 
-=head comment should work...
-sub crossref_authority_batch {
-	my( $self, $client, $reqs ) = @_;
-
-	my $appreqs = {};
-	for my $req (@$reqs) {
-
-		my $class = $req->[0];
-		my $term = $req->[1];
-		next unless $class and $term;
-		$appreqs->{$class} = {} unless exists $appreqs->{$class};
-		$appreqs->{$class}->{$term} = [];
-
-		warn "Sending auth request for $class : $term\n";
-		my $session = OpenSRF::AppSession->create("open-ils.storage");
-		my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term);
-		my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term);
-		$appreqs->{$class}->{$term}->[0] = $freq;
-		$appreqs->{$class}->{$term}->[1] = $areq;
-	}
-
-	my $response = {};
-	for my $class (keys %$appreqs) {
-		$response->{$class} = {} unless exists $response->{$class};
-		for my $term (keys %{$appreqs->{$class}}) {
-			warn "Receiving auth request for $class : $term\n";
-			my $fr = $appreqs->{$class}->{$term}->[0]->gather(1);
-			my $al = $appreqs->{$class}->{$term}->[1]->gather(1);
-			warn "Flattenting..\n";
-			$response->{$class}->{$term} = _auth_flatten( $term, $fr, $al );
-			warn "Done with $term\n";
-		}
-		warn "Done with $class\n";
-	}
-
-	use Data::Dumper;
-	warn "Returning responses: " . Dumper($response) . "\n";
-
-	return $response;
-}
-
-=cut
-
 sub crossref_authority_batch {
 	my( $self, $client, $reqs ) = @_;
 
@@ -166,7 +128,7 @@ sub crossref_authority_batch {
 			my $al	= $lastr->[3];
 			warn "Flattening $class : $term\n";
 			$response->{$cls} = {} unless exists $response->{$cls};
-			$response->{$cls}->{$trm} = _auth_flatten( $trm, $fr, $al );
+			$response->{$cls}->{$trm} = _auth_flatten( $trm, $fr, $al, 1 );
 		}
 
 		$lastr->[0] = $class;
@@ -182,7 +144,7 @@ sub crossref_authority_batch {
 		my $al	= $lastr->[3];
 		warn "Flattening $cls : $trm\n";
 		$response->{$cls} = {} unless exists $response->{$cls};
-		$response->{$cls}->{$trm} = _auth_flatten( $trm, $fr, $al );
+		$response->{$cls}->{$trm} = _auth_flatten( $trm, $fr, $al, 1);
 	}
 
 	return $response;
