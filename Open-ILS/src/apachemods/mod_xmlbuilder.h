@@ -66,6 +66,7 @@ void xmlBuilderHandleCharacter(void* blob, const xmlChar *ch, int len);
 void xmlBuilderParseError( void* blob, const char* msg, ... );
 xmlEntityPtr xmlBuilderGetEntity( void* blob, const xmlChar* name );
 void xmlBuilderExtSubset( void* blob, const xmlChar* name, const xmlChar* extId, const xmlChar* sysId );
+void xmlBuilderProcInstruction( void* blob, const xmlChar* name, const xmlChar* data );
 
 static xmlSAXHandler xmlBuilderSaxHandlerStruct = {
    NULL,								/* internalSubset */
@@ -87,7 +88,7 @@ static xmlSAXHandler xmlBuilderSaxHandlerStruct = {
    NULL,								/* reference */
 	xmlBuilderHandleCharacter,	/* characters */
    NULL,								/* ignorableWhitespace */
-   NULL,								/* processingInstruction */
+   xmlBuilderProcInstruction, /* processingInstruction */
    NULL,								/* comment */
    xmlBuilderParseError,		/* xmlParserWarning */
    xmlBuilderParseError,		/* xmlParserError */

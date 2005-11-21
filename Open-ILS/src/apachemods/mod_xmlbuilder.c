@@ -24,6 +24,10 @@ static const char* xmlBuilderSetDefaultDtd(
 	xmlBuilderConfig* config = ap_get_module_config(
 		params->server->module_config, &xmlbuilder_module );
 	config->defaultDtd = (char*) arg;
+	if( config->defaultDtd ) {
+		if(!strcmp(config->defaultDtd,"NULL"))
+			config->defaultDtd = NULL;
+	}
 	return NULL;
 }
 
@@ -87,6 +91,21 @@ static int xmlBuilderHandler( request_rec* r ) {
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
 	ap_set_content_type(r, "text/html; charset=utf-8");
+	//ap_table_set(r->headers_out, "Cache-Control", "max-age=15552000");
+
+	char* dates = apr_pcalloc(r->pool, MAX_STRING_LEN);
+	apr_rfc822_date(dates, apr_time_now() + 604800000000); /* cache for one week */
+	ap_table_set(r->headers_out, "Expires", dates);
+
+	apr_rfc822_date(dates, apr_time_now()); /* cache for one week */
+	ap_table_set(r->headers_out, "Date", dates);
+
+
+	/*
+	char expire_hdr[APR_RFC822_DATE_LEN];
+	 apr_rfc822_date(expire_hdr, (apr_time_t)(time(NULL) + 15552000));
+	ap_table_set(r->headers_out, "Expires", expire_hdr);
+	 */
 
 	string_array* params = apacheParseParms(r);
 	char* locale = apacheGetFirstParamValue(params, config->localeParam);
@@ -242,6 +261,7 @@ void xmlBuilderParseError( void* context, const char* msg, ... ) {
 
 xmlEntityPtr xmlBuilderGetEntity( void* context, const xmlChar* name ) {
 	xmlBuilderContext* ctx = (xmlBuilderContext*) context;
+	//apacheDebug("Replacing entity: %s", name);
 	return osrfHashGet( ctx->entHash, name );
 }
 
@@ -250,8 +270,21 @@ void xmlBuilderExtSubset( void* blob,
 		const xmlChar* name, const xmlChar* extId, const xmlChar* sysId ) {
 
 	xmlBuilderContext* context = (xmlBuilderContext*) blob;
-	if( context->config->defaultDtd ) return; /* only use the default if defined */
+	if( context->config->defaultDtd ) {
+		apacheDebug("Ignoring DTD [%s] because default DTD is set...", sysId);
+		return; 
+	}
+
 	xmlBuilderAddDtd( sysId, context );
+}
+
+
+void xmlBuilderProcInstruction( 
+			void* blob, const xmlChar* name, const xmlChar* data ) {
+	xmlBuilderContext* ctx = (xmlBuilderContext*) blob;
+	//xmlNodePtr node = xmlNewDocPI( ctx->doc, name, data );
+	xmlNodePtr pi = xmlNewDocPI( ctx->doc, name, data );
+	xmlAddChild( (xmlNodePtr) ctx->doc, pi );
 }
 
 
@@ -260,6 +293,8 @@ void xmlBuilderAddDtd( const char* sysId, xmlBuilderContext* context ) {
 
 	if(!sysId) return;
 	if( osrfHashGet( context->dtdHash, sysId ) ) return; /* already parsed this hash */
+
+	//apacheDebug("Adding new DTD file to the entity hash: %s", sysId);
 
 	/* use the dynamic locale if defined... default locale instead */
 	char* locale;
