@@ -537,7 +537,7 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		//resultFireXRefReq(treeName, stype, items[i]);
 
 
-		if(_oldFashioned && !IE)
+		if(_oldFashioned)
 			resultFireXRefReq(treeName, stype, items[i]);
 
 		//setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");', 100);

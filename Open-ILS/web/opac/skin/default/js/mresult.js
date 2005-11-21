@@ -57,7 +57,7 @@ function mresultCollectIds(method) {
 	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
 		//alert('cached: ' + idsCookie.read(COOKIE_IDS));
 		var c = JSON2js(idsCookie.read(COOKIE_IDS));
-		if(c) { records = c[0]; ransk = c[1]; }
+		if(c) { records = c[0]; ranks = c[1]; }
 	}
 
 	if(	getOffset() != 0 && 
