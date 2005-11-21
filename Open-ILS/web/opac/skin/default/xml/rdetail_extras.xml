@@ -32,7 +32,7 @@
 		</thead>
 	</table>
 
-	<div id='rdetail_extras_div'> 
+	<div id='rdetail_extras_div' style='width: 95%;'> 
 		<div id='rdetail_extras_loading' class='hide_me' 
 			style='padding: 10px;'>Loading...</div>
 		<xi:include href="rdetail_copyinfo.xml"/>
