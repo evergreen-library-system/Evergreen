@@ -96,6 +96,11 @@ function _rdetailDraw(r) {
 	req.callback(rdetailHandleAddedContent);
 	req.send();
 
+	resultBuildCaches( [ record ] );
+	resultDrawSubjects();
+	//resultDrawAuthors();
+	resultDrawSeries();
+
 }
 
 var rdetailTocFetched		= false;

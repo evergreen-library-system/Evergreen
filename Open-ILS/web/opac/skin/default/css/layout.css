@@ -9,7 +9,7 @@ body { margin: 6px; }
 table { border-collapse: collapse; }
 
 /* generic CSS for a table with data */
-.data_grid { font-weight: 500; border-collapse: collapse; width: 95%;}
+.data_grid { font-weight: 500; border-collapse: collapse;}
 .data_grid thead tr { background: #E0F0E0; color: #000000; }
 .data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
 .data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }

@@ -7,6 +7,7 @@
 		<title>Evergreen: Titles</title>
 		<xi:include href="css_common.xml"/>
 		<xi:include href="js_common.xml"/>
+		<script language='javascript' src='../js/sidebar_extras.js'> </script>
 		<script language='javascript' src='../js/rresult.js'> </script>
 		<script language='javascript' src='../js/result_common.js'> </script>
 		<script language='javascript' src='../js/tips.js'> </script>
