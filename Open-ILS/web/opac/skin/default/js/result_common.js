@@ -510,10 +510,11 @@ function resultDrawSeries() {
 		$("series_sidebar_tree_div") );
 }
 
+var _oldFashioned = true;
 function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode ) {
-	var tree;
 	eval("tree = " + treeName);
 
+	var xrefCache = [];
 	var found = false;
 	var x = 0;
 	for( var i in items ) {
@@ -534,13 +535,39 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 			*/
 		//if(!IE) resultFireXRefReq(treeName, stype, items[i]);
 		//resultFireXRefReq(treeName, stype, items[i]);
-		setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");', 100);
+
+
+		if(_oldFashioned && !IE)
+			resultFireXRefReq(treeName, stype, items[i]);
+
+		//setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");', 100);
+
+		var a = {};
+		a.type = stype;
+		a.term = item;
+		xrefCache.push(a);
 	}
 
 	if(found) {
 		unHideMe(wrapperNode);
-		//tree.close(tree.rootid);
+		if(!_oldFashioned)
+			resultFireXRefBatch(treeName, xrefCache, stype);
 	}
+}
+
+function resultFireXRefBatch(treeName, xrefCache, stype) {
+	var query = [];
+	for( var i = 0; i != xrefCache.length; i++ ) {
+		var topic = xrefCache[i];
+		query.push( [ topic.type, topic.term ] );
+	}
+	var req = new Request(FETCH_CROSSREF_BATCH, query);
+	var tree;
+	eval('tree=' + treeName);
+	req.request._tree = tree;
+	req.request._stype = stype;
+	req.callback(resultRenderXRefTree);
+	req.send();
 }
 
 function resultFireXRefReq( treeName, stype, item ) {
@@ -562,6 +589,35 @@ function resultQuickLink( term, type ) {
 	args[PARAM_TERM] = term;
 	args[PARAM_STYPE] = type;
 	return buildOPACLink(args);
+}
+
+function resultRenderXRefTree(r) {
+	var tree = r._tree;
+	var res = r.getResultObject();
+	var stype = r._stype;
+
+	for( var c in res ) {
+		var cls = res[c];
+		for( var t in cls ) {
+			var term = res[c][t];
+			var froms = term['from'];
+			var alsos = term['also'];
+			var total = 0;
+
+			for( var i = 0; (total++ < 5 && i < froms.length); i++ ) {
+				var string = normalize(truncate(froms[i], 45));
+				if($(stype + '_' + froms[i])) continue;
+				tree.addNode(stype + '_' + froms[i], 
+					stype + '_' + t, string, resultQuickLink(froms[i],stype));
+			}
+			for( var i = 0; (total++ < 10 && i < alsos.length); i++ ) {
+				var string = normalize(truncate(alsos[i], 45));
+				if($(stype + '_' + alsos[i])) continue;
+				tree.addNode(stype + '_' + alsos[i], 
+					stype + '_' + t, string, resultQuickLink(alsos[i],stype));
+			}
+		}
+	}
 }
 
 
