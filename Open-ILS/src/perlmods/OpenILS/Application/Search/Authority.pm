@@ -55,7 +55,7 @@ sub _auth_flatten {
 	}
 	my $from = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 
-	$from = [ @$from[0..4] ] if $limit;
+#	$from = [ @$from[0..4] ] if $limit;
 
 	%hash = ();
 	for my $x (@$al) {
@@ -74,7 +74,7 @@ sub _auth_flatten {
 	}
 	my $also = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 
-	$also = [ @$also[0..4] ] if $limit;
+#	$also = [ @$also[0..4] ] if $limit;
 
 
 	return { from => $from, also => $also };
