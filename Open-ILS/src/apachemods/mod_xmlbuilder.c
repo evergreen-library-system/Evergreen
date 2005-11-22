@@ -143,12 +143,13 @@ static int xmlBuilderHandler( request_rec* r ) {
 	}
 
 	char* docXML = xmlDocToString( doc, 1 );
+	apacheDebug("DOC:\n%s\n%s", docXML);
 	ap_rputs(docXML, r);
 	free(docXML);
 	xmlFreeDoc( doc );
 	doc = NULL;
-	xmlCleanupCharEncodingHandlers();
-	xmlCleanupParser();
+	//xmlCleanupCharEncodingHandlers();
+	//xmlCleanupParser();
 
 	return OK;
 }
@@ -262,12 +263,11 @@ void xmlBuilderAddAtts( xmlBuilderContext* ctx, xmlNodePtr node, const xmlChar**
 				bzero(buf, nl+1);
 				strncat(buf, prop + 1, nl - 2);
 				xmlEntityPtr ent = osrfHashGet( ctx->entHash, buf );
-				if(ent && ent->content) _prop = strdup(ent->content);
-			} else { _prop = strdup(prop); }
+				if(ent && ent->content) _prop = ent->content;
+			} else { _prop = (char*) prop; }
 
 			xmlSetProp( node, name, _prop );
 			i++;
-			free(_prop);
 		}
 	}
 }
