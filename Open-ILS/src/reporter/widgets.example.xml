@@ -179,5 +179,24 @@
 			</description>
 		</widget>
 	</widget-family>
-</widgets>
+
+	<!-- Library selection from in-database data - special to OpenILS -->
+	<widget-family name="lib-choose" datatype="text">
+		<label>String filter from known data</label>
+	
+		<widget name="dropdown">
+			<label>Exactly match a Library chosen from a dropdown</label>
+			<description>
+				This widget filters on an exact Library Name match.
+			</description>
+		</widget>
+		
+		<widget name="multiselect">
+			<label>Match multiple Libraries chosen from a multiselect box</label>
+			<description>
+				This widget filters based on multiple Library names.
+			</description>
+		</widget>
+	</widget-family>
+	</widgets>
 

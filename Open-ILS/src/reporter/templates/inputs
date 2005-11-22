@@ -46,13 +46,13 @@ BLOCK textarea;
 END;
 
 BLOCK select;
-	%]<select id="[% id %]" name="[% name %]" size="[% size %]"[% IF multi %] multiple="multiple" [% END %]>[%
+	%]<select id="[% id %]" name="[% name %]" onchange="[% onchange %]" size="[% size %]"[% IF multi %] multiple="multiple" [% END %]>[%
 		content;
 	%]</select>[%
 END;
 
 BLOCK option;
-	%]<option value="[% value %]"[% IF selected %] selected="selected" [% END %]>[%
+	%]<option id="[% id %]" value="[% value %]"[% IF selected %] selected="selected" [% END %]>[%
 		IF content;
 			content;
 		ELSE;

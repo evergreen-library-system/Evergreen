@@ -1,0 +1,71 @@
+[%
+
+PROCESS inputs;
+
+root = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' WHERE parent_ou IS NULL ORDER BY name;';
+q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' WHERE parent_ou = ? ORDER BY name;';
+
+org_unit_type = DBI.tie('actor.org_unit_type', 'id')
+
+%]
+
+<script language="javascript">
+	filters["[% input_prefix %]"] = "[% table_label _ ' -- ' _ field.findvalue('label') %]";
+
+	var multihier_[% table_alias %] = [];
+
+	function change_multihier_[% table_alias %] ( sel ) {
+		for (var i = 0; i < sel.options.length; i++) {
+			if (sel.options[i].selected) {
+				sel.options[i].selected = false;
+				for (var j in multihier_[% table_alias %]) {
+					if (multihier_[% table_alias %][j] == sel.options[i].id) {
+						sel.options[i].selected = true
+						continue;
+					}
+				}
+			}
+		}
+	}
+</script>
+
+[%
+
+WRAPPER select name=input_prefix multi="multi" onchange='change_multihier_' _ table_alias _ '(this);';
+	depth = 0;
+	FOR f = DBI.query(root);
+		INCLUDE option value=f.$fieldname;
+		INCLUDE next_level parent_ou = f.id depth;
+	END;
+END;
+
+BLOCK next_level;
+	depth = depth + 1;
+	x = depth;
+	s = DBI.prepare(q);
+	FOR f = s.execute(parent_ou);
+		ou_t = f.ou_type;
+
+		logme(["can_have_vols for ou_t", ,org_unit_type.$ou_t.can_have_vols]);
+
+		IF org_unit_type.$ou_t.can_have_vols == 1;
+			%]
+			<script language="javascript">
+				multihier_[% table_alias %].push("mh_[% f.id %]");
+			</script>
+			[%
+		END;
+
+		x = depth;
+		val = '';
+		WHILE x > 0;
+			val = val _ '&nbsp;&nbsp;';
+			x = x - 1;
+		END;
+
+		INCLUDE option value=f.name content=val _ f.name id='mh_' _ f.id;
+		INCLUDE next_level parent_ou = f.id;
+	END;
+END;
+
+%]

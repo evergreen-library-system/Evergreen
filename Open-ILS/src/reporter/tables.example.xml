@@ -17,6 +17,7 @@
 			</field>
 			<field
 			  name="barcode"
+			  widget-family="string-input"
 			  datatype="text">
 				<label>Barcode</label>
 				<description>Copy Barcode</description>
@@ -63,6 +64,7 @@
 			</field>
 			<field
 			  name="call_number_label"
+			  widget-family="string-input"
 			  datatype="text">
 				<label>Call Number</label>
 				<description>Copy Call Number Label</description>
@@ -120,12 +122,14 @@
 			</field>
 			<field
 			  name="name"
+			  widget-family="lib-choose"
 			  datatype="text">
 				<label>Name</label>
 				<description>Library Name</description>
 			</field>
 			<field
 			  name="shortname"
+			  widget-family="string-choose"
 			  datatype="text">
 				<label>Short Name</label>
 				<description>Library Short (Policy) Name</description>
@@ -148,6 +152,7 @@
 			</field>
 			<field
 			  name="value"
+			  widget-family="string-choose"
 			  datatype="text">
 				<label>Language Name</label>
 				<description>Name associated with the MARC code</description>
@@ -170,6 +175,7 @@
 			</field>
 			<field
 			  name="value"
+			  widget-family="string-choose"
 			  datatype="text">
 				<label>Item Form Name</label>
 				<description>Name associated with the MARC code</description>
@@ -192,6 +198,7 @@
 			</field>
 			<field
 			  name="value"
+			  widget-family="string-choose"
 			  datatype="text">
 				<label>Item Type Name</label>
 				<description>Name associated with the MARC code</description>

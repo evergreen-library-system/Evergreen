@@ -41,7 +41,7 @@ BLOCK widget_selector;
 				INCLUDE $column_input_type
 					name="filter:$linkid"
 					value=column_name
-					checked=1; 
+					checked=0; 
 				column.findvalue('label');
 			END;
 			WRAPPER html/cell;

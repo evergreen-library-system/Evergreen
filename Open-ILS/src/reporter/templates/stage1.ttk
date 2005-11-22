@@ -78,12 +78,12 @@ BLOCK stage2_new;
 		<center>
 			<b>Template name (required):</b> <input type="text" name="templatename" id="templatename" size="40" ><br/><br><br>
 		</center>
-		<b>Select Filter Widgets</b><br>[%
+		<b>Select Filter Widgets and Output Dimensions</b><br>[%
 
 	
 	WRAPPER html/table width="100%" style='border-top: 1px solid black';
 		WRAPPER html/row;
-			WRAPPER html/cell colspan=2  align='center' style="border: solid black 1px; background: lightgray;";
+			WRAPPER html/cell colspan=2  align='left' style="padding-left: 30px; border: solid black 1px; background: lightgray;";
 				# hidden input here ...
 				table = config.findnodes("/reporter/tables/table[@id='$fact_table']");
 				INCLUDE hidden name="filter" value=fact_table;
@@ -108,9 +108,7 @@ BLOCK stage2_new;
 
 		WRAPPER html/table width="100%" style='border-top: 1px solid black';
 			WRAPPER html/row;
-				WRAPPER html/cell colspan=2 align='center' style="border: solid black 1px; background: lightgray;";
-					# checkbox input here ...
-					INCLUDE checkbox name="filter" value=link_id checked=1;
+				WRAPPER html/cell align='left' width="33%" style="padding-left: 30px; border: solid black 1px; background: lightgray;";
 
 					link_label_xpath = '../../fields/field[@name="' _ dim_link.findvalue('@field') _ '"]/label';
 					dim_link.findvalue(link_label_xpath);
@@ -118,6 +116,12 @@ BLOCK stage2_new;
 					' -- ';
 					dimension.findvalue('label');
 					' Dimension';
+
+				END;
+				WRAPPER html/cell align='left' style="padding-left: 30px; border: solid black 1px; background: white;";
+					# checkbox input here ...
+					INCLUDE checkbox name="filter" value=link_id checked=1;
+					'Allow these columns to be used in Report Output';
 				END;
 			END;
 			INCLUDE widget_selector tableid=link_id;

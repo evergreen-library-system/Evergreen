@@ -407,6 +407,7 @@ BLOCK run_stage2;
 										fieldname = field.findvalue('@name');
 										widgetname = widget.findvalue('@name');
 										famname = fam.findvalue('@name');
+										table_alias = t;
 	
 										input_prefix = "filter:$t:$fieldname:$famname:$widgetname";
 	
