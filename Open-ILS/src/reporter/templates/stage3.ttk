@@ -8,9 +8,21 @@ INCLUDE logout.ttk;
 
 templates = DBI.tie('reporter.stage2', 'id')
 reports = DBI.tie('reporter.stage3', 'id')
+output = DBI.tie('reporter.output', 'id')
 rpt = {};
 tmpl = {};
 
+
+IF CGI.param('output');
+	oid = CGI.param('output');
+	out = output.$oid;
+
+	rid = out.stage3;
+	rpt = reports.$rid;
+
+	tid = rpt.stage2;
+	tmpl = templates.$tid;
+END;
 
 IF CGI.param('id');
 	rid = CGI.param('id');
@@ -27,6 +39,12 @@ WRAPPER html/html;
          PROCESS schedule_stage3;
       ELSIF CGI.param('action') == 'Save';
          PROCESS save_stage3;
+      ELSIF CGI.param('action') == 'delete_stage3';
+         PROCESS delete_stage3;
+      ELSIF CGI.param('action') == 'delete_output';
+         PROCESS delete_output;
+      ELSIF CGI.param('action') == 'rerun';
+         PROCESS rerun;
       ELSIF CGI.param('action') == 'Run Now';
          PROCESS save_stage3;
 		ELSIF CGI.param('id');
@@ -179,8 +197,22 @@ BLOCK save_stage3;
 	END;
 END;
 
+BLOCK delete_stage3;
+	q = DBI.prepare( 'DELETE FROM reporter.stage3 WHERE id = ?' );
+	CALL q.execute(rpt.id);
+END;
 
+BLOCK delete_output;
+	q = DBI.prepare( 'DELETE FROM reporter.output WHERE id = ?' );
+	CALL q.execute(out.id);
+	INCLUDE view_stage3;
+END;
 
+BLOCK rerun;
+	q = DBI.prepare( 'UPDATE reporter.stage3 SET rerun = TRUE WHERE id = ?' );
+	CALL q.execute(rpt.id);
+	INCLUDE view_stage3;
+END;
 
 BLOCK view_stage3;
 	logme(rpt.params);
@@ -209,6 +241,17 @@ BLOCK view_stage3;
 			WRAPPER html/row;
 				INCLUDE html/cell content="<b>Recurrence Interval</b>" style="border:solid gray 1px;";
 				INCLUDE html/cell content=rpt.recurrence style="border:solid gray 1px;";
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Actions</b>" style="border:solid gray 1px;";
+				WRAPPER html/cell style="border:solid gray 1px;";
+					INCLUDE anchor content='Refresh' href=CGI.url('-path', 1) _ '?id=' _ rpt.id;
+					'&nbsp;&nbsp;&nbsp;';
+					INCLUDE anchor content='Run again' href=CGI.url('-path', 1) _ '?action=rerun&id=' _ rpt.id;
+					'&nbsp;&nbsp;&nbsp;';
+					INCLUDE anchor content='Delete' href=CGI.url('-path', 1) _ '?action=delete_stage3&id=' _ rpt.id;
+					'&nbsp;&nbsp;&nbsp;';
+				END;
 			END;
 		END;
 	END;
@@ -272,6 +315,15 @@ BLOCK view_stage3;
 					WRAPPER html/row;
 						INCLUDE html/cell content="<b>Error Time</b>" style="border:solid gray 1px;";
 						INCLUDE html/cell content=run.error_time style="border:solid gray 1px;";
+					END;
+				END;
+				IF run.complete_time || run.error_time;
+					WRAPPER html/row;
+						INCLUDE html/cell content="<b>Actions</b>" style="border:solid gray 1px;";
+						WRAPPER html/cell style="border:solid gray 1px;";
+							INCLUDE anchor content='Delete' href=CGI.url('-path', 1) _ '?action=delete_output&output=' _ run.id;
+							'&nbsp;&nbsp;&nbsp;';
+						END;
 					END;
 				END;
 			END;

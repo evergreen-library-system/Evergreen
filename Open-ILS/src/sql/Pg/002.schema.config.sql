@@ -910,4 +910,42 @@ zul	Zulu
 zun	Zuni
 \.
 
+CREATE TABLE config.item_form_map (
+	code	TEXT	PRIMARY KEY,
+	value	TEXT	NOT NULL
+);
+
+COPY config.item_form_map FROM STDIN;
+a	Microfilm
+b	Microfiche
+c	Microopaque
+d	Large print
+f	Braille
+r	Regular print reproduction
+s	Electronic
+\.
+
+CREATE TABLE config.item_type_map (
+	code	TEXT	PRIMARY KEY,
+	value	TEXT	NOT NULL
+);
+
+COPY config.item_type_map FROM STDIN;
+a	Language material
+t	Manuscript language material
+g	Projected medium
+k	Two-dimensional nonprojectable graphic
+r	Three-dimensional artifact or naturally occurring object
+o	Kit
+p	Mixed materials
+e	Cartographic material
+f	Manuscript cartographic material
+c	Notated music
+d	Manuscript notated music
+i	Nonmusical sound recording
+j	Musical sound recording
+m	Computer file
+\.
+
 COMMIT;
+

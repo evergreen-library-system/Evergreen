@@ -64,12 +64,12 @@ our $dtype_xforms = {
                 'group' => 1 },
         'dateformat'            => { # see http://www.postgresql.org/docs/8.0/interactive/functions-formatting.html
                 'label' => 'Format date and time',
-                'select'        => 'TO_CHAR(?COLNAME?,?PARAM?)',
+                'select'        => "TO_CHAR(?COLNAME?,'?PARAM?')",
                 'param' => 1,           
                 'group' => 1 },                 
         'numformat'             => { # see http://www.postgresql.org/docs/8.0/interactive/functions-formatting.html
                 'label' => 'Format Numeric data',
-                'select'        => 'TO_CHAR(?COLNAME?,?PARAM?)',
+                'select'        => "TO_CHAR(?COLNAME?,'?PARAM?')",
                 'param' => 1,                           
                 'group' => 1 },                         
 };                                      

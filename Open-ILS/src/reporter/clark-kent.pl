@@ -60,7 +60,11 @@ INSERT INTO reporter.output ( stage3, state )
 	  FROM	reporter.stage3 
 	  WHERE	runtime <= $1
 	  	AND (	( 	recurrence = '0 seconds'::INTERVAL
-				AND id NOT IN ( SELECT stage3 FROM reporter.output ) )
+				AND (
+					id NOT IN ( SELECT stage3 FROM reporter.output )
+					OR rerun IS TRUE
+				)
+			)
 	  		OR (	recurrence > '0 seconds'::INTERVAL
 				AND id NOT IN (
 					SELECT	stage3
@@ -191,6 +195,11 @@ for my $r ( @reports ) {
 			  SET	runtime = runtime + recurrence
 			  WHERE	id = ? AND recurrence > '0 seconds'::INTERVAL;
 		SQL
+		$dbh->do(<<'		SQL',{}, $r->{stage3}->{id});
+			UPDATE	reporter.stage3
+			  SET	rerun = FALSE
+			  WHERE	id = ? AND rerun = TRUE;
+		SQL
 		$dbh->do(<<'		SQL',{}, $r->{id});
 			UPDATE	reporter.output
 			  SET	state = 'complete',
@@ -236,6 +245,8 @@ sub pivot_data {
 	return unless (defined($settings->{pivot}));
 
 	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
+	splice(@values,$_,1) for (reverse @groups);
 
 	# remove pivot from group-by
 	my $count = 0;
@@ -243,6 +254,9 @@ sub pivot_data {
 	while ($count < scalar(@{$settings->{groupby}})) {
 		if (defined $pivot_groupby) {
 			$settings->{groupby}->[$count] -= 1;
+			if ($settings->{groupby}->[$count] >= $values[0] + 1) {
+				$settings->{groupby}->[$count] -= 1;
+			}
 		} elsif ($settings->{groupby}->[$count] == $settings->{pivot} + 1) {
 			$pivot_groupby = $count;
 		}
@@ -251,7 +265,7 @@ sub pivot_data {
 
 
 	# grab positions of non-group-bys
-	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
+	@values = (0 .. (scalar(@{$settings->{columns}}) - 1));
 	splice(@values,$_,1) for (reverse @groups);
 	
 	# we're only doing one "value" for now, so grab that and remove from headings
@@ -263,10 +277,13 @@ sub pivot_data {
 
 	my %p_header;
 	for my $row (@$data) {
-		$p_header{ $$row[$settings->{pivot}] }++;
-		push @values, $$row[$val_col];
+		$p_header{ $$row[$settings->{pivot}] } = [] unless exists($p_header{ $$row[$settings->{pivot}] });
+		
+		push @{ $p_header{ $$row[$settings->{pivot}] } }, $$row[$val_col];
+		
 		splice(@$row,$_,1) for (@remove_me);
 	}
+
 	push @{ $settings->{columns} }, sort keys %p_header;
 
 	# remove from headings;
@@ -279,12 +296,20 @@ sub pivot_data {
 	$count = scalar(keys %p_header);
 	my %seenit;
 	my @new_data;
-	for my $row (@$data) {
-		my $fingerprint = join('',@$row[@groups]);
-		next if $seenit{$fingerprint};
-		$seenit{$fingerprint}++;
-		push @$row, splice(@values,0,$count);
-		push @new_data, [@$row];
+	{	no warnings;
+		for my $row (@$data) {
+
+			my $fingerprint = join('',@$row[@groups]);
+			next if $seenit{$fingerprint};
+
+			$seenit{$fingerprint}++;
+
+			for my $h ( sort keys %p_header ) {
+				push @$row, shift(@{ $p_header{$h} });
+			}
+
+			push @new_data, [@$row];
+		}
 	}
 
 	#replace old data with new
@@ -364,9 +389,11 @@ sub build_html {
 	CSS
 
 	print $raw "</head><body><table>";
-	print $raw "<tr><th>".join('</th><th>',@{$r->{sql}->{columns}}).'</th></tr>';
 
-	print $raw "<tr><td>".join('</td><td>',@$_).'</td></tr>' for (@{$r->{data}});
+	{	no warnings;
+		print $raw "<tr><th>".join('</th><th>',@{$r->{sql}->{columns}}).'</th></tr>';
+		print $raw "<tr><td>".join('</td><td>',@$_                    ).'</td></tr>' for (@{$r->{data}});
+	}
 
 	print $raw '</table></body></html>';
 	
@@ -388,6 +415,7 @@ sub build_html {
 		}
 	}
 
+	print $index '<br/><br/><br/><br/>';
 	# Time for a bar chart
 	if (grep {$_ eq 'bar'} @graphs) {
 		my $pics = draw_bars($r, $p, $file);
@@ -421,48 +449,67 @@ sub draw_pie {
 	for my $vcol (@values) {
 		next unless (defined $vcol);
 
-		my @pic_data;
+		my @pic_data = ([],[]);
 		for my $row (@$data) {
 			next if (!defined($$row[$vcol]) || $$row[$vcol] == 0);
-			push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
+			push @{$pic_data[0]}, join(" -- ", @$row[@groups]);
 			push @{$pic_data[1]}, $$row[$vcol];
 		}
 
-		my $pic = new GD::Graph::pie;
+		next unless (@{$pic_data[0]});
 
-		$pic->set(
-			label			=> $p->{reportname}." -- ".$settings->{columns}->[$vcol],
-			start_angle		=> 180,
-			legend_placement	=> 'R',
-			logo			=> $logo,
-			logo_position		=> 'TL',
-			logo_resize		=> 0.5,
-			show_values		=> 1,
-		);
+		my $size = 300;
+		my $split = int(scalar(@{$pic_data[0]}) / $size);
+		my $last = scalar(@{$pic_data[0]}) % $size;
 
-		my $format = $pic->export_format;
+		for my $sub_graph (0 .. $split) {
+			
+			if ($sub_graph == $split) {
+				$size = $last;
+			}
 
-		open(IMG, ">$file.pie.$vcol.$format");
-		binmode IMG;
+			my @sub_data;
+			for my $set (@pic_data) {
+				push @sub_data, [ splice(@$set,0,$size) ];
+			}
 
-		my $forgetit = 0;
-		try {
-			$pic->plot(\@pic_data) or die $pic->error;
-			print IMG $pic->gd->$format;
-		} otherwise {
-			my $e = shift;
-			warn "Couldn't draw $file.pie.$vcol.$format : $e";
-			$forgetit = 1;
-		};
+			my $pic = new GD::Graph::pie;
 
-		close IMG;
+			$pic->set(
+				label			=> $settings->{columns}->[$vcol],
+				start_angle		=> 180,
+				legend_placement	=> 'R',
+				logo			=> $logo,
+				logo_position		=> 'TL',
+				logo_resize		=> 0.5,
+				show_values		=> 1,
+			);
 
-		next if ($forgetit);
+			my $format = $pic->export_format;
 
-		push @pics,
-			{ file => "pie.$vcol.$format",
-			  name => $p->{reportname}." -- ".$settings->{columns}->[$vcol].' (Pie)',
+			open(IMG, ">$file.pie.$vcol.$sub_graph.$format");
+			binmode IMG;
+
+			my $forgetit = 0;
+			try {
+				$pic->plot(\@sub_data) or die $pic->error;
+				print IMG $pic->gd->$format;
+			} otherwise {
+				my $e = shift;
+				warn "Couldn't draw $file.pie.$vcol.$sub_graph.$format : $e";
+				$forgetit = 1;
 			};
+
+			close IMG;
+
+
+			push @pics,
+				{ file => "pie.$vcol.$sub_graph.$format",
+				  name => $settings->{columns}->[$vcol].' (Pie)',
+				} unless ($forgetit);
+
+			last if ($sub_graph == $split);
+		}
 
 	}
 	
@@ -479,11 +526,11 @@ sub draw_bars {
 	my $logo = $doc->findvalue('/reporter/setup/files/chart_logo');
 
 	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+
 	
 	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
-	delete @values[@groups];
-	@values = grep {defined $_} @values;
-	
+	splice(@values,$_,1) for (reverse @groups);
+
 	my @pic_data;
 	{	no warnings;
 		for my $row (@$data) {
@@ -500,7 +547,6 @@ sub draw_bars {
 	for my $vcol (@values) {
 		next unless (defined $vcol);
 
-		push @leg, $settings->{columns}->[$vcol];
 
 		my $pos = 0;
 		for my $row (@$data) {
@@ -516,16 +562,31 @@ sub draw_bars {
 	my $set_count = scalar(@pic_data) - 1;
 	my @trim_cols = grep { $trim_candidates{$_} == $set_count } keys %trim_candidates;
 
+	my @new_data;
+	my @use_me;
+	my @no_use;
+	my $set_index = 0;
 	for my $dataset (@pic_data) {
-		for my $col (reverse sort { $a <=> $b } @trim_cols) {
-			splice(@$dataset,$col,1);
+		splice(@$dataset,$_,1) for (sort { $b <=> $a } @trim_cols);
+
+		if (grep { $_ } @$dataset) {
+			push @new_data, $dataset;
+			push @use_me, $set_index;
+		} else {
+			push @no_use, $set_index;
 		}
+		$set_index++;
+		
 	}
 
-	my $w = 100 + 10 * scalar(@{$pic_data[0]});
+	for my $col (@use_me) {
+		push @leg, $settings->{columns}->[$col + @groups - 1] if (map { 1 } grep { $col == $_ } @values);
+	}
+
+	my $w = 100 + 10 * scalar(@{$new_data[0]});
 	$w = 400 if ($w < 400);
 
-	my $h = 10 * (scalar(@pic_data) / 2);
+	my $h = 10 * (scalar(@new_data) / 2);
 
 	$h = 0 if ($h < 0);
 
@@ -554,7 +615,7 @@ sub draw_bars {
 	binmode IMG;
 
 	try {
-		$pic->plot(\@pic_data) or die $pic->error;
+		$pic->plot(\@new_data) or die $pic->error;
 		print IMG $pic->gd->$format;
 	} otherwise {
 		my $e = shift;
@@ -595,7 +656,7 @@ sub generate_query {
 	}
 
 	for my $t (keys %{$$p{output}}) {
-		if ($t ne $core && !grep { $t } @dims ) {
+		if ($t ne $core && !(grep { $t eq $_ } @dims) ) {
 			push @dims, $t;
 		}
 	}
@@ -724,7 +785,10 @@ sub generate_query {
 	}
 
 	my $t = table_by_id($core)->findvalue('tablename');
-	my $from = " FROM $t AS \"$core\" RIGHT JOIN $d_select ON (". join(' AND ', @join).")";
+
+	my $from = " FROM $t AS \"$core\" ";
+	$from .= "RIGHT JOIN $d_select ON (". join(' AND ', @join).")" if ( @join );
+
 	my $select =
 		"SELECT ".join(',', @output). $from;
 

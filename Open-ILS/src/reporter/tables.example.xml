@@ -83,6 +83,18 @@
 			  key="code"
 			  type="has_a"/>
 			<link
+			  field="item_form"
+			  table="marc_form_map"
+			  id="copy_item_form"
+			  key="code"
+			  type="has_a"/>
+			<link
+			  field="item_type"
+			  table="marc_type_map"
+			  id="copy_item_type"
+			  key="code"
+			  type="has_a"/>
+			<link
 			  field="circ_lib"
 			  table="org_unit"
 			  id="copy_circ_lib"
@@ -138,6 +150,50 @@
 			  name="value"
 			  datatype="text">
 				<label>Language Name</label>
+				<description>Name associated with the MARC code</description>
+			</field>
+		</fields>
+	</table>
+
+	<table id="marc_form_map" partition="false" fact-table="false">
+		<label>MARC Item Form Codes</label>
+		<description>Table mapping MARC three character codes to Item Form names</description>
+		<tablename>config.item_form_map</tablename>
+
+		<fields>
+			<field
+			  name="code"
+			  primary='true'
+			  datatype="text">
+				<label>Code</label>
+				<description>MARC Item Form Code</description>
+			</field>
+			<field
+			  name="value"
+			  datatype="text">
+				<label>Item Form Name</label>
+				<description>Name associated with the MARC code</description>
+			</field>
+		</fields>
+	</table>
+
+	<table id="marc_type_map" partition="false" fact-table="false">
+		<label>MARC Item Type Codes</label>
+		<description>Table mapping MARC three character codes to Item Type names</description>
+		<tablename>config.item_type_map</tablename>
+
+		<fields>
+			<field
+			  name="code"
+			  primary='true'
+			  datatype="text">
+				<label>Code</label>
+				<description>MARC Item Type Code</description>
+			</field>
+			<field
+			  name="value"
+			  datatype="text">
+				<label>Item Type Name</label>
 				<description>Name associated with the MARC code</description>
 			</field>
 		</fields>
