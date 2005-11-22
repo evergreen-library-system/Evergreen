@@ -22,7 +22,6 @@ use GD::Graph::lines;
 
 use open ':utf8';
 
-my $current_time = DateTime->from_epoch( epoch => time() )->strftime('%FT%T%z');
 
 my ($base_xml, $count, $daemon) = ('/openils/conf/reporter.xml', 1);
 
@@ -45,7 +44,7 @@ my $db_pw = $doc->findvalue('/reporter/setup/database/password');
 
 my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host;
 
-my $dbh;
+my ($dbh,$running,$sth,@reports,$run, $current_time);
 
 daemonize("Clark Kent, waiting for trouble") if ($daemon);
 
@@ -53,6 +52,7 @@ DAEMON:
 
 $dbh = DBI->connect($dsn,$db_user,$db_pw, {pg_enable_utf8 => 1, RaiseError => 1});
 
+$current_time = DateTime->from_epoch( epoch => time() )->strftime('%FT%T%z');
 # Move new reports into the run queue
 $dbh->do(<<'SQL', {}, $current_time);
 INSERT INTO reporter.output ( stage3, state ) 
@@ -76,7 +76,7 @@ INSERT INTO reporter.output ( stage3, state )
 SQL
 
 # make sure we're not already running $count reports
-my ($running) = $dbh->selectrow_array(<<SQL);
+($running) = $dbh->selectrow_array(<<SQL);
 SELECT	count(*)
   FROM	reporter.output
   WHERE	state = 'running';
@@ -95,9 +95,9 @@ if ($count <= $running) {
 }
 
 # if we have some open slots then generate the sql
-my $run = $count - $running;
+$run = $count - $running;
 
-my $sth = $dbh->prepare(<<SQL);
+$sth = $dbh->prepare(<<SQL);
 SELECT	*
   FROM	reporter.output
   WHERE	state = 'wait'
@@ -107,7 +107,7 @@ SQL
 
 $sth->execute;
 
-my @reports;
+@reports = ();
 while (my $r = $sth->fetchrow_hashref) {
 	my $s3 = $dbh->selectrow_hashref(<<"	SQL", {}, $r->{stage3});
 		SELECT * FROM reporter.stage3 WHERE id = ?;
@@ -149,12 +149,15 @@ for my $r ( @reports ) {
 			  WHERE	id = ?;
 		SQL
 
+		my ($runtime) = $dbh->selectrow_array("SELECT run_time FROM reporter.output WHERE id = ?",{},$r->{id});
+		$r->{run_time} = $runtime;
+
 		$sth = $dbh->prepare($r->{sql}->{'select'});
 
 		$sth->execute(@{ $r->{sql}->{'bind'} });
 		$r->{data} = $sth->fetchall_arrayref;
 
-		pivot_data($r, $p);
+		pivot_data($r);
 
 		my $base = $doc->findvalue('/reporter/setup/files/output_base');
 		my $s1 = $r->{stage3}->{stage2}->{stage1};
@@ -190,9 +193,9 @@ for my $r ( @reports ) {
 
 
 		$dbh->begin_work;
-		$dbh->do(<<'		SQL',{}, $r->{stage3}->{id});
+		$dbh->do(<<'		SQL',{}, $r->{run_time}, $r->{stage3}->{id});
 			UPDATE	reporter.stage3
-			  SET	runtime = runtime + recurrence
+			  SET	runtime = CAST(? AS TIMESTAMP WITH TIME ZONE) + recurrence
 			  WHERE	id = ? AND recurrence > '0 seconds'::INTERVAL;
 		SQL
 		$dbh->do(<<'		SQL',{}, $r->{stage3}->{id});
@@ -238,7 +241,7 @@ if ($daemon) {
 
 sub pivot_data {
 	my $r = shift;
-	my $p = shift;
+	my $p = JSON->JSON2perl( $r->{stage3}->{params} );
 	my $settings = $r->{sql};
 	my $data = $r->{data};
 
@@ -452,8 +455,9 @@ sub draw_pie {
 		my @pic_data = ([],[]);
 		for my $row (@$data) {
 			next if (!defined($$row[$vcol]) || $$row[$vcol] == 0);
-			push @{$pic_data[0]}, join(" -- ", @$row[@groups]);
-			push @{$pic_data[1]}, $$row[$vcol];
+			my $val = $$row[$vcol];
+			push @{$pic_data[0]}, join(" -- ", @$row[@groups])." ($val)";
+			push @{$pic_data[1]}, $val;
 		}
 
 		next unless (@{$pic_data[0]});
@@ -644,10 +648,10 @@ sub generate_query {
 
 	my $p = JSON->JSON2perl( $r->{stage3}->{params} );
 
-	my @group_by;
-	my @aggs;
+	my @group_by = ();
+	my @aggs = ();
 	my $core = $r->{stage3}->{stage2}->{stage1};
-	my @dims;
+	my @dims = ();
 
 	for my $t (keys %{$$p{filter}}) {
 		if ($t ne $core) {
@@ -661,8 +665,8 @@ sub generate_query {
 		}
 	}
 
-	my @dim_select;
-	my @dim_from;
+	my @dim_select = ();
+	my @dim_from = ();
 	for my $d (@dims) {
 		my $t = table_by_id($d);
 		my $t_name = $t->findvalue('tablename');
@@ -685,7 +689,7 @@ sub generate_query {
 		'(SELECT ' . join(',', @dim_select) .
 		'  FROM ' . join(',', @dim_from) . ') AS dims';
 	
-	my @opord;
+	my @opord = ();
 	if (ref $$p{output_order}) {
 		@opord = @{ $$p{output_order} };
 	} else {
@@ -693,14 +697,14 @@ sub generate_query {
 	}
 	my @output_order = map { { (split ':')[1] => (split ':')[2] } } @opord;
 	my @p_col = split(':',$p->{pivot_col}) if $p->{pivot_col};
-	my $pivot;
+	my $pivot = undef;
 
 	my $col = 1;
-	my @groupby;
-	my @output;
-	my @columns;
-	my @join;
-	my @join_base;
+	my @groupby = ();
+	my @output = ();
+	my @columns = ();
+	my @join = ();
+	my @join_base = ();
 	for my $pair (@output_order) {
 		my ($t_name) = keys %$pair;
 		my $t = $t_name;
@@ -746,8 +750,8 @@ sub generate_query {
 		}
 	}
 
-	my @where;
-	my @bind;
+	my @where = ();
+	my @bind = ();
 	for my $t ( keys %{$$p{filter}} ) {
 		my $t_name = $t;
 		$t_name = "dims" if ($t ne $core);

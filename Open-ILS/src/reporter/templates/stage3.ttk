@@ -66,6 +66,8 @@ BLOCK schedule_stage3;
 		'Optional Recurrence:';
 		INCLUDE text name='recurrence-count' value='0';
 		WRAPPER select name='recurrence-interval';
+			INCLUDE option value='minutes' content='Minutes(s)'; # for testing
+			INCLUDE option value='hours' content='Hours(s)'; # for testing
 			INCLUDE option value='days' content='Day(s)';
 			INCLUDE option value='weeks' content='Week(s)';
 			INCLUDE option value='months' content='Month(s)';
@@ -74,7 +76,9 @@ BLOCK schedule_stage3;
 		FOR p = CGI.param();
 			NEXT IF p == 'action';
 			NEXT IF p == 'runtime';
-			INCLUDE hidden name=p value=CGI.param(p);
+			FOR pval = CGI.param(p);
+				INCLUDE hidden name=p value=pval;
+			END;
 		END;
 		'<br>';
 		INCLUDE submit name='action' value='Save';

@@ -72,11 +72,20 @@ BLOCK stage2_new;
 	col_xpath = "/reporter/tables/table[@id='" _ fact_table _ "']/fields/field[@core='true']";
 	logme(col_xpath);
 
-	%]<br/><form id="stage2_new" name="stage2_new" action="stage2" method="POST">
+	%]<br/><form id="stage2_new" name="stage2_new" action="stage2" method="POST" onsubmit="return require_name(this)">
+		<script language="javascript">
+			function require_name (f) {
+				if (!f.elements['templatename'].value) {
+					alert("Template Name is required!");
+					return false;
+				}
+				return true;
+			}
+		</script>
 		<input type="hidden" name="action" value="save">
 		<input type="hidden" name="stage1" value="[% CGI.param('id') %]">
 		<center>
-			<b>Template name (required):</b> <input type="text" name="templatename" id="templatename" size="40" ><br/><br><br>
+			<b>Template name </b> <input type="text" name="templatename" id="templatename" size="40" ><br/><br><br>
 		</center>
 		<b>Select Filter Widgets and Output Dimensions</b><br>[%
 

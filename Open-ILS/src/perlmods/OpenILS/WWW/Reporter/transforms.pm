@@ -10,7 +10,8 @@ our $dtype_xform_map = {
         'date'  => [ 'count', 'age','dateformat'],
         'timestamp'     => [ 'count', 'age','dateformat'],
         'timestamptz'   => [ 'count', 'age','dateformat'],
-        'text'  => [ 'count','count_dist','lower','upper','substr','dewy','dewy_prefix'],
+        'text'  => [ 'count','count_dist','lower','upper','substr'],
+        'call_number'  => [ 'count','count_dist','dewy','dewy_prefix','count_dist_dewey','count_dist_dewey_prefix','lower','upper','substr'],
 };
 
 
@@ -36,6 +37,15 @@ our $dtype_xforms = {
                 'label' => 'Distinct Count per group',
                 'select'        => 'COUNT(DISTINCT ?COLNAME?)',
                 'group' => 0 }, 
+        'count_dist_dewey'      => {
+                'label' => 'Distinct Count of Dewey numbers per group',
+                'select'        => 'COUNT(DISTINCT call_number_dewey(?COLNAME?))',
+                'group' => 1 }, 
+        'count_dist_dewey_prefix'=> {
+                'label' => 'Distinct Count of Dewey Number Prefixes per group',
+                'select'        => 'COUNT(DISTINCT call_number_dewey(?COLNAME?,?PARAM?))',
+                'param' => 1,           
+                'group' => 1 }, 
         'dewy_prefix'         => {    
                 'label' => 'Extract Dewey number prefix from call number',
                 'select'        => 'call_number_dewey(?COLNAME?,?PARAM?)',

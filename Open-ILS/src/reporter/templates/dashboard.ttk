@@ -118,8 +118,9 @@ BLOCK show_reports;
 			INCLUDE html/cell content='Public' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 			INCLUDE html/cell content='Report Name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 			INCLUDE html/cell content='Created at' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Scheduled Run Date' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Scheduled Run Time<br>Last Run Time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 			INCLUDE html/cell content='Recurrence' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Runs' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 		END;
 		FOR report = DBI.query(q);
 			rid = report.id;
@@ -127,13 +128,27 @@ BLOCK show_reports;
 			IF loop.count % 2;
 				bg='white';
 			END;
+			run_q = 'SELECT * FROM reporter.output WHERE stage3 = ? ORDER BY queue_time LIMIT 1';
+			run_count_q = 'SELECT count(*) as count FROM reporter.output WHERE stage3 = ?';
+
+			s = DBI.prepare(run_count_q);
+			run_count = s.execute(rid);
+			
+			s = DBI.prepare(run_q);
+			run = s.execute(rid);
+			
 			WRAPPER html/row;
 				p = utils.JSON2perl( report.params );
 				INCLUDE html/cell content=(report.pub ? 'Y' : 'N') col=bg style='border:solid gray 1px;' align='center';
 				INCLUDE html/cell content=link(content=p.reportname,href="stage3?id=$rid") col=bg style='border:solid gray 1px;';
-				INCLUDE html/cell content=report.create_date.chunk(10).0 col=bg style='border:solid gray 1px;';
-				INCLUDE html/cell content=report.runtime.chunk(10).0 col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(19).0 col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell
+					nowrap='nowrap'
+					content=report.runtime.chunk(19).0 _ '<br>' _ run.get.run_time.chunk(19).0
+					col=bg
+					style='border:solid gray 1px;';
 				INCLUDE html/cell content=report.recurrence col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell content=run_count.get.count col=bg style='border:solid gray 1px;';
 			END;
 		END;
 	END;

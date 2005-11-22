@@ -1,5 +1,16 @@
 <script language="javascript">
 
+function show_hide_params (sel) {
+	var span = document.getElementById('hide-param:' + sel.name);
+	if (sel.options[sel.selectedIndex].textContent.match(/\(*\)/)) {
+		span.style.visibility = 'visible';
+	} else {
+		span.style.visibility = 'hidden';
+	}
+	
+	return true;
+}
+
 function field_add_remove (x) {
 	var field = x.name;
 	if (x.checked) {

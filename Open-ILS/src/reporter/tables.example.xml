@@ -64,6 +64,7 @@
 			</field>
 			<field
 			  name="call_number_label"
+			  transform-group="call_number"
 			  widget-family="string-input"
 			  datatype="text">
 				<label>Call Number</label>

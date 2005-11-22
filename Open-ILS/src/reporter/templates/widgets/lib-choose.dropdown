@@ -27,13 +27,16 @@ org_unit_type = DBI.tie('actor.org_unit_type', 'id')
 
 [%
 
-WRAPPER select name=input_prefix onchange='change_hier_' _ table_alias _ '(this);';
+WRAPPER select id=input_prefix name=input_prefix onchange='change_hier_' _ table_alias _ '(this);';
 	depth = 0;
+	INCLUDE option value='' content='Select One';
+	INCLUDE option value='' content='----------';
 	FOR f = DBI.query(root);
 		INCLUDE option value=f.$fieldname;
 		INCLUDE next_level parent_ou = f.id depth;
 	END;
 END;
+
 
 BLOCK next_level;
 	depth = depth + 1;

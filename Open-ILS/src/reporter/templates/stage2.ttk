@@ -251,7 +251,7 @@ BLOCK run_stage2;
 					for (var i in bad_filters)
 						fstring = fstring + "\n\t" + bad_filters[i];
 
-					alert('You must choose a filter value for these filter:\n' + fstring);
+					alert('You must choose a value for these filters or settings:\n' + fstring);
 					return false;
 				}
 
@@ -282,6 +282,7 @@ BLOCK run_stage2;
 		'<br/><center><b>Report Name:</b>';
 		INCLUDE text name='reportname' size="50";
 		'</center><br/><br/>';
+		'<script language="javascript">filters["reportname"] = "Report Name";</script>';
 
 		WRAPPER html/table width="100%";
 			WRAPPER html/row  style="border-top: solid black 2px;";
@@ -324,22 +325,22 @@ BLOCK run_stage2;
 						END;
 						WRAPPER html/row;
 							WRAPPER html/cell;
-								INCLUDE checkbox name='html_graph_type' value='bar';
+								INCLUDE checkbox name='html_graph_type' value='bar' checked=1;
 							END;
 							INCLUDE html/cell content='Bar';
 						END;
 						WRAPPER html/row;
 							WRAPPER html/cell;
-								INCLUDE checkbox name='html_graph_type' value='pie';
+								INCLUDE checkbox name='html_graph_type' value='pie' checked=1;
 							END;
 							INCLUDE html/cell content='Pie';
 						END;
-						WRAPPER html/row;
-							WRAPPER html/cell;
-								INCLUDE checkbox name='html_graph_type' value='line';
-							END;
-							INCLUDE html/cell content='Line';
-						END;
+						#WRAPPER html/row;
+						#	WRAPPER html/cell;
+						#		INCLUDE checkbox name='html_graph_type' value='line';
+						#	END;
+						#	INCLUDE html/cell content='Line';
+						#END;
 					END;
 				END;
 			END;
@@ -398,10 +399,9 @@ BLOCK run_stage2;
 							widget = fam.findnodes( "widget[@name='$f_widget']" );
 
 							w_file = 'widgets/' _ fam.findvalue('@name') _ '.' _ widget.findvalue('@name');
-							INCLUDE html/cell;
-							INCLUDE html/cell align='right' content=field.findvalue( 'label' );
+							INCLUDE html/cell align='left' style="padding-left: 50px;" content=field.findvalue( 'label' );
 
-							WRAPPER html/cell align='right';
+							WRAPPER html/cell align='left';
 								TRY;
 										classname = table.findvalue('@id');
 										fieldname = field.findvalue('@name');
@@ -443,7 +443,7 @@ BLOCK run_stage2;
 			plabel = pkey_field.findvalue('label');
 		
 			WRAPPER html/row;
-				WRAPPER html/cell align='right';
+				WRAPPER html/cell align='left' style="padding-left: 50px;";
 					INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include" onclick="field_add_remove(this)";
 					INCLUDE hidden name="xform:type:$classname:$pid" value="count_dist";
 					%]
@@ -452,8 +452,8 @@ BLOCK run_stage2;
 							Widget.Select.addOption('output_order','[% "output:$classname:$pid" %]', '[% "Per group count of $plabel" %]');
 						</script>
 					[%
+				"Per group count of $plabel<br/><br/>";
 				END;
-				INCLUDE html/cell align='right' content="Per group count of $plabel";
 				INCLUDE html/cell align='center';
 			END;
 
@@ -530,7 +530,7 @@ BLOCK show_filter_atts;
 
 		WRAPPER html/row;
 
-			WRAPPER html/cell align='right' col=bg_color;
+			WRAPPER html/cell align='left' col=bg_color style="padding-left: 50px;";
 				INCLUDE checkbox name="output:$t:$fid" value="include" onclick="field_add_remove(this)";
 				%]
 					<script language="javascript">
@@ -538,12 +538,17 @@ BLOCK show_filter_atts;
 					</script>
 				[%
 
+				fname;
 			END;
-			INCLUDE html/cell align='right' content=fname col=bg_color;
-			WRAPPER html/cell align='right' col=bg_color;
-				'Output Transformation: ';
-				dtype = field.findvalue('@datatype');
-				WRAPPER select name="xform:type:$t:$fid";
+			INCLUDE html/cell align='right' content='Output Transformation:' col=bg_color;
+			WRAPPER html/cell align='left' col=bg_color style="padding-left: 50px;";
+
+				dtype = field.findvalue('@transform-group');
+				IF !dtype;
+					dtype = field.findvalue('@datatype');
+				END;
+
+				WRAPPER select id="xform:type:$t:$fid" name="xform:type:$t:$fid" onchange="show_hide_params(this)";
 					INCLUDE option value='' content='None' selected=1;
 					FOR xform = dtype_xform_map.$dtype;
 						xform_label = dtype_xforms.$xform.label;
@@ -553,9 +558,16 @@ BLOCK show_filter_atts;
 						INCLUDE option value=xform content=xform_label;
 					END;
 				END;
-				'<br/>';
-				'<small><super>*</super>Output Tranformation Parameter: </small>';
-				INCLUDE text name="xform:param:$t:$fid";
+
+				%]
+
+				<br/>
+				<span id="hide-param:xform:type:[% t %]:[% fid %]" style="visibility: hidden;">
+					<small><super>*</super>Output Tranformation Parameter: </small>
+					[% INCLUDE text name="xform:param:$t:$fid" %]
+				</span>
+
+				[%
 			END;
 		END;
 		count = count + 1;
