@@ -209,6 +209,7 @@ function runInstall {
 
 			"evergreen_core" )
 				if installing;	then $MAKE -C "$EVERGREENDIR" "circ-install"; fi;
+				if installing;	then $MAKE -C "$EVERGREENDIR" "iplist-install"; fi;
 				;;	
 
 			"evergreen_xul_client" )

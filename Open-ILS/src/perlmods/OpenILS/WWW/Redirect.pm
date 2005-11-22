@@ -40,7 +40,7 @@ sub handler {
 	my $proto = "http";
 	if($cgi->https) { $proto = "https"; }
 
-	my $url = "$proto://$hostname:$port/opac/";
+	my $url = "$proto://$hostname:$port/opac/skin/default/xml/index.xml";
 
 	my $path = $apache_obj->path_info();
 
@@ -62,8 +62,8 @@ sub handler {
 
 	}
 
-#	print "Location: $url\n\n"; 
-#	return Apache::REDIRECT;
+	print "Location: $url\n\n"; 
+	return Apache2::Const::REDIRECT;
 
 	return print_page($url);
 }
@@ -76,19 +76,20 @@ sub redirect_libs {
 
 	# do this the linear way for now...
 	for my $reg (keys %$lib_ips_hash) {
-		for my $lib( keys %{$lib_ips_hash->{$reg}} ) {
-			for my $ip_block (@{$lib_ips_hash->{$reg}->{$lib}}) {
 
-				if(defined($ip_block->[0]) && defined($ip_block->[1]) ) {
-					my $start_binary	= inet_aton( $ip_block->[0] );
-					my $end_binary		= inet_aton( $ip_block->[1] );
+		for my $lib( keys %{$lib_ips_hash->{$reg}} ) {
+
+			for my $block (@{$lib_ips_hash->{$reg}->{$lib}}) {
+
+				if(defined($block->[0]) && defined($block->[1]) ) {
+					my $start_binary	= inet_aton( $block->[0] );
+					my $end_binary		= inet_aton( $block->[1] );
 					unless( $start_binary and $end_binary ) { next; }
 					if( $start_binary le $aton_binary and
 							$end_binary ge $aton_binary ) {
 						return [ $reg, $lib ];
 					}
 				}
-
 			}
 		}
 	}
@@ -122,7 +123,7 @@ sub print_page {
 				<h4>Loading...</h4>
 			</div>
 			<br/><br/>
-			<center><img src='/images/main_logo.jpg'/></center>
+			<center><img src='/opac/images/main_logo.jpg'/></center>
 		</body>
 	</html>
 	HTML

@@ -143,7 +143,7 @@ static int xmlBuilderHandler( request_rec* r ) {
 	}
 
 	char* docXML = xmlDocToString( doc, 1 );
-	apacheDebug("DOC:\n%s\n%s", docXML);
+	//apacheDebug("DOC:\n%s\n%s", docXML);
 	ap_rputs(docXML, r);
 	free(docXML);
 	xmlFreeDoc( doc );

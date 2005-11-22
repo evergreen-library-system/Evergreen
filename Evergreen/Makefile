@@ -10,9 +10,10 @@ NEW_XUL_PACKAGE_LABEL=OpenILS
 
 all:	xul 
 
-install:	circ-install
+install: 	circ-install iplist-install
 
 xul:
+	@echo $@
 	cp -R staff_client local_staff_client
 	find local_staff_client/ -type f -exec sed -i s/evergreen/${NEW_XUL_PACKAGE_NAME}/g {} \;
 	find local_staff_client/ -type f -exec sed -i s/Evergreen/${NEW_XUL_PACKAGE_LABEL}/g {} \;
@@ -26,8 +27,14 @@ xul:
 	make -C local_staff_client package
 
 circ-install:
+	@echo $@
 	mkdir -p $(CIRCRULESDIR)
 	cp circ_rules/*.rules $(CIRCRULESDIR)/
+
+iplist-install:
+	@echo $@
+	mkdir -p $(ETCDIR)
+	cp conf/lib_ips.txt $(ETCDIR)
 
 clean:
 	if [ -d local_staff_client ]; then make -C local_staff_client clean; fi;
