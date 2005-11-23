@@ -1,18 +1,18 @@
 /* Export some constants  ----------------------------------------------------- */
 
 /* URL param names */
-var PARAM_TERM			= "term";		/* search term */
-var PARAM_STYPE		= "stype";		/* search type */
-var PARAM_LOCATION	= "location"	/* current location */;
-var PARAM_DEPTH		= "depth";		/* search depth */
-var PARAM_FORM			= "format";		/* search format */
-var PARAM_OFFSET		= "offset";		/* search offset */
-var PARAM_COUNT		= "count";		/* hits per page */
-var PARAM_HITCOUNT	= "hitcount";	/* hits per page */
-var PARAM_MRID			= "mrid";		/* metarecord id */
-var PARAM_RID			= "rid";			/* record id */
-var PARAM_ORIGLOC		= "orgloc"		/* the original location */
-var PARAM_TOPRANK		= "toprank"		/* this highest ranking rank */
+var PARAM_TERM			= "t";			/* search term */
+var PARAM_STYPE		= "tp";			/* search type */
+var PARAM_LOCATION	= "l";			/* current location */
+var PARAM_DEPTH		= "d";			/* search depth */
+var PARAM_FORM			= "f";			/* search format */
+var PARAM_OFFSET		= "o";			/* search offset */
+var PARAM_COUNT		= "c";			/* hits per page */
+var PARAM_HITCOUNT	= "hc";			/* hits per page */
+var PARAM_MRID			= "m";			/* metarecord id */
+var PARAM_RID			= "r";			/* record id */
+var PARAM_ORIGLOC		= "ol"			/* the original location */
+var PARAM_TOPRANK		= "tr"			/* this highest ranking rank */
 
 /* URL param values (see comments above) */
 var TERM;  
