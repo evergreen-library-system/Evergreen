@@ -1,35 +1,29 @@
-#!/usr/bin/perl -w
-use strict;use warnings;
-use OpenSRF::System qw(/openils/conf/bootstrap.conf);
-use OpenSRF::Utils::SettingsClient;
+#!/usr/bin/perl
+use strict; use warnings;
+use OpenSRF::System;
 use Time::HiRes qw/time/;
-use OpenSRF::EX qw/:try/;
 
-$| = 1;
+# Test script which runs queries agains the opensrf.math service and reports on
+# the average round trip time of the requests.
 
-# ----------------------------------------------------------------------------------------
-# This is a quick and dirty script to perform benchmarking against the math server.
-# Note: 1 request performs a batch of 4 queries, one for each supported method: add, sub,
-# mult, div.
-# Usage: $ perl math_bench.pl <num_requests>
-# ----------------------------------------------------------------------------------------
-
-
+# how many batches of 4 requests do we send
 my $count = $ARGV[0];
+print "usage: $0 <num_requests>\n" and exit unless $count;
 
-unless( $count ) {
-	print "usage: ./math_bench.pl <num_requests>\n";
-	exit;
-}
+# * connect to the Jabber network
+OpenSRF::System->bootstrap_client( config_file => "/openils/conf/bootstrap.conf" );
 
-warn "PID: $$\n";
-
-OpenSRF::System->bootstrap_client();
+# * create a new application session for the opensrf.math service
 my $session = OpenSRF::AppSession->create( "opensrf.math" );
 
-my @times;
+my @times; # "delta" times for each round trip
+
+# we're gonna call methods "add", "sub", "mult", and "div" with
+# params 1, 2.  The hash below maps the method name to the 
+# expected response value
 my %vals = ( add => 3, sub => -1, mult => 2, div => 0.5 );
 
+# print the counter grid 
 for my $x (1..100) {
 	if( $x % 10 ) { print ".";}
 	else{ print $x/10; };
@@ -39,52 +33,35 @@ print "\n";
 my $c = 0;
 
 for my $scale ( 1..$count ) {
-	for my $mname ( keys %vals ) {
+	for my $mname ( keys %vals ) { # cycle through add, sub, mult, and div
 
-		my $req;
-		my $resp;
-		my $starttime;
-		try {
+		my $starttime = time();
 
-			$starttime = time();
-			if( ! ($session->connect()) ) { die "Connect timed out\n"; }
-			$req = $session->request( $mname, 1, 2 );
-			$resp = $req->recv( timeout => 10 );
-			push @times, time() - $starttime;
-
-		} catch OpenSRF::EX with {
-			my $e = shift;
-			die "ERROR\n $e";
-
-		} catch Error with {
-			my $e = shift;
-			die "Caught unknown error: $e";
-		};
+		# * Fires the request and gathers the response object, which in this case
+		# is just a string
+		my $resp = $session->request( $mname, 1, 2 )->gather(1);
+		push @times, time() - $starttime;
 
 
-		if( ! $req->complete ) { warn "\nIncomplete\n"; }
+		if( "$resp" eq $vals{$mname} ) { 
+			# we got the response we expected
+			print "+"; 
 
-		if( UNIVERSAL::isa( $resp, "OpenSRF::EX" ) ) {
-			print "-" x 50 . "\nReceived Error " . $resp . "\n" . "-" x 50 . "\n";
+		} elsif($resp) { 
+			# we got some other response	 
+			print "\n* BAD Data:  $resp\n";
 
-		} elsif( $resp ) {
+		} else { 
+			# we got no data
+			print "Received nothing\n";	
+		}
 
-			my $ret = $resp->content();
-			if( "$ret" eq $vals{$mname} ) { print "+"; }
-
-			else { print "*BAD*\n" . $resp->toString(1) . "\n"; }
-
-		} else { print "*NADA*";	}
-
-		$req->finish();
-#		$session->disconnect();
 		$c++;
 
 	}
-	print "\n[$c] \n" unless $scale % 25;
-}
 
-$session->kill_me();
+	print " [$c] \n" unless $scale % 25;
+}
 
 my $total = 0;
 
@@ -93,4 +70,5 @@ $total += $_ for (@times);
 $total /= scalar(@times);
 
 print "\n\n\tAverage Round Trip Time: $total Seconds\n";
+
 
