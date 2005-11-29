@@ -9,7 +9,7 @@
 <commandset id="universal_cmds">
 	<command id="cmd_close_window" key="close-window-key" />
 	<command id="cmd_new_window" key="new-window-key" />
-	<command id="cmd_new_tab" key="new-tab-key" />
+	<command id="cmd_new_tab" oncommand="alert('event.type = ' + event.type + '  event.target.nodeName = ' + event.target.nodeName );" />
 	<command id="cmd_close_tab" key="close-tab-key" />
 
 	<command id="cmd_cat_main" key="cat-main-key" />
@@ -39,7 +39,7 @@
 <!-- Accelerator Keys (Accessor Keys are in DTD's) -->
 <keyset id="menu_frame_keys">
 	<key id="new-window-key" modifiers="accel" key="N" command="cmd_new_window"/>
-	<key id="new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
+	<key id="new-tab-key" modifiers="accel" key="T" />
 	<key id="open-key" modifiers="accel" key="O" command=""/>
 	<key id="save-key" modifiers="accel" key="S" command=""/>
 	<key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>

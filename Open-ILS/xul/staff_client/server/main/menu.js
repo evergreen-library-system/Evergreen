@@ -20,39 +20,43 @@ main.menu.prototype = {
 		obj.panels = obj.tabbox.lastChild;
 
 		var cmd_close_window = this.w.document.getElementById('cmd_close_window');
-			if (cmd_close_window) 
-				cmd_close_window.addEventListener('command', 
-					function() { 
-						obj.w.close(); 
-					}, false);
+			if (cmd_close_window)  {
+				var f = function() { obj.w.close(); };
+				cmd_close_window.addEventListener('command', f, false);
+				cmd_close_window.addEventListener('keypress', f, false);
+			}
 			
 		var cmd_new_window = this.w.document.getElementById('cmd_new_window');
-			if (cmd_new_window)
-				cmd_new_window.addEventListener('command', 
-					function() { 
-						obj.window.open('/xul/server/main/menu_frame.xul','test' + obj.window.appshell_name_increment++ ,'chrome'); 
-					}, false );
+			if (cmd_new_window) {
+				var f = function() { 
+					obj.window.open('/xul/server/main/menu_frame.xul','test' + obj.window.appshell_name_increment++ ,'chrome'); 
+				};
+				cmd_new_window.addEventListener('command', f, false );
+				cmd_new_window.addEventListener('keypress', f, false );
+			}
 
 		var cmd_new_tab = this.w.document.getElementById('cmd_new_tab');
-			if (cmd_new_tab)
-				cmd_new_tab.addEventListener('command',
-					function(ev) {
-						obj.new_tab();
-					}, false );
+			if (cmd_new_tab) {
+				var f = function(ev) {
+					obj.new_tab();
+				};
+				cmd_new_tab.addEventListener('command', f, false );
+				cmd_new_tab.addEventListener('keypress', f, true );
+			}
 
 		var cmd_close_tab = this.w.document.getElementById('cmd_close_tab');
-			if (cmd_new_tab)
-				cmd_close_tab.addEventListener('command',
-					function(ev) {
-						obj.close_tab();
-					}, false );
+			if (cmd_new_tab) {
+				var f = function(ev) { obj.close_tab(); };
+				cmd_close_tab.addEventListener('command', f, false );
+				cmd_close_tab.addEventListener('keypress', f, false );
+			}
 
 		var cmd_broken = this.w.document.getElementById('cmd_broken');
-			if (cmd_broken)
-				cmd_broken.addEventListener('command', 
-					function() { 
-						alert('Not Yet Implemented'); 
-					}, false);
+			if (cmd_broken) {
+				var f = function() { alert('Not Yet Implemented'); };
+				cmd_broken.addEventListener('command', f, false);
+				cmd_broken.addEventListener('keypress', f, false);
+			}
 		
 	},
 

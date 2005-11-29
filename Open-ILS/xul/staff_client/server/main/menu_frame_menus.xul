@@ -6,12 +6,13 @@
 <script>dump('loading menu_frame_menus.xul\n');</script>
 
 <commandset id="universal_cmds" />
+<keyset id="menu_frame_keys" />
 
 <!-- The File menu on the main menu -->
 <menu id="main.menu.file" label="&main.menu.file.label;" accesskey="&main.menu.file.key;" >
 	<menupopup id="main.menu.file.popup">
 		<menuitem label="&main.menu.file.new.label;" accesskey="&main.menu.file.new.key;" key="file-new-key" command="cmd_new_window"/>
-		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="file-new-tab-key" command="cmd_new_tab"/>
+		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="new-tab-key" onkeypress="alert('test');" command="cmd_new_tab"/>
 		<menuseparator />
 	<!--
 		<menuitem label="&main.menu.file.open.label;" accesskey="&main.menu.file.open.key;" key="file-open-key" command="cmd_broken" disabled="true"/>
