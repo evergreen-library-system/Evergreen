@@ -1,7 +1,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
 #include "objson/object.h"
-#include "opensrf/osrf_log.h"
+#include "opensrf/log.h"
 #include "oils_utils.h"
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
@@ -68,7 +68,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 		md5seed = md5sum(seed);
 		osrfCachePutString( key, md5seed, 30 );
 
-		osrfLog( OSRF_DEBUG, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
+		osrfLogDebug( "oilsAuthInit(): has seed %s and key %s", md5seed, key );
 
 		resp = jsonNewObject(md5seed);	
 		osrfAppRespondComplete( ctx, resp );
@@ -94,7 +94,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	if( uname && password ) {
 
 		/* grab the user object from storage */
-		osrfLog( OSRF_DEBUG, "oilsAuth calling method %s with username %s", storageMethod, uname );
+		osrfLogDebug( "oilsAuth calling method %s with username %s", storageMethod, uname );
 
 		osrfAppSession* session = osrfAppSessionClientInit( "open-ils.storage" ); /**/
 		jsonObject* params = jsonNewObject(uname); /**/
@@ -111,7 +111,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		jsonObject* userObj = osrfMessageGetResult(omsg);
 
 		char* _j = jsonObjectToJSON(userObj);
-		osrfLog( OSRF_DEBUG, "Auth received user object from storage: %s", _j );
+		osrfLogDebug( "Auth received user object from storage: %s", _j );
 		free(_j);
 
 		/* the method is atomic, grab the first user we receive */
@@ -135,17 +135,17 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 				"open-ils.auth.authenticate.init must be called first");
 		}
 
-		osrfLog( OSRF_DEBUG, "oilsAuth retrieved seed from cache: %s", seed );
+		osrfLogDebug( "oilsAuth retrieved seed from cache: %s", seed );
 		char* maskedPw = md5sum( "%s%s", seed, realPassword );
 		if(!maskedPw) return -1;
-		osrfLog( OSRF_DEBUG, "oilsAuth generated masked password %s. "
+		osrfLogDebug( "oilsAuth generated masked password %s. "
 				"Testing against provided password %s", maskedPw, password );
 
 		jsonObject* response;
 
 		if( !strcmp( maskedPw, password ) ) {
 
-			osrfLog( OSRF_INFO, "Login successful for %s", uname );
+			osrfLogInfo( "Login successful for %s", uname );
 			char* string = va_list_to_string( "%d.%d.%s", getpid(), time(NULL), uname ); /**/
 			char* authToken = md5sum(string); /**/
 			char* authKey = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
@@ -157,7 +157,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 		} else {
 
-			osrfLog( OSRF_INFO, "Login failed for for %s", uname );
+			osrfLogInfo( "Login failed for for %s", uname );
 			response = jsonNewNumberObject(0);
 		}
 

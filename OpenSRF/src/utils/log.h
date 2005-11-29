@@ -62,6 +62,9 @@ void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, 
 
 void _osrfLogToFile( char* msg, ... );
 
+/* returns the int representation of the log facility based on the facility name
+ * if the facility name is invalid, LOG_LOCAL0 is returned 
+ */
 int osrfLogFacilityToInt( char* facility );
 
 #endif

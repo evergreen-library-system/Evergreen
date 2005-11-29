@@ -158,8 +158,8 @@ void _osrfLogToFile( char* msg, ... ) {
 
 
 int osrfLogFacilityToInt( char* facility ) {
-	if(!facility) return -1;
-	if(strlen(facility) < 6) return -1;
+	if(!facility) return LOG_LOCAL0;
+	if(strlen(facility) < 6) return LOG_LOCAL0;
 	switch( facility[5] ) {
 		case 0: return LOG_LOCAL0;
 		case 1: return LOG_LOCAL1;
@@ -170,7 +170,7 @@ int osrfLogFacilityToInt( char* facility ) {
 		case 6: return LOG_LOCAL6;
 		case 7: return LOG_LOCAL7;
 	}
-	return -1;
+	return LOG_LOCAL0;
 }
 
 

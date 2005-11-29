@@ -49,6 +49,7 @@ int __setupRouter( char* config, char* context ) {
 	/* set up the logger */
 	char* level = osrfConfigGetValue(NULL, "/loglevel");
 	char* log_file = osrfConfigGetValue(NULL, "/logfile");
+	char* facility = osrfConfigGetValue(NULL, "/syslog");
 
 	int llevel = 1;
 	if(level) llevel = atoi(level);
@@ -58,9 +59,18 @@ int __setupRouter( char* config, char* context ) {
 		fprintf(stderr, "Unable to init logging, going to stderr...\n" );
 		*/
 
-	osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "router", llevel ); /* XXX config option */
-	osrfLogSetSyslogFacility( LOG_LOCAL3 ); /* XXX config option */
+	if(!log_file) { fprintf(stderr, "Log file needed\n"); return -1; }
 
+	if(!strcmp(log_file, "syslog")) {
+		osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "router", llevel );
+		osrfLogSetSyslogFacility(osrfLogFacilityToInt(facility));
+
+	} else {
+		osrfLogInit( OSRF_LOG_TYPE_FILE, "router", llevel );
+		osrfLogSetFile( log_file );
+	}
+
+	free(facility);
 	free(level);
 	free(log_file);
 
