@@ -15,23 +15,126 @@ main.menu.prototype = {
 
 		var obj = this;
 
+		obj.tabbox = obj.w.document.getElementById('main_tabbox');
+		obj.tabs = obj.tabbox.firstChild;
+		obj.panels = obj.tabbox.lastChild;
+
 		var cmd_close_window = this.w.document.getElementById('cmd_close_window');
 			if (cmd_close_window) 
-				cmd_close_window.addEventListener('command', function() { obj.w.close(); }, false);
+				cmd_close_window.addEventListener('command', 
+					function() { 
+						obj.w.close(); 
+					}, false);
 			
 		var cmd_new_window = this.w.document.getElementById('cmd_new_window');
 			if (cmd_new_window)
 				cmd_new_window.addEventListener('command', 
-					function() { obj.window.open('/xul/server/main/menu_frame.xul','test' + obj.window.appshell_name_increment++ ,'chrome'); },
-					false );
+					function() { 
+						obj.window.open('/xul/server/main/menu_frame.xul','test' + obj.window.appshell_name_increment++ ,'chrome'); 
+					}, false );
+
+		var cmd_new_tab = this.w.document.getElementById('cmd_new_tab');
+			if (cmd_new_tab)
+				cmd_new_tab.addEventListener('command',
+					function(ev) {
+						obj.new_tab();
+					}, false );
+
+		var cmd_close_tab = this.w.document.getElementById('cmd_close_tab');
+			if (cmd_new_tab)
+				cmd_close_tab.addEventListener('command',
+					function(ev) {
+						obj.close_tab();
+					}, false );
 
 		var cmd_broken = this.w.document.getElementById('cmd_broken');
 			if (cmd_broken)
-				cmd_broken.addEventListener('command', function() { alert('Not Yet Implemented'); }, false);
+				cmd_broken.addEventListener('command', 
+					function() { 
+						alert('Not Yet Implemented'); 
+					}, false);
 		
 	},
 
-	'close_tab' : function (t_idx) {
+	'close_tab' : function () {
+		var idx = this.tabs.selectedIndex;
+		if (idx == 0) {
+			try {
+				this.tabs.advanceSelectedTab(+1);
+			} catch(E) {
+				this.error.sdump('D_TAB','failed tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
+				try {
+					this.tabs.advanceSelectedTab(-1);
+				} catch(E) {
+					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
+				}
+			}
+		} else {
+			try {
+				this.tabs.advanceSelectedTab(-1);
+			} catch(E) {
+				this.error.sdump('D_TAB','failed tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
+				try {
+					this.tabs.advanceSelectedTab(+1);
+				} catch(E) {
+					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
+				}
+			}
+
+		}
+		
+		this.error.sdump('D_TAB','\tnew tabbox.selectedIndex = ' + this.tabbox.selectedIndex + '\n');
+
+		this.tabs.childNodes[ idx ].hidden = true;
+		this.error.sdump('D_TAB','tabs.childNodes[ ' + idx + ' ].hidden = true;\n');
+
+		// Make sure we keep at least one tab open.
+		var tab_flag = true;
+		for (var i = 0; i < this.tabs.childNodes.length; i++) {
+			var tab = this.tabs.childNodes[i];
+			if (!tab.hidden)
+				tab_flag = false;
+		}
+		if (tab_flag) this.new_tab();
+	},
+
+	'find_free_tab' : function() {
+		var last_not_hidden = -1;
+		for (var i = 0; i<this.tabs.childNodes.length; i++) {
+			var tab = this.tabs.childNodes[i];
+			if (!tab.hidden)
+				last_not_hidden = i;
+		}
+		if (last_not_hidden == this.tabs.childNodes.length - 1)
+			last_not_hidden = -1;
+		// If the one next to last_not_hidden is hidden, we want it.
+		// Basically, we fill in tabs after existing tabs for as 
+		// long as possible.
+		var idx = last_not_hidden + 1;
+		var candidate = this.tabs.childNodes[ idx ];
+		if (candidate.hidden)
+			return idx;
+		// Alright, find the first hidden then
+		for (var i = 0; i<this.tabs.childNodes.length; i++) {
+			var tab = this.tabs.childNodes[i];
+			if (tab.hidden)
+				return i;
+		}
+		return -1;
+	},
+
+	'new_tab' : function() {
+		var tc = this.find_free_tab();
+		if (tc == -1) { return null; } // 9 tabs max
+		var tab = this.tabs.childNodes[ tc ];
+		//tab.setAttribute('label','Tab ' + (tc + 1) );
+		tab.hidden = false;
+		try {
+			this.tabs.selectedIndex = tc;
+			//this.replace_tab(tc,'about:blank');
+		} catch(E) {
+			this.error.sdump('D_ERROR',E);
+		}
 	}
 
 }
