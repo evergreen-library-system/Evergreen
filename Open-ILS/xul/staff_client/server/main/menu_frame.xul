@@ -10,7 +10,7 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
-<!DOCTYPE window SYSTEM "/xul/server/locale/menu_frame.dtd">
+<!DOCTYPE window SYSTEM "menu_frame.dtd">
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
@@ -20,7 +20,7 @@
 <window id="menu_frame_win"
 	onload="my_init()"
 	orient="vertical" style="overflow: auto" width="800" height="500"
-	sizemode="maximized" persist="width height" 
+	sizemode="maximized" persist="width height" title="&main.menu.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
