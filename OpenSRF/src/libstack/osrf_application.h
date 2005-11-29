@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <dlfcn.h>
 #include "opensrf/utils.h"
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
 #include "objson/object.h"
 #include "osrf_app_session.h"
 #include "osrf_hash.h"
@@ -24,20 +24,20 @@
   This macro verifies methods receive the correct parameters */
 #define _OSRF_METHOD_VERIFY_CONTEXT(d) \
 	if(!d) return -1; \
-	if(!d->session) { osrfLog( OSRF_ERROR, "Session is NULL in app reqeust" ); return -1; }\
-	if(!d->method) { osrfLog( OSRF_ERROR, "Method is NULL in app reqeust" ); return -1; }\
-	if(!d->params) { osrfLog( OSRF_ERROR, "Params is NULL in app reqeust %s", d->method->name ); return -1; }\
+	if(!d->session) { osrfLogError( "Session is NULL in app reqeust" ); return -1; }\
+	if(!d->method) { osrfLogError( "Method is NULL in app reqeust" ); return -1; }\
+	if(!d->params) { osrfLogError( "Params is NULL in app reqeust %s", d->method->name ); return -1; }\
 	if( d->params->type != JSON_ARRAY ) { \
-		osrfLog( OSRF_ERROR, "'params' is not a JSON array for method %s", d->method->name);\
+		osrfLogError( "'params' is not a JSON array for method %s", d->method->name);\
 		return -1; }\
-	if( !d->method->name ) { osrfLog(OSRF_ERROR, "Method name is NULL"); return -1; } 
+	if( !d->method->name ) { osrfLogError( "Method name is NULL"); return -1; } 
 
 #ifdef OSRF_LOG_PARAMS 
 #define OSRF_METHOD_VERIFY_CONTEXT(d) \
 	_OSRF_METHOD_VERIFY_CONTEXT(d); \
 	char* __j = jsonObjectToJSON(d->params);\
 	if(__j) { \
-		osrfLog( OSRF_INFO, "%s %s - %s", d->session->remote_service, d->method->name, __j);\
+		osrfLogInfo( "%s %s - %s", d->session->remote_service, d->method->name, __j);\
 		free(__j); \
 	} 
 #else
@@ -50,8 +50,8 @@
 #define OSRF_METHOD_VERIFY_DESCRIPTION(app, d) \
 	if(!app) return -1; \
 	if(!d) return -1;\
-	if(!d->name) { osrfLog( OSRF_ERROR, "No method name provided in description" ), return -1; } \
-	if(!d->symbol) { osrfLog( OSRF_ERROR, "No method symbol provided in description" ), return -1; } \
+	if(!d->name) { osrfLogError( "No method name provided in description" ), return -1; } \
+	if(!d->symbol) { osrfLogError( "No method symbol provided in description" ), return -1; } \
 	if(!d->notes) d->notes = ""; \
 	if(!d->paramNotes) d->paramNotes = "";\
 	if(!d->returnNotes) d->returnNotes = "";

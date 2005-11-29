@@ -2,7 +2,7 @@
 #include "opensrf/osrf_application.h"
 #include "objson/object.h"
 #include "opensrf/utils.h"
-#include "opensrf/osrf_log.h"
+#include "opensrf/log.h"
 
 #define OSRF_VERSION_CACHE_TIME 300
 
@@ -40,7 +40,7 @@ int osrfVersion( osrfMethodContext* ctx ) {
 	free(json); 
 
 	if( cachedmd5 ) {
-		osrfLog( OSRF_DEBUG, "Found %s object in cache, returning....", cachedmd5 );
+		osrfLogDebug( "Found %s object in cache, returning....", cachedmd5 );
 		jsonObject* resp = jsonNewObject(cachedmd5);
 		osrfAppRespondComplete( ctx, resp  );
 		jsonObjectFree(resp);
@@ -79,7 +79,7 @@ int osrfVersion( osrfMethodContext* ctx ) {
 				osrfAppRespondComplete( ctx, resp );
 				jsonObjectFree(resp);
 				osrfAppSessionFree(ses);
-				osrfLog(OSRF_DEBUG, "Found version string %s, caching and returning...", resultmd5 );
+				osrfLogDebug("Found version string %s, caching and returning...", resultmd5 );
 				osrfCachePutString( paramsmd5, resultmd5, OSRF_VERSION_CACHE_TIME );
 				free(resultmd5);
 				free(paramsmd5);

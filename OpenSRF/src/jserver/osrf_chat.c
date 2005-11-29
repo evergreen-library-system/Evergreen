@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #include "osrf_chat.h"
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 
 int __osrfChatXMLErrorOcurred = 0;
 int __osrfChatClientSentDisconnect = 0;
@@ -66,7 +67,7 @@ static void chatdbg( osrfChatServer* server ) {
 			node->to, node->resource, node->username, node->domain, node->authkey, node->type );
 	}
 
-	debug_handler("DEBUG:\n%s", buf->buf );
+	osrfLogDebug("DEBUG:\n%s", buf->buf );
 	buffer_free(buf);
 	osrfListIteratorFree(itr);
 }
@@ -181,7 +182,7 @@ int osrfChatServerWait( osrfChatServer* server ) {
 	if(!server) return -1;
 	while(1) {
 		if(socket_wait_all(server->mgr, -1) < 0)
-			warning_handler( "jserver_wait(): socket_wait_all() returned error");
+			osrfLogWarning( "jserver_wait(): socket_wait_all() returned error");
 	}
 	return -1;
 }
@@ -206,16 +207,16 @@ void osrfChatHandleData( void* cs,
 	osrfChatNode* node = osrfListGetIndex( server->nodeList, sockid );
 
 	if(node)
-		debug_handler("Found node for sockid %d with state %d", sockid, node->state);
+		osrfLogDebug("Found node for sockid %d with state %d", sockid, node->state);
 
 	if(!node) {
-		debug_handler("Adding new connection for sockid %d", sockid );
+		osrfLogDebug("Adding new connection for sockid %d", sockid );
 		node = osrfChatAddNode( server, sockid );
 	}
 
 	if(node) {
 		if( (osrfChatPushData( server, node, data ) == -1) ) {
-			warning_handler("Node at socket %d received bad XML, disconnecting...", sockid );
+			osrfLogWarning("Node at socket %d received bad XML, disconnecting...", sockid );
 			osrfChatSendRaw(  node, OSRF_CHAT_PARSE_ERROR );
 			osrfChatRemoveNode( server, node );
 		}
@@ -274,7 +275,7 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 
 	if( eq( dombuf, cs->domain ) ) { /* this is to a user we host */
 
-		info_handler("Sending message on local connection\nfrom: %s\nto: %s", fromAddr, toAddr );
+		osrfLogInfo("Sending message on local connection\nfrom: %s\nto: %s", fromAddr, toAddr );
 		osrfChatNode* tonode = osrfHashGet(cs->nodeHash, toAddr);
 		if(tonode) {
 			osrfChatSendRaw( tonode, msgXML );
@@ -282,7 +283,7 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 		} else {
 
 			/* send an error message saying we don't have this connection */
-			warning_handler("We have no connection for %s", toAddr);
+			osrfLogWarning("We have no connection for %s", toAddr);
 			char* xml = va_list_to_string( OSRF_CHAT_NO_RECIPIENT, toAddr, fromAddr );
 			osrfChatSendRaw( node, xml );
 			free(xml);
@@ -293,18 +294,18 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 		osrfChatNode* tonode = osrfHashGet(cs->nodeHash, dombuf);
 		if(tonode) {
 			if( tonode->state == OSRF_CHAT_STATE_CONNECTED ) {
-				debug_handler("Routing message to server %s", dombuf);
+				osrfLogDebug("Routing message to server %s", dombuf);
 				osrfChatSendRaw( tonode, msgXML );
 
 			} else {
-				info_handler("Received s2s message and we're still trying to connect...caching");
+				osrfLogInfo("Received s2s message and we're still trying to connect...caching");
 				osrfListPush( tonode->msgs, strdup(msgXML) );
 			}
 
 		} else {
 
 			if( osrfChatInitS2S( cs, dombuf, toAddr, msgXML ) != 0 ) {
-				warning_handler("We are unable to connect to remote server %s for recipient %s", dombuf, toAddr);
+				osrfLogWarning("We are unable to connect to remote server %s for recipient %s", dombuf, toAddr);
 				char* xml = va_list_to_string( OSRF_CHAT_NO_RECIPIENT, toAddr, fromAddr );
 				osrfChatSendRaw( node, xml );
 				free(xml);
@@ -322,7 +323,7 @@ void osrfChatCacheS2SMessage( char* toAddr, char* msgXML, osrfChatNode* snode ) 
 	osrfChatS2SMessage* msg = safe_malloc(sizeof(osrfChatS2SMessage));
 	msg->toAddr = strdup(toAddr);
 	msg->msgXML = strdup(msgXML);
-	info_handler("Pushing client message onto s2s queue waiting for connect... ");
+	osrfLogInfo("Pushing client message onto s2s queue waiting for connect... ");
 	osrfListPush( snode->msgs, msgXML );
 }
 */
@@ -331,14 +332,14 @@ void osrfChatCacheS2SMessage( char* toAddr, char* msgXML, osrfChatNode* snode ) 
 int osrfChatInitS2S( osrfChatServer* cs, char* remote, char* toAddr, char* msgXML ) {
 	if(!(cs && remote && toAddr && msgXML)) return -1;
 
-	info_handler("Initing server2server connection to domain %s", remote );
+	osrfLogInfo("Initing server2server connection to domain %s", remote );
 	osrfChatNode* snode = osrfNewChatS2SNode( cs->domain, remote );
 	snode->parent = cs;
 
 	/* try to connect to the remote site */
 	snode->sockid = socket_open_tcp_client(cs->mgr, cs->s2sport, remote);
 	if(snode->sockid < 1) {
-		warning_handler("Unable to connect to remote server at %s", remote );
+		osrfLogWarning("Unable to connect to remote server at %s", remote );
 		return -1;
 	}
 
@@ -351,7 +352,7 @@ int osrfChatInitS2S( osrfChatServer* cs, char* remote, char* toAddr, char* msgXM
 	/* send the initial s2s request */
 	osrfChatSendRaw( snode, OSRF_CHAT_S2S_INIT );
 
-	debug_handler("Added new s2s node...");
+	osrfLogDebug("Added new s2s node...");
 	chatdbg(cs);
 
 	return 0;
@@ -365,7 +366,7 @@ int osrfChatPushData( osrfChatServer* server, osrfChatNode* node, char* data ) {
 
 	chatdbg(server);
 
-	debug_handler("pushing data into xml parser for node %d with state %d:\n%s", 
+	osrfLogDebug("pushing data into xml parser for node %d with state %d:\n%s", 
 						 node->sockid, node->state, data);
 	node->inparse = 1;
 	xmlParseChunk(node->parserCtx, data, strlen(data), 0);
@@ -390,7 +391,7 @@ int osrfChatPushData( osrfChatServer* server, osrfChatNode* node, char* data ) {
 
 
 void osrfChatStartStream( void* blob ) {
-	debug_handler("Starting new client stream...");
+	osrfLogDebug("Starting new client stream...");
 }
 
 
@@ -401,14 +402,14 @@ void osrfChatStartElement( void* blob, const xmlChar *name, const xmlChar **atts
 	int status = -1;
 	char* nm = (char*) name;
 
-	debug_handler("Starting element %s with namespace %s and node state %d", 
+	osrfLogDebug("Starting element %s with namespace %s and node state %d", 
 						 nm, xmlSaxAttr(atts, "xmlns"), node->state );
 
 	switch( node->state ) {
 
 		case OSRF_CHAT_STATE_NONE:
 			status = osrfChatHandleNewConnection( node, nm, atts );
-			debug_handler("After NewConnection we have state %d", node->state);
+			osrfLogDebug("After NewConnection we have state %d", node->state);
 			break;
 
 		case OSRF_CHAT_STATE_CONNECTING:
@@ -457,7 +458,7 @@ void osrfChatStartElement( void* blob, const xmlChar *name, const xmlChar **atts
 		osrfChatParseError( node, "We don't know how to handle the XML data received" );
 }
 
-#define CHAT_CHECK_VARS(x,y,z) if(!(x && y)) return -1; if(z) debug_handler(z);
+#define CHAT_CHECK_VARS(x,y,z) if(!(x && y)) return -1; if(z) osrfLogDebug(z);
 
 
 
@@ -485,7 +486,7 @@ int osrfChatHandleS2SConnected( osrfChatNode* node, const char* name, const xmlC
 				char* from = (char*) xmlGetProp(xmlDocGetRootElement(doc), BAD_CAST "from");
 				char* to = (char*) xmlGetProp(xmlDocGetRootElement(doc), BAD_CAST "to");
 				osrfChatSend( node->parent, node, to, from, xml );
-				debug_handler("Sending cached message from %s to %s", from, to);
+				osrfLogDebug("Sending cached message from %s to %s", from, to);
 				xmlFree(to); xmlFree(from);
 				xmlFreeDoc(doc);
 			}
@@ -498,7 +499,7 @@ int osrfChatHandleS2SConnected( osrfChatNode* node, const char* name, const xmlC
 	}
 
 	if(status == 0) {
-		info_handler("Successfully made S2S connection to %s", node->remote );
+		osrfLogInfo("Successfully made S2S connection to %s", node->remote );
 		node->state = OSRF_CHAT_STATE_CONNECTED;
 		node->xmlstate = 0;
 	}
@@ -523,17 +524,17 @@ int osrfChatHandleNewConnection( osrfChatNode* node, const char* name, const xml
 		if(!domain) return -1; 
 	
 		if(!eq(domain, node->domain)) {
-			warning_handler("Client attempting to connect to invalid domain");
+			osrfLogWarning("Client attempting to connect to invalid domain");
 			return -1;
 		}
 	
 		char* buf = va_list_to_string( OSRF_CHAT_START_STREAM, domain, node->authkey );
 		node->state = OSRF_CHAT_STATE_CONNECTING;
 
-		debug_handler("Server node %d setting state to OSRF_CHAT_STATE_CONNECTING[%d]",
+		osrfLogDebug("Server node %d setting state to OSRF_CHAT_STATE_CONNECTING[%d]",
 							 node->sockid, node->state );
 	
-		debug_handler("Server responding to connect message with\n%s\n", buf );
+		osrfLogDebug("Server responding to connect message with\n%s\n", buf );
 		osrfChatSendRaw( node, buf );
 		free(buf);
 		return 0;
@@ -541,7 +542,7 @@ int osrfChatHandleNewConnection( osrfChatNode* node, const char* name, const xml
 
 	/* server to server init */
 	if(eq(ns, "jabber:server")) { /* client connection */
-		info_handler("We received a new server 2 server connection, generating auth key...");
+		osrfLogInfo("We received a new server 2 server connection, generating auth key...");
 		char* xml = va_list_to_string( OSRF_CHAT_S2S_CHALLENGE, node->authkey );
 		osrfChatSendRaw( node, xml );
 		free(xml);
@@ -564,7 +565,7 @@ char* osrfChatMkAuthKey() {
 
 int osrfChatHandleConnecting( osrfChatNode* node, const char* name, const xmlChar** atts ) {
 	CHAT_CHECK_VARS(node, name, "osrfChatHandleConnecting()");
-	debug_handler("Handling connect node %s", name );
+	osrfLogDebug("Handling connect node %s", name );
 
 	if(eq(name, "iq")) node->xmlstate |= OSRF_CHAT_STATE_INIQ;
 	else if(eq(name,"username")) node->xmlstate |= OSRF_CHAT_STATE_INUSERNAME;
@@ -604,12 +605,12 @@ int osrfChatHandleConnected( osrfChatNode* node, const char* name, const xmlChar
 /* takes s2s secret, hashdomain, and the s2s auth token */
 static char* osrfChatGenerateS2SKey( char* secret, char* hashdomain, char* authtoken ) {
 	if(!(secret && hashdomain && authtoken)) return NULL;
-	info_handler("Generating s2s key with auth token: %s", authtoken );
+	osrfLogInfo("Generating s2s key with auth token: %s", authtoken );
 	char* a = shahash(secret);
-	debug_handler("S2S secret hash: %s", a);
+	osrfLogDebug("S2S secret hash: %s", a);
 	char* b = va_list_to_string("%s%s", a, hashdomain);
 	char* c = shahash(b);
-	debug_handler("S2S intermediate hash: %s", c);
+	osrfLogDebug("S2S intermediate hash: %s", c);
 	char* d = va_list_to_string("%s%s", c, authtoken);
 	char* e = strdup(shahash(d));
 	free(b); free(d); 
@@ -626,7 +627,7 @@ int osrfChatHandleS2SChallenge( osrfChatNode* node, const char* name, const xmlC
 			/* we use our domain in the s2s challenge hash */
 			char* d = osrfChatGenerateS2SKey(node->parent->secret, node->domain, id );
 			char* e = va_list_to_string(OSRF_CHAT_S2S_RESPONSE, node->remote, node->domain, d );
-			info_handler("Answering s2s challenge with key:  %s", e );
+			osrfLogInfo("Answering s2s challenge with key:  %s", e );
 			osrfChatSendRaw( node, e );
 			free(d); free(e);
 			node->state = OSRF_CHAT_STATE_S2S_VERIFY;
@@ -672,7 +673,7 @@ void osrfChatEndElement( void* blob, const xmlChar* name ) {
 			char* string = xmlDocToString(node->msgDoc, 0 );
 
 			char* from = (char*) xmlGetProp(msg, BAD_CAST "from");
-			debug_handler( "Routing message to %s\n%s\n", node->to, from, string );
+			osrfLogDebug( "Routing message to %s\n%s\n", node->to, from, string );
 			osrfChatSend( node->parent, node, node->to, from, string ); 
 			xmlFree(from);
 			free(string);
@@ -687,12 +688,12 @@ void osrfChatEndElement( void* blob, const xmlChar* name ) {
 				node->remote = va_list_to_string( 
 						"%s@%s/%s", node->username, node->domain, node->resource );
 
-				info_handler("%s successfully logged in", node->remote );
+				osrfLogInfo("%s successfully logged in", node->remote );
 
-				debug_handler("Setting remote address to %s", node->remote );
+				osrfLogDebug("Setting remote address to %s", node->remote );
 				osrfChatSendRaw( node, OSRF_CHAT_LOGIN_OK );
 				if(osrfHashGet( node->parent->nodeHash, node->remote ) ) {
-					warning_handler("New node replaces existing node for remote id %s", node->remote);
+					osrfLogWarning("New node replaces existing node for remote id %s", node->remote);
 					osrfHashRemove(node->parent->nodeHash, node->remote);
 				}
 				osrfHashSet( node->parent->nodeHash, node, node->remote );
@@ -708,7 +709,7 @@ void osrfChatHandleCharacter( void* blob, const xmlChar *ch, int len) {
 	osrfChatNode* node = (osrfChatNode*) blob;
 
 	/*
-	debug_handler("Char Handler: state %d, xmlstate %d, chardata %s", 
+	osrfLogDebug("Char Handler: state %d, xmlstate %d, chardata %s", 
 			node->state, node->xmlstate, (char*) ch );
 			*/
 
@@ -742,9 +743,9 @@ void osrfChatHandleCharacter( void* blob, const xmlChar *ch, int len) {
 			(node->xmlstate & OSRF_CHAT_STATE_INS2SRESULT) ) {
 
 		char* key = strndup((char*) ch, len);
-		debug_handler("Got s2s key from %s : %s", node->remote, key );
+		osrfLogDebug("Got s2s key from %s : %s", node->remote, key );
 		char* e = osrfChatGenerateS2SKey(node->parent->secret, node->remote, node->authkey );
-		info_handler("\nReceived s2s key from server: %s\nKey should be: %s", key, e );
+		osrfLogInfo("\nReceived s2s key from server: %s\nKey should be: %s", key, e );
 
 		if(eq(key, e)) {
 			char* msg = va_list_to_string(OSRF_CHAT_S2S_VERIFY_REQUEST,  
@@ -755,7 +756,7 @@ void osrfChatHandleCharacter( void* blob, const xmlChar *ch, int len) {
 			node->xmlstate = 0;
 
 		} else {
-			warning_handler("Server2Server keys do not match!");
+			osrfLogWarning("Server2Server keys do not match!");
 		}
 
 		/* do the hash dance again */

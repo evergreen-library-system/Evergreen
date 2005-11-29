@@ -32,7 +32,7 @@ int fatal_handler( char* msg, ... ) {
 	va_list args;
 
 	if( logging ) {
-		if( log_level < LOG_ERROR )
+		if( log_level < OSRF_LOG_ERROR )
 			return -1;
 
 		log_file = fopen( lf, "a" );
@@ -74,7 +74,7 @@ int warning_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 	
-	if( log_level < LOG_WARNING )
+	if( log_level < OSRF_LOG_WARNING )
 		return -1;
 
 	if(logging) {
@@ -122,7 +122,7 @@ int info_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 
-	if( log_level < LOG_INFO )
+	if( log_level < OSRF_LOG_INFO )
 		return -1;
 
 	if(logging) {
@@ -172,7 +172,7 @@ int debug_handler( char* msg, ... ) {
 	pid_t  pid = getpid();
 	va_list args;
 	
-	if( log_level < LOG_DEBUG )
+	if( log_level < OSRF_LOG_DEBUG )
 		return -1;
 
 	if(logging) {

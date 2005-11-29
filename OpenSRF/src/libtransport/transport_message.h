@@ -7,7 +7,7 @@
 #include <libxml/xmlmemory.h>
 
 #include "opensrf/utils.h"
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
 
 #ifndef TRANSPORT_MESSAGE_H
 #define TRANSPORT_MESSAGE_H

@@ -43,8 +43,10 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 	cfg = ils_gateway_config_file;
 	#endif
 
-	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) 
-		fatal_handler("Unable to load gateway config file...");
+	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) {
+		osrfLogError("Unable to load gateway config file...");
+		return;
+	}
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);
 }
@@ -75,7 +77,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	/* verify we are connected */
 	if(!osrf_system_get_transport_client()) {
-		fatal_handler("Bootstrap Failed, no transport client");
+		osrfLogError("Bootstrap Failed, no transport client");
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
@@ -87,7 +89,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		ap_setup_client_block(r,REQUEST_CHUNKED_DECHUNK);
 
 		if(! ap_should_client_block(r)) {
-			warning_handler("No Post Body");
+			osrfLogWarning("No Post Body");
 		}
 
 		char body[1025];
@@ -95,7 +97,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		buffer = buffer_init(1025);
 
 		while(ap_get_client_block(r, body, 1024)) {
-			debug_handler("Apache read POST block data: %s\n", body);
+			osrfLogDebug("Apache read POST block data: %s\n", body);
 			buffer_add( buffer, body );
 			memset(body,0,1025);
 		}
@@ -113,11 +115,11 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	} 
 
-	debug_handler("params args are %s", arg);
+	osrfLogDebug("params args are %s", arg);
 
 
 	if( ! arg || !arg[0] ) { /* we received no request */
-		warning_handler("No Args");
+		osrfLogWarning("No Args");
 		return OK;
 	}
 
@@ -145,17 +147,17 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	}
 
-	info_handler("\nPerforming(%d):  service %s | method %s |",
+	osrfLogInfo("\nPerforming(%d):  service %s | method %s |",
 			getpid(), service, method );
 
 	int k;
 	for( k = 0; k!= sarray->size; k++ ) {
-		info_handler( "param %s", string_array_get_string(sarray,k));
+		osrfLogInfo( "param %s", string_array_get_string(sarray,k));
 	}
 
 	osrf_app_session* session = osrf_app_client_session_init(service);
 
-	debug_handler("MOD session service: %s", session->remote_service );
+	osrfLogDebug("MOD session service: %s", session->remote_service );
 
 	int req_id = osrf_app_session_make_req( session, NULL, method, 1, sarray );
 	string_array_destroy(sarray);
@@ -194,7 +196,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			jsonObjectSetKey(exception, "is_err", json_parse_string("1"));
 			jsonObjectSetKey(exception, "err_msg", jsonNewObject(exc_buffer->buf) );
 
-			warning_handler("*** Looks like we got a "
+			osrfLogWarning("*** Looks like we got a "
 					"server exception\n%s", exc_buffer->buf );
 
 			buffer_free(exc_buffer);
@@ -244,14 +246,13 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	buffer_free(result_data);
 
 	if(content) {
-		info_handler( "APACHE writing data to web client: %s", content );
+		osrfLogInfo( "APACHE writing data to web client: %s", content );
 		ap_rputs(content,r);
 		free(content);
 	} 
 
 	osrf_app_session_request_finish( session, req_id );
-	debug_handler("gateway process message successfully");
-
+	osrfLogDebug("gateway process message successfully");
 
 	osrf_app_session_destroy(session);
 	return OK;

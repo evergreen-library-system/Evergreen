@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "utils.h"
-#include "logging.h"
+#include "log.h"
 
 #define STRING_ARRAY_MAX_SIZE 1024
 

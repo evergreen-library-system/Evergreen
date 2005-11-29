@@ -13,23 +13,32 @@ int main( int argc, char* argv[] ) {
 	char fbuf[l];
 	memset(fbuf, 0, l);
 	sprintf(fbuf,"%s/.srfsh.xml",home);
+	
+	//osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "srfsh", 
 
 	if(!access(fbuf, R_OK)) {
-		if( ! osrf_system_bootstrap_client(fbuf, "srfsh") ) 
-			fatal_handler( "Unable to bootstrap client for requests");
+		if( ! osrf_system_bootstrap_client(fbuf, "srfsh") ) {
+			osrfLogError( "Unable to bootstrap client for requests");
+			return -1;
+		}
 
 	} else {
-		fatal_handler( "No Config file found at %s", fbuf );
+		osrfLogError( "No Config file found at %s", fbuf );
+		return -1;
 	}
 
 	if(argc > 1) {
 		/* for now.. the first arg is used as a script file for processing */
 		int f;
-		if( (f = open(argv[1], O_RDONLY)) == -1 )
-			fatal_handler("Unable to open file %s for reading, exiting...", argv[1]);
+		if( (f = open(argv[1], O_RDONLY)) == -1 ) {
+			osrfLogError("Unable to open file %s for reading, exiting...", argv[1]);
+			return -1;
+		}
 
-		if(dup2(f, STDIN_FILENO) == -1)
-			fatal_handler("Unable to duplicate STDIN, exiting...");
+		if(dup2(f, STDIN_FILENO) == -1) {
+			osrfLogError("Unable to duplicate STDIN, exiting...");
+			return -1;
+		}
 
 		close(f);
 		is_from_script = 1;
@@ -158,8 +167,10 @@ int parse_request( char* request ) {
 	if( !strcmp(words[0],"router") ) 
 		ret_val = handle_router( words );
 
+	/*
 	else if( !strcmp(words[0],"time") ) 
 		ret_val = handle_time( words );
+		*/
 
 	else if (!strcmp(words[0],"request"))
 		ret_val = handle_request( words, 0 );
@@ -498,7 +509,7 @@ int send_request( char* server,
 	osrf_app_session* session = osrf_app_client_session_init(server);
 
 	if(!osrf_app_session_connect(session)) {
-		warning_handler( "Unable to connect to remote service %s\n", server );
+		osrfLogWarning( "Unable to connect to remote service %s\n", server );
 		return 1;
 	}
 
@@ -623,6 +634,7 @@ int send_request( char* server,
 
 }
 
+/*
 int handle_time( char* words[] ) {
 
 	if( ! words[1] ) {
@@ -645,6 +657,7 @@ int handle_time( char* words[] ) {
 	return 0;
 
 }
+*/
 
 		
 

@@ -1,7 +1,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
 #include "objson/object.h"
-#include "opensrf/osrf_log.h"
+#include "opensrf/log.h"
 
 #define MODULENAME "opensrf.math"
 
@@ -49,8 +49,6 @@ int osrfMathRun( osrfMethodContext* ctx ) {
 
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); /* see osrf_application.h */
 
-	osrfLog( OSRF_DEBUG, "Running opensrf.math %s", ctx->method->name );
-
 	/* collect the request params */
 	jsonObject* x = jsonObjectGetIndex(ctx->params, 0);
 	jsonObject* y = jsonObjectGetIndex(ctx->params, 1);
@@ -63,6 +61,9 @@ int osrfMathRun( osrfMethodContext* ctx ) {
 		char* b = jsonObjectToSimpleString(y);
 
 		if( a && b ) {
+
+			osrfLogActivity( "Running opensrf.math %s [ %s : %s ]", 
+					ctx->method->name, a, b );
 
 			/* construct a new params object to send to dbmath */
 			jsonObject* newParams = jsonParseString( "[ %s, %s ]", a, b );

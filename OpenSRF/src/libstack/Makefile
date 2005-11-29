@@ -14,7 +14,6 @@ TARGETS = osrf_message.o \
 			 osrfConfig.o \
 			 osrf_application.o \
 			 osrf_cache.o \
-			 osrf_log.o \
 			 osrf_transgroup.o \
 			 osrf_list.o \
 			 osrf_hash.o \
@@ -29,7 +28,6 @@ HEADERS = osrf_message.h \
 			 osrfConfig.h \
 			 osrf_application.h \
 			 osrf_cache.h \
-			 osrf_log.h \
 			 osrf_transgroup.h \
 			 osrf_list.h \
 			 osrf_hash.h \
@@ -54,7 +52,6 @@ osrf_prefork.o:	osrf_prefork.c osrf_prefork.h
 osrfConfig.o:	osrfConfig.c osrfConfig.h xml_utils.o
 osrf_application.o: osrf_application.c osrf_application.h
 osrf_cache.o:	osrf_cache.c osrf_cache.h
-osrf_log.o:	osrf_log.c osrf_log.h
 osrf_list.o:	osrf_list.c osrf_list.h
 osrf_hash.o:	osrf_hash.c osrf_hash.h
 

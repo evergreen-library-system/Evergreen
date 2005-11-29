@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 
 #include "utils.h"
-#include "logging.h"
+#include "log.h"
 
 #include <signal.h>
 

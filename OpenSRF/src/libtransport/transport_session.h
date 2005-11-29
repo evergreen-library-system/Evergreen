@@ -6,7 +6,7 @@
 #include "transport_message.h"
 
 #include "opensrf/utils.h"
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
 #include "opensrf/socket_bundle.h"
 
 #include "sha.h"

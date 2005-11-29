@@ -57,14 +57,14 @@ void osrfRouterRun( osrfRouter* router ) {
 		int numhandled = 0;
 
 		if( (selectret = select(maxfd + 1, &set, NULL, NULL, NULL)) < 0 ) {
-			warning_handler("Top level select call failed with errno %d", errno);
+			osrfLogWarning("Top level select call failed with errno %d", errno);
 			continue;
 		}
 
 		/* see if there is a top level router message */
 
 		if( FD_ISSET(routerfd, &set) ) {
-			debug_handler("Top router socket is active: %d", routerfd );
+			osrfLogDebug("Top router socket is active: %d", routerfd );
 			numhandled++;
 			osrfRouterHandleIncoming( router );
 		}
@@ -82,11 +82,11 @@ void osrfRouterRun( osrfRouter* router ) {
 
 				if( classname && (class = osrfRouterFindClass( router, classname )) ) {
 
-					debug_handler("Checking %s for activity...", classname );
+					osrfLogDebug("Checking %s for activity...", classname );
 
 					int sockfd = class->ROUTER_SOCKFD;
 					if(FD_ISSET( sockfd, &set )) {
-						debug_handler("Socket is active: %d", sockfd );
+						osrfLogDebug("Socket is active: %d", sockfd );
 						numhandled++;
 						osrfRouterClassHandleIncoming( router, classname, class );
 					}
@@ -117,7 +117,7 @@ void osrfRouterHandleIncoming( osrfRouter* router ) {
 			if(osrfStringArrayContains( router->trustedServers, domain)) 
 				osrfRouterHandleMessage( router, msg );
 			 else 
-				warning_handler("Received message from un-trusted server domain %s", msg->sender);
+				osrfLogWarning("Received message from un-trusted server domain %s", msg->sender);
 		}
 
 		message_free(msg);
@@ -128,7 +128,7 @@ int osrfRouterClassHandleIncoming( osrfRouter* router, char* classname, osrfRout
 	if(!(router && class)) return -1;
 
 	transport_message* msg;
-	debug_handler("osrfRouterClassHandleIncoming()");
+	osrfLogDebug("osrfRouterClassHandleIncoming()");
 
 	if( (msg = client_recv( class->connection, 0 )) ) {
 
@@ -155,7 +155,7 @@ int osrfRouterClassHandleIncoming( osrfRouter* router, char* classname, osrfRout
 				osrfRouterClassHandleMessage( router, class, msg );
 
 			} else {
-				warning_handler("Received client message from untrusted client domain %s", domain );
+				osrfLogWarning("Received client message from untrusted client domain %s", domain );
 			}
 		}
 
@@ -180,7 +180,7 @@ int osrfRouterHandleMessage( osrfRouter* router, transport_message* msg ) {
 	if(!strcmp(msg->router_command, ROUTER_REGISTER)) {
 		class = osrfRouterFindClass( router, msg->router_class );
 
-		info_handler("Registering class %s", msg->router_class );
+		osrfLogInfo("Registering class %s", msg->router_class );
 
 		if(!class) class = osrfRouterAddClass( router, msg->router_class );
 
@@ -196,7 +196,7 @@ int osrfRouterHandleMessage( osrfRouter* router, transport_message* msg ) {
 	} else if( !strcmp( msg->router_command, ROUTER_UNREGISTER ) ) {
 
 		if( msg->router_class && strcmp( msg->router_class, "") ) {
-			info_handler("Unregistering router class %s", msg->router_class );
+			osrfLogInfo("Unregistering router class %s", msg->router_class );
 			osrfRouterClassRemoveNode( router, msg->router_class, msg->sender );
 		}
 	}
@@ -231,7 +231,7 @@ osrfRouterClass* osrfRouterAddClass( osrfRouter* router, char* classname ) {
 int osrfRouterClassAddNode( osrfRouterClass* rclass, char* remoteId ) {
 	if(!(rclass && rclass->nodes && remoteId)) return -1;
 
-	info_handler("Adding router node for remote id %s", remoteId );
+	osrfLogInfo("Adding router node for remote id %s", remoteId );
 
 	osrfRouterNode* node = safe_malloc(sizeof(osrfRouterNode));
 	node->count = 0;
@@ -249,16 +249,16 @@ int osrfRouterClassAddNode( osrfRouterClass* rclass, char* remoteId ) {
 transport_message* osrfRouterClassHandleBounce( 
 		osrfRouter* router, char* classname, osrfRouterClass* rclass, transport_message* msg ) {
 
-	debug_handler("osrfRouterClassHandleBounce()");
+	osrfLogDebug("osrfRouterClassHandleBounce()");
 
-	warning_handler("Received network layer error message from %s", msg->sender );
+	osrfLogWarning("Received network layer error message from %s", msg->sender );
 	osrfRouterNode* node = osrfRouterClassFindNode( rclass, msg->sender );
 	transport_message* lastSent = NULL;
 
 	if( node && osrfHashGetCount(rclass->nodes) == 1 ) { /* the last node is dead */
 
 		if( node->lastMessage ) {
-			warning_handler("We lost the last node in the class, responding with error and removing...");
+			osrfLogWarning("We lost the last node in the class, responding with error and removing...");
 	
 			transport_message* error = message_init( 
 				node->lastMessage->body, node->lastMessage->subject, 
@@ -275,7 +275,7 @@ transport_message* osrfRouterClassHandleBounce(
 	} else { 
 
 		if( node->lastMessage ) {
-			debug_handler("Cloning lastMessage so next node can send it");
+			osrfLogDebug("Cloning lastMessage so next node can send it");
 			lastSent = message_init( node->lastMessage->body,
 				node->lastMessage->subject, node->lastMessage->thread, "", node->lastMessage->router_from );
 			message_set_router_info( lastSent, node->lastMessage->router_from, NULL, NULL, NULL, 0 );
@@ -298,7 +298,7 @@ int osrfRouterClassHandleMessage(
 		osrfRouter* router, osrfRouterClass* rclass, transport_message* msg ) {
 	if(!(router && rclass && msg)) return -1;
 
-	debug_handler("osrfRouterClassHandleMessage()");
+	osrfLogDebug("osrfRouterClassHandleMessage()");
 
 	osrfRouterNode* node = osrfHashIteratorNext( rclass->itr );
 	if(!node) {
@@ -312,7 +312,7 @@ int osrfRouterClassHandleMessage(
 				msg->subject, msg->thread, node->remoteId, msg->sender );
 		message_set_router_info( new_msg, msg->sender, NULL, NULL, NULL, 0 );
 
-		info_handler( "Routing message:\nfrom: [%s]\nto: [%s]", 
+		osrfLogInfo( "Routing message:\nfrom: [%s]\nto: [%s]", 
 				new_msg->router_from, new_msg->recipient );
 
 		message_free( node->lastMessage );
@@ -323,7 +323,7 @@ int osrfRouterClassHandleMessage(
 
 		else {
 			message_prepare_xml(new_msg);
-			warning_handler("Error sending message from %s to %s\n%s", 
+			osrfLogWarning("Error sending message from %s to %s\n%s", 
 					new_msg->sender, new_msg->recipient, new_msg->msg_xml );
 		}
 
@@ -335,7 +335,7 @@ int osrfRouterClassHandleMessage(
 
 int osrfRouterRemoveClass( osrfRouter* router, char* classname ) {
 	if(!(router && router->classes && classname)) return -1;
-	info_handler("Removing router class %s", classname );
+	osrfLogInfo("Removing router class %s", classname );
 	osrfHashRemove( router->classes, classname );
 	return 0;
 }
@@ -346,7 +346,7 @@ int osrfRouterClassRemoveNode(
 
 	if(!(router && router->classes && classname && remoteId)) return 0;
 
-	info_handler("Removing router node %s", remoteId );
+	osrfLogInfo("Removing router node %s", remoteId );
 
 	osrfRouterClass* class = osrfRouterFindClass( router, classname );
 
@@ -491,7 +491,7 @@ int osrfRouterRespondConnect( osrfRouter* router, transport_message* msg, osrfMe
 
 	osrfMessage* success = osrf_message_init( STATUS, omsg->thread_trace, omsg->protocol );
 
-	debug_handler("router recevied a CONNECT message from %s", msg->sender );
+	osrfLogDebug("router recevied a CONNECT message from %s", msg->sender );
 
 	osrf_message_set_status_info( 
 		success, "osrfConnectStatus", "Connection Successful", OSRF_STATUS_OK );
@@ -516,7 +516,7 @@ int osrfRouterProcessAppRequest( osrfRouter* router, transport_message* msg, osr
 
 	if(!(router && msg && omsg && omsg->method_name)) return -1;
 
-	info_handler("Router received app request: %s", omsg->method_name );
+	osrfLogInfo("Router received app request: %s", omsg->method_name );
 
 	jsonObject* jresponse = NULL;
 	if(!strcmp( omsg->method_name, ROUTER_REQUEST_CLASS_LIST )) {
@@ -579,7 +579,7 @@ int osrfRouterHandleAppResponse( osrfRouter* router,
 		osrf_message_set_result_content( oresponse, json);
 	
 		char* data =  osrf_message_serialize(oresponse);
-		debug_handler( "Responding to client app request with data: \n%s\n", data );
+		osrfLogDebug( "Responding to client app request with data: \n%s\n", data );
 
 		transport_message* tresponse = message_init(
 				data, "", msg->thread, msg->sender, msg->recipient );

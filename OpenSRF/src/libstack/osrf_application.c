@@ -1,5 +1,4 @@
 #include "osrf_application.h"
-#include "osrf_log.h"
 #include "objson/object.h"
 
 //osrfApplication* __osrfAppList = NULL; 
@@ -13,13 +12,13 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 
 	if(!__osrfAppHash) __osrfAppHash = osrfNewHash();
 
-	info_handler("Registering application %s with file %s", appName, soFile );
+	osrfLogInfo("Registering application %s with file %s", appName, soFile );
 
 	osrfApplication* app = safe_malloc(sizeof(osrfApplication));
 	app->handle = dlopen (soFile, RTLD_NOW);
 
 	if(!app->handle) {
-		warning_handler("Failed to dlopen library file %s: %s", soFile, dlerror() );
+		osrfLogWarning("Failed to dlopen library file %s: %s", soFile, dlerror() );
 		dlerror(); /* clear the error */
 		free(app);
 		return -1;
@@ -33,14 +32,14 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 	*(void **) (&init) = dlsym(app->handle, "osrfAppInitialize");
 
 	if( (error = dlerror()) != NULL ) {
-		warning_handler("! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
+		osrfLogWarning("! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
 
 	} else {
 
 		/* run the method */
 		int ret;
 		if( (ret = (*init)()) ) {
-			warning_handler("Application %s returned non-zero value from "
+			osrfLogWarning("Application %s returned non-zero value from "
 					"'osrfAppInitialize', not registering...", appName );
 			//free(app->name); /* need a method to remove an application from the list */
 			//free(app);
@@ -50,9 +49,9 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 
 	__osrfAppRegisterSysMethods(appName);
 
-	info_handler("Application %s registered successfully", appName );
+	osrfLogInfo("Application %s registered successfully", appName );
 
-	osrfLogInit(appName);
+	osrfLogSetAppname(appName);
 
 	return 0;
 }
@@ -64,9 +63,12 @@ int osrfAppRegisterMethod( char* appName, char* methodName,
 	if( !appName || ! methodName  ) return -1;
 
 	osrfApplication* app = _osrfAppFindApplication(appName);
-	if(!app) return warning_handler("Unable to locate application %s", appName );
+	if(!app) {
+		osrfLogWarning("Unable to locate application %s", appName );
+		return -1;
+	}
 
-	debug_handler("Registering method %s for app %s", methodName, appName );
+	osrfLogDebug("Registering method %s for app %s", methodName, appName );
 
 	osrfMethod* method = _osrfAppBuildMethod(
 		methodName, symbolName, notes, argc, options );		
@@ -166,7 +168,7 @@ int osrfAppRunMethod( char* appName, char* methodName,
 	/* this is the method we're gonna run */
 	int (*meth) (osrfMethodContext*);	
 
-	info_handler("Running method [%s] for app [%s] with request id %d and "
+	osrfLogInfo("Running method [%s] for app [%s] with request id %d and "
 			"thread trace %s", methodName, appName, reqId, ses->session_id );
 
 	if( !(app = _osrfAppFindApplication(appName)) )
@@ -226,7 +228,7 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 	if(!(ctx && ctx->method)) return -1;
 
 	if( ctx->method->options & OSRF_METHOD_ATOMIC ) {
-		osrfLog( OSRF_DEBUG, 
+		osrfLogDebug(  
 			"Adding responses to stash for atomic method %s", ctx->method );
 
 		if( ctx->responses == NULL )												
@@ -254,7 +256,7 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 int __osrfAppPostProcess( osrfMethodContext* ctx, int retcode ) {
 	if(!(ctx && ctx->method)) return -1;
 
-	osrfLog( OSRF_DEBUG, "Postprocessing method %s with retcode %d",
+	osrfLogDebug( "Postprocessing method %s with retcode %d",
 			ctx->method->name, retcode );
 
 	if(ctx->responses) { /* we have cached responses to return (no responses have been sent) */
@@ -278,7 +280,7 @@ int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg,
 	if(!ses) return -1;
 	if(!msg) msg = "";
 	VA_LIST_TO_STRING(msg);
-	osrfLog( OSRF_WARN, "Returning method exception with message: %s", VA_BUF );
+	osrfLogWarning( "Returning method exception with message: %s", VA_BUF );
 	osrfAppSessionStatus( ses, OSRF_STATUS_NOTFOUND, "osrfMethodException", request,  VA_BUF );
 	return 0;
 }

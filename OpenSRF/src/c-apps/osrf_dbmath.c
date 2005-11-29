@@ -1,7 +1,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
 #include "objson/object.h"
-#include "opensrf/osrf_log.h"
+#include "opensrf/log.h"
 
 #define MODULENAME "opensrf.dbmath"
 

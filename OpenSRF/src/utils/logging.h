@@ -16,10 +16,12 @@
 #define LOGGING_H
 
 
-#define LOG_ERROR 1
-#define LOG_WARNING 2
-#define LOG_INFO 3
-#define LOG_DEBUG 4
+#define OSRF_LOG_ERROR 1
+#define OSRF_LOG_WARNING 2
+#define OSRF_LOG_INFO 3
+#define OSRF_LOG_DEBUG 4
+#define OSRF_LOG_INTERNAL 5
+#define OSRF_LOG_ACTIVITY 6
 
 // ---------------------------------------------------------------------------------
 // Error handling interface.

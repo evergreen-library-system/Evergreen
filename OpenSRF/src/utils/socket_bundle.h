@@ -6,7 +6,7 @@
 #include <errno.h>
 
 #include "utils.h"
-#include "logging.h"
+#include "log.h"
 
 //---------------------------------------------------------------
 // Unix headers
@@ -75,6 +75,8 @@ int socket_open_tcp_server(socket_manager*, int port, char* listen_ip );
 
 int socket_open_unix_server(socket_manager* mgr, char* path);
 
+int socket_open_udp_server( socket_manager* mgr, int port, char* listen_ip );
+
 /* creates a client TCP socket and adds it to the socket set.
 	returns 0 on success.  -1 on failure.  */
 int socket_open_tcp_client(socket_manager*, int port, char* dest_addr);
@@ -82,6 +84,8 @@ int socket_open_tcp_client(socket_manager*, int port, char* dest_addr);
 /* creates a client UNIX socket and adds it to the socket set.
 	returns 0 on success.  -1 on failure.  */
 int socket_open_unix_client(socket_manager*, char* sock_path);
+
+int socket_open_udp_client( socket_manager* mgr, int port, char* dest_addr);
 
 /* returns the socket_node with the given sock_fd */
 socket_node* socket_find_node(socket_manager*, int sock_fd);

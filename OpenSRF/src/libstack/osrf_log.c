@@ -8,10 +8,10 @@ int __osrfLogLevel = 1;
 int osrfLogInit(char* appname) {
 
 	if( !appname ) return -1;
-	info_handler("Initing application log for app %s", appname );
+	osrfLogInfo("Initing application log for app %s", appname );
 
 	char* dir = osrf_settings_host_value("/dirs/log");
-	if(!dir) return warning_handler("No '/dirs/log' setting in host config");
+	if(!dir) return osrfLogWarning("No '/dirs/log' setting in host config");
 
 	char* level = osrfConfigGetValue(NULL, "/loglevel");
 	if(level) { __osrfLogLevel = atoi(level); free(level); }
@@ -52,7 +52,7 @@ void osrfLog( enum OSRF_LOG_LEVEL level, char* msg, ... ) {
 	free(filename);
 
 	if(!file) {
-		warning_handler("Unable to open application log file %s\n", filename);
+		osrfLogWarning("Unable to open application log file %s\n", filename);
 		return;
 	}
 

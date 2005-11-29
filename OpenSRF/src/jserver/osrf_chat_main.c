@@ -1,7 +1,8 @@
 #include "osrf_chat.h"
 #include "opensrf/osrfConfig.h"
 #include <stdio.h>
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
+#include <syslog.h>
 
 
 int main( int argc, char* argv[] ) {
@@ -32,7 +33,9 @@ int main( int argc, char* argv[] ) {
 	int port = atoi(sport);
 	int s2port = atoi(s2sport);
 	int level = atoi(llevel);
-	log_init(level, lfile);
+	//log_init(level, lfile);
+	osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "chopchop", level);
+	osrfLogSetSyslogFacility(LOG_LOCAL2);
 
 	fprintf(stderr, "Attempting to launch ChopChop with:\n"
 			"domain: %s\nport: %s\nlisten address: %s\nlog level: %s\nlog file: %s\n",
@@ -40,14 +43,15 @@ int main( int argc, char* argv[] ) {
 
 	osrfChatServer* server = osrfNewChatServer(domain, secret, s2port);
 
-	if( osrfChatServerConnect( server, port, s2port, listenaddr ) != 0 ) 
-		return fatal_handler("ChopChop unable to bind to port %d on %s", port, listenaddr);
+	if( osrfChatServerConnect( server, port, s2port, listenaddr ) != 0 ) {
+		osrfLogError("ChopChop unable to bind to port %d on %s", port, listenaddr);
+		return -1;
+	}
 
 	daemonize();
 	osrfChatServerWait( server );
 
 	osrfChatServerFree( server );
-	log_free();
 	osrfConfigFree(cfg);
 
 	return 0;

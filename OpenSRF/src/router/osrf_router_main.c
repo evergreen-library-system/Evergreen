@@ -1,16 +1,15 @@
 #include "osrf_router.h"
 #include "opensrf/osrfConfig.h"
 #include "opensrf/utils.h"
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
 #include <signal.h>
 
 osrfRouter* __osrfRouter = NULL;
 
 void routerSignalHandler( int signal ) {
-	warning_handler("Received signal [%d], cleaning up...", signal );
+	osrfLogWarning("Received signal [%d], cleaning up...", signal );
 	osrfConfigCleanup();
 	osrfRouterFree(__osrfRouter);
-	log_free();
 }
 
 static int __setupRouter( char* config, char* context );
@@ -19,7 +18,7 @@ static int __setupRouter( char* config, char* context );
 int main( int argc, char* argv[] ) {
 
 	if( argc < 3 ) {
-		fatal_handler( "Usage: %s <path_to_config_file> <config_context>", argv[0] );
+		osrfLogError( "Usage: %s <path_to_config_file> <config_context>", argv[0] );
 		exit(0);
 	}
 
@@ -54,13 +53,18 @@ int __setupRouter( char* config, char* context ) {
 	int llevel = 1;
 	if(level) llevel = atoi(level);
 
+	/*
 	if(!log_init( llevel, log_file )) 
 		fprintf(stderr, "Unable to init logging, going to stderr...\n" );
+		*/
+
+	osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "router", llevel ); /* XXX config option */
+	osrfLogSetSyslogFacility( LOG_LOCAL3 ); /* XXX config option */
 
 	free(level);
 	free(log_file);
 
-	info_handler( "Router connecting as: server: %s port: %s "
+	osrfLogInfo( "Router connecting as: server: %s port: %s "
 			"user: %s resource: %s", server, port, username, resource );
 
 	int iport = 0;
@@ -73,13 +77,15 @@ int __setupRouter( char* config, char* context ) {
 
 	int i;
 	for( i = 0; i != tservers->size; i++ ) 
-		info_handler( "Router adding trusted server: %s", osrfStringArrayGetString( tservers, i ) );
+		osrfLogInfo( "Router adding trusted server: %s", osrfStringArrayGetString( tservers, i ) );
 
 	for( i = 0; i != tclients->size; i++ ) 
-		info_handler( "Router adding trusted client: %s", osrfStringArrayGetString( tclients, i ) );
+		osrfLogInfo( "Router adding trusted client: %s", osrfStringArrayGetString( tclients, i ) );
 
-	if( tclients->size == 0 || tservers->size == 0 )
-		fatal_handler("We need trusted servers and trusted client to run the router...");
+	if( tclients->size == 0 || tservers->size == 0 ) {
+		osrfLogError("We need trusted servers and trusted client to run the router...");
+		return -1;
+	}
 
 	osrfRouter* router = osrfNewRouter( server, 
 			username, resource, password, iport, tclients, tservers );

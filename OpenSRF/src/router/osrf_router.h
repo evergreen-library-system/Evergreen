@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "opensrf/utils.h"
+#include "opensrf/log.h"
 #include "opensrf/osrf_list.h"
 #include "opensrf/osrf_hash.h"
 

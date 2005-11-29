@@ -11,7 +11,10 @@ void sigchld_handler( int sig );
 
 int osrf_prefork_run(char* appname) {
 
-	if(!appname) fatal_handler("osrf_prefork_run requires an appname to run!");
+	if(!appname) {
+		osrfLogError("osrf_prefork_run requires an appname to run!");
+		return -1;
+	}
 
 	set_proc_title( "OpenSRF Listener [%s]", appname );
 
@@ -19,20 +22,20 @@ int osrf_prefork_run(char* appname) {
 	int maxc = 10;
 	int minc = 3;
 
-	info_handler("Loading config in osrf_forker for app %s", appname);
+	osrfLogInfo("Loading config in osrf_forker for app %s", appname);
 
 	jsonObject* max_req = osrf_settings_host_value_object("/apps/%s/unix_config/max_requests", appname);
 	jsonObject* min_children = osrf_settings_host_value_object("/apps/%s/unix_config/min_children", appname);
 	jsonObject* max_children = osrf_settings_host_value_object("/apps/%s/unix_config/max_children", appname);
 
 	
-	if(!max_req) warning_handler("Max requests not defined, assuming 1000");
+	if(!max_req) osrfLogWarning("Max requests not defined, assuming 1000");
 	else maxr = (int) jsonObjectGetNumber(max_req);
 
-	if(!min_children) warning_handler("Min children not defined, assuming 3");
+	if(!min_children) osrfLogWarning("Min children not defined, assuming 3");
 	else minc = (int) jsonObjectGetNumber(min_children);
 
-	if(!max_children) warning_handler("Max children not defined, assuming 10");
+	if(!max_children) osrfLogWarning("Max children not defined, assuming 10");
 	else maxc = (int) jsonObjectGetNumber(max_children);
 
 	jsonObjectFree(max_req);
@@ -42,8 +45,12 @@ int osrf_prefork_run(char* appname) {
 
 	char* resc = va_list_to_string("%s_listener", appname);
 
-	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc ))
-		fatal_handler("Unable to bootstrap client for osrf_prefork_run()");
+	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc )) {
+		osrfLogError("Unable to bootstrap client for osrf_prefork_run()");
+		free(resc);
+		return -1;
+	}
+
 	free(resc);
 
 	prefork_simple* forker = prefork_simple_init(
@@ -51,17 +58,19 @@ int osrf_prefork_run(char* appname) {
 
 	forker->appname = strdup(appname);
 
-	if(forker == NULL)
-		fatal_handler("osrf_prefork_run() failed to create prefork_simple object");
+	if(forker == NULL) {
+		osrfLogError("osrf_prefork_run() failed to create prefork_simple object");
+		return -1;
+	}
 
 	prefork_launch_children(forker);
 
 	osrf_prefork_register_routers(appname);
 	
-	info_handler("Launching osrf_forker for app %s", appname);
+	osrfLogInfo("Launching osrf_forker for app %s", appname);
 	prefork_run(forker);
 	
-	warning_handler("prefork_run() retuned - how??");
+	osrfLogWarning("prefork_run() retuned - how??");
 	prefork_free(forker);
 	return 0;
 
@@ -75,14 +84,14 @@ void osrf_prefork_register_routers( char* appname ) {
 	char* routerName = osrfConfigGetValue( NULL, "/router_name" );
 	transport_client* client = osrfSystemGetTransportClient();
 
-	info_handler("router name is %s and we have %d routers to connect to", routerName, c );
+	osrfLogInfo("router name is %s and we have %d routers to connect to", routerName, c );
 
 	while( c ) {
 		char* domain = osrfStringArrayGetString(arr, --c);
 		if(domain) {
 
 			char* jid = va_list_to_string( "%s@%s/router", routerName, domain );
-			info_handler("Registering with router %s", jid );
+			osrfLogInfo("Registering with router %s", jid );
 
 			transport_message* msg = message_init("registering", NULL, NULL, jid, NULL );
 			message_set_router_info( msg, NULL, NULL, appname, "register", 0 );
@@ -100,10 +109,15 @@ void osrf_prefork_register_routers( char* appname ) {
 void prefork_child_init_hook(prefork_child* child) {
 
 	if(!child) return;
-	info_handler("Child init hook for child %d", child->pid);
+	osrfLogInfo("Child init hook for child %d", child->pid);
 	char* resc = va_list_to_string("%s_drone",child->appname);
-	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) 
-		fatal_handler("Unable to bootstrap client for osrf_prefork_run()");
+
+	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) {
+		osrfLogError("Unable to bootstrap client for osrf_prefork_run()");
+		free(resc);
+		return;
+	}
+
 	free(resc);
 
 	set_proc_title( "OpenSRF Drone [%s]", child->appname );
@@ -125,20 +139,24 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 
 	/* keepalive loop for stateful sessions */
 
-		debug_handler("Entering keepalive loop for session %s", session->session_id );
+		osrfLogDebug("Entering keepalive loop for session %s", session->session_id );
 }
 
 
 prefork_simple*  prefork_simple_init( transport_client* client, 
 		int max_requests, int min_children, int max_children ) {
 
-	if( min_children > max_children )
-		fatal_handler( "min_children (%d) is greater "
+	if( min_children > max_children ) {
+		osrfLogError( "min_children (%d) is greater "
 				"than max_children (%d)", min_children, max_children );
+		return NULL;
+	}
 
-	if( max_children > ABS_MAX_CHILDREN )
-		fatal_handler( "max_children (%d) is greater than ABS_MAX_CHILDREN (%d)",
+	if( max_children > ABS_MAX_CHILDREN ) {
+		osrfLogError( "max_children (%d) is greater than ABS_MAX_CHILDREN (%d)",
 				max_children, ABS_MAX_CHILDREN );
+		return NULL;
+	}
 
 	/* flesh out the struct */
 	prefork_simple* prefork = (prefork_simple*) safe_malloc(sizeof(prefork_simple));	
@@ -158,13 +176,17 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 	int status_fd[2];
 
 	/* Set up the data pipes and add the child struct to the parent */
-	if( pipe(data_fd) < 0 ) /* build the data pipe*/
-		fatal_handler( "Pipe making error" );
+	if( pipe(data_fd) < 0 ) { /* build the data pipe*/
+		osrfLogError( "Pipe making error" );
+		return NULL;
+	}
 
-	if( pipe(status_fd) < 0 ) /* build the status pipe */
-		fatal_handler( "Pipe making error" );
+	if( pipe(status_fd) < 0 ) {/* build the status pipe */
+		osrfLogError( "Pipe making error" );
+		return NULL;
+	}
 
-	debug_handler( "Pipes: %d %d %d %d", data_fd[0], data_fd[1], status_fd[0], status_fd[1] );
+	osrfLogDebug( "Pipes: %d %d %d %d", data_fd[0], data_fd[1], status_fd[0], status_fd[1] );
 	prefork_child* child = prefork_child_init( forker->max_requests, data_fd[0], 
 			data_fd[1], status_fd[0], status_fd[1] );
 
@@ -173,7 +195,10 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 
 	add_prefork_child( forker, child );
 
-	if( (pid=fork()) < 0 ) fatal_handler( "Forking Error" );
+	if( (pid=fork()) < 0 ) {
+		osrfLogError( "Forking Error" );
+		return NULL;
+	}
 
 	if( pid > 0 ) {  /* parent */
 
@@ -181,7 +206,7 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 		(forker->current_num_children)++;
 		child->pid = pid;
 
-		info_handler( "Parent launched %d", pid );
+		osrfLogInfo( "Parent launched %d", pid );
 		/* *no* child pipe FD's can be closed or the parent will re-use fd's that
 			the children are currently using */
 		return child;
@@ -189,7 +214,7 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 
 	else { /* child */
 
-		debug_handler("I am  new child with read_data_fd = %d and write_status_fd = %d",
+		osrfLogDebug("I am  new child with read_data_fd = %d and write_status_fd = %d",
 			child->read_data_fd, child->write_status_fd );
 
 		child->pid = getpid();
@@ -246,11 +271,11 @@ void prefork_run(prefork_simple* forker) {
 	while(1) {
 
 		if( forker->first_child == NULL ) {/* no more children */
-			warning_handler("No more children..." );
+			osrfLogWarning("No more children..." );
 			return;
 		}
 
-		debug_handler("Forker going into wait for data...");
+		osrfLogDebug("Forker going into wait for data...");
 		cur_msg = client_recv( forker->connection, -1 );
 
 		//fprintf(stderr, "Got Data %f\n", get_timestamp_millis() );
@@ -263,30 +288,30 @@ void prefork_run(prefork_simple* forker) {
 
 			check_children( forker ); 
 
-			debug_handler( "Server received inbound data" );
+			osrfLogDebug( "Server received inbound data" );
 			int k;
 			prefork_child* cur_child = forker->first_child;
 
 			/* Look for an available child */
 			for( k = 0; k < forker->current_num_children; k++ ) {
 
-				debug_handler("Searching for available child. cur_child->pid = %d", cur_child->pid );
-				debug_handler("Current num children %d and loop %d", forker->current_num_children, k);
+				osrfLogDebug("Searching for available child. cur_child->pid = %d", cur_child->pid );
+				osrfLogDebug("Current num children %d and loop %d", forker->current_num_children, k);
 			
 				if( cur_child->available ) {
-					debug_handler( "sending data to %d", cur_child->pid );
+					osrfLogDebug( "sending data to %d", cur_child->pid );
 
 					message_prepare_xml( cur_msg );
 					char* data = cur_msg->msg_xml;
 					if( ! data || strlen(data) < 1 ) break;
 
 					cur_child->available = 0;
-					debug_handler( "Writing to child fd %d", cur_child->write_data_fd );
+					osrfLogDebug( "Writing to child fd %d", cur_child->write_data_fd );
 
 					int written = 0;
 					//fprintf(stderr, "Writing Data %f\n", get_timestamp_millis() );
 					if( (written = write( cur_child->write_data_fd, data, strlen(data) + 1 )) < 0 ) {
-						warning_handler("Write returned error %d", errno);
+						osrfLogWarning("Write returned error %d", errno);
 						cur_child = cur_child->next;
 						continue;
 					}
@@ -302,9 +327,9 @@ void prefork_run(prefork_simple* forker) {
 
 			/* if none available, add a new child if we can */
 			if( ! honored ) {
-				debug_handler("Not enough children, attempting to add...");
+				osrfLogDebug("Not enough children, attempting to add...");
 				if( forker->current_num_children < forker->max_children ) {
-					debug_handler( "Launching new child with current_num = %d",
+					osrfLogDebug( "Launching new child with current_num = %d",
 							forker->current_num_children );
 
 					prefork_child* new_child = launch_child( forker );
@@ -312,8 +337,8 @@ void prefork_run(prefork_simple* forker) {
 					char* data = cur_msg->msg_xml;
 					if( ! data || strlen(data) < 1 ) break;
 					new_child->available = 0;
-					debug_handler( "sending data to %d", new_child->pid );
-					debug_handler( "Writing to new child fd %d", new_child->write_data_fd );
+					osrfLogDebug( "sending data to %d", new_child->pid );
+					osrfLogDebug( "Writing to new child fd %d", new_child->write_data_fd );
 					write( new_child->write_data_fd, data, strlen(data) + 1 );
 					forker->first_child = new_child->next;
 					honored = 1;
@@ -321,7 +346,7 @@ void prefork_run(prefork_simple* forker) {
 			}
 
 			if( !honored ) {
-				warning_handler( "No children available, sleeping and looping..." );
+				osrfLogWarning( "No children available, sleeping and looping..." );
 				usleep( 50000 ); /* 50 milliseconds */
 			}
 
@@ -371,7 +396,7 @@ void check_children( prefork_simple* forker ) {
 	FD_CLR(0,&read_set);/* just to be sure */
 
 	if( (select_ret=select( max_fd + 1 , &read_set, NULL, NULL, &tv)) == -1 ) {
-		warning_handler( "Select returned error %d on check_children", errno );
+		osrfLogWarning( "Select returned error %d on check_children", errno );
 	}
 
 	if( select_ret == 0 )
@@ -385,7 +410,7 @@ void check_children( prefork_simple* forker ) {
 
 		if( FD_ISSET( cur_child->read_status_fd, &read_set ) ) {
 			//printf( "Server received status from a child %d\n", cur_child->pid );
-			debug_handler( "Server received status from a child %d", cur_child->pid );
+			osrfLogDebug( "Server received status from a child %d", cur_child->pid );
 
 			num_handled++;
 
@@ -393,10 +418,10 @@ void check_children( prefork_simple* forker ) {
 			char buf[64];
 			memset( buf, 0, 64);
 			if( (n=read(cur_child->read_status_fd, buf, 63))  < 0 ) {
-				warning_handler("Read error afer select in child status read with errno %d", errno);
+				osrfLogWarning("Read error afer select in child status read with errno %d", errno);
 			}
 
-			debug_handler( "Read %d bytes from status buffer: %s", n, buf );
+			osrfLogDebug( "Read %d bytes from status buffer: %s", n, buf );
 			cur_child->available = 1;
 		}
 		cur_child = cur_child->next;
@@ -437,7 +462,7 @@ void prefork_child_wait( prefork_child* child ) {
 		}
 
 		if( n < 0 ) {
-			warning_handler( "Child read returned error with errno %d", errno );
+			osrfLogWarning( "Child read returned error with errno %d", errno );
 			break;
 		}
 
@@ -447,7 +472,7 @@ void prefork_child_wait( prefork_child* child ) {
 
 	buffer_free(gbuf);
 
-	debug_handler("Child exiting...[%d]", getpid() );
+	osrfLogDebug("Child exiting...[%d]", getpid() );
 
 	exit(0);
 }
@@ -499,7 +524,7 @@ void del_prefork_child( prefork_simple* forker, pid_t pid ) {
 	if( forker->first_child == NULL ) { return; }
 
 	(forker->current_num_children)--;
-	debug_handler("Deleting Child: %d", pid );
+	osrfLogDebug("Deleting Child: %d", pid );
 
 	prefork_child* start_child = forker->first_child; /* starting point */
 	prefork_child* cur_child	= start_child; /* current pointer */
@@ -584,7 +609,7 @@ prefork_child* prefork_child_init(
 int prefork_free( prefork_simple* prefork ) {
 	
 	while( prefork->first_child != NULL ) {
-		info_handler( "Killing children and sleeping 1 to reap..." );
+		osrfLogInfo( "Killing children and sleeping 1 to reap..." );
 		kill( 0,	SIGKILL );
 		sleep(1);
 	}

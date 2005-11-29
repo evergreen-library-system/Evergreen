@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "opensrf/utils.h"
 #include "opensrf/osrf_hash.h"
 #include "opensrf/osrf_list.h"
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
 #include "opensrf/xml_utils.h"
 #include "opensrf/socket_bundle.h"
 #include "opensrf/sha.h"

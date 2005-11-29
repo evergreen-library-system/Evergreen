@@ -1,6 +1,6 @@
 #include "opensrf/string_array.h"
 #include "opensrf/utils.h"
-#include "opensrf/logging.h"
+#include "opensrf/log.h"
 #include "objson/object.h"
 #include "objson/json_parser.h"
 

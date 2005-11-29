@@ -36,18 +36,18 @@ int _osrfSystemInitCache() {
 			char* servers[cacheServers->size];
 			for( i = 0; i != cacheServers->size; i++ ) {
 				servers[i] = jsonObjectGetString( jsonObjectGetIndex(cacheServers, i) );
-				info_handler("Adding cache server %s", servers[i]);
+				osrfLogInfo("Adding cache server %s", servers[i]);
 			}
 			osrfCacheInit( servers, cacheServers->size, atoi(maxCache) );
 
 		} else {
 			char* servers[] = { jsonObjectGetString(cacheServers) };		
-			info_handler("Adding cache server %s", servers[0]);
+			osrfLogInfo("Adding cache server %s", servers[0]);
 			osrfCacheInit( servers, 1, atoi(maxCache) );
 		}
 
 	} else {
-		fatal_handler( "Missing config value for /cache/global/servers/server _or_ "
+		osrfLogError( "Missing config value for /cache/global/servers/server _or_ "
 			"/cache/global/max_cache_time");
 	}
 
@@ -60,7 +60,8 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 	/* first we grab the settings */
 	if(!osrfSystemBootstrapClientResc(configfile, contextNode, "settings_grabber" )) {
-		return fatal_handler("Unable to bootstrap");
+		osrfLogError("Unable to bootstrap");
+		return -1;
 	}
 
 	osrf_settings_retrieve(hostname);
@@ -94,17 +95,17 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 				char* libfile = osrf_settings_host_value("/apps/%s/implementation", appname);
 		
 				if(! (appname && libfile) ) {
-					warning_handler("Missing appname / libfile in settings config");
+					osrfLogWarning("Missing appname / libfile in settings config");
 					continue;
 				}
 
-				info_handler("Launching application %s with implementation %s", appname, libfile);
+				osrfLogInfo("Launching application %s with implementation %s", appname, libfile);
 		
 				int pid;
 		
 				if( (pid = fork()) ) { 
 					// storage pid in local table for re-launching dead children...
-					info_handler("Launched application child %d", pid);
+					osrfLogInfo("Launched application child %d", pid);
 	
 				} else {
 		
@@ -112,7 +113,7 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 					if( osrfAppRegisterApplication( appname, libfile ) == 0 ) 
 						osrf_prefork_run(appname);
 	
-					debug_handler("Server exiting for app %s and library %s", appname, libfile );
+					osrfLogDebug("Server exiting for app %s and library %s", appname, libfile );
 					exit(0);
 				}
 			} // language == c
@@ -133,8 +134,10 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, char* resource ) {
 
-	if( !( config_file && contextnode ) && ! osrfConfigHasDefaultConfig() )
-		return fatal_handler("No Config File Specified\n" );
+	if( !( config_file && contextnode ) && ! osrfConfigHasDefaultConfig() ) {
+		osrfLogError("No Config File Specified\n" );
+		return -1;
+	}
 
 	if( config_file ) {
 		osrfConfigCleanup();
@@ -151,6 +154,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	char* password		= osrfConfigGetValue( NULL, "/passwd" );
 	char* port			= osrfConfigGetValue( NULL, "/port" );
 	char* unixpath		= osrfConfigGetValue( NULL, "/unixpath" );
+	char* facility		= osrfConfigGetValue( NULL, "/syslog" );
 
 	char* domain = strdup(osrfStringArrayGetString( arr, 0 )); /* just the first for now */
 	osrfStringArrayFree(arr);
@@ -161,9 +165,18 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	if(port) iport = atoi(port);
 	if(log_level) llevel = atoi(log_level);
 
-	log_init( llevel, log_file );
+	if(!log_file) { fprintf(stderr, "Log file needed\n"); return -1; }
 
-	info_handler("Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
+	if(!strcmp(log_file, "syslog")) {
+		osrfLogInit( OSRF_LOG_TYPE_SYSLOG, contextnode, llevel );
+		osrfLogSetSyslogFacility(osrfLogFacilityToInt(facility));
+
+	} else {
+		osrfLogInit( OSRF_LOG_TYPE_FILE, contextnode, llevel );
+		osrfLogSetFile( log_file );
+	}
+
+	osrfLogInfo("Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
 
 	transport_client* client = client_init( domain, iport, unixpath, 0 );
 
@@ -184,6 +197,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 		__osrfGlobalTransportClient = client;
 	}
 
+	free(facility);
 	free(log_level);
 	free(log_file);
 	free(username);
@@ -208,7 +222,6 @@ int osrf_system_shutdown() {
 	osrfConfigCleanup();
 	osrf_system_disconnect_client();
 	osrf_settings_free_host_config(NULL);
-	log_free();
 	return 1;
 }
 
@@ -221,7 +234,7 @@ void __osrfSystemSignalHandler( int sig ) {
 	int status;
 
 	while( (pid = waitpid(-1, &status, WNOHANG)) > 0) {
-		warning_handler("We lost child %d", pid);
+		osrfLogWarning("We lost child %d", pid);
 	}
 
 	/** relaunch the server **/

@@ -33,7 +33,7 @@ osrfTransportGroup* osrfNewTransportGroup( osrfTransportGroupNode* nodes[], int 
 	for( i = 0; i != count; i++ ) {
 		if(!(nodes[i] && nodes[i]->domain) ) return NULL;
 		osrfHashSet( grp->nodes, nodes[i], nodes[i]->domain );
-		debug_handler("Adding domain %s to TransportGroup", nodes[i]->domain);
+		osrfLogDebug("Adding domain %s to TransportGroup", nodes[i]->domain);
 	}
 
 	return grp;
@@ -49,17 +49,17 @@ int osrfTransportGroupConnectAll( osrfTransportGroup* grp ) {
 	osrfHashIteratorReset(grp->itr);
 
 	while( (node = osrfHashIteratorNext(grp->itr)) ) {
-		info_handler("TransportGroup attempting to connect to domain %s", 
+		osrfLogInfo("TransportGroup attempting to connect to domain %s", 
 							 node->connection->session->server);
 
 		if(client_connect( node->connection, node->username, 
 					node->password, node->resource, 10, AUTH_DIGEST )) {
 			node->active = 1;
 			active++;
-			info_handler("TransportGroup successfully connected to domain %s", 
+			osrfLogInfo("TransportGroup successfully connected to domain %s", 
 							 node->connection->session->server);
 		} else {
-			warning_handler("TransportGroup unable to connect to domain %s", 
+			osrfLogWarning("TransportGroup unable to connect to domain %s", 
 							 node->connection->session->server);
 		}
 	}
@@ -75,7 +75,7 @@ void osrfTransportGroupDisconnectAll( osrfTransportGroup* grp ) {
 	osrfHashIteratorReset(grp->itr);
 
 	while( (node = osrfHashIteratorNext(grp->itr)) ) {
-		info_handler("TransportGroup disconnecting from domain %s", 
+		osrfLogInfo("TransportGroup disconnecting from domain %s", 
 							 node->connection->session->server);
 		client_disconnect(node->connection);
 		node->active = 0;
@@ -98,7 +98,8 @@ int osrfTransportGroupSendMatch( osrfTransportGroup* grp, transport_message* msg
 			return 0;
 	}
 
-	return warning_handler("Error sending message to domain %s", domain );
+	osrfLogWarning("Error sending message to domain %s", domain );
+	return -1;
 }
 
 int osrfTransportGroupSend( osrfTransportGroup* grp, transport_message* msg ) {
@@ -140,7 +141,8 @@ int osrfTransportGroupSend( osrfTransportGroup* grp, transport_message* msg ) {
 
 		} else {
 			if(!strcmp(firstdomain, node->domain)) { /* we've made a full loop */
-				return warning_handler("We've tried to send to all domains.. giving up");
+				osrfLogWarning("We've tried to send to all domains.. giving up");
+				return -1;
 			}
 		}
 

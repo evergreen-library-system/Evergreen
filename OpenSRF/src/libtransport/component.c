@@ -14,7 +14,8 @@ int main( int argc, char** argv ) {
 
 
 	if( argc < 5 ) {
-		fatal_handler( "Usage: %s <server> <port> <name> <secret>", argv[0] );
+		osrfLogError( "Usage: %s <server> <port> <name> <secret>", argv[0] );
+		return -1;
 	}
 
 	int port = atoi(argv[2]);
@@ -22,9 +23,11 @@ int main( int argc, char** argv ) {
 
 	// try to connect, allow 15 second connect timeout 
 	if( client_connect( client, argv[3], argv[4], "", 15, 1 ) ) 
-		info_handler("Connected...\n");
-	 else  
-		fatal_handler( "NOT Connected...\n" ); 
+		osrfLogInfo("Connected...\n");
+	 else  {
+		osrfLogError( "NOT Connected...\n" ); 
+		return -1;
+	 }
 	
 	transport_message* recv;
 	while( (recv=client_recv( client, -1)) ) {

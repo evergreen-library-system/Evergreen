@@ -37,8 +37,10 @@ int osrf_settings_retrieve(char* hostname) {
 		osrf_app_session_request_finish( session, req_id );
 		osrf_app_session_destroy( session );
 
-		if(!config)
-			return fatal_handler("Unable to load config for host %s", hostname);
+		if(!config) {
+			osrfLogError("Unable to load config for host %s", hostname);
+			return -1;
+		}
 	}
 
 	return 0;

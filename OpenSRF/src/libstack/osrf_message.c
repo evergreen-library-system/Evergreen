@@ -34,7 +34,7 @@ void osrf_message_set_params( osrf_message* msg, jsonObject* o ) {
 	if(!msg || !o) return;
 
 	if(o->type != JSON_ARRAY) {
-		warning_handler("passing non-array to osrf_message_set_params(), fixing...");
+		osrfLogWarning("passing non-array to osrf_message_set_params(), fixing...");
 		jsonObject* clone = jsonObjectClone(o);
 		o = jsonNewObject(NULL);
 		jsonObjectPush(o, clone);
@@ -58,9 +58,7 @@ void osrf_message_add_param( osrf_message* msg, char* param_string ) {
 
 void osrf_message_set_status_info( 
 		osrf_message* msg, char* status_name, char* status_text, int status_code ) {
-
-	if( msg == NULL )
-		fatal_handler( "Bad params to osrf_message_set_status_info()" );
+	if(!msg) return;
 
 	if( status_name != NULL ) 
 		msg->status_name = strdup( status_name );
@@ -73,9 +71,7 @@ void osrf_message_set_status_info(
 
 
 void osrf_message_set_result_content( osrf_message* msg, char* json_string ) {
-	if( msg == NULL || json_string == NULL)
-		warning_handler( "Bad params to osrf_message_set_result_content()" );
-
+	if( msg == NULL || json_string == NULL) return;
 	msg->result_string =	strdup(json_string);
 	if(json_string) msg->_result_content = jsonParseString(json_string);
 }
@@ -218,7 +214,7 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 	jsonObject* json = jsonParseString(string);
 
 	if(!json) {
-		warning_handler(
+		osrfLogWarning(
 			"osrf_message_deserialize() unable to parse data: \n%s\n", string);
 		return 0;
 	}

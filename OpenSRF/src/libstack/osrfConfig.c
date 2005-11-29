@@ -45,7 +45,7 @@ osrfConfig* osrfConfigInit(char* configFile, char* configContext) {
 
 	xmlDocPtr doc = xmlParseFile(configFile);
 	if(!doc) {
-		warning_handler( "Unable to parse XML config file %s", configFile);
+		osrfLogWarning( "Unable to parse XML config file %s", configFile);
 		return NULL;
 	}
 
@@ -53,7 +53,7 @@ osrfConfig* osrfConfigInit(char* configFile, char* configContext) {
 	xmlFreeDoc(doc);
 
 	if(!cfg->config) {
-		warning_handler("xmlDocToJSON failed for config %s", configFile);
+		osrfLogWarning("xmlDocToJSON failed for config %s", configFile);
 		return NULL;
 	}	
 
@@ -64,7 +64,7 @@ char* osrfConfigGetValue(osrfConfig* cfg, char* path, ...) {
 
 	if(!path) return NULL;
 	if(!cfg) cfg = __osrfConfigDefault;
-	if(!cfg) { warning_handler("No Confif object!"); return NULL; }
+	if(!cfg) { osrfLogWarning("No Confif object!"); return NULL; }
 
 	VA_LIST_TO_STRING(path);
 
@@ -89,7 +89,7 @@ int osrfConfigGetValueList(osrfConfig* cfg, osrfStringArray* arr, char* path, ..
 
 	if(!arr || !path) return 0;
 	if(!cfg) cfg = __osrfConfigDefault;
-	if(!cfg) { return warning_handler("No Config object!"); }
+	if(!cfg) { osrfLogWarning("No Config object!"); return -1;}
 
 	VA_LIST_TO_STRING(path);
 

@@ -251,8 +251,11 @@ void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar *
 void xmlBuilderAddAtts( xmlBuilderContext* ctx, xmlNodePtr node, const xmlChar** atts ) {
 	if(!(ctx && node && atts)) return;
 	int i;
+
 	for(i = 0; (atts[i] != NULL); i++) {
+
 		if(atts[i+1]) {
+
 			const xmlChar* name = atts[i];
 			const xmlChar* prop = atts[i+1];
 			int nl = strlen(prop);
