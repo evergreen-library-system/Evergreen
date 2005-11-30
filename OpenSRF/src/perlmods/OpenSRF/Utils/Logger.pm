@@ -68,7 +68,7 @@ sub set_config {
 
 	$logfile = $config->bootstrap->logfile;
 	
-	if($logfile =~ /^syslog:/) {
+	if($logfile =~ /^syslog/) {
 		$syslog_enabled = 1;
 		$logfile_enabled = 0;
 		$logfile =~ s/^syslog://;
