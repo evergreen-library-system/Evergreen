@@ -27,15 +27,18 @@ i.e. $logger->error( $msg, WARN );  # logs at log level WARN
 
 %EXPORT_TAGS = ( level => [ qw/ NONE ERROR WARN INFO DEBUG INTERNAL / ] );
 
-my $config;						# config handle
-my $loglevel;					# global log level
-my $logfile;					# log file
-my $facility;					# syslog facility
-my $actlog;						# activity log syslog facility
-my $service = "osrf";		# default service name
-my $syslog_enabled = 0;		# is syslog enabled?
-my $logfile_enabled = 1;	# are we logging to a file?
-my $logdir;						# log file directory
+my $config;							# config handle
+my $loglevel;						# global log level
+my $logfile;						# log file
+my $facility;						# syslog facility
+my $actfac;							# activity log syslog facility
+my $actfile;						# activity log file
+my $service = "osrf";			# default service name
+my $syslog_enabled = 0;			# is syslog enabled?
+my $act_syslog_enabled = 0;	# is syslog enabled?
+my $logfile_enabled = 1;		# are we logging to a file?
+my $act_logfile_enabled = 1;	# are we logging to a file?
+my $logdir;							# log file directory
 
 # log levels
 sub ACTIVITY	{ return -1; }
@@ -66,25 +69,32 @@ sub set_config {
 	elsif($loglevel =~ /internal/i){ $loglevel = INTERNAL(); }
 	else{$loglevel= INFO(); }
 
+	my $logdir = $config->bootstrap->log_dir;
+
 	$logfile = $config->bootstrap->logfile;
-	
 	if($logfile =~ /^syslog/) {
 		$syslog_enabled = 1;
 		$logfile_enabled = 0;
-		$logfile =~ s/^syslog://;
+		$logfile =~ s/^syslog:?//;
 		$facility = $logfile;
+		$logfile = undef;
 		$facility = _fac_to_const($facility);
-		if(!$facility) { $facility = LOG_LOCAL0; }
-		$actlog = $config->bootstrap->actlog;
-		if(!$actlog) { $actlog = "local1"; }
-		$actlog = _fac_to_const($actlog);
+		openlog($service, 0, $facility);
 
-	} else {
-		my $logdir = $config->bootstrap->log_dir;
-		$logfile = "$logdir/$logfile";
-	}
+	} else { $logfile = "$logdir/$logfile"; }
 
-	#warn "Level: $loglevel, Fac: $facility, Act: $actlog\n";
+	$actfile = $config->bootstrap->actlog;
+	if($actfile =~ /^syslog/) {
+		$act_syslog_enabled = 1;
+		$act_logfile_enabled = 0;
+		$actfile =~ s/^syslog:?//;
+		$actfac = $actfile || "local1";
+		$actfile = undef;
+		$actfac = _fac_to_const($actfac);
+
+	} else { $actfile = "$logdir/$actfile"; }
+
+	#warn "Level: $loglevel, Fac: $facility, Act: $actfac\n";
 }
 
 sub _fac_to_const {
@@ -102,13 +112,23 @@ sub _fac_to_const {
 }
 
 sub is_syslog {
-	set_config() unless defined($config);
+	set_config();
 	return $syslog_enabled;
 }
 
+sub is_act_syslog {
+	set_config();
+	return $act_syslog_enabled;
+}
+
 sub is_filelog {
-	set_config() unless defined($config);
+	set_config();
 	return $logfile_enabled;
+}
+
+sub is_act_filelog {
+	set_config();
+	return $act_logfile_enabled;
 }
 
 sub set_service {
@@ -155,7 +175,7 @@ sub activity {
 	_log_message( $msg, ACTIVITY() );
 }
 
-# for backwards compability
+# for backward compability
 sub transport {
 	my( $self, $msg, $level ) = @_;
 	$level = DEBUG() unless defined ($level);
@@ -167,27 +187,37 @@ sub transport {
 sub _log_message {
 	my( $msg, $level ) = @_;
 	return if $level > $loglevel;
+
 	my $l; my $n; 
 	my $fac = $facility;
 
-	if ($level == ERROR())			{$l = LOG_ERR, $n = "ERR "; }
-	elsif ($level == WARN())		{$l = LOG_WARNING, $n = "WARN"; }
-	elsif ($level == INFO())		{$l = LOG_INFO, $n = "INFO"; }	
-	elsif ($level == DEBUG())	{$l = LOG_DEBUG, $n = "DEBG"; }
-	elsif ($level == INTERNAL()){$l = LOG_DEBUG, $n = "INTL"; }
-	elsif ($level == ACTIVITY()){$l = LOG_INFO, $n = "ACT"; $fac = $actlog}
+	if ($level == ERROR())			{$l = LOG_ERR; $n = "ERR "; }
+	elsif ($level == WARN())		{$l = LOG_WARNING; $n = "WARN"; }
+	elsif ($level == INFO())		{$l = LOG_INFO; $n = "INFO"; }	
+	elsif ($level == DEBUG())		{$l = LOG_DEBUG; $n = "DEBG"; }
+	elsif ($level == INTERNAL())	{$l = LOG_DEBUG; $n = "INTL"; }
+	elsif ($level == ACTIVITY())	{$l = LOG_INFO; $n = "ACT"; $fac = $actfac; }
 
 	#my( $pack, $file, $line_no ) = @caller;
-	if( is_syslog() ) { syslog( $fac | $l, $msg ); }
-	elsif( is_filelog() ) { _write_file($msg); }
+
+	if( $level == ACTIVITY() ) {
+		if( is_act_syslog() ) { syslog( $fac | $l, $msg ); } 
+		elsif( is_act_filelog() ) { _write_file( $msg, 1 ); }
+
+	} else {
+		if( is_syslog() ) { syslog( $fac | $l, $msg ); }
+		elsif( is_filelog() ) { _write_file($msg); }
+	}
 }
 
 
 sub _write_file {
-	my $msg = shift;
+	my( $msg, $isact) = @_;
+	my $file = $logfile;
+	$file = $actfile if $isact;
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);  
 	$year += 1900; $mon += 1;
-	sysopen( SINK, $logfile, O_NONBLOCK|O_WRONLY|O_APPEND|O_CREAT ) 
+	sysopen( SINK, $file, O_NONBLOCK|O_WRONLY|O_APPEND|O_CREAT ) 
 		or die "Cannot sysopen $logfile: $!";
 	binmode(SINK, ':utf8');
 	print SINK "[$year-$mon-$mday $hour:$min:$sec] $service $msg\n";
