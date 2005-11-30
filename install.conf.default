@@ -31,6 +31,7 @@
 # openils_web			- copies over the javascript and html templates to the web root directory for running the OPAC
 # openils_marcdumper - utility code for converting MARC to MARCXML
 # openils_db			- installs the database schemas 
+# openils_reporter		- installs the base of OpenILS Reporter
 #
 # evergreen_cor		- builds core Evergreen components (does not build evergreen_xul_client!)
 # evergreen_xul_client   - client XUL application
