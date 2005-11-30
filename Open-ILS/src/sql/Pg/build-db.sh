@@ -11,6 +11,7 @@ PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 011.schema.authority.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 020.schema.functions.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 030.schema.metabib.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 040.schema.asset.sql
+PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 070.schema.container.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 080.schema.money.sql
 PGUSER=$3 PGHOST=$1 PGDATABASE=$2 psql -f 090.schema.action.sql
 

@@ -12,6 +12,7 @@ use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::CDBI::money;
 use OpenILS::Application::Storage::CDBI::permission;
+use OpenILS::Application::Storage::CDBI::container;
 
 use JSON;
 use OpenSRF::Utils::Logger;

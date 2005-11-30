@@ -348,6 +348,7 @@ use OpenILS::Application::Storage::Publisher::metabib;
 use OpenILS::Application::Storage::Publisher::authority;
 use OpenILS::Application::Storage::Publisher::money;
 use OpenILS::Application::Storage::Publisher::permission;
+use OpenILS::Application::Storage::Publisher::container;
 ';
 
 if ($@) {
