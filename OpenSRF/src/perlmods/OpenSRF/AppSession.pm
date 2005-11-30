@@ -789,9 +789,7 @@ sub queue_wait {
 	if( ! $self->{peer_handle} ) { return 0; }
 	my $timeout = shift || 0;
 	$logger->debug( "Calling queue_wait($timeout)" , DEBUG );
-	$logger->debug( "Timestamp before process($timeout) : " . $logger->format_time(), INTERNAL );
 	my $o = $self->{peer_handle}->process($timeout);
-	$logger->debug( "Timestamp after  process($timeout) : " . $logger->format_time(), INTERNAL );
 	$self->flush_resend;
 	return $o;
 }

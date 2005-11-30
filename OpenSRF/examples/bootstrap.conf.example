@@ -9,6 +9,13 @@ settings_config	= /path/to/opensrf.xml
 # log files directory
 log_dir				= /path/to/log
 
+## Log file is either a file name or syslog:<facility> 
+#logfile				= osrfysys.log
+logfile				= syslog:local0
+
+# defines the syslog facility for the activity log
+actlog				= local1
+
 # log level
 debug					= ERROR
 #debug				= INFO

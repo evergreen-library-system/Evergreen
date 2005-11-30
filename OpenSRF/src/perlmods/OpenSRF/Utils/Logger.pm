@@ -2,353 +2,198 @@ package OpenSRF::Utils::Logger;
 use strict;
 use vars qw($AUTOLOAD @EXPORT_OK %EXPORT_TAGS);
 use Exporter;
+use Unix::Syslog qw(:macros :subs);
 use base qw/OpenSRF Exporter/;
 use FileHandle;
 use Time::HiRes qw(gettimeofday);
 use OpenSRF::Utils::Config;
 use Fcntl;
 
+=head1
+
+Logger code
+
+my $logger = OpenSRF::Utils::Logger;
+$logger->error( $msg );
+
+For backwards compability, a log level may also be provided to each log
+function thereby overriding the level defined by the function.
+
+i.e. $logger->error( $msg, WARN );  # logs at log level WARN
+
+=cut
+
 @EXPORT_OK = qw/ NONE ERROR WARN INFO DEBUG INTERNAL /;
 
 %EXPORT_TAGS = ( level => [ qw/ NONE ERROR WARN INFO DEBUG INTERNAL / ] );
 
-# XXX Update documentation
+my $config;						# config handle
+my $loglevel;					# global log level
+my $logfile;					# log file
+my $facility;					# syslog facility
+my $actlog;						# activity log syslog facility
+my $service = "osrf";		# default service name
+my $syslog_enabled = 0;		# is syslog enabled?
+my $logfile_enabled = 1;	# are we logging to a file?
+my $logdir;						# log file directory
 
-=head1 Description
+# log levels
+sub ACTIVITY	{ return -1; }
+sub NONE			{ return 0;	}
+sub ERROR		{ return 1;	}
+sub WARN			{ return 2;	}
+sub INFO			{ return 3;	}
+sub DEBUG		{ return 4;	}
+sub INTERNAL	{ return 5;	}
+sub ALL			{ return 100; }
 
-OpenSRF::Utils::Logger
+# load up our config options
+sub set_config {
 
-General purpose logging package.  The logger searches $config->logs->$log_name for the 
-actual file to log to.  Any file in the config may be logged to.  If the user attempts to 
-log to a log file that does not exist within the config, then the messages will to 
-to STDERR.  
+	return if defined $config;
 
-There are also a set of predefined log levels.  Currently they are
-NONE, ERROR, WARN, INFO, DEBUG, INTERNAL, and ALL.  You can select one of these log levels
-when you send messages to the logger.  The message will be logged if it is of equal or greater
-'importance' than the global log level, found at $config->system->debug.  If you don't specify
-a log level, a defaul will be provided.  Current defaults are:
+	$config = OpenSRF::Utils::Config->current;
+	if( !defined($config) ) {
+		$loglevel = INFO();
+		warn "*** Logger found no config.  Using STDERR ***\n";
+	}
 
-error			-> ERROR
+	$loglevel =  $config->bootstrap->debug; 
+	if($loglevel =~ /error/i){ $loglevel = ERROR(); }
+	elsif($loglevel =~ /warn/i){ $loglevel = WARN(); }
+	elsif($loglevel =~ /info/i){ $loglevel = INFO(); }
+	elsif($loglevel =~ /debug/i){ $loglevel = DEBUG(); }
+	elsif($loglevel =~ /internal/i){ $loglevel = INTERNAL(); }
+	else{$loglevel= INFO(); }
 
-debug			-> DEBUG
+	$logfile = $config->bootstrap->logfile;
+	
+	if($logfile =~ /^syslog:/) {
+		$syslog_enabled = 1;
+		$logfile_enabled = 0;
+		$logfile =~ s/^syslog://;
+		$facility = $logfile;
+		$facility = _fac_to_const($facility);
+		if(!$facility) { $facility = LOG_LOCAL0; }
+		$actlog = $config->bootstrap->actlog;
+		if(!$actlog) { $actlog = "local1"; }
+		$actlog = _fac_to_const($actlog);
 
-transport	-> INTERNAL
+	} else {
+		my $logdir = $config->bootstrap->log_dir;
+		$logfile = "$logdir/$logfile";
+	}
 
-message		-> INFO
+	#warn "Level: $loglevel, Fac: $facility, Act: $actlog\n";
+}
 
-method		-> INFO
+sub _fac_to_const {
+	my $name = shift;
+	return LOG_LOCAL0 unless $name;
+	return LOG_LOCAL0 if $name =~ /local0/i;
+	return LOG_LOCAL1 if $name =~ /local1/i;
+	return LOG_LOCAL2 if $name =~ /local2/i;
+	return LOG_LOCAL3 if $name =~ /local3/i;
+	return LOG_LOCAL4 if $name =~ /local4/i;
+	return LOG_LOCAL5 if $name =~ /local5/i;
+	return LOG_LOCAL6 if $name =~ /local6/i;
+	return LOG_LOCAL7 if $name =~ /local7/i;
+	return LOG_LOCAL0;
+}
 
-All others are logged to INFO by default.
+sub is_syslog {
+	set_config() unless defined($config);
+	return $syslog_enabled;
+}
 
-You write to a log by calling the log's method.  
+sub is_filelog {
+	set_config() unless defined($config);
+	return $logfile_enabled;
+}
 
-use OpenSRF::Utils::Logger qw(:level);
-
-my $logger = "OpenSRF::Utils::Logger";
-
-$logger->debug( "degug message" );
-$logger->transport( "debug message", DEBUG );
-$logger->blahalb( "I'll likely end up at STDERR with a log level of INFO" );
-
-will only write the time, line number, and file that the method was called from.
-
-Note also that all messages with a log level of ERROR are written to the "error" log
-in addition to the intended log file.
-
-=cut
-
-# Just set this first and not during every call to the logger
-# XXX this should be added to the sig{hup} handler once it exists.
-
-
-##############
-#   1. check config, if file exists write to that file locally
-#	2. If not in config and set to remote, send to socket.  if not remote log to stderr
-
-my $config; 
-my $file_hash;
-my $trace_active = 0;
-
-my $port;
-my $proto;
-my $peer;
-my $socket;
-my $remote_logging = 0;
-
-my $LEVEL = "OpenSRF::Utils::LogLevel";
-my $FILE	= "OpenSRF::Utils::LogFile";
-
-# --- Log levels - values and names
-
-my $none			= $LEVEL->new( 1,		"NONE" ); 
-my $error		= $LEVEL->new( 10,	"ERRR" ); 
-my $warn			= $LEVEL->new( 20,	"WARN" ); 
-my $info			= $LEVEL->new( 30,	"INFO" );
-my $debug		= $LEVEL->new( 40,	"DEBG" );
-my $internal	= $LEVEL->new( 50,	"INTL" );
-my $all			= $LEVEL->new( 100,	"ALL " );
-
-
-sub NONE			{ return $none;	} 
-sub ERROR		{ return $error;	} 
-sub WARN			{ return $warn;	} 
-sub INFO			{ return $info;	} 
-sub DEBUG		{ return $debug;	} 
-sub INTERNAL	{ return $internal; }
-sub ALL			{ return $all;		}
-
-# Known log files and their default log levels
-my $known_logs = [
-	$FILE->new( "error",		&ERROR ),
-	$FILE->new( "debug",		&DEBUG ),
-	$FILE->new( "transport",&INTERNAL ),
-	$FILE->new( "message",	&INFO ),
-	$FILE->new( "method",	&INFO ),
-	];
-
-
-
-
-# ---------------------------------------------------------
-
-{
-	my $global_llevel;
-	sub global_llevel { return $global_llevel; }
-
-	sub set_config {
-
-		$config = OpenSRF::Utils::Config->current;
-
-		if( defined($config) ) { 
-
-			$global_llevel =  $config->bootstrap->debug; 
-			$port = "";
-			$proto = "";
-			$peer = "";
-			$remote_logging = 0;
-
-			{
-				no strict "refs";
-				$global_llevel = &{$global_llevel};
-			}
-			build_file_hash();
-		}
-
-		else { 
-			$global_llevel = DEBUG; 
-			warn "*** Logger found no suitable config.  Using STDERR ***\n";
-		}
+sub set_service {
+	my( $self, $svc ) = @_;
+	$service = $svc;	
+	if( is_syslog() ) {
+		closelog();
+		openlog($service, 0, $facility);
 	}
 }
 
-sub build_file_hash { 
-	$file_hash = {};
-	my $path = $config->bootstrap->log_dir;
-	$file_hash->{"error"} = join("/",$path,$config->logs->error);
-	$file_hash->{"transport"} = join("/",$path,$config->logs->transport);
-	$file_hash->{"debug"} = join("/",$path,$config->logs->debug);
+sub error {
+	my( $self, $msg, $level ) = @_;
+	$level = ERROR() unless defined ($level);
+	_log_message( $msg, $level );
 }
 
-# ---------------------------------------------------------
+sub warn {
+	my( $self, $msg, $level ) = @_;
+	$level = WARN() unless defined ($level);
+	_log_message( $msg, $level );
+}
 
-sub AUTOLOAD {
+sub info {
+	my( $self, $msg, $level ) = @_;
+	$level = INFO() unless defined ($level);
+	_log_message( $msg, $level );
+}
 
+sub debug {
+	my( $self, $msg, $level ) = @_;
+	$level = DEBUG() unless defined ($level);
+	_log_message( $msg, $level );
+}
 
-	my( $self, $string, $llevel ) = @_;
-	my $log		= $AUTOLOAD;
-	$log			=~ s/.*://;   # strip fully-qualified portion
+sub internal {
+	my( $self, $msg, $level ) = @_;
+	$level = INTERNAL() unless defined ($level);
+	_log_message( $msg, $level );
+}
 
-	unless( defined($config) or global_llevel() ) {
-		set_config();
-	}
+sub activity {
+	my( $self, $msg ) = @_;
+	_log_message( $msg, ACTIVITY() );
+}
 
-	# Build the sub here so we can use the enclosed $log variable.
-	# This is some weird Perl s*** that only satan could dream up.
-	# We mangle the symbol table so that future calls to $logger->blah
-	# will no longer require the autoload.  
-	# The $log variable (above) will contain the name of the log 
-	# log file the user is attempting to log to.  This is true, however,  
-	# even though the above code is presumably run only the first time
-	# the call to $logger->blah is made.  
-
-	no strict "refs";
-
-	*{$log} = sub { 
-
-		if( global_llevel()->level == NONE->level ) { return; }
-
-		my( $class, $string, $llevel ) = @_;
-
-		# see if we can return
-		if( $llevel ) { 
-			# if level is passed in as a string, cast it to a level object
-			ref( $llevel ) || do{ $llevel = &{$llevel} };
-			return if ($llevel->level > global_llevel()->level); 
-		}
-
-		else { # see if there is a default llevel, set to INFO if not.
-			my $log_obj;
-			foreach my $l ( @$known_logs ) {
-				if( $l->name eq $log ) { $log_obj = $l and last; }
-			}
-			if( $log_obj ) { $llevel = $log_obj->def_level; }
-			else { $llevel = INFO; }
-		}
-
-
-		# again, see if we can get out of this 
-		return if ($llevel->level > global_llevel()->level); 
-	
-		my @caller = caller();
-		push( @caller, (caller(1))[3] );
-
-		# In the absense of a config, we write to STDERR
-
-		if( ! defined($config)  ) { 
-			_write_stderr( $string, $llevel->name, @caller); 
-			return;
-		}
-
-		if( $remote_logging ) {
-			_write_net( $log, $string, $llevel->name, @caller );
-		
-		} elsif ( my $file = $file_hash->{$log} ) {
-			_write_local( $file, $string, $llevel->name, @caller );
-
-		} else {
-			_write_stderr( $string, $llevel->name, @caller); 
-		}
-
-	
-		if( $llevel->name eq ERROR->name ) { # send all error to stderr
-			_write_stderr( $string, $llevel->name, @caller); 
-		}
-
-		if( $llevel->name eq ERROR->name and $log ne "error" ) {
-			if( my $e_file = $file_hash->{"error"}  ) {
-				if( ! $remote_logging ) {
-					_write_local( $e_file, $string, $llevel->name, @caller );
-				}
-			}
-		}
-	
-	};
-	
-	$self->$log( $string, $llevel );
+# for backwards compability
+sub transport {
+	my( $self, $msg, $level ) = @_;
+	$level = DEBUG() unless defined ($level);
+	_log_message( $msg, $level );
 }
 
 
-# write_net expects a log_type_name and not a log_file_name for the first parameter
-my $net_buffer = "";
-my $counter = 0;
-sub _write_net {
 
+sub _log_message {
+	my( $msg, $level ) = @_;
+	return if $level > $loglevel;
+	my $l; my $n; 
+	my $fac = $facility;
 
-	my( $log, $string, $llevel, @caller ) = @_;
-	my( $pack, $file, $line_no ) = @caller;
-	my @lines = split( "\n", $string );
+	if ($level == ERROR())			{$l = LOG_ERR, $n = "ERR "; }
+	elsif ($level == WARN())		{$l = LOG_WARNING, $n = "WARN"; }
+	elsif ($level == INFO())		{$l = LOG_INFO, $n = "INFO"; }	
+	elsif ($level == DEBUG())	{$l = LOG_DEBUG, $n = "DEBG"; }
+	elsif ($level == INTERNAL()){$l = LOG_DEBUG, $n = "INTL"; }
+	elsif ($level == ACTIVITY()){$l = LOG_INFO, $n = "ACT"; $fac = $actlog}
 
-	my $message = "$log|"."-" x 33 . 
-		"\n$log|[$0 $llevel] $line_no $pack".
-		"\n$log|[$0 $llevel] $file";
-
-	foreach my $line (@lines) {
-		$message .= "\n$log|[$0 $llevel] $line";
-	}
-
-	$net_buffer .= "$message\n";
-
-	# every 4th load is sent on the socket
-	if( $counter++ % 4 ) { return; }
-
-	unless( $socket ) {
-		$socket = IO::Socket::INET->new(
-				PeerAddr	=> $peer,
-				PeerPort	=> $port,
-				Proto		=> $proto )
-			or die "Unable to open socket to log server";  
-	}
-
-	$socket->send( $net_buffer );
-	$net_buffer = "";
-
+	#my( $pack, $file, $line_no ) = @caller;
+	if( is_syslog() ) { syslog( $fac | $l, $msg ); }
+	elsif( is_filelog() ) { _write_file($msg); }
 }
 
-sub _write_local {
 
-	my( $log, $string, $llevel, @caller ) = @_;
-	my( $pack, $file, $line_no ) = @caller;
-	my @lines = split( "\n", $string );
-	my $time = format_time();
-	sysopen( SINK, $log, O_NONBLOCK|O_WRONLY|O_APPEND|O_CREAT ) 
-		or die "Cannot sysopen $log: $!";
+sub _write_file {
+	my $msg = shift;
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);  
+	$year += 1900; $mon += 1;
+	sysopen( SINK, $logfile, O_NONBLOCK|O_WRONLY|O_APPEND|O_CREAT ) 
+		or die "Cannot sysopen $logfile: $!";
 	binmode(SINK, ':utf8');
-	print SINK "-" x 23 . "\n";
-	print SINK "$time [$0 $llevel] $line_no $pack \n";
-	print SINK "$time [$0 $llevel] $file\n";
-	foreach my $line (@lines) {
-		print SINK "$time [$0 $llevel] $line\n";
-	}
+	print SINK "[$year-$mon-$mday $hour:$min:$sec] $service $msg\n";
 	close( SINK );
-
-}
-
-sub _write_stderr {
-	my( $string, $llevel, @caller ) = @_;
-	my( $pack, $file, $line_no ) = @caller;
-	my @lines = split( "\n", $string );
-	my $time = format_time();
-	print STDERR "-" x 23 . "\n";
-	print STDERR "$time [$0 $llevel] $line_no $pack\n";
-	print STDERR "$time [$0 $llevel] $file\n";
-	foreach my $line (@lines) {
-		print STDERR "$time [$0 $llevel] $line\n";
-	}
-}
-
-sub format_time {
-	my ($s, $ms) = gettimeofday();
-	my @time = localtime( $s );
-	$ms = substr( $ms, 0, 3 );
-	my $year = $time[5] + 1900;
-	my $mon = $time[4] + 1;
-	my $day = $time[3];
-	my $hour = $time[2];
-	my $min = $time[1];
-	my $sec = $time[0];
-	$mon = "0" . "$mon" if ( length($mon) == 1 );
-	$day = "0" . "$day" if ( length($day) == 1 );
-	$hour = "0" . "$hour" if ( length($hour) == 1 );
-	$min = "0" . "$min" if (length($min) == 1 );
-	$sec = "0" . "$sec" if (length($sec) == 1 );
-
-	my $proc = $$;
-	while( length( $proc ) < 5 ) { $proc = "0" . "$proc"; }
-	return "[$year-$mon-$day $hour:$min:$sec.$ms $proc]";
 }
 
 
-# ----------------------------------------------
-# --- Models a log level
-package OpenSRF::Utils::LogLevel;
-
-sub new { return bless( [ $_[1], $_[2] ], $_[0] ); }
-
-sub level { return $_[0]->[0]; }
-sub name	{ return $_[0]->[1]; }
-
-# ----------------------------------------------
-
-package OpenSRF::Utils::LogFile;
-use OpenSRF::Utils::Config;
-
-sub new{ return bless( [ $_[1], $_[2] ], $_[0] ); }
-
-sub name { return $_[0]->[0]; }
-sub def_level { return $_[0]->[1]; }
-
-
-# ----------------------------------------------
 
 1;
