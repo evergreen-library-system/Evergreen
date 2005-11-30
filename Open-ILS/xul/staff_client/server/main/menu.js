@@ -57,7 +57,8 @@ main.menu.prototype = {
 				cmd_broken.addEventListener('command', f, false);
 				cmd_broken.addEventListener('keypress', f, false);
 			}
-		
+	
+		obj.new_tab();
 	},
 
 	'close_tab' : function () {

@@ -5,14 +5,78 @@
 
 <script>dump('loading menu_frame_menus.xul\n');</script>
 
-<commandset id="universal_cmds" />
-<keyset id="menu_frame_keys" />
+<commandset id="universal_cmds">
+	<command id="cmd_close_window" key="close-window-key" />
+	<command id="cmd_new_window" key="new-window-key" />
+	<command id="cmd_new_tab" key="new-tab-key" />
+	<command id="cmd_close_tab" key="close-tab-key" />
+
+	<command id="cmd_cat_main" key="cat-main-key" />
+	<command id="cmd_circ_checkout" key="circ-checkout-key" />
+	<command id="cmd_patron_search" key="patron-search-key" />
+	<command id="cmd_circ_checkin" key="circ-checkin-key" />
+	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
+	<command id="cmd_search_opac" key="search-opac-key" />
+	<command id="cmd_patron_register" key="patron-register-key" />
+	<command id="cmd_survey_wizard" />
+	<command id="cmd_copy_stat_cat_edit" />
+	<command id="cmd_patron_stat_cat_edit" />
+	<command id="cmd_receipt_template_editor" />
+	<command id="cmd_z39_50_import" />
+	<command id="cmd_create_new_marc_book" />
+
+	<command id="cmd_console" />
+	<command id="cmd_shell" />
+	<command id="cmd_xuleditor" />
+	<command id="cmd_filter_console" />
+	<command id="cmd_fieldmapper" />
+
+	<command id="cmd_test" disabled="true" />
+	<command id="cmd_broken" disabled="true" />
+</commandset>
+
+
+<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+<keyset id="menu_frame_keys">
+	<key id="new-window-key" modifiers="accel" key="N" command="cmd_new_window"/>
+	<key id="new-tab-key" modifiers="accel" key="T" />
+	<key id="open-key" modifiers="accel" key="O" command=""/>
+	<key id="save-key" modifiers="accel" key="S" command=""/>
+	<key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
+	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+	<!--
+	<key id="edit-undo-key" modifiers="accel" key="Z" command=""/>
+	<key id="edit-redo-key" modifiers="accel" key="Y" command=""/>
+	<key id="edit-cut-key" modifiers="accel" key="X" command=""/>
+	<key id="edit-copy-key" modifiers="accel" key="C" command=""/>
+	<key id="edit-paste-key" modifiers="accel" key="V" command=""/>
+	<key id="edit-delete-key" modifiers="" keycode="VK_DELETE" command=""/>
+	<key id="edit-select-all-key" modifiers="accel" key="A" command=""/>
+	<key id="edit-find-key" modifiers="accel" key="F" command=""/>
+	<key id="edit-find-again-key" modifiers="accel" key="G" command=""/>
+
+	<key id="circ-patron-status-key" keycode="VK_F11" command="cmd_circ_display"/>
+	<key id="circ-copy-status-key" keycode="VK_F9" command=""/>
+	<key id="circ-check-in-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="circ-renew-key" keycode="VK_F3" command=""/>
+	<key id="circ-mark-used-key" keycode="VK_F4" command=""/>
+	<key id="circ-place-hold-key" keycode="VK_F5" command=""/>
+	<key id="circ-patron-registration-key" keycode="VK_F12" command=""/>
+	-->
+	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
+	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
+	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
+	<key id="circ-hold-capture-key" keycode="VK_F5" command="cmd_circ_hold_capture"/>
+	<key id="patron-register-key" keycode="VK_F12" command="cmd_patron_registration"/>
+</keyset>
+
 
 <!-- The File menu on the main menu -->
 <menu id="main.menu.file" label="&main.menu.file.label;" accesskey="&main.menu.file.key;" >
 	<menupopup id="main.menu.file.popup">
 		<menuitem label="&main.menu.file.new.label;" accesskey="&main.menu.file.new.key;" key="file-new-key" command="cmd_new_window"/>
-		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="new-tab-key" onkeypress="alert('test');" command="cmd_new_tab"/>
+		<menuitem label="&main.menu.file.new_tab.label;" accesskey="&main.menu.file.new_tab.key;" key="new-tab-key" command="cmd_new_tab"/>
 		<menuseparator />
 	<!--
 		<menuitem label="&main.menu.file.open.label;" accesskey="&main.menu.file.open.key;" key="file-open-key" command="cmd_broken" disabled="true"/>
