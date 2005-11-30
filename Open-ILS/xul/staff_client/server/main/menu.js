@@ -29,7 +29,8 @@ main.menu.prototype = {
 		var cmd_new_window = this.w.document.getElementById('cmd_new_window');
 			if (cmd_new_window) {
 				var f = function() { 
-					obj.window.open('/xul/server/main/menu_frame.xul','test' + obj.window.appshell_name_increment++ ,'chrome'); 
+					obj.window.open('/xul/server/main/menu_frame.xul','test' + 
+						obj.window.appshell_name_increment++ ,'chrome'); 
 				};
 				cmd_new_window.addEventListener('command', f, false );
 				cmd_new_window.addEventListener('keypress', f, false );
@@ -38,7 +39,7 @@ main.menu.prototype = {
 		var cmd_new_tab = this.w.document.getElementById('cmd_new_tab');
 			if (cmd_new_tab) {
 				var f = function(ev) {
-					obj.new_tab();
+					obj.new_tab(true);
 				};
 				cmd_new_tab.addEventListener('command', f, false );
 				cmd_new_tab.addEventListener('keypress', f, true );
@@ -58,7 +59,7 @@ main.menu.prototype = {
 				cmd_broken.addEventListener('keypress', f, false);
 			}
 	
-		obj.new_tab();
+		obj.new_tab(true);
 	},
 
 	'close_tab' : function () {
@@ -71,7 +72,8 @@ main.menu.prototype = {
 				try {
 					this.tabs.advanceSelectedTab(-1);
 				} catch(E) {
-					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
+					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(-1):'+
+						js2JSON(E) + '\n');
 				}
 			}
 		} else {
@@ -82,7 +84,8 @@ main.menu.prototype = {
 				try {
 					this.tabs.advanceSelectedTab(+1);
 				} catch(E) {
-					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
+					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(+1):'+
+						js2JSON(E) + '\n');
 				}
 			}
 
@@ -128,18 +131,29 @@ main.menu.prototype = {
 		return -1;
 	},
 
-	'new_tab' : function() {
+	'new_tab' : function(focus) {
 		var tc = this.find_free_tab();
 		if (tc == -1) { return null; } // 9 tabs max
 		var tab = this.tabs.childNodes[ tc ];
 		//tab.setAttribute('label','Tab ' + (tc + 1) );
 		tab.hidden = false;
 		try {
-			this.tabs.selectedIndex = tc;
-			//this.replace_tab(tc,'about:blank');
+			if (focus) this.tabs.selectedIndex = tc;
+			this.set_tab('data:text/html,<h1>Hello World</h1>',tc);
 		} catch(E) {
 			this.error.sdump('D_ERROR',E);
 		}
+	},
+
+	'set_tab' : function(url,idx) {
+		if (!idx) idx = this.tabs.selectedIndex;
+		var tab = this.tabs.childNodes[ idx ];
+		var panel = this.panels.childNodes[ idx ];
+		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
+		var frame = this.w.document.createElement('iframe');
+		frame.setAttribute('flex','1');
+		frame.setAttribute('src',url);
+		panel.appendChild(frame);
 	}
 
 }
