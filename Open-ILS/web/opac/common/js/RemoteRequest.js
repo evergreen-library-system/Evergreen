@@ -191,29 +191,33 @@ RemoteRequest.prototype.isReady = function() {
 
 /* returns the JSON->js result object  */
 RemoteRequest.prototype.getResultObject = function() {
+
 	if(this.cancelled) return null;
 	if(!this.xmlhttp) return null;
 
 	var text = this.xmlhttp.responseText;
+	if(text == "" || text == " " || text == null) null;
+
 	var obj = JSON2js(text);
 
-	if(obj == null) return null;
-	if(obj.is_err)  throw new EXCommunication(obj.err_msg); 
-	if( obj[0] != null && obj[1] == null ) obj = obj[0];
 
-	/* these are user level exceptions from the server code */
-	if(obj._isfieldmapper && obj.classname == "ex") {
-		if(!isXUL()) alert(obj.err_msg());
-		throw obj;
+	if( obj.status != 200 ) {
+		if(!isXUL()) {
+			alert("A Server Error Occured.  Debug information follows:\n",
+				"Status: " + obj.status + '\n' + obj.debug + '\n' 
+				+ 'Payload: ' + js2JSON(obj.payload) + '\n');
+		} else { throw obj; }
 	}
 
-	if(obj.__isfieldmapper && obj.classname == "perm_ex") {
-		/* the opac will go ahead and spit out the error msg */
-		if(!isXUL()) alert(obj.err_msg());
-		throw obj;
+	var payload = obj.payload;
+	payload = (payload.length == 1) ? payload[0] : payload;
+
+	if(payload.__isfieldmapper && payload.classname == "perm_ex") {
+		if(!isXUL()) alert(payload.err_msg());
+		throw payload;
 	}
 
-	return obj;
+	return payload;
 }
 
 /* adds a new parameter to the request */
