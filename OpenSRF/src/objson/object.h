@@ -130,14 +130,14 @@ int jsonObjectIteratorHasNext(const jsonObjectIterator* iter);
 	if not, string should be NULL 
 	@return The newly allocated object or NULL on memory error.
 */
-jsonObject* jsonNewObject(const char* string);
+jsonObject* jsonNewObject(const char* string, ...);
 
 /**
 	Allocates a new JSON number object.
 	@param num The number this object is to hold
 	@return The newly allocated object.
 */
-jsonObject* jsonNewNumberObject( double num);
+jsonObject* jsonNewNumberObject( double num );
 
 
 /** 

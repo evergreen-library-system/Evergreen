@@ -5,20 +5,9 @@ char* ils_rest_gateway_config_file;
 
 static const char* ils_gateway_set_config(cmd_parms *parms, void *config, const char *arg) {
 	ils_gateway_config  *cfg;
-
-	#ifdef RESTGATEWAY
-	cfg = ap_get_module_config(parms->server->module_config, &ils_rest_gateway_module);
-	#else
 	cfg = ap_get_module_config(parms->server->module_config, &ils_gateway_module);
-	#endif
-
 	cfg->configfile = (char*) arg;
-	#ifdef RESTGATEWAY
-	ils_rest_gateway_config_file = (char*) arg;
-	#else
 	ils_gateway_config_file = (char*) arg;
-	#endif
-
 	return NULL;
 }
 
@@ -39,10 +28,6 @@ static void* ils_gateway_create_config( apr_pool_t* p, server_rec* s) {
 static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 
 	char* cfg = ils_gateway_config_file;
-	#ifdef RESTGATEWAY
-	cfg = ils_gateway_config_file;
-	#endif
-
 	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) {
 		osrfLogError("Unable to load gateway config file...");
 		return;
@@ -64,7 +49,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* method					= NULL;	/* method to perform */
 
 	//json* exception				= NULL; /* returned in error conditions */
-	jsonObject* exception				= NULL; /* returned in error conditions */
+	//jsonObject* exception		= NULL; /* returned in error conditions */
 	string_array* sarray			= init_string_array(12); /* method parameters */
 
 	growing_buffer* buffer		= NULL;	/* POST data */
@@ -72,6 +57,10 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	char* key						= NULL;	/* query item name */
 	char* val						= NULL;	/* query item value */
+
+	jsonObject* response			= jsonParseString("{\"status\":0,\"debug\":\"\"}");
+	jsonObject* payload			= jsonParseString("[]");
+	jsonObjectSetKey(response, "payload", payload );
 
 
 
@@ -147,8 +136,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	}
 
-	osrfLogInfo("\nPerforming(%d):  service %s | method %s |",
-			getpid(), service, method );
+	osrfLogInfo("\nPerforming(%d):  service %s "
+			"| method %s |", getpid(), service, method );
 
 	int k;
 	for( k = 0; k!= sarray->size; k++ ) {
@@ -164,43 +153,20 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	osrf_message* omsg = NULL;
 
-	growing_buffer* result_data = buffer_init(256);
-	buffer_add(result_data, "[");
-
-	/* gather result data */
 	while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
 
-		if( omsg->_result_content ) {
-			char* content = jsonObjectToJSON(omsg->_result_content);
-			buffer_add(result_data, content);
-			buffer_add( result_data, ",");
-			free(content);
+		jsonObjectSetKey(response, "status", jsonNewNumberObject(omsg->status_code));
 
+		if( omsg->_result_content ) {
+			jsonObjectPush( payload, jsonObjectClone(omsg->_result_content));
+	
 		} else {
 
-
-			/* build the exception information */
-			growing_buffer* exc_buffer = buffer_init(256);
-			buffer_add( exc_buffer, "\nReceived Exception:\nName: " );
-			buffer_add( exc_buffer, omsg->status_name );
-			buffer_add( exc_buffer, "\nStatus: " );
-			buffer_add( exc_buffer, omsg->status_text );
-			buffer_add( exc_buffer, "\nStatus: " );
-
-			char code[16];
-			memset(code, 0, 16);
-			sprintf( code, "%d", omsg->status_code );
-			buffer_add( exc_buffer, code );
-
-			exception = json_parse_string("{}");
-			jsonObjectSetKey(exception, "is_err", json_parse_string("1"));
-			jsonObjectSetKey(exception, "err_msg", jsonNewObject(exc_buffer->buf) );
-
-			osrfLogWarning("*** Looks like we got a "
-					"server exception\n%s", exc_buffer->buf );
-
-			buffer_free(exc_buffer);
-			osrf_message_free(omsg);
+			char* s = omsg->status_name ? omsg->status_name : "Unknown Error";
+			char* t = omsg->status_text ? omsg->status_text : "No Error Message";
+			jsonObjectSetKey(response, "debug", jsonNewObject("\n\n%s:\n%s\n", s, t));
+			osrfLogError( "Gateway received error: %s", 
+					jsonObjectGetString(jsonObjectGetKey(response, "debug")));
 			break;
 		}
 
@@ -208,55 +174,20 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		omsg = NULL;
 	}
 
-	/* remove trailing comma */
-	if( result_data->buf[strlen(result_data->buf)-1] == ',') {
-		result_data->buf[strlen(result_data->buf)-1] = '\0';
-		result_data->n_used--;
-	}
-
-	buffer_add(result_data,"]");
-
-	char* content = NULL;
-
-	if(exception) {
-		content = jsonObjectToJSON(exception);
-		jsonObjectFree(exception);
-	} 
-
-#ifdef RESTGATEWAY
-	/* set content type to text/xml for passing around XML objects */
-	ap_set_content_type(r, "text/xml");
-	if(content) { /* exception... */
-		char* tmp = content;
-		content = json_string_to_xml( tmp );
-		free(tmp);
-	} else {
-		content = json_string_to_xml( result_data->buf );
-	}
-
-#else
-	/* set content type to text/plain for passing around JSON objects */
-	if(!content) {
-		ap_set_content_type(r, "text/plain");
-		content = buffer_data(result_data); 
-	}
-#endif
-	
-
-	buffer_free(result_data);
-
+	char* content = jsonObjectToJSON(response);
 	if(content) {
-		osrfLogInfo( "APACHE writing data to web client: %s", content );
+		osrfLogInfo( "----------------------------------------------\n"
+			"Gateway responding with:\n%s\n"
+			"----------------------------------------------", content );
 		ap_rputs(content,r);
 		free(content);
 	} 
 
 	osrf_app_session_request_finish( session, req_id );
-	osrfLogDebug("gateway process message successfully");
+	osrfLogDebug("gateway processed message successfully");
 
 	osrf_app_session_destroy(session);
 	return OK;
-
 }
 
 static void mod_ils_gateway_register_hooks (apr_pool_t *p) {
@@ -265,11 +196,7 @@ static void mod_ils_gateway_register_hooks (apr_pool_t *p) {
 }
 
 
-#ifdef RESTGATEWAY
-module AP_MODULE_DECLARE_DATA ils_rest_gateway_module = {
-#else
 module AP_MODULE_DECLARE_DATA ils_gateway_module = {
-#endif
 	STANDARD20_MODULE_STUFF,
 	NULL,
 	NULL,
@@ -280,33 +207,5 @@ module AP_MODULE_DECLARE_DATA ils_gateway_module = {
 };
 
 
-/*
-#ifdef RESTGATEWAY
 
-module AP_MODULE_DECLARE_DATA ils_rest_gateway_module =
-{
-STANDARD20_MODULE_STUFF,
-NULL,
-NULL,
-ils_gateway_create_config,
-NULL,
-ils_gateway_cmds,
-mod_ils_gateway_register_hooks,
-};
-
-#else
-
-module AP_MODULE_DECLARE_DATA ils_gateway_module =
-{
-STANDARD20_MODULE_STUFF,
-NULL,
-NULL,
-ils_gateway_create_config,
-NULL,
-ils_gateway_cmds,
-mod_ils_gateway_register_hooks,
-};
-
-#endif
-*/
 
