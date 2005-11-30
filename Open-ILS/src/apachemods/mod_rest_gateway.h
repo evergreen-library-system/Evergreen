@@ -13,7 +13,6 @@
 #include "md5.h"
 #include "objson/object.h"
 #include "objson/json_parser.h"
-#include "opensrf/log.h"
 
 #include "json_xml.h"
 #define GATEWAY_CONFIG "ILSRestGatewayConfig"

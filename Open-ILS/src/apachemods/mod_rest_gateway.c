@@ -32,7 +32,7 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 	char* cfg = ils_rest_gateway_config_file;
 
 	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) {
-		osrfLogError("Unable to load gateway config file...");
+		//osrfLogError("Unable to load gateway config file...");
 		return;
 	}
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
@@ -52,7 +52,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* method					= NULL;	/* method to perform */
 
 	//json* exception				= NULL; /* returned in error conditions */
-	jsonObject* exception				= NULL; /* returned in error conditions */
+	//jsonObject* exception				= NULL; /* returned in error conditions */
 	string_array* sarray			= init_string_array(12); /* method parameters */
 
 	growing_buffer* buffer		= NULL;	/* POST data */
@@ -61,11 +61,13 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* key						= NULL;	/* query item name */
 	char* val						= NULL;	/* query item value */
 
-
+        jsonObject* response                    = jsonParseString("{\"status\":0,\"debug\":\"\"}");
+        jsonObject* payload                     = jsonParseString("[]");
+        jsonObjectSetKey(response, "payload", payload );
 
 	/* verify we are connected */
 	if(!osrf_system_get_transport_client()) {
-		osrfLogError("Bootstrap Failed, no transport client");
+		//osrfLogError("Bootstrap Failed, no transport client");
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
@@ -77,7 +79,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		ap_setup_client_block(r,REQUEST_CHUNKED_DECHUNK);
 
 		if(! ap_should_client_block(r)) {
-			osrfLogWarning("No Post Body");
+			//osrfLogWarning("No Post Body");
 		}
 
 		char body[1025];
@@ -85,7 +87,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		buffer = buffer_init(1025);
 
 		while(ap_get_client_block(r, body, 1024)) {
-			osrfLogDebug("Apache read POST block data: %s\n", body);
+			//osrfLogDebug("Apache read POST block data: %s\n", body);
 			buffer_add( buffer, body );
 			memset(body,0,1025);
 		}
@@ -103,11 +105,11 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	} 
 
-	osrfLogDebug("params args are %s", arg);
+	//osrfLogDebug("params args are %s", arg);
 
 
 	if( ! arg || !arg[0] ) { /* we received no request */
-		osrfLogWarning("No Args");
+		//osrfLogWarning("No Args");
 		return OK;
 	}
 
@@ -135,27 +137,28 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	}
 
-	osrfLogInfo("Performing(%d):  service %s | method %s | \n",
-			getpid(), service, method );
+	//osrfLogInfo("Performing(%d):  service %s | method %s | \n",
+	//		getpid(), service, method );
 
 	int k;
 	for( k = 0; k!= sarray->size; k++ ) {
-		osrfLogInfo( "param %s", string_array_get_string(sarray,k));
+		//osrfLogInfo( "param %s", string_array_get_string(sarray,k));
 	}
 
 	osrf_app_session* session = osrf_app_client_session_init(service);
 
-	osrfLogDebug("MOD session service: %s", session->remote_service );
+	//osrfLogDebug("MOD session service: %s", session->remote_service );
 
 	int req_id = osrf_app_session_make_req( session, NULL, method, 1, sarray );
 	string_array_destroy(sarray);
 
 	osrf_message* omsg = NULL;
 
-	growing_buffer* result_data = buffer_init(256);
-	buffer_add(result_data, "[");
+	//growing_buffer* result_data = buffer_init(256);
+	//buffer_add(result_data, "[");
 
 	/* gather result data */
+	/*
 	while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
 
 		if( omsg->_result_content ) {
@@ -167,7 +170,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		} else {
 
 
-			/* build the exception information */
 			growing_buffer* exc_buffer = buffer_init(256);
 			buffer_add( exc_buffer, "\nReceived Exception:\nName: " );
 			buffer_add( exc_buffer, omsg->status_name );
@@ -184,8 +186,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 			jsonObjectSetKey(exception, "is_err", json_parse_string("1"));
 			jsonObjectSetKey(exception, "err_msg", jsonNewObject(exc_buffer->buf) );
 
-			osrfLogWarning("*** Looks like we got a "
-					"server exception\n%s", exc_buffer->buf );
+			//osrfLogWarning("*** Looks like we got a "
+			//		"server exception\n%s", exc_buffer->buf );
 
 			buffer_free(exc_buffer);
 			osrf_message_free(omsg);
@@ -195,45 +197,48 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		osrf_message_free(omsg);
 		omsg = NULL;
 	}
+	*/
 
-	/* remove trailing comma */
-	if( result_data->buf[strlen(result_data->buf)-1] == ',') {
-		result_data->buf[strlen(result_data->buf)-1] = '\0';
-		result_data->n_used--;
-	}
+        while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
 
-	buffer_add(result_data,"]");
+                jsonObjectSetKey(response, "status", jsonNewNumberObject(omsg->status_code));
 
-	char* content = NULL;
+                if( omsg->_result_content ) {
+                        jsonObjectPush( payload, jsonObjectClone(omsg->_result_content));
 
-	if(exception) {
-		content = jsonObjectToJSON(exception);
-		jsonObjectFree(exception);
-	} 
+                } else {
 
+                        char* s = omsg->status_name ? omsg->status_name : "Unknown Error";
+                        char* t = omsg->status_text ? omsg->status_text : "No Error Message";
+                        jsonObjectSetKey(response, "debug", jsonNewObject("\n\n%s:\n%s\n", s, t));
+                        //osrfLogError( "Gateway received error: %s",
+                        //                jsonObjectGetString(jsonObjectGetKey(response, "debug")));
+                        break;
+                }
+
+                osrf_message_free(omsg);
+                omsg = NULL;
+        }
+
+        char* content = jsonObjectToJSON(response);
+	char* xml = json_string_to_xml( content );
+
+	free(content);
+
+	
 	/* set content type to text/xml for passing around XML objects */
 	ap_set_content_type(r, "text/xml");
-	if(content) { /* exception... */
-		char* tmp = content;
-		content = json_string_to_xml( tmp );
-		free(tmp);
-	} else {
-		content = json_string_to_xml( result_data->buf );
-	}
-
-	buffer_free(result_data);
-
-	if(content) {
-		osrfLogDebug( "APACHE writing data to web client: %s", content );
-		ap_rputs(content,r);
-		free(content);
-	} 
+	ap_rputs(xml,r);
+	free(xml);
 
 	osrf_app_session_request_finish( session, req_id );
-	osrfLogDebug("gateway process message successfully");
+	//osrfLogDebug("gateway process message successfully");
 
 
 	osrf_app_session_destroy(session);
+
+	jsonObjectFree(response);
+
 	return OK;
 
 }
