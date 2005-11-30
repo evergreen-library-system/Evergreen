@@ -182,6 +182,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		ap_rputs(content,r);
 		free(content);
 	} 
+	jsonObjectFree(response);
 
 	osrf_app_session_request_finish( session, req_id );
 	osrfLogDebug("gateway processed message successfully");
