@@ -155,6 +155,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	char* port			= osrfConfigGetValue( NULL, "/port" );
 	char* unixpath		= osrfConfigGetValue( NULL, "/unixpath" );
 	char* facility		= osrfConfigGetValue( NULL, "/syslog" );
+	char* actlog		= osrfConfigGetValue( NULL, "/actlog" );
 
 	char* domain = strdup(osrfStringArrayGetString( arr, 0 )); /* just the first for now */
 	osrfStringArrayFree(arr);
@@ -170,6 +171,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	if(!strcmp(log_file, "syslog")) {
 		osrfLogInit( OSRF_LOG_TYPE_SYSLOG, contextnode, llevel );
 		osrfLogSetSyslogFacility(osrfLogFacilityToInt(facility));
+		if(actlog) osrfLogSetSyslogActFacility(osrfLogFacilityToInt(actlog));
 
 	} else {
 		osrfLogInit( OSRF_LOG_TYPE_FILE, contextnode, llevel );
@@ -197,6 +199,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 		__osrfGlobalTransportClient = client;
 	}
 
+	free(actlog);
 	free(facility);
 	free(log_level);
 	free(log_file);

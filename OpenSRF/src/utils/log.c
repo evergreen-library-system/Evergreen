@@ -161,14 +161,14 @@ int osrfLogFacilityToInt( char* facility ) {
 	if(!facility) return LOG_LOCAL0;
 	if(strlen(facility) < 6) return LOG_LOCAL0;
 	switch( facility[5] ) {
-		case 0: return LOG_LOCAL0;
-		case 1: return LOG_LOCAL1;
-		case 2: return LOG_LOCAL2;
-		case 3: return LOG_LOCAL3;
-		case 4: return LOG_LOCAL4;
-		case 5: return LOG_LOCAL5;
-		case 6: return LOG_LOCAL6;
-		case 7: return LOG_LOCAL7;
+		case '0': return LOG_LOCAL0;
+		case '1': return LOG_LOCAL1;
+		case '2': return LOG_LOCAL2;
+		case '3': return LOG_LOCAL3;
+		case '4': return LOG_LOCAL4;
+		case '5': return LOG_LOCAL5;
+		case '6': return LOG_LOCAL6;
+		case '7': return LOG_LOCAL7;
 	}
 	return LOG_LOCAL0;
 }
