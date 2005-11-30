@@ -14,6 +14,7 @@ use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::CDBI::money;
+use OpenILS::Application::Storage::CDBI::container;
 
 use vars qw/$fieldmap $VERSION/;
 
@@ -50,6 +51,16 @@ sub _init {
 
 	$fieldmap = 
 	{
+		'Fieldmapper::container::user_bucket'		=> { hint => 'cub'   },
+		'Fieldmapper::container::copy_bucket'		=> { hint => 'ccb'   },
+		'Fieldmapper::container::call_number_bucket'	=> { hint => 'ccnb'   },
+		'Fieldmapper::container::biblio_record_entry_bucket'		=> { hint => 'cbreb'   },
+
+		'Fieldmapper::container::user_bucket_item'		=> { hint => 'cubi'   },
+		'Fieldmapper::container::copy_bucket_item'		=> { hint => 'ccbi'   },
+		'Fieldmapper::container::call_number_bucket_item'	=> { hint => 'ccnbi'   },
+		'Fieldmapper::container::biblio_record_entry_bucket_item'		=> { hint => 'cbrebi'   },
+
 		'Fieldmapper::action::survey'			=> { hint		=> 'asv',
 								     proto_fields	=> { questions	=> 1,
 								     			     responses	=> 1 } },
