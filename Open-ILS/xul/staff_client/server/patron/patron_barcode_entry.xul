@@ -59,7 +59,6 @@
 		}
 
 		function spawn(session) {
-			alert('session = ' + session);
 			var tb = document.getElementById('barcode_tb');
 			var barcode = tb.value;
 

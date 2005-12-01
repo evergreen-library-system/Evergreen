@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="/opac/common/js/JSON.js" />
 		<script type="text/javascript" src="/opac/common/js/fmall.js" />
 		<script type="text/javascript" src="/opac/common/js/fmgen.js" />
-		<script type="text/javascript" src="/xul/server/OpenILS/RemoteRequest.js" />
+		<script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
 		<script type="text/javascript" src="/opac/common/js/OrgTree.js" />
 		<script type="text/javascript" src="/opac/common/js/org_utils.js" />   
 	</scripts>

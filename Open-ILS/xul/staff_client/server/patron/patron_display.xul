@@ -55,6 +55,7 @@
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
 			<caption id="my_patron_caption" />
+			<label id="test2" />
 		</groupbox>
 	</vbox>
 
