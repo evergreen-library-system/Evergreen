@@ -37,12 +37,44 @@
 				<description>ID of the Circulating Library</description>
 			</field>
 			<field
+			  name="create_date_day"
+			  datatype="date">
+				<label>Create Date Joiner</label>
+				<description>Date of the copy's cataloging</description>
+			</field>
+			<field
+			  name="create_date_hour"
+			  datatype="timestamptz">
+				<label>Create Date and Hour Joiner</label>
+				<description>Date and Hour of the copy's cataloging</description>
+			</field>
+			<field
 			  name="create_date"
 			  datatype="timestamptz"
 			  indexed="true"
 			  default="now()">
 				<label>Create Date</label>
 				<description>Timestamp of the copy's cataloging</description>
+			</field>
+			<field
+			  name="edit_date_day"
+			  datatype="date">
+				<label>Edit Date Joiner</label>
+				<description>Date of the copy's last edit</description>
+			</field>
+			<field
+			  name="edit_date_hour"
+			  datatype="timestamptz">
+				<label>Edit Date and Hour Joiner</label>
+				<description>Date and Hour of the copy's last edit</description>
+			</field>
+			<field
+			  name="edit_date"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Edit Date</label>
+				<description>Timestamp of the copy's last edit</description>
 			</field>
 			<field
 			  name="item_lang"
@@ -73,6 +105,18 @@
 		</fields>
 
 		<links>
+			<link
+			  field="create_date_day"
+			  table="generic_day_series"
+			  id="copy_create_day"
+			  key="date"
+			  type="has_a"/>
+			<link
+			  field="create_date_hour"
+			  table="generic_hour_series"
+			  id="copy_create_hour"
+			  key="date_hour"
+			  type="has_a"/>
 			<link
 			  field="owning_lib"
 			  table="org_unit"
@@ -157,6 +201,50 @@
 			  datatype="text">
 				<label>Language Name</label>
 				<description>Name associated with the MARC code</description>
+			</field>
+		</fields>
+	</table>
+
+	<table id="generic_day_series" partition="false" fact-table="false">
+		<label>Constant day series</label>
+		<description>View providing a day series starting at 1900 and ending at 'now'</description>
+		<tablename>reporter.date_series</tablename>
+
+		<fields>
+			<field
+			  name="date"
+			  primary='true'
+			  datatype="text">
+				<label>Date joiner</label>
+				<description>Date joiner</description>
+			</field>
+			<field
+			  name="date_label"
+			  datatype="date">
+				<label>Date</label>
+				<description>Date</description>
+			</field>
+		</fields>
+	</table>
+
+	<table id="generic_hour_series" partition="false" fact-table="false">
+		<label>Constant hour series</label>
+		<description>View providing a hour series starting at 1900 and ending at 'now'</description>
+		<tablename>reporter.date_hour_series</tablename>
+
+		<fields>
+			<field
+			  name="date_hour"
+			  primary='true'
+			  datatype="text">
+				<label>time joiner</label>
+				<description>time joiner</description>
+			</field>
+			<field
+			  name="date_hour_label"
+			  datatype="timestamptz">
+				<label>Date and Hour</label>
+				<description>Date and Hour</description>
 			</field>
 		</fields>
 	</table>

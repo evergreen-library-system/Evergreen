@@ -135,7 +135,11 @@ CREATE TABLE asset.call_number_note (
 
 CREATE VIEW stats.fleshed_copy AS 
         SELECT  cp.*,
-                cn.label as call_number_label,
+		CAST(cp.create_date AS DATE) AS create_date_day,
+		CAST(cp.edit_date AS DATE) AS edit_date_day,
+		DATE_TRUNC('hour', cp.create_date) AS create_date_hour,
+		DATE_TRUNC('hour', cp.edit_date) AS edit_date_hour,
+                cn.label AS call_number_label,
                 cn.owning_lib,
                 rd.item_lang,
                 rd.item_type,
@@ -146,7 +150,11 @@ CREATE VIEW stats.fleshed_copy AS
 
 CREATE VIEW stats.fleshed_call_number AS 
         SELECT  cn.*,
-                rd.item_lang,
+       		CAST(cn.create_date AS DATE) AS create_date_day,
+		CAST(cn.edit_date AS DATE) AS edit_date_day,
+		DATE_TRUNC('hour', cn.create_date) AS create_date_hour,
+		DATE_TRUNC('hour', cn.edit_date) AS edit_date_hour,
+         	rd.item_lang,
                 rd.item_type,
                 rd.item_form
         FROM    asset.call_number cn

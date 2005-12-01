@@ -4,6 +4,20 @@ CREATE SCHEMA reporter;
 
 BEGIN;
 
+CREATE OR REPLACE VIEW reporter.date_series AS
+	SELECT	CAST('1900/01/01' AS DATE) + x AS date,
+		CAST('1900/01/01' AS DATE) + x AS date_label
+	  FROM	GENERATE_SERIES(
+	  		0,
+	  		CAST( EXTRACT( 'days' FROM CAST( NOW() - CAST( '1900/01/01' AS DATE ) AS INTERVAL ) ) AS INT )
+		) AS g(x);
+
+CREATE OR REPLACE VIEW reporter.date_hour_series AS
+	SELECT	CAST(date + CAST(h || ' hours' AS INTERVAL) AS TIMESTAMP WITH TIME ZONE) AS date_hour,
+		CAST(date + CAST(h || ' hours' AS INTERVAL) AS TIMESTAMP WITH TIME ZONE) AS date_hour_label
+	  FROM	reporter.date_series,
+	  	GENERATE_SERIES(0,23) g(h);
+
 CREATE TABLE reporter.stage2 (
 	id		serial				primary key,
 	stage1		text				not null, 
