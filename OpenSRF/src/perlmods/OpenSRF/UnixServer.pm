@@ -150,6 +150,7 @@ sub serve {
 	my( $self ) = @_;
 
 	my $app = $self->app();
+	$logger->set_service($app);
 
 	$0 = "OpenSRF master [$app]";
 
