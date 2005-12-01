@@ -19,46 +19,25 @@ main.menu.prototype = {
 		obj.tabs = obj.tabbox.firstChild;
 		obj.panels = obj.tabbox.lastChild;
 
-		var cmd_close_window = this.w.document.getElementById('cmd_close_window');
-			if (cmd_close_window)  {
-				var f = function() { obj.w.close(); };
-				cmd_close_window.addEventListener('command', f, false);
-				cmd_close_window.addEventListener('keypress', f, false);
-			}
-			
-		var cmd_new_window = this.w.document.getElementById('cmd_new_window');
-			if (cmd_new_window) {
-				var f = function() { 
-					obj.window.open('/xul/server/main/menu_frame.xul','test' + 
-						obj.window.appshell_name_increment++ ,'chrome'); 
-				};
-				cmd_new_window.addEventListener('command', f, false );
-				cmd_new_window.addEventListener('keypress', f, false );
-			}
+		var cmd_map = {
+			'cmd_close_window' : function() { obj.w.close(); },
+			'cmd_new_window' : function() {
+				obj.window.open('/xul/server/main/menu_frame.xul','test' + 
+					obj.window.appshell_name_increment++ ,'chrome'); 
+			},
+			'cmd_new_tab' : function() { obj.new_tab(true); },
+			'cmd_close_tab' : function() { obj.close_tab(); },
+			'cmd_broken' : function() { alert('Not Yet Implemented'); }
+		};
 
-		var cmd_new_tab = this.w.document.getElementById('cmd_new_tab');
-			if (cmd_new_tab) {
-				var f = function(ev) {
-					obj.new_tab(true);
-				};
-				cmd_new_tab.addEventListener('command', f, false );
-				cmd_new_tab.addEventListener('keypress', f, true );
+		for (var i in cmd_map) {
+			var cmd = this.w.document.getElementById(i);
+			if (cmd) {
+				cmd.addEventListener('command',cmd_map[i],false);
+				cmd.addEventListener('keypress',cmd_map[i],false);
 			}
+		}
 
-		var cmd_close_tab = this.w.document.getElementById('cmd_close_tab');
-			if (cmd_new_tab) {
-				var f = function(ev) { obj.close_tab(); };
-				cmd_close_tab.addEventListener('command', f, false );
-				cmd_close_tab.addEventListener('keypress', f, false );
-			}
-
-		var cmd_broken = this.w.document.getElementById('cmd_broken');
-			if (cmd_broken) {
-				var f = function() { alert('Not Yet Implemented'); };
-				cmd_broken.addEventListener('command', f, false);
-				cmd_broken.addEventListener('keypress', f, false);
-			}
-	
 		obj.new_tab(true);
 	},
 
