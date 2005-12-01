@@ -27,7 +27,10 @@ main.menu.prototype = {
 			},
 			'cmd_new_tab' : function() { obj.new_tab(true); },
 			'cmd_close_tab' : function() { obj.close_tab(); },
-			'cmd_broken' : function() { alert('Not Yet Implemented'); }
+			'cmd_broken' : function() { alert('Not Yet Implemented'); },
+			'cmd_circ_checkout' : function() { 
+				obj.set_tab('/xul/server/patron/patron_barcode_entry.xul');
+			}
 		};
 
 		for (var i in cmd_map) {

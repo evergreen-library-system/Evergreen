@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Retrieve Patron By Barcode -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "menu_frame.dtd">
+
+<window id="patron_barcode_entry_win" 
+	onload="my_init()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+
+				g.cgi = new CGI();
+
+				var tb = document.getElementById('barcode_tb');
+				tb.addEventListener(
+					'keypress',
+					function(ev) {
+						if (ev.keyCode == 13 || ev.keyCode == 77) {
+							spawn(g.cgi.params('session'));
+						}
+					},
+					false
+				);
+				tb.focus();
+	
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function spawn(session) {
+			var tb = document.getElementById('barcode_tb');
+			var barcode = tb.value;
+
+			location.href = '/xul/server/patron/patron_display.xul?session=' + session + '&barcode=' + barcode;
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Enter Patron Barcode" />
+			<hbox>
+				<label value="Patron Barcode:" accesskey="B" control="barcode_tb"/>
+				<textbox id="barcode_tb" />
+				<button label="Submit" accesskey="S" oncommand="spawn();"/>
+			</hbox>
+			<hbox>
+				<label id="status"/>
+			</hbox>
+		</groupbox>
+	</vbox>
+
+</window>
+
