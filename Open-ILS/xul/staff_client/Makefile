@@ -67,8 +67,8 @@ circ:
 	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/hold_capture_items.dtd)
 
 custom:
-	(cd chrome/content/evergreen/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
-	cp chrome/locale/en-US/evergreen/*.* ${MOZILLA_SPECIAL_RESOURCE}
+	#(cd chrome/content/evergreen/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
+	#cp chrome/locale/en-US/evergreen/*.* ${MOZILLA_SPECIAL_RESOURCE}
 
 evergreen.xpi: evergreen.jar
 	@echo
