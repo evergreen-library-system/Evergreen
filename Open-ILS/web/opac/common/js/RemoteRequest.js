@@ -199,7 +199,7 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(text == "" || text == " " || text == null) null;
 
 	var obj = JSON2js(text);
-
+	if(!obj) return null;
 
 	if( obj.status != 200 ) {
 		if(!isXUL()) {
