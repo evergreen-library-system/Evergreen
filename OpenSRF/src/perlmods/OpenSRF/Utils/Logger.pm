@@ -33,7 +33,7 @@ my $logfile;						# log file
 my $facility;						# syslog facility
 my $actfac;							# activity log syslog facility
 my $actfile;						# activity log file
-my $service = "osrf";			# default service name
+my $service = $0;			# default service name
 my $syslog_enabled = 0;			# is syslog enabled?
 my $act_syslog_enabled = 0;	# is syslog enabled?
 my $logfile_enabled = 1;		# are we logging to a file?
