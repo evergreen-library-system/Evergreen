@@ -771,7 +771,16 @@ sub generate_query {
 			my ($w) = keys %{ $$p{filter}{$t}{$c}{$fam} };
 			my $val = $$p{filter}{$t}{$c}{$fam}{$w};
 
-			if (ref $val) {
+			my $filter_code_xpath = "/reporter/widgets/widget-family[\@name='$fam']/widget[\@name='$w']/filter-code[\@type='perl']";
+			if (my $widget_code = $doc->findvalue($filter_code_xpath)) # widget supplys it's own filter code
+				my ($where_clause, $bind_list) = ('',[]);
+
+				eval $widget_code;
+
+				push @where, $where_clause;
+				push @bind, @$bind_list;
+
+			} elsif (ref $val) {
 				push @where, "$full_col IN (".join(",",map {'?'}@$val).")";
 				push @bind, @$val;
 			} else {
