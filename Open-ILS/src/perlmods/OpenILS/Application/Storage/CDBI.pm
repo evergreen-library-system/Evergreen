@@ -15,7 +15,7 @@ use OpenILS::Application::Storage::CDBI::permission;
 use OpenILS::Application::Storage::CDBI::container;
 
 use JSON;
-use OpenSRF::Utils::Logger;
+use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::EX qw/:try/;
 
 our $VERSION = undef;

@@ -2,6 +2,8 @@
 use strict; use warnings;
 use OpenSRF::System;
 use Time::HiRes qw/time/;
+use OpenSRF::Utils::Logger;
+my $log = "OpenSRF::Utils::Logger";
 
 # Test script which runs queries agains the opensrf.math service and reports on
 # the average round trip time of the requests.
@@ -12,6 +14,7 @@ print "usage: $0 <num_requests>\n" and exit unless $count;
 
 # * connect to the Jabber network
 OpenSRF::System->bootstrap_client( config_file => "/openils/conf/bootstrap.conf" );
+$log->set_service('math_bench');
 
 # * create a new application session for the opensrf.math service
 my $session = OpenSRF::AppSession->create( "opensrf.math" );

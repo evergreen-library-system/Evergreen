@@ -200,6 +200,8 @@ sub _log_message {
 
 	#my( $pack, $file, $line_no ) = @caller;
 
+	$msg = "[$n:"."$$".":::] $msg";
+
 	if( $level == ACTIVITY() ) {
 		if( is_act_syslog() ) { syslog( $fac | $l, $msg ); } 
 		elsif( is_act_filelog() ) { _write_file( $msg, 1 ); }

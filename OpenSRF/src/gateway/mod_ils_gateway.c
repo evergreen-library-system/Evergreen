@@ -176,9 +176,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	char* content = jsonObjectToJSON(response);
 	if(content) {
-		osrfLogInfo( "----------------------------------------------\n"
-			"Gateway responding with:\n%s\n"
-			"----------------------------------------------", content );
+		osrfLogInfo( "Gateway responding with:  %s", content );
 		ap_rputs(content,r);
 		free(content);
 	} 
