@@ -100,7 +100,7 @@ sub JSON2perl {
 	s/:/ => /sog;
 
 	# Do numbers...
-#	s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
+	#s/\b(-?\d+\.?\d*)\b/ JSON::number::new($1) /sog;
 
 	# Change javascript stuff to perl...
 	s/null/ undef /sog;
@@ -222,6 +222,8 @@ sub perl2JSON {
 			$c++;
 		}
 		$output .= ']';
+	} elsif (ref($perl) and ref($perl) =~ /CODE/) {
+		$output .= perl2JSON(undef,$perl->(), $strict);
 	} elsif (ref($perl) and ("$perl" =~ /^([^=]+)=(\w+)/o)) {
 		my $type = $2;
 		my $name = $1;
@@ -279,7 +281,7 @@ sub perl2prettyJSON {
 		$depth++;
 		for my $key (sort keys %$perl) {
 			$output .= ",\n" if ($c); 
-			
+			$output .= "   "x$depth;
 			$output .= perl2prettyJSON($key)." : ".perl2prettyJSON($$perl{$key}, undef, 1);
 			$c++;
 		}
@@ -294,7 +296,7 @@ sub perl2prettyJSON {
 		$depth++;
 		for my $part (@$perl) {
 			$output .= ",\n" if ($c); 
-			
+			$output .= "   "x$depth;
 			$output .= perl2prettyJSON($part);
 			$c++;
 		}
@@ -302,6 +304,8 @@ sub perl2prettyJSON {
 		$output .= "\n";
 		$output .= "   "x$depth;
 		$output .= "]";
+	} elsif (ref($perl) and ref($perl) =~ /CODE/) {
+		$output .= perl2prettyJSON(undef,$perl->(), $nospace);
 	} elsif (ref($perl) and "$perl" =~ /^([^=]+)=(\w{4,5})\(0x/) {
 		my $type = $2;
 		my $name = $1;
@@ -322,7 +326,6 @@ sub perl2prettyJSON {
 		} else {
 			$output = '"'.$perl.'"';
 		}
-		$output .= '"'.$perl.'"';
 	}
 
 	return $output;
