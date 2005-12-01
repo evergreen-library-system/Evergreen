@@ -24,6 +24,7 @@
         <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 		function my_init() {
@@ -38,7 +39,7 @@
 				g.cgi = new CGI();
 
 				JSAN.use('patron.display'); g.patron = new patron.display();
-				g.patron.init( { 'barcode' : g.cgi.param('barcode', 'session' : g.cgi.param('session') } );
+				g.patron.init( { 'barcode' : g.cgi.param('barcode') , 'session' : g.cgi.param('session') } );
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -53,7 +54,7 @@
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
-			<caption id="my_patron_name" />
+			<caption id="my_patron_caption" />
 		</groupbox>
 	</vbox>
 

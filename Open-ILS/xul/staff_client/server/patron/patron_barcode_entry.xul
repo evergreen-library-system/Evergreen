@@ -11,6 +11,10 @@
 <!-- LOCALIZATION -->
 <!DOCTYPE window SYSTEM "menu_frame.dtd">
 
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
 <window id="patron_barcode_entry_win" 
 	onload="my_init()"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -20,6 +24,7 @@
         <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 		function my_init() {
@@ -38,7 +43,7 @@
 					'keypress',
 					function(ev) {
 						if (ev.keyCode == 13 || ev.keyCode == 77) {
-							spawn(g.cgi.params('session'));
+							spawn(g.cgi.param('session'));
 						}
 					},
 					false
@@ -54,10 +59,12 @@
 		}
 
 		function spawn(session) {
+			alert('session = ' + session);
 			var tb = document.getElementById('barcode_tb');
 			var barcode = tb.value;
 
-			location.href = '/xul/server/patron/patron_display.xul?session=' + session + '&barcode=' + barcode;
+			location.href = '/xul/server/patron/patron_display.xul?session=' 
+				+ window.escape(session) + '&barcode=' + window.escape(barcode);
 		}
 
 	]]>
