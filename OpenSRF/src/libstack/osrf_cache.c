@@ -34,6 +34,7 @@ int osrfCacheInit( char* serverStrings[], int size, time_t maxCacheSeconds ) {
 int osrfCachePutObject( char* key, const jsonObject* obj, time_t seconds ) {
 	if( !(key && obj) ) return -1;
 	char* s = jsonObjectToJSON( obj );
+	osrfLogInternal("osrfCachePut(): Putting object: %s", s);
 	if( seconds < 0 ) seconds = __osrfCacheMaxSeconds;
 
 	mc_set(__osrfCache, key, strlen(key), s, strlen(s), seconds, 0);
@@ -44,6 +45,7 @@ int osrfCachePutObject( char* key, const jsonObject* obj, time_t seconds ) {
 int osrfCachePutString( char* key, const char* value, time_t seconds ) {
 	if( !(key && value) ) return -1;
 	if( seconds < 0 ) seconds = __osrfCacheMaxSeconds;
+	osrfLogInternal("osrfCachePutString(): Putting string: %s", value);
 	mc_set(__osrfCache, key, strlen(key), value, strlen(value), seconds, 0);
 	return 0;
 }
@@ -54,6 +56,7 @@ jsonObject* osrfCacheGetObject( char* key, ... ) {
 		VA_LIST_TO_STRING(key);
 		char* data = (char*) mc_aget( __osrfCache, VA_BUF, strlen(VA_BUF) );
 		if( data ) {
+			osrfLogInternal("osrfCacheGetObject(): Returning object: %s", data);
 			obj = jsonParseString( data );
 			return obj;
 		}
@@ -64,7 +67,9 @@ jsonObject* osrfCacheGetObject( char* key, ... ) {
 char* osrfCacheGetString( char* key, ... ) {
 	if( key ) {
 		VA_LIST_TO_STRING(key);
-		return (char*) mc_aget(__osrfCache, VA_BUF, strlen(VA_BUF) );
+		char* data = (char*) mc_aget(__osrfCache, VA_BUF, strlen(VA_BUF) );
+		osrfLogInternal("osrfCacheGetObject(): Returning object: %s", data);
+		return data;
 	}
 	return NULL;
 }

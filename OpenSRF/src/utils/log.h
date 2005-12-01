@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "utils.h"
 #include <time.h>
+#include <errno.h>
 
 #ifndef OSRF_LOG_INCLUDED
 #define OSRF_LOG_INCLUDED

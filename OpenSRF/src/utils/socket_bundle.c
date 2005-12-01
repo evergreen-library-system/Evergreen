@@ -404,9 +404,6 @@ void socket_disconnect(socket_manager* mgr, int sock_fd) {
 
 	osrfLogDebug("Closing socket %d", sock_fd);
 
-	if( shutdown( sock_fd, SHUT_RDWR ) )
-		osrfLogWarning( "socket_disconnect(): Error shuting down socket, removing anyway" );
-
 	if( close( sock_fd ) == -1 ) 
 		osrfLogWarning( "socket_disconnect(): Error closing socket, removing anyway" );
 
@@ -477,7 +474,7 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 	socket_node* node = mgr->socket;
 	int max_fd = 0;
 	while(node) {
-		//osrfLogDebug("Adding socket %d to select set",node->sock_fd);
+		osrfLogInternal("Adding socket fd %d to select set",node->sock_fd);
 		FD_SET( node->sock_fd, &read_set );
 		if(node->sock_fd > max_fd) max_fd = node->sock_fd;
 		node = node->next;
@@ -492,16 +489,16 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 
 		// If timeout is -1, there is no timeout passed to the call to select
 		if( (retval = select( max_fd, &read_set, NULL, NULL, NULL)) == -1 ) {
+			osrfLogWarning("Call to select interrupted (returned -1)");
 			osrfLogWarning("Sys Error: %s", strerror(errno));
-			osrfLogWarning("Call to select interrupted");
 			return -1;
 		}
 
 	} else if( timeout != 0 ) { /* timeout of 0 means don't block */
 
 		if( (retval = select( max_fd, &read_set, NULL, NULL, &tv)) == -1 ) {
+			osrfLogWarning( "Call to select interrupted (returned -1)" );
 			osrfLogWarning("Sys Error: %s", strerror(errno));
-			osrfLogWarning( "Call to select interrupted" );
 			return -1;
 		}
 	}

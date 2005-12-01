@@ -90,6 +90,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	char* uname = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 0));
 	char* password = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
 	char* storageMethod = "open-ils.storage.direct.actor.user.search.usrname.atomic";
+	osrfMessage* omsg = NULL;
 
 	if( uname && password ) {
 
@@ -97,10 +98,13 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		osrfLogDebug( "oilsAuth calling method %s with username %s", storageMethod, uname );
 
 		osrfAppSession* session = osrfAppSessionClientInit( "open-ils.storage" ); /**/
-		jsonObject* params = jsonNewObject(uname); /**/
+		//jsonObject* params = jsonNewObject(uname); /**/
+		jsonObject* params = jsonParseString("[\"%s\"]", uname);
 		int reqid = osrfAppSessionMakeRequest( session, params, storageMethod, 1, NULL );
 		jsonObjectFree(params);
-		osrfMessage* omsg = osrfAppSessionRequestRecv( session, reqid, 60 ); /**/
+		osrfLogInternal("oilsAuth waiting from response from storage...");
+		omsg = osrfAppSessionRequestRecv( session, reqid, 60 ); /**/
+		osrfLogInternal("oilsAuth storage request returned");
 
 		if(!omsg) { 
 			osrfAppSessionFree(session);
@@ -150,8 +154,10 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			char* authToken = md5sum(string); /**/
 			char* authKey = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
 
+			osrfLogInternal("oilsAuthComplete(): Setting fieldmapper string on the user object");
 			oilsFMSetString( userObj, "passwd", "" );
 			osrfCachePutObject( authKey, userObj, 28800 ); /* XXX config value */
+			osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
 			response = jsonNewObject( authToken );
 			free(string); free(authToken); free(authKey);
 
@@ -161,6 +167,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			response = jsonNewNumberObject(0);
 		}
 
+		osrfLogInternal("oilsAuthComplete responding to client");
 		osrfAppRespondComplete( ctx, response ); 
 		jsonObjectFree(response);
 		osrfMessageFree(omsg);

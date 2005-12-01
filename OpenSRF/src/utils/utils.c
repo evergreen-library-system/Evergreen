@@ -381,7 +381,10 @@ char* file_to_string(const char* filename) {
 
 	FILE* file = fopen(filename, "r");
 	if(!file) {
-		perror("Unable to open file in json_parse_file()");
+		int l = strlen(filename) + 64;
+		char b[l];
+		snprintf(b,l,"Unable to open file [%s] in file_to_string()", filename);
+		perror(b);
 		return NULL;
 	}
 

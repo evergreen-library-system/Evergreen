@@ -63,7 +63,7 @@ void osrfLogError( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_ERROR); }
 void osrfLogWarning( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_WARNING); }
 void osrfLogInfo( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_INFO); }
 void osrfLogDebug( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_DEBUG); }
-void osrfLogInternal( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_DEBUG); }
+void osrfLogInternal( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_INTERNAL); }
 void osrfLogActivity( const char* msg, ... ) { 
 	OSRF_LOG_GO(msg, OSRF_LOG_ACTIVITY); 
 	/* activity log entries are also logged as info intries */
@@ -125,7 +125,7 @@ void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, 
 		syslog( fac | lvl, "[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, VA_BUF );
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
-		_osrfLogToFile("[%s:%d:%s:%d:%s] %s", l, getpid(), filename, lb, func, VA_BUF );
+		_osrfLogToFile("[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, VA_BUF );
 }
 
 
@@ -136,15 +136,16 @@ void _osrfLogToFile( char* msg, ... ) {
 	VA_LIST_TO_STRING(msg);
 
 	if(!__osrfLogAppname) __osrfLogAppname = strdup("osrf");
-	int l = strlen(VA_BUF) + strlen(__osrfLogAppname) + 24;
+	int l = strlen(VA_BUF) + strlen(__osrfLogAppname) + 36;
 	char buf[l];
 	bzero(buf,l);
 
-	char datebuf[24];
-	bzero(datebuf,24);
+
+	char datebuf[36];
+	bzero(datebuf,36);
 	time_t t = time(NULL);
 	struct tm* tms = localtime(&t);
-	strftime(datebuf, 24, "%Y-%m-%d %h:%m:%s", tms);
+	strftime(datebuf, 36, "%Y-%m-%d %h:%m:%s", tms);
 
 	FILE* file = fopen(__osrfLogFile, "a");
 	if(!file) {
@@ -153,7 +154,9 @@ void _osrfLogToFile( char* msg, ... ) {
 	}
 
 	fprintf(file, "%s %s %s\n", __osrfLogAppname, datebuf, VA_BUF );
-	fclose(file);
+	if( fclose(file) != 0 ) 
+		osrfLogWarning("Error closing log file: %s", strerror(errno));
+	
 }
 
 

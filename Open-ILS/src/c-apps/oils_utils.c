@@ -16,8 +16,11 @@ jsonObject* oilsFMGetObject( jsonObject* object, char* field ) {
 
 int oilsFMSetString( jsonObject* object, char* field, char* string ) {
 	if(!(object && field && string)) return -1;
+	osrfLogInternal("oilsFMSetString(): Collecing position for field %s", field);
 	int pos = fm_ntop(object->classname, field);
 	if( pos > -1 ) {
+		osrfLogInternal("oilsFMSetString(): Setting string "
+				"%s at field %s [position %d]", string, field, pos );
 		jsonObjectSetIndex( object, pos, jsonNewObject(string) );
 		return 0;
 	}

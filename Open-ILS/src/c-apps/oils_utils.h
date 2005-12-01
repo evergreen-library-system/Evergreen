@@ -1,4 +1,5 @@
 #include "objson/object.h"
+#include "opensrf/log.h"
 #include "openils/fieldmapper_lookup.h"
 
 /**
