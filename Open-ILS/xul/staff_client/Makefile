@@ -3,9 +3,7 @@ PACKAGE=Evergreen
 DESCRIPTION=Evergreen Staff Client 
 BUILD=2005072719
 
-RETRIEVE_FIELDMAPPER=wget -N http://dev.gapines.org/opac/common/js/util/fieldmapper.js
 RETRIEVE_FM_ALL=wget -N http://dev.gapines.org/opac/common/js/fmall.js
-RETRIEVE_ORG_TREE=wget -N http://dev.gapines.org/opac/common/js/OrgTree.js
 RETRIEVE_CLIENT_CONFIG=cp ../../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
 MOZILLA_SPECIAL_RESOURCE=/home/phasefx/work/mozilla/dist/bin/res/dtd
 
@@ -39,8 +37,6 @@ stamp:
 generated:
 	@echo
 	@echo These things are installation specific.  The staff client is the last thing you should try to build.
-	#(cd chrome/content/evergreen/util ; ${RETRIEVE_FIELDMAPPER} );
-	#(cd chrome/content/evergreen/util ; ${RETRIEVE_ORG_TREE} );
 	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
 	(cd chrome/content/evergreen/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
 
