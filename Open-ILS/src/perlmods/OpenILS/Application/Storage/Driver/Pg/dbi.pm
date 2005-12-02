@@ -9,8 +9,8 @@
 	#-------------------------------------------------------------------------------
 	package container::user_bucket_item;
 
-	container::user_bucket->table( 'container.user_bucket_item' );
-	container::user_bucket->sequence( 'container.user_bucket_item_id_seq' );
+	container::user_bucket_item->table( 'container.user_bucket_item' );
+	container::user_bucket_item->sequence( 'container.user_bucket_item_id_seq' );
 
 	#-------------------------------------------------------------------------------
 	package container::copy_bucket;
@@ -21,8 +21,8 @@
 	#-------------------------------------------------------------------------------
 	package container::copy_bucket_item;
 
-	container::copy_bucket->table( 'container.copy_bucket_item' );
-	container::copy_bucket->sequence( 'container.copy_bucket_item_id_seq' );
+	container::copy_bucket_item->table( 'container.copy_bucket_item' );
+	container::copy_bucket_item->sequence( 'container.copy_bucket_item_id_seq' );
 
 	#-------------------------------------------------------------------------------
 	package container::call_number_bucket;
@@ -33,8 +33,8 @@
 	#-------------------------------------------------------------------------------
 	package container::call_number_bucket_item;
 
-	container::call_number_bucket->table( 'container.call_number_bucket_item' );
-	container::call_number_bucket->sequence( 'container.call_number_bucket_item_id_seq' );
+	container::call_number_bucket_item->table( 'container.call_number_bucket_item' );
+	container::call_number_bucket_item->sequence( 'container.call_number_bucket_item_id_seq' );
 
 	#-------------------------------------------------------------------------------
 	package container::biblio_record_entry_bucket;
@@ -45,8 +45,8 @@
 	#-------------------------------------------------------------------------------
 	package container::biblio_record_entry_bucket_item;
 
-	container::biblio_record_entry_bucket->table( 'container.biblio_record_entry_bucket_item' );
-	container::biblio_record_entry_bucket->sequence( 'container.biblio_record_entry_bucket_item_id_seq' );
+	container::biblio_record_entry_bucket_item->table( 'container.biblio_record_entry_bucket_item' );
+	container::biblio_record_entry_bucket_item->sequence( 'container.biblio_record_entry_bucket_item_id_seq' );
 
 	#---------------------------------------------------------------------
 	package money::grocery;
