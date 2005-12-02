@@ -18,6 +18,7 @@
 
 <window id="main_win" 
 	onload="main_init()"
+	title="&staff.auth.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
