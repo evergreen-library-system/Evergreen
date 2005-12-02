@@ -132,15 +132,46 @@ OpenILS.data.prototype = {
 	'list' : {},
 	'hash' : {},
 
-	'init' : function () {
+	'init' : function (stash) {
 
-		if (typeof this.on_complete == 'function') {
+		if (stash) {
 
-			this.chain.push( this.on_complete );
+			try {
+				const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+				var data_cache=new OpenILS( );
+				this.list = data_cache.wrappedJSObject.OpenILS.prototype.data.list;
+				this.hash = data_cache.wrappedJSObject.OpenILS.prototype.data.hash;
+			} catch(E) {
+				this.error.sdump('D_ERROR','Error in OpenILS.data.init(true): ' + js2JSON(E) );
+			}
+
+			if (typeof this.on_complete == 'function') {
+
+				this.on_complete();
+			}
+
+		} else {
+			if (typeof this.on_complete == 'function') {
+
+				this.chain.push( this.on_complete );
+			}
+
+			JSAN.use('util.exec');
+			util.exec.chain( this.chain );
 		}
+	},
 
-		JSAN.use('util.exec');
-		util.exec.chain( this.chain );
+	'stash' : function () {
+		try {
+			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+			var data_cache=new OpenILS( );
+			data_cache.wrappedJSObject.OpenILS.prototype.data = {
+				'list' : js2JSON( JSON2js( this.list ) ),
+				'hash' : js2JSON( JSON2js( this.hash ) )
+			}
+		} catch(E) {
+			this.error.sdump('D_ERROR','Error in OpenILS.data.stash(): ' + js2JSON(E) );
+		}
 	},
 
 	'_fm_objects' : {

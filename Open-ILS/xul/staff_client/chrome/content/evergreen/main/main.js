@@ -1,27 +1,8 @@
 dump('entering main/main.js\n');
 
-function test1() {
-		const Simple=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-		var simple=new Simple( );
-		for (var list in simple) { dump(list + '\n'); }
-		simple.help();
-		simple.wrappedJSObject.OpenILS.prototype.data = { 'hello' : 'world' };
-		dump( 'simple.wrappedJSObject.OpenILS.prototype.data  : ' + js2JSON(simple.wrappedJSObject.OpenILS.prototype.data) + '\n');
-}
-
-function test2() {
-		const Simple=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-		var simple=new Simple( );
-		dump( 'simple.wrappedJSObject.OpenILS.prototype.data  : ' + js2JSON(simple.wrappedJSObject.OpenILS.prototype.data) + '\n');
-}
-
-
 function main_init() {
 	dump('entering main_init()\n');
 	try {
-		test1(); test2();
-		alert('pause');
-		
 		var pref = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefBranch);
 		if (pref) {
@@ -65,6 +46,7 @@ function main_init() {
 				G.window.open('http://dev.gapines.org/xul/server/main/menu_frame.xul?session='+mw.escape(G.auth.session.key),'test','chrome');
 			}
 			G.OpenILS.data.init();
+			G.OpenILS.data.stash();
 		}
 
 		G.auth.init();

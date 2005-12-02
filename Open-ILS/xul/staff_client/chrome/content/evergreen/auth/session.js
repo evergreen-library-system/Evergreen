@@ -70,7 +70,7 @@ auth.session.prototype = {
 				this.on_init_error(E);
 			}
 
-			throw(E);
+			//throw(E);
 			/* This was for testing
 			if (typeof this.on_init == 'function') {
 				this.error.sdump('D_AUTH','auth.session.on_init() despite error\n');
