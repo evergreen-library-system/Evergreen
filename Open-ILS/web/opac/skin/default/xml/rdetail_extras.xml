@@ -11,18 +11,18 @@
 						class='classic_link'>Copy Information</a>
 				</td>
 
-				<td id='rdetail_reviews_link' class='hide_me' class='rdetail_extras_td'
+				<td id='rdetail_reviews_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("reviews");' 
 						class='classic_link'>Reviews</a>
 				</td>
 
-				<td id='rdetail_toc_link' class='hide_me' class='rdetail_extras_td'
+				<td id='rdetail_toc_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("toc");' 
 						class='classic_link'>Table of Contents</a>
 				</td>
-				<td id='rdetail_annotation_link' class='hide_me' class='rdetail_extras_td'
+				<td id='rdetail_annotation_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("annotation");' 
 						class='classic_link'>Annotation</a>
