@@ -110,30 +110,35 @@
 			<link
 			  field="create_date_day"
 			  table="generic_day_series"
+			  hidden="false"
 			  id="copy_create_day"
 			  key="date"
 			  type="has_a"/>
 			<link
 			  field="create_date_hour"
 			  table="generic_hour_series"
+			  hidden="false"
 			  id="copy_create_hour"
 			  key="date_hour"
 			  type="has_a"/>
 			<link
 			  field="edit_date_day"
 			  table="generic_day_series"
+			  hidden="false"
 			  id="copy_edit_day"
 			  key="date"
 			  type="has_a"/>
 			<link
 			  field="edit_date_hour"
 			  table="generic_hour_series"
+			  hidden="false"
 			  id="copy_edit_hour"
 			  key="date_hour"
 			  type="has_a"/>
 			<link
 			  field="owning_lib"
 			  table="org_unit"
+			  hidden="false"
 			  id="copy_owning_lib"
 			  key="id"
 			  type="has_a"/>
@@ -174,14 +179,16 @@
 			<field
 			  name="id"
 			  primary="true"
+			  filterable='true'
+			  widget-family="lib-choose"
 			  create-type="serial"
 			  datatype="int">
-				<label>ID</label>
-				<description>Library ID</description>
+				<label>Unique Library ID</label>
+				<description>Unique Library ID</description>
 			</field>
 			<field
 			  name="name"
-			  widget-family="lib-choose"
+			  widget-family="string-choose"
 			  datatype="text">
 				<label>Name</label>
 				<description>Library Name</description>
@@ -228,12 +235,7 @@
 			<field
 			  name="date"
 			  primary='true'
-			  datatype="text">
-				<label>Date joiner</label>
-				<description>Date joiner</description>
-			</field>
-			<field
-			  name="date_label"
+			  filterable='true'
 			  datatype="timestamptz">
 				<label>Date</label>
 				<description>Date</description>
@@ -250,12 +252,7 @@
 			<field
 			  name="date_hour"
 			  primary='true'
-			  datatype="text">
-				<label>time joiner</label>
-				<description>time joiner</description>
-			</field>
-			<field
-			  name="date_hour_label"
+			  filterable='true'
 			  datatype="timestamptz">
 				<label>Date and Hour</label>
 				<description>Date and Hour</description>

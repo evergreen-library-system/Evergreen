@@ -32,7 +32,7 @@ WRAPPER select id=input_prefix name=input_prefix onchange='change_hier_' _ table
 	INCLUDE option value='' content='Select One';
 	INCLUDE option value='' content='----------';
 	FOR f = DBI.query(root);
-		INCLUDE option value=f.$fieldname;
+		INCLUDE option value=f.id content=f.name;
 		INCLUDE next_level parent_ou = f.id depth;
 	END;
 END;
@@ -62,7 +62,7 @@ BLOCK next_level;
 			x = x - 1;
 		END;
 
-		INCLUDE option value=f.name content=val _ f.name id='dr_' _ f.id;
+		INCLUDE option value=f.id content=f.name content=val _ f.name id='dr_' _ f.id;
 		INCLUDE next_level parent_ou = f.id;
 	END;
 END;
