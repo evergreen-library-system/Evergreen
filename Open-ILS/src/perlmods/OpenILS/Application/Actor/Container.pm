@@ -21,7 +21,13 @@ __PACKAGE__->register_method(
 		VIEW_CONTAINER permissions.
 	NOTES
 
-
+__PACKAGE__->register_method(
+	method	=> "bucket_retrieve",
+	api_name	=> "open-ils.actor.container.biblio_record_entry_bucket.fleshed.retrieve_by_name",
+	notes		=> <<"	NOTES");
+		see: open-ils.actor.container.biblio_record_entry_bucket.retrieve_by_name
+		Returns an array of { bucket : <bucketObj>, items : [ <I1>, <I2>, ...] } objects
+	NOTES
 
 __PACKAGE__->register_method(
 	method	=> "bucket_retrieve",
@@ -32,6 +38,15 @@ __PACKAGE__->register_method(
 		If requestor ID is different than bucketOwnerId, requestor must have
 		VIEW_CONTAINER permissions.
 	NOTES
+
+__PACKAGE__->register_method(
+	method	=> "bucket_retrieve",
+	api_name	=> "open-ils.actor.container.biblio_record_entry_bucket.fleshed.retrieve_by_user",
+	notes		=> <<"	NOTES");
+		see: open-ils.actor.container.biblio_record_entry_bucket.retrieve_by_user
+		Returns an array of { bucket : <bucketObj>, items : [ <I1>, <I2>, ...] } objects
+	NOTES
+
 
 
 sub bucket_retrieve {
@@ -50,15 +65,32 @@ sub bucket_retrieve {
 	my $copymeth = "$meth.biblio_record_entry_bucket";
 	my $usermeth = "$meth.biblio_record_entry_bucket";
 
-	if( $self->api_name =~ /biblio.*retrieve_by_user/ ) {
-		return $apputils->simplereq( $svc, 
-			"$bibmeth.search.owner.atomic", $user ); }
+	my $buckets;
+	my $items;
+	my $resp = [];
 
-	if( $self->api_name =~ /biblio.*retrieve_by_name/ ) {
-		return $apputils->simplereq( $svc, 
-			"$bibmeth.search_where", { name => $name, owner => $user } ); }
+	if( $self->api_name =~ /biblio/ ) {
 
+		if( $self->api_name =~ /retrieve_by_user/ ) {
+			$buckets =  $apputils->simplereq( $svc, 
+				"$bibmeth.search.owner.atomic", $user ); }
+	
+		if( $self->api_name =~ /retrieve_by_name/ ) {
+			$buckets = $apputils->simplereq( $svc, 
+				"$bibmeth.search_where.atomic", { name => $name, owner => $user } ); }
 
+		if( $self->api_name =~ /fleshed/ ) {
+			for my $b (@$buckets) {
+				next unless $b;
+				$items = $apputils->simplereq( $svc,
+					"$bibmeth"."_item.search.bucket.atomic", $b->id );
+				push( @$resp, { bucket => $b , items => $items });
+			}
+		}
+	}
+
+	return $resp if ($self->api_name =~ /fleshed/);
+	return $buckets;
 }
 
 
