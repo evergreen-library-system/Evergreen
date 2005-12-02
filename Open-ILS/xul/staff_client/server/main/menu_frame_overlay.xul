@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "/xul/server/locale/menu_frame.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
 <?xul-overlay href="/xul/server/main/menu_frame_menus.xul"?>
 <overlay id="menu_frame_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
