@@ -99,7 +99,7 @@
 <!ENTITY rdetail.detailMain.hideMarc "Return to title details">
 
 <!ENTITY opac.holds.placeHold "Place a hold on the following item">
-<!ENTITY opac.holds.concactPhone "Concact telephone number">
+<!ENTITY opac.holds.contactPhone "Concact telephone number">
 <!ENTITY opac.holds.concactEmail "Concact email address">
 <!ENTITY opac.holds.pickupLocation "Pickup location">
 <!ENTITY opac.holds.placeHold	"Place Hold">
@@ -127,652 +127,652 @@
 		======================================================================================= -->
 
 
-<!ENTITY about.title "About">
-<!ENTITY auth.login_header "Login">
-<!ENTITY auth.logoff_prompt "Log Off"><!ENTITY auth.logoff_prompt.key "L">
-<!ENTITY auth.name_prompt "Name:"><!ENTITY auth.name_prompt.key "N">
-<!ENTITY auth.password_prompt "Password:"><!ENTITY auth.password_prompt.key "P">
-<!ENTITY auth.quit_prompt "Exit Evergreen"><!ENTITY auth.quit_prompt.key "x">
-<!ENTITY auth.submit_prompt "Submit"><!ENTITY auth.submit_prompt.key "S">
-<!ENTITY auth.title "Evergreen Staff Client 3">
-<!ENTITY auth.version "Evergreen 0.1.0 20051202">
-<!ENTITY browse_list.barcode "Barcode">
-<!ENTITY browse_list.callnumber "Call Number">
-<!ENTITY browse_list.circ_as_type "Circulate As">
-<!ENTITY browse_list.circ_lib "Circulating Lib">
-<!ENTITY browse_list.circ_modifier "Circ Modifier">
-<!ENTITY browse_list.circulate "Circulate">
-<!ENTITY browse_list.copy_number "Copy Number">
-<!ENTITY browse_list.create_date "Creation Date">
-<!ENTITY browse_list.creator "Creator">
-<!ENTITY browse_list.deposit "Deposit">
-<!ENTITY browse_list.deposit_amount "Deposit Amount">
-<!ENTITY browse_list.edit_date "Edit Date">
-<!ENTITY browse_list.editor "Editor">
-<!ENTITY browse_list.fine_level "Fine Level">
-<!ENTITY browse_list.library "Owning Lib">
-<!ENTITY browse_list.loan_duration "Loan Duration">
-<!ENTITY browse_list.location "Location/Barcode">
-<!ENTITY browse_list.location2 "Location">
-<!ENTITY browse_list.opac_visible "OPAC">
-<!ENTITY browse_list.price "Price">
-<!ENTITY browse_list.ref "Reference">
-<!ENTITY browse_list.shelving_loc "Shelving Location">
-<!ENTITY browse_list.status "Status">
-<!ENTITY browse_list.win_title "Cataloging">
-<!ENTITY cat.fixed.BKS "BKS"> <!ENTITY cat.fixed.BKS.key "B">
-<!ENTITY cat.fixed.COM "COM"> <!ENTITY cat.fixed.COM.key "O">
-<!ENTITY cat.fixed.MAP "MAP"> <!ENTITY cat.fixed.MAP.key "P">
-<!ENTITY cat.fixed.MIX "MIX"> <!ENTITY cat.fixed.MIX.key "M">
-<!ENTITY cat.fixed.REC "REC"> <!ENTITY cat.fixed.REC.key "R">
-<!ENTITY cat.fixed.SCO "SCO"> <!ENTITY cat.fixed.SCO.key "C">
-<!ENTITY cat.fixed.SER "SER"> <!ENTITY cat.fixed.SER.key "S">
-<!ENTITY cat.fixed.VIS "VIS"> <!ENTITY cat.fixed.VIS.key "V">
-<!ENTITY cat.popup.add_to_bucket "Add to Bucket"> <!ENTITY cat.popup.add_to_bucket.key "">
-<!ENTITY cat.popup.browse_record.tab "View Copies (Tab)"> <!ENTITY cat.popup.browse.record.tab.key "">
-<!ENTITY cat.popup.browse_record.window "View Copies (Window)"> <!ENTITY cat.popup.browse.record.window.key "">
-<!ENTITY cat.popup.edit_record.tab "Edit Record (Tab)"> <!ENTITY cat.popup.edit.record.tab.key "">
-<!ENTITY cat.popup.edit_record.window "Edit Record (Window)"> <!ENTITY cat.popup.edit.record.window.key "">
-<!ENTITY cat.search_advanced "Advanced"> <!ENTITY cat.search_advanced.key "V">
-<!ENTITY cat.search_all "Keyword">
-<!ENTITY cat.search_author "Author">
-<!ENTITY cat.search_barcode "Item Barcode">
-<!ENTITY cat.search_callnumber "Call Number">
-<!ENTITY cat.search_count_copy "Location"> <!ENTITY cat.search_count_copy.key "L">
-<!ENTITY cat.search_count_copy_show "Show Only These Records">
-<!ENTITY cat.search_criteria "Search Criteria">
-<!ENTITY cat.search_format "Format"> <!ENTITY cat.search_format.key "F">
-<!ENTITY cat.search_id "System ID">
-<!ENTITY cat.search_isbn "ISBN/ISSN">
-<!ENTITY cat.search_location "Location"> <!ENTITY cat.search_location.key "L">
-<!ENTITY cat.search_order "Order"> <!ENTITY cat.search_order.key "O">
-<!ENTITY cat.search_pubyear "Pub Year">
-<!ENTITY cat.search_subject "Subject">
-<!ENTITY cat.search_submit "Search"> <!ENTITY cat.search_submit.key "S">
-<!ENTITY cat.search_tcn "TCN">
-<!ENTITY cat.search_term "Terms"> <!ENTITY cat.search_term.key "e">
-<!ENTITY cat.search_title "Title">
-<!ENTITY cat.search_type "Type"> <!ENTITY cat.search_type.key "T">
-<!ENTITY cat.test "Test"> <!ENTITY cat.test.key "E">
-<!ENTITY cat.title "TCN goes here">
-<!ENTITY cat.type_of_material "All">
-<!ENTITY cat.type_of_material.a "Language Material">
-<!ENTITY cat.type_of_material.c "Notated Music">
-<!ENTITY cat.type_of_material.d "Manuscript Notated Music">
-<!ENTITY cat.type_of_material.e "Cartographic Material">
-<!ENTITY cat.type_of_material.f "Manuscript Cartographic Material">
-<!ENTITY cat.type_of_material.g "Projected Medium">
-<!ENTITY cat.type_of_material.i "Nonmusical Sound Recording">
-<!ENTITY cat.type_of_material.j "Musical Sound Recording">
-<!ENTITY cat.type_of_material.k "Two-dimensional Nonprojectable Graphic">
-<!ENTITY cat.type_of_material.m "Computer File">
-<!ENTITY cat.type_of_material.o "Kit">
-<!ENTITY cat.type_of_material.p "Mixed Material">
-<!ENTITY cat.type_of_material.r "Three-dimensional Artifact or Naturally Occuring Object">
-<!ENTITY cat.type_of_material.t "Manuscript Language Material">
-<!ENTITY checkin.auto_print_label 'Auto-Print'>
-<!ENTITY checkin.auto_print_label.accesskey 'A'>
-<!ENTITY checkin.done_label 'Done'>
-<!ENTITY checkin.done_label.accesskey 'D'>
-<!ENTITY checkin.print_receipt_label 'Print List'>
-<!ENTITY checkin.print_receipt_label.accesskey ''>
-<!ENTITY checkin.reprint_receipt_label 'Re-Print Last List'>
-<!ENTITY checkin.reprint_receipt_label.accesskey 'L'>
-<!ENTITY checkin_patron.name.label 'Patron Name'>
-<!ENTITY checkin_patron.retrieve 'Retrieve Patron'>
-<!ENTITY checkin_patron.retrieve.accesskey 'R'>
-<!ENTITY circ.checkin.caption 'Check In'>
-<!ENTITY circ.checkin.scan_label 'Enter Barcode:'>
-<!ENTITY circ.checkin.scan_label.accesskey 'a'>
-<!ENTITY circ.checkin.submit_label 'Submit'>
-<!ENTITY circ.checkin.submit_label.accesskey 'S'>
-<!ENTITY circ.hold_capture.caption 'Capture Hold'>
-<!ENTITY circ.hold_capture.scan_label 'Enter Barcode:'>
-<!ENTITY circ.hold_capture.scan_label.accesskey 'a'>
-<!ENTITY circ.hold_capture.submit_label 'Submit'>
-<!ENTITY circ.hold_capture.submit_label.accesskey 'S'>
-<!ENTITY copy.attr.barcode "Barcode">
-<!ENTITY copy.attr.circulate "Circulate?">
-<!ENTITY copy.attr.circulate.no "No">
-<!ENTITY copy.attr.circulate.yes "Yes">
-<!ENTITY copy.attr.circulating_lib "Circulating Library">
-<!ENTITY copy.attr.copy_available "Copy Status: Available?">
-<!ENTITY copy.attr.copy_status "Copy Status">
-<!ENTITY copy.attr.deposit "Deposit?">
-<!ENTITY copy.attr.deposit.no "No">
-<!ENTITY copy.attr.deposit.yes "Yes">
-<!ENTITY copy.attr.deposit_amount "Amount">
-<!ENTITY copy.attr.deposit_notes "Deposit Notes">
-<!ENTITY copy.attr.fine_level "Fine Level">
-<!ENTITY copy.attr.fine_level.high "High">
-<!ENTITY copy.attr.fine_level.low "Low">
-<!ENTITY copy.attr.fine_level.normal "Normal">
-<!ENTITY copy.attr.holds_protection "Holds Protection">
-<!ENTITY copy.attr.holds_protection.example1 "3 months (facility)">
-<!ENTITY copy.attr.holds_protection.example2 "6 months (region)">
-<!ENTITY copy.attr.holds_protection.example3 "No hold protection">
-<!ENTITY copy.attr.holds_protection.example4 "Not holdable">
-<!ENTITY copy.attr.home_lib "Home Library">
-<!ENTITY copy.attr.loan_duration "Loan Duration">
-<!ENTITY copy.attr.loan_duration.long "Long">
-<!ENTITY copy.attr.loan_duration.normal "Normal">
-<!ENTITY copy.attr.loan_duration.short "Short">
-<!ENTITY copy.attr.notes "Copy Notes">
-<!ENTITY copy.attr.notes_viewable "Copy Notes Patron Viewable?">
-<!ENTITY copy.attr.notes_viewable.example1 "Yes">
-<!ENTITY copy.attr.notes_viewable.example2 "No">
-<!ENTITY copy.attr.opac_visible "OPAC Visible?">
-<!ENTITY copy.attr.opac_visible.no "No">
-<!ENTITY copy.attr.opac_visible.yes "Yes">
-<!ENTITY copy.attr.price "Price">
-<!ENTITY copy.attr.reference_material "Reference Material?">
-<!ENTITY copy.attr.reference_material.no "No">
-<!ENTITY copy.attr.reference_material.yes "Yes">
-<!ENTITY copy.attr.shelving_location "Shelving Location">
-<!ENTITY copy.attr.shelving_location.example1 "Stacks">
-<!ENTITY copy.attr.shelving_location.example10 "Paperback">
-<!ENTITY copy.attr.shelving_location.example2 "Audio-Visual">
-<!ENTITY copy.attr.shelving_location.example3 "Children's Room">
-<!ENTITY copy.attr.shelving_location.example4 "Garden Room">
-<!ENTITY copy.attr.shelving_location.example5 "Reference">
-<!ENTITY copy.attr.shelving_location.example6 "Ready Reference">
-<!ENTITY copy.attr.shelving_location.example7 "Behind Circulation Desk">
-<!ENTITY copy.attr.shelving_location.example8 "Display">
-<!ENTITY copy.attr.shelving_location.example9 "Health">
-<!ENTITY copy.attr.stat.audience "Audience">
-<!ENTITY copy.attr.stat.audience.example1 "Adult">
-<!ENTITY copy.attr.stat.audience.example2 "Juvenile">
-<!ENTITY copy.attr.stat.audience.example3 "Preschool">
-<!ENTITY copy.attr.stat.audience.example4 "Primary">
-<!ENTITY copy.attr.stat.audience.example5 "Pre-adolescent">
-<!ENTITY copy.attr.stat.audience.example6 "Young adult">
-<!ENTITY copy.attr.stat.audience.example7 "General">
-<!ENTITY copy.attr.stat.genre "Genre">
-<!ENTITY copy.attr.stat.genre.example1 "Adventure">
-<!ENTITY copy.attr.stat.genre.example10 "Spy">
-<!ENTITY copy.attr.stat.genre.example11 "Thriller">
-<!ENTITY copy.attr.stat.genre.example12 "War">
-<!ENTITY copy.attr.stat.genre.example13 "Western">
-<!ENTITY copy.attr.stat.genre.example14 "Religious fiction">
-<!ENTITY copy.attr.stat.genre.example15 "Shortstory">
-<!ENTITY copy.attr.stat.genre.example16 "Biography">
-<!ENTITY copy.attr.stat.genre.example17 "Holiday">
-<!ENTITY copy.attr.stat.genre.example18 "Nonfiction">
-<!ENTITY copy.attr.stat.genre.example2 "Fantasy">
-<!ENTITY copy.attr.stat.genre.example3 "Historical">
-<!ENTITY copy.attr.stat.genre.example4 "Holiday">
-<!ENTITY copy.attr.stat.genre.example5 "Horror">
-<!ENTITY copy.attr.stat.genre.example6 "Humor">
-<!ENTITY copy.attr.stat.genre.example7 "Mystery">
-<!ENTITY copy.attr.stat.genre.example8 "Romance">
-<!ENTITY copy.attr.stat.genre.example9 "Sci-fi">
-<!ENTITY copy.bucket "Add to Bucket"><!ENTITY copy.bucket.key "B">
-<!ENTITY copy.clone "Clone Copy"> <!ENTITY copy.clone.key "">
-<!ENTITY copy.close "Close Window"><!ENTITY copy.close.key "C">
-<!ENTITY copy.default.attr "Default Attributes"> <!ENTITY copy.default.attr.value "Value">
-<!ENTITY copy.delete "Delete Copy"> <!ENTITY copy.delete.key "">
-<!ENTITY copy.edit_categories "Edit Categories">
-<!ENTITY copy.edit_entries "Edit Entries">
-<!ENTITY copy.local.attr "Local Attributes"> <!ENTITY copy.local.attr.value "Value">
-<!ENTITY copy.notes "Note">
-<!ENTITY copy.notes.add "Add Note"> <!ENTITY copy.notes.add.key "A">
-<!ENTITY copy.notes.date "Date">
-<!ENTITY copy.notes.delete "Delete Note"> <!ENTITY copy.notes.delete.key "D">
-<!ENTITY copy.notes.from "From">
-<!ENTITY copy.notes.opac "OPAC">
-<!ENTITY copy.pines.attr "PINES Attributes"> <!ENTITY copy.pines.attr.value "Value">
-<!ENTITY copy.reload "Reload Copy"> <!ENTITY copy.reload.key "R">
-<!ENTITY copy.save "Save Copy"> <!ENTITY copy.save.key "S">
-<!ENTITY copy.title "Barcode goes here">
-<!ENTITY copy.transfer "Transfer Copy"> <!ENTITY copy.transfer.key "">
-<!ENTITY copy.wizard.title "Batch Add Copies Wizard">
-<!ENTITY displaying.hits_per_page 'Results per page'>
-<!ENTITY displaying.of 'of'>
-<!ENTITY displaying.results 'Displaying results'>
-<!ENTITY hold_capture.auto_print_label 'Auto-Print'>
-<!ENTITY hold_capture.auto_print_label.accesskey 'A'>
-<!ENTITY hold_capture.done_label 'Done'>
-<!ENTITY hold_capture.done_label.accesskey 'D'>
-<!ENTITY hold_capture.print_receipt_label 'Print List'>
-<!ENTITY hold_capture.print_receipt_label.accesskey ''>
-<!ENTITY hold_capture.reprint_receipt_label 'Re-Print Last List'>
-<!ENTITY hold_capture.reprint_receipt_label.accesskey 'L'>
-<!ENTITY hold_capture_patron.name.label 'Patron Name'>
-<!ENTITY hold_capture_patron.retrieve 'Retrieve Patron'>
-<!ENTITY hold_capture_patron.retrieve.accesskey 'R'>
-<!ENTITY main.menu.acquisitions.label "Acquisitions"><!ENTITY main.menu.acquisitions.key "q">
-<!ENTITY main.menu.admin.label "Admin"><!ENTITY main.menu.admin.key "i">
-<!ENTITY main.menu.cat.add_bib.label "Add Bib Record"><!ENTITY main.menu.cat.add_bib.key "B">
-<!ENTITY main.menu.cat.add_copy.label "Add Item"><!ENTITY main.menu.cat.add_copy.key "I">
-<!ENTITY main.menu.cat.add_volume.label "Add Volume"><!ENTITY main.menu.cat.add_volume.key "V">
-<!ENTITY main.menu.cat.bib_search.label "Search Catalog"><!ENTITY main.menu.cat.bib_search.key "S">
-<!ENTITY main.menu.cat.bib_status.label "Display Bib Record"><!ENTITY main.menu.cat.bib_status.key "B">
-<!ENTITY main.menu.cat.copy_status.label "Display Item"><!ENTITY main.menu.cat.copy_status.key "I">
-<!ENTITY main.menu.cat.dedup.label "Merge/Transfer Interface"><!ENTITY main.menu.cat.dedup.key "M">
-<!ENTITY main.menu.cat.label "Cataloging"><!ENTITY main.menu.cat.key "a">
-<!ENTITY main.menu.cat.volume_status.label "Display Volume"><!ENTITY main.menu.cat.volume_status.key "V">
-<!ENTITY main.menu.circ.checkin.label "Check In"><!ENTITY main.menu.circ.checkin.key "C">
-<!ENTITY main.menu.circ.checkout.label "Check Out"><!ENTITY main.menu.circ.checkout.key "O">
-<!ENTITY main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'><!ENTITY main.menu.circ.claimed_returned.key "C">
-<!ENTITY main.menu.circ.copy_status.label "Display Item"><!ENTITY main.menu.circ.copy_status.key "I">
-<!ENTITY main.menu.circ.found.label "Mark Found"><!ENTITY main.menu.circ.found.key "F">
-<!ENTITY main.menu.circ.hold_capture.label "Capture Holds"><!ENTITY main.menu.circ.hold_capture.key "H">
-<!ENTITY main.menu.circ.label "Circulation"><!ENTITY main.menu.circ.key "C">
-<!ENTITY main.menu.circ.lost.label "Mark Lost"><!ENTITY main.menu.circ.lost.key "L">
-<!ENTITY main.menu.circ.mark_used.label "Mark Used"><!ENTITY main.menu.circ.mark_used.key "U">
-<!ENTITY main.menu.circ.missing.label "Mark Missing"><!ENTITY main.menu.circ.missing.key "M">
-<!ENTITY main.menu.circ.patron_registration.label "Register Patron"><!ENTITY main.menu.circ.patron_registration.key "R">
-<!ENTITY main.menu.circ.patron_status.label "Display Patron"><!ENTITY main.menu.circ.patron_status.key "P">
-<!ENTITY main.menu.circ.place_hold.label "Place Hold"><!ENTITY main.menu.circ.place_hold.key "H">
-<!ENTITY main.menu.circ.quick_add.label "Quick Add"><!ENTITY main.menu.circ.quick_add.key "Q">
-<!ENTITY main.menu.circ.renew.label "Renew"><!ENTITY main.menu.circ.renew.key "n">
-<!ENTITY main.menu.circ.special.label "Special Circulation"><!ENTITY main.menu.circ.special.key "S">
-<!ENTITY main.menu.edit.buckets.label "Manage Buckets"><!ENTITY main.menu.edit.buckets.key "B">
-<!ENTITY main.menu.edit.copy.label "Copy"><!ENTITY main.menu.edit.copy.key "C">
-<!ENTITY main.menu.edit.cut.label "Cut"><!ENTITY main.menu.edit.cut.key "t">
-<!ENTITY main.menu.edit.delete.label "Delete"><!ENTITY main.menu.edit.delete.key "D">
-<!ENTITY main.menu.edit.find.label "Find"><!ENTITY main.menu.edit.find.key "F">
-<!ENTITY main.menu.edit.find_again.label "Find Again"><!ENTITY main.menu.edit.find_again.key "g">
-<!ENTITY main.menu.edit.label "Edit"><!ENTITY main.menu.edit.key "E">
-<!ENTITY main.menu.edit.paste.label "Paste"><!ENTITY main.menu.edit.paste.key "P">
-<!ENTITY main.menu.edit.redo.label "Redo"><!ENTITY main.menu.edit.redo.key "R">
-<!ENTITY main.menu.edit.select_all.label "Select All"><!ENTITY main.menu.edit.select_all.key "A">
-<!ENTITY main.menu.edit.undo.label "Undo"><!ENTITY main.menu.edit.undo.key "U">
-<!ENTITY main.menu.entity.bib.label "Bib Records"><!ENTITY main.menu.entity.bib.key "">
-<!ENTITY main.menu.entity.copy.label "Items"><!ENTITY main.menu.entity.copy.key "">
-<!ENTITY main.menu.entity.patron.label "Patrons"><!ENTITY main.menu.entity.patron.key "">
-<!ENTITY main.menu.entity.patron.register.key "R">
-<!ENTITY main.menu.entity.volume.label "Volumes"><!ENTITY main.menu.entity.volume.key "">
-<!ENTITY main.menu.file.close.label "Close Window"><!ENTITY main.menu.file.close.key "C">
-<!ENTITY main.menu.file.close_tab.label "Close Tab"><!ENTITY main.menu.file.close_tab.key "">
-<!ENTITY main.menu.file.label "File"><!ENTITY main.menu.file.key "F">
-<!ENTITY main.menu.file.new.label "New Window"><!ENTITY main.menu.file.new.key "N">
-<!ENTITY main.menu.file.new_tab.label "New Tab"><!ENTITY main.menu.file.new_tab.key "T">
-<!ENTITY main.menu.file.open.label "Open Session"><!ENTITY main.menu.file.open.key "O">
-<!ENTITY main.menu.file.save.label "Save Session"><!ENTITY main.menu.file.save.key "S">
-<!ENTITY main.menu.help.label "Help"><!ENTITY main.menu.help.key "H">
-<!ENTITY main.menu.reports.label "Reports"><!ENTITY main.menu.reports.key "">
-<!ENTITY main.menu.search.label "Search"><!ENTITY main.menu.search.key "r">
-<!ENTITY main.menu.serials.label "Serials"><!ENTITY main.menu.serials.key "l">
-<!ENTITY main.menu.title "Evergreen Staff Client">
-<!ENTITY marc.008.BKS.MAP.indx.desc "Index">
-<!ENTITY marc.008.BKS.MAP.indx.field "008">
-<!ENTITY marc.008.BKS.MAP.indx.field_end_pos "31">
-<!ENTITY marc.008.BKS.MAP.indx.field_size "1">
-<!ENTITY marc.008.BKS.MAP.indx.field_start_pos "31">
-<!ENTITY marc.008.BKS.MAP.indx.help "http://www.oclc.org/bibformats/en/fixedfield/indx.shtm">
-<!ENTITY marc.008.BKS.MAP.indx.short "Indx"> 
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.desc "Form of Item">
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.field "008">
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.field_end_pos "23">
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.field_size "1">
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.field_start_pos "23">
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.help "http://www.oclc.org/bibformats/en/fixedfield/form.shtm">
-<!ENTITY marc.008.BKS.SER.MIX.SCO.REC.form.short "Form"> 
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.desc "Government Publication">
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.field "008">
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.field_end_pos "28">
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.field_size "1">
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.field_start_pos "28">
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.help "http://www.oclc.org/bibformats/en/fixedfield/gpub.shtm">
-<!ENTITY marc.008.BKS.SER.VIS.MAP.COM.gpub.short "GPub"> 
-<!ENTITY marc.008.BKS.SER.conf.desc "Conference Publication">
-<!ENTITY marc.008.BKS.SER.conf.field "008">
-<!ENTITY marc.008.BKS.SER.conf.field_end_pos "29">
-<!ENTITY marc.008.BKS.SER.conf.field_size "1">
-<!ENTITY marc.008.BKS.SER.conf.field_start_pos "29">
-<!ENTITY marc.008.BKS.SER.conf.help "http://www.oclc.org/bibformats/en/fixedfield/conf.shtm">
-<!ENTITY marc.008.BKS.SER.conf.short "Conf"> 
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.desc "Target Audience">
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.field "008">
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.field_end_pos "22">
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.field_size "1">
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.field_start_pos "22">
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.help "http://www.oclc.org/bibformats/en/fixedfield/audn.shtm">
-<!ENTITY marc.008.BKS.VIS.SCO.REC.COM.audn.short "Audn"> 
-<!ENTITY marc.008.BKS.biog.desc "Biography">
-<!ENTITY marc.008.BKS.biog.field "008">
-<!ENTITY marc.008.BKS.biog.field_end_pos "34">
-<!ENTITY marc.008.BKS.biog.field_size "1">
-<!ENTITY marc.008.BKS.biog.field_start_pos "34">
-<!ENTITY marc.008.BKS.biog.help "http://www.oclc.org/bibformats/en/fixedfield/biog.shtm">
-<!ENTITY marc.008.BKS.biog.short "Biog"> 
-<!ENTITY marc.008.BKS.cont.desc "Nature of Contents">
-<!ENTITY marc.008.BKS.cont.field "008">
-<!ENTITY marc.008.BKS.cont.field_end_pos "27">
-<!ENTITY marc.008.BKS.cont.field_size "4">
-<!ENTITY marc.008.BKS.cont.field_start_pos "24">
-<!ENTITY marc.008.BKS.cont.help "http://www.oclc.org/bibformats/en/fixedfield/cont.shtm">
-<!ENTITY marc.008.BKS.cont.short "Cont"> 
-<!ENTITY marc.008.BKS.fest.desc "Festschrift">
-<!ENTITY marc.008.BKS.fest.field "008">
-<!ENTITY marc.008.BKS.fest.field_end_pos "30">
-<!ENTITY marc.008.BKS.fest.field_size "1">
-<!ENTITY marc.008.BKS.fest.field_start_pos "30">
-<!ENTITY marc.008.BKS.fest.help "http://www.oclc.org/bibformats/en/fixedfield/fest.shtm">
-<!ENTITY marc.008.BKS.fest.short "Fest"> 
-<!ENTITY marc.008.BKS.ills.desc "Illustrations">
-<!ENTITY marc.008.BKS.ills.field "008">
-<!ENTITY marc.008.BKS.ills.field_end_pos "21">
-<!ENTITY marc.008.BKS.ills.field_size "4">
-<!ENTITY marc.008.BKS.ills.field_start_pos "18">
-<!ENTITY marc.008.BKS.ills.help "http://www.oclc.org/bibformats/en/fixedfield/ills.shtm">
-<!ENTITY marc.008.BKS.ills.short "Ills"> 
-<!ENTITY marc.008.BKS.litf.desc "Literary Form">
-<!ENTITY marc.008.BKS.litf.field "008">
-<!ENTITY marc.008.BKS.litf.field_end_pos "33">
-<!ENTITY marc.008.BKS.litf.field_size "1">
-<!ENTITY marc.008.BKS.litf.field_start_pos "33">
-<!ENTITY marc.008.BKS.litf.help "http://www.oclc.org/bibformats/en/fixedfield/litf.shtm">
-<!ENTITY marc.008.BKS.litf.short "LitF"> 
-<!ENTITY marc.008.MAP.VIS.form.desc "Form of Item">
-<!ENTITY marc.008.MAP.VIS.form.field "008">
-<!ENTITY marc.008.MAP.VIS.form.field_end_pos "29">
-<!ENTITY marc.008.MAP.VIS.form.field_size "1">
-<!ENTITY marc.008.MAP.VIS.form.field_start_pos "29">
-<!ENTITY marc.008.MAP.VIS.form.help "http://www.oclc.org/bibformats/en/fixedfield/form.shtm">
-<!ENTITY marc.008.MAP.VIS.form.short "Form"> 
-<!ENTITY marc.008.SER.alph.desc "Original Alphabet or Script of Title">
-<!ENTITY marc.008.SER.alph.field "008">
-<!ENTITY marc.008.SER.alph.field_end_pos "33">
-<!ENTITY marc.008.SER.alph.field_size "1">
-<!ENTITY marc.008.SER.alph.field_start_pos "33">
-<!ENTITY marc.008.SER.alph.help "http://www.oclc.org/bibformats/en/fixedfield/alph.shtm">
-<!ENTITY marc.008.SER.alph.short "Alph"> 
-<!ENTITY marc.008.SER.cont.desc "Nature of Contents">
-<!ENTITY marc.008.SER.cont.field "008">
-<!ENTITY marc.008.SER.cont.field_end_pos "27">
-<!ENTITY marc.008.SER.cont.field_size "3">
-<!ENTITY marc.008.SER.cont.field_start_pos "25">
-<!ENTITY marc.008.SER.cont.help "http://www.oclc.org/bibformats/en/fixedfield/cont.shtm">
-<!ENTITY marc.008.SER.cont.short "Cont"> 
-<!ENTITY marc.008.SER.entw.desc "Nature of Entire Work">
-<!ENTITY marc.008.SER.entw.field "008">
-<!ENTITY marc.008.SER.entw.field_end_pos "24">
-<!ENTITY marc.008.SER.entw.field_size "1">
-<!ENTITY marc.008.SER.entw.field_start_pos "24">
-<!ENTITY marc.008.SER.entw.help "http://www.oclc.org/bibformats/en/fixedfield/entw.shtm">
-<!ENTITY marc.008.SER.entw.short "EntW"> 
-<!ENTITY marc.008.SER.freq.desc "Frequency">
-<!ENTITY marc.008.SER.freq.field "008">
-<!ENTITY marc.008.SER.freq.field_end_pos "18">
-<!ENTITY marc.008.SER.freq.field_size "1">
-<!ENTITY marc.008.SER.freq.field_start_pos "18">
-<!ENTITY marc.008.SER.freq.help "http://www.oclc.org/bibformats/en/fixedfield/freq.shtm">
-<!ENTITY marc.008.SER.freq.short "Freq"> 
-<!ENTITY marc.008.SER.issn.desc "ISSN Center">
-<!ENTITY marc.008.SER.issn.field "008">
-<!ENTITY marc.008.SER.issn.field_end_pos "20">
-<!ENTITY marc.008.SER.issn.field_size "1">
-<!ENTITY marc.008.SER.issn.field_start_pos "20">
-<!ENTITY marc.008.SER.issn.help "http://www.oclc.org/bibformats/en/fixedfield/issn.shtm">
-<!ENTITY marc.008.SER.issn.short "ISSN"> 
-<!ENTITY marc.008.SER.orig.desc "Form of Original Item">
-<!ENTITY marc.008.SER.orig.field "008">
-<!ENTITY marc.008.SER.orig.field_end_pos "22">
-<!ENTITY marc.008.SER.orig.field_size "1">
-<!ENTITY marc.008.SER.orig.field_start_pos "22">
-<!ENTITY marc.008.SER.orig.help "http://www.oclc.org/bibformats/en/fixedfield/orig.shtm">
-<!ENTITY marc.008.SER.orig.short "Orig"> 
-<!ENTITY marc.008.SER.regl.desc "Regularity">
-<!ENTITY marc.008.SER.regl.field "008">
-<!ENTITY marc.008.SER.regl.field_end_pos "19">
-<!ENTITY marc.008.SER.regl.field_size "1">
-<!ENTITY marc.008.SER.regl.field_start_pos "19">
-<!ENTITY marc.008.SER.regl.help "http://www.oclc.org/bibformats/en/fixedfield/regl.shtm">
-<!ENTITY marc.008.SER.regl.short "Regl"> 
-<!ENTITY marc.008.SER.srtp.desc "Type of Continuing Resource">
-<!ENTITY marc.008.SER.srtp.field "008">
-<!ENTITY marc.008.SER.srtp.field_end_pos "21">
-<!ENTITY marc.008.SER.srtp.field_size "1">
-<!ENTITY marc.008.SER.srtp.field_start_pos "21">
-<!ENTITY marc.008.SER.srtp.help "http://www.oclc.org/bibformats/en/fixedfield/srtp.shtm">
-<!ENTITY marc.008.SER.srtp.short "SrTp"> 
-<!ENTITY marc.008.SER.succ.desc "Entry Convention">
-<!ENTITY marc.008.SER.succ.field "008">
-<!ENTITY marc.008.SER.succ.field_end_pos "34">
-<!ENTITY marc.008.SER.succ.field_size "1">
-<!ENTITY marc.008.SER.succ.field_start_pos "34">
-<!ENTITY marc.008.SER.succ.help "http://www.oclc.org/bibformats/en/fixedfield/succ.shtm">
-<!ENTITY marc.008.SER.succ.short "S/L"> 
-<!ENTITY marc.008.ctry.desc "Country of Publication, etc.">
-<!ENTITY marc.008.ctry.field "008">
-<!ENTITY marc.008.ctry.field_end_pos "17">
-<!ENTITY marc.008.ctry.field_size "3">
-<!ENTITY marc.008.ctry.field_start_pos "15">
-<!ENTITY marc.008.ctry.help "http://www.oclc.org/bibformats/en/fixedfield/ctry.shtm">
-<!ENTITY marc.008.ctry.short "Ctry">
-<!ENTITY marc.008.date1.desc "Date 1">
-<!ENTITY marc.008.date1.field "008">
-<!ENTITY marc.008.date1.field_end_pos "10">
-<!ENTITY marc.008.date1.field_size "4">
-<!ENTITY marc.008.date1.field_start_pos "7">
-<!ENTITY marc.008.date1.short "Date 1"> 
-<!ENTITY marc.008.date2.desc "Date 2">
-<!ENTITY marc.008.date2.field "008">
-<!ENTITY marc.008.date2.field_end_pos "14">
-<!ENTITY marc.008.date2.field_size "4">
-<!ENTITY marc.008.date2.field_start_pos "11">
-<!ENTITY marc.008.date2.short "Date 2">
-<!ENTITY marc.008.dates "Dates">
-<!ENTITY marc.008.dates.help "http://www.oclc.org/bibformats/en/fixedfield/dates.shtm">
-<!ENTITY marc.008.dtst.desc "Type of Date/Publication Status">
-<!ENTITY marc.008.dtst.field "008">
-<!ENTITY marc.008.dtst.field_end_pos "6">
-<!ENTITY marc.008.dtst.field_size "1">
-<!ENTITY marc.008.dtst.field_start_pos "6">
-<!ENTITY marc.008.dtst.help "http://www.oclc.org/bibformats/en/fixedfield/dtst.shtm">
-<!ENTITY marc.008.dtst.short "DtSt"> 
-<!ENTITY marc.008.entered.desc "Date Entered">
-<!ENTITY marc.008.entered.field "008">
-<!ENTITY marc.008.entered.field_end_pos "5">
-<!ENTITY marc.008.entered.field_size "6">
-<!ENTITY marc.008.entered.field_start_pos "0">
-<!ENTITY marc.008.entered.help "http://www.oclc.org/bibformats/en/fixedfield/entered.shtm">
-<!ENTITY marc.008.entered.short "Entered"> 
-<!ENTITY marc.008.lang.desc "Language Code">
-<!ENTITY marc.008.lang.field "008">
-<!ENTITY marc.008.lang.field_end_pos "37">
-<!ENTITY marc.008.lang.field_size "3">
-<!ENTITY marc.008.lang.field_start_pos "35">
-<!ENTITY marc.008.lang.help "http://www.oclc.org/bibformats/en/fixedfield/lang.shtm">
-<!ENTITY marc.008.lang.short "Lang"> 
-<!ENTITY marc.008.mrec.desc "Modified Record">
-<!ENTITY marc.008.mrec.field "008">
-<!ENTITY marc.008.mrec.field_end_pos "38">
-<!ENTITY marc.008.mrec.field_size "1">
-<!ENTITY marc.008.mrec.field_start_pos "38">
-<!ENTITY marc.008.mrec.help "http://www.oclc.org/bibformats/en/fixedfield/mrec.shtm">
-<!ENTITY marc.008.mrec.short "MRec"> 
-<!ENTITY marc.008.srce.desc "Cataloging Source">
-<!ENTITY marc.008.srce.field "008">
-<!ENTITY marc.008.srce.field_end_pos "39">
-<!ENTITY marc.008.srce.field_size "1">
-<!ENTITY marc.008.srce.field_start_pos "39">
-<!ENTITY marc.008.srce.help "http://www.oclc.org/bibformats/en/fixedfield/srce.shtm">
-<!ENTITY marc.008.srce.short "Srce"> 
-<!ENTITY marc.LDR.blvl.desc "Bibliographic Level">
-<!ENTITY marc.LDR.blvl.field "LDR">
-<!ENTITY marc.LDR.blvl.field_end_pos "7">
-<!ENTITY marc.LDR.blvl.field_size "1">
-<!ENTITY marc.LDR.blvl.field_start_pos "7">
-<!ENTITY marc.LDR.blvl.help "http://www.oclc.org/bibformats/en/fixedfield/blvl.shtm">
-<!ENTITY marc.LDR.blvl.short "BLvl"> 
-<!ENTITY marc.LDR.ctrl.desc "Type of Control">
-<!ENTITY marc.LDR.ctrl.field "LDR">
-<!ENTITY marc.LDR.ctrl.field_end_pos "8">
-<!ENTITY marc.LDR.ctrl.field_size "1">
-<!ENTITY marc.LDR.ctrl.field_start_pos "8">
-<!ENTITY marc.LDR.ctrl.help "http://www.oclc.org/bibformats/en/fixedfield/ctrl.shtm">
-<!ENTITY marc.LDR.ctrl.short "Ctrl"> 
-<!ENTITY marc.LDR.desc.desc "Descriptive Cataloging Form">
-<!ENTITY marc.LDR.desc.field "LDR">
-<!ENTITY marc.LDR.desc.field_end_pos "18">
-<!ENTITY marc.LDR.desc.field_size "1">
-<!ENTITY marc.LDR.desc.field_start_pos "18">
-<!ENTITY marc.LDR.desc.help "http://www.oclc.org/bibformats/en/fixedfield/desc.shtm">
-<!ENTITY marc.LDR.desc.short "Desc"> 
-<!ENTITY marc.LDR.elvl.desc "Encoding Level">
-<!ENTITY marc.LDR.elvl.field "LDR">
-<!ENTITY marc.LDR.elvl.field_end_pos "17">
-<!ENTITY marc.LDR.elvl.field_size "1">
-<!ENTITY marc.LDR.elvl.field_start_pos "17">
-<!ENTITY marc.LDR.elvl.help "http://www.oclc.org/bibformats/en/fixedfield/elvl.shtm">
-<!ENTITY marc.LDR.elvl.short "ELvl"> 
-<!ENTITY marc.LDR.rec_stat.desc "Record Status">
-<!ENTITY marc.LDR.rec_stat.field "LDR">
-<!ENTITY marc.LDR.rec_stat.field_end_pos "5">
-<!ENTITY marc.LDR.rec_stat.field_size "1">
-<!ENTITY marc.LDR.rec_stat.field_start_pos "5">
-<!ENTITY marc.LDR.rec_stat.help "http://www.oclc.org/bibformats/en/fixedfield/rec.shtm">
-<!ENTITY marc.LDR.rec_stat.short "Rec stat"> 
-<!ENTITY marc.LDR.type.desc "Type of Record">
-<!ENTITY marc.LDR.type.field "LDR">
-<!ENTITY marc.LDR.type.field_end_pos "6">
-<!ENTITY marc.LDR.type.field_size "1">
-<!ENTITY marc.LDR.type.field_start_pos "6">
-<!ENTITY marc.LDR.type.help "http://www.oclc.org/bibformats/en/fixedfield/type.shtm">
-<!ENTITY marc.LDR.type.short "Type"> 
-<!ENTITY marc.close.editor.key "W">
-<!ENTITY marc.display "Display"> <!ENTITY marc.display.key "D">
-<!ENTITY marc.display.control_fields "Toggle Control/Data Fields"> <!ENTITY marc.display.control_fields.key "F">
-<!ENTITY marc.display.cover_art "Toggle Cover Art"> <!ENTITY marc.display.cover_art.key "A">
-<!ENTITY marc.display.explain "Explain Errors"> <!ENTITY marc.display.explain.key "X">
-<!ENTITY marc.display.fixed.BKS "Fixed Fields as BKS"> <!ENTITY marc.display.fixed.BKS.key "B">
-<!ENTITY marc.display.fixed.COM "Fixed Fields as COM"> <!ENTITY marc.display.fixed.COM.key "O">
-<!ENTITY marc.display.fixed.MAP "Fixed Fields as MAP"> <!ENTITY marc.display.fixed.MAP.key "P">
-<!ENTITY marc.display.fixed.MIX "Fixed Fields as MIX"> <!ENTITY marc.display.fixed.MIX.key "M">
-<!ENTITY marc.display.fixed.REC "Fixed Fields as REC"> <!ENTITY marc.display.fixed.REC.key "R">
-<!ENTITY marc.display.fixed.SCO "Fixed Fields as SCO"> <!ENTITY marc.display.fixed.SCO.key "C">
-<!ENTITY marc.display.fixed.SER "Fixed Fields as SER"> <!ENTITY marc.display.fixed.SER.key "S">
-<!ENTITY marc.display.fixed.VIS "Fixed Fields as VIS"> <!ENTITY marc.display.fixed.VIS.key "V">
-<!ENTITY marc.display.legend "Legend"> <!ENTITY marc.display.legend.key "L">
-<!ENTITY marc.display.meta_data "Toggle Meta Data"> <!ENTITY marc.display.meta_data.key "E">
-<!ENTITY marc.editor.keys.help "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;">
-<!ENTITY marc.file "MARC"> <!ENTITY marc.file.key "M">
-<!ENTITY marc.file.close "Close Editor"> <!ENTITY marc.file.close.key "C">
-<!ENTITY marc.file.export "Export"> <!ENTITY marc.file.export.key "E">
-<!ENTITY marc.file.publish "Save (to DB)"> <!ENTITY marc.file.publish.key "S">
-<!ENTITY marc.file.reload "Reload"> <!ENTITY marc.file.reload.key "R">
-<!ENTITY marc.file.validate "Validate"> <!ENTITY marc.file.validate.key "V">
-<!ENTITY marc.groupbox.control "Control Fields">
-<!ENTITY marc.groupbox.cover "Cover Art">
-<!ENTITY marc.groupbox.data "Data Fields">
-<!ENTITY marc.groupbox.fixed "Fixed Fields">
-<!ENTITY marc.groupbox.meta "Meta Data (NOT YET IMPLEMENTED)">
-<!ENTITY next.range 'Next'>
-<!ENTITY next.range.key 'N'>
-<!ENTITY patron_display.bills.label 'Bills:'>
-<!ENTITY patron_display.checkout.auto_print_label 'Auto-Print'>
-<!ENTITY patron_display.checkout.auto_print_label.accesskey 'A'>
-<!ENTITY patron_display.checkout.done_label 'Done'>
-<!ENTITY patron_display.checkout.done_label.accesskey 'D'>
-<!ENTITY patron_display.checkout.print_receipt_label 'Print Receipt'>
-<!ENTITY patron_display.checkout.print_receipt_label.accesskey ''>
-<!ENTITY patron_display.checkout.reprint_receipt_label 'Re-Print Last Receipt'>
-<!ENTITY patron_display.checkout.reprint_receipt_label.accesskey 'L'>
-<!ENTITY patron_display.checkout.scan_label 'Enter Barcode:'>
-<!ENTITY patron_display.checkout.scan_label.accesskey 'a'>
-<!ENTITY patron_display.checkout.submit_label 'Submit'>
-<!ENTITY patron_display.checkout.submit_label.accesskey 'S'>
-<!ENTITY patron_display.checkouts.label 'Check Outs:'>
-<!ENTITY patron_display.checkouts_overdue.label 'Overdue:'>
-<!ENTITY patron_display.contact.caption 'Identity &amp; Contact Info'>
-<!ENTITY patron_display.credit.label 'Credit:'>
-<!ENTITY patron_display.date_of_birth.label 'DOB:'>
-<!ENTITY patron_display.day_phone.label 'Day Phone:'>
-<!ENTITY patron_display.email.label 'Email:'>
-<!ENTITY patron_display.evening_phone.label 'Evening Phone:'>
-<!ENTITY patron_display.family_name.label 'Last Name:'>
-<!ENTITY patron_display.first_given_name.label 'First Name:'>
-<!ENTITY patron_display.holds.label 'Holds:'>
-<!ENTITY patron_display.holds_available.label 'Available:'>
-<!ENTITY patron_display.home_ou.label 'Home Library:'>
-<!ENTITY patron_display.ident1.label 'ID 1:'>
-<!ENTITY patron_display.ident2.label 'ID 2:'>
-<!ENTITY patron_display.items.print_receipt_label 'Print Receipt'>
-<!ENTITY patron_display.items.print_receipt_label.accesskey 'P'>
-<!ENTITY patron_display.items_claimed_returned.label 'Items Claimed Returned:'>
-<!ENTITY patron_display.library_card.label 'PINES Card:'>
-<!ENTITY patron_display.mailing.city.label 'Mailing City:'>
-<!ENTITY patron_display.mailing.post_code.label 'Mailing ZIP:'>
-<!ENTITY patron_display.mailing.state.label 'Mailing State:'>
-<!ENTITY patron_display.mailing.street1.label 'Mailing Address 1:'>
-<!ENTITY patron_display.mailing.street2.label 'Mailing Address 2:'>
-<!ENTITY patron_display.mailing_address 'Mailing Address'>
-<!ENTITY patron_display.name.label 'Patron Name'>
-<!ENTITY patron_display.other_phone.label 'Other Phone:'>
-<!ENTITY patron_display.physical.city.label 'Physical City:'>
-<!ENTITY patron_display.physical.post_code.label 'Physical ZIP:'>
-<!ENTITY patron_display.physical.state.label 'Physical State:'>
-<!ENTITY patron_display.physical.street1.label 'Physical Address 1:'>
-<!ENTITY patron_display.physical.street2.label 'Physical Address 2:'>
-<!ENTITY patron_display.physical_address 'Physical Address'>
-<!ENTITY patron_display.profile.label 'Profile:'>
-<!ENTITY patron_display.second_given_name.label 'Middle Name:'>
-<!ENTITY patron_display.standing.label 'Standing:'>
-<!ENTITY patron_display.status.caption 'Status'>
-<!ENTITY patron_navbar.bills 'Bills'>
-<!ENTITY patron_navbar.bills.accesskey 'B'>
-<!ENTITY patron_navbar.checkout 'Check Out'>
-<!ENTITY patron_navbar.checkout.accesskey 'C'>
-<!ENTITY patron_navbar.edit 'Edit'>
-<!ENTITY patron_navbar.edit.accesskey 'E'>
-<!ENTITY patron_navbar.holds 'Holds'>
-<!ENTITY patron_navbar.holds.accesskey 'H'>
-<!ENTITY patron_navbar.info 'Info'>
-<!ENTITY patron_navbar.info.accesskey 'o'>
-<!ENTITY patron_navbar.items 'Items Out'>
-<!ENTITY patron_navbar.items.accesskey 'I'>
-<!ENTITY patron_navbar.refresh 'Refresh'>
-<!ENTITY patron_navbar.refresh.accesskey 'R'>
-<!ENTITY patron_navbar.retrieve 'Retrieve Patron'>
-<!ENTITY patron_navbar.retrieve.accesskey 'R'>
-<!ENTITY patron_search_form.caption 'Search for Patron'>
-<!ENTITY patron_search_form.city.accesskey ''>
-<!ENTITY patron_search_form.city.label 'City:'>
-<!ENTITY patron_search_form.clear.accesskey 'C'>
-<!ENTITY patron_search_form.clear.label 'Clear Form'>
-<!ENTITY patron_search_form.email.accesskey ''>
-<!ENTITY patron_search_form.email.label 'Email:'>
-<!ENTITY patron_search_form.family_name.accesskey 'L'>
-<!ENTITY patron_search_form.family_name.label 'Last Name:'>
-<!ENTITY patron_search_form.first_given_name.accesskey ''>
-<!ENTITY patron_search_form.first_given_name.label 'First Name:'>
-<!ENTITY patron_search_form.ident.accesskey ''>
-<!ENTITY patron_search_form.ident.label 'ID:'>
-<!ENTITY patron_search_form.phone.accesskey 'P'>
-<!ENTITY patron_search_form.phone.label 'Phone:'>
-<!ENTITY patron_search_form.post_code.accesskey ''>
-<!ENTITY patron_search_form.post_code.label 'ZIP:'>
-<!ENTITY patron_search_form.search.accesskey 'S'>
-<!ENTITY patron_search_form.search.label 'Search'>
-<!ENTITY patron_search_form.second_given_name.accesskey ''>
-<!ENTITY patron_search_form.second_given_name.label 'Middle Name:'>
-<!ENTITY patron_search_form.state.accesskey ''>
-<!ENTITY patron_search_form.state.label 'State:'>
-<!ENTITY patron_search_form.street1.accesskey 'd'>
-<!ENTITY patron_search_form.street1.label 'Address 1:'>
-<!ENTITY patron_search_form.street2.accesskey ''>
-<!ENTITY patron_search_form.street2.label 'Address 2:'>
-<!ENTITY previous.range 'Previous'>
-<!ENTITY previous.range.key 'P'>
-<!ENTITY record_list.author "Author">
-<!ENTITY record_list.copy_count "Copies&#740;">
-<!ENTITY record_list.isbn "ISBN">
-<!ENTITY record_list.issn "ISSN">
-<!ENTITY record_list.publisher "Publisher">
-<!ENTITY record_list.pubyear "Pub Year">
-<!ENTITY record_list.tcn "TCN">
-<!ENTITY record_list.title "Title">
-<!ENTITY record_list.win_title "Cataloging">
-<!ENTITY survey.wizard.page1 "Initial Settings">
-<!ENTITY survey.wizard.page2 "Add Questions for Survey:">
-<!ENTITY survey.wizard.title "Add a Survey Wizard">
-<!ENTITY volume.attr.callnumber "Call Number">
-<!ENTITY volume.attr.owning_lib "Owning Library">
-<!ENTITY volume.wizard.page1 "Entering Volumes">
-<!ENTITY volume.wizard.page2 "Entering Copies">
-<!ENTITY volume.wizard.page3 "Entering Barcodes">
-<!ENTITY volume.wizard.page4 "Entering Copy-Level Attribute Defaults">
-<!ENTITY volume.wizard.title "Batch Add Volumes/Copies Wizard">
+<!ENTITY staff.about.title "About">
+<!ENTITY staff.auth.login_header "Login">
+<!ENTITY staff.auth.logoff_prompt "Log Off"><!ENTITY staff.auth.logoff_prompt.key "L">
+<!ENTITY staff.auth.name_prompt "Name:"><!ENTITY staff.auth.name_prompt.key "N">
+<!ENTITY staff.auth.password_prompt "Password:"><!ENTITY staff.auth.password_prompt.key "P">
+<!ENTITY staff.auth.quit_prompt "Exit Evergreen"><!ENTITY staff.auth.quit_prompt.key "x">
+<!ENTITY staff.auth.submit_prompt "Submit"><!ENTITY staff.auth.submit_prompt.key "S">
+<!ENTITY staff.auth.title "Evergreen Staff Client 3">
+<!ENTITY staff.auth.version "Evergreen 0.1.0 20051202">
+<!ENTITY staff.browse_list.barcode "Barcode">
+<!ENTITY staff.browse_list.callnumber "Call Number">
+<!ENTITY staff.browse_list.circ_as_type "Circulate As">
+<!ENTITY staff.browse_list.circ_lib "Circulating Lib">
+<!ENTITY staff.browse_list.circ_modifier "Circ Modifier">
+<!ENTITY staff.browse_list.circulate "Circulate">
+<!ENTITY staff.browse_list.copy_number "Copy Number">
+<!ENTITY staff.browse_list.create_date "Creation Date">
+<!ENTITY staff.browse_list.creator "Creator">
+<!ENTITY staff.browse_list.deposit "Deposit">
+<!ENTITY staff.browse_list.deposit_amount "Deposit Amount">
+<!ENTITY staff.browse_list.edit_date "Edit Date">
+<!ENTITY staff.browse_list.editor "Editor">
+<!ENTITY staff.browse_list.fine_level "Fine Level">
+<!ENTITY staff.browse_list.library "Owning Lib">
+<!ENTITY staff.browse_list.loan_duration "Loan Duration">
+<!ENTITY staff.browse_list.location "Location/Barcode">
+<!ENTITY staff.browse_list.location2 "Location">
+<!ENTITY staff.browse_list.opac_visible "OPAC">
+<!ENTITY staff.browse_list.price "Price">
+<!ENTITY staff.browse_list.ref "Reference">
+<!ENTITY staff.browse_list.shelving_loc "Shelving Location">
+<!ENTITY staff.browse_list.status "Status">
+<!ENTITY staff.browse_list.win_title "Cataloging">
+<!ENTITY staff.cat.fixed.BKS "BKS"> <!ENTITY staff.cat.fixed.BKS.key "B">
+<!ENTITY staff.cat.fixed.COM "COM"> <!ENTITY staff.cat.fixed.COM.key "O">
+<!ENTITY staff.cat.fixed.MAP "MAP"> <!ENTITY staff.cat.fixed.MAP.key "P">
+<!ENTITY staff.cat.fixed.MIX "MIX"> <!ENTITY staff.cat.fixed.MIX.key "M">
+<!ENTITY staff.cat.fixed.REC "REC"> <!ENTITY staff.cat.fixed.REC.key "R">
+<!ENTITY staff.cat.fixed.SCO "SCO"> <!ENTITY staff.cat.fixed.SCO.key "C">
+<!ENTITY staff.cat.fixed.SER "SER"> <!ENTITY staff.cat.fixed.SER.key "S">
+<!ENTITY staff.cat.fixed.VIS "VIS"> <!ENTITY staff.cat.fixed.VIS.key "V">
+<!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket"> <!ENTITY staff.cat.popup.add_to_bucket.key "">
+<!ENTITY staff.cat.popup.browse_record.tab "View Copies (Tab)"> <!ENTITY staff.cat.popup.browse.record.tab.key "">
+<!ENTITY staff.cat.popup.browse_record.window "View Copies (Window)"> <!ENTITY staff.cat.popup.browse.record.window.key "">
+<!ENTITY staff.cat.popup.edit_record.tab "Edit Record (Tab)"> <!ENTITY staff.cat.popup.edit.record.tab.key "">
+<!ENTITY staff.cat.popup.edit_record.window "Edit Record (Window)"> <!ENTITY staff.cat.popup.edit.record.window.key "">
+<!ENTITY staff.cat.search_advanced "Advanced"> <!ENTITY staff.cat.search_advanced.key "V">
+<!ENTITY staff.cat.search_all "Keyword">
+<!ENTITY staff.cat.search_author "Author">
+<!ENTITY staff.cat.search_barcode "Item Barcode">
+<!ENTITY staff.cat.search_callnumber "Call Number">
+<!ENTITY staff.cat.search_count_copy "Location"> <!ENTITY staff.cat.search_count_copy.key "L">
+<!ENTITY staff.cat.search_count_copy_show "Show Only These Records">
+<!ENTITY staff.cat.search_criteria "Search Criteria">
+<!ENTITY staff.cat.search_format "Format"> <!ENTITY staff.cat.search_format.key "F">
+<!ENTITY staff.cat.search_id "System ID">
+<!ENTITY staff.cat.search_isbn "ISBN/ISSN">
+<!ENTITY staff.cat.search_location "Location"> <!ENTITY staff.cat.search_location.key "L">
+<!ENTITY staff.cat.search_order "Order"> <!ENTITY staff.cat.search_order.key "O">
+<!ENTITY staff.cat.search_pubyear "Pub Year">
+<!ENTITY staff.cat.search_subject "Subject">
+<!ENTITY staff.cat.search_submit "Search"> <!ENTITY staff.cat.search_submit.key "S">
+<!ENTITY staff.cat.search_tcn "TCN">
+<!ENTITY staff.cat.search_term "Terms"> <!ENTITY staff.cat.search_term.key "e">
+<!ENTITY staff.cat.search_title "Title">
+<!ENTITY staff.cat.search_type "Type"> <!ENTITY staff.cat.search_type.key "T">
+<!ENTITY staff.cat.test "Test"> <!ENTITY staff.cat.test.key "E">
+<!ENTITY staff.cat.title "TCN goes here">
+<!ENTITY staff.cat.type_of_material "All">
+<!ENTITY staff.cat.type_of_material.a "Language Material">
+<!ENTITY staff.cat.type_of_material.c "Notated Music">
+<!ENTITY staff.cat.type_of_material.d "Manuscript Notated Music">
+<!ENTITY staff.cat.type_of_material.e "Cartographic Material">
+<!ENTITY staff.cat.type_of_material.f "Manuscript Cartographic Material">
+<!ENTITY staff.cat.type_of_material.g "Projected Medium">
+<!ENTITY staff.cat.type_of_material.i "Nonmusical Sound Recording">
+<!ENTITY staff.cat.type_of_material.j "Musical Sound Recording">
+<!ENTITY staff.cat.type_of_material.k "Two-dimensional Nonprojectable Graphic">
+<!ENTITY staff.cat.type_of_material.m "Computer File">
+<!ENTITY staff.cat.type_of_material.o "Kit">
+<!ENTITY staff.cat.type_of_material.p "Mixed Material">
+<!ENTITY staff.cat.type_of_material.r "Three-dimensional Artifact or Naturally Occuring Object">
+<!ENTITY staff.cat.type_of_material.t "Manuscript Language Material">
+<!ENTITY staff.checkin.auto_print_label 'Auto-Print'>
+<!ENTITY staff.checkin.auto_print_label.accesskey 'A'>
+<!ENTITY staff.checkin.done_label 'Done'>
+<!ENTITY staff.checkin.done_label.accesskey 'D'>
+<!ENTITY staff.checkin.print_receipt_label 'Print List'>
+<!ENTITY staff.checkin.print_receipt_label.accesskey ''>
+<!ENTITY staff.checkin.reprint_receipt_label 'Re-Print Last List'>
+<!ENTITY staff.checkin.reprint_receipt_label.accesskey 'L'>
+<!ENTITY staff.checkin_patron.name.label 'Patron Name'>
+<!ENTITY staff.checkin_patron.retrieve 'Retrieve Patron'>
+<!ENTITY staff.checkin_patron.retrieve.accesskey 'R'>
+<!ENTITY staff.circ.checkin.caption 'Check In'>
+<!ENTITY staff.circ.checkin.scan_label 'Enter Barcode:'>
+<!ENTITY staff.circ.checkin.scan_label.accesskey 'a'>
+<!ENTITY staff.circ.checkin.submit_label 'Submit'>
+<!ENTITY staff.circ.checkin.submit_label.accesskey 'S'>
+<!ENTITY staff.circ.hold_capture.caption 'Capture Hold'>
+<!ENTITY staff.circ.hold_capture.scan_label 'Enter Barcode:'>
+<!ENTITY staff.circ.hold_capture.scan_label.accesskey 'a'>
+<!ENTITY staff.circ.hold_capture.submit_label 'Submit'>
+<!ENTITY staff.circ.hold_capture.submit_label.accesskey 'S'>
+<!ENTITY staff.copy.attr.barcode "Barcode">
+<!ENTITY staff.copy.attr.circulate "Circulate?">
+<!ENTITY staff.copy.attr.circulate.no "No">
+<!ENTITY staff.copy.attr.circulate.yes "Yes">
+<!ENTITY staff.copy.attr.circulating_lib "Circulating Library">
+<!ENTITY staff.copy.attr.copy_available "Copy Status: Available?">
+<!ENTITY staff.copy.attr.copy_status "Copy Status">
+<!ENTITY staff.copy.attr.deposit "Deposit?">
+<!ENTITY staff.copy.attr.deposit.no "No">
+<!ENTITY staff.copy.attr.deposit.yes "Yes">
+<!ENTITY staff.copy.attr.deposit_amount "Amount">
+<!ENTITY staff.copy.attr.deposit_notes "Deposit Notes">
+<!ENTITY staff.copy.attr.fine_level "Fine Level">
+<!ENTITY staff.copy.attr.fine_level.high "High">
+<!ENTITY staff.copy.attr.fine_level.low "Low">
+<!ENTITY staff.copy.attr.fine_level.normal "Normal">
+<!ENTITY staff.copy.attr.holds_protection "Holds Protection">
+<!ENTITY staff.copy.attr.holds_protection.example1 "3 months (facility)">
+<!ENTITY staff.copy.attr.holds_protection.example2 "6 months (region)">
+<!ENTITY staff.copy.attr.holds_protection.example3 "No hold protection">
+<!ENTITY staff.copy.attr.holds_protection.example4 "Not holdable">
+<!ENTITY staff.copy.attr.home_lib "Home Library">
+<!ENTITY staff.copy.attr.loan_duration "Loan Duration">
+<!ENTITY staff.copy.attr.loan_duration.long "Long">
+<!ENTITY staff.copy.attr.loan_duration.normal "Normal">
+<!ENTITY staff.copy.attr.loan_duration.short "Short">
+<!ENTITY staff.copy.attr.notes "Copy Notes">
+<!ENTITY staff.copy.attr.notes_viewable "Copy Notes Patron Viewable?">
+<!ENTITY staff.copy.attr.notes_viewable.example1 "Yes">
+<!ENTITY staff.copy.attr.notes_viewable.example2 "No">
+<!ENTITY staff.copy.attr.opac_visible "OPAC Visible?">
+<!ENTITY staff.copy.attr.opac_visible.no "No">
+<!ENTITY staff.copy.attr.opac_visible.yes "Yes">
+<!ENTITY staff.copy.attr.price "Price">
+<!ENTITY staff.copy.attr.reference_material "Reference Material?">
+<!ENTITY staff.copy.attr.reference_material.no "No">
+<!ENTITY staff.copy.attr.reference_material.yes "Yes">
+<!ENTITY staff.copy.attr.shelving_location "Shelving Location">
+<!ENTITY staff.copy.attr.shelving_location.example1 "Stacks">
+<!ENTITY staff.copy.attr.shelving_location.example10 "Paperback">
+<!ENTITY staff.copy.attr.shelving_location.example2 "Audio-Visual">
+<!ENTITY staff.copy.attr.shelving_location.example3 "Children's Room">
+<!ENTITY staff.copy.attr.shelving_location.example4 "Garden Room">
+<!ENTITY staff.copy.attr.shelving_location.example5 "Reference">
+<!ENTITY staff.copy.attr.shelving_location.example6 "Ready Reference">
+<!ENTITY staff.copy.attr.shelving_location.example7 "Behind Circulation Desk">
+<!ENTITY staff.copy.attr.shelving_location.example8 "Display">
+<!ENTITY staff.copy.attr.shelving_location.example9 "Health">
+<!ENTITY staff.copy.attr.stat.audience "Audience">
+<!ENTITY staff.copy.attr.stat.audience.example1 "Adult">
+<!ENTITY staff.copy.attr.stat.audience.example2 "Juvenile">
+<!ENTITY staff.copy.attr.stat.audience.example3 "Preschool">
+<!ENTITY staff.copy.attr.stat.audience.example4 "Primary">
+<!ENTITY staff.copy.attr.stat.audience.example5 "Pre-adolescent">
+<!ENTITY staff.copy.attr.stat.audience.example6 "Young adult">
+<!ENTITY staff.copy.attr.stat.audience.example7 "General">
+<!ENTITY staff.copy.attr.stat.genre "Genre">
+<!ENTITY staff.copy.attr.stat.genre.example1 "Adventure">
+<!ENTITY staff.copy.attr.stat.genre.example10 "Spy">
+<!ENTITY staff.copy.attr.stat.genre.example11 "Thriller">
+<!ENTITY staff.copy.attr.stat.genre.example12 "War">
+<!ENTITY staff.copy.attr.stat.genre.example13 "Western">
+<!ENTITY staff.copy.attr.stat.genre.example14 "Religious fiction">
+<!ENTITY staff.copy.attr.stat.genre.example15 "Shortstory">
+<!ENTITY staff.copy.attr.stat.genre.example16 "Biography">
+<!ENTITY staff.copy.attr.stat.genre.example17 "Holiday">
+<!ENTITY staff.copy.attr.stat.genre.example18 "Nonfiction">
+<!ENTITY staff.copy.attr.stat.genre.example2 "Fantasy">
+<!ENTITY staff.copy.attr.stat.genre.example3 "Historical">
+<!ENTITY staff.copy.attr.stat.genre.example4 "Holiday">
+<!ENTITY staff.copy.attr.stat.genre.example5 "Horror">
+<!ENTITY staff.copy.attr.stat.genre.example6 "Humor">
+<!ENTITY staff.copy.attr.stat.genre.example7 "Mystery">
+<!ENTITY staff.copy.attr.stat.genre.example8 "Romance">
+<!ENTITY staff.copy.attr.stat.genre.example9 "Sci-fi">
+<!ENTITY staff.copy.bucket "Add to Bucket"><!ENTITY staff.copy.bucket.key "B">
+<!ENTITY staff.copy.clone "Clone Copy"> <!ENTITY staff.copy.clone.key "">
+<!ENTITY staff.copy.close "Close Window"><!ENTITY staff.copy.close.key "C">
+<!ENTITY staff.copy.default.attr "Default Attributes"> <!ENTITY staff.copy.default.attr.value "Value">
+<!ENTITY staff.copy.delete "Delete Copy"> <!ENTITY staff.copy.delete.key "">
+<!ENTITY staff.copy.edit_categories "Edit Categories">
+<!ENTITY staff.copy.edit_entries "Edit Entries">
+<!ENTITY staff.copy.local.attr "Local Attributes"> <!ENTITY staff.copy.local.attr.value "Value">
+<!ENTITY staff.copy.notes "Note">
+<!ENTITY staff.copy.notes.add "Add Note"> <!ENTITY staff.copy.notes.add.key "A">
+<!ENTITY staff.copy.notes.date "Date">
+<!ENTITY staff.copy.notes.delete "Delete Note"> <!ENTITY staff.copy.notes.delete.key "D">
+<!ENTITY staff.copy.notes.from "From">
+<!ENTITY staff.copy.notes.opac "OPAC">
+<!ENTITY staff.copy.pines.attr "PINES Attributes"> <!ENTITY staff.copy.pines.attr.value "Value">
+<!ENTITY staff.copy.reload "Reload Copy"> <!ENTITY staff.copy.reload.key "R">
+<!ENTITY staff.copy.save "Save Copy"> <!ENTITY staff.copy.save.key "S">
+<!ENTITY staff.copy.title "Barcode goes here">
+<!ENTITY staff.copy.transfer "Transfer Copy"> <!ENTITY staff.copy.transfer.key "">
+<!ENTITY staff.copy.wizard.title "Batch Add Copies Wizard">
+<!ENTITY staff.displaying.hits_per_page 'Results per page'>
+<!ENTITY staff.displaying.of 'of'>
+<!ENTITY staff.displaying.results 'Displaying results'>
+<!ENTITY staff.hold_capture.auto_print_label 'Auto-Print'>
+<!ENTITY staff.hold_capture.auto_print_label.accesskey 'A'>
+<!ENTITY staff.hold_capture.done_label 'Done'>
+<!ENTITY staff.hold_capture.done_label.accesskey 'D'>
+<!ENTITY staff.hold_capture.print_receipt_label 'Print List'>
+<!ENTITY staff.hold_capture.print_receipt_label.accesskey ''>
+<!ENTITY staff.hold_capture.reprint_receipt_label 'Re-Print Last List'>
+<!ENTITY staff.hold_capture.reprint_receipt_label.accesskey 'L'>
+<!ENTITY staff.hold_capture_patron.name.label 'Patron Name'>
+<!ENTITY staff.hold_capture_patron.retrieve 'Retrieve Patron'>
+<!ENTITY staff.hold_capture_patron.retrieve.accesskey 'R'>
+<!ENTITY staff.main.menu.acquisitions.label "Acquisitions"><!ENTITY staff.main.menu.acquisitions.key "q">
+<!ENTITY staff.main.menu.admin.label "Admin"><!ENTITY staff.main.menu.admin.key "i">
+<!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record"><!ENTITY staff.main.menu.cat.add_bib.key "B">
+<!ENTITY staff.main.menu.cat.add_copy.label "Add Item"><!ENTITY staff.main.menu.cat.add_copy.key "I">
+<!ENTITY staff.main.menu.cat.add_volume.label "Add Volume"><!ENTITY staff.main.menu.cat.add_volume.key "V">
+<!ENTITY staff.main.menu.cat.bib_search.label "Search Catalog"><!ENTITY staff.main.menu.cat.bib_search.key "S">
+<!ENTITY staff.main.menu.cat.bib_status.label "Display Bib Record"><!ENTITY staff.main.menu.cat.bib_status.key "B">
+<!ENTITY staff.main.menu.cat.copy_status.label "Display Item"><!ENTITY staff.main.menu.cat.copy_status.key "I">
+<!ENTITY staff.main.menu.cat.dedup.label "Merge/Transfer Interface"><!ENTITY staff.main.menu.cat.dedup.key "M">
+<!ENTITY staff.main.menu.cat.label "Cataloging"><!ENTITY staff.main.menu.cat.key "a">
+<!ENTITY staff.main.menu.cat.volume_status.label "Display Volume"><!ENTITY staff.main.menu.cat.volume_status.key "V">
+<!ENTITY staff.main.menu.circ.checkin.label "Check In"><!ENTITY staff.main.menu.circ.checkin.key "C">
+<!ENTITY staff.main.menu.circ.checkout.label "Check Out"><!ENTITY staff.main.menu.circ.checkout.key "O">
+<!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'><!ENTITY staff.main.menu.circ.claimed_returned.key "C">
+<!ENTITY staff.main.menu.circ.copy_status.label "Display Item"><!ENTITY staff.main.menu.circ.copy_status.key "I">
+<!ENTITY staff.main.menu.circ.found.label "Mark Found"><!ENTITY staff.main.menu.circ.found.key "F">
+<!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds"><!ENTITY staff.main.menu.circ.hold_capture.key "H">
+<!ENTITY staff.main.menu.circ.label "Circulation"><!ENTITY staff.main.menu.circ.key "C">
+<!ENTITY staff.main.menu.circ.lost.label "Mark Lost"><!ENTITY staff.main.menu.circ.lost.key "L">
+<!ENTITY staff.main.menu.circ.mark_used.label "Mark Used"><!ENTITY staff.main.menu.circ.mark_used.key "U">
+<!ENTITY staff.main.menu.circ.missing.label "Mark Missing"><!ENTITY staff.main.menu.circ.missing.key "M">
+<!ENTITY staff.main.menu.circ.patron_registration.label "Register Patron"><!ENTITY staff.main.menu.circ.patron_registration.key "R">
+<!ENTITY staff.main.menu.circ.patron_status.label "Display Patron"><!ENTITY staff.main.menu.circ.patron_status.key "P">
+<!ENTITY staff.main.menu.circ.place_hold.label "Place Hold"><!ENTITY staff.main.menu.circ.place_hold.key "H">
+<!ENTITY staff.main.menu.circ.quick_add.label "Quick Add"><!ENTITY staff.main.menu.circ.quick_add.key "Q">
+<!ENTITY staff.main.menu.circ.renew.label "Renew"><!ENTITY staff.main.menu.circ.renew.key "n">
+<!ENTITY staff.main.menu.circ.special.label "Special Circulation"><!ENTITY staff.main.menu.circ.special.key "S">
+<!ENTITY staff.main.menu.edit.buckets.label "Manage Buckets"><!ENTITY staff.main.menu.edit.buckets.key "B">
+<!ENTITY staff.main.menu.edit.copy.label "Copy"><!ENTITY staff.main.menu.edit.copy.key "C">
+<!ENTITY staff.main.menu.edit.cut.label "Cut"><!ENTITY staff.main.menu.edit.cut.key "t">
+<!ENTITY staff.main.menu.edit.delete.label "Delete"><!ENTITY staff.main.menu.edit.delete.key "D">
+<!ENTITY staff.main.menu.edit.find.label "Find"><!ENTITY staff.main.menu.edit.find.key "F">
+<!ENTITY staff.main.menu.edit.find_again.label "Find Again"><!ENTITY staff.main.menu.edit.find_again.key "g">
+<!ENTITY staff.main.menu.edit.label "Edit"><!ENTITY staff.main.menu.edit.key "E">
+<!ENTITY staff.main.menu.edit.paste.label "Paste"><!ENTITY staff.main.menu.edit.paste.key "P">
+<!ENTITY staff.main.menu.edit.redo.label "Redo"><!ENTITY staff.main.menu.edit.redo.key "R">
+<!ENTITY staff.main.menu.edit.select_all.label "Select All"><!ENTITY staff.main.menu.edit.select_all.key "A">
+<!ENTITY staff.main.menu.edit.undo.label "Undo"><!ENTITY staff.main.menu.edit.undo.key "U">
+<!ENTITY staff.main.menu.entity.bib.label "Bib Records"><!ENTITY staff.main.menu.entity.bib.key "">
+<!ENTITY staff.main.menu.entity.copy.label "Items"><!ENTITY staff.main.menu.entity.copy.key "">
+<!ENTITY staff.main.menu.entity.patron.label "Patrons"><!ENTITY staff.main.menu.entity.patron.key "">
+<!ENTITY staff.main.menu.entity.patron.register.key "R">
+<!ENTITY staff.main.menu.entity.volume.label "Volumes"><!ENTITY staff.main.menu.entity.volume.key "">
+<!ENTITY staff.main.menu.file.close.label "Close Window"><!ENTITY staff.main.menu.file.close.key "C">
+<!ENTITY staff.main.menu.file.close_tab.label "Close Tab"><!ENTITY staff.main.menu.file.close_tab.key "">
+<!ENTITY staff.main.menu.file.label "File"><!ENTITY staff.main.menu.file.key "F">
+<!ENTITY staff.main.menu.file.new.label "New Window"><!ENTITY staff.main.menu.file.new.key "N">
+<!ENTITY staff.main.menu.file.new_tab.label "New Tab"><!ENTITY staff.main.menu.file.new_tab.key "T">
+<!ENTITY staff.main.menu.file.open.label "Open Session"><!ENTITY staff.main.menu.file.open.key "O">
+<!ENTITY staff.main.menu.file.save.label "Save Session"><!ENTITY staff.main.menu.file.save.key "S">
+<!ENTITY staff.main.menu.help.label "Help"><!ENTITY staff.main.menu.help.key "H">
+<!ENTITY staff.main.menu.reports.label "Reports"><!ENTITY staff.main.menu.reports.key "">
+<!ENTITY staff.main.menu.search.label "Search"><!ENTITY staff.main.menu.search.key "r">
+<!ENTITY staff.main.menu.serials.label "Serials"><!ENTITY staff.main.menu.serials.key "l">
+<!ENTITY staff.main.menu.title "Evergreen Staff Client">
+<!ENTITY staff.marc.008.BKS.MAP.indx.desc "Index">
+<!ENTITY staff.marc.008.BKS.MAP.indx.field "008">
+<!ENTITY staff.marc.008.BKS.MAP.indx.field_end_pos "31">
+<!ENTITY staff.marc.008.BKS.MAP.indx.field_size "1">
+<!ENTITY staff.marc.008.BKS.MAP.indx.field_start_pos "31">
+<!ENTITY staff.marc.008.BKS.MAP.indx.help "http://www.oclc.org/bibformats/en/fixedfield/indx.shtm">
+<!ENTITY staff.marc.008.BKS.MAP.indx.short "Indx"> 
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.desc "Form of Item">
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.field "008">
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.field_end_pos "23">
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.field_size "1">
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.field_start_pos "23">
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.help "http://www.oclc.org/bibformats/en/fixedfield/form.shtm">
+<!ENTITY staff.marc.008.BKS.SER.MIX.SCO.REC.form.short "Form"> 
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.desc "Government Publication">
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field "008">
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field_end_pos "28">
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field_size "1">
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field_start_pos "28">
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.help "http://www.oclc.org/bibformats/en/fixedfield/gpub.shtm">
+<!ENTITY staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.short "GPub"> 
+<!ENTITY staff.marc.008.BKS.SER.conf.desc "Conference Publication">
+<!ENTITY staff.marc.008.BKS.SER.conf.field "008">
+<!ENTITY staff.marc.008.BKS.SER.conf.field_end_pos "29">
+<!ENTITY staff.marc.008.BKS.SER.conf.field_size "1">
+<!ENTITY staff.marc.008.BKS.SER.conf.field_start_pos "29">
+<!ENTITY staff.marc.008.BKS.SER.conf.help "http://www.oclc.org/bibformats/en/fixedfield/conf.shtm">
+<!ENTITY staff.marc.008.BKS.SER.conf.short "Conf"> 
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.desc "Target Audience">
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field "008">
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field_end_pos "22">
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field_size "1">
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field_start_pos "22">
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.help "http://www.oclc.org/bibformats/en/fixedfield/audn.shtm">
+<!ENTITY staff.marc.008.BKS.VIS.SCO.REC.COM.audn.short "Audn"> 
+<!ENTITY staff.marc.008.BKS.biog.desc "Biography">
+<!ENTITY staff.marc.008.BKS.biog.field "008">
+<!ENTITY staff.marc.008.BKS.biog.field_end_pos "34">
+<!ENTITY staff.marc.008.BKS.biog.field_size "1">
+<!ENTITY staff.marc.008.BKS.biog.field_start_pos "34">
+<!ENTITY staff.marc.008.BKS.biog.help "http://www.oclc.org/bibformats/en/fixedfield/biog.shtm">
+<!ENTITY staff.marc.008.BKS.biog.short "Biog"> 
+<!ENTITY staff.marc.008.BKS.cont.desc "Nature of Contents">
+<!ENTITY staff.marc.008.BKS.cont.field "008">
+<!ENTITY staff.marc.008.BKS.cont.field_end_pos "27">
+<!ENTITY staff.marc.008.BKS.cont.field_size "4">
+<!ENTITY staff.marc.008.BKS.cont.field_start_pos "24">
+<!ENTITY staff.marc.008.BKS.cont.help "http://www.oclc.org/bibformats/en/fixedfield/cont.shtm">
+<!ENTITY staff.marc.008.BKS.cont.short "Cont"> 
+<!ENTITY staff.marc.008.BKS.fest.desc "Festschrift">
+<!ENTITY staff.marc.008.BKS.fest.field "008">
+<!ENTITY staff.marc.008.BKS.fest.field_end_pos "30">
+<!ENTITY staff.marc.008.BKS.fest.field_size "1">
+<!ENTITY staff.marc.008.BKS.fest.field_start_pos "30">
+<!ENTITY staff.marc.008.BKS.fest.help "http://www.oclc.org/bibformats/en/fixedfield/fest.shtm">
+<!ENTITY staff.marc.008.BKS.fest.short "Fest"> 
+<!ENTITY staff.marc.008.BKS.ills.desc "Illustrations">
+<!ENTITY staff.marc.008.BKS.ills.field "008">
+<!ENTITY staff.marc.008.BKS.ills.field_end_pos "21">
+<!ENTITY staff.marc.008.BKS.ills.field_size "4">
+<!ENTITY staff.marc.008.BKS.ills.field_start_pos "18">
+<!ENTITY staff.marc.008.BKS.ills.help "http://www.oclc.org/bibformats/en/fixedfield/ills.shtm">
+<!ENTITY staff.marc.008.BKS.ills.short "Ills"> 
+<!ENTITY staff.marc.008.BKS.litf.desc "Literary Form">
+<!ENTITY staff.marc.008.BKS.litf.field "008">
+<!ENTITY staff.marc.008.BKS.litf.field_end_pos "33">
+<!ENTITY staff.marc.008.BKS.litf.field_size "1">
+<!ENTITY staff.marc.008.BKS.litf.field_start_pos "33">
+<!ENTITY staff.marc.008.BKS.litf.help "http://www.oclc.org/bibformats/en/fixedfield/litf.shtm">
+<!ENTITY staff.marc.008.BKS.litf.short "LitF"> 
+<!ENTITY staff.marc.008.MAP.VIS.form.desc "Form of Item">
+<!ENTITY staff.marc.008.MAP.VIS.form.field "008">
+<!ENTITY staff.marc.008.MAP.VIS.form.field_end_pos "29">
+<!ENTITY staff.marc.008.MAP.VIS.form.field_size "1">
+<!ENTITY staff.marc.008.MAP.VIS.form.field_start_pos "29">
+<!ENTITY staff.marc.008.MAP.VIS.form.help "http://www.oclc.org/bibformats/en/fixedfield/form.shtm">
+<!ENTITY staff.marc.008.MAP.VIS.form.short "Form"> 
+<!ENTITY staff.marc.008.SER.alph.desc "Original Alphabet or Script of Title">
+<!ENTITY staff.marc.008.SER.alph.field "008">
+<!ENTITY staff.marc.008.SER.alph.field_end_pos "33">
+<!ENTITY staff.marc.008.SER.alph.field_size "1">
+<!ENTITY staff.marc.008.SER.alph.field_start_pos "33">
+<!ENTITY staff.marc.008.SER.alph.help "http://www.oclc.org/bibformats/en/fixedfield/alph.shtm">
+<!ENTITY staff.marc.008.SER.alph.short "Alph"> 
+<!ENTITY staff.marc.008.SER.cont.desc "Nature of Contents">
+<!ENTITY staff.marc.008.SER.cont.field "008">
+<!ENTITY staff.marc.008.SER.cont.field_end_pos "27">
+<!ENTITY staff.marc.008.SER.cont.field_size "3">
+<!ENTITY staff.marc.008.SER.cont.field_start_pos "25">
+<!ENTITY staff.marc.008.SER.cont.help "http://www.oclc.org/bibformats/en/fixedfield/cont.shtm">
+<!ENTITY staff.marc.008.SER.cont.short "Cont"> 
+<!ENTITY staff.marc.008.SER.entw.desc "Nature of Entire Work">
+<!ENTITY staff.marc.008.SER.entw.field "008">
+<!ENTITY staff.marc.008.SER.entw.field_end_pos "24">
+<!ENTITY staff.marc.008.SER.entw.field_size "1">
+<!ENTITY staff.marc.008.SER.entw.field_start_pos "24">
+<!ENTITY staff.marc.008.SER.entw.help "http://www.oclc.org/bibformats/en/fixedfield/entw.shtm">
+<!ENTITY staff.marc.008.SER.entw.short "EntW"> 
+<!ENTITY staff.marc.008.SER.freq.desc "Frequency">
+<!ENTITY staff.marc.008.SER.freq.field "008">
+<!ENTITY staff.marc.008.SER.freq.field_end_pos "18">
+<!ENTITY staff.marc.008.SER.freq.field_size "1">
+<!ENTITY staff.marc.008.SER.freq.field_start_pos "18">
+<!ENTITY staff.marc.008.SER.freq.help "http://www.oclc.org/bibformats/en/fixedfield/freq.shtm">
+<!ENTITY staff.marc.008.SER.freq.short "Freq"> 
+<!ENTITY staff.marc.008.SER.issn.desc "ISSN Center">
+<!ENTITY staff.marc.008.SER.issn.field "008">
+<!ENTITY staff.marc.008.SER.issn.field_end_pos "20">
+<!ENTITY staff.marc.008.SER.issn.field_size "1">
+<!ENTITY staff.marc.008.SER.issn.field_start_pos "20">
+<!ENTITY staff.marc.008.SER.issn.help "http://www.oclc.org/bibformats/en/fixedfield/issn.shtm">
+<!ENTITY staff.marc.008.SER.issn.short "ISSN"> 
+<!ENTITY staff.marc.008.SER.orig.desc "Form of Original Item">
+<!ENTITY staff.marc.008.SER.orig.field "008">
+<!ENTITY staff.marc.008.SER.orig.field_end_pos "22">
+<!ENTITY staff.marc.008.SER.orig.field_size "1">
+<!ENTITY staff.marc.008.SER.orig.field_start_pos "22">
+<!ENTITY staff.marc.008.SER.orig.help "http://www.oclc.org/bibformats/en/fixedfield/orig.shtm">
+<!ENTITY staff.marc.008.SER.orig.short "Orig"> 
+<!ENTITY staff.marc.008.SER.regl.desc "Regularity">
+<!ENTITY staff.marc.008.SER.regl.field "008">
+<!ENTITY staff.marc.008.SER.regl.field_end_pos "19">
+<!ENTITY staff.marc.008.SER.regl.field_size "1">
+<!ENTITY staff.marc.008.SER.regl.field_start_pos "19">
+<!ENTITY staff.marc.008.SER.regl.help "http://www.oclc.org/bibformats/en/fixedfield/regl.shtm">
+<!ENTITY staff.marc.008.SER.regl.short "Regl"> 
+<!ENTITY staff.marc.008.SER.srtp.desc "Type of Continuing Resource">
+<!ENTITY staff.marc.008.SER.srtp.field "008">
+<!ENTITY staff.marc.008.SER.srtp.field_end_pos "21">
+<!ENTITY staff.marc.008.SER.srtp.field_size "1">
+<!ENTITY staff.marc.008.SER.srtp.field_start_pos "21">
+<!ENTITY staff.marc.008.SER.srtp.help "http://www.oclc.org/bibformats/en/fixedfield/srtp.shtm">
+<!ENTITY staff.marc.008.SER.srtp.short "SrTp"> 
+<!ENTITY staff.marc.008.SER.succ.desc "Entry Convention">
+<!ENTITY staff.marc.008.SER.succ.field "008">
+<!ENTITY staff.marc.008.SER.succ.field_end_pos "34">
+<!ENTITY staff.marc.008.SER.succ.field_size "1">
+<!ENTITY staff.marc.008.SER.succ.field_start_pos "34">
+<!ENTITY staff.marc.008.SER.succ.help "http://www.oclc.org/bibformats/en/fixedfield/succ.shtm">
+<!ENTITY staff.marc.008.SER.succ.short "S/L"> 
+<!ENTITY staff.marc.008.ctry.desc "Country of Publication, etc.">
+<!ENTITY staff.marc.008.ctry.field "008">
+<!ENTITY staff.marc.008.ctry.field_end_pos "17">
+<!ENTITY staff.marc.008.ctry.field_size "3">
+<!ENTITY staff.marc.008.ctry.field_start_pos "15">
+<!ENTITY staff.marc.008.ctry.help "http://www.oclc.org/bibformats/en/fixedfield/ctry.shtm">
+<!ENTITY staff.marc.008.ctry.short "Ctry">
+<!ENTITY staff.marc.008.date1.desc "Date 1">
+<!ENTITY staff.marc.008.date1.field "008">
+<!ENTITY staff.marc.008.date1.field_end_pos "10">
+<!ENTITY staff.marc.008.date1.field_size "4">
+<!ENTITY staff.marc.008.date1.field_start_pos "7">
+<!ENTITY staff.marc.008.date1.short "Date 1"> 
+<!ENTITY staff.marc.008.date2.desc "Date 2">
+<!ENTITY staff.marc.008.date2.field "008">
+<!ENTITY staff.marc.008.date2.field_end_pos "14">
+<!ENTITY staff.marc.008.date2.field_size "4">
+<!ENTITY staff.marc.008.date2.field_start_pos "11">
+<!ENTITY staff.marc.008.date2.short "Date 2">
+<!ENTITY staff.marc.008.dates "Dates">
+<!ENTITY staff.marc.008.dates.help "http://www.oclc.org/bibformats/en/fixedfield/dates.shtm">
+<!ENTITY staff.marc.008.dtst.desc "Type of Date/Publication Status">
+<!ENTITY staff.marc.008.dtst.field "008">
+<!ENTITY staff.marc.008.dtst.field_end_pos "6">
+<!ENTITY staff.marc.008.dtst.field_size "1">
+<!ENTITY staff.marc.008.dtst.field_start_pos "6">
+<!ENTITY staff.marc.008.dtst.help "http://www.oclc.org/bibformats/en/fixedfield/dtst.shtm">
+<!ENTITY staff.marc.008.dtst.short "DtSt"> 
+<!ENTITY staff.marc.008.entered.desc "Date Entered">
+<!ENTITY staff.marc.008.entered.field "008">
+<!ENTITY staff.marc.008.entered.field_end_pos "5">
+<!ENTITY staff.marc.008.entered.field_size "6">
+<!ENTITY staff.marc.008.entered.field_start_pos "0">
+<!ENTITY staff.marc.008.entered.help "http://www.oclc.org/bibformats/en/fixedfield/entered.shtm">
+<!ENTITY staff.marc.008.entered.short "Entered"> 
+<!ENTITY staff.marc.008.lang.desc "Language Code">
+<!ENTITY staff.marc.008.lang.field "008">
+<!ENTITY staff.marc.008.lang.field_end_pos "37">
+<!ENTITY staff.marc.008.lang.field_size "3">
+<!ENTITY staff.marc.008.lang.field_start_pos "35">
+<!ENTITY staff.marc.008.lang.help "http://www.oclc.org/bibformats/en/fixedfield/lang.shtm">
+<!ENTITY staff.marc.008.lang.short "Lang"> 
+<!ENTITY staff.marc.008.mrec.desc "Modified Record">
+<!ENTITY staff.marc.008.mrec.field "008">
+<!ENTITY staff.marc.008.mrec.field_end_pos "38">
+<!ENTITY staff.marc.008.mrec.field_size "1">
+<!ENTITY staff.marc.008.mrec.field_start_pos "38">
+<!ENTITY staff.marc.008.mrec.help "http://www.oclc.org/bibformats/en/fixedfield/mrec.shtm">
+<!ENTITY staff.marc.008.mrec.short "MRec"> 
+<!ENTITY staff.marc.008.srce.desc "Cataloging Source">
+<!ENTITY staff.marc.008.srce.field "008">
+<!ENTITY staff.marc.008.srce.field_end_pos "39">
+<!ENTITY staff.marc.008.srce.field_size "1">
+<!ENTITY staff.marc.008.srce.field_start_pos "39">
+<!ENTITY staff.marc.008.srce.help "http://www.oclc.org/bibformats/en/fixedfield/srce.shtm">
+<!ENTITY staff.marc.008.srce.short "Srce"> 
+<!ENTITY staff.marc.LDR.blvl.desc "Bibliographic Level">
+<!ENTITY staff.marc.LDR.blvl.field "LDR">
+<!ENTITY staff.marc.LDR.blvl.field_end_pos "7">
+<!ENTITY staff.marc.LDR.blvl.field_size "1">
+<!ENTITY staff.marc.LDR.blvl.field_start_pos "7">
+<!ENTITY staff.marc.LDR.blvl.help "http://www.oclc.org/bibformats/en/fixedfield/blvl.shtm">
+<!ENTITY staff.marc.LDR.blvl.short "BLvl"> 
+<!ENTITY staff.marc.LDR.ctrl.desc "Type of Control">
+<!ENTITY staff.marc.LDR.ctrl.field "LDR">
+<!ENTITY staff.marc.LDR.ctrl.field_end_pos "8">
+<!ENTITY staff.marc.LDR.ctrl.field_size "1">
+<!ENTITY staff.marc.LDR.ctrl.field_start_pos "8">
+<!ENTITY staff.marc.LDR.ctrl.help "http://www.oclc.org/bibformats/en/fixedfield/ctrl.shtm">
+<!ENTITY staff.marc.LDR.ctrl.short "Ctrl"> 
+<!ENTITY staff.marc.LDR.desc.desc "Descriptive Cataloging Form">
+<!ENTITY staff.marc.LDR.desc.field "LDR">
+<!ENTITY staff.marc.LDR.desc.field_end_pos "18">
+<!ENTITY staff.marc.LDR.desc.field_size "1">
+<!ENTITY staff.marc.LDR.desc.field_start_pos "18">
+<!ENTITY staff.marc.LDR.desc.help "http://www.oclc.org/bibformats/en/fixedfield/desc.shtm">
+<!ENTITY staff.marc.LDR.desc.short "Desc"> 
+<!ENTITY staff.marc.LDR.elvl.desc "Encoding Level">
+<!ENTITY staff.marc.LDR.elvl.field "LDR">
+<!ENTITY staff.marc.LDR.elvl.field_end_pos "17">
+<!ENTITY staff.marc.LDR.elvl.field_size "1">
+<!ENTITY staff.marc.LDR.elvl.field_start_pos "17">
+<!ENTITY staff.marc.LDR.elvl.help "http://www.oclc.org/bibformats/en/fixedfield/elvl.shtm">
+<!ENTITY staff.marc.LDR.elvl.short "ELvl"> 
+<!ENTITY staff.marc.LDR.rec_stat.desc "Record Status">
+<!ENTITY staff.marc.LDR.rec_stat.field "LDR">
+<!ENTITY staff.marc.LDR.rec_stat.field_end_pos "5">
+<!ENTITY staff.marc.LDR.rec_stat.field_size "1">
+<!ENTITY staff.marc.LDR.rec_stat.field_start_pos "5">
+<!ENTITY staff.marc.LDR.rec_stat.help "http://www.oclc.org/bibformats/en/fixedfield/rec.shtm">
+<!ENTITY staff.marc.LDR.rec_stat.short "Rec stat"> 
+<!ENTITY staff.marc.LDR.type.desc "Type of Record">
+<!ENTITY staff.marc.LDR.type.field "LDR">
+<!ENTITY staff.marc.LDR.type.field_end_pos "6">
+<!ENTITY staff.marc.LDR.type.field_size "1">
+<!ENTITY staff.marc.LDR.type.field_start_pos "6">
+<!ENTITY staff.marc.LDR.type.help "http://www.oclc.org/bibformats/en/fixedfield/type.shtm">
+<!ENTITY staff.marc.LDR.type.short "Type"> 
+<!ENTITY staff.marc.close.editor.key "W">
+<!ENTITY staff.marc.display "Display"> <!ENTITY staff.marc.display.key "D">
+<!ENTITY staff.marc.display.control_fields "Toggle Control/Data Fields"> <!ENTITY staff.marc.display.control_fields.key "F">
+<!ENTITY staff.marc.display.cover_art "Toggle Cover Art"> <!ENTITY staff.marc.display.cover_art.key "A">
+<!ENTITY staff.marc.display.explain "Explain Errors"> <!ENTITY staff.marc.display.explain.key "X">
+<!ENTITY staff.marc.display.fixed.BKS "Fixed Fields as BKS"> <!ENTITY staff.marc.display.fixed.BKS.key "B">
+<!ENTITY staff.marc.display.fixed.COM "Fixed Fields as COM"> <!ENTITY staff.marc.display.fixed.COM.key "O">
+<!ENTITY staff.marc.display.fixed.MAP "Fixed Fields as MAP"> <!ENTITY staff.marc.display.fixed.MAP.key "P">
+<!ENTITY staff.marc.display.fixed.MIX "Fixed Fields as MIX"> <!ENTITY staff.marc.display.fixed.MIX.key "M">
+<!ENTITY staff.marc.display.fixed.REC "Fixed Fields as REC"> <!ENTITY staff.marc.display.fixed.REC.key "R">
+<!ENTITY staff.marc.display.fixed.SCO "Fixed Fields as SCO"> <!ENTITY staff.marc.display.fixed.SCO.key "C">
+<!ENTITY staff.marc.display.fixed.SER "Fixed Fields as SER"> <!ENTITY staff.marc.display.fixed.SER.key "S">
+<!ENTITY staff.marc.display.fixed.VIS "Fixed Fields as VIS"> <!ENTITY staff.marc.display.fixed.VIS.key "V">
+<!ENTITY staff.marc.display.legend "Legend"> <!ENTITY staff.marc.display.legend.key "L">
+<!ENTITY staff.marc.display.meta_data "Toggle Meta Data"> <!ENTITY staff.marc.display.meta_data.key "E">
+<!ENTITY staff.marc.editor.keys.help "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;">
+<!ENTITY staff.marc.file "MARC"> <!ENTITY staff.marc.file.key "M">
+<!ENTITY staff.marc.file.close "Close Editor"> <!ENTITY staff.marc.file.close.key "C">
+<!ENTITY staff.marc.file.export "Export"> <!ENTITY staff.marc.file.export.key "E">
+<!ENTITY staff.marc.file.publish "Save (to DB)"> <!ENTITY staff.marc.file.publish.key "S">
+<!ENTITY staff.marc.file.reload "Reload"> <!ENTITY staff.marc.file.reload.key "R">
+<!ENTITY staff.marc.file.validate "Validate"> <!ENTITY staff.marc.file.validate.key "V">
+<!ENTITY staff.marc.groupbox.control "Control Fields">
+<!ENTITY staff.marc.groupbox.cover "Cover Art">
+<!ENTITY staff.marc.groupbox.data "Data Fields">
+<!ENTITY staff.marc.groupbox.fixed "Fixed Fields">
+<!ENTITY staff.marc.groupbox.meta "Meta Data (NOT YET IMPLEMENTED)">
+<!ENTITY staff.next.range 'Next'>
+<!ENTITY staff.next.range.key 'N'>
+<!ENTITY staff.patron_display.bills.label 'Bills:'>
+<!ENTITY staff.patron_display.checkout.auto_print_label 'Auto-Print'>
+<!ENTITY staff.patron_display.checkout.auto_print_label.accesskey 'A'>
+<!ENTITY staff.patron_display.checkout.done_label 'Done'>
+<!ENTITY staff.patron_display.checkout.done_label.accesskey 'D'>
+<!ENTITY staff.patron_display.checkout.print_receipt_label 'Print Receipt'>
+<!ENTITY staff.patron_display.checkout.print_receipt_label.accesskey ''>
+<!ENTITY staff.patron_display.checkout.reprint_receipt_label 'Re-Print Last Receipt'>
+<!ENTITY staff.patron_display.checkout.reprint_receipt_label.accesskey 'L'>
+<!ENTITY staff.patron_display.checkout.scan_label 'Enter Barcode:'>
+<!ENTITY staff.patron_display.checkout.scan_label.accesskey 'a'>
+<!ENTITY staff.patron_display.checkout.submit_label 'Submit'>
+<!ENTITY staff.patron_display.checkout.submit_label.accesskey 'S'>
+<!ENTITY staff.patron_display.checkouts.label 'Check Outs:'>
+<!ENTITY staff.patron_display.checkouts_overdue.label 'Overdue:'>
+<!ENTITY staff.patron_display.contact.caption 'Identity &amp; Contact Info'>
+<!ENTITY staff.patron_display.credit.label 'Credit:'>
+<!ENTITY staff.patron_display.date_of_birth.label 'DOB:'>
+<!ENTITY staff.patron_display.day_phone.label 'Day Phone:'>
+<!ENTITY staff.patron_display.email.label 'Email:'>
+<!ENTITY staff.patron_display.evening_phone.label 'Evening Phone:'>
+<!ENTITY staff.patron_display.family_name.label 'Last Name:'>
+<!ENTITY staff.patron_display.first_given_name.label 'First Name:'>
+<!ENTITY staff.patron_display.holds.label 'Holds:'>
+<!ENTITY staff.patron_display.holds_available.label 'Available:'>
+<!ENTITY staff.patron_display.home_ou.label 'Home Library:'>
+<!ENTITY staff.patron_display.ident1.label 'ID 1:'>
+<!ENTITY staff.patron_display.ident2.label 'ID 2:'>
+<!ENTITY staff.patron_display.items.print_receipt_label 'Print Receipt'>
+<!ENTITY staff.patron_display.items.print_receipt_label.accesskey 'P'>
+<!ENTITY staff.patron_display.items_claimed_returned.label 'Items Claimed Returned:'>
+<!ENTITY staff.patron_display.library_card.label 'PINES Card:'>
+<!ENTITY staff.patron_display.mailing.city.label 'Mailing City:'>
+<!ENTITY staff.patron_display.mailing.post_code.label 'Mailing ZIP:'>
+<!ENTITY staff.patron_display.mailing.state.label 'Mailing State:'>
+<!ENTITY staff.patron_display.mailing.street1.label 'Mailing Address 1:'>
+<!ENTITY staff.patron_display.mailing.street2.label 'Mailing Address 2:'>
+<!ENTITY staff.patron_display.mailing_address 'Mailing Address'>
+<!ENTITY staff.patron_display.name.label 'Patron Name'>
+<!ENTITY staff.patron_display.other_phone.label 'Other Phone:'>
+<!ENTITY staff.patron_display.physical.city.label 'Physical City:'>
+<!ENTITY staff.patron_display.physical.post_code.label 'Physical ZIP:'>
+<!ENTITY staff.patron_display.physical.state.label 'Physical State:'>
+<!ENTITY staff.patron_display.physical.street1.label 'Physical Address 1:'>
+<!ENTITY staff.patron_display.physical.street2.label 'Physical Address 2:'>
+<!ENTITY staff.patron_display.physical_address 'Physical Address'>
+<!ENTITY staff.patron_display.profile.label 'Profile:'>
+<!ENTITY staff.patron_display.second_given_name.label 'Middle Name:'>
+<!ENTITY staff.patron_display.standing.label 'Standing:'>
+<!ENTITY staff.patron_display.status.caption 'Status'>
+<!ENTITY staff.patron_navbar.bills 'Bills'>
+<!ENTITY staff.patron_navbar.bills.accesskey 'B'>
+<!ENTITY staff.patron_navbar.checkout 'Check Out'>
+<!ENTITY staff.patron_navbar.checkout.accesskey 'C'>
+<!ENTITY staff.patron_navbar.edit 'Edit'>
+<!ENTITY staff.patron_navbar.edit.accesskey 'E'>
+<!ENTITY staff.patron_navbar.holds 'Holds'>
+<!ENTITY staff.patron_navbar.holds.accesskey 'H'>
+<!ENTITY staff.patron_navbar.info 'Info'>
+<!ENTITY staff.patron_navbar.info.accesskey 'o'>
+<!ENTITY staff.patron_navbar.items 'Items Out'>
+<!ENTITY staff.patron_navbar.items.accesskey 'I'>
+<!ENTITY staff.patron_navbar.refresh 'Refresh'>
+<!ENTITY staff.patron_navbar.refresh.accesskey 'R'>
+<!ENTITY staff.patron_navbar.retrieve 'Retrieve Patron'>
+<!ENTITY staff.patron_navbar.retrieve.accesskey 'R'>
+<!ENTITY staff.patron_search_form.caption 'Search for Patron'>
+<!ENTITY staff.patron_search_form.city.accesskey ''>
+<!ENTITY staff.patron_search_form.city.label 'City:'>
+<!ENTITY staff.patron_search_form.clear.accesskey 'C'>
+<!ENTITY staff.patron_search_form.clear.label 'Clear Form'>
+<!ENTITY staff.patron_search_form.email.accesskey ''>
+<!ENTITY staff.patron_search_form.email.label 'Email:'>
+<!ENTITY staff.patron_search_form.family_name.accesskey 'L'>
+<!ENTITY staff.patron_search_form.family_name.label 'Last Name:'>
+<!ENTITY staff.patron_search_form.first_given_name.accesskey ''>
+<!ENTITY staff.patron_search_form.first_given_name.label 'First Name:'>
+<!ENTITY staff.patron_search_form.ident.accesskey ''>
+<!ENTITY staff.patron_search_form.ident.label 'ID:'>
+<!ENTITY staff.patron_search_form.phone.accesskey 'P'>
+<!ENTITY staff.patron_search_form.phone.label 'Phone:'>
+<!ENTITY staff.patron_search_form.post_code.accesskey ''>
+<!ENTITY staff.patron_search_form.post_code.label 'ZIP:'>
+<!ENTITY staff.patron_search_form.search.accesskey 'S'>
+<!ENTITY staff.patron_search_form.search.label 'Search'>
+<!ENTITY staff.patron_search_form.second_given_name.accesskey ''>
+<!ENTITY staff.patron_search_form.second_given_name.label 'Middle Name:'>
+<!ENTITY staff.patron_search_form.state.accesskey ''>
+<!ENTITY staff.patron_search_form.state.label 'State:'>
+<!ENTITY staff.patron_search_form.street1.accesskey 'd'>
+<!ENTITY staff.patron_search_form.street1.label 'Address 1:'>
+<!ENTITY staff.patron_search_form.street2.accesskey ''>
+<!ENTITY staff.patron_search_form.street2.label 'Address 2:'>
+<!ENTITY staff.previous.range 'Previous'>
+<!ENTITY staff.previous.range.key 'P'>
+<!ENTITY staff.record_list.author "Author">
+<!ENTITY staff.record_list.copy_count "Copies&#740;">
+<!ENTITY staff.record_list.isbn "ISBN">
+<!ENTITY staff.record_list.issn "ISSN">
+<!ENTITY staff.record_list.publisher "Publisher">
+<!ENTITY staff.record_list.pubyear "Pub Year">
+<!ENTITY staff.record_list.tcn "TCN">
+<!ENTITY staff.record_list.title "Title">
+<!ENTITY staff.record_list.win_title "Cataloging">
+<!ENTITY staff.survey.wizard.page1 "Initial Settings">
+<!ENTITY staff.survey.wizard.page2 "Add Questions for Survey:">
+<!ENTITY staff.survey.wizard.title "Add a Survey Wizard">
+<!ENTITY staff.volume.attr.callnumber "Call Number">
+<!ENTITY staff.volume.attr.owning_lib "Owning Library">
+<!ENTITY staff.volume.wizard.page1 "Entering Volumes">
+<!ENTITY staff.volume.wizard.page2 "Entering Copies">
+<!ENTITY staff.volume.wizard.page3 "Entering Barcodes">
+<!ENTITY staff.volume.wizard.page4 "Entering Copy-Level Attribute Defaults">
+<!ENTITY staff.volume.wizard.title "Batch Add Volumes/Copies Wizard">
