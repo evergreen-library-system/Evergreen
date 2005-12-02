@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Home</title>
+		<title>&opac.title.home;</title>
 		<xi:include href="css_common.xml"/>
 		<script language='javascript' src='../../../common/js/utils.js'> </script>
 		<script language='javascript' src='../../../common/js//config.js'> </script>

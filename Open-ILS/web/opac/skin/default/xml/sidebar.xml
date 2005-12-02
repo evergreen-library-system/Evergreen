@@ -11,9 +11,9 @@
 			<a id='home_link' href='index.xml'>&navigate.home;</a>
 		</div>
 	
-		<div title="&navigate.advanced.title;"
+		<div title="&opac.navigate.advanced.title;"
 			id='advanced_link_div' class="side_bar_item ">
-			<a id='advanced_link' href='advanced.xml'>&navigate.advanced;</a>
+			<a id='advanced_link' href='advanced.xml'>&opac.navigate.advanced;</a>
 		</div>
 
 		<div title="&navigate.myopac.title;"

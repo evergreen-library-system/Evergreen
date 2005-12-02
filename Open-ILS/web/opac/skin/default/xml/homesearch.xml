@@ -42,7 +42,7 @@
 				</script>
 
 				<td style='padding: 6px; border: 1px solid #D0D0D0;' class='' align='center'>
-					<span> Now searching </span>
+					<span>&opac.search.nowSearching;</span>
 					<span style='padding: 1px;' id='now_searching_location'>  </span>
 				</td>
 			</tr>
@@ -96,19 +96,21 @@
 
 			<tr class='color_1' style='border: 1px solid #D0D0D0;'>
 				<td align='center' style='padding: 4px; padding-bottom: 6px;'>
-					<span style='padding-right: 15px;'><a id='home_adv_search_link' href='javascript:void(0);'>Advanced Search</a></span>
+					<span style='padding-right: 15px;'>
+						<a id='home_adv_search_link' href='javascript:void(0);'>&opac.navigate.advanced;</a></span>
 					<span>
 						<span class='hide_me' id='depth_selector_span'>
 							<select id='depth_selector' >
-								<option value='new'>Choose a different library...</option>
+								<option value='new'>&opac.navigate.selectNewOrg;...</option>
 							</select>
 						</span>
 						<span class='hide_me' id='lib_selector_span'>
-							<a id='lib_selector_link' href='javascript:void(0)'>Choose a library to search</a>
+							<a id='lib_selector_link' href='javascript:void(0)'>&opac.navigate.selectOrg;</a>
 						</span>
 					</span>
-					<span style='padding-left: 15px;'><a id='home_myopac_link' href='javascript:void(0);'>My Account</a></span>
-
+					<span style='padding-left: 15px;'>
+						<a id='home_myopac_link' href='javascript:void(0);'>&opac.navigate.myopac;</a>
+					</span>
 				</td>
 			</tr>
 

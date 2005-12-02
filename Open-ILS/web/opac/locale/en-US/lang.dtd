@@ -10,11 +10,14 @@
 <!ENTITY common.type "Type">
 <!ENTITY common.isbn "ISBN">
 <!ENTITY common.format "Format">
-<!ENTITY common.login "Log In">
+<!ENTITY common.login "Login">
 <!ENTITY common.logout "Log Out">
 <!ENTITY common.at "at">
 <!ENTITY common.of "of">
 <!ENTITY common.cancel "Cancel">
+<!ENTITY common.library "Library">
+<!ENTITY common.username "Username">
+<!ENTITY common.password "Password">
 
 
 <!--	======================================================================================= 
@@ -26,17 +29,25 @@
 <!ENTITY llt "&lt;">
 <!ENTITY ggt "&gt;">
 
+<!ENTITY opac.nbsp "  ">
+<!ENTITY opac.space "&nsbp;">
+<!ENTITY opac.llt "&lt;">
+<!ENTITY opac.ggt "&gt;">
+
+
 <!-- Navigations links -->
 <!ENTITY navigate.home "Home">
 <!ENTITY navigate.home.title "Go to the Home page">
-<!ENTITY navigate.advanced "Advanced Search">
-<!ENTITY navigate.advanced.title "Go to the Advanced Search Page">
+<!ENTITY opac.navigate.advanced "Advanced Search">
+<!ENTITY opac.navigate.advanced.title "Go to the Advanced Search Page">
 <!ENTITY navigate.myopac "My Account">
 <!ENTITY navigate.myopac.title "Go to My OPAC">
 <!ENTITY navigate.login "Log in">
 <!ENTITY navigate.login.title "Log in for personalized features">
 <!ENTITY navigate.logout "Log out">
 <!ENTITY navigate.logout.title "Log out">
+<!ENTITY opac.navigate.selectNewOrg "Choose a different library">
+<!ENTITY opac.navigate.selectOrg "Choose a library to search">
 
 <!-- Informational items -->
 <!ENTITY navigate.loggedinas "You are logged in as ">
@@ -102,10 +113,11 @@
 <!ENTITY opac.search.videoRecordings "Video Recordings">
 <!ENTITY opac.search.music "Music">
 <!ENTITY opac.search.electronic "Electronic Resources">
+<!ENTITY opac.search.nowSearching "Now Searching">
 
+<!ENTITY opac.title.home "Evergreen: Home">
 
-
-
+<!ENTITY opac.login.login "Login with your username and password">
 
 
 
