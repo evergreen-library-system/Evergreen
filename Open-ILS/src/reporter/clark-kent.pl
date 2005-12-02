@@ -786,18 +786,22 @@ sub generate_query {
 	for my $d (@dims) {
 		my $t = table_by_id($d);
 		my $t_name = $t->findvalue('tablename');
-		push @dim_from, "$t_name AS \"$d\"";
+		push @dim_from, "$t_name AS \"$d\""
+			unless ( grep {$_ eq "$t_name AS \"$d\""} @dim_from );
 
 		my $k = $doc->findvalue("//*[\@id='$d']/\@key");
-		push @dim_select, "\"$d\".\"$k\" AS \"${d}_${k}\"";
+		push @dim_select, "\"$d\".\"$k\" AS \"${d}_${k}\""
+			unless ( grep {$_ eq "\"$d\".\"$k\" AS \"${d}_${k}\""} @dim_select );
 
 		for my $c ( keys %{$$p{output}{$d}} ) {
-			push @dim_select, "\"$d\".\"$c\" AS \"${d}_${c}\"";
+			push @dim_select, "\"$d\".\"$c\" AS \"${d}_${c}\""
+				unless ( grep {$_ eq "\"$d\".\"$c\" AS \"${d}_${c}\""} @dim_select );
 		}
 
 		for my $c ( keys %{$$p{filter}{$d}} ) {
 			next if (exists $$p{output}{$d}{$c});
-			push @dim_select, "\"$d\".\"$c\" AS \"${d}_${c}\"";
+			push @dim_select, "\"$d\".\"$c\" AS \"${d}_${c}\""
+				unless ( grep {$_ eq "\"$d\".\"$c\" AS \"${d}_${c}\""} @dim_select );
 		}
 	}
 
@@ -818,6 +822,7 @@ sub generate_query {
 	my $col = 1;
 	my @groupby = ();
 	my @output = ();
+	my @dim_col_names = ();
 	my @columns = ();
 	my @join = ();
 	my @join_base = ();
@@ -836,7 +841,6 @@ sub generate_query {
 			$full_col = "${t}_${c}" if ($t ne $t_name);
 			$full_col = "\"$t_name\".\"$full_col\"";
 
-			
 			if (my $xform_type = $$p{xform}{type}{$t}{$c}) {
 				my $xform = $$OpenILS::WWW::Reporter::dtype_xforms{$xform_type};
 				if ($xform->{group}) {
