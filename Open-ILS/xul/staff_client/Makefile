@@ -45,8 +45,6 @@ generated:
 open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js chrome/content/evergreen/OpenILS/util/
-	#cp ../../../Open-ILS/src/javascript/widgets/*.js chrome/content/evergreen/OpenILS/widgets/
-	#cp ../../../Open-ILS/src/javascript/widgets/menu/*.js chrome/content/evergreen/OpenILS/widgets/menu/
 
 patron:
 	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_items/g | sed s/PagedTree/PatronItems/g > chrome/content/evergreen/patron/patron_items_overlay.xul )
