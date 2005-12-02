@@ -166,8 +166,8 @@ OpenILS.data.prototype = {
 			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
 			var data_cache=new OpenILS( );
 			data_cache.wrappedJSObject.OpenILS.prototype.data = {
-				'list' : js2JSON( JSON2js( this.list ) ),
-				'hash' : js2JSON( JSON2js( this.hash ) )
+				'list' : this.list,
+				'hash' : this.hash
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR','Error in OpenILS.data.stash(): ' + js2JSON(E) );
