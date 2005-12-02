@@ -510,13 +510,13 @@ BLOCK show_filter_atts;
 		END;
 	END;
 
-	fields_xpath = 'fields/field[not(@primary) or @primary != "true"]';
+	fields_xpath = 'fields/field[(not(@primary) or @primary != "true") or @filterable="true"]';
 
 
 	count = 1;
 
 	FOR field = table.findnodes(fields_xpath);
-		link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
+		link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '" and @hidden!="false"]';
 		logme(['link_test',link_test]);
 		NEXT IF field.findnodes( link_test );
 

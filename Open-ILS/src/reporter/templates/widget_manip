@@ -18,7 +18,7 @@ BLOCK widget_selector;
 		choose_base_cols = 1;
 		columns_xpath =
 			'/reporter/tables/table[@id="' _ tableid _
-			'"]/fields/field[not(@primary) or @primary!="true"]';
+			'"]/fields/field[(not(@primary) or @primary!="true") or @filterable="true"]';
 		FOR c = config.findnodes(columns_xpath);
 			link_text_xpath = "../../links/link[@field='" _ c.findvalue('@name') _ "']";
 			NEXT IF c.findnodes(link_text_xpath);
