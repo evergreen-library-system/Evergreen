@@ -203,7 +203,7 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	if( obj.status != 200 ) {
 		if(!isXUL()) {
-			alert("A Server Error Occured.  Debug information follows:\n",
+			alert("A Server Error Occured.  Debug information follows:\n" +
 				"Status: " + obj.status + '\n' + obj.debug + '\n' 
 				+ 'Payload: ' + js2JSON(obj.payload) + '\n');
 		} else { throw obj; }
