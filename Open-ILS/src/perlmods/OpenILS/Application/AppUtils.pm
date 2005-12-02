@@ -3,6 +3,7 @@ use strict; use warnings;
 use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::EX qw(:try);
+use OpenILS::Perm;
 
 
 my $cache_client = "OpenSRF::Utils::Cache";
@@ -55,6 +56,15 @@ sub check_user_perms {
 	}
 
 	$session->disconnect();
+	return undef;
+}
+
+# checks the list of user perms.  The first one that fails returns a new
+# OpenILS::Perm object of that type.  Returns undef if all perms are allowed
+sub check_perms {
+	my( $self, $user_id, $org_id, @perm_types ) = @_;
+	my $t = $self->check_user_perms( $user_id, $org_id, @perm_types );
+	return OpenILS::Perm->new($t) if $t;
 	return undef;
 }
 
@@ -132,6 +142,12 @@ sub check_user_session {
 }
 
 # generic simple request returning a scalar value
+sub simplereq {
+	my($self, $service, $method, @params) = @_;
+	return $self->simple_scalar_request($service, $method, @params);
+}
+
+
 sub simple_scalar_request {
 	my($self, $service, $method, @params) = @_;
 
@@ -271,7 +287,43 @@ sub build_org_tree {
 
 }
 
+sub fetch_user {
+	my $self = shift;
+	my $id = shift;
+	return $self->simple_scalar_request(
+		'open-ils.storage',
+		'open-ils.storage.direct.actor.user.retrieve', $id );
+}
 
+
+
+# handy tool to handle the ever-recurring situation of someone requesting 
+# something on someone else's behalf (think staff member creating something for a user)
+# returns ($requestor, $targetuser_id, $failed_perm, $exception)
+# $failed_perm is undef if perms are OK
+# exception is OK if there was no exception
+# $targetuser == $staffuser->id when $targetuser is undefined.
+sub handle_requestor {
+	my( $self, $authtoken, $targetuser, @permissions ) = @_;
+
+	my $requestor = $self->check_user_session($authtoken); 
+	$targetuser = $requestor->id unless defined $targetuser;
+	my $userobj = $requestor; 
+	$userobj = $self->fetch_user($targetuser) 
+		unless $targetuser eq $requestor->id;
+
+	if(!$userobj) {} # XXX Friendly exception
+
+	my $perm;
+
+	#everyone is allowed to view their own data
+	if( $targetuser ne $requestor->id ) {
+		$perm = $self->check_perms( 
+			$requestor->id, $userobj->home_ou, @permissions );
+	}
+
+	return ($requestor, $targetuser, $perm);
+}
 
 
 

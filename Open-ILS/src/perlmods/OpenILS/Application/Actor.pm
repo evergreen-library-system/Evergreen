@@ -16,6 +16,12 @@ use OpenILS::Utils::ModsParser;
 
 use OpenSRF::Utils::Cache;
 
+
+use OpenILS::Application::Actor::Container;
+sub initialize {
+	OpenILS::Application::Actor::Container->initialize();
+}
+
 my $apputils = "OpenILS::Application::AppUtils";
 
 sub _d { warn "Patron:\n" . Dumper(shift()); }
