@@ -1,6 +1,7 @@
 #include "mod_xmlbuilder.h"
 
 char* __xmlBuilderDynamicLocale	= NULL;
+request_rec* currentRec = NULL;
 
 
 /* set the base DTD directory */
@@ -59,19 +60,20 @@ static const char* xmlBuilderSetContentType(
 	return NULL;
 }
 
+// ACCESS_CONF - OR_ALL ?
 static const command_rec xmlBuilderCommands[] = {
 	AP_INIT_TAKE1( MODXMLB_CONFIG_LOCALE, 
-			xmlBuilderSetDefaultLocale, NULL, ACCESS_CONF, "Default Locale"),
+			xmlBuilderSetDefaultLocale, NULL, RSRC_CONF, "Default Locale"),
 	AP_INIT_TAKE1( MODXMLB_CONFIG_BASE_DIR, 
-			xmlBuilderSetBaseDir, NULL, ACCESS_CONF, "Base Directory"),
+			xmlBuilderSetBaseDir, NULL, RSRC_CONF, "Base Directory"),
 	AP_INIT_TAKE1( MODXMLB_CONFIG_POST_XSL, 
-			xmlBuilderSetPostXSL, NULL, ACCESS_CONF, "Post XSL"),
+			xmlBuilderSetPostXSL, NULL, RSRC_CONF, "Post XSL"),
 	AP_INIT_TAKE1( MODXMLB_CONFIG_DEFAULT_DTD, 
-			xmlBuilderSetDefaultDtd, NULL, ACCESS_CONF, "Default DTD"),
+			xmlBuilderSetDefaultDtd, NULL, RSRC_CONF, "Default DTD"),
 	AP_INIT_TAKE1( MODXMLB_CONFIG_LOCALE_PARAM,
-			xmlBuilderSetLocaleParam, NULL, ACCESS_CONF, "Default DTD"),
+			xmlBuilderSetLocaleParam, NULL, RSRC_CONF, "Locale URL param name"),
 	AP_INIT_TAKE1( MODXMLB_CONFIG_CONTENT_TYPE,
-			xmlBuilderSetContentType, NULL, ACCESS_CONF, "Content Type"),
+			xmlBuilderSetContentType, NULL, RSRC_CONF, "Content Type"),
 	{NULL}
 };
 
@@ -95,9 +97,21 @@ static void xmlBuilderChildInit( apr_pool_t *p, server_rec *s ) {
 static int xmlBuilderHandler( request_rec* r ) {
 
 	if( strcmp(r->handler, MODULE_NAME ) ) return DECLINED;
+	currentRec = r;
 
 	xmlBuilderConfig* config = ap_get_module_config( 
 			r->server->module_config, &xmlbuilder_module );
+
+	/*
+	xmlBuilderConfig* config = ap_get_module_config( 
+			r->per_dir_config, &xmlbuilder_module );
+			*/
+
+	if(config == NULL) {
+		ap_log_rerror( APLOG_MARK, APLOG_ERR, 0, currentRec,
+				"config is nulll...");
+		return HTTP_INTERNAL_SERVER_ERROR; 
+	}
 	
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
@@ -175,6 +189,15 @@ xmlDocPtr xmlBuilderProcessFile( char* filename, xmlBuilderConfig* config ) {
 	context.xmlError	= 0;
 	context.xmlFile	= filename;
 	context.dtdHash->freeItem = &__xmlBuilderFreeDtdHash;
+
+		
+	/*
+	ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 0, currentRec,
+			"xmlBuilderProcessFile() Options: "
+			"XMLBuilderDefaultLocale : %s |  XMLBuilderBaseDir : %s | "
+         "XMLBuilderDefaultDTD : %s | XMLBuilderLocaleParam : %s",
+			config->defaultLocale, config->baseDir, config->defaultDtd, config->localeParam );
+			*/
 
 	/* pre-parse the default dtd if defined */
 	if( config->defaultDtd ) 

@@ -71,6 +71,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	}
 
 
+	ap_set_content_type(r, "text/plain");
 
 	/* gather the post args and append them to the url query string */
 	if( !strcmp(r->method,"POST") ) {

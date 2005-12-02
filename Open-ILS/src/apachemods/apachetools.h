@@ -5,6 +5,7 @@
 #include "apr_compat.h"
 #include "apr_strings.h"
 #include "apr_reslist.h"
+#include "http_log.h"
 
 
 #include "string_array.h"
