@@ -6,6 +6,8 @@
 <!ENTITY common.author "Author">
 <!ENTITY common.subject "Subject">
 <!ENTITY common.series "Series">
+<!ENTITY common.keyword "Keyword">
+<!ENTITY common.type "Type">
 <!ENTITY common.isbn "ISBN">
 <!ENTITY common.format "Format">
 <!ENTITY common.login "Log In">
@@ -92,6 +94,14 @@
 <!ENTITY opac.holds.placeHold	"Place Hold">
 <!ENTITY opac.holds.success "Hold was successfully placed">
 <!ENTITY opac.holds.failure "Hold was not successfully placed">
+
+<!ENTITY opac.search.books "Books">
+<!ENTITY opac.search.allFormats "All Formats">
+<!ENTITY opac.search.largePrint "Large Print Books">
+<!ENTITY opac.search.audioBooks "Audiobooks">
+<!ENTITY opac.search.videoRecordings "Video Recordings">
+<!ENTITY opac.search.music "Music">
+<!ENTITY opac.search.electronic "Electronic Resources">
 
 
 
