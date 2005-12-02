@@ -10,8 +10,9 @@
 <!ENTITY common.format "Format">
 <!ENTITY common.login "Log In">
 <!ENTITY common.logout "Log Out">
-<!ENTITY common.at " at ">
-<!ENTITY common.of " of ">
+<!ENTITY common.at "at">
+<!ENTITY common.of "of">
+<!ENTITY common.cancel "Cancel">
 
 
 <!--	======================================================================================= 
@@ -85,6 +86,12 @@
 <!ENTITY rdetail.detailMain.hideMarc "Return to title details">
 
 <!ENTITY opac.holds.placeHold "Place a hold on the following item">
+<!ENTITY opac.holds.concactPhone "Concact telephone number">
+<!ENTITY opac.holds.concactEmail "Concact email address">
+<!ENTITY opac.holds.pickupLocation "Pickup location">
+<!ENTITY opac.holds.placeHold	"Place Hold">
+<!ENTITY opac.holds.success "Hold was successfully placed">
+<!ENTITY opac.holds.failure "Hold was not successfully placed">
 
 
 
