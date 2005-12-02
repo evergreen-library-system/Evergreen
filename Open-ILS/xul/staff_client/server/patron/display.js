@@ -31,7 +31,7 @@ patron.display.prototype = {
 				['render'],
 				function(e) {
 					return function() { 
-						e.setAttribute('label',obj.patron.family_name() 
+						e.setAttribute('label',obj.patron.family_name() + ', ' 
 							+ obj.patron.first_given_name());
 					};
 				}
@@ -44,7 +44,7 @@ patron.display.prototype = {
 						e.setAttribute('value',
 							obj.OpenILS.data.hash.pgt[
 								obj.patron.profile()
-							]
+							].name()
 						);
 					};
 				}
