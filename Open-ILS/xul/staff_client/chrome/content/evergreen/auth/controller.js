@@ -1,9 +1,9 @@
 dump('entering auth/controller.js\n');
 
 if (typeof auth == 'undefined') auth = {};
-auth.controller = function (w) {
+auth.controller = function (params) {
 	JSAN.use('util.error'); this.error = new util.error();
-	this.w = w;
+	this.w = params.window;
 
 	return this;
 };

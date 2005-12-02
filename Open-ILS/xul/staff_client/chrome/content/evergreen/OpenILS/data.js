@@ -1,9 +1,9 @@
 dump('entering OpenILS/data.js\n');
 
 if (typeof OpenILS == 'undefined') OpenILS = {};
-OpenILS.data = function (auth) {
+OpenILS.data = function (params) {
 
-	this.auth = auth;
+	this.session = params.session;
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('main.network'); this.network = new main.network();
@@ -68,7 +68,7 @@ OpenILS.data = function (auth) {
 				[
 					'open-ils.search',
 					'open-ils.search.actor.user.session',
-					[ obj.auth.session.key ],
+					[ obj.session ],
 					false
 				]
 			);
@@ -102,7 +102,7 @@ OpenILS.data = function (auth) {
 			[ 
 				'open-ils.actor', 
 				'open-ils.actor.org_unit.full_path.retrieve', 
-				[ obj.auth.session.key ],
+				[ obj.session ],
 				true
 			]
 		)
@@ -117,7 +117,7 @@ OpenILS.data = function (auth) {
 				[ 
 					'open-ils.circ', 
 					'open-ils.circ.stat_cat.actor.retrieve.all', 
-					[ obj.auth.session.key, obj.list.au.home_ou() ],
+					[ obj.session, obj.list.au.home_ou() ],
 					true
 				]
 			)();

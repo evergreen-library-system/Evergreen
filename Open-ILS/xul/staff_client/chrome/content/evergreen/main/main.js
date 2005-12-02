@@ -35,12 +35,12 @@ function main_init() {
 		G.window = new main.window();
 
 		JSAN.use('auth.controller');
-		G.auth = new auth.controller( mw );
+		G.auth = new auth.controller( { 'window' : mw } );
 
 		G.auth.on_login = function() {
 
 			JSAN.use('OpenILS.data');
-			G.OpenILS.data = new OpenILS.data( G.auth );
+			G.OpenILS.data = new OpenILS.data( { 'session' : G.auth.session.key } );
 			G.OpenILS.data.on_complete = function () {
 
 				G.window.open('http://dev.gapines.org/xul/server/main/menu_frame.xul?session='+mw.escape(G.auth.session.key),'test','chrome');
