@@ -1,4 +1,20 @@
 <!--	======================================================================================= 
+		Shared Entites
+		======================================================================================= -->
+
+<!ENTITY common.title "Title">
+<!ENTITY common.author "Author">
+<!ENTITY common.subject "Subject">
+<!ENTITY common.series "Series">
+<!ENTITY common.isbn "ISBN">
+<!ENTITY common.format "Format">
+<!ENTITY common.login "Log In">
+<!ENTITY common.logout "Log Out">
+<!ENTITY common.at " at ">
+<!ENTITY common.of " of ">
+
+
+<!--	======================================================================================= 
 		OPAC Entites
 		======================================================================================= -->
 
@@ -26,8 +42,6 @@
 <!ENTITY navigate.titleResults "My Title Results">
 
 <!ENTITY common.nowSearching "Now searching ">
-<!ENTITY common.at " at ">
-<!ENTITY common.of " of ">
 <!ENTITY common.ofAtLeast " of at least ">
 <!ENTITY common.relevancy "Relevancy ">
 
@@ -69,6 +83,9 @@
 <!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.detailMain.viewMarc "View MARC">
 <!ENTITY rdetail.detailMain.hideMarc "Return to title details">
+
+<!ENTITY opac.holds.placeHold "Place a hold on the following item">
+
 
 
 
