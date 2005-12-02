@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
+use diagnostics;
 use DBI;
 use FileHandle;
 use XML::LibXML;
@@ -18,7 +19,7 @@ use OpenSRF::Utils::Logger qw/:level/;
 use POSIX;
 use GD::Graph::pie;
 use GD::Graph::bars3d;
-use GD::Graph::lines;
+use GD::Graph::lines3d;
 
 use open ':utf8';
 
@@ -427,6 +428,15 @@ sub build_html {
 		}
 	}
 
+	print $index '<br/><br/><br/><br/>';
+	# Time for a bar chart
+	if (grep {$_ eq 'line'} @graphs) {
+		my $pics = draw_lines($r, $p, $file);
+		for my $pic (@$pics) {
+			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+		}
+	}
+
 
 	# and that's it!
 	print $index '</body></html>';
@@ -634,6 +644,112 @@ sub draw_bars {
 
 }
 
+sub draw_lines {
+	my $r = shift;
+	my $p = shift;
+	my $file = shift;
+	my $data = $r->{data};
+	my $settings = $r->{sql};
+
+	my $logo = $doc->findvalue('/reporter/setup/files/chart_logo');
+
+	my @groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+
+	
+	my @values = (0 .. (scalar(@{$settings->{columns}}) - 1));
+	splice(@values,$_,1) for (reverse @groups);
+
+	my @pic_data;
+	{	no warnings;
+		for my $row (@$data) {
+			push @{$pic_data[0]}, join(' -- ', @$row[@groups]);
+		}
+	}
+
+	my @leg;
+	my $set = 1;
+
+	my $max_y = 0;
+	for my $vcol (@values) {
+		next unless (defined $vcol);
+
+
+		for my $row (@$data) {
+			my $val = $$row[$vcol] ? $$row[$vcol] : 0;
+			push @{$pic_data[$set]}, $val;
+			$max_y = $val if ($val > $max_y);
+		}
+
+		$set++;
+	}
+	my $set_count = scalar(@pic_data) - 1;
+
+	my @new_data;
+	my @use_me;
+	my @no_use;
+	my $set_index = 0;
+	for my $dataset (@pic_data) {
+
+		if (grep { $_ } @$dataset) {
+			push @new_data, $dataset;
+			push @use_me, $set_index;
+		} else {
+			push @no_use, $set_index;
+		}
+		$set_index++;
+		
+	}
+
+	for my $col (@use_me) {
+		push @leg, $settings->{columns}->[$col + @groups - 1] if (map { 1 } grep { $col == $_ } @values);
+	}
+
+	my $w = 100 + 10 * scalar(@{$new_data[0]});
+	$w = 400 if ($w < 400);
+
+	my $h = 10 * (scalar(@new_data) / 2);
+
+	$h = 0 if ($h < 0);
+
+	my $pic = new GD::Graph::lines3d ($w + 250, $h + 500);
+
+	$pic->set(
+		title			=> $p->{reportname},
+		x_labels_vertical	=> 1,
+		shading			=> 1,
+		line_depth		=> 5,
+		y_max_value		=> $max_y,
+		legend_placement	=> 'TR',
+		boxclr			=> 'lgray',
+		logo			=> $logo,
+		logo_position		=> 'R',
+		logo_resize		=> 0.5,
+		show_values		=> 1,
+		overwrite		=> 1,
+	);
+	$pic->set_legend(@leg);
+
+	my $format = $pic->export_format;
+
+	open(IMG, ">$file.line.$format");
+	binmode IMG;
+
+	try {
+		$pic->plot(\@new_data) or die $pic->error;
+		print IMG $pic->gd->$format;
+	} otherwise {
+		my $e = shift;
+		warn "Couldn't draw $file.line.$format : $e";
+	};
+
+	close IMG;
+
+	return [{ file => "line.$format",
+		  name => $p->{reportname}.' (Bar)',
+		}];
+
+}
+
 sub table_by_id {
 	my $id = shift;
 	my ($node) = $doc->findnodes("//*[\@id='$id']");
@@ -765,17 +881,17 @@ sub generate_query {
 			$full_col = "${t}_${c}" if ($t ne $t_name);
 			$full_col = "\"$t_name\".\"$full_col\"";
 
-			# XXX make this use widget specific code
-
 			my ($fam) = keys %{ $$p{filter}{$t}{$c} };
 			my ($w) = keys %{ $$p{filter}{$t}{$c}{$fam} };
 			my $val = $$p{filter}{$t}{$c}{$fam}{$w};
 
 			my $filter_code_xpath = "/reporter/widgets/widget-family[\@name='$fam']/widget[\@name='$w']/filter-code[\@type='perl']";
-			if (my $widget_code = $doc->findvalue($filter_code_xpath)) # widget supplys it's own filter code
+			if (my $widget_code = $doc->findvalue($filter_code_xpath)) { # widget supplys it's own filter code
 				my ($where_clause, $bind_list) = ('',[]);
 
 				eval $widget_code;
+
+				die "$@\n\n$widget_code" if ($@);
 
 				push @where, $where_clause;
 				push @bind, @$bind_list;

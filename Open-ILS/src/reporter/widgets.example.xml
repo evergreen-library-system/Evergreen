@@ -70,7 +70,7 @@
 			</description>
 			<filter-code type="perl">
 				$full_col = "DATE_TRUNC($full_col, 'day')";
-				$where_clause = "$full_col = CAST(? AS DATE)"
+				$where_clause = "$full_col = CAST(? AS DATE)";
 				push @$bind_list, sprintf('%d/%02d/%02d', @$val{qw/year month day/});
 			</filter-code>
 		</widget>
@@ -83,7 +83,7 @@
 			</description>
 			<filter-code type="perl">
 				$full_col = "EXTRACT('week' FROM $full_col)";
-				$where_clause = "$full_col = ?"
+				$where_clause = "$full_col = ?";
 				push @$bind_list, $val;
 			</filter-code>
 		</widget>
@@ -110,9 +110,10 @@
 				on which to report.
 			</description>
 			<filter-code type="perl">
-				$full_col = "EXTRACT('week' FROM $full_col)";
-				$where_clause = "$full_col = ?"
-				push @$bind_list, $val;
+				$where_clause =
+					"EXTRACT('year' FROM $full_col) = ? ".
+					"AND EXTRACT('month' FROM $full_col) = ?";
+				push @$bind_list, $$val{'start-year'}, $$val{'start-month'};
 			</filter-code>
 		</widget>
 		
