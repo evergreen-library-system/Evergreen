@@ -60,10 +60,10 @@
 <!--
 <toolbox id="entity_toolbox">
 	<menubar id="entity_menubar">
-		<menu id="patron-menu" label="&main.menu.entity.patron.label;" accesskey="&main.menu.entity.patron.key;" command="cmd_broken"/>
-		<menu id="copy-menu" label="&main.menu.entity.copy.label;" accesskey="&main.menu.entity.copy.key;" command="cmd_broken"/>
-		<menu id="volume-menu" label="&main.menu.entity.volume.label;" accesskey="&main.menu.entity.volume.key;" command="cmd_broken"/>
-		<menu id="bib-menu" label="&main.menu.entity.bib.label;" accesskey="&main.menu.entity.bib.key;" command="cmd_broken"/>
+		<menu id="patron-menu" label="&staff.main.menu.entity.patron.label;" accesskey="&staff.main.menu.entity.patron.key;" command="cmd_broken"/>
+		<menu id="copy-menu" label="&staff.main.menu.entity.copy.label;" accesskey="&staff.main.menu.entity.copy.key;" command="cmd_broken"/>
+		<menu id="volume-menu" label="&staff.main.menu.entity.volume.label;" accesskey="&staff.main.menu.entity.volume.key;" command="cmd_broken"/>
+		<menu id="bib-menu" label="&staff.main.menu.entity.bib.label;" accesskey="&staff.main.menu.entity.bib.key;" command="cmd_broken"/>
 	</menubar>
 </toolbox>
 -->
@@ -72,7 +72,7 @@
 <!--
 <menu id="patron-menu">
 	<menupopup id="patron-popup">
-		<menuitem label="&main.menu.circ.patron_registration.label;" accesskey="&main.menu.entity.patron.register.key;" command="cmd_patron_register"/>
+		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.entity.patron.register.key;" command="cmd_patron_register"/>
 		<menuitem label="stub" />
 		<menuitem label="stub" />
 	</menupopup>

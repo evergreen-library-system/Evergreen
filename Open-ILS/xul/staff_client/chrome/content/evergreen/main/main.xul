@@ -44,8 +44,8 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- CONTENT -->
 	<groupbox id="main_groupbox" flex="1">
-		<caption id="main_caption" label="&auth.login_header;"/>
-		<label value="&auth.version;"/>
+		<caption id="main_caption" label="&staff.auth.login_header;"/>
+		<label value="&staff.auth.version;"/>
 		<label value="Development Version 123"/>
 		<label value=" "/>
 		<grid>
@@ -55,18 +55,18 @@
 			</columns>
 			<rows>
 				<row>
-					<label value="&auth.name_prompt;" control="name_prompt" accesskey="&auth.name_prompt.key;"/>
+					<label value="&staff.auth.name_prompt;" control="name_prompt" accesskey="&staff.auth.name_prompt.key;"/>
 					<textbox id="name_prompt" value=""/>
 				</row>
 				<row>
-					<label value="&auth.password_prompt;" control="password_prompt" accesskey="&auth.password_prompt.key;"/>
+					<label value="&staff.auth.password_prompt;" control="password_prompt" accesskey="&staff.auth.password_prompt.key;"/>
 					<textbox id="password_prompt" value="" type="password"/>
 				</row>
 				<row>
 					<label/>
 					<hbox>
-					<button id="submit_button" label="&auth.submit_prompt;" accesskey="&auth.submit_prompt.key;" command="cmd_login"/>
-					<button label="&auth.logoff_prompt;" accesskey="&auth.logoff_prompt.key;" command="cmd_logoff"/>
+					<button id="submit_button" label="&staff.auth.submit_prompt;" accesskey="&staff.auth.submit_prompt.key;" command="cmd_login"/>
+					<button label="&staff.auth.logoff_prompt;" accesskey="&staff.auth.logoff_prompt.key;" command="cmd_logoff"/>
 					</hbox>
 				</row>
 				<row>
@@ -75,7 +75,7 @@
 				</row>
 				<row>
 					<label/>
-					<button label="&auth.quit_prompt;" accesskey="&auth.quit_prompt.key;" command="cmd_close_window"/>
+					<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
 				</row>
 			</rows>
 		</grid>
