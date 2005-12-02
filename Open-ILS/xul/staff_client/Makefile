@@ -5,6 +5,7 @@ BUILD=2005072719
 
 RETRIEVE_FM_ALL=wget -N http://dev.gapines.org/opac/common/js/fmall.js
 RETRIEVE_CLIENT_CONFIG=cp ../../../../../../../OpenSRF/examples/math_xul_client/math/content/conf/client_config.xml .
+RETRIEVE_LANG_DTD=cp ../../../../../../web/opac/locale/en-US/lang.dtd .
 MOZILLA_SPECIAL_RESOURCE=/home/phasefx/work/mozilla/dist/bin/res/dtd
 
 all: build package
@@ -39,6 +40,7 @@ generated:
 	@echo These things are installation specific.  The staff client is the last thing you should try to build.
 	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
 	(cd chrome/content/evergreen/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
+	(cd chrome/locale/en-US/evergreen/ ; ${RETRIEVE_LANG_DTD} );
 
 open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
