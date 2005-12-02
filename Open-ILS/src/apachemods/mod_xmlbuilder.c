@@ -116,7 +116,21 @@ static int xmlBuilderHandler( request_rec* r ) {
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
 	char* ct = config->contentType;
+
+
 	if(!config->contentType) ct = "text/html; charset=utf-8";
+	/* ---------------------------------- */
+	// Hack to force XUL mime type (until config is fixed)
+	char* f = r->filename;
+	if(f) {
+		int l = strlen(f);
+		if(l > 4) {
+			if( !strcmp( f + (l - 4), ".xul"))
+				ct = "application/vnd.mozilla.xul+xml";
+		}
+	}
+	/* ---------------------------------- */
+
 	ap_set_content_type(r, ct);
 
 	//ap_table_set(r->headers_out, "Cache-Control", "max-age=15552000");
