@@ -955,6 +955,7 @@ sub postfilter_search_class_fts {
 
 	my (@types,@forms);
 	my ($t_filter, $f_filter) = ('','');
+	my ($ot_filter, $of_filter) = ('','');
 
 	if ($args{format}) {
 		my ($t, $f) = split '-', $args{format};
@@ -962,10 +963,12 @@ sub postfilter_search_class_fts {
 		@forms = split '', $f;
 		if (@types) {
 			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+			$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
 		}
 
 		if (@forms) {
 			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 		}
 	}
 
@@ -1011,7 +1014,7 @@ sub postfilter_search_class_fts {
   	  	WHERE	$fts_where
 	  		AND m.source = f.source
 	  		AND m.metarecord = mr.metarecord
-			AND rd.record = m.source
+			AND rd.record = f.source
 			$t_filter
 			$f_filter
   	  	GROUP BY m.metarecord
@@ -1024,14 +1027,15 @@ sub postfilter_search_class_fts {
 
 			SELECT	DISTINCT s.*
 			  FROM	$asset_call_number_table cn,
-				$metabib_metarecord_source_map_table mr,
+				$metabib_metarecord_source_map_table mrs,
 				$asset_copy_table cp,
 				$cs_table cs,
 				$cl_table cl,
 				$descendants d,
+				$metabib_record_descriptor ord,
 				($select) s
-			  WHERE	mr.metarecord = s.metarecord
-				AND cn.record = mr.source
+			  WHERE	mrs.metarecord = s.metarecord
+				AND cn.record = mrs.source
 				AND cp.status = cs.id
 				AND cp.location = cl.id
 				AND cn.owning_lib = d.id
@@ -1039,6 +1043,9 @@ sub postfilter_search_class_fts {
 				AND cp.opac_visible IS TRUE
 				AND cs.holdable IS TRUE
 				AND cl.opac_visible IS TRUE
+				AND ord.record = mrs.source
+				$ot_filter
+				$of_filter
 			  ORDER BY 2 DESC
 		SQL
 	}
@@ -1054,7 +1061,7 @@ sub postfilter_search_class_fts {
 			'%'.lc($SQLstring).'%',			# phrase order match
 			lc($first_word),			# first word match
 			'^\\s*'.lc($REstring).'\\s*/?\s*$',	# full exact match
-			@types, @forms );
+			@types, @forms,  @types, @forms );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
