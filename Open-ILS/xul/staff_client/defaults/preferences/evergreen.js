@@ -12,13 +12,15 @@ pref("network.http.max-persistent-connections-per-server",8);
 // However, it's better than POEM, which I wasted a day on :)
 pref("dom.max_script_run_time",60);
 
-pref("javascript.options.strict",false);
-pref("javascript.options.showInConsole",true);
-
 // This lets remote xul access link to local chrome
 pref("security.checkloaduri", false);
 pref("signed.applets.codebase_principal_support", true);
 
-//user_pref("capability.principal.codebase.p0.granted", "UniversalXPConnect");
-//user_pref("capability.principal.codebase.p0.id", "http://gapines.org");
+// Developer options
+pref("browser.dom.window.dump.enabled",true);
+pref("javascript.options.strict",false);
+pref("javascript.options.showInConsole",true);
+pref("nglayout.debug.disable_xul_cache",true);
+pref("nglayout.debug.disable_xul_fastload",true);
+
 
