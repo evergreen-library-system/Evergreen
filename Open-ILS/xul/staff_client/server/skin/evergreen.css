@@ -1,0 +1,23 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
+@namespace html url("http://www.w3.org/TR/REC-html40"); 
+
+tabpanel { border: 2px groove black; }
+caption { font-weight: bold; }
+
+.my_overflow { overflow: auto; }
+
+.text_left { text-align: left; }
+.text_right { text-align: right; }
+.text_center { text-align: center; }
+.text_justify { text-align: justify; }
+
+.tan { background-color: #D2B48C; }
+.sandy_brown { background-color: #F4A460; }
+.peach_puff { background-color: #FFDAB9; }
+.pale_violet_red { background-color: #D87093; }
+.cadet_blue { background-color: #5F9EA0; }
+.dark_salmon { background-color: #E9967A; }
+.coral { background-color: #FF7F50; }
+
+.deleted_address { background-color: red; }
+

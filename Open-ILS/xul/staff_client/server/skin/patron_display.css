@@ -1,0 +1,6 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
+@namespace html url("http://www.w3.org/TR/REC-html40"); 
+
+hbox#PatronNotNavBar { border-top: solid thin black; }
+deck#patron_deck { border-left: solid thin black; }
+.patronNameLarge { font-size: large; font-family: bold; }

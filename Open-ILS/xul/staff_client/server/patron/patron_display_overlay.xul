@@ -5,7 +5,7 @@
 
 <script>dump('loading patron_display_overlay.xul\n');</script>
 
-<box id="patron_display_main" flex="1" orient="vertical">
+<box id="patron_display_main" flex="1" orient="vertical" class="my_overflow">
 	<hbox id="PatronNavBar" flex="0"/>
 	<hbox id="PatronNotNavBar">
 		<vbox id="patron_info_sidebar" />
@@ -13,7 +13,7 @@
 	</hbox>
 </box>
 
-<vbox id="patron_info_sidebar" flex="1">
+<vbox id="patron_info_sidebar" flex="0">
 	<groupbox id="PatronDisplayStatus_groupbox" flex="0"/>
 	<groupbox id="PatronDisplaySurvey_groupbox" flex="0">
 		<caption id="pdsgbc" label="Surveys" />
@@ -22,27 +22,28 @@
 </vbox>
 
 <deck id="patron_deck" flex="1">
+	<label value="Hello World" />
 </deck>
 
 <hbox id="PatronNavBar">
-	<label id="patron_name" class="patronNameLarge"
-		tooltiptext="&patron_display.name.label;"
-		value="&patron_display.name.label;" />
+	<label id="patron_name" class="patronNameLarge" 
+		tooltiptext="&staff.patron_display.name.label;"
+		value="&staff.patron_display.name.label;" />
 	<spacer id="PatronNavBar_spacer" flex="1" />
 	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
-		label="&patron_navbar.refresh;" accesskey="&patron_navbar.refresh.accesskey;"/>
+		label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
 	<button id="PatronNavBar_checkout" command="cmd_patron_checkout"
-		label="&patron_navbar.checkout;" accesskey="&patron_navbar.checkout.accesskey;"/>
+		label="&staff.patron_navbar.checkout;" accesskey="&staff.patron_navbar.checkout.accesskey;"/>
 	<button id="PatronNavBar_items" command="cmd_patron_items"
-		label="&patron_navbar.items;" accesskey="&patron_navbar.items.accesskey;"/>
+		label="&staff.patron_navbar.items;" accesskey="&staff.patron_navbar.items.accesskey;"/>
 	<button id="PatronNavBar_holds" command="cmd_patron_holds"
-		label="&patron_navbar.holds;" accesskey="&patron_navbar.holds.accesskey;"/>
+		label="&staff.patron_navbar.holds;" accesskey="&staff.patron_navbar.holds.accesskey;"/>
 	<button id="PatronNavBar_bills" command="cmd_patron_bills"
-		label="&patron_navbar.bills;" accesskey="&patron_navbar.bills.accesskey;"/>
+		label="&staff.patron_navbar.bills;" accesskey="&staff.patron_navbar.bills.accesskey;"/>
 	<button id="PatronNavBar_edit" command="cmd_patron_edit"
-		label="&patron_navbar.edit;" accesskey="&patron_navbar.edit.accesskey;"/>
+		label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
 	<button id="PatronNavBar_info" command="cmd_patron_info"
-		label="&patron_navbar.info;" accesskey="&patron_navbar.info.accesskey;"/>
+		label="&staff.patron_navbar.info;" accesskey="&staff.patron_navbar.info.accesskey;"/>
 </hbox>
 
 <box id="PatronDisplayStatus_main" flex="1" orient="vertical">
@@ -52,10 +53,10 @@
 </box>
 
 <groupbox id="PatronDisplayStatus_groupbox" orient="vertical">
-	<caption label="&patron_display.status.caption;"/>
+	<caption label="&staff.patron_display.status.caption;"/>
 	<hbox id="PatronDisplayStatus_insert2"/>
 	<label id="PatronDisplayStatus_home_ou"
-		tooltiptext="&patron_display.home_ou.label;"
+		tooltiptext="&staff.patron_display.home_ou.label;"
 		value=" "
 		render="true" fm_class="au" 
 		render_value="patron_get_home_ou_name($$)" />
@@ -75,48 +76,48 @@
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr1" render="true" fm_class="au" render_css_style="patron_get_standing_css_style($$.standing())">
 			<label id="PatronDisplayStatus_profile_label" class="text_right"
-				value="&patron_display.profile.label;" />
+				value="&staff.patron_display.profile.label;" />
 			<label id="PatronDisplayStatus_profile" 
 				render="true" fm_class="au" 
 				render_value="patron_get_profile_as_text($$)" />
 			<label id="PatronDisplayStatus_standing_label" class="text_right"
-				value="&patron_display.standing.label;" />
+				value="&staff.patron_display.standing.label;" />
 			<label id="PatronDisplayStatus_standing" 
 				render="true" fm_class="au" 
 				render_value="patron_get_standing_as_text($$)" />
 		</row>
 		<row id="pdsgr2">
 			<label id="PatronDisplayStatus_credit_label" class="text_right"
-				value="&patron_display.credit.label;" />
+				value="&staff.patron_display.credit.label;" />
 			<label id="PatronDisplayStatus_credit" 
 				render="true" fm_class="au" 
 				render_value="patron_get_credit_total($$)" />
 			<label id="PatronDisplayStatus_bills_label" class="text_right"
-				value="&patron_display.bills.label;" />
+				value="&staff.patron_display.bills.label;" />
 			<label id="PatronDisplayStatus_bill" 
 				render="true" fm_class="au" 
 				render_value="patron_get_bills_total($$)" />
 		</row>
 		<row id="pdsgr3">
 			<label id="PatronDisplayStatus_checkouts_label" class="text_right"
-				value="&patron_display.checkouts.label;" />
+				value="&staff.patron_display.checkouts.label;" />
 			<label id="PatronDisplayStatus_checkouts"
 				render="true" fm_class="au" 
 				render_value="patron_get_checkouts_total($$)" />
 			<label id="PatronDisplayStatus_checkouts_overdue_label" class="text_right"
-				value="&patron_display.checkouts_overdue.label;" />
+				value="&staff.patron_display.checkouts_overdue.label;" />
 			<label id="PatronDisplayStatus_checkouts_overdue"
 				render="true" fm_class="au" 
 				render_value="patron_get_checkouts_overdue_total($$)" />
 		</row>
 		<row id="pdsgr4">
 			<label id="PatronDisplayStatus_holds_label" class="text_right"
-				value="&patron_display.holds.label;" />
+				value="&staff.patron_display.holds.label;" />
 			<label id="PatronDisplayStatus_holds"
 				render="true" fm_class="au" 
 				render_value="patron_get_holds_total($$)" />
 			<label id="PatronDisplayStatus_holds_available_label" class="text_right"
-				value="&patron_display.holds_available.label;" />
+				value="&staff.patron_display.holds_available.label;" />
 			<label id="PatronDisplayStatus_holds_available"
 				render="true" fm_class="au" 
 				render_value="patron_get_holds_available_total($$)" />
@@ -125,7 +126,7 @@
 </grid>
 
 <groupbox id="PatronDisplayContact_groupbox" orient="vertical">
-	<caption label="&patron_display.contact.caption;"/>
+	<caption label="&staff.patron_display.contact.caption;"/>
 	<hbox id="pdcgbhb1">
 		<grid id="PatronDisplayContact_grid" />
 		<spacer id="pdcgbhbs1" flex="1"/>
@@ -145,13 +146,13 @@
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr0">
 			<label id="PatronDisplayContact_library_card_label" class="text_right"
-				value="&patron_display.library_card.label;"/>
+				value="&staff.patron_display.library_card.label;"/>
 			<label id="PatronDisplayContact_library_card"
 				render="true" fm_class="au" render_value="patron_get_barcode($$)"/>
 		</row>
 		<row id="pdsgr1">
 			<label id="PatronDisplayContact_ident_label" class="text_right"
-				value="&patron_display.ident1.label;"/>
+				value="&staff.patron_display.ident1.label;"/>
 			<hbox id="pdsgr0h">
 				<label id="PatronDisplayContact_ident_type"
 					render="true" fm_class="au" render_value="patron_get_ident1_type_as_text($$)" />
@@ -161,7 +162,7 @@
 		</row>
 		<row id="pdsgr2">
 			<label id="PatronDisplayContact_ident_label2" class="text_right"
-				value="&patron_display.ident2.label;"/>
+				value="&staff.patron_display.ident2.label;"/>
 			<hbox id="pdsgr0ah">
 				<label id="PatronDisplayContact_ident_type2"
 					render="true" fm_class="au" render_value="patron_get_ident2_type_as_text($$)" />
@@ -171,7 +172,7 @@
 		</row>
 		<row id="pdsgr3">
 			<label id="PatronDisplayContact_date_of_birth_label" class="text_right"
-				value="&patron_display.date_of_birth.label;"/>
+				value="&staff.patron_display.date_of_birth.label;"/>
 			<label id="PatronDisplayContact_date_of_birth"
 				render="true" fm_class="au" render_value=".dob()"/>
 		</row>
@@ -187,21 +188,21 @@
 	<rows id="pdcgpr" flex="1">
 		<row id="pdcgpr1">
 			<label id="PatronDisplayContact_day_phone_label" class="text_right"
-				value="&patron_display.day_phone.label;" />
+				value="&staff.patron_display.day_phone.label;" />
 			<label id="PatronDisplayContact_day_phone" 
 				render="true" fm_class="au" 
 				render_value=".day_phone()" />
 		</row>
 		<row id="pdcgpr2">
 			<label id="PatronDisplayContact_evening_phone_label" class="text_right"
-				value="&patron_display.evening_phone.label;" />
+				value="&staff.patron_display.evening_phone.label;" />
 			<label id="PatronDisplayContact_evening_phone" 
 				render="true" fm_class="au" 
 				render_value=".evening_phone()" />
 		</row>
 		<row id="pdcgpr3">
 			<label id="PatronDisplayContact_other_phone_label" class="text_right"
-				value="&patron_display.other_phone.label;" />
+				value="&staff.patron_display.other_phone.label;" />
 			<label id="PatronDisplayContact_other_phone" 
 				render="true" fm_class="au" 
 				render_value=".other_phone()" />
@@ -209,7 +210,7 @@
 		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
 		<row id="pdcgpr5">
 			<label id="PatronDisplayContact_email_label" class="text_right"
-				value="&patron_display.email.label;" />
+				value="&staff.patron_display.email.label;" />
 			<label id="PatronDisplayContact_email" 
 				render="true" fm_class="au" 
 				render_value=".email()" />
@@ -220,43 +221,43 @@
 </grid>
 
 <groupbox id="PatronDisplayContact_mailing_address" orient="vertical">
-	<caption id="pdcmac" label="&patron_display.mailing_address;"/>
+	<caption id="pdcmac" label="&staff.patron_display.mailing_address;"/>
 	<label id="pdcmal1" 
-		tooltiptext="&patron_display.mailing.street1.label;" 
+		tooltiptext="&staff.patron_display.mailing.street1.label;" 
 		render="true" fm_class="au" render_value=".mailing_address().street1()" />
 	<label id="pdcmal2" 
-		tooltiptext="&patron_display.mailing.street2.label;" 
+		tooltiptext="&staff.patron_display.mailing.street2.label;" 
 		render="true" fm_class="au" render_value=".mailing_address().street2()" />
 	<hbox id="pdcmah">
 		<label id="pdcmal3" 
-			tooltiptext="&patron_display.mailing.city.label;" 
+			tooltiptext="&staff.patron_display.mailing.city.label;" 
 			render="true" fm_class="au" render_value=".mailing_address().city()" />
 		<label id="pdcmal4" 
-			tooltiptext="&patron_display.mailing.state.label;" 
+			tooltiptext="&staff.patron_display.mailing.state.label;" 
 			render="true" fm_class="au" render_value=".mailing_address().state()" />
 		<label id="pdcmal5" 
-			tooltiptext="&patron_display.mailing.post_code.label;" 
+			tooltiptext="&staff.patron_display.mailing.post_code.label;" 
 			render="true" fm_class="au" render_value=".mailing_address().post_code()" />
 	</hbox>
 </groupbox>
 
 <groupbox id="PatronDisplayContact_physical_address" orient="vertical">
-	<caption id="pdcpac" label="&patron_display.physical_address;"/>
+	<caption id="pdcpac" label="&staff.patron_display.physical_address;"/>
 	<label id="pdcpal1" 
-		tooltiptext="&patron_display.physical.street1.label;" 
+		tooltiptext="&staff.patron_display.physical.street1.label;" 
 		render="true" fm_class="au" render_value=".billing_address().street1()" />
 	<label id="pdcpal2" 
-		tooltiptext="&patron_display.physical.street2.label;" 
+		tooltiptext="&staff.patron_display.physical.street2.label;" 
 		render="true" fm_class="au" render_value=".billing_address().street2()" />
 	<hbox id="pdcpah">
 		<label id="pdcpal3" 
-			tooltiptext="&patron_display.physical.city.label;" 
+			tooltiptext="&staff.patron_display.physical.city.label;" 
 			render="true" fm_class="au" render_value=".billing_address().city()" />
 		<label id="pdcpal4" 
-			tooltiptext="&patron_display.physical.state.label;" 
+			tooltiptext="&staff.patron_display.physical.state.label;" 
 			render="true" fm_class="au" render_value=".billing_address().state()" />
 		<label id="pdcpal5" 
-			tooltiptext="&patron_display.physical.post_code.label;" 
+			tooltiptext="&staff.patron_display.physical.post_code.label;" 
 			render="true" fm_class="au" render_value=".billing_address().post_code()" />
 	</hbox>
 </groupbox>

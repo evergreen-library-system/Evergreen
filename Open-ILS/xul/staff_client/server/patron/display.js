@@ -36,7 +36,6 @@ patron.display.prototype = {
 					};
 				}
 			],
-
 			'patron_profile' : [
 				['render'],
 				function(e) {
@@ -134,6 +133,12 @@ patron.display.prototype = {
 				}
 			],
 			'patron_email' : [
+				['render'],
+				function(e) {
+					return function() { };
+				}
+			],
+			'patron_library' : [
 				['render'],
 				function(e) {
 					return function() { };
