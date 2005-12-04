@@ -27,7 +27,7 @@ patron.display.prototype = {
 				['command'],
 				function() { alert('Not Yet Implemented'); }
 			],
-			'patron_caption' : [
+			'patron_name' : [
 				['render'],
 				function(e) {
 					return function() { 
@@ -51,13 +51,27 @@ patron.display.prototype = {
 			'patron_credit' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.credit_forward_balance()
+						);
+					};
 				}
 			],
 			'patron_bill' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+        					var total = 0;
+					        for (var i = 0; i < obj.patron.bills.length; i++) {
+					                total += dollars_float_to_cents_integer( 
+								obj.patron.bills[i].balance_owed() 
+							);
+					        }
+        					e.setAttribute('value',
+							cents_as_dollars( total )
+						);
+					};
 				}
 			],
 			'patron_checkouts' : [
@@ -133,6 +147,12 @@ patron.display.prototype = {
 				}
 			],
 			'patron_email' : [
+				['render'],
+				function(e) {
+					return function() { };
+				}
+			],
+			'patron_photo_url' : [
 				['render'],
 				function(e) {
 					return function() { };
@@ -232,27 +252,89 @@ patron.display.prototype = {
 
 		var patron;
 		try {
-			patron = this.network.request(
-				'open-ils.actor',
-				'open-ils.actor.user.fleshed.retrieve_by_barcode',
-				[ this.session, this.barcode ]
+
+			var obj = this;
+
+			var chain = [];
+
+			// Retrieve the patron
+			chain.push(
+				function() {
+					try {
+						var patron = obj.network.request(
+							'open-ils.actor',
+							'open-ils.actor.user.fleshed.retrieve_by_barcode',
+							[ obj.session, obj.barcode ]
+						);
+						if (patron) {
+
+							if (instanceOf(patron,au)) {
+
+								obj.patron = patron;
+
+							} else {
+
+								throw('patron is not an au fm object');
+							}
+						} else {
+
+							throw('patron == false');
+						}
+
+					} catch(E) {
+						var error = ('patron.display.retrieve : ' + js2JSON(E));
+						obj.error.sdump('D_ERROR',error);
+						alert(error);
+						//FIXME// abort the chain
+					}
+				}
 			);
 
-			if (patron) {
-
-				if (instanceOf(patron,au)) {
-
-					this.patron = patron;
-					this.render();
-
-				} else {
-
-					throw('patron is not an au fm object');
+			// Retrieve the bills
+			chain.push(
+				function() {
+					try {
+						var bills = obj.network.request(
+							'open-ils.actor',
+							'open-ils.actor.user.transactions.have_balance',
+							[ obj.session, obj.patron.id() ]
+						);
+						//FIXME// obj.patron.bills( bills );
+						obj.patron.bills = bills;
+					} catch(E) {
+						var error = ('patron.display.retrieve : ' + js2JSON(E));
+						obj.error.sdump('D_ERROR',error);
+						alert(error);
+						//FIXME// abort the chain
+					}
 				}
-			} else {
+			);
 
-				throw('patron == false');
-			}
+			// Retrieve the checkouts
+			chain.push(
+				function() {
+					try {
+						var checkouts = obj.network.request(
+							'open-ils.actor',
+							'open-ils.circ.actor.user.checked_out',
+							[ obj.session, obj.patron.id() ]
+						);
+						obj.patron.checkouts( checkouts );
+					} catch(E) {
+						var error = ('patron.display.retrieve : ' + js2JSON(E));
+						obj.error.sdump('D_ERROR',error);
+						alert(error);
+						//FIXME// abort the chain
+					}
+				}
+			);
+
+			// Update the screen
+			chain.push( obj.render );
+
+			// Do it
+			JSAN.use('util.exec');
+			util.exec.chain( chain );
 
 		} catch(E) {
 			var error = ('patron.display.retrieve : ' + js2JSON(E));
