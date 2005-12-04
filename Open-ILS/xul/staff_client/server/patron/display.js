@@ -315,7 +315,7 @@ patron.display.prototype = {
 				function() {
 					try {
 						var checkouts = obj.network.request(
-							'open-ils.actor',
+							'open-ils.circ',
 							'open-ils.circ.actor.user.checked_out',
 							[ obj.session, obj.patron.id() ]
 						);
