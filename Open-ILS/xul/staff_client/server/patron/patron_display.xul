@@ -14,6 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/patron/patron_display_overlay.xul"?>
 
 <window id="patron_display_win" 
 	onload="my_init()"
@@ -52,12 +53,7 @@
 	]]>
 	</script>
 
-	<vbox flex="1" class="my_overflow">
-		<groupbox orient="vertical" flex="1">
-			<caption id="patron_caption" />
-			<label id="patron_profile" />
-		</groupbox>
-	</vbox>
+	<box id="patron_display_main" />
 
 </window>
 
