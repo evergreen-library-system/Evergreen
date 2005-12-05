@@ -46,6 +46,7 @@ function buildConfig {
 	INCLUDEDIR="$PREFIX/include/";
 	ETCDIR="$PREFIX/conf";
 	WEBDIR="$PREFIX/var/web";
+	DATADIR="$PREFIX/var/data";
 	CGIDIR="$PREFIX/var/cgi-bin";
 	TEMPLATEDIR="$PREFIX/var/templates";
 	CIRCRULESDIR="$PREFIX/var/circ";
@@ -113,6 +114,7 @@ function writeConfig {
 	_write "SOCK=\"$PREFIX/var/sock\"";
 	_write "PID=\"$PREFIX/var/pid\"";
 	_write "LOG=\"$PREFIX/var/log\"";
+	_write "DATADIR=\"$DATADIR\"";
 
 	_write "TMP=\"$TMP\"";
 	_write "APXS2=\"$APXS2\"";

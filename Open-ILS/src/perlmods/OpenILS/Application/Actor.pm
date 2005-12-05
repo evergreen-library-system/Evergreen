@@ -2,6 +2,7 @@ package OpenILS::Application::Actor;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use Data::Dumper;
+use OpenILS::Event;
 
 use Digest::MD5 qw(md5_hex);
 
