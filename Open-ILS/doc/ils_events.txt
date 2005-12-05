@@ -12,6 +12,7 @@ Events start at 1000
 
 1000	User login failed.  Why the login failed is left unspecified for security reasons.
 
+5000 Permission Error.  * The object returning this code shall also contain a field "ilsperm" containing the name of the permission which failed 
 
 
 
