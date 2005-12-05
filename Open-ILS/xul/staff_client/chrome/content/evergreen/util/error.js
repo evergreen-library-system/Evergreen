@@ -14,6 +14,8 @@ util.error = function () {
 
 	this.sdump_last_time = new Date();
 
+	this.OpenILS = {};
+
 	return this;
 };
 
@@ -191,7 +193,13 @@ util.error.prototype = {
 			alert(s);
 	},
 
-	's_alert' : function (s) { alert(s); }
+	's_alert' : function (s) { alert(s); },
+
+	'get_ilsevent' : function(status) {
+		JSAN.use('OpenILS.data'); 
+		this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init(true);
+		return this.OpenILS.data.entities['ilsevent.'+status];
+	}
 }	
 
 dump('exiting util/error.js\n');

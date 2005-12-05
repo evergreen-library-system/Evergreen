@@ -15,48 +15,60 @@ auth.controller.prototype = {
 		var obj = this;  // so the 'this' in event handlers don't confuse us
 		var w = obj.w;
 
-		// This talks to our ILS
-		JSAN.use('auth.session');
-		obj.session = new auth.session(obj.view);
-
-		// Attach this object to the XUL through event listeners
-
-		var cmd_login = w.document.getElementById('cmd_login');
-			if (cmd_login) 
-				cmd_login.addEventListener('command',function () { obj.login(); },false);
-
-		var cmd_logoff = w.document.getElementById('cmd_logoff');
-			if (cmd_logoff) 
-				cmd_logoff.addEventListener('command',function () { obj.logoff(); },false);
-
-		var cmd_close_window = w.document.getElementById('cmd_close_window');
-			if (cmd_close_window) 
-				cmd_close_window.addEventListener('command',function () { obj.close(); },false);
-
-		obj.view.name_prompt = w.document.getElementById('name_prompt');
-			if (obj.view.name_prompt) {
-				obj.view.name_prompt.addEventListener('keypress',handle_keypress,false);
-				obj.view.name_prompt.focus();
+		// MVC
+		JSAN.use('main.controller'); obj.controller = new main.controller();
+		obj.controller.init(
+			{
+				'control_map' : {
+					'cmd_login' : [
+						['command'],
+						function() {
+							obj.login();
+						}
+					],
+					'cmd_logoff' : [
+						['command'],
+						function() {
+							obj.logoff()
+						}
+					],
+					'cmd_close_window' : [
+						['command'],
+						function() {
+							obj.close()
+						}
+					],
+					'name_prompt' : [
+						['keypress'],
+						handle_keypress
+					],
+					'password_prompt' : [
+						['keypress'],
+						handle_keypress
+					],
+					'submit_button' : [
+						['render'],
+						function(e) { return function() {} }
+					],
+					'progress_bar' : [
+						['render'],
+						function(e) { return function() {} }
+					]
+				}
 			}
-
-		obj.view.password_prompt = w.document.getElementById('password_prompt');
-			if (obj.view.password_prompt)
-				obj.view.password_prompt.addEventListener('keypress',handle_keypress,false);
-	
-		obj.view.submit_button = w.document.getElementById('submit_button');
-	
-		obj.view.progress_bar = w.document.getElementById('auth_meter');
+		);
+		obj.controller.view.name_prompt.focus();
 
 		function handle_keypress(ev) {
 			if (ev.keyCode && ev.keyCode == 13) {
 				switch(this) {
-					case obj.name_prompt:
+					case obj.controller.view.name_prompt:
 						ev.preventDefault();
-						obj.view.password_prompt.focus(); obj.view.password_prompt.select();
+						obj.controller.view.password_prompt.focus(); obj.controller.view.password_prompt.select();
 					break;
-					case obj.view.password_prompt:
+					case obj.controller.view.password_prompt:
 						ev.preventDefault();
-						obj.view.submit_button.focus(); 
+						obj.controller.view.submit_button.focus(); 
 						obj.login();
 					break;
 					default: break;
@@ -64,20 +76,27 @@ auth.controller.prototype = {
 			}
 		}
 
+		// This talks to our ILS
+		JSAN.use('auth.session');
+		obj.session = new auth.session(obj.controller.view);
+
 		if (typeof this.on_init == 'function') {
 			this.error.sdump('D_AUTH','auth.controller.on_init()\n');
 			this.on_init();
 		}
 	},
 
-	'view' : {},
-
 	'login' : function() { 
 
-		this.error.sdump('D_AUTH','login with ' + this.view.name_prompt.value + ' and ' + this.view.password_prompt.value + '\n'); 
-		this.view.name_prompt.disabled = true;
-		this.view.password_prompt.disabled = true;
-		this.view.submit_button.disabled = true;
+		var obj = this;
+
+		this.error.sdump('D_AUTH','login with ' 
+			+ this.controller.view.name_prompt.value + ' and ' 
+			+ this.controller.view.password_prompt.value + '\n'
+		); 
+		this.controller.view.name_prompt.disabled = true;
+		this.controller.view.password_prompt.disabled = true;
+		this.controller.view.submit_button.disabled = true;
 
 		try {
 
@@ -85,7 +104,7 @@ auth.controller.prototype = {
 				this.error.sdump('D_AUTH','auth.controller.session.on_init = ' +
 					'auth.controller.on_login\n');
 				this.session.on_init = this.on_login;
-				this.session.on_error = this.on_logoff;
+				this.session.on_error = function() { obj.logoff(); };
 			}
 			
 			this.session.init();
@@ -106,12 +125,14 @@ auth.controller.prototype = {
 	'logoff' : function() { 
 	
 		this.error.sdump('D_AUTH','logoff' + this.w + '\n'); 
-		this.view.progress_bar.value = 0; this.view.progress_bar.setAttribute('real','0.0');
-		this.view.submit_button.disabled = false;
-		this.view.password_prompt.disabled = false;
-		this.view.password_prompt.value = '';
-		this.view.name_prompt.disabled = false;
-		this.view.name_prompt.focus(); this.view.name_prompt.select();
+		this.controller.view.progress_bar.value = 0; 
+		this.controller.view.progress_bar.setAttribute('real','0.0');
+		this.controller.view.submit_button.disabled = false;
+		this.controller.view.password_prompt.disabled = false;
+		this.controller.view.password_prompt.value = '';
+		this.controller.view.name_prompt.disabled = false;
+		this.controller.view.name_prompt.focus(); 
+		this.controller.view.name_prompt.select();
 
 		this.session.close();
 

@@ -1,9 +1,7 @@
 dump('entering OpenILS/data.js\n');
 
 if (typeof OpenILS == 'undefined') OpenILS = {};
-OpenILS.data = function (params) {
-
-	this.session = params.session;
+OpenILS.data = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('main.network'); this.network = new main.network();
@@ -139,8 +137,11 @@ OpenILS.data.prototype = {
 			try {
 				const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
 				var data_cache=new OpenILS( );
-				this.list = data_cache.wrappedJSObject.OpenILS.prototype.data.list;
-				this.hash = data_cache.wrappedJSObject.OpenILS.prototype.data.hash;
+				var dc = data_cache.wrappedJSObject.OpenILS.prototype.data;
+				for (var i in dc) {
+					this.error.sdump('D_DATA','Retrieving ' + i + ' : ' + dc[i] + '\n');
+					this[i] = dc[i];
+				}
 			} catch(E) {
 				this.error.sdump('D_ERROR','Error in OpenILS.data.init(true): ' + js2JSON(E) );
 			}
@@ -165,12 +166,24 @@ OpenILS.data.prototype = {
 		try {
 			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
 			var data_cache=new OpenILS( );
-			data_cache.wrappedJSObject.OpenILS.prototype.data = {
-				'list' : this.list,
-				'hash' : this.hash
+			for (var i = 0; i < arguments.length; i++) {
+				this.error.sdump('D_DATA','stashing ' + arguments[i] + ' : ' + this[arguments[i]] + '\n');
+				data_cache.wrappedJSObject.OpenILS.prototype.data[arguments[i]] = this[arguments[i]];
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR','Error in OpenILS.data.stash(): ' + js2JSON(E) );
+		}
+	},
+
+	'_debug_stash' : function() {
+		try {
+			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+			var data_cache=new OpenILS( );
+			for (var i in data_cache.wrappedJSObject.OpenILS.prototype.data) {
+				dump('_debug_stash ' + i + '\n');
+			}
+		} catch(E) {
+			this.error.sdump('D_ERROR','Error in OpenILS.data._debug_stash(): ' + js2JSON(E) );
 		}
 	},
 

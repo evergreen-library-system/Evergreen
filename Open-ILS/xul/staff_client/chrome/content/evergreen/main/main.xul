@@ -27,8 +27,13 @@
 	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true;</script>
 	<scripts id="openils_util_scripts"/>
 
+	<script type="text/javascript" src="chrome://evergreen/content/main/lang.js"/>
+	<script type="text/javascript" src="http://dev.gapines.org/xul/server/main/lang.js"/>
 	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
 	<script type="text/javascript" src="chrome://evergreen/content/main/main.js"/>
+	<script>
+		dump("entities['lang.version'] = " + entities['lang.version'] + '\n');
+	</script>
 
 	<commandset id="auth_cmds">
 		<command id="cmd_login"/>
@@ -44,6 +49,7 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- CONTENT -->
+	<deck id="main_deck">
 	<groupbox id="main_groupbox" flex="1">
 		<caption id="main_caption" label="&staff.auth.login_header;"/>
 		<label value="&staff.auth.version;"/>
@@ -80,8 +86,10 @@
 				</row>
 			</rows>
 		</grid>
-		<progressmeter id="auth_meter" mode="normal" value="0"/>
+		<progressmeter id="progress_bar" mode="normal" value="0"/>
 	</groupbox>
+	<iframe src="doesnotexist.xxx"/>
+	</deck>
 
 </window>
 

@@ -23,7 +23,7 @@ auth.session.prototype = {
 
 			if (init) {
 
-				this.key = this.network.request(
+				var robj = this.network.request(
 					'open-ils.auth',
 					'open-ils.auth.authenticate.complete',
 					[ 
@@ -37,13 +37,16 @@ auth.session.prototype = {
 					]
 				);
 
-				this.error.sdump('D_AUTH','auth.session.key = ' + this.key + '\n');
-
-				if (Number(this.key) == 0) {
-					throw('Invalid name/password combination.');
-				} else if (instanceOf(this.key,ex)) {
-					throw(this.key.err_msg());
+				if (robj.ilsevent == 0) {
+					this.key = robj.authtoken;
+				} else {
+					var error = robj.ilsevent + ' : ' + this.error.get_ilsevent( robj.ilsevent );
+					this.error.sdump('D_AUTH','auth.session.init: ' + error + '\n');
+					alert( error );
+					throw(robj);
 				}
+
+				this.error.sdump('D_AUTH','auth.session.key = ' + this.key + '\n');
 
 				if (typeof this.on_init == 'function') {
 					this.error.sdump('D_AUTH','auth.session.on_init()\n');
@@ -54,20 +57,20 @@ auth.session.prototype = {
 
 				var error = 'open-ils.auth.authenticate.init returned false\n';
 				this.error.sdump('D_ERROR',error);
-				if (typeof this.on_error == 'function') {
-					this.error.sdump('D_AUTH','auth.session.on_error()\n');
-					this.on_error();
-				}
 				throw(error);
 			}
 
 		} catch(E) {
-			var error = 'Error on auth.session.init(): ' + E + '\n';
+			var error = 'Error on auth.session.init(): ' + js2JSON(E) + '\n';
 			this.error.sdump('D_ERROR',error); 
 
 			if (typeof this.on_init_error == 'function') {
 				this.error.sdump('D_AUTH','auth.session.on_init_error()\n');
 				this.on_init_error(E);
+			}
+			if (typeof this.on_error == 'function') {
+				this.error.sdump('D_AUTH','auth.session.on_error()\n');
+				this.on_error();
 			}
 
 			//throw(E);
@@ -78,7 +81,6 @@ auth.session.prototype = {
 			}
 			*/
 		}
-
 	},
 
 	'close' : function () { 

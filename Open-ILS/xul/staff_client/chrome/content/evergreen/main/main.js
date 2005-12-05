@@ -37,16 +37,22 @@ function main_init() {
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( { 'window' : mw } );
 
+		JSAN.use('OpenILS.data');
+		G.OpenILS.data = new OpenILS.data()
+		G.OpenILS.data.entities = entities;
+		G.OpenILS.data.stash('entities');
+
 		G.auth.on_login = function() {
 
-			JSAN.use('OpenILS.data');
-			G.OpenILS.data = new OpenILS.data( { 'session' : G.auth.session.key } );
+			G.OpenILS.data.session = G.auth.session.key;
 			G.OpenILS.data.on_complete = function () {
+				
+				G.OpenILS.data.stash('list','hash');
+				G.OpenILS.data._debug_stash();
 
 				G.window.open('http://dev.gapines.org/xul/server/main/menu_frame.xul?session='+mw.escape(G.auth.session.key),'test','chrome');
 			}
 			G.OpenILS.data.init();
-			G.OpenILS.data.stash();
 		}
 
 		G.auth.init();
