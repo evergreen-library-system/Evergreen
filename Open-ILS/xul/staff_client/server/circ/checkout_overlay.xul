@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<overlay id="checkout_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading checkout_overlay.xul\n');</script>
+
+<commandset id="checkout_cmds" />
+
+<box id="checkout_main" flex="1" orient="vertical" class="my_overflow">
+
+	<groupbox id="cmgb1">
+		<caption label="&staff.patron_navbar.checkout;" />
+		<hbox id="checkout_top_ui" />
+		<vbox id="checkout_list" flex="1" />
+		<hbox id="checkout_bottom_ui" />
+	</groupbox>
+
+</box>
+
+<hbox id="checkout_top_ui">
+	<label id="checkout_scan_barcode_label" 
+		value="&staff.patron_display.checkout.scan_label;" 
+		accesskey="&staff.patron_display.checkout.scan_label.accesskey;" 
+		control="checkout_barcode_entry_textbox"/>
+	<textbox id="checkout_barcode_entry_textbox"/>
+	<button id="checkout_submit_barcode_button" 
+		label="&staff.patron_display.checkout.submit_label;" 
+		command="cmd_checkout_submit_barcode"
+		accesskey="&staff.patron_display.checkout.submit_label.accesskey;"/>
+</hbox>
+
+<hbox id="checkout_bottom_ui">
+	<button id="checkout_print" 
+		label="&staff.patron_display.checkout.print_receipt_label;" 
+		command="cmd_checkout_print"
+		accesskey="&staff.patron_display.checkout.print_receipt_label.accesskey;"/>
+	<button id="checkout_reprint" 
+		label="&staff.patron_display.checkout.reprint_receipt_label;" 
+		command="cmd_checkout_reprint"
+		accesskey="&staff.patron_display.checkout.reprint_receipt_label.accesskey;"/>
+	<spacer id="pcii3s" flex="1"/>
+	<checkbox id="checkout_auto" 
+		label="&staff.patron_display.checkout.auto_print_label;" 
+		accesskey="&staff.patron_display.checkout.auto_print_label.accesskey;"/> 
+	<button id="checkout_done" 
+		label="&staff.patron_display.checkout.done_label;" 
+		command="cmd_checkout_done"
+		accesskey="&staff.patron_display.checkout.done_label.accesskey;"/>
+</hbox>
+
+</overlay>
