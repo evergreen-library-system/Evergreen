@@ -13,19 +13,70 @@ patron.display.prototype = {
 
 	'init' : function( params ) {
 
-		this.session = params['session'];
-		this.barcode = params['barcode'];
-
-		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
-		this.OpenILS.data = new OpenILS.data( { 'session' : params.session } ); this.OpenILS.data.init(true);
-
 		var obj = this;
 		obj.view = {}; obj.render_list = [];
+
+		obj.session = params['session'];
+		obj.barcode = params['barcode'];
+
+		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
+		obj.OpenILS.data = new OpenILS.data( { 'session' : params.session } ); obj.OpenILS.data.init(true);
+
+		JSAN.use('util.deck');  obj.deck = new util.deck('patron_deck');
 
 		var control_map = {
 			'cmd_broken' : [
 				['command'],
 				function() { alert('Not Yet Implemented'); }
+			],
+			'cmd_patron_refresh' : [
+				['command'],
+				function(ev) {
+					obj.view.patron_name.setAttribute('value','Retrieving...');
+					obj.retrieve();
+				}
+			],
+			'cmd_patron_checkout' : [
+				['command'],
+				function(ev) {
+					obj.deck.set_iframe('data:text/html,<h1>Checkout Here</h1>');
+					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+				}
+			],
+			'cmd_patron_items' : [
+				['command'],
+				function(ev) {
+					obj.deck.set_iframe('data:text/html,<h1>Items Here</h1>');
+					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+				}
+			],
+			'cmd_patron_holds' : [
+				['command'],
+				function(ev) {
+					obj.deck.set_iframe('data:text/html,<h1>Holds Here</h1>');
+					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+				}
+			],
+			'cmd_patron_bills' : [
+				['command'],
+				function(ev) {
+					obj.deck.set_iframe('data:text/html,<h1>Bills Here</h1>');
+					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+				}
+			],
+			'cmd_patron_edit' : [
+				['command'],
+				function(ev) {
+					obj.deck.set_iframe('data:text/html,<h1>Edit Here</h1>');
+					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+				}
+			],
+			'cmd_patron_info' : [
+				['command'],
+				function(ev) {
+					obj.deck.set_iframe('data:text/html,<h1>Info Here</h1>');
+					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+				}
 			],
 			'patron_name' : [
 				['render'],
@@ -412,7 +463,7 @@ patron.display.prototype = {
 		};
 
 		for (var i in control_map) {
-			var cmd = this.w.document.getElementById(i);
+			var cmd = obj.w.document.getElementById(i);
 			if (cmd) {
 				for (var j in control_map[i][0]) {
 					if (control_map[i][1]) {

@@ -54,6 +54,16 @@
 	]]>
 	</script>
 
+	<commandset id="patron_display_cmds">
+		<command id="cmd_patron_refresh" />
+		<command id="cmd_patron_checkout" />
+		<command id="cmd_patron_items" />
+		<command id="cmd_patron_holds" />
+		<command id="cmd_patron_bills" />
+		<command id="cmd_patron_edit" />
+		<command id="cmd_patron_info" />
+	</commandset>
+
 	<box id="patron_display_main" />
 
 </window>

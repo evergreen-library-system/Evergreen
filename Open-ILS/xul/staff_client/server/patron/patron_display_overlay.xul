@@ -5,6 +5,8 @@
 
 <script>dump('loading patron_display_overlay.xul\n');</script>
 
+<commandset id="patron_display_cmds" />
+
 <box id="patron_display_main" flex="1" orient="vertical" class="my_overflow">
 	<hbox id="PatronNavBar" flex="0"/>
 	<hbox id="PatronNotNavBar">
@@ -22,7 +24,6 @@
 </vbox>
 
 <deck id="patron_deck" flex="1">
-	<label value="Hello World" />
 </deck>
 
 <hbox id="PatronNavBar">
