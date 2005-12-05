@@ -17,7 +17,7 @@ circ.checkout.prototype = {
 		obj.patron_id = params['patron_id'];
 
 		JSAN.use('OpenILS.data'); obj.OpenILS = {}; 
-		obj.OpenILS.data = new OpenILS.data( { 'session' : params.session } ); obj.OpenILS.data.init(true);
+		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init(true);
 
 
 		JSAN.use('main.list'); obj.list = new main.list('checkout_list');
