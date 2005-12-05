@@ -163,7 +163,7 @@ circ.checkout.prototype = {
 												'acp' : checkout.copy
 												}
 											}
-										//I could override map_row_to_col here
+										//I could override map_row_to_column here
 										}
 									);
 

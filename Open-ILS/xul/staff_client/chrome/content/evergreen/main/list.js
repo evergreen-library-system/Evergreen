@@ -51,27 +51,33 @@ main.list.prototype = {
 
 		if (typeof params.row == 'undefined') throw('main.list.append: Object must contain a row');
 
+		dump('main.list.append: params = ' + js2JSON(params) + '\n');
+
 		var treeitem = document.createElement('treeitem');
 		this.treechildren.appendChild( treeitem );
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 
+		dump('tree = ' + this.node + '  treechildren = ' + this.treechildren + '\n');
+		dump('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
+
 		for (var i = 0; i < this.columns.length; i++) {
 			var treecell = document.createElement('treecell');
 			var label = '';
-			if (typeof params.map_row_to_col == 'function')  {
+			if (typeof params.map_row_to_column == 'function')  {
 
-				label = params.map_row_to_col(params.row,this.columns[i]);
+				label = params.map_row_to_column(params.row,this.columns[i]);
 
 			} else {
 
-				if (typeof this.map_row_to_col == 'function') {
+				if (typeof this.map_row_to_column == 'function') {
 
-					label = this.map_row_to_col(params.row,this.columns[i]);
+					label = this.map_row_to_column(params.row,this.columns[i]);
 				}
 			}
 			treecell.setAttribute('label',label);
 			treerow.appendChild( treecell );
+			dump('treecell = ' + treecell + ' with label = ' + label + '\n');
 		}
 
 		return treeitem;
