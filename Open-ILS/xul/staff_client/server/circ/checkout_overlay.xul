@@ -12,7 +12,7 @@
 	<groupbox id="cmgb1">
 		<caption label="&staff.patron_navbar.checkout;" />
 		<hbox id="checkout_top_ui" />
-		<vbox id="checkout_list" flex="1" />
+		<tree id="checkout_list" flex="1" />
 		<hbox id="checkout_bottom_ui" />
 	</groupbox>
 
