@@ -24,8 +24,7 @@
 		ILS Events
 		======================================================================================= -->
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
-
-
+<!ENTITY ilsevent.5000 "Permission Denied">
 
 
 <!--	======================================================================================= 
@@ -49,6 +48,7 @@
 <!ENTITY opac.navigate.advanced "Advanced Search">
 <!ENTITY opac.navigate.advanced.title "Go to the Advanced Search Page">
 <!ENTITY navigate.myopac "My Account">
+<!ENTITY opac.navigate.myopac "My Account">
 <!ENTITY navigate.myopac.title "Go to My OPAC">
 <!ENTITY navigate.login "Log in">
 <!ENTITY navigate.login.title "Log in for personalized features">
