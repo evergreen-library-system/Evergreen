@@ -16,7 +16,7 @@ util.deck.prototype = {
 	'find_index' : function (url) {
 		var idx = -1;
 		var nodes = this.node.childNodes;
-		for (var i in nodes) {
+		for (var i = 0; i < nodes.length; i++) {
 			if (nodes[i].getAttribute('src') == url) idx = i;
 		}
 		return idx;
@@ -46,7 +46,7 @@ util.deck.prototype = {
 		iframe.setAttribute('src',url);
 		iframe.setAttribute('flex','1');
 		this.node.appendChild( iframe );
-		//this.node.selectedIndex = this.node.childNodes.length - 1;
+		this.node.selectedIndex = this.node.childNodes.length - 1;
 	},
 
 	'remove_iframe' : function (url) {
