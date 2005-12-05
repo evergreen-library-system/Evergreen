@@ -112,7 +112,8 @@ sub complete_authenticate {
 			"open-ils.storage", $name, $username );
 
 	unless(ref($user_list)) {
-		return OpenILS::EX->new("UNKNOWN_USER")->ex;
+		#return OpenILS::EX->new("UNKNOWN_USER")->ex;
+		return { ilsevent => 1000 };
 	}
 
 	warn "We have the user from storage with usrname $username\n";
@@ -121,7 +122,8 @@ sub complete_authenticate {
 	
 
 	if(!$user or !ref($user) ) {
-		return OpenILS::EX->new("UNKNOWN_USER")->ex();
+#		return OpenILS::EX->new("UNKNOWN_USER")->ex();
+		return { ilsevent => 1000 };
 	}
 
 	my $password = $user->passwd();
@@ -168,12 +170,13 @@ sub complete_authenticate {
 
 		my $session_id = md5_hex(time() . $$ . rand()); 
 		$cache_handle->put_cache( $session_id, $user, $timeout );
-		return $session_id;
+		#return $session_id;
+		return { ilsevent => 0, authtoken => $session_id };
 
 	} else {
 
 		warn "User password is incorrect...\n"; # send exception
-		return 0;
+		return { ilsevent => 1000 };
 	}
 }
 
