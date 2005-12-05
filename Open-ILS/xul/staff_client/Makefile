@@ -41,6 +41,7 @@ generated:
 	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
 	(cd chrome/content/evergreen/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
 	(cd chrome/locale/en-US/evergreen/ ; ${RETRIEVE_LANG_DTD} );
+	external/dtd2js.pl chrome/locale/en-US/evergreen/lang.dtd > chrome/content/evergreen/main/lang.js
 
 open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
