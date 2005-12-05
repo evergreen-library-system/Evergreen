@@ -1,0 +1,33 @@
+<ils_events>
+	<notes>
+		This file describes the event codes that an ILS method might return.  Not all
+		methods will return event codes and it is up to each method to define which
+		types of events it may return.  The standard event procedure is to return an
+		object (JSON hash) with a field called "ilsevent" which contains the event code
+		below.
+
+		If events need to be placed into groups for any reason, the segregation shall
+		be defined below with the accompanying events.
+	</notes>
+
+	<event code='0' textcode='SUCCESS'>
+		<desc>No errors or unexpected events occurred</desc>
+	</event>
+	<event code='1000' textcode='LOGIN_FAILED'>
+		<desc>
+			User login failed.  Why the login failed is not specified.
+		</desc>
+	</event>
+	<event code='5000' textcode='PERM_FAILURE'>
+		<desc> 
+			Permission Error.  * The object returning this code shall also 
+			contain a field "ilsperm" containing the name of the permission which failed 
+			and a field called "ilspermloc" defining the location at which the permission
+			failed if available.
+		</desc>
+	</event>
+</ils_events>
+
+
+
+
