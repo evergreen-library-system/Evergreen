@@ -47,7 +47,7 @@ util.deck.prototype = {
 		iframe.setAttribute('flex','1');
 		this.node.appendChild( iframe );
 		//this.node.selectedIndex = this.node.childNodes.length - 1;
-	}
+	},
 
 	'remove_iframe' : function (url) {
 		var idx = this.find_index(url);
