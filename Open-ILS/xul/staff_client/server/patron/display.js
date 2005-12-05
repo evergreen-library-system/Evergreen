@@ -14,7 +14,6 @@ patron.display.prototype = {
 	'init' : function( params ) {
 
 		var obj = this;
-		obj.view = {}; obj.render_list = [];
 
 		obj.session = params['session'];
 		obj.barcode = params['barcode'];
@@ -24,461 +23,455 @@ patron.display.prototype = {
 
 		JSAN.use('util.deck');  obj.deck = new util.deck('patron_deck');
 
-		var control_map = {
-			'cmd_broken' : [
-				['command'],
-				function() { alert('Not Yet Implemented'); }
-			],
-			'cmd_patron_refresh' : [
-				['command'],
-				function(ev) {
-					obj.view.patron_name.setAttribute('value','Retrieving...');
-					obj.retrieve();
-				}
-			],
-			'cmd_patron_checkout' : [
-				['command'],
-				function(ev) {
-					obj.deck.set_iframe('data:text/html,<h1>Checkout Here</h1>');
-					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
-				}
-			],
-			'cmd_patron_items' : [
-				['command'],
-				function(ev) {
-					obj.deck.set_iframe('data:text/html,<h1>Items Here</h1>');
-					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
-				}
-			],
-			'cmd_patron_holds' : [
-				['command'],
-				function(ev) {
-					obj.deck.set_iframe('data:text/html,<h1>Holds Here</h1>');
-					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
-				}
-			],
-			'cmd_patron_bills' : [
-				['command'],
-				function(ev) {
-					obj.deck.set_iframe('data:text/html,<h1>Bills Here</h1>');
-					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
-				}
-			],
-			'cmd_patron_edit' : [
-				['command'],
-				function(ev) {
-					obj.deck.set_iframe('data:text/html,<h1>Edit Here</h1>');
-					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
-				}
-			],
-			'cmd_patron_info' : [
-				['command'],
-				function(ev) {
-					obj.deck.set_iframe('data:text/html,<h1>Info Here</h1>');
-					dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
-				}
-			],
-			'patron_name' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.family_name() + ', ' + obj.patron.first_given_name()
-						);
-						e.setAttribute('style','background-color: lime');
-						//FIXME//bills should become a virtual field
-						if (obj.patron.bills.length > 0)
-							e.setAttribute('style','background-color: yellow');
-						if (obj.patron.standing() == 2)
-							e.setAttribute('style','background-color: lightred');
-
-					};
-				}
-			],
-			'patron_profile' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.OpenILS.data.hash.pgt[
-								obj.patron.profile()
-							].name()
-						);
-					};
-				}
-			],
-			'patron_standing' : [
-				['render'],
-				function(e) {
-					return function() {
-						e.setAttribute('value',
-							obj.OpenILS.data.hash.cst[
-								obj.patron.standing()
-							].value()
-						);
-					};
-				}
-			],
-			'patron_credit' : [
-				['render'],
-				function(e) {
-					return function() { 
-						JSAN.use('util.money');
-						e.setAttribute('value',
-							util.money.cents_as_dollars(
-								obj.patron.credit_forward_balance()
-							)
-						);
-					};
-				}
-			],
-			'patron_bill' : [
-				['render'],
-				function(e) {
-					return function() { 
-						JSAN.use('util.money');
-        					var total = 0;
-						//FIXME//adjust when .bills becomes a virtual field
-					        for (var i = 0; i < obj.patron.bills.length; i++) {
-					                total += util.money.dollars_float_to_cents_integer( 
-								obj.patron.bills[i].balance_owed() 
+		JSAN.use('main.controller'); obj.controller = new main.controller();
+		obj.controller.init(
+			{
+				control_map : {
+					'cmd_broken' : [
+						['command'],
+						function() { alert('Not Yet Implemented'); }
+					],
+					'cmd_patron_refresh' : [
+						['command'],
+						function(ev) {
+							obj.controller.view.patron_name.setAttribute(
+								'value','Retrieving...'
 							);
-					        }
-        					e.setAttribute('value',
-							util.money.cents_as_dollars( total )
-						);
-					};
-				}
-			],
-			'patron_checkouts' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.checkouts.length	
-						);
-					};
-				}
-			],
-			'patron_overdue' : [
-				['render'],
-				function(e) {
-					return function() { 
-						//FIXME//Get Bill to do this correctly on server side
-						JSAN.use('util.date');
-						var total = 0;
-						for (var i = 0; i < obj.patron.checkouts().length; i++) {
-							var item = obj.patron.checkouts()[i];
-							var due_date = item.circ.due_date();
-							due_date = due_date.substr(0,4) 
-								+ due_date.substr(5,2) + due_date.substr(8,2);
-							var today = util.date.formatted_date( new Date() , '%Y%m%d' );
-							if (today > due_date) total++;
+							obj.retrieve();
 						}
-						e.setAttribute('value',
-							total
-						);
-					};
-				}
-			],
-			'patron_holds' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.hold_requests.length
-						);
-					};
-				}
-			],
-			'patron_holds_available' : [
-				['render'],
-				function(e) {
-					return function() { 
-						var total = 0;
-						for (var i = 0; i < obj.patron.hold_requests().length; i++) {
-							var hold = obj.patron.hold_requests()[i];
-							if (hold.capture_time()) total++;
+					],
+					'cmd_patron_checkout' : [
+						['command'],
+						function(ev) {
+							obj.deck.set_iframe(
+								'/xul/server/circ/checkout.xul?session='
+								+ window.escape( obj.session )
+								+ '&patron_id='
+								+ window.escape( obj.patron.id() )
+							);
+							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
-						e.setAttribute('value',
-							total
-						);
-					};
-				}
-			],
-			'patron_card' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.card().barcode()
-						);
-					};
-				}
-			],
-			'patron_ident_type_1' : [
-				['render'],
-				function(e) {
-					return function() { 
-						var ident_string = '';
-						var ident = obj.OpenILS.data.hash.cit[
-							obj.patron.ident_type()
-						];
-						if (ident) ident_string = ident.name()
-						e.setAttribute('value',
-							ident_string
-						);
-					};
-				}
-			],
-			'patron_ident_value_1' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.ident_value()
-						);
-					};
-				}
-			],
-			'patron_ident_type_2' : [
-				['render'],
-				function(e) {
-					return function() { 
-						var ident_string = '';
-						var ident = obj.OpenILS.data.hash.cit[
-							obj.patron.ident_type2()
-						];
-						if (ident) ident_string = ident.name()
-						e.setAttribute('value',
-							ident_string
-						);
-					};
-				}
-			],
-			'patron_ident_value_2' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.ident_value2()
-						);
-					};
-				}
-			],
-			'patron_date_of_birth' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.dob()
-						);
-					};
-				}
-			],
-			'patron_day_phone' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.day_phone()
-						);
-					};
-				}
-			],
-			'patron_evening_phone' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.evening_phone()
-						);
-					};
-				}
-			],
-			'patron_other_phone' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.other_phone()
-						);
-					};
-				}
-			],
-			'patron_email' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.email()
-						);
-					};
-				}
-			],
-			'patron_photo_url' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('src',
-							obj.patron.photo_url()
-						);
-					};
-				}
-			],
-			'patron_library' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.OpenILS.data.hash.aou[
-								obj.patron.home_ou()
-							].shortname()
-						);
-						e.setAttribute('tooltiptext',
-							obj.OpenILS.data.hash.aou[
-								obj.patron.home_ou()
-							].name()
-						);
-					};
-				}
-			],
-			'patron_last_library' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.OpenILS.data.hash.aou[
-								obj.patron.home_ou()
-							].shortname()
-						);
-						e.setAttribute('tooltiptext',
-							obj.OpenILS.data.hash.aou[
-								obj.patron.home_ou()
-							].name()
-						);
-					};
-				}
-			],
-			'patron_mailing_address_street1' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.mailing_address().street1()
-						);
-					};
-				}
-			],
-			'patron_mailing_address_street2' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.mailing_address().street2()
-						);
-					};
-				}
-			],
-			'patron_mailing_address_city' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.mailing_address().city()
-						);
-					};
-				}
-			],
-			'patron_mailing_address_state' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.mailing_address().state()
-						);
-					};
-				}
-			],
-			'patron_mailing_address_post_code' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.mailing_address().post_code()
-						);
-					};
-				}
-			],
-			'patron_physical_address_street1' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.billing_address().street1()
-						);
-					};
-				}
-			],
-			'patron_physical_address_street2' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.billing_address().street2()
-						);
-					};
-				}
-			],
-			'patron_physical_address_city' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.billing_address().city()
-						);
-					};
-				}
-			],
-			'patron_physical_address_state' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.billing_address().state()
-						);
-					};
-				}
-			],
-			'patron_physical_address_post_code' : [
-				['render'],
-				function(e) {
-					return function() { 
-						e.setAttribute('value',
-							obj.patron.billing_address().post_code()
-						);
-					};
-				}
-			]
-		};
+					],
+					'cmd_patron_items' : [
+						['command'],
+						function(ev) {
+							obj.deck.set_iframe('data:text/html,<h1>Items Here</h1>');
+							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_holds' : [
+						['command'],
+						function(ev) {
+							obj.deck.set_iframe('data:text/html,<h1>Holds Here</h1>');
+							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_bills' : [
+						['command'],
+						function(ev) {
+							obj.deck.set_iframe('data:text/html,<h1>Bills Here</h1>');
+							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_edit' : [
+						['command'],
+						function(ev) {
+							obj.deck.set_iframe('data:text/html,<h1>Edit Here</h1>');
+							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_info' : [
+						['command'],
+						function(ev) {
+							obj.deck.set_iframe('data:text/html,<h1>Info Here</h1>');
+							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
+						}
+					],
+					'patron_name' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.family_name() + ', ' + obj.patron.first_given_name()
+								);
+								e.setAttribute('style','background-color: lime');
+								//FIXME//bills should become a virtual field
+								if (obj.patron.bills.length > 0)
+									e.setAttribute('style','background-color: yellow');
+								if (obj.patron.standing() == 2)
+									e.setAttribute('style','background-color: lightred');
 
-		for (var i in control_map) {
-			var cmd = obj.w.document.getElementById(i);
-			if (cmd) {
-				for (var j in control_map[i][0]) {
-					if (control_map[i][1]) {
-						var ev_type = control_map[i][0][j];
-						switch(ev_type) {
-							case 'render':
-								obj.render_list.push( control_map[i][1](cmd) ); 
-							break;
-							default: cmd.addEventListener(ev_type,control_map[i][1],false);
+							};
 						}
-					}
+					],
+					'patron_profile' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.OpenILS.data.hash.pgt[
+										obj.patron.profile()
+									].name()
+								);
+							};
+						}
+					],
+					'patron_standing' : [
+						['render'],
+						function(e) {
+							return function() {
+								e.setAttribute('value',
+									obj.OpenILS.data.hash.cst[
+										obj.patron.standing()
+									].value()
+								);
+							};
+						}
+					],
+					'patron_credit' : [
+						['render'],
+						function(e) {
+							return function() { 
+								JSAN.use('util.money');
+								e.setAttribute('value',
+									util.money.cents_as_dollars(
+										obj.patron.credit_forward_balance()
+									)
+								);
+							};
+						}
+					],
+					'patron_bill' : [
+						['render'],
+						function(e) {
+							return function() { 
+								JSAN.use('util.money');
+								var total = 0;
+								//FIXME//adjust when .bills becomes a virtual field
+								for (var i = 0; i < obj.patron.bills.length; i++) {
+									total += util.money.dollars_float_to_cents_integer( 
+										obj.patron.bills[i].balance_owed() 
+									);
+								}
+								e.setAttribute('value',
+									util.money.cents_as_dollars( total )
+								);
+							};
+						}
+					],
+					'patron_checkouts' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.checkouts.length	
+								);
+							};
+						}
+					],
+					'patron_overdue' : [
+						['render'],
+						function(e) {
+							return function() { 
+								//FIXME//Get Bill to do this correctly on server side
+								JSAN.use('util.date');
+								var total = 0;
+								for (var i = 0; i < obj.patron.checkouts().length; i++) {
+									var item = obj.patron.checkouts()[i];
+									var due_date = item.circ.due_date();
+									due_date = due_date.substr(0,4) 
+										+ due_date.substr(5,2) + due_date.substr(8,2);
+									var today = util.date.formatted_date( new Date() , '%Y%m%d' );
+									if (today > due_date) total++;
+								}
+								e.setAttribute('value',
+									total
+								);
+							};
+						}
+					],
+					'patron_holds' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.hold_requests.length
+								);
+							};
+						}
+					],
+					'patron_holds_available' : [
+						['render'],
+						function(e) {
+							return function() { 
+								var total = 0;
+								for (var i = 0; i < obj.patron.hold_requests().length; i++) {
+									var hold = obj.patron.hold_requests()[i];
+									if (hold.capture_time()) total++;
+								}
+								e.setAttribute('value',
+									total
+								);
+							};
+						}
+					],
+					'patron_card' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.card().barcode()
+								);
+							};
+						}
+					],
+					'patron_ident_type_1' : [
+						['render'],
+						function(e) {
+							return function() { 
+								var ident_string = '';
+								var ident = obj.OpenILS.data.hash.cit[
+									obj.patron.ident_type()
+								];
+								if (ident) ident_string = ident.name()
+								e.setAttribute('value',
+									ident_string
+								);
+							};
+						}
+					],
+					'patron_ident_value_1' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.ident_value()
+								);
+							};
+						}
+					],
+					'patron_ident_type_2' : [
+						['render'],
+						function(e) {
+							return function() { 
+								var ident_string = '';
+								var ident = obj.OpenILS.data.hash.cit[
+									obj.patron.ident_type2()
+								];
+								if (ident) ident_string = ident.name()
+								e.setAttribute('value',
+									ident_string
+								);
+							};
+						}
+					],
+					'patron_ident_value_2' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.ident_value2()
+								);
+							};
+						}
+					],
+					'patron_date_of_birth' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.dob()
+								);
+							};
+						}
+					],
+					'patron_day_phone' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.day_phone()
+								);
+							};
+						}
+					],
+					'patron_evening_phone' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.evening_phone()
+								);
+							};
+						}
+					],
+					'patron_other_phone' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.other_phone()
+								);
+							};
+						}
+					],
+					'patron_email' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.email()
+								);
+							};
+						}
+					],
+					'patron_photo_url' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('src',
+									obj.patron.photo_url()
+								);
+							};
+						}
+					],
+					'patron_library' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.OpenILS.data.hash.aou[
+										obj.patron.home_ou()
+									].shortname()
+								);
+								e.setAttribute('tooltiptext',
+									obj.OpenILS.data.hash.aou[
+										obj.patron.home_ou()
+									].name()
+								);
+							};
+						}
+					],
+					'patron_last_library' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.OpenILS.data.hash.aou[
+										obj.patron.home_ou()
+									].shortname()
+								);
+								e.setAttribute('tooltiptext',
+									obj.OpenILS.data.hash.aou[
+										obj.patron.home_ou()
+									].name()
+								);
+							};
+						}
+					],
+					'patron_mailing_address_street1' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.mailing_address().street1()
+								);
+							};
+						}
+					],
+					'patron_mailing_address_street2' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.mailing_address().street2()
+								);
+							};
+						}
+					],
+					'patron_mailing_address_city' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.mailing_address().city()
+								);
+							};
+						}
+					],
+					'patron_mailing_address_state' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.mailing_address().state()
+								);
+							};
+						}
+					],
+					'patron_mailing_address_post_code' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.mailing_address().post_code()
+								);
+							};
+						}
+					],
+					'patron_physical_address_street1' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.billing_address().street1()
+								);
+							};
+						}
+					],
+					'patron_physical_address_street2' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.billing_address().street2()
+								);
+							};
+						}
+					],
+					'patron_physical_address_city' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.billing_address().city()
+								);
+							};
+						}
+					],
+					'patron_physical_address_state' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.billing_address().state()
+								);
+							};
+						}
+					],
+					'patron_physical_address_post_code' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.billing_address().post_code()
+								);
+							};
+						}
+					]
 				}
 			}
-			obj.view[i] = cmd;
-		}
+		);
 
 		obj.retrieve();
 
@@ -585,7 +578,7 @@ patron.display.prototype = {
 			);
 
 			// Update the screen
-			chain.push( function() { obj.render(); } );
+			chain.push( function() { obj.controller.render(); } );
 
 			// Do it
 			JSAN.use('util.exec');
@@ -596,20 +589,7 @@ patron.display.prototype = {
 			this.error.sdump('D_ERROR',error);
 			alert(error);
 		}
-	},
-
-	'render' : function() {
-
-		for (var i in this.render_list) {
-			try {
-				this.render_list[i]();
-			} catch(E) {
-				var error = 'Problem in patron.display.render with\n' + this.render_list[i] + '\n\n' + js2JSON(E);
-				this.error.sdump('D_ERROR',error);
-			}
-		}
 	}
-
 }
 
 dump('exiting patron/display.js\n');
