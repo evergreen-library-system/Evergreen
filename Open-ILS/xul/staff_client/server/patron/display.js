@@ -104,6 +104,9 @@ patron.display.prototype = {
 							var today = util.date.formatted_date( new Date() , '%Y%m%d' );
 							if (today > due_date) total++;
 						}
+						e.setAttribute('value',
+							total
+						);
 					};
 				}
 			],
@@ -120,7 +123,16 @@ patron.display.prototype = {
 			'patron_holds_available' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						var total = 0;
+						for (var i = 0; i < obj.patron.hold_requests().length; i++) {
+							var hold = obj.patron.hold_requests()[i];
+							if (hold.capture_time()) total++;
+						}
+						e.setAttribute('value',
+							total
+						);
+					};
 				}
 			],
 			'patron_card' : [
