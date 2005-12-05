@@ -30,6 +30,11 @@
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 <!ENTITY ilsevent.5000 "Permission Denied">
 
+<!--	======================================================================================= 
+		Permission types
+		======================================================================================= -->
+<!ENTITY ilsperm.CREATE_HOLD "User is not allowed to create holds for other users at this location">
+
 
 <!--	======================================================================================= 
 		OPAC Entites
