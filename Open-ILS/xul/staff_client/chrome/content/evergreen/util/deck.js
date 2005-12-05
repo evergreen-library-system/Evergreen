@@ -13,12 +13,17 @@ util.deck = function (id) {
 
 util.deck.prototype = {
 
-	'set_iframe' : function (url) {
+	'find_index' : function (url) {
 		var idx = -1;
 		var nodes = this.node.childNodes;
 		for (var i in nodes) {
 			if (nodes[i].getAttribute('src') == url) idx = i;
 		}
+		return idx;
+	},
+
+	'set_iframe' : function (url) {
+		var idx = this.find_index(url);
 		if (idx>-1) {
 			this.node.selectedIndex = idx;
 		} else {
@@ -34,11 +39,7 @@ util.deck.prototype = {
 	},
 
 	'new_iframe' : function (url) {
-		var idx = -1;
-		var nodes = this.node.childNodes;
-		for (var i in nodes) {
-			if (nodes[i].getAttribute('src' == url) idx = i;
-		}
+		var idx = this.find_index(url);
 		if (idx>-1) throw('An iframe already exists in deck with url = ' + url);
 
 		var iframe = document.createElement('iframe');
@@ -49,11 +50,7 @@ util.deck.prototype = {
 	}
 
 	'remove_iframe' : function (url) {
-		var idx = -1;
-		var nodes = this.node.childNodes;
-		for (var i in nodes) {
-			if (nodes[i].getAttribute('src' == url) idx = i;
-		}
+		var idx = this.find_index(url);
 		if (idx>-1) {
 			this.node.removeChild( this.node.childNodes[ idx ] );
 		}
