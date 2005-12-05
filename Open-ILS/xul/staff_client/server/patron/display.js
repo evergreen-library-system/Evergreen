@@ -31,7 +31,7 @@ patron.display.prototype = {
 				['render'],
 				function(e) {
 					return function() { 
-						e.setAttribute('label',obj.patron.family_name() + ', ' 
+						e.setAttribute('value',obj.patron.family_name() + ', ' 
 							+ obj.patron.first_given_name());
 					};
 				}
@@ -62,14 +62,15 @@ patron.display.prototype = {
 				['render'],
 				function(e) {
 					return function() { 
+						JSAN.use('util.money');
         					var total = 0;
 					        for (var i = 0; i < obj.patron.bills.length; i++) {
-					                total += dollars_float_to_cents_integer( 
+					                total += util.money.dollars_float_to_cents_integer( 
 								obj.patron.bills[i].balance_owed() 
 							);
 					        }
         					e.setAttribute('value',
-							cents_as_dollars( total )
+							util.money.cents_as_dollars( total )
 						);
 					};
 				}
@@ -330,7 +331,7 @@ patron.display.prototype = {
 			);
 
 			// Update the screen
-			chain.push( obj.render );
+			chain.push( function() { obj.render(); } );
 
 			// Do it
 			JSAN.use('util.exec');
@@ -351,6 +352,7 @@ patron.display.prototype = {
 			} catch(E) {
 				var error = 'Problem in patron.display.render with\n' + this.render_list[i] + '\n\n' + js2JSON(E);
 				this.error.sdump('D_ERROR',error);
+				alert(error);
 			}
 		}
 	}

@@ -26,9 +26,7 @@
 </deck>
 
 <hbox id="PatronNavBar">
-	<label id="patron_name" class="patronNameLarge" 
-		tooltiptext="&staff.patron_display.name.label;"
-		value="&staff.patron_display.name.label;" />
+	<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" />
 	<spacer id="PatronNavBar_spacer" flex="1" />
 	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
 		label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
