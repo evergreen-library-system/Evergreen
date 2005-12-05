@@ -138,7 +138,11 @@ patron.display.prototype = {
 			'patron_card' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.card().barcode()
+						);
+					};
 				}
 			],
 			'patron_ident_type_1' : [
