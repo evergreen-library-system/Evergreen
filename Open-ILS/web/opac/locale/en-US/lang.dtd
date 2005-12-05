@@ -137,11 +137,16 @@
 
 <!ENTITY staff.about.title "About">
 <!ENTITY staff.auth.login_header "Login">
-<!ENTITY staff.auth.logoff_prompt "Log Off"><!ENTITY staff.auth.logoff_prompt.key "L">
-<!ENTITY staff.auth.name_prompt "Name:"><!ENTITY staff.auth.name_prompt.key "N">
-<!ENTITY staff.auth.password_prompt "Password:"><!ENTITY staff.auth.password_prompt.key "P">
-<!ENTITY staff.auth.quit_prompt "Exit Evergreen"><!ENTITY staff.auth.quit_prompt.key "x">
-<!ENTITY staff.auth.submit_prompt "Submit"><!ENTITY staff.auth.submit_prompt.key "S">
+<!ENTITY staff.auth.logoff_prompt "Log Off">
+<!ENTITY staff.auth.logoff_prompt.key "L">
+<!ENTITY staff.auth.name_prompt "Name:">
+<!ENTITY staff.auth.name_prompt.key "N">
+<!ENTITY staff.auth.password_prompt "Password:">
+<!ENTITY staff.auth.password_prompt.key "P">
+<!ENTITY staff.auth.quit_prompt "Exit Evergreen">
+<!ENTITY staff.auth.quit_prompt.key "x">
+<!ENTITY staff.auth.submit_prompt "Submit">
+<!ENTITY staff.auth.submit_prompt.key "S">
 <!ENTITY staff.auth.title "Evergreen Staff Client 3">
 <!ENTITY staff.auth.version "Evergreen 0.1.0 20051202">
 <!ENTITY staff.browse_list.barcode "Barcode">
@@ -168,40 +173,62 @@
 <!ENTITY staff.browse_list.shelving_loc "Shelving Location">
 <!ENTITY staff.browse_list.status "Status">
 <!ENTITY staff.browse_list.win_title "Cataloging">
-<!ENTITY staff.cat.fixed.BKS "BKS"> <!ENTITY staff.cat.fixed.BKS.key "B">
-<!ENTITY staff.cat.fixed.COM "COM"> <!ENTITY staff.cat.fixed.COM.key "O">
-<!ENTITY staff.cat.fixed.MAP "MAP"> <!ENTITY staff.cat.fixed.MAP.key "P">
-<!ENTITY staff.cat.fixed.MIX "MIX"> <!ENTITY staff.cat.fixed.MIX.key "M">
-<!ENTITY staff.cat.fixed.REC "REC"> <!ENTITY staff.cat.fixed.REC.key "R">
-<!ENTITY staff.cat.fixed.SCO "SCO"> <!ENTITY staff.cat.fixed.SCO.key "C">
-<!ENTITY staff.cat.fixed.SER "SER"> <!ENTITY staff.cat.fixed.SER.key "S">
-<!ENTITY staff.cat.fixed.VIS "VIS"> <!ENTITY staff.cat.fixed.VIS.key "V">
-<!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket"> <!ENTITY staff.cat.popup.add_to_bucket.key "">
-<!ENTITY staff.cat.popup.browse_record.tab "View Copies (Tab)"> <!ENTITY staff.cat.popup.browse.record.tab.key "">
-<!ENTITY staff.cat.popup.browse_record.window "View Copies (Window)"> <!ENTITY staff.cat.popup.browse.record.window.key "">
-<!ENTITY staff.cat.popup.edit_record.tab "Edit Record (Tab)"> <!ENTITY staff.cat.popup.edit.record.tab.key "">
-<!ENTITY staff.cat.popup.edit_record.window "Edit Record (Window)"> <!ENTITY staff.cat.popup.edit.record.window.key "">
-<!ENTITY staff.cat.search_advanced "Advanced"> <!ENTITY staff.cat.search_advanced.key "V">
+<!ENTITY staff.cat.fixed.BKS "BKS">
+<!ENTITY staff.cat.fixed.BKS.key "B">
+<!ENTITY staff.cat.fixed.COM "COM">
+<!ENTITY staff.cat.fixed.COM.key "O">
+<!ENTITY staff.cat.fixed.MAP "MAP">
+<!ENTITY staff.cat.fixed.MAP.key "P">
+<!ENTITY staff.cat.fixed.MIX "MIX">
+<!ENTITY staff.cat.fixed.MIX.key "M">
+<!ENTITY staff.cat.fixed.REC "REC">
+<!ENTITY staff.cat.fixed.REC.key "R">
+<!ENTITY staff.cat.fixed.SCO "SCO">
+<!ENTITY staff.cat.fixed.SCO.key "C">
+<!ENTITY staff.cat.fixed.SER "SER">
+<!ENTITY staff.cat.fixed.SER.key "S">
+<!ENTITY staff.cat.fixed.VIS "VIS">
+<!ENTITY staff.cat.fixed.VIS.key "V">
+<!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket">
+<!ENTITY staff.cat.popup.add_to_bucket.key "">
+<!ENTITY staff.cat.popup.browse_record.tab "View Copies (Tab)">
+<!ENTITY staff.cat.popup.browse.record.tab.key "">
+<!ENTITY staff.cat.popup.browse_record.window "View Copies (Window)">
+<!ENTITY staff.cat.popup.browse.record.window.key "">
+<!ENTITY staff.cat.popup.edit_record.tab "Edit Record (Tab)">
+<!ENTITY staff.cat.popup.edit.record.tab.key "">
+<!ENTITY staff.cat.popup.edit_record.window "Edit Record (Window)">
+<!ENTITY staff.cat.popup.edit.record.window.key "">
+<!ENTITY staff.cat.search_advanced "Advanced">
+<!ENTITY staff.cat.search_advanced.key "V">
 <!ENTITY staff.cat.search_all "Keyword">
 <!ENTITY staff.cat.search_author "Author">
 <!ENTITY staff.cat.search_barcode "Item Barcode">
 <!ENTITY staff.cat.search_callnumber "Call Number">
-<!ENTITY staff.cat.search_count_copy "Location"> <!ENTITY staff.cat.search_count_copy.key "L">
+<!ENTITY staff.cat.search_count_copy "Location">
+<!ENTITY staff.cat.search_count_copy.key "L">
 <!ENTITY staff.cat.search_count_copy_show "Show Only These Records">
 <!ENTITY staff.cat.search_criteria "Search Criteria">
-<!ENTITY staff.cat.search_format "Format"> <!ENTITY staff.cat.search_format.key "F">
+<!ENTITY staff.cat.search_format "Format">
+<!ENTITY staff.cat.search_format.key "F">
 <!ENTITY staff.cat.search_id "System ID">
 <!ENTITY staff.cat.search_isbn "ISBN/ISSN">
-<!ENTITY staff.cat.search_location "Location"> <!ENTITY staff.cat.search_location.key "L">
-<!ENTITY staff.cat.search_order "Order"> <!ENTITY staff.cat.search_order.key "O">
+<!ENTITY staff.cat.search_location "Location">
+<!ENTITY staff.cat.search_location.key "L">
+<!ENTITY staff.cat.search_order "Order">
+<!ENTITY staff.cat.search_order.key "O">
 <!ENTITY staff.cat.search_pubyear "Pub Year">
 <!ENTITY staff.cat.search_subject "Subject">
-<!ENTITY staff.cat.search_submit "Search"> <!ENTITY staff.cat.search_submit.key "S">
+<!ENTITY staff.cat.search_submit "Search">
+<!ENTITY staff.cat.search_submit.key "S">
 <!ENTITY staff.cat.search_tcn "TCN">
-<!ENTITY staff.cat.search_term "Terms"> <!ENTITY staff.cat.search_term.key "e">
+<!ENTITY staff.cat.search_term "Terms">
+<!ENTITY staff.cat.search_term.key "e">
 <!ENTITY staff.cat.search_title "Title">
-<!ENTITY staff.cat.search_type "Type"> <!ENTITY staff.cat.search_type.key "T">
-<!ENTITY staff.cat.test "Test"> <!ENTITY staff.cat.test.key "E">
+<!ENTITY staff.cat.search_type "Type">
+<!ENTITY staff.cat.search_type.key "T">
+<!ENTITY staff.cat.test "Test">
+<!ENTITY staff.cat.test.key "E">
 <!ENTITY staff.cat.title "TCN goes here">
 <!ENTITY staff.cat.type_of_material "All">
 <!ENTITY staff.cat.type_of_material.a "Language Material">
@@ -314,25 +341,37 @@
 <!ENTITY staff.copy.attr.stat.genre.example7 "Mystery">
 <!ENTITY staff.copy.attr.stat.genre.example8 "Romance">
 <!ENTITY staff.copy.attr.stat.genre.example9 "Sci-fi">
-<!ENTITY staff.copy.bucket "Add to Bucket"><!ENTITY staff.copy.bucket.key "B">
-<!ENTITY staff.copy.clone "Clone Copy"> <!ENTITY staff.copy.clone.key "">
-<!ENTITY staff.copy.close "Close Window"><!ENTITY staff.copy.close.key "C">
-<!ENTITY staff.copy.default.attr "Default Attributes"> <!ENTITY staff.copy.default.attr.value "Value">
-<!ENTITY staff.copy.delete "Delete Copy"> <!ENTITY staff.copy.delete.key "">
+<!ENTITY staff.copy.bucket "Add to Bucket">
+<!ENTITY staff.copy.bucket.key "B">
+<!ENTITY staff.copy.clone "Clone Copy"> 
+<!ENTITY staff.copy.clone.key "">
+<!ENTITY staff.copy.close "Close Window">
+<!ENTITY staff.copy.close.key "C">
+<!ENTITY staff.copy.default.attr "Default Attributes">
+<!ENTITY staff.copy.default.attr.value "Value">
+<!ENTITY staff.copy.delete "Delete Copy">
+<!ENTITY staff.copy.delete.key "">
 <!ENTITY staff.copy.edit_categories "Edit Categories">
 <!ENTITY staff.copy.edit_entries "Edit Entries">
-<!ENTITY staff.copy.local.attr "Local Attributes"> <!ENTITY staff.copy.local.attr.value "Value">
+<!ENTITY staff.copy.local.attr "Local Attributes">
+<!ENTITY staff.copy.local.attr.value "Value">
 <!ENTITY staff.copy.notes "Note">
-<!ENTITY staff.copy.notes.add "Add Note"> <!ENTITY staff.copy.notes.add.key "A">
+<!ENTITY staff.copy.notes.add "Add Note">
+<!ENTITY staff.copy.notes.add.key "A">
 <!ENTITY staff.copy.notes.date "Date">
-<!ENTITY staff.copy.notes.delete "Delete Note"> <!ENTITY staff.copy.notes.delete.key "D">
+<!ENTITY staff.copy.notes.delete "Delete Note">
+<!ENTITY staff.copy.notes.delete.key "D">
 <!ENTITY staff.copy.notes.from "From">
 <!ENTITY staff.copy.notes.opac "OPAC">
-<!ENTITY staff.copy.pines.attr "PINES Attributes"> <!ENTITY staff.copy.pines.attr.value "Value">
-<!ENTITY staff.copy.reload "Reload Copy"> <!ENTITY staff.copy.reload.key "R">
-<!ENTITY staff.copy.save "Save Copy"> <!ENTITY staff.copy.save.key "S">
+<!ENTITY staff.copy.pines.attr "PINES Attributes">
+<!ENTITY staff.copy.pines.attr.value "Value">
+<!ENTITY staff.copy.reload "Reload Copy">
+<!ENTITY staff.copy.reload.key "R">
+<!ENTITY staff.copy.save "Save Copy">
+<!ENTITY staff.copy.save.key "S">
 <!ENTITY staff.copy.title "Barcode goes here">
-<!ENTITY staff.copy.transfer "Transfer Copy"> <!ENTITY staff.copy.transfer.key "">
+<!ENTITY staff.copy.transfer "Transfer Copy">
+<!ENTITY staff.copy.transfer.key "">
 <!ENTITY staff.copy.wizard.title "Batch Add Copies Wizard">
 <!ENTITY staff.displaying.hits_per_page 'Results per page'>
 <!ENTITY staff.displaying.of 'of'>
@@ -348,60 +387,113 @@
 <!ENTITY staff.hold_capture_patron.name.label 'Patron Name'>
 <!ENTITY staff.hold_capture_patron.retrieve 'Retrieve Patron'>
 <!ENTITY staff.hold_capture_patron.retrieve.accesskey 'R'>
-<!ENTITY staff.main.menu.acquisitions.label "Acquisitions"><!ENTITY staff.main.menu.acquisitions.key "q">
-<!ENTITY staff.main.menu.admin.label "Admin"><!ENTITY staff.main.menu.admin.key "i">
-<!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record"><!ENTITY staff.main.menu.cat.add_bib.key "B">
-<!ENTITY staff.main.menu.cat.add_copy.label "Add Item"><!ENTITY staff.main.menu.cat.add_copy.key "I">
-<!ENTITY staff.main.menu.cat.add_volume.label "Add Volume"><!ENTITY staff.main.menu.cat.add_volume.key "V">
-<!ENTITY staff.main.menu.cat.bib_search.label "Search Catalog"><!ENTITY staff.main.menu.cat.bib_search.key "S">
-<!ENTITY staff.main.menu.cat.bib_status.label "Display Bib Record"><!ENTITY staff.main.menu.cat.bib_status.key "B">
-<!ENTITY staff.main.menu.cat.copy_status.label "Display Item"><!ENTITY staff.main.menu.cat.copy_status.key "I">
-<!ENTITY staff.main.menu.cat.dedup.label "Merge/Transfer Interface"><!ENTITY staff.main.menu.cat.dedup.key "M">
-<!ENTITY staff.main.menu.cat.label "Cataloging"><!ENTITY staff.main.menu.cat.key "a">
-<!ENTITY staff.main.menu.cat.volume_status.label "Display Volume"><!ENTITY staff.main.menu.cat.volume_status.key "V">
-<!ENTITY staff.main.menu.circ.checkin.label "Check In"><!ENTITY staff.main.menu.circ.checkin.key "C">
-<!ENTITY staff.main.menu.circ.checkout.label "Check Out"><!ENTITY staff.main.menu.circ.checkout.key "O">
-<!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'><!ENTITY staff.main.menu.circ.claimed_returned.key "C">
-<!ENTITY staff.main.menu.circ.copy_status.label "Display Item"><!ENTITY staff.main.menu.circ.copy_status.key "I">
-<!ENTITY staff.main.menu.circ.found.label "Mark Found"><!ENTITY staff.main.menu.circ.found.key "F">
-<!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds"><!ENTITY staff.main.menu.circ.hold_capture.key "H">
-<!ENTITY staff.main.menu.circ.label "Circulation"><!ENTITY staff.main.menu.circ.key "C">
-<!ENTITY staff.main.menu.circ.lost.label "Mark Lost"><!ENTITY staff.main.menu.circ.lost.key "L">
-<!ENTITY staff.main.menu.circ.mark_used.label "Mark Used"><!ENTITY staff.main.menu.circ.mark_used.key "U">
-<!ENTITY staff.main.menu.circ.missing.label "Mark Missing"><!ENTITY staff.main.menu.circ.missing.key "M">
-<!ENTITY staff.main.menu.circ.patron_registration.label "Register Patron"><!ENTITY staff.main.menu.circ.patron_registration.key "R">
-<!ENTITY staff.main.menu.circ.patron_status.label "Display Patron"><!ENTITY staff.main.menu.circ.patron_status.key "P">
-<!ENTITY staff.main.menu.circ.place_hold.label "Place Hold"><!ENTITY staff.main.menu.circ.place_hold.key "H">
-<!ENTITY staff.main.menu.circ.quick_add.label "Quick Add"><!ENTITY staff.main.menu.circ.quick_add.key "Q">
-<!ENTITY staff.main.menu.circ.renew.label "Renew"><!ENTITY staff.main.menu.circ.renew.key "n">
-<!ENTITY staff.main.menu.circ.special.label "Special Circulation"><!ENTITY staff.main.menu.circ.special.key "S">
-<!ENTITY staff.main.menu.edit.buckets.label "Manage Buckets"><!ENTITY staff.main.menu.edit.buckets.key "B">
-<!ENTITY staff.main.menu.edit.copy.label "Copy"><!ENTITY staff.main.menu.edit.copy.key "C">
-<!ENTITY staff.main.menu.edit.cut.label "Cut"><!ENTITY staff.main.menu.edit.cut.key "t">
-<!ENTITY staff.main.menu.edit.delete.label "Delete"><!ENTITY staff.main.menu.edit.delete.key "D">
-<!ENTITY staff.main.menu.edit.find.label "Find"><!ENTITY staff.main.menu.edit.find.key "F">
-<!ENTITY staff.main.menu.edit.find_again.label "Find Again"><!ENTITY staff.main.menu.edit.find_again.key "g">
-<!ENTITY staff.main.menu.edit.label "Edit"><!ENTITY staff.main.menu.edit.key "E">
-<!ENTITY staff.main.menu.edit.paste.label "Paste"><!ENTITY staff.main.menu.edit.paste.key "P">
-<!ENTITY staff.main.menu.edit.redo.label "Redo"><!ENTITY staff.main.menu.edit.redo.key "R">
-<!ENTITY staff.main.menu.edit.select_all.label "Select All"><!ENTITY staff.main.menu.edit.select_all.key "A">
-<!ENTITY staff.main.menu.edit.undo.label "Undo"><!ENTITY staff.main.menu.edit.undo.key "U">
-<!ENTITY staff.main.menu.entity.bib.label "Bib Records"><!ENTITY staff.main.menu.entity.bib.key "">
-<!ENTITY staff.main.menu.entity.copy.label "Items"><!ENTITY staff.main.menu.entity.copy.key "">
-<!ENTITY staff.main.menu.entity.patron.label "Patrons"><!ENTITY staff.main.menu.entity.patron.key "">
+<!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
+<!ENTITY staff.main.menu.acquisitions.key "q">
+<!ENTITY staff.main.menu.admin.label "Admin">
+<!ENTITY staff.main.menu.admin.key "i">
+<!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record">
+<!ENTITY staff.main.menu.cat.add_bib.key "B">
+<!ENTITY staff.main.menu.cat.add_copy.label "Add Item">
+<!ENTITY staff.main.menu.cat.add_copy.key "I">
+<!ENTITY staff.main.menu.cat.add_volume.label "Add Volume">
+<!ENTITY staff.main.menu.cat.add_volume.key "V">
+<!ENTITY staff.main.menu.cat.bib_search.label "Search Catalog">
+<!ENTITY staff.main.menu.cat.bib_search.key "S">
+<!ENTITY staff.main.menu.cat.bib_status.label "Display Bib Record">
+<!ENTITY staff.main.menu.cat.bib_status.key "B">
+<!ENTITY staff.main.menu.cat.copy_status.label "Display Item">
+<!ENTITY staff.main.menu.cat.copy_status.key "I">
+<!ENTITY staff.main.menu.cat.dedup.label "Merge/Transfer Interface">
+<!ENTITY staff.main.menu.cat.dedup.key "M">
+<!ENTITY staff.main.menu.cat.label "Cataloging">
+<!ENTITY staff.main.menu.cat.key "a">
+<!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
+<!ENTITY staff.main.menu.cat.volume_status.key "V">
+<!ENTITY staff.main.menu.circ.checkin.label "Check In">
+<!ENTITY staff.main.menu.circ.checkin.key "C">
+<!ENTITY staff.main.menu.circ.checkout.label "Check Out">
+<!ENTITY staff.main.menu.circ.checkout.key "O">
+<!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'>
+<!ENTITY staff.main.menu.circ.claimed_returned.key "C">
+<!ENTITY staff.main.menu.circ.copy_status.label "Display Item">
+<!ENTITY staff.main.menu.circ.copy_status.key "I">
+<!ENTITY staff.main.menu.circ.found.label "Mark Found">
+<!ENTITY staff.main.menu.circ.found.key "F">
+<!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds">
+<!ENTITY staff.main.menu.circ.hold_capture.key "H">
+<!ENTITY staff.main.menu.circ.label "Circulation">
+<!ENTITY staff.main.menu.circ.key "C">
+<!ENTITY staff.main.menu.circ.lost.label "Mark Lost">
+<!ENTITY staff.main.menu.circ.lost.key "L">
+<!ENTITY staff.main.menu.circ.mark_used.label "Mark Used">
+<!ENTITY staff.main.menu.circ.mark_used.key "U">
+<!ENTITY staff.main.menu.circ.missing.label "Mark Missing">
+<!ENTITY staff.main.menu.circ.missing.key "M">
+<!ENTITY staff.main.menu.circ.patron_registration.label "Register Patron">
+<!ENTITY staff.main.menu.circ.patron_registration.key "R">
+<!ENTITY staff.main.menu.circ.patron_status.label "Display Patron">
+<!ENTITY staff.main.menu.circ.patron_status.key "P">
+<!ENTITY staff.main.menu.circ.place_hold.label "Place Hold">
+<!ENTITY staff.main.menu.circ.place_hold.key "H">
+<!ENTITY staff.main.menu.circ.quick_add.label "Quick Add">
+<!ENTITY staff.main.menu.circ.quick_add.key "Q">
+<!ENTITY staff.main.menu.circ.renew.label "Renew">
+<!ENTITY staff.main.menu.circ.renew.key "n">
+<!ENTITY staff.main.menu.circ.special.label "Special Circulation">
+<!ENTITY staff.main.menu.circ.special.key "S">
+<!ENTITY staff.main.menu.edit.buckets.label "Manage Buckets">
+<!ENTITY staff.main.menu.edit.buckets.key "B">
+<!ENTITY staff.main.menu.edit.copy.label "Copy">
+<!ENTITY staff.main.menu.edit.copy.key "C">
+<!ENTITY staff.main.menu.edit.cut.label "Cut">
+<!ENTITY staff.main.menu.edit.cut.key "t">
+<!ENTITY staff.main.menu.edit.delete.label "Delete">
+<!ENTITY staff.main.menu.edit.delete.key "D">
+<!ENTITY staff.main.menu.edit.find.label "Find">
+<!ENTITY staff.main.menu.edit.find.key "F">
+<!ENTITY staff.main.menu.edit.find_again.label "Find Again">
+<!ENTITY staff.main.menu.edit.find_again.key "g">
+<!ENTITY staff.main.menu.edit.label "Edit">
+<!ENTITY staff.main.menu.edit.key "E">
+<!ENTITY staff.main.menu.edit.paste.label "Paste">
+<!ENTITY staff.main.menu.edit.paste.key "P">
+<!ENTITY staff.main.menu.edit.redo.label "Redo">
+<!ENTITY staff.main.menu.edit.redo.key "R">
+<!ENTITY staff.main.menu.edit.select_all.label "Select All">
+<!ENTITY staff.main.menu.edit.select_all.key "A">
+<!ENTITY staff.main.menu.edit.undo.label "Undo">
+<!ENTITY staff.main.menu.edit.undo.key "U">
+<!ENTITY staff.main.menu.entity.bib.label "Bib Records">
+<!ENTITY staff.main.menu.entity.bib.key "">
+<!ENTITY staff.main.menu.entity.copy.label "Items">
+<!ENTITY staff.main.menu.entity.copy.key "">
+<!ENTITY staff.main.menu.entity.patron.label "Patrons">
+<!ENTITY staff.main.menu.entity.patron.key "">
 <!ENTITY staff.main.menu.entity.patron.register.key "R">
-<!ENTITY staff.main.menu.entity.volume.label "Volumes"><!ENTITY staff.main.menu.entity.volume.key "">
-<!ENTITY staff.main.menu.file.close.label "Close Window"><!ENTITY staff.main.menu.file.close.key "C">
-<!ENTITY staff.main.menu.file.close_tab.label "Close Tab"><!ENTITY staff.main.menu.file.close_tab.key "">
-<!ENTITY staff.main.menu.file.label "File"><!ENTITY staff.main.menu.file.key "F">
-<!ENTITY staff.main.menu.file.new.label "New Window"><!ENTITY staff.main.menu.file.new.key "N">
-<!ENTITY staff.main.menu.file.new_tab.label "New Tab"><!ENTITY staff.main.menu.file.new_tab.key "T">
-<!ENTITY staff.main.menu.file.open.label "Open Session"><!ENTITY staff.main.menu.file.open.key "O">
-<!ENTITY staff.main.menu.file.save.label "Save Session"><!ENTITY staff.main.menu.file.save.key "S">
-<!ENTITY staff.main.menu.help.label "Help"><!ENTITY staff.main.menu.help.key "H">
-<!ENTITY staff.main.menu.reports.label "Reports"><!ENTITY staff.main.menu.reports.key "">
-<!ENTITY staff.main.menu.search.label "Search"><!ENTITY staff.main.menu.search.key "r">
-<!ENTITY staff.main.menu.serials.label "Serials"><!ENTITY staff.main.menu.serials.key "l">
+<!ENTITY staff.main.menu.entity.volume.label "Volumes">
+<!ENTITY staff.main.menu.entity.volume.key "">
+<!ENTITY staff.main.menu.file.close.label "Close Window">
+<!ENTITY staff.main.menu.file.close.key "C">
+<!ENTITY staff.main.menu.file.close_tab.label "Close Tab">
+<!ENTITY staff.main.menu.file.close_tab.key "">
+<!ENTITY staff.main.menu.file.label "File">
+<!ENTITY staff.main.menu.file.key "F">
+<!ENTITY staff.main.menu.file.new.label "New Window">
+<!ENTITY staff.main.menu.file.new.key "N">
+<!ENTITY staff.main.menu.file.new_tab.label "New Tab">
+<!ENTITY staff.main.menu.file.new_tab.key "T">
+<!ENTITY staff.main.menu.file.open.label "Open Session">
+<!ENTITY staff.main.menu.file.open.key "O">
+<!ENTITY staff.main.menu.file.save.label "Save Session">
+<!ENTITY staff.main.menu.file.save.key "S">
+<!ENTITY staff.main.menu.help.label "Help">
+<!ENTITY staff.main.menu.help.key "H">
+<!ENTITY staff.main.menu.reports.label "Reports">
+<!ENTITY staff.main.menu.reports.key "">
+<!ENTITY staff.main.menu.search.label "Search">
+<!ENTITY staff.main.menu.search.key "r">
+<!ENTITY staff.main.menu.serials.label "Serials">
+<!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.title "Evergreen Staff Client">
 <!ENTITY staff.marc.008.BKS.MAP.indx.desc "Index">
 <!ENTITY staff.marc.008.BKS.MAP.indx.field "008">
@@ -642,27 +734,47 @@
 <!ENTITY staff.marc.LDR.type.help "http://www.oclc.org/bibformats/en/fixedfield/type.shtm">
 <!ENTITY staff.marc.LDR.type.short "Type"> 
 <!ENTITY staff.marc.close.editor.key "W">
-<!ENTITY staff.marc.display "Display"> <!ENTITY staff.marc.display.key "D">
-<!ENTITY staff.marc.display.control_fields "Toggle Control/Data Fields"> <!ENTITY staff.marc.display.control_fields.key "F">
-<!ENTITY staff.marc.display.cover_art "Toggle Cover Art"> <!ENTITY staff.marc.display.cover_art.key "A">
-<!ENTITY staff.marc.display.explain "Explain Errors"> <!ENTITY staff.marc.display.explain.key "X">
-<!ENTITY staff.marc.display.fixed.BKS "Fixed Fields as BKS"> <!ENTITY staff.marc.display.fixed.BKS.key "B">
-<!ENTITY staff.marc.display.fixed.COM "Fixed Fields as COM"> <!ENTITY staff.marc.display.fixed.COM.key "O">
-<!ENTITY staff.marc.display.fixed.MAP "Fixed Fields as MAP"> <!ENTITY staff.marc.display.fixed.MAP.key "P">
-<!ENTITY staff.marc.display.fixed.MIX "Fixed Fields as MIX"> <!ENTITY staff.marc.display.fixed.MIX.key "M">
-<!ENTITY staff.marc.display.fixed.REC "Fixed Fields as REC"> <!ENTITY staff.marc.display.fixed.REC.key "R">
-<!ENTITY staff.marc.display.fixed.SCO "Fixed Fields as SCO"> <!ENTITY staff.marc.display.fixed.SCO.key "C">
-<!ENTITY staff.marc.display.fixed.SER "Fixed Fields as SER"> <!ENTITY staff.marc.display.fixed.SER.key "S">
-<!ENTITY staff.marc.display.fixed.VIS "Fixed Fields as VIS"> <!ENTITY staff.marc.display.fixed.VIS.key "V">
-<!ENTITY staff.marc.display.legend "Legend"> <!ENTITY staff.marc.display.legend.key "L">
-<!ENTITY staff.marc.display.meta_data "Toggle Meta Data"> <!ENTITY staff.marc.display.meta_data.key "E">
+<!ENTITY staff.marc.display "Display">
+<!ENTITY staff.marc.display.key "D">
+<!ENTITY staff.marc.display.control_fields "Toggle Control/Data Fields">
+<!ENTITY staff.marc.display.control_fields.key "F">
+<!ENTITY staff.marc.display.cover_art "Toggle Cover Art">
+<!ENTITY staff.marc.display.cover_art.key "A">
+<!ENTITY staff.marc.display.explain "Explain Errors">
+<!ENTITY staff.marc.display.explain.key "X">
+<!ENTITY staff.marc.display.fixed.BKS "Fixed Fields as BKS">
+<!ENTITY staff.marc.display.fixed.BKS.key "B">
+<!ENTITY staff.marc.display.fixed.COM "Fixed Fields as COM">
+<!ENTITY staff.marc.display.fixed.COM.key "O">
+<!ENTITY staff.marc.display.fixed.MAP "Fixed Fields as MAP">
+<!ENTITY staff.marc.display.fixed.MAP.key "P">
+<!ENTITY staff.marc.display.fixed.MIX "Fixed Fields as MIX">
+<!ENTITY staff.marc.display.fixed.MIX.key "M">
+<!ENTITY staff.marc.display.fixed.REC "Fixed Fields as REC">
+<!ENTITY staff.marc.display.fixed.REC.key "R">
+<!ENTITY staff.marc.display.fixed.SCO "Fixed Fields as SCO">
+<!ENTITY staff.marc.display.fixed.SCO.key "C">
+<!ENTITY staff.marc.display.fixed.SER "Fixed Fields as SER">
+<!ENTITY staff.marc.display.fixed.SER.key "S">
+<!ENTITY staff.marc.display.fixed.VIS "Fixed Fields as VIS">
+<!ENTITY staff.marc.display.fixed.VIS.key "V">
+<!ENTITY staff.marc.display.legend "Legend">
+<!ENTITY staff.marc.display.legend.key "L">
+<!ENTITY staff.marc.display.meta_data "Toggle Meta Data">
+<!ENTITY staff.marc.display.meta_data.key "E">
 <!ENTITY staff.marc.editor.keys.help "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;">
-<!ENTITY staff.marc.file "MARC"> <!ENTITY staff.marc.file.key "M">
-<!ENTITY staff.marc.file.close "Close Editor"> <!ENTITY staff.marc.file.close.key "C">
-<!ENTITY staff.marc.file.export "Export"> <!ENTITY staff.marc.file.export.key "E">
-<!ENTITY staff.marc.file.publish "Save (to DB)"> <!ENTITY staff.marc.file.publish.key "S">
-<!ENTITY staff.marc.file.reload "Reload"> <!ENTITY staff.marc.file.reload.key "R">
-<!ENTITY staff.marc.file.validate "Validate"> <!ENTITY staff.marc.file.validate.key "V">
+<!ENTITY staff.marc.file "MARC">
+<!ENTITY staff.marc.file.key "M">
+<!ENTITY staff.marc.file.close "Close Editor">
+<!ENTITY staff.marc.file.close.key "C">
+<!ENTITY staff.marc.file.export "Export">
+<!ENTITY staff.marc.file.export.key "E">
+<!ENTITY staff.marc.file.publish "Save (to DB)">
+<!ENTITY staff.marc.file.publish.key "S">
+<!ENTITY staff.marc.file.reload "Reload">
+<!ENTITY staff.marc.file.reload.key "R">
+<!ENTITY staff.marc.file.validate "Validate">
+<!ENTITY staff.marc.file.validate.key "V">
 <!ENTITY staff.marc.groupbox.control "Control Fields">
 <!ENTITY staff.marc.groupbox.cover "Cover Art">
 <!ENTITY staff.marc.groupbox.data "Data Fields">
