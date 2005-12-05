@@ -52,8 +52,11 @@ patron.display.prototype = {
 				['render'],
 				function(e) {
 					return function() { 
+						JSAN.use('util.money');
 						e.setAttribute('value',
-							obj.patron.credit_forward_balance()
+							util.money.cents_as_dollars(
+								obj.patron.credit_forward_balance()
+							)
 						);
 					};
 				}
@@ -64,6 +67,7 @@ patron.display.prototype = {
 					return function() { 
 						JSAN.use('util.money');
         					var total = 0;
+						//FIXME//adjust when .bills becomes a virtual field
 					        for (var i = 0; i < obj.patron.bills.length; i++) {
 					                total += util.money.dollars_float_to_cents_integer( 
 								obj.patron.bills[i].balance_owed() 
@@ -78,19 +82,39 @@ patron.display.prototype = {
 			'patron_checkouts' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.checkouts.length	
+						);
+					};
 				}
 			],
 			'patron_overdue' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						//FIXME//Get Bill to do this correctly on server side
+						JSAN.use('util.date');
+						var total = 0;
+						for (var i = 0; i < obj.patron.checkouts().length; i++) {
+							var item = obj.patron.checkouts()[i];
+							var due_date = item.circ.due_date();
+							due_date = due_date.substr(0,4) 
+								+ due_date.substr(5,2) + due_date.substr(8,2);
+							var today = util.date.formatted_date( new Date() , '%Y%m%d' );
+							if (today > due_date) total++;
+						}
+					};
 				}
 			],
 			'patron_holds' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.hold_requests.length
+						);
+					};
 				}
 			],
 			'patron_holds_available' : [
@@ -321,6 +345,25 @@ patron.display.prototype = {
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.checkouts( checkouts );
+					} catch(E) {
+						var error = ('patron.display.retrieve : ' + js2JSON(E));
+						obj.error.sdump('D_ERROR',error);
+						alert(error);
+						//FIXME// abort the chain
+					}
+				}
+			);
+
+			// Retrieve the holds
+			chain.push(
+				function() {
+					try {
+						var holds = obj.network.request(
+							'open-ils.circ',
+							'open-ils.circ.holds.retrieve',
+							[ obj.session, obj.patron.id() ]
+						);
+						obj.patron.hold_requests( holds );
 					} catch(E) {
 						var error = ('patron.display.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);
