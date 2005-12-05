@@ -148,7 +148,7 @@ circ.checkout.prototype = {
 									[ obj.session, barcode, obj.patron_id, 0 ]
 								);
 
-								if (permit.status = 0) {
+								if (permit.status == 0) {
 									var checkout = obj.network.request(
 										'open-ils.circ',
 										'open-ils.circ.checkout.barcode',
