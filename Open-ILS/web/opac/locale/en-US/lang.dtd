@@ -2,6 +2,10 @@
 		Shared Entites
 		======================================================================================= -->
 
+<!ENTITY lang.version "remote v1">
+<!ENTITY lang.description "English">
+<!ENTITY lang.author "PINES">
+
 <!ENTITY common.title "Title">
 <!ENTITY common.author "Author">
 <!ENTITY common.subject "Subject">
