@@ -277,8 +277,12 @@ int handle_login( char* words[]) {
 
 		parse_request( buf2 );
 
-		char* x = jsonObjectGetString(last_result->_result_content);
-		if(x) login_session = strdup(x);
+		jsonObject* x = last_result->_result_content;
+		if(x) {
+			char* authtoken = jsonObjectGetString(jsonObjectGetKey(x, "authtoken"));
+			if(authtoken) login_session = strdup(authtoken);
+			else login_session = NULL;
+		}
 		else login_session = NULL;
 
 		printf("Login Session: %s\n", login_session );

@@ -34,6 +34,7 @@
 							<xi:include href="searchbar.xml"/>
 							<xi:include href="statusbar.xml"/>
 							<xi:include href="altcanvas.xml"/>
+							<xi:include href="ilsevents.xml"/> 
 
 							<div id='canvas_main'>
 

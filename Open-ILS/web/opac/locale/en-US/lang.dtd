@@ -23,7 +23,7 @@
 <!--	======================================================================================= 
 		ILS Events
 		======================================================================================= -->
-<!ENTITY ilsevent.1000 "Login failed">
+<!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 
 
 

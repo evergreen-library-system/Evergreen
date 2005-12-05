@@ -468,13 +468,13 @@ sub initialize {
 	# --- 5 tries to connect to the jabber server
 	my $socket;
 	for(1..5) {
-		$logger->transport( "$jid: Attempting to connect to server...$host:$port (Try # $_)", WARN );
 		$socket = $sock_type->new( PeerHost => $host,
 					   PeerPort => $port,
 					   Peer => $port,
 					   Proto    => 'tcp' );
-		$logger->transport( "$jid: $_ connect attempt to $host:$port", WARN );
+		$logger->debug( "$jid: $_ connect attempt to $host:$port");
 		last if ( $socket and $socket->connected );
+		$logger->warn( "$jid: Failed to connect to server...$host:$port (Try # $_)");
 		sleep 3;
 	}
 

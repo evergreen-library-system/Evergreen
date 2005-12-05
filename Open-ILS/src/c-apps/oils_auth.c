@@ -3,9 +3,9 @@
 #include "objson/object.h"
 #include "opensrf/log.h"
 #include "oils_utils.h"
+#include "oils_constants.h"
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
-
 
 #define MODULENAME "open-ils.auth"
 
@@ -94,6 +94,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	if( uname && password ) {
 
+		jsonObject* response = jsonParseString("{\"ilsevent\":0}");
+
 		/* grab the user object from storage */
 		osrfLogDebug( "oilsAuth calling method %s with username %s", storageMethod, uname );
 
@@ -124,8 +126,16 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		if(!userObj) { /* XXX needs to be a 'friendly' exception */
 			osrfMessageFree(omsg);
 			osrfAppSessionFree(session);
+			jsonObjectSetKey(response, OILS_ILS_EVENT, 
+						jsonNewNumberObject(OILS_ILS_EVENT_AUTH_FAILED));
+			osrfAppRespondComplete( ctx, response ); 
+			jsonObjectFree(response);
+			return 0;
+
+			/*
 			return osrfAppRequestRespondException( ctx->session, 
 					ctx->request, "User %s not found in the database", uname );
+					*/
 		}
 
 		char* realPassword = oilsFMGetString( userObj, "passwd" ); /**/
@@ -145,11 +155,11 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		osrfLogDebug( "oilsAuth generated masked password %s. "
 				"Testing against provided password %s", maskedPw, password );
 
-		jsonObject* response;
 
 		if( !strcmp( maskedPw, password ) ) {
 
-			osrfLogInfo( "Login successful for %s", uname );
+			osrfLogActivity( "User %s successfully logged in", uname );
+
 			char* string = va_list_to_string( "%d.%d.%s", getpid(), time(NULL), uname ); /**/
 			char* authToken = md5sum(string); /**/
 			char* authKey = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
@@ -158,13 +168,15 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			oilsFMSetString( userObj, "passwd", "" );
 			osrfCachePutObject( authKey, userObj, 28800 ); /* XXX config value */
 			osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
-			response = jsonNewObject( authToken );
+		//	response = jsonNewObject( authToken );
+			jsonObjectSetKey( response, "authtoken", jsonNewObject(authToken) );	
 			free(string); free(authToken); free(authKey);
 
 		} else {
 
+			jsonObjectSetKey(response, OILS_ILS_EVENT, 
+						jsonNewNumberObject(OILS_ILS_EVENT_AUTH_FAILED));
 			osrfLogInfo( "Login failed for for %s", uname );
-			response = jsonNewNumberObject(0);
 		}
 
 		osrfLogInternal("oilsAuthComplete responding to client");
