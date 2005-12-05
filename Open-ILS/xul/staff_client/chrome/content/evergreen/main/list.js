@@ -39,6 +39,9 @@ main.list.prototype = {
 					treecol.setAttribute(j,this.columns[i][j]);
 				}
 				treecols.appendChild(treecol);
+				var splitter = document.createElement('splitter');
+				splitter.setAttribute('class','tree-splitter');
+				treecols.appendChild(splitter);
 			}
 
 			var treechildren = document.createElement('treechildren');
