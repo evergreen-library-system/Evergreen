@@ -4,23 +4,9 @@ if (typeof util == 'undefined') var util = {};
 util.date = {};
 
 util.date.EXPORT_OK	= [ 
-	'dollars_float_to_cents_integer', 'cents_as_dollars'
+	'timer_init', 'timer_elapsed', 'db_date2Date', 'formatted_date', 'interval_to_seconds'
 ];
 util.date.EXPORT_TAGS	= { ':all' : util.date.EXPORT_OK };
-
-util.date.cents_as_dollars = function( cents ) {
-	cents = cents.toString(); 
-	// FIXME: strip miscellaneous characters
-	try {
-		switch( cents.length ) {
-			case 0: cents = '000'; break;
-			case 1: cents = '00' + cents; break;
-		}
-	} catch(E) {
-		dump("util.date: cents_as_dollars: cents.length? " + E + "\n");
-	}
-	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
-}
 
 util.date.timer_init = function (id) {
 	if (typeof util.date.timer_init.prototype.timer == 'undefined') {
