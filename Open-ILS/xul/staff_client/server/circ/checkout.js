@@ -155,14 +155,16 @@ circ.checkout.prototype = {
 										[ obj.session, barcode, obj.patron_id ]
 									);
 									obj.list.append(
-										'row' : {
-											'my' : {
+										{
+											'row' : {
+												'my' : {
 												'circ' : checkout.circ,
 												'mvr' : checkout.record,
 												'acp' : checkout.copy
+												}
 											}
-										}
 										//I could override map_row_to_col here
+										}
 									);
 
 								} else {
