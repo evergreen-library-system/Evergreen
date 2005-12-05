@@ -31,8 +31,16 @@ patron.display.prototype = {
 				['render'],
 				function(e) {
 					return function() { 
-						e.setAttribute('value',obj.patron.family_name() + ', ' 
-							+ obj.patron.first_given_name());
+						e.setAttribute('value',
+							obj.patron.family_name() + ', ' + obj.patron.first_given_name()
+						);
+						e.setAttribute('style','background-color: lime');
+						//FIXME//bills should become a virtual field
+						if (obj.patron.bills.length > 0)
+							e.setAttribute('style','background-color: yellow');
+						if (obj.patron.standing() == 2)
+							e.setAttribute('style','background-color: lightred');
+
 					};
 				}
 			],
@@ -44,6 +52,18 @@ patron.display.prototype = {
 							obj.OpenILS.data.hash.pgt[
 								obj.patron.profile()
 							].name()
+						);
+					};
+				}
+			],
+			'patron_standing' : [
+				['render'],
+				function(e) {
+					return function() {
+						e.setAttribute('value',
+							obj.OpenILS.data.hash.cst[
+								obj.patron.standing()
+							].value()
 						);
 					};
 				}
@@ -148,121 +168,245 @@ patron.display.prototype = {
 			'patron_ident_type_1' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						var ident_string = '';
+						var ident = obj.OpenILS.data.hash.cit[
+							obj.patron.ident_type()
+						];
+						if (ident) ident_string = ident.name()
+						e.setAttribute('value',
+							ident_string
+						);
+					};
 				}
 			],
 			'patron_ident_value_1' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.ident_value()
+						);
+					};
 				}
 			],
 			'patron_ident_type_2' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						var ident_string = '';
+						var ident = obj.OpenILS.data.hash.cit[
+							obj.patron.ident_type2()
+						];
+						if (ident) ident_string = ident.name()
+						e.setAttribute('value',
+							ident_string
+						);
+					};
+				}
+			],
+			'patron_ident_value_2' : [
+				['render'],
+				function(e) {
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.ident_value2()
+						);
+					};
 				}
 			],
 			'patron_date_of_birth' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.dob()
+						);
+					};
 				}
 			],
 			'patron_day_phone' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.day_phone()
+						);
+					};
 				}
 			],
 			'patron_evening_phone' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.evening_phone()
+						);
+					};
 				}
 			],
 			'patron_other_phone' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.other_phone()
+						);
+					};
 				}
 			],
 			'patron_email' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.email()
+						);
+					};
 				}
 			],
 			'patron_photo_url' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('src',
+							obj.patron.photo_url()
+						);
+					};
 				}
 			],
 			'patron_library' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.OpenILS.data.hash.aou[
+								obj.patron.home_ou()
+							].shortname()
+						);
+						e.setAttribute('tooltiptext',
+							obj.OpenILS.data.hash.aou[
+								obj.patron.home_ou()
+							].name()
+						);
+					};
+				}
+			],
+			'patron_last_library' : [
+				['render'],
+				function(e) {
+					return function() { 
+						e.setAttribute('value',
+							obj.OpenILS.data.hash.aou[
+								obj.patron.home_ou()
+							].shortname()
+						);
+						e.setAttribute('tooltiptext',
+							obj.OpenILS.data.hash.aou[
+								obj.patron.home_ou()
+							].name()
+						);
+					};
 				}
 			],
 			'patron_mailing_address_street1' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.mailing_address().street1()
+						);
+					};
 				}
 			],
 			'patron_mailing_address_street2' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.mailing_address().street2()
+						);
+					};
 				}
 			],
 			'patron_mailing_address_city' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.mailing_address().city()
+						);
+					};
 				}
 			],
 			'patron_mailing_address_state' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.mailing_address().state()
+						);
+					};
 				}
 			],
 			'patron_mailing_address_post_code' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.mailing_address().post_code()
+						);
+					};
 				}
 			],
 			'patron_physical_address_street1' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.billing_address().street1()
+						);
+					};
 				}
 			],
 			'patron_physical_address_street2' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.billing_address().street2()
+						);
+					};
 				}
 			],
 			'patron_physical_address_city' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.billing_address().city()
+						);
+					};
 				}
 			],
 			'patron_physical_address_state' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.billing_address().state()
+						);
+					};
 				}
 			],
 			'patron_physical_address_post_code' : [
 				['render'],
 				function(e) {
-					return function() { };
+					return function() { 
+						e.setAttribute('value',
+							obj.patron.billing_address().post_code()
+						);
+					};
 				}
 			]
 		};
@@ -411,7 +555,6 @@ patron.display.prototype = {
 			} catch(E) {
 				var error = 'Problem in patron.display.render with\n' + this.render_list[i] + '\n\n' + js2JSON(E);
 				this.error.sdump('D_ERROR',error);
-				alert(error);
 			}
 		}
 	}

@@ -26,8 +26,8 @@
 </deck>
 
 <hbox id="PatronNavBar">
-	<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" />
-	<spacer id="PatronNavBar_spacer" flex="1" />
+	<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" 
+		value="Retrieving..." flex="1"/>
 	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
 		label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
 	<button id="PatronNavBar_checkout" command="cmd_patron_checkout"
@@ -50,7 +50,6 @@
 
 <groupbox id="PatronDisplayStatus_groupbox" orient="vertical">
 	<caption label="&staff.patron_display.status.caption;"/>
-	<label id="patron_library" tooltiptext="&staff.patron_display.home_ou.label;" />
 	<grid id="PatronDisplayStatus_grid" flex="1"/>
 </groupbox>
 
@@ -62,7 +61,7 @@
 		<column id="pdsgc4" />
 	</columns>
 	<rows id="pdsgr" flex="1">
-		<row id="pdsgr1" render="true" fm_class="au" render_css_style="patron_get_standing_css_style($$.standing())">
+		<row id="pdsgr1">
 			<label id="PatronDisplayStatus_profile_label" class="text_right"
 				value="&staff.patron_display.profile.label;" />
 			<label id="patron_profile" />
@@ -94,6 +93,13 @@
 				value="&staff.patron_display.holds_available.label;" />
 			<label id="patron_holds_available" />
 		</row>
+		<row id="pdsgr5">
+			<label id="pdsgr5l1" class="text_right" value="Home Lib:" />
+			<label id="patron_library" />
+			<label id="pdsgr5l2" class="text_right" value="Last Lib:" />
+			<label id="patron_last_library" />
+		</row>
+
 	</rows>
 </grid>
 
