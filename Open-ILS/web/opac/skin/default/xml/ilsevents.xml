@@ -1,6 +1,6 @@
 <span class='hide_me'>
 	<span id='ilsevent.1000'>&ilsevent.1000;</span>
 	<span id='ilsevent.5000'>&ilsevent.5000;</span>
-	<span id='ilsperm.CREATE_HOLD'>&ilperm.CREATE_HOLD;</span>
+	<span id='ilsperm.CREATE_HOLD'>&ilsperm.CREATE_HOLD;</span>
 </span>
 
