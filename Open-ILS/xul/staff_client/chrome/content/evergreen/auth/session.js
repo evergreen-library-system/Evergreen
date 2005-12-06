@@ -38,7 +38,7 @@ auth.session.prototype = {
 				);
 
 				if (robj.ilsevent == 0) {
-					this.key = robj.authtoken;
+					this.key = robj.payload;
 				} else {
 					var error = robj.ilsevent + ' : ' + this.error.get_ilsevent( robj.ilsevent );
 					this.error.sdump('D_AUTH','auth.session.init: ' + error + '\n');
