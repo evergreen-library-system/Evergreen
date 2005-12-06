@@ -392,19 +392,9 @@ function doLogin() {
    var auth_result = auth_request.result();
 
 	var code = checkILSEvent(auth_result);
-	if(code) {
-		alertILSEvent(code);
-		return null;
-	}
+	if(code) { alertILSEvent(code); return null; }
 
-	/*
-   if(auth_result == '0' || auth_result == null || auth_result.length == 0) { 
-		alert("Login failed");
-		return false; 
-	}
-	*/
-
-	var u = grabUser(auth_result.authtoken, true);
+	var u = grabUser(auth_result.payload, true);
 	if(u) runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
 
 	checkUserSkin();
