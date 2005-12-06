@@ -54,26 +54,28 @@ export PATH="$PREFIX/bin:$PATH";
 
 function fail { echo "$0 exited: $*"; exit 99; }
 
-function usage { echo "$0 [ start | stop | restart ]"; }
+function usage { echo "$0 [ start | stop | restart | restartforce ]"; }
 
 
 function startJserver {
 
 	ACTIVE=$(netstat -an | grep $JSERVERPORT);
 	
-	if [ ! -z "$ACTIVE" ]; then
-
-		echo "Port $JSERVERPORT is busy. Waiting 60 seconds for the port to clear up..."
-
-		for ((i=0; i!= 60; i++)) {
+	if [ -z "$1" ]; then
+		if [ ! -z "$ACTIVE" ]; then
+	
+			echo "Port $JSERVERPORT is busy. Waiting 60 seconds for the port to clear up..."
+	
+			for ((i=0; i!= 60; i++)) {
+				ACTIVE=$(netstat -an | grep $JSERVERPORT);
+				[ -z "$ACTIVE" ] && break; 
+				echo -n "+";
+				sleep 1;
+			}
+			echo "";
 			ACTIVE=$(netstat -an | grep $JSERVERPORT);
-			[ -z "$ACTIVE" ] && break; 
-			echo -n "+";
-			sleep 1;
-		}
-		echo "";
-		ACTIVE=$(netstat -an | grep $JSERVERPORT);
-		[ ! -z "$ACTIVE" ] && fail "Port $JSERVERPORT is busy...exiting";
+			[ ! -z "$ACTIVE" ] && fail "Port $JSERVERPORT is busy...exiting";
+		fi;
 	fi;
 	
 	"$BINDIR/$JSERVERBIN" "$ETCDIR/opensrf_core.xml" "chopchop"; 
@@ -103,7 +105,7 @@ function makeMeGo {
 	
 	if [ ! -z "$JSERVER" ]; then
 		echo "Starting Chop Chop, Jabber (jserver-c)...";
-		startJserver;
+		startJserver $1;
 		echo "Chop Chop started OK";
 	fi
 
@@ -148,6 +150,7 @@ function stopMe {
 
 [ "$1" = "stop" ] && stopMe && exit;
 [ "$1" = "restart" ] && stopMe && makeMeGo && exit;
+[ "$1" = "restartforce" ] && stopMe && makeMeGo 1 && exit;
 [ "$1" = "start" ] && makeMeGo && exit;
 
 
