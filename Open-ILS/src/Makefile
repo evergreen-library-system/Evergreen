@@ -74,6 +74,8 @@ perl-install:
 	@echo $@
 	@echo "Installing Perl modules to $(PERLDIR)"
 	mkdir -p $(PERLDIR)
+	mkdir -p $(DATADIR)
+	cp extras/ils_events.xml $(DATADIR)
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/openils.xml.example $(ETCDIR)
 	mkdir -p $(TEMPLATEDIR)
