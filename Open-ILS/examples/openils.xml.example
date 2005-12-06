@@ -26,6 +26,7 @@ For non-core config info, see the inline documentation within this file
 		<!-- script for exception strings -->
 		<ex_script>/openils/var/templates/strings/ex.ttk</ex_script>
 		<perm_script>/openils/var/templates/strings/perm.ttk</perm_script>
+		<ils_events>/openils/var/data/ils_events.xml</ils_events>
 
 		<z3950>
 

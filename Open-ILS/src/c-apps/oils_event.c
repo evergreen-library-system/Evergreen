@@ -1,6 +1,7 @@
 #include "oils_event.h"
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include "opensrf/osrf_settings.h"
 
 osrfHash* __oilsEventEvents = NULL;
 
@@ -75,9 +76,10 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 
 void _oilsEventParseEvents() {
 	
-	char* xml = "/openils/var/data/ils_events.xml"; /* get me from the settings client */
+	char* xml = osrf_settings_host_value("/ils_events");
 
 	xmlDocPtr doc = xmlParseFile(xml);
+	free(xml);
 	int success = 0;
 	__oilsEventEvents = osrfNewHash();
 
@@ -85,7 +87,6 @@ void _oilsEventParseEvents() {
 		xmlNodePtr root = xmlDocGetRootElement(doc);
 		if( root ) {
 			xmlNodePtr child = root->children;
-			//osrfLogDebug("Node Name: %s", child->name);
 			while( child ) {
 				if( !strcmp((char*) child->name, "event") ) {
 					xmlChar* code = xmlGetProp( child, BAD_CAST "code");
