@@ -37,13 +37,14 @@
 				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
 
 				g.cgi = new CGI();
+				var session = g.cgi.param('session');
 
 				var tb = document.getElementById('barcode_tb');
 				tb.addEventListener(
 					'keypress',
 					function(ev) {
 						if (ev.keyCode == 13 || ev.keyCode == 77) {
-							spawn(g.cgi.param('session'));
+							spawn(session);
 						}
 					},
 					false
