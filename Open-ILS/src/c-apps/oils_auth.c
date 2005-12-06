@@ -29,7 +29,7 @@ int osrfAppInitialize() {
 		"open-ils.auth.authenticate.complete", 
 		"oilsAuthComplete", 
 		"Completes the authentication process and returns the auth token "
-		"PARAMS(username, md5sum( seed + password ) )", 2, 0 );
+		"PARAMS(username, md5sum( seed + password ), type )", 2, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
@@ -90,55 +90,46 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	char* uname = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 0));
 	char* password = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
-	char* storageMethod = "open-ils.storage.direct.actor.user.search.usrname.atomic";
-	osrfMessage* omsg = NULL;
+	char* type		= jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
+	if(!type) type = "staff";
 
 	if( uname && password ) {
 
 		oilsEvent* response = NULL;
-
-		/* grab the user object from storage */
-		osrfLogDebug( "oilsAuth calling method %s with username %s", storageMethod, uname );
-
-		osrfAppSession* session = osrfAppSessionClientInit( "open-ils.storage" ); /**/
-		jsonObject* params = jsonParseString("[\"%s\"]", uname);
-		int reqid = osrfAppSessionMakeRequest( session, params, storageMethod, 1, NULL );
-		jsonObjectFree(params);
-		osrfLogInternal("oilsAuth waiting from response from storage...");
-		omsg = osrfAppSessionRequestRecv( session, reqid, 60 ); /**/
-		osrfLogInternal("oilsAuth storage request returned");
-
-		if(!omsg) { 
-			osrfAppSessionFree(session);
-			return osrfAppRequestRespondException( ctx->session, ctx->request,
-				"No response from storage server for method %s", storageMethod ); 
-		}
-
-		jsonObject* userObj = osrfMessageGetResult(omsg);
-
-		char* _j = jsonObjectToJSON(userObj);
-		osrfLogDebug( "Auth received user object from storage: %s", _j );
-		free(_j);
-
-		/* the method is atomic, grab the first user we receive */
-		if( userObj ) userObj = jsonObjectGetIndex(userObj, 0);
+		jsonObject* userObj = oilsUtilsFetchUserByUsername( uname ); /* XXX */
 		
-		if(!userObj) { /* XXX needs to be a 'friendly' exception */
-			osrfMessageFree(omsg);
-			osrfAppSessionFree(session);
+		if(!userObj) { 
 			response = oilsNewEvent( OILS_EVENT_AUTH_FAILED );
 			osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 			oilsEventFree(response);
 			return 0;
-
 		}
+
+		/* check to see if the user is allowed to login */
+		oilsEvent* perm = NULL;
+
+		if(!strcmp(type, "opac")) {
+			char* permissions[] = { "OPAC_LOGIN" };
+			perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
+
+		} else if(!strcmp(type, "staff")) {
+			char* permissions[] = { "STAFF_LOGIN" };
+			perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
+		}
+
+		if(perm) {
+			jsonObjectFree(userObj);
+			osrfAppRespondComplete( ctx, oilsEventToJSON(perm) ); 
+			oilsEventFree(perm);
+			return 0;
+		}
+
+
 
 		char* realPassword = oilsFMGetString( userObj, "passwd" ); /**/
 		char* seed = osrfCacheGetString( "%s%s", OILS_AUTH_CACHE_PRFX, uname ); /**/
 
 		if(!seed) {
-			osrfMessageFree(omsg);
-			osrfAppSessionFree(session);
 			return osrfAppRequestRespondException( ctx->session,
 				ctx->request, "No authentication seed found. "
 				"open-ils.auth.authenticate.init must be called first");
@@ -165,6 +156,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
 			response = oilsNewEvent2( OILS_EVENT_SUCCESS, jsonNewObject(authToken) );
 			free(string); free(authToken); free(authKey);
+			jsonObjectFree(userObj);
 
 		} else {
 
@@ -175,8 +167,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		osrfLogInternal("oilsAuthComplete responding to client");
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
-		osrfMessageFree(omsg);
-		osrfAppSessionFree(session);
 
 	} else {
 		return osrfAppRequestRespondException( ctx->session, ctx->request, 

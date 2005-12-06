@@ -1,6 +1,9 @@
 #include "objson/object.h"
 #include "opensrf/log.h"
 #include "openils/fieldmapper_lookup.h"
+#include "oils_event.h"
+#include "oils_constants.h"
+#include "opensrf/osrf_app_session.h"
 
 /**
   Returns the string value for field 'field' in the given object.
@@ -32,3 +35,32 @@ jsonObject* oilsFMGetObject( jsonObject* object, char* field );
   @return 0 if the field was updated successfully, -1 on error
   */
 int oilsFMSetString( jsonObject* object, char* field, char* string );
+
+/**
+ * Returns the data stored in the id field of the object if it exists
+ * returns -1 if the id field or the id value is not found
+ */
+long oilsFMGetObjectId( jsonObject* obj );
+
+
+/**
+ * Checks if the user has each permission at the given org unit
+ * Passing in a -1 for the orgid means to use the top level org unit
+ * The first permission that fails causes the corresponding permission
+ * failure event to be returned
+ * returns NULL if all permissions succeed
+ */
+oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int size );
+
+
+/**
+ * Performs a single request and returns the resulting data
+ * Caller is responsible for freeing the returned response object
+ */
+jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params );
+
+/**
+ * Searches the storage server for a user with the given username 
+ * Caller is responsible for freeing the returned object
+ */
+jsonObject* oilsUtilsFetchUserByUsername( char* name );

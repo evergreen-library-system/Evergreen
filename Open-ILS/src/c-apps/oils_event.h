@@ -1,3 +1,5 @@
+#ifndef OILS_EVENT_HEADER
+#define OILS_EVENT_HEADER
 #include "objson/object.h"
 #include "opensrf/utils.h"
 #include "opensrf/log.h"
@@ -48,3 +50,4 @@ void oilsEventFree( oilsEvent* event );
 
 
 
+#endif
