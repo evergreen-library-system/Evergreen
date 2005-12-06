@@ -7,7 +7,7 @@ circ.checkout = function (params) {
 	JSAN.use('main.network'); this.network = new main.network();
 
 	JSAN.use('OpenILS.data'); this.OpenILS = {};
-	obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init(true);
+	this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init(true);
 }
 
 circ.checkout.prototype = {
