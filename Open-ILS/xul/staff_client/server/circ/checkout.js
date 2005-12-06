@@ -165,6 +165,9 @@ circ.checkout.prototype = {
 										//I could override map_row_to_column here
 										}
 									);
+									if (typeof obj.on_checkout == 'function') {
+										obj.on_checkout();
+									}
 
 								} else {
 									throw(permit.text);
@@ -194,6 +197,11 @@ circ.checkout.prototype = {
 			}
 		);
 
+	},
+
+	'on_checkout' : function() {
+		this.controller.view.checkout_barcode_entry_textbox.value = '';
+		this.controller.view.checkout_barcode_entry_textbox.focus();
 	}
 }
 
