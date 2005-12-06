@@ -279,7 +279,7 @@ int handle_login( char* words[]) {
 
 		jsonObject* x = last_result->_result_content;
 		if(x) {
-			char* authtoken = jsonObjectGetString(jsonObjectGetKey(x, "authtoken"));
+			char* authtoken = jsonObjectGetString(jsonObjectGetKey(x,"payload"));
 			if(authtoken) login_session = strdup(authtoken);
 			else login_session = NULL;
 		}

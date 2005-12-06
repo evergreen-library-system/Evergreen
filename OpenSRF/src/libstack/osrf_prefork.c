@@ -109,7 +109,7 @@ void osrf_prefork_register_routers( char* appname ) {
 void prefork_child_init_hook(prefork_child* child) {
 
 	if(!child) return;
-	osrfLogInfo("Child init hook for child %d", child->pid);
+	osrfLogDebug("Child init hook for child %d", child->pid);
 	char* resc = va_list_to_string("%s_drone",child->appname);
 
 	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) {
@@ -186,7 +186,7 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 		return NULL;
 	}
 
-	osrfLogDebug( "Pipes: %d %d %d %d", data_fd[0], data_fd[1], status_fd[0], status_fd[1] );
+	osrfLogInternal( "Pipes: %d %d %d %d", data_fd[0], data_fd[1], status_fd[0], status_fd[1] );
 	prefork_child* child = prefork_child_init( forker->max_requests, data_fd[0], 
 			data_fd[1], status_fd[0], status_fd[1] );
 
@@ -206,7 +206,7 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 		(forker->current_num_children)++;
 		child->pid = pid;
 
-		osrfLogInfo( "Parent launched %d", pid );
+		osrfLogDebug( "Parent launched %d", pid );
 		/* *no* child pipe FD's can be closed or the parent will re-use fd's that
 			the children are currently using */
 		return child;
@@ -214,7 +214,7 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 
 	else { /* child */
 
-		osrfLogDebug("I am  new child with read_data_fd = %d and write_status_fd = %d",
+		osrfLogInternal("I am  new child with read_data_fd = %d and write_status_fd = %d",
 			child->read_data_fd, child->write_status_fd );
 
 		child->pid = getpid();
@@ -295,18 +295,18 @@ void prefork_run(prefork_simple* forker) {
 			/* Look for an available child */
 			for( k = 0; k < forker->current_num_children; k++ ) {
 
-				osrfLogDebug("Searching for available child. cur_child->pid = %d", cur_child->pid );
-				osrfLogDebug("Current num children %d and loop %d", forker->current_num_children, k);
+				osrfLogInternal("Searching for available child. cur_child->pid = %d", cur_child->pid );
+				osrfLogInternal("Current num children %d and loop %d", forker->current_num_children, k);
 			
 				if( cur_child->available ) {
-					osrfLogDebug( "sending data to %d", cur_child->pid );
+					osrfLogDebug( "forker sending data to %d", cur_child->pid );
 
 					message_prepare_xml( cur_msg );
 					char* data = cur_msg->msg_xml;
 					if( ! data || strlen(data) < 1 ) break;
 
 					cur_child->available = 0;
-					osrfLogDebug( "Writing to child fd %d", cur_child->write_data_fd );
+					osrfLogInternal( "Writing to child fd %d", cur_child->write_data_fd );
 
 					int written = 0;
 					//fprintf(stderr, "Writing Data %f\n", get_timestamp_millis() );
@@ -337,8 +337,8 @@ void prefork_run(prefork_simple* forker) {
 					char* data = cur_msg->msg_xml;
 					if( ! data || strlen(data) < 1 ) break;
 					new_child->available = 0;
-					osrfLogDebug( "sending data to %d", new_child->pid );
-					osrfLogDebug( "Writing to new child fd %d", new_child->write_data_fd );
+					osrfLogDebug( "Writing to new child fd %d : pid %d", 
+							new_child->write_data_fd, new_child->pid );
 					write( new_child->write_data_fd, data, strlen(data) + 1 );
 					forker->first_child = new_child->next;
 					honored = 1;

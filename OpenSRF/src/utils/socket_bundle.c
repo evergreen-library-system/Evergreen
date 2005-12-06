@@ -63,7 +63,7 @@ socket_node* _socket_add_node(socket_manager* mgr,
 		int endpoint, int addr_type, int sock_fd, int parent_id ) {
 
 	if(mgr == NULL) return NULL;
-	osrfLogDebug("Adding socket node with fd %d", sock_fd);
+	osrfLogInternal("Adding socket node with fd %d", sock_fd);
 	socket_node* new_node = safe_malloc(sizeof(socket_node));
 
 	new_node->endpoint	= endpoint;
@@ -159,7 +159,7 @@ int socket_open_unix_server(socket_manager* mgr, char* path) {
 	//osrfLogDebug("Setting SO_REUSEADDR");
 	//setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
 	
-	osrfLogDebug("Setting TCP_NODELAY");
+	//osrfLogDebug("Setting TCP_NODELAY");
 	setsockopt(sock_fd, IPPROTO_TCP, TCP_NODELAY, &i, sizeof(i));
 
 	_socket_add_node(mgr, SERVER_SOCKET, UNIX, sock_fd, 0);
@@ -209,7 +209,7 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    }
 
 	int i = 1;
-	osrfLogDebug("Setting TCP_NODELAY");
+	//osrfLogDebug("Setting TCP_NODELAY");
 	setsockopt(sock_fd, IPPROTO_TCP, TCP_NODELAY, &i, sizeof(i));
 
 
@@ -351,7 +351,6 @@ void socket_remove_node(socket_manager* mgr, int sock_fd) {
 	if(head->sock_fd == sock_fd) {
 		mgr->socket = head->next;
 		free(head);
-		osrfLogDebug("removing first socket in list");
 		return;
 	}
 
@@ -385,10 +384,9 @@ void _socket_print_list(socket_manager* mgr) {
 
 /* sends the given data to the given socket */
 int socket_send(int sock_fd, const char* data) {
-	osrfLogDebug( "socket_bundle sending to %d data %s",
+	osrfLogInternal( "socket_bundle sending to %d data %s",
 		sock_fd, data);
 
-	osrfLogDebug("%d : Sending data at %lf\n", getpid(), get_timestamp_millis());
 	signal(SIGPIPE, SIG_IGN); /* in case a unix socket was closed */
 	if( send( sock_fd, data, strlen(data), 0 ) < 0 ) {
 		osrfLogWarning( "tcp_server_send(): Error sending data" );
@@ -455,7 +453,7 @@ int socket_wait(socket_manager* mgr, int timeout, int sock_fd) {
 		}
 	}
 
-	osrfLogDebug("%d active sockets after select()", retval);
+	osrfLogInternal("%d active sockets after select()", retval);
 	return _socket_route_data_id(mgr, sock_fd);
 }
 
@@ -530,7 +528,7 @@ int _socket_route_data(
 			
 			if(last_failed_id != -1) {
 				/* in case it was not removed by our overlords */
-				osrfLogDebug("Attempting to remove last_failed_id of %d", last_failed_id);
+				osrfLogInternal("Attempting to remove last_failed_id of %d", last_failed_id);
 				socket_remove_node( mgr, last_failed_id );
 				last_failed_id = -1;
 				status = -1;
@@ -540,7 +538,7 @@ int _socket_route_data(
 			/* does this socket have data? */
 			if( FD_ISSET( sock_fd, read_set ) ) {
 	
-				osrfLogDebug("Socket %d active", sock_fd);
+				osrfLogInternal("Socket %d active", sock_fd);
 				handled++;
 				FD_CLR(sock_fd, read_set);
 	
@@ -554,7 +552,7 @@ int _socket_route_data(
 					us...start over with the first socket */
 				if(status == -1)  {
 					last_failed_id = sock_fd;
-					osrfLogDebug("Backtracking back to start of loop because "
+					osrfLogInternal("Backtracking back to start of loop because "
 							"of -1 return code from _socket_handle_client_data()");
 				}
 			}
@@ -623,12 +621,11 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 
 	memset(buf, 0, RBUFSIZE);
 	set_fl(sock_fd, O_NONBLOCK);
-	osrfLogDebug("Gathering client data for %d", node->sock_fd);
 
-	osrfLogDebug("%d : Received data at %lf\n", getpid(), get_timestamp_millis());
+	osrfLogInternal("%d : Received data at %lf\n", getpid(), get_timestamp_millis());
 
 	while( (read_bytes = recv(sock_fd, buf, RBUFSIZE-1, 0) ) > 0 ) {
-		osrfLogDebug("Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);
+		osrfLogInternal("Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);
 		if(mgr->data_received)
 			mgr->data_received(mgr->blob, mgr, sock_fd, buf, node->parent_id);
 
