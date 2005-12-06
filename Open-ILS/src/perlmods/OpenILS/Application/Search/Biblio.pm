@@ -703,9 +703,11 @@ sub biblio_search_class {
 
 	my $count = undef;
 	if( $records->[0] && defined($records->[0]->[3])) { $count = $records->[0]->[3];}
+	my $recs = [];
+	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
 
 	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
-	return { ids => $records, count => $count };
+	return { ids => $recs, count => $count };
 
 }
 
