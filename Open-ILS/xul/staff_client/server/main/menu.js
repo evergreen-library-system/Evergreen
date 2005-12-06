@@ -51,6 +51,12 @@ main.menu.prototype = {
 				function() { 
 					obj.set_tab('/xul/server/patron/patron_barcode_entry.xul?session='+obj.w.escape(session));
 				}
+			],
+			'cmd_search_opac' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab('http://dev.gapines.org/',{},{ 'authtoken' : session });
+				}
 			]
 		};
 
@@ -144,14 +150,15 @@ main.menu.prototype = {
 		tab.hidden = false;
 		try {
 			if (focus) this.view.tabs.selectedIndex = tc;
-			this.set_tab('data:text/html,<h1>Hello World</h1>',tc);
+			this.set_tab('data:text/html,<h1>Hello World</h1>',{ 'index' : tc });
 		} catch(E) {
 			this.error.sdump('D_ERROR',E);
 		}
 	},
 
-	'set_tab' : function(url,idx) {
-		if (!idx) idx = this.view.tabs.selectedIndex;
+	'set_tab' : function(url,params,content_params) {
+		var idx = this.view.tabs.selectedIndex;
+		if (typeof params.index != 'undefined') idx = params.index;
 		var tab = this.view.tabs.childNodes[ idx ];
 		var panel = this.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
@@ -159,6 +166,10 @@ main.menu.prototype = {
 		frame.setAttribute('flex','1');
 		frame.setAttribute('src',url);
 		panel.appendChild(frame);
+		if (content_params) {
+			frame.contentWindow.IAMXUL = true;
+			frame.contentWindow.xulG = content_params;
+		}
 	}
 
 }
