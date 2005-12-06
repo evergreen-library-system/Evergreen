@@ -19,10 +19,6 @@ circ.checkout.prototype = {
 		obj.session = params['session'];
 		obj.patron_id = params['patron_id'];
 
-		JSAN.use('OpenILS.data'); obj.OpenILS = {}; 
-		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init(true);
-
-
 		JSAN.use('main.list'); obj.list = new main.list('checkout_list');
 		//FIXME//getString used to wrap StringBundles, but we need to do the entity/div thing
 		function getString(s) { return obj.OpenILS.data.entities[s]; }
@@ -115,13 +111,12 @@ circ.checkout.prototype = {
 					},
 					{
 						'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
-						'primary' : false, 'hidden' : false, 'render' : 'stash.data.hash.acp[ my.acp.status() ].name()'
+						'primary' : false, 'hidden' : false, 'render' : 'obj.OpenILS.data.hash.ccs[ my.acp.status() ].name()'
 					}
 				],
 				'map_row_to_column' : function(row,col) {
 					// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
 					// col contains one of the objects listed above in columns
-					JSAN.use('OpenILS.data'); var stash = new OpenILS.data(); stash.init(true);
 					var my = row.my;
 					return eval( col.render );
 				},
