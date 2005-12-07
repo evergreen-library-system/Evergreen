@@ -75,6 +75,7 @@ function initParams() {
 	MRID		= parseInt(cgi.param(PARAM_MRID));
 	RID		= parseInt(cgi.param(PARAM_RID));
 	TOPRANK  = parseFloat(cgi.param(PARAM_TOPRANK));
+	AUTHTIME	= parseInt(cgi.param(PARAM_AUTHTIME));
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -86,6 +87,7 @@ function initParams() {
 	if(isNaN(RID))			RID		= 0;
 	if(isNaN(ORIGLOC))	ORIGLOC	= 0;
 	if(isNaN(TOPRANK))	TOPRANK	= 1;
+	if(isNaN(AUTHTIME))	AUTHTIME	= 1;
 }
 
 function initCookies() {
@@ -108,6 +110,7 @@ function getMrid(){return MRID;};
 function getRid(){return RID;};
 function getOrigLocation(){return ORIGLOC;}
 function getTopRank(){return TOPRANK;}
+function getAuthtime() { return AUTHTIME; }
 
 function getSearchBarExtras(){return SBEXTRAS;}
 function getFontSize(){return FONTSIZE;};
@@ -156,6 +159,7 @@ function  buildOPACLink(args, slim, ssl) {
 		string += "&" + x + "=" + encodeURIComponent(args[x]);
 	}
 
+	string += _appendParam(ORIGLOC,	PARAM_ORIGLOC, args, getOrigLocation, string);
 	string += _appendParam(TERM,		PARAM_TERM, args, getTerm, string);
 	string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
 	string += _appendParam(LOCATION, PARAM_LOCATION, args, getLocation, string);
@@ -167,6 +171,7 @@ function  buildOPACLink(args, slim, ssl) {
 	string += _appendParam(MRID,		PARAM_MRID, args, getMrid, string);
 	string += _appendParam(RID,		PARAM_RID, args, getRid, string);
 	string += _appendParam(TOPRANK,	PARAM_TOPRANK, args, getTopRank, string);
+	string += _appendParam(AUTHTIME,	PARAM_AUTHTIME, args, getAuthtime, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
@@ -385,7 +390,7 @@ function doLogin() {
    }
 
    var auth_request = new Request( LOGIN_COMPLETE, 
-		uname, hex_md5(seed + hex_md5(passwd)), "opac");
+		uname, hex_md5(seed + hex_md5(passwd)), "opac", getOrigLocation());
 
 
    auth_request.send(true);
@@ -394,7 +399,8 @@ function doLogin() {
 	var code = checkILSEvent(auth_result);
 	if(code) { alertILSEvent(code); return null; }
 
-	var u = grabUser(auth_result.payload, true);
+	var u = grabUser(auth_result.payload.authtoken, true);
+	AUTHTIME = parseInt(auth_result.payload.authtime);
 	if(u) runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
 
 	checkUserSkin();

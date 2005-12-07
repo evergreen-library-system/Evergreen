@@ -35,7 +35,10 @@ oilsEvent* oilsNewEvent4( char* event, char* perm, int permloc, jsonObject* payl
 /** Sets the permission info for the event */
 void oilsEventSetPermission( oilsEvent* event, char* perm, int permloc );
 
-/* Sets the payload for the event */
+/* Sets the payload for the event 
+ * This clones the payload, so the user is responsible
+ * for handling the payload object's memory
+ * */
 void oilsEventSetPayload( oilsEvent* event, jsonObject* payload );
 
 /** Creates the JSON associated with an event.  The JSON should NOT be

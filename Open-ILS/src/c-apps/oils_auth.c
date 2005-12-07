@@ -31,7 +31,9 @@ int osrfAppInitialize() {
 		MODULENAME, 
 		"open-ils.auth.authenticate.complete", 
 		"oilsAuthComplete", 
-		"Completes the authentication process and returns the auth token "
+		"Completes the authentication process.  Returns an object like so: "
+		"{authtoken : <token>, authtime:<time>}, where authtoken is the login "
+		"tokena and authtime is the number of seconds the session will be active"
 		"PARAMS(username, md5sum( seed + password ), type )", 2, 0 );
 
 	osrfAppRegisterMethod( 
@@ -196,7 +198,7 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 		}
 		if(!timeout) {
 			if(!strcmp(type, "staff")) return __oilsAuthStaffTimeout;
-			return __oilsAuthStaffTimeout;
+			return __oilsAuthOPACTimeout;
 		}
 	}
 	double t = atof(timeout);
@@ -228,9 +230,12 @@ oilsEvent* oilsAuthHandleLoginOK(
 	oilsFMSetString( userObj, "passwd", "" );
 	osrfCachePutObject( authKey, userObj, timeout ); 
 	osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
-	response = oilsNewEvent2( OILS_EVENT_SUCCESS, jsonNewObject(authToken) );
+	jsonObject* payload = jsonParseString(
+		"{ \"authtoken\": \"%s\", \"authtime\": %lf }", authToken, timeout );
 
+	response = oilsNewEvent2( OILS_EVENT_SUCCESS, payload );
 	free(string); free(authToken); free(authKey);
+	jsonObjectFree(payload);
 	return response;
 }
 
