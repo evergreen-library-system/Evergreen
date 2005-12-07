@@ -4,6 +4,8 @@ use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
+use OpenSRF::Utils::Logger;
+my $logger = "OpenSRF::Utils::Logger";
 
 
 my $cache_client = "OpenSRF::Utils::Cache";
@@ -112,6 +114,19 @@ sub rollback_db_session {
 # Checks to see if a user is logged in.  Returns the user record on success,
 # throws an exception on error.
 # ---------------------------------------------------------------------------
+sub check_ses {
+	my( $self, $session ) = @_;
+	my $user;
+	my $evt;
+	try {
+		$user = $self->check_user_session($session);
+	} catch Error with {
+		$evt = OpenILS::Event->new('NO_SESSION');
+	};
+
+	return ( $user, $evt );
+}
+
 sub check_user_session {
 
 	my( $self, $user_session ) = @_;
@@ -137,8 +152,6 @@ sub check_user_session {
 	$session->kill_me();
 
 	return $user;
-
-	
 }
 
 # generic simple request returning a scalar value
