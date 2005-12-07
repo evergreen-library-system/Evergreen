@@ -12,7 +12,8 @@ CREATE TABLE container.copy_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name)
+	btype	TEXT	NOT NULL DEFAULT 'misc',
+	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
 CREATE TABLE container.copy_bucket_item (
@@ -44,7 +45,8 @@ CREATE TABLE container.call_number_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name)
+	btype	TEXT	NOT NULL DEFAULT 'misc',
+	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
 CREATE TABLE container.call_number_bucket_item (
@@ -76,7 +78,8 @@ CREATE TABLE container.biblio_record_entry_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name)
+	btype	TEXT	NOT NULL DEFAULT 'misc',
+	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
 CREATE TABLE container.biblio_record_entry_bucket_item (
@@ -108,7 +111,8 @@ CREATE TABLE container.user_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name)
+	btype	TEXT	NOT NULL DEFAULT 'misc',
+	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
 CREATE TABLE container.user_bucket_item (

@@ -51,10 +51,14 @@ sub _init {
 
 	$fieldmap = 
 	{
-		'Fieldmapper::container::user_bucket'		=> { hint => 'cub'   },
-		'Fieldmapper::container::copy_bucket'		=> { hint => 'ccb'   },
-		'Fieldmapper::container::call_number_bucket'	=> { hint => 'ccnb'   },
-		'Fieldmapper::container::biblio_record_entry_bucket'		=> { hint => 'cbreb'   },
+		'Fieldmapper::container::user_bucket'		=> { hint => 'cub',
+								     proto_fields	=> { items => 1 } },
+		'Fieldmapper::container::copy_bucket'		=> { hint => 'ccb',
+								     proto_fields	=> { items => 1 } },
+		'Fieldmapper::container::call_number_bucket'	=> { hint => 'ccnb',
+								     proto_fields	=> { items => 1 } },
+		'Fieldmapper::container::biblio_record_entry_bucket'		=> { hint => 'cbreb',
+										     proto_fields	=> { items => 1 } },
 
 		'Fieldmapper::container::user_bucket_item'		=> { hint => 'cubi'   },
 		'Fieldmapper::container::copy_bucket_item'		=> { hint => 'ccbi'   },
