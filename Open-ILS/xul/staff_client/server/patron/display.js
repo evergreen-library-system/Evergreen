@@ -19,7 +19,7 @@ patron.display.prototype = {
 		obj.barcode = params['barcode'];
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
-		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init(true);
+		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
 		JSAN.use('util.deck');  obj.deck = new util.deck('patron_deck');
 

@@ -197,7 +197,7 @@ util.error.prototype = {
 
 	'get_ilsevent' : function(status) {
 		JSAN.use('OpenILS.data'); 
-		this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init(true);
+		this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 		return this.OpenILS.data.entities['ilsevent.'+status];
 	}
 }	
