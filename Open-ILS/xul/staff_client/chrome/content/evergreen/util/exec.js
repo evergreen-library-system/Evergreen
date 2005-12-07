@@ -1,39 +1,51 @@
 dump('entering util/exec.js\n');
 
 if (typeof util == 'undefined') var util = {};
-util.exec = {};
+util.exec = function() {
+	JSAN.use('util.error');
+	this.error = new util.error();
 
-util.exec.EXPORT_OK	= [ 'chain_exec' ];
-util.exec.EXPORT_TAGS	= { ':all' : util.exec.EXPORT_OK };
+	return this;
+};
 
-// This executes a series of functions, but tries to give other events/functions a chance to
-// execute between each one.
-util.exec.chain = function () {
-	var args = [];
-	for (var i = 0; i < arguments.length; i++) {
-		var arg = arguments[i];
-		switch(arg.constructor.name) {
-			case 'Function' :
-				args.push( arg );
-			break;
-			case 'Array' :
-				for (var j = 0; j < arg.length; j++) {
-					if (typeof arg[j] == 'function') args.push( arg[j] );
-				}
-			break;
-			case 'Object' :
-				for (var j in arg) {
-					if (typeof arg[j] == 'function') args.push( arg[j] );
-				}
-			break;
+util.exec.prototype = {
+	// This executes a series of functions, but tries to give other events/functions a chance to
+	// execute between each one.
+	'chain' : function () {
+		var args = [];
+		var obj = this;
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			switch(arg.constructor.name) {
+				case 'Function' :
+					args.push( arg );
+				break;
+				case 'Array' :
+					for (var j = 0; j < arg.length; j++) {
+						if (typeof arg[j] == 'function') args.push( arg[j] );
+					}
+				break;
+				case 'Object' :
+					for (var j in arg) {
+						if (typeof arg[j] == 'function') args.push( arg[j] );
+					}
+				break;
+			}
 		}
+		if (args.length > 0) setTimeout(
+			function() {
+				try {
+					args[0]();
+					if (args.length > 1 ) obj.chain( args.slice(1) );
+				} catch(E) {
+					this.error('D_EXEC','util.exec.chain broken: ' + E);
+					if (typeof obj.on_error == 'function') {
+						obj.on_error(E);
+					}
+				}
+			}, 0
+		);
 	}
-	if (args.length > 0) setTimeout(
-		function() {
-			args[0]();
-			if (args.length > 1 ) util.exec.chain( args.slice(1) );
-		}, 0
-	);
 }
 
 dump('exiting util/exec.js\n');

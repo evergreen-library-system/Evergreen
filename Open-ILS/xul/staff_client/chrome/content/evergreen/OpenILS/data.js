@@ -156,9 +156,10 @@ OpenILS.data.prototype = {
 
 				this.chain.push( this.on_complete );
 			}
+			JSAN.use('util.exec'); this.exec = new util.exec();
+			this.exec.on_error = function(E) { alert('oops: ' + E ); }
 
-			JSAN.use('util.exec');
-			util.exec.chain( this.chain );
+			this.exec.chain( this.chain );
 		}
 	},
 
