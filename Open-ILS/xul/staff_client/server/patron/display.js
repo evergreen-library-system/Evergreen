@@ -513,8 +513,6 @@ patron.display.prototype = {
 					} catch(E) {
 						var error = ('patron.display.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);
-						alert(error);
-						//FIXME// abort the chain
 						throw(error);
 					}
 				}
@@ -534,8 +532,7 @@ patron.display.prototype = {
 					} catch(E) {
 						var error = ('patron.display.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);
-						alert(error);
-						//FIXME// abort the chain
+						throw(error);
 					}
 				}
 			);
@@ -553,8 +550,7 @@ patron.display.prototype = {
 					} catch(E) {
 						var error = ('patron.display.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);
-						alert(error);
-						//FIXME// abort the chain
+						throw(error);
 					}
 				}
 			);
@@ -572,8 +568,7 @@ patron.display.prototype = {
 					} catch(E) {
 						var error = ('patron.display.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);
-						alert(error);
-						//FIXME// abort the chain
+						throw(error);
 					}
 				}
 			);
@@ -585,6 +580,7 @@ patron.display.prototype = {
 			JSAN.use('util.exec'); this.exec = new util.exec();
 			this.exec.on_error = function(E) {
 				alert('got here: ' + E);
+				location.href = '/xul/server/patron/patron_barcode_entry.xul';
 			}
 			this.exec.chain( chain );
 
