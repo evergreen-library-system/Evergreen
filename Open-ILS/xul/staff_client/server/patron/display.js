@@ -577,10 +577,10 @@ patron.display.prototype = {
 			chain.push( function() { obj.controller.render(); } );
 
 			// Do it
-			JSAN.use('util.exec'); this.exec = new util.exec();
-			this.exec.on_error = function(E) {
-				alert('got here: ' + E);
-				location.href = '/xul/server/patron/patron_barcode_entry.xul';
+			JSAN.use('util.exec'); obj.exec = new util.exec();
+			obj.exec.on_error = function(E) {
+				location.href = '/xul/server/patron/patron_barcode_entry.xul?session=' + window.escape(obj.session);
+				alert('FIXME: Need better alert and error handling.\nProblem with barcode.\n' + E);
 			}
 			this.exec.chain( chain );
 
