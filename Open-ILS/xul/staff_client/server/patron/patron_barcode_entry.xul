@@ -38,6 +38,14 @@
 
 				g.cgi = new CGI();
 				var session = g.cgi.param('session');
+				if (!session) { 
+					g.error('D_ERROR','session = ' + session + '\n'
+						+ 'g.cgi._keys = ' + g.cgi._keys + '\n'
+						+ 'location = ' + location + '\n'
+						+ 'location.href = ' + location.href + '\n'
+					);
+					alert('pause.  session is ' + session ); 
+				}
 
 				var tb = document.getElementById('barcode_tb');
 				tb.addEventListener(
