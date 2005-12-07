@@ -112,6 +112,13 @@ For non-core config info, see the inline documentation within this file
 					<!-- if true, user sessions will be persisted via the OpenSRF persist 
 							server in addition to memcache -->
 					<persist_users>0</persist_users>
+
+					<!-- default session timeouts by login type -->
+					<default_timeout>
+						<opac>300</opac>
+						<staff>28800</staff>
+					</default_timeout>
+
 				</app_settings>
 
 			</open-ils.auth>
