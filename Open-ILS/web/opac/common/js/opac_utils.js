@@ -275,8 +275,8 @@ function grabUser(ses, force) {
 	if(G.user.prefs['opac.hits_per_page'])
 		COUNT = parseInt(G.user.prefs['opac.hits_per_page']);
 
-	//new AuthTimer(getAuthtime()).run();
-	new AuthTimer(20).run();
+	new AuthTimer(getAuthtime()).run();
+	//new AuthTimer(20).run();
 
 	return G.user;
 
@@ -635,7 +635,11 @@ AuthTimer.prototype.run = function() {
 function _authTimerAlert() {
 	if( confirm( $('auth_session_expiring').innerHTML ) ) 
 		doLogout();
-	else grabUser(null, true);
+	else {
+		if(!grabUser(null, true)) {
+			alert($('auth_session_expired').innerHTML);
+		}
+	}
 }
 
 

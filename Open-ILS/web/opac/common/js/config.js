@@ -59,7 +59,7 @@ var STYPE_SUBJECT	= "subject";
 var STYPE_SERIES	= "series";
 var STYPE_KEYWORD	= "keyword";
 
-var LOGOUT_WARNING_TIME = 15;
+var LOGOUT_WARNING_TIME = 20; /* "head up" for session timeout */
 
 
 /* container for global variables shared accross pages */
