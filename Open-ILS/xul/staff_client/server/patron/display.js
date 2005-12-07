@@ -164,7 +164,7 @@ patron.display.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.checkouts.length	
+									obj.patron.checkouts().length	
 								);
 							};
 						}
