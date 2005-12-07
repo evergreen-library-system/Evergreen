@@ -39,7 +39,7 @@ circ.checkout.prototype = {
 					},
 					{
 						'id' : 'barcode', 'label' : getString('staff.acp_label_barcode'), 'flex' : 1,
-						'primary' : false, 'hidden' : false, 'render' : 'my.acp.barcode()'
+						'primary' : false, 'hidden' : true, 'render' : 'my.acp.barcode()'
 					},
 					{
 						'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
@@ -107,11 +107,11 @@ circ.checkout.prototype = {
 					},
 					{
 						'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
-						'primary' : false, 'hidden' : false, 'render' : 'my.circ.renewal_remaining()'
+						'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()'
 					},
 					{
 						'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
-						'primary' : false, 'hidden' : false, 'render' : 'obj.OpenILS.data.hash.ccs[ my.acp.status() ].name()'
+						'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.ccs[ my.acp.status() ].name()'
 					}
 				],
 				'map_row_to_column' : function(row,col) {
@@ -130,6 +130,9 @@ circ.checkout.prototype = {
 					'checkout_barcode_entry_textbox' : [
 						['keypress'],
 						function(ev) {
+							if (ev.keyCode && ev.keyCode == 13) {
+								obj.checkout();
+							}
 						}
 					],
 					'cmd_broken' : [
@@ -139,46 +142,7 @@ circ.checkout.prototype = {
 					'cmd_checkout_submit_barcode' : [
 						['command'],
 						function() {
-							try {
-								var barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
-								var permit = obj.network.request(
-									'open-ils.circ',
-									'open-ils.circ.permit_checkout',
-									[ obj.session, barcode, obj.patron_id, 0 ]
-								);
-
-								if (permit.status == 0) {
-									var checkout = obj.network.request(
-										'open-ils.circ',
-										'open-ils.circ.checkout.barcode',
-										[ obj.session, barcode, obj.patron_id ]
-									);
-									obj.list.append(
-										{
-											'row' : {
-												'my' : {
-												'circ' : checkout.circ,
-												'mvr' : checkout.record,
-												'acp' : checkout.copy
-												}
-											}
-										//I could override map_row_to_column here
-										}
-									);
-									if (typeof obj.on_checkout == 'function') {
-										obj.on_checkout();
-									}
-
-								} else {
-									throw(permit.text);
-								}
-							} catch(E) {
-								alert('FIXME: need special alert and error handling\n'
-									+ js2JSON(E));
-								if (typeof obj.on_failure == 'function') {
-									obj.on_failure();
-								}
-							}
+							obj.checkout();
 						}
 					],
 					'cmd_checkout_print' : [
@@ -199,6 +163,52 @@ circ.checkout.prototype = {
 				}
 			}
 		);
+		this.controller.view.checkout_barcode_entry_textbox.focus();
+
+	},
+
+	'checkout' : function() {
+		var obj = this;
+		try {
+			var barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
+			var permit = obj.network.request(
+				'open-ils.circ',
+				'open-ils.circ.permit_checkout',
+				[ obj.session, barcode, obj.patron_id, 0 ]
+			);
+
+			if (permit.status == 0) {
+				var checkout = obj.network.request(
+					'open-ils.circ',
+					'open-ils.circ.checkout.barcode',
+					[ obj.session, barcode, obj.patron_id ]
+				);
+				obj.list.append(
+					{
+						'row' : {
+							'my' : {
+							'circ' : checkout.circ,
+							'mvr' : checkout.record,
+							'acp' : checkout.copy
+							}
+						}
+					//I could override map_row_to_column here
+					}
+				);
+				if (typeof obj.on_checkout == 'function') {
+					obj.on_checkout();
+				}
+
+			} else {
+				throw(permit.text);
+			}
+		} catch(E) {
+			alert('FIXME: need special alert and error handling\n'
+				+ js2JSON(E));
+			if (typeof obj.on_failure == 'function') {
+				obj.on_failure();
+			}
+		}
 
 	},
 
@@ -208,7 +218,7 @@ circ.checkout.prototype = {
 	},
 
 	'on_failure' : function() {
-		this.controller.view.checkout_barcode_entry.textbox.select();
+		this.controller.view.checkout_barcode_entry_textbox.select();
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 	}
 }
