@@ -2,7 +2,7 @@ dump('entering util/exec.js\n');
 
 if (typeof util == 'undefined') var util = {};
 util.exec = function() {
-	JSAN.use('util.error'); this.error = new util.error();
+	//JSAN.use('util.error'); this.error = new util.error();
 
 	return this;
 };
@@ -37,7 +37,7 @@ util.exec.prototype = {
 					args[0]();
 					if (args.length > 1 ) obj.chain( args.slice(1) );
 				} catch(E) {
-					this.error.sdump('D_EXEC','util.exec.chain broken: ' + E);
+					dump('util.exec.chain broken: ' + E + '\n');
 					if (typeof obj.on_error == 'function') {
 						obj.on_error(E);
 					}
