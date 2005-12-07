@@ -49,7 +49,7 @@ main.menu.prototype = {
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
-					obj.set_tab('/xul/server/patron/patron_barcode_entry.xul?session='+obj.w.escape(session));
+					obj.set_tab('/xul/server/patron/patron_barcode_entry.xul?session='+obj.w.escape(session),{});
 				}
 			],
 			'cmd_search_opac' : [
@@ -158,7 +158,7 @@ main.menu.prototype = {
 
 	'set_tab' : function(url,params,content_params) {
 		var idx = this.view.tabs.selectedIndex;
-		if (typeof params.index != 'undefined') idx = params.index;
+		if (params && typeof params.index != 'undefined') idx = params.index;
 		var tab = this.view.tabs.childNodes[ idx ];
 		var panel = this.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
