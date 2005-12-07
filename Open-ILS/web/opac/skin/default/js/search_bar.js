@@ -143,6 +143,8 @@ function searchBarSubmit() {
 
 	var text = G.ui.searchbar.text.value;
 	if(!text || text == "") return;
+	var d	= (newSearchDepth != null) ? newSearchDepth : parseInt(_ds.options[_ds.selectedIndex].value);
+	if(isNaN(d)) d = 0;
 
 	var args = {};
 	args.page				= MRESULT;
@@ -150,7 +152,7 @@ function searchBarSubmit() {
 	args[PARAM_TERM]		= text;
 	args[PARAM_STYPE]		= _ts.options[_ts.selectedIndex].value;
 	args[PARAM_LOCATION] = newSearchLocation;
-	args[PARAM_DEPTH]		= (newSearchDepth != null) ? newSearchDepth : parseInt(_ds.options[_ds.selectedIndex].value);
+	args[PARAM_DEPTH]		= d;
 	args[PARAM_FORM]		= _fs.options[_fs.selectedIndex].value;
 
 	goTo(buildOPACLink(args));
