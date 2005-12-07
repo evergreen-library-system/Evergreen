@@ -43,8 +43,10 @@ int osrfAppInitialize() {
 		MODULENAME, 
 		"open-ils.auth.session.retrieve", 
 		"oilsAuthSessionRetrieve", 
+		"Pass in the auth token and an optional second parameter which tells the "
+		"method to reset the session timeout for the user"
 		"Returns the user object (password blanked) for the given login session "
-		"PARAMS( authToken )", 1, 0 );
+		"PARAMS( authToken, [reset?] )", 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
@@ -307,25 +309,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	return 0;
 }
 
-int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
 
-	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
-	jsonObject* cacheObj = NULL;
-
-	if( authToken ){
-		osrfLogDebug("Retrieving auth session: %s", authToken);
-		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
-		cacheObj = osrfCacheGetObject( key ); 
-		if(cacheObj) {
-			osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
-			jsonObjectFree(cacheObj);
-		}
-		free(key);
-	}
-
-	return 0;
-}
 
 int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
@@ -346,36 +330,73 @@ int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 	return 0;
 }
 
-int oilsAuthResetTimeout( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
+/** Resets the auth login timeout
+ * @return The event object, OILS_EVENT_SUCCESS, or OILS_EVENT_NO_SESSION
+ */
+oilsEvent*  _oilsAuthResetTimeout( char* authToken ) {
+	if(!authToken) return NULL;
 
-	jsonObject* cacheObj = NULL;
 	oilsEvent* evt = NULL;
 	double timeout;
 
-	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
+	osrfLogDebug("Resetting auth timeout for session %s", authToken);
+	char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
+	jsonObject* cacheObj = osrfCacheGetObject( key ); 
 
-	if( authToken ){
-		osrfLogDebug("Resetting auth timeout for session %s", authToken);
-		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
-		cacheObj = osrfCacheGetObject( key ); 
+	if(!cacheObj) {
+		evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
 
-		if(!cacheObj) {
-			evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
-		} else {
-			timeout = jsonObjectGetNumber( jsonObjectGetKey( cacheObj, "authtime"));
-			osrfCacheSetExpire( timeout, key );
-			jsonObject* payload = jsonNewNumberObject(timeout);
-			evt = oilsNewEvent2(OILS_EVENT_SUCCESS, payload);
-			jsonObjectFree(payload);
-		}
+	} else {
 
-		free(key);
+		timeout = jsonObjectGetNumber( jsonObjectGetKey( cacheObj, "authtime"));
+		osrfCacheSetExpire( timeout, key );
+		jsonObject* payload = jsonNewNumberObject(timeout);
+		evt = oilsNewEvent2(OILS_EVENT_SUCCESS, payload);
+		jsonObjectFree(payload);
+		jsonObjectFree(cacheObj);
 	}
 
+	free(key);
+	return evt;
+}
+
+int oilsAuthResetTimeout( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
+	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
+	oilsEvent* evt = _oilsAuthResetTimeout(authToken);
 	osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
 	oilsEventFree(evt);
-	jsonObjectFree(cacheObj);
+	return 0;
+}
+
+
+int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
+
+	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
+	char* reset = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 1));
+	jsonObject* cacheObj = NULL;
+
+	if( authToken ){
+
+		if(reset) {
+			oilsEvent* evt = _oilsAuthResetTimeout(authToken);
+			if( evt && strcmp(evt->event,OILS_EVENT_SUCCESS) ) {
+				osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+				oilsEventFree(evt);
+			}
+			free(reset);
+		}
+
+		osrfLogDebug("Retrieving auth session: %s", authToken);
+		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
+		cacheObj = osrfCacheGetObject( key ); 
+		if(cacheObj) {
+			osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
+			jsonObjectFree(cacheObj);
+		}
+		free(key);
+	}
 
 	return 0;
 }
