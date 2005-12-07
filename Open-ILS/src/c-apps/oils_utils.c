@@ -89,3 +89,21 @@ jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
 	return user;
 }
 
+char* oilsUtilsFetchOrgSetting( int orgid, char* setting ) {
+	if(!setting) return NULL;
+
+	jsonObject* params = jsonParseString(
+			"[{ \"org_unit\": %d, \"name\":\"%s\" }]", orgid, setting );
+
+	jsonObject* set = oilsUtilsQuickReq(
+		"open-ils.storage",
+		"open-ils.storage.direct.actor.org_unit_setting.search_where", params );
+
+	jsonObjectFree(params);
+	char* value = oilsFMGetString( set, "value" );
+	jsonObjectFree(set);
+	osrfLogDebug("Fetched org [%d] setting: %s => %s", orgid, setting, value);
+	return value;
+
+}
+

@@ -64,3 +64,10 @@ jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params )
  * Caller is responsible for freeing the returned object
  */
 jsonObject* oilsUtilsFetchUserByUsername( char* name );
+
+
+/**
+ * Returns the setting value
+ * Caller must free the returned string
+ */
+char* oilsUtilsFetchOrgSetting( int orgid, char* setting );
