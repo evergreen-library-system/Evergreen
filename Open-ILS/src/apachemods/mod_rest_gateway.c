@@ -35,6 +35,7 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 		osrfLogError("Unable to load gateway config file...");
 		return;
 	}
+	osrfLogSetAppname("oils_rest_gw");
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);
 }
