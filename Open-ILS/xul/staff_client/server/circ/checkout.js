@@ -175,6 +175,9 @@ circ.checkout.prototype = {
 							} catch(E) {
 								alert('FIXME: need special alert and error handling\n'
 									+ js2JSON(E));
+								if (typeof obj.on_failure == 'function') {
+									obj.on_failure();
+								}
 							}
 						}
 					],
@@ -201,6 +204,11 @@ circ.checkout.prototype = {
 
 	'on_checkout' : function() {
 		this.controller.view.checkout_barcode_entry_textbox.value = '';
+		this.controller.view.checkout_barcode_entry_textbox.focus();
+	},
+
+	'on_failure' : function() {
+		this.controller.view.checkout_barcode_entry.textbox.select();
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 	}
 }
