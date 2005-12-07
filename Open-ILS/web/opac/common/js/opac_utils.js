@@ -250,10 +250,18 @@ function grabUser(ses, force) {
 			return G.user;
 
 	/* first make sure the session is valid */
-	var request = new Request(FETCH_SESSION, ses );
+	var request = new Request(FETCH_SESSION, ses, 1 );
 	request.send(true);
 	var user = request.result();
+	//if(checkILSEvent(user)) throw user; /* unable to grab the session */
+
+	if(checkILSEvent(user)) {
+		doLogout();
+		return false; /* unable to grab the session */
+	}
+
 	if( !(typeof user == 'object' && user._isfieldmapper) ) {
+		doLogout();
 		return false;
 	}
 
@@ -266,6 +274,9 @@ function grabUser(ses, force) {
 	grabUserPrefs();
 	if(G.user.prefs['opac.hits_per_page'])
 		COUNT = parseInt(G.user.prefs['opac.hits_per_page']);
+
+	//new AuthTimer(getAuthtime()).run();
+	new AuthTimer(20).run();
 
 	return G.user;
 
@@ -601,16 +612,30 @@ function _timerRun(tname) {
 	_t.count++;
 }
 
-
-
 function checkILSEvent(obj) {
 	if( obj.ilsevent != null && obj.ilsevent != 0 )
 		return parseInt(obj.ilsevent);
 	return null;
 }
 function alertILSEvent(code) {
-	/*alert(code);*/
 	alert( $('ilsevent.' + code).innerHTML );
+}
+
+
+var __authTimer;
+function AuthTimer(time) { 
+	this.time = (time - LOGOUT_WARNING_TIME) * 1000; 
+	__authTimer = this;
+}
+
+AuthTimer.prototype.run = function() {
+	setTimeout('_authTimerAlert()', this.time);
+}
+
+function _authTimerAlert() {
+	if( confirm( $('auth_session_expiring').innerHTML ) ) 
+		doLogout();
+	else grabUser(null, true);
 }
 
 

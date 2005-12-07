@@ -2,5 +2,9 @@
 	<span id='ilsevent.1000'>&ilsevent.1000;</span>
 	<span id='ilsevent.5000'>&ilsevent.5000;</span>
 	<span id='ilsperm.CREATE_HOLD'>&ilsperm.CREATE_HOLD;</span>
+
+	<!-- Local OPAC Specific strings/events -->
+	<span id='auth_session_expiring'>&opac.session_expiring;</span>
+	<span id='auth_session_expired'>&opac.session_expired;</span>
 </span>
 

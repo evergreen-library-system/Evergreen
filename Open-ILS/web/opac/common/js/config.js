@@ -59,6 +59,8 @@ var STYPE_SUBJECT	= "subject";
 var STYPE_SERIES	= "series";
 var STYPE_KEYWORD	= "keyword";
 
+var LOGOUT_WARNING_TIME = 15;
+
 
 /* container for global variables shared accross pages */
 var G		= {};

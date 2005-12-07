@@ -50,6 +50,8 @@
 <!ENTITY opac.llt "&lt;">
 <!ENTITY opac.ggt "&gt;">
 
+<!ENTITY opac.session_expiring "Your login session will soon expire.  Click 'OK' to logout and return to the home page.  Click 'Cancel' to continue browsing.">
+<!ENTITY opac.session_expired "Your login session has expired">
 
 <!-- Navigations links -->
 <!ENTITY navigate.home "Home">
