@@ -34,7 +34,10 @@ int osrfAppInitialize() {
 		"Completes the authentication process.  Returns an object like so: "
 		"{authtoken : <token>, authtime:<time>}, where authtoken is the login "
 		"tokena and authtime is the number of seconds the session will be active"
-		"PARAMS(username, md5sum( seed + password ), type )", 2, 0 );
+		"PARAMS(username, md5sum( seed + password ), type, org_id ) "
+		"type can be one of 'opac' or 'staff' and it defaults to 'staff' "
+		"org_id is the location at which the login should be considered "
+		"active for login timeout purposes"	, 2, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
@@ -49,6 +52,15 @@ int osrfAppInitialize() {
 		"oilsAuthSessionDelete", 
 		"Destroys the given login session "
 		"PARAMS( authToken )",  1, 0 );
+
+	osrfAppRegisterMethod(
+		MODULENAME,
+		"open-ils.auth.session.reset_timeout",
+		"oilsAuthResetTimeout",
+		"Resets the login timeout for the given session "
+		"Returns an ILS Event with payload = session_timeout of session "
+		"is found, otherwise returns the NO_SESSION event"
+		"PARAMS( authToken )", 1, 0 );
 
 	return 0;
 }
@@ -228,7 +240,12 @@ oilsEvent* oilsAuthHandleLoginOK(
 			"%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
 
 	oilsFMSetString( userObj, "passwd", "" );
-	osrfCachePutObject( authKey, userObj, timeout ); 
+	jsonObject* cacheObj = jsonParseString("{\"authtime\": %lf}", timeout);
+	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
+
+	//osrfCachePutObject( authKey, userObj, timeout ); 
+	osrfCachePutObject( authKey, cacheObj, timeout ); 
+	jsonObjectFree(cacheObj);
 	osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
 	jsonObject* payload = jsonParseString(
 		"{ \"authtoken\": \"%s\", \"authtime\": %lf }", authToken, timeout );
@@ -294,16 +311,19 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
 
 	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
-	jsonObject* userObj = NULL;
+	jsonObject* cacheObj = NULL;
 
 	if( authToken ){
-		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
-		userObj = osrfCacheGetObject( key ); /**/
+		osrfLogDebug("Retrieving auth session: %s", authToken);
+		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
+		cacheObj = osrfCacheGetObject( key ); 
+		if(cacheObj) {
+			osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
+			jsonObjectFree(cacheObj);
+		}
 		free(key);
 	}
 
-	osrfAppRespondComplete( ctx, userObj );
-	jsonObjectFree(userObj);
 	return 0;
 }
 
@@ -314,6 +334,7 @@ int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 	jsonObject* resp = NULL;
 
 	if( authToken ) {
+		osrfLogDebug("Removing auth session: %s", authToken );
 		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
 		osrfCacheRemove(key);
 		resp = jsonNewObject(authToken); /**/
@@ -322,6 +343,40 @@ int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 
 	osrfAppRespondComplete( ctx, resp );
 	jsonObjectFree(resp);
+	return 0;
+}
+
+int oilsAuthResetTimeout( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
+
+	jsonObject* cacheObj = NULL;
+	oilsEvent* evt = NULL;
+	double timeout;
+
+	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
+
+	if( authToken ){
+		osrfLogDebug("Resetting auth timeout for session %s", authToken);
+		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
+		cacheObj = osrfCacheGetObject( key ); 
+
+		if(!cacheObj) {
+			evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
+		} else {
+			timeout = jsonObjectGetNumber( jsonObjectGetKey( cacheObj, "authtime"));
+			osrfCacheSetExpire( timeout, key );
+			jsonObject* payload = jsonNewNumberObject(timeout);
+			evt = oilsNewEvent2(OILS_EVENT_SUCCESS, payload);
+			jsonObjectFree(payload);
+		}
+
+		free(key);
+	}
+
+	osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+	oilsEventFree(evt);
+	jsonObjectFree(cacheObj);
+
 	return 0;
 }
 

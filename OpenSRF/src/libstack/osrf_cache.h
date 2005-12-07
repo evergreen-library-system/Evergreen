@@ -74,5 +74,10 @@ char* osrfCacheGetString( char* key, ... );
   */
 int osrfCacheRemove( char* key, ... );
 
+/**
+ * Sets the expire time to 'seconds' for the given key
+ */
+int osrfCacheSetExpire( time_t seconds, char* key, ... );
+
 
 

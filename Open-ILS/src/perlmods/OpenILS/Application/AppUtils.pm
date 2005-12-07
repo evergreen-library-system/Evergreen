@@ -64,7 +64,7 @@ sub check_user_perms {
 sub check_perms {
 	my( $self, $user_id, $org_id, @perm_types ) = @_;
 	my $t = $self->check_user_perms( $user_id, $org_id, @perm_types );
-	return OpenILS::Event->new('PERM_FAILURE', perm => $t, permloc => $org_id ) if $t;
+	return OpenILS::Event->new('PERM_FAILURE', ilsperm => $t, ilspermloc => $org_id ) if $t;
 	return undef;
 }
 

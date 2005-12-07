@@ -18,29 +18,17 @@ my $events = undef;
 sub new {
 	my( $class, $event, %params ) = @_;
 
-	my $perm = $params{perm};
-	my $permloc = $params{permloc};
-	my $payload = $params{payload};
-
 	_load_events() unless $events;
 
 	if( $event ne 'SUCCESS' ) {
-		my $p = (defined $perm) ? $perm : "(none)";
-		my $pl = (defined $permloc) ? $permloc  : "(none)";
-		my $pa = (defined $payload) ? $payload : "(none)";
-		$logger->warn("Returning event object $event " . 
-			"{ ilsperm => $p, ilspermloc => $pl, payload => $pa }");
+		$logger->info("Returning non-success event object: $event ");  
 	}
 
 	my $e = $events->{$event};
 	throw OpenSRF::EX 
 		("No event defined with textcode: $event") unless defined $e;
 
-	my $h = { ilsevent => $e };
-	$h->{paylod}		= $payload if defined $payload;
-	$h->{ilsperm}		= $perm if defined $perm;
-	$h->{ilspermloc}	= $permloc if defined $permloc;
-	$h->{textcode}		= $event;
+	my $h = { ilsevent => $e, textcode => $event, %params };
 
 	return $h;
 }

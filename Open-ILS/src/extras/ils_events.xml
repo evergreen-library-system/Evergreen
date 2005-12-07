@@ -18,6 +18,13 @@
 			User login failed.  Why the login failed is not specified.
 		</desc>
 	</event>
+
+	<event code='1001' textcode='NO_SESSION'>
+		<desc>
+			User login session has either timed out or does not exist.
+		</desc>
+	</event>
+
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc> 
 			Permission Error.  * The object returning this code shall also 
