@@ -13,6 +13,7 @@ var PARAM_MRID			= "m";			/* metarecord id */
 var PARAM_RID			= "r";			/* record id */
 var PARAM_ORIGLOC		= "ol"			/* the original location */
 var PARAM_TOPRANK		= "tr"			/* this highest ranking rank */
+var PARAM_AUTHTIME	= "at"			/* inactivity timeout in seconds */
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -27,6 +28,7 @@ var RANKS;
 var FONTSIZE;
 var ORIGLOC;
 var TOPRANK;
+var AUTHTIME;
 
 /* cookie values */
 var SBEXTRAS; 
