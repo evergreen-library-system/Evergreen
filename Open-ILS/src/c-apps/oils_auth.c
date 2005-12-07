@@ -150,8 +150,17 @@ int oilsAuthVerifyPassword(
 	return ret;
 }
 
-double oilsAuthGetTimeout( char* type, double orgloc ) {
-	if(!__oilsAuthOPACTimeout) {
+/**
+ * Calculates the login timeout
+ * 1. If orgloc is 1 or greater and has a timeout specified as an 
+ * org unit setting, it is used
+ * 2. If orgloc is not valid, we check the org unit auth timeout 
+ * setting for the home org unit of the user logging in
+ * 3. If that setting is not defined, we use the configured defaults
+ */
+double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
+
+	if(!__oilsAuthOPACTimeout) { /* Load the default timeouts */
 
 		__oilsAuthOPACTimeout = 
 			jsonObjectGetNumber( 
@@ -169,16 +178,27 @@ double oilsAuthGetTimeout( char* type, double orgloc ) {
 
 	char* setting = NULL;
 
-	if(!strcmp(type, "opac")) {
-		if(orgloc < 1) return __oilsAuthOPACTimeout;
-		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
+	double home_ou = jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ) );
+	if(orgloc < 1) orgloc = (int) home_ou;
 
-	} else if(!strcmp(type, "staff")) {
-		if(orgloc < 1) return __oilsAuthStaffTimeout;
+	if(!strcmp(type, "opac")) 
+		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
+	else if(!strcmp(type, "staff")) 
 		setting = OILS_ORG_SETTING_STAFF_TIMEOUT;
-	}
 
 	char* timeout = oilsUtilsFetchOrgSetting( orgloc, setting );
+
+	if(!timeout) {
+		if( orgloc != home_ou ) {
+			osrfLogDebug("Auth timeout not defined for org %d, "
+								"trying home_ou %d", orgloc, home_ou );
+			timeout = oilsUtilsFetchOrgSetting( (int) home_ou, setting );
+		}
+		if(!timeout) {
+			if(!strcmp(type, "staff")) return __oilsAuthStaffTimeout;
+			return __oilsAuthStaffTimeout;
+		}
+	}
 	double t = atof(timeout);
 	free(timeout);
 	return t ;
@@ -196,7 +216,7 @@ oilsEvent* oilsAuthHandleLoginOK(
 	oilsEvent* response;
 	osrfLogActivity( "User %s successfully logged in", uname );
 
-	double timeout = oilsAuthGetTimeout( type, orgloc );
+	double timeout = oilsAuthGetTimeout( userObj, type, orgloc );
 	osrfLogDebug("Auth session timeout for %s: %lf", uname, timeout );
 
 	char* string = va_list_to_string( 
