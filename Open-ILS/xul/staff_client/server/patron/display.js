@@ -515,6 +515,7 @@ patron.display.prototype = {
 						obj.error.sdump('D_ERROR',error);
 						alert(error);
 						//FIXME// abort the chain
+						throw(error);
 					}
 				}
 			);
@@ -581,8 +582,11 @@ patron.display.prototype = {
 			chain.push( function() { obj.controller.render(); } );
 
 			// Do it
-			JSAN.use('util.exec');
-			util.exec.chain( chain );
+			JSAN.use('util.exec'); this.exec = new util.exec();
+			this.exec.on_error = function(E) {
+				alert('got here: ' + E);
+			}
+			this.exec.chain( chain );
 
 		} catch(E) {
 			var error = ('patron.display.retrieve : ' + js2JSON(E));
