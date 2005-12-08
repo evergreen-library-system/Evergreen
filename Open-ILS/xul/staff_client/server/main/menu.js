@@ -170,6 +170,7 @@ main.menu.prototype = {
 			frame.contentWindow.IAMXUL = true;
 			frame.contentWindow.xulG = content_params;
 		}
+		return frame;
 	}
 
 }

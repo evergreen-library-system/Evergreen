@@ -45,10 +45,15 @@ patron.display.prototype = {
 						function(ev) {
 							obj.deck.set_iframe(
 								urls.remote_checkout
-								+ '?session='
-								+ window.escape( obj.session )
-								+ '&patron_id='
-								+ window.escape( obj.patron.id() )
+								+ '?session=' + window.escape( obj.session )
+								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{ 
+									'on_checkout' : function() {
+										alert('got here');
+										obj.controller.render('patron_checkouts');
+									}
+								}
 							);
 							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
