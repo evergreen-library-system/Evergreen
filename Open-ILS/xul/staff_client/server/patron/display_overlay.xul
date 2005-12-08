@@ -3,7 +3,7 @@
 <overlay id="patron_display_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<script>dump('loading patron_display_overlay.xul\n');</script>
+<script>dump('loading patron/display_overlay.xul\n');</script>
 
 <commandset id="patron_display_cmds" />
 

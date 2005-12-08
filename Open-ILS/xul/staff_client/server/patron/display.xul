@@ -15,7 +15,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
-<?xul-overlay href="/xul/server/patron/patron_display_overlay.xul"?>
+<?xul-overlay href="/xul/server/patron/display_overlay.xul"?>
 
 <window id="patron_display_win" 
 	onload="my_init()"

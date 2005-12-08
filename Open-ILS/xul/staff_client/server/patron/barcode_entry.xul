@@ -71,7 +71,7 @@
 			var tb = document.getElementById('barcode_tb');
 			var barcode = tb.value;
 
-			location.href = '/xul/server/patron/patron_display.xul?session=' 
+			location.href = urls.remote_patron_display + '?session=' 
 				+ window.escape(session) + '&barcode=' + window.escape(barcode);
 		}
 
@@ -80,9 +80,9 @@
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
-			<caption label="Enter Patron Barcode" />
+			<caption label="Retrieve Patron" />
 			<hbox>
-				<label value="Patron Barcode:" accesskey="B" control="barcode_tb"/>
+				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
 				<textbox id="barcode_tb" />
 				<button label="Submit" accesskey="S" oncommand="spawn();"/>
 			</hbox>
