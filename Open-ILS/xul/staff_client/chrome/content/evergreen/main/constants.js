@@ -24,5 +24,6 @@ var urls = {
 	'opac' : 'http://dev.gapines.org/',
 	'remote_checkout' : '/xul/server/circ/checkout.xul',
 	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
-	'remote_patron_barcode_entry' : '/xul/server/patron/patron_barcode_entry.xul'
+	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul'
+	'remote_patron_display' : '/xul/server/patron/display.xul'
 }
