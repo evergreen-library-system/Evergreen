@@ -49,8 +49,10 @@ patron.display.prototype = {
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{ 
-									'on_checkout' : function() {
-										alert('got here');
+									'on_checkout' : function(checkout) {
+										var c = obj.patron.checkouts();
+										c.push( checkout );
+										obj.patron.checkouts( c );
 										obj.controller.render('patron_checkouts');
 									}
 								}
