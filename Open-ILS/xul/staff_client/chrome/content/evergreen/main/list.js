@@ -58,8 +58,8 @@ main.list.prototype = {
 
 	'append' : function (params) {
 		switch (this.node.nodeName) {
-			'tree' : this.append_to_tree(params); break;
-			default: throw('NYI: Need .append() for ' . this.node.nodeName); break;
+			case 'tree' : this.append_to_tree(params); break;
+			default: throw('NYI: Need .append() for ' + this.node.nodeName); break;
 		}
 	},
 
