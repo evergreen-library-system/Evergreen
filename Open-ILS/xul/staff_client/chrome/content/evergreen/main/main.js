@@ -7,7 +7,7 @@ function main_init() {
 			.getService(Components.interfaces.nsIPrefBranch);
 		if (pref) {
 			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
-			pref.setCharPref("capability.principal.codebase.p0.id", "http://dev.gapines.org");
+			pref.setCharPref("capability.principal.codebase.p0.id", urls.opac);
 		}
 
 		if (typeof JSAN == 'undefined') {
