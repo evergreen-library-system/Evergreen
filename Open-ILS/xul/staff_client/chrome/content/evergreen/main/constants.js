@@ -25,5 +25,10 @@ var urls = {
 	'remote_checkout' : '/xul/server/circ/checkout.xul',
 	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
 	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul',
-	'remote_patron_display' : '/xul/server/patron/display.xul'
+	'remote_patron_bills' : 'data:text/html,<h1>Bills Here</h1>',
+	'remote_patron_display' : '/xul/server/patron/display.xul',
+	'remote_patron_edit' : 'data:text/html,<h1>Edit Here</h1>',
+	'remote_patron_holds' : 'data:text/html,<h1>Holds Here</h1>',
+	'remote_patron_info' : 'data:text/html,<h1>Info Here</h1>',
+	'remote_patron_items' : 'data:text/html,<h1>Items Here</h1>'
 }

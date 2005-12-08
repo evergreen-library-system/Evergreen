@@ -63,35 +63,35 @@ patron.display.prototype = {
 					'cmd_patron_items' : [
 						['command'],
 						function(ev) {
-							obj.deck.set_iframe('data:text/html,<h1>Items Here</h1>');
+							obj.deck.set_iframe(urls.remote_patron_items);
 							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_holds' : [
 						['command'],
 						function(ev) {
-							obj.deck.set_iframe('data:text/html,<h1>Holds Here</h1>');
+							obj.deck.set_iframe(urls.remote_patron_holds);
 							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_bills' : [
 						['command'],
 						function(ev) {
-							obj.deck.set_iframe('data:text/html,<h1>Bills Here</h1>');
+							obj.deck.set_iframe(urls.remote_patron_bills);
 							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_edit' : [
 						['command'],
 						function(ev) {
-							obj.deck.set_iframe('data:text/html,<h1>Edit Here</h1>');
+							obj.deck.set_iframe(urls.remote_patron_edit);
 							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
-							obj.deck.set_iframe('data:text/html,<h1>Info Here</h1>');
+							obj.deck.set_iframe(urls.remote_patron_info);
 							dump('obj.deck.node.childNodes.length = ' + obj.deck.node.childNodes.length + '\n');
 						}
 					],
