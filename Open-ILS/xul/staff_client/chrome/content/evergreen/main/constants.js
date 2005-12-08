@@ -1,3 +1,4 @@
+dump('Loading constants.js\n');
 var api = {
 	'auth_init' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
 	'auth_complete' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },
@@ -20,7 +21,7 @@ var api = {
 }
 
 var urls = {
-	'opac' : 'http://dev.gapines.org/'
+	'opac' : 'http://dev.gapines.org/',
 	'remote_checkout' : '/xul/server/circ/checkout.xul',
 	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
 	'remote_patron_barcode_entry' : '/xul/server/patron/patron_barcode_entry.xul'
