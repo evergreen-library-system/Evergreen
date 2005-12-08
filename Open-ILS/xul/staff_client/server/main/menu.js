@@ -49,7 +49,7 @@ main.menu.prototype = {
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
-					obj.set_tab(urls.remtoe_patron_barcode_entry + '?session='+obj.w.escape(session),{});
+					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{});
 				}
 			],
 			'cmd_search_opac' : [
