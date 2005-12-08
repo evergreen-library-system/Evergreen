@@ -1,51 +1,72 @@
 <?xml version='1.0'?>
 
-<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+<div>
+	<div id='xulholds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+		<center>
+			<table class='data_grid' style='margin-top: 20px;'>
+				<tbody>
+					<tr>
+						<td>&opac.holds.xulRecipient;:</td>
+						<td><input type='text' id='xul_recipient_barcode'> </input></td>
+						<td><input type='submit' value='&common.submit;' 
+							id='xul_recipient_barcode_submit'> </input></td>
+					</tr>
+				</tbody>
+			</table>
+		</center>
+	</div>
 
-	<br/><br/>
-	<table width='75%'>
-		<tbody>
-			<tr>
-				<td class='holds_cell color_1' 
-					align='center' colspan='2'>&opac.holds.placeHold;</td>
-			</tr>
-			<tr>
-				<td class='holds_cell'>&common.title;:</td>
-				<td class='holds_cell' id='holds_title'> </td>
-			</tr>
-			<tr>
-				<td class='holds_cell'>&common.author;:</td>
-				<td class='holds_cell' id='holds_author'> </td>
-			</tr>
-			<tr>
-				<td class='holds_cell'>&common.format;:</td>
-				<td class='holds_cell' id='holds_format'> </td>
-			</tr>
-			<tr>
-				<td class='holds_cell'>&opac.holds.contactPhone;:</td>
-				<td class='holds_cell' id='holds_phone'> </td>
-			</tr>
-			<tr>
-				<td class='holds_cell'>&opac.holds.concactEmail;:</td>
-				<td class='holds_cell' id='holds_email'> </td>
-			</tr>
-			<tr>
-				<td class='holds_cell'>&opac.holds.pickupLocation;</td>
-				<td class='holds_cell'>
-					<select id='holds_org_selector'> </select>
-				</td>
-			</tr>
-			<tr>
-				<td class='holds_cell' align='center' colspan='2'>
-					<button id='holds_submit'>&opac.holds.placeHold;</button>
-					<span style='padding: 20px;'> </span>
-					<button id='holds_cancel'>&common.cancel;</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<div class='hide_me' id='holds_success'>&opac.holds.success;</div>
-	<div class='hide_me' id='holds_failure'>&opac.holds.failure;</div>
-
+	<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+	
+		<br/><br/>
+		<table width='75%'>
+			<tbody>
+				<tr>
+					<td class='holds_cell color_1' 
+						align='center' colspan='2'>&opac.holds.placeHold;</td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&opac.holds.recipient;:</td>
+					<td class='holds_cell' id='holds_recipient'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.title;:</td>
+					<td class='holds_cell' id='holds_title'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.author;:</td>
+					<td class='holds_cell' id='holds_author'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.format;:</td>
+					<td class='holds_cell' id='holds_format'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&opac.holds.contactPhone;:</td>
+					<td class='holds_cell' id='holds_phone'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&opac.holds.concactEmail;:</td>
+					<td class='holds_cell' id='holds_email'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&opac.holds.pickupLocation;</td>
+					<td class='holds_cell'>
+						<select id='holds_org_selector'> </select>
+					</td>
+				</tr>
+				<tr>
+					<td class='holds_cell' align='center' colspan='2'>
+						<button id='holds_submit'>&opac.holds.placeHold;</button>
+						<span style='padding: 20px;'> </span>
+						<button id='holds_cancel'>&common.cancel;</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<div class='hide_me' id='holds_success'>&opac.holds.success;</div>
+		<div class='hide_me' id='holds_failure'>&opac.holds.failure;</div>
+	
+	</div>
 </div>

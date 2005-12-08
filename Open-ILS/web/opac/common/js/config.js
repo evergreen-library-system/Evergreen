@@ -209,6 +209,7 @@ var CHECK_SPELL					= "open-ils.search:open-ils.search.spell_check";
 var FETCH_REVIEWS					= "open-ils.search:open-ils.search.added_content.review.retrieve.all";
 var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve";
 var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
+var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
 /* ---------------------------------------------------------------------------- */
 
 

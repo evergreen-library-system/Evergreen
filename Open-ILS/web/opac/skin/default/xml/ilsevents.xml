@@ -6,5 +6,6 @@
 	<!-- Local OPAC Specific strings/events -->
 	<span id='auth_session_expiring'>&opac.session_expiring;</span>
 	<span id='auth_session_expired'>&opac.session_expired;</span>
+	<span id='user_not_found'>&common.user_not_found;</span>
 </span>
 

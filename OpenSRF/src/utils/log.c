@@ -78,9 +78,9 @@ void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, 
 	if(!filename) filename = "";
 	if(!func) func = "";
 
-	char lb[8];
-	bzero(lb,8);
-	if(line >= 0) snprintf(lb,8,"%d", line);
+	char lb[12];
+	bzero(lb,12);
+	if(line >= 0) snprintf(lb,12,"%d", line);
 
 	char* l = "INFO";		/* level name */
 	int lvl = LOG_INFO;	/* syslog level */
@@ -126,6 +126,7 @@ void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, 
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
 		_osrfLogToFile("[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, VA_BUF );
+
 }
 
 
@@ -139,7 +140,6 @@ void _osrfLogToFile( char* msg, ... ) {
 	int l = strlen(VA_BUF) + strlen(__osrfLogAppname) + 36;
 	char buf[l];
 	bzero(buf,l);
-
 
 	char datebuf[36];
 	bzero(datebuf,36);

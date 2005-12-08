@@ -279,7 +279,6 @@ function grabUser(ses, force) {
 	//new AuthTimer(20).run();
 
 	return G.user;
-
 }
 
 
@@ -642,4 +641,10 @@ function _authTimerAlert() {
 	}
 }
 
+
+function grabUserByBarcode( authtoken, barcode ) {
+	var req = new Request( FETCH_USER_BYBARCODE, authtoken, barcode );
+	req.send(true);
+	return req.result();
+}
 

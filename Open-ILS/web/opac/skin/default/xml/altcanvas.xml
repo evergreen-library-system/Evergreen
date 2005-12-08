@@ -17,6 +17,7 @@
 		config.ids.altcanvas.login			= config.ids.login.box;
 		config.ids.altcanvas.org_tree		= config.ids.common.org_container;
 		config.ids.altcanvas.holds			= 'holds_box';
+		config.ids.altcanvas.xulholds		= 'xulholds_box';
 		config.ids.altcanvas.loading		= 'loading_alt';
 	</script>
 

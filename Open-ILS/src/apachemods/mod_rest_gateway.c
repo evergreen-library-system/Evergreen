@@ -1,4 +1,5 @@
 #include "mod_rest_gateway.h"
+#include "http_log.h"
 
 char* ils_rest_gateway_config_file;
 
@@ -35,7 +36,6 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 		osrfLogError("Unable to load gateway config file...");
 		return;
 	}
-	osrfLogSetAppname("oils_rest_gw");
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
 	fflush(stderr);
 }
@@ -45,6 +45,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	/* make sure we're needed first thing*/
 	if (strcmp(r->handler, MODULE_NAME )) 
 		return DECLINED;
+
+	osrfLogSetAppname("oils_rest_gw");
 
 	apr_pool_t *p = r->pool;	/* memory pool */
 	char* arg = r->args;			/* url query string */
@@ -73,7 +75,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	}
 
 
-
 	/* gather the post args and append them to the url query string */
 	if( !strcmp(r->method,"POST") ) {
 
@@ -88,7 +89,6 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		buffer = buffer_init(1025);
 
 		while(ap_get_client_block(r, body, 1024)) {
-			osrfLogDebug("Apache read POST block data: %s\n", body);
 			buffer_add( buffer, body );
 			memset(body,0,1025);
 		}
@@ -106,7 +106,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	} 
 
-	osrfLogDebug("params args are %s", arg);
+	ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 0, r, "URL: %s", arg );
 
 
 	if( ! arg || !arg[0] ) { /* we received no request */

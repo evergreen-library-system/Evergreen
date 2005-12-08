@@ -22,6 +22,8 @@
 <!ENTITY common.library "Library">
 <!ENTITY common.username "Username">
 <!ENTITY common.password "Password">
+<!ENTITY common.submit "Submit">
+<!ENTITY common.user_not_found "User not found">
 
 
 <!--	======================================================================================= 
@@ -50,7 +52,7 @@
 <!ENTITY opac.llt "&lt;">
 <!ENTITY opac.ggt "&gt;">
 
-<!ENTITY opac.session_expiring "Your login session will soon expire.\nClick 'OK' to logout and return to the home page.\nClick 'Cancel' to continue browsing.">
+<!ENTITY opac.session_expiring "Your login session will soon expire. Click 'OK' to logout and return to the home page.  Click 'Cancel' to continue browsing.">
 <!ENTITY opac.session_expired "Your login session has expired">
 
 <!-- Navigations links -->
@@ -117,7 +119,9 @@
 <!ENTITY rdetail.detailMain.viewMarc "View MARC">
 <!ENTITY rdetail.detailMain.hideMarc "Return to title details">
 
-<!ENTITY opac.holds.placeHold "Place a hold on the following item">
+<!ENTITY opac.holds.xulRecipient "Enter recipient barcode">
+<!ENTITY opac.holds.recipient "Recipient">
+<!ENTITY opac.holds.placeHold "Place Hold">
 <!ENTITY opac.holds.contactPhone "Concact telephone number">
 <!ENTITY opac.holds.concactEmail "Concact email address">
 <!ENTITY opac.holds.pickupLocation "Pickup location">

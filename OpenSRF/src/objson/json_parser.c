@@ -718,6 +718,7 @@ int json_handle_error(char* string, unsigned long* index, char* err_msg) {
 			"\nError parsing json string at charracter %c "
 			"(code %d) and index %ld\nMsg:\t%s\nNear:\t%s\n\n", 
 			string[*index], string[*index], *index, err_msg, buf );
+
 	return -1;
 }
 

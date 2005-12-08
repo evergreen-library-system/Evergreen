@@ -14,6 +14,8 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Utils::ModsParser;
+use OpenSRF::Utils::Logger;
+my $logger = "OpenSRF::Utils::Logger";
 
 use OpenSRF::Utils::Cache;
 
@@ -684,8 +686,11 @@ __PACKAGE__->register_method(
 
 sub user_retrieve_by_barcode {
 	my($self, $client, $user_session, $barcode) = @_;
-	warn "Searching for user with barcode $barcode\n";
-	my $user_obj = $apputils->check_user_session( $user_session ); 
+
+	$logger->debug("Searching for user with barcode $barcode");
+	#my $user_obj = $apputils->check_user_session( $user_session ); 
+	my ($user_obj, $evt) = $apputils->check_ses($user_session);
+	return $evt if $evt;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 

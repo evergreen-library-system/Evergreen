@@ -5,7 +5,7 @@
 
 void __osrfSystemSignalHandler( int sig );
 
-transport_client* __osrfGlobalTransportClient;
+transport_client* __osrfGlobalTransportClient = NULL;
 
 transport_client* osrfSystemGetTransportClient() {
 	return __osrfGlobalTransportClient;
