@@ -49,7 +49,7 @@ main.menu.prototype = {
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
-					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{});
+					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{'yadda':'yadda'});
 				}
 			],
 			'cmd_search_opac' : [
@@ -167,6 +167,8 @@ main.menu.prototype = {
 		frame.setAttribute('src',url);
 		panel.appendChild(frame);
 		if (content_params) {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
 			frame.contentWindow.IAMXUL = true;
 			frame.contentWindow.xulG = content_params;
 		}

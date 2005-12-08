@@ -5,8 +5,18 @@ util.deck = function (id) {
 
 	this.node = document.getElementById(id);
 
-	if (!this.node) throw('Could not find element ' + id);
-	if (this.node.nodeName != 'deck') throw(id + ' is not a deck');
+	JSAN.use('util.error'); this.error = new util.error();
+
+	if (!this.node) {
+		var error = 'util.deck: Could not find element ' + id;
+		this.error.sdump('D_ERROR',error);
+		throw(error);
+	}
+	if (this.node.nodeName != 'deck') {
+		var error = 'util.deck: ' + id + 'is not a deck';
+		this.error.sdump('D_ERROR',error);
+		throw(error);
+	}
 
 	return this;
 };
@@ -22,23 +32,23 @@ util.deck.prototype = {
 		return idx;
 	},
 
-	'set_iframe' : function (url) {
+	'set_iframe' : function (url,params,content_params) {
 		var idx = this.find_index(url);
 		if (idx>-1) {
 			this.node.selectedIndex = idx;
 		} else {
-			this.new_iframe(url);
+			this.new_iframe(url,params,content_params);
 		}
 		
 		
 	},
 
-	'reset_iframe' : function (url) {
+	'reset_iframe' : function (url,params,content_params) {
 		this.remove_iframe(url);
-		this.new_iframe(url);
+		this.new_iframe(url,params,content_params);
 	},
 
-	'new_iframe' : function (url) {
+	'new_iframe' : function (url,params,content_params) {
 		var idx = this.find_index(url);
 		if (idx>-1) throw('An iframe already exists in deck with url = ' + url);
 
@@ -47,6 +57,17 @@ util.deck.prototype = {
 		iframe.setAttribute('flex','1');
 		this.node.appendChild( iframe );
 		this.node.selectedIndex = this.node.childNodes.length - 1;
+		if (content_params) {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				this.error.sdump('D_DECK', 'frame.contentWindow = ' + frame.contentWindow + '\n');
+				iframe.contentWindow.IAMXUL = true;
+				iframe.contentWindow.xulG = content_params;
+			} catch(E) {
+				dump('E: ' + E + '\n');
+			}
+			alert('new_iframe: got here3');
+		}
 	},
 
 	'remove_iframe' : function (url) {

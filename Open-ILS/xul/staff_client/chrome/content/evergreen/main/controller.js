@@ -26,7 +26,7 @@ main.controller.prototype = {
 						var ev_type = this.control_map[i][0][j];
 						switch(ev_type) {
 							case 'render':
-								this.render_list.push( this.control_map[i][1](cmd) ); 
+								this.render_list.push( [i, this.control_map[i][1](cmd)] ); 
 							break;
 							default: cmd.addEventListener(ev_type,this.control_map[i][1],false);
 						}
@@ -37,10 +37,14 @@ main.controller.prototype = {
 		}
 	},
 
-	'render' : function() {
+	'render' : function(id) {
 		for (var i in this.render_list) {
 			try {
-				this.render_list[i]();
+				if (id) {
+					if (id == this.render_list[i][0]) this.render_list[i][1]();
+				} else {
+					this.render_list[i][1]();
+				}
 			} catch(E) {
 				var error = 'Problem in circ.checkout.render with\n' 
 					+ this.render_list[i] + '\n\n' + js2JSON(E);
