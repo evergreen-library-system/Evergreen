@@ -7,7 +7,7 @@ var api = {
 	'checkout_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.barcode' },
 	'fm_acpl_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_location.retrieve.all' },
 	'fm_actsc_retrieve_via_aou' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.all' },
-	'fm_ahr_retrieve' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retreive' },
+	'fm_ahr_retrieve' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
 	'fm_aou_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_tree.retrieve' },
 	'fm_aou_retrieve_related_via_session' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.full_path.retrieve' },
 	'fm_aout_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_types.retrieve' },
