@@ -30,7 +30,7 @@ main.menu.prototype = {
 			'cmd_new_window' : [
 				['command','keypress'],
 				function() {
-					obj.window.open('/xul/server/main/menu_frame.xul','test' + 
+					obj.window.open(urls.remote_menu_frame,'test' + 
 						obj.window.appshell_name_increment++ ,'chrome'); 
 				}
 			],
@@ -49,13 +49,13 @@ main.menu.prototype = {
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
-					obj.set_tab('/xul/server/patron/patron_barcode_entry.xul?session='+obj.w.escape(session),{});
+					obj.set_tab(urls.remtoe_patron_barcode_entry + '?session='+obj.w.escape(session),{});
 				}
 			],
 			'cmd_search_opac' : [
 				['command','keypress'],
 				function() {
-					obj.set_tab('http://dev.gapines.org/',{},{ 'authtoken' : session });
+					obj.set_tab(urls.opac,{},{ 'authtoken' : session });
 				}
 			]
 		};

@@ -58,13 +58,13 @@ OpenILS.data.prototype = {
 
 	'_fm_objects' : {
 
-		'pgt' : [ 'open-ils.actor', 'open-ils.actor.groups.retrieve', [], true ],
-		'cit' : [ 'open-ils.actor', 'open-ils.actor.user.ident_types.retrieve', [], true ],
-		'cst' : [ 'open-ils.actor', 'open-ils.actor.standings.retrieve', [], true ],
-		'acpl' : [ 'open-ils.search', 'open-ils.search.config.copy_location.retrieve.all', [], true ],
-		'ccs' : [ 'open-ils.search', 'open-ils.search.config.copy_status.retrieve.all', [], true ],
-		'aou' : [ 'open-ils.actor', 'open-ils.actor.org_tree.retrieve', [], true ],
-		'aout' : [ 'open-ils.actor', 'open-ils.actor.org_types.retrieve', [], true ]	
+		'pgt' : [ api.fm_pgt_retrieve.app, api.fm_pgt_retrieve.method, [], true ],
+		'cit' : [ api.fm_cit_retrieve.app, api.fm_cit_retrieve.method, [], true ],
+		'cst' : [ api.fm_cst_retrieve.app, api.fm_cst_retrieve.method, [], true ],
+		'acpl' : [ api.fm_acpl_retrieve.app, api.fm_acpl_retrieve.method, [], true ],
+		'ccs' : [ api.fm_ccs_retrieve.app, api.fm_ccs_retrieve.method, [], true ],
+		'aou' : [ api.fm_aou_retrieve.app, api.fm_aou_retrieve.method, [], true ],
+		'aout' : [ api.fm_aout_retrieve.app, api.fm_aout_retrieve.method, [], true ]	
 	},
 
 	'stash_retrieve' : function() {
@@ -140,8 +140,8 @@ OpenILS.data.prototype = {
 				var f = gen_fm_retrieval_func(
 					'au',
 					[
-						'open-ils.search',
-						'open-ils.search.actor.user.session',
+						api.fm_au_retrieve_via_session.app,
+						api.fm_au_retrieve_via_session.method,
 						[ obj.session ],
 						false
 					]
@@ -174,8 +174,8 @@ OpenILS.data.prototype = {
 		this.chain.push(
 			gen_fm_retrieval_func('my_aou', 
 				[ 
-					'open-ils.actor', 
-					'open-ils.actor.org_unit.full_path.retrieve', 
+					api.fm_aou_retrieve_related_via_session.app,
+					api.fm_aou_retrieve_related_via_session.method,
 					[ obj.session ],
 					true
 				]
@@ -189,8 +189,8 @@ OpenILS.data.prototype = {
 
 				gen_fm_retrieval_func( 'my_actsc', 
 					[ 
-						'open-ils.circ', 
-						'open-ils.circ.stat_cat.actor.retrieve.all', 
+						api.fm_actsc_retrieve_via_aou.app,
+						api.fm_actsc_retrieve_via_aou.method,
 						[ obj.session, obj.list.au.home_ou() ],
 						true
 					]

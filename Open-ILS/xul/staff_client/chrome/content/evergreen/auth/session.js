@@ -16,16 +16,16 @@ auth.session.prototype = {
 
 		try {
 			var init = this.network.request(
-				'open-ils.auth',
-				'open-ils.auth.authenticate.init',
+				api.auth_init.app,
+				api.auth_init.method,
 				[ this.view.name_prompt.value ]
 			);
 
 			if (init) {
 
 				var robj = this.network.request(
-					'open-ils.auth',
-					'open-ils.auth.authenticate.complete',
+					api.auth_complete.app,
+					api.auth_complete.method,
 					[ 
 						this.view.name_prompt.value,
 						hex_md5(

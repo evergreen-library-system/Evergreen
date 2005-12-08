@@ -51,7 +51,8 @@ function main_init() {
 				G.OpenILS.data.stash('list','hash');
 				G.OpenILS.data._debug_stash();
 
-				G.window.open('http://dev.gapines.org/xul/server/main/menu_frame.xul?session='+mw.escape(G.auth.session.key),'test','chrome');
+				G.window.open(urls.opac + urls.remote_menu_frame 
+					+ '?session='+mw.escape(G.auth.session.key),'test','chrome');
 			}
 			G.OpenILS.data.init();
 		}

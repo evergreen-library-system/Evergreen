@@ -172,15 +172,15 @@ circ.checkout.prototype = {
 		try {
 			var barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
 			var permit = obj.network.request(
-				'open-ils.circ',
-				'open-ils.circ.permit_checkout',
+				api.checkout_permit_via_barcode.app,
+				api.checkout_permit_via_barcode.method,
 				[ obj.session, barcode, obj.patron_id, 0 ]
 			);
 
 			if (permit.status == 0) {
 				var checkout = obj.network.request(
-					'open-ils.circ',
-					'open-ils.circ.checkout.barcode',
+					api.checkout_via_barcode.app,
+					api.checkout_via_barcode.method,
 					[ obj.session, barcode, obj.patron_id ]
 				);
 				obj.list.append(

@@ -44,7 +44,8 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							obj.deck.set_iframe(
-								'/xul/server/circ/checkout.xul?session='
+								urls.remote_checkout
+								+ '?session='
 								+ window.escape( obj.session )
 								+ '&patron_id='
 								+ window.escape( obj.patron.id() )
@@ -491,8 +492,8 @@ patron.display.prototype = {
 				function() {
 					try {
 						var patron = obj.network.request(
-							'open-ils.actor',
-							'open-ils.actor.user.fleshed.retrieve_by_barcode',
+							api.fm_au_retrieve_via_barcode.app,
+							api.fm_au_retrieve_via_barcode.method,
 							[ obj.session, obj.barcode ]
 						);
 						if (patron) {
@@ -523,8 +524,8 @@ patron.display.prototype = {
 				function() {
 					try {
 						var bills = obj.network.request(
-							'open-ils.actor',
-							'open-ils.actor.user.transactions.have_balance',
+							api.fm_mobts_having_balance.app,
+							api.fm_mobts_having_balance.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						//FIXME// obj.patron.bills( bills );
@@ -542,8 +543,8 @@ patron.display.prototype = {
 				function() {
 					try {
 						var checkouts = obj.network.request(
-							'open-ils.circ',
-							'open-ils.circ.actor.user.checked_out',
+							api.blob_checkouts_retrieve.app,
+							api.blob_checkouts_retrieve.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.checkouts( checkouts );
@@ -560,8 +561,8 @@ patron.display.prototype = {
 				function() {
 					try {
 						var holds = obj.network.request(
-							'open-ils.circ',
-							'open-ils.circ.holds.retrieve',
+							api.fm_ahr_retrieve.app,
+							api.fm_ahr_retrieve.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.hold_requests( holds );
@@ -579,7 +580,7 @@ patron.display.prototype = {
 			// Do it
 			JSAN.use('util.exec'); obj.exec = new util.exec();
 			obj.exec.on_error = function(E) {
-				location.href = '/xul/server/patron/patron_barcode_entry.xul?session=' + window.escape(obj.session);
+				location.href = urls.remote_patron_barcode_entry + '?session=' + window.escape(obj.session);
 				alert('FIXME: Need better alert and error handling.\nProblem with barcode.\n' + E);
 			}
 			this.exec.chain( chain );
