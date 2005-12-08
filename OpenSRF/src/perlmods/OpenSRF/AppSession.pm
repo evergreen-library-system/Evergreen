@@ -531,7 +531,7 @@ sub send {
 
 	
 		$logger->debug( "AppSession sending ".$msg->type." to ".$self->remote_id.
-			" with threadTrace [".$msg->threadTrace."]", INFO );
+			" with threadTrace [".$msg->threadTrace."]" );
 
 	}
 	

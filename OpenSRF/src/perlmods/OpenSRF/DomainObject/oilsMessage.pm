@@ -310,7 +310,7 @@ sub do_client {
 		$self->payload->throw();
 	}
 
-	$log->debug("oilsMessage passing to Application: " . $self->type." : ".$session->remote_id, INFO );
+	$log->debug("oilsMessage passing to Application: " . $self->type." : ".$session->remote_id );
 
 	return 1;
 

@@ -87,7 +87,7 @@ sub handler {
 	}
 
 	if ($session->last_message_type eq 'REQUEST') {
-		$log->debug( "We got a REQUEST: ". $app_msg->method, INFO );
+		$log->debug( "We got a REQUEST: ". $app_msg->method);
 
 		my $method_name = $app_msg->method;
 		$log->debug( " * Looking up $method_name inside $app", DEBUG);

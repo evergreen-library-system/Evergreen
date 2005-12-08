@@ -137,7 +137,7 @@ sub process_request {
 		$logger->debug( "Looping on zombies " . $x++ , DEBUG);
 	}
 
-	$logger->debug( "Timed out, disconnected, or auth failed", INFO );
+	$logger->debug( "Timed out, disconnected, or auth failed" );
 	$app_session->kill_me if ($app_session);
 
 	$0 = $orig;
