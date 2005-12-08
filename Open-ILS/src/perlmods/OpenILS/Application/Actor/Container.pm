@@ -5,96 +5,11 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Perm;
 use Data::Dumper;
 use OpenSRF::EX qw(:try);
-use OpenILS::EX;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $logger = "OpenSRF::Utils::Logger";
 
 sub initialize { return 1; }
-
-=head comment
-__PACKAGE__->register_method(
-	method	=> "bucket_retrieve",
-	api_name	=> "open-ils.actor.container.biblio_record_entry_bucket.retrieve_by_name",
-	notes		=> <<"	NOTES");
-		Retrieves a BREB by name.  PARAMS(authtoken, bucketOwnerId, bucketName)
-		If requestor ID is different than bucketOwnerId, requestor must have
-		VIEW_CONTAINER permissions.
-	NOTES
-
-__PACKAGE__->register_method(
-	method	=> "bucket_retrieve",
-	api_name	=> "open-ils.actor.container.biblio_record_entry_bucket.fleshed.retrieve_by_name",
-	notes		=> <<"	NOTES");
-		see: open-ils.actor.container.biblio_record_entry_bucket.retrieve_by_name
-		Returns an array of { bucket : <bucketObj>, items : [ <I1>, <I2>, ...] } objects
-	NOTES
-
-__PACKAGE__->register_method(
-	method	=> "bucket_retrieve",
-	api_name	=> "open-ils.actor.container.biblio_record_entry_bucket.retrieve_by_user",
-	notes		=> <<"	NOTES");
-		Returns all BRE Buckets that belong to the given user. 
-		PARAMS( authtoken, bucketOwnerId )
-		If requestor ID is different than bucketOwnerId, requestor must have
-		VIEW_CONTAINER permissions.
-	NOTES
-
-__PACKAGE__->register_method(
-	method	=> "bucket_retrieve",
-	api_name	=> "open-ils.actor.container.biblio_record_entry_bucket.fleshed.retrieve_by_user",
-	notes		=> <<"	NOTES");
-		see: open-ils.actor.container.biblio_record_entry_bucket.retrieve_by_user
-		Returns an array of { bucket : <bucketObj>, items : [ <I1>, <I2>, ...] } objects
-	NOTES
-
-
-
-sub bucket_retrieve {
-	my($self, $client, $authtoken, $userid, $name) = @_;
-
-	my ($staff, $user, $perm) = 
-		$apputils->handle_requestor( $authtoken, $userid, 'VIEW_CONTAINER');
-	return $perm if $perm;
-
-	$logger->activity("User " . $staff->id . " retrieving buckets for user $user");
-
-	my $svc = 'open-ils.storage';
-	my $meth = 'open-ils.storage.direct.container';
-	my $bibmeth = "$meth.biblio_record_entry_bucket";
-	my $cnmeth = "$meth.biblio_record_entry_bucket";
-	my $copymeth = "$meth.biblio_record_entry_bucket";
-	my $usermeth = "$meth.biblio_record_entry_bucket";
-
-	my $buckets;
-	my $items;
-	my $resp = [];
-
-	if( $self->api_name =~ /biblio/ ) {
-
-		if( $self->api_name =~ /retrieve_by_user/ ) {
-			$buckets =  $apputils->simplereq( $svc, 
-				"$bibmeth.search.owner.atomic", $user ); }
-	
-		if( $self->api_name =~ /retrieve_by_name/ ) {
-			$buckets = $apputils->simplereq( $svc, 
-				"$bibmeth.search_where.atomic", { name => $name, owner => $user } ); }
-
-		if( $self->api_name =~ /fleshed/ ) {
-			for my $b (@$buckets) {
-				next unless $b;
-				$items = $apputils->simplereq( $svc,
-					"$bibmeth"."_item.search.bucket.atomic", $b->id );
-				push( @$resp, { bucket => $b , items => $items });
-			}
-		}
-	}
-
-	return $resp if ($self->api_name =~ /fleshed/);
-	return $buckets;
-}
-=cut
-
 
 my $svc = 'open-ils.storage';
 my $meth = 'open-ils.storage.direct.container';
@@ -116,11 +31,12 @@ __PACKAGE__->register_method(
 sub bucket_retrieve_all {
 	my($self, $client, $authtoken, $userid) = @_;
 
-	my ($staff, $user, $perm) = 
+	my ($staff, $user, $evt) = 
 		$apputils->handle_requestor( $authtoken, $userid, 'VIEW_CONTAINER');
-	return $perm if $perm;
+	return $evt if $evt;
 
-	$logger->activity("User " . $staff->id . " retrieving buckets for user $user");
+	$logger->debug("User " . $staff->id . 
+		" retrieving all buckets for user $user");
 
 	my %buckets;
 
@@ -137,8 +53,9 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.container.bucket.flesh",
 	notes		=> <<"	NOTES");
 		Fleshes a bucket by id
-		PARAMS(authtoken, bucketId, bucketype)
-		Types include biblio, callnumber, copy, and user
+		PARAMS(authtoken, bucketId, buckeclass)
+		bucketclasss include biblio, callnumber, copy, and user.  
+		bucketclass defaults to biblio.
 		If requestor ID is different than bucketOwnerId, requestor must have
 		VIEW_CONTAINER permissions.
 	NOTES
@@ -150,6 +67,8 @@ sub bucket_flesh {
 	my( $staff, $evt ) = $apputils->check_ses($authtoken);
 	return $evt if $evt;
 
+	$logger->debug("User " . $staff->id . " retrieving bucket $bucket");
+
 	my $meth = $bibmeth;
 	$meth = $cnmeth if $type eq "callnumber";
 	$meth = $copymeth if $type eq "copy";
@@ -157,8 +76,6 @@ sub bucket_flesh {
 
 	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
 	if(!$bkt) {return undef};
-
-	$logger->debug("Fetching fleshed bucket $bucket");
 
 	if( $bkt->owner ne $staff->id ) {
 		my $userobj = $apputils->fetch_user($bkt->owner);
@@ -171,6 +88,50 @@ sub bucket_flesh {
 		"$meth"."_item.search.bucket.atomic", $bucket ) );
 
 	return $bkt;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "bucket_retrieve_class",
+	api_name	=> "open-ils.actor.container.bucket.retrieve_by_class",
+	notes		=> <<"	NOTES");
+		Retrieves all un-fleshed buckets by class assigned to given user 
+		PARAMS(authtoken, bucketOwnerId, class [, type])
+		class can be one of "biblio", "callnumber", "copy", "user"
+		The optional "type" parameter allows you to limit the search by 
+		bucket type.  
+		If bucketOwnerId is not defined, the authtoken is used as the
+		bucket owner.
+		If requestor ID is different than bucketOwnerId, requestor must have
+		VIEW_CONTAINER permissions.
+	NOTES
+
+sub bucket_retrieve_class {
+	my( $self, $client, $authtoken, $userid, $class, $type ) = @_;
+
+	my ($staff, $user, $evt) = 
+		$apputils->handle_requestor( $authtoken, $userid, 'VIEW_CONTAINER');
+	return $evt if $evt;
+
+	$logger->debug("User " . $staff->id . 
+		" retrieving buckets for $user [class=$class, type=$type]");
+
+	my $meth = $bibmeth;
+	$meth = $cnmeth if $class eq "callnumber";
+	$meth = $copymeth if $class eq "copy";
+	$meth = $usermeth if $class eq "user";
+
+	my $buckets;
+
+	if( $type ) {
+		$buckets = $apputils->simplereq( $svc,
+			"$meth.search_where.atomic", { owner => $user, btype => $type } );
+	} else {
+		$buckets = $apputils->simplereq( $svc,
+			"$meth.search_where.atomic", { owner => $user } );
+	}
+
+	return $buckets;
 }
 
 

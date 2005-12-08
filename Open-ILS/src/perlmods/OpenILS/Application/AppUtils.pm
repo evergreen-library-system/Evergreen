@@ -312,14 +312,15 @@ sub fetch_user {
 
 # handy tool to handle the ever-recurring situation of someone requesting 
 # something on someone else's behalf (think staff member creating something for a user)
-# returns ($requestor, $targetuser_id, $failed_perm, $exception)
-# $failed_perm is undef if perms are OK
-# exception is OK if there was no exception
+# returns ($requestor, $targetuser_id, $event );
+# $event may be a PERM_FAILURE event or a NO_SESSION event
 # $targetuser == $staffuser->id when $targetuser is undefined.
 sub handle_requestor {
 	my( $self, $authtoken, $targetuser, @permissions ) = @_;
 
-	my $requestor = $self->check_user_session($authtoken); 
+	my( $requestor, $evt ) = $self->check_ses($authtoken);
+	return (undef, undef, $evt) if $evt;
+
 	$targetuser = $requestor->id unless defined $targetuser;
 	my $userobj = $requestor; 
 	$userobj = $self->fetch_user($targetuser) 
