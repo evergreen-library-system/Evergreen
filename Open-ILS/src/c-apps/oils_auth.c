@@ -394,6 +394,8 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 		if(cacheObj) {
 			osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
 			jsonObjectFree(cacheObj);
+		} else {
+			osrfAppRespondComplete( ctx, NULL ); /* should be event.. */
 		}
 		free(key);
 	}
