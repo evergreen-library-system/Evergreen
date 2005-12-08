@@ -6,7 +6,13 @@ main.list = function (id) {
 	this.node = document.getElementById(id);
 
 	if (!this.node) throw('Could not find element ' + id);
-        if (this.node.nodeName != 'tree') throw(id + ' is not a tree');
+	switch(this.node.nodeName) {
+		case 'tree' : break;
+		case 'richlistbox' :
+		case 'listbox' : 
+			throw(this.node.nodeName + ' not yet supported'); break;
+		default: throw(this.node.nodeName + ' not supported'); break;
+	}
 
 	JSAN.use('util.error'); this.error = new util.error();
 
@@ -51,6 +57,13 @@ main.list.prototype = {
 	},
 
 	'append' : function (params) {
+		switch (this.node.nodeName) {
+			'tree' : this.append_to_tree(params); break;
+			default: throw('NYI: Need .append() for ' . this.node.nodeName); break;
+		}
+	},
+
+	'append_to_tree' : function (params) {
 
 		if (typeof params.row == 'undefined') throw('main.list.append: Object must contain a row');
 
