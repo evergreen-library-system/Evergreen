@@ -66,7 +66,6 @@ util.deck.prototype = {
 			} catch(E) {
 				dump('E: ' + E + '\n');
 			}
-			alert('new_iframe: got here3');
 		}
 	},
 
