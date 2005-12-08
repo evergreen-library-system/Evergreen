@@ -60,7 +60,7 @@ util.deck.prototype = {
 		if (content_params) {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				this.error.sdump('D_DECK', 'frame.contentWindow = ' + frame.contentWindow + '\n');
+				this.error.sdump('D_DECK', 'frame.contentWindow = ' + iframe.contentWindow + '\n');
 				iframe.contentWindow.IAMXUL = true;
 				iframe.contentWindow.xulG = content_params;
 			} catch(E) {

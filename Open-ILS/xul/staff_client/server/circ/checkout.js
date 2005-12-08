@@ -201,6 +201,8 @@ circ.checkout.prototype = {
 				if (typeof window.xulG == 'object' && typeof window.xulG.on_checkout == 'function') {
 					obj.error.sdump('D_CIRC','circ.checkout: Calling external .on_checkout()\n');
 					window.xulG.on_checkout(checkout);
+				} else {
+					obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
 				}
 
 			} else {
@@ -215,6 +217,8 @@ circ.checkout.prototype = {
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_failure == 'function') {
 				obj.error.sdump('D_CIRC','circ.checkout: Calling external .on_failure()\n');
 				window.xulG.on_failure(E);
+			} else {
+				obj.error.sdump('D_CIRC','circ.checkout: No external .on_failure()\n');
 			}
 		}
 
@@ -223,11 +227,6 @@ circ.checkout.prototype = {
 	'on_checkout' : function() {
 		this.controller.view.checkout_barcode_entry_textbox.value = '';
 		this.controller.view.checkout_barcode_entry_textbox.focus();
-		dump('******************************************************************************\n');
-		dump('window = ' + window + '\n');
-		dump('window.IAMXUL = ' + window.xulG + '\n');
-		dump('window.xulG = ' + window.xulG + '\n');
-		dump('window.xulG.on_checkout = ' + window.xulG.on_checkout + '\n');
 	},
 
 	'on_failure' : function() {
