@@ -45,7 +45,7 @@ cat.opac.prototype = {
 		obj.controller.view.opac_browser.contentWindow.IAMXUL = true;
 
 		if (window.xulG) obj.controller.view.opac_browser.contentWindow.xulG = xulG;
-	}
+	},
 	
 	'buildProgressListener' : function() {
 
