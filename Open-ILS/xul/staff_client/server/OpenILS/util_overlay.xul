@@ -5,16 +5,28 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<scripts id="openils_util_scripts">
+		<script>dump('starting openils_util_overlay\n');</script>
+		<script>dump('loading /xul/server/main/constants.js \n');</script>
 		<script type="text/javascript" src="/xul/server/main/constants.js" />
+		<script>dump('loading /opac/common/js/utils.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/utils.js" />
+		<script>dump('loading /opac/common/js/CGI.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/CGI.js" />
+		<script>dump('loading /opac/common/js/md5.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/md5.js" />
+		<script>dump('loading /opac/common/js/JSON.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/JSON.js" />
+		<script>dump('loading /opac/common/js/fmall.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/fmall.js" />
+		<script>dump('loading /opac/common/js/fmgen.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/fmgen.js" />
+		<script>dump('loading /opac/common/js/RemoteRequest.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
+		<script>dump('loading /opac/common/js/OrgTree.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/OrgTree.js" />
+		<script>dump('loading /opac/common/js/org_utils.js\n');</script>
 		<script type="text/javascript" src="/opac/common/js/org_utils.js" />   
+		<script>dump('finished openils_util_overlay\n');</script>
 	</scripts>
 
 </overlay>

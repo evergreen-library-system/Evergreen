@@ -2,7 +2,6 @@ dump('entering cat.opac.js\n');
 
 if (typeof cat == 'undefined') cat = {};
 cat.opac = function (params) {
-
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		JSAN.use('util.error'); this.error = new util.error();

@@ -9,7 +9,7 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
-<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
@@ -25,10 +25,12 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+
 	<script>
 	<![CDATA[
 		function my_init() {
 			try {
+
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
@@ -43,12 +45,14 @@
 				if (!url) url = urls.opac;
 
 				JSAN.use('cat.opac'); g.opac = new cat.opac();
+
 				g.opac.init( 
 					{ 
 						'url' : url,
 						'session' : session,
 					} 
 				);
+
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
