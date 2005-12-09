@@ -51,6 +51,7 @@ function main_init() {
 				G.OpenILS.data.stash('list','hash');
 				G.OpenILS.data._debug_stash();
 
+			alert('authtime = ' + G.auth.session.authtime);
 				G.window.open(urls.opac + urls.remote_menu_frame 
 					+ '?session='+mw.escape(G.auth.session.key)
 					+ '&authtime='+mw.escape(G.auth.session.authtime),
