@@ -52,7 +52,9 @@ function main_init() {
 				G.OpenILS.data._debug_stash();
 
 				G.window.open(urls.opac + urls.remote_menu_frame 
-					+ '?session='+mw.escape(G.auth.session.key),'test','chrome');
+					+ '?session='+mw.escape(G.auth.session.key)
+					+ '&authtime='+mw.escape(G.auth.session.authtime),
+					'test','chrome');
 			}
 			G.OpenILS.data.init();
 		}
