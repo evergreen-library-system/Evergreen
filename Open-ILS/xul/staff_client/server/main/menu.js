@@ -168,10 +168,14 @@ main.menu.prototype = {
 		frame.setAttribute('src',url);
 		panel.appendChild(frame);
 		if (content_params) {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
-			frame.contentWindow.IAMXUL = true;
-			frame.contentWindow.xulG = content_params;
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
+				frame.contentWindow.IAMXUL = true;
+				frame.contentWindow.xulG = content_params;
+			} catch(E) {
+				this.error.sdump('D_ERROR', 'main.menu: ' + E);
+			}
 		}
 		return frame;
 	}
