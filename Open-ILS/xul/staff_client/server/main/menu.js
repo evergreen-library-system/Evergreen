@@ -55,7 +55,8 @@ main.menu.prototype = {
 			'cmd_search_opac' : [
 				['command','keypress'],
 				function() {
-					obj.set_tab(urls.opac,{},{ 'authtoken' : session });
+					obj.set_tab(urls.xul_opac_wrapper,{},{ 'authtoken' : session });
+					//obj.set_tab('test.html',{},{ 'authtoken' : session });
 				}
 			]
 		};
