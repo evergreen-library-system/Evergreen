@@ -118,6 +118,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		return OK;
 	}
 
+	osrfLogDebug("URL: %s", arg );
 	ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 0, r, "URL: %s", arg );
 
 	r->allowed |= (AP_METHOD_BIT << M_GET);

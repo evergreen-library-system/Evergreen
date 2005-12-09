@@ -71,6 +71,12 @@ void osrfLogActivity( const char* msg, ... ) {
 }
 
 void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, ... ) {
+	if(!msg) return;
+	VA_LIST_TO_STRING(msg);
+	_osrfLogDetail( level, filename, line, func, VA_BUF );
+}
+
+void _osrfLogDetail( int level, char* filename, int line, char* func, char* msg ) {
 
 	if( level == OSRF_LOG_ACTIVITY && ! __osrfLogActivityEnabled ) return;
 	if( level > __osrfLogLevel ) return;
@@ -119,13 +125,11 @@ void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, 
 			break;
 	}
 
-	VA_LIST_TO_STRING(msg);
-
 	if(__osrfLogType == OSRF_LOG_TYPE_SYSLOG )
-		syslog( fac | lvl, "[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, VA_BUF );
+		syslog( fac | lvl, "[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, msg );
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
-		_osrfLogToFile("[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, VA_BUF );
+		_osrfLogToFile("[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, msg );
 
 }
 

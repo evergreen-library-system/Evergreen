@@ -22,7 +22,7 @@
 #define OSRF_LOG_GO(m,l)		\
 	if(!m) return;					\
 	VA_LIST_TO_STRING(m);		\
-	osrfLogDetail( l, NULL, -1, NULL, VA_BUF );
+	_osrfLogDetail( l, NULL, -1, NULL, VA_BUF );
 	
 
 
@@ -60,6 +60,9 @@ void osrfLogSetActivityEnabled( int enabled );
 /* Use this for logging detailed message containing the filename, line number
  * and function name in addition to the usual level and message */
 void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, ... );
+
+/** Actually does the logging */
+void _osrfLogDetail( int level, char* filename, int line, char* func, char* msg );
 
 void _osrfLogToFile( char* msg, ... );
 
