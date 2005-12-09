@@ -56,7 +56,9 @@ main.menu.prototype = {
 			'cmd_search_opac' : [
 				['command','keypress'],
 				function() {
-					obj.set_tab(urls.xul_opac_wrapper,{},{ 'authtoken' : session, 'authtime' : authtime });
+					var content_params = { 'authtoken' : session, 'authtime' : authtime };
+					this.error.sdump('D_MENU','content_params = ' + content_params);
+					obj.set_tab(urls.xul_opac_wrapper,{},content_params);
 				}
 			]
 		};
@@ -173,6 +175,8 @@ main.menu.prototype = {
 				this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
 				frame.contentWindow.IAMXUL = true;
 				frame.contentWindow.xulG = content_params;
+				this.error.sdump('D_MENU','content_params ' + js2JSON(content_params) +
+				'\nframe.contentWindow.xulG = ' + js2JSON(frame.contentWindow.xulG) );
 			} catch(E) {
 				this.error.sdump('D_ERROR', 'main.menu: ' + E);
 			}
