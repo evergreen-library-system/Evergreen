@@ -405,8 +405,8 @@ B<OpenSRF::DomainObject::oilsException>
 =cut
 
 
-$status = 'Method not found';
-$statusCode = STATUS_NOTFOUND;
+$status = 'A server error occured during method execution';
+$statusCode = STATUS_INTERNALSERVERERROR;
 
 # -------------------------------------------
 

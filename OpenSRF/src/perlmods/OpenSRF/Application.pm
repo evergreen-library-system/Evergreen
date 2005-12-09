@@ -133,7 +133,9 @@ sub handler {
 			my $resp;
 			try {
 				my $start = time();
+				warn "About to run...\n";
 				$resp = $coderef->run( $appreq, @args); 
+				warn "Done running...\n";
 				my $time = sprintf '%.3f', time() - $start;
 				$log->debug( "Method duration for {$method_name}:  ". $time, INFO );
 				if( defined( $resp ) ) {
@@ -145,6 +147,8 @@ sub handler {
 				}
 			} catch Error with {
 				my $e = shift;
+				warn "Caught error from 'run' method: $e\n";
+
 				if(UNIVERSAL::isa($e,"Error")) {
 					$e = $e->stringify();
 				} 
@@ -401,23 +405,19 @@ sub run {
 		} catch Error with {
 			my $e = shift;
 			$err = $e;
-			warn "Caught Error in Application: $e\n";
-
-			if( UNIVERSAL::isa($e,"Error")) {
-				warn "Exception is:\n " . $e->stringify() . "\n";
-			}
+			warn "Method 'run' catching error: $e\n";
 
 			if( ref($self) eq 'HASH') {
-				warn $self;
 				$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n", ERROR);
 			}
 		};
 
 		if($err) {
 			if(UNIVERSAL::isa($err,"Error")) { 
-				throw $err ($err->stringify); 
+				warn "Throwing from method run:\n$err\n------------------\n";
+				throw $err;
 			} else {
-				die $err; 
+				die $err->stringify; 
 			}
 		}
 
