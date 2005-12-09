@@ -19,7 +19,7 @@ circ.checkout.prototype = {
 		obj.session = params['session'];
 		obj.patron_id = params['patron_id'];
 
-		JSAN.use('main.list'); obj.list = new main.list('checkout_list');
+		JSAN.use('util.list'); obj.list = new util.list('checkout_list');
 		//FIXME//getString used to wrap StringBundles, but we need to do the entity/div thing
 		function getString(s) { return obj.OpenILS.data.entities[s]; }
 		obj.list.init(

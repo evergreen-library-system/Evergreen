@@ -1,7 +1,7 @@
-dump('entering main/list.js\n');
+dump('entering util.list.js\n');
 
 if (typeof main == 'undefined') main = {};
-main.list = function (id) {
+util.list = function (id) {
 
 	this.node = document.getElementById(id);
 
@@ -19,7 +19,7 @@ main.list = function (id) {
 	return this;
 };
 
-main.list.prototype = {
+util.list.prototype = {
 
 	'init' : function (params) {
 
@@ -28,7 +28,7 @@ main.list.prototype = {
 		this.prebuilt = false;
 		if (typeof params.prebuilt != 'undefined') this.prebuilt = params.prebuilt;
 
-		if (typeof params.columns == 'undefined') throw('main.list.init: No columns');
+		if (typeof params.columns == 'undefined') throw('util.list.init: No columns');
 		this.columns = params.columns;
 
 		if (this.prebuilt) {
@@ -65,9 +65,9 @@ main.list.prototype = {
 
 	'append_to_tree' : function (params) {
 
-		if (typeof params.row == 'undefined') throw('main.list.append: Object must contain a row');
+		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
 
-		dump('main.list.append: params = ' + js2JSON(params) + '\n');
+		dump('util.list.append: params = ' + js2JSON(params) + '\n');
 
 		var treeitem = document.createElement('treeitem');
 		this.treechildren.appendChild( treeitem );
@@ -100,4 +100,4 @@ main.list.prototype = {
 	}
 
 }
-dump('exiting main/list.js\n');
+dump('exiting util.list.js\n');
