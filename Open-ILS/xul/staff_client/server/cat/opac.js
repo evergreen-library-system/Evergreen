@@ -3,6 +3,7 @@ dump('entering cat.opac.js\n');
 if (typeof patron == 'undefined') patron = {};
 cat.opac = function (params) {
 
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 	JSAN.use('util.error'); this.error = new util.error();
 }
 
