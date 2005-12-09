@@ -17,7 +17,7 @@ var api = {
 	'fm_cit_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
 	'fm_cst_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },
 	'fm_mobts_having_balance' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
-	'fm_pgt_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' }
+	'fm_pgt_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' },
 }
 
 var urls = {
@@ -30,5 +30,8 @@ var urls = {
 	'remote_patron_edit' : 'data:text/html,<h1>Edit Here</h1>',
 	'remote_patron_holds' : 'data:text/html,<h1>Holds Here</h1>',
 	'remote_patron_info' : 'data:text/html,<h1>Info Here</h1>',
-	'remote_patron_items' : 'data:text/html,<h1>Items Here</h1>'
+	'remote_patron_items' : 'data:text/html,<h1>Items Here</h1>',
+	'remote_patron_search' : '/xul/server/patron/search.xul',
+	'remote_patron_summary' : '/xul/server/patron/summary.xul',
+	'xul_opac_wrapper' : '/xul/server/cat/opac.xul',
 }
