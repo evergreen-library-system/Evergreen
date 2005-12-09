@@ -68,7 +68,7 @@
 		<command id="cmd_broken" />
 	</commandset>
 
-	<browser id="opac_browser" />
+	<browser id="opac_browser" flex="1"/>
 
 </window>
 
