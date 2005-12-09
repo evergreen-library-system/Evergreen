@@ -1,6 +1,6 @@
 dump('entering cat.opac.js\n');
 
-if (typeof patron == 'undefined') patron = {};
+if (typeof patron == 'undefined') cat = {};
 cat.opac = function (params) {
 
 	try {
