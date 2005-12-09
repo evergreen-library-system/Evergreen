@@ -25,6 +25,13 @@
 		</desc>
 	</event>
 
+	<event code='1002' textcode='USER_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a user from the system and the user
+			was not found.
+		</desc>
+	</event>
+
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc> 
 			Permission Error.  * The object returning this code shall also 

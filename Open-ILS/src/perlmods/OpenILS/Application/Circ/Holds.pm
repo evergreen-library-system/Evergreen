@@ -22,6 +22,7 @@ my $apputils = "OpenILS::Application::AppUtils";
 use OpenILS::EX;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
+use OpenILS::Event;
 
 
 
@@ -49,7 +50,8 @@ sub create_hold {
 	my( $self, $client, $login_session, @holds) = @_;
 
 	if(!@holds){return 0;}
-	my $user = $apputils->check_user_session($login_session);
+	my( $user, $evt ) = $apputils->check_ses($login_session);
+	return $evt if $evt;
 
 
 	my $holds;
@@ -69,6 +71,8 @@ sub create_hold {
 
 		my $recipient;
 		if($user->id ne $hold->usr) {
+			$recipient = $apputils->fetch_user($hold->usr);
+			if(!$recipient) { return OpenILS::Event->new('USER_NOT_FOUND'); }
 
 		} else {
 			$recipient = $user;
@@ -81,7 +85,7 @@ sub create_hold {
 
 		# see if the requestor even has permission to request
 		if($hold->requestor ne $hold->usr) {
-			$perm = _check_request_holds_perm($type, $user->id, $user->home_ou);
+			$perm = _check_request_holds_perm($user->id, $user->home_ou);
 			if($perm) { return $perm; }
 		}
 
@@ -118,24 +122,29 @@ sub create_hold {
 sub _check_holds_perm {
 	my($type, $user_id, $org_id) = @_;
 
+	my $evt;
 	if($type eq "M") {
-		if($apputils->check_user_perms($user_id, $org_id, "MR_HOLDS")) {
-			return OpenILS::Perm->new("MR_HOLDS");
+		if($evt = $apputils->check_perms(
+			$user_id, $org_id, "MR_HOLDS")) {
+			return $evt;
 		} 
 
 	} elsif ($type eq "T") {
-		if($apputils->check_user_perms($user_id, $org_id, "TITLE_HOLDS")) {
-			return OpenILS::Perm->new("TITLE_HOLDS");
+		if($evt = $apputils->check_perms(
+			$user_id, $org_id, "TITLE_HOLDS")) {
+			return $evt;
 		}
 
 	} elsif($type eq "V") {
-		if($apputils->check_user_perms($user_id, $org_id, "VOLUME_HOLDS")) {
-			return OpenILS::Perm->new("VOLUME_HOLDS");
+		if($evt = $apputils->check_perms(
+			$user_id, $org_id, "VOLUME_HOLDS")) {
+			return $evt;
 		}
 
 	} elsif($type eq "C") {
-		if($apputils->check_user_perms($user_id, $org_id, "COPY_HOLDS")) {
-			return OpenILS::Perm->new("COPY_HOLDS");
+		if($evt = $apputils->check_perms(
+			$user_id, $org_id, "COPY_HOLDS")) {
+			return $evt;
 		}
 	}
 
@@ -146,16 +155,18 @@ sub _check_holds_perm {
 sub _check_request_holds_perm {
 	my $user_id = shift;
 	my $org_id = shift;
-	if($apputils->check_user_perms($user_id, $org_id, "REQUEST_HOLDS")) {
-		return OpenILS::Perm->new("REQUEST_HOLDS");
+	if(my $evt = $apputils->check_perms(
+		$user_id, $org_id, "REQUEST_HOLDS")) {
+		return $evt;
 	}
 }
 
 sub _check_request_holds_override {
 	my $user_id = shift;
 	my $org_id = shift;
-	if($apputils->check_user_perms($user_id, $org_id, "REQUEST_HOLDS_OVERRIDE")) {
-		return OpenILS::Perm->new("REQUEST_HOLDS_OVERRIDE");
+	if(my $evt = $apputils->check_perms(
+		$user_id, $org_id, "REQUEST_HOLDS_OVERRIDE")) {
+		return $evt;
 	}
 }
 

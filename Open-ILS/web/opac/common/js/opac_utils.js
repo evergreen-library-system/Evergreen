@@ -616,8 +616,8 @@ function checkILSEvent(obj) {
 		return parseInt(obj.ilsevent);
 	return null;
 }
-function alertILSEvent(code) {
-	alert( $('ilsevent.' + code).innerHTML );
+function alertILSEvent(code, msg) {
+	alert( msg + '\n' + $('ilsevent.' + code).innerHTML );
 }
 
 

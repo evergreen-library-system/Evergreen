@@ -30,6 +30,8 @@
 		ILS Events
 		======================================================================================= -->
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
+<!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
+<!ENTITY ilsevent.1002 "User was not found in the database">
 <!ENTITY ilsevent.5000 "Permission Denied">
 
 <!--	======================================================================================= 

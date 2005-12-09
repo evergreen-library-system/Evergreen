@@ -19,8 +19,9 @@ function holdsHandleStaff() {
 function _holdsHandleStaff() {
 	var barcode = $('xul_recipient_barcode').value;
 	var user = grabUserByBarcode( G.user.session, barcode );
-	if(!user) {
-		alert( '(' + barcode + ') => ' + $('user_not_found').innerHTML );
+	var code = checkILSEvent(user);
+	if(code || !user) {
+		alertILSEvent(code, barcode);
 		showCanvas();
 		return;
 	}
@@ -36,8 +37,8 @@ function holdsDrawWindow(recid, type) {
 	}	
 	currentHoldRecord = recid;
 	
-	//if(isXUL() && holdRecipient == null ) { 
-	if(holdRecipient == null ) { 
+	if(isXUL() && holdRecipient == null ) { 
+	//if(holdRecipient == null ) { 
 		holdsHandleStaff();
 		return;
 	}

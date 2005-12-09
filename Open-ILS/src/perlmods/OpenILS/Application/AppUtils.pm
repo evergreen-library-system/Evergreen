@@ -40,7 +40,7 @@ sub start_db_session {
 sub check_user_perms {
 	my($self, $user_id, $org_id, @perm_types ) = @_;
 
-	warn "Checking perm with user : $user_id , org: $org_id, @perm_types\n";
+	$logger->debug("Checking perms with user : $user_id , org: $org_id, @perm_types");
 
 	throw OpenSRF::EX::ERROR ("Invalid call to check_user_perms()")
 		unless( defined($user_id) and defined($org_id) and @perm_types); 
@@ -136,10 +136,19 @@ sub check_user_session {
 	my $response = $request->recv();
 
 	if(!$response) {
-		throw OpenSRF::EX::User ("Session [$user_session] cannot be authenticated" );
+		throw OpenSRF::EX::User 
+			("Error communication with storage server");
 	}
 
-	if($response->isa("OpenSRF::EX")) {
+	if( ref($response) eq 'HASH' ) {
+		if(defined($response->{ilsevent}) and $response->{ilsevent} ne '0' ) {
+			throw OpenSRF::EX::ERROR 
+				("Session [$user_session] cannot be authenticated" );
+		}
+	}
+
+
+	if(ref($response) and $response->isa("OpenSRF::EX")) {
 		throw $response ($response->stringify);
 	}
 

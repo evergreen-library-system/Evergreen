@@ -702,12 +702,13 @@ sub user_retrieve_by_barcode {
 
 	if(!$card || !$card->[0]) {
 		$session->disconnect();
-		return undef;
+		return OpenILS::Event->new( 'USER_NOT_FOUND' );
 	}
 
 	$card = $card->[0];
 	my $user = flesh_user($card->usr(), $session);
 	$session->disconnect();
+	if(!$user) { return OpenILS::Event->new( 'USER_NOT_FOUND' ); }
 	return $user;
 
 }
