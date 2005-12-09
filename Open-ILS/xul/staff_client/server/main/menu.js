@@ -174,11 +174,11 @@ main.menu.prototype = {
 		if (content_params) {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
+				//this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
 				frame.contentWindow.IAMXUL = true;
 				frame.contentWindow.xulG = content_params;
-				this.error.sdump('D_MENU','content_params ' + js2JSON(content_params) +
-				'\nframe.contentWindow.xulG = ' + js2JSON(frame.contentWindow.xulG) );
+				//this.error.sdump('D_MENU','content_params ' + js2JSON(content_params) +
+				//'\nframe.contentWindow.xulG = ' + js2JSON(frame.contentWindow.xulG) );
 			} catch(E) {
 				this.error.sdump('D_ERROR', 'main.menu: ' + E);
 			}

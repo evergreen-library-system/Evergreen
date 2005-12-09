@@ -43,7 +43,7 @@
 				g.cgi = new CGI();
 
 				JSAN.use('main.menu'); g.menu = new main.menu();
-				g.menu.init( { 'session' : g.cgi.param('session') } );
+				g.menu.init( { 'session' : g.cgi.param('session'), 'authtime' : g.cgi.param('authtime') } );
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
