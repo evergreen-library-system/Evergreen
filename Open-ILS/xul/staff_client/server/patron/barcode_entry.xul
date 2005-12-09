@@ -34,7 +34,7 @@
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
 
 				g.cgi = new CGI();
 				var session = g.cgi.param('session');
