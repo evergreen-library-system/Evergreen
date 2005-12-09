@@ -21,16 +21,17 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-        <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+        <script type="text/javascript">
+		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	</script>
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-
 	<script>
 	<![CDATA[
 		function my_init() {
 			try {
-
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
@@ -39,7 +40,6 @@
 				g.error.sdump('D_TRACE','my_init() for cat_opac.xul');
 
 				g.cgi = new CGI();
-
 				var session = g.cgi.param('session');
 				var url = g.cgi.param('url');
 				if (!url) url = urls.opac;
@@ -53,7 +53,6 @@
 					} 
 				);
 
-	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" + E + '\n';

@@ -36,6 +36,8 @@ cat.opac.prototype = {
 			obj.controller.view.opac_browser = document.getElementById('opac_browser');
 
 			obj.buildProgressListener();
+			dump('obj.controller.view.opac_browser.addProgressListener = ' 
+				+ obj.controller.view.opac_browser.addProgressListener + '\n');
 			obj.controller.view.opac_browser.addProgressListener(obj.progressListener,
 			                Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 
@@ -69,6 +71,7 @@ cat.opac.prototype = {
 				onStatusChange		: function(){},
 				onSecurityChange	: function(){},
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					var s = '';
 					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 					const nsIChannel = Components.interfaces.nsIChannel;
