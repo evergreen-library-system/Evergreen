@@ -14,6 +14,7 @@ try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
 function init() {
 	runEvt('common','init');
 	if( getOrigLocation() == 0 ) ORIGLOC = LOCATION;
+	if(!isFrontPage) grabUser();
 	runEvt("common", "run");
 	//checkUserSkin();
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));

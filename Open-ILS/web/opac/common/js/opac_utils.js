@@ -1,4 +1,8 @@
 /* - Request ------------------------------------------------------------- */
+
+/* define it again here for pages that don't load RemoteRequest */
+function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
+
 function Request(type) {
 	var s = type.split(":");
 	if(s[2] == "1" && isXUL()) s[1] += ".staff";
@@ -239,11 +243,9 @@ function buildSearchLink(type, string, linknode, trunc) {
 var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
 function grabUser(ses, force) {
 
+	if(!ses && isXUL()) ses = xulG['authtoken'];
 	if(!ses) ses = cookie.get(COOKIE_SES);
-	try{if(!ses && isXUL()) ses = xulG['auth_ses'][0];}catch(e){}
 	if(!ses) return false;
-
-	//alert(ses);
 
 	if(!force) 
 		if(G.user && G.user.session == ses)
@@ -253,7 +255,6 @@ function grabUser(ses, force) {
 	var request = new Request(FETCH_SESSION, ses, 1 );
 	request.send(true);
 	var user = request.result();
-	//if(checkILSEvent(user)) throw user; /* unable to grab the session */
 
 	if(checkILSEvent(user)) {
 		doLogout();
@@ -275,8 +276,9 @@ function grabUser(ses, force) {
 	if(G.user.prefs['opac.hits_per_page'])
 		COUNT = parseInt(G.user.prefs['opac.hits_per_page']);
 
-	new AuthTimer(getAuthtime()).run();
-	//new AuthTimer(20).run();
+	var at = getAuthtime();
+	if(isXUL()) at = xulG['authtime'];
+	new AuthTimer(at).run();
 
 	return G.user;
 }
@@ -571,9 +573,7 @@ function setResourcePic( img, resource ) {
 
 
 function msg( text ) {
-	try {
-		alert( text );
-	} catch(e) {}
+	try { alert( text ); } catch(e) {}
 }
 
 function findRecord(id,type) {
