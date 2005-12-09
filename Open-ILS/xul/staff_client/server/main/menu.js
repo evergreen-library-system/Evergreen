@@ -57,7 +57,7 @@ main.menu.prototype = {
 				['command','keypress'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.error.sdump('D_MENU','content_params = ' + content_params);
+					obj.error.sdump('D_MENU','content_params = ' + js2JSON(content_params));
 					obj.set_tab(urls.xul_opac_wrapper,{},content_params);
 				}
 			]
