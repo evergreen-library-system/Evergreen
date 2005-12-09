@@ -99,6 +99,7 @@ sub handler {
 
 		unless ($coderef) {
 			$session->status( OpenSRF::DomainObject::oilsMethodException->new( 
+						statusCode => STATUS_NOTFOUND(),
 						status => "Method [$method_name] not found for $app"));
 			return 1;
 		}
