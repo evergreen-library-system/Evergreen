@@ -6,61 +6,109 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
 
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
 <window id="fm_view_win" 
-	onload="try { my_init(); } catch(E) { alert(E); }"
+	onload="try { my_init(); } catch(E) { dump(E+'\n'); alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script>mw.sdump('D_TRACE','Loading fm_view.xul\n');</script>
+        <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 
 	<script>
 	<![CDATA[
 		var tree;
+		var mw = {
+			'get_list_from_tree_selection' : function() {
+				var d = document; var tree_w;
+				if (arguments.length == 1) {
+					tree_w = arguments[0];
+				} else {
+					d = arguments[0];
+					tree_w = arguments[1];
+				}
+				var hitlist;
+				if (typeof(tree_w) != 'object') {
+					hitlist = d.getElementById(tree_w);
+				} else {
+					hitlist = tree_w;
+				}
+				var list = [];
+				var start = new Object();
+				var end = new Object();
+				var numRanges = hitlist.view.selection.getRangeCount();
+				for (var t=0; t<numRanges; t++){
+					hitlist.view.selection.getRangeAt(t,start,end);
+					for (var v=start.value; v<=end.value; v++){
+						var i = hitlist.contentView.getItemAtIndex(v);
+						list.push( i );
+					}
+				}
+				return list;
+			}
+		};
 
 		function my_init() {
-			var treechildren = window.document.getElementById('tc');
-			var fm = mw.user_request('open-ils.actor','opensrf.open-ils.system.fieldmapper',[])[0];
-			var fma = []; var fmh = {} ; 
-			for (var i in fm) { fmh[ fm[i].hint ] = fm[i]; fma.push( [ fm[i].hint, i ] ); }
-			fma.sort();
-			for (var i = 0; i < fma.length; i++) {
-				var hint = fma[i][0]; var name = fma[i][1]; var o = fmh[ hint ];
-				var ti = window.document.createElement('treeitem');
-				treechildren.appendChild( ti );
-				ti.setAttribute( 'container', 'true' );
-				var tr = window.document.createElement('treerow');
-				ti.appendChild( tr );
-				var tc = window.document.createElement('treecell');
-				tr.appendChild( tc );
-				tc.setAttribute('label',hint);
-				tc = window.document.createElement('treecell');
-				tr.appendChild( tc );
-				tc.setAttribute('label', name );
-				var _treechildren = window.document.createElement( 'treechildren' );
-				ti.appendChild( _treechildren );
-				for (var j in o.fields) {
-					var _ti = window.document.createElement( 'treeitem' );
-					_treechildren.appendChild( _ti );
-					_ti.setAttribute('fm_class',hint);
-					_ti.setAttribute('fm_field',j);
-					_ti.setAttribute('fm_virtual',o.fields[j].virtual);
-					_ti.setAttribute('fm_position',o.fields[j].position);
-					var _tr = window.document.createElement( 'treerow' );
-					_ti.appendChild( _tr );
-					var _tc = window.document.createElement( 'treecell' );
-					_tr.appendChild( _tc );
-					_tc.setAttribute('label',j);
-					_tc = window.document.createElement( 'treecell' );
-					_tr.appendChild( _tc );
-					_tc.setAttribute('label','\t         Position: ' + o.fields[j].position + '  Virtual: ' + o.fields[j].virtual);
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				JSAN.use('main.network'); g.network = new main.network();
+				JSAN.use('main.window'); g.window = new main.window();
+				JSAN.use('util.functional');
+				g.error.sdump('D_TRACE','my_init() for fm_view.xul');
+
+				var treechildren = window.document.getElementById('tc');
+				var fm = g.network.request('open-ils.actor','opensrf.open-ils.system.fieldmapper',[]);
+				var fma = []; var fmh = {} ; 
+				for (var i in fm) { fmh[ fm[i].hint ] = fm[i]; fma.push( [ fm[i].hint, i ] ); }
+				fma.sort();
+				for (var i = 0; i < fma.length; i++) {
+					var hint = fma[i][0]; var name = fma[i][1]; var o = fmh[ hint ];
+					var ti = window.document.createElement('treeitem');
+					treechildren.appendChild( ti );
+					ti.setAttribute( 'container', 'true' );
+					var tr = window.document.createElement('treerow');
+					ti.appendChild( tr );
+					var tc = window.document.createElement('treecell');
+					tr.appendChild( tc );
+					tc.setAttribute('label',hint);
+					tc = window.document.createElement('treecell');
+					tr.appendChild( tc );
+					tc.setAttribute('label', name );
+					var _treechildren = window.document.createElement( 'treechildren' );
+					ti.appendChild( _treechildren );
+					for (var j in o.fields) {
+						var _ti = window.document.createElement( 'treeitem' );
+						_treechildren.appendChild( _ti );
+						_ti.setAttribute('fm_class',hint);
+						_ti.setAttribute('fm_field',j);
+						_ti.setAttribute('fm_virtual',o.fields[j].virtual);
+						_ti.setAttribute('fm_position',o.fields[j].position);
+						var _tr = window.document.createElement( 'treerow' );
+						_ti.appendChild( _tr );
+						var _tc = window.document.createElement( 'treecell' );
+						_tr.appendChild( _tc );
+						_tc.setAttribute('label',j);
+						_tc = window.document.createElement( 'treecell' );
+						_tr.appendChild( _tc );
+						_tc.setAttribute('label','\t         Position: ' + o.fields[j].position + '  Virtual: ' + o.fields[j].virtual);
+					}
 				}
+				tree = window.document.getElementById('t');
+				tree.view.selection.select( 0 ); tree.focus();
+			} catch(E) {
 			}
-			tree = window.document.getElementById('t');
-			tree.view.selection.select( 0 ); tree.focus();
 		}
 
 		function gen_cols() {
 			var data_url = 'data:application/vnd.mozilla.xul+xml,<?xml version="1.0"?><window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><?xml-stylesheet href="chrome://global/skin" type="text/css"?><vbox flex="1"><textbox id="desc" multiline="true" flex="1"/></vbox></window>';
-			var w = mw.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
+			var w = g.window.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
 			var css = '<?xml-stylesheet href="data:text/css,#a{-moz-box-flex:1;}"?>';
 			var treeitems = mw.get_list_from_tree_selection( tree );
 			setTimeout(
@@ -84,7 +132,7 @@
 
 		function gen_properties() {
 			var data_url = 'data:application/vnd.mozilla.xul+xml,<?xml version="1.0"?><window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><?xml-stylesheet href="chrome://global/skin" type="text/css"?><vbox flex="1"><textbox id="desc" multiline="true" flex="1"/></vbox></window>';
-			var w = mw.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
+			var w = g.window.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
 			var css = '<?xml-stylesheet href="data:text/css,#a{-moz-box-flex:1;}"?>';
 			var treeitems = mw.get_list_from_tree_selection( tree );
 			setTimeout(
@@ -93,7 +141,7 @@
 					for (var i = 0; i < treeitems.length; i++) {
 						var hint = treeitems[i].getAttribute('fm_class');
 						var field = treeitems[i].getAttribute('fm_field');
-						var pretty = mw.map_list(
+						var pretty = util.functional.map_list(
 							field.split('_'),
 							function (s) {
 								return s.substr(0,1).toUpperCase() + s.substr(1);
@@ -111,7 +159,7 @@
 
 		function gen_wikitable() {
 			var data_url = 'data:application/vnd.mozilla.xul+xml,<?xml version="1.0"?><window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><?xml-stylesheet href="chrome://global/skin" type="text/css"?><vbox flex="1"><textbox id="desc" multiline="true" flex="1"/></vbox></window>';
-			var w = mw.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
+			var w = g.window.SafeWindowOpen(data_url,'paged_tree cols','chrome,resizable,width=800,height=600');
 			var css = '<?xml-stylesheet href="data:text/css,#a{-moz-box-flex:1;}"?>';
 			var treeitems = mw.get_list_from_tree_selection( tree );
 			setTimeout(

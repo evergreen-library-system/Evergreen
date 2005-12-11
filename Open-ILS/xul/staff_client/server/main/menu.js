@@ -93,12 +93,6 @@ main.menu.prototype = {
 					obj.set_tab(urls.remote_debug_xuleditor,{},{});
 				}
 			],
-			'cmd_filter_console' : [
-				['command','keypress'],
-				function() {
-					obj.set_tab(urls.remote_debug_filter_console,{},{});
-				}
-			],
 			'cmd_fieldmapper' : [
 				['command','keypress'],
 				function() {

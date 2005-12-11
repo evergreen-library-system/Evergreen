@@ -50,8 +50,6 @@ function update()
     else
       xwin.setAttribute("src",dataURI);
   }
-  try { xwin.contentWindow.mw = mw; } catch(E) {}
-  try { xwin.mw = mw; } catch(E) {}
 
   timeout = window.setTimeout(update, 500);
 }
