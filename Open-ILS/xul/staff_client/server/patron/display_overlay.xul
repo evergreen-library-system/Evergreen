@@ -9,13 +9,13 @@
 
 <box id="patron_display_main" flex="1" orient="vertical" class="my_overflow">
 	<hbox id="PatronNavBar" flex="0"/>
-	<hbox id="PatronNotNavBar">
+	<hbox id="PatronNotNavBar" flex="1">
 		<deck id="patron_left_deck" />
 		<deck id="patron_right_deck" />
 	</hbox>
 </box>
 
-<deck id="patron_right_deck" flex="1">
+<deck id="patron_right_deck" flex="2">
 </deck>
 <deck id="patron_left_deck" flex="1">
 </deck>
