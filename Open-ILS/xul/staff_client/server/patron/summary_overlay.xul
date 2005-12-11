@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<overlay id="patron_summary_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading patron/summary_overlay.xul\n');</script>
+
+<commandset id="patron_summary_cmds" />
+
+<box id="patron_summary_main" flex="1" orient="vertical" class="my_overflow">
+	<vbox id="patron_info_sidebar" />
+</box>
+
+<vbox id="patron_info_sidebar" flex="0">
+	<groupbox id="PatronSummaryStatus_groupbox" flex="0"/>
+	<groupbox id="PatronSummarySurvey_groupbox" flex="0">
+		<caption id="pdsgbc" label="Surveys" />
+	</groupbox>
+	<groupbox id="PatronSummaryContact_groupbox" flex="1"/>
+</vbox>
+
+<groupbox id="PatronSummaryStatus_groupbox" orient="vertical">
+	<caption label="&staff.patron_display.status.caption;"/>
+	<grid id="PatronSummaryStatus_grid" flex="1"/>
+</groupbox>
+
+<grid id="PatronSummaryStatus_grid">
+	<columns id="pdsgc">
+		<column id="pdsgc1" />
+		<column id="pdsgc2" />
+		<column id="pdsgc3" />
+		<column id="pdsgc4" />
+	</columns>
+	<rows id="pdsgr" flex="1">
+		<row id="pdsgr1">
+			<label id="PatronSummaryStatus_profile_label" class="text_right"
+				value="&staff.patron_display.profile.label;" />
+			<label id="patron_profile" />
+			<label id="PatronSummaryStatus_standing_label" class="text_right"
+				value="&staff.patron_display.standing.label;" />
+			<label id="patron_standing" />
+		</row>
+		<row id="pdsgr2">
+			<label id="PatronSummaryStatus_credit_label" class="text_right"
+				value="&staff.patron_display.credit.label;" />
+			<label id="patron_credit" />
+			<label id="PatronSummaryStatus_bills_label" class="text_right"
+				value="&staff.patron_display.bills.label;" />
+			<label id="patron_bill" />
+		</row>
+		<row id="pdsgr3">
+			<label id="PatronSummaryStatus_checkouts_label" class="text_right"
+				value="&staff.patron_display.checkouts.label;" />
+			<label id="patron_checkouts" />
+			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right"
+				value="&staff.patron_display.checkouts_overdue.label;" />
+			<label id="patron_overdue" />
+		</row>
+		<row id="pdsgr4">
+			<label id="PatronSummaryStatus_holds_label" class="text_right"
+				value="&staff.patron_display.holds.label;" />
+			<label id="patron_holds" />
+			<label id="PatronSummaryStatus_holds_available_label" class="text_right"
+				value="&staff.patron_display.holds_available.label;" />
+			<label id="patron_holds_available" />
+		</row>
+		<row id="pdsgr5">
+			<label id="pdsgr5l1" class="text_right" value="Home Lib:" />
+			<label id="patron_library" />
+			<label id="pdsgr5l2" class="text_right" value="Last Lib:" />
+			<label id="patron_last_library" />
+		</row>
+
+	</rows>
+</grid>
+
+<groupbox id="PatronSummaryContact_groupbox" orient="vertical">
+	<caption label="&staff.patron_display.contact.caption;"/>
+	<hbox id="pdcgbhb1">
+		<grid id="PatronSummaryContact_grid" />
+		<spacer id="pdcgbhbs1" flex="1"/>
+		<image id="patron_photo_url" />
+	</hbox>
+	<grid id="PatronSummaryContact_grid_phone" />
+	<groupbox id="PatronSummaryContact_mailing_address" />
+	<groupbox id="PatronSummaryContact_physical_address" />
+</groupbox>
+
+<grid id="PatronSummaryContact_grid">
+	<columns id="pdsgc">
+		<column id="pdsgc1" />
+		<column id="pdsgc2" />
+	</columns>
+	<rows id="pdsgr" flex="1">
+		<row id="pdsgr0">
+			<label id="PatronSummaryContact_library_card_label" class="text_right"
+				value="&staff.patron_display.library_card.label;"/>
+			<label id="patron_card" />
+		</row>
+		<row id="pdsgr1">
+			<label id="PatronSummaryContact_ident_label" class="text_right"
+				value="&staff.patron_display.ident1.label;"/>
+			<hbox id="pdsgr0h">
+				<label id="patron_ident_type_1" />
+				<label id="patron_ident_value_1" />
+			</hbox>
+		</row>
+		<row id="pdsgr2">
+			<label id="PatronSummaryContact_ident_label2" class="text_right"
+				value="&staff.patron_display.ident2.label;"/>
+			<hbox id="pdsgr0ah">
+				<label id="patron_ident_type_2" />
+				<label id="patron_ident_value_2" />
+			</hbox>
+		</row>
+		<row id="pdsgr3">
+			<label id="PatronSummaryContact_date_of_birth_label" class="text_right"
+				value="&staff.patron_display.date_of_birth.label;"/>
+			<label id="patron_date_of_birth" />
+		</row>
+		<row id="pdsgr4"><label id="pdsgr4l" value=" "/></row>
+	</rows>
+</grid>
+
+<grid id="PatronSummaryContact_grid_phone">
+	<columns id="pdcgpc">
+		<column id="pdcgpc1" />
+		<column id="pdcgpc2" />
+	</columns>
+	<rows id="pdcgpr" flex="1">
+		<row id="pdcgpr1">
+			<label id="PatronSummaryContact_day_phone_label" class="text_right"
+				value="&staff.patron_display.day_phone.label;" />
+			<label id="patron_day_phone" /> 
+		</row>
+		<row id="pdcgpr2">
+			<label id="PatronSummaryContact_evening_phone_label" class="text_right"
+				value="&staff.patron_display.evening_phone.label;" />
+			<label id="patron_evening_phone" />
+		</row>
+		<row id="pdcgpr3">
+			<label id="PatronSummaryContact_other_phone_label" class="text_right"
+				value="&staff.patron_display.other_phone.label;" />
+			<label id="patron_other_phone" /> 
+		</row>
+		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
+		<row id="pdcgpr5">
+			<label id="PatronSummaryContact_email_label" class="text_right"
+				value="&staff.patron_display.email.label;" />
+			<label id="patron_email" />
+		</row>
+		<row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
+
+	</rows>
+</grid>
+
+<groupbox id="PatronSummaryContact_mailing_address" orient="vertical">
+	<caption id="pdcmac" label="&staff.patron_display.mailing_address;"/>
+	<label id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" />
+	<label id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" />
+	<hbox id="pdcmah">
+		<label id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" />
+		<label id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" />
+		<label id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" />
+	</hbox>
+</groupbox>
+
+<groupbox id="PatronSummaryContact_physical_address" orient="vertical">
+	<caption id="pdcpac" label="&staff.patron_display.physical_address;"/>
+	<label id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" />
+	<label id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;" />
+	<hbox id="pdcpah">
+		<label id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" />
+		<label id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" />
+		<label id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" />
+	</hbox>
+</groupbox>
+
+</overlay>
