@@ -52,10 +52,10 @@ patron.display.prototype = {
 								{},
 								{ 
 									'on_checkout' : function(checkout) {
-										var c = obj.patron.checkouts();
+										var c = obj.summary_window.g.summary.patron.checkouts();
 										c.push( checkout );
-										obj.patron.checkouts( c );
-										obj.controller.render('patron_checkouts');
+										obj.summary_window.g.summary.patron.checkouts( c );
+										obj.summary_window.g.summary.controller.render('patron_checkouts');
 									}
 								}
 							);
@@ -119,7 +119,7 @@ patron.display.prototype = {
 		);
 
 		if (obj.barcode) {
-			obj.left_deck.set_iframe(
+			var frame = obj.left_deck.set_iframe(
 				urls.remote_patron_summary
 				+'?session=' + window.escape(obj.session)
 				+'&barcode=' + window.escape(obj.barcode), 
@@ -130,6 +130,7 @@ patron.display.prototype = {
 					}
 				}
 			);
+			obj.summary_window = frame.contentWindow;
 		}
 	},
 }

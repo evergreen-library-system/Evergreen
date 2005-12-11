@@ -36,8 +36,9 @@ util.deck.prototype = {
 		var idx = this.find_index(url);
 		if (idx>-1) {
 			this.node.selectedIndex = idx;
+			return this.node.childNodes[idx];
 		} else {
-			this.new_iframe(url,params,content_params);
+			return this.new_iframe(url,params,content_params);
 		}
 		
 		
@@ -45,7 +46,7 @@ util.deck.prototype = {
 
 	'reset_iframe' : function (url,params,content_params) {
 		this.remove_iframe(url);
-		this.new_iframe(url,params,content_params);
+		return this.new_iframe(url,params,content_params);
 	},
 
 	'new_iframe' : function (url,params,content_params) {
@@ -67,6 +68,7 @@ util.deck.prototype = {
 				dump('E: ' + E + '\n');
 			}
 		}
+		return iframe;
 	},
 
 	'remove_iframe' : function (url) {

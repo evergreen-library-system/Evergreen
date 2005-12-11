@@ -42,7 +42,6 @@
 
 				JSAN.use('patron.summary'); g.summary = new patron.summary();
 				g.summary.init( { 'barcode' : g.cgi.param('barcode') , 'session' : g.cgi.param('session') } );
-	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" + E + '\n';
