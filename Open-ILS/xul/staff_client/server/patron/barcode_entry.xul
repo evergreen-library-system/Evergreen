@@ -71,9 +71,7 @@
 			var tb = document.getElementById('barcode_tb');
 			var barcode = tb.value;
 
-			//location.href = urls.remote_patron_display + '?session=' 
-			//	+ window.escape(session) + '&barcode=' + window.escape(barcode);
-			location.href = urls.remote_patron_summary + '?session=' 
+			location.href = urls.remote_patron_display + '?session=' 
 				+ window.escape(session) + '&barcode=' + window.escape(barcode);
 		}
 

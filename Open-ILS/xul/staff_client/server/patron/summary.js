@@ -535,7 +535,7 @@ patron.summary.prototype = {
 				if (typeof window.xulG == 'object' && typeof window.xulG.on_finished == 'function') {
 					obj.error.sdump('D_PATRON_SUMMARY',
 						'patron.summary: Calling external .on_finished()\n');
-					window.xulG.on_finished(E);
+					window.xulG.on_finished(obj.patron);
 				} else {
 					obj.error.sdump('D_PATRON_SUMMARY','patron.summary: No external .on_finished()\n');
 				}
