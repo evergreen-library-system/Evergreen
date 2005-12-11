@@ -33,6 +33,7 @@ OpenILS.data.prototype = {
 
 	'stash' : function () {
 		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
 			var data_cache=new OpenILS( );
 			for (var i = 0; i < arguments.length; i++) {
@@ -46,6 +47,7 @@ OpenILS.data.prototype = {
 
 	'_debug_stash' : function() {
 		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
 			var data_cache=new OpenILS( );
 			for (var i in data_cache.wrappedJSObject.OpenILS.prototype.data) {
@@ -68,16 +70,21 @@ OpenILS.data.prototype = {
 	},
 
 	'stash_retrieve' : function() {
-		const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-		var data_cache=new OpenILS( );
-		var dc = data_cache.wrappedJSObject.OpenILS.prototype.data;
-		for (var i in dc) {
-			this.error.sdump('D_DATA','Retrieving ' + i + ' : ' + dc[i] + '\n');
-			this[i] = dc[i];
-		}
-		if (typeof this.on_complete == 'function') {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+			var data_cache=new OpenILS( );
+			var dc = data_cache.wrappedJSObject.OpenILS.prototype.data;
+			for (var i in dc) {
+				this.error.sdump('D_DATA','Retrieving ' + i + ' : ' + dc[i] + '\n');
+				this[i] = dc[i];
+			}
+			if (typeof this.on_complete == 'function') {
 
-			this.on_complete();
+				this.on_complete();
+			}
+		} catch(E) {
+			this.error.sdump('D_ERROR','Error in OpenILS.data._debug_stash(): ' + js2JSON(E) );
 		}
 	},
 
