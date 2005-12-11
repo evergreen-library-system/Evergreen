@@ -27,7 +27,7 @@ var urls = {
 	'remote_debug_fieldmapper' : '/xul/server/util/fieldmapper.xul',
 	'remote_debug_filter_console' : '/xul/server/util/filter_console.xul',
 	'remote_debug_shell' : '/xul/server/util/shell.html',
-	'remote_debug_xuleditor' : '/xul/server/util/xuleditor.xul',
+	'remote_debug_xuleditor' : '/xul/server/util/xuledit.xul',
 	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
 	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul',
 	'remote_patron_bills' : 'data:text/html,<h1>Bills Here</h1>',
