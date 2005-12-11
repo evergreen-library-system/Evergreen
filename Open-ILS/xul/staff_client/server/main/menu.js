@@ -24,6 +24,11 @@ main.menu.prototype = {
 		obj.view.panels = obj.view.tabbox.lastChild;
 
 		var cmd_map = {
+			'cmd_broken' : [
+				['command','keypress'],
+				function() { alert('Not Yet Implemented'); }
+			],
+
 			'cmd_close_window' : [ 
 				['command','keypress'], 
 				function() { obj.w.close(); } 
@@ -43,10 +48,7 @@ main.menu.prototype = {
 				['command','keypress'],
 				function() { obj.close_tab(); }
 			],
-			'cmd_broken' : [
-				['command','keypress'],
-				function() { alert('Not Yet Implemented'); }
-			],
+
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
@@ -60,6 +62,7 @@ main.menu.prototype = {
 					obj.set_tab(urls.xul_opac_wrapper,{},content_params);
 				}
 			],
+
 			'cmd_test_html' : [
 				['command','keypress'],
 				function() {
@@ -72,6 +75,37 @@ main.menu.prototype = {
 					obj.set_tab(urls.test_xul,{},{});
 				}
 			],
+			'cmd_console' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.remote_debug_console,{},{});
+				}
+			],
+			'cmd_shell' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.remote_debug_shell,{},{});
+				}
+			],
+			'cmd_xuleditor' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.remote_debug_xuleditor,{},{});
+				}
+			],
+			'cmd_filter_console' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.remote_debug_filter_console,{},{});
+				}
+			],
+			'cmd_fieldmapper' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.remote_debug_fieldmapper,{},{});
+				}
+			],
+
 		};
 
 		for (var i in cmd_map) {
