@@ -33,5 +33,7 @@ var urls = {
 	'remote_patron_items' : 'data:text/html,<h1>Items Here</h1>',
 	'remote_patron_search' : '/xul/server/patron/search.xul',
 	'remote_patron_summary' : '/xul/server/patron/summary.xul',
+	'test_html' : '/xul/server/main/test.html',
+	'test_xul' : '/xul/server/main/test.xul',
 	'xul_opac_wrapper' : '/xul/server/cat/opac.xul',
 }

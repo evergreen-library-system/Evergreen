@@ -50,19 +50,28 @@ main.menu.prototype = {
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
-					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{'yadda':'yadda'});
+					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_search_opac' : [
 				['command','keypress'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.error.sdump('D_MENU','session = ' + session);
-					obj.error.sdump('D_MENU','authtime = ' + authtime);
-					obj.error.sdump('D_MENU','content_params = ' + js2JSON(content_params));
 					obj.set_tab(urls.xul_opac_wrapper,{},content_params);
 				}
-			]
+			],
+			'cmd_test_html' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.test_html,{},{});
+				}
+			],
+			'cmd_test_xul' : [
+				['command','keypress'],
+				function() {
+					obj.set_tab(urls.test_xul,{},{});
+				}
+			],
 		};
 
 		for (var i in cmd_map) {

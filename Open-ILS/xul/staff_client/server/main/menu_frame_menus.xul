@@ -30,6 +30,8 @@
 	<command id="cmd_xuleditor" />
 	<command id="cmd_filter_console" />
 	<command id="cmd_fieldmapper" />
+	<command id="cmd_test_html" />
+	<command id="cmd_test_xul" />
 
 	<command id="cmd_test" disabled="true" />
 	<command id="cmd_broken" disabled="true" />
@@ -203,6 +205,8 @@
 		<menuitem label="Filterable Console" accesskey="F" command="cmd_filter_console"/>
 		<menuitem label="Javscript Console" accesskey="J" command="cmd_console"/>
 		<menuitem label="Javscript Shell" accesskey="H" command="cmd_shell"/>
+		<menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
+		<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
 	</menupopup>
 </menu>
 
