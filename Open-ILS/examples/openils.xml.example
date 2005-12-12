@@ -93,8 +93,8 @@ For non-core config info, see the inline documentation within this file
 			<open-ils.auth>
 				<keepalive>5</keepalive>
 				<stateless>1</stateless>
-				<language>perl</language>
-				<implementation>OpenILS::Application::Auth</implementation>
+				<language>C</language>
+				<implementation>oils_auth.so</implementation>
 				<max_requests>93</max_requests>
 
 				<unix_config>
@@ -207,8 +207,8 @@ For non-core config info, see the inline documentation within this file
 			<opensrf.math>
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
-				<language>perl</language>
-				<implementation>OpenSRF::Application::Demo::Math</implementation>
+				<language>C</language>
+				<implementation>osrf_math.so</implementation>
 				<max_requests>97</max_requests>
 				<unix_config>
 					<unix_sock>opensrf.math_unix.sock</unix_sock>
@@ -225,8 +225,8 @@ For non-core config info, see the inline documentation within this file
 			<opensrf.dbmath> 
 				<keepalive>3</keepalive>
 				<stateless>1</stateless>
-				<language>perl</language>
-				<implementation>OpenSRF::Application::Demo::MathDB</implementation>
+				<language>C</language>
+				<implementation>osrf_dbmath.so</implementation>
 				<max_requests>99</max_requests>
 				<unix_config>
 					<max_requests>1000</max_requests>
