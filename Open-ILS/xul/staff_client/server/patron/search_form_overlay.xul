@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<overlay id="patron_search_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading patron/search_overlay.xul\n');</script>
+
+<commandset id="patron_search_form_cmds">
+	<command id="cmd_patron_search_submit" />
+	<command id="cmd_patron_search_clear" />
+</commandset>
+
+<box id="patron_search_form_main" orient="vertical" class="my_overflow">
+	<groupbox id="psgf_gb">
+		<caption id="psgf_gbc" label='&staff.patron_search_form.caption;' />
+		<grid id="psg" />
+	</groupbox>
+</box>
+
+<!-- group 0 = user  group 1 = address  group 2 = phone, ident -->
+
+<grid id="psg">
+	<columns id="psc">
+		<column id="psc1"/>
+		<column id="psc2" flex="1"/>
+	</columns>
+	<rows id="psr">
+		<row id="psr1">
+			<label id="psl1" control="family_name" 
+				value="&staff.patron_search_form.family_name.label;" 
+				accesskey="&staff.patron_search_form.family_name.accesskey;"/>
+			<textbox id="family_name" group="0"/>
+		</row>
+		<row id="psr2">
+			<label id="psl2" control="first_given_name" 
+				value="&staff.patron_search_form.first_given_name.label;" 
+				accesskey="&staff.patron_search_form.first_given_name.accesskey;"/>
+			<textbox id="first_given_name" group="0"/>
+		</row>
+		<row id="psr3">
+			<label id="psl3" control="second_given_name" 
+				value="&staff.patron_search_form.second_given_name.label;" 
+				accesskey="&staff.patron_search_form.second_given_name.accesskey;"/>
+			<textbox id="second_given_name" group="0"/>
+		</row>
+		<row id="psr4">
+			<label id="psl4" control="email" 
+				value="&staff.patron_search_form.email.label;" 
+				accesskey="&staff.patron_search_form.email.accesskey;"/>
+			<textbox id="email" group="0"/>
+		</row>
+		<row id="psr5">
+			<label id="psl5" control="phone" 
+				value="&staff.patron_search_form.phone.label;" 
+				accesskey="&staff.patron_search_form.phone.accesskey;"/>
+			<textbox id="phone" group="2"/>
+		</row>
+		<row id="psr6">
+			<label id="psl6" control="ident" 
+				value="&staff.patron_search_form.ident.label;" 
+				accesskey="&staff.patron_search_form.ident.accesskey;"/>
+			<textbox id="ident" group="2"/>
+		</row>
+		<row id="psr6a">
+			<label id="psl6a" value=" "/>
+		</row>
+		<row id="psr7">
+			<label id="psl7" control="street1" 
+				value="&staff.patron_search_form.street1.label;" 
+				accesskey="&staff.patron_search_form.street1.accesskey;"/>
+			<textbox id="street1" group="1"/>
+		</row>
+		<row id="psr8">
+			<label id="psl8" control="street2" 
+				value="&staff.patron_search_form.street2.label;" 
+				accesskey="&staff.patron_search_form.street2.accesskey;"/>
+			<textbox id="street2" group="1"/>
+		</row>
+		<row id="psr9">
+			<label id="psl9" control="city" 
+				value="&staff.patron_search_form.city.label;" 
+				accesskey="&staff.patron_search_form.city.accesskey;"/>
+			<textbox id="city" group="1"/>
+		</row>
+		<row id="psr10">
+			<label id="psl10" control="state" 
+				value="&staff.patron_search_form.state.label;" 
+				accesskey="&staff.patron_search_form.state.accesskey;"/>
+			<textbox id="state" group="1"/>
+		</row>
+		<row id="psr11">
+			<label id="psl11" control="post_code" 
+				value="&staff.patron_search_form.post_code.label;" 
+				accesskey="&staff.patron_search_form.post_code.accesskey;"/>
+			<textbox id="post_code" group="1"/>
+		</row>
+		<row id="psr12">
+			<spacer id="pss12"/>
+			<button id="search" label="&staff.patron_search_form.search.label;" 
+				accesskey="&staff.patron_search_form.search.accesskey;"
+				command="cmd_patron_search_submit"/>
+		</row>
+		<row id="psr13">
+			<spacer id="pss13"/>
+			<button id="clear" label="&staff.patron_search_form.clear.label;" 
+				accesskey="&staff.patron_search_form.clear.accesskey;"
+				command="cmd_patron_search_clear"/>
+		</row>
+	</rows>
+</grid>
+
+
+</overlay>
