@@ -114,18 +114,7 @@ sub rollback_db_session {
 # Checks to see if a user is logged in.  Returns the user record on success,
 # throws an exception on error.
 # ---------------------------------------------------------------------------
-sub check_ses {
-	my( $self, $session ) = @_;
-	my $user;
-	my $evt;
-	try {
-		$user = $self->check_user_session($session);
-	} catch Error with {
-		$evt = OpenILS::Event->new('NO_SESSION');
-	};
 
-	return ( $user, $evt );
-}
 
 sub check_user_session {
 
@@ -140,21 +129,23 @@ sub check_user_session {
 			("Error communication with storage server");
 	}
 
-	if( ref($response) eq 'HASH' ) {
-		if(defined($response->{ilsevent}) and $response->{ilsevent} ne '0' ) {
+	if(ref($response) and $response->isa("OpenSRF::EX")) {
+		throw $response ($response->stringify);
+	}
+
+
+	my $content = $response->content;
+	if( ref($content) eq 'HASH' ) {
+		if(defined($content->{ilsevent}) and $content->{ilsevent} ne '0' ) {
 			throw OpenSRF::EX::ERROR 
 				("Session [$user_session] cannot be authenticated" );
 		}
 	}
 
-
-	if(ref($response) and $response->isa("OpenSRF::EX")) {
-		throw $response ($response->stringify);
-	}
-
-	my $user = $response->content;
+	my $user = $content;
 	if(!$user) {
-		throw OpenSRF::EX::ERROR ("Session [$user_session] cannot be authenticated" );
+		throw OpenSRF::EX::ERROR 
+			("Session [$user_session] cannot be authenticated" );
 	}
 
 	$session->disconnect();
@@ -317,37 +308,46 @@ sub fetch_user {
 		'open-ils.storage.direct.actor.user.retrieve', $id );
 }
 
+sub checkses {
+	my( $self, $session ) = @_;
+	my $user; my $evt; my $e; 
 
+	try {
+		$user = $self->check_user_session($session);
+	} catch Error with { $e = 1; };
 
-# handy tool to handle the ever-recurring situation of someone requesting 
-# something on someone else's behalf (think staff member creating something for a user)
-# returns ($requestor, $targetuser_id, $event );
-# $event may be a PERM_FAILURE event or a NO_SESSION event
-# $targetuser == $staffuser->id when $targetuser is undefined.
-sub handle_requestor {
-	my( $self, $authtoken, $targetuser, @permissions ) = @_;
-
-	my( $requestor, $evt ) = $self->check_ses($authtoken);
-	return (undef, undef, $evt) if $evt;
-
-	$targetuser = $requestor->id unless defined $targetuser;
-	my $userobj = $requestor; 
-	$userobj = $self->fetch_user($targetuser) 
-		unless $targetuser eq $requestor->id;
-
-	if(!$userobj) {} # XXX Friendly exception
-
-	my $perm;
-
-	#everyone is allowed to view their own data
-	if( $targetuser ne $requestor->id ) {
-		$perm = $self->check_perms( 
-			$requestor->id, $userobj->home_ou, @permissions );
-	}
-
-	return ($requestor, $targetuser, $perm);
+	if( $e or !$user ) { $evt = OpenILS::Event->new('NO_SESSION'); }
+	return ( $user, $evt );
 }
 
+
+sub checkrequestor {
+	my( $self, $staffobj, $userid, @perms ) = @_;
+	my $user; my $evt;
+
+	$logger->debug("checkrequestor(): staff => " . $staffobj->id . ", user => $userid");
+
+	if( $userid ne $staffobj->id ) {
+		if( ! ($user = $self->fetch_user($userid)) ) {
+			$evt = OpenILS::Event->new('USER_NOT_FOUND');
+			return (undef, $evt);
+		}
+		$evt = $self->check_perms( $staffobj->id, $user->home_ou, @perms );
+	}
+
+	return ($user, $evt);
+}
+
+sub checkses_requestor {
+	my( $self, $authtoken, $targetid, @perms ) = @_;
+	my( $requestor, $target, $evt );
+
+	($requestor, $evt) = $self->checkses($authtoken);
+	return (undef, undef, $evt) if $evt;
+
+	($target, $evt) = $self->checkrequestor( $requestor, $targetid, @perms );
+	return( $requestor, $target, $evt);
+}
 
 
 

@@ -32,6 +32,12 @@
 		</desc>
 	</event>
 
+	<event code='2000' textcode='BAD_PARAMS'>
+		<desc>
+			Invalid parameters were encountered in a method
+		</desc>
+	</event>
+
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc> 
 			Permission Error.  * The object returning this code shall also 

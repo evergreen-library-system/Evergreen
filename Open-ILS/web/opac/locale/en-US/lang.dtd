@@ -44,13 +44,17 @@
 		OPAC Entites
 		======================================================================================= -->
 
+<!--
 <!ENTITY nbsp "  ">
 <!ENTITY space "&nsbp;">
+-->
 <!ENTITY llt "&lt;">
 <!ENTITY ggt "&gt;">
 
 <!ENTITY opac.nbsp "  ">
+<!--
 <!ENTITY opac.space "&nsbp;">
+-->
 <!ENTITY opac.llt "&lt;">
 <!ENTITY opac.ggt "&gt;">
 
@@ -141,6 +145,7 @@
 <!ENTITY opac.search.nowSearching "Now Searching">
 
 <!ENTITY opac.title.home "Evergreen: Home">
+<!ENTITY opac.title.mresult "Evergreen Title Groups">
 
 <!ENTITY opac.login.login "Login with your username and password">
 

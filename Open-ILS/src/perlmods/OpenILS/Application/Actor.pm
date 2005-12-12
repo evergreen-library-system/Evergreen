@@ -1045,11 +1045,14 @@ __PACKAGE__->register_method(
 
 sub check_user_perms {
 	my( $self, $client, $login_session, $user_id, $org_id, $perm_types ) = @_;
-	my $user_obj = $apputils->check_user_session($login_session); 
 
-	if($user_obj->id ne $user_id) {
-		if($apputils->check_user_perms($user_obj->id, $org_id, "VIEW_PERMISSION")) {
-			return OpenILS::Perm->new("VIEW_PERMISSION");
+	my( $staff, $evt ) = $apputils->checkses($login_session);
+	return $evt if $evt;
+
+	if($staff->id ne $user_id) {
+		if( my $evt = $apputils->check_perms(
+			$staff->id, $org_id, 'VIEW_PERMISSION') ) {
+			return $evt;
 		}
 	}
 
