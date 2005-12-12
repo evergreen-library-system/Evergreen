@@ -18,12 +18,13 @@ int main( int argc, char* argv[] ) {
 
 	if(!access(fbuf, R_OK)) {
 		if( ! osrf_system_bootstrap_client(fbuf, "srfsh") ) {
+			fprintf(stderr,"Unable to bootstrap client for requests\n");
 			osrfLogError( "Unable to bootstrap client for requests");
 			return -1;
 		}
 
 	} else {
-		osrfLogError( "No Config file found at %s", fbuf );
+		fprintf(stderr,"No Config file found at %s\n", fbuf ); 
 		return -1;
 	}
 
