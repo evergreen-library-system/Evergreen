@@ -127,6 +127,8 @@ patron.display.prototype = {
 		);
 
 		if (obj.barcode) {
+			obj.controller.view.PatronNavBar.selectedIndex = 1;
+			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
 			var frame = obj.left_deck.set_iframe(
 				urls.remote_patron_summary
 				+'?session=' + window.escape(obj.session)
@@ -140,7 +142,7 @@ patron.display.prototype = {
 			);
 			obj.summary_window = frame.contentWindow;
 		} else {
-			obj.controller.view.PatronNavBar.hidden = true;
+			obj.controller.view.PatronNavBar.selectedIndex = 0;
 			var frame = obj.left_deck.set_iframe(
 				urls.remote_patron_search_form
 				+'?session=' + window.escape(obj.session),

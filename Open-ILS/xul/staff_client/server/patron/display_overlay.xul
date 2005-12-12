@@ -9,7 +9,11 @@
 
 <box id="patron_display_main" flex="1" orient="vertical">
 <vbox id="pdm2" flex="1">
-	<hbox id="PatronNavBar" flex="0" class="my_overflow"/>
+	<hbox id="pdm2hb1">
+		<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" 
+			value="No Patron" flex="1"/>
+		<deck id="PatronNavBar" flex="0" class="my_overflow"/>
+	</hbox>
 	<hbox id="PatronNotNavBar" flex="1">
 		<vbox id="pdm3" flex="1">
 			<deck id="patron_left_deck"/>
@@ -27,9 +31,12 @@
 <deck id="patron_left_deck" flex="1">
 </deck>
 
-<hbox id="PatronNavBar">
-	<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" 
-		value="Retrieving..." flex="1"/>
+<deck id="PatronNavBar">
+	<hbox id="PatronNavBar0"/>
+	<hbox id="PatronNavBar1"/>
+</deck>
+
+<hbox id="PatronNavBar1">
 	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
 		label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
 	<button id="PatronNavBar_checkout" command="cmd_patron_checkout"
@@ -44,6 +51,10 @@
 		label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
 	<button id="PatronNavBar_info" command="cmd_patron_info"
 		label="&staff.patron_navbar.info;" accesskey="&staff.patron_navbar.info.accesskey;"/>
+</hbox>
+
+<hbox id="PatronNavBar0">
+	<button id="pnb1b1" label="Retrieve Patron" accesskey="R"/>
 </hbox>
 
 </overlay>
