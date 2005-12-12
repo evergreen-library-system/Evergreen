@@ -4,7 +4,7 @@
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
-.my_overflow { overflow: auto; }
+.my_overflow { overflow: scroll; }
 
 .text_left { text-align: left; }
 .text_right { text-align: right; }

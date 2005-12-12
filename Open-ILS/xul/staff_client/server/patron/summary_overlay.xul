@@ -11,7 +11,7 @@
 	<vbox id="patron_info_sidebar" />
 </box>
 
-<vbox id="patron_info_sidebar" flex="0">
+<vbox id="patron_info_sidebar" flex="1">
 	<groupbox id="PatronSummaryStatus_groupbox" flex="0"/>
 	<groupbox id="PatronSummarySurvey_groupbox" flex="0">
 		<caption id="pdsgbc" label="Surveys" />

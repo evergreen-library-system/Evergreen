@@ -13,7 +13,7 @@ util.deck = function (id) {
 		throw(error);
 	}
 	if (this.node.nodeName != 'deck') {
-		var error = 'util.deck: ' + id + 'is not a deck';
+		var error = 'util.deck: ' + id + 'is not a deck' + "\nIt's a " + this.node.nodeName;
 		this.error.sdump('D_ERROR',error);
 		throw(error);
 	}
@@ -55,7 +55,9 @@ util.deck.prototype = {
 
 		var iframe = document.createElement('iframe');
 		iframe.setAttribute('src',url);
-		iframe.setAttribute('flex','1');
+		//iframe.setAttribute('flex','1');
+		//iframe.setAttribute('style','overflow: scroll');
+		//iframe.setAttribute('style','border: solid thin red');
 		this.node.appendChild( iframe );
 		this.node.selectedIndex = this.node.childNodes.length - 1;
 		if (content_params) {

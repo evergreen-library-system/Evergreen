@@ -29,6 +29,7 @@ main.menu.prototype = {
 				function() { alert('Not Yet Implemented'); }
 			],
 
+			/* File Menu */
 			'cmd_close_window' : [ 
 				['command','keypress'], 
 				function() { obj.w.close(); } 
@@ -49,10 +50,12 @@ main.menu.prototype = {
 				function() { obj.close_tab(); }
 			],
 
-			'cmd_circ_checkout' : [
+			/* Search Menu */
+			'cmd_patron_search' : [
 				['command','keypress'],
-				function() { 
-					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
+				function() {
+					obj.set_tab(urls.remote_patron_display 
+						+ '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_search_opac' : [
@@ -63,6 +66,16 @@ main.menu.prototype = {
 				}
 			],
 
+
+			/* Circulation Menu */
+			'cmd_circ_checkout' : [
+				['command','keypress'],
+				function() { 
+					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
+				}
+			],
+
+			/* Admin menu */
 			'cmd_test_html' : [
 				['command','keypress'],
 				function() {

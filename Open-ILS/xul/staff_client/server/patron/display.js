@@ -21,7 +21,7 @@ patron.display.prototype = {
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
-		JSAN.use('util.deck');  
+		JSAN.use('util.deck'); 
 		obj.right_deck = new util.deck('patron_right_deck');
 		obj.left_deck = new util.deck('patron_left_deck');
 
@@ -39,7 +39,7 @@ patron.display.prototype = {
 							obj.controller.view.patron_name.setAttribute(
 								'value','Retrieving...'
 							);
-							obj.retrieve();
+							obj.summary_window.g.summary.retrieve();
 						}
 					],
 					'cmd_patron_checkout' : [
@@ -105,11 +105,13 @@ patron.display.prototype = {
 									obj.patron.family_name() + ', ' + obj.patron.first_given_name()
 								);
 								e.setAttribute('style','background-color: lime');
-								//FIXME//bills should become a virtual field
-								if (obj.patron.bills.length > 0)
-									e.setAttribute('style','background-color: yellow');
-								if (obj.patron.standing() == 2)
-									e.setAttribute('style','background-color: lightred');
+								if (obj.summary_window) {
+									//FIXME//bills should become a virtual field
+									if (obj.summary_window.g.summary.patron.bills.length > 0)
+										e.setAttribute('style','background-color: yellow');
+									if (obj.summary_window.g.summary.patron.standing() == 2)
+										e.setAttribute('style','background-color: lightred');
+								}
 
 							};
 						}
@@ -131,6 +133,15 @@ patron.display.prototype = {
 				}
 			);
 			obj.summary_window = frame.contentWindow;
+		} else {
+			var frame = obj.left_deck.set_iframe(
+				urls.remote_patron_search_form
+				+'?session=' + window.escape(obj.session),
+				{},
+				{
+				}
+			);
+			obj.search_window = frame.contentWindow;	
 		}
 	},
 }
