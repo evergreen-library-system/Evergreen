@@ -189,7 +189,8 @@ sub merge {
 	@objs = $self->search_where($search) unless (ref $self);
 
 	if (@objs == 1) {
-		return $objs[0]->update($arg);
+		$objs[0]->update($arg);
+		return $objs[0];
 	} elsif (@objs == 0) {
 		return $self->create({%$search,%$arg});
 	} else {
