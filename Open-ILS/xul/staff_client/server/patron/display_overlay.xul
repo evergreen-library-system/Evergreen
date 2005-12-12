@@ -9,12 +9,12 @@
 
 <box id="patron_display_main" flex="1" orient="vertical">
 <vbox id="pdm2" flex="1">
-	<hbox id="PatronNavBar" flex="0"/>
+	<hbox id="PatronNavBar" flex="0" class="my_overflow"/>
 	<hbox id="PatronNotNavBar" flex="1">
 		<vbox id="pdm3" flex="1">
 			<deck id="patron_left_deck"/>
 		</vbox>
-		<vbox id="pdm4" flex="3">
+		<vbox id="pdm4" flex="2">
 			<deck id="patron_right_deck"/>
 		</vbox>
 	
