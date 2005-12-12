@@ -116,6 +116,12 @@ patron.display.prototype = {
 							};
 						}
 					],
+					'PatronNavBar' : [
+						['render'],
+						function(e) {
+							return function() {}
+						}
+					],
 				}
 			}
 		);
@@ -134,6 +140,7 @@ patron.display.prototype = {
 			);
 			obj.summary_window = frame.contentWindow;
 		} else {
+			obj.controller.view.PatronNavBar.hidden = true;
 			var frame = obj.left_deck.set_iframe(
 				urls.remote_patron_search_form
 				+'?session=' + window.escape(obj.session),
