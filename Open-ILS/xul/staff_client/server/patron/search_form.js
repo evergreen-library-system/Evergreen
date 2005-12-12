@@ -66,6 +66,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.family_name) {
+									e.setAttribute('value',params.query.family_name);
 									e.value = params.query.family_name;
 								} else {
 									e.value = '';
@@ -78,6 +79,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.first_given_name) {
+									e.setAttribute('value',params.query.first_given_name);
 									e.value = params.query.first_given_name;
 								} else {
 									e.value = '';
@@ -90,7 +92,8 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.second_given_name) {
-									e.value = params.query.second_gtiven_name;
+									e.setAttribute('value',params.query.second_given_name);
+									e.value = params.query.second_given_name;
 								} else {
 									e.value = '';
 								}
@@ -102,6 +105,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.email) {
+									e.setAttribute('value',params.query.email);
 									e.value = params.query.email;
 								} else {
 									e.value = '';
@@ -114,6 +118,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.phone) {
+									e.setAttribute('value',params.query.phone);
 									e.value = params.query.phone;
 								} else {
 									e.value = '';
@@ -126,6 +131,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.ident) {
+									e.setAttribute('value',params.query.ident);
 									e.value = params.query.ident;
 								} else {
 									e.value = '';
@@ -138,6 +144,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.street1) {
+									e.setAttribute('value',params.query.street1);
 									e.value = params.query.street1;
 								} else {
 									e.value = '';
@@ -150,6 +157,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.street2) {
+									e.setAttribute('value',params.query.street2);
 									e.value = params.query.street2;
 								} else {
 									e.value = '';
@@ -162,6 +170,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.city) {
+									e.setAttribute('value',params.query.city);
 									e.value = params.query.city;
 								} else {
 									e.value = '';
@@ -174,6 +183,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.state) {
+									e.setAttribute('value',params.query.state);
 									e.value = params.query.state;
 								} else {
 									e.value = '';
@@ -186,6 +196,7 @@ patron.search_form.prototype = {
 						function(e) {
 							return function() {
 								if (params.query&&params.query.post_code) {
+									e.setAttribute('value',params.query.post_code);
 									e.value = params.query.post_code;
 								} else {
 									e.value = '';
@@ -197,6 +208,7 @@ patron.search_form.prototype = {
 			}
 		);
 
+		obj.controller.render();
 	},
 
 	'on_submit' : function(q) {

@@ -42,8 +42,8 @@
 				var session = g.cgi.param('session');
 				var keys = g.cgi.keys();
 				var query = {};
-				for (var i in keys) {
-					query[i] = g.cgi.param(i);
+				for (var i = 0; i < keys.length; i++) {
+					query[keys[i]] = g.cgi.param(keys[i]);
 				}
 
 				JSAN.use('patron.search_form'); g.search_form = new patron.search_form();
