@@ -115,11 +115,11 @@ int oilsAuthCheckLoginPerm(
 	if(!(userObj && type)) return -1;
 	oilsEvent* perm = NULL;
 
-	if(!strcmp(type, "opac")) {
+	if(!strcasecmp(type, "opac")) {
 		char* permissions[] = { "OPAC_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 
-	} else if(!strcmp(type, "staff")) {
+	} else if(!strcasecmp(type, "staff")) {
 		char* permissions[] = { "STAFF_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 	}
