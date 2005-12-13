@@ -33,7 +33,8 @@ auth.session.prototype = {
 							hex_md5(
 								this.view.password_prompt.value
 							)
-						)
+						),
+						'staff'
 					]
 				);
 
