@@ -25,6 +25,24 @@ patron.display.prototype = {
 		obj.right_deck = new util.deck('patron_right_deck');
 		obj.left_deck = new util.deck('patron_left_deck');
 
+		function spawn_checkout_interface() {
+			obj.right_deck.set_iframe(
+				urls.remote_checkout
+				+ '?session=' + window.escape( obj.session )
+				+ '&patron_id=' + window.escape( obj.patron.id() ),
+				{},
+				{ 
+					'on_checkout' : function(checkout) {
+						var c = obj.summary_window.g.summary.patron.checkouts();
+						c.push( checkout );
+						obj.summary_window.g.summary.patron.checkouts( c );
+						obj.summary_window.g.summary.controller.render('patron_checkouts');
+					}
+				}
+			);
+			dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
+		}
+
 		JSAN.use('main.controller'); obj.controller = new main.controller();
 		obj.controller.init(
 			{
@@ -44,23 +62,7 @@ patron.display.prototype = {
 					],
 					'cmd_patron_checkout' : [
 						['command'],
-						function(ev) {
-							obj.right_deck.set_iframe(
-								urls.remote_checkout
-								+ '?session=' + window.escape( obj.session )
-								+ '&patron_id=' + window.escape( obj.patron.id() ),
-								{},
-								{ 
-									'on_checkout' : function(checkout) {
-										var c = obj.summary_window.g.summary.patron.checkouts();
-										c.push( checkout );
-										obj.summary_window.g.summary.patron.checkouts( c );
-										obj.summary_window.g.summary.controller.render('patron_checkouts');
-									}
-								}
-							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
-						}
+						spawn_checkout_interface
 					],
 					'cmd_patron_items' : [
 						['command'],
@@ -137,6 +139,10 @@ patron.display.prototype = {
 				{
 					'on_finished' : function(patron) {
 						obj.patron = patron; obj.controller.render();
+						if (!obj._checkout_spawned) {
+							spawn_checkout_interface();
+							obj._checkout_spawned = true;
+						}
 					}
 				}
 			);
@@ -150,9 +156,12 @@ patron.display.prototype = {
 				{
 				}
 			);
-			obj.search_window = frame.contentWindow;	
+			obj.search_window = frame.contentWindow;
+			obj._checkout_spawned = true;
 		}
 	},
+
+	'_checkout_spawned' : false,
 }
 
 dump('exiting patron/display.js\n');
