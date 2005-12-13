@@ -312,6 +312,8 @@ sub checkses {
 	my( $self, $session ) = @_;
 	my $user; my $evt; my $e; 
 
+	$logger->debug("Checking user session $session");
+
 	try {
 		$user = $self->check_user_session($session);
 	} catch Error with { $e = 1; };
@@ -324,8 +326,9 @@ sub checkses {
 sub checkrequestor {
 	my( $self, $staffobj, $userid, @perms ) = @_;
 	my $user; my $evt;
+	$userid = $staffobj->id unless defined $userid;
 
-	$logger->debug("checkrequestor(): staff => " . $staffobj->id . ", user => $userid");
+	$logger->debug("checkrequestor(): requestor => " . $staffobj->id . ", target => $userid");
 
 	if( $userid ne $staffobj->id ) {
 		if( ! ($user = $self->fetch_user($userid)) ) {
@@ -333,6 +336,9 @@ sub checkrequestor {
 			return (undef, $evt);
 		}
 		$evt = $self->check_perms( $staffobj->id, $user->home_ou, @perms );
+
+	} else {
+		$user = $staffobj;
 	}
 
 	return ($user, $evt);

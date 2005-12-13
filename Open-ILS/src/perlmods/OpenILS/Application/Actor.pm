@@ -42,14 +42,22 @@ __PACKAGE__->register_method(
 sub set_user_settings {
 	my( $self, $client, $user_session, $uid, $settings ) = @_;
 	
+	$logger->debug("Setting user settings: $user_session, $uid, " . Dumper($settings));
+
 	my( $staff, $user, $evt ) = 
 		$apputils->checkses_requestor( $user_session, $uid, 'UPDATE_USER' );	
 	return $evt if $evt;
 	
-	return $apputils->simple_scalar_request(
+
+	my ($params) = map { 
+		[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
+
+	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper($params));
+
+	return $apputils->simplereq(
 		'open-ils.storage',
-		'open-ils.storage.direct.actor.user_setting.batch.merge',
-		map { [{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings );
+		'open-ils.storage.direct.actor.user_setting.batch.merge', $params );
+		
 }
 
 
@@ -70,8 +78,7 @@ sub set_ou_settings {
 	my ($params) = 
 		map { [{ org_unit => $ouid, name => $_}, {value => $$settings{$_}}] } keys %$settings;
 
-	use Data::Dumper;
-	$logger->debug("Updating org unit [$ouid] settings with: " . Dumper($params));
+	$logger->activity("Updating org unit [$ouid] settings with: " . Dumper($params));
 
 	return $apputils->simplereq(
 		'open-ils.storage',

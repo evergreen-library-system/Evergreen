@@ -50,7 +50,7 @@ sub create_hold {
 	my( $self, $client, $login_session, @holds) = @_;
 
 	if(!@holds){return 0;}
-	my( $user, $evt ) = $apputils->check_ses($login_session);
+	my( $user, $evt ) = $apputils->checkses($login_session);
 	return $evt if $evt;
 
 
