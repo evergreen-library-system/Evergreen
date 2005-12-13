@@ -42,31 +42,14 @@ __PACKAGE__->register_method(
 sub set_user_settings {
 	my( $self, $client, $user_session, $uid, $settings ) = @_;
 	
-	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
-
-	if (ref($uid) eq 'HASH') {
-		$settings = $uid;
-		$uid = undef;
-	}
-	$uid ||= $user_obj->id;
-
-	if( $user_obj->id != $uid ) {
-		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "UPDATE_USER")) {
-			return OpenILS::Perm->new("UPDATE_USER");
-		}
-	}
-
-#	$set_user_settings ||=
-#		$self->method_lookup('open-ils.storage.direct.actor.user_setting.batch.merge');
-
-#	return $set_user_settings->run(map { [{ usr => $uid, name => $_}, {value => $$settings{$_}}] } keys %$settings);
-
+	my( $staff, $user, $evt ) = 
+		$apputils->checkses_requestor( $user_session, $uid, 'UPDATE_USER' );	
+	return $evt if $evt;
+	
 	return $apputils->simple_scalar_request(
 		'open-ils.storage',
 		'open-ils.storage.direct.actor.user_setting.batch.merge',
-		map { [{ usr => $uid, name => $_}, {value => $$settings{$_}}] } keys %$settings );
-
-	
+		map { [{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings );
 }
 
 
@@ -78,22 +61,22 @@ __PACKAGE__->register_method(
 sub set_ou_settings {
 	my( $self, $client, $user_session, $ouid, $settings ) = @_;
 	
-	throw OpenSRF::EX::InvalidArg ("OrgUnit ID and Settings hash required for setting OrgUnit settings") unless ($ouid && $settings);
-
-	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
-
-	if($apputils->check_user_perms($user_obj->id, $ouid, "UPDATE_ORG_UNIT")) {
-		return OpenILS::Perm->new("UPDATE_ORG_UNIT");
-	}
+	my( $staff, $evt ) = $apputils->checkses( $user_session );
+	return $evt if $evt;
+	$evt = $apputils->check_perms( $staff->id, $ouid, 'UPDATE_ORG_UNIT' );
+	return $evt if $evt;
 
 
-	$set_ou_settings ||=
-		$self->method_lookup('open-ils.storage.direct.actor.org_unit_setting.merge');
+	my ($params) = 
+		map { [{ org_unit => $ouid, name => $_}, {value => $$settings{$_}}] } keys %$settings;
 
-	return $set_ou_settings->run(map { [{ org_unit => $ouid, name => $_}, {value => $$settings{$_}}] } keys %$settings);
+	use Data::Dumper;
+	$logger->debug("Updating org unit [$ouid] settings with: " . Dumper($params));
+
+	return $apputils->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.actor.org_unit_setting.merge', @$params );
 }
-
-
 
 
 my $fetch_user_settings;
@@ -106,18 +89,12 @@ __PACKAGE__->register_method(
 sub user_settings {
 	my( $self, $client, $user_session, $uid ) = @_;
 	
-	my $user_obj = $apputils->check_user_session( $user_session ); #throws EX on error
+	my( $staff, $user, $evt ) = 
+		$apputils->checkses_requestor( $user_session, $uid, 'VIEW_USER' );
+	return $evt if $evt;
 
-	$uid ||= $user_obj->id;
-
-	if( $user_obj->id != $uid ) {
-		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
-			return OpenILS::Perm->new("VIEW_USER");
-		}
-	}
-
-	warn "fetching user settings for $uid...\n";
-	my $s = $apputils->simple_scalar_request(
+	$logger->debug("User " . $staff->id . " fetching user $uid\n");
+	my $s = $apputils->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.actor.user_setting.search.usr.atomic',$uid );
 
@@ -133,12 +110,9 @@ __PACKAGE__->register_method(
 sub ou_settings {
 	my( $self, $client, $ouid ) = @_;
 	
-	throw OpenSRF::EX::InvalidArg ("OrgUnit ID required for lookup of OrgUnit settings") unless ($ouid);
-
-	$fetch_ou_settings ||=
-		$self->method_lookup('open-ils.storage.direct.actor.org_unit_setting.search.org_unit.atomic');
-
-	my ($s) = $fetch_ou_settings->run($ouid);
+	my $s = $apputils->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.actor.org_unit_setting.search.org_unit.atomic', $ouid);
 
 	return { map { ($_->name,$_->value) } @$s };
 }
@@ -1162,17 +1136,16 @@ __PACKAGE__->register_method(
 sub user_transactions {
 	my( $self, $client, $login_session, $user_id, $type ) = @_;
 
-	my $user_obj = $apputils->check_user_session($login_session); 
-	if($user_obj->id ne $user_id) {
-		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER_TRANSACTIONS")) {
-			return OpenILS::Perm->new("VIEW_USER_TRANSACTIONS"); 
-		}
-	}
-
+	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
+		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
+	return $evt if $evt;
+	
 	my $api = $self->api_name();
 	my $trans;
 	my @xact;
+
 	if(defined($type)) { @xact = (xact_type =>  $type); 
+
 	} else { @xact = (); }
 
 	if($api =~ /have_charge/) {

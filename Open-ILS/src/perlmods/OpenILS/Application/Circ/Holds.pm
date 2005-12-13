@@ -184,13 +184,9 @@ NOTE
 sub retrieve_holds {
 	my($self, $client, $login_session, $user_id) = @_;
 
-	my $user = $apputils->check_user_session($login_session);
-
-	if($user->id ne $user_id) {
-		if($apputils->check_user_perms($user->id, $user->home_ou, "VIEW_HOLDS")) {
-			return OpenILS::Perm->new("VIEW_HOLDS");
-		}
-	}
+	my( $user, $target, $evt ) = $apputils->checkses_requestor(
+		$login_session, $user_id, 'VIEW_HOLDS' );
+	return $evt if $evt;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $req = $session->request(
