@@ -1,0 +1,21 @@
+<!ENTITY lang.version "remote v1">
+<!ENTITY lang.description "English">
+<!ENTITY lang.author "PINES">
+<!ENTITY common.title "Title">
+<!ENTITY common.author "Author">
+<!ENTITY common.subject "Subject">
+<!ENTITY common.series "Series">
+<!ENTITY common.keyword "Keyword">
+<!ENTITY common.type "Type">
+<!ENTITY common.isbn "ISBN">
+<!ENTITY common.format "Format">
+<!ENTITY common.login "Login">
+<!ENTITY common.logout "Log Out">
+<!ENTITY common.at "at">
+<!ENTITY common.of "of">
+<!ENTITY common.cancel "Cancel">
+<!ENTITY common.library "Library">
+<!ENTITY common.username "Username">
+<!ENTITY common.password "Password">
+<!ENTITY common.submit "Submit">
+<!ENTITY common.user_not_found "User not found">

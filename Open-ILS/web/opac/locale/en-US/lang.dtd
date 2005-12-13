@@ -1,7 +1,3 @@
-<!--	======================================================================================= 
-		Shared Entites
-		======================================================================================= -->
-
 <!ENTITY lang.version "remote v1">
 <!ENTITY lang.description "English">
 <!ENTITY lang.author "PINES">
@@ -25,136 +21,15 @@
 <!ENTITY common.submit "Submit">
 <!ENTITY common.user_not_found "User not found">
 
-
-<!--	======================================================================================= 
-		ILS Events
-		======================================================================================= -->
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 <!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
 <!ENTITY ilsevent.1002 "User was not found in the database">
 <!ENTITY ilsevent.5000 "Permission Denied">
 
-<!--	======================================================================================= 
-		Permission types
-		======================================================================================= -->
 <!ENTITY ilsperm.CREATE_HOLD "User is not allowed to create holds for other users at this location">
 
 
-<!--	======================================================================================= 
-		OPAC Entites
-		======================================================================================= -->
 
-<!--
-<!ENTITY nbsp "  ">
-<!ENTITY space "&nsbp;">
--->
-<!ENTITY llt "&lt;">
-<!ENTITY ggt "&gt;">
-
-<!ENTITY opac.nbsp "  ">
-<!--
-<!ENTITY opac.space "&nsbp;">
--->
-<!ENTITY opac.llt "&lt;">
-<!ENTITY opac.ggt "&gt;">
-
-<!ENTITY opac.session_expiring "Your login session will soon expire. Click 'OK' to logout and return to the home page.  Click 'Cancel' to continue browsing.">
-<!ENTITY opac.session_expired "Your login session has expired">
-
-<!-- Navigations links -->
-<!ENTITY navigate.home "Home">
-<!ENTITY navigate.home.title "Go to the Home page">
-<!ENTITY opac.navigate.advanced "Advanced Search">
-<!ENTITY opac.navigate.advanced.title "Go to the Advanced Search Page">
-<!ENTITY navigate.myopac "My Account">
-<!ENTITY opac.navigate.myopac "My Account">
-<!ENTITY navigate.myopac.title "Go to My OPAC">
-<!ENTITY navigate.login "Log in">
-<!ENTITY navigate.login.title "Log in for personalized features">
-<!ENTITY navigate.logout "Log out">
-<!ENTITY navigate.logout.title "Log out">
-<!ENTITY opac.navigate.selectNewOrg "Choose a different library">
-<!ENTITY opac.navigate.selectOrg "Choose a library to search">
-
-<!-- Informational items -->
-<!ENTITY navigate.loggedinas "You are logged in as ">
-<!ENTITY navigate.loggedinas.title "Logged in as...">
-<!ENTITY navigate.titleGroupResults "My Search Results">
-<!ENTITY navigate.titleResults "My Title Results">
-
-<!ENTITY common.nowSearching "Now searching ">
-<!ENTITY common.ofAtLeast " of at least ">
-<!ENTITY common.relevancy "Relevancy ">
-
-<!ENTITY common.tips "Tips:">
-<!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
-<!ENTITY common.tips.tip2 "If you don't find what you want try expanding your search using the range selector at the right of the search bar">
-
-<!ENTITY common.org.openAll "Expand All">
-<!ENTITY common.org.closeAll "Close All">
-<!ENTITY common.org.cancel "Cancel">
-<!ENTITY common.org.loading "Loading library selector...">
-<!ENTITY common.org.note "Tip:">
-<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a region.">
-
-<!-- Sidebar Header Labels -->
-<!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">
-<!ENTITY sidebar.relevantAuthors.headerLabel "Relevant Authors">
-<!ENTITY sidebar.relevantSeries.headerLabel "Relevant Series">
-<!ENTITY sidebar.relevantReviews.headerLabel "Reviews">
-
-
-<!-- Record Details -->
-<!ENTITY rdetail.detailMain.headerLabel "Title Details">
-<!ENTITY rdetail.detailMain.title "Title">
-<!ENTITY rdetail.detailMain.author "Author">
-<!ENTITY rdetail.detailMain.isbn "ISBN">
-<!ENTITY rdetail.detailMain.edition "Edition">
-<!ENTITY rdetail.detailMain.pubdate "Publication Date">
-<!ENTITY rdetail.detailMain.publisher "Publisher">
-<!ENTITY rdetail.detailMain.tor "Format">
-<!ENTITY rdetail.detailMain.subjects "Subjects">
-<!ENTITY rdetail.detailMain.abstract "Abstract">
-<!ENTITY rdetail.copyInfo.headerLabel "Copy Information">
-<!ENTITY rdetail.copyInfo.library "Library">
-<!ENTITY rdetail.copyInfo.callnumber "Callnumber">
-<!ENTITY rdetail.copyInfo.local "View Copy Information for this location only">
-<!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
-<!ENTITY rdetail.loading "Loading copy infomation...">
-<!ENTITY rdetail.noneAvailable " * There are no copies in this location">
-<!ENTITY rdetail.detailMain.viewMarc "View MARC">
-<!ENTITY rdetail.detailMain.hideMarc "Return to title details">
-
-<!ENTITY opac.holds.xulRecipient "Enter recipient barcode">
-<!ENTITY opac.holds.recipient "Recipient">
-<!ENTITY opac.holds.placeHold "Place Hold">
-<!ENTITY opac.holds.contactPhone "Concact telephone number">
-<!ENTITY opac.holds.concactEmail "Concact email address">
-<!ENTITY opac.holds.pickupLocation "Pickup location">
-<!ENTITY opac.holds.placeHold	"Place Hold">
-<!ENTITY opac.holds.success "Hold was successfully placed">
-<!ENTITY opac.holds.failure "Hold was not successfully placed">
-
-<!ENTITY opac.search.books "Books">
-<!ENTITY opac.search.allFormats "All Formats">
-<!ENTITY opac.search.largePrint "Large Print Books">
-<!ENTITY opac.search.audioBooks "Audiobooks">
-<!ENTITY opac.search.videoRecordings "Video Recordings">
-<!ENTITY opac.search.music "Music">
-<!ENTITY opac.search.electronic "Electronic Resources">
-<!ENTITY opac.search.nowSearching "Now Searching">
-
-<!ENTITY opac.title.home "Evergreen: Home">
-<!ENTITY opac.title.mresult "Evergreen Title Groups">
-
-<!ENTITY opac.login.login "Login with your username and password">
-
-
-
-
-<!--	======================================================================================= 
-		Staff Client Entites
-		======================================================================================= -->
 
 <!ENTITY staff.about.title "About">
 <!ENTITY staff.acp_label_barcode "Barcode">
