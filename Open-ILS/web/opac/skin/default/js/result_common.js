@@ -8,6 +8,7 @@ G.evt.result.hitCountReceived.push(resultSetHitInfo);
 G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
+//G.evt.result.allRecordsReceived.push(resultBuildCaches );
 
 attachEvt('result','lowHits',resultLowHits);
 attachEvt('result','zeroHits',resultZeroHits);

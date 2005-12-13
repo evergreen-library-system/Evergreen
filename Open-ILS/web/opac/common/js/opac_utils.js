@@ -142,7 +142,7 @@ function buildISBNSrc(isbn) {
 */
 
 function buildImageLink(name, ssl) {
-	return findBaseURL(ssl) + "../../../images/" + name;
+	return findBaseURL(ssl) + "../../../../images/" + name;
 }
 
 function  buildOPACLink(args, slim, ssl) {
@@ -278,6 +278,7 @@ function grabUser(ses, force) {
 
 	var at = getAuthtime();
 	if(isXUL()) at = xulG['authtime'];
+	//alert(at);
 	new AuthTimer(at).run();
 
 	return G.user;
@@ -363,7 +364,7 @@ function updateUserSetting(setting, value, user) {
 
 function commitUserPrefs() {
 	var req = new Request( 
-		UPDATE_USER_PREFS, G.user.session, G.user.prefs );
+		UPDATE_USER_PREFS, G.user.session, null, G.user.prefs );
 	req.send(true);
 	return req.result();
 }
@@ -411,8 +412,8 @@ function doLogin() {
 	var code = checkILSEvent(auth_result);
 	if(code) { alertILSEvent(code); return null; }
 
-	var u = grabUser(auth_result.payload.authtoken, true);
 	AUTHTIME = parseInt(auth_result.payload.authtime);
+	var u = grabUser(auth_result.payload.authtoken, true);
 	if(u) runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
 
 	checkUserSkin();
@@ -566,7 +567,7 @@ function MARCFormatToMods(format) {
 }
 
 function setResourcePic( img, resource ) {
-	img.setAttribute( "src", "../../../images/tor/" + resource + ".jpg");
+	img.setAttribute( "src", "../../../../images/tor/" + resource + ".jpg");
 	img.title = resource;
 }
 

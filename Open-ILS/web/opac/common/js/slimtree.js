@@ -1,9 +1,19 @@
+/*
 var stpicopen	= '../../../images/slimtree/folder.gif';
 var stpicclose = '../../../images/slimtree/folderopen.gif';
 var stpicblank = '../../../images/slimtree/page.gif';
 var stpicline	= '../../../images/slimtree/line.gif';
 var stpicjoin	= '../../../images/slimtree/join.gif';
 var stpicjoinb = '../../../images/slimtree/joinbottom.gif';
+*/
+
+var stpicopen	= '../../../../images/slimtree/folder.gif';
+var stpicclose = '../../../../images/slimtree/folderopen.gif';
+var stpicblank = '../../../../images/slimtree/page.gif';
+var stpicline	= '../../../../images/slimtree/line.gif';
+var stpicjoin	= '../../../../images/slimtree/join.gif';
+var stpicjoinb = '../../../../images/slimtree/joinbottom.gif';
+
 
 var stimgopen	= elem('img',{src:stpicopen,border:0});
 var stimgclose	= elem('img',{src:stpicclose,border:0});
