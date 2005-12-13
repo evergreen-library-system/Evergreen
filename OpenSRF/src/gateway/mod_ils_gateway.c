@@ -59,7 +59,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	char* key						= NULL;	/* query item name */
 	char* val						= NULL;	/* query item value */
 
-	jsonObject* response			= jsonParseString("{ }");
+	jsonObject* response			= jsonParseString("{\"status\":200}");
 	jsonObject* payload			= jsonParseString("[ ]");
 	jsonObjectSetKey(response, "payload", payload );
 
