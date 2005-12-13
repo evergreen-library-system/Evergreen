@@ -16,7 +16,7 @@ auth.controller.prototype = {
 		var w = obj.w;
 
 		// MVC
-		JSAN.use('main.controller'); obj.controller = new main.controller();
+		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
 			{
 				'control_map' : {

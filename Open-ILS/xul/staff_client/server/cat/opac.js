@@ -22,7 +22,7 @@ cat.opac.prototype = {
 			obj.session = params['session'];
 			obj.url = params['url'];
 
-			JSAN.use('main.controller'); obj.controller = new main.controller();
+			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
 				{
 					control_map : {

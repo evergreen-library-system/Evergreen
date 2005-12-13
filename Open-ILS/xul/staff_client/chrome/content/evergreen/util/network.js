@@ -1,7 +1,7 @@
-dump('entering main/network.js\n');
+dump('entering util/network.js\n');
 
-if (typeof main == 'undefined') main = {};
-main.network = function () {
+if (typeof util == 'undefined') util = {};
+util.network = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	// Place a test here for network connectivity
@@ -10,7 +10,7 @@ main.network = function () {
 	return this;
 };
 
-main.network.prototype = {
+util.network.prototype = {
 
 	// Flag for whether the staff client should act as if it were offline or not
 	'offline' : false,
@@ -52,4 +52,4 @@ function sample_callback(request) {
 }
 */
 
-dump('exiting main/network.js\n');
+dump('exiting util/network.js\n');

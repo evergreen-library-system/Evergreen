@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') patron = {};
 circ.checkout = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('main.network'); this.network = new main.network();
+	JSAN.use('util.network'); this.network = new util.network();
 
 	JSAN.use('OpenILS.data'); this.OpenILS = {};
 	this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
@@ -123,7 +123,7 @@ circ.checkout.prototype = {
 			}
 		);
 		
-		JSAN.use('main.controller'); obj.controller = new main.controller();
+		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
 			{
 				'control_map' : {

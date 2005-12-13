@@ -4,7 +4,7 @@ if (typeof main == 'undefined') main = {};
 main.menu = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('main.window'); this.window = new main.window();
+	JSAN.use('util.window'); this.window = new util.window();
 
 	this.w = window;
 }

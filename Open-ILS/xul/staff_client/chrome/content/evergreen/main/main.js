@@ -31,8 +31,8 @@ function main_init() {
 		G.error = new util.error();
 		G.error.sdump('D_ERROR','Testing');
 
-		JSAN.use('main.window');
-		G.window = new main.window();
+		JSAN.use('util.window');
+		G.window = new util.window();
 
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( { 'window' : mw } );

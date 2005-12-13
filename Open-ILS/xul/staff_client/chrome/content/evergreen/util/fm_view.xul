@@ -58,8 +58,8 @@
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
-				JSAN.use('main.network'); g.network = new main.network();
-				JSAN.use('main.window'); g.window = new main.window();
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.window'); g.window = new util.window();
 				JSAN.use('util.functional');
 				g.error.sdump('D_TRACE','my_init() for fm_view.xul');
 

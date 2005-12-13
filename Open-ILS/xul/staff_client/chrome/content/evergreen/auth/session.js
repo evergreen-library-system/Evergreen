@@ -4,7 +4,7 @@ if (typeof auth == 'undefined') auth = {};
 auth.session = function (view) {
 
 	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('main.network'); this.network = new main.network();
+	JSAN.use('util.network'); this.network = new util.network();
 	this.view = view;
 
 	return this;

@@ -1,18 +1,18 @@
-dump('entering main/controller.js\n');
+dump('entering util/controller.js\n');
 
-if (typeof main == 'undefined') main = {};
-main.controller = function () {
+if (typeof util == 'undefined') util = {};
+util.controller = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
 
 	return this;
 };
 
-main.controller.prototype = {
+util.controller.prototype = {
 
 	'init' : function (params) {
 
-		if (typeof params.control_map == 'undefined') throw('main.controller.init: No control_map');
+		if (typeof params.control_map == 'undefined') throw('util.controller.init: No control_map');
 
 		this.control_map = params.control_map;
 		this.render_list = [];
@@ -53,4 +53,4 @@ main.controller.prototype = {
 		}
 	}
 }
-dump('exiting main/controller.js\n');
+dump('exiting util/controller.js\n');

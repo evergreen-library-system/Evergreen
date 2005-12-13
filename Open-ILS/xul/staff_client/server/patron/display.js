@@ -4,8 +4,8 @@ if (typeof patron == 'undefined') patron = {};
 patron.display = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('main.window'); this.window = new main.window();
-	JSAN.use('main.network'); this.network = new main.network();
+	JSAN.use('util.window'); this.window = new util.window();
+	JSAN.use('util.network'); this.network = new util.network();
 	this.w = window;
 }
 
@@ -43,7 +43,7 @@ patron.display.prototype = {
 			dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 		}
 
-		JSAN.use('main.controller'); obj.controller = new main.controller();
+		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
 			{
 				control_map : {

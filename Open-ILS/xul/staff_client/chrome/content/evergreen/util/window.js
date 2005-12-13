@@ -1,12 +1,12 @@
-dump('entering main/window.js\n');
+dump('entering util/window.js\n');
 
-if (typeof main == 'undefined') main = {};
-main.window = function () {
+if (typeof util == 'undefined') util = {};
+util.window = function () {
 	JSAN.use('util.error'); this.error = new util.error(); this.win = window;
 	return this;
 };
 
-main.window.prototype = {
+util.window.prototype = {
 	
 	// list of open window references, used for debugging in shell
 	'win_list' : [],	
@@ -70,4 +70,4 @@ main.window.prototype = {
 	}
 }
 
-dump('exiting main/window.js\n');
+dump('exiting util/window.js\n');

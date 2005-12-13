@@ -4,7 +4,7 @@ if (typeof OpenILS == 'undefined') OpenILS = {};
 OpenILS.data = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('main.network'); this.network = new main.network();
+	JSAN.use('util.network'); this.network = new util.network();
 
 	return this;
 }
