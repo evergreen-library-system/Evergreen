@@ -1,0 +1,21 @@
+<body onload='init(); 
+	getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED}));
+	getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
+	<table width='100%' style='border-collapse: collapse;'>
+		<tbody>
+			<tr>
+				<td width='10%'> </td>
+				<td width='80%'>
+					<div id='canvas'>
+						<!--#include virtual="altcanvas.xml"-->
+						<!--#include virtual="homesearch.xml"-->
+					</div>
+				</td>
+				<td width='10%'> </td>
+			</tr>
+		</tbody>
+	</table>
+	<script language='javascript'>isFrontPage = true;</script>
+</body>
+
+

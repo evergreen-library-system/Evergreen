@@ -1,44 +1,38 @@
-<?xml version='1.0'?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Loads the environment -->
+<!--#include virtual="setenv.xml"-->
+
+<!-- Tells the browser to translate the page as HTML --> 
+<?xml-stylesheet type="text/xsl" href="html_xsl.xml"?> 
 
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/common.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/opac_common.dtd"-->
 
-	<head>
-		<title>&opac.title.home;</title>
-		<xi:include href="css_common.xml"/>
-		<script language='javascript' src='../../../common/js/utils.js'> </script>
-		<script language='javascript' src='../../../common/js//config.js'> </script>
-		<script language='javascript' src='../../../common/js/CGI.js'> </script>
-		<script language='javascript' src='../../../common/js/Cookie.js'> </script>
+	<!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
+		<!--#include virtual="/opac/locale/${locale}/opac_result.dtd"-->
+	<!--#endif-->
 
-		<script language='javascript' src='../../../common/js/slimtree.js'> </script>
-		<script language='javascript' src='../../../common/js/JSON.js'> </script>
-		<script language='javascript' src='../../../common/js/fmcore.js'> </script>
-		<script language='javascript' src='../../../common/js/fmgen.js'> </script>
-		<script language='javascript' src='../../../common/js/opac_utils.js'> </script>
-		<script language='javascript' src='../../../common/js/OrgTree.js'> </script>
-		<script language='javascript' src='../../../common/js/org_utils.js'> </script>
-		<script language='javascript' src='../../../common/js/init.js'> </script>
+	<!--#if expr="$OILS_PAGE='rdetail.xml'"-->
+		<!--#include virtual="/opac/locale/${locale}/opac_rdetail.dtd"-->
+	<!--#endif-->
 
-	</head>
+	<!--#if expr="$OILS_PAGE!='index.xml'"-->
+		<!--#include virtual="/opac/locale/${locale}/opac_holds.dtd"-->
+	<!--#endif-->
 
-	<body onload='init(); 
-		getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED}));
-		getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
-		<table width='100%' style='border-collapse: collapse;'>
-			<tbody>
-				<tr>
-					<td width='10%'> </td>
-					<td width='80%'>
-						<div id='canvas'>
-							<xi:include href="altcanvas.xml"/>
-							<xi:include href="homesearch.xml"/>
-						</div>
-					</td>
-					<td width='10%'> </td>
-				</tr>
-			</tbody>
-		</table>
-	</body>
-	<script language='javascript'>isFrontPage = true;</script>
+]>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<!--#include virtual="header.xml"-->
+	<!--#if expr="$OILS_PAGE='index.xml'"-->
+		<!--#include virtual="index_body.xml"-->
+	<!--#else-->
+		<!--#include virtual="body.xml"-->
+	<!--#endif-->
 </html>

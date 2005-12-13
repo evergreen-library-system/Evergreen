@@ -1,0 +1,24 @@
+<body onload='init();'>
+	<table width='100%' height='99%'>
+		<tbody>
+			<tr>
+				<td id='main_left_cell'>
+					<!--#include virtual="logo.xml"-->
+					<!--#include virtual="sidebar.xml"-->
+				</td>
+				<td id='main_right_cell'>
+					<div id='canvas' class='canvas'>
+						<!--#include virtual="searchbar.xml"-->
+						<!--#include virtual="statusbar.xml"-->
+						<!--#include virtual="altcanvas.xml"-->
+						<!--#include virtual="ilsevents.xml"--> 
+						<!--#include virtual="page_${OILS_PAGE}"-->
+					</div>
+					<br/>
+					<!--#include virtual="tips.xml"-->
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!--#include virtual='footer.xml'-->
+</body>

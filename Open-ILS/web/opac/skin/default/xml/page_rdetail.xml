@@ -1,0 +1,30 @@
+<div id='canvas_main'>
+
+	<script language='javascript' src='../js/sidebar_extras.js'> </script>
+	<script language='javascript' src='../js/rdetail.js'> </script>
+	<script language='javascript' src='../js/holds.js'> </script>
+
+	<script language='javascript'>
+		config.ids.rdetail = {};
+		config.ids.rdetail.view_marc = "rdetail_view_marc";
+	</script>
+
+
+	<table style='' class='rdetail_header color_1' width='100%'>
+		<tbody>
+			<tr>
+				<td>
+					<span>&rdetail.detailMain.headerLabel;</span>
+				</td>
+				<td align='right' style='padding-right: 7px;'>
+					<span style='padding-right: 5px;'>
+						<a id='rdetail_place_hold' class='classic_link'>Place Hold</a>
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!--#include virtual="rdetail_summary.xml"-->
+	<br/><br/>
+	<!--#include virtual="rdetail_extras.xml"-->
+</div>

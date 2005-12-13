@@ -1,0 +1,65 @@
+<div id='canvas_main'>
+
+	<script language='javascript' src='../js/myopac.js'> </script>
+
+	<!-- overwrite the fieldmapper code with the extended fieldmapper code -->
+	<script language='javascript' src='../../../../common/js/fmextcore.js'> </script>
+	<script language='javascript' src='../../../../common/js/fmgen.js'> </script>
+
+	<script language='javascript'>
+		config.ids.myopac = {};
+		config.css.myopac = {};
+		config.names.myopac = {};
+	</script>
+
+	<br/>
+	<table style='width: 95%; text-align: center;'>
+		<tbody>
+			<tr id='myopac_nav_row'>
+
+				<td width='5%' style='border-right: 1px solid #808080;'></td>
+
+				<td class='myopac_link' id='myopac_summary_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("summary");'> Account Summary</a>
+				</td>
+
+				<td class='myopac_link' id='myopac_checked_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("checked");'> Checked Out</a>
+				</td>
+
+				<td class='myopac_link' id='myopac_holds_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("holds");'>Holds</a>
+				</td>
+
+				<td class='myopac_link' id='myopac_fines_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("fines");'>Fines</a>
+				</td>
+
+				<td class='myopac_link' id='myopac_prefs_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("prefs");'>Preferences</a>
+				</td>
+
+				<td width='5%' style='border-left: 1px solid #808080;'></td>
+
+			</tr>
+		</tbody>
+	</table>
+
+	<br/>
+
+	<div id='myopac_main_div'>
+		<!--#include virtual="myopac_summary.xml"-->
+		<!--#include virtual="myopac_checked.xml"-->
+		<!--#include virtual="myopac_holds.xml"-->
+		<!--#include virtual="myopac_fines.xml"-->
+		<!--#include virtual="myopac_prefs.xml"-->
+	</div>
+
+</div>
+
+

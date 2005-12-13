@@ -1,12 +1,11 @@
-<?xml version='1.0'?>
 
 <div id='myopac_fines_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
 	<br/>
-	<table width='100%' class='light_border data_grid'>
+	<table width='100%' class='data_grid data_grid_center'>
 
 		<thead class='color_3'>
-			<tr><td colspan='3' align='center' style='background: none'><b>Summary</b></td></tr>
+			<tr><td colspan='3' style='background: none'><b>Summary</b></td></tr>
 			<tr>
 				<td width='33%'>Total Owed</td>
 				<td width='33%'>Total Paid</td>
@@ -17,9 +16,9 @@
 		<tbody id='myopac_fines_summary_tbody'>
 			<tr id='myopac_fines_summary_loading'><td>Loading...</td></tr>
 			<tr id='myopac_fines_summary_row' class='light_border hide_me'>
-				<td align='center' id='myopac_fines_summary_total' class='light_border'>$</td>
-				<td align='center' id='myopac_fines_summary_paid' class='light_border'>$</td>
-				<td align='center' id='myopac_fines_summary_balance' class='light_border' style='color:red;font-weight: bold;'>$</td>
+				<td id='myopac_fines_summary_total' class='light_border'>$</td>
+				<td id='myopac_fines_summary_paid' class='light_border'>$</td>
+				<td id='myopac_fines_summary_balance' class='light_border' style='color:red;font-weight: bold;'>$</td>
 			</tr>
 		</tbody>
 	</table>
@@ -28,10 +27,13 @@
 	<br/>
 	<br/>
 
+	<!--
 	<table width='100%' class='light_border myopac_table hide_me' id='myopac_trans_table'>
+	-->
+	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_trans_table'>
 
-		<thead class='color_3'>
-			<tr><td colspan='8' align='center' style='background: none'><b>Transaction Details</b></td></tr>
+		<thead>
+			<tr><td colspan='8' style='background: none'><b>Transaction Details</b></td></tr>
 			<tr>
 				<td width='12%'>Transaction Start Time</td>
 				<td width='12%'>Last Billing Time</td>
@@ -45,15 +47,15 @@
 		</thead>
 
 		<tbody id='myopac_fines_tbody'>
-			<tr id='myopac_trans_row' class='light_border'>
-				<td align='center' name='myopac_trans_start' class='light_border'> </td>
-				<td align='center' name='myopac_trans_last_bill' class='light_border'> </td>
-				<td align='center' name='myopac_trans_last_payment' class='light_border'> </td>
-				<td align='center' name='myopac_trans_init_amount' class='light_border'>$</td>
-				<td align='center' name='myopac_trans_total_paid' class='light_border'>$</td>
-				<td align='center' name='myopac_trans_balance' class='light_border' style='color:red; font-weight: bold;'>$</td>
-				<td align='center' name='myopac_trans_type' class='light_border'> </td>
-				<td align='center' name='myopac_trans_extra' class='light_border'> </td>
+			<tr id='myopac_trans_row'>
+				<td name='myopac_trans_start'> </td>
+				<td name='myopac_trans_last_bill'> </td>
+				<td name='myopac_trans_last_payment'> </td>
+				<td name='myopac_trans_init_amount'>$</td>
+				<td name='myopac_trans_total_paid'>$</td>
+				<td name='myopac_trans_balance' style='color:red; font-weight: bold;'>$</td>
+				<td name='myopac_trans_type'> </td>
+				<td name='myopac_trans_extra'> </td>
 			</tr>
 		</tbody>
 	</table>

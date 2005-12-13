@@ -1,4 +1,3 @@
-<?xml version='1.0'?>
 
 <!-- These are the UI components that may be needed on any given page.  The must be
 	set to class += 'hide_me' by default -->
@@ -6,10 +5,12 @@
 <div id='not_the_canvas' xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<!-- the login page -->
-	<xi:include href="login.xml"/> 
+	<!--#if expr="$FRONT_PAGE!='true'"-->
+		<!--#include virtual="login.xml"-->
+	<!--#endif-->
 
 	<!-- The org tree -->
-	<xi:include href="orgtree.xml"/> 
+	<!--#include virtual="orgtree.xml"-->
 
 	<!-- ============================================================================= -->
 	<!-- Register the alternate canvases  -->
@@ -21,7 +22,9 @@
 		config.ids.altcanvas.loading		= 'loading_alt';
 	</script>
 
-	<xi:include href='holds.xml'/>
+	<!--#if expr="$FRONT_PAGE!='true'"-->
+		<!--#include virtual="holds.xml"-->
+	<!--#endif-->
 
 	<div id='loading_alt' class='hide_me non_canvas' style='margin-top: 6px;'>
 		<div style='margin-top: 30px; text-align: left; font-weight: 700;' class='color_3'>

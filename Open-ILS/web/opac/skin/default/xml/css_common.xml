@@ -1,23 +1,16 @@
-<?xml version='1.0'?>
 
 <!-- CSS shared across pages goes here --> 
 
-<css>
+<link type='text/css' rel='stylesheet' href='../css/layout.css'/>
 
-	<link type='text/css' rel='stylesheet' href='../css/layout.css'/>
-	<link type='text/css' rel='stylesheet' href='../../../common/css/dtree.css'/>
+<!-- Our font CSS's -->
+<link type='text/css' rel='stylesheet'					
+	href='<!--#echo var="OILS_CSS_BASE"-->/mediumfont.css' name='meduim_fonts' csstype='font'/>
 
-	<!-- Our font CSS's -->
-	<link type='text/css' rel='stylesheet'					
-		href='../../../common/css/mediumfont.css' name='meduim_fonts' csstype='font'/>
+<!-- Our colors -->
+<link type='text/css' rel="stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/default/css/colors.css"  
+	name='Default' csstype='color'/>
 
-	<!-- Our colors -->
-	<link type='text/css' rel="stylesheet" href="../../../theme/default/css/colors.css"  
-		name='Default' csstype='color'/>
+<link type='text/css' rel="alternate stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/test/css/colors.css" 
+	title='Color Test' name='ColorTest' csstype="color" />
 
-	<!--
-	<link type='text/css' rel="alternate stylesheet" href="../../../theme/test/css/colors.css" 
-		title='Color Test' name='ColorTest' csstype="color" />
-		-->
-
-</css>

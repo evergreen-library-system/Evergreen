@@ -1,6 +1,12 @@
-<?xml version='1.0'?>
+<head>
+	<!-- Set the page title -->
 
-<div id='left_div' xmlns:xi="http://www.w3.org/2001/XInclude">
-	<xi:include href="logo.xml"/>
-	<xi:include href="sidebar.xml"/> 
-</div>
+	<!--#include virtual="css_common.xml"-->
+
+	<title>&<!--#echo var="OILS_TITLE"-->;</title>
+
+	<!--#if expr="$slimpac!='true'"-->
+		<!--#include virtual="js_common.xml"-->
+	<!--#endif-->
+
+</head>

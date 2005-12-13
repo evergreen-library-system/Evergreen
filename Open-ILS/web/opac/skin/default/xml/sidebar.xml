@@ -1,4 +1,3 @@
-<?xml version='1.0'?>
 
 <!-- Navigation bar -->
 
@@ -60,9 +59,10 @@
 	<div id='subject_tree_sidebar' class='sidebar_chunk hide_me'> 
 		<div id='subject_sidebar_tree_div'> </div>
 		<script language='javascript'>
+			removeChildren($('subject_sidebar_tree_div'));
 			var subjectSidebarTree = new SlimTree(
 				document.getElementById('subject_sidebar_tree_div'),
-				'subjectSidebarTree', '../../../images/slimtree/related.jpg');
+				'subjectSidebarTree', '../../../../images/slimtree/related.jpg');
 			subjectSidebarTree.addNode( 'subjectSidebarTreeRoot', -1, 
 				"&sidebar.relevantSubjects.headerLabel;", 
 				'javascript:subjectSidebarTree.toggle(' +
@@ -74,9 +74,10 @@
 		<hr/>
 		<div id='author_sidebar_tree_div'> </div>
 		<script language='javascript'>
+			removeChildren($('author_sidebar_tree_div'));
 			var authorSidebarTree = new SlimTree(
 				document.getElementById('author_sidebar_tree_div'),
-				'authorSidebarTree','../../../images/slimtree/people.jpg');
+				'authorSidebarTree','../../../../images/slimtree/people.jpg');
 			authorSidebarTree.addNode( 'authorSidebarTreeRoot', -1, 
 				"&sidebar.relevantAuthors.headerLabel;", 
 				'javascript:authorSidebarTree.toggle(' +
@@ -88,10 +89,11 @@
 		<hr/>
 		<div id='series_sidebar_tree_div'> </div>
 		<script language='javascript'>
+			removeChildren($('series_sidebar_tree_div'));
 			var seriesSidebarTree = new SlimTree(
 				document.getElementById('series_sidebar_tree_div'),
 				'seriesSidebarTree',
-				'../../../images/slimtree/houses.jpg');
+				'../../../../images/slimtree/houses.jpg');
 			seriesSidebarTree.addNode( 'seriesSidebarTreeRoot', -1, 
 				"&sidebar.relevantSeries.headerLabel;", 
 				'javascript:seriesSidebarTree.toggle(' +

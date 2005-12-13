@@ -1,0 +1,34 @@
+<!-- Sets our environment variables for convenience and determining which page we're on -->
+
+<!--#set var='OILS_PAGE' value="$DOCUMENT_NAME"-->
+
+<!--#if expr="$DOCUMENT_NAME='index.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.home'-->
+	<!--#set var='FRONT_PAGE' value='true'-->
+
+<!--#elif expr="$DOCUMENT_NAME='mresult.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.mresult'-->
+	
+
+<!--#elif expr="$DOCUMENT_NAME='rresult.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.rresult'-->
+
+<!--#elif expr="$DOCUMENT_NAME='rdetail.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.rdetail'-->
+
+<!--#elif expr="$DOCUMENT_NAME='myopac.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.myopac'-->
+
+<!--#elif expr="$DOCUMENT_NAME='advanced.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.advanced'-->
+
+<!--#endif-->
+
+<!--#set var="OILS_BASE" value="http://${SERVER_NAME}/${OILS_OPAC_BASE}"-->
+<!--#set var="OILS_JS_BASE" value="${OILS_BASE}/common/js"-->
+<!--#set var="OILS_CSS_BASE" value="${OILS_BASE}/common/css"--> 
+<!--#set var="OILS_THEME_BASE" value="${OILS_BASE}/theme"--> 
+
+<!--#if expr="!$locale || $locale=''"-->
+	<!--#set var="locale" value="en-US"-->
+<!--#endif-->

@@ -1,4 +1,3 @@
-<?xml version='1.0'?>
 
 <div xmlns:xi="http://www.w3.org/2001/XInclude">
 
@@ -40,7 +39,7 @@
 	<div id='rdetail_extras_div' style='width: 95%;'> 
 		<div id='rdetail_extras_loading' class='hide_me' 
 			style='padding: 10px;'>Loading...</div>
-		<xi:include href="rdetail_copyinfo.xml"/>
+		<!--#include virtual="rdetail_copyinfo.xml"-->
 
 		<div id='rdetail_reviews_div' class='rdetail_extras_div hide_me'> 
 			<div id='rdetail_review_template' style='width: 100%;'>

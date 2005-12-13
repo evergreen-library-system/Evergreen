@@ -1,5 +1,3 @@
-<?xml version='1.0'?>
-
 <!-- Search results are spit into this table -->
 
 <div id='result_table_div' xmlns:xi="http://www.w3.org/2001/XInclude">
@@ -13,67 +11,12 @@
 		</thead>
 
 		<tbody id='result_table'>
-
 			<tr>
 
 				<td class='result_table_row'>
-
-					<table style='width: 100%;'>
-						<tbody>
-
-							<tr style='height: 1em; background: #E0F6E0'>
-
-								<td style='vertical-align: top;'  id='next_prev_links'>
-
-									<span class='hide_me' id='result_info_div' style='font-size: 9pt;'>
-										<span> Results </span> 
-										<span id='offset_start'> </span>
-										<span> - </span>
-										<span id='offset_end'> </span>
-										<span> &common.ofAtLeast; </span>
-										<span id='result_count'> </span>
-										<span style='padding-left: 6px;'> (page </span>
-										<span id='current_page'> </span>
-										<span> &common.of; </span>
-										<span id='num_pages'> </span>
-									</span>
-
-									<span id='start_end_links_span' class='hide_me' 
-											style='padding-left: 40px;' >
-										<a class='search_page_nav_link' id='search_home_link' 
-											title="First results page">Start</a>
-										<a class='search_page_nav_link' id='prev_link' 
-											title='Previus page'> &llt;&llt; </a>
-										<span class='search_page_nav_link' id='page_numbers'> </span>
-										<a  class='search_page_nav_link' id='next_link' 
-											title='Next Page'> &ggt;&ggt; </a>
-										<a  class='search_page_nav_link' id='end_link' 
-											title="Last results page">End</a>
-									</span>
-
-								</td>
-
-								<td  colspan='5' 
-									style='padding-bottom: 4px; text-align:center; vertical-align: top; border-bottom: 1px solid #E0E0E0;'>
-										<span id='search_info_table' class='hide_me' style='font-size: 8pt;'>
-											<b>Available copies / Total copies </b>
-										</span>
-								</td>
-							</tr>
-
-							<tr style='height: 2em;' id='result_thead_row'>
-								<td> </td>
-								<td rowspan='2' style='font-size: 8pt; padding-top: 4px;' class='copy_count_cell' 
-									width='12%' align='center' name='result_thead_ccell'> </td>
-							</tr>
-
-						</tbody>
-					</table>
+					<!--#include virtual="result_info.xml"-->
 				</td>
 			</tr>
-
-
-
 
 			<!-- Template for displaying a search result.  This row template is cloned and inserted
 					for each result returned -->
@@ -124,47 +67,47 @@
 								<td name='result_table_format_cell' class='result_table_format_cell'>
 
 									<a name='text_link' class='search_link'> 
-										<img src='../../../images/tor/text.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/text.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='sound recording-nonmusical_link' class='search_link'> 
-										<img src='../../../images/tor/sound recording-nonmusical.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/sound recording-nonmusical.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='moving image_link' class='search_link'> 
-										<img src='../../../images/tor/moving image.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/moving image.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='software, multimedia_link' class='search_link'> 
-										<img src='../../../images/tor/software, multimedia.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/software, multimedia.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='sound recording-musical_link' class='search_link'> 
-										<img src='../../../images/tor/sound recording-musical.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/sound recording-musical.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='cartographic_link' class='search_link'> 
-										<img src='../../../images/tor/cartographic.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/cartographic.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='mixed material_link' class='search_link'> 
-										<img src='../../../images/tor/mixed material.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/mixed material.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='notated music_link' class='search_link'> 
-										<img src='../../../images/tor/notated music.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/notated music.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='sound recording_link' class='search_link'> 
-										<img src='../../../images/tor/sound recording.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/sound recording.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='still images_link' class='search_link'> 
-										<img src='../../../images/tor/still images.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/still images.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<a name='three dimensional object_link' class='search_link'> 
-										<img src='../../../images/tor/three dimensional object.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/three dimensional object.jpg' class='dim tor_pic'> </img>
 									</a>
 
 									<span class='hide_me' 

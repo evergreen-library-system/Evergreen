@@ -1,4 +1,3 @@
-<?xml version='1.0'?>
 
 <div id='canvas_main' 
 	style='border: 3px solid #A7EA9D; -moz-border-radius: 6px; padding: 6px; margin-top: 65px;' 
@@ -26,7 +25,7 @@
 
 
 	<div style='width: 100%; text-align: center'>
-		<img src='../../../images/main_logo.jpg' />
+		<img src='../../../../images/main_logo.jpg' />
 	</div>
 
 

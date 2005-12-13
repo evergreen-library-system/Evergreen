@@ -1,4 +1,3 @@
-<?xml version='1.0'?>
 
 <div id='myopac_prefs_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
@@ -11,11 +10,6 @@
 					<b>Preferences</b>
 				</td>
 			</tr>
-			<!--
-			<tr>
-				<td >More To Come...</td>
-			</tr>
-			-->
 		</thead>
 
 		<tbody id='myopac_prefs_tbody'>
@@ -25,6 +19,7 @@
 				<td>
 					<select id='prefs_hits_per'>
 						<option>5</option>
+						<option>8</option>
 						<option>10</option>
 						<option>15</option>
 						<option>20</option>

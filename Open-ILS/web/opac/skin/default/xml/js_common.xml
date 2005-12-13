@@ -1,27 +1,24 @@
-<?xml version='1.0'?>
 
-<!-- Javascript shared across all pages -->
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
 
-<div xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" lang="en">
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookie.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js'> </script>
 
-	<script language='javascript' src='../../../common/js/utils.js'> </script>
-	<script language='javascript' src='../../../common/js//config.js'> </script>
-	<script language='javascript' src='../../../common/js/CGI.js'> </script>
-	<script language='javascript' src='../../../common/js/Cookie.js'> </script>
-	<script language='javascript' src='../../../common/js/Cookies.js'> </script>
-	<script language='javascript' src='../../../common/js/md5.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->//slimtree.js'> </script>
 
-	<script language='javascript' src='../../../common/js/slimtree.js'> </script>
-
-	<script language='javascript' src='../../../common/js/JSON.js'> </script>
-	<script language='javascript' src='../../../common/js/fmcore.js'> </script>
-	<script language='javascript' src='../../../common/js/fmgen.js'> </script>
-	<script language='javascript' src='../../../common/js/opac_utils.js'> </script>
-	<script language='javascript' src='../../../common/js/OrgTree.js'> </script>
-	<script language='javascript' src='../../../common/js/org_utils.js'> </script>
-	<script language='javascript' src='../../../common/js/RemoteRequest.js'> </script>
-	<script language='javascript' src='../../../common/js/init.js'> </script>
-	<script language='javascript' src='../../../common/js/added_content.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opac_utils.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/OrgTree.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/org_utils.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/RemoteRequest.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/init.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/added_content.js'> </script>
 
 	<!-- Some global js -->
 	<script language='javascript'>
@@ -30,5 +27,4 @@
 		config.css.color_3 = "color_3";
 	</script>
 
-</div>
 
