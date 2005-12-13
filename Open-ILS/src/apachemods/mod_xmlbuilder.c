@@ -358,6 +358,15 @@ void xmlBuilderExtSubset( void* blob,
 	xmlBuilderAddDtd( sysId, context );
 }
 
+void xmlBuilderComment( void* blob, const xmlChar* data ) {
+	xmlBuilderContext* ctx = (xmlBuilderContext*) blob;
+	xmlNodePtr comment = xmlNewComment( data );
+	xmlNodePtr parent = osrfListGetIndex( 
+			ctx->nodeList, ctx->nodeList->size - 1 );
+	if( parent ) xmlAddChild( parent, comment );
+}
+
+
 
 void xmlBuilderProcInstruction( 
 			void* blob, const xmlChar* name, const xmlChar* data ) {
