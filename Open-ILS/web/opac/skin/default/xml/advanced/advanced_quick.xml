@@ -1,4 +1,4 @@
-<table class='data_grid' width='95%'>
+<table class='data_grid' width='80%'>
 	<thead>
 		<tr>
 			<td colspan='6'>&opac.advanced.quick.title;</td>
@@ -7,10 +7,12 @@
 	<tbody>
 		<tr>
 			<td>
-				<!--
-				<span>&opac.advanced.marc.tag;: </span>
-				<input name='advanced.marc.tag' maxlength='3' size='3'> </input>
-				-->
+				<span style='padding-right: 10px;'>&opac.advanced.quick.isbn;:</span>
+				<input type='text' size='10' maxlength='10'> </input>
+			</td>
+			<td>
+				<span style='padding-right: 10px;'>&opac.advanced.quick.issn;:</span>
+				<input type='text' size='8' maxlength='8'> </input>
 			</td>
 		</tr>
 	</tbody>

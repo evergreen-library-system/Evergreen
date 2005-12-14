@@ -6,6 +6,7 @@ body a:hover	{ color: red; text-decoration: underline;}
 .color_2 { background: #64EA4F; color: #000000; }
 .color_3 { background: #CCFFFF; color: #000000; }
 .color_4 { background: #E0F0E0; color: #000000; }
+.color_border1 { }
 
 /* ---------------------------------------------------------------------- */
 .sidebar_chunk {}
@@ -26,4 +27,12 @@ body a:hover	{ color: red; text-decoration: underline;}
 #rdetail_image_cell { border: 1px solid white; border-right: 1px solid #A7EA9D;}
 .rdetail_header {  }
 
+
+.sidebar_item_active { background: #A7EA9D; }
+
+#canvas_main { border-left: 3px solid #A7EA9D; border-bottom: 3px solid #A7EA9D; 
+	border-top: 3px solid #A7EA9D;  }
+
+.non_canvas {  border-left: 3px solid #A7EA9D; border-top: 3px solid #A7EA9D; 
+	border-bottom: 3px solid #A7EA9D; }
 

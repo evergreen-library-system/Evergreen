@@ -6,7 +6,7 @@
 <!ENTITY common.subject "Subject">
 <!ENTITY common.series "Series">
 <!ENTITY common.keyword "Keyword">
-<!ENTITY common.type "Type">
+<!ENTITY common.type "Search Type">
 <!ENTITY common.isbn "ISBN">
 <!ENTITY common.format "Format">
 <!ENTITY common.login "Login">
@@ -18,4 +18,5 @@
 <!ENTITY common.username "Username">
 <!ENTITY common.password "Password">
 <!ENTITY common.submit "Submit">
+<!ENTITY common.and "and">
 <!ENTITY common.user_not_found "User not found">

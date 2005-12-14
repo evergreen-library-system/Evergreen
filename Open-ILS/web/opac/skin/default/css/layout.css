@@ -32,11 +32,9 @@ table { border-collapse: collapse; }
 .canvas { min-height: 300px; }
 #not_the_canvas {}
 
-#canvas_main { min-height: 300px; border-left: 3px solid #A7EA9D; border-bottom: 3px solid #A7EA9D; 
-	border-top: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px; padding-bottom: 10px; }
+#canvas_main { min-height: 300px; padding-left: 6px; -moz-border-radius: 6px; padding-bottom: 10px; }
+.non_canvas {  min-height: 300px; padding-left: 6px; -moz-border-radius: 6px;}
 
-.non_canvas {  min-height: 300px; border-left: 3px solid #A7EA9D; border-top: 3px solid #A7EA9D; 
-	border-bottom: 3px solid #A7EA9D; padding-left: 6px; -moz-border-radius: 6px;}
 
 #loading_div { width: 100%;}
 .logo { height: 65px; width: 180px; }
@@ -56,7 +54,7 @@ table { border-collapse: collapse; }
 .sidebar_extra_item { padding: 0px; margin-right: 8px;}
 .side_bar_item { padding-left: 8px; padding-right: 8px; padding-top: 4px; padding-bottom: 4px; margin-right: 8px; }
 
-.sidebar_item_active { background: #A7EA9D; margin-right: 0px; }
+.sidebar_item_active { margin-right: 0px; }
 
 .sidebar_chunk { width: 100%; }
 
@@ -64,10 +62,12 @@ table { border-collapse: collapse; }
 
 #searchbar { margin-top: 18px; width: 100%; }
 #searchbar table tr td {font-weight: bold; font-size: 8pt; }
-#searchbar select, input { border-collapse: collapse; border: solid 1px; font-size: 9pt; }
+#searchbar select, input { border-collapse: collapse; font-size: 9pt; }
 .searchbar_item { margin: 3px; font-size: 9pt; } 
 .searchbar_label_span { font-size: 9pt; }
 #searchbar_table { border-collapse: collapse; }
+
+.search_box_container { width: 240px; padding: 3px; }/* border: 1px solid #A0A0A0;' class='color_2'>*/
 
 
 /* ---------------------------------------------------------------------- */
@@ -116,8 +116,18 @@ table { border-collapse: collapse; }
 .tor_pic { width: 17px; height: 17px; border: none;}
 
 .dim2_border { border: 1px solid #F06000; -moz-border-radius: 3px;}
-.dim2 { filter:alpha(opacity=50); -moz-opacity:0.5; opacity: 0.5; text-decoration: none; }
-.dim { filter:alpha(opacity=10); -moz-opacity:0.1; opacity: 0.1; text-decoration: none; }
+
+.dim2 { 
+	filter:alpha(opacity=50); 
+	-moz-opacity:0.5; 
+	opacity: 0.5; 
+	text-decoration: none; }
+
+.dim { 
+	filter:alpha(opacity=10); 
+	-moz-opacity:0.1; 
+	opacity: 0.1; 
+	text-decoration: none; }
 
 /* ---------------------------------------------------------------------- */
 

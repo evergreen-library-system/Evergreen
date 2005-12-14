@@ -220,7 +220,7 @@ sub cancel_hold {
 	}
 
 	$logger->activity( "User " . $user->id . 
-		" canceling hold $holdid for user " . $hold->user );
+		" canceling hold $holdid for user " . $hold->usr );
 
 	return $apputils->simplereq(
 		'open-ils.storage',
