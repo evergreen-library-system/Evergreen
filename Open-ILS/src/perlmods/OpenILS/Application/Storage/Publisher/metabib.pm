@@ -1061,7 +1061,7 @@ sub postfilter_search_class_fts {
 			'%'.lc($SQLstring).'%',			# phrase order match
 			lc($first_word),			# first word match
 			'^\\s*'.lc($REstring).'\\s*/?\s*$',	# full exact match
-			@types, @forms,  @types, @forms );
+			@types, @forms,  ($self->api_name !~ /staff/o ? (@types, @forms) : () ) );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
@@ -1093,12 +1093,186 @@ for my $class ( qw/title author subject keyword series/ ) {
 }
 
 
+
 my $_cdbi = {	title	=> "metabib::title_field_entry",
 		author	=> "metabib::author_field_entry",
 		subject	=> "metabib::subject_field_entry",
 		keyword	=> "metabib::keyword_field_entry",
 		series	=> "metabib::series_field_entry",
 };
+
+# XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
+sub postfilter_search_multi_class_fts {
+	my $self = shift;
+	my $client = shift;
+	my %args = @_;
+	
+	my $ou = $args{org_unit};
+	my $ou_type = $args{depth};
+	my $limit = $args{limit};
+	my $offset = $args{offset} || 0;
+
+	my $outer_limit = 1000;
+
+	my $limit_clause = '';
+	my $offset_clause = '';
+
+	$limit_clause = "LIMIT $outer_limit";
+	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
+
+	my (@types,@forms);
+	my ($t_filter, $f_filter) = ('','');
+	my ($ot_filter, $of_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+			$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+	}
+
+
+
+	my $descendants = defined($ou_type) ?
+				"actor.org_unit_descendants($ou, $ou_type)" :
+				"actor.org_unit_descendants($ou)";
+
+	my $search_table_list = '';
+	my $fts_list = '';
+	my $join_table_list = '';
+	my $rank_list = '';
+
+	my $prev_search_class;
+	my $curr_search_class;
+	for my $search_class (sort keys %{$args{searches}}) {
+		$prev_search_class = $curr_search_class if ($curr_search_class);
+
+		$curr_search_class = $search_class;
+
+		my $class = $_cdbi->{$search_class};
+		my $search_table = $class->table;
+
+		my ($index_col) = $class->columns('FTS');
+		$index_col ||= 'value';
+
+		
+		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_class}{term}, $search_class.'.value', "$search_class.$index_col");
+
+		my $fts_where = $fts->sql_where_clause;
+		my @fts_ranks = $fts->fts_rank;
+
+		my $rank = join(' + ', @fts_ranks);
+
+		#---------------------
+
+		$search_table_list .= "$search_table $search_class, ";
+		$rank_list .= " $rank +";
+		$fts_list .= " AND $fts_where AND m.source = $search_class.source";
+
+		if ($prev_search_class) {
+			$join_table_list .= " AND $prev_search_class.source = $curr_search_class.source";
+		}
+	}
+
+	chop $rank_list; # bleh ... ugly, ugly
+
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
+	my $metabib_metarecord = metabib::metarecord->table;
+	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
+	my $asset_call_number_table = asset::call_number->table;
+	my $asset_copy_table = asset::copy->table;
+	my $cs_table = config::copy_status->table;
+	my $cl_table = asset::copy_location->table;
+
+
+	my $select = <<"	SQL";
+		SELECT	m.metarecord,
+			SUM( $rank_list ),
+			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END
+  	  	FROM	$search_table_list
+			$metabib_metarecord_source_map_table m,
+			$metabib_metarecord_source_map_table mr,
+			$metabib_record_descriptor rd
+	  	WHERE	m.metarecord = mr.metarecord
+  	  		$fts_list
+			$join_table_list
+			AND rd.record = m.source
+			$t_filter
+			$f_filter
+  	  	GROUP BY m.metarecord
+  	  	ORDER BY 2 DESC
+		LIMIT 10000
+	SQL
+
+	if ($self->api_name !~ /staff/o) {
+		$select = <<"		SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	$asset_call_number_table cn,
+				$metabib_metarecord_source_map_table mrs,
+				$asset_copy_table cp,
+				$cs_table cs,
+				$cl_table cl,
+				$descendants d,
+				$metabib_record_descriptor ord,
+				($select) s
+			  WHERE	mrs.metarecord = s.metarecord
+				AND cn.record = mrs.source
+				AND cp.status = cs.id
+				AND cp.location = cl.id
+				AND cn.owning_lib = d.id
+				AND cp.call_number = cn.id
+				AND cp.opac_visible IS TRUE
+				AND cs.holdable IS TRUE
+				AND cl.opac_visible IS TRUE
+				AND ord.record = mrs.source
+				$ot_filter
+				$of_filter
+			  ORDER BY 2 DESC
+		SQL
+	}
+
+
+	$log->debug("Field Search SQL :: [$select]",DEBUG);
+
+	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
+			$select, {},
+			@types, @forms,  ($self->api_name !~ /staff/o ? (@types, @forms) : () ) );
+	
+	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
+
+	my $count = scalar(@$recs);
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		next unless ($$rec[0]);
+		my ($mrid,$rank,$skip) = @$rec;
+		$client->respond( [$mrid, sprintf('%0.3f',$rank), $skip, $count] );
+	}
+	return undef;
+}
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord",
+	method		=> 'postfilter_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord.staff",
+	method		=> 'postfilter_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 
 
 
