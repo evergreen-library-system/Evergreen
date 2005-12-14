@@ -990,7 +990,7 @@ sub checkin {
 
 
 		# see if this copy can fulfill a hold
-		my $hold = OpenILS::Application::Circ::Holds::_find_local_hold_for_copy( $session, $copy, $user );
+		my ( $hold, $evt ) = OpenILS::Application::Circ::Holds::_find_local_hold_for_copy( $session, $copy, $user );
 
 		$route_to = $shelving_locations->{$copy->location};
 
