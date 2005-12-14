@@ -12,6 +12,10 @@ use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 use OpenSRF::Utils;
 use OpenILS::Utils::ModsParser;
+use OpenILS::Event;
+use OpenSRF::EX qw(:try);
+use OpenSRF::Utils::Logger qw(:logger);
+#my $logger = "OpenSRF::Utils::Logger";
 
 
 # ------------------------------------------------------------------------
@@ -39,38 +43,29 @@ __PACKAGE__->register_method(
 sub checkouts_by_user {
 	my( $self, $client, $user_session, $user_id ) = @_;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my( $requestor, $target, $copy, $record, $evt );
 
-	if(!$user_id) { $user_id = $user_obj->id(); }
+	( $requestor, $target, $evt ) = 
+		$apputils->checkses_requestor( $user_session, $user_id, 'VIEW_CIRCULATIONS');
+	return $evt if $evt;
 
-	my $circs = $session->request(
+	my $circs = $apputils->simplereq(
+		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
-		{ usr => $user_id } );
-	$circs = $circs->gather(1);
+		{ usr => $target->id } );
 
 	my @results;
 	for my $circ (@$circs) {
 
-		my $copy = $session->request(
-			"open-ils.storage.direct.asset.copy.retrieve",
-			$circ->target_copy );
+		( $copy, $evt )  = $apputils->fetch_copy($circ->target_copy);
+		return $evt if $evt;
 
-		warn "Retrieving record for copy " . $circ->target_copy . "\n";
+		$logger->debug("Retrieving record for copy " . $circ->target_copy);
 
-		my $record = $session->request(
-			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
-			$circ->target_copy );
+		($record, $evt) = $apputils->fetch_record_by_copy( $circ->target_copy );
+		return $evt if $evt;
 
-		$copy = $copy->gather(1);
-		$record = $record->gather(1);
-
-		use Data::Dumper;
-		warn Dumper $circ;
-		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch( $record->marc() );
-		my $mods = $u->finish_mods_batch();
-		$mods->doc_id($record->id());
+		my $mods = $apputils->record_to_mvr($record);
 
 		push( @results, { copy => $copy, circ => $circ, record => $mods } );
 	}
@@ -89,27 +84,20 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub title_from_transaction {
-
 	my( $self, $client, $login_session, $transactionid ) = @_;
-	my $user = $apputils->check_user_session($login_session); 
-	my $session = OpenSRF::AppSession->create('open-ils.storage');
 
-	my $circ = $session->request(
-		"open-ils.storage.direct.action.circulation.retrieve", $transactionid )->gather(1);
+	my( $user, $circ, $title, $evt );
 
-	if($circ) {
-		my $title = $session->request(
-			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
-			$circ->target_copy )->gather(1);
+	( $user, $evt ) = $apputils->checkses( $login_session );
+	return $evt if $evt;
 
-		if($title) {
-			my $u = OpenILS::Utils::ModsParser->new();
-			$u->start_mods_batch( $title->marc );
-			return $u->finish_mods_batch();
-		}
-	}
+	( $circ, $evt ) = $apputils->fetch_circulation($transactionid);
+	return $evt if $evt;
+	
+	($title, $evt) = $apputils->fetch_record_by_copy($circ->target_copy);
+	return $evt if $evt;
 
-	return undef;	
+	return $apputils->record_to_mvr($title);
 }
 
 
@@ -133,34 +121,35 @@ __PACKAGE__->register_method(
 
 sub set_circ_lost {
 	my( $self, $client, $login, $circid ) = @_;
+	my( $user, $circ, $evt );
 
-	my $user = $apputils->check_user_session($login); 
-	my $session = OpenSRF::AppSession->create('open-ils.storage');
-	my $circ = $session->request(
-		"open-ils.storage.direct.action.circulation.retrieve", $circid )->gather(1);
+	( $user, $evt ) = $apputils->checkses($login);
+	return $evt if $evt;
 
-	if(!$circ) { throw OpenSRF::EX::ERROR ("No circulation exists with id $circid"); }
+	( $circ, $evt ) = $apputils->fetch_circulation( $circid );
+	return $evt if $evt;
 
 	if($self->api_name =~ /lost/) {
-		if($apputils->check_user_perms($user->id, $circ->circ_lib, "SET_CIRC_LOST")) {
-			return OpenILS::Perm->new("SET_CIRC_LOST");
+		if($evt = $apputils->checkperms(
+			$user->id, $circ->circ_lib, "SET_CIRC_LOST")) {
+			return $evt;
 		}
 		$circ->stop_fines("LOST");		
 	}
 
 	if($self->api_name =~ /claims_returned/) {
-		if($apputils->check_user_perms($user->id, $circ->circ_lib, "SET_CIRC_CLAIMS_RETURNED")) {
-			return OpenILS::Perm->new("SET_CIRC_CLAIMS_RETURNED");
+		if($evt = $apputils->checkperms(
+			$user->id, $circ->circ_lib, "SET_CIRC_CLAIMS_RETURNED")) {
+			return $evt;
 		}
 		$circ->stop_fines("CLAIMSRETURNED");
 	}
 
-
-	my $s = $session->request(
-		"open-ils.storage.direct.action.circulation.update", $circ )->gather(1);
+	my $s = $apputils->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.action.circulation.update", $circ );
 
 	if(!$s) { throw OpenSRF::EX::ERROR ("Error updating circulation with id $circid"); }
-
 }
 
 

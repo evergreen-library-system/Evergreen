@@ -5,6 +5,7 @@ use OpenSRF::Utils::Cache;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenSRF::Utils::Logger;
+use OpenILS::Utils::ModsParser;
 my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -355,7 +356,60 @@ sub checkses_requestor {
 	return( $requestor, $target, $evt);
 }
 
+sub fetch_copy {
+	my( $self, $copyid ) = @_;
+	my( $copy, $evt );
 
+	$copy = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.asset.copy.retrieve', $copyid );
+
+	if(!$copy) { $evt = OpenILS::Event->new('COPY_NOT_FOUND'); }
+
+	return( $copy, $evt );
+}
+
+
+# retrieves a circ object by id
+sub fetch_circulation {
+	my( $self, $circid ) = @_;
+	my $circ; my $evt;
+	
+	$circ = $self->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.action.circulation.retrieve", $circid );
+
+	if(!$circ) {
+		$evt = OpenILS::Event->new('CIRCULATION_NOT_FOUND', circid => $circid );
+	}
+
+	return ( $circ, $evt );
+}
+
+sub fetch_record_by_copy {
+	my( $self, $copyid ) = @_;
+	my( $record, $evt );
+
+	$record = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy', $copyid );
+
+	if(!$record) {
+		$evt = OpenILS::Event->new('BIBLIO_RECORD_NOT_FOUND');
+	}
+
+	return ($record, $evt);
+}
+
+# turns a record object into an mvr (mods) object
+sub record_to_mvr {
+	my( $self, $record ) = @_;
+	my $u = OpenILS::Utils::ModsParser->new();
+	$u->start_mods_batch( $record->marc );
+	my $mods = $u->finish_mods_batch();
+	$mods->doc_id($record->id);
+	return $mods;
+}
 
 
 

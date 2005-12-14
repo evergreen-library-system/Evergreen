@@ -24,8 +24,9 @@ i.e. $logger->error( $msg, WARN );  # logs at log level WARN
 =cut
 
 @EXPORT_OK = qw/ NONE ERROR WARN INFO DEBUG INTERNAL /;
+push @EXPORT_OK, '$logger';
 
-%EXPORT_TAGS = ( level => [ qw/ NONE ERROR WARN INFO DEBUG INTERNAL / ] );
+%EXPORT_TAGS = ( level => [ qw/ NONE ERROR WARN INFO DEBUG INTERNAL / ], logger => [ '$logger' ] );
 
 my $config;							# config handle
 my $loglevel;						# global log level
@@ -39,6 +40,8 @@ my $act_syslog_enabled = 0;	# is syslog enabled?
 my $logfile_enabled = 1;		# are we logging to a file?
 my $act_logfile_enabled = 1;	# are we logging to a file?
 my $logdir;							# log file directory
+
+our $logger = "OpenSRF::Utils::Logger";
 
 # log levels
 sub ACTIVITY	{ return -1; }

@@ -32,6 +32,30 @@
 		</desc>
 	</event>
 
+	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a circulation object from the system and 
+			the object was not found.
+		</desc>
+	</event>
+
+	<event code='1501' textcode='BIBLIO_RECORD_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a biblio record entry object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+	<event code='1502' textcode='COPY_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a copy object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+
+
+
 	<event code='2000' textcode='BAD_PARAMS'>
 		<desc>
 			Invalid parameters were encountered in a method
