@@ -114,23 +114,24 @@ circ.util.columns = function(modify) {
 	return c;
 }
 
-circ.util.std_map_row_to_column = function(row,col) {
-	// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
-	// col contains one of the objects listed above in columns
-	
-	// mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
-	var obj = {}; obj.OpenILS = {}; 
-	JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); data.init({'via':'stash'});
+circ.util.std_map_row_to_column = function() {
+	return function(row,col) {
+		// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
+		// col contains one of the objects listed above in columns
+		
+		// mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
+		var obj = {}; obj.OpenILS = {};  // One of our circ columns uses OpenILS.data
+		JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
-	var my = row.my;
-	var value;
-	try { 
-		value = eval( col.render; ) 
-	} catch(E) {
-		obj.error.sdump('D_ERROR','map_row_to_column: ' + E);
-		value = '???';
+		var my = row.my;
+		var value;
+		try { 
+			value = eval( col.render );
+		} catch(E) {
+			obj.error.sdump('D_ERROR','map_row_to_column: ' + E);
+			value = '???';
+		}
+		return value;
 	}
-	return value;
 }
-
 dump('exiting circ/util.js\n');
