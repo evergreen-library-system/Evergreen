@@ -5,9 +5,6 @@ circ.checkin = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
-
-	JSAN.use('OpenILS.data'); this.OpenILS = {};
-	this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 }
 
 circ.checkin.prototype = {
@@ -26,6 +23,7 @@ circ.checkin.prototype = {
 				'status' : { 'hidden' : false },
 			} 
 		);
+		dump('columns = ' + js2JSON(columns) + '\n');
 
 		JSAN.use('util.list'); obj.list = new util.list('checkin_list');
 		obj.list.init(

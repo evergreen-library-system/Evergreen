@@ -5,9 +5,6 @@ circ.checkout = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
-
-	JSAN.use('OpenILS.data'); this.OpenILS = {};
-	this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 }
 
 circ.checkout.prototype = {

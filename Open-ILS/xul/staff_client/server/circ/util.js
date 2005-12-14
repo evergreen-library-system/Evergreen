@@ -10,7 +10,9 @@ circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
 circ.util.columns = function(modify) {
 	
-	function getString(s) { return obj.OpenILS.data.entities[s]; }
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	function getString(s) { return data.entities[s]; }
 
 	var c = [
 		{
@@ -102,10 +104,10 @@ circ.util.columns = function(modify) {
 			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.ccs[ my.acp.status() ].name()'
 		},
 	];
-	for (var i = 0; i < c.length; c++) {
+	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
-			for (var j in modify) {
-				c[i][j] = modify[j];
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
 			}
 		}
 	}
