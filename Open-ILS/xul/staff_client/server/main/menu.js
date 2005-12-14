@@ -68,12 +68,19 @@ main.menu.prototype = {
 
 
 			/* Circulation Menu */
+			'cmd_circ_checkin' : [
+				['command','keypress'],
+				function() { 
+					obj.set_tab(urls.remote_checkin + '?session='+obj.w.escape(session),{},{});
+				}
+			],
 			'cmd_circ_checkout' : [
 				['command','keypress'],
 				function() { 
 					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
 				}
 			],
+
 
 			/* Admin menu */
 			'cmd_test_html' : [

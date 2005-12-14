@@ -24,6 +24,7 @@ var api = {
 
 var urls = {
 	'opac' : 'http://dev.gapines.org/',
+	'remote_checkin' : '/xul/server/circ/checkin.xul',
 	'remote_checkout' : '/xul/server/circ/checkout.xul',
 	'remote_debug_console' : '/xul/server/util/shell.html',
 	'remote_debug_fieldmapper' : '/xul/server/util/fieldmapper.xul',
