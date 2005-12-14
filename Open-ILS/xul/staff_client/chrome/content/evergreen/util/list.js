@@ -24,6 +24,7 @@ util.list.prototype = {
 	'init' : function (params) {
 
 		if (typeof params.map_row_to_column == 'function') this.map_row_to_column = params.map_row_to_column;
+		if (typeof params.retrieve_row == 'function') this.retrieve_row = params.retrieve_row;
 
 		this.prebuilt = false;
 		if (typeof params.prebuilt != 'undefined') this.prebuilt = params.prebuilt;
@@ -77,6 +78,34 @@ util.list.prototype = {
 		dump('tree = ' + this.node + '  treechildren = ' + this.treechildren + '\n');
 		dump('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
+		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+
+			treerow.setAttribute('retrieve_id',params.retrieve_id);
+			//FIXME//Make async and fire when row is visible in list
+			var row;
+			if (typeof params.retrieve_row == 'function') {
+
+				row = params.retrieve_row( params );
+
+			} else {
+
+				if (typeof this.retrieve_row == 'function') {
+
+					row = this.retrieve_row( params );
+
+				}
+			}
+			params.row = row;
+			this._map_row_to_treecell(params,treerow);
+
+		} else {
+			this._map_row_to_treecell(params,treerow);
+		}
+
+		return treeitem;
+	},
+
+	'_map_row_to_treecell' : function(params,treerow) {
 		for (var i = 0; i < this.columns.length; i++) {
 			var treecell = document.createElement('treecell');
 			var label = '';
@@ -95,9 +124,7 @@ util.list.prototype = {
 			treerow.appendChild( treecell );
 			dump('treecell = ' + treecell + ' with label = ' + label + '\n');
 		}
-
-		return treeitem;
-	}
+	},
 
 }
 dump('exiting util.list.js\n');

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<overlay id="patron_search_result_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading patron/search_result_overlay.xul\n');</script>
+
+<commandset id="patron_search_result_cmds" />
+
+	<box id="patron_search_result_main" flex="1">
+		<tree id="patron_list" flex="1" enableColumnDrag="true"/>
+	</box>
+
+</overlay>

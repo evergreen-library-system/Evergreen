@@ -149,14 +149,24 @@ patron.display.prototype = {
 			obj.summary_window = frame.contentWindow;
 		} else {
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
-			var frame = obj.left_deck.set_iframe(
+			var form_frame = obj.left_deck.set_iframe(
 				urls.remote_patron_search_form
 				+'?session=' + window.escape(obj.session),
 				{},
 				{
+					'on_submit' : function(query) {
+						var list_frame = obj.right_deck.reset_iframe(
+							urls.remote_patron_search_result
+							+'?session=' + window.escape(obj.session) + '&' + query,
+							{},
+							{
+							}
+						);
+						obj.search_result = list_frame.contentWindow;
+					}
 				}
 			);
-			obj.search_window = frame.contentWindow;
+			obj.search_window = form_frame.contentWindow;
 			obj._checkout_spawned = true;
 		}
 	},

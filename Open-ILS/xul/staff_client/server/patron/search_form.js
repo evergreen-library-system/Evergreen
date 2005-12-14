@@ -36,7 +36,7 @@ patron.search_form.prototype = {
 								var node = document.getElementById(id);
 								if (node && node.value != '') {
 									if (query == '') {
-										query += '?';
+										// Responsible for own ? or &
 									} else {
 										query += '&';
 									}
