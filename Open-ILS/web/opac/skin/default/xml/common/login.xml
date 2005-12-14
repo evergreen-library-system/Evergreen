@@ -9,6 +9,7 @@
 		config.ids.login.password	= "login_password";
 		config.ids.login.button		= "login_button";
 		config.ids.login.cancel		= "login_cancel_button";
+		config.ids.altcanvas.login			= config.ids.login.box;
 	</script>
 
 	<div class='login_text color_1'>

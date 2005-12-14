@@ -1,0 +1,11 @@
+<span>
+	<span class='hide_me' id='depth_selector_span'>
+		<select id='depth_selector' >
+			<option value='new'>Choose a different library...</option>
+		</select>
+	</span>
+	<span class='hide_me' id='lib_selector_span'>
+		<a id='lib_selector_link' class='classic_link' href='javascript:void(0)'>Choose a library to search</a>
+	</span>
+</span>
+

@@ -1,3 +1,36 @@
-<div id='canvas_main'>Advanced Search Goes Here</div>
+<div id='canvas_main' style='margin-top: 20px;'>
+
+	<style type='text/css'>
+		.advanced_div { text-align: center; margin: 20px; 
+			margin-top: 30px; margin-bottom: 30px; width: 95%; padding: 5px; }
+	</style>
+
+
+	<div class='advanced_div' style='border: 1px solid #000; padding-left: 15px'>
+		<!--#include virtual="advanced/advanced_location.xml"-->
+	</div>
+
+	<div class='advanced_div'>
+		<!--#include virtual="advanced/advanced_quick.xml"-->
+	</div>
+
+	<div class='advanced_div'>
+		<!--#include virtual="advanced/advanced_wizard.xml"-->
+	</div>
+
+	<hr/>
+
+	<div class='advanced_div'>
+		<!--#include virtual="advanced/advanced_refined.xml"-->
+	</div>
+
+	<hr/>
+
+	<div class='advanced_div'>
+		<!--#include virtual="advanced/advanced_marc.xml"-->
+	</div>
+
+
+</div>
 
 

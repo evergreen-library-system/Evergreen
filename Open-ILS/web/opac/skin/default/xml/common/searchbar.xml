@@ -28,7 +28,8 @@
 		<tbody>
 			<tr>
 
-				<td  nowrap='nowrap' align='center' style='width: 240px; padding: 3px; border: 1px solid #A0A0A0;' class='color_2'>
+				<td nowrap='nowrap' align='center' 
+					style='width: 240px; padding: 3px; border: 1px solid #A0A0A0;' class='color_2'>
 					<input id='search_box' style='width: 190px;' type='text' />
 					<span style='padding-left: 6px;'>
 						<input type='button' style='width: 40px;' id='search_submit' value='Go!' />
@@ -37,42 +38,21 @@
 
 				<td nowrap='nowrap' style='padding: 3px;' align='right' >
 
-					<!--
-					<span style='margin-left: 3px; margin-right: 6px;'> Options:  </span>
-					-->
-
 					<span style='padding-right:9px;'>
-					<select id='search_type_selector'>
-						<option value='keyword' selected='selected'> Keyword </option>
-						<option value='title'>Title</option>
-						<option value='author'>Author</option>
-						<option value='subject'>Subject</option>
-						<option value='series'>Series</option>
-					</select>
+						<!--
+						<span>&common.type;: </span>
+						-->
+						<!--#include virtual="stypes_selector.xml"-->
 					</span>
 
 					<span style='padding-right:9px;'>
-					<select id='form_selector' >
-						<option value='all'>All Formats</option>
-						<option value='at'>Books</option>
-						<option value='at-d'>Large Print Books</option>
-						<option value='i'>Audiobooks</option>
-						<option value='g'>Video Recording</option>
-						<option value='j'>Music</option>
-						<option value='m'>Electronic Resources</option>
-					</select>
+						<!--
+						<span>&common.format;: </span>
+						-->
+						<!--#include virtual="format_selector.xml"-->
 					</span>
 
-					<span>
-						<span class='hide_me' id='depth_selector_span'>
-							<select id='depth_selector' >
-								<option value='new'>Choose a different library...</option>
-							</select>
-						</span>
-						<span class='hide_me' id='lib_selector_span'>
-							<a id='lib_selector_link' href='javascript:void(0)'>* Choose a library to search</a>
-						</span>
-					</span>
+					<!--#include virtual="libselect.xml"-->
 
 				</td>
 			</tr>

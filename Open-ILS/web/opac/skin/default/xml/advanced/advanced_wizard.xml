@@ -1,0 +1,44 @@
+<table class='data_grid' width='80%'>
+	<thead>
+		<tr><td colspan='2'>&opac.advanced.wizard.title;</td></tr>
+	</thead>
+	<tbody style='text-align: left'>
+		<tr>
+			<td>&opac.advanced.wizard.contains;</td>
+			<td align='center'>
+				<input type='text' size='36' id='advanced.wizard.contains'> </input>
+				<!--
+				<script language='javascript'>$('advanced.wizard.contains').focus();</script>
+				-->
+			</td>
+		</tr>
+		<tr>
+			<td>&opac.advanced.wizard.nocontains;</td>
+			<td align='center'>
+				<input type='text' size='36' id='advanced.wizard.nocontains'> </input>
+			</td>
+		</tr>
+		<tr>
+			<td>&opac.advanced.wizard.exact;</td>
+			<td align='center'>
+				<input type='text' size='36' id='advanced.wizard.exact'> </input>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>
+				<span>&common.type;: </span>
+				<!--#include virtual="../common/stypes_selector.xml"-->
+			</td>
+			<td align='center'>
+				<span>&common.format;: </span>
+				<!--#include virtual="../common/format_selector.xml"-->
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2' align='center'>
+				<input type='submit' 
+					id='advanced.wizard.submit' value='&common.submit;'> </input>
+			</td>
+		</tr>
+	</tbody>
+</table>

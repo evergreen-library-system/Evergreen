@@ -1,12 +1,12 @@
 <head>
 	<!-- Set the page title -->
 
-	<!--#include virtual="css_common.xml"-->
+	<!--#include virtual="common/css_common.xml"-->
 
 	<title>&<!--#echo var="OILS_TITLE"-->;</title>
 
 	<!--#if expr="$slimpac!='true'"-->
-		<!--#include virtual="js_common.xml"-->
+		<!--#include virtual="common/js_common.xml"-->
 	<!--#endif-->
 
 </head>

@@ -4,6 +4,6 @@
 	<script language='javascript' src='../js/result_common.js'> </script>
 	<script language='javascript' src='../js/tips.js'> </script>
 	<script language='javascript' src='../js/holds.js'> </script>   
-	<!--#include virtual="result_common.xml"-->
+	<!--#include virtual="result/result_common.xml"-->
 </div>
 

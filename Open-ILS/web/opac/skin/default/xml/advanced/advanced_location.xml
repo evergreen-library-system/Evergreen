@@ -1,0 +1,10 @@
+<table>
+	<tbody>
+		<tr>
+			<td><!--#include virtual="statusbar.xml"--></td>
+			<td><a style='padding-left: 20px;'  href='javascript:void(0);'
+				class='classic_link'>Change search location</a></td>
+		</tr>
+	</tbody>
+</table>
+

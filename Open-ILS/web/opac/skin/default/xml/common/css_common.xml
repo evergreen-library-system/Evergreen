@@ -11,6 +11,6 @@
 <link type='text/css' rel="stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/default/css/colors.css"  
 	name='Default' csstype='color'/>
 
-<link type='text/css' rel="alternate stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/test/css/colors.css" 
-	title='Color Test' name='ColorTest' csstype="color" />
+<link type='text/css' rel="alternate stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/water/css/colors.css" 
+	title='Water' name='Water' csstype="color" />
 

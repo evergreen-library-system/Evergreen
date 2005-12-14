@@ -53,11 +53,11 @@
 	<br/>
 
 	<div id='myopac_main_div'>
-		<!--#include virtual="myopac_summary.xml"-->
-		<!--#include virtual="myopac_checked.xml"-->
-		<!--#include virtual="myopac_holds.xml"-->
-		<!--#include virtual="myopac_fines.xml"-->
-		<!--#include virtual="myopac_prefs.xml"-->
+		<!--#include virtual="myopac/myopac_summary.xml"-->
+		<!--#include virtual="myopac/myopac_checked.xml"-->
+		<!--#include virtual="myopac/myopac_holds.xml"-->
+		<!--#include virtual="myopac/myopac_fines.xml"-->
+		<!--#include virtual="myopac/myopac_prefs.xml"-->
 	</div>
 
 </div>

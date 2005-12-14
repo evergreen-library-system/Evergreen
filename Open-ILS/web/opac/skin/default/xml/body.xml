@@ -3,19 +3,23 @@
 		<tbody>
 			<tr>
 				<td id='main_left_cell'>
-					<!--#include virtual="logo.xml"-->
-					<!--#include virtual="sidebar.xml"-->
+					<!--#include virtual="common/logo.xml"-->
+					<!--#include virtual="common/sidebar.xml"-->
 				</td>
 				<td id='main_right_cell'>
 					<div id='canvas' class='canvas'>
-						<!--#include virtual="searchbar.xml"-->
-						<!--#include virtual="statusbar.xml"-->
-						<!--#include virtual="altcanvas.xml"-->
-						<!--#include virtual="ilsevents.xml"--> 
+						<!--#if expr="$OILS_PAGE!='advanced.xml'"-->
+						<!--#include virtual="common/searchbar.xml"-->
+						<!--#include virtual="common/statusbar.xml"-->
+						<!--#endif-->
+						<!--#include virtual="common/fonts.xml"-->
+
+						<!--#include virtual="common/altcanvas.xml"-->
+						<!--#include virtual="common/ilsevents.xml"--> 
 						<!--#include virtual="page_${OILS_PAGE}"-->
 					</div>
 					<br/>
-					<!--#include virtual="tips.xml"-->
+					<!--#include virtual="common/tips.xml"-->
 				</td>
 			</tr>
 		</tbody>

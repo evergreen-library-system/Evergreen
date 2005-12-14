@@ -3,8 +3,12 @@
 <!-- Loads the environment -->
 <!--#include virtual="setenv.xml"-->
 
+<!--#if expr="$safari || !$mozilla"-->
 <!-- Tells the browser to translate the page as HTML --> 
 <?xml-stylesheet type="text/xsl" href="html_xsl.xml"?> 
+<!--#else-->
+<?xml-stylesheet type="text/xsl" href="html_xsl.xml"?>  <!-- keep this in until we can fix some bugs -->
+<!--#endif-->
 
 
 <!DOCTYPE html PUBLIC 
@@ -21,6 +25,10 @@
 		<!--#include virtual="/opac/locale/${locale}/opac_rdetail.dtd"-->
 	<!--#endif-->
 
+	<!--#if expr="$OILS_PAGE='advanced.xml'"-->
+		<!--#include virtual="/opac/locale/${locale}/opac_advanced.dtd"-->
+	<!--#endif-->
+
 	<!--#if expr="$OILS_PAGE!='index.xml'"-->
 		<!--#include virtual="/opac/locale/${locale}/opac_holds.dtd"-->
 	<!--#endif-->
@@ -31,8 +39,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<!--#include virtual="header.xml"-->
 	<!--#if expr="$OILS_PAGE='index.xml'"-->
-		<!--#include virtual="index_body.xml"-->
+		<!--#include virtual="home/index_body.xml"-->
 	<!--#else-->
 		<!--#include virtual="body.xml"-->
 	<!--#endif-->
 </html>
+

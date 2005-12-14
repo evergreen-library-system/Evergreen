@@ -1,0 +1,8 @@
+<select id='search_type_selector'>
+	<option value='keyword' selected='selected'>&common.keyword;</option>
+	<option value='title'>&common.title;</option>
+	<option value='author'>&common.author;</option>
+	<option value='subject'>&common.subject;</option>
+	<option value='series'>&common.series;</option>
+</select>
+

@@ -1,0 +1,44 @@
+<table class='data_grid' width='95%'>
+	<thead>
+		<tr>
+			<td colspan='6'>&opac.advanced.marc.title; (&opac.advanced.marc.warning;)</td>
+		</tr>
+	</thead>
+	<tbody id='advanced.marc.tbody'>
+		<tr id='advanced.marc.template'>
+			<td>
+				<span>&opac.advanced.marc.tag;: </span>
+				<input name='advanced.marc.tag' maxlength='3' size='3'> </input>
+			</td>
+			<!--
+			<td>
+				<span>&opac.advanced.marc.ind1;: </span>
+				<input name='advanced.marc.ind1' maxlength='1' size='1'> </input>
+			</td>
+			<td>
+				<span>&opac.advanced.marc.ind2;: </span>
+				<input name='advanced.marc.ind2' maxlength='1' size='1'> </input>
+			</td>
+			-->
+			<td>
+				<span>&opac.advanced.marc.subfield;: </span>
+				<input name='advanced.marc.subfield' maxlength='1' size='1'> </input>
+			</td>
+			<td>
+				<span>&opac.advanced.marc.value;: </span>
+				<input name='advanced.marc.value' size='24'> </input>
+			</td>
+
+			<td>
+				<input name='advanced.marc.addrow' type='submit'
+					value='&opac.advanced.marc.addrow;'> </input>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='6'>
+				<input name='advanced.marc.submit' 
+					type='submit' value='&common.submit;'> </input>
+			</td>
+		</tr>
+	</tbody>
+</table>

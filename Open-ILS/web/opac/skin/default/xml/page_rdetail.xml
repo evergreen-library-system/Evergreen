@@ -24,7 +24,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<!--#include virtual="rdetail_summary.xml"-->
+	<!--#include virtual="rdetail/rdetail_summary.xml"-->
 	<br/><br/>
-	<!--#include virtual="rdetail_extras.xml"-->
+	<!--#include virtual="rdetail/rdetail_extras.xml"-->
 </div>

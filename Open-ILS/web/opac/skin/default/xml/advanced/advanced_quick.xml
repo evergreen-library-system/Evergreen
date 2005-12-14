@@ -1,0 +1,17 @@
+<table class='data_grid' width='95%'>
+	<thead>
+		<tr>
+			<td colspan='6'>&opac.advanced.quick.title;</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<!--
+				<span>&opac.advanced.marc.tag;: </span>
+				<input name='advanced.marc.tag' maxlength='3' size='3'> </input>
+				-->
+			</td>
+		</tr>
+	</tbody>
+</table>

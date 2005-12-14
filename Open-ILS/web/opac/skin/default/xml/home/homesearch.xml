@@ -65,27 +65,12 @@
 				<td nowrap='nowrap' align='center' style='padding: 4px;'>
 
 					<span style='padding-right:9px;'>
-						<span>&common.type;: </span>
-						<select id='search_type_selector'>
-							<option value='keyword' selected='selected'>&common.keyword;</option>
-							<option value='title'>&common.title;</option>
-							<option value='author'>&common.author;</option>
-							<option value='subject'>&common.subject;</option>
-							<option value='series'>&common.series;</option>
-						</select>
+						<!--#include virtual="../common/stypes_selector.xml"-->
 					</span>
 
 					<span style='padding-right:9px;'>
 						<span>&common.format;: </span>
-					<select id='form_selector' >
-						<option value='all'>&opac.search.allFormats;</option>
-						<option value='at'>&opac.search.books;</option>
-						<option value='at-d'>&opac.search.largePrint;</option>
-						<option value='i'>&opac.search.audioBooks;</option>
-						<option value='g'>&opac.search.videoRecordings;</option>
-						<option value='j'>&opac.search.music;</option>
-						<option value='m'>&opac.search.electronic;</option>
-					</select>
+						<!--#include virtual="../common/format_selector.xml"-->
 					</span>
 
 				</td>

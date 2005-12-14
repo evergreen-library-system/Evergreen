@@ -1,0 +1,10 @@
+<select id='form_selector' >
+	<option value='all'>&opac.search.allFormats;</option>
+	<option value='at'>&opac.search.books;</option>
+	<option value='at-d'>&opac.search.largePrint;</option>
+	<option value='i'>&opac.search.audioBooks;</option>
+	<option value='g'>&opac.search.videoRecordings;</option>
+	<option value='j'>&opac.search.music;</option>
+	<option value='m'>&opac.search.electronic;</option>
+</select>
+	

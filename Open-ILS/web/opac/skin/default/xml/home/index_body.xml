@@ -7,7 +7,7 @@
 				<td width='10%'> </td>
 				<td width='80%'>
 					<div id='canvas'>
-						<!--#include virtual="altcanvas.xml"-->
+						<!--#include virtual="../common/altcanvas.xml"-->
 						<!--#include virtual="homesearch.xml"-->
 					</div>
 				</td>
