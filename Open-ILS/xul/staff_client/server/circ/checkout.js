@@ -5,6 +5,7 @@ circ.checkout = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
+	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 }
 
 circ.checkout.prototype = {
@@ -29,12 +30,7 @@ circ.checkout.prototype = {
 		obj.list.init(
 			{
 				'columns' : columns,
-				'map_row_to_column' : function(row,col) {
-					// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
-					// col contains one of the objects listed above in columns
-					var my = row.my;
-					return eval( col.render );
-				},
+				'map_row_to_column' : circ.util.std_map_row_to_column,
 			}
 		);
 		
