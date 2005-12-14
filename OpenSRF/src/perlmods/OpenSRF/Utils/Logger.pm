@@ -203,11 +203,11 @@ sub _log_message {
 	$msg = "[$n:"."$$".":::] $msg";
 
 	if( $level == ACTIVITY() ) {
-		if( is_act_syslog() ) { syslog( $fac | $l, $msg ); } 
+		if( is_act_syslog() ) { syslog( $fac | $l, substr($msg,0,100) ); } 
 		elsif( is_act_filelog() ) { _write_file( $msg, 1 ); }
 
 	} else {
-		if( is_syslog() ) { syslog( $fac | $l, $msg ); }
+		if( is_syslog() ) { syslog( $fac | $l, substr($msg,0,100) ); }
 		elsif( is_filelog() ) { _write_file($msg); }
 	}
 }
