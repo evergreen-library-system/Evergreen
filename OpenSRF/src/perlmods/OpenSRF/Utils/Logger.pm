@@ -203,14 +203,17 @@ sub _log_message {
 
 	#my( $pack, $file, $line_no ) = @caller;
 
+	# help syslog with the formatting
+	$msg =~ s/\%/\%\%/gso if( is_act_syslog() or is_syslog() );
+
 	$msg = "[$n:"."$$".":::] $msg";
 
 	if( $level == ACTIVITY() ) {
-		if( is_act_syslog() ) { syslog( $fac | $l, substr($msg,0,100) ); } 
+		if( is_act_syslog() ) { syslog( $fac | $l, $msg ); } 
 		elsif( is_act_filelog() ) { _write_file( $msg, 1 ); }
 
 	} else {
-		if( is_syslog() ) { syslog( $fac | $l, substr($msg,0,100) ); }
+		if( is_syslog() ) { syslog( $fac | $l, $msg ); }
 		elsif( is_filelog() ) { _write_file($msg); }
 	}
 }
