@@ -261,6 +261,8 @@ sub multi_search_full_rec {
 
 	my %args = @_;	
 	my $class_join = $args{class_join} || 'AND';
+	my $limit = $args{limit} || 100;
+	my $offset = $args{offset} || 0;
 	my @binds;
 	my @selects;
 
@@ -293,9 +295,7 @@ sub multi_search_full_rec {
 
 	my $descendants = defined($args{depth}) ?
 				"actor.org_unit_descendants($args{org_unit}, $args{depth})" :
-				defined($args{depth}) ?
-					"actor.org_unit_descendants($args{org_unit})" :
-					"actor.org_unit";
+				"actor.org_unit_descendants($args{org_unit})" ;
 
 
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
@@ -380,7 +380,12 @@ sub multi_search_full_rec {
 	my $recs = metabib::full_rec->db_Main->selectall_arrayref("$select;", {}, @binds);
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	$client->respond($_) for (@$recs);
+	my $count = @$recs;
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		next unless ($$rec[0]);
+		my ($mrid,$rank,$junk,$skip) = @$rec;
+		$client->respond( [$mrid, sprintf('%0.3f',$rank), $skip, $count] );
+	}
 	return undef;
 }
 __PACKAGE__->register_method(
