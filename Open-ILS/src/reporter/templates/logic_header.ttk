@@ -26,10 +26,11 @@ dir = config.findvalue(dir);
 dbdriver = config.findvalue('/reporter/setup/database/driver');
 dbname = config.findvalue('/reporter/setup/database/name');
 dbhost = config.findvalue('/reporter/setup/database/host');
+dbport = config.findvalue('/reporter/setup/database/port') || '5432';
 d_u = config.findvalue('/reporter/setup/database/user');
 d_p = config.findvalue('/reporter/setup/database/password');
 
-dsn = "dbi:" _ dbdriver _ ":dbname=" _ dbname _';host=' _ dbhost;
+dsn = "dbi:" _ dbdriver _ ":dbname=" _ dbname _';host=' _ dbhost _ ';port=' _ dbport;
 
 logme([dsn,d_u,d_p]);
 

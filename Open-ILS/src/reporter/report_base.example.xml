@@ -9,6 +9,7 @@
 		<database>
 			<driver>Pg</driver>
 			<host>127.0.0.1</host>
+			<port>5433</port>
 			<name>develooper</name>
 			<user>postgres</user>
 			<password/>

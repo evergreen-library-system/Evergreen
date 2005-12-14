@@ -39,11 +39,12 @@ my $doc = $parser->parse_file($base_xml);
 
 my $db_driver = $doc->findvalue('/reporter/setup/database/driver');
 my $db_host = $doc->findvalue('/reporter/setup/database/host');
+my $db_port = $doc->findvalue('/reporter/setup/database/port') || '5432';
 my $db_name = $doc->findvalue('/reporter/setup/database/name');
 my $db_user = $doc->findvalue('/reporter/setup/database/user');
 my $db_pw = $doc->findvalue('/reporter/setup/database/password');
 
-my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host;
+my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
@@ -194,9 +195,14 @@ for my $r ( @reports ) {
 
 
 		$dbh->begin_work;
-		$dbh->do(<<'		SQL',{}, $r->{run_time}, $r->{stage3}->{id});
+		#$dbh->do(<<'		SQL',{}, $r->{run_time}, $r->{stage3}->{id});
+		#	UPDATE	reporter.stage3
+		#	  SET	runtime = CAST(? AS TIMESTAMP WITH TIME ZONE) + recurrence
+		#	  WHERE	id = ? AND recurrence > '0 seconds'::INTERVAL;
+		#SQL
+		$dbh->do(<<'		SQL',{}, $r->{stage3}->{id});
 			UPDATE	reporter.stage3
-			  SET	runtime = CAST(? AS TIMESTAMP WITH TIME ZONE) + recurrence
+			  SET	runtime = runtime + recurrence
 			  WHERE	id = ? AND recurrence > '0 seconds'::INTERVAL;
 		SQL
 		$dbh->do(<<'		SQL',{}, $r->{stage3}->{id});
@@ -592,6 +598,8 @@ sub draw_bars {
 		$set_index++;
 		
 	}
+
+	return [] unless ($new_data[0] && @{$new_data[0]});
 
 	for my $col (@use_me) {
 		push @leg, $settings->{columns}->[$col + @groups - 1] if (map { 1 } grep { $col == $_ } @values);

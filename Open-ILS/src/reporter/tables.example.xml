@@ -39,16 +39,15 @@
 			<field
 			  name="create_date_day"
 			  datatype="date">
-				<label>Create Date Joiner</label>
+				<label>Create Date</label>
 				<description>Date of the copy's cataloging</description>
 			</field>
 			<field
 			  name="create_date_hour"
 			  datatype="timestamptz">
-				<label>Create Date and Hour Joiner</label>
+				<label>Create Date and Hour</label>
 				<description>Date and Hour of the copy's cataloging</description>
 			</field>
-<!--
 			<field
 			  name="create_date"
 			  datatype="timestamptz"
@@ -65,17 +64,16 @@
 				<label>Edit Date</label>
 				<description>Timestamp of the copy's last edit</description>
 			</field>
--->
 			<field
 			  name="edit_date_day"
 			  datatype="date">
-				<label>Edit Date Joiner</label>
+				<label>Edit Date</label>
 				<description>Date of the copy's last edit</description>
 			</field>
 			<field
 			  name="edit_date_hour"
 			  datatype="timestamptz">
-				<label>Edit Date and Hour Joiner</label>
+				<label>Edit Date and Hour</label>
 				<description>Date and Hour of the copy's last edit</description>
 			</field>
 			<field
@@ -110,35 +108,30 @@
 			<link
 			  field="create_date_day"
 			  table="generic_day_series"
-			  hidden="false"
 			  id="copy_create_day"
 			  key="date"
 			  type="has_a"/>
 			<link
 			  field="create_date_hour"
 			  table="generic_hour_series"
-			  hidden="false"
 			  id="copy_create_hour"
 			  key="date_hour"
 			  type="has_a"/>
 			<link
 			  field="edit_date_day"
 			  table="generic_day_series"
-			  hidden="false"
 			  id="copy_edit_day"
 			  key="date"
 			  type="has_a"/>
 			<link
 			  field="edit_date_hour"
 			  table="generic_hour_series"
-			  hidden="false"
 			  id="copy_edit_hour"
 			  key="date_hour"
 			  type="has_a"/>
 			<link
 			  field="owning_lib"
 			  table="org_unit"
-			  hidden="false"
 			  id="copy_owning_lib"
 			  key="id"
 			  type="has_a"/>
@@ -236,6 +229,7 @@
 			  name="date"
 			  primary='true'
 			  filterable='true'
+			  hidden='false'
 			  datatype="timestamptz">
 				<label>Date</label>
 				<description>Date</description>
@@ -253,6 +247,7 @@
 			  name="date_hour"
 			  primary='true'
 			  filterable='true'
+			  hidden='false'
 			  datatype="timestamptz">
 				<label>Date and Hour</label>
 				<description>Date and Hour</description>

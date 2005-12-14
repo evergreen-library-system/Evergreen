@@ -200,6 +200,12 @@
 				This widget allows the user to pick a month relative to the
 				report runtime on which to report.
 			</description>
+			<filter-code type="perl">
+				$where_clause = 
+					"DATE_TRUNC($full_col, 'month') = ".
+						"DATE_TRUNC(now(), 'month') - CAST(? || ' months' AS INTERVAL);
+				push @$bind_list, $val;
+			</filter-code>
 		</widget>
 		
 		<widget name="quarter">

@@ -211,9 +211,9 @@ BLOCK view_stage2;
 
 
 			FOR field = table.findnodes('fields/field[not(@primary) or @primary != "true"]');
-				link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '"]';
-				logme(['link_test',link_test]);
-				NEXT IF field.findnodes( link_test );
+				link_test = 'links/link[@field="' _ field.findvalue('@name') _ '" and (not(@hidden) or @hidden!="false")]';
+				logme(['view_stage2 -> link_test',link_test]);
+				NEXT IF table.findnodes( link_test );
 
 				fname = field.findvalue( "label" );
 				fdesc = field.findvalue( "desription" );
@@ -510,15 +510,16 @@ BLOCK show_filter_atts;
 		END;
 	END;
 
-	fields_xpath = 'fields/field[(not(@primary) or @primary != "true") or @filterable="true"]';
+	fields_xpath = 'fields/field[(not(@primary) or @primary != "true") or @hidden="false"]';
 
 
 	count = 1;
 
 	FOR field = table.findnodes(fields_xpath);
-		link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '" and @hidden!="false"]';
-		logme(['link_test',link_test]);
-		NEXT IF field.findnodes( link_test );
+		link_test = '../../links/link[@field="' _ field.findvalue('@name') _ '" and (not(@hidden) or @hidden!="false")]';
+		link_test = 'links/link[@field="' _ field.findvalue('@name') _ '" and (not(@hidden) or @hidden!="false")]';
+		logme(['show_filter_atts -> link_test', t, link_test]);
+		NEXT IF table.findnodes( link_test );
 
 		fname = field.findvalue( "label" );
 		fid = field.findvalue( "@name" );
