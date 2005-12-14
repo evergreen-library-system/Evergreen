@@ -176,7 +176,7 @@ __PACKAGE__->register_method(
 	notes		=> <<NOTE);
 Retrieves all the holds for the specified user id.  The login session
 is the requestor and if the requestor is different from the user, then
-the requestor must have VIEW_HOLDS permissions.
+the requestor must have VIEW_HOLD permissions.
 NOTE
 
 
@@ -184,7 +184,7 @@ sub retrieve_holds {
 	my($self, $client, $login_session, $user_id) = @_;
 
 	my( $user, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $user_id, 'VIEW_HOLDS' );
+		$login_session, $user_id, 'VIEW_HOLD' );
 	return $evt if $evt;
 
 	return $apputils->simplereq(
@@ -259,7 +259,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.circ.hold.status.retrieve",
 	notes		=> <<"	NOTE");
 	Calculates the current status of the hold.
-	the requestor must have VIEW_HOLDS permissions if the hold is for a user
+	the requestor must have VIEW_HOLD permissions if the hold is for a user
 	other than the requestor.
 	Returns -1  on error (for now)
 	Returns 1 for 'waiting for copy to become available'

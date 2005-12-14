@@ -305,11 +305,14 @@ sub fetch_user {
 	my( $self, $userid ) = @_;
 	my( $user, $evt );
 
+	$logger->debug("Fetching user $userid from storage");
+
 	$user = $self->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.actor.user.retrieve', $userid );
 
 	if(!$user) {
+		$logger->info("User $userid not found in the db");
 		$evt = OpenILS::Event->new('USER_NOT_FOUND');
 	}
 
@@ -339,10 +342,8 @@ sub checkrequestor {
 	$logger->debug("checkrequestor(): requestor => " . $staffobj->id . ", target => $userid");
 
 	if( $userid ne $staffobj->id ) {
-		if( ! ($user = $self->fetch_user($userid)) ) {
-			$evt = OpenILS::Event->new('USER_NOT_FOUND');
-			return (undef, $evt);
-		}
+		($user, $evt) = $self->fetch_user($userid);
+		return (undef, $evt) if $evt;
 		$evt = $self->check_perms( $staffobj->id, $user->home_ou, @perms );
 
 	} else {
@@ -367,6 +368,8 @@ sub fetch_copy {
 	my( $self, $copyid ) = @_;
 	my( $copy, $evt );
 
+	$logger->debug("Fetching copy $copyid from storage");
+
 	$copy = $self->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.asset.copy.retrieve', $copyid );
@@ -382,6 +385,8 @@ sub fetch_circulation {
 	my( $self, $circid ) = @_;
 	my $circ; my $evt;
 	
+	$logger->debug("Fetching circ $circid from storage");
+
 	$circ = $self->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.circulation.retrieve", $circid );
@@ -396,6 +401,8 @@ sub fetch_circulation {
 sub fetch_record_by_copy {
 	my( $self, $copyid ) = @_;
 	my( $record, $evt );
+
+	$logger->debug("Fetching record by copy $copyid from storage");
 
 	$record = $self->simplereq(
 		'open-ils.storage',
@@ -422,6 +429,8 @@ sub fetch_hold {
 	my( $self, $holdid ) = @_;
 	my( $hold, $evt );
 
+	$logger->debug("Fetching hold $holdid from storage");
+
 	$hold = $self->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_request.retrieve', $holdid);
@@ -436,6 +445,8 @@ sub fetch_hold_transit_by_hold {
 	my( $self, $holdid ) = @_;
 	my( $transit, $evt );
 
+	$logger->debug("Fetching transit by hold $holdid from storage");
+
 	$transit = $self->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_transit_copy.search.hold', $holdid );
@@ -449,6 +460,8 @@ sub fetch_hold_transit_by_hold {
 sub fetch_copy_by_barcode {
 	my( $self, $barcode ) = $_;
 	my( $copy, $evt );
+
+	$logger->debug("Fetching copy by barcode $barcode from storage");
 
 	$copy = $self->simplereq( 'open-ils.storage',
 		'open-ils.storage.direct.asset.copy.search.barcode', $barcode );
