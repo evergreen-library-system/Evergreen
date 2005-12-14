@@ -18,11 +18,13 @@ package OpenILS::Application::Circ::Holds;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
-my $apputils = "OpenILS::Application::AppUtils";
 use OpenILS::EX;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
+use OpenSRF::Utils::Logger qw(:logger);
+
+my $apputils = "OpenILS::Application::AppUtils";
 
 
 
@@ -53,65 +55,62 @@ sub create_hold {
 	my( $user, $evt ) = $apputils->checkses($login_session);
 	return $evt if $evt;
 
-
 	my $holds;
 	if(ref($holds[0]) eq 'ARRAY') {
 		$holds = $holds[0];
 	} else { $holds = [ @holds ]; }
 
-	warn "Iterating over holds requests...\n";
+	$logger->debug("Iterating over holds requests...");
 
 	for my $hold (@$holds) {
 
 		if(!$hold){next};
 		my $type = $hold->hold_type;
 
-		use Data::Dumper;
-		warn "Hold to create: " . Dumper($hold) . "\n";
+		$logger->activity("User " . $user->id . 
+			" creating new hold of type $type for user " . $hold->usr);
 
 		my $recipient;
 		if($user->id ne $hold->usr) {
-			$recipient = $apputils->fetch_user($hold->usr);
-			if(!$recipient) { return OpenILS::Event->new('USER_NOT_FOUND'); }
+			( $recipient, $evt ) = $apputils->fetch_user($hold->usr);
+			return $evt if $evt;
 
 		} else {
 			$recipient = $user;
 		}
 
-		#enforce the fact that the login is the one requesting the hold
-		$hold->requestor($user->id); 
 
 		my $perm = undef;
 
-		# see if the requestor even has permission to request
+		# am I allowed to place holds for this user?
 		if($hold->requestor ne $hold->usr) {
 			$perm = _check_request_holds_perm($user->id, $user->home_ou);
 			if($perm) { return $perm; }
 		}
 
+		# is this user allowed to have holds of this type?
 		$perm = _check_holds_perm($type, $hold->usr, $recipient->home_ou);
 		if($perm) { 
 			#if there is a requestor, see if the requestor has override privelages
 			if($hold->requestor ne $hold->usr) {
 				$perm = _check_request_holds_override($user->id, $user->home_ou);
 				if($perm) {return $perm;}
+
 			} else {
 				return $perm; 
 			}
 		}
 
+		#enforce the fact that the login is the one requesting the hold
+		$hold->requestor($user->id); 
 
-		#my $session = $apputils->start_db_session();
-		my $session = OpenSRF::AppSession->create("open-ils.storage");
-		my $method = "open-ils.storage.direct.action.hold_request.create";
-		warn "Sending hold request to storage... $method \n";
+		my $resp = $apputils->simplereq(
+			'open-ils.storage',
+			'open-ils.storage.direct.action.hold_request.create', $hold );
 
-		my $req = $session->request( $method, $hold );
-
-		my $resp = $req->gather(1);
-		$session->disconnect();
-		if(!$resp) { return OpenILS::EX->new("UNKNOWN")->ex(); }
-#		$apputils->commit_db_session($session);
+		if(!$resp) { 
+			return OpenSRF::EX::ERROR ("Error creating hold"); 
+		}
 	}
 
 	return 1;
@@ -188,14 +187,10 @@ sub retrieve_holds {
 		$login_session, $user_id, 'VIEW_HOLDS' );
 	return $evt if $evt;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $req = $session->request(
+	return $apputils->simplereq(
+		'open-ils.storage',
 		"open-ils.storage.direct.action.hold_request.search.atomic",
 		"usr" =>  $user_id , fulfillment_time => undef, { order_by => "request_time" });
-
-	my $h = $req->gather(1);
-	$session->disconnect();
-	return $h;
 }
 
 
@@ -210,34 +205,26 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub cancel_hold {
-	my($self, $client, $login_session, $hold) = @_;
+	my($self, $client, $login_session, $holdid) = @_;
+	
 
 	my $user = $apputils->check_user_session($login_session);
+	my( $hold, $evt ) = $apputils->fetch_hold($holdid);
+	return $evt if $evt;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	
-	if(!ref($hold)) {
-		$hold = $session->request(
-			"open-ils.storage.direct.action.hold_request.retrieve", $hold)->gather(1);
-	}
-
-	if($user->id ne $hold->usr) {
-		if($apputils->check_user_perms($user->id, $user->home_ou, "CANCEL_HOLDS")) {
-			return OpenILS::Perm->new("CANCEL_HOLDS");
+	if($user->id ne $hold->usr) { #am I allowed to cancel this user's hold?
+		if($evt = $apputils->checkperms(
+			$user->id, $user->home_ou, 'CANCEL_HOLDS')) {
+			return $evt;
 		}
 	}
 
-	use Data::Dumper;
-	warn "Cancelling hold: " . Dumper($hold) . "\n";
+	$logger->activity( "User " . $user->id . 
+		" canceling hold $holdid for user " . $hold->user );
 
-	my $req = $session->request(
-		"open-ils.storage.direct.action.hold_request.delete",
-		$hold );
-	my $h = $req->gather(1);
-
-	warn "[$h] returned from hold_request delete\n";
-	$session->disconnect();
-	return $h;
+	return $apputils->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.action.hold_request.delete", $hold );
 }
 
 
@@ -253,25 +240,17 @@ __PACKAGE__->register_method(
 sub update_hold {
 	my($self, $client, $login_session, $hold) = @_;
 
-	my $user = $apputils->check_user_session($login_session);
+	my( $requestor, $target, $evt ) = $apputils->checkses_requestor(
+		$login_session, $hold->usr, 'UPDATE_HOLD' );
+	return $evt if $evt;
 
-	if($user->id ne $hold->usr) {
-		if($apputils->check_user_perms($user->id, $user->home_ou, "UPDATE_HOLDS")) {
-			return OpenILS::Perm->new("UPDATE_HOLDS");
-		}
-	}
-
+	$logger->activity('User ' + $requestor->id . 
+		' updating hold ' . $hold->id . ' for user ' . $target->id );
 	use Data::Dumper;
-	warn "Updating hold: " . Dumper($hold) . "\n";
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $req = $session->request(
+	return $apputils->simplereq(
+		'open-ils.storage',
 		"open-ils.storage.direct.action.hold_request.update", $hold );
-	my $h = $req->gather(1);
-
-	warn "[$h] returned from hold_request update\n";
-	$session->disconnect();
-	return $h;
 }
 
 
@@ -292,49 +271,29 @@ __PACKAGE__->register_method(
 sub retrieve_hold_status {
 	my($self, $client, $login_session, $hold_id) = @_;
 
-	my $user = $apputils->check_user_session($login_session);
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my( $requestor, $target, $hold, $copy, $transit, $evt );
 
-	my $hold = $session->request(
-		"open-ils.storage.direct.action.hold_request.retrieve", $hold_id )->gather(1);
-	return -1 unless $hold; # should be an exception
+	( $hold, $evt ) = $apputils->fetch_hold($hold_id);
+	return $evt if $evt;
 
+	( $requestor, $target, $evt ) = $apputils->checkses_requestor(
+		$login_session, $hold->usr, 'VIEW_HOLD' );
+	return $evt if $evt;
 
-	if($user->id ne $hold->usr) {
-		if($apputils->check_user_perms($user->id, $user->home_ou, "VIEW_HOLDS")) {
-			return OpenILS::Perm->new("VIEW_HOLDS");
-		}
-	}
-	
 	return 1 unless (defined($hold->current_copy));
-
-	#return 2 unless (defined($hold->capture_time));
-
-	my $copy = $session->request(
-		"open-ils.storage.direct.asset.copy.retrieve", $hold->current_copy )->gather(1);
-	return 1 unless $copy; # should be an exception
-
-	use Data::Dumper;
-	warn "Hold Copy in status check: " . Dumper($copy) . "\n\n";
+	
+	( $copy, $evt ) = $apputils->fetch_copy($hold->current_copy);
+	return $evt if $evt;
 
 	return 4 if ($hold->capture_time and $copy->circ_lib eq $hold->pickup_lib);
 
-	my $transit = _fetch_hold_transit($session, $hold->id);
+	( $transit, $evt ) = $apputils->fetch_hold_transit_by_hold( $hold->id );
 	return 4 if(ref($transit) and defined($transit->dest_recv_time) ); 
 
 	return 3 if defined($hold->capture_time);
 
 	return 2;
-}
-
-
-sub _fetch_hold_transit {
-	my $session = shift;
-	my $holdid = shift;
-	return $session->request(
-		"open-ils.storage.direct.action.hold_transit_copy.search.hold",
-		$holdid )->gather(1);
 }
 
 __PACKAGE__->register_method(
@@ -352,29 +311,29 @@ __PACKAGE__->register_method(
 sub capture_copy {
 	my( $self, $client, $login_session, $barcode, $flesh ) = @_;
 
-	warn "Capturing copy with barcode $barcode, flesh=$flesh \n";
+	my( $user, $target, $copy, $hold, $evt );
 
-	my $user = $apputils->check_user_session($login_session);
+	( $user, $evt ) = $apputils->checkses($login_session);
+	return $evt if $evt;
 
-	if($apputils->check_user_perms($user->id, $user->home_ou, "COPY_CHECKIN")) {
-		return OpenILS::Perm->new("COPY_CHECKIN"); }
+	# am I allowed to checkin a copy?
+	$evt = $apputils->check_perms($user->id, $user->home_ou, "COPY_CHECKIN");
+	return $evt if $evt;
+
+	$logger->info("Capturing copy with barcode $barcode, flesh=$flesh");
 
 	my $session = $apputils->start_db_session();
 
-	my $copy = $session->request(
-		"open-ils.storage.direct.asset.copy.search.barcode",
-		$barcode )->gather(1);
+	($copy, $evt) = $apputils->fetch_copy_by_barcode($barcode);
+	return $evt if $evt;
 
-	warn "Found copy $copy\n";
+	$logger->debug("Capturing copy " . $copy->id);
 
-	return OpenILS::EX->new("UNKNOWN_BARCODE")->ex unless $copy;
-
-	warn "Capturing copy " . $copy->id . "\n";
-
-	my $hold = _find_local_hold_for_copy($session, $copy, $user);
-	if(!$hold) {return OpenILS::EX->new("NO_HOLD_FOUND")->ex;}
+	( $hold, $evt ) = _find_local_hold_for_copy($session, $copy, $user);
+	return $evt if $evt;
 
 	warn "Found hold " . $hold->id . "\n";
+	$logger->info("We found a hold " .$hold->id. "for capturing copy with barcode $barcode");
 
 	$hold->current_copy($copy->id);
 	$hold->capture_time("now"); 
@@ -382,7 +341,8 @@ sub capture_copy {
 	#update the hold
 	my $stat = $session->request(
 			"open-ils.storage.direct.action.hold_request.update", $hold)->gather(1);
-	if(!$stat) { throw OpenSRF::EX ("Error updating hold request " . $copy->id); }
+	if(!$stat) { throw OpenSRF::EX::ERROR 
+		("Error updating hold request " . $copy->id); }
 
 	$copy->status(8); #status on holds shelf
 
@@ -400,24 +360,21 @@ sub capture_copy {
 	
 	my $title = undef;
 	if($flesh) {
-		$title = $session->request(
-			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
-			$copy->id )->gather(1);
-		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch( $title->marc() );
-		$title = $u->finish_mods_batch();
-
+		($title, $evt) = $apputils->fetch_record_by_copy( $copy->id );
+		return $evt if $evt;
+		$title = $apputils->record_to_mvr($title);
 	} 
 
 	$apputils->commit_db_session($session);
 
-	return { 
+	my $payload = { 
 		copy => $copy,
 		route_to => $hold->pickup_lib,
 		record => $title,
 		hold => $hold, 
 	};
 
+	return OpenILS::Event->new('SUCCESS', payload => $payload );
 }
 
 sub _build_hold_transit {
@@ -443,27 +400,30 @@ sub _find_local_hold_for_copy {
 	my $session = shift;
 	my $copy = shift;
 	my $user = shift;
+	my $evt = OpenILS::Event->new('HOLD_NOT_FOUND');
 
 	# first see if this copy has already been selected to fulfill a hold
 	my $hold  = $session->request(
 		"open-ils.storage.direct.action.hold_request.search_where",
 		{ current_copy => $copy->id, capture_time => undef } )->gather(1);
 
+	$logger->debug("Hold found for copy " . $copy->id);
+
 	if($hold) {return $hold;}
 
-	warn "searching for local hold at org " . $user->home_ou . " and copy " . $copy->id . "\n";
+	$logger->debug("searching for local hold at org " . 
+		$user->home_ou . " and copy " . $copy->id);
 
 	my $holdid = $session->request(
 		"open-ils.storage.action.hold_request.nearest_hold",
 		$user->home_ou, $copy->id )->gather(1);
 
-	if(!$holdid) { return undef; }
+	return (undef, $evt) unless defined $holdid;
 
-	warn "found hold id $holdid\n";
+	$logger->debug("Found hold id $holdid while ".
+		"searching nearest hold to " .$user->home_ou);
 
-	return $session->request(
-		"open-ils.storage.direct.action.hold_request.retrieve", $holdid )->gather(1);
-
+	return $apputils->fetch_hold($holdid);
 }
 
 
@@ -477,11 +437,11 @@ __PACKAGE__->register_method(
 sub create_hold_transit {
 	my( $self, $client, $login_session, $transit, $session ) = @_;
 
-	my $user = $apputils->check_user_session($login_session);
-	if($apputils->check_user_perms($user->id, $user->home_ou, "CREATE_TRANSIT")) {
-		return OpenILS::Perm->new("CREATE_TRANSIT");
-	}
-	
+	my( $user, $evt ) = $apputils->checkses($login_session);
+	return $evt if $evt;
+	$evt = $apputils->check_perms($user->id, $user->home_ou, "CREATE_TRANSIT");
+	return $evt if $evt;
+
 	my $ses;
 	if($session) { $ses = $session; } 
 	else { $ses = OpenSRF::AppSession->create("open-ils.storage"); }

@@ -53,6 +53,19 @@
 		</desc>
 	</event>
 
+	<event code='1503' textcode='HOLD_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a hold object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+	<event code='1503' textcode='TRANSIT_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a transit object from the 
+			system and the object was not found.
+		</desc>
+	</event>
 
 
 

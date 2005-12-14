@@ -302,11 +302,18 @@ sub build_org_tree {
 }
 
 sub fetch_user {
-	my $self = shift;
-	my $id = shift;
-	return $self->simple_scalar_request(
+	my( $self, $userid ) = @_;
+	my( $user, $evt );
+
+	$user = $self->simplereq(
 		'open-ils.storage',
-		'open-ils.storage.direct.actor.user.retrieve', $id );
+		'open-ils.storage.direct.actor.user.retrieve', $userid );
+
+	if(!$user) {
+		$evt = OpenILS::Event->new('USER_NOT_FOUND');
+	}
+
+	return ($user, $evt);
 }
 
 sub checkses {
@@ -411,6 +418,44 @@ sub record_to_mvr {
 	return $mods;
 }
 
+sub fetch_hold {
+	my( $self, $holdid ) = @_;
+	my( $hold, $evt );
 
+	$hold = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.action.hold_request.retrieve', $holdid);
+
+	if(!$hold) { $evt = OpenILS::Event->new('HOLD_NOT_FOUND');	}
+
+	return ($hold, $evt);
+}
+
+
+sub fetch_hold_transit_by_hold {
+	my( $self, $holdid ) = @_;
+	my( $transit, $evt );
+
+	$transit = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.action.hold_transit_copy.search.hold', $holdid );
+
+	if(!$transit) { $evt = OpenILS::Event->new('TRANSIT_NOT_FOUND'); }
+
+	return ($transit, $evt );
+}
+
+
+sub fetch_copy_by_barcode {
+	my( $self, $barcode ) = $_;
+	my( $copy, $evt );
+
+	$copy = $self->simplereq( 'open-ils.storage',
+		'open-ils.storage.direct.asset.copy.search.barcode', $barcode );
+
+	if(!$copy) { $evt = OpenILS::Event->new('COPY_NOT_FOUND'); }
+
+	return ($copy, $evt);
+}
 
 1;
