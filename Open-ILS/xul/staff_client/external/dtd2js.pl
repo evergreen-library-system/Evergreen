@@ -9,7 +9,9 @@
 print "var entities = {};";
 while( $line = <> ) {
 
-	if ($line =~ /<!ENTITY\s+(\S+)\s+(".+")\s*>/) {
+	if ($line =~ /<!ENTITY\s+(\S+)\s+(["'].*["'])\s*>/) {
 		print "entities['$1'] = $2;\n";	
+	} else {
+		print STDERR "Problem with: $line";
 	}
 }
