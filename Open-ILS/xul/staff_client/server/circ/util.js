@@ -121,6 +121,7 @@ circ.util.std_map_row_to_column = function() {
 		
 		// mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
 		var obj = {}; obj.OpenILS = {};  // One of our circ columns uses OpenILS.data
+		JSAN.use('util.error'); obj.error = new util.error();
 		JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
 		var my = row.my;
