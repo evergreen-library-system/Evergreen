@@ -289,7 +289,7 @@ sub multi_search_full_rec {
 		}
 		my $where = join(' OR ', @wheres);
 
-		push @selects, "SELECT record, sum($rank) FROM $search_table WHERE $where GROUP BY 1 ORDER BY 2 DESC";
+		push @selects, "SELECT id, record, $rank as sum FROM $search_table WHERE $where";
 
 	}
 
@@ -306,8 +306,8 @@ sub multi_search_full_rec {
 	my $cs_table = config::copy_status->table;
 	my $cl_table = asset::copy_location->table;
 
-	my $cj = ''; $cj = 'HAVING COUNT(x.record) > 1' if ($class_join eq 'AND');
-	my $search_table = '(SELECT x.record, sum(x.sum) FROM (('.join(') UNION ALL (', @selects).")) x GROUP BY 1 $cj )";
+	my $cj = ''; $cj = 'HAVING COUNT(x.id) > 1' if ($class_join eq 'AND' && @selects > 1);
+	my $search_table = '(SELECT x.record, sum(x.sum) FROM (('.join(') UNION ALL (', @selects).")) x GROUP BY 1 $cj ORDER BY 2 DESC )";
 
 	my $has_vols = 'AND cn.owning_lib = d.id';
 	my $has_copies = 'AND cp.call_number = cn.id';
