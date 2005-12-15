@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'std_map_row_to_column', 'retrieve_au_by_id'
+	'columns', 'std_map_row_to_column', 'retrieve_au_via_id'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -28,7 +28,7 @@ patron.util.columns = function(modify) {
 			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.cst[ my.au.standing() ].value()'
 		},
 		{ 
-			'id' : 'profile', 'label' : 'Group'), 'flex' : 1, 
+			'id' : 'profile', 'label' : 'Group', 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.pgt[ my.au.profile() ].name()'
 		},
 		{ 
@@ -155,7 +155,7 @@ patron.util.std_map_row_to_column = function() {
 	}
 }
 
-patron.util.retrieve_au_by_id = function(session, id) {
+patron.util.retrieve_au_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
 	var patron = network.request(

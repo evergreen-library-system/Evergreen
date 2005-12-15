@@ -26,6 +26,12 @@ patron.search_result.prototype = {
 		JSAN.use('patron.util');
 		var columns = patron.util.columns(
 			{
+				'standing' : { 'hidden' : 'false' },
+				'active' : { 'hidden' : 'false' },
+				'family_name' : { 'hidden' : 'false' },
+				'first_given_name' : { 'hidden' : 'false' },
+				'second_given_name' : { 'hidden' : 'false' },
+				'dob' : { 'hidden' : 'false' },
 			}
 		);
 		obj.list.init(
@@ -34,11 +40,11 @@ patron.search_result.prototype = {
 				'map_row_to_column' : patron.util.std_map_row_to_column(),
 				'retrieve_row' : function(params) {
 					var id = params.retrieve_id;
-					var patron = patron.util.retrieve_au_via_id( obj.session, id );
+					var au_obj = patron.util.retrieve_au_via_id( obj.session, id );
 
 					var row = params.row;
 					if (typeof row.my == 'undefined') row.my = {};
-					row.my.au = patron;
+					row.my.au = au_obj;
 
 					return row;
 				}
