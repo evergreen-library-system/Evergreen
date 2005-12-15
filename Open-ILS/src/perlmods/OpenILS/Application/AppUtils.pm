@@ -334,6 +334,19 @@ sub checkses {
 }
 
 
+# verifiese the session and checks the permissions agains the
+# session user and the user's home_ou as the org id
+sub checksesperm {
+	my( $self, $session, @perms ) = @_;
+	my $user; my $evt; my $e; 
+	$logger->debug("Checking user session $session and perms @perms");
+	($user, $evt) = $self->checkses($session);
+	return (undef, $evt) if $evt;
+	$evt = $self->check_perms($user->id, $user->home_ou, @perms);
+	return ($user, $evt) if $evt;
+}
+
+
 sub checkrequestor {
 	my( $self, $staffobj, $userid, @perms ) = @_;
 	my $user; my $evt;
@@ -435,7 +448,7 @@ sub fetch_hold {
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_request.retrieve', $holdid);
 
-	if(!$hold) { $evt = OpenILS::Event->new('HOLD_NOT_FOUND');	}
+	$evt = OpenILS::Event->new('HOLD_NOT_FOUND', holdid => $holdid) unless $hold;
 
 	return ($hold, $evt);
 }
@@ -451,7 +464,7 @@ sub fetch_hold_transit_by_hold {
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_transit_copy.search.hold', $holdid );
 
-	if(!$transit) { $evt = OpenILS::Event->new('TRANSIT_NOT_FOUND'); }
+	$evt = OpenILS::Event->new('TRANSIT_NOT_FOUND', holdid => $holdid) unless $transit;
 
 	return ($transit, $evt );
 }
@@ -466,9 +479,24 @@ sub fetch_copy_by_barcode {
 	$copy = $self->simplereq( 'open-ils.storage',
 		'open-ils.storage.direct.asset.copy.search.barcode', $barcode );
 
-	if(!$copy) { $evt = OpenILS::Event->new('COPY_NOT_FOUND'); }
+	$evt = OpenILS::Event->new('COPY_NOT_FOUND', barcode => $barcode) unless $copy;
 
 	return ($copy, $evt);
+}
+
+sub fetch_open_billable_transaction {
+	my( $self, $transid ) = @_;
+	my( $transaction, $evt );
+
+	$logger->debug("Fetching open billable transaction $transid from storage");
+
+	$transaction = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.money.open_billable_transaction_summary.retrieve',  $transid);
+
+	$evt = OpenILS::Event->new('TRANSACTION_NOT_FOUND', transid => $transid ) unless $transaction;
+
+	return ($transaction, $evt);
 }
 
 1;

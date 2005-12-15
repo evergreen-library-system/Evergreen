@@ -22,6 +22,8 @@ my $apputils = "OpenILS::Application::AppUtils";
 
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
+use Data::Dumper;
+use OpenSRF::Utils::Logger qw/:logger/;
 
 
 __PACKAGE__->register_method(
@@ -47,14 +49,15 @@ __PACKAGE__->register_method(
 sub make_payments {
 
 	my( $self, $client, $login, $payments ) = @_;
-	my $user = $apputils->check_user_session($login);
 
-	if($apputils->check_user_perms($user->id, $user->home_ou, "CREATE_PAYMENT")) {
-		return OpenILS::Perm->new("CREATE_PAYMENT");
-	} 
+	my( $user, $trans, $evt );
 
-	use Data::Dumper;
-	warn Dumper $payments;
+	( $user, $evt ) = $apputils->checkses($login);
+	return $evt if $evt;
+	$evt = $apputils->check_perms($user->id, $user->home_ou, 'CREATE_PAYMENT');
+	return $evt if $evt;
+
+	$logger->activity("Creating payment objects: " . Dumper($payments) );
 
 	my $session = $apputils->start_db_session;
 	my $type		= $payments->{payment_type};
@@ -67,15 +70,12 @@ sub make_payments {
 
 		my $transid = $pay->[0];
 		my $amount = $pay->[1];
-		my $trans = $session->request(
-			"open-ils.storage.direct.money.open_billable_transaction_summary.retrieve", 
-			$transid )->gather(1);
+		($trans, $evt) = $apputils->fetch_open_billable_transaction($transid);
+		return $evt if $evt;
 
-		return OpenILS::EX->new("NO_TRANSACTION_FOUND")->ex unless $trans; 
-
-		if($trans->usr != $userid) { # XXX exception
-			warn "Userid $userid does not match the user " . $trans->usr .
-				"attached to transaction " . $trans->id . "\n";
+		if($trans->usr != $userid) { # Do we need to restrict this in some way ??
+			$logger->info( " * User $userid is making a payment for " . 
+				"a different user: " .  $trans->usr . ' for transaction ' . $trans->id  );
 		}
 
 		my $payobj = "Fieldmapper::money::$type";
@@ -91,19 +91,20 @@ sub make_payments {
 		# update the transaction if it's done 
 		if( ($trans->balance_owed - $amount) <= 0 ) {
 
-			warn "Transaction is complete, updating...\n";
+			$logger->debug("Transactin " . $trans->id . ' is complete');
 			$trans = $session->request(
 				"open-ils.storage.direct.money.billable_transaction.retrieve", $transid )->gather(1);
 
 			$trans->xact_finish("now");
 			my $s = $session->request(
 				"open-ils.storage.direct.money.billable_transaction.update", $trans )->gather(1);
+
 			if(!$s) { throw OpenSRF::EX::ERROR 
 				("Error updating billable_xact in circ.money.payment"); }
 					
 		}
 
-		warn "Creating new $type object for \$$amount\n";
+		$logger->debug("Creating new $payobj for \$$amount\n");
 
 		my $s = $session->request(
 			"open-ils.storage.direct.money.$type.create", $payobj )->gather(1);
@@ -146,13 +147,14 @@ __PACKAGE__->register_method(
 sub retrieve_payments {
 	my( $self, $client, $login, $transid ) = @_;
 
-	my $staff = $apputils->check_user_session($login);
-	if($apputils->check_user_perms($staff->id, 
-			$staff->home_ou, "VIEW_TRANSACTION")) {
-		return OpenILS::Perm->new("VIEW_TRANSACTION");
-	}
+	my( $staff, $evt ) =  
+		$apputils->checksesperm($login, 'VIEW_TRANSACTION');
+	return $evt if $evt;
 
-	return $apputils->simple_scalar_request(
+	# XXX the logic here is wrong.. we need to check the owner of the transaction
+	# to make sure the requestor has access
+
+	return $apputils->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.money.payment.search.xact.atomic', $transid );
 }
@@ -170,25 +172,23 @@ __PACKAGE__->register_method(
 sub create_grocery_bill {
 	my( $self, $client, $login, $transaction ) = @_;
 
-	my $staff = $apputils->check_user_session($login);
-	if($apputils->check_user_perms($staff->id, 
-			$transaction->billing_location, "CREATE_TRANSACTION")) {
-		return OpenILS::Perm->new("CREATE_TRANSACTION");
-	}
+	my( $staff, $evt ) = $apputils->checkses($login);
+	return $evt if $evt;
+	$evt = $apputils->check_perms($staff->id, 
+		$transaction->billing_location, 'CREATE_TRANSACTION' );
+	return $evt if $evt;
 
-	use Data::Dumper;
-	warn "Grocery Transaction: " . Dumper($transaction) ."\n";
+
+	$logger->activity("Creating grocery bill " . Dumper($transaction) );
 
 	$transaction->clear_id;
 	my $session = $apputils->start_db_session;
 	my $transid = $session->request(
 		'open-ils.storage.direct.money.grocery.create', $transaction)->gather(1);
 
-	if(!$transid) {
-		throw OpenSRF::EX ("Error creating new money.grocery");
-	}
+	throw OpenSRF::EX ("Error creating new money.grocery") unless defined $transid;
 
-	warn "created new grocery transaction $transid\n";
+	$logger->debug("Created new grocery transaction $transid");
 	
 	$apputils->commit_db_session($session);
 
@@ -206,15 +206,19 @@ __PACKAGE__->register_method(
 sub billing_items {
 	my( $self, $client, $login, $transid ) = @_;
 
-	my $staff = $apputils->check_user_session($login);
-	if($apputils->check_user_perms($staff->id, 
-			$staff->home_ou, "VIEW_TRANSACTION")) {
-		return OpenILS::Perm->new("VIEW_TRANSACTION");
-	}
+	my( $staff, $evt ) = $apputils->checksesperm($login, 'VIEW_TRANSACTION');
+	return $evt if $evt;
 
-	return $apputils->simple_scalar_request(
-		'open-ils.storage',
+# we need to grab the transaction by id and check the billing location
+# to determin the permissibility XXX
+
+#	$evt = $apputils->check_perms($staff->id, 
+#		$transaction->billing_location, 'VIEW_TRANSACTION' );
+#	return $evt if $evt;
+
+	return $apputils->simplereq( 'open-ils.storage',
 		'open-ils.storage.direct.money.billing.search.xact.atomic', $transid )
+
 }
 
 
@@ -229,20 +233,15 @@ __PACKAGE__->register_method(
 sub billing_items_create {
 	my( $self, $client, $login, $billing ) = @_;
 
-	my $staff = $apputils->check_user_session($login);
-	if($apputils->check_user_perms($staff->id, 
-			$staff->home_ou, "CREATE_BILL")) {
-		return OpenILS::Perm->new("CREATE_BILL");
-	}
+	my( $staff, $evt ) = $apputils->checksesperm($login, 'CREATE_BILL');
+	return $evt if $evt;
 
 	my $session = $apputils->start_db_session;
 
 	my $id = $session->request(
 		'open-ils.storage.direct.money.billing.create', $billing )->gather(1);
 
-	if(!$id) {
-		throw OpenSRF::EX ("Error creating new bill");
-	}
+	throw OpenSRF::EX ("Error creating new bill") unless defined $id;
 
 	$apputils->commit_db_session($session);
 
