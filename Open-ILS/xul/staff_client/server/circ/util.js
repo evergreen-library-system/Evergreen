@@ -109,11 +109,11 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'checkin_route_to', 'label' : getString('staff.checkin_label_route_to'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.route_to.toString()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.route_to.toString()'
 		},
 		{
 			'id' : 'checkin_text', 'label' : getString('staff.checkin_label_text'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.text.toString()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.text.toString()'
 		}
 
 	];

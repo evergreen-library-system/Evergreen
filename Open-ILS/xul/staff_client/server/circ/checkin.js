@@ -22,9 +22,9 @@ circ.checkin.prototype = {
 				'barcode' : { 'hidden' : false },
 				'title' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
-				'checkin_status' : { 'hidden' : false },
+				//'checkin_status' : { 'hidden' : false },
 				'checkin_route_to' : { 'hidden' : false },
-				'checkin_text' : { 'hidden' : false },
+				'checkin_text' : { 'hidden' : false, 'flex' : 2 },
 			} 
 		);
 		dump('columns = ' + js2JSON(columns) + '\n');
