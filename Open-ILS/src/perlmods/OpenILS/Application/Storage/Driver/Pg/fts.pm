@@ -21,10 +21,12 @@
 		$term =~ s/(\pM+)//gos;
 		$self->decompose($term);
 
-		my $newterm = join('&', $self->words);
+		my $newterm = '';
+		$newterm = join('&', $self->words) if ($self->words);
 
 		if (@{$self->nots}) {
-			$newterm = '('.$newterm.')&!('. join('|', $self->nots) . ')';
+			$newterm = '('.$newterm.')&' if ($newterm);
+			$newterm .= '!('. join('|', $self->nots) . ')';
 		}
 
 		$log->debug("Compiled term is [$newterm]", DEBUG);
