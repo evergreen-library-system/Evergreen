@@ -1,5 +1,9 @@
 <span>
+	<script language='javascript' src='../js/depth_selector.js'> </script>
 	<span class='hide_me' id='depth_selector_span'>
+		<!--#if expr="$SHOW_DEPTHSEL_TEXT='true'"-->
+		<span>Find results in </span>
+		<!--#endif-->
 		<select id='depth_selector' >
 			<option value='new'>Choose a different library...</option>
 		</select>

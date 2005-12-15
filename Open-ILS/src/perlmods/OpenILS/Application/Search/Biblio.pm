@@ -633,7 +633,7 @@ sub biblio_search_class {
 	if( !defined($org_id) or !$class or !$string ) {
 		warn "not enbough args to metarecord search\n";
 		throw OpenSRF::EX::InvalidArg 
-			("Not enough args to open-ils.search.cat.biblio.class")
+			("Not enough args to open-ils.search.biblio.class")
 	}
 
 	$class =~ s/\s+//g;

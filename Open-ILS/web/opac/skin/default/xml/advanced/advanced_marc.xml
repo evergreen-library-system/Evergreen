@@ -30,14 +30,13 @@
 			</td>
 
 			<td>
-				<input name='advanced.marc.addrow' type='submit'
+				<input name='advanced.marc.addrow' type='submit' onclick='advAddMARC();'
 					value='&opac.advanced.marc.addrow;'> </input>
 			</td>
 		</tr>
-		<tr>
+		<tr id='advanced.marc.submit.row'>
 			<td colspan='6'>
-				<input name='advanced.marc.submit' 
-					type='submit' value='&common.submit;'> </input>
+				<input onclick='advMARCRun();' type='submit' value='&common.submit;'> </input>
 			</td>
 		</tr>
 	</tbody>

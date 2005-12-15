@@ -21,7 +21,7 @@ function showCanvas() {
 	}
 	hideMe(G.ui.common.loading);
 	unHideMe(G.ui.common.canvas_main);
-	G.ui.searchbar.text.focus(); 
+	try{G.ui.searchbar.text.focus();}catch(e){}
 }
 
 function swapCanvas(newNode) {
@@ -81,6 +81,7 @@ function initParams() {
 	TOPRANK  = parseFloat(cgi.param(PARAM_TOPRANK));
 	AUTHTIME	= parseInt(cgi.param(PARAM_AUTHTIME));
 	ADVTERM	= cgi.param(PARAM_ADVTERM);
+	ADVTYPE	= cgi.param(PARAM_ADVTYPE);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -117,11 +118,11 @@ function getRid(){return RID;};
 function getOrigLocation(){return ORIGLOC;}
 function getTopRank(){return TOPRANK;}
 function getAuthtime() { return AUTHTIME; }
-
 function getSearchBarExtras(){return SBEXTRAS;}
 function getFontSize(){return FONTSIZE;};
 function getSkin(){return SKIN;};
 function getAdvTerm(){return ADVTERM;}
+function getAdvType(){return ADVTYPE;}
 
 
 function findBasePath() {
@@ -180,6 +181,7 @@ function  buildOPACLink(args, slim, ssl) {
 	string += _appendParam(TOPRANK,	PARAM_TOPRANK, args, getTopRank, string);
 	string += _appendParam(AUTHTIME,	PARAM_AUTHTIME, args, getAuthtime, string);
 	string += _appendParam(ADVTERM,	PARAM_ADVTERM, args, getAdvTerm, string);
+	string += _appendParam(ADVTYPE,	PARAM_ADVTYPE, args, getAdvType, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
@@ -282,8 +284,8 @@ function grabUser(ses, force) {
 
 	var at = getAuthtime();
 	if(isXUL()) at = xulG['authtime'];
-	//alert(at);
-	new AuthTimer(at).run();
+
+	//new AuthTimer(at).run(); /* needs debugging... */
 
 	return G.user;
 }

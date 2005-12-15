@@ -29,8 +29,11 @@ function resultFinalPageIndex() {
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
 function resultSetHitInfo() { 
+
+	try{searchTimer.stop()}catch(e){}
+
 	if( findCurrentPage() == MRESULT ) {
-		if(getHitCount() <= lowHitCount)
+		if(getHitCount() <= lowHitCount && getTerm())
 			runEvt('result', 'lowHits');
 		if(getHitCount() == 0) {
 			runEvt('result', 'zeroHits');
@@ -55,7 +58,6 @@ function resultSetHitInfo() {
 }
 
 function resultLowHits() {
-	try{searchTimer.stop()}catch(e){}
 	showCanvas();
 	unHideMe($('result_low_hits'));
 	if(getHitCount() > 0)
@@ -111,8 +113,10 @@ function resultLowHitXRef(r) {
 }
 
 function resultZeroHits() {
+	showCanvas();
+	unHideMe($('result_low_hits'));
 	unHideMe($('result_zero_hits_msg'));
-	resultExpandSearch();
+	if(getTerm()) resultExpandSearch(); /* advanced search */
 }
 
 function resultExpandSearch() {

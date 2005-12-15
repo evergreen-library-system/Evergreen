@@ -31,11 +31,17 @@ function mresultDoSearch() {
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
 	if(getOffset() == 0 || getHitCount() == null ) {
-		if( getAdvTerm() && !getTerm() ) mresultCollectAdvIds(1);
+		if( getAdvTerm() && !getTerm() ) {
+			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
+			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
+		}
 		else mresultCollectIds(FETCH_MRIDS_FULL); 
 
 	} else  {
-		if( getAdvTerm() && !getTerm()) mresultCollectAdvIds();
+		if( getAdvTerm() && !getTerm() ) {
+			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
+			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvIds();
+		}
 		else mresultCollectIds(FETCH_MRIDS);
 	}
 }
@@ -57,24 +63,29 @@ function mresultHandleCount(r) {
 */
 
 
-/* performs the actual search */
-function mresultCollectIds(method) {
-
+function mresultLoadCachedSearch() {
 	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
-		//alert('cached: ' + idsCookie.read(COOKIE_IDS));
 		var c = JSON2js(idsCookie.read(COOKIE_IDS));
 		if(c) { records = c[0]; ranks = c[1]; }
 	}
+}
 
-	if(	getOffset() != 0 && 
-			records[getOffset()] != null && 
+function mresultTryCachedSearch() {
+	mresultLoadCachedSearch();
+	if(	getOffset() != 0 && records[getOffset()] != null && 
 			records[resultFinalPageIndex()] != null) {
-			//alert('we have cookies...  offset : ' + getOffset() );
-			runEvt('result', 'hitCountReceived');
-			mresultCollectRecords(); 
 
-	} else {
+		runEvt('result', 'hitCountReceived');
+		mresultCollectRecords(); 
+		return true;
+	}
+	return false;
+}
 
+
+/* performs the actual search */
+function mresultCollectIds(method) {
+	if(!mresultTryCachedSearch()) {
 		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(method, getStype(), getTerm(), 
 			getLocation(), getDepth(), mresultPreCache, getOffset(), form );
@@ -85,23 +96,20 @@ function mresultCollectIds(method) {
 
 
 function mresultCollectAdvIds() {
-
-	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
-		var c = JSON2js(idsCookie.read(COOKIE_IDS));
-		if(c) { records = c[0]; ranks = c[1]; }
-	}
-
-	if(	getOffset() != 0 && 
-			records[getOffset()] != null && 
-			records[resultFinalPageIndex()] != null) {
-			runEvt('result', 'hitCountReceived');
-			mresultCollectRecords(); 
-
-	} else {
-
+	if(!mresultTryCachedSearch()) {
 		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(FETCH_ADV_MRIDS, 
 			JSON2js(getAdvTerm()), getLocation(), form, mresultPreCache );
+		req.callback(mresultHandleMRIds);
+		req.send();
+	}
+}
+
+function mresultCollectAdvMARCIds() {
+	if(!mresultTryCachedSearch()) {
+		var form = (getForm() == "all") ? null : getForm();
+		var req = new Request(FETCH_ADV_MARC_MRIDS, 
+			JSON2js(getAdvTerm()), getLocation(), form );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}

@@ -15,6 +15,7 @@ var PARAM_ORIGLOC		= "ol";			/* the original location */
 var PARAM_TOPRANK		= "tr";			/* this highest ranking rank */
 var PARAM_AUTHTIME	= "at";			/* inactivity timeout in seconds */
 var PARAM_ADVTERM		= "adv";			/* advanced search term */
+var PARAM_ADVTYPE		= "adt";			/* the advanced search type */
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -31,6 +32,7 @@ var ORIGLOC;
 var TOPRANK;
 var AUTHTIME;
 var ADVTERM;
+var ADVTYPE;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -56,10 +58,14 @@ var HOME			= "home";
 
 /* search type (STYPE) options */
 var STYPE_AUTHOR	= "author";
-var STYPE_TITLE		= "title";
+var STYPE_TITLE	= "title";
 var STYPE_SUBJECT	= "subject";
 var STYPE_SERIES	= "series";
 var STYPE_KEYWORD	= "keyword";
+
+/* types of advanced search */
+var ADVTYPE_MULTI = 'ml';
+var ADVTYPE_MARC = 'ma'
 
 var LOGOUT_WARNING_TIME = 30; /* "head up" for session timeout */
 
@@ -213,8 +219,8 @@ var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve
 var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
 var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
 var FETCH_ADV_MRIDS				= "open-ils.search:open-ils.search.biblio.multiclass:1";
+var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
 /* ---------------------------------------------------------------------------- */
-
 
 
 /* ---------------------------------------------------------------------------- */
@@ -270,6 +276,7 @@ createEvt("common", "loggedIn");					/* f() : user has just logged in */
 createEvt('result', 'zeroHits');
 createEvt('result', 'lowHits');
 createEvt('rdetail', 'recordRetrieved');			/* we are about to draw the rdetail page */
+createEvt('common', 'depthChanged');
 
 
 

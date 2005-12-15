@@ -4,6 +4,7 @@
 	xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<!-- load my js -->
+	<script language='javascript' src='../js/depth_selector.js'> </script>
 	<script language='javascript' src='../js/search_bar.js'> </script>
 
 	<script language='javascript'>
@@ -70,6 +71,7 @@
 
 					<span style='padding-right:9px;'>
 						<span>&common.format;: </span>
+						<!--#set var='FORM_SEL_ID' value='form_selector'-->
 						<!--#include virtual="../common/format_selector.xml"-->
 					</span>
 

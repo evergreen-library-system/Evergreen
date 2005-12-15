@@ -4,8 +4,6 @@
 <div id='searchbar'>
 
 	<!-- load my js -->
-	<script language='javascript' src='../js/search_bar.js'> </script>
-
 	<script language='javascript'>
 		config.ids.searchbar = {};
 		config.css.searchbar = {};
@@ -56,6 +54,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<script language='javascript' src='../js/search_bar.js'> </script>
 </div>
 
 

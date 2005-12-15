@@ -1,9 +1,9 @@
 <table>
 	<tbody>
 		<tr>
+			<!--#set var="SHOW_DEPTHSEL_TEXT" value="true"-->
 			<td><!--#include virtual="../common/statusbar.xml"--></td>
-			<td><a style='padding-left: 20px;'  href='javascript:void(0);'
-				class='classic_link'>Change search location</a></td>
+			<td style='padding-left: 20px;'><!--#include virtual="../common/libselect.xml"--></td>
 		</tr>
 	</tbody>
 </table>
