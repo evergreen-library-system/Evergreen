@@ -1,6 +1,6 @@
 dump('entering circ.checkin.js\n');
 
-if (typeof patron == 'undefined') patron = {};
+if (typeof circ == 'undefined') circ = {};
 circ.checkin = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
