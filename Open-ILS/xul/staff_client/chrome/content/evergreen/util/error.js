@@ -199,7 +199,46 @@ util.error.prototype = {
 		JSAN.use('OpenILS.data'); 
 		this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 		return this.OpenILS.data.entities['ilsevent.'+status];
-	}
-}	
+	},
+
+	'yns_alert' : function (s,title,b1,b2,b3,c) {
+
+		/*
+			s 	= Message to display
+			title 	= Text in Title Bar
+			b1	= Text for button 1
+			b2	= Text for button 2
+			b3	= Text for button 3
+			c	= Text for confirmation checkbox.  null for no confirm
+		*/
+
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+		// get a reference to the prompt service component.
+		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Components.interfaces.nsIPromptService);
+
+		// set the buttons that will appear on the dialog. It should be
+		// a set of constants multiplied by button position constants. In this case,
+		// three buttons appear, Save, Cancel and a custom button.
+		//var flags=promptService.BUTTON_TITLE_OK * promptService.BUTTON_POS_0 +
+		//	promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1 +
+		//	promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_2;
+		var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
+			promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1 +
+			promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_2; 
+
+		// display the dialog box. The flags set above are passed
+		// as the fourth argument. The next three arguments are custom labels used for
+		// the buttons, which are used if BUTTON_TITLE_IS_STRING is assigned to a
+		// particular button. The last two arguments are for an optional check box.
+		var check = {};
+		var rv = promptService.confirmEx(window,title, s, flags, b1, b2, b3, c, check);
+		if (c && !check.value) {
+			return this.yns_alert(s,title,b1,b2,b3,c);
+		}
+		return rv;
+	},
+}
 
 dump('exiting util/error.js\n');
