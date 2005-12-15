@@ -160,6 +160,7 @@ OpenILS.data.prototype = {
 					obj.list.au = new au();
 					obj.list.au.home_lib( '1' );
 				}
+				obj.list.au = [ obj.list.au ];
 			}
 		);
 
@@ -198,7 +199,7 @@ OpenILS.data.prototype = {
 					[ 
 						api.fm_actsc_retrieve_via_aou.app,
 						api.fm_actsc_retrieve_via_aou.method,
-						[ obj.session, obj.list.au.home_ou() ],
+						[ obj.session, obj.list.au[0].home_ou() ],
 						true
 					]
 				)();
