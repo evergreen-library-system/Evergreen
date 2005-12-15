@@ -190,7 +190,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 								check.text = check2.text;
 								check.route_to = check2.route_to;
 								JSAN.use('patron.util');
-								var patron = patron.util.retrieve_au_by_id( check.hold.usr() );
+								var patron = patron.util.retrieve_au_via_id( check.hold.usr() );
 								alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 									check.record.title() + '  Author: ' + check.record.author() + 
 									'\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
@@ -225,7 +225,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				break;
 				case '2': case 2: /* LOST??? */
 					JSAN.use('patron.util');
-					var patron = patron.util.retrieve_au_by_id( check.circ.usr() );
+					var patron = patron.util.retrieve_au_via_id( check.circ.usr() );
 					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 							check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
 							'Patron: ' + patron.card().barcode() + ' ' + patron.family_name() + ', ' +
