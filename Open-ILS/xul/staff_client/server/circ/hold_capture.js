@@ -86,7 +86,7 @@ circ.hold_capture.prototype = {
 		try {
 			var barcode = obj.controller.view.hold_capture_barcode_entry_textbox.value;
 			JSAN.use('circ.util');
-			var hold_capture = circ.util.hold_capture_via_barcode(
+			var hold_capture = circ.util.hold_capture_via_copy_barcode(
 				obj.session, barcode, true
 			);
 			if (hold_capture) {
