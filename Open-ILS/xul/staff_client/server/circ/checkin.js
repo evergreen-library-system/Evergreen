@@ -85,10 +85,9 @@ circ.checkin.prototype = {
 		var obj = this;
 		try {
 			var barcode = obj.controller.view.checkin_barcode_entry_textbox.value;
-			var checkin = obj.network.request(
-				api.checkin_via_barcode.app,
-				api.checkin_via_barcode.method,
-				[ obj.session, barcode, obj.patron_id ]
+			JSAN.use('circ.util');
+			var checkin = circ.util.checkin_via_barcode(
+				obj.session, barcode, obj.patron_id 
 			);
 			obj.list.append(
 				{

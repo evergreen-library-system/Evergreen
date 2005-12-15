@@ -4,7 +4,7 @@ if (typeof circ == 'undefined') var circ = {};
 circ.util = {};
 
 circ.util.EXPORT_OK	= [ 
-	'columns'
+	'columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_by_copy_barcode'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
