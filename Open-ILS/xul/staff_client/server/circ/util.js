@@ -4,7 +4,7 @@ if (typeof circ == 'undefined') var circ = {};
 circ.util = {};
 
 circ.util.EXPORT_OK	= [ 
-	'columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_by_copy_barcode'
+	'columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -184,7 +184,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 					switch(rv) {
 						case 0: /* capture */
 						try {
-							var check2 = this.hold_capture_by_copy_barcode( session, barcode );
+							var check2 = this.hold_capture_via_copy_barcode( session, barcode );
 							if (check2) {
 								check.copy = check2.copy;
 								check.text = check2.text;
@@ -328,7 +328,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 	}
 }
 
-circ.util.hold_capture_by_copy_barcode = function ( session, barcode, retrieve_flag ) {
+circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_flag ) {
 	try {
 		JSAN.use('util.network'); var network = new util.network();
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
