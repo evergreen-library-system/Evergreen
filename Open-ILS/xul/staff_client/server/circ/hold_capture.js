@@ -22,9 +22,9 @@ circ.hold_capture.prototype = {
 				'barcode' : { 'hidden' : false },
 				'title' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
-				//'hold_capture_status' : { 'hidden' : false },
-				'hold_capture_route_to' : { 'hidden' : false },
-				'hold_capture_text' : { 'hidden' : false, 'flex' : 3 },
+				//'checkin_status' : { 'hidden' : false },
+				'checkin_route_to' : { 'hidden' : false },
+				'checkin_text' : { 'hidden' : false, 'flex' : 3 },
 			} 
 		);
 		dump('columns = ' + js2JSON(columns) + '\n');
@@ -91,12 +91,22 @@ circ.hold_capture.prototype = {
 			);
 			if (hold_capture) {
 				JSAN.use('patron.util');
-				var au_obj = patron.util.retrieve_via_id( hold_capture.hold.usr() );
+				var au_obj;
+				if (hold_capture.hold && hold_capture.hold.usr()) {
+
+					au_obj = patron.util.retrieve_au_via_id( obj.session, hold_capture.hold.usr() );
+
+				} else {
+
+					au_obj = new au(); au_obj.family_name( '???' );
+
+				}
 				obj.list.append(
 					{
 						'row' : {
 							'my' : {
-								'patron' : au_obj,
+								'au' : au_obj,
+								'hr' : hold_capture.hold,
 								'circ' : hold_capture.circ,
 								'mvr' : hold_capture.record,
 								'acp' : hold_capture.copy,
@@ -108,16 +118,18 @@ circ.hold_capture.prototype = {
 					//I could override map_row_to_column here
 					}
 				);
-			
-				alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + check.record.title() + 
-					'  Author: ' + check.record.author() + '\r\n' +
-					'Route To: ' + check.route_to + 
+		
+				try {
+				alert('To Printer\n' + hold_capture.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + hold_capture.record.title() + 
+					'  Author: ' + hold_capture.record.author() + '\r\n' +
+					'Route To: ' + hold_capture.route_to + 
 					'  Patron: ' + au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + 
 					'\r\n'); //FIXME
+				} catch(E) { dump('errors\n'); }
 				/*
-				sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + check.record.title() + 
-					'  Author: ' + check.record.author() + '<br />\r\n' +
-					'Route To: ' + check.route_to + 
+				sPrint(hold_capture.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + hold_capture.record.title() + 
+					'  Author: ' + hold_capture.record.author() + '<br />\r\n' +
+					'Route To: ' + hold_capture.route_to + 
 					'  Patron: ' + au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + 
 					'<br />\r\n'
 				);

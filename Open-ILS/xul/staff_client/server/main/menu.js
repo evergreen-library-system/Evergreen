@@ -80,6 +80,12 @@ main.menu.prototype = {
 					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
 				}
 			],
+			'cmd_circ_hold_capture' : [
+				['command','keypress'],
+				function() { 
+					obj.set_tab(urls.remote_hold_capture + '?session='+obj.w.escape(session),{},{});
+				}
+			],
 
 
 			/* Admin menu */

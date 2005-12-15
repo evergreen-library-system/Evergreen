@@ -190,19 +190,19 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 								check.text = check2.text;
 								check.route_to = check2.route_to;
 								JSAN.use('patron.util');
-								var patron = patron.util.retrieve_au_via_id( check.hold.usr() );
+								var au_obj = patron.util.retrieve_au_via_id( session, check.hold.usr() );
 								alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 									check.record.title() + '  Author: ' + check.record.author() + 
 									'\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
-									patron.card().barcode() + ' ' + patron.family_name() + ', ' + 
-									patron.first_given_name() + '\r\n'); //FIXME
+									au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + 
+									au_obj.first_given_name() + '\r\n'); //FIXME
 
 								/*
 								sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 									check.record.title() + '  Author: ' + check.record.author() + 
 									'<br />\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
-									patron.card().barcode() + ' ' + patron.family_name() + ', ' + 
-									patron.first_given_name() + '<br />\r\n'
+									au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + 
+									au_obj.first_given_name() + '<br />\r\n'
 								);
 								*/
 
@@ -225,11 +225,11 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				break;
 				case '2': case 2: /* LOST??? */
 					JSAN.use('patron.util');
-					var patron = patron.util.retrieve_au_via_id( check.circ.usr() );
+					var au_obj = patron.util.retrieve_au_via_id( session, check.circ.usr() );
 					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 							check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
-							'Patron: ' + patron.card().barcode() + ' ' + patron.family_name() + ', ' +
-							patron.first_given_name();
+							'Patron: ' + au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' +
+							au_obj.first_given_name();
 					var pcheck = error.yns_alert(
 						msg,
 						'Lost Item',
@@ -244,7 +244,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 						var w = mw.spawn_main();
 						setTimeout(
 							function() {
-								mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':patron});
+								mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':au_obj});
 								mw.spawn_batch_copy_editor(w.document,'new_tab','main_tabbox',
 									{'copy_ids':[ check.copy.id() ]});
 							}, 0
@@ -332,12 +332,20 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 	try {
 		JSAN.use('util.network'); var network = new util.network();
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		var check = network.request(
+		var robj = network.request(
 			api.capture_copy_for_hold_via_barcode.app,
 			api.capture_copy_for_hold_via_barcode.method,
 			[ session, barcode, retrieve_flag ]
-		)[0];
-		check.text = 'Captured for Hold';
+		);
+		var check = robj.payload;
+		if (!check) {
+			check = {};
+			check.status = robj.ilsevent;
+			check.copy = new acp(); check.copy.barcode( barcode );
+		}
+		check.text = robj.textcode;
+		check.route_to = robj.route_to;
+		//check.text = 'Captured for Hold';
 		if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
 		return check;
 	} catch(E) {
