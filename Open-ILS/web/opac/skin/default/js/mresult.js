@@ -18,7 +18,6 @@ attachEvt("result", "idsReceived", mresultCollectRecords);
 function mresultUnload() { removeChildren(table); table = null;}
 
 function mresultDoSearch() {
-	//idsCookie = new HTTP.Cookies();
 
 	if(getOffset() == 0) {
 		swapCanvas($('loading_alt'));
@@ -31,12 +30,17 @@ function mresultDoSearch() {
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  /* add an extra row so IE and safari won't complain */
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
-	if(getOffset() == 0 || getHitCount() == null ) 
-		mresultCollectIds(FETCH_MRIDS_FULL); 
-	else  
-		mresultCollectIds(FETCH_MRIDS);
+	if(getOffset() == 0 || getHitCount() == null ) {
+		if( getAdvTerm() && !getTerm() ) mresultCollectAdvIds(1);
+		else mresultCollectIds(FETCH_MRIDS_FULL); 
+
+	} else  {
+		if( getAdvTerm() && !getTerm()) mresultCollectAdvIds();
+		else mresultCollectIds(FETCH_MRIDS);
+	}
 }
 
+/*
 function mresultGetCount() {
 	var form = (getForm() == "all") ? null : getForm();
 	var req = new Request(FETCH_MRCOUNT, 
@@ -47,8 +51,10 @@ function mresultGetCount() {
 
 function mresultHandleCount(r) {
 	HITCOUNT = parseInt(r.getResultObject());
+	alert('mresultHandleCount()');
 	runEvt('result', 'hitCountReceived');
 }
+*/
 
 
 /* performs the actual search */
@@ -76,6 +82,32 @@ function mresultCollectIds(method) {
 		req.send();
 	}
 }
+
+
+function mresultCollectAdvIds() {
+
+	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
+		var c = JSON2js(idsCookie.read(COOKIE_IDS));
+		if(c) { records = c[0]; ranks = c[1]; }
+	}
+
+	if(	getOffset() != 0 && 
+			records[getOffset()] != null && 
+			records[resultFinalPageIndex()] != null) {
+			runEvt('result', 'hitCountReceived');
+			mresultCollectRecords(); 
+
+	} else {
+
+		var form = (getForm() == "all") ? null : getForm();
+		var req = new Request(FETCH_ADV_MRIDS, 
+			JSON2js(getAdvTerm()), getLocation(), form, mresultPreCache );
+		req.callback(mresultHandleMRIds);
+		req.send();
+	}
+}
+
+
 
 function mresultHandleMRIds(r) {
 	var res = r.getResultObject();

@@ -31,13 +31,13 @@
 			</td>
 			<td align='center'>
 				<span>&common.format;: </span>
+				<!--#set var='FORM_SEL_ID' value='advanced.wizard.form_selector'-->
 				<!--#include virtual="../common/format_selector.xml"-->
 			</td>
 		</tr>
 		<tr>
 			<td colspan='2' align='center'>
-				<input type='submit' 
-					id='advanced.wizard.submit' value='&common.submit;'> </input>
+				<input type='submit' onclick='advWizardRun();' value='&common.submit;'> </input>
 			</td>
 		</tr>
 	</tbody>

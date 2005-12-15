@@ -19,6 +19,9 @@ use Digest::MD5 qw(md5_hex);
 
 use XML::LibXML;
 use XML::LibXSLT;
+use Data::Dumper;
+$Data::Dumper::Indent = 0;
+use OpenSRF::Utils::Logger qw/:logger/;
 
 my $apputils = "OpenILS::Application::AppUtils";
 
@@ -33,6 +36,7 @@ sub test { return "test"; }
 
 
 
+=head comment
 __PACKAGE__->register_method(
 	method	=> "biblio_search_marc",
 	api_name	=> "open-ils.search.biblio.marc",
@@ -63,6 +67,7 @@ sub biblio_search_marc {
 	return $data;
 
 }
+=cut
 
 
 
@@ -280,26 +285,7 @@ sub biblio_search_tcn {
 # --------------------------------------------------------------------------------
 # ISBN
 
-__PACKAGE__->register_method(
-	method	=> "biblio_search_isbn",
-	api_name	=> "open-ils.search.biblio.isbn",
-);
 
-sub biblio_search_isbn { 
-	my( $self, $client, $isbn ) = @_;
-	throw OpenSRF::EX::InvalidArg 
-
-		("biblio_search_isbn needs an ISBN to search")
-			unless defined $isbn;
-
-	warn "biblio search for ISBN $isbn\n";
-	my $method = $self->method_lookup("open-ils.search.biblio.marc");
-	my ($records) = $method->run( $cat_search_hash->{isbn}, $isbn );
-
-	return { count => 0 } unless($records and @$records);
-	my $size = @$records;
-	return { count => $size, ids => $records };
-}
 
 
 
@@ -456,6 +442,7 @@ sub barcode_to_mods {
 
 
 
+=head comment
 __PACKAGE__->register_method(
 	method	=> "cat_biblio_search_class",
 	api_name	=> "open-ils.search.cat.biblio.class",
@@ -526,6 +513,8 @@ sub cat_biblio_search_class {
 
 	return undef;
 }
+
+=cut
 
 
 
@@ -691,8 +680,6 @@ sub biblio_search_class {
 	#my @all_ids;
 
 	warn "Received " . scalar(@$records) . " id's from class search\n";
-	use Data::Dumper;
-	warn Dumper $records;
 
 #	for my $i (@$records) { if(defined($i)) { push @all_ids, $i; } }
 #	my @ids = @all_ids;
@@ -1057,6 +1044,121 @@ sub copy_count_summary {
 	return $apputils->simple_scalar_request( "open-ils.storage", $method, $rid );
 }
 
+
+__PACKAGE__->register_method(
+	method		=> "multiclass_search",
+	api_name	=> "open-ils.search.biblio.multiclass",
+	notes 		=> <<"	NOTES");
+		Performs a multiclass search
+		PARAMS( searchBlob, org_unit, format, limit ) 
+		where searchBlob is defined like this:
+			{ 
+				"title" : { "term" : "water" }, 
+				"author" : { "term" : "smith" }, 
+				... 
+			}
+	NOTES
+
+__PACKAGE__->register_method(
+	method		=> "multiclass_search",
+	api_name	=> "open-ils.search.biblio.multiclass.staff",
+	notes 		=> "see open-ils.search.biblio.multiclass" );
+
+sub multiclass_search {
+	my( $self, $client, $searchBlob, $orgid, $format, $limit ) = @_;
+
+	$logger->debug("Performing multiclass search with org => $orgid, " .
+		"format => $format, limit => $limit, and search blob " . Dumper($searchBlob));
+
+	my $meth = 'open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord.atomic';
+	if($self->api_name =~ /staff/) { $meth =~ s/metarecord\.atomic/metarecord.staff.atomic/; }
+
+
+	my $records = $apputils->simplereq(
+		'open-ils.storage', $meth, 
+		 org_unit => $orgid, searches => $searchBlob, format => $format, limit => $limit );
+
+	my $count = 0;
+	my $recs = [];
+
+	if( ref($records) and $records->[0] and 
+		defined($records->[0]->[3])) { $count = $records->[0]->[3];}
+
+	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
+
+	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
+	return { ids => $recs, count => $count };
+
+
+}
+
+__PACKAGE__->register_method(
+	method		=> "marc_search",
+	api_name	=> "open-ils.search.biblio.marc",
+	notes 		=> <<"	NOTES");
+		Performs a multiclass search
+		PARAMS( searchBlob, org_unit, format ) 
+		where searchBlob is defined like this:
+		[ 
+			{
+				"term":"shakespeare",
+				"restrict":[{"tag":"245","subfield":"a"}] 
+			}, 
+			{
+				"term":"bloom",
+				"restrict":[{"tag":"100","subfield":"a"}] 
+			} 
+
+		]
+	NOTES
+
+
+sub marc_search {
+	my( $self, $client, $searchBlob, $orgid, $format ) = @_;
+
+	$logger->debug("Performing MARC search with org => $orgid, " .
+		"format => $format and search blob " . Dumper($searchBlob) );
+		
+	my $records =  $apputils->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.metabib.full_rec.multi_search.atomic',
+		searches => $searchBlob, org_unit => $orgid, format => $format );
+
+	my $count = 0;
+	my $recs = [];
+
+	if( ref($records) and $records->[0] and 
+		defined($records->[0]->[3])) { $count = $records->[0]->[3];}
+
+	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
+
+	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
+	return { ids => $recs, count => $count };
+
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_isbn",
+	api_name	=> "open-ils.search.biblio.isbn",
+);
+
+sub biblio_search_isbn { 
+	my( $self, $client, $isbn ) = @_;
+
+	$logger->debug("Searching ISBN $isbn");
+
+	my $method = $self->method_lookup("open-ils.search.biblio.marc");
+
+	my ($records) = $method->run(  
+		[ {	term => $isbn,
+				restrict => $cat_search_hash->{isbn} } ], 1);
+
+	return { count => 0 } unless($records and @$records);
+	my $size = @$records;
+	return { count => $size, ids => $records };
+}
 
 
 

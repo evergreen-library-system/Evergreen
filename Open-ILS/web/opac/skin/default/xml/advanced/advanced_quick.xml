@@ -8,11 +8,13 @@
 		<tr>
 			<td>
 				<span style='padding-right: 10px;'>&opac.advanced.quick.isbn;:</span>
-				<input type='text' size='10' maxlength='10'> </input>
+				<input style='margin: 5px;' type='text' size='10' maxlength='10'> </input>
+				<input type='submit' id='opac.advanced.quick.isbn.submit' value='&common.submit;'> </input>
 			</td>
 			<td>
 				<span style='padding-right: 10px;'>&opac.advanced.quick.issn;:</span>
-				<input type='text' size='8' maxlength='8'> </input>
+				<input style='margin: 5px;' type='text' size='8' maxlength='8'> </input>
+				<input type='submit' id='opac.advanced.quick.issn.submit' value='&common.submit;'> </input>
 			</td>
 		</tr>
 	</tbody>

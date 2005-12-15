@@ -1,5 +1,7 @@
 <div id='canvas_main' style='margin-top: 20px;'>
 
+	<script language='javascript' src='../js/advanced.js'> </script>
+
 	<style type='text/css'>
 		.advanced_div { text-align: center; margin: 20px; 
 			margin-top: 30px; margin-bottom: 30px; width: 95%; padding: 5px; }

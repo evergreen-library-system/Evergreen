@@ -46,10 +46,12 @@
 		<tr>
 			<td><span>&common.format;: </span></td>
 			
-			<td> <!--#include virtual="../common/format_selector.xml"--> </td>
+			<td> 
+				<!--#set var='FORM_SEL_ID' value='advanced.refined.form_selector'-->
+				<!--#include virtual="../common/format_selector.xml"--> 
+			</td>
 			<td colspan='1' align='center'>
-				<input type='submit' 
-					id='advanced.refined.submit' value='&common.submit;'> </input>
+				<input type='submit' onclick='advRefinedRun();' value='&common.submit;'> </input>
 			</td>
 		</tr>
 	</tbody>

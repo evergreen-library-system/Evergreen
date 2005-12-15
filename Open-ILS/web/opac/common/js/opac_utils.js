@@ -80,6 +80,7 @@ function initParams() {
 	RID		= parseInt(cgi.param(PARAM_RID));
 	TOPRANK  = parseFloat(cgi.param(PARAM_TOPRANK));
 	AUTHTIME	= parseInt(cgi.param(PARAM_AUTHTIME));
+	ADVTERM	= cgi.param(PARAM_ADVTERM);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -92,6 +93,7 @@ function initParams() {
 	if(isNaN(ORIGLOC))	ORIGLOC	= 0;
 	if(isNaN(TOPRANK))	TOPRANK	= 1;
 	if(isNaN(AUTHTIME))	AUTHTIME	= 1;
+	if(ADVTERM==null)		ADVTERM	= "";
 }
 
 function initCookies() {
@@ -119,6 +121,7 @@ function getAuthtime() { return AUTHTIME; }
 function getSearchBarExtras(){return SBEXTRAS;}
 function getFontSize(){return FONTSIZE;};
 function getSkin(){return SKIN;};
+function getAdvTerm(){return ADVTERM;}
 
 
 function findBasePath() {
@@ -176,6 +179,7 @@ function  buildOPACLink(args, slim, ssl) {
 	string += _appendParam(RID,		PARAM_RID, args, getRid, string);
 	string += _appendParam(TOPRANK,	PARAM_TOPRANK, args, getTopRank, string);
 	string += _appendParam(AUTHTIME,	PARAM_AUTHTIME, args, getAuthtime, string);
+	string += _appendParam(ADVTERM,	PARAM_ADVTERM, args, getAdvTerm, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
@@ -604,6 +608,7 @@ function _timerRun(tname) {
 	var _t;
 	eval('_t='+tname);
 	if(_t.done) return;
+	if(_t.count > 100) return;
 	var str = ' . ';
 	if( (_t.count % 5) == 0 ) 
 		str = _t.count / 5;

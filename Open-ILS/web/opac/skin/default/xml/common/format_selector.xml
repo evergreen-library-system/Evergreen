@@ -1,4 +1,4 @@
-<select id='form_selector' >
+<select id='<!--#echo var="FORM_SEL_ID"-->' >
 	<option value='all'>&opac.search.allFormats;</option>
 	<option value='at'>&opac.search.books;</option>
 	<option value='at-d'>&opac.search.largePrint;</option>

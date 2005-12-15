@@ -175,6 +175,12 @@ function setSelector( sel, value ) {
 }
 
 
+function getSelectorVal( sel ) {
+	if(!sel) return undef;
+	return sel.options[sel.selectedIndex].value;
+}
+
+
 /* split on spaces.  capitalize the first /\w/ character in
    each substring */
 function normalize(val) {

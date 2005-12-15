@@ -11,9 +11,10 @@ var PARAM_COUNT		= "c";			/* hits per page */
 var PARAM_HITCOUNT	= "hc";			/* hits per page */
 var PARAM_MRID			= "m";			/* metarecord id */
 var PARAM_RID			= "r";			/* record id */
-var PARAM_ORIGLOC		= "ol"			/* the original location */
-var PARAM_TOPRANK		= "tr"			/* this highest ranking rank */
-var PARAM_AUTHTIME	= "at"			/* inactivity timeout in seconds */
+var PARAM_ORIGLOC		= "ol";			/* the original location */
+var PARAM_TOPRANK		= "tr";			/* this highest ranking rank */
+var PARAM_AUTHTIME	= "at";			/* inactivity timeout in seconds */
+var PARAM_ADVTERM		= "adv";			/* advanced search term */
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -29,6 +30,7 @@ var FONTSIZE;
 var ORIGLOC;
 var TOPRANK;
 var AUTHTIME;
+var ADVTERM;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -210,6 +212,7 @@ var FETCH_REVIEWS					= "open-ils.search:open-ils.search.added_content.review.re
 var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve";
 var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
 var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
+var FETCH_ADV_MRIDS				= "open-ils.search:open-ils.search.biblio.multiclass:1";
 /* ---------------------------------------------------------------------------- */
 
 

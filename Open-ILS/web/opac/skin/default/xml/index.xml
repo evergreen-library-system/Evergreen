@@ -7,7 +7,7 @@
 <!-- Tells the browser to translate the page as HTML --> 
 <?xml-stylesheet type="text/xsl" href="html_xsl.xml"?> 
 <!--#else-->
-<?xml-stylesheet type="text/xsl" href="html_xsl.xml"?>  <!-- keep this in until we can fix some bugs -->
+<?xml-stylesheet type="text/xsl" href="html_xsl.xml"?> 
 <!--#endif-->
 
 

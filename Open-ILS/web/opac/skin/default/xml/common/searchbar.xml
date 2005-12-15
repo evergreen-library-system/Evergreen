@@ -46,9 +46,7 @@
 					</span>
 
 					<span style='padding-right:9px;'>
-						<!--
-						<span>&common.format;: </span>
-						-->
+						<!--#set var='FORM_SEL_ID' value='form_selector'-->
 						<!--#include virtual="format_selector.xml"-->
 					</span>
 
