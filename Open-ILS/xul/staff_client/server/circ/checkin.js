@@ -24,7 +24,7 @@ circ.checkin.prototype = {
 				'status' : { 'hidden' : false },
 				//'checkin_status' : { 'hidden' : false },
 				'checkin_route_to' : { 'hidden' : false },
-				'checkin_text' : { 'hidden' : false, 'flex' : 2 },
+				'checkin_text' : { 'hidden' : false, 'flex' : 3 },
 			} 
 		);
 		dump('columns = ' + js2JSON(columns) + '\n');
