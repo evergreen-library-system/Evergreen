@@ -22,55 +22,19 @@ patron.search_result.prototype = {
 
 		JSAN.use('util.list'); obj.list = new util.list('patron_list');
 		function getString(s) { return obj.OpenILS.data.entities[s]; }
+
+		JSAN.use('patron.util');
+		var columns = patron.util.columns(
+			{
+			}
+		);
 		obj.list.init(
 			{
-				'columns' : [
-					{
-						'active' : 'barcode_col', 'label' : 'Barcode', 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.card().barcode()'
-					},
-					{ 
-						'active' : 'id_col', 'label' : getString('staff.au_label_active'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.active() ? "Yes" : "No"'
-					},
-					{ 
-						'id' : 'id_col', 'label' : getString('staff.au_label_id'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.id()'
-					},
-					{ 
-						'id' : 'prefix_col', 'label' : getString('staff.au_label_prefix'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.prefix()'
-					},
-					{ 
-						'id' : 'family_name_col', 'label' : getString('staff.au_label_family_name'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.family_name()'
-					},
-					{ 
-						'id' : 'first_given_name_col', 'label' : getString('staff.au_label_first_given_name'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.first_given_name()'
-					},
-					{ 
-						'id' : 'second_given_name_col', 'label' : getString('staff.au_label_second_given_name'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.second_given_name()'
-					},
-					{ 
-						'id' : 'suffix_col', 'label' : getString('staff.au_label_suffix'), 'flex' : 1, 
-						'primary' : false, 'hidden' : false, 'render' : 'my.au.suffix()'
-					},
-				],
-				'map_row_to_column' : function(row,col) {
-					// row contains { 'my' : { 'au' : {} } }
-					// col contains one of the objects listed above in columns
-					var my = row.my;
-					return eval( col.render );
-				},
+				'columns' : columns,
+				'map_row_to_column' : patron.util.std_map_row_to_column(),
 				'retrieve_row' : function(params) {
 					var id = params.retrieve_id;
-					var patron = obj.network.request(
-						api.fm_au_retrieve_via_id.app,
-						api.fm_au_retrieve_via_id.method,
-						[ obj.session, id ]
-					);
+					var patron = patron.util.retrieve_au_via_id( obj.session, id );
 
 					var row = params.row;
 					if (typeof row.my == 'undefined') row.my = {};
