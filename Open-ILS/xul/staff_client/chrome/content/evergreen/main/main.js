@@ -7,7 +7,7 @@ function main_init() {
 			.getService(Components.interfaces.nsIPrefBranch);
 		if (pref) {
 			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
-			pref.setCharPref("capability.principal.codebase.p0.id", urls.opac);
+			pref.setCharPref("capability.principal.codebase.p0.id", urls.remote);
 		}
 
 		if (typeof JSAN == 'undefined') {
@@ -51,7 +51,7 @@ function main_init() {
 				G.OpenILS.data.stash('list','hash');
 				G.OpenILS.data._debug_stash();
 
-				G.window.open(urls.opac + urls.remote_menu_frame 
+				G.window.open(urls.remote + urls.remote_menu_frame 
 					+ '?session='+mw.escape(G.auth.session.key)
 					+ '&authtime='+mw.escape(G.auth.session.authtime),
 					'test','chrome,resizable');
