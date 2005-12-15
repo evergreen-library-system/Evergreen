@@ -367,14 +367,9 @@ sub capture_copy {
 
 	$apputils->commit_db_session($session);
 
-	my $payload = { 
-		copy => $copy,
-		route_to => $hold->pickup_lib,
-		record => $title,
-		hold => $hold, 
-	};
+	my $payload = { copy => $copy, record => $title, hold => $hold, };
 
-	return OpenILS::Event->new('SUCCESS', payload => $payload );
+	return OpenILS::Event->new('ROUTE_COPY', route_to => $hold->pickup_lib, payload => $payload );
 }
 
 sub _build_hold_transit {

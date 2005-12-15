@@ -13,6 +13,7 @@
 	<event code='0' textcode='SUCCESS'>
 		<desc>No errors or unexpected events occurred</desc>
 	</event>
+
 	<event code='1000' textcode='LOGIN_FAILED'>
 		<desc>
 			User login failed.  Why the login failed is not specified.
@@ -67,6 +68,18 @@
 		</desc>
 	</event>
 
+	<event code='1503' textcode='BILLING_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a transit object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+	<event code='1700' textcode='ROUTE_COPY'>
+		<desc>
+			A copy needs to be routed to a different location	
+		</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>

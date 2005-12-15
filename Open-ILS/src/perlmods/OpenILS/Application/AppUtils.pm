@@ -471,7 +471,7 @@ sub fetch_hold_transit_by_hold {
 
 
 sub fetch_copy_by_barcode {
-	my( $self, $barcode ) = $_;
+	my( $self, $barcode ) = @_;
 	my( $copy, $evt );
 
 	$logger->debug("Fetching copy by barcode $barcode from storage");
