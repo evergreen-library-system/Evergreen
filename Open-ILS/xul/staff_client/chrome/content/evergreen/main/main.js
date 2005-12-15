@@ -54,7 +54,7 @@ function main_init() {
 				G.window.open(urls.opac + urls.remote_menu_frame 
 					+ '?session='+mw.escape(G.auth.session.key)
 					+ '&authtime='+mw.escape(G.auth.session.authtime),
-					'test','chrome');
+					'test','chrome,resizable');
 			}
 			G.OpenILS.data.init();
 		}
