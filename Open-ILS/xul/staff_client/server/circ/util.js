@@ -134,4 +134,206 @@ circ.util.std_map_row_to_column = function() {
 		return value;
 	}
 }
+
+circ.util.checkin_via_barcode = function(session,barcode,backdate) {
+	try {
+		JSAN.use('util.error'); var error = new util.error();
+		JSAN.use('util.network'); var network = new util.network();
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		JSAN.use('util.date');
+		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
+
+		var check = network.request(
+			api.checkin_via_barcode.app,
+			api.checkin_via_barcode.method,
+			[ session, barcode, null, backdate ]
+		);
+
+		/*
+		{ // REMOVE_ME, forcing a condition for testing
+			check.status = 1;
+			check.text = 'This copy is the first that could fulfill a hold.  Do it?';
+		}
+		*/
+
+		if (check.status != 0) {
+			switch(check.status) {
+				case '1': case 1: /* possible hold capture */
+					var rv = error.yns_alert(
+						check.text,
+						'Alert',
+						"Capture",
+						"Don't Capture",
+						null,
+						"Check here to confirm this message"
+					);
+					switch(rv) {
+						case 0: /* capture */
+						try {
+							var check2 = this.hold_capture_by_copy_barcode( session, barcode );
+							if (check2) {
+								check.copy = check2.copy;
+								check.text = check2.text;
+								check.route_to = check2.route_to;
+								JSAN.use('patron.util');
+								var patron = patron.util.retrieve_au_by_id( check.hold.usr() );
+								alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+									check.record.title() + '  Author: ' + check.record.author() + 
+									'\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
+									patron.card().barcode() + ' ' + patron.family_name() + ', ' + 
+									patron.first_given_name() + '\r\n'); //FIXME
+
+								/*
+								sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+									check.record.title() + '  Author: ' + check.record.author() + 
+									'<br />\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
+									patron.card().barcode() + ' ' + patron.family_name() + ', ' + 
+									patron.first_given_name() + '<br />\r\n'
+								);
+								*/
+
+							}
+
+						} catch(E) { 
+							error.sdump('D_ERROR',E + '\n'); 
+							/* 
+							// demo testing 
+							check.text = 'Captured for Hold';
+							check.route_to = 'ARL-ATH';
+							*/
+						}
+						break;
+						case 1: /* don't capture */
+
+							check.text = 'Not Captured for Hold';
+						break;
+					}
+				break;
+				case '2': case 2: /* LOST??? */
+					JSAN.use('patron.util');
+					var patron = patron.util.retrieve_au_by_id( check.circ.usr() );
+					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+							check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
+							'Patron: ' + patron.card().barcode() + ' ' + patron.family_name() + ', ' +
+							patron.first_given_name();
+					var pcheck = error.yns_alert(
+						msg,
+						'Lost Item',
+						'Edit Copy & Patron',
+						"Just Continue",
+						null,
+						"Check here to confirm this message"
+					); 
+					if (pcheck == 0) {
+						//FIXME//Re-implement
+						/*
+						var w = mw.spawn_main();
+						setTimeout(
+							function() {
+								mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':patron});
+								mw.spawn_batch_copy_editor(w.document,'new_tab','main_tabbox',
+									{'copy_ids':[ check.copy.id() ]});
+							}, 0
+						);
+						*/
+					}
+				break;
+				case '3': case 3: /* TRANSIT ELSEWHERE */
+					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+							check.record.title() + '  Author: ' + check.record.author() + 
+							'\r\n' + 'Route To: ' + check.route_to + '\r\n';
+					var pcheck = error.yns_alert(
+						msg,
+						'Alert',
+						'Print Receipt',
+						"Don't Print",
+						null,
+						"Check here to confirm this message"
+					); 
+					if (pcheck == 0) {
+						alert('To Printer\n' + msg); //FIXME//
+						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+					}
+
+				break;
+				case '4': case 4: /* transit for hold is complete */
+					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+							check.record.title() + '  Author: ' + check.record.author() + 
+							'\r\n' + 'Route To: ' + check.route_to +
+							'\r\n';
+					var pcheck = error.yns_alert(
+						msg,
+						'Alert',
+						'Print Receipt',
+						"Don't Print",
+						null,
+						"Check here to confirm this message"
+					); 
+					if (pcheck == 0) {
+						alert('To Printer\n' + msg); //FIXME//
+						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+					}
+
+				break;
+
+				default: 
+					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+					var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;
+					var pcheck = error.yns_alert(
+						msg,
+						'Alert',
+						'Print Receipt',
+						"Don't Print",
+						null,
+						"Check here to confirm this message"
+					); 
+					if (pcheck == 0) {
+						alert('To Printer\n' + msg); //FIXME//
+						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+					}
+				break;
+			}
+		} else {  // status == 0
+		}
+		if (parseInt(check.route_to)) {
+			if (check.route_to != data.list.au[0].home_ou()) {
+				check.route_to = data.hash.aou[ check.route_to ].shortname();
+			} else {
+				check.route_to = data.hash.acpl[ check.copy.location() ].name();
+			}
+		}
+		return check;
+	} catch(E) {
+		JSAN.use('util.error'); var error = new util.error();
+		var msg = E + '\n---\n' + js2JSON(E);
+		error.sdump('D_ERROR',msg);
+		alert(msg);
+		return null;
+	}
+}
+
+circ.util.hold_capture_by_copy_barcode = function ( session, barcode, retrieve_flag ) {
+	try {
+		JSAN.use('util.network'); var network = new util.network();
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		var check = network.request(
+			api.capture_copy_for_hold_via_barcode.app,
+			api.capture_copy_for_hold_via_barcode.method,
+			[ session, barcode, retrieve_flag ]
+		)[0];
+		check.text = 'Captured for Hold';
+		if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+		return check;
+	} catch(E) {
+		JSAN.use('util.error'); var error = new util.error();
+		var msg = E + '\n---\n' + js2JSON(E);
+		error.sdump('D_ERROR',msg);
+		alert(msg);
+		return null;
+	}
+}
+
+
 dump('exiting circ/util.js\n');

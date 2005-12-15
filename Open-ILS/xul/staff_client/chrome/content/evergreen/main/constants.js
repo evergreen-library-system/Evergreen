@@ -3,6 +3,8 @@ var api = {
 	'auth_init' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
 	'auth_complete' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },
 	'blob_checkouts_retrieve' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out' },
+	'capture_copy_for_hold_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.capture_copy.barcode' },
+	'checkin_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkin.barcode' },
 	'checkout_permit_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.permit_checkout' },
 	'checkout_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.barcode' },
 	'fm_acpl_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_location.retrieve.all' },
