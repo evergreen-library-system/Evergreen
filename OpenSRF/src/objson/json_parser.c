@@ -274,7 +274,7 @@ int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj) {
 			json_eat_ws(string, index, 1);
 			if(string[*index] != ',') {
 				return json_handle_error(string, index,
-					"json_parse_json_array(): array not followed by a ','");
+					"json_parse_json_array(): array item not followed by a ','");
 			}
 			(*index)++;
 			json_eat_ws(string, index, 1);
