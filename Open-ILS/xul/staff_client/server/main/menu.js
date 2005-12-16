@@ -92,13 +92,13 @@ main.menu.prototype = {
 			'cmd_test_html' : [
 				['command','keypress'],
 				function() {
-					obj.set_tab(urls.test_html,{},{});
+					obj.set_tab(urls.test_html + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['command','keypress'],
 				function() {
-					obj.set_tab(urls.test_xul,{},{});
+					obj.set_tab(urls.test_xul + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_console' : [
