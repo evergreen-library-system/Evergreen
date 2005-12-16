@@ -55,6 +55,8 @@ function resultDrawSeries() {
 }
 
 var _oldFashioned = true;
+var IESux = true;
+
 function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode ) {
 	eval("tree = " + treeName);
 
@@ -64,7 +66,12 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 	for( var i in items ) {
 
 		if(isNull(items[i])) continue;
+
+		/* again, IE is a turd */
+		//if(IE) { if(x++ > 5) break; }
+		//else { if(x++ > 7) break; }
 		if(x++ > 7) break;
+
 		found = true;
 
 		var item = normalize(truncate(items[i], 65));
@@ -73,18 +80,8 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		var href = resultQuickLink( items[i], stype );
 		tree.addNode( stype + "_" + items[i], treeName + 'Root', item, href );
 
-		/*
-		if(!IE)
-			setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");',200);
-			*/
-		//if(!IE) resultFireXRefReq(treeName, stype, items[i]);
-		//resultFireXRefReq(treeName, stype, items[i]);
-
-
-		if(_oldFashioned)
-			resultFireXRefReq(treeName, stype, items[i]);
-
-		//setTimeout('resultFireXRefReq("'+treeName+'","'+stype+'","'+item+'");', 100);
+		////if(_oldFashioned && !IE) {
+		if(_oldFashioned && !IE ) resultFireXRefReq(treeName, stype, items[i]);
 
 		var a = {};
 		a.type = stype;
@@ -96,6 +93,9 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		unHideMe(wrapperNode);
 		if(!_oldFashioned)
 			resultFireXRefBatch(treeName, xrefCache, stype);
+		//if(IE && stype == 'subject' ) {
+
+		if(IE) resultFireXRefSingle(treeName, xrefCache, stype);
 	}
 }
 
@@ -111,6 +111,32 @@ function resultFireXRefBatch(treeName, xrefCache, stype) {
 	req.request._tree = tree;
 	req.request._stype = stype;
 	req.callback(resultRenderXRefTree);
+	req.send();
+}
+
+var xrefCacheIndex = {};
+xrefCacheIndex['subject'] = 0;
+xrefCacheIndex['author'] = 0;
+xrefCacheIndex['series'] = 0;
+
+function resultHandleXRefResponse(r) {
+	resultFireXRefSingle( r._treename, r._cache, r._stype );
+	resultAppendCrossRef(r);
+}
+
+
+function resultFireXRefSingle( treeName, xrefCache, stype ) {
+	var i = xrefCacheIndex[stype]++;
+	var item = xrefCache[i].term;
+	var tree;
+	eval('tree=' + treeName);
+	var req = new Request(FETCH_CROSSREF, stype, item);
+	req.request._tree = tree;
+	req.request._item = item;
+	req.request._stype = stype;
+	req.request._cache = xrefCache;
+	req.request._treename = treeName;
+	req.callback(resultHandleXRefResponse);
 	req.send();
 }
 

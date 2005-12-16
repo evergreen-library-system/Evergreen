@@ -18,13 +18,13 @@
 				<td width='50%'>Search hits per page</td>
 				<td>
 					<select id='prefs_hits_per'>
-						<option>5</option>
-						<option>8</option>
-						<option>10</option>
-						<option>15</option>
-						<option>20</option>
-						<option>25</option>
-						<option>50</option>
+						<option value='5'>5</option>
+						<option value='8'>8</option>
+						<option value='10'>10</option>
+						<option value='15'>15</option>
+						<option value='20'>20</option>
+						<option value='25'>25</option>
+						<option value='50'>50</option>
 					</select>
 				</td>
 			</tr>

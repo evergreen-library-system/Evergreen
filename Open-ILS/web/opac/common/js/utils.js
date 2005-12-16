@@ -174,9 +174,8 @@ function setSelector( sel, value ) {
 	}
 }
 
-
 function getSelectorVal( sel ) {
-	if(!sel) return undef;
+	if(!sel) return null;
 	return sel.options[sel.selectedIndex].value;
 }
 
@@ -287,7 +286,7 @@ function scaleFonts(type) {
 			break;
 	}
 
-	document.body.style.fontSize = size;
+	document.getElementsByTagName('body')[0].style.fontSize = size;
 	for (i = 0; (a = document.getElementsByTagName ("td")[i]); i++) a.style.fontSize = size;;
 	for (i = 0; (a = document.getElementsByTagName ("div")[i]); i++) a.style.fontSize = ssize;
 	for (i = 0; (a = document.getElementsByTagName ("option")[i]); i++) a.style.fontSize = ssize;

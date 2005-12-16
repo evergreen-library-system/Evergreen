@@ -335,8 +335,7 @@ function myOPACShowTransactions(r) {
 }
 
 function myOPACSavePrefs() {
-	G.user.prefs['opac.hits_per_page'] = 
-		$('prefs_hits_per').options[$('prefs_hits_per').selectedIndex].value;
+	G.user.prefs['opac.hits_per_page'] = getSelectorVal($('prefs_hits_per'));
 	if(commitUserPrefs())
 		alert($('prefs_update_success').innerHTML);
 	else alert($('prefs_update_failure').innerHTML);
@@ -354,16 +353,8 @@ function myOPACShowHitsPer() {
 	var hits = 10;
 	if(G.user.prefs['opac.hits_per_page'])
 		hits = G.user.prefs['opac.hits_per_page'];
-
 	var hitsSel = $('prefs_hits_per');
-
-	for( var o in hitsSel.options ) {
-		var opt = hitsSel.options[o];
-		if( hits == opt.value ) {
-			opt.selected = true;
-			hitsSel.selectedIndex = o;
-		}
-	}
+	setSelector(hitsSel, hits);
 }
 
 var userShown = false;

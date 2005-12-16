@@ -427,7 +427,7 @@ function doLogin() {
 	return u;
 }
 
-function doLogout() {
+function doLogout(noredirect) {
 
 	/* be nice and delete the session from the server */
 	if(G.user && G.user.session) { 
@@ -448,7 +448,9 @@ function doLogout() {
 	args[PARAM_DEPTH] = findOrgDepth(globalOrgTree);
 	args.page = "home";
 
-	goTo(buildOPACLink(args));
+	var nored = false;
+	try{ if(isFrontPage) nored = true; } catch(e){nored = false;}
+	if(!nored) goTo(buildOPACLink(args));
 }
 
 

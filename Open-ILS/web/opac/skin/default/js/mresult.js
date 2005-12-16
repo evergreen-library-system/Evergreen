@@ -35,14 +35,22 @@ function mresultDoSearch() {
 			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
 		}
-		else mresultCollectIds(FETCH_MRIDS_FULL); 
+		else {
+			mresultCollectIds(FETCH_MRIDS_FULL); 
+			ADVTERM = "";
+			ADVTYPE = "";
+		}
 
 	} else  {
 		if( getAdvTerm() && !getTerm() ) {
 			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvIds();
 		}
-		else mresultCollectIds(FETCH_MRIDS);
+		else {
+			mresultCollectIds(FETCH_MRIDS);
+			ADVTERM = "";
+			ADVTYPE = "";
+		}
 	}
 }
 
