@@ -1,14 +1,14 @@
-dump('entering patron.list.js\n');
+dump('entering patron.items.js\n');
 
 if (typeof patron == 'undefined') patron = {};
-patron.list = function (params) {
+patron.items = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
 	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 }
 
-patron.list.prototype = {
+patron.items.prototype = {
 
 	'init' : function( params ) {
 
@@ -86,4 +86,4 @@ patron.list.prototype = {
 	},
 }
 
-dump('exiting patron.list.js\n');
+dump('exiting patron.items.js\n');
