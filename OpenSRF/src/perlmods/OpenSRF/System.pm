@@ -103,7 +103,6 @@ sub load_bootstrap_config {
 		return;
 	}
 
-	warn "Loading $bootstrap_config_file\n";
 	if(!$bootstrap_config_file) {
 		die "Please provide a bootstrap config file to OpenSRF::System!\n" . 
 			"use OpenSRF::System qw(/path/to/bootstrap_config);";
