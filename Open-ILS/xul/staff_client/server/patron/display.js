@@ -67,7 +67,15 @@ patron.display.prototype = {
 					'cmd_patron_items' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(urls.remote_patron_items);
+							obj.right_deck.set_iframe(
+								urls.remote_patron_items
+								+ '?session=' + window.escape( obj.session )
+								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{
+									'checkouts' : obj.patron.checkouts()
+								}
+							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],

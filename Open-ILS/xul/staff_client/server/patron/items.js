@@ -21,13 +21,12 @@ patron.items.prototype = {
 		var columns = circ.util.columns( 
 			{ 
 				'title' : { 'hidden' : false, 'flex' : '3' },
-				'xact_start' : { 'hidden' : false },
 				'due_date' : { 'hidden' : false },
 				'renewal_remaining' : { 'hidden' : false },
 			} 
 		);
 
-		JSAN.use('util.list'); obj.list = new util.list('item_list');
+		JSAN.use('util.list'); obj.list = new util.list('items_list');
 		obj.list.init(
 			{
 				'columns' : columns,
@@ -57,32 +56,45 @@ patron.items.prototype = {
 			}
 		);
 
+		obj.retrieve();
+
 	},
 
 	'retrieve' : function() {
+		var obj = this;
 		if (window.xulG && window.xulG.checkouts) {
-			this.checkouts = window.xulG.checkouts;
+			obj.checkouts = window.xulG.checkouts;
 		} else {
-			this.checkouts = this.network.request(
+			obj.checkouts = obj.network.request(
 				api.blob_checkouts_retrieve.app,
 				api.blob_checkouts_retrieve.method,
-				[ this.session, this.patron_id ]
+				[ obj.session, obj.patron_id ]
 			);
 				
 		}
-		for (var i in this.checkouts) {
-			this.list.append(
-				{
-					'row' : {
-						'my' : {
-							'circ' : this.checkouts[i].circ,
-							'mvr' : this.checkouts[i].record,
-							'acp' : this.checkouts[i].copy
+
+		function gen_list_append(checkout) {
+			return function() {
+				obj.list.append(
+					{
+						'row' : {
+							'my' : {
+								'circ' : checkout.circ,
+								'mvr' : checkout.record,
+								'acp' : checkout.copy
+							}
 						}
 					}
-				}
-			);
+				);
+			};
 		}
+
+		JSAN.use('util.exec'); var exec = new util.exec();
+		var rows = [];
+		for (var i in obj.checkouts) {
+			rows.push( gen_list_append(obj.checkouts[i]) );
+		}
+		exec.chain( rows );
 	},
 }
 
