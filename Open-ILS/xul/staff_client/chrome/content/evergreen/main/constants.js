@@ -42,7 +42,7 @@ var urls = {
 	'remote_patron_edit' : 'data:text/html,<h1>Edit Here</h1>',
 	'remote_patron_holds' : 'data:text/html,<h1>Holds Here</h1>',
 	'remote_patron_info' : 'data:text/html,<h1>Info Here</h1>',
-	'remote_patron_items' : 'data:text/html,<h1>Items Here</h1>',
+	'remote_patron_items' : '/xul/server/patron/items.xul',
 	'remote_patron_search_form' : '/xul/server/patron/search_form.xul',
 	'remote_patron_search_result' : '/xul/server/patron/search_result.xul',
 	'remote_patron_summary' : '/xul/server/patron/summary.xul',
