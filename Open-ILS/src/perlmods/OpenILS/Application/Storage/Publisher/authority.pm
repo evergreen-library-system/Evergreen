@@ -24,6 +24,20 @@ sub find_authority_marc {
 	my $term = $args{term};
 	my $tag = $args{tag};
 	my $subfield = $args{subfield};
+	my $limit = $args{limit} || 100;
+	my $offset = $args{offset} || 0;
+
+	if ($limit) {
+		$limit = "LIMIT $limit";
+	} else {
+		$limit = '';
+	}
+
+	if ($offset) {
+		$offset = "OFFSET $offset";
+	} else {
+		$offset = '';
+	}
 
 	my $tag_where = "AND f.tag LIKE '$tag'";
 	if (ref $tag) {
@@ -43,13 +57,15 @@ sub find_authority_marc {
 
 	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
 
+
 	my $fts_where = $fts->sql_where_clause;
 	my $fts_words = join '%', $fts->words;
 	my $fts_words_where = "f.value LIKE '$fts_words\%'";
 
+	my $fts_rank = join '+', $fts->fts_rank;
 
 	my $select = <<"	SQL";
-		SELECT	DISTINCT a.marc
+		SELECT	a.marc, sum($fts_rank)
   	  	FROM	$search_table f,
 			$marc_table a
   	  	WHERE	$fts_where
@@ -57,6 +73,11 @@ sub find_authority_marc {
 			$tag_where
 			$sf_where
 	  		AND a.id = f.record
+			GROUP BY 1
+			ORDER BY 2
+			$limit
+			$offset
+			
 	SQL
 
 	$log->debug("Authority Search SQL :: [$select]",DEBUG);
@@ -102,13 +123,15 @@ sub find_see_from_controlled {
 	my $self = shift;
 	my $client = shift;
 	my $term = shift;
+	my $limit = shift;
+	my $offset = shift;
 
 	(my $class = $self->api_name) =~ s/^.+authority.([^\.]+)\.see.+$/$1/o;
 	my $sf = 'a';
 	$sf = 't' if ($class eq 'title');
 
 	my @marc = $self->method_lookup('open-ils.storage.authority.search.marc')
-			->run( term => $term, tag => '4%', subfield => $sf );
+			->run( term => $term, tag => '4%', subfield => $sf, limit => $limit, offset => $offset );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*[@code="a" or @code="d" or @code="x"]');
@@ -131,13 +154,15 @@ sub find_see_also_from_controlled {
 	my $self = shift;
 	my $client = shift;
 	my $term = shift;
+	my $limit = shift;
+	my $offset = shift;
 
 	(my $class = $self->api_name) =~ s/^.+authority.([^\.]+)\.see.+$/$1/o;
 	my $sf = 'a';
 	$sf = 't' if ($class eq 'title');
 
 	my @marc = $self->method_lookup('open-ils.storage.authority.search.marc')
-			->run( term => $term, tag => '5%', subfield => $sf );
+			->run( term => $term, tag => '5%', subfield => $sf, limit => $limit, offset => $offset );
 	for my $m ( @marc ) {
 		my $doc = $parser->parse_string($m);
 		my @nodes = $doc->documentElement->findnodes('//*[substring(@tag,1,1)="1"]/*[@code="a" or @code="d" or @code="x"]');
