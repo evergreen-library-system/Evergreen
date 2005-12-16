@@ -208,7 +208,7 @@ sub _init {
 		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn'    },
 
 		'Fieldmapper::permission::perm_list'		=> { hint => 'ppl'    },
-		'Fieldmapper::permission::grp_tree'		=> { hint => 'pgt'    },
+		'Fieldmapper::permission::grp_tree'		=> { hint => 'pgt', proto_fields => { children => 1 } },
 		'Fieldmapper::permission::usr_grp_map'		=> { hint => 'pugm'   },
 		'Fieldmapper::permission::usr_perm_map'		=> { hint => 'pupm'   },
 		'Fieldmapper::permission::grp_perm_map'		=> { hint => 'pgpm'   },

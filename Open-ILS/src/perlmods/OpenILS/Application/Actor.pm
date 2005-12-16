@@ -1227,6 +1227,47 @@ sub retrieve_groups {
 		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
 }
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_groups_tree",
+	api_name	=> "open-ils.actor.groups.tree.retrieve",
+	notes		=> <<"	NOTES");
+	Returns a list of user groups
+	NOTES
+sub retrieve_groups_tree {
+	my( $self, $client ) = @_;
+	my $groups = $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
+	return $self->build_group_tree($groups);	
+}
+
+
+# turns an org list into an org tree
+sub build_group_tree {
+
+	my( $self, $grplist) = @_;
+
+	return $grplist unless ( 
+			ref($grplist) and @$grplist > 1 );
+
+	my @list = sort { $a->name cmp $b->name } @$grplist;
+
+	my $root;
+	for my $grp (@list) {
+
+		if ($grp and !defined($grp->parent)) {
+			$root = $grp;
+			next;
+		}
+		my ($parent) = grep { $_->id == $grp->parent} @list;
+
+		$parent->children([]) unless defined($parent->children); 
+		push( @{$parent->children}, $grp );
+	}
+
+	return $root;
+
+}
 
 
 
