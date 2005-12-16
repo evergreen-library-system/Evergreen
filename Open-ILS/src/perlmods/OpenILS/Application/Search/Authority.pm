@@ -22,8 +22,10 @@ sub crossref_authority {
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	$session->connect;
 
-	my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term);
-	my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term);
+	my $freq = $session->request(
+		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
+	my $areq = $session->request(
+		"open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10);
 
 	my $fr = $freq->gather(1);
 	my $al = $areq->gather(1);
@@ -118,8 +120,8 @@ sub crossref_authority_batch {
 		my $term = $req->[1];
 		next unless $class and $term;
 		warn "Sending authority request for $class : $term\n";
-		my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term);
-		my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term);
+		my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
+		my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10);
 
 		if( $lastr->[0] ) { #process old data while waiting on new data
 			my $cls = $lastr->[0];
