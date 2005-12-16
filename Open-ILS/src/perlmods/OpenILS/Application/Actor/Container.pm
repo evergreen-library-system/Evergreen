@@ -144,22 +144,61 @@ __PACKAGE__->register_method(
 sub bucket_create {
 	my( $self, $client, $authtoken, $class, $bucket ) = @_;
 
-	my( $staff, $evt ) = $apputils->checkses($authtoken);
+	my( $staff, $target, $evt ) = 
+		$apputils->checkses_requestor( 
+			$authtoken, $bucket->owner, 'CREATE_CONTAINER' );
 	return $evt if $evt;
-
-	if( $bucket->owner ne $staff->id ) {
-		return $evt if ($evt = $apputils->check_perms('CREATE_CONTAINER'));
-	}
 
 	$logger->activity( "User " . $staff->id . 
 		" creating a new continer for user " . $bucket->owner );
 
+	$logger->debug("Creating new container object: " . Dumper($bucket));
+
 	my $method = $types{$class} . ".create";
 	my $id = $apputils->simplreq( $svc, $method, $bucket );
 
+	$logger->debug("Creatined new container with id $id");
+
 	if(!$id) { throw OpenSRF::EX 
 		("Unable to create new bucket object"); }
+
 	return $id;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "bucket_delete",
+	api_name	=> "open-ils.actor.container.bucket.delete",
+	notes		=> <<"	NOTES");
+		Deletes a bucket object.  If requestor is different from
+		bucketOwner, requestor needs DELETE_CONTAINER permissions
+		PARAMS(authtoken, class, bucketId);
+		Returns the new bucket object
+	NOTES
+
+sub bucket_delete {
+	my( $self, $client, $authtoken, $class, $bucketid ) = @_;
+
+	my $bucket = $apputils->simplereq( 
+		$svc, $types{$class} . ".retrieve", $bucketid );
+
+	if(!$bucket) {
+		return OpenILS::Event->new('CONTAINER_NOT_FOUND');
+	}
+
+	my( $staff, $target, $evt ) = $apputils->checkses_requestor( 
+		$authtoken, $bucket->owner, 'DELETE_CONTAINER' );
+	return $evt if $evt;
+
+	$logger->activity( "User " . $staff->id . 
+		" deleting continer $bucketid for user " . $bucket->owner );
+
+	my $method = $types{$class} . ".delete";
+	my $resp = $apputils->simplreq( $svc, $method, $bucketid );
+
+	if(!$resp) { throw OpenSRF::EX 
+		("Unable to create new bucket object"); }
+	return $resp;
 
 }
 

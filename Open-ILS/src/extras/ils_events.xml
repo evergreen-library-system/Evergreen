@@ -75,6 +75,14 @@
 		</desc>
 	</event>
 
+	<event code='1504' textcode='CONTAINER_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a transit object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+
 	<event code='1700' textcode='ROUTE_COPY'>
 		<desc>
 			A copy needs to be routed to a different location	
