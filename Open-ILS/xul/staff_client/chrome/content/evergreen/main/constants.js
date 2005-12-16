@@ -22,6 +22,8 @@ var api = {
 	'fm_cst_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },
 	'fm_mobts_having_balance' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
 	'fm_pgt_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' },
+	'mods_slim_metarecord_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.metarecord.mods_slim.retrieve' },
+	'mods_slim_record_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve' },
 }
 
 var urls = {
@@ -30,7 +32,7 @@ var urls = {
 	'remote_checkin' : '/xul/server/circ/checkin.xul',
 	'remote_checkout' : '/xul/server/circ/checkout.xul',
 	'remote_debug_console' : '/xul/server/util/shell.html',
-	'remote_debug_fieldmapper' : '/xul/server/util/fieldmapper.xul',
+	'remote_debug_fieldmapper' : '/xul/server/util/fm_view.xul',
 	'remote_debug_filter_console' : '/xul/server/util/filter_console.xul',
 	'remote_debug_shell' : '/xul/server/util/shell.html',
 	'remote_debug_xuleditor' : '/xul/server/util/xuledit.xul',
@@ -40,7 +42,7 @@ var urls = {
 	'remote_patron_bills' : 'data:text/html,<h1>Bills Here</h1>',
 	'remote_patron_display' : '/xul/server/patron/display.xul',
 	'remote_patron_edit' : 'data:text/html,<h1>Edit Here</h1>',
-	'remote_patron_holds' : 'data:text/html,<h1>Holds Here</h1>',
+	'remote_patron_holds' : '/xul/server/patron/holds.xul',
 	'remote_patron_info' : 'data:text/html,<h1>Info Here</h1>',
 	'remote_patron_items' : '/xul/server/patron/items.xul',
 	'remote_patron_search_form' : '/xul/server/patron/search_form.xul',
