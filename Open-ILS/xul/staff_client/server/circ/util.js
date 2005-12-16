@@ -4,7 +4,7 @@ if (typeof circ == 'undefined') var circ = {};
 circ.util = {};
 
 circ.util.EXPORT_OK	= [ 
-	'columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode'
+	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -115,6 +115,108 @@ circ.util.columns = function(modify) {
 			'id' : 'checkin_text', 'label' : getString('staff.checkin_label_text'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.text.toString()'
 		}
+
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	return c;
+}
+
+circ.util.hold_columns = function(modify) {
+	
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	function getString(s) { return data.entities[s]; }
+
+	var c = [
+		{
+			'id' : 'request_time', 'label' : getString('staff.ahr_request_time_label'), 'flex' : 0,
+			'primary' : false, 'hidden' : true,  
+			'render' : 'my.ahr.request_time().toString().substr(0,10)'
+		},
+		{
+			'id' : 'capture_time', 'label' : getString('staff.ahr_capture_time_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time()'
+		},
+		{
+			'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.status()'
+		},
+		{
+			'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.hold_type()'
+		},
+		{
+			'id' : 'pickup_lib', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  
+			'render' : 'obj.OpenILS.data.hash.aou[ my.ahr.pickup_lib() ].name()'
+		},
+		{
+			'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
+			'primary' : false, 'hidden' : true,  
+			'render' : 'obj.OpenILS.data.hash.aou[ my.ahr.pickup_lib() ].shortname()'
+		},
+		{
+			'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.current_copy()'
+		},
+		{
+			'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.email_notify()'
+		},
+		{
+			'id' : 'expire_time', 'label' : getString('staff.ahr_expire_time_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.expire_time()'
+		},
+		{
+			'id' : 'fulfillment_time', 'label' : getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.fulfillment_time()'
+		},
+		{
+			'id' : 'holdable_formats', 'label' : getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.holdable_formats()'
+		},
+		{
+			'id' : 'id', 'label' : getString('staff.ahr_id_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.id()'
+		},
+		{
+			'id' : 'phone_notify', 'label' : getString('staff.ahr_phone_notify_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.phone_notify()'
+		},
+		{
+			'id' : 'prev_check_time', 'label' : getString('staff.ahr_prev_check_time_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.prev_check_time()'
+		},
+		{
+			'id' : 'requestor', 'label' : getString('staff.ahr_requestor_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.requestor()'
+		},
+		{
+			'id' : 'selection_depth', 'label' : getString('staff.ahr_selection_depth_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.selection_depth()'
+		},
+		{
+			'id' : 'target', 'label' : getString('staff.ahr_target_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.target()'
+		},
+		{
+			'id' : 'usr', 'label' : getString('staff.ahr_usr_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.usr()'
+		},
+		{
+			'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.title()'
+		},
+		{
+			'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.author()'
+		},
 
 	];
 	for (var i = 0; i < c.length; i++) {

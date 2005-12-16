@@ -82,7 +82,15 @@ patron.display.prototype = {
 					'cmd_patron_holds' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(urls.remote_patron_holds);
+							obj.right_deck.set_iframe(
+								urls.remote_patron_holds	
+								+ '?session=' + window.escape( obj.session )
+								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{
+									//FIXME//'holds' : obj.patron.holds()
+								}
+							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
