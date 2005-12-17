@@ -33,7 +33,8 @@ util.list.prototype = {
 		this.columns = params.columns;
 
 		switch(this.node.nodeName) {
-			case 'tree' : _init_tree(params); break;
+			case 'tree' : this._init_tree(params); break;
+			case 'listbox' : this._init_listbox(params); break;
 			default: throw('NYI: Need ._init() for ' + this.node.nodeName); break;
 		}
 	},
