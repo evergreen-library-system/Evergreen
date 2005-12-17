@@ -122,7 +122,7 @@ patron.bills.prototype = {
 								}
 							}
 							obj.update_payment_applied();
-						}; 
+						} 
 					],
 					'bill_payment_applied' : [
 						['render'],
