@@ -24,7 +24,7 @@ patron.bills.prototype = {
 		function getString(s) { return obj.OpenILS.data.entities[s]; }
 		obj.list.init(
 			{
-				'columns' : {
+				'columns' : [
 						{
 							'id' : 'checkbox', 'label' : '', 'flex' : 0, 'primary' : false, 'hidden' : false,
 							'render' : 'document.createElement("checkbox")'
@@ -45,7 +45,7 @@ patron.bills.prototype = {
 							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 0, 
 							'render' : 'document.createElement("textbox")'
 						}
-				},
+				],
 				'map_row_to_column' : function(row,col) {
 					// row contains { 'my' : { 'mbts' : ... } }
 					// col contains one of the objects listed above in columns
