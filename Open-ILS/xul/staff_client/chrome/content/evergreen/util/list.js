@@ -7,9 +7,9 @@ util.list = function (id) {
 
 	if (!this.node) throw('Could not find element ' + id);
 	switch(this.node.nodeName) {
+		case 'listbox' : 
 		case 'tree' : break;
 		case 'richlistbox' :
-		case 'listbox' : 
 			throw(this.node.nodeName + ' not yet supported'); break;
 		default: throw(this.node.nodeName + ' not supported'); break;
 	}
@@ -32,6 +32,13 @@ util.list.prototype = {
 		if (typeof params.columns == 'undefined') throw('util.list.init: No columns');
 		this.columns = params.columns;
 
+		switch(this.node.nodeName) {
+			case 'tree' : _init_tree(params); break;
+			default: throw('NYI: Need ._init() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_init_tree' : function (params) {
 		if (this.prebuilt) {
 		
 			this.treechildren = this.node.lastChild;	
@@ -57,26 +64,49 @@ util.list.prototype = {
 		}
 	},
 
+	'_init_listbox' : function (params) {
+		if (this.prebuilt) {
+		} else {
+			var listhead = document.createElement('listhead');
+			this.node.appendChild(listhead);
+
+			var listcols = document.createElement('listcols');
+			this.node.appendChild(listcols);
+
+			for (var i = 0; i < this.columns.length; i++) {
+				var listheader = document.createElement('listheader');
+				listhead.appendChild(listheader);
+				var listcol = document.createElement('listcol');
+				listcols.appendChild(listcol);
+				for (var j in this.columns[i]) {
+					listhead.setAttribute(j,this.columns[i][j]);
+					listcol.setAttribute(j,this.columns[i][j]);
+				};
+			}
+		}
+	},
+
 	'append' : function (params) {
 		switch (this.node.nodeName) {
-			case 'tree' : this.append_to_tree(params); break;
+			case 'tree' : this._append_to_tree(params); break;
+			case 'listbox' : this._append_to_listbox(params); break;
 			default: throw('NYI: Need .append() for ' + this.node.nodeName); break;
 		}
 	},
 
-	'append_to_tree' : function (params) {
+	'_append_to_tree' : function (params) {
 
 		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
 
-		dump('util.list.append: params = ' + js2JSON(params) + '\n');
+		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
 
 		var treeitem = document.createElement('treeitem');
 		this.treechildren.appendChild( treeitem );
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 
-		dump('tree = ' + this.node + '  treechildren = ' + this.treechildren + '\n');
-		dump('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
+		s += ('tree = ' + this.node + '  treechildren = ' + this.treechildren + '\n');
+		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
@@ -101,14 +131,56 @@ util.list.prototype = {
 		} else {
 			this._map_row_to_treecell(params,treerow);
 		}
+		this.error.sdump('D_LIST',s);
 
 		return treeitem;
 	},
 
+	'_append_to_listbox' : function (params) {
+
+		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
+
+		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
+
+		var listitem = document.createElement('listitem');
+		this.node.appendChild( listitem );
+
+		s += ('listbox = ' + this.node + '  listitem = ' + listitem + '\n');
+
+		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+
+			listitem.setAttribute('retrieve_id',params.retrieve_id);
+			//FIXME//Make async and fire when row is visible in list
+			var row;
+			if (typeof params.retrieve_row == 'function') {
+
+				row = params.retrieve_row( params );
+
+			} else {
+
+				if (typeof this.retrieve_row == 'function') {
+
+					row = this.retrieve_row( params );
+
+				}
+			}
+			params.row = row;
+			this._map_row_to_listcell(params,listitem);
+
+		} else {
+			this._map_row_to_listcell(params,listitem);
+		}
+		this.error.sdump('D_LIST',s);
+
+		return listitem;
+
+	},
+
 	'_map_row_to_treecell' : function(params,treerow) {
+		var s = '';
 		for (var i = 0; i < this.columns.length; i++) {
 			var treecell = document.createElement('treecell');
-			var label = '';
+			var value = '';
 			if (typeof params.map_row_to_column == 'function')  {
 
 				label = params.map_row_to_column(params.row,this.columns[i]);
@@ -122,8 +194,37 @@ util.list.prototype = {
 			}
 			treecell.setAttribute('label',label);
 			treerow.appendChild( treecell );
-			dump('treecell = ' + treecell + ' with label = ' + label + '\n');
+			s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
 		}
+		this.error.sdump('D_LIST',s);
+	},
+
+	'_map_row_to_listcell' : function(params,listitem) {
+		var s = '';
+		for (var i = 0; i < this.columns.length; i++) {
+			var value = '';
+			if (typeof params.map_row_to_column == 'function')  {
+
+				value = params.map_row_to_column(params.row,this.columns[i]);
+
+			} else {
+
+				if (typeof this.map_row_to_column == 'function') {
+
+					value = this.map_row_to_column(params.row,this.columns[i]);
+				}
+			}
+			if (typeof value == 'string') {
+				var listcell = document.createElement('listcell');
+				listcell.setAttribute('label',value);
+				listitem.appendChild(listcell);
+				s += ('listcell = ' + listcell + ' with label = ' + value + '\n');
+			} else {
+				listitem.appendChild(value);
+				s += ('listcell = ' + value + ' is really a ' + value.nodeName + '\n');
+			}
+		}
+		this.error.sdump('D_LIST',s);
 	},
 
 }
