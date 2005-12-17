@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<overlay id="bills_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading bills_overlay.xul\n');</script>
+
+<commandset id="bills_cmds" />
+
+<box id="bills_main" flex="1" orient="vertical" class="my_overflow">
+	<box id="bills_top_ui" />
+	<listbox id="bill_list" />
+</box>
+
+<box id="bills_top_ui">
+	<hbox>
+		<groupbox>
+			<caption label="Summary"/>
+			<grid>
+				<columns><column /><column /></columns>                                 
+				<rows>
+					<row>
+						<label value="Total Owed" />
+	
+						<textbox id="bill_total_owed" value="" readonly="true" />
+					</row>
+					<row>
+						<label value="- Payment applied" />
+			
+						<textbox id="bill_payment_applied" readonly="true"/>
+					</row>
+					<row>
+						<label value="= New Balance" 
+							style="font-family: bold" />
+	
+						<textbox id="bill_new_balance" readonly="true"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		<spacer flex="2"/>
+		<groupbox>
+			<caption label="Pay Bill"/>
+			<grid>
+				<columns><column /><column /></columns>                                 
+				<rows>
+					<row>
+						<label value="Payment Type" 
+							accesskey="t" control="payment_type" />
+						<menulist id="payment_type">
+							<menupopup id="payment_type_menupopup">
+								<menuitem id="payment_type_menuitem1" label="Cash" value="cash_payment"/>
+								<menuitem id="payment_type_menuitem2" label="Check" value="check_payment"/>
+								<menuitem id="payment_type_menuitem3" label="Credit Card" value="credit_card_payment"/>
+								<menuitem id="payment_type_menuitem4" label="Patron Credit" value="credit_payment" />
+								<menuitem id="payment_type_menuitem5" label="Work" value="work_payment"/>
+								<menuitem id="payment_type_menuitem6" label="Forgive" value="forgive_payment"/>
+							</menupopup>
+						</menulist>
+					</row>
+					<row>
+						<label value="Payment received" style="font-weight: bold"
+							accesskey="a" control="bill_payment_amount" />
+			
+						<textbox id="bill_payment_amount" style="border: solid thick black"/>
+					</row>
+					<row>
+						<label value="- Payment applied" />
+			
+						<textbox id="bpato" observes="bill_payment_applied" />
+					</row>
+					<row>
+						<label value="= Change" control="bill_change_amount" />
+	
+						<hbox>
+							<textbox id="bill_change_amount" />
+						</hbox>
+					</row>
+					<row>
+						<label value="or Patron Credit" 
+							style="font-family: bold" />
+	
+						<textbox id="bill_credit_amount" readonly="true"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</hbox>
+	<hbox>
+		<button id="bill_wizard" label="Bill Patron" accesskey="B" command="cmd_bill_wizard"/>
+		<spacer flex="2"/>
+		<button id="change_to_credit" label="Convert Change to Patron Credit" command="cmd_change_to_credit"/>
+		<button id="bill_apply_payment" label="Go!" accesskey="G" command="cmd_bill_apply_payment"/>
+	</hbox>
+	<label value=" "/>
+</box>
+
+
+</overlay>
