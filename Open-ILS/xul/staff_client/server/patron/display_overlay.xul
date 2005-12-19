@@ -18,6 +18,7 @@
 		<vbox id="pdm3" flex="1">
 			<deck id="patron_left_deck"/>
 		</vbox>
+		<splitter id="pdms1"><grippy id="pdmsg1"/></splitter>
 		<vbox id="pdm4" flex="2">
 			<deck id="patron_right_deck"/>
 		</vbox>
