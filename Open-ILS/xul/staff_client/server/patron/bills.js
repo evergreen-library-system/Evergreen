@@ -427,7 +427,14 @@ patron.bills.prototype = {
 				btn.addEventListener(
 					'command',
 					function(ev) {
-						alert('bill details go here');
+						JSAN.use('util.window'); var w = new util.window();
+						w.open(
+							urls.remote_patron_bill_details 
+							+ '?session=' + window.escape(obj.session) 
+							+ '&mbts_id=' + window.escape(mobts.id()),
+							'test' + mobts.id(),
+							'modal,chrome,resizable'
+						);
 					},
 					false
 				);

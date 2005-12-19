@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/circ.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="bill_details_win" 
+	onload="try{ my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+
+				JSAN.use('util.error'); g.error = new util.error();
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date');
+
+				g.error.sdump('D_TRACE','my_init() for bill_details.xul');
+
+				g.cgi = new CGI();
+
+				var mbts_id = g.cgi.param('mbts_id');
+				var session = g.cgi.param('session');
+
+
+				var mb_list = g.network.request(
+					api.fm_mb_retrieve_via_mbts_id.app,
+					api.fm_mb_retrieve_via_mbts_id.method,
+					[ session, mbts_id ]
+				);
+
+				var rows = document.getElementById('g_rows');
+				for (var i = 0; i < mb_list.length; i++) {
+
+					var row = document.createElement('row');
+					rows.appendChild(row);
+
+						var c1 = document.createElement('label');
+						row.appendChild(c1);
+						c1.setAttribute('value', mb_list[0].voided() ? 'Yes' : 'No' );
+
+						var c2 = document.createElement('label');
+						row.appendChild(c2);
+						c2.setAttribute('value', util.date.formatted_date( mb_list[0].billing_ts(),'%F' ));
+
+						var c3 = document.createElement('label');
+						row.appendChild(c3);
+						c3.setAttribute('value', mb_list[0].billing_type());
+
+						var c4 = document.createElement('label');
+						row.appendChild(c4);
+						c4.setAttribute('value', mb_list[0].amount());
+
+						var c5 = document.createElement('label');
+						row.appendChild(c5);
+						c5.setAttribute('value', mb_list[0].note());
+				}
+
+	
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\nbill_details.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Full Details"/>
+			<grid>
+				<columns> <column /> <column /> <column /> <column /> </columns>
+				<rows id="g_rows">
+					<row><label value="Voided" /><label value="When"/><label value="Type" /><label value="Amount" /><label value="Note"/></row>
+				</rows>
+			</grid>
+		</groupbox>
+		<button label="Close Window" oncommand="window.close()" accesskey="c"/>
+	</vbox>
+
+
+</window>
+
