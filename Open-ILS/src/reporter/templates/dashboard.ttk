@@ -6,25 +6,23 @@ PROCESS widget_manip;
 PROCESS logic_header.ttk;
 
 pagetype = CGI.param('detail');
+templates = DBI.tie('reporter.stage2', 'id')
+reports = DBI.tie('reporter.stage3', 'id')
+outputs = DBI.tie('reporter.output', 'id')
+
 
 %] <style> table {border-collapse:collapse;}</style> [%
 
 SWITCH pagetype;
 	CASE 'myreports';
-		INCLUDE header.ttk title="Reporter Dashboard -- My Recent Reports";
-		INCLUDE navbar.ttk + my_reports;
-	CASE 'mytemplates';
-		INCLUDE header.ttk title="Reporter Dashboard -- My Recent Templates";
-		INCLUDE navbar.ttk + my_templates;
-	CASE 'othersreports';
-		INCLUDE header.ttk title="Reporter Dashboard -- Others Recent Public Reports";
-		INCLUDE navbar.ttk + public_reports;
-	CASE 'otherstemplates';
-		INCLUDE header.ttk title="Reporter Dashboard -- Others Recent Public Templates";
-		INCLUDE navbar.ttk + public_templates;
-	CASE 'facttables';
-		INCLUDE header.ttk title="Reporter Dashboard -- Core Fact Tables";
-		INCLUDE navbar.ttk + fact_tables;
+		INCLUDE header.ttk title="Reporter Dashboard -- Completed Reports";
+		INCLUDE navbar.ttk + my_scheduled_reports;
+	CASE 'mycompletereports';
+		INCLUDE header.ttk title="Reporter Dashboard -- Completed Reports";
+		INCLUDE navbar.ttk + my_completed_reports;
+	CASE 'report_template_tree';
+		INCLUDE header.ttk title="Reporter Dashboard -- Schedule a report";
+		INCLUDE navbar.ttk + report_template_tree;
 	CASE;
 		INCLUDE header.ttk title="Reporter Dashboard";
 		INCLUDE navbar.ttk + summary;
@@ -36,59 +34,58 @@ BLOCK summary;
 	WRAPPER html/table border=0 width='100%';
 		WRAPPER html/row;
 			INCLUDE html/cell
-				width='50%'
-				content=link(content='My Recent Reports',href='dashboard?detail=myreports')
-				align='center'
-				style='border-bottom:1px solid black';
-			INCLUDE html/cell
-				content=link(content='Others Recent Public Reports',href='dashboard?detail=othersreports')
-				align='center'
-				style='border-bottom:1px solid black';
-		END;
-		WRAPPER html/row;
-			WRAPPER html/cell valign='top' style='height:200px';
-				INCLUDE my_reports limit=5;
-			END;
-			WRAPPER html/cell valign='top';
-				INCLUDE public_reports limit=5;
-			END;
-		END;
-		WRAPPER html/row;
-			INCLUDE html/cell
-				content=link(content='My Recent Templates',href='dashboard?detail=mytemplates')
-				align='center'
-				style='border-bottom:1px solid black';
-			INCLUDE html/cell
-				content=link(content='Others Recent Public Templates',href='dashboard?detail=otherstemplates')
-				align='center'
-				style='border-bottom:1px solid black';
-		END;
-		WRAPPER html/row;
-			WRAPPER html/cell valign='top' style='height:200px';
-				INCLUDE my_templates limit=5;
-			END;
-			WRAPPER html/cell valign='top';
-				INCLUDE public_templates limit=5;
-			END;
-		END;
-		WRAPPER html/row;
-			INCLUDE html/cell
 				colspan=2
 				align='center'
-				content=link(content='Core Fact Tables',href='dashboard?detail=facttables')
+				content=link(content='Schedule a new report',href='bradboard?detail=report_template_tree')
 				style='border-bottom:1px solid black';
 		END;
 		WRAPPER html/row;
 			WRAPPER html/cell colspan=2 valign='top';
-				INCLUDE fact_tables;
+				INCLUDE report_template_tree;
+				'<br/><br/><br/>';
+			END;
+		END;
+		WRAPPER html/row;
+			INCLUDE html/cell
+				content=link(content='Completed reports',href='bradboard?detail=mycompletereports')
+				align='center'
+				style='border-bottom:1px solid black';
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell valign='top' style='height:200px';
+				INCLUDE my_completed_reports limit=5;
+			END;
+		END;
+		WRAPPER html/row;
+			INCLUDE html/cell
+				content=link(content='Manage scheduled reports',href='bradboard?detail=myreports')
+				align='center'
+				style='border-bottom:1px solid black';
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell valign='top' style='height:200px';
+				INCLUDE my_scheduled_reports limit=5;
 			END;
 		END;
 	END;
 END;
 
-BLOCK my_reports;
+BLOCK my_completed_reports;
+	q = "SELECT o.* FROM reporter.stage3 s JOIN reporter.output o ON (o.stage3 = s.id) WHERE s.owner = " _ user.id() _
+		" ORDER BY COALESCE(o.complete_time, o.error_time, o.run_time, o.queue_time) DESC";
+	IF limit > 0;
+		q = q _ ' LIMIT ' _ limit;
+	END;
+
+	logme(q);
+
+	INCLUDE show_complete_reports;
+
+END;
+
+BLOCK my_scheduled_reports;
 	q = "SELECT * FROM reporter.stage3 WHERE owner = " _ user.id() _
-		" ORDER BY runtime DESC";
+		" AND runtime > now() ORDER BY runtime DESC";
 	IF limit > 0;
 		q = q _ ' LIMIT ' _ limit;
 	END;
@@ -99,28 +96,67 @@ BLOCK my_reports;
 
 END;
 
-BLOCK public_reports;
-	q = "SELECT * FROM reporter.stage3 WHERE pub is true" _
-		" and owner != " _ user.id() _ " ORDER BY runtime DESC";
-	IF limit > 0;
-		q = q _ ' LIMIT ' _ limit;
+BLOCK show_complete_reports;
+	WRAPPER html/table width='100%';
+		WRAPPER html/row;
+			INCLUDE html/cell content='Run status' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Report name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Run time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+		END;
+		FOR output = DBI.query(q);
+			rid = output.stage3;
+
+			bg='lightblue';
+			IF loop.count % 2;
+				bg='white';
+			END;
+
+			report = reports.$rid;
+			p = utils.JSON2perl( report.params );
+
+			state = '<span style="font-weight: bold; background-color: lightgray">Waiting in line...</span>';
+			
+			IF output.state == 'complete';
+				state = '<span style="font-weight: bold; background-color: lightgreen">Complete</span>';
+				runtime = output.complete_time;
+			ELSIF output.state == 'error';
+				state = '<span style="font-weight: bold; background-color: lightred">ERROR</span>';
+				runtime = output.error_time;
+			ELSIF output.state == 'running';
+				state = '<span style="font-weight: bold; background-color: lightblue">Running</span>';
+				runtime = output.run_time;
+			END;
+			
+			WRAPPER html/row;
+				INCLUDE html/cell
+					width='5%'
+					nowrap='nowrap'
+					content=state
+					col=bg
+					style='padding:5px; border:solid gray 1px;';
+				INCLUDE html/cell
+					content=link(content=p.reportname,href="stage3?id=$rid#$output.id")
+					col=bg
+					style='border:solid gray 1px;';
+				INCLUDE html/cell
+					nowrap='nowrap'
+					content=runtime.chunk(19).0
+					col=bg
+					style='border:solid gray 1px;';
+			END;
+		END;
 	END;
-
-	logme(q);
-
-	INCLUDE show_reports;
-
 END;
+
 
 BLOCK show_reports;
 	WRAPPER html/table width='100%';
 		WRAPPER html/row;
 			INCLUDE html/cell content='Public' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Report Name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Created at' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Scheduled Run Time<br>Last Run Time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Recurrence' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Runs' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Report name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Create date and time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Scheduled run time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Number of runs' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 		END;
 		FOR report = DBI.query(q);
 			rid = report.id;
@@ -144,10 +180,9 @@ BLOCK show_reports;
 				INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(19).0 col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell
 					nowrap='nowrap'
-					content=report.runtime.chunk(19).0 _ '<br>' _ run.get.run_time.chunk(19).0
+					content=report.runtime.chunk(19).0
 					col=bg
 					style='border:solid gray 1px;';
-				INCLUDE html/cell content=report.recurrence col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell content=run_count.get.count col=bg style='border:solid gray 1px;';
 			END;
 		END;
@@ -203,29 +238,39 @@ BLOCK show_templates;
 	END;
 END;
 
-BLOCK fact_tables;
-  	WRAPPER html/table width='100%' class='withborder';
-		WRAPPER html/row;
-			INCLUDE html/cell content='Fact table' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Description' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-		END;
+BLOCK report_template_tree;
+	
+	fact_table_xpath = "/reporter/tables/table[@fact-table='true']";
+	
+	FOR tab = config.findnodes(fact_table_xpath);
+		counter = loop.count
+		tid = tab.findvalue('@id');
+		tname = tab.findvalue('label');
+		tdesc = tab.findvalue('description');
+		"<div id='fact_tree_$counter'/>";
+		content=link(content=tab.findvalue('label'),href="stage1?id=$tid") style='border:solid gray 1px;';
+		"<script language='javascript'>
+			var tree_$counter = new SlimTree(document.getElementById('fact_tree_$counter'),'tree_$counter');
+			tree_" _ counter _ ".addNode($counter,-1,'$tname','stage1?create_stage2=1&id=$tid','$tdesc');
+		</script>";
 
-		fact_table_xpath = "/reporter/tables/table[@fact-table='true']";
- 		FOR tab = config.findnodes(fact_table_xpath);
-			tid = tab.findvalue('@id');
-			bg='lightblue';
-			IF loop.count % 2;
-				bg='white';
-			END;
-			WRAPPER html/row;
-				p = utils.JSON2perl( template.params );
-				INCLUDE html/cell
-					col=bg
-					content=link(content=tab.findvalue('label'),href="stage1?id=$tid") style='border:solid gray 1px;';
-				INCLUDE html/cell content=tab.findvalue('description') style='border:solid gray 1px;';
-			END;
+		q = "SELECT * FROM reporter.stage2 WHERE (pub is true" _
+			" or owner = " _ user.id() _ ") and stage1 = '$tid' ORDER BY create_date DESC";
+
+		FOR template = DBI.query(q);
+			p = utils.JSON2perl( template.params );
+			s2id = template.id;
+			"<script language='javascript'>
+				tree_" _ counter _ ".addNode(
+					$template.id,
+					$counter,
+					'$p.templatename',
+					'stage2?action=run&id=$s2id',
+					'$p.templatename'
+				);
+			</script>";
 		END;
-   END;
+	END;
 END;
 
 %]
