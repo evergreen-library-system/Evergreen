@@ -88,10 +88,16 @@ util.list.prototype = {
 	},
 
 	'append' : function (params) {
+		var rnode;
 		switch (this.node.nodeName) {
-			case 'tree' : this._append_to_tree(params); break;
-			case 'listbox' : this._append_to_listbox(params); break;
+			case 'tree' : rnode = this._append_to_tree(params); break;
+			case 'listbox' : rnode = this._append_to_listbox(params); break;
 			default: throw('NYI: Need .append() for ' + this.node.nodeName); break;
+		}
+		if (rnode && params.attributes) {
+			for (var i in params.attributes) {
+				rnode.setAttribute(i,params.attributes[i]);
+			}
 		}
 	},
 

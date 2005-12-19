@@ -46,7 +46,7 @@ patron.bills.prototype = {
 							'primary' : false, 'hidden' : false, 'render' : 'obj.money_box(my.mobts)'
 						},
 						{
-							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 1, 
+							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 0, 
 							'render' : 'document.createElement("textbox")'
 						}
 				],
@@ -150,9 +150,11 @@ patron.bills.prototype = {
 
 		//FIXME//.bills virtual field
 		for (var i = 0; i < obj.bills.length; i++) {
-			obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } } } );
+			obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } }, 'attributes' : { 'allowevents' : true } } );
 		}
 	},
+
+	/*****************************************************************************************************************************/
 
 	'apply_payment' : function() {
 		var obj = this;
