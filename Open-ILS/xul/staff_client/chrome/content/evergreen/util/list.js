@@ -144,7 +144,6 @@ util.list.prototype = {
 		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
 
 		var listitem = document.createElement('listitem');
-		this.node.appendChild( listitem );
 
 		s += ('listbox = ' + this.node + '  listitem = ' + listitem + '\n');
 
@@ -171,6 +170,9 @@ util.list.prototype = {
 		} else {
 			this._map_row_to_listcell(params,listitem);
 		}
+
+		this.node.appendChild( listitem );
+
 		this.error.sdump('D_LIST',s);
 
 		return listitem;

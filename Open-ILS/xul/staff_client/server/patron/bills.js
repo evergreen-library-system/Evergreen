@@ -25,10 +25,12 @@ patron.bills.prototype = {
 		obj.list.init(
 			{
 				'columns' : [
+				/*
 						{
 							'id' : 'checkbox', 'label' : '', 'flex' : 1, 'primary' : false, 'hidden' : false,
 							'render' : 'document.createElement("checkbox")'
 						},
+				*/
 						{
 							'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 1,
 							'primary' : false, 'hidden' : false, 'render' : 'xact_dates_box(my.mbts)'
@@ -160,6 +162,12 @@ patron.bills.prototype = {
 			}
 		);
 
+		obj.retrieve();
+
+		//FIXME//.bills virtual field
+		for (var i = 0; i < obj.bills.length; i++) {
+			obj.list.append( { 'row' : { 'mobts' : obj.bills[i] } } );
+		}
 	},
 
 	'apply_payment' : function() {
@@ -261,6 +269,15 @@ patron.bills.prototype = {
 		}
 		tb.value = util.money.cents_as_dollars( proposed_change );
 		obj.controller.view.bill_credit_amount.value = util.money.cents_as_dollars( proposed_credit );
+	},
+
+	'retrieve' : function() {
+		var obj = this;
+		obj.bills = obj.network.request(
+			api.fm_mobts_having_balance.app,
+			api.fm_mobts_having_balance.method,
+			[ obj.session, obj.patron_id ]
+		);
 	}
 }
 
