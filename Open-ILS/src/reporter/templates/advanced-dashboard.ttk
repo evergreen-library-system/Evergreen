@@ -1,0 +1,231 @@
+[%
+
+PROCESS inputs;
+PROCESS class_manip;
+PROCESS widget_manip;
+PROCESS logic_header.ttk;
+
+pagetype = CGI.param('detail');
+
+%] <style> table {border-collapse:collapse;}</style> [%
+
+SWITCH pagetype;
+	CASE 'myreports';
+		INCLUDE header.ttk title="Reporter Dashboard -- My Recent Reports";
+		INCLUDE navbar.ttk + my_reports;
+	CASE 'mytemplates';
+		INCLUDE header.ttk title="Reporter Dashboard -- My Recent Templates";
+		INCLUDE navbar.ttk + my_templates;
+	CASE 'othersreports';
+		INCLUDE header.ttk title="Reporter Dashboard -- Others Recent Public Reports";
+		INCLUDE navbar.ttk + public_reports;
+	CASE 'otherstemplates';
+		INCLUDE header.ttk title="Reporter Dashboard -- Others Recent Public Templates";
+		INCLUDE navbar.ttk + public_templates;
+	CASE 'facttables';
+		INCLUDE header.ttk title="Reporter Dashboard -- Core Fact Tables";
+		INCLUDE navbar.ttk + fact_tables;
+	CASE;
+		INCLUDE header.ttk title="Reporter Dashboard";
+		INCLUDE navbar.ttk + summary;
+END;
+
+PROCESS logout.ttk;
+
+BLOCK summary; 
+	WRAPPER html/table border=0 width='100%';
+		WRAPPER html/row;
+			INCLUDE html/cell
+				width='50%'
+				content=link(content='My Recent Reports',href='dashboard?detail=myreports')
+				align='center'
+				style='border-bottom:1px solid black';
+			INCLUDE html/cell
+				content=link(content='Others Recent Public Reports',href='dashboard?detail=othersreports')
+				align='center'
+				style='border-bottom:1px solid black';
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell valign='top' style='height:200px';
+				INCLUDE my_reports limit=5;
+			END;
+			WRAPPER html/cell valign='top';
+				INCLUDE public_reports limit=5;
+			END;
+		END;
+		WRAPPER html/row;
+			INCLUDE html/cell
+				content=link(content='My Recent Templates',href='dashboard?detail=mytemplates')
+				align='center'
+				style='border-bottom:1px solid black';
+			INCLUDE html/cell
+				content=link(content='Others Recent Public Templates',href='dashboard?detail=otherstemplates')
+				align='center'
+				style='border-bottom:1px solid black';
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell valign='top' style='height:200px';
+				INCLUDE my_templates limit=5;
+			END;
+			WRAPPER html/cell valign='top';
+				INCLUDE public_templates limit=5;
+			END;
+		END;
+		WRAPPER html/row;
+			INCLUDE html/cell
+				colspan=2
+				align='center'
+				content=link(content='Core Fact Tables',href='dashboard?detail=facttables')
+				style='border-bottom:1px solid black';
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell colspan=2 valign='top';
+				INCLUDE fact_tables;
+			END;
+		END;
+	END;
+END;
+
+BLOCK my_reports;
+	q = "SELECT * FROM reporter.stage3 WHERE owner = " _ user.id() _
+		" ORDER BY runtime DESC";
+	IF limit > 0;
+		q = q _ ' LIMIT ' _ limit;
+	END;
+
+	logme(q);
+
+	INCLUDE show_reports;
+
+END;
+
+BLOCK public_reports;
+	q = "SELECT * FROM reporter.stage3 WHERE pub is true" _
+		" and owner != " _ user.id() _ " ORDER BY runtime DESC";
+	IF limit > 0;
+		q = q _ ' LIMIT ' _ limit;
+	END;
+
+	logme(q);
+
+	INCLUDE show_reports;
+
+END;
+
+BLOCK show_reports;
+	WRAPPER html/table width='100%';
+		WRAPPER html/row;
+			INCLUDE html/cell content='Public' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Report Name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Created at' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Scheduled Run Time<br>Last Run Time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Recurrence' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Runs' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+		END;
+		FOR report = DBI.query(q);
+			rid = report.id;
+			bg='lightblue';
+			IF loop.count % 2;
+				bg='white';
+			END;
+			run_q = 'SELECT * FROM reporter.output WHERE stage3 = ? ORDER BY queue_time LIMIT 1';
+			run_count_q = 'SELECT count(*) as count FROM reporter.output WHERE stage3 = ?';
+
+			s = DBI.prepare(run_count_q);
+			run_count = s.execute(rid);
+			
+			s = DBI.prepare(run_q);
+			run = s.execute(rid);
+			
+			WRAPPER html/row;
+				p = utils.JSON2perl( report.params );
+				INCLUDE html/cell content=(report.pub ? 'Y' : 'N') col=bg style='border:solid gray 1px;' align='center';
+				INCLUDE html/cell content=link(content=p.reportname,href="stage3?id=$rid") col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(19).0 col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell
+					nowrap='nowrap'
+					content=report.runtime.chunk(19).0 _ '<br>' _ run.get.run_time.chunk(19).0
+					col=bg
+					style='border:solid gray 1px;';
+				INCLUDE html/cell content=report.recurrence col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell content=run_count.get.count col=bg style='border:solid gray 1px;';
+			END;
+		END;
+	END;
+END;
+
+BLOCK my_templates;
+	q = "SELECT * FROM reporter.stage2 WHERE " _
+		" owner = " _ user.id() _ " ORDER BY create_date DESC";
+	IF limit > 0;
+		q = q _ ' LIMIT ' _ limit;
+	END;
+
+	logme(q);
+
+	INCLUDE show_templates;
+
+END;
+
+BLOCK public_templates;
+	q = "SELECT * FROM reporter.stage2 WHERE pub is true" _
+		" and owner != " _ user.id() _ " ORDER BY create_date DESC";
+	IF limit > 0;
+		q = q _ ' LIMIT ' _ limit;
+	END;
+
+	logme(q);
+
+	INCLUDE show_templates;
+
+END;
+
+BLOCK show_templates;
+	WRAPPER html/table width='100%' class='withborder';
+		WRAPPER html/row;
+			INCLUDE html/cell content='Public' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Template Name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Created at' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+		END;
+		FOR template = DBI.query(q);
+			tid = template.id;
+			bg='lightblue';
+			IF loop.count % 2;
+				bg='white';
+			END;
+			WRAPPER html/row;
+				p = utils.JSON2perl( template.params );
+				INCLUDE html/cell content=(template.pub ? 'Y' : 'N') col=bg style='border:solid gray 1px;' align='center';
+				INCLUDE html/cell content=link(content=p.templatename,href="stage2?id=$tid") col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell content=template.create_date.chunk(10).0 col=bg style='border:solid gray 1px;';
+			END;
+		END;
+	END;
+END;
+
+BLOCK fact_tables;
+  	WRAPPER html/table width='100%' class='withborder';
+		WRAPPER html/row;
+			INCLUDE html/cell content='Fact table' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Description' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+		END;
+
+		fact_table_xpath = "/reporter/tables/table[@fact-table='true']";
+ 		FOR tab = config.findnodes(fact_table_xpath);
+			tid = tab.findvalue('@id');
+			bg='lightblue';
+			IF loop.count % 2;
+				bg='white';
+			END;
+			WRAPPER html/row;
+				p = utils.JSON2perl( template.params );
+				INCLUDE html/cell
+					col=bg
+					content=link(content=tab.findvalue('label'),href="stage1?id=$tid") style='border:solid gray 1px;';
+				INCLUDE html/cell content=tab.findvalue('description') style='border:solid gray 1px;';
+			END;
+		END;
+   END;
+END;
+
+%]
