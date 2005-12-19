@@ -8,11 +8,11 @@
 <commandset id="bills_cmds" />
 
 <box id="bills_main" flex="1" orient="vertical" class="my_overflow">
-	<box id="bills_top_ui" />
+	<vbox id="bills_top_ui" />
 	<listbox id="bill_list" />
 </box>
 
-<box id="bills_top_ui">
+<vbox id="bills_top_ui">
 	<hbox>
 		<groupbox>
 			<caption label="Summary"/>
@@ -93,7 +93,7 @@
 		<button id="bill_apply_payment" label="Go!" accesskey="G" command="cmd_bill_apply_payment"/>
 	</hbox>
 	<label value=" "/>
-</box>
+<v/box>
 
 
 </overlay>
