@@ -1218,7 +1218,7 @@ __PACKAGE__->register_method(
 	method	=> "retrieve_groups",
 	api_name	=> "open-ils.actor.groups.retrieve",
 	notes		=> <<"	NOTES");
-	Returns a list of user groups
+	Returns a list of user groupss
 	NOTES
 sub retrieve_groups {
 	my( $self, $client ) = @_;
@@ -1267,6 +1267,34 @@ sub build_group_tree {
 
 	return $root;
 
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "add_user_to_groups",
+	api_name	=> "open-ils.actor.user.add_to_groups",
+	notes		=> <<"	NOTES");
+	Adds a user to one or more permission groups
+	NOTES
+
+sub add_user_to_groups {
+	my( $self, $client, $authtoken, $userid, @groups ) = @_;
+	my( $requestor, $target, $evt ) = $apputils->checkses_requestor(
+		$authtoken, $userid, 'CREATE_USER_GROUP_LINK' );
+	return $evt if $evt;
+
+	for my $group (@groups) {
+		my $link = Fieldmapper::permission::usr_grp_map->new;
+		$link->grp($group);
+		$link->usr($userid);
+		my $id = $apputils->simplereq(
+			'open-ils.storage',
+			'open-ils.storage.direct.permission.usr_grp_map.create', $link );
+		throw OpenSRF::EX::ERROR 
+			("Unable to create new permission.usr_grp_map object") unless $id;
+	}
+
+	return 1;
 }
 
 
