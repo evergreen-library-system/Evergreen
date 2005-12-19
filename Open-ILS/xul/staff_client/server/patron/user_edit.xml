@@ -1,0 +1,266 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+        <head>
+                <title>Evergreen: User Editor</title>
+                <script language='javascript' src='/opac/common/js/utils.js'> </script>
+                <script language='javascript' src='/opac/common/js//config.js'> </script>
+                <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+                <script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+
+                <script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+                <script language='javascript' src='/opac/common/js/JSON.js'> </script>
+                <script language='javascript' src='/opac/common/js/fmall.js'> </script>
+                <script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+                <script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+                <script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+                <script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+                <script language='javascript' src='/opac/common/js/init.js'> </script>
+                <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+                <script language='javascript' src='user_edit.js'> </script>
+
+		<style>
+
+
+			.hideme {		visibility: hidden;
+						display: none;
+			}
+
+			*[adv='true'] {		visibility: hidden;
+					display: none;
+			}
+
+			table {		border-collapse: collapse;
+					border: solid black 1px;
+					margin-bottom: 10px;
+					margin-top: 10px;
+			}
+
+			th {		padding-bottom: 5px;
+					white-space: nowrap;
+					padding-top: 15px;
+					text-align: center;
+			}
+
+			td.label {	text-align: right;
+					padding-right: 10px;
+			}
+
+			td.value {	text-align: left;
+					padding-left: 10px;
+			}
+
+			input[disabled='true'] { color: black; }
+
+		</style>
+        </head>
+
+	<body onload="init_editor()">
+		<form method="GET" name="editor" id="editor" >
+
+		<table>
+			<tr>
+				<th colspan="2">User Identifcation</th>
+			</tr>
+			<tr adv='true'>
+				<td class="label">System ID:</td>
+				<td class="value"><input type="text" name="user.id" id="user.id" disabled="true"/></td>
+			</tr>
+			<tr>
+				<td class="label">Creation Date:</td>
+				<td class="value"><input type="text" name="user.create_date" id="user.create_date" disabled="true"/></td>
+			</tr>
+			<tr>
+				<td class="label">User Name:</td>
+				<td class="value"><input type="text" name="user.usrname" id="user.usrname"/></td>
+			</tr>
+			<tr>
+				<td class="label">Current Barcode:</td>
+				<td class="value"><input type="text" name="user.card.barcode" id="user.card.barcode" disabled="true"/>
+						  <button class="hideme" name="replace_card">Replace Card</button>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Password:</td>
+				<td class="value"><input type="password" name="user.passwd" id="user.passwd"/></td>
+			</tr>
+
+			<tr>
+				<td class="label">Honorific:</td>
+				<td class="value"><input type="text" name="user.prefix" id="user.prefix"/></td>
+			</tr>
+			<tr>
+				<td class="label">First Name:</td>
+				<td class="value"><input type="text" name="user.first_given_name" id="user.first_given_name"/></td>
+			</tr>
+			<tr>
+				<td class="label">Middle Name:</td>
+				<td class="value"><input type="text" name="user.second_given_name" id="user.second_given_name"/></td>
+			</tr>
+			<tr>
+				<td class="label">Last Name:</td>
+				<td class="value"><input type="text" name="user.family_name" id="user.family_name"/></td>
+			</tr>
+			<tr>
+				<td class="label">Title:</td>
+				<td class="value"><input type="text" name="user.suffix" id="user.suffix"/></td>
+			</tr>
+
+			<tr>
+				<td class="label">Date of Birth:</td>
+				<td class="value"><input type="text" name="user.dob" id="user.dob"/></td>
+			</tr>
+
+			<tr>
+				<td class="label">Primary Identification Type:</td>
+				<td class="value"><select name="user.ident_type" id="user.ident_type"/></td>
+			</tr>
+			<tr>
+				<td class="label">Primary Identification:</td>
+				<td class="value"><input type="text" name="user.ident_value" id="user.ident_value"/></td>
+			</tr>
+			<tr>
+				<td class="label">Alternate Identification Type:</td>
+				<td class="value"><select name="user.ident_type2" id="user.ident_type2"/></td>
+			</tr>
+			<tr>
+				<td class="label">Alternate Identification:</td>
+				<td class="value"><input type="text" name="user.ident_value2" id="user.ident_value2"/></td>
+			</tr>
+
+
+
+			<tr>
+				<th colspan="2">Contact Information</th>
+			</tr>
+			<tr>
+				<td class="label">Email Address:</td>
+				<td class="value"><input type="text" name="user.email" id="user.email"/></td>
+			</tr>
+
+			<tr>
+				<td class="label">Daytime Phone:</td>
+				<td class="value"><input type="text" name="user.day_phone" id="user.day_phone"/></td>
+			</tr>
+			<tr>
+				<td class="label">Evening Phone:</td>
+				<td class="value"><input type="text" name="user.evening_phone" id="user.evening_phone"/></td>
+			</tr>
+			<tr>
+				<td class="label">Other/Cell Phone:</td>
+				<td class="value"><input type="text" name="user.other_phone" id="user.other_phone"/></td>
+			</tr>
+
+			<tr>
+				<td class="label">Home Library:</td>
+				<td class="value"><select name="user.home_ou" id="user.home_ou"/></td>
+			</tr>
+
+			<tr>
+				<td class="label">Addresses:</td>
+				<td class="value">
+					<div name="addresses" id="addresses"/>
+					<div>
+						<button onclick="new_addr(); return false;">New Address</button>
+					</div>
+				</td>
+			</tr>
+
+
+
+
+
+			<tr>
+				<th colspan="2">User Settings</th>
+			</tr>
+			<tr>
+				<td class="label">Profile Group:</td>
+				<td class="value"><select name="user.profile" id="user.profile"/></td>
+			</tr>
+			<tr adv='true'>
+				<td class="label">Permission Groups:</td>
+				<td class="value"><select multiple="muliple" name="permgroups" id="permgroups"/></td>
+			</tr>
+			<tr>
+				<td class="label">Expire Date:</td>
+				<td class="value"><input type="text" name="user.expire_date" id="user.expire_date"/></td>
+			</tr>
+			<tr>
+				<td class="label">Active:</td>
+				<td class="value"><input type="checkbox" name="user.active" id="user.active" value="t"/></td>
+			</tr>
+			<tr adv='true'>
+				<td class="label">Set as Superuser:</td>
+				<td class="value"><input type="checkbox" name="user.super_user" id="user.super_user" value="t"/></td>
+			</tr>
+			<tr>
+				<td class="label">Standing:</td>
+				<td class="value"><select name="user.standing" id="user.standing"/></td>
+			</tr>
+			<tr>
+				<td class="label">Set as Family or Group Lead Account:</td>
+				<td class="value"><input type="checkbox" name="user.master_account" id="user.master_account" value="t"/></td>
+			</tr>
+			<tr>
+				<td class="label">"Claims returned" count:</td>
+				<td class="value">
+					<input type="text" name="user.claims_returned_count" id="user.claims_returned_count" value="0" disabled="true"/>
+					<button onclick="reset_crc(); return false;">Reset</button>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Alert Message:</td>
+				<td class="value">
+					<textarea name="user.alert_message" id="user.alert_message" defaultvalue=''> </textarea>
+					<button onclick="clear_alert_message(); return false;">Reset</button>
+				</td>
+			</tr>
+
+		</table>
+
+		<button onclick="save_user(); return false;">Save</button>
+		</form>
+
+
+		<div class='hideme' id="addr-tmpl">
+			<table>
+				<tr>
+					<th colspan="1">Address Label</th>
+					<td colspan="1"><input type="text" size="7" name="adr.address_type"/></td>
+					<th colspan="1">Mailing Address</th>
+					<td colspan="1"><input type="radio" name="is_mailing"/></td>
+					<th colspan="1">Physical Address</th>
+					<td colspan="1"><input type="radio" name="is_billing"/></td>
+					<th colspan="1">Valid</th>
+					<td colspan="1"><input type="checkbox" name="adr.valid" value='t'/></td>
+				</tr>
+				<tr>
+					<th colspan="1">Street 1</th>
+					<td colspan="7"><input type="text" size="50" name="adr.street1"/></td>
+				</tr>
+				<tr>
+					<th colspan="1">Street 2</th>
+					<td colspan="7"><input type="text" size="50" name="adr.street2"/></td>
+				</tr>
+				<tr>
+					<th>City</th>
+					<td><input type="text" size="15" name="adr.city"/></td>
+					<th>State</th>
+					<td><input type="text" size="4" name="adr.state"/></td>
+					<th>ZIP</th>
+					<td colspan='3'><input type="text" size="10" name="adr.post_code"/></td>
+				</tr>
+				<tr>
+					<th colspan="1">County</th>
+					<td colspan="2"><input type="text" size="20" name="adr.county"/></td>
+					<th colspan="1">Country</th>
+					<td colspan="4"><input type="text" size="20" name="adr.country"/></td>
+				</tr>
+				<tr>
+					<th colspan="8"><button name="remove">Remove this address</button></th>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
+
