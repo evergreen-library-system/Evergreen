@@ -27,18 +27,12 @@ patron.bills.prototype = {
 		obj.list.init(
 			{
 				'columns' : [
-				/*
-						{
-							'id' : 'checkbox', 'label' : '', 'flex' : 1, 'primary' : false, 'hidden' : false,
-							'render' : 'document.createElement("checkbox")'
-						},
-				*/
 						{
 							'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 1,
 							'primary' : false, 'hidden' : false, 'render' : 'obj.xact_dates_box(my.mobts)'
 						},
 						{
-							'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 1,
+							'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 2,
 							'primary' : false, 'hidden' : false, 'render' : 'obj.info_box(my.mobts)'
 						},
 						{
@@ -148,10 +142,34 @@ patron.bills.prototype = {
 
 		obj.retrieve();
 
+		var total_owed = 0;
+
+		JSAN.use('util.money');
+
 		//FIXME//.bills virtual field
 		for (var i = 0; i < obj.bills.length; i++) {
-			obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } }, 'attributes' : { 'allowevents' : true } } );
+			var rnode = obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } }, 'attributes' : { 'allowevents' : true } } );
+			var cb = rnode.getElementsByTagName('checkbox')[0];
+			var tb = rnode.getElementsByTagName('textbox')[0];
+			var bo = obj.bills[i].balance_owed();
+			total_owed += util.money.dollars_float_to_cents_integer( bo );
+			var id = obj.bills[i].id();
+			obj.current_payments.push( { 'mobts_id' : id, 'balance_owed' : bo, 'checkbox' : cb, 'textbox' : tb, } );
+			tb.addEventListener(
+				'change',
+				function(ev) {
+					JSAN.use('util.money');
+					tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
+					if ( util.money.dollars_float_to_cents_integer( tb.value ) >
+						util.money.dollars_float_to_cents_integer( bo ) ) {
+						tb.value = bo;
+					}
+					obj.update_payment_applied();	
+				},
+				false
+			);
 		}
+		obj.controller.view.bill_total_owed.value = util.money.cents_as_dollars( total_owed );
 	},
 
 	/*****************************************************************************************************************************/
@@ -181,6 +199,9 @@ patron.bills.prototype = {
 
 				//FIXME//Refresh
 
+			} else {
+
+				alert('oops');
 			}
 
 		} catch(E) {
@@ -278,12 +299,17 @@ patron.bills.prototype = {
 			grid.appendChild( rows );
 				var row0 = document.createElement('row');
 				rows.appendChild( row0 );
-					var label_r0_1 = document.createElement('label');
-					row0.appendChild( label_r0_1 );
-					label_r0_1.setAttribute('value',getString('staff.mbts_id_label'));
-					var label_r0_2 = document.createElement('label');
-					row0.appendChild( label_r0_2 );
-					label_r0_2.setAttribute('value',mobts.id());
+					var cb_r0_0 = document.createElement('checkbox');
+					row0.appendChild( cb_r0_0 );
+					cb_r0_0.setAttribute('checked','true');
+					var hb_r0_1 = document.createElement('hbox');
+					row0.appendChild( hb_r0_1 );
+						var label_r0_1 = document.createElement('label');
+						hb_r0_1.appendChild( label_r0_1 );
+						label_r0_1.setAttribute('value',getString('staff.mbts_id_label'));
+						var label_r0_2 = document.createElement('label');
+						hb_r0_1.appendChild( label_r0_2 );
+						label_r0_2.setAttribute('value',mobts.id());
 				var row1 = document.createElement('row');
 				rows.appendChild( row1 );
 					var label_r1_1 = document.createElement('label');
