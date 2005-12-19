@@ -10,6 +10,8 @@ patron.bills = function (params) {
 
 patron.bills.prototype = {
 
+	'version' : 'test123',
+
 	'current_payments' : [],
 
 	'init' : function( params ) {
@@ -33,40 +35,22 @@ patron.bills.prototype = {
 				*/
 						{
 							'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 1,
-							'primary' : false, 'hidden' : false, 'render' : 'xact_dates_box(my.mbts)'
+							'primary' : false, 'hidden' : false, 'render' : 'obj.xact_dates_box(my.mobts)'
 						},
 						{
 							'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 1,
-							'primary' : false, 'hidden' : false, 'render' : 'info_box(my.mbts)'
+							'primary' : false, 'hidden' : false, 'render' : 'obj.info_box(my.mobts)'
 						},
 						{
 							'id' : 'money', 'label' : getString('staff.bills_money_label'), 'flex' : 1,
-							'primary' : false, 'hidden' : false, 'render' : 'money_box(my.mbts)'
+							'primary' : false, 'hidden' : false, 'render' : 'obj.money_box(my.mobts)'
 						},
 						{
 							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 1, 
 							'render' : 'document.createElement("textbox")'
 						}
 				],
-				'map_row_to_column' : function(row,col) {
-					// row contains { 'my' : { 'mbts' : ... } }
-					// col contains one of the objects listed above in columns
-
-					var obj = {}; obj.OpenILS = {}; 
-					JSAN.use('util.error'); obj.error = new util.error();
-					//JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
-
-					var my = row.my;
-					var value;
-					try {
-						value = eval( col.render );
-					} catch(E) {
-						obj.error.sdump('D_ERROR','map_row_to_column: ' + E);
-						value = '???';
-					}
-					dump('map_row_to_column: value = ' + value + '\n');
-					return value;
-				},
+				'map_row_to_column' : obj.gen_map_row_to_column(),
 			}
 		);
 
@@ -166,7 +150,7 @@ patron.bills.prototype = {
 
 		//FIXME//.bills virtual field
 		for (var i = 0; i < obj.bills.length; i++) {
-			obj.list.append( { 'row' : { 'mobts' : obj.bills[i] } } );
+			obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } } } );
 		}
 	},
 
@@ -184,7 +168,7 @@ patron.bills.prototype = {
 			if ( !(tb.value == '0.00' || tb.value == '') ) {
 				payment_blob.payments.push( 
 					[
-						obj.current_payments[ i ].mbts_id,
+						obj.current_payments[ i ].mobts_id,
 						tb.value
 					]
 				);
@@ -278,7 +262,172 @@ patron.bills.prototype = {
 			api.fm_mobts_having_balance.method,
 			[ obj.session, obj.patron_id ]
 		);
-	}
+	},
+
+	'xact_dates_box' : function ( mobts ) {
+		var obj = this;
+		function getString(s) { return obj.OpenILS.data.entities[s]; }
+		var grid = document.createElement('grid');
+			var cols = document.createElement('columns');
+			grid.appendChild( cols );
+				cols.appendChild( document.createElement('column') );
+				cols.appendChild( document.createElement('column') );
+			var rows = document.createElement('rows');
+			grid.appendChild( rows );
+				var row0 = document.createElement('row');
+				rows.appendChild( row0 );
+					var label_r0_1 = document.createElement('label');
+					row0.appendChild( label_r0_1 );
+					label_r0_1.setAttribute('value',getString('staff.mbts_id_label'));
+					var label_r0_2 = document.createElement('label');
+					row0.appendChild( label_r0_2 );
+					label_r0_2.setAttribute('value',mobts.id());
+				var row1 = document.createElement('row');
+				rows.appendChild( row1 );
+					var label_r1_1 = document.createElement('label');
+					row1.appendChild( label_r1_1 );
+					label_r1_1.setAttribute('value',getString('staff.mbts_xact_start_label'));
+					var label_r1_2 = document.createElement('label');
+					row1.appendChild( label_r1_2 );
+					label_r1_2.setAttribute('value',mobts.xact_start().toString().substr(0,10));
+				var row2 = document.createElement('row');
+				rows.appendChild( row2 );
+					var label_r2_1 = document.createElement('label');
+					row2.appendChild( label_r2_1 );
+					label_r2_1.setAttribute('value',getString('staff.mbts_xact_finish_label'));
+					var label_r2_2 = document.createElement('label');
+					row2.appendChild( label_r2_2 );
+					try { label_r2_2.setAttribute('value',mobts.xact_finish().toString().substr(0,10));
+					} catch(E) {}
+
+		return grid;
+	},
+
+	'money_box' : function ( mobts ) {
+		var obj = this;
+		function getString(s) { return obj.OpenILS.data.entities[s]; }
+		var grid = document.createElement('grid');
+			var cols = document.createElement('columns');
+			grid.appendChild( cols );
+				cols.appendChild( document.createElement('column') );
+				cols.appendChild( document.createElement('column') );
+			var rows = document.createElement('rows');
+			grid.appendChild( rows );
+				var row1 = document.createElement('row');
+				rows.appendChild( row1 );
+					var label_r1_1 = document.createElement('label');
+					row1.appendChild( label_r1_1 );
+					label_r1_1.setAttribute('value',getString('staff.mbts_total_owed_label'));
+					var label_r1_2 = document.createElement('label');
+					row1.appendChild( label_r1_2 );
+					label_r1_2.setAttribute('value',mobts.total_owed());
+				var row2 = document.createElement('row');
+				rows.appendChild( row2 );
+					var label_r2_1 = document.createElement('label');
+					row2.appendChild( label_r2_1 );
+					label_r2_1.setAttribute('value',getString('staff.mbts_total_paid_label'));
+					var label_r2_2 = document.createElement('label');
+					row2.appendChild( label_r2_2 );
+					label_r2_2.setAttribute('value',mobts.total_paid());
+				var row3 = document.createElement('row');
+				rows.appendChild( row3 );
+					var label_r3_1 = document.createElement('label');
+					row3.appendChild( label_r3_1 );
+					label_r3_1.setAttribute('value',getString('staff.mbts_balance_owed_label'));
+					label_r3_1.setAttribute('style','font-weight: bold');
+					var label_r3_2 = document.createElement('label');
+					row3.appendChild( label_r3_2 );
+					label_r3_2.setAttribute('value',mobts.balance_owed());
+					label_r3_2.setAttribute('style','font-weight: bold');
+
+		return grid;
+	},
+
+	'info_box' : function ( mobts ) {
+		var obj = this;
+		function getString(s) { return obj.OpenILS.data.entities[s]; }
+		var vbox = document.createElement('vbox');
+			var grid = document.createElement('grid');
+				vbox.appendChild( grid );
+
+				var cols = document.createElement('columns');
+					grid.appendChild( cols );
+					cols.appendChild( document.createElement('column') );
+					cols.appendChild( document.createElement('column') );
+				var rows = document.createElement('rows');
+					grid.appendChild( rows );
+
+			var xact_type = document.createElement('row');
+			rows.appendChild( xact_type );
+
+				var xt_label = document.createElement('label');
+					xact_type.appendChild( xt_label );
+					xt_label.setAttribute( 'value', 'Type' );
+				var xt_value = document.createElement('label');
+					xact_type.appendChild( xt_value );
+					xt_value.setAttribute( 'value', mobts.xact_type() );
+
+			var last_billing = document.createElement('row');
+			rows.appendChild( last_billing );
+
+				var lb_label = document.createElement('label');
+					last_billing.appendChild( lb_label );
+					lb_label.setAttribute( 'value', 'Last Billing:' );
+
+				var lb_value = document.createElement('label');
+					last_billing.appendChild( lb_value );
+					if (mobts.last_billing_type()) 
+						lb_value.setAttribute( 'value', mobts.last_billing_type() );
+
+			var last_payment = document.createElement('row');
+			rows.appendChild( last_payment );
+
+				var lp_label = document.createElement('label');
+					last_payment.appendChild( lp_label );
+					lp_label.setAttribute( 'value', 'Last Payment:' );
+
+				var lp_value = document.createElement('label');
+					last_payment.appendChild( lp_value );
+					if (mobts.last_payment_type()) 
+						lp_value.setAttribute( 'value', mobts.last_payment_type() );
+
+			var btn = document.createElement('button');
+				vbox.appendChild( btn );
+				btn.setAttribute( 'label', 'Full Details' );
+				btn.setAttribute( 'name', 'full_details' );
+				btn.setAttribute( 'mobts_id', mobts.id() );	
+				btn.addEventListener(
+					'command',
+					function(ev) {
+						alert('bill details go here');
+					},
+					false
+				);
+
+		return vbox;
+	},
+	
+	'gen_map_row_to_column' : function() {
+		var obj = this;
+
+		return function(row,col) {
+			// row contains { 'my' : { 'mobts' : ... } }
+			// col contains one of the objects listed above in columns
+
+			var my = row.my;
+			var value;
+			try {
+				value = eval( col.render );
+			} catch(E) {
+				try{obj.error.sdump('D_ERROR','map_row_to_column: ' + E);}
+				catch(P){dump('?map_row_to_column: ' + E + '\n');}
+				value = '???';
+			}
+			dump('map_row_to_column: value = ' + value + '\n');
+			return value;
+		};
+	},
+
 }
 
 dump('exiting patron.bills.js\n');
