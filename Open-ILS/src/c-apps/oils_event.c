@@ -78,6 +78,11 @@ void _oilsEventParseEvents() {
 	
 	char* xml = osrf_settings_host_value("/ils_events");
 
+	if(!xml) {
+		osrfLogError("Unable to find ILS Events file: %s", xml);
+		return;
+	}
+
 	xmlDocPtr doc = xmlParseFile(xml);
 	free(xml);
 	int success = 0;
