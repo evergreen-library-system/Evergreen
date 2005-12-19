@@ -33,16 +33,16 @@
    			var seed = init_request.getResultObject();
 			
    			if( ! seed || seed == '0') {
-      			alert( "Error Communicating with Authentication Server" );
-      			return null;
+      				alert( "Error Communicating with Authentication Server" );
+      				return null;
    			}
 			
    			var auth_request = new RemoteRequest( 
 					"open-ils.auth", "open-ils.auth.authenticate.complete",
-      			uname, hex_md5(seed + hex_md5(passwd)), "staff");
+      					uname, hex_md5(seed + hex_md5(passwd)), "staff");
 			
    			auth_request.send(true);
-   			var auth_result = auth_request.getResultObject();
+   			var auth_result = auth_request.getResultObject().payload.authtoken;
 			
    			if(auth_result == '0' || auth_result == null || auth_result.length == 0) { 
 					alert("Login failed");
