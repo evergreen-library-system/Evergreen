@@ -80,7 +80,7 @@ util.list.prototype = {
 				var listcol = document.createElement('listcol');
 				listcols.appendChild(listcol);
 				for (var j in this.columns[i]) {
-					listhead.setAttribute(j,this.columns[i][j]);
+					listheader.setAttribute(j,this.columns[i][j]);
 					listcol.setAttribute(j,this.columns[i][j]);
 				};
 			}
