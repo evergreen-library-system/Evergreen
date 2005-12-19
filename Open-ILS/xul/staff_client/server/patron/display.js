@@ -97,7 +97,15 @@ patron.display.prototype = {
 					'cmd_patron_bills' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(urls.remote_patron_bills);
+							obj.right_deck.set_iframe(
+								urls.remote_patron_bills
+								+ '?session=' + window.escape( obj.session )
+								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{
+									//FIXME//'bills' : obj.patron.bills()
+								}
+							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],

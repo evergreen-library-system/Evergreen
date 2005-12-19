@@ -26,23 +26,23 @@ patron.bills.prototype = {
 			{
 				'columns' : [
 						{
-							'id' : 'checkbox', 'label' : '', 'flex' : 0, 'primary' : false, 'hidden' : false,
+							'id' : 'checkbox', 'label' : '', 'flex' : 1, 'primary' : false, 'hidden' : false,
 							'render' : 'document.createElement("checkbox")'
 						},
 						{
-							'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 0,
+							'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 1,
 							'primary' : false, 'hidden' : false, 'render' : 'xact_dates_box(my.mbts)'
 						},
 						{
-							'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 0,
+							'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 1,
 							'primary' : false, 'hidden' : false, 'render' : 'info_box(my.mbts)'
 						},
 						{
-							'id' : 'money', 'label' : getString('staff.bills_money_label'), 'flex' : 0,
+							'id' : 'money', 'label' : getString('staff.bills_money_label'), 'flex' : 1,
 							'primary' : false, 'hidden' : false, 'render' : 'money_box(my.mbts)'
 						},
 						{
-							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 0, 
+							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 1, 
 							'render' : 'document.createElement("textbox")'
 						}
 				],
@@ -62,6 +62,7 @@ patron.bills.prototype = {
 						obj.error.sdump('D_ERROR','map_row_to_column: ' + E);
 						value = '???';
 					}
+					dump('map_row_to_column: value = ' + value + '\n');
 					return value;
 				},
 			}
