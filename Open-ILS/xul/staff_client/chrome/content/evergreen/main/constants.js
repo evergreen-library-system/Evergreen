@@ -2,6 +2,7 @@ dump('Loading constants.js\n');
 var api = {
 	'auth_init' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
 	'auth_complete' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },
+	'bill_pay' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
 	'blob_checkouts_retrieve' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out' },
 	'capture_copy_for_hold_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.capture_copy.barcode' },
 	'checkin_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkin.barcode' },
@@ -39,7 +40,7 @@ var urls = {
 	'remote_hold_capture' : '/xul/server/circ/hold_capture.xul',
 	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
 	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul',
-	'remote_patron_bills' : 'data:text/html,<h1>Bills Here</h1>',
+	'remote_patron_bills' : '/xul/server/patron/bills.xul',
 	'remote_patron_display' : '/xul/server/patron/display.xul',
 	'remote_patron_edit' : 'data:text/html,<h1>Edit Here</h1>',
 	'remote_patron_holds' : '/xul/server/patron/holds.xul',
