@@ -23,7 +23,7 @@ my $event;
 
 __PACKAGE__->register_method(
 	method	=> "bucket_retrieve_all",
-	api_name	=> "open-ils.actor.container.bucket.all.retrieve_by_user",
+	api_name	=> "open-ils.actor.container.all.retrieve_by_user",
 	notes		=> <<"	NOTES");
 		Retrieves all un-fleshed buckets assigned to given user 
 		PARAMS(authtoken, bucketOwnerId)
@@ -53,7 +53,7 @@ sub bucket_retrieve_all {
 
 __PACKAGE__->register_method(
 	method	=> "bucket_flesh",
-	api_name	=> "open-ils.actor.container.bucket.flesh",
+	api_name	=> "open-ils.actor.container.flesh",
 	argc		=> 3, 
 	notes		=> <<"	NOTES");
 		Fleshes a bucket by id
@@ -90,7 +90,7 @@ sub bucket_flesh {
 
 __PACKAGE__->register_method(
 	method	=> "bucket_retrieve_class",
-	api_name	=> "open-ils.actor.container.bucket.retrieve_by_class",
+	api_name	=> "open-ils.actor.container.retrieve_by_class",
 	argc		=> 3, 
 	notes		=> <<"	NOTES");
 		Retrieves all un-fleshed buckets by class assigned to given user 
@@ -133,7 +133,7 @@ sub bucket_retrieve_class {
 
 __PACKAGE__->register_method(
 	method	=> "bucket_create",
-	api_name	=> "open-ils.actor.container.bucket.create",
+	api_name	=> "open-ils.actor.container.create",
 	notes		=> <<"	NOTES");
 		Creates a new bucket object.  If requestor is different from
 		bucketOwner, requestor needs CREATE_CONTAINER permissions
@@ -168,7 +168,7 @@ sub bucket_create {
 
 __PACKAGE__->register_method(
 	method	=> "bucket_delete",
-	api_name	=> "open-ils.actor.container.bucket.delete",
+	api_name	=> "open-ils.actor.container.delete",
 	notes		=> <<"	NOTES");
 		Deletes a bucket object.  If requestor is different from
 		bucketOwner, requestor needs DELETE_CONTAINER permissions
@@ -201,7 +201,7 @@ sub bucket_delete {
 
 __PACKAGE__->register_method(
 	method	=> "item_create",
-	api_name	=> "open-ils.actor.container.bucket.item.create",
+	api_name	=> "open-ils.actor.container.item.create",
 	notes		=> <<"	NOTES");
 		PARAMS(authtoken, class, item)
 	NOTES
@@ -221,17 +221,17 @@ sub item_create {
 		" creating continer item  " . Dumper($item) . " for user " . $bucket->owner );
 
 	my $method = $types{$class} . "_item.create";
-	my $resp = $apputils->simplreq( $svc, $method, $item );
+	my $resp = $apputils->simplereq( $svc, $method, $item );
 
-	throw OpenSRF::EX ("Unable to delete container item") unless $resp;
+	throw OpenSRF::EX ("Unable to create container item") unless $resp;
 	return $resp;
 }
 
 
 
 __PACKAGE__->register_method(
-	method	=> "item_create",
-	api_name	=> "open-ils.actor.container.bucket.item.delete",
+	method	=> "item_delete",
+	api_name	=> "open-ils.actor.container.item.delete",
 	notes		=> <<"	NOTES");
 		PARAMS(authtoken, class, itemId)
 	NOTES
@@ -254,7 +254,7 @@ sub item_delete {
 		" deleting continer item  $itemid for user " . $bucket->owner );
 
 	my $method = $types{$class} . "_item.delete";
-	my $resp = $apputils->simplreq( $svc, $method, $itemid );
+	my $resp = $apputils->simplereq( $svc, $method, $itemid );
 
 	throw OpenSRF::EX ("Unable to delete container item") unless $resp;
 	return $resp;

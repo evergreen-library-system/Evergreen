@@ -5,14 +5,14 @@
 #----------------------------------------------------------------
 
 require '../oils_header.pl';
+use vars qw/ $apputils $memcache $user $authtoken $authtime 
+	$AUTH $STORAGE $SEARCH $CIRC $CAT $MATH $SETTINGS $ACTOR /;
+use strict; use warnings;
+
 
 my $config		= shift; 
 my $username	= shift || 'admin';
 my $password	= shift || 'open-ils';
-
-osrf_connect($config);
-oils_login($username, $password);
-oils_fetch_session($authtoken);
 
 my %types;
 my $meth = 'open-ils.storage.direct.container';
@@ -23,6 +23,7 @@ $types{'user'}				= "user_bucket";
 
 # XXX These will depend on the data you have available.
 # we need a "fetch_any" method to resolve this
+my %ttest;
 $ttest{'biblio'}			= 40791;
 $ttest{'callnumber'}		= 1;
 $ttest{'copy'}				= 420795;
@@ -36,9 +37,19 @@ my $testuser = 3;
 my %containers;
 my %items;
 
-containers_create();
-#items_create();
-containers_delete();
+sub go {
+	osrf_connect($config);
+	oils_login($username, $password);
+	oils_fetch_session($authtoken);
+	containers_create();
+	items_create();
+	items_delete();
+	containers_delete();
+}
+
+go();
+
+#----------------------------------------------------------------
 
 sub containers_create {
 
@@ -50,7 +61,7 @@ sub containers_create {
 		$bucket->btype("TestType");
 	
 		my $resp = simplereq($ACTOR, 
-			'open-ils.actor.container.bucket.create',
+			'open-ils.actor.container.create',
 			$authtoken, $type, $bucket );
 	
 		oils_event_die($resp);
@@ -68,10 +79,10 @@ sub items_create {
 		$item = $item->new;
 
 		$item->bucket($id);
-		$item->target_copy($test{$type}) if $type eq 'copy';
-		$item->target_call_number($test{$type}) if $type eq 'callnumber';
-		$item->target_biblio_record_entry($test{$type}) if $type eq 'biblio';
-		$item->target_user($test{$type}) if $type eq 'user';
+		$item->target_copy($ttest{$type}) if $type eq 'copy';
+		$item->target_call_number($ttest{$type}) if $type eq 'callnumber';
+		$item->target_biblio_record_entry($ttest{$type}) if $type eq 'biblio';
+		$item->target_user($ttest{$type}) if $type eq 'user';
 	
 		my $resp = simplereq($ACTOR, 
 			'open-ils.actor.container.item.create',
@@ -86,7 +97,7 @@ sub items_create {
 
 sub items_delete {
 	for my $type ( keys %types ) {
-		my $id = $containers{$type};
+		my $id = $items{$type};
 
 		my $resp = simplereq($ACTOR, 
 			'open-ils.actor.container.item.delete',
@@ -103,7 +114,7 @@ sub containers_delete {
 		my $id = $containers{$type};
 
 		my $resp = simplereq( $ACTOR,
-			'open-ils.actor.container.bucket.delete',
+			'open-ils.actor.container.delete',
 			$authtoken, $type, $id );
 
 		oils_event_die($resp);
