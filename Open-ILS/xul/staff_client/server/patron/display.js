@@ -112,7 +112,12 @@ patron.display.prototype = {
 					'cmd_patron_edit' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(urls.remote_patron_edit);
+							obj.right_deck.set_iframe(
+								urls.remote_patron_edit
+								+ '?ses=' + window.escape( obj.session )
+								+ '&usr=' + window.escape( obj.patron.id() ),
+								{}, {}
+							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
