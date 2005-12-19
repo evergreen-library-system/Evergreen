@@ -494,9 +494,58 @@ sub fetch_open_billable_transaction {
 		'open-ils.storage',
 		'open-ils.storage.direct.money.open_billable_transaction_summary.retrieve',  $transid);
 
-	$evt = OpenILS::Event->new('TRANSACTION_NOT_FOUND', transid => $transid ) unless $transaction;
+	$evt = OpenILS::Event->new(
+		'TRANSACTION_NOT_FOUND', transid => $transid ) unless $transaction;
 
 	return ($transaction, $evt);
 }
+
+
+
+my %buckets;
+$buckets{'biblio'} = 'biblio_record_entry_bucket';
+$buckets{'callnumber'} = 'call_number_bucket';
+$buckets{'copy'} = 'copy_bucket';
+$buckets{'user'} = 'user_bucket';
+
+sub fetch_container {
+	my( $self, $id, $type ) = @_;
+	my( $bucket, $evt );
+
+	$logger->debug("Fetching container $id with type $type");
+
+	my $meth = $buckets{$type};
+	$bucket = $self->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.container.$meth.retrieve", $id );
+
+	$evt = OpenILS::Event->new(
+		'CONTAINER_NOT_FOUND', container => $id, 
+			container_type => $type ) unless $bucket;
+
+	return ($bucket, $evt);
+}
+
+
+sub fetch_container_item {
+	my( $self, $id, $type ) = @_;
+	my( $bucket, $evt );
+
+	$logger->debug("Fetching container item $id with type $type");
+
+	my $meth = $buckets{$type} . "_item";
+
+	$bucket = $self->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.container.$meth.retrieve", $id );
+
+	$evt = OpenILS::Event->new(
+		'CONTAINER_ITEM_NOT_FOUND', itemid => $id, 
+			container_type => $type ) unless $bucket;
+
+	return ($bucket, $evt);
+}
+
+
 
 1;

@@ -155,7 +155,7 @@ sub bucket_create {
 	$logger->debug("Creating new container object: " . Dumper($bucket));
 
 	my $method = $types{$class} . ".create";
-	my $id = $apputils->simplreq( $svc, $method, $bucket );
+	my $id = $apputils->simplereq( $svc, $method, $bucket );
 
 	$logger->debug("Creatined new container with id $id");
 
@@ -179,14 +179,12 @@ __PACKAGE__->register_method(
 sub bucket_delete {
 	my( $self, $client, $authtoken, $class, $bucketid ) = @_;
 
-	my $bucket = $apputils->simplereq( 
-		$svc, $types{$class} . ".retrieve", $bucketid );
+	my( $bucket, $staff, $target, $evt );
 
-	if(!$bucket) {
-		return OpenILS::Event->new('CONTAINER_NOT_FOUND');
-	}
+	( $bucket, $evt ) = $apputils->fetch_container($bucketid, $class);
+	return $evt if $evt;
 
-	my( $staff, $target, $evt ) = $apputils->checkses_requestor( 
+	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
 		$authtoken, $bucket->owner, 'DELETE_CONTAINER' );
 	return $evt if $evt;
 
@@ -194,12 +192,72 @@ sub bucket_delete {
 		" deleting continer $bucketid for user " . $bucket->owner );
 
 	my $method = $types{$class} . ".delete";
-	my $resp = $apputils->simplreq( $svc, $method, $bucketid );
+	my $resp = $apputils->simplereq( $svc, $method, $bucketid );
 
-	if(!$resp) { throw OpenSRF::EX 
-		("Unable to create new bucket object"); }
+	throw OpenSRF::EX ("Unable to create new bucket object") unless $resp;
 	return $resp;
+}
 
+
+__PACKAGE__->register_method(
+	method	=> "item_create",
+	api_name	=> "open-ils.actor.container.bucket.item.create",
+	notes		=> <<"	NOTES");
+		PARAMS(authtoken, class, item)
+	NOTES
+
+sub item_create {
+	my( $self, $client, $authtoken, $class, $item ) = @_;
+	my( $bucket, $staff, $target, $evt);
+
+	( $bucket, $evt ) = $apputils->fetch_container($item->bucket, $class);
+	return $evt if $evt;
+
+	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
+		$authtoken, $bucket->owner, 'CREATE_CONTAINER_ITEM' );
+	return $evt if $evt;
+
+	$logger->activity( "User " . $staff->id . 
+		" creating continer item  " . Dumper($item) . " for user " . $bucket->owner );
+
+	my $method = $types{$class} . "_item.create";
+	my $resp = $apputils->simplreq( $svc, $method, $item );
+
+	throw OpenSRF::EX ("Unable to delete container item") unless $resp;
+	return $resp;
+}
+
+
+
+__PACKAGE__->register_method(
+	method	=> "item_create",
+	api_name	=> "open-ils.actor.container.bucket.item.delete",
+	notes		=> <<"	NOTES");
+		PARAMS(authtoken, class, itemId)
+	NOTES
+
+sub item_delete {
+	my( $self, $client, $authtoken, $class, $itemid ) = @_;
+	my( $bucket, $item, $staff, $target, $evt);
+
+	
+	( $item, $evt ) = $apputils->fetch_container_item( $itemid, $class );
+	return $evt if $evt;
+	( $bucket, $evt ) = $apputils->fetch_container($item->bucket, $class);
+	return $evt if $evt;
+
+	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
+		$authtoken, $bucket->owner, 'DELETE_CONTAINER_ITEM' );
+	return $evt if $evt;
+
+	$logger->activity( "User " . $staff->id . 
+		" deleting continer item  $itemid for user " . $bucket->owner );
+
+	my $method = $types{$class} . "_item.delete";
+	my $resp = $apputils->simplreq( $svc, $method, $itemid );
+
+	throw OpenSRF::EX ("Unable to delete container item") unless $resp;
+	return $resp;
 }
 
 
