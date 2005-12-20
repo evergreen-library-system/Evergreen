@@ -55,7 +55,7 @@
 		</style>
         </head>
 
-	<body onload="init_editor()">
+	<body onload="try { init_editor() } catch(E) { alert(js2JSON(E)); }">
 		<form method="GET" name="editor" id="editor" >
 
 		<table>
