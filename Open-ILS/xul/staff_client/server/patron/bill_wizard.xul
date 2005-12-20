@@ -16,10 +16,9 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<wizard id="patron_bill" title="Bill Patron Wizard"
+<window id="patron_bill" title="Bill Patron Wizard"
 	orient="vertical" style="overflow: auto"
 	onload="patron_bill_init()" width="800" height="600"
-	onwizardfinish="patron_bill_finish()"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -98,8 +97,8 @@
 					throw('mg_id = ' + mg_id);
 				}
 			} catch(E) {
-				g.error.sdump('D_ERROR',E);
-				alert(E);
+				g.error.sdump('D_ERROR',js2JSON(E));
+				alert(js2JSON(E));
 			}
 		}
 
@@ -107,7 +106,8 @@
 	</script>
 
 
-	<wizardpage id="page1" description="Billing Patron" onpageadvanced="">
+	<groupbox>
+		<caption label="Bill Patron"/>
 		<label id="patron_name"/>
 		<grid>
 			<columns> <column flex="0" /> <column flex="0" /> </columns>
@@ -156,8 +156,9 @@
 				<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
 			</rows>
 		</grid>
-	</wizardpage>
+		<button label="Submit this Bill" oncommand="patron_bill_finish()"/>
+	</groupbox>
 
-</wizard>
+</window>
 
 

@@ -66,7 +66,7 @@ patron.bills.prototype = {
 									+ '?session=' + window.escape(obj.session)
 									+ '&patron_id=' + window.escape(obj.patron_id),
 								'billwizard',
-								'modal,chrome,resizable'
+								'chrome,resizable,modal'
 							);
 						}
 					],
