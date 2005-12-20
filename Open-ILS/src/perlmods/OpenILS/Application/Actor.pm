@@ -1272,37 +1272,58 @@ sub build_group_tree {
 
 __PACKAGE__->register_method(
 	method	=> "add_user_to_groups",
-	api_name	=> "open-ils.actor.user.add_to_groups",
+	api_name	=> "open-ils.actor.user.set_groups",
 	notes		=> <<"	NOTES");
 	Adds a user to one or more permission groups
 	NOTES
 
 sub add_user_to_groups {
-	my( $self, $client, $authtoken, $userid, @groups ) = @_;
+	my( $self, $client, $authtoken, $userid, $groups ) = @_;
+
 	my( $requestor, $target, $evt ) = $apputils->checkses_requestor(
 		$authtoken, $userid, 'CREATE_USER_GROUP_LINK' );
 	return $evt if $evt;
 
-	for my $group (@groups) {
+	( $requestor, $target, $evt ) = $apputils->checkses_requestor(
+		$authtoken, $userid, 'REMOVE_USER_GROUP_LINK' );
+	return $evt if $evt;
+
+	$apputils->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.permission.usr_grp_map.mass_delete', { usr => $userid } );
+		
+	for my $group (@$groups) {
 		my $link = Fieldmapper::permission::usr_grp_map->new;
 		$link->grp($group);
 		$link->usr($userid);
+
 		my $id = $apputils->simplereq(
 			'open-ils.storage',
 			'open-ils.storage.direct.permission.usr_grp_map.create', $link );
-		throw OpenSRF::EX::ERROR 
-			("Unable to create new permission.usr_grp_map object") unless $id;
 	}
 
 	return 1;
 }
 
+__PACKAGE__->register_method(
+	method	=> "get_user_perm_groups",
+	api_name	=> "open-ils.actor.user.get_groups",
+	notes		=> <<"	NOTES");
+	Retrieve a user's permission groups.
+	NOTES
 
 
+sub get_user_perm_groups {
+	my( $self, $client, $authtoken, $userid ) = @_;
 
+	my( $requestor, $target, $evt ) = $apputils->checkses_requestor(
+		$authtoken, $userid, 'VIEW_PERM_GROUPS' );
+	return $evt if $evt;
 
-
-
+	return $apputils->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.permission.usr_grp_map.search.usr.atomic', $userid );
+}	
 
 
 
