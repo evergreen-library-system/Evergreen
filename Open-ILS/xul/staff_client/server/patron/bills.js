@@ -58,7 +58,16 @@ patron.bills.prototype = {
 					],
 					'cmd_bill_wizard' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { 
+							JSAN.use('util.window');
+							var w = new util.window();
+							w.open(
+								urls.remote_patron_bill_wizard
+									+ '?session=' + window.escape(obj.session) 
+								'billwizard',
+								'modal,chrome,resizable'
+							);
+						}
 					],
 					'cmd_change_to_credit' : [
 						['command'],
