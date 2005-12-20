@@ -63,7 +63,7 @@ patron.bills.prototype = {
 							var w = new util.window();
 							w.open(
 								urls.remote_patron_bill_wizard
-									+ '?session=' + window.escape(obj.session) 
+									+ '?session=' + window.escape(obj.session),
 								'billwizard',
 								'modal,chrome,resizable'
 							);
