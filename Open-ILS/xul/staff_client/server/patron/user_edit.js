@@ -319,6 +319,7 @@ function init_editor (u) {
 	var in_groups = [];
 	for (var i in user_group_objects) {
 		in_groups.push(user_group_objects[i].grp());
+		user_groups.push(user_group_objects[i].grp());
 	}
 
 	selectBuilder(
