@@ -53,7 +53,7 @@
 				document.getElementById('patron_name').setAttribute('value',
 					g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
 				document.getElementById('billing_location').setAttribute('value',
-					g.OpenILS.data.list.au[0].home_ou().name() );
+					g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].home_ou() ].name() );
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -69,7 +69,7 @@
 			try {
 				var grocery = new mg();
 					grocery.isnew('1');
-					grocery.billing_location( g.OpenILS.data.list.au[0].home_ou().id() );
+					grocery.billing_location( g.OpenILS.data.list.au[0].home_ou() );
 					grocery.usr( g.au_obj.id() );
 					grocery.note( document.getElementById('bill_note').value );
 				JSAN.use('util.network'); var net = new util.network();
