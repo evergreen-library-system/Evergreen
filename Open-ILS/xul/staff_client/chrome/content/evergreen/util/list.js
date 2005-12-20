@@ -99,6 +99,7 @@ util.list.prototype = {
 				rnode.setAttribute(i,params.attributes[i]);
 			}
 		}
+		return rnode;
 	},
 
 	'_append_to_tree' : function (params) {

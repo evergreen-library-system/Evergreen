@@ -20,8 +20,6 @@ util.money.dollars_float_to_cents_integer = function( money ) {
 			cents = cents + '0';
 		}
 	} catch(E) {
-		// I am not sure why these are getting thrown, especially with the code still working
-		dump("util.money: cents.length? " + E + "\n");
 	}
 	try {
 		if (cents.length > 2) {
@@ -29,18 +27,15 @@ util.money.dollars_float_to_cents_integer = function( money ) {
 			cents = cents.substr(0,2);
 		}
 	} catch(E) {
-		dump("util.money:2: cents.length? " + E + "\n");
 	}
 	var total = 0;
 	try {
 		if (parseInt(cents)) total += parseInt(cents);
 	} catch(E) {
-		dump("util.money: parseInt(cents)? " + E + "\n");
 	}
 	try {
 		if (parseInt(dollars)) total += (parseInt(dollars) * 100);
 	} catch(E) {
-		dump("util.money: parseInt(dollars)? " + E + "\n");
 	}
 	return total;	
 }
@@ -54,7 +49,6 @@ util.money.cents_as_dollars = function( cents ) {
 			case 1: cents = '00' + cents; break;
 		}
 	} catch(E) {
-		dump("util.money: cents_as_dollars: cents.length? " + E + "\n");
 	}
 	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }
