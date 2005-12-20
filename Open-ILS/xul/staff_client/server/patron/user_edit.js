@@ -316,16 +316,15 @@ function init_editor (u) {
 		user_group_objects = req.getResultObject();
 	}
 
-	var in_groups = [];
+	user_groups = [];
 	for (var i in user_group_objects) {
-		in_groups.push(user_group_objects[i].grp());
 		user_groups.push(user_group_objects[i].grp());
 	}
 
 	selectBuilder(
 		'permgroups',
 		[group_tree],
-		in_groups,
+		user_groups,
 		{ label_field		: 'name',
 		  value_field		: 'id',
 		  clear			: true,
