@@ -45,6 +45,7 @@ var urls = {
 	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul',
 	'remote_patron_bills' : '/xul/server/patron/bills.xul',
 	'remote_patron_bill_details' : '/xul/server/patron/bill_details.xul',
+	'remote_patron_bill_wizard' : '/xul/server/patron/bill_wizard.xul',
 	'remote_patron_display' : '/xul/server/patron/display.xul',
 	'remote_patron_edit' : '/xul/server/patron/user_edit.xml',
 	'remote_patron_holds' : '/xul/server/patron/holds.xul',
