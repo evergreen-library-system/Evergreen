@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<wizard id="patron_bill" title="Bill Patron Wizard"
+	orient="vertical" style="overflow: auto"
+	onload="patron_bill_init()" width="800" height="600"
+	onwizardfinish="patron_bill_finish()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+
+	<script>
+	<![CDATA[
+
+		function patron_bill_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+				g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
+				g.OpenILS.data.init({'via':'stash'});
+
+				g.cgi = new CGI();
+				g.session = g.cgi.param('session');
+				g.patron_id = g.cgi.param('patron_id');
+
+				JSAN.use('patron.util'); g.patron = new patron.util();
+				g.au_obj = g.patron.retrieve_au_via_id( g.session, g.patron_id );
+				
+				document.getElementById('patron_name').setAttribute('value',
+					g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
+				document.getElementById('billing_location').setAttribute('value',
+					g.OpenILS.data.list.au[0].home_ou().name() );
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" 
+					+ 'patron/bill_wizard.xul\n' + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+
+		}
+
+		function patron_bill_finish() {
+			try {
+				var grocery = new mg();
+					grocery.isnew('1');
+					grocery.billing_location( g.OpenILS.data.list.au[0].home_ou().id() );
+					grocery.usr( g.au_obj.id() );
+					grocery.note( document.getElementById('bill_note').value );
+				JSAN.use('util.network'); var net = new util.network();
+				var mg_id = net.request(
+					api.fm_mg_create.app,
+					api.fm_mg_create.method,
+					[ g.session, grocery ]
+				)[0];
+				if (mg_id) {
+					var billing = new mb();
+						billing.isnew('1');
+						billing.note( document.getElementById('bill_note').value );
+						billing.xact( mg_id );
+						billing.amount( document.getElementById('bill_amount').value );
+						billing.billing_type( document.getElementById('billing_type').value );
+					var mb_id = net.request(
+						api.fm_mb_create.app,
+						api.fm_mb_create.method,
+						[ g.session, billing ]
+					)[0];
+					if (mb_id) {
+					} else {
+						throw('mb_id = ' + mb_id);
+					}
+				} else {
+					throw('mg_id = ' + mg_id);
+				}
+			} catch(E) {
+				g.error.sdump('D_ERROR',E);
+				alert(E);
+			}
+		}
+
+	]]>
+	</script>
+
+
+	<wizardpage id="page1" description="Billing Patron" onpageadvanced="">
+		<label id="patron_name"/>
+		<grid>
+			<columns> <column flex="0" /> <column flex="0" /> </columns>
+			<rows id="page1_rows">
+				<row><label value="Location"/><textbox id="billing_location" disabled="true" /></row>
+				<row><label value="Transaction Type"/>
+					<menulist id="xact_type">
+						<menupopup>
+							<menuitem label="Grocery" value="grocery" selected="true"/>
+						</menupopup>
+					</menulist>
+				</row>
+				<row><label value="Billing Type"/>
+					<menulist id="billing_type">
+						<menupopup>
+							<menuitem value="Miscellaneous" label="Miscellaneous" />
+							<menuitem value="Overdue materials" label="Overdue materials" />
+							<menuitem value="Fee for placing a hold" label="Fee for placing a hold" />
+							<menuitem value="Fee for checking out a book" label="Fee for checking out a book" />
+							<menuitem value="Fee for library card" label="Fee for library card" />
+							<menuitem value="Miscellaneous charges" label="Miscellaneous charges" />
+							<menuitem value="Lost materials" label="Lost materials" />
+							<menuitem value="Damaged material" label="Damaged material" />
+							<menuitem value="Overdue Reserves charge" label="Overdue Reserves charge" />
+							<menuitem value="Recall overdue" label="Recall overdue" />
+							<menuitem value="Fee for processing lost library materials" label="Fee for processing lost library materials" />
+							<menuitem value="Fee for sending patron bills to collection agency" label="Fee for sending patron bills to collection agency" />
+							<menuitem value="Fee for interlibrary loan" label="Fee for interlibrary loan" />
+							<menuitem value="Fee for copies" label="Fee for copies" />
+							<menuitem value="Money advanced to pay for telephone use" label="Money advanced to pay for telephone use" />
+							<menuitem value="Deposit fee" label="Deposit fee" />
+							<menuitem value="Fee for disk" label="Fee for disk" />
+							<menuitem value="Fee for faxing" label="Fee for faxing" />
+							<menuitem value="Fee for laminating" label="Fee for laminating" />
+							<menuitem value="Fee for room cleaning" label="Fee for room cleaning" />
+							<menuitem value="Deposit returned; fee refund" label="Deposit returned; fee refund" />
+							<menuitem value="Sale items" label="Sale items" />
+							<menuitem value="Fee for lost card" label="Fee for lost card" />
+							<menuitem value="Long overdue items" label="Long overdue items" />
+							<menuitem value="Lost/Replacement Cassette" label="Lost/Replacement Cassette" />
+							<menuitem value="Returned Check" label="Returned Check" />
+						</menupopup>
+					</menulist>
+				</row>
+				<row><label value="Amount"/><textbox id="bill_amount" /></row>
+				<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
+			</rows>
+		</grid>
+	</wizardpage>
+
+</wizard>
+
+
