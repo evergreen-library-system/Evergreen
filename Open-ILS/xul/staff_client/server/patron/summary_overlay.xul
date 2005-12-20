@@ -67,8 +67,6 @@
 		<row id="pdsgr5">
 			<label id="pdsgr5l1" class="text_right" value="Home Lib:" />
 			<label id="patron_library" />
-			<label id="pdsgr5l2" class="text_right" value="Last Lib:" />
-			<label id="patron_last_library" />
 		</row>
 
 	</rows>
