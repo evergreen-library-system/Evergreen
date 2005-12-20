@@ -159,7 +159,7 @@
 		<hbox>
 			<spacer flex="1"/>
 			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
-			<button label="Submit this Bill" oncommand="patron_bill_finish()" accesskey="S"/>
+			<button label="Submit this Bill" oncommand="patron_bill_finish(); window.close();" accesskey="S"/>
 	</groupbox>
 
 </window>

@@ -14,6 +14,10 @@ patron.bills.prototype = {
 
 	'current_payments' : [],
 
+	'refresh' : function() {
+		alert('refresh called');
+	},
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -59,15 +63,21 @@ patron.bills.prototype = {
 					'cmd_bill_wizard' : [
 						['command'],
 						function() { 
-							JSAN.use('util.window');
-							var w = new util.window();
-							w.open(
-								urls.remote_patron_bill_wizard
-									+ '?session=' + window.escape(obj.session)
-									+ '&patron_id=' + window.escape(obj.patron_id),
-								'billwizard',
-								'chrome,resizable,modal'
-							);
+							try {
+								JSAN.use('util.window');
+								var win = new util.window();
+								var w = win.open(
+									urls.remote_patron_bill_wizard
+										+ '?session=' + window.escape(obj.session)
+										+ '&patron_id=' + window.escape(obj.patron_id),
+									'billwizard',
+									'chrome,resizable,modal'
+								);
+								obj.refresh();
+							} catch(E) {
+								obj.error.sdump('D_ERROR',E);
+								alert(E);
+							}
 						}
 					],
 					'cmd_change_to_credit' : [
@@ -163,6 +173,7 @@ patron.bills.prototype = {
 
 		JSAN.use('util.money');
 
+		obj.current_payments = [];
 		//FIXME//.bills virtual field
 		for (var i = 0; i < obj.bills.length; i++) {
 			var rnode = obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } }, 'attributes' : { 'allowevents' : true } } );
@@ -202,7 +213,7 @@ patron.bills.prototype = {
 		try {
 			if ( obj.pay( payment_blob ) ) {
 
-				//FIXME//Refresh
+				obj.refresh();
 
 			} else {
 
@@ -287,11 +298,15 @@ patron.bills.prototype = {
 
 	'retrieve' : function() {
 		var obj = this;
-		obj.bills = obj.network.request(
-			api.fm_mobts_having_balance.app,
-			api.fm_mobts_having_balance.method,
-			[ obj.session, obj.patron_id ]
-		);
+		if (typeof window.bills != 'undefined') {
+			obj.bills = window.bills;
+		} else {
+			obj.bills = obj.network.request(
+				api.fm_mobts_having_balance.app,
+				api.fm_mobts_having_balance.method,
+				[ obj.session, obj.patron_id ]
+			);
+		}
 	},
 
 	'xact_dates_box' : function ( mobts ) {
