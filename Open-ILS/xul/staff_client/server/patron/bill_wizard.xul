@@ -18,7 +18,7 @@
 
 <window id="patron_bill" title="Bill Patron Wizard"
 	orient="vertical" style="overflow: auto"
-	onload="patron_bill_init()" width="800" height="600"
+	onload="patron_bill_init()"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -76,7 +76,7 @@
 					api.fm_mg_create.app,
 					api.fm_mg_create.method,
 					[ g.session, grocery ]
-				)[0];
+				);
 				if (mg_id) {
 					var billing = new mb();
 						billing.isnew('1');
@@ -88,7 +88,7 @@
 						api.fm_mb_create.app,
 						api.fm_mb_create.method,
 						[ g.session, billing ]
-					)[0];
+					);
 					if (mb_id) {
 					} else {
 						throw('mb_id = ' + mb_id);
@@ -156,7 +156,10 @@
 				<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
 			</rows>
 		</grid>
-		<button label="Submit this Bill" oncommand="patron_bill_finish()"/>
+		<hbox>
+			<spacer flex="1"/>
+			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
+			<button label="Submit this Bill" oncommand="patron_bill_finish()" accesskey="S"/>
 	</groupbox>
 
 </window>
