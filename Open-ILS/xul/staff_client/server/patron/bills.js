@@ -41,7 +41,7 @@ patron.bills.prototype = {
 						},
 						{
 							'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 0, 
-							'render' : 'document.createElement("textbox")'
+							'render' : 'obj.payment_box()'
 						}
 				],
 				'map_row_to_column' : obj.gen_map_row_to_column(),
@@ -86,6 +86,7 @@ patron.bills.prototype = {
 							JSAN.use('util.money');
 							var tb = ev.target;
 							tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
+							tb.setAttribute('value', tb.value );
 							var total = util.money.dollars_float_to_cents_integer( tb.value );
 							for (var i = 0; i < obj.current_payments.length; i++) {
 								var bill = obj.current_payments[i];
@@ -101,6 +102,7 @@ patron.bills.prototype = {
 								} else {
 									bill.textbox.value = '0.00';
 								}
+								bill.textbox.setAttribute('value',bill.textbox.value);
 							}
 							obj.update_payment_applied();
 						} 
@@ -125,7 +127,12 @@ patron.bills.prototype = {
 								proposed_credit = real_change - proposed_change;
 							}
 							tb.value = util.money.cents_as_dollars( proposed_change );
+							tb.setAttribute('value',tb.value);
 							obj.controller.view.bill_credit_amount.value = util.money.cents_as_dollars( proposed_credit );
+							obj.controller.view.bill_credit_amount.setAttribute(
+								'value',
+								obj.controller.view.bill_credit_amount.value
+							);
 						}
 					],
 					'bill_credit_amount' : [
@@ -155,21 +162,9 @@ patron.bills.prototype = {
 			total_owed += util.money.dollars_float_to_cents_integer( bo );
 			var id = obj.bills[i].id();
 			obj.current_payments.push( { 'mobts_id' : id, 'balance_owed' : bo, 'checkbox' : cb, 'textbox' : tb, } );
-			tb.addEventListener(
-				'change',
-				function(ev) {
-					JSAN.use('util.money');
-					tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
-					if ( util.money.dollars_float_to_cents_integer( tb.value ) >
-						util.money.dollars_float_to_cents_integer( bo ) ) {
-						tb.value = bo;
-					}
-					obj.update_payment_applied();	
-				},
-				false
-			);
 		}
 		obj.controller.view.bill_total_owed.value = util.money.cents_as_dollars( total_owed );
+		obj.controller.view.bill_total_owed.setAttribute('value',obj.controller.view.bill_total_owed.value);
 	},
 
 	/*****************************************************************************************************************************/
@@ -275,7 +270,9 @@ patron.bills.prototype = {
 			proposed_credit = real_change - proposed_change;
 		}
 		tb.value = util.money.cents_as_dollars( proposed_change );
+		tb.setAttribute('value',tb.value);
 		obj.controller.view.bill_credit_amount.value = util.money.cents_as_dollars( proposed_credit );
+		obj.controller.view.bill_credit_amount.setAttribute('value',obj.controller.view.bill_credit_amount.value);
 	},
 
 	'retrieve' : function() {
@@ -440,6 +437,14 @@ patron.bills.prototype = {
 				);
 
 		return vbox;
+	},
+
+	'payment_box' : function() {
+		var vb = document.createElement('vbox');
+		var tb = document.createElement('textbox');
+		tb.setAttribute('readonly','true');
+		vb.appendChild(tb);
+		return vb;
 	},
 	
 	'gen_map_row_to_column' : function() {
