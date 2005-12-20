@@ -34,6 +34,8 @@ function main_init() {
 		JSAN.use('util.window');
 		G.window = new util.window();
 
+		G.window.open(urls.remote_debug_console,'testconsole','chrome,resizable');
+
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( { 'window' : mw } );
 
