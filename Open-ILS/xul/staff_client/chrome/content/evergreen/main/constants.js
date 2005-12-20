@@ -21,6 +21,7 @@ var api = {
 	'fm_ccs_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all' },
 	'fm_cit_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
 	'fm_cst_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },
+	'fm_mb_create' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.create' },
 	'fm_mb_retrieve_via_mbts_id' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.retrieve.all' },
 	'fm_mobts_having_balance' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
 	'fm_pgt_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' },
