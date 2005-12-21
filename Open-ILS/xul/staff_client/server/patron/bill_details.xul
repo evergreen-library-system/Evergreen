@@ -47,6 +47,7 @@
 				var mbts_id = g.cgi.param('mbts_id');
 				var session = g.cgi.param('session');
 
+				var rows = document.getElementById('g_rows');
 
 				var mb_list = g.network.request(
 					api.fm_mb_retrieve_via_mbts_id.app,
@@ -54,11 +55,13 @@
 					[ session, mbts_id ]
 				);
 
-				var rows = document.getElementById('bill_rows');
 				for (var i = 0; i < mb_list.length; i++) {
 
 					var row = document.createElement('row');
-					rows.appendChild(row);
+					rows.insertBefore( row, document.getElementById('ref0') );
+
+						var c0 = document.createElement('spacer');
+						row.appendChild(c0);
 
 						var c1 = document.createElement('label');
 						row.appendChild(c1);
@@ -88,11 +91,13 @@
 					[ session, mbts_id ]
 				);
 
-				var rows = document.getElementById('pay_rows');
 				for (var i = 0; i < mp_list.length; i++) {
 
 					var row = document.createElement('row');
-					rows.appendChild(row);
+					rows.insertBefore( row, document.getElementById('ref1') );
+
+						var c0 = document.createElement('spacer');
+						row.appendChild(c0);
 
 						var c1 = document.createElement('label');
 						row.appendChild(c1);
@@ -132,39 +137,32 @@
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
 			<caption label="Full Details"/>
-			<grid>
-				<columns> <column /> <column /> </columns>
-				<rows>
+			<grid flex="1">
+				<columns> <column flex="0" /><column flex="1" /> <column flex="1" /> <column flex="1" /> <column flex="1" /> </columns>
+				<rows id="g_rows">
 					<row>
 						<label value="Bills" class="header" style="color: red;" />
-						<grid>
-							<columns> <column /> <column /> <column /> <column /> </columns>
-							<rows id="bill_rows">
-								<row>
-									<label value="Voided" class="header" />
-									<label value="When" class="header" />
-									<label value="Type" class="header" />
-									<label value="Amount" class="header" />
-									<label value="Note" class="header" />
-								</row>
-							</rows>
-						</grid>
 					</row>
 					<row>
-						<label value="Payments" class="header" style="color: green;" />
-						<grid>
-							<columns> <column /> <column /> <column /> <column /> </columns>
-							<rows id="pay_rows">
-								<row>
-									<label value="Voided" class="header" />
-									<label value="When" class="header" />
-									<label value="Type" class="header" />
-									<label value="Amount" class="header" />
-									<label value="Note" class="header" />
-								</row>
-							</rows>
-						</grid>
+						<spacer />
+						<label value="Voided" class="header" />
+						<label value="When" class="header" />
+						<label value="Type" class="header" />
+						<label value="Amount" class="header" />
+						<label value="Note" class="header" />
 					</row>
+					<row id="ref0">
+						<label value="Payments" class="header" style="color: green;" />
+					</row>
+					<row>
+						<spacer />
+						<label value="Voided" class="header" />
+						<label value="When" class="header" />
+						<label value="Type" class="header" />
+						<label value="Amount" class="header" />
+						<label value="Note" class="header" />
+					</row>
+					<row id="ref1" />
 				</rows>
 			</grid>
 		</groupbox>
