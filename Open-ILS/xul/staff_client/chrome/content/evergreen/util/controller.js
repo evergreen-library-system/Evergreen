@@ -31,11 +31,12 @@ util.controller.prototype = {
 							case 'render':
 								this.render_list.push( [i, this.control_map[i][1](cmd)] ); 
 							break;
-							case 'on_command':
+							case 'oncommand':
 								if (!this.window_knows_me_by) 
 									throw('util.controller: on_command requires window_knows_me_by');
-								var s = this.window_knows_me_by + ".cmds." + i + "()";
-								cmd.setAttribute(ev_type, s);	
+								var s = 'try{'+this.window_knows_me_by+".cmds."+i+"();}catch(E){alert(E);}";
+								cmd.setAttribute(ev_type, s);
+								this.cmds[i] = this.control_map[i][1];
 							break;
 							default: cmd.addEventListener(ev_type,this.control_map[i][1],false);
 						}
