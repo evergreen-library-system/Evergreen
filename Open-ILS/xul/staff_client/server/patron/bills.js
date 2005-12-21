@@ -19,15 +19,15 @@ patron.bills.prototype = {
 	'current_payments' : [],
 
 	'refresh' : function() {
-		alert('refresh called');
+		location.href = location.href;
 	},
 
 	'init' : function( params ) {
 
 		var obj = this;
 
-		obj.session = params['session'];
-		obj.patron_id = params['patron_id'];
+		obj.session = obj.session || params['session'];
+		obj.patron_id = obj.patron_id || params['patron_id'];
 
 		JSAN.use('util.list'); obj.list = new util.list('bill_list');
 
