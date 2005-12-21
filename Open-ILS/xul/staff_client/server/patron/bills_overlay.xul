@@ -9,7 +9,7 @@
 
 <box id="bills_main" flex="1" orient="vertical" class="my_overflow">
 	<vbox id="bills_top_ui" />
-	<listbox id="bill_list"/>
+	<listbox id="bill_list" flex="1"/>
 </box>
 
 <vbox id="bills_top_ui">
