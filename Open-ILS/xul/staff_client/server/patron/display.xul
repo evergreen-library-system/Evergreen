@@ -63,6 +63,7 @@
 		<command id="cmd_patron_bills" />
 		<command id="cmd_patron_edit" />
 		<command id="cmd_patron_info" />
+		<command id="cmd_patron_retrieve" />
 	</commandset>
 
 	<box id="patron_display_main" />

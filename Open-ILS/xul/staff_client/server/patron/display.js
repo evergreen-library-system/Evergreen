@@ -51,6 +51,11 @@ patron.display.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
+					'cmd_patron_retrieve' : [
+						['command'],
+						function(ev) {
+						}
+					],
 					'cmd_patron_refresh' : [
 						['command'],
 						function(ev) {
@@ -193,6 +198,7 @@ patron.display.prototype = {
 			obj.summary_window = frame.contentWindow;
 		} else {
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
+			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			var form_frame = obj.left_deck.set_iframe(
 				urls.remote_patron_search_form
 				+'?session=' + window.escape(obj.session),
