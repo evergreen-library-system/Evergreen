@@ -277,6 +277,7 @@ patron.bills.prototype = {
 			obj.controller.view.bill_payment_amount.value = util.money.cents_as_dollars( total_applied );
 		}
 		obj.controller.view.bill_payment_applied.value = util.money.cents_as_dollars( total_applied );
+		obj.controller.view.bill_payment_applied.setAttribute('value', obj.controller.view.bill_payment_applied.value )
 		obj.controller.view.bill_credit_amount.value = '';
 		if (total_payment > total_applied ) {
 			obj.controller.view.bill_change_amount.value = util.money.cents_as_dollars( total_payment - total_applied);
