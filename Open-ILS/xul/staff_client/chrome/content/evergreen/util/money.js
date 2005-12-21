@@ -53,5 +53,9 @@ util.money.cents_as_dollars = function( cents ) {
 	return cents.substr(0,cents.length-2) + '.' + cents.substr(cents.length - 2);
 }
 
+util.money.sanitize = function( money ) {
+	return util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( money ) );
+}
+
 
 dump('exiting util/money.js\n');

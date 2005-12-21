@@ -11,6 +11,8 @@ caption { font-weight: bold; }
 .text_center { text-align: center; }
 .text_justify { text-align: justify; }
 
+.header { font-weight: bold; }
+
 .tan { background-color: #D2B48C; }
 .sandy_brown { background-color: #F4A460; }
 .peach_puff { background-color: #FFDAB9; }
