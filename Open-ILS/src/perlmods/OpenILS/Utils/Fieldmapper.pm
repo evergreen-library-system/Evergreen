@@ -348,6 +348,13 @@ sub real_fields {
 	return @f;
 }
 
+sub has_field {
+	my $self = shift;
+	my $field = shift;
+	return 1 if grep { $_ eq $field } keys %{$$fieldmap{$class_name}{fields}};
+	return 0;
+}
+
 sub properties {
 	my $self = shift;
 	my $class_name = $self->class_name;
