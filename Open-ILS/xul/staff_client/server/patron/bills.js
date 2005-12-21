@@ -3,9 +3,13 @@ dump('entering patron.bills.js\n');
 if (typeof patron == 'undefined') patron = {};
 patron.bills = function (params) {
 
-	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('util.network'); this.network = new util.network();
-	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
+	try { JSAN.use('util.error'); this.error = new util.error(); } catch(E) { alert(E); }
+	try { JSAN.use('util.network'); this.network = new util.network(); } catch(E) { alert(E); }
+	try { 
+		this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'}); 
+	} catch(E) { 
+		alert(E); 
+	}
 }
 
 patron.bills.prototype = {
@@ -227,11 +231,12 @@ patron.bills.prototype = {
 	},
 
 	'pay' : function(payment_blob) {
+		var obj = this;
 		try {
-			var robj = this.network.retrieve(
+			var robj = obj.network.request(
 				api.bill_pay.app,	
 				api.bill_pay.method,
-				[ this.session, payment_blob ]
+				[ obj.session, payment_blob ]
 			);
 			if (robj && robj.ilsevent && robj.ilsevent == 0) {
 				return true;
@@ -239,7 +244,7 @@ patron.bills.prototype = {
 				throw robj;
 			}
 		} catch(E) {
-			this.error.sdump('D_ERROR','patron.bills.pay: ' + E);
+			obj.error.sdump('D_ERROR','patron.bills.pay: ' + E);
 			return false;
 		}
 	},
