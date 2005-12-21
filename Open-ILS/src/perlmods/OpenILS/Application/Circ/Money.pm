@@ -66,6 +66,10 @@ sub make_payments {
 	my $userid	= $payments->{userid};
 	my $note		= $payments->{note};
 	my $cc_type = $payments->{cc_type} || 'n/a';
+	my $cc_number = $payments->{cc_number} || 'n/a';
+	my $expire_month = $payments->{expire_month};
+	my $expire_year = $payments->{expire_year};
+	my $approval_code = $payments->{approval_code} || 'n/a';
 	my $check_number = $payments->{check_number} || 'n/a';
 
 	for my $pay (@{$payments->{payments}}) {
@@ -90,6 +94,10 @@ sub make_payments {
 		$payobj->note($note);
 		if ($payobj->has_field('cash_drawer')) $payobj->cash_drawer($drawer);
 		if ($payobj->has_field('cc_type')) $payobj->cc_type($cc_type);
+		if ($payobj->has_field('cc_number')) $payobj->cc_number($cc_number);
+		if ($payobj->has_field('expire_month')) $payobj->expire_month($expire_month);
+		if ($payobj->has_field('expire_year')) $payobj->expire_year($expire_year);
+		if ($payobj->has_field('approval_code')) $payobj->approval_code($approval_code);
 		if ($payobj->has_field('check_number')) $payobj->check_number($check_number);
 		
 		# update the transaction if it's done 
