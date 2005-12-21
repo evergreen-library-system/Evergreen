@@ -250,7 +250,9 @@ patron.bills.prototype = {
 				throw robj;
 			}
 		} catch(E) {
-			obj.error.sdump('D_ERROR','patron.bills.pay: ' + E);
+			var error = 'patron.bills.pay: ' + js2JSON(E);
+			obj.error.sdump('D_ERROR',error);
+			alert(error);
 			return false;
 		}
 	},

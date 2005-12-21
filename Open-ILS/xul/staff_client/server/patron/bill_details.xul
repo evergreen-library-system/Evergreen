@@ -62,24 +62,24 @@
 
 						var c1 = document.createElement('label');
 						row.appendChild(c1);
-						c1.setAttribute('value', mb_list[0].voided() ? 'Yes' : 'No' );
+						c1.setAttribute('value', mb_list[i].voided() ? 'Yes' : 'No' );
 
 						var c2 = document.createElement('label');
 						row.appendChild(c2);
-						c2.setAttribute('value', util.date.formatted_date( mb_list[0].billing_ts(),'%F' ));
+						c2.setAttribute('value', util.date.formatted_date( mb_list[i].billing_ts(),'' ));
 
 						var c3 = document.createElement('label');
 						row.appendChild(c3);
-						c3.setAttribute('value', mb_list[0].billing_type());
+						c3.setAttribute('value', mb_list[i].billing_type());
 
 						var c4 = document.createElement('label');
 						row.appendChild(c4);
-						c4.setAttribute('value', util.money.sanitize( mb_list[0].amount() ) );
+						c4.setAttribute('value', util.money.sanitize( mb_list[i].amount() ) );
 						c4.setAttribute('class','text-right');
 
 						var c5 = document.createElement('label');
 						row.appendChild(c5);
-						c5.setAttribute('value', mb_list[0].note());
+						c5.setAttribute('value', mb_list[i].note());
 				}
 
 				var mp_list = g.network.request(
@@ -96,25 +96,25 @@
 
 						var c1 = document.createElement('label');
 						row.appendChild(c1);
-						//c1.setAttribute('value', mp_list[0].voided() ? 'Yes' : 'No' );
+						//c1.setAttribute('value', mp_list[i].voided() ? 'Yes' : 'No' );
 						c1.setAttribute('value', 'No' );
 
 						var c2 = document.createElement('label');
 						row.appendChild(c2);
-						c2.setAttribute('value', util.date.formatted_date( mp_list[0].payment_ts(),'%F' ));
+						c2.setAttribute('value', util.date.formatted_date( mp_list[i].payment_ts(),'' ));
 
 						var c3 = document.createElement('label');
 						row.appendChild(c3);
-						c3.setAttribute('value', mp_list[0].payment_type());
+						c3.setAttribute('value', mp_list[i].payment_type());
 
 						var c4 = document.createElement('label');
 						row.appendChild(c4);
-						c4.setAttribute('value', util.money.sanitize( mp_list[0].amount() ) );
+						c4.setAttribute('value', util.money.sanitize( mp_list[i].amount() ) );
 						c4.setAttribute('class','text-right');
 
 						var c5 = document.createElement('label');
 						row.appendChild(c5);
-						c5.setAttribute('value', mp_list[0].note());
+						c5.setAttribute('value', mp_list[i].note());
 				}
 
 	
