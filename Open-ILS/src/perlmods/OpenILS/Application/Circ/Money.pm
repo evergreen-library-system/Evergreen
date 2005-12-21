@@ -65,6 +65,8 @@ sub make_payments {
 	my $drawer	= $payments->{cash_drawer};
 	my $userid	= $payments->{userid};
 	my $note		= $payments->{note};
+	my $cc_type = $payments->{cc_type} || 'n/a';
+	my $check_number = $payments->{check_number} || 'n/a';
 
 	for my $pay (@{$payments->{payments}}) {
 
@@ -86,7 +88,9 @@ sub make_payments {
 		$payobj->accepting_usr($user->id);
 		$payobj->xact($transid);
 		$payobj->note($note);
-		$payobj->cash_drawer($drawer);
+		if ($payobj->has_field('cash_drawer')) $payobj->cash_drawer($drawer);
+		if ($payobj->has_field('cc_type')) $payobj->cc_type($cc_type);
+		if ($payobj->has_field('check_number')) $payobj->check_number($check_number);
 		
 		# update the transaction if it's done 
 		if( ($trans->balance_owed - $amount) <= 0 ) {
