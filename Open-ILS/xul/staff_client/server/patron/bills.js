@@ -97,7 +97,7 @@ patron.bills.prototype = {
 					'cmd_bill_apply_payment' : [
 						['command'],
 						function() {
-							obj.apply_payment();
+							try { obj.apply_payment(); } catch(E) { alert(E); }
 						}
 					],
 					'bill_total_owed' : [
@@ -201,8 +201,31 @@ patron.bills.prototype = {
 	'apply_payment' : function() {
 		var obj = this;
 		var payment_blob = {};
+		JSAN.use('util.window');
+		var win = new util.window();
+		switch(obj.controller.view.payment_type.value) {
+			case 'credit_card_payment' :
+				var w = win.open(
+					urls.remote_patron_bill_cc_info,
+					'billccinfo',
+					'chrome,resizable,modal'
+				);
+				obj.OpenILS.data.stash_retrieve();
+				payment_blob = JSON2js( obj.OpenILS.data.temp );
+			break;
+			case 'check_payment' :
+				var w = win.open(
+					urls.remote_patron_bill_check_info,
+					'billccinfo',
+					'chrome,resizable,modal'
+				);
+				obj.OpenILS.data.stash_retrieve();
+				payment_blob = JSON2js( obj.OpenILS.data.temp );
+			break;
+		}
+		if (payment_blob.cancelled == 'true') { alert('cancelled'); return; }
 		payment_blob.userid = obj.patron_id;
-		payment_blob.note = '';
+		payment_blob.note = payment_blob.note || '';
 		payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
 		payment_blob.payment_type = obj.controller.view.payment_type.value;
 		payment_blob.payments = [];
@@ -235,6 +258,7 @@ patron.bills.prototype = {
 	},
 
 	'pay' : function(payment_blob) {
+		alert('payment_blob = ' + payment_blob);
 		var obj = this;
 		try {
 			var robj = obj.network.request(

@@ -45,6 +45,8 @@ var urls = {
 	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
 	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul',
 	'remote_patron_bills' : '/xul/server/patron/bills.xul',
+	'remote_patron_bill_cc_info' : '/xul/server/patron/bill_cc_info.xul',
+	'remote_patron_bill_check_info' : '/xul/server/patron/bill_check_info.xul',
 	'remote_patron_bill_details' : '/xul/server/patron/bill_details.xul',
 	'remote_patron_bill_wizard' : '/xul/server/patron/bill_wizard.xul',
 	'remote_patron_display' : '/xul/server/patron/display.xul',

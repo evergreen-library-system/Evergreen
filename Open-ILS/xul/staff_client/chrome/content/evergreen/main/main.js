@@ -50,7 +50,7 @@ function main_init() {
 			G.OpenILS.data.session = G.auth.session.key;
 			G.OpenILS.data.on_complete = function () {
 				
-				G.OpenILS.data.stash('list','hash');
+				G.OpenILS.data.stash('list','hash','temp');
 				G.OpenILS.data._debug_stash();
 
 				G.window.open(urls.remote + urls.remote_menu_frame 

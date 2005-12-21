@@ -14,6 +14,8 @@ OpenILS.data.prototype = {
 	'list' : {},
 	'hash' : {},
 
+	'temp' : '',
+
 	'init' : function (params) {
 
 		try {
