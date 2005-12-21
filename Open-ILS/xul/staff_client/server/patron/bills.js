@@ -10,6 +10,7 @@ patron.bills = function (params) {
 	} catch(E) { 
 		alert(E); 
 	}
+	window.refresh = function() { this.refresh(); }
 }
 
 patron.bills.prototype = {
@@ -77,6 +78,9 @@ patron.bills.prototype = {
 									'billwizard',
 									'chrome,resizable,modal'
 								);
+								if (typeof window.display_refresh == 'function') {
+									try { window.display_refresh(); } catch(E) { obj.error.sdump('D_ERROR',E); }
+								}
 								obj.refresh();
 							} catch(E) {
 								obj.error.sdump('D_ERROR',E);
