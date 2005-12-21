@@ -38,6 +38,7 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
+				JSAN.use('util.money');
 
 				g.error.sdump('D_TRACE','my_init() for bill_details.xul');
 
@@ -53,7 +54,7 @@
 					[ session, mbts_id ]
 				);
 
-				var rows = document.getElementById('g_rows');
+				var rows = document.getElementById('bill_rows');
 				for (var i = 0; i < mb_list.length; i++) {
 
 					var row = document.createElement('row');
@@ -73,11 +74,47 @@
 
 						var c4 = document.createElement('label');
 						row.appendChild(c4);
-						c4.setAttribute('value', mb_list[0].amount());
+						c4.setAttribute('value', util.money.sanitize( mb_list[0].amount() ) );
+						c4.setAttribute('class','text-right');
 
 						var c5 = document.createElement('label');
 						row.appendChild(c5);
 						c5.setAttribute('value', mb_list[0].note());
+				}
+
+				var mp_list = g.network.request(
+					api.fm_mp_retrieve_via_mbts_id.app,
+					api.fm_mp_retrieve_via_mbts_id.method,
+					[ session, mbts_id ]
+				);
+
+				var rows = document.getElementById('pay_rows');
+				for (var i = 0; i < mp_list.length; i++) {
+
+					var row = document.createElement('row');
+					rows.appendChild(row);
+
+						var c1 = document.createElement('label');
+						row.appendChild(c1);
+						//c1.setAttribute('value', mp_list[0].voided() ? 'Yes' : 'No' );
+						c1.setAttribute('value', 'No' );
+
+						var c2 = document.createElement('label');
+						row.appendChild(c2);
+						c2.setAttribute('value', util.date.formatted_date( mp_list[0].payment_ts(),'%F' ));
+
+						var c3 = document.createElement('label');
+						row.appendChild(c3);
+						c3.setAttribute('value', mp_list[0].payment_type());
+
+						var c4 = document.createElement('label');
+						row.appendChild(c4);
+						c4.setAttribute('value', util.money.sanitize( mp_list[0].amount() ) );
+						c4.setAttribute('class','text-right');
+
+						var c5 = document.createElement('label');
+						row.appendChild(c5);
+						c5.setAttribute('value', mp_list[0].note());
 				}
 
 	
@@ -96,9 +133,38 @@
 		<groupbox orient="vertical" flex="1">
 			<caption label="Full Details"/>
 			<grid>
-				<columns> <column /> <column /> <column /> <column /> </columns>
-				<rows id="g_rows">
-					<row><label value="Voided" /><label value="When"/><label value="Type" /><label value="Amount" /><label value="Note"/></row>
+				<columns> <column /> <column /> </columns>
+				<rows>
+					<row>
+						<label value="Bills" class="header" style="color: red;" />
+						<grid>
+							<columns> <column /> <column /> <column /> <column /> </columns>
+							<rows id="bill_rows">
+								<row>
+									<label value="Voided" class="header" />
+									<label value="When" class="header" />
+									<label value="Type" class="header" />
+									<label value="Amount" class="header" />
+									<label value="Note" class="header" />
+								</row>
+							</rows>
+						</grid>
+					</row>
+					<row>
+						<label value="Payments" class="header" style="color: green;" />
+						<grid>
+							<columns> <column /> <column /> <column /> <column /> </columns>
+							<rows id="pay_rows">
+								<row>
+									<label value="Voided" class="header" />
+									<label value="When" class="header" />
+									<label value="Type" class="header" />
+									<label value="Amount" class="header" />
+									<label value="Note" class="header" />
+								</row>
+							</rows>
+						</grid>
+					</row>
 				</rows>
 			</grid>
 		</groupbox>
