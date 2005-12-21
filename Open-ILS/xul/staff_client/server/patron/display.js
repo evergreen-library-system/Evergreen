@@ -160,6 +160,13 @@ patron.display.prototype = {
 
 		if (obj.barcode) {
 			obj.controller.view.PatronNavBar.selectedIndex = 1;
+			obj.controller.view.cmd_patron_refresh.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_checkout.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_items.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_holds.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_bills.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_edit.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
 			var frame = obj.left_deck.set_iframe(
 				urls.remote_patron_summary
@@ -169,6 +176,13 @@ patron.display.prototype = {
 				{
 					'on_finished' : function(patron) {
 						obj.patron = patron; obj.controller.render();
+						obj.controller.view.cmd_patron_refresh.setAttribute('disabled','false');
+						obj.controller.view.cmd_patron_checkout.setAttribute('disabled','false');
+						obj.controller.view.cmd_patron_items.setAttribute('disabled','false');
+						obj.controller.view.cmd_patron_holds.setAttribute('disabled','false');
+						obj.controller.view.cmd_patron_bills.setAttribute('disabled','false');
+						obj.controller.view.cmd_patron_edit.setAttribute('disabled','false');
+						obj.controller.view.cmd_patron_info.setAttribute('disabled','false');
 						if (!obj._checkout_spawned) {
 							spawn_checkout_interface();
 							obj._checkout_spawned = true;
