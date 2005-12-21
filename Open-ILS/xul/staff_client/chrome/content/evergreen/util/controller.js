@@ -14,8 +14,6 @@ util.controller.prototype = {
 
 	'init' : function (params) {
 
-		var obj = this;
-
 		if (typeof params.control_map == 'undefined') throw('util.controller.init: No control_map');
 
 		this.control_map = params.control_map;
@@ -36,7 +34,7 @@ util.controller.prototype = {
 							case 'on_command':
 								if (!this.window_knows_me_by) 
 									throw('util.controller: on_command requires window_knows_me_by');
-								var s = obj.window_knows_me_by + ".cmds." + i + "()";
+								var s = this.window_knows_me_by + ".cmds." + i + "()";
 								cmd.setAttribute(ev_type, s);	
 							break;
 							default: cmd.addEventListener(ev_type,this.control_map[i][1],false);
