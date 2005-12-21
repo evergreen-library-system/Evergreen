@@ -41,7 +41,11 @@
 				g.cgi = new CGI();
 
 				JSAN.use('patron.summary'); g.summary = new patron.summary();
-				g.summary.init( { 'barcode' : g.cgi.param('barcode') , 'session' : g.cgi.param('session') } );
+				g.summary.init( { 
+					'session' : g.cgi.param('session') ,
+					'barcode' : g.cgi.param('barcode') , 
+					'id' : g.cgi.param('id') , 
+				} );
 
 				window.refresh = function () { g.summary.retrieve(); }
 

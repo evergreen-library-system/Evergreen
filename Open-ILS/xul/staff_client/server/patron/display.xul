@@ -41,7 +41,11 @@
 				g.cgi = new CGI();
 
 				JSAN.use('patron.display'); g.patron = new patron.display();
-				g.patron.init( { 'barcode' : g.cgi.param('barcode') , 'session' : g.cgi.param('session') } );
+				g.patron.init( { 
+					'session' : g.cgi.param('session') , 
+					'barcode' : g.cgi.param('barcode') ,
+					'id' : g.cgi.param('id') ,
+				} );
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

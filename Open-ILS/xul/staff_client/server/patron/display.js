@@ -11,12 +11,15 @@ patron.display = function (params) {
 
 patron.display.prototype = {
 
+	'retrieve_ids' : [],
+
 	'init' : function( params ) {
 
 		var obj = this;
 
 		obj.session = params['session'];
 		obj.barcode = params['barcode'];
+		obj.id = params['id'];
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
@@ -54,6 +57,20 @@ patron.display.prototype = {
 					'cmd_patron_retrieve' : [
 						['command'],
 						function(ev) {
+							if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
+								for (var i = 0; i < obj.retrieve_ids.length; i++) {	
+									try {
+										var url = urls.remote_patron_display 
+											+ '?session=' + window.escape(obj.session) 
+											+ '&id=' + window.escape( obj.retrieve_ids[i] );
+										window.xulG.new_tab(
+											url
+										);
+									} catch(E) {
+										alert(E);
+									}
+								}
+							}
 						}
 					],
 					'cmd_patron_refresh' : [
@@ -163,7 +180,7 @@ patron.display.prototype = {
 			}
 		);
 
-		if (obj.barcode) {
+		if (obj.barcode || obj.id) {
 			obj.controller.view.PatronNavBar.selectedIndex = 1;
 			obj.controller.view.cmd_patron_refresh.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_checkout.setAttribute('disabled','true');
@@ -176,7 +193,8 @@ patron.display.prototype = {
 			var frame = obj.left_deck.set_iframe(
 				urls.remote_patron_summary
 				+'?session=' + window.escape(obj.session)
-				+'&barcode=' + window.escape(obj.barcode), 
+				+'&barcode=' + window.escape(obj.barcode) 
+				+'&id=' + window.escape(obj.id), 
 				{},
 				{
 					'on_finished' : function(patron) {
@@ -205,11 +223,16 @@ patron.display.prototype = {
 				{},
 				{
 					'on_submit' : function(query) {
+						obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 						var list_frame = obj.right_deck.reset_iframe(
 							urls.remote_patron_search_result
 							+'?session=' + window.escape(obj.session) + '&' + query,
 							{},
 							{
+								'on_select' : function(list) {
+									obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
+									obj.retrieve_ids = list;
+								}
 							}
 						);
 						obj.search_result = list_frame.contentWindow;

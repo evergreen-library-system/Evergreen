@@ -38,7 +38,7 @@ main.menu.prototype = {
 			],
 			'cmd_new_tab' : [
 				['oncommand'],
-				function() { obj.new_tab(true); }
+				function() { obj.new_tab(null,{'focus':true},null); }
 			],
 			'cmd_close_tab' : [
 				['oncommand'],
@@ -132,7 +132,7 @@ main.menu.prototype = {
 		obj.controller.view.tabs = obj.controller.view.tabbox.firstChild;
 		obj.controller.view.panels = obj.controller.view.tabbox.lastChild;
 
-		obj.new_tab(true);
+		obj.new_tab(null,{'focus':true},null);
 	},
 
 	'close_tab' : function () {
@@ -204,21 +204,29 @@ main.menu.prototype = {
 		return -1;
 	},
 
-	'new_tab' : function(focus) {
+	'new_tab' : function(url,params,content_params) {
+		if (!url) url = 'data:text/html,<h1>Hello World</h1>'
+		if (!params) params = {};
+		if (!content_params) content_params = {};
 		var tc = this.find_free_tab();
 		if (tc == -1) { return null; } // 9 tabs max
 		var tab = this.controller.view.tabs.childNodes[ tc ];
 		//tab.setAttribute('label','Tab ' + (tc + 1) );
 		tab.hidden = false;
 		try {
-			if (focus) this.controller.view.tabs.selectedIndex = tc;
-			this.set_tab('data:text/html,<h1>Hello World</h1>',{ 'index' : tc });
+			if (params.focus) this.controller.view.tabs.selectedIndex = tc;
+			params.index = tc;
+			this.set_tab(url,params,content_params);
 		} catch(E) {
 			this.error.sdump('D_ERROR',E);
 		}
 	},
 
 	'set_tab' : function(url,params,content_params) {
+		if (!url) url = 'data:text/html,<h1>Hello World</h1>'
+		if (!params) params = {};
+		if (!content_params) content_params = {};
+		var obj = this;
 		var idx = this.controller.view.tabs.selectedIndex;
 		if (params && typeof params.index != 'undefined') idx = params.index;
 		var tab = this.controller.view.tabs.childNodes[ idx ];
@@ -228,17 +236,13 @@ main.menu.prototype = {
 		frame.setAttribute('flex','1');
 		frame.setAttribute('src',url);
 		panel.appendChild(frame);
-		if (content_params) {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				//this.error.sdump('D_MENU', 'frame.contentWindow = ' + frame.contentWindow + '\n');
-				frame.contentWindow.IAMXUL = true;
-				frame.contentWindow.xulG = content_params;
-				//this.error.sdump('D_MENU','content_params ' + js2JSON(content_params) +
-				//'\nframe.contentWindow.xulG = ' + js2JSON(frame.contentWindow.xulG) );
-			} catch(E) {
-				this.error.sdump('D_ERROR', 'main.menu: ' + E);
-			}
+		content_params.new_tab = function(a,b,c) { obj.new_tab(a,b,c); }
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			frame.contentWindow.IAMXUL = true;
+			frame.contentWindow.xulG = content_params;
+		} catch(E) {
+			this.error.sdump('D_ERROR', 'main.menu: ' + E);
 		}
 		return frame;
 	}

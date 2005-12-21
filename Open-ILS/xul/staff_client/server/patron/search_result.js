@@ -47,6 +47,23 @@ patron.search_result.prototype = {
 					row.my.au = au_obj;
 
 					return row;
+				},
+				'on_select' : function(ev) {
+					JSAN.use('util.functional');
+					var sel = obj.list.retrieve_selection();
+					var list = util.functional.map_list(
+						sel,
+						function(o) { return o.getAttribute('retrieve_id'); }
+					);
+					if (typeof obj.on_select == 'function') {
+						obj.on_select(list);
+					}
+					if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
+						obj.error.sdump('D_PATRON','patron.search_result: Calling external .on_select()\n');
+						window.xulG.on_select(list);
+					} else {
+						obj.error.sdump('D_PATRON','patron.search_result: No external .on_select()\n');
+					}
 				}
 			}
 		);

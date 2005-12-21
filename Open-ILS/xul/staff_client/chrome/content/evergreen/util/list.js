@@ -63,6 +63,13 @@ util.list.prototype = {
 			this.node.appendChild(treechildren);
 			this.treechildren = treechildren;
 		}
+		if (typeof params.on_select == 'function') {
+			this.node.addEventListener(
+				'select',
+				params.on_select,
+				false
+			);
+		}
 	},
 
 	'_init_listbox' : function (params) {
@@ -109,6 +116,7 @@ util.list.prototype = {
 		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
 
 		var treeitem = document.createElement('treeitem');
+		treeitem.setAttribute('retrieve_id',params.retrieve_id);
 		this.treechildren.appendChild( treeitem );
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
@@ -237,5 +245,26 @@ util.list.prototype = {
 		this.error.sdump('D_LIST',s);
 	},
 
+	'retrieve_selection' : function(params) {
+		switch(this.node.nodeName) {
+			case 'tree' : return this._retrieve_selection_from_tree(params); break;
+			default: throw('NYI: Need ._retrieve_selection_from_() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_retrieve_selection_from_tree' : function(params) {
+		var list = [];
+		var start = new Object();
+		var end = new Object();
+		var numRanges = this.node.view.selection.getRangeCount();
+		for (var t=0; t<numRanges; t++){
+			this.node.view.selection.getRangeAt(t,start,end);
+			for (var v=start.value; v<=end.value; v++){
+				var i = this.node.contentView.getItemAtIndex(v);
+				list.push( i );
+			}
+		}
+		return list;
+	},
 }
 dump('exiting util.list.js\n');

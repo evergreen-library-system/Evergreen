@@ -17,6 +17,7 @@ patron.summary.prototype = {
 
 		obj.session = params['session'];
 		obj.barcode = params['barcode'];
+		obj.id = params['id'];
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
@@ -431,11 +432,22 @@ patron.summary.prototype = {
 			chain.push(
 				function() {
 					try {
-						var robj = obj.network.request(
-							api.fm_au_retrieve_via_barcode.app,
-							api.fm_au_retrieve_via_barcode.method,
-							[ obj.session, obj.barcode ]
-						);
+						var robj;
+						if (obj.barcode && obj.barcode != 'null') {
+							robj = obj.network.request(
+								api.fm_au_retrieve_via_barcode.app,
+								api.fm_au_retrieve_via_barcode.method,
+								[ obj.session, obj.barcode ]
+							);
+						} else if (obj.id && obj.id != 'null') {
+							robj = obj.network.request(
+								api.fm_au_retrieve_via_id.app,
+								api.fm_au_retrieve_via_id.method,
+								[ obj.session, obj.id ]
+							);
+						} else {
+							throw('summary: No barcode or id');
+						}
 						if (robj) {
 
 							if (instanceOf(robj,au)) {
