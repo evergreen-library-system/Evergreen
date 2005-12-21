@@ -92,13 +92,13 @@ sub make_payments {
 		$payobj->accepting_usr($user->id);
 		$payobj->xact($transid);
 		$payobj->note($note);
-		if ($payobj->has_field('cash_drawer')) $payobj->cash_drawer($drawer);
-		if ($payobj->has_field('cc_type')) $payobj->cc_type($cc_type);
-		if ($payobj->has_field('cc_number')) $payobj->cc_number($cc_number);
-		if ($payobj->has_field('expire_month')) $payobj->expire_month($expire_month);
-		if ($payobj->has_field('expire_year')) $payobj->expire_year($expire_year);
-		if ($payobj->has_field('approval_code')) $payobj->approval_code($approval_code);
-		if ($payobj->has_field('check_number')) $payobj->check_number($check_number);
+		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
+		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
+		if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
+		if ($payobj->has_field('expire_month')) { $payobj->expire_month($expire_month); }
+		if ($payobj->has_field('expire_year')) { $payobj->expire_year($expire_year); }
+		if ($payobj->has_field('approval_code')) { $payobj->approval_code($approval_code); }
+		if ($payobj->has_field('check_number')) { $payobj->check_number($check_number); }
 		
 		# update the transaction if it's done 
 		if( ($trans->balance_owed - $amount) <= 0 ) {
