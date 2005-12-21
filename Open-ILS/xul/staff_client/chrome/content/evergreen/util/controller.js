@@ -10,11 +10,14 @@ util.controller = function () {
 
 util.controller.prototype = {
 
+	'cmds' : {},
+
 	'init' : function (params) {
 
 		if (typeof params.control_map == 'undefined') throw('util.controller.init: No control_map');
 
 		this.control_map = params.control_map;
+		this.window_knows_me_by = params.window_knows_me_by;
 		this.render_list = [];
 		this.view = {};
 		
@@ -27,6 +30,11 @@ util.controller.prototype = {
 						switch(ev_type) {
 							case 'render':
 								this.render_list.push( [i, this.control_map[i][1](cmd)] ); 
+							break;
+							case 'on_command':
+								if (!this.window_knows_me_by) 
+									throw('util.controller: on_command requires window_knows_me_by');
+								cmd.setAttribute(ev_type, this.window_knows_me_by . ".cmds." i . "()");	
 							break;
 							default: cmd.addEventListener(ev_type,this.control_map[i][1],false);
 						}
