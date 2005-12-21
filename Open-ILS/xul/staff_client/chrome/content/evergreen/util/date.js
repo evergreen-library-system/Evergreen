@@ -50,6 +50,7 @@ util.date.formatted_date = function (date,format) {
 	var I = date.getHours(); if (I > 12) I -= 12; I = I.toString();
 	var M = date.getMinutes(); M = M.toString(); if (M.length == 1) M = '0' + M;
 	var s = format;
+	if (s == '') { s = '%F %H:%M'; }
 	s = s.replace( /%m/g, mm );
 	s = s.replace( /%d/g, dd );
 	s = s.replace( /%Y/g, yyyy );
