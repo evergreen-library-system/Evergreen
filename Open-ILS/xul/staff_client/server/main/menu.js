@@ -17,49 +17,44 @@ main.menu.prototype = {
 		var authtime = params['authtime'];
 
 		var obj = this;
-		obj.view = {};
-
-		obj.view.tabbox = obj.w.document.getElementById('main_tabbox');
-		obj.view.tabs = obj.view.tabbox.firstChild;
-		obj.view.panels = obj.view.tabbox.lastChild;
 
 		var cmd_map = {
 			'cmd_broken' : [
-				['command','keypress'],
+				['oncommand'],
 				function() { alert('Not Yet Implemented'); }
 			],
 
 			/* File Menu */
 			'cmd_close_window' : [ 
-				['command','keypress'], 
+				['oncommand'], 
 				function() { obj.w.close(); } 
 			],
 			'cmd_new_window' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.window.open(urls.remote_menu_frame,'test' + 
 						obj.window.appshell_name_increment++ ,'chrome'); 
 				}
 			],
 			'cmd_new_tab' : [
-				['command','keypress'],
+				['oncommand'],
 				function() { obj.new_tab(true); }
 			],
 			'cmd_close_tab' : [
-				['command','keypress'],
+				['oncommand'],
 				function() { obj.close_tab(); }
 			],
 
 			/* Search Menu */
 			'cmd_patron_search' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.remote_patron_display 
 						+ '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_search_opac' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
 					obj.set_tab(urls.xul_opac_wrapper,{},content_params);
@@ -69,19 +64,19 @@ main.menu.prototype = {
 
 			/* Circulation Menu */
 			'cmd_circ_checkin' : [
-				['command','keypress'],
+				['oncommand'],
 				function() { 
 					obj.set_tab(urls.remote_checkin + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
-				['command','keypress'],
+				['oncommand'],
 				function() { 
 					obj.set_tab(urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
-				['command','keypress'],
+				['oncommand'],
 				function() { 
 					obj.set_tab(urls.remote_hold_capture + '?session='+obj.w.escape(session),{},{});
 				}
@@ -90,37 +85,37 @@ main.menu.prototype = {
 
 			/* Admin menu */
 			'cmd_test_html' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.test_html + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.test_xul + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_console' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.remote_debug_console,{},{});
 				}
 			],
 			'cmd_shell' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.remote_debug_shell,{},{});
 				}
 			],
 			'cmd_xuleditor' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.remote_debug_xuleditor,{},{});
 				}
 			],
 			'cmd_fieldmapper' : [
-				['command','keypress'],
+				['oncommand'],
 				function() {
 					obj.set_tab(urls.remote_debug_fieldmapper,{},{});
 				}
@@ -128,28 +123,27 @@ main.menu.prototype = {
 
 		};
 
-		for (var i in cmd_map) {
-			var cmd = this.w.document.getElementById(i);
-			if (cmd) {
-				for (var j in cmd_map[i][0]) {
-					cmd.addEventListener(cmd_map[i][0][j],cmd_map[i][1],false);
-				}
-			}
-			obj.view[i] = cmd;
-		}
+		JSAN.use('util.controller');
+		var cmd;
+		obj.controller = new util.controller();
+		obj.controller.init( { 'window_knows_me_by' : 'g.menu.controller', 'control_map' : cmd_map } );
+
+		obj.controller.view.tabbox = obj.w.document.getElementById('main_tabbox');
+		obj.controller.view.tabs = obj.controller.view.tabbox.firstChild;
+		obj.controller.view.panels = obj.controller.view.tabbox.lastChild;
 
 		obj.new_tab(true);
 	},
 
 	'close_tab' : function () {
-		var idx = this.view.tabs.selectedIndex;
+		var idx = this.controller.view.tabs.selectedIndex;
 		if (idx == 0) {
 			try {
-				this.view.tabs.advanceSelectedTab(+1);
+				this.controller.view.tabs.advanceSelectedTab(+1);
 			} catch(E) {
 				this.error.sdump('D_TAB','failed tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
 				try {
-					this.view.tabs.advanceSelectedTab(-1);
+					this.controller.view.tabs.advanceSelectedTab(-1);
 				} catch(E) {
 					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(-1):'+
 						js2JSON(E) + '\n');
@@ -157,11 +151,11 @@ main.menu.prototype = {
 			}
 		} else {
 			try {
-				this.view.tabs.advanceSelectedTab(-1);
+				this.controller.view.tabs.advanceSelectedTab(-1);
 			} catch(E) {
 				this.error.sdump('D_TAB','failed tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
 				try {
-					this.view.tabs.advanceSelectedTab(+1);
+					this.controller.view.tabs.advanceSelectedTab(+1);
 				} catch(E) {
 					this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(+1):'+
 						js2JSON(E) + '\n');
@@ -170,15 +164,15 @@ main.menu.prototype = {
 
 		}
 		
-		this.error.sdump('D_TAB','\tnew tabbox.selectedIndex = ' + this.view.tabbox.selectedIndex + '\n');
+		this.error.sdump('D_TAB','\tnew tabbox.selectedIndex = ' + this.controller.view.tabbox.selectedIndex + '\n');
 
-		this.view.tabs.childNodes[ idx ].hidden = true;
+		this.controller.view.tabs.childNodes[ idx ].hidden = true;
 		this.error.sdump('D_TAB','tabs.childNodes[ ' + idx + ' ].hidden = true;\n');
 
 		// Make sure we keep at least one tab open.
 		var tab_flag = true;
-		for (var i = 0; i < this.view.tabs.childNodes.length; i++) {
-			var tab = this.view.tabs.childNodes[i];
+		for (var i = 0; i < this.controller.view.tabs.childNodes.length; i++) {
+			var tab = this.controller.view.tabs.childNodes[i];
 			if (!tab.hidden)
 				tab_flag = false;
 		}
@@ -187,23 +181,23 @@ main.menu.prototype = {
 
 	'find_free_tab' : function() {
 		var last_not_hidden = -1;
-		for (var i = 0; i<this.view.tabs.childNodes.length; i++) {
-			var tab = this.view.tabs.childNodes[i];
+		for (var i = 0; i<this.controller.view.tabs.childNodes.length; i++) {
+			var tab = this.controller.view.tabs.childNodes[i];
 			if (!tab.hidden)
 				last_not_hidden = i;
 		}
-		if (last_not_hidden == this.view.tabs.childNodes.length - 1)
+		if (last_not_hidden == this.controller.view.tabs.childNodes.length - 1)
 			last_not_hidden = -1;
 		// If the one next to last_not_hidden is hidden, we want it.
 		// Basically, we fill in tabs after existing tabs for as 
 		// long as possible.
 		var idx = last_not_hidden + 1;
-		var candidate = this.view.tabs.childNodes[ idx ];
+		var candidate = this.controller.view.tabs.childNodes[ idx ];
 		if (candidate.hidden)
 			return idx;
 		// Alright, find the first hidden then
-		for (var i = 0; i<this.view.tabs.childNodes.length; i++) {
-			var tab = this.view.tabs.childNodes[i];
+		for (var i = 0; i<this.controller.view.tabs.childNodes.length; i++) {
+			var tab = this.controller.view.tabs.childNodes[i];
 			if (tab.hidden)
 				return i;
 		}
@@ -213,11 +207,11 @@ main.menu.prototype = {
 	'new_tab' : function(focus) {
 		var tc = this.find_free_tab();
 		if (tc == -1) { return null; } // 9 tabs max
-		var tab = this.view.tabs.childNodes[ tc ];
+		var tab = this.controller.view.tabs.childNodes[ tc ];
 		//tab.setAttribute('label','Tab ' + (tc + 1) );
 		tab.hidden = false;
 		try {
-			if (focus) this.view.tabs.selectedIndex = tc;
+			if (focus) this.controller.view.tabs.selectedIndex = tc;
 			this.set_tab('data:text/html,<h1>Hello World</h1>',{ 'index' : tc });
 		} catch(E) {
 			this.error.sdump('D_ERROR',E);
@@ -225,10 +219,10 @@ main.menu.prototype = {
 	},
 
 	'set_tab' : function(url,params,content_params) {
-		var idx = this.view.tabs.selectedIndex;
+		var idx = this.controller.view.tabs.selectedIndex;
 		if (params && typeof params.index != 'undefined') idx = params.index;
-		var tab = this.view.tabs.childNodes[ idx ];
-		var panel = this.view.panels.childNodes[ idx ];
+		var tab = this.controller.view.tabs.childNodes[ idx ];
+		var panel = this.controller.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 		var frame = this.w.document.createElement('iframe');
 		frame.setAttribute('flex','1');
