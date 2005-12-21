@@ -57,7 +57,8 @@ patron.display.prototype = {
 							obj.controller.view.patron_name.setAttribute(
 								'value','Retrieving...'
 							);
-							obj.summary_window.g.summary.retrieve();
+							try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
+							try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
 						}
 					],
 					'cmd_patron_checkout' : [
@@ -201,6 +202,24 @@ patron.display.prototype = {
 	},
 
 	'_checkout_spawned' : false,
+
+	'refresh_deck' : function() {
+		var obj = this;
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		for (var i = 0; i < obj.right_deck.node.childNodes.length; i++) {
+			try {
+
+				var f = obj.right_deck.node.childNodes[i];
+				var w = f.contentWindow;
+				if (typeof w.refresh == 'function') {
+					w.refresh();
+				}
+
+			} catch(E) {
+				dump('refresh_deck: ' + E + '\n');
+			}
+		}
+	},
 }
 
 dump('exiting patron/display.js\n');

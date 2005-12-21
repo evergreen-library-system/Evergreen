@@ -3,14 +3,14 @@ dump('entering patron.bills.js\n');
 if (typeof patron == 'undefined') patron = {};
 patron.bills = function (params) {
 
-	try { JSAN.use('util.error'); this.error = new util.error(); } catch(E) { alert(E); }
-	try { JSAN.use('util.network'); this.network = new util.network(); } catch(E) { alert(E); }
+	var obj = this;
+	try { JSAN.use('util.error'); obj.error = new util.error(); } catch(E) { alert(E); }
+	try { JSAN.use('util.network'); obj.network = new util.network(); } catch(E) { alert(E); }
 	try { 
-		this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'}); 
+		obj.OpenILS = {}; JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'}); 
 	} catch(E) { 
 		alert(E); 
 	}
-	window.refresh = function() { this.refresh(); }
 }
 
 patron.bills.prototype = {
