@@ -258,7 +258,6 @@ patron.bills.prototype = {
 	},
 
 	'pay' : function(payment_blob) {
-		alert('payment_blob = ' + payment_blob);
 		var obj = this;
 		try {
 			var robj = obj.network.request(
