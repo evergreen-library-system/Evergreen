@@ -240,6 +240,8 @@ patron.bills.prototype = {
 			);
 			if (robj && robj.ilsevent && robj.ilsevent == 0) {
 				return true;
+			} else if (robj == 1) {
+				return true;
 			} else {
 				throw robj;
 			}
