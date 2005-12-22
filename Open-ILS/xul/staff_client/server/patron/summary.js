@@ -138,7 +138,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.hold_requests.length
+									obj.patron.hold_requests().length
 								);
 							};
 						}
