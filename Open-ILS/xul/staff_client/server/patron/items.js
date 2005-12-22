@@ -47,7 +47,17 @@ patron.items.prototype = {
 						function() {
 						}
 					],
-					'cmd_item_reprint' : [
+					'cmd_item_renew' : [
+						['command'],
+						function() {
+						}
+					],
+					'cmd_item_checkin' : [
+						['command'],
+						function() {
+						}
+					],
+					'cmd_show_catalog' : [
 						['command'],
 						function() {
 						}

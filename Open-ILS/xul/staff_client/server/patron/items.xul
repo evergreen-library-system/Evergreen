@@ -61,7 +61,9 @@
 
 	<commandset id="items_cmds">
 		<command id="cmd_items_print" />
-		<command id="cmd_items_reprint" />
+		<command id="cmd_items_renew" />
+		<command id="cmd_items_checkin" />
+		<command id="cmd_show_catalog" />
 	</commandset>
 
 	<box id="items_main" />
