@@ -30,6 +30,10 @@
 		label="Show in Catalog"
 		command="cmd_show_catalog"
 	/>
+	<button id="holds_edit"
+		label="Edit"
+		command="cmd_holds_edit"
+	/>
 	<button id="holds_cancel"
 		label="Cancel"
 		command="cmd_holds_cancel"

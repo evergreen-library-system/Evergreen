@@ -61,6 +61,7 @@
 
 	<commandset id="holds_cmds">
 		<command id="cmd_holds_print" />
+		<command id="cmd_holds_edit" />
 		<command id="cmd_holds_cancel" />
 		<command id="cmd_show_catalog" />
 	</commandset>

@@ -73,6 +73,11 @@ patron.holds.prototype = {
 						function() {
 						}
 					],
+					'cmd_holds_edit' : [
+						['command'],
+						function() {
+						}
+					],
 					'cmd_holds_cancel' : [
 						['command'],
 						function() {
