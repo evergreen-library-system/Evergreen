@@ -61,6 +61,18 @@
 			<columns> <column flex="0" /> <column flex="0" /> </columns>
 			<rows>
 				<row>
+					<label value="CC Type"/>
+					<menulist id="cc_type" oncommand="g.payment_blob.cc_type = this.value;">
+						<menupopup>
+							<menuitem label="Visa" value="Visa"/>
+							<menuitem label="Mastercard" value="Mastercard"/>
+							<menuitem label="American Express" value="American Express"/>
+							<menuitem label="Discover" value="Discover"/>
+							<menuitem label="Other" value="Other"/>
+						</menupopup>
+					</menulist>
+				</row>
+				<row>
 					<label value="CC Number"/>
 					<textbox id="cc_number" onchange="g.payment_blob.cc_number = event.target.value"/>
 				</row>
