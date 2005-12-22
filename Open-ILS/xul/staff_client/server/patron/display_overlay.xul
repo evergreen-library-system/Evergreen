@@ -38,6 +38,7 @@
 </deck>
 
 <hbox id="PatronNavBar1">
+	<spacer flex="1"/>
 	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
 		label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
 	<button id="PatronNavBar_checkout" command="cmd_patron_checkout"
