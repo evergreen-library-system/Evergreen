@@ -50,7 +50,7 @@
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" + E + '\n';
+					"system administrator or software developer the following:\npatron/holds.xul\n" + E + '\n';
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -61,7 +61,8 @@
 
 	<commandset id="holds_cmds">
 		<command id="cmd_holds_print" />
-		<command id="cmd_holds_reprint" />
+		<command id="cmd_holds_cancel" />
+		<command id="cmd_show_catalog" />
 	</commandset>
 
 	<box id="holds_main" />

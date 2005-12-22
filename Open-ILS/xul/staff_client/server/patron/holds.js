@@ -68,12 +68,17 @@ patron.holds.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
-					'cmd_item_print' : [
+					'cmd_holds_print' : [
 						['command'],
 						function() {
 						}
 					],
-					'cmd_item_reprint' : [
+					'cmd_holds_cancel' : [
+						['command'],
+						function() {
+						}
+					],
+					'cmd_show_catalog' : [
 						['command'],
 						function() {
 						}
