@@ -335,8 +335,8 @@ patron.bills.prototype = {
 
 	'retrieve' : function() {
 		var obj = this;
-		if (typeof window.bills != 'undefined') {
-			obj.bills = window.bills;
+		if (window.xulG && window.xulG.bills) {
+			obj.bills = window.xulG.bills;
 		} else {
 			obj.bills = obj.network.request(
 				api.fm_mobts_having_balance.app,

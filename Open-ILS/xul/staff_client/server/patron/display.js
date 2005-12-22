@@ -119,7 +119,7 @@ patron.display.prototype = {
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									//FIXME//'holds' : obj.patron.holds()
+									'holds' : obj.patron.hold_requests()
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
@@ -134,7 +134,8 @@ patron.display.prototype = {
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									//FIXME//'bills' : obj.patron.bills()
+									/* FIXME */
+									'bills' : obj.patron.bills
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
