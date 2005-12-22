@@ -6,6 +6,9 @@ caption { font-weight: bold; }
 
 .my_overflow { overflow: scroll; }
 
+iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+.my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+
 .text_left { text-align: left; }
 .text_right { text-align: right; }
 .text_center { text-align: center; }

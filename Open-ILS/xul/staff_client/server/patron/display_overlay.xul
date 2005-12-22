@@ -14,7 +14,7 @@
 			value="No Patron Selected" flex="1"/>
 		<deck id="PatronNavBar" flex="1" class="my_overflow"/>
 	</hbox>
-	<hbox id="PatronNotNavBar" flex="1">
+	<hbox id="PatronNotNavBar" flex="1" class="my_bg">
 		<vbox id="pdm3" flex="1">
 			<deck id="patron_left_deck"/>
 		</vbox>
