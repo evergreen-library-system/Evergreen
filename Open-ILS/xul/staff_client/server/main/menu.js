@@ -237,6 +237,7 @@ main.menu.prototype = {
 		frame.setAttribute('src',url);
 		panel.appendChild(frame);
 		content_params.new_tab = function(a,b,c) { obj.new_tab(a,b,c); }
+		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); }
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			frame.contentWindow.IAMXUL = true;

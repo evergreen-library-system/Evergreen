@@ -46,7 +46,7 @@
 					'barcode' : g.cgi.param('barcode') ,
 					'id' : g.cgi.param('id') ,
 				} );
-	
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" 

@@ -181,6 +181,10 @@ patron.display.prototype = {
 		);
 
 		if (obj.barcode || obj.id) {
+			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+				try { window.xulG.set_tab_name('Retrieving Patron...'); } catch(E) { alert(E); }
+			}
+
 			obj.controller.view.PatronNavBar.selectedIndex = 1;
 			obj.controller.view.cmd_patron_refresh.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_checkout.setAttribute('disabled','true');
@@ -198,7 +202,9 @@ patron.display.prototype = {
 				{},
 				{
 					'on_finished' : function(patron) {
+
 						obj.patron = patron; obj.controller.render();
+
 						obj.controller.view.cmd_patron_refresh.setAttribute('disabled','false');
 						obj.controller.view.cmd_patron_checkout.setAttribute('disabled','false');
 						obj.controller.view.cmd_patron_items.setAttribute('disabled','false');
@@ -206,6 +212,12 @@ patron.display.prototype = {
 						obj.controller.view.cmd_patron_bills.setAttribute('disabled','false');
 						obj.controller.view.cmd_patron_edit.setAttribute('disabled','false');
 						obj.controller.view.cmd_patron_info.setAttribute('disabled','false');
+
+						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+							try { window.xulG.set_tab_name(patron.family_name() + ' : ' + patron.card().barcode() ); } 
+							catch(E) { alert(E); }
+						}
+
 						if (!obj._checkout_spawned) {
 							spawn_checkout_interface();
 							obj._checkout_spawned = true;
@@ -215,6 +227,10 @@ patron.display.prototype = {
 			);
 			obj.summary_window = frame.contentWindow;
 		} else {
+			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+				try { window.xulG.set_tab_name('Patron Search'); } catch(E) { alert(E); }
+			}
+
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			var form_frame = obj.left_deck.set_iframe(

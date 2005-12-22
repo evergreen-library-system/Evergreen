@@ -53,6 +53,10 @@
 					} 
 				);
 
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name('Catalog'); } catch(E) { alert(E); }
+				}
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" + E + '\n';
