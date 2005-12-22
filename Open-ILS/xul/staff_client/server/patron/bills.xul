@@ -48,6 +48,8 @@
 					} 
 				);
 				window.refresh = function() { g.bills.refresh(); }
+
+				document.getElementById('bill_payment_amount').focus();
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

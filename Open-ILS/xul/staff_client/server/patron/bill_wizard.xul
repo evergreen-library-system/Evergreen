@@ -54,6 +54,8 @@
 				document.getElementById('billing_location').setAttribute('value',
 					g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].home_ou() ].name() );
 
+				document.getElementById('bill_amount').focus();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" 
