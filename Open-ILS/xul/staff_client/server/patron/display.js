@@ -73,6 +73,14 @@ patron.display.prototype = {
 							}
 						}
 					],
+					'cmd_search_form' : [
+						['command'],
+						function(ev) {
+							obj.controller.view.cmd_search_form.setAttribute('disabled','true');
+							obj.left_deck.node.selectedIndex = 0;
+							obj.controller.view.patron_name.setAttribute('value','No Patron Selected');
+						}
+					],
 					'cmd_patron_refresh' : [
 						['command'],
 						function(ev) {
@@ -156,7 +164,8 @@ patron.display.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.family_name() + ', ' + obj.patron.first_given_name()
+									obj.patron.family_name() + ', ' + obj.patron.first_given_name() + ' ' +
+									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
 								);
 								e.setAttribute('style','background-color: lime');
 								if (obj.summary_window) {
@@ -214,8 +223,14 @@ patron.display.prototype = {
 						obj.controller.view.cmd_patron_info.setAttribute('disabled','false');
 
 						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-							try { window.xulG.set_tab_name('Patron: ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' + (patron.second_given_name() ? patron.second_given_name() : '' ) ); } 
-							catch(E) { alert(E); }
+							try { 
+								window.xulG.set_tab_name(
+									'Patron: ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' 
+										+ (patron.second_given_name() ? patron.second_given_name() : '' ) 
+								); 
+							} catch(E) { 
+								obj.error.sdump('D_ERROR',E);
+							}
 						}
 
 						if (!obj._checkout_spawned) {
@@ -225,6 +240,7 @@ patron.display.prototype = {
 					}
 				}
 			);
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			obj.summary_window = frame.contentWindow;
 		} else {
 			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
@@ -233,6 +249,7 @@ patron.display.prototype = {
 
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
+			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 			var form_frame = obj.left_deck.set_iframe(
 				urls.remote_patron_search_form
 				+'?session=' + window.escape(obj.session),
@@ -247,14 +264,40 @@ patron.display.prototype = {
 							{
 								'on_select' : function(list) {
 									obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
+									obj.controller.view.cmd_search_form.setAttribute('disabled','false');
 									obj.retrieve_ids = list;
+									obj.controller.view.patron_name.setAttribute('value','Retrieving...');
+									setTimeout(
+										function() {
+											var frame = obj.left_deck.set_iframe(
+												urls.remote_patron_summary
+													+'?session=' + window.escape(obj.session)
+													+'&id=' + window.escape(list[0]), 
+													{},
+													{
+														'on_finished' : function(patron) {
+															obj.patron = patron;
+															obj.controller.render();
+														}
+													}
+											);
+											netscape.security.PrivilegeManager.enablePrivilege(
+												"UniversalXPConnect"
+											);
+											obj.summary_window = frame.contentWindow;
+											obj.patron = obj.summary_window.g.summary.patron;
+											obj.controller.render('patron_name');
+										}, 0
+									);
 								}
 							}
 						);
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						obj.search_result = list_frame.contentWindow;
 					}
 				}
 			);
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			obj.search_window = form_frame.contentWindow;
 			obj._checkout_spawned = true;
 		}
