@@ -214,7 +214,7 @@ patron.display.prototype = {
 						obj.controller.view.cmd_patron_info.setAttribute('disabled','false');
 
 						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-							try { window.xulG.set_tab_name('Patron: ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' + patron.second_given_name() ); } 
+							try { window.xulG.set_tab_name('Patron: ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' + (patron.second_given_name() ? patron.second_given_name() : '' ) ); } 
 							catch(E) { alert(E); }
 						}
 
