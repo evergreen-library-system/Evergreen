@@ -73,7 +73,10 @@
 </grid>
 
 <groupbox id="PatronSummaryContact_groupbox" orient="vertical">
+	<!--
 	<caption label="&staff.patron_display.contact.caption;"/>
+	-->
+	<caption label="ID/Contact Info"/>
 	<hbox id="pdcgbhb1">
 		<grid id="PatronSummaryContact_grid" />
 		<spacer id="pdcgbhbs1" flex="1"/>
