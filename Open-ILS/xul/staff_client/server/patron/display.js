@@ -196,6 +196,13 @@ patron.display.prototype = {
 			}
 
 			obj.controller.view.PatronNavBar.selectedIndex = 1;
+			JSAN.use('util.widgets'); 
+			util.widgets.enable_accesskeys_in_node_and_children(
+				obj.controller.view.PatronNavBar.lastChild
+			);
+			util.widgets.disable_accesskeys_in_node_and_children(
+				obj.controller.view.PatronNavBar.firstChild
+			);
 			obj.controller.view.cmd_patron_refresh.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_checkout.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_items.setAttribute('disabled','true');
@@ -249,6 +256,13 @@ patron.display.prototype = {
 			}
 
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
+			JSAN.use('util.widgets'); 
+			util.widgets.enable_accesskeys_in_node_and_children(
+				obj.controller.view.PatronNavBar.firstChild
+			);
+			util.widgets.disable_accesskeys_in_node_and_children(
+				obj.controller.view.PatronNavBar.lastChild
+			);
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 			var form_frame = obj.left_deck.set_iframe(
