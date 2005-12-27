@@ -1,8 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tables>
 
+	<table id="wide-circulation" partition="false" fact-table="true">
+		<label>Circulation</label>
+		<description>Base table for creating circulation reports</description>
+		<tablename>stats.fleshed_circulation</tablename>
+
+		<fields>
+			<field
+			  name="id"
+			  primary="true"
+			  create-type="serial"
+			  datatype="int">
+				<label>ID</label>
+				<description>Circulation ID</description>
+			</field>
+			<field
+			  name="circ_lib"
+			  datatype="int"
+			  indexed="true">
+				<label>Circulator</label>
+				<description>ID of the Circulating Library</description>
+			</field>
+			<field
+			  name="checkin_lib"
+			  datatype="int"
+			  indexed="true">
+				<label>Checkin Library</label>
+				<description>ID of the Checkin Library</description>
+			</field>
+			<field
+			  name="owning_lib"
+			  datatype="int"
+			  indexed="true">
+				<label>Owner</label>
+				<description>ID of the Owning Library</description>
+			</field>
+			<field
+			  name="start_date_day"
+			  datatype="date">
+				<label>Start Date</label>
+				<description>Date of the copy's cataloging</description>
+			</field>
+			<field
+			  name="start_date_hour"
+			  datatype="timestamptz">
+				<label>Start Date and Hour</label>
+				<description>Date and Hour of the circulation start</description>
+			</field>
+			<field
+			  name="due_date_day"
+			  datatype="date"
+			  indexed="true" >
+				<label>Due Date</label>
+				<description>Day the circulation is due</description>
+			</field>
+			<field
+			  name="due_date_hour"
+			  datatype="timestamptz"
+			  indexed="true" >
+				<label>Due Date and Hour</label>
+				<description>Day and Hour the circulation is due</description>
+			</field>
+			<field
+			  name="due_date"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Due Date</label>
+				<description>Timestamp of the circulation due date</description>
+			</field>
+			<field
+			  name="xact_start"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Start Time</label>
+				<description>Timestamp of the circulation start</description>
+			</field>
+			<field
+			  name="xact_finish"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Finish Time</label>
+				<description>Timestamp of the circulation end</description>
+			</field>
+			<field
+			  name="finish_date_day"
+			  datatype="date">
+				<label>Finsh Date</label>
+				<description>Date of the circulation end</description>
+			</field>
+			<field
+			  name="finish_date_hour"
+			  datatype="timestamptz">
+				<label>Finish Date and Hour</label>
+				<description>Date and Hour of the circulation end</description>
+			</field>
+			<field
+			  name="item_lang"
+			  datatype="text">
+				<label>Language</label>
+				<description>MARC Item Language</description>
+			</field>
+			<field
+			  name="item_form"
+			  datatype="text">
+				<label>Form</label>
+				<description>MARC Item Form of Material</description>
+			</field>
+			<field
+			  name="item_type"
+			  datatype="text">
+				<label>Type</label>
+				<description>MARC Item Type</description>
+			</field>
+			<field
+			  name="call_number_label"
+			  transform-group="call_number"
+			  widget-family="string-input"
+			  datatype="text">
+				<label>Call Number</label>
+				<description>Copy Call Number Label</description>
+			</field>
+		</fields>
+
+		<links>
+			<link
+			  field="start_date_day"
+			  table="generic_day_series"
+			  id="circ_start_day"
+			  key="date"
+			  type="has_a"/>
+			<link
+			  field="start_date_hour"
+			  table="generic_hour_series"
+			  id="circ_start_hour"
+			  key="date_hour"
+			  type="has_a"/>
+			<link
+			  field="finish_date_day"
+			  table="generic_day_series"
+			  id="circ_finish_day"
+			  key="date"
+			  type="has_a"/>
+			<link
+			  field="due_date_hour"
+			  table="generic_hour_series"
+			  id="circ_due_date_hour"
+			  key="date_hour"
+			  type="has_a"/>
+			<link
+			  field="due_date_day"
+			  table="generic_day_series"
+			  id="circ_due_date_day"
+			  key="date"
+			  type="has_a"/>
+			<link
+			  field="finish_date_hour"
+			  table="generic_hour_series"
+			  id="circ_finish_hour"
+			  key="date_hour"
+			  type="has_a"/>
+			<link
+			  field="checkin_lib"
+			  table="org_unit"
+			  id="circ_checkin_lib"
+			  key="id"
+			  type="has_a"/>
+			<link
+			  field="owning_lib"
+			  table="org_unit"
+			  id="circ_owning_lib"
+			  key="id"
+			  type="has_a"/>
+			<link
+			  field="item_lang"
+			  table="marc_lang_map"
+			  id="circ_language"
+			  key="code"
+			  type="has_a"/>
+			<link
+			  field="item_form"
+			  table="marc_form_map"
+			  id="circ_item_form"
+			  key="code"
+			  type="has_a"/>
+			<link
+			  field="item_type"
+			  table="marc_type_map"
+			  id="circ_item_type"
+			  key="code"
+			  type="has_a"/>
+			<link
+			  field="circ_lib"
+			  table="org_unit"
+			  id="circ_circ_lib"
+			  key="id"
+			  type="has_a"/>
+		</links>
+
+	</table>
+
 	<table id="wide-copy" partition="false" fact-table="true">
-		<label>Wide Copy info</label>
+		<label>Copies</label>
 		<description>Base table for creating snapshot reports on copy information</description>
 		<tablename>stats.fleshed_copy</tablename>
 
@@ -162,6 +364,148 @@
 		</links>
 
 	</table>
+
+	<table id="wide-call-number" partition="false" fact-table="true">
+		<label>Call Numbers/Volumes</label>
+		<description>Base table for creating snapshot reports on call number/volume information</description>
+		<tablename>stats.fleshed_call_number</tablename>
+
+		<fields>
+			<field
+			  name="id"
+			  primary="true"
+			  create-type="serial"
+			  datatype="int">
+				<label>ID</label>
+				<description>Call Number ID</description>
+			</field>
+			<field
+			  name="owning_lib"
+			  datatype="int"
+			  indexed="true">
+				<label>Owner</label>
+				<description>ID of the Owning Library</description>
+			</field>
+			<field
+			  name="create_date_day"
+			  datatype="date">
+				<label>Create Date</label>
+				<description>Date of the call number's cataloging</description>
+			</field>
+			<field
+			  name="create_date_hour"
+			  datatype="timestamptz">
+				<label>Create Date and Hour</label>
+				<description>Date and Hour of the call number's cataloging</description>
+			</field>
+			<field
+			  name="create_date"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Create Date</label>
+				<description>Timestamp of the call number's cataloging</description>
+			</field>
+			<field
+			  name="edit_date"
+			  datatype="timestamptz"
+			  indexed="true"
+			  default="now()">
+				<label>Edit Date</label>
+				<description>Timestamp of the call number's last edit</description>
+			</field>
+			<field
+			  name="edit_date_day"
+			  datatype="date">
+				<label>Edit Date</label>
+				<description>Date of the call number's last edit</description>
+			</field>
+			<field
+			  name="edit_date_hour"
+			  datatype="timestamptz">
+				<label>Edit Date and Hour</label>
+				<description>Date and Hour of the call number's last edit</description>
+			</field>
+			<field
+			  name="item_lang"
+			  datatype="text">
+				<label>Language</label>
+				<description>MARC Item Language</description>
+			</field>
+			<field
+			  name="item_form"
+			  datatype="text">
+				<label>Form</label>
+				<description>MARC Item Form of Material</description>
+			</field>
+			<field
+			  name="item_type"
+			  datatype="text">
+				<label>Type</label>
+				<description>MARC Item Type</description>
+			</field>
+			<field
+			  name="label"
+			  transform-group="call_number"
+			  widget-family="string-input"
+			  datatype="text">
+				<label>Call Number</label>
+				<description>Call Number Label</description>
+			</field>
+		</fields>
+
+		<links>
+			<link
+			  field="create_date_day"
+			  table="generic_day_series"
+			  id="call_number_create_day"
+			  key="date"
+			  type="has_a"/>
+			<link
+			  field="create_date_hour"
+			  table="generic_hour_series"
+			  id="call_number_create_hour"
+			  key="date_hour"
+			  type="has_a"/>
+			<link
+			  field="edit_date_day"
+			  table="generic_day_series"
+			  id="call_number_edit_day"
+			  key="date"
+			  type="has_a"/>
+			<link
+			  field="edit_date_hour"
+			  table="generic_hour_series"
+			  id="call_number_edit_hour"
+			  key="date_hour"
+			  type="has_a"/>
+			<link
+			  field="owning_lib"
+			  table="org_unit"
+			  id="call_number_owning_lib"
+			  key="id"
+			  type="has_a"/>
+			<link
+			  field="item_lang"
+			  table="marc_lang_map"
+			  id="call_number_language"
+			  key="code"
+			  type="has_a"/>
+			<link
+			  field="item_form"
+			  table="marc_form_map"
+			  id="call_number_item_form"
+			  key="code"
+			  type="has_a"/>
+			<link
+			  field="item_type"
+			  table="marc_type_map"
+			  id="call_number_item_type"
+			  key="code"
+			  type="has_a"/>
+		</links>
+
+	</table>
 		
 	<table id="org_unit" partition="false" fact-table="false">
 		<label>Organizational Units</label>
@@ -301,6 +645,8 @@
 		</fields>
 	</table>
 
+	<!-- 
+
 	<table id="silly.fact" partition="true" fact-table="false">
 		<label>Silly Fact table</label>
 		<description>Base table for creating reports on silly words</description>
@@ -308,7 +654,7 @@
 
 		<partition>
 			<field>said_when</field>
-			<!-- Valid options:  years, months, weeks, days, hours, minutes, seconds  -->
+			--><!-- Valid options:  years, months, weeks, days, hours, minutes, seconds  --><!--
 			<chunk>months</chunk>
 			<start>2005-09-01</start>
 			<end>2005-12-31</end>
@@ -405,6 +751,8 @@
 			</field>
 		</fields>
 	</table>
+
+	-->
 
 </tables>
 
