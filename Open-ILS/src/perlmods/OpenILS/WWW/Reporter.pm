@@ -11,6 +11,7 @@ use Apache2::RequestRec ();
 use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 use CGI;
+use Data::Dumper;
 
 use Template qw(:template);
 
@@ -145,6 +146,10 @@ sub verify_login {
 	my $req = $session->request(
 		"open-ils.auth.session.retrieve", $auth_token );
 	my $user = $req->gather(1);
+
+	if (ref($user) eq 'HASH' && $user->{ilsevent} == 1001) {
+		return 0;
+	}
 
 	return $user if ref($user);
 	return 0;
