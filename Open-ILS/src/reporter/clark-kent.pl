@@ -332,6 +332,9 @@ sub build_csv {
 	my $r = shift;
 
 	my $csv = Text::CSV_XS->new({ always_quote => 1, eol => "\015\012" });
+
+	return unless ($csv);
+	
 	my $f = new FileHandle (">$file");
 
 	$csv->print($f, $r->{sql}->{columns});
