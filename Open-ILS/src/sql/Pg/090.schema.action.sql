@@ -90,6 +90,21 @@ CREATE OR REPLACE VIEW action.billable_cirulations AS
 	  FROM	action.circulation
 	  WHERE	xact_finish IS NULL;
 
+CREATE VIEW stats.fleshed_circulation AS
+        SELECT  c.*,
+                CAST(c.xact_start AS DATE) AS start_date_day,
+                CAST(c.xact_finish AS DATE) AS finish_date_day,
+                DATE_TRUNC('hour', c.xact_start) AS start_date_hour,
+                DATE_TRUNC('hour', c.xact_finish) AS finish_date_hour,
+                cp.call_number_label,
+                cp.owning_lib,
+                cp.item_lang,
+                cp.item_type,
+                cp.item_form
+        FROM    "action".circulation c
+                JOIN stats.fleshed_copy cp ON (cp.id = c.target_copy);
+
+
 CREATE OR REPLACE FUNCTION action.circulation_claims_returned () RETURNS TRIGGER AS $$
 BEGIN
 	IF OLD.stop_fines IS NULL OR OLD.stop_fines <> NEW.stop_fines THEN
