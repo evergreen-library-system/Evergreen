@@ -111,6 +111,8 @@ util.list.prototype = {
 
 	'_append_to_tree' : function (params) {
 
+		var obj = this;
+
 		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
 
 		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
@@ -126,24 +128,27 @@ util.list.prototype = {
 
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
-			treerow.setAttribute('retrieve_id',params.retrieve_id);
-			//FIXME//Make async and fire when row is visible in list
-			var row;
-			if (typeof params.retrieve_row == 'function') {
+			setTimeout(
+				function() {
+					treerow.setAttribute('retrieve_id',params.retrieve_id);
+					//FIXME//Make async and fire when row is visible in list
+					var row;
+					if (typeof params.retrieve_row == 'function') {
 
-				row = params.retrieve_row( params );
+						row = params.retrieve_row( params );
 
-			} else {
+					} else {
 
-				if (typeof this.retrieve_row == 'function') {
+						if (typeof obj.retrieve_row == 'function') {
 
-					row = this.retrieve_row( params );
+							row = obj.retrieve_row( params );
 
-				}
-			}
-			params.row = row;
-			this._map_row_to_treecell(params,treerow);
-
+						}
+					}
+					params.row = row;
+					obj._map_row_to_treecell(params,treerow);
+				}, 0
+			);
 		} else {
 			this._map_row_to_treecell(params,treerow);
 		}
@@ -153,6 +158,8 @@ util.list.prototype = {
 	},
 
 	'_append_to_listbox' : function (params) {
+
+		var obj = this;
 
 		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
 
@@ -164,32 +171,34 @@ util.list.prototype = {
 
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
-			listitem.setAttribute('retrieve_id',params.retrieve_id);
-			//FIXME//Make async and fire when row is visible in list
-			var row;
-			if (typeof params.retrieve_row == 'function') {
+			setTimeout(
+				function() {
+					listitem.setAttribute('retrieve_id',params.retrieve_id);
+					//FIXME//Make async and fire when row is visible in list
+					var row;
+					if (typeof params.retrieve_row == 'function') {
 
-				row = params.retrieve_row( params );
+						row = params.retrieve_row( params );
 
-			} else {
+					} else {
 
-				if (typeof this.retrieve_row == 'function') {
+						if (typeof obj.retrieve_row == 'function') {
 
-					row = this.retrieve_row( params );
+							row = obj.retrieve_row( params );
 
-				}
-			}
-			params.row = row;
-			this._map_row_to_listcell(params,listitem);
-
+						}
+					}
+					params.row = row;
+					obj._map_row_to_listcell(params,listitem);
+					obj.node.appendChild( listitem );
+				}, 0
+			);
 		} else {
 			this._map_row_to_listcell(params,listitem);
+			this.node.appendChild( listitem );
 		}
 
-		this.node.appendChild( listitem );
-
 		this.error.sdump('D_LIST',s);
-
 		return listitem;
 
 	},
