@@ -183,12 +183,18 @@ BLOCK show_reports;
 			
 			WRAPPER html/row;
 				p = utils.JSON2perl( report.params );
+
+				rtime = report.runtime.chunk(19).0;
+				IF report.disable;
+					rtime = rtime _ '<br/>(Disabled)';
+				END;
+
 				INCLUDE html/cell content=(report.pub ? 'Y' : 'N') col=bg style='border:solid gray 1px;' align='center';
 				INCLUDE html/cell content=link(content=p.reportname,href="stage3?id=$rid") col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(19).0 col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell
 					nowrap='nowrap'
-					content=report.runtime.chunk(19).0
+					content=rtime
 					col=bg
 					style='border:solid gray 1px;';
 				INCLUDE html/cell content=run_count.get.count col=bg style='border:solid gray 1px;';

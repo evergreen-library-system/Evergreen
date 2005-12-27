@@ -61,6 +61,7 @@ INSERT INTO reporter.output ( stage3, state )
 	SELECT	id, 'wait'
 	  FROM	reporter.stage3 
 	  WHERE	runtime <= $1
+	  	AND NOT disable
 	  	AND (	( 	recurrence = '0 seconds'::INTERVAL
 				AND (
 					id NOT IN ( SELECT stage3 FROM reporter.output )

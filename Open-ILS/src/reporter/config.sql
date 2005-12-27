@@ -52,6 +52,8 @@ CREATE TABLE reporter.stage3 (
 								initially deferred,
 	params	  	text				not null,
 	owner		int				not null,
+	disable		bool				not null
+							default false,
 	pub		bool				not null
 							default false,
 	create_date	timestamp with time zone	not null
