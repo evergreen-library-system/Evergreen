@@ -171,7 +171,7 @@ sub multiranged_asset_stat_cat {
 	my $collector = ' INTERSECT ';
 	my $entry_method = 'open-ils.storage.multiranged.intersect.asset.stat_cat_entry.search.stat_cat';
 	if ($self->api_name =~ /union/o) {
-		$collector = ' UNION ' if ($self->api_name =~ /union/o);
+		$collector = ' UNION ';
 		$entry_method = 'open-ils.storage.multiranged.union.asset.stat_cat_entry.search.stat_cat';
 	}
 
