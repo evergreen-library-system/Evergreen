@@ -45,7 +45,9 @@ patron.search_result.prototype = {
 					var row = params.row;
 					if (typeof row.my == 'undefined') row.my = {};
 					row.my.au = au_obj;
-
+					if (typeof params.on_retrieve == 'function') {
+						params.on_retrieve(row);
+					}
 					return row;
 				},
 				'on_select' : function(ev) {

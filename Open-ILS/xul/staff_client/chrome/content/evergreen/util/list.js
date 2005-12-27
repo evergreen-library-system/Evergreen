@@ -133,6 +133,13 @@ util.list.prototype = {
 					treerow.setAttribute('retrieve_id',params.retrieve_id);
 					//FIXME//Make async and fire when row is visible in list
 					var row;
+
+					params.row_node = treeitem;
+					params.on_retrieve = function(row) {
+						params.row = row;
+						obj._map_row_to_treecell(params,treerow);
+					}
+
 					if (typeof params.retrieve_row == 'function') {
 
 						row = params.retrieve_row( params );
@@ -145,8 +152,6 @@ util.list.prototype = {
 
 						}
 					}
-					params.row = row;
-					obj._map_row_to_treecell(params,treerow);
 				}, 0
 			);
 		} else {
@@ -176,6 +181,14 @@ util.list.prototype = {
 					listitem.setAttribute('retrieve_id',params.retrieve_id);
 					//FIXME//Make async and fire when row is visible in list
 					var row;
+
+					params.row_node = listitem;
+					params.on_retrieve = function(row) {
+						params.row = row;
+						obj._map_row_to_treecell(params,treerow);
+						obj.node.appendChild( listitem );
+					}
+
 					if (typeof params.retrieve_row == 'function') {
 
 						row = params.retrieve_row( params );
@@ -188,9 +201,6 @@ util.list.prototype = {
 
 						}
 					}
-					params.row = row;
-					obj._map_row_to_listcell(params,listitem);
-					obj.node.appendChild( listitem );
 				}, 0
 			);
 		} else {

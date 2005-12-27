@@ -55,6 +55,9 @@ patron.holds.prototype = {
 					} catch(E) {
 						obj.error.sdump('D_ERROR','retrieve_row: ' + E );
 					}
+					if (typeof params.on_retrieve == 'function') {
+						params.on_retrieve(row);
+					}
                                         return row;
 				}
 			}
