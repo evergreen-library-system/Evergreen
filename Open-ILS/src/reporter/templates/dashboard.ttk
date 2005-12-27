@@ -18,7 +18,7 @@ SWITCH pagetype;
 		INCLUDE header.ttk title="Reporter Dashboard -- Scheduled Reports";
 		INCLUDE navbar.ttk + my_scheduled_reports;
 	CASE 'mycompletereports';
-		INCLUDE header.ttk title="Reporter Dashboard -- Completed Reports";
+		INCLUDE header.ttk title="Reporter Dashboard -- Active Reports";
 		INCLUDE navbar.ttk + my_completed_reports;
 	CASE 'report_template_tree';
 		INCLUDE header.ttk title="Reporter Dashboard -- Schedule a report";
@@ -47,7 +47,7 @@ BLOCK summary;
 		END;
 		WRAPPER html/row;
 			INCLUDE html/cell
-				content=link(content='Completed reports',href='bradboard?detail=mycompletereports')
+				content=link(content='Active reports',href='bradboard?detail=mycompletereports')
 				align='center'
 				style='border-bottom:1px solid black';
 		END;
@@ -182,15 +182,24 @@ BLOCK show_reports;
 			run = s.execute(rid);
 			
 			WRAPPER html/row;
+
+				tid = report.stage2;
+				template = templates.$tid;
+
 				p = utils.JSON2perl( report.params );
+				t = utils.JSON2perl( template.params );
+
 
 				rtime = report.runtime.chunk(19).0;
 				IF report.disable;
 					rtime = rtime _ '<br/>(Disabled)';
 				END;
 
+				name_link = link(content=p.reportname,href="stage3?id=$rid");
+				name_link = t.templatename _ ' :: ' _ name_link;
+
 				INCLUDE html/cell content=(report.pub ? 'Y' : 'N') col=bg style='border:solid gray 1px;' align='center';
-				INCLUDE html/cell content=link(content=p.reportname,href="stage3?id=$rid") col=bg style='border:solid gray 1px;';
+				INCLUDE html/cell content=name_link col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(19).0 col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell
 					nowrap='nowrap'
