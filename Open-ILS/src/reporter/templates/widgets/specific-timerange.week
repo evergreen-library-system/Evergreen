@@ -2,10 +2,17 @@
 
 PROCESS inputs;
 
-'Week of year: ';
-WRAPPER select name=input_prefix;
+USE date;
+USE start = DateTime(now = 1);
+
+'Year: ';
+INCLUDE name=input_prefix _ ':year' text size=4 value=start.year;
+
+
+'<br/>Week of year: ';
+WRAPPER select name=input_prefix _ ':week';
 	count = 1;
-	WHILE count < 53;
+	WHILE count < 54;
 		INCLUDE option value=count;
 		count = count + 1;
 	END;

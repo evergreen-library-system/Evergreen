@@ -1,0 +1,24 @@
+[%
+
+PROCESS inputs;
+
+WRAPPER select name=input_prefix _ ":target";
+	count = 1;
+	WHILE count < 37;
+		INCLUDE option value=count selected=(count == 1 ? 1 : 0);
+		count = count + 1;
+	END;
+END;
+
+' months before runtime<br/>Compared to ';
+
+WRAPPER select name=input_prefix _ ":compare";
+	count = 1;
+	WHILE count < 37;
+		INCLUDE option value=count selected=(count == 12 ? 1 : 0);
+		count = count + 1;
+	END;
+END;
+' months before target';
+
+%]
