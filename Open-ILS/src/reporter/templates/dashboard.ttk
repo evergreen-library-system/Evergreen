@@ -15,7 +15,7 @@ outputs = DBI.tie('reporter.output', 'id')
 
 SWITCH pagetype;
 	CASE 'myreports';
-		INCLUDE header.ttk title="Reporter Dashboard -- Completed Reports";
+		INCLUDE header.ttk title="Reporter Dashboard -- Scheduled Reports";
 		INCLUDE navbar.ttk + my_scheduled_reports;
 	CASE 'mycompletereports';
 		INCLUDE header.ttk title="Reporter Dashboard -- Completed Reports";
@@ -112,7 +112,12 @@ BLOCK show_complete_reports;
 			END;
 
 			report = reports.$rid;
+			
+			tid = report.stage2;
+			template = templates.$tid;
+
 			p = utils.JSON2perl( report.params );
+			t = utils.JSON2perl( template.params );
 
 			state = '<span style="font-weight: bold; background-color: lightgray">Waiting in line...</span>';
 			
@@ -127,6 +132,9 @@ BLOCK show_complete_reports;
 				runtime = output.run_time;
 			END;
 			
+			name_link = link(content=p.reportname,href="stage3?id=$rid#$output.id");
+			name_link = t.templatename _ ' :: ' _ name_link;
+			
 			WRAPPER html/row;
 				INCLUDE html/cell
 					width='5%'
@@ -135,7 +143,7 @@ BLOCK show_complete_reports;
 					col=bg
 					style='padding:5px; border:solid gray 1px;';
 				INCLUDE html/cell
-					content=link(content=p.reportname,href="stage3?id=$rid#$output.id")
+					content=name_link
 					col=bg
 					style='border:solid gray 1px;';
 				INCLUDE html/cell
