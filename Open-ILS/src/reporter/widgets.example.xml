@@ -49,11 +49,31 @@
 		</widget>
 	</widget-family>
 	
+	<!-- Comparative time range selection -->
+	<widget-family name="comparative-timerange" datatype="timestamptz">
+		<label>Comparative time-range widgets</label>
+	
+		<widget name="month">
+			<label>Compare runtime relative time months</label>
+			<description>
+				This widget allows the user to pick an arbitrary time range
+				on which to report.
+			</description>
+			<filter-code type="perl">
+				$full_col = "DATE_TRUNC('month', $full_col)";
+				$where_clause = 
+					"( $full_col = DATE_TRUNC('month', NOW() - CAST( ? || ' month' AS INTERVAL )) ".
+					"  OR $full_col = DATE_TRUNC('month', NOW() - CAST( ? || ' month' AS INTERVAL )) )";
+				push @$bind_list, $$val{target}, $$val{target} + $$val{compare};
+			</filter-code>
+		</widget>
+	</widget-family>
 	
 	<!-- Specific time range selection family -->
 	<widget-family name="specific-timerange" datatype="timestamptz">
 		<label>Specific time-range widgets</label>
 	
+		<!--
 		<widget name="any">
 			<label>User defined time range</label>
 			<description>
@@ -61,7 +81,8 @@
 				on which to report.
 			</description>
 		</widget>
-		
+		-->
+
 		<widget name="day">
 			<label>Choose a specific date</label>
 			<description>
@@ -69,7 +90,7 @@
 				to report.
 			</description>
 			<filter-code type="perl">
-				$full_col = "DATE_TRUNC($full_col, 'day')";
+				$full_col = "DATE_TRUNC('day', $full_col)";
 				$where_clause = "$full_col = CAST(? AS DATE)";
 				push @$bind_list, sprintf('%d/%02d/%02d', @$val{qw/year month day/});
 			</filter-code>
@@ -82,9 +103,10 @@
 				on which to report.
 			</description>
 			<filter-code type="perl">
-				$full_col = "EXTRACT('week' FROM $full_col)";
-				$where_clause = "$full_col = ?";
-				push @$bind_list, $val;
+				$where_clause =
+					"( EXTRACT('year' FROM $full_col) = ? ".
+					"  AND EXTRACT('week' FROM $full_col) = ? )";
+				push @$bind_list, $$val{year}, $$val{week};
 			</filter-code>
 		</widget>
 		
@@ -96,9 +118,9 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause =
-					"EXTRACT('year' FROM $full_col) = ? ".
-					"AND EXTRACT('week' FROM $full_col) ".
-						"BETWEEN ? AND ?";
+					"( EXTRACT('year' FROM $full_col) = ? ".
+					"  AND EXTRACT('week' FROM $full_col) ".
+						"BETWEEN ? AND ? )";
 				push @$bind_list, $$val{year}, $$val{start}, $$val{end};
 			</filter-code>
 		</widget>
@@ -111,8 +133,8 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause =
-					"EXTRACT('year' FROM $full_col) = ? ".
-					"AND EXTRACT('month' FROM $full_col) = ?";
+					"( EXTRACT('year' FROM $full_col) = ? ".
+					"  AND EXTRACT('month' FROM $full_col) = ? )";
 				push @$bind_list, $$val{'start-year'}, $$val{'start-month'};
 			</filter-code>
 		</widget>
@@ -125,7 +147,7 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause = 
-					"DATE_TRUNC($full_col, 'month') ".
+					"DATE_TRUNC('month', $full_col) ".
 						"BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
 				push @$bind_list,
 					sprintf('%d/%02d/01', @$val{qw/start-year start-month/}),
@@ -133,6 +155,7 @@
 			</filter-code>
 		</widget>
 		
+		<!--
 		<widget name="quarter">
 			<label>Choose a specific year and quarter</label>
 			<description>
@@ -148,6 +171,7 @@
 				to report.
 			</description>
 		</widget>
+		-->
 		
 		<widget name="year">
 			<label>Choose a specific year</label>
@@ -184,6 +208,12 @@
 				This widget allows the user to pick a date relative to the
 				report runtime on which to report.
 			</description>
+			<filter-code type="perl">
+				$where_clause = 
+					"DATE_TRUNC('day', $full_col) = ".
+						"DATE_TRUNC('day', NOW()) - CAST(? || ' day' AS INTERVAL);
+				push @$bind_list, $val;
+			</filter-code>
 		</widget>
 		
 		<widget name="week">
@@ -192,6 +222,12 @@
 				This widget allows the user to pick a week (sun-sat)  relative
 				to the report runtime on which to report.
 			</description>
+			<filter-code type="perl">
+				$where_clause =
+					"( DATE_TRUNC('week', $full_col) = ".
+					"  DATE_TRUNC('week', NOW() - CAST(? || ' weeks' AS INTERVAL) ) ";
+				push @$bind_list, $val;
+			</filter-code>
 		</widget>
 		
 		<widget name="month">
@@ -202,12 +238,13 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause = 
-					"DATE_TRUNC($full_col, 'month') = ".
-						"DATE_TRUNC(now(), 'month') - CAST(? || ' months' AS INTERVAL);
+					"DATE_TRUNC('month', $full_col) = ".
+						"DATE_TRUNC('month', NOW()) - CAST(? || ' months' AS INTERVAL);
 				push @$bind_list, $val;
 			</filter-code>
 		</widget>
 		
+		<!--
 		<widget name="quarter">
 			<label>Choose a quarter relative to the report runtime</label>
 			<description>
@@ -215,13 +252,20 @@
 				report runtime on which to report.
 			</description>
 		</widget>
-		
+		-->
+
 		<widget name="year">
 			<label>Choose a year relative to the report runtime</label>
 			<description>
 				This widget allows the user to pick a year relative to the
 				report runtime on which to report.
 			</description>
+			<filter-code type="perl">
+				$where_clause = 
+					"DATE_TRUNC('year', $full_col) = ".
+						"DATE_TRUNC('year', NOW()) - CAST(? || ' years' AS INTERVAL);
+				push @$bind_list, $val;
+			</filter-code>
 		</widget>
 	</widget-family>
 
