@@ -1,15 +1,18 @@
 dump('entering main/main.js\n');
 
+function grant_perms(url) {
+	var pref = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefBranch);
+	if (pref) {
+		pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
+		pref.setCharPref("capability.principal.codebase.p0.id", url);
+	}
+
+}
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {
-		var pref = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefBranch);
-		if (pref) {
-			pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
-			pref.setCharPref("capability.principal.codebase.p0.id", urls.remote);
-		}
-
 		if (typeof JSAN == 'undefined') {
 			throw(
 				"The JSAN library object is missing."
@@ -49,11 +52,15 @@ function main_init() {
 
 			G.OpenILS.data.session = G.auth.session.key;
 			G.OpenILS.data.on_complete = function () {
+
+				var url = G.auth.controller.view.server_prompt.value || urls.remote;
+				if (! url.match( '^http://' ) ) url = 'http://' + url;
+				grant_perms(url);
 				
 				G.OpenILS.data.stash('list','hash','temp');
 				G.OpenILS.data._debug_stash();
 
-				G.window.open(urls.remote + urls.remote_menu_frame 
+				G.window.open(url + urls.remote_menu_frame 
 					+ '?session='+mw.escape(G.auth.session.key)
 					+ '&authtime='+mw.escape(G.auth.session.authtime),
 					'test','chrome,resizable');
@@ -62,6 +69,7 @@ function main_init() {
 		}
 
 		G.auth.init();
+		// XML_HTTP_SERVER will get reset to G.auth.controller.view.server_prompt.value
 
 		/////////////////////////////////////////////////////////////////////////////
 

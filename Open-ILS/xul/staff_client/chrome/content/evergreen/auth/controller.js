@@ -38,6 +38,10 @@ auth.controller.prototype = {
 							obj.close()
 						}
 					],
+					'server_prompt' : [
+						['keypress'],
+						handle_keypress
+					],
 					'name_prompt' : [
 						['keypress'],
 						handle_keypress
@@ -62,6 +66,10 @@ auth.controller.prototype = {
 		function handle_keypress(ev) {
 			if (ev.keyCode && ev.keyCode == 13) {
 				switch(this) {
+					case obj.controller.view.server_prompt:
+						ev.preventDefault();
+						obj.controller.view.name_prompt.focus(); obj.controller.view.name_prompt.select();
+					break;
 					case obj.controller.view.name_prompt:
 						ev.preventDefault();
 						obj.controller.view.password_prompt.focus(); obj.controller.view.password_prompt.select();
@@ -92,11 +100,14 @@ auth.controller.prototype = {
 
 		this.error.sdump('D_AUTH','login with ' 
 			+ this.controller.view.name_prompt.value + ' and ' 
-			+ this.controller.view.password_prompt.value + '\n'
+			+ this.controller.view.password_prompt.value + ' at ' 
+			+ this.controller.view.server_prompt.value + '\n'
 		); 
+		this.controller.view.server_prompt.disabled = true;
 		this.controller.view.name_prompt.disabled = true;
 		this.controller.view.password_prompt.disabled = true;
 		this.controller.view.submit_button.disabled = true;
+		XML_HTTP_SERVER = this.controller.view.server_prompt.value;
 
 		try {
 
@@ -114,6 +125,10 @@ auth.controller.prototype = {
 			this.error.sdump('D_ERROR',error); 
 			alert(error);
 			this.logoff();
+			if (E == 'open-ils.auth.authenticate.init returned false\n') {
+				this.controller.view.server_prompt.focus();
+				this.controller.view.server_prompt.select();
+			}
 
 			if (typeof this.on_login_error == 'function') {
 				this.error.sdump('D_AUTH','auth.controller.on_login_error()\n');
@@ -133,6 +148,7 @@ auth.controller.prototype = {
 		this.controller.view.name_prompt.disabled = false;
 		this.controller.view.name_prompt.focus(); 
 		this.controller.view.name_prompt.select();
+		this.controller.view.server_prompt.disabled = false;
 
 		this.session.close();
 

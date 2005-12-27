@@ -28,7 +28,9 @@
 	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="chrome://evergreen/content/main/lang.js"/>
+	<!--
 	<script type="text/javascript" src="http://dev.gapines.org/xul/server/main/lang.js"/>
+	-->
 	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
 	<script type="text/javascript" src="chrome://evergreen/content/main/main.js"/>
 	<script>
@@ -62,6 +64,10 @@
 			</columns>
 			<rows>
 				<row>
+					<label value="Server" control="server_prompt" accesskey="r"/>
+					<textbox id="server_prompt" value="dev.gapines.org"/>
+				</row>
+				<row>
 					<label value="&staff.auth.name_prompt;" control="name_prompt" accesskey="&staff.auth.name_prompt.key;"/>
 					<textbox id="name_prompt" value=""/>
 				</row>
@@ -88,7 +94,6 @@
 		</grid>
 		<progressmeter id="progress_bar" mode="normal" value="0"/>
 	</groupbox>
-	<iframe src="doesnotexist.xxx"/>
 	</deck>
 
 </window>
