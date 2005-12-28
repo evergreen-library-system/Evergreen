@@ -245,6 +245,11 @@ patron.display.prototype = {
 							spawn_checkout_interface();
 							obj._checkout_spawned = true;
 						}
+					},
+					'on_error' : function(E) {
+						location.href = urls.remote_patron_barcode_entry + '?session='
+							+ window.escape(obj.session);
+						alert(E);
 					}
 				}
 			);

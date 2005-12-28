@@ -567,13 +567,13 @@ patron.summary.prototype = {
 					var card = new ac(); card.barcode( obj.barcode );
 					obj.patron.card( card );
 					obj.patron.family_name( 'Could not retrieve patron' );
-				alert('FIXME: Need better alert and error handling.\nProblem with barcode: ' 
+				var error = ('FIXME: Need better alert and error handling.\nProblem with barcode: ' 
 					+ obj.barcode + '\n' + E);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.on_error == 'function') {
 					obj.error.sdump('D_PATRON_SUMMARY',
 						'patron.summary: Calling external .on_error()\n');
-					window.xulG.on_error(E);
+					window.xulG.on_error(error);
 				} else {
 					obj.error.sdump('D_PATRON_SUMMARY','patron.summary: No external .on_error()\n');
 				}
@@ -584,7 +584,11 @@ patron.summary.prototype = {
 		} catch(E) {
 			var error = ('patron.summary.retrieve : ' + js2JSON(E));
 			this.error.sdump('D_ERROR',error);
-			alert(error);
+			if (typeof window.xulG == 'object' && typeof window.xulG.on_error == 'function') {
+				window.xulG.on_error(error);
+			} else {
+				alert(error);
+			}
 		}
 	}
 }
