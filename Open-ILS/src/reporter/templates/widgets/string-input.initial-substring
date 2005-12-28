@@ -1,4 +1,4 @@
 [%
 PROCESS inputs;
-INCLUDE text name=input_prefix size=20;
+INCLUDE text name=input_prefix size=20 value=current_value;
 %]

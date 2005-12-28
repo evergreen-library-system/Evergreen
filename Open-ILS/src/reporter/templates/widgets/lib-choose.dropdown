@@ -62,6 +62,11 @@ BLOCK next_level;
 			x = x - 1;
 		END;
 
+		selected = '';
+		IF current_value == f.id;
+			selected = 'selected';
+		END;
+
 		INCLUDE option value=f.id content=f.name content=val _ f.name id='dr_' _ f.id;
 		INCLUDE next_level parent_ou = f.id;
 	END;

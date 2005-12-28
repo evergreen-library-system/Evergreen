@@ -12,15 +12,19 @@ WRAPPER html/table ;
 		INCLUDE html/cell content='Day';
 	END;
 
+	y = (current_value.year ? current_value.year : start.year);
+	m = (current_value.month ? current_value.month : start.month);
+	d = (current_value.day ? current_value.day : start.day);
+
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':year' size=4 value=start.year;
+			INCLUDE text name=input_prefix _ ':year' size=4 value=y;
 		END;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':month' size=4 value=start.month;
+			INCLUDE text name=input_prefix _ ':month' size=4 value=m;
 		END;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':day' size=4 value=start.day;
+			INCLUDE text name=input_prefix _ ':day' size=4 value=d;
 		END;
 	END;
 

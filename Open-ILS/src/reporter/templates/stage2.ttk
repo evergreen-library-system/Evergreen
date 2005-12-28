@@ -14,6 +14,7 @@ WRAPPER html/html;
 	PROCESS select_sorter.js;
 
 	templates = DBI.tie('reporter.stage2', 'id')
+	reports = DBI.tie('reporter.stage3', 'id')
 	tmpl = {};
 
 
@@ -22,15 +23,18 @@ WRAPPER html/html;
 		tmpl = templates.$tid;
 	END;
 
-      IF CGI.param('action') == 'save';
-         PROCESS save_stage2;
-      ELSIF CGI.param('action') == 'edit';
-         PROCESS edit_stage2;
-      ELSIF CGI.param('action') == 'run';
-         PROCESS run_stage2;
-		ELSE;
-         PROCESS view_stage2;
-      END;
+	IF CGI.param('action') == 'save';
+		PROCESS save_stage2;
+	ELSIF CGI.param('action') == 'edit';
+		rid = CGI.param('report');
+		r = reports.$rid;
+		report = utils.JSON2perl( r.params );
+		PROCESS run_stage2;
+	ELSIF CGI.param('action') == 'run';
+		PROCESS run_stage2;
+	ELSE;
+		PROCESS view_stage2;
+	END;
    END;
    INCLUDE footer.ttk;
 END;
@@ -280,7 +284,11 @@ BLOCK run_stage2;
 		INCLUDE hidden name='stage2' value=CGI.param('id');
 
 		'<br/><center><b>Report Name:</b>';
-		INCLUDE text name='reportname' size="50";
+		rname = '';
+		IF report;
+			rname = report.reportname _ ' (COPY)';
+		END;
+		INCLUDE text name='reportname' size="50" value=rname;
 		'</center><br/><br/>';
 		'<script language="javascript">filters["reportname"] = "Report Name";</script>';
 
@@ -291,14 +299,34 @@ BLOCK run_stage2;
 			END;
 			WRAPPER html/row;
 				WRAPPER html/cell rowspan=3 width="25%";
-					INCLUDE select multi=1 size=5 id='output_order' name='output_order';
+					WRAPPER select multi=1 size=5 id='output_order' name='output_order';
+						FOR column = report.output_order;
+							parts = column.split(':');
+							xpath = '/reporter/tables/table[@id="' _ parts.1 _ '"]/fields/field[@name="' _ parts.2 _ '"]';
+							IF parts.1 != params.stage1;
+								xpath = '//*[@id="' _ parts.1 _ '"]/@table';
+								name = config.findvalue(xpath);
+								xpath = '/reporter/tables/table[@id="' _ name _ '"]/fields/field[@name="' _ parts.2 _ '"]';
+							END;
+							node = config.findnodes(xpath);
+							IF node.findvalue('@primary') == 'true' && parts.1 == params.stage1;
+								INCLUDE option value=column content='Per group count -- ' _ node.findvalue('description');
+							ELSE;
+								INCLUDE option value=column content=node.findvalue('description');
+							END;
+						END;
+					END;
 				END;
 				WRAPPER html/cell;
 					INCLUDE anchor href='javascript:void(0);' content='Up' onclick="Widget.Select.moveSelectedOptionsUp('output_order')";
 				END;
 
 				WRAPPER html/cell align="right";
-					INCLUDE checkbox name='output_format' value='csv' checked='checked';
+					checked = 'checked';
+					IF report.output_format.grep('csv') == 0;
+						checked = '';
+					END;
+					INCLUDE checkbox name='output_format' value='csv';
 				END;
 				INCLUDE html/cell content="CSV" align="left";
 			END;
@@ -308,14 +336,22 @@ BLOCK run_stage2;
 				END;
 
 				WRAPPER html/cell align="right";
-					INCLUDE checkbox name='output_format' value='excel' checked='checked';
+					checked = 'checked';
+					IF report.output_format.grep('excel') == 0;
+						checked = '';
+					END;
+					INCLUDE checkbox name='output_format' value='excel';
 				END;
 				INCLUDE html/cell content="Excel" align="left";
 			END;
 			WRAPPER html/row;
 				INCLUDE html/cell;
 				WRAPPER html/cell align="right" valign='top';
-					INCLUDE checkbox name='output_format' value='html' checked='checked';
+					checked = 'checked';
+					IF report.output_format.grep('html') == 0;
+						checked = '';
+					END;
+					INCLUDE checkbox name='output_format' value='html';
 				END;
 				WRAPPER html/cell align="left";
 					'HTML<br/>';
@@ -325,18 +361,30 @@ BLOCK run_stage2;
 						END;
 						WRAPPER html/row;
 							WRAPPER html/cell;
-								INCLUDE checkbox name='html_graph_type' value='bar' checked=1;
+								checked = 'checked';
+								IF report.output_format.grep('bar') == 0;
+									checked = '';
+								END;
+								INCLUDE checkbox name='html_graph_type' value='bar';
 							END;
 							INCLUDE html/cell content='Bar';
 						END;
 						WRAPPER html/row;
 							WRAPPER html/cell;
-								INCLUDE checkbox name='html_graph_type' value='pie' checked=1;
+								checked = 'checked';
+								IF report.output_format.grep('pie') == 0;
+									checked = '';
+								END;
+								INCLUDE checkbox name='html_graph_type' value='pie';
 							END;
 							INCLUDE html/cell content='Pie';
 						END;
 						WRAPPER html/row;
 							WRAPPER html/cell;
+								checked = '';
+								IF report.output_format.grep('line');
+									checked = 'checked';
+								END;
 								INCLUDE checkbox name='html_graph_type' value='line';
 							END;
 							INCLUDE html/cell content='Line';
@@ -346,9 +394,25 @@ BLOCK run_stage2;
 			END;
 		END;
 
+		checked = 0;
+
 		'<br/><br/><b>Pivot Column:</b> ';
 		WRAPPER select id='pivot_col' name='pivot_col';
 			INCLUDE option value='' content='No Pivot';
+			FOR column = report.output_order;
+				parts = column.split(':');
+				xpath = '/reporter/tables/table[@id="' _ parts.1 _ '"]/fields/field[@name="' _ parts.2 _ '"]/description';
+				IF parts.1 != params.stage1;
+					xpath = '//*[@id="' _ parts.1 _ '"]/@table';
+					name = config.findvalue(xpath);
+					xpath = '/reporter/tables/table[@id="' _ name _ '"]/fields/field[@name="' _ parts.2 _ '"]/description';
+				END;
+				selected = 0;
+				IF column == report.pivot_col;
+					selected = 1;
+				END;
+				INCLUDE option value=column content=config.findvalue(xpath);
+			END;
 		END;
 		'<br/><br/>';
 
@@ -410,6 +474,8 @@ BLOCK run_stage2;
 										table_alias = t;
 	
 										input_prefix = "filter:$t:$fieldname:$famname:$widgetname";
+										current_value = report.filter.$t.$fieldname.$famname.$widgetname;
+										logme(current_value);
 	
 										INCLUDE $w_file widget_family=fam;
 								CATCH;
@@ -444,12 +510,22 @@ BLOCK run_stage2;
 		
 			WRAPPER html/row;
 				WRAPPER html/cell align='left' style="padding-left: 50px;";
-					INCLUDE checkbox checked='checked' name="output:$classname:$pid" value="include" onclick="field_add_remove(this)";
+					INCLUDE checkbox
+						checked=(report.output.$classname.$pid == 'include' ? 'checked' : '')
+						name="output:$classname:$pid"
+						value="include"
+						onclick="field_add_remove(this)";
 					INCLUDE hidden name="xform:type:$classname:$pid" value="count_dist";
 					%]
 						<script language="javascript">
 							outputs['[% "output:$classname:$pid" %]'] = '[% "Per group count of $plabel" %]';
-							Widget.Select.addOption('output_order','[% "output:$classname:$pid" %]', '[% "Per group count of $plabel" %]');
+							[% IF !report %]
+							Widget.Select.addOption(
+								'output_order',
+								'[% "output:$classname:$pid" %]', 
+								'[% "Per group count of $plabel" %]'
+							);
+							[% END %]
 						</script>
 					[%
 				"Per group count of $plabel<br/><br/>";
@@ -475,7 +551,7 @@ BLOCK run_stage2;
 		END;
 	
 
-		INCLUDE checkbox name="publicreport" value="t";
+		INCLUDE checkbox name="publicreport" value="t" checked=(report.publicreport == 't' ? 'checked' : '');
 		'Public Report<br>';
 		INCLUDE submit name="action" value="Run Now";
 		INCLUDE submit name="action" value="Schedule";
@@ -532,7 +608,11 @@ BLOCK show_filter_atts;
 		WRAPPER html/row;
 
 			WRAPPER html/cell align='left' col=bg_color style="padding-left: 50px;";
-				INCLUDE checkbox name="output:$t:$fid" value="include" onclick="field_add_remove(this)";
+				INCLUDE checkbox
+					name="output:$t:$fid"
+					value="include" 
+					onclick="field_add_remove(this)" 
+					checked=(report.output.$t.$fid == 'include' ? 'checked' : '');
 				%]
 					<script language="javascript">
 						outputs['[% "output:$t:$fid" %]'] = '[% fname %]';
@@ -550,22 +630,22 @@ BLOCK show_filter_atts;
 				END;
 
 				WRAPPER select id="xform:type:$t:$fid" name="xform:type:$t:$fid" onchange="show_hide_params(this)";
-					INCLUDE option value='' content='None' selected=1;
+					INCLUDE option value='' content='None' selected=(report.xform.type.$t.$fid == '' ? 1 : 0);
 					FOR xform = dtype_xform_map.$dtype;
 						xform_label = dtype_xforms.$xform.label;
 						IF dtype_xforms.$xform.param;
 							xform_label = "$xform_label (*)";
 						END;
-						INCLUDE option value=xform content=xform_label;
+						INCLUDE option value=xform content=xform_label selected=(report.xform.type.$t.$fid == xform ? 1 : 0);
 					END;
 				END;
 
 				%]
 
 				<br/>
-				<span id="hide-param:xform:type:[% t %]:[% fid %]" style="visibility: hidden;">
+				<span id="hide-param:xform:type:[% t %]:[% fid %]" [% 'style="visibility: hidden;"' IF !report.xform.param.$t.$fid %] >
 					<small><super>*</super>Output Tranformation Parameter: </small>
-					[% INCLUDE text name="xform:param:$t:$fid" %]
+					[% INCLUDE text name="xform:param:$t:$fid" value=report.xform.param.$t.$fid %]
 				</span>
 
 				[%

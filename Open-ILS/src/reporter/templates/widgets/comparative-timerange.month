@@ -4,8 +4,12 @@ PROCESS inputs;
 
 WRAPPER select name=input_prefix _ ":target";
 	count = 1;
+	def = 1;
+	IF current_value.target;
+		def = current_value.target;
+	END;
 	WHILE count < 37;
-		INCLUDE option value=count selected=(count == 1 ? 1 : 0);
+		INCLUDE option value=count selected=(count == def ? 1 : 0);
 		count = count + 1;
 	END;
 END;
@@ -14,8 +18,12 @@ END;
 
 WRAPPER select name=input_prefix _ ":compare";
 	count = 1;
+	def = 12;
+	IF current_value.compare;
+		def = current_value.compare;
+	END;
 	WHILE count < 37;
-		INCLUDE option value=count selected=(count == 12 ? 1 : 0);
+		INCLUDE option value=count selected=(count == def ? 1 : 0);
 		count = count + 1;
 	END;
 END;

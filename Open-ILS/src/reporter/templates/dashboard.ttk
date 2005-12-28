@@ -36,7 +36,7 @@ BLOCK summary;
 			INCLUDE html/cell
 				colspan=2
 				align='center'
-				content=link(content='Schedule a new report',href='bradboard?detail=report_template_tree')
+				content=link(content='Schedule a new report',href='dashboard?detail=report_template_tree')
 				style='border-bottom:1px solid black';
 		END;
 		WRAPPER html/row;
@@ -47,7 +47,7 @@ BLOCK summary;
 		END;
 		WRAPPER html/row;
 			INCLUDE html/cell
-				content=link(content='Active reports',href='bradboard?detail=mycompletereports')
+				content=link(content='Active reports',href='dashboard?detail=mycompletereports')
 				align='center'
 				style='border-bottom:1px solid black';
 		END;
@@ -58,7 +58,7 @@ BLOCK summary;
 		END;
 		WRAPPER html/row;
 			INCLUDE html/cell
-				content=link(content='Manage scheduled reports',href='bradboard?detail=myreports')
+				content=link(content='Manage scheduled reports',href='dashboard?detail=myreports')
 				align='center'
 				style='border-bottom:1px solid black';
 		END;

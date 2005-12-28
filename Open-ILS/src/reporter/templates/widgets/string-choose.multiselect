@@ -8,6 +8,13 @@ q = 'SELECT DISTINCT ' _ fieldname _ ' FROM ' _ table.findvalue('tablename') _ '
 
 WRAPPER select name=input_prefix multi=1 size=10;
 	FOR f = DBI.query(q);
+		selected = 0;
+		FOR v = current_value;
+			IF v == f.$fieldname;
+				selected = 1;
+				LAST;
+			END;
+		END;
 		INCLUDE option value=f.$fieldname;
 	END;
 END;

@@ -13,11 +13,12 @@ WRAPPER html/table ;
 
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':year' size=4 value=start.year;
+			INCLUDE text name=input_prefix _ ':year' size=4 value=(current_value.year ? current_value.year : start.year);
 		END;
 		WRAPPER html/cell;
 			'For ';
-			INCLUDE text name=input_prefix _ ':year-count' value=2;
+			ycl = 'year-count';
+			INCLUDE text name=input_prefix _ ':year-count' value=(current_value.$ycl ? current_value.$ycl : 2);
 			' years';
 		END;
 	END;

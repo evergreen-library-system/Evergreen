@@ -16,12 +16,22 @@ WRAPPER html/table ;
 		INCLUDE html/cell content='Month';
 	END;
 
+	syl = 'start-year';
+	sml = 'start-month';
+	eyl = 'end-year';
+	eml = 'end-month';
+
+	sy = (current_value.$syl ? current_value.$syl : start.year);
+	sm = (current_value.$sml ? current_value.$sml : start.month);
+	ey = (current_value.$eyl ? current_value.$eyl : end.year);
+	em = (current_value.$eml ? current_value.$eml : end.month);
+
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':start-year' size=4 value=start.year;
+			INCLUDE text name=input_prefix _ ':start-year' size=4 value=sy;
 		END;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':start-month' size=4 value=start.month;
+			INCLUDE text name=input_prefix _ ':start-month' size=4 value=sm;
 		END;
 	END;
 
@@ -36,10 +46,10 @@ WRAPPER html/table ;
 
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':end-year' size=4 value=end.year;
+			INCLUDE text name=input_prefix _ ':end-year' size=4 value=ey;
 		END;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':end-month' size=4 value=end.month;
+			INCLUDE text name=input_prefix _ ':end-month' size=4 value=em;
 		END;
 	END;
 END;

@@ -285,6 +285,8 @@ BLOCK view_stage3;
 				WRAPPER html/cell style="border:solid gray 1px;";
 					INCLUDE anchor content='Refresh' href=CGI.url('-path', 1) _ '?id=' _ rpt.id;
 					'&nbsp;&nbsp;&nbsp;';
+					INCLUDE anchor content='Clone and Edit' href='stage2?action=edit&id=' _ rpt.stage2 _ '&report=' _ rpt.id;
+					'&nbsp;&nbsp;&nbsp;';
 					IF user.id == rpt.owner;
 						INCLUDE anchor content='Run again' href=CGI.url('-path', 1) _ '?action=rerun&id=' _ rpt.id;
 						'&nbsp;&nbsp;&nbsp;';

@@ -1,4 +1,4 @@
 [%
 PROCESS inputs;
-INCLUDE textarea name=input_prefix;
+INCLUDE textarea name=input_prefix value=current_value;
 %]

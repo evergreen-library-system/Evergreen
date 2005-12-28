@@ -4,8 +4,11 @@ PROCESS inputs;
 
 WRAPPER select name=input_prefix;
 	count = 1;
+        IF current_value;
+                def = current_value;
+        END;
 	WHILE count < 53;
-		INCLUDE option value=count;
+                INCLUDE option value=count selected=(count == def ? 1 : 0);
 		count = count + 1;
 	END;
 END;

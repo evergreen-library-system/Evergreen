@@ -15,10 +15,20 @@ WRAPPER html/table ;
 
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':start-year' size=4 value=start.year;
+			v = start.year;
+			f = 'start-year';
+			IF current_value.$f;
+				v = current_value.$f;
+			END;
+			INCLUDE text name=input_prefix _ ':start-year' size=4 value=v;
 		END;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix _ ':start-month' size=4 value=start.month;
+			v = start.month;
+			f = 'start-month';
+			IF current_value.$f;
+				v = current_value.$f;
+			END;
+			INCLUDE text name=input_prefix _ ':start-month' size=4 value=v;
 		END;
 	END;
 

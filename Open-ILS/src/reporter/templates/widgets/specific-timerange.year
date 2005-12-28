@@ -13,7 +13,7 @@ WRAPPER html/table ;
 
 	WRAPPER html/row;
 		WRAPPER html/cell;
-			INCLUDE text name=input_prefix size=4 value=start.year;
+			INCLUDE text name=input_prefix size=4 value=(current_value ? current_value : start.year);
 		END;
 	END;
 
