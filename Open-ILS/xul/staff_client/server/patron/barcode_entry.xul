@@ -41,6 +41,7 @@
 				if (!session) { 
 					g.error.sdump('D_ERROR','session = ' + session + '\n'
 						+ 'g.cgi._keys = ' + g.cgi._keys + '\n'
+						+ 'g.cgi.param("session") = ' + g.cgi.param('session') + '\n'
 						+ 'location = ' + location + '\n'
 						+ 'location.href = ' + location.href + '\n'
 					);
@@ -52,7 +53,7 @@
 					'keypress',
 					function(ev) {
 						if (ev.keyCode == 13 || ev.keyCode == 77) {
-							spawn(session);
+							spawn();
 						}
 					},
 					false
@@ -71,12 +72,12 @@
 			}
 		}
 
-		function spawn(session) {
+		function spawn() {
 			var tb = document.getElementById('barcode_tb');
 			var barcode = tb.value;
-
+			
 			location.href = urls.remote_patron_display + '?session=' 
-				+ window.escape(session) + '&barcode=' + window.escape(barcode);
+				+ window.escape(g.cgi.param('session')) + '&barcode=' + window.escape(barcode);
 		}
 
 	]]>
