@@ -72,6 +72,8 @@ function initLogin() {
 
 	loginBoxVisible = !loginBoxVisible;
 	G.ui.login.cancel.onclick = showCanvas;
+	if(findCurrentPage() == MYOPAC) 
+		G.ui.login.cancel.onclick = goHome;
 }
 
 function setSidebarLinks() {

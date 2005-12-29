@@ -38,7 +38,6 @@ function holdsDrawWindow(recid, type) {
 	currentHoldRecord = recid;
 	
 	if(isXUL() && holdRecipient == null ) { 
-	//if(holdRecipient == null ) { 
 		holdsHandleStaff();
 		return;
 	}

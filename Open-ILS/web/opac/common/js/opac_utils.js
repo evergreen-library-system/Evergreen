@@ -627,6 +627,7 @@ function checkILSEvent(obj) {
 	return null;
 }
 function alertILSEvent(code, msg) {
+   if(!msg) msg = "";
 	alert( msg + '\n' + $('ilsevent.' + code).innerHTML );
 }
 
@@ -657,4 +658,11 @@ function grabUserByBarcode( authtoken, barcode ) {
 	req.send(true);
 	return req.result();
 }
+
+
+function goHome() {
+	goTo(buildOPACLink({page:HOME}));
+}
+
+
 
