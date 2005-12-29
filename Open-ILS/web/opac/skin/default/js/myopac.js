@@ -188,11 +188,11 @@ function myOPACDrawHolds(r) {
 
 		var h = holds[i];
 		var row = holdsTemplateRow.cloneNode(true);
-		row.id = "myopac_holds_row_" + h.target();
+		row.id = "myopac_holds_row_" + h.id() + '_' + h.target();
 
 		var formats = (h.holdable_formats()) ? h.holdable_formats() : null;
 		var form = $n(row, "myopac_holds_formats");
-		form.id = "myopac_holds_form_" + h.target();
+		form.id = "myopac_holds_form_" + h.id() + '_' + h.target();
 		if(formats) form.appendChild(text(formats));
 
 		$n(row, "myopac_holds_location").
@@ -227,20 +227,21 @@ function myOPACDrawHoldTitle(hold) {
 	if(hold.hold_type() == "T") method = FETCH_RMODS;
 	var req = new Request(method, hold.target());
 	req.callback(myOPACFleshHoldTitle);
+	req.request.hold = hold.id();
 	req.send();
 }
 
 function myOPACFleshHoldTitle(r) {
 
 	var record = r.getResultObject();
-	var row = $("myopac_holds_row_" + record.doc_id());
+	var row = $("myopac_holds_row_" + r.hold + '_' + record.doc_id());
 	var title_link = $n(row, "myopac_holds_title_link");
 	var author_link = $n(row, "myopac_holds_author_link");
 
 	buildTitleDetailLink(record, title_link);
 	buildSearchLink(STYPE_AUTHOR, record.author(), author_link);
 
-	var form = $("myopac_holds_form_" + record.doc_id());
+	var form = $("myopac_holds_form_" + r.hold + '_' + record.doc_id());
 
 	if(form) {
 		var img = elem("img");
