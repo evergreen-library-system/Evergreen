@@ -38,7 +38,10 @@ table { border-collapse: collapse; }
 
 #loading_div { width: 100%;}
 .logo { height: 65px; width: 180px; }
+/*
 .org_tree { height: 500px; padding-left: 2px; padding-right: 2px; }            
+*/
+.org_tree { padding-left: 2px; padding-right: 2px; }            
 .org_link { padding-right: 15px; }
 #org_link_container { margin-bottom: 5px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px; width: 100%; }
 #left_div { float:left; width: 20%; }
