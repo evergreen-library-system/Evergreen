@@ -2,6 +2,8 @@ package OpenILS::Application::Search::AddedContent;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
+sub initialize { return 1; }
+
 
 __PACKAGE__->register_method(
 	method	=> "summary",

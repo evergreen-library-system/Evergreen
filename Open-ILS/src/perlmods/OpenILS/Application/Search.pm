@@ -13,7 +13,7 @@ use OpenSRF::Utils::Cache;
 #use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Biblio;
 use OpenILS::Application::Search::Authority;
-use OpenILS::Application::Search::Actor;
+#use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
 
 
@@ -35,17 +35,16 @@ sub initialize {
 	my $implementation = $conf->config_value(					
 		"apps", "open-ils.search","app_settings", "added_content", "implementation" );
 
-	if($implementation) {
-		eval "use $implementation";
-		if($@) {	
-			$logger->error("Unable to load Added Content handler: $@"); 
-			return; 
-		}
-		$implementation->initialize();
+	$implementation = "OpenILS::Application::Search::AddedContent" unless $implementation;
 
-	} else { #if none is defined, use the default which returns empty sets
-		eval "use OpenILS::Application::Search::AddedContent";
+	$logger->debug("Attempting to load Added Content handler: $implementation");
+	eval "use $implementation";
+	if($@) {	
+		$logger->error("Unable to load Added Content handler [$implementation]: $@"); 
+		return; 
 	}
+
+	eval { $implementation->initialize(); };
 }
 
 sub filter_search {
