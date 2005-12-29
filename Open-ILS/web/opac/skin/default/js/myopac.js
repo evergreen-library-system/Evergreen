@@ -103,6 +103,7 @@ function myOPACDrawCheckedOutSlim(r) {
 	var none				= $("myopac_checked_none");
 
 	if(checkedDrawn) return;
+	checkedDrawn = true;
 	if(!checkedRowTemplate) 
 		checkedRowTemplate = tbody.removeChild($("myopac_checked_row"));
 

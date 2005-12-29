@@ -29,11 +29,6 @@ $ttest{'callnumber'}		= 1;
 $ttest{'copy'}				= 420795;
 $ttest{'user'}				= 3;
 
-my $testcopy = 420795;
-my $testrec = 40791;
-my $testcn = 1;
-my $testuser = 3;
-
 my %containers;
 my %items;
 

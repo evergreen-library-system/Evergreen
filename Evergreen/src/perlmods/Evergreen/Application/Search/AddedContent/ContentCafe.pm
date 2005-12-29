@@ -96,7 +96,11 @@ sub summary {
 
 	my $data = retrieve_added_content( "member", $isbn, 1 );
 	return {} unless $data;
-	my $doc = XML::LibXML->new->parse_string($data);
+	my $doc;
+	try {
+		$doc = XML::LibXML->new->parse_string($data);
+	} catch Error with { $doc = undef };
+
 	my $summary = {};
 	return $summary unless $doc;
 
@@ -135,7 +139,11 @@ sub reviews {
 	return $ret unless $enabled;
 	my $data = retrieve_added_content( "review", $isbn );
 	return $ret unless $data;
-	my $doc = XML::LibXML->new->parse_string($data);
+
+	my $doc;
+	try {
+		$doc = XML::LibXML->new->parse_string($data);
+	} catch Error with { $doc = undef };
 
 
 	if(!$doc) {
@@ -181,7 +189,12 @@ sub toc {
 
 	my $data = retrieve_added_content( "toc", $isbn );
 	return undef unless $data;
-	my $doc = XML::LibXML->new->parse_string($data);
+
+	my $doc;
+	try {
+		$doc = XML::LibXML->new->parse_string($data);
+	} catch Error with { $doc = undef };
+
 
 	my @nodes =  $doc->findnodes("//*[local-name()='TOCText']")->get_nodelist();
 		

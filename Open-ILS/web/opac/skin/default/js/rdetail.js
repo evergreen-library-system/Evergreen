@@ -233,6 +233,7 @@ function _rdetailBuildInfoRows(r) {
 	_rdetailRows();
 
 	var summary = r.getResultObject();
+	if(!summary) return;
 
 	G.ui.rdetail.cp_info_loading.parentNode.removeChild(
 		G.ui.rdetail.cp_info_loading);
