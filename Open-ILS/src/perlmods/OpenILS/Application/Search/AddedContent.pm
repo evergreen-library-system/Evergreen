@@ -8,10 +8,10 @@ use XML::LibXML;
 use LWP::UserAgent;
 use OpenSRF::EX qw(:try);
 
-
 my $host;
 my $username;
 my $password;
+my $enabled = 0;
 my $urlbase = "ContentCafe";
 my $types = {
 	toc			=> "TOC.asmx",
@@ -28,6 +28,8 @@ sub initialize {
 		"apps", "open-ils.search","app_settings", "added_content", "username");
 	$password = $conf->config_value(					
 		"apps", "open-ils.search","app_settings", "added_content", "password");
+
+	$enabled = 1 if ($host and $username and $password);
 }
 
 
@@ -57,7 +59,7 @@ sub retrieve_added_content {
 	};
 	alarm(0);
 
-	warn "received content data:\n$data\n";
+#	warn "received content data:\n$data\n";
 	return $data;
 }
 
@@ -80,6 +82,18 @@ __PACKAGE__->register_method(
 
 sub summary {
 	my( $self, $client, $isbn ) = @_;
+
+	if(!$enabled) {
+		return { 
+			Review		=> "false",
+			Inventory	=> "false",
+			Annotation	=> "false",
+			Jacket		=> "false",
+			TOC			=> "false",
+			Product		=> "false",
+		};
+	}
+
 	my $data = retrieve_added_content( "member", $isbn, 1 );
 	return {} unless $data;
 	my $doc = XML::LibXML->new->parse_string($data);
@@ -117,10 +131,12 @@ __PACKAGE__->register_method(
 sub reviews {
 	my( $self, $client, $isbn ) = @_;
 
-	my $data = retrieve_added_content( "review", $isbn );
-	return undef unless $data;
-	my $doc = XML::LibXML->new->parse_string($data);
 	my $ret = [];
+	return $ret unless $enabled;
+	my $data = retrieve_added_content( "review", $isbn );
+	return $ret unless $data;
+	my $doc = XML::LibXML->new->parse_string($data);
+
 
 	if(!$doc) {
 		if( $self->api_name =~ /random/ ) { return undef; }
