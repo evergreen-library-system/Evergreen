@@ -1161,7 +1161,17 @@ sub biblio_search_isbn {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "fetch_mods_by_copy",
+	api_name	=> "open-ils.search.biblio.mods_from_copy",
+);
 
+sub fetch_mods_by_copy {
+	my( $self, $client, $copyid ) = @_;
+	my ($record, $evt) = $apputils->fetch_record_by_copy( $copyid );
+	return $evt if $evt;
+	return $apputils->record_to_mvr($record);
+}
 
 
 

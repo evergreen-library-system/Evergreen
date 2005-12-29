@@ -85,8 +85,8 @@ function myOPACChangePage( page ) {
 }
 
 function myOPACShowChecked() {
-	var req = new Request(FETCH_CHECKED_OUT, G.user.session);	
-	req.callback(myOPACDrawCheckedOut);
+	var req = new Request(FETCH_CHECKED_OUT_SLIM, G.user.session);	
+	req.callback(myOPACDrawCheckedOutSlim);
 	req.send();
 }
 
@@ -94,8 +94,8 @@ function myOPACShowChecked() {
 var checkedRowTemplate;
 var circsCache = new Array();
 var checkedDrawn = false;
-function myOPACDrawCheckedOut(r) {
 
+function myOPACDrawCheckedOutSlim(r) {
 
 	var checked			= r.getResultObject();
 	var tbody			= $("myopac_checked_tbody");
@@ -113,22 +113,17 @@ function myOPACDrawCheckedOut(r) {
 
 	for( var idx in checked ) {
 
+		var circ    = checked[idx]
 		var row = checkedRowTemplate.cloneNode(true);
+		row.id = 'myopac_checked_row_ ' + circ.id();
 
-		var circ    = checked[idx].circ;
-      var record  = checked[idx].record;
-      var copy    = checked[idx].copy;
  		var due = circ.due_date();
       due = due.replace(/[0-9][0-9]:.*$/,"");
 
-		var tlink = $n( row, "myopac_checked_title_link" );
-		var alink = $n( row, "myopac_checked_author_link" );
 		var dlink = $n( row, "myopac_checked_due" );
 		var rlink = $n( row, "myopac_checked_renewals" );
 		var rnlink = $n( row, "myopac_checked_renew_link" );
 
-		buildTitleDetailLink(record, tlink);
-		buildSearchLink(STYPE_AUTHOR, record.author(), alink);
 		dlink.appendChild(text(due));
 		rlink.appendChild(text(circ.renewal_remaining()));
 		unHideMe(row);
@@ -136,8 +131,24 @@ function myOPACDrawCheckedOut(r) {
 		circsCache.push(circ);
 
 		tbody.appendChild(row);
+
+		var req = new Request(FETCH_MODS_FROM_COPY, circ.target_copy() );
+		req.request.circ = circ.id();
+		req.callback(myOPACDrawCheckedTitle);
+		req.send();
 	}
 }
+
+function myOPACDrawCheckedTitle(r) {
+	var circid = r.circ;
+	var row = $('myopac_checked_row_ ' + circid);
+	var record = r.getResultObject();
+	var tlink = $n( row, "myopac_checked_title_link" );
+	var alink = $n( row, "myopac_checked_author_link" );
+	buildTitleDetailLink(record, tlink);
+	buildSearchLink(STYPE_AUTHOR, record.author(), alink);
+}
+
 
 function myOPACRenewCirc(circid) {
 	var circ;

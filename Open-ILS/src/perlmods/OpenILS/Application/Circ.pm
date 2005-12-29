@@ -74,6 +74,32 @@ sub checkouts_by_user {
 }
 
 
+
+__PACKAGE__->register_method(
+	method	=> "checkouts_by_user_slim",
+	api_name	=> "open-ils.circ.actor.user.checked_out.slim",
+	NOTES		=> <<"	NOTES");
+	Returns a list of open circulation objects
+	NOTES
+
+sub checkouts_by_user_slim {
+	my( $self, $client, $user_session, $user_id ) = @_;
+
+	my( $requestor, $target, $copy, $record, $evt );
+
+	( $requestor, $target, $evt ) = 
+		$apputils->checkses_requestor( $user_session, $user_id, 'VIEW_CIRCULATIONS');
+	return $evt if $evt;
+
+	return $apputils->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.action.open_circulation.search.atomic", 
+		{ usr => $target->id } );
+}
+
+
+
+
 __PACKAGE__->register_method(
 	method	=> "title_from_transaction",
 	api_name	=> "open-ils.circ.circ_transaction.find_title",
