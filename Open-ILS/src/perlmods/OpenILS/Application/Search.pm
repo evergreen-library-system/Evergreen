@@ -2,6 +2,7 @@ package OpenILS::Application::Search;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use JSON;
+use OpenSRF::Utils::Logger qw(:logger);
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
@@ -14,7 +15,7 @@ use OpenILS::Application::Search::Biblio;
 use OpenILS::Application::Search::Authority;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
-use OpenILS::Application::Search::AddedContent;
+
 
 use OpenILS::Application::AppUtils;
 
@@ -28,7 +29,23 @@ use Text::Aspell; # spell checking...
 
 sub initialize {
 	OpenILS::Application::Search::Z3950->initialize();
-	OpenILS::Application::Search::AddedContent->initialize();
+
+	# try to load the added content handler
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+	my $implementation = $conf->config_value(					
+		"apps", "open-ils.search","app_settings", "added_content", "implementation" );
+
+	if($implementation) {
+		eval "use $implementation";
+		if($@) {	
+			$logger->error("Unable to load Added Content handler: $@"); 
+			return; 
+		}
+		$implementation->initialize();
+
+	} else { #if none is defined, use the default which returns empty sets
+		eval "use OpenILS::Application::Search::AddedContent";
+	}
 }
 
 sub filter_search {

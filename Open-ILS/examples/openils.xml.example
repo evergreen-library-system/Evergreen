@@ -147,6 +147,19 @@ For non-core config info, see the inline documentation within this file
 					<memcache>127.0.0.1:10101</memcache>
 					<max_cache_time>3600</max_cache_time>
 					<marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+					<added_content>
+						<!-- 
+							Example added content handler.  If this is not defined, the default
+							content handler is used, which returns empty sets for all methods	
+						-->
+						<!--
+						<implementation>Evergreen::Application::Search::AddedContent::ContentCafe</implementation>
+						<host>MY_CONTENT_HOST</host>
+						<username>MY_CONTENT_USERNAME</username>
+						<password>MY_CONTENT_PASSWORD</password>
+						-->
+					</added_content>
+
 				</app_settings>
 
 			</open-ils.search>

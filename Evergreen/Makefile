@@ -26,6 +26,11 @@ xul:
 	find local_staff_client/ -type f -exec sed -i s/gapines.org/${NEW_OPAC_URL}/g {} \;
 	make -C local_staff_client package
 
+perl-install:
+	@echo $@
+	mkdir -p $(PERLDIR)
+	cp -r src/perlmods/* $(PERLDIR)
+
 circ-install:
 	@echo $@
 	mkdir -p $(CIRCRULESDIR)
