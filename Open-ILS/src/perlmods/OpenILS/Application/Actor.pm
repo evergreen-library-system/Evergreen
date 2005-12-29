@@ -995,6 +995,10 @@ sub update_password {
 		$user_obj->passwd($new_value);
 	} 
 	elsif($self->api_name =~ /username/) {
+		my $users = search_username(undef, undef, $new_value); 
+		if( $users and $users->[0] ) {
+			return OpenILS::Event->new('USERNAME_EXISTS');
+		}
 		$user_obj->usrname($new_value);
 	}
 

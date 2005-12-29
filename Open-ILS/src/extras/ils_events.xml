@@ -33,6 +33,13 @@
 		</desc>
 	</event>
 
+	<event code='1200' textcode='USERNAME_EXISTS'>
+		<desc>
+			The given username exists in the database
+		</desc>
+	</event>
+
+
 	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a circulation object from the system and 

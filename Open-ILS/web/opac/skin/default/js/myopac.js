@@ -245,7 +245,8 @@ function myOPACFleshHoldTitle(r) {
 
 	if(form) {
 		var img = elem("img");
-		img.setAttribute("src", buildImageLink('tor/' + record.types_of_resource()[0] + ".jpg"));
+		img.setAttribute("src", 
+			buildImageLink('tor/' + record.types_of_resource()[0] + ".jpg"));
 		addCSSClass(img, "myopac_form_pic");
 		form.appendChild(img);
 	}
@@ -425,6 +426,13 @@ function myOPACUpdateUsername() {
 	var req = new Request(UPDATE_USERNAME, G.user.session, username );
 	req.send(true);
 	if(req.result()) {
+
+		var evt;
+		if(evt = checkILSEvent(req.result())) {
+			alertILSEvent(evt);
+			return;
+		}
+
 		G.user.usrname(username);
 		hideMe($('myopac_update_username_row'));
 		userShown = false;
