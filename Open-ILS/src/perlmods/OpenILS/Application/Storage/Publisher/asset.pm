@@ -6,6 +6,89 @@ use base qw/OpenILS::Application::Storage/;
 #
 #my $log = 'OpenSRF::Utils::Logger';
 
+# XXX
+# see /home/miker/cn_browse-test.sql for page up and down sql ...
+# XXX
+
+sub cn_browse_target {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;
+
+	my $cn = $args{label};
+	my $org = $args{org_unit};
+	my $depth = $args{depth};
+	my $size = $args{page_size} || 10;
+	$size /= 2;
+	$size = int($size);
+
+	my $table = asset::call_number->table;
+
+	my $descendants = "actor.org_unit_descendants($org)";
+	if (defined $depth) {
+		$descendants = "actor.org_unit_descendants($org,$depth)";
+	}
+
+	my $top_sql = <<"	SQL";
+		select * from (
+			select
+			        cn.label,
+			        cn.owning_lib,
+			        cn.record,
+			        cn.id
+			from
+			        $table cn
+			        join $descendants d
+			                on (d.id = cn.owning_lib)
+			where
+			        upper(label) < ?
+			order by 1 desc, 4, 2, 3
+			limit $size
+		) as foo
+		order by 1,4;
+	SQL
+
+	my $bottom_sql = <<"	SQL";
+		select
+        		cn.label,
+		        cn.owning_lib,
+		        cn.record,
+		        cn.id
+		from
+		        $table cn
+		        join $descendants d
+		                on (d.id = cn.owning_lib)
+		where
+		        upper(label) >= ?
+		order by 1,4
+		limit $size;
+	SQL
+
+	my $sth = asset::call_number->db_Main->prepare($top_sql);
+	$sth->execute($cn);
+	while ( my $row = $sth->fetchrow_hashref ) {
+		$client->respond($row);
+	}
+	$sth->finish;
+
+	$sth = asset::call_number->db_Main->prepare($bottom_sql);
+	$sth->execute($cn);
+	while ( my $row = $sth->fetchrow_hashref ) {
+		$client->respond($row);
+	}
+	$sth->finish;
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'cn_browse_target',
+	api_name	=> 'open-ils.storage.asset.call_number.browse.target',
+	argc		=> 0,
+	stream		=> 1,
+);
+
+
 sub copy_proximity {
 	my $self = shift;
 	my $client = shift;
@@ -25,7 +108,7 @@ sub copy_proximity {
 __PACKAGE__->register_method(
 	method		=> 'copy_proximity',
 	api_name	=> 'open-ils.storage.asset.copy.proximity',
-	argc		=> 0,
+	argc		=> 4,
 	stream		=> 1,
 );
 
