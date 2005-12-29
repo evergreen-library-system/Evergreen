@@ -40,7 +40,7 @@
 <!ENTITY common.org.cancel "Cancel">
 <!ENTITY common.org.loading "Loading library selector...">
 <!ENTITY common.org.note "Tip:">
-<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a region.">
+<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a section.">
 
 <!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">
 <!ENTITY sidebar.relevantAuthors.headerLabel "Relevant Authors">

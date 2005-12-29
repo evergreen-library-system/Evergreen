@@ -152,6 +152,9 @@ function myOPACDrawCheckedTitle(r) {
 
 
 function myOPACRenewCirc(circid) {
+	alert("Functionality currently under construction");
+	return;
+
 	var circ;
 	for( var i = 0; i != circsCache.length; i++ ) 
 		if(circsCache[i].id() == circid)

@@ -1086,10 +1086,13 @@ __PACKAGE__->register_method(
 sub renew {
 	my($self, $client, $login_session, $circ) = @_;
 
+	my( $evt, $user );
+
 	throw OpenSRF::EX::InvalidArg 
 		("open-ils.circ.renew no circ") unless defined($circ);
 
-	my $user = $apputils->check_user_session($login_session);
+	($user, $evt) = $apputils->checkses($login_session);
+	return $evt if $evt;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $copy = _grab_copy_by_id($session, $circ->target_copy);
