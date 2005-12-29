@@ -226,15 +226,10 @@ __PACKAGE__->register_method(
 
 sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $user_session, $user_id ) = @_;
-	my $user_obj = $apputils->check_user_session( $user_session ); 
 
-	if(!defined($user_id)) { $user_id = $user_obj->id; }
-
-	if( $user_obj->id ne $user_id ) {
-		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER")) {
-			return OpenILS::Perm->new("VIEW_USER");
-		}
-	}
+	my( $requestor, $target, $evt ) = $apputils->
+		checkses_requestor( $user_session, $user_id, 'VIEW_USER' );
+	return $evt if $evt;
 
 	return flesh_user($user_id);
 }
@@ -277,17 +272,8 @@ sub flesh_user {
 	$user->addresses( $add_req->gather(1) );
 
 	for my $c(@{$user->addresses}) {
-		if($c->id == $user->billing_address || $c->id eq $user->billing_address ) {
-			warn "Setting my address to " . $c->id . "\n";
-			$user->billing_address($c);
-		}
-	}
-
-	for my $c(@{$user->addresses}) {
-		if($c->id == $user->mailing_address || $c->id eq $user->mailing_address ) {
-			warn "Setting my address to " . $c->id . "\n";
-			$user->mailing_address($c);
-		}
+		if($c->id eq $user->billing_address ) { $user->billing_address($c); }
+		if($c->id eq $user->mailing_address ) { $user->mailing_address($c); }
 	}
 
 	my $stat_req = $session->request(
@@ -297,10 +283,8 @@ sub flesh_user {
 
 	if($kill) { $session->disconnect(); }
 	$user->clear_passwd();
-	warn Dumper $user;
 
 	return $user;
-
 }
 
 
