@@ -292,6 +292,23 @@ BLOCK report_template_tree;
 					'$p.templatename'
 				);
 			</script>";
+
+			q3 = "SELECT * FROM reporter.stage3 WHERE (pub is true" _
+				" or owner = " _ user.id() _ ") and stage2 = '$s2id' ORDER BY create_date DESC";
+			FOR report = DBI.query(q3);
+				p = utils.JSON2perl( report.params );
+				s3id = report.id;
+				"<script language='javascript'>
+					tree_" _ counter _ ".addNode(
+						'r_$report.id',
+						$template.id,
+						'$p.reportname',
+						'stage2?action=edit&id=$s2id&report=$s3id',
+						'$p.reportname'
+					);
+				</script>";
+			END;
+
 		END;
 	END;
 END;
