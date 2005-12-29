@@ -10,7 +10,7 @@ NEW_XUL_PACKAGE_LABEL=OpenILS
 
 all:	xul 
 
-install: 	circ-install iplist-install
+install: 	circ-install iplist-install perl-install
 
 xul:
 	@echo $@

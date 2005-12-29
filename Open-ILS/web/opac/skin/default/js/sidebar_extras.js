@@ -54,7 +54,6 @@ function resultDrawSeries() {
 		$("series_sidebar_tree_div") );
 }
 
-var _oldFashioned = true;
 var IESux = true;
 
 function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode ) {
@@ -80,8 +79,7 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		var href = resultQuickLink( items[i], stype );
 		tree.addNode( stype + "_" + items[i], treeName + 'Root', item, href );
 
-		////if(_oldFashioned && !IE) {
-		if(_oldFashioned && !IE ) resultFireXRefReq(treeName, stype, items[i]);
+		if( !IE ) resultFireXRefReq(treeName, stype, items[i]);
 
 		var a = {};
 		a.type = stype;
@@ -91,14 +89,11 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 
 	if(found) {
 		unHideMe(wrapperNode);
-		if(!_oldFashioned)
-			resultFireXRefBatch(treeName, xrefCache, stype);
-		//if(IE && stype == 'subject' ) {
-
 		if(IE) resultFireXRefSingle(treeName, xrefCache, stype);
 	}
 }
 
+/*
 function resultFireXRefBatch(treeName, xrefCache, stype) {
 	var query = [];
 	for( var i = 0; i != xrefCache.length; i++ ) {
@@ -113,6 +108,7 @@ function resultFireXRefBatch(treeName, xrefCache, stype) {
 	req.callback(resultRenderXRefTree);
 	req.send();
 }
+*/
 
 var xrefCacheIndex = {};
 xrefCacheIndex['subject'] = 0;
@@ -127,6 +123,7 @@ function resultHandleXRefResponse(r) {
 
 function resultFireXRefSingle( treeName, xrefCache, stype ) {
 	var i = xrefCacheIndex[stype]++;
+	if(xrefCache[i] == null) return;
 	var item = xrefCache[i].term;
 	var tree;
 	eval('tree=' + treeName);
@@ -161,6 +158,7 @@ function resultQuickLink( term, type ) {
 	return buildOPACLink(args);
 }
 
+/*
 function resultRenderXRefTree(r) {
 	var tree = r._tree;
 	var res = r.getResultObject();
@@ -189,6 +187,7 @@ function resultRenderXRefTree(r) {
 		}
 	}
 }
+*/
 
 
 function resultAppendCrossRef(r) {
