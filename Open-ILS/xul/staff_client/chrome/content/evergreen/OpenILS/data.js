@@ -158,9 +158,10 @@ OpenILS.data.prototype = {
 				try {
 					f();
 				} catch(E) {
-					// Probably the one thing we should not cache, so what do we do?
-					obj.list.au = new au();
-					obj.list.au.home_lib( '1' );
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					alert(error);
+					throw(E);
 				}
 				obj.list.au = [ obj.list.au ];
 			}
