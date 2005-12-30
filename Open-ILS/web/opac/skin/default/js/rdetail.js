@@ -257,7 +257,11 @@ function _rdetailBuildInfoRows(r) {
 
 		} else rowNode.setAttribute("used", "1");
 
-		findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(text(arr[1]));
+		var a = elem("a", {href:'javascript:cnBrowseGo("' + arr[1] + '");' }, arr[1]);
+		addCSSClass(a, 'classic_link');
+		findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(a);
+		
+		//findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(text(arr[1]));
 
 		var cpc_temp = rowNode.removeChild(
 			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));

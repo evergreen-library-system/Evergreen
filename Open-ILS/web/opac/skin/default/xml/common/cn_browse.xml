@@ -1,0 +1,26 @@
+<div id='cn_browse' class='hide_me non_canvas cn_browser' style='width: 90%; text-align: center; padding: 15px;'>
+	<div id='cn_browse_div'> 
+		<table class='data_grid bookshelf' width='100%'>
+			<thead>
+				<tr>
+					<td><a id='cn_browse_next' class='classic_link' 
+						href='javascript:cnBrowsePrev();'>&lt;&lt; Previous Page</a></td>
+					<td colspan='1' align='center'>Callnumber Browser</td>
+					<td><a id='cn_browse_prev' class='classic_link' 
+						href='javascript:cnBrowseNext();'>Next Page&gt;&gt;</a></td>
+				</tr>
+			</thead>
+			<tbody id='cn_tbody'>
+				<tr id='cn_browse_row'>
+					<td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
+						<a><img height='60' width='50' class='cn_browse_info' name='cn_browse_pic' border='0'> </img></a>
+						<div style='font-weight: bold;' class='cn_browse_info' name='cn_browse_cn'>  </div>
+						<div class='cn_browse_info'><a name='cn_browse_title' class='classic_link'> </a></div>
+						<div class='cn_browse_info'><a name='cn_browse_author' class='classic_link'>  </a></div>
+						<div class='cn_browse_info' name='cn_browse_lib'>  </div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

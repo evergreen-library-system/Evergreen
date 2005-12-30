@@ -222,6 +222,9 @@ var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summa
 var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
 var FETCH_ADV_MRIDS				= "open-ils.search:open-ils.search.biblio.multiclass:1";
 var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
+var FETCH_CNBROWSE_TARGET		= 'open-ils.search:open-ils.search.callnumber.browse.target';
+var FETCH_CNBROWSE_PREV			= 'open-ils.search:open-ils.search.callnumber.browse.page_up';
+var FETCH_CNBROWSE_NEXT			= 'open-ils.search:open-ils.search.callnumber.browse.page_down';
 /* ---------------------------------------------------------------------------- */
 
 

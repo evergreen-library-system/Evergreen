@@ -168,4 +168,15 @@ table { border-collapse: collapse; }
 
 .rdetail_extras_td { padding-right: 15px; padding-left: 15px; border-right: 1px solid #888; }
 
+.cn_browse_item { }
+.cn_browse_info { padding: 4px; border-bottom: 1px dashed #E0E0E0;}
+
+.bookshelf {
+	 /*
+	 background-image: url(wood.jpg);
+	 background-repeat: no-repeat;
+	 */
+	 border-bottom: 1px solid black;
+}
+
 

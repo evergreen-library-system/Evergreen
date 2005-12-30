@@ -3,6 +3,7 @@
 	<script language='javascript' src='../js/sidebar_extras.js'> </script>
 	<script language='javascript' src='../js/rdetail.js'> </script>
 	<script language='javascript' src='../js/holds.js'> </script>
+	<script language='javascript' src='../js/cn_browse.js'> </script>
 
 	<script language='javascript'>
 		config.ids.rdetail = {};

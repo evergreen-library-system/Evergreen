@@ -1176,4 +1176,48 @@ sub fetch_mods_by_copy {
 
 
 
+
+# -------------------------------------------------------------------------------------
+
+__PACKAGE__->register_method(
+	method	=> "cn_browse",
+	api_name	=> "open-ils.search.callnumber.browse.target",
+	notes		=> "Starts a callnumber browse"
+	);
+
+__PACKAGE__->register_method(
+	method	=> "cn_browse",
+	api_name	=> "open-ils.search.callnumber.browse.page_up",
+	notes		=> "Returns the previous page of callnumbers", 
+	);
+
+__PACKAGE__->register_method(
+	method	=> "cn_browse",
+	api_name	=> "open-ils.search.callnumber.browse.page_down",
+	notes		=> "Returns the next page of callnumbers", 
+	);
+
+
+# RETURNS array of arrays like so: label, owning_lib, record, id
+sub cn_browse {
+	my( $self, $client, @params ) = @_;
+	my $method;
+
+	$method = 'open-ils.storage.asset.call_number.browse.target.atomic' 
+		if( $self->api_name =~ /target/ );
+	$method = 'open-ils.storage.asset.call_number.browse.page_up.atomic'
+		if( $self->api_name =~ /page_up/ );
+	$method = 'open-ils.storage.asset.call_number.browse.page_down.atomic'
+		if( $self->api_name =~ /page_down/ );
+
+	return $apputils->simplereq( 'open-ils.storage', $method, @params );
+}
+# -------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 1;

@@ -19,10 +19,12 @@
 		config.ids.altcanvas.holds			= 'holds_box';
 		config.ids.altcanvas.xulholds		= 'xulholds_box';
 		config.ids.altcanvas.loading		= 'loading_alt';
+		config.ids.altcanvas.cnbrowse		= 'cn_browse';
 	</script>
 
 	<!--#if expr="$FRONT_PAGE!='true'"-->
 		<!--#include virtual="holds.xml"-->
+		<!--#include virtual="cn_browse.xml"-->
 	<!--#endif-->
 
 	<div id='loading_alt' class='hide_me non_canvas' style='margin-top: 6px;'>
