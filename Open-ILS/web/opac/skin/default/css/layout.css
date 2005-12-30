@@ -172,10 +172,9 @@ table { border-collapse: collapse; }
 .cn_browse_info { padding: 4px; border-bottom: 1px dashed #E0E0E0;}
 
 .bookshelf {
-	 /*
-	 background-image: url(wood.jpg);
-	 background-repeat: no-repeat;
-	 */
+	 /*background-image: url(http://10.4.0.10/woodgrain.jpeg);*/
+	 background-image: url(http://dev.gapines.org/opac/images/woodgrain.jpg);
+	 background-repeat: repeat;
 	 border-bottom: 1px solid black;
 }
 
