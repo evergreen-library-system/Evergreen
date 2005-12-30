@@ -10,16 +10,133 @@ use base qw/OpenILS::Application::Storage/;
 # see /home/miker/cn_browse-test.sql for page up and down sql ...
 # XXX
 
+sub cn_browse_pagedown {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;
+
+	my $cn = uc($args{label});
+	my $org = $args{org_unit};
+	my $depth = $args{depth};
+	my $boundry_id = $args{boundry_id};
+	my $size = $args{page_size} || 20;
+	$size = int($size);
+
+	my $table = asset::call_number->table;
+
+	my $descendants = "actor.org_unit_descendants($org)";
+	if (defined $depth) {
+		$descendants = "actor.org_unit_descendants($org,$depth)";
+	}
+
+	my $sql = <<"	SQL";
+		select * from (
+			select
+			        cn.label,
+			        cn.owning_lib,
+		        	cn.record,
+			        cn.id
+			from
+			        $table cn
+			        join $descendants d
+		        	        on (d.id = cn.owning_lib)
+			where
+			        upper(label) > ?
+			        or ( cn.id > ? and upper(label) = ? )
+			order by upper(label)
+			limit 1000
+		) as foo
+		order by 1,4
+		limit $size;
+	SQL
+
+	my $sth = asset::call_number->db_Main->prepare($sql);
+	$sth->execute($cn, $boundry_id, $cn);
+	while ( my $row = $sth->fetchrow_hashref ) {
+		$client->respond($row);
+	}
+	$sth->finish;
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'cn_browse_pagedown',
+	api_name	=> 'open-ils.storage.asset.call_number.browse.page_down',
+	argc		=> 4,
+	stream		=> 1,
+);
+
+sub cn_browse_pageup {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;
+
+	my $cn = uc($args{label});
+	my $org = $args{org_unit};
+	my $depth = $args{depth};
+	my $boundry_id = $args{boundry_id};
+	my $size = $args{page_size} || 20;
+	$size = int($size);
+
+	my $table = asset::call_number->table;
+
+	my $descendants = "actor.org_unit_descendants($org)";
+	if (defined $depth) {
+		$descendants = "actor.org_unit_descendants($org,$depth)";
+	}
+
+	my $sql = <<"	SQL";
+		select * from (
+			select * from (
+				select
+				        cn.label,
+				        cn.owning_lib,
+			        	cn.record,
+				        cn.id
+				from
+				        $table cn
+				        join $descendants d
+			        	        on (d.id = cn.owning_lib)
+				where
+				        upper(label) < ?
+				        or ( cn.id < ? and upper(label) = ? )
+				order by upper(label) desc
+				limit 1000
+			) as foo
+			order by 1 desc, 4 desc
+			limit $size
+		) as bar
+		order by 1,4;
+	SQL
+
+	my $sth = asset::call_number->db_Main->prepare($sql);
+	$sth->execute($cn, $boundry_id, $cn);
+	while ( my $row = $sth->fetchrow_hashref ) {
+		$client->respond($row);
+	}
+	$sth->finish;
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'cn_browse_pageup',
+	api_name	=> 'open-ils.storage.asset.call_number.browse.page_up',
+	argc		=> 4,
+	stream		=> 1,
+);
+
 sub cn_browse_target {
 	my $self = shift;
 	my $client = shift;
 
 	my %args = @_;
 
-	my $cn = $args{label};
+	my $cn = uc($args{label});
 	my $org = $args{org_unit};
 	my $depth = $args{depth};
-	my $size = $args{page_size} || 10;
+	my $size = $args{page_size} || 20;
 	$size /= 2;
 	$size = int($size);
 
@@ -32,35 +149,43 @@ sub cn_browse_target {
 
 	my $top_sql = <<"	SQL";
 		select * from (
-			select
-			        cn.label,
-			        cn.owning_lib,
-			        cn.record,
-			        cn.id
-			from
-			        $table cn
-			        join $descendants d
-			                on (d.id = cn.owning_lib)
-			where
-			        upper(label) < ?
-			order by 1 desc, 4, 2, 3
+			select * from (
+				select
+				        cn.label,
+				        cn.owning_lib,
+			        	cn.record,
+				        cn.id
+				from
+				        $table cn
+				        join $descendants d
+			        	        on (d.id = cn.owning_lib)
+				where
+				        upper(label) < ?
+				order by upper(label) desc
+				limit 1000
+			) as foo
+			order by 1 desc, 4 desc
 			limit $size
-		) as foo
+		) as bar
 		order by 1,4;
 	SQL
 
 	my $bottom_sql = <<"	SQL";
-		select
-        		cn.label,
-		        cn.owning_lib,
-		        cn.record,
-		        cn.id
-		from
-		        $table cn
-		        join $descendants d
-		                on (d.id = cn.owning_lib)
-		where
-		        upper(label) >= ?
+		select * from (
+			select
+	        		cn.label,
+			        cn.owning_lib,
+			        cn.record,
+		        	cn.id
+			from
+			        $table cn
+			        join $descendants d
+		        	        on (d.id = cn.owning_lib)
+			where
+			        upper(label) >= ?
+			order by upper(label)
+			limit 1000
+		) as foo
 		order by 1,4
 		limit $size;
 	SQL
