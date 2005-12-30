@@ -53,8 +53,8 @@ sub cn_browse_pagedown {
 
 	my $sth = asset::call_number->db_Main->prepare($sql);
 	$sth->execute($cn, $boundry_id, $cn);
-	while ( my $row = $sth->fetchrow_hashref ) {
-		$client->respond($row);
+	while ( my @row = $sth->fetchrow_array ) {
+		$client->respond([@row]);
 	}
 	$sth->finish;
 
@@ -113,8 +113,8 @@ sub cn_browse_pageup {
 
 	my $sth = asset::call_number->db_Main->prepare($sql);
 	$sth->execute($cn, $boundry_id, $cn);
-	while ( my $row = $sth->fetchrow_hashref ) {
-		$client->respond($row);
+	while ( my @row = $sth->fetchrow_array ) {
+		$client->respond([@row]);
 	}
 	$sth->finish;
 
@@ -192,15 +192,15 @@ sub cn_browse_target {
 
 	my $sth = asset::call_number->db_Main->prepare($top_sql);
 	$sth->execute($cn);
-	while ( my $row = $sth->fetchrow_hashref ) {
-		$client->respond($row);
+	while ( my @row = $sth->fetchrow_array ) {
+		$client->respond([@row]);
 	}
 	$sth->finish;
 
 	$sth = asset::call_number->db_Main->prepare($bottom_sql);
 	$sth->execute($cn);
-	while ( my $row = $sth->fetchrow_hashref ) {
-		$client->respond($row);
+	while ( my @row = $sth->fetchrow_array ) {
+		$client->respond([@row]);
 	}
 	$sth->finish;
 
