@@ -137,8 +137,9 @@ sub cn_browse_target {
 	my $org = $args{org_unit};
 	my $depth = $args{depth};
 	my $size = $args{page_size} || 20;
-	$size /= 2;
-	$size = int($size);
+	my $topsize = $size / 2;
+	$topsize = int($topsize);
+	$bottomsize = $size - $topsize;
 
 	my $table = asset::call_number->table;
 
@@ -165,7 +166,7 @@ sub cn_browse_target {
 				limit 1000
 			) as foo
 			order by 1 desc, 4 desc
-			limit $size
+			limit $topsize
 		) as bar
 		order by 1,4;
 	SQL
@@ -187,7 +188,7 @@ sub cn_browse_target {
 			limit 1000
 		) as foo
 		order by 1,4
-		limit $size;
+		limit $bottomsize;
 	SQL
 
 	my $sth = asset::call_number->db_Main->prepare($top_sql);
