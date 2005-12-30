@@ -84,7 +84,7 @@ sub cn_browse_target {
 __PACKAGE__->register_method(
 	method		=> 'cn_browse_target',
 	api_name	=> 'open-ils.storage.asset.call_number.browse.target',
-	argc		=> 0,
+	argc		=> 4,
 	stream		=> 1,
 );
 
@@ -108,7 +108,7 @@ sub copy_proximity {
 __PACKAGE__->register_method(
 	method		=> 'copy_proximity',
 	api_name	=> 'open-ils.storage.asset.copy.proximity',
-	argc		=> 4,
+	argc		=> 2,
 	stream		=> 1,
 );
 
