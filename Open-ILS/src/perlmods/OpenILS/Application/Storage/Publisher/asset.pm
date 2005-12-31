@@ -31,23 +31,19 @@ sub cn_browse_pagedown {
 	}
 
 	my $sql = <<"	SQL";
-		select * from (
-			select
-			        cn.label,
-			        cn.owning_lib,
-		        	cn.record,
-			        cn.id
-			from
-			        $table cn
-			        join $descendants d
-		        	        on (d.id = cn.owning_lib)
-			where
-			        upper(label) > ?
-			        or ( cn.id > ? and upper(label) = ? )
-			order by upper(label)
-			limit 1000
-		) as foo
-		order by 1,4
+		select
+		        cn.label,
+		        cn.owning_lib,
+	        	cn.record,
+		        cn.id
+		from
+		        $table cn
+		        join $descendants d
+	        	        on (d.id = cn.owning_lib)
+		where
+		        upper(label) > ?
+		        or ( cn.id > ? and upper(label) = ? )
+		order by upper(label), 4, 2
 		limit $size;
 	SQL
 
@@ -89,26 +85,22 @@ sub cn_browse_pageup {
 
 	my $sql = <<"	SQL";
 		select * from (
-			select * from (
-				select
-				        cn.label,
-				        cn.owning_lib,
-			        	cn.record,
-				        cn.id
-				from
-				        $table cn
-				        join $descendants d
-			        	        on (d.id = cn.owning_lib)
-				where
-				        upper(label) < ?
-				        or ( cn.id < ? and upper(label) = ? )
-				order by upper(label) desc
-				limit 1000
-			) as foo
-			order by 1 desc, 4 desc
+			select
+			        cn.label,
+			        cn.owning_lib,
+		        	cn.record,
+			        cn.id
+			from
+			        $table cn
+			        join $descendants d
+		        	        on (d.id = cn.owning_lib)
+			where
+			        upper(label) < ?
+			        or ( cn.id < ? and upper(label) = ? )
+			order by upper(label) desc, 4 desc, 2 desc
 			limit $size
 		) as bar
-		order by 1,4;
+		order by 1,4,2;
 	SQL
 
 	my $sth = asset::call_number->db_Main->prepare($sql);
@@ -150,44 +142,36 @@ sub cn_browse_target {
 
 	my $top_sql = <<"	SQL";
 		select * from (
-			select * from (
-				select
-				        cn.label,
-				        cn.owning_lib,
-			        	cn.record,
-				        cn.id
-				from
-				        $table cn
-				        join $descendants d
-			        	        on (d.id = cn.owning_lib)
-				where
-				        upper(label) < ?
-				order by upper(label) desc
-				limit 1000
-			) as foo
-			order by 1 desc, 4 desc
-			limit $topsize
-		) as bar
-		order by 1,4;
-	SQL
-
-	my $bottom_sql = <<"	SQL";
-		select * from (
 			select
-	        		cn.label,
+			        cn.label,
 			        cn.owning_lib,
-			        cn.record,
-		        	cn.id
+			       	cn.record,
+			        cn.id
 			from
 			        $table cn
 			        join $descendants d
-		        	        on (d.id = cn.owning_lib)
+			       	        on (d.id = cn.owning_lib)
 			where
-			        upper(label) >= ?
-			order by upper(label)
-			limit 1000
-		) as foo
-		order by 1,4
+			        upper(label) < ?
+			order by upper(label) desc, 4 desc, 2 desc
+			limit $topsize
+		) as bar
+		order by 1,4,2;
+	SQL
+
+	my $bottom_sql = <<"	SQL";
+		select
+        		cn.label,
+		        cn.owning_lib,
+		        cn.record,
+	        	cn.id
+		from
+		        $table cn
+		        join $descendants d
+	        	        on (d.id = cn.owning_lib)
+		where
+		        upper(label) >= ?
+		order by upper(label),4,2
 		limit $bottomsize;
 	SQL
 
