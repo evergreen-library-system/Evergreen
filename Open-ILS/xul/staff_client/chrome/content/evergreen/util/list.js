@@ -94,6 +94,29 @@ util.list.prototype = {
 		}
 	},
 
+	'clear' : function (params) {
+		switch (this.node.nodeName) {
+			case 'tree' : this._clear_tree(params); break;
+			case 'listbox' : this._clear_listbox(params); break;
+			default: throw('NYI: Need .clear() for ' + this.node.nodeName); break;
+		}
+		this.error.sdump('D_LIST','Clearing list ' + this.node.getAttribute('id') + '\n');
+	},
+
+	'_clear_tree' : function(params) {
+		var items = this.treechildren.childNodes;
+		for (var i = 0; i < items.length; i++) {
+			this.treechildren.removeChild(items[i]);
+		}
+	},
+
+	'_clear_listbox' : function(params) {
+		var items = this.node.getElementsByTagName('listitem');
+		for (var i = 0; i < items.length; i++) {
+			this.node.removeChild(items[i]);
+		}
+	},
+
 	'append' : function (params) {
 		var rnode;
 		switch (this.node.nodeName) {
