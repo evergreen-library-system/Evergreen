@@ -20,12 +20,61 @@ patron.bills.prototype = {
 	'current_payments' : [],
 
 	'refresh' : function() {
-		location.href = location.href;
+		var obj = this;
+		/*
+		if (window.xulG && typeof window.xulG.display_refresh == 'function') {
+			try { window.xulG.display_refresh(); } catch(E) { this.error.sdump('D_ERROR',E); }
+		}
+		*/
+		obj.bills = obj.network.request(
+			api.fm_mobts_having_balance.app,
+			api.fm_mobts_having_balance.method,
+			[ obj.session, obj.patron_id ]
+		);
+		if (window.xulG && typeof window.xulG.on_bill == 'function') {
+			try { window.xulG.on_bill(obj.bills); } catch(E) { this.error.sdump('D_ERROR',E); }
+		}
+		//location.href = location.href;
+		var tbs = document.getElementsByTagName('textbox');
+		for (var i = 0; i < tbs.length; i++) {
+			tbs[i].value = ''; tbs[i].setAttribute('value','');
+		}
+		obj.init();
+		obj.controller.view.bill_payment_amount.focus();
 	},
 
 	'init' : function( params ) {
+	
+		var obj = this;
+
+		obj.init_controller( params );
+
+		obj.retrieve();
+
+		var total_owed = 0;
+
+		JSAN.use('util.money');
+
+		obj.current_payments = []; obj.list.clear();
+		//FIXME//.bills virtual field
+		for (var i = 0; i < obj.bills.length; i++) {
+			var rnode = obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } }, 'attributes' : { 'allowevents' : true } } );
+			var cb = rnode.getElementsByTagName('checkbox')[0];
+			var tb = rnode.getElementsByTagName('textbox')[0];
+			var bo = obj.bills[i].balance_owed();
+			total_owed += util.money.dollars_float_to_cents_integer( bo );
+			var id = obj.bills[i].id();
+			obj.current_payments.push( { 'mobts_id' : id, 'balance_owed' : bo, 'checkbox' : cb, 'textbox' : tb, } );
+		}
+		obj.controller.view.bill_total_owed.value = util.money.cents_as_dollars( total_owed );
+		obj.controller.view.bill_total_owed.setAttribute('value',obj.controller.view.bill_total_owed.value);
+	},
+
+	'init_controller' : function( params ) {
 
 		var obj = this;
+
+		if (obj._controller_inited) return;
 
 		obj.session = obj.session || params['session'];
 		obj.patron_id = obj.patron_id || params['patron_id'];
@@ -78,9 +127,6 @@ patron.bills.prototype = {
 									'billwizard',
 									'chrome,resizable,modal'
 								);
-								if (typeof window.display_refresh == 'function') {
-									try { window.display_refresh(); } catch(E) { obj.error.sdump('D_ERROR',E); }
-								}
 								obj.refresh();
 							} catch(E) {
 								obj.error.sdump('D_ERROR',E);
@@ -175,26 +221,10 @@ patron.bills.prototype = {
 			}
 		);
 
-		obj.retrieve();
+		obj._controller_inited = true;
 
-		var total_owed = 0;
-
-		JSAN.use('util.money');
-
-		obj.current_payments = [];
-		//FIXME//.bills virtual field
-		for (var i = 0; i < obj.bills.length; i++) {
-			var rnode = obj.list.append( { 'row' : { 'my' : { 'mobts' : obj.bills[i] } }, 'attributes' : { 'allowevents' : true } } );
-			var cb = rnode.getElementsByTagName('checkbox')[0];
-			var tb = rnode.getElementsByTagName('textbox')[0];
-			var bo = obj.bills[i].balance_owed();
-			total_owed += util.money.dollars_float_to_cents_integer( bo );
-			var id = obj.bills[i].id();
-			obj.current_payments.push( { 'mobts_id' : id, 'balance_owed' : bo, 'checkbox' : cb, 'textbox' : tb, } );
-		}
-		obj.controller.view.bill_total_owed.value = util.money.cents_as_dollars( total_owed );
-		obj.controller.view.bill_total_owed.setAttribute('value',obj.controller.view.bill_total_owed.value);
 	},
+
 
 	/*****************************************************************************************************************************/
 
@@ -245,6 +275,7 @@ patron.bills.prototype = {
 			if ( obj.pay( payment_blob ) ) {
 
 				obj.refresh();
+				alert('FIXME: Receipt goes here\n' + js2JSON(payment_blob));
 
 			} else {
 
@@ -525,7 +556,7 @@ patron.bills.prototype = {
 				catch(P){dump('?map_row_to_column: ' + E + '\n');}
 				value = '???';
 			}
-			dump('map_row_to_column: value = ' + value + '\n');
+			//dump('map_row_to_column: value = ' + value + '\n');
 			return value;
 		};
 	},

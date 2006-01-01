@@ -84,11 +84,7 @@ patron.display.prototype = {
 					'cmd_patron_refresh' : [
 						['command'],
 						function(ev) {
-							obj.controller.view.patron_name.setAttribute(
-								'value','Retrieving...'
-							);
-							try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
-							try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
+							obj.refresh_all();
 						}
 					],
 					'cmd_patron_checkout' : [
@@ -128,14 +124,25 @@ patron.display.prototype = {
 					'cmd_patron_bills' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(
+							var f = obj.right_deck.set_iframe(
 								urls.remote_patron_bills
 								+ '?session=' + window.escape( obj.session )
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
 									/* FIXME */
-									'bills' : obj.patron.bills
+									'bills' : obj.patron.bills,
+									'display_refresh' : function() {
+										obj.refresh_all();
+									},
+									'on_bill' : function(b) {
+										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+										f.contentWindow.xulG.bills = b;
+										/* FIXME */
+										obj.patron.bills = b;
+										obj.summary_window.g.summary.patron.bills = b;
+										obj.summary_window.g.summary.controller.render('patron_bill');
+									}
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
@@ -341,6 +348,15 @@ patron.display.prototype = {
 				dump('refresh_deck: ' + E + '\n');
 			}
 		}
+	},
+	
+	'refresh_all' : function() {
+		var obj = this;
+		obj.controller.view.patron_name.setAttribute(
+			'value','Retrieving...'
+		);
+		try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
+		try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
 	},
 }
 
