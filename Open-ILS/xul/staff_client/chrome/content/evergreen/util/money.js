@@ -43,7 +43,7 @@ util.money.dollars_float_to_cents_integer = function( money ) {
 util.money.cents_as_dollars = function( cents ) {
 	cents = cents.toString(); 
 	// FIXME: strip miscellaneous characters
-	if (cents.match(/\./)) cents = util.money.dollars_float_to_cents_integer( cents );
+	if (cents.match(/\./)) cents = util.money.dollars_float_to_cents_integer( cents ).toString();
 	try {
 		switch( cents.length ) {
 			case 0: cents = '000'; break;
