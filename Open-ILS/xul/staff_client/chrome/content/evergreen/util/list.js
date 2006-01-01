@@ -209,7 +209,7 @@ util.list.prototype = {
 					params.row_node = listitem;
 					params.on_retrieve = function(row) {
 						params.row = row;
-						obj._map_row_to_listcell(params,treerow);
+						obj._map_row_to_listcell(params,listitem);
 						obj.node.appendChild( listitem );
 					}
 
