@@ -73,11 +73,26 @@
 		}
 
 		function spawn() {
-			var tb = document.getElementById('barcode_tb');
-			var barcode = tb.value;
-			
-			location.href = urls.remote_patron_display + '?session=' 
-				+ window.escape(g.cgi.param('session')) + '&barcode=' + window.escape(barcode);
+			try {
+				var tb = document.getElementById('barcode_tb');
+				var barcode = tb.value;
+
+				var loc = urls.remote_patron_display + '?session=' + 
+					window.escape(g.cgi.param('session')) + '&barcode=' + window.escape(barcode);
+
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+
+					window.xulG.set_tab( loc );
+				} else {
+
+					location.href = loc;
+				}
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
 		}
 
 	]]>
