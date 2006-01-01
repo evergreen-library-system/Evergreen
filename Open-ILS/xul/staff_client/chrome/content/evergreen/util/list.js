@@ -104,14 +104,15 @@ util.list.prototype = {
 	},
 
 	'_clear_tree' : function(params) {
-		var items = this.treechildren.childNodes;
-		for (var i = 0; i < items.length; i++) {
-			this.treechildren.removeChild(items[i]);
-		}
+		while (this.treechildren.lastChild) this.treechildren.removeChild( this.treechildren.lastChild );
 	},
 
 	'_clear_listbox' : function(params) {
-		var items = this.node.getElementsByTagName('listitem');
+		var items = [];
+		var nl = this.node.getElementsByTagName('listitem');
+		for (var i = 0; i < nl.length; i++) {
+			items.push( nl[i] );
+		}
 		for (var i = 0; i < items.length; i++) {
 			this.node.removeChild(items[i]);
 		}
@@ -208,7 +209,7 @@ util.list.prototype = {
 					params.row_node = listitem;
 					params.on_retrieve = function(row) {
 						params.row = row;
-						obj._map_row_to_treecell(params,treerow);
+						obj._map_row_to_listcell(params,treerow);
 						obj.node.appendChild( listitem );
 					}
 
@@ -274,7 +275,7 @@ util.list.prototype = {
 					value = this.map_row_to_column(params.row,this.columns[i]);
 				}
 			}
-			if (typeof value == 'string') {
+			if (typeof value == 'string' || typeof value == 'number') {
 				var listcell = document.createElement('listcell');
 				listcell.setAttribute('label',value);
 				listitem.appendChild(listcell);
