@@ -8,6 +8,7 @@ var api = {
 	'checkin_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkin.barcode' },
 	'checkout_permit_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.permit_checkout' },
 	'checkout_via_barcode' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.barcode' },
+	'fm_acp_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.retrieve' },
 	'fm_acpl_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_location.retrieve.all' },
 	'fm_actsc_retrieve_via_aou' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.all' },
 	'fm_ahr_retrieve' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
@@ -19,6 +20,7 @@ var api = {
 	'fm_au_retrieve_via_barcode' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve_by_barcode' },
 	'fm_au_retrieve_via_id' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve' },
 	'fm_ccs_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all' },
+	'fm_circ_retrieve_via_user' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out.slim' },
 	'fm_cit_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
 	'fm_cst_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },
 	'fm_mb_create' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.create' },
@@ -29,6 +31,7 @@ var api = {
 	'fm_pgt_retrieve' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' },
 	'mods_slim_metarecord_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.metarecord.mods_slim.retrieve' },
 	'mods_slim_record_retrieve' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve' },
+	'mods_slim_record_retrieve_via_copy' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy' },
 }
 
 var urls = {
