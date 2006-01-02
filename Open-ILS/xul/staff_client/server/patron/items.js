@@ -49,12 +49,13 @@ patron.items.prototype = {
 						
 						function() {
 
-
 							row.my.acp = obj.network.request(
 								api.fm_acp_retrieve.app,
 								api.fm_acp_retrieve.method,
 								[ row.my.circ.target_copy() ]
 							);
+
+							params.row_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
 
 						},
 
@@ -105,24 +106,34 @@ patron.items.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
-					'cmd_item_print' : [
+					'cmd_items_print' : [
+						['command'],
+						function() {
+							alert('TODO: Print items out receipt');
+						}
+					],
+					'cmd_items_claimed_returned' : [
 						['command'],
 						function() {
 						}
 					],
-					'cmd_item_claimed_returned' : [
+					'cmd_items_renew' : [
 						['command'],
 						function() {
 						}
 					],
-					'cmd_item_renew' : [
+					'cmd_items_checkin' : [
 						['command'],
 						function() {
-						}
-					],
-					'cmd_item_checkin' : [
-						['command'],
-						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								var barcode = obj.retrieve_ids[i];
+								dump('Check in barcode = ' + barcode);
+								var checkin = circ.util.checkin_via_barcode(
+									obj.session, barcode, obj.patron_id
+								);
+								dump('  result = ' + checkin + '\n');
+							}
 						}
 					],
 					'cmd_show_catalog' : [
@@ -136,6 +147,10 @@ patron.items.prototype = {
 
 		obj.retrieve();
 
+		obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
+		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
 	'retrieve' : function() {
@@ -155,7 +170,6 @@ patron.items.prototype = {
 			return function() {
 				obj.list.append(
 					{
-						'retrieve_id' : checkout.id(),
 						'row' : {
 							'my' : {
 								'circ' : checkout,
@@ -174,9 +188,17 @@ patron.items.prototype = {
 		exec.chain( rows );
 	},
 
-	'on_select' : function() {
-		obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
-		obj.controller.view.cmd_search_form.setAttribute('disabled','false');
+	'on_select' : function(list) {
+
+		dump('patron.items.on_select list = ' + js2JSON(list) + '\n');
+
+		var obj = this;
+
+		obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_renew.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_checkin.setAttribute('disabled','false');
+		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
+
 		obj.retrieve_ids = list;
 	}
 }
