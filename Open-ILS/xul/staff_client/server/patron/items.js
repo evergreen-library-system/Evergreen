@@ -30,6 +30,52 @@ patron.items.prototype = {
 		obj.list.init(
 			{
 				'columns' : columns,
+				'retrieve_row' : function(params) {
+
+					var row = params.row;
+
+					var funcs = [
+						
+						function() {
+
+							row.my.mvr = obj.network.request(
+								api.mods_slim_record_retrieve_via_copy.app,
+								api.mods_slim_record_retrieve_via_copy.method,
+								[ row.my.circ.target_copy() ]
+							);
+
+						},
+						
+						function() {
+
+
+							row.my.acp = obj.network.request(
+								api.fm_acp_retrieve.app,
+								api.fm_acp_retrieve.method,
+								[ obj.session, row.my.circ.target_copy() ]
+							);
+
+						},
+
+						function() {
+
+							if (typeof params.on_retrieve == 'function') {
+								params.on_retrieve(row);
+							}
+
+						},
+					];
+
+					JSAN.use('util.exec'); var exec = new util.exec();
+					exec.on_error = function(E) {
+						//var err = 'items chain: ' + js2JSON(E);
+						//obj.error.sdump('D_ERROR',err);
+						return true; /* keep going */
+					}
+					exec.chain( funcs );
+
+					return row;
+				},
 				'map_row_to_column' : circ.util.std_map_row_to_column(),
 			}
 		);
@@ -76,8 +122,8 @@ patron.items.prototype = {
 			obj.checkouts = window.xulG.checkouts;
 		} else {
 			obj.checkouts = obj.network.request(
-				api.blob_checkouts_retrieve.app,
-				api.blob_checkouts_retrieve.method,
+				api.fm_circ_retrieve_via_user.app,
+				api.fm_circ_retrieve_via_user.method,
 				[ obj.session, obj.patron_id ]
 			);
 				
@@ -89,9 +135,7 @@ patron.items.prototype = {
 					{
 						'row' : {
 							'my' : {
-								'circ' : checkout.circ,
-								'mvr' : checkout.record,
-								'acp' : checkout.copy
+								'circ' : checkout,
 							}
 						}
 					}

@@ -120,8 +120,8 @@ patron.summary.prototype = {
 								JSAN.use('util.date');
 								var total = 0;
 								for (var i = 0; i < obj.patron.checkouts().length; i++) {
-									var item = obj.patron.checkouts()[i];
-									var due_date = item.circ.due_date();
+									var circ = obj.patron.checkouts()[i];
+									var due_date = circ.due_date();
 									due_date = due_date.substr(0,4) 
 										+ due_date.substr(5,2) + due_date.substr(8,2);
 									var today = util.date.formatted_date( new Date() , '%Y%m%d' );
@@ -506,8 +506,8 @@ patron.summary.prototype = {
 				function() {
 					try {
 						var checkouts = obj.network.request(
-							api.blob_checkouts_retrieve.app,
-							api.blob_checkouts_retrieve.method,
+							api.fm_circ_retrieve_via_user.app,
+							api.fm_circ_retrieve_via_user.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.checkouts( checkouts );
