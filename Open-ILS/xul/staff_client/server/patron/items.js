@@ -93,6 +93,11 @@ patron.items.prototype = {
 						function() {
 						}
 					],
+					'cmd_item_claimed_returned' : [
+						['command'],
+						function() {
+						}
+					],
 					'cmd_item_renew' : [
 						['command'],
 						function() {

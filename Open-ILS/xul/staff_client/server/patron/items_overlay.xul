@@ -30,6 +30,10 @@
 		label="Show in Catalog"
 		command="cmd_show_catalog"
 	/>
+	<button id="items_claimed_returned"
+		label="Claims Returned"
+		command="cmd_items_claimed_returned"
+	/>
 	<button id="items_renew"
 		label="Renew"
 		command="cmd_items_renew"
