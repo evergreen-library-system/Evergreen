@@ -101,6 +101,8 @@ sub record_by_copy {
 	SQL
 
 	my $rec = biblio::record_entry->retrieve( $r );
+	return undef unless ($rec)
+
 	my $r_fm = $rec->to_fieldmapper;
 	$r_fm->fixed_fields( $rec->record_descriptor->next->to_fieldmapper );
 

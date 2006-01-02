@@ -251,6 +251,7 @@ sub fleshed_copy {
 	for my $id ( @ids ) {
 		next unless $id;
 		my $cp = asset::copy->retrieve($id);
+		next unless $cp;
 
 		my $cp_fm = $cp->to_fieldmapper;
 		$cp_fm->circ_lib( $cp->circ_lib->to_fieldmapper );
