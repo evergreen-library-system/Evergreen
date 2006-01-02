@@ -37,9 +37,21 @@ util.exec.prototype = {
 					args[0]();
 					if (args.length > 1 ) obj.chain( args.slice(1) );
 				} catch(E) {
-					dump('util.exec.chain broken: ' + E + '\n');
+					dump('util.exec.chain error: ' + js2JSON(E) + '\n');
+					var keep_going = false;
 					if (typeof obj.on_error == 'function') {
-						obj.on_error(E);
+						keep_going = obj.on_error(E);
+					}
+					if (keep_going) {
+						dump('chain not broken\n');
+						try {
+							if (args.length > 1 ) obj.chain( args.slice(1) );
+
+						} catch(E) {
+							dump('another error: ' + js2JSON(E) + '\n');
+						}
+					} else {
+						dump('chain broken\n');
 					}
 				}
 			}, 0

@@ -221,6 +221,8 @@ OpenILS.data.prototype = {
 			} else {
 				alert('oops: ' + E ); 
 			}
+
+			return false; /* break chain */
 		}
 
 		this.exec.chain( this.chain );
