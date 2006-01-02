@@ -372,7 +372,7 @@ sub fleshed_copy_retrieve {
 	warn "copy retrieve for id $id\n";
 	return OpenILS::Application::AppUtils->simple_scalar_request(
 			"open-ils.storage", 
-			"open-ils.storage.fleshed.asset.copy.retrieve.atomic",
+			"open-ils.storage.fleshed.asset.copy.retrieve",
 			$id );
 }
 
