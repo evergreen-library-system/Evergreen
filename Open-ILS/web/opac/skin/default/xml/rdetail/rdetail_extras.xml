@@ -32,6 +32,12 @@
 					<a href='javascript:rdetailShowExtra("marc");' 
 						class='classic_link'>MARC Record</a>
 				</td>
+
+				<td id='rdetail_viewcn_link' class='rdetail_extras_td hide_me'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<span>Callnumber Browse</span>
+				</td>
+
 			</tr>
 		</thead>
 	</table>
@@ -53,6 +59,8 @@
 		<div id='rdetail_marc_div' class='rdetail_extras_div hide_me'> 
 			<div id='rdetail_view_marc_box'> </div>
 		</div>
+
+		<!--#include virtual="../common/cn_browse.xml"-->
 
 	</div>
 </div>

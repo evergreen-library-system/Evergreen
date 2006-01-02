@@ -7,6 +7,7 @@ var MAX_CN = 9;
 
 function cnBrowseGo(cn) { 
 	cnBrowseCurrent = cn;
+	//unHideMe($('cn_browse_loading'));
 	var req = new Request( FETCH_CNBROWSE_TARGET, 
 		'org_unit', getLocation(), 
 		'depth', getDepth(), 
@@ -17,6 +18,7 @@ function cnBrowseGo(cn) {
 }
 
 function cnBrowseNext() {
+	//unHideMe($('cn_browse_loading'));
 	var req = new Request( FETCH_CNBROWSE_NEXT, 
 		'org_unit', getLocation(), 
 		'depth', getDepth(), 
@@ -28,6 +30,7 @@ function cnBrowseNext() {
 }
 
 function cnBrowsePrev() {
+	//unHideMe($('cn_browse_loading'));
 	var req = new Request( FETCH_CNBROWSE_PREV,
 		'org_unit', getLocation(), 
 		'depth', getDepth(), 
@@ -44,7 +47,6 @@ var cnRowT;
 var cnTdT;
 
 function cnBrowseDraw( r ) {
-	swapCanvas($('cn_browse'));
 	var list = r.getResultObject();
 
 	if(!cnTbody) {
@@ -71,13 +73,20 @@ function cnBrowseDraw( r ) {
 		var record	= list[idx][2];
 		var id		= list[idx][3];
 
+		/*
+		if( label != cnBrowseCurrent ) {
+			removeCSSClass( td, 'cn_browse_home_cn' );
+		}
+		*/
 
 		if( idx == 0 ) {
 			cnBrowseTopCn = label;
 			cnBrowseTopId = id;
-		} else if( idx == MAX_CN - 1 ) {
+			//alert('top cn: ' + cnBrowseTopCn + ' : top id : ' + cnBrowseTopId );
+		} else {
 			cnBrowseBottomCn = label;
 			cnBrowseBottomId = id;
+			//alert('bottom cn: ' + cnBrowseBottomCn + ' : bottom id : ' + cnBrowseBottomId );
 		}
 
 		var cn_td			= $n(currentTd, 'cn_browse_cn');

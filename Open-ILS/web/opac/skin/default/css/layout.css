@@ -168,14 +168,20 @@ table { border-collapse: collapse; }
 
 .rdetail_extras_td { padding-right: 15px; padding-left: 15px; border-right: 1px solid #888; }
 
-.cn_browse_item { }
+.cn_browse_item { height: 190px; }
 .cn_browse_info { padding: 4px; border-bottom: 1px dashed #E0E0E0;}
 
 .bookshelf {
 	 /*background-image: url(http://10.4.0.10/woodgrain.jpeg);*/
+	 /*
 	 background-image: url(http://dev.gapines.org/opac/images/woodgrain.jpg);
 	 background-repeat: repeat;
+	 */
 	 border-bottom: 1px solid black;
 }
+
+.cn_browse_loading { width: 95%; padding: 15px; text-align: center; background: #E0F0E0; }
+
+.cn_browse_home_cn { border: 2px solid #E0F0E0; background: green; font-weight: 700;}
 
 

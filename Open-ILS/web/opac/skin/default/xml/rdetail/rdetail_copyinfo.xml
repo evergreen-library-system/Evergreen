@@ -28,7 +28,7 @@
 		<tbody>
 			<tr id='rdetail_copy_info_row' class='hide_me'>
 				<td name='rdetail_library_cell'> </td>
-				<td name='rdetail_callnumber_cell'> </td>
+				<td name='rdetail_callnumber_cell' title='Launch Callnumber Browse'> </td>
 				<td nowrap='nowrap' class='rdetail_copy_count_cell vertical' 
 					name='rdetail_copy_count_cell'> </td>
 			</tr>

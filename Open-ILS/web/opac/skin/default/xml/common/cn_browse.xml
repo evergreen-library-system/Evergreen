@@ -1,4 +1,10 @@
-<div id='cn_browse' class='hide_me non_canvas cn_browser' style='width: 90%; text-align: center; padding: 15px;'>
+<!--
+<div id='cn_browse' class='hide_me non_canvas cn_browser' 
+	style='width: 90%; text-align: center; padding: 15px;'>
+	-->
+<div id='cn_browse' class='hide_me cn_browser' 
+	style='width: 99%; text-align: center; padding: 15px;'>
+	<div id='cn_browse_loading'  class='cn_browse_loading hide_me'>Loading Callnumber Page...</div>
 	<div id='cn_browse_div'> 
 		<table class='data_grid bookshelf' width='100%'>
 			<thead>
@@ -13,7 +19,8 @@
 			<tbody id='cn_tbody'>
 				<tr id='cn_browse_row'>
 					<td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
-						<a><img height='60' width='50' class='cn_browse_info' name='cn_browse_pic' border='0'> </img></a>
+						<a><img height='60' width='50' src='blah' 
+							class='cn_browse_info' name='cn_browse_pic' border='0'> </img></a>
 						<div style='font-weight: bold;' class='cn_browse_info' name='cn_browse_cn'>  </div>
 						<div class='cn_browse_info'><a name='cn_browse_title' class='classic_link'> </a></div>
 						<div class='cn_browse_info'><a name='cn_browse_author' class='classic_link'>  </a></div>

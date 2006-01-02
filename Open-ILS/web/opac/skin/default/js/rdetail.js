@@ -113,6 +113,8 @@ function rdetailShowExtra(type) {
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_marc_div'));
+	hideMe($('cn_browse'));
+	hideMe($('rdetail_viewcn_link'));
 
 	var req;
 	switch(type) {
@@ -150,6 +152,16 @@ function rdetailShowExtra(type) {
 			req.send();
 			break;
 	}
+}
+
+function rdetailShowCNBrowse( cn ) {
+	hideMe($('rdetail_copy_info_div'));
+	hideMe($('rdetail_reviews_div'));
+	hideMe($('rdetail_toc_div'));
+	hideMe($('rdetail_marc_div'));
+	unHideMe($('rdetail_viewcn_link'));
+	unHideMe($('cn_browse'));
+	cnBrowseGo(cn);
 }
 
 function rdetailHandleAddedContent(r) {
@@ -257,7 +269,8 @@ function _rdetailBuildInfoRows(r) {
 
 		} else rowNode.setAttribute("used", "1");
 
-		var a = elem("a", {href:'javascript:cnBrowseGo("' + arr[1] + '");' }, arr[1]);
+		//var a = elem("a", {href:'javascript:cnBrowseGo("' + arr[1] + '");' }, arr[1]);
+		var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + arr[1] + '");' }, arr[1]);
 		addCSSClass(a, 'classic_link');
 		findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(a);
 		
