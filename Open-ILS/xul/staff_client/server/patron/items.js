@@ -30,6 +30,7 @@ patron.items.prototype = {
 		obj.list.init(
 			{
 				'columns' : columns,
+				'map_row_to_column' : circ.util.std_map_row_to_column(),
 				'retrieve_row' : function(params) {
 
 					var row = params.row;
@@ -52,7 +53,7 @@ patron.items.prototype = {
 							row.my.acp = obj.network.request(
 								api.fm_acp_retrieve.app,
 								api.fm_acp_retrieve.method,
-								[ obj.session, row.my.circ.target_copy() ]
+								[ row.my.circ.target_copy() ]
 							);
 
 						},
@@ -76,7 +77,23 @@ patron.items.prototype = {
 
 					return row;
 				},
-				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'on_select' : function(ev) {
+					JSAN.use('util.functional');
+					var sel = obj.list.retrieve_selection();
+					var list = util.functional.map_list(
+						sel,
+						function(o) { return o.getAttribute('retrieve_id'); }
+					);
+					if (typeof obj.on_select == 'function') {
+						obj.on_select(list);
+					}
+					if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
+						obj.error.sdump('D_PATRON','patron.items: Calling external .on_select()\n');
+						window.xulG.on_select(list);
+					} else {
+						obj.error.sdump('D_PATRON','patron.items: No external .on_select()\n');
+					}
+				},
 			}
 		);
 		
@@ -138,11 +155,12 @@ patron.items.prototype = {
 			return function() {
 				obj.list.append(
 					{
+						'retrieve_id' : checkout.id(),
 						'row' : {
 							'my' : {
 								'circ' : checkout,
 							}
-						}
+						},
 					}
 				);
 			};
@@ -155,6 +173,12 @@ patron.items.prototype = {
 		}
 		exec.chain( rows );
 	},
+
+	'on_select' : function() {
+		obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
+		obj.controller.view.cmd_search_form.setAttribute('disabled','false');
+		obj.retrieve_ids = list;
+	}
 }
 
 dump('exiting patron.items.js\n');
