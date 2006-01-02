@@ -37,9 +37,14 @@ patron.display.prototype = {
 				{ 
 					'on_checkout' : function(checkout) {
 						var c = obj.summary_window.g.summary.patron.checkouts();
-						c.push( checkout );
+						c.push( checkout.circ );
 						obj.summary_window.g.summary.patron.checkouts( c );
 						obj.summary_window.g.summary.controller.render('patron_checkouts');
+						if (obj.items_window) {
+							obj.items_window.xulG.checkouts = c;
+							obj.items_window.g.items.list.clear();
+							obj.items_window.g.items.retrieve();
+						}
 					}
 				}
 			);
@@ -94,7 +99,7 @@ patron.display.prototype = {
 					'cmd_patron_items' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(
+							var frame = obj.right_deck.set_iframe(
 								urls.remote_patron_items
 								+ '?session=' + window.escape( obj.session )
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
@@ -104,6 +109,8 @@ patron.display.prototype = {
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
+							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+							obj.items_window = frame.contentWindow;
 						}
 					],
 					'cmd_patron_holds' : [
