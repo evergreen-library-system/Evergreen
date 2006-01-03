@@ -91,6 +91,9 @@ sub checkouts_by_user_slim {
 		$apputils->checkses_requestor( $user_session, $user_id, 'VIEW_CIRCULATIONS');
 	return $evt if $evt;
 
+	$logger->debug( 'User ' . $requestor->id . 
+		" retrieving checked out items for user " . $target->id );
+
 	return $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
