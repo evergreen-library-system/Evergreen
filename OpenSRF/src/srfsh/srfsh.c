@@ -1,5 +1,6 @@
 #include "srfsh.h"
 
+int recv_timeout = 120;
 int is_from_script = 0;
 FILE* shell_writer = NULL;
 FILE* shell_reader = NULL;
@@ -531,7 +532,7 @@ int send_request( char* server,
 	int req_id = osrf_app_session_make_req( session, params, method, 1, NULL );
 
 
-	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, 60 );
+	osrf_message* omsg = osrf_app_session_request_recv( session, req_id, recv_timeout );
 
 	if(!omsg) 
 		printf("\nReceived no data from server\n");
@@ -619,7 +620,7 @@ int send_request( char* server,
 		}
 
 
-		omsg = osrf_app_session_request_recv( session, req_id, 5 );
+		omsg = osrf_app_session_request_recv( session, req_id, recv_timeout );
 
 	}
 
