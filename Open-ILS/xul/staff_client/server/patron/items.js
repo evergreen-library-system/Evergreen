@@ -130,9 +130,9 @@ patron.items.prototype = {
 								var barcode = obj.retrieve_ids[i];
 								dump('Check in barcode = ' + barcode);
 								var checkin = circ.util.checkin_via_barcode(
-									obj.session, barcode, obj.patron_id
+									obj.session, barcode
 								);
-								dump('  result = ' + checkin + '\n');
+								dump('  result = ' + js2JSON(checkin) + '\n');
 							}
 						}
 					],
