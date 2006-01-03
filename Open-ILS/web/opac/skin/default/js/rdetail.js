@@ -12,6 +12,8 @@ var copyRowParent = null;
 var copyRow = null;
 var statusRow = null;
 var numStatuses = null;
+var defaultCN;
+var callnumberCache = {};
 
 function rdetailDraw() {
 
@@ -114,7 +116,7 @@ function rdetailShowExtra(type) {
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_marc_div'));
 	hideMe($('cn_browse'));
-	hideMe($('rdetail_viewcn_link'));
+	hideMe($('rdetail_cn_browse_div'));
 
 	var req;
 	switch(type) {
@@ -151,10 +153,33 @@ function rdetailShowExtra(type) {
 			req.callback(rdetailViewMarc); 
 			req.send();
 			break;
+
+		case 'cn':
+			unHideMe($('rdetail_cn_browse_div'));
+			rdetailShowCNBrowse(defaultCN);
+			break;
 	}
 }
 
+function rdetailBuildCNList() {
+	var select = $('cn_browse_selector');
+	var index = 0;
+	for( var cn in callnumberCache ) {
+		var opt = new Option(cn);
+		opt.onclick = rdetailGatherCN;
+		select.options[index++] = opt;
+	}
+}
+
+function rdetailGatherCN() {
+	var cn = getSelectorVal($('cn_browse_selector'));
+	rdetailShowCNBrowse( cn );
+}
+
+
 function rdetailShowCNBrowse( cn ) {
+	if(!cn) return;
+	rdetailBuildCNList();
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
@@ -240,6 +265,7 @@ function _rdetailRows(node) {
 }
 
 /* walk through the copy info and build rows where necessary */
+var localCNFound = false;
 function _rdetailBuildInfoRows(r) {
 
 	_rdetailRows();
@@ -269,21 +295,34 @@ function _rdetailBuildInfoRows(r) {
 
 		} else rowNode.setAttribute("used", "1");
 
-		//var a = elem("a", {href:'javascript:cnBrowseGo("' + arr[1] + '");' }, arr[1]);
 		var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + arr[1] + '");' }, arr[1]);
 		addCSSClass(a, 'classic_link');
 		findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(a);
 		
-		//findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(text(arr[1]));
-
 		var cpc_temp = rowNode.removeChild(
 			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
 		rdetailApplyStatuses(rowNode, cpc_temp, arr[2]);
 
 		var isLocal = false;
-		if( orgIsMine( findOrgUnit(getLocation()), thisOrg ) ) { found = true; isLocal = true; }
+		if( orgIsMine( findOrgUnit(getLocation()), thisOrg ) ) { 
+			found = true; 
+			isLocal = true; 
+			if(!localCNFound) {
+				localCNFound = true;
+				defaultCN = arr[1];
+			}
+		}
 		rdetailSetPath( thisOrg, isLocal );
+
+		/* used for building the shelf browser */
+		var cache = callnumberCache[arr[1]];
+		if( cache ) {
+			cache.count++;
+			if(isLocal) cache.local = true;
+		} else { callnumberCache[arr[1]] = { count : 1, local : false };}
+
+		if( i == summary.length - 1 && !defaultCN) defaultCN = arr[1];
 
 	}
 

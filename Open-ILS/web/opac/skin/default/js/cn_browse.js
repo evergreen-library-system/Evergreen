@@ -7,7 +7,6 @@ var MAX_CN = 9;
 
 function cnBrowseGo(cn) { 
 	cnBrowseCurrent = cn;
-	//unHideMe($('cn_browse_loading'));
 	var req = new Request( FETCH_CNBROWSE_TARGET, 
 		'org_unit', getLocation(), 
 		'depth', getDepth(), 
@@ -18,7 +17,6 @@ function cnBrowseGo(cn) {
 }
 
 function cnBrowseNext() {
-	//unHideMe($('cn_browse_loading'));
 	var req = new Request( FETCH_CNBROWSE_NEXT, 
 		'org_unit', getLocation(), 
 		'depth', getDepth(), 
@@ -30,7 +28,6 @@ function cnBrowseNext() {
 }
 
 function cnBrowsePrev() {
-	//unHideMe($('cn_browse_loading'));
 	var req = new Request( FETCH_CNBROWSE_PREV,
 		'org_unit', getLocation(), 
 		'depth', getDepth(), 
@@ -79,15 +76,9 @@ function cnBrowseDraw( r ) {
 		}
 		*/
 
-		if( idx == 0 ) {
-			cnBrowseTopCn = label;
-			cnBrowseTopId = id;
-			//alert('top cn: ' + cnBrowseTopCn + ' : top id : ' + cnBrowseTopId );
-		} else {
-			cnBrowseBottomCn = label;
-			cnBrowseBottomId = id;
-			//alert('bottom cn: ' + cnBrowseBottomCn + ' : bottom id : ' + cnBrowseBottomId );
-		}
+		if( idx == 0 ) { cnBrowseTopCn = label; cnBrowseTopId = id; } 
+		cnBrowseBottomCn = label;
+		cnBrowseBottomId = id;
 
 		var cn_td			= $n(currentTd, 'cn_browse_cn');
 		var lib_td			= $n(currentTd, 'cn_browse_lib');

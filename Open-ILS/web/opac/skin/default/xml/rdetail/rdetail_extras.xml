@@ -33,9 +33,17 @@
 						class='classic_link'>MARC Record</a>
 				</td>
 
+				<!--
 				<td id='rdetail_viewcn_link' class='rdetail_extras_td hide_me'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<span>Shelf Browser</span>
+				</td>
+				-->
+
+				<td id='rdetail_viewcn_link' class='rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("cn");' 
+						class='classic_link'>Shelf Browser</a>
 				</td>
 
 			</tr>
@@ -60,7 +68,14 @@
 			<div id='rdetail_view_marc_box'> </div>
 		</div>
 
-		<!--#include virtual="../common/cn_browse.xml"-->
+		<div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
+			<div style='width: 100%; border: 1px solid black; padding: 10px; margin-top: 5px;'>
+				<select id='cn_browse_selector'>
+				</select>
+			</div>
+			
+			<!--#include virtual="../common/cn_browse.xml"-->
+		</div>
 
 	</div>
 </div>
