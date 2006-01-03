@@ -34,6 +34,8 @@ function mresultDoSearch() {
 		if( getAdvTerm() && !getTerm() ) {
 			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
+			if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
+			if(getAdvType() == ADVTYPE_ISSN ) mresultCollectAdvISSNIds();
 		}
 		else {
 			mresultCollectIds(FETCH_MRIDS_FULL); 
@@ -118,6 +120,22 @@ function mresultCollectAdvMARCIds() {
 		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(FETCH_ADV_MARC_MRIDS, 
 			JSON2js(getAdvTerm()), getLocation(), form );
+		req.callback(mresultHandleMRIds);
+		req.send();
+	}
+}
+
+function mresultCollectAdvISBNIds() {
+	if(!mresultTryCachedSearch()) {
+		var req = new Request(FETCH_ADV_ISBN_MRIDS, getAdvTerm() );
+		req.callback(mresultHandleMRIds);
+		req.send();
+	}
+}
+
+function mresultCollectAdvISSNIds() {
+	if(!mresultTryCachedSearch()) {
+		var req = new Request(FETCH_ADV_ISSN_MRIDS, getAdvTerm() );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}

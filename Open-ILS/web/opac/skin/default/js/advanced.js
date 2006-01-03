@@ -59,20 +59,47 @@ function advRefinedRun() {
 	if(subject) { blob.subject = {}; blob.subject.term = subject;}
 	if(series) { blob.series = {}; blob.series.term = series; }
 
-	var arg = {};
-	arg.page = MRESULT;
-	arg[PARAM_FORM] = form;
-	arg[PARAM_STYPE] = "";
-	arg[PARAM_TERM] = "";
-	arg[PARAM_ADVTERM] = js2JSON(blob);
-	arg[PARAM_DEPTH]	= depthSelGetDepth();
+	var arg					= {};
+	arg.page					= MRESULT;
+	arg[PARAM_FORM]		= form;
+	arg[PARAM_STYPE]		= "";
+	arg[PARAM_TERM]		= "";
+	arg[PARAM_ADVTERM]	= js2JSON(blob);
+	arg[PARAM_DEPTH]		= depthSelGetDepth();
 	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
-	arg[PARAM_OFFSET] = 0;
-	arg[PARAM_ADVTYPE] = ADVTYPE_MULTI;
+	arg[PARAM_OFFSET]		= 0;
+	arg[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
 
 	goTo(buildOPACLink(arg));
 
 }
+
+function advISBNRun() {
+	var isbn = $('opac.advanced.quick.isbn').value;
+	if(!isbn) return;
+	var arg					= {};
+	arg.page					= MRESULT;
+	arg[PARAM_STYPE]		= "";
+	arg[PARAM_TERM]		= "";
+	arg[PARAM_ADVTERM]	= isbn;
+	arg[PARAM_OFFSET]		= 0;
+	arg[PARAM_ADVTYPE]	= ADVTYPE_ISBN;
+	goTo(buildOPACLink(arg));
+}
+
+function advISSNRun() {
+	var issn = $('opac.advanced.quick.issn').value;
+	if(!issn) return;
+	var arg					= {};
+	arg.page					= MRESULT;
+	arg[PARAM_STYPE]		= "";
+	arg[PARAM_TERM]		= "";
+	arg[PARAM_ADVTERM]	= issn;
+	arg[PARAM_OFFSET]		= 0;
+	arg[PARAM_ADVTYPE]	= ADVTYPE_ISSN;
+	goTo(buildOPACLink(arg));
+}
+
 
 function advRefinedTerm( type, term ) {
 	var t = getSelectorVal($('advanced.refined.' + type + '_type'));

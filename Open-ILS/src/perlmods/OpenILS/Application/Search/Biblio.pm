@@ -245,6 +245,10 @@ my $cat_search_hash =  {
 		{ tag => "020", subfield => "a" },
 	],
 
+	issn	=> [
+		{ tag => '022', subfield => 'a' },
+	],
+
 };
 
 
@@ -1155,10 +1159,30 @@ sub biblio_search_isbn {
 		[ {	term => $isbn,
 				restrict => $cat_search_hash->{isbn} } ], 1);
 
-	return { count => 0 } unless($records and @$records);
-	my $size = @$records;
-	return { count => $size, ids => $records };
+	return $records;
 }
+
+
+__PACKAGE__->register_method(
+	method	=> "biblio_search_issn",
+	api_name	=> "open-ils.search.biblio.issn",
+);
+
+sub biblio_search_issn { 
+	my( $self, $client, $issn ) = @_;
+
+	$logger->debug("Searching ISSN $issn");
+
+	my $method = $self->method_lookup("open-ils.search.biblio.marc");
+
+	my ($records) = $method->run(  
+		[ {	term => $issn,
+				restrict => $cat_search_hash->{issn} } ], 1);
+
+	return $records;
+}
+
+
 
 
 __PACKAGE__->register_method(
