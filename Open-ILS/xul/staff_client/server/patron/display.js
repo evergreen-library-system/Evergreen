@@ -105,6 +105,9 @@ patron.display.prototype = {
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
+									'display_refresh' : function() {
+										obj.refresh_all();
+									},
 									'checkouts' : obj.patron.checkouts()
 								}
 							);
@@ -363,6 +366,12 @@ patron.display.prototype = {
 			'value','Retrieving...'
 		);
 		try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
+		/* summary refresh is async, so you can't rely on its data */
+		try { 
+			obj.items_window.xulG.checkouts = null;
+		} catch(E) { 
+			dump(E + '\n'); 
+		}
 		try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
 	},
 }

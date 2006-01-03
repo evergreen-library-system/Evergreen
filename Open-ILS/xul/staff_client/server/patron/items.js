@@ -134,6 +134,9 @@ patron.items.prototype = {
 								);
 								dump('  result = ' + js2JSON(checkin) + '\n');
 							}
+							if (window.xulG && typeof window.xulG.display_refresh == 'function') {
+								window.xulG.display_refresh();
+							}
 						}
 					],
 					'cmd_show_catalog' : [
