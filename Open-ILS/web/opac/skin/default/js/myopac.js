@@ -85,6 +85,7 @@ function myOPACChangePage( page ) {
 }
 
 function myOPACShowChecked() {
+	if(checkedDrawn) return;
 	var req = new Request(FETCH_CHECKED_OUT_SLIM, G.user.session);	
 	req.callback(myOPACDrawCheckedOutSlim);
 	req.send();
