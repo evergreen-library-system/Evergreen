@@ -99,10 +99,12 @@ sub patron_circ_summary {
 	my $c_table = action::circulation->table;
 	my $b_table = money::billing->table;
 
+	$log->debug("Retrieving patron summary for id $id", DEBUG);
+
 	my $select = <<"	SQL";
 		SELECT	COUNT(DISTINCT c.id), SUM( COALESCE(b.amount,0) )
 		  FROM	$c_table c
-		  	LEFT OUTER JOIN $b_table b ON (c.id = b.xact)
+		  	LEFT OUTER JOIN $b_table b ON (c.id = b.xact AND b.voided = FALSE)
 		  WHERE	c.usr = ?
 		  	AND c.xact_finish IS NULL
 			AND c.stop_fines NOT IN ('CLAIMSRETURNED','LOST')
@@ -432,8 +434,13 @@ sub hold_copy_targeter {
 	};
 
 	for my $hold (@$holds) {
-		action::hold_request->db_Main->begin_work;
 		try {
+			#action::hold_request->db_Main->begin_work;
+			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
+				$client->respond("Cleaning up after previous transaction\n");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			}
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$client->respond("Processing hold ".$hold->id."...\n");
 
 			my $copies;
@@ -508,12 +515,14 @@ sub hold_copy_targeter {
 			$client->respond("\tProcessing of hold ".$hold->id." complete.\n");
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
-			action::hold_request->dbi_commit;
+			#action::hold_request->dbi_commit;
 
 		} otherwise {
 			my $e = shift;
-			$client->respond("\tProcessing of hold ".$hold->id." failed!.\n\t\t$e\n");
-			action::hold_request->dbi_rollback;
+			$log->error("Processing of hold failed:  $e");
+			$client->respond("\tProcessing of hold failed!.\n\t\t$e\n");
+			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			#action::hold_request->dbi_rollback;
 		};
 	}
 
@@ -584,8 +593,9 @@ sub copy_hold_capture {
 	my @maps;
 	$self->{client}->respond( "\tMapping ".scalar(@copies)." eligable copies for hold ".$hold->id."\n");
 	for my $c (@copies) {
-		push @maps, action::hold_copy_map->create( { hold => ''.$hold->id, target_copy => ''.$c->id } );
+		push @maps, action::hold_copy_map->create( { hold => $hold->id, target_copy => $c->id } );
 	}
+	$self->{client}->respond( "\tA total of ".scalar(@maps)." mapping were created for hold ".$hold->id."\n");
 
 	return \@copies;
 }
