@@ -12,7 +12,7 @@ use JSON;
 use Data::Dumper;
 use OpenILS::WWW::Reporter::transforms;
 use Text::CSV_XS;
-use Spreadsheet::WriteExcel;
+use Spreadsheet::WriteExcel::Big;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:daemon/;
 use OpenSRF::Utils::Logger qw/:level/;
@@ -348,7 +348,7 @@ sub build_excel {
 	my $r = shift;
 	my $p = JSON->JSON2perl( $r->{stage3}->{params} );
 
-	my $xls = Spreadsheet::WriteExcel->new($file);
+	my $xls = Spreadsheet::WriteExcel::Big->new($file);
 
 	my $sheetname = substr($p->{reportname},1,31);
 	$sheetname =~ s/\W/_/gos;
@@ -421,32 +421,33 @@ sub build_html {
 		@graphs = ( $$p{html_graph_type} );
 	}
 
-	# Time for a pie chart
-	if (grep {$_ eq 'pie'} @graphs) {
-		my $pics = draw_pie($r, $p, $file);
-		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+	if ($graphs[0]) {
+		# Time for a pie chart
+		if (grep {$_ eq 'pie'} @graphs) {
+			my $pics = draw_pie($r, $p, $file);
+			for my $pic (@$pics) {
+				print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+			}
+		}
+
+		print $index '<br/><br/><br/><br/>';
+		# Time for a bar chart
+		if (grep {$_ eq 'bar'} @graphs) {
+			my $pics = draw_bars($r, $p, $file);
+			for my $pic (@$pics) {
+				print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+			}
+		}
+
+		print $index '<br/><br/><br/><br/>';
+		# Time for a bar chart
+		if (grep {$_ eq 'line'} @graphs) {
+			my $pics = draw_lines($r, $p, $file);
+			for my $pic (@$pics) {
+				print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+			}
 		}
 	}
-
-	print $index '<br/><br/><br/><br/>';
-	# Time for a bar chart
-	if (grep {$_ eq 'bar'} @graphs) {
-		my $pics = draw_bars($r, $p, $file);
-		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
-		}
-	}
-
-	print $index '<br/><br/><br/><br/>';
-	# Time for a bar chart
-	if (grep {$_ eq 'line'} @graphs) {
-		my $pics = draw_lines($r, $p, $file);
-		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
-		}
-	}
-
 
 	# and that's it!
 	print $index '</body></html>';
