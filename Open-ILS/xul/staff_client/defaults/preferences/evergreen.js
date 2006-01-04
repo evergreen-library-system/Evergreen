@@ -12,7 +12,7 @@ pref("network.http.max-persistent-connections-per-server",8);
 // However, it's better than POEM, which I wasted a day on :)
 pref("dom.max_script_run_time",60);
 
-// This lets remote xul access link to local chrome
+// This lets remote xul access link to local chrome, except it doesn't work
 pref("security.checkloaduri", false);
 pref("signed.applets.codebase_principal_support", true);
 
