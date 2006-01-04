@@ -57,7 +57,7 @@ main.menu.prototype = {
 			'cmd_patron_search' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.XUL_PATRON_DISPLAY 
+					obj.set_tab(url_prefix(urls.XUL_PATRON_DISPLAY)
 						+ '?session='+obj.w.escape(session),{},{});
 				}
 			],
@@ -65,7 +65,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.set_tab(urls.remote + urls.XUL_OPAC_WRAPPER,{},content_params);
+					obj.set_tab(url_prefix(urls.XUL_OPAC_WRAPPER),{},content_params);
 				}
 			],
 
@@ -74,19 +74,19 @@ main.menu.prototype = {
 			'cmd_circ_checkin' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(urls.remote + urls.XUL_CHECKIN + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(url_prefix(urls.XUL_CHECKIN) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(urls.remote + urls.XUL_PATRON_BARCODE_ENTRY + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(urls.remote + urls.XUL_HOLD_CAPTURE + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 
@@ -95,37 +95,37 @@ main.menu.prototype = {
 			'cmd_test_html' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.TEST_HTML + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(url_prefix(urls.TEST_HTML) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.TEST_XUL + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(url_prefix(urls.TEST_XUL) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_console' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.XUL_DEBUG_CONSOLE,{},{});
+					obj.set_tab(url_prefix(urls.XUL_DEBUG_CONSOLE),{},{});
 				}
 			],
 			'cmd_shell' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.XUL_DEBUG_SHELL,{},{});
+					obj.set_tab(url_prefix(urls.XUL_DEBUG_SHELL),{},{});
 				}
 			],
 			'cmd_xuleditor' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.XUL_DEBUG_XULEDITOR,{},{});
+					obj.set_tab(url_prefix(urls.XUL_DEBUG_XULEDITOR),{},{});
 				}
 			],
 			'cmd_fieldmapper' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.XUL_DEBUG_FIELDMAPPER,{},{});
+					obj.set_tab(url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{},{});
 				}
 			],
 
