@@ -18,6 +18,31 @@ CREATE OR REPLACE VIEW reporter.date_hour_series AS
 	  FROM	reporter.date_series,
 	  	GENERATE_SERIES(0,23) g(h);
 
+
+
+CREATE TABLE reporter.date_dim AS
+        SELECT 
+                EXTRACT('year' FROM date_label)::INT AS year,
+                EXTRACT('month' FROM date_label)::INT AS month,
+                EXTRACT('day' FROM date_label)::INT AS day
+        FROM
+                (SELECT '1900-01-01'::date + g.x AS date_label
+                   FROM GENERATE_SERIES(0, EXTRACT('days' FROM NOW() + '10 years'::INTERVAL - '1900-01-01'::TIMESTAMP WITH TIME ZONE)::INT) g(x)) as y
+        ORDER BY 1,2,3;
+
+
+CREATE TABLE reporter.time_dim AS
+        SELECT 
+                a.x AS hour,     
+                b.x AS minute, 
+                c.x AS second
+        FROM
+                   GENERATE_SERIES(0, 23) as a(x),
+                   GENERATE_SERIES(0, 59) as b(x),
+                   GENERATE_SERIES(0, 59) as c(x)
+        order by 1,2,3;
+
+
 CREATE TABLE reporter.stage2 (
 	id		serial				primary key,
 	stage1		text				not null, 
