@@ -511,7 +511,11 @@ BLOCK run_stage2;
 			WRAPPER html/row;
 				WRAPPER html/cell align='left' style="padding-left: 50px;";
 					INCLUDE checkbox
-						checked=(report.output.$classname.$pid == 'include' ? 'checked' : '')
+						checked=(
+							!report || report.output.$classname.$pid == 'include'
+								? 'checked'
+								: ''
+						)
 						name="output:$classname:$pid"
 						value="include"
 						onclick="field_add_remove(this)";
