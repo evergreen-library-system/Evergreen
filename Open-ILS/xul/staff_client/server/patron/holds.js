@@ -39,15 +39,15 @@ patron.holds.prototype = {
 						switch(row.my.ahr.hold_type()) {
 							case 'M' :
 								row.my.mvr = obj.network.request(
-									api.mods_slim_metarecord_retrieve.app,
-									api.mods_slim_metarecord_retrieve.method,
+									api.MODS_SLIM_METARECORD_RETRIEVE.app,
+									api.MODS_SLIM_METARECORD_RETRIEVE.method,
 									[ row.my.ahr.target() ]
 								);
 							break;
 							default:
 								row.my.mvr = obj.network.request(
-									api.mods_slim_record_retrieve.app,
-									api.mods_slim_record_retrieve.method,
+									api.MODS_SLIM_RECORD_RETRIEVE.app,
+									api.MODS_SLIM_RECORD_RETRIEVE.method,
 									[ row.my.ahr.target() ]
 								);
 							break;
@@ -105,8 +105,8 @@ patron.holds.prototype = {
 			obj.holds = window.xulG.holds;
 		} else {
 			obj.holds = obj.network.request(
-				api.fm_ahr_retrieve.app,
-				api.fm_ahr_retrieve.method,
+				api.FM_AHR_RETRIEVE.app,
+				api.FM_AHR_RETRIEVE.method,
 				[ obj.session, obj.patron_id ]
 			);
 				

@@ -16,16 +16,16 @@ auth.session.prototype = {
 
 		try {
 			var init = this.network.request(
-				api.auth_init.app,
-				api.auth_init.method,
+				api.AUTH_INIT.app,
+				api.AUTH_INIT.method,
 				[ this.view.name_prompt.value ]
 			);
 
 			if (init) {
 
 				var robj = this.network.request(
-					api.auth_complete.app,
-					api.auth_complete.method,
+					api.AUTH_COMPLETE.app,
+					api.AUTH_COMPLETE.method,
 					[ 
 						this.view.name_prompt.value,
 						hex_md5(

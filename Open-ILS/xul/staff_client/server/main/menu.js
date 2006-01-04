@@ -58,7 +58,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.set_tab(urls.remote + urls.xul_opac_wrapper,{},content_params);
+					obj.set_tab(urls.remote + urls.XUL_OPAC_WRAPPER,{},content_params);
 				}
 			],
 
@@ -88,13 +88,13 @@ main.menu.prototype = {
 			'cmd_test_html' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.test_html + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(urls.remote + urls.TEST_HTML + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.test_xul + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(urls.remote + urls.TEST_XUL + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_console' : [

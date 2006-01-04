@@ -4,7 +4,7 @@ if (typeof circ == 'undefined') var circ = {};
 circ.util = {};
 
 circ.util.EXPORT_OK	= [ 
-	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode'
+	'columns', 'hold_columns', 'CHECKIN_VIA_BARCODE', 'std_map_row_to_column', 'hold_capture_via_copy_barcode'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -260,8 +260,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
 
 		var check = network.request(
-			api.checkin_via_barcode.app,
-			api.checkin_via_barcode.method,
+			api.CHECKIN_VIA_BARCODE.app,
+			api.CHECKIN_VIA_BARCODE.method,
 			[ session, barcode, null, backdate ]
 		);
 
@@ -435,8 +435,8 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 		JSAN.use('util.network'); var network = new util.network();
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		var robj = network.request(
-			api.capture_copy_for_hold_via_barcode.app,
-			api.capture_copy_for_hold_via_barcode.method,
+			api.CAPTURE_COPY_FOR_HOLD_VIA_BARCODE.app,
+			api.CAPTURE_COPY_FOR_HOLD_VIA_BARCODE.method,
 			[ session, barcode, retrieve_flag ]
 		);
 		var check = robj.payload;

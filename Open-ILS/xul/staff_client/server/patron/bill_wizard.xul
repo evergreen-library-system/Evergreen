@@ -75,8 +75,8 @@
 					grocery.note( document.getElementById('bill_note').value );
 				JSAN.use('util.network'); var net = new util.network();
 				var mg_id = net.request(
-					api.fm_mg_create.app,
-					api.fm_mg_create.method,
+					api.FM_MG_CREATE.app,
+					api.FM_MG_CREATE.method,
 					[ g.session, grocery ]
 				);
 				if (mg_id) {
@@ -87,8 +87,8 @@
 						billing.amount( document.getElementById('bill_amount').value );
 						billing.billing_type( document.getElementById('billing_type').value );
 					var mb_id = net.request(
-						api.fm_mb_create.app,
-						api.fm_mb_create.method,
+						api.FM_MB_CREATE.app,
+						api.FM_MB_CREATE.method,
 						[ g.session, billing ]
 					);
 					if (mb_id) {

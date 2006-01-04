@@ -50,8 +50,8 @@
 				var rows = document.getElementById('g_rows');
 
 				var mb_list = g.network.request(
-					api.fm_mb_retrieve_via_mbts_id.app,
-					api.fm_mb_retrieve_via_mbts_id.method,
+					api.FM_MB_RETRIEVE_VIA_MBTS_ID.app,
+					api.FM_MB_RETRIEVE_VIA_MBTS_ID.method,
 					[ session, mbts_id ]
 				);
 
@@ -86,8 +86,8 @@
 				}
 
 				var mp_list = g.network.request(
-					api.fm_mp_retrieve_via_mbts_id.app,
-					api.fm_mp_retrieve_via_mbts_id.method,
+					api.FM_MP_RETRIEVE_VIA_MBTS_ID.app,
+					api.FM_MP_RETRIEVE_VIA_MBTS_ID.method,
 					[ session, mbts_id ]
 				);
 

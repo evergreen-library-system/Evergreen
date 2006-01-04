@@ -159,8 +159,8 @@ patron.util.retrieve_au_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
 	var patron = network.request(
-		api.fm_au_retrieve_via_id.app,
-		api.fm_au_retrieve_via_id.method,
+		api.FM_AU_RETRIEVE_VIA_ID.app,
+		api.FM_AU_RETRIEVE_VIA_ID.method,
 		[ session, id ]
 	);
 	return patron;

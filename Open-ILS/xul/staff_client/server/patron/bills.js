@@ -27,8 +27,8 @@ patron.bills.prototype = {
 		}
 		*/
 		obj.bills = obj.network.request(
-			api.fm_mobts_having_balance.app,
-			api.fm_mobts_having_balance.method,
+			api.FM_MOBTS_HAVING_BALANCE.app,
+			api.FM_MOBTS_HAVING_BALANCE.method,
 			[ obj.session, obj.patron_id ]
 		);
 		if (window.xulG && typeof window.xulG.on_bill == 'function') {
@@ -292,8 +292,8 @@ patron.bills.prototype = {
 		var obj = this;
 		try {
 			var robj = obj.network.request(
-				api.bill_pay.app,	
-				api.bill_pay.method,
+				api.BILL_PAY.app,	
+				api.BILL_PAY.method,
 				[ obj.session, payment_blob ]
 			);
 			if (robj && robj.ilsevent && robj.ilsevent == 0) {
@@ -370,8 +370,8 @@ patron.bills.prototype = {
 			obj.bills = window.xulG.bills;
 		} else {
 			obj.bills = obj.network.request(
-				api.fm_mobts_having_balance.app,
-				api.fm_mobts_having_balance.method,
+				api.FM_MOBTS_HAVING_BALANCE.app,
+				api.FM_MOBTS_HAVING_BALANCE.method,
 				[ obj.session, obj.patron_id ]
 			);
 		}

@@ -40,8 +40,8 @@ patron.items.prototype = {
 						function() {
 
 							row.my.mvr = obj.network.request(
-								api.mods_slim_record_retrieve_via_copy.app,
-								api.mods_slim_record_retrieve_via_copy.method,
+								api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.app,
+								api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.method,
 								[ row.my.circ.target_copy() ]
 							);
 
@@ -50,8 +50,8 @@ patron.items.prototype = {
 						function() {
 
 							row.my.acp = obj.network.request(
-								api.fm_acp_retrieve.app,
-								api.fm_acp_retrieve.method,
+								api.FM_ACP_RETRIEVE.app,
+								api.FM_ACP_RETRIEVE.method,
 								[ row.my.circ.target_copy() ]
 							);
 
@@ -162,8 +162,8 @@ patron.items.prototype = {
 			obj.checkouts = window.xulG.checkouts;
 		} else {
 			obj.checkouts = obj.network.request(
-				api.fm_circ_retrieve_via_user.app,
-				api.fm_circ_retrieve_via_user.method,
+				api.FM_CIRC_RETRIEVE_VIA_USER.app,
+				api.FM_CIRC_RETRIEVE_VIA_USER.method,
 				[ obj.session, obj.patron_id ]
 			);
 				

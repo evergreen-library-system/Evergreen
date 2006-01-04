@@ -112,8 +112,8 @@ patron.search_result.prototype = {
 		}
 		try {
 			var results = this.network.request(
-				api.fm_au_ids_retrieve_via_hash.app,
-				api.fm_au_ids_retrieve_via_hash.method,
+				api.FM_AU_IDS_RETRIEVE_VIA_HASH.app,
+				api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
 				[ this.session, search_hash ]
 			);
 			for (var i = 0; i < results.length; i++) {

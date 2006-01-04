@@ -435,14 +435,14 @@ patron.summary.prototype = {
 						var robj;
 						if (obj.barcode && obj.barcode != 'null') {
 							robj = obj.network.request(
-								api.fm_au_retrieve_via_barcode.app,
-								api.fm_au_retrieve_via_barcode.method,
+								api.FM_AU_RETRIEVE_VIA_BARCODE.app,
+								api.FM_AU_RETRIEVE_VIA_BARCODE.method,
 								[ obj.session, obj.barcode ]
 							);
 						} else if (obj.id && obj.id != 'null') {
 							robj = obj.network.request(
-								api.fm_au_retrieve_via_id.app,
-								api.fm_au_retrieve_via_id.method,
+								api.FM_AU_RETRIEVE_VIA_ID.app,
+								api.FM_AU_RETRIEVE_VIA_ID.method,
 								[ obj.session, obj.id ]
 							);
 						} else {
@@ -487,8 +487,8 @@ patron.summary.prototype = {
 				function() {
 					try {
 						var bills = obj.network.request(
-							api.fm_mobts_having_balance.app,
-							api.fm_mobts_having_balance.method,
+							api.FM_MOBTS_HAVING_BALANCE.app,
+							api.FM_MOBTS_HAVING_BALANCE.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						//FIXME// obj.patron.bills( bills );
@@ -506,8 +506,8 @@ patron.summary.prototype = {
 				function() {
 					try {
 						var checkouts = obj.network.request(
-							api.fm_circ_retrieve_via_user.app,
-							api.fm_circ_retrieve_via_user.method,
+							api.FM_CIRC_RETRIEVE_VIA_USER.app,
+							api.FM_CIRC_RETRIEVE_VIA_USER.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.checkouts( checkouts );
@@ -524,8 +524,8 @@ patron.summary.prototype = {
 				function() {
 					try {
 						var holds = obj.network.request(
-							api.fm_ahr_retrieve.app,
-							api.fm_ahr_retrieve.method,
+							api.FM_AHR_RETRIEVE.app,
+							api.FM_AHR_RETRIEVE.method,
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.hold_requests( holds );
