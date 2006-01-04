@@ -19,8 +19,7 @@ main.menu.prototype = {
 
 		function url_prefix(url) {
 			if (url.match(/^\//)) url = urls.remote + url;
-			if (! url.match(/^(http|chrome):\/\/) 
-				&& ! url.match(/^data:/) ) url = 'http://' + url;
+			if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
 			return url;
 		}
 
