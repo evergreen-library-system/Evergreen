@@ -17,7 +17,7 @@
 <?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
 
 <window id="main_win" 
-	onload="main_init()"
+	onload="try { main_init(); } catch(E) { alert(E); }"
 	title="&staff.auth.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

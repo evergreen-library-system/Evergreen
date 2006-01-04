@@ -14,8 +14,12 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
+<?xul-overlay href="chrome://evergreen/content/main/menu_frame_overlay.xul"?>
+<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
+<!--
 <?xul-overlay href="/xul/server/main/menu_frame_overlay.xul"?>
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+-->
 
 <window id="menu_frame_win"
 	onload="my_init()"
@@ -28,7 +32,7 @@
         <script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="JSAN.js"/>
 	<script type="text/javascript">
 	<![CDATA[
 		function my_init() {
@@ -36,14 +40,21 @@
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
+				/*
 				JSAN.addRepository('/xul/server/');
+				*/
+				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for menu_frame.xul');
 
 				g.cgi = new CGI();
 
 				JSAN.use('main.menu'); g.menu = new main.menu();
-				g.menu.init( { 'session' : g.cgi.param('session'), 'authtime' : g.cgi.param('authtime') } );
+				g.menu.init( { 
+					'session' : g.cgi.param('session'), 
+					'authtime' : g.cgi.param('authtime'),
+					'server' : g.cgi.param('server'),
+				} );
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

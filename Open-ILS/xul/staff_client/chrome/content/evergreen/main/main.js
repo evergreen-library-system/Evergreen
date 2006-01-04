@@ -60,9 +60,10 @@ function main_init() {
 				G.OpenILS.data.stash('list','hash','temp');
 				G.OpenILS.data._debug_stash();
 
-				G.window.open(url + urls.remote_menu_frame 
+				G.window.open(urls.remote_menu_frame 
 					+ '?session='+mw.escape(G.auth.session.key)
-					+ '&authtime='+mw.escape(G.auth.session.authtime),
+					+ '&authtime='+mw.escape(G.auth.session.authtime)
+					+ '&server='+mw.escape(url),
 					'test','chrome,resizable');
 			}
 			G.OpenILS.data.init();

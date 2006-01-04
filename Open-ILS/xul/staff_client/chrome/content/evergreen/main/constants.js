@@ -45,7 +45,7 @@ var urls = {
 	'remote_debug_shell' : '/xul/server/util/shell.html',
 	'remote_debug_xuleditor' : '/xul/server/util/xuledit.xul',
 	'remote_hold_capture' : '/xul/server/circ/hold_capture.xul',
-	'remote_menu_frame' : '/xul/server/main/menu_frame.xul',
+	'remote_menu_frame' : 'chrome://evergreen/content/main/menu_frame.xul',
 	'remote_patron_barcode_entry' : '/xul/server/patron/barcode_entry.xul',
 	'remote_patron_bills' : '/xul/server/patron/bills.xul',
 	'remote_patron_bill_cc_info' : '/xul/server/patron/bill_cc_info.xul',

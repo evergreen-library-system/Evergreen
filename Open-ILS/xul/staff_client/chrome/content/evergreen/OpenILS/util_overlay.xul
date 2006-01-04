@@ -7,6 +7,7 @@
 	<scripts id="openils_util_scripts">
 		<script type="text/javascript" src="../main/constants.js" />
 		<script type="text/javascript" src="util/utils.js" />
+		<script type="text/javascript" src="util/CGI.js" />
 		<script type="text/javascript" src="util/md5.js" />
 		<script type="text/javascript" src="util/JSON.js" />
 		<script type="text/javascript" src="util/fmall.js" />
