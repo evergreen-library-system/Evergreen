@@ -128,6 +128,12 @@ main.menu.prototype = {
 					obj.set_tab(url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{},{});
 				}
 			],
+			'cmd_survey_wizard' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(url_prefix(urls.XUL_SURVEY_WIZARD) + '?session='+obj.w.escape(session),{},{});
+				}
+			],
 
 		};
 
