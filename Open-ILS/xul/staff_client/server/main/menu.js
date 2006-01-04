@@ -130,7 +130,7 @@ main.menu.prototype = {
 			'cmd_survey_wizard' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.XUL_SURVEY_WIZARD) + '?session='+obj.w.escape(session),{},{});
+					obj.window.open(url_prefix(urls.XUL_SURVEY_WIZARD),'survey_wizard','chrome'); 
 				}
 			],
 
