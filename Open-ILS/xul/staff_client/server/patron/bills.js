@@ -121,7 +121,7 @@ patron.bills.prototype = {
 								JSAN.use('util.window');
 								var win = new util.window();
 								var w = win.open(
-									urls.remote_patron_bill_wizard
+									urls.XUL_PATRON_BILL_WIZARD
 										+ '?session=' + window.escape(obj.session)
 										+ '&patron_id=' + window.escape(obj.patron_id),
 									'billwizard',
@@ -236,7 +236,7 @@ patron.bills.prototype = {
 		switch(obj.controller.view.payment_type.value) {
 			case 'credit_card_payment' :
 				var w = win.open(
-					urls.remote_patron_bill_cc_info,
+					urls.XUL_PATRON_BILL_CC_INFO,
 					'billccinfo',
 					'chrome,resizable,modal'
 				);
@@ -245,7 +245,7 @@ patron.bills.prototype = {
 			break;
 			case 'check_payment' :
 				var w = win.open(
-					urls.remote_patron_bill_check_info,
+					urls.XUL_PATRON_BILL_CHECK_INFO,
 					'billccinfo',
 					'chrome,resizable,modal'
 				);
@@ -519,7 +519,7 @@ patron.bills.prototype = {
 					function(ev) {
 						JSAN.use('util.window'); var w = new util.window();
 						w.open(
-							urls.remote_patron_bill_details 
+							urls.XUL_PATRON_BILL_DETAILS 
 							+ '?session=' + window.escape(obj.session) 
 							+ '&mbts_id=' + window.escape(mobts.id()),
 							'test' + mobts.id(),

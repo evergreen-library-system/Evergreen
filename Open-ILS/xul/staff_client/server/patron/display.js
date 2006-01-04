@@ -30,7 +30,7 @@ patron.display.prototype = {
 
 		function spawn_checkout_interface() {
 			obj.right_deck.set_iframe(
-				urls.remote_checkout
+				urls.XUL_CHECKOUT
 				+ '?session=' + window.escape( obj.session )
 				+ '&patron_id=' + window.escape( obj.patron.id() ),
 				{},
@@ -65,7 +65,7 @@ patron.display.prototype = {
 							if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {	
 									try {
-										var url = urls.remote_patron_display 
+										var url = urls.XUL_PATRON_DISPLAY 
 											+ '?session=' + window.escape(obj.session) 
 											+ '&id=' + window.escape( obj.retrieve_ids[i] );
 										window.xulG.new_tab(
@@ -100,7 +100,7 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							var frame = obj.right_deck.set_iframe(
-								urls.remote_patron_items
+								urls.XUL_PATRON_ITEMS
 								+ '?session=' + window.escape( obj.session )
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
@@ -120,7 +120,7 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							obj.right_deck.set_iframe(
-								urls.remote_patron_holds	
+								urls.XUL_PATRON_HOLDS	
 								+ '?session=' + window.escape( obj.session )
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
@@ -135,7 +135,7 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							var f = obj.right_deck.set_iframe(
-								urls.remote_patron_bills
+								urls.XUL_PATRON_BILLS
 								+ '?session=' + window.escape( obj.session )
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
@@ -162,7 +162,7 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							obj.right_deck.set_iframe(
-								urls.remote_patron_edit
+								urls.XUL_PATRON_EDIT
 								+ '?ses=' + window.escape( obj.session )
 								+ '&usr=' + window.escape( obj.patron.id() ),
 								{}, {}
@@ -173,7 +173,7 @@ patron.display.prototype = {
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(urls.remote_patron_info);
+							obj.right_deck.set_iframe(urls.XUL_PATRON_INFO);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
@@ -229,7 +229,7 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
 			var frame = obj.left_deck.set_iframe(
-				urls.remote_patron_summary
+				urls.XUL_PATRON_SUMMARY
 				+'?session=' + window.escape(obj.session)
 				+'&barcode=' + window.escape(obj.barcode) 
 				+'&id=' + window.escape(obj.id), 
@@ -264,7 +264,7 @@ patron.display.prototype = {
 						}
 					},
 					'on_error' : function(E) {
-						location.href = urls.remote_patron_barcode_entry + '?session='
+						location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?session='
 							+ window.escape(obj.session);
 						alert(E);
 					}
@@ -288,14 +288,14 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 			var form_frame = obj.left_deck.set_iframe(
-				urls.remote_patron_search_form
+				urls.XUL_PATRON_SEARCH_FORM
 				+'?session=' + window.escape(obj.session),
 				{},
 				{
 					'on_submit' : function(query) {
 						obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 						var list_frame = obj.right_deck.reset_iframe(
-							urls.remote_patron_search_result
+							urls.XUL_PATRON_SEARCH_RESULT
 							+'?session=' + window.escape(obj.session) + '&' + query,
 							{},
 							{
@@ -307,7 +307,7 @@ patron.display.prototype = {
 									setTimeout(
 										function() {
 											var frame = obj.left_deck.set_iframe(
-												urls.remote_patron_summary
+												urls.XUL_PATRON_SUMMARY
 													+'?session=' + window.escape(obj.session)
 													+'&id=' + window.escape(list[0]), 
 													{},

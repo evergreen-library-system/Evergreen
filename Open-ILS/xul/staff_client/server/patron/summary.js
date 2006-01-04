@@ -557,7 +557,7 @@ patron.summary.prototype = {
 			// Do it
 			JSAN.use('util.exec'); obj.exec = new util.exec();
 			obj.exec.on_error = function(E) {
-				//location.href = urls.remote_patron_barcode_entry + '?session=' + window.escape(obj.session);
+				//location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?session=' + window.escape(obj.session);
 				obj.patron = new au();
 					obj.patron.checkouts( [] );
 					obj.patron.hold_requests( [] );

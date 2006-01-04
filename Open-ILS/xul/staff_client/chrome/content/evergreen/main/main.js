@@ -37,7 +37,7 @@ function main_init() {
 		JSAN.use('util.window');
 		G.window = new util.window();
 
-		//G.window.open(urls.remote_debug_console,'testconsole','chrome,resizable');
+		//G.window.open(urls.XUL_DEBUG_CONSOLE,'testconsole','chrome,resizable');
 
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( { 'window' : mw } );
@@ -60,7 +60,7 @@ function main_init() {
 				G.OpenILS.data.stash('list','hash','temp');
 				G.OpenILS.data._debug_stash();
 
-				G.window.open(urls.remote_menu_frame 
+				G.window.open(urls.XUL_MENU_FRAME 
 					+ '?session='+mw.escape(G.auth.session.key)
 					+ '&authtime='+mw.escape(G.auth.session.authtime)
 					+ '&server='+mw.escape(url),

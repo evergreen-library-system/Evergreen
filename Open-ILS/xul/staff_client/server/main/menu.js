@@ -17,6 +17,13 @@ main.menu.prototype = {
 		var authtime = params['authtime'];
 		urls.remote = params['server'];
 
+		function url_prefix(url) {
+			if (url.match(/^\//)) url = urls.remote + url;
+			if (! url.match(/^(http|chrome):\/\/) 
+				&& ! url.match(/^data:/) ) url = 'http://' + url;
+			return url;
+		}
+
 		var obj = this;
 
 		var cmd_map = {
@@ -33,7 +40,7 @@ main.menu.prototype = {
 			'cmd_new_window' : [
 				['oncommand'],
 				function() {
-					obj.window.open(urls.remote + urls.remote_menu_frame,'test' + 
+					obj.window.open(url_prefix(urls.XUL_MENU_FRAME),'test' + 
 						obj.window.appshell_name_increment++ ,'chrome'); 
 				}
 			],
@@ -50,7 +57,7 @@ main.menu.prototype = {
 			'cmd_patron_search' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.remote_patron_display 
+					obj.set_tab(urls.remote + urls.XUL_PATRON_DISPLAY 
 						+ '?session='+obj.w.escape(session),{},{});
 				}
 			],
@@ -67,19 +74,19 @@ main.menu.prototype = {
 			'cmd_circ_checkin' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(urls.remote + urls.remote_checkin + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(urls.remote + urls.XUL_CHECKIN + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(urls.remote + urls.remote_patron_barcode_entry + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(urls.remote + urls.XUL_PATRON_BARCODE_ENTRY + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(urls.remote + urls.remote_hold_capture + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(urls.remote + urls.XUL_HOLD_CAPTURE + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 
@@ -100,25 +107,25 @@ main.menu.prototype = {
 			'cmd_console' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote_debug_console,{},{});
+					obj.set_tab(urls.XUL_DEBUG_CONSOLE,{},{});
 				}
 			],
 			'cmd_shell' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.remote_debug_shell,{},{});
+					obj.set_tab(urls.remote + urls.XUL_DEBUG_SHELL,{},{});
 				}
 			],
 			'cmd_xuleditor' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.remote_debug_xuleditor,{},{});
+					obj.set_tab(urls.remote + urls.XUL_DEBUG_XULEDITOR,{},{});
 				}
 			],
 			'cmd_fieldmapper' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote + urls.remote_debug_fieldmapper,{},{});
+					obj.set_tab(urls.remote + urls.XUL_DEBUG_FIELDMAPPER,{},{});
 				}
 			],
 
