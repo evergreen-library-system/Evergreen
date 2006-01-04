@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<overlay id="survey_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<wizardpage id="page1" 
+		description="&staff.survey.wizard.page1;" 
+		onpageadvanced="setDescription('page2','survey_name');"
+		onpageshow="document.getElementById('survey_add').canAdvance = false; document.getElementById('survey_name').focus();"
+	>
+		<grid id="page1_grid1"/>
+	</wizardpage>
+
+	<grid id="page1_grid1">
+		<columns id="page1_grid1_columns">
+			<column id="page1_grid1_column1"/>
+			<column id="page1_grid1_column2"/>
+			<column id="page1_grid1_column3"/>
+			<column id="page1_grid1_column4"/>
+		</columns>
+		<rows id="page1_grid1_rows">
+			<row id ="page1_grid1_row1"/>
+			<row id ="page1_grid1_row1c"/>
+			<row id ="page1_grid1_row1a"/>
+			<row id ="page1_grid1_row1b"/>
+			<row id ="page1_grid1_row2"/>
+			<row id ="page1_grid1_row3"/>
+		</rows>
+	</grid>
+
+	<row id="page1_grid1_row1">
+		<label id="page1_row1_label1" value="Available to:" class="wizard_label"/>
+		<menulist id="lib_menulist">
+			<menupopup id="lib_menupopup"/>
+		</menulist>
+		<label id="page1_row1_label2" value="Required:" class="wizard_label"/>
+		<checkbox id="required_checkbox"/>
+	</row>
+	
+	<row id="page1_grid1_row1c">
+		<label id="page1_row1c_label1"/>
+		<label id="page1_row1c_label2"/>
+		<label id="page1_row1c_label3" value="Poll Format:" class="wizard_label"/>
+		<checkbox id="poll_checkbox"/>
+	</row>
+
+
+	<row id="page1_grid1_row1a">
+		<label id="page1_row1a_label1"/>
+		<label id="page1_row1a_label2"/>
+		<label id="page1_row1a_label3" value="OPAC Visible:" class="wizard_label"/>
+		<checkbox id="opac_checkbox"/>
+	</row>
+
+	<row id="page1_grid1_row1b">
+		<label id="page1_row1b_label1"/>
+		<label id="page1_row1b_label2"/>
+		<label id="page1_row1b_label3" value="Staff Client:" class="wizard_label"/>
+		<checkbox id="patron_summary_checkbox"/>
+	</row>
+
+	<row id="page1_grid1_row2">
+		<label id="page1_row2_label1" value="Name:" class="wizard_label"/>
+		<textbox id="survey_name" onchange="page1_check_advance();" onkeyup="page1_check_advance();" />
+		<label id="page1_row2_label2" value="Start:" class="wizard_label"/>
+		<textbox id="survey_start"/>
+	</row>
+
+	<row id="page1_grid1_row3">
+		<label id="page1_row3_label1" value="Description:" class="wizard_label"/>
+		<textbox id="survey_description" multiline="true" rows="4"/>
+		<label id="page1_row3_label2" value="End:" class="wizard_label"/>
+		<vbox id="page1_row3_vbox1">
+		<textbox id="survey_end"/>
+		</vbox>
+	</row>
+
+	<wizardpage id="page2" 
+		description="&staff.survey.wizard.page2;" 
+		onpageshow="document.getElementById('survey_add').canAdvance = false; document.getElementById('new_question').focus();"
+	>
+		<separator id="page2_separator1"/>
+		<grid id="page2_grid1"/>
+	</wizardpage>
+
+	<grid id='page2_grid1'>
+		<columns id="page2_grid1_columns">
+			<column id="page2_grid1_column1"/>
+			<column id="page2_grid1_column2" flex="1"/>
+			<column id="page2_grid1_column3"/>
+		</columns>
+		<rows id="page2_grid1_rows"/>
+	</grid>
+
+
+	<rows id="page2_grid1_rows">
+		<row id="page2_grid1_row1">
+			<label id="new_question_label" value="#1"/>
+			<textbox id="new_question" flex="1"/>
+			<button id="page2_button1" label="Save this Question" oncommand="add_question(event);"/>
+		</row>
+	</rows>
+
+</overlay>
+

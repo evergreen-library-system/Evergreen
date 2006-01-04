@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+	<!-- Overlays for this XUL file -->
+	<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
+	<?xul-overlay href="chrome://evergreen/content/admin/survey_overlay.xul"?>
+
+<!-- This DTD declaration needs to be fixed for Mozilla locales -->
+<!DOCTYPE wizard SYSTEM "chrome://evergreen/locale/lang.dtd">
+<wizard id="survey_add" title="&staff.survey.wizard.title;" 
+	orient="vertical" style="overflow: auto"
+	onload="try{ my_init(); } catch(E) { alert(E); }"
+	onwizardfinish="save_survey();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://evergreen/content/main/lang.js"/>
+	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
+	<script type="text/javascript" src="chrome://evergreen/content/admin/survey.js" />
+	<script type="text/javascript">
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('..');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for survey_wizard.xul');
+
+				g.cgi = new CGI();
+
+				g.session = g.cgi.param('session'); 
+
+				survey_init(); // legacy init
+	
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\nsurvey_wizard.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+	]]>
+	</script>
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<wizardpage id="page1"/>
+	<wizardpage id="page2"/>
+
+</wizard>
+
