@@ -10,6 +10,12 @@
 						class='classic_link'>Copy Information</a>
 				</td>
 
+				<td id='rdetail_viewcn_link' class='rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("cn");' 
+						class='classic_link'>Shelf Browser</a>
+				</td>
+
 				<td id='rdetail_reviews_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("reviews");' 
@@ -31,19 +37,6 @@
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("marc");' 
 						class='classic_link'>MARC Record</a>
-				</td>
-
-				<!--
-				<td id='rdetail_viewcn_link' class='rdetail_extras_td hide_me'
-					style='padding-right: 15px; padding-left: 15px;' >
-					<span>Shelf Browser</span>
-				</td>
-				-->
-
-				<td id='rdetail_viewcn_link' class='rdetail_extras_td'
-					style='padding-right: 15px; padding-left: 15px;' >
-					<a href='javascript:rdetailShowExtra("cn");' 
-						class='classic_link'>Shelf Browser</a>
 				</td>
 
 			</tr>
