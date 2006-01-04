@@ -10,10 +10,10 @@
 			<thead>
 				<tr>
 					<td><a id='cn_browse_next' class='classic_link' 
-						href='javascript:cnBrowsePrev();'>&lt;&lt; Previous Page</a></td>
+						href='javascript:cnBrowsePrev();'><b>&lt;&lt; Previous Page</b></a></td>
 					<td colspan='1' align='center'>Shelf Browser</td>
 					<td><a id='cn_browse_prev' class='classic_link' 
-						href='javascript:cnBrowseNext();'>Next Page&gt;&gt;</a></td>
+						href='javascript:cnBrowseNext();'><b>Next Page&gt;&gt;</b></a></td>
 				</tr>
 			</thead>
 			<tbody id='cn_tbody'>

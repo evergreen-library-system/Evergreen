@@ -14,6 +14,7 @@ var statusRow = null;
 var numStatuses = null;
 var defaultCN;
 var callnumberCache = {};
+var rdetailLocalOnly = true;
 
 function rdetailDraw() {
 
@@ -57,6 +58,7 @@ function rdetailShowLocalCopies() {
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
 	hideMe(G.ui.rdetail.cp_info_local);
 	unHideMe(G.ui.rdetail.cp_info_all);
+	rdetailLocalOnly = true;
 }
 
 function rdetailShowAllCopies() {
@@ -68,6 +70,7 @@ function rdetailShowAllCopies() {
 	hideMe(G.ui.rdetail.cp_info_all);
 	unHideMe(G.ui.rdetail.cp_info_local);
 	hideMe(G.ui.rdetail.cp_info_none);
+	rdetailLocalOnly = false;
 }
 
 
@@ -156,7 +159,7 @@ function rdetailShowExtra(type) {
 
 		case 'cn':
 			unHideMe($('rdetail_cn_browse_div'));
-			rdetailShowCNBrowse(defaultCN);
+			rdetailShowCNBrowse(defaultCN, null, true);
 			break;
 	}
 }
@@ -173,12 +176,12 @@ function rdetailBuildCNList() {
 
 function rdetailGatherCN() {
 	var cn = getSelectorVal($('cn_browse_selector'));
-	rdetailShowCNBrowse( cn, getDepth() );
+	rdetailShowCNBrowse( cn, getDepth(), true );
 	setSelector( $('cn_browse_selector'), cn );
 }
 
 
-function rdetailShowCNBrowse( cn, depth ) {
+function rdetailShowCNBrowse( cn, depth, fromOnclick ) {
 	if(!cn) return;
 	rdetailBuildCNList();
 	setSelector( $('cn_browse_selector'), cn );
@@ -188,6 +191,7 @@ function rdetailShowCNBrowse( cn, depth ) {
 	hideMe($('rdetail_marc_div'));
 	unHideMe($('rdetail_cn_browse_div'));
 	unHideMe($('cn_browse'));
+	if( !rdetailLocalOnly && ! fromOnclick ) depth = findOrgDepth(globalOrgTree);
 	cnBrowseGo(cn, depth);
 }
 
