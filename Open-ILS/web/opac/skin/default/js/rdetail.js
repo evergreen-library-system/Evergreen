@@ -173,20 +173,22 @@ function rdetailBuildCNList() {
 
 function rdetailGatherCN() {
 	var cn = getSelectorVal($('cn_browse_selector'));
-	rdetailShowCNBrowse( cn );
+	rdetailShowCNBrowse( cn, getDepth() );
+	setSelector( $('cn_browse_selector'), cn );
 }
 
 
-function rdetailShowCNBrowse( cn ) {
+function rdetailShowCNBrowse( cn, depth ) {
 	if(!cn) return;
 	rdetailBuildCNList();
+	setSelector( $('cn_browse_selector'), cn );
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_marc_div'));
-	unHideMe($('rdetail_viewcn_link'));
+	unHideMe($('rdetail_cn_browse_div'));
 	unHideMe($('cn_browse'));
-	cnBrowseGo(cn);
+	cnBrowseGo(cn, depth);
 }
 
 function rdetailHandleAddedContent(r) {
@@ -295,10 +297,6 @@ function _rdetailBuildInfoRows(r) {
 
 		} else rowNode.setAttribute("used", "1");
 
-		var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + arr[1] + '");' }, arr[1]);
-		addCSSClass(a, 'classic_link');
-		findNodeByName( rowNode, config.names.rdetail.cn_cell ).appendChild(a);
-		
 		var cpc_temp = rowNode.removeChild(
 			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
@@ -314,20 +312,28 @@ function _rdetailBuildInfoRows(r) {
 			}
 		}
 		rdetailSetPath( thisOrg, isLocal );
-
-		/* used for building the shelf browser */
-		var cache = callnumberCache[arr[1]];
-		if( cache ) {
-			cache.count++;
-			if(isLocal) cache.local = true;
-		} else { callnumberCache[arr[1]] = { count : 1, local : false };}
+		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal );
 
 		if( i == summary.length - 1 && !defaultCN) defaultCN = arr[1];
-
 	}
 
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
 
+}
+
+function rdetailBuildBrowseInfo(row, cn, local) {
+	/* used for building the shelf browser */
+	if(local) {
+		var cache = callnumberCache[cn];
+		if( cache ) cache.count++;
+		else callnumberCache[cn] = { count : 1 };
+	}
+
+	var depth = getDepth();
+	if( !local ) depth = findOrgDepth(globalOrgTree);
+	var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");' }, cn);
+	addCSSClass(a, 'classic_link');
+	findNodeByName( row, config.names.rdetail.cn_cell ).appendChild(a);
 }
 
 /* sets the path to org as 'active' and displays the 

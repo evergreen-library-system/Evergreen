@@ -3,48 +3,103 @@ var cnBrowseTopCn;
 var cnBrowseTopId;
 var cnBrowseBottomCn;
 var cnBrowseBottomId;
+var cnBrowseDepth;
+var cnBrowseCache = {};
+var cnBrowseShowNext = false;
+var cnBrowseShowPrev = false;
 var MAX_CN = 9;
 
-function cnBrowseGo(cn) { 
+function cnBrowseGo(cn, depth) { 
+	if(depth == null) depth = getDepth();
+	cnBrowseDepth = depth;
 	cnBrowseCurrent = cn;
 	var req = new Request( FETCH_CNBROWSE_TARGET, 
 		'org_unit', getLocation(), 
-		'depth', getDepth(), 
-		'label', cn, 
+		'depth', cnBrowseDepth, 
+		'label', cnBrowseCurrent,
 		'page_size', MAX_CN );
 	req.callback( cnBrowseDraw );
 	req.send();
 }
 
 function cnBrowseNext() {
-	var req = new Request( FETCH_CNBROWSE_NEXT, 
-		'org_unit', getLocation(), 
-		'depth', getDepth(), 
-		'label', cnBrowseBottomCn, 
-		'boundry_id', cnBrowseBottomId,
-		'page_size', MAX_CN );
-	req.callback( cnBrowseDraw );
-	req.send();
+	cnBrowseShowNext = true;
+	if( cnBrowseCache.next )  /* if we have it, show it */
+		cnBrowseClearNext(cnBrowseCache.next);
 }
 
 function cnBrowsePrev() {
+	cnBrowseShowPrev = true;
+	if( cnBrowseCache.prev ) 
+		cnBrowseClearPrev(cnBrowseCache.prev);
+}
+
+function cnBrowseGrabNext() {
+	var req = new Request( FETCH_CNBROWSE_NEXT, 
+		'org_unit', getLocation(), 
+		'depth', cnBrowseDepth,
+		'label', cnBrowseBottomCn, 
+		'boundry_id', cnBrowseBottomId,
+		'page_size', MAX_CN );
+	req.callback( cnBrowseCacheMe );
+	req.request.next = true;
+	req.send();
+}
+
+
+function cnBrowseGrabPrev() {
 	var req = new Request( FETCH_CNBROWSE_PREV,
 		'org_unit', getLocation(), 
-		'depth', getDepth(), 
+		'depth', cnBrowseDepth,
 		'label', cnBrowseTopCn, 
 		'boundry_id', cnBrowseTopId,
 		'page_size', MAX_CN );
-	req.callback( cnBrowseDraw );
+	req.callback( cnBrowseCacheMe );
+	req.request.prev = true;
 	req.send();
+}
+
+function cnBrowseClearNext(list) {
+	cnBrowseCache.next = null; 
+	cnBrowseShowNext = false;
+	_cnBrowseDraw(list);
+}
+
+function cnBrowseClearPrev(list) {
+	cnBrowseCache.prev = null; 
+	cnBrowseShowPrev = false;
+	_cnBrowseDraw(list);
+}
+
+/* cache next and previous calls unless they are 
+needed immediately */
+function cnBrowseCacheMe(r) {
+	var list = r.getResultObject();
+	if( r.next ) {
+		cnBrowseCache.next = list;
+		if( cnBrowseShowNext ) {
+			cnBrowseClearNext(list);
+		} 
+
+	} else if( r.prev ) {
+		cnBrowseCache.prev = list;
+		if( cnBrowseShowPrev )  {
+			cnBrowseClearPrev(list);
+		} 
+	}
+}
+
+
+function cnBrowseDraw( r ) {
+	var list = r.getResultObject();
+	_cnBrowseDraw(list);
 }
 
 
 var cnTbody;
 var cnRowT;
 var cnTdT;
-
-function cnBrowseDraw( r ) {
-	var list = r.getResultObject();
+function _cnBrowseDraw( list ) {
 
 	if(!cnTbody) {
 		cnTbody = $('cn_tbody');
@@ -103,6 +158,8 @@ function cnBrowseDraw( r ) {
 			cnTbody.appendChild(currentRow);
 		}
 	}
+	cnBrowseGrabNext();
+	cnBrowseGrabPrev();
 }
 
 function cnBrowseDrawTitle(r) {
