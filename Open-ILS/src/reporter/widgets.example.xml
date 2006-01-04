@@ -60,10 +60,10 @@
 				on which to report.
 			</description>
 			<filter-code type="perl">
-				$full_col = "DATE_TRUNC('month', $full_col)";
+				$full_col = "CAST(DATE_TRUNC('month', $full_col) AS DATE)";
 				$where_clause = 
-					"( $full_col = DATE_TRUNC('month', NOW() - CAST( ? || ' month' AS INTERVAL )) ".
-					"  OR $full_col = DATE_TRUNC('month', NOW() - CAST( ? || ' month' AS INTERVAL )) )";
+					"$full_col IN ( CAST(DATE_TRUNC('month', NOW() - CAST( ? || ' month' AS INTERVAL )) AS DATE), ".
+					"  CAST(DATE_TRUNC('month', NOW() - CAST( ? || ' month' AS INTERVAL )) AS DATE))";
 				push @$bind_list, $$val{target}, $$val{target} + $$val{compare};
 			</filter-code>
 		</widget>
@@ -210,8 +210,8 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause = 
-					"DATE_TRUNC('day', $full_col) = ".
-						"DATE_TRUNC('day', NOW()) - CAST(? || ' day' AS INTERVAL);
+					"CAST($full_col AS DATE) = ".
+						"CAST((NOW() - CAST(? || ' day' AS INTERVAL)) AS DATE)";
 				push @$bind_list, $val;
 			</filter-code>
 		</widget>
@@ -224,8 +224,8 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause =
-					"( DATE_TRUNC('week', $full_col) = ".
-					"  DATE_TRUNC('week', NOW() - CAST(? || ' weeks' AS INTERVAL) ) ";
+					"( CAST(DATE_TRUNC('week', $full_col) AS DATE) = ".
+					"  CAST(DATE_TRUNC('week', NOW() - CAST(? || ' weeks' AS INTERVAL) ) AS DATE) ";
 				push @$bind_list, $val;
 			</filter-code>
 		</widget>
@@ -238,8 +238,8 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause = 
-					"DATE_TRUNC('month', $full_col) = ".
-						"DATE_TRUNC('month', NOW()) - CAST(? || ' months' AS INTERVAL);
+					"CAST(DATE_TRUNC('month', $full_col) AS DATE) = ".
+						"CAST(DATE_TRUNC('month', NOW()) - CAST(? || ' months' AS INTERVAL) AS DATE)";
 				push @$bind_list, $val;
 			</filter-code>
 		</widget>
@@ -262,8 +262,8 @@
 			</description>
 			<filter-code type="perl">
 				$where_clause = 
-					"DATE_TRUNC('year', $full_col) = ".
-						"DATE_TRUNC('year', NOW()) - CAST(? || ' years' AS INTERVAL);
+					"CAST(DATE_TRUNC('year', $full_col) AS DATE)= ".
+						"CAST(DATE_TRUNC('year', NOW()) - CAST(? || ' years' AS INTERVAL) AS DATE)";
 				push @$bind_list, $val;
 			</filter-code>
 		</widget>
