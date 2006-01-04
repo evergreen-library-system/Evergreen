@@ -61,7 +61,7 @@ var urls = {
 	'XUL_PATRON_SEARCH_FORM' : '/xul/server/patron/search_form.xul',
 	'XUL_PATRON_SEARCH_RESULT' : '/xul/server/patron/search_result.xul',
 	'XUL_PATRON_SUMMARY' : '/xul/server/patron/summary.xul',
-	'XUL_SURVEY_WIZARD' : 'chrome://evergren/content/admin/survey_wizard.xul',
+	'XUL_SURVEY_WIZARD' : 'chrome://evergreen/content/admin/survey_wizard.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : 'chrome://evergreen/content/admin/survey_wizard.xul',
 	'XUL_OPAC_WRAPPER' : '/xul/server/cat/opac.xul',
