@@ -2,6 +2,7 @@ package OpenILS::Application::Circ;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
+use OpenILS::Application::Circ::Circulate;
 use OpenILS::Application::Circ::Rules;
 use OpenILS::Application::Circ::Survey;
 use OpenILS::Application::Circ::StatCat;
@@ -25,6 +26,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 sub initialize {
 	my $self = shift;
 	OpenILS::Application::Circ::Rules->initialize();
+	OpenILS::Application::Circ::Circulate->initialize();
 }
 
 
@@ -51,6 +53,7 @@ sub checkouts_by_user {
 	my $circs = $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
+#		{ usr => $target->id, xact_finish => undef } );
 		{ usr => $target->id } );
 
 	my @results;
@@ -97,6 +100,7 @@ sub checkouts_by_user_slim {
 	return $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
+#		{ usr => $target->id, xact_finish => undef } );
 		{ usr => $target->id } );
 }
 

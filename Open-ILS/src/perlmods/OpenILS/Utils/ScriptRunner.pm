@@ -10,8 +10,7 @@ sub new {
 	$class = ref($class) || $class;
 
 	my $type = $params{type} || 'js';
-	my $file = $params{file};
-	my $thingy = OpenILS::Utils::SpiderMonkey->new( $file ) if( $type =~ /js/i );
+	my $thingy = OpenILS::Utils::SpiderMonkey->new( %params ) if( $type =~ /js/i );
 
 	if($thingy) { 
 		$thingy->init; 
@@ -25,6 +24,10 @@ sub new {
 
 sub init {$logger->error("METHOD NOT DEFINED"); }
 sub context {$logger->error("METHOD NOT DEFINED"); }
+# generic insertion method
+sub insert {$logger->error("METHOD NOT DEFINED"); }
+# generic retrieval method
+sub retrieve {$logger->error("METHOD NOT DEFINED"); }
 sub insert_fm { $logger->error("METHOD NOT DEFINED"); }
 sub insert_hash { $logger->error("METHOD NOT DEFINED"); }
 # loads an external script

@@ -133,13 +133,17 @@ sub make_payments {
 
 sub _update_patron_credit {
 	my( $session, $userid, $credit ) = @_;
-	return if $credit < 0;
+	return if $credit <= 0;
 
 	my $patron = $session->request( 
 		'open-ils.storage.direct.actor.user.retrieve', $userid )->gather(1);
 
+	$logger->activity( "Adding to patron [$userid] credit: $credit" );
+
 	$patron->credit_forward_balance( 
 		$patron->credit_forward_balance + $credit);
+	
+	$logger->debug("Total patron credit is now " . $patron->credit_forward_balance );
 
 	my $res = $session->request(
 		'open-ils.storage.direct.actor.user.update', $patron )->gather(1);

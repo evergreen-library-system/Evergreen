@@ -121,7 +121,6 @@ sub _grab_patron_profiles {
 	my $session = shift;
 	if(!$patron_profiles) {
 		my $profile_req = $session->request(
-			#"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
 			"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
 		$patron_profiles = $profile_req->gather(1);
 		$patron_profiles =

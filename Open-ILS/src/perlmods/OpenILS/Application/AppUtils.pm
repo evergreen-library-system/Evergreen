@@ -547,5 +547,30 @@ sub fetch_container_item {
 }
 
 
+sub fetch_patron_standings {
+	my $self = shift;
+	$logger->debug("Fetching patron standings");	
+	return $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.config.standing.retrieve.all.atomic');
+}
+
+
+sub fetch_permission_group_tree {
+	my $self = shift;
+	$logger->debug("Fetching patron profiles");	
+	return $self->simplereq(
+		'open-ils.storage', 
+		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
+}
+
+
+sub fetch_patron_summary {
+	my( $self, $userid ) = @_;
+	$logger->debug("Fetching patron summary for $userid");
+	return $self->simplereq(
+		'open-ils.storage', 
+		"open-ils.storage.action.circulation.patron_summary", $userid );
+}
 
 1;
