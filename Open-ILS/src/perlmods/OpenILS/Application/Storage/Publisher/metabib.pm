@@ -1389,4 +1389,102 @@ for my $class ( qw/title author subject keyword series/ ) {
 }
 
 
+sub multi_Z_search_full_rec {
+	my $self = shift;
+	my $client = shift;
+
+	my %args = @_;	
+	my $class_join = $args{class_join} || 'AND';
+	my $limit = $args{limit} || 10;
+	my $offset = $args{offset} || 0;
+	my @binds;
+	my @selects;
+
+	my $limiter_count = 0;
+
+	for my $arg (@{ $args{searches} }) {
+		my $term = $$arg{term};
+		my $limiters = $$arg{restrict};
+
+		my ($index_col) = metabib::full_rec->columns('FTS');
+		$index_col ||= 'value';
+		my $search_table = metabib::full_rec->table;
+
+		my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
+
+		my $fts_where = $fts->sql_where_clause();
+		my @fts_ranks = $fts->fts_rank;
+
+		my $rank = join(' + ', @fts_ranks);
+
+		my @wheres;
+		for my $limit (@$limiters) {
+			push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
+			push @binds, $$limit{tag}, ($$limit{subfield} ? $$limit{subfield} : '_');
+ 			$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
+		}
+		$limiter_count++;
+		my $where = join(' OR ', @wheres);
+
+		push @selects, "SELECT id, record, $rank as sum FROM $search_table WHERE $where";
+
+	}
+
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
+
+	my $cj = 'HAVING COUNT(x.id) = ' . $limiter_count if ($class_join eq 'AND');
+	my $search_table =
+		'(SELECT x.record, sum(x.sum) FROM (('.
+			join(') UNION ALL (', @selects).
+			")) x GROUP BY 1 $cj ORDER BY 2 DESC )";
+
+	my ($t_filter, $f_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		my @types = split '', $t;
+		my @forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+		push @binds, @types, @forms;
+	}
+
+
+	my $select = <<"	SQL";
+		SELECT	f.record, f.sum
+  	  	FROM	$search_table f,
+			$metabib_record_descriptor rd
+  	  	WHERE	rd.record = f.record
+			$t_filter
+			$f_filter
+	SQL
+
+
+	$log->debug("Search SQL :: [$select]",DEBUG);
+
+	my $recs = metabib::full_rec->db_Main->selectall_arrayref("$select;", {}, @binds);
+	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
+
+	my $count = @$recs;
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		next unless ($$rec[0]);
+		my ($rid,$rank) = @$rec;
+		$client->respond( [$rid, sprintf('%0.3f',$rank), $count] );
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.metabib.full_rec.Zmulti_search',
+	method		=> 'multi_Z_search_full_rec',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+
 1;
