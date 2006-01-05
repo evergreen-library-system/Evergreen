@@ -158,6 +158,51 @@ patron.summary.prototype = {
 							};
 						}
 					],
+					'patron_surveys' : [
+						['render'],
+						function(e) {
+							return function() {
+								while(e.lastChild){e.removeChild(e.lastChild);} /* empty vbox */
+								JSAN.use('util.date'); JSAN.use('util.functional');
+								var surveys = obj.OpenILS.data.list.asv;
+								var sr = obj.patron.survey_respones();
+								for (var i  = 0; i < surveys.length; i++) {
+									var survey = surveys[i];
+									var hbox = document.createElement('hbox');
+									e.appendChild(hbox);
+									var sname = document.createElement('label');
+									sname.setAttribute('value',survey.name());
+									hbox.appendChild(sname);
+									var responses = sr[survey.id()];
+									var vbox = document.createElement('vbox');
+									hbox.appendChild(vbox);
+									var sdate = document.createElement('label');
+									sdate.setAttribute('value','Not Taken');
+									vbox.appendChild(sdate);
+									if (responses && responses.length > 0) {
+										var response = responses.pop(); // last response
+										var date;
+										if (response.effective_date()) {
+											date = util.date.formatted_date( response.effective_date(), '%D' );
+										} else {
+											date = util.date.formatted_date( response.answer_date(), '%D' );
+										}
+										sdate.setAttribute('value',date);
+										var answer = util.functional.find_id_object_in_list( // first answer
+											util.functional.find_id_object_in_list(
+												survey.questions(),
+												response.question()
+											).answers(),
+											response.answer()
+										).answer();
+										var ans = document.createElement('label');
+										ans.setAttribute('value',answer);
+										vbox.appendChild(ans);
+									}
+								}
+							};
+						}
+					],
 					'patron_card' : [
 						['render'],
 						function(e) {
@@ -529,6 +574,29 @@ patron.summary.prototype = {
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.hold_requests( holds );
+					} catch(E) {
+						var error = ('patron.summary.retrieve : ' + js2JSON(E));
+						obj.error.sdump('D_ERROR',error);
+						throw(error);
+					}
+				}
+			);
+
+			// Retrieve the survey responses for required surveys
+			chain.push(
+				function() {
+					try {
+						var surveys = obj.OpenILS.data.list.asv;
+						var survey_respones = {};
+						for (var i = 0; i < surveys.length; i++) {
+							var s = obj.network.request(
+								api.FM_ASVR_RETRIEVE.app,
+								api.FM_ASVR_RETRIEVE.method,
+								[ obj.session, surveys[i].id(), obj.patron.id() ]
+							);
+							survey_responses[ i ] = s;
+						}
+						obj.patron.survey_responses( survey_responses );
 					} catch(E) {
 						var error = ('patron.summary.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);

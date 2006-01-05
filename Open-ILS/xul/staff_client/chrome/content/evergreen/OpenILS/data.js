@@ -167,6 +167,29 @@ OpenILS.data.prototype = {
 			}
 		);
 
+		this.chain.push(
+			function() {
+				var f = gen_fm_retrieval_func(
+					'asv',
+					[
+						api.FM_ASV_RETRIEVE_REQUIRED.app,
+						api.FM_ASV_RETRIEVE_REQUIRED.method,
+						[ obj.session ],
+						true
+					]
+				);
+				try {
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					alert(error);
+					throw(E);
+				}
+			}
+		);
+
+
 		obj.error.sdump('D_DEBUG','_fm_objects = ' + js2JSON(this._fm_objects) + '\n');
 
 		for (var i in this._fm_objects) {
