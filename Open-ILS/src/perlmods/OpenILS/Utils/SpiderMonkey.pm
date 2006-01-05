@@ -41,16 +41,14 @@ sub load {
 sub run {
 	my $self = shift;
 	my $file = shift() || $self->{file};
+	my $js = $self->context;
 
 	if( ! open(F, $file) ) {
 		$logger->error("Error opening script file: $file");
 		return 0;
 	}
 
-	my $js = $self->context;
-	$js->property_by_path("js.file", join( "\n", <F> ));
-
-	if( ! $js->eval("eval( js.file );") ) { 
+	if( ! $js->eval(join("\n", <F>)) ) {
 		$logger->error("$file Eval failed: $@");  
 		return 0;
 	}
