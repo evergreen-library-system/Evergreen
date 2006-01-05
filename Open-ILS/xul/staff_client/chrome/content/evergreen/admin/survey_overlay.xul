@@ -25,6 +25,17 @@
 					<menupopup id="lib_menupopup"/>
 				</menulist>
 			</row>
+
+			<row id="page1_grid1_row2">
+				<label id="page1_row2_label1" value="Name:" class="wizard_label"/>
+				<textbox id="survey_name" onchange="page1_check_advance();" onkeyup="page1_check_advance();" />
+			</row>
+
+			<row id="page1_grid1_row3">
+				<label id="page1_row3_label1" value="Description:" class="wizard_label"/>
+				<textbox id="survey_description" multiline="true" rows="4"/>
+			</row>
+
 			<row>
 				<label id="page1_row1_label2" value="Required:" class="wizard_label"/>
 				<checkbox id="required_checkbox"/>
@@ -52,15 +63,6 @@
 			<row>
 				<label id="page1_row3_label2" value="End:" class="wizard_label"/>
 				<textbox id="survey_end"/>
-			</row>
-			<row id="page1_grid1_row2">
-				<label id="page1_row2_label1" value="Name:" class="wizard_label"/>
-				<textbox id="survey_name" onchange="page1_check_advance();" onkeyup="page1_check_advance();" />
-			</row>
-
-			<row id="page1_grid1_row3">
-				<label id="page1_row3_label1" value="Description:" class="wizard_label"/>
-				<textbox id="survey_description" multiline="true" rows="4"/>
 			</row>
 		</rows>
 	</grid>
