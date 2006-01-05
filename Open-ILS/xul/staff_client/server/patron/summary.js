@@ -165,7 +165,7 @@ patron.summary.prototype = {
 								while(e.lastChild){e.removeChild(e.lastChild);} /* empty vbox */
 								JSAN.use('util.date'); JSAN.use('util.functional');
 								var surveys = obj.OpenILS.data.list.asv;
-								var sr = obj.patron.survey_respones();
+								var sr = obj.patron.survey_responses();
 								for (var i  = 0; i < surveys.length; i++) {
 									var survey = surveys[i];
 									var hbox = document.createElement('hbox');
@@ -587,7 +587,7 @@ patron.summary.prototype = {
 				function() {
 					try {
 						var surveys = obj.OpenILS.data.list.asv;
-						var survey_respones = {};
+						var survey_responses = {};
 						for (var i = 0; i < surveys.length; i++) {
 							var s = obj.network.request(
 								api.FM_ASVR_RETRIEVE.app,
