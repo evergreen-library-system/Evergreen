@@ -1283,5 +1283,110 @@ __PACKAGE__->register_method(
 
 
 
+# XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
+sub postfilter_Z_search_class_fts {
+	my $self = shift;
+	my $client = shift;
+	my %args = @_;
+	
+	my $term = $args{term};
+	#my $ou = $args{org_unit};
+	#my $ou_type = $args{depth};
+	my $limit = $args{limit} || 10;
+	my $offset = $args{offset} || 0;
+
+	my (@types,@forms);
+	my ($t_filter, $f_filter) = ('','');
+	my ($ot_filter, $of_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+			$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+	}
+
+
+
+	#my $descendants = defined($ou_type) ?
+	#			"actor.org_unit_descendants($ou, $ou_type)" :
+	#			"actor.org_unit_descendants($ou)";
+
+	my $class = $self->{cdbi};
+	my $search_table = $class->table;
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
+
+	my ($index_col) = $class->columns('FTS');
+	$index_col ||= 'value';
+
+	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
+
+	my $fts_where = $fts->sql_where_clause;
+	my @fts_ranks = $fts->fts_rank;
+
+	my $rank = join(' + ', @fts_ranks);
+
+	my $select = <<"	SQL";
+		SELECT	f.source,
+			SUM(	$rank
+				* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
+				* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
+				* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
+			)
+  	  	FROM	$search_table f,
+			$metabib_record_descriptor rd
+  	  	WHERE	$fts_where
+			AND rd.record = f.source
+			$t_filter
+			$f_filter
+  	  	GROUP BY 1
+  	  	ORDER BY 2 DESC, MIN(COALESCE(CHAR_LENGTH(f.value),1))
+	SQL
+
+
+	$log->debug("Z39.50 Search SQL :: [$select]",DEBUG);
+
+	my $SQLstring = join('%',$fts->words);
+	my $REstring = join('\\s+',$fts->words);
+	my $first_word = ($fts->words)[0].'%';
+	my $recs =
+		$class->db_Main->selectall_arrayref(
+			$select, {},
+			'%'.lc($SQLstring).'%',			# phrase order match
+			lc($first_word),			# first word match
+			'^\\s*'.lc($REstring).'\\s*/?\s*$',	# full exact match
+			@types, @forms
+		);
+	
+	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
+
+	my $count = scalar(@$recs);
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		next unless ($rec);
+		my ($mrid,$rank) = @$rec;
+		$client->respond( [$mrid, sprintf('%0.3f',$rank), $count] );
+	}
+	return undef;
+}
+
+for my $class ( qw/title author subject keyword series/ ) {
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.metabib.$class.Zsearch",
+		method		=> 'postfilter_Z_search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+}
+
 
 1;
