@@ -9,7 +9,7 @@
 <!-- This DTD declaration needs to be fixed for Mozilla locales -->
 <!DOCTYPE wizard SYSTEM "chrome://evergreen/locale/lang.dtd">
 <wizard id="survey_add" title="&staff.survey.wizard.title;" 
-	orient="vertical" style="overflow: auto"
+	orient="vertical" style="overflow: auto" width="800" height="600"
 	onload="try{ my_init(); } catch(E) { alert(E); }"
 	onwizardfinish="save_survey();"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -37,6 +37,12 @@
 				g.cgi = new CGI();
 
 				g.session = g.cgi.param('session'); 
+
+				JSAN.use('OpenILS.data'); g.OpenILS = {};
+				g.OpenILS.data = new OpenILS.data(); g.OpenILS.data.init({'via':'stash'});
+
+				JSAN.use('util.network');
+				g.network = new util.network();
 
 				survey_init(); // legacy init
 	

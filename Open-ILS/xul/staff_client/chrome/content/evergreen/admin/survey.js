@@ -1,10 +1,56 @@
 dump('Loading survey.js\n');
 
 var SURVEY = {};
+var last_answer;
+var last_button;
+
+function populate_lib_list_with_branch(menulist,menupopup,defaultlib,branch,id_flag) {
+	JSAN.use('util.fm_utils');
+	var default_menuitem;
+	if (typeof defaultlib == 'object') {
+		defaultlib = defaultlib.id();	
+	}
+	var popup = menupopup;
+	if (typeof(popup)!='object') popup = document.getElementById(menupopup);
+	if (popup) {
+		//empty_widget(popup);
+		var padding_flag = true;
+		var flat_branch = util.fm_utils.flatten_ou_branch( branch );
+		for (var i in flat_branch) {
+			var menuitem = document.createElement('menuitem');
+			var padding = '';
+			var depth = g.OpenILS.data.hash.aout[ flat_branch[i].ou_type() ].depth();
+			if (padding_flag) {
+				for (var j = 0; j < depth; j++) { 
+					padding = padding + '  '; 
+				}
+			}
+			menuitem.setAttribute('label', padding + flat_branch[i].name() );
+			menuitem.setAttribute('value', flat_branch[i].id() );
+			if (id_flag) menuitem.setAttribute('id', 'libitem' + flat_branch[i].id() );
+			if (defaultlib == flat_branch[i].id()) {
+				default_menuitem = menuitem;
+			}
+			popup.appendChild(menuitem);
+		}
+		var list = menulist;
+		if (typeof(list)!='object') { list = document.getElementById(menulist); }
+		if (list && defaultlib && default_menuitem) {
+			if (list) { list.selectedItem = default_menuitem; }
+		}
+	} else {
+			var err = ('populate_lib_list_with_branch: Could not find ' + menupopup + '\n');
+			dump(err);
+			alert(err);
+	}
+}
+
 
 function survey_init() {
 	dump('survey_init()\n');
-	/*REPLACEME populate_lib_list_with_branch('lib_menulist','lib_menupopup',mw.G.user_ou,mw.G.user_ou); */
+	var user_ou = g.OpenILS.data.list.au[0].home_ou();
+	var user_branch = g.OpenILS.data.hash.aou[ user_ou ];
+	populate_lib_list_with_branch('lib_menulist','lib_menupopup',user_ou,user_branch); 
 	SURVEY['asv'] = new asv(); SURVEY['asv'].isnew('1');
 	SURVEY['num_of_questions'] = 0;
 	document.getElementById('survey_name').focus();
@@ -63,7 +109,7 @@ function save_survey() {
 	}
 	g.error.sdump('D_SURVEY', 'before survey = ' + js2JSON( SURVEY.asv ) + '\n');
 	try {
-		var result = user_request(
+		var result = g.network.request(
 			api.FM_ASV_CREATE.app,
 			api.FM_ASV_CREATE.method,
 			[ g.session, SURVEY.asv ]
@@ -151,7 +197,8 @@ function add_question() {
 	add_question_row(my_asvq);
 
 	document.getElementById('new_question_label').setAttribute('value', '#' + (SURVEY.num_of_questions + 1) );
-	question.select();
+	//question.select();
+	if (last_answer) last_answer.focus();
 }
 
 function add_question_row(my_asvq) {
@@ -191,8 +238,10 @@ function add_question_row(my_asvq) {
 	var g_tb = document.createElement('textbox');
 		g_tb.setAttribute('flex','1');
 	g_row_2.appendChild(g_tb);
+	if (last_button) last_button.setAttribute('accesskey','');
 	var g_b = document.createElement('button');
 		g_b.setAttribute('label','Save this Response');
+		g_b.setAttribute('accesskey','R');
 		g_b.setAttribute('oncommand','add_answer(event,' + my_asvq.id() + ');');
 	g_row_2.appendChild(g_b);
 
@@ -201,6 +250,9 @@ function add_question_row(my_asvq) {
 	var blank2 = document.createElement('label');
 		blank2.setAttribute('value', ' ');
 	blank.appendChild( blank2 );
+
+	last_answer = g_tb;
+	last_button = g_b;
 }
 
 function page1_check_advance() {
