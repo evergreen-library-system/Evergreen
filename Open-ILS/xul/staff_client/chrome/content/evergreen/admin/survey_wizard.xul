@@ -45,6 +45,7 @@
 				g.network = new util.network();
 
 				survey_init(); // legacy init
+				document.getElementById('survey_add').canAdvance = false; 
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

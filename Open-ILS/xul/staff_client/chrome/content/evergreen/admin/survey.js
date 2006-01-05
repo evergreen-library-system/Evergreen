@@ -127,11 +127,13 @@ function save_survey() {
 	g.error.sdump('D_SURVEY', 'after  survey = ' + js2JSON( SURVEY.asv ) + '\n');
 }
 
+var original_description;
 function setDescription(e,t) {
 	var page = document.getElementById(e);
 	var desc = page.getAttribute('description');
+	if (!original_description) original_description = desc;
 	var value = document.getElementById(t).value;
-	page.setAttribute('description',desc + ' ' + value); 
+	page.setAttribute('description',original_description + ' ' + value); 
 }
 
 var new_id = -1;

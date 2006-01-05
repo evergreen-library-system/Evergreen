@@ -8,7 +8,7 @@
 	<wizardpage id="page1" 
 		description="&staff.survey.wizard.page1;" 
 		onpageadvanced="setDescription('page2','survey_name');"
-		onpageshow="document.getElementById('survey_add').canAdvance = false; document.getElementById('survey_name').focus();"
+		onpageshow="document.getElementById('survey_name').focus();"
 	>
 		<grid id="page1_grid1"/>
 	</wizardpage>
