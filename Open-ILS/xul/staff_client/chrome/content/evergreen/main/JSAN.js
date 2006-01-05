@@ -117,7 +117,7 @@ JSAN._findMyPath = function () {
         }
     }
 }
-JSAN._findMyPath();
+/* For some reason this breaks XUL wizards, but we shouldn't need it.   JSAN._findMyPath(); */
 
 JSAN._convertPathToUrl = function (path, repository) {
     return repository.concat('/' + path);
