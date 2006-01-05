@@ -6,6 +6,7 @@
 
 use strict;
 use warnings;
+use JSON;
 use Data::Dumper;
 use OpenSRF::System;
 use OpenSRF::AppSession;
@@ -40,6 +41,7 @@ our $ACTOR		= 'open-ils.actor';
 #----------------------------------------------------------------
 sub err { 
 	my ($pkg, $file, $line, $sub)  = _caller(); 
+	no warnings;
 	die "Script halted with error ".
 		"($pkg : $file : $line : $sub):\n" . shift() . "\n"; 
 }
