@@ -3,12 +3,15 @@
 <overlay id="survey_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+	<script>dump('survey_overlay.xul loading\n');</script>
+
 	<wizardpage id="page1" 
 		description="&staff.survey.wizard.page1;" 
 		onpageadvanced="setDescription('page2','survey_name');"
 		onpageshow="document.getElementById('survey_add').canAdvance = false; document.getElementById('survey_name').focus();"
 	>
 		<grid id="page1_grid1"/>
+		<label value="Hello World"/>
 	</wizardpage>
 
 	<grid id="page1_grid1">
@@ -101,5 +104,6 @@
 		</row>
 	</rows>
 
+	<script>dump('survey_overlay.xul loaded\n');</script>
 </overlay>
 

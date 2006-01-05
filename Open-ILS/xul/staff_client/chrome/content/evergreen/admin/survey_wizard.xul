@@ -16,6 +16,7 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
+	<script>dump('survey_wizard.xul loading\n');</script>
 	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
 
@@ -53,5 +54,6 @@
 	<wizardpage id="page1"/>
 	<wizardpage id="page2"/>
 
+	<script>dump('survey_wizard.xul loaded\n');</script>
 </wizard>
 

@@ -3,6 +3,7 @@ dump('Loading survey.js\n');
 var SURVEY = {};
 
 function survey_init() {
+	dump('survey_init()\n');
 	/*REPLACEME populate_lib_list_with_branch('lib_menulist','lib_menupopup',mw.G.user_ou,mw.G.user_ou); */
 	SURVEY['asv'] = new asv(); SURVEY['asv'].isnew('1');
 	SURVEY['num_of_questions'] = 0;
