@@ -30,6 +30,14 @@
 		label="Show in Catalog"
 		command="cmd_show_catalog"
 	/>
+	<button id="items_edit"
+		label="Edit"
+		command="cmd_items_edit"
+	/>
+	<button id="items_mark_missing"
+		label="Missing"
+		command="cmd_items_mark_missing"
+	/>
 	<button id="items_claimed_returned"
 		label="Claims Returned"
 		command="cmd_items_claimed_returned"

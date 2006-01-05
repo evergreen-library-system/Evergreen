@@ -122,6 +122,16 @@ patron.items.prototype = {
 						function() {
 						}
 					],
+					'cmd_items_edit' : [
+						['command'],
+						function() {
+						}
+					],
+					'cmd_items_mark_missing' : [
+						['command'],
+						function() {
+						}
+					],
 					'cmd_items_checkin' : [
 						['command'],
 						function() {
@@ -153,6 +163,8 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_edit.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_mark_missing.setAttribute('disabled','true');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
@@ -200,6 +212,8 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','false');
 		obj.controller.view.cmd_items_renew.setAttribute('disabled','false');
 		obj.controller.view.cmd_items_checkin.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_edit.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_mark_missing.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 
 		obj.retrieve_ids = list;
