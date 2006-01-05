@@ -398,7 +398,7 @@ void startElementHandler(
 		ses->state_machine->in_message_error = 1;
 		buffer_add( ses->message_error_type, get_xml_attr( atts, "type" ) );
 		ses->message_error_code = atoi( get_xml_attr( atts, "code" ) );
-		osrfLogWarning( "Received <error> message with type %s and code %s", 
+		osrfLogInfo( "Received <error> message with type %s and code %s", 
 			get_xml_attr( atts, "type"), get_xml_attr( atts, "code") );
 		return;
 	}

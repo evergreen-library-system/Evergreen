@@ -251,7 +251,7 @@ transport_message* osrfRouterClassHandleBounce(
 
 	osrfLogDebug("osrfRouterClassHandleBounce()");
 
-	osrfLogWarning("Received network layer error message from %s", msg->sender );
+	osrfLogInfo("Received network layer error message from %s", msg->sender );
 	osrfRouterNode* node = osrfRouterClassFindNode( rclass, msg->sender );
 	transport_message* lastSent = NULL;
 

@@ -283,7 +283,7 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 		} else {
 
 			/* send an error message saying we don't have this connection */
-			osrfLogWarning("We have no connection for %s", toAddr);
+			osrfLogInfo("We have no connection for %s", toAddr);
 			char* xml = va_list_to_string( OSRF_CHAT_NO_RECIPIENT, toAddr, fromAddr );
 			osrfChatSendRaw( node, xml );
 			free(xml);
