@@ -114,9 +114,14 @@ function save_survey() {
 			api.FM_ASV_CREATE.method,
 			[ g.session, SURVEY.asv ]
 		);
-		dump('result = ' + js2JSON( result ) + '\n');
 		if (! (result instanceof asv) ) {
 			throw('save_survey: result not an asv');
+		} else {
+			var surveys_list = g.OpenILS.data.list.asv;
+			var surveys_hash = g.OpenILS.data.hash.asv;
+			surveys_list.push( result );
+			surveys_hash[ result.id() ] = result;
+			g.OpenILS.data.stash('list','hash');
 		}
 	} catch(E) {
 		var err = ('Survey failed: ' + js2JSON(E) + '\n');
