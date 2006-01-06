@@ -40,6 +40,7 @@ var api = {
 var urls = {
 	'opac' : 'http://dev.gapines.org/opac/en-US/skin/default/xml/advanced.xml',
 	'REMOTE' : 'http://dev.gapines.org/',
+	'XUL_BROWSER' : '/xul/server/util/browser.xul',
 	'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
 	'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
 	'XUL_DEBUG_CONSOLE' : 'chrome://global/content/console.xul',
