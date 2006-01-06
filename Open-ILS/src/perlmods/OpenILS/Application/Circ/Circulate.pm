@@ -53,7 +53,9 @@ sub create_circ_env {
 	my %params = @_;
 
 	my $barcode = $params{barcode};
-	my $patron = $params{patron};
+	my $patron	= $params{patron};
+	my $summary = $params{fetch_patron_circ_summary};
+
 	my ( $copy, $title, $evt );
 
 	if(!$standings) {
@@ -67,20 +69,64 @@ sub create_circ_env {
 	( $title, $evt ) = $apputils->fetch_record_by_copy( $copy->id );
 	return ( undef, $evt ) if $evt;
 
+	$summary = $apputils->fetch_patron_circ_summary($patron->id) if $summary;
+
+	_doctor_circ_objects( $patron, $title, $copy, $summary );
+
+	my $runner = _build_circ_script_runner( $patron, $title, $copy, $summary );
+
+	return { 
+		runner			=> $runner, 
+		title				=> $title, 
+		patron			=> $patron, 
+		copy				=> $copy, 
+		standings		=> $standings, 
+		group_tree		=> $group_tree,
+		circ_summary	=> $summary, 
+	};
+}
+
+
+# ------------------------------------------------------------------------------
+# Patches up circ objects to make them easier to use from within the script
+# environment
+# ------------------------------------------------------------------------------
+sub _doctor_circ_objects {
+	my( $patron, $title, $copy, $summary ) = @_;
+	for my $s (@$standings) {
+		$patron->standing( $s->value) if( $s->id eq $patron->standing);
+	}
+
+	# XXX
+	$copy->circulate(0);
+}
+
+
+# ------------------------------------------------------------------------------
+# Constructs and shoves data into the script environment
+# ------------------------------------------------------------------------------
+sub _build_circ_script_runner {
+	my( $patron, $title, $copy, $summary ) = @_;
+
 	my $runner = OpenILS::Utils::ScriptRunner->new( type => 'js' );
-	$runner->insert( 'patron', $patron );
-	$runner->insert( 'title', $title );
-	$runner->insert( 'copy', $copy );
+
+	$runner->insert( 'patron',		$patron );
+	$runner->insert( 'title',		$title );
+	$runner->insert( 'copy',		$copy );
 	$runner->insert( 'standings', $standings );
 	$runner->insert( 'group_tree', $group_tree );
 
-	return { 
-		runner		=> $runner, 
-		title			=> $title, 
-		patron		=> $patron, 
-		copy			=> $copy, 
-		standings	=> $standings, 
-		group_tree	=> $group_tree };
+	# circ script result
+	$runner->insert( 'result', {} );
+	$runner->insert( 'result.event', 'SUCCESS' );
+
+	if($summary) {
+		$runner->insert( 'patron_info', {} );
+		$runner->insert( 'patron_info.copy_count', $summary->[0] );
+		$runner->insert( 'patron_info.fines', $summary->[1] );
+	}
+
+	return $runner;
 }
 
 
@@ -102,25 +148,21 @@ sub permit_circ {
 	my $isrenew		= $params{renew};
 	my ( $requestor, $patron, $env, $evt );
 
-	( $requestor, $patron, $evt) = 
-		$apputils->checkses_requestor( 
+	# check permisson of the requestor
+	( $requestor, $patron, $evt ) = $apputils->checkses_requestor( 
 		$authtoken, $patronid, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
 
-	( $env, $evt ) = create_circ_env( barcode => $barcode, patron => $patron );
+	# fetch and build the circulation environment
+	( $env, $evt ) = create_circ_env( barcode => $barcode, 
+		patron => $patron, fetch_patron_circ_summary => 1 );
 	return $evt if $evt;
 
 	my $runner = $env->{runner};
 	$runner->load($scripts{circ_permit});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Script Died");
 
-	if( ! $runner->run ) {
-		throw OpenSRF::EX::ERROR 
-			("Error running permit circ script: " . $scripts{circ_permit});
-	}
-
-	# Insepect the script results and return correct event
-
-	return OpenILS::Event->new( 'SUCCESS' );
+	return OpenILS::Event->new($runner->retrieve('result.event'));
 }
 
 
