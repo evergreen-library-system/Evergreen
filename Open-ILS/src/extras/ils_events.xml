@@ -97,12 +97,43 @@
 	</event>
 
 
-
+	<!-- ================================================================ -->
+	<!-- CIRC EVENTS -->
 	<event code='1700' textcode='ROUTE_COPY'>
+		<desc> A copy needs to be routed to a different location	</desc>
+	</event>
+
+	<event code='1701' textcode='PATRON_BAD_STANDING'>
 		<desc>
-			A copy needs to be routed to a different location	
+			The patron in question is not able to check out materials because
+			their account is in bad standing
 		</desc>
 	</event>
+
+	<event code='1702' textcode='PATRON_HIGH_CHECKOUT_COUNT'>
+		<desc>
+			The patron in question has the maximum number of items already checked out
+		</desc>
+	</event>
+
+	<event code='1703' textcode='COPY_CIRC_NOT_ALLOWED'>
+		<desc> Target copy is not allowed to circulate </desc>
+	</event>
+
+	<event code='1704' textcode='COPY_NOT_AVAILABLE'>
+		<desc> Copy is not available </desc>
+	</event>
+
+	<event code='1705' textcode='LOCATION_CIRC_NOT_ALLOWED'>
+		<desc> Location does not allow materials to circulate </desc>
+	</event>
+
+	<event code='1706' textcode='COPY_IS_REFERENCE'>
+		<desc> Copy is reference material </desc>
+	</event>
+
+	<!-- ================================================================ -->
+
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
