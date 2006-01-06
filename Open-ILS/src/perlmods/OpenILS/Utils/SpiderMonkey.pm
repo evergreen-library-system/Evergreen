@@ -23,6 +23,7 @@ sub init {
 	my $js = JavaScript::SpiderMonkey->new();
 	$js->init();
 	$js->function_set("perl_print",		sub { print "@_\n"; } );
+	$js->function_set("log_activity",	sub { $logger->activity(@_); return 1;} );
 	$js->function_set("log_error",		sub { $logger->error(@_); return 1;} );
 	$js->function_set("log_warn",			sub { $logger->warn(@_); return 1;} );
 	$js->function_set("log_info",			sub { $logger->info(@_); return 1;} );
