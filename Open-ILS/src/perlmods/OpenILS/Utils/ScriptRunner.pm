@@ -27,6 +27,9 @@ sub init {$logger->error("METHOD NOT DEFINED"); }
 # the script context
 sub context {$logger->error("METHOD NOT DEFINED"); }
 
+# Retrieves a value based on key
+sub retrieve {$logger->error("METHOD NOT DEFINED"); }
+
 # generic insertion method - should work on arrays, 
 # hashes, fieldmapper objects, and scalars
 sub insert {$logger->error("METHOD NOT DEFINED"); }

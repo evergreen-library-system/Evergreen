@@ -51,7 +51,7 @@ sub run {
 	}
 
 	if( ! $js->eval(join("\n", <F>)) ) {
-		$logger->error("$file Eval failed: $@");  
+		$logger->error("Script ($file) eval failed in SpiderMonkey run: $@");  
 		return 0;
 	}
 
@@ -70,8 +70,14 @@ sub _js_prop_name {
 	return $name;
 }
 
+sub retrieve {
+	my( $self, $key ) = @_;
+	return $self->context->property_get($key);
+}
+
 sub insert {
 	my( $self, $key, $val ) = @_;
+	return unless defined($val);
 
 	if (ref($val) =~ /^Fieldmapper/o) {
 		$self->insert_fm($key, $val);
@@ -160,7 +166,7 @@ sub insert_array {
 			$self->insert('__tmp_arr_el', $v);
 			$ctx->array_set_element_as_object( $a, $ind, $elobj );
 		} else {
-			$ctx->array_set_element( $a, $ind, $v );
+			$ctx->array_set_element( $a, $ind, $v ) if defined($v);
 		}
 		$ind++;
 	}
