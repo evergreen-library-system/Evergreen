@@ -96,9 +96,6 @@ sub _doctor_circ_objects {
 	for my $s (@$standings) {
 		$patron->standing( $s->value) if( $s->id eq $patron->standing);
 	}
-
-	# XXX
-	$copy->circulate(0);
 }
 
 
