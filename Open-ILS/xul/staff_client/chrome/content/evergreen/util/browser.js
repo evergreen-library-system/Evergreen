@@ -37,6 +37,22 @@ util.browser.prototype = {
 								obj.controller.view.browser_browser.contentWindow.print();
 							}
 						],
+						'cmd_forward' : [
+							['command'],
+							function() {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+								var b = obj.controller.view.browser_browser;
+								if (b.canGoForward) b.goForward();
+							}
+						],
+						'cmd_back' : [
+							['command'],
+							function() {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+								var b = obj.controller.view.browser_browser;
+								if (b.canGoBack) b.goBack();
+							}
+						],
 					}
 				}
 			);
@@ -89,7 +105,20 @@ util.browser.prototype = {
 					}
 					if (stateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT) {
 						s += ('\tSTATE_IS_DOCUMENT\n');
-						if( stateFlags & nsIWebProgressListener.STATE_STOP ) obj.push_variables(); 
+						if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
+							obj.push_variables(); 
+							var b = obj.controller.view.browser_browser;
+							if (b.canGoForward) {
+								obj.controller.view.cmd_forward.disabled = false;
+							} else {
+								obj.controller.view.cmd_forward.disabled = true;
+							}
+							if (b.canGoBack) {
+								obj.controller.view.cmd_back.disabled = false;
+							} else {
+								obj.controller.view.cmd_back.disabled = true;
+							}
+						}
 					}
 					if (stateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
 						s += ('\tSTATE_IS_NETWORK\n');

@@ -71,10 +71,14 @@
 	<commandset id="util_browser_cmds">
 		<command id="cmd_broken" />
 		<command id="cmd_print" />
+		<command id="cmd_back" />
+		<command id="cmd_forward" />
 	</commandset>
 
 	<vbox flex="1">
 		<hbox>
+			<button id="back" label="Go Back" command="cmd_back"/>
+			<button id="forward" label="Go Forward" command="cmd_forward"/>
 			<spacer flex="1"/>
 			<button id="browser_print" label="Print Page" command="cmd_print"/>
 		</hbox>
