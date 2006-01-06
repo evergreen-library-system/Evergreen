@@ -565,12 +565,19 @@ sub fetch_permission_group_tree {
 }
 
 
-sub fetch_patron_summary {
+sub fetch_patron_circ_summary {
 	my( $self, $userid ) = @_;
 	$logger->debug("Fetching patron summary for $userid");
-	return $self->simplereq(
+	my $summary = $self->simplereq(
 		'open-ils.storage', 
 		"open-ils.storage.action.circulation.patron_summary", $userid );
+
+	if( $summary ) {
+		$summary->[0] ||= 0;
+		$summary->[1] ||= 0.0;
+		return $summary;
+	}
+	return undef;
 }
 
 1;
