@@ -110,7 +110,7 @@
 		</desc>
 	</event>
 
-	<event code='1702' textcode='PATRON_HIGH_CHECKOUT_COUNT'>
+	<event code='1702' textcode='PATRON_EXCEEDS_CHECKOUT_COUNT'>
 		<desc>
 			The patron in question has the maximum number of items already checked out
 		</desc>
@@ -132,8 +132,10 @@
 		<desc> Copy is reference material </desc>
 	</event>
 
+	<event code='1707' textcode='COPY_NEEDED_FOR_HOLD'>
+		<desc> Copy is needed to fulfil a hold </desc>
+	</event>
 	<!-- ================================================================ -->
-
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
