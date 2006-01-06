@@ -107,7 +107,10 @@ sub patron_circ_summary {
 		  	LEFT OUTER JOIN $b_table b ON (c.id = b.xact AND b.voided = FALSE)
 		  WHERE	c.usr = ?
 		  	AND c.xact_finish IS NULL
-			AND c.stop_fines NOT IN ('CLAIMSRETURNED','LOST')
+			AND (
+				c.stop_fines NOT IN ('CLAIMSRETURNED','LOST')
+				OR c.stop_fines IS NULL
+			)
 	SQL
 
 	return action::survey->db_Main->selectrow_arrayref($select, {}, $id);
