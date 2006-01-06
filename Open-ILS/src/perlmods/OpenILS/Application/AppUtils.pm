@@ -560,8 +560,8 @@ sub fetch_permission_group_tree {
 	my $self = shift;
 	$logger->debug("Fetching patron profiles");	
 	return $self->simplereq(
-		'open-ils.storage', 
-		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
+		'open-ils.actor', 
+		'open-ils.actor.groups.tree.retrieve' );
 }
 
 
@@ -579,5 +579,7 @@ sub fetch_patron_circ_summary {
 	}
 	return undef;
 }
+
+
 
 1;

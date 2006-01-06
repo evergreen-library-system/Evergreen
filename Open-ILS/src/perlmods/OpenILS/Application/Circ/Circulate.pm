@@ -1,16 +1,19 @@
 package OpenILS::Application::Circ::Circulate;
 use base 'OpenSRF::Application';
 use strict; use warnings;
-use Data::Dumper;
 use OpenSRF::EX qw(:try);
+use Data::Dumper;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Circ::Holds;
 my $apputils = "OpenILS::Application::AppUtils";
+my $holdcode = "OpenILS::Application::Circ::Holds";
 
 my %scripts;		# - circulation script filenames
 my $standings;		# - cached patron standings
 my $group_tree;	# - cached permission group tree
+my $script_libs;	# - any additional script libraries
 
 # ------------------------------------------------------------------------------
 # Load the circ script from the config
@@ -27,6 +30,7 @@ sub initialize {
 	my $m		= $conf->config_value(	@pfx, 'max_fines' );
 	my $pr	= $conf->config_value(	@pfx, 'permit_renew' );
 	my $ph	= $conf->config_value(	@pfx, 'permit_hold' );
+	my $lb	= $conf->config_value(	@pfx, 'script_lib' );
 
 	$logger->error( "Missing circ script(s)" ) 
 		unless( $p and $d and $f and $m and $pr and $ph );
@@ -37,6 +41,9 @@ sub initialize {
 	$scripts{circ_max_fines}		= $m;
 	$scripts{circ_renew_permit}	= $pr;
 	$scripts{hold_permit}			= $ph;
+
+	$lb = [ $lb ] unless ref($lb);
+	$script_libs = $lb;
 
 	$logger->debug("Loaded rules scripts for circ: " .
 		"circ permit : $p, circ duration :$d , circ recurring fines : $f, " .
@@ -93,9 +100,25 @@ sub create_circ_env {
 # ------------------------------------------------------------------------------
 sub _doctor_circ_objects {
 	my( $patron, $title, $copy, $summary ) = @_;
+
+	# set the patron standing to the standing name
 	for my $s (@$standings) {
-		$patron->standing( $s->value) if( $s->id eq $patron->standing);
+		$patron->standing( $s->value ) if( $s->id eq $patron->standing);
 	}
+
+	# set the patron ptofile to the profile name
+	$patron->profile( _patron_get_profile( $patron, $group_tree ) );
+}
+
+# recurse and find the patron profile name from the tree
+sub _patron_get_profile { 
+	my( $patron, $group_tree ) = @_;
+	return $group_tree->name if ($group_tree->id eq $patron->profile);
+	for my $child (@{$group_tree->children}) {
+		my $ret = _patron_get_profile( $patron, $child );
+		return $ret if $ret;
+	}
+	return undef;
 }
 
 
@@ -105,7 +128,10 @@ sub _doctor_circ_objects {
 sub _build_circ_script_runner {
 	my( $patron, $title, $copy, $summary ) = @_;
 
-	my $runner = OpenILS::Utils::ScriptRunner->new( type => 'js' );
+	$logger->debug("Loading script environment for circulation");
+
+	my $runner = OpenILS::Utils::ScriptRunner->new( 
+		type => 'js', libs => $script_libs );
 
 	$runner->insert( 'patron',		$patron );
 	$runner->insert( 'title',		$title );
@@ -119,11 +145,24 @@ sub _build_circ_script_runner {
 
 	if($summary) {
 		$runner->insert( 'patron_info', {} );
-		$runner->insert( 'patron_info.copy_count', $summary->[0] );
+		$runner->insert( 'patron_info.items_out', $summary->[0] );
 		$runner->insert( 'patron_info.fines', $summary->[1] );
 	}
 
+	_add_script_runner_methods( $runner );
 	return $runner;
+}
+
+sub _add_script_runner_methods {
+	my $runner = shift;	
+
+	$runner->context->function_set(
+		'fetch_hold_by_copy', sub {
+			my $copyid = shift;
+			my $hold = $holdcode->fetch_open_hold_by_current_copy($copyid);
+			$runner->insert( 'hold', $hold ) if $hold;
+		}
+	);
 }
 
 
@@ -146,15 +185,19 @@ sub permit_circ {
 	my ( $requestor, $patron, $env, $evt );
 
 	# check permisson of the requestor
-	( $requestor, $patron, $evt ) = $apputils->checkses_requestor( 
+	( $requestor, $patron, $evt ) = 
+		$apputils->checkses_requestor( 
 		$authtoken, $patronid, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
 
 	# fetch and build the circulation environment
-	( $env, $evt ) = create_circ_env( barcode => $barcode, 
-		patron => $patron, fetch_patron_circ_summary => 1 );
+	( $env, $evt ) = create_circ_env( 
+		barcode => $barcode, 
+		patron => $patron, 
+		fetch_patron_circ_summary => 1 );
 	return $evt if $evt;
 
+	# run the script
 	my $runner = $env->{runner};
 	$runner->load($scripts{circ_permit});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Script Died");

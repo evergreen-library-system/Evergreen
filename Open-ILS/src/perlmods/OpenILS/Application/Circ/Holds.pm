@@ -18,6 +18,7 @@ package OpenILS::Application::Circ::Holds;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
+use Data::Dumper;
 use OpenILS::EX;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
@@ -246,7 +247,6 @@ sub update_hold {
 
 	$logger->activity('User ' + $requestor->id . 
 		' updating hold ' . $hold->id . ' for user ' . $target->id );
-	use Data::Dumper;
 
 	return $apputils->simplereq(
 		'open-ils.storage',
@@ -446,6 +446,16 @@ sub create_hold_transit {
 }
 
 
+sub fetch_open_hold_by_current_copy {
+	my $class = shift;
+	my $copyid = shift;
+	my $hold = $apputils->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.action.hold_request.search.atomic',
+			 current_copy =>  $copyid , fulfillment_time => undef );
+	return $hold->[0] if ref($hold);
+	return undef;
+}
 
 
 1;
