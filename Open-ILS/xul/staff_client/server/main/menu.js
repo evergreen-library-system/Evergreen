@@ -64,7 +64,15 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.set_tab(url_prefix(urls.XUL_OPAC_WRAPPER),{},content_params);
+					/*obj.set_tab(url_prefix(urls.XUL_OPAC_WRAPPER),{},content_params);*/
+					obj.set_tab(url_prefix(urls.XUL_BROWSER)
+						+ '?ses=' + window.escape( obj.session )
+						+ '&url=' + window.escape( 
+							urls.opac
+						),
+						{}, content_params
+					);
+
 				}
 			],
 
