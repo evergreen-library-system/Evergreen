@@ -30,6 +30,9 @@
 		label="&staff.circ.checkin.submit_label;" 
 		command="cmd_checkin_submit_barcode"
 		accesskey="&staff.circ.checkin.submit_label.accesskey;"/>
+	<spacer flex="1"/>
+	<label id="checkin_effective_date_label" value="Effective Date:" control="checkin_effective_date_textbox" accesskey="D"/>
+	<textbox id="checkin_effective_date_textbox"/>
 </hbox>
 
 <hbox id="checkin_bottom_ui">
@@ -44,11 +47,13 @@
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkin_auto" 
 		label="&staff.checkin.auto_print_label;" 
-		accesskey="&staff.checkin.auto_print_label.accesskey;"/> 
+		accesskey_disabled="&staff.checkin.auto_print_label.accesskey;"/> 
+<!--
 	<button id="checkin_done" 
 		label="&staff.checkin.done_label;" 
 		command="cmd_checkin_done"
 		accesskey="&staff.checkin.done_label.accesskey;"/>
+-->
 </hbox>
 
 </overlay>

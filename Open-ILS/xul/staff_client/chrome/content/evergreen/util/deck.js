@@ -33,6 +33,7 @@ util.deck.prototype = {
 	},
 
 	'set_iframe' : function (url,params,content_params) {
+		this.error.sdump('D_TRACE','util.deck.set_iframe: url = ' + url);
 		var idx = this.find_index(url);
 		if (idx>-1) {
 			this.node.selectedIndex = idx;

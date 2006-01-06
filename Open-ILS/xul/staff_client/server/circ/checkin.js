@@ -5,6 +5,7 @@ circ.checkin = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
+	JSAN.use('util.date');
 	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 }
 
@@ -49,6 +50,41 @@ circ.checkin.prototype = {
 							}
 						}
 					],
+					'checkin_effective_date_label' : [
+						['render'],
+						function(e) {
+							return function() {
+								obj.controller.view.checkin_effective_date_textbox.value =
+									util.date.formatted_date(new Date(),'%F');
+							};
+						}
+					],
+					'checkin_effective_date_textbox' : [
+						['change'],
+						function(ev) {
+							if (ev.target.nodeName == 'textbox') {
+								try {
+									var flag = false;
+									var darray = ev.target.value.split('-');
+									var year = darray[0]; var month = darray[1]; var day = darray[2]; 
+									if ( (!year) || (year.length != 4) || (!parseInt(year)) ) flag = true;
+									if ( (!month) || (month.length !=2) || (!parseInt(month)) ) flag = true;
+									if ( (!day) || (day.length !=2) || (!parseInt(day)) ) flag = true;
+									if (flag) {
+										throw('invalid date format');
+									}
+									var d = new Date( year, month - 1, day );
+									if (d.toString() == 'Invalid Date') throw('Invalid Date');
+									if ( d > new Date() ) throw('Future Date');
+									ev.target.value = util.date.formatted_date(d,'%F');
+
+								} catch(E) {
+									dump('checkin:effective_date: ' + E + '\n');
+									ev.target.value = util.date.formatted_date(new Date(),'%F');
+								}
+							}
+						}
+					],
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }
@@ -77,6 +113,7 @@ circ.checkin.prototype = {
 				}
 			}
 		);
+		this.controller.render();
 		this.controller.view.checkin_barcode_entry_textbox.focus();
 
 	},
@@ -85,9 +122,10 @@ circ.checkin.prototype = {
 		var obj = this;
 		try {
 			var barcode = obj.controller.view.checkin_barcode_entry_textbox.value;
+			var backdate = obj.controller.view.checkin_effective_date_textbox.value;
 			JSAN.use('circ.util');
 			var checkin = circ.util.checkin_via_barcode(
-				obj.session, barcode, obj.patron_id 
+				obj.session, barcode, backdate
 			);
 			obj.list.append(
 				{
