@@ -4,6 +4,7 @@
 <overlay id="openils_util_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+	<script>dump('Loading OpenILS/util_overlay.xul\n');</script>
 	<scripts id="openils_util_scripts">
 		<script type="text/javascript" src="../main/constants.js" />
 		<script type="text/javascript" src="util/utils.js" />
@@ -16,6 +17,7 @@
 		<script type="text/javascript" src="util/OrgTree.js" />
 		<script type="text/javascript" src="util/org_utils.js" />   
 	</scripts>
+	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
 
 </overlay>
 
