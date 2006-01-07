@@ -40,17 +40,29 @@ util.browser.prototype = {
 						'cmd_forward' : [
 							['command'],
 							function() {
-								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								var b = obj.controller.view.browser_browser;
-								if (b.canGoForward) b.goForward();
+								try {
+									netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+									var b = obj.controller.view.browser_browser;
+									dump('b = ' + b + ' .webNavigation = ' + b.webNavigation + ' .canGoForward = ' + b.webNavigation.canGoForward + '\n');
+									if (b.webNavigation.canGoForward) b.webNavigation.goForward();
+								} catch(E) {
+									var err = 'cmd_forward: ' + E;
+									obj.error.sdump('D_ERROR',err);
+								}
 							}
 						],
 						'cmd_back' : [
 							['command'],
 							function() {
-								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								var b = obj.controller.view.browser_browser;
-								if (b.canGoBack) b.goBack();
+								try {
+									netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+									var b = obj.controller.view.browser_browser;
+									dump('b = ' + b + ' .webNavigation = ' + b.webNavigation + ' .canGoBack = ' + b.webNavigation.canGoBack + '\n');
+									if (b.webNavigation.canGoBack) b.webNavigation.goBack();
+								} catch(E) {
+									var err = 'cmd_back: ' + E;
+									obj.error.sdump('D_ERROR',err);
+								}
 							}
 						],
 					}
@@ -107,13 +119,19 @@ util.browser.prototype = {
 						s += ('\tSTATE_IS_DOCUMENT\n');
 						if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
 							obj.push_variables(); 
-							var b = obj.controller.view.browser_browser;
-							if (b.canGoForward) {
+							try {
+								var b = obj.controller.view.browser_browser;
+								s += ('\nb = ' + b + ' .webNavigation' + b.webNavigation + ' .canGoBack = ' + b.webNavigation.canGoBack 
+									+ ' .canGoForward = ' + b.webNavigation.canGoForward + '\n');
+							} catch(E) {
+								s += E;
+							}
+							if (b.webNavigation.canGoForward) {
 								obj.controller.view.cmd_forward.disabled = false;
 							} else {
 								obj.controller.view.cmd_forward.disabled = true;
 							}
-							if (b.canGoBack) {
+							if (b.webNavigation.canGoBack) {
 								obj.controller.view.cmd_back.disabled = false;
 							} else {
 								obj.controller.view.cmd_back.disabled = true;
