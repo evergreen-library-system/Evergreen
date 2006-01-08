@@ -82,7 +82,7 @@
 			<spacer flex="1"/>
 			<button id="browser_print" label="Print Page" command="cmd_print"/>
 		</hbox>
-		<browser id="browser_browser" flex="1"/>
+		<browser id="browser_browser" flex="1" type="content"/>
 	</vbox>
 
 </window>

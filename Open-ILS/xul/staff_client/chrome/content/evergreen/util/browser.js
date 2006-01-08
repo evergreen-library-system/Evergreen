@@ -40,29 +40,37 @@ util.browser.prototype = {
 						'cmd_forward' : [
 							['command'],
 							function() {
+								var s = '';
 								try {
 									netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-									var b = obj.controller.view.browser_browser;
-									dump('b = ' + b + ' .webNavigation = ' + b.webNavigation + ' .canGoForward = ' + b.webNavigation.canGoForward + '\n');
-									if (b.webNavigation.canGoForward) b.webNavigation.goForward();
+									var n = obj.getWebNavigation();
+									s += ('\nwebNavigation = ' + n + '\n');
+									s += ('\nwebNavigation.canGoForward = ' + n.canGoForward + '\n');
+									s += ('\nwebNavigation.canGoBack = ' + n.canGoBack + '\n');
+									if (n.canGoForward) n.goForward();
 								} catch(E) {
 									var err = 'cmd_forward: ' + E;
 									obj.error.sdump('D_ERROR',err);
 								}
+								dump(s);
 							}
 						],
 						'cmd_back' : [
 							['command'],
 							function() {
+								var s = '';
 								try {
 									netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-									var b = obj.controller.view.browser_browser;
-									dump('b = ' + b + ' .webNavigation = ' + b.webNavigation + ' .canGoBack = ' + b.webNavigation.canGoBack + '\n');
-									if (b.webNavigation.canGoBack) b.webNavigation.goBack();
+									var n = obj.getWebNavigation();
+									s += ('\nwebNavigation = ' + n + '\n');
+									s += ('\nwebNavigation.canGoForward = ' + n.canGoForward + '\n');
+									s += ('\nwebNavigation.canGoBack = ' + n.canGoBack + '\n');
+									if (n.canGoBack) n.goBack();
 								} catch(E) {
 									var err = 'cmd_back: ' + E;
 									obj.error.sdump('D_ERROR',err);
 								}
+								dump(s);
 							}
 						],
 					}
@@ -93,6 +101,10 @@ util.browser.prototype = {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
 		}
 	},
+
+	'getWebNavigation' : function() {
+		return document.getElementById('browser_browser').webNavigation;
+	},
 	
 	'buildProgressListener' : function() {
 
@@ -106,7 +118,13 @@ util.browser.prototype = {
 				onStatusChange		: function(){},
 				onSecurityChange	: function(){},
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
-					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					netscape.security.PrivilegeManager.enablePrivilege(
+						"UniversalXPConnect " 
+						+ "UniversalPreferencesWrite "
+						+ "UniversalBrowserWrite "
+						+ "UniversalPreferencesRead "
+						+ "UniversalBrowserRead"
+					);
 					var s = '';
 					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 					const nsIChannel = Components.interfaces.nsIChannel;
@@ -120,21 +138,22 @@ util.browser.prototype = {
 						if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
 							obj.push_variables(); 
 							try {
-								var b = obj.controller.view.browser_browser;
-								s += ('\nb = ' + b + ' .webNavigation' + b.webNavigation + ' .canGoBack = ' + b.webNavigation.canGoBack 
-									+ ' .canGoForward = ' + b.webNavigation.canGoForward + '\n');
+								var n = obj.getWebNavigation();
+								s += ('\nwebNavigation = ' + n + '\n');
+								s += ('\nwebNavigation.canGoForward = ' + n.canGoForward + '\n');
+								s += ('\nwebNavigation.canGoBack = ' + n.canGoBack + '\n');
+								if (n.canGoForward) {
+									obj.controller.view.cmd_forward.disabled = false;
+								} else {
+									obj.controller.view.cmd_forward.disabled = true;
+								}
+								if (n.canGoBack) {
+									obj.controller.view.cmd_back.disabled = false;
+								} else {
+									obj.controller.view.cmd_back.disabled = true;
+								}
 							} catch(E) {
 								s += E;
-							}
-							if (b.webNavigation.canGoForward) {
-								obj.controller.view.cmd_forward.disabled = false;
-							} else {
-								obj.controller.view.cmd_forward.disabled = true;
-							}
-							if (b.webNavigation.canGoBack) {
-								obj.controller.view.cmd_back.disabled = false;
-							} else {
-								obj.controller.view.cmd_back.disabled = true;
 							}
 						}
 					}
