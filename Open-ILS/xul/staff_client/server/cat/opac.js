@@ -53,7 +53,11 @@ cat.opac.prototype = {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			this.controller.view.opac_browser.contentWindow.IAMXUL = true;
-			if (window.xulG) this.controller.view.opac_browser.contentWindow.xulG = xulG;
+			if (window.xulG) {
+				this.controller.view.opac_browser.contentWindow.xulG = xulG;
+				dump('xulG = ' + js2JSON(xulG) + '\n');
+				dump('xulG = ' + js2JSON(this.controller.view.opac_browser.contentWindow.xulG) + '\n');
+			}
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.opac.push_variables: ' + E + '\n');
 		}
