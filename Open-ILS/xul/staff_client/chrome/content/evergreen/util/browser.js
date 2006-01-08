@@ -40,37 +40,27 @@ util.browser.prototype = {
 						'cmd_forward' : [
 							['command'],
 							function() {
-								var s = '';
 								try {
 									netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 									var n = obj.getWebNavigation();
-									s += ('\nwebNavigation = ' + n + '\n');
-									s += ('\nwebNavigation.canGoForward = ' + n.canGoForward + '\n');
-									s += ('\nwebNavigation.canGoBack = ' + n.canGoBack + '\n');
 									if (n.canGoForward) n.goForward();
 								} catch(E) {
 									var err = 'cmd_forward: ' + E;
 									obj.error.sdump('D_ERROR',err);
 								}
-								dump(s);
 							}
 						],
 						'cmd_back' : [
 							['command'],
 							function() {
-								var s = '';
 								try {
 									netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 									var n = obj.getWebNavigation();
-									s += ('\nwebNavigation = ' + n + '\n');
-									s += ('\nwebNavigation.canGoForward = ' + n.canGoForward + '\n');
-									s += ('\nwebNavigation.canGoBack = ' + n.canGoBack + '\n');
 									if (n.canGoBack) n.goBack();
 								} catch(E) {
 									var err = 'cmd_back: ' + E;
 									obj.error.sdump('D_ERROR',err);
 								}
-								dump(s);
 							}
 						],
 					}
@@ -118,13 +108,7 @@ util.browser.prototype = {
 				onStatusChange		: function(){},
 				onSecurityChange	: function(){},
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
-					netscape.security.PrivilegeManager.enablePrivilege(
-						"UniversalXPConnect " 
-						+ "UniversalPreferencesWrite "
-						+ "UniversalBrowserWrite "
-						+ "UniversalPreferencesRead "
-						+ "UniversalBrowserRead"
-					);
+					netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect " );
 					var s = '';
 					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 					const nsIChannel = Components.interfaces.nsIChannel;
@@ -139,18 +123,22 @@ util.browser.prototype = {
 							obj.push_variables(); 
 							try {
 								var n = obj.getWebNavigation();
-								s += ('\nwebNavigation = ' + n + '\n');
-								s += ('\nwebNavigation.canGoForward = ' + n.canGoForward + '\n');
-								s += ('\nwebNavigation.canGoBack = ' + n.canGoBack + '\n');
+								s += ('webNavigation = ' + n + '\n');
+								s += ('webNavigation.canGoForward = ' + n.canGoForward + '\n');
+								s += ('webNavigation.canGoBack = ' + n.canGoBack + '\n');
 								if (n.canGoForward) {
 									obj.controller.view.cmd_forward.disabled = false;
+									obj.controller.view.cmd_forward.setAttribute('disabled','false');
 								} else {
 									obj.controller.view.cmd_forward.disabled = true;
+									obj.controller.view.cmd_forward.setAttribute('disabled','true');
 								}
 								if (n.canGoBack) {
 									obj.controller.view.cmd_back.disabled = false;
+									obj.controller.view.cmd_back.setAttribute('disabled','false');
 								} else {
 									obj.controller.view.cmd_back.disabled = true;
+									obj.controller.view.cmd_back.setAttribute('disabled','true');
 								}
 							} catch(E) {
 								s += E;
