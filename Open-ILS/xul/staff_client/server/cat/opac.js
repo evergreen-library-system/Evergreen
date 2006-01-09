@@ -42,6 +42,7 @@ cat.opac.prototype = {
 			                Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 
 			obj.controller.view.opac_browser.setAttribute('src',obj.url);
+			dump('url = ' + obj.url + '\n');
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.opac.init: ' + E + '\n');
