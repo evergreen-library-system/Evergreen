@@ -34,7 +34,7 @@ util.browser.prototype = {
 							['command'],
 							function() {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								obj.controller.view.browser_browser.contentWindow.print();
+								obj.controller.view.browser_browser.contentWindow.wrappedJSObject.print();
 							}
 						],
 						'cmd_forward' : [
@@ -76,7 +76,6 @@ util.browser.prototype = {
 
 			obj.controller.view.browser_browser.setAttribute('src',obj.url);
 			dump('url = ' + obj.url + '\n');
-			obj.push_variables();
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.init: ' + E + '\n');
@@ -87,11 +86,21 @@ util.browser.prototype = {
 
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			this.controller.view.browser_browser.contentWindow.IAMXUL = true;
+			/*
+			var cw = this.controller.view.browser_browser.contentWindow.wrappedJSObject; 
+			var cd = this.controller.view.browser_browser.contentDocument; 
+			dump('contentWindow.wrappedJSObject = ' + cw + '\n');
+			dump('contentWindow.wrappedJSObject.wrappedJSObject = ' + cw.wrappedJSObject + '\n');
+			dump('contentDocument = ' + cd + '\n');
+			dump('contentWindow.wrappedJSObject.document = ' + cw.document + '\n');
+			dump('contentWindow.wrappedJSObject.document.ownerDocument = ' + cw.document.ownerDocument + '\n');
+			dump('contentWindow.wrappedJSObject.document.parentNode = ' + cw.document.parentNode + '\n');
+			*/
+			this.controller.view.browser_browser.contentWindow.wrappedJSObject.IAMXUL = true;
 			if (window.xulG) {
-				this.controller.view.browser_browser.contentWindow.xulG = window.xulG;
+				this.controller.view.browser_browser.contentWindow.wrappedJSObject.xulG = window.xulG;
 				dump('xulG = ' + js2JSON(xulG) + '\n');
-				dump('xulG = ' + js2JSON(this.controller.view.browser_browser.contentWindow.xulG) + '\n');
+				dump('xulG = ' + js2JSON(this.controller.view.browser_browser.contentWindow.wrappedJSObject.xulG) + '\n');
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
