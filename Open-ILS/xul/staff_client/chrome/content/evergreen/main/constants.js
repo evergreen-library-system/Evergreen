@@ -68,5 +68,5 @@ var urls = {
 	'XUL_SURVEY_WIZARD' : 'chrome://evergreen/content/admin/survey_wizard.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : 'chrome://evergreen/content/admin/test.xul',
-	'XUL_OPAC_WRAPPER' : '/xul/server/cat/opac.xul',
+	'XUL_OPAC_WRAPPER' : 'chrome://evergreen/content/cat/opac.xul',
 }

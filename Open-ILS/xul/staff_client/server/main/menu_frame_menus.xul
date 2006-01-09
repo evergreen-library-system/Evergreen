@@ -32,7 +32,7 @@
 	<command id="cmd_test_html" />
 	<command id="cmd_test_xul" />
 
-	<command id="cmd_test" disabled="true" />
+	<command id="cmd_test" />
 	<command id="cmd_broken" disabled="true" />
 </commandset>
 

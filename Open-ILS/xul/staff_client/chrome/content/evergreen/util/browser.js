@@ -143,7 +143,7 @@ util.browser.prototype = {
 					var s = '';
 					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 					const nsIChannel = Components.interfaces.nsIChannel;
-					obj.push_variables(); obj.updateNavButtons();
+					//obj.push_variables(); obj.updateNavButtons();
 					if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
 					s = ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
 					if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
