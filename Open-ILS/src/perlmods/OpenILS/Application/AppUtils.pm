@@ -581,5 +581,19 @@ sub fetch_patron_circ_summary {
 }
 
 
+sub fetch_copy_statuses {
+	my( $self ) = @_;
+	$logger->debug("Fetching copy statuses");
+	return $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.config.copy_status.retrieve.all.atomic' );
+}
+
+sub fetch_copy_locations {
+	my $self = shift; 
+	return $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.asset.copy_location.retrieve.all.atomic');
+}
 
 1;
