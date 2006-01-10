@@ -77,8 +77,8 @@
 
 	<vbox flex="1">
 		<hbox>
-			<button id="back" label="Go Back" command="cmd_back" accesskey="b"/>
-			<button id="forward" label="Go Forward" command="cmd_forward" accesskey="d"/>
+			<button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true"/>
+			<button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true"/>
 			<spacer flex="1"/>
 			<button id="browser_print" label="Print Page" command="cmd_print"/>
 		</hbox>

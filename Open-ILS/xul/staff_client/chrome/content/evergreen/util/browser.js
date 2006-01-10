@@ -86,20 +86,9 @@ util.browser.prototype = {
 
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			/*
-			var cw = this.controller.view.browser_browser.contentWindow.wrappedJSObject; 
-			var cd = this.controller.view.browser_browser.contentDocument; 
-			dump('contentWindow.wrappedJSObject = ' + cw + '\n');
-			dump('contentWindow.wrappedJSObject.wrappedJSObject = ' + cw.wrappedJSObject + '\n');
-			dump('contentDocument = ' + cd + '\n');
-			dump('contentWindow.wrappedJSObject.document = ' + cw.document + '\n');
-			dump('contentWindow.wrappedJSObject.document.ownerDocument = ' + cw.document.ownerDocument + '\n');
-			dump('contentWindow.wrappedJSObject.document.parentNode = ' + cw.document.parentNode + '\n');
-			*/
 			this.controller.view.browser_browser.contentWindow.wrappedJSObject.IAMXUL = true;
 			if (window.xulG) {
 				this.controller.view.browser_browser.contentWindow.wrappedJSObject.xulG = window.xulG;
-				dump('xulG = ' + js2JSON(xulG) + '\n');
 				dump('xulG = ' + js2JSON(this.controller.view.browser_browser.contentWindow.wrappedJSObject.xulG) + '\n');
 			}
 		} catch(E) {
@@ -112,6 +101,7 @@ util.browser.prototype = {
 	},
 
 	'updateNavButtons' : function() {
+		var obj = this; var s = '';
 		try {
 			var n = obj.getWebNavigation();
 			s += ('webNavigation = ' + n + '\n');
@@ -132,8 +122,9 @@ util.browser.prototype = {
 				obj.controller.view.cmd_back.setAttribute('disabled','true');
 			}
 		} catch(E) {
-			s += E;
+			s += E + '\n';
 		}
+		dump(s);
 	},
 
 	'buildProgressListener' : function() {
@@ -152,7 +143,6 @@ util.browser.prototype = {
 					var s = '';
 					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 					const nsIChannel = Components.interfaces.nsIChannel;
-					//obj.push_variables(); obj.updateNavButtons();
 					if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
 					s = ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
 					if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
