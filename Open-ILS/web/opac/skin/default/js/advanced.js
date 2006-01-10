@@ -2,7 +2,10 @@
 
 attachEvt("common", "run", advInit);
 
-function advInit() { depthSelInit(); }
+function advInit() { 
+	$('advanced.wizard.contains').focus();
+	depthSelInit(); 
+}
 
 function advWizardRun() {
 	var contains = $('advanced.wizard.contains').value;

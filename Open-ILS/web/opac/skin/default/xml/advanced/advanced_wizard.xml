@@ -7,9 +7,6 @@
 			<td>&opac.advanced.wizard.contains;</td>
 			<td align='center'>
 				<input type='text' size='36' id='advanced.wizard.contains'> </input>
-				<!--
-				<script language='javascript'>$('advanced.wizard.contains').focus();</script>
-				-->
 			</td>
 		</tr>
 		<tr>
