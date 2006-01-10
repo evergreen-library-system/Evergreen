@@ -39,6 +39,8 @@ function initSideBar() {
 
 	if(G.ui.sidebar.login) G.ui.sidebar.login.onclick = initLogin;
 	if(G.ui.sidebar.logout) G.ui.sidebar.logout.onclick = doLogout; 
+
+	if(isXUL()) hideMe( G.ui.sidebar.logoutbox );
 }
 
 /* sets up the login ui components */
