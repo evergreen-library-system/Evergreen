@@ -63,9 +63,20 @@ main.menu.prototype = {
 			'cmd_search_opac' : [
 				['oncommand'],
 				function() {
-					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					//obj.set_tab(url_prefix(urls.XUL_OPAC_WRAPPER),{},content_params);
-					obj.set_tab(url_prefix(urls.XUL_BROWSER), {}, content_params);
+					try {
+						var content_params = { 
+							'passthru_content_params' : { 'authtoken' : session, 'authtime' : authtime },
+							'on_url_load' : function(f) {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+								f.contentWindow.wrappedJSObject.attachEvt("rdetail", "recordRetrieved",
+									function(id){alert(id);}
+								);
+							},
+						};
+						obj.set_tab(url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
+					} catch(E) {
+						obj.error.sdump('D_ERROR','cmd_search_opac: ' + E);
+					}
 				}
 			],
 

@@ -40,6 +40,7 @@
 				g.error.sdump('D_TRACE','my_init() for util_browser.xul');
 
 				g.cgi = new CGI();
+				var name = g.cgi.param('name') || 'Browser';
 				var session = g.cgi.param('session');
 				var url = g.cgi.param('url');
 				if (!url) url = urls.browser;
@@ -54,7 +55,7 @@
 				);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Catalog'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
