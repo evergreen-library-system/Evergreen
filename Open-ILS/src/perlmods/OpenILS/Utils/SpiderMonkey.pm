@@ -76,6 +76,13 @@ sub retrieve {
 	return $self->context->property_get($key);
 }
 
+sub insert_method {
+	my( $self, $obj_key, $meth_name, $sub ) = @_;
+	my $obj = $self->context->object_by_path( $obj_key );
+	$self->context->function_set( $meth_name, $sub, $obj ) if $obj;
+}
+
+
 sub insert {
 	my( $self, $key, $val ) = @_;
 	return unless defined($val);
@@ -86,6 +93,8 @@ sub insert {
 		$self->insert_array($key, $val);
 	} elsif (ref($val) and $val =~ /HASH/o) {
 		$self->insert_hash($key, $val);
+	} elsif (ref($val) and $val =~ /CODE/o) {
+		$self->context->function_set( $key, $val );
 	} elsif (!ref($val)) {
 		$self->context->property_by_path(
 			$key, $val,
@@ -152,6 +161,7 @@ sub insert_hash {
 	}
 }
 
+my $__array_id = 0;
 sub insert_array {
 
 	my( $self, $key, $array ) = @_;
@@ -163,9 +173,10 @@ sub insert_array {
 	my $ind = 0;
 	for my $v ( @$array ) {
 		if (ref $v) {
-			my $elobj = $ctx->object_by_path('__tmp_arr_el');
-			$self->insert('__tmp_arr_el', $v);
+			my $elobj = $ctx->object_by_path('__tmp_arr_el'.$__array_id);
+			$self->insert('__tmp_arr_el'.$__array_id, $v);
 			$ctx->array_set_element_as_object( $a, $ind, $elobj );
+			$__array_id++;
 		} else {
 			$ctx->array_set_element( $a, $ind, $v ) if defined($v);
 		}
