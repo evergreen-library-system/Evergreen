@@ -85,7 +85,7 @@ sub insert_method {
 
 sub insert {
 	my( $self, $key, $val ) = @_;
-	return unless defined($val);
+	return unless defined($key);
 
 	if (ref($val) =~ /^Fieldmapper/o) {
 		$self->insert_fm($key, $val);
@@ -96,11 +96,16 @@ sub insert {
 	} elsif (ref($val) and $val =~ /CODE/o) {
 		$self->context->function_set( $key, $val );
 	} elsif (!ref($val)) {
-		$self->context->property_by_path(
-			$key, $val,
-			sub { $val },
-			sub { my( $k, $v ) = @_; $val = $v; }
-		);
+		if( defined($val) ) {
+			$self->context->property_by_path(
+				$key, $val,
+				sub { $val },
+				sub { my( $k, $v ) = @_; $val = $v; }
+			);
+		} else {
+			$self->context->property_by_path($key);
+		}
+
 	} else {
 		return 0;
 	}
