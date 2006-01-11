@@ -77,7 +77,7 @@ main.menu.prototype = {
 											window.escape(session) + '&docid=' + window.escape(id),
 											{},
 											{}
-										id);
+										);
 									}
 								);
 							},
