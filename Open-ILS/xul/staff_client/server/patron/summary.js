@@ -162,6 +162,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 								while(e.lastChild){e.removeChild(e.lastChild);} /* empty vbox */
 								JSAN.use('util.date'); JSAN.use('util.functional');
 								var surveys = obj.OpenILS.data.list.asv;
@@ -594,7 +595,7 @@ patron.summary.prototype = {
 								api.FM_ASVR_RETRIEVE.method,
 								[ obj.session, surveys[i].id(), obj.patron.id() ]
 							);
-							survey_responses[ i ] = s;
+							survey_responses[ surveys[i].id() ] = s;
 						}
 						obj.patron.survey_responses( survey_responses );
 					} catch(E) {
