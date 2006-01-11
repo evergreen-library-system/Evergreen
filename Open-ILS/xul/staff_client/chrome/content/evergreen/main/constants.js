@@ -42,6 +42,7 @@ var urls = {
 	'browser' : 'http://dev.gapines.org/opac/en-US/skin/default/xml/advanced.xml',
 	'REMOTE' : 'http://dev.gapines.org/',
 	'XUL_BROWSER' : 'chrome://evergreen/content/util/browser.xul',
+	'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
 	'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
 	'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
 	'XUL_DEBUG_CONSOLE' : 'chrome://global/content/console.xul',

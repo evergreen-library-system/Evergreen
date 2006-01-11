@@ -162,14 +162,15 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							obj.right_deck.set_iframe(
-								urls.XUL_BROWSER
-								+ '?ses=' + window.escape( obj.session )
-								+ '&url=' + window.escape( 
+								urls.XUL_REMOTE_BROWSER
+								+ '?url=' + window.escape( 
 									urls.XUL_PATRON_EDIT
 									+ '?ses=' + window.escape( obj.session )
 									+ '&usr=' + window.escape( obj.patron.id() )
 								),
-								{}, {}
+								{}, {
+									'show_print_button' : true,
+								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}

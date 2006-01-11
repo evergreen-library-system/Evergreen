@@ -34,7 +34,7 @@ util.browser.prototype = {
 							['command'],
 							function() {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								obj.controller.view.browser_browser.contentWindow.wrappedJSObject.print();
+								obj.get_content().print();
 							}
 						],
 						'cmd_forward' : [
@@ -82,14 +82,23 @@ util.browser.prototype = {
 		}
 	},
 
+	'get_content' : function() {
+		if (this.controller.view.browser_browser.contentWindow.wrappedJSObject) {
+			return this.controller.view.browser_browser.contentWindow.wrappedJSObject;
+		} else {
+			return this.controller.view.browser_browser.contentWindow;
+		}
+	},
+
 	'push_variables' : function() {
 
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			this.controller.view.browser_browser.contentWindow.wrappedJSObject.IAMXUL = true;
+			var cw = this.get_content();
+			cw.IAMXUL = true;
 			if (window.xulG) {
-				this.controller.view.browser_browser.contentWindow.wrappedJSObject.xulG = window.xulG.passthru_content_params;
-				dump('xulG = ' + js2JSON(this.controller.view.browser_browser.contentWindow.wrappedJSObject.xulG) + '\n');
+				cw.xulG = window.xulG.passthru_content_params;
+				dump('xulG = ' + js2JSON(cw.xulG) + '\n');
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
@@ -97,7 +106,9 @@ util.browser.prototype = {
 	},
 
 	'getWebNavigation' : function() {
-		return document.getElementById('browser_browser').webNavigation;
+		var wn = this.controller.view.browser_browser.webNavigation;
+		dump('getWebNavigation() = ' + wn + '\n');
+		return wn;
 	},
 
 	'updateNavButtons' : function() {

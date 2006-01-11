@@ -65,6 +65,8 @@ main.menu.prototype = {
 				function() {
 					try {
 						var content_params = { 
+							'show_nav_buttons' : true,
+							'show_print_button' : true,
 							'passthru_content_params' : { 'authtoken' : session, 'authtime' : authtime },
 							'on_url_load' : function(f) {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
