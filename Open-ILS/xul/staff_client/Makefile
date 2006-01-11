@@ -46,7 +46,7 @@ generated:
 open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js chrome/content/evergreen/OpenILS/util/
-	cp server/main/menu* chrome/content/evergreen/main/
+	#cp server/main/menu* chrome/content/evergreen/main/
 	#cp server/cat/opac* chrome/content/evergreen/cat/
 
 patron:
@@ -84,7 +84,7 @@ clean:
 	@echo delete derived files
 	rm -f evergreen.xpi
 	rm -f chrome/evergreen.jar
-	rm -f chrome/content/evergreen/main/menu.js chrome/content/evergreen/menu_frame*
+	#rm -f chrome/content/evergreen/main/menu.js chrome/content/evergreen/menu_frame*
 	rm -f chrome/content/evergreen/patron/patron_items_overlay.xul chrome/locale/en-US/evergreen/patron_items.dtd
 	rm -f chrome/content/evergreen/patron/patron_search_results_overlay.xul chrome/locale/en-US/evergreen/patron_search_results.dtd
 	rm -f chrome/content/evergreen/patron/patron_checkout_items_overlay.xul chrome/locale/en-US/evergreen/patron_checkout_items.dtd
