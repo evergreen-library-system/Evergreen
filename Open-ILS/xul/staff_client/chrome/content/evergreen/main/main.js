@@ -1,10 +1,12 @@
 dump('entering main/main.js\n');
 
 function grant_perms(url) {
+	var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead";
+	dump('Granting ' + perms + ' to ' + url + '\n');
 	var pref = Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefBranch);
 	if (pref) {
-		pref.setCharPref("capability.principal.codebase.p0.granted", "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
+		pref.setCharPref("capability.principal.codebase.p0.granted", perms);
 		pref.setCharPref("capability.principal.codebase.p0.id", url);
 	}
 
