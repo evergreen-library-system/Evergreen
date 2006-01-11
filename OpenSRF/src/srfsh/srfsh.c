@@ -60,7 +60,7 @@ int main( int argc, char* argv[] ) {
 	char* request;
 	while((request=readline(prompt))) {
 
-		if( !strcmp(request, "exit") || !strcmp(request,"quit")) 
+		if( !strcasecmp(request, "exit") || !strcasecmp(request,"quit")) 
 			break; 
 
 		char* req_copy = strdup(request);
