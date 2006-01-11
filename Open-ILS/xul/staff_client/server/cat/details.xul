@@ -31,7 +31,7 @@
 	<script>
 	<![CDATA[
 
-		var session; var docid;
+		var session; var docid; var marc_html; var top_pane; var bottom_pane;
 
 		function my_init() {
 			try {
@@ -47,25 +47,19 @@
 				docid = g.cgi.param('docid');
 
 				JSAN.use('util.deck');
-				var top_pane = new util.deck('top_pane');
+				top_pane = new util.deck('top_pane');
 
 				setTimeout(
 					function() {
-						top_pane.set_iframe( 
-							urls.XUL_BIB_BRIEF + '?docid=' + window.escape(docid), 
-							{}, 
-							{ 
-								'set_tab_name' : function(n) { 
-									if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-										try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
-									} else {
-										dump('no set_tab_name\n');
-									}
-								}
-							}  
-						);
+						set_brief_view();
 					}, 0
 				);
+				
+				JSAN.use('util.network'); g.network = new util.network();
+				bottom_pane = new util.deck('bottom_pane');
+
+				set_marc_view();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\ncat/details.xul\n" + E + '\n';
@@ -74,25 +68,24 @@
 			}
 		}
 
-		function my_init_spawn_brief_view() {
-			spawn_brief_view(
-				document, 'replace_iframe', 'brief_view', {
-					'find_this_id' : find_this_id
-				}
-			).find_this_id = find_this_id;
+		function set_brief_view() {
+			top_pane.set_iframe( 
+				urls.XUL_BIB_BRIEF + '?docid=' + window.escape(docid), 
+				{}, 
+				{ 
+					'set_tab_name' : function(n) { 
+						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+							try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
+						} else {
+							dump('no set_tab_name\n');
+						}
+					}
+				}  
+			);
 		}
 
-		function my_init_spawn_marc_view() {
-			var html = user_request(
-				"open-ils.search",
-				"open-ils.search.biblio.record.html",
-				[ find_this_id ]
-			)[0];
-			spawn_interface(
-				document, 'replace_browser', 'marc_view',
-				'data:text/html,' + html,
-				'MARC View2', {}
-			);
+		function set_marc_view() {
+			bottom_pane.set_iframe(urls.XUL_MARC_VIEW + '?docid=' + window.escape(docid),{},{});
 		}
 
 		function my_init_spawn_marc_editor() {
@@ -126,12 +119,12 @@
 	<vbox flex="1">
 		<deck id="top_pane"/>
 		<hbox>
-			<button label="MARC View" id="marc_view"/>
+			<button label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
 			<button label="MARC Edit" id="marc_edit"/>
 			<button label="Copy Browser" id="copy_browse"/>
 			<button label="Copy Editor" id="copy_edit" />
 		</hbox>
-		<deck id="main_pane" flex="1"/>
+		<deck id="bottom_pane" flex="1"/>
 	</vbox>
 
 </window>
