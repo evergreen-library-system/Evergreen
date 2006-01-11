@@ -1,0 +1,37 @@
+
+<div id='myopac_bookbag_div' class='hide_me' xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<br/>
+
+	<span class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</span>
+
+	<table width='100%' class='data_grid data_grid_center'>
+		<thead>
+			<tr><td colspan='2'>My Bookbags</td></tr>
+		</thead>
+		<tbody id='myopac_bookbag_tbody'>
+			<tr id='myopac_bookbag_tr'>
+				<td><a href='javascript:void(0);' 
+					class='classic_link' name='myopac_expand_bookbag'> </a></td>
+				<td><span name='myopac_bookbag_item_count'> X </span> <span>Items</span></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br/><br/>
+
+	<table width='100%' class='data_grid data_grid_center'>
+		<thead>
+			<tr><td>Create a new Bookbag</td></tr>
+		</thead>
+		<tbody>
+			<tr><td> 
+				<span>Enter the name of the new Bookbag: </span>
+				<input id='myopac_bookbag_new_name' type='text'> </input> 
+				<input onclick='myOPACCreateBookbag();' type='submit'> </input>
+			</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+

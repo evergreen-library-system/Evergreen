@@ -71,6 +71,10 @@ var ADVTYPE_ISSN	= 'issn';
 
 var LOGOUT_WARNING_TIME = 30; /* "head up" for session timeout */
 
+/* user preferences */
+var PREF_HITS_PER = 'opac.hits_per_page';
+var PREF_BOOKBAG = 'opac.bookbag_enabled';
+
 
 /* container for global variables shared accross pages */
 var G		= {};
@@ -229,6 +233,11 @@ var FETCH_ADV_ISSN_MRIDS		= "open-ils.search:open-ils.search.biblio.issn";
 var FETCH_CNBROWSE_TARGET		= 'open-ils.search:open-ils.search.callnumber.browse.target';
 var FETCH_CNBROWSE_PREV			= 'open-ils.search:open-ils.search.callnumber.browse.page_up';
 var FETCH_CNBROWSE_NEXT			= 'open-ils.search:open-ils.search.callnumber.browse.page_down';
+var FETCH_CONTAINERS				= 'open-ils.actor:open-ils.actor.container.retrieve_by_class';
+var CREATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.create';
+var DELETE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.delete';
+var CREATE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.create';
+var DELETE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.delete';
 /* ---------------------------------------------------------------------------- */
 
 

@@ -25,12 +25,14 @@ function myOPACChangePage( page ) {
 	var f = $("myopac_fines_td");
 	var h = $("myopac_holds_td");
 	var p = $("myopac_prefs_td");
+	var b = $('myopac_bookbag_td');
 
 	var ss = $("myopac_summary_div");
 	var cc = $("myopac_checked_div");
 	var ff = $("myopac_fines_div");
 	var hh = $("myopac_holds_div");
 	var pp = $("myopac_prefs_div");
+	var bb = $('myopac_bookbag_div');
 
 	var cls = "myopac_link";
 	var acls = "myopac_link_active";
@@ -38,12 +40,14 @@ function myOPACChangePage( page ) {
 	hideMe(ss);
 	hideMe(cc); hideMe(ff);
 	hideMe(hh); hideMe(pp);
+	hideMe(bb);
 
 	removeCSSClass(s, acls );
 	removeCSSClass(c, acls );
 	removeCSSClass(f, acls );
 	removeCSSClass(h, acls );
 	removeCSSClass(p, acls );
+	removeCSSClass(b, acls );
 
 	switch( page ) {
 
@@ -75,6 +79,12 @@ function myOPACChangePage( page ) {
 			unHideMe(pp);
 			addCSSClass(p, acls );
 			myOPACShowPrefs();
+			break;
+
+		case 'bookbag':
+			unHideMe(bb);
+			addCSSClass(b, acls);
+			myOPACShowBookbags();
 			break;
 	}
 
@@ -353,7 +363,7 @@ function myOPACShowTransactions(r) {
 }
 
 function myOPACSavePrefs() {
-	G.user.prefs['opac.hits_per_page'] = getSelectorVal($('prefs_hits_per'));
+	G.user.prefs[PREF_HITS_PER] = getSelectorVal($('prefs_hits_per'));
 	if(commitUserPrefs())
 		alert($('prefs_update_success').innerHTML);
 	else alert($('prefs_update_failure').innerHTML);
@@ -369,8 +379,8 @@ function myOPACShowPrefs() {
 
 function myOPACShowHitsPer() {
 	var hits = 10;
-	if(G.user.prefs['opac.hits_per_page'])
-		hits = G.user.prefs['opac.hits_per_page'];
+	if(G.user.prefs[PREF_HITS_PER])
+		hits = G.user.prefs[PREF_HITS_PER];
 	var hitsSel = $('prefs_hits_per');
 	setSelector(hitsSel, hits);
 }
@@ -506,5 +516,63 @@ function myOPACUpdatePassword() {
 }
 
 
+
+
+var containerTemplate;
+function myOPACShowBookbags(force) {
+
+	var tbody =$('myopac_bookbag_tbody') ;
+
+	if(!containerTemplate) 
+		containerTemplate = tbody.removeChild($('myopac_bookbag_tr'));
+	else if(!force) return;
+
+	removeChildren(tbody);
+
+
+	var req = new Request( 
+		FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
+	
+	req.send(true);
+	var containers = req.result();
+
+	for( var i in containers ) {
+		var cont = containers[i];
+		var row = containerTemplate.cloneNode(true);
+		row.id = 'bookbag_item_' + cont.id();
+		var link = $n(row, 'myopac_expand_bookbag');
+		link.appendChild( text(cont.name()) );
+		link.setAttribute('href', 
+			'javascript:myOPACExpandBookbag("' + cont.id() + '","' + cont.name() + '");');
+		tbody.appendChild(row);	
+	}
+	
+}
+
+function myOPACExpandBookbag( id, name ) {
+	alert("Expanding: " + id + ' : ' + name );
+}
+
+
+function myOPACCreateBookbag() {
+	var name = $('myopac_bookbag_new_name').value;	
+	if(!name) return;
+
+	var container = new cbreb();
+	container.btype('bookbag');
+	container.owner( G.user.id() );
+	container.name( name );
+
+	var req = new Request( 
+		CREATE_CONTAINER, G.user.session, 'biblio', container );
+
+	req.send(true);
+
+	var result = req.result();
+	var code = checkILSEvent(result);
+	if(code) { alertILSEvent(code); return; }
+
+	myOPACShowBookbags(true);
+}
 
 

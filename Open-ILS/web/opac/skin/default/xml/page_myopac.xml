@@ -44,6 +44,11 @@
 						onclick='myOPACChangePage("prefs");'>Preferences</a>
 				</td>
 
+				<td class='myopac_link' id='myopac_bookbag_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("bookbag");'>Bookbags </a>
+				</td>
+
 				<td width='5%' style='border-left: 1px solid #808080;'></td>
 
 			</tr>
@@ -58,6 +63,7 @@
 		<!--#include virtual="myopac/myopac_holds.xml"-->
 		<!--#include virtual="myopac/myopac_fines.xml"-->
 		<!--#include virtual="myopac/myopac_prefs.xml"-->
+		<!--#include virtual="myopac/myopac_bookbags.xml"-->
 	</div>
 
 </div>
