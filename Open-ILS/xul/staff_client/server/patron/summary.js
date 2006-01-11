@@ -163,23 +163,34 @@ patron.summary.prototype = {
 						function(e) {
 							return function() {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+								/*******************************************************************/
+								/* xul */
 								while(e.lastChild){e.removeChild(e.lastChild);} /* empty vbox */
+								var grid = document.createElement('grid'); e.appendChild(grid);
+								var cols = document.createElement('columns'); grid.appendChild(cols);
+								var c1 = document.createElement('column'); cols.appendChild(c1); c1.setAttribute('flex','1');
+								var c2 = document.createElement('column'); cols.appendChild(c2);
+								var rows = document.createElement('rows'); grid.appendChild(rows);
+								/*******************************************************************/
 								JSAN.use('util.date'); JSAN.use('util.functional');
 								var surveys = obj.OpenILS.data.list.asv;
 								var sr = obj.patron.survey_responses();
 								for (var i  = 0; i < surveys.length; i++) {
 									var survey = surveys[i];
-									var hbox = document.createElement('hbox');
-									e.appendChild(hbox);
-									var sname = document.createElement('label');
+									/***********************************************************/
+									/* xul */
+									var row = document.createElement('row'); rows.appendChild(row);
+									row.setAttribute('style','border-bottom: dotted black thin');
+									var sname = document.createElement('label'); row.appendChild(sname);
 									sname.setAttribute('value',survey.name());
-									hbox.appendChild(sname);
+									/***********************************************************/
 									var responses = sr[survey.id()];
-									var vbox = document.createElement('vbox');
-									hbox.appendChild(vbox);
-									var sdate = document.createElement('label');
+									/***********************************************************/
+									/* xul */
+									var vbox = document.createElement('vbox'); row.appendChild(vbox);
+									var sdate = document.createElement('label'); vbox.appendChild(sdate);
 									sdate.setAttribute('value','Not Taken');
-									vbox.appendChild(sdate);
+									/***********************************************************/
 									if (responses && responses.length > 0) {
 										var response = responses.pop(); // last response
 										var date;
@@ -188,7 +199,10 @@ patron.summary.prototype = {
 										} else {
 											date = util.date.formatted_date( response.answer_date(), '%D' );
 										}
+										/***************************************************/
+										/* xul */
 										sdate.setAttribute('value',date);
+										/***************************************************/
 										var answer = util.functional.find_id_object_in_list( // first answer
 											util.functional.find_id_object_in_list(
 												survey.questions(),
@@ -196,9 +210,11 @@ patron.summary.prototype = {
 											).answers(),
 											response.answer()
 										).answer();
-										var ans = document.createElement('label');
+										/***************************************************/
+										/* xul */
+										var ans = document.createElement('label'); vbox.appendChild(ans);
 										ans.setAttribute('value',answer);
-										vbox.appendChild(ans);
+										/***************************************************/
 									}
 								}
 							};
