@@ -179,6 +179,37 @@ function getSelectorVal( sel ) {
 	return sel.options[sel.selectedIndex].value;
 }
 
+function insertSelectorVal( selector, index, name, value, action, indent ) {
+	for( var i = selector.options.length; i != index; i-- ) {
+		selector.options[i] = selector.options[i-1].cloneNode(true);
+	}
+	setSelectorVal( selector, index, name, value, action, indent );
+}
+
+function setSelectorVal( selector, index, name, value, action, indent ) {
+	if(!indent) indent = 0;
+	indent = parseInt(indent);
+
+	var option;
+	if(IE) {
+		var pre = elem("pre");
+		for( var i = 0; i != indent; i++ )
+			pre.appendChild(text(" "));
+
+		pre.appendChild(text(name));
+		option = new Option("", value);
+		selector.options[index] = option;
+		select.appendChild(pre);
+	
+	} else {
+		indent = indent * 14;
+		option= new Option(name, value);
+		option.setAttribute("style", "padding-left: "+indent+'px;');
+		selector.options[index] = option;
+	}
+	if(action) option.onclick = action;
+}
+
 
 /* split on spaces.  capitalize the first /\w/ character in
    each substring */

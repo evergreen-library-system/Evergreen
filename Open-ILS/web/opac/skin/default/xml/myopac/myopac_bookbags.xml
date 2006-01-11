@@ -3,17 +3,18 @@
 
 	<br/>
 
-	<span class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</span>
+	<div style='text-align: center; font-weight: bold;' class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
-	<table width='100%' class='data_grid data_grid_center'>
+	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
 			<tr><td colspan='2'>My Bookbags</td></tr>
 		</thead>
 		<tbody id='myopac_bookbag_tbody'>
 			<tr id='myopac_bookbag_tr'>
-				<td><a href='javascript:void(0);' 
-					class='classic_link' name='myopac_expand_bookbag'> </a></td>
-				<td><span name='myopac_bookbag_item_count'> X </span> <span>Items</span></td>
+				<td>
+					<a href='javascript:void(0);' class='classic_link' name='myopac_expand_bookbag'> </a>
+				</td>
+				<td><span name='myopac_bookbag_item_count'> </span> <span>Items</span></td>
 			</tr>
 		</tbody>
 	</table>
@@ -28,10 +29,35 @@
 			<tr><td> 
 				<span>Enter the name of the new Bookbag: </span>
 				<input id='myopac_bookbag_new_name' type='text'> </input> 
-				<input onclick='myOPACCreateBookbag();' type='submit'> </input>
+				<input onclick='myOPACCreateBookbag();' type='submit' value='&common.submit;'> </input>
 			</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<br/><br/>
+
+	<!--
+	<div style='overflow: auto; max-height: 200px;' class='hide_me'>
+	-->
+
+		<div style='width: 99%; text-align: center'> <b id='myopac_bookbag_items_name'> </b></div>
+
+		<div class='hide_me' style='width: 100%; text-align: center; font-weight: 700; margin-top: 10px;'
+			id='myopac_bookbag_no_items'>The selected bookbag contains no items...</div>
+
+		<table width='100%' class='hide_me data_grid data_grid_center' id='myopac_bookbag_items_table'>
+			<thead> 
+				<tr> <td>Title</td> <td>Authors</td> <td>Remove this item?</td> </tr> 
+			</thead>
+			<tbody id='myopac_bookbag_items_tbody'>
+				<tr id='myopac_bookbag_items_row'>
+					<td> <a name='myopac_bookbag_items_title' class='classic_link'> </a> </td>
+					<td> <a name='myopac_bookbag_items_author' class='classic_link'> </a> </td>
+					<td><a name='myopac_bookbag_items_remove' class='classic_link'>remove</a></td>	
+				</tr>
+			</tbody>
+		</table>
+	<!--</div>-->
 </div>
 

@@ -18,9 +18,19 @@
 					<span>&rdetail.detailMain.headerLabel;</span>
 				</td>
 				<td align='right' style='padding-right: 7px;'>
-					<span style='padding-right: 5px;'>
+					<span style='padding-right: 7px;'>
 						<a id='rdetail_place_hold' class='classic_link'>Place Hold</a>
 					</span>
+					<span style='padding-right: 7px;' class='hide_me' id='rdetail_more_actions'>
+						<select id='rdetail_more_actions_selector' style='max-width: 11em;'>
+							<option value='start'>More Actions...</option>
+							<option disabled='disabled'>--------------</option>
+							<option disabled='disabled'>Add to Bookbag</option>
+							<option disabled='disabled'>--------------</option>
+							<option value='new_bookbag'>Create a new bookbag</option>
+						</select>
+					</span>
+
 				</td>
 			</tr>
 		</tbody>
@@ -28,4 +38,6 @@
 	<!--#include virtual="rdetail/rdetail_summary.xml"-->
 	<br/><br/>
 	<!--#include virtual="rdetail/rdetail_extras.xml"-->
+
+	<div class='hide_me' id='rdetail_bb_none'>(none)</div>
 </div>

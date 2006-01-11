@@ -3,6 +3,7 @@ attachEvt("common", "run", myOPACInit );
 attachEvt("common", "loggedIn", myOPACInit );
 
 var fleshedUser = null;
+var fleshedContainers = {};
 
 
 function clearNodes( node, keepArray ) {
@@ -529,30 +530,108 @@ function myOPACShowBookbags(force) {
 
 	removeChildren(tbody);
 
-
 	var req = new Request( 
 		FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
 	
 	req.send(true);
 	var containers = req.result();
 
+	var found = false;
 	for( var i in containers ) {
+		found = true;
 		var cont = containers[i];
 		var row = containerTemplate.cloneNode(true);
-		row.id = 'bookbag_item_' + cont.id();
+		row.id = 'myopac_bookbag_row_' + cont.id();
 		var link = $n(row, 'myopac_expand_bookbag');
 		link.appendChild( text(cont.name()) );
 		link.setAttribute('href', 
 			'javascript:myOPACExpandBookbag("' + cont.id() + '","' + cont.name() + '");');
+		myOPACFetchBBItems( cont.id(), row );
 		tbody.appendChild(row);	
 	}
-	
+
+	if(!found) unHideMe($('myopac_bookbags_none'));
+	else unHideMe($('myopac_bookbag_table'));	
 }
 
+function myOPACFetchBBItems( id, row, block ) {
+	var req = new Request( FLESH_CONTAINER, G.user.session, 'biblio', id );
+	req.request.row = row;
+
+	if(!block) {
+		req.callback( myOPACSetBBItems );
+		req.send();
+	} else {
+		req.send(true);
+		myOPACSetBBItems( req.request );
+	}
+}
+
+function myOPACSetBBItems( r ) {
+	var container = r.getResultObject();
+	fleshedContainers[container.id()] = container;
+	var node = $n(r.row, 'myopac_bookbag_item_count');
+	removeChildren(node);
+	node.appendChild( text(container.items().length) );
+}
+
+var BBItemsRow;
 function myOPACExpandBookbag( id, name ) {
-	alert("Expanding: " + id + ' : ' + name );
+	
+	var tbody = $('myopac_bookbag_items_tbody');
+	if(!BBItemsRow) BBItemsRow = tbody.removeChild($('myopac_bookbag_items_row'));
+	removeChildren(tbody);
+	removeChildren($('myopac_bookbag_items_name'));
+
+	$('myopac_bookbag_items_name').appendChild(text(name));
+
+	if( fleshedContainers[id] ) {
+		var len = fleshedContainers[id].items().length;
+
+		if( len == 0 ) {
+			unHideMe($('myopac_bookbag_no_items'));
+			hideMe($('myopac_bookbag_items_table'));
+			return;
+		}
+
+		hideMe($('myopac_bookbag_no_items'));
+		unHideMe($('myopac_bookbag_items_table'));
+
+		for( var i = 0; i != len; i++ ) {
+			var row = BBItemsRow.cloneNode(true);
+			found = true;
+
+			var item = fleshedContainers[id].items()[i];
+			var tlink = $n(row,'myopac_bookbag_items_title');
+			var alink = $n(row,'myopac_bookbag_items_author');
+
+			var req = new Request( FETCH_RMODS, item.target_biblio_record_entry() );
+			req.request.tlink = tlink;
+			req.request.alink = alink;
+			req.callback(myOPACShowBBItem);
+			req.send();
+
+			var clink = $n(row, 'myopac_bookbag_items_remove');
+			clink.setAttribute('href', 'javascript:myOPACRemoveBBItem("'+item.id()+'","'+id+'","'+name+'");');
+
+			tbody.appendChild(row);
+		}
+	}
 }
 
+function myOPACRemoveBBItem( id, containerid, container_name ) {
+	var req = new Request( DELETE_CONTAINER_ITEM, G.user.session, 'biblio', id );
+	req.send(true);
+	req.result();
+	myOPACFetchBBItems( containerid, $('myopac_bookbag_row_' + containerid), true);
+	myOPACExpandBookbag( containerid, container_name );
+}
+
+function myOPACShowBBItem(r) {
+	var record = r.getResultObject();
+	buildTitleDetailLink(record, r.tlink);
+	buildSearchLink(STYPE_AUTHOR, record.author(), r.alink);
+}
 
 function myOPACCreateBookbag() {
 	var name = $('myopac_bookbag_new_name').value;	

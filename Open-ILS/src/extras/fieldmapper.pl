@@ -13,9 +13,9 @@ if(!$web) { $web = ""; }
 my @web_hints = qw/ asv asva asvr asvq 
 		circ acp acpl acn ccs ahn  
 		crcd crmf crrf mbts aoc aus 
-		mous mobts cdreb cdrebi /;
+		mous mobts /;
 
-my @web_core = qw/ aou au perm_ex ex aout mvr ccs ahr aua ac actscecm /;
+my @web_core = qw/ aou au perm_ex ex aout mvr ccs ahr aua ac actscecm cbreb cbrebi /;
 
 my @reports = qw/ perm_ex ex ao aou aout /;
 
@@ -24,18 +24,17 @@ print "var _c = {};\n";
 
 for my $object (keys %$map) {
 
+	my $hint = $map->{$object}->{hint};
+
 	if($web eq "web") {
-		my $hint = $map->{$object}->{hint};
 		next unless (grep { $_ eq $hint } @web_hints );
 	}
 
 	if($web eq "web_core") {
-		my $hint = $map->{$object}->{hint};
 		next unless (grep { $_ eq $hint } @web_core );
 	}
 
 	if($web eq "reports") {
-		my $hint = $map->{$object}->{hint};
 		next unless (grep { $_ eq $hint } @web_core );
 	}
 

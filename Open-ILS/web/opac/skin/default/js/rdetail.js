@@ -97,16 +97,55 @@ function _rdetailDraw(r) {
 	runEvt("rdetail", "recordDrawn");
 	recordsCache.push(record);
 
+	rdetailSetExtrasSelector();
+
 	var req = new Request(FETCH_ACONT_SUMMARY, cleanISBN(record.isbn()));
 	req.callback(rdetailHandleAddedContent);
 	req.send();
 
 	resultBuildCaches( [ record ] );
 	resultDrawSubjects();
-	//resultDrawAuthors();
 	resultDrawSeries();
-
 }
+
+function rdetailSetExtrasSelector() {
+	if(!grabUser()) return;
+	unHideMe($('rdetail_more_actions'));
+
+
+	var selector = $('rdetail_more_actions_selector');
+
+	var req = new Request( 
+		FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
+	req.callback(rdetailAddBookbags);
+	req.send();
+}
+
+function rdetailAddBookbags(r) {
+
+	var containers = r.getResultObject();
+	var selector = $('rdetail_more_actions_selector');
+	var found = false;
+	var index = 3;
+
+	for( var i = 0; i != containers.length; i++ ) {
+		found = true;
+		var container = containers[i];
+		insertSelectorVal( selector, index++, container.name(), 
+			"container_" + container.id(), rdetailAddToBookbag, 1 );
+	}
+
+	if(!found) insertSelectorVal( selector, 3, "name", "value", 1 );
+}
+
+function rdetailAddToBookbag() {
+	var selector = $('rdetail_more_actions_selector');
+	var id = selector.options[selector.selectedIndex].value;
+	alert(id);
+	setSelector( selector, 'start' );
+}
+
+
 
 var rdetailTocFetched		= false;
 var rdetailReviewFetched	= false;

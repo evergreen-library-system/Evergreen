@@ -85,34 +85,16 @@ function holdsDrawWindow(recid, type) {
 }
 
 
-function holdsBuildOrgSelector(node, depth) {
+function holdsBuildOrgSelector(node) {
 
-	if(!node) {
-		node = globalOrgTree;
-		depth = 0;
-	}
+	if(!node) node = globalOrgTree;
 
 	var selector = $('holds_org_selector');
 	var index = selector.options.length;
 
-	if(IE) {
-		var pre = elem("pre");
-		for(var x=2; x <= findOrgType(node.ou_type()).depth(); x++) {
-			pre.appendChild(text("    "));
-		}
-		pre.appendChild(text(node.name()));
-		var select = new Option("", node.id());
-		selector.options[index] = select;
-		select.appendChild(pre);
+	var indent = findOrgType(node.ou_type()).depth() - 1;
+	setSelectorVal( selector, index, node.name(), node.id(), null, indent );
 	
-	} else {
-		var pad = (findOrgType(node.ou_type()).depth() - 1) * 12;
-		if(pad < 0) pad = 0;
-		var select = new Option(node.name(), node.id());
-		select.setAttribute("style", "padding-left: "+pad+'px;');
-		selector.options[index] = select;
-	}	
-
 	if( node.id() == holdRecipient.home_ou() ) {
 		selector.selectedIndex = index;
 		selector.options[index].selected = true;	
@@ -120,9 +102,7 @@ function holdsBuildOrgSelector(node, depth) {
 
 	for( var i in node.children() ) {
 		var child = node.children()[i];
-		if(child) {
-			holdsBuildOrgSelector(child, depth+1);
-		}
+		if(child) holdsBuildOrgSelector(child);
 	}
 }
 

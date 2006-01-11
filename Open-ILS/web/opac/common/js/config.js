@@ -238,6 +238,7 @@ var CREATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.create';
 var DELETE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.delete';
 var CREATE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.create';
 var DELETE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.delete';
+var FLESH_CONTAINER				= 'open-ils.actor:open-ils.actor.container.flesh';
 /* ---------------------------------------------------------------------------- */
 
 
