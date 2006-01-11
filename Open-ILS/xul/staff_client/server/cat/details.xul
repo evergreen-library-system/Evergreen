@@ -16,7 +16,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="details_win"
-	onload="my_init();"
+	onload="try { my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -40,27 +40,32 @@
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for cat_opac.xul');
+				g.error.sdump('D_TRACE','my_init() for cat/details.xul');
 
 				g.cgi = new CGI();
 				session = g.cgi.param('session');
 				docid = g.cgi.param('docid');
 
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Bib Record: ' + docid); } catch(E) { alert(E); }
-				}
+				JSAN.use('util.deck');
+				var top_pane = new util.deck('top_pane');
 
-				/*document.getElementById('copy_editor_tab').disabled = true;*/
-				/*
-				chain_exec(
-					my_init_spawn_brief_view,
-					my_init_spawn_marc_view,
-					my_init_spawn_copy_browser,
-					/* my_init_spawn_opac_view, */
-					my_init_spawn_marc_editor
+				setTimeout(
+					function() {
+						top_pane.set_iframe( 
+							urls.XUL_BIB_BRIEF + '?docid=' + window.escape(docid), 
+							{}, 
+							{ 
+								'set_tab_name' : function(n) { 
+									if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+										try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
+									} else {
+										dump('no set_tab_name\n');
+									}
+								}
+							}  
+						);
+					}, 0
 				);
-				*/
-
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\ncat/details.xul\n" + E + '\n';

@@ -75,7 +75,7 @@ main.menu.prototype = {
 										obj.new_tab(
 											url_prefix(urls.XUL_CAT_DETAILS) + '?session=' +
 											window.escape(session) + '&docid=' + window.escape(id),
-											{},
+											{ 'tab_name' : 'Retrieving Bib Record...' },
 											{}
 										);
 									}
@@ -273,14 +273,18 @@ main.menu.prototype = {
 		var tab = this.controller.view.tabs.childNodes[ idx ];
 		var panel = this.controller.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
-		var frame = this.w.document.createElement('iframe');
-		frame.setAttribute('flex','1');
-		frame.setAttribute('src',url);
-		panel.appendChild(frame);
+
 		content_params.new_tab = function(a,b,c) { obj.new_tab(a,b,c); };
 		content_params.set_tab = function(a,b,c) { obj.set_tab(a,b,c); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
 		content_params.open_chrome_window = function(a,b,c) { obj.window.open(a,b,c); };
+		if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
+		
+		var frame = this.w.document.createElement('iframe');
+		frame.setAttribute('flex','1');
+		frame.setAttribute('src',url);
+		panel.appendChild(frame);
+
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			frame.contentWindow.IAMXUL = true;
