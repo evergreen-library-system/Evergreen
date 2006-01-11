@@ -71,7 +71,9 @@ main.menu.prototype = {
 							'on_url_load' : function(f) {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 								f.contentWindow.wrappedJSObject.attachEvt("rdetail", "recordRetrieved",
-									function(id){alert(id);}
+									function(id){
+										alert(id);
+									}
 								);
 							},
 						};
@@ -245,7 +247,6 @@ main.menu.prototype = {
 		var tc = this.find_free_tab();
 		if (tc == -1) { return null; } // 9 tabs max
 		var tab = this.controller.view.tabs.childNodes[ tc ];
-		//tab.setAttribute('label','Tab ' + (tc + 1) );
 		tab.hidden = false;
 		try {
 			if (params.focus) this.controller.view.tabs.selectedIndex = tc;
@@ -274,6 +275,7 @@ main.menu.prototype = {
 		content_params.new_tab = function(a,b,c) { obj.new_tab(a,b,c); };
 		content_params.set_tab = function(a,b,c) { obj.set_tab(a,b,c); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
+		content_params.open_chrome_window = function(a,b,c) { obj.window.open(a,b,c); };
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			frame.contentWindow.IAMXUL = true;
