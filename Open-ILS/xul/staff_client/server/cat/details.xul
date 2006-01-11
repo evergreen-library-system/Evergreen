@@ -2,37 +2,71 @@
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Cataloger's Search Result Screen -->
 
-<!-- Stylesheets -->
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
-<?xml-stylesheet href="chrome://evergreen/skin/cat.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
 
-<!-- Localization -->
-<!DOCTYPE window SYSTEM "chrome://evergreen/locale/cat.dtd">
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
 
-<window id="details_win" title="Record Details" 
-	orient="vertical" style="overflow: scroll" width="800" height="500"
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="details_win"
 	onload="my_init();"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- Overlays for this XUL file -->
-	<?xul-overlay href="chrome://evergreen/content/util/util_overlay.xul"?>
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	</script>
+        <scripts id="openils_util_scripts"/>
 
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
-		var myPackageDir = "evergreen";
+
+		var session; var docid;
 
 		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat_opac.xul');
 
-			/*document.getElementById('copy_editor_tab').disabled = true;*/
-			chain_exec(
-				my_init_spawn_brief_view,
-				my_init_spawn_marc_view,
-				my_init_spawn_copy_browser,
-				/* my_init_spawn_opac_view, */
-				my_init_spawn_marc_editor
-			);
+				g.cgi = new CGI();
+				session = g.cgi.param('session');
+				docid = g.cgi.param('docid');
 
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name('Bib Record: ' + docid); } catch(E) { alert(E); }
+				}
+
+				/*document.getElementById('copy_editor_tab').disabled = true;*/
+				/*
+				chain_exec(
+					my_init_spawn_brief_view,
+					my_init_spawn_marc_view,
+					my_init_spawn_copy_browser,
+					/* my_init_spawn_opac_view, */
+					my_init_spawn_marc_editor
+				);
+				*/
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/details.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
 		}
 
 		function my_init_spawn_brief_view() {
@@ -85,27 +119,14 @@
 	</script>
 
 	<vbox flex="1">
-		<hbox id="brief_view"/>
-		<tabbox flex="1">
-			<tabs>
-				<!-- <tab label="OPAC View"/> -->
-				<tab label="MARC View"/>
-				<tab label="MARC Edit"/>
-				<tab label="Copy Browser"/>
-				<tab label="Copy Editor" id="copy_editor_tab" />
-			</tabs>
-			<tabpanels flex="1">
-				<!-- <tabpanel id="opac_view"/> -->
-				<tabpanel id="marc_view"/>
-				<tabpanel id="marc_edit"/>
-				<tabpanel id="copy_browser"/>
-				<tabpanel id="copy_editor">
-					<description>
-						Select some copies in the Copy Browser tab to edit.
-					</description>
-				</tabpanel>
-			</tabpanels>
-		</tabbox>
+		<deck id="top_pane"/>
+		<hbox>
+			<button label="MARC View" id="marc_view"/>
+			<button label="MARC Edit" id="marc_edit"/>
+			<button label="Copy Browser" id="copy_browse"/>
+			<button label="Copy Editor" id="copy_edit" />
+		</hbox>
+		<deck id="main_pane" flex="1"/>
 	</vbox>
 
 </window>

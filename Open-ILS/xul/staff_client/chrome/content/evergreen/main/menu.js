@@ -72,7 +72,12 @@ main.menu.prototype = {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 								f.contentWindow.wrappedJSObject.attachEvt("rdetail", "recordRetrieved",
 									function(id){
-										alert(id);
+										obj.new_tab(
+											url_prefix(urls.XUL_CAT_DETAILS) + '?session=' +
+											window.escape(session) + '&docid=' + window.escape(id),
+											{},
+											{}
+										id);
 									}
 								);
 							},
