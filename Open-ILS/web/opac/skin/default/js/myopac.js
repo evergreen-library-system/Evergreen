@@ -530,11 +530,7 @@ function myOPACShowBookbags(force) {
 
 	removeChildren(tbody);
 
-	var req = new Request( 
-		FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
-	
-	req.send(true);
-	var containers = req.result();
+	var containers = containerFetchAll();
 
 	var found = false;
 	for( var i in containers ) {
@@ -543,10 +539,12 @@ function myOPACShowBookbags(force) {
 		var row = containerTemplate.cloneNode(true);
 		row.id = 'myopac_bookbag_row_' + cont.id();
 		var link = $n(row, 'myopac_expand_bookbag');
+		var dlink = $n(row, 'myopac_container_delete');
 		link.appendChild( text(cont.name()) );
 		link.setAttribute('href', 
 			'javascript:myOPACExpandBookbag("' + cont.id() + '","' + cont.name() + '");');
 		myOPACFetchBBItems( cont.id(), row );
+		dlink.setAttribute('href', 'javascript:myOPACDeleteBookbag("'+cont.id()+'");');
 		tbody.appendChild(row);	
 	}
 
@@ -554,23 +552,32 @@ function myOPACShowBookbags(force) {
 	else unHideMe($('myopac_bookbag_table'));	
 }
 
-function myOPACFetchBBItems( id, row, block ) {
-	var req = new Request( FLESH_CONTAINER, G.user.session, 'biblio', id );
-	req.request.row = row;
-
-	if(!block) {
-		req.callback( myOPACSetBBItems );
-		req.send();
-	} else {
-		req.send(true);
-		myOPACSetBBItems( req.request );
+function myOPACDeleteBookbag(id) {
+	if( confirm( $('myopac_delete_bookbag_warn').innerHTML ) ) {
+		var result = containerDelete(id);
+		var code = checkILSEvent(result);
+		if(code) { alertILSEvent(code); return; }
+		hideMe($('myopac_bookbag_items_table'));
+		hideMe($('myopac_bookbag_items_name'));
+		hideMe($('myopac_bookbag_no_items'));
+		myOPACShowBookbags(true);
 	}
 }
 
-function myOPACSetBBItems( r ) {
-	var container = r.getResultObject();
+function myOPACFetchBBItems( id, row, block ) {
+	if(!block) {
+		containerFlesh( id, _myOPACSetBBItems, { row: row }  );
+	} else {
+		var cont = containerFlesh(id);
+		myOPACSetBBItems( cont, row );
+	}
+}
+
+function _myOPACSetBBItems(r) { myOPACSetBBItems( r.getResultObject(), r.args.row ); }
+
+function myOPACSetBBItems( container, row ) {
 	fleshedContainers[container.id()] = container;
-	var node = $n(r.row, 'myopac_bookbag_item_count');
+	var node = $n(row, 'myopac_bookbag_item_count');
 	removeChildren(node);
 	node.appendChild( text(container.items().length) );
 }
@@ -620,9 +627,7 @@ function myOPACExpandBookbag( id, name ) {
 }
 
 function myOPACRemoveBBItem( id, containerid, container_name ) {
-	var req = new Request( DELETE_CONTAINER_ITEM, G.user.session, 'biblio', id );
-	req.send(true);
-	req.result();
+	containerRemoveItem( id );
 	myOPACFetchBBItems( containerid, $('myopac_bookbag_row_' + containerid), true);
 	myOPACExpandBookbag( containerid, container_name );
 }
@@ -636,21 +641,9 @@ function myOPACShowBBItem(r) {
 function myOPACCreateBookbag() {
 	var name = $('myopac_bookbag_new_name').value;	
 	if(!name) return;
-
-	var container = new cbreb();
-	container.btype('bookbag');
-	container.owner( G.user.id() );
-	container.name( name );
-
-	var req = new Request( 
-		CREATE_CONTAINER, G.user.session, 'biblio', container );
-
-	req.send(true);
-
-	var result = req.result();
+	var result = containerCreate( name );
 	var code = checkILSEvent(result);
 	if(code) { alertILSEvent(code); return; }
-
 	myOPACShowBookbags(true);
 }
 

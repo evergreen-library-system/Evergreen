@@ -21,6 +21,12 @@ $types{'copy'} = "$meth.copy_bucket";
 $types{'user'} = "$meth.user_bucket";
 my $event;
 
+sub _sort_buckets {
+	my $buckets = shift;
+	return $buckets unless ($buckets && $buckets->[0]);
+	return [ sort { $a->name cmp $b->name } @$buckets ];
+}
+
 __PACKAGE__->register_method(
 	method	=> "bucket_retrieve_all",
 	api_name	=> "open-ils.actor.container.all.retrieve_by_user",
@@ -107,11 +113,8 @@ __PACKAGE__->register_method(
 sub bucket_retrieve_class {
 	my( $self, $client, $authtoken, $userid, $class, $type ) = @_;
 
-	my( $staff, $user, $evt );
-	($staff, $evt) = $apputils->checkses($authtoken);
-	return $evt if $evt;
-
-	($user, $evt) = $apputils->checkrequestor($staff, $userid, 'VIEW_CONTAINER');
+	my( $staff, $user, $evt ) = 
+		$apputils->checkses_requestor( $authtoken, $userid, 'VIEW_CONTAINER' );
 	return $evt if $evt;
 
 	$logger->debug("User " . $staff->id . 
@@ -128,7 +131,7 @@ sub bucket_retrieve_class {
 		$buckets = $apputils->simplereq( $svc, $meth, { owner => $userid } );
 	}
 
-	return $buckets;
+	return _sort_buckets($buckets);
 }
 
 __PACKAGE__->register_method(
@@ -152,6 +155,7 @@ sub bucket_create {
 	$logger->activity( "User " . $staff->id . 
 		" creating a new continer for user " . $bucket->owner );
 
+	$bucket->clear_id;
 	$logger->debug("Creating new container object: " . Dumper($bucket));
 
 	my $method = $types{$class} . ".create";
@@ -243,6 +247,7 @@ sub item_delete {
 	
 	( $item, $evt ) = $apputils->fetch_container_item( $itemid, $class );
 	return $evt if $evt;
+
 	( $bucket, $evt ) = $apputils->fetch_container($item->bucket, $class);
 	return $evt if $evt;
 
@@ -258,6 +263,34 @@ sub item_delete {
 
 	throw OpenSRF::EX ("Unable to delete container item") unless $resp;
 	return $resp;
+}
+
+__PACKAGE__->register_method(
+	method	=> 'full_delete',
+	api_name	=> 'open-ils.actor.container.full_delete',
+	notes		=> "Complety removes a container including all attached items",
+);	
+
+sub full_delete {
+	my( $self, $client, $authtoken, $class, $containerId ) = @_;
+	my( $staff, $target, $container, $evt);
+
+	( $container, $evt ) = $apputils->fetch_container($containerId, $class);
+	return $evt if $evt;
+
+	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
+		$authtoken, $container->owner, 'DELETE_CONTAINER' );
+	return $evt if $evt;
+
+	$logger->activity("User " . $staff->id . " deleting full container $containerId");
+
+	my $meth = $types{$class};
+	my $items = $apputils->simplereq( $svc, "$meth"."_item.search.bucket.atomic", $containerId );
+
+	$self->item_delete( $client, $authtoken, $class, $_->id ) for @$items;
+
+	$meth = $types{$class} . ".delete";
+	return $apputils->simplereq( $svc, $meth, $containerId );
 }
 
 

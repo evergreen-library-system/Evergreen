@@ -1,13 +1,21 @@
 
 <div id='myopac_bookbag_div' class='hide_me' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
+	<script language='javascript' src='../js/container.js'> </script>
+
+	<div id='myopac_delete_bookbag_warn' class='hide_me'>
+		This will remove the selected bookbag and all items contained within the bookbag.  
+		Are you sure you wish to continue?
+	</div>
+
 	<br/>
 
 	<div style='text-align: center; font-weight: bold;' class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
+	<div style='width: 99%; text-align: center'> <b>My Bookbags</b></div>
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
-			<tr><td colspan='2'>My Bookbags</td></tr>
+			<tr><td>Name</td><td># Items</td><td>Delete this bookbag?</td></tr>
 		</thead>
 		<tbody id='myopac_bookbag_tbody'>
 			<tr id='myopac_bookbag_tr'>
@@ -15,6 +23,7 @@
 					<a href='javascript:void(0);' class='classic_link' name='myopac_expand_bookbag'> </a>
 				</td>
 				<td><span name='myopac_bookbag_item_count'> </span> <span>Items</span></td>
+				<td><a class='class_link' href='javascript:void(0);' name='myopac_container_delete'>Delete</a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -27,7 +36,7 @@
 		</thead>
 		<tbody>
 			<tr><td> 
-				<span>Enter the name of the new Bookbag: </span>
+				<span style='padding-right: 5px;'>Enter the name of the new Bookbag: </span>
 				<input id='myopac_bookbag_new_name' type='text'> </input> 
 				<input onclick='myOPACCreateBookbag();' type='submit' value='&common.submit;'> </input>
 			</td>

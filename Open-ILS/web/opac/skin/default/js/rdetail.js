@@ -16,6 +16,8 @@ var defaultCN;
 var callnumberCache = {};
 var rdetailLocalOnly = true;
 
+var nextContainerIndex;
+
 function rdetailDraw() {
 
 
@@ -112,9 +114,6 @@ function rdetailSetExtrasSelector() {
 	if(!grabUser()) return;
 	unHideMe($('rdetail_more_actions'));
 
-
-	var selector = $('rdetail_more_actions_selector');
-
 	var req = new Request( 
 		FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
 	req.callback(rdetailAddBookbags);
@@ -135,14 +134,33 @@ function rdetailAddBookbags(r) {
 			"container_" + container.id(), rdetailAddToBookbag, 1 );
 	}
 
+	nextContainerIndex = index;
 	if(!found) insertSelectorVal( selector, 3, "name", "value", 1 );
 }
+
+function rdetailNewBookbag() {
+	var name = prompt($('rdetail_bb_new').innerHTML,"");
+	if(!name) return;
+
+	var id;
+	if( id = containerCreate( name ) ) {
+		alert($('rdetail_bb_success').innerHTML);
+		var selector = $('rdetail_more_actions_selector');
+		setSelector( selector, 'start' );
+		insertSelectorVal( selector, nextContainerIndex++, name, 
+			"container_" + id, rdetailAddToBookbag, 1 );
+	}
+}
+
 
 function rdetailAddToBookbag() {
 	var selector = $('rdetail_more_actions_selector');
 	var id = selector.options[selector.selectedIndex].value;
-	alert(id);
 	setSelector( selector, 'start' );
+
+	if( containerCreateItem( id.substring(10), record.doc_id() )) {
+		alert($('rdetail_bb_item_success').innerHTML);
+	}
 }
 
 

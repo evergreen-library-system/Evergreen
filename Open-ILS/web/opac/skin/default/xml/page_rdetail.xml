@@ -4,6 +4,7 @@
 	<script language='javascript' src='../js/rdetail.js'> </script>
 	<script language='javascript' src='../js/holds.js'> </script>
 	<script language='javascript' src='../js/cn_browse.js'> </script>
+	<script language='javascript' src='../js/container.js'> </script>
 
 	<script language='javascript'>
 		config.ids.rdetail = {};
@@ -27,7 +28,7 @@
 							<option disabled='disabled'>--------------</option>
 							<option disabled='disabled'>Add to Bookbag</option>
 							<option disabled='disabled'>--------------</option>
-							<option value='new_bookbag'>Create a new bookbag</option>
+							<option value='new_bookbag' onclick='rdetailNewBookbag();'>Create a new bookbag</option>
 						</select>
 					</span>
 
@@ -40,4 +41,8 @@
 	<!--#include virtual="rdetail/rdetail_extras.xml"-->
 
 	<div class='hide_me' id='rdetail_bb_none'>(none)</div>
+	<div class='hide_me' id='rdetail_bb_item_success'>Item successfully added to Bookbag</div>
+	<div class='hide_me' id='rdetail_bb_new'>Enter the name of the new bookbag</div>
+	<div class='hide_me' id='rdetail_bb_success'>Bookbag successfully created</div>
+
 </div>
