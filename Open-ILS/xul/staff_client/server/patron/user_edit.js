@@ -60,6 +60,24 @@ function save_user () {
 			}
 		}
 
+                var res = [];
+                for (var i in responses) {
+                        if (!i) continue;
+                        for (var j in responses[i]) {
+                                if (!j) continue;
+                                var r = new asvr();
+                                r.usr(survey_user);
+                                r.survey(i);
+                                r.question(j);
+                                r.answer(responses[i][j]);
+                                r.answer_date( document.getElementById('e_date_'+i).value );
+                                res.push(r);
+                        }
+                }
+
+		user.survey_responses( res );
+                responses = {};
+
 
 		if (user.billing_address().isdeleted()) 
 			throw "Please select a valid Billing Address";
@@ -342,6 +360,14 @@ function init_editor (u) {
 
 	if (cgi.param('adv')) x['permgroups'].parentNode.parentNode.setAttribute('adv', 'false');
 
+	req = new RemoteRequest( 'open-ils.circ', 'open-ils.circ.survey.retrieve.required', ses_id );
+	req.send(true);
+	surveys = req.getResultObject();
+
+	var f = document.getElementById('surveys');
+	for ( var i in surveys )
+		display_survey( f, surveys[i].id(), user.id() );
+
 	return true;
 }
 
@@ -361,6 +387,14 @@ function new_addr () {
 
 	user.addresses().push(x);
 	display_address(document.getElementById('addresses'), x);
+}
+
+function display_survey (div, sid, uid) {
+
+	var t = document.getElementById('survey-tmpl').firstChild.cloneNode(true);
+	div.appendChild(t);
+	
+	init_survey(t,sid,uid);
 }
 
 function display_address (div, adr) {

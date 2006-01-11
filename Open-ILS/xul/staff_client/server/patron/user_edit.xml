@@ -17,7 +17,10 @@
                 <script language='javascript' src='/opac/common/js/org_utils.js'> </script>
                 <script language='javascript' src='/opac/common/js/init.js'> </script>
                 <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+                <script language='javascript' src='/opac/common/js/sprintf.js'> </script>
+		<script language='javascript' src='take_survey.js'> </script>
                 <script language='javascript' src='user_edit.js'> </script>
+
 
 		<style>
 
@@ -36,10 +39,12 @@
 					margin-top: 10px;
 			}
 
-			th {		padding-bottom: 5px;
+			th {		
 					white-space: nowrap;
 					padding-top: 15px;
+					padding-bottom: 10px;
 					text-align: center;
+					border-top: solid black 1px;
 			}
 
 			td.label {	text-align: right;
@@ -157,12 +162,14 @@
 			</tr>
 
 			<tr>
-				<td class="label">Addresses:</td>
-				<td class="value">
-					<div name="addresses" id="addresses"/>
+				<th class="label" colspan="2">Addresses</th>
+			</tr>
+			<tr>
+				<td class="value" colspan="2">
 					<div>
 						<button onclick="new_addr(); return false;">New Address</button>
 					</div>
+					<div name="addresses" id="addresses"/>
 				</td>
 			</tr>
 
@@ -216,6 +223,19 @@
 				</td>
 			</tr>
 
+
+
+
+			<tr>
+				<th colspan="2">Required Surveys</th>
+			</tr>
+			<tr>
+				<td colspan="2" class='value'>
+					<div name="surveys" id="surveys" style="width: 100%"/>
+				</td>
+			</tr>
+
+
 		</table>
 
 		<button onclick="save_user(); return false;">Save</button>
@@ -225,42 +245,96 @@
 		<div class='hideme' id="addr-tmpl">
 			<table>
 				<tr>
-					<th colspan="1">Address Label</th>
+					<td class="label" colspan="1">Address Label</td>
 					<td colspan="1"><input type="text" size="7" name="adr.address_type"/></td>
-					<th colspan="1">Mailing Address</th>
+					<td class="label" colspan="1">Mailing Address</td>
 					<td colspan="1"><input type="radio" name="is_mailing"/></td>
-					<th colspan="1">Physical Address</th>
+					<td class="label" colspan="1">Physical Address</td>
 					<td colspan="1"><input type="radio" name="is_billing"/></td>
-					<th colspan="1">Valid</th>
+					<td class="label" colspan="1">Valid</td>
 					<td colspan="1"><input type="checkbox" name="adr.valid" value='t'/></td>
 				</tr>
 				<tr>
-					<th colspan="1">Street 1</th>
+					<td class="label" colspan="1">Street 1</td>
 					<td colspan="7"><input type="text" size="50" name="adr.street1"/></td>
 				</tr>
 				<tr>
-					<th colspan="1">Street 2</th>
+					<td class="label" colspan="1">Street 2</td>
 					<td colspan="7"><input type="text" size="50" name="adr.street2"/></td>
 				</tr>
 				<tr>
-					<th>City</th>
+					<td class="label">City</td>
 					<td><input type="text" size="15" name="adr.city"/></td>
-					<th>State</th>
+					<td class="label">State</td>
 					<td><input type="text" size="4" name="adr.state"/></td>
-					<th>ZIP</th>
+					<td class="label">ZIP</td>
 					<td colspan='3'><input type="text" size="10" name="adr.post_code"/></td>
 				</tr>
 				<tr>
-					<th colspan="1">County</th>
+					<td colspan="1" class="label">County</td>
 					<td colspan="2"><input type="text" size="20" name="adr.county"/></td>
-					<th colspan="1">Country</th>
+					<td colspan="1" class="label">Country</td>
 					<td colspan="4"><input type="text" size="20" name="adr.country"/></td>
 				</tr>
 				<tr>
-					<th colspan="8"><button name="remove">Remove this address</button></th>
+					<td colspan="8"><button name="remove">Remove this address</button></td>
 				</tr>
 			</table>
 		</div>
+
+                <div class='hideme' id='survey-tmpl'><div>
+
+                        <table name="editor" width="95%">
+                                <tr>
+                                        <td colspan="2" style="text-align: center; font-weight: bold;"><span name="sur.name"/></td>
+                                </tr>
+                                <tr>
+                                        <td colspan="2" style="text-align: center"><span name="sur.description"/></td>
+                                </tr>
+				<!--
+                                <tr>
+                                        <th class="label">Survey Start Date:</th>
+                                        <td class="value"><span name="sur.start_date"/></td>
+                                </tr>
+                                <tr>
+                                        <th class="label">Survey End Date:</th>
+                                        <td class="value"><span name="sur.end_date"/></td>
+                                </tr>
+				-->
+                                <tr>
+                                        <td class="label">Answer Date:</td>
+                                        <td class="value"><input type="text" name="effective_date"/></td>
+                                </tr>
+                                <tr>
+                                        <td class="label">Questions</td>
+                                        <td class="value" name="questions"/>
+                                </tr>
+				<!--
+                                <tr>
+                                        <th colspan="2" class="label">
+                                                <button name="save_response">Submit</button>
+                                        </th>
+                                </tr>
+				-->
+                        </table>
+                        <div class='hideme' name="question-tmpl">
+                                <table width="100%">
+                                        <tr>
+                                                <td class="value">
+                                                        <span name="q.question"/>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td class="label">
+                                                        <select onchange="update_response(this);" name="answers-sel" class='hideme'/>
+                                                        <div name="answers-rad" class='hideme'><input onclick="update_response_rad(this);" type="radio"/></div>
+                                                </td>
+                                        </tr>
+                                </table>
+                        </div>
+                </div></div>
+
+
 	</body>
 </html>
 
