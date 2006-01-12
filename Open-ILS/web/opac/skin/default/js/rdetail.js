@@ -224,7 +224,12 @@ function rdetailShowExtra(type) {
 function rdetailBuildCNList() {
 	var select = $('cn_browse_selector');
 	var index = 0;
-	for( var cn in callnumberCache ) {
+	var arr = [];
+	for( var cn in callnumberCache ) arr.push( cn );
+	arr.sort();
+
+	for( var i in arr ) {
+		var cn = arr[i];
 		var opt = new Option(cn);
 		opt.onclick = rdetailGatherCN;
 		select.options[index++] = opt;

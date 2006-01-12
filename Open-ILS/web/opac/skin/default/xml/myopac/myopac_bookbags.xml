@@ -13,6 +13,7 @@
 	<div style='text-align: center; font-weight: bold;' class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
 	<div style='width: 99%; text-align: center'> <b>My Bookbags</b></div>
+	<br/>
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
 			<tr><td>Name</td><td># Items</td><td>Delete this bookbag?</td></tr>
@@ -23,7 +24,7 @@
 					<a href='javascript:void(0);' class='classic_link' name='myopac_expand_bookbag'> </a>
 				</td>
 				<td><span name='myopac_bookbag_item_count'> </span> <span>Items</span></td>
-				<td><a class='class_link' href='javascript:void(0);' name='myopac_container_delete'>Delete</a></td>
+				<td><a class='classic_link' href='javascript:void(0);' name='myopac_container_delete'>Delete</a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -51,6 +52,7 @@
 	-->
 
 		<div style='width: 99%; text-align: center'> <b id='myopac_bookbag_items_name'> </b></div>
+		<br/>
 
 		<div class='hide_me' style='width: 100%; text-align: center; font-weight: 700; margin-top: 10px;'
 			id='myopac_bookbag_no_items'>The selected bookbag contains no items...</div>
