@@ -11,17 +11,17 @@ main.menu = function () {
 
 main.menu.prototype = {
 
+	'url_prefix' : function(url) {
+		if (url.match(/^\//)) url = urls.remote + url;
+		if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
+		return url;
+	},
+
 	'init' : function( params ) {
 
 		var session = params['session'];
 		var authtime = params['authtime'];
 		urls.remote = params['server'];
-
-		function url_prefix(url) {
-			if (url.match(/^\//)) url = urls.remote + url;
-			if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
-			return url;
-		}
 
 		var obj = this;
 
@@ -39,7 +39,7 @@ main.menu.prototype = {
 			'cmd_new_window' : [
 				['oncommand'],
 				function() {
-					obj.window.open(url_prefix(urls.XUL_MENU_FRAME),'test' + 
+					obj.window.open(obj.url_prefix(urls.XUL_MENU_FRAME),'test' + 
 						obj.window.appshell_name_increment++ ,'chrome'); 
 				}
 			],
@@ -56,7 +56,7 @@ main.menu.prototype = {
 			'cmd_patron_search' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.XUL_PATRON_DISPLAY)
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_DISPLAY)
 						+ '?session='+obj.w.escape(session),{},{});
 				}
 			],
@@ -73,7 +73,7 @@ main.menu.prototype = {
 								f.contentWindow.wrappedJSObject.attachEvt("rdetail", "recordRetrieved",
 									function(id){
 										obj.new_tab(
-											url_prefix(urls.XUL_CAT_DETAILS) + '?session=' +
+											obj.url_prefix(urls.XUL_CAT_DETAILS) + '?session=' +
 											window.escape(session) + '&docid=' + window.escape(id),
 											{ 'tab_name' : 'Retrieving Bib Record...' },
 											{}
@@ -82,7 +82,7 @@ main.menu.prototype = {
 								);
 							},
 						};
-						obj.set_tab(url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
+						obj.set_tab(obj.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
 					} catch(E) {
 						obj.error.sdump('D_ERROR','cmd_search_opac: ' + E);
 					}
@@ -94,19 +94,19 @@ main.menu.prototype = {
 			'cmd_circ_checkin' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(url_prefix(urls.XUL_CHECKIN) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 
@@ -116,49 +116,49 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.set_tab(url_prefix(urls.XUL_BROWSER), {}, content_params);
+					obj.set_tab(obj.url_prefix(urls.XUL_BROWSER), {}, content_params);
 				}
 			],
 			'cmd_test_html' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.TEST_HTML) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.TEST_XUL) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_console' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.XUL_DEBUG_CONSOLE),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{},{});
 				}
 			],
 			'cmd_shell' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.XUL_DEBUG_SHELL),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_SHELL),{},{});
 				}
 			],
 			'cmd_xuleditor' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.XUL_DEBUG_XULEDITOR),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{},{});
 				}
 			],
 			'cmd_fieldmapper' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{},{});
 				}
 			],
 			'cmd_survey_wizard' : [
 				['oncommand'],
 				function() {
-					obj.window.open(url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+obj.w.escape(session),'survey_wizard','chrome'); 
+					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+obj.w.escape(session),'survey_wizard','chrome'); 
 				}
 			],
 
@@ -278,6 +278,7 @@ main.menu.prototype = {
 		content_params.set_tab = function(a,b,c) { obj.set_tab(a,b,c); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
 		content_params.open_chrome_window = function(a,b,c) { obj.window.open(a,b,c); };
+		content_params.url_prefix = function(url) { return obj.url_prefix(url); };
 		if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
 		
 		var frame = this.w.document.createElement('iframe');
