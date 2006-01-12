@@ -121,6 +121,7 @@ function _js2JSON(arg) {
 	
 			case 'unknown':
 			case 'number':
+				if( isNaN(arg) ) throw "JSON.js encountered NaN in js2JSON()";
 				return arg;
 	
 			case 'undefined':
