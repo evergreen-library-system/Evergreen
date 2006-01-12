@@ -17,6 +17,7 @@
 <?xul-overlay href="chrome://evergreen/content/legacy/marc_overlay.xul"?>
 
 <window id="marc_win"
+	orient="vertical" style="overflow: scroll" 
 	onload="
 		try { my_pre_init(); } catch(E) { alert(E); }
 	"
@@ -124,7 +125,7 @@
 	<keyset id="marc_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
-	<vbox id="marc_vbox" class="test_class"/>
+	<vbox id="marc_vbox" class="test_class" style="overflow: scroll"/>
 
 </window>
 
