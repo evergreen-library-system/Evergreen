@@ -34,6 +34,12 @@
 		var params = {};
 		var mw = {};
 		var find_this_id;
+		var new_node_id = -1;
+
+		var character_measure = {};
+		var tree;
+		var meta;
+		var backup_tree;
 
 		function my_pre_init() {
 			try {
