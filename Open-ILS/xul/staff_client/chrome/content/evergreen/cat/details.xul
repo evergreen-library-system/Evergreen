@@ -88,6 +88,11 @@
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},{});
 		}
 
+		function set_marc_edit() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_EDIT ) + '?session=' + window.escape(session) 
+				+ '&docid=' + window.escape(docid),{},{});
+		}
+
 		function my_init_spawn_marc_editor() {
 			spawn_marc_editor(
 				document, 'replace_iframe', 'marc_edit', {
@@ -120,7 +125,7 @@
 		<deck id="top_pane"/>
 		<hbox>
 			<button label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
-			<button label="MARC Edit" id="marc_edit"/>
+			<button label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
 			<button label="Copy Browser" id="copy_browse"/>
 			<button label="Copy Editor" id="copy_edit" />
 		</hbox>

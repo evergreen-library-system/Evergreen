@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Cataloger's MARC Screen -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="chrome://evergreen/content/legacy/marc_overlay.xul"?>
+
+<window id="marc_win"
+	onload="
+		try { my_pre_init(); } catch(E) { alert(E); }
+	"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
+	<script type="text/javascript">
+	<![CDATA[
+
+		var params = {};
+		var mw = {};
+		var find_this_id;
+
+		function my_pre_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('..');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_pre_init() for marc.xul');
+
+				mw.G = {};
+				mw.G.main_test_variable = 'Hello World';
+				g.cgi = new CGI();
+				mw.G.auth_ses = [ g.cgi.param('session') ];
+				mw.sdump = function(a,b) { g.error.sdump(a,b); }
+
+				find_this_id = g.cgi.param('docid');
+
+				JSAN.use('util.network');
+				g.network = new util.network();
+
+				my_init();
+	
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\nmarc.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function timer_elapsed() {
+			return '';
+		}
+
+		function handle_error(err) {
+			try { alert(js2JSON(err)); } catch(E) { alert(err); }
+		}
+
+		function user_request(a,b,c,d) {
+			return [ g.network.request(a,b,c,d) ];
+		}
+
+		function disable_widgets() {
+			var d = document; var idx = 0;
+			if (arguments[0].nodeName == '#document') {
+				idx = 1; d = arguments[0];
+			}
+			for (var i = idx; i < arguments.length; i++) {
+				if (typeof(arguments[i]) == 'object') {
+					arguments[i].disabled = true;
+				} else {
+					var w = d.getElementById( arguments[i] );
+					if (w) { 
+						w.disabled = true; 
+					}
+				}
+			}
+		}
+
+		function enable_widgets() {
+			var d = document; var idx = 0;
+			if (arguments[0].nodeName == '#document') {
+				idx = 1; d = arguments[0];
+			}
+			for (var i = idx; i < arguments.length; i++) {
+				if (typeof(arguments[i]) == 'object') {
+					arguments[i].disabled = false;
+				} else {
+					var w = d.getElementById( arguments[i] );
+					if (w) { 
+						w.disabled = false; 
+					}
+				}
+			}
+		}
+
+
+	]]>
+	</script>
+
+	<!-- The logic for this app -->
+	<Evergreen id="marc_js" />
+
+	<!-- XUL'ified abstraction for logic to attach to widgets -->
+	<commandset id="marc_cmds" />
+
+	<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
+	<keyset id="marc_keys" />
+
+	<!-- Layout to be filled in by overlays and javascript -->
+	<vbox id="marc_vbox" class="test_class"/>
+
+</window>
+

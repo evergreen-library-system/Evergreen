@@ -54,7 +54,7 @@ var urls = {
 	'XUL_DEBUG_SHELL' : '/xul/server/util/shell.html',
 	'XUL_DEBUG_XULEDITOR' : '/xul/server/util/xuledit.xul',
 	'XUL_HOLD_CAPTURE' : '/xul/server/circ/hold_capture.xul',
-	'XUL_MARC_EDIT' : 'chrome://evergreen/content/legacy/marc.xul',
+	'XUL_MARC_EDIT' : 'chrome://evergreen/content/legacy/_marc.xul',
 	'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
 	'XUL_MENU_FRAME' : 'chrome://evergreen/content/main/menu_frame.xul',
 	'XUL_PATRON_BARCODE_ENTRY' : '/xul/server/patron/barcode_entry.xul',
