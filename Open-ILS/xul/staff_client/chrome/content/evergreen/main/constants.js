@@ -73,6 +73,7 @@ var urls = {
 	'XUL_PATRON_SEARCH_RESULT' : '/xul/server/patron/search_result.xul',
 	'XUL_PATRON_SUMMARY' : '/xul/server/patron/summary.xul',
 	'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
+	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xml',
 	'XUL_SURVEY_WIZARD' : 'chrome://evergreen/content/admin/survey_wizard.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : 'chrome://evergreen/content/admin/test.xul',

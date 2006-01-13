@@ -19,8 +19,7 @@
 	<command id="cmd_search_opac" key="search-opac-key" />
 	<command id="cmd_patron_register" key="patron-register-key" />
 	<command id="cmd_survey_wizard" />
-	<command id="cmd_copy_stat_cat_edit" />
-	<command id="cmd_patron_stat_cat_edit" />
+	<command id="cmd_stat_cat_edit" />
 	<command id="cmd_receipt_template_editor" />
 	<command id="cmd_z39_50_import" />
 	<command id="cmd_create_new_marc_book" />
@@ -195,8 +194,7 @@
 	<menupopup id="main.menu.admin.popup">
 		<menuitem label="Receipt Template Editor" accesskey="R" command="cmd_receipt_template_editor"/>
 		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
-		<menuitem label="Copy Stat-Cat Editor" accesskey="C" command="cmd_copy_stat_cat_edit"/>
-		<menuitem label="Patron Stat-Cat Editor" accesskey="P" command="cmd_patron_stat_cat_edit"/>
+		<menuitem label="Statistical Category Editor" accesskey="C" command="cmd_stat_cat_edit"/>
 		<menuseparator />
 		<menuitem label="Test Module" accesskey="T" command="cmd_test"/>
 		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
