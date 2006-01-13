@@ -1,0 +1,242 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Statistical Category Editor</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script> <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='stat_cat_editor.js'> </script>
+
+		<style type='text/css'>
+			.hide_me { visibility: hidden; display: none }
+			.has_color { background: #E0F0E0; color: #000000; }
+			.data_grid { font-weight: 500; border-collapse: collapse;}
+			.data_grid thead tr { background: #E0F0E0; color: #000000; }
+			.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
+			.data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
+			.data_grid_center { text-align: center; }
+			.data_grid_padded tbody td { padding: 10px; }
+			/*.selector option { width: 10em; }*/
+			.insert_row { border: 2px solid #A0B0A0; padding: 50px;}
+			.padded { padding-left: 7px; padding-right: 7px; }
+			select { width: 12em; }
+		</style>
+
+	</head>
+
+	<body onload='try{scEditorInit();}catch(e){alert(js2JSON(e));}'>
+
+		<div style='position:absolute; top: 5px; right: 5px;'>
+			<span>Welcome </span><b><span id='sc_user'/></b>
+		</div>
+
+		<center>
+			<div style='font-weight: bold; font-size: 12pt;'> Statistical Category Editor</div>
+		</center>
+
+		<hr/> 
+
+		<center>
+			<br/>
+
+			<table class='data_grid data_grid_center' width='80%'>
+				<thead>
+					<tr>
+						<td colspan='4'>Create a new statistical category</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Enter the name: </td>
+						<td>
+							<input type='text' id='sc_new_name'> </input>
+							<script>$('sc_new_name').focus();</script>
+						</td>
+						<td>Owning Library: </td>
+						<td>
+							<select id='sc_owning_lib_selector'>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Opac Visibility: </td>
+						<td>	
+							<span>On</span>
+							<input type='radio' name='opac_visibility' id='sc_make_opac_visible'> </input>
+							<span>Off</span>
+							<input type='radio' name='opac_visibility' checked='checked'> </input>
+						</td>
+						<td>Type: </td>
+						<td>
+							<select id='sc_type_selector'>
+								<option value='actor'>Patron</option>
+								<option value='asset'>Copy</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan='4'>
+							<input type='submit' value='Create new stat cat' onclick='scNew();'/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br/>
+			<hr/>
+			<br/>
+
+			<table width='98%'>
+				<tbody>
+					<tr>
+						<td width='20%'> </td>
+						<td id='sc_show_copy' width='30%' class='has_color'
+							align='center'><a href='javascript:scShow("asset");'>Copy Stat Cats</a></td>
+						<td id='sc_show_actor' width='30%' 
+							align='center'><a href='javascript:scShow("actor");'>Patron Stat Cats</a></td>
+						<td width='20%'> </td>
+					</tr>
+				</tbody>
+			</table>
+
+
+
+			<br/>
+			<div>* To edit or view information about an entry, click on the entry in the drop-down menu</div>
+			<br/>
+
+			<!--
+			<div style='overflow: auto; max-height: 200px;'>
+			-->
+				<table width='95%' class='hide_me data_grid data_grid_center' id='sc_table'>
+					<thead>
+						<tr>
+							<td>Stat Cat Name</td>
+							<td>Owning Library</td>
+							<td>OPAC Visiblity</td>
+							<td>Entries</td>
+							<td>Add Entry</td>
+							<td>Edit</td>
+						</tr>
+					</thead>
+	
+					<tbody id='sc_tbody'>
+						<tr id='sc_tr'>
+							<td><b name='sc_name'> </b></td>
+							<td name='sc_owning_lib'> </td>
+	
+							<td>
+								<span class='hide_me' name='sc_opac_visible'>On</span> 
+								<span class='hide_me' name='sc_opac_invisible'>Off</span> 
+							</td>
+	
+							<td><select class='selector' name='sc_entries_selector'><option>(none)</option></select></td>
+							<td><a href='javascript:void(0);' name='sc_new_entry'>Add</a></td>
+							<td><a href='javascript:void(0);' name='sc_edit'>Edit</a></td>
+						</tr>
+					</tbody>
+				</table>
+			<!--
+			</div>
+			-->
+	
+		
+
+			
+		</center>
+
+
+		<!-- Text spans  / template +++++++++++++++++++++++++++++++++++++  -->
+		<span class='hide_me' id='sc_new_entry_text'>Enter the value for the new stat cat entry</span>
+
+		<span class='hide_me' id='sc_delete_confirm'>
+			This will delete the selected stat cat and all attached entries
+			Are you sure you wish to continue?
+		</span>
+
+		<span class='hide_me' id='sc_entry_delete_confirm'>
+			Are you sure you wish to remove this stat cat entry?
+		</span>
+
+		<table class='hide_me'>
+			<tr class='insert_row' id='sc_edit_row'>
+				<td><input name='sc_edit_name'> </input></td>
+				<td>
+					<span class='hide_me' name='sc_edit_show_owning_lib'> </span>
+					<select class='hide_me' name='sc_edit_owning_lib'> </select>
+				</td>
+
+				<td>
+					<span>On</span>
+					<span name='sc_edit_opac_vis'>
+						<input type='radio' name='sc_edit_opac_visibility'> </input>
+					</span>
+					<span>Off</span>
+					<span name='sc_edit_opac_invis'>
+						<input type='radio' name='sc_edit_opac_visibility'> </input>
+					</span>
+				</td>
+				<td colspan='4'>
+					<span class='padded'>
+						<input  type='submit' value='Update Stat Cat' name='sc_edit_submit'/>
+					</span>
+					<span class='padded'>
+						<input  type='submit' value='Delete Stat Cat' name='sc_edit_delete'/>
+					</span>
+					<input type='submit' name='sc_edit_cancel' value='Cancel'/>
+				</td>
+			</tr>
+
+			<tr class='insert_row' id='sc_edit_entry_row'>
+				<td colspan='7'>
+					<span class='padded'>
+						<span>Owned By </span><b name='sc_edit_entry_owner'/>
+					</span>
+					<span class='padded'>
+						<input type='text' name='sc_edit_entry_name' class='padded'/>
+					</span>
+					<span class='padded'>
+						<input type='submit' name='sc_edit_entry_name_submit' value='Update Entry Value' class='padded'/>
+					</span>
+					<span class='padded'>
+						<input type='submit' name='sc_edit_entry_delete' value='Delete Entry' class='padded'/>
+					</span>
+					<span class='padded'>
+						<input type='submit' name='sc_edit_entry_cancel' value='Cancel'/>
+					</span>
+				</td>
+			</tr>
+
+			<tr class='insert_row' id='sc_new_entry_row'>
+				<td colspan='7'> 
+					<span>Enter the value of the new entry: </span>
+					<span class='padded'>
+						<input type='text' name='sc_new_entry_name'/>
+					</span>
+					<span class='padded'>
+						<select name='sc_new_entry_lib'> </select>
+					</span>
+					<span class='padded'>
+						<input type='submit' name='sc_new_entry_create' value='Create new entry'/>
+					</span>
+					<span class='padded'>
+						<input type='submit' name='sc_new_entry_cancel' value='Cancel'/>
+					</span>
+				</td>
+			</tr>
+		</table>
+
+	</body>
+</html>
+
