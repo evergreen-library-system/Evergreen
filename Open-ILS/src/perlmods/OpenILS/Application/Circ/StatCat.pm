@@ -45,9 +45,10 @@ sub retrieve_stat_cats {
 
 	my $user_obj = $apputils->check_user_session($user_session); 
 	if(!$orgid) { $orgid = $user_obj->home_ou; }
-
-	return $apputils->simple_scalar_request(
+	my $cats = $apputils->simple_scalar_request(
 				"open-ils.storage", $method, $orgid );
+
+	return [ sort { $a->name cmp $b->name } @$cats ];
 }
 
 
@@ -132,9 +133,11 @@ sub stat_cat_create {
 	my $session = $apputils->start_db_session();
 	my $newid = _create_stat_cat($session, $stat_cat, $method);
 
-	for my $entry (@{$stat_cat->entries}) {
-		$entry->stat_cat($newid);
-		_create_stat_entry($session, $entry, $entry_create);
+	if( ref($stat_cat->entries) ) {
+		for my $entry (@{$stat_cat->entries}) {
+			$entry->stat_cat($newid);
+			_create_stat_entry($session, $entry, $entry_create);
+		}
 	}
 
 	$apputils->commit_db_session($session);
