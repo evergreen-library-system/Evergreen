@@ -52,20 +52,8 @@ open-ils:
 	#cp server/cat/opac* chrome/content/evergreen/cat/
 
 patron:
-	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_items/g | sed s/PagedTree/PatronItems/g > chrome/content/evergreen/patron/patron_items_overlay.xul )
-	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_search_results/g | sed s/PagedTree/PatronSearchResults/g > chrome/content/evergreen/patron/patron_search_results_overlay.xul )
-	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_checkout_items/g | sed s/PagedTree/PatronCheckoutItems/g > chrome/content/evergreen/patron/patron_checkout_items_overlay.xul )
-	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/patron_holds/g | sed s/PagedTree/PatronHolds/g > chrome/content/evergreen/patron/patron_holds_overlay.xul )
-	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_items.dtd)
-	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_search_results.dtd)
-	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_checkout_items.dtd)
-	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/patron_holds.dtd)
 
 circ:
-	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/checkin_items/g | sed s/PagedTree/CheckinItems/g > chrome/content/evergreen/circ/checkin_items_overlay.xul )
-	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/checkin_items.dtd)
-	(cat chrome/content/evergreen/main/paged_tree_overlay.xul | sed s/paged_tree/hold_capture_items/g | sed s/PagedTree/HoldCaptureItems/g > chrome/content/evergreen/circ/hold_capture_items_overlay.xul )
-	(cp chrome/locale/en-US/evergreen/paged_tree.dtd chrome/locale/en-US/evergreen/hold_capture_items.dtd)
 
 custom:
 	#(cd chrome/content/evergreen/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
@@ -89,16 +77,8 @@ clean:
 	#rm -f chrome/content/evergreen/main/menu.js chrome/content/evergreen/menu_frame*
 	rm chrome/content/evergreen/legacy/marc*
 	rm chrome/locale/en-US/evergreen/cat.dtd
-	rm -f chrome/content/evergreen/patron/patron_items_overlay.xul chrome/locale/en-US/evergreen/patron_items.dtd
-	rm -f chrome/content/evergreen/patron/patron_search_results_overlay.xul chrome/locale/en-US/evergreen/patron_search_results.dtd
-	rm -f chrome/content/evergreen/patron/patron_checkout_items_overlay.xul chrome/locale/en-US/evergreen/patron_checkout_items.dtd
-	rm -f chrome/content/evergreen/patron/patron_holds_overlay.xul chrome/locale/en-US/evergreen/patron_holds.dtd
-	rm -f chrome/content/evergreen/circ/checkin_items_overlay.xul chrome/locale/en-US/evergreen/checkin_items.dtd
-	rm -f chrome/content/evergreen/circ/hold_capture_items_overlay.xul chrome/locale/en-US/evergreen/hold_capture_items.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
-	rm -f chrome/content/evergreen/util/fieldmapper.js
-	rm -f chrome/content/evergreen/util/OrgTree.js
 	rm -f chrome/content/evergreen/OpenSRF/*js
 	rm -f chrome/content/evergreen/OpenILS/util/*js
-	rm -f chrome/content/evergreen/OpenILS/widgets/*js
-	rm -f chrome/content/evergreen/OpenILS/widgets/menu/*js
+	#rm -f chrome/content/evergreen/OpenILS/widgets/*js
+	#rm -f chrome/content/evergreen/OpenILS/widgets/menu/*js
