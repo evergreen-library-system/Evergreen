@@ -115,7 +115,7 @@ main.menu.prototype = {
 			'cmd_stat_cat_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+obj.w.escape(session),{},{});
 				}
 			],
 			'cmd_test' : [
