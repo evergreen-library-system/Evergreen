@@ -33,6 +33,8 @@ var TOPRANK;
 var AUTHTIME;
 var ADVTERM;
 var ADVTYPE;
+var MRID;
+var RID;
 
 /* cookie values */
 var SBEXTRAS; 

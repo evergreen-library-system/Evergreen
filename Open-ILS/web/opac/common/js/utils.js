@@ -179,7 +179,9 @@ function getSelectorVal( sel ) {
 	return sel.options[sel.selectedIndex].value;
 }
 
+/* if index < 0, the item is pushed onto the end */
 function insertSelectorVal( selector, index, name, value, action, indent ) {
+	if( index < 0 ) index = selector.options.length;
 	for( var i = selector.options.length; i != index; i-- ) {
 		selector.options[i] = selector.options[i-1].cloneNode(true);
 	}
@@ -187,7 +189,7 @@ function insertSelectorVal( selector, index, name, value, action, indent ) {
 }
 
 function setSelectorVal( selector, index, name, value, action, indent ) {
-	if(!indent) indent = 0;
+	if(!indent || indent < 0) indent = 0;
 	indent = parseInt(indent);
 
 	var option;

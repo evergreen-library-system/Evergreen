@@ -3,6 +3,8 @@
 /* define it again here for pages that don't load RemoteRequest */
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
+var __ilsEvent; /* the last event the occurred */
+
 function Request(type) {
 	var s = type.split(":");
 	if(s[2] == "1" && isXUL()) s[1] += ".staff";
@@ -263,6 +265,7 @@ function grabUser(ses, force) {
 	var user = request.result();
 
 	if(checkILSEvent(user)) {
+		__ilsEvent = user;
 		doLogout();
 		return false; /* unable to grab the session */
 	}
