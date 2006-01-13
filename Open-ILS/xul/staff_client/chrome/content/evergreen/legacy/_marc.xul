@@ -61,6 +61,10 @@
 				JSAN.use('util.network');
 				g.network = new util.network();
 
+				disable_widgets('cmd_close_window','cmd_marc_meta_data');
+				document.getElementById('cmd_close_window').setAttribute('hidden','true');
+				document.getElementById('cmd_marc_meta_data').setAttribute('hidden','true');
+
 				my_init();
 	
 			} catch(E) {
@@ -131,7 +135,10 @@
 	<keyset id="marc_keys" />
 
 	<!-- Layout to be filled in by overlays and javascript -->
-	<vbox id="marc_vbox" class="test_class" style="overflow: scroll"/>
+	<groupbox flex="1">
+		<caption label="MARC Edit"/>
+		<vbox id="marc_vbox" class="test_class" style="overflow: scroll"/>
+	</groupbox>
 
 </window>
 
