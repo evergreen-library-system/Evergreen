@@ -76,9 +76,9 @@ clean:
 	rm -f evergreen.xpi
 	rm -f chrome/evergreen.jar
 	#rm -f chrome/content/evergreen/main/menu.js chrome/content/evergreen/menu_frame*
-	rm chrome/content/evergreen/legacy/marc*
-	rm chrome/content/evergreen/legacy/browse*
-	rm chrome/locale/en-US/evergreen/cat.dtd
+	rm -f chrome/content/evergreen/legacy/marc*
+	rm -f chrome/content/evergreen/legacy/browse*
+	rm -f chrome/locale/en-US/evergreen/cat.dtd
 	rm -f chrome/content/evergreen/conf/client_config.xml
 	rm -f chrome/content/evergreen/OpenSRF/*js
 	rm -f chrome/content/evergreen/OpenILS/util/*js
