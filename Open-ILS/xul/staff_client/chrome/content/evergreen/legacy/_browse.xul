@@ -29,6 +29,7 @@
 	<script type="text/javascript">
 	<![CDATA[
 
+		var parentWindow = {};
 		var params = {};
 		var mw = {};
 		var find_this_id;
@@ -223,6 +224,35 @@
 			return new_list;
 		}
 
+		function mapChrome(chrome) {
+			switch(chrome) {
+				case 'chrome://evergreen/content/cat/volume_copy_add_wizard.xul':
+					return 'chrome://evergreen/content/legacy/_volume_copy_add_wizard.xul'; break;
+				case 'chrome://evergreen/content/cat/copy_add_wizard.xul':
+					return 'chrome://evergreen/content/legacy/_copy_add_wizard.xul'; break;
+				case 'chrome://evergreen/content/cat/volume_edit_wizard.xul':
+					return 'chrome://evergreen/content/legacy/_volume_edit_wizard.xul':
+			}
+			return '';
+		}
+
+		parentWindow.new_tab = function() { };
+
+		parentWindow.replace_tab = function(a,b,c) {
+			if (window.xulG && typeof window.xulG.new_tab == 'function') {
+				try {
+					var f = window.xulG.new_tab( mapChrome(c), { 'tab_name' : b }, {} );
+					return f.contentWindow;
+				} catch(E) {
+					alert(E);
+				}
+			}
+		}
+
+		mw.new_window = function(a,b,c) {
+			JSAN.use('util.window); var win = new util.window();
+			return util.window.open( mapChrome(a), b, c );
+		}
 	]]>
 	</script>
 

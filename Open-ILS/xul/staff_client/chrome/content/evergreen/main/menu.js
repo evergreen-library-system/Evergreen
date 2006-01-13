@@ -274,10 +274,10 @@ main.menu.prototype = {
 		var panel = this.controller.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 
-		content_params.new_tab = function(a,b,c) { obj.new_tab(a,b,c); };
-		content_params.set_tab = function(a,b,c) { obj.set_tab(a,b,c); };
+		content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
+		content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
-		content_params.open_chrome_window = function(a,b,c) { obj.window.open(a,b,c); };
+		content_params.open_chrome_window = function(a,b,c) { return obj.window.open(a,b,c); };
 		content_params.url_prefix = function(url) { return obj.url_prefix(url); };
 		if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
 		
