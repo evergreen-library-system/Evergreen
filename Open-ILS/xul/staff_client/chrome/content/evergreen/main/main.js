@@ -59,7 +59,7 @@ function main_init() {
 				if (! url.match( '^http://' ) ) url = 'http://' + url;
 				grant_perms(url);
 				
-				G.OpenILS.data.stash('list','hash','temp');
+				G.OpenILS.data.stash('list','hash','tree','temp');
 				G.OpenILS.data._debug_stash();
 
 				G.window.open(urls.XUL_MENU_FRAME 

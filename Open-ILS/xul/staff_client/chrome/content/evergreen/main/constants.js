@@ -48,6 +48,7 @@ var urls = {
 	'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
 	'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
 	'XUL_CAT_DETAILS' : 'chrome://evergreen/content/cat/details.xul',
+	'XUL_COPY_VOLUME_BROWSE' : 'chrome://evergreen/content/legacy/_browse.xul',
 	'XUL_DEBUG_CONSOLE' : 'chrome://global/content/console.xul',
 	'XUL_DEBUG_FIELDMAPPER' : '/xul/server/util/fm_view.xul',
 	'XUL_DEBUG_FILTER_CONSOLE' : '/xul/server/util/filter_console.xul',

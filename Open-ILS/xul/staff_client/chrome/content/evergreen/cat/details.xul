@@ -93,31 +93,11 @@
 				+ '&docid=' + window.escape(docid),{},{});
 		}
 
-		function my_init_spawn_marc_editor() {
-			spawn_marc_editor(
-				document, 'replace_iframe', 'marc_edit', {
-					'find_this_id' : find_this_id
-				}
-			).find_this_id = find_this_id;
+		function set_copy_browser() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?session=' + window.escape(session) 
+				+ '&docid=' + window.escape(docid),{},{});
 		}
 
-		function my_init_spawn_copy_browser() {
-			var w = spawn_copy_browser(
-				document, 'replace_iframe', 'copy_browser', {
-					'find_this_id' : find_this_id
-				}
-			);
-			w.find_this_id = find_this_id;
-			w.parent_window = window;
-		}
-
-		function my_init_spawn_opac_view() {
-			dump('trying to spawn: ' + params.opac_url + '\n');
-			spawn_interface(
-				document, 'replace_browser', 'opac_view',
-				params.opac_url, 'OPAC View', {}
-			);
-		}
 	]]>
 	</script>
 
@@ -126,7 +106,7 @@
 		<hbox>
 			<button label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
 			<button label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
-			<button label="Copy Browser" id="copy_browse"/>
+			<button label="Copy Browser" id="copy_browse" oncommand="set_copy_browser();"/>
 			<button label="Copy Editor" id="copy_edit" />
 		</hbox>
 		<deck id="bottom_pane" flex="1"/>

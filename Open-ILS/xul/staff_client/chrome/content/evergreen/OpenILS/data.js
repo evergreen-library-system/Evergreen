@@ -13,6 +13,7 @@ OpenILS.data.prototype = {
 
 	'list' : {},
 	'hash' : {},
+	'tree' : {},
 
 	'temp' : '',
 
@@ -199,8 +200,8 @@ OpenILS.data.prototype = {
 		// The previous org_tree call returned a tree, not a list or hash.
 		this.chain.push(
 			function () {
-				obj.org_tree = obj.list.aou;
-				obj.list.aou = util.fm_utils.flatten_ou_branch( obj.org_tree );
+				obj.tree.aou = obj.list.aou;
+				obj.list.aou = util.fm_utils.flatten_ou_branch( obj.tree.aou );
 				obj.hash.aou = util.functional.convert_object_list_to_hash( obj.list.aou );
 			}
 		);
