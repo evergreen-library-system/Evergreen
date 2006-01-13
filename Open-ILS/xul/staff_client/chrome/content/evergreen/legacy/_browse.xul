@@ -231,7 +231,7 @@
 				case 'chrome://evergreen/content/cat/copy_add_wizard.xul':
 					return 'chrome://evergreen/content/legacy/_copy_add_wizard.xul'; break;
 				case 'chrome://evergreen/content/cat/volume_edit_wizard.xul':
-					return 'chrome://evergreen/content/legacy/_volume_edit_wizard.xul':
+					return 'chrome://evergreen/content/legacy/_volume_edit_wizard.xul'; break;
 			}
 			return '';
 		}
