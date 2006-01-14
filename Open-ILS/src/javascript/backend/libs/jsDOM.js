@@ -1,5 +1,7 @@
-load_lib('jsOO.js')
-load_lib('xpath.js')
+try {
+	load_lib('jsOO.js')
+	load_lib('xpath.js')
+} catch (e) {}
 
 function DOMException  (c) { this.code = c }
 DOMException.INDEX_SIZE_ERR = 1;
@@ -54,7 +56,11 @@ var __XMLDOC = {};
 var __XMLDOCid = 0;
 DOMImplementation.parseString = function (xml) {
 	__XMLDOC['id' + __XMLDOCid] = {};
-	_OILS_FUNC_xml_parse_string(xml, '__XMLDOC.id' + __XMLDOCid);
+	try {
+		_OILS_FUNC_xml_parse_string(xml, '__XMLDOC.id' + __XMLDOCid);
+	} catch (e) {
+		alert("Sorry, no string parsing support");
+	}
 	var x = __XMLDOC['id' + __XMLDOCid];
 	__XMLDOCid++;
 	return x;
