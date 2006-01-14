@@ -13,6 +13,19 @@
  * or send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford,
  * California 94305, USA.
  *
+ *
+ * Patch m1: January 13, 2006
+ *   Forcing namespace resolution for default namespaces.  In the current
+ *   code the default namespace (no prefix) is the same as no namespace,
+ *   but AFAICT this is incorrect.  If a node has a namespaceURI then it
+ *   should be used, and the expression should use the NamespaceResolver
+ *   to match the node's namespaceURI.
+ *
+ *   On a more positive note, I am using this library to test the correctness
+ *   of my pure-JS DOM implementation for use in libjs environments.  You can
+ *   currently find that at
+ *   http://open-ils.org/cgi-bin/viewcvs.cgi/ILS/Open-ILS/src/javascript/backend/libs/jsDOM.js
+ *
  * Revision 19: November 29, 2005
  *   Nodesets now store their nodes in a height balanced tree, increasing
  *   performance for the common case of selecting nodes in document order,
