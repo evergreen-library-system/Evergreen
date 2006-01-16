@@ -251,7 +251,7 @@
 
 		mw.new_window = function(a,b,c) {
 			JSAN.use('util.window'); var win = new util.window();
-			return util.window.open( mapChrome(a), b, c );
+			return win.open( mapChrome(a), b, c );
 		}
 	]]>
 	</script>
