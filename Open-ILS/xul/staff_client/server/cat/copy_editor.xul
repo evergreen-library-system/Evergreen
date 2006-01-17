@@ -279,13 +279,30 @@
 			var rp = document.getElementById('right_pane');
 			util.widgets.remove_children( rp );
 
+			function gen_callnumber_retrieve(cn_id,cn_label) {
+				return function(req) {
+					var cn = '??? id = ' + cn_id;
+					try {
+						cn = req.getResultObject().label();
+					} catch(E) {
+						g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
+					}
+					cn_label.setAttribute('value',cn);
+				}
+			}
+
 			for (var i in g.summary['Call Number']) {
-				var cn = i; var count = g.summary['Call Number'][i];
+				var cn_id = i; var count = g.summary['Call Number'][i];
 				var hbox = document.createElement('hbox'); cns.appendChild(hbox);
 				var cn_label = document.createElement('label'); hbox.appendChild(cn_label);
-				cn_label.setAttribute('value',cn);
-				//var count_label = document.createElement('label'); hbox.appendChild(count_label);
-				//count_label.setAttribute('value',count);
+				g.network.request(
+					api.FM_ACN_RETRIEVE.app,
+					api.FM_ACN_RETRIEVE.method,
+					[ cn_id ],
+					gen_callnumber_retrieve(cn_id,cn_label)
+				);
+				var count_label = document.createElement('label'); hbox.appendChild(count_label);
+				count_label.setAttribute('value',count + ' copies');
 			}
 
 			for (var i in g.summary['Barcode']) {
