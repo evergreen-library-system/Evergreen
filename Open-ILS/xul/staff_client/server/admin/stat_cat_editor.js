@@ -23,6 +23,7 @@ var opacVisible		= false;
 function scEditorInit() {
 	var cgi = new CGI();
 	session = cgi.param('ses');
+	if(!session) throw "User session is not defined";
 	var show = cgi.param('show');
 	user = fetchUser(session);
 	if(show == ACTOR) scShow(ACTOR);
