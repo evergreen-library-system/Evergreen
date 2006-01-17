@@ -336,12 +336,14 @@
 			var rp = document.getElementById('right_pane');
 			util.widgets.remove_children( rp );
 
+			var grid = util.widgets.make_grid( [ { 'flex' : '1' }, {} ] );
+			cns.appendChild(grid);
 			for (var i in g.summary['Call Number']) {
 				var cn_id = i; var count = g.summary['Call Number'][i];
-				var hbox = document.createElement('hbox'); cns.appendChild(hbox);
-				var cn_label = document.createElement('label'); hbox.appendChild(cn_label);
+				var row = document.createElement('row'); grid.lastChild.appendChild(row);
+				var cn_label = document.createElement('label'); row.appendChild(cn_label);
 				g.special_exception['Call Number']( cn_label, cn_id );
-				var count_label = document.createElement('label'); hbox.appendChild(count_label);
+				var count_label = document.createElement('label'); row.appendChild(count_label);
 				count_label.setAttribute('value',count + ' copies');
 			}
 
