@@ -74,7 +74,7 @@
 			}
 		}
 
-		g.summarize( copies ) {
+		g.summarize = function( copies ) {
 			g.summary = {};
 			for (var i = 0; i < g.field_names.length; i++) {
 				var field_name = g.field_names[i];
