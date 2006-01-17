@@ -18,6 +18,7 @@
 <window id="cat_copy_editor_win" 
 	onload="try { my_init(); } catch(E) { alert(E); }"
 	width="800" height="600"
+	title="Copies"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -33,6 +34,62 @@
 
 		g.apply = function(field,value) {
 			dump('field = ' + field + '  value = ' + value + '\n');
+		}
+
+		g.special_exception = {
+			'Call Number' : function(label,value) {
+				g.network.request(
+					api.FM_ACN_RETRIEVE.app,
+					api.FM_ACN_RETRIEVE.method,
+					[ value ],
+					function(req) {
+						var cn = '??? id = ' + value;
+						try {
+							cn = req.getResultObject().label();
+						} catch(E) {
+							g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
+						}
+						label.setAttribute('value',cn);
+					}
+				);
+			},
+			'Creator' : function(label,value) {
+				g.network.request(
+					api.FM_AU_RETRIEVE_VIA_ID.app,
+					api.FM_AU_RETRIEVE_VIA_ID.method,
+					[ g.session, value ],
+					function(req) {
+						var p = '??? id = ' + value;
+						try {
+							p = req.getResultObject();
+							p = p.card().barcode() + ' : ' + p.family_name();
+
+						} catch(E) {
+							g.error.sdump('D_ERROR','patron retrieve: ' + E);
+						}
+						label.setAttribute('value',p);
+					}
+				);
+			},
+			'Last Editor' : function(label,value) {
+				g.network.request(
+					api.FM_AU_RETRIEVE_VIA_ID.app,
+					api.FM_AU_RETRIEVE_VIA_ID.method,
+					[ g.session, value ],
+					function(req) {
+						var p = '??? id = ' + value;
+						try {
+							p = req.getResultObject();
+							p = p.card().barcode() + ' : ' + p.family_name();
+
+						} catch(E) {
+							g.error.sdump('D_ERROR','patron retrieve: ' + E);
+						}
+						label.setAttribute('value',p);
+					}
+				);
+			}
+
 		}
 
 		g.readonly_field_names = [
@@ -94,7 +151,7 @@
 			[
 			 	"Creator",
 				{ 
-					render: '"User ID: " + fm.creator();',
+					render: 'fm.creator();',
 	 			}
 			],
 			[
@@ -120,7 +177,7 @@
 			[
 			 	"Last Editor",
 				{
-					render: '"User ID: " + fm.editor();',
+					render: 'fm.editor();',
 	 			}
 			],
 			[
@@ -279,28 +336,11 @@
 			var rp = document.getElementById('right_pane');
 			util.widgets.remove_children( rp );
 
-			function gen_callnumber_retrieve(cn_id,cn_label) {
-				return function(req) {
-					var cn = '??? id = ' + cn_id;
-					try {
-						cn = req.getResultObject().label();
-					} catch(E) {
-						g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
-					}
-					cn_label.setAttribute('value',cn);
-				}
-			}
-
 			for (var i in g.summary['Call Number']) {
 				var cn_id = i; var count = g.summary['Call Number'][i];
 				var hbox = document.createElement('hbox'); cns.appendChild(hbox);
 				var cn_label = document.createElement('label'); hbox.appendChild(cn_label);
-				g.network.request(
-					api.FM_ACN_RETRIEVE.app,
-					api.FM_ACN_RETRIEVE.method,
-					[ cn_id ],
-					gen_callnumber_retrieve(cn_id,cn_label)
-				);
+				g.special_exception['Call Number']( cn_label, cn_id );
 				var count_label = document.createElement('label'); hbox.appendChild(count_label);
 				count_label.setAttribute('value',count + ' copies');
 			}
@@ -327,16 +367,21 @@
 						var value = j; var count = g.summary[fn][j];
 						var row = document.createElement('row'); rows.appendChild(row);
 						var label1 = document.createElement('label'); row.appendChild(label1);
-						label1.setAttribute('value',value);
+						if (g.special_exception[ fn ]) {
+							g.special_exception[ fn ]( label1, value );
+						} else {
+							label1.setAttribute('value',value);
+						}
 						var label2 = document.createElement('label'); row.appendChild(label2);
 						label2.setAttribute('value',count + ' copies');
 					}
-					var vbox2 = document.createElement('vbox'); vbox.appendChild(vbox2);
+					var hbox = document.createElement('hbox'); vbox.appendChild(hbox);
 					if (f[1].input && g.edit) {
 						try {
-							var x;
-							eval( f[1].input );
-							vbox2.appendChild(x);
+							var spacer = document.createElement('spacer'); hbox.appendChild(spacer);
+							spacer.setAttribute('flex','1');
+							var x; eval( f[1].input );
+							if (x) hbox.appendChild(x);
 
 						} catch(E) {
 							dump(E + '\n');
