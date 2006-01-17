@@ -49,7 +49,8 @@
 
 				g.session = g.cgi.param('session') || g.cgi.param('ses');
 
-				var copy_ids = g.cgi.param('copy_ids');
+				var copy_ids = [];
+				if (g.cgi.param('copy_ids')) copy_ids = JSON2js( g.cgi.param('copy_ids') );
 				if (!copy_ids) copy_ids = [];
 				if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
 
@@ -69,7 +70,7 @@
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\ncat/copy_editor.xul\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
 				alert(err_msg);
 			}
 		}
