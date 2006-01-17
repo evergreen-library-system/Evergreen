@@ -187,7 +187,7 @@ sub biblio_record_tree_import {
 
 	$session = OpenSRF::AppSession->create("open-ils.storage");
 
-	my $wreq = $session->request("open-ils.worm.wormize", $id)->gather(1);
+	my $wreq = $session->request("open-ils.worm.wormize.biblio", $id)->gather(1);
 	warn "Done worming record $id\n";
 
 	if(!$wreq) { throw OpenSRF::EX::ERROR ("Unable to wormize imported record"); }
@@ -328,7 +328,7 @@ sub biblio_record_tree_commit {
 	my $success = 0;
 	my $wresp;
 
-	my $wreq = $session->request( "open-ils.worm.wormize", $docid );
+	my $wreq = $session->request( "open-ils.worm.wormize.biblio", $docid );
 
 	try {
 		$wreq->gather(1);
