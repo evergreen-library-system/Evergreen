@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Copy Viewer/Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_copy_editor_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		g.field_names = [
+			 "barcode", "call_number", "circ_as_type", "circ_lib", "circ_modifier", "circulate", "copy_number", "create_date",
+			 "creator", "deposit", "deposit_amount", "edit_date", "editor", "fine_level", "holdable", "loan_duration",
+			 "location", "opac_visible", "price", "ref", "status",
+		];
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat/copy_editor.xul');
+
+				g.cgi = new CGI();
+
+				g.session = g.cgi.param('session') || g.cgi.param('ses');
+
+				var copy_ids = g.cgi.param('copy_ids');
+				if (!copy_ids) copy_ids = [];
+				if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
+
+				if (g.cgi.param('edit')) { document.getElementById('caption').setAttribute('label','Copy Editor'); }
+
+				JSAN.use('util.network'); g.network = new util.network();
+
+				if (copy_ids.length > 0) g.copies = g.network.request(
+					api.FM_ACP_FLESHED_BATCH_RETRIEVE.app,
+					api.FM_ACP_FLESHED_BATCH_RETRIEVE.method,
+					[ copy_ids ]
+				);
+
+				if (!g.copies) g.copies = [];
+				if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/copy_editor.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		g.summarize( copies ) {
+			g.summary = {};
+			for (var i = 0; i < g.field_names.length; i++) {
+				var field_name = g.field_names[i];
+				g.summary[ field_name ] = {};
+				for (var j = 0; j < copies.length; j++) {
+					var copy = copies[j];
+					var cmd = 'copy.' + field_name + '();';
+					var value = eval( cmd );
+					if (g.summary[ field_name ][ value ]) {
+						g.summary[ field_name ][ value ]++;
+					} else {
+						g.summary[ field_name ][ value ] = 1;
+					}
+				}
+			}
+			dump('summary = ' + js2JSON(g.summary) + '\n');
+		}
+	]]>
+	</script>
+
+	<groupbox flex="1">
+		<caption id="caption" label="Copy Viewer"/>
+	</groupbox>
+
+</window>
+

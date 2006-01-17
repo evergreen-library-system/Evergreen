@@ -52,7 +52,8 @@
 				mw.G = {};
 				mw.G.main_test_variable = 'Hello World';
 				g.cgi = new CGI();
-				mw.G.auth_ses = [ g.cgi.param('session') ];
+				g.session = g.cgi.param('session');
+				mw.G.auth_ses = [ g.session ];
 				mw.sdump = function(a,b) { g.error.sdump(a,b); }
 
 				find_this_id = g.cgi.param('docid');
@@ -329,8 +330,12 @@
 				}
 			);
 
-
-			alert('spawn copy editor with barcodes = ' + js2JSON(list));
+			JSAN.use('util.window'); var win = new util.window();
+			win.open(
+				urls.XUL_COPY_EDITOR+'?session='+window.escape(g.session)+'&copy_ids='+window.escape(js2JSON(list)),
+				'Copies',
+				'chrome,modal'
+			); 
 		}
 
 		function spawn_volume_editor() {
