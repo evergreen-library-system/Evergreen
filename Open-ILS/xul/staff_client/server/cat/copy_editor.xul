@@ -61,7 +61,7 @@
 				"Circulation Library",		
 				{ 	
 			 		render: 'fm.circ_lib().shortname();',
-			 		input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.my_aou, function(obj) { return [ obj.shortname(), obj.id() ]; })); x.addEventListener("command",function(ev) { g.apply("circ_lib",ev.target.value); }, false);',
+			 		input: 'x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(data.list.my_aou, function(obj) { return data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(ev) { g.apply("circ_lib",ev.target.value); }, false);',
 			 	} 
 			],
 			[
@@ -149,7 +149,7 @@
 			 	"Shelving Location",
 				{ 
 					render: 'fm.location().name();', 
-					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; })); x.addEventListener("command",function(ev) { g.apply("location",ev.target.value); }, false);',
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(ev) { g.apply("location",ev.target.value); }, false);',
 
 				}
 			],
@@ -178,7 +178,7 @@
 			 	"Status",
 				{ 
 					render: 'fm.status().name();', 
-					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ) ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
 
 
 				}
