@@ -17,6 +17,7 @@
 
 <window id="cat_copy_editor_win" 
 	onload="try { my_init(); } catch(E) { alert(E); }"
+	width="800" height="600"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -30,29 +31,158 @@
 	<script>
 	<![CDATA[
 
+		g.apply = function(field,value) {
+			dump('field = ' + field + '  value = ' + value + '\n');
+		}
+
 		g.readonly_field_names = [
-			["barcode"], ["call_number"],
+			[
+				"Barcode",		 
+				{
+					render: 'fm.barcode();',
+				}
+			], 
+			[
+				"Call Number", 	
+				{
+					render: 'fm.call_number();',
+				}
+			],
 		];
 		g.editable_field_names = [
-			 ["circ_as_type",	{ } ],
-			 ["circ_lib",		{ } ],
-			 ["circ_modifier",	{ } ],
-			 ["circulate",		{ } ],
-			 ["copy_number",	{ } ],
-			 ["create_date",	{ } ],
-			 ["creator",		{ } ],
-			 ["deposit",		{ } ],
-			 ["deposit_amount",	{ } ],
-			 ["edit_date",		{ } ],
-			 ["editor",		{ } ],
-			 ["fine_level",		{ } ],
-			 ["holdable",		{ } ],
-			 ["loan_duration",	{ } ],
-			 ["location",		{ } ],
-			 ["opac_visible",	{ } ],
-			 ["price",		{ } ],
-			 ["ref",		{ } ],
-			 ["status",		{ } ],
+			 [
+			 	"Circulate as Type",	
+				{ 	
+			 		render: 'fm.circ_as_type();',
+			 		input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("circ_as_type",ev.target.value); }, false);',
+				} 
+			],
+			[
+				"Circulation Library",		
+				{ 	
+			 		render: 'fm.circ_lib().shortname();',
+			 		input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.my_aou, function(obj) { return [ obj.shortname(), obj.id() ]; })); x.addEventListener("command",function(ev) { g.apply("circ_lib",ev.target.value); }, false);',
+			 	} 
+			],
+			[
+			 	"Circulation Modifier",
+				{	
+					render: 'fm.circ_modifier();',
+					input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("circ_modifier",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Circulate?",
+				{ 	
+					render: 'fm.circulate() ? "Yes" : "No";',
+					input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("circulate",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Copy Number",
+				{ 
+					render: 'fm.copy_number();',
+					input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("copy_number",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Creation Date",
+				{ 
+					render: 'util.date.formatted_date( fm.create_date(), "%F");',
+				}
+			],
+			[
+			 	"Creator",
+				{ 
+					render: '"User ID: " + fm.creator();',
+	 			}
+			],
+			[
+			 	"Deposit?",
+				{ 
+					render: 'fm.deposit() ? "Yes" : "No";',
+					input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("deposit",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Deposit Amount",
+				{ 
+					render: 'util.money.sanitize( fm.deposit_amount() );',
+					input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("deposit_amount",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Last Edit Date",
+				{ 
+					render: 'util.date.formatted_date( fm.edit_date(), "%F");',
+				}
+			],
+			[
+			 	"Last Editor",
+				{
+					render: '"User ID: " + fm.editor();',
+	 			}
+			],
+			[
+			 	"Fine Level",
+				{
+					render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
+					input: 'x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(ev) { g.apply("fine_level",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Holdable?",
+				{ 
+					render: 'fm.holdable() ? "Yes" : "No";', 
+					input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("holdable",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Loan Duration",
+				{ 
+					render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
+					input: 'x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(ev) { g.apply("loan_duration",ev.target.value); }, false);',
+
+				}
+			],
+			[
+			 	"Shelving Location",
+				{ 
+					render: 'fm.location().name();', 
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; })); x.addEventListener("command",function(ev) { g.apply("location",ev.target.value); }, false);',
+
+				}
+			],
+			[
+			 	"OPAC Visible?",
+				{ 
+					render: 'fm.opac_visible() ? "Yes" : "No";', 
+					input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("opac_visible",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Price",
+				{ 
+					render: 'util.money.sanitize( fm.price() );', 
+					input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("deposit_amount",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Reference?",
+				{ 
+					render: 'fm.ref() ? "Yes" : "No";', 
+					input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("ref",ev.target.value); }, false);',
+				}
+			],
+			[
+			 	"Status",
+				{ 
+					render: 'fm.status().name();', 
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ) ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
+
+
+				}
+			],
 		];
 
 		function my_init() {
@@ -73,7 +203,11 @@
 				if (!copy_ids) copy_ids = [];
 				if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
 
-				if (g.cgi.param('edit')) { document.getElementById('caption').setAttribute('label','Copy Editor'); }
+				if (g.cgi.param('edit')) { 
+					g.edit = true;
+					document.getElementById('caption').setAttribute('label','Copy Editor'); 
+					document.getElementById('nav').setAttribute('hidden','false'); 
+				}
 
 				JSAN.use('util.network'); g.network = new util.network();
 
@@ -98,21 +232,29 @@
 		}
 
 		g.summarize = function( copies ) {
+			JSAN.use('util.date'); JSAN.use('util.money');
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 			g.summary = {};
 			g.field_names = g.readonly_field_names.concat( g.editable_field_names );
 			for (var i = 0; i < g.field_names.length; i++) {
 				var field_name = g.field_names[i][0];
+				var render = g.field_names[i][1].render;
 				g.summary[ field_name ] = {};
 				for (var j = 0; j < copies.length; j++) {
-					var copy = copies[j];
-					var cmd = 'copy.' + field_name + '();';
-					var value = eval( cmd );
+					var fm = copies[j];
+					var cmd = render || ('fm.' + field_name + '();');
+					dump(cmd + ' = ');
+					var value = '???';
+					try { value = eval( cmd ); } catch(E) { dump(E + '\n'); }
+					dump(value + '\n');
 					if (typeof value == 'object' && value != null) {
-						//dump('value = ' + js2JSON(value) + '\n');
+						dump('field_name = ' + field_name + '  value = ' + js2JSON(value) + '\n');
+						/*
 						try { value = value.id(); } catch(E) { 
 							dump(E + '\n'); 
 							try { dump(js2JSON(value) + '\n'); } catch(F) { dump(F); }
 						}
+						*/
 					}
 					if (g.summary[ field_name ][ value ]) {
 						g.summary[ field_name ][ value ]++;
@@ -126,7 +268,8 @@
 
 		g.render = function() {
 
-			JSAN.use('util.widgets');
+			JSAN.use('util.widgets'); JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('util.functional');
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
 			/* clear */
 			var cns = document.getElementById('call_number_summary');
@@ -136,8 +279,8 @@
 			var rp = document.getElementById('right_pane');
 			util.widgets.remove_children( rp );
 
-			for (var i in g.summary.call_number) {
-				var cn = i; var count = g.summary.call_number[i];
+			for (var i in g.summary['Call Number']) {
+				var cn = i; var count = g.summary['Call Number'][i];
 				var hbox = document.createElement('hbox'); cns.appendChild(hbox);
 				var cn_label = document.createElement('label'); hbox.appendChild(cn_label);
 				cn_label.setAttribute('value',cn);
@@ -145,7 +288,7 @@
 				//count_label.setAttribute('value',count);
 			}
 
-			for (var i in g.summary.barcode) {
+			for (var i in g.summary['Barcode']) {
 				var bc = i;
 				var hbox = document.createElement('hbox'); bcs.appendChild(hbox);
 				var bc_label = document.createElement('label'); hbox.appendChild(bc_label);
@@ -154,30 +297,45 @@
 
 			
 			for (var i = 0; i < g.editable_field_names.length; i++) {
-				var f = g.editable_field_names[i]; var fn = f[0];
-				var hbox = document.createElement('hbox'); rp.appendChild(hbox);
-				var label = document.createElement('label'); hbox.appendChild(label);
-				label.setAttribute('value',fn); label.setAttribute('style','font-family: bold');
-				var vbox = document.createElement('vbox'); hbox.appendChild(vbox);
-				var grid = util.widgets.make_grid( [ { 'flex' : 1 }, {} ] ); vbox.appendChild(grid);
-				grid.setAttribute('flex','1');
-				var rows = grid.lastChild;
-				for (var j in g.summary[fn]) {
-					var value = j; var count = g.summary[fn][j];
-					var row = document.createElement('row'); rows.appendChild(row);
-					var label1 = document.createElement('label'); row.appendChild(label1);
-					label1.setAttribute('value',value);
-					var label2 = document.createElement('label'); row.appendChild(label2);
-					label2.setAttribute('value',count);
+				try {
+					var f = g.editable_field_names[i]; var fn = f[0];
+					var groupbox = document.createElement('groupbox'); rp.appendChild(groupbox);
+					var caption = document.createElement('caption'); groupbox.appendChild(caption);
+					caption.setAttribute('label',fn);
+					var vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
+					var grid = util.widgets.make_grid( [ { 'flex' : 1 }, {} ] ); vbox.appendChild(grid);
+					grid.setAttribute('flex','1');
+					var rows = grid.lastChild;
+					for (var j in g.summary[fn]) {
+						var value = j; var count = g.summary[fn][j];
+						var row = document.createElement('row'); rows.appendChild(row);
+						var label1 = document.createElement('label'); row.appendChild(label1);
+						label1.setAttribute('value',value);
+						var label2 = document.createElement('label'); row.appendChild(label2);
+						label2.setAttribute('value',count + ' copies');
+					}
+					var vbox2 = document.createElement('vbox'); vbox.appendChild(vbox2);
+					if (f[1].input && g.edit) {
+						try {
+							var x;
+							eval( f[1].input );
+							vbox2.appendChild(x);
+
+						} catch(E) {
+							dump(E + '\n');
+						}
+					}
+				} catch(E) {
+					g.error.sdump('D_ERROR','copy editor: ' + E + '\n');
 				}
-				var vbox2 = document.createElement('vbox'); vbox.appendChild(vbox2);
 			}
 		}
 	]]>
 	</script>
 
-	<groupbox flex="1">
+	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Copy Viewer"/>
+		<hbox id="nav" hidden="true"><spacer flex="1"/><button id="save" label="Modify these Copies"/></hbox>
 		<hbox flex="1">
 			<vbox style="overflow: scroll"> <!-- left pane -->
 				<groupbox id="gb_callnumbers">
@@ -190,15 +348,7 @@
 				</groupbox>
 			</vbox>
 			<splitter><grippy /></splitter>
-			<vbox id="right_pane" style="overflow: scroll" flex="1"> <!-- right pane -->
-				<hbox>
-					<label value="Status"/>
-					<vbox>
-						<vbox id="status_summary" flex="1"/>
-						<vbox id="status_entry"/>
-					</vbox>
-				</hbox>
-			</vbox>
+			<vbox id="right_pane" style="overflow: scroll" flex="1"/> <!-- right pane -->
 		</hbox>
 	</groupbox>
 

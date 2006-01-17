@@ -9,8 +9,20 @@ util.widgets.EXPORT_OK	= [
 	'enable_accesskeys_in_node_and_children', 
 	'remove_children',
 	'make_grid',
+	'make_menulist',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
+
+util.widgets.make_menulist = function( items ) {
+	var menulist = document.createElement('menulist');
+	var menupopup = document.createElement('menupopup'); menulist.appendChild(menupopup);
+	for (var i = 0; i < items.length; i++) {
+		var menuitem = document.createElement('menuitem'); menupopup.appendChild(menuitem);
+		menuitem.setAttribute('label',items[i][0]);
+		menuitem.setAttribute('value',items[i][1]);
+	}
+	return menulist;
+}
 
 util.widgets.make_grid = function( cols ) {
 	var grid = document.createElement('grid');

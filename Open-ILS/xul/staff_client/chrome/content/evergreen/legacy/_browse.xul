@@ -334,7 +334,8 @@
 			win.open(
 				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
 					+'?session='+window.escape(g.session)
-					+'&copy_ids='+window.escape(js2JSON(list)),
+					+'&copy_ids='+window.escape(js2JSON(list))
+					+'&edit=1',
 				'Copies',
 				'chrome,modal,resizable'
 			); 
