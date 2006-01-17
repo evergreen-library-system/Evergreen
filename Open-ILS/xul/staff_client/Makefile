@@ -47,7 +47,7 @@ open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js chrome/content/evergreen/OpenILS/util/
 	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* chrome/content/evergreen/legacy/
-	#TEMP#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* chrome/content/evergreen/legacy/
+	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* chrome/content/evergreen/legacy/
 	cp ../../../Evergreen/staff_client/chrome/locale/en-US/evergreen/cat.dtd chrome/locale/en-US/evergreen/
 	#cp server/main/menu* chrome/content/evergreen/main/
 	#cp server/cat/opac* chrome/content/evergreen/cat/
