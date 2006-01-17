@@ -336,7 +336,7 @@
 					+'?session='+window.escape(g.session)
 					+'&copy_ids='+window.escape(js2JSON(list)),
 				'Copies',
-				'chrome,modal'
+				'chrome,modal,resizable'
 			); 
 		}
 
