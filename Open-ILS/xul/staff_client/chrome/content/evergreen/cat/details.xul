@@ -85,17 +85,17 @@
 		}
 
 		function set_marc_view() {
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},{});
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
 		}
 
 		function set_marc_edit() {
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_EDIT ) + '?session=' + window.escape(session) 
-				+ '&docid=' + window.escape(docid),{},{});
+				+ '&docid=' + window.escape(docid),{},xulG);
 		}
 
 		function set_copy_browser() {
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?session=' + window.escape(session) 
-				+ '&docid=' + window.escape(docid),{},{});
+				+ '&docid=' + window.escape(docid),{},xulG);
 		}
 
 	]]>

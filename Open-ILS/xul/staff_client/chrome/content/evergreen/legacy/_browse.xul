@@ -326,13 +326,15 @@
 			list = util.functional.map_list(
 				list,
 				function (obj) {
-					return obj.getAttribute('barcode');
+					return obj.getAttribute('copy_id');
 				}
 			);
 
 			JSAN.use('util.window'); var win = new util.window();
 			win.open(
-				urls.XUL_COPY_EDITOR+'?session='+window.escape(g.session)+'&copy_ids='+window.escape(js2JSON(list)),
+				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
+					+'?session='+window.escape(g.session)
+					+'&copy_ids='+window.escape(js2JSON(list)),
 				'Copies',
 				'chrome,modal'
 			); 
