@@ -96,6 +96,14 @@
 		</desc>
 	</event>
 
+	<event code='1506' textcode='VOLUME_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve a volume object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+
 
 	<!-- ================================================================ -->
 	<!-- CIRC EVENTS -->

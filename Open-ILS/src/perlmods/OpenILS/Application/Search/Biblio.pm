@@ -1238,6 +1238,20 @@ sub cn_browse {
 }
 # -------------------------------------------------------------------------------------
 
+__PACKAGE__->register_method(
+	method => "fetch_cn",
+	api_name => "open-ils.search.callnumber.retrieve",
+	notes		=> "retrieves a callnumber based on ID",
+	);
+
+sub fetch_cn {
+	my( $self, $client, $id ) = @_;
+	my( $cn, $evt ) = $apputils->fetch_callnumber( $id );
+	return $evt if $evt;
+	return $cn;
+}
+
+
 
 
 

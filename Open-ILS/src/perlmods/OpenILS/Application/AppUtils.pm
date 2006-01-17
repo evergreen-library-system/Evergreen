@@ -6,6 +6,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenSRF::Utils::Logger;
 use OpenILS::Utils::ModsParser;
+use OpenILS::Event;
 my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -594,6 +595,19 @@ sub fetch_copy_locations {
 	return $self->simplereq(
 		'open-ils.storage', 
 		'open-ils.storage.direct.asset.copy_location.retrieve.all.atomic');
+}
+
+sub fetch_callnumber {
+	my( $self, $id ) = @_;
+	my $evt = undef;
+	$logger->debug("Fetching callnumber $id");
+
+	my $cn = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.asset.call_number.retrieve', $id );
+	$evt = OpenILS::Event->new( 'VOLUME_NOT_FOUND', id => $id ) unless $cn;
+
+	return ( $cn, $evt );
 }
 
 1;
