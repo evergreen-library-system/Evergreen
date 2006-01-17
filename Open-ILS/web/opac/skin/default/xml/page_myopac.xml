@@ -45,7 +45,9 @@
 				</td>
 
 				<td class='myopac_link' id='myopac_bookbag_td' >
+					<!--
 					<span><img src='../../../../images/bookbag.gif' style='width: 25px; height: 25px;'> </img></span>
+					-->
 					<a href='javascript:void(0);' 
 						onclick='myOPACChangePage("bookbag");'> Bookbags </a>
 

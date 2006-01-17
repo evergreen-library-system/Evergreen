@@ -1,4 +1,4 @@
-
+<div>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
 
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
@@ -26,5 +26,6 @@
 		config.css.color_2 = "color_2";
 		config.css.color_3 = "color_3";
 	</script>
+</div>
 
 

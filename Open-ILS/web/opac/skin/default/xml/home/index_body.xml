@@ -1,6 +1,4 @@
-<body onload='init(); 
-	getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED}));
-	getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
+<body onload='init(); getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
 	<table width='100%' style='border-collapse: collapse;'>
 		<tbody>
 			<tr>
