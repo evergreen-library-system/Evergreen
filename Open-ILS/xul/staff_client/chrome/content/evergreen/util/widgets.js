@@ -7,8 +7,23 @@ util.widgets.EXPORT_OK	= [
 	'get_list_from_tree_selection',
 	'disable_accesskeys_in_node_and_children', 
 	'enable_accesskeys_in_node_and_children', 
+	'remove_children',
+	'make_grid',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
+
+util.widgets.make_grid = function( cols ) {
+	var grid = document.createElement('grid');
+	var columns = document.createElement('columns'); grid.appendChild(columns);
+	for (var i = 0; i < cols.length; i++) {
+		var column = document.createElement('column'); columns.appendChild(column);
+		for (var j in cols[i]) {
+			column.setAttribute(j,cols[i][j]);
+		}
+	}
+	var rows = document.createElement('rows'); grid.appendChild(rows);
+	return grid;
+}
 
 util.widgets.get_list_from_tree_selection = function(tree_w) {
 	var hitlist;
@@ -29,6 +44,11 @@ util.widgets.get_list_from_tree_selection = function(tree_w) {
 		}
 	}
 	return list;
+}
+
+util.widgets.remove_children = function(w) {
+	if (typeof w != 'object') w = document.getElementById(w);
+	while(w.lastChild) w.removeChild( w.lastChild );
 }
 
 util.widgets.disable_accesskeys_in_node_and_children = function( node ) {

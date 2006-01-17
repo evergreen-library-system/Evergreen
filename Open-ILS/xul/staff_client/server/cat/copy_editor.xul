@@ -30,10 +30,29 @@
 	<script>
 	<![CDATA[
 
-		g.field_names = [
-			 "barcode", "call_number", "circ_as_type", "circ_lib", "circ_modifier", "circulate", "copy_number", "create_date",
-			 "creator", "deposit", "deposit_amount", "edit_date", "editor", "fine_level", "holdable", "loan_duration",
-			 "location", "opac_visible", "price", "ref", "status",
+		g.readonly_field_names = [
+			["barcode"], ["call_number"],
+		];
+		g.editable_field_names = [
+			 ["circ_as_type",	{ } ],
+			 ["circ_lib",		{ } ],
+			 ["circ_modifier",	{ } ],
+			 ["circulate",		{ } ],
+			 ["copy_number",	{ } ],
+			 ["create_date",	{ } ],
+			 ["creator",		{ } ],
+			 ["deposit",		{ } ],
+			 ["deposit_amount",	{ } ],
+			 ["edit_date",		{ } ],
+			 ["editor",		{ } ],
+			 ["fine_level",		{ } ],
+			 ["holdable",		{ } ],
+			 ["loan_duration",	{ } ],
+			 ["location",		{ } ],
+			 ["opac_visible",	{ } ],
+			 ["price",		{ } ],
+			 ["ref",		{ } ],
+			 ["status",		{ } ],
 		];
 
 		function my_init() {
@@ -67,6 +86,9 @@
 				if (!g.copies) g.copies = [];
 				if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
 
+				g.summarize( g.copies );
+				g.render();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\ncat/copy_editor.xul\n" + E + '\n';
@@ -77,13 +99,21 @@
 
 		g.summarize = function( copies ) {
 			g.summary = {};
+			g.field_names = g.readonly_field_names.concat( g.editable_field_names );
 			for (var i = 0; i < g.field_names.length; i++) {
-				var field_name = g.field_names[i];
+				var field_name = g.field_names[i][0];
 				g.summary[ field_name ] = {};
 				for (var j = 0; j < copies.length; j++) {
 					var copy = copies[j];
 					var cmd = 'copy.' + field_name + '();';
 					var value = eval( cmd );
+					if (typeof value == 'object' && value != null) {
+						//dump('value = ' + js2JSON(value) + '\n');
+						try { value = value.id(); } catch(E) { 
+							dump(E + '\n'); 
+							try { dump(js2JSON(value) + '\n'); } catch(F) { dump(F); }
+						}
+					}
 					if (g.summary[ field_name ][ value ]) {
 						g.summary[ field_name ][ value ]++;
 					} else {
@@ -93,11 +123,83 @@
 			}
 			dump('summary = ' + js2JSON(g.summary) + '\n');
 		}
+
+		g.render = function() {
+
+			JSAN.use('util.widgets');
+
+			/* clear */
+			var cns = document.getElementById('call_number_summary');
+			util.widgets.remove_children( cns );
+			var bcs = document.getElementById('barcode_summary');
+			util.widgets.remove_children( bcs );
+			var rp = document.getElementById('right_pane');
+			util.widgets.remove_children( rp );
+
+			for (var i in g.summary.call_number) {
+				var cn = i; var count = g.summary.call_number[i];
+				var hbox = document.createElement('hbox'); cns.appendChild(hbox);
+				var cn_label = document.createElement('label'); hbox.appendChild(cn_label);
+				cn_label.setAttribute('value',cn);
+				//var count_label = document.createElement('label'); hbox.appendChild(count_label);
+				//count_label.setAttribute('value',count);
+			}
+
+			for (var i in g.summary.barcode) {
+				var bc = i;
+				var hbox = document.createElement('hbox'); bcs.appendChild(hbox);
+				var bc_label = document.createElement('label'); hbox.appendChild(bc_label);
+				bc_label.setAttribute('value',bc);
+			}
+
+			
+			for (var i = 0; i < g.editable_field_names.length; i++) {
+				var f = g.editable_field_names[i]; var fn = f[0];
+				var hbox = document.createElement('hbox'); rp.appendChild(hbox);
+				var label = document.createElement('label'); hbox.appendChild(label);
+				label.setAttribute('value',fn); label.setAttribute('style','font-family: bold');
+				var vbox = document.createElement('vbox'); hbox.appendChild(vbox);
+				var grid = util.widgets.make_grid( [ { 'flex' : 1 }, {} ] ); vbox.appendChild(grid);
+				grid.setAttribute('flex','1');
+				var rows = grid.lastChild;
+				for (var j in g.summary[fn]) {
+					var value = j; var count = g.summary[fn][j];
+					var row = document.createElement('row'); rows.appendChild(row);
+					var label1 = document.createElement('label'); row.appendChild(label1);
+					label1.setAttribute('value',value);
+					var label2 = document.createElement('label'); row.appendChild(label2);
+					label2.setAttribute('value',count);
+				}
+				var vbox2 = document.createElement('vbox'); vbox.appendChild(vbox2);
+			}
+		}
 	]]>
 	</script>
 
 	<groupbox flex="1">
 		<caption id="caption" label="Copy Viewer"/>
+		<hbox flex="1">
+			<vbox style="overflow: scroll"> <!-- left pane -->
+				<groupbox id="gb_callnumbers">
+					<caption label="Call Numbers"/>
+					<vbox id="call_number_summary" flex="1"/>
+				</groupbox>
+				<groupbox id="gb_barcodes">
+					<caption label="Barcodes"/>
+					<vbox id="barcode_summary" flex="1"/>
+				</groupbox>
+			</vbox>
+			<splitter><grippy /></splitter>
+			<vbox id="right_pane" style="overflow: scroll" flex="1"> <!-- right pane -->
+				<hbox>
+					<label value="Status"/>
+					<vbox>
+						<vbox id="status_summary" flex="1"/>
+						<vbox id="status_entry"/>
+					</vbox>
+				</hbox>
+			</vbox>
+		</hbox>
 	</groupbox>
 
 </window>
