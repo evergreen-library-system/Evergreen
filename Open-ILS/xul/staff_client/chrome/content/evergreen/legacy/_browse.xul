@@ -71,6 +71,21 @@
 				mw.G.ccs_list = g.data.list.ccs;
 				mw.G.ccs_hash = g.data.hash.ccs;
 
+				var x = document.getElementById('cmd_copy_edit');
+				x.setAttribute('oncommand','try{spawn_copy_editor();}catch(E){alert(E);}');
+
+				x = document.getElementById('cmd_copy_add');
+				x.setAttribute('oncommand','try{spawn_copy_add_wizard();}catch(E){alert(E);}');
+
+				x = document.getElementById('cmd_volume_edit');
+				x.setAttribute('oncommand','try{spawn_volume_editor();}catch(E){alert(E);}');
+
+				x = document.getElementById('cmd_volume_add');
+				x.setAttribute('oncommand','try{spawn_volume_add_wizard();}catch(E){alert(E);}');
+
+				x = document.getElementById('browse_list_tree');
+				x.setAttribute('seltype','multiple');
+
 				my_init();
 	
 			} catch(E) {
@@ -224,6 +239,48 @@
 			return new_list;
 		}
 
+		function cycle_attribute() {
+			var d; var e; var a; var v;
+			if (arguments.length == 3) {
+				e = arguments[0];
+				a = arguments[1];
+				v = arguments[2];
+			} else {
+				d = arguments[0];
+				e = arguments[1];
+				a = arguments[2];
+				v = arguments[3];
+				if (typeof(e) != 'object') { e = d.getElementById(e); }
+			}
+			try {
+				if (typeof(e) != 'object') { throw('typeof e != object : typeof e = ' + typeof(e)); }
+				if (!a) { throw('!a : a = ' + a); }
+				if (! e.getAttribute(a) ) { throw(' ! e.getAttribute(a) : a = ' + a); }
+				if (typeof(v) != 'object') { throw('typeof v != object : typeof v = ' + typeof(v)); }
+
+				var toggle = e.getAttribute(a);
+				var next_one = false;
+				for (var i = 0; i < v.length; i++) {
+					if (next_one) {
+						e.setAttribute(a,v[i]);
+						return v[i];
+					}
+					if (toggle == v[i]) {
+						next_one = true;
+					}
+				}
+				if (next_one) {
+					e.setAttribute(a,v[0]);
+					return v[0];
+				} else {
+					throw('current value not in list');
+				}
+			} catch(E) {
+				return null;
+			}
+		}
+
+
 		function mapChrome(chrome) {
 			switch(chrome) {
 				case 'chrome://evergreen/content/cat/volume_copy_add_wizard.xul':
@@ -250,8 +307,92 @@
 		}
 
 		mw.new_window = function(a,b,c) {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			JSAN.use('util.window'); var win = new util.window();
 			return win.open( mapChrome(a), b, c );
+		}
+
+		function spawn_copy_editor() {
+			/* <command id="cmd_copy_edit" oncommand="spawn_batch_copy_editor(window.parent_window.document, 'replace_iframe', 'copy_editor', { 'tree' : document.getElementById('browse_list_tree') , 'refresh_func' : refresh_browse_list }); window.parent_window.document.getElementById('copy_editor_tab').disabled = false;"/> */
+			JSAN.use('util.widgets'); JSAN.use('util.functional');
+			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
+			list = util.functional.filter_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('object_type') == 'copy';
+				}
+			);
+			list = util.functional.map_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('barcode');
+				}
+			);
+
+
+			alert('spawn copy editor with barcodes = ' + js2JSON(list));
+		}
+
+		function spawn_volume_editor() {
+			/* <command id="cmd_volume_edit" oncommand="volume_edit(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/> */
+			JSAN.use('util.widgets'); JSAN.use('util.functional');
+			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
+			list = util.functional.filter_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('object_type') == 'volume';
+				}
+			);
+			list = util.functional.map_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('volume_id');
+				}
+			);
+
+			alert('spawn volume editor with volume_ids = ' + js2JSON(list));
+		}
+
+		function spawn_volume_add_wizard() {
+			/* <command id="cmd_volume_add" oncommand="volume_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/> */
+			JSAN.use('util.widgets'); JSAN.use('util.functional');
+			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
+			list = util.functional.filter_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('object_type') == 'org_unit';
+				}
+			);
+			list = util.functional.map_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('ou_id');
+				}
+			);
+
+
+			alert('spawn volume add wizard with ou_ids = ' + js2JSON(list) );
+		}
+
+		function spawn_copy_add_wizard() {
+			/* <command id="cmd_copy_add" oncommand="copy_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/> */
+			JSAN.use('util.widgets'); JSAN.use('util.functional');
+			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
+			list = util.functional.filter_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('object_type') == 'volume';
+				}
+			);
+			list = util.functional.map_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('volume_id');
+				}
+			);
+
+
+			alert('spawn copy add wizard with volume_ids = ' + js2JSON(list));
 		}
 	]]>
 	</script>

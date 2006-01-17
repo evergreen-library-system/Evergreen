@@ -107,7 +107,6 @@
 			<button label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
 			<button label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
 			<button label="Copy Browser" id="copy_browse" oncommand="set_copy_browser();"/>
-			<button label="Copy Editor" id="copy_edit" />
 		</hbox>
 		<deck id="bottom_pane" flex="1"/>
 	</vbox>
