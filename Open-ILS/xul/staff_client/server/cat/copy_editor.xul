@@ -350,6 +350,7 @@
 			<splitter><grippy /></splitter>
 			<vbox id="right_pane" style="overflow: scroll" flex="1"/> <!-- right pane -->
 		</hbox>
+		<spacer/>
 	</groupbox>
 
 </window>
