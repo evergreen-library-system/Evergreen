@@ -8,7 +8,7 @@ util.widgets.EXPORT_OK	= [
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
-util.widget.get_list_from_tree_selection = function(tree_w) {
+util.widgets.get_list_from_tree_selection = function(tree_w) {
 	var hitlist;
 	if (typeof(tree_w) != 'object') {
 		tree = document.getElementById(tree_w);
