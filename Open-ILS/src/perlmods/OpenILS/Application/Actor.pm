@@ -1035,6 +1035,46 @@ sub check_user_perms {
 	return \@not_allowed
 }
 
+__PACKAGE__->register_method(
+	method	=> "check_user_perms2",
+	api_name	=> "open-ils.actor.user.perm.check.multi_org",
+	notes		=> q/
+		Checks the permissions on a list of perms and orgs for a user
+		@param authtoken The login session key
+		@param user_id The id of the user to check
+		@param orgs The array of org ids
+		@param perms The array of permission names
+		@return An array of  [ orgId, permissionName ] arrays that FAILED the check
+		if the logged in user does not match 'user_id', then the logged in user must
+		have VIEW_PERMISSION priveleges.
+	/);
+
+sub check_user_perms2 {
+	my( $self, $client, $authtoken, $user_id, $orgs, $perms ) = @_;
+
+	my( $staff, $evt ) = $apputils->checkses($authtoken);
+	return $evt if $evt;
+
+	my @not_allowed;
+	for my $org (@$orgs) {
+
+		if($staff->id ne $user_id) {
+			if( $evt = $apputils->check_perms(
+				$staff->id, $org, 'VIEW_PERMISSION') ) {
+				return $evt;
+			}
+		}
+
+		for my $perm (@$perms) {
+			if($apputils->check_perms($user_id, $org, $perm)) {
+				push @not_allowed, [ $org, $perm ];
+			}
+		}
+	}
+
+	return \@not_allowed
+}
+
 
 
 __PACKAGE__->register_method(
