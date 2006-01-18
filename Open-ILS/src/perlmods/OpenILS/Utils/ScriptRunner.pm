@@ -62,6 +62,7 @@ sub init {
 sub refresh_context {
 	my $self = shift;
 	$self->context->destroy;
+	$self->{_loaded} = {};
 	$self->init;
 }
 
@@ -245,7 +246,7 @@ sub insert_hash {
 				( !$RO ? 
 					sub {
 						my( $hashkey, $val ) = @_;
-						$hash->{_js_prop_name($hashkey)} = $val; }
+						$hash->{_js_prop_name($hashkey)} = $val;
 					} :
 					sub {}
 				)
