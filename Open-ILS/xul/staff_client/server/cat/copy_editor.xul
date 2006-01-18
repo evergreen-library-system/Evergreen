@@ -34,6 +34,16 @@
 
 		g.apply = function(field,value) {
 			dump('field = ' + field + '  value = ' + value + '\n');
+			for (var i = 0; i < g.copies.length; i++) {
+				var copy = g.copies[i];
+				try {
+					var cmd = 'copy.' + field + '( ' + value + "); copy.ischanged('1');";
+					dump('copy.id() = ' + copy.id() + ' -> ' + cmd + '\n');	
+					eval( cmd );
+				} catch(E) {
+					alert(E);
+				}
+			}
 		}
 
 		g.special_exception = {
@@ -399,7 +409,11 @@
 
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Copy Viewer"/>
-		<hbox id="nav" hidden="true"><spacer flex="1"/><button id="save" label="Modify these Copies"/></hbox>
+		<hbox id="nav" hidden="true">
+			<spacer flex="1"/>
+			<button id="save" label="Modify these Copies" 
+				oncommand="alert('push these: ' + js2JSON(g.copies) );"/>
+		</hbox>
 		<hbox flex="1">
 			<vbox style="overflow: scroll"> <!-- left pane -->
 				<groupbox id="gb_callnumbers">
