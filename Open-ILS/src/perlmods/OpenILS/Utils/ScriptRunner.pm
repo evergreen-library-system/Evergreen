@@ -2,6 +2,7 @@ package OpenILS::Utils::ScriptRunner;
 use strict; use warnings;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::EX qw(:try);
+use JSON;
 use JavaScript::SpiderMonkey;
 use LWP::UserAgent;
 use XML::LibXML;
@@ -48,11 +49,21 @@ sub init {
 	$self->insert(alert		=> sub { $logger->warn(@_); return 1;} );
 	$self->insert(load_lib		=> sub { $self->load_lib(@_); });
 
+	# OpenSRF support function
+	$self->insert(
+		_OILS_FUNC_jsonopensrfrequest_send =>
+			sub { $self->_jsonopensrfrequest_send(@_); }
+	);
+
 	# XML support functions
 	$self->insert(
-		_OILS_FUNC_xmlhttprequest_send	=> sub { $self->_xmlhttprequest_send(@_); });
+		_OILS_FUNC_xmlhttprequest_send	=>
+			sub { $self->_xmlhttprequest_send(@_); }
+	);
 	$self->insert(
-		_OILS_FUNC_xml_parse_string	=> sub { $self->_parse_xml_string(@_); });
+		_OILS_FUNC_xml_parse_string	=>
+			sub { $self->_parse_xml_string(@_); }
+	);
 	
 	$self->load_lib($_) for @{$self->{libs}};
 
@@ -314,6 +325,44 @@ sub _xmlhttprequest_send {
 		$ctx->property_by_path('__xmlhttpreq_hash.id'.$id.'.status', $res->code);
 
 	}
+		
+}
+
+sub _jsonopensrfrequest_send {
+	my $self = shift;
+	my $id = shift;
+	my $service = shift;
+	my $method = shift;
+	my $blocking = shift;
+	my $params = shift;
+
+	my @p = @{ JSON->JSON2perl($params) };
+
+	my $ctx = $self->context;
+
+	# just so perl has access to it...
+	$ctx->object_by_path('__jsonopensrfreq_hash.id'.$id);
+
+	my $ses = OpenSRF::AppSession->create($service);
+	my $req = $ses->request($method,@p);
+
+	$req->wait_complete;
+	if (!$req->failed) {
+		my $res = $req->content;
+		
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.responseText', $res);
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.readyState', 4);
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.statusText', 'OK');
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.status', '200');
+
+	} else {
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.responseText', '');
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.readyState', 4);
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.statusText', $req->failed->status );
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.status', $req->failed->statusCode );
+	}
+
+	$req->finish;
 		
 }
 
