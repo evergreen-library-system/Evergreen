@@ -5,7 +5,34 @@ attachEvt("common", "run", advInit);
 function advInit() { 
 	$('advanced.wizard.contains').focus();
 	depthSelInit(); 
+
+	var wiz = [
+		'advanced.wizard.contains',
+		'advanced.wizard.nocontains',
+		'advanced.wizard.exact',
+		'search_type_selector',
+		'advanced.wizard.form_selector' ];
+	for( var node in wiz ) 
+		setEnterFunc( $(wiz[node]), advWizardRun );
+
+	var ref = [
+		'advanced.refined.title_contains',
+		'advanced.refined.author_contains',
+		'advanced.refined.subject_contains',
+		'advanced.refined.series_contains',
+		'advanced.refined.form_selector',
+		'advanced.refined.series_type',
+		'advanced.refined.subject_type',
+		'advanced.refined.author_type',
+		'advanced.refined.title_type' ];
+	for( var i in ref ) 
+		setEnterFunc( $(ref[i]), advRefinedRun );
+
+	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
+	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
+	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 }
+
 
 function advWizardRun() {
 	var contains = $('advanced.wizard.contains').value;

@@ -340,4 +340,9 @@ function sortWordsIgnoreCase(a, b) {
 
 
 
-
+function setEnterFunc(node, func) {
+	if(!(node && func)) return;
+	node.onkeydown = function(evt) {
+		if( userPressedEnter(evt)) func();
+	}
+}
