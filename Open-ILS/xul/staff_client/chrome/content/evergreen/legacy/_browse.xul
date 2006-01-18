@@ -314,8 +314,9 @@
 		}
 
 		function spawn_copy_editor() {
-			/* <command id="cmd_copy_edit" oncommand="spawn_batch_copy_editor(window.parent_window.document, 'replace_iframe', 'copy_editor', { 'tree' : document.getElementById('browse_list_tree') , 'refresh_func' : refresh_browse_list }); window.parent_window.document.getElementById('copy_editor_tab').disabled = false;"/> */
+
 			JSAN.use('util.widgets'); JSAN.use('util.functional');
+
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
@@ -323,6 +324,28 @@
 					return obj.getAttribute('object_type') == 'copy';
 				}
 			);
+
+			var edit = 0;
+			try {
+				edit = g.network.request(
+					api.PERM_MULTI_ORG_CHECK.app,
+					api.PERM_MULTI_ORG_CHECK.method,
+					[ 
+						g.session, 
+						g.data.list.au[0].id(), 
+						util.functional.map_list(
+							list,
+							function (obj) {
+								return obj.getAttribute('ou_id');
+							}
+						),
+						[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+					]
+				).length == 0 ? 1 : 0;
+			} catch(E) {
+				g.error.sdump('batch permission check: ' + E);
+			}
+
 			list = util.functional.map_list(
 				list,
 				function (obj) {
@@ -331,14 +354,18 @@
 			);
 
 			JSAN.use('util.window'); var win = new util.window();
-			win.open(
+			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
 					+'?session='+window.escape(g.session)
 					+'&copy_ids='+window.escape(js2JSON(list))
-					+'&edit=1',
+					+'&edit='+edit,
 				'Copies',
 				'chrome,modal,resizable'
-			); 
+			);
+			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+			g.data.stash_retrieve();
+			var copies = JSON2js( g.data.temp );
+			alert('copies = ' + js2JSON(copies));
 		}
 
 		function spawn_volume_editor() {

@@ -39,6 +39,8 @@ var api = {
 	'MODS_SLIM_METARECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.metarecord.mods_slim.retrieve' },
 	'MODS_SLIM_RECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve' },
 	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy' },
+	'PERM_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check' },
+	'PERM_MULTI_ORG_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check2' },
 }
 
 var urls = {
