@@ -47,6 +47,7 @@
 		}
 
 		function info_finish() {
+			/* FIXME -- need unique temp space name */
 			g.OpenILS.data.temp = js2JSON( g.payment_blob );
 			g.OpenILS.data.stash('temp');
 		}

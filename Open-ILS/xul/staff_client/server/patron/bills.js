@@ -241,15 +241,17 @@ patron.bills.prototype = {
 					'chrome,resizable,modal'
 				);
 				obj.OpenILS.data.stash_retrieve();
+				/* FIXME -- need unique temp space name */
 				payment_blob = JSON2js( obj.OpenILS.data.temp );
 			break;
 			case 'check_payment' :
 				var w = win.open(
 					urls.XUL_PATRON_BILL_CHECK_INFO,
-					'billccinfo',
+					'billcheckinfo',
 					'chrome,resizable,modal'
 				);
 				obj.OpenILS.data.stash_retrieve();
+				/* FIXME -- need unique temp space name */
 				payment_blob = JSON2js( obj.OpenILS.data.temp );
 			break;
 		}
