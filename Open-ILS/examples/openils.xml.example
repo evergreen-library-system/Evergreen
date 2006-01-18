@@ -19,6 +19,8 @@ For non-core config info, see the inline documentation within this file
 			<!-- xsl stylesheets go here -->
 			<xsl>/openils/var/xsl</xsl>
 			<conf>/openils/var/conf</conf>
+			<script>/openils/var/data</script>
+			<script_lib>/openils/var/data</script_lib>
 		</dirs>
 
 		<server_type>prefork</server_type>
@@ -271,13 +273,12 @@ For non-core config info, see the inline documentation within this file
 
 				<app_settings>
 					<rules>
-						<main>/openils/var/circ/circ_main.rules</main>
-						<permission>/openils/var/circ/permit_circ.rules</permission>
-						<duration>/openils/var/circ/calculate_duration.rules</duration>
-						<recurring_fines>/openils/var/circ/calculate_recurring_fines.rules</recurring_fines>
-						<max_fines>/openils/var/circ/calculate_max_fines.rules</max_fines>
-						<permit_hold>/openils/var/circ/permit_hold.rules</permit_hold>
-						<permit_renew>/openils/var/circ/permit_renew.rules</permit_renew>
+						<permission>permit_circ.rules</permission>
+						<duration>calculate_duration.rules</duration>
+						<recurring_fines>calculate_recurring_fines.rules</recurring_fines>
+						<max_fines>calculate_max_fines.rules</max_fines>
+						<permit_hold>permit_hold.rules</permit_hold>
+						<permit_renew>permit_renew.rules</permit_renew>
 					</rules>
 				</app_settings>
 
