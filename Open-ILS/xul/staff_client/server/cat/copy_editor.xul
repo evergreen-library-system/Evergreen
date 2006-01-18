@@ -33,13 +33,11 @@
 	<![CDATA[
 
 		g.apply = function(field,value) {
-			dump('field = ' + field + '  value = ' + value + '\n');
+			g.error.sdump('D_TRACE','field = ' + field + '  value = ' + value + '\n');
 			for (var i = 0; i < g.copies.length; i++) {
 				var copy = g.copies[i];
 				try {
-					var cmd = 'copy.' + field + '( ' + value + "); copy.ischanged('1');";
-					dump('copy.id() = ' + copy.id() + ' -> ' + cmd + '\n');	
-					eval( cmd );
+					copy[field]( value ); copy.ischanged('1');
 				} catch(E) {
 					alert(E);
 				}
@@ -310,16 +308,20 @@
 				for (var j = 0; j < copies.length; j++) {
 					var fm = copies[j];
 					var cmd = render || ('fm.' + field_name + '();');
-					dump(cmd + ' = ');
+					g.error.sdump('D_TRACE',cmd + ' = ');
 					var value = '???';
-					try { value = eval( cmd ); } catch(E) { dump(E + '\n'); }
-					dump(value + '\n');
+					try { value = eval( cmd ); } catch(E) { g.error.sdump('D_ERROR', E + '\n'); }
+					g.error.sdump('D_TRACE',value + '\n');
 					if (typeof value == 'object' && value != null) {
-						dump('field_name = ' + field_name + '  value = ' + js2JSON(value) + '\n');
+						g.error.sdump('D_ERROR','field_name = ' + field_name + '  value = ' + js2JSON(value) + '\n');
 						/*
 						try { value = value.id(); } catch(E) { 
-							dump(E + '\n'); 
-							try { dump(js2JSON(value) + '\n'); } catch(F) { dump(F); }
+							g.error.sdump('D_ERROR',E + '\n'); 
+							try { 
+								g.error.sdump('D_ERROR',js2JSON(value) + '\n'); 
+							} catch(F) { 
+								g.error.sdump('D_ERROR',F); 
+							}
 						}
 						*/
 					}
@@ -330,7 +332,7 @@
 					}
 				}
 			}
-			dump('summary = ' + js2JSON(g.summary) + '\n');
+			g.error.sdump('D_ERROR','summary = ' + js2JSON(g.summary) + '\n');
 		}
 
 		g.render = function() {
@@ -396,7 +398,7 @@
 							if (x) hbox.appendChild(x);
 
 						} catch(E) {
-							dump(E + '\n');
+							g.error.sdump('D_ERROR',E + '\n');
 						}
 					}
 				} catch(E) {
