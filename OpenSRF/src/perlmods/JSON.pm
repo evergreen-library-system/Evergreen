@@ -59,6 +59,18 @@ sub _JSON_regex {
 	return ($string,$1);
 }
 
+sub lookup_class {
+	my $self = shift;
+	my $hint = shift;
+	return $_class_map{hints}{$hint}{name}
+}
+
+sub lookup_hint {
+	my $self = shift;
+	my $class = shift;
+	return $_class_map{classes}{$class}{hint}
+}
+
 sub _json_hint_to_class {
 	my $type = shift;
 	my $hint = shift;
