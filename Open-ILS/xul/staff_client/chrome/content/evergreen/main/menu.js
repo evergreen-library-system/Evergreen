@@ -63,29 +63,8 @@ main.menu.prototype = {
 			'cmd_search_opac' : [
 				['oncommand'],
 				function() {
-					try {
-						var content_params = { 
-							'show_nav_buttons' : true,
-							'show_print_button' : true,
-							'passthru_content_params' : { 'authtoken' : session, 'authtime' : authtime },
-							'on_url_load' : function(f) {
-								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								f.contentWindow.wrappedJSObject.attachEvt("rdetail", "recordRetrieved",
-									function(id){
-										obj.new_tab(
-											obj.url_prefix(urls.XUL_CAT_DETAILS) + '?session=' +
-											window.escape(session) + '&docid=' + window.escape(id),
-											{ 'tab_name' : 'Retrieving Bib Record...' },
-											{}
-										);
-									}
-								);
-							},
-						};
-						obj.set_tab(obj.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
-					} catch(E) {
-						obj.error.sdump('D_ERROR','cmd_search_opac: ' + E);
-					}
+					var content_params = { 'session' : session, 'authtime' : authtime };
+					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
 				}
 			],
 
@@ -121,8 +100,8 @@ main.menu.prototype = {
 			'cmd_test' : [
 				['oncommand'],
 				function() {
-					var content_params = { 'authtoken' : session, 'authtime' : authtime };
-					obj.set_tab(obj.url_prefix(urls.XUL_BROWSER), {}, content_params);
+					var content_params = { 'session' : session, 'authtime' : authtime };
+					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
 				}
 			],
 			'cmd_test_html' : [

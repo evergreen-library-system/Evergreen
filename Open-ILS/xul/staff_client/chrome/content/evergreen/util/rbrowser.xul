@@ -42,7 +42,7 @@
 				g.cgi = new CGI();
 				var name = g.cgi.param('name') || 'Browser';
 				var session = g.cgi.param('session');
-				var url = g.cgi.param('url');
+				var url; try { url = g.cgi.param('url') || xulG.url } catch(E) { dump(E + '\n'); };
 				if (!url) url = urls.browser;
 
 				JSAN.use('util.browser'); g.browser = new util.browser();

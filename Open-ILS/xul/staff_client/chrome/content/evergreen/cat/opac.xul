@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Cataloger's Search Result Screen -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
+
+<window id="opac_win"
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		var session; var authtime; var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame;
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('..');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat/opac.xul');
+
+				JSAN.use('util.network'); g.network = new util.network();
+
+				g.cgi = new CGI();
+				try { session = g.cgi.param('session') || xulG.session; } catch(E) { g.error.sdump('D_ERROR',E); }
+				try { authtime = g.cgi.param('authtime') || xulG.authtime; } catch(E) { g.error.sdump('D_ERROR',E); }
+				try { docid = g.cgi.param('docid') || xulG.docid; } catch(E) { g.error.sdump('D_ERROR',E); }
+				try { opac_url = g.cgi.param('opac_url') || xulG.opac_url; } catch(E) { g.error.sdump('D_ERROR',E); }
+
+				JSAN.use('util.deck');
+				top_pane = new util.deck('top_pane');
+				bottom_pane = new util.deck('bottom_pane');
+
+				set_opac();
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/opac.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function set_brief_view() {
+			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid); 
+			dump('spawning ' + url + '\n');
+			top_pane.set_iframe( 
+				url,
+				{}, 
+				{ 
+					'set_tab_name' : function(n) { 
+						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+							try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
+						} else {
+							dump('no set_tab_name\n');
+						}
+					}
+				}  
+			);
+		}
+
+		function set_marc_view() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+		}
+
+		function set_marc_edit() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_EDIT ) + '?session=' + window.escape(session) 
+				+ '&docid=' + window.escape(docid),{},xulG);
+		}
+
+		function set_copy_browser() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?session=' + window.escape(session) 
+				+ '&docid=' + window.escape(docid),{},xulG);
+		}
+
+		function set_opac() {
+			try {
+				dump('set_opac: session = ' + session + ' authtime = ' + authtime + '\n');
+				var content_params = { 
+					'show_nav_buttons' : true,
+					'show_print_button' : true,
+					'passthru_content_params' : { 'authtoken' : session, 'authtime' : authtime },
+					'on_url_load' : function(f) {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						f.contentWindow.wrappedJSObject.attachEvt("rdetail", "recordRetrieved",
+							function(id){
+								try {
+									var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid) 
+									dump('removing ' + url + '\n');
+									try { top_pane.remove_iframe( url ); } catch(E) { dump(E + '\n'); }
+									docid = id;
+									set_brief_view();
+									document.getElementById('nav').setAttribute('hidden','false');
+								} catch(E) {
+									alert(E);
+								}
+							}
+						);
+					},
+				};
+				if (opac_url) content_params.url = opac_url;
+				browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
+			} catch(E) {
+				g.error.sdump('D_ERROR','set_opac: ' + E);
+			}
+		}
+
+		function bib_in_new_tab() {
+			try {
+				var url = browser_frame.contentWindow.g.browser.controller.view.browser_browser.contentWindow.wrappedJSObject.location.href;
+				var content_params = { 'session' : session, 'authtime' : authtime, 'opac_url' : url };
+				xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
+			} catch(E) {
+				g.error.sdump('D_ERROR',E);
+			}
+		}
+
+		function remove_me() {
+			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid);
+			dump('removing ' + url + '\n');
+			try { top_pane.remove_iframe( url ); } catch(E) { dump(E + '\n'); }
+			document.getElementById('nav').setAttribute('hidden','true');
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1">
+		<deck id="top_pane"/>
+		<hbox id="nav" hidden="true">
+			<button label="OPAC View" id="opac_view" oncommand="set_opac();"/>
+			<button label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
+			<button label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
+			<button label="Copy Browser" id="copy_browse" oncommand="set_copy_browser();"/>
+			<button label="Open in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
+			<button label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
+		</hbox>
+		<deck id="bottom_pane" flex="1"/>
+	</vbox>
+
+</window>
+

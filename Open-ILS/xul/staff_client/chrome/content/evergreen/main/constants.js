@@ -63,6 +63,7 @@ var urls = {
 	'XUL_MARC_EDIT' : 'chrome://evergreen/content/legacy/_marc.xul',
 	'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
 	'XUL_MENU_FRAME' : 'chrome://evergreen/content/main/menu_frame.xul',
+	'XUL_OPAC_WRAPPER' : 'chrome://evergreen/content/cat/opac.xul',
 	'XUL_PATRON_BARCODE_ENTRY' : '/xul/server/patron/barcode_entry.xul',
 	'XUL_PATRON_BILLS' : '/xul/server/patron/bills.xul',
 	'XUL_PATRON_BILL_CC_INFO' : '/xul/server/patron/bill_cc_info.xul',
@@ -82,5 +83,4 @@ var urls = {
 	'XUL_SURVEY_WIZARD' : 'chrome://evergreen/content/admin/survey_wizard.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : 'chrome://evergreen/content/admin/test.xul',
-	'XUL_OPAC_WRAPPER' : 'chrome://evergreen/content/cat/opac.xul',
 }
