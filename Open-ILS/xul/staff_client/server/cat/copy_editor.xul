@@ -268,7 +268,7 @@
 				if (!copy_ids) copy_ids = [];
 				if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
 
-				if (g.cgi.param('edit')) { 
+				if (g.cgi.param('edit') == '1') { 
 					g.edit = true;
 					document.getElementById('caption').setAttribute('label','Copy Editor'); 
 					document.getElementById('nav').setAttribute('hidden','false'); 
