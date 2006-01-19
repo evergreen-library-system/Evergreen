@@ -28,6 +28,18 @@ sub package {
 	return $self->{package};
 }
 
+sub signature {
+	my $self = shift;
+	return 0 unless ref($self);
+	return $self->{signature};
+}
+
+sub argc {
+	my $self = shift;
+	return 0 unless ref($self);
+	return $self->{argc};
+}
+
 sub api_name {
 	my $self = shift;
 	return 1 unless ref($self);
@@ -133,11 +145,41 @@ sub handler {
 
 			my $resp;
 			try {
+				# un-if(0) this block to enable param checking based on signature and argc
+				if (0) {
+					if (@args <= $self->argc) {
+						die	"Not enough params passed to ".
+							$self->api_name." : requires ". $self->argc
+					}
+					if (@args) {
+						if (exists $self->signature->{params}) {
+							for my $p (0 .. scalar(@{ $self->signature->{params} }) - 1 ) {
+								my $s = $self->signature->{params}->[$p];
+								my $a = $args[$p];
+								if ($s->{class} && JSON->lookup_hint(ref $a) ne $s->{class}) {
+									die "Incorrect param class at position $p : should be a '$$s{class}'";
+								} elsif ($s->{type}) {
+									if (lc($s->{type}) eq 'object' && $a !~ /HASH/o) {
+										die "Incorrect param type at position $p : should be an 'object'";
+									} elsif (lc($s->{type}) eq 'array' && $a !~ /ARRAY/o) {
+										die "Incorrect param type at position $p : should be an 'array'";
+									} elsif (lc($s->{type}) eq 'number' && (ref($a) || $a !~ /^-?\d+(?:\.\d+)?$/o)) {
+										die "Incorrect param type at position $p : should be a 'number'";
+									} elsif (lc($s->{type}) eq 'string' && ref($a)) {
+										die "Incorrect param type at position $p : should be a 'string'";
+									}
+								}
+							}
+						}
+					}
+				}
+
 				my $start = time();
 				warn "About to run...\n";
 				$resp = $coderef->run( $appreq, @args); 
 				warn "Done running...\n";
 				my $time = sprintf '%.3f', time() - $start;
+
 				$log->debug( "Method duration for {$method_name}:  ". $time, INFO );
 				if( defined( $resp ) ) {
 					$appreq->respond_complete( $resp );
@@ -236,6 +278,49 @@ sub is_registered {
 	return exists($_METHODS[$api_level]{$api_name});
 }
 
+sub parse_notes_signature {
+	my $string = shift;
+	my @lines = split(/\n/so, $string);
+
+	my @params;
+	my $ret;
+	my $desc = '';
+	for (@lines) {
+		if (/^\s*\@return (.+)$/) {
+			$ret = [$1];
+		} elsif (/^\s*\@param (\w+) \b(.+)$/) {
+			push @params, [ $1, $2 ];
+		} else {
+			$desc .= $_;
+		}
+	}
+
+	return [$desc,\@params, $ret];
+}
+
+sub parse_array_signature {
+	my $array = shift;
+	my ($d,$p,$r) = @$array;
+
+	return {
+		desc	=> $d,
+		params	=> [
+			map { 
+				{ name  => $$_[0],
+				  desc  => $$_[1],
+				  type  => $$_[2],
+				  class => $$_[3],
+				}
+			} @$p
+		],
+		'return'=>
+			{ desc  => $$r[0],
+			  type  => $$r[1],
+			  class => $$r[2],
+			}
+	};
+}
+
 sub register_method {
 	my $self = shift;
 	my $app = ref($self) || $self;
@@ -247,10 +332,24 @@ sub register_method {
 	$args{api_level} = 1 unless(defined($args{api_level}));
 	$args{stream} ||= 0;
 	$args{remote} ||= 0;
+	$args{argc} ||= 0;
 	$args{package} ||= $app;                
 	$args{server_class} = server_class();
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
 
+	# un-if(0) this block to enable signature parsing
+	if (0) {
+		if (!$args{signature}) {
+			if ($args{notes} && !ref($args{notes})) {
+				$args{signature} =
+					parse_array_signature( parse_notes_signature( $args{notes} ) );
+			}
+		} elsif( ref($args{signature}) eq 'ARRAY') {
+			$args{signature} =
+				parse_array_signature( $args{signature} );
+		}
+	}
+	
 	unless ($args{object_hint}) {
 		($args{object_hint} = $args{package}) =~ s/::/_/go;
 	}
@@ -532,3 +631,5 @@ sub make_stream_atomic {
 
 
 1;
+
+
