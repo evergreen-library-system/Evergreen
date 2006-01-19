@@ -150,7 +150,7 @@ util.browser.prototype = {
 				onStatusChange		: function(){},
 				onSecurityChange	: function(){},
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
-					netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect " );
+					netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
 					var s = '';
 					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 					const nsIChannel = Components.interfaces.nsIChannel;
