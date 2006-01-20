@@ -210,6 +210,7 @@ RemoteRequest.prototype.getResultObject = function() {
 	}
 
 	var payload = obj.payload;
+	if(!payload || payload.length == 0) return null;
 	payload = (payload.length == 1) ? payload[0] : payload;
 
 	if(payload.__isfieldmapper && payload.classname == "perm_ex") {
