@@ -12,16 +12,9 @@ my $apputils = "OpenILS::Application::AppUtils";
 my $holdcode = "OpenILS::Application::Circ::Holds";
 
 my %scripts;			# - circulation script filenames
-my $standings;			# - cached patron standings
-my $group_tree;		# - cached permission group tree
-my $script_libs;		# - any additional script libraries
-my $copy_statuses;	# - copy status objects
-my $copy_locations;	# - shelving locations
 
-my $cur_copy;
-my $cur_patron;
-my $cur_title;
-my $cur_standings;
+my $script_libs;		# - any additional script libraries
+my %cache;
 
 my %contexts;			# - Script runner contexts
 
@@ -66,7 +59,7 @@ sub initialize {
 # Returns ( $data, $evt ).  if $evt is defined, then an
 # unexpedted event occurred and should be dealt with / returned to the caller
 # ------------------------------------------------------------------------------
-sub create_circ_env {
+sub create_circ_ctx {
 	my %params = @_;
 
 	my $barcode			= $params{barcode};
@@ -75,38 +68,42 @@ sub create_circ_env {
 	my $fetch_cstatus	= $params{fetch_copy_statuses};
 	my $fetch_clocs	= $params{fetch_copy_locations};
 
-	my ( $copy, $title, $evt );
+	my $evt;
+	my $ctx = {};
+	$ctx->{patron} = $patron;
+	$ctx->{type} = $params{type};
 
-	if(!$cur_standings) {
-		$cur_standings = $apputils->fetch_patron_standings();
-		$group_tree = $apputils->fetch_permission_group_tree();
+	if(!defined($cache{patron_standings})) {
+		$cache{patron_standings} = $apputils->fetch_patron_standings();
+		$cache{group_tree} = $apputils->fetch_permission_group_tree();
 	}
 
-	my $cstatus		= $apputils->fetch_copy_statuses if( $fetch_cstatus and !$copy_statuses );
-	my $clocs		= $apputils->fetch_copy_locations if( $fetch_clocs and !$copy_locations);
-	my $summary		= $apputils->fetch_patron_circ_summary($patron->id) if $fetch_summary;
+	$ctx->{patron_standings} = $cache{patron_standings};
+	$ctx->{group_tree} = $cache{group_tree};
 
-	( $copy, $evt ) = $apputils->fetch_copy_by_barcode( $barcode );
+	$cache{copy_statuses} = $apputils->fetch_copy_statuses 
+		if( $fetch_cstatus and !defined($cache{copy_statuses}) );
+
+	$cache{copy_locations} = $apputils->fetch_copy_locations 
+		if( $fetch_clocs and !defined($cache{copy_locations}));
+
+	$ctx->{copy_statuses} = $cache{copy_statuses};
+	$ctx->{copy_locations} = $cache{copy_locations};
+
+	$ctx->{patron_circ_summary} = 
+		$apputils->fetch_patron_circ_summary($patron->id) if $fetch_summary;
+
+	( $ctx->{copy}, $evt ) = $apputils->fetch_copy_by_barcode( $barcode );
 	return ( undef, $evt ) if $evt;
 
-	( $title, $evt ) = $apputils->fetch_record_by_copy( $copy->id );
+	( $ctx->{title}, $evt ) = $apputils->fetch_record_by_copy( $ctx->{copy}->id );
 	return ( undef, $evt ) if $evt;
 
-	_doctor_circ_objects( $patron, $title, $copy, $summary, $cstatus, $clocs );
+	_doctor_circ_objects($ctx);
+	_build_circ_script_runner($ctx);
+	_add_script_runner_methods( $ctx );
 
-	my $runner = _build_circ_script_runner( $patron, $title, $copy, $summary, $params{type} );
-
-	$cur_patron = $patron;
-	$cur_copy	= $copy;
-	$cur_title	= $title;
-
-	return { 
-		runner			=> $runner, 
-		title				=> $title, 
-		patron			=> $patron, 
-		copy				=> $copy, 
-		circ_summary	=> $summary, 
-	};
+	return $ctx;
 }
 
 
@@ -115,41 +112,46 @@ sub create_circ_env {
 # environment
 # ------------------------------------------------------------------------------
 sub _doctor_circ_objects {
-	my( $patron, $title, $copy, $summary, $cstatus, $clocs ) = @_;
+	my $ctx = shift;
 
-	# set the patron standing to the standing name
-	for my $s (@$cur_standings) {
-		$patron->standing( $s->value ) if( $s->id eq $patron->standing);
+	my $patron = $ctx->{patron};
+	my $copy = $ctx->{copy};
+			
+	for my $s (@{$ctx->{patron_standings}}) {
+		$patron->standing($s) if ( $s->id eq $ctx->{patron}->standing );
 	}
 
 	# set the patron ptofile to the profile name
-	$patron->profile( _patron_get_profile( $patron, $group_tree ) );
+	$patron->profile( _get_patron_profile( $patron, $ctx->{group_tree} ) );
+
+	# flesh the org unit
+	$patron->home_ou( $apputils->fetch_org_unit( $patron->home_ou ) );
 
 	# set the copy status to a status name
-	$copy->status( _get_copy_status_name( $copy, $cstatus ) );
+	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) );
 
 	# set the copy location to the location object
-	$copy->location( _get_copy_location( $copy, $clocs ) );
+	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) );
 
 }
 
 # recurse and find the patron profile name from the tree
 # another option would be to grab the groups for the patron
 # and cycle through those until the "profile" group has been found
-sub _patron_get_profile { 
+sub _get_patron_profile { 
 	my( $patron, $group_tree ) = @_;
-	return $group_tree->name if ($group_tree->id eq $patron->profile);
+	return $group_tree if ($group_tree->id eq $patron->profile);
 	for my $child (@{$group_tree->children}) {
-		my $ret = _patron_get_profile( $patron, $child );
+		my $ret = _get_patron_profile( $patron, $child );
 		return $ret if $ret;
 	}
 	return undef;
 }
 
-sub _get_copy_status_name {
+sub _get_copy_status {
 	my( $copy, $cstatus ) = @_;
 	for my $status (@$cstatus) {
-		return $status->name if( $status->id eq $copy->status ) 
+		return $status if( $status->id eq $copy->status ) 
 	}
 	return undef;
 }
@@ -166,16 +168,16 @@ sub _get_copy_location {
 # Constructs and shoves data into the script environment
 # ------------------------------------------------------------------------------
 sub _build_circ_script_runner {
-	my( $patron, $title, $copy, $summary, $type ) = @_;
+	my $ctx = shift;
 
 	$logger->debug("Loading script environment for circulation");
 
 	my $runner;
-	if( $runner = $contexts{$type} ) {
+	if( $runner = $contexts{$ctx->{type}} ) {
 		$runner->refresh_context;
 	} else {
 		$runner = OpenILS::Utils::ScriptRunner->new unless $runner;
-		$contexts{$type} = $runner;
+		$contexts{type} = $runner;
 	}
 
 	for(@$script_libs) {
@@ -183,118 +185,39 @@ sub _build_circ_script_runner {
 		$runner->add_path( $_ );
 	}
 
-	$runner->insert( 'patron',		$patron );
-	$runner->insert( 'title',		$title );
-	$runner->insert( 'copy',		$copy );
+	$runner->insert( 'patron',		$ctx->{patron} );
+	$runner->insert( 'title',		$ctx->{title} );
+	$runner->insert( 'copy',		$ctx->{copy} );
 
 	# circ script result
 	$runner->insert( 'result', {} );
 	$runner->insert( 'result.event', 'SUCCESS' );
 
-	if($summary) {
+	if(ref($ctx->{patron_circ_summary})) {
 		$runner->insert( 'patron_info', {} );
-		$runner->insert( 'patron_info.items_out', $summary->[0] );
-		$runner->insert( 'patron_info.fines', $summary->[1] );
+		$runner->insert( 'patron_info.items_out', $ctx->{patron_circ_summary}->[0] );
+		$runner->insert( 'patron_info.fines', $ctx->{patron_circ_summary}->[1] );
 	}
 
-	_add_script_runner_methods( $runner );
+	$ctx->{runner} = $runner;
 	return $runner;
 }
 
-sub _add_script_runner_methods {
-	my $runner = shift;	
 
+sub _add_script_runner_methods {
+	my $ctx = shift;
+	my $runner = $ctx->{runner};
+
+	# allows a script to fetch a hold that is currently targeting the
+	# copy in question
 	$runner->insert_method( 'copy', '__OILS_FUNC_fetch_hold', sub {
 			my $key = shift;
-			my $hold = $holdcode->fetch_open_hold_by_current_copy($cur_copy->id);
+			my $hold = $holdcode->fetch_open_hold_by_current_copy($ctx->{copy}->id);
 			$hold = undef unless $hold;
 			$runner->insert( $key, $hold );
 		}
 	);
-
-#	$runner->insert_method( 'patron', '__OILS_FUNC_get_standing', sub {
-#			my $key = shift;
-#			my $standing = "";
-#			for my $s (@$cur_standings) {
-#				$standing = $s->value if ( $s->id eq $cur_patron->standing );
-#			}
-#			$runner->insert( $key, $standing );
-#		}
-#	);
-
-
 }
-
-=head blah
-sub _insert_event {
-	my $runner = shift;
-	my $evt = shift;
-	$runner->insert('result.event', $evt->{textcode} );
-}
-
-sub _add_script_methods {
-	my $runner = shift;
-
-	$runner->insert( 'fetch_patron', sub {
-			my ( $key, $id ) = @_;	
-			my ( $user, $evt ) = $apputils->fetch_user($id);
-			_insert_event( $runner, $evt ) if $evt;
-			$runner->insert( $key, $user );
-		}
-	);
-
-	$runner->insert( 'fetch_copy_by_barcode', sub {
-			my( $key, $barcode ) = @_;
-			my( $copy, $evt ) = $apputils->fetch_copy_by_barcode( $barcode );
-			_insert_event( $runner, $evt ) if $evt;
-			$runner->insert( $key, $copy );
-		}
-	);
-
-	$runner->insert( 'fetch_copy_statuses', sub {
-		my $key = shift;
-		$runner->insert( $key, $apputils->fetch_copy_statuses ); 
-	});
-
-	$runner->insert( 'fetch_copy_locations', sub {
-		my $key = shift;
-		$runner->insert( $key, $apputils->fetch_copy_locations ); });
-
-	$runner->insert( 'fetch_patron_circ_summary', sub {
-		my( $key, $patron_id ) = @_;
-		$runner->insert( $key, $apputils->fetch_patron_circ_summary($patron_id)); });
-
-	$runner->insert( 'fetch_group_tree', sub { 
-		my $key = shift;
-		$runner->insert( $key, $apputils->fetch_permission_group_tree ); });
-
-	$runner->insert( 'fetch_patron_standings', sub { 
-		my $key = shift;
-		$runner->insert( $key, $apputils->fetch_patron_standings ); } );
-}
-
-
-sub _build_script_runner {
-	my %params = @_;
-
-	my $runner = OpenILS::Utils::ScriptRunner->new( 
-		type => 'js', libs => $script_libs );
-	
-	# return status event
-	$runner->insert( 'result', {} );
-	$runner->insert( 'result.event', 'SUCCESS' );
-
-	$runner->insert('env.patron_id', $params{patron_id} ) if defined $params{patron_id};
-	$runner->insert('env.copy_barcode', $params{copy_barcode} ) if defined $params{copy_barcode};
-
-	$runner->insert( 'arr', [ 1, 5, 10 ] );
-
-
-	return $runner;
-}
-
-=cut
-
 
 # ------------------------------------------------------------------------------
 
@@ -313,7 +236,7 @@ sub permit_circ {
 	my $barcode		= $params{barcode};
 	my $patronid	= $params{patron};
 	my $isrenew		= $params{renew};
-	my ( $requestor, $patron, $env, $evt );
+	my ( $requestor, $patron, $ctx, $evt );
 
 
 	# check permisson of the requestor
@@ -326,7 +249,7 @@ sub permit_circ {
 		", patron " . $patron->id . ", and barcode $barcode" );
 
 	# fetch and build the circulation environment
-	( $env, $evt ) = create_circ_env( 
+	( $ctx, $evt ) = create_circ_ctx( 
 		barcode							=> $barcode, 
 		patron							=> $patron, 
 		type								=> 'permit',
@@ -337,10 +260,7 @@ sub permit_circ {
 	return $evt if $evt;
 
 	# run the script
-	my $runner = $env->{runner};
-
-#	my $runner = _build_script_runner( patron_id => $patronid, copy_barcode => $barcode );
-#	_add_script_methods( $runner );
+	my $runner = $ctx->{runner};
 
 	$runner->load($scripts{circ_permit});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Script Died: $@");

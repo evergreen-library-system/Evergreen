@@ -169,6 +169,7 @@ sub set_circ_lost {
 		$circ->stop_fines("LOST");		
 	}
 
+	# XXX Back date the checkin time so the patron has no fines
 	if($self->api_name =~ /claims_returned/) {
 		if($evt = $apputils->checkperms(
 			$user->id, $circ->circ_lib, "SET_CIRC_CLAIMS_RETURNED")) {
