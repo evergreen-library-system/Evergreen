@@ -57,6 +57,7 @@ var RDETAIL		= "rdetail";
 var MYOPAC		= "myopac";
 var ADVANCED	= "advanced";
 var HOME			= "home";
+var BBAGS		= "bbags";
 
 /* search type (STYPE) options */
 var STYPE_AUTHOR	= "author";
@@ -126,6 +127,7 @@ config.page[MRESULT]		= "mresult.xml";
 config.page[RRESULT]		= "rresult.xml";
 config.page[MYOPAC]		= "myopac.xml";
 config.page[RDETAIL]		= "rdetail.xml";
+config.page[BBAGS]		= "bbags.xml";
 
 /* themes */
 config.themes = {};
@@ -236,11 +238,13 @@ var FETCH_CNBROWSE_TARGET		= 'open-ils.search:open-ils.search.callnumber.browse.
 var FETCH_CNBROWSE_PREV			= 'open-ils.search:open-ils.search.callnumber.browse.page_up';
 var FETCH_CNBROWSE_NEXT			= 'open-ils.search:open-ils.search.callnumber.browse.page_down';
 var FETCH_CONTAINERS				= 'open-ils.actor:open-ils.actor.container.retrieve_by_class';
+var FETCH_CONTAINERS				= 'open-ils.actor:open-ils.actor.container.retrieve_by_class';
 var CREATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.create';
 var DELETE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.full_delete';
 var CREATE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.create';
 var DELETE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.delete';
 var FLESH_CONTAINER				= 'open-ils.actor:open-ils.actor.container.flesh';
+var FLESH_PUBLIC_CONTAINER		= 'open-ils.actor:open-ils.actor.container.public.flesh';
 /* ---------------------------------------------------------------------------- */
 
 
