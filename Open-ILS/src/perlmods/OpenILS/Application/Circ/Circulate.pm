@@ -224,11 +224,16 @@ sub _add_script_runner_methods {
 __PACKAGE__->register_method(
 	method	=> "permit_circ",
 	api_name	=> "open-ils.circ.permit_checkout_",
-	notes		=> <<"	NOTES");
+	notes		=> q/
 		Determines if the given checkout can occur
-		PARAMS( authtoken, barcode => bc, patron => pid, renew => t/f )
-		Returns an event
-	NOTES
+		@param authtoken The login session key
+		@param params A trailing list of named params including 
+			barcode : The copy barcode, 
+			patron : The patron the checkout is occurring for, 
+			renew : true or false - whether or not this is a renewal
+		@return The event that occurred during the permit check.  
+			If all is well, the SUCCESS event is returned
+	/);
 
 sub permit_circ {
 	my( $self, $client, $authtoken, %params ) = @_;
