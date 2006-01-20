@@ -373,10 +373,11 @@
 						api.FM_ACP_FLESHED_BATCH_UPDATE.method,
 						[ g.session, copies ]
 					);
-					alert('copy update result = ' + r);
+					/* FIXME -- revisit the return value here */
 				} catch(E) {
 					alert('copy update error: ' + js2JSON(E));
 				}
+				refresh_browse_list();
 			}
 		}
 
