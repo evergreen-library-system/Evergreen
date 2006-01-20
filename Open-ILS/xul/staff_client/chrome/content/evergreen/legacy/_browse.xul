@@ -66,7 +66,7 @@
 				mw.G.my_orgs = g.data.list.my_aou;
 				mw.G.my_orgs_hash = g.data.hash.my_aou;
 				mw.G.org_tree = g.data.tree.aou;
-				mw.G.user_ou = g.data.list.au[0];
+				mw.G.user_ou = g.data.hash.aou[ g.data.list.au[0].home_ou() ];
 				mw.G.aout_list = g.data.list.aout;
 				mw.G.aout_hash = g.data.hash.aout;
 				mw.G.ccs_list = g.data.list.ccs;
@@ -365,7 +365,19 @@
 			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 			g.data.stash_retrieve();
 			var copies = JSON2js( g.data.temp );
-			alert('copies = ' + js2JSON(copies));
+			g.error.sdump('D_CAT','in browse, g.data.temp =\n' + g.data.temp);
+			if (edit=='1') {
+				try {
+					var r = g.network.request(
+						api.FM_ACP_FLESHED_BATCH_UPDATE.app,
+						api.FM_ACP_FLESHED_BATCH_UPDATE.method,
+						[ g.session, copies ]
+					);
+					alert('copy update result = ' + r);
+				} catch(E) {
+					alert('copy update error: ' + js2JSON(E));
+				}
+			}
 		}
 
 		function spawn_volume_editor() {

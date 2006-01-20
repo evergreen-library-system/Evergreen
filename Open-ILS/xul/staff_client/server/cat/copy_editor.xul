@@ -127,7 +127,7 @@
 				"Circulation Library",		
 				{ 	
 			 		render: 'fm.circ_lib().shortname();',
-			 		input: 'x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(data.list.my_aou, function(obj) { return data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(ev) { g.apply("circ_lib",ev.target.value); }, false);',
+			 		input: 'x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(ev) { g.apply("circ_lib",ev.target.value); }, false);',
 			 	} 
 			],
 			[
@@ -215,7 +215,7 @@
 			 	"Shelving Location",
 				{ 
 					render: 'fm.location().name();', 
-					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(ev) { g.apply("location",ev.target.value); }, false);',
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(ev) { g.apply("location",ev.target.value); }, false);',
 
 				}
 			],
@@ -244,7 +244,7 @@
 			 	"Status",
 				{ 
 					render: 'fm.status().name();', 
-					input: 'x = util.widgets.make_menulist( util.functional.map_list( data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
 
 
 				}
@@ -259,6 +259,8 @@
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat/copy_editor.xul');
+
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
 				g.cgi = new CGI();
 
@@ -299,7 +301,6 @@
 
 		g.summarize = function( copies ) {
 			JSAN.use('util.date'); JSAN.use('util.money');
-			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 			g.summary = {};
 			g.field_names = g.readonly_field_names.concat( g.editable_field_names );
 			for (var i = 0; i < g.field_names.length; i++) {
@@ -339,7 +340,6 @@
 		g.render = function() {
 
 			JSAN.use('util.widgets'); JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('util.functional');
-			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
 			/* clear */
 			var cns = document.getElementById('call_number_summary');
@@ -407,6 +407,14 @@
 				}
 			}
 		}
+
+		g.stash_and_close = function() {
+			g.data.temp = js2JSON( g.copies );
+			g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
+			g.data.stash('temp');
+			window.close();
+		}
+
 	]]>
 	</script>
 
@@ -415,7 +423,7 @@
 		<hbox id="nav" hidden="true">
 			<spacer flex="1"/>
 			<button id="save" label="Modify these Copies" 
-				oncommand="alert('push these: ' + js2JSON(g.copies) );"/>
+				oncommand="g.stash_and_close();"/>
 		</hbox>
 		<hbox flex="1">
 			<vbox style="overflow: scroll"> <!-- left pane -->
