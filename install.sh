@@ -175,6 +175,7 @@ function runInstall {
 					$MAKE -C "$OPENILSDIR" "string-templates-install"; 
 					$MAKE -C "$OPENILSDIR" "xsl-install"; 
 					$MAKE -C "$OPENILSDIR" "c_apps-install"; 
+					$MAKE -C "$OPENILSDIR" "circ_rules-install"; 
 				fi;
 				;;
 

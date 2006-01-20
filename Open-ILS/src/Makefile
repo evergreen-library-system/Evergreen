@@ -6,11 +6,15 @@ export CFLAGS			= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEAD
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
 
-all: mod_xmlbuilder mod_ils_rest_gateway c_apps
+all: mod_xmlbuilder mod_ils_rest_gateway c_apps 
 
-install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install
+install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install
 
 web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install
+
+circ_rules-install:
+	@echo $@
+	cp javascript/backend/circ/* $(CIRCRULESDIR)
 
 
 # -----------------------------------------------------------------------------------
@@ -36,13 +40,13 @@ mod_xmlbuilder-install:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
-	mkdir -p $(WEBDIR)
-	cp -r ../web/* $(WEBDIR)
-	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
-	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
-	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
-	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/advanced.xml
-	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/myopac.xml
+#	mkdir -p $(WEBDIR)
+#	cp -r ../web/* $(WEBDIR)
+#	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
+#	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
+#	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
+#	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/advanced.xml
+#	ln -s $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/myopac.xml
 
 libfieldmapper:	
 	make -C apachemods libfieldmapper.so
