@@ -301,7 +301,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		}
 	}
 
-	resultBuildFormatIcons( r, rec );
+	resultBuildFormatIcons( r, rec, is_mr );
 
 	unHideMe(r);
 	
@@ -327,7 +327,7 @@ function _resultFindRec(id) {
 }
 
 
-function resultBuildFormatIcons( row, rec ) {
+function resultBuildFormatIcons( row, rec, is_mr ) {
 
 	var ress = rec.types_of_resource();
 
@@ -346,10 +346,16 @@ function resultBuildFormatIcons( row, rec ) {
 		}
 
 		var args = {};
-		args.page = RRESULT;
 		args[PARAM_OFFSET] = 0;
-		args[PARAM_MRID] = rec.doc_id();
 		args[PARAM_FORM] = modsFormatToMARC(res);
+
+		if(is_mr) {
+			args.page = RRESULT;
+			args[PARAM_MRID] = rec.doc_id();
+		} else {
+			args.page = RDETAIL
+			args[PARAM_RID] = rec.doc_id();
+		}
 
 		link.setAttribute("href", buildOPACLink(args));
 
