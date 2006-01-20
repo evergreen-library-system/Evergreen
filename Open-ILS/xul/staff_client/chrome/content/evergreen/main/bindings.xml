@@ -5,10 +5,7 @@
    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    xmlns:xbl="http://www.mozilla.org/xbl">
 
-	<binding id="groupbox-sizer">
-		<content>
-			<xul:label value="Testing"/>
-		</content>
+	<binding id="groupbox-sizer" extends="chrome://global/content/bindings/groupbox.xml#groupbox">
 	</binding>
 
 <!--
