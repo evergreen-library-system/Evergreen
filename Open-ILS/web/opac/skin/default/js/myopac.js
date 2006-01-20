@@ -545,6 +545,18 @@ function myOPACShowBookbags(force) {
 			'javascript:myOPACExpandBookbag("' + cont.id() + '","' + cont.name() + '");');
 		myOPACFetchBBItems( cont.id(), row );
 		dlink.setAttribute('href', 'javascript:myOPACDeleteBookbag("'+cont.id()+'");');
+
+		if( cont.public() ) {
+			unHideMe($n(row, 'myopac_bb_published_yes'));
+			var link = $n(row, 'myopac_bb_published_view');
+			link.setAttribute('href', buildContribLink( 'bbags.xml?bb='+cont.id(), false));  
+			link.setAttribute('target', '_blank' );
+			unHideMe(link);
+
+		} else { 
+			unHideMe($n(row, 'myopac_bb_published_no')); 
+		}
+
 		tbody.appendChild(row);	
 	}
 
@@ -641,7 +653,7 @@ function myOPACShowBBItem(r) {
 function myOPACCreateBookbag() {
 	var name = $('myopac_bookbag_new_name').value;	
 	if(!name) return;
-	var result = containerCreate( name );
+	var result = containerCreate( name, $('bb_public_yes').checked );
 	var code = checkILSEvent(result);
 	if(code) { alertILSEvent(code); return; }
 	myOPACShowBookbags(true);

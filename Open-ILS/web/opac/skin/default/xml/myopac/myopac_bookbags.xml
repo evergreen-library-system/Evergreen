@@ -10,13 +10,14 @@
 
 	<br/>
 
-	<div style='text-align: center; font-weight: bold;' class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
+	<div style='text-align: center; font-weight: bold;' 
+		class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
 	<div style='width: 99%; text-align: center'> <b>My Bookbags</b></div>
 	<br/>
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
-			<tr><td>Name</td><td># Items</td><td>Delete this bookbag?</td></tr>
+			<tr><td>Name</td><td># Items</td><td>Published</td><td>Delete this bookbag?</td></tr>
 		</thead>
 		<tbody id='myopac_bookbag_tbody'>
 			<tr id='myopac_bookbag_tr'>
@@ -24,7 +25,14 @@
 					<a href='javascript:void(0);' class='classic_link' name='myopac_expand_bookbag'> </a>
 				</td>
 				<td><span name='myopac_bookbag_item_count'> </span> <span>Items</span></td>
-				<td><a class='classic_link' href='javascript:void(0);' name='myopac_container_delete'>Delete</a></td>
+				<td>
+					<span name='myopac_bb_published_no' class='hide_me'>No</span>
+					<span name='myopac_bb_published_yes' class='hide_me'>Yes</span>
+					<a name='myopac_bb_published_view' class='classic_link hide_me'>(View)</a>
+				</td>
+				<td>
+					<a class='classic_link' href='javascript:void(0);' name='myopac_container_delete'>Delete</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -36,11 +44,21 @@
 			<tr><td>Create a new Bookbag</td></tr>
 		</thead>
 		<tbody>
-			<tr><td> 
-				<span style='padding-right: 5px;'>Enter the name of the new Bookbag: </span>
-				<input id='myopac_bookbag_new_name' type='text'> </input> 
-				<input onclick='myOPACCreateBookbag();' type='submit' value='&common.submit;'> </input>
-			</td>
+			<tr>
+				<td> 
+					<span style='padding-right: 5px;'>Enter the name of the new Bookbag: </span>
+					<input id='myopac_bookbag_new_name' type='text'> </input> 
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span style='padding: 5px;'>Publish this Bookbag</span>
+					<a class='classic_link' href='javascript:alert($("bb_publish_text").innerHTML);'>(<b>??</b>)</a>
+					<span>Yes</span> <input type='radio' name='bb_public' id='bb_public_yes'/>
+					<span>No</span> <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
+					<input style='padding-left: 10px;' onclick='myOPACCreateBookbag();' 
+						type='submit' value='&common.submit;'> </input>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -70,5 +88,11 @@
 			</tbody>
 		</table>
 	<!--</div>-->
+
+	<span id='bb_publish_text' class='hide_me'>
+		Publishing a Bookbag means that the contents of the Bookbag will be visible to others.  
+		To see the public view of a published Bookbag, click the "View" link in the 
+		"Published" column of the Bookbag list at the top of this page.
+	</span>
 </div>
 
