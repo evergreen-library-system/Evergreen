@@ -6,9 +6,9 @@ package config;
 use base qw/OpenILS::Application::Storage::CDBI/;
 #-------------------------------------------------------------------------------
 
-package config::non_cataloged_item;
+package config::non_cataloged_type;
 use base qw/config/;
-__PACKAGE__->table('config_non_cataloged_item');
+__PACKAGE__->table('config_non_cataloged_type');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/owning_lib name/);
 #-------------------------------------------------------------------------------
