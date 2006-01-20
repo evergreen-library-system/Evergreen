@@ -2,8 +2,7 @@
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
 tabpanel { border: 2px groove black; }
-caption { font-weight: bold; }
-groupbox { -moz-binding: url('chrome://evergreen/content/main/bindings.xml#groupbox-sizer'); }
+.shrinkable_groupbox { font-weight: bold; -moz-binding: url('chrome://evergreen/content/main/bindings.xml#caption'); }
 
 .my_overflow { overflow: auto; }
 

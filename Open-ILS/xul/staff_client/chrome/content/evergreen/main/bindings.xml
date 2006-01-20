@@ -5,38 +5,6 @@
    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    xmlns:xbl="http://www.mozilla.org/xbl">
 
-	<binding id="groupbox-sizer" extends="chrome://global/content/bindings/groupbox.xml#groupbox">
-	</binding>
-
-<!--
-  <binding id="groupbox-base">
-    <resources>
-      <stylesheet src="chrome://global/skin/groupbox.css"/>
-    </resources>
-  </binding>
-
-  <binding id="groupbox" extends="chrome://global/content/bindings/groupbox.xml#groupbox-base">
-    <content>
-      <xul:hbox class="groupbox-title" align="center" pack="start">
-        <children includes="caption"/>
-      </xul:hbox>
-      <xul:box flex="1" class="groupbox-body" xbl:inherits="orient,align,pack">
-        <children/>
-      </xul:box>
-    </content>
-
-    <implementation implements="nsIAccessibleProvider">
-      <property name="accessible">
-        <getter>
-          <![CDATA[
-            var accService = Components.classes["@mozilla.org/accessibilityService;1"].getService(Components.interfaces.nsIAccessibilityService);
-            return accService.createXULGroupboxAccessible(this);
-          ]]>
-        </getter>
-      </property>
-    </implementation>
-  </binding>
-
   <binding id="caption" extends="chrome://global/content/bindings/general.xml#basetext">
     <resources>
       <stylesheet src="chrome://global/skin/groupbox.css"/>
@@ -45,11 +13,10 @@
     <content>
       <children>
         <xul:image class="caption-icon" xbl:inherits="src=image"/>
-        <xul:label class="caption-text" flex="1"
+        <xul:label class="caption-text" flex="1" onclick="var n = document.getAnonymousNodes(parentNode.parentNode)[1]; if (n.hidden) { n.hidden = false; } else { n.hidden = true; }"
                    xbl:inherits="default,value=label,crop,accesskey"/>
       </children>
     </content>
   </binding>
--->
 
 </bindings>
