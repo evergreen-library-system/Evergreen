@@ -1229,10 +1229,12 @@ sub postfilter_search_multi_class_fts {
 				$asset_copy_table cp,
 				$cs_table cs,
 				$cl_table cl,
+				$br_table br,
 				$descendants d,
 				$metabib_record_descriptor ord,
 				($select) s
 			  WHERE	mrs.metarecord = s.metarecord
+				AND br.id = mrs.source
 				AND cn.record = mrs.source
 				AND cp.status = cs.id
 				AND cp.location = cl.id
@@ -1241,6 +1243,26 @@ sub postfilter_search_multi_class_fts {
 				AND cp.opac_visible IS TRUE
 				AND cs.holdable IS TRUE
 				AND cl.opac_visible IS TRUE
+				AND br.active IS TRUE
+				AND ord.record = mrs.source
+				$ot_filter
+				$of_filter
+			  ORDER BY 2 DESC
+		SQL
+	} else {
+		$select = <<"		SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	$asset_call_number_table cn,
+				$metabib_metarecord_source_map_table mrs,
+				$asset_copy_table cp,
+				$descendants d,
+				$metabib_record_descriptor ord,
+				($select) s
+			  WHERE	mrs.metarecord = s.metarecord
+				AND cn.record = mrs.source
+				AND cn.owning_lib = d.id
+				AND cp.call_number = cn.id
 				AND ord.record = mrs.source
 				$ot_filter
 				$of_filter
