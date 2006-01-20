@@ -14,14 +14,14 @@
 <vbox id="patron_info_sidebar" flex="1">
 	<groupbox id="PatronSummaryStatus_groupbox" flex="0"/>
 	<groupbox id="PatronSummarySurvey_groupbox" flex="0">
-		<caption id="pdsgbc" label="Surveys" />
+		<caption id="pdsgbc" label="Surveys" class="shrinkable_groupbox"/>
 		<vbox id="patron_surveys" />
 	</groupbox>
 	<groupbox id="PatronSummaryContact_groupbox" flex="1"/>
 </vbox>
 
 <groupbox id="PatronSummaryStatus_groupbox" orient="vertical">
-	<caption label="&staff.patron_display.status.caption;"/>
+	<caption label="&staff.patron_display.status.caption;" class="shrinkable_groupbox"/>
 	<grid id="PatronSummaryStatus_grid" flex="1"/>
 </groupbox>
 
@@ -77,7 +77,7 @@
 	<!--
 	<caption label="&staff.patron_display.contact.caption;"/>
 	-->
-	<caption label="ID/Contact Info"/>
+	<caption label="ID/Contact Info" class="shrinkable_groupbox"/>
 	<hbox id="pdcgbhb1">
 		<grid id="PatronSummaryContact_grid" />
 		<spacer id="pdcgbhbs1" flex="1"/>
@@ -157,7 +157,7 @@
 </grid>
 
 <groupbox id="PatronSummaryContact_mailing_address" orient="vertical">
-	<caption id="pdcmac" label="&staff.patron_display.mailing_address;"/>
+	<caption id="pdcmac" label="&staff.patron_display.mailing_address;" class="shrinkable_groupbox"/>
 	<label id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" />
 	<label id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" />
 	<hbox id="pdcmah">
@@ -168,7 +168,7 @@
 </groupbox>
 
 <groupbox id="PatronSummaryContact_physical_address" orient="vertical">
-	<caption id="pdcpac" label="&staff.patron_display.physical_address;"/>
+	<caption id="pdcpac" label="&staff.patron_display.physical_address;" class="shrinkable_groupbox"/>
 	<label id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" />
 	<label id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;" />
 	<hbox id="pdcpah">
