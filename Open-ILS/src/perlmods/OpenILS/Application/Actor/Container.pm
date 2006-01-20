@@ -95,6 +95,34 @@ sub bucket_flesh {
 
 
 __PACKAGE__->register_method(
+	method	=> "bucket_flesh_public",
+	api_name	=> "open-ils.actor.container.public.flesh",
+	argc		=> 3, 
+	notes		=> <<"	NOTES");
+		Fleshes a bucket by id
+		PARAMS(authtoken, bucketClass, bucketId)
+		bucketclasss include biblio, callnumber, copy, and user.  
+		bucketclass defaults to biblio.
+		If requestor ID is different than bucketOwnerId, requestor must have
+		VIEW_CONTAINER permissions.
+	NOTES
+
+sub bucket_flesh_public {
+
+	my($self, $client, $class, $bucket) = @_;
+
+	my $meth = $types{$class};
+	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
+	return undef unless ($bkt and $bkt->public);
+
+	$bkt->items( $apputils->simplereq( $svc,
+		"$meth"."_item.search.bucket.atomic", $bucket ) );
+
+	return $bkt;
+}
+
+
+__PACKAGE__->register_method(
 	method	=> "bucket_retrieve_class",
 	api_name	=> "open-ils.actor.container.retrieve_by_class",
 	argc		=> 3, 
