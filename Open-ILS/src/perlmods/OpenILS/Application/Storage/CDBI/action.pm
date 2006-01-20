@@ -6,6 +6,20 @@ package action;
 use base qw/OpenILS::Application::Storage::CDBI/;
 #-------------------------------------------------------------------------------
 
+package action::in_house_use;
+use base qw/action/;
+__PACKAGE__->table('action_in_house_use');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/item staff org_unit use_time/);
+#-------------------------------------------------------------------------------
+
+package action::non_cataloged_circulation;
+use base qw/action/;
+__PACKAGE__->table('action_non_cataloged_circulation');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/patron staff circ_lib item_type circ_time/);
+#-------------------------------------------------------------------------------
+
 package action::survey;
 use base qw/action/;
 __PACKAGE__->table('action_survey');

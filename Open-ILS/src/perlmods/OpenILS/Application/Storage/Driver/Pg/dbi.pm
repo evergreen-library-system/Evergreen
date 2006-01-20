@@ -144,6 +144,18 @@
 	action::circulation->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
+	package action::in_house_use;
+	
+	action::in_house_use->table( 'action.in_house_use' );
+	action::in_house_use->sequence( 'action.in_house_use_id_seq' );
+
+	#---------------------------------------------------------------------
+	package action::non_cataloged_circulation;
+	
+	action::non_cataloged_circulation->table( 'action.non_cataloged_circulation' );
+	action::non_cataloged_circulation->sequence( 'action.non_cataloged_circulation_id_seq' );
+
+	#---------------------------------------------------------------------
 	package action::open_circulation;
 	
 	action::open_circulation->table( 'action.open_circulation' );
@@ -172,6 +184,12 @@
 	action::survey_response->table( 'action.survey_response' );
 	action::survey_response->sequence( 'action.survey_response_id_seq' );
 	
+	#---------------------------------------------------------------------
+	package config::non_cataloged_type;
+	
+	config::non_cataloged_type->table( 'config.non_cataloged_type' );
+	config::non_cataloged_type->sequence( 'config.non_cataloged_type_id_seq' );
+
 	#---------------------------------------------------------------------
 	package config::copy_status;
 	

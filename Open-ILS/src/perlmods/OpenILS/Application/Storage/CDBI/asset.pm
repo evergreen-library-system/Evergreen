@@ -39,7 +39,7 @@ __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date ed
 				   edit_date copy_number status loan_duration circ_lib
 				   fine_level circulate deposit price ref opac_visible
 				   circ_as_type circ_modifier deposit_amount location
-				   holdable/ );
+				   holdable dummy_title dummy_author/ );
 
 #-------------------------------------------------------------------------------
 package asset::stat_cat;

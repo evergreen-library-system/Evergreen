@@ -65,6 +65,9 @@ sub _init {
 		'Fieldmapper::container::call_number_bucket_item'	=> { hint => 'ccnbi'   },
 		'Fieldmapper::container::biblio_record_entry_bucket_item'		=> { hint => 'cbrebi'   },
 
+		'Fieldmapper::action::in_house_use'		=> { hint => 'aihu'   },
+		'Fieldmapper::action::non_cataloged_circulation'=> { hint => 'ancc'   },
+
 		'Fieldmapper::action::survey'			=> { hint		=> 'asv',
 								     proto_fields	=> { questions	=> 1,
 								     			     responses	=> 1 } },
@@ -94,8 +97,6 @@ sub _init {
 		'Fieldmapper::actor::org_address'		=> { hint => 'aoa'    },
 		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },
 		'Fieldmapper::actor::card'			=> { hint => 'ac'    },
-		'Fieldmapper::config::standing'			=> { hint => 'cst'   },
-		'Fieldmapper::config::copy_status'		=> { hint => 'ccs'   },
 		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'actsc',
 								     proto_fields	=> { entries => 1 } },
 		'Fieldmapper::actor::stat_cat_entry'		=> { hint => 'actsce'    },
@@ -181,6 +182,9 @@ sub _init {
 		'Fieldmapper::config::rules::recuring_fine'	=> { hint => 'crrf'  },
 		'Fieldmapper::config::rules::circ_duration'	=> { hint => 'crcd'  },
 		'Fieldmapper::config::rules::max_fine'		=> { hint => 'crmf'  },
+		'Fieldmapper::config::non_cataloged_type'	=> { hint => 'cnct'   },
+		'Fieldmapper::config::standing'			=> { hint => 'cst'   },
+		'Fieldmapper::config::copy_status'		=> { hint => 'ccs'   },
 
 		'Fieldmapper::authority::full_rec'		=> { hint => 'afr'  },
 		'Fieldmapper::authority::record_descriptor'	=> { hint => 'ard'  },
