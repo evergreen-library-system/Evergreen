@@ -13,6 +13,7 @@ CREATE TABLE container.copy_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
+	public	BOOL	NOT NULL DEFAULT FALSE,
 	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -46,6 +47,7 @@ CREATE TABLE container.call_number_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
+	public	BOOL	NOT NULL DEFAULT FALSE,
 	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -79,6 +81,7 @@ CREATE TABLE container.biblio_record_entry_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
+	public	BOOL	NOT NULL DEFAULT FALSE,
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -112,6 +115,7 @@ CREATE TABLE container.user_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
+	public	BOOL	NOT NULL DEFAULT FALSE,
 	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)
 );
 

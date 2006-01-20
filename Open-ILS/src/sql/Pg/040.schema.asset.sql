@@ -36,6 +36,8 @@ CREATE TABLE asset.copy (
 	ref		BOOL				NOT NULL DEFAULT FALSE,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,
+	dummy_title	TEXT,
+	dummy_author	TEXT,
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE
 );
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
@@ -123,6 +125,8 @@ CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
 CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
 CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_number_dewey(label));
 CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (upper(label),id,owning_lib);
+
+INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
 CREATE TABLE asset.call_number_note (
 	id		BIGSERIAL			PRIMARY KEY,

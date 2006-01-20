@@ -40,4 +40,6 @@ CREATE INDEX biblio_record_note_record_idx ON biblio.record_note ( record );
 CREATE INDEX biblio_record_note_creator_idx ON biblio.record_note ( creator );
 CREATE INDEX biblio_record_note_editor_idx ON biblio.record_note ( editor );
 
+INSERT INTO biblio.record_entry VALUES (-1,'','AUTOGEN','-1',1,1,NOW(),NOW(),FALSE,FALSE,1,'','FOO');
+
 COMMIT;

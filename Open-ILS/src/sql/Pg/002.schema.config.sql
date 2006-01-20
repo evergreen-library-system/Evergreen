@@ -146,6 +146,36 @@ INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject'
 -- INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */
 
+CREATE TABLE config.non_cataloged_type (
+	id		SERIAL	PRIMARY KEY,
+	owning_lib	INT	NOT NULL, -- REFERENCES actor.org_unit (id),
+	name		TEXT	NOT NULL UNIQUE
+);
+COMMENT ON TABLE config.non_cataloged_type IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Types of valid non-cataloged items.
+ *
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
+
+INSERT INTO config.non_cataloged_type ( owning_lib, name ) VALUES ( 1, 'Paperback Book' );
+
 CREATE TABLE config.identification_type (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE

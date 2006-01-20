@@ -4,6 +4,23 @@ BEGIN;
 
 CREATE SCHEMA action;
 
+CREATE TABLE action.in_house_use (
+	id		SERIAL				PRIMARY KEY,
+	item		BIGINT				NOT NULL REFERENCES asset.copy (id),
+	staff		INT				NOT NULL REFERENCES actor.usr (id),
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE action.non_cataloged_circulation (
+	id		SERIAL				PRIMARY KEY,
+	patron		INT				NOT NULL REFERENCES actor.usr (id),
+	staff		INT				NOT NULL REFERENCES actor.usr (id),
+	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id),
+	item_type	INT				NOT NULL REFERENCES config.non_cataloged_type (id),
+	circ_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE action.survey (
 	id		SERIAL	PRIMARY KEY,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
