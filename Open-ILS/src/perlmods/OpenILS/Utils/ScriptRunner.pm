@@ -196,7 +196,7 @@ sub insert {
 				)
 			);
 		} else {
-			$self->context->property_by_path($key);
+			$self->context->property_by_path($key, "");
 		}
 
 	} else {
