@@ -103,6 +103,14 @@
 		</desc>
 	</event>
 
+	<event code='1507' textcode='ORG_UNIT_NOT_FOUND'>
+		<desc>
+			Someone attempted to retrieve an org unit object from the 
+			system and the object was not found.
+		</desc>
+	</event>
+
+
 
 
 	<!-- ================================================================ -->

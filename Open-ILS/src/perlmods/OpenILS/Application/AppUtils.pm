@@ -610,4 +610,17 @@ sub fetch_callnumber {
 	return ( $cn, $evt );
 }
 
+sub fetch_org_unit {
+	my( $self, $id ) = @_;
+	$logger->debug("Fetching org unit $id");
+	my $evt = undef;
+
+	my $org = $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.actor.org_unit.retrieve', $id );
+	$evt = OpenILS::Event->new( 'ORG_UNIT_NOT_FOUND', id => $id ) unless $org;
+
+	return ($org, $evt);
+}
+
 1;
