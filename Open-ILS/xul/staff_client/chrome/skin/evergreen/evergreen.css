@@ -4,6 +4,7 @@
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
+groupbox { -moz-binding: url('chrome://evergreen/content/main/bindings.xml#groupbox-sizer'); }
 .my_overflow { overflow: auto; }
 
 .text_left { text-align: left; }
