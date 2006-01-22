@@ -146,15 +146,15 @@ sub handler {
 			my $resp;
 			try {
 				# un-if(0) this block to enable param checking based on signature and argc
-				if (0) {
-					if (@args <= $self->argc) {
+				if (1) {
+					if (@args < $coderef->argc) {
 						die	"Not enough params passed to ".
-							$self->api_name." : requires ". $self->argc
+							$coderef->api_name." : requires ". $coderef->argc
 					}
 					if (@args) {
-						if (exists $self->signature->{params}) {
-							for my $p (0 .. scalar(@{ $self->signature->{params} }) - 1 ) {
-								my $s = $self->signature->{params}->[$p];
+						if (exists $coderef->signature->{params}) {
+							for my $p (0 .. scalar(@{ $coderef->signature->{params} }) - 1 ) {
+								my $s = $coderef->signature->{params}->[$p];
 								my $a = $args[$p];
 								if ($s->{class} && JSON->lookup_hint(ref $a) ne $s->{class}) {
 									die "Incorrect param class at position $p : should be a '$$s{class}'";
@@ -223,6 +223,35 @@ sub handler {
 				$in_request++;
 				my $resp;
 				try {
+					# un-if(0) this block to enable param checking based on signature and argc
+					if (1) {
+						if (@args < $aref->[2]->argc) {
+							die	"Not enough params passed to ".
+								$aref->[2]->api_name." : requires ". $aref->[2]->argc
+						}
+						if (@args) {
+							if (exists $aref->[2]->signature->{params}) {
+								for my $p (0 .. scalar(@{ $aref->[2]->signature->{params} }) - 1 ) {
+									my $s = $aref->[2]->signature->{params}->[$p];
+									my $a = $args[$p];
+									if ($s->{class} && JSON->lookup_hint(ref $a) ne $s->{class}) {
+										die "Incorrect param class at position $p : should be a '$$s{class}'";
+									} elsif ($s->{type}) {
+										if (lc($s->{type}) eq 'object' && $a !~ /HASH/o) {
+											die "Incorrect param type at position $p : should be an 'object'";
+										} elsif (lc($s->{type}) eq 'array' && $a !~ /ARRAY/o) {
+											die "Incorrect param type at position $p : should be an 'array'";
+										} elsif (lc($s->{type}) eq 'number' && (ref($a) || $a !~ /^-?\d+(?:\.\d+)?$/o)) {
+											die "Incorrect param type at position $p : should be a 'number'";
+										} elsif (lc($s->{type}) eq 'string' && ref($a)) {
+											die "Incorrect param type at position $p : should be a 'string'";
+										}
+									}
+								}
+							}
+						}
+					}
+
 					my $start = time;
 					my $response = $aref->[2]->run( $aref->[0], @{$aref->[1]} );
 					my $time = sprintf '%.3f', time - $start;
@@ -372,6 +401,7 @@ sub register_method {
 
 	__PACKAGE__->register_method(
 		stream => 0,
+		argc => $args{argc},
 		api_name => $args{api_name}.'.atomic',
 		method => 'make_stream_atomic',
 		notes => "This is a system generated method.  Please see the definition for $args{api_name}",
