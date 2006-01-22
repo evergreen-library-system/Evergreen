@@ -278,24 +278,38 @@ sub is_registered {
 	return exists($_METHODS[$api_level]{$api_name});
 }
 
+
+sub normalize_whitespace {
+	my $txt = shift;
+
+	$txt =~ s/^\s+//gso;
+	$txt =~ s/\s+$//gso;
+	$txt =~ s/\s+/ /gso;
+	$txt =~ s/\n//gso;
+	$txt =~ s/\. /\.  /gso;
+
+	return $txt;
+}
+
 sub parse_notes_signature {
 	my $string = shift;
-	my @lines = split(/\n/so, $string);
+	my @chunks = split(/\@/so, $string);
 
 	my @params;
 	my $ret;
 	my $desc = '';
-	for (@lines) {
-		if (/^\s*\@return (.+)$/) {
-			$ret = [$1];
-		} elsif (/^\s*\@param (\w+) \b(.+)$/) {
-			push @params, [ $1, $2 ];
+	for (@chunks) {
+		if (/^return (.+)$/so) {
+			$ret = [normalize_whitespace($1)];
+		} elsif (/^param (\w+) \b(.+)$/so) {
+			push @params, [ $1, normalize_whitespace($2) ];
 		} else {
+			$desc .= '@' if $desc;
 			$desc .= $_;
 		}
 	}
 
-	return [$desc,\@params, $ret];
+	return [normalize_whitespace($desc),\@params, $ret];
 }
 
 sub parse_array_signature {
@@ -338,16 +352,14 @@ sub register_method {
 	$args{api_name} ||= $args{server_class} . '.' . $args{method};
 
 	# un-if(0) this block to enable signature parsing
-	if (0) {
-		if (!$args{signature}) {
-			if ($args{notes} && !ref($args{notes})) {
-				$args{signature} =
-					parse_array_signature( parse_notes_signature( $args{notes} ) );
-			}
-		} elsif( ref($args{signature}) eq 'ARRAY') {
+	if (!$args{signature}) {
+		if ($args{notes} && !ref($args{notes})) {
 			$args{signature} =
-				parse_array_signature( $args{signature} );
+				parse_array_signature( parse_notes_signature( $args{notes} ) );
 		}
+	} elsif( ref($args{signature}) eq 'ARRAY') {
+		$args{signature} =
+			parse_array_signature( $args{signature} );
 	}
 	
 	unless ($args{object_hint}) {
@@ -361,7 +373,8 @@ sub register_method {
 	__PACKAGE__->register_method(
 		stream => 0,
 		api_name => $args{api_name}.'.atomic',
-		method => 'make_stream_atomic'
+		method => 'make_stream_atomic',
+		notes => "This is a system generated method.  Please see the definition for $args{api_name}",
 	) if ($args{stream});
 }
 
@@ -594,13 +607,31 @@ sub introspect {
 __PACKAGE__->register_method(
 	stream => 1,
 	method => 'introspect',
-	api_name => 'opensrf.system.method.all'
+	api_name => 'opensrf.system.method.all',
+	argc => 0,
+	signature => {
+		desc => q/This method is used to introspect an entire OpenSRF Application/,
+		return => {
+			desc => q/A stream of objects describing the methods available via this OpenSRF Application/,
+			type => 'object'
+		}
+	},
 );
 __PACKAGE__->register_method(
 	stream => 1,
 	method => 'introspect',
 	argc => 1,
-	api_name => 'opensrf.system.method'
+	api_name => 'opensrf.system.method',
+	argc => 1,
+	signature => {
+		desc => q/Use this method to get the definition of a single OpenSRF Method/,
+		params => [
+			{ desc => q/The method to introspect/,
+			  type => 'string' },
+		],
+		return => { desc => q/An object describing the method requested, or an error if it can't be found/,
+			    type => 'object' }
+	},
 );
 
 sub echo_method {
@@ -615,7 +646,14 @@ __PACKAGE__->register_method(
 	stream => 1,
 	method => 'echo_method',
 	argc => 1,
-	api_name => 'opensrf.system.echo'
+	api_name => 'opensrf.system.echo',
+	signature => {
+		desc => q/A test method that will echo back it's arguments in a streaming response/,
+		params => [
+			{ desc => q/One or more arguments to echo back/ }
+		],
+		return => { desc => q/A stream of the arguments passed/ }
+	},
 );
 
 sub make_stream_atomic {
