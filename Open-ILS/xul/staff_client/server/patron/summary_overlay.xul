@@ -17,7 +17,7 @@
 		<caption id="pdsgbc" label="Surveys" class="shrinkable_groupbox"/>
 		<vbox id="patron_surveys" />
 	</groupbox>
-	<groupbox id="PatronSummaryContact_groupbox" flex="1"/>
+	<groupbox id="PatronSummaryContact_groupbox" flex="0"/>
 </vbox>
 
 <groupbox id="PatronSummaryStatus_groupbox" orient="vertical">
