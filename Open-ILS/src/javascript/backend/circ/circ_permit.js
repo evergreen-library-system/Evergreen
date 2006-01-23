@@ -14,6 +14,7 @@ log_debug('CIRC PERMIT: permit circ on ' +
 	', Patron fines: '		+ patron_info.fines +
 	', Copy status: '			+ copy.status.name +
 	', Copy location: '		+ copy.location.name +
+	', Is Renewal: '			+ ( (env.isRenewal) ? "yes" : "no" ) +
 	'');
 
 

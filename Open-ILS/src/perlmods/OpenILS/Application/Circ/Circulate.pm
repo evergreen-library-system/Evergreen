@@ -71,7 +71,8 @@ sub create_circ_ctx {
 	my $evt;
 	my $ctx = {};
 	$ctx->{patron} = $patron;
-	$ctx->{type} = $params{type};
+	$ctx->{type}	= $params{type};
+	$ctx->{isrenew} = $params{isrenew};
 
 	if(!defined($cache{patron_standings})) {
 		$cache{patron_standings} = $apputils->fetch_patron_standings();
@@ -193,6 +194,9 @@ sub _build_circ_script_runner {
 	$runner->insert( 'result', {} );
 	$runner->insert( 'result.event', 'SUCCESS' );
 
+	$runner->insert('env', {});
+	$runner->insert('env.isRenewal', 1) if $ctx->{isrenew};
+
 	if(ref($ctx->{patron_circ_summary})) {
 		$runner->insert( 'patron_info', {} );
 		$runner->insert( 'patron_info.items_out', $ctx->{patron_circ_summary}->[0] );
@@ -261,6 +265,7 @@ sub permit_circ {
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
+		isrenew							=> ($isrenew) ? 1 : 0,
 		);
 	return $evt if $evt;
 
