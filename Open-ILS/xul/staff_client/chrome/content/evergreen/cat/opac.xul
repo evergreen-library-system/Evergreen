@@ -105,8 +105,16 @@
 					'passthru_content_params' : { 'authtoken' : session, 'authtime' : authtime },
 					'on_url_load' : function(f) {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-						var win = typeof f.contentWindow.wrappedJSObject.attachEvt == 'undefined' ?
-							f.contentWindow : f.contentWindow.wrappedJSObject;
+						var win;
+						try {
+							if (typeof f.contentWindow.wrappedJSObject.attachEvt != 'undefined') {
+								win = f.contentWindow.wrappedJSObject;
+							} else {
+								win = f.contentWindow;
+							}
+						} catch(E) {
+							win = f.contentWindow;
+						}
 						win.attachEvt("rdetail", "recordRetrieved",
 							function(id){
 								try {
