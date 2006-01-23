@@ -74,7 +74,7 @@
 
 				for (var i = 0; i < g.volumes.length; i++) {
 					var row = document.createElement('row'); rows.appendChild(row);
-					var lib_label = document.createElement('label'); row.appendChild(label);
+					var lib_label = document.createElement('label'); row.appendChild(lib_label);
 					var tb = document.createElement('textbox'); row.appendChild(tb);
 
 					var lib_id = g.volumes[i].owning_lib();
