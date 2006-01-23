@@ -47,20 +47,26 @@
 
 		g.special_exception = {
 			'Call Number' : function(label,value) {
-				g.network.request(
-					api.FM_ACN_RETRIEVE.app,
-					api.FM_ACN_RETRIEVE.method,
-					[ value ],
-					function(req) {
-						var cn = '??? id = ' + value;
-						try {
-							cn = req.getResultObject().label();
-						} catch(E) {
-							g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
+				if (value>0) { /* an existing call number */
+					g.network.request(
+						api.FM_ACN_RETRIEVE.app,
+						api.FM_ACN_RETRIEVE.method,
+						[ value ],
+						function(req) {
+							var cn = '??? id = ' + value;
+							try {
+								cn = req.getResultObject().label();
+							} catch(E) {
+								g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
+							}
+							label.setAttribute('value',cn);
 						}
-						label.setAttribute('value',cn);
+					);
+i				} else { /* a yet to be created call number */
+					if (xulG.callnumbers) {
+						label.setAttribute('value',xulG.callnumbers[value]);
 					}
-				);
+				}
 			},
 			'Creator' : function(label,value) {
 				g.network.request(
@@ -367,30 +373,56 @@
 				bc_label.setAttribute('value',bc);
 			}
 
-			
+		
+			var groupbox; var caption; var vbox; var grid; var rows;
+			if (g.copies.length == 1) {
+				groupbox = document.createElement('groupbox'); rp.appendChild(groupbox);
+				caption = document.createElement('caption'); groupbox.appendChild(caption);
+				caption.setAttribute('label','Fields');
+				vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
+				grid = util.widgets.make_grid( [ {}, { 'flex' : 1 } ] ); vbox.appendChild(grid);
+				grid.setAttribute('flex','1');
+				rows = grid.lastChild;
+			}	
 			for (var i = 0; i < g.editable_field_names.length; i++) {
 				try {
 					var f = g.editable_field_names[i]; var fn = f[0];
-					var groupbox = document.createElement('groupbox'); rp.appendChild(groupbox);
-					var caption = document.createElement('caption'); groupbox.appendChild(caption);
-					caption.setAttribute('label',fn);
-					var vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
-					var grid = util.widgets.make_grid( [ { 'flex' : 1 }, {} ] ); vbox.appendChild(grid);
-					grid.setAttribute('flex','1');
-					var rows = grid.lastChild;
+					if (g.copies.length != 1) {
+						groupbox = document.createElement('groupbox'); rp.appendChild(groupbox);
+						caption = document.createElement('caption'); groupbox.appendChild(caption);
+						caption.setAttribute('label',fn);
+						vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
+						grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
+						grid.setAttribute('flex','1');
+						rows = grid.lastChild;
+					}
 					for (var j in g.summary[fn]) {
 						var value = j; var count = g.summary[fn][j];
 						var row = document.createElement('row'); rows.appendChild(row);
+						if (g.copies.length==1) {
+							var label0 = document.createElement('label'); row.appendChild(label0);
+							label0.setAttribute('value',fn);
+						}
 						var label1 = document.createElement('label'); row.appendChild(label1);
 						if (g.special_exception[ fn ]) {
 							g.special_exception[ fn ]( label1, value );
 						} else {
 							label1.setAttribute('value',value);
 						}
-						var label2 = document.createElement('label'); row.appendChild(label2);
-						label2.setAttribute('value',count + ' copies');
+						if (g.copies.length!=1) {
+							var label2 = document.createElement('label'); row.appendChild(label2);
+							label2.setAttribute('value',count + ' copies');
+						}
 					}
-					var hbox = document.createElement('hbox'); vbox.appendChild(hbox);
+					var hbox = document.createElement('hbox'); 
+					if (g.copies.length==1) {
+						var row = document.createElement('row'); rows.appendChild(row);
+						row.appendChild(document.createElement('spacer'));
+						row.appendChild(document.createElement('spacer'));
+						row.appendChild(hbox);
+					} else {
+						vbox.appendChild(hbox);
+					}
 					if (f[1].input && g.edit) {
 						try {
 							var spacer = document.createElement('spacer'); hbox.appendChild(spacer);
