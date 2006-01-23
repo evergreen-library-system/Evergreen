@@ -355,7 +355,7 @@ i				} else { /* a yet to be created call number */
 			var rp = document.getElementById('right_pane');
 			util.widgets.remove_children( rp );
 
-			var grid = util.widgets.make_grid( [ { 'flex' : '1' }, {} ] );
+			var grid = util.widgets.make_grid( [ { 'flex' : '1' } ] );
 			cns.appendChild(grid);
 			for (var i in g.summary['Call Number']) {
 				var cn_id = i; var count = g.summary['Call Number'][i];
@@ -363,7 +363,8 @@ i				} else { /* a yet to be created call number */
 				var cn_label = document.createElement('label'); row.appendChild(cn_label);
 				g.special_exception['Call Number']( cn_label, cn_id );
 				var count_label = document.createElement('label'); row.appendChild(count_label);
-				count_label.setAttribute('value',count + ' copies');
+				var unit = count == 1 ? 'copy' : 'copies';
+				count_label.setAttribute('value',count + ' ' + unit);
 			}
 
 			for (var i in g.summary['Barcode']) {
@@ -396,12 +397,14 @@ i				} else { /* a yet to be created call number */
 						grid.setAttribute('flex','1');
 						rows = grid.lastChild;
 					}
+					var row;
 					for (var j in g.summary[fn]) {
 						var value = j; var count = g.summary[fn][j];
-						var row = document.createElement('row'); rows.appendChild(row);
+						row = document.createElement('row'); rows.appendChild(row);
 						if (g.copies.length==1) {
 							var label0 = document.createElement('label'); row.appendChild(label0);
 							label0.setAttribute('value',fn);
+							label0.setAttribute('style','font-weight: bold');
 						}
 						var label1 = document.createElement('label'); row.appendChild(label1);
 						if (g.special_exception[ fn ]) {
@@ -411,14 +414,13 @@ i				} else { /* a yet to be created call number */
 						}
 						if (g.copies.length!=1) {
 							var label2 = document.createElement('label'); row.appendChild(label2);
-							label2.setAttribute('value',count + ' copies');
+							var unit = count == 1 ? 'copy' : 'copies';
+							label2.setAttribute('value',count + ' ' + unit);
 						}
 					}
 					var hbox = document.createElement('hbox'); 
 					if (g.copies.length==1) {
-						var row = document.createElement('row'); rows.appendChild(row);
-						row.appendChild(document.createElement('spacer'));
-						row.appendChild(document.createElement('spacer'));
+						row.setAttribute('style','border-bottom: dotted black thin');
 						row.appendChild(hbox);
 					} else {
 						vbox.appendChild(hbox);
@@ -454,7 +456,7 @@ i				} else { /* a yet to be created call number */
 		<caption id="caption" label="Copy Viewer"/>
 		<hbox id="nav" hidden="true">
 			<spacer flex="1"/>
-			<button id="save" label="Modify these Copies" 
+			<button id="save" label="Modify" 
 				oncommand="g.stash_and_close();"/>
 		</hbox>
 		<hbox flex="1">
