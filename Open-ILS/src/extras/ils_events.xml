@@ -110,6 +110,19 @@
 		</desc>
 	</event>
 
+	<event code='1508' textcode='STAT_CAT_NOT_FOUND'>
+		<desc> Stat cat object does not exist </desc>
+	</event>
+
+	<event code='1509' textcode='STAT_CAT_ENTRY_NOT_FOUND'>
+		<desc> Stat cat entry object does not exist </desc>
+	</event>
+
+	<event code='1510' textcode='STAT_CAT_ENTRY_MAP_NOT_FOUND'>
+		<desc> Stat cat entry map object does not exist </desc>
+	</event>
+
+
 
 
 

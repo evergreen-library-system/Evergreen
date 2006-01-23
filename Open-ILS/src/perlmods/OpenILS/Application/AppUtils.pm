@@ -623,4 +623,26 @@ sub fetch_org_unit {
 	return ($org, $evt);
 }
 
+sub fetch_stat_cat {
+	my( $self, $type, $id ) = @_;
+	my( $cat, $evt );
+	$logger->debug("Fetching $type stat cat: $id");
+	$cat = $self->simplereq(
+		'open-ils.storage', 
+		"open-ils.storage.direct.$type.stat_cat.retrieve", $id );
+	$evt = OpenILS::Event->new( 'STAT_CAT_NOT_FOUND', id => $id ) unless $cat;
+	return ( $cat, $evt );
+}
+
+sub fetch_stat_cat_entry {
+	my( $self, $type, $id ) = @_;
+	my( $entry, $evt );
+	$logger->debug("Fetching $type stat cat entry: $id");
+	$entry = $self->simplereq(
+		'open-ils.storage', 
+		"open-ils.storage.direct.$type.stat_cat_entry.retrieve", $id );
+	$evt = OpenILS::Event->new( 'STAT_CAT_ENTRY_NOT_FOUND', id => $id ) unless $entry;
+	return ( $entry, $evt );
+}
+
 1;

@@ -17,6 +17,7 @@ package OpenILS::Application::Circ::StatCat;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
+use OpenSRF::Utils::Logger qw($logger);
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
@@ -42,7 +43,6 @@ sub retrieve_stat_cats {
 		$method = "open-ils.storage.ranged.fleshed.asset.stat_cat.all.atomic"; 
 	}
 
-
 	my $user_obj = $apputils->check_user_session($user_session); 
 	if(!$orgid) { $orgid = $user_obj->home_ou; }
 	my $cats = $apputils->simple_scalar_request(
@@ -50,7 +50,6 @@ sub retrieve_stat_cats {
 
 	return [ sort { $a->name cmp $b->name } @$cats ];
 }
-
 
 
 __PACKAGE__->register_method(
@@ -101,8 +100,6 @@ sub retrieve_ranged_union_stat_cats {
 
 
 
-
-
 __PACKAGE__->register_method(
 	method	=> "stat_cat_create",
 	api_name	=> "open-ils.circ.stat_cat.asset.create");
@@ -114,21 +111,29 @@ __PACKAGE__->register_method(
 sub stat_cat_create {
 	my( $self, $client, $user_session, $stat_cat ) = @_;
 
-	if(!$stat_cat) {
-		throw OpenSRF::EX::ERROR
-			("stat_cat.*.create requires a stat_cat object");
-	}
-
-	my $user_obj = $apputils->check_user_session($user_session); 
-	my $orgid = $user_obj->home_ou();
-
 	my $method = "open-ils.storage.direct.actor.stat_cat.create";
 	my $entry_create = "open-ils.storage.direct.actor.stat_cat_entry.create";
+	my $perm = 'CREATE_PATRON_STAT_CAT';
+	my $eperm = 'CREATE_PATRON_STAT_CAT_ENTRY';
 
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat.create";
 		$entry_create = "open-ils.storage.direct.asset.stat_cat_entry.create";
+		$perm = 'CREATE_COPY_STAT_CAT_ENTRY';
 	}
+
+	#my $user_obj = $apputils->check_user_session($user_session); 
+	#my $orgid = $user_obj->home_ou();
+	my( $user_obj, $evt ) = $apputils->checkses($user_session);
+	return $evt if $evt;
+	$evt = $apputils->check_perms($user_obj->id, $stat_cat->owner, $perm);
+	return $evt if $evt;
+
+	if($stat_cat->entries) {
+		$evt = $apputils->check_perms($user_obj->id, $stat_cat->owner, $eperm);
+		return $evt if $evt;
+	}
+
 
 	my $session = $apputils->start_db_session();
 	my $newid = _create_stat_cat($session, $stat_cat, $method);
@@ -142,14 +147,14 @@ sub stat_cat_create {
 
 	$apputils->commit_db_session($session);
 
-	warn "Stat cat creation successful with id $newid\n";
+	$logger->debug("Stat cat creation successful with id $newid");
 
+	my $orgid = $user_obj->home_ou;
 	if( $self->api_name =~ /asset/ ) {
 		return _flesh_asset_cat($newid, $orgid);
 	} else {
 		return _flesh_user_cat($newid, $orgid);
 	}
-
 }
 
 
@@ -236,12 +241,18 @@ __PACKAGE__->register_method(
 sub update_stat_entry {
 	my( $self, $client, $user_session, $entry ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
 
 	my $method = "open-ils.storage.direct.actor.stat_cat_entry.update";
+	my $perm = 'UPDATE_PATRON_STAT_CAT_ENTRY';
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat_entry.update";
+		$perm = 'UPDATE_COPY_STAT_CAT_ENTRY';
 	}
+
+	my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+	$evt = $apputils->check_perms( $user_obj->id, $entry->owner, $perm );
+	return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
 	my $req = $session->request($method, $entry); 
@@ -263,12 +274,17 @@ __PACKAGE__->register_method(
 sub update_stat {
 	my( $self, $client, $user_session, $cat ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
-
 	my $method = "open-ils.storage.direct.actor.stat_cat.update";
+	my $perm = 'UPDATE_PATRON_STAT_CAT';
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat.update";
+		$perm = 'UPDATE_COPY_STAT_CAT';
 	}
+
+	my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+	$evt = $apputils->check_perms( $user_obj->id, $cat->owner, $perm );
+	return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
 	my $req = $session->request($method, $cat); 
@@ -290,17 +306,19 @@ __PACKAGE__->register_method(
 sub create_stat_entry {
 	my( $self, $client, $user_session, $entry ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
-
-	$entry->clear_id();
-	use Data::Dumper;
-	warn Dumper($entry);
-
 	my $method = "open-ils.storage.direct.actor.stat_cat_entry.create";
+	my $perm = 'CREATE_PATRON_STAT_CAT_ENTRY';
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat_entry.create";
+		$perm = 'CREATE_COPY_STAT_CAT_ENTRY';
 	}
 
+	my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+	$evt = $apputils->check_perms( $user_obj->id, $entry->owner, $perm );
+	return $evt if $evt;
+
+	$entry->clear_id();
 	my $session = $apputils->start_db_session();
 	my $req = $session->request($method, $entry); 
 	my $status = $req->gather(1);
@@ -323,18 +341,38 @@ __PACKAGE__->register_method(
 sub create_stat_map {
 	my( $self, $client, $user_session, $map ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
 
-	warn "Creating stat_cat_map\n";
-
-	$map->clear_id();
+	my ( $evt, $copy, $volume, $patron, $user_obj );
 
 	my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.create";
 	my $ret = "open-ils.storage.direct.actor.stat_cat_entry_user_map.retrieve";
+	my $perm = 'CREATE_PATRON_STAT_CAT_ENTRY_MAP';
+	my $perm_org;
+
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.create";
 		$ret = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.retrieve";
+		$perm = 'CREATE_COPY_STAT_CAT_ENTRY_MAP';
+		( $copy, $evt ) = $apputils->fetch_copy($map->owning_copy);
+		return $evt if $evt;
+		( $volume, $evt ) = $apputils->fetch_callnumber($copy->call_number);
+		return $evt if $evt;
+		$perm_org = $volume->owning_lib;
+
+	} else {
+		($patron, $evt) = $apputils->fetch_user($map->target_usr);
+		return $evt if $evt;
+		$perm_org = $patron->home_ou;
 	}
+
+	( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+	$evt = $apputils->check_perms( $user_obj->id, $perm_org, $perm );
+	return $evt if $evt;
+
+	$logger->debug( $user_obj->id . " creating new stat cat map" );
+
+	$map->clear_id();
 
 	my $session = $apputils->start_db_session();
 	my $req = $session->request($method, $map); 
@@ -358,14 +396,33 @@ __PACKAGE__->register_method(
 sub update_stat_map {
 	my( $self, $client, $user_session, $map ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
-
-	warn "Updating stat_cat_map\n";
+	my ( $evt, $copy, $volume, $patron, $user_obj );
 
 	my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
+	my $perm = 'UPDATE_PATRON_STAT_ENTRY_MAP';
+	my $perm_org;
+
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.update";
+		$perm = 'UPDATE_COPY_STAT_ENTRY_MAP';
+		( $copy, $evt ) = $apputils->fetch_copy($map->owning_copy);
+		return $evt if $evt;
+		( $volume, $evt ) = $apputils->fetch_callnumber($copy->call_number);
+		return $evt if $evt;
+		$perm_org = $volume->owning_lib;
+
+	} else {
+		($patron, $evt) = $apputils->fetch_user($map->target_usr);
+		return $evt if $evt;
+		$perm_org = $patron->home_ou;
 	}
+
+
+	( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+	$evt = $apputils->check_perms( $user_obj->id, $perm_org, $perm );
+	return $evt if $evt;
+
 
 	my $session = $apputils->start_db_session();
 	my $req = $session->request($method, $map); 
@@ -389,7 +446,9 @@ __PACKAGE__->register_method(
 sub retrieve_maps {
 	my( $self, $client, $user_session, $target ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+
+	my( $user_obj, $evt ) = $apputils->checkses($user_session); 
+	return $evt if $evt;
 
 	my	$method = "open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy.atomic";
 	if($self->api_name =~ /actor/ ) {
@@ -413,10 +472,26 @@ __PACKAGE__->register_method(
 
 sub delete_stats {
 	my( $self, $client, $user_session, $target ) = @_;
-	my $user_obj = $apputils->check_user_session($user_session); 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	
+	my $cat;
+
 	my $type = "actor";
-	if($self->api_name =~ /asset/) { $type = "asset"; }
+	my $perm = 'DELETE_PATRON_STAT_CAT';
+	if($self->api_name =~ /asset/) { 
+		$type = "asset"; 
+		$perm = 'DELETE_COPY_STAT_CAT';
+	}
+
+	my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+
+	( $cat, $evt ) = $apputils->fetch_stat_cat( $type, $target );
+	return $evt if $evt;
+
+	$evt = $apputils->check_perms( $user_obj->id, $cat->owner, $perm );
+	return $evt if $evt;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	return _delete_stats($session, $target, $type);
 }
 
@@ -442,10 +517,25 @@ __PACKAGE__->register_method(
 
 sub delete_entry {
 	my( $self, $client, $user_session, $target ) = @_;
-	my $user_obj = $apputils->check_user_session($user_session); 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
 	my $type = "actor";
-	if($self->api_name =~ /asset/) { $type = "asset"; }
+	my $perm = 'DELETE_PATRON_STAT_CAT_ENTRY';
+	if($self->api_name =~ /asset/) { 
+		$type = "asset"; 
+		$perm = 'DELETE_COPY_STAT_CAT_ENTRY';
+	}
+
+	my $entry;
+	my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+	return $evt if $evt;
+
+	( $entry, $evt ) = $apputils->fetch_stat_cat_entry( $type, $target );
+	return $evt if $evt;
+
+	$evt = $apputils->check_perms( $user_obj->id, $entry->owner, $perm );
+	return $evt if $evt;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	return _delete_entry($session, $target, $type);
 }
 
