@@ -471,7 +471,6 @@
 		}
 
 		function spawn_volume_add_wizard() {
-			/* <command id="cmd_volume_add" oncommand="volume_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/> */
 			JSAN.use('util.widgets'); JSAN.use('util.functional');
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
@@ -485,10 +484,69 @@
 				function (obj) {
 					return obj.getAttribute('ou_id');
 				}
+			)		
+			var edit = 0;
+			try {
+				edit = g.network.request(
+					api.PERM_MULTI_ORG_CHECK.app,
+					api.PERM_MULTI_ORG_CHECK.method,
+					[ 
+						g.session, 
+						g.data.list.au[0].id(), 
+						list,
+						[ 'CREATE_VOLUME', 'CREATE_COPY' ]
+					]
+				).length == 0 ? 1 : 0;
+			} catch(E) {
+				g.error.sdump('batch permission check: ' + E);
+			}
+
+			if (edit==0) return; // no read-only view for this interface
+
+			var title = 'Add Volume/Copy';
+
+			JSAN.use('util.window'); var win = new util.window();
+			var w = win.open(
+				window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+					+'?session='+window.escape(g.session)
+					+'&ou_ids=' + window.escape( js2JSON(list) ),
+				title,
+				'chrome,modal,resizable'
 			);
 
+			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+			g.data.stash_retrieve();
+			var volumes = JSON2js( g.data.temp );
+			g.error.sdump('D_CAT','in browse, g.data.temp =\n' + g.data.temp);
+		
+			volumes = util.functional.filter_list(
+				volumes,
+				function (obj) {
+					return obj.ischanged() == '1';
+				}
+			);
 
-			alert('spawn volume add wizard with ou_ids = ' + js2JSON(list) );
+			volumes = util.functional.map_list(
+				volumes,
+				function (obj) {
+					obj.record( find_this_id ); // staff client 2 didn't do this.  Does it matter?
+					return obj;
+				}
+			);
+
+			if (volumes.length == 0) return;
+
+			try {
+				var r = g.network.request(
+					api.FM_ACN_TREE_UPDATE.app,
+					api.FM_ACN_TREE_UPDATE.method,
+					[ g.session, volumes ]
+				);
+				/* FIXME -- revisit the return value here */
+			} catch(E) {
+				alert('volume update error: ' + js2JSON(E));
+			}
+			refresh_browse_list();
 		}
 
 		function spawn_copy_add_wizard() {
