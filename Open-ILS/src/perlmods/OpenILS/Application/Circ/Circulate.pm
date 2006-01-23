@@ -186,21 +186,20 @@ sub _build_circ_script_runner {
 		$runner->add_path( $_ );
 	}
 
-	$runner->insert( 'patron',		$ctx->{patron} );
-	$runner->insert( 'title',		$ctx->{title} );
-	$runner->insert( 'copy',		$ctx->{copy} );
+	$runner->insert( 'patron',		$ctx->{patron}, 1);
+	$runner->insert( 'title',		$ctx->{title}, 1);
+	$runner->insert( 'copy',		$ctx->{copy}, 1);
 
 	# circ script result
 	$runner->insert( 'result', {} );
 	$runner->insert( 'result.event', 'SUCCESS' );
 
-	$runner->insert('env', {});
-	$runner->insert('env.isRenewal', 1) if $ctx->{isrenew};
+	$runner->insert('environment', {}, 1);
+	$runner->insert('environment.isRenewal', 1) if $ctx->{isrenew};
 
 	if(ref($ctx->{patron_circ_summary})) {
-		$runner->insert( 'patron_info', {} );
-		$runner->insert( 'patron_info.items_out', $ctx->{patron_circ_summary}->[0] );
-		$runner->insert( 'patron_info.fines', $ctx->{patron_circ_summary}->[1] );
+		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
+		$runner->insert( 'environment.patronFines', $ctx->{patron_circ_summary}->[1], 1 );
 	}
 
 	$ctx->{runner} = $runner;
@@ -218,7 +217,7 @@ sub _add_script_runner_methods {
 			my $key = shift;
 			my $hold = $holdcode->fetch_open_hold_by_current_copy($ctx->{copy}->id);
 			$hold = undef unless $hold;
-			$runner->insert( $key, $hold );
+			$runner->insert( $key, $hold, 1 );
 		}
 	);
 }

@@ -3,25 +3,31 @@ function go() {
 /* load the lib script */
 load_lib('circ_lib.js');
 
-log_debug('CIRC PERMIT: permit circ on ' +
-	' Copy: '					+ copy.id + 
-	', Patron:'					+ patron.id +
-	', Patron Username:'		+ patron.usrname +
-	', Patron Profile: '		+ patron.profile.name +
-	', Patron Standing: '	+ patron.standing.value +
-	', Patron copies: '		+ patron_info.items_out +
-	', Patron Library: '		+ patron.home_ou.name +
-	', Patron fines: '		+ patron_info.fines +
-	', Copy status: '			+ copy.status.name +
-	', Copy location: '		+ copy.location.name +
-	', Is Renewal: '			+ ( (env.isRenewal) ? "yes" : "no" ) +
-	'');
 
 
 /* collect some useful variables */
 var standing	= patron.standing.value.toLowerCase();
 var profile		= patron.profile.name.toLowerCase();
 var status		= copy.status.name.toLowerCase();
+var itemsOut	= environment.patronItemsOut;
+var fines		= environment.patronFines;
+var isRenewal	= environment.isRenewal;
+
+log_debug('CIRC PERMIT: permit circ on ' +
+	' Copy: '					+ copy.id + 
+	', Patron:'					+ patron.id +
+	', Patron Username:'		+ patron.usrname +
+	', Patron Profile: '		+ patron.profile.name +
+	', Patron Standing: '	+ patron.standing.value +
+	', Patron copies: '		+ itemsOut +
+	', Patron Library: '		+ patron.home_ou.name +
+	', Patron fines: '		+ fines +
+	', Copy status: '			+ copy.status.name +
+	', Copy location: '		+ copy.location.name +
+	', Is Renewal: '			+ ( (isRenewal) ? "yes" : "no" ) +
+	'');
+
+
 
 if( standing != 'good' ) 
 	return result.event = 'PATRON_BAD_STANDING';
@@ -38,10 +44,10 @@ if( status != 'available' && status != 'on holds shelf' )
 
 
 
-if( profile == 'patrons' && patron_info.items_out > 10 )
+if( profile == 'patrons' && itemsOut > 10 )
 	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
 
-if( profile == 'staff' && patron_info.items_out > 30 )
+if( profile == 'staff' && itemsOut > 30 )
 	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
 
 
