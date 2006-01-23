@@ -83,6 +83,7 @@ var urls = {
 	'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
 	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xml',
 	'XUL_SURVEY_WIZARD' : 'chrome://evergreen/content/admin/survey_wizard.xul',
+	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : 'chrome://evergreen/content/admin/test.xul',
 }
