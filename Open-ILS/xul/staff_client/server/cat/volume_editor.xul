@@ -16,9 +16,8 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="cat_copy_editor_win" 
+<window id="cat_volume_editor_win" 
 	onload="try { my_init(); } catch(E) { alert(E); }"
-	width="800" height="600"
 	title="Volumes"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -40,7 +39,7 @@
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for cat/copy_editor.xul');
+				g.error.sdump('D_TRACE','my_init() for cat/volume_editor.xul');
 
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
@@ -86,7 +85,7 @@
 					}
 
 					tb.setAttribute('value',g.volumes[i].label());
-					tb.setAttribute('oncommand','var v = g.volumes['+i+']; v.ischanged("1"); v.label( this.value );');
+					tb.setAttribute('onchange','var v = g.volumes['+i+']; v.ischanged("1"); v.label( this.value );');
 				}
 
 			} catch(E) {
