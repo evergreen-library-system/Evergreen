@@ -29,10 +29,6 @@
 						display: none;
 			}
 
-			*[adv='true'] {		visibility: hidden;
-					display: none;
-			}
-
 			table {		border-collapse: collapse;
 					border: solid black 1px;
 					margin-bottom: 10px;
@@ -67,7 +63,7 @@
 			<tr>
 				<th colspan="2">User Identifcation</th>
 			</tr>
-			<tr adv='true'>
+			<tr class='advanced hideme'>
 				<td class="label">System ID:</td>
 				<td class="value"><input type="text" name="user.id" id="user.id" disabled="true"/></td>
 			</tr>
@@ -184,23 +180,19 @@
 				<td class="label">Profile Group:</td>
 				<td class="value"><select name="user.profile" id="user.profile"/></td>
 			</tr>
-			<tr adv='true'>
-				<td class="label">Permission Groups:</td>
-				<td class="value"><select multiple="muliple" name="permgroups" id="permgroups"/></td>
-			</tr>
 			<tr>
 				<td class="label">Expire Date:</td>
 				<td class="value"><input type="text" name="user.expire_date" id="user.expire_date"/></td>
 			</tr>
-			<tr>
+			<tr class='advanced hideme'>
 				<td class="label">Active:</td>
 				<td class="value"><input type="checkbox" name="user.active" id="user.active" value="t"/></td>
 			</tr>
-			<tr adv='true'>
+			<tr class='advanced hideme'>
 				<td class="label">Set as Superuser:</td>
 				<td class="value"><input type="checkbox" name="user.super_user" id="user.super_user" value="t"/></td>
 			</tr>
-			<tr>
+			<tr class='advanced hideme'>
 				<td class="label">Standing:</td>
 				<td class="value"><select name="user.standing" id="user.standing"/></td>
 			</tr>
@@ -208,7 +200,7 @@
 				<td class="label">Set as Family or Group Lead Account:</td>
 				<td class="value"><input type="checkbox" name="user.master_account" id="user.master_account" value="t"/></td>
 			</tr>
-			<tr>
+			<tr class='advanced hideme'>
 				<td class="label">"Claims returned" count:</td>
 				<td class="value">
 					<input type="text" name="user.claims_returned_count" id="user.claims_returned_count" value="0" disabled="true"/>
@@ -224,6 +216,29 @@
 			</tr>
 
 
+			<tr class='advanced hideme'>
+				<th colspan="2">User Permissions</th>
+			</tr>
+			<tr class='advanced hideme'>
+				<td class="label">Permission Groups:</td>
+				<td class="value"><select multiple="muliple" name="permgroups" id="permgroups"/></td>
+			</tr>
+			<tr class='advanced hideme'>
+				<td class="label">User Specific Permissions:</td>
+				<td class="value">
+					<table width="100%">
+						<thead>
+							<tr>
+								<th>Permission</th>
+								<th>Applied</th>
+								<th>Depth</th>
+								<th>Grantable</th>
+							</tr>
+						</thead>
+						<tbody id="permissions" name="permissions"/>
+					</table>
+				</td>
+			</tr>
 
 
 			<tr>
@@ -280,6 +295,22 @@
 					<td colspan="8"><button name="remove">Remove this address</button></td>
 				</tr>
 			</table>
+		</div>
+		<div class='hideme' id="permission-tmpl">
+			<tr name='prow'>
+				<td class="label" name='plabel'>
+					<span name="p.code"/>
+				</td>
+				<td class="value" name='papply'>
+					<input type="checkbox" name="p.id" onclick="set_perm(this.parentNode.parentNode);"/>
+				</td>
+				<td class="value" name='pdepth'>
+					<select onchange="set_perm(this.parentNode.parentNode);" name="p.depth"/>
+				</td>
+				<td class="value" name='pgrant'>
+					<input type="checkbox" name="p.grantable" onclick="set_perm(this.parentNode.parentNode);"/>
+				</td>
+			</tr>
 		</div>
 
                 <div class='hideme' id='survey-tmpl'><div>

@@ -67,10 +67,11 @@ INSERT INTO permission.grp_tree VALUES (5, 'Circulators', 3);
 SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, 6);
 
 CREATE TABLE permission.grp_perm_map (
-	id	SERIAL	PRIMARY KEY,
-	grp	INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE,
-	perm	INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
-	depth	INT	NOT NULL,
+	id		SERIAL	PRIMARY KEY,
+	grp		INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
+	depth		INT	NOT NULL,
+	grantable	BOOL	NOT NULL DEFAULT FALSE,
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
 );
 
@@ -111,10 +112,11 @@ SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, 48);
 
 
 CREATE TABLE permission.usr_perm_map (
-	id	SERIAL	PRIMARY KEY,
-	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
-	perm	INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
-	depth	INT	NOT NULL,
+	id		SERIAL	PRIMARY KEY,
+	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
+	depth		INT	NOT NULL,
+	grantable	BOOL	NOT NULL DEFAULT FALSE,
 		CONSTRAINT perm_usr_once UNIQUE (usr,perm)
 );
 
@@ -159,7 +161,7 @@ BEGIN
 				)
 		LOOP
 
-		FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth
+		FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth, p.grantable
 				  FROM	permission.grp_perm_map p
 				  WHERE	p.grp = g_list.id LOOP
 
@@ -175,7 +177,7 @@ BEGIN
 		FOR g_list IN	SELECT	*
 				  FROM	permission.grp_ancestors( grp.grp ) LOOP
 
-			FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth
+			FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth, p.grantable
 					  FROM	permission.grp_perm_map p
 						JOIN permission.usr_grp_map m ON (m.grp = p.grp)
 					  WHERE	m.grp = g_list.id LOOP

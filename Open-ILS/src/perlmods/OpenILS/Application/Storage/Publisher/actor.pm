@@ -285,7 +285,12 @@ sub org_unit_ancestors {
 
 	my $func = 'actor.org_unit_ancestors(?)';
 
-	my $sth = actor::org_unit->db_Main->prepare_cached("SELECT * FROM $func");
+	my $sth = actor::org_unit->db_Main->prepare_cached(<<"	SQL");
+		SELECT	f.*
+		  FROM	$func f
+			JOIN actor.org_unit_type t ON (f.ou_type = t.id)
+		  ORDER BY t.depth, f.name;
+	SQL
 	$sth->execute(''.$id);
 
 	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );

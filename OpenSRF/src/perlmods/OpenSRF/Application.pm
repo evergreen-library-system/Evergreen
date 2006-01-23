@@ -152,9 +152,10 @@ sub handler {
 							$coderef->api_name." : requires ". $coderef->argc
 					}
 					if (@args) {
-						if (exists $coderef->signature->{params}) {
-							for my $p (0 .. scalar(@{ $coderef->signature->{params} }) - 1 ) {
-								my $s = $coderef->signature->{params}->[$p];
+						my $sig = $coderef->signature;
+						if ($sig && exists $sig->{params}) {
+							for my $p (0 .. scalar(@{ $sig->{params} }) - 1 ) {
+								my $s = $sig->{params}->[$p];
 								my $a = $args[$p];
 								if ($s->{class} && JSON->lookup_hint(ref $a) ne $s->{class}) {
 									die "Incorrect param class at position $p : should be a '$$s{class}'";
@@ -230,9 +231,10 @@ sub handler {
 								$aref->[2]->api_name." : requires ". $aref->[2]->argc
 						}
 						if (@args) {
-							if (exists $aref->[2]->signature->{params}) {
-								for my $p (0 .. scalar(@{ $aref->[2]->signature->{params} }) - 1 ) {
-									my $s = $aref->[2]->signature->{params}->[$p];
+							my $sig = $aref->[2]->signature;
+							if ($sig && exists $sig->{params}) {
+								for my $p (0 .. scalar(@{ $sig->{params} }) - 1 ) {
+									my $s = $sig->{params}->[$p];
 									my $a = $args[$p];
 									if ($s->{class} && JSON->lookup_hint(ref $a) ne $s->{class}) {
 										die "Incorrect param class at position $p : should be a '$$s{class}'";

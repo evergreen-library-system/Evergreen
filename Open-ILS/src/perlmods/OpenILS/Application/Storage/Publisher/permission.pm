@@ -16,7 +16,24 @@ sub retrieve_all {
 __PACKAGE__->register_method(
 	method		=> 'retrieve_all',
 	api_name	=> 'open-ils.storage.direct.permission.grp_tree.retrieve.all',
-	argc		=> 3,
+	argc		=> 0,
+	stream		=> 1,
+);
+
+sub retrieve_perms {
+	my $self = shift;
+	my $client = shift;
+
+	for my $rec ( sort { $a->code cmp $b->code } permission::perm_list->retrieve_all ) {
+		$client->respond( $rec->to_fieldmapper );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'retrieve_perms',
+	api_name	=> 'open-ils.storage.direct.permission.perm_list.retrieve.all',
+	argc		=> 0,
 	stream		=> 1,
 );
 
@@ -52,7 +69,7 @@ sub usr_perms {
 __PACKAGE__->register_method(
 	method		=> 'usr_perms',
 	api_name	=> 'open-ils.storage.permission.user_perms',
-	argc		=> 2,
+	argc		=> 1,
 	stream		=> 1,
 );
 

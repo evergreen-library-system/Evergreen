@@ -202,8 +202,6 @@ sub update_patron {
 		}
 	}
 
-	$apputils->commit_db_session($session);
-
 	$session = OpenSRF::AppSession->create("open-ils.storage");
 	$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
 	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
@@ -212,6 +210,14 @@ sub update_patron {
 		return undef;
 	}
 
+	$new_patron	= _create_perm_maps($session, $user_session, $patron, $new_patron, $user_obj);
+	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
+		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
+		$client->respond_complete($new_patron->ex);
+		return undef;
+	}
+
+	$apputils->commit_db_session($session);
 
 	warn "Patron Update/Create complete\n";
 	return flesh_user($new_patron->id());
@@ -619,6 +625,43 @@ sub _create_stat_maps {
 		if(!$status) {
 			throw OpenSRF::EX::ERROR 
 				("Error updating stat map with method $method");	
+		}
+
+	}
+
+	return $new_patron;
+}
+
+sub _create_perm_maps {
+
+	my($session, $user_session, $patron, $new_patron) = @_;
+
+	my $maps = $patron->permissions;
+
+	for my $map (@$maps) {
+
+		my $method = "open-ils.storage.direct.permission.usr_perm_map.update";
+		if ($map->isdeleted()) {
+			$method = "open-ils.storage.direct.permission.usr_perm_map.delete";
+		} elsif ($map->isnew()) {
+			$method = "open-ils.storage.direct.permission.usr_perm_map.create";
+			$map->clear_id;
+		}
+
+
+		$map->usr($new_patron->id);
+
+		warn( "Updating permissions with method $method and session $user_session and map $map" );
+		$logger->debug( "Updating permissions with method $method and session $user_session and map $map" );
+
+		my $req = $session->request($method, $map);
+		my $status = $req->gather(1);
+
+		warn "Updated\n";
+
+		if(!$status) {
+			throw OpenSRF::EX::ERROR 
+				("Error updating permission map with method $method");	
 		}
 
 	}
@@ -1272,6 +1315,44 @@ sub user_transactions {
 
 
 
+
+__PACKAGE__->register_method(
+	method	=> "user_perms",
+	api_name	=> "open-ils.actor.permissions.user_perms.retrieve",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of permissions
+	NOTES
+sub user_perms {
+	my( $self, $client, $authtoken, $user ) = @_;
+
+	my( $staff, $evt ) = $apputils->checkses($authtoken);
+	return $evt if $evt;
+
+	$user ||= $staff->id;
+
+	if( $user != $staff->id and $evt = $apputils->check_perms( $staff->id, $staff->home_ou, 'VIEW_PERMISSION') ) {
+		return $evt;
+	}
+
+	return $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.permission.user_perms.atomic",
+		$user);
+}
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_perms",
+	api_name	=> "open-ils.actor.permissions.retrieve",
+	notes		=> <<"	NOTES");
+	Returns a list of permissions
+	NOTES
+sub retrieve_perms {
+	my( $self, $client ) = @_;
+	return $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.permission.perm_list.retrieve.all.atomic");
+}
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_groups",

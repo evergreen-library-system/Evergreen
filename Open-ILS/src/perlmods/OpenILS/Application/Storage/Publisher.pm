@@ -375,6 +375,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			api_name	=> $api_prefix.'.search',
 			method		=> 'search',
 			api_level	=> 1,
+			argc		=> 2,
 			stream		=> 1,
 			cdbi		=> $cdbi,
 			cachable	=> 1,
@@ -387,6 +388,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			method		=> 'search_where',
 			api_level	=> 1,
 			stream		=> 1,
+			argc		=> 1,
 			cdbi		=> $cdbi,
 			cachable	=> 1,
 		);
@@ -400,6 +402,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			stream		=> 1,
 			cdbi		=> $cdbi,
 			cachable	=> 1,
+			argc		=> 2,
 		);
 	}
 
@@ -412,6 +415,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				stream		=> 1,
 				cdbi		=> $cdbi,
 				cachable	=> 1,
+				argc		=> 2,
 			);
 		}
 	}
@@ -425,6 +429,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				stream		=> 1,
 				cdbi		=> $cdbi,
 				cachable	=> 1,
+				argc		=> 2,
 			);
 		}
 	}
@@ -438,6 +443,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				stream		=> 1,
 				cdbi		=> $cdbi,
 				cachable	=> 1,
+				argc		=> 2,
 			);
 		}
 	}
@@ -450,6 +456,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			api_level	=> 1,
 			cdbi		=> $cdbi,
 			cachable	=> 1,
+			argc		=> 1,
 		);
 	}
 
@@ -462,6 +469,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			stream		=> 1,
 			cdbi		=> $cdbi,
 			cachable	=> 1,
+			argc		=> 1,
 		);
 	}
 
@@ -474,6 +482,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				cdbi		=> $cdbi,
 				cachable	=> 1,
 				stream		=> 1,
+				argc		=> 1,
 			);
 		}
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
@@ -484,6 +493,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				cdbi		=> $cdbi,
 				cachable	=> 1,
 				stream		=> 1,
+				argc		=> 1,
 			);
 		}
 		if (\&Class::DBI::search_fts) {
@@ -495,6 +505,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 					cdbi		=> $cdbi,
 					cachable	=> 1,
 					stream		=> 1,
+					argc		=> 1,
 				);
 			}
 		}
@@ -507,6 +518,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 					cdbi		=> $cdbi,
 					cachable	=> 1,
 					stream		=> 1,
+					argc		=> 1,
 				);
 			}
 		}
@@ -519,6 +531,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 					cdbi		=> $cdbi,
 					cachable	=> 1,
 					stream		=> 1,
+					argc		=> 1,
 				);
 			}
 		}
@@ -533,6 +546,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'create_node',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -543,6 +557,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'batch_call',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -553,6 +568,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'update_node',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -563,6 +579,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'batch_call',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -573,6 +590,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'delete_node',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -583,6 +601,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'batch_call',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -593,6 +612,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'merge_node',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -604,6 +624,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				unwrap		=> 1,
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -614,6 +635,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'remote_update_node',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -625,6 +647,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				api_level	=> 1,
 				unwrap		=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 
@@ -635,6 +658,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				method		=> 'mass_delete',
 				api_level	=> 1,
 				cdbi		=> $cdbi,
+				argc		=> 1,
 			);
 		}
 	}

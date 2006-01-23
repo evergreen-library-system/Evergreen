@@ -90,6 +90,7 @@ sub _init {
 								     			     checkouts		=> 1,
 								     			     hold_requests	=> 1,
 								     			     settings		=> 1,
+								     			     permissions	=> 1,
 								     			     addresses		=> 1 } },
 		'Fieldmapper::actor::user_setting'		=> { hint => 'aus'    },
 		'Fieldmapper::actor::org_unit_setting'		=> { hint => 'aous'    },

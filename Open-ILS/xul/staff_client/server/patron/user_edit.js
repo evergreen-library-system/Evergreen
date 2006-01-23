@@ -3,6 +3,10 @@ var orgTree;
 var user;
 var ses_id;
 var user_groups = [];
+var adv_items = [];
+var user_perms = [];
+var perm_list = [];
+
 
 var required_user_parts = {
 	usrname:'User Name',
@@ -26,6 +30,47 @@ var required_addr_parts = {
 	address_type:'Address Label',
 };
 
+function set_perm(row) {
+	var pid = findNodeByName(row,'p.code').getAttribute('permid');
+	var papply = findNodeByName(row,'p.id').checked;
+	var pdepth = findNodeByName(row,'p.depth').options[findNodeByName(row,'p.depth').selectedIndex].value;
+	var pgrant = findNodeByName(row,'p.grantable').checked;
+
+	var p;
+	for (var i in user_perms) {
+		if (user_perms[i].perm() == pid) {
+			p = user_perms[i];
+			if (papply) {
+				p.isdeleted(0);
+				p.ischanged(1);
+				p.depth(pdepth);
+				p.grantable(pgrant ? 1 : 0);
+			} else {
+				if (p.isnew()) {
+					user_perms[i] = null;
+				} else {
+					p.isdeleted(1);
+				}
+			}
+			break;
+		}
+	}
+
+	if (!p) {
+		if (papply) {
+			p = new pupm();
+			p.isnew(1);
+			p.perm(pid);
+			p.usr(user.id());
+			p.depth('' + pdepth);
+			p.grantable(pgrant ? 1 : 0);
+
+			user_perms.push(p);
+		}
+	}
+
+}
+
 function reset_crc () {
 	document.forms.editor.elements["user.claims_returned_count"].value = '0';
 	user.claims_returned_count(0);
@@ -43,6 +88,21 @@ function save_user () {
 	//return false;
 
 	try {
+
+		for (var i in user_perms) {
+			if (!user_perms[i].depth()) {
+				var p;
+				for (var j in perm_list) {
+					if (perm_list[j].id() == user_perms[i].perm()) {
+						p = perm_list[j];
+						break;
+					}
+				}
+				throw "Depth is required on the " + p.code() + " permission.";
+			}
+		}
+
+		user.permissions(user_perms);
 
 		for (var i in required_user_parts) {
 			if (!user[i]()) {
@@ -113,12 +173,26 @@ function fakeid () {
 	return --_fake_id;
 };
 
+var adv_mode = false;
+function apply_adv_mode (root) {
+	adv_items = findNodesByClass(root,'advanced');
+	for (var i in adv_items) {
+		adv_mode ?
+			removeCSSClass(adv_items[i], 'hideme') :
+			addCSSClass(adv_items[i], 'hideme');
+	}
+}
+
 function init_editor (u) {
 	
 	var x = document.getElementById('editor').elements;
 
+	
+	cgi = new CGI();
+	if (cgi.param('adv')) adv_mode = true;
+	apply_adv_mode(document.getElementById('editor'));
+
 	if (!u) {
-		cgi = new CGI();
 		ses_id = cgi.param('ses');
 
 		var usr_id = cgi.param('usr');
@@ -235,7 +309,7 @@ function init_editor (u) {
 	// onchange handled by func above
 
 	if (user.alert_message()) x['user.alert_message'].value = user.alert_message();
-	// onchange handled by func above
+	x['user.alert_message'].setAttribute('onchange','user.alert_message(this.value)');
 
 
 	// set up the home_ou selector
@@ -365,10 +439,98 @@ function init_editor (u) {
 	surveys = req.getResultObject();
 
 	var f = document.getElementById('surveys');
+	while (f.firstChild) f.removeChild(f.lastChild);
+
 	for ( var i in surveys )
 		display_survey( f, surveys[i].id(), user.id() );
 
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.user_perms.retrieve', ses_id );
+	req.send(true);
+	var staff_perms = req.getResultObject();
+
+	user_perms = [];
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.user_perms.retrieve', ses_id, user.id() );
+	req.send(true);
+	var up = req.getResultObject();
+	for (var i in up) {
+		if (up[i].id() > 0)
+			user_perms.push(up[i]);
+	}
+
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.retrieve' );
+	req.send(true);
+	perm_list = req.getResultObject();
+
+	f = document.getElementById('permissions');
+	while (f.firstChild) f.removeChild(f.lastChild);
+
+	for (var i in perm_list)
+		display_perm(f,perm_list[i],staff_perms);
+
 	return true;
+}
+
+function display_perm (root,perm_def,staff_perms) {
+
+	var prow = findNodeByName(document.getElementById('permission-tmpl'), 'prow').cloneNode(true);
+	root.appendChild(prow);
+
+	var all = false;
+	for (var i in staff_perms) {
+		if (staff_perms[i].perm() == -1) {
+			all = true;
+			break;
+		}
+	}
+
+
+	var sp,up;
+	if (!all) {
+		for (var i in staff_perms) {
+			if (perm_def.id() == staff_perms[i].perm() || staff_perms[i].perm() == -1) {
+				sp = staff_perms[i];
+				break;
+			}
+		}
+	}
+
+	for (var i in user_perms) {
+		if (perm_def.id() == user_perms[i].perm() && user_perms[i].id() > 0)
+			up = user_perms[i];
+	}
+
+
+	var dis = false;
+	if (!sp || !sp.grantable()) dis = true; 
+	if (all) dis = false; 
+
+	var label_cell = findNodeByName(prow,'plabel');
+	findNodeByName(label_cell,'p.code').appendChild(text(perm_def.code()));
+	findNodeByName(label_cell,'p.code').setAttribute('title', perm_def.description());
+	findNodeByName(label_cell,'p.code').setAttribute('permid', perm_def.id());
+
+	var apply_cell = findNodeByName(prow,'papply');
+	findNodeByName(apply_cell,'p.id').disabled = dis;
+	findNodeByName(apply_cell,'p.id').checked = up ? true : false;
+
+	var depth_cell = findNodeByName(prow,'pdepth');
+	findNodeByName(depth_cell,'p.depth').disabled = dis;
+	findNodeByName(depth_cell,'p.depth').id = 'perm-depth-' + perm_def.id();
+	selectBuilder(
+		'perm-depth-' + perm_def.id(),
+		globalOrgTypes,
+		(up ? up.depth() : findOrgDepth(user.home_ou())),
+		{ label_field		: 'name',
+		  value_field		: 'depth',
+		  empty_label		: '-- Select One --',
+		  empty_value		: '',
+		  clear			: true }
+	);
+	
+	var grant_cell = findNodeByName(prow,'pgrant');
+	findNodeByName(grant_cell,'p.grantable').disabled = dis;
+	findNodeByName(grant_cell,'p.grantable').checked = up ? (up.grantable() ? true : false) : false;
+
 }
 
 function display_all_addresses () {
@@ -507,7 +669,9 @@ function selectBuilder (id, objects, def, args) {
 
 	var child_field_name = args['child_field_name'];
 
-	var sel = document.getElementById(id);
+	var sel = id;
+	if (typeof sel != 'object')
+		sel = document.getElementById(sel);
 
 	if (args['clear']) {
 		for (var o in sel.options) {
@@ -566,4 +730,25 @@ function selectBuilder (id, objects, def, args) {
 
 	}
 }	
+
+function findNodesByClass(root, nodeClass, list) {
+	if(!list) list = [];
+        if( !root || !nodeClass) {
+		return null;
+	}
+        
+        if(root.nodeType != 1) {
+		return null;
+	}
+        
+        if(root.className.match(nodeClass)) list.push( root );
+
+        var children = root.childNodes;
+        
+        for( var i = 0; i != children.length; i++ ) {
+                findNodesByClass(children[i], nodeClass, list);
+        }                       
+                        
+        return list;            
+}                                       
 

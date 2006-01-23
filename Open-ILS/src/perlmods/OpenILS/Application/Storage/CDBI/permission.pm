@@ -23,12 +23,12 @@ __PACKAGE__->columns(All => qw/id usr grp/);
 package permission::usr_perm_map;
 use base qw/permission/;
 __PACKAGE__->table('permission_usr_perm_map');
-__PACKAGE__->columns(All => qw/id usr perm depth/);
+__PACKAGE__->columns(All => qw/id usr perm depth grantable/);
 #-------------------------------------------------------------------------------
 package permission::grp_perm_map;
 use base qw/permission/;
 __PACKAGE__->table('permission_grp_perm_map');
-__PACKAGE__->columns(All => qw/id grp perm depth/);
+__PACKAGE__->columns(All => qw/id grp perm depth grantable/);
 #-------------------------------------------------------------------------------
 1;
 
