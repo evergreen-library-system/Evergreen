@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Copy Viewer/Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_copy_editor_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	width="800" height="600"
+	title="Volumes"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat/copy_editor.xul');
+
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.cgi = new CGI();
+
+				g.session = g.cgi.param('session') || g.cgi.param('ses');
+
+				var tuples = [];
+				if (g.cgi.param('ou_id_volume_id_callnumber_tuples')) 
+					tuples = JSON2js( g.cgi.param('ou_id_volume_id_callnumber_tuples') );
+				if (!tuples) tuples = [];
+				if (window.xulG && window.xulG.ou_id_volume_id_callnumber_tuples) 
+					tuples = tuples.concat( window.xulG.ou_id_volume_id_callnumber_tuples );
+
+				JSAN.use('util.network'); g.network = new util.network();
+
+				JSAN.use('util.functional');
+
+				g.volumes = util.functional.map_list(
+					tuples,
+					function (obj) {
+						var cn = new acn();
+						cn.owning_lib( obj[0] );
+						cn.id( obj[1] );
+						cn.label( obj[2] );
+						return cn;
+					}
+				);
+
+				var rows = document.getElementById('rows');
+
+				for (var i = 0; i < g.volumes.length; i++) {
+					var row = document.createElement('row'); rows.appendChild(row);
+					var lib_label = document.createElement('label'); row.appendChild(label);
+					var tb = document.createElement('textbox'); row.appendChild(tb);
+
+					var lib_id = g.volumes[i].owning_lib();
+
+					if (last_lib_seen != lib_id ) {
+						lib_label.setAttribute('value',g.data.hash.aou[ lib_id ].shortname() );
+						last_lib_seen = lib_id;
+					}
+
+					tb.setAttribute('value',g.volumes[i].label());
+					tb.setAttribute('oncommand','var v = g.volumes['+i+']; v.ischanged("1"); v.label( this.value );');
+				}
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/copy_editor.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
+				alert(err_msg);
+			}
+		}
+
+		g.stash_and_close = function() {
+			g.data.temp = js2JSON( g.volumes );
+			g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
+			g.data.stash('temp');
+			window.close();
+		}
+
+	]]>
+	</script>
+
+	<groupbox flex="1" style="overflow: auto">
+		<caption id="caption" label="Volume Editor"/>
+		<hbox>
+			<spacer flex="1" />
+			<button label="Modify" oncommand="g.stash_and_close();"/>
+		</hbox>
+		<grid flex="1">
+			<columns> <column /> <column /> <column flex="1"/> </columns>
+			<rows id="rows" />
+		</grid>
+	</groupbox>
+
+</window>
+

@@ -9,6 +9,7 @@ var api = {
 	'CHECKOUT_PERMIT_VIA_BARCODE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.permit_checkout' },
 	'CHECKOUT_VIA_BARCODE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.barcode' },
 	'FM_ACN_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.callnumber.retrieve' },
+	'FM_ACN_TREE_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.volume_tree.fleshed.batch.update' },
 	'FM_ACP_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.retrieve' },
 	'FM_ACP_FLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve' },
 	'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
