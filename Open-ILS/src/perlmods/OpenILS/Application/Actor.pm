@@ -779,7 +779,7 @@ sub get_org_unit {
 __PACKAGE__->register_method(
 	method	=> "get_org_tree",
 	api_name	=> "open-ils.actor.org_tree.retrieve",
-	argc		=> 1, 
+	argc		=> 0, 
 	note		=> "Returns the entire org tree structure",
 );
 
@@ -1027,7 +1027,7 @@ sub check_user_perms {
 
 	my @not_allowed;
 	for my $perm (@$perm_types) {
-		if($apputils->check_user_perms($user_id, $org_id, $perm)) {
+		if($apputils->check_perms($user_id, $org_id, $perm)) {
 			push @not_allowed, $perm;
 		}
 	}
@@ -1052,19 +1052,12 @@ __PACKAGE__->register_method(
 sub check_user_perms2 {
 	my( $self, $client, $authtoken, $user_id, $orgs, $perms ) = @_;
 
-	my( $staff, $evt ) = $apputils->checkses($authtoken);
+	my( $staff, $target, $evt ) = $apputils->checkses_requestor(
+		$authtoken, $user_id, 'VIEW_PERMISSION' );
 	return $evt if $evt;
 
 	my @not_allowed;
 	for my $org (@$orgs) {
-
-		if($staff->id ne $user_id) {
-			if( $evt = $apputils->check_perms(
-				$staff->id, $org, 'VIEW_PERMISSION') ) {
-				return $evt;
-			}
-		}
-
 		for my $perm (@$perms) {
 			if($apputils->check_perms($user_id, $org, $perm)) {
 				push @not_allowed, [ $org, $perm ];
@@ -1074,6 +1067,44 @@ sub check_user_perms2 {
 
 	return \@not_allowed
 }
+
+
+__PACKAGE__->register_method(
+	method => 'check_user_perms3',
+	api_name	=> 'open-ils.actor.user.perm.highest_org',
+	notes		=> q/
+		Returns the highest org unit object at which a user has a given permission
+		If the requestor does not match the target user, the requestor must have
+		'VIEW_PERMISSION' rights at the home org unit of the target user
+		@param authtoken The login session key
+		@param userid The id of the user in question
+		@param perm The permission to check
+		@return The org unit highest in the org tree within which the user has
+		the requested permission
+	/);
+
+sub check_user_perms3 {
+	my( $self, $client, $authtoken, $userid, $perm ) = @_;
+
+	my( $staff, $target, $org, $evt );
+
+	( $staff, $target, $evt ) = $apputils->checkses_requestor(
+		$authtoken, $userid, 'VIEW_PERMISSION' );
+	return $evt if $evt;
+
+	my $tree = get_org_tree();
+	$org = $apputils->find_org($tree, $target->home_ou );
+
+	my $lastid = undef;
+	while( $org ) {
+		last if ($apputils->check_perms( $userid, $org->id, $perm )); # perm failed
+		$lastid = $org->id;
+		$org = $apputils->find_org( $tree, $org->parent_ou() );
+	}
+
+	return $lastid;
+}
+
 
 
 
@@ -1352,6 +1383,8 @@ sub get_user_perm_groups {
 		'open-ils.storage',
 		'open-ils.storage.direct.permission.usr_grp_map.search.usr.atomic', $userid );
 }	
+
+
 
 
 1;

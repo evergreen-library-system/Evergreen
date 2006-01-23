@@ -37,6 +37,7 @@
 
 	<body onload='try{scEditorInit();}catch(e){alert(js2JSON(e));}'>
 
+
 		<div style='position:absolute; top: 5px; right: 5px;'>
 			<span>Welcome </span><b><span id='sc_user'/></b>
 		</div>
@@ -87,7 +88,7 @@
 					</tr>
 					<tr>
 						<td colspan='4'>
-							<input type='submit' value='Create new stat cat' onclick='scNew();'/>
+							<input type='submit' value='Create new stat cat' onclick='scNew();' id='sc_new'/>
 						</td>
 					</tr>
 				</tbody>
@@ -96,6 +97,8 @@
 			<br/>
 			<hr/>
 			<br/>
+
+			<div id='loading' class='has_color'><h2>Loading permissions and stat cats...</h2></div>
 
 			<table width='98%'>
 				<tbody>

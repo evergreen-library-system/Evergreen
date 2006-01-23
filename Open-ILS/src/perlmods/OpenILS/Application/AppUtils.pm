@@ -645,4 +645,18 @@ sub fetch_stat_cat_entry {
 	return ( $entry, $evt );
 }
 
+
+sub find_org {
+	my( $self, $org_tree, $orgid )  = @_;
+	return $org_tree if ( $org_tree->id eq $orgid );
+	return undef unless ref($org_tree->children);
+	for my $c (@{$org_tree->children}) {
+		my $o = $self->find_org($c, $orgid);
+		return $o if $o;
+	}
+	return undef;
+}
+
+
+
 1;

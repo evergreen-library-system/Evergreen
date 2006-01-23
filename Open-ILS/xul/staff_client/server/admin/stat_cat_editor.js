@@ -5,10 +5,6 @@ var SC_DELETE			= 'open-ils.circ:open-ils.circ.stat_cat.TYPE.delete';
 var SC_ENTRY_CREATE	= 'open-ils.circ:open-ils.circ.stat_cat.TYPE.entry.create';
 var SC_ENTRY_UPDATE	= 'open-ils.circ:open-ils.circ.stat_cat.TYPE.entry.update';
 var SC_ENTRY_DELETE	= 'open-ils.circ:open-ils.circ.stat_cat.TYPE.entry.delete';
-/*
-var SC_MAP_CREATE		= 'open-ils.circ:open-ils.circ.stat_cat.TYPE.WHAT_map.create';
-var SC_MAP_UPDATE		= 'open-ils.circ:open-ils.circ.stat_cat.TYPE.WHAT_map.update';
-*/
 
 var ACTOR				= 'actor';
 var ASSET				= 'asset';
@@ -16,21 +12,59 @@ var session				= null;
 var user					= null;
 
 var scCache				= {};
+var PERMS				= {};
+PERMS[ACTOR]			= {};
+PERMS[ASSET]			= {};
+
 var currentlyVisible;
 var opacVisible		= false;
+var cgi;
 
 
 function scEditorInit() {
-	var cgi = new CGI();
+	cgi = new CGI();
 	session = cgi.param('ses');
 	if(!session) throw "User session is not defined";
-	var show = cgi.param('show');
 	user = fetchUser(session);
-	if(show == ACTOR) scShow(ACTOR);
-	else scShow(ASSET);
+	setTimeout( function() { scFetchPerms(); scGo(); }, 20 );
+}
+
+function scGo() {
+
+
+	var show = cgi.param('show');
+	if(!show) show = ASSET;
+	scShow(show);
 	scBuildNew();
 	$('sc_user').appendChild(text(user.usrname()));
 }
+
+function scFetchPerms() {
+
+	PERMS[ACTOR].create_stat_cat = scFetchPerm('CREATE_PATRON_STAT_CAT');
+	PERMS[ACTOR].update_stat_cat = scFetchPerm('UPDATE_PATRON_STAT_CAT');
+	PERMS[ACTOR].delete_stat_cat = scFetchPerm('DELETE_PATRON_STAT_CAT');
+	PERMS[ACTOR].create_stat_cat_entry = scFetchPerm('CREATE_PATRON_STAT_CAT_ENTRY');
+	PERMS[ACTOR].update_stat_cat_entry = scFetchPerm('UPDATE_PATRON_STAT_CAT_ENTRY');
+	PERMS[ACTOR].delete_stat_cat_entry = scFetchPerm('DELETE_PATRON_STAT_CAT_ENTRY');
+
+	PERMS[ASSET].create_stat_cat = scFetchPerm('CREATE_COPY_STAT_CAT');
+	PERMS[ASSET].update_stat_cat = scFetchPerm('UPDATE_COPY_STAT_CAT');
+	PERMS[ASSET].delete_stat_cat = scFetchPerm('DELETE_COPY_STAT_CAT');
+	PERMS[ASSET].create_stat_cat_entry = scFetchPerm('CREATE_COPY_STAT_CAT_ENTRY');
+	PERMS[ASSET].update_stat_cat_entry = scFetchPerm('UPDATE_COPY_STAT_CAT_ENTRY');
+	PERMS[ASSET].delete_stat_cat_entry = scFetchPerm('DELETE_COPY_STAT_CAT_ENTRY');
+}
+
+function scFetchPerm(perm) {
+	var req = new RemoteRequest(
+		'open-ils.actor',
+		'open-ils.actor.user.perm.highest_org', session, user.id(), perm );
+	req.send(true);
+	return req.getResultObject();
+	PERMS.create_stat = req.getResultObjecdt();
+}
+
 
 function _cleanTbody(tbody) {
 	for( var c  = 0; c < tbody.childNodes.length; c++ ) {
@@ -75,6 +109,7 @@ function scShow(type) {
 var scRow; var scCounter;
 function scDraw( type, cats ) {
 
+	hideMe($('loading'));
 	if(!cats || cats.length == 0) return unHideMe($('sc_none'));
 	var tbody = $('sc_tbody');
 
@@ -98,7 +133,6 @@ function scInsertCat( tbody, cat, type ) {
 
 	$n(row, 'sc_new_entry').onclick = function() { scNewEntry(type, cat, tbody); }
 	$n(row, 'sc_edit').onclick = function(){ scEdit(tbody, type, cat); };
-	/*$n(row, 'sc_delete').onclick = function(){ scDelete(type, cat.id()); };*/
 	$n(row, 'sc_owning_lib').appendChild( text( findOrgUnit(cat.owner()).name() ));
 
 	if( cat.opac_visible() ) unHideMe($n(row, 'sc_opac_visible'));
@@ -170,27 +204,54 @@ function scNewEntry( type, cat, tbody ) {
 				tbody.removeChild(row); };
 	$n(row, 'sc_new_entry_cancel').onclick = function(){tbody.removeChild(row);}
 
-	var org = findOrgUnit(cat.owner());
-	var myorg = findOrgUnit(user.home_ou());
-	var depth = findOrgDepth(org);
-	var mydepth = findOrgDepth(myorg);
-
-	if( depth < mydepth ) {
-		depth = mydepth;
-		org = myorg;
+	var c_org = PERMS[type].create_stat_cat_entry;
+	var max_c_depth = (c_org != null) ? findOrgDepth(c_org) : -1;
+	
+	if( max_c_depth == -1 ) {
+		$n(row, 'sc_new_entry_create').disabled = true;
+		$n(row, 'sc_new_entry_lib').disabled = true;
+		return;
 	}
 
+	var org = findOrgUnit(cat.owner());
+	var depth = findOrgDepth(org);
 
-	_scBuildOrgSelector( $n(row, 'sc_new_entry_lib'), org, findOrgDepth(org));
+	if( depth < max_c_depth ) {
+		depth = max_c_depth;
+		org = findOrgUnit(c_org);
+	}
+	
+	_scBuildOrgSelector( $n(row, 'sc_new_entry_lib'), org, depth );
 	$n(row, 'sc_new_entry_name').focus();
 }
 
 
 function scBuildNew() {
+
+	var c_org = PERMS[ASSET].create_stat_cat;
+	var max_c_depth = (c_org != null) ? findOrgDepth(c_org) : -1;
+
+	var ac_org = PERMS[ACTOR].create_stat_cat;
+	var max_ac_depth = (ac_org != null) ? findOrgDepth(ac_org) : -1;
+
+	var depth = max_c_depth;
+	var org = c_org;
+
 	var selector = $('sc_owning_lib_selector');
-	var org = findOrgUnit( user.home_ou() );
-	var offset = findOrgDepth(org);
-	_scBuildOrgSelector( selector, org, offset);
+
+	if( depth == -1 ) {
+		depth = max_ac_depth;
+		org = ac_org;
+		if( depth == -1 ) {
+			$('sc_new').disabled = true;
+			$('sc_type_selector').disabled = true;
+			selector.disabled = true;
+			return;
+		}
+	}
+
+	org = findOrgUnit( org );
+	_scBuildOrgSelector( selector, org, depth );
 }
 
 function _scBuildOrgSelector(selector, org, offset) {
@@ -233,7 +294,7 @@ function scEdit( tbody, type, cat ) {
 	row.setAttribute('edit', '1');
 
 	var r = $('sc_tr_' + cat.id());
-	if(r.nextSibling) tbody.insertBefore( row, r.nextSibling );
+	if(r.nextSibling) { tbody.insertBefore( row, r.nextSibling ); }
 	else{ tbody.appendChild(row); }
 
 	$n(row, 'sc_edit_name').value = cat.name();
@@ -268,20 +329,23 @@ function scEdit( tbody, type, cat ) {
 			'sc_edit_opac_visibility').checked = true;
 
 	$n(row, 'sc_edit_submit').onclick = 
-		function() { 
-			if( scEditGo( type, cat, row, selector ) ) 
-				tbody.removeChild(row); };
+		function() { scEditGo( type, cat, row, selector ); };
 
-	$n(row, 'sc_edit_delete').onclick = function(){ scDelete(type, cat.id()); };
+	$n(row, 'sc_edit_delete').onclick = 
+		function(){ scDelete(type, cat.id()); };
 
 	var o_depth = findOrgDepth(findOrgUnit(cat.owner()));
-	var m_depth = findOrgDepth(findOrgUnit(user.home_ou()));
+	/*var m_depth = findOrgDepth(findOrgUnit(user.home_ou()));*/
+	var e_org = PERMS[type].update_stat_cat;
+	var d_org = PERMS[type].delete_stat_cat;
+	var max_e_depth = (e_org != null) ? findOrgDepth(e_org) : -1;
+	var max_d_depth = (d_org != null) ? findOrgDepth(d_org) : -1;
 
-	if(  o_depth < m_depth ) {
+	if( max_e_depth == -1 || o_depth < max_e_depth )
 		$n(row,'sc_edit_submit').disabled = true;
-		$n(row,'sc_edit_delete').disabled = true;
-	}
 
+	if( max_d_depth == -1 || o_depth < max_d_depth )
+		$n(row,'sc_edit_delete').disabled = true;
 }
 
 function scEditGo( type, cat, row, selector ) {
@@ -342,13 +406,18 @@ function scUpdateEntry( cat, entry, tbody, type ) {
 		function(){ scEntryDelete( cat, entry, type ); }
 
 	var o_depth = findOrgDepth( findOrgUnit(entry.owner()) );
-	var m_depth = findOrgDepth(findOrgUnit(user.home_ou()));
+	/*var m_depth = findOrgDepth(findOrgUnit(user.home_ou()));*/
 
-	if(  o_depth < m_depth ) {
+	var e_org = PERMS[type].update_stat_cat_entry;
+	var d_org = PERMS[type].delete_stat_cat_entry;
+	var max_e_depth = (e_org != null) ? findOrgDepth(e_org) : -1;
+	var max_d_depth = (d_org != null) ? findOrgDepth(d_org) : -1;
+
+	if( max_e_depth == -1 || o_depth < max_e_depth )
 		$n(row,'sc_edit_entry_name_submit').disabled = true;
+
+	if( max_d_depth == -1 || o_depth < max_d_depth )
 		$n(row,'sc_edit_entry_delete').disabled = true;
-	}
-		
 }
 
 function scEntryDelete( cat, entry, type ) {
