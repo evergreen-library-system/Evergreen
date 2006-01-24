@@ -28,7 +28,7 @@
 	<br/>
 
 	<div id='accrue_explanation' class='hide_me'>
-		<span>Balances marked with a</span>
+		<span>Transactions whose balances are marked with a</span>
 		<span style='color:red; font-weight: bold'>*</span>
 		<span>will continue to accrue fines until the checked out item is returned.</span>
 	</div>
