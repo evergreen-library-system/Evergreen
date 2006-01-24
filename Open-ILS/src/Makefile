@@ -14,7 +14,7 @@ web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest
 
 circ_rules-install:
 	@echo $@
-	cp javascript/backend/circ/* $(CIRCRULESDIR)
+	cp javascript/backend/circ/*.js $(CIRCRULESDIR)
 
 
 # -----------------------------------------------------------------------------------
