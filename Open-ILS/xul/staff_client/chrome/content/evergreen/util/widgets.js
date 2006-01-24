@@ -10,6 +10,7 @@ util.widgets.EXPORT_OK	= [
 	'remove_children',
 	'make_grid',
 	'make_menulist',
+	'insertAfter',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
@@ -84,6 +85,15 @@ util.widgets.enable_accesskeys_in_node_and_children = function( node ) {
 		util.widgets.enable_accesskeys_in_node_and_children( node.childNodes[i] );
 	}
 	dump('+ node = <' + node.id + '> accesskey = <' + node.accessKey + '> accesskey = <' + node.getAttribute('accesskey') + '> oldaccesskey = <' + node.getAttribute('oldaccesskey') + '>\n');
+}
+
+util.widgets.insertAfter = function(parent_node,new_node,sibling_node) {
+	sibling_node = sibling_node.nextSibling;
+	if (sibling_node) {
+		parent_node.insertBefore(new_node,sibling_node);
+	} else {
+		parent_node.appendChild(new_node);
+	}
 }
 
 dump('exiting util/widgets.js\n');
