@@ -509,43 +509,12 @@
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
 					+'?session='+window.escape(g.session)
+					+'&doc_id=' + window.escape(find_this_id)
 					+'&ou_ids=' + window.escape( js2JSON(list) ),
 				title,
 				'chrome,modal,resizable'
 			);
 
-			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-			g.data.stash_retrieve();
-			var volumes = JSON2js( g.data.temp );
-			g.error.sdump('D_CAT','in browse, g.data.temp =\n' + g.data.temp);
-		
-			volumes = util.functional.filter_list(
-				volumes,
-				function (obj) {
-					return obj.ischanged() == '1';
-				}
-			);
-
-			volumes = util.functional.map_list(
-				volumes,
-				function (obj) {
-					obj.record( find_this_id ); // staff client 2 didn't do this.  Does it matter?
-					return obj;
-				}
-			);
-
-			if (volumes.length == 0) return;
-
-			try {
-				var r = g.network.request(
-					api.FM_ACN_TREE_UPDATE.app,
-					api.FM_ACN_TREE_UPDATE.method,
-					[ g.session, volumes ]
-				);
-				/* FIXME -- revisit the return value here */
-			} catch(E) {
-				alert('volume update error: ' + js2JSON(E));
-			}
 			refresh_browse_list();
 		}
 

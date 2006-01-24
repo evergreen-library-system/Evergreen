@@ -43,11 +43,12 @@
 				g.error.sdump('D_TRACE','my_init() for cat/volume_copy_creator.xul');
 
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-				JSAN.use('util.widgets');
+				JSAN.use('util.widgets'); JSAN.use('util.functional');
 
 				g.cgi = new CGI();
 
 				g.session = g.cgi.param('session') || g.cgi.param('ses');
+				g.doc_id = g.cgi.param('doc_id');
 
 				var ou_ids = [];
 				if (g.cgi.param('ou_ids')) 
@@ -172,16 +173,98 @@
 					tb.setAttribute('callnumber',callnumber);
 					tb.setAttribute('rel_vert_pos','4');
 					util.widgets.apply_vertical_tab_on_enter_handler( tb );
+					tb.setAttribute('onchange','document.getElementById("Create").disabled = false;');
 				}
 			} catch(E) {
 				g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);
 			}
 		}
 
+		g.new_node_id = -1;
+
 		g.stash_and_close = function() {
-			g.data.temp = js2JSON( g.volumes );
-			g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
-			g.data.stash('temp');
+			var nl = document.getElementsByTagName('textbox');
+
+			var volumes_hash = {};
+
+			var barcodes = util.functional.filter_list(
+				nl,
+				function(obj) { return obj.getAttribute('rel_vert_pos') == 4; }
+			);
+		
+			for (var i = 0; i < barcodes.length; i++) {
+				var ou_id = barcodes[i].getAttribute('ou_id');
+				var callnumber = barcodes[i].getAttribute('callnumber');
+				var barcode = barcodes[i].value;
+
+				if (typeof volumes_hash[ou_id] == 'undefined') { volumes_hash[ou_id] = {} }
+				if (typeof volumes_hash[ou_id][callnumber] == 'undefined') { volumes_hash[ou_id][callnumber] = [] }
+
+				volumes_hash[ou_id][callnumber].push( barcode );
+			}
+
+			var volumes = [];
+			var copies = [];
+			var volume_labels = {};
+
+			for (var ou_id in volumes_hash) {
+				for (var cn in volumes_hash[ou_id]) {
+					var volume = new acn();
+					var acn_id = g.new_node_id--;
+					volume.id( acn_id );
+					volume.isnew('1');
+					volume.record(g.doc_id);
+					volume.label(cn);
+					volume.owning_lib(ou_id);
+					volume.copies( [] );
+					volumes.push( volume );
+
+					volume_labels[ acn_id ] = cn;
+
+					for (var i = 0; i < volumes_hash[ou_id][cn].length; i++) {
+						var copy = new acp();
+						copy.id( g.new_node_id-- );
+						copy.isnew('1');
+						copy.barcode( volumes_hash[ou_id][cn][i] );
+						copy.call_number( acn_id );
+						copies.push( copy );
+					}
+				}
+			}
+
+			JSAN.use('util.window'); var win = new util.window();
+			var w = win.open(
+				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
+					+'?session='+window.escape(g.session)
+					+'&copies='+window.escape(js2JSON(copies))
+					+'&callnumbers='+window.escape(js2JSON(volume_labels))
+					+'&edit=1',
+				title,
+				'chrome,modal,resizable'
+			);
+			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+			g.data.stash_retrieve();
+			copies = JSON2js( g.data.temp );
+
+			for (var i = 0; i < copies.length; i++) {
+				var copy = copies[i];
+				var volume = util.functional.find_id_object_in_list( volumes, copy.call_number() );
+				var temp = volume.copies();
+				temp.push( copy );
+				volume.copies( temp );
+			}
+
+			try {
+				var r = g.network.request(
+					api.FM_ACN_TREE_UPDATE.app,
+					api.FM_ACN_TREE_UPDATE.method,
+					[ g.session, volumes ]
+				);
+				/* FIXME -- revisit the return value here */
+			} catch(E) {
+				alert('volume update error: ' + js2JSON(E));
+			}
+
 			window.close();
 		}
 
@@ -192,7 +275,7 @@
 		<caption id="caption" label="Volume/Copy Creator"/>
 		<hbox style="border-bottom: solid black thin">
 			<spacer flex="1" />
-			<button label="Create" disabled="true" oncommand="g.stash_and_close();"/>
+			<button id="Create" label="Create" disabled="true" oncommand="g.stash_and_close();"/>
 		</hbox>
 		<grid flex="1">
 			<columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
