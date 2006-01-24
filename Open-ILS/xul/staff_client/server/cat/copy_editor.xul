@@ -293,10 +293,10 @@ i				} else { /* a yet to be created call number */
 
 				if (!g.copies) g.copies = [];
 				if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
-				if (g.cgi.param('copies') g.copies = g.copies.concat( JSON2js( g.cgi.param('copies') ) );
+				if (g.cgi.param('copies')) g.copies = g.copies.concat( JSON2js( g.cgi.param('copies') ) );
 
 				if (window.xulG && window.xulG.callnumbers) g.callnumbers = window.xulG.callnumbers;
-				if (g.cgi.param('callnumbers') g.callnumbers =  JSON2js( g.cgi.param('callnumbers') );
+				if (g.cgi.param('callnumbers')) g.callnumbers =  JSON2js( g.cgi.param('callnumbers') );
 
 				g.summarize( g.copies );
 				g.render();
