@@ -4,6 +4,7 @@ var __SCRATCH = {};
 function scratchKey()		{ return '_' + __scratchKey++; };
 function scratchPad(key)	{ return '__SCRATCH.'+ key; }
 function getScratch(key)	{ return __SCRATCH[ key ]; }
+function scratchClear()		{ for( var o in __SCRATCH ) __SCRATCH[o] = null; }
 
 
 

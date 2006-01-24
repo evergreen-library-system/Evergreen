@@ -193,8 +193,8 @@ sub _build_circ_script_runner {
 	$runner->insert( 'environment.copy',		$ctx->{copy}, 1);
 
 	# circ script result
-	$runner->insert( 'environment.result', {} );
-	$runner->insert( 'environment.result.event', 'SUCCESS' );
+	$runner->insert( 'result', {} );
+	$runner->insert( 'result.event', 'SUCCESS' );
 
 	$runner->insert('environment.isRenewal', 1) if $ctx->{isrenew};
 
@@ -275,7 +275,7 @@ sub permit_circ {
 	$runner->load($scripts{circ_permit});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Script Died: $@");
 
-	my $evtname = $runner->retrieve('environment.result.event');
+	my $evtname = $runner->retrieve('result.event');
 	$logger->activity("Permit Circ for user $patronid and barcode $barcode returned event: $evtname");
 	return OpenILS::Event->new($evtname);
 }
