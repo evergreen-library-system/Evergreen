@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Copy Viewer/Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/evergreen.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_volume_copy_creator_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	width="800" height="600"
+	title="Volume/Copy Editor"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat/volume_copy_creator.xul');
+
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+				JSAN.use('util.widgets');
+
+				g.cgi = new CGI();
+
+				g.session = g.cgi.param('session') || g.cgi.param('ses');
+
+				var ou_ids = [];
+				if (g.cgi.param('ou_ids')) 
+					ou_ids = JSON2js( g.cgi.param('ou_ids') );
+				if (!ou_ids) ou_ids = [];
+				if (window.xulG && window.xulG.ou_ids) 
+					ou_ids = ou_ids.concat( window.xulG.ou_ids );
+
+				JSAN.use('util.network'); g.network = new util.network();
+
+				var rows = document.getElementById('rows');
+
+				var node_id = 0;
+				for (var i = 0; i < ou_ids.length; i++) {
+					try {
+						var row = document.createElement('row'); rows.appendChild(row); row.setAttribute('ou_id',ou_ids[i]);
+						g.render_library_label(row,ou_ids[i]);
+						g.render_volume_count_entry(row,ou_ids[i]);
+					} catch(E) {
+						g.error.sdump('D_ERROR',E);
+					}
+				}
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/volume_copy_creator.xul\n" +E+ '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
+				alert(err_msg);
+			}
+		}
+
+		g.render_library_label = function(row,ou_id) {
+			var label = document.createElement('label'); row.appendChild(label);
+			label.setAttribute('ou_id',ou_id);
+			label.setAttribute('value',g.data.hash.aou[ ou_id ].shortname());
+		}
+
+		g.render_volume_count_entry = function(row,ou_id) {
+			var hb = document.createElement('vbox'); row.appendChild(hb);
+			var tb = document.createElement('textbox'); hb.appendChild(tb);
+			tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
+			tb.setAttribute('rel_vert_pos','1');
+			tb.addEventListener(
+				'change',
+				function(ev) {
+					if (! isNaN( parseInt( ev.target.value) ) ) {
+						ev.target.disabled = true;
+						g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
+					}
+				},
+				false
+			);
+		}
+
+		g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
+			var grid = util.widgets.make_grid( [ {}, {} ] ); row.appendChild(grid);
+			grid.setAttribute('flex','1');
+			grid.setAttribute('ou_id',ou_id);
+			var rows = grid.lastChild;
+			var r = document.createElement('row'); rows.appendChild( r );
+			var x = document.createElement('label'); r.appendChild(x);
+			x.setAttribute('value','Call Numbers'); x.setAttribute('style','font-weight: bold');
+			x = document.createElement('label'); r.appendChild(x);
+			x.setAttribute('value','# of Copies'); x.setAttribute('style','font-weight: bold');
+
+			function handle_change(tb1,tb2,hb3) {
+				if (tb1.value == '') return;
+				if (isNaN( parseInt( tb2.value ) )) return;
+
+				tb1.disabled = true;
+				tb2.disabled = true;
+
+				g.render_barcode_entry(hb3,tb1.value,parseInt(tb2.value),ou_id);
+			}
+
+			for (var i = 0; i < count; i++) {
+				var r = document.createElement('row'); rows.appendChild(r);
+				var hb1 = document.createElement('vbox'); r.appendChild(hb1);
+				var hb2 = document.createElement('vbox'); r.appendChild(hb2);
+				var hb3 = document.createElement('vbox'); r.appendChild(hb3);
+				var tb1 = document.createElement('textbox'); hb1.appendChild(tb1);
+				tb1.setAttribute('rel_vert_pos','2');
+				var tb2 = document.createElement('textbox'); hb2.appendChild(tb2);
+				tb2.setAttribute('size','3'); tb2.setAttribute('cols','3');
+				tb2.setAttribute('rel_vert_pos','3');
+
+				tb1.addEventListener(
+					'change',
+					function(ev) {
+						var _tb1 = ev.target;	
+						var _hb1 = _tb1.parentNode;
+						var _hb2 = _hb1.nextSibling;
+						var _tb2 = _hb2.firstChild;
+						var _hb3 = _hb2.nextSibling;
+						handle_change(_tb1,_tb2,_hb3);
+					},
+					false
+				);
+				
+				tb2.addEventListener(
+					'change',
+					function(ev) {
+						var _tb2 = ev.target;	
+						var _hb2 = _tb2.parentNode;
+						var _hb1 = _hb2.previousSibling;
+						var _tb1 = _hb1.firstChild;
+						var _hb3 = _hb2.nextSibling;
+						handle_change(_tb1,_tb2,_hb3);
+					},
+					false
+				);
+			}
+		}
+
+		g.render_barcode_entry = function(node,callnumber,count,ou_id) {
+			try {
+				for (var i = 0; i < count; i++) {
+					var tb = document.createElement('textbox'); node.appendChild(tb);
+					tb.setAttribute('ou_id',ou_id);
+					tb.setAttribute('callnumber',callnumber);
+					tb.setAttribute('rel_vert_pos','4');
+				}
+			} catch(E) {
+				g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);
+			}
+		}
+
+		g.stash_and_close = function() {
+			g.data.temp = js2JSON( g.volumes );
+			g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
+			g.data.stash('temp');
+			window.close();
+		}
+
+	]]>
+	</script>
+
+	<groupbox flex="1" style="overflow: auto">
+		<caption id="caption" label="Volume/Copy Creator"/>
+		<hbox style="border-bottom: solid black thin">
+			<spacer flex="1" />
+			<button label="Create" disabled="true" oncommand="g.stash_and_close();"/>
+		</hbox>
+		<grid flex="1">
+			<columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
+			<rows id="rows">
+				<row>
+					<label value="Library" style="font-weight: bold"/>
+					<label value="# of volumes" style="font-weight: bold"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</window>
+
