@@ -231,6 +231,13 @@
 							copy.isnew('1');
 							copy.barcode( volumes_hash[ou_id][cn][i] );
 							copy.call_number( acn_id );
+							copy.circ_lib(ou_id);
+							/* FIXME -- use constants */
+							copy.deposit(0);
+							copy.fine_level(2);
+							copy.loan_duration(2);
+							copy.location(1);
+							copy.status(0);
 							copies.push( copy );
 						}
 					}
