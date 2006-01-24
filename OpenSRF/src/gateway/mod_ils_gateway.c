@@ -50,6 +50,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	char* service					= NULL;	/* service to connect to */
 	char* method					= NULL;	/* method to perform */
+	int api_level					= 1;
 
 	string_array* sarray			= init_string_array(12); /* method parameters */
 
@@ -133,6 +134,9 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		ap_unescape_url((char*)key);
 		ap_unescape_url((char*)val);
 
+		fprintf(stderr, "URL KEY: %s\n", key);
+		fflush(stderr);
+
 		if(!strcmp(key,"service")) 
 			service = val;
 
@@ -142,7 +146,18 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		if(!strcmp(key,"param"))
 			string_array_add(sarray, val);
 
+		if(!strcmp(key, "api_level")) 
+			api_level = atoi(val);
+
+		if(!strcmp(key, "echo")) {
+			if(val) ap_rputs(val,r);
+			else ap_rputs("1",r);
+			return OK;  /** XXX CLEAN UP MEMORY HERE */
+		}
 	}
+
+	fprintf(stderr, "DONE URL KEY: %s %d\n", key, api_level);
+	fflush(stderr);
 
 	osrfLogInfo("\r\nPerforming(%d):  service %s "
 			"| method %s |", getpid(), service, method );
@@ -156,7 +171,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	osrfLogDebug("session service: %s", session->remote_service );
 
-	int req_id = osrf_app_session_make_req( session, NULL, method, 1, sarray );
+	int req_id = osrf_app_session_make_req( session, NULL, method, api_level, sarray );
 	string_array_destroy(sarray);
 
 	osrf_message* omsg = NULL;
