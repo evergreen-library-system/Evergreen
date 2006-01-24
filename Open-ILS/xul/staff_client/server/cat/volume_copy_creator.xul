@@ -194,7 +194,7 @@
 				
 				for (var i = 0; i < nl.length; i++) {
 					if ( nl[i].getAttribute('rel_vert_pos') == 4 ) barcodes.push( nl[i] );
-				);
+				};
 			
 				for (var i = 0; i < barcodes.length; i++) {
 					var ou_id = barcodes[i].getAttribute('ou_id');
