@@ -355,6 +355,10 @@ function myOPACShowTransactions(r) {
 
 		var extra = "";
 		var type = trans.xact_type();
+		if(type == 'circulation') {
+			unHideMe($('accrue_explanation'));
+			unHideMe($n(row, 'myopac_trans_balance_recur'));
+		}
 		$n(row,'myopac_trans_type').appendChild(text(type));
 		if( type == "circulation" ) extra = record.title();
 		$n(row, 'myopac_trans_extra').appendChild(text(extra));

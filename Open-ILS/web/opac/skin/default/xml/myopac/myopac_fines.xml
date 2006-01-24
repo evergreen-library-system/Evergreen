@@ -27,6 +27,13 @@
 	<br/>
 	<br/>
 
+	<div id='accrue_explanation' class='hide_me'>
+		<span>Balances marked with a</span>
+		<span style='color:red; font-weight: bold'>*</span>
+		<span>will continue to accrue fines until the checked out item is returned.</span>
+	</div>
+
+	<br/>
 	<!--
 	<table width='100%' class='light_border myopac_table hide_me' id='myopac_trans_table'>
 	-->
@@ -53,13 +60,18 @@
 				<td name='myopac_trans_last_payment'> </td>
 				<td name='myopac_trans_init_amount'>$</td>
 				<td name='myopac_trans_total_paid'>$</td>
-				<td name='myopac_trans_balance' style='color:red; font-weight: bold;'>$</td>
+				<td style='color:red; font-weight: bold;'>
+					<span name='myopac_trans_balance_recur' class='hide_me'> * </span>
+					<span name='myopac_trans_balance'>$</span>
+				</td>
 				<td name='myopac_trans_type'> </td>
 				<td name='myopac_trans_extra'> </td>
 			</tr>
 		</tbody>
 	</table>
-
+	
+	<br/>
+	
 </div>
 
 
