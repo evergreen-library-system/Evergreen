@@ -13,6 +13,7 @@ use Data::Dumper;
 use OpenILS::Utils::FlatXML;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Logger qw($logger);
 
 my $apputils = "OpenILS::Application::AppUtils";
 
@@ -823,14 +824,13 @@ sub _create_copy {
 sub _update_copy {
 	my($session, $copy, $user_obj) = @_;
 
-	if($apputils->check_user_perms(
-			$user_obj->id, $user_obj->home_ou, "UPDATE_COPY")) {
-		return OpenILS::Perm->new("UPDATE_COPY"); }
+	my $evt = $apputils->check_perms($user_obj->id, $copy->circ_lib, 'UPDATE_COPY');
+	return $evt if $evt; #XXX NOT YET HANDLED BY CALLER
 
-	my $request = $session->request(
+	my $status = $apputils->simplereq( 	
+		'open-ils.storage',
 		"open-ils.storage.direct.asset.copy.update", $copy );
-	my $status = $request->gather(1);
-	warn "Updated copy " . $copy->id . "\n";
+	$logger->debug("Successfully updated copy " . $copy->id );
 	return $status;
 }
 
@@ -861,7 +861,7 @@ sub _fleshed_copy_update {
 	}
 
 	
-	if(!@$stat_cat_entries) { return 1; }
+	return 1 unless ( $stat_cat_entries and @$stat_cat_entries );
 
 	my $stat_maps = $session->request(
 		"open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy.atomic",
