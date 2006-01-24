@@ -89,7 +89,7 @@
 			var hb = document.createElement('vbox'); row.appendChild(hb);
 			var tb = document.createElement('textbox'); hb.appendChild(tb);
 			tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
-			tb.setAttribute('rel_vert_pos','1');
+			tb.setAttribute('rel_vert_pos','1'); util.widgets.apply_vertical_tab_on_enter_handler( tb );
 			tb.addEventListener(
 				'change',
 				function(ev) {
@@ -130,9 +130,11 @@
 				var hb3 = document.createElement('vbox'); r.appendChild(hb3);
 				var tb1 = document.createElement('textbox'); hb1.appendChild(tb1);
 				tb1.setAttribute('rel_vert_pos','2');
+				util.widgets.apply_vertical_tab_on_enter_handler( tb1 );
 				var tb2 = document.createElement('textbox'); hb2.appendChild(tb2);
 				tb2.setAttribute('size','3'); tb2.setAttribute('cols','3');
 				tb2.setAttribute('rel_vert_pos','3');
+				util.widgets.apply_vertical_tab_on_enter_handler( tb2 );
 
 				tb1.addEventListener(
 					'change',
@@ -169,6 +171,7 @@
 					tb.setAttribute('ou_id',ou_id);
 					tb.setAttribute('callnumber',callnumber);
 					tb.setAttribute('rel_vert_pos','4');
+					util.widgets.apply_vertical_tab_on_enter_handler( tb );
 				}
 			} catch(E) {
 				g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);

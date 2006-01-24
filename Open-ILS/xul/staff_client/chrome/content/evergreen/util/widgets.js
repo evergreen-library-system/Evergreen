@@ -11,6 +11,8 @@ util.widgets.EXPORT_OK	= [
 	'make_grid',
 	'make_menulist',
 	'insertAfter',
+	'apply_vertical_tab_on_enter_handler',
+	'vertical_tab',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
@@ -95,5 +97,83 @@ util.widgets.insertAfter = function(parent_node,new_node,sibling_node) {
 		parent_node.appendChild(new_node);
 	}
 }
+
+util.widgets.apply_vertical_tab_on_enter_handler = function(node) {
+	try {
+		node.addEventListener(
+			'keypress',
+			function(ev) {
+				dump('keypress: ev.target.tagName = ' + ev.target.tagName 
+					+ ' ev.target.nodeName = ' + ev.target.nodeName 
+					+ ' ev.keyCode = ' + ev.keyCode 
+					+ ' ev.charCode = ' + ev.charCode + '\n');
+				if (ev.keyCode == 13) {
+					dump('trying vertical tab\n');
+					util.widgets.vertical_tab(ev.target);
+					ev.preventDefault(); ev.stopPropagation();
+					return true;
+				}
+			},
+			false
+		);
+	} catch(E) {
+		alert(E);
+	}
+}
+
+util.widgets.vertical_tab = function(node) {
+	try {
+		var rel_vert_pos = node.getAttribute('rel_vert_pos') || 0;
+		dump('vertical_tab -> node = ' + node.nodeName + ' rel_vert_pos = ' + rel_vert_pos + '\n');
+
+		var nl = document.getElementsByTagName( node.nodeName );
+
+		var found_self = false; var next_node; var max_rel_vert_pos = 0;
+		for (var i = 0; i < nl.length; i++) {
+
+			var candidate_node = nl[i];
+			var test_rel_vert_pos = candidate_node.getAttribute('rel_vert_pos') || 0;
+
+			if (found_self && !next_node && (test_rel_vert_pos == rel_vert_pos) && !candidate_node.disabled) {
+			
+				next_node = candidate_node;
+
+			}
+			if (candidate_node == node) found_self = true;
+
+			if (test_rel_vert_pos > max_rel_vert_pos) max_rel_vert_pos = test_rel_vert_pos;
+		}
+
+		dump('intermediate: next_node = ' + next_node + ' max_rel_vert_pos = ' + max_rel_vert_pos + '\n');
+
+		if (!next_node) {
+
+			found_self = false;
+			for (var next_pos = rel_vert_pos; next_pos <= max_rel_vert_pos; next_pos++) {
+
+				for (var i = 0; i < nl.length; i++) {
+					var candidate_node = nl[i];
+					var test_rel_vert_pos = candidate_node.getAttribute('rel_vert_pos') || 0;
+
+					if (found_self && !next_node && (test_rel_vert_pos == next_pos) && !candidate_node.disabled ) {
+						next_node = candidate_node;
+					}
+
+					if (candidate_node == node) found_self = true;
+				}
+
+			}
+
+		}
+
+		if (next_node) {
+			dump('focusing\n');
+			next_node.focus();
+		}
+	} catch(E) {
+		alert(E);
+	}
+}
+
 
 dump('exiting util/widgets.js\n');
