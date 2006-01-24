@@ -238,7 +238,7 @@
 
 				JSAN.use('util.window'); var win = new util.window();
 				var w = win.open(
-					window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
+					urls.XUL_COPY_EDITOR
 						+'?session='+window.escape(g.session)
 						+'&copies='+window.escape(js2JSON(copies))
 						+'&callnumbers='+window.escape(js2JSON(volume_labels))
