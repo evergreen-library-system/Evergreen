@@ -41,19 +41,39 @@ function scGo() {
 
 function scFetchPerms() {
 
-	PERMS[ACTOR].create_stat_cat = scFetchPerm('CREATE_PATRON_STAT_CAT');
-	PERMS[ACTOR].update_stat_cat = scFetchPerm('UPDATE_PATRON_STAT_CAT');
-	PERMS[ACTOR].delete_stat_cat = scFetchPerm('DELETE_PATRON_STAT_CAT');
-	PERMS[ACTOR].create_stat_cat_entry = scFetchPerm('CREATE_PATRON_STAT_CAT_ENTRY');
-	PERMS[ACTOR].update_stat_cat_entry = scFetchPerm('UPDATE_PATRON_STAT_CAT_ENTRY');
-	PERMS[ACTOR].delete_stat_cat_entry = scFetchPerm('DELETE_PATRON_STAT_CAT_ENTRY');
+	var req = new RemoteRequest(
+		'open-ils.actor',
+		'open-ils.actor.user.perm.highest_org.batch', session, user.id(), 
+		[	'CREATE_PATRON_STAT_CAT',
+			'UPDATE_PATRON_STAT_CAT',
+			'DELETE_PATRON_STAT_CAT',
+			'CREATE_PATRON_STAT_CAT_ENTRY',
+			'UPDATE_PATRON_STAT_CAT_ENTRY',
+			'DELETE_PATRON_STAT_CAT_ENTRY',
+	
+			'CREATE_COPY_STAT_CAT',
+			'UPDATE_COPY_STAT_CAT',
+			'DELETE_COPY_STAT_CAT',
+			'CREATE_COPY_STAT_CAT_ENTRY',
+			'UPDATE_COPY_STAT_CAT_ENTRY',
+			'DELETE_COPY_STAT_CAT_ENTRY' ] );
 
-	PERMS[ASSET].create_stat_cat = scFetchPerm('CREATE_COPY_STAT_CAT');
-	PERMS[ASSET].update_stat_cat = scFetchPerm('UPDATE_COPY_STAT_CAT');
-	PERMS[ASSET].delete_stat_cat = scFetchPerm('DELETE_COPY_STAT_CAT');
-	PERMS[ASSET].create_stat_cat_entry = scFetchPerm('CREATE_COPY_STAT_CAT_ENTRY');
-	PERMS[ASSET].update_stat_cat_entry = scFetchPerm('UPDATE_COPY_STAT_CAT_ENTRY');
-	PERMS[ASSET].delete_stat_cat_entry = scFetchPerm('DELETE_COPY_STAT_CAT_ENTRY');
+	req.send(true);
+	var orgs = req.getResultObject();
+
+	PERMS[ACTOR].create_stat_cat = orgs[0];
+	PERMS[ACTOR].update_stat_cat = orgs[1];
+	PERMS[ACTOR].delete_stat_cat = orgs[2];
+	PERMS[ACTOR].create_stat_cat_entry = orgs[3];
+	PERMS[ACTOR].update_stat_cat_entry = orgs[4];
+	PERMS[ACTOR].delete_stat_cat_entry = orgs[5];
+
+	PERMS[ASSET].create_stat_cat = orgs[6];
+	PERMS[ASSET].update_stat_cat = orgs[7];
+	PERMS[ASSET].delete_stat_cat = orgs[8];
+	PERMS[ASSET].create_stat_cat_entry =  orgs[9];
+	PERMS[ASSET].update_stat_cat_entry =  orgs[10];
+	PERMS[ASSET].delete_stat_cat_entry =  orgs[11];
 }
 
 function scFetchPerm(perm) {

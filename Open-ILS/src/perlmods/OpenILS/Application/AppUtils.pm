@@ -112,48 +112,36 @@ sub rollback_db_session {
 	$session->kill_me();
 }
 
+
+# returns undef it the event is not an ILS event
+# returns the event code otherwise
+sub event_code {
+	my( $self, $evt ) = @_;
+	return $evt->{ilsevent} if( ref($evt) eq 'HASH' and defined($evt->{ilsevent})) ;
+	return undef;
+}
+
 # ---------------------------------------------------------------------------
 # Checks to see if a user is logged in.  Returns the user record on success,
 # throws an exception on error.
 # ---------------------------------------------------------------------------
-
-
 sub check_user_session {
 
 	my( $self, $user_session ) = @_;
 
-	my $session = OpenSRF::AppSession->create( "open-ils.auth" );
-	my $request = $session->request("open-ils.auth.session.retrieve", $user_session );
-	my $response = $request->recv();
-
-	if(!$response) {
-		throw OpenSRF::EX::User 
-			("Error communication with storage server");
-	}
-
-	if(ref($response) and $response->isa("OpenSRF::EX")) {
-		throw $response ($response->stringify);
-	}
+	my $content = $self->simplereq( 
+		'open-ils.auth', 
+		'open-ils.auth.session.retrieve', $user_session );
 
 
-	my $content = $response->content;
-	if( ref($content) eq 'HASH' ) {
-		if(defined($content->{ilsevent}) and $content->{ilsevent} ne '0' ) {
-			throw OpenSRF::EX::ERROR 
-				("Session [$user_session] cannot be authenticated" );
-		}
-	}
-
-	my $user = $content;
-	if(!$user) {
+	if(! $content or $self->event_code($content)) {
 		throw OpenSRF::EX::ERROR 
 			("Session [$user_session] cannot be authenticated" );
 	}
 
-	$session->disconnect();
-	$session->kill_me();
+	$logger->debug("Fetch user session $user_session found user " . $content->id );
 
-	return $user;
+	return $content;
 }
 
 # generic simple request returning a scalar value

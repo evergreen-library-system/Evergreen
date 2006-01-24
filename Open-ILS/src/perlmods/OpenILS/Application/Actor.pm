@@ -1116,7 +1116,7 @@ __PACKAGE__->register_method(
 	method => 'check_user_perms3',
 	api_name	=> 'open-ils.actor.user.perm.highest_org',
 	notes		=> q/
-		Returns the highest org unit object at which a user has a given permission
+		Returns the highest org unit id at which a user has a given permission
 		If the requestor does not match the target user, the requestor must have
 		'VIEW_PERMISSION' rights at the home org unit of the target user
 		@param authtoken The login session key
@@ -1136,16 +1136,56 @@ sub check_user_perms3 {
 	return $evt if $evt;
 
 	my $tree = get_org_tree();
-	$org = $apputils->find_org($tree, $target->home_ou );
+	return _find_highest_perm_org( $perm, $userid, $target->home_ou, $tree );
+}
+
+
+sub _find_highest_perm_org {
+	my ( $perm, $userid, $start_org, $org_tree ) = @_;
+	my $org = $apputils->find_org($org_tree, $start_org );
 
 	my $lastid = undef;
 	while( $org ) {
 		last if ($apputils->check_perms( $userid, $org->id, $perm )); # perm failed
 		$lastid = $org->id;
-		$org = $apputils->find_org( $tree, $org->parent_ou() );
+		$org = $apputils->find_org( $org_tree, $org->parent_ou() );
 	}
 
 	return $lastid;
+}
+
+__PACKAGE__->register_method(
+	method => 'check_user_perms4',
+	api_name	=> 'open-ils.actor.user.perm.highest_org.batch',
+	notes		=> q/
+		Returns the highest org unit id at which a user has a given permission
+		If the requestor does not match the target user, the requestor must have
+		'VIEW_PERMISSION' rights at the home org unit of the target user
+		@param authtoken The login session key
+		@param userid The id of the user in question
+		@param perms An array of perm names to check 
+		@return An array of orgId's  representing the org unit 
+		highest in the org tree within which the user has the requested permission
+		The arrah of orgId's has matches the order of the perms array
+	/);
+
+sub check_user_perms4 {
+	my( $self, $client, $authtoken, $userid, $perms ) = @_;
+	
+	my( $staff, $target, $org, $evt );
+
+	( $staff, $target, $evt ) = $apputils->checkses_requestor(
+		$authtoken, $userid, 'VIEW_PERMISSION' );
+	return $evt if $evt;
+
+	my @arr;
+	return [] unless ref($perms);
+	my $tree = get_org_tree();
+
+	for my $p (@$perms) {
+		push( @arr, _find_highest_perm_org( $p, $userid, $target->home_ou, $tree ) );
+	}
+	return \@arr;
 }
 
 
