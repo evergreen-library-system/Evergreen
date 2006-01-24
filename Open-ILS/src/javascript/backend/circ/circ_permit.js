@@ -6,12 +6,16 @@ load_lib('circ_lib.js');
 
 
 /* collect some useful variables */
+var copy			= environment.copy;
+var patron		= environment.patron;
+var result		= environment.result;
 var standing	= patron.standing.value.toLowerCase();
 var profile		= patron.profile.name.toLowerCase();
 var status		= copy.status.name.toLowerCase();
 var itemsOut	= environment.patronItemsOut;
 var fines		= environment.patronFines;
 var isRenewal	= environment.isRenewal;
+
 
 log_debug('CIRC PERMIT: permit circ on ' +
 	' Copy: '					+ copy.id + 

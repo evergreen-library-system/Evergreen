@@ -142,6 +142,8 @@ sub _doctor_circ_objects {
 sub _get_patron_profile { 
 	my( $patron, $group_tree ) = @_;
 	return $group_tree if ($group_tree->id eq $patron->profile);
+	return undef unless ($group_tree->children);
+
 	for my $child (@{$group_tree->children}) {
 		my $ret = _get_patron_profile( $patron, $child );
 		return $ret if $ret;
@@ -186,15 +188,14 @@ sub _build_circ_script_runner {
 		$runner->add_path( $_ );
 	}
 
-	$runner->insert( 'patron',		$ctx->{patron}, 1);
-	$runner->insert( 'title',		$ctx->{title}, 1);
-	$runner->insert( 'copy',		$ctx->{copy}, 1);
+	$runner->insert( 'environment.patron',		$ctx->{patron}, 1);
+	$runner->insert( 'environment.title',		$ctx->{title}, 1);
+	$runner->insert( 'environment.copy',		$ctx->{copy}, 1);
 
 	# circ script result
-	$runner->insert( 'result', {} );
-	$runner->insert( 'result.event', 'SUCCESS' );
+	$runner->insert( 'environment.result', {} );
+	$runner->insert( 'environment.result.event', 'SUCCESS' );
 
-	$runner->insert('environment', {}, 1);
 	$runner->insert('environment.isRenewal', 1) if $ctx->{isrenew};
 
 	if(ref($ctx->{patron_circ_summary})) {
@@ -213,7 +214,7 @@ sub _add_script_runner_methods {
 
 	# allows a script to fetch a hold that is currently targeting the
 	# copy in question
-	$runner->insert_method( 'copy', '__OILS_FUNC_fetch_hold', sub {
+	$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
 			my $key = shift;
 			my $hold = $holdcode->fetch_open_hold_by_current_copy($ctx->{copy}->id);
 			$hold = undef unless $hold;
@@ -274,7 +275,7 @@ sub permit_circ {
 	$runner->load($scripts{circ_permit});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Script Died: $@");
 
-	my $evtname = $runner->retrieve('result.event');
+	my $evtname = $runner->retrieve('environment.result.event');
 	$logger->activity("Permit Circ for user $patronid and barcode $barcode returned event: $evtname");
 	return OpenILS::Event->new($evtname);
 }

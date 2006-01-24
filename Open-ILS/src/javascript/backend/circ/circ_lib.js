@@ -8,14 +8,12 @@ function getScratch(key)	{ return __SCRATCH[ key ]; }
 
 
 /* -- Copy functions ----------------------------------------------------- */
-try { 
-
-	copy.fetchHold = function() {
+if( environment.copy ) {
+	environment.copy.fetchHold = function() {
 		var key = scratchKey();
-		copy.__OILS_FUNC_fetch_hold(scratchPad(key));
+		environment.copy.__OILS_FUNC_fetch_hold(scratchPad(key));
 		var val = getScratch(key);
 		return (val) ? val : null;
 	}
-
-} catch(E) { log_warn( "Copy function definitions failed: " + E ); }
+} 
 
