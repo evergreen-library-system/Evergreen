@@ -35,6 +35,15 @@ our $MATH		= 'opensrf.math';
 our $SETTINGS	= 'opensrf.settings';
 our $ACTOR		= 'open-ils.actor';
 
+sub AUTH		{ return $AUTH; }
+sub STORAGE { return $STORAGE; }
+sub SEARCH	{ return $SEARCH; }
+sub CIRC		{ return $CIRC; }
+sub CAT		{ return $CAT; }
+sub MATH		{ return $MATH; }
+sub SETTINGS { return $SETTINGS; }
+sub ACTOR	{ return $ACTOR; }
+
 
 #----------------------------------------------------------------
 # Exit a script
