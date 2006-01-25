@@ -18,22 +18,7 @@
 		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
 		<script language='javascript' src='adminlib.js'> </script>
 		<script language='javascript' src='stat_cat_editor.js'> </script>
-
-		<style type='text/css'>
-			.hide_me { visibility: hidden; display: none }
-			.has_color { background: #E0F0E0; color: #000000; }
-			.data_grid { font-weight: 500; border-collapse: collapse;}
-			.data_grid thead tr { background: #E0F0E0; color: #000000; }
-			.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
-			.data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
-			.data_grid_center { text-align: center; }
-			.data_grid_padded tbody td { padding: 10px; }
-			/*.selector option { width: 10em; }*/
-			.insert_row { border: 2px solid #A0B0A0; padding: 50px;}
-			.padded { padding-left: 7px; padding-right: 7px; }
-			select { width: 12em; }
-		</style>
-
+		<link type='text/css' rel='stylesheet' href='admin.css' name='meduim_fonts' csstype='font'/>
 	</head>
 
 	<body onload='try{scEditorInit();}catch(e){alert(js2JSON(e));}'>
@@ -67,7 +52,7 @@
 						</td>
 						<td>Owning Library: </td>
 						<td>
-							<select id='sc_owning_lib_selector'>
+							<select class='select_big' id='sc_owning_lib_selector'>
 							</select>
 						</td>
 					</tr>
@@ -178,7 +163,7 @@
 				<td><input name='sc_edit_name'> </input></td>
 				<td>
 					<span class='hide_me' name='sc_edit_show_owning_lib'> </span>
-					<select class='hide_me' name='sc_edit_owning_lib'> </select>
+					<select class='hide_me select_big' name='sc_edit_owning_lib'> </select>
 				</td>
 
 				<td>
@@ -229,7 +214,7 @@
 						<input type='text' name='sc_new_entry_name'/>
 					</span>
 					<span class='padded'>
-						<select name='sc_new_entry_lib'> </select>
+						<select name='sc_new_entry_lib' class='select_big'> </select>
 					</span>
 					<span class='padded'>
 						<input type='submit' name='sc_new_entry_create' value='Create new entry'/>

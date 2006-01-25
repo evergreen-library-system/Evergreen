@@ -80,14 +80,6 @@ function scFetchPerm(perm) {
 }
 
 
-function _cleanTbody(tbody) {
-	for( var c  = 0; c < tbody.childNodes.length; c++ ) {
-		var child = tbody.childNodes[c];
-		if(child && child.getAttribute('edit')) tbody.removeChild(child); 
-	}
-}
-
-
 function scFetchAll( session, type, orgid, callback, args ) {
 	var req = new Request( 
 		SC_FETCH_ALL.replace(/TYPE/, type) , session, orgid );
@@ -149,8 +141,8 @@ function scInsertCat( tbody, cat, type ) {
 
 	cat.entries().sort(  /* sort the entries by value */
 		function( a, b ) { 
-			if( a.value() > b.value()) return 1;
-			if( a.value() < b.value()) return -1;
+			if( a.value().toLowerCase() > b.value().toLowerCase()) return 1;
+			if( a.value().toLowerCase() < b.value().toLowerCase()) return -1;
 			return 0;
 		}
 	);
@@ -196,7 +188,7 @@ function scCreateEntry( type, id, row ) {
 }
 
 function scNewEntry( type, cat, tbody ) {
-	_cleanTbody(tbody);
+	cleanTbody(tbody, 'edit');
 	var row = $('sc_new_entry_row').cloneNode(true);
 	row.setAttribute('edit', '1');
 
@@ -227,7 +219,7 @@ function scNewEntry( type, cat, tbody ) {
 		org = findOrgUnit(c_org);
 	}
 	
-	_scBuildOrgSelector( $n(row, 'sc_new_entry_lib'), org, depth );
+	buildOrgSel( $n(row, 'sc_new_entry_lib'), org, depth );
 	$n(row, 'sc_new_entry_name').focus();
 }
 
@@ -257,15 +249,9 @@ function scBuildNew() {
 	}
 
 	org = findOrgUnit( org );
-	_scBuildOrgSelector( selector, org, depth );
+	buildOrgSel( selector, org, depth );
 }
 
-function _scBuildOrgSelector(selector, org, offset) {
-	insertSelectorVal( selector, -1, 
-		org.name(), org.id(), null, findOrgDepth(org) - offset );
-	for( var c in org.children() )
-		_scBuildOrgSelector( selector, org.children()[c], offset);
-}
 
 function scNew() {
 
@@ -295,7 +281,7 @@ function scNew() {
 
 function scEdit( tbody, type, cat ) {
 
-	_cleanTbody(tbody);
+	_cleanTbody(tbody, 'edit');
 	var row = $('sc_edit_row').cloneNode(true);
 	row.setAttribute('edit', '1');
 
@@ -317,7 +303,7 @@ function scEdit( tbody, type, cat ) {
 	var selector = null;
 	if( myorg.children() && myorg.children().length > 0 ) {
 		selector = $n(row, 'sc_edit_owning_lib');
-		_scBuildOrgSelector( selector, myorg, findOrgDepth(myorg) );
+		buildOrgSel( selector, myorg, findOrgDepth(myorg) );
 		setSelector( selector, cat.owner() );
 		unHideMe(selector);
 
@@ -386,7 +372,7 @@ function scEditGo( type, cat, row, selector ) {
 }
 
 function scUpdateEntry( cat, entry, tbody, type ) {
-	_cleanTbody(tbody);
+	_cleanTbody(tbody, 'edit');
 	var row = $('sc_edit_entry_row').cloneNode(true);
 	row.setAttribute('edit', '1');
 

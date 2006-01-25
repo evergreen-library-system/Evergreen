@@ -30,5 +30,23 @@ function fetchHighestPermOrgs( session, userId, perms ) {
 	var orgs = req.getResultObject();
 	for( var i = 0; i != orgs.length; i++ ) 
 		PERMS[ perms[i] ] = ( orgs[i] != null ) ? orgs[i] : -1 ;
-	return 
+	return orgs;
+}
+
+/* offset is the depth of the highest org 
+	in the tree we're building 
+  */
+function buildOrgSel(selector, org, offset) {
+	insertSelectorVal( selector, -1, 
+		org.name(), org.id(), null, findOrgDepth(org) - offset );
+	for( var c in org.children() )
+		buildOrgSel( selector, org.children()[c], offset);
+}
+
+/** removes all child nodes in 'tbody' that have the attribute 'key' defined */
+function cleanTbody(tbody, key) {
+	for( var c  = 0; c < tbody.childNodes.length; c++ ) {
+		var child = tbody.childNodes[c];
+		if(child && child.getAttribute(key)) tbody.removeChild(child); 
+	}
 }

@@ -1,0 +1,15 @@
+.welcome_box { position:absolute; top: 5px; right: 5px; }
+.title { font-weight: bold; font-size: 14pt; margin: 10px;}
+.hide_me { visibility: hidden; display: none }
+.has_color { background: #E0F0E0; color: #000000; }
+.data_grid { font-weight: 500; border-collapse: collapse;}
+.data_grid thead tr { background: #E0F0E0; color: #000000; }
+.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
+.data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
+.data_grid_center { text-align: center; }
+.data_grid_padded tbody td { padding: 10px; }
+.insert_row { border: 2px solid #A0B0A0; padding: 50px;}
+.padded { padding-left: 7px; padding-right: 7px; }
+select { width: 12em; }
+.select_big { width: 15em; }
+
