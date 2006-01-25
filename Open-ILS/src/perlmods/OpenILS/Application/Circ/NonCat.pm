@@ -87,15 +87,16 @@ __PACKAGE__->register_method(
 		Retrieves the non-cat types at the requested location as well
 		as those above and below the requested location in the org tree
 		@param orgId The base location at which to retrieve the type objects
+		@param depth Optional parameter to limit the depth of the tree
 		@return An array of non cat type objects or an event if an error occurs
 	/);
 
 sub retrieve_noncat_types_all {
-	my( $self, $client, $orgId ) = @_;
-	return $U->simplereq(
-		'open-ils.storage', # XXX Needs to be a ranged call
-		'open-ils.storage.direct.config.non_cataloged_type.search_where.atomic', 
-		{ owning_lib => $orgId } );
+	my( $self, $client, $orgId, $depth ) = @_;
+	my $meth = 'open-ils.storage.ranged.config.non_cataloged_type.retrieve.atomic';
+	my $svc = 'open-ils.storage';
+	return $U->simplereq($svc, $meth, $orgId, $depth) if defined($depth);
+	return $U->simplereq($svc, $meth, $orgId);
 }
 
 
