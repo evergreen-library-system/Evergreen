@@ -10,7 +10,7 @@ all: mod_xmlbuilder mod_ils_rest_gateway c_apps
 
 install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install
 
-web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  server-xul
 
 circ_rules-install:
 	@echo $@
@@ -36,6 +36,13 @@ mod_xmlbuilder:
 mod_xmlbuilder-install:
 	@echo $@
 	make -C apachemods mod_xmlbuilder-install
+
+server-xul:
+	@echo $@
+	echo "Copying xul into $(WEBDIR)"
+	mkdir -p $(WEBDIR)
+	mkdir -p ${WEBDIR)/xul/
+	cp -R ../xul/staff_client ${WEBDIR}/xul/
 
 webcore-install:
 	@echo $@
