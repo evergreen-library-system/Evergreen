@@ -14,7 +14,7 @@
 			with minimum and maximum supported versions. --> 
 		<em:targetApplication>
 			<Description>
-				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+				<em:id>{09ce6f37-9e73-48db-a264-d095f9f22bb3}</em:id>
 				<em:minVersion>1.0</em:minVersion>
 				<em:maxVersion>1.0+</em:maxVersion>
 			</Description>
