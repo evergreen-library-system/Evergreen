@@ -42,7 +42,7 @@ server-xul:
 	echo "Copying xul into ${WEBDIR}"
 	mkdir -p ${WEBDIR}
 	mkdir -p ${WEBDIR}/xul/
-	cp -R ../xul/staff_client ${WEBDIR}/xul/
+	cp -R ../xul/staff_client/* ${WEBDIR}/xul/
 
 webcore-install:
 	@echo $@
