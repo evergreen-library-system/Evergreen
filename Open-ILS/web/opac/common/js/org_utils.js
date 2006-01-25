@@ -4,7 +4,11 @@
 
 /* takes an org unit or id and return the numeric depth */
 function findOrgDepth(org_id_or_node) {
-	return findOrgType(findOrgUnit(org_id_or_node).ou_type()).depth();
+	var org = findOrgUnit(org_id_or_node);
+	if(!org) return -1;
+	var type = findOrgType(org.ou_type());
+	if(type) return type.depth();
+	return -1;
 }
 
 function findOrgTypeFromDepth(depth) {
