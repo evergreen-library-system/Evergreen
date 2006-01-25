@@ -1,3 +1,3 @@
-content evergreen jar:evergreen.jar!/content/evergreen/
-locale evergreen en-US jar:evergreen.jar!/locale/en-US/evergreen/
-skin evergreen evergreen jar:evergreen.jar!/skin/evergreen/
+content OPEN_ILS_STAFF_CLIENT jar:OPEN_ILS_STAFF_CLIENT.jar!/content/OPEN_ILS_STAFF_CLIENT/
+locale OPEN_ILS_STAFF_CLIENT en-US jar:OPEN_ILS_STAFF_CLIENT.jar!/locale/en-US/OPEN_ILS_STAFF_CLIENT/
+skin OPEN_ILS_STAFF_CLIENT OPEN_ILS_STAFF_CLIENT jar:OPEN_ILS_STAFF_CLIENT.jar!/skin/OPEN_ILS_STAFF_CLIENT/

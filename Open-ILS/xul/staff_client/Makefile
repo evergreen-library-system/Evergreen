@@ -19,7 +19,7 @@ build: generated open-ils custom
 	@echo
 	@echo Everything before packaging
 
-package: evergreen.xpi
+package: OPEN_ILS_STAFF_CLIENT.xpi
 	@echo
 	@echo Packaging
 
@@ -32,55 +32,55 @@ stamp:
 	sed -i 's/<em:description>.*<\/em:description>/<em:description>${DESCRIPTION}<\/em:description>/' install.rdf 
 	sed -i "s/extVersion: '.\*'/extVersion: '${VERSION}'/" install.js 
 	sed -i "s/extFullName: '.\*'/extFullName: '${DESCRIPTION}'/" install.js 
-	sed -i 's/auth\.title ".*"/auth\.title "${DESCRIPTION}"/' chrome/locale/en-US/evergreen/auth.dtd 
-	sed -i 's/auth\.version ".*"/auth\.version "${PACKAGE} ${VERSION} ${BUILD}"/' chrome/locale/en-US/evergreen/auth.dtd 
+	sed -i 's/auth\.title ".*"/auth\.title "${DESCRIPTION}"/' chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/auth.dtd 
+	sed -i 's/auth\.version ".*"/auth\.version "${PACKAGE} ${VERSION} ${BUILD}"/' chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/auth.dtd 
 
 generated:
 	@echo
 	@echo These things are installation specific.  The staff client is the last thing you should try to build.
-	(cd chrome/content/evergreen/conf ; ${RETRIEVE_CLIENT_CONFIG} );
-	(cd chrome/content/evergreen/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
-	(cd chrome/locale/en-US/evergreen/ ; ${RETRIEVE_LANG_DTD} );
-	external/dtd2js.pl chrome/locale/en-US/evergreen/lang.dtd > chrome/content/evergreen/main/lang.js
+	(cd chrome/content/OPEN_ILS_STAFF_CLIENT/conf ; ${RETRIEVE_CLIENT_CONFIG} );
+	(cd chrome/content/OPEN_ILS_STAFF_CLIENT/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
+	(cd chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/ ; ${RETRIEVE_LANG_DTD} );
+	external/dtd2js.pl chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/lang.dtd > chrome/content/OPEN_ILS_STAFF_CLIENT/main/lang.js
 
 open-ils:
-	cp ../../../OpenSRF/src/javascript/*.js chrome/content/evergreen/OpenSRF/
-	cp ../../../Open-ILS/web/opac/common/js/*.js chrome/content/evergreen/OpenILS/util/
-	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* chrome/content/evergreen/legacy/
-	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* chrome/content/evergreen/legacy/
-	cp ../../../Evergreen/staff_client/chrome/locale/en-US/evergreen/cat.dtd chrome/locale/en-US/evergreen/
-	#cp server/main/menu* chrome/content/evergreen/main/
-	#cp server/cat/opac* chrome/content/evergreen/cat/
+	cp ../../../OpenSRF/src/javascript/*.js chrome/content/OPEN_ILS_STAFF_CLIENT/OpenSRF/
+	cp ../../../Open-ILS/web/opac/common/js/*.js chrome/content/OPEN_ILS_STAFF_CLIENT/OpenILS/util/
+	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* chrome/content/OPEN_ILS_STAFF_CLIENT/legacy/
+	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* chrome/content/OPEN_ILS_STAFF_CLIENT/legacy/
+	cp ../../../Evergreen/staff_client/chrome/locale/en-US/evergreen/cat.dtd chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/
+	#cp server/main/menu* chrome/content/OPEN_ILS_STAFF_CLIENT/main/
+	#cp server/cat/opac* chrome/content/OPEN_ILS_STAFF_CLIENT/cat/
 
 patron:
 
 circ:
 
 custom:
-	#(cd chrome/content/evergreen/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
-	#cp chrome/locale/en-US/evergreen/*.* ${MOZILLA_SPECIAL_RESOURCE}
+	#(cd chrome/content/OPEN_ILS_STAFF_CLIENT/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
+	#cp chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/*.* ${MOZILLA_SPECIAL_RESOURCE}
 
-evergreen.xpi: evergreen.jar
+OPEN_ILS_STAFF_CLIENT.xpi: OPEN_ILS_STAFF_CLIENT.jar
 	@echo
 	@echo make the xpi file
-	zip -r evergreen.xpi chrome/ defaults/ install.js install.rdf application.ini Makefile LICENSE README -x \*CVS\* > /dev/null
+	zip -r OPEN_ILS_STAFF_CLIENT.xpi chrome/ defaults/ install.js install.rdf application.ini Makefile LICENSE README -x \*CVS\* > /dev/null
 
-evergreen.jar: build
+OPEN_ILS_STAFF_CLIENT.jar: build
 	@echo
 	@echo make the jar file
-	(cd chrome; zip -r evergreen.jar content/ locale/ skin/ -x \*CVS\* > /dev/null )
+	(cd chrome; zip -r OPEN_ILS_STAFF_CLIENT.jar content/ locale/ skin/ -x \*CVS\* > /dev/null )
 
 clean:
 	@echo
 	@echo delete derived files
-	rm -f evergreen.xpi
-	rm -f chrome/evergreen.jar
-	#rm -f chrome/content/evergreen/main/menu.js chrome/content/evergreen/menu_frame*
-	rm -f chrome/content/evergreen/legacy/marc*
-	rm -f chrome/content/evergreen/legacy/browse*
-	rm -f chrome/locale/en-US/evergreen/cat.dtd
-	rm -f chrome/content/evergreen/conf/client_config.xml
-	rm -f chrome/content/evergreen/OpenSRF/*js
-	rm -f chrome/content/evergreen/OpenILS/util/*js
-	#rm -f chrome/content/evergreen/OpenILS/widgets/*js
-	#rm -f chrome/content/evergreen/OpenILS/widgets/menu/*js
+	rm -f OPEN_ILS_STAFF_CLIENT.xpi
+	rm -f chrome/OPEN_ILS_STAFF_CLIENT.jar
+	#rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/main/menu.js chrome/content/OPEN_ILS_STAFF_CLIENT/menu_frame*
+	rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/legacy/marc*
+	rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/legacy/browse*
+	rm -f chrome/locale/en-US/OPEN_ILS_STAFF_CLIENT/cat.dtd
+	rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/conf/client_config.xml
+	rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/OpenSRF/*js
+	rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/OpenILS/util/*js
+	#rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/OpenILS/widgets/*js
+	#rm -f chrome/content/OPEN_ILS_STAFF_CLIENT/OpenILS/widgets/menu/*js

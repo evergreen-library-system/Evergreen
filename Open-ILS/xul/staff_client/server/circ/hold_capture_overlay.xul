@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://OPEN_ILS_STAFF_CLIENT/locale/lang.dtd">
 <overlay id="hold_capture_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

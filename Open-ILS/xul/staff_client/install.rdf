@@ -22,10 +22,10 @@
     
 		<!-- Packages, Skins and Locales that this extension registers -->
 		<em:file>
-			<Description about="urn:mozilla:extension:file:evergreen.jar">
-				<em:package>content/evergreen/</em:package>
-				<em:locale>locale/en-US/evergreen/</em:locale>
-				<em:skin>skin/evergreen/</em:skin>
+			<Description about="urn:mozilla:extension:file:OPEN_ILS_STAFF_CLIENT.jar">
+				<em:package>content/OPEN_ILS_STAFF_CLIENT/</em:package>
+				<em:locale>locale/en-US/OPEN_ILS_STAFF_CLIENT/</em:locale>
+				<em:skin>skin/OPEN_ILS_STAFF_CLIENT/</em:skin>
 			</Description>
 		</em:file>
 	
