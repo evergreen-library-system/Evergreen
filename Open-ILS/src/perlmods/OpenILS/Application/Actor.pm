@@ -1135,7 +1135,7 @@ sub check_user_perms3 {
 		$authtoken, $userid, 'VIEW_PERMISSION' );
 	return $evt if $evt;
 
-	my $tree = get_org_tree();
+	my $tree = $self->get_org_tree();
 	return _find_highest_perm_org( $perm, $userid, $target->home_ou, $tree );
 }
 
@@ -1180,7 +1180,7 @@ sub check_user_perms4 {
 
 	my @arr;
 	return [] unless ref($perms);
-	my $tree = get_org_tree();
+	my $tree = $self->get_org_tree();
 
 	for my $p (@$perms) {
 		push( @arr, _find_highest_perm_org( $p, $userid, $target->home_ou, $tree ) );
