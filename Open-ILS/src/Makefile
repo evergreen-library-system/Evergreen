@@ -39,9 +39,9 @@ mod_xmlbuilder-install:
 
 server-xul:
 	@echo $@
-	echo "Copying xul into $(WEBDIR)"
-	mkdir -p $(WEBDIR)
-	mkdir -p ${WEBDIR)/xul/
+	echo "Copying xul into ${WEBDIR}"
+	mkdir -p ${WEBDIR}
+	mkdir -p ${WEBDIR}/xul/
 	cp -R ../xul/staff_client ${WEBDIR}/xul/
 
 webcore-install:
