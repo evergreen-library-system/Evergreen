@@ -151,8 +151,8 @@ function buildImageLink(name, ssl) {
 	return findBaseURL(ssl) + "../../../../images/" + name;
 }
 
-function buildContribLink(name, ssl) {
-	return findBaseURL(ssl) + "../../../../contrib/" + name;
+function buildExtrasLink(name, ssl) {
+	return findBaseURL(ssl) + "../../../../extras/" + name;
 }
 
 function  buildOPACLink(args, slim, ssl) {

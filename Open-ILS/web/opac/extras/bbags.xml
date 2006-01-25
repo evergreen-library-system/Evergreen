@@ -1,0 +1,60 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Bookbag Viewer</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script> 
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='bbags.js'> </script>
+
+		<style type='text/css'>
+			.hide_me { visibility: hidden; display: none }
+			.has_color { background: #E0F0E0; color: #000000; }
+			.data_grid { font-weight: 500; border-collapse: collapse;}
+			.data_grid thead tr { background: #E0F0E0; color: #000000; }
+			.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
+			.data_grid tbody td { border: 1px solid #E0E0E0; padding: 10px; }
+			.data_grid_center { text-align: center; }
+		</style>
+
+	</head>
+
+	<body onload='bbInit();'>
+		<center>
+			<table class='data_grid data_grid_center' width='80%' style='margin-top: 30px;'>
+				<thead>
+					<tr>
+						<td id='view_bookbags'>
+							<span>Items in  Bookbag </span>
+							<b><span id='bb_name'> </span></b>
+						</td>
+					</tr>
+				</thead>
+				<tbody id='tbody'>
+					<tr id='row_template'>
+						<td>
+							<b><a href='javascript:void(0);' name='title'> </a></b>
+							<span name='by' class='hide_me'> By </span><b><span name='author'> </span></b>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<span id='not_found' class='hide_me'><b>No Bookbag found!</b></span>
+		</center>
+	</body>
+
+
+</html>
+
