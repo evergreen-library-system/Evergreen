@@ -119,6 +119,7 @@ For non-core config info, see the inline documentation within this file
 					<default_timeout>
 						<opac>300</opac>
 						<staff>28800</staff>
+					   <override>300</override> <!-- temporary login -->
 					</default_timeout>
 
 				</app_settings>
