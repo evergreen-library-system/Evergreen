@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://evergreen/locale/lang.dtd">
-<?xul-overlay href="chrome://evergreen/content/main/menu_frame_menus.xul"?>
+<!DOCTYPE overlay SYSTEM "chrome://OPEN_ILS_STAFF_CLIENT/locale/lang.dtd">
+<?xul-overlay href="chrome://OPEN_ILS_STAFF_CLIENT/content/main/menu_frame_menus.xul"?>
 <!--
 <?xul-overlay href="/xul/server/main/menu_frame_menus.xul"?>
 -->

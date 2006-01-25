@@ -15,7 +15,7 @@ util.file = function (fname) {
 
 util.file.prototype = {
 
-	'myPackageDir' : 'evergreen',
+	'myPackageDir' : 'OPEN_ILS_STAFF_CLIENT',
 
 	'name' : '',
 	'_file' : null,

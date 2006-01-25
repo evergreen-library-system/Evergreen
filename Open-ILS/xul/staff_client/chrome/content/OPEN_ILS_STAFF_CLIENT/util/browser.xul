@@ -5,15 +5,15 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://evergreen/skin/evergreen.css" type="text/css"?>
+<?xml-stylesheet href="chrome://OPEN_ILS_STAFF_CLIENT/skin/OPEN_ILS_STAFF_CLIENT.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
-<!DOCTYPE window SYSTEM "chrome://evergreen/locale/lang.dtd">
+<!DOCTYPE window SYSTEM "chrome://OPEN_ILS_STAFF_CLIENT/locale/lang.dtd">
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="chrome://evergreen/content/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="chrome://OPEN_ILS_STAFF_CLIENT/content/OpenILS/util_overlay.xul"?>
 
 <window id="util_browser_win" 
 	onload="my_init()"
@@ -22,12 +22,12 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'evergreen'; var IAMXUL = true; var g = {};
+		var myPackageDir = 'OPEN_ILS_STAFF_CLIENT'; var IAMXUL = true; var g = {};
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 	</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://evergreen/content/main/JSAN.js"/>
+	<script type="text/javascript" src="chrome://OPEN_ILS_STAFF_CLIENT/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 		function my_init() {

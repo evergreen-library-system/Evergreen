@@ -12,7 +12,7 @@
     
     <content>
       <children>
-        <xul:image onclick="var n = document.getAnonymousNodes(parentNode.parentNode)[1]; if (n.hidden) { n.hidden = false; this.setAttribute('src','chrome://evergreen/skin/media/images/opentriangle.gif'); } else { n.hidden = true; this.setAttribute('src','chrome://evergreen/skin/media/images/triangle.gif');  }" />
+        <xul:image onclick="var n = document.getAnonymousNodes(parentNode.parentNode)[1]; if (n.hidden) { n.hidden = false; this.setAttribute('src','chrome://OPEN_ILS_STAFF_CLIENT/skin/media/images/opentriangle.gif'); } else { n.hidden = true; this.setAttribute('src','chrome://OPEN_ILS_STAFF_CLIENT/skin/media/images/triangle.gif');  }" />
         <xul:image class="caption-icon" xbl:inherits="src=image"/>
         <xul:label class="caption-text" flex="1" xbl:inherits="default,value=label,crop,accesskey" />
       </children>
@@ -22,7 +22,7 @@
     	<constructor>
 		<![CDATA[
 		var n = document.getAnonymousNodes(this)[0];
-		n.setAttribute('src','chrome://evergreen/skin/media/images/opentriangle.gif');
+		n.setAttribute('src','chrome://OPEN_ILS_STAFF_CLIENT/skin/media/images/opentriangle.gif');
 		]]>
 	</constructor>
     </implementation>
