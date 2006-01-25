@@ -27,8 +27,12 @@ DEFAULT_CONFIG_FILE="install.conf.default";
 
 function buildConfig {
 
-	if [ -f "$DEFAULT_CONFIG_FILE" ]; then
-		source "$DEFAULT_CONFIG_FILE";
+	if [ -f "$CONFIG_FILE" ]; then
+		source "$CONFIG_FILE";
+	else
+		if [ -f "$DEFAULT_CONFIG_FILE" ]; then
+			source "$DEFAULT_CONFIG_FILE";
+		fi;
 	fi;
 
 
