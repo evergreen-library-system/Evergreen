@@ -257,13 +257,15 @@ sub org_unit_full_path {
 	my $self = shift;
 	my $client = shift;
 	my $id = shift;
+	my $depth = shift;
 
 	return undef unless ($id);
 
 	my $func = 'actor.org_unit_full_path(?)';
+	my $func = 'actor.org_unit_full_path(?,?)' if defined($depth);
 
 	my $sth = actor::org_unit->db_Main->prepare_cached("SELECT * FROM $func");
-	$sth->execute(''.$id);
+	$sth->execute($id, $depth);
 
 	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
 
