@@ -102,12 +102,25 @@ CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT,INT ) RETURNS SETOF 
 	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
 $$ LANGUAGE SQL STABLE;
 
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_at_depth ( INT,INT ) RETURNS actor.org_unit AS $$
+	SELECT	a.*
+	  FROM	actor.org_unit a
+	  WHERE	id = ( SELECT FIRST(x.id)
+	  		 FROM	actor.org_unit_ancestors($1) x
+			   	JOIN actor.org_unit_type y
+					ON x.ou_type = y.id AND y.depth = $2);
+$$ LANGUAGE SQL STABLE;
+
 CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT ) RETURNS SETOF actor.org_unit AS $$
 	SELECT	*
 	  FROM	actor.org_unit_ancestors($1)
 			UNION
 	SELECT	*
 	  FROM	actor.org_unit_descendants($1);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT, INT ) RETURNS SETOF actor.org_unit AS $$
+	SELECT	* FROM actor.org_unit_full_path((actor.org_unit_ancestor_at_depth($1, $2)).id)
 $$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_combined_ancestors ( INT, INT ) RETURNS SETOF actor.org_unit AS $$
