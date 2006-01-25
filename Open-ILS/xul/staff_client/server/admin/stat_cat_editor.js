@@ -31,7 +31,6 @@ function scEditorInit() {
 
 function scGo() {
 
-
 	var show = cgi.param('show');
 	if(!show) show = ASSET;
 	scShow(show);
@@ -41,9 +40,7 @@ function scGo() {
 
 function scFetchPerms() {
 
-	var req = new RemoteRequest(
-		'open-ils.actor',
-		'open-ils.actor.user.perm.highest_org.batch', session, user.id(), 
+	var orgs = fetchHighestPermOrgs( session, user.id(), 
 		[	'CREATE_PATRON_STAT_CAT',
 			'UPDATE_PATRON_STAT_CAT',
 			'DELETE_PATRON_STAT_CAT',
@@ -57,9 +54,6 @@ function scFetchPerms() {
 			'CREATE_COPY_STAT_CAT_ENTRY',
 			'UPDATE_COPY_STAT_CAT_ENTRY',
 			'DELETE_COPY_STAT_CAT_ENTRY' ] );
-
-	req.send(true);
-	var orgs = req.getResultObject();
 
 	PERMS[ACTOR].create_stat_cat = orgs[0];
 	PERMS[ACTOR].update_stat_cat = orgs[1];
@@ -91,14 +85,6 @@ function _cleanTbody(tbody) {
 		var child = tbody.childNodes[c];
 		if(child && child.getAttribute('edit')) tbody.removeChild(child); 
 	}
-}
-
-function fetchUser(session) {
-	var request = new Request(FETCH_SESSION, session, 1 );
-	request.send(true);
-	var user = request.result();
-	if(checkILSEvent(user)) throw user;
-	return user;
 }
 
 
