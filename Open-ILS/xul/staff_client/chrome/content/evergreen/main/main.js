@@ -28,7 +28,7 @@ function main_init() {
 		//JSAN.use('test.test'); test.test.hello_world();
 
 		var mw = self;
-		var G =  {};
+		G =  {};
 		G.OpenILS = {};
 		G.OpenSRF = {};
 

@@ -86,11 +86,17 @@ auth.session.prototype = {
 	},
 
 	'close' : function () { 
-		this.error.sdump('D_AUTH','auth.session.close()\n'); 
-		this.key = null;
-		if (typeof this.on_close == 'function') {
-			this.error.sdump('D_AUTH','auth.session.on_close()\n');
-			this.on_close();
+		var obj = this;
+		obj.error.sdump('D_AUTH','auth.session.close()\n'); 
+		obj.network.request(
+			api.AUTH_DELETE.app,
+			api.AUTH_DELETE.method,
+			[ obj.key ]
+		);
+		obj.key = null;
+		if (typeof obj.on_close == 'function') {
+			obj.error.sdump('D_AUTH','auth.session.on_close()\n');
+			obj.on_close();
 		}
 	}
 

@@ -18,13 +18,14 @@
 
 <window id="main_win" 
 	onload="try { main_init(); } catch(E) { alert(E); }"
+	onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
 	title="&staff.auth.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true;</script>
+	<script type="text/javascript">var myPackageDir = 'evergreen'; var IAMXUL = true; var G;</script>
 	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="chrome://evergreen/content/main/lang.js"/>

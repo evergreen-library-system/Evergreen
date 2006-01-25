@@ -150,6 +150,15 @@ auth.controller.prototype = {
 		this.controller.view.name_prompt.select();
 		this.controller.view.server_prompt.disabled = false;
 
+		var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+		var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+		var enumerator = windowManagerInterface.getEnumerator(null);
+
+		var w; // close all other windows
+		while ( w = enumerator.getNext() ) {
+			if (w != window) w.close();
+		}
+
 		this.session.close();
 
 		if (typeof this.on_logoff == 'function') {
