@@ -122,49 +122,16 @@
 		<desc> Stat cat entry map object does not exist </desc>
 	</event>
 
-
-
-
-
-	<!-- ================================================================ -->
-	<!-- CIRC EVENTS -->
-	<event code='1700' textcode='ROUTE_COPY'>
-		<desc> A copy needs to be routed to a different location	</desc>
+	<event code='1511' textcode='NON_CAT_TYPE_NOT_FOUND'>
+		<desc> The non cataloged type object does not exist </desc>
 	</event>
 
-	<event code='1701' textcode='PATRON_BAD_STANDING'>
-		<desc>
-			The patron in question is not able to check out materials because
-			their account is in bad standing
-		</desc>
-	</event>
 
-	<event code='1702' textcode='PATRON_EXCEEDS_CHECKOUT_COUNT'>
-		<desc>
-			The patron in question has the maximum number of items already checked out
-		</desc>
-	</event>
 
-	<event code='1703' textcode='COPY_CIRC_NOT_ALLOWED'>
-		<desc> Target copy is not allowed to circulate </desc>
-	</event>
 
-	<event code='1704' textcode='COPY_NOT_AVAILABLE'>
-		<desc> Copy is not available </desc>
+	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
+		<desc> The non-cataloged type object already exists </desc>
 	</event>
-
-	<event code='1705' textcode='LOCATION_CIRC_NOT_ALLOWED'>
-		<desc> Location does not allow materials to circulate </desc>
-	</event>
-
-	<event code='1706' textcode='COPY_IS_REFERENCE'>
-		<desc> Copy is reference material </desc>
-	</event>
-
-	<event code='1707' textcode='COPY_NEEDED_FOR_HOLD'>
-		<desc> Copy is needed to fulfil a hold </desc>
-	</event>
-	<!-- ================================================================ -->
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
@@ -172,6 +139,13 @@
 			Invalid parameters were encountered in a method
 		</desc>
 	</event>
+
+	<event code='2001' textcode='DATABASE_UPDATE_FAILED'>
+		<desc>
+			The attempt to write to the DB failed
+		</desc>
+	</event>
+
 
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc> 
@@ -181,6 +155,48 @@
 			failed if available.
 		</desc>
 	</event>
+
+
+	<!-- ================================================================ -->
+	<!-- CIRC EVENTS -->
+	<event code='7000' textcode='ROUTE_COPY'>
+		<desc> A copy needs to be routed to a different location	</desc>
+	</event>
+
+	<event code='7001' textcode='PATRON_BAD_STANDING'>
+		<desc>
+			The patron in question is not able to check out materials because
+			their account is in bad standing
+		</desc>
+	</event>
+
+	<event code='7002' textcode='PATRON_EXCEEDS_CHECKOUT_COUNT'>
+		<desc>
+			The patron in question has the maximum number of items already checked out
+		</desc>
+	</event>
+
+	<event code='7003' textcode='COPY_CIRC_NOT_ALLOWED'>
+		<desc> Target copy is not allowed to circulate </desc>
+	</event>
+
+	<event code='7004' textcode='COPY_NOT_AVAILABLE'>
+		<desc> Copy is not available </desc>
+	</event>
+
+	<event code='7005' textcode='LOCATION_CIRC_NOT_ALLOWED'>
+		<desc> Location does not allow materials to circulate </desc>
+	</event>
+
+	<event code='7006' textcode='COPY_IS_REFERENCE'>
+		<desc> Copy is reference material </desc>
+	</event>
+
+	<event code='7007' textcode='COPY_NEEDED_FOR_HOLD'>
+		<desc> Copy is needed to fulfil a hold </desc>
+	</event>
+	<!-- ================================================================ -->
+
 </ils_events>
 
 

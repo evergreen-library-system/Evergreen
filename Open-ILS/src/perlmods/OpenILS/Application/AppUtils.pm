@@ -645,6 +645,32 @@ sub find_org {
 	return undef;
 }
 
+sub fetch_non_cat_type_by_name_and_org {
+	my( $self, $name, $orgId ) = @_;
+	$logger->debug("Fetching non cat type $name at org $orgId");
+	my $types = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.config.non_cataloged_type.search_where.atomic',
+		{ name => $name, owning_lib => $orgId } );
+	return ($types->[0], undef) if($types and @$types);
+	return (undef, OpenILS::Event->new('NON_CAT_TYPE_NOT_FOUND') );
+}
 
+sub fetch_non_cat_type {
+	my( $self, $id ) = @_;
+	$logger->debug("Fetching non cat type $id");
+	my( $type, $evt );
+	$type = $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.config.non_cataloged_type.retrieve', $id );
+	$evt = OpenILS::Event->new('NON_CAT_TYPE_NOT_FOUND') unless $type;
+	return ($type, $evt);
+}
+
+sub DB_UPDATE_FAILED { 
+	my( $self, $payload ) = @_;
+	return OpenILS::Event->new('DATABASE_UPDATE_FAILED', 
+		payload => ($payload) ? $payload : undef ); 
+}
 
 1;
