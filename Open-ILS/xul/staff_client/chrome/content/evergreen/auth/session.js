@@ -88,7 +88,7 @@ auth.session.prototype = {
 	'close' : function () { 
 		var obj = this;
 		obj.error.sdump('D_AUTH','auth.session.close()\n'); 
-		obj.network.request(
+		if (obj.key) obj.network.request(
 			api.AUTH_DELETE.app,
 			api.AUTH_DELETE.method,
 			[ obj.key ]
