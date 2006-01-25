@@ -11,11 +11,16 @@
 
 #define MODULENAME "open-ils.auth"
 
+#define OILS_AUTH_OPAC "opac"
+#define OILS_AUTH_STAFF "staff"
+#define OILS_AUTH_OVERRIDE "override"
+
 int osrfAppInitialize();
 int osrfAppChildInit();
 
 int __oilsAuthOPACTimeout = 0;
 int __oilsAuthStaffTimeout = 0;
+int __oilsAuthOverrideTimeout = 0;
 
 
 int osrfAppInitialize() {
@@ -35,7 +40,7 @@ int osrfAppInitialize() {
 		"{authtoken : <token>, authtime:<time>}, where authtoken is the login "
 		"tokena and authtime is the number of seconds the session will be active"
 		"PARAMS(username, md5sum( seed + password ), type, org_id ) "
-		"type can be one of 'opac' or 'staff' and it defaults to 'staff' "
+		"type can be one of 'opac','staff', or 'override' and it defaults to 'staff' "
 		"org_id is the location at which the login should be considered "
 		"active for login timeout purposes"	, 2, 0 );
 
@@ -115,11 +120,15 @@ int oilsAuthCheckLoginPerm(
 	if(!(userObj && type)) return -1;
 	oilsEvent* perm = NULL;
 
-	if(!strcasecmp(type, "opac")) {
+	if(!strcasecmp(type, OILS_AUTH_OPAC)) {
 		char* permissions[] = { "OPAC_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 
-	} else if(!strcasecmp(type, "staff")) {
+	} else if(!strcasecmp(type, OILS_AUTH_STAFF)) {
+		char* permissions[] = { "STAFF_LOGIN" };
+		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
+
+	} else if(!strcasecmp(type, OILS_AUTH_OVERRIDE)) {
 		char* permissions[] = { "STAFF_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 	}
@@ -188,8 +197,14 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 				osrf_settings_host_value_object( 
 					"/apps/open-ils.auth/app_settings/default_timeout/staff" ));
 
-		osrfLogInfo("Set default auth timetouts: opac => %d : staff => %d",
-				__oilsAuthOPACTimeout, __oilsAuthStaffTimeout );
+		__oilsAuthOverrideTimeout = 
+			jsonObjectGetNumber( 
+				osrf_settings_host_value_object( 
+					"/apps/open-ils.auth/app_settings/default_timeout/override" ));
+
+
+		osrfLogInfo("Set default auth timetouts: opac => %d : staff => %d : override => %d",
+				__oilsAuthOPACTimeout, __oilsAuthStaffTimeout, __oilsAuthOverrideTimeout );
 	}
 
 	char* setting = NULL;
@@ -197,10 +212,12 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 	double home_ou = jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ) );
 	if(orgloc < 1) orgloc = (int) home_ou;
 
-	if(!strcmp(type, "opac")) 
+	if(!strcmp(type, OILS_AUTH_OPAC)) 
 		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
-	else if(!strcmp(type, "staff")) 
+	else if(!strcmp(type, OILS_AUTH_STAFF)) 
 		setting = OILS_ORG_SETTING_STAFF_TIMEOUT;
+	else if(!strcmp(type, OILS_AUTH_OVERRIDE)) 
+		setting = OILS_ORG_SETTING_OVERRIDE_TIMEOUT;
 
 	char* timeout = oilsUtilsFetchOrgSetting( orgloc, setting );
 
@@ -211,10 +228,12 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 			timeout = oilsUtilsFetchOrgSetting( (int) home_ou, setting );
 		}
 		if(!timeout) {
-			if(!strcmp(type, "staff")) return __oilsAuthStaffTimeout;
+			if(!strcmp(type, OILS_AUTH_STAFF)) return __oilsAuthStaffTimeout;
+			if(!strcmp(type, OILS_AUTH_OVERRIDE)) return __oilsAuthOverrideTimeout;
 			return __oilsAuthOPACTimeout;
 		}
 	}
+
 	double t = atof(timeout);
 	free(timeout);
 	return t ;
@@ -245,7 +264,6 @@ oilsEvent* oilsAuthHandleLoginOK(
 	jsonObject* cacheObj = jsonParseString("{\"authtime\": %lf}", timeout);
 	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
 
-	//osrfCachePutObject( authKey, userObj, timeout ); 
 	osrfCachePutObject( authKey, cacheObj, timeout ); 
 	jsonObjectFree(cacheObj);
 	osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
@@ -255,6 +273,7 @@ oilsEvent* oilsAuthHandleLoginOK(
 	response = oilsNewEvent2( OILS_EVENT_SUCCESS, payload );
 	free(string); free(authToken); free(authKey);
 	jsonObjectFree(payload);
+
 	return response;
 }
 
@@ -268,7 +287,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	char* type		= jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
 	double orgloc	= jsonObjectGetNumber(jsonObjectGetIndex(ctx->params, 3));
 
-	if(!type) type = "staff";
+	if(!type) type = OILS_AUTH_STAFF;
 
 	if( !(uname && password) ) {
 		return osrfAppRequestRespondException( ctx->session, ctx->request, 
