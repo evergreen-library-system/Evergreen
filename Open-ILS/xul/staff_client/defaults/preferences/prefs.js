@@ -3,7 +3,7 @@
 // Modified by Jason for Evergreen
 
 // This one is required for XUL Runner
-pref("toolkit.defaultChromeURI", "chrome://OPEN_ILS_STAFF_CLIENT/content/main/main.xul");
+pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
 // This one just makes things speedier.  We use a lot of XMLHttpRequest
 pref("network.http.max-persistent-connections-per-server",8);

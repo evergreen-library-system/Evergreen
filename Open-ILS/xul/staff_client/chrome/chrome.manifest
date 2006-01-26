@@ -1,3 +1,3 @@
-content OPEN_ILS_STAFF_CLIENT jar:OPEN_ILS_STAFF_CLIENT.jar!/content/OPEN_ILS_STAFF_CLIENT/
-locale OPEN_ILS_STAFF_CLIENT en-US jar:OPEN_ILS_STAFF_CLIENT.jar!/locale/en-US/OPEN_ILS_STAFF_CLIENT/
-skin OPEN_ILS_STAFF_CLIENT OPEN_ILS_STAFF_CLIENT jar:OPEN_ILS_STAFF_CLIENT.jar!/skin/OPEN_ILS_STAFF_CLIENT/
+content open_ils_staff_client jar:open_ils_staff_client.jar!/content/open_ils_staff_client/
+locale open_ils_staff_client en-US jar:open_ils_staff_client.jar!/locale/en-US/open_ils_staff_client/
+skin open_ils_staff_client open_ils_staff_client jar:open_ils_staff_client.jar!/skin/open_ils_staff_client/

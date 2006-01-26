@@ -5,16 +5,16 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://OPEN_ILS_STAFF_CLIENT/skin/OPEN_ILS_STAFF_CLIENT.css" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/open_ils_staff_client.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
-<!DOCTYPE window SYSTEM "chrome://OPEN_ILS_STAFF_CLIENT/locale/lang.dtd">
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="chrome://OPEN_ILS_STAFF_CLIENT/content/OpenILS/util_overlay.xul"?>
-<?xul-overlay href="chrome://OPEN_ILS_STAFF_CLIENT/content/legacy/browse_list_overlay.xul"?>
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="chrome://open_ils_staff_client/content/legacy/browse_list_overlay.xul"?>
 
 <window id="browse_list_win"
 	orient="vertical" style="overflow: scroll" 
@@ -23,9 +23,9 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'OPEN_ILS_STAFF_CLIENT'; var IAMXUL = true; var g = {};</script>
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
-	<script type="text/javascript" src="chrome://OPEN_ILS_STAFF_CLIENT/content/main/JSAN.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript">
 	<![CDATA[
 
@@ -284,12 +284,12 @@
 
 		function mapChrome(chrome) {
 			switch(chrome) {
-				case 'chrome://OPEN_ILS_STAFF_CLIENT/content/cat/volume_copy_add_wizard.xul':
-					return 'chrome://OPEN_ILS_STAFF_CLIENT/content/legacy/_volume_copy_add_wizard.xul'; break;
-				case 'chrome://OPEN_ILS_STAFF_CLIENT/content/cat/copy_add_wizard.xul':
-					return 'chrome://OPEN_ILS_STAFF_CLIENT/content/legacy/_copy_add_wizard.xul'; break;
-				case 'chrome://OPEN_ILS_STAFF_CLIENT/content/cat/volume_edit_wizard.xul':
-					return 'chrome://OPEN_ILS_STAFF_CLIENT/content/legacy/_volume_edit_wizard.xul'; break;
+				case 'chrome://open_ils_staff_client/content/cat/volume_copy_add_wizard.xul':
+					return 'chrome://open_ils_staff_client/content/legacy/_volume_copy_add_wizard.xul'; break;
+				case 'chrome://open_ils_staff_client/content/cat/copy_add_wizard.xul':
+					return 'chrome://open_ils_staff_client/content/legacy/_copy_add_wizard.xul'; break;
+				case 'chrome://open_ils_staff_client/content/cat/volume_edit_wizard.xul':
+					return 'chrome://open_ils_staff_client/content/legacy/_volume_edit_wizard.xul'; break;
 			}
 			return '';
 		}

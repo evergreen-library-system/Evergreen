@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://OPEN_ILS_STAFF_CLIENT/locale/lang.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
 <overlay id="patron_display_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
