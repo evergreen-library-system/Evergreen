@@ -256,16 +256,15 @@ __PACKAGE__->register_method(
 sub org_unit_full_path {
 	my $self = shift;
 	my $client = shift;
-	my $id = shift;
-	my $depth = shift;
+	my @binds = @_;
 
-	return undef unless ($id);
+	return undef unless (@binds);
 
 	my $func = 'actor.org_unit_full_path(?)';
-	my $func = 'actor.org_unit_full_path(?,?)' if defined($depth);
+	$func = 'actor.org_unit_full_path(?,?)' if (@binds > 1);
 
 	my $sth = actor::org_unit->db_Main->prepare_cached("SELECT * FROM $func");
-	$sth->execute($id, $depth);
+	$sth->execute(@binds);
 
 	$client->respond( $_->to_fieldmapper ) for ( map { actor::org_unit->construct($_) } $sth->fetchall_hash );
 
