@@ -6,7 +6,7 @@
 	<!-- modified by Jason for Evergreen -->
 
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>{c3dd711b-c9b4-4785-b8f8-6157149c8905}</em:id>
+		<em:id>{09ce6f37-9e73-48db-a264-d095f9f22bb3}</em:id>
 		<em:version>0.1.0</em:version>
 		<em:type>2</em:type>
 
@@ -14,7 +14,7 @@
 			with minimum and maximum supported versions. --> 
 		<em:targetApplication>
 			<Description>
-				<em:id>{09ce6f37-9e73-48db-a264-d095f9f22bb3}</em:id>
+				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>1.0</em:minVersion>
 				<em:maxVersion>1.0+</em:maxVersion>
 			</Description>
@@ -22,10 +22,10 @@
     
 		<!-- Packages, Skins and Locales that this extension registers -->
 		<em:file>
-			<Description about="urn:mozilla:extension:file:OPEN_ILS_STAFF_CLIENT.jar">
-				<em:package>content/OPEN_ILS_STAFF_CLIENT/</em:package>
-				<em:locale>locale/en-US/OPEN_ILS_STAFF_CLIENT/</em:locale>
-				<em:skin>skin/OPEN_ILS_STAFF_CLIENT/</em:skin>
+			<Description about="urn:mozilla:extension:file:BOO.jar">
+				<em:package>content/BOO/</em:package>
+				<em:locale>locale/en-US/BOO/</em:locale>
+				<em:skin>skin/BOO/</em:skin>
 			</Description>
 		</em:file>
 	
