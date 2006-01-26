@@ -42,6 +42,11 @@ generated:
 	(cd chrome/locale/en-US/ ; ${RETRIEVE_LANG_DTD} );
 	external/dtd2js.pl chrome/locale/en-US/lang.dtd > chrome/content/main/lang.js
 
+symlinks:
+	ln -sf ../chrome/content/util/ server/
+	ln -sf ../../chrome/content/main/constants.js server/main/constants.js
+	ln -sf ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
+
 open-ils:
 	cp ../../../OpenSRF/src/javascript/*.js chrome/content/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js chrome/content/OpenILS/util/
