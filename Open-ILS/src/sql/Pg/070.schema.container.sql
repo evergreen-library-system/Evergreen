@@ -4,16 +4,17 @@ BEGIN;
 CREATE SCHEMA container;
 
 CREATE TABLE container.copy_bucket (
-	id	SERIAL	PRIMARY KEY,
-	owner	INT	NOT NULL
-			REFERENCES actor.usr (id)
-				ON DELETE CASCADE
-				ON UPDATE CASCADE
-				DEFERRABLE
-				INITIALLY DEFERRED,
-	name	TEXT	NOT NULL,
-	btype	TEXT	NOT NULL DEFAULT 'misc',
-	public	BOOL	NOT NULL DEFAULT FALSE,
+	id		SERIAL				PRIMARY KEY,
+	owner		INT				NOT NULL
+							REFERENCES actor.usr (id)
+								ON DELETE CASCADE
+								ON UPDATE CASCADE
+								DEFERRABLE
+								INITIALLY DEFERRED,
+	name		TEXT				NOT NULL,
+	btype		TEXT				NOT NULL DEFAULT 'misc',
+	public		BOOL				NOT NULL DEFAULT FALSE,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -31,6 +32,7 @@ CREATE TABLE container.copy_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cb_cb_item_once_per_bucket UNIQUE (bucket,target_copy)
 );
 
@@ -48,6 +50,7 @@ CREATE TABLE container.call_number_bucket (
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
 	public	BOOL	NOT NULL DEFAULT FALSE,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -65,6 +68,7 @@ CREATE TABLE container.call_number_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cnb_item_once_per_bucket UNIQUE (bucket,target_call_number)
 );
 
@@ -82,6 +86,7 @@ CREATE TABLE container.biblio_record_entry_bucket (
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
 	public	BOOL	NOT NULL DEFAULT FALSE,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -99,6 +104,7 @@ CREATE TABLE container.biblio_record_entry_bucket_item (
 							ON UPDATE CASCADE
 							DEFERRABLE
 							INITIALLY DEFERRED,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT breb_item_once_per_bucket UNIQUE (bucket,target_biblio_record_entry)
 );
 
@@ -116,6 +122,7 @@ CREATE TABLE container.user_bucket (
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
 	public	BOOL	NOT NULL DEFAULT FALSE,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
@@ -133,6 +140,7 @@ CREATE TABLE container.user_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT ub_item_once_per_bucket UNIQUE (bucket,target_user)
 );
 

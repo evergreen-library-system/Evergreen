@@ -133,6 +133,34 @@ INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family
 	VALUES ( 1, 1,'admin', 'open-ils', 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 
 
+CREATE TABLE actor.usr_standing_penalty (
+	id		SERIAL	PRIMARY KEY,
+	usr		INT	NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	penalty_type	TEXT	NOT NULL
+);
+COMMENT ON TABLE actor.usr_standing_penalty IS $$
+/*
+ * Copyright (C) 2005  Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * User standing penalties
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
+CREATE INDEX actor_usr_standing_penalty_usr_idx ON actor.usr_standing_penalty (usr);
+
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
 	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
