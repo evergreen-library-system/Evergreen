@@ -4,6 +4,7 @@ USE ws = WebSession;
 j = ws.bootstrap_client("/pines/conf/bootstrap.conf");
 
 rank_threshold = 5000;
+base_url = 'http://fw1/';
 
 pagesize = 10;
 IF CGI.param('pagesize');
@@ -11,9 +12,6 @@ IF CGI.param('pagesize');
 END;
 
 itempage = CGI.param('page');
-
-#type,string,location,depth
-count_meth = 'open-ils.search.biblio.class.count';
 
 #type,string,location,depth,limit,offset
 search_meth = 'open-ils.search.biblio.class';
@@ -24,7 +22,7 @@ type = CGI.param('mr_search_type');
 string = CGI.param('mr_search_query');
 location = CGI.param('mr_search_location');
 depth = CGI.param('mr_search_depth');
-max_rank = CGI.param('max_rank');
+max_rank = CGI.param('max_rank') || 0;
 limit = pagesize;
 offset = (itempage - 1) * pagesize;
 
@@ -32,16 +30,13 @@ IF offset < 0;
 	offset = 0;
 END;
 
-count_req = session.request(count_meth, type, string, location, depth);
 id_req = session.request(search_meth, type, string, location, depth, limit, offset);
-
-j = count_req.wait_complete();
-count = count_req.recv().content();
-j = count_req.finish;
 
 j = id_req.wait_complete();
 list = id_req.recv().content();
 j = id_req.finish;
+
+count = list.count;
 
 IF max_rank == '{relevanceScale}';
 	max_rank = 0;
@@ -49,13 +44,11 @@ END;
 
 -%]
 <?xml version="1.0"?>
-<rss version="2.0"
-	xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/"
-	xmlns:openIll="http://open-ils.org/xml/openIll/1.0">
+<rss version="2.0" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
     <channel>
       <title>Pines Catalogue Search: [% string | html %] </title>
-      <link>http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]&amp;pagesize=[% pagesize %]&amp;max_rank=[% max_rank %]</link>
-      <description>Search results for "[% string | html %]" at gapines.org</description>
+      <link>[% base_url %]/opac/extras/opensearch/?target=mr_result&amp;mr_search_type=[% type %]&amp;mr_search_query=[% string | uri | html %]&amp;page=[% itempage %]&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]&amp;pagesize=[% pagesize %]&amp;max_rank=[% max_rank %]</link>
+      <description>Search results for "[% string | html %]" at dev.gapines.org</description>
       <language>en-us</language>
       <copyright>&amp;copy;2004-2005, Georga Public Library Service.</copyright>
       <openSearch:totalResults>[% count %]</openSearch:totalResults>
@@ -66,18 +59,20 @@ END;
 
 mr_list = list.ids;
 
-FOREACH mr_id IN mr_list;
+FOREACH mr_id = mr_list;
 	req = session.request('open-ils.search.biblio.metarecord.mods_slim.retrieve', mr_id.0);
 	j = req.wait_complete();
 
 	IF max_rank == 0;
 		max_rank = mr_id.1;
+		'      <openSearch:relevanceScale>' _ max_rank _ "</openSearch:relevanceScale>\n";
 	END;
-	'      <openIll:relevanceScale>' _ max_rank _ "</openIll:relevanceScale>\n";
 
 	rank = mr_id.1 / max_rank;
 	rank = rank * 100;
 	rank = rank.split('\.').0;
+
+	#'<!-- Got a metarecord... ' _ mr_id.0 _ ' relevance: ' _ mr_id.1 _ ' rank: ' _ rank _ ' scale: ' _ max_rank _ '-->';
 
 	mods = req.recv().content();
 	j = req.finish;
@@ -85,14 +80,14 @@ FOREACH mr_id IN mr_list;
 -%]
       <item>
         <title>[% mods.title() | html %]</title>
-        <link>http://gapines.org/opac/?sub_frame=1&amp;target=record_result&amp;page=0&amp;mrid=[% mr_id.0 %]&amp;hits_per_page=10</link>
-        <openIll:relevance>[% rank %]</openIll:relevance>
+        <link>[% base_url %]/opac/en-US/skin/default/xml/rresult.xml?m=[% mr_id.0 %]&amp;l=[% location %]</link>
+        <openSearch:relevance>[% rank %]</openSearch:relevance>
         <description>
 [%-
 	IF mods.isbn();
 -%]
 		&lt;div style="float: left;"&gt;
-			&lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=record_result&amp;page=0&amp;mrid=[% mr_id.0 %]&amp;hits_per_page=10"&gt;
+			&lt;a href="[% base_url %]/opac/en-US/skin/default/xml/rresult.xml?m=[% mr_id.0 %]&amp;l=[% location %]"&gt;
 				&lt;img
 					style="padding: 3px; border: none;"
 					width="45"
@@ -104,7 +99,7 @@ FOREACH mr_id IN mr_list;
 	END;
 	IF mods.author();
 -%]
-		&lt;b&gt;Author:&lt;/b&gt; &lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=author&amp;mr_search_query=[% mods.author() | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% mods.author() | html %]&lt;/a&gt;&lt;br&gt;
+		&lt;b&gt;Author:&lt;/b&gt; &lt;a href="[% base_url %]/opac/en-US/skin/default/xml/mresult.xml?tp=author&amp;t=[% mods.author() | uri | html %]&amp;l=[% location %]"&gt;[% mods.author() | html %]&lt;/a&gt;&lt;br&gt;
 [%
 	END;
 	IF mods.subject();
@@ -120,7 +115,7 @@ FOREACH mr_id IN mr_list;
 			', ';
 		END;
 		-%]
-&lt;a href="http://gapines.org/opac/?sub_frame=1&amp;target=mr_result&amp;mr_search_type=subject&amp;mr_search_query=[% sub | uri | html %]&amp;page=0&amp;mr_search_depth=[% depth %]&amp;mr_search_location=[% location %]"&gt;[% sub | html %]&lt;/a&gt;[%
+&lt;a href="[% base_url %]/opac/en-US/skin/default/xml/mresult.xml?tp=subject&amp;mr_search_query=[% sub | uri | html %]"&gt;[% sub | html %]&lt;/a&gt;[%
 	END;
 %]
 &lt;br&gt;
@@ -159,7 +154,6 @@ FOREACH mr_id IN mr_list;
 
 	END;
 %]
-		&lt;b&gt;Copies Available:&lt;/b&gt; [% mr_id.2 %] 
         </description>
       </item>
 [%-

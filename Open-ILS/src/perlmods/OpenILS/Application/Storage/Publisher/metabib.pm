@@ -712,6 +712,7 @@ sub search_class_fts_count {
 		SELECT	count(distinct  m.metarecord)
 	  	  FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
+			$metabib_metarecord_source_map_table mr,
 			$asset_call_number_table cn,
 			$asset_copy_table cp,
 			$cs_table cs,
@@ -719,7 +720,8 @@ sub search_class_fts_count {
 			$metabib_record_descriptor rd,
 			$descendants d
 	  	  WHERE	$fts_where
-		  	AND m.source = f.source
+		  	AND mr.source = f.source
+			AND mr.metarecord = m.metarecord
 			AND cn.record = m.source
 			AND rd.record = m.source
 			AND cp.status = cs.id
@@ -735,9 +737,11 @@ sub search_class_fts_count {
 		SELECT	count(distinct  m.metarecord)
 	  	  FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
+			$metabib_metarecord_source_map_table mr,
 			$metabib_record_descriptor rd
 	  	  WHERE	$fts_where
-		  	AND m.source = f.source
+		  	AND mr.source = f.source
+			AND mr.metarecord = m.metarecord
 			AND rd.record = m.source
 			$t_filter
 			$f_filter
@@ -848,9 +852,9 @@ sub new_search_class_fts {
 				$metabib_metarecord_source_map_table mr,
 				$metabib_record_descriptor rd
 	  	  	WHERE	$fts_where
-		  		AND m.source = f.source
+		  		AND mr.source = f.source
 				AND mr.metarecord = m.metarecord
-				AND rd.record = mr.source
+				AND rd.record = m.source
 				$t_filter
 				$f_filter
 				AND EXISTS (

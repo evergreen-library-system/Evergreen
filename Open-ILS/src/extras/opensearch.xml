@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription
-	xmlns="http://a9.com/-/spec/opensearchdescription/1.0/"
-	xmlns:openIll="http://open-ils.org/xml/openIll/1.0">
-  <Url>http://gapines.org/opensearch/?target=mr_result&amp;mr_search_type=keyword&amp;mr_search_query={searchTerms}&amp;page={startPage}&amp;mr_search_depth=0&amp;mr_search_location=1&amp;pagesize={count}&amp;max_rank={relevanceScale}</Url>
+	xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
+  <Url>http://dev.gapines.org/opac/extras/opensearch?target=mr_result&amp;mr_search_type=keyword&amp;mr_search_query={searchTerms}&amp;page={startPage}&amp;mr_search_depth=0&amp;mr_search_location=1&amp;pagesize={count}&amp;max_rank={relevanceScale}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
-  <ShortName>Evergreen DEMO</ShortName>
-  <LongName>Pines Consortium DEMO OpenSearch Catalogue</LongName>
-  <Description>Search for books in Pines.</Description>
-  <Tags>book library research Evergreen Open-ILS GPLS</Tags>
-  <Image>http://gapines.org/images/small_logo.jpg</Image>
+  <ShortName>Evergreen/OpenILS DEMO</ShortName>
+  <LongName>PINES Consortium Evergreen/OpenILS DEMO OpenSearch Catalog</LongName>
+  <Description>Search for books in the PINES Catalog.</Description>
+  <Tags>book library research Evergreen Open-ILS OpenILS PINES GPLS</Tags>
+  <Image>http://dev.gapines.org/opac/images/small_logo.jpg</Image>
   <SampleSearch>harry potter</SampleSearch>
-  <Developer>GPLS</Developer>
+  <Developer>GPLS, Mike Rylander</Developer>
   <Contact>mrylander@gmail.com</Contact>
-  <Attribution>Product and search data &amp;copy; 2005, Georgia Public Library Service, All Rights Reserved</Attribution>
+  <Attribution>Product and search data &amp;copy; 2005-2006, Georgia Public Library Service, All Rights Reserved</Attribution>
   <SyndicationRight>open</SyndicationRight>
   <AdultContent>false</AdultContent>
 </OpenSearchDescription>
