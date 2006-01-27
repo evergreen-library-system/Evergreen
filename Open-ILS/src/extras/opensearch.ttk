@@ -4,7 +4,7 @@ USE ws = WebSession;
 j = ws.bootstrap_client("/pines/conf/bootstrap.conf");
 
 rank_threshold = 5000;
-base_url = 'http://fw1/';
+base_url = 'http://dev.gapines.org/';
 
 pagesize = 10;
 IF CGI.param('pagesize');
@@ -92,7 +92,7 @@ FOREACH mr_id = mr_list;
 					style="padding: 3px; border: none;"
 					width="45"
 					height="50"
-					src="http://images.amazon.com/images/P/[% mods.isbn().replace('\s+','') %].01.MZZZZZZZ.jpg"&gt;
+					src="http://images.amazon.com/images/P/[% mods.isbn().split('\s+').0 %].01.MZZZZZZZ.jpg"&gt;
 			&lt;/a&gt;
 		&lt;/div&gt;
 [%-

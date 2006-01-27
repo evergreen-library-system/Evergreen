@@ -457,7 +457,7 @@ sub hupall {
 sub _log {
 	my $string = shift;
 	OpenSRF::Utils::Logger->debug( $string, INFO );
-	print $string . "\n";
+	#print $string . "\n";
 }
 
 # ----------------------------------------------
