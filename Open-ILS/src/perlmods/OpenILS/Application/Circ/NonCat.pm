@@ -11,6 +11,29 @@ $Data::Dumper::Indent = 0;
 my $U = "OpenILS::Application::AppUtils";
 
 
+# returns ( $newid, $evt ).  If $evt, then there was an error
+sub create_non_cat_circ {
+	my( $staffid, $patronid, $circ_lib, $noncat_type, $circ_time ) = @_;
+
+	my( $id, $evt );
+	$circ_time |= 'now';
+	my $circ = Fieldmapper::action::non_cataloged_circulation->new;
+
+	$circ->patron($patronid);
+	$circ->staff($staffid);
+	$circ->circ_lib($circ_lib);
+	$circ->item_type($noncat_type);
+	$circ->circ_time($circ_time);
+
+	$id = $U->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.action.non_cataloged_circulation.create', $circ );
+	$evt = $U->DB_UPDATE_FAILED($circ) unless $id;
+
+	return( $id, $evt );
+}
+
+
 __PACKAGE__->register_method(
 	method	=> "create_noncat_type",
 	api_name	=> "open-ils.circ.non_cat_type.create",
