@@ -29,8 +29,6 @@ function main_init() {
 
 		var mw = self;
 		G =  {};
-		G.OpenILS = {};
-		G.OpenSRF = {};
 
 		JSAN.use('util.error');
 		G.error = new util.error();
@@ -45,30 +43,27 @@ function main_init() {
 		G.auth = new auth.controller( { 'window' : mw } );
 
 		JSAN.use('OpenILS.data');
-		G.OpenILS.data = new OpenILS.data()
-		G.OpenILS.data.on_error = G.auth.logoff;
-		G.OpenILS.data.entities = entities;
-		G.OpenILS.data.stash('entities');
+		G.data = new OpenILS.data()
+		G.data.on_error = G.auth.logoff;
+		G.data.entities = entities;
+		G.data.stash('entities');
 
 		G.auth.on_login = function() {
 
-			G.OpenILS.data.session = G.auth.session.key;
-			G.OpenILS.data.on_complete = function () {
+			var url = G.auth.controller.view.server_prompt.value || urls.remote;
+			if (! url.match( '^http://' ) ) url = 'http://' + url;
 
-				var url = G.auth.controller.view.server_prompt.value || urls.remote;
-				if (! url.match( '^http://' ) ) url = 'http://' + url;
-				grant_perms(url);
-				
-				G.OpenILS.data.stash('list','hash','tree','temp');
-				G.OpenILS.data._debug_stash();
+			grant_perms(url);
 
-				G.window.open(urls.XUL_MENU_FRAME 
-					+ '?session='+mw.escape(G.auth.session.key)
-					+ '&authtime='+mw.escape(G.auth.session.authtime)
-					+ '&server='+mw.escape(url),
-					'test','chrome,resizable');
+			var deck = document.getElementById('main_deck');
+			var iframe = document.createElement('iframe'); deck.appendChild(iframe);
+			iframe.setAttribute( 'src', url + '/xul/server/main/data.xul' );
+			var xulG = {
+				'auth' : G.auth,
+				'url' : url,
+				'window' : G.window,
 			}
-			G.OpenILS.data.init();
+			iframe.contentWindow.xulG = xulG;
 		}
 
 		G.auth.init();

@@ -14,7 +14,9 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
+<!--
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+-->
 
 <window id="main_win" 
 	onload="try { main_init(); } catch(E) { alert(E); }"
@@ -26,7 +28,25 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var G;</script>
-	<scripts id="openils_util_scripts"/>
+	<script>dump('Loading OpenILS/util_overlay.xul\n');</script>
+	<scripts id="openils_util_scripts">
+		<script type="text/javascript" src="constants.js" />
+		<script type="text/javascript" src="../OpenILS/util/utils.js" />
+		<script type="text/javascript" src="../OpenILS/util/CGI.js" />
+		<script type="text/javascript" src="../OpenILS/util/md5.js" />
+		<script type="text/javascript" src="../OpenILS/util/JSON.js" />
+		<!--
+		<script type="text/javascript" src="../OpenILS/util/fmall.js" />
+		<script type="text/javascript" src="../OpenILS/util/fmgen.js" />
+		-->
+		<script type="text/javascript" src="../OpenILS/util/RemoteRequest.js" />
+		<!--
+		<script type="text/javascript" src="../OpenILS/util/OrgTree.js" />
+		-->
+		<script type="text/javascript" src="../OpenILS/util/org_utils.js" />   
+	</scripts>
+	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
+
 
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<!--
