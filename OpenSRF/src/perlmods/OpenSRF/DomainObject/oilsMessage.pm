@@ -272,7 +272,7 @@ sub do_client {
 			$session->reset;
 			$session->connect;
 			$session->push_resend( $session->app_request($self->threadTrace) );
-			$log->debug("Disconnected because of timeout", WARN);
+			$log->debug("Disconnected because of timeout");
 			return 0;
 
 		} elsif ($self->payload->statusCode == STATUS_REDIRECTED) {
