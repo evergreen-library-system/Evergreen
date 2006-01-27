@@ -146,7 +146,7 @@ sub handler {
 			my $resp;
 			try {
 				# un-if(0) this block to enable param checking based on signature and argc
-				if (1) {
+				if (0) {
 					if (@args < $coderef->argc) {
 						die	"Not enough params passed to ".
 							$coderef->api_name." : requires ". $coderef->argc
@@ -225,7 +225,7 @@ sub handler {
 				my $resp;
 				try {
 					# un-if(0) this block to enable param checking based on signature and argc
-					if (1) {
+					if (0) {
 						if (@args < $aref->[2]->argc) {
 							die	"Not enough params passed to ".
 								$aref->[2]->api_name." : requires ". $aref->[2]->argc
