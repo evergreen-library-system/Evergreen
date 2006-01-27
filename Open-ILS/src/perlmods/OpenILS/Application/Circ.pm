@@ -12,6 +12,7 @@ use OpenILS::Application::Circ::NonCat;
 
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 use OpenSRF::Utils;
 use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
@@ -184,6 +185,60 @@ sub set_circ_lost {
 		"open-ils.storage.direct.action.circulation.update", $circ );
 
 	if(!$s) { throw OpenSRF::EX::ERROR ("Error updating circulation with id $circid"); }
+}
+
+__PACKAGE__->register_method(
+	method		=> "create_in_house_use",
+	api_name		=> 'open-ils.circ.in_house_use.create',
+	signature	=>	q/
+		Creates an in-house use action.
+		@param $authtoken The login session key
+		@param params A named list of params including
+			'location' The org unit id where the in-house use occurs
+			'copyid' The copy in question
+			'count' The number of in-house uses to apply to this copy
+		@return An array of id's representing the id's of the newly created
+		in-house use objects or an event on an error
+	/);
+
+sub create_in_house_use {
+	my( $self, $client, $authtoken, %params ) = @_;
+
+	my( $staff, $evt, $copy );
+	my $org		= $params{location};
+	my $copyid	= $params{copyid};
+	my $count	= $params{count} || 1;
+
+	($staff, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	($copy, $evt) = $U->fetch_copy($copyid);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($staff->id, $org, 'CREATE_IN_HOUSE_USE');
+	return $evt if $evt;
+
+	$logger->activity("User " . $staff->id .
+		" creating $count in-house use(s) for copy $copyid at location $org");
+
+	my @ids;
+	for(1..$count) {
+		my $ihu = Fieldmapper::action::in_house_use->new;
+
+		$ihu->item($copyid);
+		$ihu->staff($staff->id);
+		$ihu->org_unit($org);
+		$ihu->use_time('now');
+
+		my $id = $U->simplereq(
+			'open-ils.storage',
+			'open-ils.storage.direct.action.in_house_use.create', $ihu );
+
+		return $U->DB_UPDATE_FAILED($ihu) unless $id;
+		push @ids, $id;
+	}
+
+	return \@ids;
 }
 
 
