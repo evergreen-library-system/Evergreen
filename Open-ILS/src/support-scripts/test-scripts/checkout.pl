@@ -43,10 +43,10 @@ sub do_permit {
 
 	my @args = ( $authtoken, 'patron', $patronid );
 	push(@args, (barcode => $barcode)) unless $noncat;
-	push(@args, (noncat => 1, noncat_type => $nc_type )) if $noncat;
+	push(@args, (noncat => 1, noncat_type => $nc_type) ) if $noncat;
 
 	my $resp = simplereq( 
-		CIRC(), 'open-ils.circ.permit_checkout_', @args );
+		CIRC(), 'open-ils.circ.checkout.permit', @args );
 	
 	oils_event_die($resp);
 	printl("Permit succeeded for patron $patronid");
@@ -57,7 +57,7 @@ sub do_checkout {
 
 	my @args = ($authtoken, 'patron', $patronid);
 	push(@args, (barcode => $barcode)) unless $noncat;
-	push(@args, (noncat => 1, noncat_type => $nc_type )) if $noncat;
+	push(@args, noncat => 1, noncat_type => $nc_type ) if $noncat;
 
 	my $resp = osrf_request(
 		'open-ils.circ', 

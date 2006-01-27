@@ -70,7 +70,7 @@ sub create_circ_ctx {
 	my $ctx = {};
 
 	$ctx->{type}			= $params{type};
-	$ctx->{isrenew}		= $params{isrenew};
+	$ctx->{renew}			= $params{renew};
 	$ctx->{noncat}			= $params{noncat};
 	$ctx->{noncat_type}	= $params{noncat_type};
 
@@ -252,7 +252,7 @@ sub _build_circ_script_runner {
 	$runner->insert( 'result', {} );
 	$runner->insert( 'result.event', 'SUCCESS' );
 
-	$runner->insert('environment.isRenewal', 1) if $ctx->{isrenew};
+	$runner->insert('environment.isRenewal', 1) if $ctx->{renew};
 	$runner->insert('environment.isNonCat', 1) if $ctx->{noncat};
 	$runner->insert('environment.nonCatType', $ctx->{noncat_type}) if $ctx->{noncat};
 
@@ -288,7 +288,7 @@ sub _add_script_runner_methods {
 
 __PACKAGE__->register_method(
 	method	=> "permit_circ",
-	api_name	=> "open-ils.circ.permit_checkout_",
+	api_name	=> "open-ils.circ.checkout.permit",
 	notes		=> q/
 		Determines if the given checkout can occur
 		@param authtoken The login session key
@@ -312,18 +312,12 @@ sub permit_circ {
 	return $evt if $evt;
 
 	# fetch and build the circulation environment
-	( $ctx, $evt ) = create_circ_ctx( 
-		barcode							=> $params{barcode}, 
-		copyid							=> $params{copyid},
-		copy								=> $params{copy},
+	( $ctx, $evt ) = create_circ_ctx( %params, 
 		patron							=> $patron, 
 		type								=> 'permit',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
-		isrenew							=> ($params{renew}) ? 1 : 0,
-		noncat							=> ($params{noncat}) ? 1 : 0,
-		noncat_type						=> $params{noncat_type},
 		);
 	return $evt if $evt;
 
@@ -394,22 +388,16 @@ sub checkout {
 	return _checkout_noncat( $requestor, $patron, %params ) if $params{noncat};
 
 	# fetch and build the circulation environment
-	( $ctx, $evt ) = create_circ_ctx( 
-		barcode							=> $params{barcode}, 
-		copyid							=> $params{copyid},
-		copy								=> $params{copy},
+	( $ctx, $evt ) = create_circ_ctx( %params, 
 		patron							=> $patron, 
 		type								=> 'checkout',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
-		isrenew							=> ($params{renew}) ? 1 : 0,
-		noncat							=> ($params{noncat}) ? 1 : 0,
 		);
 	return $evt if $evt;
 
 	return _run_checkout_scripts( $ctx );
-
 }
 
 
@@ -442,7 +430,7 @@ sub _checkout_noncat {
 
 __PACKAGE__->register_method(
 	method	=> "checkin",
-	api_name	=> "open-ils.circ.checkin.barcode_",
+	api_name	=> "open-ils.circ.checkin",
 	notes		=> <<"	NOTES");
 	PARAMS( authtoken, barcode => bc )
 	Checks in based on barcode
