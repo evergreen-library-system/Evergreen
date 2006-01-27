@@ -689,6 +689,7 @@ sub _create_standing_penalties {
 	my($session, $user_session, $patron, $new_patron) = @_;
 
 	my $maps = $patron->standing_penalties;
+	my $method;
 
 	for my $map (@$maps) {
 
