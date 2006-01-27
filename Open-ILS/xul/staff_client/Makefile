@@ -38,7 +38,7 @@ generated:
 	@echo
 	@echo These things are installation specific.  The staff client is the last thing you should try to build.
 	(cd chrome/content/conf ; ${RETRIEVE_CLIENT_CONFIG} );
-	(cd chrome/content/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
+	#(cd chrome/content/OpenILS/util/ ; ${RETRIEVE_FM_ALL} );
 	(cd chrome/locale/en-US/ ; ${RETRIEVE_LANG_DTD} );
 	external/dtd2js.pl chrome/locale/en-US/lang.dtd > chrome/content/main/lang.js
 
