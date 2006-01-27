@@ -136,7 +136,7 @@ sub oils_login {
 
 	my $response = $apputils->simplereq( $AUTH, 
 		'open-ils.auth.authenticate.complete', $username, 
-		md5_hex($seed . md5_hex($password)));
+		md5_hex($seed . md5_hex($password)), "staff");
 	err("No auth response returned on login") unless $response;
 
 	oils_event_die($response);
@@ -144,6 +144,16 @@ sub oils_login {
 	$authtime = $response->{payload}->{authtime};
 	$authtoken = $response->{payload}->{authtoken};
 	return $authtoken;
+}
+
+
+#----------------------------------------------------------------
+# Destroys the login session on the server
+#----------------------------------------------------------------
+sub oils_logout {
+	$apputils->simplereq(
+		'open-ils.auth',
+		'open-ils.auth.session.delete', $authtoken );
 }
 
 #----------------------------------------------------------------

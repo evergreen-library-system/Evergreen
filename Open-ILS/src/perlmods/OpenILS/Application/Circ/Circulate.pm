@@ -153,10 +153,10 @@ sub _doctor_circ_objects {
 	$patron->home_ou( $apputils->fetch_org_unit( $patron->home_ou ) );
 
 	# set the copy status to a status name
-	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) );
+	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) ) if $copy;
 
 	# set the copy location to the location object
-	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) );
+	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) ) if $copy;
 
 }
 
@@ -268,8 +268,6 @@ sub permit_circ {
 
 	my $barcode		= $params{barcode};
 	my $patronid	= $params{patron};
-	my $isrenew		= $params{renew};
-	my $noncat		= $params{noncat};
 
 	my ( $requestor, $patron, $ctx, $evt );
 
@@ -291,11 +289,12 @@ sub permit_circ {
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
-		isrenew							=> ($isrenew) ? 1 : 0,
-		noncat							=> $noncat,
+		isrenew							=> ($params{renew}) ? 1 : 0,
+		noncat							=> $params{noncat},
 		);
 	return $evt if $evt;
 
+	$ctx->{noncat_type} = $params{noncat_type};
 	return _run_permit_scripts($ctx);
 }
 
@@ -308,7 +307,7 @@ sub _run_permit_scripts {
 	my $ctx			= shift;
 	my $runner		= $ctx->{runner};
 	my $patronid	= $ctx->{patron}->id;
-	my $barcode		= $ctx->{copy}->barcode;
+	my $barcode		= ($ctx->{copy}) ? $ctx->{copy}->barcode : undef;
 
 	$runner->load($scripts{circ_permit_patron});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
