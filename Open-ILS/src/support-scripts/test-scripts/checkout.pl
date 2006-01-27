@@ -8,13 +8,15 @@ require '../oils_header.pl';
 use vars qw/ $apputils $memcache $user $authtoken $authtime /;
 use strict; use warnings;
 
-err("usage: $0 <config> <oils_login_username> ".
+#----------------------------------------------------------------
+err("\nusage: $0 <config> <oils_login_username> ".
 	" <oils_login_password> <patronid> <copy_barcode> [<type>]\n".
 	"Where <type> is one of:\n".
 	"\t'permit' to run the permit only\n".
 	"\t'noncat_permit' to run the permit script against a noncat item\n".
 	"\t'noncat' to check out a noncat item\n".
 	"\tblahk to do a regular checkout\n" ) unless $ARGV[4];
+#----------------------------------------------------------------
 
 my $config		= shift; 
 my $username	= shift;
@@ -36,7 +38,6 @@ sub go {
 go();
 
 #----------------------------------------------------------------
-
 
 sub do_permit {
 	my( $patronid, $barcode, $noncat ) = @_;
