@@ -19,6 +19,9 @@ sub create_non_cat_circ {
 	$circ_time |= 'now';
 	my $circ = Fieldmapper::action::non_cataloged_circulation->new;
 
+	$logger->activity("Creating non-cataloged circulation for ".
+		"staff $staffid, patron $patronid, location $circ_lib, and non-cat type $noncat_type");
+
 	$circ->patron($patronid);
 	$circ->staff($staffid);
 	$circ->circ_lib($circ_lib);

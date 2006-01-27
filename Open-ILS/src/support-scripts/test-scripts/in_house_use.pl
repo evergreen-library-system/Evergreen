@@ -45,6 +45,7 @@ sub do_in_house_use {
 		count		=> $count );
 
 	oils_event_die($resp);
-	printl("Successfully created " . scalar(@$resp) . " in house use actions");
+	printl("Successfully created " . scalar(@$resp) . " in house \n".
+	"use actions for copy $copyid and location $location");
 }
 

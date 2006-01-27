@@ -457,5 +457,14 @@ sub fetch_open_hold_by_current_copy {
 	return undef;
 }
 
+sub fetch_related_holds {
+	my $class = shift;
+	my $copyid = shift;
+	return $apputils->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.action.hold_request.search.atomic',
+			 current_copy =>  $copyid , fulfillment_time => undef );
+}
+
 
 1;

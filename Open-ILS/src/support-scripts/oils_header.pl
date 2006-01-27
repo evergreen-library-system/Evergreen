@@ -171,6 +171,6 @@ sub oils_fetch_session {
 # var $response = simplereq( $service, $method, @params );
 #----------------------------------------------------------------
 sub simplereq { return $apputils->simplereq(@_); }
-
+sub osrf_request { return $apputils->simplereq(@_); }
 
 1;

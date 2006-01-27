@@ -66,20 +66,24 @@ sub initialize {
 sub create_circ_ctx {
 	my %params = @_;
 
-	my $barcode			= $params{barcode};
-
 	my $evt;
 	my $ctx = {};
 
-	$ctx->{type}		= $params{type};
-	$ctx->{isrenew}	= $params{isrenew};
-	$ctx->{noncat}		= $params{noncat};
+	$ctx->{type}			= $params{type};
+	$ctx->{isrenew}		= $params{isrenew};
+	$ctx->{noncat}			= $params{noncat};
+	$ctx->{noncat_type}	= $params{noncat_type};
 
 	$evt = _ctx_add_patron_objects($ctx, %params);
 	return $evt if $evt;
-	$evt = _ctx_add_copy_objects($ctx, %params) unless $ctx->{noncat};
-	return $evt if $evt;
 
+	if( ($params{copy} or $params{copyid} or $params{barcode}) and !$params{noncat} ) {
+		$evt = _ctx_add_copy_objects($ctx, %params);
+		return $evt if $evt;
+	}
+
+	_doctor_patron_object($ctx) if $ctx->{patron};
+	_doctor_copy_object($ctx) if $ctx->{copy};
 	_doctor_circ_objects($ctx);
 	_build_circ_script_runner($ctx);
 	_add_script_runner_methods( $ctx );
@@ -121,8 +125,22 @@ sub _ctx_add_copy_objects {
 	$ctx->{copy_statuses} = $cache{copy_statuses};
 	$ctx->{copy_locations} = $cache{copy_locations};
 
-	( $ctx->{copy}, $evt ) = $apputils->fetch_copy_by_barcode( $params{barcode} );
-	return $evt if $evt;
+	my $copy = $params{copy} if $params{copy};
+
+	if(!$copy) {
+
+		( $copy, $evt ) = 
+			$apputils->fetch_copy($params{copyid}) if $params{copyid};
+		return $evt if $evt;
+
+		if(!$copy) {
+			( $copy, $evt ) = 
+				$apputils->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
+			return $evt if $evt;
+		}
+	}
+
+	$ctx->{copy} = $copy;
 
 	( $ctx->{title}, $evt ) = $apputils->fetch_record_by_copy( $ctx->{copy}->id );
 	return $evt if $evt;
@@ -131,32 +149,46 @@ sub _ctx_add_copy_objects {
 }
 
 
+# ------------------------------------------------------------------------------
+# Fleshes parts of the patron object
+# ------------------------------------------------------------------------------
+sub _doctor_copy_object {
 
-# ------------------------------------------------------------------------------
-# Patches up circ objects to make them easier to use from within the script
-# environment
-# ------------------------------------------------------------------------------
-sub _doctor_circ_objects {
 	my $ctx = shift;
-
-	my $patron = $ctx->{patron};
 	my $copy = $ctx->{copy};
-			
-	for my $s (@{$ctx->{patron_standings}}) {
-		$patron->standing($s) if ( $s->id eq $ctx->{patron}->standing );
+
+	# set the copy status to a status name
+	$copy->status( _get_copy_status( 
+		$copy, $ctx->{copy_statuses} ) ) if $copy;
+
+	# set the copy location to the location object
+	$copy->location( _get_copy_location( 
+		$copy, $ctx->{copy_locations} ) ) if $copy;
+
+}
+
+
+# ------------------------------------------------------------------------------
+# Fleshes parts of the copy object
+# ------------------------------------------------------------------------------
+sub _doctor_patron_object {
+	my $ctx = shift;
+	my $patron = $ctx->{patron};
+
+	# push the standing object into the patron
+	if(ref($ctx->{patron_standings})) {
+		for my $s (@{$ctx->{patron_standings}}) {
+			$patron->standing($s) if ( $s->id eq $ctx->{patron}->standing );
+		}
 	}
 
 	# set the patron ptofile to the profile name
-	$patron->profile( _get_patron_profile( $patron, $ctx->{group_tree} ) );
+	$patron->profile( _get_patron_profile( 
+		$patron, $ctx->{group_tree} ) ) if $ctx->{group_tree};
 
 	# flesh the org unit
-	$patron->home_ou( $apputils->fetch_org_unit( $patron->home_ou ) );
-
-	# set the copy status to a status name
-	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) ) if $copy;
-
-	# set the copy location to the location object
-	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) ) if $copy;
+	$patron->home_ou( 
+		$apputils->fetch_org_unit( $patron->home_ou ) ) if $patron;
 
 }
 
@@ -221,6 +253,8 @@ sub _build_circ_script_runner {
 	$runner->insert( 'result.event', 'SUCCESS' );
 
 	$runner->insert('environment.isRenewal', 1) if $ctx->{isrenew};
+	$runner->insert('environment.isNonCat', 1) if $ctx->{noncat};
+	$runner->insert('environment.nonCatType', $ctx->{noncat_type}) if $ctx->{noncat};
 
 	if(ref($ctx->{patron_circ_summary})) {
 		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
@@ -236,15 +270,18 @@ sub _add_script_runner_methods {
 	my $ctx = shift;
 	my $runner = $ctx->{runner};
 
-	# allows a script to fetch a hold that is currently targeting the
-	# copy in question
-	$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
-			my $key = shift;
-			my $hold = $holdcode->fetch_open_hold_by_current_copy($ctx->{copy}->id);
-			$hold = undef unless $hold;
-			$runner->insert( $key, $hold, 1 );
-		}
-	);
+	if( $ctx->{copy} ) {
+		
+		# allows a script to fetch a hold that is currently targeting the
+		# copy in question
+		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
+				my $key = shift;
+				my $hold = $holdcode->fetch_related_holds($ctx->{copy}->id);
+				$hold = undef unless $hold;
+				$runner->insert( $key, $hold, 1 );
+			}
+		);
+	}
 }
 
 # ------------------------------------------------------------------------------
@@ -266,35 +303,30 @@ __PACKAGE__->register_method(
 sub permit_circ {
 	my( $self, $client, $authtoken, %params ) = @_;
 
-	my $barcode		= $params{barcode};
-	my $patronid	= $params{patron};
-
 	my ( $requestor, $patron, $ctx, $evt );
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
 		$apputils->checkses_requestor( 
-		$authtoken, $patronid, 'VIEW_PERMIT_CHECKOUT' );
+		$authtoken, $params{patron}, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
-
-	$logger->info("Checking circulation permission for staff: " . 
-		$requestor->id .  ", patron " . $patron->id . 
-		", and barcode " . (($barcode) ? $barcode : "") );
 
 	# fetch and build the circulation environment
 	( $ctx, $evt ) = create_circ_ctx( 
-		barcode							=> $barcode, 
+		barcode							=> $params{barcode}, 
+		copyid							=> $params{copyid},
+		copy								=> $params{copy},
 		patron							=> $patron, 
 		type								=> 'permit',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		isrenew							=> ($params{renew}) ? 1 : 0,
-		noncat							=> $params{noncat},
+		noncat							=> ($params{noncat}) ? 1 : 0,
+		noncat_type						=> $params{noncat_type},
 		);
 	return $evt if $evt;
 
-	$ctx->{noncat_type} = $params{noncat_type};
 	return _run_permit_scripts($ctx);
 }
 
@@ -331,17 +363,78 @@ sub _run_permit_scripts {
 # ------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method	=> "circulate",
-	api_name	=> "open-ils.circ.checkout.barcode_",
-	notes		=> <<"	NOTES");
-		Checks out an item based on barcode
-		PARAMS( authtoken, barcode => bc, patron => pid )
-	NOTES
+	method	=> "checkout",
+	api_name	=> "open-ils.circ.checkout",
+	notes => q/
+		Checks out an item
+		@param authtoken The login session key
+		@param params A named list of params including:
+			copy			The copy object
+			barcode		If no copy is provided, the copy is retrieved via barcode
+			copyid		If no copy or barcode is provide, the copy id will be use
+			patron		The patron's id
+			noncat		True if this is a circulation for a non-cataloted item
+			noncat_type	The non-cataloged type id
+			noncat_circ_lib The location for the noncat circ.  
+				Default is the home org of the staff member
+		@return The SUCCESS event on success, any other event depending on the error
+	/);
 
-sub circulate {
+sub checkout {
 	my( $self, $client, $authtoken, %params ) = @_;
-	my $barcode		= $params{barcode};
-	my $patronid	= $params{patron};
+
+	my ( $requestor, $patron, $ctx, $evt );
+
+	# check permisson of the requestor
+	( $requestor, $patron, $evt ) = 
+		$apputils->checkses_requestor( 
+			$authtoken, $params{patron}, 'COPY_CHECKOUT' );
+	return $evt if $evt;
+
+	return _checkout_noncat( $requestor, $patron, %params ) if $params{noncat};
+
+	# fetch and build the circulation environment
+	( $ctx, $evt ) = create_circ_ctx( 
+		barcode							=> $params{barcode}, 
+		copyid							=> $params{copyid},
+		copy								=> $params{copy},
+		patron							=> $patron, 
+		type								=> 'checkout',
+		fetch_patron_circ_summary	=> 1,
+		fetch_copy_statuses			=> 1, 
+		fetch_copy_locations			=> 1, 
+		isrenew							=> ($params{renew}) ? 1 : 0,
+		noncat							=> ($params{noncat}) ? 1 : 0,
+		);
+	return $evt if $evt;
+
+	return _run_checkout_scripts( $ctx );
+
+}
+
+
+sub _run_checkout_scripts {
+	my $ctx = shift;
+
+	my $runner = $ctx->{runner};
+
+#	$runner->load($scripts{circ_duration});
+#	$runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+
+	return OpenILS::Event->new('SUCCESS', 
+		payload => { copy => $ctx->{copy} } );
+}
+
+
+
+sub _checkout_noncat {
+	my ( $requestor, $patron, %params ) = @_;
+	my $circlib = $params{noncat_circ_lib} || $requestor->home_ou;
+	my( $circ, $evt ) = 
+		OpenILS::Application::Circ::NonCat::create_non_cat_circ(
+			$requestor->id, $patron->id, $circlib, $params{noncat_type} );
+	return $evt if $evt;
+	return OpenILS::Event->new('SUCCESS');
 }
 
 

@@ -10,12 +10,12 @@ use strict; use warnings;
 
 #----------------------------------------------------------------
 err("\nusage: $0 <config> <oils_login_username> ".
-	" <oils_login_password> <patronid> <copy_barcode> [<type>]\n".
+	" <oils_login_password> <patronid> <copy_barcode> [<type>, <noncat_type>]\n".
 	"Where <type> is one of:\n".
 	"\t'permit' to run the permit only\n".
 	"\t'noncat_permit' to run the permit script against a noncat item\n".
 	"\t'noncat' to check out a noncat item\n".
-	"\tblahk to do a regular checkout\n" ) unless $ARGV[4];
+	"\t(blank) to do a regular checkout\n" ) unless $ARGV[5];
 #----------------------------------------------------------------
 
 my $config		= shift; 
@@ -24,14 +24,13 @@ my $password	= shift;
 my $patronid	= shift;
 my $barcode		= shift;
 my $type			= shift;
-
-my $method = 'open-ils.circ.checkout_permit_';
+my $nc_type		= shift;
 
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
 	do_permit($patronid, $barcode, $type =~ /noncat/ ); 
-	do_checkout($patronid, $barcode, $type =~ /noncat/ ) unless ($type =~ /permit/);
+	do_checkout($patronid, $barcode, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
 	oils_logout();
 }
 
@@ -43,8 +42,8 @@ sub do_permit {
 	my( $patronid, $barcode, $noncat ) = @_;
 
 	my @args = ( $authtoken, 'patron', $patronid );
-	push(@args, ('barcode', $barcode)) unless $noncat;
-	push(@args, ('noncat', 1)) if $noncat;
+	push(@args, (barcode => $barcode)) unless $noncat;
+	push(@args, (noncat => 1, noncat_type => $nc_type )) if $noncat;
 
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.permit_checkout_', @args );
@@ -54,5 +53,19 @@ sub do_permit {
 }
 
 sub do_checkout {
+	my( $patronid, $barcode, $noncat, $nc_type ) = @_;
+
+	my @args = ($authtoken, 'patron', $patronid);
+	push(@args, (barcode => $barcode)) unless $noncat;
+	push(@args, (noncat => 1, noncat_type => $nc_type )) if $noncat;
+
+	my $resp = osrf_request(
+		'open-ils.circ', 
+		'open-ils.circ.checkout', @args );
+	oils_event_die($resp);
+	printl("Checkout succeeded");
 }
+
+
+
 
