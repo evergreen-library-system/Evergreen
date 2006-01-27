@@ -25,20 +25,23 @@ sub initialize {
 
 	my $self = shift;
 	my $conf = OpenSRF::Utils::SettingsClient->new;
-	my @pfx = ( "apps", "open-ils.circ","app_settings", "scripts" );
+	my @pfx2 = ( "apps", "open-ils.circ","app_settings" );
+	my @pfx = ( @pfx2, "scripts" );
 
-	my $p		= $conf->config_value(	@pfx, 'permission' );
-	my $d		= $conf->config_value(	@pfx, 'duration' );
-	my $f		= $conf->config_value(	@pfx, 'recurring_fines' );
-	my $m		= $conf->config_value(	@pfx, 'max_fines' );
-	my $pr	= $conf->config_value(	@pfx, 'permit_renew' );
-	my $ph	= $conf->config_value(	@pfx, 'permit_hold' );
-	my $lb	= $conf->config_value(	'apps', 'open-ils.circ', 'app_settings', 'script_path' );
+	my $p		= $conf->config_value(	@pfx, 'circ_permit_patron' );
+	my $c		= $conf->config_value(	@pfx, 'circ_permit_copy' );
+	my $d		= $conf->config_value(	@pfx, 'circ_duration' );
+	my $f		= $conf->config_value(	@pfx, 'circ_recurring_fines' );
+	my $m		= $conf->config_value(	@pfx, 'circ_max_fines' );
+	my $pr	= $conf->config_value(	@pfx, 'renew_permit' );
+	my $ph	= $conf->config_value(	@pfx, 'hold_permit' );
+	my $lb	= $conf->config_value(	@pfx2, 'script_path' );
 
 	$logger->error( "Missing circ script(s)" ) 
-		unless( $p and $d and $f and $m and $pr and $ph );
+		unless( $p and $c and $d and $f and $m and $pr and $ph );
 
-	$scripts{circ_permit}			= $p;
+	$scripts{circ_permit_patron}	= $p;
+	$scripts{circ_permit_copy}		= $c;
 	$scripts{circ_duration}			= $d;
 	$scripts{circ_recurring_fines}= $f;
 	$scripts{circ_max_fines}		= $m;
@@ -49,7 +52,8 @@ sub initialize {
 	$script_libs = $lb;
 
 	$logger->debug("Loaded rules scripts for circ: " .
-		"circ permit : $p, circ duration :$d , circ recurring fines : $f, " .
+		"circ permit patron: $p, circ permit copy: $c, ".
+		"circ duration :$d , circ recurring fines : $f, " .
 		"circ max fines : $m, circ renew permit : $pr, permit hold: $ph");
 }
 
@@ -63,16 +67,30 @@ sub create_circ_ctx {
 	my %params = @_;
 
 	my $barcode			= $params{barcode};
-	my $patron			= $params{patron};
-	my $fetch_summary = $params{fetch_patron_circ_summary};
-	my $fetch_cstatus	= $params{fetch_copy_statuses};
-	my $fetch_clocs	= $params{fetch_copy_locations};
 
 	my $evt;
 	my $ctx = {};
-	$ctx->{patron} = $patron;
-	$ctx->{type}	= $params{type};
-	$ctx->{isrenew} = $params{isrenew};
+
+	$ctx->{type}		= $params{type};
+	$ctx->{isrenew}	= $params{isrenew};
+	$ctx->{noncat}		= $params{noncat};
+
+	$evt = _ctx_add_patron_objects($ctx, %params);
+	return $evt if $evt;
+	$evt = _ctx_add_copy_objects($ctx, %params) unless $ctx->{noncat};
+	return $evt if $evt;
+
+	_doctor_circ_objects($ctx);
+	_build_circ_script_runner($ctx);
+	_add_script_runner_methods( $ctx );
+
+	return $ctx;
+}
+
+sub _ctx_add_patron_objects {
+	my( $ctx, %params) = @_;
+
+	$ctx->{patron}	= $params{patron};
 
 	if(!defined($cache{patron_standings})) {
 		$cache{patron_standings} = $apputils->fetch_patron_standings();
@@ -82,30 +100,36 @@ sub create_circ_ctx {
 	$ctx->{patron_standings} = $cache{patron_standings};
 	$ctx->{group_tree} = $cache{group_tree};
 
+	$ctx->{patron_circ_summary} = 
+		$apputils->fetch_patron_circ_summary($ctx->{patron}->id) 
+		if $params{fetch_patron_circsummary};
+
+	return undef;
+}
+
+
+sub _ctx_add_copy_objects {
+	my($ctx, %params)  = @_;
+	my $evt;
+
 	$cache{copy_statuses} = $apputils->fetch_copy_statuses 
-		if( $fetch_cstatus and !defined($cache{copy_statuses}) );
+		if( $params{fetch_copy_statuses} and !defined($cache{copy_statuses}) );
 
 	$cache{copy_locations} = $apputils->fetch_copy_locations 
-		if( $fetch_clocs and !defined($cache{copy_locations}));
+		if( $params{fetch_copy_locations} and !defined($cache{copy_locations}));
 
 	$ctx->{copy_statuses} = $cache{copy_statuses};
 	$ctx->{copy_locations} = $cache{copy_locations};
 
-	$ctx->{patron_circ_summary} = 
-		$apputils->fetch_patron_circ_summary($patron->id) if $fetch_summary;
-
-	( $ctx->{copy}, $evt ) = $apputils->fetch_copy_by_barcode( $barcode );
-	return ( undef, $evt ) if $evt;
+	( $ctx->{copy}, $evt ) = $apputils->fetch_copy_by_barcode( $params{barcode} );
+	return $evt if $evt;
 
 	( $ctx->{title}, $evt ) = $apputils->fetch_record_by_copy( $ctx->{copy}->id );
-	return ( undef, $evt ) if $evt;
+	return $evt if $evt;
 
-	_doctor_circ_objects($ctx);
-	_build_circ_script_runner($ctx);
-	_add_script_runner_methods( $ctx );
-
-	return $ctx;
+	return undef;
 }
+
 
 
 # ------------------------------------------------------------------------------
@@ -245,8 +269,9 @@ sub permit_circ {
 	my $barcode		= $params{barcode};
 	my $patronid	= $params{patron};
 	my $isrenew		= $params{renew};
-	my ( $requestor, $patron, $ctx, $evt );
+	my $noncat		= $params{noncat};
 
+	my ( $requestor, $patron, $ctx, $evt );
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
@@ -254,8 +279,9 @@ sub permit_circ {
 		$authtoken, $patronid, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
 
-	$logger->info("Checking circulation permission for staff: " . $requestor->id .
-		", patron " . $patron->id . ", and barcode $barcode" );
+	$logger->info("Checking circulation permission for staff: " . 
+		$requestor->id .  ", patron " . $patron->id . 
+		", and barcode " . (($barcode) ? $barcode : "") );
 
 	# fetch and build the circulation environment
 	( $ctx, $evt ) = create_circ_ctx( 
@@ -266,18 +292,40 @@ sub permit_circ {
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		isrenew							=> ($isrenew) ? 1 : 0,
+		noncat							=> $noncat,
 		);
 	return $evt if $evt;
 
-	# run the script
-	my $runner = $ctx->{runner};
+	return _run_permit_scripts($ctx);
+}
 
-	$runner->load($scripts{circ_permit});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Script Died: $@");
 
+# Runs the patron and copy permit scripts
+# if this is a non-cat circulation, the copy permit script 
+# is not run
+sub _run_permit_scripts {
+
+	my $ctx			= shift;
+	my $runner		= $ctx->{runner};
+	my $patronid	= $ctx->{patron}->id;
+	my $barcode		= $ctx->{copy}->barcode;
+
+	$runner->load($scripts{circ_permit_patron});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
 	my $evtname = $runner->retrieve('result.event');
-	$logger->activity("Permit Circ for user $patronid and barcode $barcode returned event: $evtname");
+	$logger->activity("circ_permit_patron for user $patronid returned event: $evtname");
+
+	return OpenILS::Event->new($evtname) 
+		if ( $ctx->{noncat} or $evtname ne 'SUCCESS' );
+
+	$runner->load($scripts{circ_permit_copy});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
+	$evtname = $runner->retrieve('result.event');
+	$logger->activity("circ_permit_patron for user $patronid ".
+		"and copy $barcode returned event: $evtname");
+
 	return OpenILS::Event->new($evtname);
+
 }
 
 

@@ -281,6 +281,18 @@ For non-core config info, see the inline documentation within this file
 						<permit_hold>permit_hold.rules</permit_hold>
 						<permit_renew>permit_renew.rules</permit_renew>
 					</rules>
+
+               <script_path>/openils/var/circ/</script_path>
+               <scripts>
+                  <circ_permit_patron>circ_permit_patron.js</circ_permit_patron>
+                  <circ_permit_copy>circ_permit_copy.js</circ_permit_copy>
+                  <circ_duration>circ_duration.js</circ_duration>
+                  <circ_recurring_fines>circ_recurring_fines.js</circ_recurring_fines>
+                  <circ_max_fines>circ_max_fines.js</circ_max_fines>
+                  <hold_permit>hold_permit.js</hold_permit>
+                  <renew_permit>renew_permit.js</renew_permit>
+               </scripts>
+
 				</app_settings>
 
 			</open-ils.circ>

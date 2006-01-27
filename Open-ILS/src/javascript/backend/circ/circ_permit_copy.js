@@ -4,7 +4,6 @@ function go() {
 load_lib('circ_lib.js');
 
 
-
 /* collect some useful variables */
 var copy			= environment.copy;
 var patron		= environment.patron;
@@ -16,7 +15,7 @@ var fines		= environment.patronFines;
 var isRenewal	= environment.isRenewal;
 
 
-log_debug('CIRC PERMIT: permit circ on ' +
+log_debug('circ_permit_copy: permit circ on ' +
 	' Copy: '					+ copy.id + 
 	', Patron:'					+ patron.id +
 	', Patron Username:'		+ patron.usrname +
@@ -32,9 +31,6 @@ log_debug('CIRC PERMIT: permit circ on ' +
 
 
 
-if( standing != 'good' ) 
-	return result.event = 'PATRON_BAD_STANDING';
-
 if( copy.circulate == '0' ) 
 	return result.event = 'COPY_CIRC_NOT_ALLOWED';
 
@@ -43,15 +39,6 @@ if( copy.ref != '0' )
 
 if( status != 'available' && status != 'on holds shelf' )
 	return result.event = 'COPY_NOT_AVAILABLE';
-
-
-
-
-if( profile == 'patrons' && itemsOut > 10 )
-	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
-
-if( profile == 'staff' && itemsOut > 30 )
-	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
 
 
 var hold = copy.fetchHold();
