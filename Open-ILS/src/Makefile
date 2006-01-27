@@ -120,6 +120,14 @@ cgi-bootstrap:
 	cp cgi-bin/setup.pl $(ETCDIR)/live-db-setup.pl
 
 storage-bootstrap:
+	@echo $@
+	@echo ""
+	@echo "WARNING!"
+	@echo ""
+	@echo "storage-bootstrap will DESTROY all data within all of the ILS tables in your database."
+	@echo "Type control-c to avoid destroying all of the data.  Type enter to continue..."
+	@echo ""
+	@read X;
 	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
 
 # -----------------------------------------------------------------------------------
