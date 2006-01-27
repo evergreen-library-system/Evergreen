@@ -28,16 +28,19 @@ sub create_noncat_type {
 	my( $staff, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
 
-	my $type;
-
-	# first, see if the exact type already exists  XXX this needs to be ranged
-	($type, $evt) = $U->fetch_non_cat_type_by_name_and_org($name, $orgId);
-	return OpenILS::Event->new('NON_CAT_TYPE_EXISTS') if $type;
+	# grab all of "my" non-cat types and see if one with 
+	# the requested name already exists
+	my $types = $self->retrieve_noncat_types_all($client, $orgId);
+	if(ref($types)) {
+		for(@$types) {
+			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS') if $_->name eq $name;
+		}
+	}
 
 	$evt = $U->check_perms( $staff->id, $orgId, 'CREATE_NON_CAT_TYPE' );
 	return $evt if $evt;
 
-	$type = Fieldmapper::config::non_cataloged_type->new;
+	my $type = Fieldmapper::config::non_cataloged_type->new;
 	$type->name($name);
 	$type->owning_lib($orgId);
 
