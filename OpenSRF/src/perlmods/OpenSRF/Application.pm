@@ -322,7 +322,7 @@ sub normalize_whitespace {
 	return $txt;
 }
 
-sub parse_notes_signature {
+sub parse_string_signature {
 	my $string = shift;
 	my @chunks = split(/\@/so, $string);
 
@@ -386,8 +386,11 @@ sub register_method {
 	if (!$args{signature}) {
 		if ($args{notes} && !ref($args{notes})) {
 			$args{signature} =
-				parse_array_signature( parse_notes_signature( $args{notes} ) );
+				parse_array_signature( parse_string_signature( $args{notes} ) );
 		}
+	} elsif( !ref($args{signature}) ) {
+		$args{signature} =
+			parse_array_signature( parse_string_signature( $args{notes} ) );
 	} elsif( ref($args{signature}) eq 'ARRAY') {
 		$args{signature} =
 			parse_array_signature( $args{signature} );

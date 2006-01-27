@@ -952,6 +952,8 @@ sub postfilter_search_class_fts {
 	my %args = @_;
 	
 	my $term = $args{term};
+	my $sort = $args{'sort'};
+	my $sort_dir = $args{sort_dir} || 'DESC';
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
 	my $limit = $args{limit};
@@ -993,6 +995,7 @@ sub postfilter_search_class_fts {
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 
+	my $metabib_full_rec = metabib::full_rec->table;
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
 	my $metabib_metarecord = metabib::metarecord->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
@@ -1000,6 +1003,7 @@ sub postfilter_search_class_fts {
 	my $asset_copy_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
 	my $cl_table = asset::copy_location->table;
+	my $br_table = biblio::record_entry->table;
 
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
@@ -1009,28 +1013,69 @@ sub postfilter_search_class_fts {
 	my $fts_where = $fts->sql_where_clause;
 	my @fts_ranks = $fts->fts_rank;
 
-	my $rank = join(' + ', @fts_ranks);
+	my $relevance = join(' + ', @fts_ranks);
 
-	my $select = <<"	SQL";
-		SELECT	m.metarecord,
-			(SUM(	$rank
+	$relevance = <<"	RANK";
+			(SUM(	$relevance
 				* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
 				* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
 				* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
-			)/COUNT(m.source)),
-			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END
+			)/COUNT(m.source))
+	RANK
+
+	my $rank = $relevance;
+	if (lc($sort) eq 'pubdate') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+				  FROM	$metabib_full_rec frp
+				  WHERE	frp.record = mr.master_record
+				  	AND frp.tag = '260'
+					AND frp.subfield = 'c'
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'title') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				  FROM	$metabib_full_rec frt
+				  WHERE	frt.record = mr.master_record
+				  	AND frt.tag = '245'
+					AND frt.subfield = 'a'
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'author') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				  FROM	$metabib_full_rec fra
+				  WHERE	fra.record = mr.master_record
+				  	AND fra.tag LIKE '1%'
+					AND fra.subfield = 'a'
+					ORDER BY fra.tag::text::int
+			)) )
+		RANK
+	} else {
+		$sort = undef;
+	}
+
+	my $select = <<"	SQL";
+		SELECT	m.metarecord,
+			$relevance,
+			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END,
+			$rank
   	  	FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
-			$metabib_metarecord_source_map_table mr,
+			$metabib_metarecord mr,
 			$metabib_record_descriptor rd
   	  	WHERE	$fts_where
 	  		AND m.source = f.source
-	  		AND m.metarecord = mr.metarecord
+	  		AND m.metarecord = mr.id
 			AND rd.record = f.source
 			$t_filter
 			$f_filter
   	  	GROUP BY m.metarecord
-  	  	ORDER BY 2 DESC, MIN(COALESCE(CHAR_LENGTH(f.value),1))
+  	  	ORDER BY 4 $sort_dir, MIN(COALESCE(CHAR_LENGTH(f.value),1))
 		LIMIT 10000
 	SQL
 
@@ -1043,10 +1088,12 @@ sub postfilter_search_class_fts {
 				$asset_copy_table cp,
 				$cs_table cs,
 				$cl_table cl,
+				$br_table br,
 				$descendants d,
 				$metabib_record_descriptor ord,
 				($select) s
 			  WHERE	mrs.metarecord = s.metarecord
+				AND br.id = mrs.source
 				AND cn.record = mrs.source
 				AND cp.status = cs.id
 				AND cp.location = cl.id
@@ -1055,10 +1102,32 @@ sub postfilter_search_class_fts {
 				AND cp.opac_visible IS TRUE
 				AND cs.holdable IS TRUE
 				AND cl.opac_visible IS TRUE
+				AND br.active IS TRUE
+				AND br.deleted IS FALSE
 				AND ord.record = mrs.source
 				$ot_filter
 				$of_filter
-			  ORDER BY 2 DESC
+			  ORDER BY 4 $sort_dir
+		SQL
+	} else {
+		$select = <<"		SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	$asset_call_number_table cn,
+				$metabib_metarecord_source_map_table mrs,
+				$br_table br,
+				$descendants d,
+				$metabib_record_descriptor ord,
+				($select) s
+			  WHERE	mrs.metarecord = s.metarecord
+				AND br.id = mrs.source
+				AND cn.record = mrs.source
+				AND cn.owning_lib = d.id
+				AND br.deleted IS FALSE
+				AND ord.record = mrs.source
+				$ot_filter
+				$of_filter
+			  ORDER BY 4 $sort_dir
 		SQL
 	}
 
@@ -1072,7 +1141,13 @@ sub postfilter_search_class_fts {
 			$select, {},
 			'%'.lc($SQLstring).'%',			# phrase order match
 			lc($first_word),			# first word match
-			'^\\s*'.lc($REstring).'\\s*/?\s*$',	# full exact match
+			'^\\s*'.lc($REstring).'\\s*/?\s*$', 	# full exact match
+			( !$sort ?
+				('%'.lc($SQLstring).'%',			# phrase order match
+				 lc($first_word),			# first word match
+				 '^\\s*'.lc($REstring).'\\s*/?\s*$',) :	# full exact match
+				 ()
+			),
 			@types, @forms,  ($self->api_name !~ /staff/o ? (@types, @forms) : () ) );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
@@ -1119,6 +1194,8 @@ sub postfilter_search_multi_class_fts {
 	my $client = shift;
 	my %args = @_;
 	
+	my $sort = $args{'sort'};
+	my $sort_dir = $args{sort_dir} || 'DESC';
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
 	my $limit = $args{limit};
@@ -1160,7 +1237,7 @@ sub postfilter_search_multi_class_fts {
 	my $search_table_list = '';
 	my $fts_list = '';
 	my $join_table_list = '';
-	my $rank_list = '';
+	my @rank_list;
 
 	my $prev_search_class;
 	my $curr_search_class;
@@ -1186,7 +1263,7 @@ sub postfilter_search_multi_class_fts {
 		#---------------------
 
 		$search_table_list .= "$search_table $search_class, ";
-		$rank_list .= " $rank +";
+		push @rank_list,$rank;
 		$fts_list .= " AND $fts_where AND m.source = $search_class.source";
 
 		if ($prev_search_class) {
@@ -1194,33 +1271,72 @@ sub postfilter_search_multi_class_fts {
 		}
 	}
 
-	chop $rank_list; # bleh ... ugly, ugly
-
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
+	my $metabib_full_rec = metabib::full_rec->table;
 	my $metabib_metarecord = metabib::metarecord->table;
 	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
 	my $asset_call_number_table = asset::call_number->table;
 	my $asset_copy_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
 	my $cl_table = asset::copy_location->table;
+	my $br_table = biblio::record_entry->table;
+
+	my $relevance = join (' + ', @rank_list);
+	$relevance = "SUM( $relevance )";
+
+
+	my $rank = $relevance;
+	if (lc($sort) eq 'pubdate') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+				  FROM	$metabib_full_rec frp
+				  WHERE	frp.record = mr.master_record
+				  	AND frp.tag = '260'
+					AND frp.subfield = 'c'
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'title') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				  FROM	$metabib_full_rec frt
+				  WHERE	frt.record = mr.master_record
+				  	AND frt.tag = '245'
+					AND frt.subfield = 'a'
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'author') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				  FROM	$metabib_full_rec fra
+				  WHERE	fra.record = mr.master_record
+				  	AND fra.tag LIKE '1%'
+					AND fra.subfield = 'a'
+					ORDER BY fra.tag::text::int
+			)) )
+		RANK
+	}
 
 
 	my $select = <<"	SQL";
 		SELECT	m.metarecord,
-			SUM( $rank_list ),
-			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END
+			$relevance,
+			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END,
+			$rank
   	  	FROM	$search_table_list
 			$metabib_metarecord_source_map_table m,
-			$metabib_metarecord_source_map_table mr,
+			$metabib_metarecord mr,
 			$metabib_record_descriptor rd
-	  	WHERE	m.metarecord = mr.metarecord
+	  	WHERE	m.metarecord = mr.id
   	  		$fts_list
 			$join_table_list
 			AND rd.record = m.source
 			$t_filter
 			$f_filter
   	  	GROUP BY m.metarecord
-  	  	ORDER BY 2 DESC
+  	  	ORDER BY 4 $sort_dir
 		LIMIT 10000
 	SQL
 
@@ -1248,10 +1364,11 @@ sub postfilter_search_multi_class_fts {
 				AND cs.holdable IS TRUE
 				AND cl.opac_visible IS TRUE
 				AND br.active IS TRUE
+				AND br.deleted IS FALSE
 				AND ord.record = mrs.source
 				$ot_filter
 				$of_filter
-			  ORDER BY 2 DESC
+			  ORDER BY 4 $sort_dir
 		SQL
 	} else {
 		$select = <<"		SQL";
@@ -1261,16 +1378,19 @@ sub postfilter_search_multi_class_fts {
 				$metabib_metarecord_source_map_table mrs,
 				$asset_copy_table cp,
 				$descendants d,
+				$br_table br,
 				$metabib_record_descriptor ord,
 				($select) s
 			  WHERE	mrs.metarecord = s.metarecord
+				AND br.id = mrs.source
 				AND cn.record = mrs.source
 				AND cn.owning_lib = d.id
 				AND cp.call_number = cn.id
 				AND ord.record = mrs.source
+				AND br.deleted IS FALSE
 				$ot_filter
 				$of_filter
-			  ORDER BY 2 DESC
+			  ORDER BY 4 $sort_dir
 		SQL
 	}
 
