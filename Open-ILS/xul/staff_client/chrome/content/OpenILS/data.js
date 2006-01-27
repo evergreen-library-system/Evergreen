@@ -92,6 +92,7 @@ OpenILS.data.prototype = {
 	},
 
 	'network_retrieve' : function() {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
 
 		JSAN.use('util.file');
@@ -101,8 +102,10 @@ OpenILS.data.prototype = {
 		function gen_fm_retrieval_func(classname,data) {
 			var app = data[0]; var method = data[1]; var params = data[2]; var cacheable = data[3];
 			return function () {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 				function convert() {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					try {
 						if (obj.list[classname].constructor.name == 'Array') {
 							obj.hash[classname] = 
@@ -170,6 +173,7 @@ OpenILS.data.prototype = {
 
 		this.chain.push(
 			function() {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				var f = gen_fm_retrieval_func(
 					'asv',
 					[
@@ -180,6 +184,7 @@ OpenILS.data.prototype = {
 					]
 				);
 				try {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					f();
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);

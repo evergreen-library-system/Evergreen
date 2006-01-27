@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Main, Authentication Window -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="data_win" 
+	onload="try { data_init(); } catch(E) { alert(E); }"
+	title="&staff.auth.title;"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
+	<script type="text/javascript" src="/xul/server/main/lang.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		dump("entities['lang.version'] = " + entities['lang.version'] + '\n');
+
+		function data_init() {
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+			if (typeof JSAN == 'undefined') {
+				throw(
+					"The JSAN library object is missing."
+				);
+			}
+			/////////////////////////////////////////////////////////////////////////////
+
+			JSAN.errorLevel = "die"; // none, warn, or die
+			JSAN.addRepository('/xul/server/');
+
+			JSAN.use('OpenILS.data');
+			g.data = new OpenILS.data()
+			g.data.on_error = xulG.auth.logoff;
+			g.data.entities = entities;
+			g.data.stash('entities');
+
+			g.data.session = xulG.auth.session.key;
+			g.data.on_complete = function () {
+
+				g.data.stash('list','hash','tree','temp');
+				g.data._debug_stash();
+
+				xulG.window.open(urls.XUL_MENU_FRAME
+					+ '?session='+window.escape(xulG.auth.session.key)
+					+ '&authtime='+window.escape(xulG.auth.session.authtime)
+					+ '&server='+window.escape(xulG.url),
+					'test','chrome,resizable'
+				);
+
+			}
+
+			g.data.init();
+		}
+	]]>
+	</script>
+
+	<groupbox id="data_groupbox" flex="1"> <caption label="Loading data..."/> </groupbox>
+
+</window>
+
