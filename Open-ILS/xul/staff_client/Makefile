@@ -19,6 +19,8 @@ build_dir:
 	mkdir -p build/
 	cp -R chrome build/
 	cp -R server build/
+	cp -R defaults build/
+	cp -R components build/
 	cp application.ini build/
 	cp -R build/chrome/content/util/ build/server/
 	cp build/chrome/content/main/constants.js build/server/main/constants.js
