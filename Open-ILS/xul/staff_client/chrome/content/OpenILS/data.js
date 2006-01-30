@@ -124,14 +124,17 @@ OpenILS.data.prototype = {
 					obj.list[classname] = obj.network.request( app, method, params);
 					convert();
 					// if cacheable, store an offline copy
+					/* FIXME -- we're going to revisit caching and do it differently
 					if (cacheable) {
 						var file = new util.file( classname );
 						file.set_object( obj.list[classname] );
 					}
+					*/
 
 				} catch(E) {
 					// if cacheable, try offline
 					if (cacheable) {
+						/* FIXME -- we're going to revisit caching and do it differently
 						try {
 							var file = new util.file( classname );
 							obj.list[classname] = file.get_object();
@@ -139,6 +142,8 @@ OpenILS.data.prototype = {
 						} catch(E) {
 							throw(E);
 						}
+						*/
+						throw(E); // for now
 					} else {
 						throw(E); // for now
 					}
