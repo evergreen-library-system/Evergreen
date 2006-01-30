@@ -15,7 +15,7 @@ err("\nusage: $0 <config> <oils_login_username> ".
 	"\t'permit' to run the permit only\n".
 	"\t'noncat_permit' to run the permit script against a noncat item\n".
 	"\t'noncat' to check out a noncat item\n".
-	"\t(blank) to do a regular checkout\n" ) unless $ARGV[5];
+	"\t(blank) to do a regular checkout\n" ) unless $ARGV[4];
 #----------------------------------------------------------------
 
 my $config		= shift; 
@@ -23,7 +23,7 @@ my $username	= shift;
 my $password	= shift;
 my $patronid	= shift;
 my $barcode		= shift;
-my $type			= shift;
+my $type			= shift || "";
 my $nc_type		= shift;
 
 sub go {
@@ -41,12 +41,16 @@ go();
 sub do_permit {
 	my( $patronid, $barcode, $noncat ) = @_;
 
-	my @args = ( $authtoken, 'patron', $patronid );
-	push(@args, (barcode => $barcode)) unless $noncat;
-	push(@args, (noncat => 1, noncat_type => $nc_type) ) if $noncat;
+	my $args = { patron => $patronid };
+
+	$args->{barcode} = $barcode;
+	if($noncat) {
+		$args->{noncat} = 1;
+		$args->{noncat_type} = $nc_type;
+	}
 
 	my $resp = simplereq( 
-		CIRC(), 'open-ils.circ.checkout.permit', @args );
+		CIRC(), 'open-ils.circ.checkout.permit', $authtoken, $args );
 	
 	oils_event_die($resp);
 	printl("Permit succeeded for patron $patronid");
@@ -55,13 +59,17 @@ sub do_permit {
 sub do_checkout {
 	my( $patronid, $barcode, $noncat, $nc_type ) = @_;
 
-	my @args = ($authtoken, 'patron', $patronid);
-	push(@args, (barcode => $barcode)) unless $noncat;
-	push(@args, noncat => 1, noncat_type => $nc_type ) if $noncat;
+	my $args = { patron => $patronid };
+	$args->{barcode} = $barcode;
+	if($noncat) {
+		$args->{noncat} = 1;
+		$args->{noncat_type} = $nc_type;
+	}
 
 	my $resp = osrf_request(
 		'open-ils.circ', 
-		'open-ils.circ.checkout', @args );
+		'open-ils.circ.checkout', $authtoken, $args );
+
 	oils_event_die($resp);
 	printl("Checkout succeeded");
 }

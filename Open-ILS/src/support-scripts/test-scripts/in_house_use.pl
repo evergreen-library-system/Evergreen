@@ -40,9 +40,9 @@ sub do_in_house_use {
 	my $resp = simplereq(
 		'open-ils.circ',
 		'open-ils.circ.in_house_use.create', $authtoken, 
-		copyid	=> $copyid, 
-		location	=> $location, 
-		count		=> $count );
+		{	copyid	=> $copyid, 
+			location	=> $location, 
+			count		=> $count } );
 
 	oils_event_die($resp);
 	printl("Successfully created " . scalar(@$resp) . " in house \n".

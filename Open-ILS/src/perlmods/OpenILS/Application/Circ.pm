@@ -193,7 +193,7 @@ __PACKAGE__->register_method(
 	signature	=>	q/
 		Creates an in-house use action.
 		@param $authtoken The login session key
-		@param params A named list of params including
+		@param params A hash of params including
 			'location' The org unit id where the in-house use occurs
 			'copyid' The copy in question
 			'count' The number of in-house uses to apply to this copy
@@ -202,12 +202,12 @@ __PACKAGE__->register_method(
 	/);
 
 sub create_in_house_use {
-	my( $self, $client, $authtoken, %params ) = @_;
+	my( $self, $client, $authtoken, $params ) = @_;
 
 	my( $staff, $evt, $copy );
-	my $org		= $params{location};
-	my $copyid	= $params{copyid};
-	my $count	= $params{count} || 1;
+	my $org		= $params->{location};
+	my $copyid	= $params->{copyid};
+	my $count	= $params->{count} || 1;
 
 	($staff, $evt) = $U->checkses($authtoken);
 	return $evt if $evt;

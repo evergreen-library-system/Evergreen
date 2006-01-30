@@ -292,7 +292,7 @@ __PACKAGE__->register_method(
 	notes		=> q/
 		Determines if the given checkout can occur
 		@param authtoken The login session key
-		@param params A trailing list of named params including 
+		@param params A trailing hash of named params including 
 			barcode : The copy barcode, 
 			patron : The patron the checkout is occurring for, 
 			renew : true or false - whether or not this is a renewal
@@ -301,18 +301,18 @@ __PACKAGE__->register_method(
 	/);
 
 sub permit_circ {
-	my( $self, $client, $authtoken, %params ) = @_;
+	my( $self, $client, $authtoken, $params ) = @_;
 
 	my ( $requestor, $patron, $ctx, $evt );
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
 		$apputils->checkses_requestor( 
-		$authtoken, $params{patron}, 'VIEW_PERMIT_CHECKOUT' );
+		$authtoken, $params->{patron}, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
 
 	# fetch and build the circulation environment
-	( $ctx, $evt ) = create_circ_ctx( %params, 
+	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
 		type								=> 'permit',
 		fetch_patron_circ_summary	=> 1,
@@ -362,7 +362,7 @@ __PACKAGE__->register_method(
 	notes => q/
 		Checks out an item
 		@param authtoken The login session key
-		@param params A named list of params including:
+		@param params A named hash of params including:
 			copy			The copy object
 			barcode		If no copy is provided, the copy is retrieved via barcode
 			copyid		If no copy or barcode is provide, the copy id will be use
@@ -375,20 +375,20 @@ __PACKAGE__->register_method(
 	/);
 
 sub checkout {
-	my( $self, $client, $authtoken, %params ) = @_;
+	my( $self, $client, $authtoken, $params ) = @_;
 
 	my ( $requestor, $patron, $ctx, $evt );
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
 		$apputils->checkses_requestor( 
-			$authtoken, $params{patron}, 'COPY_CHECKOUT' );
+			$authtoken, $params->{patron}, 'COPY_CHECKOUT' );
 	return $evt if $evt;
 
-	return _checkout_noncat( $requestor, $patron, %params ) if $params{noncat};
+	return _checkout_noncat( $requestor, $patron, %$params ) if $params->{noncat};
 
 	# fetch and build the circulation environment
-	( $ctx, $evt ) = create_circ_ctx( %params, 
+	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
 		type								=> 'checkout',
 		fetch_patron_circ_summary	=> 1,
@@ -440,7 +440,7 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub checkin {
-	my( $self, $client, $authtoken, %params ) = @_;
+	my( $self, $client, $authtoken, $params ) = @_;
 	my $barcode		= $params{barcode};
 }
 
@@ -458,7 +458,7 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub renew {
-	my( $self, $client, $authtoken, %params ) = @_;
+	my( $self, $client, $authtoken, $params ) = @_;
 	my $circ	= $params{circ};
 }
 

@@ -41,8 +41,8 @@ if( status != 'available' && status != 'on holds shelf' )
 	return result.event = 'COPY_NOT_AVAILABLE';
 
 var holds = copy.fetchHold();
-for( my i in holds ) {
-	my hold = holds[i];
+for( var i in holds ) {
+	var hold = holds[i];
 	if( hold && hold.usr != patron.id )
 		return result.event = 'COPY_NEEDED_FOR_HOLD';
 }
