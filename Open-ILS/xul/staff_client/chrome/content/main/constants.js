@@ -47,9 +47,8 @@ var api = {
 }
 
 var urls = {
-	'opac' : 'http://dev.gapines.org/opac/en-US/skin/default/xml/advanced.xml',
-	'browser' : 'http://dev.gapines.org/opac/en-US/skin/default/xml/advanced.xml',
-	'REMOTE' : 'http://dev.gapines.org/',
+	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
+	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
 	'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
 	'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
