@@ -206,6 +206,18 @@ function runInstall {
 				fi;
 				;;
 
+			"openils_client_xul" )
+				if building; then
+					$MAKE -C "$OPENILSDIR" "client-xul";
+				fi;
+				;;
+
+			"openils_server_xul" )
+				if installing; then
+					$MAKE -C "$OPENILSDIR" "server-xul";
+				fi;
+				;;
+
 			# Evergreen --- 			
 
 			"evergreen_core" )
