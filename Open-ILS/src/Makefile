@@ -6,13 +6,13 @@ export CFLAGS			= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEAD
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
 
-export STAFF_CLIENT_BUILD_ID = `/bin/date +"%Y%m%d.%H%M%S"`
+export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
-all: mod_xmlbuilder mod_ils_rest_gateway c_apps 
+all: mod_xmlbuilder mod_ils_rest_gateway c_apps client-xul
 
-install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install
+install:	perl-install web-install server-xul string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install 
 
-web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  server-xul client-xul
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install 
 
 circ_rules-install:
 	@echo $@
@@ -39,31 +39,20 @@ mod_xmlbuilder-install:
 	@echo $@
 	make -C apachemods mod_xmlbuilder-install
 
+client-xul:
+	@echo $@
+	@echo "Building staff client"
+	make -C ../xul/staff_client 
+
 server-xul:
 	@echo $@
 	mkdir -p ${WEBDIR}
-	echo "Creating ${WEBDIR}/xul/"
+	@echo "Creating ${WEBDIR}/xul/"
 	mkdir -p ${WEBDIR}/xul/
-	echo "Creating placeholder for HEAD at ${WEBDIR}/xul/HEAD/"
-	mkdir -p ${WEBDIR}/xul/HEAD/
-	echo "Copying xul into ${WEBDIR}/xul/ORIGINAL/"
-	mkdir -p ${WEBDIR}/xul/ORIGINAL/
-	cp -R ../xul/staff_client/server ${WEBDIR}/xul/ORIGINAL/
-	rm -f ${WEBDIR}/xul/ORIGINAL/server/util
-	rm -f ${WEBDIR}/xul/ORIGINAL/server/main/constants.js
-	rm -f ${WEBDIR}/xul/ORIGINAL/server/OpenILS/data.js
-	cp -R ../xul/staff_client/chrome/content/util/ ${WEBDIR}/xul/ORIGINAL/server/
-	cp ../xul/staff_client/chrome/content/main/constants.js ${WEBDIR}/xul/ORIGINAL/server/main/constants.js
-	cp ../xul/staff_client/chrome/content/OpenILS/data.js ${WEBDIR}/xul/ORIGINAL/server/OpenILS/data.js
-	echo "Linking server/ to ORIGINAL/server/ for unversioned staff clients"
-	ln -s ${WEBDIR}/xul/ORIGINAL/server/ ${WEBDIR}/xul/server
-	echo "Linking ORIGINAL to Build ID: " ${STAFF_CLIENT_BUILD_ID}
-	ln -s ${WEBDIR}/xul/ORIGINAL/ ${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}
-
-client-xul:
-	@echo $@
-	echo "Building versioned staff client with Build ID: " ${STAFF_CLIENT_BUILD_ID}
-	make -C ../xul/staff_client 
+	@echo "BUILD_ID = ${STAFF_CLIENT_BUILD_ID}"
+	@echo "Copying xul into ${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}"
+	mkdir -p "${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}"
+	cp -R ../xul/staff_client/build/server "${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}/"
 
 webcore-install:
 	@echo $@
