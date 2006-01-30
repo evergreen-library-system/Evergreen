@@ -6,11 +6,13 @@ export CFLAGS			= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEAD
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
 
+export STAFF_CLIENT_BUILD_ID = `/bin/date +"%Y%m%d.%H%M%S"`
+
 all: mod_xmlbuilder mod_ils_rest_gateway c_apps 
 
 install:	perl-install web-install string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install
 
-web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  server-xul
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  server-xul client-xul
 
 circ_rules-install:
 	@echo $@
@@ -39,10 +41,29 @@ mod_xmlbuilder-install:
 
 server-xul:
 	@echo $@
-	echo "Copying xul into ${WEBDIR}"
 	mkdir -p ${WEBDIR}
+	echo "Creating ${WEBDIR}/xul/"
 	mkdir -p ${WEBDIR}/xul/
-	cp -R ../xul/staff_client/* ${WEBDIR}/xul/
+	echo "Creating placeholder for HEAD at ${WEBDIR}/xul/HEAD/"
+	mkdir -p ${WEBDIR}/xul/HEAD/
+	echo "Copying xul into ${WEBDIR}/xul/ORIGINAL/"
+	mkdir -p ${WEBDIR}/xul/ORIGINAL/
+	cp -R ../xul/staff_client/server ${WEBDIR}/xul/ORIGINAL/
+	rm -f ${WEBDIR}/xul/ORIGINAL/server/util
+	rm -f ${WEBDIR}/xul/ORIGINAL/server/main/constants.js
+	rm -f ${WEBDIR}/xul/ORIGINAL/server/OpenILS/data.js
+	cp -R ../xul/staff_client/chrome/content/util/ ${WEBDIR}/xul/ORIGINAL/server/
+	cp ../xul/staff_client/chrome/content/main/constants.js ${WEBDIR}/xul/ORIGINAL/server/main/constants.js
+	cp ../xul/staff_client/chrome/content/OpenILS/data.js ${WEBDIR}/xul/ORIGINAL/server/OpenILS/data.js
+	echo "Linking server/ to ORIGINAL/server/ for unversioned staff clients"
+	ln -s ${WEBDIR}/xul/ORIGINAL/server/ ${WEBDIR}/xul/server
+	echo "Linking ORIGINAL to Build ID: " ${STAFF_CLIENT_BUILD_ID}
+	ln -s ${WEBDIR}/xul/ORIGINAL/ ${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}
+
+client-xul:
+	@echo $@
+	echo "Building versioned staff client with Build ID: " ${STAFF_CLIENT_BUILD_ID}
+	make -C ../xul/staff_client 
 
 webcore-install:
 	@echo $@
