@@ -56,7 +56,7 @@ sub do_permit {
 	
 	oils_event_die($resp);
 	my $e = time() - $start;
-	printl("Permit succeeded : duration $e" );
+	printl("Permit (OK): $e" );
 }
 
 sub do_checkout {
@@ -79,14 +79,10 @@ sub do_checkout {
 	my $d = $finish - $start_checkout;
 	my $dd = $finish - $start;
 
-	printl("Checkout took $d"); 
-	printl("Total process took $dd");
+	printl("Checkout: $d"); 
+	printl("Total: $dd");
 	printl("Title: " . $resp->{payload}->{record}->title );
 	printl("Copy: " . $resp->{payload}->{copy}->barcode );
-
-	printl("");
-	#debug($resp);
-
 }
 
 
