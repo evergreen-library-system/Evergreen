@@ -12,13 +12,13 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 
 	if(!__osrfAppHash) __osrfAppHash = osrfNewHash();
 
-	osrfLogInfo("Registering application %s with file %s", appName, soFile );
+	osrfLogInfo( OSRF_LOG_MARK, "Registering application %s with file %s", appName, soFile );
 
 	osrfApplication* app = safe_malloc(sizeof(osrfApplication));
 	app->handle = dlopen (soFile, RTLD_NOW);
 
 	if(!app->handle) {
-		osrfLogWarning("Failed to dlopen library file %s: %s", soFile, dlerror() );
+		osrfLogWarning( OSRF_LOG_MARK, "Failed to dlopen library file %s: %s", soFile, dlerror() );
 		dlerror(); /* clear the error */
 		free(app);
 		return -1;
@@ -32,14 +32,14 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 	*(void **) (&init) = dlsym(app->handle, "osrfAppInitialize");
 
 	if( (error = dlerror()) != NULL ) {
-		osrfLogWarning("! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
+		osrfLogWarning( OSRF_LOG_MARK, "! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
 
 	} else {
 
 		/* run the method */
 		int ret;
 		if( (ret = (*init)()) ) {
-			osrfLogWarning("Application %s returned non-zero value from "
+			osrfLogWarning( OSRF_LOG_MARK, "Application %s returned non-zero value from "
 					"'osrfAppInitialize', not registering...", appName );
 			//free(app->name); /* need a method to remove an application from the list */
 			//free(app);
@@ -49,7 +49,7 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 
 	__osrfAppRegisterSysMethods(appName);
 
-	osrfLogInfo("Application %s registered successfully", appName );
+	osrfLogInfo( OSRF_LOG_MARK, "Application %s registered successfully", appName );
 
 	osrfLogSetAppname(appName);
 
@@ -64,11 +64,11 @@ int osrfAppRegisterMethod( char* appName, char* methodName,
 
 	osrfApplication* app = _osrfAppFindApplication(appName);
 	if(!app) {
-		osrfLogWarning("Unable to locate application %s", appName );
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to locate application %s", appName );
 		return -1;
 	}
 
-	osrfLogDebug("Registering method %s for app %s", methodName, appName );
+	osrfLogDebug( OSRF_LOG_MARK, "Registering method %s for app %s", methodName, appName );
 
 	osrfMethod* method = _osrfAppBuildMethod(
 		methodName, symbolName, notes, argc, options );		
@@ -168,7 +168,7 @@ int osrfAppRunMethod( char* appName, char* methodName,
 	/* this is the method we're gonna run */
 	int (*meth) (osrfMethodContext*);	
 
-	osrfLogInfo("Running method [%s] for app [%s] with request id %d and "
+	osrfLogInfo( OSRF_LOG_MARK, "Running method [%s] for app [%s] with request id %d and "
 			"thread trace %s", methodName, appName, reqId, ses->session_id );
 
 	if( !(app = _osrfAppFindApplication(appName)) )
@@ -228,7 +228,7 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 	if(!(ctx && ctx->method)) return -1;
 
 	if( ctx->method->options & OSRF_METHOD_ATOMIC ) {
-		osrfLogDebug(  
+		osrfLogDebug( OSRF_LOG_MARK,   
 			"Adding responses to stash for atomic method %s", ctx->method );
 
 		if( ctx->responses == NULL )												
@@ -256,7 +256,7 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 int __osrfAppPostProcess( osrfMethodContext* ctx, int retcode ) {
 	if(!(ctx && ctx->method)) return -1;
 
-	osrfLogDebug( "Postprocessing method %s with retcode %d",
+	osrfLogDebug( OSRF_LOG_MARK,  "Postprocessing method %s with retcode %d",
 			ctx->method->name, retcode );
 
 	if(ctx->responses) { /* we have cached responses to return (no responses have been sent) */
@@ -280,7 +280,7 @@ int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg,
 	if(!ses) return -1;
 	if(!msg) msg = "";
 	VA_LIST_TO_STRING(msg);
-	osrfLogWarning( "Returning method exception with message: %s", VA_BUF );
+	osrfLogWarning( OSRF_LOG_MARK,  "Returning method exception with message: %s", VA_BUF );
 	osrfAppSessionStatus( ses, OSRF_STATUS_NOTFOUND, "osrfMethodException", request,  VA_BUF );
 	return 0;
 }

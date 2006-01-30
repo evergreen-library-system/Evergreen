@@ -7,7 +7,7 @@
 osrfRouter* __osrfRouter = NULL;
 
 void routerSignalHandler( int signal ) {
-	osrfLogWarning("Received signal [%d], cleaning up...", signal );
+	osrfLogWarning( OSRF_LOG_MARK, "Received signal [%d], cleaning up...", signal );
 	osrfConfigCleanup();
 	osrfRouterFree(__osrfRouter);
 }
@@ -18,7 +18,7 @@ static int __setupRouter( char* config, char* context );
 int main( int argc, char* argv[] ) {
 
 	if( argc < 3 ) {
-		osrfLogError( "Usage: %s <path_to_config_file> <config_context>", argv[0] );
+		osrfLogError( OSRF_LOG_MARK,  "Usage: %s <path_to_config_file> <config_context>", argv[0] );
 		exit(0);
 	}
 
@@ -74,7 +74,7 @@ int __setupRouter( char* config, char* context ) {
 	free(level);
 	free(log_file);
 
-	osrfLogInfo( "Router connecting as: server: %s port: %s "
+	osrfLogInfo(  OSRF_LOG_MARK, "Router connecting as: server: %s port: %s "
 			"user: %s resource: %s", server, port, username, resource );
 
 	int iport = 0;
@@ -87,13 +87,13 @@ int __setupRouter( char* config, char* context ) {
 
 	int i;
 	for( i = 0; i != tservers->size; i++ ) 
-		osrfLogInfo( "Router adding trusted server: %s", osrfStringArrayGetString( tservers, i ) );
+		osrfLogInfo( OSRF_LOG_MARK,  "Router adding trusted server: %s", osrfStringArrayGetString( tservers, i ) );
 
 	for( i = 0; i != tclients->size; i++ ) 
-		osrfLogInfo( "Router adding trusted client: %s", osrfStringArrayGetString( tclients, i ) );
+		osrfLogInfo( OSRF_LOG_MARK,  "Router adding trusted client: %s", osrfStringArrayGetString( tclients, i ) );
 
 	if( tclients->size == 0 || tservers->size == 0 ) {
-		osrfLogError("We need trusted servers and trusted client to run the router...");
+		osrfLogError( OSRF_LOG_MARK, "We need trusted servers and trusted client to run the router...");
 		return -1;
 	}
 

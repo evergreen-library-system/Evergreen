@@ -24,20 +24,20 @@
   This macro verifies methods receive the correct parameters */
 #define _OSRF_METHOD_VERIFY_CONTEXT(d) \
 	if(!d) return -1; \
-	if(!d->session) { osrfLogError( "Session is NULL in app reqeust" ); return -1; }\
-	if(!d->method) { osrfLogError( "Method is NULL in app reqeust" ); return -1; }\
-	if(!d->params) { osrfLogError( "Params is NULL in app reqeust %s", d->method->name ); return -1; }\
+	if(!d->session) { osrfLogError( OSRF_LOG_MARK,  "Session is NULL in app reqeust" ); return -1; }\
+	if(!d->method) { osrfLogError( OSRF_LOG_MARK,  "Method is NULL in app reqeust" ); return -1; }\
+	if(!d->params) { osrfLogError( OSRF_LOG_MARK,  "Params is NULL in app reqeust %s", d->method->name ); return -1; }\
 	if( d->params->type != JSON_ARRAY ) { \
-		osrfLogError( "'params' is not a JSON array for method %s", d->method->name);\
+		osrfLogError( OSRF_LOG_MARK,  "'params' is not a JSON array for method %s", d->method->name);\
 		return -1; }\
-	if( !d->method->name ) { osrfLogError( "Method name is NULL"); return -1; } 
+	if( !d->method->name ) { osrfLogError( OSRF_LOG_MARK,  "Method name is NULL"); return -1; } 
 
 #ifdef OSRF_LOG_PARAMS 
 #define OSRF_METHOD_VERIFY_CONTEXT(d) \
 	_OSRF_METHOD_VERIFY_CONTEXT(d); \
 	char* __j = jsonObjectToJSON(d->params);\
 	if(__j) { \
-		osrfLogInfo( "%s %s - %s", d->session->remote_service, d->method->name, __j);\
+		osrfLogInfo( OSRF_LOG_MARK,  "%s %s - %s", d->session->remote_service, d->method->name, __j);\
 		free(__j); \
 	} 
 #else
@@ -50,8 +50,8 @@
 #define OSRF_METHOD_VERIFY_DESCRIPTION(app, d) \
 	if(!app) return -1; \
 	if(!d) return -1;\
-	if(!d->name) { osrfLogError( "No method name provided in description" ), return -1; } \
-	if(!d->symbol) { osrfLogError( "No method symbol provided in description" ), return -1; } \
+	if(!d->name) { osrfLogError( OSRF_LOG_MARK,  "No method name provided in description" ), return -1; } \
+	if(!d->symbol) { osrfLogError( OSRF_LOG_MARK,  "No method symbol provided in description" ), return -1; } \
 	if(!d->notes) d->notes = ""; \
 	if(!d->paramNotes) d->paramNotes = "";\
 	if(!d->returnNotes) d->returnNotes = "";

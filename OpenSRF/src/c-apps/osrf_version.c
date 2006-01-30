@@ -40,7 +40,7 @@ int osrfVersion( osrfMethodContext* ctx ) {
 	free(json); 
 
 	if( cachedmd5 ) {
-		osrfLogDebug( "Found %s object in cache, returning....", cachedmd5 );
+		osrfLogDebug(OSRF_LOG_MARK,  "Found %s object in cache, returning....", cachedmd5 );
 		jsonObject* resp = jsonNewObject(cachedmd5);
 		osrfAppRespondComplete( ctx, resp  );
 		jsonObjectFree(resp);
@@ -79,7 +79,7 @@ int osrfVersion( osrfMethodContext* ctx ) {
 				osrfAppRespondComplete( ctx, resp );
 				jsonObjectFree(resp);
 				osrfAppSessionFree(ses);
-				osrfLogDebug("Found version string %s, caching and returning...", resultmd5 );
+				osrfLogDebug(OSRF_LOG_MARK, "Found version string %s, caching and returning...", resultmd5 );
 				osrfCachePutString( paramsmd5, resultmd5, OSRF_VERSION_CACHE_TIME );
 				free(resultmd5);
 				free(paramsmd5);

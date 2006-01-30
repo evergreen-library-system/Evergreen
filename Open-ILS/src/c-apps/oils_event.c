@@ -58,7 +58,7 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 	char* code = osrfHashGet( __oilsEventEvents, event->event );
 
 	if(!code) {
-		osrfLogError( "No such event name: %s", event->event );
+		osrfLogError(OSRF_LOG_MARK,  "No such event name: %s", event->event );
 		return NULL;
 	}
 
@@ -79,7 +79,7 @@ void _oilsEventParseEvents() {
 	char* xml = osrf_settings_host_value("/ils_events");
 
 	if(!xml) {
-		osrfLogError("Unable to find ILS Events file: %s", xml);
+		osrfLogError(OSRF_LOG_MARK, "Unable to find ILS Events file: %s", xml);
 		return;
 	}
 
@@ -99,7 +99,7 @@ void _oilsEventParseEvents() {
 					if( code && textcode ) {
 						osrfHashSet( __oilsEventEvents, code, textcode );
 						success = 1;
-						osrfLogDebug("Loading OILS Event: %s => %s", 
+						osrfLogDebug(OSRF_LOG_MARK, "Loading OILS Event: %s => %s", 
 								textcode, osrfHashGet( __oilsEventEvents, textcode) );
 					}
 				}
@@ -108,7 +108,7 @@ void _oilsEventParseEvents() {
 		}
 	}
 
-	if(!success) osrfLogError( " ! Unable to parse events file: %s", xml );
+	if(!success) osrfLogError(OSRF_LOG_MARK,  " ! Unable to parse events file: %s", xml );
 }
 
 

@@ -93,7 +93,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 		md5seed = md5sum(seed);
 		osrfCachePutString( key, md5seed, 30 );
 
-		osrfLogDebug( "oilsAuthInit(): has seed %s and key %s", md5seed, key );
+		osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
 
 		resp = jsonNewObject(md5seed);	
 		osrfAppRespondComplete( ctx, resp );
@@ -160,10 +160,10 @@ int oilsAuthVerifyPassword(
 			"open-ils.auth.authenticate.init must be called first");
 	}
 
-	osrfLogDebug( "oilsAuth retrieved seed from cache: %s", seed );
+	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth retrieved seed from cache: %s", seed );
 	char* maskedPw = md5sum( "%s%s", seed, realPassword );
 	if(!maskedPw) return -1;
-	osrfLogDebug( "oilsAuth generated masked password %s. "
+	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth generated masked password %s. "
 			"Testing against provided password %s", maskedPw, password );
 
 	if( !strcmp( maskedPw, password ) ) ret = 1;
@@ -203,7 +203,7 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 					"/apps/open-ils.auth/app_settings/default_timeout/override" ));
 
 
-		osrfLogInfo("Set default auth timetouts: opac => %d : staff => %d : override => %d",
+		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timetouts: opac => %d : staff => %d : override => %d",
 				__oilsAuthOPACTimeout, __oilsAuthStaffTimeout, __oilsAuthOverrideTimeout );
 	}
 
@@ -223,7 +223,7 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 
 	if(!timeout) {
 		if( orgloc != home_ou ) {
-			osrfLogDebug("Auth timeout not defined for org %d, "
+			osrfLogDebug(OSRF_LOG_MARK, "Auth timeout not defined for org %d, "
 								"trying home_ou %d", orgloc, home_ou );
 			timeout = oilsUtilsFetchOrgSetting( (int) home_ou, setting );
 		}
@@ -249,10 +249,10 @@ oilsEvent* oilsAuthHandleLoginOK(
 		jsonObject* userObj, char* uname, char* type, double orgloc ) { 
 		
 	oilsEvent* response;
-	osrfLogActivity( "User %s successfully logged in", uname );
+	osrfLogActivity(OSRF_LOG_MARK,  "User %s successfully logged in", uname );
 
 	double timeout = oilsAuthGetTimeout( userObj, type, orgloc );
-	osrfLogDebug("Auth session timeout for %s: %lf", uname, timeout );
+	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %lf", uname, timeout );
 
 	char* string = va_list_to_string( 
 			"%d.%d.%s", getpid(), time(NULL), uname ); 
@@ -266,7 +266,7 @@ oilsEvent* oilsAuthHandleLoginOK(
 
 	osrfCachePutObject( authKey, cacheObj, timeout ); 
 	jsonObjectFree(cacheObj);
-	osrfLogInternal("oilsAuthComplete(): Placed user object into cache");
+	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthComplete(): Placed user object into cache");
 	jsonObject* payload = jsonParseString(
 		"{ \"authtoken\": \"%s\", \"authtime\": %lf }", authToken, timeout );
 
@@ -318,7 +318,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	} else {
 		response = oilsNewEvent( OILS_EVENT_AUTH_FAILED );
-		osrfLogInfo( "Login failed for for %s", uname );
+		osrfLogInfo(OSRF_LOG_MARK,  "Login failed for for %s", uname );
 	}
 
 	jsonObjectFree(userObj);
@@ -337,7 +337,7 @@ int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 	jsonObject* resp = NULL;
 
 	if( authToken ) {
-		osrfLogDebug("Removing auth session: %s", authToken );
+		osrfLogDebug(OSRF_LOG_MARK, "Removing auth session: %s", authToken );
 		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); /**/
 		osrfCacheRemove(key);
 		resp = jsonNewObject(authToken); /**/
@@ -358,7 +358,7 @@ oilsEvent*  _oilsAuthResetTimeout( char* authToken ) {
 	oilsEvent* evt = NULL;
 	double timeout;
 
-	osrfLogDebug("Resetting auth timeout for session %s", authToken);
+	osrfLogDebug(OSRF_LOG_MARK, "Resetting auth timeout for session %s", authToken);
 	char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
 	jsonObject* cacheObj = osrfCacheGetObject( key ); 
 
@@ -407,7 +407,7 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 			free(reset);
 		}
 
-		osrfLogDebug("Retrieving auth session: %s", authToken);
+		osrfLogDebug(OSRF_LOG_MARK, "Retrieving auth session: %s", authToken);
 		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
 		cacheObj = osrfCacheGetObject( key ); 
 		if(cacheObj) {

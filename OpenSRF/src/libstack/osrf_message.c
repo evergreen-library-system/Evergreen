@@ -34,7 +34,7 @@ void osrf_message_set_params( osrf_message* msg, jsonObject* o ) {
 	if(!msg || !o) return;
 
 	if(o->type != JSON_ARRAY) {
-		osrfLogWarning("passing non-array to osrf_message_set_params(), fixing...");
+		osrfLogWarning( OSRF_LOG_MARK, "passing non-array to osrf_message_set_params(), fixing...");
 		jsonObject* clone = jsonObjectClone(o);
 		o = jsonNewObject(NULL);
 		jsonObjectPush(o, clone);
@@ -214,7 +214,7 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 	jsonObject* json = jsonParseString(string);
 
 	if(!json) {
-		osrfLogWarning(
+		osrfLogWarning( OSRF_LOG_MARK, 
 			"osrf_message_deserialize() unable to parse data: \n%s\n", string);
 		return 0;
 	}

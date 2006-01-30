@@ -11,7 +11,7 @@ void sig_int( int sig ) {
 int main( int argc, char** argv ) {
 
 	if( argc < 5 ) {
-		osrfLogError( "Usage: %s <username> <host> <resource> <recipient> \n", argv[0] );
+		osrfLogError( OSRF_LOG_MARK, "Usage: %s <username> <host> <resource> <recipient> \n", argv[0] );
 		return 99;
 	}
 
@@ -20,9 +20,9 @@ int main( int argc, char** argv ) {
 
 	// try to connect, allow 15 second connect timeout 
 	if( client_connect( client, argv[1], "jkjkasdf", argv[3], 15, AUTH_DIGEST ) ) 
-		osrfLogInfo("Connected...\n");
+		osrfLogInfo(OSRF_LOG_MARK, "Connected...\n");
 	 else { 
-		osrfLogError( "NOT Connected...\n" ); 
+		osrfLogError( OSRF_LOG_MARK, "NOT Connected...\n" ); 
 		return -1;
 	 }
 	

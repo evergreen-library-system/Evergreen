@@ -26,7 +26,7 @@ transport_message* message_init( char* body,
 			msg->subject	== NULL || msg->recipient			== NULL	||
 			msg->sender		== NULL ) {
 
-		osrfLogError( "message_init(): Out of Memory" );
+		osrfLogError(OSRF_LOG_MARK,  "message_init(): Out of Memory" );
 		return NULL;
 	}
 
@@ -130,7 +130,7 @@ transport_message* new_message_from_xml( const char* msg_xml ) {
 	encoded_body = strdup( (char*) xmlbuf );
 
 	if( encoded_body == NULL ) 
-		osrfLogError("message_to_xml(): Out of Memory");
+		osrfLogError(OSRF_LOG_MARK, "message_to_xml(): Out of Memory");
 
 	xmlFree(xmlbuf);
 	xmlFreeDoc(msg_doc);
@@ -194,7 +194,7 @@ void message_set_router_info( transport_message* msg, char* router_from,
 
 	if( msg->router_from == NULL || msg->router_to == NULL ||
 			msg->router_class == NULL || msg->router_command == NULL ) 
-		osrfLogError( "message_set_router_info(): Out of Memory" );
+		osrfLogError(OSRF_LOG_MARK,  "message_set_router_info(): Out of Memory" );
 
 	return;
 }
@@ -250,7 +250,7 @@ char* message_to_xml( const transport_message* msg ) {
 	xmlKeepBlanksDefault(0);
 
 	if( ! msg ) { 
-		osrfLogWarning( "Passing NULL message to message_to_xml()"); 
+		osrfLogWarning(OSRF_LOG_MARK,  "Passing NULL message to message_to_xml()"); 
 		return 0; 
 	}
 
@@ -313,7 +313,7 @@ char* message_to_xml( const transport_message* msg ) {
 	encoded_body = strdup( (char*) xmlbuf );
 
 	if( encoded_body == NULL ) {
-		osrfLogError("message_to_xml(): Out of Memory");
+		osrfLogError(OSRF_LOG_MARK, "message_to_xml(): Out of Memory");
 		return NULL;
 	}
 

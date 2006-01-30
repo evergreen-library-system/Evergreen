@@ -30,7 +30,7 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 
 	char* cfg = ils_gateway_config_file;
 	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) {
-		osrfLogError("Unable to bootstrap client in gateway...");
+		osrfLogError( OSRF_LOG_MARK, "Unable to bootstrap client in gateway...");
 		return;
 	}
 	fprintf(stderr, "Bootstrapping %d\n", getpid() );
@@ -66,12 +66,12 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	/* verify we are connected */
 	if(!osrf_system_get_transport_client()) {
-		osrfLogError("Bootstrap Failed, no transport client");
+		osrfLogError( OSRF_LOG_MARK, "Bootstrap Failed, no transport client");
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
 	ap_set_content_type(r, "text/plain");
-	osrfLogDebug("Apache request method: %s", r->method );
+	osrfLogDebug( OSRF_LOG_MARK, "Apache request method: %s", r->method );
 
 	/* gather the post args and append them to the url query string */
 	if( !strcmp(r->method,"POST") ) {
@@ -79,7 +79,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		ap_setup_client_block(r,REQUEST_CHUNKED_DECHUNK);
 
 		if(! ap_should_client_block(r)) {
-			osrfLogWarning("No Post Body");
+			osrfLogWarning( OSRF_LOG_MARK, "No Post Body");
 			ap_rputs("null", r);
 			return OK;
 		}
@@ -95,7 +95,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		}
 
 		if( buffer->n_used < 1 ) {
-			osrfLogWarning("No Post Body");
+			osrfLogWarning( OSRF_LOG_MARK, "No Post Body");
 			ap_rputs("null", r);
 			return OK;
 		}
@@ -114,12 +114,12 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	} 
 
 	if( ! arg || strlen(arg) == 0 ) { /* we received no request */
-		osrfLogWarning("No Args");
+		osrfLogWarning( OSRF_LOG_MARK, "No Args");
 		ap_rputs("null", r);
 		return OK;
 	}
 
-	osrfLogDebug("URL: %s", arg );
+	osrfLogDebug( OSRF_LOG_MARK, "URL: %s", arg );
 	ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 0, r, "URL: %s", arg );
 
 	r->allowed |= (AP_METHOD_BIT << M_GET);
@@ -159,17 +159,17 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	fprintf(stderr, "DONE URL KEY: %s %d\n", key, api_level);
 	fflush(stderr);
 
-	osrfLogInfo("\r\nPerforming(%d):  service %s "
+	osrfLogInfo( OSRF_LOG_MARK, "\r\nPerforming(%d):  service %s "
 			"| method %s |", getpid(), service, method );
 
 	int k;
 	for( k = 0; k!= sarray->size; k++ ) {
-		osrfLogInfo( "param %s", string_array_get_string(sarray,k));
+		osrfLogInfo( OSRF_LOG_MARK,  "param %s", string_array_get_string(sarray,k));
 	}
 
 	osrf_app_session* session = osrf_app_client_session_init(service);
 
-	osrfLogDebug("session service: %s", session->remote_service );
+	osrfLogDebug( OSRF_LOG_MARK, "session service: %s", session->remote_service );
 
 	int req_id = osrf_app_session_make_req( session, NULL, method, api_level, sarray );
 	string_array_destroy(sarray);
@@ -189,7 +189,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 				char* s = omsg->status_name ? omsg->status_name : "Unknown Error";
 				char* t = omsg->status_text ? omsg->status_text : "No Error Message";
 				jsonObjectSetKey(response, "debug", jsonNewObject("\n\n%s:\n%s\n", s, t));
-				osrfLogError( "Gateway received error: %s", 
+				osrfLogError( OSRF_LOG_MARK,  "Gateway received error: %s", 
 						jsonObjectGetString(jsonObjectGetKey(response, "debug")));
 				break;
 			}
@@ -201,14 +201,14 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	char* content = jsonObjectToJSON(response);
 	if(content) {
-		osrfLogInfo( "Gateway responding with:  %s", content );
+		osrfLogInfo( OSRF_LOG_MARK,  "Gateway responding with:  %s", content );
 		ap_rputs(content,r);
 		free(content);
 	} 
 	jsonObjectFree(response);
 
 	osrf_app_session_request_finish( session, req_id );
-	osrfLogDebug("gateway processed message successfully");
+	osrfLogDebug( OSRF_LOG_MARK, "gateway processed message successfully");
 
 	osrf_app_session_destroy(session);
 	return OK;

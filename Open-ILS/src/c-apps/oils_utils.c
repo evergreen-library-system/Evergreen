@@ -16,10 +16,10 @@ jsonObject* oilsFMGetObject( jsonObject* object, char* field ) {
 
 int oilsFMSetString( jsonObject* object, char* field, char* string ) {
 	if(!(object && field && string)) return -1;
-	osrfLogInternal("oilsFMSetString(): Collecing position for field %s", field);
+	osrfLogInternal(OSRF_LOG_MARK, "oilsFMSetString(): Collecing position for field %s", field);
 	int pos = fm_ntop(object->classname, field);
 	if( pos > -1 ) {
-		osrfLogInternal("oilsFMSetString(): Setting string "
+		osrfLogInternal(OSRF_LOG_MARK, "oilsFMSetString(): Setting string "
 				"%s at field %s [position %d]", string, field, pos );
 		jsonObjectSetIndex( object, pos, jsonNewObject(string) );
 		return 0;
@@ -67,7 +67,7 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 
 jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params ) {
 	if(!(service && method)) return NULL;
-	osrfLogDebug("oilsUtilsQuickReq(): %s - %s", service, method );
+	osrfLogDebug(OSRF_LOG_MARK, "oilsUtilsQuickReq(): %s - %s", service, method );
 	osrfAppSession* session = osrfAppSessionClientInit( service ); 
 	int reqid = osrfAppSessionMakeRequest( session, params, method, 1, NULL );
 	osrfMessage* omsg = osrfAppSessionRequestRecv( session, reqid, 60 ); 
@@ -102,7 +102,7 @@ char* oilsUtilsFetchOrgSetting( int orgid, char* setting ) {
 	jsonObjectFree(params);
 	char* value = oilsFMGetString( set, "value" );
 	jsonObjectFree(set);
-	osrfLogDebug("Fetched org [%d] setting: %s => %s", orgid, setting, value);
+	osrfLogDebug(OSRF_LOG_MARK, "Fetched org [%d] setting: %s => %s", orgid, setting, value);
 	return value;
 
 }

@@ -62,7 +62,7 @@ int osrfMathRun( osrfMethodContext* ctx ) {
 
 		if( a && b ) {
 
-			osrfLogActivity( "Running opensrf.math %s [ %s : %s ]", 
+			osrfLogActivity( OSRF_LOG_MARK, "Running opensrf.math %s [ %s : %s ]", 
 					ctx->method->name, a, b );
 
 			/* construct a new params object to send to dbmath */

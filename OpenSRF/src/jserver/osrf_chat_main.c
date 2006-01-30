@@ -53,7 +53,7 @@ int main( int argc, char* argv[] ) {
 	osrfChatServer* server = osrfNewChatServer(domain, secret, s2port);
 
 	if( osrfChatServerConnect( server, port, s2port, listenaddr ) != 0 ) {
-		osrfLogError("ChopChop unable to bind to port %d on %s", port, listenaddr);
+		osrfLogError( OSRF_LOG_MARK, "ChopChop unable to bind to port %d on %s", port, listenaddr);
 		return -1;
 	}
 

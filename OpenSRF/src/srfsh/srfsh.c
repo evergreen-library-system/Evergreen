@@ -15,12 +15,10 @@ int main( int argc, char* argv[] ) {
 	memset(fbuf, 0, l);
 	sprintf(fbuf,"%s/.srfsh.xml",home);
 	
-	//osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "srfsh", 
-
 	if(!access(fbuf, R_OK)) {
 		if( ! osrf_system_bootstrap_client(fbuf, "srfsh") ) {
 			fprintf(stderr,"Unable to bootstrap client for requests\n");
-			osrfLogError( "Unable to bootstrap client for requests");
+			osrfLogError( OSRF_LOG_MARK,  "Unable to bootstrap client for requests");
 			return -1;
 		}
 
@@ -33,12 +31,12 @@ int main( int argc, char* argv[] ) {
 		/* for now.. the first arg is used as a script file for processing */
 		int f;
 		if( (f = open(argv[1], O_RDONLY)) == -1 ) {
-			osrfLogError("Unable to open file %s for reading, exiting...", argv[1]);
+			osrfLogError( OSRF_LOG_MARK, "Unable to open file %s for reading, exiting...", argv[1]);
 			return -1;
 		}
 
 		if(dup2(f, STDIN_FILENO) == -1) {
-			osrfLogError("Unable to duplicate STDIN, exiting...");
+			osrfLogError( OSRF_LOG_MARK, "Unable to duplicate STDIN, exiting...");
 			return -1;
 		}
 
@@ -523,7 +521,7 @@ int send_request( char* server,
 	osrf_app_session* session = osrf_app_client_session_init(server);
 
 	if(!osrf_app_session_connect(session)) {
-		osrfLogWarning( "Unable to connect to remote service %s\n", server );
+		osrfLogWarning( OSRF_LOG_MARK,  "Unable to connect to remote service %s\n", server );
 		return 1;
 	}
 

@@ -62,7 +62,7 @@ transport_client* client_init( char* server, int port, char* unix_path, int comp
 
 
 	if(client->session == NULL) {
-		osrfLogError( "client_init(): Out of Memory"); 
+		osrfLogError(OSRF_LOG_MARK,  "client_init(): Out of Memory"); 
 		return NULL;
 	}
 	client->session->message_callback = client_message_handler;
@@ -119,7 +119,7 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 		//	if( ! session_wait( client->session, -1 ) ) {
 			int x;
 			if( (x = session_wait( client->session, -1 )) ) {
-				osrfLogWarning("session_wait returned failure code %d\n", x);
+				osrfLogWarning(OSRF_LOG_MARK, "session_wait returned failure code %d\n", x);
 				return NULL;
 			}
 		}

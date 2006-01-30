@@ -50,7 +50,7 @@ void _osrf_app_request_free( void * req ){
 /** Pushes the given message onto the list of 'responses' to this request */
 void _osrf_app_request_push_queue( osrf_app_request* req, osrf_message* result ){
 	if(req == NULL || result == NULL) return;
-	osrfLogDebug( "App Session pushing request [%d] onto request queue", result->thread_trace );
+	osrfLogDebug( OSRF_LOG_MARK,  "App Session pushing request [%d] onto request queue", result->thread_trace );
 	if(req->result == NULL)
 		req->result = result;
 	else {
@@ -72,7 +72,7 @@ void osrf_app_session_request_finish(
 
 void osrf_app_session_request_reset_timeout( osrf_app_session* session, int req_id ) {
 	if(session == NULL) return;
-	osrfLogDebug("Resetting request timeout %d", req_id );
+	osrfLogDebug( OSRF_LOG_MARK, "Resetting request timeout %d", req_id );
 	osrf_app_request* req = osrfListGetIndex( session->request_queue, req_id );
 	if(req == NULL) return;
 	req->reset_timeout = 1;
@@ -99,13 +99,13 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 
 	while( remaining >= 0 ) {
 		/* tell the session to wait for stuff */
-		osrfLogDebug( "In app_request receive with remaining time [%d]", (int) remaining );
+		osrfLogDebug( OSRF_LOG_MARK,  "In app_request receive with remaining time [%d]", (int) remaining );
 
 		osrf_app_session_queue_wait( req->session, 0 );
 
 		if( req->result != NULL ) { /* if we received anything */
 			/* pop off the first message in the list */
-			osrfLogDebug( "app_request_recv received a message, returning it");
+			osrfLogDebug( OSRF_LOG_MARK,  "app_request_recv received a message, returning it");
 			osrf_message* ret_msg = req->result;
 			osrf_message* tmp_msg = ret_msg->next;
 			req->result = tmp_msg;
@@ -119,7 +119,7 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 
 		if( req->result != NULL ) { /* if we received anything */
 			/* pop off the first message in the list */
-			osrfLogDebug( "app_request_recv received a message, returning it");
+			osrfLogDebug( OSRF_LOG_MARK,  "app_request_recv received a message, returning it");
 			osrf_message* ret_msg = req->result;
 			osrf_message* tmp_msg = ret_msg->next;
 			req->result = tmp_msg;
@@ -131,13 +131,13 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 		if(req->reset_timeout) {
 			remaining = (time_t) timeout;
 			req->reset_timeout = 0;
-			osrfLogDebug("Recevied a timeout reset");
+			osrfLogDebug( OSRF_LOG_MARK, "Recevied a timeout reset");
 		} else {
 			remaining -= (int) (time(NULL) - start);
 		}
 	}
 
-	osrfLogDebug("Returning NULL from app_request_recv after timeout");
+	osrfLogDebug( OSRF_LOG_MARK, "Returning NULL from app_request_recv after timeout");
 	return NULL;
 }
 
@@ -145,7 +145,7 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 int _osrf_app_request_resend( osrf_app_request* req ) {
 	if(req == NULL) return 0;
 	if(!req->complete) {
-		osrfLogDebug( "Resending request [%d]", req->request_id );
+		osrfLogDebug( OSRF_LOG_MARK,  "Resending request [%d]", req->request_id );
 		return _osrf_app_session_send( req->session, req->payload );
 	}
 	return 1;
@@ -185,7 +185,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	session->transport_handle = osrf_system_get_transport_client();
 	if( session->transport_handle == NULL ) {
-		osrfLogWarning("No transport client for service 'client'");
+		osrfLogWarning( OSRF_LOG_MARK, "No transport client for service 'client'");
 		return NULL;
 	}
 
@@ -210,10 +210,10 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	#ifdef ASSUME_STATELESS
 	session->stateless = 1;
-	osrfLogDebug("%s session is stateless", remote_service );
+	osrfLogDebug( OSRF_LOG_MARK, "%s session is stateless", remote_service );
 	#else
 	session->stateless = 0;
-	osrfLogDebug("%s session is NOT stateless", remote_service );
+	osrfLogDebug( OSRF_LOG_MARK, "%s session is NOT stateless", remote_service );
 	#endif
 
 	/* build a chunky, random session id */
@@ -222,7 +222,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 
 	sprintf(id, "%lf.%d%d", get_timestamp_millis(), (int)time(NULL), getpid());
 	session->session_id = strdup(id);
-	osrfLogDebug( "Building a new client session with id [%s] [%s]", 
+	osrfLogDebug( OSRF_LOG_MARK,  "Building a new client session with id [%s] [%s]", 
 			session->remote_service, session->session_id );
 
 	session->thread_trace = 0;
@@ -236,7 +236,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 osrf_app_session* osrf_app_server_session_init( 
 		char* session_id, char* our_app, char* remote_id ) {
 
-	osrfLogInfo("Initing server session with session id %s, service %s,"
+	osrfLogInfo( OSRF_LOG_MARK, "Initing server session with session id %s, service %s,"
 			" and remote_id %s", session_id, our_app, remote_id );
 
 	osrf_app_session* session = osrf_app_session_find_session( session_id );
@@ -246,7 +246,7 @@ osrf_app_session* osrf_app_server_session_init(
 
 	session->transport_handle = osrf_system_get_transport_client();
 	if( session->transport_handle == NULL ) {
-		osrfLogWarning("No transport client for service '%s'", our_app );
+		osrfLogWarning( OSRF_LOG_MARK, "No transport client for service '%s'", our_app );
 		return NULL;
 	}
 
@@ -323,11 +323,11 @@ int osrf_app_session_make_req(
 
 	osrf_app_request* req = _osrf_app_request_init( session, req_msg );
 	if(_osrf_app_session_send( session, req_msg ) ) {
-		osrfLogWarning( "Error sending request message [%d]", session->thread_trace );
+		osrfLogWarning( OSRF_LOG_MARK,  "Error sending request message [%d]", session->thread_trace );
 		return -1;
 	}
 
-	osrfLogDebug( "Pushing [%d] onto requeust queue for session [%s] [%s]",
+	osrfLogDebug( OSRF_LOG_MARK,  "Pushing [%d] onto requeust queue for session [%s] [%s]",
 			req->request_id, session->remote_service, session->session_id );
 	osrfListSet( session->request_queue, req, req->request_id ); 
 	return req->request_id;
@@ -357,7 +357,7 @@ void osrf_app_session_reset_remote( osrf_app_session* session ){
 		return;
 
 	free(session->remote_id);
-	osrfLogDebug( "App Session [%s] [%s] resetting remote id to %s",
+	osrfLogDebug( OSRF_LOG_MARK,  "App Session [%s] [%s] resetting remote id to %s",
 			session->remote_service, session->session_id, session->orig_remote_id );
 
 	session->remote_id = strdup(session->orig_remote_id);
@@ -396,7 +396,7 @@ int osrf_app_session_connect(osrf_app_session* session){
 
 	int timeout = 5; /* XXX CONFIG VALUE */
 
-	osrfLogDebug( "AppSession connecting to %s", session->remote_id );
+	osrfLogDebug( OSRF_LOG_MARK,  "AppSession connecting to %s", session->remote_id );
 
 	/* defaulting to protocol 1 for now */
 	osrf_message* con_msg = osrf_message_init( CONNECT, session->thread_trace, 1 );
@@ -415,7 +415,7 @@ int osrf_app_session_connect(osrf_app_session* session){
 	}
 
 	if(session->state == OSRF_SESSION_CONNECTED)
-		osrfLogDebug(" * Connected Successfully to %s", session->remote_service );
+		osrfLogDebug( OSRF_LOG_MARK, " * Connected Successfully to %s", session->remote_service );
 
 	if(session->state != OSRF_SESSION_CONNECTED)
 		return 0;
@@ -434,13 +434,13 @@ int osrf_app_session_disconnect( osrf_app_session* session){
 		return 1;
 
 	if(session->stateless && session->state != OSRF_SESSION_CONNECTED) {
-		osrfLogDebug(
+		osrfLogDebug( OSRF_LOG_MARK,  
 				"Exiting disconnect on stateless session %s", 
 				session->session_id);
 		return 1;
 	}
 
-	osrfLogDebug( "AppSession disconnecting from %s", session->remote_id );
+	osrfLogDebug(OSRF_LOG_MARK,  "AppSession disconnecting from %s", session->remote_id );
 
 	osrf_message* dis_msg = osrf_message_init( DISCONNECT, session->thread_trace, 1 );
 	session->state = OSRF_SESSION_DISCONNECTED;
@@ -491,7 +491,7 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 		transport_message* t_msg = message_init( 
 				string, "", session->session_id, session->remote_id, NULL );
 	
-		osrfLogDebug("Session [%s] [%s]  sending to %s \nData: %s", 
+		osrfLogDebug(OSRF_LOG_MARK, "Session [%s] [%s]  sending to %s \nData: %s", 
 				session->remote_service, session->session_id, t_msg->recipient, string );
 
 		retval = client_send_message( session->transport_handle, t_msg );
@@ -524,7 +524,7 @@ int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
 int osrf_app_session_queue_wait( osrf_app_session* session, int timeout ){
 	if(session == NULL) return 0;
 	int ret_val = 0;
-	osrfLogDebug( "AppSession in queue_wait with timeout %d", timeout );
+	osrfLogDebug(OSRF_LOG_MARK,  "AppSession in queue_wait with timeout %d", timeout );
 	ret_val = osrf_stack_entry_point(session->transport_handle, timeout);
 	return ret_val;
 }
@@ -540,7 +540,7 @@ void osrfAppSessionFree( osrfAppSession* ses ) {
 void osrf_app_session_destroy( osrf_app_session* session ){
 	if(session == NULL) return;
 
-	osrfLogDebug( "AppSession [%s] [%s] destroying self and deleting requests", 
+	osrfLogDebug(OSRF_LOG_MARK,  "AppSession [%s] [%s] destroying self and deleting requests", 
 			session->remote_service, session->session_id );
 	if(session->type == OSRF_SESSION_CLIENT 
 			&& session->state != OSRF_SESSION_DISCONNECTED ) { /* disconnect if we're a client */

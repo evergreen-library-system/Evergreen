@@ -18,11 +18,13 @@
 #define OSRF_LOG_TYPE_FILE 1
 #define OSRF_LOG_TYPE_SYSLOG 2
 
+#define OSRF_LOG_MARK __FILE__, __LINE__
 
-#define OSRF_LOG_GO(m,l)		\
+
+#define OSRF_LOG_GO(f,li,m,l)		\
 	if(!m) return;					\
 	VA_LIST_TO_STRING(m);		\
-	_osrfLogDetail( l, NULL, -1, NULL, VA_BUF );
+	_osrfLogDetail( l, f, li, VA_BUF );
 	
 
 
@@ -43,26 +45,23 @@ void osrfLogSetAppname( const char* appname );
  * than "level" will not be logged */
 void osrfLogSetLevel( int loglevel );
 /* Log an error message */
-void osrfLogError( const char* msg, ... );
+void osrfLogError( const char* file, int line, const char* msg, ... );
 /* Log a warning message */
-void osrfLogWarning( const char* msg, ... );
+void osrfLogWarning( const char* file, int line, const char* msg, ... );
 /* log an info message */
-void osrfLogInfo( const char* msg, ... );
+void osrfLogInfo( const char* file, int line, const char* msg, ... );
 /* Log a debug message */
-void osrfLogDebug( const char* msg, ... );
+void osrfLogDebug( const char* file, int line, const char* msg, ... );
 /* Log an internal debug message */
-void osrfLogInternal( const char* msg, ... );
+void osrfLogInternal( const char* file, int line, const char* msg, ... );
 /* Log an activity message */
-void osrfLogActivity( const char* msg, ... );
+void osrfLogActivity( const char* file, int line, const char* msg, ... );
 
+/* sets the activity flag */
 void osrfLogSetActivityEnabled( int enabled );
 
-/* Use this for logging detailed message containing the filename, line number
- * and function name in addition to the usual level and message */
-void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, ... );
-
 /** Actually does the logging */
-void _osrfLogDetail( int level, char* filename, int line, char* func, char* msg );
+void _osrfLogDetail( int level, const char* filename, int line, char* msg );
 
 void _osrfLogToFile( char* msg, ... );
 

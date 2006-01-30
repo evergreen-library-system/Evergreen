@@ -14,7 +14,7 @@ int main( int argc, char** argv ) {
 
 
 	if( argc < 5 ) {
-		osrfLogError( "Usage: %s <server> <port> <name> <secret>", argv[0] );
+		osrfLogError(OSRF_LOG_MARK,  "Usage: %s <server> <port> <name> <secret>", argv[0] );
 		return -1;
 	}
 
@@ -23,9 +23,9 @@ int main( int argc, char** argv ) {
 
 	// try to connect, allow 15 second connect timeout 
 	if( client_connect( client, argv[3], argv[4], "", 15, 1 ) ) 
-		osrfLogInfo("Connected...\n");
+		osrfLogInfo(OSRF_LOG_MARK, "Connected...\n");
 	 else  {
-		osrfLogError( "NOT Connected...\n" ); 
+		osrfLogError(OSRF_LOG_MARK,  "NOT Connected...\n" ); 
 		return -1;
 	 }
 	

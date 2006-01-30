@@ -6,7 +6,7 @@ osrfStringArray* osrfNewStringArray(int size) {
 
 string_array* init_string_array(int size) {
 	if(size > STRING_ARRAY_MAX_SIZE)
-		osrfLogError("init_string_array size is too large");
+		osrfLogError( OSRF_LOG_MARK, "init_string_array size is too large");
 
 	string_array* arr = 
 		(string_array*) safe_malloc(sizeof(string_array));
@@ -28,7 +28,7 @@ void string_array_add(string_array* arr, char* str) {
 	arr->size++;
 
 	if( arr->size > STRING_ARRAY_MAX_SIZE ) 
-		osrfLogError("string_array_add size is too large");
+		osrfLogError( OSRF_LOG_MARK, "string_array_add size is too large");
 
 	/* if necessary, double capacity */
 	if(arr->size >= arr->arr_size) {

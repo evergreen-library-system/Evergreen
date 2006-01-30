@@ -41,7 +41,7 @@ transport_session* init_transport(  char* server,
 			session->router_class_buffer == NULL || session->router_command_buffer == NULL ||
 			session->session_id == NULL ) { 
 
-		osrfLogError( "init_transport(): buffer_init returned NULL" );
+		osrfLogError(OSRF_LOG_MARK,  "init_transport(): buffer_init returned NULL" );
 		return 0;
 	}
 
@@ -128,7 +128,7 @@ int session_send_msg(
 	if( ! session ) { return -1; }
 
 	if( ! session->state_machine->connected ) {
-		osrfLogWarning("State machine is not connected in send_msg()");
+		osrfLogWarning(OSRF_LOG_MARK, "State machine is not connected in send_msg()");
 		return -1;
 	}
 
@@ -148,7 +148,7 @@ int session_connect( transport_session* session,
 	int size2 = 0;
 
 	if( ! session ) { 
-		osrfLogWarning( "session is null in connect" );
+		osrfLogWarning(OSRF_LOG_MARK,  "session is null in connect" );
 		return 0; 
 	}
 
@@ -187,7 +187,7 @@ int session_connect( transport_session* session,
 
 //		if( ! tcp_send( session->sock_obj, stanza1 ) ) {
 		if( socket_send( session->sock_id, stanza1 ) ) {
-			osrfLogWarning("error sending");
+			osrfLogWarning(OSRF_LOG_MARK, "error sending");
 			return 0;
 		}
 	
@@ -211,7 +211,7 @@ int session_connect( transport_session* session,
 	
 			//if( ! tcp_send( session->sock_obj, stanza2 )  ) {
 			if( socket_send( session->sock_id, stanza2 )  ) {
-				osrfLogWarning("error sending");
+				osrfLogWarning(OSRF_LOG_MARK, "error sending");
 				return 0;
 			}
 		}
@@ -232,7 +232,7 @@ int session_connect( transport_session* session,
 		session->state_machine->connecting = CONNECTING_1;
 		//if( ! tcp_send( session->sock_obj, stanza1 ) ) {
 		if( socket_send( session->sock_id, stanza1 ) ) {
-			osrfLogWarning("error sending");
+			osrfLogWarning(OSRF_LOG_MARK, "error sending");
 			return 0;
 		}
 
@@ -257,7 +257,7 @@ int session_connect( transport_session* session,
 			if( session->state_machine->connecting == CONNECTING_2 ) {
 				//if( ! tcp_send( session->sock_obj, stanza2 )  ) {
 				if( socket_send( session->sock_id, stanza2 )  ) {
-					osrfLogWarning("error sending");
+					osrfLogWarning(OSRF_LOG_MARK, "error sending");
 					return 0;
 				}
 			}
@@ -285,7 +285,7 @@ int session_connect( transport_session* session,
 			if( session->state_machine->connecting == CONNECTING_2 ) {
 				//if( ! tcp_send( session->sock_obj, stanza2 )  ) {
 				if( socket_send( session->sock_id, stanza2 )  ) {
-					osrfLogWarning("error sending");
+					osrfLogWarning(OSRF_LOG_MARK, "error sending");
 					return 0;
 				}
 			}
@@ -374,7 +374,7 @@ void startElementHandler(
 
 	if( strcmp( name, "stream:error" ) == 0 ) {
 		ses->state_machine->in_error = 1;
-		osrfLogWarning( "Received <stream:error> message from Jabber server" );
+		osrfLogWarning(  OSRF_LOG_MARK, "Received <stream:error> message from Jabber server" );
 		return;
 	}
 
@@ -398,7 +398,7 @@ void startElementHandler(
 		ses->state_machine->in_message_error = 1;
 		buffer_add( ses->message_error_type, get_xml_attr( atts, "type" ) );
 		ses->message_error_code = atoi( get_xml_attr( atts, "code" ) );
-		osrfLogInfo( "Received <error> message with type %s and code %s", 
+		osrfLogInfo( OSRF_LOG_MARK,  "Received <error> message with type %s and code %s", 
 			get_xml_attr( atts, "type"), get_xml_attr( atts, "code") );
 		return;
 	}
@@ -414,7 +414,7 @@ void startElementHandler(
 		}
 
 		if( strcmp( get_xml_attr(atts, "type"), "error") == 0 ) {
-			osrfLogWarning( "Error connecting to jabber" );
+			osrfLogWarning( OSRF_LOG_MARK,  "Error connecting to jabber" );
 			return;
 		}
 	}
@@ -496,8 +496,8 @@ void endElementHandler( void *session, const xmlChar *name) {
 	if( strcmp( name, "iq" ) == 0 ) {
 		ses->state_machine->in_iq = 0;
 		if( ses->message_error_code > 0 ) {
-			osrfLogWarning( "Error in IQ packet: code %d",  ses->message_error_code );
-			osrfLogWarning( "Error 401 means not authorized" );
+			osrfLogWarning( OSRF_LOG_MARK,  "Error in IQ packet: code %d",  ses->message_error_code );
+			osrfLogWarning( OSRF_LOG_MARK,  "Error 401 means not authorized" );
 		}
 		reset_session_buffers( session );
 		return;
@@ -585,7 +585,7 @@ void characterHandler(
 
 	if( ses->state_machine->in_error ) {
 		/* for now... */
-		osrfLogWarning( "ERROR Xml fragment: %s\n", ch );
+		osrfLogWarning( OSRF_LOG_MARK,  "ERROR Xml fragment: %s\n", ch );
 	}
 
 }

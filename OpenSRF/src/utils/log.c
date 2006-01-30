@@ -59,34 +59,27 @@ void osrfLogSetLevel( int loglevel ) {
 	__osrfLogLevel = loglevel;
 }
 
-void osrfLogError( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_ERROR); }
-void osrfLogWarning( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_WARNING); }
-void osrfLogInfo( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_INFO); }
-void osrfLogDebug( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_DEBUG); }
-void osrfLogInternal( const char* msg, ... ) { OSRF_LOG_GO(msg, OSRF_LOG_INTERNAL); }
-void osrfLogActivity( const char* msg, ... ) { 
-	OSRF_LOG_GO(msg, OSRF_LOG_ACTIVITY); 
-	/* activity log entries are also logged as info intries */
-	osrfLogDetail( OSRF_LOG_INFO, NULL, -1, NULL, VA_BUF );
+void osrfLogError( const char* file, int line, const char* msg, ... ) 
+	{ OSRF_LOG_GO(file, line, msg, OSRF_LOG_ERROR); }
+void osrfLogWarning( const char* file, int line, const char* msg, ... ) 
+	{ OSRF_LOG_GO(file, line, msg, OSRF_LOG_WARNING); }
+void osrfLogInfo( const char* file, int line, const char* msg, ... ) 
+	{ OSRF_LOG_GO(file, line, msg, OSRF_LOG_INFO); }
+void osrfLogDebug( const char* file, int line, const char* msg, ... ) 
+	{ OSRF_LOG_GO(file, line, msg, OSRF_LOG_DEBUG); }
+void osrfLogInternal( const char* file, int line, const char* msg, ... ) 
+	{ OSRF_LOG_GO(file, line, msg, OSRF_LOG_INTERNAL); }
+void osrfLogActivity( const char* file, int line, const char* msg, ... ) { 
+	OSRF_LOG_GO(file, line, msg, OSRF_LOG_ACTIVITY); 
+	_osrfLogDetail( OSRF_LOG_INFO, file, line, VA_BUF ); /* also log at info level */
 }
 
-void osrfLogDetail( int level, char* filename, int line, char* func, char* msg, ... ) {
-	if(!msg) return;
-	VA_LIST_TO_STRING(msg);
-	_osrfLogDetail( level, filename, line, func, VA_BUF );
-}
-
-void _osrfLogDetail( int level, char* filename, int line, char* func, char* msg ) {
+void _osrfLogDetail( int level, const char* filename, int line, char* msg ) {
 
 	if( level == OSRF_LOG_ACTIVITY && ! __osrfLogActivityEnabled ) return;
 	if( level > __osrfLogLevel ) return;
 	if(!msg) return;
 	if(!filename) filename = "";
-	if(!func) func = "";
-
-	char lb[12];
-	bzero(lb,12);
-	if(line >= 0) snprintf(lb,12,"%d", line);
 
 	char* l = "INFO";		/* level name */
 	int lvl = LOG_INFO;	/* syslog level */
@@ -126,10 +119,10 @@ void _osrfLogDetail( int level, char* filename, int line, char* func, char* msg 
 	}
 
 	if(__osrfLogType == OSRF_LOG_TYPE_SYSLOG )
-		syslog( fac | lvl, "[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, msg );
+		syslog( fac | lvl, "[%s:%d:%s:%d] %s", l, getpid(), filename, line, msg );
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
-		_osrfLogToFile("[%s:%d:%s:%s:%s] %s", l, getpid(), filename, lb, func, msg );
+		_osrfLogToFile("[%s:%d:%s:%d] %s", l, getpid(), filename, line, msg );
 
 }
 
@@ -149,7 +142,7 @@ void _osrfLogToFile( char* msg, ... ) {
 	bzero(datebuf,36);
 	time_t t = time(NULL);
 	struct tm* tms = localtime(&t);
-	strftime(datebuf, 36, "%Y-%m-%d %h:%m:%s", tms);
+	strftime(datebuf, 36, "%Y-%m-%d %H:%M:%S", tms);
 
 	FILE* file = fopen(__osrfLogFile, "a");
 	if(!file) {
@@ -159,7 +152,7 @@ void _osrfLogToFile( char* msg, ... ) {
 
 	fprintf(file, "%s %s %s\n", __osrfLogAppname, datebuf, VA_BUF );
 	if( fclose(file) != 0 ) 
-		osrfLogWarning("Error closing log file: %s", strerror(errno));
+		osrfLogWarning(OSRF_LOG_MARK, "Error closing log file: %s", strerror(errno));
 	
 }
 
