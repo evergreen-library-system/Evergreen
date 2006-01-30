@@ -1,0 +1,27 @@
+
+function go() {
+
+/* load the lib script */
+load_lib('circ_lib.js');
+
+/* collect some useful variables */
+var copy					= environment.copy;
+var patron				= environment.patron;
+var patronStanding	= patron.standing.value.toLowerCase();
+var patronProfile		= patron.profile.name.toLowerCase();
+var copyStatus			= copy.status.name.toLowerCase();
+var patronItemsOut	= environment.patronItemsOut;
+var patronFines		= environment.patronFines;
+var isRenewal			= environment.isRenewal;
+
+/** 
+Set some sane defaults.  Valid values for result.recurringFinesLevel
+are low, nornal, and high
+*/
+result.recurringFinesRule = "books";
+result.recurringFinesLevel = 'normal';
+
+
+return;
+
+} go();

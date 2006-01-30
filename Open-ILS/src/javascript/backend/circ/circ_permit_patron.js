@@ -5,34 +5,34 @@ load_lib('circ_lib.js');
 
 
 /* collect some useful variables */
-var patron		= environment.patron;
-var standing	= patron.standing.value.toLowerCase();
-var profile		= patron.profile.name.toLowerCase();
-var itemsOut	= environment.patronItemsOut;
-var fines		= environment.patronFines;
-var isRenewal	= environment.isRenewal;
+var patron				= environment.patron;
+var patronStanding	= patron.standing.value.toLowerCase();
+var patronProfile		= patron.profile.name.toLowerCase();
+var patronItemsOut	= environment.patronItemsOut;
+var patronFines		= environment.patronFines;
+var isRenewal			= environment.isRenewal;
 
 
 log_debug('circ_permit_patron: permit circ on ' +
 	', Patron:'					+ patron.id +
 	', Patron Username:'		+ patron.usrname +
-	', Patron Profile: '		+ patron.profile.name +
-	', Patron Standing: '	+ patron.standing.value +
-	', Patron copies: '		+ itemsOut +
+	', Patron Profile: '		+ patronProfile +
+	', Patron Standing: '	+ patronStanding +
+	', Patron copies: '		+ patronItemsOut +
 	', Patron Library: '		+ patron.home_ou.name +
-	', Patron fines: '		+ fines +
+	', Patron fines: '		+ patronFines +
 	', Is Renewal: '			+ ( (isRenewal) ? "yes" : "no" ) +
 	'');
 
 
 
-if( standing != 'good' ) 
+if( patronStanding != 'good' ) 
 	return result.event = 'PATRON_BAD_STANDING';
 
-if( profile == 'patrons' && itemsOut > 10 )
+if( patronProfile == 'patrons' && patronItemsOut > 10 )
 	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
 
-if( profile == 'staff' && itemsOut > 30 )
+if( patronProfile == 'staff' && patronItemsOut > 30 )
 	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
 
 
