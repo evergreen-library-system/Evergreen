@@ -73,7 +73,7 @@ sub application_implementation {
 
 	if (defined $app) {
 		$_app = $app;
-		eval "use $_app;";
+		$_app->use;
 		if( $@ ) {
 			$log->error( "Error loading application_implementation: $app -> $@", ERROR);
 		}

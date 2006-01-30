@@ -22,7 +22,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::EX;
 use OpenSRF::Utils::Logger qw(:level); 
 
-use Template qw(:template);
+use Template;
 use Template::Stash; 
 
 use Time::HiRes qw(time);

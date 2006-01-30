@@ -1,6 +1,6 @@
 package OpenILS::EX;
 use strict; use warnings;
-use Template qw(:template);
+use Template;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
 

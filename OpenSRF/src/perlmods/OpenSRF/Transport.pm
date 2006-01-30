@@ -56,7 +56,7 @@ sub message_envelope {
 	my( $class, $envelope ) = @_;
 	if( $envelope ) {
 		$message_envelope = $envelope;
-		eval "use $envelope;";
+		$envelope->use;
 		if( $@ ) {
 			$logger->error( 
 					"Error loading message_envelope: $envelope -> $@", ERROR);

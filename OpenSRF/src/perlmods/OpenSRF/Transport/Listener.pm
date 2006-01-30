@@ -32,7 +32,7 @@ sub set_listener {
 	my( $class, $listener ) = @_;
 	OpenSRF::Utils::Logger->transport("Loading Listener $listener", INFO );
 	if( $listener ) {
-		eval "use $listener;";
+		$listener->use;
 		if( $@ ) {
 			OpenSRF::Utils::Logger->error(
 					"Unable to set transport listener: $@", ERROR );

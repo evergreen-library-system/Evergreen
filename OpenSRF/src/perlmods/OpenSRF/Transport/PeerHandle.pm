@@ -29,7 +29,7 @@ classes capabilities.
 sub set_peer_client {
 	my( $class, $peer ) = @_;
 	if( $peer ) {
-		eval "use $peer;";
+		$peer->use;
 		if( $@ ) {
 			throw OpenSRF::EX::PANIC ( "Unable to set peer client: $@" );
 		}

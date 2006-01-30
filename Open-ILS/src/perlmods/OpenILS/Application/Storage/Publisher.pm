@@ -338,23 +338,66 @@ sub batch_call {
 	return $insert_total;
 }
 
-eval '
-use OpenILS::Application::Storage::Publisher::actor;
-use OpenILS::Application::Storage::Publisher::action;
-use OpenILS::Application::Storage::Publisher::asset;
-use OpenILS::Application::Storage::Publisher::biblio;
-use OpenILS::Application::Storage::Publisher::config;
-use OpenILS::Application::Storage::Publisher::metabib;
-use OpenILS::Application::Storage::Publisher::authority;
-use OpenILS::Application::Storage::Publisher::money;
-use OpenILS::Application::Storage::Publisher::permission;
-use OpenILS::Application::Storage::Publisher::container;
-';
-
+OpenILS::Application::Storage::Publisher::actor->use;
 if ($@) {
-	$log->debug("ARG! Couldn't load (at least one) class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load (at least one) class Publisher: $@");
+	$log->debug("ARG! Couldn't load actor class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load actor class Publisher: $@");
 }
+
+OpenILS::Application::Storage::Publisher::action->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load action class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load action class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::asset->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load asset class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load asset class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::biblio->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load biblio class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load biblio class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::config->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load config class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load config class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::metabib->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load metabib class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load metabib class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::authority->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load authority class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load authority class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::money->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load money class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load money class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::permission->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load permission class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load permission class Publisher: $@");
+}
+
+OpenILS::Application::Storage::Publisher::container->use;
+if ($@) {
+	$log->debug("ARG! Couldn't load container class Publisher: $@", ERROR);
+	throw OpenSRF::EX::ERROR ("ARG! Couldn't load container class Publisher: $@");
+}
+
 
 
 for my $fmclass ( (Fieldmapper->classes) ) {

@@ -6,7 +6,7 @@ use Apache2 ();
 use Apache2::Log;
 use Apache2::Const -compile => qw(OK REDIRECT :log);
 use APR::Const    -compile => qw(:error SUCCESS);
-use Template qw(:template);
+use Template;
 use Apache2::RequestRec ();
 use Apache2::RequestIO ();
 use CGI ();

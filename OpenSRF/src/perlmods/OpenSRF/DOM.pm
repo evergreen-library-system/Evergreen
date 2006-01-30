@@ -74,7 +74,7 @@ sub upcast {
 
 	my $class = "OpenSRF::DOM::Element::$tag";
 	unless (exists $_loaded_classes{$class}) {
-		eval "use $class;";
+		$class->use;
 		$_loaded_classes{$class} = 1;
 	}
 	if ($@) {

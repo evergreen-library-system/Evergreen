@@ -18,7 +18,7 @@ use JSON;
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::EX qw/:try/;
 
-our $VERSION = undef;
+our $VERSION = 1;
 my $log = 'OpenSRF::Utils::Logger';
 
 sub child_init {

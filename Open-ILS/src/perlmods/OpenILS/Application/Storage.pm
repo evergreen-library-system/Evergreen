@@ -27,7 +27,7 @@ sub initialize {
 
 	$log->debug("Attempting to load $driver ...", DEBUG);
 
-	eval "use $driver;";
+	$driver->use;
 	if ($@) {
 		$log->debug( "Can't load $driver!  :  $@", ERROR );
 		$log->error( "Can't load $driver!  :  $@");
@@ -39,13 +39,13 @@ sub initialize {
 	# Suck in the method publishing modules
 	@OpenILS::Application::Storage::CDBI::ISA = ( $driver );
 
-	eval 'use OpenILS::Application::Storage::Publisher;';
+	OpenILS::Application::Storage::Publisher->use;
 	if ($@) {
 		$log->debug("FAILURE LOADING Publisher!  $@", ERROR);
 		throw OpenILS::EX::PANIC ( "FAILURE LOADING Publisher!  :  $@" );
 	}
-	#eval 'use OpenILS::Application::Storage::WORM;';
-	eval 'use OpenILS::Application::WoRM;';
+
+	OpenILS::Application::WoRM->use;
 	if ($@) {
 		$log->debug("FAILURE LOADING WORM!  $@", ERROR);
 		throw OpenILS::EX::PANIC ( "FAILURE LOADING WoRM!  :  $@" );

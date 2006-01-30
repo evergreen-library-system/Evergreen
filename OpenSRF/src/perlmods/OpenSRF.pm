@@ -1,6 +1,7 @@
 package OpenSRF;
 use strict;
 use Error;
+require UNIVERSAL::require;
 use vars qw/$VERSION $AUTOLOAD/;
 $VERSION = do { my @r=(q$Revision$=~/\d+/g); sprintf "%d."."%02d"x$#r,@r };
 

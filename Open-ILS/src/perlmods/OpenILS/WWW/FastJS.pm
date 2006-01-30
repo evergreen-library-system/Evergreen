@@ -10,7 +10,7 @@ use Apache::RequestIO ();
 use Apache::RequestUtil;
 
 use CGI ();
-use Template qw(:template);
+use Template;
 
 use OpenSRF::EX qw(:try);
 

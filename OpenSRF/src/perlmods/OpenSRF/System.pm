@@ -1,5 +1,6 @@
 package OpenSRF::System;
 use strict; use warnings;
+use OpenSRF;
 use base 'OpenSRF';
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::Transport::Listener;
@@ -192,7 +193,7 @@ sub bootstrap {
 
 	_log( " * Server type: $server_type", INTERNAL );
 
-	eval "use $server_type";
+	$server_type->use;
 
 	if( $@ ) {
 		throw OpenSRF::EX::PANIC ("Cannot set $server_type: $@" );
