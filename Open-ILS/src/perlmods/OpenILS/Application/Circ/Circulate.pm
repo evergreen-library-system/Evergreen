@@ -2,6 +2,7 @@ package OpenILS::Application::Circ::Circulate;
 use base 'OpenSRF::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
+use OpenSRF::Utils;
 use Data::Dumper;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::ScriptRunner;
@@ -9,13 +10,12 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
 $Data::Dumper::Indent = 0;
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 my $holdcode = "OpenILS::Application::Circ::Holds";
 
 my %scripts;			# - circulation script filenames
-
 my $script_libs;		# - any additional script libraries
-my %cache;
-
+my %cache;				# - db objects cache
 my %contexts;			# - Script runner contexts
 
 # ------------------------------------------------------------------------------
@@ -67,12 +67,7 @@ sub create_circ_ctx {
 	my %params = @_;
 
 	my $evt;
-	my $ctx = {};
-
-	$ctx->{type}			= $params{type};
-	$ctx->{renew}			= $params{renew};
-	$ctx->{noncat}			= $params{noncat};
-	$ctx->{noncat_type}	= $params{noncat_type};
+	my $ctx = \%params;
 
 	$evt = _ctx_add_patron_objects($ctx, %params);
 	return $evt if $evt;
@@ -165,6 +160,7 @@ sub _doctor_copy_object {
 	$copy->location( _get_copy_location( 
 		$copy, $ctx->{copy_locations} ) ) if $copy;
 
+	$copy->circ_lib( $U->fetch_org_unit($copy->circ_lib) );
 }
 
 
@@ -209,17 +205,22 @@ sub _get_patron_profile {
 
 sub _get_copy_status {
 	my( $copy, $cstatus ) = @_;
+	my $s = undef;
 	for my $status (@$cstatus) {
-		return $status if( $status->id eq $copy->status ) 
+		$s = $status if( $status->id eq $copy->status ) 
 	}
-	return undef;
+	$logger->debug("Retrieving copy status: " . $s->name) if $s;
+	return $s;
 }
 
 sub _get_copy_location {
 	my( $copy, $locations ) = @_;
+	my $l = undef;
 	for my $loc (@$locations) {
-		return $loc if $loc->id eq $copy->location;
+		$l = $loc if $loc->id eq $copy->location;
 	}
+	$logger->debug("Retrieving copy location: " . $l->name ) if $l;
+	return $l;
 }
 
 
@@ -314,6 +315,7 @@ sub permit_circ {
 	# fetch and build the circulation environment
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
+		requestor						=> $requestor, 
 		type								=> 'permit',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
@@ -377,7 +379,7 @@ __PACKAGE__->register_method(
 sub checkout {
 	my( $self, $client, $authtoken, $params ) = @_;
 
-	my ( $requestor, $patron, $ctx, $evt );
+	my ( $requestor, $patron, $ctx, $evt, $circ );
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
@@ -387,9 +389,13 @@ sub checkout {
 
 	return _checkout_noncat( $requestor, $patron, %$params ) if $params->{noncat};
 
+	my $session = $U->start_db_session();
+
 	# fetch and build the circulation environment
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
+		requestor						=> $requestor, 
+		session							=> $session, 
 		type								=> 'checkout',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
@@ -397,22 +403,203 @@ sub checkout {
 		);
 	return $evt if $evt;
 
-	return _run_checkout_scripts( $ctx );
+	$ctx->{circ_lib} = (defined($params->{circ_lib})) ? 
+		$params->{circ_lib} : $requestor->home_ou;
+
+	$evt = _run_checkout_scripts($ctx);
+	return $evt if $evt;
+
+	_build_checkout_circ_object($ctx);
+
+	$evt = _commit_checkout_circ_object($ctx);
+	return $evt if $evt;
+
+	_update_checkout_copy($ctx);
+
+	$evt = _handle_related_holds($ctx);
+	return $evt if $evt;
+
+	#$U->commit_db_session($session);
+
+	return OpenILS::Event->new('SUCCESS', 
+		payload		=> { 
+			copy		=> $ctx->{copy},
+			circ		=> $ctx->{circ},
+			record	=> $U->record_to_mvr($ctx->{title}),
+		} );
 }
 
 
 sub _run_checkout_scripts {
 	my $ctx = shift;
+	my $evt;
+	my $circ;
 
 	my $runner = $ctx->{runner};
 
-#	$runner->load($scripts{circ_duration});
-#	$runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+	$runner->insert('result.durationLevel');
+	$runner->insert('result.durationRule');
+	$runner->insert('result.recurringFinesRule');
+	$runner->insert('result.recurringFinesLevel');
+	$runner->insert('result.maxFine');
 
-	return OpenILS::Event->new('SUCCESS', 
-		payload => { copy => $ctx->{copy} } );
+	$runner->load($scripts{circ_duration});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+	my $duration = $runner->retrieve('result.durationRule');
+	$logger->debug("Circ duration script yielded a duration rule of: $duration");
+
+	$runner->load($scripts{circ_recurring_fines});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Recurring Fines Script Died: $@");
+	my $recurring = $runner->retrieve('result.recurringFinesRule');
+	$logger->debug("Circ recurring fines script yielded a rule of: $recurring");
+
+	$runner->load($scripts{circ_max_fines});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Max Fine Script Died: $@");
+	my $max_fine = $runner->retrieve('result.maxFine');
+	$logger->debug("Circ max_fine fines script yielded a rule of: $max_fine");
+
+	($duration, $evt) = $U->fetch_circ_duration_by_name($duration);
+	return $evt if $evt;
+	($recurring, $evt) = $U->fetch_recurring_fine_by_name($recurring);
+	return $evt if $evt;
+	($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine);
+	return $evt if $evt;
+
+	$ctx->{duration_level}			= $runner->retrieve('result.durationLevel');
+	$ctx->{recurring_fines_level} = $runner->retrieve('result.recurringFinesLevel');
+	$ctx->{duration_rule}			= $duration;
+	$ctx->{recurring_fines_rule}	= $recurring;
+	$ctx->{max_fine_rule}			= $max_fine;
+
+	return undef;
 }
 
+sub _build_checkout_circ_object {
+	my $ctx = shift;
+
+	my $circ			= new Fieldmapper::action::circulation;
+	my $duration	= $ctx->{duration_rule};
+	my $max			= $ctx->{max_fine_rule};
+	my $recurring	= $ctx->{recurring_fines_rule};
+	my $copy			= $ctx->{copy};
+	my $patron 		= $ctx->{patron};
+	my $dur_level	= $ctx->{duration_level};
+	my $rec_level	= $ctx->{recurring_fines_level};
+
+	$circ->duration( $duration->shrt ) if ($dur_level == 1);
+	$circ->duration( $duration->normal ) if ($dur_level == 2);
+	$circ->duration( $duration->extended ) if ($dur_level == 3);
+
+	$circ->recuring_fine( $recurring->low ) if ($rec_level =~ /low/io);
+	$circ->recuring_fine( $recurring->normal ) if ($rec_level =~ /normal/io);
+	$circ->recuring_fine( $recurring->high ) if ($rec_level =~ /high/io);
+
+	$circ->duration_rule( $duration->name );
+	$circ->recuring_fine_rule( $recurring->name );
+	$circ->max_fine_rule( $max->name );
+	$circ->max_fine( $max->amount );
+
+	$circ->fine_interval($recurring->recurance_interval);
+	$circ->renewal_remaining( $duration->max_renewals );
+	$circ->target_copy( $copy->id );
+	$circ->usr( $patron->id );
+	$circ->circ_lib( $ctx->{circ_lib} );
+
+	if( $ctx->{renew} ) {
+		$circ->opac_renewal(1); # XXX different for different types ?????
+		$circ->clear_id;
+		#$circ->renewal_remaining($numrenews - 1); # XXX
+		$circ->circ_staff($ctx->{patron}->id);
+
+	} else {
+		$circ->circ_staff( $ctx->{requestor}->id );
+	}
+
+	_set_circ_due_date($circ);
+	$ctx->{circ} = $circ;
+}
+
+sub _set_circ_due_date {
+	my $circ = shift;
+
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = 
+		gmtime(OpenSRF::Utils->interval_to_seconds($circ->duration) + int(time()));
+
+	$year += 1900; $mon += 1;
+	my $due_date = sprintf(
+   	'%s-%0.2d-%0.2dT%s:%0.2d:%0.s2-00',
+   	$year, $mon, $mday, $hour, $min, $sec);
+
+	$logger->debug("Checkout setting due date on circ to: $due_date");
+	$circ->due_date($due_date);
+}
+
+# Sets the editor, edit_date, un-fleshes the copy, and updates the copy in the DB
+sub _update_checkout_copy {
+	my $ctx = shift;
+	my $copy = $ctx->{copy};
+
+	$copy->status( $copy->status->id );
+	$copy->editor( $ctx->{requestor}->id );
+	$copy->edit_date( 'now' );
+	$copy->location( $copy->location->id );
+	$copy->circ_lib( $copy->circ_lib->id );
+
+	$logger->debug("Updating editor info on copy in checkout: " . $copy->id );
+	$ctx->{session}->request( 
+		'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
+}
+
+# commits the circ object to the db then fleshes the circ with rules objects
+sub _commit_checkout_circ_object {
+
+	my $ctx = shift;
+	my $circ = $ctx->{circ};
+
+	my $r = $ctx->{session}->request(
+		"open-ils.storage.direct.action.circulation.create", $circ )->gather(1);
+
+	return $U->DB_UPDATE_FAILED($circ) unless $r;
+
+	$logger->debug("Created a new circ object in checkout: $r");
+
+	$circ->id($r);
+	$circ->duration_rule($ctx->{duration_rule});
+	$circ->max_fine_rule($ctx->{max_fine_rule});
+	$circ->recuring_fine_rule($ctx->{recurring_fines_rule});
+
+	return undef;
+}
+
+
+# sees if there are any holds that this copy 
+sub _handle_related_holds {
+
+	my $ctx		= shift;
+	my $copy		= $ctx->{copy};
+	my $patron	= $ctx->{patron};
+	my $holds	= $holdcode->fetch_related_holds($copy->id);
+
+	if(ref($holds) && @$holds) {
+
+		# for now, just sort by id to get what should be the oldest hold
+		$holds = [ sort { $a->id <=> $b->id } @$holds ];
+		$holds = [ grep { $_->usr eq $patron->id } @$holds ];
+
+		if(@$holds) {
+			my $hold = $holds->[0];
+
+			$logger->debug("Related hold found in checkout: " . $hold->id );
+
+			$hold->fulfillment_time('now');
+			my $r = $ctx->{session}->request(
+				"open-ils.storage.direct.action.hold_request.update", $hold )->gather(1);
+			return $U->DB_UPDATE_FAILED( $hold ) unless $r;
+		}
+	}
+
+	return undef;
+}
 
 
 sub _checkout_noncat {
@@ -441,7 +628,6 @@ __PACKAGE__->register_method(
 
 sub checkin {
 	my( $self, $client, $authtoken, $params ) = @_;
-	my $barcode		= $params{barcode};
 }
 
 # ------------------------------------------------------------------------------
@@ -459,7 +645,6 @@ __PACKAGE__->register_method(
 
 sub renew {
 	my( $self, $client, $authtoken, $params ) = @_;
-	my $circ	= $params{circ};
 }
 
 	

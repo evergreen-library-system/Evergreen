@@ -600,6 +600,7 @@ sub fetch_callnumber {
 
 sub fetch_org_unit {
 	my( $self, $id ) = @_;
+	return $id if( ref($id) eq 'Fieldmapper::actor::org_unit' );
 	$logger->debug("Fetching org unit $id");
 	my $evt = undef;
 
@@ -672,5 +673,40 @@ sub DB_UPDATE_FAILED {
 	return OpenILS::Event->new('DATABASE_UPDATE_FAILED', 
 		payload => ($payload) ? $payload : undef ); 
 }
+
+sub fetch_circ_duration_by_name {
+	my( $self, $name ) = @_;
+	my( $dur, $evt );
+	$dur = $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.config.rules.circ_duration.search.name.atomic', $name );
+	$dur = $dur->[0];
+	$evt = OpenILS::Event->new('CIRC_DURATION_NOT_FOUND') unless $dur;
+	return ($dur, $evt);
+}
+
+sub fetch_recurring_fine_by_name {
+	my( $self, $name ) = @_;
+	my( $obj, $evt );
+	$obj = $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.config.rules.recuring_fine.search.name.atomic', $name );
+	$obj = $obj->[0];
+	$evt = OpenILS::Event->new('RECURRING_FINE_NOT_FOUND') unless $obj;
+	return ($obj, $evt);
+}
+
+sub fetch_max_fine_by_name {
+	my( $self, $name ) = @_;
+	my( $obj, $evt );
+	$obj = $self->simplereq(
+		'open-ils.storage', 
+		'open-ils.storage.direct.config.rules.max_fine.search.name.atomic', $name );
+	$obj = $obj->[0];
+	$evt = OpenILS::Event->new('MAX_FINE_NOT_FOUND') unless $obj;
+	return ($obj, $evt);
+}
+
+
 
 1;

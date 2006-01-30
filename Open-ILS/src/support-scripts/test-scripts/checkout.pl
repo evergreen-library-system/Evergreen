@@ -7,6 +7,7 @@
 require '../oils_header.pl';
 use vars qw/ $apputils $memcache $user $authtoken $authtime /;
 use strict; use warnings;
+use Time::HiRes qw/time/;
 
 #----------------------------------------------------------------
 err("\nusage: $0 <config> <oils_login_username> ".
@@ -26,6 +27,8 @@ my $barcode		= shift;
 my $type			= shift || "";
 my $nc_type		= shift;
 
+my $start;
+
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
@@ -41,37 +44,49 @@ go();
 sub do_permit {
 	my( $patronid, $barcode, $noncat ) = @_;
 
-	my $args = { patron => $patronid };
-
-	$args->{barcode} = $barcode;
+	my $args = { patron => $patronid, barcode => $barcode };
 	if($noncat) {
 		$args->{noncat} = 1;
 		$args->{noncat_type} = $nc_type;
 	}
 
+	$start = time();
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.checkout.permit', $authtoken, $args );
 	
 	oils_event_die($resp);
-	printl("Permit succeeded for patron $patronid");
+	my $e = time() - $start;
+	printl("Permit succeeded : duration $e" );
 }
 
 sub do_checkout {
 	my( $patronid, $barcode, $noncat, $nc_type ) = @_;
 
-	my $args = { patron => $patronid };
-	$args->{barcode} = $barcode;
+	my $args = { patron => $patronid, barcode => $barcode };
 	if($noncat) {
 		$args->{noncat} = 1;
 		$args->{noncat_type} = $nc_type;
 	}
 
+	my $start_checkout = time();
 	my $resp = osrf_request(
 		'open-ils.circ', 
 		'open-ils.circ.checkout', $authtoken, $args );
+	my $finish = time();
 
 	oils_event_die($resp);
-	printl("Checkout succeeded");
+
+	my $d = $finish - $start_checkout;
+	my $dd = $finish - $start;
+
+	printl("Checkout took $d"); 
+	printl("Total process took $dd");
+	printl("Title: " . $resp->{payload}->{record}->title );
+	printl("Copy: " . $resp->{payload}->{copy}->barcode );
+
+	printl("");
+	#debug($resp);
+
 }
 
 

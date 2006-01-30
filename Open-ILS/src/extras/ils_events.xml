@@ -126,6 +126,17 @@
 		<desc> The non cataloged type object does not exist </desc>
 	</event>
 
+	<event code='1512' textcode='CIRC_DURATION_NOT_FOUND'>
+		<desc> The circ duration object does not exist </desc>
+	</event>
+
+	<event code='1513' textcode='RECURRING_FINE_NOT_FOUND'>
+		<desc> The recurring fines object does not exist </desc>
+	</event>
+
+	<event code='1514' textcode='MAX_FINE_NOT_FOUND'>
+		<desc> The max fines object does not exist </desc>
+	</event>
 
 
 
