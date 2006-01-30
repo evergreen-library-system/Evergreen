@@ -1,5 +1,7 @@
 # ILS/Open-ILS/xul/staff_client/Makefile
 
+export STAFF_CLIENT_BUILD_ID = `/bin/date +"%Y%m%d.%H%M%S"`
+
 all: build 
 	@echo
 	@echo
@@ -8,21 +10,25 @@ build: build_dir generated open-ils custom stamp
 	@echo
 	@echo 
 	@echo To test the staff client:
-	@echo \tcd build/
-	@echo \txulrunner application.ini
+	@echo "  cd build/"
+	@echo "  xulrunner application.ini"
 
 build_dir:
 	@echo
 	@echo '*********************************************************  Creating and populating build/ '
 	mkdir -p build/
 	cp -R chrome build/
+	cp -R server build/
 	cp application.ini build/
+	cp -R build/chrome/content/util/ build/server/
+	cp build/chrome/content/main/constants.js build/server/main/constants.js
+	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	external/prune_dirs.sh build/
 
 stamp: 
 	@echo
-	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ) ; fi
-	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning" ) ; fi
+	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo "${STAFF_CLIENT_BUILD_ID}" > build/BUILD_ID) ; fi
+	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning"; echo "none" > build/BUILD_ID ) ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then sed -i s/^Version=.\*/Version=${STAFF_CLIENT_BUILD_ID}/ build/application.ini ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then sed -i s/^BuildID=.\*/BuildID=${STAFF_CLIENT_BUILD_ID}/ build/application.ini ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xul' -or -name '*.js' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
