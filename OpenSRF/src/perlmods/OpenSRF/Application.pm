@@ -324,6 +324,7 @@ sub normalize_whitespace {
 
 sub parse_string_signature {
 	my $string = shift;
+	return [] unless $string;
 	my @chunks = split(/\@/so, $string);
 
 	my @params;
@@ -346,6 +347,7 @@ sub parse_string_signature {
 sub parse_array_signature {
 	my $array = shift;
 	my ($d,$p,$r) = @$array;
+	return {} unless ($d or $p or $r);
 
 	return {
 		desc	=> $d,
