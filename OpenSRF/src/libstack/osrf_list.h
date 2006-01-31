@@ -126,5 +126,17 @@ void __osrfListSetSize( osrfList* list );
   */
 unsigned long osrfListGetCount( osrfList* list );
 
+/**
+ * May be used as a default memory freeing call
+ * Just calls free() on list items
+ */
+void osrfListVanillaFree( void* item );
+
+/**
+ * Tells the list to just call 'free()' on each item when
+ * an item or the whole list is destroyed
+ */
+void osrfListSetDefaultFree( osrfList* list );
+
 
 #endif

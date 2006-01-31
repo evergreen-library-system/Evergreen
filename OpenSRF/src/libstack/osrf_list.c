@@ -168,3 +168,11 @@ void osrfListIteratorReset( osrfListIterator* itr ) {
 }
 
 
+void osrfListVanillaFree( void* item ) {
+	free(item);
+}
+
+void osrfListSetDefaultFree( osrfList* list ) {
+	if(!list) return;
+	list->freeItem = osrfListVanillaFree;
+}
