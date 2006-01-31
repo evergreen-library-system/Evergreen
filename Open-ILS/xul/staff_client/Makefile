@@ -1,6 +1,6 @@
 # ILS/Open-ILS/xul/staff_client/Makefile
 
-export STAFF_CLIENT_BUILD_ID = `/bin/date +"%Y%m%d.%H%M%S"`
+export STAFF_CLIENT_BUILD_ID = `/bin/cat build/BUILD_ID`
 
 all: build 
 	@echo
@@ -17,6 +17,7 @@ build_dir:
 	@echo
 	@echo '*********************************************************  Creating and populating build/ '
 	mkdir -p build/
+	/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
 	cp -R chrome build/
 	cp -R server build/
 	cp -R defaults build/
@@ -29,8 +30,8 @@ build_dir:
 
 stamp: 
 	@echo
-	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo "${STAFF_CLIENT_BUILD_ID}" > build/BUILD_ID) ; fi
-	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning"; echo "none" > build/BUILD_ID ) ; fi
+	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ) ; fi
+	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning" ) ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then sed -i s/^Version=.\*/Version=${STAFF_CLIENT_BUILD_ID}/ build/application.ini ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then sed -i s/^BuildID=.\*/BuildID=${STAFF_CLIENT_BUILD_ID}/ build/application.ini ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xul' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
