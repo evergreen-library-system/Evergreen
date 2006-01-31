@@ -35,7 +35,7 @@ util.error.prototype = {
 
 		'D_NONE' : false, 'D_ALL' : false, 'D_ERROR' : true, 'D_DEBUG' : true, 'D_TRACE' :  true,
 		'D_TRACE_ENTER' :  false, 'D_TRACE_EXIT' :  false, 'D_TIMEOUT' :  false, 'D_FILTER' : false,
-		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 'D_DATA' : true,
+		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 'D_DATA' : false,
 
 		'D_CLAM' : false, 'D_PAGED_TREE' : false, 'D_GRID_LIST' : false, 'D_HTML_TABLE' : false,
 		'D_TAB' : false, 'D_LIST' : true,
