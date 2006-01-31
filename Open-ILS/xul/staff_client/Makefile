@@ -6,12 +6,24 @@ all: build
 	@echo
 	@echo
 
-build: build_dir generated open-ils custom stamp
+build: remove_symlinks build_dir add_symlinks generated open-ils custom stamp
 	@echo
 	@echo 
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
+
+remove_symlinks:
+	@echo
+	@echo Removing convenience symlinks from server/ before copying to build/
+	find server/ -type l -exec rm -f {} \;
+
+add_symlinks:
+	@echo
+	@echo Adding convenience symlinks back into server/
+	ln -s ../chrome/content/util server/util
+	ln -s ../../chrome/content/main/constants.js server/main/constants.js
+	ln -s ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
 
 build_dir:
 	@echo
