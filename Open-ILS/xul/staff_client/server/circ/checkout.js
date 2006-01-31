@@ -85,39 +85,43 @@ circ.checkout.prototype = {
 			var permit = obj.network.request(
 				api.CHECKOUT_PERMIT_VIA_BARCODE.app,
 				api.CHECKOUT_PERMIT_VIA_BARCODE.method,
-				[ obj.session, barcode, obj.patron_id, 0 ]
+				[ obj.session, { barcode: barcode, patron: obj.patron_id } ]
 			);
 
-			if (permit.status == 0) {
+			if (permit.ilsevent == 0) {
 				var checkout = obj.network.request(
 					api.CHECKOUT_VIA_BARCODE.app,
 					api.CHECKOUT_VIA_BARCODE.method,
-					[ obj.session, barcode, obj.patron_id ]
+					[ obj.session, { barcode: barcode, patron: obj.patron_id } ]
 				);
-				obj.list.append(
-					{
-						'row' : {
-							'my' : {
-							'circ' : checkout.circ,
-							'mvr' : checkout.record,
-							'acp' : checkout.copy
+				if (checkout.ilsevent == 0) {
+					obj.list.append(
+						{
+							'row' : {
+								'my' : {
+								'circ' : checkout.payload.circ,
+								'mvr' : checkout.payload.record,
+								'acp' : checkout.payload.copy
+								}
 							}
+						//I could override map_row_to_column here
 						}
-					//I could override map_row_to_column here
+					);
+					if (typeof obj.on_checkout == 'function') {
+						obj.on_checkout(checkout.payload);
 					}
-				);
-				if (typeof obj.on_checkout == 'function') {
-					obj.on_checkout(checkout);
-				}
-				if (typeof window.xulG == 'object' && typeof window.xulG.on_checkout == 'function') {
-					obj.error.sdump('D_CIRC','circ.checkout: Calling external .on_checkout()\n');
-					window.xulG.on_checkout(checkout);
+					if (typeof window.xulG == 'object' && typeof window.xulG.on_checkout == 'function') {
+						obj.error.sdump('D_CIRC','circ.checkout: Calling external .on_checkout()\n');
+						window.xulG.on_checkout(checkout.payload);
+					} else {
+						obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
+					}
 				} else {
-					obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
+					throw(checkout);
 				}
 
 			} else {
-				throw(permit.text);
+				throw(permit);
 			}
 		} catch(E) {
 			alert('FIXME: need special alert and error handling\n'
