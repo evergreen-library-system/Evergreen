@@ -6,7 +6,9 @@
 			<tr>
 				<td align='left'>
 					<span> Now searching </span>
+					<b>
 					<span style='padding: 1px; ' id='now_searching_location'>  </span>
+					</b>
 				</td>
 			</tr>
 		</tbody>
