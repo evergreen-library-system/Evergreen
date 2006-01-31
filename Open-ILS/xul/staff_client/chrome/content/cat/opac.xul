@@ -130,6 +130,7 @@
 							}
 						);
 					},
+					'url_prefix' : xulG.url_prefix,
 				};
 				if (opac_url) content_params.url = opac_url;
 				browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);

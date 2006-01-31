@@ -49,7 +49,7 @@
 
 				g.browser.init( 
 					{ 
-						'url' : url,
+						'url' : xulG.url_prefix(url),
 						'session' : session,
 					} 
 				);
