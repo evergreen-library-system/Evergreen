@@ -1,6 +1,6 @@
 <!ENTITY opac.advanced.wizard.title "Advanced Search Wizard">
 <!ENTITY opac.advanced.wizard.contains "Selected field contains the following words">
-<!ENTITY opac.advanced.wizard.nocontains "Selected field does <u>not</u> contains the following words">
+<!ENTITY opac.advanced.wizard.nocontains "Selected field does <u>not</u> contain the following words">
 <!ENTITY opac.advanced.wizard.exact "Selected field contains the <u>exact</u> phrase">
 <!ENTITY opac.advanced.refined.title "Refined Advanced Search">
 <!ENTITY opac.advanced.refined.title_contains "Title contains the following words">
@@ -9,8 +9,8 @@
 <!ENTITY opac.advanced.refined.series_contains "Series contains the following words">
 <!ENTITY opac.advanced.refined.contains "Contains">
 <!ENTITY opac.advanced.refined.nocontains "Does not contain">
-<!ENTITY opac.advanced.refined.exact "Matches">
-<!ENTITY opac.advanced.marc.warning "For Librians">
+<!ENTITY opac.advanced.refined.exact "Matches Exactly">
+<!ENTITY opac.advanced.marc.warning "For Librarians">
 <!ENTITY opac.advanced.marc.title "MARC Advanced Search">
 <!ENTITY opac.advanced.marc.tag "MARC Tag">
 <!ENTITY opac.advanced.marc.ind1 "Indicator 1">
