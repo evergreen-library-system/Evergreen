@@ -39,12 +39,14 @@ if( copy.ref != '0' )
 if( copyStatus != 'available' && copyStatus != 'on holds shelf' )
 	return result.event = 'COPY_NOT_AVAILABLE';
 
+/* example of handling holds 
 var holds = copy.fetchHold();
 for( var i in holds ) {
 	var hold = holds[i];
 	if( hold && hold.usr != patron.id )
 		return result.event = 'COPY_NEEDED_FOR_HOLD';
 }
+*/
 
 
 } go();
