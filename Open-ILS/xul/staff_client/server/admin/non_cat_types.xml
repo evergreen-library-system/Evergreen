@@ -60,7 +60,7 @@
 				</thead>
 				<tbody id='nc_tbody'>
 					<tr id='nc_row_template'>
-						<td name='nc_name'/>
+						<td><b name='nc_name'> </b></td>
 						<td name='nc_owner'/>
 						<td><input name='nc_edit' type='submit' value='Edit' disabled='disabled'/></td>
 						<td><input name='nc_delete' type='submit' value='Delete' disabled='disabled'/></td>
@@ -71,7 +71,7 @@
 
 		<table class='hide_me'> <!-- repository for template rows -->
 			<tbody>
-				<tr id='nc_edit_row_temaplate' edit='1'>
+				<tr id='nc_edit_row_temaplate' class='insert_row' edit='1'>
 					<td colspan='4' align='center'>
 						<span class='padded'>
 							<input name='nc_edit_name' type='text'> </input>
