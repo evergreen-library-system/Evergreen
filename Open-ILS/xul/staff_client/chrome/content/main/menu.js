@@ -97,6 +97,13 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Stat Cat Editor'},{});
 				}
 			],
+			'cmd_non_cat_type_edit' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Non-Cataloged Type Editor'},{});
+				}
+			],
+
 			'cmd_test' : [
 				['oncommand'],
 				function() {

@@ -65,6 +65,7 @@ var urls = {
 	'XUL_MARC_EDIT' : 'chrome://open_ils_staff_client/content/legacy/_marc.xul',
 	'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
 	'XUL_MENU_FRAME' : 'chrome://open_ils_staff_client/content/main/menu_frame.xul',
+	'XUL_NON_CAT_LABEL_EDIT' : '/xul/server/admin/non_cat_types.xml',
 	'XUL_OPAC_WRAPPER' : 'chrome://open_ils_staff_client/content/cat/opac.xul',
 	'XUL_PATRON_BARCODE_ENTRY' : '/xul/server/patron/barcode_entry.xul',
 	'XUL_PATRON_BILLS' : '/xul/server/patron/bills.xul',
