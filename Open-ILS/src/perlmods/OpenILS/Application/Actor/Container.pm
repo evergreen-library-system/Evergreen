@@ -8,6 +8,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 my $logger = "OpenSRF::Utils::Logger";
 
 sub initialize { return 1; }
@@ -113,7 +114,7 @@ sub bucket_flesh_public {
 
 	my $meth = $types{$class};
 	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
-	return undef unless ($bkt and $bkt->public);
+	return undef unless ($bkt and $bkt->pub);
 
 	$bkt->items( $apputils->simplereq( $svc,
 		"$meth"."_item.search.bucket.atomic", $bucket ) );
@@ -255,7 +256,7 @@ sub item_create {
 	my $method = $types{$class} . "_item.create";
 	my $resp = $apputils->simplereq( $svc, $method, $item );
 
-	throw OpenSRF::EX ("Unable to create container item") unless $resp;
+	return $U->DB_UPDATE_FAILED($item) unless $resp;
 	return $resp;
 }
 

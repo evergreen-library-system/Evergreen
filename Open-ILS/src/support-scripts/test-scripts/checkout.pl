@@ -81,8 +81,13 @@ sub do_checkout {
 	my $d = $finish - $start_checkout;
 	my $dd = $finish - $start;
 
-	printl("Checkout OK:\n\ttime =\t$d\n\ttotal time =\t$dd".
-		"\n\ttitle =\t" . $resp->{payload}->{record}->title );
+	printl("Checkout OK:");
+	if(!$noncat) {
+		printl("\ttime = $d");
+		printl("\ttotal time = $dd");
+		printl("\ttitle = " . $resp->{payload}->{record}->title );
+		printl("\tdue_date = " . $resp->{payload}->{circ}->due_date );
+	}
 }
 
 

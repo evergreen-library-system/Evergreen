@@ -16,7 +16,7 @@ var template;
 function bbShow(r) {
 
 	var bb = r.getResultObject();
-	if(!bb || !bb.public()) { unHideMe($('not_found')); return; }
+	if(!bb || !bb.pub()) { unHideMe($('not_found')); return; }
 	$('bb_name').appendChild(text(bb.name()));
 
 	var tbody = $('tbody');

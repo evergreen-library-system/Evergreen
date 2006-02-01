@@ -15,7 +15,7 @@ my $U = "OpenILS::Application::AppUtils";
 sub create_non_cat_circ {
 	my( $staffid, $patronid, $circ_lib, $noncat_type, $circ_time ) = @_;
 
-	my( $id, $evt );
+	my( $id, $nct, $evt );
 	$circ_time |= 'now';
 	my $circ = Fieldmapper::action::non_cataloged_circulation->new;
 
@@ -33,7 +33,8 @@ sub create_non_cat_circ {
 		'open-ils.storage.direct.action.non_cataloged_circulation.create', $circ );
 	$evt = $U->DB_UPDATE_FAILED($circ) unless $id;
 
-	return( $id, $evt );
+	$circ->id($id);
+	return( $circ, $evt );
 }
 
 

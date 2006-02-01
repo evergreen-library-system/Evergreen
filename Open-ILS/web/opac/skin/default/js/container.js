@@ -30,13 +30,13 @@ function containerDelete( id, callback, args ) {
 }
 
 
-function containerCreate( name, public, callback, args ) {
+function containerCreate( name, pub, callback, args ) {
 
 	var container = new cbreb();
 	container.btype('bookbag');
 	container.owner( G.user.id() );
 	container.name( name );
-	if(public) container.public(1);
+	if(pub) container.pub(1);
 
 	var req = new Request( 
 		CREATE_CONTAINER, G.user.session, 'biblio', container );

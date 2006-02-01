@@ -386,7 +386,9 @@ sub _cache_permit_key {
 sub _check_permit_key {
 	my( $key, $cid, $pid, $rid ) = @_;
 	$logger->debug("Fetching circ permit key $key");
-	my $arr = $cache_handle->get_cache("oils_permit_key_$key");
+	my $k = "oils_permit_key_$key";
+	my $arr = $cache_handle->get_cache($k);
+	$cache_handle->delete_cache($k);
 	return 1 if( ref($arr) and @$arr[0] eq $cid and @$arr[1] eq $pid and @$arr[2] eq $rid );
 	return 0;
 }
@@ -427,7 +429,11 @@ sub checkout {
 	if( $params->{noncat} ) {
 		return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
 			unless _check_permit_key( $key, -1, $patron->id, $requestor->id );
-		return _checkout_noncat( $requestor, $patron, %$params )
+
+		( $circ, $evt ) = _checkout_noncat( $requestor, $patron, %$params );
+		return $evt if $evt;
+		return OpenILS::Event->new('SUCCESS', 
+			payload => { noncat_circ => $circ } );
 	}
 
 	my $session = $U->start_db_session();
@@ -564,19 +570,24 @@ sub _build_checkout_circ_object {
 	$ctx->{circ} = $circ;
 }
 
-sub _set_circ_due_date {
-	my $circ = shift;
+sub _create_due_date {
+	my $duration = shift;
 
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = 
-		gmtime(OpenSRF::Utils->interval_to_seconds($circ->duration) + int(time()));
+		gmtime(OpenSRF::Utils->interval_to_seconds($duration) + int(time()));
 
 	$year += 1900; $mon += 1;
 	my $due_date = sprintf(
    	'%s-%0.2d-%0.2dT%s:%0.2d:%0.s2-00',
    	$year, $mon, $mday, $hour, $min, $sec);
+	return $due_date;
+}
 
-	$logger->debug("Checkout setting due date on circ to: $due_date");
-	$circ->due_date($due_date);
+sub _set_circ_due_date {
+	my $circ = shift;
+	my $dd = _create_due_date($circ->duration);
+	$logger->debug("Checkout setting due date on circ to: $dd");
+	$circ->due_date($dd);
 }
 
 # Sets the editor, edit_date, un-fleshes the copy, and updates the copy in the DB
@@ -650,11 +661,8 @@ sub _handle_related_holds {
 sub _checkout_noncat {
 	my ( $requestor, $patron, %params ) = @_;
 	my $circlib = $params{noncat_circ_lib} || $requestor->home_ou;
-	my( $circ, $evt ) = 
-		OpenILS::Application::Circ::NonCat::create_non_cat_circ(
+	return OpenILS::Application::Circ::NonCat::create_non_cat_circ(
 			$requestor->id, $patron->id, $circlib, $params{noncat_type} );
-	return $evt if $evt;
-	return OpenILS::Event->new('SUCCESS');
 }
 
 
