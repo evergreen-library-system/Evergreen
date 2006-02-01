@@ -21,14 +21,17 @@
 </vbox>
 
 <hbox id="checkout_top_ui">
+<!--
 	<label id="checkout_scan_barcode_label" 
 		value="&staff.patron_display.checkout.scan_label;" 
 		accesskey="&staff.patron_display.checkout.scan_label.accesskey;" 
 		control="checkout_barcode_entry_textbox"/>
+-->
+	<hbox id="checkout_menu_placeholder" flex="0"/>
 	<textbox id="checkout_barcode_entry_textbox"/>
 	<button id="checkout_submit_barcode_button" 
 		label="&staff.patron_display.checkout.submit_label;" 
-		command="cmd_checkout_submit_barcode"
+		command="cmd_checkout_submit"
 		accesskey="&staff.patron_display.checkout.submit_label.accesskey;"/>
 </hbox>
 

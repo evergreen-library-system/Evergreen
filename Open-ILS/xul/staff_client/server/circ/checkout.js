@@ -5,7 +5,7 @@ circ.checkout = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
-	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
+	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 }
 
 circ.checkout.prototype = {
@@ -38,11 +38,49 @@ circ.checkout.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'checkout_menu_placeholder' : [
+						['render'],
+						function(e) {
+							return function() {
+								JSAN.use('util.widgets'); JSAN.use('util.functional');
+								var items = [ [ 'Barcode:' , 'barcode' ] ].concat(
+									util.functional.map_list(
+										obj.data.list.cnct,
+										function(o) {
+											return [ o.name(), o.id() ];
+										}
+									)
+								);
+								g.error.sdump('D_TRACE','items = ' + js2JSON(items));
+								util.widgets.remove_children( e );
+								var ml = util.widgets.make_menulist(
+									items
+								);
+								e.appendChild( ml );
+								ml.setAttribute('id','checkout_menulist');
+								ml.addEventListener(
+									'command',
+									function(ev) {
+										var tb = obj.controller.view.checkout_barcode_entry_textbox;
+										if (ev.target.value == 'barcode') {
+											tb.disabled = false;
+											tb.value = '';
+											tb.focus();
+										} else {
+											tb.disabled = true;
+											tb.value = 'Non-Cataloged';
+										}
+									}, false
+								);
+								obj.controller.view.checkout_menu = ml;
+							};
+						},
+					],
 					'checkout_barcode_entry_textbox' : [
 						['keypress'],
 						function(ev) {
 							if (ev.keyCode && ev.keyCode == 13) {
-								obj.checkout();
+								obj.checkout( { barcode: ev.target.value } );
 							}
 						}
 					],
@@ -50,10 +88,18 @@ circ.checkout.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
-					'cmd_checkout_submit_barcode' : [
+					'cmd_checkout_submit' : [
 						['command'],
 						function() {
-							obj.checkout();
+							var params = {};
+							if (obj.controller.view.checkout_menu.value == 'barcode' ||
+								obj.controller.view.checkout_menu.value == '') {
+								params.barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
+							} else {
+								params.noncat = 1;
+								params.noncat_type = obj.controller.view.checkout_menu.value;
+							}
+							obj.checkout( params );
 						}
 					],
 					'cmd_checkout_print' : [
@@ -74,27 +120,50 @@ circ.checkout.prototype = {
 				}
 			}
 		);
+		this.controller.render();
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 
 	},
 
-	'checkout' : function() {
+	'checkout' : function(params) {
+		if (!params) params = {};
 		var obj = this;
 		try {
-			var barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
+
+			params.patron = obj.patron_id;
+
 			var permit = obj.network.request(
-				api.CHECKOUT_PERMIT_VIA_BARCODE.app,
-				api.CHECKOUT_PERMIT_VIA_BARCODE.method,
-				[ obj.session, { barcode: barcode, patron: obj.patron_id } ]
+				api.CHECKOUT_PERMIT.app,
+				api.CHECKOUT_PERMIT.method,
+				[ obj.session, params ]
 			);
 
 			if (permit.ilsevent == 0) {
+
+				params.permit_key = permit.payload;
+
 				var checkout = obj.network.request(
-					api.CHECKOUT_VIA_BARCODE.app,
-					api.CHECKOUT_VIA_BARCODE.method,
-					[ obj.session, { permit_key: permit.payload, barcode: barcode, patron: obj.patron_id } ]
+					api.CHECKOUT.app,
+					api.CHECKOUT.method,
+					[ obj.session, params ]
 				);
 				if (checkout.ilsevent == 0) {
+					if (!checkout.payload) {
+						checkout.payload = {};
+						if (!checkout.payload.circ) {
+							checkout.payload.circ = new aoc();
+						}
+						if (!checkout.payload.mvr) {
+							checkout.payload.mvr = new mvr();
+							checkout.payload.mvr.title(
+								/* assuming noncat */
+								obj.data.hash.cnct[ params.noncat_type ].name()
+							);
+						}
+						if (!checkout.payload.acp) {
+							checkout.payload.acp = new acp();
+						}
+					}
 					obj.list.append(
 						{
 							'row' : {

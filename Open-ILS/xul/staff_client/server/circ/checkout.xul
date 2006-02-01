@@ -61,7 +61,7 @@
 	</script>
 
 	<commandset id="checkout_cmds">
-		<command id="cmd_checkout_submit_barcode" />
+		<command id="cmd_checkout_submit" />
 		<command id="cmd_checkout_print" />
 		<command id="cmd_checkout_reprint" />
 		<command id="cmd_checkout_done" />
