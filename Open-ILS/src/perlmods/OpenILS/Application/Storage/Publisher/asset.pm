@@ -276,9 +276,6 @@ __PACKAGE__->register_method(
         api_name        => 'open-ils.storage.ranged.asset.copy_location.retrieve',
         argc            => 1,
         stream          => 1,
-        notes           => <<"  NOTES",
-                Returns 
-        NOTES
 );
 
 
