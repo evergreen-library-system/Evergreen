@@ -2,12 +2,15 @@ package OpenILS::Application::Circ::Circulate;
 use base 'OpenSRF::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
-use OpenSRF::Utils;
 use Data::Dumper;
-use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::Utils;
+use OpenSRF::Utils::Cache;
+use Digest::MD5 qw(md5_hex);
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
+use OpenSRF::Utils::Logger qw(:logger);
+
 $Data::Dumper::Indent = 0;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -17,6 +20,7 @@ my %scripts;			# - circulation script filenames
 my $script_libs;		# - any additional script libraries
 my %cache;				# - db objects cache
 my %contexts;			# - Script runner contexts
+my $cache_handle;		# - memcache handle
 
 # ------------------------------------------------------------------------------
 # Load the circ script from the config
@@ -24,6 +28,7 @@ my %contexts;			# - Script runner contexts
 sub initialize {
 
 	my $self = shift;
+	$cache_handle = OpenSRF::Utils::Cache->new('global');
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	my @pfx2 = ( "apps", "open-ils.circ","app_settings" );
 	my @pfx = ( @pfx2, "scripts" );
@@ -33,8 +38,8 @@ sub initialize {
 	my $d		= $conf->config_value(	@pfx, 'circ_duration' );
 	my $f		= $conf->config_value(	@pfx, 'circ_recurring_fines' );
 	my $m		= $conf->config_value(	@pfx, 'circ_max_fines' );
-	my $pr	= $conf->config_value(	@pfx, 'renew_permit' );
-	my $ph	= $conf->config_value(	@pfx, 'hold_permit' );
+	my $pr	= $conf->config_value(	@pfx, 'circ_permit_renew' );
+	my $ph	= $conf->config_value(	@pfx, 'circ_permit_hold' );
 	my $lb	= $conf->config_value(	@pfx2, 'script_path' );
 
 	$logger->error( "Missing circ script(s)" ) 
@@ -306,6 +311,10 @@ sub permit_circ {
 
 	my ( $requestor, $patron, $ctx, $evt );
 
+	if(1) {
+		$logger->debug("PERMIT: " . Dumper($params));
+	}
+
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
 		$apputils->checkses_requestor( 
@@ -342,8 +351,12 @@ sub _run_permit_scripts {
 	my $evtname = $runner->retrieve('result.event');
 	$logger->activity("circ_permit_patron for user $patronid returned event: $evtname");
 
-	return OpenILS::Event->new($evtname) 
-		if ( $ctx->{noncat} or $evtname ne 'SUCCESS' );
+	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
+
+	if ( $ctx->{noncat}  ) {
+		my $key = _cache_permit_key(-1, $patronid, $ctx->{requestor}->id);
+		return OpenILS::Event->new($evtname, payload => $key);
+	}
 
 	$runner->load($scripts{circ_permit_copy});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
@@ -351,8 +364,31 @@ sub _run_permit_scripts {
 	$logger->activity("circ_permit_patron for user $patronid ".
 		"and copy $barcode returned event: $evtname");
 
+	if( $evtname eq 'SUCCESS' ) {
+		my $key = _cache_permit_key($ctx->{copy}->id, $patronid, $ctx->{requestor}->id);
+		return OpenILS::Event->new($evtname, payload => $key);
+	}
+
 	return OpenILS::Event->new($evtname);
 
+}
+
+# takes copyid, patronid, and requestor id
+sub _cache_permit_key {
+	my( $cid, $pid, $rid ) = @_;
+	my $key = md5_hex( time() . rand() . "$$ $cid $pid $rid" );
+	$logger->debug("Setting circ permit key [$key] for copy $cid, patron $pid, and staff $rid");
+	$cache_handle->put_cache( "oils_permit_key_$key", [ $cid, $pid, $rid ], 300 );
+	return $key;
+}
+
+# takes permit_key, copyid, patronid, and requestor id
+sub _check_permit_key {
+	my( $key, $cid, $pid, $rid ) = @_;
+	$logger->debug("Fetching circ permit key $key");
+	my $arr = $cache_handle->get_cache("oils_permit_key_$key");
+	return 1 if( ref($arr) and @$arr[0] eq $cid and @$arr[1] eq $pid and @$arr[2] eq $rid );
+	return 0;
 }
 
 
@@ -380,6 +416,7 @@ sub checkout {
 	my( $self, $client, $authtoken, $params ) = @_;
 
 	my ( $requestor, $patron, $ctx, $evt, $circ );
+	my $key = $params->{permit_key};
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
@@ -387,7 +424,11 @@ sub checkout {
 			$authtoken, $params->{patron}, 'COPY_CHECKOUT' );
 	return $evt if $evt;
 
-	return _checkout_noncat( $requestor, $patron, %$params ) if $params->{noncat};
+	if( $params->{noncat} ) {
+		return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
+			unless _check_permit_key( $key, -1, $patron->id, $requestor->id );
+		return _checkout_noncat( $requestor, $patron, %$params )
+	}
 
 	my $session = $U->start_db_session();
 
@@ -402,6 +443,9 @@ sub checkout {
 		fetch_copy_locations			=> 1, 
 		);
 	return $evt if $evt;
+
+	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
+		unless _check_permit_key( $key, $ctx->{copy}->id, $patron->id, $requestor->id );
 
 	$ctx->{circ_lib} = (defined($params->{circ_lib})) ? 
 		$params->{circ_lib} : $requestor->home_ou;
@@ -420,6 +464,7 @@ sub checkout {
 	return $evt if $evt;
 
 	#$U->commit_db_session($session);
+	$session->disconnect;
 
 	return OpenILS::Event->new('SUCCESS', 
 		payload		=> { 

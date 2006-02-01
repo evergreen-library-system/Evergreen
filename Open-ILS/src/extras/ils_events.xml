@@ -39,6 +39,13 @@
 		</desc>
 	</event>
 
+	<event code='1201' textcode='CIRC_PERMIT_BAD_KEY'>
+		<desc>
+			A checkout was attempted without a valid checkout permit key
+		</desc>
+	</event>
+
+
 
 	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
 		<desc>

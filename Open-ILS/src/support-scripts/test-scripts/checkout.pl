@@ -32,8 +32,8 @@ my $start;
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
-	do_permit($patronid, $barcode, $type =~ /noncat/ ); 
-	do_checkout($patronid, $barcode, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
+	my $key = do_permit($patronid, $barcode, $type =~ /noncat/ ); 
+	do_checkout($key, $patronid, $barcode, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
 	oils_logout();
 }
 
@@ -56,13 +56,15 @@ sub do_permit {
 	
 	oils_event_die($resp);
 	my $e = time() - $start;
-	printl("Permit (OK): $e" );
+	my $key = $resp->{payload};
+	printl("Permit OK: \n\ttime =\t$e\n\tkey =\t$key" );
+	return $key;
 }
 
 sub do_checkout {
-	my( $patronid, $barcode, $noncat, $nc_type ) = @_;
+	my( $key, $patronid, $barcode, $noncat, $nc_type ) = @_;
 
-	my $args = { patron => $patronid, barcode => $barcode };
+	my $args = { permit_key => $key, patron => $patronid, barcode => $barcode };
 	if($noncat) {
 		$args->{noncat} = 1;
 		$args->{noncat_type} = $nc_type;
@@ -79,10 +81,8 @@ sub do_checkout {
 	my $d = $finish - $start_checkout;
 	my $dd = $finish - $start;
 
-	printl("Checkout: $d"); 
-	printl("Total: $dd");
-	printl("Title: " . $resp->{payload}->{record}->title );
-	printl("Copy: " . $resp->{payload}->{copy}->barcode );
+	printl("Checkout OK:\n\ttime =\t$d\n\ttotal time =\t$dd".
+		"\n\ttitle =\t" . $resp->{payload}->{record}->title );
 }
 
 
