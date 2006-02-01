@@ -13,7 +13,7 @@ CREATE TABLE container.copy_bucket (
 								INITIALLY DEFERRED,
 	name		TEXT				NOT NULL,
 	btype		TEXT				NOT NULL DEFAULT 'misc',
-	public		BOOL				NOT NULL DEFAULT FALSE,
+	pub		BOOL				NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
 );
@@ -49,7 +49,7 @@ CREATE TABLE container.call_number_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
-	public	BOOL	NOT NULL DEFAULT FALSE,
+	pub	BOOL	NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
 );
@@ -85,7 +85,7 @@ CREATE TABLE container.biblio_record_entry_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
-	public	BOOL	NOT NULL DEFAULT FALSE,
+	pub	BOOL	NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
@@ -121,7 +121,7 @@ CREATE TABLE container.user_bucket (
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
 	btype	TEXT	NOT NULL DEFAULT 'misc',
-	public	BOOL	NOT NULL DEFAULT FALSE,
+	pub	BOOL	NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)
 );
