@@ -243,6 +243,31 @@ OpenILS.data.prototype = {
 			}
 		);
 
+		this.chain.push(
+			function() {
+				var f = gen_fm_retrieval_func(
+					'cnct',
+					[
+						api.FM_CNCT_RETRIEVE.app,
+						api.FM_CNCT_RETRIEVE.method,
+						/* FIXME -- later, in most places where we look at the home_ou of the sessioned staff member, we'll want to use the workstation ou instead */
+						[ obj.list.au[0].home_ou() ], 
+						false
+					]
+				);
+				try {
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					alert(error);
+					throw(E);
+				}
+				obj.list.au = [ obj.list.au ];
+			}
+		);
+
+
 		if (typeof this.on_complete == 'function') {
 
 			this.chain.push( this.on_complete );
