@@ -147,9 +147,10 @@ INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject'
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */
 
 CREATE TABLE config.non_cataloged_type (
-	id		SERIAL	PRIMARY KEY,
-	owning_lib	INT	NOT NULL, -- REFERENCES actor.org_unit (id),
-	name		TEXT	NOT NULL UNIQUE
+	id		SERIAL		PRIMARY KEY,
+	owning_lib	INT		NOT NULL, -- REFERENCES actor.org_unit (id),
+	name		TEXT		NOT NULL UNIQUE,
+	circ_duration	INTERVAL	NOT NULL DEFAULT '14 days'::INTERVAL
 );
 COMMENT ON TABLE config.non_cataloged_type IS $$
 /*
