@@ -21,6 +21,7 @@ remove_symlinks:
 add_symlinks:
 	@echo
 	@echo Adding convenience symlinks back into server/
+	ln -s ../../../build/chrome/locale/en-US/lang.dtd chrome/locale/en-US/lang.dtd
 	ln -s ../chrome/content/util server/util
 	ln -s ../../chrome/content/main/constants.js server/main/constants.js
 	ln -s ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
