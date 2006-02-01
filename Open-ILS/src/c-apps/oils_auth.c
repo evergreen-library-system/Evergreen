@@ -48,10 +48,10 @@ int osrfAppInitialize() {
 		MODULENAME, 
 		"open-ils.auth.session.retrieve", 
 		"oilsAuthSessionRetrieve", 
-		"Pass in the auth token and an optional second parameter which tells the "
-		"method to reset the session timeout for the user"
+		"Pass in the auth token and this retrieves the user object.  The auth "
+		"timeout is reset when this call is made "
 		"Returns the user object (password blanked) for the given login session "
-		"PARAMS( authToken, [reset?] )", 1, 0 );
+		"PARAMS( authToken )", 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
@@ -393,18 +393,16 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
 
 	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
-	char* reset = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 1));
 	jsonObject* cacheObj = NULL;
 
 	if( authToken ){
 
-		if(reset) {
+		if(1) {
 			oilsEvent* evt = _oilsAuthResetTimeout(authToken);
-			if( evt && strcmp(evt->event,OILS_EVENT_SUCCESS) ) {
+			if( evt && strcmp(evt->event, OILS_EVENT_SUCCESS) ) {
 				osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
 				oilsEventFree(evt);
 			}
-			free(reset);
 		}
 
 		osrfLogDebug(OSRF_LOG_MARK, "Retrieving auth session: %s", authToken);
