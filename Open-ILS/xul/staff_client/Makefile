@@ -17,6 +17,7 @@ remove_symlinks:
 	@echo
 	@echo Removing convenience symlinks from server/ before copying to build/
 	find server/ -type l -exec rm -f {} \;
+	find chrome/ -type l -exec rm -f {} \;
 
 add_symlinks:
 	@echo
