@@ -2,6 +2,8 @@
 attachEvt("common", "run", myOPACInit );
 attachEvt("common", "loggedIn", myOPACInit );
 
+attachEvt('common','locationUpdated', myopacReload );
+
 var fleshedUser = null;
 var fleshedContainers = {};
 
@@ -16,6 +18,15 @@ function clearNodes( node, keepArray ) {
 function myOPACInit() {
 	if(!(G.user && G.user.session)) initLogin();
 	else myOPACChangePage( "summary" );
+}
+
+function myopacReload() {
+	swapCanvas($('myopac_reloading'));
+	//alert($('myopac_reloading').className);
+	var a = {};
+	a[PARAM_LOCATION] = getNewSearchLocation();
+	a[PARAM_DEPTH] = getNewSearchDepth();
+	goTo(buildOPACLink(a, true));
 }
 
 
@@ -550,7 +561,7 @@ function myOPACShowBookbags(force) {
 		myOPACFetchBBItems( cont.id(), row );
 		dlink.setAttribute('href', 'javascript:myOPACDeleteBookbag("'+cont.id()+'");');
 
-		if( cont.public() ) {
+		if( cont.pub() ) {
 			unHideMe($n(row, 'myopac_bb_published_yes'));
 			var link = $n(row, 'myopac_bb_published_view');
 			link.setAttribute('href', buildExtrasLink( 'bbags.xml?bb='+cont.id(), false));  

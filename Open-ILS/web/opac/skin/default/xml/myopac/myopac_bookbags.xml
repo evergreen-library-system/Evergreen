@@ -24,7 +24,7 @@
 				<td>
 					<a href='javascript:void(0);' class='classic_link' name='myopac_expand_bookbag'> </a>
 				</td>
-				<td><span name='myopac_bookbag_item_count'> </span> <span>Items</span></td>
+				<td><span name='myopac_bookbag_item_count'> </span> <span> Items</span></td>
 				<td>
 					<span name='myopac_bb_published_no' class='hide_me'>No</span>
 					<span name='myopac_bb_published_yes' class='hide_me'>Yes</span>

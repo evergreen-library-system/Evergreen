@@ -11,7 +11,7 @@
 			<tr>
 				<td width='50%'>Title</td>
 				<td width='20%'>Author</td>
-				<td width='10%' nowrap='nowrap' align='center'>Due Data</td>
+				<td width='10%' nowrap='nowrap' align='center'>Due Date</td>
 				<td width='10%' nowrap='nowrap' align='center'>Renewals Remaining</td>
 				<td width='10%' nowrap='nowrap' align='center'>Renew</td>
 			</tr>

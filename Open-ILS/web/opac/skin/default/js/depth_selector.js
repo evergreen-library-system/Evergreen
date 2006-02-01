@@ -84,6 +84,8 @@ function buildLocationSelector(newLoc) {
 	selector.appendChild(node);
 }
 
+function getNewSearchDepth() { return newSearchDepth; }
+function getNewSearchLocation() { return _newlocation; }
 function depthSelGetNewLoc() { return _newlocation; }
 
 function updateLoc(location, depth) {

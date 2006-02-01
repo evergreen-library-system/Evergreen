@@ -164,6 +164,8 @@ function setSelector( sel, value ) {
 		for( var i = 0; i!= sel.options.length; i++ ) { 
 			if( sel.options[i] ) {
 				var val = sel.options[i].value;
+				if( val == null || val == "" ) /* for IE */
+					val = sel.options[i].innerHTML;
 				value += ""; /* in case of number */ 
 				if( val && val.toLowerCase() == value.toLowerCase() ) {
 					sel.selectedIndex = i;
@@ -176,16 +178,41 @@ function setSelector( sel, value ) {
 
 function getSelectorVal( sel ) {
 	if(!sel) return null;
-	return sel.options[sel.selectedIndex].value;
+	var o = sel.options[sel.selectedIndex];
+	var v = o.value; 
+	if(v == null || v == "") v = o.innerHTML;
+	return v;
+}
+
+function debugSelector(sel) {
+	var s = 'Selector\n';
+	for( var i = 0; i != sel.options.length; i++ ) {
+		var o = sel.options[i];
+		s += "\t" + o.innerHTML + "\n";
+	}
+	return s;
+}
+
+function doSelectorActions(sel) {
+	if(IE && sel) { 
+		sel.onchange = function() {
+			var o = sel.options[sel.selectedIndex];
+			if(o && o.onclick) o.onclick()
+		}
+	}
 }
 
 /* if index < 0, the item is pushed onto the end */
 function insertSelectorVal( selector, index, name, value, action, indent ) {
 	if( index < 0 ) index = selector.options.length;
-	for( var i = selector.options.length; i != index; i-- ) {
-		selector.options[i] = selector.options[i-1].cloneNode(true);
-	}
+	var a = [];
+	for( var i = selector.options.length; i != index; i-- ) 
+		a[i] = selector.options[i-1];
+
 	setSelectorVal( selector, index, name, value, action, indent );
+
+	for( var i = index + 1; i != a.length; i++ ) 
+		selector.options[i] = a[i];
 }
 
 function setSelectorVal( selector, index, name, value, action, indent ) {
@@ -196,20 +223,22 @@ function setSelectorVal( selector, index, name, value, action, indent ) {
 	if(IE) {
 		var pre = elem("pre");
 		for( var i = 0; i != indent; i++ )
-			pre.appendChild(text(" "));
+			pre.appendChild(text("   "));
 
 		pre.appendChild(text(name));
 		option = new Option("", value);
 		selector.options[index] = option;
-		select.appendChild(pre);
+		option.appendChild(pre);
 	
 	} else {
 		indent = indent * 14;
 		option= new Option(name, value);
 		option.setAttribute("style", "padding-left: "+indent+'px;');
 		selector.options[index] = option;
+		if(action) option.onclick = action;
 	}
-	if(action) option.onclick = action;
+
+	option.onclick = action;
 }
 
 

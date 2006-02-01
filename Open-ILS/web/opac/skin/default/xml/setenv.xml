@@ -28,6 +28,7 @@
 <!--#set var="OILS_JS_BASE" value="${OILS_BASE}/common/js"-->
 <!--#set var="OILS_CSS_BASE" value="${OILS_BASE}/common/css"--> 
 <!--#set var="OILS_THEME_BASE" value="${OILS_BASE}/theme"--> 
+<!--#set var="OILS_SKIN_BASE" value="${OILS_BASE}/skin"--> 
 
 <!--#if expr="!$locale || $locale=''"-->
 	<!--#set var="locale" value="en-US"-->

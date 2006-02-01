@@ -1,7 +1,7 @@
 
 <!-- CSS shared across pages goes here --> 
 
-<link type='text/css' rel='stylesheet' href='../css/layout.css'/>
+<link type='text/css' rel='stylesheet' href="<!--#echo var='OILS_SKIN_BASE'-->/default/css/layout.css"/>
 
 <!-- Our font CSS's -->
 <link type='text/css' rel='stylesheet'					

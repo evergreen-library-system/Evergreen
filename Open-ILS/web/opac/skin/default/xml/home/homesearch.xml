@@ -4,8 +4,10 @@
 	xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<!-- load my js -->
-	<script language='javascript' src='../js/depth_selector.js'> </script>
-	<script language='javascript' src='../js/search_bar.js'> </script>
+	<script language='javascript' 
+		src="<!--#echo var='OILS_SKIN_BASE'-->/default/js/depth_selector.js"> </script>
+	<script language='javascript' 
+		src="<!--#echo var='OILS_SKIN_BASE'-->/default/js/search_bar.js"> </script>
 
 	<script language='javascript'>
 		config.ids.searchbar = {};
@@ -26,7 +28,7 @@
 
 
 	<div style='width: 100%; text-align: center'>
-		<img src='../../../../images/main_logo.jpg' />
+		<img src='<!--#echo var="OILS_BASE"-->/images/main_logo.jpg' />
 	</div>
 
 

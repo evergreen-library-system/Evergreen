@@ -126,18 +126,20 @@ function rdetailAddBookbags(r) {
 	var selector = $('rdetail_more_actions_selector');
 	var found = false;
 	var index = 3;
+	doSelectorActions(selector);
 
 	for( var i = 0; i != containers.length; i++ ) {
 		found = true;
 		var container = containers[i];
 		insertSelectorVal( selector, index++, container.name(), 
-			"container_" + container.id(), rdetailAddToBookbag, 1 );
+			"container_" + container.id(), rdetailAddToBookbag,  1 );
 	}
 
 	nextContainerIndex = index;
 	if(!found) insertSelectorVal( selector, 3, "name", "value", 1 );
 }
 
+var _actions = {};
 function rdetailNewBookbag() {
 	var name = prompt($('rdetail_bb_new').innerHTML,"");
 	if(!name) return;
@@ -146,9 +148,9 @@ function rdetailNewBookbag() {
 	if( id = containerCreate( name ) ) {
 		alert($('rdetail_bb_success').innerHTML);
 		var selector = $('rdetail_more_actions_selector');
-		setSelector( selector, 'start' );
 		insertSelectorVal( selector, nextContainerIndex++, name, 
 			"container_" + id, rdetailAddToBookbag, 1 );
+		setSelector( selector, 'start' );
 	}
 }
 
@@ -231,9 +233,9 @@ function rdetailBuildCNList() {
 	for( var i in arr ) {
 		var cn = arr[i];
 		var opt = new Option(cn);
-		opt.onclick = rdetailGatherCN;
 		select.options[index++] = opt;
 	}
+	select.onchange = rdetailGatherCN;
 }
 
 function rdetailGatherCN() {

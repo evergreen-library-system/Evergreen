@@ -8,7 +8,7 @@
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js'> </script>
 
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->//slimtree.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/slimtree.js'> </script>
 
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js'> </script>
