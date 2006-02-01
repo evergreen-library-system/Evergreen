@@ -1201,6 +1201,14 @@ sub postfilter_search_multi_class_fts {
 	my $limit = $args{limit};
 	my $offset = $args{offset} || 0;
 
+	if (! scalar( keys %{$args{searches}} )) {
+		die "No target organizational unit passed to ".$self->api_name;
+	}
+
+	if (! scalar( keys %{$args{searches}} )) {
+		die "No search arguments were passed to ".$self->api_name;
+	}
+
 	my $outer_limit = 1000;
 
 	my $limit_clause = '';
