@@ -53,6 +53,8 @@ function main_init() {
 			var url = G.auth.controller.view.server_prompt.value || urls.remote;
 			if (! url.match( '^http://' ) ) url = 'http://' + url;
 
+			G.data.server = url; G.data.stash('server');
+
 			grant_perms(url);
 
 			var deck = document.getElementById('main_deck');
