@@ -263,7 +263,6 @@ OpenILS.data.prototype = {
 					alert(error);
 					throw(E);
 				}
-				obj.list.au = [ obj.list.au ];
 			}
 		);
 
