@@ -9,7 +9,7 @@ package container::user_bucket;
 use base qw/container/;
 
 container::user_bucket->table( 'container_user_bucket' );
-container::user_bucket->columns( All => qw/id owner name btype public/ );
+container::user_bucket->columns( All => qw/id owner name btype pub/ );
 
 #-------------------------------------------------------------------------------
 package container::user_bucket_item;
@@ -23,7 +23,7 @@ package container::copy_bucket;
 use base qw/container/;
 
 container::copy_bucket->table( 'container_copy_bucket' );
-container::copy_bucket->columns( All => qw/id owner name btype public/ );
+container::copy_bucket->columns( All => qw/id owner name btype pub/ );
 
 #-------------------------------------------------------------------------------
 package container::copy_bucket_item;
@@ -37,7 +37,7 @@ package container::biblio_record_entry_bucket;
 use base qw/container/;
 
 container::biblio_record_entry_bucket->table( 'container_biblio_record_entry_bucket' );
-container::biblio_record_entry_bucket->columns( All => qw/id owner name btype public/ );
+container::biblio_record_entry_bucket->columns( All => qw/id owner name btype pub/ );
 
 #-------------------------------------------------------------------------------
 package container::biblio_record_entry_bucket_item;
@@ -51,7 +51,7 @@ package container::call_number_bucket;
 use base qw/container/;
 
 container::call_number_bucket->table( 'container_call_number_bucket' );
-container::call_number_bucket->columns( All => qw/id owner name btype public/ );
+container::call_number_bucket->columns( All => qw/id owner name btype pub/ );
 
 #-------------------------------------------------------------------------------
 package container::call_number_bucket_item;
