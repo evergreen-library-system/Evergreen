@@ -6,7 +6,7 @@ all: build
 	@echo
 	@echo
 
-build: remove_symlinks build_dir add_symlinks generated open-ils custom stamp
+build: remove_symlinks build_dir generated open-ils custom stamp add_symlinks 
 	@echo
 	@echo 
 	@echo To test the staff client:
@@ -15,17 +15,20 @@ build: remove_symlinks build_dir add_symlinks generated open-ils custom stamp
 
 remove_symlinks:
 	@echo
-	@echo Removing convenience symlinks from server/ before copying to build/
+	@echo Removing convenience symlinks from server/ and chrome/ before copying to build/
 	find server/ -type l -exec rm -f {} \;
 	find chrome/ -type l -exec rm -f {} \;
 
 add_symlinks:
 	@echo
-	@echo Adding convenience symlinks back into server/
-	ln -s ../../../build/chrome/locale/en-US/lang.dtd chrome/locale/en-US/lang.dtd
+	@echo Adding convenience symlinks back into server/ and chrome/
 	ln -s ../chrome/content/util server/util
 	ln -s ../../chrome/content/main/constants.js server/main/constants.js
 	ln -s ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
+	(cd build/chrome/content/OpenSRF/; for x in *; do ln -s  ../../../build/chrome/content/OpenSRF/$$x ../../../../chrome/content/OpenSRF/$$x; done)
+	(cd build/chrome/content/OpenILS/util/; for x in *; do ln -s  ../../../../build/chrome/content/OpenILS/util/$$x ../../../../../chrome/content/OpenILS/util/$$x; done)
+	(cd build/chrome/content/legacy/; for x in [a-z]*; do ln -s  ../../../build/chrome/content/legacy/$$x ../../../../chrome/content/legacy/$$x; done)
+	(cd build/chrome/locale/en-US/; for x in *; do ln -s  ../../../build/chrome/locale/en-US/$$x ../../../../chrome/locale/en-US/$$x; done)
 
 build_dir:
 	@echo
@@ -72,7 +75,7 @@ custom:
 	@echo '********************************************************* Placeholder for debugging tweaks '
 	#(cd chrome/content/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
 
-clean:
+clean: remove_symlinks
 	@echo
 	@echo '********************************************************* Removing build/ '
 	rm -rf build/
