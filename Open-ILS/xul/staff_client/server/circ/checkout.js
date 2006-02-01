@@ -92,7 +92,7 @@ circ.checkout.prototype = {
 				var checkout = obj.network.request(
 					api.CHECKOUT_VIA_BARCODE.app,
 					api.CHECKOUT_VIA_BARCODE.method,
-					[ obj.session, { barcode: barcode, patron: obj.patron_id } ]
+					[ obj.session, { permit_key: permit.payload, barcode: barcode, patron: obj.patron_id } ]
 				);
 				if (checkout.ilsevent == 0) {
 					obj.list.append(
