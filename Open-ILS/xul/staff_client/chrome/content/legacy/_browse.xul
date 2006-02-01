@@ -24,8 +24,10 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-	<scripts id="openils_util_scripts"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/constants.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/OpenILS/util/fmall.js"/>
+	<scripts id="openils_util_scripts"/>
 	<script type="text/javascript">
 	<![CDATA[
 
