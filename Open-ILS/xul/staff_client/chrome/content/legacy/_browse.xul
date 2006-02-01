@@ -356,6 +356,8 @@
 			var title = list.length == 1 ? 'Copy' : 'Copies';
 
 			JSAN.use('util.window'); var win = new util.window();
+			g.data.temp = '';
+			g.data.stash('temp');
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
 					+'?session='+window.escape(g.session)
@@ -368,7 +370,7 @@
 			g.data.stash_retrieve();
 			var copies = JSON2js( g.data.temp );
 			g.error.sdump('D_CAT','in browse, g.data.temp =\n' + g.data.temp);
-			if (edit=='1') {
+			if (edit=='1' && copies!='') {
 				try {
 					var r = g.network.request(
 						api.FM_ACP_FLESHED_BATCH_UPDATE.app,
@@ -426,6 +428,8 @@
 			var title = list.length == 1 ? 'Volume' : 'Volumes';
 
 			JSAN.use('util.window'); var win = new util.window();
+			g.data.temp = '';
+			g.data.stash('temp');
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR)
 					+'?session='+window.escape(g.session)
@@ -438,6 +442,7 @@
 			g.data.stash_retrieve();
 			var volumes = JSON2js( g.data.temp );
 			g.error.sdump('D_CAT','in browse, g.data.temp =\n' + g.data.temp);
+			if (volumes=='') return;
 		
 			volumes = util.functional.filter_list(
 				volumes,

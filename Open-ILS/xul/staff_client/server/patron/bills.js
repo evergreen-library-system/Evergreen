@@ -235,6 +235,8 @@ patron.bills.prototype = {
 		var win = new util.window();
 		switch(obj.controller.view.payment_type.value) {
 			case 'credit_card_payment' :
+				obj.OpenILS.data.temp = '';
+				obj.OpenILS.data.stash('temp');
 				var w = win.open(
 					urls.XUL_PATRON_BILL_CC_INFO,
 					'billccinfo',
@@ -245,6 +247,8 @@ patron.bills.prototype = {
 				payment_blob = JSON2js( obj.OpenILS.data.temp );
 			break;
 			case 'check_payment' :
+				obj.OpenILS.data.temp = '';
+				obj.OpenILS.data.stash('temp');
 				var w = win.open(
 					urls.XUL_PATRON_BILL_CHECK_INFO,
 					'billcheckinfo',
@@ -255,7 +259,7 @@ patron.bills.prototype = {
 				payment_blob = JSON2js( obj.OpenILS.data.temp );
 			break;
 		}
-		if (payment_blob.cancelled == 'true') { alert('cancelled'); return; }
+		if (payment_blob=='' || payment_blob.cancelled=='true') { alert('cancelled'); return; }
 		payment_blob.userid = obj.patron_id;
 		payment_blob.note = payment_blob.note || '';
 		payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
