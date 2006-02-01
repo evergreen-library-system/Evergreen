@@ -329,6 +329,12 @@
 	biblio::record_note->sequence( 'biblio.record_note_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package actor::workstation;
+	
+	actor::workstation->table( 'actor.workstation' );
+	actor::workstation->sequence( 'actor.workstation_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::user;
 	
 	actor::user->table( 'actor.usr' );

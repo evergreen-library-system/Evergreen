@@ -378,6 +378,13 @@ INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, '
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (4, 4, 'SL1', 'Example Sub-lib 1');
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (6, 5, 'BM1', 'Example Bookmobile 1');
 
+-- Workstation registration...
+CREATE TABLE actor.workstation (
+	id		SERIAL	PRIMARY KEY,
+	name		TEXT	NOT NULL UNIQUE,
+	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id)
+);
+
 CREATE TABLE actor.org_unit_setting (
 	id		BIGSERIAL	PRIMARY KEY,
 	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE,

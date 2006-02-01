@@ -204,18 +204,20 @@ CREATE INDEX money_credit_payment_xact_idx ON money.credit_payment (xact);
 CREATE INDEX money_credit_payment_accepting_usr_idx ON money.credit_payment (accepting_usr);
 
 CREATE TABLE money.bnm_desk_payment (
-	cash_drawer	TEXT	NOT NULL
+	cash_drawer	INT	REFERENCES actor.workstation (id)
 ) INHERITS (money.bnm_payment);
 
 CREATE TABLE money.cash_payment () INHERITS (money.bnm_desk_payment);
 CREATE INDEX money_cash_payment_xact_idx ON money.cash_payment (xact);
 CREATE INDEX money_cash_payment_accepting_usr_idx ON money.cash_payment (accepting_usr);
+CREATE INDEX money_cash_payment_cash_drawer_idx ON money.cash_payment (cash_drawer);
 
 CREATE TABLE money.check_payment (
 	check_number	TEXT	NOT NULL
 ) INHERITS (money.bnm_desk_payment);
 CREATE INDEX money_check_payment_xact_idx ON money.check_payment (xact);
 CREATE INDEX money_check_payment_accepting_usr_idx ON money.check_payment (accepting_usr);
+CREATE INDEX money_check_payment_cash_drawer_idx ON money.check_payment (cash_drawer);
 
 CREATE TABLE money.credit_card_payment (
 	cc_type		TEXT	NOT NULL,
@@ -226,6 +228,7 @@ CREATE TABLE money.credit_card_payment (
 ) INHERITS (money.bnm_desk_payment);
 CREATE INDEX money_credit_card_payment_xact_idx ON money.credit_card_payment (xact);
 CREATE INDEX money_credit_card_payment_accepting_usr_idx ON money.credit_card_payment (accepting_usr);
+CREATE INDEX money_credit_card_payment_cash_drawer_idx ON money.credit_card_payment (cash_drawer);
 
 
 COMMIT;

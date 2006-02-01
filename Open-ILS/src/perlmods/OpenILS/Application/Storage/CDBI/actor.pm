@@ -21,6 +21,14 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				day_phone evening_phone other_phone mailing_address/ );
 
 #-------------------------------------------------------------------------------
+package actor::workstation;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_workstation' );
+__PACKAGE__->columns( Primary => qw/id/);
+__PACKAGE__->columns( Essential => qw/name owning_lib/);
+
+#-------------------------------------------------------------------------------
 package actor::user_standing_penalty;
 use base qw/actor/;
 
