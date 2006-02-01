@@ -142,53 +142,58 @@ CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permis
 		END, a.name;
 $$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION permission.usr_perms ( iuser INT ) RETURNS SETOF permission.usr_perm_map AS $$
-DECLARE
-	u_perm	permission.usr_perm_map%ROWTYPE;
-	grp	permission.usr_grp_map%ROWTYPE;
-	g_list	permission.grp_tree%ROWTYPE;
-BEGIN
-	FOR u_perm IN SELECT * FROM permission.usr_perm_map WHERE usr = iuser LOOP
-		RETURN NEXT u_perm;
-	END LOOP;
+CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
+	SELECT	DISTINCT ON (usr,perm) *
+	  FROM	(
+			(SELECT * FROM permission.usr_perm_map WHERE usr = $1)
+        				UNION ALL
+			(SELECT	-p.id, 1 AS usr, p.perm, p.depth, p.grantable
+			  FROM	permission.grp_perm_map p
+			  WHERE	p.grp = (SELECT profile FROM actor.usr WHERE id = $1 LIMIT 1))
+        				UNION ALL
+			(SELECT	-p.id, 1 AS usr, p.perm, p.depth, p.grantable
+			  FROM	permission.grp_perm_map p 
+			  WHERE	p.grp IN (SELECT (permission.grp_ancestors(m.grp)).id FROM permission.usr_grp_map m WHERE usr = 1))
+		) AS x
+	  ORDER BY 2, 3, 1 DESC, 5 DESC ;
+$$ LANGUAGE SQL STABLE;
 
-	FOR g_list IN	SELECT	*
-			  FROM	permission.grp_ancestors(
-			  	  (	SELECT	u.profile
-					  FROM	actor.usr u
-					  WHERE	u.id = iuser
-				  )
-				)
+CREATE OR REPLACE FUNCTION permission.usr_can_grant_perm ( iuser INT, tperm TEXT, target_ou INT ) RETURNS BOOL AS $$
+DECLARE
+	r_usr	actor.usr%ROWTYPE;
+	r_perm	permission.usr_perm_map%ROWTYPE;
+BEGIN
+
+	SELECT * INTO r_usr FROM actor.usr WHERE id = iuser;
+
+	IF r_usr.active = FALSE THEN
+		RETURN FALSE;
+	END IF;
+
+	IF r_usr.super_user = TRUE THEN
+		RETURN TRUE;
+	END IF;
+
+
+	FOR r_perm IN	SELECT	*
+			  FROM	permission.usr_perms(iuser) p
+				JOIN permission.perm_list l
+					ON (l.id = p.perm)
+			  WHERE	(l.code = tperm AND p.grantable IS TRUE)
 		LOOP
 
-		FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth, p.grantable
-				  FROM	permission.grp_perm_map p
-				  WHERE	p.grp = g_list.id LOOP
+		PERFORM	*
+		  FROM	actor.org_unit_descendants(target_ou,r_perm.depth)
+		  WHERE	id = r_usr.home_ou;
 
-			RETURN NEXT u_perm;
-
-		END LOOP;
+		IF FOUND THEN
+			RETURN TRUE;
+		ELSE
+			RETURN FALSE;
+		END IF;
 	END LOOP;
 
-	FOR grp IN	SELECT	*
-			  FROM	permission.usr_grp_map
-			  WHERE	usr = iuser LOOP
-
-		FOR g_list IN	SELECT	*
-				  FROM	permission.grp_ancestors( grp.grp ) LOOP
-
-			FOR u_perm IN	SELECT	DISTINCT -p.id, iuser AS usr, p.perm, p.depth, p.grantable
-					  FROM	permission.grp_perm_map p
-						JOIN permission.usr_grp_map m ON (m.grp = p.grp)
-					  WHERE	m.grp = g_list.id LOOP
-
-				RETURN NEXT u_perm;
-
-			END LOOP;
-		END LOOP;
-	END LOOP;
-
-	RETURN;
+	RETURN FALSE;
 END;
 $$ LANGUAGE PLPGSQL;
 
