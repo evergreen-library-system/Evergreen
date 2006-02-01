@@ -239,6 +239,49 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 );
 
+# XXX arg, with the descendancy SPs...
+sub ranged_asset_copy_location {
+        my $self = shift;
+        my $client = shift;
+        my @binds = @_;
+        
+        my $ctable = asset::copy_location->table;
+        
+        my $descendants = defined($binds[1]) ?
+                "actor.org_unit_full_path(?, ?)" :
+                "actor.org_unit_full_path(?)" ;
+
+        
+        my $sql = <<"	SQL";
+                SELECT  DISTINCT c.*
+                  FROM  $ctable c
+                        JOIN $descendants d
+                                ON (d.id = c.owning_lib)
+	SQL
+        
+        my $sth = asset::copy_location->db_Main->prepare($sql);
+        $sth->execute(@binds);
+        
+        while ( my $rec = $sth->fetchrow_hashref ) {
+        
+                my $cnct = new Fieldmapper::asset::copy_location;
+		map {$cnct->$_($$rec{$_})} keys %$rec;
+                $client->respond( $cnct );
+        }
+
+        return undef;
+}
+__PACKAGE__->register_method(
+        method          => 'ranged_asset_copy_location',
+        api_name        => 'open-ils.storage.ranged.asset.copy_location.retrieve',
+        argc            => 1,
+        stream          => 1,
+        notes           => <<"  NOTES",
+                Returns 
+        NOTES
+);
+
+
 sub fleshed_copy {
 	my $self = shift;
 	my $client = shift;
