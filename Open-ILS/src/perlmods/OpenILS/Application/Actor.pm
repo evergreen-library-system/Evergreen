@@ -1379,6 +1379,12 @@ sub user_transactions {
 			
 		#warn $t->id . "\n";
 
+
+		if( $t->xact_type ne 'circulation' ) {
+			push @resp, {transaction => $t};
+			next;
+		}
+
 		my $circ = $apputils->simple_scalar_request(
 				"open-ils.storage",
 				"open-ils.storage.direct.action.circulation.retrieve",
