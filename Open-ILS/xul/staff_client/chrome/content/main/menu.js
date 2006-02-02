@@ -70,6 +70,12 @@ main.menu.prototype = {
 
 
 			/* Circulation Menu */
+			'cmd_patron_register' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_EDIT) + '?ses=' + obj.w.escape(session), { 'tab_name' : 'Register Patron' }, {});
+				}
+			],
 			'cmd_circ_checkin' : [
 				['oncommand'],
 				function() { 
