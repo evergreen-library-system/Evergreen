@@ -40,7 +40,7 @@
 				g.error.sdump('D_TRACE','my_init() for util_browser.xul');
 
 				g.cgi = new CGI();
-				var name = g.cgi.param('name') || 'Browser';
+				var name = g.cgi.param('tab_name') || g.cgi.param('name') || 'Browser';
 				var session = g.cgi.param('session');
 				var url; try { url = g.cgi.param('url') || xulG.url } catch(E) { dump(E + '\n'); };
 				if (!url) url = urls.browser;
