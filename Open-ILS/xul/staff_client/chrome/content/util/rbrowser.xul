@@ -41,7 +41,12 @@
 				g.error.sdump('D_TRACE','my_init() for util_browser.xul');
 
 				g.cgi = new CGI();
-				var name = g.cgi.param('name') || 'Browser';
+				var name = g.cgi.param('tab_name') || g.cgi.param('name') || null;
+				if (!name) {
+					if (typeof window.xulG == 'object') {
+						name = window.xulG.name || window.xulG.tab_name || null;
+					}
+				}
 				var session = g.cgi.param('session');
 				var url; try { url = g.cgi.param('url') || xulG.url } catch(E) { dump(E + '\n'); };
 				if (!url) url = urls.browser;
@@ -56,7 +61,7 @@
 				);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
+					if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
 				}
 				if (typeof window.xulG && window.xulG.show_nav_buttons) {
 					document.getElementById('back').hidden = false;
