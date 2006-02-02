@@ -162,7 +162,7 @@ function save_user () {
 		init_editor(ok);
 
 	} catch (e) {
-		alert(e)
+		alert( js2JSON( e ))
 	};
 
 	return false;
