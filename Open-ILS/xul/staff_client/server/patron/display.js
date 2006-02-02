@@ -166,7 +166,6 @@ patron.display.prototype = {
 								+ '?url=' + window.escape( 
 									urls.XUL_PATRON_EDIT
 									+ '?ses=' + window.escape( obj.session )
-									+ '&adv=1'
 									+ '&usr=' + window.escape( obj.patron.id() )
 								),
 								{}, {
