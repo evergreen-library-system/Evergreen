@@ -58,6 +58,7 @@ circ.checkout.prototype = {
 								);
 								e.appendChild( ml );
 								ml.setAttribute('id','checkout_menulist');
+								ml.setAttribute('accesskey','');
 								ml.addEventListener(
 									'command',
 									function(ev) {
