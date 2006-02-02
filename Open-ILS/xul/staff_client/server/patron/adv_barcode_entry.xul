@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Retrieve Patron By Barcode -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="patron_barcode_entry_win" 
+	onload="my_init()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
+
+				g.cgi = new CGI();
+				var session = g.cgi.param('session');
+				if (!session) { 
+					g.error.sdump('D_ERROR','session = ' + session + '\n'
+						+ 'g.cgi._keys = ' + g.cgi._keys + '\n'
+						+ 'g.cgi.param("session") = ' + g.cgi.param('session') + '\n'
+						+ 'location = ' + location + '\n'
+						+ 'location.href = ' + location.href + '\n'
+					);
+					alert('pause.  session is ' + session ); 
+				}
+
+				var tb = document.getElementById('barcode_tb');
+				tb.addEventListener(
+					'keypress',
+					function(ev) {
+						if (ev.keyCode == 13 || ev.keyCode == 77) {
+							setTimeout(
+								function() {
+									spawn();
+								}, 0
+							);
+						}
+					},
+					false
+				);
+				tb.focus();
+	
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name('User Scan for Advanced Edit'); } catch(E) { alert(E); }
+				}
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function spawn() {
+			try {
+				var tb = document.getElementById('barcode_tb');
+				var barcode = tb.value;
+
+				var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( 
+					urls.XUL_PATRON_EDIT
+					+ '?ses=' + window.escape( g.cgi.param('session') )
+					+ '&adv=1'
+					+ '&barcode=' + window.escape( barcode )
+				);
+
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+
+					window.xulG.set_tab( loc, {}, { 'show_print_button' : true, } );
+
+				} else {
+
+					location.href = loc;
+				}
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<groupbox orient="vertical" flex="1">
+			<caption label="Retrieve Patron" />
+			<hbox>
+				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
+				<textbox id="barcode_tb" />
+				<button label="Submit" accesskey="S" oncommand="spawn();"/>
+			</hbox>
+			<hbox>
+				<label id="status"/>
+			</hbox>
+		</groupbox>
+	</vbox>
+
+</window>
+

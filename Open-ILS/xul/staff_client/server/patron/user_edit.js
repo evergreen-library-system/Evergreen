@@ -196,7 +196,8 @@ function init_editor (u) {
 		ses_id = cgi.param('ses');
 
 		var usr_id = cgi.param('usr');
-		if (!usr_id) {
+		var usr_barcode = cgi.param('barcode');
+		if (!usr_id && !usr_barcode) {
 
 			user = new au();
 			user.isnew(1);
@@ -218,7 +219,12 @@ function init_editor (u) {
 			user.cards().push(user.card());
 
 		} else {
-			var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve', ses_id, usr_id );
+			var req;
+			if (usr_id) {
+				req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve', ses_id, usr_id );
+			} else {
+				req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.fleshed.retrieve_by_barcode', ses_id, usr_barcode );
+			}
 			req.send(true);
 			user = req.getResultObject();
 		}
