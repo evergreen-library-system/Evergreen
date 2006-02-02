@@ -267,6 +267,10 @@ patron.display.prototype = {
 							spawn_checkout_interface();
 							obj._checkout_spawned = true;
 						}
+
+						if (patron.alert_message()) {
+							alert('** FIXME - Use the Confirmation Alert here **\nPatron Alert Message:  ' + patron.alert_message() );
+						}
 					},
 					'on_error' : function(E) {
 						location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?session='
