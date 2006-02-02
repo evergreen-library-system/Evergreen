@@ -47,7 +47,7 @@
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkout_auto" 
 		label="&staff.patron_display.checkout.auto_print_label;" 
-		accesskey="&staff.patron_display.checkout.auto_print_label.accesskey;"/> 
+		accesskey_old="&staff.patron_display.checkout.auto_print_label.accesskey;"/> 
 	<button id="checkout_done" 
 		label="&staff.patron_display.checkout.done_label;" 
 		command="cmd_checkout_done"
