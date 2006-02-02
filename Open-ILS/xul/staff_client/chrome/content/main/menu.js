@@ -91,6 +91,12 @@ main.menu.prototype = {
 
 
 			/* Admin menu */
+			'cmd_adv_user_edit' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY) + '?session=' + obj.w.escape(session), {}, {});
+				}
+			],
 			'cmd_stat_cat_edit' : [
 				['oncommand'],
 				function() {
