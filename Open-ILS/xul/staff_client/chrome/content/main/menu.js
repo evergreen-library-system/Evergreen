@@ -73,7 +73,9 @@ main.menu.prototype = {
 			'cmd_patron_register' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_EDIT) + '?ses=' + obj.w.escape(session), { 'tab_name' : 'Register Patron' }, {});
+					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + obj.w.escape( session ));
+					obj.set_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Register Patron' });
 				}
 			],
 			'cmd_circ_checkin' : [
