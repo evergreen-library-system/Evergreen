@@ -148,21 +148,36 @@ circ.checkout.prototype = {
 					[ obj.session, params ]
 				);
 				if (checkout.ilsevent == 0) {
-					if (!checkout.payload) {
-						checkout.payload = {};
-						if (!checkout.payload.circ) {
-							checkout.payload.circ = new aoc();
+					if (!checkout.payload) checkout.payload = {};
+					if (!checkout.payload.circ) {
+						checkout.payload.circ = new aoc();
+						if (checkout.payload.noncat_circ) {
+							checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
+							checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
+							checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
+							
+							JSAN.use('util.date');
+							var c = checkout.payload.noncat_circ.circ_time();
+							var d = c == "now" ? new Date() : util.date.db_date2Date( c );
+							var t =obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ];
+							var cd = t.circ_duration() || "14 days";
+							var i = util.date.interval_to_seconds( cd ) * 1000;
+							d.setTime( Date.parse(d) + i );
+							checkout.payload.circ.due_date( util.date.formatted_date(d,'%F') );
+
 						}
-						if (!checkout.payload.mvr) {
-							checkout.payload.mvr = new mvr();
-							checkout.payload.mvr.title(
-								/* assuming noncat */
-								obj.data.hash.cnct[ params.noncat_type ].name()
+					}
+					if (!checkout.payload.record) {
+						checkout.payload.record = new mvr();
+						if (checkout.payload.noncat_circ) {
+							checkout.payload.record.title(
+								obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ].name()
 							);
 						}
-						if (!checkout.payload.acp) {
-							checkout.payload.acp = new acp();
-						}
+					}
+					if (!checkout.payload.copy) {
+						checkout.payload.copy = new acp();
+						checkout.payload.copy.barcode( 'special' );
 					}
 					obj.list.append(
 						{

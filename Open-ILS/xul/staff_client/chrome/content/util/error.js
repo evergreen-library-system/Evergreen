@@ -38,7 +38,7 @@ util.error.prototype = {
 		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 'D_DATA' : false,
 
 		'D_CLAM' : false, 'D_PAGED_TREE' : false, 'D_GRID_LIST' : false, 'D_HTML_TABLE' : false,
-		'D_TAB' : false, 'D_LIST' : true,
+		'D_TAB' : false, 'D_LIST' : false,
 
 		'D_AUTH' : true, 'D_OPAC' : true, 'D_CAT' : true,
 
@@ -55,9 +55,9 @@ util.error.prototype = {
 
 		'D_PATRON_UTILS' : false, 'D_CIRC_UTILS' : false,
 
-		'D_FILE' : true, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : false, 'D_SES' : true,
+		'D_FILE' : false, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : false, 'D_SES' : true,
 		'D_SES_FUNC' : false, 'D_SES_RESULT' : true, 'D_SPAWN' : false, 'D_STRING' : false,
-		'D_UTIL' : false, 'D_WIN' : true, 'D_WIDGETS' : false
+		'D_UTIL' : false, 'D_WIN' : false, 'D_WIDGETS' : false
 	},
 
 	'filter_console_init' : function (p) {
