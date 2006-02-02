@@ -224,6 +224,8 @@ circ.checkout.prototype = {
 	},
 
 	'on_checkout' : function() {
+		this.controller.view.checkout_menu.selectedIndex = 0;
+		this.controller.view.checkout_barcode_entry_textbox.disabled = false;
 		this.controller.view.checkout_barcode_entry_textbox.value = '';
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 	},
