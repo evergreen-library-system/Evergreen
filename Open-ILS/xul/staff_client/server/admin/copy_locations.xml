@@ -1,0 +1,114 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Copy Locations Editor</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script>
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='adminlib.js'> </script>
+		<script language='javascript' src='copy_locations.js'> </script>
+
+		<link type='text/css' rel='stylesheet' href='admin.css' />
+	</head>
+
+	<body onload='try{clEditorInit();}catch(e){alert(js2JSON(e));}'>
+
+		<div class='welcome_box'>
+			<span>Welcome </span><b><span id='user'/></b>
+		</div>
+
+		<center>
+			<div class='title'> Copy Locations Editor </div>
+
+
+			<table class='data_grid data_grid_center' style='width: 95%'>
+				<thead>
+					<tr>
+						<td width='15%'>Name</td>
+						<td width='20%'>Owning Library</td>
+						<td width='15%'>
+							<span>Holdable </span>
+							<a class='context_help' href='javascript:void(0);' onclick='clHoldMsg();'> ??</a>
+						</td>
+						<td width='15%'>OPAC Visible</td>
+						<td width='15%'>Circulate</td>
+						<td width='10%'>Edit</td>
+						<td width='10%'>Delete</td>
+					</tr>
+				</thead>
+				<tbody id='cl_tbody'>
+					<tr id='cl_row'>
+						<td name='cl_name'> </td>
+						<td name='cl_owner'> </td>
+						<td name='cl_holdable'> </td>
+						<td name='cl_visible'> </td>
+						<td name='cl_circulate'> </td>
+						<td><input type='submit' value='Edit' name='cl_edit'> </input></td>
+						<td><input type='submit' value='Delete' name='cl_delete'> </input></td>
+					</tr>
+				</tbody>
+			</table>
+		 </center>
+
+		 <div class='hide_me'>
+			<span id='yes'>Yes</span>
+			<span id='no'>No</span>
+			<span id='cl_hold_msg'>
+				If a copy location is "Holdable", copies in that location may have holds placed on them.
+			</span>
+			<table>
+				<tbody>
+					<tr id='cl_new' class='insert_row'>
+						<td><input name='cl_new_name' type='text'> </input></td>
+						<td name='cl_new_owner'></td>
+						<td>
+							<span>Yes</span>
+							<span name='cl_new_holdable_yes'>
+								<input type='radio' name='cl_new_holdable'/>
+							</span>
+							<span>No</span>
+							<span name='cl_new_holdable_no'>
+								<input type='radio' name='cl_new_holdable'/>
+							</span>
+						</td>
+						<td>
+							<span>Yes</span>
+							<span name='cl_new_visible_yes'>
+								<input type='radio' name='cl_new_visible'/>
+							</span>
+							<span>No</span>
+							<span name='cl_new_visible_no'>
+								<input type='radio' name='cl_new_visible'/>
+							</span>
+						</td>
+						<td>
+							<span>Yes</span>
+							<span name='cl_new_circulate_yes'>
+								<input type='radio' name='cl_new_circulate'/>
+							</span>
+							<span>No</span>
+							<span name='cl_new_circulate_no'>
+								<input type='radio' name='cl_new_circulate'/>
+							</span>
+						</td>
+						<td><input type='submit' name='cl_new_commit' value='Submit'/></td>
+						<td><input type='submit' name='cl_new_cancel' value='Cancel'/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
+
