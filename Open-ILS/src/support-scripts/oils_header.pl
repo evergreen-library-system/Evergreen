@@ -128,7 +128,9 @@ sub oils_event_die {
 # Login to the auth server and set the global $authtoken var
 #----------------------------------------------------------------
 sub oils_login {
-	my( $username, $password ) = @_;
+	my( $username, $password, $type ) = @_;
+
+	$type |= "staff";
 
 	my $seed = $apputils->simplereq( $AUTH, 
 		'open-ils.auth.authenticate.init', $username );
@@ -136,7 +138,7 @@ sub oils_login {
 
 	my $response = $apputils->simplereq( $AUTH, 
 		'open-ils.auth.authenticate.complete', $username, 
-		md5_hex($seed . md5_hex($password)), "staff");
+		md5_hex($seed . md5_hex($password)), $type);
 	err("No auth response returned on login") unless $response;
 
 	oils_event_die($response);

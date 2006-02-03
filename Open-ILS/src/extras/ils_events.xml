@@ -45,6 +45,13 @@
 		</desc>
 	</event>
 
+	<event code='1202' textcode='ITEM_NOT_CATALOGED'>
+		<desc>
+			The requested item is not cataloged in the database
+		</desc>
+	</event>
+
+
 
 
 	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
@@ -145,10 +152,18 @@
 		<desc> The max fines object does not exist </desc>
 	</event>
 
+	<event code='1515' textcode='COPY_LOCATION_NOT_FOUND'>
+		<desc> The copy location object does not exist </desc>
+	</event>
+
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
 		<desc> The non-cataloged type object already exists </desc>
+	</event>
+
+	<event code='1701' textcode='COPY_LOCATION_EXISTS'>
+		<desc> The copy location object already exists </desc>
 	</event>
 
 

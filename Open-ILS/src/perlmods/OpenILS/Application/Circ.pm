@@ -9,6 +9,7 @@ use OpenILS::Application::Circ::StatCat;
 use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::Money;
 use OpenILS::Application::Circ::NonCat;
+use OpenILS::Application::Circ::CopyLocations;
 
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";

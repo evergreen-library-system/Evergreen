@@ -578,11 +578,30 @@ sub fetch_copy_statuses {
 		'open-ils.storage.direct.config.copy_status.retrieve.all.atomic' );
 }
 
+sub fetch_copy_location {
+	my( $self, $id ) = @_;
+	my $evt;
+	my $cl = $self->storagereq(
+		'open-ils.storage.direct.asset.copy_location.retrieve', $id );
+	$evt = OpenILS::Event->new('COPY_LOCATION_NOT_FOUND') unless $cl;
+	return ($cl, $evt);
+}
+
 sub fetch_copy_locations {
 	my $self = shift; 
 	return $self->simplereq(
 		'open-ils.storage', 
 		'open-ils.storage.direct.asset.copy_location.retrieve.all.atomic');
+}
+
+sub fetch_copy_location_by_name {
+	my( $self, $name, $org ) = @_;
+	my $evt;
+	my $cl = $self->storagereq(
+		'open-ils.storage.direct.asset.copy_location.search_where',
+			{ name => $name, owning_lib => $org } );
+	$evt = OpenILS::Event->new('COPY_LOCATION_NOT_FOUND') unless $cl;
+	return ($cl, $evt);
 }
 
 sub fetch_callnumber {
@@ -705,6 +724,12 @@ sub fetch_max_fine_by_name {
 	$obj = $obj->[0];
 	$evt = OpenILS::Event->new('MAX_FINE_NOT_FOUND') unless $obj;
 	return ($obj, $evt);
+}
+
+sub storagereq {
+	my( $self, $method, @params ) = @_;
+	return $self->simplereq(
+		'open-ils.storage', $method, @params );
 }
 
 
