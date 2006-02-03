@@ -2,6 +2,7 @@ package OpenILS::Application::Actor;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use Data::Dumper;
+$Data::Dumper::Indent = 0;
 use OpenILS::Event;
 
 use Digest::MD5 qw(md5_hex);
@@ -14,8 +15,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Utils::ModsParser;
-use OpenSRF::Utils::Logger;
-my $logger = "OpenSRF::Utils::Logger";
+use OpenSRF::Utils::Logger qw/$logger/;
 
 use OpenSRF::Utils::Cache;
 
@@ -26,6 +26,7 @@ sub initialize {
 }
 
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 
 sub _d { warn "Patron:\n" . Dumper(shift()); }
 
@@ -135,6 +136,8 @@ sub update_patron {
 
 	my $session = $apputils->start_db_session();
 	my $err = undef;
+
+	$logger->debug("Updating Patron: " . Dumper($patron));
 
 	#warn $user_session . " " . $patron . "\n";
 	#_d($patron);
@@ -633,14 +636,11 @@ sub _create_stat_maps {
 
 		my $req = $session->request($method, $map);
 		my $status = $req->gather(1);
-
-		#warn "Updated\n";
-
-		if(!$status) {
+		
+		if( $map->isnew() and !$status) {
 			throw OpenSRF::EX::ERROR 
-				("Error updating stat map with method $method");	
+				("Error creating permission map with method $method");	
 		}
-
 	}
 
 	return $new_patron;
@@ -671,11 +671,9 @@ sub _create_perm_maps {
 		my $req = $session->request($method, $map);
 		my $status = $req->gather(1);
 
-		#warn "Updated\n";
-
-		if(!$status) {
+		if($map->isnew and !$status) {
 			throw OpenSRF::EX::ERROR 
-				("Error updating permission map with method $method");	
+				("Error creating permission map with method $method");	
 		}
 
 	}
@@ -747,8 +745,7 @@ sub user_retrieve_by_barcode {
 	my($self, $client, $user_session, $barcode) = @_;
 
 	$logger->debug("Searching for user with barcode $barcode");
-	#my $user_obj = $apputils->check_user_session( $user_session ); 
-	my ($user_obj, $evt) = $apputils->check_ses($user_session);
+	my ($user_obj, $evt) = $apputils->checkses($user_session);
 	return $evt if $evt;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
@@ -1005,7 +1002,6 @@ __PACKAGE__->register_method(
 sub patron_adv_search {
 	my( $self, $client, $staff_login, $search_hash ) = @_;
 
-	use Data::Dumper;
 	#warn "patron adv with $staff_login and search " . 
 		#Dumper($search_hash) . "\n";
 
