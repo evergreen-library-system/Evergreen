@@ -75,18 +75,20 @@ sub create_circ_ctx {
 	my $ctx = \%params;
 
 	$evt = _ctx_add_patron_objects($ctx, %params);
-	return $evt if $evt;
+	return (undef,$evt) if $evt;
 
-	if( ($params{copy} or $params{copyid} or $params{barcode}) and !$params{noncat} ) {
-		$evt = _ctx_add_copy_objects($ctx, %params);
-		return $evt if $evt;
+	if(!$params{noncat}) {
+		if( $evt = _ctx_add_copy_objects($ctx, %params) ) {
+			$ctx->{precat} = 1 if($evt->{textcode} eq 'COPY_NOT_FOUND')
+		} else {
+			$ctx->{precat} = 1 if ( $ctx->{copy}->call_number == -1 ); # special case copy
+		}
 	}
 
 	_doctor_patron_object($ctx) if $ctx->{patron};
 	_doctor_copy_object($ctx) if $ctx->{copy};
-	_doctor_circ_objects($ctx);
 	_build_circ_script_runner($ctx);
-	_add_script_runner_methods( $ctx );
+	_add_script_runner_methods($ctx);
 
 	return $ctx;
 }
@@ -125,7 +127,9 @@ sub _ctx_add_copy_objects {
 	$ctx->{copy_statuses} = $cache{copy_statuses};
 	$ctx->{copy_locations} = $cache{copy_locations};
 
-	my $copy = $params{copy} if $params{copy};
+	my $copy = $params{copy} || undef;
+
+	$logger->debug("Fetched : We were provided a copy object: " . Dumper($copy)) if $copy;
 
 	if(!$copy) {
 
@@ -140,10 +144,12 @@ sub _ctx_add_copy_objects {
 		}
 	}
 
-	$ctx->{copy} = $copy;
-
-	( $ctx->{title}, $evt ) = $apputils->fetch_record_by_copy( $ctx->{copy}->id );
-	return $evt if $evt;
+	if( $copy ) {
+		$logger->debug("Copy status: " . $copy->status);
+		( $ctx->{title}, $evt ) = $apputils->fetch_record_by_copy( $copy->id );
+		return $evt if $evt;
+		$ctx->{copy} = $copy;
+	}
 
 	return undef;
 }
@@ -155,7 +161,7 @@ sub _ctx_add_copy_objects {
 sub _doctor_copy_object {
 
 	my $ctx = shift;
-	my $copy = $ctx->{copy};
+	my $copy = $ctx->{copy} || return undef;
 
 	# set the copy status to a status name
 	$copy->status( _get_copy_status( 
@@ -174,7 +180,7 @@ sub _doctor_copy_object {
 # ------------------------------------------------------------------------------
 sub _doctor_patron_object {
 	my $ctx = shift;
-	my $patron = $ctx->{patron};
+	my $patron = $ctx->{patron} || return undef;
 
 	# push the standing object into the patron
 	if(ref($ctx->{patron_standings})) {
@@ -250,6 +256,7 @@ sub _build_circ_script_runner {
 		$runner->add_path( $_ );
 	}
 
+
 	$runner->insert( 'environment.patron',		$ctx->{patron}, 1);
 	$runner->insert( 'environment.title',		$ctx->{title}, 1);
 	$runner->insert( 'environment.copy',		$ctx->{copy}, 1);
@@ -311,10 +318,6 @@ sub permit_circ {
 
 	my ( $requestor, $patron, $ctx, $evt );
 
-	if(1) {
-		$logger->debug("PERMIT: " . Dumper($params));
-	}
-
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
 		$apputils->checkses_requestor( 
@@ -353,9 +356,18 @@ sub _run_permit_scripts {
 
 	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 
-	if ( $ctx->{noncat}  ) {
-		my $key = _cache_permit_key(-1, $patronid, $ctx->{requestor}->id);
-		return OpenILS::Event->new($evtname, payload => $key);
+	my $key;
+
+	if( $ctx->{noncat} ) {
+		$logger->debug("Exiting circ permit early because item is a non-cataloged item");
+		$key = _cache_permit_key(-1, $patronid, $ctx->{requestor}->id);
+		return OpenILS::Event->new('SUCCESS', payload => $key);
+	}
+
+	if( $ctx->{precat} ) {
+		$logger->debug("Exiting circ permit early because item has yet to be cataloged");
+		$key = _cache_permit_key(-1, $patronid, $ctx->{requestor}->id);
+		return OpenILS::Event->new('ITEM_NOT_CATALOGED', payload => $key);
 	}
 
 	$runner->load($scripts{circ_permit_copy});
@@ -365,12 +377,11 @@ sub _run_permit_scripts {
 		"and copy $barcode returned event: $evtname");
 
 	if( $evtname eq 'SUCCESS' ) {
-		my $key = _cache_permit_key($ctx->{copy}->id, $patronid, $ctx->{requestor}->id);
+		$key = _cache_permit_key($ctx->{copy}->id, $patronid, $ctx->{requestor}->id);
 		return OpenILS::Event->new($evtname, payload => $key);
 	}
 
 	return OpenILS::Event->new($evtname);
-
 }
 
 # takes copyid, patronid, and requestor id
@@ -426,15 +437,7 @@ sub checkout {
 			$authtoken, $params->{patron}, 'COPY_CHECKOUT' );
 	return $evt if $evt;
 
-	if( $params->{noncat} ) {
-		return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
-			unless _check_permit_key( $key, -1, $patron->id, $requestor->id );
-
-		( $circ, $evt ) = _checkout_noncat( $requestor, $patron, %$params );
-		return $evt if $evt;
-		return OpenILS::Event->new('SUCCESS', 
-			payload => { noncat_circ => $circ } );
-	}
+	return _checkout_noncat( $key, $requestor, $patron, %$params ) if $params->{noncat};
 
 	my $session = $U->start_db_session();
 
@@ -469,8 +472,8 @@ sub checkout {
 	$evt = _handle_related_holds($ctx);
 	return $evt if $evt;
 
-	#$U->commit_db_session($session);
-	$session->disconnect;
+	$U->commit_db_session($session);
+	#$session->disconnect;
 
 	return OpenILS::Event->new('SUCCESS', 
 		payload		=> { 
@@ -479,6 +482,8 @@ sub checkout {
 			record	=> $U->record_to_mvr($ctx->{title}),
 		} );
 }
+
+
 
 
 sub _run_checkout_scripts {
@@ -595,7 +600,12 @@ sub _update_checkout_copy {
 	my $ctx = shift;
 	my $copy = $ctx->{copy};
 
-	$copy->status( $copy->status->id );
+	my $s;
+	for my $status (@{$cache{copy_statuses}}) { #XXX Abstractify me
+		$s = $status if( $status->name eq 'Checked out' );
+	}
+
+	$copy->status( $s->id ) if $s;
 	$copy->editor( $ctx->{requestor}->id );
 	$copy->edit_date( 'now' );
 	$copy->location( $copy->location->id );
@@ -659,10 +669,20 @@ sub _handle_related_holds {
 
 
 sub _checkout_noncat {
-	my ( $requestor, $patron, %params ) = @_;
-	my $circlib = $params{noncat_circ_lib} || $requestor->home_ou;
-	return OpenILS::Application::Circ::NonCat::create_non_cat_circ(
+	my ( $key, $requestor, $patron, %params ) = @_;
+	my( $circ, $circlib, $evt );
+
+	$circlib = $params{noncat_circ_lib} || $requestor->home_ou;
+
+	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
+		unless _check_permit_key( $key, -1, $patron->id, $requestor->id );
+
+	( $circ, $evt ) = OpenILS::Application::Circ::NonCat::create_non_cat_circ(
 			$requestor->id, $patron->id, $circlib, $params{noncat_type} );
+
+	return $evt if $evt;
+	return OpenILS::Event->new( 
+		'SUCCESS', payload => { noncat_circ => $circ } );
 }
 
 
