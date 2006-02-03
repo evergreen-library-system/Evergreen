@@ -28,15 +28,12 @@ sub new {
 	throw OpenSRF::EX 
 		("No event defined with textcode: $event") unless defined $e;
 
-	my $h = { ilsevent => $e, textcode => $event, %params };
-
-	return $h;
+	return { ilsevent => $e, textcode => $event, %params };
 }
 
 sub _load_events {
 	my $settings_client = OpenSRF::Utils::SettingsClient->new();
 	my $eventsxml =  $settings_client->config_value( "ils_events" );
-#	my $eventsxml =  "/openils/conf/ils_events.xml";
 
 	if(!$eventsxml) { 
 		throw OpenSRF::EX ("No ils_events file found in settings config"); 
