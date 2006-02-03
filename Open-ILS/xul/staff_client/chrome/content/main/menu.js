@@ -117,7 +117,12 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Non-Cataloged Type Editor'},{});
 				}
 			],
-
+			'cmd_copy_location_edit' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Copy Location Editor'},{});
+				}
+			],
 			'cmd_test' : [
 				['oncommand'],
 				function() {

@@ -58,6 +58,7 @@ var urls = {
 	'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
 	'XUL_CAT_DETAILS' : 'chrome://open_ils_staff_client/content/cat/details.xul',
 	'XUL_COPY_EDITOR' : '/xul/server/cat/copy_editor.xul',
+	'XUL_COPY_LOCATION_EDIT' : '/xul/server/admin/copy_locations.xml',
 	'XUL_COPY_VOLUME_BROWSE' : 'chrome://open_ils_staff_client/content/legacy/_browse.xul',
 	'XUL_DEBUG_CONSOLE' : 'chrome://global/content/console.xul',
 	'XUL_DEBUG_FIELDMAPPER' : '/xul/server/util/fm_view.xul',
