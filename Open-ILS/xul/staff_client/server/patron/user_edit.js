@@ -476,7 +476,7 @@ function init_editor (u) {
 		display_perm(f,perm_list[i],staff_perms);
 
 
-	req = new RemoteRequest( 'open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all', ses_id, user.home_ou() );
+	req = new RemoteRequest( 'open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all', ses_id );
 	req.send(true);
 	var sc_list = req.getResultObject();
 
