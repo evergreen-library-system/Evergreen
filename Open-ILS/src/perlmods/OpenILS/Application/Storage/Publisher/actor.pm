@@ -355,7 +355,7 @@ sub fleshed_actor_stat_cat {
         my $client = shift;
         my @list = @_;
         
-	@list = ($list[0]) unless ($self->api_name =~ /batch$/o);
+	@list = ($list[0]) unless ($self->api_name =~ /batch/o);
 
 	for my $sc (@list) {
 		my $cat = actor::stat_cat->retrieve($sc);
