@@ -25,6 +25,39 @@ my $apputils = "OpenILS::Application::AppUtils";
 
 
 __PACKAGE__->register_method(
+	method	=> "retrieve_stat_cat_list",
+	argc	=> 1,
+	api_name	=> "open-ils.circ.stat_cat.actor.retrieve.batch");
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_stat_cat_list",
+	argc	=> 1,
+	api_name	=> "open-ils.circ.stat_cat.asset.retrieve.batch");
+
+# retrieves all of the stat cats for a given org unit
+# if no orgid, user_session->home_ou is used
+
+sub retrieve_stat_cat_list {
+	my( $self, $client, $user_session, @sc ) = @_;
+
+	if (ref($sc[0])) {
+		@sc = @{$sc[0]};
+	}
+
+	my $method = "open-ils.storage.fleshed.actor.stat_cat.retrieve.batch.atomic"; 
+	if( $self->api_name =~ /asset/ ) {
+		$method = "open-ils.storage.fleshed.asset.stat_cat.retrieve.batch.atomic"; 
+	}
+
+	my $user_obj = $apputils->check_user_session($user_session); 
+
+	my $cats = $apputils->simple_scalar_request(
+				"open-ils.storage", $method, @sc);
+
+	return [ sort { $a->name cmp $b->name } @$cats ];
+}
+
+__PACKAGE__->register_method(
 	method	=> "retrieve_stat_cats",
 	api_name	=> "open-ils.circ.stat_cat.actor.retrieve.all");
 

@@ -350,8 +350,43 @@ __PACKAGE__->register_method(
 	stream          => 1,
 );
 
+sub fleshed_actor_stat_cat {
+        my $self = shift;
+        my $client = shift;
+        my @list = @_;
+        
+	@list = ($list[0]) unless ($self->api_name =~ /batch$/o);
+
+	for my $sc (@list) {
+		my $cat = actor::stat_cat->retrieve($sc);
+		next unless ($cat);
+
+		my $sc_fm = $cat->to_fieldmapper;
+		$sc_fm->entries( [ map { $_->to_fieldmapper } $cat->entries ] );
+
+		$client->respond( $sc_fm );
+
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.fleshed.actor.stat_cat.retrieve',
+        api_level       => 1,
+	argc		=> 1,
+        method          => 'fleshed_actor_stat_cat',
+);
+
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.fleshed.actor.stat_cat.retrieve.batch',
+        api_level       => 1,
+	argc		=> 1,
+        stream          => 1,
+        method          => 'fleshed_actor_stat_cat',
+);
+
 #XXX Fix stored proc calls
-sub ranged_actor_stat_cat {
+sub ranged_actor_stat_cat_all {
         my $self = shift;
         my $client = shift;
         my $ou = ''.shift();
@@ -385,15 +420,17 @@ sub ranged_actor_stat_cat {
 __PACKAGE__->register_method(
         api_name        => 'open-ils.storage.ranged.fleshed.actor.stat_cat.all',
         api_level       => 1,
+	argc		=> 1,
         stream          => 1,
-        method          => 'ranged_actor_stat_cat',
+        method          => 'ranged_actor_stat_cat_all',
 );
 
 __PACKAGE__->register_method(
         api_name        => 'open-ils.storage.ranged.actor.stat_cat.all',
         api_level       => 1,
+	argc		=> 1,
         stream          => 1,
-        method          => 'ranged_actor_stat_cat',
+        method          => 'ranged_actor_stat_cat_all',
 );
 
 #XXX Fix stored proc calls

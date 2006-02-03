@@ -622,13 +622,14 @@ sub _create_stat_maps {
 
 	for my $map (@$maps) {
 
-		next unless($map->isnew() || $map->ischanged());
-
 		my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
-		if($map->isnew()) {
+		if ($map->isdeleted()) {
+			$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.delete";
+		} elsif ($map->isnew()) {
 			$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.create";
 			$map->clear_id;
 		}
+
 
 		$map->target_usr($new_patron->id);
 
@@ -637,10 +638,10 @@ sub _create_stat_maps {
 		my $req = $session->request($method, $map);
 		my $status = $req->gather(1);
 		
-		if( $map->isnew() and !$status) {
-			throw OpenSRF::EX::ERROR 
-				("Error creating permission map with method $method");	
-		}
+		#if(!$map->ischanged && !$status) {
+		#	throw OpenSRF::EX::ERROR 
+		#		("Error handling stat_cat map with method $method");	
+		#}
 	}
 
 	return $new_patron;

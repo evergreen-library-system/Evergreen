@@ -84,7 +84,7 @@ function clear_alert_message () {
 function save_user () {
 	user.ischanged(1);
 
-	//alert(	js2JSON(user));
+	alert(	js2JSON(user.stat_cat_entries()) );
 	//return false;
 
 	try {
@@ -164,6 +164,8 @@ function save_user () {
 	} catch (e) {
 		alert( js2JSON( e ))
 	};
+
+
 
 	return false;
 }
@@ -473,7 +475,112 @@ function init_editor (u) {
 	for (var i in perm_list)
 		display_perm(f,perm_list[i],staff_perms);
 
+
+	req = new RemoteRequest( 'open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all', ses_id, user.home_ou() );
+	req.send(true);
+	var sc_list = req.getResultObject();
+
+	var missing_scs = [];
+	for (var i in user.stat_cat_entries()) {
+		var found = 0;
+		for (var j in sc_list) {
+			if (sc_list[j].id() == user.stat_cat_entries()[i].stat_cat()) {
+				found = 1;
+				break;
+			}
+		}
+		if (!found)
+			missing_scs.push(user.stat_cat_entries()[i].stat_cat());
+	}
+	
+	req = new RemoteRequest( 'open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.batch', ses_id, missing_scs );
+	req.send(true);
+	var foreign_sc_list = req.getResultObject();
+
+	f = document.getElementById('statcats');
+	while (f.firstChild) f.removeChild(f.lastChild);
+
+	for (var i in sc_list)
+		display_sc(f,sc_list[i],user.stat_cat_entries());
+
+	for (var i in foreign_sc_list)
+		display_sc(f,foreign_sc_list[i],user.stat_cat_entries(), true);
+
 	return true;
+}
+
+function set_sc_value (node) {
+	var id = parseInt(node.getAttribute('scid'));
+	var value = node.value;
+
+
+	var sc;
+	for (var i in user.stat_cat_entries()) {
+		if (user.stat_cat_entries()[i].stat_cat() == id) {
+			user.stat_cat_entries()[i].stat_cat_entry(value);
+			if (value == '') {
+				user.stat_cat_entries()[i].isdeleted(1);
+			} else {
+				user.stat_cat_entries()[i].isdeleted(0);
+				user.stat_cat_entries()[i].ischanged(1);
+			}
+			sc = user.stat_cat_entries()[i];
+			break;
+		}
+	}
+
+	if (!sc) {
+		sc = new actscecm();
+		sc.isnew(1);
+		sc.stat_cat_entry(value);
+		sc.stat_cat(id);
+		sc.target_usr(user.id());
+
+		user.stat_cat_entries().push(sc);
+	}
+}
+
+function display_sc (root,sc_def, user_scs, foreign) {
+
+	var sc;
+	for (var i in user_scs) {
+		if (sc_def.id() == user_scs[i].stat_cat()) {
+			sc = user_scs[i];
+			break;
+		}
+	}
+
+	var sc_row = findNodeByName(document.getElementById('statcat-tmpl'), 'scrow').cloneNode(true);
+	root.appendChild(sc_row);
+
+	findNodeByName(sc_row,'sc.name').appendChild(text(sc_def.name()));
+
+	var text_box = findNodeByName(sc_row,'sce.value');
+	text_box.setAttribute('scid', sc_def.id());
+	if (sc) text_box.value = sc.stat_cat_entry();
+
+	if (!foreign) {
+		if (sc_def.entries().length > 0) {
+			var selector = findNodeByName(sc_row,'sce_select');
+			selector.id = 'scid-' + sc_def.id();
+
+			removeCSSClass(selector.parentNode, 'hideme');
+	
+			selectBuilder(
+				'scid-' + sc_def.id(),
+				sc_def.entries(),
+				(sc ? sc.stat_cat_entry() : ''),
+				{ label_field		: 'value',
+			  	value_field		: 'value',
+			  	empty_label		: '-- Select One --',
+			  	empty_value		: '',
+			  	clear			: true }
+			);
+		}
+	} else {
+		text_box.disabled = true;
+		text_box.parentNode.appendChild(text('(Foreign Stat Cat)'));
+	}
 }
 
 function display_perm (root,perm_def,staff_perms) {

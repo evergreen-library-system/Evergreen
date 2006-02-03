@@ -59,7 +59,7 @@
 	<body onload="try { init_editor() } catch(E) { alert(js2JSON(E)); }">
 		<form method="GET" name="editor" id="editor" >
 
-		<table>
+		<table width="100%">
 			<tr>
 				<th colspan="2">User Identifcation</th>
 			</tr>
@@ -224,8 +224,7 @@
 				<td class="value"><select multiple="muliple" name="permgroups" id="permgroups"/></td>
 			</tr>
 			<tr class='advanced hideme'>
-				<td class="label">User Specific Permissions:</td>
-				<td class="value">
+				<td class="value" colspan="2">
 					<table width="100%">
 						<thead>
 							<tr>
@@ -239,6 +238,12 @@
 					</table>
 				</td>
 			</tr>
+
+
+			<tr>
+				<th colspan="2">Local Statistical Catagories</th>
+			</tr>
+			<tbody id="statcats" name="statcats"/>
 
 
 			<tr>
@@ -296,6 +301,26 @@
 				</tr>
 			</table>
 		</div>
+
+		<div class='hideme' id="statcat-tmpl">
+			<tr name='scrow'>
+				<td class="label" name='sclabel' valign='top'>
+					<span name="sc.name"/>
+				</td>
+				<td class="value">
+					<input type="text" name="sce.value" onchange="set_sc_value(this);"/>
+					<div class='hideme'>
+						<select
+							onchange="
+								var x = findNodeByName(this.parentNode.parentNode,'sce.value');
+								x.value = this.options[this.selectedIndex].value;
+								set_sc_value(x);"
+							name="sce_select"/>
+					</div>
+				</td>
+			</tr>
+		</div>
+
 		<div class='hideme' id="permission-tmpl">
 			<tr name='prow'>
 				<td class="label" name='plabel'>
