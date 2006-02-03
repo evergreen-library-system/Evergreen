@@ -30,6 +30,25 @@ patron.summary.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
+					'patron_alert' : [
+						['render'],
+						function(e) {
+							return function() {
+								JSAN.use('util.widgets');
+								util.widgets.remove_children( e );
+								if (obj.patron.alert_message()) {
+									e.appendChild(
+										document.createTextNode(
+											obj.patron.alert_message()
+										)
+									);
+									e.parentNode.hidden = false;
+								} else {
+									e.parentNode.hidden = true;
+								}
+							};
+						}
+					],
 					'patron_name' : [
 						['render'],
 						function(e) {

@@ -12,6 +12,10 @@
 </box>
 
 <vbox id="patron_info_sidebar" flex="1">
+	<groupbox id="PatronSummaryAlert_groupbox" flex="0" hidden="true">
+		<caption id="psagbc" label="Alert" class="shrinkable_groupbox"/>
+		<description id="patron_alert"/>
+	</groupbox>
 	<groupbox id="PatronSummaryStatus_groupbox" flex="0"/>
 	<groupbox id="PatronSummarySurvey_groupbox" flex="0">
 		<caption id="pdsgbc" label="Surveys" class="shrinkable_groupbox"/>
