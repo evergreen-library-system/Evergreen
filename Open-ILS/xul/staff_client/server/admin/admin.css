@@ -12,4 +12,4 @@
 .padded { padding-left: 7px; padding-right: 7px; }
 select { width: 12em; }
 .select_big { width: 15em; }
-
+.context_help { font-weight: bold; color: blue; }

@@ -31,6 +31,56 @@
 
 		<center>
 			<div class='title'> Copy Locations Editor </div>
+			<br/>
+
+			<table class='data_grid data_grid_center' width='65%'>
+				<thead>
+					<tr><td colspan='4'>Create a new copy location</td></tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td id='id'>Name: </td>
+						<td>
+							<input id='cl_new_name' type='text' size='10'/>
+						</td>
+						<td>Holdable: </td>
+						<td>
+							<span>Yes</span>
+							<input type='radio' name='cl_new_hold' id='cl_new_hold_yes'/>
+							<span>No</span>
+							<input type='radio' name='cl_new_hold'  
+								id='cl_new_hold_no' checked='checked'> </input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>OPAC Visible: </td>
+						<td>
+							<span>Yes</span>
+							<input type='radio' name='cl_new_vis' id='cl_new_vis_yes' />
+							<span>No</span>
+							<input type='radio' name='cl_new_vis'  id='cl_new_vis_no' checked='checked'> </input>
+						</td>
+						<td>Circulate: </td>
+						<td>
+							<span>Yes</span>
+							<input type='radio' name='cl_new_circulate' id='cl_new_circulate_yes' />
+							<span>No</span>
+							<input type='radio' name='cl_new_circulate'  
+								id='cl_new_circulate_no' checked='checked'> </input>
+						</td>
+					</tr>
+					<tr>
+						<td>Owning Library:</td>
+						<td colspan='2' >
+							<select id='cl_new_owner' disabled='disabled'> </select>
+						</td>
+						<td><input id='sc_new_submit' type='submit' value='Create' disabled='disabled'/></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br/><hr/><br/>
 
 
 			<table class='data_grid data_grid_center' style='width: 95%'>
@@ -40,7 +90,7 @@
 						<td width='20%'>Owning Library</td>
 						<td width='15%'>
 							<span>Holdable </span>
-							<a class='context_help' href='javascript:void(0);' onclick='clHoldMsg();'> ??</a>
+							<a class='context_help' href='javascript:clHoldMsg();'> ??</a>
 						</td>
 						<td width='15%'>OPAC Visible</td>
 						<td width='15%'>Circulate</td>
@@ -55,8 +105,8 @@
 						<td name='cl_holdable'> </td>
 						<td name='cl_visible'> </td>
 						<td name='cl_circulate'> </td>
-						<td><input type='submit' value='Edit' name='cl_edit'> </input></td>
-						<td><input type='submit' value='Delete' name='cl_delete'> </input></td>
+						<td><input type='submit' value='Edit' name='cl_edit' disabled='disabled'> </input></td>
+						<td><input type='submit' value='Delete' name='cl_delete' disabled='disabled'> </input></td>
 					</tr>
 				</tbody>
 			</table>
@@ -68,43 +118,47 @@
 			<span id='cl_hold_msg'>
 				If a copy location is "Holdable", copies in that location may have holds placed on them.
 			</span>
+			<span id='cl_delete_confirm'>
+				Are you sure you wish to delete the selected copy location?
+				Note: If copies are currently attached to this location, the delete operation will fail.
+			</span>
 			<table>
 				<tbody>
-					<tr id='cl_new' class='insert_row'>
-						<td><input name='cl_new_name' type='text'> </input></td>
-						<td name='cl_new_owner'></td>
+					<tr id='cl_edit' class='insert_row'>
+						<td><input name='cl_edit_name' type='text'> </input></td>
+						<td name='cl_edit_owner'></td>
 						<td>
 							<span>Yes</span>
-							<span name='cl_new_holdable_yes'>
-								<input type='radio' name='cl_new_holdable'/>
+							<span name='cl_edit_holdable_yes'>
+								<input type='radio' name='cl_edit_holdable'/>
 							</span>
 							<span>No</span>
-							<span name='cl_new_holdable_no'>
-								<input type='radio' name='cl_new_holdable'/>
+							<span name='cl_edit_holdable_no'>
+								<input type='radio' name='cl_edit_holdable'/>
 							</span>
 						</td>
 						<td>
 							<span>Yes</span>
-							<span name='cl_new_visible_yes'>
-								<input type='radio' name='cl_new_visible'/>
+							<span name='cl_edit_visible_yes'>
+								<input type='radio' name='cl_edit_visible'/>
 							</span>
 							<span>No</span>
-							<span name='cl_new_visible_no'>
-								<input type='radio' name='cl_new_visible'/>
+							<span name='cl_edit_visible_no'>
+								<input type='radio' name='cl_edit_visible'/>
 							</span>
 						</td>
 						<td>
 							<span>Yes</span>
-							<span name='cl_new_circulate_yes'>
-								<input type='radio' name='cl_new_circulate'/>
+							<span name='cl_edit_circulate_yes'>
+								<input type='radio' name='cl_edit_circulate'/>
 							</span>
 							<span>No</span>
-							<span name='cl_new_circulate_no'>
-								<input type='radio' name='cl_new_circulate'/>
+							<span name='cl_edit_circulate_no'>
+								<input type='radio' name='cl_edit_circulate'/>
 							</span>
 						</td>
-						<td><input type='submit' name='cl_new_commit' value='Submit'/></td>
-						<td><input type='submit' name='cl_new_cancel' value='Cancel'/></td>
+						<td><input type='submit' name='cl_edit_commit' value='Submit'/></td>
+						<td><input type='submit' name='cl_edit_cancel' value='Cancel'/></td>
 					</tr>
 				</tbody>
 			</table>

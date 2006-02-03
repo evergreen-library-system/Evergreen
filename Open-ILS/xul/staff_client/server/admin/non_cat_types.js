@@ -84,9 +84,8 @@ function ncDisplayTypes(r) {
 }
 
 function ncSetRowCallbacks( type, owner, tbody, row ) {
-	var tdepth = findOrgDepth( owner );
-	var mydepth = findOrgDepth( PERMS['UPDATE_NON_CAT_TYPE'] );
-	if( mydepth != -1 && mydepth <= tdepth ) $n(row, 'nc_edit').disabled = false;
+
+	checkDisabled( $n(row, 'nc_edit'), owner, 'UPDATE_NON_CAT_TYPE');
 
 	mydepth = findOrgDepth( PERMS['DELETE_NON_CAT_TYPE'] );
 	if( mydepth != -1 && mydepth <= tdepth ) $n(row, 'nc_delete').disabled = false;

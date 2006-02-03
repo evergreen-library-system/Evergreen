@@ -52,7 +52,24 @@ function cleanTbody(tbody, key) {
 }
 
 
+/** Inserts a row into a specified place in a table
+  * tbody is the table body
+  * row is the context row after which the new row is to be inserted
+  * newRow is the new row to insert
+  */
 function insRow( tbody, row, newRow ) {
 	if(row.nextSibling) tbody.insertBefore( newRow, row.nextSibling );
 	else{ tbody.appendChild(newRow); }
+}
+
+
+/** Checks to see if a given node should be enabled
+  * A node should be enabled if the itemOrg is lower in the
+  * org tree than my permissions allow editing
+  * I.e. I can edit the context item because it's "below" me
+  */
+function checkDisabled( node, itemOrg, perm ) {
+	var itemDepth = findOrgDepth(itemOrg);
+	var mydepth = findOrgDepth(PERMS[perm]);
+	if( mydepth != -1 && mydepth <= itemDepth ) node.disabled = false;
 }
