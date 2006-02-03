@@ -4,7 +4,8 @@
 	<head>
 		<title>Evergreen: Statistical Category Editor</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js//config.js'> </script> <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script> 
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
 		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
 	
 		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
@@ -18,7 +19,7 @@
 		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
 		<script language='javascript' src='adminlib.js'> </script>
 		<script language='javascript' src='stat_cat_editor.js'> </script>
-		<link type='text/css' rel='stylesheet' href='admin.css' name='meduim_fonts' csstype='font'/>
+		<link type='text/css' rel='stylesheet' href='admin.css'/>
 	</head>
 
 	<body onload='try{scEditorInit();}catch(e){alert(js2JSON(e));}'>

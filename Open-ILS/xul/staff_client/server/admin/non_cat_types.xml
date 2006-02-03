@@ -20,7 +20,7 @@
 		<script language='javascript' src='adminlib.js'> </script>
 		<script language='javascript' src='non_cat_types.js'> </script>
 
-		<link type='text/css' rel='stylesheet' href='admin.css' name='meduim_fonts' csstype='font'/>
+		<link type='text/css' rel='stylesheet' href='admin.css'/>
 	</head>
 
 	<body onload='try{ncEditorInit();}catch(e){alert(js2JSON(e));}'>
