@@ -64,7 +64,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var content_params = { 'session' : session, 'authtime' : authtime };
-					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
+					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':'Catalog'}, content_params);
 				}
 			],
 
@@ -140,25 +140,25 @@ main.menu.prototype = {
 			'cmd_console' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{'tab_name':'Console'},{});
 				}
 			],
 			'cmd_shell' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_SHELL),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_SHELL),{'tab_name':'JS Shell'},{});
 				}
 			],
 			'cmd_xuleditor' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{'tab_name':'XUL Editor'},{});
 				}
 			],
 			'cmd_fieldmapper' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{'tab_name':'Fieldmapper'},{});
 				}
 			],
 			'cmd_survey_wizard' : [
