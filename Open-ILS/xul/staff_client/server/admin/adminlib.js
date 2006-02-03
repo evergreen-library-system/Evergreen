@@ -50,3 +50,9 @@ function cleanTbody(tbody, key) {
 		if(child && child.getAttribute(key)) tbody.removeChild(child); 
 	}
 }
+
+
+function insRow( tbody, row, newRow ) {
+	if(row.nextSibling) tbody.insertBefore( newRow, row.nextSibling );
+	else{ tbody.appendChild(newRow); }
+}

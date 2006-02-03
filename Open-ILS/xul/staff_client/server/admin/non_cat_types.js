@@ -15,6 +15,7 @@ function ncEditorInit() {
 		ncFetchTypes(); }, 20 );
 }
 
+
 function ncBuildNew() {
 
 	var name = $('nc_new_name');
@@ -103,8 +104,6 @@ function ncEditType( tbody, row, type ) {
 
 	var name = $n(row, 'nc_edit_name');
 	name.value = type.name();
-	name.focus();
-	name.select();
 
 	$n(row, 'nc_edit_submit').onclick = function() { 
 		var name = $n(row, 'nc_edit_name').value;
@@ -117,6 +116,9 @@ function ncEditType( tbody, row, type ) {
 	var r = $('nc_row_' + type.id());
 	if(r.nextSibling) tbody.insertBefore( row, r.nextSibling );
 	else{ tbody.appendChild(row); }
+
+	name.focus();
+	name.select();
 }
 
 function ncEditSubmit( type, name ) {
