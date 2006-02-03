@@ -211,7 +211,7 @@ function insertSelectorVal( selector, index, name, value, action, indent ) {
 
 	setSelectorVal( selector, index, name, value, action, indent );
 
-	for( var i = index + 1; i != a.length; i++ ) 
+	for( var i = index + 1; i < a.length; i++ ) 
 		selector.options[i] = a[i];
 }
 

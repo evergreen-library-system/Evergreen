@@ -281,7 +281,7 @@ function scNew() {
 
 function scEdit( tbody, type, cat ) {
 
-	_cleanTbody(tbody, 'edit');
+	cleanTbody(tbody, 'edit');
 	var row = $('sc_edit_row').cloneNode(true);
 	row.setAttribute('edit', '1');
 
@@ -372,7 +372,7 @@ function scEditGo( type, cat, row, selector ) {
 }
 
 function scUpdateEntry( cat, entry, tbody, type ) {
-	_cleanTbody(tbody, 'edit');
+	cleanTbody(tbody, 'edit');
 	var row = $('sc_edit_entry_row').cloneNode(true);
 	row.setAttribute('edit', '1');
 
