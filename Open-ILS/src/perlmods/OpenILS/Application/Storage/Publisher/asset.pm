@@ -339,6 +339,40 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 );
 
+
+#XXX Fix stored proc calls
+sub fleshed_asset_stat_cat {
+        my $self = shift;
+        my $client = shift;
+        my @list = @_;
+
+	@list = ($list[0]) unless ($self->api_name =~ /batch/o);
+	for my $sc (@list) {
+        	my $cat = asset::stat_cat->retrieve($sc);
+		
+		next unless ($cat);
+
+                my $sc_fm = $cat->to_fieldmapper;
+                $sc_fm->entries( [ map { $_->to_fieldmapper } $cat->entries ] );
+                $client->respond( $sc_fm );
+        }
+
+        return undef;
+}
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.fleshed.asset.stat_cat.retrieve',
+        api_level       => 1,
+        method          => 'fleshed_asset_stat_cat',
+);
+
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.fleshed.asset.stat_cat.retrieve.batch',
+        api_level       => 1,
+        stream          => 1,
+        method          => 'fleshed_asset_stat_cat',
+);
+
+
 #XXX Fix stored proc calls
 sub ranged_asset_stat_cat {
         my $self = shift;
