@@ -150,6 +150,11 @@
 			<label id="patron_other_phone" /> 
 		</row>
 		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
+		<row id="pdsgpr4a">
+			<label id="PatronSummaryContact_usrname_label" class="text_right"
+				value="OPAC Login:" />
+			<label id="patron_usrname" />
+		</row>
 		<row id="pdcgpr5">
 			<label id="PatronSummaryContact_email_label" class="text_right"
 				value="&staff.patron_display.email.label;" />

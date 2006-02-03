@@ -49,6 +49,14 @@ patron.summary.prototype = {
 							};
 						}
 					],
+					'patron_usrname' : [
+						['render'],
+						function(e) {
+							return function() {
+								e.setAttribute('value',obj.patron.usrname());
+							};
+						}
+					],
 					'patron_name' : [
 						['render'],
 						function(e) {
