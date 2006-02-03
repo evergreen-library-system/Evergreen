@@ -5,7 +5,7 @@ var _ds;
 var _libselspan;
 var _libselslink;
 var _dselspan;
-var _newlocation;
+var _newlocation = null;
 
 function depthSelInit() {
 	_ds = $('depth_selector'); 
@@ -85,8 +85,8 @@ function buildLocationSelector(newLoc) {
 }
 
 function getNewSearchDepth() { return newSearchDepth; }
-function getNewSearchLocation() { return _newlocation; }
-function depthSelGetNewLoc() { return _newlocation; }
+function getNewSearchLocation() { return ( _newlocation == null ) ? LOCATION : _newlocation; }
+function depthSelGetNewLoc() { getNewSearchLocation(); }
 
 function updateLoc(location, depth) {
 	if( depth != null ) {
