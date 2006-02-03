@@ -22,13 +22,13 @@ remove_symlinks:
 add_symlinks:
 	@echo
 	@echo Adding convenience symlinks back into server/ and chrome/
-	ln -sf ../chrome/content/util server/util
-	ln -sf ../../chrome/content/main/constants.js server/main/constants.js
-	ln -sf ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
-	(cd build/chrome/content/OpenSRF/; for x in *; do ln -sf  ../../../build/chrome/content/OpenSRF/$$x ../../../../chrome/content/OpenSRF/$$x; done)
-	(cd build/chrome/content/OpenILS/util/; for x in *; do ln -sf  ../../../../build/chrome/content/OpenILS/util/$$x ../../../../../chrome/content/OpenILS/util/$$x; done)
-	(cd build/chrome/content/legacy/; for x in [a-z]*; do ln -sf  ../../../build/chrome/content/legacy/$$x ../../../../chrome/content/legacy/$$x; done)
-	(cd build/chrome/locale/en-US/; for x in *; do ln -sf  ../../../build/chrome/locale/en-US/$$x ../../../../chrome/locale/en-US/$$x; done)
+	ln -s ../chrome/content/util server/util
+	ln -s ../../chrome/content/main/constants.js server/main/constants.js
+	ln -s ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
+	(cd build/chrome/content/OpenSRF/; for x in *; do ln -s  ../../../build/chrome/content/OpenSRF/$$x ../../../../chrome/content/OpenSRF/$$x; done)
+	(cd build/chrome/content/OpenILS/util/; for x in *; do if [ $$x != 'fmall.js' ]; then ln -s  ../../../../build/chrome/content/OpenILS/util/$$x ../../../../../chrome/content/OpenILS/util/$$x; fi ; done)
+	(cd build/chrome/content/legacy/; for x in [a-z]*; do ln -s  ../../../build/chrome/content/legacy/$$x ../../../../chrome/content/legacy/$$x; done)
+	(cd build/chrome/locale/en-US/; for x in *; do ln -s  ../../../build/chrome/locale/en-US/$$x ../../../../chrome/locale/en-US/$$x; done)
 
 build_dir:
 	@echo
