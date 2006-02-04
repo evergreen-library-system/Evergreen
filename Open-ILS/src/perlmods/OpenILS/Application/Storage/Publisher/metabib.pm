@@ -1079,7 +1079,7 @@ sub postfilter_search_class_fts {
 		LIMIT 10000
 	SQL
 
-	if ($self->api_name !~ /staff/o) {
+	if (0) {
 		$select = <<"		SQL";
 
 			SELECT	DISTINCT s.*
@@ -1109,24 +1109,64 @@ sub postfilter_search_class_fts {
 				$of_filter
 			  ORDER BY 4 $sort_dir
 		SQL
+	} elsif ($self->api_name !~ /staff/o) {
+		$select = <<"		SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$asset_copy_table cp,
+					$cs_table cs,
+					$cl_table cl,
+					$br_table br,
+					$descendants d,
+					$metabib_record_descriptor ord
+				
+				  WHERE	mrs.metarecord = s.metarecord
+					AND br.id = mrs.source
+					AND cn.record = mrs.source
+					AND cp.status = cs.id
+					AND cp.location = cl.id
+					AND cn.owning_lib = d.id
+					AND cp.call_number = cn.id
+					AND cp.opac_visible IS TRUE
+					AND cs.holdable IS TRUE
+					AND cl.opac_visible IS TRUE
+					AND br.active IS TRUE
+					AND br.deleted IS FALSE
+					AND ord.record = mrs.source
+					$ot_filter
+					$of_filter
+				  LIMIT 1
+				)
+			  ORDER BY 4 $sort_dir
+		SQL
 	} else {
 		$select = <<"		SQL";
 
 			SELECT	DISTINCT s.*
-			  FROM	$asset_call_number_table cn,
-				$metabib_metarecord_source_map_table mrs,
-				$br_table br,
-				$descendants d,
-				$metabib_record_descriptor ord,
-				($select) s
-			  WHERE	mrs.metarecord = s.metarecord
-				AND br.id = mrs.source
-				AND cn.record = mrs.source
-				AND cn.owning_lib = d.id
-				AND br.deleted IS FALSE
-				AND ord.record = mrs.source
-				$ot_filter
-				$of_filter
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$br_table br,
+					$descendants d,
+					$metabib_record_descriptor ord,
+				
+				  WHERE	mrs.metarecord = s.metarecord
+					AND br.id = mrs.source
+					AND cn.record = mrs.source
+					AND cn.owning_lib = d.id
+					AND br.deleted IS FALSE
+					AND ord.record = mrs.source
+					$ot_filter
+					$of_filter
+				  LIMIT 1
+				)
 			  ORDER BY 4 $sort_dir
 		SQL
 	}
