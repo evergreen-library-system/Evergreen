@@ -1155,7 +1155,7 @@ sub postfilter_search_class_fts {
 					$metabib_metarecord_source_map_table mrs,
 					$br_table br,
 					$descendants d,
-					$metabib_record_descriptor ord,
+					$metabib_record_descriptor ord
 				
 				  WHERE	mrs.metarecord = s.metarecord
 					AND br.id = mrs.source
@@ -1200,7 +1200,7 @@ sub postfilter_search_class_fts {
 				 '^\\s*'.lc($REstring).'\\s*/?\s*$',) :	# full exact match
 				 ()
 			),
-			@types, @forms,  ($self->api_name !~ /staff/o ? (@types, @forms) : () ) );
+			@types, @forms, @types, @forms,  ($self->api_name =~ /staff/o ? (@types, @forms) : () ) );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
@@ -1477,7 +1477,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
 			$select, {},
-			@types, @forms,  ($self->api_name !~ /staff/o ? (@types, @forms) : () ) );
+			@types, @forms, @types, @forms,  ($self->api_name =~ /staff/o ? (@types, @forms) : () ) );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
