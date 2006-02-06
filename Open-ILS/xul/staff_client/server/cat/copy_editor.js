@@ -18,6 +18,7 @@ function my_init() {
 		g.cgi = new CGI();
 
 		g.session = g.cgi.param('session') || g.cgi.param('ses');
+		g.docid = g.cgi.param('docid');
 
 		/******************************************************************************************************/
 		/* Get the copy ids from various sources */
@@ -53,6 +54,17 @@ function my_init() {
 			g.edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
 			document.getElementById('nav').setAttribute('hidden','false'); 
+		}
+
+		/******************************************************************************************************/
+		/* Show the Record Details? */
+		if (g.docid) {
+			document.getElementById('brief_display').setAttribute(
+				'src',
+				urls.XUL_BIB_BRIEF + '?docid=' + g.docid
+			);
+		} else {
+			document.getElementById('brief_display').setAttribute('hidden','true');
 		}
 
 		/******************************************************************************************************/

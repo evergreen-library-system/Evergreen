@@ -18,7 +18,7 @@
 
 <window id="cat_copy_editor_win" 
 	onload="try { my_init(); } catch(E) { alert(E); }"
-	width="800" height="600"
+	width="800" height="500" sizemode="maximized" persist="width height"
 	title="Copies"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -32,13 +32,11 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script type="text/javascript" src="copy_editor.js"/>
 
+	<iframe id="brief_display"/>
+
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Copy Viewer"/>
-		<hbox id="nav" hidden="true">
-			<spacer flex="1"/>
-			<button id="save" label="Modify" 
-				oncommand="g.stash_and_close();"/>
-		</hbox>
+
 		<hbox flex="1">
 			<vbox style="overflow: scroll"> <!-- left pane -->
 				<groupbox id="gb_callnumbers">
@@ -53,6 +51,15 @@
 			<splitter><grippy /></splitter>
 			<vbox id="right_pane" style="overflow: scroll" flex="1"/> <!-- right pane -->
 		</hbox>
+
+		<hbox id="nav" hidden="true">
+			<spacer flex="1"/>
+			<button id="save" label="Modify" 
+				oncommand="g.stash_and_close();"/>
+			<button id="save" label="Cancel" 
+				oncommand="window.close();"/>
+		</hbox>
+
 		<spacer/>
 	</groupbox>
 
