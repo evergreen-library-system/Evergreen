@@ -25,6 +25,10 @@ my $cache_handle;		# - memcache handle
 sub PRECAT_FINE_LEVEL { return 2; }
 sub PRECAT_LOAN_DURATION { return 2; }
 
+# for security, this is a process-defined and not
+# a client-defined variable
+my $__isrenewal = 0;
+
 # ------------------------------------------------------------------------------
 # Load the circ script from the config
 # ------------------------------------------------------------------------------
@@ -53,8 +57,8 @@ sub initialize {
 	$scripts{circ_duration}			= $d;
 	$scripts{circ_recurring_fines}= $f;
 	$scripts{circ_max_fines}		= $m;
-	$scripts{circ_renew_permit}	= $pr;
-	$scripts{hold_permit}			= $ph;
+	$scripts{circ_permit_renew}	= $pr;
+	$scripts{hold_permit_permit}	= $ph;
 
 	$lb = [ $lb ] unless ref($lb);
 	$script_libs = $lb;
@@ -73,6 +77,7 @@ sub initialize {
 # ------------------------------------------------------------------------------
 sub create_circ_ctx {
 	my %params = @_;
+	$U->logmark;
 
 	my $evt;
 	my $ctx = \%params;
@@ -90,16 +95,18 @@ sub create_circ_ctx {
 
 	_doctor_patron_object($ctx) if $ctx->{patron};
 	_doctor_copy_object($ctx) if $ctx->{copy};
-	_build_circ_script_runner($ctx);
-	_add_script_runner_methods($ctx);
+
+	if(!$ctx->{no_runner}) {
+		_build_circ_script_runner($ctx);
+		_add_script_runner_methods($ctx);
+	}
 
 	return $ctx;
 }
 
 sub _ctx_add_patron_objects {
 	my( $ctx, %params) = @_;
-
-	$ctx->{patron}	= $params{patron};
+	$U->logmark;
 
 	if(!defined($cache{patron_standings})) {
 		$cache{patron_standings} = $U->fetch_patron_standings();
@@ -119,6 +126,7 @@ sub _ctx_add_patron_objects {
 
 sub _find_copy_by_attr {
 	my %params = @_;
+	$U->logmark;
 	my $evt;
 
 	my $copy = $params{copy} || undef;
@@ -135,12 +143,12 @@ sub _find_copy_by_attr {
 			return (undef,$evt) if $evt;
 		}
 	}
-	$logger->debug("_find_copy_by_attr(): " . Dumper($copy));
 	return ( $copy, $evt );
 }
 
 sub _ctx_add_copy_objects {
 	my($ctx, %params)  = @_;
+	$U->logmark;
 	my $evt;
 	my $copy;
 
@@ -171,8 +179,8 @@ sub _ctx_add_copy_objects {
 # Fleshes parts of the patron object
 # ------------------------------------------------------------------------------
 sub _doctor_copy_object {
-
 	my $ctx = shift;
+	$U->logmark;
 	my $copy = $ctx->{copy} || return undef;
 
 	$logger->debug("Doctoring copy object...");
@@ -192,12 +200,16 @@ sub _doctor_copy_object {
 # ------------------------------------------------------------------------------
 sub _doctor_patron_object {
 	my $ctx = shift;
+	$U->logmark;
 	my $patron = $ctx->{patron} || return undef;
 
 	# push the standing object into the patron
 	if(ref($ctx->{patron_standings})) {
 		for my $s (@{$ctx->{patron_standings}}) {
-			$patron->standing($s) if ( $s->id eq $ctx->{patron}->standing );
+			if( $s->id eq $ctx->{patron}->standing ) {
+				$patron->standing($s);
+				$logger->debug("Set patron standing to ". $s->value);
+			}
 		}
 	}
 
@@ -228,6 +240,7 @@ sub _get_patron_profile {
 
 sub _get_copy_status {
 	my( $copy, $cstatus ) = @_;
+	$U->logmark;
 	my $s = undef;
 	for my $status (@$cstatus) {
 		$s = $status if( $status->id eq $copy->status ) 
@@ -238,6 +251,7 @@ sub _get_copy_status {
 
 sub _get_copy_location {
 	my( $copy, $locations ) = @_;
+	$U->logmark;
 	my $l = undef;
 	for my $loc (@$locations) {
 		$l = $loc if $loc->id eq $copy->location;
@@ -252,6 +266,7 @@ sub _get_copy_location {
 # ------------------------------------------------------------------------------
 sub _build_circ_script_runner {
 	my $ctx = shift;
+	$U->logmark;
 
 	$logger->debug("Loading script environment for circulation");
 
@@ -269,8 +284,6 @@ sub _build_circ_script_runner {
 	}
 
 
-	$logger->debug("Inserting copy into circ env: " . Dumper($ctx->{copy}));
-
 	$runner->insert( 'environment.patron',		$ctx->{patron}, 1);
 	$runner->insert( 'environment.title',		$ctx->{title}, 1);
 	$runner->insert( 'environment.copy',		$ctx->{copy}, 1);
@@ -279,7 +292,7 @@ sub _build_circ_script_runner {
 	$runner->insert( 'result', {} );
 	$runner->insert( 'result.event', 'SUCCESS' );
 
-	$runner->insert('environment.isRenewal', 1) if $ctx->{renew};
+	$runner->insert('environment.isRenewal', 1) if $__isrenewal;
 	$runner->insert('environment.isNonCat', 1) if $ctx->{noncat};
 	$runner->insert('environment.nonCatType', $ctx->{noncat_type}) if $ctx->{noncat};
 
@@ -295,6 +308,7 @@ sub _build_circ_script_runner {
 
 sub _add_script_runner_methods {
 	my $ctx = shift;
+	$U->logmark;
 	my $runner = $ctx->{runner};
 
 	if( $ctx->{copy} ) {
@@ -324,13 +338,13 @@ __PACKAGE__->register_method(
 			patron : The patron the checkout is occurring for, 
 			renew : true or false - whether or not this is a renewal
 		@return The event that occurred during the permit check.  
-			If all is well, #fetch the object so we can check a. it exists and b. it's location for permsthe SUCCESS event is returned
 	/);
 
 sub permit_circ {
 	my( $self, $client, $authtoken, $params ) = @_;
+	$U->logmark;
 
-	my ( $requestor, $patron, $ctx, $evt );
+	my ( $requestor, $patron, $ctx, $evt, $circ );
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
@@ -339,40 +353,38 @@ sub permit_circ {
 	return $evt if $evt;
 
 	# fetch and build the circulation environment
-	( $ctx, $evt ) = create_circ_ctx( %$params, 
-		patron							=> $patron, 
-		requestor						=> $requestor, 
-		type								=> 'permit',
-		fetch_patron_circ_summary	=> 1,
-		fetch_copy_statuses			=> 1, 
-		fetch_copy_locations			=> 1, 
-		);
-	return $evt if $evt;
+	if( !( $ctx = $params->{_ctx}) ) {
 
-	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS')
-		if ( $ctx->{copy} and _find_open_circulation($ctx->{copy}->id));
+		( $ctx, $evt ) = create_circ_ctx( %$params, 
+			patron							=> $patron, 
+			requestor						=> $requestor, 
+			type								=> 'circ',
+			fetch_patron_circ_summary	=> 1,
+			fetch_copy_statuses			=> 1, 
+			fetch_copy_locations			=> 1, 
+			);
+		return $evt if $evt;
+	}
+
+	($circ, $evt) = $U->fetch_open_circ($ctx->{copy}->id) 
+		if ( !$__isrenewal and $ctx->{copy});
+
+	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $evt;
 
 	return _run_permit_scripts($ctx);
 }
 
-
-sub _find_open_circulation {
-	my $cid = shift;
-	return $U->storagereq(
-		'open-ils.storage.direct.action.open_circulation.search_where',
-		{ target_copy => $cid, stop_fines_time => undef } );
-}
 
 
 # Runs the patron and copy permit scripts
 # if this is a non-cat circulation, the copy permit script 
 # is not run
 sub _run_permit_scripts {
-
 	my $ctx			= shift;
 	my $runner		= $ctx->{runner};
 	my $patronid	= $ctx->{patron}->id;
 	my $barcode		= ($ctx->{copy}) ? $ctx->{copy}->barcode : undef;
+	$U->logmark;
 
 	$runner->load($scripts{circ_permit_patron});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
@@ -446,14 +458,22 @@ __PACKAGE__->register_method(
 
 sub checkout {
 	my( $self, $client, $authtoken, $params ) = @_;
+	$U->logmark;
 
 	my ( $requestor, $patron, $ctx, $evt, $circ, $copy );
 	my $key = $params->{permit_key};
 
-	# check permisson of the requestor
-	( $requestor, $patron, $evt ) = $U->checkses_requestor( 
-			$authtoken, $params->{patron}, 'COPY_CHECKOUT' );
+	# if this is a renewal, then the requestor does not have to
+	# have checkout privelages
+	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
+	( $requestor, $evt ) = $U->checksesperm( $authtoken, 'COPY_CHECKOUT' ) unless $__isrenewal;
+
+	$logger->debug("REQUESTOR event: " . ref($requestor));
+
 	return $evt if $evt;
+	( $patron, $evt ) = $U->fetch_user($params->{patron});
+	return $evt if $evt;
+
 
 	# set the circ lib to the home org of the requestor if not specified
 	my $circlib = (defined($params->{circ_lib})) ? 
@@ -471,16 +491,19 @@ sub checkout {
 	my $session = $U->start_db_session();
 
 	# fetch and build the circulation environment
-	( $ctx, $evt ) = create_circ_ctx( %$params, 
-		patron							=> $patron, 
-		requestor						=> $requestor, 
-		session							=> $session, 
-		type								=> 'checkout',
-		fetch_patron_circ_summary	=> 1,
-		fetch_copy_statuses			=> 1, 
-		fetch_copy_locations			=> 1, 
-		);
-	return $evt if $evt;
+	if( !( $ctx = $params->{_ctx}) ) {
+		( $ctx, $evt ) = create_circ_ctx( %$params, 
+			patron							=> $patron, 
+			requestor						=> $requestor, 
+			session							=> $session, 
+			type								=> 'circ',
+			fetch_patron_circ_summary	=> 1,
+			fetch_copy_statuses			=> 1, 
+			fetch_copy_locations			=> 1, 
+			);
+		return $evt if $evt;
+	}
+	$ctx->{session} = $session;
 
 	my $cid = ($params->{precat}) ? -1 : $ctx->{copy}->id;
 	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
@@ -516,6 +539,7 @@ sub checkout {
 
 sub _make_precat_copy {
 	my ( $requestor, $circlib, $params ) =  @_;
+	$U->logmark;
 	my( $copy, undef ) = _find_copy_by_attr(%$params);
 
 	if($copy) {
@@ -553,6 +577,7 @@ sub _make_precat_copy {
 
 sub _run_checkout_scripts {
 	my $ctx = shift;
+	$U->logmark;
 	my $evt;
 	my $circ;
 
@@ -597,6 +622,7 @@ sub _run_checkout_scripts {
 
 sub _build_checkout_circ_object {
 	my $ctx = shift;
+	$U->logmark;
 
 	my $circ			= new Fieldmapper::action::circulation;
 	my $duration	= $ctx->{duration_rule};
@@ -626,22 +652,22 @@ sub _build_checkout_circ_object {
 	$circ->usr( $patron->id );
 	$circ->circ_lib( $ctx->{circ_lib} );
 
-	if( $ctx->{renew} ) {
-		$circ->opac_renewal(1); # XXX different for different types ?????
-		$circ->clear_id;
-		#$circ->renewal_remaining($numrenews - 1); # XXX
-		$circ->circ_staff($ctx->{patron}->id);
+	if( $__isrenewal ) {
+		$logger->debug("Circ is a renewal.  Setting renewal_remaining to " . $ctx->{renewal_remaining} );
+		$circ->opac_renewal(1); 
+		$circ->renewal_remaining($ctx->{renewal_remaining});
+		$circ->circ_staff($ctx->{requestor}->id);
+	} 
 
-	} else {
-		$circ->circ_staff( $ctx->{requestor}->id );
-	}
-
+	# if a patron is renewing, 'requestor' will be the patron
+	$circ->circ_staff( $ctx->{requestor}->id ); 
 	_set_circ_due_date($circ);
 	$ctx->{circ} = $circ;
 }
 
 sub _create_due_date {
 	my $duration = shift;
+	$U->logmark;
 
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = 
 		gmtime(OpenSRF::Utils->interval_to_seconds($duration) + int(time()));
@@ -655,6 +681,7 @@ sub _create_due_date {
 
 sub _set_circ_due_date {
 	my $circ = shift;
+	$U->logmark;
 	my $dd = _create_due_date($circ->duration);
 	$logger->debug("Checkout setting due date on circ to: $dd");
 	$circ->due_date($dd);
@@ -663,6 +690,7 @@ sub _set_circ_due_date {
 # Sets the editor, edit_date, un-fleshes the copy, and updates the copy in the DB
 sub _update_checkout_copy {
 	my $ctx = shift;
+	$U->logmark;
 	my $copy = $ctx->{copy};
 
 	my $s;
@@ -677,7 +705,6 @@ sub _update_checkout_copy {
 	$copy->circ_lib( $copy->circ_lib->id );
 
 	$logger->debug("Updating editor info on copy in checkout: " . $copy->id );
-	$logger->debug("Updating editor info on copy in checkout: " . Dumper($copy) );
 	$ctx->{session}->request( 
 		'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
 }
@@ -687,7 +714,9 @@ sub _commit_checkout_circ_object {
 
 	my $ctx = shift;
 	my $circ = $ctx->{circ};
+	$U->logmark;
 
+	$circ->clear_id;
 	my $r = $ctx->{session}->request(
 		"open-ils.storage.direct.action.circulation.create", $circ )->gather(1);
 
@@ -711,6 +740,7 @@ sub _handle_related_holds {
 	my $copy		= $ctx->{copy};
 	my $patron	= $ctx->{patron};
 	my $holds	= $holdcode->fetch_related_holds($copy->id);
+	$U->logmark;
 
 	if(ref($holds) && @$holds) {
 
@@ -737,6 +767,7 @@ sub _handle_related_holds {
 sub _checkout_noncat {
 	my ( $key, $requestor, $patron, %params ) = @_;
 	my( $circ, $circlib, $evt );
+	$U->logmark;
 
 	$circlib = $params{noncat_circ_lib} || $requestor->home_ou;
 
@@ -767,6 +798,43 @@ __PACKAGE__->register_method(
 
 sub checkin {
 	my( $self, $client, $authtoken, $params ) = @_;
+	$U->logmark;
+
+	my( $ctx, $requestor, $evt, $patron, $circ );
+
+	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
+	( $requestor, $evt ) = $U->checksesperm( $authtoken, 'COPY_CHECKIN' ) unless $__isrenewal;
+	return $evt if $evt;
+	( $patron, $evt ) = $U->fetch_user($params->{patron});
+	return $evt if $evt;
+
+	if( !( $ctx = $params->{_ctx}) ) {
+		( $ctx, $evt ) = create_circ_ctx( %$params, 
+			patron							=> $patron, 
+			requestor						=> $requestor, 
+			#session							=> $session, 
+			type								=> 'circ',
+			fetch_patron_circ_summary	=> 1,
+			fetch_copy_statuses			=> 1, 
+			fetch_copy_locations			=> 1, 
+			no_runner						=> 1, 
+			);
+		return $evt if $evt;
+	}
+
+	return OpenILS::Event->new('COPY_NOT_FOUND') unless $ctx->{copy};
+	( $circ, $evt ) = $U->fetch_open_circulation($ctx->{copy}->id);
+	return $evt if $evt;
+
+	# XXX Use the old checkin for now XXX 
+	my $checkin = $self->method_lookup("open-ils.circ.checkin.barcode");
+	my ($status) = $checkin->run($authtoken, $ctx->{copy}->barcode, 1);
+
+	return OpenILS::Event->new('PERM_FAILURE') 
+		if ref($status) eq "Fieldmapper::perm_ex";
+	return OpenILS::Event->new('UNKNOWN', 
+		payload => $status ) if ($status->{status} ne "0"); 
+	return OpenILS::Event->new('SUCCESS');
 }
 
 # ------------------------------------------------------------------------------
@@ -784,6 +852,78 @@ __PACKAGE__->register_method(
 
 sub renew {
 	my( $self, $client, $authtoken, $params ) = @_;
+	$U->logmark;
+
+	my ( $requestor, $patron, $ctx, $evt, $circ, $copy );
+	$__isrenewal = 1;
+
+	# if requesting a renewal for someone else, you must have
+	# renew privelages
+	( $requestor, $patron, $evt ) = $U->checkses_requestor( 
+		$authtoken, $params->{patron}, 'RENEW_CIRC' );
+	return $evt if $evt;
+
+	# fetch and build the circulation environment
+	( $ctx, $evt ) = create_circ_ctx( %$params, 
+		patron							=> $patron, 
+		requestor						=> $requestor, 
+		type								=> 'circ',
+		fetch_patron_circ_summary	=> 1,
+		fetch_copy_statuses			=> 1, 
+		fetch_copy_locations			=> 1, 
+		);
+	return $evt if $evt;
+	$params->{_ctx} = $ctx;
+
+	($circ, $evt) = _check_renewals($ctx);
+	return $evt if $evt;
+	$ctx->{old_circ} = $circ;
+	$ctx->{renewal_remaining} = $circ->renewal_remaining - 1;
+	return $evt if( ($evt = _run_renew_scripts($ctx)) );
+
+	$params->{permit_key} = $evt->{payload};
+	$evt = $self->checkin($client, $authtoken, $params );
+	return $evt unless $U->event_equals($evt, 'SUCCESS');
+
+	($circ->{copy}, undef) = $U->fetch_copy($circ->{copy}->id);
+	_doctor_copy_object($ctx); #re-flesh the copy since it's been checked in
+
+	$evt = $self->permit_circ($client, $authtoken, $params );
+	if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
+		$ctx->{precat} = 1;
+	} else {
+		return $evt unless $U->event_equals($evt, 'SUCCESS');
+	}
+
+
+	$evt = $self->checkout($client, $authtoken, $params );
+
+	$__isrenewal = 0;
+	return $evt;
+}
+
+sub _check_renewals {
+	my $ctx = shift;
+	$U->logmark;
+	my( $circ, $evt ) = $U->fetch_open_circulation($ctx->{copy}->id);
+	return (undef, $evt) if $evt;
+	$evt = OpenILS::Event->new(
+		'MAX_RENEWALS_REACHED') if $circ->renewal_remaining < 1;
+	return ($circ, $evt);
+}
+
+sub _run_renew_scripts {
+	my $ctx = shift;
+	my $runner = $ctx->{runner};
+	$U->logmark;
+
+	$runner->load($scripts{circ_permit_renew});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
+	my $evtname = $runner->retrieve('result.event');
+	$logger->activity("circ_permit_renew for user ".$ctx->{patron}." returned event: $evtname");
+
+	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
+	return undef;
 }
 
 	

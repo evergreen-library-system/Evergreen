@@ -10,7 +10,7 @@ function scratchClear()		{ for( var o in __SCRATCH ) __SCRATCH[o] = null; }
 
 /* -- Copy functions ----------------------------------------------------- */
 if( environment.copy ) {
-	environment.copy.fetchHold = function() {
+	environment.copy.fetchHolds = function() {
 		var key = scratchKey();
 		environment.copy.__OILS_FUNC_fetch_hold(scratchPad(key));
 		var val = getScratch(key);

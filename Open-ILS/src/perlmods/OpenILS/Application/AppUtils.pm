@@ -332,7 +332,7 @@ sub checksesperm {
 	($user, $evt) = $self->checkses($session);
 	return (undef, $evt) if $evt;
 	$evt = $self->check_perms($user->id, $user->home_ou, @perms);
-	return ($user, $evt) if $evt;
+	return ($user, $evt);
 }
 
 
@@ -732,6 +732,35 @@ sub storagereq {
 		'open-ils.storage', $method, @params );
 }
 
+sub event_equals {
+	my( $self, $e, $name ) =  @_;
+	if( $e and ref($e) eq 'HASH' and 
+		defined($e->{textcode}) and $e->{textcode} eq $name ) {
+		return 1 ;
+	}
+	return 0;
+}
+
+sub logmark {
+	my( undef, $f, $l ) = caller(0);
+	my( undef, undef, undef, $s ) = caller(1);
+	$s =~ s/.*:://g;
+	$f =~ s/.*\///g;
+	$logger->debug("LOGMARK: $f:$l:$s");
+}
+
+# takes a copy id 
+sub fetch_open_circulation {
+	my( $self, $cid ) = @_;
+	my $evt;
+	$self->logmark;
+	my $circ = $self->storagereq(
+		'open-ils.storage.direct.action.open_circulation.search_where',
+		{ target_copy => $cid, stop_fines_time => undef } );
+	$evt = OpenILS::Event->new('CIRCULATION_NOT_FOUND') unless $circ;	
+	return ($circ, $evt);
+}
 
 
 1;
+

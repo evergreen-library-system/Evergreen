@@ -32,10 +32,18 @@ my $start;
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
-	my($key,$precat) = do_permit($patronid, $barcode, $type =~ /noncat/ ); 
-	printl("Item is pre-cataloged...") if $precat;
-	do_checkout($key, $patronid, $barcode, 
-		$precat, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
+
+	if($type eq 'renew') {
+		do_renew($patronid, $barcode);
+
+	} elsif( $type eq 'checkin' ) {
+		do_checkin($patronid, $barcode);
+	} else {
+		my($key,$precat) = do_permit($patronid, $barcode, $type =~ /noncat/ ); 
+		printl("Item is pre-cataloged...") if $precat;
+		do_checkout($key, $patronid, $barcode, 
+			$precat, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
+	}
 	oils_logout();
 }
 
@@ -104,4 +112,25 @@ sub do_checkout {
 
 
 
+sub do_renew {
+	my( $patronid, $barcode ) = @_;
+	my $args = { patron => $patronid, barcode => $barcode };
+	my $t = time();
+	my $resp = simplereq( 
+		CIRC(), 'open-ils.circ.renew_', $authtoken, $args );
+	my $e = time() - $t;
+	oils_event_die($resp);
+	printl("Renewal succeeded\nTime: $t");
+}
 
+sub do_checkin {
+	my( $patronid, $barcode ) = @_;
+	my $args = { patron => $patronid, barcode => $barcode };
+	my $t = time();
+	my $resp = simplereq( 
+		CIRC(), 'open-ils.circ.checkin', $authtoken, $args );
+	my $e = time() - $t;
+	oils_event_die($resp);
+	printl("Checkin succeeded\nTime: $t");
+
+}

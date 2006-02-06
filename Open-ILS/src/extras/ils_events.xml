@@ -14,6 +14,11 @@
 		<desc>No errors or unexpected events occurred</desc>
 	</event>
 
+	<event code='1' textcode='UNKNOWN'>
+		<desc>Placeholder event.  Used for development only</desc>
+	</event>
+
+
 	<event code='1000' textcode='LOGIN_FAILED'>
 		<desc>
 			User login failed.  Why the login failed is not specified.
@@ -231,6 +236,10 @@
 
 	<event code='7007' textcode='COPY_NEEDED_FOR_HOLD'>
 		<desc> Copy is needed to fulfil a hold </desc>
+	</event>
+
+	<event code='7008' textcode='MAX_RENEWALS_REACHED'>
+		<desc> Circulation has no more renewals remaining </desc>
 	</event>
 	<!-- ================================================================ -->
 

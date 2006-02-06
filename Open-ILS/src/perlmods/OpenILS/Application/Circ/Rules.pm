@@ -1045,9 +1045,12 @@ sub checkin {
 			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
 			$copy->id() );
 
-		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch( $record->marc() );
-		my $mods = $u->finish_mods_batch();
+		my $mods = undef;
+		if( $record->marc ) {
+			my $u = OpenILS::Utils::ModsParser->new();
+			$u->start_mods_batch( $record->marc() );
+			$mods = $u->finish_mods_batch();
+		}
 
 		return { 
 			record	=> $mods, 

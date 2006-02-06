@@ -402,8 +402,6 @@ sub _find_local_hold_for_copy {
 		"open-ils.storage.direct.action.hold_request.search_where",
 		{ current_copy => $copy->id, capture_time => undef } )->gather(1);
 
-	$logger->debug("Hold found for copy " . $copy->id);
-
 	if($hold) {return $hold;}
 
 	$logger->debug("searching for local hold at org " . 
