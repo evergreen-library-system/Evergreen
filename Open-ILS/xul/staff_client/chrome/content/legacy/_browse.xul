@@ -364,6 +364,7 @@
 				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
 					+'?session='+window.escape(g.session)
 					+'&copy_ids='+window.escape(js2JSON(list))
+					+'&docid='+window.escape(find_this_id)
 					+'&edit='+edit,
 				title,
 				'chrome,modal,resizable'
