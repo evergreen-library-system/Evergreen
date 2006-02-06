@@ -18,17 +18,27 @@ util.window.prototype = {
 	'doc_list' : [],	
 
 	// Windows need unique names.  This number helps.
-	'window_name_increment' : 0, 
+	'window_name_increment' :  function() {
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		if (typeof data.appshell_name_increment == 'undefined') {
+			data.window_name_increment = 1;
+		} else {
+			data.window_name_increment++;
+		}
+		data.stash('window_name_increment');
+		return data.window_name_increment;
+	},
 
 	// This number gets put into the title bar for Top Level menu interface windows
 	'appshell_name_increment' : function() {
-		var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-		var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-		var enumerator = windowManagerInterface.getEnumerator(null);
-
-		var i = 0; while ( w = enumerator.getNext() ) { i++; }
-
-		return i - 1;
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		if (typeof data.appshell_name_increment == 'undefined') {
+			data.appshell_name_increment = 1;
+		} else {
+			data.appshell_name_increment++;
+		}
+		data.stash('appshell_name_increment');
+		return data.appshell_name_increment;
 	},
 
 	// From: Bryan White on netscape.public.mozilla.xpfe, Oct 13, 2004
@@ -63,7 +73,7 @@ util.window.prototype = {
 
 	'open' : function(url,title,features) {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (!title) title = 'anon' + window_name_increment++;
+		if (!title) title = 'anon' + window_name_increment();
 		if (!features) features = 'chrome';
 		this.error.sdump('D_WIN',
 			'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');

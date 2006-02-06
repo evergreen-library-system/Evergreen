@@ -44,7 +44,7 @@ main.menu.prototype = {
 						+ '?session='+window.escape(session) 
 						+ '&authtime='+window.escape(authtime) 
 						+ '&server='+window.escape(urls.remote),
-						'test' + obj.window.appshell_name_increment(),
+						'main' + obj.window.window_name_increment(),
 						'chrome,resizable'); 
 				}
 			],
