@@ -104,7 +104,8 @@ sub record_by_copy {
 	return undef unless ($rec);
 
 	my $r_fm = $rec->to_fieldmapper;
-	$r_fm->fixed_fields( $rec->record_descriptor->next->to_fieldmapper );
+	my $ff = $rec->record_descriptor->next;
+	$r_fm->fixed_fields( $ff->to_fieldmapper ) if ($ff);
 
 	return $r_fm;
 }
