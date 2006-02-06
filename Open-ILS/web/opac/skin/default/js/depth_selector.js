@@ -85,8 +85,8 @@ function buildLocationSelector(newLoc) {
 }
 
 function getNewSearchDepth() { return newSearchDepth; }
-function getNewSearchLocation() { return ( _newlocation == null ) ? LOCATION : _newlocation; }
-function depthSelGetNewLoc() { getNewSearchLocation(); }
+function getNewSearchLocation() { return (isNull(_newlocation)) ? LOCATION : _newlocation; }
+function depthSelGetNewLoc() { return getNewSearchLocation(); }
 
 function updateLoc(location, depth) {
 	if( depth != null ) {
