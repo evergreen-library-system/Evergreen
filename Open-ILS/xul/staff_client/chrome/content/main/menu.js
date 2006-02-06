@@ -39,8 +39,13 @@ main.menu.prototype = {
 			'cmd_new_window' : [
 				['oncommand'],
 				function() {
-					obj.window.open(obj.url_prefix(urls.XUL_MENU_FRAME),'test' + 
-						obj.window.appshell_name_increment++ ,'chrome'); 
+					obj.window.open(
+						obj.url_prefix(urls.XUL_MENU_FRAME)
+						+ '?session='+window.escape(session) 
+						+ '&authtime='+window.escape(authtime) 
+						+ '&server='+window.escape(urls.remote),
+						'test' + obj.window.appshell_name_increment(),
+						'chrome,resizable'); 
 				}
 			],
 			'cmd_new_tab' : [

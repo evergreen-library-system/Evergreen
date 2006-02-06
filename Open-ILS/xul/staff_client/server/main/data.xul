@@ -64,7 +64,7 @@
 					+ '?session='+window.escape(xulG.auth.session.key)
 					+ '&authtime='+window.escape(xulG.auth.session.authtime)
 					+ '&server='+window.escape(xulG.url),
-					'test','chrome,resizable'
+					'test'+xulG.window.appshell_name_increment(),'chrome,resizable'
 				);
 
 			}

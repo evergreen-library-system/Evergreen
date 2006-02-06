@@ -58,7 +58,15 @@
 					'authtime' : g.cgi.param('authtime'),
 					'server' : g.cgi.param('server'),
 				} );
-	
+
+				JSAN.use('util.window'); g.window = new util.window();
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				// FIXME - Use workstation ou when we get it instead of staff home_ou
+				document.title = g.window.appshell_name_increment() + ': ' 
+					+ g.data.list.au[0].usrname() + '@' 
+					+ g.data.hash.aou[ g.data.list.au[0].home_ou() ].shortname();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\nmenu_frame.xul\n" + E + '\n';

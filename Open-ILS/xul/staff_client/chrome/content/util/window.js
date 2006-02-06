@@ -21,7 +21,15 @@ util.window.prototype = {
 	'window_name_increment' : 0, 
 
 	// This number gets put into the title bar for Top Level menu interface windows
-	'appshell_name_increment' : 0,
+	'appshell_name_increment' : function() {
+		var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+		var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+		var enumerator = windowManagerInterface.getEnumerator(null);
+
+		var i = 0; while ( w = enumerator.getNext() ) { i++; }
+
+		return i - 1;
+	},
 
 	// From: Bryan White on netscape.public.mozilla.xpfe, Oct 13, 2004
 	// Message-ID: <ckjh7a$18q1@ripley.netscape.com>
