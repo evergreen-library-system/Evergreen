@@ -1167,6 +1167,18 @@ sub postfilter_search_class_fts {
 					$of_filter
 				  LIMIT 1
 				)
+				OR NOT EXISTS (
+				SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$metabib_record_descriptor ord
+				  WHERE	mrs.metarecord = s.metarecord
+					AND cn.record = mrs.source
+					AND ord.record = mrs.source
+					$ot_filter
+					$of_filter
+				  LIMIT 1
+				)
 			  ORDER BY 4 $sort_dir
 		SQL
 	}
@@ -1392,52 +1404,70 @@ sub postfilter_search_multi_class_fts {
 		$select = <<"		SQL";
 
 			SELECT	DISTINCT s.*
-			  FROM	$asset_call_number_table cn,
-				$metabib_metarecord_source_map_table mrs,
-				$asset_copy_table cp,
-				$cs_table cs,
-				$cl_table cl,
-				$br_table br,
-				$descendants d,
-				$metabib_record_descriptor ord,
-				($select) s
-			  WHERE	mrs.metarecord = s.metarecord
-				AND br.id = mrs.source
-				AND cn.record = mrs.source
-				AND cp.status = cs.id
-				AND cp.location = cl.id
-				AND cn.owning_lib = d.id
-				AND cp.call_number = cn.id
-				AND cp.opac_visible IS TRUE
-				AND cs.holdable IS TRUE
-				AND cl.opac_visible IS TRUE
-				AND br.active IS TRUE
-				AND br.deleted IS FALSE
-				AND ord.record = mrs.source
-				$ot_filter
-				$of_filter
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$asset_copy_table cp,
+					$cs_table cs,
+					$cl_table cl,
+					$br_table br,
+					$descendants d,
+					$metabib_record_descriptor ord
+				  WHERE	mrs.metarecord = s.metarecord
+					AND br.id = mrs.source
+					AND cn.record = mrs.source
+					AND cp.status = cs.id
+					AND cp.location = cl.id
+					AND cn.owning_lib = d.id
+					AND cp.call_number = cn.id
+					AND cp.opac_visible IS TRUE
+					AND cs.holdable IS TRUE
+					AND cl.opac_visible IS TRUE
+					AND br.active IS TRUE
+					AND br.deleted IS FALSE
+					AND ord.record = mrs.source
+					$ot_filter
+					$of_filter
+				  LIMIT 1
+			  	)
 			  ORDER BY 4 $sort_dir
 		SQL
 	} else {
 		$select = <<"		SQL";
 
 			SELECT	DISTINCT s.*
-			  FROM	$asset_call_number_table cn,
-				$metabib_metarecord_source_map_table mrs,
-				$asset_copy_table cp,
-				$descendants d,
-				$br_table br,
-				$metabib_record_descriptor ord,
-				($select) s
-			  WHERE	mrs.metarecord = s.metarecord
-				AND br.id = mrs.source
-				AND cn.record = mrs.source
-				AND cn.owning_lib = d.id
-				AND cp.call_number = cn.id
-				AND ord.record = mrs.source
-				AND br.deleted IS FALSE
-				$ot_filter
-				$of_filter
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$descendants d,
+					$br_table br,
+					$metabib_record_descriptor ord
+				  WHERE	mrs.metarecord = s.metarecord
+					AND br.id = mrs.source
+					AND cn.record = mrs.source
+					AND cn.owning_lib = d.id
+					AND ord.record = mrs.source
+					AND br.deleted IS FALSE
+					$ot_filter
+					$of_filter
+				  LIMIT 1
+				)
+				OR NOT EXISTS (
+				SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$metabib_record_descriptor ord
+				  WHERE	mrs.metarecord = s.metarecord
+					AND cn.record = mrs.source
+					AND ord.record = mrs.source
+					$ot_filter
+					$of_filter
+				  LIMIT 1
+				)
 			  ORDER BY 4 $sort_dir
 		SQL
 	}
@@ -1517,6 +1547,7 @@ sub postfilter_Z_search_class_fts {
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
+	my $br_table = biblio::record_entry->table;
 
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
@@ -1536,9 +1567,12 @@ sub postfilter_Z_search_class_fts {
 				* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
 			)
   	  	FROM	$search_table f,
+			$br_table br,
 			$metabib_record_descriptor rd
   	  	WHERE	$fts_where
 			AND rd.record = f.source
+			AND br.id = f.source
+			AND br.deleted IS FALSE
 			$t_filter
 			$f_filter
   	  	GROUP BY 1
@@ -1546,7 +1580,7 @@ sub postfilter_Z_search_class_fts {
 	SQL
 
 
-	$log->debug("Z39.50 Search SQL :: [$select]",DEBUG);
+	$log->debug("Z39.50 (Record) Search SQL :: [$select]",DEBUG);
 
 	my $SQLstring = join('%',$fts->words);
 	my $REstring = join('\\s+',$fts->words);
@@ -1574,6 +1608,16 @@ sub postfilter_Z_search_class_fts {
 for my $class ( qw/title author subject keyword series/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.Zsearch",
+		method		=> 'postfilter_Z_search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+}
+for my $class ( qw/title author subject keyword series/ ) {
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.biblio.$class.search_fts.record",
 		method		=> 'postfilter_Z_search_class_fts',
 		api_level	=> 1,
 		stream		=> 1,
@@ -1620,13 +1664,13 @@ sub multi_Z_search_full_rec {
 		$limiter_count++;
 		my $where = join(' OR ', @wheres);
 
-		push @selects, "SELECT id, record, $rank as sum FROM $search_table WHERE $where";
+		push @selects, "SELECT FIRST(id), record, SUM($rank) as sum FROM $search_table WHERE $where GROUP BY 2";
 
 	}
 
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
 
-	my $cj = 'HAVING COUNT(x.id) = ' . $limiter_count if ($class_join eq 'AND');
+	my $cj = 'HAVING COUNT(DISTINCT x.id) = ' . $limiter_count if ($class_join eq 'AND');
 	my $search_table =
 		'(SELECT x.record, sum(x.sum) FROM (('.
 			join(') UNION ALL (', @selects).
@@ -1656,6 +1700,7 @@ sub multi_Z_search_full_rec {
   	  	WHERE	rd.record = f.record
 			$t_filter
 			$f_filter
+		ORDER BY 2
 	SQL
 
 
@@ -1674,6 +1719,14 @@ sub multi_Z_search_full_rec {
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.metabib.full_rec.Zmulti_search',
+	method		=> 'multi_Z_search_full_rec',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.multiclass.search_fts.record',
 	method		=> 'multi_Z_search_full_rec',
 	api_level	=> 1,
 	stream		=> 1,
