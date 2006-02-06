@@ -372,8 +372,8 @@
 			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 			g.data.stash_retrieve();
 			var copies = JSON2js( g.data.temp );
-			g.error.sdump('D_CAT','in browse, g.data.temp =\n' + g.data.temp);
-			if (edit=='1' && copies!='') {
+			g.error.sdump('D_CAT','in browse, copies =\n<<' + copies + '>>');
+			if (edit=='1' && copies!='' && typeof copies != 'undefined') {
 				try {
 					var r = g.network.request(
 						api.FM_ACP_FLESHED_BATCH_UPDATE.app,
