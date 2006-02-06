@@ -52,7 +52,7 @@ for my $object (keys %$map) {
 	print SOURCE "	}\n";
 }
 print SOURCE <<C;
-	return strdup("datum");
+	return NULL;
 }
 
 int isFieldmapper(char* class) {
