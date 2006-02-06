@@ -83,15 +83,18 @@ util.browser.prototype = {
 	},
 
 	'get_content' : function() {
-		if (this.controller.view.browser_browser.contentWindow.wrappedJSObject) {
-			return this.controller.view.browser_browser.contentWindow.wrappedJSObject;
-		} else {
-			return this.controller.view.browser_browser.contentWindow;
+		try {
+			if (this.controller.view.browser_browser.contentWindow.wrappedJSObject) {
+				return this.controller.view.browser_browser.contentWindow.wrappedJSObject;
+			} else {
+				return this.controller.view.browser_browser.contentWindow;
+			}
+		} catch(E) {
+			alert('util.browser.get_content(): ' + E);
 		}
 	},
 
 	'push_variables' : function() {
-
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var cw = this.get_content();
@@ -106,9 +109,13 @@ util.browser.prototype = {
 	},
 
 	'getWebNavigation' : function() {
-		var wn = this.controller.view.browser_browser.webNavigation;
-		dump('getWebNavigation() = ' + wn + '\n');
-		return wn;
+		try {
+			var wn = this.controller.view.browser_browser.webNavigation;
+			dump('getWebNavigation() = ' + wn + '\n');
+			return wn;
+		} catch(E) {
+			alert('util.browser.getWebNavigation(): ' + E );
+		}
 	},
 
 	'updateNavButtons' : function() {
@@ -150,51 +157,55 @@ util.browser.prototype = {
 				onStatusChange		: function(){},
 				onSecurityChange	: function(){},
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
-					netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
-					var s = '';
-					const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
-					const nsIChannel = Components.interfaces.nsIChannel;
-					if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
-					s = ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
-					if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
-						s += ('\tSTATE_IS_REQUEST\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT) {
-						s += ('\tSTATE_IS_DOCUMENT\n');
-						if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
-							obj.push_variables(); obj.updateNavButtons();
-							if (window.xulG && typeof window.xulG.on_url_load == 'function') {
-								try {
-									obj.error.sdump('D_TRACE','calling on_url_load');
-									window.xulG.on_url_load( obj.controller.view.browser_browser );
-								} catch(E) {
-									obj.error.sdump('D_ERROR','on_url_load: ' + E );
+					try {
+						netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
+						var s = '';
+						const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
+						const nsIChannel = Components.interfaces.nsIChannel;
+						if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
+						s = ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
+						if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
+							s += ('\tSTATE_IS_REQUEST\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT) {
+							s += ('\tSTATE_IS_DOCUMENT\n');
+							if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
+								obj.push_variables(); obj.updateNavButtons();
+								if (window.xulG && typeof window.xulG.on_url_load == 'function') {
+									try {
+										obj.error.sdump('D_TRACE','calling on_url_load');
+										window.xulG.on_url_load( obj.controller.view.browser_browser );
+									} catch(E) {
+										obj.error.sdump('D_ERROR','on_url_load: ' + E );
+									}
 								}
 							}
 						}
+						if (stateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
+							s += ('\tSTATE_IS_NETWORK\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_IS_WINDOW) {
+							s += ('\tSTATE_IS_WINDOW\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_START) {
+							s += ('\tSTATE_START\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_REDIRECTING) {
+							s += ('\tSTATE_REDIRECTING\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_TRANSFERING) {
+							s += ('\tSTATE_TRANSFERING\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_NEGOTIATING) {
+							s += ('\tSTATE_NEGOTIATING\n');
+						}
+						if (stateFlags & nsIWebProgressListener.STATE_STOP) {
+							s += ('\tSTATE_STOP\n');
+						}
+						obj.error.sdump('D_OPAC',s);	
+					} catch(E) {
+						alert('util.browser.progresslistener.onstatechange: ' + js2JSON(E));
 					}
-					if (stateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
-						s += ('\tSTATE_IS_NETWORK\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_IS_WINDOW) {
-						s += ('\tSTATE_IS_WINDOW\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_START) {
-						s += ('\tSTATE_START\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_REDIRECTING) {
-						s += ('\tSTATE_REDIRECTING\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_TRANSFERING) {
-						s += ('\tSTATE_TRANSFERING\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_NEGOTIATING) {
-						s += ('\tSTATE_NEGOTIATING\n');
-					}
-					if (stateFlags & nsIWebProgressListener.STATE_STOP) {
-						s += ('\tSTATE_STOP\n');
-					}
-					obj.error.sdump('D_OPAC',s);	
 				}
 			}
 			obj.progressListener.QueryInterface = function(){return this;};
