@@ -206,7 +206,13 @@ RemoteRequest.prototype.getResultObject = function() {
 			alert("A Server Error Occured.  Debug information follows:\n" +
 				"Status: " + obj.status + '\n' + obj.debug + '\n' 
 				+ 'Payload: ' + js2JSON(obj.payload) + '\n');
-		} else { throw obj; }
+		} else { 
+			dump('Remote Request Error:' +
+					'\ncode = '		+ obj.status + 
+					'\ndebug: '		+ obj.debug + 
+					'\npayload: '	+ js2JSON(obj.payload)); 
+			throw obj;
+		}
 	}
 
 	var payload = obj.payload;
