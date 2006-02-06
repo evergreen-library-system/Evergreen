@@ -28,7 +28,11 @@ sub new {
 	throw OpenSRF::EX 
 		("No event defined with textcode: $event") unless defined $e;
 
-	return { ilsevent => $e, textcode => $event, %params };
+	my( $m, $f, $l ) = caller(1);
+	my( $mm, $ff, $ll ) = caller(2);
+
+	return { ilsevent => $e, textcode => $event, 
+		stacktrace => "$f:$l, $ff:$ll", %params };
 }
 
 sub _load_events {

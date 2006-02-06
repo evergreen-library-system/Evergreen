@@ -22,6 +22,9 @@ my %cache;				# - db objects cache
 my %contexts;			# - Script runner contexts
 my $cache_handle;		# - memcache handle
 
+sub PRECAT_FINE_LEVEL { return 2; }
+sub PRECAT_LOAN_DURATION { return 2; }
+
 # ------------------------------------------------------------------------------
 # Load the circ script from the config
 # ------------------------------------------------------------------------------
@@ -99,54 +102,63 @@ sub _ctx_add_patron_objects {
 	$ctx->{patron}	= $params{patron};
 
 	if(!defined($cache{patron_standings})) {
-		$cache{patron_standings} = $apputils->fetch_patron_standings();
-		$cache{group_tree} = $apputils->fetch_permission_group_tree();
+		$cache{patron_standings} = $U->fetch_patron_standings();
+		$cache{group_tree} = $U->fetch_permission_group_tree();
 	}
 
 	$ctx->{patron_standings} = $cache{patron_standings};
 	$ctx->{group_tree} = $cache{group_tree};
 
 	$ctx->{patron_circ_summary} = 
-		$apputils->fetch_patron_circ_summary($ctx->{patron}->id) 
+		$U->fetch_patron_circ_summary($ctx->{patron}->id) 
 		if $params{fetch_patron_circsummary};
 
 	return undef;
 }
 
 
+sub _find_copy_by_attr {
+	my %params = @_;
+	my $evt;
+
+	my $copy = $params{copy} || undef;
+
+	if(!$copy) {
+
+		( $copy, $evt ) = 
+			$U->fetch_copy($params{copyid}) if $params{copyid};
+		return (undef,$evt) if $evt;
+
+		if(!$copy) {
+			( $copy, $evt ) = 
+				$U->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
+			return (undef,$evt) if $evt;
+		}
+	}
+	$logger->debug("_find_copy_by_attr(): " . Dumper($copy));
+	return ( $copy, $evt );
+}
+
 sub _ctx_add_copy_objects {
 	my($ctx, %params)  = @_;
 	my $evt;
+	my $copy;
 
-	$cache{copy_statuses} = $apputils->fetch_copy_statuses 
+	$cache{copy_statuses} = $U->fetch_copy_statuses 
 		if( $params{fetch_copy_statuses} and !defined($cache{copy_statuses}) );
 
-	$cache{copy_locations} = $apputils->fetch_copy_locations 
+	$cache{copy_locations} = $U->fetch_copy_locations 
 		if( $params{fetch_copy_locations} and !defined($cache{copy_locations}));
 
 	$ctx->{copy_statuses} = $cache{copy_statuses};
 	$ctx->{copy_locations} = $cache{copy_locations};
 
-	my $copy = $params{copy} || undef;
-
-	$logger->debug("Fetched : We were provided a copy object: " . Dumper($copy)) if $copy;
-
-	if(!$copy) {
-
-		( $copy, $evt ) = 
-			$apputils->fetch_copy($params{copyid}) if $params{copyid};
-		return $evt if $evt;
-
-		if(!$copy) {
-			( $copy, $evt ) = 
-				$apputils->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
-			return $evt if $evt;
-		}
-	}
+	($copy, $evt) = _find_copy_by_attr(%params);
+	return $evt if $evt;
 
 	if( $copy ) {
 		$logger->debug("Copy status: " . $copy->status);
-		( $ctx->{title}, $evt ) = $apputils->fetch_record_by_copy( $copy->id );
+		( $ctx->{title}, $evt ) = $U->fetch_record_by_copy( $copy->id );
 		return $evt if $evt;
 		$ctx->{copy} = $copy;
 	}
@@ -163,20 +175,20 @@ sub _doctor_copy_object {
 	my $ctx = shift;
 	my $copy = $ctx->{copy} || return undef;
 
+	$logger->debug("Doctoring copy object...");
+
 	# set the copy status to a status name
-	$copy->status( _get_copy_status( 
-		$copy, $ctx->{copy_statuses} ) ) if $copy;
+	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) );
 
 	# set the copy location to the location object
-	$copy->location( _get_copy_location( 
-		$copy, $ctx->{copy_locations} ) ) if $copy;
+	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) );
 
 	$copy->circ_lib( $U->fetch_org_unit($copy->circ_lib) );
 }
 
 
 # ------------------------------------------------------------------------------
-# Fleshes parts of the copy object
+# Fleshes parts of the patron object
 # ------------------------------------------------------------------------------
 sub _doctor_patron_object {
 	my $ctx = shift;
@@ -195,7 +207,7 @@ sub _doctor_patron_object {
 
 	# flesh the org unit
 	$patron->home_ou( 
-		$apputils->fetch_org_unit( $patron->home_ou ) ) if $patron;
+		$U->fetch_org_unit( $patron->home_ou ) ) if $patron;
 
 }
 
@@ -257,6 +269,8 @@ sub _build_circ_script_runner {
 	}
 
 
+	$logger->debug("Inserting copy into circ env: " . Dumper($ctx->{copy}));
+
 	$runner->insert( 'environment.patron',		$ctx->{patron}, 1);
 	$runner->insert( 'environment.title',		$ctx->{title}, 1);
 	$runner->insert( 'environment.copy',		$ctx->{copy}, 1);
@@ -310,7 +324,7 @@ __PACKAGE__->register_method(
 			patron : The patron the checkout is occurring for, 
 			renew : true or false - whether or not this is a renewal
 		@return The event that occurred during the permit check.  
-			If all is well, the SUCCESS event is returned
+			If all is well, #fetch the object so we can check a. it exists and b. it's location for permsthe SUCCESS event is returned
 	/);
 
 sub permit_circ {
@@ -320,7 +334,7 @@ sub permit_circ {
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
-		$apputils->checkses_requestor( 
+		$U->checkses_requestor( 
 		$authtoken, $params->{patron}, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
 
@@ -335,7 +349,18 @@ sub permit_circ {
 		);
 	return $evt if $evt;
 
+	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS')
+		if ( $ctx->{copy} and _find_open_circulation($ctx->{copy}->id));
+
 	return _run_permit_scripts($ctx);
+}
+
+
+sub _find_open_circulation {
+	my $cid = shift;
+	return $U->storagereq(
+		'open-ils.storage.direct.action.open_circulation.search_where',
+		{ target_copy => $cid, stop_fines_time => undef } );
 }
 
 
@@ -356,52 +381,43 @@ sub _run_permit_scripts {
 
 	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 
-	my $key;
+	my $key = _cache_permit_key();
 
 	if( $ctx->{noncat} ) {
 		$logger->debug("Exiting circ permit early because item is a non-cataloged item");
-		$key = _cache_permit_key(-1, $patronid, $ctx->{requestor}->id);
 		return OpenILS::Event->new('SUCCESS', payload => $key);
 	}
 
-	if( $ctx->{precat} ) {
-		$logger->debug("Exiting circ permit early because item has yet to be cataloged");
-		$key = _cache_permit_key(-1, $patronid, $ctx->{requestor}->id);
+	if($ctx->{precat}) {
+		$logger->debug("Exiting circ permit early because copy is pre-cataloged");
 		return OpenILS::Event->new('ITEM_NOT_CATALOGED', payload => $key);
 	}
 
 	$runner->load($scripts{circ_permit_copy});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
 	$evtname = $runner->retrieve('result.event');
-	$logger->activity("circ_permit_patron for user $patronid ".
+	$logger->activity("circ_permit_copy for user $patronid ".
 		"and copy $barcode returned event: $evtname");
 
-	if( $evtname eq 'SUCCESS' ) {
-		$key = _cache_permit_key($ctx->{copy}->id, $patronid, $ctx->{requestor}->id);
-		return OpenILS::Event->new($evtname, payload => $key);
-	}
-
+	return OpenILS::Event->new($evtname, payload => $key) if( $evtname eq 'SUCCESS' );
 	return OpenILS::Event->new($evtname);
 }
 
 # takes copyid, patronid, and requestor id
 sub _cache_permit_key {
-	my( $cid, $pid, $rid ) = @_;
-	my $key = md5_hex( time() . rand() . "$$ $cid $pid $rid" );
-	$logger->debug("Setting circ permit key [$key] for copy $cid, patron $pid, and staff $rid");
-	$cache_handle->put_cache( "oils_permit_key_$key", [ $cid, $pid, $rid ], 300 );
+	my $key = md5_hex( time() . rand() . "$$" );
+	$logger->debug("Setting circ permit key to $key");
+	$cache_handle->put_cache( "oils_permit_key_$key", 1, 300 );
 	return $key;
 }
 
-# takes permit_key, copyid, patronid, and requestor id
 sub _check_permit_key {
-	my( $key, $cid, $pid, $rid ) = @_;
+	my $key = shift;
 	$logger->debug("Fetching circ permit key $key");
 	my $k = "oils_permit_key_$key";
-	my $arr = $cache_handle->get_cache($k);
+	my $one = $cache_handle->get_cache($k);
 	$cache_handle->delete_cache($k);
-	return 1 if( ref($arr) and @$arr[0] eq $cid and @$arr[1] eq $pid and @$arr[2] eq $rid );
-	return 0;
+	return ($one) ? 1 : 0;
 }
 
 
@@ -421,6 +437,9 @@ __PACKAGE__->register_method(
 			noncat		True if this is a circulation for a non-cataloted item
 			noncat_type	The non-cataloged type id
 			noncat_circ_lib The location for the noncat circ.  
+			precat		The item has yet to be cataloged
+			dummy_title The temporary title of the pre-cataloded item
+			dummy_author The temporary authr of the pre-cataloded item
 				Default is the home org of the staff member
 		@return The SUCCESS event on success, any other event depending on the error
 	/);
@@ -428,16 +447,26 @@ __PACKAGE__->register_method(
 sub checkout {
 	my( $self, $client, $authtoken, $params ) = @_;
 
-	my ( $requestor, $patron, $ctx, $evt, $circ );
+	my ( $requestor, $patron, $ctx, $evt, $circ, $copy );
 	my $key = $params->{permit_key};
 
 	# check permisson of the requestor
-	( $requestor, $patron, $evt ) = 
-		$apputils->checkses_requestor( 
+	( $requestor, $patron, $evt ) = $U->checkses_requestor( 
 			$authtoken, $params->{patron}, 'COPY_CHECKOUT' );
 	return $evt if $evt;
 
-	return _checkout_noncat( $key, $requestor, $patron, %$params ) if $params->{noncat};
+	# set the circ lib to the home org of the requestor if not specified
+	my $circlib = (defined($params->{circ_lib})) ? 
+		$params->{circ_lib} : $requestor->home_ou;
+
+	# if this is a non-cataloged item, check it out and return
+	return _checkout_noncat( 
+		$key, $requestor, $patron, %$params ) if $params->{noncat};
+
+	# if this item has yet to be cataloged, make sure a dummy copy exists
+	( $params->{copy}, $evt ) = _make_precat_copy(
+		$requestor, $circlib, $params ) if $params->{precat};
+	return $evt if $evt;
 
 	my $session = $U->start_db_session();
 
@@ -453,11 +482,11 @@ sub checkout {
 		);
 	return $evt if $evt;
 
+	my $cid = ($params->{precat}) ? -1 : $ctx->{copy}->id;
 	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
-		unless _check_permit_key( $key, $ctx->{copy}->id, $patron->id, $requestor->id );
+		unless _check_permit_key($key);
 
-	$ctx->{circ_lib} = (defined($params->{circ_lib})) ? 
-		$params->{circ_lib} : $requestor->home_ou;
+	$ctx->{circ_lib} = $circlib;
 
 	$evt = _run_checkout_scripts($ctx);
 	return $evt if $evt;
@@ -472,18 +501,54 @@ sub checkout {
 	$evt = _handle_related_holds($ctx);
 	return $evt if $evt;
 
+
 	$U->commit_db_session($session);
-	#$session->disconnect;
+	my $record = $U->record_to_mvr($ctx->{title}) unless $ctx->{precat};
 
 	return OpenILS::Event->new('SUCCESS', 
 		payload		=> { 
 			copy		=> $ctx->{copy},
 			circ		=> $ctx->{circ},
-			record	=> $U->record_to_mvr($ctx->{title}),
+			record	=> $record,
 		} );
 }
 
 
+sub _make_precat_copy {
+	my ( $requestor, $circlib, $params ) =  @_;
+	my( $copy, undef ) = _find_copy_by_attr(%$params);
+
+	if($copy) {
+		$logger->debug("Pre-cat copy already exists in checkout: ID=" . $copy->id);
+		return ($copy, undef);
+	}
+
+	$logger->debug("Creating a new precataloged copy in checkout with barcode " . $params->{barcode});
+
+	my $evt = OpenILS::Event->new(
+		'BAD_PARAMS', desc => "Dummy title or author not provided" ) 
+		unless ( $params->{dummy_title} and $params->{dummy_author} );
+	return (undef, $evt) if $evt;
+
+	$copy = Fieldmapper::asset::copy->new;
+	$copy->circ_lib($circlib);
+	$copy->creator($requestor->id);
+	$copy->editor($requestor->id);
+	$copy->barcode($params->{barcode});
+	$copy->call_number(-1); #special CN for precat materials
+	$copy->loan_duration(&PRECAT_LOAN_DURATION);  # these two should come from constants
+	$copy->fine_level(&PRECAT_FINE_LEVEL);
+
+	$copy->dummy_title($params->{dummy_title});
+	$copy->dummy_author($params->{dummy_author});
+
+	my $id = $U->storagereq(
+		'open-ils.storage.direct.asset.copy.create', $copy );
+	return (undef, $U->DB_UPDATE_FAILED($copy)) unless $copy;
+
+	$logger->debug("Pre-cataloged copy successfully created");
+	return $U->fetch_copy($id);
+}
 
 
 sub _run_checkout_scripts {
@@ -612,6 +677,7 @@ sub _update_checkout_copy {
 	$copy->circ_lib( $copy->circ_lib->id );
 
 	$logger->debug("Updating editor info on copy in checkout: " . $copy->id );
+	$logger->debug("Updating editor info on copy in checkout: " . Dumper($copy) );
 	$ctx->{session}->request( 
 		'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
 }
@@ -675,7 +741,7 @@ sub _checkout_noncat {
 	$circlib = $params{noncat_circ_lib} || $requestor->home_ou;
 
 	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
-		unless _check_permit_key( $key, -1, $patron->id, $requestor->id );
+		unless _check_permit_key($key);
 
 	( $circ, $evt ) = OpenILS::Application::Circ::NonCat::create_non_cat_circ(
 			$requestor->id, $patron->id, $circlib, $params{noncat_type} );

@@ -32,8 +32,10 @@ my $start;
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
-	my $key = do_permit($patronid, $barcode, $type =~ /noncat/ ); 
-	do_checkout($key, $patronid, $barcode, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
+	my($key,$precat) = do_permit($patronid, $barcode, $type =~ /noncat/ ); 
+	printl("Item is pre-cataloged...") if $precat;
+	do_checkout($key, $patronid, $barcode, 
+		$precat, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
 	oils_logout();
 }
 
@@ -44,6 +46,7 @@ go();
 sub do_permit {
 	my( $patronid, $barcode, $noncat ) = @_;
 
+	my $precat = 0;
 	my $args = { patron => $patronid, barcode => $barcode };
 	if($noncat) {
 		$args->{noncat} = 1;
@@ -54,20 +57,31 @@ sub do_permit {
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.checkout.permit', $authtoken, $args );
 	
-	oils_event_die($resp);
+	if( oils_event_equals($resp, 'ITEM_NOT_CATALOGED') ) {
+		$precat = 1;
+	} else { oils_event_die($resp); }
+
 	my $e = time() - $start;
 	my $key = $resp->{payload};
 	printl("Permit OK: \n\ttime =\t$e\n\tkey =\t$key" );
-	return $key;
+
+	return ( $key, $precat );
 }
 
 sub do_checkout {
-	my( $key, $patronid, $barcode, $noncat, $nc_type ) = @_;
+	my( $key, $patronid, $barcode, $precat, $noncat, $nc_type ) = @_;
 
 	my $args = { permit_key => $key, patron => $patronid, barcode => $barcode };
+
 	if($noncat) {
 		$args->{noncat} = 1;
 		$args->{noncat_type} = $nc_type;
+	}
+
+	if($precat) {
+		$args->{precat} = 1;
+		$args->{dummy_title} = "Dummy Title";
+		$args->{dummy_author} = "Dummy Author";
 	}
 
 	my $start_checkout = time();
@@ -82,12 +96,10 @@ sub do_checkout {
 	my $dd = $finish - $start;
 
 	printl("Checkout OK:");
-	if(!$noncat) {
-		printl("\ttime = $d");
-		printl("\ttotal time = $dd");
-		printl("\ttitle = " . $resp->{payload}->{record}->title );
-		printl("\tdue_date = " . $resp->{payload}->{circ}->due_date );
-	}
+	printl("\ttime = $d");
+	printl("\ttotal time = $dd");
+	printl("\ttitle = " . $resp->{payload}->{record}->title ) unless($noncat or $precat);
+	printl("\tdue_date = " . $resp->{payload}->{circ}->due_date ) unless $noncat;
 }
 
 

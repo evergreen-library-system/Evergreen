@@ -108,6 +108,12 @@ sub oils_is_event {
 	return 0;	
 }
 
+sub oils_event_equals {
+	my( $e, $name ) = @_;
+	return 1 if (oils_is_event($e) and ($e->{textcode} eq $name));
+	return 0;
+}
+
 #----------------------------------------------------------------
 # If the given object is an event, this prints the event info 
 # and exits the script

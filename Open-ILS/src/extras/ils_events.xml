@@ -166,6 +166,10 @@
 		<desc> The copy location object already exists </desc>
 	</event>
 
+	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
+		<desc> There is an open circulation on the requested item </desc>
+	</event>
+
 
 	<event code='2000' textcode='BAD_PARAMS'>
 		<desc>
