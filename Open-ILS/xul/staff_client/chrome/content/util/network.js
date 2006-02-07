@@ -17,6 +17,10 @@ util.network.prototype = {
 
 	'link_id' : 0,
 
+	'simple_request' : function(id,params,f) {
+		return this.request(api[id].app,api[id].method,params,f);
+	},
+
 	'request' : function (app,name,params,f) {
 		try {
 			var obj = this;
