@@ -20,7 +20,7 @@ util.window.prototype = {
 	// Windows need unique names.  This number helps.
 	'window_name_increment' :  function() {
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		if (typeof data.appshell_name_increment == 'undefined') {
+		if (typeof data.window_name_increment == 'undefined') {
 			data.window_name_increment = 1;
 		} else {
 			data.window_name_increment++;
