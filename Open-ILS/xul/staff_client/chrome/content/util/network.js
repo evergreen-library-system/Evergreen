@@ -15,25 +15,33 @@ util.network.prototype = {
 	// Flag for whether the staff client should act as if it were offline or not
 	'offline' : false,
 
+	'link_id' : 0,
+
 	'request' : function (app,name,params,f) {
-
 		try {
-
-			this.error.sdump('D_SES','=-=-=-=-= user_request("'+app+'","'+name+'",'+js2JSON(params)+')\n');
+			var obj = this;
+			var sparams = js2JSON(params);
+			obj.error.sdump('D_SES','request '+app+' '+name+' '+sparams.slice(1,sparams.length-1)+
+				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
 			var request = new RemoteRequest( app, name );
 			for(var index in params) {
 				request.addParam(params[index]);
 			}
 	
 			if (f)  {
-				request.setCompleteCallback(f);
+				request.setCompleteCallback(
+					function(req) {
+						obj.error.sdump('D_SES_RESULT','asynced result #' + obj.link_id + '\n\n' + 
+							js2JSON(req.getResultObject()));
+						f(req);
+					}
+				);
 				request.send(false);
-				this.error.sdump('D_SES_RESULT','=-=-= result asynced\n');
 				return null;
 			} else {
 				request.send(true);
 				var result = request.getResultObject();
-				this.error.sdump('D_SES_RESULT','=-=-= result = ' + js2JSON(result) + '\n');
+				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + js2JSON(result));
 				return result;
 			}
 
