@@ -12,6 +12,7 @@ function my_init() {
 		JSAN.use('util.error'); g.error = new util.error();
 		g.error.sdump('D_TRACE','my_init() for cat/copy_editor.xul');
 
+		JSAN.use('util.functional');
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 		JSAN.use('util.network'); g.network = new util.network();
 
@@ -21,7 +22,7 @@ function my_init() {
 		g.docid = g.cgi.param('docid');
 
 		/******************************************************************************************************/
-		/* Get the copy ids from various sources */
+		/* Get the copy ids from various sources and flesh them */
 
 		var copy_ids = [];
 		if (g.cgi.param('copy_ids')) copy_ids = JSON2js( g.cgi.param('copy_ids') );
@@ -35,7 +36,7 @@ function my_init() {
 		);
 
 		/******************************************************************************************************/
-		/* And fleshed copies if any */
+		/* And other fleshed copies if any */
 
 		if (!g.copies) g.copies = [];
 		if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
@@ -58,6 +59,7 @@ function my_init() {
 
 		/******************************************************************************************************/
 		/* Show the Record Details? */
+
 		if (g.docid) {
 			document.getElementById('brief_display').setAttribute(
 				'src',
@@ -65,6 +67,70 @@ function my_init() {
 			);
 		} else {
 			document.getElementById('brief_display').setAttribute('hidden','true');
+		}
+
+		/******************************************************************************************************/
+		/* Add stat cats to the right_pane_field_names */
+
+		var stat_cat_seen = {};
+
+		function add_stat_cat(sc) {
+
+			if (typeof g.data.hash.asc == 'undefined') { g.data.hash.asc = {}; g.data.stash('hash'); }
+
+			var sc_id = sc;
+
+			if (typeof sc == 'object') {
+
+				sc_id = sc.id();
+			}
+
+			if (typeof stat_cat_seen[sc_id] != 'undefined') { return; }
+
+			stat_cat_seen[ sc_id ] = 1;
+
+			if (typeof sc != 'object') {
+
+				sc = g.network.simple_request(
+					'FM_ASC_BATCH_RETRIEVE',
+					[ g.session, [ sc_id ] ]
+				)[0];
+
+			}
+
+			g.data.hash.asc[ sc.id() ] = sc; g.data.stash('hash');
+
+			var label_name = g.data.hash.aou[ sc.owner() ].shortname() + " : " + sc.name();
+
+			var temp_array = [
+				label_name,
+				{
+					render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
+						+ sc.id() + '; } ); l ? l.value() : null;',
+					input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ); '
+						+ 'x.addEventListener("command",function(ev) { g.apply_stat_cat(' + sc.id()
+						+ ', ev.target.value); } ,false);',
+				}
+			];
+
+			dump('temp_array = ' + js2JSON(temp_array) + '\n');
+
+			g.right_pane_field_names.push( temp_array );
+		}
+
+		/* The stat cats for the pertinent library */
+		for (var i = 0; i < g.data.list.my_asc.length; i++) {
+			add_stat_cat( g.data.list.my_asc[i] );	
+		}
+
+		/* Other stat cats present on these copies */
+		for (var i = 0; i < g.copies.length; i++) {
+			var entries = g.copies[i].stat_cat_entries();
+			for (var j = 0; j < entries.length; j++) {
+				var sc_id = entries[j].stat_cat();
+				add_stat_cat( sc_id );
+			}
 		}
 
 		/******************************************************************************************************/
@@ -95,6 +161,37 @@ g.apply = function(field,value) {
 		}
 	}
 }
+
+/******************************************************************************************************/
+/* Apply a stat cat entry to all the copies being edited */
+
+g.apply_stat_cat = function(sc_id,entry_id) {
+	g.error.sdump('D_TRACE','sc_id = ' + sc_id + '  entry_id = ' + entry_id + '\n');
+	for (var i = 0; i < g.copies.length; i++) {
+		var copy = g.copies[i];
+		try {
+			copy.ischanged('1');
+			var temp = copy.stat_cat_entries();
+			temp = util.functional.filter_list(
+				temp,
+				function (obj) {
+					return (obj.id() != entry_id);
+				}
+			);
+			temp.push( 
+				util.functional.find_id_object_in_list( 
+					g.data.hash.asc[sc_id].entries(), 
+					entry_id
+				)
+			);
+			copy.stat_cat_entries( temp );
+
+		} catch(E) {
+			alert(E);
+		}
+	}
+}
+
 
 /******************************************************************************************************/
 /* These need data from the middle layer to render */
@@ -377,7 +474,7 @@ g.summarize = function( copies ) {
 			}
 		}
 	}
-	g.error.sdump('D_ERROR','summary = ' + js2JSON(g.summary) + '\n');
+	g.error.sdump('D_TRACE','summary = ' + js2JSON(g.summary) + '\n');
 }
 
 /******************************************************************************************************/
