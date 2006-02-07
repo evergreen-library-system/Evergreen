@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="pre_cat_fields" title="CC Info"
+	orient="vertical" style="overflow: auto"
+	onload="try{my_init();}catch(E){alert(E);}"
+	onunload="try{my_finish();}catch(E){alert(E);}"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+
+	<script>
+	<![CDATA[
+
+		function my_init() {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+			JSAN.errorLevel = "die"; // none, warn, or die
+			JSAN.addRepository('/xul/server/');
+			JSAN.use('util.error'); g.error = new util.error();
+			g.error.sdump('D_TRACE','my_init() for pre_cat_fields.xul');
+			JSAN.use('OpenILS.data'); g.data = new OpenILS.data();
+			g.data.init({'via':'stash'});
+
+			document.getElementById('dummy_title').focus();
+		}
+
+		function my_finish() {
+			/* FIXME -- need unique temp space name */
+			/* FIXME -- We need to blank dummy_title on a forced window close */
+			g.data.stash('dummy_title','dummy_author');
+		}
+
+	]]>
+	</script>
+
+
+	<groupbox>
+		<caption label="Pre-Catalog Field Entry"/>
+		<grid>
+			<columns><column /><column flex="1"/></columns>
+			<rows>
+				<row>
+					<label value="Title" control="dummy_title"/>
+					<textbox id="dummy_title" onchange="g.data.dummy_title = event.target.value;"/>
+				</row>
+				<row>
+					<label value="Author" control="dummy_author"/>
+					<textbox id="dummy_author" onchange="g.data.dummy_author = event.target.value;"/>
+				</row>
+			</rows>
+		</grid>
+		<hbox>
+			<spacer flex="1"/>
+			<button label="Cancel" oncommand="g.data.dummy_title = ''; window.close()" accesskey="C"/>
+			<button label="Checkout" oncommand="window.close();" accesskey="o"/>
+		</hbox>
+	</groupbox>
+
+</window>
+
+
