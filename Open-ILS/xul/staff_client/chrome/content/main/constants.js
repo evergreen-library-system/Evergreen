@@ -21,6 +21,7 @@ var api = {
 	'FM_AOU_RETRIEVE_RELATED_VIA_SESSION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.full_path.retrieve' },
 	'FM_AOUT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_types.retrieve' },
 	'FM_ASC_BATCH_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.batch' },
+	'FM_ASC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.all' },
 	'FM_ASV_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.create' },
 	'FM_ASV_RETRIEVE_REQUIRED' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.retrieve.required' },
 	'FM_ASVR_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.response.retrieve' },
