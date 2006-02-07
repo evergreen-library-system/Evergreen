@@ -121,7 +121,11 @@ OpenILS.data.prototype = {
 				}
 
 				try {
+					var level = obj.error.sdump_levels.D_SES_RESULT;
+					if (classname == 'aou' || classname == 'my_aou')
+						obj.error.sdump_levels.D_SES_RESULT = false;
 					obj.list[classname] = obj.network.request( app, method, params);
+					obj.error.sdump_levels.D_SES_RESULT = level;
 					convert();
 					// if cacheable, store an offline copy
 					/* FIXME -- we're going to revisit caching and do it differently
