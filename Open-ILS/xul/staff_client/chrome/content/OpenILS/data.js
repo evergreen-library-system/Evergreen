@@ -244,6 +244,22 @@ OpenILS.data.prototype = {
 		);
 
 		this.chain.push(
+
+			function () {
+
+				gen_fm_retrieval_func( 'my_asc', 
+					[ 
+						api.FM_ASC_RETRIEVE_VIA_AOU.app,
+						api.FM_ASC_RETRIEVE_VIA_AOU.method,
+						[ obj.session, obj.list.au[0].home_ou() ],
+						true
+					]
+				)();
+			}
+		);
+
+
+		this.chain.push(
 			function() {
 				var f = gen_fm_retrieval_func(
 					'cnct',
