@@ -366,10 +366,10 @@ sub permit_circ {
 		return $evt if $evt;
 	}
 
-	($circ, $evt) = $U->fetch_open_circ($ctx->{copy}->id) 
+	($circ, $evt) = $U->fetch_open_circulation($ctx->{copy}->id) 
 		if ( !$__isrenewal and $ctx->{copy});
 
-	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $evt;
+	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $circ;
 
 	return _run_permit_scripts($ctx);
 }
@@ -792,7 +792,7 @@ __PACKAGE__->register_method(
 	PARAMS( authtoken, barcode => bc )
 	Checks in based on barcode
 	Returns an event object whose payload contains the record, circ, and copy
-	If the item needs to be routed, the event is a ROUTE_COPY event
+	If the item needs to be routed, the event is a ROUTE_ITEM event
 	with an additional 'route_to' variable set on the event
 	NOTES
 
@@ -800,7 +800,7 @@ sub checkin {
 	my( $self, $client, $authtoken, $params ) = @_;
 	$U->logmark;
 
-	my( $ctx, $requestor, $evt, $patron, $circ );
+	my( $ctx, $requestor, $evt, $patron, $circ, $copy );
 
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
 	( $requestor, $evt ) = $U->checksesperm( $authtoken, 'COPY_CHECKIN' ) unless $__isrenewal;
@@ -808,30 +808,35 @@ sub checkin {
 	( $patron, $evt ) = $U->fetch_user($params->{patron});
 	return $evt if $evt;
 
-	if( !( $ctx = $params->{_ctx}) ) {
-		( $ctx, $evt ) = create_circ_ctx( %$params, 
-			patron							=> $patron, 
-			requestor						=> $requestor, 
-			#session							=> $session, 
-			type								=> 'circ',
-			fetch_patron_circ_summary	=> 1,
-			fetch_copy_statuses			=> 1, 
-			fetch_copy_locations			=> 1, 
-			no_runner						=> 1, 
-			);
-		return $evt if $evt;
-	}
+#	if( !( $ctx = $params->{_ctx}) ) {
+#		( $ctx, $evt ) = create_circ_ctx( %$params, 
+#			patron							=> $patron, 
+#			requestor						=> $requestor, 
+#			#session							=> $session, 
+#			type								=> 'circ',
+#			fetch_patron_circ_summary	=> 1,
+#			fetch_copy_statuses			=> 1, 
+#			fetch_copy_locations			=> 1, 
+#			no_runner						=> 1, 
+#			);
+#		return $evt if $evt;
+#	}
 
-	return OpenILS::Event->new('COPY_NOT_FOUND') unless $ctx->{copy};
-	( $circ, $evt ) = $U->fetch_open_circulation($ctx->{copy}->id);
+	($copy, $evt) = $U->fetch_copy_by_barcode($params->{barcode});
+	return $evt if $evt;
+
+#	return OpenILS::Event->new('COPY_NOT_FOUND') unless $ctx->{copy};
+	( $circ, $evt ) = $U->fetch_open_circulation($copy->id);
 	return $evt if $evt;
 
 	# XXX Use the old checkin for now XXX 
 	my $checkin = $self->method_lookup("open-ils.circ.checkin.barcode");
-	my ($status) = $checkin->run($authtoken, $ctx->{copy}->barcode, 1);
+	my ($status) = $checkin->run($authtoken, $copy->barcode, $__isrenewal);
 
 	return OpenILS::Event->new('PERM_FAILURE') 
 		if ref($status) eq "Fieldmapper::perm_ex";
+	return OpenILS::Event->new('ROUTE_ITEM', payload => $status->{route_to} )
+		if( $status->{status} eq '3' );
 	return OpenILS::Event->new('UNKNOWN', 
 		payload => $status ) if ($status->{status} ne "0"); 
 	return OpenILS::Event->new('SUCCESS');
@@ -863,6 +868,7 @@ sub renew {
 		$authtoken, $params->{patron}, 'RENEW_CIRC' );
 	return $evt if $evt;
 
+
 	# fetch and build the circulation environment
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
@@ -875,34 +881,53 @@ sub renew {
 	return $evt if $evt;
 	$params->{_ctx} = $ctx;
 
-	($circ, $evt) = _check_renewals($ctx);
+	# make sure they have some renewals left and make sure the circulation exists
+	($circ, $evt) = _check_renewal_remaining($ctx);
 	return $evt if $evt;
 	$ctx->{old_circ} = $circ;
-	$ctx->{renewal_remaining} = $circ->renewal_remaining - 1;
+	my $renewals = $circ->renewal_remaining - 1;
+
+	# run the renew permit script
 	return $evt if( ($evt = _run_renew_scripts($ctx)) );
 
-	$params->{permit_key} = $evt->{payload};
-	$evt = $self->checkin($client, $authtoken, $params );
-	return $evt unless $U->event_equals($evt, 'SUCCESS');
+	# checkin the cop
+	$evt = $self->checkin($client, $authtoken, 
+		{ barcode => $params->{barcode}, patron => $params->{patron}} );
 
-	($circ->{copy}, undef) = $U->fetch_copy($circ->{copy}->id);
-	_doctor_copy_object($ctx); #re-flesh the copy since it's been checked in
+	return $evt unless $U->event_equals($evt, 'SUCCESS') 
+		or $U->event_equals($evt, 'ROUTE_ITEM');
 
-	$evt = $self->permit_circ($client, $authtoken, $params );
+	# re-fetch the context since objects have changed in the checkin
+	( $ctx, $evt ) = create_circ_ctx( %$params, 
+		patron							=> $patron, 
+		requestor						=> $requestor, 
+		type								=> 'circ',
+		fetch_patron_circ_summary	=> 1,
+		fetch_copy_statuses			=> 1, 
+		fetch_copy_locations			=> 1, 
+		);
+	return $evt if $evt;
+	$params->{_ctx} = $ctx;
+	$ctx->{renewal_remaining} = $renewals;
+
+	# run the circ permit scripts
+	$evt = $self->permit_circ( $client, $authtoken, $params );
 	if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
 		$ctx->{precat} = 1;
 	} else {
 		return $evt unless $U->event_equals($evt, 'SUCCESS');
 	}
+	$params->{permit_key} = $evt->{payload};
 
 
+	# checkout the item again
 	$evt = $self->checkout($client, $authtoken, $params );
 
 	$__isrenewal = 0;
 	return $evt;
 }
 
-sub _check_renewals {
+sub _check_renewal_remaining {
 	my $ctx = shift;
 	$U->logmark;
 	my( $circ, $evt ) = $U->fetch_open_circulation($ctx->{copy}->id);

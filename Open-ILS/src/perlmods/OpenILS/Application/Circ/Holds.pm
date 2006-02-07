@@ -369,7 +369,7 @@ sub capture_copy {
 
 	my $payload = { copy => $copy, record => $title, hold => $hold, };
 
-	return OpenILS::Event->new('ROUTE_COPY', route_to => $hold->pickup_lib, payload => $payload );
+	return OpenILS::Event->new('ROUTE_ITEM', route_to => $hold->pickup_lib, payload => $payload );
 }
 
 sub _build_hold_transit {

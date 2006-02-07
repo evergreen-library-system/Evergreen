@@ -201,7 +201,7 @@
 
 	<!-- ================================================================ -->
 	<!-- CIRC EVENTS -->
-	<event code='7000' textcode='ROUTE_COPY'>
+	<event code='7000' textcode='ROUTE_ITEM'>
 		<desc> A copy needs to be routed to a different location	</desc>
 	</event>
 
