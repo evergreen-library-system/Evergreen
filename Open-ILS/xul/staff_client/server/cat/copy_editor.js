@@ -612,8 +612,13 @@ g.render = function() {
 					try {
 						var spacer = document.createElement('spacer'); hbox.appendChild(spacer);
 						spacer.setAttribute('flex','1');
+						var deck = document.createElement('deck'); hbox.appendChild(deck);
+						var btn = document.createElement('button'); deck.appendChild(btn);
+						deck.setAttribute('style','width: 200px; min-width: 200px;');
+						btn.setAttribute('label','Change');
+						btn.setAttribute('oncommand','this.parentNode.selectedIndex = 1;');
 						var x; eval( f[1].input );
-						if (x) hbox.appendChild(x);
+						if (x) deck.appendChild(x);
 
 					} catch(E) {
 						g.error.sdump('D_ERROR',E + '\n');
@@ -674,8 +679,13 @@ g.render = function() {
 					try {
 						var spacer = document.createElement('spacer'); hbox.appendChild(spacer);
 						spacer.setAttribute('flex','1');
+						var deck = document.createElement('deck'); hbox.appendChild(deck);
+						var btn = document.createElement('button'); deck.appendChild(btn);
+						deck.setAttribute('style','width: 200px; min-width: 200px;');
+						btn.setAttribute('label','Change');
+						btn.setAttribute('oncommand','this.parentNode.selectedIndex = 1;');
 						var x; eval( f[1].input );
-						if (x) hbox.appendChild(x);
+						if (x) deck.appendChild(x);
 
 					} catch(E) {
 						g.error.sdump('D_ERROR',E + '\n');
