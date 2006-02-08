@@ -795,19 +795,15 @@ sub checkin {
 	my( $self, $client, $authtoken, $params ) = @_;
 	$U->logmark;
 
-	my( $ctx, $requestor, $evt, $patron, $circ, $copy, $obt );
+	my( $ctx, $requestor, $evt, $circ, $copy, $obt );
 
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
 	( $requestor, $evt ) = $U->checksesperm( 
 		$authtoken, 'COPY_CHECKIN' ) unless $__isrenewal;
 	return $evt if $evt;
 
-	( $patron, $evt ) = $U->fetch_user($params->{patron});
-	return $evt if $evt;
-
 	if( !( $ctx = $params->{_ctx}) ) {
 		( $ctx, $evt ) = create_circ_ctx( %$params, 
-			patron							=> $patron, 
 			requestor						=> $requestor, 
 			session							=> $U->start_db_session(),
 			type								=> 'circ',
@@ -851,8 +847,16 @@ sub checkin {
 		"session thread trace: ".$ctx->{session}->session_id);
 	$U->commit_db_session($ctx->{session});
 
-	return OpenILS::Event->new('ITEM_NOT_CATALOGED') if $copy->call_number == -1;
-	return OpenILS::Event->new('SUCCESS');
+	my $record = $U->record_to_mvr($ctx->{title}) if($ctx->{title} and ! $ctx->{precat});
+	my $payload = { 
+		copy		=> $ctx->{copy},
+		circ		=> $ctx->{circ},
+		record	=> $record };
+
+	return OpenILS::Event->new('ITEM_NOT_CATALOGED', 
+		payload => $payload ) if $copy->call_number == -1;
+
+	return OpenILS::Event->new('SUCCESS', payload => $payload );
 }
 
 
