@@ -6,7 +6,7 @@ var api = {
 	'BILL_PAY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
 	'BLOB_CHECKOUTS_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out' },
 	'CAPTURE_COPY_FOR_HOLD_VIA_BARCODE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.capture_copy.barcode' },
-	'CHECKIN_VIA_BARCODE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkin.barcode' },
+	'CHECKIN_VIA_BARCODE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkin' },
 	'CHECKOUT_PERMIT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.permit' },
 	'CHECKOUT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout' },
 	'FM_ACN_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.callnumber.retrieve' },

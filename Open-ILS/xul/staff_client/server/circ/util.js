@@ -262,10 +262,13 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		JSAN.use('util.date');
 		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
 
+		var params = { 'barcode' : barcode };
+		if (backdate) params.backdate = backdate;
+
 		var check = network.request(
 			api.CHECKIN_VIA_BARCODE.app,
 			api.CHECKIN_VIA_BARCODE.method,
-			[ session, barcode, null, backdate ]
+			[ session, params ]
 		);
 
 		/*
