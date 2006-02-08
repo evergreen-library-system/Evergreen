@@ -158,19 +158,48 @@ function myOPACDrawCheckedOutSlim(r) {
 
 		var req = new Request(FETCH_MODS_FROM_COPY, circ.target_copy() );
 		req.request.circ = circ.id();
+		req.request.copy = circ.target_copy();
 		req.callback(myOPACDrawCheckedTitle);
 		req.send();
 	}
 }
 
 function myOPACDrawCheckedTitle(r) {
-	var circid = r.circ;
-	var row = $('myopac_checked_row_ ' + circid);
 	var record = r.getResultObject();
+	var circid = r.circ;
+
+	if(!record || checkILSEvent(record)) {
+		var req = new Request( FETCH_COPY, r.copy );
+		req.request.circ = circid
+		req.callback(myOPACDrawNonCatalogedItem);
+		req.send();
+		return;
+	}
+
+	var row = $('myopac_checked_row_ ' + circid);
 	var tlink = $n( row, "myopac_checked_title_link" );
 	var alink = $n( row, "myopac_checked_author_link" );
 	buildTitleDetailLink(record, tlink);
 	buildSearchLink(STYPE_AUTHOR, record.author(), alink);
+}
+
+function myOPACDrawNonCatalogedItem(r) {
+	var copy = r.getResultObject();
+	var circid = r.circ;
+	var row = $('myopac_checked_row_ ' + circid);
+	var tlink = $n( row, "myopac_checked_title_link" );
+	var alink = $n( row, "myopac_checked_author_link" );
+	//tlink.appendChild(text(copy.dummy_title()));
+	//alink.appendChild(text(copy.dummy_author()));
+
+	tlink.parentNode.appendChild(text(copy.dummy_title()));
+	alink.parentNode.appendChild(text(copy.dummy_author()));
+
+	/*
+	tlink.setAttribute('href', null);
+	alink.setAttribute('href', null);
+	alert(alink.getAttribute('href'));
+	*/
 }
 
 
