@@ -33,7 +33,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.call_number()'
+			'primary' : false, 'hidden' : true, 'render' : 'obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]).label()'
 		},
 		{
 			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1,
@@ -41,19 +41,21 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'location', 'label' : getString('staff.acp_label_location'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.location()'
+			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.acpl[ my.acp.location() ].name()'
 		},
 		{
 			'id' : 'loan_duration', 'label' : getString('staff.acp_label_loan_duration'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.loan_duration()'
+			'primary' : false, 'hidden' : true, 
+			'render' : 'switch(my.acp.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }'
 		},
 		{
 			'id' : 'circ_lib', 'label' : getString('staff.acp_label_circ_lib'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circ_lib()'
+			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.aou[ my.acp.circ_lib() ].shortname()'
 		},
 		{
 			'id' : 'fine_level', 'label' : getString('staff.acp_label_fine_level'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.fine_level()'
+			'primary' : false, 'hidden' : true,
+			'render' : 'switch(my.acp.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }'
 		},
 		{
 			'id' : 'deposit', 'label' : getString('staff.acp_label_deposit'), 'flex' : 1,
@@ -101,7 +103,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.ccs[ my.acp.status() ].name()'
+			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.ccs[ my.acp.status() ].name()'
 		},
 		{
 			'id' : 'checkin_status', 'label' : getString('staff.checkin_label_status'), 'flex' : 1,
@@ -154,12 +156,12 @@ circ.util.hold_columns = function(modify) {
 		{
 			'id' : 'pickup_lib', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'obj.OpenILS.data.hash.aou[ my.ahr.pickup_lib() ].name()'
+			'render' : 'obj.data.hash.aou[ my.ahr.pickup_lib() ].name()'
 		},
 		{
 			'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'obj.OpenILS.data.hash.aou[ my.ahr.pickup_lib() ].shortname()'
+			'render' : 'obj.data.hash.aou[ my.ahr.pickup_lib() ].shortname()'
 		},
 		{
 			'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
@@ -235,9 +237,10 @@ circ.util.std_map_row_to_column = function() {
 		// col contains one of the objects listed above in columns
 		
 		// mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
-		var obj = {}; obj.OpenILS = {};  // One of our circ columns uses OpenILS.data
+		var obj = {}; 
 		JSAN.use('util.error'); obj.error = new util.error();
-		JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
+		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+		JSAN.use('util.network'); obj.network = new util.network();
 
 		var my = row.my;
 		var value;
