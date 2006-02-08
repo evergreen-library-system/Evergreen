@@ -16,7 +16,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="pre_cat_fields" title="CC Info"
+<window id="pre_cat_fields" title="Pre-Cat Fields"
 	orient="vertical" style="overflow: auto"
 	onload="try{my_init();}catch(E){alert(E);}"
 	onunload="try{my_finish();}catch(E){alert(E);}"
