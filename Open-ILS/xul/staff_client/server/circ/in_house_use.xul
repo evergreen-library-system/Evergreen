@@ -87,8 +87,8 @@
 			command="cmd_in_house_use_submit_barcode"
 			accesskey="S"/>
 		<spacer flex="1"/>
-		<label id="in_house_use_multiplier_label" value="Multiplier:" control="in_house_use_multiplier_textbox" accesskey="M"/>
-		<textbox id="in_house_use_multiplier_textbox" value="1"/>
+		<label id="in_house_use_multiplier_label" value="Multiplier:" control="in_house_use_multiplier_textbox" accesskey="M" hidden="true"/>
+		<textbox id="in_house_use_multiplier_textbox" value="1" hidden="true"/>
 	</hbox>
 
 
