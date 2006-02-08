@@ -101,6 +101,12 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+obj.w.escape(session),{},{});
 				}
 			],
+			'cmd_in_house_use' : [
+				['oncommand'],
+				function() { 
+					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE) + '?session='+obj.w.escape(session),{},{});
+				}
+			],
 
 
 			/* Admin menu */

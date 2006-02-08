@@ -16,6 +16,7 @@
 	<command id="cmd_patron_search" key="patron-search-key" />
 	<command id="cmd_circ_checkin" key="circ-checkin-key" />
 	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
+	<command id="cmd_in_house_use" key="circ-in-house-use" />
 	<command id="cmd_search_opac" key="search-opac-key" />
 	<command id="cmd_patron_register" key="patron-register-key" />
 	<command id="cmd_survey_wizard" />
@@ -71,6 +72,7 @@
 	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
 	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
 	<key id="circ-hold-capture-key" keycode="VK_F5" command="cmd_circ_hold_capture"/>
+	<key id="circ-in-house-use-key" keycode="VK_F6" command="cmd_in_house_use"/>
 	<key id="patron-register-key" keycode="VK_F12" command="cmd_patron_registration"/>
 </keyset>
 
@@ -120,28 +122,12 @@
 		<menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 		<menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.key;" key="circ-checkin-key" command="cmd_circ_checkin"/>
 		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
-	<!--
-		<menu id="special-circ-menu" label="&staff.main.menu.circ.special.label;" accesskey="&staff.main.menu.circ.special.key;" command="cmd_broken"/>
-		<menuseparator />
-		<menuitem label="&staff.main.menu.circ.place_hold.label;" accesskey="&staff.main.menu.circ.place_hold.key;" key="circ-place-hold-key" command="cmd_broken"/>
-	-->
+		<menuitem label="In-House Use" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" command="cmd_broken"/>
 		<menuitem label="&staff.main.menu.circ.patron_status.label;" accesskey="&staff.main.menu.circ.patron_status.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.key;" key="patron-register-key" command="cmd_patron_register"/>
-	</menupopup>
-</menu>
-
-<!-- The Special Circulation submenu in the Circulation menu -->
-<menu id="special-circ-menu">
-	<menupopup id="special-circ-popup">
-		<menuitem label="&staff.main.menu.circ.mark_used.label;" accesskey="&staff.main.menu.circ.mark_used.key;" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.circ.lost.label;" accesskey="&staff.main.menu.circ.lost.key;" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.circ.missing.label;" accesskey="&staff.main.menu.circ.missing.key;" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.circ.found.label;" accesskey="&staff.main.menu.circ.found.key;" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.circ.claimed_returned.label;" accesskey="&staff.main.menu.circ.claimed_returned.key;" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.circ.quick_add.label;" accesskey="&staff.main.menu.circ.quick_add.key;" command="cmd_broken"/>
 	</menupopup>
 </menu>
 
