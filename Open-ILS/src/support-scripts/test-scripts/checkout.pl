@@ -117,7 +117,7 @@ sub do_renew {
 	my $args = { patron => $patronid, barcode => $barcode };
 	my $t = time();
 	my $resp = simplereq( 
-		CIRC(), 'open-ils.circ.renew_', $authtoken, $args );
+		CIRC(), 'open-ils.circ.renew', $authtoken, $args );
 	my $e = time() - $t;
 	oils_event_die($resp);
 	printl("Renewal succeeded\nTime: $t");

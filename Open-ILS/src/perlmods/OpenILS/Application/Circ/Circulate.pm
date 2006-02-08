@@ -916,7 +916,7 @@ sub _update_checkin_circ_and_copy {
 
 __PACKAGE__->register_method(
 	method	=> "renew",
-	api_name	=> "open-ils.circ.renew_",
+	api_name	=> "open-ils.circ.renew",
 	notes		=> <<"	NOTES");
 	PARAMS( authtoken, circ => circ_id );
 	open-ils.circ.renew(login_session, circ_object);
