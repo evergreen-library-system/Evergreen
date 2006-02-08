@@ -87,79 +87,84 @@
 		</desc>
 	</event>
 
-	<event code='1503' textcode='TRANSIT_NOT_FOUND'>
+	<event code='1504' textcode='TRANSIT_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 
-	<event code='1503' textcode='BILLING_NOT_FOUND'>
+	<event code='1505' textcode='BILLING_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 
-	<event code='1504' textcode='CONTAINER_NOT_FOUND'>
+	<event code='1506' textcode='CONTAINER_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a container object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 
-	<event code='1505' textcode='CONTAINER_ITEM_NOT_FOUND'>
+	<event code='1507' textcode='CONTAINER_ITEM_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a container item object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 
-	<event code='1506' textcode='VOLUME_NOT_FOUND'>
+	<event code='1508' textcode='VOLUME_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a volume object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 
-	<event code='1507' textcode='ORG_UNIT_NOT_FOUND'>
+	<event code='1509' textcode='ORG_UNIT_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve an org unit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 
-	<event code='1508' textcode='STAT_CAT_NOT_FOUND'>
+	<event code='1510' textcode='STAT_CAT_NOT_FOUND'>
 		<desc> Stat cat object does not exist </desc>
 	</event>
 
-	<event code='1509' textcode='STAT_CAT_ENTRY_NOT_FOUND'>
+	<event code='1511' textcode='STAT_CAT_ENTRY_NOT_FOUND'>
 		<desc> Stat cat entry object does not exist </desc>
 	</event>
 
-	<event code='1510' textcode='STAT_CAT_ENTRY_MAP_NOT_FOUND'>
+	<event code='1512' textcode='STAT_CAT_ENTRY_MAP_NOT_FOUND'>
 		<desc> Stat cat entry map object does not exist </desc>
 	</event>
 
-	<event code='1511' textcode='NON_CAT_TYPE_NOT_FOUND'>
+	<event code='1513' textcode='NON_CAT_TYPE_NOT_FOUND'>
 		<desc> The non cataloged type object does not exist </desc>
 	</event>
 
-	<event code='1512' textcode='CIRC_DURATION_NOT_FOUND'>
+	<event code='1514' textcode='CIRC_DURATION_NOT_FOUND'>
 		<desc> The circ duration object does not exist </desc>
 	</event>
 
-	<event code='1513' textcode='RECURRING_FINE_NOT_FOUND'>
+	<event code='1515' textcode='RECURRING_FINE_NOT_FOUND'>
 		<desc> The recurring fines object does not exist </desc>
 	</event>
 
-	<event code='1514' textcode='MAX_FINE_NOT_FOUND'>
+	<event code='1516' textcode='MAX_FINE_NOT_FOUND'>
 		<desc> The max fines object does not exist </desc>
 	</event>
 
-	<event code='1515' textcode='COPY_LOCATION_NOT_FOUND'>
+	<event code='1517' textcode='COPY_LOCATION_NOT_FOUND'>
 		<desc> The copy location object does not exist </desc>
 	</event>
+
+	<event code='1518' textcode='HOLD_TRANSIT_NOT_FOUND'>
+		<desc> The hold transit object does not exist </desc>
+	</event>
+
 
 
 
@@ -202,7 +207,11 @@
 	<!-- ================================================================ -->
 	<!-- CIRC EVENTS -->
 	<event code='7000' textcode='ROUTE_ITEM'>
-		<desc> A copy needs to be routed to a different location	</desc>
+		<desc> 
+			A copy needs to be routed to a different location	
+			The destination location will be specified by an 'org' key
+			within the event object
+		</desc>
 	</event>
 
 	<event code='7001' textcode='PATRON_BAD_STANDING'>
@@ -241,6 +250,14 @@
 	<event code='7008' textcode='MAX_RENEWALS_REACHED'>
 		<desc> Circulation has no more renewals remaining </desc>
 	</event>
+
+	<event code='7009' textcode='ROUTE_TO_COPY_LOCATION'>
+		<desc> 
+		A copy needs to be routed to a copy location.  The location
+		should be specified within the event with a 'location' key
+		</desc>
+	</event>
+
 	<!-- ================================================================ -->
 
 </ils_events>

@@ -12,6 +12,8 @@ my $logger = "OpenSRF::Utils::Logger";
 
 my $cache_client = "OpenSRF::Utils::Cache";
 
+my $storage_session = undef;
+
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
 # ---------------------------------------------------------------------------
@@ -33,6 +35,11 @@ sub start_db_session {
 			("Unable to Begin Transaction with database" );
 	}
 	$trans_req->finish();
+
+	$logger->debug("Setting global storage session to ".
+		"session: " . $session->session_id . " : " . $session->app );
+
+	$storage_session = $session;
 	return $session;
 }
 
@@ -41,25 +48,12 @@ sub start_db_session {
 # returns the first failed perm on failure
 sub check_user_perms {
 	my($self, $user_id, $org_id, @perm_types ) = @_;
-
 	$logger->debug("Checking perms with user : $user_id , org: $org_id, @perm_types");
-
-	throw OpenSRF::EX::ERROR ("Invalid call to check_user_perms()")
-		unless( defined($user_id) and defined($org_id) and @perm_types); 
-
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	for my $type (@perm_types) {
-		my $req = $session->request(
+		return $type unless ($self->storagereq(
 			"open-ils.storage.permission.user_has_perm", 
-			$user_id, $type, $org_id );
-		my $resp = $req->gather(1);
-		if(!$resp) { 
-			$session->disconnect();
-			return $type; 
-		}
+			$user_id, $type, $org_id ));
 	}
-
-	$session->disconnect();
 	return undef;
 }
 
@@ -98,6 +92,7 @@ sub commit_db_session {
 	$session->finish();
 	$session->disconnect();
 	$session->kill_me();
+	$storage_session = undef;
 }
 
 sub rollback_db_session {
@@ -110,6 +105,7 @@ sub rollback_db_session {
 	$session->finish();
 	$session->disconnect();
 	$session->kill_me();
+	$storage_session = undef;
 }
 
 
@@ -150,11 +146,35 @@ sub simplereq {
 	return $self->simple_scalar_request($service, $method, @params);
 }
 
+sub get_storage_session {
+	if(	$storage_session and 
+			$storage_session->connected and
+			$storage_session->app eq 'open-ils.storage' ) {
+		$logger->debug("get_storage_session(): returning existing session");
+		return $storage_session;
+	}
+	$logger->debug("get_storage_session(): returning undef");
+	$storage_session = undef;
+	return undef;
+}
+
 
 sub simple_scalar_request {
 	my($self, $service, $method, @params) = @_;
 
-	my $session = OpenSRF::AppSession->create( $service );
+	my $session = undef;
+	if( $service eq 'open-ils.storage' ) {
+		if( $session = get_storage_session() ) {
+			$logger->debug("simple request using existing storage session ".$session->session_id);
+		} else { $session = undef; }
+	}
+
+	if(!$session) {
+		$session = OpenSRF::AppSession->create( $service );
+	}
+
+	$logger->debug("simple request for service $service using session " .$session->app);
+
 	my $request = $session->request( $method, @params );
 	my $response = $request->recv(30);
 
@@ -176,8 +196,11 @@ sub simple_scalar_request {
 
 
 	$request->finish();
-	$session->finish();
-	$session->disconnect();
+
+	if($service ne 'open-ils.storage' or !get_storage_session() ) {
+		$session->finish();
+		$session->disconnect();
+	}
 
 	my $value;
 
@@ -453,11 +476,20 @@ sub fetch_hold_transit_by_hold {
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_transit_copy.search.hold', $holdid );
 
-	$evt = OpenILS::Event->new('TRANSIT_NOT_FOUND', holdid => $holdid) unless $transit;
+	$evt = OpenILS::Event->new('HOLD_TRANSIT_NOT_FOUND', holdid => $holdid) unless $transit;
 
 	return ($transit, $evt );
 }
 
+sub fetch_hold_transit {
+	my( $self, $transid ) = @_;
+	my( $htransit, $evt );
+	$logger->debug("Fetching hold transit with hold id $transid");
+	$htransit = $self->storagereq(
+		'open-ils.storage.direct.action.hold_transit_copy.retrieve', $transid );
+	$evt = OpenILS::Event->new('HOLD_TRANSIT_NOT_FOUND', id => $transid) unless $htransit;
+	return ($htransit, $evt);
+}
 
 sub fetch_copy_by_barcode {
 	my( $self, $barcode ) = @_;
@@ -761,6 +793,62 @@ sub fetch_open_circulation {
 	return ($circ, $evt);
 }
 
+sub copy_status_from_name {
+	my( $self, $statuses, $name ) = @_;
+	for my $status (@$statuses) { 
+		return $status if( $status->name =~ /$name/i );
+	}
+	return undef;
+}
+
+sub copy_status_to_name {
+	my( $self, $statuses, $sid ) = @_;
+	for my $status (@$statuses) { 
+		return $status->name if( $status->id == $sid );
+	}
+	return undef;
+}
+
+sub fetch_open_transit_by_copy {
+	my( $self, $copyid ) = @_;
+	my($transit, $evt);
+	$transit = $self->storagereq(
+		'open-ils.storage.direct.action.transit_copy.search_where',
+		{ target_copy => $copyid, dest_recv_time => undef });
+	$evt = OpenILS::Event->new('TRANSIT_NOT_FOUND') unless $transit;
+	return ($transit, $evt);
+}
+
+
+# un-fleshes a copy and updates it in the DB
+# returns a DB_UPDATE_FAILED event on error
+# returns undef on success
+sub update_copy {
+	my( $self, %params ) = @_;
+
+	my $copy		= $params{copy}	|| die "update_copy(): copy required";
+	my $editor	= $params{editor} || die "update_copy(): copy editor required";
+	my $session = $params{session};
+
+	$logger->debug("Updating copy in the database: " . $copy->id);
+
+	$copy->status( $copy->status->id ) if ref($copy->status);
+	$copy->editor( $editor );
+	$copy->edit_date( 'now' );
+	$copy->location( $copy->location->id ) if ref($copy->location);
+	$copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);
+
+	my $s;
+	my $meth = 'open-ils.storage.direct.asset.copy.update';
+
+	$s = $session->request( $meth, $copy )->gather(1) if $session;
+	$s = $self->storagereq( $meth, $copy );
+
+	$logger->debug("Update of copy ".$copy->id." returned: $s");
+
+	return $self->DB_UPDATE_FAILED($copy) unless $s;
+	return undef;
+}
 
 1;
 

@@ -10,6 +10,7 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 
 use OpenILS::Application::AppUtils;
+my $U = "OpenILS::Application::AppUtils";
 
 use JSON;
 
@@ -340,6 +341,19 @@ sub biblio_id_to_copy {
 
 	return $record;
 
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "copy_retrieve", 
+	api_name	=> "open-ils.search.asset.copy.retrieve",
+);
+
+sub copy_retrieve {
+	my( $self, $client, $cid ) = @_;
+	my( $copy, $evt ) = $U->fetch_copy($cid);
+	return $evt if $evt;
+	return $copy;
 }
 
 
@@ -1194,6 +1208,7 @@ sub fetch_mods_by_copy {
 	my( $self, $client, $copyid ) = @_;
 	my ($record, $evt) = $apputils->fetch_record_by_copy( $copyid );
 	return $evt if $evt;
+	return OpenILS::Event->new('ITEM_NOT_CATALOGED') unless $record->marc;
 	return $apputils->record_to_mvr($record);
 }
 
