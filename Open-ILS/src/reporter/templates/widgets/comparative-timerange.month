@@ -2,6 +2,7 @@
 
 PROCESS inputs;
 
+BLOCK editor;
 WRAPPER select name=input_prefix _ ":target";
 	count = 1;
 	def = 1;
@@ -28,5 +29,10 @@ WRAPPER select name=input_prefix _ ":compare";
 	END;
 END;
 ' months before target';
+END;
+
+BLOCK display;
+current_value.compare _' months before runtime compared to ' _ current_value.compare _ ' months before target';
+END;
 
 %]

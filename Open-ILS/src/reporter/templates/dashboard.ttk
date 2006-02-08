@@ -34,19 +34,6 @@ BLOCK summary;
 	WRAPPER html/table border=0 width='100%';
 		WRAPPER html/row;
 			INCLUDE html/cell
-				colspan=2
-				align='center'
-				content=link(content='Schedule a new report',href='dashboard?detail=report_template_tree')
-				style='border-bottom:1px solid black';
-		END;
-		WRAPPER html/row;
-			WRAPPER html/cell colspan=2 valign='top';
-				INCLUDE report_template_tree;
-				'<br/><br/><br/>';
-			END;
-		END;
-		WRAPPER html/row;
-			INCLUDE html/cell
 				content=link(content='Active reports',href='dashboard?detail=mycompletereports')
 				align='center'
 				style='border-bottom:1px solid black';
@@ -67,6 +54,19 @@ BLOCK summary;
 				INCLUDE my_scheduled_reports limit=5;
 			END;
 		END;
+		WRAPPER html/row;
+			INCLUDE html/cell
+				colspan=2
+				align='center'
+				content=link(content='Schedule a new report',href='dashboard?detail=report_template_tree')
+				style='border-bottom:1px solid black';
+		END;
+		WRAPPER html/row;
+			WRAPPER html/cell colspan=2 valign='top';
+				INCLUDE report_template_tree;
+				'<br/><br/><br/>';
+			END;
+		END;
 	END;
 END;
 
@@ -85,7 +85,7 @@ END;
 
 BLOCK my_scheduled_reports;
 	q = "SELECT * FROM reporter.stage3 WHERE owner = " _ user.id() _
-		" AND runtime > now() ORDER BY runtime DESC";
+		" AND runtime > now() ORDER BY runtime";
 	IF limit > 0;
 		q = q _ ' LIMIT ' _ limit;
 	END;
@@ -97,11 +97,12 @@ BLOCK my_scheduled_reports;
 END;
 
 BLOCK show_complete_reports;
-	WRAPPER html/table width='100%';
+	WRAPPER html/table width='100%' class='sortable' id='show_complete_reports';
 		WRAPPER html/row;
-			INCLUDE html/cell content='Run status' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Report name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Run time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Status' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Base Template' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Report Defintion' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Last Action Time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 		END;
 		FOR output = DBI.query(q);
 			rid = output.stage3;
@@ -133,7 +134,7 @@ BLOCK show_complete_reports;
 			END;
 			
 			name_link = link(content=p.reportname,href="stage3?id=$rid#$output.id");
-			name_link = t.templatename _ ' :: ' _ name_link;
+			#name_link = t.templatename _ ' :: ' _ name_link;
 			
 			WRAPPER html/row;
 				INCLUDE html/cell
@@ -143,12 +144,16 @@ BLOCK show_complete_reports;
 					col=bg
 					style='padding:5px; border:solid gray 1px;';
 				INCLUDE html/cell
+					content=t.templatename
+					col=bg
+					style='border:solid gray 1px;';
+				INCLUDE html/cell
 					content=name_link
 					col=bg
 					style='border:solid gray 1px;';
 				INCLUDE html/cell
 					nowrap='nowrap'
-					content=runtime.chunk(19).0
+					content=runtime.chunk(16).0
 					col=bg
 					style='border:solid gray 1px;';
 			END;
@@ -158,13 +163,14 @@ END;
 
 
 BLOCK show_reports;
-	WRAPPER html/table width='100%';
+	WRAPPER html/table width='100%' class='sortable' id='show_reports';
 		WRAPPER html/row;
+			INCLUDE html/cell content='Runs' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 			INCLUDE html/cell content='Public' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Report name' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Create date and time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Scheduled run time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
-			INCLUDE html/cell content='Number of runs' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Base Template' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Report Definition' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			#INCLUDE html/cell content='Create date' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
+			INCLUDE html/cell content='Scheduled Run Time' nowrap='nowrap' col='lightgray' style='border:solid gray 1px;';
 		END;
 		FOR report = DBI.query(q);
 			rid = report.id;
@@ -190,23 +196,24 @@ BLOCK show_reports;
 				t = utils.JSON2perl( template.params );
 
 
-				rtime = report.runtime.chunk(19).0;
+				rtime = report.runtime.chunk(16).0;
 				IF report.disable;
 					rtime = rtime _ '<br/>(Disabled)';
 				END;
 
 				name_link = link(content=p.reportname,href="stage3?id=$rid");
-				name_link = t.templatename _ ' :: ' _ name_link;
+				#name_link = t.templatename _ ' :: ' _ name_link;
 
+				INCLUDE html/cell content=run_count.get.count col=bg style='text-align: center; border:solid gray 1px;';
 				INCLUDE html/cell content=(report.pub ? 'Y' : 'N') col=bg style='border:solid gray 1px;' align='center';
+				INCLUDE html/cell content=t.templatename col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell content=name_link col=bg style='border:solid gray 1px;';
-				INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(19).0 col=bg style='border:solid gray 1px;';
+				#INCLUDE html/cell nowrap='nowrap' content=report.create_date.chunk(16).0 col=bg style='border:solid gray 1px;';
 				INCLUDE html/cell
 					nowrap='nowrap'
 					content=rtime
 					col=bg
-					style='border:solid gray 1px;';
-				INCLUDE html/cell content=run_count.get.count col=bg style='border:solid gray 1px;';
+					style='text-align: center; border:solid gray 1px;';
 			END;
 		END;
 	END;

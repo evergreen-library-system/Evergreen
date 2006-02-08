@@ -1,4 +1,12 @@
 [%
 PROCESS inputs;
+
+BLOCK editor;
 INCLUDE textarea name=input_prefix value=current_value;
+END;
+
+BLOCK display;
+current_value;
+END;
+
 %]

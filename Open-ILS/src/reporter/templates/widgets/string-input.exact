@@ -1,4 +1,11 @@
 [%
 PROCESS inputs;
+BLOCK editor;
 INCLUDE text name=input_prefix size=20 value=current_value;
+END;
+
+BLOCK display;
+current_value;
+END;
+
 %]

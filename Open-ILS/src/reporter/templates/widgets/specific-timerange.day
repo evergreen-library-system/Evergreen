@@ -5,6 +5,7 @@ USE start = DateTime(now = 1);
 
 PROCESS inputs;
 
+BLOCK editor;
 WRAPPER html/table ;
 	WRAPPER html/row;
 		INCLUDE html/cell content='Year';
@@ -28,6 +29,11 @@ WRAPPER html/table ;
 		END;
 	END;
 
+END;
+END;
+
+BLOCK display;
+current_value.year _ '-' _ current_value.month _ '-' _ current_value.day;
 END;
 
 %]

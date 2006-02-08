@@ -2,6 +2,7 @@
 
 PROCESS inputs;
 
+BLOCK editor;
 WRAPPER select name=input_prefix;
 	count = 1;
         IF current_value;
@@ -13,5 +14,9 @@ WRAPPER select name=input_prefix;
 	END;
 END;
 ' weeks before runtime';
+END;
 
+BLOCK display;
+current_value _ ' weeks before runtime';
+END;
 %]

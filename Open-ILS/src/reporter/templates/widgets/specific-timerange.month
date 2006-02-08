@@ -6,6 +6,8 @@ USE end = DateTime(now = 1);
 
 PROCESS inputs;
 
+BLOCK editor;
+
 WRAPPER html/table ;
 
 	WRAPPER html/row;
@@ -33,5 +35,12 @@ WRAPPER html/table ;
 	END;
 
 END;
+END;
 
+BLOCK display;
+f = 'start-year';
+current_value.$f _ '-';
+f = 'start-month';
+current_value.$f;
+END;
 %]

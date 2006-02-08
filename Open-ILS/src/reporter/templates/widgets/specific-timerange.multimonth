@@ -6,6 +6,8 @@ USE end = DateTime(now = 1);
 
 PROCESS inputs;
 
+BLOCK editor;
+
 WRAPPER html/table ;
 	WRAPPER html/row;
 		INCLUDE html/cell colspan=2 align='center' content='Start time';
@@ -52,6 +54,22 @@ WRAPPER html/table ;
 			INCLUDE text name=input_prefix _ ':end-month' size=4 value=em;
 		END;
 	END;
+END;
+END;
+
+BLOCK display;
+	syl = 'start-year';
+	sml = 'start-month';
+	eyl = 'end-year';
+	eml = 'end-month';
+
+	sy = (current_value.$syl ? current_value.$syl : start.year);
+	sm = (current_value.$sml ? current_value.$sml : start.month);
+	ey = (current_value.$eyl ? current_value.$eyl : end.year);
+	em = (current_value.$eml ? current_value.$eml : end.month);
+
+	sy _ '-' _ sm _ ' through ' _ ey _ '-' _ em;
+
 END;
 
 %]

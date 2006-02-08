@@ -278,7 +278,7 @@ BLOCK run_stage2;
 		END;
 	END;
 
-	'<br/><br/>';
+	'<br/><br/><div id="output_order_div"';
 
 	WRAPPER form id="stage3_new" name="stage3_new" action="stage3" onsubmit="return send_it(this);" method="POST";
 		INCLUDE hidden name='stage2' value=CGI.param('id');
@@ -292,7 +292,7 @@ BLOCK run_stage2;
 		'</center><br/><br/>';
 		'<script language="javascript">filters["reportname"] = "Report Name";</script>';
 
-		WRAPPER html/table width="100%";
+		WRAPPER html/table id='order_table' width="100%";
 			WRAPPER html/row  style="border-top: solid black 2px;";
 				INCLUDE html/cell colspan=2 content='<b>Output and Sort Order</b>' style="border-top: solid black 2px;";
 				INCLUDE html/cell colspan=2 content='<b>Output Formats</b>' align="center" style="border-top: solid black 2px;";
@@ -414,7 +414,7 @@ BLOCK run_stage2;
 				INCLUDE option value=column content=config.findvalue(xpath);
 			END;
 		END;
-		'<br/><br/>';
+		'<br/><br/></div>';
 
 		WRAPPER html/table border=0 width='100%';
 			WRAPPER html/row;
@@ -477,7 +477,8 @@ BLOCK run_stage2;
 										current_value = report.filter.$t.$fieldname.$famname.$widgetname;
 										logme(current_value);
 	
-										INCLUDE $w_file widget_family=fam;
+										PROCESS $w_file widget_family=fam;
+										PROCESS editor;
 								CATCH;
 									%]ARG!! Couldn't render widget [% $w_file %] ([% error.info %])!!![%
 								END;
@@ -554,6 +555,14 @@ BLOCK run_stage2;
 			END;
 		END;
 	
+		%]
+			<div id='output_home'/>
+			<script>
+				document.getElementById('output_home').appendChild(
+					document.getElementById('output_order_div')
+				);
+			</script>
+		[%
 
 		INCLUDE checkbox name="publicreport" value="t" checked=(report.publicreport == 't' ? 'checked' : '');
 		'Public Report<br>';

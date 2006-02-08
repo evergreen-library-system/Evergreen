@@ -5,6 +5,8 @@ PROCESS inputs;
 USE date;
 USE start = DateTime(now = 1);
 
+BLOCK editor;
+
 'Year: ';
 INCLUDE name=input_prefix _ ':year' text size=4 value=start.year;
 
@@ -20,6 +22,11 @@ WRAPPER select name=input_prefix _ ':week';
 		INCLUDE option value=count;
 		count = count + 1;
 	END;
+END;
+END;
+
+BLOCK display;
+'Year: ' _ current_value.year _ ', Week: ' _ current_value.week;
 END;
 
 %]

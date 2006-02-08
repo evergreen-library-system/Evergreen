@@ -5,6 +5,8 @@ USE start = DateTime(now = 1);
 
 PROCESS inputs;
 
+BLOCK editor;
+
 WRAPPER html/table ;
 
 	WRAPPER html/row;
@@ -17,6 +19,11 @@ WRAPPER html/table ;
 		END;
 	END;
 
+END;
+END;
+
+BLOCK display;
+current_value;
 END;
 
 %]

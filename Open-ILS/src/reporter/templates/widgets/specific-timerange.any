@@ -6,6 +6,7 @@ USE end = DateTime(now = 1);
 
 PROCESS inputs;
 
+BLOCK editor;
 WRAPPER html/table ;
 	WRAPPER html/row;
 		INCLUDE html/cell colspan=6 align='center' content='Start time';
@@ -74,6 +75,11 @@ WRAPPER html/table ;
 			INCLUDE text name=input_prefix _ ':end-second' size=4 value=end.second;
 		END;
 	END;
+END;
+
+END;
+
+BLOCK display;
 END;
 
 %]

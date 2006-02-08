@@ -283,6 +283,65 @@ BLOCK view_stage3;
 				INCLUDE html/cell content=rpt.recurrence style="border:solid gray 1px;";
 			END;
 			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Selection Criteria</b>" style="border:solid gray 1px; vertical-align: top;";
+				WRAPPER html/cell style="border:solid gray 1px;";
+					WRAPPER html/table width="100%" style="border-collapse:collapse;";
+						FOR t = params.filter.keys;
+							FOR c = params.filter.$t.keys;
+								FOR wf = params.filter.$t.$c.keys;
+									FOR w = params.filter.$t.$c.$wf.keys;
+										WRAPPER html/row;
+											xpath = '/reporter/tables/table[@id="' _ t _ '" and @fact-table="true"]';
+											table = config.findnodes(xpath);
+											IF !table;
+												xpath = '/reporter/tables/table[@id=//link[@id="' _ t _ '"]/@table]';
+												table = config.findnodes(xpath);
+											END;
+
+											INCLUDE html/cell
+												content = table.findvalue('label')
+												style="border:solid gray 1px; top; font-weight:bold;";
+
+											xpath =	'fields/field[@name="' _ c _ '"]/label';
+											INCLUDE html/cell
+												content = table.findvalue(xpath)
+												style="border:solid gray 1px; font-weight:bold;";
+
+											WRAPPER html/cell
+												style="border:solid gray 1px; vertical-align: top;";
+												w_file = 'widgets/' _ wf _ '.' _ w;
+												current_value = params.filter.$t.$c.$wf.$w;
+												PROCESS $w_file;
+												PROCESS display;
+											END;
+										END;
+									END;
+								END;
+							END;
+						END;
+					END;
+				END;
+			END;
+			WRAPPER html/row;
+				INCLUDE html/cell content="<b>Output Attributes</b>" style="border:solid gray 1px; vertical-align: top;";
+				WRAPPER html/cell style="border:solid gray 1px;";
+					FOR t = params.output.keys;
+						FOR c = params.output.$t.keys;
+							xpath = '/reporter/tables/table[@id="' _ t _ '" and @fact-table="true"]';
+							table = config.findnodes(xpath);
+							IF !table;
+								xpath = '/reporter/tables/table[@id=//link[@id="' _ t _ '"]/@table]';
+								table = config.findnodes(xpath);
+							END;
+
+							xpath =	'fields/field[@name="' _ c _ '"]/label';
+							table.findvalue('label') _ ' -- ' _ table.findvalue(xpath) _ '<br/>';
+
+						END;
+					END;
+				END;
+			END;
+			WRAPPER html/row;
 				INCLUDE html/cell content="<b>Actions</b>" style="border:solid gray 1px;";
 				WRAPPER html/cell style="border:solid gray 1px;";
 					INCLUDE anchor content='Refresh' href=CGI.url('-path', 1) _ '?id=' _ rpt.id;

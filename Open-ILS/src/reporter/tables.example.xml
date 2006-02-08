@@ -146,9 +146,9 @@
 			  key="date"
 			  type="has_a"/>
 			<link
-			  field="due_date_hour"
+			  field="finish_date_hour"
 			  table="generic_hour_series"
-			  id="circ_due_date_hour"
+			  id="circ_finish_hour"
 			  key="date_hour"
 			  type="has_a"/>
 			<link
@@ -158,9 +158,9 @@
 			  key="date"
 			  type="has_a"/>
 			<link
-			  field="finish_date_hour"
+			  field="due_date_hour"
 			  table="generic_hour_series"
-			  id="circ_finish_hour"
+			  id="circ_due_date_hour"
 			  key="date_hour"
 			  type="has_a"/>
 			<link
@@ -520,15 +520,15 @@
 			  widget-family="lib-choose"
 			  create-type="serial"
 			  datatype="int">
-				<label>Unique Library ID</label>
-				<description>Unique Library ID</description>
+				<label>Unique Library</label>
+				<description>Globally Unique Library Identifier</description>
 			</field>
 			<field
 			  name="name"
 			  widget-family="string-choose"
 			  datatype="text">
-				<label>Name</label>
-				<description>Library Name</description>
+				<label>Library Name</label>
+				<description>Friendly Library Name</description>
 			</field>
 			<field
 			  name="shortname"

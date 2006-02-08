@@ -5,6 +5,7 @@ USE start = DateTime(now = 1);
 
 PROCESS inputs;
 
+BLOCK editor;
 WRAPPER html/table ;
 
 	WRAPPER html/row;
@@ -23,6 +24,12 @@ WRAPPER html/table ;
 		END;
 	END;
 
+END;
+END;
+
+BLOCK display;
+ycl = 'year-count';
+current_value.year _ ' through ' _ current_value.year + current_value.$ycl;
 END;
 
 %]

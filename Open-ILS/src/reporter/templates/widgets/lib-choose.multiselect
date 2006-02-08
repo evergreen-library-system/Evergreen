@@ -2,6 +2,7 @@
 
 PROCESS inputs;
 
+BLOCK editor;
 root = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' WHERE parent_ou IS NULL ORDER BY name;';
 q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' WHERE parent_ou = ? ORDER BY name;';
 
@@ -43,6 +44,7 @@ WRAPPER select name=input_prefix multi="multi" onchange='change_multihier_' _ ta
 		INCLUDE next_level parent_ou = f.id;
 	END;
 END;
+END;
 
 BLOCK next_level;
 	depth = depth + 1;
@@ -80,4 +82,12 @@ BLOCK next_level;
 	END;
 END;
 
+BLOCK display;
+	org_units = DBI.tie('actor.org_unit', 'id');
+	list = [];
+	FOR o = current_value;
+		list.push(org_units.$o.name);
+	END;
+	list.join('<br/>');
+END;
 %]

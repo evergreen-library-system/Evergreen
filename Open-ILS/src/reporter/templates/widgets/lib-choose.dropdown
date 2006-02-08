@@ -2,6 +2,7 @@
 
 PROCESS inputs;
 
+BLOCK editor;
 root = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' WHERE parent_ou IS NULL ORDER BY name;';
 q = 'SELECT * FROM ' _ table.findvalue('tablename') _ ' WHERE parent_ou = ? ORDER BY name;';
 
@@ -35,6 +36,7 @@ WRAPPER select id=input_prefix name=input_prefix onchange='change_hier_' _ table
 		INCLUDE option value=f.id content=f.name;
 		INCLUDE next_level parent_ou = f.id depth;
 	END;
+END;
 END;
 
 
@@ -72,4 +74,9 @@ BLOCK next_level;
 	END;
 END;
 
+BLOCK display;
+org_units = DBI.tie('actor.org_unit', 'id')
+ou = org_units.$current_value;
+ou.name;
+END;
 %]
