@@ -343,8 +343,10 @@ sub update {
 
 	if (ref($arg)) {
 		$self = $self->modify_from_fieldmapper($arg);
-		$log->debug("Modification of $self seems to have failed....", DEBUG);
-		return undef unless (defined $self);
+		unless (defined $self) {
+			$log->debug("Modification of $arg seems to have failed....", DEBUG);
+			return undef;
+		}
 	}
 
 	$log->debug("Calling Class::DBI->update on modified object $self", DEBUG);
