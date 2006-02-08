@@ -12,7 +12,7 @@ all: mod_xmlbuilder mod_ils_rest_gateway c_apps client-xul
 
 install:	perl-install web-install server-xul string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install 
 
-web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install 
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  
 
 circ_rules-install:
 	@echo $@
@@ -34,6 +34,14 @@ mod_ils_rest_gateway-install:
 mod_xmlbuilder:
 	@echo $@
 	make -C apachemods mod_xmlbuilder.so
+
+oils_cgi:
+	@echo $@
+	make -C apachemods oils_cgi.so
+
+oils_cgi-install:
+	@echo $@
+	make -C apachemods oils_cgi-install
 
 mod_xmlbuilder-install:
 	@echo $@
@@ -74,10 +82,12 @@ libfieldmapper-install:
 c_apps:	libfieldmapper
 	@echo $@
 	make -C c-apps
+	make -C extras oils_requestor
 
 c_apps-install:	libfieldmapper-install
 	@echo $@
 	make -C c-apps install
+	make -C extras oils_requestor-install
 
 autojs-install:
 	@echo $@
@@ -157,4 +167,5 @@ clean:
 	@echo $@
 	make -C extras clean
 	make -C apachemods clean
+	make -C c-apps clean
 

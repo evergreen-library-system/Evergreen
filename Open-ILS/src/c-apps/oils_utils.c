@@ -107,3 +107,45 @@ char* oilsUtilsFetchOrgSetting( int orgid, char* setting ) {
 
 }
 
+
+
+char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
+	if(!(uname && passwd)) return NULL;
+
+	osrfLogDebug(OSRF_LOG_MARK, "Logging in with username %s", uname );
+	char* token = NULL;
+
+	jsonObject* params = jsonParseString("[\"%s\"]", uname);
+
+	jsonObject* o = oilsUtilsQuickReq( "open-ils.auth",
+		"open-ils.auth.authenticate.init", params );
+
+	char* seed = jsonObjectGetString(o);
+	char* passhash = md5sum(passwd);
+	char buf[256];
+	bzero(buf, 256);
+	snprintf(buf, 255, "%s%s", seed, passhash);
+	char* fullhash = md5sum(buf);
+
+	jsonObjectFree(o);
+	jsonObjectFree(params);
+	free(passhash);
+
+	params = jsonParseString( "[\"%s\", \"%s\", \"%s\", \"%d\"]", uname, fullhash, type, orgId );
+	o = oilsUtilsQuickReq( "open-ils.auth",
+		"open-ils.auth.authenticate.complete", params );
+
+	if(o) {
+		char* tok = jsonObjectGetString(
+			jsonObjectGetKey(jsonObjectGetKey(o,"payload"), "authtoken"));
+		if(tok) token = strdup(tok);
+	}
+
+	free(fullhash);
+	jsonObjectFree(params);
+	jsonObjectFree(o);
+
+	return token;
+}
+
+

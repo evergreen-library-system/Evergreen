@@ -71,3 +71,11 @@ jsonObject* oilsUtilsFetchUserByUsername( char* name );
  * Caller must free the returned string
  */
 char* oilsUtilsFetchOrgSetting( int orgid, char* setting );
+
+
+/**
+ * Logs into the auth server with the given username and password
+ * @return The authtoken string which must be de-allocated by the caller
+ */
+char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId );
+
