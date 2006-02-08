@@ -102,13 +102,13 @@
 
 		my $success = 1;
 		try {
-			$log->debug("Committing trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+			$log->debug("Committing transaction with Open-ILS XACT-ID [$xact_id]", INFO) if ($xact_id);
 			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
 			$dbh->commit;
 
 		} catch Error with {
 			my $e = shift;
-			$log->debug("Failed to commit trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+			$log->debug("Failed to commit transaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
 			$success = 0;
 		};
 		
