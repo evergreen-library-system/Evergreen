@@ -91,11 +91,11 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.title()'
+			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.title(); } catch(E) { my.acp.dummy_title(); }'
 		},
 		{
 			'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.author()'
+			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.author(); } catch(E) { my.acp.dummy_author(); }'
 		},
 		{
 			'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
