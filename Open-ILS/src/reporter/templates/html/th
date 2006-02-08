@@ -1,0 +1,25 @@
+[%# html/cell: an empty and orphaned HTML table cell, <th> . . . </th>
+  # ARGS:
+  #	col	    # background colour (default: none)
+  #     align       # horizontal alignment (default: none)
+  #     valign      # vertical alignment (default: none)
+  #     colspan     # span multiple columns (defualt: none)
+  #     rowspan     # span multiple rows (defualt: none)
+  #     content     # box content
+-%]
+
+<th
+    [%- IF width %] width="[% width %]"[% END %]
+    [%- IF col %] bgcolor="[% col %]"[% END %]
+    [%- IF colspan %] colspan="[% colspan %]"[% END %]
+    [%- IF rowspan %] rowspan="[% rowspan %]"[% END %]
+    [%- IF  align %] align="[% align %]"[% END %]
+    [%- IF  padding %] padding="[% padding %]"[% END %]
+    [%- IF  class %] class="[% class %]"[% END %]
+    [%- IF  id %] id="[% id %]"[% END %]
+    [%- IF  valign %] valign="[% valign %]"[% END %]
+    [%- IF  nowrap %] nowrap="[% nowrap %]"[% END %]
+    [%- IF  style %] style="[% style %]"[% END %]>
+[%- content -%]
+</th>
+
