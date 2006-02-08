@@ -271,18 +271,45 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			[ session, params ]
 		);
 
-		/*
-		{ // REMOVE_ME, forcing a condition for testing
-			check.status = 1;
-			check.text = 'This copy is the first that could fulfill a hold.  Do it?';
+		/* legacy */
+		check.status = check.textcode;
+		check.text = check.textcode;
+		if (check.payload) { 
+			check.copy = check.payload.copy;
+			check.circ = check.payload.circ;
+			check.record = check.payload.record;
+			check.hold = check.payload.hold;
+		} else {
+			check.copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]);
+			if (check.copy.ilsevent) {
+				check.text = check.copy.textcode; /* Probably 1502 - COPY_NOT_FOUND */
+				check.copy = new acp();
+			} else {
+				check.record = network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ check.copy.id() ]);
+				if (check.record.ilsevent) {
+					check.text = check.record.textcode; /* Probably 1202 - ITEM_NOT_CATALOGED */
+					if (check.record.ilsevent == 1202) check.route_to = 'CATALOGING';
+				}
+			}
+			check.circ = new aoc();
 		}
-		*/
+		if (typeof check.route_to != 'undefined') {
+			if (parseInt(check.route_to)) {
+				if (check.route_to != data.list.au[0].home_ou()) {
+					check.route_to = data.hash.aou[ check.route_to ].shortname();
+				} else {
+					check.route_to = data.hash.acpl[ check.copy.location() ].name();
+				}
+			}
+		} else {
+			check.route_to = data.hash.acpl[ check.copy.location() ].name();
+		}
 
-		if (check.status != 0) {
-			switch(check.status) {
+		if (check.ilsevent != 0) {
+			switch(check.ilsevent) {
 				case '1': case 1: /* possible hold capture */
 					var rv = error.yns_alert(
-						check.text,
+						check.textcode,
 						'Alert',
 						"Capture",
 						"Don't Capture",
@@ -295,10 +322,10 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 							var check2 = this.hold_capture_via_copy_barcode( session, barcode );
 							if (check2) {
 								check.copy = check2.copy;
-								check.text = check2.text;
+								check.text = check2.textcode;
 								check.route_to = check2.route_to;
 								JSAN.use('patron.util');
-								var au_obj = patron.util.retrieve_au_via_id( session, check.hold.usr() );
+								var au_obj = patron.util.retrieve_au_via_id( session, check.payload.hold.usr() );
 								alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
 									check.record.title() + '  Author: ' + check.record.author() + 
 									'\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
@@ -400,7 +427,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 
 				break;
 
-				default: 
+				default: /* 1500 - "CIRCULATION_NOT_FOUND" */
 					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
 					var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;
 					var pcheck = error.yns_alert(
@@ -417,14 +444,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 					}
 				break;
 			}
-		} else {  // status == 0
-		}
-		if (parseInt(check.route_to)) {
-			if (check.route_to != data.list.au[0].home_ou()) {
-				check.route_to = data.hash.aou[ check.route_to ].shortname();
-			} else {
-				check.route_to = data.hash.acpl[ check.copy.location() ].name();
-			}
+		} else {  // ilsevent == 0
 		}
 		return check;
 	} catch(E) {
