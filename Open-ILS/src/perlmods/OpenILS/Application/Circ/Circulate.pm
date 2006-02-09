@@ -9,12 +9,14 @@ use Digest::MD5 qw(md5_hex);
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
+use OpenILS::Application::Circ::Transit;
 use OpenSRF::Utils::Logger qw(:logger);
 
 $Data::Dumper::Indent = 0;
-my $apputils = "OpenILS::Application::AppUtils";
-my $U = $apputils;
-my $holdcode = "OpenILS::Application::Circ::Holds";
+my $apputils	= "OpenILS::Application::AppUtils";
+my $U				= $apputils;
+my $holdcode	= "OpenILS::Application::Circ::Holds";
+my $transcode	= "OpenILS::Application::Circ::Transit";
 
 my %scripts;			# - circulation script filenames
 my $script_libs;		# - any additional script libraries
@@ -24,6 +26,9 @@ my $cache_handle;		# - memcache handle
 
 sub PRECAT_FINE_LEVEL { return 2; }
 sub PRECAT_LOAN_DURATION { return 2; }
+
+my $SUCCESS;
+
 
 # for security, this is a process-defined and not
 # a client-defined variable
@@ -68,6 +73,9 @@ sub initialize {
 		"circ permit patron: $p, circ permit copy: $c, ".
 		"circ duration :$d , circ recurring fines : $f, " .
 		"circ max fines : $m, circ renew permit : $pr, permit hold: $ph");
+
+
+	$SUCCESS = OpenILS::Event->new('SUCCESS');
 }
 
 
@@ -531,7 +539,7 @@ sub checkout {
 
 	return OpenILS::Event->new('SUCCESS', 
 		payload		=> { 
-			copy		=> $ctx->{copy},
+			copy		=> $U->unflesh_copy($ctx->{copy}),
 			circ		=> $ctx->{circ},
 			record	=> $record,
 		} );
@@ -694,7 +702,7 @@ sub _update_checkout_copy {
 	$U->logmark;
 	my $copy = $ctx->{copy};
 
-	my $s = $U->copy_status_from_name($cache{copy_statuses}, 'checked out');
+	my $s = $U->copy_status_from_name('checked out');
 	$copy->status( $s->id ) if $s;
 
 	my $evt = $U->update_copy( session => $ctx->{session}, 
@@ -795,7 +803,7 @@ sub checkin {
 	my( $self, $client, $authtoken, $params ) = @_;
 	$U->logmark;
 
-	my( $ctx, $requestor, $evt, $circ, $copy, $obt );
+	my( $ctx, $requestor, $evt, $circ, $copy, $payload );
 
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
 	( $requestor, $evt ) = $U->checksesperm( 
@@ -807,7 +815,7 @@ sub checkin {
 			requestor						=> $requestor, 
 			session							=> $U->start_db_session(),
 			type								=> 'circ',
-			fetch_patron_circ_summary	=> 1,
+			#fetch_patron_circ_summary	=> 1,
 			fetch_copy_statuses			=> 1, 
 			fetch_copy_locations			=> 1, 
 			no_runner						=> 1, 
@@ -819,44 +827,97 @@ sub checkin {
 	$copy = $ctx->{copy};
 	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
 
+	$payload = { copy => $copy };
+	$payload->{record} = 
+		$U->record_to_mvr($ctx->{title}) 
+			if($ctx->{title} and !$ctx->{precat});
+
 #	if( $copy->status == 
 #		$U->copy_status_from_name($cache{copy_statuses}, 'lost')->id) {
 #		$__islost = 1;
 #	} else { $__islost = 0; }
 
-	my $status = $U->copy_status_from_name($cache{copy_statuses}, 'in transit');
+	my $status = $U->copy_status_from_name('in transit');
 	if( $copy->status == $status->id ) {
+
 		# if this copy is in transit, send it to transit_receive.  
-		$evt = transit_receive( $copy->id, $requestor, $ctx->{session} );
-		return $evt unless $U->event_equals($evt, 'SUCCESS');
-		$copy = $evt->{payload};
+		$evt = $transcode->transit_receive( $copy, $requestor, $ctx->{session} );
+		if( !$U->event_equals($evt, 'SUCCESS')) {
+			$evt->{payload}->{copy} = $U->unflesh_copy($copy);
+			return $evt;
+		}
 		$evt = undef;
 	} 
 
-	$copy->status( $U->copy_status_from_name(
-		$cache{copy_statuses}, 'available')->id );
+	# set the status to available for now for ease of debugging
+	$copy->status( $U->copy_status_from_name('available')->id );
 
+	# set the status to reshelving XXX needs to fall back to 
+	# 'available' after a configurable amount of time
+	#$copy->status( $U->copy_status_from_name('reshelving')->id );
 
+	# grab the open circ attached to this copy
 	( $circ, $evt ) = $U->fetch_open_circulation($copy->id);
-	return $evt if $evt;
-	$ctx->{circ} = $circ;
+	if($evt) { 
+		$evt->{payload} = $payload; 
+		$evt->{payload}->{copy} = $U->unflesh_copy($copy);
+		return $evt; 
+	}
 
+	$ctx->{circ} = $circ;
+	$payload->{circ} = $circ;
+
+	# update the circ and copy in the db
 	return $evt if($evt = _update_checkin_circ_and_copy($ctx));
 
-	$logger->debug("Checkin committing objects with ".
-		"session thread trace: ".$ctx->{session}->session_id);
+	# ------------------------------------------------------------------------------
+	# If we get to this point, then the checkin will succeed.  We just need to
+	# see if there is any other processing required on this copy
+	# ------------------------------------------------------------------------------
+
+	if( !($evt = _check_checkin_holds($ctx)) ) {
+		# if no hold is found for the copy, see if it needs to be transited
+		if( $copy->circ_lib != $requestor->home_ou ) {
+			$logger->debug("Checkin copy needs to go back to it's circ lib: ".
+				"current loc: ".$requestor->home_ou.", copy circ_lib: ".$copy->circ_lib);
+			$evt = OpenILS::Event->new('ROUTE_ITEM', org => $copy->circ_lib );
+		}
+	}
+	
+	$logger->debug("Checkin committing objects...");
 	$U->commit_db_session($ctx->{session});
 
-	my $record = $U->record_to_mvr($ctx->{title}) if($ctx->{title} and ! $ctx->{precat});
-	my $payload = { 
-		copy		=> $ctx->{copy},
-		circ		=> $ctx->{circ},
-		record	=> $record };
+	# if the item is not cataloged and no superceding
+	# events exist, return the proper event
+	if ( $copy->call_number == -1 and !$evt ) {
+		$evt = OpenILS::Event->new('ITEM_NOT_CATALOGED') }
 
-	return OpenILS::Event->new('ITEM_NOT_CATALOGED', 
-		payload => $payload ) if $copy->call_number == -1;
+	$evt = $SUCCESS if (!$evt or $__isrenewal);
+	$evt->{payload} = $payload;
 
-	return OpenILS::Event->new('SUCCESS', payload => $payload );
+	$logger->info("Checkin of copy ".$copy->id." returned event: ".$evt->{textcode});
+
+	$evt->{payload}->{copy} = $U->unflesh_copy($copy);
+
+	return $evt;
+}
+
+sub _check_checkin_holds {
+
+	my $ctx			= shift;
+	my $session		= $ctx->{session};
+	my $requestor	= $ctx->{requestor};
+	my $copy			= $ctx->{copy};
+
+	$logger->debug("Searching for a local hold on a copy: " . $session->session_id);
+
+	my ( $hold, $evt ) = 
+		$holdcode->find_local_hold( $session, $copy, $requestor );
+
+	if($hold) {
+		$evt = OpenILS::Event->new(
+			'COPY_NEEDED_FOR_HOLD', org => $hold->pickup_lib);
+	}
 }
 
 
@@ -947,6 +1008,7 @@ sub renew {
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
 		requestor						=> $requestor, 
+		patron							=> $patron, 
 		type								=> 'circ',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
@@ -965,7 +1027,7 @@ sub renew {
 	return $evt if( ($evt = _run_renew_scripts($ctx)) );
 
 	# checkin the cop
-	$ctx->{patron} = $ctx->{patron}->id;
+	#$ctx->{patron} = $ctx->{patron}->id;
 	$evt = $self->checkin($client, $authtoken, $ctx );
 		#{ barcode => $params->{barcode}, patron => $params->{patron}} );
 
@@ -975,6 +1037,7 @@ sub renew {
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
 		requestor						=> $requestor, 
+		patron							=> $patron, 
 		type								=> 'circ',
 		fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
@@ -1019,81 +1082,11 @@ sub _run_renew_scripts {
 	$runner->load($scripts{circ_permit_renew});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
 	my $evtname = $runner->retrieve('result.event');
-	$logger->activity("circ_permit_renew for user ".$ctx->{patron}." returned event: $evtname");
+	$logger->activity("circ_permit_renew for user ".$ctx->{patron}->id." returned event: $evtname");
 
 	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 	return undef;
 }
-
-
-
-sub transit_receive {
-	my ( $copyid, $requestor, $session ) = @_;
-	$U->logmark;
-
-	my( $copy, $evt ) = $U->fetch_copy($copyid);
-	my( $transit, $hold_transit );
-	my $cstats = $cache{copy_statuses};
-
-	my $status_name = $U->copy_status_to_name($cstats, $copy->status );
-	$logger->debug("Attempting transit receive on copy $copyid. Copy status is $status_name");
-
-	# fetch the transit
-	($transit, $evt) = $U->fetch_open_transit_by_copy($copyid);
-	return $evt if $evt;
-
-	if( $transit->dest != $requestor->home_ou ) {
-		$logger->activity("Fowarding transit on copy which is destined ".
-			"for a different location. copy=$copyid,current ".
-			"location=".$requestor->home_ou.",destination location=".$transit->dest);
-
-		return OpenILS::Event->new('ROUTE_ITEM', org => $transit->dest );
-	}
-
-	# The transit is received, set the receive time
-	$transit->dest_recv_time('now');
-	my $r = $session->request(
-		'open-ils.storage.direct.action.transit_copy.update', $transit )->gather(1);
-	return $U->DB_UPDATE_FAILED($transit) unless $r;
-
-	# if this is a hold transit, finalize the hold transit
-	return $evt if( ($evt = _finish_hold_transit( 
-		$session, $requestor, $copy, $transit->id )) ); 
-	
-	$U->logmark;
-
-	#recover this copy's status from the transit
-	$copy->status( $transit->copy_status );
-	return OpenILS::Event->('SUCCESS', payload => $copy);
-
-}
-
-# ------------------------------------------------------------------------------
-# If we have a hold transit, set the copy's status to 'on holds shelf',
-# update the copy, and return the ROUTE_TO_COPY_LOATION event
-# ------------------------------------------------------------------------------
-sub _finish_hold_transit {
-	my( $session, $requestor, $copy, $transid ) = @_;
-	$U->logmark;
-	my ($hold_transit, $evt) = $U->fetch_hold_transit( $transid );
-	return undef unless $hold_transit;
-
-	my $cstats = $cache{copy_statuses};
-	my $s = $U->copy_status_from_name($cstats, 'on holds shelf');
-	$logger->info("Hold transit found: ".$hold_transit->id.". Routing to holds shelf");
-
-	$copy->status($s->id);
-	$copy->editor($requestor->id);
-	$copy->edit_date('now');
-
-	my $r = $session->request( 
-		'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
-	return $U->DB_UPDATE_FAILED($copy) unless $r;
-
-	return OpenILS::Event->new('ROUTE_TO_COPY_LOCATION', location => $s->id );
-}
-	
-
 
 
 

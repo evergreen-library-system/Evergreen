@@ -390,6 +390,11 @@ sub _build_hold_transit {
 }
 
 
+sub find_local_hold {
+	my( $class, $session, $copy, $user ) = @_;
+	return _find_local_hold_for_copy($session, $copy, $user);
+}
+
 sub _find_local_hold_for_copy {
 
 	my $session = shift;

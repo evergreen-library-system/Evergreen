@@ -37,7 +37,7 @@ sub go {
 		do_renew($patronid, $barcode);
 
 	} elsif( $type eq 'checkin' ) {
-		do_checkin($patronid, $barcode);
+		do_checkin($barcode);
 	} else {
 		my($key,$precat) = do_permit($patronid, $barcode, $type =~ /noncat/ ); 
 		printl("Item is pre-cataloged...") if $precat;
@@ -124,8 +124,8 @@ sub do_renew {
 }
 
 sub do_checkin {
-	my( $patronid, $barcode ) = @_;
-	my $args = { patron => $patronid, barcode => $barcode };
+	my $barcode  = shift;
+	my $args = { barcode => $barcode };
 	my $t = time();
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.checkin', $authtoken, $args );

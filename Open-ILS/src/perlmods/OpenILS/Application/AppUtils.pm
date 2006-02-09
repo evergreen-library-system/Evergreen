@@ -793,17 +793,20 @@ sub fetch_open_circulation {
 	return ($circ, $evt);
 }
 
+my $copy_statuses;
 sub copy_status_from_name {
-	my( $self, $statuses, $name ) = @_;
-	for my $status (@$statuses) { 
+	my( $self, $name ) = @_;
+	$copy_statuses = $self->fetch_copy_statuses unless $copy_statuses;
+	for my $status (@$copy_statuses) { 
 		return $status if( $status->name =~ /$name/i );
 	}
 	return undef;
 }
 
 sub copy_status_to_name {
-	my( $self, $statuses, $sid ) = @_;
-	for my $status (@$statuses) { 
+	my( $self, $sid ) = @_;
+	$copy_statuses = $self->fetch_copy_statuses unless $copy_statuses;
+	for my $status (@$copy_statuses) { 
 		return $status->name if( $status->id == $sid );
 	}
 	return undef;
@@ -819,6 +822,13 @@ sub fetch_open_transit_by_copy {
 	return ($transit, $evt);
 }
 
+sub unflesh_copy {
+	my( $self, $copy ) = @_;
+	$copy->status( $copy->status->id ) if ref($copy->status);
+	$copy->location( $copy->location->id ) if ref($copy->location);
+	$copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);
+	return $copy;
+}
 
 # un-fleshes a copy and updates it in the DB
 # returns a DB_UPDATE_FAILED event on error
@@ -832,11 +842,9 @@ sub update_copy {
 
 	$logger->debug("Updating copy in the database: " . $copy->id);
 
-	$copy->status( $copy->status->id ) if ref($copy->status);
+	$self->unflesh_copy($copy);
 	$copy->editor( $editor );
 	$copy->edit_date( 'now' );
-	$copy->location( $copy->location->id ) if ref($copy->location);
-	$copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);
 
 	my $s;
 	my $meth = 'open-ils.storage.direct.asset.copy.update';
