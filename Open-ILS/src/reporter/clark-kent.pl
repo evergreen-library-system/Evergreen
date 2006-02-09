@@ -286,11 +286,18 @@ sub pivot_data {
 		{ $b <=> $a }
 		($val_col, $settings->{groupby}->[$pivot_groupby] - 1);
 
+	# get the groups-to-be
+	my @temp_groupby = @{$settings->{groupby}};
+	splice(@temp_groupby, $pivot_groupby, 1);
+
+	@groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+
 	my %p_header;
 	for my $row (@$data) {
 		$p_header{ $$row[$settings->{pivot}] } = [] unless exists($p_header{ $$row[$settings->{pivot}] });
 		
-		push @{ $p_header{ $$row[$settings->{pivot}] } }, $$row[$val_col];
+		# add the header from this row's pivot
+		push @{ $p_header{ $$row[$settings->{pivot}] } }, [ $$row[$val_col], join('',@$row[@temp_groups]) ];
 		
 		splice(@$row,$_,1) for (@remove_me);
 	}
@@ -316,7 +323,9 @@ sub pivot_data {
 			$seenit{$fingerprint}++;
 
 			for my $h ( sort keys %p_header ) {
-				push @$row, shift(@{ $p_header{$h} });
+				push @$row,  join('',@$row[@temp_groups]) eq $p_header{$h}[0][1] ?
+					shift(@{ $p_header{$h} }[0]) :
+					0;
 			}
 
 			push @new_data, [@$row];
