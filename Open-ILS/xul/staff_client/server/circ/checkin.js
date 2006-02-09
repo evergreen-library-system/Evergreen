@@ -22,10 +22,11 @@ circ.checkin.prototype = {
 			{ 
 				'barcode' : { 'hidden' : false },
 				'title' : { 'hidden' : false },
+				'location' : { 'hidden' : false },
+				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
-				//'checkin_status' : { 'hidden' : false },
-				'checkin_route_to' : { 'hidden' : false },
-				'checkin_text' : { 'hidden' : false, 'flex' : 3 },
+				'route_to' : { 'hidden' : false },
+				'message' : { 'hidden' : false, 'flex' : 3 },
 			} 
 		);
 		dump('columns = ' + js2JSON(columns) + '\n');
@@ -136,7 +137,7 @@ circ.checkin.prototype = {
 							'acp' : checkin.copy,
 							'status' : checkin.status,
 							'route_to' : checkin.route_to,
-							'text' : checkin.text,
+							'message' : checkin.message,
 						}
 					}
 				//I could override map_row_to_column here

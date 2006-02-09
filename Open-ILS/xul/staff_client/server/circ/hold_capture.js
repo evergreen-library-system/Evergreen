@@ -110,9 +110,8 @@ circ.hold_capture.prototype = {
 								'circ' : hold_capture.circ,
 								'mvr' : hold_capture.record,
 								'acp' : hold_capture.copy,
-								'status' : hold_capture.status,
 								'route_to' : hold_capture.route_to,
-								'text' : hold_capture.text,
+								'message' : hold_capture.message,
 							}
 						}
 					//I could override map_row_to_column here

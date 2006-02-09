@@ -33,7 +33,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]).label()'
+			'primary' : false, 'hidden' : true, 'render' : 'if (my.acp.call_number() == -1) { "Not Cataloged"; } else { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { x.label(); } }'
 		},
 		{
 			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1,
@@ -106,16 +106,12 @@ circ.util.columns = function(modify) {
 			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.ccs[ my.acp.status() ].name()'
 		},
 		{
-			'id' : 'checkin_status', 'label' : getString('staff.checkin_label_status'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.status.toString()'
-		},
-		{
-			'id' : 'checkin_route_to', 'label' : getString('staff.checkin_label_route_to'), 'flex' : 1,
+			'id' : 'route_to', 'label' : 'Route To', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.route_to.toString()'
 		},
 		{
-			'id' : 'checkin_text', 'label' : getString('staff.checkin_label_text'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.text.toString()'
+			'id' : 'message', 'label' : 'Message', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.message.toString()'
 		}
 
 	];
@@ -247,7 +243,7 @@ circ.util.std_map_row_to_column = function() {
 		try { 
 			value = eval( col.render );
 		} catch(E) {
-			obj.error.sdump('D_ERROR','map_row_to_column: ' + E);
+			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
 			value = '???';
 		}
 		return value;
@@ -271,181 +267,227 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			[ session, params ]
 		);
 
-		/* legacy */
-		check.status = check.textcode;
-		check.text = check.textcode;
-		if (check.payload) { 
-			check.copy = check.payload.copy;
-			check.circ = check.payload.circ;
-			check.record = check.payload.record;
-			check.hold = check.payload.hold;
-		} else {
-			check.copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]);
-			if (check.copy.ilsevent) {
-				check.text = check.copy.textcode; /* Probably 1502 - COPY_NOT_FOUND */
-				check.copy = new acp();
-			} else {
-				check.record = network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ check.copy.id() ]);
-				if (check.record.ilsevent) {
-					check.text = check.record.textcode; /* Probably 1202 - ITEM_NOT_CATALOGED */
-					if (check.record.ilsevent == 1202) check.route_to = 'CATALOGING';
-				}
-			}
-			check.circ = new aoc();
-		}
-		if (typeof check.route_to != 'undefined') {
-			if (parseInt(check.route_to)) {
-				if (check.route_to != data.list.au[0].home_ou()) {
-					check.route_to = data.hash.aou[ check.route_to ].shortname();
-				} else {
-					check.route_to = data.hash.acpl[ check.copy.location() ].name();
-				}
-			}
-		} else {
+		check.message = check.textcode;
+
+		/* FIXME - remove me later */
+		//if (check.payload && check.payload.copy && typeof check.payload.copy.location() == 'object') {
+		//	check.payload.copy.location( check.payload.copy.location().id() );
+		//}
+
+		if (check.payload && check.payload.copy) check.copy = check.payload.copy;
+		if (check.payload && check.payload.record) check.record = check.payload.record;
+		if (check.payload && check.payload.circ) check.circ = check.payload.circ;
+
+		if (!check.route_to) check.route_to = '???';
+
+		/* SUCCESS */
+		if (check.ilsevent == 0) {
 			check.route_to = data.hash.acpl[ check.copy.location() ].name();
 		}
 
-		if (check.ilsevent != 0) {
-			switch(check.ilsevent) {
-				case '1': case 1: /* possible hold capture */
-					var rv = error.yns_alert(
-						check.textcode,
-						'Alert',
-						"Capture",
-						"Don't Capture",
-						null,
-						"Check here to confirm this message"
-					);
-					switch(rv) {
-						case 0: /* capture */
-						try {
-							var check2 = this.hold_capture_via_copy_barcode( session, barcode );
-							if (check2) {
-								check.copy = check2.copy;
-								check.text = check2.textcode;
-								check.route_to = check2.route_to;
-								JSAN.use('patron.util');
-								var au_obj = patron.util.retrieve_au_via_id( session, check.payload.hold.usr() );
-								alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-									check.record.title() + '  Author: ' + check.record.author() + 
-									'\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
-									au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + 
-									au_obj.first_given_name() + '\r\n'); //FIXME
+		/* ROUTE_ITEM */
+		if (check.ilsevent == 7000) {
+			check.route_to = data.hash.aou[ check.org ].shortname();
+		}
 
-								/*
-								sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-									check.record.title() + '  Author: ' + check.record.author() + 
-									'<br />\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
-									au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + 
-									au_obj.first_given_name() + '<br />\r\n'
-								);
-								*/
+		/* CIRCULATION_NOT_FOUND */
+		if (check.ilsevent == 1500) {
+			if ( check.copy.circ_lib() == data.list.au[0].home_ou() ) {
+				if ( check.copy.dummy_title() ) {
+					check.route_to = 'CATALOGING';
+					check.copy.status( 11 );
+				} else {
+					check.route_to = data.hash.acpl[ check.copy.location() ].name();
+				}
+			} else {
+				check.route_to = data.hash.aou[ check.copy.circ_lib() ].shortname();
+			}
+		}
 
-							}
+		/* ITEM_NOT_CATALOGED */
+		if (check.ilsevent == 1202) {
+			check.route_to = 'CATALOGING';
+			check.copy.status( 11 );
+		}
+		
+		/* COPY_NOT_FOUND */
+		if (check.ilsevent == 1502) {
+			check.copy = new acp();
+			check.copy.barcode( barcode );
+			check.copy.status( 11 );
+			check.route_to = 'CATALOGING';
+		}
 
-						} catch(E) { 
-							error.sdump('D_ERROR',E + '\n'); 
-							/* 
-							// demo testing 
-							check.text = 'Captured for Hold';
-							check.route_to = 'ARL-ATH';
-							*/
-						}
-						break;
-						case 1: /* don't capture */
+		/* COPY_NEEDED_FOR_HOLD */
+		if (check.ilsevent == 7007) {
+			var rv = error.yns_alert(
+				'This copy is needed to fulfill a hold.  Capture it?',
+				'Alert',
+				"Capture",
+				"Don't Capture",
+				null,
+				"Check here to confirm this message"
+			);
+			switch(rv) {
+				case 0: /* captured */
 
-							check.text = 'Not Captured for Hold';
-						break;
-					}
-				break;
-				case '2': case 2: /* LOST??? */
-					JSAN.use('patron.util');
-					var au_obj = patron.util.retrieve_au_via_id( session, check.circ.usr() );
-					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-							check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
-							'Patron: ' + au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' +
-							au_obj.first_given_name();
-					var pcheck = error.yns_alert(
-						msg,
-						'Lost Item',
-						'Edit Copy & Patron',
-						"Just Continue",
-						null,
-						"Check here to confirm this message"
-					); 
-					if (pcheck == 0) {
-						//FIXME//Re-implement
-						/*
-						var w = mw.spawn_main();
-						setTimeout(
-							function() {
-								mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':au_obj});
-								mw.spawn_batch_copy_editor(w.document,'new_tab','main_tabbox',
-									{'copy_ids':[ check.copy.id() ]});
-							}, 0
-						);
-						*/
-					}
-				break;
-				case '3': case 3: /* TRANSIT ELSEWHERE */
-					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
-					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-							check.record.title() + '  Author: ' + check.record.author() + 
-							'\r\n' + 'Route To: ' + check.route_to + '\r\n';
-					var pcheck = error.yns_alert(
-						msg,
-						'Alert',
-						'Print Receipt',
-						"Don't Print",
-						null,
-						"Check here to confirm this message"
-					); 
-					if (pcheck == 0) {
-						alert('To Printer\n' + msg); //FIXME//
-						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
-					}
+					var hold = this.hold_capture_via_copy_barcode( session, barcode, false );
 
 				break;
-				case '4': case 4: /* transit for hold is complete */
-					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
-					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-							check.record.title() + '  Author: ' + check.record.author() + 
-							'\r\n' + 'Route To: ' + check.route_to +
-							'\r\n';
-					var pcheck = error.yns_alert(
-						msg,
-						'Alert',
-						'Print Receipt',
-						"Don't Print",
-						null,
-						"Check here to confirm this message"
-					); 
-					if (pcheck == 0) {
-						alert('To Printer\n' + msg); //FIXME//
-						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
-					}
+				case 1: /* not captured */
+
+					alert('case 1');
 
 				break;
+				default:
+				
+					alert('case 2');
 
-				default: /* 1500 - "CIRCULATION_NOT_FOUND" */
-					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
-					var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;
-					var pcheck = error.yns_alert(
-						msg,
-						'Alert',
-						'Print Receipt',
-						"Don't Print",
-						null,
-						"Check here to confirm this message"
-					); 
-					if (pcheck == 0) {
-						alert('To Printer\n' + msg); //FIXME//
-						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
-					}
 				break;
 			}
-		} else {  // ilsevent == 0
 		}
+
+//		if (check.ilsevent != 0) {
+//			switch(check.ilsevent) {
+//				case '1': case 1: /* possible hold capture */
+//					var rv = error.yns_alert(
+//						check.textcode,
+//						'Alert',
+//						"Capture",
+//						"Don't Capture",
+//						null,
+//						"Check here to confirm this message"
+//					);
+//					switch(rv) {
+//						case 0: /* capture */
+//						try {
+//							var check2 = this.hold_capture_via_copy_barcode( session, barcode );
+//							if (check2) {
+//								check.copy = check2.copy;
+//								check.text = check2.textcode;
+//								check.route_to = check2.route_to;
+//								JSAN.use('patron.util');
+//								var au_obj = patron.util.retrieve_au_via_id( session, check.payload.hold.usr() );
+//								alert('To Printer\n' + check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+//									check.record.title() + '  Author: ' + check.record.author() + 
+//									'\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
+//									au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + 
+//									au_obj.first_given_name() + '\r\n'); //FIXME
+//
+//								/*
+//								sPrint(check.text + '<br />\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+//									check.record.title() + '  Author: ' + check.record.author() + 
+//									'<br />\r\n' + 'Route To: ' + check.route_to + '  Patron: ' + 
+//									au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' + 
+//									au_obj.first_given_name() + '<br />\r\n'
+//								);
+//								*/
+//
+//							}
+//
+//						} catch(E) { 
+//							error.sdump('D_ERROR',E + '\n'); 
+//							/* 
+//							// demo testing 
+//							check.text = 'Captured for Hold';
+//							check.route_to = 'ARL-ATH';
+//							*/
+//						}
+//						break;
+//						case 1: /* don't capture */
+//
+//							check.text = 'Not Captured for Hold';
+//						break;
+//					}
+//				break;
+//				case '2': case 2: /* LOST??? */
+//					JSAN.use('patron.util');
+//					var au_obj = patron.util.retrieve_au_via_id( session, check.circ.usr() );
+//					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+//							check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
+//							'Patron: ' + au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' +
+//							au_obj.first_given_name();
+//					var pcheck = error.yns_alert(
+//						msg,
+//						'Lost Item',
+//						'Edit Copy & Patron',
+//						"Just Continue",
+//						null,
+//						"Check here to confirm this message"
+//					); 
+//					if (pcheck == 0) {
+//						//FIXME//Re-implement
+//						/*
+//						var w = mw.spawn_main();
+//						setTimeout(
+//							function() {
+//								mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':au_obj});
+//								mw.spawn_batch_copy_editor(w.document,'new_tab','main_tabbox',
+//									{'copy_ids':[ check.copy.id() ]});
+//							}, 0
+//						);
+//						*/
+//					}
+//				break;
+//				case '3': case 3: /* TRANSIT ELSEWHERE */
+//					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+//					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+//							check.record.title() + '  Author: ' + check.record.author() + 
+//							'\r\n' + 'Route To: ' + check.route_to + '\r\n';
+//					var pcheck = error.yns_alert(
+//						msg,
+//						'Alert',
+//						'Print Receipt',
+//						"Don't Print",
+//						null,
+//						"Check here to confirm this message"
+//					); 
+//					if (pcheck == 0) {
+//						alert('To Printer\n' + msg); //FIXME//
+//						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+//					}
+//
+//				break;
+//				case '4': case 4: /* transit for hold is complete */
+//					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+//					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
+//							check.record.title() + '  Author: ' + check.record.author() + 
+//							'\r\n' + 'Route To: ' + check.route_to +
+//							'\r\n';
+//					var pcheck = error.yns_alert(
+//						msg,
+//						'Alert',
+//						'Print Receipt',
+//						"Don't Print",
+//						null,
+//						"Check here to confirm this message"
+//					); 
+//					if (pcheck == 0) {
+//						alert('To Printer\n' + msg); //FIXME//
+//						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+//					}
+//
+//				break;
+//
+//				default: /* 1500 - "CIRCULATION_NOT_FOUND" */
+//					if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+//					var msg = check.text + '\r\nBarcode: ' + barcode + '  Route To: ' + check.route_to;
+//					var pcheck = error.yns_alert(
+//						msg,
+//						'Alert',
+//						'Print Receipt',
+//						"Don't Print",
+//						null,
+//						"Check here to confirm this message"
+//					); 
+//					if (pcheck == 0) {
+//						alert('To Printer\n' + msg); //FIXME//
+//						//sPrint( msg.match( /\n/g, '<br />\r\n'), true );
+//					}
+//				break;
+//			}
+//		} else {  // ilsevent == 0
+//		}
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
@@ -460,10 +502,12 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 	try {
 		JSAN.use('util.network'); var network = new util.network();
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		var params = { barcode: barcode }
+		if (retrieve_flag) { params.flesh_record = retrieve_flag; params.flesh_copy = retrieve_flag; }
 		var robj = network.request(
 			api.CAPTURE_COPY_FOR_HOLD_VIA_BARCODE.app,
 			api.CAPTURE_COPY_FOR_HOLD_VIA_BARCODE.method,
-			[ session, barcode, retrieve_flag ]
+			[ session, params ]
 		);
 		var check = robj.payload;
 		if (!check) {
