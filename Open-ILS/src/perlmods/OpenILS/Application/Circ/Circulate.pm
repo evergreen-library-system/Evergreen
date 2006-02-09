@@ -529,7 +529,8 @@ sub checkout {
 	$evt = _update_checkout_copy($ctx);
 	return $evt if $evt;
 
-	$evt = _handle_related_holds($ctx);
+	my $holds;
+	($holds, $evt) = _handle_related_holds($ctx);
 	return $evt if $evt;
 
 
@@ -538,10 +539,11 @@ sub checkout {
 	my $record = $U->record_to_mvr($ctx->{title}) unless $ctx->{precat};
 
 	return OpenILS::Event->new('SUCCESS', 
-		payload		=> { 
-			copy		=> $U->unflesh_copy($ctx->{copy}),
-			circ		=> $ctx->{circ},
-			record	=> $record,
+		payload	=> { 
+			copy					=> $U->unflesh_copy($ctx->{copy}),
+			circ					=> $ctx->{circ},
+			record				=> $record,
+			holds_fulfilled	=> $holds,
 		} );
 }
 
@@ -744,7 +746,9 @@ sub _handle_related_holds {
 	my $patron	= $ctx->{patron};
 	my $holds	= $holdcode->fetch_related_holds($copy->id);
 	$U->logmark;
+	my @fulfilled;
 
+	# XXX should we fulfill all the holds or just the first
 	if(ref($holds) && @$holds) {
 
 		# for now, just sort by id to get what should be the oldest hold
@@ -759,11 +763,12 @@ sub _handle_related_holds {
 			$hold->fulfillment_time('now');
 			my $r = $ctx->{session}->request(
 				"open-ils.storage.direct.action.hold_request.update", $hold )->gather(1);
-			return $U->DB_UPDATE_FAILED( $hold ) unless $r;
+			return (undef,$U->DB_UPDATE_FAILED( $hold )) unless $r;
+			push( @fulfilled, $hold->id );
 		}
 	}
 
-	return undef;
+	return (\@fulfilled, undef);
 }
 
 

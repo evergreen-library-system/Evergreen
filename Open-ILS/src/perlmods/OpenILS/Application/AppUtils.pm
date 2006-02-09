@@ -147,9 +147,12 @@ sub simplereq {
 }
 
 sub get_storage_session {
+
 	if(	$storage_session and 
 			$storage_session->connected and
+			$storage_session->transport_connected and
 			$storage_session->app eq 'open-ils.storage' ) {
+
 		$logger->debug("get_storage_session(): returning existing session");
 		return $storage_session;
 	}

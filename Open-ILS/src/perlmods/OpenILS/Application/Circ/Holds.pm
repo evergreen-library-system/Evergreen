@@ -309,7 +309,10 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub capture_copy {
-	my( $self, $client, $login_session, $barcode, $flesh ) = @_;
+	my( $self, $client, $login_session, $params ) = @_;
+	my %params = %$params;
+	my $barcode = $params{barcode};
+
 
 	my( $user, $target, $copy, $hold, $evt );
 
@@ -320,7 +323,7 @@ sub capture_copy {
 	$evt = $apputils->check_perms($user->id, $user->home_ou, "COPY_CHECKIN");
 	return $evt if $evt;
 
-	$logger->info("Capturing copy with barcode $barcode, flesh=$flesh");
+	$logger->info("Capturing copy with barcode $barcode");
 
 	my $session = $apputils->start_db_session();
 
@@ -357,19 +360,21 @@ sub capture_copy {
 		"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
 	if(!$stat) { throw OpenSRF::EX ("Error updating copy " . $copy->id); }
 
-	
-	my $title = undef;
-	if($flesh) {
-		($title, $evt) = $apputils->fetch_record_by_copy( $copy->id );
+	my $payload = { hold => $hold };
+	$payload->{copy} = $copy if $params{flesh_copy};
+
+	if($params{flesh_record}) {
+		my $record;
+		($record, $evt) = $apputils->fetch_record_by_copy( $copy->id );
 		return $evt if $evt;
-		$title = $apputils->record_to_mvr($title);
-	} 
+		$record = $apputils->record_to_mvr($record);
+		$payload->{record} = $record;
+	}
 
 	$apputils->commit_db_session($session);
 
-	my $payload = { copy => $copy, record => $title, hold => $hold, };
-
-	return OpenILS::Event->new('ROUTE_ITEM', route_to => $hold->pickup_lib, payload => $payload );
+	return OpenILS::Event->new('ROUTE_ITEM', 
+		route_to => $hold->pickup_lib, payload => $payload );
 }
 
 sub _build_hold_transit {
