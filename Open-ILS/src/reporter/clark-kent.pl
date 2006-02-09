@@ -184,11 +184,11 @@ for my $r ( @reports ) {
 		if ( grep { $_ eq 'csv' } @formats ) {
 			build_csv("$base/$s1/$s2/$s3/$output/report-data.csv", $r);
 		}
-		
+
 		if ( grep { $_ eq 'excel' } @formats ) {
 			build_excel("$base/$s1/$s2/$s3/$output/report-data.xls", $r);
 		}
-		
+
 		if ( grep { $_ eq 'html' } @formats ) {
 			mkdir("$base/$s1/$s2/$s3/$output/html");
 			build_html("$base/$s1/$s2/$s3/$output/report-data.html", $r);
@@ -287,17 +287,18 @@ sub pivot_data {
 		($val_col, $settings->{groupby}->[$pivot_groupby] - 1);
 
 	# get the groups-to-be
-	my @temp_groupby = @{$settings->{groupby}};
+	my @temp_groupby = @groups;
 	splice(@temp_groupby, $pivot_groupby, 1);
 
-	@groups = (map { ($_ - 1) } @{ $settings->{groupby} });
+	@groups = map { ($_ - 1) } @{ $settings->{groupby} };
 
 	my %p_header;
 	for my $row (@$data) {
 		$p_header{ $$row[$settings->{pivot}] } = [] unless exists($p_header{ $$row[$settings->{pivot}] });
 		
 		# add the header from this row's pivot
-		push @{ $p_header{ $$row[$settings->{pivot}] } }, [ $$row[$val_col], join('',@$row[@temp_groups]) ];
+		push @{ $p_header{ $$row[$settings->{pivot}] } },
+			{ val => $$row[$val_col], fp => join('', map { defined($_) ? $_ : '' } @$row[@temp_groupby]) };
 		
 		splice(@$row,$_,1) for (@remove_me);
 	}
@@ -311,7 +312,6 @@ sub pivot_data {
 	splice(@{$settings->{groupby}}, $pivot_groupby, 1);
 	@groups = (map { ($_ - 1) } @{ $settings->{groupby} });
 
-	$count = scalar(keys %p_header);
 	my %seenit;
 	my @new_data;
 	{	no warnings;
@@ -323,18 +323,48 @@ sub pivot_data {
 			$seenit{$fingerprint}++;
 
 			for my $h ( sort keys %p_header ) {
-				push @$row,  join('',@$row[@temp_groups]) eq $p_header{$h}[0][1] ?
-					shift(@{ $p_header{$h} }[0]) :
-					0;
+				my $found = 0;
+				my $bcount = 0;
+				for my $blob (@{ $p_header{$h} }) {
+					$fingerprint = join('', map { defined($_) ? $_ : '' } @$row[@groups]);
+
+					if ($blob->{fp} eq $fingerprint ) {
+						push @$row, $blob->{val};
+						$found++;
+						splice(@{ $p_header{$h} }, $bcount, 1);
+						last;
+					}
+					$bcount++;
+				}
+				push @$row, 0 if (!$found);
 			}
 
 			push @new_data, [@$row];
 		}
 	}
 
+	@new_data = sort { data_sorter($a,$b,\@groups) } @new_data;
+
 	#replace old data with new
 	$r->{data} = \@new_data;
 
+}
+
+sub data_sorter {
+	no warnings;
+
+	my $_a = shift;
+	my $_b = shift;
+	my $sort_cols = shift;
+
+	for my $col (@$sort_cols) {
+		return -1 if (!defined($$_a[$col]));
+		return 1 if (!defined($$_b[$col]));
+
+		return -1 if ($$_a[$col] lt $$_b[$col]);
+		return 1 if ($$_a[$col] gt $$_b[$col]);
+	}
+	return 0;
 }
 
 sub build_csv {
