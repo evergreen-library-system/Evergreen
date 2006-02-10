@@ -24,6 +24,7 @@ patron.holds.prototype = {
 				'request_time' : { 'hidden' : false },
 				'pickup_lib_shortname' : { 'hidden' : false },
 				'hold_type' : { 'hidden' : false },
+				'current_copy' : { 'hidden' : false },
 				'capture_time' : { 'hidden' : false },
 			} 
 		);
@@ -49,6 +50,9 @@ patron.holds.prototype = {
 									api.MODS_SLIM_RECORD_RETRIEVE.app,
 									api.MODS_SLIM_RECORD_RETRIEVE.method,
 									[ row.my.ahr.target() ]
+								);
+								row.my.acp = obj.network.simple_request(
+									'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]
 								);
 							break;
 						}
