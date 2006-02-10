@@ -161,7 +161,7 @@ circ.util.hold_columns = function(modify) {
 		},
 		{
 			'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.current_copy()'
+			'primary' : false, 'hidden' : true,  'render' : 'my.acp.barcode()'
 		},
 		{
 			'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
@@ -267,12 +267,9 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			[ session, params ]
 		);
 
-		check.message = check.textcode;
+		while(true) { /* only loops under certain conditions */
 
-		/* FIXME - remove me later */
-		//if (check.payload && check.payload.copy && typeof check.payload.copy.location() == 'object') {
-		//	check.payload.copy.location( check.payload.copy.location().id() );
-		//}
+		check.message = check.textcode;
 
 		if (check.payload && check.payload.copy) check.copy = check.payload.copy;
 		if (check.payload && check.payload.record) check.record = check.payload.record;
@@ -332,6 +329,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				case 0: /* captured */
 
 					var hold = this.hold_capture_via_copy_barcode( session, barcode, false );
+					if (hold.ilsevent != 7007) { check = hold; continue; }
+					alert('something weird');
 
 				break;
 				case 1: /* not captured */
@@ -347,6 +346,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			}
 		}
 
+		break;
+		} /* end of while */
 //		if (check.ilsevent != 0) {
 //			switch(check.ilsevent) {
 //				case '1': case 1: /* possible hold capture */

@@ -26,10 +26,8 @@ circ.checkin.prototype = {
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
 				'route_to' : { 'hidden' : false },
-				'message' : { 'hidden' : false, 'flex' : 3 },
 			} 
 		);
-		dump('columns = ' + js2JSON(columns) + '\n');
 
 		JSAN.use('util.list'); obj.list = new util.list('checkin_list');
 		obj.list.init(
