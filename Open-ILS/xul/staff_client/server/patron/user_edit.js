@@ -84,7 +84,7 @@ function clear_alert_message () {
 function save_user () {
 	user.ischanged(1);
 
-	alert(	js2JSON(user.stat_cat_entries()) );
+	//alert(	js2JSON(user.stat_cat_entries()) );
 	//return false;
 
 	try {
@@ -202,6 +202,7 @@ function init_editor (u) {
 		if (!usr_id && !usr_barcode) {
 
 			user = new au();
+			user.id(fakeid());
 			user.isnew(1);
 
 			user.mailing_address( new aua() );
@@ -235,7 +236,7 @@ function init_editor (u) {
 		user = u;
 	}
 
-	if (user.id()) x['user.id'].value = user.id();
+	if (user.id() > 0) x['user.id'].value = user.id();
 	if (cgi.param('adv')) x['user.id'].parentNode.parentNode.setAttribute('adv', 'false');
 
 	if (user.create_date()) x['user.create_date'].value = user.create_date();
@@ -457,17 +458,20 @@ function init_editor (u) {
 	var staff_perms = req.getResultObject();
 
 	user_perms = [];
-	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.user_perms.retrieve', ses_id, user.id() );
-	req.send(true);
-	var up = req.getResultObject();
-	for (var i in up) {
-		if (up[i].id() > 0)
-			user_perms.push(up[i]);
-	}
+	perm_list = [];
+	if (user.id() > 0) {
+		req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.user_perms.retrieve', ses_id, user.id() );
+		req.send(true);
+		var up = req.getResultObject();
+		for (var i in up) {
+			if (up[i].id() > 0)
+				user_perms.push(up[i]);
+		}
 
-	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.retrieve' );
-	req.send(true);
-	perm_list = req.getResultObject();
+		req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.retrieve' );
+		req.send(true);
+		perm_list = req.getResultObject();
+	}
 
 	f = document.getElementById('permissions');
 	while (f.firstChild) f.removeChild(f.lastChild);
