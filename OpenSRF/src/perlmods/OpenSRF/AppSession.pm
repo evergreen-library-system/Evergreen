@@ -1015,7 +1015,9 @@ sub respond {
 sub respond_complete { respond(@_); }
 
 sub new {
-	return bless({resp => []}, 'OpenSRF::AppSubrequest');
+	my $class = shift;
+	$class = ref($class) || $class;
+	return bless({resp => [], @_}, $class);
 }
 
 sub responses { @{$_[0]->{resp}} }

@@ -555,5 +555,50 @@ __PACKAGE__->register_method(
 );
 
 
+sub cn_ranged_tree {
+	my $self = shift;
+	my $client = shift;
+	my $cn = shift;
+	my $ou = shift;
+	my $depth = shift || 0;
+
+	my $ou_list =
+		actor::org_unit
+			->db_Main
+			->selectcol_arrayref(
+				'SELECT id FROM actor.org_unit_descendants(?,?)',
+				{},
+				$ou,
+				$depth
+			);
+
+	return undef unless ($ou_list and @$ou_list);
+
+	$cn = asset::call_number->retrieve( $cn );
+	return undef unless ($cn);
+
+	my $call_number = $cn->to_fieldmapper;
+	$call_number->copies([]);
+
+	$call_number->record( $cn->record->to_fieldmapper );
+	$call_number->record->fixed_fields( $cn->record->record_descriptor->next->to_fieldmapper );
+
+	for my $cp ( $cn->copies(circ_lib => $ou_list) ) {
+		my $copy = $cp->to_fieldmapper;
+		$copy->status( $cp->status->to_fieldmapper );
+		$copy->location( $cp->status->to_fieldmapper );
+
+		push @{ $call_number->copies }, $copy;
+	}
+
+	return $call_number;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.asset.call_number.ranged_tree',
+	method		=> 'cn_ranged_tree',
+	argc		=> 1,
+	api_level	=> 1,
+);
+
 
 1;

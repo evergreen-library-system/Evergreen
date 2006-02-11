@@ -58,6 +58,58 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+sub record_ranged_tree {
+	my $self = shift;
+	my $client = shift;
+	my $r = shift;
+	my $ou = shift;
+	my $depth = shift || 0;
+
+	my $ou_list =
+		actor::org_unit
+			->db_Main
+			->selectcol_arrayref(
+				'SELECT id FROM actor.org_unit_descendants(?,?)',
+				{},
+				$ou,
+				$depth
+			);
+
+	return undef unless ($ou_list and @$ou_list);
+
+	$r = biblio::record_entry->retrieve( $r );
+	return undef unless ($r);
+
+	my $rec = $r->to_fieldmapper;
+	$rec->call_numbers([]);
+
+	$rec->fixed_fields( $r->record_descriptor->next->to_fieldmapper );
+
+	for my $cn ( $r->call_numbers  ) {
+		my $call_number = $cn->to_fieldmapper;
+		$call_number->copies([]);
+
+
+		for my $cp ( $cn->copies(circ_lib => $ou_list) ) {
+			my $copy = $cp->to_fieldmapper;
+			$copy->status( $cp->status->to_fieldmapper );
+			$copy->location( $cp->status->to_fieldmapper );
+
+			push @{ $call_number->copies }, $copy;
+		}
+
+		push @{ $rec->call_numbers }, $call_number if (@{ $call_number->copies });
+	}
+
+	return $rec;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.ranged_tree',
+	method		=> 'record_ranged_tree',
+	argc		=> 1,
+	api_level	=> 1,
+);
+
 sub record_by_barcode {
 	my $self = shift;
 	my $client = shift;

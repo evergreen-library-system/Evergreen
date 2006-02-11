@@ -351,7 +351,7 @@ sub update {
 
 	$log->debug("Calling Class::DBI->update on modified object $self", DEBUG);
 
-	debug_object($self);
+	#debug_object($self);
 
 	return $self->SUPER::update if ($self->is_changed);
 	return 0;
@@ -362,8 +362,8 @@ sub modify_from_fieldmapper {
 	my $fm = shift;
 	my $orig = $obj;
 
-	debug_object($obj);
-	debug_object($fm);
+	#debug_object($obj);
+	#debug_object($fm);
 
 	$log->debug("Modifying object using fieldmapper", DEBUG);
 
@@ -373,7 +373,7 @@ sub modify_from_fieldmapper {
 
 	if (!ref($obj)) {
 		$obj = $class->retrieve($fm);
-		debug_object($obj);
+		#debug_object($obj);
 		unless ($obj) {
 			$log->debug("Retrieve of $class using $fm (".$fm->id.") failed! -- ".shift(), ERROR);
 			throw OpenSRF::EX::WARN ("No $class with id of ".$fm->id."!!");
@@ -394,7 +394,7 @@ sub modify_from_fieldmapper {
 	my $au = $obj->autoupdate;
 	$obj->autoupdate(0);
 	
-	debug_object($obj);
+	#debug_object($obj);
 
 	for my $field ( keys %hash ) {
 		$obj->$field( $hash{$field} ) if ($obj->$field ne $hash{$field});
@@ -603,10 +603,11 @@ sub modify_from_fieldmapper {
 	action::hold_request->has_a(  requestor => 'actor::user' );
 	action::hold_request->has_a(  usr => 'actor::user' );
 	action::hold_request->has_a(  pickup_lib => 'actor::org_unit' );
+	action::hold_request->has_a(  request_lib => 'actor::org_unit' );
 
 	action::hold_request->has_many(  notifications => 'action::hold_notification' );
-	action::hold_request->has_many(  copy_maps => 'action::hold_copy_map' );
+	action::hold_request->has_many(  eligible_copies => [ 'action::hold_copy_map' => 'target_copy' ] );
 
-	asset::copy->has_many(  hold_maps => 'action::hold_copy_map' );
+	asset::copy->has_many(  holds => [ 'action::hold_copy_map' => 'hold' ] );
 
 1;

@@ -2,6 +2,7 @@ package OpenILS::Utils::PermitHold;
 use strict; use warnings;
 use Data::Dumper;
 use OpenSRF::Utils;
+use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);

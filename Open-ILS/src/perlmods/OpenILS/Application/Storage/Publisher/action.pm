@@ -5,6 +5,7 @@ use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::PermitHold;
 use DateTime;
 use DateTime::Format::ISO8601;
 
@@ -383,6 +384,231 @@ __PACKAGE__->register_method(
 
 
 
+sub new_hold_copy_targeter {
+	my $self = shift;
+	my $client = shift;
+	my $check_expire = shift;
+	my $one_hold = shift;
+
+	my $time = time;
+	$check_expire ||= '12h';
+	$check_expire = interval_to_seconds( $check_expire );
+
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
+	$year += 1900;
+	$mon += 1;
+	my $expire_threshold = sprintf(
+		'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
+		$year, $mon, $mday, $hour, $min, $sec
+	);
+
+
+	my $holds;
+
+	try {
+		if ($one_hold) {
+			$holds = [ action::hold_request->search(id => $one_hold) ];
+		} else {
+			$holds = [ action::hold_request->search_where(
+							{ capture_time => undef,
+							  fulfillment_time => undef,
+							  prev_check_time => { '<=' => $expire_threshold },
+							},
+							{ order_by => 'request_time,prev_check_time' } ) ];
+			push @$holds, action::hold_request->search(
+							capture_time => undef,
+							fulfillment_time => undef,
+				  			prev_check_time => undef,
+							{ order_by => 'request_time' } );
+		}
+	} catch Error with {
+		my $e = shift;
+		die "Could not retrieve uncaptured hold requests:\n\n$e\n";
+	};
+
+	my @successes;
+	for my $hold (@$holds) {
+		try {
+			#action::hold_request->db_Main->begin_work;
+			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
+				$log->debug("Cleaning up after previous transaction\n");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			}
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+			$log->info("Processing hold ".$hold->id."...\n");
+
+			action::hold_copy_map->search( { hold => $hold->id } )->delete_all;
+	
+			my $all_copies = [];
+
+			# find all the potential copies
+			if ($hold->hold_type eq 'M') {
+				for my $r ( map
+						{$_->record}
+						metabib::record_descriptor
+							->search(
+								record => [ map { $_->id } metabib::metarecord
+											->retrieve($hold->target)
+											->source_records ],
+								item_type => [split '', $hold->holdable_formats]
+							)
+				) {
+					my ($rtree) = $self
+						->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
+						->run( $r->id, $hold->request_lib->id, $hold->selection_depth );
+
+					for my $cn ( @{ $rtree->call_numbers } ) {
+						push @$all_copies,
+							asset::copy->search( id => [map {$_->id} @{ $cn->copies }] );
+					}
+				}
+			} elsif ($hold->hold_type eq 'T') {
+				my ($rtree) = $self
+					->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
+					->run( $hold->target, $hold->request_lib->id, $hold->selection_depth );
+
+				unless ($rtree) {
+					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_RECORD' };
+					die 'OK';
+				}
+
+				for my $cn ( @{ $rtree->call_numbers } ) {
+					push @$all_copies,
+						asset::copy->search( id => [map {$_->id} @{ $cn->copies }] );
+				}
+			} elsif ($hold->hold_type eq 'V') {
+				my ($vtree) = $self
+					->method_lookup( 'open-ils.storage.asset.call_number.ranged_tree')
+					->run( $hold->target, $hold->request_lib->id, $hold->selection_depth );
+
+				push @$all_copies,
+					asset::copy->search( id => [map {$_->id} @{ $vtree->copies }] );
+					
+			} elsif  ($hold->hold_type eq 'C') {
+
+				$all_copies = [asset::copy->retrieve($hold->target)];
+			}
+
+			# let 'em know we're still working
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			
+			if (!ref $all_copies || !@$all_copies) {
+				$log->info("\tNo copies available for targeting at all!\n");
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+				push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_COPIES' };
+				die 'OK';
+			}
+
+			my $copies = [];
+			for my $c ( @$all_copies ) {
+				push @$copies, $c
+					if ( OpenILS::Utils::PermitHold::permit_copy_hold(
+						{ title => $c->call_number->record->to_fieldmapper,
+						  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
+						  patron => $hold->usr->to_fieldmapper,
+						  copy => $c->to_fieldmapper,
+						  requestor => $hold->requestor->to_fieldmapper,
+						  request_lib => $hold->request_lib->to_fieldmapper,
+						} ));
+			}
+			my $copy_count = @$copies;
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+			# map the potentials, so that we can pick up checkins
+			$log->debug( "\tMapping ".scalar(@copies)." potential copies for hold ".$hold->id);
+			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@copies);
+
+			my @good_copies;
+			for my $c (@$copies) {
+				next if ($c->id == $hold->current_copy);
+				push @good_copies, $c if ($c);
+			}
+
+			$log->debug("\t".scalar(@good_copies)." (non-current) copies available for targeting...");
+
+			my $old_best = $hold->current_copy;
+			$hold->update({ current_copy => undef });
+	
+			if (!scalar(@good_copies)) {
+				$log->info("\tNo (non-current) copies eligible to fill the hold.");
+				if ( $old_best && grep { $old_best == $_ } @$copies ) {
+					$log->debug("\tPushing current_copy back onto the targeting list");
+					push @good_copies, $old_best;
+				} else {
+					$log->debug("\tcurrent_copy is no longer available for targeting... NEXT HOLD, PLEASE!");
+					$self->method_lookup('open-ils.storage.transaction.commit')->run;
+					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_TARGETS' };
+					die 'OK';
+				}
+			}
+
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			my $prox_list = [];
+			$$prox_list[0] =
+			[
+				grep {
+					$_->circ_lib == $hold->pickup_lib && 
+					( $_->status == 0 || $_->status == 7 )
+				} @good_copies
+			];
+
+			$copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
+
+			my $best = $self->choose_nearest_copy($hold, $prox_list);
+
+			if (!$best) {
+				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
+				$best = $self->choose_nearest_copy($hold, $prox_list);
+			}
+
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			if ($old_best) {
+				# hold wasn't fulfilled, record the fact
+			
+				$log->info("\tHold was not (but should have been) fulfilled by ".$old_best->id);
+				action::unfulfilled_hold_list->create(
+						{ hold => ''.$hold->id,
+						  current_copy => ''.$old_best->id,
+						  circ_lib => ''.$old_best->circ_lib,
+						});
+			}
+
+			if ($best) {
+				$hold->update( { current_copy => ''.$best->id } );
+				$log->debug("\tTargeting copy ".$best->id." for hold fulfillment.");
+			} else {
+				$log->debug( "\tThere were no targetable copies for the hold" );
+			}
+
+			$hold->update( { prev_check_time => 'now' } );
+			$log->info("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
+
+			$self->method_lookup('open-ils.storage.transaction.commit')->run;
+			$log->info("\tProcessing of hold ".$hold->id." complete.");
+
+			push @successes,
+				{ hold => $hold->id,
+				  old_target => ($old_best ? $old_best->id : undef),
+				  eligible_copies => $copy_count,
+				  target => ($best ? $best->id : undef) };
+
+		} otherwise {
+			my $e = shift;
+			if ($e !~ /^OK/o) {
+				$log->error("Processing of hold failed:  $e");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			}
+		};
+	}
+
+	return \@successes;
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.hold_request.copy_targeter',
+	api_level       => 1,
+	method          => 'new_hold_copy_targeter',
+);
+
 my $locations;
 my $statuses;
 my %cache = (titles => {}, cns => {});
@@ -536,11 +762,10 @@ sub hold_copy_targeter {
 }
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.action.hold_request.copy_targeter',
-	api_level       => 1,
+	api_level       => 0,
 	stream		=> 1,
 	method          => 'hold_copy_targeter',
 );
-
 
 
 sub copy_hold_capture {
@@ -557,10 +782,10 @@ sub copy_hold_capture {
 		};
 	}
 
-	my @copies = grep { $_->holdable and !$_->ref } @$cps;
+	my @copies = grep { $_->holdable } @$cps;
 
-	for (my $i = 0; $i < @copies; $i++) {
-		next unless $copies[$i];
+	for (my $i = 0; $i < @$cps; $i++) {
+		next unless $$cps[$i];
 		
 		my $cn = $cache{cns}{$copies[$i]->call_number};
 		my $rec = $cache{titles}{$cn->record};
