@@ -63,7 +63,7 @@ sub nearest_hold {
 		  WHERE	h.pickup_lib = ?
 		  	AND hm.target_copy = ?
 			AND h.capture_time IS NULL
-		ORDER BY h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.request_time
+		ORDER BY h.selection_depth DESC, h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.request_time
 		LIMIT 1
 	SQL
 	return $id;
@@ -414,12 +414,12 @@ sub new_hold_copy_targeter {
 							  fulfillment_time => undef,
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
-							{ order_by => 'request_time,prev_check_time' } ) ];
+							{ order_by => 'selection_depth DESC, request_time,prev_check_time' } ) ];
 			push @$holds, action::hold_request->search(
 							capture_time => undef,
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
-							{ order_by => 'request_time' } );
+							{ order_by => 'selection_depth DESC, request_time' } );
 		}
 	} catch Error with {
 		my $e = shift;
