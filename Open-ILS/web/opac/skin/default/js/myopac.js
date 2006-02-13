@@ -359,53 +359,104 @@ function _finesFormatNumber(num) {
 	return num;
 }          
 
+function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
+
 function _trimSeconds(time) { if(!time) return ""; return time.replace(/\..*/,""); }
 
 
-var transTemplate;
 function myOPACShowTransactions(r) {
 
-	if(transTemplate) return;
-	var tbody = $('myopac_fines_tbody');
-	unHideMe($('myopac_trans_table'));
-	transTemplate = tbody.removeChild($('myopac_trans_row'));
+	if(myopacGenericTransTemplate || myopacCircTransTemplate) return;
 
 	var transactions = r.getResultObject();
 
-	//alert(js2JSON(transactions));
-
 	for( var idx in transactions ) {
 
-		var trans = transactions[idx].transaction;
-		var record = transactions[idx].record;
-		var row = transTemplate.cloneNode(transTemplate);
+		var trans	= transactions[idx].transaction;
+		var record	= transactions[idx].record;
+		var circ		= transactions[idx].circ;
 
-		$n(row,'myopac_trans_start').
-			appendChild(text(_trimSeconds(trans.xact_start())));
-		$n(row,'myopac_trans_last_bill').
-			appendChild(text(_trimSeconds(trans.last_billing_ts())));
-		$n(row,'myopac_trans_last_payment').
-			appendChild(text(_trimSeconds(trans.last_payment_ts())));
-		$n(row,'myopac_trans_init_amount').
-			appendChild(text(_finesFormatNumber(trans.total_owed())));
-		$n(row,'myopac_trans_total_paid').
-			appendChild(text(_finesFormatNumber(trans.total_paid())));
-		$n(row,'myopac_trans_balance').
-			appendChild(text(_finesFormatNumber(trans.balance_owed())));
+		if(trans.xact_type() == 'circulation') 
+			myOPACShowCircTransaction(trans, record, circ);
 
-		var extra = "";
-		var type = trans.xact_type();
-		if(type == 'circulation') {
-			unHideMe($('accrue_explanation'));
-			unHideMe($n(row, 'myopac_trans_balance_recur'));
-		}
-		$n(row,'myopac_trans_type').appendChild(text(type));
-		if( type == "circulation" ) extra = record.title();
-		$n(row, 'myopac_trans_extra').appendChild(text(extra));
-
-		tbody.appendChild(row);
+		else if(trans.xact_type() == 'grocery' ) 
+			myopacShowGenericTransaction( trans );
 	}
 }
+
+var myopacGenericTransTemplate;
+function myopacShowGenericTransaction( trans ) {
+	var tbody = $('myopac_trans_tbody');
+
+	if(!myopacGenericTransTemplate) {
+		myopacGenericTransTemplate = 
+			tbody.removeChild($('myopac_trans_row'));
+		removeChildren(tbody);
+	}
+
+	var row = myopacGenericTransTemplate.cloneNode(true);
+
+	$n(row,'myopac_trans_start').appendChild(
+			text(_trimSeconds(trans.xact_start())));
+
+	$n(row,'myopac_trans_last_payment').appendChild(
+			text(_trimSeconds(trans.last_payment_ts())));
+
+	$n(row,'myopac_trans_init_amount').appendChild(
+			text(_finesFormatNumber(trans.total_owed())));
+
+	$n(row,'myopac_trans_total_paid').appendChild(
+			text(_finesFormatNumber(trans.total_paid())));
+
+	$n(row,'myopac_trans_balance').appendChild(
+			text(_finesFormatNumber(trans.balance_owed())));
+
+	var req = new Request(FETCH_MONEY_BILLING, G.user.session, trans.id());
+	req.send(true);
+	var bills = req.result();
+	if(bills && bills[0])
+		$n(row,'myopac_trans_bill_type').appendChild(
+				text(bills[0].billing_type()));
+
+	tbody.appendChild(row);
+	unHideMe($('myopac_trans_table'));
+}
+
+
+
+/* draws a circulation transaction summary */
+var myopacCircTransTemplate;
+function myOPACShowCircTransaction(trans, record, circ) {
+	var tbody = $('myopac_circ_trans_tbody');
+
+	if(!myopacCircTransTemplate) {
+		myopacCircTransTemplate = tbody.removeChild($('myopac_circ_trans_row'));
+		removeChildren(tbody);
+	}
+
+	var row = myopacCircTransTemplate.cloneNode(true);
+
+	buildTitleDetailLink(record, $n(row,'myopac_circ_trans_title'));
+
+	$n(row,'myopac_circ_trans_author').appendChild(text(
+		normalize(truncate(record.author(), 65))));
+
+	$n(row,'myopac_circ_trans_start').
+		appendChild(text(_trimTime(trans.xact_start())));
+
+   var due = _trimTime(circ.due_date());
+	var checkin = _trimTime(circ.stop_fines_time());
+
+	$n(row,'myopac_circ_trans_due').appendChild(text(due))
+	$n(row,'myopac_circ_trans_finished').appendChild(text(checkin))
+
+	$n(row,'myopac_circ_trans_balance').
+		appendChild(text(_finesFormatNumber(trans.balance_owed())));
+
+	tbody.appendChild(row);
+	unHideMe($('myopac_circ_trans_table'));
+}
+
 
 function myOPACSavePrefs() {
 	G.user.prefs[PREF_HITS_PER] = getSelectorVal($('prefs_hits_per'));

@@ -217,6 +217,7 @@ var FETCH_CHECKED_OUT_SLIM		= "open-ils.circ:open-ils.circ.actor.user.checked_ou
 var FETCH_HOLDS					= "open-ils.circ:open-ils.circ.holds.retrieve";
 var FETCH_FINES_SUMMARY			= "open-ils.actor:open-ils.actor.user.fines.summary";
 var FETCH_TRANSACTIONS			= "open-ils.actor:open-ils.actor.user.transactions.have_charge.fleshed";
+var FETCH_MONEY_BILLING			= 'open-ils.circ:open-ils.circ.money.billing.retrieve.all';
 var FETCH_CROSSREF				= "open-ils.search:open-ils.search.authority.crossref";
 var FETCH_CROSSREF_BATCH		= "open-ils.search:open-ils.search.authority.crossref.batch";
 var CREATE_HOLD					= "open-ils.circ:open-ils.circ.holds.create";
@@ -246,6 +247,7 @@ var DELETE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.delet
 var FLESH_CONTAINER				= 'open-ils.actor:open-ils.actor.container.flesh';
 var FLESH_PUBLIC_CONTAINER		= 'open-ils.actor:open-ils.actor.container.public.flesh';
 var FETCH_COPY						= 'open-ils.search:open-ils.search.asset.copy.retrieve';
+var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible';
 /* ---------------------------------------------------------------------------- */
 
 

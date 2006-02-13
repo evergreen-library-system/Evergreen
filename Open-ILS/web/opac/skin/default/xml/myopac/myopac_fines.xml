@@ -5,7 +5,7 @@
 	<table width='100%' class='data_grid data_grid_center'>
 
 		<thead class='color_3'>
-			<tr><td colspan='3' style='background: none'><b>Summary</b></td></tr>
+			<tr><td colspan='3' style='padding: 6px'><b>Summary</b></td></tr>
 			<tr>
 				<td width='33%'>Total Owed</td>
 				<td width='33%'>Total Paid</td>
@@ -15,48 +15,71 @@
 
 		<tbody id='myopac_fines_summary_tbody'>
 			<tr id='myopac_fines_summary_loading'><td>Loading...</td></tr>
-			<tr id='myopac_fines_summary_row' class='light_border hide_me'>
-				<td id='myopac_fines_summary_total' class='light_border'>$</td>
-				<td id='myopac_fines_summary_paid' class='light_border'>$</td>
-				<td id='myopac_fines_summary_balance' class='light_border' style='color:red;font-weight: bold;'>$</td>
+			<tr id='myopac_fines_summary_row' class='hide_me'>
+				<td id='myopac_fines_summary_total' >$</td>
+				<td id='myopac_fines_summary_paid' >$</td>
+				<td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>$</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<br/>
-	<br/>
-	<br/>
-
+	<!--
 	<div id='accrue_explanation' class='hide_me'>
 		<span>Transactions whose balances are marked with a</span>
 		<span style='color:red; font-weight: bold'>*</span>
 		<span>will continue to accrue fines until the checked out item is returned.</span>
 	</div>
-
-	<br/>
-	<!--
-	<table width='100%' class='light_border myopac_table hide_me' id='myopac_trans_table'>
 	-->
-	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_trans_table'>
 
+	<br/><br/><hr/><br/>
+
+	<!-- Table for circulation transactions only -->
+	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_circ_trans_table'>
 		<thead>
-			<tr><td colspan='8' style='background: none'><b>Transaction Details</b></td></tr>
+			<tr><td colspan='10' style='padding: 6px'><b>Overdue Materials</b></td></tr>
+			<tr>
+				<td>Title</td>
+				<td>Author</td>
+				<td>Checkout Date</td>
+				<td>Due Date</td>
+				<td>Date Returned</td>
+				<td>Balance Owed</td>
+			</tr>
+		</thead>
+		<tbody id='myopac_circ_trans_tbody'>
+			<tr id='myopac_circ_trans_row'>
+				<td><a class='classic_link' name='myopac_circ_trans_title'> </a></td>
+				<td name='myopac_circ_trans_author'> </td>
+				<td name='myopac_circ_trans_start'> </td>
+				<td name='myopac_circ_trans_due'> </td>
+				<td name='myopac_circ_trans_finished'> </td>
+				<td>
+					<span style='color: red; font-weight: bold;' 
+						name='myopac_circ_trans_balance'>$</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br/><br/><hr/><br/>
+
+	<!-- Table for all non-circulation transactions -->
+	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_trans_table'>
+		<thead>
+			<tr><td colspan='8' style='padding: 6px'><b>Other Transactions</b></td></tr>
 			<tr>
 				<td width='12%'>Transaction Start Time</td>
-				<td width='12%'>Last Billing Time</td>
 				<td width='12%'>Last Payment Time</td>
 				<td width='12%'>Initial Amount Owed</td>
 				<td width='12%'>Total Amount Paid</td>
 				<td width='12%'>Balance Owed</td>
-				<td width='12%'>Type</td>
-				<td width='12%'>Extra Info</td>
+				<td width='12%'>Billing Type</td>
 			</tr>
 		</thead>
 
-		<tbody id='myopac_fines_tbody'>
+		<tbody id='myopac_trans_tbody'>
 			<tr id='myopac_trans_row'>
 				<td name='myopac_trans_start'> </td>
-				<td name='myopac_trans_last_bill'> </td>
 				<td name='myopac_trans_last_payment'> </td>
 				<td name='myopac_trans_init_amount'>$</td>
 				<td name='myopac_trans_total_paid'>$</td>
@@ -64,8 +87,7 @@
 					<span name='myopac_trans_balance_recur' class='hide_me'> * </span>
 					<span name='myopac_trans_balance'>$</span>
 				</td>
-				<td name='myopac_trans_type'> </td>
-				<td name='myopac_trans_extra'> </td>
+				<td name='myopac_trans_bill_type'> </td>
 			</tr>
 		</tbody>
 	</table>
