@@ -17,7 +17,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="example_template_win" 
-	onload="my_init()"
+	onload="try { my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
