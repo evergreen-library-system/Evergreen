@@ -244,7 +244,34 @@ sub create_in_house_use {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "view_circ_patrons",
+	api_name	=> "open-ils.circ.copy_checkout_history.retrieve",
+	notes		=> q/
+		Retrieves the last X users who checked out a given copy
+		@param authtoken The login session key
+		@param copyid The copy to check
+		@param count How far to go back in the item history
+		@return An array of patron ids
+	/);
 
+sub view_circ_patrons {
+	my( $self, $client, $authtoken, $copyid, $count ) = @_; 
+
+	my( $requestor, $evt ) = $U->checksesperm(
+			$authtoken, 'VIEW_COPY_CHECKOUT_HISTORY' );
+	return $evt if $evt;
+
+	return [] unless $count;
+
+	my $circs = $U->storagereq(
+		'open-ils.storage.direct.action.circulation.search_where.atomic',
+			{ target_copy => $copyid  }, { limit => $count } );
+
+	my @users;
+	push(@users, $_->usr) for @$circs;
+	return \@users;
+}
 
 
 1;
