@@ -181,7 +181,7 @@ sub handler {
 				warn "Done running...\n";
 				my $time = sprintf '%.3f', time() - $start;
 
-				$log->debug( "Method duration for {$method_name}:  ". $time, INFO );
+				$log->debug( "Method duration for {$method_name}:  ". $time );
 				if( defined( $resp ) ) {
 					$appreq->respond_complete( $resp );
 				} else {

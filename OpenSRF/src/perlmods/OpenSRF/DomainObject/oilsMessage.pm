@@ -171,7 +171,7 @@ sub handler {
 	$session->last_threadTrace($tT);
 
 	$log->debug(" Received api_level => [$api_level], MType => [$mtype], ".
-			"from [".$session->remote_id."], threadTrace[".$self->threadTrace."]", INFO);
+			"from [".$session->remote_id."], threadTrace[".$self->threadTrace."]");
 	$log->debug("endpoint => [".$session->endpoint."]", DEBUG);
 	$log->debug("OpenSRF::AppSession->SERVER => [".$session->SERVER()."]", DEBUG);
 
@@ -245,8 +245,6 @@ sub do_server {
 	}
 
 
-	$log->debug("Passing to Application::handler()", INFO);
-
 	return 1;
 
 }
@@ -263,7 +261,7 @@ sub do_client {
 
 		if ($self->payload->statusCode == STATUS_OK) {
 			$session->state($session->CONNECTED);
-			$log->debug("We connected successfully to ".$session->app, INFO);
+			$log->debug("We connected successfully to ".$session->app);
 			return 0;
 		}
 
