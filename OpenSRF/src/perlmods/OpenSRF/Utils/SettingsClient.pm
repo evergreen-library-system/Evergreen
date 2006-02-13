@@ -32,6 +32,7 @@ sub config_value {
 
 
 	my $bsconfig = OpenSRF::Utils::Config->current;
+	die "No bootstrap config exists.  Have you bootstrapped?\n" unless $bsconfig;
 	my $host = $bsconfig->env->hostname;
 
 	if($we_cache) {
