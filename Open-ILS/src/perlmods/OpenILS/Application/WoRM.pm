@@ -655,7 +655,7 @@ our %biblio_descriptor_code = (
 	cat_form => sub { substr($ldr,18,1); },
 	pub_status => sub { substr($ldr,5,1); },
 	item_lang => sub { substr($oo8,35,3); },
-	#lit_form => sub { (substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/) ? substr($oo8,33,1) : "0"; },
+	lit_form => sub { (substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/) ? substr($oo8,33,1) : '0'; },
 	audience => sub { substr($oo8,22,1); },
 );
 
