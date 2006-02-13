@@ -131,6 +131,17 @@ sub search_where {
 	my $client = shift;
 	my @args = @_;
 
+	if (ref($args[0]) eq 'HASH') {
+		if ($args[1]) {
+			$args[1]{limit_dialect} = $self->{cdbi}->db_Main;
+		} else {
+			$args[1] = {limit_dialect => $self->{cdbi}->db_Main };
+		}
+	} else {
+		$args[0] = { @args };
+		$args[1] = {limit_dialect => $self->{cdbi} };
+	}
+
 	my $cdbi = $self->{cdbi};
 
 	for my $obj ($cdbi->search_where(@args)) {
