@@ -149,7 +149,12 @@ CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission
         				UNION ALL
 			(SELECT	-p.id, $1 AS usr, p.perm, p.depth, p.grantable
 			  FROM	permission.grp_perm_map p
-			  WHERE	p.grp = (SELECT profile FROM actor.usr WHERE id = $1 LIMIT 1))
+			  WHERE	p.grp IN (
+			  	SELECT	(permission.grp_ancestors(
+						(SELECT profile FROM actor.usr WHERE id = $1)
+					)).id
+				)
+			)
         				UNION ALL
 			(SELECT	-p.id, $1 AS usr, p.perm, p.depth, p.grantable
 			  FROM	permission.grp_perm_map p 
