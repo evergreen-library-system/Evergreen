@@ -447,6 +447,28 @@ INSERT INTO config.net_access_level (name) VALUES ('Restricted');
 INSERT INTO config.net_access_level (name) VALUES ('Full');
 INSERT INTO config.net_access_level (name) VALUES ('None');
 
+CREATE TABLE config.lit_form_map (
+	code		"char"	PRIMARY KEY,
+	value		TEXT	NOT NULL,
+	description	TEXT
+);
+
+COPY config.lit_form_map FROM STDIN;
+0	Not fiction (not further specified)	The item is not a work of fiction and no further identification of the literary form is desired
+1	Fiction (not further specified)	The item is a work of fiction and no further identification of the literary form is desired
+c	Comic strips	\N
+d	Dramas	\N
+e	Essays	\N
+f	Novels	\N
+h	Humor, satires, etc.	The item is a humorous work, satire or of similar literary form.
+i	Letters	The item is a single letter or collection of correspondence.
+j	Short stories	The item is a short story or collection of short stories.
+m	Mixed forms	The item is a variety of literary forms (e.g., poetry and short stories).
+p	Poetry	The item is a poem or collection of poems.
+s	Speeches	The item is a speech or collection of speeches.
+u	Unknown	The literary form of the item is unknown.
+\.
+
 CREATE TABLE config.language_map (
 	code	TEXT	PRIMARY KEY,
 	value	TEXT	NOT NULL
