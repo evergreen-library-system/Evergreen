@@ -1077,7 +1077,7 @@ sub checkin {
 
 __PACKAGE__->register_method(
 	method	=> "renew",
-	api_name	=> "open-ils.circ.renew",
+	api_name	=> "open-ils.circ.renew_",
 	notes		=> <<"	NOTES");
 	open-ils.circ.renew(login_session, circ_object);
 	Renews the provided circulation.  login_session is the requestor of the
