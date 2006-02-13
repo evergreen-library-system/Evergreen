@@ -266,7 +266,7 @@ sub view_circ_patrons {
 
 	my $circs = $U->storagereq(
 		'open-ils.storage.direct.action.circulation.search_where.atomic',
-			{ target_copy => $copyid  }, { limit => $count } );
+			{ target_copy => $copyid  }, { limit => $count, order_by => "xact_start" } );
 
 	my @users;
 	push(@users, $_->usr) for @$circs;
