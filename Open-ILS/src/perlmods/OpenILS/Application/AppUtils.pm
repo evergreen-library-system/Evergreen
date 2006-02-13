@@ -861,7 +861,15 @@ sub update_copy {
 	return undef;
 }
 
-
+sub fetch_billable_xact {
+	my( $self, $id ) = @_;
+	my($xact, $evt);
+	$logger->debug("Fetching billable transaction %id");
+	$xact = $self->storagereq(
+		'open-ils.storage.direct.money.billable_transaction.retrieve', $id );
+	$evt = OpenILS::Event->new('TRANSACTION_NOT_FOUND') unless $xact;
+	return ($xact, $evt);
+}
 
 
 

@@ -19,6 +19,7 @@ use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = "OpenILS::Application::AppUtils";
 
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
@@ -222,19 +223,20 @@ __PACKAGE__->register_method(
 sub billing_items {
 	my( $self, $client, $login, $transid ) = @_;
 
-	my( $staff, $evt ) = $apputils->checksesperm($login, 'VIEW_TRANSACTION');
+	my( $trans, $evt ) = $U->fetch_billable_xact($transid);
 	return $evt if $evt;
 
-# we need to grab the transaction by id and check the billing location
-# to determin the permissibility XXX
+	my $staff;
+	($staff, $evt ) = $apputils->checkses($login);
+	return $evt if $evt;
 
-#	$evt = $apputils->check_perms($staff->id, 
-#		$transaction->billing_location, 'VIEW_TRANSACTION' );
-#	return $evt if $evt;
-
+	if($staff->id ne $trans->usr) {
+		$evt = $U->check_perms($staff->id, $staff->home_ou, 'VIEW_TRANSACTION');
+		return $evt if $evt;
+	}
+	
 	return $apputils->simplereq( 'open-ils.storage',
 		'open-ils.storage.direct.money.billing.search.xact.atomic', $transid )
-
 }
 
 
