@@ -345,7 +345,8 @@ void jsonObjectNodeFree( jsonObjectNode* node ) {
 
 jsonObject* jsonObjectGetIndex( const jsonObject* obj, unsigned long index ) {
 
-	if( obj && index >= 0 && obj->type == JSON_ARRAY ) {
+	if( obj && index >= 0 && 
+			index < obj->size && obj->type == JSON_ARRAY ) {
 
 		jsonObjectNode* node = obj->value.c;
 		while(node) {
