@@ -64,6 +64,8 @@ sub record_ranged_tree {
 	my $r = shift;
 	my $ou = shift;
 	my $depth = shift || 0;
+	my $limit = shift || 0;
+	my $offset = shift || 0;
 
 	my $ou_list =
 		actor::org_unit
@@ -85,18 +87,29 @@ sub record_ranged_tree {
 
 	$rec->fixed_fields( $r->record_descriptor->next->to_fieldmapper );
 
+	my $offset_count = 0;
+	my $limit_count = 0;
 	for my $cn ( $r->call_numbers  ) {
 		my $call_number = $cn->to_fieldmapper;
 		$call_number->copies([]);
 
 
 		for my $cp ( $cn->copies(circ_lib => $ou_list) ) {
-			my $copy = $cp->to_fieldmapper;
-			$copy->status( $cp->status->to_fieldmapper );
-			$copy->location( $cp->status->to_fieldmapper );
-
-			push @{ $call_number->copies }, $copy;
+			if ($offset && $offset_count < $offset) {
+				$offset_count++;
+				next;
+			}
+			last if ($limit && $limit_count >= $limit);
+			if ($limit && $limit_count < $limit) {
+				$limit_count++;
+				my $copy = $cp->to_fieldmapper;
+				$copy->status( $cp->status->to_fieldmapper );
+				$copy->location( $cp->status->to_fieldmapper );
+				push @{ $call_number->copies }, $copy;
+			}
 		}
+
+		last if ($limit && $limit_count >= $limit);
 
 		push @{ $rec->call_numbers }, $call_number if (@{ $call_number->copies });
 	}
