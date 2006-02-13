@@ -9,8 +9,51 @@ use OpenILS::Utils::PermitHold;
 use DateTime;
 use DateTime::Format::ISO8601;
 
+
 my $parser = DateTime::Format::ISO8601->new;
 my $log = 'OpenSRF::Utils::Logger';
+
+sub ou_hold_requests {
+	my $self = shift;
+	my $client = shift;
+	my $ou = shift;
+
+	my $h_table = action::hold_request->table;
+	my $c_table = asset::copy->table;
+	my $o_table = actor::org_unit->table;
+
+	my $SQL = <<"	SQL";
+		SELECT 	h.id
+		  FROM	$h_table h
+		  	JOIN $c_table cp ON (cp.id = h.current_copy)
+			JOIN $o_table ou ON (ou.id = cp.circ_lib)
+		  WHERE	ou.id = ?
+		  	AND h.capture_time IS NULL
+		  ORDER BY h.request_time
+	SQL
+
+	my $sth = action::hold_request->db_Main->prepare_cached($SQL);
+	$sth->execute($ou);
+
+	$client->respond($_) for (
+		map {
+			$self
+				->method_lookup('open-ils.storage.direct.action.hold_request.retrieve')
+				->run($_)
+		} map {
+			$_->[0]
+		} @{ $sth->fetchall_arrayref }
+	);
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.targeted_hold_request.org_unit',
+	api_level       => 1,
+	argc		=> 1,
+	stream		=> 1,
+	method          => 'ou_hold_requests',
+);
+
 
 sub overdue_circs {
 	my $grace = shift;
@@ -63,7 +106,7 @@ sub nearest_hold {
 		  WHERE	h.pickup_lib = ?
 		  	AND hm.target_copy = ?
 			AND h.capture_time IS NULL
-		ORDER BY h.selection_depth DESC, h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.request_time
+		ORDER BY h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.selection_depth DESC, h.request_time
 		LIMIT 1
 	SQL
 	return $id;
@@ -455,7 +498,7 @@ sub new_hold_copy_targeter {
 				) {
 					my ($rtree) = $self
 						->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
-						->run( $r->id, $hold->request_lib->id, $hold->selection_depth );
+						->run( $r->id, $hold->usr->home_ou->id, $hold->selection_depth );
 
 					for my $cn ( @{ $rtree->call_numbers } ) {
 						push @$all_copies,
@@ -465,7 +508,7 @@ sub new_hold_copy_targeter {
 			} elsif ($hold->hold_type eq 'T') {
 				my ($rtree) = $self
 					->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
-					->run( $hold->target, $hold->request_lib->id, $hold->selection_depth );
+					->run( $hold->target, $hold->usr->home_ou->id, $hold->selection_depth );
 
 				unless ($rtree) {
 					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_RECORD' };
@@ -479,7 +522,7 @@ sub new_hold_copy_targeter {
 			} elsif ($hold->hold_type eq 'V') {
 				my ($vtree) = $self
 					->method_lookup( 'open-ils.storage.asset.call_number.ranged_tree')
-					->run( $hold->target, $hold->request_lib->id, $hold->selection_depth );
+					->run( $hold->target, $hold->usr->home_ou->id, $hold->selection_depth );
 
 				push @$all_copies,
 					asset::copy->search( id => [map {$_->id} @{ $vtree->copies }] );
