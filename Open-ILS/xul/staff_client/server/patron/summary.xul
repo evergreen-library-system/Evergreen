@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/patron/summary_overlay.xul"?>
 
 <window id="patron_summary_win" 
-	onload="my_init()"
+	onload="try { my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
