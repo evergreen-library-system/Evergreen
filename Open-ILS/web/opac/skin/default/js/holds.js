@@ -52,6 +52,14 @@ function holdsDrawWindow(recid, type) {
 		initLogin();
 		return;
 	}
+
+
+	swapCanvas($('check_holds_box'));
+	setTimeout( function() { holdsCheckPossibility(recid, type); }, 10 );
+}
+
+function _holdsDrawWindow(recid, type) {
+
 	swapCanvas($('holds_box'));
 
 	var rec = findRecord( recid, type );
@@ -82,6 +90,17 @@ function holdsDrawWindow(recid, type) {
 	appendClear( $('holds_email'), text(holdRecipient.email()));
 	$('holds_cancel').onclick = showCanvas;
 	$('holds_submit').onclick = holdsPlaceHold; 
+}
+
+
+function holdsCheckPossibility(recid, type) {
+	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, 
+			{ titleid : recid, patronid : G.user.id(), depth : 0 } );
+	req.send(true);
+	var res = req.result();
+
+	if(res) _holdsDrawWindow(recid, type);
+	else drawCanvas();
 }
 
 

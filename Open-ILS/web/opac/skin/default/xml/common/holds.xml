@@ -15,6 +15,12 @@
 		</center>
 	</div>
 
+	<div id='check_holds_box' class='hide_me non_canvas' 
+		style='margin-top: 6px; width: 100%; text-align: center'>
+		<br/><br/><br/>
+		<b>Checking for possibility of hold fulfillment...</b>
+	</div>
+
 	<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
 	
 		<br/><br/>

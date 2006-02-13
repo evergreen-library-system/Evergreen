@@ -17,6 +17,7 @@
 	<script language='javascript'>
 		config.ids.altcanvas.org_tree		= config.ids.common.org_container;
 		config.ids.altcanvas.holds			= 'holds_box';
+		config.ids.altcanvas.check_holds	= 'check_holds_box';
 		config.ids.altcanvas.xulholds		= 'xulholds_box';
 		config.ids.altcanvas.loading		= 'loading_alt';
 		//config.ids.altcanvas.cnbrowse		= 'cn_browse';
