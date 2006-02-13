@@ -120,6 +120,19 @@ patron.items.prototype = {
 					'cmd_items_renew' : [
 						['command'],
 						function() {
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								var barcode = obj.retrieve_ids[i];
+								dump('Renew barcode = ' + barcode);
+								var renew = obj.network.simple_request(
+									'CHECKOUT_RENEW', 
+									[ obj.session, { barcode: barcode, patron: obj.patron_id } ]
+								);
+								dump('  result = ' + js2JSON(renew) + '\n');
+							}
+							if (window.xulG && typeof window.xulG.display_refresh == 'function') {
+								window.xulG.display_refresh();
+							}
+
 						}
 					],
 					'cmd_items_edit' : [
