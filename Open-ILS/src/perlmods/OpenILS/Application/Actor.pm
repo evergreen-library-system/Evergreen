@@ -12,6 +12,7 @@ use OpenILS::EX;
 use OpenILS::Perm;
 
 use OpenILS::Application::AppUtils;
+
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Utils::ModsParser;
@@ -137,14 +138,11 @@ sub update_patron {
 	my $session = $apputils->start_db_session();
 	my $err = undef;
 
-	$logger->debug("Updating Patron: " . Dumper($patron));
+	$logger->info("Creating new patron...") if $patron->isnew; 
+	$logger->info("Updating Patron: " . $patron->id) unless $patron->isnew;
 
-	#warn $user_session . " " . $patron . "\n";
-	#_d($patron);
-
-	my $user_obj = 
-		OpenILS::Application::AppUtils->check_user_session( 
-				$user_session ); #throws EX on error
+	my( $user_obj, $evt ) = $U->checkses($user_session);
+	return $evt if $evt;
 
 	# XXX does this user have permission to add/create users.  Granularity?
 	# $new_patron is the patron in progress.  $patron is the original patron
@@ -153,79 +151,44 @@ sub update_patron {
 
 	my $new_patron;
 
-	if(ref($patron->card)) { $patron->card( $patron->card->id ); }
-	if(ref($patron->billing_address)) { $patron->billing_address( $patron->billing_address->id ); }
-	if(ref($patron->mailing_address)) { $patron->mailing_address( $patron->mailing_address->id ); }
+	# unflesh the real items on the patron
+	$patron->card( $patron->card->id ) if(ref($patron->card));
+	$patron->billing_address( $patron->billing_address->id ) 
+		if(ref($patron->billing_address));
+	$patron->mailing_address( $patron->mailing_address->id ) 
+		if(ref($patron->mailing_address));
 
 	# create/update the patron first so we can use his id
 	if($patron->isnew()) {
-
-		$new_patron = _add_patron($session, _clone_patron($patron), $user_obj);
-
-		if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-			UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-			$client->respond_complete($new_patron->ex);
-			return undef;
-		}
-
+		( $new_patron, $evt ) = _add_patron($session, _clone_patron($patron), $user_obj);
+		return $evt if $evt;
 	} else { $new_patron = $patron; }
 
-	$new_patron = _add_update_addresses($session, $patron, $new_patron, $user_obj);
+	( $new_patron, $evt ) = _add_update_addresses($session, $patron, $new_patron, $user_obj);
+	return $evt if $evt;
 
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
+	( $new_patron, $evt ) = _add_update_cards($session, $patron, $new_patron, $user_obj);
+	return $evt if $evt;
 
-	$new_patron = _add_update_cards($session, $patron, $new_patron, $user_obj);
-
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
-
-	$new_patron = _add_survey_responses($session, $patron, $new_patron, $user_obj);
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
-
+	( $new_patron, $evt ) = _add_survey_responses($session, $patron, $new_patron, $user_obj);
+	return $evt if $evt;
 
 	# re-update the patron if anything has happened to him during this process
 	if($new_patron->ischanged()) {
-		$new_patron = _update_patron($session, $new_patron, $user_obj);
-
-		if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-			UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-			$client->respond_complete($new_patron->ex);
-			return undef;
-		}
+		( $new_patron, $evt ) = _update_patron($session, $new_patron, $user_obj);
+		return $evt if $evt;
 	}
 
-	$session = OpenSRF::AppSession->create("open-ils.storage");
-	$new_patron	= _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
+	#$session = OpenSRF::AppSession->create("open-ils.storage");  # why did i put this here?
 
-	$new_patron	= _create_perm_maps($session, $user_session, $patron, $new_patron, $user_obj);
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
+	($new_patron, $evt) = _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
+	return $evt if $evt;
 
-	$new_patron	= _create_standing_penalties($session, $user_session, $patron, $new_patron, $user_obj);
-	if(UNIVERSAL::isa($new_patron, "OpenILS::EX") || 
-		UNIVERSAL::isa($new_patron, "OpenILS::Perm")) {
-		$client->respond_complete($new_patron->ex);
-		return undef;
-	}
+	($new_patron, $evt) = _create_perm_maps($session, $user_session, $patron, $new_patron, $user_obj);
+	return $evt if $evt;
+
+	($new_patron, $evt) = _create_standing_penalties($session, $user_session, $patron, $new_patron, $user_obj);
+	return $evt if $evt;
 
 	$apputils->commit_db_session($session);
 
@@ -345,65 +308,49 @@ sub _clone_patron {
 
 
 sub _add_patron {
+
 	my $session		= shift;
 	my $patron		= shift;
 	my $user_obj	= shift;
 
+	my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'CREATE_USER');
+	return (undef, $evt) if $evt;
 
-	if($apputils->check_user_perms(
-				$user_obj->id, $user_obj->home_ou, "CREATE_USER")) {
-		return OpenILS::Perm->new("CREATE_USER");
-	}
+	$logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
-	#warn "Creating new patron\n";
-	#_d($patron);
+	my $id = $session->request(
+		"open-ils.storage.direct.actor.user.create", $patron)->gather(1);
+	return (undef, $U->DB_UPDATE_FAILED($patron)) unless $id;
 
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.user.create",$patron);
-	my $id = $req->gather(1);
-	if(!$id) { 
-		return OpenILS::EX->new("DUPLICATE_USER_USERNAME");
-	}
+	$logger->info("Successfully created new user [$id] in DB");
 
-	# retrieve the patron from the db to collect defaults
-	my $ureq = $session->request(
-			"open-ils.storage.direct.actor.user.retrieve",
-			$id);
-
-	#warn "Created new patron with id $id\n";
-
-	return $ureq->gather(1);
+	return ( $session->request( 
+		"open-ils.storage.direct.actor.user.retrieve", $id)->gather(1), undef );
 }
 
 
 sub _update_patron {
 	my( $session, $patron, $user_obj) = @_;
 
+	$logger->info("Updating patron ".$patron->id." in DB");
+	my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
+	return (undef, $evt) if $evt;
 
-	if($patron->id ne $user_obj->id) {
-		if($apputils->check_user_perms(
-					$user_obj->id, $user_obj->home_ou, "UPDATE_USER")) {
-			return OpenILS::Perm->new("UPDATE_USER");
-		}
-	}
+	my $stat = $session->request(
+		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
+	return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
 
-	#warn "updating patron " . Dumper($patron) . "\n";
-
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.user.update",$patron );
-	my $status = $req->gather(1);
-	if(!defined($status)) { 
-		throw OpenSRF::EX::ERROR 
-			("Unknown error updating patron"); 
-	}
-	return $patron;
+	return ($patron);
 }
 
 
 sub _add_update_addresses {
+
 	my $session = shift;
 	my $patron = shift;
 	my $new_patron = shift;
+
+	my $evt;
 
 	my $current_id; # id of the address before creation
 
@@ -412,10 +359,10 @@ sub _add_update_addresses {
 		$address->usr($new_patron->id());
 
 		if(ref($address) and $address->isnew()) {
-			#warn "Adding new address at street " . $address->street1() . "\n";
 
 			$current_id = $address->id();
-			$address = _add_address($session,$address);
+			($address, $evt) = _add_address($session,$address);
+			return (undef, $evt) if $evt;
 
 			if( $patron->billing_address() and 
 					$patron->billing_address() == $current_id ) {
@@ -430,28 +377,31 @@ sub _add_update_addresses {
 			}
 
 		} elsif( ref($address) and $address->ischanged() ) {
-			#warn "Updating address at street " . $address->street1();
+
 			$address->usr($new_patron->id());
-			_update_address($session,$address);
+			($address, $evt) = _update_address($session, $address);
+			return (undef, $evt) if $evt;
 
 		} elsif( ref($address) and $address->isdeleted() ) {
-			#warn "Deleting address at street " . $address->street1();
 
 			if( $address->id() == $new_patron->mailing_address() ) {
 				$new_patron->clear_mailing_address();
-				_update_patron($session, $new_patron);
+				($new_patron, $evt) = _update_patron($session, $new_patron);
+				return (undef, $evt) if $evt;
 			}
 
 			if( $address->id() == $new_patron->billing_address() ) {
 				$new_patron->clear_billing_address();
-				_update_patron($session, $new_patron);
+				($new_patron, $evt) = _update_patron($session, $new_patron);
+				return (undef, $evt) if $evt;
 			}
 
-			_delete_address($session,$address);
+			$evt = _delete_address($session, $address);
+			return (undef, $evt) if $evt;
 		}
 	}
 
-	return $new_patron;
+	return ( $new_patron, undef );
 }
 
 
@@ -460,41 +410,27 @@ sub _add_address {
 	my($session, $address) = @_;
 	$address->clear_id();
 
-	#use Data::Dumper;
-	#warn "Adding Address:\n";
-	#warn Dumper($address);
+	$logger->info("Creating new address at street ".$address->street1);
 
 	# put the address into the database
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.user_address.create",
-		$address );
+	my $id = $session->request(
+		"open-ils.storage.direct.actor.user_address.create", $address )->gather(1);
+	return (undef, $U->DB_UPDATE_FAILED($address)) unless $id;
 
-	#update the id
-	my $id = $req->gather(1);
-	if(!$id) { 
-		throw OpenSRF::EX::ERROR 
-			("Unable to create new user address"); 
-	}
-
-	#warn "Created address with id $id\n";
-
-	# update all the necessary id's
 	$address->id( $id );
-	return $address;
+	return ($address, undef);
 }
 
 
 sub _update_address {
 	my( $session, $address ) = @_;
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.user_address.update",
-		$address );
-	my $status = $req->gather(1);
-	if(!defined($status)) { 
-		throw OpenSRF::EX::ERROR 
-			("Unknown error updating address"); 
-	}
-	return $address;
+	$logger->info("Updating address ".$address->id." in the DB");
+
+	my $stat = $session->request(
+		"open-ils.storage.direct.actor.user_address.update", $address )->gather(1);
+
+	return (undef, $U->DB_UPDATE_FAILED($address)) unless defined($stat);
+	return ($address, undef);
 }
 
 
@@ -505,6 +441,8 @@ sub _add_update_cards {
 	my $patron = shift;
 	my $new_patron = shift;
 
+	my $evt;
+
 	my $virtual_id; #id of the card before creation
 	for my $card (@{$patron->cards()}) {
 
@@ -513,10 +451,8 @@ sub _add_update_cards {
 		if(ref($card) and $card->isnew()) {
 
 			$virtual_id = $card->id();
-			$card = _add_card($session,$card);
-			if(UNIVERSAL::isa($card,"OpenILS::EX")) {
-				return $card;
-			}
+			( $card, $evt ) = _add_card($session,$card);
+			return (undef, $evt) if $evt;
 
 			#if(ref($patron->card)) { $patron->card($patron->card->id); }
 			if($patron->card() == $virtual_id) {
@@ -526,10 +462,12 @@ sub _add_update_cards {
 
 		} elsif( ref($card) and $card->ischanged() ) {
 			$card->usr($new_patron->id());
-			_update_card($session, $card);
+			$evt = _update_card($session, $card);
+			return (undef, $evt) if $evt;
 		}
 	}
-	return $new_patron;
+
+	return ( $new_patron, undef );
 }
 
 
@@ -537,55 +475,42 @@ sub _add_update_cards {
 sub _add_card {
 	my( $session, $card ) = @_;
 	$card->clear_id();
+	$logger->info("Adding new patron card ".$card->barcode);
 
-	#warn "Adding card with barcode " . $card->barcode() . "\n";
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.card.create",
-		$card );
-
-	my $id = $req->gather(1);
-	if(!$id) { 
-		return OpenILS::EX->new("DUPLICATE_INVALID_USER_BARCODE");
-	}
+	my $id = $session->request(
+		"open-ils.storage.direct.actor.card.create", $card )->gather(1);
+	return (undef, $U->DB_UPDATE_FAILED($card)) unless $id;
+	$logger->info("Successfully created patron card $id");
 
 	$card->id($id);
-	#warn "Created patron card with id $id\n";
-	return $card;
+	return ( $card, undef );
 }
 
 
+# returns event on error.  returns undef otherwise
 sub _update_card {
 	my( $session, $card ) = @_;
-	#warn Dumper $card;
+	$logger->info("Updating patron card ".$card->id);
 
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.card.update",
-		$card );
-	my $status = $req->gather(1);
-	if(!defined($status)) { 
-		throw OpenSRF::EX::ERROR 
-			("Unknown error updating card"); 
-	}
-	return $card;
+	my $stat = $session->request(
+		"open-ils.storage.direct.actor.card.update", $card )->gather(1);
+	return $U->DB_UPDATE_FAILED($card) unless defined($stat);
+	return undef;
 }
 
 
 
 
+# returns event on error.  returns undef otherwise
 sub _delete_address {
 	my( $session, $address ) = @_;
+	$logger->info("Deleting address ".$address->id." from DB");
 
-	#warn "Deleting address " . $address->street1() . "\n";
+	my $stat = $session->request(
+		"open-ils.storage.direct.actor.user_address.delete", $address )->gather(1);
 
-	my $req = $session->request(
-		"open-ils.storage.direct.actor.user_address.delete",
-		$address );
-	my $status = $req->gather(1);
-	if(!defined($status)) { 
-		throw OpenSRF::EX::ERROR 
-			("Unknown error updating address"); 
-	}
-	#warn "Delete address status is $status\n";
+	return $U->DB_UPDATE_FAILED($address) unless defined($stat);
+	return undef;
 }
 
 
@@ -593,24 +518,22 @@ sub _delete_address {
 sub _add_survey_responses {
 	my ($session, $patron, $new_patron) = @_;
 
-	#warn "updating responses for user " . $new_patron->id . "\n";
+	$logger->info( "Updating survey responses for patron ".$new_patron->id );
 
 	my $responses = $patron->survey_responses;
 
 	if($responses) {
 
-		for my $resp( @$responses ) {
-			$resp->usr($new_patron->id);
-		}
+		$_->usr($new_patron->id) for (@$responses);
 
-		my $status = $apputils->simple_scalar_request(
-			"open-ils.circ", 
-			"open-ils.circ.survey.submit.user_id",
-			$responses );
+		my $evt = $U->simplereq( "open-ils.circ", 
+			"open-ils.circ.survey.submit.user_id", $responses );
+
+		return (undef, $evt) if defined($U->event_code($evt));
 
 	}
 
-	return $new_patron;
+	return ( $new_patron, undef );
 }
 
 
@@ -623,8 +546,10 @@ sub _create_stat_maps {
 	for my $map (@$maps) {
 
 		my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
+
 		if ($map->isdeleted()) {
 			$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.delete";
+
 		} elsif ($map->isnew()) {
 			$method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.create";
 			$map->clear_id;
@@ -633,18 +558,15 @@ sub _create_stat_maps {
 
 		$map->target_usr($new_patron->id);
 
-		#warn "Updating stat entry with method $method and session $user_session and map $map\n";
+		#warn "
+		$logger->info("Updating stat entry with method $method and map $map");
 
-		my $req = $session->request($method, $map);
-		my $status = $req->gather(1);
-		
-		#if(!$map->ischanged && !$status) {
-		#	throw OpenSRF::EX::ERROR 
-		#		("Error handling stat_cat map with method $method");	
-		#}
+		my $stat = $session->request($method, $map)->gather(1);
+		return (undef, $U->DB_UPDATE_FAILED($map)) unless defined($stat);
+
 	}
 
-	return $new_patron;
+	return ($new_patron, undef);
 }
 
 sub _create_perm_maps {
@@ -667,19 +589,14 @@ sub _create_perm_maps {
 		$map->usr($new_patron->id);
 
 		#warn( "Updating permissions with method $method and session $user_session and map $map" );
-		$logger->debug( "Updating permissions with method $method and session $user_session and map $map" );
+		$logger->info( "Updating permissions with method $method and map $map" );
 
-		my $req = $session->request($method, $map);
-		my $status = $req->gather(1);
-
-		if($map->isnew and !$status) {
-			throw OpenSRF::EX::ERROR 
-				("Error creating permission map with method $method");	
-		}
+		my $stat = $session->request($method, $map)->gather(1);
+		return (undef, $U->DB_UPDATE_FAILED($map)) unless defined($stat);
 
 	}
 
-	return $new_patron;
+	return ($new_patron, undef);
 }
 
 
@@ -705,18 +622,11 @@ sub _create_standing_penalties {
 
 		$logger->debug( "Updating standing penalty with method $method and session $user_session and map $map" );
 
-		my $req = $session->request($method, $map);
-		my $status = $req->gather(1);
-
-
-		if(!$status) {
-			throw OpenSRF::EX::ERROR 
-				("Error updating standing penalty with method $method");	
-		}
-
+		my $stat = $session->request($method, $map)->gather(1);
+		return (undef, $U->DB_UPDATE_FAILED($map)) unless $stat;
 	}
 
-	return $new_patron;
+	return ($new_patron, undef);
 }
 
 
@@ -1057,6 +967,8 @@ __PACKAGE__->register_method(
 sub update_password {
 	my( $self, $client, $user_session, $new_value, $current_password ) = @_;
 
+	my $evt;
+
 	#warn "Updating user with method " .$self->api_name . "\n";
 	my $user_obj = $apputils->check_user_session($user_session); 
 
@@ -1083,7 +995,10 @@ sub update_password {
 	}
 
 	my $session = $apputils->start_db_session();
-	$user_obj = _update_patron($session, $user_obj, $user_obj);
+
+	( $user_obj, $evt ) = _update_patron($session, $user_obj, $user_obj);
+	return $evt if $evt;
+
 	$apputils->commit_db_session($session);
 
 	if($user_obj) { return 1; }
