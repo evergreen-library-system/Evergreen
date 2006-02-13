@@ -9,7 +9,8 @@ package authority::record_entry;
 use base qw/authority/;
 
 authority::record_entry->table( 'authority_record_entry' );
-authority::record_entry->columns( All => qw/id arn_source arn_value creator editor
+authority::record_entry->columns( Primary => qw/id/ );
+authority::record_entry->columns( Essential => qw/arn_source arn_value creator editor
 				      create_date edit_date source active
 				      deleted marc last_xact_id/ );
 
@@ -18,7 +19,8 @@ package authority::record_note;
 use base qw/authority/;
 
 authority::record_note->table( 'authority_record_note' );
-authority::record_note->columns( All => qw/id record value creator
+authority::record_note->columns( Primary => qw/id/ );
+authority::record_note->columns( Essential => qw/record value creator
 					editor create_date edit_date/ );
 #-------------------------------------------------------------------------------
 package authority::full_rec;

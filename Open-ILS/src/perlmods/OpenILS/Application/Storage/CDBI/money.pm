@@ -79,24 +79,21 @@ package money::payment;
 use base qw/money/;
 __PACKAGE__->table('money_payment');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount payment_ts payment_type/);
-__PACKAGE__->columns(Others => qw/note/);
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts payment_type note/);
 #-------------------------------------------------------------------------------
 
 package money::cash_payment;
 use base qw/money/;
 __PACKAGE__->table('money_cash_payment');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer accepting_usr amount_collected/);
-__PACKAGE__->columns(Others => qw/note/);
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer accepting_usr amount_collected note/);
 #-------------------------------------------------------------------------------
 
 package money::check_payment;
 use base qw/money/;
 __PACKAGE__->table('money_check_payment');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer check_number accepting_usr amount_collected/);
-__PACKAGE__->columns(Others => qw/note/);
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer check_number accepting_usr amount_collected note/);
 #-------------------------------------------------------------------------------
 
 package money::credit_card_payment;
@@ -106,16 +103,14 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer
 				     accepting_usr amount_collected cc_type
 				     cc_number expire_month expire_year
-				     approval_code/);
-__PACKAGE__->columns(Others => 'note');
+				     approval_code note/);
 #-------------------------------------------------------------------------------
 
 package money::forgive_payment;
 use base qw/money/;
 __PACKAGE__->table('money_forgive_payment');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount payment_ts accepting_usr amount_collected/);
-__PACKAGE__->columns(Others => qw/note/);
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts accepting_usr amount_collected note/);
 #-------------------------------------------------------------------------------
 
 package money::work_payment;

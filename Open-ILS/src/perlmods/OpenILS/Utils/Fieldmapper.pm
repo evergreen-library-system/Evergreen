@@ -272,7 +272,7 @@ sub _init {
 
 		unless ( $$fieldmap{$pkg}{virtual} ) {
 			$$fieldmap{$pkg}{cdbi} = $cdbi;
-			for my $col ( sort $cdbi->columns('All') ) {
+			for my $col ( sort $cdbi->columns('Essential') ) {
 				$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
 				$pos++;
 			}
