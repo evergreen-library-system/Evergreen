@@ -424,32 +424,43 @@ sub check_title_hold {
 
 	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
 
-	my $title = $U->storagereq(
-		'open-ils.storage.biblio.record_entry.ranged_tree', $titleid, $rangelib );
 
 	my $org = $U->simplereq(
 		'open-ils.actor', 
 		'open-ils.actor.org_unit.retrieve', 
 		$authtoken, $requestor->home_ou );
 
-	for my $cn (@{$title->call_numbers}) {
+	my $limit	= 10;
+	my $offset	= 0;
+	my $title;
 
-		$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
+	while( $title = $U->storagereq(
+				'open-ils.storage.biblio.record_entry.ranged_tree', 
+				$titleid, $rangelib, $depth, $limit, $offset ) ) {
 
-		for my $copy (@{$cn->copies}) {
+		last unless ref($title);
 
-			$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
-
-			return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
-				{	patron				=> $patron, 
-					requestor			=> $requestor, 
-					copy					=> $copy,
-					title					=> $title, 
-					title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
-					request_lib			=> $org } );
-
-			$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
+		for my $cn (@{$title->call_numbers}) {
+	
+			$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
+	
+			for my $copy (@{$cn->copies}) {
+	
+				$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
+	
+				return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
+					{	patron				=> $patron, 
+						requestor			=> $requestor, 
+						copy					=> $copy,
+						title					=> $title, 
+						title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
+						request_lib			=> $org } );
+	
+				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
+			}
 		}
+
+		$offset += $limit;
 	}
 
 	return 0;
