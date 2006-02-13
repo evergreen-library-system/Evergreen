@@ -79,7 +79,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + obj.w.escape( session ));
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + obj.w.escape( session ) + '&adv=1');
 					obj.set_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Register Patron' });
 				}
 			],
