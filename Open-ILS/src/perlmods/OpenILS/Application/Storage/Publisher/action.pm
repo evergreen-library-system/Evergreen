@@ -433,25 +433,25 @@ sub new_hold_copy_targeter {
 	my $check_expire = shift;
 	my $one_hold = shift;
 
-	my $time = time;
-	$check_expire ||= '12h';
-	$check_expire = interval_to_seconds( $check_expire );
-
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
-	$year += 1900;
-	$mon += 1;
-	my $expire_threshold = sprintf(
-		'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
-		$year, $mon, $mday, $hour, $min, $sec
-	);
-
-
 	my $holds;
 
 	try {
 		if ($one_hold) {
 			$holds = [ action::hold_request->search(id => $one_hold) ];
-		} else {
+		} elsif ( $check_expire ) {
+
+			my $time = time;
+			$check_expire ||= '12h';
+			$check_expire = interval_to_seconds( $check_expire );
+
+			my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
+			$year += 1900;
+			$mon += 1;
+			my $expire_threshold = sprintf(
+				'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
+				$year, $mon, $mday, $hour, $min, $sec
+			);
+
 			$holds = [ action::hold_request->search_where(
 							{ capture_time => undef,
 							  fulfillment_time => undef,
@@ -463,6 +463,12 @@ sub new_hold_copy_targeter {
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
 							{ order_by => 'selection_depth DESC, request_time' } );
+		} else {
+			$holds [ action::hold_request->search(
+							capture_time => undef,
+							fulfillment_time => undef,
+				  			prev_check_time => undef,
+							{ order_by => 'selection_depth DESC, request_time' } ) ];
 		}
 	} catch Error with {
 		my $e = shift;
@@ -647,9 +653,9 @@ sub new_hold_copy_targeter {
 	return \@successes;
 }
 __PACKAGE__->register_method(
-	api_name        => 'open-ils.storage.action.hold_request.copy_targeter',
-	api_level       => 1,
-	method          => 'new_hold_copy_targeter',
+	api_name	=> 'open-ils.storage.action.hold_request.copy_targeter',
+	api_level	=> 1,
+	method		=> 'new_hold_copy_targeter',
 );
 
 my $locations;
