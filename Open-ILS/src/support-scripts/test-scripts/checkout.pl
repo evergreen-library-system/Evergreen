@@ -36,6 +36,9 @@ sub go {
 	if($type eq 'renew') {
 		do_renew($patronid, $barcode);
 
+	} elsif( $type eq 'transit_receive' ) {
+		do_transit_receive($barcode);
+
 	} elsif( $type eq 'checkin' ) {
 		do_checkin($barcode);
 	} else {
@@ -133,4 +136,15 @@ sub do_checkin {
 	oils_event_die($resp);
 	printl("Checkin succeeded\nTime: $t");
 
+}
+
+sub do_transit_receive {
+	my $barcode = shift;
+	my $args = { barcode => $barcode };
+	my $t = time();
+	my $resp = simplereq( 
+		CIRC(), 'open-ils.circ.copy_transit.receive', $authtoken, $args );
+	my $e = time() - $t;
+	oils_event_die($resp);
+	printl("Transit receive succeeded\nTime: $t");
 }

@@ -10,6 +10,7 @@ use OpenILS::Utils::ScriptRunner;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::Transit;
+use OpenILS::Utils::PermitHold;
 use OpenSRF::Utils::Logger qw(:logger);
 
 $Data::Dumper::Indent = 0;
@@ -26,8 +27,6 @@ my $cache_handle;		# - memcache handle
 
 sub PRECAT_FINE_LEVEL { return 2; }
 sub PRECAT_LOAN_DURATION { return 2; }
-
-my $SUCCESS;
 
 
 # for security, this is a process-defined and not
@@ -52,11 +51,10 @@ sub initialize {
 	my $f		= $conf->config_value(	@pfx, 'circ_recurring_fines' );
 	my $m		= $conf->config_value(	@pfx, 'circ_max_fines' );
 	my $pr	= $conf->config_value(	@pfx, 'circ_permit_renew' );
-	my $ph	= $conf->config_value(	@pfx, 'circ_permit_hold' );
 	my $lb	= $conf->config_value(	@pfx2, 'script_path' );
 
 	$logger->error( "Missing circ script(s)" ) 
-		unless( $p and $c and $d and $f and $m and $pr and $ph );
+		unless( $p and $c and $d and $f and $m and $pr );
 
 	$scripts{circ_permit_patron}	= $p;
 	$scripts{circ_permit_copy}		= $c;
@@ -64,7 +62,6 @@ sub initialize {
 	$scripts{circ_recurring_fines}= $f;
 	$scripts{circ_max_fines}		= $m;
 	$scripts{circ_permit_renew}	= $pr;
-	$scripts{hold_permit_permit}	= $ph;
 
 	$lb = [ $lb ] unless ref($lb);
 	$script_libs = $lb;
@@ -72,10 +69,7 @@ sub initialize {
 	$logger->debug("Loaded rules scripts for circ: " .
 		"circ permit patron: $p, circ permit copy: $c, ".
 		"circ duration :$d , circ recurring fines : $f, " .
-		"circ max fines : $m, circ renew permit : $pr, permit hold: $ph");
-
-
-	$SUCCESS = OpenILS::Event->new('SUCCESS');
+		"circ max fines : $m, circ renew permit : $pr");
 }
 
 
@@ -173,7 +167,7 @@ sub _ctx_add_copy_objects {
 	($copy, $evt) = _find_copy_by_attr(%params);
 	return $evt if $evt;
 
-	if( $copy ) {
+	if( $copy and !$ctx->{title} ) {
 		$logger->debug("Copy status: " . $copy->status);
 		( $ctx->{title}, $evt ) = $U->fetch_record_by_copy( $copy->id );
 		return $evt if $evt;
@@ -283,7 +277,7 @@ sub _build_circ_script_runner {
 	if( $runner = $contexts{$ctx->{type}} ) {
 		$runner->refresh_context;
 	} else {
-		$runner = OpenILS::Utils::ScriptRunner->new unless $runner;
+		$runner = OpenILS::Utils::ScriptRunner->new;
 		$contexts{type} = $runner;
 	}
 
@@ -292,18 +286,36 @@ sub _build_circ_script_runner {
 		$runner->add_path( $_ );
 	}
 
+	# Note: inserting the number 0 into the script turns into the
+	# string "0", and thus evaluates to true in JS land
+	# inserting undef will insert "", which evaluates to false
 
-	$runner->insert( 'environment.patron',		$ctx->{patron}, 1);
-	$runner->insert( 'environment.title',		$ctx->{title}, 1);
-	$runner->insert( 'environment.copy',		$ctx->{copy}, 1);
+	$runner->insert( 'environment.patron',	$ctx->{patron}, 1);
+	$runner->insert( 'environment.title',	$ctx->{title}, 1);
+	$runner->insert( 'environment.copy',	$ctx->{copy}, 1);
 
 	# circ script result
 	$runner->insert( 'result', {} );
 	$runner->insert( 'result.event', 'SUCCESS' );
 
-	$runner->insert('environment.isRenewal', 1) if $__isrenewal;
-	$runner->insert('environment.isNonCat', 1) if $ctx->{noncat};
-	$runner->insert('environment.nonCatType', $ctx->{noncat_type}) if $ctx->{noncat};
+	if($__isrenewal) {
+		$runner->insert('environment.isRenewal', 1);
+	} else {
+		$runner->insert('environment.isRenewal', undef);
+	}
+
+	if($ctx->{ishold} ) { 
+		$runner->insert('environment.isHold', 1); 
+	} else{ 
+		$runner->insert('environment.isHold', undef) 
+	}
+
+	if( $ctx->{noncat} ) {
+		$runner->insert('environment.isNonCat', 1);
+		$runner->insert('environment.nonCatType', $ctx->{noncat_type});
+	} else {
+		$runner->insert('environment.isNonCat', undef);
+	}
 
 	if(ref($ctx->{patron_circ_summary})) {
 		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
@@ -375,12 +387,72 @@ sub permit_circ {
 		return $evt if $evt;
 	}
 
-	($circ, $evt) = $U->fetch_open_circulation($ctx->{copy}->id) 
-		if ( !$__isrenewal and $ctx->{copy});
-
-	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $circ;
+	if( !$ctx->{ishold} and !$__isrenewal and $ctx->{copy} ) {
+		($circ, $evt) = $U->fetch_open_circulation($ctx->{copy}->id);
+		return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $circ;
+	}
 
 	return _run_permit_scripts($ctx);
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "check_title_hold",
+	api_name	=> "open-ils.circ.title_hold.is_possible",
+	notes		=> q/
+		Determines if a hold were to be placed by a given user,
+		whether or not said hold would have any potential copies
+		to fulfill it.
+		@param authtoken The login session key
+		@param params A hash of named params including:
+			patronid  - the id of the hold recipient
+			titleid (brn) - the id of the title to be held
+			depth	- the hold range depth (defaults to 0)
+	/);
+
+sub check_title_hold {
+	my( $self, $client, $authtoken, $params ) = @_;
+	my %params = %$params;
+	my $titleid = $params{titleid};
+
+	my ( $requestor, $patron, $evt ) = $U->checkses_requestor( 
+		$authtoken, $params{patronid}, 'VIEW_HOLD_PERMIT' );
+	return $evt if $evt;
+
+	my $rangelib	= $patron->home_ou;
+	my $depth		= $params{depth} || 0;
+
+	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
+
+	my $title = $U->storagereq(
+		'open-ils.storage.biblio.record_entry.ranged_tree', $titleid, $rangelib );
+
+	my $org = $U->simplereq(
+		'open-ils.actor', 
+		'open-ils.actor.org_unit.retrieve', 
+		$authtoken, $requestor->home_ou );
+
+	for my $cn (@{$title->call_numbers}) {
+
+		$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
+
+		for my $copy (@{$cn->copies}) {
+
+			$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
+
+			return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
+				{	patron				=> $patron, 
+					requestor			=> $requestor, 
+					copy					=> $copy,
+					title					=> $title, 
+					title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
+					request_lib			=> $org } );
+
+			$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
+		}
+	}
+
+	return 0;
 }
 
 
@@ -412,6 +484,11 @@ sub _run_permit_scripts {
 	if($ctx->{precat}) {
 		$logger->debug("Exiting circ permit early because copy is pre-cataloged");
 		return OpenILS::Event->new('ITEM_NOT_CATALOGED', payload => $key);
+	}
+
+	if($ctx->{ishold}) {
+		$logger->debug("Exiting circ permit early because request is for hold patron permit");
+		return OpenILS::Event->new('SUCCESS');
 	}
 
 	$runner->load($scripts{circ_permit_copy});
@@ -760,6 +837,8 @@ sub _handle_related_holds {
 
 			$logger->debug("Related hold found in checkout: " . $hold->id );
 
+			# if the hold was never officially captured, capture it.
+			$hold->capture_time('now') unless $hold->capture_time;
 			$hold->fulfillment_time('now');
 			my $r = $ctx->{session}->request(
 				"open-ils.storage.direct.action.hold_request.update", $hold )->gather(1);
@@ -808,7 +887,7 @@ sub checkin {
 	my( $self, $client, $authtoken, $params ) = @_;
 	$U->logmark;
 
-	my( $ctx, $requestor, $evt, $circ, $copy, $payload );
+	my( $ctx, $requestor, $evt, $circ, $copy, $payload, $transit );
 
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
 	( $requestor, $evt ) = $U->checksesperm( 
@@ -828,6 +907,7 @@ sub checkin {
 		return $evt if $evt;
 	}
 	$ctx->{session} = $U->start_db_session() unless $ctx->{session};
+	$ctx->{authtoken} = $authtoken;
 
 	$copy = $ctx->{copy};
 	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
@@ -880,16 +960,16 @@ sub checkin {
 	# see if there is any other processing required on this copy
 	# ------------------------------------------------------------------------------
 
-	if( !($evt = _check_checkin_holds($ctx)) ) {
-		# if no hold is found for the copy, see if it needs to be transited
-		if( $copy->circ_lib != $requestor->home_ou ) {
-			$logger->debug("Checkin copy needs to go back to it's circ lib: ".
-				"current loc: ".$requestor->home_ou.", copy circ_lib: ".$copy->circ_lib);
-			$evt = OpenILS::Event->new('ROUTE_ITEM', org => $copy->circ_lib );
+	if(!$__isrenewal) {
+		if( !($evt = _check_checkin_holds($ctx)) ) {
+			# if no hold is found for the copy, see if it needs to be transited
+			($evt, $transit) = $self->check_copy_transit($ctx); 
+			return $evt if ($evt and !$transit);
+			$payload->{transit} = $transit if $transit;
 		}
 	}
 	
-	$logger->debug("Checkin committing objects...");
+	$logger->debug("Checkin succeeded.  Committing objects...");
 	$U->commit_db_session($ctx->{session});
 
 	# if the item is not cataloged and no superceding
@@ -897,7 +977,7 @@ sub checkin {
 	if ( $copy->call_number == -1 and !$evt ) {
 		$evt = OpenILS::Event->new('ITEM_NOT_CATALOGED') }
 
-	$evt = $SUCCESS if (!$evt or $__isrenewal);
+	$evt = OpenILS::Event->new('SUCCESS') if (!$evt or $__isrenewal);
 	$evt->{payload} = $payload;
 
 	$logger->info("Checkin of copy ".$copy->id." returned event: ".$evt->{textcode});
@@ -905,6 +985,27 @@ sub checkin {
 	$evt->{payload}->{copy} = $U->unflesh_copy($copy);
 
 	return $evt;
+}
+
+# returns (undef) if no transit is needed
+# returns (ROUTE_ITEM, $transit) on succsessful transit creation
+# return (other event) on failure
+sub check_copy_transit {
+	my( $self,  $ctx ) = @_;
+	my $copy = $ctx->{copy};
+
+	return (undef) if( $copy->circ_lib == $ctx->{requestor}->home_ou );
+
+	my ($evt) = $self->method_lookup(
+		'open-ils.circ.copy_transit.create')->run(
+			$ctx->{authtoken}, 
+			{ session => $ctx->{session}, copyid => $copy->id } );
+
+	return ($evt, undef) unless $U->event_equals($evt,'SUCCESS');
+
+	my $transit = $evt->{payload}->{transit};
+	$evt = OpenILS::Event->new('ROUTE_ITEM', org => $copy->circ_lib );
+	return ($evt, $transit);
 }
 
 sub _check_checkin_holds {

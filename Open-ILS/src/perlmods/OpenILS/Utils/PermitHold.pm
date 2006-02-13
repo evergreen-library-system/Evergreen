@@ -32,6 +32,8 @@ sub permit_copy_hold {
 	# we get the script result from the event 
 	$runner->insert( "result.event",	'SUCCESS' );
 
+	$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
+
 	load_scripts($runner);
 	$runner->run or throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
 	my $evtname = $runner->retrieve('result.event');

@@ -17,6 +17,36 @@ $Data::Dumper::Indent	= 0;
 
 
 
+__PACKAGE__->register_method(
+	method	=> "copy_transit_receive",
+	api_name	=> "open-ils.circ.copy_transit.receive",
+	notes		=> q/
+		Closes out a copy transit
+		Requestor needs the COPY_TRANSIT_RECEIVE permission
+		@param authtoken The login session key
+		@param params An object of named params including
+			copyid - the id of the copy in quest
+			barcode - the barcode of the copy in question 
+				If copyid is not sent, this is used.
+		@return A ROUTE_ITEM if the copy is destined for a different location.
+			A SUCCESS event on success. Other events on error.
+	/);
+
+sub copy_transit_receive {
+	my( $self, $client, $authtoken, $params ) = @_;
+	my %params = %$params;
+	my( $evt, $copy, $requestor );
+	($requestor, $evt) = $U->checksesperm($authtoken, 'COPY_TRANSIT_RECEIVE');
+	return $evt if $evt;
+	($copy, $evt) = $U->fetch_copy($params{copyid});
+	($copy, $evt) = $U->fetch_copy_by_barcode($params{barcode}) unless $copy;
+	return $evt if $evt;
+	my $session = $U->start_db_session();
+	$evt = $self->transit_receive( $copy, $requestor, $session );
+	$U->commit_db_session($session) if $U->event_equals($evt,'SUCCESS');
+	return $evt;
+}
+
 # ------------------------------------------------------------------------------
 # If the transit destination is different than the requestor's lib,
 # a ROUTE_TO event is returned with the org set.
@@ -61,7 +91,7 @@ sub transit_receive {
 
 	#recover this copy's status from the transit
 	$copy->status( $transit->copy_status );
-	return OpenILS::Event->('SUCCESS', payload => $copy);
+	return OpenILS::Event->new('SUCCESS', payload => $copy);
 
 }
 
@@ -69,7 +99,7 @@ sub transit_receive {
 
 # ------------------------------------------------------------------------------
 # If we have a hold transit, set the copy's status to 'on holds shelf',
-# update the copy, and return the ROUTE_TO_COPY_LOATION event
+# update the copy, and return SUCCESS
 # ------------------------------------------------------------------------------
 sub _finish_hold_transit {
 	my( $session, $requestor, $copy, $transid ) = @_;
@@ -119,7 +149,7 @@ sub copy_transit_create {
 	($copy,$evt) = $U->fetch_copy($params{copyid});
 	return $evt if $evt;
 
-	my $session		= $U->start_db_session();
+	my $session		= $params{session} || $U->start_db_session();
 	my $source		= $requestor->home_ou;
 	my $dest			= $params{destination} || $copy->circ_lib;
 	my $transit		= Fieldmapper::action::transit_copy->new;
@@ -144,6 +174,8 @@ sub copy_transit_create {
 	$copy->status($stat->id); 
 	return $evt if ($evt = $U->update_copy(
 		copy => $copy, editor => $requestor->id, session => $session ));
+
+	$U->commit_db_session($session) unless $params{session};
 
 	return OpenILS::Event->new('SUCCESS', 
 		payload => { copy => $copy, transit => $transit } );
