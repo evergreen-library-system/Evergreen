@@ -2,8 +2,8 @@
 <!ENTITY opac.holds.xulRecipient "Enter recipient barcode">
 <!ENTITY opac.holds.recipient "Recipient">
 <!ENTITY opac.holds.placeHold "Place Hold">
-<!ENTITY opac.holds.contactPhone "Concact telephone number">
-<!ENTITY opac.holds.concactEmail "Concact email address">
+<!ENTITY opac.holds.contactPhone "Contact telephone number">
+<!ENTITY opac.holds.concactEmail "Contact email address">
 <!ENTITY opac.holds.pickupLocation "Pickup location">
 <!ENTITY opac.holds.placeHold	"Place Hold">
 <!ENTITY opac.holds.success "Hold was successfully placed">
