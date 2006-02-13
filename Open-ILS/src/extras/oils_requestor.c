@@ -45,6 +45,8 @@ int main( int argc, char* argv[] ) {
 		return 1;
 	}
 
+	printf("Connected to OpenSRF network...\n");
+
 	if( username && password &&
 			( authtoken = oilsUtilsLogin(username, password, "staff", -1 )) ) {
 		printf("Login Session: %s\n", authtoken);
