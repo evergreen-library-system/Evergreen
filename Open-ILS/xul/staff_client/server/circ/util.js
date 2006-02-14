@@ -298,6 +298,23 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				}
 			} else {
 				check.route_to = data.hash.aou[ check.copy.circ_lib() ].shortname();
+				var rv = error.yns_alert(
+					'There is no circulation for this item, however, its circulating library is ' + check.route_to
+						+ '.\nTransit this item?',
+					'Alert',
+					"Transit",
+					"Don't Transit",
+					null,
+					"Check here to confirm this message"
+				);
+				switch(rv) {
+					case 0: /* transit */
+						alert('FIXME -- make transit call here');
+					break;
+					case 1: /* don't transit */
+						check.route_to += ' ?';
+					break;
+				}
 			}
 		}
 
