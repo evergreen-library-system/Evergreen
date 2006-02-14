@@ -295,35 +295,47 @@ sub oISBN {
 	my $client = shift;
 	my $isbn = shift;
 
+	throw OpenSRF::EX::InvalidArg ('I need an ISBN please')
+		unless (length($isbn) >= 10);
+
+	# Create a storage session, since we'll be making muliple requests.
 	$_storage->connect;
 
+	# Find the record that has that ISBN.
 	my $bibrec = $_storage->request(
 		'open-ils.storage.direct.metabib.full_rec.search_where.atomic',
 		{ tag => '020', subfield => 'a', value => { like => $isbn.'%'} }
 	)->gather(1);
 
+	# Go away if we don't have one.
 	return {} unless (@$bibrec);
 
+	# Find the metarecord for that bib record.
 	my $mr = $_storage->request(
 		'open-ils.storage.direct.metabib.metarecord_source_map.search.source.atomic',
 		$bibrec->[0]->record
 	)->gather(1);
 
+	# Find the other records for that metarecord.
 	my $records = $_storage->request(
 		'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic',
 		$mr->[0]->metarecord
 	)->gather(1);
 
+	# Just to be safe.  There's currently no unique constraint on sources...
 	my %unique_recs = map { ($_->source, 1) } @$records;
 	my @rec_list = sort keys %unique_recs;
 
+	# And now fetch the ISBNs for thos records.
 	my $recs = $_storage->request(
 		'open-ils.storage.direct.metabib.full_rec.search_where.atomic',
 		{ tag => '020', subfield => 'a', record => \@rec_list }
 	)->gather(1);
 
+	# We're done with the storage server session.
 	$_storage->disconnect;
 
+	# Return the oISBN data structure.  This will be XMLized at a higher layer.
 	return { metarecord => $mr->[0]->metarecord, record_list => { map { ($_->record, $_->value) } @$recs } };
 
 }
@@ -338,8 +350,8 @@ Returns the ISBN list for the metarecord of the requested isbn
 		  DESC
 		  params   =>
 		  	[
-				{ name => 'recordId',
-				  desc => 'An OpenILS biblio::record_entry id',
+				{ name => 'isbn',
+				  desc => 'An ISBN.  Duh.',
 				  type => 'string' },
 			],
 		  'return' =>
