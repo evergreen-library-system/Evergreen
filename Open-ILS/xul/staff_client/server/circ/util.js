@@ -285,6 +285,14 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		/* ROUTE_ITEM */
 		if (check.ilsevent == 7000) {
 			check.route_to = data.hash.aou[ check.org ].shortname();
+			var rv = error.yns_alert(
+				'This item is in transit to ' + check.route_to + '.',
+				'Alert',
+				null,
+				"OK",
+				null,
+				"Check here to confirm this message"
+			);
 		}
 
 		/* CIRCULATION_NOT_FOUND */
@@ -293,8 +301,17 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				if ( check.copy.dummy_title() ) {
 					check.route_to = 'CATALOGING';
 					check.copy.status( 11 );
+					error.yns_alert(
+						'This item needs to be routed to CATALOGING.',
+						'Alert',
+						null,
+						'OK',
+						null,
+						"Check here to confirm this message"
+					);
 				} else {
 					check.route_to = data.hash.acpl[ check.copy.location() ].name();
+					/* FIXME -- Do we want a dialog for this case? */
 				}
 			} else {
 				check.route_to = data.hash.aou[ check.copy.circ_lib() ].shortname();
@@ -322,6 +339,15 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		if (check.ilsevent == 1202) {
 			check.route_to = 'CATALOGING';
 			check.copy.status( 11 );
+			error.yns_alert(
+				'This item needs to be routed to CATALOGING.',
+				'Alert',
+				null,
+				'OK',
+				null,
+				"Check here to confirm this message"
+			);
+
 		}
 		
 		/* COPY_NOT_FOUND */
@@ -330,6 +356,14 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			check.copy.barcode( barcode );
 			check.copy.status( 11 );
 			check.route_to = 'CATALOGING';
+			error.yns_alert(
+				'The barcode was either mis-scanned or this item needs to be routed to CATALOGING.',
+				'Alert',
+				null,
+				'OK',
+				null,
+				"Check here to confirm this message"
+			);
 		}
 
 		/* COPY_NEEDED_FOR_HOLD */
