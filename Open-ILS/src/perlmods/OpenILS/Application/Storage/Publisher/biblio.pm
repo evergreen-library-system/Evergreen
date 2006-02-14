@@ -95,21 +95,22 @@ sub record_ranged_tree {
 
 
 		for my $cp ( $cn->copies(circ_lib => $ou_list) ) {
-			if ($offset && $offset_count < $offset) {
+			if ($offset > 0 && $offset_count < $offset) {
 				$offset_count++;
 				next;
 			}
-			last if ($limit && $limit_count >= $limit);
-			if ($limit && $limit_count < $limit) {
-				$limit_count++;
-				my $copy = $cp->to_fieldmapper;
-				$copy->status( $cp->status->to_fieldmapper );
-				$copy->location( $cp->status->to_fieldmapper );
-				push @{ $call_number->copies }, $copy;
-			}
+			
+			last if ($limit > 0 && $limit_count >= $limit);
+
+			my $copy = $cp->to_fieldmapper;
+			$copy->status( $cp->status->to_fieldmapper );
+			$copy->location( $cp->status->to_fieldmapper );
+			push @{ $call_number->copies }, $copy;
+
+			$limit_count++;
 		}
 
-		last if ($limit && $limit_count >= $limit);
+		last if ($limit > 0 && $limit_count >= $limit);
 
 		push @{ $rec->call_numbers }, $call_number if (@{ $call_number->copies });
 	}
