@@ -73,7 +73,7 @@ util.window.prototype = {
 
 	'open' : function(url,title,features) {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (!title) title = 'anon' + window_name_increment();
+		if (!title) title = 'anon' + this.window_name_increment();
 		if (!features) features = 'chrome';
 		this.error.sdump('D_WIN',
 			'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');
