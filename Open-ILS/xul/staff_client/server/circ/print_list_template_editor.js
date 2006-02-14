@@ -24,30 +24,30 @@ circ.print_list_template_editor.prototype = {
 			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
 			if (typeof obj.data.print_list_templates == 'undefined') {
-				obj.data.print_list_types = [ 'items', 'holds' ];
+				obj.data.print_list_types = [ 'items', 'holds', 'patrons' ];
 				obj.data.print_list_templates = { 
 					'items_out' : {
 						'type' : 'items',
 						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following items:<hr/><ol>',
-						'line_item' : '<li>%TITLE: 50%\r\nBarcode: %COPY_BARCODE% Due: %DUE_D%\r\n',
+						'line_item' : '<li>%title: 50%\r\nBarcode: %barcode% Due: %due_date%\r\n',
 						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
 					}, 
 					'checkout' : {
 						'type' : 'items',
 						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou checked out the following items:<hr/><ol>',
-						'line_item' : '<li>%TITLE%\r\nBarcode: %COPY_BARCODE% Due: %DUE_D%\r\n',
+						'line_item' : '<li>%title%\r\nBarcode: %barcode% Due: %due_date%\r\n',
 						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
 					}, 
 					'checkin' : {
 						'type' : 'items',
 						'header' : 'You checked in the following items:<hr/><ol>',
-						'line_item' : '<li>%TITLE%\r\nBarcode: %COPY_BARCODE%\r\n',
+						'line_item' : '<li>%title%\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
 						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
 					}, 
 					'holds' : {
 						'type' : 'holds',
 						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following titles on hold:<hr/><ol>',
-						'line_item' : '<li>%TITLE%\r\n',
+						'line_item' : '<li>%title%\r\n',
 						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
 					} 
 				}; 
@@ -78,6 +78,64 @@ circ.print_list_template_editor.prototype = {
 							['command'],
 							function() {
 								alert( 'not yet implemented' );
+							}
+						],
+						'macros' : [
+							['command'],
+							function() {
+								try {
+									JSAN.use('util.functional');
+									var template_type = obj.controller.view.template_type_menu.value;
+									var macros;
+									switch(template_type) {
+										case 'items':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'holds':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.hold_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'patrons':
+											JSAN.use('patron.util');
+											macros = util.functional.map_list(
+												patron.util.columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+									}
+									var macro_string = macros.join(', ');
+									JSAN.use('util.window');
+									var win = new util.window();
+									win.open('data:text/html,'
+										+ window.escape(
+											'<html style="width: 600; height: 400;">'
+											+ '<head><title>Template Macros</title></head>'
+											+ '<body onload="document.getElementById(\'btn\').focus()">'
+											+ '<h1>General:</h1>'
+											+ '<p>%PINES_CODE%, %TODAY%, %STAFF_FIRSTNAME%, %STAFF_LASTNAME%, '
+											+ '%PATRON_FIRSTNAME%, %LIBRARY%</p>'
+											+ '<h1>For type: '
+											+ template_type + '</h1>'
+											+ '<p>' + macro_string + '</p>'
+											+ '<button id="btn" onclick="window.close()">Close Window</button>'
+											+ '</body></html>'
+										), 'title', 'chrome,resizable');
+								} catch(E) {
+									alert(E);
+								}
 							}
 						],
 						'template_name_menu_placeholder' : [

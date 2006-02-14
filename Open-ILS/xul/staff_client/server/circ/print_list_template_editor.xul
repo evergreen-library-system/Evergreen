@@ -89,6 +89,7 @@
 				<button id="preview" label="Preview" accesskey="P" />
 				<button id="save" label="Save" accesskey="S" />
 				<button id="delete" label="Delete" accesskey="D" />
+				<button id="macros" label="Macros" accesskey="M" />
 			</groupbox>
 		</hbox>
 		<hbox flex="1">
