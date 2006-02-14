@@ -336,7 +336,9 @@ sub oISBN {
 	$_storage->disconnect;
 
 	# Return the oISBN data structure.  This will be XMLized at a higher layer.
-	return { metarecord => $mr->[0]->metarecord, record_list => { map { ($_->record, $_->value) } @$recs } };
+	return
+		{ metarecord => $mr->[0]->metarecord,
+		  record_list => { map { ($_->record, $_->value) } @$recs } };
 
 }
 __PACKAGE__->register_method(
