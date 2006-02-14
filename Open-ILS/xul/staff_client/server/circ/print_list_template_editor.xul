@@ -91,21 +91,25 @@
 				<button id="delete" label="Delete" accesskey="D" />
 			</groupbox>
 		</hbox>
-		<groupbox orient="horizontal" flex="1">
-			<caption label="Fields"/>
+		<hbox flex="1">
 			<groupbox flex="1">
-				<caption label="Header"/>
-				<textbox id="header" multiline="true" flex="1"/>
+				<caption label="Preview" />
 			</groupbox>
-			<groupbox flex="1">
-				<caption label="Line Item"/>
-				<textbox id="line_item" multiline="true" flex="1"/>
-			</groupbox>
-			<groupbox flex="1">
-				<caption label="Footer"/>
-				<textbox id="footer" multiline="true" flex="1"/>
-			</groupbox>
-		</groupbox>
+			<vbox flex="1">
+				<groupbox flex="1">
+					<caption label="Header"/>
+					<textbox id="header" multiline="true" flex="1"/>
+				</groupbox>
+				<groupbox flex="1">
+					<caption label="Line Item"/>
+					<textbox id="line_item" multiline="true" flex="1"/>
+				</groupbox>
+				<groupbox flex="1">
+					<caption label="Footer"/>
+					<textbox id="footer" multiline="true" flex="1"/>
+				</groupbox>
+			</vbox>
+		</hbox>
 	</groupbox>
 
 </window>
