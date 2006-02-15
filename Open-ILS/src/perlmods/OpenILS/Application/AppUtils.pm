@@ -827,6 +827,7 @@ sub fetch_open_transit_by_copy {
 
 sub unflesh_copy {
 	my( $self, $copy ) = @_;
+	return undef unless $copy;
 	$copy->status( $copy->status->id ) if ref($copy->status);
 	$copy->location( $copy->location->id ) if ref($copy->location);
 	$copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);

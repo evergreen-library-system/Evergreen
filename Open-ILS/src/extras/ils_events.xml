@@ -56,6 +56,21 @@
 		</desc>
 	</event>
 
+	<event code='1203' textcode='COPY_BAD_STATUS'>
+		<desc>
+			The given copy is not in a standard circulation status
+		</desc>
+	</event>
+
+	<event code='1204' textcode='CIRC_BAD_STATUS'>
+		<desc>
+			The given circulation is not in a standard status or
+			the circulation was never fully closed properly
+		</desc>
+	</event>
+
+
+
 
 
 

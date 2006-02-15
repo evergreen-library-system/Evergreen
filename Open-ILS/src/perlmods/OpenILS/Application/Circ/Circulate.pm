@@ -881,6 +881,252 @@ sub _checkout_noncat {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "generic_receive",
+	api_name	=> "open-ils.circ.checkin__",
+);
+
+sub generic_receive {
+	my( $self, $connection, $authtoken, $params ) = @_;
+	my( $ctx, $requestor, $evt );
+
+	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
+	( $requestor, $evt ) = $U->checksesperm( 
+		$authtoken, 'COPY_CHECKIN' ) unless $__isrenewal;
+	return $evt if $evt;
+
+	# ------------------------------------------------------------------------------
+	# load up the circ objects
+	if( !( $ctx = $params->{_ctx}) ) {
+		( $ctx, $evt ) = create_circ_ctx( %$params, 
+			requestor						=> $requestor, 
+			session							=> $U->start_db_session(),
+			type								=> 'circ',
+			fetch_copy_statuses			=> 1, 
+			fetch_copy_locations			=> 1, 
+			no_runner						=> 1,  
+			);
+		return $evt if $evt;
+	}
+	$ctx->{session} = $U->start_db_session() unless $ctx->{session};
+	$ctx->{authtoken} = $authtoken;
+	my $session = $ctx->{session};
+
+	my $copy = $ctx->{copy};
+	$U->unflesh_copy($copy);
+	$logger->debug("Checkin copy called by user ".$requestor->id." for copy ".$copy->id);
+	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
+	# ------------------------------------------------------------------------------
+
+	if(!$ctx->{force}) {
+		return $evt if ($evt = _checkin_check_copy_status($copy));
+	}
+
+	my ($circ)		= $U->fetch_open_circulation($copy->id);
+	my ($transit)	= $U->fetch_open_transit_by_copy($copy->id);
+
+	if( $circ ) {
+		
+		# There is an open circ on this item so close out the circ
+		$ctx->{circ} = $circ;
+		$evt = _checkin_handle_circ($ctx);
+		return $evt if $evt;
+
+	} elsif( $transit ) {
+
+		# is this item currently in transit?
+		$ctx->{transit} = $transit;
+		$evt = $transcode->transit_receive( $copy, $requestor, $session );
+
+		if( !$U->event_equals($evt, 'SUCCESS') ) {
+
+			# either an error occurred or a ROUTE_ITEM was generated and the 
+			# item must be forwarded on to its destination.
+			$evt->{payload}->{copy} = $U->unflesh_copy($copy);
+			return $evt;
+
+		} else {
+
+			if($evt->{ishold}) {
+
+				# copy was received as a hold transit.  Copy is at target lib
+				# and hold transit is complete.  We're done here...
+				$U->commit_db_session($session);
+				return _checkin_flesh_event($ctx, $evt);
+			}
+			$evt = undef;
+		}
+	}
+
+	# If it's a renewal, we're not concerned with holds and transits.  
+	# We just want the item to be checked in.
+	if($__isrenewal) {
+		$U->commit_db_session($session);
+		return OpenILS::Event->new('SUCCESS');
+	}
+
+	# Now, let's see if this copy is needed for a hold
+	my ($hold) = $holdcode->find_local_hold( $session, $copy, $requestor ); 
+
+	if($hold) {
+
+		$ctx->{hold} = $hold;
+		
+		# Capture the hold with this copy
+		return $evt if ($evt = _checkin_capture_hold($ctx));
+
+		if( $hold->pickup_lib == $requestor->home_ou ) {
+
+			# This hold was captured in the correct location
+			$evt = OpenILS::Event->new('SUCCESS');
+
+		} else {
+
+			# Hold needs to be picked up elsewhere.  Build a hold 
+			# transit and route the item.
+			return $evt if ($evt =_checkin_build_hold_transit($ctx));
+			$evt = OpenILS::Event->new('ROUTE_ITEM', org => $hold->pickup_lib);
+		}
+
+	} else { # not needed for a hold
+
+		if( $copy->circ_lib == $requestor->home_ou ) {
+
+			# Copy is in the right place.  Re-shelve the thing.
+			$copy->status($U->copy_status_from_name('reshelving')->id );
+			return $evt if ( $evt = $U->update_copy( 
+				copy => $copy, editor => $requestor->id, session => $session ));
+			$evt = OpenILS::Event->new('SUCCESS');
+			$evt = OpenILS::Event->new('ITEM_NOT_CATALOGED') if $ctx->{precat};
+
+		} else {
+
+			# Copy wants to go home. Transit it there.
+			return $evt if ( $evt = _checkin_build_generic_copy_transit($ctx) );
+			$evt = OpenILS::Event->new('ROUTE_ITEM', org => $copy->circ_lib);
+		}
+	}
+
+	$logger->info("Copy checkin finished with event: ".$evt->{textcode});
+
+	$U->commit_db_session($session);
+	return _checkin_flesh_event($ctx, $evt);
+}
+
+
+sub _checkin_check_copy_status {
+	my $copy = shift;
+	my $stat = (ref($copy->status)) ? $copy->status->id : $copy->status;
+	my $evt = OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
+	return $evt if ($stat == $U->copy_status_from_name('lost')->id);
+	return $evt if ($stat == $U->copy_status_from_name('missing')->id);
+
+	# XXX Really do this?
+	my ($circ)	= $U->fetch_open_circulation($copy->id);
+	if($circ) {
+		$evt = OpenILS::Event->new('CIRC_BAD_STATUS', payload => $copy );
+		return $evt if ($circ->stop_fines =~ /longoverdue/);
+		return $evt if ($circ->stop_fines =~ /claimsreturned/);
+	}
+
+	return undef;
+}
+
+# Just gets the copy back home.  Returns undef on success, event on error
+sub _checkin_build_generic_copy_transit {
+
+	my $ctx			= shift;
+	my $requestor	= $ctx->{requestor};
+	my $copy			= $ctx->{copy};
+	my $transit		= Fieldmapper::action::transit_copy->new;
+	my $session		= $ctx->{session};
+
+	$logger->activity("User ". $requestor->id ." creating a ".
+		" new copy transit for copy ".$copy->id." to org ".$copy->circ_lib);
+
+	$transit->source($requestor->home_ou);
+	$transit->dest($copy->circ_lib);
+	$transit->target_copy($copy->id);
+	$transit->source_send_time('now');
+	$transit->copy_status($copy->status);
+	
+	$logger->debug("Creating new copy_transit in DB");
+
+	my $s = $session->request(
+		"open-ils.storage.direct.action.transit_copy.create", $transit )->gather(1);
+	return $U->DB_UPDATE_FAILED($transit) unless $s;
+
+	$logger->info("Checkin copy successfully created new transit: $s");
+
+	$copy->status($U->copy_status_from_name('in transit')->id );
+
+	return $U->update_copy( copy => $copy, 
+			editor => $requestor->id, session => $session );
+	
+}
+
+
+sub _checkin_build_hold_transit {
+	my $ctx = shift;
+
+	my $copy = $ctx->{copy};
+	my $hold = $ctx->{hold};
+	my $trans = Fieldmapper::action::hold_transit_copy->new;
+
+	$trans->hold($hold->id);
+	$trans->source($ctx->{requestor}->home_ou);
+	$trans->dest($hold->pickup_lib);
+	$trans->source_send_time("now");
+	$trans->target_copy($copy->id);
+	$trans->copy_status($copy->status);
+
+	my $id = $ctx->{session}->request(
+		"open-ils.storage.direct.action.hold_transit_copy.create", $trans )->gather(1);
+	return $U->DB_UPDATE_FAILED($trans) unless $id;
+
+	$logger->info("Checkin copy successfully created hold transit: $id");
+
+	$copy->status($U->copy_status_from_name('in transit')->id );
+	return $U->update_copy( copy => $copy, 
+			editor => $ctx->{requestor}->id, session => $ctx->{session} );
+}
+
+# Returns event on error, undef on success
+sub _checkin_capture_hold {
+	my $ctx = shift;
+	my $copy = $ctx->{copy};
+	my $hold = $ctx->{hold}; 
+
+	$logger->debug("Checkin copy capturing hold ".$hold->id);
+
+	$hold->current_copy($copy->id);
+	$hold->capture_time('now'); 
+
+	my $stat = $ctx->{session}->request(
+		"open-ils.storage.direct.action.hold_request.update", $hold)->gather(1);
+	return $U->DB_UPDATE_FAILED($hold) unless $stat;
+
+	$copy->status( $U->copy_status_from_name('on holds shelf')->id );
+
+	return $U->update_copy( copy => $copy, 
+			editor => $ctx->{requestor}->id, session => $ctx->{session} );
+}
+
+sub _checkin_flesh_event {
+	my $ctx = shift;
+	my $evt = shift;
+
+	my $payload				= {};
+	$payload->{copy}		= $U->unflesh_copy($ctx->{copy});
+	$payload->{record}	= $U->record_to_mvr($ctx->{title}) if($ctx->{title} and !$ctx->{precat});
+	$payload->{circ}		= $ctx->{circ} if $ctx->{circ};
+	$payload->{transit}	= $ctx->{transit} if $ctx->{transit};
+
+	$evt->{payload} = $payload;
+	return $evt;
+}
+
+
 # ------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
@@ -1038,9 +1284,13 @@ sub _check_checkin_holds {
 }
 
 
+sub _checkin_handle_circ { return _update_checkin_circ_and_copy(@_); }
+
 sub _update_checkin_circ_and_copy {
 	my $ctx = shift;
 	$U->logmark;
+
+	$logger->info("Handling circulation found in checkin...");
 
 	my $circ = $ctx->{circ};
 	my $copy = $ctx->{copy};
@@ -1067,9 +1317,9 @@ sub _update_checkin_circ_and_copy {
 
 		$circ->xact_finish($backdate); 
 
-		my $bills = $session->request( # XXX what other search criteria??
+		my $bills = $session->request( # XXX Verify this call is correct
 			"open-ils.storage.direct.money.billing.search_where.atomic",
-			billing_ts => { ">=" => $backdate })->gather(1);
+			billing_ts => { ">=" => $backdate }, "xact" => $circ->id )->gather(1);
 
 		if($bills) {
 			for my $bill (@$bills) {
@@ -1118,7 +1368,7 @@ sub renew {
 	# renew privelages
 	( $requestor, $patron, $evt ) = $U->checkses_requestor( 
 		$authtoken, $params->{patron}, 'RENEW_CIRC' );
-	return $evt if $evt;
+	if($evt) { $__isrenewal = 0; return $evt; }
 
 
 	# fetch and build the circulation environment
@@ -1131,24 +1381,27 @@ sub renew {
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		);
-	return $evt if $evt;
+	if($evt) { $__isrenewal = 0; return $evt; }
 	$params->{_ctx} = $ctx;
 
 	# make sure they have some renewals left and make sure the circulation exists
 	($circ, $evt) = _check_renewal_remaining($ctx);
-	return $evt if $evt;
+	if($evt) { $__isrenewal = 0; return $evt; }
 	$ctx->{old_circ} = $circ;
 	my $renewals = $circ->renewal_remaining - 1;
 
 	# run the renew permit script
-	return $evt if( ($evt = _run_renew_scripts($ctx)) );
+	$evt = _run_renew_scripts($ctx);
+	if($evt) { $__isrenewal = 0; return $evt; }
 
 	# checkin the cop
 	#$ctx->{patron} = $ctx->{patron}->id;
 	$evt = $self->checkin($client, $authtoken, $ctx );
 		#{ barcode => $params->{barcode}, patron => $params->{patron}} );
 
-	return $evt unless $U->event_equals($evt, 'SUCCESS');
+	if( !$U->event_equals($evt, 'SUCCESS') ) {
+		$__isrenewal = 0; return $evt; 
+	}
 
 	# re-fetch the context since objects have changed in the checkin
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
@@ -1160,7 +1413,7 @@ sub renew {
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		);
-	return $evt if $evt;
+	if($evt) { $__isrenewal = 0; return $evt; }
 	$params->{_ctx} = $ctx;
 	$ctx->{renewal_remaining} = $renewals;
 
@@ -1169,7 +1422,9 @@ sub renew {
 	if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
 		$ctx->{precat} = 1;
 	} else {
-		return $evt unless $U->event_equals($evt, 'SUCCESS');
+		if(!$U->event_equals($evt, 'SUCCESS')) {
+			if($evt) { $__isrenewal = 0; return $evt; }
+		}
 	}
 	$params->{permit_key} = $evt->{payload};
 

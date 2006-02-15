@@ -81,8 +81,10 @@ sub transit_receive {
 	return $U->DB_UPDATE_FAILED($transit) unless $r;
 
 	# if this is a hold transit, finalize the hold transit
+	my $ishold = 0;
 	if( ($evt = _finish_hold_transit( 
 			$session, $requestor, $copy, $transit->id )) ) {
+		$ishold = 1;
 		return $evt unless $U->event_equals($evt, 'SUCCESS');
 		$evt = undef;
 	}
@@ -91,7 +93,7 @@ sub transit_receive {
 
 	#recover this copy's status from the transit
 	$copy->status( $transit->copy_status );
-	return OpenILS::Event->new('SUCCESS', payload => $copy);
+	return OpenILS::Event->new('SUCCESS', ishold => $ishold, payload => $copy);
 
 }
 
