@@ -277,32 +277,45 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 
 		if (!check.route_to) check.route_to = '???';
 
-		/* SUCCESS  /  NO_CHANGE */
-		if (check.ilsevent == 0 || check.ilsevent == 3) {
+		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
+		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
 			check.route_to = data.hash.acpl[ check.copy.location() ].name();
+			var msg = '';
+			if (check.ilsevent == 3) msg = 'This item is already checked in.\n';
+			if (check.ilsevent == 1202 && check.copy.status() != 11) {
+				msg = 'FIXME -- ITEM_NOT_CATALOGED event but copy status is '
+					+ data.hash.ccs[ check.copy.status() ].name() + '\n';
+			}
 			switch(check.copy.status()) {
 				case 0: /* AVAILABLE */
 				case 7: /* RESHELVING */
 				break;
 				case 8: /* ON HOLDS SHELF */
 					check.route_to = 'HOLDS SHELF';
+					msg += 'This item needs to be routed to ' + check.route_to + '.\n';
 					var rv = error.yns_alert(
-						'This item needs to be routed to ' + check.route_to + '.',
+						msg,
 						'Alert',
 						"Print Hold Slip",
 						"Don't Print",
 						null,
 						"Check here to confirm this message"
 					);
+					msg = '';
 				break;
 				case 6: /* IN TRANSIT */
-					check.route_to = 'TRANSIT SHELF';
-					alert("FIXME -- I didn't think we could get here");
+					check.route_to = 'TRANSIT SHELF??';
+					msg += ("FIXME -- I didn't think we could get here.\n");
+				break;
+				case 11: /* CATALOGING */
+					check.route_to = 'CATALOGING';
 				break;
 				default:
-					alert("FIXME -- whaaa??");
+					msg += ("FIXME -- this case is unhandled\n");
 				break;
 			}
+			msg += 'This item needs to be routed to ' + check.route_to + '.';
+			if (msg) error.yns_alert(msg,'Alert',null,'OK',null,"Check here to confirm this message");
 		}
 
 		/* ROUTE_ITEM */
@@ -318,21 +331,6 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			);
 		}
 
-		/* ITEM_NOT_CATALOGED */
-		if (check.ilsevent == 1202) {
-			check.route_to = 'CATALOGING';
-			check.copy.status( 11 );
-			error.yns_alert(
-				'This item needs to be routed to CATALOGING.',
-				'Alert',
-				null,
-				'OK',
-				null,
-				"Check here to confirm this message"
-			);
-
-		}
-		
 		/* COPY_NOT_FOUND */
 		if (check.ilsevent == 1502) {
 			check.copy = new acp();
