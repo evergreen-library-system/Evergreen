@@ -55,17 +55,29 @@ circ.print_list_template_editor.prototype = {
 				obj.data.stash( 'print_list_templates', 'print_list_types' );
 			}
 
+			obj.controller_init();
+			obj.controller.render(); obj.controller.view.template_name_menu.focus();
+
+		} catch(E) {
+			alert('init: ' + E);
+			this.error.sdump('D_ERROR','print_list.init: ' + E + '\n');
+		}
+	},
+
+	'controller_init' : function() {
+		try {
+			var obj = this;
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
 				{
 					control_map : {
-						'header' : [ ['command'], function() {} ],
-						'line_item' : [ ['command'], function() {} ],
-						'footer' : [ ['command'], function() {} ],
+						'sample' : [ ['command'], function() { } ],
+						'header' : [ ['change'], function() { obj.preview(); } ],
+						'line_item' : [ ['change'], function() { obj.preview(); } ],
+						'footer' : [ ['change'], function() { obj.preview(); } ],
 						'preview' : [
 							['command'],
 							function() {
-								alert( 'preview: ' + obj.controller.view.template_name_menu.value );
 							}
 						],
 						'save' : [
@@ -193,13 +205,6 @@ circ.print_list_template_editor.prototype = {
 									ml.setAttribute('id','template_types_menu');
 									e.appendChild(ml);
 									obj.controller.view.template_type_menu = ml;
-									ml.addEventListener(
-										'command',
-										function(ev) {
-											alert(ev.target.value);
-										},
-										false
-									);
 								}
 							}
 						],
@@ -207,31 +212,36 @@ circ.print_list_template_editor.prototype = {
 					}
 				}
 			);
-			obj.controller.render(); obj.controller.view.template_name_menu.focus();
-
 		} catch(E) {
-			this.error.sdump('D_ERROR','print_list.init: ' + E + '\n');
+			alert('controller_init: ' + E );
 		}
 	},
 
-	'test_template' : function (name) { 
+	'preview' : function (name) { 
 		var params = { 
-			'au' : test_patron, 
-			'lib' : obj.data.list.au[0].home_ou(),
-			'staff' : obj.data.list.au[0],
-			'header' : document.getElementById(name + '_header_tb').value,
-			'line_item' : document.getElementById(name + '_line_item_tb').value,
-			'footer' : document.getElementById(name + '_footer_tb').value
+			'au' : new au(), 
+			'lib' : this.data.list.au[0].home_ou(),
+			'staff' : this.data.list.au[0],
+			'header' : this.controller.view.header.value,
+			'line_item' : this.controller.view.line_item.value,
+			'footer' : this.controller.view.footer.value,
+			'type' : this.controller.view.template_type_menu.value,
+			'list' : this.test_list[ this.controller.view.template_type_menu.value ].dump(),
+			'sample_view' : this.controller.view.sample,
 		};
-		this.print.print_list( params, sample_view );
+		this.print( params );
 	},
 
 	'save_template' : function(name) {
 		this.data.print_list_templates[name].header = this.controller.view.header.value;
 		this.data.print_list_templates[name].line_item = this.controller.view.line_item.value;
 		this.data.print_list_templates[name].footer = this.controller.view.footer.value;
+		this.data.print_list_templates[name].type = this.controller.view.template_type_menu.value;
 		this.data.stash( 'print_list_templates' );
 		alert('Template Saved');
+	},
+
+	'print' : function(params) {
 	},
 }
 

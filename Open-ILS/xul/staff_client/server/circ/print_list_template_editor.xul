@@ -95,6 +95,7 @@
 		<hbox flex="1">
 			<groupbox flex="1">
 				<caption label="Preview" />
+				<iframe id="sample" flex="1"/>
 			</groupbox>
 			<vbox flex="1">
 				<groupbox flex="1">
