@@ -914,8 +914,8 @@ sub generic_receive {
 
 	my $copy = $ctx->{copy};
 	$U->unflesh_copy($copy);
-	$logger->info("Checkin copy called by user ".$requestor->id." for copy ".$copy->id);
 	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
+	$logger->info("Checkin copy called by user ".$requestor->id." for copy ".$copy->id);
 	# ------------------------------------------------------------------------------
 
 	return $self->checkin_do_receive($connection, $ctx);
@@ -929,6 +929,7 @@ sub checkin_do_receive {
 	my $copy			= $ctx->{copy};
 	my $session		= $ctx->{session};
 	my $requestor	= $ctx->{requestor};
+	my $nochange	= 1; # did we actually do anything?
 
 	if(!$ctx->{force}) {
 		return $evt if ($evt = _checkin_check_copy_status($copy));
@@ -945,6 +946,7 @@ sub checkin_do_receive {
 		# info from the circ then close it out 
 		$longoverdue	= 1 if ($circ->stop_fines =~ /longoverdue/);
 		$claimsret		= 1 if ($circ->stop_fines =~ /claimsreturned/);
+		$nochange		= 0;
 		$ctx->{circ}	= $circ;
 		$evt				= _checkin_handle_circ($ctx);
 		return $evt if $evt;
@@ -952,8 +954,9 @@ sub checkin_do_receive {
 	} elsif( $transit ) {
 
 		# is this item currently in transit?
-		$ctx->{transit} = $transit;
-		$evt = $transcode->transit_receive( $copy, $requestor, $session );
+		$nochange			= 0;
+		$ctx->{transit}	= $transit;
+		$evt					= $transcode->transit_receive( $copy, $requestor, $session );
 
 		if( !$U->event_equals($evt, 'SUCCESS') ) {
 
@@ -987,7 +990,8 @@ sub checkin_do_receive {
 
 	if($hold) {
 
-		$ctx->{hold} = $hold;
+		$ctx->{hold}	= $hold;
+		$nochange		= 0;
 		
 		# Capture the hold with this copy
 		return $evt if ($evt = _checkin_capture_hold($ctx));
@@ -1017,11 +1021,15 @@ sub checkin_do_receive {
 
 			# Copy wants to go home. Transit it there.
 			return $evt if ( $evt = _checkin_build_generic_copy_transit($ctx) );
-			$evt = OpenILS::Event->new('ROUTE_ITEM', org => $copy->circ_lib);
+			$evt			= OpenILS::Event->new('ROUTE_ITEM', org => $copy->circ_lib);
+			$nochange	= 0;
 		}
 	}
 
 	$logger->info("Copy checkin finished with event: ".$evt->{textcode});
+
+	return _checkin_flesh_event(
+		$ctx, OpenILS::Event->new('NO_CHANGE')) if $nochange;
 
 	$U->commit_db_session($session);
 	return _checkin_flesh_event($ctx, $evt);

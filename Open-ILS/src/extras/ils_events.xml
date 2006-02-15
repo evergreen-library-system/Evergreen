@@ -18,6 +18,13 @@
 		<desc>Placeholder event.  Used for development only</desc>
 	</event>
 
+	<event code='3' textcode='NO_CHANGE'>
+		<desc>
+			The called method didn't actually do anything
+		</desc>
+	</event>
+
+
 
 	<event code='1000' textcode='LOGIN_FAILED'>
 		<desc>
