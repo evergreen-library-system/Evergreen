@@ -277,9 +277,32 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 
 		if (!check.route_to) check.route_to = '???';
 
-		/* SUCCESS */
-		if (check.ilsevent == 0) {
+		/* SUCCESS  /  NO_CHANGE */
+		if (check.ilsevent == 0 || check.ilsevent == 3) {
 			check.route_to = data.hash.acpl[ check.copy.location() ].name();
+			switch(check.copy.status()) {
+				case 0: /* AVAILABLE */
+				case 7: /* RESHELVING */
+				break;
+				case 8: /* ON HOLDS SHELF */
+					check.route_to = 'HOLDS SHELF';
+					var rv = error.yns_alert(
+						'This item needs to be routed to ' + check.route_to + '.',
+						'Alert',
+						"Print Hold Slip",
+						"Don't Print",
+						null,
+						"Check here to confirm this message"
+					);
+				break;
+				case 6: /* IN TRANSIT */
+					check.route_to = 'TRANSIT SHELF';
+					alert("FIXME -- I didn't think we could get here");
+				break;
+				default:
+					alert("FIXME -- whaaa??");
+				break;
+			}
 		}
 
 		/* ROUTE_ITEM */
@@ -288,51 +311,11 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			var rv = error.yns_alert(
 				'This item is in transit to ' + check.route_to + '.',
 				'Alert',
-				null,
-				"OK",
+				"Print Transit Slip",
+				"Don't Print",
 				null,
 				"Check here to confirm this message"
 			);
-		}
-
-		/* CIRCULATION_NOT_FOUND */
-		if (check.ilsevent == 1500) {
-			if ( check.copy.circ_lib() == data.list.au[0].home_ou() ) {
-				if ( check.copy.dummy_title() ) {
-					check.route_to = 'CATALOGING';
-					check.copy.status( 11 );
-					error.yns_alert(
-						'This item needs to be routed to CATALOGING.',
-						'Alert',
-						null,
-						'OK',
-						null,
-						"Check here to confirm this message"
-					);
-				} else {
-					check.route_to = data.hash.acpl[ check.copy.location() ].name();
-					/* FIXME -- Do we want a dialog for this case? */
-				}
-			} else {
-				check.route_to = data.hash.aou[ check.copy.circ_lib() ].shortname();
-				var rv = error.yns_alert(
-					'There is no circulation for this item, however, its circulating library is ' + check.route_to
-						+ '.\nTransit this item?',
-					'Alert',
-					"Transit",
-					"Don't Transit",
-					null,
-					"Check here to confirm this message"
-				);
-				switch(rv) {
-					case 0: /* transit */
-						alert('FIXME -- make transit call here');
-					break;
-					case 1: /* don't transit */
-						check.route_to += ' ?';
-					break;
-				}
-			}
 		}
 
 		/* ITEM_NOT_CATALOGED */
