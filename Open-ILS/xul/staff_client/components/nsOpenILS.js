@@ -52,7 +52,7 @@ var Module = {
 
     myFactory: {
         createInstance: function (outer, iid) {
-            dump("CI: " + iid + "\n");
+            //dump("CI: " + iid + "\n");
             if (outer != null)
             throw Components.results.NS_ERROR_NO_AGGREGATION;
             return (new OpenILS()).QueryInterface(iid);
