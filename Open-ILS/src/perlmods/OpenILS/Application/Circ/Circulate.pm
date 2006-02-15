@@ -883,7 +883,7 @@ sub _checkout_noncat {
 
 __PACKAGE__->register_method(
 	method	=> "generic_receive",
-	api_name	=> "open-ils.circ.checkin__",
+	api_name	=> "open-ils.circ.checkin",
 );
 
 sub generic_receive {
@@ -914,22 +914,39 @@ sub generic_receive {
 
 	my $copy = $ctx->{copy};
 	$U->unflesh_copy($copy);
-	$logger->debug("Checkin copy called by user ".$requestor->id." for copy ".$copy->id);
+	$logger->info("Checkin copy called by user ".$requestor->id." for copy ".$copy->id);
 	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
 	# ------------------------------------------------------------------------------
+
+	return $self->checkin_do_receive($connection, $ctx);
+}
+
+sub checkin_do_receive {
+
+	my( $self, $connection, $ctx ) = @_;
+
+	my $evt;
+	my $copy			= $ctx->{copy};
+	my $session		= $ctx->{session};
+	my $requestor	= $ctx->{requestor};
 
 	if(!$ctx->{force}) {
 		return $evt if ($evt = _checkin_check_copy_status($copy));
 	}
 
-	my ($circ)		= $U->fetch_open_circulation($copy->id);
-	my ($transit)	= $U->fetch_open_transit_by_copy($copy->id);
+	my $longoverdue	= 0; # is this copy attached to a longoverdue circ?
+	my $claimsret		= 0; # is this copy attached to a claims returned circ?
+	my ($circ)			= $U->fetch_open_circulation($copy->id);
+	my ($transit)		= $U->fetch_open_transit_by_copy($copy->id);
 
 	if( $circ ) {
-		
-		# There is an open circ on this item so close out the circ
-		$ctx->{circ} = $circ;
-		$evt = _checkin_handle_circ($ctx);
+
+		# There is an open circ on this item.  Grab any interesting
+		# info from the circ then close it out 
+		$longoverdue	= 1 if ($circ->stop_fines =~ /longoverdue/);
+		$claimsret		= 1 if ($circ->stop_fines =~ /claimsreturned/);
+		$ctx->{circ}	= $circ;
+		$evt				= _checkin_handle_circ($ctx);
 		return $evt if $evt;
 
 	} elsif( $transit ) {
@@ -992,10 +1009,7 @@ sub generic_receive {
 
 		if( $copy->circ_lib == $requestor->home_ou ) {
 
-			# Copy is in the right place.  Re-shelve the thing.
-			$copy->status($U->copy_status_from_name('reshelving')->id );
-			return $evt if ( $evt = $U->update_copy( 
-				copy => $copy, editor => $requestor->id, session => $session ));
+			# Copy is in the right place.
 			$evt = OpenILS::Event->new('SUCCESS');
 			$evt = OpenILS::Event->new('ITEM_NOT_CATALOGED') if $ctx->{precat};
 
@@ -1020,15 +1034,6 @@ sub _checkin_check_copy_status {
 	my $evt = OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
 	return $evt if ($stat == $U->copy_status_from_name('lost')->id);
 	return $evt if ($stat == $U->copy_status_from_name('missing')->id);
-
-	# XXX Really do this?
-	my ($circ)	= $U->fetch_open_circulation($copy->id);
-	if($circ) {
-		$evt = OpenILS::Event->new('CIRC_BAD_STATUS', payload => $copy );
-		return $evt if ($circ->stop_fines =~ /longoverdue/);
-		return $evt if ($circ->stop_fines =~ /claimsreturned/);
-	}
-
 	return undef;
 }
 
@@ -1129,9 +1134,10 @@ sub _checkin_flesh_event {
 
 # ------------------------------------------------------------------------------
 
+=head comment
 __PACKAGE__->register_method(
 	method	=> "checkin",
-	api_name	=> "open-ils.circ.checkin",
+	api_name	=> "open-ils.circ.checkin___",
 	notes		=> <<"	NOTES");
 	PARAMS( authtoken, barcode => bc )
 	Checks in based on barcode
@@ -1283,6 +1289,8 @@ sub _check_checkin_holds {
 	}
 }
 
+=cut
+
 
 sub _checkin_handle_circ { return _update_checkin_circ_and_copy(@_); }
 
@@ -1331,9 +1339,9 @@ sub _update_checkin_circ_and_copy {
 		}
 	}
 
-	$logger->debug("Checkin committing copy and circ objects");
-	$evt = $U->update_copy( session => $session, 
-		copy => $copy, editor => $requestor->id );
+	$logger->info("Checkin copy setting status to 'reshelving' and committing...");
+	$copy->status($U->copy_status_from_name('reshelving')->id);
+	$evt = $U->update_copy( session => $session, copy => $copy, editor => $requestor->id );
 	return $evt if $evt;
 
 	$ctx->{session}->request(

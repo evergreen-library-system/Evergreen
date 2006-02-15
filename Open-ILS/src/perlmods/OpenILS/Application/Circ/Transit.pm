@@ -80,48 +80,29 @@ sub transit_receive {
 		'open-ils.storage.direct.action.transit_copy.update', $transit )->gather(1);
 	return $U->DB_UPDATE_FAILED($transit) unless $r;
 
-	# if this is a hold transit, finalize the hold transit
 	my $ishold = 0;
-	if( ($evt = _finish_hold_transit( 
-			$session, $requestor, $copy, $transit->id )) ) {
+	my ($ht) = $U->fetch_hold_transit( $transit->id );
+
+	if($ht) {
+
+		$logger->info("Hold transit found: ".$hold_transit->id.". Setting copy status to 'on holds shelf'");
+		$copy->status($U->copy_status_from_name('on holds shelf')->id);
 		$ishold = 1;
-		return $evt unless $U->event_equals($evt, 'SUCCESS');
-		$evt = undef;
+
+	} else {
+
+		$logger->info("Hold transit not found, recovering original copy status");
+		$copy->status( $transit->copy_status );
 	}
+
 	
-	$U->logmark;
+	return $evt if ( $evt = 
+		$U->update_copy( copy => $copy, editor => $requestor->id, session => $session ));
 
-	#recover this copy's status from the transit
-	$copy->status( $transit->copy_status );
 	return OpenILS::Event->new('SUCCESS', ishold => $ishold, payload => $copy);
-
 }
 
 
-
-# ------------------------------------------------------------------------------
-# If we have a hold transit, set the copy's status to 'on holds shelf',
-# update the copy, and return SUCCESS
-# ------------------------------------------------------------------------------
-sub _finish_hold_transit {
-	my( $session, $requestor, $copy, $transid ) = @_;
-	$U->logmark;
-	my ($hold_transit, $evt) = $U->fetch_hold_transit( $transid );
-	return undef unless $hold_transit;
-
-	my $s = $U->copy_status_from_name('on holds shelf');
-	$logger->info("Hold transit found: ".$hold_transit->id.". Routing to holds shelf");
-
-	$copy->status($s->id);
-	$U->update_copy( copy => $copy, 
-		editor => $requestor->id, session => $session );
-
-	my $r = $session->request( 
-		'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
-	return $U->DB_UPDATE_FAILED($copy) unless $r;
-
-	return OpenILS::Event->new('SUCCESS');
-}
 
 
 __PACKAGE__->register_method(
