@@ -309,5 +309,26 @@ util.list.prototype = {
 		}
 		return list;
 	},
+
+	'dump' : function(params) {
+		switch(this.node.nodeName) {
+			case 'tree' : return this._dump_tree(params); break;
+			default: throw('NYI: Need ._init() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_dump_tree' : function(params) {
+		var dump = [];
+		for (var i = 0; i < this.treechildren.childNodes.length; i++) {
+			var row = [];
+			var treeitem = this.treechildren.childNodes[i];
+			var treerow = treeitem.firstChild;
+			for (var j = 0; j < treerow.childNodes.length; j++) {
+				row.push( treerow.childNodes[j].getAttribute('label') );
+			}
+			dump.push( row );
+		}
+		return dump;
+	}
 }
 dump('exiting util.list.js\n');
