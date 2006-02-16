@@ -148,6 +148,8 @@ function save_user () {
 		req.send(true);
 		var ok = req.getResultObject();
 
+		if (ok.ilsevent) throw ok;
+			
 		req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.set_groups', ses_id, ok.id(), user_groups );
 		req.send(true);
 		req.getResultObject();
