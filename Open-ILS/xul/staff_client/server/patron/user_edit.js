@@ -18,7 +18,6 @@ var required_user_parts = {
 	day_phone:'Daytime Phone',
 	home_ou:'Home Library',
 	profile:'Profile Group',
-	standing:'Standing',
 };
 
 var required_addr_parts = {
@@ -315,6 +314,10 @@ function init_editor (u) {
 	x['user.super_user'].setAttribute('onchange','user.super_user(this.checked ? "t" : "f" )');
 	if (cgi.param('adv')) x['user.super_user'].parentNode.parentNode.setAttribute('adv', 'false');
 
+	if (user.barred()) x['user.barred'].checked = true;
+	x['user.barred'].setAttribute('onchange','user.barred(this.checked ? "t" : "f" )');
+	if (cgi.param('adv')) x['user.barred'].parentNode.parentNode.setAttribute('adv', 'false');
+
 	if (user.claims_returned_count()) x['user.claims_returned_count'].value = user.claims_returned_count();
 	// onchange handled by func above
 
@@ -373,7 +376,8 @@ function init_editor (u) {
 	x['user.ident_type2'].setAttribute('onchange','var x = this.options[this.selectedIndex].value; x ? user.ident_type2(x) : user.ident_type2(null);');
 
 
-	// set up the standing selector
+/*
+	// set up the barred checkbox
 	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.standings.retrieve' );
 	req.send(true);
 	standing_list = req.getResultObject();
@@ -390,6 +394,7 @@ function init_editor (u) {
 	);
 
 	x['user.standing'].setAttribute('onchange','user.standing(this.options[this.selectedIndex].value)');
+*/
 
 	// set up the profile selector
 	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.groups.tree.retrieve' );

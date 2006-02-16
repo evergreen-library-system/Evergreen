@@ -54,6 +54,7 @@ CREATE TABLE actor.usr (
 	active			BOOL		NOT NULL DEFAULT TRUE,
 	master_account		BOOL		NOT NULL DEFAULT FALSE,
 	super_user		BOOL		NOT NULL DEFAULT FALSE,
+	barred			BOOL		NOT NULL DEFAULT FALSE,
 	usrgroup		SERIAL		NOT NULL,
 	claims_returned_count	INT		NOT NULL DEFAULT 0,
 	credit_forward_balance	NUMERIC(6,2)	NOT NULL DEFAULT 0.00,

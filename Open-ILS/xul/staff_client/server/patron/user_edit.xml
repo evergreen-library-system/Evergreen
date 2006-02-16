@@ -193,8 +193,8 @@
 				<td class="value"><input type="checkbox" name="user.super_user" id="user.super_user" value="t"/></td>
 			</tr>
 			<tr class='advanced hideme'>
-				<td class="label">Standing:</td>
-				<td class="value"><select name="user.standing" id="user.standing"/></td>
+				<td class="label">Barred:</td>
+				<td class="value"><input type="checkbox" name="user.barred" id="user.barred" value="t"/></td>
 			</tr>
 			<tr>
 				<td class="label">Set as Family or Group Lead Account:</td>
