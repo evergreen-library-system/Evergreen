@@ -88,7 +88,7 @@ int osrfCacheSetExpire( time_t seconds, char* key, ... ) {
 	if( key ) {
 		VA_LIST_TO_STRING(key);
 		jsonObject* o = osrfCacheGetObject( VA_BUF );
-		osrfCacheRemove(VA_BUF);
+		//osrfCacheRemove(VA_BUF);
 		return osrfCachePutObject( VA_BUF, o, seconds );
 	}
 	return -1;
