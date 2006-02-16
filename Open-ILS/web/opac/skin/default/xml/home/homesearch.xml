@@ -67,12 +67,14 @@
 
 				<td nowrap='nowrap' align='center' style='padding: 4px;'>
 
-					<span style='padding-right:9px;'>
+					<span style='padding-right:40px;'>
 						<!--#include virtual="../common/stypes_selector.xml"-->
 					</span>
 
-					<span style='padding-right:9px;'>
+					<span>
+						<!--
 						<span>&common.format;: </span>
+						-->
 						<!--#set var='FORM_SEL_ID' value='form_selector'-->
 						<!--#include virtual="../common/format_selector.xml"-->
 					</span>

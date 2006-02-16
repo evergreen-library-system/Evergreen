@@ -11,7 +11,7 @@
 <!ENTITY opac.advanced.refined.nocontains "Does not contain">
 <!ENTITY opac.advanced.refined.exact "Matches Exactly">
 <!ENTITY opac.advanced.marc.warning "For Librarians">
-<!ENTITY opac.advanced.marc.title "MARC Advanced Search">
+<!ENTITY opac.advanced.marc.title "MARC Expert Search">
 <!ENTITY opac.advanced.marc.tag "MARC Tag">
 <!ENTITY opac.advanced.marc.ind1 "Indicator 1">
 <!ENTITY opac.advanced.marc.ind2 "Indicator 2">

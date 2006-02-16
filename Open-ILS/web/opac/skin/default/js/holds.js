@@ -76,7 +76,7 @@ function _holdsDrawWindow(recid, type) {
 	appendClear($('holds_title'), text(rec.title()));
 	appendClear($('holds_author'), text(rec.author()));
 
-	//removeChildren($('holds_format'));
+	removeChildren($('holds_format'));
 	for( var i in rec.types_of_resource() ) {
 		var res = rec.types_of_resource()[i];
 		var img = elem("img");

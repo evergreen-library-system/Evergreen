@@ -1,7 +1,7 @@
 <table class='data_grid' width='95%'>
 	<thead>
 		<tr>
-			<td colspan='6'>&opac.advanced.marc.title; (&opac.advanced.marc.warning;)</td>
+			<td colspan='6'>&opac.advanced.marc.title;</td>
 		</tr>
 	</thead>
 	<tbody id='advanced.marc.tbody'>

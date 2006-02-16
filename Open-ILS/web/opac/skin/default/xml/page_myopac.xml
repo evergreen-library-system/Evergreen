@@ -16,11 +16,13 @@
 	</script>
 
 	<br/>
-	<table style='width: 95%; text-align: center;'>
+	<table style='width: 98%; text-align: center;'>
 		<tbody>
 			<tr id='myopac_nav_row'>
 
-				<td width='5%' style='border-right: 1px solid #808080;'></td>
+				<!--
+				<td width='1%' style='border-right: 1px solid #808080;'></td>
+				-->
 
 				<td class='myopac_link' id='myopac_summary_td' >
 					<a href='javascript:void(0);' 
@@ -29,12 +31,12 @@
 
 				<td class='myopac_link' id='myopac_checked_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("checked");'> Checked Out</a>
+						onclick='myOPACChangePage("checked");'>Items Checked Out</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_holds_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("holds");'>Holds</a>
+						onclick='myOPACChangePage("holds");'>Items on Hold</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_fines_td' >
@@ -44,19 +46,21 @@
 
 				<td class='myopac_link' id='myopac_prefs_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("prefs");'>Preferences</a>
+						onclick='myOPACChangePage("prefs");'>Accounty Preferences</a>
 				</td>
 
-				<td class='myopac_link' id='myopac_bookbag_td' >
+				<td class='myopac_link' id='myopac_bookbag_td' nowrap='nowrap'>
 					<!--
 					<span><img src='../../../../images/bookbag.gif' style='width: 25px; height: 25px;'> </img></span>
 					-->
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("bookbag");'> Bookbags </a>
+						onclick='myOPACChangePage("bookbag");'>My Bookbags</a>
 
 				</td>
 
-				<td width='5%' style='border-left: 1px solid #808080;'></td>
+				<!--
+				<td width='1%' style='border-left: 1px solid #808080;'></td>
+				-->
 
 			</tr>
 		</tbody>
