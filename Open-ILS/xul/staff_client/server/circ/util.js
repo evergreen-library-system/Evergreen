@@ -349,37 +349,37 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			);
 		}
 
-		/* COPY_NEEDED_FOR_HOLD */
-		if (check.ilsevent == 7007) {
-			var rv = error.yns_alert(
-				'This copy is needed to fulfill a hold.  Capture it?',
-				'Alert',
-				"Capture",
-				"Don't Capture",
-				null,
-				"Check here to confirm this message"
-			);
-			switch(rv) {
-				case 0: /* captured */
-
-					var hold = this.hold_capture_via_copy_barcode( session, barcode, false );
-					if (hold.ilsevent != 7007) { check = hold; continue; }
-					alert('something weird');
-
-				break;
-				case 1: /* not captured */
-
-					alert('case 1');
-
-				break;
-				default:
-				
-					alert('case 2');
-
-				break;
-			}
-		}
-
+//		/* COPY_NEEDED_FOR_HOLD */
+//		if (check.ilsevent == 7007) {
+//			var rv = error.yns_alert(
+//				'This copy is needed to fulfill a hold.  Capture it?',
+//				'Alert',
+//				"Capture",
+//				"Don't Capture",
+//				null,
+//				"Check here to confirm this message"
+//			);
+//			switch(rv) {
+//				case 0: /* captured */
+//
+//					var hold = this.hold_capture_via_copy_barcode( session, barcode, false );
+//					if (hold.ilsevent != 7007) { check = hold; continue; }
+//					alert('something weird');
+//
+//				break;
+//				case 1: /* not captured */
+//
+//					alert('case 1');
+//
+//				break;
+//				default:
+//				
+//					alert('case 2');
+//
+//				break;
+//			}
+//		}
+//
 		break;
 		} /* end of while */
 //		if (check.ilsevent != 0) {
