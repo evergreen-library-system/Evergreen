@@ -56,7 +56,7 @@ sub transit_receive {
 	my ( $class, $copy, $requestor, $session ) = @_;
 	$U->logmark;
 
-	my( $transit, $hold_transit, $evt );
+	my( $transit, $evt );
 	my $copyid = $copy->id;
 
 	my $status_name = $U->copy_status_to_name($copy->status);
@@ -80,26 +80,20 @@ sub transit_receive {
 		'open-ils.storage.direct.action.transit_copy.update', $transit )->gather(1);
 	return $U->DB_UPDATE_FAILED($transit) unless $r;
 
-	my $ishold = 0;
-	my ($ht) = $U->fetch_hold_transit( $transit->id );
-
+	my $ishold	= 0;
+	my ($ht)		= $U->fetch_hold_transit( $transit->id );
 	if($ht) {
-
-		$logger->info("Hold transit found: ".$hold_transit->id.". Setting copy status to 'on holds shelf'");
-		$copy->status($U->copy_status_from_name('on holds shelf')->id);
-		$ishold = 1;
-
-	} else {
-
-		$logger->info("Hold transit not found, recovering original copy status");
-		$copy->status( $transit->copy_status );
+		$logger->info("Hold transit found in transit receive...");
+		$ishold	= 1;
 	}
 
-	
+	$logger->info("Recovering original copy status in transit: ".$transit->copy_status);
+	$copy->status( $transit->copy_status );
 	return $evt if ( $evt = 
 		$U->update_copy( copy => $copy, editor => $requestor->id, session => $session ));
 
-	return OpenILS::Event->new('SUCCESS', ishold => $ishold, payload => $copy);
+	return OpenILS::Event->new('SUCCESS', ishold => $ishold, 
+		payload => { transit => $transit, holdtransit => $ht } );
 }
 
 

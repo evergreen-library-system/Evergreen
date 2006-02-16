@@ -484,6 +484,19 @@ sub fetch_hold_transit_by_hold {
 	return ($transit, $evt );
 }
 
+sub fetch_open_hold_by_copy {
+	my( $self, $copyid ) = @_;
+	$logger->debug("Searching for active hold for copy $copyid");
+	my( $hold, $evt );
+
+	$hold = $self->storagereq(
+		'open-ils.storage.direct.action.hold_request.search_where',
+		{ current_copy => $copyid , fulfillment_time => undef } );
+
+	$evt = OpenILS::Event->new('HOLD_NOT_FOUND', copyid => $copyid) unless $hold;
+	return ($hold, $evt);
+}
+
 sub fetch_hold_transit {
 	my( $self, $transid ) = @_;
 	my( $htransit, $evt );

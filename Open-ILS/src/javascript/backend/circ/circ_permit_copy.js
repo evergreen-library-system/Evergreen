@@ -36,7 +36,10 @@ if( copy.circulate == '0' )
 if( copy.ref != '0' ) 
 	return result.event = 'COPY_IS_REFERENCE';
 
-if( copyStatus != 'available' && copyStatus != 'on holds shelf' )
+if(	copyStatus != 'available' && 
+		copyStatus != 'on holds shelf' && 
+		copyStatus != 'reshelving' )
+
 	return result.event = 'COPY_NOT_AVAILABLE';
 
 /* example of handling holds 

@@ -187,6 +187,10 @@
 		<desc> The hold transit object does not exist </desc>
 	</event>
 
+	<event code='1519' textcode='TRANSACTION_NOT_FOUND'>
+		<desc> Requested transaction object does not exist </desc>
+	</event>
+
 
 
 

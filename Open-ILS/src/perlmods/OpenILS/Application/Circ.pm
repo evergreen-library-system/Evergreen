@@ -56,8 +56,8 @@ sub checkouts_by_user {
 	my $circs = $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
-#		{ usr => $target->id, xact_finish => undef } );
-		{ usr => $target->id } );
+		{ usr => $target->id, stop_fines => undef } );
+#		{ usr => $target->id } );
 
 	my @results;
 	for my $circ (@$circs) {
@@ -100,11 +100,12 @@ sub checkouts_by_user_slim {
 	$logger->debug( 'User ' . $requestor->id . 
 		" retrieving checked out items for user " . $target->id );
 
+	# XXX Make the call correct..
 	return $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
-#		{ usr => $target->id, xact_finish => undef } );
-		{ usr => $target->id } );
+		{ usr => $target->id, stop_fines => undef } );
+#		{ usr => $target->id } );
 }
 
 

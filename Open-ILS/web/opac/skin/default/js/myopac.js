@@ -186,39 +186,36 @@ function myOPACDrawCheckedTitle(r) {
 function myOPACDrawNonCatalogedItem(r) {
 	var copy = r.getResultObject();
 	var circid = r.circ;
+
 	var row = $('myopac_checked_row_ ' + circid);
 	var tlink = $n( row, "myopac_checked_title_link" );
 	var alink = $n( row, "myopac_checked_author_link" );
-	//tlink.appendChild(text(copy.dummy_title()));
-	//alink.appendChild(text(copy.dummy_author()));
 
 	tlink.parentNode.appendChild(text(copy.dummy_title()));
 	alink.parentNode.appendChild(text(copy.dummy_author()));
-
-	/*
-	tlink.setAttribute('href', null);
-	alink.setAttribute('href', null);
-	alert(alink.getAttribute('href'));
-	*/
 }
 
 
 function myOPACRenewCirc(circid) {
-	alert("Functionality currently under construction");
-	return;
 
 	var circ;
 	for( var i = 0; i != circsCache.length; i++ ) 
 		if(circsCache[i].id() == circid)
 			circ = circsCache[i];
 
-	var req = new Request(RENEW_CIRC, G.user.session, circ );
+	var req = new Request(RENEW_CIRC, G.user.session, 
+		{ patron : G.user.id(), copyid : circ.target_copy() } );
 	req.send(true);
 	var res = req.result();
-	if(res.status) {
-		alert(res.text);
-		return;
+
+	if(evt = checkILSEvent(res)) {
+		if( evt != 0 ) {
+			alert(evt);
+			alertILSEvent(evt);
+			return;
+		}
 	}
+
 	alert($('myopac_renew_success').innerHTML);	
 	checkedDrawn = false;
 	myOPACShowChecked();
