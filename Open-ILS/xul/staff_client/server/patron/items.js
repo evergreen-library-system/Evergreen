@@ -109,7 +109,7 @@ patron.items.prototype = {
 					'cmd_items_print' : [
 						['command'],
 						function() {
-							alert('TODO: Print items out receipt');
+							dump(js2JSON(obj.list.dump()) + '\n');
 						}
 					],
 					'cmd_items_claimed_returned' : [

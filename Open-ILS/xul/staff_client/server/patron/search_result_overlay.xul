@@ -8,7 +8,13 @@
 <commandset id="patron_search_result_cmds" />
 
 	<box id="patron_search_result_main" flex="1">
-		<tree id="patron_list" flex="1" enableColumnDrag="true" seltype="multiple"/>
+		<vbox flex="1">
+			<tree id="patron_list" flex="1" enableColumnDrag="true" seltype="multiple"/>
+			<hbox>
+				<spacer flex="1"/>
+				<button label="Print" command="cmd_search_print" />
+			</hbox>
+		</vbox>
 	</box>
 
 </overlay>

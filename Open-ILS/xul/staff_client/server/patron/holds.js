@@ -78,6 +78,8 @@ patron.holds.prototype = {
 					'cmd_holds_print' : [
 						['command'],
 						function() {
+							dump( js2JSON( obj.list.dump() ) + '\n');
+							alert( js2JSON( obj.list.dump() ) + '\n');
 						}
 					],
 					'cmd_holds_edit' : [

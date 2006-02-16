@@ -97,6 +97,8 @@ circ.checkin.prototype = {
 					'cmd_checkin_print' : [
 						['command'],
 						function() {
+							dump( js2JSON( obj.list.dump() ) );
+							alert( js2JSON( obj.list.dump() ) );
 						}
 					],
 					'cmd_checkin_reprint' : [

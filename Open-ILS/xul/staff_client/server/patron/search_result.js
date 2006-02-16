@@ -77,6 +77,13 @@ patron.search_result.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
+					'cmd_search_print' : [
+						['command'],
+						function() {
+							dump( js2JSON( obj.list.dump() ) );
+							alert( js2JSON( obj.list.dump() ) );
+						}
+					],
 				}
 			}
 		);
