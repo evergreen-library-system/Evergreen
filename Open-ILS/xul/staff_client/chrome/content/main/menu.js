@@ -79,7 +79,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + obj.w.escape( session ) + '&adv=1');
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + obj.w.escape( session ) );
 					obj.set_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Register Patron' });
 				}
 			],
@@ -274,7 +274,7 @@ main.menu.prototype = {
 	},
 
 	'new_tab' : function(url,params,content_params) {
-		if (!url) url = 'data:text/html,<h1>Hello World</h1>'
+		if (!url) url = 'http://open-ils.org/dokuwiki/doku.php?id=scratchpad:mock_staff_client_portal';
 		if (!params) params = {};
 		if (!content_params) content_params = {};
 		var tc = this.find_free_tab();
