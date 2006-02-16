@@ -289,6 +289,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			switch(check.copy.status()) {
 				case 0: /* AVAILABLE */
 				case 7: /* RESHELVING */
+					if (msg) msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 				case 8: /* ON HOLDS SHELF */
 					check.route_to = 'HOLDS SHELF';
@@ -309,12 +310,13 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				break;
 				case 11: /* CATALOGING */
 					check.route_to = 'CATALOGING';
+					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 				default:
 					msg += ("FIXME -- this case is unhandled\n");
+					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 			}
-			msg += 'This item needs to be routed to ' + check.route_to + '.';
 			if (msg) error.yns_alert(msg,'Alert',null,'OK',null,"Check here to confirm this message");
 		}
 
