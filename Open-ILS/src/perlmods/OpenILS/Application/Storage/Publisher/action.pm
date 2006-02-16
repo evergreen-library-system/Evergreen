@@ -437,7 +437,24 @@ sub new_hold_copy_targeter {
 
 	try {
 		if ($one_hold) {
-			$holds = [ action::hold_request->search(id => $one_hold) ];
+
+			my $time = time;
+			$check_expire ||= '12h';
+			$check_expire = interval_to_seconds( $check_expire );
+
+			my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
+			$year += 1900;
+			$mon += 1;
+			my $expire_threshold = sprintf(
+				'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
+				$year, $mon, $mday, $hour, $min, $sec
+			);
+
+			$holds = [ action::hold_request->search_where(
+					{ id => $one_hold,
+					  fulfillment_time => undef, 
+					  prev_check_time => [ undef, { '<=' => $expire_threshold } ] }
+				   ) ];
 		} elsif ( $check_expire ) {
 
 			my $time = time;
@@ -538,6 +555,11 @@ sub new_hold_copy_targeter {
 				$all_copies = [asset::copy->retrieve($hold->target)];
 			}
 
+			@$all_copies = grep {	$_->status->holdable && 
+						$_->location->holdable && 
+						$_->holdable
+					} @$all_copies;
+
 			# let 'em know we're still working
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			
@@ -564,8 +586,8 @@ sub new_hold_copy_targeter {
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			# map the potentials, so that we can pick up checkins
-			$log->debug( "\tMapping ".scalar(@copies)." potential copies for hold ".$hold->id);
-			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@copies);
+			$log->debug( "\tMapping ".scalar(@$copies)." potential copies for hold ".$hold->id);
+			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@$copies);
 
 			my @good_copies;
 			for my $c (@$copies) {
@@ -596,8 +618,7 @@ sub new_hold_copy_targeter {
 			$$prox_list[0] =
 			[
 				grep {
-					$_->circ_lib == $hold->pickup_lib && 
-					( $_->status == 0 || $_->status == 7 )
+					$_->circ_lib == $hold->pickup_lib
 				} @good_copies
 			];
 
@@ -606,6 +627,7 @@ sub new_hold_copy_targeter {
 			my $best = $self->choose_nearest_copy($hold, $prox_list);
 
 			if (!$best) {
+				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$copies)." copies");
 				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
 				$best = $self->choose_nearest_copy($hold, $prox_list);
 			}
@@ -624,13 +646,12 @@ sub new_hold_copy_targeter {
 
 			if ($best) {
 				$hold->update( { current_copy => ''.$best->id } );
-				$log->debug("\tTargeting copy ".$best->id." for hold fulfillment.");
+				$log->debug("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
 			} else {
-				$log->debug( "\tThere were no targetable copies for the hold" );
+				$log->info( "\tThere were no targetable copies for the hold" );
 			}
 
 			$hold->update( { prev_check_time => 'now' } );
-			$log->info("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 			$log->info("\tProcessing of hold ".$hold->id." complete.");
@@ -885,7 +906,7 @@ sub choose_nearest_copy {
 
 	for my $p ( 0 .. int( scalar(@$prox_list) - 1) ) {
 		next unless (ref $$prox_list[$p]);
-		my @capturable = grep { $_->status == 0 } @{ $$prox_list[$p] };
+		my @capturable = grep { $_->status == 0 || $_->status == 7 } @{ $$prox_list[$p] };
 		next unless (@capturable);
 		return $capturable[rand(scalar(@capturable))];
 	}
@@ -899,6 +920,7 @@ sub create_prox_list {
 	my @prox_list;
 	for my $cp (@$copies) {
 		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp->id, $lib );
+		next unless (defined($prox));
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
 		push @{$prox_list[$prox]}, $cp;
 	}

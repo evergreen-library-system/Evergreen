@@ -210,7 +210,7 @@ sub copy_proximity {
 
 	$cp = $cp->id if (ref $cp);
 	$cp = asset::copy->retrieve($cp);
-	return 999 unless $copy;
+	return unless $copy;
 	my $ol = $cp->call_number->owning_lib;
 
 	return asset::copy->db_Main->selectcol_arrayref('SELECT actor.org_unit_proximity(?,?)',{},"$ol","$org")->[0];
