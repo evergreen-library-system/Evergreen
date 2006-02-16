@@ -836,7 +836,9 @@ sub _handle_related_holds {
 	$U->logmark;
 	my @fulfilled;
 
-	# XXX should we fulfill all the holds or just the first
+	# XXX We should only fulfill one hold here...
+	# XXX If a hold was transited to the user who is checking out
+	# the item, we need to make sure that hold is what's grabbed
 	if(ref($holds) && @$holds) {
 
 		# for now, just sort by id to get what should be the oldest hold
@@ -848,6 +850,7 @@ sub _handle_related_holds {
 
 			$logger->debug("Related hold found in checkout: " . $hold->id );
 
+			$hold->current_copy($copy->id); # just make sure it's set
 			# if the hold was never officially captured, capture it.
 			$hold->capture_time('now') unless $hold->capture_time;
 			$hold->fulfillment_time('now');

@@ -484,6 +484,7 @@ sub fetch_hold_transit_by_hold {
 	return ($transit, $evt );
 }
 
+# fetches the captured, but not fulfilled hold attached to a given copy
 sub fetch_open_hold_by_copy {
 	my( $self, $copyid ) = @_;
 	$logger->debug("Searching for active hold for copy $copyid");
@@ -491,7 +492,11 @@ sub fetch_open_hold_by_copy {
 
 	$hold = $self->storagereq(
 		'open-ils.storage.direct.action.hold_request.search_where',
-		{ current_copy => $copyid , fulfillment_time => undef } );
+		{ 
+			current_copy		=> $copyid , 
+			capture_time		=> { "!=" => undef }, 
+			fulfillment_time	=> undef 
+		} );
 
 	$evt = OpenILS::Event->new('HOLD_NOT_FOUND', copyid => $copyid) unless $hold;
 	return ($hold, $evt);

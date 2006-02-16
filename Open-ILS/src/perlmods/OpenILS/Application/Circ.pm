@@ -56,7 +56,7 @@ sub checkouts_by_user {
 	my $circs = $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
-		{ usr => $target->id, stop_fines => undef } );
+		{ usr => $target->id, checkin_time => undef } );
 #		{ usr => $target->id } );
 
 	my @results;
@@ -104,7 +104,7 @@ sub checkouts_by_user_slim {
 	return $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.open_circulation.search.atomic", 
-		{ usr => $target->id, stop_fines => undef } );
+		{ usr => $target->id, checkin_time => undef } );
 #		{ usr => $target->id } );
 }
 
