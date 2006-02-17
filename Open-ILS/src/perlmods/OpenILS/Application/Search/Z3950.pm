@@ -13,6 +13,8 @@ use OpenILS::Utils::FlatXML;
 use OpenILS::Application::Cat::Utils;
 use OpenILS::Application::AppUtils;
 
+use OpenSRF::Utils::Logger qw/$logger/;
+
 use OpenSRF::EX qw(:try);
 
 my $utils = "OpenILS::Application::Cat::Utils";
@@ -39,6 +41,9 @@ sub initialize {
 	$attr			= $settings_client->config_value("z3950", "oclc", "attr");
 	$username	= $settings_client->config_value("z3950", "oclc", "username");
 	$password	= $settings_client->config_value("z3950", "oclc", "password");
+
+	$logger->info("z3950:  Search App connecting:  host=$host, port=$port, ".
+		"db=$database, attr=$attr, username=$username, password=$password" );
 }
 
 
@@ -56,7 +61,7 @@ sub z39_search_by_string {
 			$server and $port and $db and $search);
 
 
-	warn "Z39.50 search for $search\n";
+	$logger->info("Z3950: searching for $search");
 
 	$user ||= "";
 	$pw	||= "";
@@ -79,14 +84,14 @@ sub z39_search_by_string {
 	my $hash = {};
 
 	$hash->{count} =  $rs->size();
-	warn "Z3950 Search recovered " . $hash->{count} . " records\n";
+	$logger->info("Z3950: Search recovered " . $hash->{count} . " records");
 
 	# until there is a more graceful way to handle this
 	if($hash->{count} > 20) { return $hash; }
 
 
 	for( my $x = 0; $x != $hash->{count}; $x++ ) {
-		warn "Churning on z39 record count $x\n";
+		$logger->debug("z3950: Churning on z39 record count $x");
 
 		my $rec = $rs->record($x+1);
 		my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
@@ -102,33 +107,26 @@ sub z39_search_by_string {
 					"http://www.loc.gov/MARC21/slim", undef, 1);
 		}
 
-		warn "Z3950 XML doc:\n" . $doc->toString . "\n";
-
-		warn "Turning doc into a nodeset...\n";
+		$logger->debug("z3950: Turning doc into a nodeset...");
 
 		my $tree;
 		my $err;
 
 		try {
 			my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
-			#use Data::Dumper;
-			#warn Dumper $nodes;
-			warn "turning nodeset into tree\n";
+			$logger->debug("z3950: turning nodeset into tree");
 			$tree = $utils->nodeset2tree( $nodes->nodeset );
 		} catch Error with {
 			$err = shift;
 		};
 
 		if($err) {
-			warn "Error turning doc into nodeset/node tree: $err\n";
+			$logger->error("z3950: Error turning doc into nodeset/node tree: $err");
 		} else {
 			push @$records, $tree;
 		}
 
 	}
-
-	use Data::Dumper;
-	warn "Returning marc tree " . Dumper($records) . "\n";
 
 	$hash->{records} = $records;
 	return $hash;
