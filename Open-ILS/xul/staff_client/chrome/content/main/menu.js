@@ -108,6 +108,13 @@ main.menu.prototype = {
 				}
 			],
 
+			/* Cataloging Menu */
+			'cmd_z39_50_import' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT) + '?session='+window.escape(session),{},{});
+				}
+			],
 
 			/* Admin menu */
 			'cmd_adv_user_edit' : [

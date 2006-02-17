@@ -45,6 +45,7 @@ var api = {
 	'FM_MOBTS_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
 	'FM_PGT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' },
 	'MARC_HTML_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.html' },
+	'FM_BRN_RETRIEVE_VIA_Z3950_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.import' },
 	'MODS_SLIM_METARECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.metarecord.mods_slim.retrieve' },
 	'MODS_SLIM_RECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve' },
 	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy' },
@@ -98,6 +99,7 @@ var urls = {
 	'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
 	'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
+	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : 'chrome://open_ils_staff_client/content/admin/test.xul',
 }
