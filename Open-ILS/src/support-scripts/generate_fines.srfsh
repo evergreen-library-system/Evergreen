@@ -1,2 +1,2 @@
-#!/usr/bin/srfsh
+#!/openils/bin/srfsh
 request open-ils.storage open-ils.storage.action.circulation.overdue.generate_fines 1

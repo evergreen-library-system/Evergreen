@@ -1,2 +1,2 @@
-#!/usr/bin/srfsh
+#!/openils/bin/srfsh
 request open-ils.storage open-ils.storage.action.hold_request.copy_targeter "24h"
