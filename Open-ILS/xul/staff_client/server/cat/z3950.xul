@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_z3950_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat_z3950.xul');
+
+				g.cgi = new CGI();
+				var session = g.cgi.param('session');
+
+				JSAN.use('cat.z3950'); g.z3950 = new cat.z3950();
+
+				g.z3950.init( 
+					{ 
+						'session' : session,
+					} 
+				);
+
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name('Z39.50'); } catch(E) { alert(E); }
+				}
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/z3950.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+	]]>
+	</script>
+
+	<commandset id="cat_z3950_cmds">
+		<command id="cmd_broken" />
+	</commandset>
+
+	<groupbox flex="1">
+		<caption label="MARC Import via Z39.50"/>
+		<description>This interface is very minimal at the moment, but may evolve into a federated z39.50 search client.</description>
+		<groupbox>
+			<caption label="Server Details"/>
+			<grid>
+				<columns><column /><column flex="1" /></columns>
+				<rows>
+					<row>
+						<label value=""/>
+						<hbox>
+							<menulist>
+								<menupopup>
+									<menuitem label="zcat.oclc.org with PINES credentials" />
+									<menuitem label="Another server" disabled="true"/>
+								</menupopup>
+							</menulist>
+						</hbox>
+					</row>
+					<row><label value="Server:"/><textbox value="Not Yet Implemented" disabled="true"/></row>
+					<row><label value="Username:"/><textbox value="Not Yet Implemented" disabled="true"/></row>
+					<row><label value="Password:"/><textbox value="Not Yet Implemented" disabled="true"/></row>
+				</rows>
+			</grid>
+		</groupbox>
+		<groupbox>
+			<caption label="Query" />
+			<grid>
+				<columns><column /><column flex="1" /><column /></columns>
+				<rows>
+					<row>
+						<label value="Ascession ID:" control="asc_id" accesskey="A"/>
+						<textbox id="asc_id"/>
+						<button id="asc_search" label="Submit" />
+					</row>
+					<row>
+						<label value="Raw Z39.50:" control="raw_string" accesskey="R"/>
+						<textbox id="raw_string"/>
+						<button id="raw_search" label="Submit" />
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		<groupbox flex="1">
+			<caption label="Results" />
+		</groupbox>
+	</groupbox>
+
+</window>
+
