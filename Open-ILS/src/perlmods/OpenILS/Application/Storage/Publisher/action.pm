@@ -76,6 +76,42 @@ sub overdue_circs {
 
 }
 
+sub complete_reshelving {
+	my $self = shift;
+	my $client = shift;
+	my $window = shift;
+
+	throw OpenSRF::EX::InvalidArg ("I need an interval of more than 0 seconds!")
+		unless (interval_to_seconds( $window ));
+
+	my $circ = action::circulation->table;
+	my $cp = asset::copy->table;
+
+	my $sql = <<"	SQL";
+		UPDATE	$cp
+		  SET	status = 0
+		  WHERE	id IN ( SELECT	cp.id
+				  FROM	$cp cp
+				  	JOIN $circ circ ON (circ.target_copy = cp.id)
+				  WHERE	circ.checkin_time IS NOT NULL
+				  	AND circ.checkin_time < NOW() - CAST(? AS INTERVAL)
+					AND cp.status = 7 )
+	SQL
+
+	my $sth = action::circulation->db_Main->prepare_cached($sql);
+	$sth->execute($window);
+
+	return $sth->rows;
+
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.circulation.reshelving.complete',
+	api_level       => 1,
+	stream		=> 1,
+	argc		=> 1,
+	method          => 'complete_reshelving',
+);
+
 sub grab_overdue {
 	my $self = shift;
 	my $client = shift;
