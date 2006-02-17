@@ -421,17 +421,18 @@ CREATE INDEX actor_org_unit_setting_usr_idx ON actor.org_unit_setting (org_unit)
 
 
 CREATE TABLE actor.usr_address (
-	id		SERIAL	PRIMARY KEY,
-	valid		BOOL	NOT NULL DEFAULT TRUE,
-	address_type	TEXT	NOT NULL DEFAULT 'MAILING',
-	usr		INT	NOT NULL REFERENCES actor.usr (id),
-	street1		TEXT	NOT NULL,
-	street2		TEXT,
-	city		TEXT	NOT NULL,
-	county		TEXT,
-	state		TEXT	NOT NULL,
-	country		TEXT	NOT NULL,
-	post_code	TEXT	NOT NULL
+	id			SERIAL	PRIMARY KEY,
+	valid			BOOL	NOT NULL DEFAULT TRUE,
+	within_city_limits	BOOL	NOT NULL DEFAULT TRUE,
+	address_type		TEXT	NOT NULL DEFAULT 'MAILING',
+	usr			INT	NOT NULL REFERENCES actor.usr (id),
+	street1			TEXT	NOT NULL,
+	street2			TEXT,
+	city			TEXT	NOT NULL,
+	county			TEXT,
+	state			TEXT	NOT NULL,
+	country			TEXT	NOT NULL,
+	post_code		TEXT	NOT NULL
 );
 
 CREATE INDEX actor_usr_addr_usr_idx ON actor.usr_address (usr);

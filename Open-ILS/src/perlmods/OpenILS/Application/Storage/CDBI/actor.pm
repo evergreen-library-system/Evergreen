@@ -132,7 +132,8 @@ use base qw/actor/;
 __PACKAGE__->table( 'actor_usr_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/valid address_type usr street1 street2
-				      city county state country post_code/ );
+				      city county state country post_code
+				      within_city_limits/ );
 
 #-------------------------------------------------------------------------------
 package actor::org_address;
