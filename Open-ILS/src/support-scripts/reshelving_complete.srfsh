@@ -1,2 +1,2 @@
 #!/openils/bin/srfsh
-request open-ils.storage open-ils.storage.action.circulation.reshelving.complete "3h"
+request open-ils.storage open-ils.storage.action.circulation.reshelving.complete "24h"
