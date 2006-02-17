@@ -1459,6 +1459,47 @@ sub user_transaction_retrieve {
 
 
 __PACKAGE__->register_method(
+	method	=> "hold_request_count",
+	api_name	=> "open-ils.actor.user.hold_requests.count",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns hold ready/total counts
+	NOTES
+sub hold_request_count {
+	my( $self, $client, $login_session, $userid ) = @_;
+
+	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
+		$login_session, $userid, 'VIEW_HOLD' );
+	return $evt if $evt;
+	
+
+	my $holds = $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.action.hold_request.search_where.atomic",
+			{ usr => $userid,
+			  fulfillment_time => {"=" => undef } }
+	);
+
+	my @ready;
+	for my $h (@$holds) {
+		next unless $h->capture_time;
+
+		my $copy = $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.asset.copy.retrieve",
+			$h->current_copy
+		);
+
+		if ($copy->status == 8) {
+			push @ready, $h;
+		}
+	}
+
+	return { total => scalar(@$holds), ready => scalar(@ready) };
+}
+
+
+__PACKAGE__->register_method(
 	method	=> "checkedout_count",
 	api_name	=> "open-ils.actor.user.checked_out.count",
 	argc		=> 1,
