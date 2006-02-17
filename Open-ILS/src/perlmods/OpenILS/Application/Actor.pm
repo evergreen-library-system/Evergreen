@@ -17,11 +17,15 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Search::Actor;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenSRF::Utils qw/:datetime/;
 
 use OpenSRF::Utils::Cache;
 
+use DateTime;
+use DateTime::Format::ISO8601;
 
 use OpenILS::Application::Actor::Container;
+
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
 }
@@ -1451,6 +1455,44 @@ sub user_transaction_retrieve {
 	$logger->debug("MODSized the circ title");
 
 	return {transaction => $trans, circ => $circ, record => $mods };
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "checkedout_count",
+	api_name	=> "open-ils.actor.user.checked_out.count",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a transaction record
+	NOTES
+sub checkedout_count {
+	my( $self, $client, $login_session, $userid ) = @_;
+
+	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
+		$login_session, $userid, 'VIEW_CIRCULATIONS' );
+	return $evt if $evt;
+	
+
+	my $circs = $apputils->simple_scalar_request(
+			"open-ils.storage",
+			"open-ils.storage.direct.action.circulation.search_where.atomic",
+			{ usr => $userid,
+			  checkin_time => {"=" => undef } }
+	);
+
+	my $parser = DateTime::Format::ISO8601->new;
+
+	my (@out,@overdue);
+	for my $c (@$circs) {
+		my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+		my $due = $due_dt->epoch;
+
+		if ($due < time) {
+			push @overdue, $c;
+		}
+	}
+
+	return { total => scalar(@$circs), overdue => scalar(@overdue) };
 }
 
 __PACKAGE__->register_method(
