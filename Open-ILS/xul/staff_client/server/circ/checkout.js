@@ -16,6 +16,7 @@ circ.checkout.prototype = {
 
 		obj.session = params['session'];
 		obj.patron_id = params['patron_id'];
+		obj.patron = obj.network.simple_request('FM_AU_RETRIEVE_VIA_ID',[obj.session,obj.patron_id]);
 
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
@@ -106,6 +107,24 @@ circ.checkout.prototype = {
 					'cmd_checkout_print' : [
 						['command'],
 						function() {
+							try {
+								var params = { 
+									'patron' : obj.patron, 
+									'lib' : obj.data.hash.aou[ this.data.list.au[0].home_ou() ],
+									'staff' : obj.data.list.au[0],
+									'header' : obj.data.print_list_templates.checkout.header,
+									'line_item' : obj.data.print_list_templates.checkout.line_item,
+									'footer' : obj.data.print_list_templates.checkout.footer,
+									'type' : 'items',
+									'list' : obj.list.dump(),
+								};
+								JSAN.use('util.print'); var print = new util.print();
+								print.tree_list( params );
+							} catch(E) {
+								this.error.sdump('D_ERROR','preview: ' + E);
+								alert('preview: ' + E);
+							}
+
 						}
 					],
 					'cmd_checkout_reprint' : [

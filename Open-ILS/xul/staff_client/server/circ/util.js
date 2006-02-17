@@ -291,10 +291,14 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				break;
 				case 8: /* ON HOLDS SHELF */
 					check.route_to = 'HOLDS SHELF';
-					if (check.payload.hold.pickup_lib() != data.list.au[0].home_ou()) {
-						msg += 'FIXME:  We should have received a ROUTE_ITEM\n';
-					} else {
-						msg += 'This item needs to be routed to ' + check.route_to + '.\n';
+					if (check.payload.hold) {
+						if (check.payload.hold.pickup_lib() != data.list.au[0].home_ou()) {
+							msg += 'FIXME:  We should have received a ROUTE_ITEM\n';
+						} else {
+							msg += 'This item needs to be routed to ' + check.route_to + '.\n';
+						}
+					} else { 
+						msg += 'FIXME: status of Holds Shelf, but no hold in payload';
 					}
 					if (check.payload.hold) {
 						JSAN.use('patron.util');
