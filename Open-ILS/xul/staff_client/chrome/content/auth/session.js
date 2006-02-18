@@ -91,7 +91,8 @@ auth.session.prototype = {
 		if (obj.key) obj.network.request(
 			api.AUTH_DELETE.app,
 			api.AUTH_DELETE.method,
-			[ obj.key ]
+			[ obj.key ],
+			function(req) {}
 		);
 		obj.key = null;
 		if (typeof obj.on_close == 'function') {
