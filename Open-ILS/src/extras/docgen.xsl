@@ -40,6 +40,12 @@ span.subcode { color:darkblue;}        </style>
   <!--#set var="service" value="$1" -->
 <!--#endif -->
 
+<!--#if expr="$QUERY_STRING = /all=on/" -->
+  <!--#set var="all" value="true" -->
+<!--#else -->
+  <!--#set var="all" value="false" -->
+<!--#endif -->
+
 <!--#if expr="$QUERY_STRING = /param=%22([^&]+)%22/" -->
   <!--#set var="param" value="$1" -->
 <!--#endif -->
@@ -49,28 +55,55 @@ span.subcode { color:darkblue;}        </style>
 	  <br/><br/><br/><br/><br/><br/>
 	</xsl:if>
 
-        <form method="GET" action='<!--#echo var="DOCUMENT_URI" -->' onsubmit='this.param.value = "\"" + this.param.value + "\"";'>
+        <form
+	  method="GET"
+	  action='<!--#echo var="DOCUMENT_URI" -->'
+	  onsubmit='
+	    this.param.value = "\"" + this.param.value + "\"";
+	    if (this.all.checked) this.method.value = "opensrf.system.method.all";
+	  '>
           <xsl:if test="not(res:content)">
 	    <xsl:attribute name="style">
 	      <xsl:value-of select="'text-align:center;'"/>
 	    </xsl:attribute>
 	  </xsl:if>
-          Service:
+          Application:
 	  <input name="service" type="text" value='<!--#echo var="service" -->'>
             <xsl:if test="not(res:content)">
               <xsl:attribute name="value">
 	        <xsl:value-of select="''"/>
 	      </xsl:attribute>
 	    </xsl:if>
-	  </input>&#160; 
-          Method Name Regex:
+	  </input>&#160;
+          API Method Name Regex:
 	  <input name="param" type="text" value='<!--#echo var="param" -->'>
-            <xsl:if test="not(res:content)">
+            <xsl:if test="'<!--#echo var="all" -->' = 'true'">
+	      <xsl:attribute name="disabled">
+	        <xsl:value-of select="'true'"/>
+	      </xsl:attribute>
+	    </xsl:if>
+            <xsl:if test="'<!--#echo var="param" -->' = '(none)'">
 	      <xsl:attribute name="value">
 	        <xsl:value-of select="''"/>
 	      </xsl:attribute>
 	    </xsl:if>
-	  </input>&#160; 
+	  </input>&#160;
+	  All Methods
+	  <input
+	    name="all"
+	    type="checkbox"
+	    value="on"
+	    onclick='
+	      if (this.checked) this.form.param.disabled = true;
+	      else this.form.param.disabled = false;
+	    '>
+	    <xsl:if test="'<!--#echo var="all" -->' = 'true'">
+	      <xsl:attribute name="checked">
+	        <xsl:value-of select="'checked'"/>
+	      </xsl:attribute>
+	    </xsl:if>
+
+	    </input>&#160;
           <button name="method" value="opensrf.system.method">Find 'em</button>
         </form>
 
@@ -80,28 +113,56 @@ span.subcode { color:darkblue;}        </style>
           <xsl:apply-templates select="res:content/res:response"/>
 
 	  <hr/>
-          <form method="GET" action='<!--#echo var="DOCUMENT_URI" -->' onsubmit='this.param.value = "\"" + this.param.value + "\"";'>
+
+          <form
+	    method="GET"
+	    action='<!--#echo var="DOCUMENT_URI" -->'
+	    onsubmit='
+	      this.param.value = "\"" + this.param.value + "\"";
+	      if (this.all.checked) this.method.value = "opensrf.system.method.all";
+	    '>
             <xsl:if test="not(res:content)">
 	      <xsl:attribute name="style">
 	        <xsl:value-of select="'text-align:center;'"/>
 	      </xsl:attribute>
 	    </xsl:if>
-            Service:
+            Application:
 	    <input name="service" type="text" value='<!--#echo var="service" -->'>
               <xsl:if test="not(res:content)">
                 <xsl:attribute name="value">
 	          <xsl:value-of select="''"/>
 	        </xsl:attribute>
 	      </xsl:if>
-	    </input>&#160; 
-            Method Name Regex:
+	    </input>&#160;
+            API Method Name Regex:
 	    <input name="param" type="text" value='<!--#echo var="param" -->'>
-              <xsl:if test="not(res:content)">
+              <xsl:if test="'<!--#echo var="all" -->' = 'true'">
+	        <xsl:attribute name="disabled">
+	          <xsl:value-of select="'true'"/>
+	        </xsl:attribute>
+	      </xsl:if>
+              <xsl:if test="'<!--#echo var="param" -->' = '(none)'">
 	        <xsl:attribute name="value">
 	          <xsl:value-of select="''"/>
 	        </xsl:attribute>
 	      </xsl:if>
-	    </input>&#160; 
+	    </input>&#160;
+	    All Methods
+	    <input
+	      name="all"
+	      type="checkbox"
+	      value="on"
+	      onclick='
+	        if (this.checked) this.form.param.disabled = true;
+	        else this.form.param.disabled = false;
+	      '>
+	      <xsl:if test="'<!--#echo var="all" -->' = 'true'">
+	        <xsl:attribute name="checked">
+	          <xsl:value-of select="'checked'"/>
+	        </xsl:attribute>
+	      </xsl:if>
+  
+	      </input>&#160;
             <button name="method" value="opensrf.system.method">Find 'em</button>
           </form>
 
@@ -246,8 +307,13 @@ span.subcode { color:darkblue;}        </style>
   </xsl:template>
 
 
-  <!--#if expr="$QUERY_STRING = /param=%22[^&]+%22/" -->
-    <!--#if expr="$QUERY_STRING = /service=[^&]+/" -->
+  <!--#if expr="$QUERY_STRING = /service=[^&]+/" -->
+    <!--#if expr="$QUERY_STRING = /param=%22[^&]+%22/" -->
+      <content xmlns="http://example.com/test">
+        <!--#include virtual="/restgateway?${QUERY_STRING}"-->
+      </content>
+    <!--#endif -->
+    <!--#if expr="$QUERY_STRING = /all=on/" -->
       <content xmlns="http://example.com/test">
         <!--#include virtual="/restgateway?${QUERY_STRING}"-->
       </content>
