@@ -14,6 +14,7 @@ util.widgets.EXPORT_OK	= [
 	'apply_vertical_tab_on_enter_handler',
 	'vertical_tab',
 	'click',
+	'dispatch',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
@@ -21,6 +22,12 @@ util.widgets.click = function(e) {
 	var evt = document.createEvent("MouseEvent");
 	evt.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false,false,false,false,0,null);
 	e.dispatchEvent(evt);
+}
+
+util.widgets.dispatch = function(ev,el) {
+	var evt = document.createEvent("Events");
+	evt.initEvent( ev, true, true );
+	el.dispatchEvent(evt);
 }
 
 util.widgets.make_menulist = function( items ) {
