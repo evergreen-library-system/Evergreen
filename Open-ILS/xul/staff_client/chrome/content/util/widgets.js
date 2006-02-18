@@ -13,8 +13,15 @@ util.widgets.EXPORT_OK	= [
 	'insertAfter',
 	'apply_vertical_tab_on_enter_handler',
 	'vertical_tab',
+	'click',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
+
+util.widgets.click = function(e) {
+	var evt = document.createEvent("MouseEvent");
+	evt.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false,false,false,false,0,null);
+	e.dispatchEvent(evt);
+}
 
 util.widgets.make_menulist = function( items ) {
 	var menulist = document.createElement('menulist');
