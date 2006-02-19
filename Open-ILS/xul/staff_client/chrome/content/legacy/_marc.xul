@@ -58,6 +58,10 @@
 
 				find_this_id = g.cgi.param('docid');
 
+				if (typeof window.xulG == 'object' && window.xulG.import_tree) {
+					params.import_tree = window.xulG.import_tree;
+				}
+
 				JSAN.use('util.network');
 				g.network = new util.network();
 

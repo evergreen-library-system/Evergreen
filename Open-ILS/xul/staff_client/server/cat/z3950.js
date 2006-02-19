@@ -49,6 +49,8 @@ cat.z3950.prototype = {
 							function(o) { return o.getAttribute('retrieve_id'); }
 						);
 						obj.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
+						obj.controller.view.import.disabled = false;
+						obj.controller.setAttribute('retrieve_id',list[0]);
 					},
 				}
 			);
@@ -104,6 +106,11 @@ cat.z3950.prototype = {
 						'import' : [
 							['command'],
 							function() {
+								obj.spawn_marc_editor(
+									obj.results.records[
+										obj.controller.view.import.getAttribute('retrieve_id')
+									].brn
+								);
 							},
 						],
 						'asc_search' : [
@@ -312,7 +319,7 @@ cat.z3950.prototype = {
 				document.createTextNode( results.records.length + (results.records.length == 1 ? ' result' : ' results') + ' retrieved. ')
 			);
 			obj.results = results;
-			obj.list.clear(); 
+			obj.list.clear(); obj.controller.view.import.disabled = true;
 			for (var i = 0; i < obj.results.records.length; i++) {
 				obj.list.append(
 					{
@@ -330,6 +337,11 @@ cat.z3950.prototype = {
 				document.createTextNode( 'Too many results to retrieve. ')
 			);
 		}
+	},
+
+	'spawn_marc_editor' : function(my_brn) {
+		var obj = this;
+		xulG.new_tab(xulG.url_prefix(urls.XUL_MARC_EDIT) + '?session=' + window.escape(obj.session), {}, { 'import_tree' : my_brn } );
 	},
 
 }
