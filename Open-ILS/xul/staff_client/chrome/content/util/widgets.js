@@ -4,6 +4,10 @@ if (typeof util == 'undefined') var util = {};
 util.widgets = {};
 
 util.widgets.EXPORT_OK	= [ 
+	'get',
+	'store_disable',
+	'restore_disable',
+	'disable',
 	'get_list_from_tree_selection',
 	'disable_accesskeys_in_node_and_children', 
 	'enable_accesskeys_in_node_and_children', 
@@ -18,16 +22,46 @@ util.widgets.EXPORT_OK	= [
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
+util.widgets.get = function(e) {
+	if (typeof e == 'object') {
+		return e;
+	} else {
+		return document.getElementById(e);
+	}
+}
+
+util.widgets.store_disable = function() {
+	for (var i = 0; i < arguments.length; i++) {
+		var e = util.widgets.get( arguments[i] );
+		e.setAttribute('_disabled',e.getAttribute('disabled'));
+	}
+}
+
+util.widgets.restore_disable = function() {
+	for (var i = 0; i < arguments.length; i++) {
+		var e = util.widgets.get( arguments[i] );
+		e.setAttribute('disabled',e.getAttribute('_disabled'));
+	}
+}
+
+util.widgets.disable = function() {
+	for (var i = 0; i < arguments.length; i++) {
+		var e = util.widgets.get( arguments[i] );
+		e.setAttribute('disabled',true);
+	}
+}
+
 util.widgets.click = function(e) {
 	var evt = document.createEvent("MouseEvent");
 	evt.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false,false,false,false,0,null);
-	e.dispatchEvent(evt);
+	util.widgets.get(e).dispatchEvent(evt);
 }
 
 util.widgets.dispatch = function(ev,el) {
 	var evt = document.createEvent("Events");
+	//var evt = document.createEvent();
 	evt.initEvent( ev, true, true );
-	el.dispatchEvent(evt);
+	util.widgets.get(el).dispatchEvent(evt);
 }
 
 util.widgets.make_menulist = function( items ) {
@@ -56,11 +90,7 @@ util.widgets.make_grid = function( cols ) {
 
 util.widgets.get_list_from_tree_selection = function(tree_w) {
 	var hitlist;
-	if (typeof(tree_w) != 'object') {
-		tree = document.getElementById(tree_w);
-	} else {
-		tree = tree_w;
-	}
+	var tree = util.widgets.get(tree_w);
 	var list = [];
 	var start = new Object();
 	var end = new Object();
@@ -75,9 +105,11 @@ util.widgets.get_list_from_tree_selection = function(tree_w) {
 	return list;
 }
 
-util.widgets.remove_children = function(w) {
-	if (typeof w != 'object') w = document.getElementById(w);
-	while(w.lastChild) w.removeChild( w.lastChild );
+util.widgets.remove_children = function() {
+	for (var i = 0; i < arguments.length; i++) {
+		var e = util.widgets.get( arguments[i] );
+		while(e.lastChild) e.removeChild( e.lastChild );
+	}
 }
 
 util.widgets.disable_accesskeys_in_node_and_children = function( node ) {
