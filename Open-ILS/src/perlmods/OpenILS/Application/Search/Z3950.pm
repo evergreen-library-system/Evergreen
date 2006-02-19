@@ -123,10 +123,20 @@ sub z39_search_by_string {
 		if($err) {
 			$logger->error("z3950: Error turning doc into nodeset/node tree: $err");
 		} else {
-			push @$records, $tree;
+			my $mods;
+			
+			my $u = OpenILS::Utils::ModsParser->new();
+			$u->start_mods_batch( $marcxml );
+			$mods = $u->finish_mods_batch();
+
+			push @$records, { 'mvr' => $mods, 'brn' => $tree };
+
+			#push @$records, $tree;
 		}
 
 	}
+
+	$logger->debug("z3950: got here near the end with " . scalar(@$records) . " records." );
 
 	$hash->{records} = $records;
 	return $hash;
