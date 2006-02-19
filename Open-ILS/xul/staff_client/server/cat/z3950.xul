@@ -22,6 +22,7 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
+	<script type="text/javascript" src="chrome://global/content/globalOverlay.js"/>
         <script type="text/javascript">
 		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 	</script>
@@ -72,48 +73,59 @@
 	<groupbox flex="1">
 		<caption label="MARC Import via Z39.50"/>
 		<description>This interface is very minimal at the moment, but may evolve into a federated z39.50 search client.</description>
-		<groupbox>
-			<caption label="Server Details"/>
-			<grid>
-				<columns><column /><column flex="1" /></columns>
-				<rows>
-					<row>
-						<label value=""/>
-						<hbox>
-							<menulist>
-								<menupopup>
-									<menuitem label="zcat.oclc.org with PINES credentials" />
-									<menuitem label="Another server" disabled="true"/>
-								</menupopup>
-							</menulist>
-						</hbox>
-					</row>
-					<row><label value="Server:"/><textbox value="Not Yet Implemented" disabled="true"/></row>
-					<row><label value="Username:"/><textbox value="Not Yet Implemented" disabled="true"/></row>
-					<row><label value="Password:"/><textbox value="Not Yet Implemented" disabled="true"/></row>
-				</rows>
-			</grid>
-		</groupbox>
+		<hbox>
+			<groupbox>
+				<caption id="c1" label="Sessions" class="shrinkable_groupbox"/>
+				<hbox id="menu_placeholder">
+				</hbox>
+				<hbox>
+					<button id="new_menu_option" label="New" command="cmd_broken"/>
+					<button id="save_menu_option" label="Save" command="cmd_broken"/>
+				</hbox>
+			</groupbox>
+			<groupbox>
+				<caption id="c2" label="Server Details" class="shrinkable_groupbox"/>
+				<grid>
+					<columns><column /><column flex="1" /><column /><column flex="1"/></columns>
+					<rows>
+						<row>
+							<label value="Server:" control="server"/><textbox id="server" value="" disabled="false"/>
+							<label value="Username:" control="username"/><textbox id="username" value="" disabled="false"/>
+						</row>
+						<row>
+							<label value="Database:" control="database"/><textbox id="database" value="" disabled="false"/>
+							<label value="Password:" control="password"/><textbox id="password" value="" disabled="false"/>
+						</row>
+						<row>
+							<label value="Port:" control="port"/><textbox id="port" value="" disabled="false"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+		</hbox>
 		<groupbox>
 			<caption label="Query" />
 			<grid>
 				<columns><column /><column flex="1" /><column /></columns>
 				<rows>
 					<row>
-						<label value="Ascession ID:" control="asc_id" accesskey="A"/>
+						<label value="Accession ID:" control="asc_id" accesskey="A"/>
 						<textbox id="asc_id"/>
-						<button id="asc_search" label="Submit" />
+						<button id="asc_search" label="Submit" accesskey="S"/>
 					</row>
 					<row>
 						<label value="Raw Z39.50:" control="raw_string" accesskey="R"/>
-						<textbox id="raw_string"/>
-						<button id="raw_search" label="Submit" />
+						<textbox id="raw_string" value="Not Yet Implemented" disabled="true"/>
+						<button id="raw_search" label="Submit" disabled="true"/>
 					</row>
 				</rows>
 			</grid>
 		</groupbox>
 		<groupbox flex="1">
 			<caption label="Results" />
+			<description id="result_message" />
+			<hbox><spacer flex="1"/><button id="import" label="Import" disabled="true"/></hbox>
+			<tree id="results" flex="1" enableColumnDrag="true" seltype="single"/>
 		</groupbox>
 	</groupbox>
 
