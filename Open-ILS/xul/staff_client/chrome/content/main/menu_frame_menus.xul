@@ -17,7 +17,9 @@
 	<command id="cmd_circ_checkin" key="circ-checkin-key" />
 	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
 	<command id="cmd_in_house_use" key="circ-in-house-use" />
+	<command id="cmd_copy_status" key="copy-status-key" />
 	<command id="cmd_search_opac" key="search-opac-key" />
+	<command id="cmd_search_tcn" />
 	<command id="cmd_patron_register" key="patron-register-key" />
 	<command id="cmd_survey_wizard" />
 	<command id="cmd_stat_cat_edit" />
@@ -73,6 +75,7 @@
 	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
 	<key id="circ-hold-capture-key" keycode="VK_F5" command="cmd_circ_hold_capture"/>
 	<key id="circ-in-house-use-key" keycode="VK_F6" command="cmd_in_house_use"/>
+	<key id="copy-status-key" keycode="VK_F9" command=""/>
 	<key id="patron-register-key" keycode="VK_F12" command="cmd_patron_registration"/>
 </keyset>
 
@@ -124,7 +127,7 @@
 		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
 		<menuitem label="In-House Use" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />
-		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" command="cmd_broken"/>
+		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" key="copy-status-key" command="cmd_copy_status"/>
 		<menuitem label="&staff.main.menu.circ.patron_status.label;" accesskey="&staff.main.menu.circ.patron_status.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.key;" key="patron-register-key" command="cmd_patron_register"/>
@@ -145,8 +148,10 @@
 <!-- The Search menu on the main menu -->
 <menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.key;">
 	<menupopup id="main.menu.search.popup">
-		<menuitem label="Catalog" accesskey="C" key="search-opac-key" command="cmd_search_opac" />
 		<menuitem label="Patrons" accesskey="P" key="patron-search-key" command="cmd_patron_search" />
+		<menuitem label="Catalog" accesskey="C" key="search-opac-key" command="cmd_search_opac" />
+		<menuitem label="TCN" accesskey="T" command="cmd_search_tcn" />
+		<menuitem label="Item Barcode" accesskey="I" key="copy-status-key" command="cmd_copy_status"/>
 	</menupopup>
 </menu>
 

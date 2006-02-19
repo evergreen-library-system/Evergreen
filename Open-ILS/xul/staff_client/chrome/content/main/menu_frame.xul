@@ -36,6 +36,8 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="JSAN.js"/>
+	<script type="text/javascript" src="constants.js"/>
+	<script type="text/javascript" src="../OpenILS/util/fmall.js"/>
 	<script type="text/javascript">
 	<![CDATA[
 		function my_init() {

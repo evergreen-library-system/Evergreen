@@ -34,7 +34,7 @@ main.menu.prototype = {
 			/* File Menu */
 			'cmd_close_window' : [ 
 				['oncommand'], 
-				function() { obj.w.close(); } 
+				function() { window.close(); } 
 			],
 			'cmd_new_window' : [
 				['oncommand'],
@@ -62,7 +62,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_DISPLAY)
-						+ '?session='+obj.w.escape(session),{},{});
+						+ '?session='+window.escape(session),{},{});
 				}
 			],
 			'cmd_search_opac' : [
@@ -72,6 +72,37 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':'Catalog'}, content_params);
 				}
 			],
+			'cmd_search_tcn' : [
+				['oncommand'],
+				function() {
+				}
+			],
+			'cmd_copy_status' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_STATUS)
+						+ '?session='+window.escape(session),{},{});
+					/*
+					JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+					obj.data.cmd_copy_status_value = ''; obj.data.stash('cmd_copy_status_value');
+
+					obj.window.open(
+						obj.url_prefix(urls.XUL_COPY_BARCODE_QUERY),
+						'cmd_copy_status_win' + obj.window.window_name_increment(),
+						'chrome,resizable,modal,center'
+					);
+
+					obj.data.stash_retrieve();
+					var barcode = obj.data.cmd_copy_status_value;
+
+					if (barcode) {
+						JSAN.use('util.network');
+						var network = new util.network();
+						var robj = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[barcode]);
+					}
+					*/
+				}
+			],
 
 
 			/* Circulation Menu */
@@ -79,32 +110,32 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + obj.w.escape( session ) );
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( session ) );
 					obj.set_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Register Patron' });
 				}
 			],
 			'cmd_circ_checkin' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN) + '?session='+window.escape(session),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+window.escape(session),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(session),{},{});
 				}
 			],
 			'cmd_in_house_use' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE) + '?session='+window.escape(session),{},{});
 				}
 			],
 
@@ -120,31 +151,31 @@ main.menu.prototype = {
 			'cmd_adv_user_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY) + '?session=' + obj.w.escape(session), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY) + '?session=' + window.escape(session), {}, {});
 				}
 			],
 			'cmd_print_list_template_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR) + '?session=' + obj.w.escape(session), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR) + '?session=' + window.escape(session), {}, {});
 				}
 			],
 			'cmd_stat_cat_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Stat Cat Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(session),{'tab_name':'Stat Cat Editor'},{});
 				}
 			],
 			'cmd_non_cat_type_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Non-Cataloged Type Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(session),{'tab_name':'Non-Cataloged Type Editor'},{});
 				}
 			],
 			'cmd_copy_location_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+obj.w.escape(session),{'tab_name':'Copy Location Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(session),{'tab_name':'Copy Location Editor'},{});
 				}
 			],
 			'cmd_test' : [
@@ -157,13 +188,13 @@ main.menu.prototype = {
 			'cmd_test_html' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?session='+window.escape(session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?session='+obj.w.escape(session),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?session='+window.escape(session),{},{});
 				}
 			],
 			'cmd_console' : [
@@ -193,7 +224,7 @@ main.menu.prototype = {
 			'cmd_survey_wizard' : [
 				['oncommand'],
 				function() {
-					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+obj.w.escape(session),'survey_wizard','chrome'); 
+					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+window.escape(session),'survey_wizard','chrome'); 
 				}
 			],
 
@@ -204,7 +235,7 @@ main.menu.prototype = {
 		obj.controller = new util.controller();
 		obj.controller.init( { 'window_knows_me_by' : 'g.menu.controller', 'control_map' : cmd_map } );
 
-		obj.controller.view.tabbox = obj.w.document.getElementById('main_tabbox');
+		obj.controller.view.tabbox = window.document.getElementById('main_tabbox');
 		obj.controller.view.tabs = obj.controller.view.tabbox.firstChild;
 		obj.controller.view.panels = obj.controller.view.tabbox.lastChild;
 
@@ -281,7 +312,6 @@ main.menu.prototype = {
 	},
 
 	'new_tab' : function(url,params,content_params) {
-		if (!url) url = 'http://open-ils.org/dokuwiki/doku.php?id=scratchpad:mock_staff_client_portal';
 		if (!params) params = {};
 		if (!content_params) content_params = {};
 		var tc = this.find_free_tab();
@@ -298,11 +328,11 @@ main.menu.prototype = {
 	},
 
 	'set_tab' : function(url,params,content_params) {
-		if (!url) url = 'data:text/html,<h1>Hello World</h1>';
+		var obj = this;
+		if (!url) url = '/xul/server/';
 		if (!url.match(/:\/\//) && !url.match(/^data:/)) url = urls.remote + url;
 		if (!params) params = {};
 		if (!content_params) content_params = {};
-		var obj = this;
 		var idx = this.controller.view.tabs.selectedIndex;
 		if (params && typeof params.index != 'undefined') idx = params.index;
 		var tab = this.controller.view.tabs.childNodes[ idx ];
