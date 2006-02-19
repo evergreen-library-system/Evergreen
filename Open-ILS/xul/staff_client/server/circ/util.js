@@ -98,6 +98,26 @@ circ.util.columns = function(modify) {
 			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.author(); } catch(E) { my.acp.dummy_author(); }'
 		},
 		{
+			'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.edition();'
+		},
+		{
+			'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.isbn();'
+		},
+		{
+			'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.pubdate();'
+		},
+		{
+			'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.publisher();'
+		},
+		{
+			'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
+		},
+		{
 			'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()'
 		},
@@ -215,6 +235,27 @@ circ.util.hold_columns = function(modify) {
 			'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.author()'
 		},
+		{
+			'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.edition();'
+		},
+		{
+			'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.isbn();'
+		},
+		{
+			'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.pubdate();'
+		},
+		{
+			'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.publisher();'
+		},
+		{
+			'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
+		},
+
 
 	];
 	for (var i = 0; i < c.length; i++) {
