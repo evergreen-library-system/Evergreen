@@ -36,8 +36,26 @@ span.subcode { color:darkblue;}        </style>
       <body>
         <a name="top"/>
 
+<!--#if expr='"$QUERY_STRING" = /limit=([^&]+)/' -->
+  <!--#set var="limit" value="$1" -->
+<!--#else -->
+  <!--#set var="limit" value="10" -->
+<!--#endif -->
+
+<!--#if expr='"$QUERY_STRING" = /offset=([^&]+)/' -->
+  <!--#set var="offset" value="$1" -->
+<!--#else -->
+  <!--#set var="offset" value="0" -->
+<!--#endif -->
+
 <!--#if expr='"$QUERY_STRING" = /service=([^&]+)/' -->
   <!--#set var="service" value="$1" -->
+<!--#else -->
+  <!--#set var="service" value="" -->
+<!--#endif -->
+
+<!--#if expr='"$QUERY_STRING" = /method=([^&]+)/' -->
+  <!--#set var="method" value="$1" -->
 <!--#endif -->
 
 <!--#if expr="$QUERY_STRING = /all=on/" -->
@@ -48,9 +66,11 @@ span.subcode { color:darkblue;}        </style>
 
 <!--#if expr="$QUERY_STRING = /param=%22([^&]+)%22/" -->
   <!--#set var="param" value="$1" -->
+<!--#else -->
+  <!--#set var="param" value="" -->
 <!--#endif -->
 
-        <xsl:if test="not(res:content)">
+        <xsl:if test="not(res:content/res:response)">
 	  <br/><br/><br/><br/><br/><br/>
 	  <br/><br/><br/><br/><br/><br/>
 	</xsl:if>
@@ -62,19 +82,13 @@ span.subcode { color:darkblue;}        </style>
 	    this.param.value = "\"" + this.param.value + "\"";
 	    if (this.all.checked) this.method.value = "opensrf.system.method.all";
 	  '>
-          <xsl:if test="not(res:content)">
+          <xsl:if test="not(res:content/res:response)">
 	    <xsl:attribute name="style">
 	      <xsl:value-of select="'text-align:center;'"/>
 	    </xsl:attribute>
 	  </xsl:if>
           Application:
-	  <input name="service" type="text" value='<!--#echo var="service" -->'>
-            <xsl:if test="not(res:content)">
-              <xsl:attribute name="value">
-	        <xsl:value-of select="''"/>
-	      </xsl:attribute>
-	    </xsl:if>
-	  </input>&#160;
+	  <input name="service" type="text" value='<!--#echo var="service" -->'/>&#160;
           API Method Name Regex:
 	  <input name="param" type="text" value='<!--#echo var="param" -->'>
             <xsl:if test="'<!--#echo var="all" -->' = 'true'">
@@ -82,13 +96,8 @@ span.subcode { color:darkblue;}        </style>
 	        <xsl:value-of select="'true'"/>
 	      </xsl:attribute>
 	    </xsl:if>
-            <xsl:if test="'<!--#echo var="param" -->' = '(none)'">
-	      <xsl:attribute name="value">
-	        <xsl:value-of select="''"/>
-	      </xsl:attribute>
-	    </xsl:if>
 	  </input>&#160;
-	  All Methods
+	  All Methods (Use with care!)
 	  <input
 	    name="all"
 	    type="checkbox"
@@ -107,7 +116,7 @@ span.subcode { color:darkblue;}        </style>
           <button name="method" value="opensrf.system.method">Find 'em</button>
         </form>
 
-        <xsl:if test="res:content">
+        <xsl:if test="res:content/res:response">
 	  <hr/>
 
           <xsl:apply-templates select="res:content/res:response"/>
@@ -121,19 +130,13 @@ span.subcode { color:darkblue;}        </style>
 	      this.param.value = "\"" + this.param.value + "\"";
 	      if (this.all.checked) this.method.value = "opensrf.system.method.all";
 	    '>
-            <xsl:if test="not(res:content)">
+            <xsl:if test="not(res:content/res:response)">
 	      <xsl:attribute name="style">
 	        <xsl:value-of select="'text-align:center;'"/>
 	      </xsl:attribute>
 	    </xsl:if>
             Application:
-	    <input name="service" type="text" value='<!--#echo var="service" -->'>
-              <xsl:if test="not(res:content)">
-                <xsl:attribute name="value">
-	          <xsl:value-of select="''"/>
-	        </xsl:attribute>
-	      </xsl:if>
-	    </input>&#160;
+	    <input name="service" type="text" value='<!--#echo var="service" -->'/>&#160;
             API Method Name Regex:
 	    <input name="param" type="text" value='<!--#echo var="param" -->'>
               <xsl:if test="'<!--#echo var="all" -->' = 'true'">
@@ -141,13 +144,8 @@ span.subcode { color:darkblue;}        </style>
 	          <xsl:value-of select="'true'"/>
 	        </xsl:attribute>
 	      </xsl:if>
-              <xsl:if test="'<!--#echo var="param" -->' = '(none)'">
-	        <xsl:attribute name="value">
-	          <xsl:value-of select="''"/>
-	        </xsl:attribute>
-	      </xsl:if>
 	    </input>&#160;
-	    All Methods
+	    All Methods (Use with care!)
 	    <input
 	      name="all"
 	      type="checkbox"
@@ -172,6 +170,7 @@ span.subcode { color:darkblue;}        </style>
   </xsl:template>
 
   <xsl:template match="res:api_name">
+    API Level: <xsl:value-of select="../res:api_level/text()"/> / Method: 
     <a>
       <xsl:attribute name="href">#<xsl:value-of select="./text()"/></xsl:attribute>
       <xsl:value-of select="./text()"/>
@@ -180,14 +179,23 @@ span.subcode { color:darkblue;}        </style>
   </xsl:template>
 
   <xsl:template match="res:response">
-    <xsl:if test="count(//res:api_name) > 1">
-      <h1>Method Index</h1>
-      <xsl:apply-templates select="//res:api_name"/>
+    <xsl:choose>
+      <xsl:when test="count(//res:api_name) > 1">
+        <h1>Matching Methods</h1>
+        <xsl:apply-templates select="//res:api_name">
+          <xsl:sort select="text()"/>
+        </xsl:apply-templates>
 
-      <h1>Method Definitions</h1>
-    </xsl:if>
+        <h1>Method Definitions</h1>
+      </xsl:when>
+      <xsl:when test="count(//res:api_name) = 0">
+        <h1><i>No Matching Methods Found</i></h1>
+      </xsl:when>
+    </xsl:choose>
 
-    <xsl:apply-templates select="res:hash/res:pair[res:key/text()='payload']/res:value/res:array/res:datum/res:Object"/>
+    <xsl:apply-templates select="res:hash/res:pair[res:key/text()='payload']/res:value/res:array/res:datum/res:Object">
+      <xsl:sort select="res:api_name/text()"/>
+    </xsl:apply-templates>
   </xsl:template>
 
 
@@ -263,6 +271,10 @@ span.subcode { color:darkblue;}        </style>
     <tr>
       <td>
         <table class="params">
+	  <tr>
+	    <td class="label params">Position:</td>
+	    <td class="value params"><xsl:value-of select="position()"/></td>
+	  </tr>
           <xsl:apply-templates select="res:pair[res:key/text()='name']"/>
           <xsl:apply-templates select="res:pair[res:key/text()='desc']"/>
           <xsl:apply-templates select="res:pair[res:key/text()='type']"/>
@@ -289,7 +301,9 @@ span.subcode { color:darkblue;}        </style>
             Parameters:</td>
         </tr>
       </xsl:if>
-      <xsl:apply-templates select="res:params/res:hash"/>
+      <xsl:apply-templates select="res:params/res:hash">
+        <xsl:sort select="position()"/>
+      </xsl:apply-templates>
       <xsl:if test="res:return">
         <tr>
           <td class="label">Returns:</td>
@@ -310,12 +324,14 @@ span.subcode { color:darkblue;}        </style>
   <!--#if expr="$QUERY_STRING = /service=[^&]+/" -->
     <!--#if expr="$QUERY_STRING = /param=%22[^&]+%22/" -->
       <content xmlns="http://example.com/test">
-        <!--#include virtual="/restgateway?${QUERY_STRING}"-->
+	<!--#include virtual="/restgateway?${QUERY_STRING}"-->
+        <!-- virtual='/restgateway?service=$service&method=$method&param="$param"&param=$limit&param=$offset'-->
       </content>
     <!--#endif -->
     <!--#if expr="$QUERY_STRING = /all=on/" -->
       <content xmlns="http://example.com/test">
-        <!--#include virtual="/restgateway?${QUERY_STRING}"-->
+	<!--#include virtual="/restgateway?${QUERY_STRING}"-->
+        <!-- virtual='/restgateway?service=$service&method=$method&param=""&param=$limit&param=$offset' -->
       </content>
     <!--#endif -->
   <!--#endif -->

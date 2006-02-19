@@ -620,22 +620,32 @@ sub introspect {
 	my $self = shift;
 	my $client = shift;
 	my $method = shift;
+	my $limit = shift;
+	my $offset = shift;
 
 	$method = undef if ($self->api_name =~ /all$/o);
 
+	my ($seen,$returned) = (0,0);
 	for my $api_level ( reverse(1 .. $#_METHODS) ) {
 		for my $api_name ( sort keys %{$_METHODS[$api_level]} ) {
-			if (!$_METHODS[$api_level]{$api_name}{remote}) {
-				if (defined($method)) {
-					if ($api_name =~ $method) {
-						$client->respond( $_METHODS[$api_level]{$api_name} );
+			if (!$offset || $offset < $seen) {
+				if (!$_METHODS[$api_level]{$api_name}{remote}) {
+					if (defined($method)) {
+						if ($api_name =~ $method) {
+							if (!$limit || $returned < $limit) {
+								$client->respond( $_METHODS[$api_level]{$api_name} );
+								$returned++;
+							}
+						}
+					} else {
+						if (!$limit || $returned < $limit) {
+							$client->respond( $_METHODS[$api_level]{$api_name} );
+							$returned++;
+						}
 					}
-				} else {
-					$log->debug( "Returning definition for method [$api_name]", INTERNAL );
-					$client->respond( $_METHODS[$api_level]{$api_name} );
-					$log->debug( "responed with definition for method [$api_name]", INTERNAL );
 				}
 			}
+			$seen++;
 		}
 	}
 
