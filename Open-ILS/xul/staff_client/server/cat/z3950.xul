@@ -22,7 +22,6 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-	<script type="text/javascript" src="chrome://global/content/globalOverlay.js"/>
         <script type="text/javascript">
 		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 	</script>
@@ -124,7 +123,7 @@
 		<groupbox flex="1">
 			<caption label="Results" />
 			<description id="result_message" />
-			<hbox><spacer flex="1"/><button id="import" label="Import" disabled="true"/></hbox>
+			<hbox><spacer flex="1"/><button id="marc_import" label="Import" disabled="true"/></hbox>
 			<tree id="results" flex="1" enableColumnDrag="true" seltype="single"/>
 		</groupbox>
 	</groupbox>

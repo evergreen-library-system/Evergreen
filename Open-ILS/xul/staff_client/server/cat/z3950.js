@@ -42,15 +42,19 @@ cat.z3950.prototype = {
 					'columns' : columns,
 					'map_row_to_column' : circ.util.std_map_row_to_column(),
 					'on_select' : function(ev) {
-						JSAN.use('util.functional');
-						var sel = obj.list.retrieve_selection();
-						var list = util.functional.map_list(
-							sel,
-							function(o) { return o.getAttribute('retrieve_id'); }
-						);
-						obj.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
-						obj.controller.view.import.disabled = false;
-						obj.controller.setAttribute('retrieve_id',list[0]);
+						try {
+							JSAN.use('util.functional');
+							var sel = obj.list.retrieve_selection();
+							var list = util.functional.map_list(
+								sel,
+								function(o) { return o.getAttribute('retrieve_id'); }
+							);
+							obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
+							obj.controller.view.marc_import.disabled = false;
+							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
+						} catch(E) {
+							alert('FIXME: ' + E);
+						}
 					},
 				}
 			);
@@ -103,12 +107,12 @@ cat.z3950.prototype = {
 								};
 							}
 						],
-						'import' : [
+						'marc_import' : [
 							['command'],
 							function() {
 								obj.spawn_marc_editor(
 									obj.results.records[
-										obj.controller.view.import.getAttribute('retrieve_id')
+										obj.controller.view.marc_import.getAttribute('retrieve_id')
 									].brn
 								);
 							},
@@ -319,7 +323,7 @@ cat.z3950.prototype = {
 				document.createTextNode( results.records.length + (results.records.length == 1 ? ' result' : ' results') + ' retrieved. ')
 			);
 			obj.results = results;
-			obj.list.clear(); obj.controller.view.import.disabled = true;
+			obj.list.clear(); obj.controller.view.marc_import.disabled = true;
 			for (var i = 0; i < obj.results.records.length; i++) {
 				obj.list.append(
 					{
@@ -341,7 +345,10 @@ cat.z3950.prototype = {
 
 	'spawn_marc_editor' : function(my_brn) {
 		var obj = this;
-		xulG.new_tab(xulG.url_prefix(urls.XUL_MARC_EDIT) + '?session=' + window.escape(obj.session), {}, { 'import_tree' : my_brn } );
+		xulG.new_tab(
+			xulG.url_prefix(urls.XUL_MARC_EDIT) + '?session=' + window.escape(obj.session), 
+			{ 'tab_name' : 'MARC Editor' }, { 'import_tree' : my_brn } 
+		);
 	},
 
 }
