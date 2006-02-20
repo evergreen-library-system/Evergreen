@@ -111,9 +111,14 @@ cat.z3950.prototype = {
 							['command'],
 							function() {
 								obj.spawn_marc_editor(
-									obj.results.records[
-										obj.controller.view.marc_import.getAttribute('retrieve_id')
-									].brn
+									obj.network.simple_request(
+										'FM_BRN_FROM_MARCXML',
+										[
+											obj.results.records[
+												obj.controller.view.marc_import.getAttribute('retrieve_id')
+											].marcxml
+										]
+									)
 								);
 							},
 						],
