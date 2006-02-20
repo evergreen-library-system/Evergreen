@@ -104,7 +104,6 @@ main.menu.prototype = {
 				}
 			],
 
-
 			/* Circulation Menu */
 			'cmd_patron_register' : [
 				['oncommand'],

@@ -33,6 +33,7 @@ var api = {
 	'FM_AU_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve_by_barcode' },
 	'FM_AU_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve' },
 	'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve' },
+	'FM_BRE_ID_SEARCH_VIA_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.tcn' },
 	'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all' },
 	'FM_CIRC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out.slim' },
 	'FM_CIT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
@@ -56,6 +57,7 @@ var api = {
 
 var urls = {
 	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
+	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
 	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'fieldmapper' : '/opac/common/js/fmall.js',
 	'XUL_ADV_USER_BARCODE_ENTRY' : '/xul/server/patron/adv_barcode_entry.xul',
