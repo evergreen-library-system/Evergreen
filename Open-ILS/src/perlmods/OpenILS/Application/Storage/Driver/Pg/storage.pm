@@ -223,7 +223,7 @@
 
 		my $pri = $cdbi->columns('Primary');
 
-		my @cols = grep {$_ ne $pri} $cdbi->columns('All');
+		my @cols = grep {$_ ne $pri} $cdbi->columns('Essential');
 
 		my $col_list = join ',', @cols;
 

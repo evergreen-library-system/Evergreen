@@ -83,7 +83,7 @@ sub fast_flesh_sth {
 	}
 
 	my $fm_class = 'Fieldmapper::'.$class;
-	my $field_list = join ',', $class->columns('All');
+	my $field_list = join ',', $class->columns('Essential');
 	
 	my $sth;
 	if (!$like) {
@@ -260,7 +260,7 @@ sub create_from_fieldmapper {
 		my %hash = map { defined $fm->$_ ?
 					($_ => $fm->$_) :
 					()
-				} grep { $_ ne $primary } $class->columns('All');
+				} grep { $_ ne $primary } $class->columns('Essential');
 
 		if ($class->find_column( 'last_xact_id' )) {
 			my $xact_id = $class->current_xact_id;
@@ -386,7 +386,7 @@ sub modify_from_fieldmapper {
 		%hash = map { defined $fm->$_ ?
 				($_ => ''.$fm->$_) :
 				()
-			} grep { $_ ne $primary } $class->columns('All');
+			} grep { $_ ne $primary } $class->columns('Essential');
 	} else {
 		%hash = %{$fm};
 	}
