@@ -75,6 +75,50 @@ main.menu.prototype = {
 			'cmd_search_tcn' : [
 				['oncommand'],
 				function() {
+					JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+					obj.data.cmd_copy_status_value = ''; obj.data.stash('cmd_search_tcn_value');
+
+					obj.window.open(
+						obj.url_prefix(urls.XUL_TCN_QUERY),
+						'cmd_search_tcn_win' + obj.window.window_name_increment(),
+						'chrome,resizable,modal,center'
+					);
+
+					obj.data.stash_retrieve();
+					var tcn = obj.data.cmd_search_tcn_value;
+
+					if (tcn) {
+						JSAN.use('util.network');
+						var network = new util.network();
+						var robj = network.simple_request('FM_BRE_ID_SEARCH_VIA_TCN',[tcn]);
+						if (robj.count != robj.ids.length) throw('FIXME -- FM_BRE_ID_SEARCH_VIA_TCN = ' + js2JSON(robj));
+						if (robj.count == 0) {
+							alert('TCN not found');
+						} else {
+							for (var i = 0; i < robj.count; i++) {
+								var id = robj.ids[i];
+								var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
+								var content_params = { 
+									'session' : session, 
+									'authtime' : authtime,
+									'opac_url' : opac_url,
+								};
+								if (i == 0) {
+									obj.set_tab(
+										obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										{'tab_name':tcn}, 
+										content_params
+									);
+								} else {
+									obj.new_tab(
+										obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										{'tab_name':tcn}, 
+										content_params
+									);
+								}
+							}
+						}
+					}
 				}
 			],
 			'cmd_copy_status' : [
@@ -82,25 +126,6 @@ main.menu.prototype = {
 				function() {
 					obj.set_tab(obj.url_prefix(urls.XUL_COPY_STATUS)
 						+ '?session='+window.escape(session),{},{});
-					/*
-					JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-					obj.data.cmd_copy_status_value = ''; obj.data.stash('cmd_copy_status_value');
-
-					obj.window.open(
-						obj.url_prefix(urls.XUL_COPY_BARCODE_QUERY),
-						'cmd_copy_status_win' + obj.window.window_name_increment(),
-						'chrome,resizable,modal,center'
-					);
-
-					obj.data.stash_retrieve();
-					var barcode = obj.data.cmd_copy_status_value;
-
-					if (barcode) {
-						JSAN.use('util.network');
-						var network = new util.network();
-						var robj = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[barcode]);
-					}
-					*/
 				}
 			],
 

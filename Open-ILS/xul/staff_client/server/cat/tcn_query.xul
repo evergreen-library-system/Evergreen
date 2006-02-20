@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="tcn_query" title="Title Control Number Lookup"
+	orient="vertical" style="overflow: auto"
+	onload="try{info_init();}catch(E){alert(E);}"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+
+	<script>
+	<![CDATA[
+
+		function info_init() {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+			JSAN.errorLevel = "die"; // none, warn, or die
+			JSAN.addRepository('/xul/server/');
+			JSAN.use('util.error'); g.error = new util.error();
+			g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+			JSAN.use('OpenILS.data'); g.data = new OpenILS.data();
+			g.data.init({'via':'stash'});
+
+			document.getElementById('tcn').focus();
+			document.getElementById('tcn').addEventListener(
+				'keypress',
+				function(ev) {
+					if (ev.keyCode && ev.keyCode == 13) {
+						setTimeout( /* workaround some segfaults */
+							function() {
+								info_finish();
+								window.close();
+							}, 0
+						);
+					}
+				},
+				false
+			);
+		}
+
+		function info_finish() {
+			/* FIXME -- need unique temp space name */
+			g.data.cmd_search_tcn_value = document.getElementById('tcn').value;
+			g.data.stash('cmd_search_tcn_value');
+		}
+
+	]]>
+	</script>
+
+
+	<groupbox>
+		<caption label="Enter TCN / Accession ID"/>
+		<grid>
+			<columns> <column flex="0" /> <column flex="0" /> </columns>
+			<rows>
+				<row>
+					<label value="ID"/>
+					<textbox id="tcn" />
+				</row>
+			</rows>
+		</grid>
+		<hbox>
+			<spacer flex="1"/>
+			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
+			<button label="Search" oncommand="info_finish(); window.close();" accesskey="S"/>
+		</hbox>
+	</groupbox>
+
+</window>
+
+
