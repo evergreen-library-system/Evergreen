@@ -5,6 +5,8 @@ var advanced			= false;
 var SC_FETCH_ALL     = 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
 var SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
 var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
+var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
+var identTypes			= null;
 
 var myPerms		= [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
 
@@ -45,6 +47,7 @@ function uEditInit() {
 		function() { 
 			fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 			uEditDrawUser(fetchFleshedUser(cgi.param('usr')));
+			uEditFetchIDTypes();
 			uEditFetchStatCats();
 			uEditFetchSurveys();
 		}, 20 
@@ -115,6 +118,26 @@ function uEditAddrHighlight( node, type ) {
 
 function uEditDrawUser(patron) {
 	if(!patron) return 0;
+}
+
+function uEditFetchIDTypes() {
+	var req = new Request(FETCH_ID_TYPES);
+	req.callback(uEditDrawIDTypes);
+	req.send();
+}
+
+function uEditDrawIDTypes(r) {
+
+	var types = r.getResultObject();
+	var pri_sel = $('ue_primary_ident_type');
+	var sec_sel = $('ue_secondary_ident_type');
+
+	var idx = 1;
+	for( var t in types ) {
+		var type = types[t];
+		setSelectorVal( pri_sel, idx, type.name(), type.id() );
+		setSelectorVal( sec_sel, idx++, type.name(), type.id() );
+	}
 }
 
 function uEditFetchStatCats() {
@@ -234,21 +257,121 @@ function uEditInsertSurveyQuestion( div, table, tbody, row, survey, question, si
 }
 
 
+function uEditFetchError(id) { return $(id).innerHTML + "\n"; }
+
+
 function uEditSaveUser() {
 
-	if(patron == null) patron = new au();
+	var card		= null;
+	var errors	= "";
 
-	var barcode = $('ue_barcode').value;
-	patron.usrname($('ue_username').value);	
-	patron.passwd($('ue_password1').value);	
-	patron.first_given_name($('ue_firstname').value);
-	patron.second_given_name($('ue_middlename').value);
-	patron.family_name($('ue_lastname').value);
-	patron.suffix($('ue_suffix').value);
-	patron.dob($('ue_dob').value);
+	if(patron == null) { 
+		patron = new au(); 
+		patron.isnew(1);
+		card = new ac();
+		patron.card(-1); /* attach to the virtual id of the card */
+		patron.cards([card]);
 
-	alert(js2JSON(patron));
+	} else { 
+		patron.ischanged(1); 
+		patron.isnew(0);
+	}
 
+	errors += uEditFleshCard(card);
+	errors += uEditAddBasicPatronInfo(patron);
+	errors += uEditAddIdents(patron);
+
+	if(errors) alert(errors);
+	else alert(js2JSON(patron));
 }
 
+function uEditSetVal( obj, func, val, regex ) {
+
+	if( val == null ) return false;
+	if(!instanceOf(val, String)) {
+		try {
+			val = val.value;
+		} catch(e) { return false; }
+	}
+
+	if(val == "" ) return false;
+	if(regex && !val.match(regex) ) return false;
+
+	obj[func](val);
+	alert("Setting val: "+val);
+
+	return true;
+}
+
+
+function uEditAddBasicPatronInfo(patron) {
+
+	var errors = "";
+
+	if(!uEditSetVal(patron, "usrname", $('ue_username'), /.+/ ))
+		errors += uEditFetchError('ue_bad_username');
+
+	/* make sure passwords match */
+	var p1 = $('ue_password1').value;
+	var p2 = $('ue_password1').value;
+	if( p1 != p2 || !uEditSetVal( patron, "passwd", p1 )) 
+		errors += uEditFetchError('ue_bad_password');
+
+	if(!uEditSetVal(patron, "first_given_name", $('ue_firstname'), /.+/)) 
+		errors += uEditFetchError('ue_bad_firstname');
+
+	if(!uEditSetVal(patron, "second_given_name", $('ue_middlename'), /.+/)) 
+		errors += uEditFetchError('ue_bad_middlename');
+
+	if(!uEditSetVal(patron, "family_name", $('ue_lastname'), /.+/)) 
+		errors += uEditFetchError('ue_bad_lastname');
+
+	patron.suffix($('ue_suffix').value); /* suffis isn't required */
+
+	if(!uEditSetVal(patron, "dob", $('ue_dob'), /^\d{4}-\d{2}-\d{2}/ ) )
+		errors += uEditFetchError('ue_bad_dob');
+
+	/* make sure emails match */
+	var email	= $('ue_email1').value;
+	var email2	= $('ue_email2').value;
+	if( email != email2 || !uEditSetVal(patron, "email", email, /.+\@.+\..+/ ))
+		errors += uEditFetchError('ue_bad_email');
+
+	return errors;
+}
+
+function uEditFleshCard(card) {
+	if(!card) return "";
+
+	if(!uEditSetVal( card, "barcode", $('ue_barcode') ))
+		return uEditFetchError('ue_bad_barcode');
+
+	card.id(-1);
+	card.active(1);
+	return "";
+}
+
+function uEditAddIdents(patron) {
+
+	var ptype1 = 
+	var ptype2 = getSelectorVal($('ue_secondary_ident_type'));
+	var val1 = $('ue_primary_ident').value;
+	var val2 = $('ue_secondary_ident').value;
+	
+	if( !uEditSetVal( patron, 
+		"ident_type", getSelectorVal($('ue_primary_ident_type'), /^[0-9]+$/ );
+		return uEditFetchError('ue_no_ident');
+
+	if( !uEditSetVal( patron, 
+		"ident_type2", getSelectorVal($('ue_secondary_ident_type'), /^[0-9]+$/ );
+		return uEditFetchError('ue_no_ident');
+
+	if( !uEditSetVal( patron, "ident_value", $('ue_primary_ident') ))
+		return uEditFetchError('ue_no_ident');
+
+	if( !uEditSetVal( patron, "ident_value2", $('ue_secondary_ident') ))
+		return uEditFetchError('ue_no_ident');
+
+	return "";
+}
 

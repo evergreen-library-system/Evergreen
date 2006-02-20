@@ -137,7 +137,13 @@
 								<tbody>
 									<tr>
 										<td><div class='wide right'>Barcode</div></td>
-										<td><div class='wide left'><input type='text' id='ue_barcode'/></div></td>
+										<td><div class='wide left'>
+
+											<input type='text' id='ue_barcode' 
+												onblur=' var un = $("ue_username");
+													if(!un.value) un.value = this.value;'/>
+
+										</div></td>
 									</tr>
 									<tr>
 										<td><div class='wide right'>Username</div></td>
@@ -439,6 +445,9 @@
 												</button>
 
 												<span class='pad' style='font-size: 8pt;'>(YYYY-MM-DD)</span>
+												<div style='margin-top: 5px;'>
+													Note: a default will be provided if none is selected
+												</div>
 	
 												<script type="text/javascript">
 													Calendar.setup({
@@ -616,6 +625,27 @@
 			</tbody>
 		</table>
 	</center>
+
+	<!-- ************************************************************** -->
+	<!-- This holds all of the strings we may have to alert to the user -->
+	<!-- ************************************************************** -->
+	<div class='hide_me'>
+		<span id='ue_bad_dob'>The date of birth field is not formatted correctly.  We're expecting YYY-MM-DD</span>
+		<span id='ue_bad_username'>Username is invalid.</span>
+		<span id='ue_bad_password'>Passwords do not match or are invalid</span>
+		<span id='ue_bad_firstname'>First name is invalid</span>
+		<span id='ue_bad_middlename'>Middle name is invalid</span>
+		<span id='ue_bad_lastname'>Last name is invalid</span>
+		<span id='ue_bad_barcode'>Barcode is invalid.</span>
+		<span id='ue_duplicate_barcode'>The barcode is invalid.</span>
+		<span id='ue_new_barcode_warn'>
+			This will de-activate the existing barcode for this user!  If you wish to continue, 
+			enter the new barcode below.  Otherwise, click the Cancel button.
+		</span>
+		<span id='ue_no_ident'>You must select two types of identification.</span>
+		<span id='ue_bad_email'>The email addresses do not match or are invalid</span>
+	</div>
+
 	</body>
 </html>
 
