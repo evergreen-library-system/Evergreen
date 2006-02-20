@@ -48,6 +48,44 @@ sub initialize {
 
 
 __PACKAGE__->register_method(
+	method	=> "marcxml_to_brn",
+	api_name	=> "open-ils.search.z3950.marcxml_to_brn",
+);
+
+sub marcxml_to_brn {
+
+	my( $self, $client, $marcxml ) = @_;
+
+	my $tree;
+	my $err;
+
+	my $flat = OpenILS::Utils::FlatXML->new( xml => $marcxml ); 
+	my $doc = $flat->xml_to_doc();
+
+	if( $doc->documentElement->nodeName =~ /collection/io ) {
+		$doc->setDocumentElement( $doc->documentElement->firstChild );
+		$doc->documentElement->setNamespace(
+				"http://www.loc.gov/MARC21/slim", undef, 1);
+	}
+	$logger->debug("z3950: Turning doc into a nodeset...");
+
+	try {
+		my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
+		$logger->debug("z3950: turning nodeset into tree");
+		$tree = $utils->nodeset2tree( $nodes->nodeset );
+	} catch Error with {
+		$err = shift;
+	};
+
+	if($err) {
+		$logger->error("z3950: Error turning doc into nodeset/node tree: $err");
+		return undef;
+	} else {
+		return $tree;
+	}
+}
+
+__PACKAGE__->register_method(
 	method	=> "z39_search_by_string",
 	api_name	=> "open-ils.search.z3950.raw_string",
 );
@@ -80,6 +118,9 @@ sub z39_search_by_string {
 		throw OpenSRF::EX::ERROR ("z39 search failed"); 
 	}
 
+	# We want nice full records
+	$rs->option(elementSetName => "f");
+
 	my $records = [];
 	my $hash = {};
 
@@ -89,7 +130,6 @@ sub z39_search_by_string {
 	# until there is a more graceful way to handle this
 	if($hash->{count} > 20) { return $hash; }
 
-
 	for( my $x = 0; $x != $hash->{count}; $x++ ) {
 		$logger->debug("z3950: Churning on z39 record count $x");
 
@@ -97,43 +137,13 @@ sub z39_search_by_string {
 		my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
 
 		my $marcxml = $marc->as_xml();
-		my $flat = OpenILS::Utils::FlatXML->new( xml => $marcxml ); 
-		my $doc = $flat->xml_to_doc();
-
-
-		if( $doc->documentElement->nodeName =~ /collection/io ) {
-			$doc->setDocumentElement( $doc->documentElement->firstChild );
-			$doc->documentElement->setNamespace(
-					"http://www.loc.gov/MARC21/slim", undef, 1);
-		}
-
-		$logger->debug("z3950: Turning doc into a nodeset...");
-
-		my $tree;
-		my $err;
-
-		try {
-			my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
-			$logger->debug("z3950: turning nodeset into tree");
-			$tree = $utils->nodeset2tree( $nodes->nodeset );
-		} catch Error with {
-			$err = shift;
-		};
-
-		if($err) {
-			$logger->error("z3950: Error turning doc into nodeset/node tree: $err");
-		} else {
-			my $mods;
+		my $mods;
 			
-			my $u = OpenILS::Utils::ModsParser->new();
-			$u->start_mods_batch( $marcxml );
-			$mods = $u->finish_mods_batch();
+		my $u = OpenILS::Utils::ModsParser->new();
+		$u->start_mods_batch( $marcxml );
+		$mods = $u->finish_mods_batch();
 
-			push @$records, { 'mvr' => $mods, 'brn' => $tree };
-
-			#push @$records, $tree;
-		}
-
+		push @$records, { 'mvr' => $mods, 'marcxml' => $marcxml };
 	}
 
 	$logger->debug("z3950: got here near the end with " . scalar(@$records) . " records." );
