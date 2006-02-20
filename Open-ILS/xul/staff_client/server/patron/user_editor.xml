@@ -53,7 +53,7 @@
 			.uedit_table { width: 80% }
 			.address_table { 
 				-moz-border-radius: 4px;
-				border: 3px solid #E0E0F0;
+				border: 4px solid #E0E0F0;
 				padding: 4px;
 				}
 			.address_table td { 
@@ -505,17 +505,23 @@
 						<!-- ************************************************************** -->
 						<div id='uedit_stat_cats' class='main_div hide_me'>
 							<table class='uedit_table' style='width: 98%'>
-								<thead><tr><td>Stat Cat Name</td><td>Owner</td><td>Value</td></tr></thead>
+								<thead>
+									<tr style='font-weight: bold;'>
+										<td>Stat Cat Name</td>
+										<td>Owner</td>
+										<td>Value</td>
+									</tr>
+								</thead>
 								<tbody id='ue_stat_cat_tbody'>
 									<tr id='ue_stat_cat_row'>
-										<td><div class='wide right' style='font-weight: bold;' name='ue_stat_cat_name'/></td>
+										<td><div class='wide right' name='ue_stat_cat_name'/></td>
 										<td><div class='wide right' style='font-size: 8pt' name='ue_stat_cat_owner'/></td>
 										<td>
 											<div class='wide left'>
 												<select name='ue_stat_cat_selector'>
 													<option> -- Select One -- </option>
 												</select>
-												<span class='pad'> Or Enter a new value: </span>
+												<span class='pad'> or </span>
 												<input class='pad' type='text' name='ue_stat_cat_newval'/>
 											</div>
 										</td>
@@ -569,6 +575,17 @@
 						<!-- Finish Up -->
 						<!-- ************************************************************** -->
 						<div id='uedit_finalize' class='main_div hide_me'>
+							<div class='has_color' style='width: 95%; margin-top: 40px; text-align: center'>
+								<div>
+									You are now ready to save the user to the database.  <br/>
+									To view or print a summary of the changes, click on the "View Summary" link.  <br/>
+									To save the user, click on the 'Save User' button.
+								</div>
+								<br/>
+								<a style='margin-right: 30px;' id='ue_view_summary' 
+									href='javascript:uEditShowSummary();'>View Summary</a>
+								<input style='margin-left: 30px;' type='submit' value='Save User' onclick='uEditSaveUser();'/>
+							</div>
 						</div>
 
 	

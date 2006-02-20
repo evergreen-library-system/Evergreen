@@ -18,14 +18,15 @@ var pages		= [
 	'uedit_finalize',
 	];
 
+/* ID's of objects that should be focused when their page is made visible */
 var pageFocus	= [
 	'ue_barcode',
 	'ue_email1',
 	'ue_addr_label',
-	'ue_barcode',
-	'ue_barcode',
-	'ue_barcode',
-	'ue_barcode'
+	'ue_profile',
+	'ue_stat_cat_selector_1',
+	'ue_survey_selector_1',
+	'ue_view_summary'
 ];
 
 /* fetch the necessary data to start off */
@@ -36,7 +37,7 @@ function uEditInit() {
 	if(cgi.param('adv')) advanced = true 
 	if(!session) throw "User session is not defined";
 
-	user = fetchUser(session);
+	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
 	uEditShowPage('uedit_userid');
 
@@ -74,7 +75,7 @@ function uEditShowPage(id) {
 	addCSSClass($(id+'_label'), 'label_active');
 	var idx = _findPageIdx(id);
 	var fpage = pageFocus[idx];
-	if(fpage) { $(fpage).focus(); $(fpage).select() }
+	if(fpage) { $(fpage).focus(); try{$(fpage).select()}catch(e){} }
 
 	unHideMe($('ue_back'));
 	unHideMe($('ue_fwd'));
@@ -129,12 +130,12 @@ function uEditDrawStatCats(r) {
 
 	for( var c in cats ) {
 		var row = templ.cloneNode(true);
-		uEditInsertCat( tbody, row, cats[c] );
+		uEditInsertCat( tbody, row, cats[c], c );
 		tbody.appendChild(row);
 	}
 }
 
-function uEditInsertCat( tbody, row, cat ) {
+function uEditInsertCat( tbody, row, cat, idx ) {
 
 	cat.entries().sort(  /* sort the entries by value */
 		function( a, b ) { 
@@ -145,6 +146,7 @@ function uEditInsertCat( tbody, row, cat ) {
 	);
 
 	var selector = $n(row, 'ue_stat_cat_selector');
+	if( idx == 0 ) selector.id = 'ue_stat_cat_selector_1'; 
 	$n(row, 'ue_stat_cat_name').appendChild(text(cat.name()));
 	$n(row, 'ue_stat_cat_owner').appendChild(text(fetchOrgUnit(cat.owner()).shortname()));
 
@@ -167,32 +169,32 @@ function uEditDrawSurveys(r) {
 	var div = $('uedit_surveys');
 	var table = div.removeChild($('ue_survey_table'));
 
+	var x = 0;
 	for( var s in surveys ) {
 		var survey = surveys[s];
 		var clone = table.cloneNode(true);
-		uEditInsertSurvey( div, clone, survey );
+		uEditInsertSurvey( div, clone, survey, x++ );
 		div.appendChild(clone);
 	}
 }
 
-function uEditInsertSurvey( div, table, survey ) {
+function uEditInsertSurvey( div, table, survey, sidx ) {
 	$n(table, 'ue_survey_name').appendChild(text(survey.name()));
 	$n(table, 'ue_survey_desc').appendChild(text(survey.description()));
 	var tbody = $n(table, 'ue_survey_tbody');
 	var templ = tbody.removeChild($n(table, 'ue_survey_row'));
 
-	var selector	= $('ue_survey_answer');
 	var polldiv		= $('ue_survey_answer_poll');
 
 	var idx = 1;
 	for( var q in survey.questions() ) {
 		var row = templ.cloneNode(true);
-		uEditInsertSurveyQuestion( div, table, tbody, row, survey, survey.questions()[q] );
+		uEditInsertSurveyQuestion( div, table, tbody, row, survey, survey.questions()[q], sidx );
 		tbody.appendChild(row);
 	}
 }
 
-function uEditInsertSurveyQuestion( div, table, tbody, row, survey, question ) {
+function uEditInsertSurveyQuestion( div, table, tbody, row, survey, question, sidx ) {
 
 	$n(row, 'ue_survey_question').appendChild(text(question.question()));
 
@@ -201,6 +203,8 @@ function uEditInsertSurveyQuestion( div, table, tbody, row, survey, question ) {
 	var idx			= 1;
 	var polltbody	= $n(row, 'ue_survey_answer_poll_tbody');
 	var pollrow		= polltbody.removeChild($n(polltbody, 'ue_survey_answer_poll_row'));
+
+	if( sidx == 0 ) selector.id = 'ue_survey_selector_1'; 
 
 	for( var a in question.answers() ) {
 
@@ -227,6 +231,24 @@ function uEditInsertSurveyQuestion( div, table, tbody, row, survey, question ) {
 			setSelectorVal( selector, idx++, answer.answer(), answer.id() );
 		}
 	}
+}
+
+
+function uEditSaveUser() {
+
+	if(patron == null) patron = new au();
+
+	var barcode = $('ue_barcode').value;
+	patron.usrname($('ue_username').value);	
+	patron.passwd($('ue_password1').value);	
+	patron.first_given_name($('ue_firstname').value);
+	patron.second_given_name($('ue_middlename').value);
+	patron.family_name($('ue_lastname').value);
+	patron.suffix($('ue_suffix').value);
+	patron.dob($('ue_dob').value);
+
+	alert(js2JSON(patron));
+
 }
 
 
