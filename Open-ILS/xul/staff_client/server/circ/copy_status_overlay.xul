@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+<overlay id="copy_status_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>dump('loading copy_status_overlay.xul\n');</script>
+
+<commandset id="copy_status_cmds" />
+
+<box id="copy_status_main" flex="1" orient="vertical" class="my_overflow">
+	<vbox id="cmvb1" flex="1"/>
+</box>
+
+<vbox id="cmvb1" flex="1">
+	<groupbox id="cmgb1" flex="2">
+		<caption label="Scan Item" />
+		<hbox id="copy_status_top_ui" />
+		<tree id="copy_status_list" flex="1" enableColumnDrag="true"/>
+		<hbox id="copy_status_bottom_ui" />
+	</groupbox>
+</vbox>
+
+<hbox id="copy_status_top_ui">
+	<label id="copy_status_scan_barcode_label" 
+		value="Barcode:"
+		accesskey="B"
+		control="copy_status_barcode_entry_textbox"/>
+	<textbox id="copy_status_barcode_entry_textbox"/>
+	<button id="copy_status_submit_barcode_button" 
+		label="Submit"
+		command="cmd_copy_status_submit_barcode"
+		accesskey="S"/>
+	<spacer flex="1"/>
+	<label value="Selected Items:"/>
+	<button id="sel_checkin" label="Check In" disabled="true"/>
+	<button id="sel_edit" label="Edit" disabled="true"/>
+	<button id="sel_opac" label="OPAC" disabled="true"/>
+	<button id="sel_patron" label="Patron" disabled="true"/>
+	<button id="sel_bucket" label="Bucket" disabled="true"/>
+</hbox>
+
+<hbox id="copy_status_bottom_ui">
+	<button id="copy_status_print" 
+		label="Print"
+		command="cmd_copy_status_print"
+		accesskey="P"/>
+	<button id="copy_status_reprint" 
+		label="Print Last"
+		command="cmd_copy_status_reprint"
+		accesskey_disabled="L"/>
+	<spacer id="pcii3s" flex="1"/>
+	<checkbox id="copy_status_auto" 
+		label="Auto-Print"
+		accesskey_disabled="A"/> 
+<!--
+	<button id="copy_status_done" 
+		label="&staff.copy_status.done_label;" 
+		command="cmd_copy_status_done"
+		accesskey="&staff.copy_status.done_label.accesskey;"/>
+-->
+</hbox>
+
+</overlay>
