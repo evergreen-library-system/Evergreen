@@ -224,7 +224,7 @@ circ.copy_status.prototype = {
 				]
 			).length == 0 ? 1 : 0;
 		} catch(E) {
-			obj.error.sdump('batch permission check: ' + E);
+			obj.error.sdump('D_ERROR','batch permission check: ' + E);
 		}
 
 		var title = list.length == 1 ? 'Copy' : 'Copies';

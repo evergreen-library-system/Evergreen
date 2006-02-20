@@ -345,7 +345,7 @@
 					]
 				).length == 0 ? 1 : 0;
 			} catch(E) {
-				g.error.sdump('batch permission check: ' + E);
+				g.error.sdump('D_ERROR','batch permission check: ' + E);
 			}
 
 			list = util.functional.map_list(
