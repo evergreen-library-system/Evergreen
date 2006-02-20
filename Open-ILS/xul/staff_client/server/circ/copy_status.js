@@ -194,8 +194,8 @@ circ.copy_status.prototype = {
 
 		list = util.functional.map_list(
 			list,
-			function (obj) {
-				return obj[0];
+			function (o) {
+				return o[0];
 			}
 		);
 
@@ -216,8 +216,8 @@ circ.copy_status.prototype = {
 					obj.data.list.au[0].id(), 
 					util.functional.map_list(
 						copies,
-						function (obj) {
-							return obj.network.simple_request('FM_ACN_RETRIEVE',[obj.call_number()]).owning_lib();
+						function (o) {
+							return obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
 						}
 					),
 					[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
