@@ -41,7 +41,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'location', 'label' : getString('staff.acp_label_location'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.acpl[ my.acp.location() ].name()'
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())) obj.data.hash.acpl[ my.acp.location() ].name(); else my.acp.location().name();'
 		},
 		{
 			'id' : 'loan_duration', 'label' : getString('staff.acp_label_loan_duration'), 'flex' : 1,
@@ -50,7 +50,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'circ_lib', 'label' : getString('staff.acp_label_circ_lib'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.aou[ my.acp.circ_lib() ].shortname()'
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.circ_lib())) obj.data.hash.aou[ my.acp.circ_lib() ].shortname(); else my.acp.circ_lib().shortname();'
 		},
 		{
 			'id' : 'fine_level', 'label' : getString('staff.acp_label_fine_level'), 'flex' : 1,
@@ -123,7 +123,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'obj.data.hash.ccs[ my.acp.status() ].name()'
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.status())) obj.data.hash.ccs[ my.acp.status() ].name(); else my.acp.status().name();'
 		},
 		{
 			'id' : 'route_to', 'label' : 'Route To', 'flex' : 1,
@@ -172,12 +172,12 @@ circ.util.hold_columns = function(modify) {
 		{
 			'id' : 'pickup_lib', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'obj.data.hash.aou[ my.ahr.pickup_lib() ].name()'
+			'render' : 'if (Number(my.ahr.pickup_lib())) obj.data.hash.aou[ my.ahr.pickup_lib() ].name(); else my.ahr.pickup_lib().name();'
 		},
 		{
 			'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'obj.data.hash.aou[ my.ahr.pickup_lib() ].shortname()'
+			'render' : 'if (Number(my.ahr.pickup_lib())) obj.data.hash.aou[ my.ahr.pickup_lib() ].shortname(); else my.ahr.pickup_lib().shortname();'
 		},
 		{
 			'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
