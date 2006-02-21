@@ -104,7 +104,22 @@ circ.copy_status.prototype = {
 					'sel_bucket' : [
 						['command'],
 						function() {
-							alert('Not Yet Implemented');
+							JSAN.use('util.functional');
+							JSAN.use('util.window'); var win = new util.window();
+							win.open( 
+								xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
+								+ '?session=' + window.escape(obj.session)
+								+ '&copy_ids=' + js2JSON(
+									util.functional.map_list(
+										obj.selection_list,
+										function (o) {
+											return o[0];
+										}
+									)
+								),
+								'sel_bucket_win' + win.window_name_increment(),
+								'chrome,resizable,modal,center'
+							);
 						}
 					],
 					'copy_status_barcode_entry_textbox' : [
