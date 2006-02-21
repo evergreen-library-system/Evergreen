@@ -127,6 +127,7 @@ function my_init() {
 		/* Other stat cats present on these copies */
 		for (var i = 0; i < g.copies.length; i++) {
 			var entries = g.copies[i].stat_cat_entries();
+			if (!entries) entries = [];
 			for (var j = 0; j < entries.length; j++) {
 				var sc_id = entries[j].stat_cat();
 				add_stat_cat( sc_id );
@@ -172,6 +173,7 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 		try {
 			copy.ischanged('1');
 			var temp = copy.stat_cat_entries();
+			if (!temp) temp = [];
 			temp = util.functional.filter_list(
 				temp,
 				function (obj) {
