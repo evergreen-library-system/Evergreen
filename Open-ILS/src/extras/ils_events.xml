@@ -45,6 +45,10 @@
 		</desc>
 	</event>
 
+	<event code='1003' textcode='Z3950_SEARCH_FAILED'>
+		<desc>The Z search did not succeed</desc>
+	</event>
+
 	<event code='1200' textcode='USERNAME_EXISTS'>
 		<desc>
 			The given username exists in the database
