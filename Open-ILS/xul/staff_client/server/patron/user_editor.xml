@@ -25,9 +25,9 @@
 		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
 		<script language='javascript' src='/opac/common/js/init.js'> </script>
 		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='adminlib.js'> </script>
+		<script language='javascript' src='../admin/adminlib.js'> </script>
 		<script language='javascript' src='user_editor.js'> </script>
-		<link type='text/css' rel='stylesheet' href='admin.css'/>
+		<link type='text/css' rel='stylesheet' href='../admin/admin.css'/>
   
 		<link rel="stylesheet" type="text/css" media="all" 
 			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
@@ -382,7 +382,11 @@
 													<tr>
 														<td colspan='6'>
 															<div class='button_row'>
-																<input type='submit' name='ue_addr_delete' value='Delete this Address'/>
+																<input type='submit' name='ue_addr_delete' value='Delete this Address'
+																	onclick='
+																		var mytab = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+																		mytab.parentNode.parentNode.parentNode.removeChild(mytab.parentNode.parentNode);
+																	'/>
 														</div>
 													</td>
 												</tr>
@@ -409,8 +413,7 @@
 							</table>
 
 							<div class='button_row' style='margin-top: 20px;'>
-								<input type='submit' value='Create a New Address'
-									onclick='$("ue_address_tbody").appendChild($("ue_address_template").cloneNode(true));'/>
+								<input type='submit' value='Create a New Address' id='ue_address_new'/>
 							</div>
 						</div>
 	

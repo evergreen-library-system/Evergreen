@@ -27,7 +27,7 @@ var pages		= [
 var pageFocus	= [
 	'ue_barcode',
 	'ue_email1',
-	'ue_addr_label',
+	'ue_addr_label_1',
 	'ue_profile',
 	'ue_stat_cat_selector_1',
 	'ue_survey_selector_1',
@@ -58,6 +58,7 @@ function uEditInit() {
 			uEditDrawUser(fetchFleshedUser(cgi.param('usr')));
 			uEditBuildLibSelector();
 			uEditFetchIDTypes();
+			uEditFetchAddrs();
 			uEditFetchGroups();
 			uEditFetchStatCats();
 			uEditFetchSurveys();
@@ -292,6 +293,7 @@ function uEditSaveUser() {
 	uEditAddBasicPatronInfo(patron);
 	uEditAddPhones(patron);
 	uEditAddIdents(patron);
+	uEditAddAddresses(patron);
 	uEditAddGroupsAndPerms(patron);
 
 	if(ERRORS) { alert(ERRORS); ERRORS = ""; }
@@ -470,7 +472,52 @@ function uEditAddGroupsAndPerms(patron) {
 
 	uEditSetVal( patron, "claims_returned_count", 
 		$('ue_claims_returned'), 'isnum', 'ue_bad_claims_returned');
+
+	if($('ue_alert_message').value) 
+		uEditSetVal(patron, "alert_message", $('ue_alert_message'));
 }
 
 
 
+function uEditAddAddresses(patron) {
+	var tbody = $('ue_address_tbody');	
+
+	for( var r in tbody.childNodes ) {
+		var row = tbody.childNodes[r];
+		if(!(row && row.nodeName == 'tr')) continue;
+		uEditSetAddress( tbody, row );	
+	}
+}
+
+/* extracts a single address from the page */
+function uEditSetAddress( tbody, row ) {
+
+	var label	= $n(row, 'ue_addr_label');
+	var street1	= $n(row, 'ue_addr_street1');
+	var street2	= $n(row, 'ue_addr_street2');
+	var city		= $n(row, 'ue_addr_city');
+	var county	= $n(row, 'ue_addr_county');
+	var state	= $n(row, 'ue_addr_state');
+	var zip		= $n(row, 'ue_addr_zip');
+	var country = $n(row, 'ue_addr_country');
+
+}
+
+
+var uEditAddrTemplate;
+function uEditFetchAddrs() {
+
+	var tbody = $('ue_address_tbody');
+	uEditAddrTemplate = tbody.removeChild($('ue_address_template'));
+
+	$('ue_address_new').onclick = 
+		function() { tbody.appendChild(uEditAddrTemplate.cloneNode(true)); }
+
+	/* go ahead and add a blank addr */
+	if(!patron) {
+		var row = uEditAddrTemplate.cloneNode(true);
+		$n( row, 'ue_addr_label').id = 'ue_addr_label_1';
+		tbody.appendChild(row); 
+		return;
+	}
+}
