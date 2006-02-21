@@ -1,6 +1,12 @@
 var USER;
 var SESSION;
 var PERMS = {};
+var ORG_CACHE = {};
+
+var XML_ELEMENT_NODE = 1;
+var XML_TEXT_NODE = 3;
+
+var FETCH_ORG_UNIT = "open-ils.actor:open-ils.actor.org_unit.retrieve";
 
 function fetchUser(session) {
 	if(session == null ) {
@@ -15,6 +21,10 @@ function fetchUser(session) {
 	if(checkILSEvent(user)) throw user;
 	USER = user;
 	return user;
+}
+
+function fetchFleshedUser(id) {
+	if(id == null) return null;
 }
 
 /**
@@ -72,4 +82,28 @@ function checkDisabled( node, itemOrg, perm ) {
 	var itemDepth = findOrgDepth(itemOrg);
 	var mydepth = findOrgDepth(PERMS[perm]);
 	if( mydepth != -1 && mydepth <= itemDepth ) node.disabled = false;
+}
+
+
+function fetchOrgUnit(id, callback) {
+
+	if(ORG_CACHE[id]) return ORG_CACHE[id];
+	var req = new Request(FETCH_ORG_UNIT, SESSION, id);	
+
+	if(callback) {
+		req.callback(
+			function(r) { 
+				var org = r.getResultObject();
+				ORG_CACHE[id] = org;
+				callback(org); 
+			}
+		);
+		req.send();
+
+	} else {
+		req.send(true);
+		var org = req.result();
+		ORG_CACHE[id] = org;
+		return org;
+	}
 }
