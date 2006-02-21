@@ -175,7 +175,7 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 			temp = util.functional.filter_list(
 				temp,
 				function (obj) {
-					return (obj.id() != entry_id);
+					return (obj.stat_cat() != sc_id);
 				}
 			);
 			temp.push( 

@@ -114,8 +114,8 @@
 					</row>
 					<row>
 						<label value="Raw Z39.50:" control="raw_string" accesskey="R"/>
-						<textbox id="raw_string" value="Not Yet Implemented" disabled="true"/>
-						<button id="raw_search" label="Submit" disabled="true"/>
+						<textbox id="raw_string"/>
+						<button id="raw_search" label="Submit" />
 					</row>
 				</rows>
 			</grid>

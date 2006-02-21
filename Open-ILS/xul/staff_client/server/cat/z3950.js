@@ -156,7 +156,7 @@ cat.z3950.prototype = {
 								return function() {
 									util.widgets.remove_children(e);
 									var ml = util.widgets.make_menulist( [
-										[ 'System Defaults', 0 ],
+										[ 'OCLC', 'oclc' ],
 										[ 'Custom', 1 ],
 									] );
 									ml.setAttribute('flex','1');
@@ -169,7 +169,7 @@ cat.z3950.prototype = {
 										function(ev) { 
 											/* FIXME - get these values from server */
 											switch(ev.target.value) {
-												case 0: case '0':
+												case 'oclc':
 													obj.controller.view.server.value = 'zcat.oclc.org';
 													obj.controller.view.server.disabled = true;
 													obj.controller.view.database.value = 'OLUCWorldCat';
@@ -180,12 +180,12 @@ cat.z3950.prototype = {
 													obj.controller.view.username.disabled = true;
 													obj.controller.view.password.value = '****';
 													obj.controller.view.password.disabled = true;
-													obj.controller.view.raw_string.value = 'DISABLED';
-													obj.controller.view.raw_string.disabled = true;
-													obj.controller.view.raw_search.disabled = true;
-													obj.controller.view.asc_id.value = '';
-													obj.controller.view.asc_id.disabled = false;
-													obj.controller.view.asc_search.disabled = false;
+													//obj.controller.view.raw_string.value = 'DISABLED';
+													//obj.controller.view.raw_string.disabled = true;
+													//obj.controller.view.raw_search.disabled = true;
+													//obj.controller.view.asc_id.value = '';
+													//obj.controller.view.asc_id.disabled = false;
+													//obj.controller.view.asc_search.disabled = false;
 												break;
 												default:
 													obj.controller.view.server.disabled = false;
@@ -196,12 +196,12 @@ cat.z3950.prototype = {
 													obj.controller.view.username.disabled = false;
 													obj.controller.view.password.value = '';
 													obj.controller.view.password.disabled = false;
-													obj.controller.view.raw_string.value = '';
-													obj.controller.view.raw_string.disabled = false;
-													obj.controller.view.raw_search.disabled = false;
-													obj.controller.view.asc_id.value = 'DISABLED';
-													obj.controller.view.asc_id.disabled = true;
-													obj.controller.view.asc_search.disabled = true;
+													//obj.controller.view.raw_string.value = '';
+													//obj.controller.view.raw_string.disabled = false;
+													//obj.controller.view.raw_search.disabled = false;
+													//obj.controller.view.asc_id.value = 'DISABLED';
+													//obj.controller.view.asc_id.disabled = true;
+													//obj.controller.view.asc_search.disabled = true;
 												break;
 											}
 										},
@@ -213,6 +213,7 @@ cat.z3950.prototype = {
 										false
 									);
 									setTimeout( function() { util.widgets.dispatch('set_server_details',ml); }, 0 );
+									obj.controller.view.server_menu = ml;
 								}
 							}
 						],
@@ -260,9 +261,15 @@ cat.z3950.prototype = {
 				document.createTextNode( 'Searching...' )
 			);
 			obj.store_disable_search_buttons();
+			var params;
+			if (!Number(obj.controller.view.server_menu.value)) {
+				params = [ obj.session, search, obj.controller.view.server_menu.value ];
+			} else {
+				params = [ obj.session, search, 'oclc' ];
+			}
 			obj.network.simple_request(
 				'FM_BRN_RETRIEVE_VIA_Z3950_TCN',
-				[ obj.session, search ],
+				[ obj.session, search, 'oclc' ],
 				function(req) {
 					obj.handle_results(req.getResultObject())
 					obj.restore_enable_search_buttons();
@@ -286,17 +293,31 @@ cat.z3950.prototype = {
 				document.createTextNode( 'Searching...' )
 			);
 			obj.store_disable_search_buttons();
+			if (!Number(obj.controller.view.server_menu.value)) {
+				params = [ 
+					obj.session, 
+					{
+						'search':search,
+						'service':obj.controller.view.server_menu.value,
+					}
+				];
+			} else {
+				params = [ 
+					obj.session, 
+					{
+						'search':search,
+						'server':obj.controller.view.server.value, 
+						'prt':obj.controller.view.port.value, 
+						'db':obj.controller.view.database.value, 
+						'username':obj.controller.view.username.value, 
+						'password':obj.controller.view.password.value 
+					}
+
+				];
+			}
 			obj.network.simple_request(
 				'FM_BRN_RETRIEVE_VIA_Z3950_RAW',
-				[ 
-					obj.session, 
-					obj.controller.view.server.value, 
-					obj.controller.view.port.value, 
-					obj.controller.view.database.value, 
-					search, 
-					obj.controller.view.username.value, 
-					obj.controller.view.password.value 
-				],
+				params,
 				function(req) {
 					obj.handle_results(req.getResultObject())
 					obj.restore_enable_search_buttons();
