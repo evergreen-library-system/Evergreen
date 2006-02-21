@@ -110,10 +110,7 @@ sub biblio_record_tree_import {
 		return OpenILS::Perm->new("IMPORT_MARC"); 
 	}
 
-	warn "importing new record " . Dumper($tree) . "\n";
-
 	my $nodeset = $utils->tree2nodeset($tree);
-	warn "turned into nodeset " . Dumper($nodeset) . "\n";
 
 	# copy the doc so that we can mangle the namespace.  
 	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml($nodeset);
@@ -122,6 +119,9 @@ sub biblio_record_tree_import {
 	$marcxml->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
 	my $tcn;
 
+	#warn "Importing MARC Doc:\n".$marcxml->toString(1)."\n";
+	#warn "Namespace: " . $marcxml->documentElement->firstChild->namespaceURI . "\n";
+	#return 1;
 
 	warn "Starting db session in import\n";
 	my $session = $apputils->start_db_session();
@@ -209,8 +209,11 @@ sub _tcn_exists {
 	my $recs = $req->gather(1);
 
 	if($recs and $recs->[0]) {
+		$logger->debug("_tcn_exists is true for tcn : $tcn");
 		return 1;
 	}
+
+	$logger->debug("_tcn_exists is false for tcn : $tcn");
 	return 0;
 }
 
