@@ -294,7 +294,7 @@
 										<td><div class='wide right'>Home Library</div></td>
 										<td>
 											<div class='wide left'>
-												<select id='ue_org_selector'/>
+												<select style='width: 20em;' id='ue_org_selector'/>
 											</div>
 										</td>
 									</tr>
@@ -630,7 +630,7 @@
 	<!-- This holds all of the strings we may have to alert to the user -->
 	<!-- ************************************************************** -->
 	<div class='hide_me'>
-		<span id='ue_bad_dob'>The date of birth field is not formatted correctly.  We're expecting YYY-MM-DD</span>
+		<span id='ue_bad_dob'>The date of birth field is not formatted correctly.  We're expecting YYYY-MM-DD</span>
 		<span id='ue_bad_username'>Username is invalid.</span>
 		<span id='ue_bad_password'>Passwords do not match or are invalid</span>
 		<span id='ue_bad_firstname'>First name is invalid</span>
@@ -644,6 +644,7 @@
 		</span>
 		<span id='ue_no_ident'>You must select two types of identification.</span>
 		<span id='ue_bad_email'>The email addresses do not match or are invalid</span>
+		<span id='ue_bad_phone'>An invalid phone number was entered</span>
 	</div>
 
 	</body>

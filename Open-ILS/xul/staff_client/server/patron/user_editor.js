@@ -31,6 +31,12 @@ var pageFocus	= [
 	'ue_view_summary'
 ];
 
+var regexes = {};
+regexes.phone	= /\d{3}-\d{3}-\d{4}/;
+regexes.email	= /.+\@.+\..+/;
+regexes.date	= /^\d{4}-\d{2}-\d{2}/;
+regexes.isid	= /^\d+$/;
+
 /* fetch the necessary data to start off */
 function uEditInit() {
 
@@ -47,6 +53,7 @@ function uEditInit() {
 		function() { 
 			fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 			uEditDrawUser(fetchFleshedUser(cgi.param('usr')));
+			uEditBuildLibSelector();
 			uEditFetchIDTypes();
 			uEditFetchStatCats();
 			uEditFetchSurveys();
@@ -279,13 +286,14 @@ function uEditSaveUser() {
 
 	errors += uEditFleshCard(card);
 	errors += uEditAddBasicPatronInfo(patron);
+	errors += uEditAddPhones(patron);
 	errors += uEditAddIdents(patron);
 
 	if(errors) alert(errors);
 	else alert(js2JSON(patron));
 }
 
-function uEditSetVal( obj, func, val, regex ) {
+function uEditSetVal( obj, func, val, regxtype ) {
 
 	if( val == null ) return false;
 	if(!instanceOf(val, String)) {
@@ -295,7 +303,9 @@ function uEditSetVal( obj, func, val, regex ) {
 	}
 
 	if(val == "" ) return false;
-	if(regex && !val.match(regex) ) return false;
+
+	if(regxtype && regexes[regxtype] 
+		&& !val.match(regexes[regxtype]) ) return false;
 
 	obj[func](val);
 	alert("Setting val: "+val);
@@ -308,7 +318,7 @@ function uEditAddBasicPatronInfo(patron) {
 
 	var errors = "";
 
-	if(!uEditSetVal(patron, "usrname", $('ue_username'), /.+/ ))
+	if(!uEditSetVal(patron, "usrname", $('ue_username') ))
 		errors += uEditFetchError('ue_bad_username');
 
 	/* make sure passwords match */
@@ -317,25 +327,61 @@ function uEditAddBasicPatronInfo(patron) {
 	if( p1 != p2 || !uEditSetVal( patron, "passwd", p1 )) 
 		errors += uEditFetchError('ue_bad_password');
 
-	if(!uEditSetVal(patron, "first_given_name", $('ue_firstname'), /.+/)) 
+	if(!uEditSetVal(patron, "first_given_name", $('ue_firstname') )) 
 		errors += uEditFetchError('ue_bad_firstname');
 
-	if(!uEditSetVal(patron, "second_given_name", $('ue_middlename'), /.+/)) 
+	if(!uEditSetVal(patron, "second_given_name", $('ue_middlename') )) 
 		errors += uEditFetchError('ue_bad_middlename');
 
-	if(!uEditSetVal(patron, "family_name", $('ue_lastname'), /.+/)) 
+	if(!uEditSetVal(patron, "family_name", $('ue_lastname') )) 
 		errors += uEditFetchError('ue_bad_lastname');
 
 	patron.suffix($('ue_suffix').value); /* suffis isn't required */
 
-	if(!uEditSetVal(patron, "dob", $('ue_dob'), /^\d{4}-\d{2}-\d{2}/ ) )
+	if(!uEditSetVal(patron, "dob", $('ue_dob'), 'date' ) )
 		errors += uEditFetchError('ue_bad_dob');
 
 	/* make sure emails match */
 	var email	= $('ue_email1').value;
 	var email2	= $('ue_email2').value;
-	if( email != email2 || !uEditSetVal(patron, "email", email, /.+\@.+\..+/ ))
+	if( email != email2 || !uEditSetVal(patron, "email", email, 'email' ))
 		errors += uEditFetchError('ue_bad_email');
+
+
+	return errors;
+}
+
+function uEditAddPhones(patron) {
+
+	var errors = "";
+
+	/* verifies the phone numbers are formatted correctly */
+	var verify = function(n1, n2, n3) {
+		var a = n1.value;
+		var p = n2.value;
+		var s = n3.value;
+		if( !a || !b || !c ) return false;
+		return a + '-' + p + '-' + s;
+	}
+
+
+	if(!uEditSetVal( patron, "day_phone", 
+		verify($('ue_day_phone_area'), 
+		$('ue_day_phone_prefix'), 
+		$('ue_day_phone_suffix')), 'phone' ))
+			errors += uEditFetchError('ue_bad_phone');
+
+	if(!uEditSetVal( patron, "night_phone", 
+		verify($('ue_night_phone_area'), 
+		$('ue_night_phone_prefix'), 
+		$('ue_night_phone_suffix')), 'phone' ))
+			errors += uEditFetchError('ue_bad_phone');
+
+	if(!uEditSetVal( patron, "other_phone", 
+		verify($('ue_other_phone_area'), 
+		$('ue_other_phone_prefix'), 
+		$('ue_other_phone_suffix')), 'phone' ))
+			errors += uEditFetchError('ue_bad_phone');
 
 	return errors;
 }
@@ -353,17 +399,12 @@ function uEditFleshCard(card) {
 
 function uEditAddIdents(patron) {
 
-	var ptype1 = 
-	var ptype2 = getSelectorVal($('ue_secondary_ident_type'));
-	var val1 = $('ue_primary_ident').value;
-	var val2 = $('ue_secondary_ident').value;
-	
 	if( !uEditSetVal( patron, 
-		"ident_type", getSelectorVal($('ue_primary_ident_type'), /^[0-9]+$/ );
+		"ident_type", getSelectorVal($('ue_primary_ident_type')), 'isid' ))
 		return uEditFetchError('ue_no_ident');
 
 	if( !uEditSetVal( patron, 
-		"ident_type2", getSelectorVal($('ue_secondary_ident_type'), /^[0-9]+$/ );
+		"ident_type2", getSelectorVal($('ue_secondary_ident_type')), 'isid' ))
 		return uEditFetchError('ue_no_ident');
 
 	if( !uEditSetVal( patron, "ident_value", $('ue_primary_ident') ))
@@ -374,4 +415,17 @@ function uEditAddIdents(patron) {
 
 	return "";
 }
+
+
+var orgSelecto
+function uEditBuildLibSelector( node, depth, selector ) {
+	if(!selector) selector = $('ue_org_selector');
+	if(!node) { depth = 0; node = globalOrgTree; }
+	
+	insertSelectorVal( selector, -1, node.name(), node.id(), null, depth++ );
+	if( node.id() == USER.home_ou() ) setSelector(selector, node.id());
+	for( var c in node.children() ) 
+		uEditBuildLibSelector(node.children()[c], depth, selector);
+}
+
 
