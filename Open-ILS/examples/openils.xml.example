@@ -32,13 +32,16 @@ For non-core config info, see the inline documentation within this file
 
 		<z3950>
 
+			<default>oclc</default>
+
 			<!-- OpenILS currently only searches the 'oclc' database when
 					doing Z39.50 importing... -->
 			<oclc>
 				<host>zcat.oclc.org</host>
 				<port>210</port>
 				<db>OLUCWorldCat</db>
-				<attr>12</attr> <!-- which @attr (tcn search) we're searching -->
+				<tcnattr>12</tcnattr> 
+				<isbnattr>7</isbnattr>
 				<username>my_username</username>
 				<password>my_password</password>
 			</oclc>
