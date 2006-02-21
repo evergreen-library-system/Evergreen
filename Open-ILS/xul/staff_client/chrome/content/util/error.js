@@ -34,6 +34,7 @@ util.error.prototype = {
 	'sdump_levels' : {
 
 		'D_NONE' : false, 'D_ALL' : false, 'D_ERROR' : true, 'D_DEBUG' : true, 'D_TRACE' :  true,
+		'D_WARN' : true,
 		'D_TRACE_ENTER' :  false, 'D_TRACE_EXIT' :  false, 'D_TIMEOUT' :  false, 'D_FILTER' : false,
 		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 'D_DATA' : false,
 
