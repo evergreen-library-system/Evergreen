@@ -340,6 +340,8 @@ sub _update_patron {
 	my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
 	return (undef, $evt) if $evt;
 
+	$patron->clear_passwd if ($patron->passwd =~ /^\s+/);
+
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
 	return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
