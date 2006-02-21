@@ -631,20 +631,25 @@
 	<!-- ************************************************************** -->
 	<div class='hide_me'>
 		<span id='ue_bad_dob'>The date of birth field is not formatted correctly.  We're expecting YYYY-MM-DD</span>
-		<span id='ue_bad_username'>Username is invalid.</span>
+		<span id='ue_bad_username'>Username is invalid</span>
 		<span id='ue_bad_password'>Passwords do not match or are invalid</span>
 		<span id='ue_bad_firstname'>First name is invalid</span>
 		<span id='ue_bad_middlename'>Middle name is invalid</span>
 		<span id='ue_bad_lastname'>Last name is invalid</span>
-		<span id='ue_bad_barcode'>Barcode is invalid.</span>
-		<span id='ue_duplicate_barcode'>The barcode is invalid.</span>
+		<span id='ue_bad_barcode'>Barcode is invalid</span>
+		<span id='ue_duplicate_barcode'>The selected barcode already exists in the database</span>
 		<span id='ue_new_barcode_warn'>
 			This will de-activate the existing barcode for this user!  If you wish to continue, 
 			enter the new barcode below.  Otherwise, click the Cancel button.
 		</span>
-		<span id='ue_no_ident'>You must select two types of identification.</span>
+		<span id='ue_no_ident'>You must select two types of identification</span>
 		<span id='ue_bad_email'>The email addresses do not match or are invalid</span>
 		<span id='ue_bad_phone'>An invalid phone number was entered</span>
+		<span id='ue_no_profile'>A profile group must be selected</span>
+		<span id='ue_bad_expire'>The user expiration date is invalid.  We're expecting YYYY-MM-DD</span>
+		<span id='ue_bad_claims_returned'>The claims returned count is invalid</span>
+		<span id='ue_no_profile'>A profile group must be selected</span>
+		<span id='ue_unknown_error'>An unknown formatting error occurred</span>
 	</div>
 
 	</body>
