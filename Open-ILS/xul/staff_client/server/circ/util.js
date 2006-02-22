@@ -58,8 +58,24 @@ circ.util.columns = function(modify) {
 			'render' : 'switch(my.acp.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }'
 		},
 		{
-			'id' : 'deposit', 'label' : getString('staff.acp_label_deposit'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.deposit()'
+			'id' : 'circulate', 'label' : 'Circulate?', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circulate() == 1 ? "Yes" : "No"'
+		},
+		{
+			'id' : 'holdable', 'label' : 'Holdable?', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.holdable() == 1 ? "Yes" : "No"'
+		},
+		{
+			'id' : 'opac_visible', 'label' : 'OPAC Visible?', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.opac_visible() == 1 ? "Yes" : "No"'
+		},
+		{
+			'id' : 'ref', 'label' : 'Reference?', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.ref() == 1 ? "Yes" : "No"'
+		},
+		{
+			'id' : 'deposit', 'label' : 'Deposit?', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.deposit() == 1 ? "Yes" : "No"'
 		},
 		{
 			'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
