@@ -35,7 +35,8 @@ our (
   $_parser,
   $_xslt,
   $_storage,
-  %xslt,
+  %record_xslt,
+  %metarecord_xslt,
 );
 
 sub child_init {
@@ -53,7 +54,7 @@ sub child_init {
 		"/MARC21slim2MODS.xsl"
 	);
 	# and stash a transformer
-	$xslt{mods} = $_xslt->parse_stylesheet( $mods_xslt );
+	$record_xslt{mods} = $_xslt->parse_stylesheet( $mods_xslt );
 
 
 	# parse the RDFDC xslt ...
@@ -64,7 +65,7 @@ sub child_init {
 		"/MARC21slim2RDFDC.xsl"
 	);
 	# and stash a transformer
-	$xslt{rdfdc} = $_xslt->parse_stylesheet( $rdfdc_xslt );
+	$record_xslt{rdfdc} = $_xslt->parse_stylesheet( $rdfdc_xslt );
 
 
 	# parse the SRWDC xslt ...
@@ -75,7 +76,7 @@ sub child_init {
 		"/MARC21slim2SRWDC.xsl"
 	);
 	# and stash a transformer
-	$xslt{srwdc} = $_xslt->parse_stylesheet( $srwdc_xslt );
+	$record_xslt{srwdc} = $_xslt->parse_stylesheet( $srwdc_xslt );
 
 
 	# parse the OAIDC xslt ...
@@ -86,7 +87,7 @@ sub child_init {
 		"/MARC21slim2OAIDC.xsl"
 	);
 	# and stash a transformer
-	$xslt{oaidc} = $_xslt->parse_stylesheet( $oaidc_xslt );
+	$record_xslt{oaidc} = $_xslt->parse_stylesheet( $oaidc_xslt );
 
 
 	# parse the RSS xslt ...
@@ -97,7 +98,7 @@ sub child_init {
 		"/MARC21slim2RSS2.xsl"
 	);
 	# and stash a transformer
-	$xslt{rss2} = $_xslt->parse_stylesheet( $rss_xslt );
+	$record_xslt{rss2} = $_xslt->parse_stylesheet( $rss_xslt );
 
 
 	# and finally, a storage server session
@@ -109,7 +110,7 @@ sub child_init {
 }
 
 sub register_record_transforms {
-	for my $type ( keys %xslt ) {
+	for my $type ( keys %record_xslt ) {
 		__PACKAGE__->register_method(
 			method    => 'retrieve_record_transform',
 			api_name  => "open-ils.supercat.record.$type.retrieve",
@@ -188,7 +189,7 @@ sub retrieve_record_transform {
 		$rid
 	)->gather(1)->marc;
 
-	return entityize($xslt{$transform}->transform( $_parser->parse_string( $marc ) )->toString);
+	return entityize($record_xslt{$transform}->transform( $_parser->parse_string( $marc ) )->toString);
 }
 
 
@@ -358,6 +359,44 @@ Returns the MODS representation of the requested metarecord
 			  type => 'string' }
 		}
 );
+
+sub list_metarecord_formats {
+	return ['mods', keys %metarecord_xslt];
+}
+__PACKAGE__->register_method(
+	method    => 'list_metarecord_formats',
+	api_name  => 'open-ils.supercat.metarecord.formats',
+	api_level => 1,
+	argc      => 0,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the list of valid metarecord formats that supercat understands.
+		  DESC
+		  'return' =>
+		  	{ desc => 'The format list',
+			  type => 'array' }
+		}
+);
+
+
+sub list_record_formats {
+	return ['marcxml', keys %record_xslt];
+}
+__PACKAGE__->register_method(
+	method    => 'list_record_formats',
+	api_name  => 'open-ils.supercat.record.formats',
+	api_level => 1,
+	argc      => 0,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the list of valid record formats that supercat understands.
+		  DESC
+		  'return' =>
+		  	{ desc => 'The format list',
+			  type => 'array' }
+		}
+);
+
 
 sub oISBN {
 	my $self = shift;
