@@ -42,7 +42,8 @@
 			#uedit_nav_bar { border: 2px solid #E0F0E0; padding: 6px;}
 			.nav_link { padding-left: 90px; padding-right: 90px; }
 			.main_nav_link { -moz-border-radius: 7px; height: 13%;}
-			.main_div { height: 480px; padding-left: 15px; text-align: center; vertical-align: middle; overflow: auto;}
+			.main_div { height: 480px; padding-left: 15px; 
+				text-align: center; vertical-align: middle; overflow: auto;}
 			.nav_link_table { height: 480px;}
 			.label_active { background: #E0F0E0; }
 			.right { text-align: right; padding-right: 3px;}
@@ -306,7 +307,7 @@
 						<!-- Addresses Pane -->
 						<!-- ************************************************************** -->
 						<div id='uedit_addresses' class='main_div hide_me' >
-							<table class='uedit_table' style='width: 95%; padding: 1px;'>
+							<table class='uedit_table' style='width: 98%; padding: 1px;'>
 								<thead>
 									<tr>
 										<td>Address</td>
@@ -382,10 +383,15 @@
 													<tr>
 														<td colspan='6'>
 															<div class='button_row'>
-																<input type='submit' name='ue_addr_delete' value='Delete this Address'
+																<input type='submit' name='ue_addr_delete' 
+																	value='Delete this Address'
 																	onclick='
-																		var mytab = this.parentNode.parentNode.parentNode.parentNode.parentNode;
-																		mytab.parentNode.parentNode.parentNode.removeChild(mytab.parentNode.parentNode);
+																		if( confirm($("ue_delete_addr_warn").innerHTML) ) {
+																			var td = this.parentNode.parentNode;
+																			var mytab = td.parentNode.parentNode.parentNode;
+																			var top = mytab.parentNode.parentNode.parentNode;
+																			top.removeChild(mytab.parentNode.parentNode);
+																		}
 																	'/>
 														</div>
 													</td>
@@ -629,6 +635,92 @@
 		</table>
 	</center>
 
+	<div id='ue_summary_page' class='hide_me'>
+		<table id='ue_summary_table' class='summary_grid'>
+			<style type='text/css'>
+				.summary_grid { padding: 5px; }
+				.summary_grid thead tr { background: #E0F0E0; font-weight: bold;}
+				.summary_grid tbody tr td { border: 1px solid #E0F0E0; }
+			</style>
+			<thead><tr><td colspan='2'>User Summary Information</td></tr></thead>
+			<tbody id='ue_summary_page_tbody'>
+				<tr><td>Username</td><td id='ue_summary_username'/></tr>
+				<tr><td>First Name</td><td id='ue_summary_firstname'/></tr>
+				<tr><td>Middle Name</td><td id='ue_summary_middlename'/></tr>
+				<tr><td>Last Name</td><td id='ue_summary_lastname'/></tr>
+				<tr><td>Suffix</td><td id='ue_summary_suffix'/></tr>
+				<tr><td>Date of Birth</td><td id='ue_summary_dob'/></tr>
+				<tr><td>Primary Identification Type</td><td id='ue_summary_primary_ident_type'/></tr>
+				<tr><td>Primary Identification</td><td id='ue_summary_primary_ident'/></tr>
+				<tr><td>Secondary Identification Type</td><td id='ue_summary_secondary_ident_type'/></tr>
+				<tr><td>Secondary Identification</td><td id='ue_summary_secondary_ident'/></tr>
+				<tr><td>Email Address</td><td id='ue_summary_email'/></tr>
+				<tr><td>Day Phone</td><td id='ue_summary_dayphone'/></tr>
+				<tr><td>Evening Phone</td><td id='ue_summary_nightphone'/></tr>
+				<tr><td>Other Phone</td><td id='ue_summary_otherphone'/></tr>
+				<tr><td>Home Library</td><td id='ue_summary_home_lib'/></tr>
+				<tr>
+					<td colspan='2'>
+						<table>
+							<thead><tr><td colspan='2'>Addresses</td></tr></thead>
+							<tbody id='ue_summary_addr_tbody'>
+								<tr>
+									<td>
+										<table id='ue_summary_addr_table'>
+											<tbody>
+												<tr><td>Address Label</td><td name='label'/></tr>
+												<tr><td>Street1</td><td name='street1'/></tr>
+												<tr><td>Street2</td><td name='street2'/></tr>
+												<tr><td>City</td><td name='city'/></tr>
+												<tr><td>County</td><td name='county'/></tr>
+												<tr><td>State</td><td name='state'/></tr>
+												<tr><td>Zip Code</td><td name='zip'/></tr>
+												<tr><td>Country</td><td name='country'/></tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr><td>Profile</td><td id='ue_summary_profile'/></tr>
+				<tr><td>Expire Date</td><td id='ue_summary_expire'/></tr>
+				<tr><td>Family Lead Account</td><td id='ue_summary_family_lead'/></tr>
+				<tr><td>Claims Returned Count</td><td id='ue_summary_claims_returned'/></tr>
+				<tr><td>Alert Message</td><td id='ue_summary_alert_message'/></tr>
+				<tr>
+					<td>
+						<table>
+							<thead><tr><td colspan='2'>Statistical Category Updates</td></tr></thead>
+							<tbody id='ue_summary_stats_tbody'>
+								<tr id='ue_summary_stats_row'>
+									<td name='name'/><td name='value'/>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table>
+							<thead><tr><td colspan='2'>Survey Responses</td></tr></thead>
+							<tbody id='ue_summary_survey_tbody'>
+								<tr id='ue_summary_survey_row'>
+									<td name='name'/><td name='value'/>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td><input type='submit' value='Print Page'/></td>
+					<td><input type='submit' value='Close Window'/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
 	<!-- ************************************************************** -->
 	<!-- This holds all of the strings we may have to alert to the user -->
 	<!-- ************************************************************** -->
@@ -653,6 +745,20 @@
 		<span id='ue_bad_claims_returned'>The claims returned count is invalid</span>
 		<span id='ue_no_profile'>A profile group must be selected</span>
 		<span id='ue_unknown_error'>An unknown formatting error occurred</span>
+		<span id='ue_bad_addr_lable'>Address label is invalid</span>
+		<span id='ue_bad_addr_street'>Address street is invalid</span>
+		<span id='ue_bad_addr_city'>Address city is invalid</span>
+		<span id='ue_bad_addr_county'>Address county is invalid</span>
+		<span id='ue_bad_addr_state'>Address state is invalid</span>
+		<span id='ue_bad_addr_country'>Address country is invalid</span>
+		<span id='ue_bad_addr_zip'>Address zip is invalid</span>
+		<span id='ue_delete_addr_warn'>
+			This will remove this address from the user.  
+			Are you sure you wish to continue?
+		</span>
+		<span id='yes'>Yes</span>
+		<span id='no'>No</span>
+		<span id='ue_summary_window'>Patron Summary</span>
 	</div>
 
 	</body>
