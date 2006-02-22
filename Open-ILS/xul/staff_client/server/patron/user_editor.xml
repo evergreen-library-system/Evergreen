@@ -404,13 +404,13 @@
 										<td><input type='checkbox' name='ue_addr_valid_yes' checked='checked'/></td>
 										<td>
 											<div style='width: 100%; -moz-border-radius: 8px;'>
-												<input type='radio' name='ue_addr_mailing_yes' 
+												<input type='radio' name='ue_addr_mailing_yes' checked='checked'
 													onclick='uEditAddrHighlight(this, "mailing");'/>
 											</div>
 										</td>
 										<td>
 											<div style='width: 100%; -moz-border-radius: 8px;'>
-												<input type='radio' name='ue_addr_billing_yes' 
+												<input type='radio' name='ue_addr_billing_yes' checked='checked'
 													onclick='uEditAddrHighlight(this, "billing");'/>
 											</div>
 										</td>
@@ -565,7 +565,8 @@
 								</thead>
 								<tbody name='ue_survey_tbody'>
 									<tr name='ue_survey_row'>
-										<td name='ue_survey_question' style='width: 60%; text-align: left; padding-left: 40px;'/>
+										<td name='ue_survey_question' 
+											style='width: 60%; text-align: left; padding-left: 40px;'/>
 										<td class='hide_me'>
 											<select name='ue_survey_answer'>
 												<option> -- Select One -- </option>
@@ -594,7 +595,7 @@
 						<!-- ************************************************************** -->
 						<div id='uedit_finalize' class='main_div hide_me'>
 							<div class='has_color' style='width: 95%; margin-top: 40px; text-align: center'>
-								<div>
+								<div style='padding: 5px;'>
 									You are now ready to save the user to the database.  <br/>
 									To view or print a summary of the changes, click on the "View Summary" link.  <br/>
 									To save the user, click on the 'Save User' button.
@@ -602,7 +603,8 @@
 								<br/>
 								<a style='margin-right: 30px;' id='ue_view_summary' 
 									href='javascript:uEditShowSummary();'>View Summary</a>
-								<input style='margin-left: 30px;' type='submit' value='Save User' onclick='uEditSaveUser();'/>
+								<input style='margin-left: 30px;' 
+									type='submit' value='Save User' onclick='uEditSaveUser();'/>
 							</div>
 						</div>
 
@@ -620,10 +622,12 @@
 								<tr id='uedit_nav_bar'>
 									<td width='10%'/>
 									<td width='40%'>
-										<a id='ue_back' class='nav_link hide_me' href='javascript:uEditPrev()'>&lt;&lt; Back</a>
+										<a id='ue_back' class='nav_link hide_me' 
+											href='javascript:uEditPrev()'>&lt;&lt; Back</a>
 									</td>
 									<td width='40%'>
-										<a id='ue_fwd' class='nav_link' href='javascript:uEditNext()'>Forward &gt;&gt;</a>
+										<a id='ue_fwd' class='nav_link' 
+											href='javascript:uEditNext()'>Forward &gt;&gt;</a>
 									</td>
 									<td width='10%'/>
 								</tr>
@@ -636,46 +640,68 @@
 	</center>
 
 	<div id='ue_summary_page' class='hide_me'>
-		<table id='ue_summary_table' class='summary_grid'>
+		<table id='ue_summary_table' class='summary_grid' width='55%'>
 			<style type='text/css'>
 				.summary_grid { padding: 5px; }
 				.summary_grid thead tr { background: #E0F0E0; font-weight: bold;}
 				.summary_grid tbody tr td { border: 1px solid #E0F0E0; }
+				.hide_me{ visibility: hidden; display: none }
 			</style>
 			<thead><tr><td colspan='2'>User Summary Information</td></tr></thead>
-			<tbody id='ue_summary_page_tbody'>
-				<tr><td>Username</td><td id='ue_summary_username'/></tr>
-				<tr><td>First Name</td><td id='ue_summary_firstname'/></tr>
-				<tr><td>Middle Name</td><td id='ue_summary_middlename'/></tr>
-				<tr><td>Last Name</td><td id='ue_summary_lastname'/></tr>
-				<tr><td>Suffix</td><td id='ue_summary_suffix'/></tr>
-				<tr><td>Date of Birth</td><td id='ue_summary_dob'/></tr>
-				<tr><td>Primary Identification Type</td><td id='ue_summary_primary_ident_type'/></tr>
-				<tr><td>Primary Identification</td><td id='ue_summary_primary_ident'/></tr>
-				<tr><td>Secondary Identification Type</td><td id='ue_summary_secondary_ident_type'/></tr>
-				<tr><td>Secondary Identification</td><td id='ue_summary_secondary_ident'/></tr>
-				<tr><td>Email Address</td><td id='ue_summary_email'/></tr>
-				<tr><td>Day Phone</td><td id='ue_summary_dayphone'/></tr>
-				<tr><td>Evening Phone</td><td id='ue_summary_nightphone'/></tr>
-				<tr><td>Other Phone</td><td id='ue_summary_otherphone'/></tr>
-				<tr><td>Home Library</td><td id='ue_summary_home_lib'/></tr>
+			<tbody name='ue_summary_page_tbody'>
+				<tr>
+					<td><input type='submit' value='Print Page' onclick='window.print();'/></td>
+					<td><input type='submit' value='Close Window' onclick='window.close();'/></td>
+				</tr>
+				<tr><td>Username</td><td name='ue_summary_username'/></tr>
+				<tr><td>First Name</td><td name='ue_summary_firstname'/></tr>
+				<tr><td>Middle Name</td><td name='ue_summary_middlename'/></tr>
+				<tr><td>Last Name</td><td name='ue_summary_lastname'/></tr>
+				<tr><td>Suffix</td><td name='ue_summary_suffix'/></tr>
+				<tr><td>Date of Birth</td><td name='ue_summary_dob'/></tr>
+				<tr><td>Primary Identification Type</td><td name='ue_summary_primary_ident_type'/></tr>
+				<tr><td>Primary Identification</td><td name='ue_summary_primary_ident'/></tr>
+				<tr><td>Secondary Identification Type</td><td name='ue_summary_secondary_ident_type'/></tr>
+				<tr><td>Secondary Identification</td><td name='ue_summary_secondary_ident'/></tr>
+				<tr><td>Email Address</td><td name='ue_summary_email'/></tr>
+				<tr><td>Day Phone</td><td name='ue_summary_dayphone'/></tr>
+				<tr><td>Evening Phone</td><td name='ue_summary_nightphone'/></tr>
+				<tr><td>Other Phone</td><td name='ue_summary_otherphone'/></tr>
+				<tr><td>Home Library</td><td name='ue_summary_home_lib'/></tr>
 				<tr>
 					<td colspan='2'>
-						<table>
-							<thead><tr><td colspan='2'>Addresses</td></tr></thead>
-							<tbody id='ue_summary_addr_tbody'>
-								<tr>
+						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
+							<thead><tr><td>Addresses</td></tr></thead>
+							<tbody name='ue_summary_addr_tbody'>
+								<tr name='ue_summary_addr_row'>
 									<td>
-										<table id='ue_summary_addr_table'>
+										<table name='ue_summary_addr_table' width='100%'>
+											<thead><tr><td colspan='4'/><span> </span></tr></thead>
 											<tbody>
-												<tr><td>Address Label</td><td name='label'/></tr>
-												<tr><td>Street1</td><td name='street1'/></tr>
-												<tr><td>Street2</td><td name='street2'/></tr>
-												<tr><td>City</td><td name='city'/></tr>
-												<tr><td>County</td><td name='county'/></tr>
-												<tr><td>State</td><td name='state'/></tr>
-												<tr><td>Zip Code</td><td name='zip'/></tr>
-												<tr><td>Country</td><td name='country'/></tr>
+												<tr>
+													<td>Address Label</td><td name='label'/>
+													<td>Zip Code</td><td name='zip'/>
+												</tr>
+												<tr>
+													<td>Street1</td><td name='street1'/>
+													<td>Country</td><td name='country'/>
+												</tr>
+												<tr>
+													<td>Street2</td><td name='street2'/>
+													<td>Mailing</td><td name='mailing'/>
+												</tr>
+												<tr>
+													<td>City</td><td name='city'/>
+													<td>Billing</td><td name='billing'/>
+												</tr>
+												<tr>
+													<td>County</td><td name='county'/>
+													<td>Valid</td><td name='valid'/>
+												</tr>
+												<tr>
+													<td>State</td><td name='state'/>
+													<td>Incorporated</td><td name='incorporated'/>
+												</tr>
 											</tbody>
 										</table>
 									</td>
@@ -684,38 +710,52 @@
 						</table>
 					</td>
 				</tr>
-				<tr><td>Profile</td><td id='ue_summary_profile'/></tr>
-				<tr><td>Expire Date</td><td id='ue_summary_expire'/></tr>
-				<tr><td>Family Lead Account</td><td id='ue_summary_family_lead'/></tr>
-				<tr><td>Claims Returned Count</td><td id='ue_summary_claims_returned'/></tr>
-				<tr><td>Alert Message</td><td id='ue_summary_alert_message'/></tr>
-				<tr>
-					<td>
-						<table>
+				<tr><td>Profile</td><td name='ue_summary_profile'/></tr>
+				<tr><td>Expire Date</td><td name='ue_summary_expire'/></tr>
+				<tr><td>Family Lead Account</td><td name='ue_summary_family_lead'/></tr>
+				<tr><td>Claims Returned Count</td><td name='ue_summary_claims_returned'/></tr>
+				<tr><td>Alert Message</td><td name='ue_summary_alert_message'/></tr>
+				<tr class='hide_me' name='ue_summary_stat_cat_td'>
+					<td colspan='2' >
+						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
 							<thead><tr><td colspan='2'>Statistical Category Updates</td></tr></thead>
-							<tbody id='ue_summary_stats_tbody'>
-								<tr id='ue_summary_stats_row'>
-									<td name='name'/><td name='value'/>
+							<tbody name='ue_summary_stats_tbody'>
+								<tr name='ue_summary_stats_row'>
+									<td name='ue_summary_stat_name'/><td name='ue_summary_stat_value'/>
 								</tr>
 							</tbody>
 						</table>
 					</td>
 				</tr>
-				<tr>
-					<td>
-						<table>
-							<thead><tr><td colspan='2'>Survey Responses</td></tr></thead>
-							<tbody id='ue_summary_survey_tbody'>
-								<tr id='ue_summary_survey_row'>
-									<td name='name'/><td name='value'/>
+				<tr class='hide_me' name='ue_summary_survey_td'>
+					<td colspan='2'>
+						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
+							<thead><tr><td>Survey</td><td>Question</td><td>Answer</td></tr></thead>
+							<tbody name='ue_summary_survey_tbody'>
+								<tr name='ue_summary_survey_row'>
+									<td name='ue_summary_survey_name'/>
+									<td name='ue_summary_survey_question'/>
+									<td name='ue_summary_survey_answer'/>
 								</tr>
 							</tbody>
 						</table>
 					</td>
 				</tr>
+				<tr name='ue_summary_errors_row' class='hide_me'>
+					<td colspan='2'>
+						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
+							<thead>
+								<tr>
+									<td style='color: red;' ><b>Errors you would see if you saved now...</b></td>
+								</tr>
+							</thead>
+							<tbody><tr><td name='ue_summary_errors'/></tr></tbody>
+						</table>
+					</td>
+				</tr>
 				<tr>
-					<td><input type='submit' value='Print Page'/></td>
-					<td><input type='submit' value='Close Window'/></td>
+					<td><input type='submit' value='Print Page' onclick='window.print();'/></td>
+					<td><input type='submit' value='Close Window' onclick='window.close();'/></td>
 				</tr>
 			</tbody>
 		</table>
@@ -745,7 +785,7 @@
 		<span id='ue_bad_claims_returned'>The claims returned count is invalid</span>
 		<span id='ue_no_profile'>A profile group must be selected</span>
 		<span id='ue_unknown_error'>An unknown formatting error occurred</span>
-		<span id='ue_bad_addr_lable'>Address label is invalid</span>
+		<span id='ue_bad_addr_label'>Address label is invalid</span>
 		<span id='ue_bad_addr_street'>Address street is invalid</span>
 		<span id='ue_bad_addr_city'>Address city is invalid</span>
 		<span id='ue_bad_addr_county'>Address county is invalid</span>
@@ -759,6 +799,7 @@
 		<span id='yes'>Yes</span>
 		<span id='no'>No</span>
 		<span id='ue_summary_window'>Patron Summary</span>
+		<span id='ue_success'>User update succeeded</span>
 	</div>
 
 	</body>

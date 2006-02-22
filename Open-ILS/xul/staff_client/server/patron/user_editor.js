@@ -1,16 +1,20 @@
 
-var cgi					= null;
-var patron				= null;
-var advanced			= false;
-var SC_FETCH_ALL     = 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
-var SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
-var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
-var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
-var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
-var identTypes			= {};
-var groupTree			= null;
-var cachedSurveys		= {};
-var ERRORS				= ""; /* global set of errors */
+var cgi							= null;
+var patron						= null;
+var advanced					= false;
+var SC_FETCH_ALL				= 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
+var SC_CREATE_MAP				= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
+var SV_FETCH_ALL				= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
+var FETCH_ID_TYPES			= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
+var FETCH_GROUPS				= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
+var UPDATE_PATRON				= 'open-ils.actor:open-ils.actor.patron.update';
+var identTypes					= {};
+var groupTree					= null;
+var cachedSurveys				= {};
+var cachedSurveyQuestions	= {};
+var cachedSurveyAnswers		= {};
+var cachedStatCats			= {};
+var ERRORS						= ""; /* global set of errors */
 
 var myPerms		= [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
 
@@ -156,13 +160,26 @@ function uEditFetchSurveys() {
 /* ------------------------------------------------------------------------------ */
 /* Save the user
 /* ------------------------------------------------------------------------------ */
-var uEditExistingStatEnties;
+var uEditExistingStatEntries;
 var uEditExistingSurveyResponses;
 
 function uEditSaveUser() {
 	uEditCollectData();
-	if(ERRORS) { alert(ERRORS); ERRORS = ""; }
-	else alert(js2JSON(patron));
+
+	if(ERRORS) { 
+		alert(ERRORS); 
+		ERRORS = ""; 
+		return;
+	}
+
+	//alert(js2JSON(patron));
+
+	var req = new Request(UPDATE_PATRON, SESSION, patron);
+	req.send(true);
+	var result = req.result();
+	if( checkILSEvent(result) ) alert(js2JSON(result));
+	else alert($('ue_success').innerHTML);
+
 }
 
 function uEditCollectData() {
@@ -179,10 +196,13 @@ function uEditCollectData() {
 
 	} else { 
 
-		patron.ischanged(1); 
-		patron.isnew(0);
-		uEditExistingStatEnties = patron.stat_cat_entries();
-		uEditExistingSurveyResponses = patron.survey_responses();
+		/* if this function is called again, patron will exist */
+		if(!patron.isnew()) { 
+			patron.ischanged(1); 
+			patron.isnew(0);
+			uEditExistingStatEntries = patron.stat_cat_entries();
+			uEditExistingSurveyResponses = patron.survey_responses();
+		}
 	}
 
 	patron.stat_cat_entries([]);
@@ -205,7 +225,9 @@ function uEditCollectData() {
 /* Draw the user
 /* ------------------------------------------------------------------------------ */
 function uEditDrawUser(patron) {
-	if(!patron) return 0;
+	if(!patron) {
+		
+	}
 }
 
 
@@ -258,10 +280,12 @@ function uEditInsertCat( tbody, row, cat, idx ) {
 		}
 	);
 
+	cachedStatCats[cat.id()] = cat;
+
 	row.setAttribute('statcat', cat.id());
 	var newval = $n(row, 'ue_stat_cat_newval');
 	newval.onchange = function(){ 
-		findParentNodeByName(newval,'tr').setAttribute('changed', '1'); }
+		findParentByNodeName(newval,'tr').setAttribute('changed', '1'); }
 
 	var selector = $n(row, 'ue_stat_cat_selector');
 	selector.onchange = function(){ 
@@ -291,8 +315,10 @@ function uEditReapStatCats(patron) {
 		if( !row || row.nodeName != 'tr' ) continue;
 		if( row.getAttribute('changed') ) {
 			var val = $n( row, 'ue_stat_cat_newval' );
-			uEditCreateStatEntry( patron, row.getAttribute('statcat'), 
-				val.value, val.getAttribute('entry') );
+			if(val.value) {
+				uEditCreateStatEntry( patron, row.getAttribute('statcat'), 
+					val.value, val.getAttribute('entry') );
+			}
 		}
 	}
 }
@@ -346,7 +372,9 @@ function uEditInsertSurvey( div, table, survey, sidx ) {
 	var idx = 1;
 	for( var q in survey.questions() ) {
 		var row = templ.cloneNode(true);
-		uEditInsertSurveyQuestion( div, table, tbody, row, survey, survey.questions()[q], sidx );
+		var quest = survey.questions()[q];
+		cachedSurveyQuestions[quest.id()] = quest;
+		uEditInsertSurveyQuestion( div, table, tbody, row, survey, quest, sidx );
 		tbody.appendChild(row);
 	}
 }
@@ -374,26 +402,29 @@ function uEditInsertSurveyQuestion( div, table, tbody, row, survey, question, si
 	for( var a in question.answers() ) {
 
 		var answer = question.answers()[a];
+		cachedSurveyAnswers[answer.id()] = answer;
 
 		if( survey.poll() ) {
 
 			unHideMe(polldiv);
 			var prow = pollrow.cloneNode(true);
 
-			prow.onselect	= function() {
+
+			$n(prow, 'ue_survey_answer_poll_answer').appendChild(text(answer.answer()));
+
+
+			var input = elem('input', { 
+					type	: 'radio', 
+					name	: 'survey_poll_answer_'+survey.id(),
+					id		:  answer.id()
+				});
+
+			input.onchange	= function() {
 				row.setAttribute('answer', answer.id());
 				row.setAttribute('changed', '1');
 			}
 
-			$n(prow, 'ue_survey_answer_poll_answer').appendChild(text(answer.answer()));
-
-			$n(prow, 'ue_survey_answer_poll_radio').appendChild(
-				elem('input', { 
-					type	: 'radio', 
-					name	: 'survey_poll_answer_'+survey.id(),
-					id		:  answer.id()
-				}));
-
+			$n(prow, 'ue_survey_answer_poll_radio').appendChild(input);
 			polltbody.appendChild(prow);
 
 		} else {
@@ -419,6 +450,8 @@ function uEditReapSurveys(patron) {
 
 		for( var r in rows ) {
 			var row	= rows[r];
+			if(!row.getAttribute('changed')) continue;
+
 			var resp	= new asvr();
 			resp.isnew(1);
 			resp.survey(survey.id());
@@ -642,16 +675,17 @@ function uEditBuildAddress( patron, tbody, row ) {
 		addr.isnew(1);
 	}
 
-	if($n(row, 'ue_addr_mailing_yes')) patron.mailing_address(addr.id());
-	if($n(row, 'ue_addr_billing_yes')) patron.billing_address(addr.id());
+	if($n(row, 'ue_addr_mailing_yes').checked) patron.mailing_address(addr.id());
+	if($n(row, 'ue_addr_billing_yes').checked) patron.billing_address(addr.id());
+	if($n(row, 'ue_addr_valid_yes').checked) addr.valid(1);
+	if($n(row, 'ue_addr_street2').value) addr.street2($n(row, 'ue_addr_street2').value);
 
-	uEditSetVal(addr, "address_type",	$n(row, 'ue_addr_address_type'),	null, 'ue_bad_addr_address_type' );
+	uEditSetVal(addr, "address_type",	$n(row, 'ue_addr_label'),			null, 'ue_bad_addr_label' );
 	uEditSetVal(addr, "street1",			$n(row, 'ue_addr_street1'),		null, 'ue_bad_addr_street' );
-	uEditSetVal(addr, "street2",			$n(row, 'ue_addr_street2'),		null, 'ue_bad_addr_street' );
 	uEditSetVal(addr, "city",				$n(row, 'ue_addr_city'),			null, 'ue_bad_addr_city' );
 	uEditSetVal(addr, "county",			$n(row, 'ue_addr_county'),			null, 'ue_bad_addr_county' );
 	uEditSetVal(addr, "state",				$n(row, 'ue_addr_state'),			null, 'ue_bad_addr_state' );
-	uEditSetVal(addr, "post_code",		$n(row, 'ue_addr_post_code'),		null, 'ue_bad_addr_post_code' );
+	uEditSetVal(addr, "post_code",		$n(row, 'ue_addr_zip'),				null, 'ue_bad_addr_zip' );
 	uEditSetVal(addr, "country",			$n(row, 'ue_addr_country'),		null, 'ue_bad_addr_country' );
 
 	return addr;
@@ -659,17 +693,34 @@ function uEditBuildAddress( patron, tbody, row ) {
 
 
 var uEditAddrTemplate;
+var uEditOrigAddrRow;
 function uEditFetchAddrs() {
 
 	var tbody = $('ue_address_tbody');
 	uEditAddrTemplate = tbody.removeChild($('ue_address_template'));
 
 	$('ue_address_new').onclick = 
-		function() { tbody.appendChild(uEditAddrTemplate.cloneNode(true)); }
+		function() { 
+			/* we have to retain the mailing/billing radio input values */
+			var rows = getElementsByTagNameFlat(tbody,'tr');
+			var mailrow;
+			var billrow;
+			for( var r in rows ) {
+				var row = rows[r];
+				if($n(row,'ue_addr_mailing_yes').checked) mailrow = row;
+				if($n(row,'ue_addr_billing_yes').checked) billrow = row;
+			}
+			var newrow = uEditAddrTemplate.cloneNode(true);
+			tbody.appendChild(newrow); 
+			$n(newrow, 'ue_addr_label').focus();
+			if(mailrow) $n(mailrow,'ue_addr_mailing_yes').checked = true;
+			if(billrow) $n(billrow,'ue_addr_billing_yes').checked = true;
+		}
 
 	/* go ahead and add a blank addr */
 	if(!patron) {
 		var row = uEditAddrTemplate.cloneNode(true);
+		uEditOrigAddrRow = row;
 		$n( row, 'ue_addr_label').id = 'ue_addr_label_1';
 		tbody.appendChild(row); 
 		return;
@@ -679,39 +730,132 @@ function uEditFetchAddrs() {
 
 function uEditShowSummary() {
 	uEditCollectData();
-	var table = $('ue_summary_table');
+	var table = $('ue_summary_table').cloneNode(true);;
 	uEditFleshSummaryTable(table);
 	var win = window.open("", $('ue_summary_window').innerHTML );	
-	win.document.body.appendChild(table.cloneNode(true));
+	win.document.body.innerHTML = "";
+	win.document.body.appendChild(table);
 }
 
 function uEditFleshSummaryTable(table) {
+
+	var yes = $('yes').innerHTML;
+	var no = $('no').innerHTML;
+
 	var identt1 = "";
 	var identt2 = "";
 	var homeorg = "";
+	var profile	= "";
 
 	if( patron.ident_type() != null) 
 		identt1 = identTypes[patron.ident_type()].name();
 	if( patron.ident_type2() != null ) 
-		identt2 = identTypes[patron.ident_type()].name();
+		identt2 = identTypes[patron.ident_type2()].name();
 	if( patron.home_ou() != null )
 		homeorg = findOrgUnit(patron.home_ou()).name();
+	if( patron.profile() != null )
+		profile = findTreeItemById(groupTree, patron.profile()).name();
 
-	$('ue_summary_username').appendChild(text(patron.usrname()));
-	$('ue_summary_firstname').appendChild(text(patron.first_given_name()));
-	$('ue_summary_middlename').appendChild(text(patron.second_given_name()));
-	$('ue_summary_lastname').appendChild(text(patron.family_name()));
-	$('ue_summary_suffix').appendChild(text(patron.suffix()));
-	$('ue_summary_dob').appendChild(text(patron.dob()));
-	$('ue_summary_primary_ident_type').appendChild(text(identt1));
-	$('ue_summary_primary_ident').appendChild(text(patron.ident_value()));
-	$('ue_summary_secondary_ident_type').appendChild(text(identt2));
-	$('ue_summary_secondary_ident').appendChild(text(patron.ident_value2()));
-	$('ue_summary_email').appendChild(text(patron.email()));
-	$('ue_summary_dayphone').appendChild(text(patron.day_phone()));
-	$('ue_summary_nightphone').appendChild(text(patron.evening_phone()));
-	$('ue_summary_otherphone').appendChild(text(patron.other_phone()));
-	$('ue_summary_home_lib').appendChild(text(homeorg));
+
+	$n(table, 'ue_summary_username').appendChild(text(patron.usrname()));
+	$n(table, 'ue_summary_firstname').appendChild(text(patron.first_given_name()));
+	$n(table, 'ue_summary_middlename').appendChild(text(patron.second_given_name()));
+	$n(table, 'ue_summary_lastname').appendChild(text(patron.family_name()));
+	$n(table, 'ue_summary_suffix').appendChild(text(patron.suffix()));
+	$n(table, 'ue_summary_dob').appendChild(text(patron.dob()));
+	$n(table, 'ue_summary_primary_ident_type').appendChild(text(identt1));
+	$n(table, 'ue_summary_primary_ident').appendChild(text(patron.ident_value()));
+	$n(table, 'ue_summary_secondary_ident_type').appendChild(text(identt2));
+	$n(table, 'ue_summary_secondary_ident').appendChild(text(patron.ident_value2()));
+	$n(table, 'ue_summary_email').appendChild(text(patron.email()));
+	$n(table, 'ue_summary_dayphone').appendChild(text(patron.day_phone()));
+	$n(table, 'ue_summary_nightphone').appendChild(text(patron.evening_phone()));
+	$n(table, 'ue_summary_otherphone').appendChild(text(patron.other_phone()));
+	$n(table, 'ue_summary_home_lib').appendChild(text(homeorg));
+	$n(table, 'ue_summary_profile').appendChild(text(profile));
+	$n(table, 'ue_summary_expire').appendChild(text(patron.expire_date()));
+	$n(table, 'ue_summary_family_lead').appendChild(text( (patron.master_account()) ? yes : no ));
+	$n(table, 'ue_summary_claims_returned').appendChild(text(patron.claims_returned_count()));
+	$n(table, 'ue_summary_alert_message').appendChild(text(patron.alert_message()));
+
+	uEditFleshSummaryAddresses( table, patron );
+	uEditFleshSummaryStatCats( table, patron );
+	uEditFleshSummarySurveys( table, patron );
+	uEditFleshSummaryErrors( table );
+
+
+}
+
+function uEditFleshSummaryAddresses( table, patron ) {
+
+	var addrtbody = $n(table, 'ue_summary_addr_tbody');
+	var rowtmpl = addrtbody.removeChild($n(addrtbody, 'ue_summary_addr_row'));
+	var yes = $('yes').innerHTML;
+	var no = $('no').innerHTML;
+
+	for( var a in patron.addresses() ) {
+
+		var address = patron.addresses()[a];
+		var row = rowtmpl.cloneNode(true);
+
+		$n(row, 'label').appendChild(text(address.address_type()));
+		$n(row, 'street1').appendChild(text(address.street1()));
+		$n(row, 'street2').appendChild(text(address.street2()));
+		$n(row, 'city').appendChild(text(address.city()));
+		$n(row, 'county').appendChild(text(address.county()));
+		$n(row, 'state').appendChild(text(address.state()));
+		$n(row, 'country').appendChild(text(address.country()));
+		$n(row, 'zip').appendChild(text(address.post_code()));
+		$n(row, 'valid').appendChild(text( (address.valid()) ? yes : no ));
+
+		$n(row, 'mailing').appendChild(text( 
+			(patron.mailing_address() == address.id()) ? yes : no ));
+
+		$n(row, 'billing').appendChild(text( 
+			(patron.billing_address() == address.id()) ? yes : no ));
+
+		addrtbody.appendChild(row);
+	}
 }
 
 
+function uEditFleshSummaryStatCats( table, patron ) {
+	var tbody = $n(table, 'ue_summary_stats_tbody');
+	var rowtmpl = tbody.removeChild($n(tbody, 'ue_summary_stats_row'));
+	for( var s in patron.stat_cat_entries() ) {
+		unHideMe($n(table, 'ue_summary_stat_cat_td'));
+		row = rowtmpl.cloneNode(true);
+		var entry = patron.stat_cat_entries()[s];
+		var cat = cachedStatCats[entry.stat_cat()];
+		$n(row, 'ue_summary_stat_name').appendChild(text(cat.name()));
+		$n(row, 'ue_summary_stat_value').appendChild(text(entry.stat_cat_entry()));
+		tbody.appendChild(row);
+	}
+}
+
+
+function uEditFleshSummarySurveys( table, patron ) {
+	var tbody	= $n(table, 'ue_summary_survey_tbody');
+	var rowtmpl = tbody.removeChild($n(tbody, 'ue_summary_survey_row'));
+	for( var r in patron.survey_responses() ) {
+		unHideMe($n(table, 'ue_summary_survey_td'));
+		var row		= rowtmpl.cloneNode(rowtmpl);
+		var resp		= patron.survey_responses()[r];
+		var survey	= cachedSurveys[resp.survey()];
+		var quest	= cachedSurveyQuestions[resp.question()];
+		var answer	= cachedSurveyAnswers[resp.answer()];
+		$n(row, 'ue_summary_survey_name').appendChild(text(survey.name()));
+		$n(row, 'ue_summary_survey_question').appendChild(text(quest.question()));
+		$n(row, 'ue_summary_survey_answer').appendChild(text(answer.answer()));
+		tbody.appendChild(row);
+	}
+}
+
+
+function uEditFleshSummaryErrors( table ) {
+	if(ERRORS) {
+		unHideMe($n(table, 'ue_summary_errors_row'));
+		var errors = ERRORS.replace(/\n/g, "<br/>");
+		$n(table, 'ue_summary_errors').innerHTML += errors;
+	}
+}
