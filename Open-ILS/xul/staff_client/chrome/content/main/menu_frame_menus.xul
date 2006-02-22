@@ -11,6 +11,8 @@
 	<command id="cmd_new_tab" key="new-tab-key" />
 	<command id="cmd_close_tab" key="close-tab-key" />
 
+	<command id="cmd_edit_copy_buckets" />
+
 	<command id="cmd_cat_main" key="cat-main-key" />
 	<command id="cmd_circ_checkout" key="circ-checkout-key" />
 	<command id="cmd_patron_search" key="patron-search-key" />
@@ -99,7 +101,7 @@
 <!-- The Edit menu on the main menu -->
 <menu id="main.menu.edit" label="&staff.main.menu.edit.label;" accesskey="&staff.main.menu.edit.key;">
 	<menupopup id="main.menu.edit.popup">
-		<menuitem label="stub"/>
+		<menuitem label="Copy Buckets" command="cmd_edit_copy_buckets" accesskey="B"/>
 	<!--
 		<menuitem label="&staff.main.menu.edit.undo.label;" accesskey="&staff.main.menu.edit.undo.key;" key="edit-undo-key" command="cmd_broken"/>
 		<menuitem label="&staff.main.menu.edit.redo.label;" accesskey="&staff.main.menu.edit.redo.key;" key="edit-redo-key" command="cmd_broken"/>

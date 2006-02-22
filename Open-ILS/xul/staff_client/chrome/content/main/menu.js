@@ -57,6 +57,15 @@ main.menu.prototype = {
 				function() { obj.close_tab(); }
 			],
 
+			/* Edit Menu */
+			'cmd_edit_copy_buckets' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS)
+						+ '?session='+window.escape(session),{'tab_name':'Copy Buckets'},{});
+				}
+			],
+
 			/* Search Menu */
 			'cmd_patron_search' : [
 				['oncommand'],
