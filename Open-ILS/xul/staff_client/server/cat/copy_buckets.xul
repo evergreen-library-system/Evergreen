@@ -50,7 +50,7 @@
 				);
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Copy Status'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name('Copy Buckets'); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {

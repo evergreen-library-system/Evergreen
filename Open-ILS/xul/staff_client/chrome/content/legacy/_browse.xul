@@ -365,7 +365,8 @@
 					+'?session='+window.escape(g.session)
 					+'&copy_ids='+window.escape(js2JSON(list))
 					+'&docid='+window.escape(find_this_id)
-					+'&edit='+edit,
+					+'&edit='+edit
+					+'&handle_update=1',
 				title,
 				'chrome,modal,resizable'
 			);
@@ -374,16 +375,6 @@
 			var copies = JSON2js( g.data.temp );
 			g.error.sdump('D_CAT','in browse, copies =\n<<' + copies + '>>');
 			if (edit=='1' && copies!='' && typeof copies != 'undefined') {
-				try {
-					var r = g.network.request(
-						api.FM_ACP_FLESHED_BATCH_UPDATE.app,
-						api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-						[ g.session, copies ]
-					);
-					/* FIXME -- revisit the return value here */
-				} catch(E) {
-					alert('copy update error: ' + js2JSON(E));
-				}
 				refresh_browse_list();
 			}
 		}
