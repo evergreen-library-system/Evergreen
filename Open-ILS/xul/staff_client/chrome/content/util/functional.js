@@ -45,9 +45,9 @@ util.functional.find_object = function(obj,f) {
 }
 
 util.functional.map_list = function(list,f) {
-	var new_list = [];
+	var new_list = []; var idx = 0;
 	for (var i in list) {
-		new_list.push( f( list[i] ) );
+		new_list.push( f( list[i], idx++ ) );
 	}
 	return new_list;
 }
