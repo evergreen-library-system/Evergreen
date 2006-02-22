@@ -20,6 +20,7 @@ function my_init() {
 
 		g.session = g.cgi.param('session') || g.cgi.param('ses');
 		g.docid = g.cgi.param('docid');
+		g.handle_update = g.cgi.param('handle_update');
 
 		/******************************************************************************************************/
 		/* Get the copy ids from various sources and flesh them */
@@ -732,6 +733,18 @@ g.render_input = function(node,input_cmd) {
 /* store the copies in the global xpcom stash */
 
 g.stash_and_close = function() {
+	if (g.handle_update) {
+		try {
+			var r = g.network.request(
+				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
+				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
+				[ g.session, g.copies ]
+			);
+			/* FIXME -- revisit the return value here */
+		} catch(E) {
+			alert('copy update error: ' + js2JSON(E));
+		}
+	}
 	g.data.temp = js2JSON( g.copies );
 	g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
 	g.data.stash('temp');

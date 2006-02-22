@@ -238,11 +238,11 @@ cat.copy_buckets.prototype = {
 									var robj = obj.network.simple_request('BUCKET_ITEM_DELETE',
 										[ obj.session, 'copy', bucket_item_id ]);
 									if (typeof robj == 'object') throw robj;
-									obj.controller.render('copy_buckets_menulist_placeholder');
 								} catch(E) {
 									alert(js2JSON(E));
 								}
                                                         }
+							obj.controller.render('copy_buckets_menulist_placeholder');
 						}
 					],
 					'copy_buckets_delete_bucket' : [
@@ -302,7 +302,8 @@ cat.copy_buckets.prototype = {
 											}
 										)
 									) )
-									+ '&single_edit=1',
+									+ '&single_edit=1'
+									+ '&handle_update=1',
 									'batch_copy_editor_win_' + win.window_name_increment(),
 									'chrome,resizable,modal'
 								);
