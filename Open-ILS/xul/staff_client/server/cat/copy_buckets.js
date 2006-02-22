@@ -314,6 +314,45 @@ cat.copy_buckets.prototype = {
 							}
 						}
 					],
+					'copy_buckets_transfer_to_volume' : [
+						['command'],
+						function() {
+							// FM_ACN_RETRIEVE
+							obj.data.stash_retrieve();
+							if (!obj.data.marked_volume) {
+								alert('Please mark a volume as the destination from within the copy browser and then try this again.');
+								return;
+							}
+							var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+							// FIXME -- later, show some brief details for the record
+							var confirm = prompt('Moving copies to volume "' + volume.label() + '".  To confirm, please retype the volume label.','','Copy Transfer');
+							if (confirm == volume.label()) {
+								JSAN.use('util.functional');
+
+								var copies = obj.network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [
+									util.functional.map_list(
+										obj.list2.dump_retrieve_ids(),
+										function (o) {
+											return JSON2js(o)[0]; // acp_id
+										}
+									)
+								]);
+
+								for (var i = 0; i < copies.length; i++) {
+									copies[i].call_number( obj.data.marked_volume );
+									copies[i].ischanged( 1 );
+								}
+
+								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',
+									[ obj.session, copies ]);
+								// FIXME -- check return value at some point
+
+								obj.controller.render('copy_buckets_menulist_placeholder');		
+								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+
+							}
+						}
+					],
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }
