@@ -12,6 +12,7 @@ cat.copy_buckets = function (params) {
 cat.copy_buckets.prototype = {
 	'selection_list1' : [],
 	'selection_list2' : [],
+	'bucket_id_name_map' : {},
 
 	'init' : function( params ) {
 
@@ -105,6 +106,7 @@ cat.copy_buckets.prototype = {
 										[ obj.session, obj.data.list.au[0].id() ]
 									).copy,
 									function(o) {
+										obj.bucket_id_name_map[ o.id() ] = o.name();
 										return [ o.name(), o.id() ];
 									}
 								);
@@ -239,6 +241,10 @@ cat.copy_buckets.prototype = {
 						function() {
 							try {
 								var bucket = obj.controller.view.bucket_menulist.value;
+								var name = obj.bucket_id_name_map[ bucket ];
+								var conf = prompt('To delete this bucket, re-type its name:','','Delete Bucket');
+								if (conf != name) return;
+								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[obj.session,'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
 								obj.controller.render('copy_buckets_menulist_placeholder');
