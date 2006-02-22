@@ -268,7 +268,7 @@ cat.z3950.prototype = {
 				params = [ obj.session, search, 'oclc' ];
 			}
 			obj.network.simple_request(
-				'FM_BRN_RETRIEVE_VIA_Z3950_TCN',
+				'FM_BLOB_RETRIEVE_VIA_Z3950_TCN',
 				[ obj.session, search, 'oclc' ],
 				function(req) {
 					obj.handle_results(req.getResultObject())
@@ -316,7 +316,7 @@ cat.z3950.prototype = {
 				];
 			}
 			obj.network.simple_request(
-				'FM_BRN_RETRIEVE_VIA_Z3950_RAW',
+				'FM_BLOB_RETRIEVE_VIA_Z3950_RAW',
 				params,
 				function(req) {
 					obj.handle_results(req.getResultObject())
@@ -335,7 +335,7 @@ cat.z3950.prototype = {
 		util.widgets.remove_children( obj.controller.view.result_message );
 		if (results == null) {
 			obj.controller.view.result_message.appendChild(
-				document.createTextNode( 'Server Error: ' + api.FM_BRN_RETRIEVE_VIA_Z3950_TCN.method + ' returned null' )
+				document.createTextNode( 'Server Error: ' + api.FM_BLOB_RETRIEVE_VIA_Z3950_TCN.method + ' returned null' )
 			);
 			return;
 		}
