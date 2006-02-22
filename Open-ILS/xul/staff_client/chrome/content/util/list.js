@@ -313,7 +313,7 @@ util.list.prototype = {
 	'dump' : function(params) {
 		switch(this.node.nodeName) {
 			case 'tree' : return this._dump_tree(params); break;
-			default: throw('NYI: Need ._init() for ' + this.node.nodeName); break;
+			default: throw('NYI: Need .dump() for ' + this.node.nodeName); break;
 		}
 	},
 
@@ -329,6 +329,23 @@ util.list.prototype = {
 			dump.push( row );
 		}
 		return dump;
-	}
+	},
+
+	'dump_retrieve_ids' : function(params) {
+		switch(this.node.nodeName) {
+			case 'tree' : return this._dump_retrieve_ids_tree(params); break;
+			default: throw('NYI: Need .dump_retrieve_ids() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_dump_retrieve_ids_tree' : function(params) {
+		var dump = [];
+		for (var i = 0; i < this.treechildren.childNodes.length; i++) {
+			var treeitem = this.treechildren.childNodes[i];
+			dump.push( treeitem.getAttribute('retrieve_id') );
+		}
+		return dump;
+	},
+
 }
 dump('exiting util.list.js\n');
