@@ -109,7 +109,6 @@ var urls = {
 	'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
 	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xml',
 	'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
-	'XUL_TCN_QUERY' : '/xul/server/cat/tcn_query.xul',
 	'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',

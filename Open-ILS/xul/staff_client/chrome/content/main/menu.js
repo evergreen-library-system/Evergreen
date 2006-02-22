@@ -75,17 +75,7 @@ main.menu.prototype = {
 			'cmd_search_tcn' : [
 				['oncommand'],
 				function() {
-					JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-					obj.data.cmd_copy_status_value = ''; obj.data.stash('cmd_search_tcn_value');
-
-					obj.window.open(
-						obj.url_prefix(urls.XUL_TCN_QUERY),
-						'cmd_search_tcn_win' + obj.window.window_name_increment(),
-						'chrome,resizable,modal,center'
-					);
-
-					obj.data.stash_retrieve();
-					var tcn = obj.data.cmd_search_tcn_value;
+					var tcn = prompt('What is the TCN or accession ID for the record?','','TCN Lookup');
 
 					if (tcn) {
 						JSAN.use('util.network');
