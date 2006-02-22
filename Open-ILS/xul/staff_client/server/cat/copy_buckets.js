@@ -10,7 +10,8 @@ cat.copy_buckets = function (params) {
 }
 
 cat.copy_buckets.prototype = {
-	'selection_list' : [],
+	'selection_list1' : [],
+	'selection_list2' : [],
 
 	'init' : function( params ) {
 
@@ -37,6 +38,25 @@ cat.copy_buckets.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'on_select' : function(ev) {
+					try {
+						JSAN.use('util.functional');
+						var sel = obj.list1.retrieve_selection();
+						obj.selection_list1 = util.functional.map_list(
+							sel,
+							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
+						);
+						obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 1 = ' + js2JSON(obj.selection_list1) );
+						if (obj.selection_list1.length == 0) {
+							obj.controller.view.copy_buckets_sel_add.disabled = true;
+						} else {
+							obj.controller.view.copy_buckets_sel_add.disabled = false;
+						}
+					} catch(E) {
+						alert('FIXME: ' + E);
+					}
+				},
+
 			}
 		);
 		for (var i = 0; i < obj.copy_ids.length; i++) {
@@ -53,12 +73,12 @@ cat.copy_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list2.retrieve_selection();
-						obj.selection_list = util.functional.map_list(
+						obj.selection_list2 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
 						);
-						obj.error.sdump('D_TRACE','circ/copy_buckets: selection list = ' + js2JSON(obj.selection_list) );
-						if (obj.selection_list.length == 0) {
+						obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
+						if (obj.selection_list2.length == 0) {
 							obj.controller.view.copy_buckets_delete_item.disabled = true;
 						} else {
 							obj.controller.view.copy_buckets_delete_item.disabled = false;
@@ -96,13 +116,33 @@ cat.copy_buckets.prototype = {
 								e.appendChild( ml );
 								ml.setAttribute('id','bucket_menulist');
 								ml.setAttribute('accesskey','');
-								ml.addEventListener(
-									'command',
-									function(ev) {
-										alert(ev.target.value)
-									}, false
-								);
+
+								function change_bucket(ev) {
+									var bucket_id = ev.target.value;
+									var bucket = obj.network.simple_request(
+										'BUCKET_FLESH',
+										[ obj.session, 'copy', bucket_id ]
+									);
+									var items = bucket.items() || [];
+									obj.list2.clear();
+									for (var i = 0; i < items.length; i++) {
+										var item = obj.flesh_item_for_list( 
+											items[i].target_copy(),
+											items[i].id()
+										);
+										if (item) obj.list2.append( item );
+									}
+								}
+
+								ml.addEventListener( 'command', change_bucket , false);
 								obj.controller.view.bucket_menulist = ml;
+								change_bucket( 
+									{ 'target' : { 
+										'value' : ml.firstChild.firstChild.getAttribute('value') 
+										} 
+									} 
+								);
+								JSAN.use('util.widgets'); util.widgets.dispatch('command',ml);
 							};
 						},
 					],
@@ -110,41 +150,106 @@ cat.copy_buckets.prototype = {
 					'copy_buckets_add' : [
 						['command'],
 						function() {
+							var bucket_id = obj.controller.view.bucket_menulist.value;
+							if (!bucket_id) return;
 							for (var i = 0; i < obj.copy_ids.length; i++) {
 								var item = obj.flesh_item_for_list( obj.copy_ids[i] );
-								if (item) obj.list2.append( item );
+								if (!item) continue;
+								var bucket_item = new ccbi();
+								bucket_item.isnew('1');
+								bucket_item.bucket(bucket_id);
+								bucket_item.target_copy( obj.copy_ids[i] );
+								try {
+									var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
+										[ obj.session, 'copy', bucket_item ]);
+
+									if (typeof robj == 'object') throw robj;
+
+									obj.list2.append( item );
+								} catch(E) {
+									alert( js2JSON(E) );
+								}
 							}
 						}
 					],
+					'copy_buckets_sel_add' : [
+						['command'],
+						function() {                                                        
+							var bucket_id = obj.controller.view.bucket_menulist.value;
+							if (!bucket_id) return;
+							for (var i = 0; i < obj.selection_list1.length; i++) {
+	                                                        var acp_id = obj.selection_list1[i][0];
+								//var barcode = obj.selection_list1[i][1];
+								var item = obj.flesh_item_for_list( acp_id );
+								if (!item) continue;
+								var bucket_item = new ccbi();
+								bucket_item.isnew('1');
+								bucket_item.bucket(bucket_id);
+								bucket_item.target_copy( acp_id );
+								try {
+									var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
+										[ obj.session, 'copy', bucket_item ]);
+
+									if (typeof robj == 'object') throw robj;
+
+									obj.list2.append( item );
+								} catch(E) {
+									alert( js2JSON(E) );
+								}
+							}
+
+						}
+					],
+					'copy_buckets_export' : [
+						['command'],
+						function() {                                                        
+							for (var i = 0; i < obj.selection_list2.length; i++) {
+	                                                        var acp_id = obj.selection_list2[i][0];
+								//var barcode = obj.selection_list1[i][1];
+								//var bucket_item_id = obj.selection_list1[i][2];
+								var item = obj.flesh_item_for_list( acp_id );
+								if (item) obj.list1.append( item );
+							}
+
+						}
+					],
+
 					'copy_buckets_delete_item' : [
 						['command'],
 						function() {
-                                                        JSAN.use('circ.util');
-                                                        for (var i = 0; i < obj.selection_list.length; i++) {
-                                                                var acp_id = obj.selection_list[i][0];
-                                                                var barcode = obj.selection_list[i][1];
+                                                        for (var i = 0; i < obj.selection_list2.length; i++) {
+								try {
+	                                                                //var acp_id = obj.selection_list2[i][0];
+									//var barcode = obj.selection_list2[i][1];
+									var bucket_item_id = obj.selection_list2[i][2];
+									var robj = obj.network.simple_request('BUCKET_ITEM_DELETE',
+										[ obj.session, 'copy', bucket_item_id ]);
+									if (typeof robj == 'object') throw robj;
+									obj.controller.render('copy_buckets_menulist_placeholder');
+								} catch(E) {
+									alert(js2JSON(E));
+								}
                                                         }
 						}
 					],
 					'copy_buckets_delete_bucket' : [
 						['command'],
 						function() {
+							try {
+								var bucket = obj.controller.view.bucket_menulist.value;
+								var robj = obj.network.simple_request('BUCKET_DELETE',[obj.session,'copy',bucket]);
+								if (typeof robj == 'object') throw robj;
+								obj.controller.render('copy_buckets_menulist_placeholder');
+							} catch(E) {
+								alert('FIXME -- ' + E);
+							}
 						}
 					],
 					'copy_buckets_new_bucket' : [
 						['command'],
 						function() {
 							try {
-								obj.data.new_bucket_value = ''; obj.data.stash('new_bucket_value');
-								JSAN.use('util.window'); var win = new util.window();
-								win.open(
-									obj.data.server + urls.XUL_BUCKET_NAME,
-									'new_bucket_win' + win.window_name_increment(),
-									'chrome,resizable,modal,center'
-								);
-
-								obj.data.stash_retrieve();
-								var name = obj.data.new_bucket_value;
+								var name = prompt('What would you like to name the bucket?','','Bucket Creation');
 
 								if (name) {
 									var bucket = new ccb();
@@ -152,12 +257,14 @@ cat.copy_buckets.prototype = {
 									bucket.owner( obj.data.list.au[0].id() );
 									bucket.name( name );
 
-									obj.network.simple_request('BUCKET_CREATE',[obj.session,'copy',bucket]);
+									var robj = obj.network.simple_request('BUCKET_CREATE',[obj.session,'copy',bucket]);
+
+									if (typeof robj == 'object') throw robj;
 
 									obj.controller.render('copy_buckets_menulist_placeholder');
 								}
 							} catch(E) {
-								alert('FIXME -- ' + E);
+								alert( js2JSON(E) );
 							}
 						}
 					],
@@ -190,16 +297,15 @@ cat.copy_buckets.prototype = {
 
 	},
 
-	'flesh_item_for_list' : function(acp_id) {
+	'flesh_item_for_list' : function(acp_id,bucket_item_id) {
 		var obj = this;
 		try {
-			JSAN.use('circ.util');
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ acp_id ]);
 			if (copy == null) {
 				throw('COPY NOT FOUND');
 			} else {
 				var item = {
-					'retrieve_id' : js2JSON( [ copy.id(), copy.barcode() ] ),
+					'retrieve_id' : js2JSON( [ copy.id(), copy.barcode(), bucket_item_id ] ),
 					'row' : {
 						'my' : {
 							'mvr' : obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]),
