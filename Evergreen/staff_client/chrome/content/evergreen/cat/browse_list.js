@@ -508,6 +508,13 @@ function build_CopyBrowser_Context(ev) {
 			menuitem.setAttribute('command','cmd_volume_add');
 		popup.appendChild( document.createElement( 'menuseparator' ) );
 	}
+	if (volume_flag == 1) {
+		var menuitem = document.createElement('menuitem');
+		popup.appendChild(menuitem);
+			menuitem.setAttribute('label','Mark Volume as Copy Transfer Destination');
+			menuitem.setAttribute('oncommand','mark_volume("browse_list_tree");');
+		popup.appendChild( document.createElement( 'menuseparator' ) );
+	}
 	if (volume_flag > 0) {
 		var menuitem = document.createElement('menuitem');
 		popup.appendChild(menuitem);
@@ -526,6 +533,16 @@ function build_CopyBrowser_Context(ev) {
 		popup.appendChild( document.createElement( 'menuseparator' ) );
 	}
 	if (copy_flag > 0) {
+		var menuitem = document.createElement('menuitem');
+		popup.appendChild(menuitem);
+			if (copy_flag > 1) {
+				menuitem.setAttribute('label','Add Copies to Bucket');
+			} else {
+				menuitem.setAttribute('label','Add Copy to Bucket');
+			}
+			menuitem.setAttribute('oncommand','add_to_bucket("browse_list_tree");');
+		popup.appendChild( document.createElement( 'menuseparator' ) );
+
 		var menuitem = document.createElement('menuitem');
 		popup.appendChild(menuitem);
 			if (copy_flag > 1) {
@@ -578,7 +595,7 @@ function volume_add(tab,params) {
 			return obj.getAttribute('object_type') == 'org_unit';
 		}
 	);
-	var chrome = 'chrome://evergreen/content/cat/volume_copy_add_wizard.xul';
+	var chrome = 'chrome://open_ils_staff_client/content/cat/volume_copy_add_wizard.xul';
 	if (tab) {
 		parentWindow.new_tab('main_tabbox');
 		w = parentWindow.replace_tab('main_tabbox','Add Volume',chrome);
@@ -603,7 +620,7 @@ function copy_add(tab,params) {
 			return obj.getAttribute('object_type') == 'volume';
 		}
 	);
-	var chrome = 'chrome://evergreen/content/cat/copy_add_wizard.xul';
+	var chrome = 'chrome://open_ils_staff_client/content/cat/copy_add_wizard.xul';
 	if (tab) {
 		parentWindow.new_tab('main_tabbox');
 		w = parentWindow.replace_tab('main_tabbox','Add Copy',chrome);
@@ -628,7 +645,7 @@ function volume_edit(tab,params) {
 			return obj.getAttribute('object_type') == 'volume';
 		}
 	);
-	var chrome = 'chrome://evergreen/content/cat/volume_edit_wizard.xul';
+	var chrome = 'chrome://open_ils_staff_client/content/cat/volume_edit_wizard.xul';
 	if (tab) {
 		parentWindow.new_tab('main_tabbox');
 		w = parentWindow.replace_tab('main_tabbox','Edit Volumes',chrome);

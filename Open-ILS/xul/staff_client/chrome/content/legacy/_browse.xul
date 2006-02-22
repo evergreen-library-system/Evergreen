@@ -546,6 +546,57 @@
 
 			alert('spawn copy add wizard with volume_ids = ' + js2JSON(list));
 		}
+		
+		function mark_volume() {
+			JSAN.use('util.widgets'); JSAN.use('util.functional');
+			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
+			list = util.functional.filter_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('object_type') == 'volume';
+				}
+			);
+			list = util.functional.map_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('volume_id');
+				}
+			);
+
+			g.data.marked_volume = list[0];
+			g.data.stash('marked_volume');
+			alert('Volume marked as Copy Transfer Destination');
+		}
+
+		function add_to_bucket() {
+
+			JSAN.use('util.widgets'); JSAN.use('util.functional');
+
+			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
+			list = util.functional.filter_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('object_type') == 'copy';
+				}
+			);
+
+			list = util.functional.map_list(
+				list,
+				function (obj) {
+					return obj.getAttribute('copy_id');
+				}
+			);
+			
+			JSAN.use('util.window'); var win = new util.window();
+			win.open( 
+				xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
+				+ '?session=' + window.escape(g.session)
+				+ '&copy_ids=' + js2JSON( list ),
+				'sel_bucket_win' + win.window_name_increment(),
+				'chrome,resizable,modal,center'
+			);
+		}
+
 	]]>
 	</script>
 
