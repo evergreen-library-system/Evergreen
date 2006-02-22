@@ -42,18 +42,19 @@ sub handler {
 
 	my ($id,$type,$format,$command) = reverse split '/', $path;
 
-	print "Content-type: text/xml; charset=utf-8\n\n";
+	print "Content-type: application/xml; charset=utf-8\n";
 	
 	if ( $path =~ m{^/?$}o ) {
 		my $cgi = new CGI;
 
 		my $uri = $cgi->param('uri') || '';
+		my $base = $cgi->url;
 
 		$format = $cgi->param('format');
 		($id,$type) = ('','');
 
 		if (!$format) {
-			if ($uri =~ m{^oils:/([^\/]+)/(\d+)}o) {
+			if ($uri =~ m{^info:oils/([^\/]+)/(\d+)}o) {
 				$id = $2;
 				$type = 'record';
 				$type = 'metarecord' if ($1 =~ /^m/o);
@@ -62,12 +63,27 @@ sub handler {
 					->request("open-ils.supercat.$type.formats")
 					->gather(1);
 
-				print '<formats>'.
+				print "\n";
+
+				my $body =
+					"<formats>
+					 <uri>$uri</uri>
+					   <format>
+					     <name>opac</name>
+					     <type>text/html</type>
+					   </format>".
+
 					join('',
-						map { 
-							"<format><name>$_</name><type>text/xml</type></format>" 
+						map { "  <format>
+							   <name>$_</name>
+							   <type>application/xml</type>
+							 </format>" 
 						} @$list
-					).'</formats>';
+					).
+					
+					'</formats>';
+
+				$apache->custom_response( 300, $body);
 				return 300;
 			} else {
 				my $list = $supercat
@@ -82,7 +98,11 @@ sub handler {
 				my %hash = map { ($_ => $_) } @$list;
 				$list = [ sort keys %hash ];
 
-				print '<formats>'.
+				print "\n<formats>
+					   <format>
+					     <name>opac</name>
+					     <type>text/html</type>
+					   </format>".
 					join('',
 						map { 
 							"<format><name>$_</name><type>text/xml</type></format>" 
@@ -93,11 +113,19 @@ sub handler {
 		}
 
 		
-		if ($uri =~ m{^oils:/([^\/]+)/(\d+)}o) {
+		if ($uri =~ m{^info:oils/([^\/]+)/(\d+)}o) {
 			$id = $2;
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
 			$command = 'retrieve';
+		}
+
+		if ($format eq 'opac') {
+			print "Location: $base/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+				if ($type eq 'metarecord');
+			print "Location: $base/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+				if ($type eq 'record');
+			return 302;
 		}
 
 	} elsif ( $path =~ m{^/formats/([^\/]+)$}o ) {
@@ -105,7 +133,7 @@ sub handler {
 			->request("open-ils.supercat.$1.formats")
 			->gather(1);
 
-		print '<formats>'.
+		print "\n<formats>".
 			join('',
 				map { 
 					"<format><name>$_</name><type>text/xml</type></format>" 
@@ -114,9 +142,7 @@ sub handler {
 		return Apache2::Const::OK;
 	}
 
-	print $supercat
-		->request("open-ils.supercat.$type.$format.$command",$id)
-		->gather(1);
+	print "\n" . $supercat->request("open-ils.supercat.$type.$format.$command",$id)->gather(1);
 
 	return Apache2::Const::OK;
 }

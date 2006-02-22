@@ -238,7 +238,7 @@ sub retrieve_metarecord_mods {
 		->ownerDocument
 		->createElement("mods:recordIdentifier");
 
-	$recordIdentifier->setAttribute( source => 'oils:/metabib-metarecord/' );
+	$recordIdentifier->setAttribute( source => 'info:oils/metabib-metarecord/' );
 
 	my $id = $mr->id;
 	$recordIdentifier->appendTextNode( $id );
@@ -307,7 +307,7 @@ sub retrieve_metarecord_mods {
 			->ownerDocument
 			->createElement("mods:recordIdentifier");
 
-		$subRecordIdentifier->setAttribute( source => 'oils:/biblio-record_entry/' );
+		$subRecordIdentifier->setAttribute( source => 'info:oils/biblio-record_entry/' );
 
 		my $subid = $map->source;
 		$subRecordIdentifier->appendTextNode( $subid );
