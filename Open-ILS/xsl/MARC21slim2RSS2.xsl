@@ -94,22 +94,10 @@
 				</dc:format>
 			</xsl:for-each>
 
-			<xsl:for-each select="marc:datafield[@tag=520]">
-				<dc:description>
-					<xsl:value-of select="marc:subfield[@code='a']"/>
-				</dc:description>
-			</xsl:for-each>
-
-			<xsl:for-each select="marc:datafield[@tag=521]">
-				<dc:description>
-					<xsl:value-of select="marc:subfield[@code='a']"/>
-				</dc:description>
-			</xsl:for-each>
-
 			<xsl:for-each select="marc:datafield[500&lt;@tag][@tag&lt;=599][not(@tag=506 or @tag=530 or @tag=540 or @tag=546)]">
-				<dc:description>
+				<description>
 					<xsl:value-of select="marc:subfield[@code='a']"/>
-				</dc:description>
+				</description>
 			</xsl:for-each>
 
 			<xsl:for-each select="marc:datafield[@tag=600]">

@@ -31,21 +31,108 @@ use Unicode::Normalize;
 
 use JSON;
 
-our ($_parser, $_mods_sheet, $_storage);
+our (
+  $_parser,
+  $_xslt,
+  $_storage,
+  %xslt,
+);
 
 sub child_init {
+	# we need an XML parser
 	$_parser = new XML::LibXML;
+
+	# and an xslt parser
+	$_xslt = new XML::LibXSLT;
+	
+	# parse the MODS xslt ...
 	my $mods_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
 			->new
 			->config_value( dirs => 'xsl' ).
 		"/MARC21slim2MODS.xsl"
 	);
-	my $xslt = new XML::LibXSLT;
-	$_mods_sheet = $xslt->parse_stylesheet( $mods_xslt );
+	# and stash a transformer
+	$xslt{mods} = $_xslt->parse_stylesheet( $mods_xslt );
+
+
+	# parse the RDFDC xslt ...
+	my $rdfdc_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2RDFDC.xsl"
+	);
+	# and stash a transformer
+	$xslt{rdfdc} = $_xslt->parse_stylesheet( $rdfdc_xslt );
+
+
+	# parse the SRWDC xslt ...
+	my $srwdc_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2SRWDC.xsl"
+	);
+	# and stash a transformer
+	$xslt{srwdc} = $_xslt->parse_stylesheet( $srwdc_xslt );
+
+
+	# parse the OAIDC xslt ...
+	my $oaidc_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2OAIDC.xsl"
+	);
+	# and stash a transformer
+	$xslt{oaidc} = $_xslt->parse_stylesheet( $oaidc_xslt );
+
+
+	# parse the RSS xslt ...
+	my $rss_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2RSS2.xsl"
+	);
+	# and stash a transformer
+	$xslt{rss2} = $_xslt->parse_stylesheet( $rss_xslt );
+
+
+	# and finally, a storage server session
 	$_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+
+	register_record_transforms();
+
 	return 1;
 }
+
+sub register_record_transforms {
+	for my $type ( keys %xslt ) {
+		__PACKAGE__->register_method(
+			method    => 'retrieve_record_transform',
+			api_name  => "open-ils.supercat.record.$type.retrieve",
+			api_level => 1,
+			argc      => 1,
+			signature =>
+				{ desc     => <<"				  DESC",
+Returns the \U$type\E representation of the requested bibliographic record
+				  DESC
+				  params   =>
+			  		[
+						{ name => 'bibId',
+						  desc => 'An OpenILS biblio::record_entry id',
+						  type => 'number' },
+					],
+			  	'return' =>
+		  			{ desc => "The bib record in \U$type\E",
+					  type => 'string' }
+				}
+		);
+	}
+}
+
 
 sub entityize {
 	my $stuff = NFC(shift());
@@ -89,39 +176,21 @@ Returns the MARCXML representation of the requested bibliographic record
 		}
 );
 
-sub retrieve_record_mods {
+sub retrieve_record_transform {
 	my $self = shift;
 	my $client = shift;
 	my $rid = shift;
+
+	(my $transform = $self->api_name) =~ s/^.+record\.([^\.]+)\.retrieve$/$1/o;
 
 	my $marc = $_storage->request(
 		'open-ils.storage.direct.biblio.record_entry.retrieve',
 		$rid
 	)->gather(1)->marc;
 
-	return entityize($_mods_sheet->transform( $_parser->parse_string( $marc ) )->toString);
+	return entityize($xslt{$transform}->transform( $_parser->parse_string( $marc ) )->toString);
 }
 
-__PACKAGE__->register_method(
-	method    => 'retrieve_record_mods',
-	api_name  => 'open-ils.supercat.record.mods.retrieve',
-	api_level => 1,
-	argc      => 1,
-	signature =>
-		{ desc     => <<"		  DESC",
-Returns the MODS representation of the requested bibliographic record
-		  DESC
-		  params   =>
-		  	[
-				{ name => 'bibId',
-				  desc => 'An OpenILS biblio::record_entry id',
-				  type => 'number' },
-			],
-		  'return' =>
-		  	{ desc => 'The bib record in MODS',
-			  type => 'string' }
-		}
-);
 
 sub retrieve_metarecord_mods {
 	my $self = shift;
@@ -229,21 +298,21 @@ sub retrieve_metarecord_mods {
 
 		$identifier->setAttribute( type => 'uri' );
 
-		my $recordInfo = $mods
+		my $subRecordInfo = $mods
 			->ownerDocument
 			->createElement("mods:recordInfo");
 
-		my $recordIdentifier = $mods
+		my $subRecordIdentifier = $mods
 			->ownerDocument
 			->createElement("mods:recordIdentifier");
 
-		$recordIdentifier->setAttribute( source => 'oils:/biblio-record_entry/' );
+		$subRecordIdentifier->setAttribute( source => 'oils:/biblio-record_entry/' );
 
-		my $id = $map->source;
-		$recordIdentifier->appendTextNode( $id );
-		$recordInfo->appendChild($recordIdentifier);
+		my $subid = $map->source;
+		$subRecordIdentifier->appendTextNode( $subid );
+		$subRecordInfo->appendChild($subRecordIdentifier);
 
-		$relatedItem->appendChild( $recordInfo );
+		$relatedItem->appendChild( $subRecordInfo );
 
 		my ($tor) = $part_mods->findnodes( './mods:typeOfResource' );
 		$tor->setNamespace( "http://www.loc.gov/mods/", "mods", 1 ) if ($tor);
