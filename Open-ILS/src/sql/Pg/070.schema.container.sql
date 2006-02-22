@@ -32,8 +32,7 @@ CREATE TABLE container.copy_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
-	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	CONSTRAINT cb_cb_item_once_per_bucket UNIQUE (bucket,target_copy)
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 
@@ -68,8 +67,7 @@ CREATE TABLE container.call_number_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
-	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	CONSTRAINT cnb_item_once_per_bucket UNIQUE (bucket,target_call_number)
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 
@@ -104,8 +102,7 @@ CREATE TABLE container.biblio_record_entry_bucket_item (
 							ON UPDATE CASCADE
 							DEFERRABLE
 							INITIALLY DEFERRED,
-	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	CONSTRAINT breb_item_once_per_bucket UNIQUE (bucket,target_biblio_record_entry)
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 
@@ -140,8 +137,7 @@ CREATE TABLE container.user_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
-	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	CONSTRAINT ub_item_once_per_bucket UNIQUE (bucket,target_user)
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 COMMIT;
