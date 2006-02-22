@@ -153,8 +153,6 @@ cat.copy_buckets.prototype = {
 							var bucket_id = obj.controller.view.bucket_menulist.value;
 							if (!bucket_id) return;
 							for (var i = 0; i < obj.copy_ids.length; i++) {
-								var item = obj.flesh_item_for_list( obj.copy_ids[i] );
-								if (!item) continue;
 								var bucket_item = new ccbi();
 								bucket_item.isnew('1');
 								bucket_item.bucket(bucket_id);
@@ -164,6 +162,9 @@ cat.copy_buckets.prototype = {
 										[ obj.session, 'copy', bucket_item ]);
 
 									if (typeof robj == 'object') throw robj;
+
+									var item = obj.flesh_item_for_list( obj.copy_ids[i], robj );
+									if (!item) continue;
 
 									obj.list2.append( item );
 								} catch(E) {
@@ -180,8 +181,6 @@ cat.copy_buckets.prototype = {
 							for (var i = 0; i < obj.selection_list1.length; i++) {
 	                                                        var acp_id = obj.selection_list1[i][0];
 								//var barcode = obj.selection_list1[i][1];
-								var item = obj.flesh_item_for_list( acp_id );
-								if (!item) continue;
 								var bucket_item = new ccbi();
 								bucket_item.isnew('1');
 								bucket_item.bucket(bucket_id);
@@ -191,6 +190,9 @@ cat.copy_buckets.prototype = {
 										[ obj.session, 'copy', bucket_item ]);
 
 									if (typeof robj == 'object') throw robj;
+
+									var item = obj.flesh_item_for_list( acp_id, robj );
+									if (!item) continue;
 
 									obj.list2.append( item );
 								} catch(E) {
