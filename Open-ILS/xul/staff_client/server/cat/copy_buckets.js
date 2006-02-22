@@ -14,12 +14,21 @@ cat.copy_buckets.prototype = {
 	'selection_list2' : [],
 	'bucket_id_name_map' : {},
 
+	'render_pending_copies' : function() {
+		var obj = this;
+		obj.list1.clear();
+		for (var i = 0; i < obj.copy_ids.length; i++) {
+			var item = obj.flesh_item_for_list( obj.copy_ids[i] );
+			if (item) obj.list1.append( item );
+		}
+	},
+
 	'init' : function( params ) {
 
 		var obj = this;
 
 		obj.session = params['session'];
-		obj.copy_ids = params['copy_ids'];
+		obj.copy_ids = params['copy_ids'] || [];
 
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
@@ -60,11 +69,9 @@ cat.copy_buckets.prototype = {
 
 			}
 		);
-		for (var i = 0; i < obj.copy_ids.length; i++) {
-			var item = obj.flesh_item_for_list( obj.copy_ids[i] );
-			if (item) obj.list1.append( item );
-		}
-		
+
+		obj.render_pending_copies();
+	
 		obj.list2 = new util.list('copies_in_bucket_list');
 		obj.list2.init(
 			{
@@ -212,9 +219,11 @@ cat.copy_buckets.prototype = {
 								//var barcode = obj.selection_list1[i][1];
 								//var bucket_item_id = obj.selection_list1[i][2];
 								var item = obj.flesh_item_for_list( acp_id );
-								if (item) obj.list1.append( item );
+								if (item) {
+									obj.list1.append( item );
+									obj.copy_ids.push( acp_id );
+								}
 							}
-
 						}
 					],
 
@@ -271,6 +280,34 @@ cat.copy_buckets.prototype = {
 
 									obj.controller.render('copy_buckets_menulist_placeholder');
 								}
+							} catch(E) {
+								alert( js2JSON(E) );
+							}
+						}
+					],
+					'copy_buckets_batch_copy_edit' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								JSAN.use('util.window'); var win = new util.window();
+								win.open(
+									urls.XUL_COPY_EDITOR 
+									+ '?session=' + window.escape(obj.session)
+									+ '&copy_ids=' + window.escape( js2JSON(
+										util.functional.map_list(
+											obj.list2.dump_retrieve_ids(),
+											function (o) {
+												return JSON2js(o)[0]; // acp_id
+											}
+										)
+									) )
+									+ '&single_edit=1',
+									'batch_copy_editor_win_' + win.window_name_increment(),
+									'chrome,resizable,modal'
+								);
+								obj.controller.render('copy_buckets_menulist_placeholder');		
+								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 							} catch(E) {
 								alert( js2JSON(E) );
 							}

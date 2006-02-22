@@ -57,6 +57,12 @@ function my_init() {
 			document.getElementById('nav').setAttribute('hidden','false'); 
 		}
 
+		if (g.cgi.param('single_edit') == '1') {
+			g.single_edit = true;
+			document.getElementById('caption').setAttribute('label','Copy Editor'); 
+			document.getElementById('nav').setAttribute('hidden','false'); 
+		}
+
 		/******************************************************************************************************/
 		/* Show the Record Details? */
 
@@ -564,6 +570,33 @@ g.render = function() {
 	/******************************************************************************************************/
 	/* Prepare the right panel, which is different for 1-copy view and multi-copy view */
 
+	if (g.single_edit) {
+		
+		/******************************************************************************************************/
+		/* For a less dangerous batch edit, choose one field here */
+
+		var gb = document.createElement('groupbox'); rp.appendChild(gb);
+		var c = document.createElement('caption'); gb.appendChild(c);
+		c.setAttribute('label','Choose a field to edit');
+		JSAN.use('util.widgets'); JSAN.use('util.functional');
+		var ml = util.widgets.make_menulist(
+			util.functional.map_list(
+				g.right_pane_field_names,
+				function(o,i) { return [ o[0], i ]; }
+			)
+		);
+		gb.appendChild(ml);
+		ml.addEventListener(
+			'command',
+			function(ev) {
+				g.render_input(gb, g.right_pane_field_names[ ev.target.value ][1].input);
+				ml.disabled = true;
+			}, 
+			false
+		);
+
+	}
+
 	if (g.copies.length == 1) {
 
 		/******************************************************************************************************/
@@ -608,23 +641,11 @@ g.render = function() {
 				/* Render the input widget */
 
 				var hbox = document.createElement('hbox'); 
+				hbox.setAttribute('id',fn);
 				row.setAttribute('style','border-bottom: dotted black thin');
 				row.appendChild(hbox);
 				if (f[1].input && g.edit) {
-					try {
-						var spacer = document.createElement('spacer'); hbox.appendChild(spacer);
-						spacer.setAttribute('flex','1');
-						var deck = document.createElement('deck'); hbox.appendChild(deck);
-						var btn = document.createElement('button'); deck.appendChild(btn);
-						deck.setAttribute('style','width: 200px; min-width: 200px;');
-						btn.setAttribute('label','Change');
-						btn.setAttribute('oncommand','this.parentNode.selectedIndex = 1;');
-						var x; eval( f[1].input );
-						if (x) deck.appendChild(x);
-
-					} catch(E) {
-						g.error.sdump('D_ERROR',E + '\n');
-					}
+					g.render_input(hbox,f[1].input);
 				}
 
 			} catch(E) {
@@ -672,31 +693,38 @@ g.render = function() {
 
 				}
 				var hbox = document.createElement('hbox'); 
+				hbox.setAttribute('id',fn);
 				vbox.appendChild(hbox);
 
 				/**************************************************************************************/
 				/* Render the input widget */
 
 				if (f[1].input && g.edit) {
-					try {
-						var spacer = document.createElement('spacer'); hbox.appendChild(spacer);
-						spacer.setAttribute('flex','1');
-						var deck = document.createElement('deck'); hbox.appendChild(deck);
-						var btn = document.createElement('button'); deck.appendChild(btn);
-						deck.setAttribute('style','width: 200px; min-width: 200px;');
-						btn.setAttribute('label','Change');
-						btn.setAttribute('oncommand','this.parentNode.selectedIndex = 1;');
-						var x; eval( f[1].input );
-						if (x) deck.appendChild(x);
-
-					} catch(E) {
-						g.error.sdump('D_ERROR',E + '\n');
-					}
+					g.render_input(hbox,f[1].input);
 				}
 			} catch(E) {
 				g.error.sdump('D_ERROR','copy editor: ' + E + '\n');
 			}
 		}
+	}
+}
+
+/******************************************************************************************************/
+/* This actually draws the change button and input widget for a given field */
+g.render_input = function(node,input_cmd) {
+	try {
+		var spacer = document.createElement('spacer'); node.appendChild(spacer);
+		spacer.setAttribute('flex','1');
+		var deck = document.createElement('deck'); node.appendChild(deck);
+		var btn = document.createElement('button'); deck.appendChild(btn);
+		deck.setAttribute('style','width: 200px; min-width: 200px;');
+		btn.setAttribute('label','Change');
+		btn.setAttribute('oncommand','this.parentNode.selectedIndex = 1;');
+		var x; eval( input_cmd );
+		if (x) deck.appendChild(x);
+
+	} catch(E) {
+		g.error.sdump('D_ERROR',E + '\n');
 	}
 }
 
