@@ -59,6 +59,41 @@
 
 				JSAN.use('util.network'); g.network = new util.network();
 
+				var cn_blob;
+				try {
+					cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[g.doc_id]);
+				} catch(E) {
+					cn_blob = [];
+				}
+				if (cn_blob.length > 0) {
+					var hbox = document.getElementById('marc_cn');
+					var ml = util.widgets.make_menulist(
+						util.functional.map_list(
+							cn_blob,
+							function(o) {
+								for (var i in o) {
+									return [ i + ' -> ' + o[i], o[i] ];
+								}
+							}
+						)
+					); hbox.appendChild(ml);
+					var btn = document.createElement('button');
+					btn.setAttribute('label','Apply');
+					btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
+					hbox.appendChild(btn);
+					btn.addEventListener(
+						'command',
+						function() {
+							var nl = document.getElementsByTagName('textbox');
+							for (var i = 0; i < nl.length; i++) {
+								if (nl[i].getAttribute('rel_vert_pos')==2 
+									&& !nl[i].disabled) nl[i].value = ml.value;
+							}
+						}, 
+						false
+					);
+				}
+
 				var rows = document.getElementById('rows');
 
 				var node_id = 0;
@@ -289,6 +324,7 @@
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Volume/Copy Creator"/>
 		<hbox style="border-bottom: solid black thin">
+			<hbox id="marc_cn"/>
 			<spacer flex="1" />
 			<button id="Create" label="Create" disabled="true" oncommand="g.stash_and_close();"/>
 		</hbox>

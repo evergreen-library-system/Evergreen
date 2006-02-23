@@ -5,6 +5,7 @@ var api = {
 	'AUTH_DELETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.session.delete' },
 	'BILL_PAY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
 	'BLOB_CHECKOUTS_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out' },
+	'BLOB_MARC_CALLNUMBERS_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc_cn.retrieve' },
 	'BUCKET_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.create' },
 	'BUCKET_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.delete' },
 	'BUCKET_FLESH' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.flesh' },
