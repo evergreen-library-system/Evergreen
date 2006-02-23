@@ -37,6 +37,7 @@ tabpanel { border: 2px groove black; }
 .marc { 
 	-moz-appearance: none;
 	font-family: monospace;
+	font-size: x-large;
 	border: none;
 	padding: 0px; 
 	margin: 0px; 
