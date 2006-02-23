@@ -109,7 +109,7 @@ sub unapi {
 				
 				'</formats>';
 
-		$apache->custom_response( 300, $body);
+			$apache->custom_response( 300, $body);
 			return 300;
 		} else {
 			my $list = $supercat
@@ -167,6 +167,9 @@ sub supercat {
 
 	my $path = $apache->path_info;
 
+	my $cgi = new CGI;
+	my $base = $cgi->url;
+
 	my ($id,$type,$format,$command) = reverse split '/', $path;
 
 	print "Content-type: application/xml; charset=utf-8\n";
@@ -178,8 +181,10 @@ sub supercat {
 				->gather(1);
 
 			print "\n<formats>
-				   <name>opac</name>
-				   <type>text/html</type>".
+				   <format>
+				     <name>opac</name>
+				     <type>text/html</type>
+				   </format>".
 				join('',
 					map { 
 						"<format><name>$_</name><type>text/xml</type></format>" 
@@ -213,6 +218,14 @@ sub supercat {
 				} @$list
 			).'</formats>';
 		return Apache2::Const::OK;
+	}
+
+	if ($format eq 'opac') {
+		print "Location: $base/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+			if ($type eq 'metarecord');
+		print "Location: $base/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+			if ($type eq 'record');
+		return 302;
 	}
 
 	print "\n" . $supercat->request("open-ils.supercat.$type.$format.$command",$id)->gather(1);
