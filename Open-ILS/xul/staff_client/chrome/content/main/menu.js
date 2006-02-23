@@ -335,12 +335,12 @@ main.menu.prototype = {
 	},
 
 	'new_tab' : function(url,params,content_params) {
-		if (!params) params = {};
-		if (!content_params) content_params = {};
 		var tc = this.find_free_tab();
 		if (tc == -1) { return null; } // 9 tabs max
 		var tab = this.controller.view.tabs.childNodes[ tc ];
 		tab.hidden = false;
+		if (!content_params) content_params = {};
+		if (!params) params = { 'tab_name' : 'Tab ' + (tc+1) };
 		try {
 			if (params.focus) this.controller.view.tabs.selectedIndex = tc;
 			params.index = tc;
