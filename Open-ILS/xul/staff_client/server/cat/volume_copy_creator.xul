@@ -90,17 +90,16 @@
 			var hb = document.createElement('vbox'); row.appendChild(hb);
 			var tb = document.createElement('textbox'); hb.appendChild(tb);
 			tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
-			tb.setAttribute('rel_vert_pos','1'); util.widgets.apply_vertical_tab_on_enter_handler( tb );
-			tb.addEventListener(
-				'change',
-				function(ev) {
-					if (! isNaN( parseInt( ev.target.value) ) ) {
-						ev.target.disabled = true;
-						g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
-					}
-				},
-				false
-			);
+			tb.setAttribute('rel_vert_pos','1'); 
+			function render_copy_count_entry(ev) {
+				if (ev.target.disabled) return;
+				if (! isNaN( parseInt( ev.target.value) ) ) {
+					ev.target.disabled = true;
+					g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
+				}
+			}
+			util.widgets.apply_vertical_tab_on_enter_handler( tb, render_copy_count_entry);
+			tb.addEventListener( 'change', render_copy_count_entry, false);
 		}
 
 		g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
@@ -118,10 +117,30 @@
 				if (tb1.value == '') return;
 				if (isNaN( parseInt( tb2.value ) )) return;
 
+				if (tb1.disabled || tb2.disabled) return;
+
 				tb1.disabled = true;
 				tb2.disabled = true;
 
 				g.render_barcode_entry(hb3,tb1.value,parseInt(tb2.value),ou_id);
+			}
+
+			function handle_change_tb1(ev) {
+				var _tb1 = ev.target;	
+				var _hb1 = _tb1.parentNode;
+				var _hb2 = _hb1.nextSibling;
+				var _tb2 = _hb2.firstChild;
+				var _hb3 = _hb2.nextSibling;
+				handle_change(_tb1,_tb2,_hb3);
+			}
+
+			function handle_change_tb2(ev) {
+				var _tb2 = ev.target;	
+				var _hb2 = _tb2.parentNode;
+				var _hb1 = _hb2.previousSibling;
+				var _tb1 = _hb1.firstChild;
+				var _hb3 = _hb2.nextSibling;
+				handle_change(_tb1,_tb2,_hb3);
 			}
 
 			for (var i = 0; i < count; i++) {
@@ -131,49 +150,30 @@
 				var hb3 = document.createElement('vbox'); r.appendChild(hb3);
 				var tb1 = document.createElement('textbox'); hb1.appendChild(tb1);
 				tb1.setAttribute('rel_vert_pos','2');
-				util.widgets.apply_vertical_tab_on_enter_handler( tb1 );
+				util.widgets.apply_vertical_tab_on_enter_handler( tb1, handle_change_tb1);
 				var tb2 = document.createElement('textbox'); hb2.appendChild(tb2);
 				tb2.setAttribute('size','3'); tb2.setAttribute('cols','3');
 				tb2.setAttribute('rel_vert_pos','3');
-				util.widgets.apply_vertical_tab_on_enter_handler( tb2 );
+				util.widgets.apply_vertical_tab_on_enter_handler( tb2, handle_change_tb2);
 
-				tb1.addEventListener(
-					'change',
-					function(ev) {
-						var _tb1 = ev.target;	
-						var _hb1 = _tb1.parentNode;
-						var _hb2 = _hb1.nextSibling;
-						var _tb2 = _hb2.firstChild;
-						var _hb3 = _hb2.nextSibling;
-						handle_change(_tb1,_tb2,_hb3);
-					},
-					false
-				);
-				
-				tb2.addEventListener(
-					'change',
-					function(ev) {
-						var _tb2 = ev.target;	
-						var _hb2 = _tb2.parentNode;
-						var _hb1 = _hb2.previousSibling;
-						var _tb1 = _hb1.firstChild;
-						var _hb3 = _hb2.nextSibling;
-						handle_change(_tb1,_tb2,_hb3);
-					},
-					false
-				);
+				tb1.addEventListener( 'change', handle_change_tb1, false);
+				tb2.addEventListener( 'change', handle_change_tb2, false);
 			}
 		}
 
 		g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 			try {
+				function ready_to_create(ev) {
+					document.getElementById("Create").disabled = false;
+				}
+
 				for (var i = 0; i < count; i++) {
 					var tb = document.createElement('textbox'); node.appendChild(tb);
 					tb.setAttribute('ou_id',ou_id);
 					tb.setAttribute('callnumber',callnumber);
 					tb.setAttribute('rel_vert_pos','4');
-					util.widgets.apply_vertical_tab_on_enter_handler( tb );
-					tb.setAttribute('onchange','document.getElementById("Create").disabled = false;');
+					util.widgets.apply_vertical_tab_on_enter_handler( tb, ready_to_create);
+					tb.addEventListener('change',ready_to_create,false);
 				}
 			} catch(E) {
 				g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);

@@ -144,7 +144,7 @@ util.widgets.insertAfter = function(parent_node,new_node,sibling_node) {
 	}
 }
 
-util.widgets.apply_vertical_tab_on_enter_handler = function(node) {
+util.widgets.apply_vertical_tab_on_enter_handler = function(node,onfailure) {
 	try {
 		node.addEventListener(
 			'keypress',
@@ -155,9 +155,13 @@ util.widgets.apply_vertical_tab_on_enter_handler = function(node) {
 					+ ' ev.charCode = ' + ev.charCode + '\n');
 				if (ev.keyCode == 13) {
 					dump('trying vertical tab\n');
-					util.widgets.vertical_tab(ev.target);
-					ev.preventDefault(); ev.stopPropagation();
-					return true;
+					if (util.widgets.vertical_tab(ev.target)) {
+						ev.preventDefault(); ev.stopPropagation();
+						return true;
+					} else {
+						if (typeof onfailure == 'function') onfailure(ev);
+						return util.widgets.vertical_tab(ev.target);
+					}
 				}
 			},
 			false
@@ -216,6 +220,7 @@ util.widgets.vertical_tab = function(node) {
 			dump('focusing\n');
 			next_node.focus();
 		}
+		return next_node;
 	} catch(E) {
 		alert(E);
 	}
