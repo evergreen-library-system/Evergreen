@@ -518,7 +518,6 @@
 		}
 
 		function spawn_copy_add_wizard() {
-			/* <command id="cmd_copy_add" oncommand="copy_add(false,{ 'tree' : 'browse_list_tree', 'refresh_func' : refresh_browse_list });"/> */
 			JSAN.use('util.widgets'); JSAN.use('util.functional');
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
@@ -527,15 +526,55 @@
 					return obj.getAttribute('object_type') == 'volume';
 				}
 			);
+			var copy_shortcut = {};
 			list = util.functional.map_list(
 				list,
 				function (obj) {
-					return obj.getAttribute('volume_id');
+					var cn =  obj.network.simple_request(
+						'FM_ACN_RETRIEVE',
+						obj.getAttribute('volume_id')
+					);
+					var ou_id = cn.owning_lib();
+					var label = cn.label();
+					if (!copy_shortcut[ou_id]) copy_shortcut[ou_id] = {};
+					copy_shortcut[ou_id][label] = 1;
+
+					return ou_id;
 				}
 			);
 
+			var edit = 0;
+			try {
+				edit = g.network.request(
+					api.PERM_MULTI_ORG_CHECK.app,
+					api.PERM_MULTI_ORG_CHECK.method,
+					[ 
+						g.session, 
+						g.data.list.au[0].id(), 
+						list,
+						[ 'CREATE_COPY' ]
+					]
+				).length == 0 ? 1 : 0;
+			} catch(E) {
+				g.error.sdump('batch permission check: ' + E);
+			}
 
-			alert('spawn copy add wizard with volume_ids = ' + js2JSON(list));
+			if (edit==0) return; // no read-only view for this interface
+
+			var title = 'Add Copy';
+
+			JSAN.use('util.window'); var win = new util.window();
+			var w = win.open(
+				window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+					+'?session='+window.escape(g.session)
+					+'&doc_id=' + window.escape(find_this_id)
+					+'&ou_ids=' + window.escape( js2JSON(list) ),
+					+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) )
+				title,
+				'chrome,modal,resizable'
+			);
+
+			refresh_browse_list();
 		}
 		
 		function mark_volume() {

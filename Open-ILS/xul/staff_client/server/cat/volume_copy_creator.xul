@@ -79,6 +79,7 @@
 					); hbox.appendChild(ml);
 					var btn = document.createElement('button');
 					btn.setAttribute('label','Apply');
+					btn.setAttribute('accesskey','A');
 					btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
 					hbox.appendChild(btn);
 					btn.addEventListener(
@@ -135,6 +136,10 @@
 			}
 			util.widgets.apply_vertical_tab_on_enter_handler( tb, render_copy_count_entry);
 			tb.addEventListener( 'change', render_copy_count_entry, false);
+			if (g.copy_shortcut) {
+				tb.value = g.copy_shortcut[ou_id].length;
+				render_copy_count_entry(tb);
+			}
 		}
 
 		g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
@@ -193,6 +198,11 @@
 
 				tb1.addEventListener( 'change', handle_change_tb1, false);
 				tb2.addEventListener( 'change', handle_change_tb2, false);
+
+				if (g.copy_shortcut) {
+					var label = g.copy_shortcut[ou_id][i];
+					tb1.value = label; handle_change_tb1(tb1);
+				}
 			}
 		}
 
