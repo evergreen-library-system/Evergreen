@@ -417,6 +417,36 @@ sub biblio_record_record_metadata {
 
 }
 
+__PACKAGE__->register_method(
+	method	=> "biblio_record_marc_cn",
+	api_name	=> "open-ils.cat.biblio.record.marc_cn.retrieve",
+	argc		=> 1, #(bib id ) 
+);
+
+sub biblio_record_marc_cn {
+	my( $self, $client, $id ) = @_;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $marc = $session
+		->request("open-ils.storage.direct.biblio.record_entry.retrieve", $id )
+		->gather(1)
+		->marc;
+
+	my $doc = XML::LibXML->new->parse_string($marc);
+	$doc->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
+	
+	my @res;
+	for my $tag ( qw/050 055 060 070 080 082 086 088 090 092 096 098 099/ ) {
+		my @node = $doc->findnodes("//marc:datafield[\@tag='$tag']");
+		for my $x (@node) {
+			my $cn = $x->findvalue("marc:subfield[\@code='a' or \@code='b']");
+			push @res, {$tag => $cn} if ($cn);
+		}
+	}
+
+	return \@res
+}
+
 # gets the username
 sub _get_userid_by_id {
 
