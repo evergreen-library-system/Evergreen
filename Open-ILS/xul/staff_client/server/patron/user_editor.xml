@@ -127,8 +127,15 @@
 						</table>
 					</td>
 
-					<td width='85%'>
+					<td width='85%' id='uedit_loading'>
+						<div class='main_div has_color' 
+							style='padding: 50px; vertical-align: middle;'>
+							<b>Loading data...</b>
+						</div>
+					</td>
 
+
+					<td width='85%' id='ue_maintd' class='hide_me'>
 
 						<!-- ************************************************************** -->
 						<!--  Identification Pane -->
@@ -385,14 +392,7 @@
 															<div class='button_row'>
 																<input type='submit' name='ue_addr_delete' 
 																	value='Delete this Address'
-																	onclick='
-																		if( confirm($("ue_delete_addr_warn").innerHTML) ) {
-																			var td = this.parentNode.parentNode;
-																			var mytab = td.parentNode.parentNode.parentNode;
-																			var top = mytab.parentNode.parentNode.parentNode;
-																			top.removeChild(mytab.parentNode.parentNode);
-																		}
-																	'/>
+																	onclick='uEditRemoveAddress(this);'/>
 														</div>
 													</td>
 												</tr>
@@ -554,7 +554,7 @@
 						<!-- ************************************************************** -->
 						<div id='uedit_surveys' class='main_div hide_me'>
 							<table id='ue_survey_table' 
-								class='uedit_table data_grid' style='width: 95%; margin-top: 10px;'>
+								class='uedit_table data_grid' style='width: 95%; margin-top: 17px;'>
 								<thead>
 									<tr>
 										<td colspan='2' style='text-align: left; padding-left: 20px;'>
@@ -646,8 +646,14 @@
 				.summary_grid thead tr { background: #E0F0E0; font-weight: bold;}
 				.summary_grid tbody tr td { border: 1px solid #E0F0E0; }
 				.hide_me{ visibility: hidden; display: none }
+				.deleted { background: #FF6666; }
 			</style>
-			<thead><tr><td colspan='2'>User Summary Information</td></tr></thead>
+			<thead><tr>
+				<td colspan='2'>
+					<span>User Summary Information (Deleted items are marked in</span>
+					<span class='deleted'>color</span><span>)</span>
+				</td>
+			</tr></thead>
 			<tbody name='ue_summary_page_tbody'>
 				<tr>
 					<td><input type='submit' value='Print Page' onclick='window.print();'/></td>
@@ -715,11 +721,14 @@
 				<tr><td>Family Lead Account</td><td name='ue_summary_family_lead'/></tr>
 				<tr><td>Claims Returned Count</td><td name='ue_summary_claims_returned'/></tr>
 				<tr><td>Alert Message</td><td name='ue_summary_alert_message'/></tr>
-				<tr class='hide_me' name='ue_summary_stat_cat_td'>
+				<tr name='ue_summary_stat_cat_td'>
 					<td colspan='2' >
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
-							<thead><tr><td colspan='2'>Statistical Category Updates</td></tr></thead>
+							<thead><tr><td colspan='2'>Statistical Categories</td></tr></thead>
 							<tbody name='ue_summary_stats_tbody'>
+								<tr class='hide_me' name='ue_summary_stat_cat_none'>
+									<td colspan='2'>No Stat Cats have been set</td>
+								</tr>
 								<tr name='ue_summary_stats_row'>
 									<td name='ue_summary_stat_name'/><td name='ue_summary_stat_value'/>
 								</tr>
@@ -727,11 +736,16 @@
 						</table>
 					</td>
 				</tr>
-				<tr class='hide_me' name='ue_summary_survey_td'>
+				<tr name='ue_summary_survey_td'>
 					<td colspan='2'>
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
 							<thead><tr><td>Survey</td><td>Question</td><td>Answer</td></tr></thead>
 							<tbody name='ue_summary_survey_tbody'>
+
+								<tr class='hide_me' name='ue_summary_survey_none'>
+									<td colspan='3'>No new survey entries were created</td>
+								</tr>
+
 								<tr name='ue_summary_survey_row'>
 									<td name='ue_summary_survey_name'/>
 									<td name='ue_summary_survey_question'/>

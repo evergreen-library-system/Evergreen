@@ -13,8 +13,11 @@ var groupTree					= null;
 var cachedSurveys				= {};
 var cachedSurveyQuestions	= {};
 var cachedSurveyAnswers		= {};
-var cachedStatCats			= {};
 var ERRORS						= ""; /* global set of errors */
+var cachedStatCats			= {};
+var deletedStatCats			= {};
+var cachedAddresses			= {};
+var deletedAddresses			= {};
 
 var myPerms		= [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
 
@@ -59,14 +62,20 @@ function uEditInit() {
 
 	setTimeout( 
 		function() { 
+
+			/* these can be asynch */
 			fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
-			uEditDrawUser(fetchFleshedUser(cgi.param('usr')));
+			uEditFetchSurveys();
+
+			/* these have to be synchronous */
 			uEditBuildLibSelector();
 			uEditFetchIDTypes();
-			uEditFetchAddrs();
+			uEditBuildAddrs();
 			uEditFetchGroups();
 			uEditFetchStatCats();
-			uEditFetchSurveys();
+
+			uEditDrawUser(fetchFleshedUser(cgi.param('usr')));
+
 		}, 20 
 	);
 }
@@ -140,14 +149,16 @@ function uEditAddrHighlight( node, type ) {
 /* ------------------------------------------------------------------------------ */
 function uEditFetchIDTypes() {
 	var req = new Request(FETCH_ID_TYPES);
-	req.callback(uEditDrawIDTypes);
-	req.send();
+	//req.callback(uEditDrawIDTypes);
+	req.send(true);
+	uEditDrawIDTypes(req.request);
 }
 
 function uEditFetchStatCats() {
 	var req = new Request(SC_FETCH_ALL, SESSION);
-	req.callback(uEditDrawStatCats);
-	req.send();
+	//req.callback(uEditDrawStatCats);
+	req.send(true);
+	uEditDrawStatCats(req.request);
 }
 
 function uEditFetchSurveys() {
@@ -173,6 +184,7 @@ function uEditSaveUser() {
 	}
 
 	//alert(js2JSON(patron));
+	//return;
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);
@@ -200,8 +212,10 @@ function uEditCollectData() {
 		if(!patron.isnew()) { 
 			patron.ischanged(1); 
 			patron.isnew(0);
-			uEditExistingStatEntries = patron.stat_cat_entries();
-			uEditExistingSurveyResponses = patron.survey_responses();
+			if(!uEditExistingStatEntries)
+				uEditExistingStatEntries = patron.stat_cat_entries();
+			if(!uEditExistingSurveyResponses)
+				uEditExistingSurveyResponses = patron.survey_responses();
 		}
 	}
 
@@ -224,9 +238,104 @@ function uEditCollectData() {
 /* ------------------------------------------------------------------------------ */
 /* Draw the user
 /* ------------------------------------------------------------------------------ */
-function uEditDrawUser(patron) {
-	if(!patron) {
+function uEditDrawUser(p) {
+
+	hideMe($('uedit_loading'));
+	unHideMe($('ue_maintd'));
+
+	if(!p) return;
+	patron = p;
+
+	$('ue_barcode').value			= patron.card().barcode();
+	$('ue_username').value			= patron.usrname();
+	$('ue_firstname').value			= patron.first_given_name();
+	$('ue_middlename').value		= patron.second_given_name();
+	$('ue_lastname').value			= patron.family_name();
+	$('ue_suffix').value				= patron.suffix();
+	$('ue_dob').value					= patron.dob();
+	$('ue_primary_ident').value	= patron.ident_value();
+	$('ue_secondary_ident').value	= patron.ident_value2();
+	$('ue_email1').value				= patron.email();
+	$('ue_email2').value				= patron.email();
+	$('ue_expire').value				= patron.expire_date();
+	$('ue_active').value				= patron.active();
+	$('ue_barred').value				= patron.barred();
+	$('ue_claims_returned').value	= patron.claims_returned_count();
+	$('ue_alert_message').value	= patron.alert_message();
+
+	setSelector( $('ue_primary_ident_type'), patron.ident_type() );
+	setSelector( $('ue_secondary_ident_type'), patron.ident_type2() );
+	setSelector( $('ue_org_selector'), patron.home_ou() );
+	setSelector( $('ue_profile'), patron.profile() );
+	
+	/* flesh out the phone numbers ------------------------- */
+	var dp = patron.day_phone();
+	var np = patron.evening_phone();
+	var op = patron.other_phone();
+
+	if(dp) {
+		var daynums = dp.split('-');
+		$('ue_day_phone_area').value		= daynums[0];
+		$('ue_day_phone_prefix').value	= daynums[1];
+		$('ue_day_phone_suffix').value	= daynums[2];
+	}
+
+	if(np) {
+		var nightnums = np.split('-');
+		$('ue_night_phone_area').value	= nightnums[0];
+		$('ue_night_phone_prefix').value	= nightnums[1];
+		$('ue_night_phone_suffix').value	= nightnums[2];
+	}
+
+	if(op) {
+		var othernums = op.split('-');
+		$('ue_other_phone_area').value	= othernums[0];
+		$('ue_other_phone_prefix').value	= othernums[1];
+		$('ue_other_phone_suffix').value	= othernums[2];
+	}
+
+
+	/* Flesh the addresses ------------------------------------ */
+	var i = 0;
+	var tbody = $('ue_address_tbody');	
+	for( var i = 0; i != patron.addresses().length; i++ ) {
+		var addr = patron.addresses()[i];
+		cachedAddresses[addr.id()] = addr;
+		var row;
+		if( i == 0 ) row = getElementsByTagNameFlat(tbody, 'tr')[0];
+		else row = $('ue_address_new').onclick(); /* create a new row if necessary */
+
+		row.setAttribute('exists', addr.id() );
+
+		if( patron.mailing_address().id() == addr.id())
+			$n(row, 'ue_addr_mailing_yes').checked = true;
+
+		if( patron.billing_address().id() == addr.id())
+			$n(row, 'ue_addr_billing_yes').checked = true;
 		
+		if( addr.valid() ) $n(row, 'ue_addr_valid_yes').checked = true;
+
+	
+		$n(row, 'ue_addr_label').value	= addr.address_type();
+		$n(row, 'ue_addr_street1').value	= addr.street1();
+		$n(row, 'ue_addr_street2').value = addr.street2();
+		$n(row, 'ue_addr_city').value		= addr.city();
+		$n(row, 'ue_addr_county').value	= addr.county();
+		$n(row, 'ue_addr_state').value	= addr.state();
+		$n(row, 'ue_addr_zip').value		= addr.post_code();
+		$n(row, 'ue_addr_country').value	= addr.country();
+
+	}
+
+
+
+	var stattbody = $('ue_stat_cat_tbody');
+	for( var m in patron.stat_cat_entries() ) {
+		var map = patron.stat_cat_entries()[m];
+		var row = grep( getElementsByTagNameFlat( stattbody, 'tr' ), 
+			function(a) { return a.getAttribute('statcat') == map.stat_cat() })[0];
+		$n(row, 'ue_stat_cat_newval').value = map.stat_cat_entry();
+		setSelectorByName( $n(row, 'ue_stat_cat_selector'), map.stat_cat_entry() );
 	}
 }
 
@@ -239,7 +348,7 @@ function uEditDrawUser(patron) {
 /* ------------------------------------------------------------------------------ */
 function uEditDrawIDTypes(r) {
 
-	var types = r.getResultObject();
+	var types	= r.getResultObject();
 	var pri_sel = $('ue_primary_ident_type');
 	var sec_sel = $('ue_secondary_ident_type');
 
@@ -248,7 +357,13 @@ function uEditDrawIDTypes(r) {
 		var type = types[t];
 		identTypes[type.id()] = type;
 		setSelectorVal( pri_sel, idx, type.name(), type.id() );
+
+		if(patron && patron.ident_type() != null ) 
+			setSelector( pri_sel, patron.ident_type() );
+
 		setSelectorVal( sec_sel, idx++, type.name(), type.id() );
+		if(patron && patron.ident_type2() != null ) 
+			setSelector( sec_sel, patron.ident_type2() );
 	}
 }
 
@@ -315,25 +430,32 @@ function uEditReapStatCats(patron) {
 		if( !row || row.nodeName != 'tr' ) continue;
 		if( row.getAttribute('changed') ) {
 			var val = $n( row, 'ue_stat_cat_newval' );
-			if(val.value) {
-				uEditCreateStatEntry( patron, row.getAttribute('statcat'), 
-					val.value, val.getAttribute('entry') );
-			}
+			uEditCreateStatMap( patron, row.getAttribute('statcat'), 
+				val.value, val.getAttribute('entry') );
 		}
 	}
 }
 
 
-function uEditCreateStatEntry( patron, catid, newval, entryid ) {
-	var map = new actscecm();
-	map.isnew(1);
+function uEditCreateStatMap( patron, catid, newval, entryid ) {
 
 	if( ! patron.isnew() ) {
-		if( grep( uEditExistingStatEntries, 
-			function(a) { return a.id() == entryid } ) )
-			map.ischanged(1);
+
+		/* if the patron exists and we're editing an entry that's 
+		already been created for this user... */
+		for( var m in uEditExistingStatEntries ) {
+			var map = uEditExistingStatEntries[m];
+			if( map.stat_cat() == catid ) {
+				if( newval ) map.ischanged(1);
+				else map.isdeleted(1); 
+				patron.stat_cat_entries().push(map);
+				return;
+			}
+		}
 	}
 
+	var map = new actscecm();
+	map.isnew(1);
 	map.stat_cat_entry(newval);
 	map.stat_cat(catid);
 	map.target_usr(patron.id());
@@ -506,9 +628,12 @@ function uEditAddBasicPatronInfo(patron) {
 	/* make sure passwords match */
 	var p1 = $('ue_password1').value;
 	var p2 = $('ue_password1').value;
-	if( p1 != p2 || uEditSetVal( patron, "passwd", p1 )) 
-		ERRORS += uEditFetchError('ue_bad_password');
 
+	if( p1 || patron.isnew() ) { /* existing patrons will have a blank password */
+		if( p1 != p2 || uEditSetVal( patron, "passwd", p1 )) 
+			ERRORS += uEditFetchError('ue_bad_password');
+	}
+	
 	uEditSetVal(patron, "usrname", $('ue_username'), null, 'ue_bad_username' );
 	uEditSetVal(patron, "first_given_name", $('ue_firstname'), null, 'ue_bad_firstname' );
 	uEditSetVal(patron, "second_given_name", $('ue_middlename'), null, 'ue_bad_middlename' ); 
@@ -552,10 +677,12 @@ function uEditAddPhones(patron) {
 		$('ue_night_phone_prefix'), 
 		$('ue_night_phone_suffix')), 'phone', er );
 
-	uEditSetVal( patron, "other_phone", 
-		verify($('ue_other_phone_area'), 
-		$('ue_other_phone_prefix'), 
-		$('ue_other_phone_suffix')), 'phone', er );
+	if( $('ue_other_phone_prefix').value ) {
+		uEditSetVal( patron, "other_phone", 
+			verify($('ue_other_phone_area'), 
+			$('ue_other_phone_prefix'), 
+			$('ue_other_phone_suffix')), 'phone', er );
+	}
 
 }
 
@@ -605,8 +732,9 @@ function uEditBuildLibSelector( node, depth, selector ) {
 
 function uEditFetchGroups() {
 	var req = new Request(FETCH_GROUPS);
-	req.callback(uEditDrawGroups);
-	req.send();
+	//req.callback(uEditDrawGroups);
+	req.send(true);
+	uEditDrawGroups(req.request);
 }
 
 function uEditDrawGroups(r, tree, depth, selector) {
@@ -657,6 +785,10 @@ function uEditAddAddresses(patron) {
 		if(!(row && row.nodeName == 'tr')) continue;
 		patron.addresses().push( uEditBuildAddress( patron, tbody, row ));	
 	}
+	for( var a in deletedAddresses ) {
+		var addr = deletedAddresses[a];
+		patron.addresses().push(addr);
+	}
 }
 
 /* extracts a single address from the page */
@@ -691,10 +823,26 @@ function uEditBuildAddress( patron, tbody, row ) {
 	return addr;
 }
 
+function uEditRemoveAddress(node) {
+	if( confirm($("ue_delete_addr_warn").innerHTML) ) {
+		var td      = node.parentNode.parentNode;
+		var mytab   = td.parentNode.parentNode.parentNode;
+		var row 		= mytab.parentNode.parentNode;
+		if( row.getAttribute('exists') ) {
+			var a =  cachedAddresses[row.getAttribute('exists')];
+			a.isdeleted(1);
+			deletedAddresses[a.id()] = a;
+		}
+		var tbody   = row.parentNode;
+		tbody.removeChild(mytab.parentNode.parentNode);
+	}
+
+}
+
 
 var uEditAddrTemplate;
 var uEditOrigAddrRow;
-function uEditFetchAddrs() {
+function uEditBuildAddrs() {
 
 	var tbody = $('ue_address_tbody');
 	uEditAddrTemplate = tbody.removeChild($('ue_address_template'));
@@ -715,6 +863,7 @@ function uEditFetchAddrs() {
 			$n(newrow, 'ue_addr_label').focus();
 			if(mailrow) $n(mailrow,'ue_addr_mailing_yes').checked = true;
 			if(billrow) $n(billrow,'ue_addr_billing_yes').checked = true;
+			return newrow;
 		}
 
 	/* go ahead and add a blank addr */
@@ -735,6 +884,7 @@ function uEditShowSummary() {
 	var win = window.open("", $('ue_summary_window').innerHTML );	
 	win.document.body.innerHTML = "";
 	win.document.body.appendChild(table);
+	ERRORS = "";
 }
 
 function uEditFleshSummaryTable(table) {
@@ -790,55 +940,83 @@ function uEditFleshSummaryAddresses( table, patron ) {
 
 	var addrtbody = $n(table, 'ue_summary_addr_tbody');
 	var rowtmpl = addrtbody.removeChild($n(addrtbody, 'ue_summary_addr_row'));
+
+	for( var a in patron.addresses() ) {
+		var address = patron.addresses()[a];
+		var row = rowtmpl.cloneNode(true);
+		uEditFleshSummaryAddr( address, patron, row );
+		addrtbody.appendChild(row);
+		if(address.isdeleted()) addCSSClass(row, 'deleted');
+	}
+}
+
+
+function uEditFleshSummaryAddr( address, patron, row ) {
 	var yes = $('yes').innerHTML;
 	var no = $('no').innerHTML;
 
-	for( var a in patron.addresses() ) {
+	$n(row, 'label').appendChild(text(address.address_type()));
+	$n(row, 'street1').appendChild(text(address.street1()));
+	$n(row, 'street2').appendChild(text(address.street2()));
+	$n(row, 'city').appendChild(text(address.city()));
+	$n(row, 'county').appendChild(text(address.county()));
+	$n(row, 'state').appendChild(text(address.state()));
+	$n(row, 'country').appendChild(text(address.country()));
+	$n(row, 'zip').appendChild(text(address.post_code()));
+	$n(row, 'valid').appendChild(text( (address.valid()) ? yes : no ));
 
-		var address = patron.addresses()[a];
-		var row = rowtmpl.cloneNode(true);
+	$n(row, 'mailing').appendChild(text( 
+		(patron.mailing_address() == address.id()) ? yes : no ));
 
-		$n(row, 'label').appendChild(text(address.address_type()));
-		$n(row, 'street1').appendChild(text(address.street1()));
-		$n(row, 'street2').appendChild(text(address.street2()));
-		$n(row, 'city').appendChild(text(address.city()));
-		$n(row, 'county').appendChild(text(address.county()));
-		$n(row, 'state').appendChild(text(address.state()));
-		$n(row, 'country').appendChild(text(address.country()));
-		$n(row, 'zip').appendChild(text(address.post_code()));
-		$n(row, 'valid').appendChild(text( (address.valid()) ? yes : no ));
-
-		$n(row, 'mailing').appendChild(text( 
-			(patron.mailing_address() == address.id()) ? yes : no ));
-
-		$n(row, 'billing').appendChild(text( 
-			(patron.billing_address() == address.id()) ? yes : no ));
-
-		addrtbody.appendChild(row);
-	}
+	$n(row, 'billing').appendChild(text( 
+		(patron.billing_address() == address.id()) ? yes : no ));
 }
 
 
 function uEditFleshSummaryStatCats( table, patron ) {
 	var tbody = $n(table, 'ue_summary_stats_tbody');
 	var rowtmpl = tbody.removeChild($n(tbody, 'ue_summary_stats_row'));
+
 	for( var s in patron.stat_cat_entries() ) {
-		unHideMe($n(table, 'ue_summary_stat_cat_td'));
 		row = rowtmpl.cloneNode(true);
 		var entry = patron.stat_cat_entries()[s];
 		var cat = cachedStatCats[entry.stat_cat()];
 		$n(row, 'ue_summary_stat_name').appendChild(text(cat.name()));
 		$n(row, 'ue_summary_stat_value').appendChild(text(entry.stat_cat_entry()));
+		row.setAttribute('statcat', entry.stat_cat());
+		if( entry.isdeleted() ) addCSSClass(row, 'deleted'); 
 		tbody.appendChild(row);
 	}
+
+	for( var s in uEditExistingStatEntries ) {
+
+		var entry = uEditExistingStatEntries[s]; 
+		var rows = getElementsByTagNameFlat( tbody, 'tr' );
+		var test = function(a) { return a.getAttribute('statcat') == entry.stat_cat() };
+
+		if( ! grep( rows, test ) ) {
+
+			row = rowtmpl.cloneNode(true);
+			var cat = cachedStatCats[entry.stat_cat()];
+			$n(row, 'ue_summary_stat_name').appendChild(text(cat.name()));
+			$n(row, 'ue_summary_stat_value').appendChild(text(entry.stat_cat_entry()));
+			row.setAttribute('statcat', entry.stat_cat());
+			tbody.appendChild(row);
+		}
+	}
+
+
+	if( ! getElementsByTagNameFlat( tbody, 'tr' )[1] )
+		unHideMe($n(tbody, 'ue_summary_stat_cat_none'));
 }
 
 
 function uEditFleshSummarySurveys( table, patron ) {
+
 	var tbody	= $n(table, 'ue_summary_survey_tbody');
 	var rowtmpl = tbody.removeChild($n(tbody, 'ue_summary_survey_row'));
+
 	for( var r in patron.survey_responses() ) {
-		unHideMe($n(table, 'ue_summary_survey_td'));
 		var row		= rowtmpl.cloneNode(rowtmpl);
 		var resp		= patron.survey_responses()[r];
 		var survey	= cachedSurveys[resp.survey()];
@@ -849,6 +1027,9 @@ function uEditFleshSummarySurveys( table, patron ) {
 		$n(row, 'ue_summary_survey_answer').appendChild(text(answer.answer()));
 		tbody.appendChild(row);
 	}
+
+	if( ! getElementsByTagNameFlat(tbody, 'tr')[1])
+		unHideMe($n(tbody, 'ue_summary_survey_none'))
 }
 
 
