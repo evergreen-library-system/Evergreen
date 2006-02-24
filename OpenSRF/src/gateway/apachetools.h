@@ -8,8 +8,8 @@
 #include "http_log.h"
 
 
-#include "string_array.h"
-#include "utils.h"
+#include "opensrf/string_array.h"
+#include "opensrf/utils.h"
 #include "opensrf/utils.h"
 
 #ifndef APACHE_TOOLS_H
