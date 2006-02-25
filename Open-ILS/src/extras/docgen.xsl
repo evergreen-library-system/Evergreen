@@ -222,6 +222,10 @@ span.subcode { color:darkblue;}        </style>
           <td colspan="2" class="value"><xsl:value-of select="res:package"/></td>
         </tr>
         <tr>
+          <td class="label">Packaged Method:</td>
+          <td colspan="2" class="value"><xsl:value-of select="res:method"/></td>
+        </tr>
+        <tr>
           <td class="label">Required argument count:</td>
           <td colspan="2" class="value"><xsl:value-of select="res:argc"/></td>
         </tr>
