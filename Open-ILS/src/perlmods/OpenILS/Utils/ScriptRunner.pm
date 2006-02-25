@@ -15,9 +15,12 @@ sub new {
 	my %params = @_;
 	$class = ref($class) || $class;
 	$params{paths} ||= [];
+	$params{reset_count} ||= 0;
 
 	my $self = bless {	file => $params{file},
 				libs => $params{libs},
+				reset_count => $params{reset_count},
+				_runs => 0,
 				_path => {%_paths} } => $class;
 
 	$self->add_path($_) for @{$params{paths}};
@@ -34,6 +37,8 @@ sub init {
 	my $self = shift;
 	$self->context( new JavaScript::SpiderMonkey );
 	$self->context->init();
+
+	$self->{_runs} = 0;
 
 
 	# eating our own dog food with insert
@@ -82,10 +87,25 @@ sub load {
 	$self->{file} = $filename;
 }
 
+sub runs { shift()->{_runs} }
+
+sub reset_count {
+	my $self = shift;
+	my $count = shift;
+
+	$self->{reset_count} = $count if ($count);
+	return $self->{reset_count};
+}
+
 sub run {
 	my $self = shift;
 	my $file = shift() || $self->{file};
 	my $js = $self->context;
+
+	$self->refresh_context
+		if ($self->reset_count && $self->runs > $self->reset_count);
+
+	$self->{_runs}++;
 
 	$file = $self->_find_file($file);
 
@@ -149,6 +169,10 @@ sub _find_file {
 
 sub load_lib { 
 	my( $self, $file ) = @_;
+
+	push @{ $self->{libs} }, $file
+		if (! grep {$_ eq $file} @{ $self->{libs} });
+
 	if (!$self->{_loaded}{$file} && $self->run( $file )) {
 		$self->{_loaded}{$file} = 1;
 	}

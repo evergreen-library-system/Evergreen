@@ -65,6 +65,12 @@ sub post_init {
 	}
 }
 
+sub entityize {
+	my $stuff = NFC(shift());
+	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+	return $stuff;
+}
+
 
 sub in_transaction {
 	OpenILS::Application::WoRM->post_init();
@@ -645,9 +651,33 @@ package OpenILS::Application::WoRM::Biblio::Leader;
 use base qw/OpenILS::Application::WoRM/;
 use Unicode::Normalize;
 
+our %marc_type_groups = (
+	BKS => q/[at]{1}/,
+	SER => q/[a]{1}/,
+	VIS => q/[gkro]{1}/,
+	MIX => q/[p]{1}/,
+	MAP => q/[ef]{1}/,
+	SCO => q/[cd]{1}/,
+	REC => q/[ij]{1}/,
+	COM => q/[m]{1}/,
+);
+
+sub _type_re {
+	my $re = '^'. join('|', $marc_type_groups{@_}) .'$';
+	return qr/$re/;
+}
+
 our %biblio_descriptor_code = (
 	item_type => sub { substr($ldr,6,1); },
-	item_form => sub { (substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/o) ? substr($oo8,29,1) : substr($oo8,23,1); },
+	item_form =>
+		sub {
+			if (substr($ldr,6,1) =~ _type_re( qw/MAP VIS/ )) {
+				return substr($oo8,29,1);
+			} elsif (substr($ldr,6,1) =~ _type_re( qw/BKS SER MIX SCO REC/ )) {
+				return substr($oo8,23,1);
+			}
+			return ' ';
+		},
 	bib_level => sub { substr($ldr,7,1); },
 	control_type => sub { substr($ldr,8,1); },
 	char_encoding => sub { substr($ldr,9,1); },
@@ -655,7 +685,8 @@ our %biblio_descriptor_code = (
 	cat_form => sub { substr($ldr,18,1); },
 	pub_status => sub { substr($ldr,5,1); },
 	item_lang => sub { substr($oo8,35,3); },
-	lit_form => sub { (substr($ldr,6,1) =~ /^(?:f|g|i|m|o|p|r)$/) ? substr($oo8,33,1) : '0'; },
+	lit_form => sub { (substr($ldr,6,1) =~ _type_re('BKS')) ? substr($oo8,33,1) : ' '; },
+	type_mat => sub { (substr($ldr,6,1) =~ _type_re('VIS')) ? substr($oo8,33,1) : ' '; },
 	audience => sub { substr($oo8,22,1); },
 );
 
@@ -1083,6 +1114,69 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );                      
 
+our $fp_script;
+sub biblio_fingerprint {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	OpenILS::Application::WoRM->post_init();
+
+	my $marc = OpenILS::Application::WoRM::entityize(
+		OpenILS::Application::WoRM
+			->storage_req( 'open-ils.storage.direct.biblio.record_entry.retrieve' => $rec )
+			->marc
+	);
+
+	$log->internal("Got MARC [$marc]");
+
+	my $mods = OpenILS::Application::WoRM::entityize(
+		$mods_sheet
+			->transform( $parser->parse_string($marc) )
+			->toString
+	);
+
+	$log->internal("Created MODS [$mods]");
+
+	if(!$fp_script) {
+		my @pfx = ( "apps", "open-ils.storage","app_settings" );
+		my $conf = OpenSRF::Utils::SettingsClient->new;
+
+		my $libs        = $conf->config_value(@pfx, 'script_path');
+		my $script_file = $conf->config_value(@pfx, 'scripts', 'biblio_fingerprint');
+		my $script_libs = (ref($libs)) ? $libs : [$libs];
+
+		$log->debug("Loading script $script_file for biblio fingerprinting...");
+		
+		$fp_script = new OpenILS::Utils::ScriptRunner
+			( file		=> $script_file,
+			  paths		=> $script_libs,
+			  reset_count	=> 1000 );
+	}
+
+	$log->debug("Applying environment for biblio fingerprinting...");
+
+	my $env = {marc => $marc, mods => $mods};
+	my $res = {fingerprint => '', quality => '0'};
+
+	$fp_script->insert('environment' => $env);
+	$fp_script->insert('result' => $res);
+
+	$log->debug("Running script for biblio fingerprinting...");
+
+	$fp_script->run || OpenSRF::EX::ERROR->throw( "Fingerprint script died!  $@" );
+
+	$log->debug("Script for biblio fingerprinting completed successfully...");
+
+	return $res;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.fingerprint.record",
+	method		=> "biblio_fingerprint",
+	api_level	=> 0,
+	argc		=> 1,
+);                      
+
 sub fingerprint_marc {
 	my $self = shift;
 	my $client = shift;
@@ -1106,6 +1200,7 @@ __PACKAGE__->register_method(
 # --------------------------------------------------------------------------------
 
 1;
+
 __END__
 my $in_xact;
 my $begin;
