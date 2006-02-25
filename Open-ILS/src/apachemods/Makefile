@@ -7,7 +7,8 @@ install:	mod_xmlbuilder-install mod_ils_rest_gateway-install libfieldmapper-inst
 
 
 mod_xmlbuilder.o: mod_xmlbuilder.h mod_xmlbuilder.c
-apachetools.o: apachetools.c apachetools.h
+apachetools.o: 
+	cp ../../../OpenSRF/src/gateway/apachetools.o .
 json_xml.o:	json_xml.c json_xml.h
 fieldmapper_lookup.o:	fieldmapper_lookup.c fieldmapper_lookup.h
 ils_rest_gateway.o:	mod_rest_gateway.c mod_rest_gateway.h

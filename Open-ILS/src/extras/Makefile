@@ -1,4 +1,4 @@
-LDLIBS += -lreadline -loils_utils
+LDLIBS += -lreadline -loils_utils -lopensrf -lobjson -lxml2 -lfieldmapper
 all:	oils_requestor
 
 oils_requestor:	oils_requestor.o
