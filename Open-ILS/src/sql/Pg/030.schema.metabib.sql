@@ -93,6 +93,7 @@ CREATE TABLE metabib.rec_descriptor (
 	enc_level	"char",
 	audience	"char",
 	lit_form	"char",
+	type_mat	"char",
 	cat_form	TEXT,
 	pub_status	TEXT,
 	item_lang	TEXT

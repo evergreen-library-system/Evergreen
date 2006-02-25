@@ -80,7 +80,7 @@ metabib::record_descriptor->table( 'metabib_rec_descriptor' );
 metabib::record_descriptor->columns( Primary => qw/id/ );
 metabib::record_descriptor->columns( Essential => qw/record item_type item_form bib_level
 					 control_type char_encoding enc_level lit_form
-					 cat_form pub_status item_lang audience/ );
+					 cat_form pub_status item_lang audience type_mat/ );
 
 #-------------------------------------------------------------------------------
 
