@@ -98,7 +98,7 @@ var urls = {
 	'XUL_PATRON_BILL_DETAILS' : '/xul/server/patron/bill_details.xul',
 	'XUL_PATRON_BILL_WIZARD' : '/xul/server/patron/bill_wizard.xul',
 	'XUL_PATRON_DISPLAY' : '/xul/server/patron/display.xul',
-	'XUL_PATRON_EDIT' : '/xul/server/patron/user_edit.xml',
+	'XUL_PATRON_EDIT' : '/xul/server/patron/user_editor.xml',
 	'XUL_PATRON_HOLDS' : '/xul/server/patron/holds.xul',
 	'XUL_PATRON_INFO' : 'data:text/html,<h1>Info Here</h1>',
 	'XUL_PATRON_ITEMS' : '/xul/server/patron/items.xul',
