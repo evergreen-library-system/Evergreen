@@ -1671,7 +1671,6 @@ sub postfilter_Z_search_class_fts {
 			  WHERE	EXISTS (
 			  	SELECT	1
 				  FROM	$asset_call_number_table cn,
-					$metabib_metarecord_source_map_table mrs,
 					$descendants d,
 					$br_table br
 				  WHERE	br.id = s.source
@@ -1684,7 +1683,6 @@ sub postfilter_Z_search_class_fts {
 				SELECT	1
 				  FROM	$asset_call_number_table cn
 				  WHERE	cn.record = s.source
-					AND ord.record = mrs.source
 				  LIMIT 1
 				)
   	  		  ORDER BY 2 $sort_dir, 3
