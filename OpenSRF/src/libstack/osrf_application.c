@@ -32,7 +32,8 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 	*(void **) (&init) = dlsym(app->handle, "osrfAppInitialize");
 
 	if( (error = dlerror()) != NULL ) {
-		osrfLogWarning( OSRF_LOG_MARK, "! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
+		osrfLogWarning( OSRF_LOG_MARK, 
+			"! Unable to locate method symbol [osrfAppInitialize] for app %s: %s", appName, error );
 
 	} else {
 
