@@ -623,12 +623,16 @@ sub introspect {
 	my $limit = shift;
 	my $offset = shift;
 
-	$method = undef if ($self->api_name =~ /all$/o);
+	if ($self->api_name =~ /all$/o) {
+		$offset = $limit;
+		$limit = $method;
+		$method = undef; 
+	}
 
 	my ($seen,$returned) = (0,0);
 	for my $api_level ( reverse(1 .. $#_METHODS) ) {
 		for my $api_name ( sort keys %{$_METHODS[$api_level]} ) {
-			if (!$offset || $offset < $seen) {
+			if (!$offset || $offset <= $seen) {
 				if (!$_METHODS[$api_level]{$api_name}{remote}) {
 					if (defined($method)) {
 						if ($api_name =~ $method) {
