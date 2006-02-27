@@ -1,4 +1,10 @@
 // HTTP.Cookies - Burak Gürsoy <burak[at]cpan[dot]org>
+
+/*
+I removed all the docs (except author and license info) to reduce download size
+-bill erickson <billserickson@gmail.com>
+*/
+
 if (!HTTP) var HTTP = {}; // create base class if undefined
 
 HTTP.Cookies = function () { // HTTP.Cookies constructor
@@ -97,67 +103,6 @@ HTTP.Cookies.prototype.remove = function (name, path, domain, secure) {
 =head1 NAME
 
 HTTP.Cookies - JavaScript class for reading, writing and deleting cookies
-
-=head1 SYNOPSIS
-
-   var cookie    = new HTTP.Cookies;
-   var password  = cookie.read('password');
-   var lastvisit = cookie.read('lastvisit');
-   cookie.write('lastvisit',1079383075,'+1y');
-   cookie.remove('password');
-
-=head1 DESCRIPTION
-
-HTTP.Cookies is a class for http cookies manipulation. It defines
-three object methods to read, write and remove cookies. Implementation
-is somehow similar to the Perl module CGI.pm' s C<cookie()> method.
-
-=head1 METHODS
-
-=head2 read NAME
-
-Reads the cookie named C<name> and returns it's value or an empty
-string upon failure.
-
-=head2 write NAME, VALUE [, EXPIRES, PATH, DOMAIN, SECURE]
-
-Creates a new cookie with C<NAME> and C<VALUE>. Optional C<EXPIRES>
-value sets the cookie lifetime.
-
-Expire date format: you can use negative or positive numbers combined
-with 's', 'm', 'h', 'd', 'w', 'M', 'y' or you can use 'now' to
-expire as soon as possible. Meanings:
-
-    s   = second
-    m   = minute
-    h   = hour
-    d   = day
-    w   = week
-    M   = month
-    y   = year
-    now = immediately
-
-for a session cookie; pass "-1" as the expires value.
-
-Optional parameter C<DOMAIN> can be used to define the domain
-for which the HTTP cookie is valid.
-
-Optional parameter C<EXPIRES> can be used to make it a secure cookie
-(secure cookies can only be used with HTTPS protocol).
-
-=head2 remove NAME [, PATH, DOMAIN, SECURE]
-
-Deletes/removes the named cookie from the client.
-
-=head1 SEE ALSO
-
-=head1 BUGS
-
-Contact the author if you find any.
-
-This library is tested with: Opera 8.01, MSIE 6.0,
-Netscape Communicator 4.77, Mozilla 1.7.8
-and Mozilla FireFox 1.0.4 under Windows XP Professional SP2.
 
 =head1 AUTHOR
 

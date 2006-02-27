@@ -9,7 +9,7 @@
 
 
 <!ENTITY opac.session_expiring 
-	"Your login session will timeout in 1 minute unless there is activity">
+	"Your login session will timeout in 1 minute unless there is activity.">
 <!ENTITY opac.session_expired "Your login session has expired">
 
 <!ENTITY navigate.home "Home">

@@ -3,6 +3,8 @@
 /* define it again here for pages that don't load RemoteRequest */
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
+var cookieManager = new HTTP.Cookies();
+
 var __ilsEvent; /* the last event the occurred */
 
 function Request(type) {
@@ -101,9 +103,9 @@ function initParams() {
 
 function initCookies() {
 	FONTSIZE = "medium";
-	var font = fontCookie.get(COOKIE_FONT);
+	var font = cookieManager.read(COOKIE_FONT);
 	if(font) FONTSIZE = font;
-	SKIN = skinCookie.get(COOKIE_SKIN);
+	SKIN = cookieManager.read(COOKIE_SKIN);
 }
 
 /* URL param accessors */
@@ -252,11 +254,10 @@ function buildSearchLink(type, string, linknode, trunc) {
 	to find one in the cookies.  If 'force' is true we retrieve the 
 	user from the server even if there is already a global user present.
 	if ses != G.user.session, we also force a grab */
-var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
 function grabUser(ses, force) {
 
 	if(!ses && isXUL()) ses = xulG['authtoken'];
-	if(!ses) ses = cookie.get(COOKIE_SES);
+	if(!ses) ses = cookieManager.read(COOKIE_SES);
 	if(!ses) return false;
 
 	if(!force) 
@@ -282,8 +283,7 @@ function grabUser(ses, force) {
 	G.user = user;
 	G.user.fleshed = false;
 	G.user.session = ses;
-	cookie.put(COOKIE_SES, ses);
-	cookie.write();
+	cookieManager.write(COOKIE_SES, ses, '+1y');
 
 	grabUserPrefs();
 	if(G.user.prefs['opac.hits_per_page'])
@@ -325,19 +325,16 @@ function grabFleshedUser() {
 
 	if(!G.user || G.user.length == 0) { 
 		G.user = null; return false; 
-		cookie.remove(COOKIE_SES);
+		cookieManager.remove(COOKIE_SES);
 	}
 
 	G.user.session = ses;
 	G.user.fleshed = true;
 
-	cookie.put(COOKIE_SES, ses); /*  update the cookie */
-	cookie.write();
-
+	cookieManager.write(COOKIE_SES, ses, '+1y'); /*  update the cookie */
 	return G.user;
 }
 
-var skinCookie = new cookieObject("skin", 1, "/", COOKIE_SKIN);
 function checkUserSkin(new_skin) {
 
 	return; /* XXX do some debugging with this... */
@@ -352,8 +349,7 @@ function checkUserSkin(new_skin) {
 		if(grabUser()) {
 			if(grabUserPrefs()) {
 				user_skin = G.user.prefs["opac.skin"];
-				skinCookie.put( COOKIE_SKIN, user_skin );
-				skinCookie.write();
+				cookieManager.write( COOKIE_SKIN, user_skin, '+1y' );
 			}
 		}
 	}
@@ -444,8 +440,8 @@ function doLogout(noredirect) {
     }
 
 	G.user = null;
-	cookie.remove(COOKIE_SES);
-	skinCookie.remove(COOKIE_SKIN);
+	cookieManager.remove(COOKIE_SES);
+	cookieManager.remove(COOKIE_SKIN);
 	checkUserSkin("default");
 	COUNT = 10;
 
@@ -501,11 +497,10 @@ function orgSelect(id) {
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(id).name()));
 }
 
-var fontCookie = new cookieObject("fonts", 1, "/", COOKIE_FONT);
+var fontCookie = new HTTP.Cookies();
 function setFontSize(size) {
 	scaleFonts(size);
-	fontCookie.put(COOKIE_FONT, size);
-	fontCookie.write();
+	fontCookie.write(COOKIE_FONT, size, '+1y');
 }
 
 

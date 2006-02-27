@@ -4,16 +4,12 @@ var ranks = [];
 var onlyrecord = {};
 var table;
 var mresultPreCache = 200;
-//var idsCookie = new cookieObject("ids", 1, "/", COOKIE_IDS);
-//var idsCookie;
-var idsCookie = new HTTP.Cookies();
 var searchTimer;
 
 attachEvt("common", "unload", mresultUnload);
 attachEvt("common", "run", mresultDoSearch);
 attachEvt("result", "idsReceived", mresultSetRecords); 
 attachEvt("result", "idsReceived", mresultCollectRecords); 
-
 
 function mresultUnload() { removeChildren(table); table = null;}
 
@@ -75,7 +71,7 @@ function mresultHandleCount(r) {
 
 function mresultLoadCachedSearch() {
 	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
-		var c = JSON2js(idsCookie.read(COOKIE_IDS));
+		var c = JSON2js(cookieManager.read(COOKIE_IDS));
 		if(c) { records = c[0]; ranks = c[1]; }
 	}
 }
@@ -169,9 +165,8 @@ function mresultSetRecords(idstruct) {
 	}
 
 	if(getOffset() == 0) {
-		idsCookie.remove(COOKIE_IDS);
-		idsCookie.write(COOKIE_IDS, js2JSON([ records, ranks ]), '+1d' );
-		//alert('Set cookies: ' + idsCookie.read(COOKIE_IDS) + ' : ' + idsCookie.read(COOKIE_IDS).length );
+		cookieManager.remove(COOKIE_IDS);
+		cookieManager.write(COOKIE_IDS, js2JSON([ records, ranks ]), '+1d' );
 	}
 
 	TOPRANK = ranks[getOffset()];
