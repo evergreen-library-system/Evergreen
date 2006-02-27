@@ -1514,8 +1514,10 @@ sub postfilter_Z_search_class_fts {
 	my %args = @_;
 	
 	my $term = $args{term};
-	#my $ou = $args{org_unit};
-	#my $ou_type = $args{depth};
+	my $sort = $args{'sort'};
+	my $sort_dir = $args{sort_dir} || 'DESC';
+	my $ou = $args{org_unit};
+	my $ou_type = $args{depth};
 	my $limit = $args{limit} || 10;
 	my $offset = $args{offset} || 0;
 
@@ -1540,10 +1542,6 @@ sub postfilter_Z_search_class_fts {
 
 
 
-	#my $descendants = defined($ou_type) ?
-	#			"actor.org_unit_descendants($ou, $ou_type)" :
-	#			"actor.org_unit_descendants($ou)";
-
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
@@ -1557,17 +1555,61 @@ sub postfilter_Z_search_class_fts {
 	my $fts_where = $fts->sql_where_clause;
 	my @fts_ranks = $fts->fts_rank;
 
-	my $rank = join(' + ', @fts_ranks);
+	my $relevance = join(' + ', @fts_ranks);
 
-	my $select = <<"	SQL";
-		SELECT	f.source,
-			SUM(	$rank
+	$relevance = <<"	RANK";
+			(SUM(	$relevance
 				* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
 				* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
 				* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
-			)
+			)/COUNT(m.source))
+	RANK
+
+	my $rank = $relevance;
+	if (lc($sort) eq 'pubdate') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+				  FROM	$metabib_full_rec frp
+				  WHERE	frp.record = s.source
+				  	AND frp.tag = '260'
+					AND frp.subfield = 'c'
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'title') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				  FROM	$metabib_full_rec frt
+				  WHERE	frt.record = s.source
+				  	AND frt.tag = '245'
+					AND frt.subfield = 'a'
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'author') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				  FROM	$metabib_full_rec fra
+				  WHERE	fra.record = s.source
+				  	AND fra.tag LIKE '1%'
+					AND fra.subfield = 'a'
+					ORDER BY fra.tag::text::int
+			)) )
+		RANK
+	} else {
+		$sort = undef;
+	}
+
+
+
+	my $select = <<"	SQL";
+		SELECT	f.source,
+			$rank,
+			$relevance
   	  	FROM	$search_table f,
 			$br_table br,
+			$descendants
 			$metabib_record_descriptor rd
   	  	WHERE	$fts_where
 			AND rd.record = f.source
@@ -1576,8 +1618,74 @@ sub postfilter_Z_search_class_fts {
 			$t_filter
 			$f_filter
   	  	GROUP BY 1
-  	  	ORDER BY 2 DESC, MIN(COALESCE(CHAR_LENGTH(f.value),1))
+  	  	ORDER BY 2 $sort_dir, 3, MIN(COALESCE(CHAR_LENGTH(f.value),1))
 	SQL
+
+
+	if ($self->api_name !~ /Zsearch/o) {
+
+		my $descendants = defined($ou_type) ?
+				"actor.org_unit_descendants($ou, $ou_type)" :
+				"actor.org_unit_descendants($ou)";
+
+		if ($self->api_name !~ /staff/o) {
+			$select = <<"			SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$asset_copy_table cp,
+					$cs_table cs,
+					$cl_table cl,
+					$br_table br,
+					$descendants d
+				  WHERE	br.id = s.source
+					AND cn.record = s.source
+					AND cp.status = cs.id
+					AND cp.location = cl.id
+					AND cn.owning_lib = d.id
+					AND cp.call_number = cn.id
+					AND cp.opac_visible IS TRUE
+					AND cs.holdable IS TRUE
+					AND cl.opac_visible IS TRUE
+					AND br.active IS TRUE
+					AND br.deleted IS FALSE
+				  LIMIT 1
+			  	)
+  	  		  ORDER BY 2 $sort_dir, 3
+
+			SQL
+		} else {
+			$select = <<"			SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$metabib_metarecord_source_map_table mrs,
+					$descendants d,
+					$br_table br
+				  WHERE	br.id = s.source
+					AND cn.record = s.source
+					AND cn.owning_lib = d.id
+					AND br.deleted IS FALSE
+				  LIMIT 1
+				)
+				OR NOT EXISTS (
+				SELECT	1
+				  FROM	$asset_call_number_table cn
+				  WHERE	cn.record = s.source
+					AND ord.record = mrs.source
+				  LIMIT 1
+				)
+  	  		  ORDER BY 2 $sort_dir, 3
+
+			SQL
+		}
+	}
 
 
 	$log->debug("Z39.50 (Record) Search SQL :: [$select]",DEBUG);
@@ -1599,7 +1707,7 @@ sub postfilter_Z_search_class_fts {
 	my $count = scalar(@$recs);
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
 		next unless ($rec);
-		my ($mrid,$rank) = @$rec;
+		my ($mrid,$junk,$rank) = @$rec;
 		$client->respond( [$mrid, sprintf('%0.3f',$rank), $count] );
 	}
 	return undef;
@@ -1614,10 +1722,16 @@ for my $class ( qw/title author subject keyword series/ ) {
 		cdbi		=> "metabib::${class}_field_entry",
 		cachable	=> 1,
 	);
-}
-for my $class ( qw/title author subject keyword series/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.biblio.$class.search_fts.record",
+		method		=> 'postfilter_Z_search_class_fts',
+		api_level	=> 1,
+		stream		=> 1,
+		cdbi		=> "metabib::${class}_field_entry",
+		cachable	=> 1,
+	);
+	__PACKAGE__->register_method(
+		api_name	=> "open-ils.storage.biblio.$class.search_fts.record.staff",
 		method		=> 'postfilter_Z_search_class_fts',
 		api_level	=> 1,
 		stream		=> 1,
