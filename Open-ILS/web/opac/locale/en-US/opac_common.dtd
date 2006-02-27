@@ -9,7 +9,7 @@
 
 
 <!ENTITY opac.session_expiring 
-	"Your login session will soon expire. Click 'OK' to logout and return to the home page.  Click 'Cancel' to continue browsing.">
+	"Your login session will timeout in 1 minute unless there is activity">
 <!ENTITY opac.session_expired "Your login session has expired">
 
 <!ENTITY navigate.home "Home">
@@ -64,4 +64,5 @@
 <!ENTITY opac.title.myopac "Evergreen My Account">
 <!ENTITY opac.title.rdetail "Evergreen Title Details">
 <!ENTITY opac.title.advanced "Evergreen Advanced Search">
+<!ENTITY opac.title.reqitems "Evergreen Request Items">
 <!ENTITY opac.login.login "Login with your username and password">

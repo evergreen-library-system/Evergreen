@@ -137,8 +137,12 @@
 		</tbody>
 	</table>
 
+	<br/><hr/><br/>
 
+
+	<!--
 	<br/><br/><br/>
+	-->
 	<table width='100%' class='light_border data_grid'>
 		<thead class='color_4'>
 			<tr><td style='background: none; border-bottom: none' align='center' colspan='7'><b>Addresses</b></td></tr>

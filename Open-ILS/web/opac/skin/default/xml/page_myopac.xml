@@ -46,7 +46,7 @@
 
 				<td class='myopac_link' id='myopac_prefs_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("prefs");'>Accounty Preferences</a>
+						onclick='myOPACChangePage("prefs");'>Account Preferences</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_bookbag_td' nowrap='nowrap'>

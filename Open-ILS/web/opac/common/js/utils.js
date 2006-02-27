@@ -184,6 +184,23 @@ function getSelectorVal( sel ) {
 	return v;
 }
 
+function getSelectorName( sel ) {
+	var o = sel.options[sel.selectedIndex];
+	var v = o.name;
+	if(v == null || v == undefined || v == "") v = o.innerHTML;
+	return v;
+}
+
+function setSelectorByName( sel, name ) {
+	for( var o in sel.options ) {
+		var opt = sel.options[o];
+		if( opt.name == name || opt.innerHTML == name ) {
+			sel.selectedIndex = o;
+			opt.selected = true;
+		}
+	}
+}
+
 function debugSelector(sel) {
 	var s = 'Selector\n';
 	for( var i = 0; i != sel.options.length; i++ ) {
@@ -191,6 +208,45 @@ function debugSelector(sel) {
 		s += "\t" + o.innerHTML + "\n";
 	}
 	return s;
+}
+
+function findParentByNodeName(node, name) {
+	while( ( node = node.parentNode) ) 
+		if (node.nodeName == name) return node;
+	return null;
+}
+
+/* returns only elements in nodes childNodes list, not sub-children */
+function getElementsByTagNameFlat( node, name ) {
+	var elements = [];
+	for( var e in node.childNodes ) {
+		var n = node.childNodes[e];
+		if( n && n.nodeName == name ) elements.push(n);
+	}
+	return elements;
+}
+
+/* expects a tree with a id() method on each node and a 
+children() method to get to each node */
+function findTreeItemById( tree, id ) {
+	if( tree.id() == id ) return tree;
+	for( var c in tree.children() ) {
+		var found = findTreeItemById( tree.children()[c], id );
+		if(found) return found;
+	}
+	return null;
+}
+
+/* returns null if none of the tests are true.  returns sub-array of 
+matching array items otherwise */
+function grep( arr, func ) {
+	var results = [];
+	for( var i in arr ) {
+		if( func(arr[i]) ) 
+			results.push(arr[i]);
+	}
+	if(results.length > 0) return results;
+	return null;
 }
 
 function doSelectorActions(sel) {
@@ -209,10 +265,12 @@ function insertSelectorVal( selector, index, name, value, action, indent ) {
 	for( var i = selector.options.length; i != index; i-- ) 
 		a[i] = selector.options[i-1];
 
-	setSelectorVal( selector, index, name, value, action, indent );
+	var opt = setSelectorVal( selector, index, name, value, action, indent );
 
 	for( var i = index + 1; i < a.length; i++ ) 
 		selector.options[i] = a[i];
+
+	return opt;
 }
 
 function setSelectorVal( selector, index, name, value, action, indent ) {
@@ -220,6 +278,7 @@ function setSelectorVal( selector, index, name, value, action, indent ) {
 	indent = parseInt(indent);
 
 	var option;
+
 	if(IE) {
 		var pre = elem("pre");
 		for( var i = 0; i != indent; i++ )
@@ -239,6 +298,7 @@ function setSelectorVal( selector, index, name, value, action, indent ) {
 	}
 
 	option.onclick = action;
+	return option;
 }
 
 

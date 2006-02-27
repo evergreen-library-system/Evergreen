@@ -292,7 +292,7 @@ function grabUser(ses, force) {
 	var at = getAuthtime();
 	if(isXUL()) at = xulG['authtime'];
 
-	//new AuthTimer(at).run(); /* needs debugging... */
+	new AuthTimer(at).run(); /* needs debugging... */
 
 	return G.user;
 }
@@ -469,14 +469,12 @@ function unHideMe(obj) { removeCSSClass(obj, config.css.hide_me); }
 /* build the org tree */
 /* ----------------------------------------------------------------------- */
 function drawOrgTree() {
-	//G.ui.common.org_tree.innerHTML = buildOrgSelector().toString();
-	//buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);
-	setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 10 );
+	//setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 10 );
+	setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 1 );
 }
 	
 var orgTreeSelector;
 function buildOrgSelector(node) {
-	//var tree = new dTree("orgTreeSelector"); 
 	var tree = new SlimTree(node,'orgTreeSelector');
 	orgTreeSelector = tree;
 	for( var i in orgArraySearcher ) { 
@@ -650,13 +648,8 @@ AuthTimer.prototype.run = function() {
 }
 
 function _authTimerAlert() {
-	if( confirm( $('auth_session_expiring').innerHTML ) ) 
-		doLogout();
-	else {
-		if(!grabUser(null, true)) {
-			alert($('auth_session_expired').innerHTML);
-		}
-	}
+	alert( $('auth_session_expiring').innerHTML );
+	if(!grabUser(null, true)) doLogout();
 }
 
 
