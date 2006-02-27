@@ -51,7 +51,7 @@ void osrf_message_set_params( osrf_message* msg, jsonObject* o ) {
 /* only works if parse_json_params is false */
 void osrf_message_add_param( osrf_message* msg, char* param_string ) {
 	if(msg == NULL || param_string == NULL) return;
-	if(!msg->_params) msg->_params = jsonNewObject(NULL);
+	if(!msg->_params) msg->_params = jsonParseString("[]");
 	jsonObjectPush(msg->_params, jsonParseString(param_string));
 }
 
@@ -288,6 +288,8 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 				if(tmp0) {
 					char* s = jsonObjectToJSON(tmp0);
 					new_msg->_params = jsonParseString(s);
+					if(new_msg->_params && new_msg->_params->type == JSON_NULL) 
+						new_msg->_params->type = JSON_ARRAY;
 					free(s);
 				}
 
