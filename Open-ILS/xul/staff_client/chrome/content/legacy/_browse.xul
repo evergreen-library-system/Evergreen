@@ -530,18 +530,17 @@
 			list = util.functional.map_list(
 				list,
 				function (o) {
-					var cn =  g.network.simple_request(
-						'FM_ACN_RETRIEVE',
-						o.getAttribute('volume_id')
-					);
-					var ou_id = cn.owning_lib();
-					var label = cn.label();
+					var ou_id = o.getAttribute('ou_id');
+					var volume_id = o.getAttribute('volume_id');
+					var label = o.getAttribute('callnumber');
 					if (!copy_shortcut[ou_id]) copy_shortcut[ou_id] = {};
-					copy_shortcut[ou_id][label] = 1;
+					copy_shortcut[ou_id][ label ] = volume_id;
 
 					return ou_id;
 				}
 			);
+			/* quick fix */
+			list = []; for (var i in copy_shortcut) { list.push( i ); }
 
 			var edit = 0;
 			try {
@@ -568,12 +567,11 @@
 				window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
 					+'?session='+window.escape(g.session)
 					+'&doc_id=' + window.escape(find_this_id)
-					+'&ou_ids=' + window.escape( js2JSON(list) ),
-					+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) )
+					+'&ou_ids=' + window.escape( js2JSON(list) )
+					+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
 				title,
 				'chrome,modal,resizable'
 			);
-
 			refresh_browse_list();
 		}
 		
