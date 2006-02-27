@@ -37,18 +37,22 @@ function advInit() {
 function advWizardRun() {
 	var contains = $('advanced.wizard.contains').value;
 	var nocontains = $('advanced.wizard.nocontains').value; 
-	var exact = $('advanced.wizard.exact').value; 
-	var form = getSelectorVal($('advanced.wizard.form_selector'));
-	var type = getSelectorVal($('search_type_selector'));
+	var exact	= $('advanced.wizard.exact').value; 
+	var form		= getSelectorVal($('advanced.wizard.form_selector'));
+	var type		= getSelectorVal($('search_type_selector'));
+	var sort		= getSelectorVal($('advanced.wizard.sort_by'));
+	var sortdir	= getSelectorVal($('advanced.wizard.sort_dir'));
 
 	var arg = {};
 	arg.page = MRESULT;
-	arg[PARAM_FORM] = form;
-	arg[PARAM_STYPE] = type;
-	arg[PARAM_OFFSET] = 0;
-	arg[PARAM_DEPTH]	= depthSelGetDepth();
+	arg[PARAM_FORM]		= form;
+	arg[PARAM_STYPE]		= type;
+	arg[PARAM_OFFSET]		= 0;
+	arg[PARAM_DEPTH]		= depthSelGetDepth();
 	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
-	arg[PARAM_TERM] = advBuildSearch( contains, nocontains, exact );
+	arg[PARAM_TERM]		= advBuildSearch( contains, nocontains, exact );
+	arg[PARAM_SORT]		= (sort.match(/relevance/i)) ? null : sort;
+	arg[PARAM_SORT_DIR]	= sortdir;
 
 	goTo(buildOPACLink(arg));
 }

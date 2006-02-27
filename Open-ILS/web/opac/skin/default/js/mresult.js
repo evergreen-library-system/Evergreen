@@ -23,17 +23,19 @@ function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
 
-	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  /* add an extra row so IE and safari won't complain */
+	/* add an extra row so IE and safari won't complain */
+	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
+	/*
 	if(getOffset() == 0 || getHitCount() == null ) {
 		if( getAdvTerm() && !getTerm() ) {
 			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
 			if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
 			if(getAdvType() == ADVTYPE_ISSN ) mresultCollectAdvISSNIds();
-		}
-		else {
+
+		} else {
 			mresultCollectIds(FETCH_MRIDS_FULL); 
 			ADVTERM = "";
 			ADVTYPE = "";
@@ -43,31 +45,27 @@ function mresultDoSearch() {
 		if( getAdvTerm() && !getTerm() ) {
 			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvIds();
-		}
-		else {
+
+		} else {
 			mresultCollectIds(FETCH_MRIDS);
 			ADVTERM = "";
 			ADVTYPE = "";
 		}
 	}
-}
+	*/
 
-/*
-function mresultGetCount() {
-	var form = (getForm() == "all") ? null : getForm();
-	var req = new Request(FETCH_MRCOUNT, 
-			getStype(), getTerm(), getLocation(), getDepth(), form );
-	req.callback(mresultHandleCount);
-	req.send();
-}
+	if( getAdvTerm() && !getTerm() ) {
+		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
+		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
+		if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
+		if(getAdvType() == ADVTYPE_ISSN ) mresultCollectAdvISSNIds();
 
-function mresultHandleCount(r) {
-	HITCOUNT = parseInt(r.getResultObject());
-	alert('mresultHandleCount()');
-	runEvt('result', 'hitCountReceived');
+	} else {
+		_mresultCollectIds(); 
+		ADVTERM = "";
+		ADVTYPE = "";
+	}
 }
-*/
-
 
 function mresultLoadCachedSearch() {
 	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
@@ -80,7 +78,6 @@ function mresultTryCachedSearch() {
 	mresultLoadCachedSearch();
 	if(	getOffset() != 0 && records[getOffset()] != null && 
 			records[resultFinalPageIndex()] != null) {
-
 		runEvt('result', 'hitCountReceived');
 		mresultCollectRecords(); 
 		return true;
@@ -90,11 +87,30 @@ function mresultTryCachedSearch() {
 
 
 /* performs the actual search */
+/*
 function mresultCollectIds(method) {
 	if(!mresultTryCachedSearch()) {
 		var form = (getForm() == "all") ? null : getForm();
 		var req = new Request(method, getStype(), getTerm(), 
 			getLocation(), getDepth(), mresultPreCache, getOffset(), form );
+		req.callback(mresultHandleMRIds);
+		req.send();
+	}
+}
+*/
+
+function _mresultCollectIds() {
+	if( getOffset() == 0 || !mresultTryCachedSearch() ) {
+		var form = (getForm() == "all") ? null : getForm();
+		var req = new Request(FETCH_MRIDS_, getStype(), 
+			{	term		: getTerm(), 
+				sort		: getSort(), 
+				sort_dir	: getSortDir(),
+				org_unit : getLocation(),
+				depth		: getDepth(),
+				limit		: mresultPreCache,
+				offset	: getOffset(),
+				format	: (getForm()=="all") ? null : getForm() } );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}

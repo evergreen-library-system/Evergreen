@@ -18,17 +18,31 @@ function rresultDoSearch() {
 }
 
 function rresultCollectIds() {
-	var form = (getForm() == "all") ? null : getForm();
-	var req = new Request(FETCH_RIDS, getMrid(), form );
-	req.callback( rresultHandleRIds );
-	req.send();
+	var ids;
+	switch(getRtype()) {
+		case RTYPE_COOKIE:
+			ids = JSON2js(cookieManager.read(COOKIE_RIDS));
+			_rresultHandleIds( ids, ids.length );
+			break;
+
+		case RTYPE_MRID :
+		defaut:
+			var form = (getForm() == "all") ? null : getForm();
+			var req = new Request(FETCH_RIDS, getMrid(), form );
+			req.callback( rresultHandleRIds );
+			req.send();
+	}
 }
 
 function rresultHandleRIds(r) {
 	var res = r.getResultObject();
-	HITCOUNT = parseInt(res.count);
+	_rresultHandleIds(res.ids, res.count);
+}
+
+function _rresultHandleIds(ids, count) {
+	HITCOUNT = parseInt(count);
 	runEvt('result', 'hitCountReceived');
-	runEvt('result', 'idsReceived', res.ids);
+	runEvt('result', 'idsReceived', ids);
 }
 
 function rresultCollectRecords(ids) {

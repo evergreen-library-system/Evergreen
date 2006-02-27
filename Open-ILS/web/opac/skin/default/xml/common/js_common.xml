@@ -4,7 +4,9 @@
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js'> </script>
+	<!--
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookie.js'> </script>
+	-->
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js'> </script>
 

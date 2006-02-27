@@ -16,6 +16,9 @@ var PARAM_TOPRANK		= "tr";			/* this highest ranking rank */
 var PARAM_AUTHTIME	= "at";			/* inactivity timeout in seconds */
 var PARAM_ADVTERM		= "adv";			/* advanced search term */
 var PARAM_ADVTYPE		= "adt";			/* the advanced search type */
+var PARAM_RTYPE		= "rt";
+var PARAM_SORT			= "s";
+var PARAM_SORT_DIR	= "sd";
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -35,6 +38,9 @@ var ADVTERM;
 var ADVTYPE;
 var MRID;
 var RID;
+var RTYPE;
+var SORT;
+var SORT_DIR;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -44,11 +50,10 @@ var SKIN;
 /* cookies */
 var COOKIE_SB = "sbe";
 var COOKIE_SES = "ses";
-var COOKIE_IDS	= "ids";
+var COOKIE_IDS	= "ids"; /* list of mrecord ids */
 var COOKIE_FONT = "fnt";
 var COOKIE_SKIN = "skin";
-
-/* these are the actual param values - set on page load */
+var COOKIE_RIDS = "rids"; /* list of record ids */
 
 /* pages */
 var MRESULT		= "mresult";
@@ -58,6 +63,7 @@ var MYOPAC		= "myopac";
 var ADVANCED	= "advanced";
 var HOME			= "home";
 var BBAGS		= "bbags";
+var REQITEMS	= "reqitems";
 
 /* search type (STYPE) options */
 var STYPE_AUTHOR	= "author";
@@ -65,6 +71,21 @@ var STYPE_TITLE	= "title";
 var STYPE_SUBJECT	= "subject";
 var STYPE_SERIES	= "series";
 var STYPE_KEYWORD	= "keyword";
+
+/* record-level search types */
+var RTYPE_MRID		= "mrid";
+var RTYPE_COOKIE	= "cookie";
+var RTYPE_AUTHOR	= STYPE_AUTHOR;
+var RTYPE_SUBJECT	= STYPE_SUBJECT;
+var RTYPE_TITLE	= STYPE_TITLE;
+var RTYPE_SERIES	= STYPE_SERIES;
+var RTYPE_KEYWORD	= STYPE_KEYWORD;
+
+var SORT_TYPE_AUTHOR		= STYPE_AUTHOR; 
+var SORT_TYPE_TITLE		= STYPE_TITLE;
+var SORT_TYPE_PUBDATE	= "pubdate";
+var SORT_DIR_ASC			= "asc";
+var SORT_DIR_DESC			= "desc";
 
 /* types of advanced search */
 var ADVTYPE_MULTI = 'ml';
@@ -128,6 +149,7 @@ config.page[RRESULT]		= "rresult.xml";
 config.page[MYOPAC]		= "myopac.xml";
 config.page[RDETAIL]		= "rdetail.xml";
 config.page[BBAGS]		= "bbags.xml";
+config.page[REQITEMS]	= "reqitems.xml";
 
 /* themes */
 config.themes = {};
@@ -193,7 +215,7 @@ config.ids.altcanvas = {};
 	have a staff counterpart and should have ".staff" appended to the method 
 	before the method is called when in XUL mode */
 
-var FETCH_MRCOUNT					= "open-ils.search:open-ils.search.biblio.class.count:1";
+var FETCH_MRIDS_					= "open-ils.search:open-ils.search.biblio.metabib.class.search:1";
 var FETCH_MRIDS					= "open-ils.search:open-ils.search.biblio.class:1";
 var FETCH_MRIDS_FULL				= "open-ils.search:open-ils.search.biblio.class.full:1";
 var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";

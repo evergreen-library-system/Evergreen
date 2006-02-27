@@ -15,7 +15,7 @@ function Request(type) {
 		this.request.addParam(arguments[x]);
 }
 
-Request.prototype.callback = function(cal) { this.request.setCompleteCallback(cal); }
+Request.prototype.callback = function(cal) {this.request.setCompleteCallback(cal);}
 Request.prototype.send		= function(block){this.request.send(block);}
 Request.prototype.result	= function(){return this.request.getResultObject();}
 
@@ -70,10 +70,9 @@ function findCurrentPage() {
 function initParams() {
 	var cgi	= new CGI();	
 
-	TERM	= cgi.param(PARAM_TERM);
-	STYPE	= cgi.param(PARAM_STYPE);
-	FORM	= cgi.param(PARAM_FORM);
-
+	TERM		= cgi.param(PARAM_TERM);
+	STYPE		= cgi.param(PARAM_STYPE);
+	FORM		= cgi.param(PARAM_FORM);
 	LOCATION	= parseInt(cgi.param(PARAM_LOCATION));
 	ORIGLOC	= parseInt(cgi.param(PARAM_ORIGLOC));
 	DEPTH		= parseInt(cgi.param(PARAM_DEPTH));
@@ -86,6 +85,9 @@ function initParams() {
 	AUTHTIME	= parseInt(cgi.param(PARAM_AUTHTIME));
 	ADVTERM	= cgi.param(PARAM_ADVTERM);
 	ADVTYPE	= cgi.param(PARAM_ADVTYPE);
+	RTYPE		= cgi.param(PARAM_RTYPE);
+	SORT		= cgi.param(PARAM_SORT);
+	SORT_DIR	= cgi.param(PARAM_SORT_DIR);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -127,6 +129,9 @@ function getFontSize(){return FONTSIZE;};
 function getSkin(){return SKIN;};
 function getAdvTerm(){return ADVTERM;}
 function getAdvType(){return ADVTYPE;}
+function getRtype(){return RTYPE;}
+function getSort(){return SORT;}
+function getSortDir(){return SORT_DIR;}
 
 
 function findBasePath() {
@@ -190,6 +195,9 @@ function  buildOPACLink(args, slim, ssl) {
 	string += _appendParam(AUTHTIME,	PARAM_AUTHTIME, args, getAuthtime, string);
 	string += _appendParam(ADVTERM,	PARAM_ADVTERM, args, getAdvTerm, string);
 	string += _appendParam(ADVTYPE,	PARAM_ADVTYPE, args, getAdvType, string);
+	string += _appendParam(RTYPE,		PARAM_RTYPE, args, getRtype, string);
+	string += _appendParam(SORT,		PARAM_SORT, args, getSort, string);
+	string += _appendParam(SORT_DIR,	PARAM_SORT_DIR, args, getSortDir, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
@@ -220,6 +228,7 @@ function buildTitleLink(rec, link) {
 	args.page = RRESULT;
 	args[PARAM_OFFSET] = 0;
 	args[PARAM_MRID] = rec.doc_id();
+	args[PARAM_RTYPE] = RTYPE_MRID;
 	link.setAttribute("href", buildOPACLink(args));
 }
 

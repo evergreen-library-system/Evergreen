@@ -1,4 +1,4 @@
-<table class='data_grid' width='80%'>
+<table class='data_grid data_grid_center' width='80%'>
 	<thead>
 		<tr><td colspan='2'>&opac.advanced.wizard.title;</td></tr>
 	</thead>
@@ -30,6 +30,30 @@
 				<span>&common.format;: </span>
 				<!--#set var='FORM_SEL_ID' value='advanced.wizard.form_selector'-->
 				<!--#include virtual="../common/format_selector.xml"-->
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span>Sort results by </span>
+				<select id='advanced.wizard.sort_by' 
+					onchange='
+					if(this.selectedIndex == 0) 
+						$("advanced.wizard.sort_dir").disabled = true;
+					else $("advanced.wizard.sort_dir").disabled = false;'>
+					<option value=''>Relevance</option>
+					<option value='title'>Title</option>
+					<option value='author'>Author</option>
+					<!--
+					<option value='pubdate'>Publication Date</option>
+					-->
+				</select>
+			</td>
+			<td>
+				<span>Sort Direction </span>
+				<select id='advanced.wizard.sort_dir' disabled='disabled'>
+					<option value='asc'>Normal</option>
+					<option value='desc'>Reverse</option>
+				</select>
 			</td>
 		</tr>
 		<tr>
