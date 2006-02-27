@@ -1545,6 +1545,11 @@ sub postfilter_Z_search_class_fts {
 	my $class = $self->{cdbi};
 	my $search_table = $class->table;
 	my $metabib_record_descriptor = metabib::record_descriptor->table;
+	my $metabib_full_rec = metabib::full_rec->table;
+	my $asset_call_number_table = asset::call_number->table;
+	my $asset_copy_table = asset::copy->table;
+	my $cs_table = config::copy_status->table;
+	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
 
 	my ($index_col) = $class->columns('FTS');
@@ -1562,7 +1567,7 @@ sub postfilter_Z_search_class_fts {
 				* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
 				* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
 				* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
-			)/COUNT(m.source))
+			)/COUNT(f.id))
 	RANK
 
 	my $rank = $relevance;
@@ -1571,7 +1576,7 @@ sub postfilter_Z_search_class_fts {
 			( FIRST((
 				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
 				  FROM	$metabib_full_rec frp
-				  WHERE	frp.record = s.source
+				  WHERE	frp.record = f.source
 				  	AND frp.tag = '260'
 					AND frp.subfield = 'c'
 			)) )
@@ -1581,7 +1586,7 @@ sub postfilter_Z_search_class_fts {
 			( FIRST((
 				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
 				  FROM	$metabib_full_rec frt
-				  WHERE	frt.record = s.source
+				  WHERE	frt.record = f.source
 				  	AND frt.tag = '245'
 					AND frt.subfield = 'a'
 			)) )
@@ -1591,7 +1596,7 @@ sub postfilter_Z_search_class_fts {
 			( FIRST((
 				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
 				  FROM	$metabib_full_rec fra
-				  WHERE	fra.record = s.source
+				  WHERE	fra.record = f.source
 				  	AND fra.tag LIKE '1%'
 					AND fra.subfield = 'a'
 					ORDER BY fra.tag::text::int
