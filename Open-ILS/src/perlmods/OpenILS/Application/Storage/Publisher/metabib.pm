@@ -1573,33 +1573,34 @@ sub postfilter_Z_search_class_fts {
 	my $rank = $relevance;
 	if (lc($sort) eq 'pubdate') {
 		$rank = <<"		RANK";
-			( FIRST((
-				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+			(
+				SELECT	FIRST(COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT)
 				  FROM	$metabib_full_rec frp
 				  WHERE	frp.record = f.source
 				  	AND frp.tag = '260'
 					AND frp.subfield = 'c'
-			)) )
+			)
 		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
-			( FIRST((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+			(
+				SELECT	FIRST(COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz'))
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = f.source
 				  	AND frt.tag = '245'
 					AND frt.subfield = 'a'
-			)) )
+			)
 		RANK
 	} elsif (lc($sort) eq 'author') {
 		$rank = <<"		RANK";
-			( FIRST((
+			( FIRST ((
 				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
 				  FROM	$metabib_full_rec fra
 				  WHERE	fra.record = f.source
 				  	AND fra.tag LIKE '1%'
 					AND fra.subfield = 'a'
-					ORDER BY fra.tag::text::int
+				  ORDER BY fra.tag::text::int
+				  LIMIT 1
 			)) )
 		RANK
 	} else {
