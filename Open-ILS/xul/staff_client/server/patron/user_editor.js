@@ -659,9 +659,9 @@ function uEditAddBasicPatronInfo(patron) {
 
 function uEditAddPhones(patron) {
 
-
 	/* verifies the phone numbers are formatted correctly */
 	var verify = function(n1, n2, n3) {
+		if(!(a || p||s) ) return null;
 		var a = n1.value;
 		var p = n2.value;
 		var s = n3.value;
@@ -669,26 +669,20 @@ function uEditAddPhones(patron) {
 		return a + '-' + p + '-' + s;
 	}
 
-
 	var er = 'ue_bad_phone'
 
-	uEditSetVal( patron, "day_phone", 
-		verify($('ue_day_phone_area'), 
-		$('ue_day_phone_prefix'), 
-		$('ue_day_phone_suffix')), 'phone', er );
+	var r1 = verify($('ue_day_phone_area'), $('ue_day_phone_prefix'),$('ue_day_phone_suffix'));
+	var r2 = verify($('ue_night_phone_area'), $('ue_night_phone_prefix'),$('ue_night_phone_suffix'));
+	var r3 = verify($('ue_other_phone_area'), $('ue_other_phone_prefix'),$('ue_other_phone_suffix'));
 
-	uEditSetVal( patron, "evening_phone", 
-		verify($('ue_night_phone_area'), 
-		$('ue_night_phone_prefix'), 
-		$('ue_night_phone_suffix')), 'phone', er );
+	if(r1 != null) 
+		uEditSetVal( patron, "day_phone", r1, 'phone', er);
 
-	if( $('ue_other_phone_prefix').value ) {
-		uEditSetVal( patron, "other_phone", 
-			verify($('ue_other_phone_area'), 
-			$('ue_other_phone_prefix'), 
-			$('ue_other_phone_suffix')), 'phone', er );
-	}
+	if(r2 != null) 
+		uEditSetVal( patron, "evening_phone", r2, 'phone', er);
 
+	if(r3 != null) 
+		uEditSetVal( patron, "other_phone", r3, 'phone', er);
 }
 
 function uEditFleshCard(card) {
@@ -709,13 +703,16 @@ function uEditAddIdents(patron) {
 
 	uEditSetVal( patron, "ident_type", 
 		getSelectorVal($('ue_primary_ident_type')), 'isnum', err );
+	uEditSetVal( patron, "ident_value", $('ue_primary_ident'), null, err );
 
-
-	uEditSetVal( patron, "ident_value", 
-		$('ue_primary_ident'), null, err );
-
-	patron.ident_type2(getSelectorVal($('ue_secondary_ident_type')));
-	patron.ident_value2($('ue_secondary_ident').value);
+	var val = getSelectorVal($('ue_secondary_ident_type'));
+	if( val && val.match(/^\d+$/) ) {
+		patron.ident_type2(getSelectorVal($('ue_secondary_ident_type')));
+		patron.ident_value2($('ue_secondary_ident').value);
+	} else {
+		patron.ident_type2(null);
+		patron.ident_value2(null);
+	}
 }
 
 
