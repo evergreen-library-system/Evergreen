@@ -31,8 +31,11 @@ sub new {
 	my( $m, $f, $l ) = caller(0);
 	my( $mm, $ff, $ll ) = caller(1);
 
-	return { ilsevent => $e, textcode => $event, 
-		stacktrace => "$f:$l, $ff:$ll", %params };
+	return { 
+		ilsevent		=> $e, 
+		textcode		=> $event, 
+		stacktrace	=> "$f:$l, $ff:$ll", 
+		pid			=> $$, %params };
 }
 
 sub _load_events {
