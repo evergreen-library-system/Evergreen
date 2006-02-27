@@ -85,8 +85,10 @@ sub bucket_flesh {
 	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
 	if(!$bkt) {return undef};
 
-	my( $user, $e ) = $apputils->checkrequestor( $staff, $bkt->owner, 'VIEW_CONTAINER' );
-	return $e if $e;
+	if(!$bkt->pub) {
+		my( $user, $e ) = $apputils->checkrequestor( $staff, $bkt->owner, 'VIEW_CONTAINER' );
+		return $e if $e;
+	}
 
 	$bkt->items( $apputils->simplereq( $svc,
 		"$meth"."_item.search.bucket.atomic", $bucket ) );
