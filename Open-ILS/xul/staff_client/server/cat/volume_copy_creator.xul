@@ -49,6 +49,9 @@
 
 				g.session = g.cgi.param('session') || g.cgi.param('ses');
 				g.doc_id = g.cgi.param('doc_id');
+				g.copy_shortcut = g.cgi.param('copy_shortcut');
+				g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + g.cgi.param('ou_ids'));
+				if (g.copy_shortcut) g.copy_shortcut = JSON2js( g.copy_shortcut );
 
 				var ou_ids = [];
 				if (g.cgi.param('ou_ids')) 
@@ -136,10 +139,24 @@
 			}
 			util.widgets.apply_vertical_tab_on_enter_handler( tb, render_copy_count_entry);
 			tb.addEventListener( 'change', render_copy_count_entry, false);
-			if (g.copy_shortcut) {
-				tb.value = g.copy_shortcut[ou_id].length;
-				render_copy_count_entry(tb);
-			}
+			setTimeout(
+				function() {
+					try {
+					if (g.copy_shortcut) {
+						JSAN.use('util.functional');
+						tb.value = util.functional.map_object_to_list(
+							g.copy_shortcut[ou_id],
+							function(o,i) {
+								return g.copy_shortcut[ou_id][i];
+							}
+						).length
+						render_copy_count_entry({'target':tb});
+					}
+					} catch(E) {
+						alert(E);
+					}
+				}, 0
+			);
 		}
 
 		g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
@@ -199,10 +216,26 @@
 				tb1.addEventListener( 'change', handle_change_tb1, false);
 				tb2.addEventListener( 'change', handle_change_tb2, false);
 
-				if (g.copy_shortcut) {
-					var label = g.copy_shortcut[ou_id][i];
-					tb1.value = label; handle_change_tb1(tb1);
-				}
+				setTimeout(
+					function(idx,tb){
+						return function() {
+							try {
+							JSAN.use('util.functional');
+							if (g.copy_shortcut) {
+								var label = util.functional.map_object_to_list(
+									g.copy_shortcut[ou_id],
+									function(o,i) {
+										return i;
+									}
+								)[idx];
+								tb.value = label; handle_change_tb1({'target':tb});
+							}
+							} catch(E) {
+								alert(E);
+							}
+						}
+					}(i,tb1),0
+				);
 			}
 		}
 
@@ -259,9 +292,14 @@
 				for (var ou_id in volumes_hash) {
 					for (var cn in volumes_hash[ou_id]) {
 						var volume = new acn();
-						var acn_id = g.new_node_id--;
+						var acn_id;
+						if (!g.copy_shortcut) {
+							acn_id = g.new_node_id--;
+							volume.isnew('1');
+						} else {
+							acn_id = g.copy_shortcut[ou_id][cn];
+						}
 						volume.id( acn_id );
-						volume.isnew('1');
 						volume.record(g.doc_id);
 						volume.label(cn);
 						volume.owning_lib(ou_id);

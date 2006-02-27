@@ -322,8 +322,8 @@
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('object_type') == 'copy';
+				function (o) {
+					return o.getAttribute('object_type') == 'copy';
 				}
 			);
 
@@ -337,8 +337,8 @@
 						g.data.list.au[0].id(), 
 						util.functional.map_list(
 							list,
-							function (obj) {
-								return obj.getAttribute('ou_id');
+							function (o) {
+								return o.getAttribute('ou_id');
 							}
 						),
 						[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
@@ -350,8 +350,8 @@
 
 			list = util.functional.map_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('copy_id');
+				function (o) {
+					return o.getAttribute('copy_id');
 				}
 			);
 
@@ -384,8 +384,8 @@
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('object_type') == 'volume';
+				function (o) {
+					return o.getAttribute('object_type') == 'volume';
 				}
 			);
 			
@@ -399,8 +399,8 @@
 						g.data.list.au[0].id(), 
 						util.functional.map_list(
 							list,
-							function (obj) {
-								return obj.getAttribute('ou_id');
+							function (o) {
+								return o.getAttribute('ou_id');
 							}
 						),
 						[ 'UPDATE_VOLUME' ]
@@ -414,8 +414,8 @@
 
 			list = util.functional.map_list(
 				list,
-				function (obj) {
-					return [ obj.getAttribute('ou_id'), obj.getAttribute('volume_id'), obj.getAttribute('callnumber') ];
+				function (o) {
+					return [ o.getAttribute('ou_id'), o.getAttribute('volume_id'), o.getAttribute('callnumber') ];
 				}
 			);
 
@@ -440,16 +440,16 @@
 		
 			volumes = util.functional.filter_list(
 				volumes,
-				function (obj) {
-					return obj.ischanged() == '1';
+				function (o) {
+					return o.ischanged() == '1';
 				}
 			);
 
 			volumes = util.functional.map_list(
 				volumes,
-				function (obj) {
-					obj.record( find_this_id ); // staff client 2 didn't do this.  Does it matter?
-					return obj;
+				function (o) {
+					o.record( find_this_id ); // staff client 2 didn't do this.  Does it matter?
+					return o;
 				}
 			);
 
@@ -474,14 +474,14 @@
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('object_type') == 'org_unit';
+				function (o) {
+					return o.getAttribute('object_type') == 'org_unit';
 				}
 			);
 			list = util.functional.map_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('ou_id');
+				function (o) {
+					return o.getAttribute('ou_id');
 				}
 			)		
 			var edit = 0;
@@ -522,17 +522,17 @@
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('object_type') == 'volume';
+				function (o) {
+					return o.getAttribute('object_type') == 'volume';
 				}
 			);
 			var copy_shortcut = {};
 			list = util.functional.map_list(
 				list,
-				function (obj) {
-					var cn =  obj.network.simple_request(
+				function (o) {
+					var cn =  g.network.simple_request(
 						'FM_ACN_RETRIEVE',
-						obj.getAttribute('volume_id')
+						o.getAttribute('volume_id')
 					);
 					var ou_id = cn.owning_lib();
 					var label = cn.label();
@@ -582,14 +582,14 @@
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('object_type') == 'volume';
+				function (o) {
+					return o.getAttribute('object_type') == 'volume';
 				}
 			);
 			list = util.functional.map_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('volume_id');
+				function (o) {
+					return o.getAttribute('volume_id');
 				}
 			);
 
@@ -605,15 +605,15 @@
 			var list = util.widgets.get_list_from_tree_selection('browse_list_tree');
 			list = util.functional.filter_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('object_type') == 'copy';
+				function (o) {
+					return o.getAttribute('object_type') == 'copy';
 				}
 			);
 
 			list = util.functional.map_list(
 				list,
-				function (obj) {
-					return obj.getAttribute('copy_id');
+				function (o) {
+					return o.getAttribute('copy_id');
 				}
 			);
 			
