@@ -218,6 +218,7 @@ sub user_retrieve_fleshed_by_id {
 }
 
 
+# fleshes: card, cards, address, addresses, stat_cat_entries, standing_penalties
 sub flesh_user {
 	my $id = shift;
 	my $session = shift;
@@ -340,7 +341,7 @@ sub _update_patron {
 	my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
 	return (undef, $evt) if $evt;
 
-	$patron->clear_passwd if ($patron->passwd =~ /^\s+/);
+	$patron->clear_passwd unless $patron->passwd;
 
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
@@ -430,6 +431,7 @@ sub _add_address {
 
 sub _update_address {
 	my( $session, $address ) = @_;
+
 	$logger->info("Updating address ".$address->id." in the DB");
 
 	my $stat = $session->request(
@@ -481,6 +483,7 @@ sub _add_update_cards {
 sub _add_card {
 	my( $session, $card ) = @_;
 	$card->clear_id();
+
 	$logger->info("Adding new patron card ".$card->barcode);
 
 	my $id = $session->request(
@@ -510,6 +513,7 @@ sub _update_card {
 # returns event on error.  returns undef otherwise
 sub _delete_address {
 	my( $session, $address ) = @_;
+
 	$logger->info("Deleting address ".$address->id." from DB");
 
 	my $stat = $session->request(
