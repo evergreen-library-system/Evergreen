@@ -52,13 +52,9 @@ void osrfListFree( osrfList* list ) {
 	int retcode;
 
 	while (value != NULL) {
-		JLD(retcode, list->list, index);
-
-		if(list->freeItem) {
+		if(list->freeItem) 
 			list->freeItem( (void*) *value );
-			*value = (Word_t) NULL;
-		}
-
+		JLD(retcode, list->list, index);
 		JLP(value, list->list, index);
 	}               
 
