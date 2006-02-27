@@ -52,7 +52,6 @@ sub biblio_search_marc {
 	warn "Building biblio marc session\n";
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
-	use Data::Dumper;
 	warn "Sending biblio marc request. String $string\nSearch hash: " . Dumper($search_hash);
 	my $request = $session->request( 
 			"open-ils.storage.direct.metabib.full_rec.search_fts.index_vector.atomic", 
@@ -462,83 +461,7 @@ sub barcode_to_mods {
 
 
 
-=head comment
-__PACKAGE__->register_method(
-	method	=> "cat_biblio_search_class",
-	api_name	=> "open-ils.search.cat.biblio.class",
-);
-
-
-sub cat_biblio_search_class {
-
-	my( $self, $client, $org_id, $class, $sort, $string ) = @_;
-
-	throw OpenSRF::EX::InvalidArg 
-		("Not enough args to open-ils.search.cat.biblio.class")
-			unless( defined($org_id) and $class and $sort and $string );
-
-
-	my $search_hash;
-
-	my $method = $self->method_lookup("open-ils.search.biblio.marc");
-	if(!$method) {
-		throw OpenSRF::EX::PANIC 
-			("Can't lookup method 'open-ils.search.biblio.marc'");
-	}
-
-	my ($records) = $method->run( $cat_search_hash->{$class}, $string );
-
-	my @ids;
-	for my $i (@$records) { push @ids, $i->[0]; }
-
-	my $mods_list = _records_to_mods( @ids );
-	return undef unless (ref($mods_list) eq "ARRAY");
-
-	# ---------------------------------------------------------------
-	# append copy count information to the mods objects
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	my $request = $session->request(
-		"open-ils.storage.direct.biblio.record_copy_count.batch",  $org_id, @ids );
-
-	for my $id (@ids) {
-
-		warn "receiving copy counts for doc $id\n";
-
-		my $response = $request->recv();
-		next unless $response;
-
-		if( $response and UNIVERSAL::isa($response, "Error")) {
-			throw $response ($response->stringify);
-		}
-
-		my $count = $response->content;
-		my $mods_obj = undef;
-		for my $m (@$mods_list) {
-			$mods_obj = $m if ($m->doc_id() == $id)
-		}
-		if($mods_obj) {
-			$mods_obj->copy_count($count);
-		}
-
-		$client->respond( $mods_obj );
-
-	}	
-	$request->finish();
-
-	$session->finish();
-	$session->disconnect();
-	$session->kill_me();
-	# ---------------------------------------------------------------
-
-	return undef;
-}
-
-=cut
-
-
-
-
+=head
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class_count",
 	api_name	=> "open-ils.search.biblio.class.count",
@@ -604,6 +527,71 @@ sub biblio_search_class_count {
 	return $count;
 }
 
+=cut
+
+
+__PACKAGE__->register_method(
+	method		=> "record_search_class",
+	api_name		=> "open-ils.search.biblio.record.class.search",
+	signature	=> q/
+		Performs a class search for biblio records (not metarecords)
+		@param class The search class to use
+		@param args A hash of named parameters including:
+			term		: The search string,
+			org_unit : The org id to focus the search at
+			depth		: The org depth
+			limit		: The search limit
+			offset	: The search offset
+			format	: The MARC format
+			sort		: What field to sort the results on [ author | title | pubdate ]
+			sort_dir	: What direction do we sort? [ asc | desc ]
+		The only required argument is the term.
+		@return 
+	/);
+
+__PACKAGE__->register_method(
+	method		=> "record_search_class",
+	api_name		=> "open-ils.search.biblio.record.class.search.staff",
+	signature	=> q/@see open-ils.search.biblio.record.class.search/);
+__PACKAGE__->register_method(
+	method	=> "record_search_class",
+	api_name	=> "open-ils.search.biblio.metabib.class.search",
+	signature	=> q/@see open-ils.search.biblio.record.class.search/);
+__PACKAGE__->register_method(
+	method	=> "record_search_class",
+	api_name	=> "open-ils.search.biblio.metabib.class.search.staff",
+	signature	=> q/@see open-ils.search.biblio.record.class.search/);
+
+sub record_search_class {
+	my( $self, $client, $class, $args ) = @_;
+
+	my $type		= ($self->api_name =~ /metabib/) ? 1 : 0;
+	my $method	= "open-ils.storage.metabib.$class.post_filter.search_fts.metarecord.atomic";
+	$method		= "open-ils.storage.biblio.$class.search_fts.record.atomic" unless $type;
+
+	if(!$$args{'sort'}) {
+		delete $$args{'sort'}; 
+		delete $$args{'sort_dir'};
+	}
+	$$args{limit}	= 200 if (!$$args{limit} || $$args{limit} > 1000);
+	$$args{offset} ||= 0;
+
+	$logger->info("Class search with args: ".Dumper($args));
+
+	$method =~ s/\.atomic/.staff.atomic/o if $self->api_name =~ /staff/o;
+	my $result = $U->storagereq( $method, %$args );
+
+	if($result and $result->[0]) {
+		my $recs = [];
+		for my $r (@$result) { push(@$recs, $r) if ($r and $r->[0]); }
+		return { ids => $recs, 
+			count => ($type) ? $result->[0]->[3] : $result->[0]->[2] };
+	}
+	return { count => 0 };
+}
+
+
+=head comment 
 
 __PACKAGE__->register_method(
 	method	=> "biblio_search_class",
@@ -717,6 +705,7 @@ sub biblio_search_class {
 	return { ids => $recs, count => $count };
 
 }
+=cut
 
 
 
@@ -730,12 +719,10 @@ sub biblio_mrid_to_modsbatch_batch {
 	warn "Performing mrid_to_modsbatch_batch...";
 	my @mods;
 	my $method = $self->method_lookup("open-ils.search.biblio.metarecord.mods_slim.retrieve");
-	use Data::Dumper;
 	warn "Grabbing mods for " . Dumper($mrids) . "\n";
 
 	for my $id (@$mrids) {
 		next unless defined $id;
-		#push @mods, biblio_mrid_to_modsbatch($self, $client, $id);
 		my ($m) = $method->run($id);
 		push @mods, $m;
 	}
@@ -869,7 +856,6 @@ sub biblio_mrid_make_modsbatch {
 	}
 
 	my $u = OpenILS::Utils::ModsParser->new();
-	use Data::Dumper;
 	$u->start_mods_batch( $record->marc );
 	my $main_doc_id = $record->id();
 
@@ -945,7 +931,6 @@ sub biblio_mrid_to_record_ids {
 	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( 
 			"open-ils.storage", $method, $mrid, $format );
 
-	use Data::Dumper;
 	warn Dumper $mrmaps;
 
 	my $size = @$mrmaps;	
