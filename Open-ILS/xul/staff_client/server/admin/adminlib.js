@@ -8,6 +8,8 @@ var XML_TEXT_NODE = 3;
 
 var FETCH_ORG_UNIT = "open-ils.actor:open-ils.actor.org_unit.retrieve";
 
+function debug(str) { try { dump(str + '\n'); } catch(e){} }
+
 function fetchUser(session) {
 	if(session == null ) {
 		cgi = new CGI();
@@ -25,6 +27,10 @@ function fetchUser(session) {
 
 function fetchFleshedUser(id) {
 	if(id == null) return null;
+	var req = new Request(
+		'open-ils.actor:open-ils.actor.user.fleshed.retrieve', SESSION, id );
+	req.send(true);
+	return req.result();
 }
 
 /**

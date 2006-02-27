@@ -19,7 +19,8 @@ var deletedStatCats			= {};
 var cachedAddresses			= {};
 var deletedAddresses			= {};
 
-var myPerms		= [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
+/* if they don't have these perms, they shouldn't be here */
+//var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
 
 var pages		= [ 
 	'uedit_userid', 
@@ -44,7 +45,7 @@ var pageFocus	= [
 
 var regexes		= {};
 regexes.phone	= /\d{3}-\d{3}-\d{4}/;
-regexes.email	= /\w+\@\w+\.\w+/;
+regexes.email	= /.+\@.+\..+/;
 regexes.date	= /^\d{4}-\d{2}-\d{2}/;
 regexes.isnum	= /^\d+$/;
 
@@ -64,7 +65,7 @@ function uEditInit() {
 		function() { 
 
 			/* these can be asynch */
-			fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
+			/*fetchHighestPermOrgs( SESSION, USER.id(), myPerms );*/
 			uEditFetchSurveys();
 
 			/* these have to be synchronous */
@@ -196,7 +197,7 @@ function uEditSaveUser() {
 
 function uEditCollectData() {
 
-	var card		= null;
+	var card	= null;
 
 	if(patron == null) { 
 		patron = new au(); 
@@ -694,6 +695,7 @@ function uEditFleshCard(card) {
 
 	card.id(-1);
 	card.active(1);
+	card.isnew(1);
 	return "";
 }
 
