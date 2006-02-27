@@ -648,12 +648,13 @@ jsonObject* jsonObjectFindPath( const jsonObject* obj, char* format, ...) {
 	char* buf = VA_BUF;
 
 	/* tmp storage for strtok_r */
-	char tokbuf[len];		
-	bzero(tokbuf, len);
+	//char tokbuf[len];		
+	//bzero(tokbuf, len);
 
 	char* token = NULL;
 	char* t = buf;
-	char* tt = tokbuf;
+	//char* tt = tokbuf;
+	char* tt; /* strtok storage */
 
 	/* copy the path before strtok_r destroys it */
 	char* pathcopy = strdup(buf);

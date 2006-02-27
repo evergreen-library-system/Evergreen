@@ -33,18 +33,18 @@ GNU General Public License for more details.
 
 /* turns a va_list into a string */
 #define VA_LIST_TO_STRING(x) \
-	unsigned long len = 0;\
+	unsigned long __len = 0;\
 	va_list args; \
 	va_list a_copy;\
 	va_copy(a_copy, args); \
 	va_start(args, x); \
-	len = vsnprintf(NULL, 0, x, args); \
+	__len = vsnprintf(NULL, 0, x, args); \
 	va_end(args); \
-	len += 2; \
-	char _b[len]; \
-	bzero(_b, len); \
+	__len += 2; \
+	char _b[__len]; \
+	bzero(_b, __len); \
 	va_start(a_copy, x); \
-	vsnprintf(_b, len - 1, x, a_copy); \
+	vsnprintf(_b, __len - 1, x, a_copy); \
 	va_end(a_copy); \
 	char* VA_BUF = _b; \
 

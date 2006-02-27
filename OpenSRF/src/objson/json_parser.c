@@ -160,7 +160,7 @@ int json_parse_json_null(char* string, unsigned long* index, jsonObject* obj) {
 
 	if(*index >= (current_strlen - 3)) {
 		return json_handle_error(string, index, 
-			"_parse_json_string(): invalid null" );
+			"_parse_json_null(): invalid null" );
 	}
 
 	if(!strncasecmp(string + (*index), "null", 4)) {
@@ -169,7 +169,7 @@ int json_parse_json_null(char* string, unsigned long* index, jsonObject* obj) {
 		return 0;
 	} else {
 		return json_handle_error(string, index,
-			"_parse_json_string(): invalid null" );
+			"_parse_json_null(): invalid null" );
 	}
 }
 
