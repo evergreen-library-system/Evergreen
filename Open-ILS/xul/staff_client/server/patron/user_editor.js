@@ -637,19 +637,23 @@ function uEditAddBasicPatronInfo(patron) {
 	
 	uEditSetVal(patron, "usrname", $('ue_username'), null, 'ue_bad_username' );
 	uEditSetVal(patron, "first_given_name", $('ue_firstname'), null, 'ue_bad_firstname' );
-	uEditSetVal(patron, "second_given_name", $('ue_middlename'), null, 'ue_bad_middlename' ); 
+	//uEditSetVal(patron, "second_given_name", $('ue_middlename'), null, 'ue_bad_middlename' ); 
 	uEditSetVal(patron, "family_name", $('ue_lastname'), null, 'ue_bad_lastname' ); 
 	uEditSetVal(patron, "dob", $('ue_dob'), 'date', 'ue_bad_dob' );
 
+	patron.second_given_name($('ue_middlename').value);
 	patron.suffix($('ue_suffix').value); /* suffis isn't required */
 
 
 	/* make sure emails match */
+	/*
 	var email	= $('ue_email1').value;
 	var email2	= $('ue_email2').value;
 	if( email != email2 || uEditSetVal(patron, "email", email, 'email' ))
 		ERRORS += uEditFetchError('ue_bad_email');
+		*/
 
+	patron.email($('ue_email1').value);
 	patron.home_ou(getSelectorVal($('ue_org_selector')));
 }
 
@@ -706,15 +710,12 @@ function uEditAddIdents(patron) {
 	uEditSetVal( patron, "ident_type", 
 		getSelectorVal($('ue_primary_ident_type')), 'isnum', err );
 
-	uEditSetVal( patron, "ident_type2", 
-		getSelectorVal($('ue_secondary_ident_type')), 'isnum', err );
 
 	uEditSetVal( patron, "ident_value", 
 		$('ue_primary_ident'), null, err );
 
-	uEditSetVal( patron, "ident_value2", 
-		$('ue_secondary_ident'), null, err );
-
+	patron.ident_type2(getSelectorVal($('ue_secondary_ident_type')));
+	patron.ident_value2($('ue_secondary_ident').value);
 }
 
 
@@ -899,10 +900,10 @@ function uEditFleshSummaryTable(table) {
 	var homeorg = "";
 	var profile	= "";
 
-	if( patron.ident_type() != null) 
-		identt1 = identTypes[patron.ident_type()].name();
-	if( patron.ident_type2() != null ) 
-		identt2 = identTypes[patron.ident_type2()].name();
+	if( identt1 = identTypes[patron.ident_type()]) 
+		identt1 = identt1.name();
+	if( identt2 = identTypes[patron.ident_type2()] ) 
+		identt2 = identt2.name();
 	if( patron.home_ou() != null )
 		homeorg = findOrgUnit(patron.home_ou()).name();
 	if( patron.profile() != null )
