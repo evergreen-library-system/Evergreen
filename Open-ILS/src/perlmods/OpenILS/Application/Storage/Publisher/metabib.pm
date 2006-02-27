@@ -1563,7 +1563,7 @@ sub postfilter_Z_search_class_fts {
 	my $relevance = join(' + ', @fts_ranks);
 
 	$relevance = <<"	RANK";
-			(SUM(	$relevance
+			(SUM(	($relevance)
 				* CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END -- phrase order
 				* CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END -- first word match
 				* CASE WHEN f.value ~* ? THEN 2 ELSE 1 END -- only word match
@@ -1703,6 +1703,12 @@ sub postfilter_Z_search_class_fts {
 			'%'.lc($SQLstring).'%',			# phrase order match
 			lc($first_word),			# first word match
 			'^\\s*'.lc($REstring).'\\s*/?\s*$',	# full exact match
+			( !$sort ?
+				( '%'.lc($SQLstring).'%',			# phrase order match
+				  lc($first_word),				# first word match
+				  '^\\s*'.lc($REstring).'\\s*/?\s*$' ) :	# full exact match
+				()
+			),
 			@types, @forms
 		);
 	
