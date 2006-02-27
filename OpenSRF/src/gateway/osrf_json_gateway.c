@@ -2,6 +2,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_system.h"
 #include "objson/object.h"
+#include "objson/json2xml.h"
 
 #define MODULE_NAME "osrf_json_gateway_module"
 #define GATEWAY_CONFIG "OSRFGatewayConfig"
@@ -72,18 +73,32 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 	char* service				= NULL;	/* service to connect to */
 	char* method				= NULL;	/* method to perform */
-	int api_level				= 1;		/* request api level */
-
-	ap_set_content_type(r, "text/plain");
+	char* format				= NULL;	/* method to perform */
+	char* a_l				= NULL;	/* request api level */
+	int   isXML				= 0;
+	int   api_level				= 1;
 
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
 
 	string_array* mparams	= NULL;
 	string_array* params		= apacheParseParms(r); /* free me */
-	service	= apacheGetFirstParamValue( params, "service" );
-	method	= apacheGetFirstParamValue( params, "method" ); 
-	mparams	= apacheGetParamValues( params, "param" ); /* free me */
+	service		= apacheGetFirstParamValue( params, "service" );
+	method		= apacheGetFirstParamValue( params, "method" ); 
+	format		= apacheGetFirstParamValue( params, "format" ); 
+	a_l		= apacheGetFirstParamValue( params, "api_level" ); 
+	mparams		= apacheGetParamValues( params, "param" ); /* free me */
+
+	if (a_l)
+		api_level = atoi(a_l);
+
+	if (format && !strcasecmp(format, "xml" )) {
+		isXML = 1;
+		ap_set_content_type(r, "application/xml");
+	} else {
+		ap_set_content_type(r, "text/plain");
+	}
+
 
 	if( service && method ) {
 
@@ -95,11 +110,15 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		int statuscode = 200;
 
 		/* kick off the object */
-		ap_rputs("{\"payload\":[", r);
+		if (isXML)
+			ap_rputs("<response xmlns=\"http://opensrf.org/-/namespaces/gateway/v1\"><payload>", r);
+		else
+			ap_rputs("{\"payload\":[", r);
 
 		int morethan1		= 0;
 		char* statusname	= NULL;
 		char* statustext	= NULL;
+		char* output		= NULL;
 
 		while((omsg = osrfAppSessionRequestRecv( session, req_id, 60 ))) {
 	
@@ -108,10 +127,14 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 			if( ( res = osrfMessageGetResult(omsg)) ) {
 
-				char* json = jsonObjectToJSON( res );
-				if( morethan1 ) ap_rputs(",", r); /* comma between JSON array items */
-				ap_rputs(json, r);
-				free(json);
+				if (isXML) {
+					output = jsonObjectToXML( res );
+				} else {
+					output = jsonObjectToJSON( res );
+					if( morethan1 ) ap_rputs(",", r); /* comma between JSON array items */
+				}
+				ap_rputs(output, r);
+				free(output);
 				morethan1 = 1;
 		
 			} else {
@@ -127,30 +150,47 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 			if(statusname) break;
 		}
 
-		ap_rputs("]",r); /* finish off the payload array */
+		if (isXML)
+			ap_rputs("</payload>", r);
+		else
+			ap_rputs("]",r); /* finish off the payload array */
 
 		if(statusname) {
 
 			/* add a debug field if the request died */
 			ap_log_rerror( APLOG_MARK, APLOG_INFO, 0, r, 
 					"OpenSRF JSON Request returned error: %s -> %s", statusname, statustext );
-			int l = strlen(statusname) + strlen(statustext) + 24;
+			int l = strlen(statusname) + strlen(statustext) + 32;
 			char buf[l];
 			bzero(buf,l);
-			snprintf( buf, l, ",\"debug\":\"%s : %s\"", statusname, statustext );
+
+			if (isXML)
+				snprintf( buf, l, "<debug>\"%s : %s\"</debug>", statusname, statustext );
+			else
+				snprintf( buf, l, ",\"debug\":\"%s : %s\"", statusname, statustext );
+
 			ap_rputs(buf, r);
 
 			free(statusname);
 			free(statustext);
 		}
 
-		/* insert the statu code */
-		char buf[24];
-		bzero(buf,24);
-		snprintf(buf, 24, ",\"status\":%d", statuscode );
+		/* insert the status code */
+		char buf[32];
+		bzero(buf,32);
+
+		if (isXML)
+			snprintf(buf, 32, "<status>%d</status>", statuscode );
+		else
+			snprintf(buf, 32, ",\"status\":%d", statuscode );
+
 		ap_rputs( buf, r );
 
-		ap_rputs( "}", r ); /* finish off the object */
+		if (isXML)
+			ap_rputs("</response>", r);
+		else
+			ap_rputs( "}", r ); /* finish off the object */
+
 		osrf_app_session_destroy(session);
 	}
 
