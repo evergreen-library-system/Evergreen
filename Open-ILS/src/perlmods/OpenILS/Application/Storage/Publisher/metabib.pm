@@ -1494,7 +1494,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $max = 0;
 	for (@$recs) {
-		$max = $$_[3] if ($$_[3] > $max);
+		$max = $$_[1] if ($$_[1] > $max);
 	}
 
 	my $count = scalar(@$recs);
