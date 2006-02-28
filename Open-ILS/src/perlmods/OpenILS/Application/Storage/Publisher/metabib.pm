@@ -1481,11 +1481,16 @@ sub postfilter_search_multi_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
+	my $max = 0;
+	for (@$recs) {
+		$max = $$_[2] if ($$_[2] > $max);
+	}
+
 	my $count = scalar(@$recs);
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
 		next unless ($$rec[0]);
 		my ($mrid,$rank,$skip) = @$rec;
-		$client->respond( [$mrid, sprintf('%0.3f',$rank), $skip, $count] );
+		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $skip, $count] );
 	}
 	return undef;
 }
@@ -1714,11 +1719,16 @@ sub postfilter_Z_search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
+	my $max = 0;
+	for (@$recs) {
+		$max = $$_[2] if ($$_[2] > $max);
+	}
+
 	my $count = scalar(@$recs);
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
 		next unless ($rec);
 		my ($mrid,$junk,$rank) = @$rec;
-		$client->respond( [$mrid, sprintf('%0.3f',$rank), $count] );
+		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $count] );
 	}
 	return undef;
 }
