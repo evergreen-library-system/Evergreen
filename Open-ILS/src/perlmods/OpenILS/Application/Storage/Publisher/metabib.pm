@@ -1026,23 +1026,23 @@ sub postfilter_search_class_fts {
 	my $rank = $relevance;
 	if (lc($sort) eq 'pubdate') {
 		$rank = <<"		RANK";
-			( FIRST((
-				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+			(
+				SELECT	FIRST(COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT)
 				  FROM	$metabib_full_rec frp
 				  WHERE	frp.record = mr.master_record
 				  	AND frp.tag = '260'
 					AND frp.subfield = 'c'
-			)) )
+			)
 		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
-			( FIRST((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+			(
+				SELECT	FIRST(COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz'))
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = mr.master_record
 				  	AND frt.tag = '245'
 					AND frt.subfield = 'a'
-			)) )
+			)
 		RANK
 	} elsif (lc($sort) eq 'author') {
 		$rank = <<"		RANK";
@@ -1053,6 +1053,7 @@ sub postfilter_search_class_fts {
 				  	AND fra.tag LIKE '1%'
 					AND fra.subfield = 'a'
 					ORDER BY fra.tag::text::int
+				  LIMIT 1
 			)) )
 		RANK
 	} else {
@@ -1348,18 +1349,18 @@ sub postfilter_search_multi_class_fts {
 	my $rank = $relevance;
 	if (lc($sort) eq 'pubdate') {
 		$rank = <<"		RANK";
-			( FIRST((
-				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+			(
+				SELECT	FIRST(COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT)
 				  FROM	$metabib_full_rec frp
 				  WHERE	frp.record = mr.master_record
 				  	AND frp.tag = '260'
 					AND frp.subfield = 'c'
-			)) )
+			)
 		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
-			( FIRST((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+			(
+				SELECT	FIRST(COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz'))
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = mr.master_record
 				  	AND frt.tag = '245'
@@ -1375,6 +1376,7 @@ sub postfilter_search_multi_class_fts {
 				  	AND fra.tag LIKE '1%'
 					AND fra.subfield = 'a'
 					ORDER BY fra.tag::text::int
+				  LIMIT 1
 			)) )
 		RANK
 	}
