@@ -1207,10 +1207,15 @@ sub postfilter_search_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
+	my $max = 0;
+	for (@$recs) {
+		$max = $$_[3] if ($$_[3] > $max);
+	}
+
 	my $count = scalar(@$recs);
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
 		my ($mrid,$rank,$skip) = @$rec;
-		$client->respond( [$mrid, sprintf('%0.3f',$rank), $skip, $count] );
+		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $skip, $count] );
 	}
 	return undef;
 }
@@ -1489,7 +1494,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $max = 0;
 	for (@$recs) {
-		$max = $$_[2] if ($$_[2] > $max);
+		$max = $$_[3] if ($$_[3] > $max);
 	}
 
 	my $count = scalar(@$recs);
