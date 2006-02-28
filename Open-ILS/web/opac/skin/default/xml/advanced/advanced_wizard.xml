@@ -37,10 +37,11 @@
 				<span>Sort results by </span>
 				<select id='advanced.wizard.sort_by' 
 					onchange='
-					if(this.selectedIndex == 0) 
+					if(this.selectedIndex == 0) {
 						$("advanced.wizard.sort_dir").disabled = true;
-					else $("advanced.wizard.sort_dir").disabled = false;'>
-					<option value=''>Relevance</option>
+						$("advanced.wizard.sort_dir").selectedIndex = 0;
+					} else $("advanced.wizard.sort_dir").disabled = false;'>
+					<option value='rel'>Relevance</option>
 					<option value='title'>Title</option>
 					<option value='author'>Author</option>
 					<!--
