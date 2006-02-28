@@ -194,7 +194,10 @@ function resultPaginate() {
 	if( !((o + getDisplayCount()) >= getHitCount()) ) {
 
 		var args = {};
-		args[PARAM_OFFSET] = o + getDisplayCount();
+		args[PARAM_OFFSET]	= o + getDisplayCount();
+		args[PARAM_SORT]		= SORT;
+		args[PARAM_SORT_DIR] = SORT_DIR;
+
 		G.ui.result.next_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.next_link, config.css.result.nav_active);
 
@@ -206,6 +209,9 @@ function resultPaginate() {
 	if( o > 0 ) {
 
 		var args = {};
+		args[PARAM_SORT]		= SORT;
+		args[PARAM_SORT_DIR] = SORT_DIR;
+
 		args[PARAM_OFFSET] = o - getDisplayCount();
 		G.ui.result.prev_link.setAttribute( "href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.prev_link, config.css.result.nav_active);
@@ -234,8 +240,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);
-		rank = ( rank / getTopRank() ) * 100;
-		rank = parseInt(rank) + "%";
+		rank		= parseInt( rank * 100 );
 		var relspan = $n(r, "relevancy_span");
 		relspan.appendChild(text(rank));
 		unHideMe(relspan.parentNode);

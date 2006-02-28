@@ -31,6 +31,11 @@ function advInit() {
 	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
+
+	setSelector($('advanced.wizard.sort_by'), getSort());
+	setSelector($('advanced.wizard.sort_dir'), getSortDir());
+	if(getSort() && getSort() != SORT_TYPE_REL) 
+		$('advanced.wizard.sort_dir').disabled = false;
 }
 
 
@@ -51,7 +56,7 @@ function advWizardRun() {
 	arg[PARAM_DEPTH]		= depthSelGetDepth();
 	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
 	arg[PARAM_TERM]		= advBuildSearch( contains, nocontains, exact );
-	arg[PARAM_SORT]		= (sort.match(/relevance/i)) ? null : sort;
+	arg[PARAM_SORT]		= sort;
 	arg[PARAM_SORT_DIR]	= sortdir;
 
 	goTo(buildOPACLink(arg));

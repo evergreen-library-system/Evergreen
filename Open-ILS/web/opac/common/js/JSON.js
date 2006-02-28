@@ -23,7 +23,7 @@ function JSON2js (json) {
 		try {
 			eval( 'obj = ' + json );
 		} catch(E) {
-			debug("Error building JSON object with string " + E + "\nString:\n" + json );
+			alert("* Fix Me *\nError parsing JSON [" + E + "]\n\n" + json );
 			return null;
 		}
 	}
@@ -33,11 +33,9 @@ function JSON2js (json) {
 
 function object2Array(obj) {
 	if( obj == null ) return null;
-
 	var arr = new Array();
-	for( var i  = 0; i < obj.length; i++ ) {
+	for( var i  = 0; i < obj.length; i++ ) 
 		arr[i] = obj[i];
-	}
 	return arr;
 }
 

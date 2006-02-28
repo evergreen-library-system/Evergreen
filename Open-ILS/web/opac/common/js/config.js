@@ -12,7 +12,7 @@ var PARAM_HITCOUNT	= "hc";			/* hits per page */
 var PARAM_MRID			= "m";			/* metarecord id */
 var PARAM_RID			= "r";			/* record id */
 var PARAM_ORIGLOC		= "ol";			/* the original location */
-var PARAM_TOPRANK		= "tr";			/* this highest ranking rank */
+//var PARAM_TOPRANK		= "tr";			/* this highest ranking rank */
 var PARAM_AUTHTIME	= "at";			/* inactivity timeout in seconds */
 var PARAM_ADVTERM		= "adv";			/* advanced search term */
 var PARAM_ADVTYPE		= "adt";			/* the advanced search type */
@@ -32,7 +32,7 @@ var HITCOUNT;
 var RANKS; 
 var FONTSIZE;
 var ORIGLOC;
-var TOPRANK;
+//var TOPRANK;
 var AUTHTIME;
 var ADVTERM;
 var ADVTYPE;
@@ -81,6 +81,7 @@ var RTYPE_TITLE	= STYPE_TITLE;
 var RTYPE_SERIES	= STYPE_SERIES;
 var RTYPE_KEYWORD	= STYPE_KEYWORD;
 
+var SORT_TYPE_REL			= "rel";
 var SORT_TYPE_AUTHOR		= STYPE_AUTHOR; 
 var SORT_TYPE_TITLE		= STYPE_TITLE;
 var SORT_TYPE_PUBDATE	= "pubdate";

@@ -101,16 +101,21 @@ function mresultCollectIds(method) {
 
 function _mresultCollectIds() {
 	if( getOffset() == 0 || !mresultTryCachedSearch() ) {
-		var form = (getForm() == "all") ? null : getForm();
+
+		var form		= (!getForm() || getForm() == "all") ? null : getForm();
+		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
+		var sortdir = (sort) ? getSortDir() : null;
+
 		var req = new Request(FETCH_MRIDS_, getStype(), 
 			{	term		: getTerm(), 
-				sort		: getSort(), 
-				sort_dir	: getSortDir(),
+				sort		: sort,
+				sort_dir	: sortdir,
 				org_unit : getLocation(),
 				depth		: getDepth(),
 				limit		: mresultPreCache,
 				offset	: getOffset(),
-				format	: (getForm()=="all") ? null : getForm() } );
+				format	: form } );
+
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}

@@ -81,7 +81,6 @@ function initParams() {
 	HITCOUNT	= parseInt(cgi.param(PARAM_HITCOUNT));
 	MRID		= parseInt(cgi.param(PARAM_MRID));
 	RID		= parseInt(cgi.param(PARAM_RID));
-	TOPRANK  = parseFloat(cgi.param(PARAM_TOPRANK));
 	AUTHTIME	= parseInt(cgi.param(PARAM_AUTHTIME));
 	ADVTERM	= cgi.param(PARAM_ADVTERM);
 	ADVTYPE	= cgi.param(PARAM_ADVTYPE);
@@ -97,9 +96,8 @@ function initParams() {
 	if(isNaN(HITCOUNT))	HITCOUNT	= 0;
 	if(isNaN(MRID))		MRID		= 0;
 	if(isNaN(RID))			RID		= 0;
-	if(isNaN(ORIGLOC))	ORIGLOC	= 0;
-	if(isNaN(TOPRANK))	TOPRANK	= 1;
-	if(isNaN(AUTHTIME))	AUTHTIME	= 1;
+	if(isNaN(ORIGLOC))	ORIGLOC	= 1;
+	if(isNaN(AUTHTIME))	AUTHTIME	= 0;
 	if(ADVTERM==null)		ADVTERM	= "";
 }
 
@@ -122,7 +120,6 @@ function getHitCount(){return HITCOUNT;}
 function getMrid(){return MRID;};
 function getRid(){return RID;};
 function getOrigLocation(){return ORIGLOC;}
-function getTopRank(){return TOPRANK;}
 function getAuthtime() { return AUTHTIME; }
 function getSearchBarExtras(){return SBEXTRAS;}
 function getFontSize(){return FONTSIZE;};
@@ -162,6 +159,8 @@ function buildExtrasLink(name, ssl) {
 	return findBaseURL(ssl) + "../../../../extras/" + name;
 }
 
+function _debug(str) { try { dump(str + '\n'); } catch(e) {} }
+
 function  buildOPACLink(args, slim, ssl) {
 
 	if(!args) args = {};
@@ -176,28 +175,46 @@ function  buildOPACLink(args, slim, ssl) {
 	string += "?";
 
 	for( var x in args ) {
-		if(x == "page" || args[x] == null) continue;
-		string += "&" + x + "=" + encodeURIComponent(args[x]);
+		var v = args[x];
+		if(x == "page" || v == null || v == undefined ) continue;
+		if(x == PARAM_OFFSET && v == 0) continue;
+		if(x == PARAM_LOCATION && v == 1) continue;
+		if(x == PARAM_DEPTH && v == 0) continue;
+		if(x == PARAM_COUNT && v == 10) continue;
+		if(x == PARAM_FORM && v == 'all' ) continue;
+		string += "&" + x + "=" + encodeURIComponent(v);
 	}
 
-	string += _appendParam(ORIGLOC,	PARAM_ORIGLOC, args, getOrigLocation, string);
-	string += _appendParam(TERM,		PARAM_TERM, args, getTerm, string);
-	string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
-	string += _appendParam(LOCATION, PARAM_LOCATION, args, getLocation, string);
-	string += _appendParam(DEPTH,		PARAM_DEPTH, args, getDepth, string);
-	string += _appendParam(FORM,		PARAM_FORM, args, getForm, string);
-	string += _appendParam(OFFSET,	PARAM_OFFSET, args, getOffset, string);
-	string += _appendParam(COUNT,		PARAM_COUNT, args, getDisplayCount, string);
-	string += _appendParam(HITCOUNT, PARAM_HITCOUNT, args, getHitCount, string);
-	string += _appendParam(MRID,		PARAM_MRID, args, getMrid, string);
-	string += _appendParam(RID,		PARAM_RID, args, getRid, string);
-	string += _appendParam(TOPRANK,	PARAM_TOPRANK, args, getTopRank, string);
-	string += _appendParam(AUTHTIME,	PARAM_AUTHTIME, args, getAuthtime, string);
-	string += _appendParam(ADVTERM,	PARAM_ADVTERM, args, getAdvTerm, string);
-	string += _appendParam(ADVTYPE,	PARAM_ADVTYPE, args, getAdvType, string);
-	string += _appendParam(RTYPE,		PARAM_RTYPE, args, getRtype, string);
-	string += _appendParam(SORT,		PARAM_SORT, args, getSort, string);
-	string += _appendParam(SORT_DIR,	PARAM_SORT_DIR, args, getSortDir, string);
+	if(getOrigLocation() != 1) 
+		string += _appendParam(ORIGLOC,	PARAM_ORIGLOC, args, getOrigLocation, string);
+	if(getTerm()) 
+		string += _appendParam(TERM,		PARAM_TERM, args, getTerm, string);
+	if(getStype()) 
+		string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
+	if(getLocation() != 1) 
+		string += _appendParam(LOCATION, PARAM_LOCATION, args, getLocation, string);
+	if(getDepth() != 0) 
+		string += _appendParam(DEPTH,		PARAM_DEPTH, args, getDepth, string);
+	if(getForm() && (getForm() != 'all') ) 
+		string += _appendParam(FORM,		PARAM_FORM, args, getForm, string);
+	if(getOffset() != 0) 
+		string += _appendParam(OFFSET,	PARAM_OFFSET, args, getOffset, string);
+	if(getDisplayCount() != 10) 
+		string += _appendParam(COUNT,		PARAM_COUNT, args, getDisplayCount, string);
+	if(getHitCount()) 
+		string += _appendParam(HITCOUNT, PARAM_HITCOUNT, args, getHitCount, string);
+	if(getMrid())
+		string += _appendParam(MRID,		PARAM_MRID, args, getMrid, string);
+	if(getRid())
+		string += _appendParam(RID,		PARAM_RID, args, getRid, string);
+	if(getAuthtime())
+		string += _appendParam(AUTHTIME,	PARAM_AUTHTIME, args, getAuthtime, string);
+	if(getAdvTerm())
+		string += _appendParam(ADVTERM,	PARAM_ADVTERM, args, getAdvTerm, string);
+	if(getAdvType())
+		string += _appendParam(ADVTYPE,	PARAM_ADVTYPE, args, getAdvType, string);
+	if(getRtype())
+		string += _appendParam(RTYPE,		PARAM_RTYPE, args, getRtype, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }

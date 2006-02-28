@@ -51,6 +51,8 @@ function searchBarSubmit() {
 		if(getAdvTerm()){}
 	}
 
+	SORT = ""; /* we don't want this to propogate */
+
 	if(!text || text == "") return;
 	var d	= (newSearchDepth != null) ?  newSearchDepth : depthSelGetDepth();
 	if(isNaN(d)) d = 0;
