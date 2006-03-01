@@ -22,7 +22,6 @@ function myOPACInit() {
 
 function myopacReload() {
 	swapCanvas($('myopac_reloading'));
-	//alert($('myopac_reloading').className);
 	var a = {};
 	a[PARAM_LOCATION] = getNewSearchLocation();
 	a[PARAM_DEPTH] = getNewSearchDepth();
@@ -99,11 +98,6 @@ function myOPACChangePage( page ) {
 			myOPACShowBookbags();
 			break;
 	}
-
-	/*
-	alert('Classes:\n' + s.className + '\n' + c.className + 
-		'\n' + h.className + '\n' + f.className + '\n' + p.className);
-		*/
 }
 
 function myOPACShowChecked() {
