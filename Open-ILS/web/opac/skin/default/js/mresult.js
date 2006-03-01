@@ -27,33 +27,6 @@ function mresultDoSearch() {
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
-	/*
-	if(getOffset() == 0 || getHitCount() == null ) {
-		if( getAdvTerm() && !getTerm() ) {
-			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
-			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
-			if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
-			if(getAdvType() == ADVTYPE_ISSN ) mresultCollectAdvISSNIds();
-
-		} else {
-			mresultCollectIds(FETCH_MRIDS_FULL); 
-			ADVTERM = "";
-			ADVTYPE = "";
-		}
-
-	} else  {
-		if( getAdvTerm() && !getTerm() ) {
-			if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
-			if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvIds();
-
-		} else {
-			mresultCollectIds(FETCH_MRIDS);
-			ADVTERM = "";
-			ADVTYPE = "";
-		}
-	}
-	*/
-
 	if( getAdvTerm() && !getTerm() ) {
 		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
@@ -85,21 +58,8 @@ function mresultTryCachedSearch() {
 	return false;
 }
 
-
-/* performs the actual search */
-/*
-function mresultCollectIds(method) {
-	if(!mresultTryCachedSearch()) {
-		var form = (getForm() == "all") ? null : getForm();
-		var req = new Request(method, getStype(), getTerm(), 
-			getLocation(), getDepth(), mresultPreCache, getOffset(), form );
-		req.callback(mresultHandleMRIds);
-		req.send();
-	}
-}
-*/
-
 function _mresultCollectIds() {
+
 	if( getOffset() == 0 || !mresultTryCachedSearch() ) {
 
 		var form		= (!getForm() || getForm() == "all") ? null : getForm();
@@ -123,10 +83,23 @@ function _mresultCollectIds() {
 
 
 function mresultCollectAdvIds() {
-	if(!mresultTryCachedSearch()) {
-		var form = (getForm() == "all") ? null : getForm();
+
+	if(getOffset() == 0 || !mresultTryCachedSearch()) {
+
+		var form		= (getForm() == "all") ? null : getForm();
+		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
+		var sortdir = (sort) ? getSortDir() : null;
+
 		var req = new Request(FETCH_ADV_MRIDS, 
-			JSON2js(getAdvTerm()), getLocation(), form, mresultPreCache );
+			{	sort		: sort,
+				sort_dir	: sortdir,
+				org_unit : getLocation(),
+				depth		: getDepth(),
+				limit		: mresultPreCache,
+				offset	: getOffset(),
+				format	: form,
+				searches	: JSON2js(getAdvTerm()) } );
+
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
@@ -159,10 +132,8 @@ function mresultCollectAdvISSNIds() {
 }
 
 
-
 function mresultHandleMRIds(r) {
 	var res = r.getResultObject();
-
 	if(res.count != null) {
 		if( getOffset() == 0 ) HITCOUNT = res.count;
 		runEvt('result', 'hitCountReceived');

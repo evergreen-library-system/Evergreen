@@ -32,10 +32,12 @@ function advInit() {
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 
+	/*
 	setSelector($('advanced.wizard.sort_by'), getSort());
 	setSelector($('advanced.wizard.sort_dir'), getSortDir());
 	if(getSort() && getSort() != SORT_TYPE_REL) 
 		$('advanced.wizard.sort_dir').disabled = false;
+		*/
 }
 
 
@@ -86,6 +88,8 @@ function advRefinedRun() {
 	var subject = $('advanced.refined.subject_contains').value;
 	var series	= $('advanced.refined.series_contains').value;
 	var form = getSelectorVal($('advanced.refined.form_selector'));
+	var sort		= getSelectorVal($('advanced.refined.sort_by'));
+	var sortdir	= getSelectorVal($('advanced.refined.sort_dir'));
 
 	var blob = {};
 	title = advRefinedTerm('title', title);
@@ -108,6 +112,8 @@ function advRefinedRun() {
 	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
 	arg[PARAM_OFFSET]		= 0;
 	arg[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
+	arg[PARAM_SORT]		= sort;
+	arg[PARAM_SORT_DIR]	= sortdir;
 
 	goTo(buildOPACLink(arg));
 

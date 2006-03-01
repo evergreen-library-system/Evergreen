@@ -44,6 +44,7 @@
 					<option value='rel'>Relevance</option>
 					<option value='title'>Title</option>
 					<option value='author'>Author</option>
+					<option value='pubdate' disabled='disabled'>Publication Date</option>
 					<!--
 					<option value='pubdate'>Publication Date</option>
 					-->

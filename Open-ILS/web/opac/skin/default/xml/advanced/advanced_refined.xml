@@ -9,7 +9,7 @@
 				<!--#set var='OILS_ADV_CONT_ID' value="advanced.refined.title_type"-->
 				<!--#include virtual="advanced_contains.xml"-->
 			</td>
-			<td align='center'>
+			<td colspan='2' align='center'>
 				<input type='text' size='36' id='advanced.refined.title_contains'> </input>
 			</td>
 		</tr>
@@ -19,7 +19,7 @@
 				<!--#set var='OILS_ADV_CONT_ID' value="advanced.refined.author_type"-->
 				<!--#include virtual="advanced_contains.xml"-->
 			</td>
-			<td align='center'>
+			<td colspan='2' align='center'>
 				<input type='text' size='36' id='advanced.refined.author_contains'> </input>
 			</td>
 		</tr>
@@ -29,7 +29,7 @@
 				<!--#set var='OILS_ADV_CONT_ID' value="advanced.refined.subject_type"-->
 				<!--#include virtual="advanced_contains.xml"-->
 			</td>
-			<td align='center'>
+			<td colspan='2' align='center'>
 				<input type='text' size='36' id='advanced.refined.subject_contains'> </input>
 			</td>
 		</tr>
@@ -39,18 +39,47 @@
 				<!--#set var='OILS_ADV_CONT_ID' value="advanced.refined.series_type"-->
 				<!--#include virtual="advanced_contains.xml"-->
 			</td>
-			<td align='center'>
+			<td colspan='2' align='center'>
 				<input type='text' size='36' id='advanced.refined.series_contains'> </input>
 			</td>
 		</tr>
 		<tr>
 			<td><span>&common.format;: </span></td>
 			
-			<td> 
+			<td colspan='3'> 
 				<!--#set var='FORM_SEL_ID' value='advanced.refined.form_selector'-->
 				<!--#include virtual="../common/format_selector.xml"--> 
 			</td>
-			<td colspan='1' align='center'>
+		</tr>
+		<tr>
+			<td>
+				<span>Sort results by </span>
+			</td>
+			<td>
+				<select id='advanced.refined.sort_by' 
+					onchange='
+					if(this.selectedIndex == 0) {
+						$("advanced.refined.sort_dir").disabled = true;
+						$("advanced.refined.sort_dir").selectedIndex = 0;
+					} else $("advanced.refined.sort_dir").disabled = false;'>
+					<option value='rel'>Relevance</option>
+					<option value='title'>Title</option>
+					<option value='author'>Author</option>
+					<option value='pubdate' disabled='disabled'>Publication Date</option>
+				</select>
+			</td>
+			<td>
+				<span>Sort Direction </span>
+			</td>
+			<td>
+				<select id='advanced.refined.sort_dir' disabled='disabled'>
+					<option value='asc'>Normal</option>
+					<option value='desc'>Reverse</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='4' align='center'>
 				<input type='submit' onclick='advRefinedRun();' value='&common.submit;'> </input>
 			</td>
 		</tr>
