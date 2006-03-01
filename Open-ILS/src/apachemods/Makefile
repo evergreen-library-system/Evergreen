@@ -21,6 +21,7 @@ fieldmapper_lookup.c:
 # ------------------------------------------------------
 
 mod_xmlbuilder.so: mod_xmlbuilder.o apachetools.o 
+#mod_xmlbuilder.so: mod_xmlbuilder.o 
 	@echo $@
 	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 apachetools.o mod_xmlbuilder.o -o $@
 
@@ -64,6 +65,6 @@ mod_xmlbuilder-install:
 
 clean:
 	echo $@
-	/bin/rm -f *.o mod_xmlbuilder.so libfieldmapper.so mod_ils_rest_gateway.so
+	/bin/rm -f *.o *.so 
 	/bin/rm -f fieldmapper_lookup.c
 
