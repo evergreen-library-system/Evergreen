@@ -891,6 +891,15 @@ sub fetch_billable_xact {
 }
 
 
+sub fetch_fleshed_copy {
+	my( $self, $id ) = @_;
+	my( $copy, $evt );
+	$logger->info("Fetching fleshed copy $id");
+	$copy = $self->storagereq(
+		"open-ils.storage.fleshed.asset.copy.retrieve", $id );
+	$evt = OpenILS::Event->new('COPY_NOT_FOUND', id => $id) unless $copy;
+	return ($copy, $evt);
+}
 
 1;
 

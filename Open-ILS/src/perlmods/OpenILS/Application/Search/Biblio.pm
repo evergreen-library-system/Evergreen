@@ -9,8 +9,8 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 
-use OpenILS::Application::AppUtils;
-my $U = "OpenILS::Application::AppUtils";
+use OpenSRF::Utils::Logger qw/:logger/;
+
 
 use JSON;
 
@@ -20,54 +20,21 @@ use Digest::MD5 qw(md5_hex);
 
 use XML::LibXML;
 use XML::LibXSLT;
+
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
-use OpenSRF::Utils::Logger qw/:logger/;
 
+use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
-
-# Houses biblio search utilites 
-
-
-__PACKAGE__->register_method(
-	method	=> "test",
-	api_name	=> "open-ils.search.test");
-
-sub test { return "test"; }
+my $U = $apputils;
 
 
+# useful for MARC based searches
+my $cat_search_hash =  {
+	isbn	=> [ { tag => '020', subfield => 'a' }, ],
+	issn	=> [ { tag => '022', subfield => 'a' }, ],
+};
 
-=head comment
-__PACKAGE__->register_method(
-	method	=> "biblio_search_marc",
-	api_name	=> "open-ils.search.biblio.marc",
-	argc		=> 1, 
-	note		=> "Searches biblio information by marc tag",
-);
-
-sub biblio_search_marc {
-
-	my( $self, $client, $search_hash, $string ) = @_;
-
-	warn "Building biblio marc session\n";
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	warn "Sending biblio marc request. String $string\nSearch hash: " . Dumper($search_hash);
-	my $request = $session->request( 
-			"open-ils.storage.direct.metabib.full_rec.search_fts.index_vector.atomic", 
-			restrict => $search_hash, 
-			term		=> $string );
-	my $data = $request->gather(1);
-
-	warn Dumper $data;
-
-	$session->finish();
-	$session->disconnect();
-
-	return $data;
-
-}
-=cut
 
 
 
@@ -85,46 +52,18 @@ sub _records_to_mods {
 	my $request = $session->request(
 			"open-ils.storage.direct.biblio.record_entry.batch.retrieve",  @ids );
 
-	my $last_content = undef;
-
-	while( my $response = $request->recv() ) {
-
-		if( $last_content ) {
-			my $u = OpenILS::Utils::ModsParser->new();
-			$u->start_mods_batch( $last_content->marc );
-			my $mods = $u->finish_mods_batch();
-			$mods->doc_id($last_content->id());
-			$mods->tcn($last_content->tcn_value);
-			warn "Turning doc " . $mods->doc_id() . " into MODS\n";
-			$last_content = undef;
-			push @results, $mods;
-		}
-
-		next unless $response;
-
-		if($response->isa("OpenSRF::EX")) {
-			throw $response ($response->stringify);
-		}
-
-		$last_content = $response->content;
-
-	}
-
-	if( $last_content ) {
+	while( my $resp = $request->recv ) {
+		my $content = $resp->content;
 		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch( $last_content->marc );
+		$u->start_mods_batch( $content->marc );
 		my $mods = $u->finish_mods_batch();
-		$mods->doc_id($last_content->id());
-		$mods->tcn($last_content->tcn_value);
+		$mods->doc_id($content->id());
+		$mods->tcn($content->tcn_value);
 		push @results, $mods;
 	}
 
-	$request->finish();
-	$session->finish();
 	$session->disconnect();
-
 	return \@results;
-
 }
 
 __PACKAGE__->register_method(
@@ -220,38 +159,6 @@ sub record_id_to_copy_count {
 }
 
 
-# used for cat search classes
-my $cat_search_hash =  {
-
-	author => [ 
-		{ tag => "100", subfield => "a"} ,
-		{ tag => "700", subfield => "a"}, 
-	],
-
-	title => [ 
-		{ tag => "245", subfield => "a"},
-		{ tag => "242", subfield => "a"}, 
-		{ tag => "240", subfield => "a"},
-		{ tag => "210", subfield => "a"},
-	],
-
-	subject => [ 
-		{ tag => "650", subfield => "_" }, 
-	],
-
-	tcn	=> [
-		{ tag => "035", subfield => "_" },
-	],
-
-	isbn	=> [
-		{ tag => "020", subfield => "a" },
-	],
-
-	issn	=> [
-		{ tag => '022', subfield => 'a' },
-	],
-
-};
 
 
 __PACKAGE__->register_method(
@@ -280,76 +187,37 @@ sub biblio_search_tcn {
 
 	$session->disconnect();
 
-	warn "received ID's for tcn search @ids\n";
 	my $size = @ids;
-
 	return { count => $size, ids => \@ids };
-
 }
-
-
-# --------------------------------------------------------------------------------
-# ISBN
-
-
-
 
 
 # --------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
 	method	=> "biblio_barcode_to_copy",
-	api_name	=> "open-ils.search.asset.copy.find_by_barcode",
-);
-
-# turns a barcode into a copy object
+	api_name	=> "open-ils.search.asset.copy.find_by_barcode",);
 sub biblio_barcode_to_copy { 
 	my( $self, $client, $barcode ) = @_;
-
-	throw OpenSRF::EX::InvalidArg 
-		("search.biblio.barcode needs a barcode to search")
-			unless defined $barcode;
-
-	warn "copy search for barcode $barcode\n";
-	my $record = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.direct.asset.copy.search.barcode.atomic",
-			$barcode );
-
-	return undef unless($record);
-	return $record->[0];
-
+	my( $copy, $evt ) = $U->fetch_copy_by_barcode($barcode);
+	return $evt if $evt;
+	return $copy;
 }
 
 __PACKAGE__->register_method(
 	method	=> "biblio_id_to_copy",
-	api_name	=> "open-ils.search.asset.copy.batch.retrieve",
-);
-
-# turns a barcode into a copy object
+	api_name	=> "open-ils.search.asset.copy.batch.retrieve",);
 sub biblio_id_to_copy { 
 	my( $self, $client, $ids ) = @_;
-
-	throw OpenSRF::EX::InvalidArg 
-		("search.biblio.batch.retrieve needs a id to search")
-			unless defined $ids;
-
-	warn "copy search for ids @$ids\n";
-	my $record = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.direct.asset.copy.batch.retrieve.atomic",
-			@$ids );
-
-	return $record;
-
+	$logger->info("Fetching copies @$ids");
+	return $U->storagereq(
+		"open-ils.storage.direct.asset.copy.batch.retrieve.atomic", @$ids );
 }
 
 
 __PACKAGE__->register_method(
 	method	=> "copy_retrieve", 
-	api_name	=> "open-ils.search.asset.copy.retrieve",
-);
-
+	api_name	=> "open-ils.search.asset.copy.retrieve",);
 sub copy_retrieve {
 	my( $self, $client, $cid ) = @_;
 	my( $copy, $evt ) = $U->fetch_copy($cid);
@@ -360,39 +228,25 @@ sub copy_retrieve {
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve_batch",
-	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve",
-);
+	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve",);
 
 sub fleshed_copy_retrieve_batch { 
 	my( $self, $client, $ids ) = @_;
-
-	throw OpenSRF::EX::InvalidArg 
-		("search.biblio.batch.retrieve needs a id to search")
-			unless defined $ids;
-
-	warn "fleshed copy search for id @$ids\n";
-	my $copy = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.fleshed.asset.copy.batch.retrieve.atomic",
-			@$ids );
-
-	return $copy;
+	$logger->info("Fetching fleshed copies @$ids");
+	return $U->storagereq(
+		"open-ils.storage.fleshed.asset.copy.batch.retrieve.atomic", @$ids );
 }
+
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve",
-	api_name	=> "open-ils.search.asset.copy.fleshed.retrieve",
-);
+	api_name	=> "open-ils.search.asset.copy.fleshed.retrieve",);
 
 sub fleshed_copy_retrieve { 
 	my( $self, $client, $id ) = @_;
-
-	return undef unless defined $id;
-	warn "copy retrieve for id $id\n";
-	return OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.fleshed.asset.copy.retrieve",
-			$id );
+	my( $c, $e) = $U->fetch_fleshed_copy($id);
+	return $e if $e;
+	return $c;
 }
 
 
@@ -405,22 +259,12 @@ __PACKAGE__->register_method(
 sub biblio_barcode_to_title {
 	my( $self, $client, $barcode ) = @_;
 
-	if(!$barcode) {
-		throw OpenSRF::EX::ERROR 
-			("Not enough args to find_by_barcode");
-	}
-
 	my $title = $apputils->simple_scalar_request(
 		"open-ils.storage",
-		"open-ils.storage.biblio.record_entry.retrieve_by_barcode",
-		$barcode );
+		"open-ils.storage.biblio.record_entry.retrieve_by_barcode", $barcode );
 
-	if($title) {
-		return { ids => [ $title->id ], count => 1 };
-	} else {
-		return { count => 0 };
-	}
-
+	return { ids => [ $title->id ], count => 1 } if $title;
+	return { count => 0 };
 }
 
 
@@ -433,13 +277,7 @@ __PACKAGE__->register_method(
 sub biblio_copy_to_mods {
 	my( $self, $client, $copy ) = @_;
 
-	throw OpenSRF::EX::InvalidArgs 
-		("copy.mods.retrieve needs a copy") unless( $copy );
-
-	new Fieldmapper::asset::copy($copy);
-
-	my $volume = OpenILS::Application::AppUtils->simple_scalar_request(
-		"open-ils.storage",
+	my $volume = $U->storagereq( 
 		"open-ils.storage.direct.asset.call_number.retrieve",
 		$copy->call_number() );
 
@@ -452,83 +290,9 @@ sub biblio_copy_to_mods {
 }
 
 
-sub barcode_to_mods {
-
-}
-
-
-# --------------------------------------------------------------------------------
-
-
-
-=head
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class_count",
-	api_name	=> "open-ils.search.biblio.class.count",
-);
-
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class_count",
-	api_name	=> "open-ils.search.biblio.class.count.staff",
-);
-
-sub biblio_search_class_count {
-
-	my( $self, $client, $class, $string, $org_id, $org_type, $format ) = @_;
-
-	warn "org: $org_id : depth: $org_type\n";
-
-	$org_id	 	= "1" unless defined($org_id); # xxx
-	$org_type	= 0	unless defined($org_type);
-
-	warn "Searching biblio.class.id\n" . 
-		"string: $string "		. 
-		"org_id: $org_id\n"		.
-		"depth: $org_type\n"		.
-		"format: $format\n";
-
-	if( !defined($org_id) or !$class or !$string ) {
-		warn "not enbough args to metarecord search\n";
-		throw OpenSRF::EX::InvalidArg 
-			("Not enough args to open-ils.search.cat.biblio.class")
-	}
-
-	$class =~ s/\s+//g;
-
-	if( ($class ne "title") and ($class ne "author") and 
-		($class ne "subject") and ($class ne "keyword") 
-		and ($class ne "series"  )) {
-		warn "Invalid search class: $class\n";
-		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
-	}
-
-	# grab the mr id's from storage
-
-	my $method = "open-ils.storage.cachable.metabib.$class.search_fts.metarecord_count";
-	if($self->api_name =~ /staff/) { 
-		$method = "$method.staff"; 
-		$method =~ s/\.cachable//o;
-	}
-	warn "Performing count method $method\n";
-	warn "API name " . $self->api_name() . "\n";
-
-	my $session = OpenSRF::AppSession->create('open-ils.storage');
-
-	my $request = $session->request( $method, 
-			term					=> $string, 
-			org_unit				=> $org_id, 
-			cache_page_size	=> 1,
-			depth					=> $org_type,
-			format				=> $format );
-
-	my $count = $request->gather(1);
-	warn "Received count $count\n";
-
-	return $count;
-}
-
-=cut
-
+# ----------------------------------------------------------------------------
+# These are the main OPAC search methods
+# ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
 	method		=> "record_search_class",
@@ -591,123 +355,6 @@ sub record_search_class {
 }
 
 
-=head comment 
-
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class",
-);
-
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class.full",
-);
-
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class.full.staff",
-);
-
-__PACKAGE__->register_method(
-	method	=> "biblio_search_class",
-	api_name	=> "open-ils.search.biblio.class.staff",
-);
-
-sub biblio_search_class {
-
-	my( $self, $client, $class, $string, 
-			$org_id, $org_type, $limit, $offset, $format ) = @_;
-
-	warn "org: $org_id : depth: $org_type : limit: $limit :  offset: $offset\n";
-
-
-	$offset		= 0	unless (defined($offset) and $offset > 0);
-	$limit		= 100 unless (defined($limit) and $limit > 0);
-	$org_id	 	= "1" unless (defined($org_id)); # xxx
-	$org_type	= 0	unless (defined($org_type));
-
-	warn "Searching biblio.class.id\n" . 
-		"string: $string "		. 
-		"\noffset: $offset\n"	.
-		"limit: $limit\n"			.
-		"org_id: $org_id\n"		.
-		"depth: $org_type\n"		.
-		"format: $format\n";
-
-	warn "Search filtering string " . time() . "\n";
-	$string = OpenILS::Application::Search->filter_search($string);
-	if(!$string) { return undef; }
-
-	if( !defined($org_id) or !$class or !$string ) {
-		warn "not enbough args to metarecord search\n";
-		throw OpenSRF::EX::InvalidArg 
-			("Not enough args to open-ils.search.biblio.class")
-	}
-
-	$class =~ s/\s+//g;
-
-	if( ($class ne "title") and ($class ne "author") and 
-		($class ne "subject") and ($class ne "keyword") 
-		and ($class ne "series") ) {
-		warn "Invalid search class: $class\n";
-		throw OpenSRF::EX::InvalidArg ("Not a valid search class: $class")
-	}
-
-	#my $method = "open-ils.storage.cachable.metabib.$class.post_filter.search_fts.metarecord.atomic";
-	my $method = "open-ils.storage.metabib.$class.post_filter.search_fts.metarecord.atomic";
-
-	if($self->api_name =~ /staff/) { 
-		$method =~ s/atomic/staff\.atomic/og;
-		$method =~ s/\.cachable//o;
-	}
-
-	if($self->api_name =~ /full/) { 
-		$method =~ s/\.cachable//o; #XXX testing..
-	}
-
-	warn "Performing search method $method\n";
-	warn "MR search method is $method\n";
-
-	my $session = OpenSRF::AppSession->create('open-ils.storage');
-
-	warn "Search making request " . time() . "\n";
-	my $request = $session->request(	
-		$method,
-		term		=> $string, 
-		org_unit => $org_id, 
-		depth		=> $org_type, 
-		limit		=> $limit,
-		offset	=> $offset,
-		format	=> $format,
-		cache_page_size => 200,
-		);
-
-	my $records = $request->gather(1);
-	if(!$records) {return { ids => [] }};
-
-	#my @all_ids;
-
-	warn "Received " . scalar(@$records) . " id's from class search\n";
-
-#	for my $i (@$records) { if(defined($i)) { push @all_ids, $i; } }
-#	my @ids = @all_ids;
-#	@ids = grep { defined($_->[0]) } @ids;
-
-	$session->finish();
-	$session->disconnect();
-
-	my $count = undef;
-	if( $records->[0] && defined($records->[0]->[3])) { $count = $records->[0]->[3];}
-	my $recs = [];
-	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
-
-	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
-	return { ids => $recs, count => $count };
-
-}
-=cut
-
-
 
 
 __PACKAGE__->register_method(
@@ -719,8 +366,6 @@ sub biblio_mrid_to_modsbatch_batch {
 	warn "Performing mrid_to_modsbatch_batch...";
 	my @mods;
 	my $method = $self->method_lookup("open-ils.search.biblio.metarecord.mods_slim.retrieve");
-	warn "Grabbing mods for " . Dumper($mrids) . "\n";
-
 	for my $id (@$mrids) {
 		next unless defined $id;
 		my ($m) = $method->run($id);
@@ -1050,6 +695,7 @@ sub copy_count_summary {
 }
 
 
+=head
 __PACKAGE__->register_method(
 	method		=> "multiclass_search",
 	api_name	=> "open-ils.search.biblio.multiclass",
@@ -1093,9 +739,59 @@ sub multiclass_search {
 
 	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
 	return { ids => $recs, count => $count };
-
-
 }
+=cut
+
+
+
+__PACKAGE__->register_method(
+	method		=> "multiclass_search",
+	api_name		=> "open-ils.search.biblio.multiclass",
+	signature	=> q/
+		Performs a multiclass search
+		@param args A names hash of arguments:
+			org_unit : The org to focus the search on
+			depth		: The search depth
+			format	: Item format
+			limit		: Return limit
+			offset	: Search offset
+			searches : A named hash of searches which has the following format:
+				{ 
+					"title" : { "term" : "water" }, 
+					"author" : { "term" : "smith" }, 
+					... 
+				}
+		@return { ids : <array of ids>, count : hitcount }
+	/
+);
+
+__PACKAGE__->register_method(
+	method		=> "multiclass_search",
+	api_name		=> "open-ils.search.biblio.multiclass.staff",
+	notes 		=> q/@see open-ils.search.biblio.multiclass/ );
+
+sub multiclass_search {
+	my( $self, $client, $args ) = @_;
+
+	$logger->debug("Performing multiclass search with args:\n" . Dumper($args));
+	my $meth = 'open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord.atomic';
+	if($self->api_name =~ /staff/) { $meth =~ s/metarecord\.atomic/metarecord.staff.atomic/; }
+
+	my $records = $apputils->simplereq( 'open-ils.storage', $meth, %$args );
+
+	my $count = 0;
+	my $recs = [];
+
+	if( ref($records) and $records->[0] and 
+		defined($records->[0]->[3])) { $count = $records->[0]->[3];}
+
+	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
+
+	return { ids => $recs, count => $count };
+}
+
+
+
 
 __PACKAGE__->register_method(
 	method		=> "marc_search",
@@ -1113,7 +809,6 @@ __PACKAGE__->register_method(
 				"term":"bloom",
 				"restrict":[{"tag":"100","subfield":"a"}] 
 			} 
-
 		]
 	NOTES
 
