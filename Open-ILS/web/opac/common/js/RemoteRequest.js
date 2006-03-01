@@ -25,8 +25,14 @@ function cleanRemoteRequests() {
 
 function destroyRequest(r) {
 	if(r == null) return;
-	r.xmlhttp.onreadystatechange = function(){};
-	r.xmlhttp				= null;
+
+	if( r.xmlhttp ) {
+		/* this has to come before abort() or IE will puke on you */
+		r.xmlhttp.onreadystatechange = function(){};
+		r.abort();
+		r.xmlhttp				= null;
+	}
+
 	r.callback				= null;
 	r.userdata				= null;
 	_allrequests[r.id] 	= null;
@@ -60,6 +66,10 @@ function RemoteRequest( service, method ) {
 	if(!this.params) { this.params = ""; }
 	this.param_string = "service=" + service + "&method=" + method + this.params;
 	if( this.buildXMLRequest() == null ) alert("Browser is not supported!");
+}
+
+RemoteRequest.prototype.abort = function() {
+	if( this.xmlhttp ) this.xmlhttp.abort();
 }
 
 /* constructs our XMLHTTPRequest object */

@@ -176,7 +176,7 @@ function  buildOPACLink(args, slim, ssl) {
 
 	for( var x in args ) {
 		var v = args[x];
-		if(x == "page" || v == null || v == undefined ) continue;
+		if(x == "page" || v == null || v == undefined || v+'' == 'NaN' ) continue;
 		if(x == PARAM_OFFSET && v == 0) continue;
 		if(x == PARAM_LOCATION && v == 1) continue;
 		if(x == PARAM_DEPTH && v == 0) continue;
@@ -221,7 +221,7 @@ function  buildOPACLink(args, slim, ssl) {
 
 function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 	var ret = "";
-	if( fieldVar != null && overrideArgs[fieldName] == null ) 
+	if( fieldVar != null && (fieldVar +'' != 'NaN') && overrideArgs[fieldName] == null ) 
 		ret = "&" + fieldName + "=" + encodeURIComponent(getFunc());
 	return ret;
 }
@@ -425,6 +425,8 @@ function grabSkinFromURL() {
 /* returns a fleshed G.user on success, false on failure */
 function doLogin() {
 
+	cleanRemoteRequests(); /* cancel whatever is out there */
+
 	var uname = G.ui.login.username.value;
 	var passwd = G.ui.login.password.value;	
 
@@ -457,6 +459,9 @@ function doLogin() {
 }
 
 function doLogout(noredirect) {
+
+	/* cancel everything else */
+	cleanRemoteRequests();
 
 	/* be nice and delete the session from the server */
 	if(G.user && G.user.session) { 
