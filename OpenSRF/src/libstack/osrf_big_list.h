@@ -1,11 +1,10 @@
-#ifndef OSRF_LIST_H
-#define OSRF_LIST_H
+#ifndef OSRF_BIG_LIST_H
+#define OSRF_BIG_LIST_H
 
+
+#include <stdio.h>
 #include "opensrf/utils.h"
-
-#define OSRF_LIST_DEFAULT_SIZE 48 /* most opensrf lists are small... */
-#define OSRF_LIST_INC_SIZE 256
-#define OSRF_LIST_MAX_SIZE 10240
+#include <Judy.h>
 
 /**
   Items are stored as void*'s so it's up to the user to
@@ -13,39 +12,38 @@
   then, it will be used on any item that needs to be freed, so don't mix data
   types in the list if you want magic freeing */
 
-struct __osrfListStruct {
-	unsigned int size;			/* how many items in the list including NULL items between non-NULL items */	
+struct __osrfBigListStruct {
+	Pvoid_t list;							/* the list */
+	int size;								/* how many items in the list including NULL items between non-NULL items */	
 	void (*freeItem) (void* item);	/* callback for freeing stored items */
-	void** arrlist;
-	int arrsize; /* how big is the currently allocated array */
 };
-typedef struct __osrfListStruct osrfList;
+typedef struct __osrfBigListStruct osrfBigList;
 
 
-struct __osrfListIteratorStruct {
-	osrfList* list;
-	unsigned int current;
+struct __osrfBigBigListIteratorStruct {
+	osrfBigList* list;
+	unsigned long current;
 };
-typedef struct __osrfListIteratorStruct osrfListIterator;
+typedef struct __osrfBigBigListIteratorStruct osrfBigBigListIterator;
 
 
 /**
   Creates a new list iterator with the given list
   */
-osrfListIterator* osrfNewListIterator( osrfList* list );
+osrfBigBigListIterator* osrfNewBigListIterator( osrfBigList* list );
 
 /**
   Returns the next non-NULL item in the list, return NULL when
   the end of the list has been reached
   */
-void* osrfListIteratorNext( osrfListIterator* itr );
+void* osrfBigBigListIteratorNext( osrfBigBigListIterator* itr );
 
 /**
   Deallocates the given list
   */
-void osrfListIteratorFree( osrfListIterator* itr );
+void osrfBigBigListIteratorFree( osrfBigBigListIterator* itr );
 
-void osrfListIteratorReset( osrfListIterator* itr );
+void osrfBigBigListIteratorReset( osrfBigBigListIterator* itr );
 
 
 /**
@@ -55,7 +53,7 @@ void osrfListIteratorReset( osrfListIterator* itr );
   if item positionality is not important.
   @return The allocated list
   */
-osrfList* osrfNewList();
+osrfBigList* osrfNewBigList();
 
 /**
   Pushes an item onto the end of the list.  This always finds the highest index
@@ -64,15 +62,15 @@ osrfList* osrfNewList();
   @param item The item to push
   @return 0 on success, -1 on failure
   */
-int osrfListPush( osrfList* list, void* item );
+int osrfBigListPush( osrfBigList* list, void* item );
 
 
 /**
  * Removes the last item in the list
- * See osrfListRemove for details on how the removed item is handled
+ * See osrfBigListRemove for details on how the removed item is handled
  * @return The item, unless 'freeItem' exists, then returns NULL
  */
-void* osrfListPop( osrfList* list );
+void* osrfBigListPop( osrfBigList* list );
 
 /**
   Puts the given item into the list at the specified position.  If there
@@ -87,20 +85,20 @@ void* osrfListPop( osrfList* list );
   any displaced items.  Returns the displaced item if no "freeItem"
   callback is defined.
 	*/
-void* osrfListSet( osrfList* list, void* item, unsigned int position );
+void* osrfBigListSet( osrfBigList* list, void* item, unsigned long position );
 
 /**
   Returns the item at the given position
   @param list The list
   @param postiont the position
   */
-void* osrfListGetIndex( osrfList* list, unsigned int  position );
+void* osrfBigListGetIndex( osrfBigList* list, unsigned long  position );
 
 /**
   Frees the list and all list items (if the list has a "freeItem" function defined )
   @param list The list
   */
-void osrfListFree( osrfList* list );
+void osrfBigListFree( osrfBigList* list );
 
 /**
   Removes the list item at the given index
@@ -109,7 +107,7 @@ void osrfListFree( osrfList* list );
   @return A pointer to the item removed if "freeItem" is not defined
   for this list, returns NULL if it is.
   */
-void* osrfListRemove( osrfList* list, int position );
+void* osrfBigListRemove( osrfBigList* list, int position );
 
 /**
   Finds the list item whose void* is the same as the one passed in
@@ -117,28 +115,28 @@ void* osrfListRemove( osrfList* list, int position );
   @param addr The pointer connected to the list item we're to find
   @return the index of the item, or -1 if the item was not found
   */
-int osrfListFind( osrfList* list, void* addr );
+int osrfBigListFind( osrfBigList* list, void* addr );
 
 
-void __osrfListSetSize( osrfList* list );
+void __osrfBigListSetSize( osrfBigList* list );
 
 
 /**
   @return The number of non-null items in the list
   */
-unsigned int osrfListGetCount( osrfList* list );
+unsigned long osrfBigListGetCount( osrfBigList* list );
 
 /**
  * May be used as a default memory freeing call
  * Just calls free() on list items
  */
-void osrfListVanillaFree( void* item );
+void osrfBigListVanillaFree( void* item );
 
 /**
  * Tells the list to just call 'free()' on each item when
  * an item or the whole list is destroyed
  */
-void osrfListSetDefaultFree( osrfList* list );
+void osrfBigListSetDefaultFree( osrfBigList* list );
 
 
 #endif

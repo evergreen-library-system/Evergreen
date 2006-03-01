@@ -1,126 +1,97 @@
 #include "osrf_list.h"
 
-
 osrfList* osrfNewList() {
 	osrfList* list = safe_malloc(sizeof(osrfList));
-	list->list = (Pvoid_t) NULL;
-	list->size = 0;
+	list->size		= 0;
 	list->freeItem = NULL;
+	list->arrsize	= OSRF_LIST_DEFAULT_SIZE;
+	list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
 	return list;
 }
 
 
 int osrfListPush( osrfList* list, void* item ) {
-	if(!(list && item)) return -1;
-	Word_t* value;
-	unsigned long index = -1;
-	JLL(value, list->list, index );
-	osrfListSet( list, item, index+1 );
+	if(!(list)) return -1;
+	osrfListSet( list, item, list->size );
 	return 0;
 }
 
-
-void* osrfListSet( osrfList* list, void* item, unsigned long position ) {
+void* osrfListSet( osrfList* list, void* item, unsigned int position ) {
 	if(!list || position < 0) return NULL;
 
-	Word_t* value;
+	int i;
+	int newsize = list->arrsize;
+	void** newarr;
+
+	while( position >= newsize ) 
+		newsize += OSRF_LIST_INC_SIZE;
+
+	if( newsize > list->arrsize ) { /* expand the list if necessary */
+		newarr = safe_malloc( newsize * sizeof(void*) );
+		for( i = 0; i < list->arrsize; i++ ) 
+			newarr[i] = list->arrlist[i];
+		free(list->arrlist);
+		list->arrlist = newarr;
+		list->arrsize = newsize;
+	}
+
 	void* olditem = osrfListRemove( list, position );
-
-	JLI( value, list->list, position ); 
-	*value = (Word_t) item;
-	__osrfListSetSize( list );
-
+	list->arrlist[position] = item;
+	if( list->size == 0 || list->size <= position )
+		list->size = position + 1;
 	return olditem;
 }
 
 
-void* osrfListGetIndex( osrfList* list, unsigned long position ) {
-	if(!list) return NULL;
-
-	Word_t* value;
-	JLG( value, list->list, position );
-	if(value) return (void*) *value;
-	return NULL;
+void* osrfListGetIndex( osrfList* list, unsigned int position ) {
+	if(!list || position >= list->size) return NULL;
+	return list->arrlist[position];
 }
 
 void osrfListFree( osrfList* list ) {
 	if(!list) return;
 
-	Word_t* value;
-	unsigned long index = -1;
-	JLL(value, list->list, index );
-	int retcode;
+	if( list->freeItem ) {
+		int i; void* val;
+		for( i = 0; i < list->size; i++ ) {
+			if( (val = list->arrlist[i]) ) 
+				list->freeItem(val);
+		}
+	}
 
-	while (value != NULL) {
-		if(list->freeItem) 
-			list->freeItem( (void*) *value );
-		JLD(retcode, list->list, index);
-		JLP(value, list->list, index);
-	}               
-
+	free(list->arrlist);
 	free(list);
 }
 
 void* osrfListRemove( osrfList* list, int position ) {
-	if(!list) return NULL;
+	if(!list || position >= list->size) return NULL;
 
-	int retcode;
-	Word_t* value;
-	JLG( value, list->list, position );
-	void* olditem = NULL;
-
-	if( value ) {
-
-		olditem = (void*) *value;
-		if( olditem ) {
-			JLD(retcode, list->list, position );
-			if(retcode == 1) {
-				if(list->freeItem) {
-					list->freeItem( olditem );
-					olditem = NULL;
-				}
-				__osrfListSetSize( list );
-			}
-		}
+	void* olditem = list->arrlist[position];
+	list->arrlist[position] = NULL;
+	if( list->freeItem ) {
+		list->freeItem(olditem);
+		olditem = NULL;
 	}
 
+	if( position == list->size - 1 ) list->size--;
 	return olditem;
 }
 
 
 int osrfListFind( osrfList* list, void* addr ) {
 	if(!(list && addr)) return -1;
-
-	Word_t* value;
-	unsigned long index = -1;
-	JLL(value, list->list, index );
-
-	while (value != NULL) {
-		if( (void*) *value == addr )
+	int index;
+	for( index = 0; index < list->size; index++ ) {
+		if( list->arrlist[index] == addr ) 
 			return index;
-		JLP(value, list->list, index);
 	}
-
 	return -1;
 }
 
 
-
-void __osrfListSetSize( osrfList* list ) {
-	if(!list) return;
-
-	Word_t* value;
-	unsigned long index = -1;
-	JLL(value, list->list, index );
-	list->size = index + 1;
-}
-
-
-unsigned long osrfListGetCount( osrfList* list ) {
+unsigned int osrfListGetCount( osrfList* list ) {
 	if(!list) return -1;
-	unsigned long retcode = -1;
-	JLC( retcode, list->list, 0, -1 );
-	return retcode;
+	return list->size;
 }
 
 
@@ -140,22 +111,14 @@ osrfListIterator* osrfNewListIterator( osrfList* list ) {
 
 void* osrfListIteratorNext( osrfListIterator* itr ) {
 	if(!(itr && itr->list)) return NULL;
-
-	Word_t* value;
 	if(itr->current >= itr->list->size) return NULL;
-	JLF( value, itr->list->list, itr->current );
-	if(value) {
-		itr->current++;
-		return (void*) *value;
-	}
-	return NULL;
+	return itr->list->arrlist[itr->current++];
 }
 
 void osrfListIteratorFree( osrfListIterator* itr ) {
 	if(!itr) return;
 	free(itr);
 }
-
 
 
 void osrfListIteratorReset( osrfListIterator* itr ) {
