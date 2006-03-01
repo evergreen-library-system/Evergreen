@@ -1208,6 +1208,7 @@ sub postfilter_search_class_fts {
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
 	my $max = 0;
+	$max = 1 if (!@$recs);
 	for (@$recs) {
 		$max = $$_[1] if ($$_[1] > $max);
 	}
@@ -1493,6 +1494,7 @@ sub postfilter_search_multi_class_fts {
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
 	my $max = 0;
+	$max = 1 if (!@$recs);
 	for (@$recs) {
 		$max = $$_[1] if ($$_[1] > $max);
 	}
@@ -1731,6 +1733,7 @@ sub postfilter_Z_search_class_fts {
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
 	my $max = 0;
+	$max = 1 if (!@$recs);
 	for (@$recs) {
 		$max = $$_[2] if ($$_[2] > $max);
 	}
