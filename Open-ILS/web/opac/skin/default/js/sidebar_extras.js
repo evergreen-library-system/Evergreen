@@ -67,9 +67,9 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		if(isNull(items[i])) continue;
 
 		/* again, IE is a turd */
-		//if(IE) { if(x++ > 5) break; }
-		//else { if(x++ > 7) break; }
-		if(x++ > 7) break;
+		if(IE) { if(x++ > 5) break; }
+		else { if(x++ > 7) break; }
+		//if(x++ > 7) break;
 
 		found = true;
 
