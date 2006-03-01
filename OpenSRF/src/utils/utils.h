@@ -63,6 +63,14 @@ GNU General Public License for more details.
 	snprintf(__b, __len - 1, "%lf", l); \
 	char* DOUBLESTR = __b;
 
+#define LONG_DOUBLE_TO_STRING(l) \
+	unsigned int __len = snprintf(NULL, 0, "%Lf", l) + 2; \
+	char __b[__len]; \
+	bzero(__b, __len); \
+	snprintf(__b, __len - 1, "%Lf", l); \
+	char* LONGDOUBLESTR = __b;
+
+
 #define INT_TO_STRING(l) \
 	unsigned int __len = snprintf(NULL, 0, "%d", l) + 2; \
 	char __b[__len]; \
