@@ -318,8 +318,7 @@ function grabUser(ses, force) {
 	var at = getAuthtime();
 	if(isXUL()) at = xulG['authtime'];
 
-	new AuthTimer(at).run(); /* needs debugging... */
-
+	if(at) new AuthTimer(at).run(); 
 	return G.user;
 }
 
