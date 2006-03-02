@@ -28,6 +28,8 @@ struct __osrfListIteratorStruct {
 };
 typedef struct __osrfListIteratorStruct osrfListIterator;
 
+osrfList* osrfNewListSize( unsigned int size );
+
 
 /**
   Creates a new list iterator with the given list

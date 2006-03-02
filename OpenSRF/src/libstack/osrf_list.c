@@ -9,6 +9,15 @@ osrfList* osrfNewList() {
 	return list;
 }
 
+osrfList* osrfNewListSize( unsigned int size ) {
+	osrfList* list = safe_malloc(sizeof(osrfList));
+	list->size		= 0;
+	list->freeItem = NULL;
+	list->arrsize	= size;
+	list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
+	return list;
+}
+
 
 int osrfListPush( osrfList* list, void* item ) {
 	if(!(list)) return -1;
