@@ -87,8 +87,11 @@ function ncSetRowCallbacks( type, owner, tbody, row ) {
 
 	checkDisabled( $n(row, 'nc_edit'), owner, 'UPDATE_NON_CAT_TYPE');
 
+	/*
 	mydepth = findOrgDepth( PERMS['DELETE_NON_CAT_TYPE'] );
 	if( mydepth != -1 && mydepth <= tdepth ) $n(row, 'nc_delete').disabled = false;
+	*/
+	checkDisabled( $n(row, 'nc_delete'), owner, 'DELETE_NON_CAT_TYPE' );
 
 	$n(row, 'nc_edit').onclick = 
 		function() { ncEditType( tbody, row, type ); };
