@@ -277,6 +277,18 @@ oilsEvent* oilsAuthHandleLoginOK(
 	return response;
 }
 
+oilsEvent* oilsAuthVerifyWorkstation( osrfMethodContext* ctx, jsonObject* userObj, double wsid ) {
+	osrfLogInfo(OSRF_LOG_MARK, "Attaching workstation to user at login: %lf", wsid);
+	jsonObject* workstation = oilsUtilsFetchWorkstation(wsid);
+	if(!workstation) return oilsNewEvent("WORKSTATION_NOT_FOUND");
+	DOUBLE_TO_STRING(wsid);
+	char* orgid = oilsFMGetString(workstation, "owning_lib");
+	oilsFMSetString(userObj, "wsid", DOUBLESTR);
+	oilsFMSetString(userObj, "ws_ou", orgid);
+	free(orgid);
+	return NULL;
+}
+
 
 
 int oilsAuthComplete( osrfMethodContext* ctx ) {
@@ -286,6 +298,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	char* password = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
 	char* type		= jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
 	double orgloc	= jsonObjectGetNumber(jsonObjectGetIndex(ctx->params, 3));
+	double wsid		= jsonObjectGetNumber(jsonObjectGetIndex(ctx->params, 4));
 
 	if(!type) type = OILS_AUTH_STAFF;
 
@@ -312,6 +325,13 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	int passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
 	if( passOK < 0 ) return passOK;
+
+	if( wsid > 0 && (response = oilsAuthVerifyWorkstation( ctx, userObj, wsid )) ) {
+		jsonObjectFree(userObj);
+		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
+		oilsEventFree(response);
+		return 0;
+	}
 
 	if( passOK ) {
 		response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc );
