@@ -35,7 +35,8 @@ int main( int argc, char* argv[] ) {
 
 int __setupRouter( char* config, char* context ) {
 
-	fprintf(stderr, "Launching router with config %s and config context %s", config, context );
+	osrfLogInfo(OSRF_LOG_MARK, "Launching router with config "
+			"%s and config context %s", config, context );
 	osrfConfig* cfg = osrfConfigInit( config, context );
 	osrfConfigSetDefaultConfig(cfg);
 
