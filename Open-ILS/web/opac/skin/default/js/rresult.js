@@ -1,6 +1,7 @@
 var records = new Array();
 var table;
 var rowtemplate;
+var rresultLimit = 200;
 
 function rresultUnload() { removeChildren(table); table = null;}
 
@@ -20,9 +21,18 @@ function rresultDoSearch() {
 function rresultCollectIds() {
 	var ids;
 	switch(getRtype()) {
+
 		case RTYPE_COOKIE:
 			ids = JSON2js(cookieManager.read(COOKIE_RIDS));
 			_rresultHandleIds( ids, ids.length );
+			break;
+
+		case RTYPE_TITLE:
+		case RTYPE_AUTHOR:
+		case RTYPE_SUBJECT:
+		case RTYPE_SERIES:
+		case RTYPE_KEYWORD:
+			rresultDoRecordSearch();
 			break;
 
 		case RTYPE_MRID :
@@ -67,3 +77,34 @@ function rresultHandleMods(r) {
 function rresultLaunchDrawn(id, node) {
 	runEvt("rresult", "recordDrawn", id, node);
 }
+
+
+function rresultDoRecordSearch() {
+
+	var form		= (!getForm() || getForm() == "all") ? null : getForm();
+	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
+	var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
+
+	var req = new Request(FETCH_SEARCH_RIDS, getRtype(), 
+		{	term		: getTerm(), 
+			sort		: sort,
+			sort_dir	: sortdir,
+			org_unit : getLocation(),
+			depth		: getDepth(),
+			limit		: rresultLimit,
+			offset	: getOffset(),
+			format	: form } );
+
+	req.callback(rresultFilterSearchResults);
+	req.send();
+}
+
+function rresultFilterSearchResults(r) {
+	var result = r.getResultObject();
+	var ids = [];
+	for( var i = 0; i != result.ids.length; i++ ) 
+		ids.push(result.ids[i][0]);
+	_rresultHandleIds( ids, result.count );
+}
+
+

@@ -2,6 +2,23 @@
 
 attachEvt("common", "run", advInit);
 
+/* tests the cookie rresult stuff 
+
+function advTestCookie() {
+	var ids = [ 
+		40791, 40792, 40793, 40794, 40795, 40797, 40798, 40799, 362178, 362179, 
+		362180, 362170, 338215, 333398, 329010, 17, 362182, 362183, 362184, 362185 ];
+
+	cookieManager.write(COOKIE_RIDS, js2JSON(ids), '+1h');
+	var a = {};
+	a.page = RRESULT;
+	a[PARAM_RTYPE] = RTYPE_COOKIE;
+	goTo(buildOPACLink(a));
+}
+*/
+
+
+
 function advInit() { 
 	$('advanced.wizard.contains').focus();
 	depthSelInit(); 
@@ -31,13 +48,6 @@ function advInit() {
 	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
-
-	/*
-	setSelector($('advanced.wizard.sort_by'), getSort());
-	setSelector($('advanced.wizard.sort_dir'), getSortDir());
-	if(getSort() && getSort() != SORT_TYPE_REL) 
-		$('advanced.wizard.sort_dir').disabled = false;
-		*/
 }
 
 
@@ -60,6 +70,11 @@ function advWizardRun() {
 	arg[PARAM_TERM]		= advBuildSearch( contains, nocontains, exact );
 	arg[PARAM_SORT]		= sort;
 	arg[PARAM_SORT_DIR]	= sortdir;
+
+	if( sort == SORT_TYPE_PUBDATE ) {
+		arg.page = RRESULT;
+		arg[PARAM_RTYPE]	= type;
+	}
 
 	goTo(buildOPACLink(arg));
 }

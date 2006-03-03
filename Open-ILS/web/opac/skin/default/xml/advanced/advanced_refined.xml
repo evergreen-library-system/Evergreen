@@ -65,7 +65,9 @@
 					<option value='rel'>Relevance</option>
 					<option value='title'>Title</option>
 					<option value='author'>Author</option>
-					<option value='pubdate' disabled='disabled'>Publication Date</option>
+					<!--
+					<option value='pubdate'>Publication Date</option>
+					-->
 				</select>
 			</td>
 			<td>
@@ -73,8 +75,8 @@
 			</td>
 			<td>
 				<select id='advanced.refined.sort_dir' disabled='disabled'>
-					<option value='asc'>Normal</option>
-					<option value='desc'>Reverse</option>
+					<option value='asc'>Ascending / A to Z</option>
+					<option value='desc'>Descending / Z to A</option>
 				</select>
 			</td>
 		</tr>

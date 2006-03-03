@@ -64,7 +64,7 @@ function _mresultCollectIds() {
 
 		var form		= (!getForm() || getForm() == "all") ? null : getForm();
 		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
-		var sortdir = (sort) ? getSortDir() : null;
+		var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
 
 		var req = new Request(FETCH_MRIDS_, getStype(), 
 			{	term		: getTerm(), 
@@ -88,7 +88,7 @@ function mresultCollectAdvIds() {
 
 		var form		= (getForm() == "all") ? null : getForm();
 		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
-		var sortdir = (sort) ? getSortDir() : null;
+		var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
 
 		var req = new Request(FETCH_ADV_MRIDS, 
 			{	sort		: sort,

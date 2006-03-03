@@ -1,4 +1,4 @@
-<!ENTITY opac.advanced.wizard.title "Advanced Search Wizard">
+<!ENTITY opac.advanced.wizard.title "Advanced Search">
 <!ENTITY opac.advanced.wizard.contains "Selected field contains the following words">
 <!ENTITY opac.advanced.wizard.nocontains "Selected field does <u>not</u> contain the following words">
 <!ENTITY opac.advanced.wizard.exact "Selected field contains the <u>exact</u> phrase">
