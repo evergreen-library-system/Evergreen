@@ -142,5 +142,11 @@ void osrfListVanillaFree( void* item );
  */
 void osrfListSetDefaultFree( osrfList* list );
 
+/**
+ * Inserts the new item at the first free (null) slot
+ * in the array.  Item is shoved onto the end of the
+ * list if there are no null slots */
+int osrfListPushFirst( osrfList* list, void* item );
+
 
 #endif

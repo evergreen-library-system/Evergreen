@@ -25,6 +25,15 @@ int osrfListPush( osrfList* list, void* item ) {
 	return 0;
 }
 
+int osrfListPushFirst( osrfList* list, void* item ) {
+	if(!(list && item)) return -1;
+	int i;
+	for( i = 0; i < list->size; i++ ) 
+		if(!list->arrlist[i]) break;
+	osrfListSet( list, item, i );
+	return list->size;
+}
+
 void* osrfListSet( osrfList* list, void* item, unsigned int position ) {
 	if(!list || position < 0) return NULL;
 
