@@ -182,6 +182,10 @@ function mresultHandleMods(r) {
 	var pagePosition = r.userdata;
 	runEvt('result', 'recordReceived', rec, pagePosition, true);
 	resultCollectCopyCounts(rec, pagePosition, FETCH_MR_COPY_COUNTS);
+	if(resultPageIsDone())  
+		runEvt('result', 'allRecordsReceived', recordsCache);
 }
+
+
 
 

@@ -8,11 +8,25 @@ var cookieManager = new HTTP.Cookies();
 var __ilsEvent; /* the last event the occurred */
 
 function Request(type) {
+
 	var s = type.split(":");
 	if(s[2] == "1" && isXUL()) s[1] += ".staff";
 	this.request = new RemoteRequest(s[0], s[1]);
-	for( var x = 1; x!= arguments.length; x++ ) 
+	var p = [];
+
+	for( var x = 1; x!= arguments.length; x++ ) {
+		p.push(arguments[x]);
 		this.request.addParam(arguments[x]);
+	}
+
+	if( getDebug() ) {
+		var str = "";
+		for( var i = 0; i != p.length; i++ ) {
+			if( i > 0 ) str += ", "
+			str += js2JSON(p[i]);
+		}
+		_debug('request ' + s[0] + ' ' + s[1] + ' ' + str );
+	}
 }
 
 Request.prototype.callback = function(cal) {this.request.setCompleteCallback(cal);}
@@ -87,6 +101,7 @@ function initParams() {
 	RTYPE		= cgi.param(PARAM_RTYPE);
 	SORT		= cgi.param(PARAM_SORT);
 	SORT_DIR	= cgi.param(PARAM_SORT_DIR);
+	DEBUG		= cgi.param(PARAM_DEBUG);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -129,6 +144,7 @@ function getAdvType(){return ADVTYPE;}
 function getRtype(){return RTYPE;}
 function getSort(){return SORT;}
 function getSortDir(){return SORT_DIR;}
+function getDebug(){return DEBUG;}
 
 
 function findBasePath() {

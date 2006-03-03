@@ -314,14 +314,11 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	
 	runEvt("result", "recordDrawn", rec.doc_id(), title_link);
 
+	/*
 	if(resultPageIsDone())  {
-		//showCanvas();
-		/* hide the 'now loading...' message */
-		/*
-		hideMe(G.ui.common.loading);
-		*/
 		runEvt('result', 'allRecordsReceived', recordsCache);
 	}
+	*/
 }
 
 function _resultFindRec(id) {

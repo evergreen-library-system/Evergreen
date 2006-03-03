@@ -20,6 +20,7 @@ var PARAM_ADVTYPE		= "adt";			/* the advanced search type */
 var PARAM_RTYPE		= "rt";
 var PARAM_SORT			= "s";
 var PARAM_SORT_DIR	= "sd";
+var PARAM_DEBUG		= "dbg";
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -42,6 +43,7 @@ var RTYPE;
 var SORT;
 var SORT_DIR;
 var RLIST;
+var DEBUG;
 
 /* cookie values */
 var SBEXTRAS; 

@@ -80,6 +80,8 @@ function rresultHandleMods(r) {
 	var rec = r.getResultObject();
 	runEvt('result', 'recordReceived', rec, r.userdata, false);
 	resultCollectCopyCounts(rec, r.userdata, FETCH_R_COPY_COUNTS);
+	if(resultPageIsDone())  
+		runEvt('result', 'allRecordsReceived', recordsCache);
 }
 
 
