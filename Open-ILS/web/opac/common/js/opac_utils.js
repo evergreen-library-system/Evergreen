@@ -424,7 +424,7 @@ function grabSkinFromURL() {
 /* returns a fleshed G.user on success, false on failure */
 function doLogin() {
 
-	cleanRemoteRequests(); /* cancel whatever is out there */
+	abortAllRequests();
 
 	var uname = G.ui.login.username.value;
 	var passwd = G.ui.login.password.value;	
@@ -460,7 +460,7 @@ function doLogin() {
 function doLogout(noredirect) {
 
 	/* cancel everything else */
-	cleanRemoteRequests();
+	abortAllRequests();
 
 	/* be nice and delete the session from the server */
 	if(G.user && G.user.session) { 

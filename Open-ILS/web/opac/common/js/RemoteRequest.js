@@ -23,14 +23,25 @@ function cleanRemoteRequests() {
 		destroyRequest(_allrequests[i]);
 }
 
+function abortAllRequests() {
+	for( var i in _allrequests ) {
+		var r = _allrequests[i];
+		if(r) {	
+			/* this has to come before abort() or IE will puke on you */
+			r.xmlhttp.onreadystatechange = function(){};
+			r.abort();
+			destroyRequest(r);
+		}
+	}
+}
+
 function destroyRequest(r) {
 	if(r == null) return;
 
 	if( r.xmlhttp ) {
-		/* this has to come before abort() or IE will puke on you */
 		r.xmlhttp.onreadystatechange = function(){};
-		r.abort();
-		r.xmlhttp				= null;
+		//r.abort();
+		r.xmlhttp = null;
 	}
 
 	r.callback				= null;
