@@ -83,6 +83,8 @@ sub _init {
 		'Fieldmapper::action::open_circulation'		=> { hint	=> 'aoc',
 								     readonly	=> 1 },
 
+		'Fieldmapper::actor::workstation'		=> { hint	=> 'aws' },
+
 		'Fieldmapper::actor::user'			=> { hint		=> 'au',
 								     proto_fields	=> { cards		=> 1,
 								     			     survey_responses	=> 1,
