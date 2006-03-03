@@ -229,6 +229,7 @@ g.special_exception = {
 		}
 	},
 	'Creator' : function(label,value) {
+		if (value == null || value == '' || value == 'null') return;
 		g.network.request(
 			api.FM_AU_RETRIEVE_VIA_ID.app,
 			api.FM_AU_RETRIEVE_VIA_ID.method,
@@ -247,6 +248,7 @@ g.special_exception = {
 		);
 	},
 	'Last Editor' : function(label,value) {
+		if (value == null || value == '' || value == 'null') return;
 		g.network.request(
 			api.FM_AU_RETRIEVE_VIA_ID.app,
 			api.FM_AU_RETRIEVE_VIA_ID.method,
