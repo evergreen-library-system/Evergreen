@@ -125,12 +125,6 @@ function _cnBrowseDraw( list ) {
 		var record	= list[idx][2];
 		var id		= list[idx][3];
 
-		/*
-		if( label != cnBrowseCurrent ) {
-			removeCSSClass( td, 'cn_browse_home_cn' );
-		}
-		*/
-
 		if( idx == 0 ) { cnBrowseTopCn = label; cnBrowseTopId = id; } 
 		cnBrowseBottomCn = label;
 		cnBrowseBottomId = id;
@@ -164,6 +158,7 @@ function _cnBrowseDraw( list ) {
 
 function cnBrowseDrawTitle(r) {
 	var mods = r.getResultObject();
+
 	buildTitleDetailLink(mods, r.title_td); 
 	buildSearchLink(STYPE_AUTHOR, mods.author(), r.author_td);
 	r.pic_td.setAttribute("src", buildISBNSrc(cleanISBN(mods.isbn())));

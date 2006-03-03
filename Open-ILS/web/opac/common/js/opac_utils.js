@@ -198,8 +198,8 @@ function  buildOPACLink(args, slim, ssl) {
 		if(x == PARAM_DEPTH && v == 0) continue;
 		if(x == PARAM_COUNT && v == 10) continue;
 		if(x == PARAM_FORM && v == 'all' ) continue;
-		if( instanceOf(v, Array) ) {
-			for( var i = 0; i != v.length; i++ ) {
+		if( instanceOf(v, Array) && v.length ) {
+			for( var i = 0; i < v.length; i++ ) {
 				string += "&" + x + "=" + encodeURIComponent(v[i]);
 			}
 		} else {
