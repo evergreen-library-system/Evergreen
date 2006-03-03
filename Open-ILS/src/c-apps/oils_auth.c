@@ -251,7 +251,18 @@ oilsEvent* oilsAuthHandleLoginOK(
 	oilsEvent* response;
 	osrfLogActivity(OSRF_LOG_MARK,  "User %s successfully logged in", uname );
 
-	double timeout = oilsAuthGetTimeout( userObj, type, orgloc );
+	double timeout;
+	char* wsorg = jsonObjectToSimpleString(oilsFMGetObject(userObj, "ws_ou"));
+	if(wsorg) { /* if there is a workstation, use it for the timeout */
+		osrfLogDebug( OSRF_LOG_MARK, 
+				"Auth session trying workstation id %d for auth timeout", atoi(wsorg));
+		timeout = oilsAuthGetTimeout( userObj, type, atoi(wsorg) );
+		free(wsorg);
+	} else {
+		osrfLogDebug( OSRF_LOG_MARK, 
+				"Auth session trying org from param [%d] for auth timeout", orgloc );
+		timeout = oilsAuthGetTimeout( userObj, type, orgloc );
+	}
 	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %lf", uname, timeout );
 
 	char* string = va_list_to_string( 
