@@ -37,7 +37,7 @@
 	_OSRF_METHOD_VERIFY_CONTEXT(d); \
 	char* __j = jsonObjectToJSON(d->params);\
 	if(__j) { \
-		osrfLogInfo( OSRF_LOG_MARK,  "%s %s - %s", d->session->remote_service, d->method->name, __j);\
+		osrfLogInfo( OSRF_LOG_MARK,  "CALL:	%s %s - %s", d->session->remote_service, d->method->name, __j);\
 		free(__j); \
 	} 
 #else
