@@ -195,6 +195,10 @@
 		<desc> Requested transaction object does not exist </desc>
 	</event>
 
+	<event code='1520' textcode='WORKSTATION_NOT_FOUND'>
+		<desc> Requested workstation object does not exist </desc>
+	</event>
+
 
 
 
@@ -208,6 +212,10 @@
 
 	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
 		<desc> There is an open circulation on the requested item </desc>
+	</event>
+
+	<event code='1702' textcode='WORKSTATION_NAME_EXISTS'>
+		<desc> A workstation with that name already exists </desc>
 	</event>
 
 

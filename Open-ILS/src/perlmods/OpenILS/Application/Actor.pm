@@ -1721,6 +1721,41 @@ sub get_user_perm_groups {
 
 
 
+__PACKAGE__->register_method (
+	method		=> 'register_workstation',
+	api_name		=> 'open-ils.actor.workstation.register',
+	signature	=> q/
+		Registers a new workstion in the system
+		@param authtoken The login session key
+		@param name The name of the workstation id
+		@param owner The org unit that owns this workstation
+		@return The workstation on success, WORKSTATION_NAME_EXISTS
+		if the name is already in use.
+	/);
+
+sub register_workstation {
+	my( $self, $connection, $authtoken, $name, $owner ) = @_;
+	my( $requestor, $evt ) = $U->checkses($authtoken);
+	return $evt if $evt;
+	$evt = $U->check_perms($requestor->id, $owner, 'REGISTER_WORKSTATION');
+	return $evt if $evt;
+
+	my $ws = $U->storagereq(
+		'open-ils.storage.direct.actor.workstation.search.name', $name );
+	return OpenILS::Event->new('WORKSTATION_NAME_EXISTS') if $ws;
+
+	$ws = Fieldmapper::actor::workstation->new;
+	$ws->owning_lib($owner);
+	$ws->name($name);
+
+	my $id = $U->storagereq(
+		'open-ils.storage.direct.actor.workstation.create', $ws );
+	return $U->DB_UPDATE_FAILED($ws) unless $id;
+
+	$ws->id($id);
+	return $ws;
+}
+
 
 1;
 

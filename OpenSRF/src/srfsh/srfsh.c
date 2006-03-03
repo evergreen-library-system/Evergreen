@@ -244,8 +244,9 @@ int handle_login( char* words[]) {
 		char* password = words[2];
 		char* type		= words[3];
 		char* orgloc	= words[4];
-		int orgloci = 0;
-		if(orgloc) orgloci = atoi(orgloc);
+		char* wsid		= words[5];
+		int orgloci = (orgloc) ? atoi(orgloc) : 0;
+		int wsidi = (wsid) ? atoi(wsid) : 0;
 		if(!type) type = "opac";
 
 		char buf[256];
@@ -274,7 +275,7 @@ int handle_login( char* words[]) {
 		char* mess_buf = md5sum(both_buf);
 
 		sprintf( buf2, "request open-ils.auth open-ils.auth.authenticate.complete "
-				"\"%s\", \"%s\", \"%s\", %d", username, mess_buf, type, orgloci );
+				"\"%s\", \"%s\", \"%s\", %d, %d", username, mess_buf, type, orgloci, wsidi );
 
 		free(pass_buf);
 		free(mess_buf);

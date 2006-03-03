@@ -79,3 +79,9 @@ char* oilsUtilsFetchOrgSetting( int orgid, char* setting );
  */
 char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId );
 
+
+/**
+ * Fetches the requested workstation object by id
+ */
+jsonObject* oilsUtilsFetchWorkstation( long id );
+

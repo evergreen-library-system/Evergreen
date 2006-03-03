@@ -7,6 +7,7 @@ osrfHash* __oilsEventEvents = NULL;
 
 oilsEvent* oilsNewEvent( char* event ) {
 	if(!event) return NULL;
+	osrfLogInfo(OSRF_LOG_MARK, "Creating new event: %s", event);
 	if(!__oilsEventEvents) _oilsEventParseEvents();
 	oilsEvent* evt =  (oilsEvent*) safe_malloc(sizeof(oilsEvent));
 	evt->event = strdup(event);
@@ -99,8 +100,6 @@ void _oilsEventParseEvents() {
 					if( code && textcode ) {
 						osrfHashSet( __oilsEventEvents, code, textcode );
 						success = 1;
-						osrfLogDebug(OSRF_LOG_MARK, "Loading OILS Event: %s => %s", 
-								textcode, osrfHashGet( __oilsEventEvents, textcode) );
 					}
 				}
 				child = child->next;

@@ -149,3 +149,13 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 }
 
 
+jsonObject* oilsUtilsFetchWorkstation( long id ) {
+	jsonObject* p = jsonParseString("[%ld]", id);
+	jsonObject* r = oilsUtilsQuickReq(
+		"open-ils.storage", 
+		"open-ils.storage.direct.actor.workstation.retrieve", p );
+	jsonObjectFree(p);
+	return r;
+}
+
+
