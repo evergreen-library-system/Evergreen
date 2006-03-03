@@ -90,6 +90,8 @@ sub _init {
 								     			     survey_responses	=> 1,
 								     			     stat_cat_entries	=> 1,
 								     			     checkouts		=> 1,
+								     			     wsid		=> 1,
+								     			     ws_ou		=> 1,
 								     			     hold_requests	=> 1,
 								     			     settings		=> 1,
 								     			     permissions	=> 1,
