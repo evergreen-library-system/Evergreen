@@ -182,7 +182,13 @@ function  buildOPACLink(args, slim, ssl) {
 		if(x == PARAM_DEPTH && v == 0) continue;
 		if(x == PARAM_COUNT && v == 10) continue;
 		if(x == PARAM_FORM && v == 'all' ) continue;
-		string += "&" + x + "=" + encodeURIComponent(v);
+		if( instanceOf(v, Array) ) {
+			for( var i = 0; i != v.length; i++ ) {
+				string += "&" + x + "=" + encodeURIComponent(v[i]);
+			}
+		} else {
+			string += "&" + x + "=" + encodeURIComponent(v);
+		}
 	}
 
 	if(getOrigLocation() != 1) 

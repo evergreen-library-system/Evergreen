@@ -35,6 +35,10 @@ function rresultCollectIds() {
 			rresultDoRecordSearch();
 			break;
 
+		case RTYPE_LIST :
+			rresultHandleList();
+			break;
+
 		case RTYPE_MRID :
 		defaut:
 			var form = (getForm() == "all") ? null : getForm();
@@ -42,6 +46,11 @@ function rresultCollectIds() {
 			req.callback( rresultHandleRIds );
 			req.send();
 	}
+}
+
+function rresultHandleList() {
+	var ids = new CGI().param(PARAM_RLIST);
+	if(ids) _rresultHandleIds(ids, ids.length);
 }
 
 function rresultHandleRIds(r) {

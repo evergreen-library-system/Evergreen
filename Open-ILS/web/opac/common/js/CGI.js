@@ -24,7 +24,8 @@ function CGI() {
 		if(c == "&" || c == ";") {
 			inkey = 1;
 			invalue = 0;
-			this.data[key] = decodeURIComponent(value);
+			if( ! this.data[key] ) this.data[key] = [];
+			this.data[key].push(decodeURIComponent(value));
 			this._keys.push(key);
 			key = ""; value = "";
 			continue;
@@ -34,7 +35,8 @@ function CGI() {
 		else if(invalue) value += c;
 	}
 
-	this.data[key] = decodeURIComponent(value);
+	if( ! this.data[key] ) this.data[key] = [];
+	this.data[key].push(decodeURIComponent(value));
 	this._keys.push(key);
 }
 
@@ -43,8 +45,8 @@ function CGI() {
  */
 CGI.prototype.param = function(p) {
 	if(this.data[p] == null) return null;
-	//if(this.data[p].length == 1)
-		//return this.data[p][0];
+	if(this.data[p].length == 1)
+		return this.data[p][0];
 	return this.data[p];
 }
 

@@ -197,6 +197,7 @@ function resultPaginate() {
 		args[PARAM_OFFSET]	= o + getDisplayCount();
 		args[PARAM_SORT]		= SORT;
 		args[PARAM_SORT_DIR] = SORT_DIR;
+		args[PARAM_RLIST]		= new CGI().param(PARAM_RLIST);
 
 		G.ui.result.next_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.next_link, config.css.result.nav_active);
@@ -211,6 +212,7 @@ function resultPaginate() {
 		var args = {};
 		args[PARAM_SORT]		= SORT;
 		args[PARAM_SORT_DIR] = SORT_DIR;
+		args[PARAM_RLIST]		= new CGI().param(PARAM_RLIST);
 
 		args[PARAM_OFFSET] = o - getDisplayCount();
 		G.ui.result.prev_link.setAttribute( "href", buildOPACLink(args)); 
