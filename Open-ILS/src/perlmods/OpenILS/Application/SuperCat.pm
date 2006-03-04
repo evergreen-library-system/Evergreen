@@ -43,6 +43,8 @@ sub child_init {
 	# we need an XML parser
 	$_parser = new XML::LibXML;
 
+	$logger->debug("Got here!");
+
 	# and an xslt parser
 	$_xslt = new XML::LibXSLT;
 	
@@ -54,41 +56,54 @@ sub child_init {
 		"/MARC21slim2MODS.xsl"
 	);
 	# and stash a transformer
-	$record_xslt{mods} = $_xslt->parse_stylesheet( $mods_xslt );
+	$record_xslt{mods}{xslt} = $_xslt->parse_stylesheet( $mods_xslt );
+	$record_xslt{mods}{namespace_uri} = 'http://www.loc.gov/mods/';
+	$record_xslt{mods}{docs} = 'http://www.loc.gov/mods/';
+	$record_xslt{mods}{schema_location} = 'http://www.loc.gov/standards/mods/mods.xsd';
 
+	$logger->debug("Got here!");
 
 	# parse the RDFDC xslt ...
-	my $rdfdc_xslt = $_parser->parse_file(
+	my $rdf_dc_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
 			->new
 			->config_value( dirs => 'xsl' ).
 		"/MARC21slim2RDFDC.xsl"
 	);
 	# and stash a transformer
-	$record_xslt{rdfdc} = $_xslt->parse_stylesheet( $rdfdc_xslt );
+	$record_xslt{rdf_dc}{xslt} = $_xslt->parse_stylesheet( $rdf_dc_xslt );
+	$record_xslt{rdf_dc}{namespace_uri} = 'http://purl.org/dc/elements/1.1/';
+	$record_xslt{rdf_dc}{schema_location} = 'http://purl.org/dc/elements/1.1/';
 
+	$logger->debug("Got here!");
 
 	# parse the SRWDC xslt ...
-	my $srwdc_xslt = $_parser->parse_file(
+	my $srw_dc_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
 			->new
 			->config_value( dirs => 'xsl' ).
 		"/MARC21slim2SRWDC.xsl"
 	);
 	# and stash a transformer
-	$record_xslt{srwdc} = $_xslt->parse_stylesheet( $srwdc_xslt );
+	$record_xslt{srw_dc}{xslt} = $_xslt->parse_stylesheet( $srw_dc_xslt );
+	$record_xslt{srw_dc}{namespace_uri} = 'info:srw/schema/1/dc-schema';
+	$record_xslt{srw_dc}{schema_location} = 'http://www.loc.gov/z3950/agency/zing/srw/dc-schema.xsd';
 
+	$logger->debug("Got here!");
 
 	# parse the OAIDC xslt ...
-	my $oaidc_xslt = $_parser->parse_file(
+	my $oai_dc_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
 			->new
 			->config_value( dirs => 'xsl' ).
 		"/MARC21slim2OAIDC.xsl"
 	);
 	# and stash a transformer
-	$record_xslt{oaidc} = $_xslt->parse_stylesheet( $oaidc_xslt );
+	$record_xslt{oai_dc}{xslt} = $_xslt->parse_stylesheet( $oai_dc_xslt );
+	$record_xslt{oai_dc}{namespace_uri} = 'http://www.openarchives.org/OAI/2.0/oai_dc/';
+	$record_xslt{oai_dc}{schema_location} = 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
 
+	$logger->debug("Got here!");
 
 	# parse the RSS xslt ...
 	my $rss_xslt = $_parser->parse_file(
@@ -98,8 +113,9 @@ sub child_init {
 		"/MARC21slim2RSS2.xsl"
 	);
 	# and stash a transformer
-	$record_xslt{rss2} = $_xslt->parse_stylesheet( $rss_xslt );
+	$record_xslt{rss2}{xslt} = $_xslt->parse_stylesheet( $rss_xslt );
 
+	$logger->debug("Got here!");
 
 	# and finally, a storage server session
 	$_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
@@ -189,7 +205,7 @@ sub retrieve_record_transform {
 		$rid
 	)->gather(1)->marc;
 
-	return entityize($record_xslt{$transform}->transform( $_parser->parse_string( $marc ) )->toString);
+	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $marc ) )->toString);
 }
 
 
@@ -238,10 +254,17 @@ sub retrieve_metarecord_mods {
 		->ownerDocument
 		->createElement("mods:recordIdentifier");
 
-	$recordIdentifier->setAttribute( source => 'info:oils/metabib-metarecord/' );
+	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
+	$year += 1900;
+	$month += 1;
 
 	my $id = $mr->id;
-	$recordIdentifier->appendTextNode( $id );
+	$recordIdentifier->appendTextNode(
+		sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:biblio-record_entry/$id",
+			$month,
+			$day
+		)
+	);
 
 	$recordInfo->appendChild($recordIdentifier);
 	$mods->appendChild($recordInfo);
@@ -307,10 +330,13 @@ sub retrieve_metarecord_mods {
 			->ownerDocument
 			->createElement("mods:recordIdentifier");
 
-		$subRecordIdentifier->setAttribute( source => 'info:oils/biblio-record_entry/' );
-
 		my $subid = $map->source;
-		$subRecordIdentifier->appendTextNode( $subid );
+		$subRecordIdentifier->appendTextNode(
+			sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:biblio-record_entry/$subid",
+				$month,
+				$day
+			)
+		);
 		$subRecordInfo->appendChild($subRecordIdentifier);
 
 		$relatedItem->appendChild( $subRecordInfo );
@@ -361,7 +387,26 @@ Returns the MODS representation of the requested metarecord
 );
 
 sub list_metarecord_formats {
-	return ['mods', keys %metarecord_xslt];
+	my @list = (
+		{ mods =>
+			{ namespace_uri	  => 'http://www.loc.gov/mods/',
+			  docs		  => 'http://www.loc.gov/mods/',
+			  schema_location => 'http://www.loc.gov/standards/mods/mods.xsd',
+			}
+		}
+	);
+
+	for my $type ( keys %metarecord_xslt ) {
+		push @list,
+			{ $type => 
+				{ namespace_uri	  => $metarecord_xslt{$type}{namespace_uri},
+				  docs		  => $metarecord_xslt{$type}{docs},
+				  schema_location => $metarecord_xslt{$type}{schema_location},
+				}
+			};
+	}
+
+	return \@list;
 }
 __PACKAGE__->register_method(
 	method    => 'list_metarecord_formats',
@@ -380,7 +425,26 @@ Returns the list of valid metarecord formats that supercat understands.
 
 
 sub list_record_formats {
-	return ['marcxml', keys %record_xslt];
+	my @list = (
+		{ marcxml =>
+			{ namespace_uri	  => 'http://www.loc.gov/MARC21/slim',
+			  docs		  => 'http://www.loc.gov/marcxml/',
+			  schema_location => 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd',
+			}
+		}
+	);
+
+	for my $type ( keys %record_xslt ) {
+		push @list,
+			{ $type => 
+				{ namespace_uri	  => $record_xslt{$type}{namespace_uri},
+				  docs		  => $record_xslt{$type}{docs},
+				  schema_location => $record_xslt{$type}{schema_location},
+				}
+			};
+	}
+
+	return \@list;
 }
 __PACKAGE__->register_method(
 	method    => 'list_record_formats',
@@ -412,7 +476,7 @@ sub oISBN {
 	# Find the record that has that ISBN.
 	my $bibrec = $_storage->request(
 		'open-ils.storage.direct.metabib.full_rec.search_where.atomic',
-		{ tag => '020', subfield => 'a', value => { like => $isbn.'%'} }
+		{ tag => '020', subfield => 'a', value => { ilike => $isbn.'%'} }
 	)->gather(1);
 
 	# Go away if we don't have one.

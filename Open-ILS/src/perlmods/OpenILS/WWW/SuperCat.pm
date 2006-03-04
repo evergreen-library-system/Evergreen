@@ -59,7 +59,7 @@ sub oisbn {
 		print "  <isbn record='$_'>$o</isbn>\n"
 	}
 
-	print "</idlist>";
+	print "</idlist>\n";
 
 	return Apache2::Const::OK;
 }
@@ -75,12 +75,13 @@ sub unapi {
 
 	my $uri = $cgi->param('uri') || '';
 	my $base = $cgi->url;
+	my $host = $cgi->virtual_host || $cgi->server_name;
 
 	my $format = $cgi->param('format');
 	my ($id,$type,$command) = ('','','');
 
 	if (!$format) {
-		if ($uri =~ m{^info:oils/([^\/]+)/(\d+)}o) {
+		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
 			$id = $2;
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
@@ -97,17 +98,21 @@ sub unapi {
 				   <format>
 				     <name>opac</name>
 				     <type>text/html</type>
-				   </format>".
+				   </format>";
 
-				join('',
-					map { "  <format>
-						   <name>$_</name>
-						   <type>application/xml</type>
-					 </format>" 
-					} @$list
-				).
+			for my $h (@$list) {
+				my ($type) = keys %$h;
+				$body .= "<format><name>$type</name><type>application/$type+xml</type>";
+
+				for my $part ( qw/namespace_uri docs schema_location/ ) {
+					$body .= "<$part>$$h{$type}{$part}</$part>"
+						if ($$h{$type}{$part});
+				}
 				
-				'</formats>';
+				$body .= '</format>';
+			}
+
+			$body .= "</formats>\n";
 
 			$apache->custom_response( 300, $body);
 			return 300;
@@ -122,25 +127,36 @@ sub unapi {
 					->gather(1);
 				};
 
-			my %hash = map { ($_ => $_) } @$list;
-			$list = [ sort keys %hash ];
+			my %hash = map { ( (keys %$_)[0] => (values %$_)[0] ) } @$list;
+			$list = [ map { { $_ => $hash{$_} } } sort keys %hash ];
 
 			print "\n<formats>
 				   <format>
 				     <name>opac</name>
 				     <type>text/html</type>
-				   </format>".
-				join('',
-					map { 
-						"<format><name>$_</name><type>text/xml</type></format>" 
-					} @$list
-				).'</formats>';
+				   </format>";
+
+			for my $h (@$list) {
+				my ($type) = keys %$h;
+				print "<format><name>$type</name><type>application/$type+xml</type>";
+
+				for my $part ( qw/namespace_uri docs schema_location/ ) {
+					print "<$part>$$h{$type}{$part}</$part>"
+						if ($$h{$type}{$part});
+				}
+				
+				print '</format>';
+			}
+
+			print "</formats>\n";
+
+
 			return Apache2::Const::OK;
 		}
 	}
 
 		
-	if ($uri =~ m{^info:oils/([^\/]+)/(\d+)}o) {
+	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
 		$id = $2;
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^m/o);
@@ -180,16 +196,27 @@ sub supercat {
 				->request("open-ils.supercat.$1.formats")
 				->gather(1);
 
-			print "\n<formats>
+			print "\n";
+
+			print "<formats>
 				   <format>
 				     <name>opac</name>
 				     <type>text/html</type>
-				   </format>".
-				join('',
-					map { 
-						"<format><name>$_</name><type>text/xml</type></format>" 
-					} @$list
-				).'</formats>';
+				   </format>";
+
+			for my $h (@$list) {
+				my ($type) = keys %$h;
+				print "<format><name>$type</name><type>application/$type+xml</type>";
+
+				for my $part ( qw/namespace_uri docs schema_location/ ) {
+					print "<$part>$$h{$type}{$part}</$part>"
+						if ($$h{$type}{$part});
+				}
+				
+				print '</format>';
+			}
+
+			print "</formats>\n";
 
 			return Apache2::Const::OK;
 		}
@@ -204,19 +231,30 @@ sub supercat {
 				->gather(1);
 			};
 
-		my %hash = map { ($_ => $_) } @$list;
-		$list = [ sort keys %hash ];
+		my %hash = map { ( (keys %$_)[0] => (values %$_)[0] ) } @$list;
+		$list = [ map { { $_ => $hash{$_} } } sort keys %hash ];
 
 		print "\n<formats>
 			   <format>
 			     <name>opac</name>
 			     <type>text/html</type>
-			   </format>".
-			join('',
-				map { 
-					"<format><name>$_</name><type>text/xml</type></format>" 
-				} @$list
-			).'</formats>';
+			   </format>";
+
+		for my $h (@$list) {
+			my ($type) = keys %$h;
+			print "<format><name>$type</name><type>application/$type+xml</type>";
+
+			for my $part ( qw/namespace_uri docs schema_location/ ) {
+				print "<$part>$$h{$type}{$part}</$part>"
+					if ($$h{$type}{$part});
+			}
+			
+			print '</format>';
+		}
+
+		print "</formats>\n";
+
+
 		return Apache2::Const::OK;
 	}
 
