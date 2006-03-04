@@ -254,9 +254,31 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var title_link = $n(r, config.names.result.item_title);
 	var author_link = $n(r, config.names.result.item_author);
 
+	var d = new Date();
+
 	if( is_mr )  {
 		var onlyrec = onlyrecord[ getOffset() + pos ];
 		if(onlyrec) {
+			var unapi_span = $n(r,'unapi');
+			unapi_span.appendChild(
+				text(
+					normalize( rec.title() ) +
+						' (tag:open-ils.org,' +
+						d.getFullYear() + '-' +
+						(1 + d.getMonth()) + '-' + 
+						d.getDate() + 
+						':biblio-record_entry/' + onlyrec + ')'
+				)
+			);
+			unapi_span.setAttribute(
+				'title',
+				'tag:open-ils.org,' +
+					d.getFullYear() + '-' +
+					(1 + d.getMonth()) + '-' + 
+					d.getDate() + 
+					':biblio-record_entry/' + onlyrec
+			);
+
 			var args = {};
 			args.page = RDETAIL;
 			args[PARAM_OFFSET] = 0;
@@ -267,6 +289,26 @@ function resultDisplayRecord(rec, pos, is_mr) {
 			title_link.appendChild(text(normalize(truncate(rec.title(), 65))));
 			
 		} else {
+			var unapi_span = $n(r,'unapi');
+			unapi_span.appendChild(
+				text(
+					normalize( rec.title() ) +
+						' (tag:open-ils.org,' +
+						d.getFullYear() + '-' +
+						(1 + d.getMonth()) + '-' + 
+						d.getDate() + 
+						':metabib-metarecord/' + rec.doc_id() + ')'
+				)
+			);
+			unapi_span.setAttribute(
+				'title'
+				'tag:open-ils.org,' +
+					d.getFullYear() + '-' +
+					(1 + d.getMonth()) + '-' + 
+					d.getDate() + 
+					':biblio-record_entry/' + rec.doc_id()
+			);
+
 			buildTitleLink(rec, title_link); 
 			var args = {};
 			args.page = RRESULT;
@@ -276,6 +318,26 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		}
 
 	} else {
+		var unapi_span = $n(r,'unapi');
+		unapi_span.appendChild(
+			text(
+				normalize( rec.title() ) +
+					' (tag:open-ils.org,' +
+					d.getFullYear() + '-' +
+					(1 + d.getMonth()) + '-' + 
+					d.getDate() + 
+					':biblio-record_entry/' + rec.doc_id() + ')'
+			)
+		);
+		unapi_span.setAttribute(
+			'title',
+			'tag:open-ils.org,' +
+				d.getFullYear() + '-' +
+				(1 + d.getMonth()) + '-' + 
+				d.getDate() + 
+				':biblio-record_entry/' + rec.doc_id()
+		);
+
 		buildTitleDetailLink(rec, title_link); 
 		var args = {};
 		args.page = RDETAIL;

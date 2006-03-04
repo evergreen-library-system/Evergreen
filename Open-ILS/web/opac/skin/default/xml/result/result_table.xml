@@ -36,9 +36,14 @@
 								</td>
 
 								<td class='result_table_title_cell' name='result_table_title_cell'>
+									<!-- Title goes here -->
 									<a title="View titles for this record" name='item_title' class='search_link'> 
 										<!-- Title goes here -->
 									</a>
+									<!-- Empty span used for creating unAPI links -->
+									<span name="unapi" class="unapi-uri hide_me">
+										<!-- unAPI URI goes here -->
+									</span>
 								</td>
 
 								<!-- Copy this td for each copy count appended -->

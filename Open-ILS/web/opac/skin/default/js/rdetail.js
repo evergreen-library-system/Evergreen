@@ -38,9 +38,32 @@ function rdetailDraw() {
 }
 
 var rdeatilMarcFetched = false;
-function rdetailViewMarc(r) {
+function rdetailViewMarc(r,id) {
 	hideMe($('rdetail_extras_loading'));
 	$('rdetail_view_marc_box').innerHTML = r.getResultObject();
+
+	var d = new Date();
+
+	/* add the unapi span inside a hidden div */
+	$('rdetail_view_marc_box').insertBefore(
+		elem('div', { class : 'hide_me' }).appendChild(
+			elem(	'span',
+				{ class : 'unAPI',
+				  title :
+				  	'tag:open-ils.org,' +
+				  	d.getFullYear() + '-' +
+				  	(1 + d.getMonth()) + '-' +
+				  	d.getDate() +
+					':biblio-record_entry/' + id },
+				  'tag:open-ils.org,' +
+			  	  d.getFullYear() + '-' +
+				  (1 + d.getMonth()) + '-' +
+				  d.getDate() +
+				  ':biblio-record_entry/' + id
+			)
+		),
+		$('rdetail_view_marc_box').firstChild
+	);
 }
 
 
@@ -212,7 +235,7 @@ function rdetailShowExtra(type) {
 			unHideMe($('rdetail_extras_loading'));
 			rdetailMarcFetched = true;
 			var req = new Request( FETCH_MARC_HTML, record.doc_id() );
-			req.callback(rdetailViewMarc); 
+			req.callback(rdetailViewMarc, record.doc_id()); 
 			req.send();
 			break;
 
