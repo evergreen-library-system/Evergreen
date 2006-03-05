@@ -229,6 +229,20 @@ function resultPaginate() {
 	try{searchTimer.stop()}catch(e){}
 }
 
+function buildunAPISpan (span, type, id) {
+	var cgi = new CGI();
+	var d = new Date();
+
+	addCSSClass(span,'unapi-uri');
+
+	span.appendChild(text('unAPI'));
+	span.setAttribute(
+		'title',
+		'tag:' + cgi.server_name + ',' +
+			d.getFullYear() +
+			':' + type + '/' + id
+	);
+}
 
 /* display the record info in the record display table 'pos' is the 
 		zero based position the record should have in the display table */
@@ -254,30 +268,10 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var title_link = $n(r, config.names.result.item_title);
 	var author_link = $n(r, config.names.result.item_author);
 
-	var d = new Date();
-
 	if( is_mr )  {
 		var onlyrec = onlyrecord[ getOffset() + pos ];
 		if(onlyrec) {
-			var unapi_span = $n(r,'unapi');
-			unapi_span.appendChild(
-				text(
-					normalize( rec.title() ) +
-						' (tag:open-ils.org,' +
-						d.getFullYear() + '-' +
-						(1 + d.getMonth()) + '-' + 
-						d.getDate() + 
-						':biblio-record_entry/' + onlyrec + ')'
-				)
-			);
-			unapi_span.setAttribute(
-				'title',
-				'tag:open-ils.org,' +
-					d.getFullYear() + '-' +
-					(1 + d.getMonth()) + '-' + 
-					d.getDate() + 
-					':biblio-record_entry/' + onlyrec
-			);
+			buildunAPISpan($n(r,'unapi'), 'biblio-record_entry', onlyrec);
 
 			var args = {};
 			args.page = RDETAIL;
@@ -289,25 +283,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 			title_link.appendChild(text(normalize(truncate(rec.title(), 65))));
 			
 		} else {
-			var unapi_span = $n(r,'unapi');
-			unapi_span.appendChild(
-				text(
-					normalize( rec.title() ) +
-						' (tag:open-ils.org,' +
-						d.getFullYear() + '-' +
-						(1 + d.getMonth()) + '-' + 
-						d.getDate() + 
-						':metabib-metarecord/' + rec.doc_id() + ')'
-				)
-			);
-			unapi_span.setAttribute(
-				'title',
-				'tag:open-ils.org,' +
-					d.getFullYear() + '-' +
-					(1 + d.getMonth()) + '-' + 
-					d.getDate() + 
-					':biblio-record_entry/' + rec.doc_id()
-			);
+			buildunAPISpan($n(r,'unapi'), 'metabib-metarecord', rec.doc_id());
 
 			buildTitleLink(rec, title_link); 
 			var args = {};
@@ -318,25 +294,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		}
 
 	} else {
-		var unapi_span = $n(r,'unapi');
-		unapi_span.appendChild(
-			text(
-				normalize( rec.title() ) +
-					' (tag:open-ils.org,' +
-					d.getFullYear() + '-' +
-					(1 + d.getMonth()) + '-' + 
-					d.getDate() + 
-					':biblio-record_entry/' + rec.doc_id() + ')'
-			)
-		);
-		unapi_span.setAttribute(
-			'title',
-			'tag:open-ils.org,' +
-				d.getFullYear() + '-' +
-				(1 + d.getMonth()) + '-' + 
-				d.getDate() + 
-				':biblio-record_entry/' + rec.doc_id()
-		);
+		buildunAPISpan($n(r,'unapi'), 'biblio-record_entry', rec.doc_id());
 
 		buildTitleDetailLink(rec, title_link); 
 		var args = {};
