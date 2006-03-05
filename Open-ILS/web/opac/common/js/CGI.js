@@ -5,6 +5,7 @@ function CGI() {
 	this.data = new Object();
 
 	var string = location.search.replace(/^\?/,"");
+	this.server_name = location.href.replace(/^https?:\/\/([^\/]+).+$/,"$1");
 
 	var key = ""; 
 	var value = "";
