@@ -301,7 +301,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 				)
 			);
 			unapi_span.setAttribute(
-				'title'
+				'title',
 				'tag:open-ils.org,' +
 					d.getFullYear() + '-' +
 					(1 + d.getMonth()) + '-' + 
