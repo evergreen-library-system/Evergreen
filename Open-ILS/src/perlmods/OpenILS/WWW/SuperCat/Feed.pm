@@ -1,0 +1,328 @@
+package OpenILS::WWW::SuperCat::Feed;
+use strict; use warnings;
+use vars qw/$parser/;
+use OpenSRF::EX qw(:try);
+use XML::LibXML;
+use CGI;
+
+sub new {
+	my $class = shift;
+	my $type = shift;
+	if ($type) {
+		$class .= '::'.$type;
+		return $class->new;
+	}
+	throw OpenSRF::EX::ERROR ("I need a feed type!") ;
+}
+
+sub build {
+	my $class = shift;
+	my $xml = shift;
+
+	$parser = new XML::LibXML if (!$parser);
+
+	my $self = { doc => $parser->parse_string($xml), items => [] };
+
+	return bless $self => $class;
+}
+
+sub base {
+	my $self = shift;
+	my $base = shift;
+	$self->{base} = $base if ($base);
+	return $self->{base};
+}
+
+sub unapi {
+	my $self = shift;
+	my $unapi = shift;
+	$self->{unapi} = $unapi if ($unapi);
+	return $self->{unapi};
+}
+
+sub push_item {
+	my $self = shift;
+	push @{ $self->{items} }, @_;
+}
+
+sub items {
+	my $self = shift;
+	return @{ $self->{items} } if (wantarray);
+	return $self->{items};
+}
+
+sub _add_node {
+	my $self = shift;
+
+	my $xpath = shift;
+	my $new = shift;
+
+	for my $node ($self->{doc}->findnodes($xpath)) {
+		$node->appendChild($new);
+		last;
+	}
+}
+
+sub _create_node {
+	my $self = shift;
+
+	my $xpath = shift;
+	my $ns = shift;
+	my $name = shift;
+	my $text = shift;
+	my $attrs = shift;
+
+	for my $node ($self->{doc}->findnodes($xpath)) {
+		my $new = $self->{doc}->createElement($name) if (!$ns);
+		$new = $self->{doc}->createElementNS($ns,$name) if ($ns);
+
+		$new->appendChild( $self->{doc}->createTextNode( $text ) )
+			if (defined $text);
+
+		if (ref($attrs)) {
+			for my $key (keys %$attrs) {
+				$new->setAttribute( $key => $$attrs{$key} );
+			}
+		}
+
+		$node->appendChild( $new );
+
+		return $new;
+	}
+}
+
+sub add_item {
+	my $self = shift;
+	my $class = ref($self) || $self;
+	$class .= '::item';
+
+	my $item_xml = shift;
+	my $entry = $class->new($item_xml);
+
+	$entry->base($self->base);
+	$entry->unapi($self->unapi);
+
+	$self->push_item($entry);
+	return $entry;
+}
+
+sub toString {
+	my $self = shift;
+	for my $root ( $self->{doc}->findnodes($self->{item_xpath}) ) {
+		for my $item ( $self->items ) {
+			$root->appendChild( $item->{doc}->documentElement );
+		}
+		last;
+	}
+
+	return $self->{doc}->toString(1);
+}
+
+sub id {};
+sub link {};
+sub title {};
+sub update_ts {};
+sub creator {};
+
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::atom;
+use base 'OpenILS::WWW::SuperCat::Feed';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<atom:feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
+	$self->{type} = 'atom';
+	$self->{item_xpath} = '/atom:feed';
+	return $self;
+}
+
+sub title {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','atom:title', $text);
+}
+
+sub update_ts {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','atom:updated', $text);
+}
+
+sub creator {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','atom:author');
+	$self->_create_node('/atom:feed/atom:author', 'http://www.w3.org/2005/Atom','atom:name', $text);
+}
+
+sub link {
+	my $self = shift;
+	my $type = shift;
+	my $id = shift;
+	my $mime = shift || "application/$type+xml";
+
+	$type = 'self' if ($type eq 'atom');
+
+	$self->_create_node(
+		$self->{item_xpath},
+		'http://www.w3.org/2005/Atom',
+		'atom:link',
+		undef,
+		{ rel => $type,
+		  href => $id,
+		  type => $mime,
+		}
+	);
+}
+
+sub id {
+	my $self = shift;
+	my $id = shift;
+
+	$self->_create_node( '/atom:feed', 'http://www.w3.org/2005/Atom', 'atom:id', $id );
+}
+
+package OpenILS::WWW::SuperCat::Feed::atom::item;
+use base 'OpenILS::WWW::SuperCat::Feed::atom';
+
+sub new {
+	my $class = shift;
+	my $xml = shift;
+	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
+	$self->{item_xpath} = '/atom:entry';
+	$self->{type} = 'atom::item';
+	return $self;
+}
+
+
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::rss2;
+use base 'OpenILS::WWW::SuperCat::Feed';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<rss version="2.0"><channel/></rss>');
+	$self->{type} = 'rss2';
+	$self->{item_xpath} = '/rss/channel';
+	return $self;
+}
+
+sub title {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node('/rss/channel',undef,'title', $text);
+}
+
+sub update_ts {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node('/rss/channel',undef,'lastBuildDate', $text);
+}
+
+sub creator {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node('/rss/channel', undef,'generator', $text);
+}
+
+sub link {
+	my $self = shift;
+	my $type = shift;
+	my $id = shift;
+	my $mime = shift || "application/$type+xml";
+
+	$type = 'self' if ($type eq 'rss2');
+
+	$self->_create_node(
+		$self->{item_xpath},
+		undef,
+		'link',
+		$id,
+		{ rel => $type,
+		  type => $mime,
+		}
+	);
+}
+
+package OpenILS::WWW::SuperCat::Feed::rss2::item;
+use base 'OpenILS::WWW::SuperCat::Feed::rss2';
+
+sub new {
+	my $class = shift;
+	my $xml = shift;
+	my $self = $class->SUPER::build($xml);
+	$self->{type} = 'atom::item';
+	$self->{item_xpath} = '/item';
+	return $self;
+}
+
+
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::mods;
+use base 'OpenILS::WWW::SuperCat::Feed';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<mods:modsCollection version="3.0" xmlns:mods="http://www.loc.gov/mods/"/>');
+	$self->{type} = 'mods';
+	$self->{item_xpath} = '/mods:modsCollection';
+	return $self;
+}
+
+package OpenILS::WWW::SuperCat::Feed::mods::item;
+use base 'OpenILS::WWW::SuperCat::Feed::mods';
+
+sub new {
+	my $class = shift;
+	my $xml = shift;
+	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', 'mods');
+	$self->{type} = 'mods::item';
+	return $self;
+}
+
+my $linkid = 1;
+
+sub link {
+	my $self = shift;
+	my $type = shift;
+	my $id = shift;
+
+	if ($type eq 'unapi' || $type eq 'opac') {
+		$self->_create_node(
+			'mods:mods',
+			'http://www.loc.gov/mods/',
+			'mods:relatedItem',
+			undef,
+			{ type => 'otherFormat', id => 'link-'.$linkid }
+		);
+		$self->_create_node(
+			"mods:mods/mods:relatedItem[\@id='link-$linkid']",
+			'http://www.loc.gov/mods/',
+			'mods:recordIdentifier',
+			$id
+		);
+		$linkid++;
+	}
+}
+
+
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::html;
+use base 'OpenILS::WWW::SuperCat::Feed';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<html><head/><body/></html>');
+	$self->{type} = 'html';
+	$self->{item_xpath} = '/html/body';
+	return $self;
+}
+
+
+1;
