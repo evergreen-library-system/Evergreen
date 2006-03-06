@@ -60,6 +60,7 @@ jsonObject* osrfCacheGetObject( char* key, ... ) {
 			obj = jsonParseString( data );
 			return obj;
 		}
+		osrfLogWarning(OSRF_LOG_MARK, "No cache data exists with key %s", VA_BUF);
 	}
 	return NULL;
 }
@@ -69,6 +70,7 @@ char* osrfCacheGetString( char* key, ... ) {
 		VA_LIST_TO_STRING(key);
 		char* data = (char*) mc_aget(__osrfCache, VA_BUF, strlen(VA_BUF) );
 		osrfLogInternal( OSRF_LOG_MARK, "osrfCacheGetObject(): Returning object: %s", data);
+		if(!data) osrfLogWarning(OSRF_LOG_MARK, "No cache data exists with key %s", VA_BUF);
 		return data;
 	}
 	return NULL;

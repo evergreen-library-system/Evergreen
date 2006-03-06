@@ -394,6 +394,7 @@ oilsEvent*  _oilsAuthResetTimeout( char* authToken ) {
 	jsonObject* cacheObj = osrfCacheGetObject( key ); 
 
 	if(!cacheObj) {
+		osrfLogError(OSRF_LOG_MARK, "No user in the cache exists with key %s", key);
 		evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
 
 	} else {
@@ -425,29 +426,37 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 
 	char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
 	jsonObject* cacheObj = NULL;
+	oilsEvent* evt = NULL;
 
 	if( authToken ){
 
-		if(1) {
-			oilsEvent* evt = _oilsAuthResetTimeout(authToken);
-			if( evt && strcmp(evt->event, OILS_EVENT_SUCCESS) ) {
-				osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+		evt = _oilsAuthResetTimeout(authToken);
+
+		if( evt && strcmp(evt->event, OILS_EVENT_SUCCESS) ) {
+			osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+			oilsEventFree(evt);
+
+		} else {
+
+			osrfLogDebug(OSRF_LOG_MARK, "Retrieving auth session: %s", authToken);
+			char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
+			cacheObj = osrfCacheGetObject( key ); 
+			if(cacheObj) {
+				osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
+				jsonObjectFree(cacheObj);
+			} else {
+				oilsEvent* evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
+				osrfAppRespondComplete( ctx, oilsEventToJSON(evt) ); /* should be event.. */
 				oilsEventFree(evt);
 			}
+			free(key);
 		}
 
-		osrfLogDebug(OSRF_LOG_MARK, "Retrieving auth session: %s", authToken);
-		char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
-		cacheObj = osrfCacheGetObject( key ); 
-		if(cacheObj) {
-			osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
-			jsonObjectFree(cacheObj);
-		} else {
-			oilsEvent* evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
-			osrfAppRespondComplete( ctx, oilsEventToJSON(evt) ); /* should be event.. */
-			oilsEventFree(evt);
-		}
-		free(key);
+	} else {
+
+		evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
+		osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+		oilsEventFree(evt);
 	}
 
 	return 0;
