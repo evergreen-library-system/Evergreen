@@ -63,6 +63,18 @@ sub child_init {
 
 	$logger->debug("Got here!");
 
+	# parse the ATOM entry xslt ...
+	my $atom_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2ATOM.xsl"
+	);
+	# and stash a transformer
+	$record_xslt{atom}{xslt} = $_xslt->parse_stylesheet( $atom_xslt );
+	$record_xslt{atom}{namespace_uri} = 'http://www.w3.org/2005/Atom';
+	$record_xslt{atom}{docs} = 'http://www.ietf.org/rfc/rfc4287.txt';
+
 	# parse the RDFDC xslt ...
 	my $rdf_dc_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
