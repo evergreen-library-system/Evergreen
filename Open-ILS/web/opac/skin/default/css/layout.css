@@ -17,6 +17,7 @@ table { border-collapse: collapse; }
 
 .classic_link { text-decoration: underline; color: black;}
 .classic_link:visited { text-decoration: underline; color: black;}
+.classic_link_col { text-decoration: underline; color: red;}
 
 
 

@@ -1,4 +1,4 @@
-<table class='data_grid' width='80%'>
+<table class='data_grid' width='95%'>
 	<thead>
 		<tr>
 			<td colspan='6'>&opac.advanced.quick.title;</td>
@@ -7,14 +7,19 @@
 	<tbody>
 		<tr>
 			<td>
-				<span style='padding-right: 10px;'>&opac.advanced.quick.isbn;:</span>
-				<input id='opac.advanced.quick.isbn' style='margin: 5px;' type='text' size='10' maxlength='10'> </input>
-				<input type='submit' onclick='advISBNRun();' value='&common.submit;'> </input>
+				<span style='padding-right: 0px;'>Call Number:</span>
+				<input id='opac.advanced.quick.cn' style='margin: 2px;' type='text' size='12'> </input>
+				<input type='submit' onclick='advCNRun();' value='Go'> </input>
 			</td>
 			<td>
-				<span style='padding-right: 10px;'>&opac.advanced.quick.issn;:</span>
-				<input id='opac.advanced.quick.issn' style='margin: 5px;' type='text' size='9' maxlength='9'> </input>
-				<input type='submit' onclick='advISSNRun();' value='&common.submit;'> </input>
+				<span style='padding-right: 0px;'>&opac.advanced.quick.isbn;:</span>
+				<input id='opac.advanced.quick.isbn' style='margin: 2px;' type='text' size='10' maxlength='10'> </input>
+				<input type='submit' onclick='advISBNRun();' value='Go'> </input>
+			</td>
+			<td>
+				<span style='padding-right: 0px;'>&opac.advanced.quick.issn;:</span>
+				<input id='opac.advanced.quick.issn' style='margin: 2px;' type='text' size='9' maxlength='9'> </input>
+				<input type='submit' onclick='advISSNRun();' value='Go'> </input>
 			</td>
 		</tr>
 	</tbody>

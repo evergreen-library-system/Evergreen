@@ -9,6 +9,24 @@ var cnBrowseShowNext = false;
 var cnBrowseShowPrev = false;
 var MAX_CN = 9;
 
+if( findCurrentPage() == CNBROWSE ) {
+	attachEvt("common", "run", cnBrowseLoadSearch);
+	attachEvt( "common", "locationUpdated", cnBrowseResubmit );
+}
+
+function cnBrowseLoadSearch() {
+	unHideMe($('cn_browse'));
+	cnBrowseGo(getCallnumber(), getDepth());
+}
+
+function cnBrowseResubmit() {
+	var args = {}
+	args[PARAM_CN] = cnBrowseCurrent;
+	args[PARAM_DEPTH] = getNewSearchDepth();
+	args[PARAM_LOCATION] = getNewSearchLocation();
+	goTo(buildOPACLink(args));
+}
+
 function cnBrowseGo(cn, depth) { 
 	if(depth == null) depth = getDepth();
 	cnBrowseDepth = depth;

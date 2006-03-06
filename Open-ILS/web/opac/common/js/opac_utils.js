@@ -102,6 +102,7 @@ function initParams() {
 	SORT		= cgi.param(PARAM_SORT);
 	SORT_DIR	= cgi.param(PARAM_SORT_DIR);
 	DEBUG		= cgi.param(PARAM_DEBUG);
+	CALLNUM	= cgi.param(PARAM_CN);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -145,6 +146,7 @@ function getRtype(){return RTYPE;}
 function getSort(){return SORT;}
 function getSortDir(){return SORT_DIR;}
 function getDebug(){return DEBUG;}
+function getCallnumber() { return CALLNUM; }
 
 
 function findBasePath() {
@@ -207,6 +209,8 @@ function  buildOPACLink(args, slim, ssl) {
 		}
 	}
 
+	if(getDebug())
+		string += _appendParam(DEBUG,	PARAM_DEBUG, args, getDebug, string);
 	if(getOrigLocation() != 1) 
 		string += _appendParam(ORIGLOC,	PARAM_ORIGLOC, args, getOrigLocation, string);
 	if(getTerm()) 

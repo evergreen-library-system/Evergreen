@@ -47,6 +47,7 @@ function advInit() {
 
 	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
+	setEnterFunc($('opac.advanced.quick.cn'), advCNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 }
 
@@ -157,6 +158,15 @@ function advISSNRun() {
 	arg[PARAM_ADVTERM]	= issn;
 	arg[PARAM_OFFSET]		= 0;
 	arg[PARAM_ADVTYPE]	= ADVTYPE_ISSN;
+	goTo(buildOPACLink(arg));
+}
+
+function advCNRun() {
+	var cn = $('opac.advanced.quick.cn').value;
+	if(!cn) return;
+	var arg			= {};
+	arg.page			= CNBROWSE;
+	arg[PARAM_CN]	= cn;
 	goTo(buildOPACLink(arg));
 }
 

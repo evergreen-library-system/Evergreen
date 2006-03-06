@@ -58,11 +58,12 @@
 <!ENTITY opac.search.nowSearching "Now Searching">
 
 
-<!ENTITY opac.title.home "Evergreen: Home">
+<!ENTITY opac.title.home "Evergreen Home">
 <!ENTITY opac.title.mresult "Evergreen Title Groups">
 <!ENTITY opac.title.rresult "Evergreen Titles">
 <!ENTITY opac.title.myopac "Evergreen My Account">
 <!ENTITY opac.title.rdetail "Evergreen Title Details">
 <!ENTITY opac.title.advanced "Evergreen Advanced Search">
 <!ENTITY opac.title.reqitems "Evergreen Request Items">
+<!ENTITY opac.title.cnbrowse "Evergreen Call Number Browse">
 <!ENTITY opac.login.login "Login with your username and password">

@@ -22,6 +22,12 @@
 <!--#elif expr="$DOCUMENT_NAME='advanced.xml'"-->
 	<!--#set var='OILS_TITLE' value='opac.title.advanced'-->
 
+<!--#elif expr="$DOCUMENT_NAME='reqitems.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.reqitems'-->
+
+<!--#elif expr="$DOCUMENT_NAME='cnbrowse.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.cnbrowse'-->
+
 <!--#endif-->
 
 <!--#set var="OILS_BASE" value="http://${SERVER_NAME}/${OILS_OPAC_BASE}"-->

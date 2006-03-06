@@ -21,6 +21,7 @@ var PARAM_RTYPE		= "rt";
 var PARAM_SORT			= "s";
 var PARAM_SORT_DIR	= "sd";
 var PARAM_DEBUG		= "dbg";
+var PARAM_CN			= "cn";
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -44,6 +45,7 @@ var SORT;
 var SORT_DIR;
 var RLIST;
 var DEBUG;
+var CALLNUM;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -67,6 +69,7 @@ var ADVANCED	= "advanced";
 var HOME			= "home";
 var BBAGS		= "bbags";
 var REQITEMS	= "reqitems";
+var CNBROWSE	= "cnbrowse";
 
 /* search type (STYPE) options */
 var STYPE_AUTHOR	= "author";
@@ -155,6 +158,7 @@ config.page[MYOPAC]		= "myopac.xml";
 config.page[RDETAIL]		= "rdetail.xml";
 config.page[BBAGS]		= "bbags.xml";
 config.page[REQITEMS]	= "reqitems.xml";
+config.page[CNBROWSE]	= "cnbrowse.xml";
 
 /* themes */
 config.themes = {};
@@ -222,8 +226,6 @@ config.ids.altcanvas = {};
 
 var FETCH_MRIDS_					= "open-ils.search:open-ils.search.biblio.metabib.class.search:1";
 var FETCH_SEARCH_RIDS			= "open-ils.search:open-ils.search.biblio.record.class.search:1";
-/*var FETCH_MRIDS					= "open-ils.search:open-ils.search.biblio.class:1";*/
-/*var FETCH_MRIDS_FULL				= "open-ils.search:open-ils.search.biblio.class.full:1";*/
 var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
 var FETCH_MODS_FROM_COPY		= "open-ils.search:open-ils.search.biblio.mods_from_copy";
 var FETCH_MR_COPY_COUNTS		= "open-ils.search:open-ils.search.biblio.metarecord.copy_count:1";
