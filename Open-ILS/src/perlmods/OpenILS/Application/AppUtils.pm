@@ -925,6 +925,19 @@ sub fetch_copy_note {
 	return ($note, $evt);
 }
 
+sub fetch_call_numbers_by_title {
+	my( $self, $titleid ) = @_;
+	$logger->info("Fetching call numbers by title $titleid");
+	return $self->storagereq(
+		'open-ils.storage.direct.asset.call_number.search.record.atomic', $titleid);
+}
+
+sub fetch_copies_by_call_number {
+	my( $self, $cnid ) = @_;
+	$logger->info("Fetching copies by call number $cnid");
+	return $self->storagereq(
+		'open-ils.storage.direct.asset.copy.search.call_number.atomic', $cnid );
+}
 
 1;
 

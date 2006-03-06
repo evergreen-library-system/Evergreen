@@ -15,12 +15,11 @@ var numStatuses = null;
 var defaultCN;
 var callnumberCache = {};
 var rdetailLocalOnly = true;
+var globalCNCache	= {};
 
 var nextContainerIndex;
 
 function rdetailDraw() {
-
-
 	copyRowParent = G.ui.rdetail.cp_info_row.parentNode;
 	copyRow = copyRowParent.removeChild(G.ui.rdetail.cp_info_row);
 	statusRow = G.ui.rdetail.cp_status.parentNode;
@@ -204,6 +203,7 @@ function rdetailShowExtra(type) {
 	hideMe($('rdetail_marc_div'));
 	hideMe($('cn_browse'));
 	hideMe($('rdetail_cn_browse_div'));
+	hideMe($('rdetail_notes_div'));
 
 	var req;
 	switch(type) {
@@ -244,6 +244,10 @@ function rdetailShowExtra(type) {
 		case 'cn':
 			unHideMe($('rdetail_cn_browse_div'));
 			rdetailShowCNBrowse(defaultCN, null, true);
+			break;
+
+		case 'notes':
+			unHideMe($('rdetail_notes_div'));
 			break;
 	}
 }
@@ -375,8 +379,10 @@ function _rdetailBuildInfoRows(r) {
 	for( var i = 0; i < summary.length; i++ ) {
 
 		var arr = summary[i];
+		globalCNCache[arr[1]] = 1;
 		var thisOrg = findOrgUnit(arr[0]);
 		var rowNode = $("cp_info_" + thisOrg.id());
+		if(!rowNode) continue;
 
 		if(rowNode.getAttribute("used")) {
 
@@ -412,6 +418,52 @@ function _rdetailBuildInfoRows(r) {
 
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
 
+	/* now that we know what CN's we have, grab the associated notes */
+	rdetailFetchNotes();
+}
+
+function rdetailFetchNotes() {
+	var req = new Request(FETCH_BIBLIO_NOTES, record.doc_id());
+	req.callback(rdetailDrawNotes);
+	req.send();
+}
+
+var rdetailNotesTemplate;
+function rdetailDrawNotes(r) {
+	var notes = r.getResultObject();
+
+	var tbody = $('rdetail_notes_tbody');
+	if(!rdetailNotesTemplate) 
+		rdetailNotesTemplate = tbody.removeChild($('rdetail_notes_row'));
+
+	var found = false;
+	for( var t in notes.titles ) {
+		var note = notes.copies[c];
+		/* these need to go into a title notes 
+		section different from the copy/cn notes (on the title summary?) */
+	}
+
+	for( var v in notes.volumes ) {
+		var note = notes.copies[c];
+		var row = rdetailNotesTemplate.cloneNode(true);
+		found = true;
+	}
+
+	for( var c in notes.copies ) {
+		found = true;
+		var copynode = notes.copies[c];
+		var copy = copynode.id;
+		var nts = copynode.notes;
+		for( var n in nts ) {
+			var note = nts[n];
+			var row = rdetailNotesTemplate.cloneNode(true);
+			$n(row, 'rdetail_notes_title').appendChild(text(note.title()));
+			$n(row, 'rdetail_notes_value').appendChild(text(note.value()));
+			tbody.appendChild(row);
+		}
+	}
+
+	if(found) unHideMe($('rdetail_viewnotes_link'));
 }
 
 function rdetailBuildBrowseInfo(row, cn, local) {

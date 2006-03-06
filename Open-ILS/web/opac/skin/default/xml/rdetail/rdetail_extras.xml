@@ -33,11 +33,18 @@
 						class='classic_link'>Annotation</a>
 				</td>
 
+				<td id='rdetail_viewnotes_link' class='hide_me rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("notes");' 
+						class='classic_link'>Item Notes</a>
+				</td>
+
 				<td id='rdetail_viewmarc_link' class='rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("marc");' 
 						class='classic_link'>MARC Record</a>
 				</td>
+
 
 			</tr>
 		</thead>
@@ -70,6 +77,8 @@
 			
 			<!--#include virtual="../common/cn_browse.xml"-->
 		</div>
+
+		<!--#include virtual="rdetail_notes.xml"-->
 
 	</div>
 </div>

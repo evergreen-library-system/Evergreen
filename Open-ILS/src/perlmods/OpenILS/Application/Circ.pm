@@ -426,6 +426,80 @@ sub delete_copy_note {
 }
 
 
+__PACKAGE__->register_method(
+	method		=> 'note_batch',
+	api_name		=> 'open-ils.circ.biblio_notes.public.batch.retrieve',
+	signature	=> q/
+		Returns a set of notes for a given set of titles, volumes, and copies.
+		@param titleid The id of the title who's notes are retrieving
+		@return A list like so:
+			{
+				"titles"		: [ { id : $id, notes : [ n1, n2 ] },... ]
+				"volumes"	: [ { id : $id, notes : [ n1, n2 ] },... ]
+				"copies"		: [ { id : $id, notes : [ n1, n2 ] },... ]
+			}
+	/
+);
+
+sub note_batch {
+	my( $self, $conn, $titleid ) = @_;
+
+	my @copies;
+	my $cns = $U->storagereq(
+		'open-ils.storage.id_list.asset.call_number.search.record.atomic', $titleid );
+
+	for my $c (@$cns) {
+		my $copyids = $U->storagereq(
+			'open-ils.storage.id_list.asset.copy.search.call_number.atomic', $c);
+		push(@copies, @$copyids);
+	}
+
+	return _note_batch( { titles => [$titleid], volumes => $cns, copies => \@copies} );
+}
+
+
+sub _note_batch {
+	my $args = shift;
+
+	my %resp;
+	$resp{titles}	= [];
+	$resp{volumes} = [];
+	$resp{copies}	= [];
+
+	my $titles	= (ref($$args{titles})) ? $$args{titles} : [];
+	my $volumes = (ref($$args{volumes})) ? $$args{volumes} : [];
+	my $copies	= (ref($$args{copies})) ? $$args{copies} : [];
+
+	for my $title (@$titles) {
+		my $notes = $U->storagereq(
+			'open-ils.storage.direct.biblio.record_note.search_where.atomic', 
+			{ record => $title, pub => 't' });
+		push(@{$resp{titles}}, {id => $title, notes => $notes}) if @$notes;
+	}
+
+	for my $volume (@$volumes) {
+		my $notes = $U->storagereq(
+			'open-ils.storage.direct.asset.call_number_note.search_where.atomic',
+			{ call_number => $volume, pub => 't' });
+		push( @{$resp{volumes}}, {id => $volume, notes => $notes} ) if @$notes;
+	}
+
+
+	for my $copy (@$copies) {
+		$logger->debug("Fetching copy notes for copy $copy");
+		my $notes = $U->storagereq(
+			'open-ils.storage.direct.asset.copy_note.search_where.atomic',
+			{ owning_copy => $copy, pub => 't' });
+		push( @{$resp{copies}}, { id => $copy, notes => $notes }) if @$notes;
+	}
+
+	return \%resp;
+}
+
+
+
+
+
 
 
 1;
