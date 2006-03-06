@@ -31,6 +31,21 @@ sub register_method {
 			__PACKAGE__->SUPER::register_method( %dup_args );
 		}
 	}
+
+	if ($dup_args{real_api_name} =~ /^open-ils\.storage\.direct\..+\.search.+/o ||
+	    $dup_args{api_name} =~ /^open-ils\.storage\.direct\..+\.search.+/o) {
+		$dup_args{api_name} = $dup_args{real_api_name} if ($dup_args{real_api_name});
+
+		(my $name = $dup_args{api_name}) =~ s/\.direct\./.id_list./o;
+
+		$dup_args{notes} = $dup_args{real_api_name};
+		$dup_args{real_api_name} = $dup_args{api_name};
+		$dup_args{method} = 'search_ids';
+		$dup_args{api_name} = $name;
+		$dup_args{package} = __PACKAGE__;
+
+		__PACKAGE__->SUPER::register_method( %dup_args );
+	}
 }
 
 sub cachable_wrapper {
@@ -123,6 +138,21 @@ sub retrieve_node {
 		}
 		$client->respond($rec);
 	}
+	return undef;
+}
+
+sub search_ids {
+	my $self = shift;
+	my $client = shift;
+	my @args = @_;
+
+	my @res = $self->method_lookup($self->{real_api_name})->run(@args);
+
+	if (ref($res[0]) eq 'ARRAY') {
+		return [ map { $_->id } @{ $res[0] } ];
+	}
+
+	$client->respond($_) for ( map { $_->id } @res );
 	return undef;
 }
 
