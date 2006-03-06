@@ -1395,7 +1395,7 @@ sub postfilter_search_multi_class_fts {
 	my $select = <<"	SQL";
 		SELECT	m.metarecord,
 			$relevance,
-			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END,
+			CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MIN(m.source) ELSE 0 END,
 			$rank
   	  	FROM	$search_table_list
 			$metabib_metarecord_source_map_table m,
