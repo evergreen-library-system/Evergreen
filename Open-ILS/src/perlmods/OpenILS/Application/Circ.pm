@@ -285,4 +285,147 @@ sub view_circ_patrons {
 }
 
 
+
+__PACKAGE__->register_method(
+	method		=> 'fetch_notes',
+	api_name		=> 'open-ils.circ.copy_note.retrieve.all',
+	signature	=> q/
+		Returns an array of copy note objects.  
+		@param args A named hash of parameters including:
+			authtoken	: Required if viewing non-public notes
+			itemid		: The id of the item whose notes we want to retrieve
+			pub			: True if all the caller wants are public notes
+		@return An array of note objects
+	/);
+
+__PACKAGE__->register_method(
+	method		=> 'fetch_notes',
+	api_name		=> 'open-ils.circ.call_number_note.retrieve.all',
+	signature	=> q/@see open-ils.circ.copy_note.retrieve.all/);
+
+__PACKAGE__->register_method(
+	method		=> 'fetch_notes',
+	api_name		=> 'open-ils.circ.title_note.retrieve.all',
+	signature	=> q/@see open-ils.circ.copy_note.retrieve.all/);
+
+# NOTE: VIEW_COPY/VOLUME/TITLE_NOTES perms should always be global
+sub fetch_notes {
+	my( $self, $connection, $args ) = @_;
+
+	my $id = $$args{itemid};
+	my $authtoken = $$args{authtoken};
+	my( $r, $evt);
+
+	if( $self->api_name =~ /copy/ ) {
+		if( $$args{pub} ) {
+			return $U->storagereq(
+				'open-ils.storage.direct.asset.copy_note.search_where.atomic',
+				{ owning_copy => $id, pub => 't' } );
+		} else {
+			( $r, $evt ) = $U->checksesperms($authtoken, 'VIEW_COPY_NOTES');
+			return $evt if $evt;
+			return $U->storagereq(
+				'open-ils.storage.direct.asset.copy_note.search.owning_copy.atomic', $id );
+		}
+
+	} elsif( $self->api_name =~ /call_number/ ) {
+		if( $$args{pub} ) {
+			return $U->storagereq(
+				'open-ils.storage.direct.asset.call_number_note.search_where.atomic',
+				{ call_number => $id, pub => 't' } );
+		} else {
+			( $r, $evt ) = $U->checksesperms($authtoken, 'VIEW_VOLUME_NOTES');
+			return $evt if $evt;
+			return $U->storagereq(
+				'open-ils.storage.direct.asset.call_number_note.search.call_number.atomic', $id );
+		}
+
+	} elsif( $self->api_name =~ /title/ ) {
+		if( $$args{pub} ) {
+			return $U->storagereq(
+				'open-ils.storage.direct.bilbio.record_note.search_where.atomic',
+				{ record => $id, pub => 't' } );
+		} else {
+			( $r, $evt ) = $U->checksesperms($authtoken, 'VIEW_TITLE_NOTES');
+			return $evt if $evt;
+			return $U->storagereq(
+				'open-ils.storage.direct.asset.call_number_note.search.call_number.atomic', $id );
+		}
+	}
+
+	return undef;
+}
+
+__PACKAGE__->register_method(
+	method		=> 'create_copy_note',
+	api_name		=> 'open-ils.circ.copy_note.create',
+	signature	=> q/
+		Creates a new copy note
+		@param authtoken The login session key
+		@param note	The note object to create
+		@return The id of the new note object
+	/);
+
+sub create_copy_note {
+	my( $self, $connection, $authtoken, $note ) = @_;
+	my( $cnowner, $requestor, $evt );
+
+	($cnowner, $evt) = $U->fetch_copy_owner($note->owning_copy);
+	return $evt if $evt;
+	($requestor, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
+	$evt = $U->check_perms($requestor->id, $cnowner, 'CREATE_COPY_NOTE');
+	return $evt if $evt;
+
+	$note->create_date('now');
+	$note->pub( ($note->pub) ? 't' : 'f' );
+
+	my $id = $U->storagereq(
+		'open-ils.storage.direct.asset.copy_note.create', $note );
+	return $U->DB_UPDATE_FAILED($note) unless $id;
+
+	$logger->activity("User ".$requestor->id." created a new copy ".
+		"note [$id] for copy ".$note->owning_copy." with text ".$note->value);
+
+	return $id;
+}
+
+__PACKAGE__->register_method(
+	method		=> 'delete_copy_note',
+	api_name		=>	'open-ils.circ.copy_note.delete',
+	signature	=> q/
+		Deletes an existing copy note
+		@param authtoken The login session key
+		@param noteid The id of the note to delete
+		@return 1 on success - Event otherwise.
+		/);
+
+sub delete_copy_note {
+	my( $self, $conn, $authtoken, $noteid ) = @_;
+	my( $requestor, $note, $owner, $evt );
+
+	($requestor, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	($note, $evt) = $U->fetch_copy_note($noteid);
+	return $evt if $evt;
+
+	if( $note->creator ne $requestor->id ) {
+		($owner, $evt) = $U->fetch_copy_onwer($note->owning_copy);
+		return $evt if $evt;
+		$evt = $U->check_perms($requestor->id, $owner, 'DELETE_COPY_NOTE');
+		return $evt if $evt;
+	}
+
+	my $stat = $U->storagereq(
+		'open-ils.storage.direct.asset.copy_note.delete', $noteid );
+	return $U->DB_UPDATE_FAILED($noteid) unless $stat;
+
+	$logger->activity("User ".$requestor->id." deleted copy note $noteid");
+	return 1;
+}
+
+
+
+
 1;

@@ -13,66 +13,53 @@
 	<event code='0' textcode='SUCCESS'>
 		<desc>No errors or unexpected events occurred</desc>
 	</event>
-
 	<event code='1' textcode='UNKNOWN'>
 		<desc>Placeholder event.  Used for development only</desc>
 	</event>
-
 	<event code='3' textcode='NO_CHANGE'>
 		<desc>
 			The called method didn't actually do anything
 		</desc>
 	</event>
-
-
-
 	<event code='1000' textcode='LOGIN_FAILED'>
 		<desc>
 			User login failed.  Why the login failed is not specified.
 		</desc>
 	</event>
-
 	<event code='1001' textcode='NO_SESSION'>
 		<desc>
 			User login session has either timed out or does not exist.
 		</desc>
 	</event>
-
 	<event code='1002' textcode='USER_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a user from the system and the user
 			was not found.
 		</desc>
 	</event>
-
 	<event code='1003' textcode='Z3950_SEARCH_FAILED'>
 		<desc>The Z search did not succeed</desc>
 	</event>
-
 	<event code='1200' textcode='USERNAME_EXISTS'>
 		<desc>
 			The given username exists in the database
 		</desc>
 	</event>
-
 	<event code='1201' textcode='CIRC_PERMIT_BAD_KEY'>
 		<desc>
 			A checkout was attempted without a valid checkout permit key
 		</desc>
 	</event>
-
 	<event code='1202' textcode='ITEM_NOT_CATALOGED'>
 		<desc>
 			The requested item is not cataloged in the database
 		</desc>
 	</event>
-
 	<event code='1203' textcode='COPY_BAD_STATUS'>
 		<desc>
 			The given copy is not in a standard circulation status
 		</desc>
 	</event>
-
 	<event code='1204' textcode='CIRC_BAD_STATUS'>
 		<desc>
 			The given circulation is not in a standard status or
@@ -83,120 +70,107 @@
 
 
 
-
-
 	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a circulation object from the system and 
 			the object was not found.
 		</desc>
 	</event>
-
 	<event code='1501' textcode='BIBLIO_RECORD_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a biblio record entry object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1502' textcode='COPY_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a copy object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1503' textcode='HOLD_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a hold object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1504' textcode='TRANSIT_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1505' textcode='BILLING_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1506' textcode='CONTAINER_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a container object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1507' textcode='CONTAINER_ITEM_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a container item object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1508' textcode='VOLUME_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a volume object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1509' textcode='ORG_UNIT_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve an org unit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-
 	<event code='1510' textcode='STAT_CAT_NOT_FOUND'>
 		<desc> Stat cat object does not exist </desc>
 	</event>
-
 	<event code='1511' textcode='STAT_CAT_ENTRY_NOT_FOUND'>
 		<desc> Stat cat entry object does not exist </desc>
 	</event>
-
 	<event code='1512' textcode='STAT_CAT_ENTRY_MAP_NOT_FOUND'>
 		<desc> Stat cat entry map object does not exist </desc>
 	</event>
-
 	<event code='1513' textcode='NON_CAT_TYPE_NOT_FOUND'>
 		<desc> The non cataloged type object does not exist </desc>
 	</event>
-
 	<event code='1514' textcode='CIRC_DURATION_NOT_FOUND'>
 		<desc> The circ duration object does not exist </desc>
 	</event>
-
 	<event code='1515' textcode='RECURRING_FINE_NOT_FOUND'>
 		<desc> The recurring fines object does not exist </desc>
 	</event>
-
 	<event code='1516' textcode='MAX_FINE_NOT_FOUND'>
 		<desc> The max fines object does not exist </desc>
 	</event>
-
 	<event code='1517' textcode='COPY_LOCATION_NOT_FOUND'>
 		<desc> The copy location object does not exist </desc>
 	</event>
-
 	<event code='1518' textcode='HOLD_TRANSIT_NOT_FOUND'>
 		<desc> The hold transit object does not exist </desc>
 	</event>
-
 	<event code='1519' textcode='TRANSACTION_NOT_FOUND'>
 		<desc> Requested transaction object does not exist </desc>
 	</event>
-
 	<event code='1520' textcode='WORKSTATION_NOT_FOUND'>
 		<desc> Requested workstation object does not exist </desc>
+	</event>
+	<event code='1521' textcode='COPY_NOTE_NOT_FOUND'>
+		<desc> Requested copy note does not exist </desc>
+	</event>
+	<event code='1522' textcode='VOLUME_NOTE_NOT_FOUND'>
+		<desc> Requested copy note does not exist </desc>
+	</event>
+	<event code='1523' textcode='TITLE_NOTE_NOT_FOUND'>
+		<desc> Requested copy note does not exist </desc>
 	</event>
 
 

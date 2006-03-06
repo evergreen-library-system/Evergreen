@@ -901,5 +901,30 @@ sub fetch_fleshed_copy {
 	return ($copy, $evt);
 }
 
+
+# returns the org that owns the callnumber that the copy
+# is attached to
+sub fetch_copy_owner {
+	my( $self, $copyid ) = @_;
+	my( $copy, $cn, $evt );
+	$logger->debug("Fetching copy owner $copyid");
+	($copy, $evt) = $self->fetch_copy($copyid);
+	return (undef,$evt) if $evt;
+	($cn, $evt) = $self->fetch_callnumber($copy->call_number);
+	return (undef,$evt) if $evt;
+	return ($cn->owning_lib);
+}
+
+sub fetch_copy_note {
+	my( $self, $id ) = @_;
+	my( $note, $evt );
+	$logger->debug("Fetching copy note $id");
+	$note = $self->storagereq(
+		'open-ils.storage.direct.asset.copy_note.retrieve', $id );
+	$evt = OpenILS::Event->new('COPY_NOTE_NOT_FOUND', id => $id ) unless $note;
+	return ($note, $evt);
+}
+
+
 1;
 
