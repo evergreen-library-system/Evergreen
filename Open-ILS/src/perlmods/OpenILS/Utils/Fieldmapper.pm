@@ -149,6 +149,7 @@ sub _init {
 
 		'Fieldmapper::authority::record_entry'		=> { hint		=> 'are', },
 		'Fieldmapper::authority::record_note'		=> { hint		=> 'arn', },
+		'Fieldmapper::biblio::record_note'		=> { hint		=> 'bren', },
 		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
 								     proto_fields	=> { call_numbers => 1,
 								     			     fixed_fields => 1 } },
