@@ -1065,16 +1065,18 @@ sub postfilter_search_class_fts {
 	my $select = <<"	SQL";
 		SELECT	m.metarecord,
 			$relevance,
-			CASE WHEN COUNT(DISTINCT rd.record) = 1 THEN MIN(m.source) ELSE 0 END,
+			CASE WHEN COUNT(DISTINCT smrs.source) = 1 THEN MIN(m.source) ELSE 0 END,
 			$rank
   	  	FROM	$search_table f,
 			$metabib_metarecord_source_map_table m,
+			$metabib_metarecord_source_map_table smrs,
 			$metabib_metarecord mr,
 			$metabib_record_descriptor rd
   	  	WHERE	$fts_where
+	  		AND smrs.metarecord = mr.id
 	  		AND m.source = f.source
 	  		AND m.metarecord = mr.id
-			AND rd.record = f.source
+			AND rd.record = smrs.source
 			$t_filter
 			$f_filter
   	  	GROUP BY m.metarecord
@@ -1395,16 +1397,18 @@ sub postfilter_search_multi_class_fts {
 	my $select = <<"	SQL";
 		SELECT	m.metarecord,
 			$relevance,
-			CASE WHEN COUNT(DISTINCT m.source) = 1 THEN MIN(m.source) ELSE 0 END,
+			CASE WHEN COUNT(DISTINCT smrs.source) = 1 THEN MIN(m.source) ELSE 0 END,
 			$rank
   	  	FROM	$search_table_list
 			$metabib_metarecord_source_map_table m,
+			$metabib_metarecord_source_map_table smrs,
 			$metabib_metarecord mr,
 			$metabib_record_descriptor rd
 	  	WHERE	m.metarecord = mr.id
+	  		smrs.metarecord = mr.id
   	  		$fts_list
 			$join_table_list
-			AND rd.record = m.source
+			AND rd.record = smrs.source
 			$t_filter
 			$f_filter
   	  	GROUP BY m.metarecord
