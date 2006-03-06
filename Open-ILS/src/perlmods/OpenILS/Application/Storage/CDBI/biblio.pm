@@ -19,7 +19,7 @@ use base qw/biblio/;
 
 biblio::record_note->table( 'biblio_record_note' );
 biblio::record_note->columns( Essential => qw/id record value creator
-					editor create_date edit_date/ );
+					editor create_date edit_date pub/ );
 #-------------------------------------------------------------------------------
 
 1;

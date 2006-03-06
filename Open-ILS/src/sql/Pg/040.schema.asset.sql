@@ -105,6 +105,7 @@ CREATE TABLE asset.copy_note (
 	owning_copy	BIGINT				NOT NULL,
 	creator		BIGINT				NOT NULL,
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
+	pub		BOOL				NOT NULL DEFAULT FALSE,
 	title		TEXT				NOT NULL,
 	value		TEXT				NOT NULL
 );
@@ -133,6 +134,7 @@ CREATE TABLE asset.call_number_note (
 	call_number	BIGINT				NOT NULL,
 	creator		BIGINT				NOT NULL,
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
+	pub		BOOL				NOT NULL DEFAULT FALSE,
 	title		TEXT				NOT NULL,
 	value		TEXT				NOT NULL
 );

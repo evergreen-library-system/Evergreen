@@ -27,7 +27,7 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_call_number_note' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/call_number title creator create_date value/ );
+__PACKAGE__->columns( Essential => qw/call_number title creator create_date value pub/ );
 
 #-------------------------------------------------------------------------------
 package asset::copy;
@@ -71,7 +71,7 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_copy_note' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/owning_copy title creator create_date value/ );
+__PACKAGE__->columns( Essential => qw/owning_copy title creator create_date value pub/ );
 
 #-------------------------------------------------------------------------------
 
