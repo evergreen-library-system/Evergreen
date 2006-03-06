@@ -36,7 +36,7 @@ use Exporter;
 %EXPORT_TAGS = (
 	common		=> [qw(interval_to_seconds seconds_to_interval sendmail)],
 	daemon		=> [qw(safe_fork set_psname daemonize)],
-	datetime	=> [qw(clense_ISO8601 interval_to_seconds seconds_to_interval)],
+	datetime	=> [qw(clense_ISO8601 gmtime_ISO8601 interval_to_seconds seconds_to_interval)],
 );
 
 Exporter::export_ok_tags('common','daemon','datetime');  # add aa, cc and dd to @EXPORT_OK
@@ -336,6 +336,20 @@ sub set_psname {
 	my $self = shift;
 	my $PS_NAME = shift || $self;
 	$0 = $PS_NAME if ($PS_NAME);
+}
+
+sub gmtime_ISO8601 {
+	my $self = shift;
+	my @date = gmtime;
+
+	my $y = $date[5] + 1900;
+	my $M = $date[4] + 1;
+	my $d = $date[3];
+	my $h = $date[2];
+	my $m = $date[1];
+	my $s = $date[0];
+
+	return sprintf('%d-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d+00:00', $y, $M, $d, $h, $m, $s);
 }
 
 sub clense_ISO8601 {
