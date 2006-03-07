@@ -59,8 +59,10 @@
 	</script>
 
 	<commandset id="auth_cmds">
-		<command id="cmd_login"/>
+		<command id="cmd_login" />
 		<command id="cmd_logoff"/>
+		<command id="cmd_override" />
+		<command id="cmd_register" />
 		<command id="cmd_close_window"/>
 	</commandset>
 
@@ -74,44 +76,87 @@
 	<!-- CONTENT -->
 	<deck id="main_deck">
 	<groupbox id="main_groupbox" flex="1">
-		<caption id="main_caption" label="&staff.auth.login_header;"/>
+		<caption id="main_caption" label="Startup"/>
 		<label value="&staff.auth.version;"/>
 		<label value="Development Version 123"/>
 		<label value=" "/>
 		<grid>
-			<columns>
-				<column />
-				<column />
-			</columns>
-			<rows>
-				<row>
-					<label value="Server" control="server_prompt" accesskey="r"/>
-					<textbox id="server_prompt" value="dev.gapines.org"/>
-				</row>
-				<row>
-					<label value="&staff.auth.name_prompt;" control="name_prompt" accesskey="&staff.auth.name_prompt.key;"/>
-					<textbox id="name_prompt" value=""/>
-				</row>
-				<row>
-					<label value="&staff.auth.password_prompt;" control="password_prompt" accesskey="&staff.auth.password_prompt.key;"/>
-					<textbox id="password_prompt" value="" type="password"/>
-				</row>
-				<row>
-					<label/>
-					<hbox>
-					<button id="submit_button" label="&staff.auth.submit_prompt;" accesskey="&staff.auth.submit_prompt.key;" command="cmd_login"/>
-					<button label="&staff.auth.logoff_prompt;" accesskey="&staff.auth.logoff_prompt.key;" command="cmd_logoff"/>
-					</hbox>
-				</row>
-				<row>
-					<label/>
-					<label/>
-				</row>
-				<row>
-					<label/>
-					<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
-				</row>
-			</rows>
+		<columns><column/><column/></columns>
+		<rows>
+		<row>
+			<groupbox>
+				<caption label="Server"/>
+				<grid>
+					<columns><column /><column /></columns>
+					<rows>
+						<row>
+							<label value="Hostname" control="server_prompt" accesskey="H"/>
+							<textbox id="server_prompt" value="dev.gapines.org"/>
+						</row>
+						<row>
+							<label value="Status"/>
+							<label id="status" value="Online" style="color: green; text-color: green;"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<groupbox>
+				<caption label="Workstation"/>
+				<deck id="ws_deck">
+					<description>
+						Not yet configured.
+					</description>
+					<grid>
+						<columns><column /><column /></columns>
+						<rows>
+							<row>
+								<label value="Library" control="menu_spot"/>
+								<hbox id="menu_spot" />
+							</row>
+							<row>
+								<label value="ID" control="wsid_prompt" />
+								<textbox id="wsid_prompt" />
+							</row>
+						</rows>
+					</grid>
+				</deck>
+			</groupbox>
+		</row>
+		<row>
+			<groupbox>
+				<caption label="Authentication"/>
+				<grid>
+					<columns> <column /> <column /> </columns>
+					<rows>
+						<row>
+							<label value="Username" control="name_prompt" accesskey="U"/>
+							<textbox id="name_prompt" value=""/>
+						</row>
+						<row>
+							<label value="Password" control="password_prompt" accesskey="P"/>
+							<textbox id="password_prompt" value="" type="password"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<groupbox>
+				<caption label="Actions"/>
+				<grid>
+					<columns><column flex="1"/><column /></columns>
+					<rows>
+						<row>
+							<button id="submit_button" label="Login" accesskey="L" command="cmd_login" />
+							<button id="register_button" label="Register" accesskey="R" command="cmd_register" />
+						</row>
+						<row>
+							<button label="&staff.auth.logoff_prompt;" accesskey="f" command="cmd_logoff" />
+							<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+		</row>
+		</rows>
 		</grid>
 		<progressmeter id="progress_bar" mode="normal" value="0"/>
 	</groupbox>

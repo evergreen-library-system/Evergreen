@@ -3,6 +3,7 @@ var api = {
 	'AUTH_INIT' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
 	'AUTH_COMPLETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },
 	'AUTH_DELETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.session.delete' },
+	'AUTH_WORKSTATION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.workstation.register' },
 	'BILL_PAY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
 	'BLOB_CHECKOUTS_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out' },
 	'BLOB_MARC_CALLNUMBERS_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc_cn.retrieve' },

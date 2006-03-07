@@ -26,6 +26,19 @@ auth.controller.prototype = {
 							obj.login();
 						}
 					],
+					'cmd_override' : [
+						['command'],
+						function() {
+							obj.override();
+						}
+					],
+					'cmd_register' : [
+						['command'],
+						function() {
+							dump('cmd_register handler\n');
+							obj.register();
+						}
+					],
 					'cmd_logoff' : [
 						['command'],
 						function() {
@@ -38,6 +51,7 @@ auth.controller.prototype = {
 							obj.close()
 						}
 					],
+
 					'server_prompt' : [
 						['keypress'],
 						handle_keypress
@@ -50,43 +64,79 @@ auth.controller.prototype = {
 						['keypress'],
 						handle_keypress
 					],
+					'wsid_prompt' : [
+						['keypress'],
+						handle_keypress
+					],
+
 					'submit_button' : [
+						['render'],
+						function(e) { return function() {} }
+					],
+					'register_button' : [
 						['render'],
 						function(e) { return function() {} }
 					],
 					'progress_bar' : [
 						['render'],
 						function(e) { return function() {} }
-					]
+					],
+					'status' : [
+						['render'],
+						function(e) { return function() {
+						} }
+					],
+					'ws_deck' : [
+						['render'],
+						function(e) { return function() {
+						} }
+					],
+					'menu_spot' : [
+						['render'],
+						function(e) { return function() {
+						} }
+					],
+
 				}
 			}
 		);
 		obj.controller.view.name_prompt.focus();
 
 		function handle_keypress(ev) {
-			if (ev.keyCode && ev.keyCode == 13) {
-				switch(this) {
-					case obj.controller.view.server_prompt:
-						ev.preventDefault();
-						obj.controller.view.name_prompt.focus(); obj.controller.view.name_prompt.select();
-					break;
-					case obj.controller.view.name_prompt:
-						ev.preventDefault();
-						obj.controller.view.password_prompt.focus(); obj.controller.view.password_prompt.select();
-					break;
-					case obj.controller.view.password_prompt:
-						ev.preventDefault();
-						obj.controller.view.submit_button.focus(); 
-						obj.login();
-					break;
-					default: break;
+			try {
+				if (ev.keyCode && ev.keyCode == 13) {
+					switch(this) {
+						case obj.controller.view.server_prompt:
+							ev.preventDefault();
+							obj.controller.view.name_prompt.focus(); obj.controller.view.name_prompt.select();
+						break;
+						case obj.controller.view.name_prompt:
+							ev.preventDefault();
+							obj.controller.view.password_prompt.focus(); obj.controller.view.password_prompt.select();
+						break;
+						case obj.controller.view.password_prompt:
+							ev.preventDefault();
+							obj.controller.view.submit_button.focus(); 
+							obj.login();
+						break;
+						case obj.controller.view.wsid_prompt:
+							ev.preventDefault();
+							obj.controller.view.register_button.focus();
+							obj.register();
+						break;
+						default: break;
+					}
 				}
+			} catch(E) {
+				alert(E);
 			}
 		}
 
 		// This talks to our ILS
 		JSAN.use('auth.session');
 		obj.session = new auth.session(obj.controller.view);
+
+		obj.controller.render();
 
 		if (typeof this.on_init == 'function') {
 			this.error.sdump('D_AUTH','auth.controller.on_init()\n');
@@ -137,6 +187,43 @@ auth.controller.prototype = {
 		}
 
 	},
+
+	'register' : function() { 
+		try {
+		dump('register code\n');
+		var obj = this;
+
+		var orgid = obj.controller.view.menu_spot.firstChild.value;
+		var wsname = obj.controller.view.wsid_prompt.value;
+
+		obj.error.sdump('D_AUTH','register workstation with ' + orgid + ' and ' + wsname + '\n'); 
+
+		obj.controller.view.menu_spot.firstChild.disabled = true;
+		obj.controller.view.wsid_prompt.disabled = true;
+
+		try {
+
+			var server = obj.controller.view.server_prompt.value;
+
+			if (typeof obj.on_register == 'function') {
+				dump('calling on_register\n');
+				obj.on_register(obj.session.key,server,orgid,wsname);
+			}
+			
+
+		} catch(E) {
+			var error = '!! ' + E + '\n';
+			this.error.sdump('D_ERROR',error); 
+			alert(error);
+			this.controller.view.menu_spot.firstChild.disabled = false;
+			this.controller.view.wsid_prompt.disabled = false;
+		}
+		} catch(E) {
+			alert(E);
+		}
+
+	},
+
 	'logoff' : function() { 
 	
 		this.error.sdump('D_AUTH','logoff' + this.w + '\n'); 
