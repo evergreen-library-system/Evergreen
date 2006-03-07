@@ -317,11 +317,77 @@ sub bookbag_feed {
 	return Apache2::Const::OK;
 }
 
+sub opensearch_osd {
+	my $version = shift;
+	my $class = shift;
+	my $base = shift;
+
+	if ($version eq '1.0') {
+		print <<OSD;
+Content-type: application/opensearchdescription+xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
+  <Url>$base/1.0/-/$class/-/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
+  <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
+  <ShortName>$class</ShortName>
+  <LongName>Search by $class</LongName>
+  <Description>Search the OPAC by $class.</Description>
+  <Tags>book library</Tags>
+  <SampleSearch>harry+potter</SampleSearch>
+  <Developer>Mike Rylander for GPLS/PINES</Developer>
+  <Contact>feedback\@open-ils.org</Contact>
+  <SyndicationRight>open</SyndicationRight>
+  <AdultContent>false</AdultContent>
+</OpenSearchDescription>
+OSD
+	} else {
+		print <<OSD;
+Content-type: application/opensearchdescription+xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>$class</ShortName>
+  <Description>Search the OPAC by $class.</Description>
+  <Tags>book library</Tags>
+  <Url type="application/atom+xml"
+       method="post"
+       template="$base/1.1/-/$class/atom/{searchTerms}">
+    <Param name="startPage" value="{startPage?}"/>
+    <Param name="startIndex" value="{startIndex?}"/>
+    <Param name="count" value="{count?}"/>
+  </Url>
+  <Url type="application/rss+xml"
+       method="post"
+       template="$base/1.1/-/$class/rss2/{searchTerms}">
+    <Param name="startPage" value="{startPage?}"/>
+    <Param name="startIndex" value="{startIndex?}"/>
+    <Param name="count" value="{count?}"/>
+  </Url>
+  <Url type="application/mods+xml"
+       method="post"
+       template="$base/1.1/-/$class/mods/{searchTerms}">
+    <Param name="startPage" value="{startPage?}"/>
+    <Param name="startIndex" value="{startIndex?}"/>
+    <Param name="count" value="{count?}"/>
+  <LongName>Search by $class</LongName>
+  <Query role="example" searchTerms="harry+potter" />
+  <Developer>Mike Rylander for GPLS/PINES</Developer>
+  <SyndicationRight>open</SyndicationRight>
+  <AdultContent>false</AdultContent>
+  <Language>en-us</Language>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>
+OSD
+	}
+
+	return Apache2::Const::OK;
+}
+
 sub opensearch_feed {
 	my $apache = shift;
 	return Apache2::Const::DECLINED if (-e $apache->filename);
-
-	print "Content-type: application/xml; charset=utf-8\n\n";
 
 	my $cgi = new CGI;
 	(my $unapi = $cgi->url) =~ s{[^/]+/?$}{unapi};
@@ -331,6 +397,19 @@ sub opensearch_feed {
 	my $host = $cgi->virtual_host || $cgi->server_name;
 	my $base = $cgi->url;
 	my $path = $apache->path_info;
+
+	if ($path =~ m{^/?(1\.\d{1})/([^/]+)/osd.xml}o) {
+		
+		my $version = $1;
+		my $class = $2;
+
+		if ($class eq '-') {
+			$class = 'keyword';
+		}
+
+		return opensearch_osd($version, $class, $base);
+	}
+
 
 	my $page = $cgi->param('startPage') || 1;
 	my $offset = $cgi->param('startIndex') || 1;
@@ -342,7 +421,11 @@ sub opensearch_feed {
 		$offset -= 1;
 	}
 
-	my ($terms,$class,$type,$version) = reverse split '/', $path;
+	my ($terms,$class,$type,$org,$version) = reverse split '/', $path;
+
+	if ($org !~ /^[1-9]{1}[0-9]*$/o) {
+		$org = 1;
+	}
 
 	if ($version eq '1.0') {
 		$type = 'rss2';
@@ -358,7 +441,7 @@ sub opensearch_feed {
 	my $recs = $search->request(
 		'open-ils.search.biblio.record.class.search' => $class,
 		{ term		=> $terms,
-		  org_unit	=> 1,
+		  org_unit	=> $org,
 		  limit		=> $limit,
 		  offset	=> $offset,
 		}
@@ -429,6 +512,8 @@ sub opensearch_feed {
 		'application/opensearch+xml'
 	);
 
+
+	print "Content-type: application/xml; charset=utf-8\n\n";
 
 	print entityize($feed->toString) . "\n";
 	return Apache2::Const::OK;
