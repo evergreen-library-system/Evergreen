@@ -785,6 +785,23 @@ sub get_org_unit {
 	return $home_ou;
 }
 
+__PACKAGE__->register_method(
+	method	=> "search_org_unit",
+	api_name	=> "open-ils.actor.org_unit_list.search",
+);
+
+sub search_org_unit {
+
+	my( $self, $client, $field, $value ) = @_;
+
+	my $list = OpenILS::Application::AppUtils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.actor.org_unit.search.$field.atomic", 
+		$value );
+
+	return $list;
+}
+
 
 # build the org tree
 
