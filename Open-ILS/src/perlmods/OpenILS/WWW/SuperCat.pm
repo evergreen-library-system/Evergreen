@@ -282,8 +282,6 @@ sub bookbag_feed {
 	my $apache = shift;
 	return Apache2::Const::DECLINED if (-e $apache->filename);
 
-	print "Content-type: application/xml; charset=utf-8\n\n";
-
 	my $cgi = new CGI;
 	(my $unapi = $cgi->url) =~ s{[^/]+/?$}{unapi};
 
@@ -297,6 +295,13 @@ sub bookbag_feed {
 
 	my $bucket = $actor->request("open-ils.actor.container.public.flesh", 'biblio', $id)->gather(1);
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
+
+	if ($type eq 'opac') {
+		print "Location: $base/../../../opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
+			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
+			"\n\n";
+		return Apache2::Const::OK;
+	}
 
 	my $feed = create_record_feed(
 		$type,
@@ -312,6 +317,7 @@ sub bookbag_feed {
 	$feed->link(rss2 => $base . "/bookbag/rss2/$id");
 	$feed->link(html => $base . "/bookbag/html/$id");
 
+	print "Content-type: application/xml; charset=utf-8\n\n";
 	print entityize($feed->toString) . "\n";
 
 	return Apache2::Const::OK;
