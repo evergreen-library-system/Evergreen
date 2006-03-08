@@ -1746,7 +1746,7 @@ __PACKAGE__->register_method (
 		@param authtoken The login session key
 		@param name The name of the workstation id
 		@param owner The org unit that owns this workstation
-		@return The workstation on success, WORKSTATION_NAME_EXISTS
+		@return The workstation id on success, WORKSTATION_NAME_EXISTS
 		if the name is already in use.
 	/);
 
@@ -1770,7 +1770,7 @@ sub register_workstation {
 	return $U->DB_UPDATE_FAILED($ws) unless $id;
 
 	$ws->id($id);
-	return $ws;
+	return $ws->id();
 }
 
 
