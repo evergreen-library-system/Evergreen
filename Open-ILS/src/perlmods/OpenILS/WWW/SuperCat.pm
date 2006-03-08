@@ -317,6 +317,14 @@ sub bookbag_feed {
 	$feed->link(rss2 => $base . "/bookbag/rss2/$id");
 	$feed->link(html => $base . "/bookbag/html/$id");
 
+	$feed->link(
+		OPAC =>
+		$base . '/../../../opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
+		'text/xhtml'
+	);
+
+
 	print "Content-type: application/xml; charset=utf-8\n\n";
 	print entityize($feed->toString) . "\n";
 
@@ -362,6 +370,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
+    <Param name="language" value="{language?}"/>
   </Url>
   <Url type="application/rss+xml"
        method="post"
@@ -369,6 +378,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
+    <Param name="language" value="{language?}"/>
   </Url>
   <Url type="application/mods+xml"
        method="post"
@@ -376,12 +386,22 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
+    <Param name="language" value="{language?}"/>
+  </Url>
+  <Url type="application/marcxml+xml"
+       method="post"
+       template="$base/1.1/-/$class/marcxml/{searchTerms}">
+    <Param name="startPage" value="{startPage?}"/>
+    <Param name="startIndex" value="{startIndex?}"/>
+    <Param name="count" value="{count?}"/>
+    <Param name="language" value="{language?}"/>
+  </Url>
   <LongName>Search by $class</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
   <SyndicationRight>open</SyndicationRight>
   <AdultContent>false</AdultContent>
-  <Language>en-us</Language>
+  <Language>en-US</Language>
   <OutputEncoding>UTF-8</OutputEncoding>
   <InputEncoding>UTF-8</InputEncoding>
 </OpenSearchDescription>
@@ -420,6 +440,7 @@ sub opensearch_feed {
 	my $page = $cgi->param('startPage') || 1;
 	my $offset = $cgi->param('startIndex') || 1;
 	my $limit = $cgi->param('count') || 10;
+	my $lang = $cgi->param('language') || 'en-US';
 
 	if ($page > 1) {
 		$offset = ($page - 1) * $limit;
@@ -428,10 +449,6 @@ sub opensearch_feed {
 	}
 
 	my ($terms,$class,$type,$org,$version) = reverse split '/', $path;
-
-	if ($org !~ /^[1-9]{1}[0-9]*$/o) {
-		$org = 1;
-	}
 
 	if ($version eq '1.0') {
 		$type = 'rss2';
@@ -444,10 +461,21 @@ sub opensearch_feed {
 
 	warn "searching for $class -> [$terms] via OS $version, response type $type";
 
+	my $org_unit;
+	if ($org eq '-') {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => parent_ou => undef
+		)->gather(1);
+	} else {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => shortname => $org
+		)->gather(1);
+	}
+
 	my $recs = $search->request(
 		'open-ils.search.biblio.record.class.search' => $class,
 		{ term		=> $terms,
-		  org_unit	=> $org,
+		  org_unit	=> $org_unit->[0]->id,
 		  limit		=> $limit,
 		  offset	=> $offset,
 		}
@@ -459,6 +487,10 @@ sub opensearch_feed {
 		$unapi,
 	);
 
+	$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
+	$feed->creator($host);
+	$feed->update_ts(gmtime_ISO8601());
+
 =head
 	my $bucket = $actor->request("open-ils.actor.container.public.flesh", 'biblio', $id)->gather(1);
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
@@ -468,10 +500,6 @@ sub opensearch_feed {
 		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
 		$unapi,
 	);
-
-	$feed->title("Items in Book Bag #".$bucket->id);
-	$feed->creator($host);
-	$feed->update_ts(gmtime_ISO8601());
 
 	$feed->link(atom => $id);
 	$feed->link(rss2 => $id);
@@ -518,6 +546,12 @@ sub opensearch_feed {
 		'application/opensearch+xml'
 	);
 
+	$feed->link(
+		opac =>
+		$base . "/../../opac/$lang/skin/default/xml/rresult.xml?rt=list&" .
+			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
+		'text/xhtml'
+	);
 
 	print "Content-type: application/xml; charset=utf-8\n\n";
 
