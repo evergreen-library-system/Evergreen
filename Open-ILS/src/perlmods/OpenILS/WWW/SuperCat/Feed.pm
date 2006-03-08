@@ -313,6 +313,31 @@ sub link {
 
 #----------------------------------------------------------
 
+package OpenILS::WWW::SuperCat::Feed::marcxml;
+use base 'OpenILS::WWW::SuperCat::Feed';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim"/>');
+	$self->{type} = 'marcxml';
+	$self->{item_xpath} = '/marc:collection';
+	return $self;
+}
+
+package OpenILS::WWW::SuperCat::Feed::marcxml::item;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml';
+
+sub new {
+	my $class = shift;
+	my $xml = shift;
+	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
+	$self->{type} = 'marc::item';
+	return $self;
+}
+
+#----------------------------------------------------------
+
 package OpenILS::WWW::SuperCat::Feed::html;
 use base 'OpenILS::WWW::SuperCat::Feed';
 
