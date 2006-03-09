@@ -6,9 +6,6 @@
 
 		<script language='javascript'>
 
-			var COOKIE_SES = "ses";
-			var cookie = new cookieObject("ses", 1, "/", COOKIE_SES);
-
 			function initPage() {
    			document.getElementById("reports_login_username").focus();
    			document.getElementById("reports_login_username").onkeypress = checkInputClicks;
@@ -39,7 +36,11 @@
 			
    			var auth_request = new RemoteRequest( 
 					"open-ils.auth", "open-ils.auth.authenticate.complete",
-      					uname, hex_md5(seed + hex_md5(passwd)), "staff");
+					{	
+						username : uname,
+						password : hex_md5(seed + hex_md5(passwd)),
+						type : "staff" 
+					});
 			
    			auth_request.send(true);
    			var auth_result = auth_request.getResultObject().payload.authtoken;
@@ -49,8 +50,7 @@
 					return false; 
 				}
 	
-				cookie.put(COOKIE_SES, auth_result);
-				cookie.write();
+				cookieManager.write(COOKIE_SES, auth_result, '+1d');
 				location.href = location.href;
 		
 			}
