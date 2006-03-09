@@ -184,7 +184,7 @@ sub bucket_create {
 	return $evt if $evt;
 
 	$logger->activity( "User " . $staff->id . 
-		" creating a new continer for user " . $bucket->owner );
+		" creating a new container for user " . $bucket->owner );
 
 	$bucket->clear_id;
 	$logger->debug("Creating new container object: " . Dumper($bucket));
@@ -224,7 +224,7 @@ sub bucket_delete {
 	return $evt if $evt;
 
 	$logger->activity( "User " . $staff->id . 
-		" deleting continer $bucketid for user " . $bucket->owner );
+		" deleting container $bucketid for user " . $bucket->owner );
 
 	my $method = $types{$class} . ".delete";
 	my $resp = $apputils->simplereq( $svc, $method, $bucketid );
@@ -253,7 +253,7 @@ sub item_create {
 	return $evt if $evt;
 
 	$logger->activity( "User " . $staff->id . 
-		" creating continer item  " . Dumper($item) . " for user " . $bucket->owner );
+		" creating container item for bucket " . $item->bucket . " and user " . $bucket->owner );
 
 	my $method = $types{$class} . "_item.create";
 	my $resp = $apputils->simplereq( $svc, $method, $item );
@@ -323,6 +323,37 @@ sub full_delete {
 	$meth = $types{$class} . ".delete";
 	return $apputils->simplereq( $svc, $meth, $containerId );
 }
+
+__PACKAGE__->register_method(
+	method		=> 'container_update',
+	api_name		=> 'open-ils.actor.container.update',
+	signature	=> q/
+		Updates the given container item.
+		@param authtoken The login session key
+		@param class The container class
+		@param container The container item
+		@return true on success, 0 on no update, Event on error
+		/
+);
+
+sub container_update {
+	my( $self, $conn, $authtoken, $class, $container )  = @_;
+
+	my( $staff, $target, $dbcontainer, $evt);
+
+	( $dbcontainer, $evt ) = $apputils->fetch_container($container->id, $class);
+	return $evt if $evt;
+
+	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
+		$authtoken, $dbcontainer->owner, 'UPDATE_CONTAINER' );
+	return $evt if $evt;
+
+	$logger->activity("User " . $staff->id . " updating container ". $container->id);
+
+	my $meth = $types{$class}.".update";
+	return $U->storagereq($meth, $container);
+}
+
 
 
 

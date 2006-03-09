@@ -62,6 +62,14 @@ sub containers_create {
 		oils_event_die($resp);
 		printl("Created new $type bucket with id $resp");
 		$containers{$type} = $resp;
+
+		$bucket->id($resp);
+		$bucket->pub(1);
+
+		$resp = simplereq($ACTOR, 
+			'open-ils.actor.container.update', $authtoken, $type, $bucket );
+		oils_event_die($resp);
+		printl("Updated container type $type");
 	}
 }
 
@@ -102,6 +110,7 @@ sub items_delete {
 		printl("Deleted $type bucket item with id $id");
 	}
 }
+
 
 
 sub containers_delete {

@@ -17,7 +17,7 @@
 	<br/>
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
-			<tr><td>Name</td><td># Items</td><td>Published</td><td>Delete this bookbag?</td></tr>
+			<tr><td>Name</td><td># Items</td><td>Shared</td><td>Share / Hide</td><td>Delete this bookbag?</td></tr>
 		</thead>
 		<tbody id='myopac_bookbag_tbody'>
 			<tr id='myopac_bookbag_tr'>
@@ -30,6 +30,12 @@
 					<span name='myopac_bb_published_yes' class='hide_me'>Yes</span>
 					<a name='myopac_bb_published_view' class='classic_link hide_me'>(View)</a>
 				</td>
+
+				<td>
+					<a name='myopac_bb_make_unpublished' class='classic_link hide_me'>Hide</a>
+					<a name='myopac_bb_make_published' class='classic_link hide_me'>Share</a>
+				</td>
+
 				<td>
 					<a class='classic_link' href='javascript:void(0);' name='myopac_container_delete'>Delete</a>
 				</td>
@@ -52,7 +58,7 @@
 			</tr>
 			<tr>
 				<td>
-					<span style='padding: 5px;'>Publish this Bookbag</span>
+					<span style='padding: 5px;'>Share this Bookbag</span>
 					<a class='classic_link' href='javascript:alert($("bb_publish_text").innerHTML);'>(<b>??</b>)</a>
 					<span>Yes</span> <input type='radio' name='bb_public' id='bb_public_yes'/>
 					<span>No</span> <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
@@ -89,13 +95,27 @@
 	<!--</div>-->
 
 	<span id='bb_publish_text' class='hide_me'>
-		Publishing a Bookbag means that the contents of the Bookbag will be visible to others.  
-		To see the public view of a published Bookbag, click the "View" link in the 
-		"Published" column of the Bookbag list at the top of this page.
+		Sharing a Bookbag means that the contents of the Bookbag will be visible to others.  
+		To see the public view of a shared Bookbag, click the "View" link in the 
+		"Shared" column of the Bookbag list at the top of this page.
 	</span>
 
 	<span id='myopac_remove_bb_item_confirm' class='hide_me'>
 		Are you sure you wish to remove this bookbag item?
+	</span>
+
+	<span id='myopac_make_published_confirm' class='hide_me'>
+		Sharing this bookbag will allow the contents 
+		of the bookback to be seen by others.
+		Are you sure you wish to share this bookbag?  
+	</span>
+
+	<span id='myopac_make_unpublished_confirm' class='hide_me'>
+		Are you sure you wish to hide this bookbag?
+	</span>
+
+	<span id='myopac_bb_update_success'>
+		The Bookbag was successfully updated.
 	</span>
 
 </div>

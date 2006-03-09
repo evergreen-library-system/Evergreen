@@ -642,8 +642,15 @@ function myOPACShowBookbags(force) {
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
 
+			link = $n(row, 'myopac_bb_make_unpublished');
+			link.setAttribute('href', 'javascript:myOPACMakeBBPublished("'+cont.id()+'", true);');
+			unHideMe(link);
+
 		} else { 
 			unHideMe($n(row, 'myopac_bb_published_no')); 
+			var link = $n(row, 'myopac_bb_make_published');
+			link.setAttribute('href', 'javascript:myOPACMakeBBPublished("'+cont.id()+'");');
+			unHideMe(link);
 		}
 
 		tbody.appendChild(row);	
@@ -652,6 +659,29 @@ function myOPACShowBookbags(force) {
 	if(!found) unHideMe($('myopac_bookbags_none'));
 	else unHideMe($('myopac_bookbag_table'));	
 }
+
+function myOPACMakeBBPublished(bbid, hideme) {
+
+	var bb = fleshedContainers[bbid];
+
+	if(hideme) {
+		if(!confirm($('myopac_make_unpublished_confirm').innerHTML)) return;
+		bb.pub(0);
+	} else {
+		if(!confirm($('myopac_make_published_confirm').innerHTML)) return;
+		bb.pub(1);
+	}
+
+	var result = containerUpdate(bb);
+
+	var code = checkILSEvent(result);
+	if(code) { alertILSEvent(code); return; }
+
+	if(result) alert($('myopac_bb_update_success').innerHTML);
+	myOPACShowBookbags(true);
+}
+
+
 
 function myOPACDeleteBookbag(id) {
 	if( confirm( $('myopac_delete_bookbag_warn').innerHTML ) ) {

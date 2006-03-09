@@ -280,6 +280,7 @@ var CREATE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.creat
 var DELETE_CONTAINER_ITEM		= 'open-ils.actor:open-ils.actor.container.item.delete';
 var FLESH_CONTAINER				= 'open-ils.actor:open-ils.actor.container.flesh';
 var FLESH_PUBLIC_CONTAINER		= 'open-ils.actor:open-ils.actor.container.public.flesh';
+var UPDATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.update';
 var FETCH_COPY						= 'open-ils.search:open-ils.search.asset.copy.retrieve';
 var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible';
 var FETCH_BIBLIO_NOTES			= 'open-ils.circ:open-ils.circ.biblio_notes.public.batch.retrieve';

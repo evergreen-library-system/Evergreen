@@ -43,6 +43,11 @@ function containerCreate( name, pub, callback, args ) {
 	return containerDoRequest( req, callback, args );
 }
 
+function containerUpdate( container, callback, args ) {
+	var req = new Request(UPDATE_CONTAINER, G.user.session, 'biblio', container);
+	return containerDoRequest(req, callback, args);
+}
+
 function containerCreateItem( containerId, target, callback, args ) {
 
 	var item = new cbrebi();
