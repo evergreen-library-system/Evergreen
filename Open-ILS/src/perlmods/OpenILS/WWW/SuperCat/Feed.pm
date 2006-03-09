@@ -3,6 +3,8 @@ use strict; use warnings;
 use vars qw/$parser/;
 use OpenSRF::EX qw(:try);
 use XML::LibXML;
+use XML::LibXSLT;
+use OpenSRF::Utils::SettingsClient;
 use CGI;
 
 sub new {
@@ -38,6 +40,13 @@ sub base {
 	my $base = shift;
 	$self->{base} = $base if ($base);
 	return $self->{base};
+}
+
+sub root {
+	my $self = shift;
+	my $root = shift;
+	$self->{root} = $root if ($root);
+	return $self->{root};
 }
 
 sub unapi {
@@ -113,7 +122,7 @@ sub add_item {
 	return $entry;
 }
 
-sub toString {
+sub composeDoc {
 	my $self = shift;
 	for my $root ( $self->{doc}->findnodes($self->{item_xpath}) ) {
 		for my $item ( $self->items ) {
@@ -121,7 +130,11 @@ sub toString {
 		}
 		last;
 	}
+}
 
+sub toString {
+	my $self = shift;
+	$self->composeDoc;
 	return $self->{doc}->toString(1);
 }
 
@@ -351,17 +364,35 @@ use base 'OpenILS::WWW::SuperCat::Feed::atom';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::new;
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/xhtml+xml';
 	return $self;
 }
 
+our ($_parser, $_xslt, $atom2html_xslt);
 
 sub toString {
 	my $self = shift;
-	my $stuff = $self->SUPER::toString;
 	my $base = $self->base;
-	$stuff =~ s{\n}{\n<?xml-stylesheet href="../../../../os.xsl" type="text/xsl" ?>\n}so;
-	return $stuff;
+	my $root = $self->root;
+
+	$self->composeDoc;
+
+        $_parser ||= new XML::LibXML;
+        $_xslt ||= new XML::LibXSLT;
+
+        # parse the MODS xslt ...
+        $atom2html_xslt ||= $_xslt->parse_stylesheet(
+		$_parser->parse_file(
+	                OpenSRF::Utils::SettingsClient
+        	                ->new
+                	        ->config_value( dirs => 'xsl' ).
+	                "/ATOM2XHTML.xsl"
+		)
+        );
+
+	my $new_doc = $atom2html_xslt->transform($self->{doc}, base_dir => "'$root'");
+	return $new_doc->toString(1); 
+	return $atom2html_xslt->output_string($new_doc);
 }
 
 

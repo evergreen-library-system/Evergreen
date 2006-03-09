@@ -287,19 +287,26 @@ sub bookbag_feed {
 	my $year = (gmtime())[5] + 1900;
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $url = $cgi->url(-path_info=>1);
+	my $rel_name = quotemeta($cgi->url(-relative=>1));
+
+	my $add_path = 1;
+	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+
+	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
 	my $base = (split 'bookbag', $url)[0] . 'bookbag';
 	my $path = (split 'bookbag', $url)[1];
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
 
 
+	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
 
 	my ($id,$type) = reverse split '/', $path;
 
 	my $bucket = $actor->request("open-ils.actor.container.public.flesh", 'biblio', $id)->gather(1);
-	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
+	return Apache2::Const::NOT_FOUND unless($bucket);
 
+	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
 		print "Location: $base/../../../opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
@@ -312,6 +319,7 @@ sub bookbag_feed {
 		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
 		$unapi,
 	);
+	$feed->root($root);
 
 	$feed->title("Items in Book Bag #".$bucket->id);
 	$feed->creator($host);
@@ -425,12 +433,19 @@ sub opensearch_feed {
 
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $url = $cgi->url(-path_info=>1);
+	my $rel_name = quotemeta($cgi->url(-relative=>1));
+
+	my $add_path = 1;
+	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+
+	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'opensearch', $url)[0];
 	my $base = (split 'opensearch', $url)[0] . 'opensearch';
 	my $unapi = (split 'opensearch', $url)[0] . 'unapi';
 
 	my $path = (split 'opensearch', $url)[1];
+
+	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
 
 	if ($path =~ m{^/?(1\.\d{1})/(?:([^/]+)/)?([^/]+)/osd.xml}o) {
 		
@@ -472,7 +487,7 @@ sub opensearch_feed {
 	$class = 'keyword' if ($class eq '-');
 	$terms =~ s/\+/ /go;
 
-	warn "searching for $class -> [$terms] via OS $version, response type $type";
+	#warn "searching for $class -> [$terms] via OS $version, response type $type";
 
 	my $org_unit;
 	if ($org eq '-') {
@@ -499,26 +514,11 @@ sub opensearch_feed {
 		[ map { $_->[0] } @{$recs->{ids}} ],
 		$unapi,
 	);
+	$feed->root($root);
 
 	$feed->title("$class search results for [$terms] at ".$org_unit->[0]->name);
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
-
-=head
-	my $bucket = $actor->request("open-ils.actor.container.public.flesh", 'biblio', $id)->gather(1);
-	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
-
-	my $feed = create_record_feed(
-		$type,
-		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
-		$unapi,
-	);
-
-	$feed->link(atom => $id);
-	$feed->link(rss2 => $id);
-	$feed->link(html => $id);
-
-=cut
 
 	$feed->_create_node(
 		$feed->{item_xpath},
@@ -560,8 +560,15 @@ sub opensearch_feed {
 	);
 
 	$feed->link(
+		alternate =>
+		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
+			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
+		'text/xhtml'
+	);
+
+	$feed->link(
 		opac =>
-		$root . "../opac/$lang/skin/default/xml/rresult.xml?rt=list&" .
+		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
 		'text/xhtml'
 	);
@@ -611,6 +618,7 @@ sub create_record_feed {
 
 sub entityize {
 	my $stuff = NFC(shift());
+	$stuff =~ s/&(?!#.{2,4};|amp;)/&amp;/gso;
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $stuff;
 }
