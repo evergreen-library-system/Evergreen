@@ -69,7 +69,8 @@
 		</div>
 
 		<div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
-			<div style='width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px;'>
+			<div id='rdetail_cn_browse_select_div' 
+				style='width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px;'>
 				<span>Local Call Numbers: </span>
 				<select id='cn_browse_selector'>
 				</select>

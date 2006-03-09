@@ -38,6 +38,15 @@ function cnBrowseGo(cn, depth) {
 		'page_size', MAX_CN );
 	req.callback( cnBrowseDraw );
 	req.send();
+
+	var o = findOrgUnit(getLocation());
+	var d = findOrgDepth(o);
+	var x = 0;
+	while( d > depth ) {
+		o = findOrgUnit(o.parent_ou());
+		d = findOrgDepth(o);
+	}
+	appendClear($('cn_browse_where'), text(o.name()));
 }
 
 function cnBrowseNext() {

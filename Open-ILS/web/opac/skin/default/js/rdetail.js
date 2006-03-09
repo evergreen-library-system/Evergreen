@@ -259,6 +259,11 @@ function rdetailBuildCNList() {
 	for( var cn in callnumberCache ) arr.push( cn );
 	arr.sort();
 
+	if( arr.length == 0 ) {
+		hideMe($('rdetail_cn_browse_select_div'));
+		return;
+	}
+
 	for( var i in arr ) {
 		var cn = arr[i];
 		var opt = new Option(cn);
