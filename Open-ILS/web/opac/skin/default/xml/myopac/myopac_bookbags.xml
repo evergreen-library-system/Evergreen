@@ -114,8 +114,17 @@
 		Are you sure you wish to hide this bookbag?
 	</span>
 
-	<span id='myopac_bb_update_success'>
+	<span id='myopac_bb_update_success' class='hide_me'>
 		The Bookbag was successfully updated.
+	</span>
+
+	<span id='bb_create_warning' class='hide_me'>
+		Warning: Adding items to a bookbag creates a link between you and the
+		items in the database.  The contents of the bookbag are NOT publicly 
+		viewable unless the bookbag is shared. However, if you prefer not to
+		have any link between your patron record and a particular item or items,
+		we suggest that you do not place said items in a bookbag or that you 
+		avoid using bookbags all together.  Thank you.
 	</span>
 
 </div>

@@ -773,6 +773,13 @@ function myOPACShowBBItem(r) {
 function myOPACCreateBookbag() {
 	var name = $('myopac_bookbag_new_name').value;	
 	if(!name) return;
+
+	var exists = false;
+	for( var c in fleshedContainers ) { exists = true; break; }
+
+	/* let them know what they are getting into... */
+	if(!exists) if(!confirm($('bb_create_warning').innerHTML)) return;
+
 	var result = containerCreate( name, $('bb_public_yes').checked );
 	var code = checkILSEvent(result);
 	if(code) { alertILSEvent(code); return; }
