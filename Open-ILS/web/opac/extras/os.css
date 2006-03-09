@@ -2,6 +2,11 @@ body {
 	font-family: Arial, Helvetica, Sans-serif;
 	font-size: 0.9em;
 	}
+p.nav {
+	text-align: center;
+	border-top: solid lightgray 1px;
+	border-bottom: solid lightgray 1px;
+}
 h1 {
 	font-size: 1.5em;
 	}

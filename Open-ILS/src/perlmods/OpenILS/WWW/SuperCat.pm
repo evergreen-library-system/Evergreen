@@ -516,7 +516,7 @@ sub opensearch_feed {
 	);
 	$feed->root($root);
 
-	$feed->title("$class search results for [$terms] at ".$org_unit->[0]->name);
+	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
@@ -552,6 +552,12 @@ sub opensearch_feed {
 		$base . $path . "?startIndex=" . int(($offset - $limit) + 1) . "&count=" . $limit =>
 		'application/opensearch+xml'
 	) if ($offset);
+
+	$feed->link(
+		unapi =>
+		$unapi =>
+		'application/xml'
+	);
 
 	$feed->link(
 		self =>
@@ -611,6 +617,7 @@ sub create_record_feed {
 		$node->link(alternate => $feed->unapi . "?uri=$item_tag&format=opac" => 'application/xml');
 		$node->link(opac => $feed->unapi . "?uri=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?uri=$item_tag");
+		$node->link('unapi-uri' => $item_tag);
 	}
 
 	return $feed;
@@ -618,7 +625,7 @@ sub create_record_feed {
 
 sub entityize {
 	my $stuff = NFC(shift());
-	$stuff =~ s/&(?!#.{2,4};|amp;)/&amp;/gso;
+	#$stuff =~ s/&(?!#.{2,4};|amp;)/&amp;/gso;
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $stuff;
 }

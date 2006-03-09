@@ -115,6 +115,7 @@ To-do list:
 			<xsl:variable name="totalresults"><xsl:if test="(opensearch:totalResults | opensearchOld:totalResults)&gt;=$endIndex"><xsl:value-of select="(opensearch:totalResults | opensearchOld:totalResults)[1]" /></xsl:if></xsl:variable>
 			<xsl:variable name="navprev"><xsl:if test="atom:link[@rel='previous']/@href and ((opensearch:startIndex&gt;1 or opensearchOld:startIndex&gt;1) or not(opensearch:startIndex or opensearchOld:startIndex))"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="(atom:link[@rel='previous']/@href)[1]" /></xsl:call-template></xsl:if></xsl:variable>
 			<xsl:variable name="navnext"><xsl:if test="atom:link[@rel='next']/@href and (($totalresults&gt;0 and $totalresults&gt;$endIndex) or (not($totalresults&gt;0)))"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="atom:link[@rel='next']/@href" /></xsl:call-template></xsl:if></xsl:variable>
+
 			<xsl:variable name="statedStartIndex" select="(opensearch:startIndex | opensearchOld:startIndex)[1]" />
 			<head>
 				<title><xsl:value-of select="$title" /></title>
@@ -127,6 +128,15 @@ To-do list:
 					<xsl:attribute name="href"><xsl:value-of select="concat($base_dir,'/os.css')"/></xsl:attribute>
 				</link>
 				<!-- rel links -->
+
+				<xsl:for-each select="atom:link[@rel='unapi' and string-length(@href)&gt;0]">
+					<link rel="meta" title="unAPI" type="application/xml">
+						<xsl:attribute name='href'>
+							<xsl:value-of select="./@href"/>
+						</xsl:attribute>
+					</link>
+				</xsl:for-each>
+
 				<xsl:if test="string-length($navprev)&gt;0"><link rel="previous" href="{$navprev}" title="{$t-prevpage}" /></xsl:if>
 				<xsl:if test="string-length($navnext)&gt;0"><link rel="next" href="{$navnext}" title="{$t-nextpage}" /></xsl:if>
 				<xsl:if test="atom:link[@rel='first']/@href and ($statedStartIndex&gt;1 or string-length($statedStartIndex)=0)">
@@ -174,7 +184,7 @@ To-do list:
 				<xsl:choose>
 					<xsl:when test="$items">
 						<!-- display the search numbers -->
-						<p>
+						<p class="nav">
 							<xsl:value-of select="concat($t-results,' ')" />
 							<xsl:choose>
 								<xsl:when test="$statedStartIndex&gt;0"><xsl:value-of select="$statedStartIndex" /></xsl:when>
@@ -183,10 +193,25 @@ To-do list:
 							<xsl:value-of select="concat(' ', $t-resultsto, ' ')" />
 							<xsl:value-of select="$endIndex" />
 							<xsl:if test="$totalresults&gt;0"><xsl:value-of select="concat(' ', $t-resultsof, ' ')" /><xsl:number value="$totalresults" grouping-size="3" grouping-separator="{$t-numsep}" /></xsl:if>
+							<xsl:if test="string-length($navnext)&gt;0 or string-length($navprev)&gt;0">   |   </xsl:if>
+							<xsl:if test="string-length($navprev)&gt;0">
+								<a class="x-escape" href="{$navprev}" rel="previous"><xsl:value-of select="$t-prevlink" disable-output-escaping="yes" /></a>
+								<xsl:if test="string-length($navnext)&gt;0"> | </xsl:if>
+							</xsl:if>
+							<xsl:if test="string-length($navnext)&gt;0"><a class="x-escape" href="{$navnext}" rel="next"><xsl:value-of select="$t-nextlink" disable-output-escaping="yes" /></a></xsl:if>
 						</p>
 						<dl><xsl:apply-templates select="$items" /></dl>
 						<!-- result navigation -->
-						<p id="nav">
+						<p class="nav">
+							<xsl:value-of select="concat($t-results,' ')" />
+							<xsl:choose>
+								<xsl:when test="$statedStartIndex&gt;0"><xsl:value-of select="$statedStartIndex" /></xsl:when>
+								<xsl:otherwise>1</xsl:otherwise>
+							</xsl:choose>
+							<xsl:value-of select="concat(' ', $t-resultsto, ' ')" />
+							<xsl:value-of select="$endIndex" />
+							<xsl:if test="$totalresults&gt;0"><xsl:value-of select="concat(' ', $t-resultsof, ' ')" /><xsl:number value="$totalresults" grouping-size="3" grouping-separator="{$t-numsep}" /></xsl:if>
+							<xsl:if test="string-length($navnext)&gt;0 or string-length($navprev)&gt;0">   |   </xsl:if>
 							<xsl:if test="string-length($navprev)&gt;0">
 								<a class="x-escape" href="{$navprev}" rel="previous"><xsl:value-of select="$t-prevlink" disable-output-escaping="yes" /></a>
 								<xsl:if test="string-length($navnext)&gt;0"> | </xsl:if>
@@ -309,10 +334,21 @@ To-do list:
 		<!-- item url -->
 		<xsl:if test="string-length($url)&gt;0">
 			<dd class="url">
-				<xsl:choose>
-					<xsl:when test="string-length(substring-after($url, 'http://'))&gt;100"><xsl:value-of select="concat(substring(substring-after($url, 'http://'),1,100),'&#8230;')" /></xsl:when>
-					<xsl:otherwise><xsl:value-of select="substring-after($url, 'http://')" /></xsl:otherwise>
-				</xsl:choose>
+				<span class="unapi-uri">
+					<xsl:for-each select="atom:link[@rel='unapi-uri']">
+						<xsl:attribute name="title">
+							<xsl:value-of select="@href" />
+						</xsl:attribute>
+					</xsl:for-each>
+					<xsl:choose>
+						<xsl:when test="string-length(substring-after($url, 'http://'))&gt;100">
+							<xsl:value-of select="concat(substring(substring-after($url, 'http://'),1,100),'&#8230;')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="substring-after($url, 'http://')" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</span>
 			</dd>
 		</xsl:if>
 	</xsl:template>

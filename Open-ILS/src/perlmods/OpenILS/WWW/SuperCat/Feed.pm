@@ -181,6 +181,7 @@ sub link {
 	my $type = shift;
 	my $id = shift;
 	my $mime = shift || "application/$type+xml";
+	my $title = shift;
 
 	$type = 'self' if ($type eq 'atom');
 
@@ -191,6 +192,7 @@ sub link {
 		undef,
 		{ rel => $type,
 		  href => $id,
+		  title => $title,
 		  type => $mime,
 		}
 	);
