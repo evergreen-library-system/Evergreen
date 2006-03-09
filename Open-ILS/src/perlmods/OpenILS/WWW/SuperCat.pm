@@ -554,15 +554,15 @@ sub opensearch_feed {
 	) if ($offset);
 
 	$feed->link(
-		unapi =>
-		$unapi =>
-		'application/xml'
-	);
-
-	$feed->link(
 		self =>
 		$base . $path =>
 		'application/opensearch+xml'
+	);
+
+	$feed->link(
+		unapi =>
+		$unapi =>
+		'application/xml'
 	);
 
 	$feed->link(
