@@ -366,7 +366,7 @@ use base 'OpenILS::WWW::SuperCat::Feed::atom';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::new;
-	$self->{type} = 'application/xhtml+xml';
+	$self->{type} = 'text/html';
 	return $self;
 }
 
