@@ -25,6 +25,8 @@ int __oilsAuthOverrideTimeout = 0;
 
 int osrfAppInitialize() {
 
+	osrfLogInfo(OSRF_LOG_MARK, "Initializing Auth Server...");
+
 	osrfAppRegisterMethod( 
 		MODULENAME, 
 		"open-ils.auth.authenticate.init", 
@@ -42,7 +44,7 @@ int osrfAppInitialize() {
 		"PARAMS(username, md5sum( seed + password ), type, org_id ) "
 		"type can be one of 'opac','staff', or 'override' and it defaults to 'staff' "
 		"org_id is the location at which the login should be considered "
-		"active for login timeout purposes"	, 2, 0 );
+		"active for login timeout purposes"	, 1, 0 );
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 
@@ -80,12 +82,13 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
 
 	jsonObject* resp;
-	char* username = NULL;
-	char* seed = NULL;
-	char* md5seed = NULL;
-	char* key = NULL;
 
-	if( (username = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 0))) ) {
+	char* username = NULL;
+	char* seed		= NULL;
+	char* md5seed	= NULL;
+	char* key		= NULL;
+
+	if( (username = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0))) ) {
 
 		seed = va_list_to_string( "%d.%d.%s", time(NULL), getpid(), username );
 		key = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
@@ -102,6 +105,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 		free(seed);
 		free(md5seed);
 		free(key);
+		free(username);
 		return 0;
 	}
 
@@ -288,13 +292,15 @@ oilsEvent* oilsAuthHandleLoginOK(
 	return response;
 }
 
-oilsEvent* oilsAuthVerifyWorkstation( osrfMethodContext* ctx, jsonObject* userObj, double wsid ) {
-	osrfLogInfo(OSRF_LOG_MARK, "Attaching workstation to user at login: %lf", wsid);
-	jsonObject* workstation = oilsUtilsFetchWorkstation(wsid);
+oilsEvent* oilsAuthVerifyWorkstation( 
+		osrfMethodContext* ctx, jsonObject* userObj, char* ws ) {
+	osrfLogInfo(OSRF_LOG_MARK, "Attaching workstation to user at login: %s", ws);
+	jsonObject* workstation = oilsUtilsFetchWorkstationByName(ws);
 	if(!workstation) return oilsNewEvent("WORKSTATION_NOT_FOUND");
-	DOUBLE_TO_STRING(wsid);
+	long wsid = oilsFMGetObjectId(workstation);
+	LONG_TO_STRING(wsid);
 	char* orgid = oilsFMGetString(workstation, "owning_lib");
-	oilsFMSetString(userObj, "wsid", DOUBLESTR);
+	oilsFMSetString(userObj, "wsid", LONGSTR);
 	oilsFMSetString(userObj, "ws_ou", orgid);
 	free(orgid);
 	return NULL;
@@ -305,43 +311,67 @@ oilsEvent* oilsAuthVerifyWorkstation( osrfMethodContext* ctx, jsonObject* userOb
 int oilsAuthComplete( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
 
-	char* uname		= jsonObjectGetString(jsonObjectGetIndex(ctx->params, 0));
-	char* password = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
-	char* type		= jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
-	double orgloc	= jsonObjectGetNumber(jsonObjectGetIndex(ctx->params, 3));
-	double wsid		= jsonObjectGetNumber(jsonObjectGetIndex(ctx->params, 4));
+	jsonObject* args		= jsonObjectGetIndex(ctx->params, 0);
+
+	char* uname				= jsonObjectGetString(jsonObjectGetKey(args, "username"));
+	char* password			= jsonObjectGetString(jsonObjectGetKey(args, "password"));
+	char* type				= jsonObjectGetString(jsonObjectGetKey(args, "type"));
+	double orgloc			= jsonObjectGetNumber(jsonObjectGetKey(args, "org"));
+	char* workstation		= jsonObjectGetString(jsonObjectGetKey(args, "workstation"));
+	char* barcode			= jsonObjectToSimpleString(jsonObjectGetKey(args, "barcode"));
+
 
 	if(!type) type = OILS_AUTH_STAFF;
 
-	if( !(uname && password) ) {
+	if( !( (uname || barcode) && password) ) {
+		free(barcode);
 		return osrfAppRequestRespondException( ctx->session, ctx->request, 
-			"username and password required for method: %s", ctx->method->name );
+			"username/barocode and password required for method: %s", ctx->method->name );
 	}
 
 	oilsEvent* response = NULL;
-	jsonObject* userObj = oilsUtilsFetchUserByUsername( uname ); 
+	jsonObject* userObj = NULL;
+
+	if(uname) userObj = oilsUtilsFetchUserByUsername( uname ); 
+	else if(barcode) userObj = oilsUtilsFetchUserByBarcode( barcode );
 	
 	if(!userObj) { 
 		response = oilsNewEvent( OILS_EVENT_AUTH_FAILED );
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
+		free(barcode);
 		return 0;
 	}
 
 	/* check to see if the user is allowed to login */
 	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
 		jsonObjectFree(userObj);
+		free(barcode);
 		return 0;
 	}
 
-	int passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
-	if( passOK < 0 ) return passOK;
+	
+	int passOK = -1;
+	if(uname) passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
+	else if (barcode) 
+		passOK = oilsAuthVerifyPassword( ctx, userObj, barcode, password );
 
-	if( wsid > 0 && (response = oilsAuthVerifyWorkstation( ctx, userObj, wsid )) ) {
-		jsonObjectFree(userObj);
-		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
-		oilsEventFree(response);
-		return 0;
+	if( passOK < 0 ) {
+		free(barcode);
+		return passOK;
+	}
+
+	/* if a workstation is defined, flesh the user with the workstation info */
+	if( workstation != NULL ) {
+		osrfLogDebug(OSRF_LOG_MARK, "Workstation is %s", workstation);
+		response = oilsAuthVerifyWorkstation( ctx, userObj, workstation );
+		if(response) {
+			jsonObjectFree(userObj);
+			osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
+			oilsEventFree(response);
+			free(barcode);
+			return 0;
+		}
 	}
 
 	if( passOK ) {
@@ -355,6 +385,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	jsonObjectFree(userObj);
 	osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 	oilsEventFree(response);
+	free(barcode);
 
 	return 0;
 }

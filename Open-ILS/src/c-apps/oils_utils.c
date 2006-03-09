@@ -77,6 +77,10 @@ jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params )
 	return result;
 }
 
+jsonObject* oilsUtilsStorageReq( char* method, jsonObject* params ) {
+	return oilsUtilsQuickReq( "open-ils.storage", method, params );
+}
+
 
 
 jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
@@ -86,6 +90,32 @@ jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
 			"open-ils.storage.direct.actor.user.search.usrname.atomic", params );
 	jsonObject* user = jsonObjectClone(jsonObjectGetIndex( r, 0 ));
 	jsonObjectFree(r);
+	jsonObjectFree(params);
+	return user;
+}
+
+jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
+	if(!barcode) return NULL;
+
+	osrfLogInfo(OSRF_LOG_MARK, "Fetching user by barcode %s", barcode);
+
+	jsonObject* params = jsonParseString("[\"%s\"]",barcode);
+	jsonObject* card = oilsUtilsStorageReq(
+			"open-ils.storage.direct.actor.card.search.barcode", params );
+
+	if(!card) { jsonObjectFree(params); return NULL; }
+
+	char* usr = oilsFMGetString(card, "usr");
+	if(!usr) return NULL;
+	double iusr = strtod(usr, NULL);
+	free(usr);
+
+	jsonObjectFree(params);
+	params = jsonParseString("[%lf]", iusr);
+	jsonObject* user = oilsUtilsStorageReq(
+			"open-ils.storage.direct.actor.user.retrieve", params);
+
+	jsonObjectFree(params);
 	return user;
 }
 
@@ -154,6 +184,14 @@ jsonObject* oilsUtilsFetchWorkstation( long id ) {
 	jsonObject* r = oilsUtilsQuickReq(
 		"open-ils.storage", 
 		"open-ils.storage.direct.actor.workstation.retrieve", p );
+	jsonObjectFree(p);
+	return r;
+}
+
+jsonObject* oilsUtilsFetchWorkstationByName( char* name ) {
+	jsonObject* p = jsonParseString("[\"%s\"]", name);
+	jsonObject* r = oilsUtilsStorageReq(
+		"open-ils.storage.direct.actor.workstation.search.name", p );
 	jsonObjectFree(p);
 	return r;
 }
