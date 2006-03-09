@@ -26,6 +26,13 @@ sub build {
 	return bless $self => $class;
 }
 
+sub type {
+	my $self = shift;
+	my $type = shift;
+	$self->{type} = $type if ($type);
+	return $self->{type};
+}
+
 sub base {
 	my $self = shift;
 	my $base = shift;
@@ -132,7 +139,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<atom:feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
-	$self->{type} = 'atom';
+	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/atom:feed';
 	return $self;
 }
@@ -192,7 +199,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
 	$self->{item_xpath} = '/atom:entry';
-	$self->{type} = 'atom::item';
+	$self->{type} = 'application/xml';
 	return $self;
 }
 
@@ -205,7 +212,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<rss version="2.0"><channel/></rss>');
-	$self->{type} = 'rss2';
+	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/rss/channel';
 	return $self;
 }
@@ -254,7 +261,7 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
-	$self->{type} = 'atom::item';
+	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/item';
 	return $self;
 }
@@ -268,7 +275,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<mods:modsCollection version="3.0" xmlns:mods="http://www.loc.gov/mods/"/>');
-	$self->{type} = 'mods';
+	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/mods:modsCollection';
 	return $self;
 }
@@ -281,7 +288,7 @@ sub new {
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', 'mods');
-	$self->{type} = 'mods::item';
+	$self->{type} = 'application/xml';
 	return $self;
 }
 
@@ -319,7 +326,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim"/>');
-	$self->{type} = 'marcxml';
+	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/marc:collection';
 	return $self;
 }
@@ -332,22 +339,33 @@ sub new {
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
-	$self->{type} = 'marc::item';
+	$self->{type} = 'application/xml';
 	return $self;
 }
 
 #----------------------------------------------------------
 
 package OpenILS::WWW::SuperCat::Feed::html;
-use base 'OpenILS::WWW::SuperCat::Feed';
+use base 'OpenILS::WWW::SuperCat::Feed::atom';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<html><head/><body/></html>');
-	$self->{type} = 'html';
-	$self->{item_xpath} = '/html/body';
+	my $self = $class->SUPER::new;
+	$self->{type} = 'application/xml';
 	return $self;
 }
 
+
+sub toString {
+	my $self = shift;
+	my $stuff = $self->SUPER::toString;
+	my $base = $self->base;
+	$stuff =~ s{\n}{\n<?xml-stylesheet href="../../../../os.xsl" type="text/xsl" ?>\n}so;
+	return $stuff;
+}
+
+
+package OpenILS::WWW::SuperCat::Feed::html::item;
+use base 'OpenILS::WWW::SuperCat::Feed::atom::item';
 
 1;

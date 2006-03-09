@@ -283,13 +283,17 @@ sub bookbag_feed {
 	return Apache2::Const::DECLINED if (-e $apache->filename);
 
 	my $cgi = new CGI;
-	(my $unapi = $cgi->url) =~ s{[^/]+/?$}{unapi};
 
-	my $year = (gmtime())[5];
-
+	my $year = (gmtime())[5] + 1900;
 	my $host = $cgi->virtual_host || $cgi->server_name;
-	my $path = $apache->path_info;
-	my $base = $cgi->url;
+
+	my $url = $cgi->url(-path_info=>1);
+	my $root = (split 'feed', $url)[0];
+	my $base = (split 'bookbag', $url)[0] . 'bookbag';
+	my $path = (split 'bookbag', $url)[1];
+	my $unapi = (split 'feed', $url)[0] . 'unapi';
+
+
 
 	my ($id,$type) = reverse split '/', $path;
 
@@ -319,7 +323,7 @@ sub bookbag_feed {
 
 	$feed->link(
 		OPAC =>
-		$base . '/../../../opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+		$root . '../en-US/skin/default/xml/rresult.xml?rt=list&' .
 			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
 		'text/xhtml'
 	);
@@ -333,6 +337,7 @@ sub bookbag_feed {
 
 sub opensearch_osd {
 	my $version = shift;
+	my $lib = shift;
 	my $class = shift;
 	my $base = shift;
 
@@ -342,12 +347,12 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
-  <Url>$base/1.0/-/$class/-/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
+  <Url>$base/1.0/$lib/$class/-/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
   <ShortName>$class</ShortName>
   <LongName>Search by $class</LongName>
-  <Description>Search the OPAC by $class.</Description>
-  <Tags>book library</Tags>
+  <Description>Search the $lib OPAC by $class.</Description>
+  <Tags>$lib book library</Tags>
   <SampleSearch>harry+potter</SampleSearch>
   <Developer>Mike Rylander for GPLS/PINES</Developer>
   <Contact>feedback\@open-ils.org</Contact>
@@ -362,11 +367,11 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
   <ShortName>$class</ShortName>
-  <Description>Search the OPAC by $class.</Description>
-  <Tags>book library</Tags>
+  <Description>Search the $lib OPAC by $class.</Description>
+  <Tags>$lib book library</Tags>
   <Url type="application/atom+xml"
        method="post"
-       template="$base/1.1/-/$class/atom/{searchTerms}">
+       template="$base/1.1/$lib/$class/atom/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -374,7 +379,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   </Url>
   <Url type="application/rss+xml"
        method="post"
-       template="$base/1.1/-/$class/rss2/{searchTerms}">
+       template="$base/1.1/$lib/$class/rss2/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -382,7 +387,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   </Url>
   <Url type="application/mods+xml"
        method="post"
-       template="$base/1.1/-/$class/mods/{searchTerms}">
+       template="$base/1.1/$lib/$class/mods/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -390,7 +395,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   </Url>
   <Url type="application/marcxml+xml"
        method="post"
-       template="$base/1.1/-/$class/marcxml/{searchTerms}">
+       template="$base/1.1/$lib/$class/marcxml/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -416,24 +421,32 @@ sub opensearch_feed {
 	return Apache2::Const::DECLINED if (-e $apache->filename);
 
 	my $cgi = new CGI;
-	(my $unapi = $cgi->url) =~ s{[^/]+/?$}{unapi};
-
-	my $year = (gmtime())[5];
+	my $year = (gmtime())[5] + 1900;
 
 	my $host = $cgi->virtual_host || $cgi->server_name;
-	my $base = $cgi->url;
-	my $path = $apache->path_info;
 
-	if ($path =~ m{^/?(1\.\d{1})/([^/]+)/osd.xml}o) {
+	my $url = $cgi->url(-path_info=>1);
+	my $root = (split 'opensearch', $url)[0];
+	my $base = (split 'opensearch', $url)[0] . 'opensearch';
+	my $unapi = (split 'opensearch', $url)[0] . 'unapi';
+
+	my $path = (split 'opensearch', $url)[1];
+
+	if ($path =~ m{^/?(1\.\d{1})/(?:([^/]+)/)?([^/]+)/osd.xml}o) {
 		
 		my $version = $1;
-		my $class = $2;
+		my $lib = $2;
+		my $class = $3;
+
+		if (!$lib) {
+			$lib = 'PINES';
+		}
 
 		if ($class eq '-') {
 			$class = 'keyword';
 		}
 
-		return opensearch_osd($version, $class, $base);
+		return opensearch_osd($version, $lib, $class, $base);
 	}
 
 
@@ -487,7 +500,7 @@ sub opensearch_feed {
 		$unapi,
 	);
 
-	$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
+	$feed->title("$class search results for [$terms] at ".$org_unit->[0]->name);
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
@@ -535,7 +548,7 @@ sub opensearch_feed {
 	) if ($offset + $limit < $recs->{count});
 
 	$feed->link(
-		prev =>
+		previous =>
 		$base . $path . "?startIndex=" . int(($offset - $limit) + 1) . "&count=" . $limit =>
 		'application/opensearch+xml'
 	) if ($offset);
@@ -548,14 +561,14 @@ sub opensearch_feed {
 
 	$feed->link(
 		opac =>
-		$base . "/../../opac/$lang/skin/default/xml/rresult.xml?rt=list&" .
+		$root . "../opac/$lang/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
 		'text/xhtml'
 	);
 
-	print "Content-type: application/xml; charset=utf-8\n\n";
-
+	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
 	print entityize($feed->toString) . "\n";
+
 	return Apache2::Const::OK;
 }
 
@@ -568,14 +581,17 @@ sub create_record_feed {
 	my $base = $cgi->url;
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $year = (gmtime())[5];
+	my $year = (gmtime())[5] + 1900;
 
 	my $feed = new OpenILS::WWW::SuperCat::Feed ($type);
 	$feed->base($base);
 	$feed->unapi($unapi);
 
+	$type = 'atom' if ($type eq 'html');
+
 	for my $rec (@$records) {
 		my $item_tag = "tag:$host,$year:biblio-record_entry/" . $rec;
+
 
 		my $xml = $supercat->request(
 			"open-ils.supercat.record.$type.retrieve",
@@ -585,6 +601,7 @@ sub create_record_feed {
 		my $node = $feed->add_item($xml);
 
 		$node->id($item_tag);
+		$node->link(alternate => $feed->unapi . "?uri=$item_tag&format=opac" => 'application/xml');
 		$node->link(opac => $feed->unapi . "?uri=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?uri=$item_tag");
 	}
