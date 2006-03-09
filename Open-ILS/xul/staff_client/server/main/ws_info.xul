@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Main, Authentication Window -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="wsinfo_win" 
+	onload="try { wsinfo_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
+	<script type="text/javascript" src="/xul/server/main/lang.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function wsinfo_init() {
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+			if (typeof JSAN == 'undefined') {
+				throw(
+					"The JSAN library object is missing."
+				);
+			}
+			/////////////////////////////////////////////////////////////////////////////
+
+			JSAN.errorLevel = "die"; // none, warn, or die
+			JSAN.addRepository('/xul/server/');
+
+			JSAN.use('util.error'); g.error = new util.error();
+			JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+			JSAN.use('util.network'); g.network = new util.network();
+			JSAN.use('util.widgets');
+			JSAN.use('util.functional');
+
+			g.my_libs = g.network.simple_request(
+				'FM_AOU_RETRIEVE_RELATED_VIA_SESSION',
+				[ xulG.auth.session.key ]
+			);
+
+			g.my_lib = g.network.simple_request(
+				'FM_AU_RETRIEVE_VIA_SESSION',
+				[ xulG.auth.session.key ]
+			).home_ou();
+
+			g.tb = document.getElementById('wsname');
+
+			render_menulist();
+
+			g.ml.focus();
+			
+		}
+
+		function render_menulist() {
+			var x = document.getElementById('placeholder');
+			util.widgets.remove_children( x );
+
+			g.ml = util.widgets.make_menulist( 
+				util.functional.map_list( 
+					g.my_libs,
+					function(obj) { return [ obj.shortname(), obj.id() ]; }
+				).sort(),
+				g.my_lib
+			);
+
+			x.appendChild( g.ml );
+		}
+
+		function register() {
+			try {
+				var robj = g.network.simple_request(
+					'AUTH_WORKSTATION',
+					[ xulG.auth.session.key, g.tb.value, g.ml.value ]
+				);
+
+				if (robj.ilsevent) {
+					alert(js2JSON(robj));
+				} else {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
+					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
+						'name' : g.tb.value, 'owning_lib' : g.ml.value 
+					};
+					xulG.file.get('ws_info');
+					xulG.file.set_object(g.data.ws_info);
+					alert('Registration successful');
+					xulG.auth.logoff();
+				}
+			} catch(E) {
+				alert(E);
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1">
+		<hbox id="placeholder"/>
+		<hbox>
+			<label value="Name" control="wsname"/>
+			<textbox id="wsname" />
+			<button label="Register" accesskey="R" oncommand="register();"/>
+		</hbox>
+	</vbox>
+</window>
+
