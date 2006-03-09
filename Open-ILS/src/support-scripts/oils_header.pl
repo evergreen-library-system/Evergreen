@@ -143,8 +143,11 @@ sub oils_login {
 	err("No auth seed") unless $seed;
 
 	my $response = $apputils->simplereq( $AUTH, 
-		'open-ils.auth.authenticate.complete', $username, 
-		md5_hex($seed . md5_hex($password)), $type);
+		'open-ils.auth.authenticate.complete', 
+		{	username => $username, 
+			password => md5_hex($seed . md5_hex($password)), 
+			type => $type });
+
 	err("No auth response returned on login") unless $response;
 
 	oils_event_die($response);
