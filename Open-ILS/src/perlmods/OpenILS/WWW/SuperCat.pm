@@ -355,7 +355,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
-  <Url>$base/1.0/$lib/$class/-/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
+  <Url>$base/1.0/$lib/-/$class/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
   <ShortName>$class</ShortName>
   <LongName>Search by $class</LongName>
@@ -379,7 +379,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Tags>$lib book library</Tags>
   <Url type="application/atom+xml"
        method="post"
-       template="$base/1.1/$lib/$class/atom/{searchTerms}">
+       template="$base/1.1/$lib/atom/$class/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -387,7 +387,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   </Url>
   <Url type="application/rss+xml"
        method="post"
-       template="$base/1.1/$lib/$class/rss2/{searchTerms}">
+       template="$base/1.1/$lib/rss2/$class/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -395,7 +395,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   </Url>
   <Url type="application/mods+xml"
        method="post"
-       template="$base/1.1/$lib/$class/mods/{searchTerms}">
+       template="$base/1.1/$lib/mods/$class/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
@@ -403,7 +403,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   </Url>
   <Url type="application/marcxml+xml"
        method="post"
-       template="$base/1.1/$lib/$class/marcxml/{searchTerms}">
+       template="$base/1.1/$lib/marcxml/$class/{searchTerms}">
     <Param name="startPage" value="{startPage?}"/>
     <Param name="startIndex" value="{startIndex?}"/>
     <Param name="count" value="{count?}"/>
