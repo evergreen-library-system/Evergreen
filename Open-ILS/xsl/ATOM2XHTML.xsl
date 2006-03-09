@@ -73,6 +73,7 @@ To-do list:
 	<xsl:variable name="t-download">download</xsl:variable> <!-- leave this or t-enclosure blank to not show link to enclosures -->
 	<xsl:variable name="t-enclosure">enclosure</xsl:variable> <!-- text of untitled enclosures; leave this or t-download blank to not show link to enclosures -->
 	<!-- END SETTINGS -->
+
 	
 	<xsl:template match="/">
 		<xsl:comment>For information about the XSLT file that generated this, see http://opensearch.a9.com/docs/stylesheet.jsp</xsl:comment>
@@ -92,6 +93,9 @@ To-do list:
 
 	<xsl:template match="atom:feed | rss/channel | rdf:RDF">
 		<xsl:variable name="language" select="(@xml:lang | language)[1]" />
+		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet type="text/xsl" href="</xsl:text>
+		<xsl:value-of select="$base_dir" />
+		<xsl:text>/html_xsl.xml"?></xsl:text>
 		<html xml:lang="{$language}" lang="{$language}">
 			<xsl:variable name="query" select="opensearch:Query[@role='request' and @searchTerms][1]/@searchTerms" />
 			<xsl:variable name="statedtitle" select="(atom:title | title | //rss1:channel/rss1:title | //rss9:channel/rss9:title)[1]" />
