@@ -183,6 +183,11 @@ sub bucket_create {
 			$authtoken, $bucket->owner, 'CREATE_CONTAINER' );
 	return $evt if $evt;
 
+	if( $staff->id eq $target->id ) {
+		$evt = $U->check_perms($target->id, $target->home_ou, 'CREATE_MY_CONTAINER');
+		return $evt if $evt;
+	}
+
 	$logger->activity( "User " . $staff->id . 
 		" creating a new container for user " . $bucket->owner );
 
