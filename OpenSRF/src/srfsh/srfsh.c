@@ -240,13 +240,12 @@ int handle_login( char* words[]) {
 
 	if( words[1] && words[2]) {
 
-		char* username = words[1];
-		char* password = words[2];
-		char* type		= words[3];
-		char* orgloc	= words[4];
-		char* wsid		= words[5];
+		char* username		= words[1];
+		char* password		= words[2];
+		char* type			= words[3];
+		char* orgloc		= words[4];
+		char* workstation	= words[5];
 		int orgloci = (orgloc) ? atoi(orgloc) : 0;
-		int wsidi = (wsid) ? atoi(wsid) : 0;
 		if(!type) type = "opac";
 
 		char buf[256];
@@ -274,13 +273,28 @@ int handle_login( char* words[]) {
 
 		char* mess_buf = md5sum(both_buf);
 
+		/*
 		sprintf( buf2, "request open-ils.auth open-ils.auth.authenticate.complete "
-				"\"%s\", \"%s\", \"%s\", %d, %d", username, mess_buf, type, orgloci, wsidi );
+				"{ \"username\" : \"%s\", \"password\" : \"%s\", "
+				"\"type\" : \"%s\", \"org\" : %d, \"workstation\": \"%s\"}", 
+				username, mess_buf, type, orgloci, workstation );
+				*/
+
+		growing_buffer* argbuf = buffer_init(64);
+		buffer_fadd(argbuf, 
+				"request open-ils.auth open-ils.auth.authenticate.complete "
+				"{ \"username\" : \"%s\", \"password\" : \"%s\"", username, mess_buf );
+
+		if(type) buffer_fadd( argbuf, ", \"type\" : \"%s\"", type );
+		if(orgloci) buffer_fadd( argbuf, ", \"org\" : %d", orgloci );
+		if(workstation) buffer_fadd( argbuf, ", \"workstation\" : \"%s\"", workstation);
+		buffer_add(argbuf, "}");
 
 		free(pass_buf);
 		free(mess_buf);
 
-		parse_request( buf2 );
+		parse_request( argbuf->buf );
+		buffer_free(argbuf);
 
 		jsonObject* x = last_result->_result_content;
 		double authtime = 0;
