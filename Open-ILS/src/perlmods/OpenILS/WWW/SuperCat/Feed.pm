@@ -368,7 +368,7 @@ sub new {
 	return $self;
 }
 
-our ($_parser, $_xslt, $atom2html_xslt);
+our ($_parser, $_xslt, $xslt_file);
 
 sub toString {
 	my $self = shift;
@@ -380,19 +380,17 @@ sub toString {
         $_parser ||= new XML::LibXML;
         $_xslt ||= new XML::LibXSLT;
 
+	$xslt_file ||=
+                OpenSRF::Utils::SettingsClient
+       	                ->new
+               	        ->config_value( dirs => 'xsl' ).
+                "/ATOM2XHTML.xsl";
+
         # parse the MODS xslt ...
-        $atom2html_xslt ||= $_xslt->parse_stylesheet(
-		$_parser->parse_file(
-	                OpenSRF::Utils::SettingsClient
-        	                ->new
-                	        ->config_value( dirs => 'xsl' ).
-	                "/ATOM2XHTML.xsl"
-		)
-        );
+        my $atom2html_xslt = $_xslt->parse_stylesheet( $_parser->parse_file($xslt_file) );
 
 	my $new_doc = $atom2html_xslt->transform($self->{doc}, base_dir => "'$root'");
 	return $new_doc->toString(1); 
-	return $atom2html_xslt->output_string($new_doc);
 }
 
 
