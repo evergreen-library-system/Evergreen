@@ -64,7 +64,7 @@ util.widgets.dispatch = function(ev,el) {
 	util.widgets.get(el).dispatchEvent(evt);
 }
 
-util.widgets.make_menulist = function( items ) {
+util.widgets.make_menulist = function( items, dvalue ) {
 	var menulist = document.createElement('menulist');
 	var menupopup = document.createElement('menupopup'); menulist.appendChild(menupopup);
 	for (var i = 0; i < items.length; i++) {
@@ -72,6 +72,7 @@ util.widgets.make_menulist = function( items ) {
 		menuitem.setAttribute('label',items[i][0]);
 		menuitem.setAttribute('value',items[i][1]);
 	}
+	menulist.setAttribute('value',dvalue);
 	return menulist;
 }
 
