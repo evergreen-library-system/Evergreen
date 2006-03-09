@@ -72,7 +72,6 @@ To-do list:
 	<xsl:variable name="t-comments">comments</xsl:variable> <!-- leave blank to not show link to comments -->
 	<xsl:variable name="t-download">download</xsl:variable> <!-- leave this or t-enclosure blank to not show link to enclosures -->
 	<xsl:variable name="t-enclosure">enclosure</xsl:variable> <!-- text of untitled enclosures; leave this or t-download blank to not show link to enclosures -->
-	<xsl:variable name="t-numsep"><xsl:text>,</xsl:text></xsl:variable> <!-- text to separate number of over 3 digits (eg ',' or ' '); leave blank for no separator-->
 	<!-- END SETTINGS -->
 	
 	<xsl:template match="/">
@@ -192,7 +191,7 @@ To-do list:
 							</xsl:choose>
 							<xsl:value-of select="concat(' ', $t-resultsto, ' ')" />
 							<xsl:value-of select="$endIndex" />
-							<xsl:if test="$totalresults&gt;0"><xsl:value-of select="concat(' ', $t-resultsof, ' ')" /><xsl:number value="$totalresults" grouping-size="3" grouping-separator="{$t-numsep}" /></xsl:if>
+							<xsl:if test="$totalresults&gt;0"><xsl:value-of select="concat(' ', $t-resultsof, ' ')" /><xsl:number value="$totalresults" grouping-size="3" grouping-separator="," /></xsl:if>
 							<xsl:if test="string-length($navnext)&gt;0 or string-length($navprev)&gt;0">   |   </xsl:if>
 							<xsl:if test="string-length($navprev)&gt;0">
 								<a class="x-escape" href="{$navprev}" rel="previous"><xsl:value-of select="$t-prevlink" disable-output-escaping="yes" /></a>
@@ -210,7 +209,7 @@ To-do list:
 							</xsl:choose>
 							<xsl:value-of select="concat(' ', $t-resultsto, ' ')" />
 							<xsl:value-of select="$endIndex" />
-							<xsl:if test="$totalresults&gt;0"><xsl:value-of select="concat(' ', $t-resultsof, ' ')" /><xsl:number value="$totalresults" grouping-size="3" grouping-separator="{$t-numsep}" /></xsl:if>
+							<xsl:if test="$totalresults&gt;0"><xsl:value-of select="concat(' ', $t-resultsof, ' ')" /><xsl:number value="$totalresults" grouping-size="3" grouping-separator="," /></xsl:if>
 							<xsl:if test="string-length($navnext)&gt;0 or string-length($navprev)&gt;0">   |   </xsl:if>
 							<xsl:if test="string-length($navprev)&gt;0">
 								<a class="x-escape" href="{$navprev}" rel="previous"><xsl:value-of select="$t-prevlink" disable-output-escaping="yes" /></a>
