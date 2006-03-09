@@ -1,0 +1,49 @@
+body {
+	font-family: Arial, Helvetica, Sans-serif;
+	font-size: 0.9em;
+	}
+h1 {
+	font-size: 1.5em;
+	}
+div#header img {
+	position: absolute;
+	top: 0;
+	right: 0;
+	}
+h1, div#header p, form p {
+	margin: 0;
+	padding: 0;
+	}
+form {
+	margin: 1em 0 0 3em;
+	font-size: 0.8em;
+	}
+input {
+	margin-right: 0.5em;
+	}
+input[type=text] { /* unfortunately not supported in IE <=6, but it looks okay without it anyway */
+	width: 20em;
+	}
+dt {
+	margin-top: 1.2em;
+	}
+dd {
+	font-style: italic;
+	margin: 0;
+	width: 80%;
+	margin-left: 1em;
+	}
+dd.desc {
+	font-style: normal;
+	}
+dd.url {
+	color: #999999;
+	font-style: normal;
+	margin-left: 0;
+	}
+#footer {
+	text-align: center;
+	}
+.escape { /* part of hack used to handle web browsers that don't support disable-output-escaping (e.g. Mozilla) */
+	display: inline;
+	}
