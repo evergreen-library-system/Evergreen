@@ -54,10 +54,10 @@ function main_init() {
 			G.file.get('ws_info');
 			G.ws_info = G.file.get_object();
 			// { server_name : { 'id' : ..., 'name' : ..., 'owning_lib' : ... }, ... : ... }
-			alert('retrieved ws_info from filesystem: ' + js2JSON(ws_info) );
+			// alert('retrieved ws_info from filesystem: ' + js2JSON(G.ws_info) );
 		} catch(E) {
 			G.ws_info = {};
-			alert('could not retrieve ws_info from filesystem');
+			//alert('could not retrieve ws_info from filesystem');
 		}
 		G.data.ws_info = G.ws_info; G.data.stash('ws_info');
 
@@ -70,51 +70,25 @@ function main_init() {
 
 			grant_perms(url);
 
+			var xulG = {
+				'auth' : G.auth,
+				'url' : url,
+				'window' : G.window,
+			}
+
 			if (G.data.ws_info && G.data.ws_info[G.auth.controller.view.server_prompt.value]) {
 				var deck = document.getElementById('main_deck');
 				var iframe = document.createElement('iframe'); deck.appendChild(iframe);
 				iframe.setAttribute( 'src', url + '/xul/server/main/data.xul' );
-				var xulG = {
-					'auth' : G.auth,
-					'url' : url,
-					'window' : G.window,
-				}
 				iframe.contentWindow.xulG = xulG;
 			} else {
-				G.auth.controller.view.ws_deck.selectedIndex = 1;
-				JSAN.use('util.widgets');
-				var spot = document.getElementById('menu_spot');
-				util.widgets.remove_children(spot);
-				var ml = util.widgets.make_menulist( [ ['PINES','1'], ['ARL-ATH','18'] ] );
-				ml.setAttribute('id','menu');
-				spot.appendChild(ml);
-			}
-		}
-
-		G.auth.on_register = function(ses,server,orgid,wsname) {
-			try {
-				alert('register happens here: ses = ' + ses + ' server = ' + server + ' orgid = ' + orgid + ' wsname = ' + wsname );
-
-				var deck = document.getElementById('main_deck');
+				xulG.file = G.file;
+				var deck = G.auth.controller.view.ws_deck;
 				var iframe = document.createElement('iframe'); deck.appendChild(iframe);
-				iframe.setAttribute( 'src', G.data.server + '/xul/server/main/register.xul');
-				var xulG = {
-					'auth' : G.auth,
-					'url' : G.data.server,
-					'window' : G.window,
-					'ses' : ses,
-					'ws_server' : server,
-					'ws_orgid' : orgid,
-					'ws_name' : wsname,
-					'file' : G.file,
-				}
+				iframe.setAttribute( 'src', url + '/xul/server/main/ws_info.xul' );
 				iframe.contentWindow.xulG = xulG;
-
-			} catch(E) {
-				G.error.sdump('D_ERROR',E);
-				alert(E);
+				deck.selectedIndex = deck.childNodes.length - 1;
 			}
-
 		}
 
 		G.auth.init();

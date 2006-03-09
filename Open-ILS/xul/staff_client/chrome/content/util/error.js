@@ -56,7 +56,7 @@ util.error.prototype = {
 
 		'D_PATRON_UTILS' : false, 'D_CIRC_UTILS' : false,
 
-		'D_FILE' : false, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : false, 'D_SES' : true,
+		'D_FILE' : true, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : false, 'D_SES' : true,
 		'D_SES_FUNC' : false, 'D_SES_RESULT' : true, 'D_SPAWN' : false, 'D_STRING' : false,
 		'D_UTIL' : false, 'D_WIN' : false, 'D_WIDGETS' : false
 	},

@@ -32,13 +32,6 @@ auth.controller.prototype = {
 							obj.override();
 						}
 					],
-					'cmd_register' : [
-						['command'],
-						function() {
-							dump('cmd_register handler\n');
-							obj.register();
-						}
-					],
 					'cmd_logoff' : [
 						['command'],
 						function() {
@@ -64,16 +57,7 @@ auth.controller.prototype = {
 						['keypress'],
 						handle_keypress
 					],
-					'wsid_prompt' : [
-						['keypress'],
-						handle_keypress
-					],
-
 					'submit_button' : [
-						['render'],
-						function(e) { return function() {} }
-					],
-					'register_button' : [
 						['render'],
 						function(e) { return function() {} }
 					],
@@ -118,11 +102,6 @@ auth.controller.prototype = {
 							ev.preventDefault();
 							obj.controller.view.submit_button.focus(); 
 							obj.login();
-						break;
-						case obj.controller.view.wsid_prompt:
-							ev.preventDefault();
-							obj.controller.view.register_button.focus();
-							obj.register();
 						break;
 						default: break;
 					}
@@ -184,42 +163,6 @@ auth.controller.prototype = {
 				this.error.sdump('D_AUTH','auth.controller.on_login_error()\n');
 				this.on_login_error(E);
 			}
-		}
-
-	},
-
-	'register' : function() { 
-		try {
-		dump('register code\n');
-		var obj = this;
-
-		var orgid = obj.controller.view.menu_spot.firstChild.value;
-		var wsname = obj.controller.view.wsid_prompt.value;
-
-		obj.error.sdump('D_AUTH','register workstation with ' + orgid + ' and ' + wsname + '\n'); 
-
-		obj.controller.view.menu_spot.firstChild.disabled = true;
-		obj.controller.view.wsid_prompt.disabled = true;
-
-		try {
-
-			var server = obj.controller.view.server_prompt.value;
-
-			if (typeof obj.on_register == 'function') {
-				dump('calling on_register\n');
-				obj.on_register(obj.session.key,server,orgid,wsname);
-			}
-			
-
-		} catch(E) {
-			var error = '!! ' + E + '\n';
-			this.error.sdump('D_ERROR',error); 
-			alert(error);
-			this.controller.view.menu_spot.firstChild.disabled = false;
-			this.controller.view.wsid_prompt.disabled = false;
-		}
-		} catch(E) {
-			alert(E);
 		}
 
 	},

@@ -19,6 +19,7 @@
 -->
 
 <window id="main_win" 
+	width="400" height="550"
 	onload="try { main_init(); } catch(E) { alert(E); }"
 	onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
 	title="&staff.auth.title;"
@@ -62,7 +63,6 @@
 		<command id="cmd_login" />
 		<command id="cmd_logoff"/>
 		<command id="cmd_override" />
-		<command id="cmd_register" />
 		<command id="cmd_close_window"/>
 	</commandset>
 
@@ -74,91 +74,60 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- CONTENT -->
-	<deck id="main_deck">
-	<groupbox id="main_groupbox" flex="1">
+	<deck id="main_deck" flex="1">
+	<groupbox id="main_groupbox" flex="1" style="overflow: auto;">
 		<caption id="main_caption" label="Startup"/>
 		<label value="&staff.auth.version;"/>
 		<label value="Development Version 123"/>
 		<label value=" "/>
-		<grid>
-		<columns><column/><column/></columns>
-		<rows>
-		<row>
-			<groupbox>
-				<caption label="Server"/>
-				<grid>
-					<columns><column /><column /></columns>
-					<rows>
-						<row>
-							<label value="Hostname" control="server_prompt" accesskey="H"/>
-							<textbox id="server_prompt" value="dev.gapines.org"/>
-						</row>
-						<row>
-							<label value="Status"/>
-							<label id="status" value="Online" style="color: green; text-color: green;"/>
-						</row>
-					</rows>
-				</grid>
-			</groupbox>
-			<groupbox>
-				<caption label="Workstation"/>
-				<deck id="ws_deck">
-					<description>
-						Not yet configured.
-					</description>
-					<grid>
-						<columns><column /><column /></columns>
-						<rows>
-							<row>
-								<label value="Library" control="menu_spot"/>
-								<hbox id="menu_spot" />
-							</row>
-							<row>
-								<label value="ID" control="wsid_prompt" />
-								<textbox id="wsid_prompt" />
-							</row>
-						</rows>
-					</grid>
-				</deck>
-			</groupbox>
-		</row>
-		<row>
-			<groupbox>
-				<caption label="Authentication"/>
-				<grid>
-					<columns> <column /> <column /> </columns>
-					<rows>
-						<row>
-							<label value="Username" control="name_prompt" accesskey="U"/>
-							<textbox id="name_prompt" value=""/>
-						</row>
-						<row>
-							<label value="Password" control="password_prompt" accesskey="P"/>
-							<textbox id="password_prompt" value="" type="password"/>
-						</row>
-					</rows>
-				</grid>
-			</groupbox>
-			<groupbox>
-				<caption label="Actions"/>
-				<grid>
-					<columns><column flex="1"/><column /></columns>
-					<rows>
-						<row>
-							<button id="submit_button" label="Login" accesskey="L" command="cmd_login" />
-							<button id="register_button" label="Register" accesskey="R" command="cmd_register" />
-						</row>
-						<row>
-							<button label="&staff.auth.logoff_prompt;" accesskey="f" command="cmd_logoff" />
-							<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
-						</row>
-					</rows>
-				</grid>
-			</groupbox>
-		</row>
-		</rows>
-		</grid>
+
+		<groupbox flex="1">
+			<caption label="Server"/>
+			<grid>
+				<columns><column /><column /></columns>
+				<rows>
+					<row>
+						<label value="Hostname" control="server_prompt" accesskey="H"/>
+						<textbox id="server_prompt" value="dev.gapines.org"/>
+					</row>
+					<row>
+						<label value="Status"/>
+						<label id="status" value="Online" style="color: green; text-color: green;"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+
+		<groupbox flex="1">
+			<caption label="Authentication"/>
+			<grid>
+				<columns> <column /> <column /> </columns>
+				<rows>
+					<row>
+						<label value="Username" control="name_prompt" accesskey="U"/>
+						<textbox id="name_prompt" value=""/>
+					</row>
+					<row>
+						<label value="Password" control="password_prompt" accesskey="P"/>
+						<textbox id="password_prompt" value="" type="password"/>
+					</row>
+					<row>
+						<button id="submit_button" label="Login" accesskey="L" command="cmd_login" />
+						<button label="&staff.auth.logoff_prompt;" accesskey="f" command="cmd_logoff" />
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+
+		<groupbox flex="1">
+			<caption label="Workstation"/>
+			<deck id="ws_deck">
+			</deck>
+		</groupbox>
+
+		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
 		<progressmeter id="progress_bar" mode="normal" value="0"/>
+
 	</groupbox>
 	</deck>
 
