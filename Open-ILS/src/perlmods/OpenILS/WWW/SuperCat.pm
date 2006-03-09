@@ -625,7 +625,7 @@ sub create_record_feed {
 
 sub entityize {
 	my $stuff = NFC(shift());
-	#$stuff =~ s/&(?!#.{2,4};|amp;)/&amp;/gso;
+	$stuff =~ s/&(?!\S+;)/&amp;/gso;
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $stuff;
 }
