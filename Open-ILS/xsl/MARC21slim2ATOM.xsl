@@ -42,13 +42,17 @@
 	
 			<xsl:for-each select="marc:datafield[@tag=100]">
 				<author>
-					<xsl:value-of select="."/>
+					<name>
+						<xsl:value-of select="."/>
+					</name>
 				</author>
 			</xsl:for-each>
 
 			<xsl:for-each select="marc:datafield[@tag=110]|marc:datafield[@tag=111]|marc:datafield[@tag=700]|marc:datafield[@tag=710]|marc:datafield[@tag=711]|marc:datafield[@tag=720]">
 				<author>
-					<xsl:value-of select="."/>
+					<name>
+						<xsl:value-of select="."/>
+					</name>
 				</author>
 			</xsl:for-each>
 
