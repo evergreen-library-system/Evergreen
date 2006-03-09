@@ -357,8 +357,8 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
   <Url>$base/1.0/$lib/-/$class/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
-  <ShortName>$class</ShortName>
-  <LongName>Search by $class</LongName>
+  <ShortName>$lib</ShortName>
+  <LongName>Search $lib</LongName>
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
   <SampleSearch>harry+potter</SampleSearch>
@@ -374,7 +374,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>$class</ShortName>
+  <ShortName>$lib</ShortName>
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
   <Url type="application/atom+xml"
@@ -409,7 +409,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
     <Param name="count" value="{count?}"/>
     <Param name="language" value="{language?}"/>
   </Url>
-  <LongName>Search by $class</LongName>
+  <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
   <SyndicationRight>open</SyndicationRight>
