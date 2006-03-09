@@ -1,5 +1,5 @@
 <body onload='init(); getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
-	<table width='100%' style='border-collapse: collapse;'>
+	<table width='100%' style='border-collapse: collapse; height: 99%;'>
 		<tbody>
 			<tr>
 				<td width='10%'> </td>
@@ -14,6 +14,9 @@
 		</tbody>
 	</table>
 	<script language='javascript'>isFrontPage = true;</script>
+	<center>
+		<!--#include virtual='../footer.xml'-->
+	</center>
 </body>
 
 

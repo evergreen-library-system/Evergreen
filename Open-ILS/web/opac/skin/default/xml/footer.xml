@@ -1,12 +1,18 @@
+<!-- Needs serious DTD-ization -->
+
 <div style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 50px;'>
-	<!--
-	<div style='width: 90%; background: #E0F0E0; text-align:center; vertical-align: bottom; margin: 10px; border: 1px solid #808080;'>
-	-->
-	<span 
-		style='width: 90%; background: #E0F0E0; text-align:center; vertical-align: bottom; border: 1px solid #808080; padding: 10px;'>
-		<span>Copyright (C) 2005 Georgia Public Library Service</span>
-	</span>
-	<!--
-	</div>
-	-->
+	<center>
+		<div 
+			style='width: 90%; background: #E0F0E0; text-align:center; vertical-align: bottom; border: 1px solid #808080; padding: 10px;'>
+			<span style='margin-left: 10px; margin-right: 10px;'>
+				<a target='_blank' class='classic_link'	
+					href='http://www.georgialibraries.org/public/findlibrary.html'>Find a Library Mear Me</a>
+			</span>
+			<span>Copyright (C) 2005 Georgia Public Library Service</span>
+			<span style='margin-left: 10px; margin-right: 10px;'>
+				<a target='_blank' class='classic_link' 
+					href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+			</span>
+		</div>
+	</center>
 </div>
