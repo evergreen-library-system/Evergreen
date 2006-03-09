@@ -66,4 +66,4 @@
 <!ENTITY opac.title.advanced "Evergreen Advanced Search">
 <!ENTITY opac.title.reqitems "Evergreen Request Items">
 <!ENTITY opac.title.cnbrowse "Evergreen Call Number Browse">
-<!ENTITY opac.login.login "Login with your username and password">
+<!ENTITY opac.login.login "Login">

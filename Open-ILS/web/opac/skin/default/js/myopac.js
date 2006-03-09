@@ -197,6 +197,8 @@ function myOPACRenewCirc(circid) {
 		if(circsCache[i].id() == circid)
 			circ = circsCache[i];
 
+	if(!confirm($('myopac_renew_confirm').innerHTML)) return;
+
 	var req = new Request(RENEW_CIRC, G.user.session, 
 		{ patron : G.user.id(), copyid : circ.target_copy() } );
 	req.send(true);
@@ -485,6 +487,7 @@ function _myOPACSummaryShowUer(r) {
 
 	var user = r.getResultObject();
 	fleshedUser = user;
+	if(!user) return;
 
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));
 	appendClear($('myopac_summary_middle'),text(user.second_given_name()));
@@ -725,6 +728,7 @@ function myOPACExpandBookbag( id, name ) {
 }
 
 function myOPACRemoveBBItem( id, containerid, container_name ) {
+	if(!confirm($('myopac_remove_bb_item_confirm').innerHTML)) return;
 	containerRemoveItem( id );
 	myOPACFetchBBItems( containerid, $('myopac_bookbag_row_' + containerid), true);
 	myOPACExpandBookbag( containerid, container_name );

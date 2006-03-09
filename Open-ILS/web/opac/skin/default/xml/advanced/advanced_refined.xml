@@ -1,6 +1,6 @@
 <table class='data_grid' width='80%'>
 	<thead>
-		<tr><td colspan='3'>&opac.advanced.refined.title;</td></tr>
+		<tr><td colspan='4'>&opac.advanced.refined.title;</td></tr>
 	</thead>
 	<tbody style='text-align: left'>
 		<tr>

@@ -1,7 +1,7 @@
 
 <div id='myopac_prefs_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<table width='100%' class='data_grid'>
+	<table width='100%' class='data_grid' style='margin-top: 20px;'>
 
 		<br/>
 		<thead>
@@ -29,16 +29,20 @@
 				</td>
 			</tr>
 
+			<tr><td colspan='2'><br/></td></tr>
+
 			<tr>
-				<td align='middle' colspan='2'>
+				<td align='center' class='color_3' colspan='2'>
 					<button onclick='myOPACSavePrefs();' 
-						id='myopac_prefs_submit'>Save Changes</button>
+						id='myopac_prefs_submit'>Save Preference Changes</button>
 				</td>
 			</tr>
 
+			<!--
 			<tr>
 				<td colspan='2' align='center'><br/><b> * More To Come...</b></td>
 			</tr>
+			-->
 
 		</tbody>
 	</table>

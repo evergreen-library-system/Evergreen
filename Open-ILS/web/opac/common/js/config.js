@@ -114,6 +114,10 @@ G.user	= null; /* global user object */
 G.ui		= {} /* cache of UI components */
 
 
+/* regexes */
+var REGEX_BARCODE = /^\d+/; /* starts with a number */
+
+
 /* call me after page init and I will load references 
 	to all of the ui object id's defined below 
 	They will be stored in G.ui.<page>.<thingy>

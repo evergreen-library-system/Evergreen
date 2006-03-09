@@ -58,7 +58,7 @@ function rdetailViewMarc(r,id) {
 
 	var d = new Date();
 
-	var div = elem('div', { class : 'hide_me' });
+	var div = elem('div', { "class" : 'hide_me' });
 	var span = div.appendChild( elem('span') );
 
 	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );

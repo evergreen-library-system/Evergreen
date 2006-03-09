@@ -12,16 +12,18 @@
 		config.ids.altcanvas.login			= config.ids.login.box;
 	</script>
 
-	<div class='login_text color_1'>
+	<br/>
+
+	<div class='login_text color_1' style='padding: 4px; text-align: center;'>
 		<span>&opac.login.login;</span>
 	</div>
 
 	<br/>
 
-	<table>
+	<table class='data_grid' style='margin-left: 20px;' width='95%'>
 		<tbody>
 			<tr>
-				<td><span class='login_text'>&common.username;</span></td>
+				<td><span class='login_text'>Enter your username or library barcode</span></td>
 				<td>
 					<span class='login_text'>
 						<input id='login_username' type='text' size='16'> </input>
@@ -38,22 +40,19 @@
 					</span>
 				</td>
 			</tr>
-			<tr><td><br/></td></tr>
-			<tr>
-				<td>
-					<span class='login_text'>
-					<a href="javascript:void(0);" id='login_button'> &common.login; </a>
+			<tr><td><br/></td><td/></tr>
+			<tr class='color_1'>
+				<td colspan='2' align='center'>
+					<span class='login_text' style='margin-right: 20px;'>
+					<input type='submit' value='Login'  id='login_button'/>
 					</span>
-				</td>
-				<td>
-					<span class='login_text'>
-						<a href='javascript:void(0);' id='login_cancel_button'> &common.cancel; </a>
+					<span class='login_text' style='margin-left: 20px;'>
+						<input type='submit' id='login_cancel_button' value='&common.cancel;'/>
 					</span>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-
 </div>
 
 

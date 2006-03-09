@@ -3,6 +3,7 @@
 /* define it again here for pages that don't load RemoteRequest */
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
+
 var cookieManager = new HTTP.Cookies();
 
 var __ilsEvent; /* the last event the occurred */
@@ -464,9 +465,16 @@ function doLogin() {
       return null;
    }
 
-   var auth_request = new Request( LOGIN_COMPLETE, 
-		uname, hex_md5(seed + hex_md5(passwd)), "opac", getOrigLocation());
+	var args = {
+		password : hex_md5(seed + hex_md5(passwd)), 
+		type		: "opac", 
+		org		: getOrigLocation()
+	};
 
+	if( uname.match(REGEX_BARCODE) ) args.barcode = uname; /* make this better */
+	else args.username = uname;
+
+   var auth_request = new Request( LOGIN_COMPLETE, args );
 
    auth_request.send(true);
    var auth_result = auth_request.result();
