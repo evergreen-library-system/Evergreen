@@ -24,28 +24,26 @@ auth.session.prototype = {
 			if (init) {
 				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
 
-				var login_type = data.tmp_login_type || 'staff';
-
-				var params = [ 
-					this.view.name_prompt.value,
-					hex_md5(
+				var params = { 
+					'username' : this.view.name_prompt.value,
+					'password' : hex_md5(
 						init +
 						hex_md5(
 							this.view.password_prompt.value
 						)
 					),
-					login_type,
-				];
+					'type' : 'opac',
+				};
 
-				if (data.ws_id) {
-					params[3] = null; // org_id
-					params[4] = data.ws_id;
+				if (data.ws_info[ this.view.server_prompt.value ]) {
+					params.type = 'staff';
+					params.workstation = data.ws_info[ this.view.server_prompt.value ].name;
 				}
 
 				var robj = this.network.request(
 					api.AUTH_COMPLETE.app,
 					api.AUTH_COMPLETE.method,
-					params
+					[ params ]
 				);
 
 				if (robj.ilsevent == 0) {
