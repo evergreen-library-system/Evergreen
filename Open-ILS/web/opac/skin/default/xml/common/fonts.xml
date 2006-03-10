@@ -2,7 +2,7 @@
 
 	<div id='text_size_div' style='position:absolute; top: 2px; right: 6px;'>
 		<span>Text Size: </span>
-		<span><a href="javascript:void(0);" onclick="setFontSize('medium');"> Regular </a></span>
+		<span><a href="javascript:void(0);" onclick="setFontSize('regular');"> Regular </a></span>
 		<span> / </span>
 		<span><a href="javascript:void(0);" onclick="setFontSize('large');"> Large </a></span>
 	</div>
