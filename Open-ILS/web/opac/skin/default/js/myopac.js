@@ -412,7 +412,7 @@ function myopacShowGenericTransaction( trans ) {
 				text(bills[0].billing_type()));
 
 	tbody.appendChild(row);
-	unHideMe($('myopac_trans_table'));
+	unHideMe($('myopac_trans_div'));
 }
 
 
@@ -447,7 +447,10 @@ function myOPACShowCircTransaction(trans, record, circ) {
 		appendChild(text(_finesFormatNumber(trans.balance_owed())));
 
 	tbody.appendChild(row);
+	/*
 	unHideMe($('myopac_circ_trans_table'));
+	*/
+	unHideMe($('myopac_circ_trans_div'));
 }
 
 

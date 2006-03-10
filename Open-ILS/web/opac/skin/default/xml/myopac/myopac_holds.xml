@@ -19,7 +19,9 @@
 
 		<tbody id='myopac_holds_tbody'>
 
-			<tr id='myopac_holds_none' class='hide_me'><td>You have no items on hold at this time</td></tr>
+			<tr id='myopac_holds_none' class='hide_me'>
+				<td colspan='10' align='center'><b>You have no items on hold at this time</b></td>
+			</tr>
 			<tr id='myopac_holds_loading'><td>Loading...</td></tr>
 
 			<tr id='myopac_holds_row' class='light_border hide_me'>

@@ -31,66 +31,69 @@
 	</div>
 	-->
 
-	<br/><br/><hr/><br/>
 
 	<!-- Table for circulation transactions only -->
-	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_circ_trans_table'>
-		<thead>
-			<tr><td colspan='10' style='padding: 6px'><b>Overdue Materials</b></td></tr>
-			<tr>
-				<td>Title</td>
-				<td>Author</td>
-				<td>Checkout Date</td>
-				<td>Due Date</td>
-				<td>Date Returned</td>
-				<td>Balance Owed</td>
-			</tr>
-		</thead>
-		<tbody id='myopac_circ_trans_tbody'>
-			<tr id='myopac_circ_trans_row'>
-				<td><a class='classic_link' name='myopac_circ_trans_title'> </a></td>
-				<td name='myopac_circ_trans_author'> </td>
-				<td name='myopac_circ_trans_start'> </td>
-				<td name='myopac_circ_trans_due'> </td>
-				<td name='myopac_circ_trans_finished'> </td>
-				<td>
-					<span style='color: red; font-weight: bold;' 
-						name='myopac_circ_trans_balance'>$</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<br/><br/><hr/><br/>
+	<div id='myopac_circ_trans_div' class='hide_me'>
+		<br/><hr/><br/>
+		<table width='100%' class='data_grid data_grid_center' id='myopac_circ_trans_table'>
+			<thead>
+				<tr><td colspan='10' style='padding: 6px'><b>Overdue Materials</b></td></tr>
+				<tr>
+					<td>Title</td>
+					<td>Author</td>
+					<td>Checkout Date</td>
+					<td>Due Date</td>
+					<td>Date Returned</td>
+					<td>Balance Owed</td>
+				</tr>
+			</thead>
+			<tbody id='myopac_circ_trans_tbody'>
+				<tr id='myopac_circ_trans_row'>
+					<td><a class='classic_link' name='myopac_circ_trans_title'> </a></td>
+					<td name='myopac_circ_trans_author'> </td>
+					<td name='myopac_circ_trans_start'> </td>
+					<td name='myopac_circ_trans_due'> </td>
+					<td name='myopac_circ_trans_finished'> </td>
+					<td>
+						<span style='color: red; font-weight: bold;' 
+							name='myopac_circ_trans_balance'>$</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<!-- Table for all non-circulation transactions -->
-	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_trans_table'>
-		<thead>
-			<tr><td colspan='8' style='padding: 6px'><b>Other Fees</b></td></tr>
-			<tr>
-				<td width='12%'>Transaction Start Time</td>
-				<td width='12%'>Last Payment Time</td>
-				<td width='12%'>Initial Amount Owed</td>
-				<td width='12%'>Total Amount Paid</td>
-				<td width='12%'>Balance Owed</td>
-				<td width='12%'>Billing Type</td>
-			</tr>
-		</thead>
-
-		<tbody id='myopac_trans_tbody'>
-			<tr id='myopac_trans_row'>
-				<td name='myopac_trans_start'> </td>
-				<td name='myopac_trans_last_payment'> </td>
-				<td name='myopac_trans_init_amount'>$</td>
-				<td name='myopac_trans_total_paid'>$</td>
-				<td style='color:red; font-weight: bold;'>
-					<span name='myopac_trans_balance_recur' class='hide_me'> * </span>
-					<span name='myopac_trans_balance'>$</span>
-				</td>
-				<td name='myopac_trans_bill_type'> </td>
-			</tr>
-		</tbody>
-	</table>
+	<div id='myopac_trans_div' class='hide_me'>
+		<br/><hr/><br/>
+		<table width='100%' class='data_grid data_grid_center' id='myopac_trans_table'>
+			<thead>
+				<tr><td colspan='8' style='padding: 6px'><b>Other Fees</b></td></tr>
+				<tr>
+					<td width='12%'>Transaction Start Time</td>
+					<td width='12%'>Last Payment Time</td>
+					<td width='12%'>Initial Amount Owed</td>
+					<td width='12%'>Total Amount Paid</td>
+					<td width='12%'>Balance Owed</td>
+					<td width='12%'>Billing Type</td>
+				</tr>
+			</thead>
+	
+			<tbody id='myopac_trans_tbody'>
+				<tr id='myopac_trans_row'>
+					<td name='myopac_trans_start'> </td>
+					<td name='myopac_trans_last_payment'> </td>
+					<td name='myopac_trans_init_amount'>$</td>
+					<td name='myopac_trans_total_paid'>$</td>
+					<td style='color:red; font-weight: bold;'>
+						<span name='myopac_trans_balance_recur' class='hide_me'> * </span>
+						<span name='myopac_trans_balance'>$</span>
+					</td>
+					<td name='myopac_trans_bill_type'> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	
 	<br/>
 	
