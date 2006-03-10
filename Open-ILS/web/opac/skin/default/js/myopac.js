@@ -354,8 +354,7 @@ function _finesFormatNumber(num) {
 
 function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
 
-function _trimSeconds(time) { if(!time) return ""; return time.replace(/\..*/,""); }
-
+function _trimSeconds(time) { if(!time) return ""; return time.replace(/:\d\d\..*$/,""); }
 
 function myOPACShowTransactions(r) {
 
@@ -441,32 +440,40 @@ function myOPACShowCircTransaction(trans, record, circ) {
 	var checkin = _trimTime(circ.stop_fines_time());
 
 	$n(row,'myopac_circ_trans_due').appendChild(text(due))
-	$n(row,'myopac_circ_trans_finished').appendChild(text(checkin))
+	/*$n(row,'myopac_circ_trans_finished').appendChild(text(checkin));*/
+	if(checkin)
+		appendClear($n(row,'myopac_circ_trans_finished'), text(checkin));
 
 	$n(row,'myopac_circ_trans_balance').
 		appendChild(text(_finesFormatNumber(trans.balance_owed())));
 
 	tbody.appendChild(row);
-	/*
-	unHideMe($('myopac_circ_trans_table'));
-	*/
 	unHideMe($('myopac_circ_trans_div'));
 }
 
 
 function myOPACSavePrefs() {
 	G.user.prefs[PREF_HITS_PER] = getSelectorVal($('prefs_hits_per'));
+	G.user.prefs[PREF_DEF_FONT] = getSelectorVal($('prefs_def_font'));
 	if(commitUserPrefs())
 		alert($('prefs_update_success').innerHTML);
 	else alert($('prefs_update_failure').innerHTML);
 }
 
 
+function myOPACShowDefFont() {
+	var font;
+	if(G.user.prefs[PREF_DEF_FONT])
+		font = G.user.prefs[PREF_DEF_FONT];
+	else font = "regular";
+	setSelector($('prefs_def_font'), font);
+}
+
 function myOPACShowPrefs() {
 	grabUserPrefs();
 	myOPACShowHitsPer();
+	myOPACShowDefFont();
 	hideMe($('myopac_prefs_loading'));
-	unHideMe($('myopac_prefs_row'));
 }
 
 function myOPACShowHitsPer() {

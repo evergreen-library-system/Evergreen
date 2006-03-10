@@ -397,13 +397,15 @@ function setActivateStyleSheet(name) {
 /* ----------------------------------------------------- */
 function scaleFonts(type) {
 
-	var size = "";
-	var ssize = "";
+	var size		= "";
+	var ssize	= "";
+	var size2	= "";
 	var a;
 
 	switch(type) {
-		case "large": 
-			size = "148%"; 
+		case "large":  /* these are arbitrary.. but they seem to work ok in FF/IE */
+			size = "142%"; 
+			size2 = "107%"; 
 			ssize = "94%";
 			break;
 	}
@@ -414,6 +416,8 @@ function scaleFonts(type) {
 	for (i = 0; (a = document.getElementsByTagName ("option")[i]); i++) a.style.fontSize = ssize;
 	for (i = 0; (a = document.getElementsByTagName ("li")[i]); i++) a.style.fontSize = ssize;
 	for (i = 0; (a = document.getElementsByTagName ("span")[i]); i++) a.style.fontSize = ssize;
+	for (i = 0; (a = document.getElementsByTagName ("select")[i]); i++) a.style.fontSize = ssize;
+	for (i = 0; (a = document.getElementsByTagName ("a")[i]); i++) a.style.fontSize = size2;
 }
 
 

@@ -121,6 +121,7 @@ function initParams() {
 function initCookies() {
 	FONTSIZE = "medium";
 	var font = cookieManager.read(COOKIE_FONT);
+	scaleFonts(font);
 	if(font) FONTSIZE = font;
 	SKIN = cookieManager.read(COOKIE_SKIN);
 }
@@ -342,6 +343,9 @@ function grabUser(ses, force) {
 	if(G.user.prefs['opac.hits_per_page'])
 		COUNT = parseInt(G.user.prefs['opac.hits_per_page']);
 
+	if(G.user.prefs[PREF_DEF_FONT]) 
+		setFontSize(G.user.prefs[PREF_DEF_FONT]);
+
 	var at = getAuthtime();
 	if(isXUL()) at = xulG['authtime'];
 
@@ -561,10 +565,11 @@ function orgSelect(id) {
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(id).name()));
 }
 
-var fontCookie = new HTTP.Cookies();
+//var fontCookie = new HTTP.Cookies();
+
 function setFontSize(size) {
 	scaleFonts(size);
-	fontCookie.write(COOKIE_FONT, size, '+1y');
+	cookieManager.write(COOKIE_FONT, size, '+1y');
 }
 
 

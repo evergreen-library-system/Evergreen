@@ -13,8 +13,8 @@
 		</thead>
 
 		<tbody id='myopac_prefs_tbody'>
-			<tr id='myopac_prefs_loading'><td>Loading...</td></tr>
-			<tr id='myopac_prefs_row' class='light_border hide_me'>
+			<tr id='myopac_prefs_loading'><td colspan='3'><b>Loading...</b></td></tr>
+			<tr id='myopac_prefs_row'>
 				<td width='50%'>Search hits per page</td>
 				<td>
 					<select id='prefs_hits_per'>
@@ -29,6 +29,16 @@
 				</td>
 			</tr>
 
+			<tr>
+				<td>Default Font Size</td>
+				<td>
+					<select id='prefs_def_font'>
+						<option value='regular'>Regular Font</option>
+						<option value='large'>Large Font</option>
+					</select>
+				</td>
+			</tr>
+
 			<tr><td colspan='2'><br/></td></tr>
 
 			<tr>
@@ -37,12 +47,6 @@
 						id='myopac_prefs_submit'>Save Preference Changes</button>
 				</td>
 			</tr>
-
-			<!--
-			<tr>
-				<td colspan='2' align='center'><br/><b> * More To Come...</b></td>
-			</tr>
-			-->
 
 		</tbody>
 	</table>

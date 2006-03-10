@@ -53,7 +53,7 @@
 					<td name='myopac_circ_trans_author'> </td>
 					<td name='myopac_circ_trans_start'> </td>
 					<td name='myopac_circ_trans_due'> </td>
-					<td name='myopac_circ_trans_finished'> </td>
+					<td name='myopac_circ_trans_finished'><span style='color:red;'>(fines accruing)</span></td>
 					<td>
 						<span style='color: red; font-weight: bold;' 
 							name='myopac_circ_trans_balance'>$</span>

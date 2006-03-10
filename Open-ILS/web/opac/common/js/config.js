@@ -106,6 +106,7 @@ var LOGOUT_WARNING_TIME = 30; /* "head up" for session timeout */
 /* user preferences */
 var PREF_HITS_PER = 'opac.hits_per_page';
 var PREF_BOOKBAG = 'opac.bookbag_enabled';
+var PREF_DEF_FONT = 'opac.default_font';
 
 
 /* container for global variables shared accross pages */

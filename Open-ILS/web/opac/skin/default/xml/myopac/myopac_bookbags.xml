@@ -87,7 +87,10 @@
 		<tbody id='myopac_bookbag_items_tbody'>
 			<tr id='myopac_bookbag_items_row'>
 				<td> <a name='myopac_bookbag_items_title' class='classic_link'> </a> </td>
+				<!--
 				<td> <a name='myopac_bookbag_items_author' class='classic_link'> </a> </td>
+				-->
+				<td name='myopac_bookbag_items_author'> </td>
 				<td><a name='myopac_bookbag_items_remove' class='classic_link'>remove</a></td>	
 			</tr>
 		</tbody>

@@ -55,14 +55,17 @@ sub set_user_settings {
 	return $evt if $evt;
 	
 
-	my ($params) = map { 
+	#my ($params) = map { 
+	#	[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
+
+	my @params = map { 
 		[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
 
-	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper($params));
+	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper(\@params));
 
 	return $apputils->simplereq(
 		'open-ils.storage',
-		'open-ils.storage.direct.actor.user_setting.batch.merge', $params );
+		'open-ils.storage.direct.actor.user_setting.batch.merge', @params );
 		
 }
 
