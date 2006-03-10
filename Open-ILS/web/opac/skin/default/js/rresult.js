@@ -10,6 +10,8 @@ attachEvt("common", "run", rresultDoSearch);
 attachEvt("result", "idsReceived", rresultCollectRecords); 
 attachEvt("result", "recordDrawn", rresultLaunchDrawn); 
 
+hideMe($('copyright_block')); 
+
 function rresultDoSearch() {
 	table = G.ui.result.main_table;
 	hideMe(G.ui.result.row_template);
@@ -80,8 +82,10 @@ function rresultHandleMods(r) {
 	var rec = r.getResultObject();
 	runEvt('result', 'recordReceived', rec, r.userdata, false);
 	resultCollectCopyCounts(rec, r.userdata, FETCH_R_COPY_COUNTS);
-	if(resultPageIsDone())  
+	if(resultPageIsDone()) {
 		runEvt('result', 'allRecordsReceived', recordsCache);
+		unHideMe($('copyright_block')); 
+	}
 }
 
 

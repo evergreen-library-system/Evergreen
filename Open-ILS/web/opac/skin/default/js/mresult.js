@@ -13,7 +13,10 @@ attachEvt("result", "idsReceived", mresultCollectRecords);
 
 function mresultUnload() { removeChildren(table); table = null;}
 
+hideMe($('copyright_block')); 
+
 function mresultDoSearch() {
+
 
 	if(getOffset() == 0) {
 		swapCanvas($('loading_alt'));
@@ -182,8 +185,10 @@ function mresultHandleMods(r) {
 	var pagePosition = r.userdata;
 	runEvt('result', 'recordReceived', rec, pagePosition, true);
 	resultCollectCopyCounts(rec, pagePosition, FETCH_MR_COPY_COUNTS);
-	if(resultPageIsDone())  
+	if(resultPageIsDone()) {
 		runEvt('result', 'allRecordsReceived', recordsCache);
+		unHideMe($('copyright_block')); /* *** */
+	}
 }
 
 

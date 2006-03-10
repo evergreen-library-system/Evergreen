@@ -1,18 +1,29 @@
 <!-- Needs serious DTD-ization -->
 
-<div style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 50px;'>
-	<center>
+<div
+	style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 50px;'>
+	<center id='copyright_block'>
 		<div 
-			style='width: 90%; background: #E0F0E0; text-align:center; vertical-align: bottom; border: 1px solid #808080; padding: 10px;'>
-			<span style='margin-left: 10px; margin-right: 10px;'>
-				<a target='_blank' class='classic_link'	
-					href='http://www.georgialibraries.org/public/findlibrary.html'>Find a Library Mear Me</a>
-			</span>
-			<span>Copyright (C) 2005 Georgia Public Library Service</span>
-			<span style='margin-left: 10px; margin-right: 10px;'>
-				<a target='_blank' class='classic_link' 
-					href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
-			</span>
+			style='width: 80%; background: #EFF6EF; text-align:center; border: 1px solid #808080; padding: 10px;'>
+			<table width='100%'>
+				<tr>
+					<td width='25%'>
+						<span style='margin-left: 10px; margin-right: 10px;'>
+							<a target='_blank' class='classic_link'	
+								href='http://www.georgialibraries.org/public/findlibrary.html'>Find a Library Mear Me</a>
+						</span>
+					</td>
+					<td width='50%'>
+						<span>Copyright (C) 2005 Georgia Public Library Service</span>
+					</td>
+					<td width='25%'>
+						<span style='margin-left: 10px; margin-right: 10px;'>
+							<a target='_blank' class='classic_link' 
+								href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+						</span>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</center>
 </div>
