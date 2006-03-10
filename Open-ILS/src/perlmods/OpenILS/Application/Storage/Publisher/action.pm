@@ -1,5 +1,5 @@
 package OpenILS::Application::Storage::Publisher::action;
-use base qw/OpenILS::Application::Storage/;
+use base qw/OpenILS::Application::Storage::Publisher/;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::AppSession;
@@ -260,6 +260,50 @@ __PACKAGE__->register_method(
 	api_level       => 1,
 	stream          => 1,
 	method          => 'find_opac_surveys',
+);
+
+sub hold_pull_list {
+	my $self = shift;
+	my $client = shift;
+	my $ou = shift;
+	my $limit = shift || 10;
+	my $offset = shift || 0;
+
+	return undef unless ($ou);
+	my $h_table = action::hold_request->table;
+	my $a_table = asset::copy->table;
+
+	my $select = <<"	SQL";
+		SELECT	h.*
+		  FROM	$h_table h
+		  	JOIN $a_table a ON (h.current_copy = a.id)
+		  WHERE	a.circ_lib = ?
+		  	AND h.capture_time IS NULL
+		  ORDER BY h.request_time ASC
+		  LIMIT $limit
+		  OFFSET $offset
+	SQL
+
+	my $sth = action::survey->db_Main->prepare_cached($select);
+	$sth->execute($ou);
+
+	$client->respond( $_->to_fieldmapper ) for ( map { action::hold_request->construct($_) } $sth->fetchall_hash );
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib',
+	api_level       => 1,
+	stream          => 1,
+	signature	=> [
+		"Returns the holds for a specific library's pull list.",
+ 		[ [org_unit => "The library's org id", "number"],
+		  [limit => 'An optional page size, defaults to 10', 'number'],
+		  [offset => 'Offset for paging, defaults to 0, 0 based', 'number'],
+		],
+		['A list of holds for the stated library to pull for', 'array']
+	],
+	method          => 'hold_pull_list',
 );
 
 sub find_optional_surveys {
