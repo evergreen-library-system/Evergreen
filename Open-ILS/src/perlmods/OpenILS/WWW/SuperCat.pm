@@ -378,37 +378,13 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
   <Url type="application/atom+xml"
-       method="post"
-       template="$base/1.1/$lib/atom/$class/{searchTerms}">
-    <Param name="startPage" value="{startPage?}"/>
-    <Param name="startIndex" value="{startIndex?}"/>
-    <Param name="count" value="{count?}"/>
-    <Param name="language" value="{language?}"/>
-  </Url>
+       template="$base/1.1/$lib/atom/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/rss+xml"
-       method="post"
-       template="$base/1.1/$lib/rss2/$class/{searchTerms}">
-    <Param name="startPage" value="{startPage?}"/>
-    <Param name="startIndex" value="{startIndex?}"/>
-    <Param name="count" value="{count?}"/>
-    <Param name="language" value="{language?}"/>
-  </Url>
+       template="$base/1.1/$lib/rss2/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/mods+xml"
-       method="post"
-       template="$base/1.1/$lib/mods/$class/{searchTerms}">
-    <Param name="startPage" value="{startPage?}"/>
-    <Param name="startIndex" value="{startIndex?}"/>
-    <Param name="count" value="{count?}"/>
-    <Param name="language" value="{language?}"/>
-  </Url>
+       template="$base/1.1/$lib/mods/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/marcxml+xml"
-       method="post"
-       template="$base/1.1/$lib/marcxml/$class/{searchTerms}">
-    <Param name="startPage" value="{startPage?}"/>
-    <Param name="startIndex" value="{startIndex?}"/>
-    <Param name="count" value="{count?}"/>
-    <Param name="language" value="{language?}"/>
-  </Url>
+       template="$base/1.1/$lib/marcxml/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
@@ -454,7 +430,9 @@ sub opensearch_feed {
 		my $class = $3;
 
 		if (!$lib) {
-			$lib = 'PINES';
+		 	$lib = $actor->request(
+				'open-ils.actor.org_unit_list.search' => parent_ou => undef
+			)->gather(1)->[0]->shortname;
 		}
 
 		if ($class eq '-') {
@@ -469,6 +447,11 @@ sub opensearch_feed {
 	my $offset = $cgi->param('startIndex') || 1;
 	my $limit = $cgi->param('count') || 10;
 	my $lang = $cgi->param('language') || 'en-US';
+
+	$page = 1 if ($page =~ /^{/);
+	$offset = 1 if ($offset =~ /^{/);
+	$limit = 10 if ($limit =~ /^{/);
+	$lang = 'en-US' if ($lang =~ /^{/);
 
 	if ($page > 1) {
 		$offset = ($page - 1) * $limit;
