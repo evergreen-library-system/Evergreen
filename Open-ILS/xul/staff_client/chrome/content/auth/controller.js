@@ -15,6 +15,9 @@ auth.controller.prototype = {
 		var obj = this;  // so the 'this' in event handlers don't confuse us
 		var w = obj.w;
 
+		JSAN.use('OpenILS.data');
+		obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+
 		// MVC
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
@@ -73,6 +76,21 @@ auth.controller.prototype = {
 					'ws_deck' : [
 						['render'],
 						function(e) { return function() {
+							try {
+							JSAN.use('util.widgets'); util.widgets.remove_children(e);
+							if (obj.data.ws_info && obj.data.ws_info[ obj.controller.view.server_prompt.value ]) {
+								var ws = obj.data.ws_info[ obj.controller.view.server_prompt.value ];
+								var x = document.createElement('description');
+								e.appendChild(x);
+								x.appendChild(
+									document.createTextNode(
+										ws.name + ' @  ' + ws.lib_shortname
+									)
+								);
+							}
+							} catch(E) {
+								alert(E);
+							}
 						} }
 					],
 					'menu_spot' : [
@@ -110,6 +128,12 @@ auth.controller.prototype = {
 				alert(E);
 			}
 		}
+
+		obj.controller.view.server_prompt.addEventListener(
+			'change',
+			function () { obj.controller.render('ws_deck'); },
+			false
+		);
 
 		// This talks to our ILS
 		JSAN.use('auth.session');
@@ -188,6 +212,8 @@ auth.controller.prototype = {
 		while ( w = enumerator.getNext() ) {
 			if (w != window) w.close();
 		}
+
+		this.controller.render('ws_deck');
 
 		this.session.close();
 

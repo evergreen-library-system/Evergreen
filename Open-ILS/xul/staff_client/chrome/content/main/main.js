@@ -53,11 +53,8 @@ function main_init() {
 		try {
 			G.file.get('ws_info');
 			G.ws_info = G.file.get_object();
-			// { server_name : { 'id' : ..., 'name' : ..., 'owning_lib' : ... }, ... : ... }
-			// alert('retrieved ws_info from filesystem: ' + js2JSON(G.ws_info) );
 		} catch(E) {
 			G.ws_info = {};
-			//alert('could not retrieve ws_info from filesystem');
 		}
 		G.data.ws_info = G.ws_info; G.data.stash('ws_info');
 
@@ -84,6 +81,7 @@ function main_init() {
 			} else {
 				xulG.file = G.file;
 				var deck = G.auth.controller.view.ws_deck;
+				JSAN.use('util.widgets'); util.widgets.remove_children('ws_deck');
 				var iframe = document.createElement('iframe'); deck.appendChild(iframe);
 				iframe.setAttribute( 'src', url + '/xul/server/main/ws_info.xul' );
 				iframe.contentWindow.xulG = xulG;
