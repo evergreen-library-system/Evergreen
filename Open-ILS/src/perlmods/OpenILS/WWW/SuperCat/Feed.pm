@@ -180,7 +180,7 @@ sub link {
 	my $self = shift;
 	my $type = shift;
 	my $id = shift;
-	my $mime = shift || "application/$type+xml";
+	my $mime = shift || "application/x-$type+xml";
 	my $title = shift;
 
 	$type = 'self' if ($type eq 'atom');
@@ -254,7 +254,7 @@ sub link {
 	my $self = shift;
 	my $type = shift;
 	my $id = shift;
-	my $mime = shift || "application/$type+xml";
+	my $mime = shift || "application/x-$type+xml";
 
 	$type = 'self' if ($type eq 'rss2');
 

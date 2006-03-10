@@ -144,7 +144,7 @@ sub unapi {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				print "<format><name>$type</name><type>application/$type+xml</type>";
+				print "<format><name>$type</name><type>application/x-$type+xml</type>";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
 					print "<$part>$$h{$type}{$part}</$part>"
@@ -325,9 +325,9 @@ sub bookbag_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(atom => $base . "/bookbag/atom/$id");
+	$feed->link(atom => $base . "/bookbag/atom/$id" => 'application/atom+xml');
 	$feed->link(rss2 => $base . "/bookbag/rss2/$id");
-	$feed->link(html => $base . "/bookbag/html/$id");
+	$feed->link(html => $base . "/bookbag/html/$id" => 'text/html');
 
 	$feed->link(
 		OPAC =>
@@ -337,7 +337,7 @@ sub bookbag_feed {
 	);
 
 
-	print "Content-type: application/xml; charset=utf-8\n\n";
+	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
 	print entityize($feed->toString) . "\n";
 
 	return Apache2::Const::OK;
@@ -379,13 +379,13 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Tags>$lib book library</Tags>
   <Url type="application/atom+xml"
        template="$base/1.1/$lib/atom/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
-  <Url type="application/rss+xml"
+  <Url type="application/x-rss+xml"
        template="$base/1.1/$lib/rss2/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
-  <Url type="application/mods3+xml"
+  <Url type="application/x-mods3+xml"
        template="$base/1.1/$lib/mods3/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
-  <Url type="application/mods+xml"
+  <Url type="application/x-mods+xml"
        template="$base/1.1/$lib/mods/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
-  <Url type="application/marcxml+xml"
+  <Url type="application/x-marcxml+xml"
        template="$base/1.1/$lib/marcxml/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
@@ -546,22 +546,21 @@ sub opensearch_feed {
 
 	$feed->link(
 		unapi =>
-		$unapi =>
-		'application/xml'
+		$unapi
 	);
 
 	$feed->link(
 		alternate =>
 		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
-		'text/xhtml'
+		'text/html'
 	);
 
 	$feed->link(
 		opac =>
 		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
-		'text/xhtml'
+		'text/html'
 	);
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
@@ -599,7 +598,7 @@ sub create_record_feed {
 		my $node = $feed->add_item($xml);
 
 		$node->id($item_tag);
-		$node->link(alternate => $feed->unapi . "?uri=$item_tag&format=opac" => 'application/xml');
+		$node->link(alternate => $feed->unapi . "?uri=$item_tag&format=opac" => 'text/html');
 		$node->link(opac => $feed->unapi . "?uri=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?uri=$item_tag");
 		$node->link('unapi-uri' => $item_tag);
