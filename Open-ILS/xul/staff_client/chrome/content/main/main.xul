@@ -92,7 +92,11 @@
 					</row>
 					<row>
 						<label value="Status"/>
-						<label id="status" value="Online" style="color: green; text-color: green;"/>
+						<label id="status" />
+					</row>
+					<row>
+						<label value="Version"/>
+						<label id="version" />
 					</row>
 				</rows>
 			</grid>

@@ -77,17 +77,24 @@ auth.controller.prototype = {
 						['render'],
 						function(e) { return function() {
 							try {
-							JSAN.use('util.widgets'); util.widgets.remove_children(e);
-							if (obj.data.ws_info && obj.data.ws_info[ obj.controller.view.server_prompt.value ]) {
-								var ws = obj.data.ws_info[ obj.controller.view.server_prompt.value ];
+								JSAN.use('util.widgets'); util.widgets.remove_children(e);
 								var x = document.createElement('description');
 								e.appendChild(x);
-								x.appendChild(
-									document.createTextNode(
-										ws.name + ' @  ' + ws.lib_shortname
-									)
-								);
-							}
+								if (obj.data.ws_info 
+									&& obj.data.ws_info[ obj.controller.view.server_prompt.value ]) {
+									var ws = obj.data.ws_info[ obj.controller.view.server_prompt.value ];
+									x.appendChild(
+										document.createTextNode(
+											ws.name + ' @  ' + ws.lib_shortname
+										)
+									);
+								} else {
+									x.appendChild(
+										document.createTextNode(
+											'Not yet configured for the specified server.'
+										)
+									);
+								}
 							} catch(E) {
 								alert(E);
 							}
@@ -131,7 +138,10 @@ auth.controller.prototype = {
 
 		obj.controller.view.server_prompt.addEventListener(
 			'change',
-			function () { obj.controller.render('ws_deck'); },
+			function (ev) { 
+				obj.controller.render('ws_deck'); 
+				obj.test_server(ev.target.value);
+			},
 			false
 		);
 
@@ -140,10 +150,83 @@ auth.controller.prototype = {
 		obj.session = new auth.session(obj.controller.view);
 
 		obj.controller.render();
+		obj.test_server( obj.controller.view.server_prompt.value );
 
 		if (typeof this.on_init == 'function') {
 			this.error.sdump('D_AUTH','auth.controller.on_init()\n');
 			this.on_init();
+		}
+	},
+
+	'test_server' : function(url) {
+		var obj = this;
+		var s = document.getElementById('status');
+		s.setAttribute('value','Testing hostname...');
+		s.setAttribute('style','color: orange;');
+		if (!url) {
+			s.setAttribute('value','Please enter a server hostname.');
+			s.setAttribute('style','color: red;');
+			return;
+		}
+		try {
+			if ( ! url.match(/^http:\/\//) ) url = 'http://' + url;
+			var x = new XMLHttpRequest();
+			dump('server url = ' + url + '\n');
+			x.open("GET",url,true);
+			x.onreadystatechange = function() {
+				try {
+					if (x.readyState != 4) return;
+					s.setAttribute('value',x.status + ' : ' + x.statusText);
+					if (x.status == 200) {
+						s.setAttribute('style','color: green;');
+					} else {
+						s.setAttribute('style','color: red;');
+					}
+					obj.test_version(url);
+				} catch(E) {
+					s.setAttribute('value','There was an error testing this hostname.');
+					s.setAttribute('style','color: red;');
+					obj.error.sdump('D_ERROR',E);
+				}
+			}
+			x.send(null);
+		} catch(E) {
+			s.setAttribute('value','There was an error testing this hostname.');
+			s.setAttribute('style','color: brown;');
+			obj.error.sdump('D_ERROR',E);
+		}
+	},
+
+	'test_version' : function(url) {
+		var obj = this;
+		var s = document.getElementById('version');
+		s.setAttribute('value','Testing version...');
+		s.setAttribute('style','color: orange;');
+		try {
+			var x = new XMLHttpRequest();
+			url = url + '/xul/server/';
+			dump('version url = ' + url + '\n');
+			x.open("GET",url,true);
+			x.onreadystatechange = function() {
+				try {
+					if (x.readyState != 4) return;
+					s.setAttribute('value',x.status + ' : ' + x.statusText);
+					if (x.status == 200) {
+						s.setAttribute('style','color: green;');
+					} else {
+						s.setAttribute('style','color: red;');
+					}
+				} catch(E) {
+					s.setAttribute('value','There was an error checking version support.');
+					s.setAttribute('style','color: red;');
+					obj.error.sdump('D_ERROR',E);
+				}
+			}
+			x.send(null);
+		} catch(E) {
+			s.setAttribute('value','There was an error checking version support.');
+			s.setAttribute('style','color: brown;');
+			obj.error.sdump('D_ERROR',E);
 		}
 	},
 
