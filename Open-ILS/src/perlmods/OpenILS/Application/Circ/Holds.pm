@@ -26,6 +26,7 @@ use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 
 
 
@@ -473,6 +474,32 @@ sub fetch_related_holds {
 		'open-ils.storage.direct.action.hold_request.search.atomic',
 			 current_copy =>  $copyid , fulfillment_time => undef );
 }
+
+
+__PACKAGE__->register_method (
+	method		=> "hold_pull_list",
+	api_name		=> "open-ils.circ.hold_pull_list.retrieve",
+	signature	=> q/
+		Returns a list of hold ID's that need to be "pulled"
+		by a given location
+	/
+);
+
+sub hold_pull_list {
+	my( $self, $conn, $authtoken, $limit, $offset ) = @_;
+	my( $reqr, $evt ) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	# the perm locaiton shouldn't really matter here since holds
+	# will exist all over and VIEW_HOLDS should be universal
+	$evt = $U->check_perms($reqr->id, $reqr->home_ou, 'VIEW_HOLD');
+	return $evt if $evt;
+
+	return $U->storagereq(
+		'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
+		$reqr->home_ou, $limit, $offset ); # XXX change to workstation
+}
+
 
 
 1;
