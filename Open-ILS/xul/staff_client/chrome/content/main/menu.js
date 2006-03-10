@@ -250,6 +250,13 @@ main.menu.prototype = {
 					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+window.escape(session),'survey_wizard','chrome'); 
 				}
 			],
+			'cmd_public_opac' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(urls.remote, {'tab_name':'OPAC'}, {} );
+				}
+			],
+
 
 		};
 

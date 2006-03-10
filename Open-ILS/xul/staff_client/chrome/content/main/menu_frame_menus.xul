@@ -21,6 +21,7 @@
 	<command id="cmd_in_house_use" key="circ-in-house-use" />
 	<command id="cmd_copy_status" key="copy-status-key" />
 	<command id="cmd_search_opac" key="search-opac-key" />
+	<command id="cmd_public_opac" />
 	<command id="cmd_search_tcn" />
 	<command id="cmd_patron_register" key="patron-register-key" />
 	<command id="cmd_survey_wizard" />
@@ -195,6 +196,7 @@
 		<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>
 		<menuitem label="Copy Location Editor" accesskey="L" command="cmd_copy_location_edit"/>
 		<menuseparator />
+		<menuitem label="Public OPAC" command="cmd_public_opac"/>
 		<menuitem label="Test Module" accesskey="T" command="cmd_test"/>
 		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
 		<menuitem label="Fieldmapper" accesskey="m" command="cmd_fieldmapper"/>
