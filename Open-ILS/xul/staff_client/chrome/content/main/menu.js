@@ -155,6 +155,13 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(session),{},{});
 				}
 			],
+			'cmd_circ_hold_pull_list' : [
+				['oncommand'],
+				function() { 
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(session),{},{});
+				}
+			],
+
 			'cmd_in_house_use' : [
 				['oncommand'],
 				function() { 

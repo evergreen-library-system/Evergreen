@@ -18,6 +18,7 @@
 	<command id="cmd_patron_search" key="patron-search-key" />
 	<command id="cmd_circ_checkin" key="circ-checkin-key" />
 	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
+	<command id="cmd_circ_hold_pull_list" />
 	<command id="cmd_in_house_use" key="circ-in-house-use" />
 	<command id="cmd_copy_status" key="copy-status-key" />
 	<command id="cmd_search_opac" key="search-opac-key" />
@@ -128,6 +129,7 @@
 		<menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 		<menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.key;" key="circ-checkin-key" command="cmd_circ_checkin"/>
 		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
+		<menuitem label="On Shelf Hold Pull List" command="cmd_circ_hold_pull_list"/>
 		<menuitem label="In-House Use" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" key="copy-status-key" command="cmd_copy_status"/>

@@ -86,6 +86,7 @@ var urls = {
 	'XUL_DEBUG_SHELL' : '/xul/server/util/shell.html',
 	'XUL_DEBUG_XULEDITOR' : '/xul/server/util/xuledit.xul',
 	'XUL_HOLD_CAPTURE' : '/xul/server/circ/hold_capture.xul',
+	'XUL_HOLD_PULL_LIST' : '/xul/server/admin/hold_pull_list.xml',
 	'XUL_IN_HOUSE_USE' : '/xul/server/circ/in_house_use.xul',
 	'XUL_MARC_EDIT' : 'chrome://open_ils_staff_client/content/legacy/_marc.xul',
 	'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
