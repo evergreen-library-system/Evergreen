@@ -220,18 +220,22 @@ OpenILS.data.prototype = {
 			}
 		);
 
+		// Do this after we get the user object
 		this.chain.push(
-			gen_fm_retrieval_func('my_aou', 
-				[ 
-					api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.app,
-					api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.method,
-					[ obj.session, obj.list.au[0].ws_ou() ], /* use ws_ou and not home_ou */
-					true
-				]
-			)
+
+			function() {
+
+				gen_fm_retrieval_func('my_aou', 
+					[ 
+						api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.app,
+						api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.method,
+						[ obj.session, obj.list.au[0].ws_ou() ], /* use ws_ou and not home_ou */
+						true
+					]
+				)();
+			}
 		);
 
-		// Do this after we get the user object
 		this.chain.push(
 
 			function () {
