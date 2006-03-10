@@ -8,7 +8,8 @@
 			style='width: 80%; background: #EFF6EF; text-align:center; border: 1px solid #808080; padding: 10px;'>
 			-->
 		<div 
-			style='width: 60%; text-align:center; padding: 10px;'>
+			style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
+
 				<span style='margin-left: 10px; margin-right: 10px;'>
 					<a target='_blank' class='classic_link'
 						href='http://www.georgialibraries.org/public/findlibrary.html'>Find a Library Near Me</a>
@@ -24,10 +25,9 @@
 						href='http://www.georgialibraries.org/public/pines.html'>OPAC Tutorial</a>
 				</span>
 				<br/>
-				<div style='margin-top: 4px;'>
-					<span>Copyright (C) 2006 Georgia Public Library Service</span>
+				<div style='margin-top: 4px; font-size: 7pt;'>
+					<span>Copyright &#xA9; 2006 Georgia Public Library Service</span>
 				</div>
-
 		</div>
 	</center>
 </div>
