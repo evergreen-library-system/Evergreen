@@ -57,6 +57,11 @@
 				[ xulG.auth.session.key ]
 			);
 
+			g.my_libs_hash = {};
+			for (var i = 0; i < g.my_libs.length; i++) {
+				g.my_libs_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
+			}
+
 			g.my_lib = g.network.simple_request(
 				'FM_AU_RETRIEVE_VIA_SESSION',
 				[ xulG.auth.session.key ]
@@ -97,7 +102,9 @@
 				} else {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
 					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
-						'name' : g.tb.value, 'owning_lib' : g.ml.value 
+						'name' : g.tb.value, 
+						'owning_lib' : g.ml.value,
+						'lib_shortname' : g.my_libs_hash[ g.ml.value ],
 					};
 					xulG.file.get('ws_info');
 					xulG.file.set_object(g.data.ws_info);
