@@ -117,9 +117,8 @@ circ.in_house_use.prototype = {
 
 			var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
 			var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ copy.id() ]);
-			/* FIXME -- Use workstation ou */
 			var result = obj.network.simple_request('FM_AIHU_CREATE',
-				[ obj.session, { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].home_ou(), 'count' : multiplier } ]
+				[ obj.session, { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
 			);
 
 			obj.list.append(

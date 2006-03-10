@@ -236,7 +236,7 @@ circ.print_list_template_editor.prototype = {
 		try {
 			var params = { 
 				'patron' : this.test_patron, 
-				'lib' : this.data.hash.aou[ this.data.list.au[0].home_ou() ],
+				'lib' : this.data.hash.aou[ this.data.list.au[0].ws_ou() ],
 				'staff' : this.data.list.au[0],
 				'header' : this.controller.view.header.value,
 				'line_item' : this.controller.view.line_item.value,

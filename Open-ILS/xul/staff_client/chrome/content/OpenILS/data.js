@@ -225,7 +225,7 @@ OpenILS.data.prototype = {
 				[ 
 					api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.app,
 					api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.method,
-					[ obj.session ],
+					[ obj.session, obj.list.au[0].ws_ou() ], /* use ws_ou and not home_ou */
 					true
 				]
 			)
@@ -240,7 +240,7 @@ OpenILS.data.prototype = {
 					[ 
 						api.FM_ACTSC_RETRIEVE_VIA_AOU.app,
 						api.FM_ACTSC_RETRIEVE_VIA_AOU.method,
-						[ obj.session, obj.list.au[0].home_ou() ],
+						[ obj.session, obj.list.au[0].ws_ou() ],
 						true
 					]
 				)();
@@ -255,7 +255,7 @@ OpenILS.data.prototype = {
 					[ 
 						api.FM_ASC_RETRIEVE_VIA_AOU.app,
 						api.FM_ASC_RETRIEVE_VIA_AOU.method,
-						[ obj.session, obj.list.au[0].home_ou() ],
+						[ obj.session, obj.list.au[0].ws_ou() ],
 						true
 					]
 				)();
@@ -270,8 +270,7 @@ OpenILS.data.prototype = {
 					[
 						api.FM_CNCT_RETRIEVE.app,
 						api.FM_CNCT_RETRIEVE.method,
-						/* FIXME -- later, in most places where we look at the home_ou of the sessioned staff member, we'll want to use the workstation ou instead */
-						[ obj.list.au[0].home_ou() ], 
+						[ obj.list.au[0].ws_ou() ], 
 						false
 					]
 				);

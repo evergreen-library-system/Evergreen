@@ -110,7 +110,7 @@ circ.checkout.prototype = {
 							try {
 								var params = { 
 									'patron' : obj.patron, 
-									'lib' : obj.data.hash.aou[ this.data.list.au[0].home_ou() ],
+									'lib' : obj.data.hash.aou[ this.data.list.au[0].ws_ou() ],
 									'staff' : obj.data.list.au[0],
 									'header' : obj.data.print_list_templates.checkout.header,
 									'line_item' : obj.data.print_list_templates.checkout.line_item,
