@@ -395,12 +395,17 @@ function setActivateStyleSheet(name) {
 
 
 /* ----------------------------------------------------- */
+var currentFontSize;
 function scaleFonts(type) {
 
 	var size		= "";
 	var ssize	= "";
 	var size2	= "";
 	var a;
+	
+	if(!currentFontSize) currentFontSize = 'regular';
+	if(currentFontSize == 'regular' && type == 'regular' ) return;
+	currentFontSize = type;
 
 	switch(type) {
 		case "large":  /* these are arbitrary.. but they seem to work ok in FF/IE */
