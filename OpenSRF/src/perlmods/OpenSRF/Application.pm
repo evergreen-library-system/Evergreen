@@ -392,7 +392,7 @@ sub register_method {
 		}
 	} elsif( !ref($args{signature}) ) {
 		$args{signature} =
-			parse_array_signature( parse_string_signature( $args{notes} ) );
+			parse_array_signature( parse_string_signature( $args{signature} ) );
 	} elsif( ref($args{signature}) eq 'ARRAY') {
 		$args{signature} =
 			parse_array_signature( $args{signature} );
