@@ -119,7 +119,7 @@ function initParams() {
 }
 
 function initCookies() {
-	FONTSIZE = "medium";
+	FONTSIZE = "regular";
 	var font = cookieManager.read(COOKIE_FONT);
 	scaleFonts(font);
 	if(font) FONTSIZE = font;
@@ -179,7 +179,27 @@ function buildExtrasLink(name, ssl) {
 	return findBaseURL(ssl) + "../../../../extras/" + name;
 }
 
-function _debug(str) { try { dump(str + '\n'); } catch(e) {} }
+var consoleService;
+function _debug(str) { 
+	try { dump(str + '\n'); } catch(e) {} 
+
+	if(!IE) {
+		if(!consoleService) {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
+					.getService(Components.interfaces.nsIConsoleService);
+			} catch(e) {}
+		}
+	
+		try {
+			if(consoleService) {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				consoleService.logStringMessage(str + '\n');
+			}
+		} catch(e){}
+	}
+}
 
 function  buildOPACLink(args, slim, ssl) {
 
