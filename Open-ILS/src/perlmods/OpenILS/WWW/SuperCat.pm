@@ -381,6 +381,8 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
        template="$base/1.1/$lib/atom/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/rss+xml"
        template="$base/1.1/$lib/rss2/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
+  <Url type="application/mods3+xml"
+       template="$base/1.1/$lib/mods3/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/mods+xml"
        template="$base/1.1/$lib/mods/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/marcxml+xml"

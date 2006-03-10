@@ -335,6 +335,32 @@ sub link {
 
 #----------------------------------------------------------
 
+package OpenILS::WWW::SuperCat::Feed::mods3;
+use base 'OpenILS::WWW::SuperCat::Feed';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<mods:modsCollection version="3.0" xmlns:mods="http://www.loc.gov/mods/v3"/>');
+	$self->{type} = 'application/xml';
+	$self->{item_xpath} = '/mods:modsCollection';
+	return $self;
+}
+
+package OpenILS::WWW::SuperCat::Feed::mods3::item;
+use base 'OpenILS::WWW::SuperCat::Feed::mods3';
+
+sub new {
+	my $class = shift;
+	my $xml = shift;
+	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', 'mods');
+	$self->{type} = 'application/xml';
+	return $self;
+}
+
+
+#----------------------------------------------------------
+
 package OpenILS::WWW::SuperCat::Feed::marcxml;
 use base 'OpenILS::WWW::SuperCat::Feed';
 
