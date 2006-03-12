@@ -38,6 +38,7 @@ auth.session.prototype = {
 				if (data.ws_info[ this.view.server_prompt.value ]) {
 					params.type = 'staff';
 					params.workstation = data.ws_info[ this.view.server_prompt.value ].name;
+					data.ws_name = params.workstation; data.stash('ws_name');
 				}
 
 				var robj = this.network.request(

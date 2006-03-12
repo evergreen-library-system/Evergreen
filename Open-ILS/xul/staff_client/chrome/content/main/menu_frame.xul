@@ -66,8 +66,8 @@
 
 				// FIXME - Use workstation ou when we get it instead of staff home_ou
 				document.title = g.window.appshell_name_increment() + ': ' 
-					+ g.data.list.au[0].usrname() + '@' 
-					+ g.data.hash.aou[ g.data.list.au[0].home_ou() ].shortname();
+					+ g.data.list.au[0].usrname() + ' (' + g.data.ws_name + '@' 
+					+ g.data.hash.aou[ g.data.list.au[0].ws_ou() ].shortname() + ')';
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
