@@ -158,7 +158,10 @@ main.menu.prototype = {
 			'cmd_circ_hold_pull_list' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(session),{},{});
+					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
+						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(session)
+					);
+					obj.set_tab( loc, {'tab_name':'On Shelf Pull List'}, { 'show_print_button' : true, } );
 				}
 			],
 
@@ -260,7 +263,14 @@ main.menu.prototype = {
 			'cmd_public_opac' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(urls.remote, {'tab_name':'OPAC'}, {} );
+					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+						urls.remote
+					);
+					obj.set_tab( 
+						loc, 
+						{'tab_name':'OPAC'}, 
+						{ 'no_xulG' : true, 'show_nav_buttons' : true, 'show_print_button' : true, } 
+					);
 				}
 			],
 

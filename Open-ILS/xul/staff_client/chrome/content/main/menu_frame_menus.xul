@@ -129,7 +129,7 @@
 		<menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 		<menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.key;" key="circ-checkin-key" command="cmd_circ_checkin"/>
 		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
-		<menuitem label="On Shelf Hold Pull List" command="cmd_circ_hold_pull_list"/>
+		<menuitem label="On Shelf Hold Pull List" accesskey="S" command="cmd_circ_hold_pull_list"/>
 		<menuitem label="In-House Use" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" key="copy-status-key" command="cmd_copy_status"/>
@@ -198,7 +198,7 @@
 		<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>
 		<menuitem label="Copy Location Editor" accesskey="L" command="cmd_copy_location_edit"/>
 		<menuseparator />
-		<menuitem label="Public OPAC" command="cmd_public_opac"/>
+		<menuitem label="Public OPAC" command="cmd_public_opac" accesskey="p"/>
 		<menuitem label="Test Module" accesskey="T" command="cmd_test"/>
 		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
 		<menuitem label="Fieldmapper" accesskey="m" command="cmd_fieldmapper"/>
