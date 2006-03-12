@@ -53,10 +53,14 @@
 
 				JSAN.use('util.browser'); g.browser = new util.browser();
 
+				var push_xulG = true;
+				if (g.cgi.param('no_xulG') || xulG.no_xulG) push_xulG = false;
+
 				g.browser.init( 
 					{ 
 						'url' : url,
 						'session' : session,
+						'push_xulG' : push_xulG,
 					} 
 				);
 

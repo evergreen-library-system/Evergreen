@@ -21,6 +21,7 @@ util.browser.prototype = {
 
 			obj.session = params['session'];
 			obj.url = params['url'];
+			obj.push_xulG = params['push_xulG'];
 
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
@@ -96,6 +97,8 @@ util.browser.prototype = {
 
 	'push_variables' : function() {
 		try {
+			var obj = this;
+			if (!obj.push_xulG) return;
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var cw = this.get_content();
 			cw.IAMXUL = true;
@@ -124,7 +127,6 @@ util.browser.prototype = {
 			var n = obj.getWebNavigation();
 			s += ('webNavigation = ' + n + '\n');
 			s += ('webNavigation.canGoForward = ' + n.canGoForward + '\n');
-			s += ('webNavigation.canGoBack = ' + n.canGoBack + '\n');
 			if (n.canGoForward) {
 				obj.controller.view.cmd_forward.disabled = false;
 				obj.controller.view.cmd_forward.setAttribute('disabled','false');
@@ -132,6 +134,13 @@ util.browser.prototype = {
 				obj.controller.view.cmd_forward.disabled = true;
 				obj.controller.view.cmd_forward.setAttribute('disabled','true');
 			}
+		} catch(E) {
+			s += E + '\n';
+		}
+		try {
+			var n = obj.getWebNavigation();
+			s += ('webNavigation = ' + n + '\n');
+			s += ('webNavigation.canGoBack = ' + n.canGoBack + '\n');
 			if (n.canGoBack) {
 				obj.controller.view.cmd_back.disabled = false;
 				obj.controller.view.cmd_back.setAttribute('disabled','false');
@@ -139,9 +148,11 @@ util.browser.prototype = {
 				obj.controller.view.cmd_back.disabled = true;
 				obj.controller.view.cmd_back.setAttribute('disabled','true');
 			}
+
 		} catch(E) {
 			s += E + '\n';
 		}
+
 		dump(s);
 	},
 
