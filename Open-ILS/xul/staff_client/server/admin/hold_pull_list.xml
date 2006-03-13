@@ -49,7 +49,7 @@
 
 			<span>Note: Click on a column header to sort the column</span>
 
-			<table witdh='85%' class='data_grid sortable' id='pl_table'>
+			<table width='100%' class='data_grid sortable' id='pl_table'>
 				<thead>
 					<tr>
 						<td>Title</td>
