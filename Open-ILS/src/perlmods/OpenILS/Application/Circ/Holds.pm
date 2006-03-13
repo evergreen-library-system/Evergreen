@@ -500,6 +500,68 @@ sub hold_pull_list {
 		$reqr->home_ou, $limit, $offset ); # XXX change to workstation
 }
 
+__PACKAGE__->register_method (
+	method		=> 'fetch_hold_notify',
+	api_name		=> 'open-ils.circ.hold_notification.retrieve_by_hold',
+	signature	=> q/ 
+		Returns a list of hold notification objects based on hold id.
+		@param authtoken The loggin session key
+		@param holdid The id of the hold whose notifications we want to retrieve
+		@return An array of hold notification objects, event on error.
+	/
+);
+
+sub fetch_hold_notify {
+	my( $self, $conn, $authtoken, $holdid ) = @_;
+	my( $requestor, $evt ) = $U->checkses($authtoken);
+	return $evt if $evt;
+	my ($hold, $patron);
+	($hold, $evt) = $U->fetch_hold($holdid);
+	return $evt if $evt;
+	($patron, $evt) = $U->fetch_user($hold->usr);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($requestor->id, $patron->home_ou, 'VIEW_HOLD_NOTIFICATION');
+	return $evt if $evt;
+
+	$logger->info("User ".$requestor->id." fetching hold notifications for hold $holdid");
+	return $U->storagereq(
+		'open-ils.storage.direct.action.hold_notification.search.hold.atomic', $holdid );
+}
+
+
+__PACKAGE__->register_method (
+	method		=> 'create_hold_notify',
+	api_name		=> 'open-ils.circ.hold_notification.create',
+	signature	=> q/
+		Creates a new hold notification object
+		@param authtoken The login session key
+		@param notification The hold notification object to create
+		@return ID of the new object on success, Event on error
+		/
+);
+sub create_hold_notify {
+	my( $self, $conn, $authtoken, $notification ) = @_;
+	my( $requestor, $evt ) = $U->checkses($authtoken);
+	return $evt if $evt;
+	my ($hold, $patron);
+	($hold, $evt) = $U->fetch_hold($notification->hold);
+	return $evt if $evt;
+	($patron, $evt) = $U->fetch_user($hold->usr);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($requestor->id, $patron->home_ou, 'CREATE_HOLD_NOTIFICATION');
+	return $evt if $evt;
+
+	# Set the proper notifier 
+	$notification->notify_staff($requestor->id);
+	my $id = $U->storagereq(
+		'open-ils.storage.direct.action.hold_notification.create', $notification );
+	return $U->DB_UPDATE_FAILED($notification) unless $id;
+	$logger->info("User ".$requestor->id." successfully created new hold notification $id");
+	return $id;
+}
+
 
 
 1;
