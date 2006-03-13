@@ -36,6 +36,9 @@ patron.display.prototype = {
 				{},
 				{ 
 					'on_checkout' : function(checkout) {
+						/* FIXME -- need to handle this differently, however Bill is going to do
+							it with the opac.  Display is moving to housing just summary info. */
+						/*
 						var c = obj.summary_window.g.summary.patron.checkouts();
 						c.push( checkout.circ );
 						obj.summary_window.g.summary.patron.checkouts( c );
@@ -45,6 +48,7 @@ patron.display.prototype = {
 							obj.items_window.g.items.list.clear();
 							obj.items_window.g.items.retrieve();
 						}
+						*/
 					}
 				}
 			);
