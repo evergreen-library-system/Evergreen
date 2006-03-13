@@ -98,7 +98,7 @@ package action::hold_notification;
 use base qw/action/;
 __PACKAGE__->table('action_hold_notification');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/hold method notify_time note/);
+__PACKAGE__->columns(Essential => qw/hold method notify_time note notify_staff/);
 
 #-------------------------------------------------------------------------------
 

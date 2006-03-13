@@ -165,17 +165,19 @@ CREATE TABLE action.hold_request (
 	hold_type		"char"				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
-	email_notify		TEXT
+	email_notify		BOOL				NOT NULL DEFAULT TRUE
 );
 
 
 CREATE TABLE action.hold_notification (
 	id		SERIAL				PRIMARY KEY,
 	hold		INT				NOT NULL REFERENCES action.hold_request (id),
+	notify_staff	INT				REFERENCES actor.usr (id),
 	notify_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	method		TEXT				NOT NULL, -- eh...
+	method		TEXT				NOT NULL, -- email address or phone number
 	note		TEXT
 );
+CREATE INDEX ahn_hold_idx ON action.hold_notification (hold);
 
 CREATE TABLE action.hold_copy_map (
 	id		SERIAL	PRIMARY KEY,
@@ -183,6 +185,8 @@ CREATE TABLE action.hold_copy_map (
 	target_copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
 );
+-- CREATE INDEX acm_hold_idx ON action.hold_copy_map (hold);
+CREATE INDEX acm_copy_idx ON action.hold_copy_map (target_copy);
 
 CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
