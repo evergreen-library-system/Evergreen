@@ -160,9 +160,12 @@ auth.controller.prototype = {
 
 	'test_server' : function(url) {
 		var obj = this;
+		obj.controller.view.submit_button.disabled = true;
+		obj.controller.view.server_prompt.disabled = true;
 		var s = document.getElementById('status');
 		s.setAttribute('value','Testing hostname...');
 		s.setAttribute('style','color: orange;');
+		document.getElementById('version').value = '';
 		if (!url) {
 			s.setAttribute('value','Please enter a server hostname.');
 			s.setAttribute('style','color: red;');
@@ -204,18 +207,21 @@ auth.controller.prototype = {
 		s.setAttribute('style','color: orange;');
 		try {
 			var x = new XMLHttpRequest();
-			url = url + '/xul/server/';
-			dump('version url = ' + url + '\n');
-			x.open("GET",url,true);
+			var url2 = url + '/xul/server/';
+			dump('version url = ' + url2 + '\n');
+			x.open("GET",url2,true);
 			x.onreadystatechange = function() {
 				try {
 					if (x.readyState != 4) return;
 					s.setAttribute('value',x.status + ' : ' + x.statusText);
 					if (x.status == 200) {
 						s.setAttribute('style','color: green;');
+						obj.controller.view.submit_button.disabled = false;
 					} else {
 						s.setAttribute('style','color: red;');
+						obj.test_upgrade_instructions(url);
 					}
+					obj.controller.view.server_prompt.disabled = false;
 				} catch(E) {
 					s.setAttribute('value','There was an error checking version support.');
 					s.setAttribute('style','color: red;');
@@ -226,6 +232,31 @@ auth.controller.prototype = {
 		} catch(E) {
 			s.setAttribute('value','There was an error checking version support.');
 			s.setAttribute('style','color: brown;');
+			obj.error.sdump('D_ERROR',E);
+		}
+	},
+
+	'test_upgrade_instructions' : function(url) {
+		var obj = this;
+		try {
+			var x = new XMLHttpRequest();
+			var url2 = url + '/xul/versions.html';
+			dump('upgrade url = ' + url2 + '\n');
+			x.open("GET",url2,true);
+			x.onreadystatechange = function() {
+				try {
+					if (x.readyState != 4) return;
+					if (x.status == 200) {
+						window.open('data:text/html,'+window.escape(x.responseText),'upgrade','chrome,resizable,modal,centered');
+					} else {
+						alert('This server does not support your version of the staff client.  Please check with your system administrator.');
+					}
+				} catch(E) {
+					obj.error.sdump('D_ERROR',E);
+				}
+			}
+			x.send(null);
+		} catch(E) {
 			obj.error.sdump('D_ERROR',E);
 		}
 	},
@@ -299,6 +330,9 @@ auth.controller.prototype = {
 		this.controller.render('ws_deck');
 
 		this.session.close();
+
+		/* FIXME - need some locking or object destruction for the async tests */
+		/* this.test_server( this.controller.view.server_prompt.value ); */
 
 		if (typeof this.on_logoff == 'function') {
 			this.error.sdump('D_AUTH','auth.controller.on_logoff()\n');
