@@ -8,6 +8,7 @@ util.print = function () {
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init( { 'via':'stash' } );
 	JSAN.use('util.window'); this.win = new util.window();
+	JSAN.use('util.functional');
 
 	return this;
 };
@@ -15,31 +16,34 @@ util.print = function () {
 util.print.prototype = {
 
 	'simple' : function(msg,params) {
+		try {
+			if (!params) params = {};
 
-		if (!params) params = {};
+			var obj = this;
 
-		var obj = this;
+			obj.data.last_print = msg; obj.data.stash('last_print');
 
-		obj.data.last_print = msg; obj.data.stash('last_print');
+			var silent = false;
+			if (params && params.no_prompt && params.no_prompt == true) silent = true;
 
-		var silent = false;
-		if (params && params.no_prompt && params.no_prompt == true) silent = true;
+			var w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','temp','chrome,resizable');
 
-		var w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','temp','chrome,resizable');
+			w.minimize();
 
-		w.minimize();
-
-		setTimeout(
-			function() {
-				try {
-					obj.NSPrint(w, silent, params);
-				} catch(E) {
-					obj.error.sdump('D_ERROR','util.print.simple: ' + E);
-					w.print();
-				}
-				w.minimize(); w.close();
-			}, 0
-		);
+			setTimeout(
+				function() {
+					try {
+						obj.NSPrint(w, silent, params);
+					} catch(E) {
+						obj.error.sdump('D_ERROR','util.print.simple: ' + E);
+						w.print();
+					}
+					w.minimize(); w.close();
+				}, 0
+			);
+		} catch(E) {
+			alert(E);
+		}
 	},
 	
 	'tree_list' : function (params) { 
@@ -147,13 +151,15 @@ util.print.prototype = {
 
 	'NSPrint' : function(w,silent,params) {
 		if (!w) w = window;
+		var obj = this;
 		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var webBrowserPrint = w
 				.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 				.getInterface(Components.interfaces.nsIWebBrowserPrint);
 			this.error.sdump('D_PRINT','webBrowserPrint = ' + webBrowserPrint);
 			if (webBrowserPrint) {
-				var gPrintSettings = GetPrintSettings();
+				var gPrintSettings = obj.GetPrintSettings();
 				if (silent) gPrintSettings.printSilent = true;
 				else gPrintSettings.printSilent = false;
 				if (params) {
@@ -191,6 +197,7 @@ util.print.prototype = {
 
 	'GetPrintSettings' : function() {
 		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var pref = Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefBranch);
 			if (pref) {
@@ -215,15 +222,20 @@ util.print.prototype = {
 	},
 
 	'setPrinterDefaultsForSelectedPrint' : function (aPrintService) {
-		if (this.gPrintSettings.printerName == "") {
-			this.gPrintSettings.printerName = aPrintService.defaultPrinterName;
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			if (this.gPrintSettings.printerName == "") {
+				this.gPrintSettings.printerName = aPrintService.defaultPrinterName;
+			}
+	 
+			// First get any defaults from the printer 
+			aPrintService.initPrintSettingsFromPrinter(this.gPrintSettings.printerName, this.gPrintSettings);
+	 
+			// now augment them with any values from last time
+			aPrintService.initPrintSettingsFromPrefs(this.gPrintSettings, true, this.gPrintSettings.kInitSaveAll);
+		} catch(E) {
+			this.error.sdump('D_PRINT',"setPrinterDefaultsForSelectedPrint() "+E+"\n");
 		}
- 
-		// First get any defaults from the printer 
-		aPrintService.initPrintSettingsFromPrinter(this.gPrintSettings.printerName, this.gPrintSettings);
- 
-		// now augment them with any values from last time
-		aPrintService.initPrintSettingsFromPrefs(this.gPrintSettings, true, this.gPrintSettings.kInitSaveAll);
 	}
 }
 

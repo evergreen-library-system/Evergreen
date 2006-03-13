@@ -143,8 +143,25 @@ circ.copy_status.prototype = {
 					'cmd_copy_status_print' : [
 						['command'],
 						function() {
-							dump( js2JSON( obj.list.dump() ) );
-							alert( js2JSON( obj.list.dump() ) );
+							try {
+							dump( js2JSON( obj.list.dump() ) + '\n' );
+							obj.data.stash_retrieve();
+							var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+							lib.children(null);
+							var p = { 
+								'lib' : lib,
+								'staff' : obj.data.list.au[0],
+								'header' : obj.data.print_list_templates.item_status.header,
+								'line_item' : obj.data.print_list_templates.item_status.line_item,
+								'footer' : obj.data.print_list_templates.item_status.footer,
+								'type' : obj.data.print_list_templates.item_status.type,
+								'list' : obj.list.dump(),
+							};
+							JSAN.use('util.print'); var print = new util.print();
+							print.tree_list( p );
+							} catch(E) {
+								alert(E); 
+							}
 						}
 					],
 					'cmd_copy_status_reprint' : [
@@ -173,6 +190,8 @@ circ.copy_status.prototype = {
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ barcode ]);
 			if (copy == null) {
 				throw('COPY NOT FOUND');
+			} else if (copy.ilsevent) {
+				throw('COPY NOT FOUND\n' + js2JSON(copy));
 			} else {
 				obj.list.append(
 					{

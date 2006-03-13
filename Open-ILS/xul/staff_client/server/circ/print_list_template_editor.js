@@ -31,15 +31,21 @@ circ.print_list_template_editor.prototype = {
 
 			this.test_list = {
 			
-				'items' : { 'dump' : function() { return JSON2js('[["1858348","421","268297","31001000418112","AC KRENTZ","1","???","Normal","???","Normal","0","0","18","","","2006-02-13 15:31:30.730986-05","","2006-02-27","Deep waters","Krentz, Jayne Ann.","1","???","???","???"],["3524184","462","???","nc10","Not Cataloged","","???","Normal","???","Normal","0","0","0","","","2006-02-16 01:00:44.84216-05","","2006-03-01","temp title","temp author","2","???","???","???"],["3524178","487","???","nc1","Not Cataloged","","???","Normal","???","Normal","0","0","0","","","2006-02-16 11:52:51.065944-05","","2006-03-02","title1","author1","2","???","???","???"]]'); } },
-				'holds' : { 'dump' : function() { return JSON2js('[["2005-11-18","","","T","Athens-Clarke County Library","ARL-ATH","???","demo@demoland.tv","","","","18","111-222-3344","2006-02-16 03:33:24.90493-05","3","0","183324","3","WATER GARDENS (FOR YOUR GARDEN) PB","Spier, Carol."],["2005-11-22","","","T","Athens-Clarke County Library","ARL-ATH","33207004527158","demo@demoland.tv","","","","25","111-222-3344","2006-02-16 03:33:27.754555-05","3","0","278434","3","Harry Potter and the sorcerer\'s stone","Rowling, J. K."],["2005-11-22","2006-02-09 21:29:09.575124-05","","T","Athens-Clarke County Library","ARL-ATH","33207000946790","demo@demoland.tv","","","","26","111-222-3344","2006-02-09 21:03:11.938293-05","3","0","352139","3","Shakespeare the man","Rowse, A. L. "],["2005-11-22","","","T","Athens-Clarke County Library","ARL-ATH","???","demo@demoland.tv","","","","27","111-222-3344","2006-02-16 03:33:39.35158-05","3","0","277202","3","Costa Rica","Morrison, Marion."],["2005-11-22","","","T","Bogart Branch Library","ARL-BOG","???","demo@demoland.tv","","","","29","111-222-3344","2006-02-16 03:33:41.297713-05","3","0","366540","3","On leaving Charleston","Ripley, Alexandra."],["2005-11-24","","","T","Athens-Clarke County Library","ARL-ATH","???","demo@demoland.tv","","","","30","111-222-3344","2006-02-16 03:33:41.697186-05","3","0","216351","3","Cats! Cats! Cats!","Wiseman, Bernard."],["2005-12-09","","","T","Athens-Clarke County Library","ARL-ATH","???","demo@demoland.tv","","","","32","111-222-3344","2006-02-16 03:33:41.970716-05","3","0","313569","3","Water","Cooper, Jason"],["2006-02-16","2006-02-16 06:23:19.602866-05","","T","Athens-Clarke County Library","ARL-ATH","a1115b1","demo@demoland.tv","","","","65","111-222-3345","2006-02-16 06:22:11.49379-05","14","0","200839","3","Water all around","Pine, Tillie S."]]'); } },
-				'patrons' : { 'dump' : function() { return JSON2js('[["090909090","demo3","Good","Users","Yes","6","Airman","Demo3","Demo3","D","III","","0","2005-11-22","2008-11-22","ECGR-MIDVL","0","","","","demo2@open-ils.org","1980-04-03","Drivers Licence","9898888777","???","","1"],["123321123321123","miker2","Good","Patrons","Yes","21","mr","Rylander","Mike","E","IIX","","0","2006-02-16","2006-01-01","ARL-BOG","0","770-222-5555","","","miker@example.com","1979-01-22","State ID","0987654321","???","","1"],["123456789","demo","Good","Staff","Yes","3","Mr.","Joe","Demo","J","","test","0","2005-11-15","2008-11-15","ARL-ATH","978.38","111-222-3345","222-333-4455","","demo@demoland.tv","1976-10-24","Drivers Licence","888888","???","","1"],["user2","user2","Good","Patrons","Yes","17","","User","Jim","","","","0","2006-02-13","2009-02-13","ARL-BOG","0","404","","","","2005-12-12","Drivers Licence","1234","???","","1"],["18009999999","animalmother","Good","Patrons","Yes","12","","Mother","Animal","","","","0","2006-02-13","2008-02-15","ARL-BOG","0","444-333-2222","","","animalmother@fullmetaljacket.net","1969-01-02","SSN","123456789","???","","1"],["staff3","staff3","Good","Circulators","Yes","15","","staff","circ","","","","0","2006-02-13","2009-02-13","ARL-BKM","0","777","","","","2005-12-12","Drivers Licence","n/a","???","","1"],["staff2","staff2","Good","Circulators","Yes","14","","Staff","Circ","","","","0","2006-02-13","2009-02-13","ARL-BOG","0","777","","","","2005-12-12","Drivers Licence","n/a","???","","1"],["11223344","miker","Good","Patrons","Yes","8","Mr","rylander","mike","","","","0","2005-12-19","2008-12-19","ARL-EAST","0","12123412","","","mrylander@example.com","1979-01-22","Voter Card","123456","???","","1"],["987654321","erickson","Good","Operations Manager","Yes","4","","Erickson","Bill","S","","","1","2005-11-18","2008-11-18","ARL-ATH","5","111-444-7777","1-800-999-9998","","bill@mastashake.org","1976-10-24","Voter Card","999999999999","???","","1"],["user4","user4","Good","Patrons","Yes","34","","Nimble","Jack","B","","","0","2006-02-16","2009-02-16","ARL-ATH","0","404","","","","2000-10-10","Drivers Licence","123","???","","1"],["user3","user3","Good","Patrons","Yes","18","","User","Jane","","","","0","2006-02-13","2009-02-13","ARL-BKM","0","404","","","","2005-12-12","Drivers Licence","12345","???","","1"],["user1","user1","Good","Patrons","Yes","16","","User","Joe","","","","0","2006-02-13","2009-02-13","ARL-ATH","0","404","404","","","2005-12-12","Drivers Licence","123","???","","1"],["staff1","staff1","Good","Circulators","Yes","13","","Staff","Circ","","","","0","2006-02-13","2009-02-13","ARL-ATH","0","777","","","","2005-12-12","Drivers Licence","n/a","???","","1"],["1122332211","demo2","Good","Users","Yes","5","Advisor","Jones","Demo2","D","","","0","2005-11-22","2008-11-22","CPRL-R","0","111-222-3333","","","demo2@open-ils.org","1980-05-02","Drivers Licence","0009990000","???","","1"]]'); } },
+				'items' : { 'dump' : function() { return JSON2js('[["1858348","421","268297","31001000418112","AC KRENTZ","1","Stacks","Normal","ARL-ATH","Normal","Yes","Yes","Yes","No","No","0","18","","","2006-02-13 15:31:30.730986-05","","2006-02-27","Deep waters ","Krentz, Jayne Ann.","","0671575236 :","p1997","Simon & Schuster Audio","PIN01074166   ","1","Checked out","???","???"]]'); } },
+				'holds' : { 'dump' : function() { return; } },
+				'patrons' : { 'dump' : function() { return; } },
 
 			}
 
 			if (typeof obj.data.print_list_templates == 'undefined') {
 				obj.data.print_list_types = [ 'items', 'holds', 'patrons' ];
 				obj.data.print_list_templates = { 
+					'item_status' : {
+						'type' : 'items',
+						'header' : 'You following items were checked:<hr/><ol>',
+						'line_item' : '<li>%title%\r\nBarcode: %barcode%\r\n',
+						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
+					}, 
 					'items_out' : {
 						'type' : 'items',
 						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following items:<hr/><ol>',
@@ -254,12 +260,13 @@ circ.print_list_template_editor.prototype = {
 	},
 
 	'save_template' : function(name) {
+		var obj = this;
 		this.data.print_list_templates[name].header = this.controller.view.header.value;
 		this.data.print_list_templates[name].line_item = this.controller.view.line_item.value;
 		this.data.print_list_templates[name].footer = this.controller.view.footer.value;
 		this.data.print_list_templates[name].type = this.controller.view.template_type_menu.value;
 		this.data.stash( 'print_list_templates' );
-		alert('Template Saved');
+		alert('Template Saved\n' + js2JSON(obj.data.print_list_templates[name]));
 	},
 
 }
