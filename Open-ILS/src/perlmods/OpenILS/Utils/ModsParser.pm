@@ -168,7 +168,7 @@ sub modsdoc_to_values {
 			for my $arr (@value) {
 				if( ref($arr) ) {
 					$data->{$class}->{$type} = shift @$arr;
-					$data->{$class}->{$type} .= ' : ' . shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
+					$data->{$class}->{$type} .= ' ' . shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
 					for my $t (@$arr) {
 						$data->{$class}->{$type} .= ' : ' if ($data->{$class}->{$type} =~ /\w\s*$/o);
 						$data->{$class}->{$type} .= " $t";
