@@ -10,10 +10,10 @@
 				<td width='40%'>Title</td>
 				<td width='20%'>Author</td>
 				<td>Formats</td>
-				<td align='center' nowrap='nowrap'>Pickup Location</td>
-				<td align='center' nowrap='nowrap'>Email Notify</td>
-				<td align='center' nowrap='nowrap'>Phone Notify</td>
-				<td align='center' nowrap='nowrap'>Cancel</td>
+				<td align='center'>Pickup Location</td>
+				<td align='center'>Enable Email Notification</td>
+				<td align='center'>Notification Phone Number</td>
+				<td align='center'>Cancel This Hold</td>
 			</tr>
 		</thead>
 
@@ -38,8 +38,13 @@
 
 				<td align='center' name='myopac_holds_location' class='light_border'> </td>
 
+				<!--
 				<td align='center' name='myopac_holds_email' class='light_border'>
 					<a href='javascript:void(0);' name='myopac_holds_email_link'></a>
+				</td>
+				-->
+				<td align='center' class='light_border'>
+					<input type='checkbox' name='myopac_holds_email_link' onclick='myopacChangeEmailNotify(this);'/>
 				</td>
 
 				<td align='center' name='myopac_holds_phone' class='light_border'>
@@ -56,6 +61,10 @@
 	</table>
 
 	<div class='hide_me' id='myopac_holds_cancel_verify'>Are you sure you wish to cancel the selected hold?</div>
+
+	<span class='hide_me' id='myopac_hold_email_verify'>
+		Are you sure you wish to set/unset the email notification for this hold?
+	</span>
 
 
 </div>

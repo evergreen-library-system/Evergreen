@@ -6,6 +6,7 @@ attachEvt('common','locationUpdated', myopacReload );
 
 var fleshedUser = null;
 var fleshedContainers = {};
+var holdCache = {};
 
 
 function clearNodes( node, keepArray ) {
@@ -247,6 +248,7 @@ function myOPACDrawHolds(r) {
 	for( var i = 0; i != holds.length; i++ ) {
 
 		var h = holds[i];
+		holdCache[h.id()] = h;
 		var row = holdsTemplateRow.cloneNode(true);
 		row.id = "myopac_holds_row_" + h.id() + '_' + h.target();
 
@@ -257,8 +259,13 @@ function myOPACDrawHolds(r) {
 
 		$n(row, "myopac_holds_location").
 			appendChild(text(findOrgUnit(h.pickup_lib()).name()));
-		$n(row, "myopac_holds_email_link").
-			appendChild(text(h.email_notify()));
+
+		if(h.email_notify()) 
+			$n(row, "myopac_holds_email_link").checked = true;
+		else
+			$n(row, "myopac_holds_email_link").checked = false;
+
+
 		$n(row, "myopac_holds_phone_link").
 			appendChild(text(h.phone_notify()));
 		tbody.appendChild(row);
@@ -269,6 +276,31 @@ function myOPACDrawHolds(r) {
 
 		myOPACDrawHoldTitle(h);
 	}
+}
+
+function myopacChangeEmailNotify(node) {
+	var id = node.parentNode.parentNode.id.replace(/myopac_holds_row_/,"").replace(/_\d+$/,"");
+	var hold = holdCache[id];
+
+	if(!confirm($('myopac_hold_email_verify').innerHTML)) {
+		if( hold.email_notify() ) node.checked = true;
+		else node.checked = false;
+		return;
+	}
+
+	if( hold.email_notify() ) {
+		hold.email_notify(0);
+		node.checked = false;
+	} else {
+		hold.email_notify(1);
+		node.checked = true;
+	}
+
+	var req = new Request(UPDATE_HOLD, G.user.session, hold);
+	req.send(true);
+	var x = req.result();
+	holdsTemplateRow = null
+	myOPACShowHolds();
 }
 
 function myOPACCancelHold(holdid) {

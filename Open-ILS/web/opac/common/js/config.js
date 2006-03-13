@@ -284,6 +284,7 @@ var FLESH_PUBLIC_CONTAINER		= 'open-ils.actor:open-ils.actor.container.public.fl
 var UPDATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.update';
 var FETCH_COPY						= 'open-ils.search:open-ils.search.asset.copy.retrieve';
 var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible';
+var UPDATE_HOLD					= 'open-ils.circ:open-ils.circ.hold.update';
 var FETCH_BIBLIO_NOTES			= 'open-ils.circ:open-ils.circ.biblio_notes.public.batch.retrieve';
 /* ---------------------------------------------------------------------------- */
 
