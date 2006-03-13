@@ -18,6 +18,7 @@ TARGETS = osrf_message.o \
 			 osrf_list.o \
 			 osrf_big_list.o \
 			 osrf_hash.o \
+			 osrf_big_hash.o \
 			 xml_utils.o
 
 HEADERS = osrf_message.h \
@@ -33,6 +34,7 @@ HEADERS = osrf_message.h \
 			 osrf_list.h \
 			 osrf_big_list.h \
 			 osrf_hash.h \
+			 osrf_big_hash.h \
 			 xml_utils.h
 
 all: xml_utils.o $(TARGETS) copy 
@@ -57,6 +59,7 @@ osrf_cache.o:	osrf_cache.c osrf_cache.h
 osrf_list.o:	osrf_list.c osrf_list.h
 osrf_big_list.o:	osrf_big_list.c osrf_big_list.h
 osrf_hash.o:	osrf_hash.c osrf_hash.h
+osrf_big_hash.o:	osrf_big_hash.c osrf_big_hash.h
 
 
 clean:

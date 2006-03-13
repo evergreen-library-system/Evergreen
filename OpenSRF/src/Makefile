@@ -33,6 +33,7 @@ OPENSRF_TARGETS = 	libtransport/transport_session.o \
 			libstack/osrf_list.o \
 			libstack/osrf_big_list.o \
 			libstack/osrf_hash.o \
+			libstack/osrf_big_hash.o \
 			utils/socket_bundle.o \
 			utils/string_array.o \
 			utils/utils.o \
@@ -57,6 +58,7 @@ OPENSRF_HEADERS = 	libtransport/transport_session.h \
 			libstack/osrf_list.h \
 			libstack/osrf_big_list.h \
 			libstack/osrf_hash.h \
+			libstack/osrf_big_hash.h \
 			utils/socket_bundle.h \
 			utils/string_array.h \
 			utils/utils.h \

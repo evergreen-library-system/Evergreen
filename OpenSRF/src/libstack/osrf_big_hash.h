@@ -1,45 +1,29 @@
 #ifndef OSRF_HASH_H
 #define OSRF_HASH_H
 
+#include <Judy.h>
 #include "opensrf/utils.h"
 #include "opensrf/string_array.h"
-#include "osrf_list.h"
 
 #define OSRF_HASH_MAXKEY 256
 
-#define OSRF_HASH_KEY_MASK 0x7FF  /* hash keys are a maximun of 2047 in size */
-#define OSRF_HASH_KEY_SIZE 2048  /* size of the container list for the keys */
-
-
-struct __osrfHashStruct {
-	osrfList* hash; /* this hash */
+struct __osrfBigHashStruct {
+	Pvoid_t hash;							/* the hash */
 	void (*freeItem) (char* key, void* item);	/* callback for freeing stored items */
-	unsigned int size;
 };
-typedef struct __osrfHashStruct osrfHash;
-
-struct _osrfHashNodeStruct {
-	char* key;
-	void* item;
-};
-typedef struct _osrfHashNodeStruct osrfHashNode;
+typedef struct __osrfBigHashStruct osrfBigHash;
 
 
-struct __osrfHashIteratorStruct {
+struct __osrfBigHashIteratorStruct {
 	char* current;
-	int currentIdx;
-	osrfHash* hash;
-	osrfStringArray* keys;
+	osrfBigHash* hash;
 };
-typedef struct __osrfHashIteratorStruct osrfHashIterator;
-
-osrfHashNode* osrfNewHashNode(char* key, void* item);
-void osrfHashNodeFree(osrfHashNode*);
+typedef struct __osrfBigHashIteratorStruct osrfBigHashIterator;
 
 /**
   Allocates a new hash object
   */
-osrfHash* osrfNewHash();
+osrfBigHash* osrfNewBigHash();
 
 /**
   Sets the given key with the given item
@@ -50,16 +34,16 @@ osrfHash* osrfNewHash();
   @return The old item if exists and there is no 'freeItem', returns NULL
   otherwise
   */
-void* osrfHashSet( osrfHash* hash, void* item, const char* key, ... );
+void* osrfBigHashSet( osrfBigHash* hash, void* item, const char* key, ... );
 
 /**
   Removes an item from the hash.
   if 'freeItem' is defined it is used and NULL is returned,
   else the freed item is returned
   */
-void* osrfHashRemove( osrfHash* hash, const char* key, ... );
+void* osrfBigHashRemove( osrfBigHash* hash, const char* key, ... );
 
-void* osrfHashGet( osrfHash* hash, const char* key, ... );
+void* osrfBigHashGet( osrfBigHash* hash, const char* key, ... );
 
 
 /**
@@ -67,17 +51,17 @@ void* osrfHashGet( osrfHash* hash, const char* key, ... );
   caller is responsible for freeing the returned string array 
   with osrfStringArrayFree();
   */
-osrfStringArray* osrfHashKeys( osrfHash* hash );
+osrfStringArray* osrfBigHashKeys( osrfBigHash* hash );
 
 /**
   Frees a hash
   */
-void osrfHashFree( osrfHash* hash );
+void osrfBigHashFree( osrfBigHash* hash );
 
 /**
   @return The number of items in the hash
   */
-unsigned long osrfHashGetCount( osrfHash* hash );
+unsigned long osrfBigHashGetCount( osrfBigHash* hash );
 
 
 
@@ -85,19 +69,19 @@ unsigned long osrfHashGetCount( osrfHash* hash );
 /**
   Creates a new list iterator with the given list
   */
-osrfHashIterator* osrfNewHashIterator( osrfHash* hash );
+osrfBigHashIterator* osrfNewBigHashIterator( osrfBigHash* hash );
 
 /**
   Returns the next non-NULL item in the list, return NULL when
   the end of the list has been reached
   */
-void* osrfHashIteratorNext( osrfHashIterator* itr );
+void* osrfBigHashIteratorNext( osrfBigHashIterator* itr );
 
 /**
   Deallocates the given list
   */
-void osrfHashIteratorFree( osrfHashIterator* itr );
+void osrfBigHashIteratorFree( osrfBigHashIterator* itr );
 
-void osrfHashIteratorReset( osrfHashIterator* itr );
+void osrfBigHashIteratorReset( osrfBigHashIterator* itr );
 
 #endif
