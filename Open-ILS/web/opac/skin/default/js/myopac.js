@@ -249,6 +249,7 @@ function myOPACDrawHolds(r) {
 
 		var h = holds[i];
 		holdCache[h.id()] = h;
+
 		var row = holdsTemplateRow.cloneNode(true);
 		row.id = "myopac_holds_row_" + h.id() + '_' + h.target();
 
@@ -257,17 +258,25 @@ function myOPACDrawHolds(r) {
 		form.id = "myopac_holds_form_" + h.id() + '_' + h.target();
 		if(formats) form.appendChild(text(formats));
 
-		$n(row, "myopac_holds_location").
-			appendChild(text(findOrgUnit(h.pickup_lib()).name()));
+		var orglink = $n(row, "myopac_holds_location");
+		orglink.appendChild(text(findOrgUnit(h.pickup_lib()).name()));
+		orglink.setAttribute('href', 'javascript:myOPACChangeHoldPickupLib('+h.id()+');');
 
 		if(h.email_notify()) 
 			$n(row, "myopac_holds_email_link").checked = true;
 		else
 			$n(row, "myopac_holds_email_link").checked = false;
 
+		var plink = $n(row, "myopac_holds_phone_link");
 
-		$n(row, "myopac_holds_phone_link").
-			appendChild(text(h.phone_notify()));
+		if( h.phone_notify() ) {
+			plink.appendChild(text(h.phone_notify()));
+			$n(row, 'myopac_holds_enable_phone').checked = true;
+		} else {
+			$n(row, 'myopac_holds_enable_phone').checked = false;
+		}
+
+		plink.setAttribute('href', 'javascript:myOPACChangeHoldPhone('+h.id()+');');
 		tbody.appendChild(row);
 
 		$n(row,'myopac_holds_cancel_link').setAttribute(
@@ -277,6 +286,78 @@ function myOPACDrawHolds(r) {
 		myOPACDrawHoldTitle(h);
 	}
 }
+
+var holdsOrgRowTemplate;
+function myOPACChangeHoldPickupLib(holdid) {
+	var hold = holdCache[holdid];
+	var row = $('myopac_holds_row_' + holdid + '_' + hold.target());
+	if(!holdsOrgRowTemplate)
+		holdsOrgRowTemplate = $('myopac_holds_org_row').cloneNode(true);
+	var orgrow = holdsOrgRowTemplate;
+	var tbody = row.parentNode;
+	if( row.nextSibling ) tbody.insertBefore(orgrow, row.nextSibling);
+	else tbody.appendChild(orgrow);
+	var selector = $n(orgrow, 'myopac_holds_org_selector');
+	buildOrgSel( selector, globalOrgTree, 0 );
+	setSelector( selector, hold.pickup_lib() );
+
+	for( var i = 0; i != selector.options.length; i++ ) {
+		var ou = findOrgUnit(selector.options[i].value);
+		var t = findOrgType(ou.ou_type());
+		if(!t.can_have_vols()) selector.options[i].disabled = true;
+	}
+
+	unHideMe(orgrow);
+
+	$n(orgrow, 'myopac_hold_org_update_submit').onclick = 
+		function(){myOPACUpdateHoldPickupLib(tbody, orgrow, hold);} 
+	$n(orgrow, 'myopac_hold_org_update_cancel').onclick = 
+		function(){tbody.removeChild(orgrow);}
+}
+
+function myOPACUpdateHoldPickupLib( tbody, orgrow, hold ) {
+
+	if( hold.capture_time() ) {
+		alert($('myopac_cannot_change_pickup').textContent);
+		return;
+	}
+
+	var org = getSelectorVal($n(orgrow, 'myopac_holds_org_selector'));
+	hold.pickup_lib(org);
+	tbody.removeChild(orgrow);
+	myOPACUpdateHold(hold);
+}
+
+
+function myOPACUpdateHold(hold) {
+	var req = new Request(UPDATE_HOLD, G.user.session, hold);
+	req.send(true);
+	var x = req.result();
+	holdsTemplateRow = null
+	myOPACShowHolds();
+}
+
+
+function myOPACChangeHoldPhone(holdid) {
+	var hold = holdCache[holdid];
+	var phone;
+
+	var origphone = hold.phone_notify();
+	if(!origphone) origphone = G.user.day_phone();
+
+	phone = prompt($('myopac_hold_phone_change').innerHTML, origphone);
+	if(!phone) return;
+	if( phone == hold.phone_notify() ) return;
+	if( !phone.match(REGEX_PHONE) ) {
+		alert($('myopac_bad_phone').textContent);
+		myOPACChangeHoldPhone(holdid);
+		return;
+	}
+
+	hold.phone_notify(phone);
+	myOPACUpdateHold(hold);
+}
+
 
 function myopacChangeEmailNotify(node) {
 	var id = node.parentNode.parentNode.id.replace(/myopac_holds_row_/,"").replace(/_\d+$/,"");
@@ -296,11 +377,24 @@ function myopacChangeEmailNotify(node) {
 		node.checked = true;
 	}
 
-	var req = new Request(UPDATE_HOLD, G.user.session, hold);
-	req.send(true);
-	var x = req.result();
-	holdsTemplateRow = null
-	myOPACShowHolds();
+	myOPACUpdateHold(hold);
+}
+
+function myopacChangePhoneNotify(node) {
+	var id = node.parentNode.parentNode.id.replace(/myopac_holds_row_/,"").replace(/_\d+$/,"");
+	var hold = holdCache[id];
+
+	if(!node.checked) {
+		if(!confirm($('myopac_hold_phone_verify').innerHTML)) {
+			node.checked = true;
+			return;
+		}
+	}
+
+	if( hold.phone_notify() ) hold.phone_notify("");
+	else myOPACChangeHoldPhone(id);
+
+	myOPACUpdateHold(hold);
 }
 
 function myOPACCancelHold(holdid) {

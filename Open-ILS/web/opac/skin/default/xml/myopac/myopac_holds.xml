@@ -3,55 +3,64 @@
 
 	<script language='javascript' src='../js/holds.js'> </script>
 
-	<table class='light_border data_grid'>
+	<table class='light_border data_grid data_grid_center'>
 
 		<thead class='color_3'>
 			<tr>
-				<td width='40%'>Title</td>
-				<td width='20%'>Author</td>
+				<td width='30%'>Title</td>
+				<td width='30%'>Author</td>
 				<td>Formats</td>
-				<td align='center'>Pickup Location</td>
-				<td align='center'>Enable Email Notification</td>
-				<td align='center'>Notification Phone Number</td>
-				<td align='center'>Cancel This Hold</td>
+				<td>Pickup Location</td>
+				<td>Enable Email Notification</td>
+				<td>Enable Phone Notification</td>
+				<td>Notification Phone Number</td>
+				<td>Cancel This Hold</td>
 			</tr>
 		</thead>
 
 		<tbody id='myopac_holds_tbody'>
 
+			<tr id='myopac_holds_org_row' class='hide_me' style='padding: 6px; border: 3px solid #E0F0E0;'>
+				<td style='padding: 4px;' colspan='10'>
+					<select name='myopac_holds_org_selector'> </select>
+					<input name='myopac_hold_org_update_submit' type='submit' value='Submit'> </input>
+					<input name='myopac_hold_org_update_cancel' type='submit' value='Cancel'> </input>
+				</td>
+			</tr>
+
 			<tr id='myopac_holds_none' class='hide_me'>
-				<td colspan='10' align='center'><b>You have no items on hold at this time</b></td>
+				<td colspan='10'><b>You have no items on hold at this time</b></td>
 			</tr>
 			<tr id='myopac_holds_loading'><td>Loading...</td></tr>
 
-			<tr id='myopac_holds_row' class='light_border hide_me'>
+			<tr id='myopac_holds_row' class='hide_me'>
 
-				<td name='myopac_holds_title' class='light_border'>
+				<td name='myopac_holds_title'>
 					<a href='javascript:void(0);' name='myopac_holds_title_link'> </a>
 				</td>
 
-				<td name='myopac_holds_author' class='light_border'>
+				<td name='myopac_holds_author'>
 					<a href='javascript:void(0);' name='myopac_holds_author_link'> </a>
 				</td>
 
-				<td align='center' name='myopac_holds_formats' class='light_border'> </td>
+				<td name='myopac_holds_formats'> </td>
 
-				<td align='center' name='myopac_holds_location' class='light_border'> </td>
+				<td><a name='myopac_holds_location' class='classic_link'/></td>
 
-				<!--
-				<td align='center' name='myopac_holds_email' class='light_border'>
-					<a href='javascript:void(0);' name='myopac_holds_email_link'></a>
-				</td>
-				-->
-				<td align='center' class='light_border'>
+				<td>
 					<input type='checkbox' name='myopac_holds_email_link' onclick='myopacChangeEmailNotify(this);'/>
 				</td>
 
-				<td align='center' name='myopac_holds_phone' class='light_border'>
+				<td>
+					<input type='checkbox' name='myopac_holds_enable_phone' 
+						onclick='myopacChangePhoneNotify(this);'/>
+				</td>
+
+				<td name='myopac_holds_phone' class='classic_link'>
 					<a href='javascript:void(0);' name='myopac_holds_phone_link'></a>
 				</td>
 
-				<td align='center' name='myopac_holds_cancel' class='light_border'>
+				<td name='myopac_holds_cancel'>
 					<a href='javascript:void(0);' 
 						name='myopac_holds_cancel_link' class='classic_link'>Cancel</a>
 				</td>
@@ -63,9 +72,26 @@
 	<div class='hide_me' id='myopac_holds_cancel_verify'>Are you sure you wish to cancel the selected hold?</div>
 
 	<span class='hide_me' id='myopac_hold_email_verify'>
-		Are you sure you wish to set/unset the email notification for this hold?
+		Are you sure you wish to the email notification setting for this hold?
 	</span>
 
+	<span class='hide_me' id='myopac_hold_phone_change'>
+		Enter the new hold notification phone number or click 'Cancel' to keep the current phone number.
+		The required format is XXX-YYY-ZZZZ.
+	</span>
+	<span class='hide_me' id='myopac_bad_phone'>
+		The phone number does not have the correct format.  
+		The required format is XXX-YYY-ZZZZ
+	</span>
+
+	<span class='hide_me' id='myopac_hold_phone_verify'>
+		Are you sure you with to disable phone notifications for this hold?
+	</span>
+
+	<span class='hide_me' id='myopac_cannot_change_pickup'>
+		The selected hold is either in transit or has arrived at the pickup location.
+		The pickup location for this hold cannot be changed.
+	</span>
 
 </div>
 

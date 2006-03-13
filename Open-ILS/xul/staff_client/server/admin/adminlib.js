@@ -52,12 +52,17 @@ function fetchHighestPermOrgs( session, userId, perms ) {
 /* offset is the depth of the highest org 
 	in the tree we're building 
   */
-function buildOrgSel(selector, org, offset) {
+
+/* XXX Moved to opac_utils.js */
+
+/*
+function buildOrgSel(selector, org, offset) { 
 	insertSelectorVal( selector, -1, 
 		org.name(), org.id(), null, findOrgDepth(org) - offset );
 	for( var c in org.children() )
 		buildOrgSel( selector, org.children()[c], offset);
 }
+*/
 
 /** removes all child nodes in 'tbody' that have the attribute 'key' defined */
 function cleanTbody(tbody, key) {

@@ -24,7 +24,7 @@
 	<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
 	
 		<br/><br/>
-		<table width='75%'>
+		<table width='90%'>
 			<tbody>
 				<tr>
 					<td class='holds_cell color_1' 
@@ -46,13 +46,36 @@
 					<td class='holds_cell'>&common.format;:</td>
 					<td class='holds_cell' id='holds_format'> </td>
 				</tr>
+				<tr id='hold_physical_desc_row'>
+					<td class='holds_cell'>Physical Description:</td>
+					<td class='holds_cell' id='holds_physical_desc'> </td>
+				</tr>
 				<tr>
 					<td class='holds_cell'>&opac.holds.contactPhone;:</td>
+					<!--
 					<td class='holds_cell' id='holds_phone'> </td>
+					-->
+					<td class='holds_cell'>
+						<input id='holds_phone' size='13' maxlength='12'/>
+						<span style='margin-left: 4px; font-size: 7pt;'>(XXX-YYY-ZZZZ)</span>
+					</td>
 				</tr>
+				<tr>
+					<td class='holds_cell'>Enable phone notifications for this hold?</td>
+					<td class='holds_cell'>
+						<input type='checkbox' id='holds_enable_phone' checked='checked'/>
+					</td>
+				</tr>
+
 				<tr>
 					<td class='holds_cell'>&opac.holds.concactEmail;:</td>
 					<td class='holds_cell' id='holds_email'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>Enable email notifications for this hold?</td>
+					<td class='holds_cell'>
+						<input type='checkbox' id='holds_enable_email' checked='checked'/>
+					</td>
 				</tr>
 				<tr>
 					<td class='holds_cell'>&opac.holds.pickupLocation;</td>
@@ -72,6 +95,10 @@
 	
 		<div class='hide_me' id='holds_success'>&opac.holds.success;</div>
 		<div class='hide_me' id='holds_failure'>&opac.holds.failure;</div>
+		<span class='hide_me' id='holds_bad_phone'>
+			The phone number does not have the correct format.
+			The expected format is XXX-YYY-ZZZZ
+		</span>
 	
 	</div>
 </div>

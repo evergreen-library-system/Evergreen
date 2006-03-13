@@ -117,6 +117,7 @@ G.ui		= {} /* cache of UI components */
 
 /* regexes */
 var REGEX_BARCODE = /^\d+/; /* starts with a number */
+var REGEX_PHONE = /^\d{3}-\d{3}-\d{4}$/; /* 111-222-3333 */
 
 
 /* call me after page init and I will load references 

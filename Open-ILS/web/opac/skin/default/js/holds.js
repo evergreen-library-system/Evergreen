@@ -86,10 +86,13 @@ function _holdsDrawWindow(recid, type) {
 		$('holds_format').appendChild(text(' '));
 	}
 
-	appendClear( $('holds_phone'), text(holdRecipient.day_phone()));
+	$('holds_phone').value = holdRecipient.day_phone();
 	appendClear( $('holds_email'), text(holdRecipient.email()));
 	$('holds_cancel').onclick = showCanvas;
 	$('holds_submit').onclick = holdsPlaceHold; 
+
+	appendClear($('holds_physical_desc'), text(rec.physical_description()));
+	if(hold.hold_type() == 'M') hideMe($('hold_physical_desc_row'));
 }
 
 
@@ -111,8 +114,10 @@ function holdsBuildOrgSelector(node) {
 	var selector = $('holds_org_selector');
 	var index = selector.options.length;
 
-	var indent = findOrgType(node.ou_type()).depth() - 1;
-	setSelectorVal( selector, index, node.name(), node.id(), null, indent );
+	var type = findOrgType(node.ou_type());
+	var indent = type.depth() - 1;
+	var opt = setSelectorVal( selector, index, node.name(), node.id(), null, indent );
+	if(!type.can_have_vols()) opt.disabled = true;
 	
 	if( node.id() == holdRecipient.home_ou() ) {
 		selector.selectedIndex = index;
@@ -131,13 +136,32 @@ function holdsPlaceHold() {
 		$('holds_org_selector').selectedIndex].value;
 
 	var hold = new ahr();
+
+
+	if( $('holds_enable_phone').checked ) {
+		var phone = $('holds_phone').value;
+		if( !phone.match(REGEX_PHONE) ) {
+			alert($('holds_bad_phone').textContent);
+			return;
+		}
+		hold.phone_notify(phone);
+
+	} else {
+		hold.phone_notify(null);
+	}
+
+	if( $('holds_enable_email').checked ) 
+		hold.email_notify(1);
+	else
+		hold.email_notify(0);
+
+
+
 	hold.pickup_lib(org); 
 	hold.request_lib(org); 
 	hold.requestor(holdRequestor.id());
 	hold.usr(holdRecipient.id());
 	hold.hold_type('T');
-	hold.email_notify(holdRecipient.email());
-	hold.phone_notify(holdRecipient.day_phone());
 	hold.target(currentHoldRecord);
 	
 	var req = new Request( CREATE_HOLD, holdRequestor.session, hold );
