@@ -142,6 +142,8 @@ sub _init {
 													  edition	=> 1,
 													  online_loc	=> 1,
 													  synopsis	=> 1,
+													  physical_description	=> 1,
+													  toc => 1,
 											     copy_count	        => 1,
 											     series	        => 1,
 											     serials	        => 1,

@@ -5,7 +5,7 @@
 		<tbody id='rdetail_details_tbody'>
 
 			<tr>
-				<td id='rdetail_image_cell' rowspan='8'><img id='rdetail_image'> </img></td>
+				<td id='rdetail_image_cell' rowspan='9'><img id='rdetail_image'> </img></td>
 				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.title;</td>		
 				<td class='rdetail_item' id='rdetail_title'> </td>
 			</tr>
@@ -35,6 +35,12 @@
 			<tr>
 				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.publisher;</td>		
 				<td class='rdetail_item' id='rdetail_publisher'> </td>
+			</tr>
+
+
+			<tr>
+				<td nowrap='nowrap' class='rdetail_desc'>Physical Description</td>		
+				<td class='rdetail_item' id='rdetail_physical_desc'> </td>
 			</tr>
 
 			<tr>

@@ -23,9 +23,12 @@ my $tcn_xpath			= "//mods:mods/mods:recordInfo/mods:recordIdentifier";
 my $publisher_xpath	= "//mods:mods/mods:originInfo//mods:publisher[1]";
 my $edition_xpath		= "//mods:mods/mods:originInfo//mods:edition[1]";
 my $abstract_xpath	= "//mods:mods/mods:abstract";
-my $toc_xpath			= "";
 my $related_xpath		= "";
 my $online_loc_xpath = "(//mods:location/mods:url|//mods:location/mods:url/\@displayLabel)";
+my $physical_desc		= "(//mods:physicalDescription/mods:form|//mods:physicalDescription/mods:extent|".
+	"//mods:physicalDescription/mods:reformattingQuality|//mods:physicalDescription/mods:internetMediaType|".
+	"//mods:physicalDescription/mods:digitalOrigin)";
+my $toc_xpath			= "//mods:tableOfContents";
 
 my $xpathset = {
 
@@ -165,7 +168,7 @@ sub modsdoc_to_values {
 			for my $arr (@value) {
 				if( ref($arr) ) {
 					$data->{$class}->{$type} = shift @$arr;
-					$data->{$class}->{$type} .= shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
+					$data->{$class}->{$type} .= ' : ' . shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
 					for my $t (@$arr) {
 						$data->{$class}->{$type} .= ' : ' if ($data->{$class}->{$type} =~ /\w\s*$/o);
 						$data->{$class}->{$type} .= " $t";
@@ -319,6 +322,14 @@ sub start_mods_batch {
 	($self->{master_doc}->{synopsis}) = 
 		$self->get_field_value( $mods, $abstract_xpath );
 
+	$self->{master_doc}->{physical_description} = [];
+	push(@{$self->{master_doc}->{physical_description}},
+		$self->get_field_value( $mods, $physical_desc ) );
+	$self->{master_doc}->{physical_description} = 
+		join( ' ', @{$self->{master_doc}->{physical_description}});
+
+	($self->{master_doc}->{toc}) = $self->get_field_value($mods, $toc_xpath);
+
 }
 
 
@@ -404,6 +415,11 @@ sub finish_mods_batch {
 
 	$record->online_loc($perl->{online_loc});
 	$record->synopsis($perl->{synopsis});
+	$record->physical_description($perl->{physical_description});
+	$record->toc($perl->{toc});
+
+	use Data::Dumper;
+	warn Dumper $self->{master_doc};
 
 	$self->{master_doc} = undef;
 	return $record;
