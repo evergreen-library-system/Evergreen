@@ -67,8 +67,6 @@ var api = {
 
 var urls = {
 
-	'remote' : 'http://dev.gapines.org/',
-
 	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
 	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',

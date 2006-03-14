@@ -38,7 +38,8 @@ util.sound.prototype = {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var obj = this;
-			var url2 = obj.xp_url_init( urls.remote + url );
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+			var url2 = obj.xp_url_init( data.server + url );
 			dump('url = ' + url2 + '\n');
 			obj.SOUND.play( url2 );
 		} catch(E) {
