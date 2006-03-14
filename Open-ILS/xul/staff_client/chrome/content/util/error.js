@@ -16,6 +16,8 @@ util.error = function () {
 
 	this.OpenILS = {};
 
+	JSAN.use('util.sound'); this.sound = new util.sound();
+
 	return this;
 };
 
@@ -214,6 +216,8 @@ util.error.prototype = {
 		*/
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+		this.sound.bad();
 
 		// get a reference to the prompt service component.
 		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]

@@ -66,10 +66,20 @@ var api = {
 }
 
 var urls = {
+
+	'remote' : 'http://dev.gapines.org/',
+
 	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
 	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'fieldmapper' : '/opac/common/js/fmall.js',
+
+	'AUDIO_GOOD_SOUND' : '/xul/server/skin/media/audio/bonus.wav',
+	'AUDIO_BAD_SOUND' : '/xul/server/skin/media/audio/question.wav',
+	'AUDIO_HORRIBLE_SOUND' : '/xul/server/skin/media/audio/redalert.wav',
+	'AUDIO_CIRC_GOOD_SOUND' : '/xul/server/skin/media/audio/toggled.wav',
+	'AUDIO_CIRC_BAD_SOUND' : '/xul/server/skin/media/audio/question.wav',
+
 	'XUL_ADV_USER_BARCODE_ENTRY' : '/xul/server/patron/adv_barcode_entry.xul',
 	'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
 	'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
