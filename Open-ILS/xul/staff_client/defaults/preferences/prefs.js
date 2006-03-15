@@ -16,6 +16,12 @@ pref("dom.max_script_run_time",60);
 pref("security.checkloaduri", false);
 pref("signed.applets.codebase_principal_support", true);
 
+// This stops the pop-up blocker.  Well it should, but it doesn't work here
+pref("dom.disable_open_during_load", false);
+pref("browser.popups.showPopupBlocker", false);
+pref("privacy.popups.disable_from_plugins",0);
+pref("privacy.popups.policy",0);
+
 // Developer options
 pref("browser.dom.window.dump.enabled",true);
 pref("javascript.options.strict",false);
