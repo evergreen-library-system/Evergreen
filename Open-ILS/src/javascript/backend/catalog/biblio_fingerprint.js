@@ -9,19 +9,29 @@ var mods_ns = new Namespace('http://www.loc.gov/mods/');
 default xml namespace = mods_ns;
 
 var t = null;
+var a = null;
 
 function extract_typed_title( ti ) {
-	log_debug(ti.toString());
 
-	return	ti.(hasOwnProperty("@type") && @type == 'uniform')[0] ||
-		ti.(hasOwnProperty("@type") && @type == 'translated')[0] ||
-		ti.(hasOwnProperty("@type") && @type == 'alternative')[0];
+	try {
+		var types = ['uniform','translated','alternative'];
+		for ( var j in types ) {
+			for ( var i in ti ) {
+				if (ti[i].attribute("type") == types[j])
+					return  ti[i];
+			}
+		}
+
+	} catch (e) {
+		log_debug(e);
+		return ti[0];
+	}
 }
 
 function extract_author( au ) {
 	log_debug(au.toString());
 
-	if ( au..role.length > 0 ) au = au.(role.text == 'creator' || role.text == 'author');
+	if ( au..role.length() > 0 ) au = au.(role.text == 'creator' || role.text == 'author');
 	
 	if ( au.(hasOwnProperty("@type")) ) {
 		au = au.(@type == 'personal')[0] ||
@@ -41,10 +51,10 @@ if (modsdoc.typeOfResource != 'text') {
 	quality = 10;
 
 	// Look in related items for a good title
-	for ( var index in modsdoc.relatedItem.( /^(?:host)|(?:series)$/.test(@type) ) ) {
+	for ( var index in modsdoc.relatedItem.( hasOwnProperty('@type') && @type != 'series' && @type != 'host' ) ) {
 		var ri = modsdoc.relatedItem[index];
 		if ( ri.(!hasOwnProperty("@type") )) {
-			t = extract_typed_title( ti.titleInfo.(hasOwnProperty('@type')) );
+			t = extract_typed_title( ri.titleInfo.(hasOwnProperty('@type')) );
 			if (!t) {
 				t = ri.titleInfo[0];
 				quality += 10;
@@ -61,7 +71,7 @@ if (modsdoc.typeOfResource != 'text') {
 
 	// Couldn't find a usable title in a related item
 	if (t == null) {
-		t = extract_typed_title( modsdoc.titleInfo.(hasOwnProperty('@type')) );
+		t = extract_typed_title( modsdoc.titleInfo );
 		if (!t) {
 			t = modsdoc.titleInfo[0];
 			quality += 5;
@@ -75,8 +85,7 @@ if (modsdoc.typeOfResource != 'text') {
 } else {
 	quality = 20;
 
-	if (modsdoc.titleInfo.(hasOwnProperty('@type')))
-		t = extract_typed_title( modsdoc.titleInfo );
+	t = extract_typed_title( modsdoc.titleInfo );
 
 	if (t == null) {
 		t = modsdoc.titleInfo[0];
