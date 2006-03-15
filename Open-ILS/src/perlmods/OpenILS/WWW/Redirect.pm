@@ -40,7 +40,7 @@ sub handler {
 	my $proto = "http";
 	if($cgi->https) { $proto = "https"; }
 
-	my $url = "$proto://$hostname:$port/opac/skin/en-US/default/xml/index.xml";
+	my $url = "$proto://$hostname:$port/opac/en-US/skin/default/xml/index.xml";
 
 	my $path = $apache_obj->path_info();
 
