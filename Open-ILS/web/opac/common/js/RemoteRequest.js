@@ -40,7 +40,6 @@ function destroyRequest(r) {
 
 	if( r.xmlhttp ) {
 		r.xmlhttp.onreadystatechange = function(){};
-		//r.abort();
 		r.xmlhttp = null;
 	}
 
