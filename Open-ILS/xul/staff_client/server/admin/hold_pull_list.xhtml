@@ -1,0 +1,89 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!ENTITY nbsp " "> <!-- calendar needs this entity -->
+]>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen Holds Pull List</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script> 
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='/opac/common/js/sorttable.js'> </script>
+		<script language='javascript' src='adminlib.js'> </script>
+		<script language='javascript' src='hold_pull_list.js'> </script>
+		<link type='text/css' rel='stylesheet' href='admin.css'/>
+  
+		<style type='text/css'>
+			a { color: black; text-decoration: none; }
+		</style>
+	</head>
+
+	<body onload='try{pullListInit();}catch(e){alert(js2JSON(e));}'>
+
+		<center>
+			<h2>Evergreen Holds Pull List : <span id='pl_org'/></h2>
+
+			<div style='position:absolute; top: 5px; right: 5px;'>
+				<span>Welcome </span><b><span id='pl_user'/></b>
+			</div>
+		
+			<hr/><br/>
+
+			<span>Note: Click on a column header to sort the column</span>
+
+			<table width='100%' class='data_grid sortable' id='pl_table'>
+				<thead>
+					<tr>
+						<td>Title</td>
+						<td>Author</td>
+						<td>Copy Location</td>
+						<td id='pl_callnumber'>Call Number</td>
+						<td>Item Bracode</td>
+						<td>Copy Number</td>
+						<td>Format</td>
+						<td>Patron Barcode</td>
+						<td>Hold Placement Date</td>
+					</tr>
+				</thead>
+				<tbody id='pull_list_tbody'>
+					<tr id='pull_list_row'>
+						<td name='title'/>
+						<td name='author'/>
+						<td name='copy_location'/>
+						<td name='call_number'/>
+						<td name='barcode'/>
+						<td name='copy_number'/>
+						<td>
+							<span name='format_at'		class='hide_me'>Book</span>
+							<span name='format_at-d'	class='hide_me'>Large Print Book</span>
+							<span name='format_i'		class='hide_me'>Audiobook</span>
+							<span name='format_g'		class='hide_me'>Video Recording</span>
+							<span name='format_j'		class='hide_me'>Music</span>
+							<span name='format_m'		class='hide_me'>Electronic Resource</span>
+						</td>
+						<td name='patron'/>
+						<td name='date'/>
+					</tr>
+				</tbody>
+			</table>
+		</center>
+	</body>
+</html>
