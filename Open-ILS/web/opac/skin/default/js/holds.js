@@ -6,6 +6,8 @@ var holdRecipient;
 var holdRequestor
 var holdEmail;
 var holdPhone;
+var holdEditHold;
+var holdEditCallback;
 
 
 function holdsHandleStaff() {
@@ -29,13 +31,15 @@ function _holdsHandleStaff() {
 	holdsDrawWindow( currentHoldRecord, null );
 }
 
-function holdsDrawWindow(recid, type) {
+function holdsDrawWindow(recid, type, edithold, done_callback) {
 
 	if(recid == null) {
 		recid = currentHoldRecord;
 		if(recid == null) return;
 	}	
 	currentHoldRecord = recid;
+	holdEditHold = edithold;
+	holdEditCallback = done_callback;
 	
 	if(isXUL() && holdRecipient == null ) { 
 		holdsHandleStaff();
@@ -55,8 +59,51 @@ function holdsDrawWindow(recid, type) {
 
 
 	swapCanvas($('check_holds_box'));
-	setTimeout( function() { holdsCheckPossibility(recid, type); }, 10 );
+
+	if(!edithold) {
+		setTimeout( function() { holdsCheckPossibility(recid, type); }, 10 );
+
+	} else {
+		_holdsDrawWindow(recid, type);
+		_holdsUpdateEditHold(edithold);
+	}
 }
+
+function _holdsUpdateEditHold(hold) {
+
+	if( hold.capture_time() )
+		$('holds_org_selector').disabled = true;
+	else
+		setSelector($('holds_org_selector'), hold.pickup_lib());
+
+	$('holds_submit').onclick = holdsEditHold;
+
+
+	if(hold.phone_notify()) {
+		$('holds_enable_phone').checked = true;
+		$('holds_phone').value = hold.phone_notify();
+
+	} else {
+		$('holds_phone').disabled = true;
+		$('holds_enable_phone').checked = false;
+	}
+
+	if(hold.email_notify()) {
+		$('holds_enable_email').checked = true;
+
+	} else {
+		$('holds_enable_email').checked = false;
+	}
+}
+
+function holdsEditHold() {
+	var hold = holdsBuildHoldFromWindow();
+	hold.id( holdEditHold.id() );
+	holdsUpdate(hold);
+	showCanvas();
+	if(holdEditCallback) holdEditCallback(hold);
+}
+
 
 function _holdsDrawWindow(recid, type) {
 
@@ -86,13 +133,26 @@ function _holdsDrawWindow(recid, type) {
 		$('holds_format').appendChild(text(' '));
 	}
 
+
 	$('holds_phone').value = holdRecipient.day_phone();
 	appendClear( $('holds_email'), text(holdRecipient.email()));
-	$('holds_cancel').onclick = showCanvas;
-	$('holds_submit').onclick = holdsPlaceHold; 
 
+	var pref = G.user.prefs[PREF_HOLD_NOTIFY];
+
+	if(pref) {
+		if( ! pref.match(/email/i) ) 
+			$('holds_enable_email').checked = false;
+
+		if( ! pref.match(/phone/i) ) {
+			$('holds_phone').disabled = true;
+			$('holds_enable_phone').checked = false;
+		}
+	}
+
+	$('holds_cancel').onclick = showCanvas;
+	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	appendClear($('holds_physical_desc'), text(rec.physical_description()));
-	if(hold.hold_type() == 'M') hideMe($('hold_physical_desc_row'));
+	if(type == 'M') hideMe($('hold_physical_desc_row'));
 }
 
 
@@ -130,7 +190,7 @@ function holdsBuildOrgSelector(node) {
 	}
 }
 
-function holdsPlaceHold() {
+function holdsBuildHoldFromWindow() {
 
 	var org = $('holds_org_selector').options[
 		$('holds_org_selector').selectedIndex].value;
@@ -141,13 +201,13 @@ function holdsPlaceHold() {
 	if( $('holds_enable_phone').checked ) {
 		var phone = $('holds_phone').value;
 		if( !phone.match(REGEX_PHONE) ) {
-			alert($('holds_bad_phone').textContent);
+			alert($('holds_bad_phone').innerHTML);
 			return;
 		}
 		hold.phone_notify(phone);
 
 	} else {
-		hold.phone_notify(null);
+		hold.phone_notify("");
 	}
 
 	if( $('holds_enable_email').checked ) 
@@ -156,14 +216,17 @@ function holdsPlaceHold() {
 		hold.email_notify(0);
 
 
-
 	hold.pickup_lib(org); 
 	hold.request_lib(org); 
 	hold.requestor(holdRequestor.id());
 	hold.usr(holdRecipient.id());
 	hold.hold_type('T');
 	hold.target(currentHoldRecord);
+	return hold;
+}
 	
+function holdsPlaceHold(hold) {
+
 	var req = new Request( CREATE_HOLD, holdRequestor.session, hold );
 	req.send(true);
 	var res = req.result();
@@ -182,5 +245,14 @@ function holdsCancel(holdid, user) {
 	req.send(true);
 	return req.result();
 }
+
+function holdsUpdate(hold, user) {
+	if(!user) user = G.user;
+	var req = new Request(UPDATE_HOLD, user.session, hold);
+	req.send(true);
+	var x = req.result(); /* cause an exception if there is one */
+}
+
+
 
 

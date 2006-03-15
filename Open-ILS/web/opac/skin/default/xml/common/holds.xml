@@ -28,7 +28,7 @@
 			<tbody>
 				<tr>
 					<td class='holds_cell color_1' 
-						align='center' colspan='2'>&opac.holds.placeHold;</td>
+						align='center' colspan='2'>Place or Edit a Hold</td>
 				</tr>
 				<tr>
 					<td class='holds_cell'>&opac.holds.recipient;:</td>
@@ -63,7 +63,10 @@
 				<tr>
 					<td class='holds_cell'>Enable phone notifications for this hold?</td>
 					<td class='holds_cell'>
-						<input type='checkbox' id='holds_enable_phone' checked='checked'/>
+						<input type='checkbox' id='holds_enable_phone'  checked='checked'
+							onchange='
+								if (this.checked) $("holds_phone").disabled=false; 
+								else $("holds_phone").disabled = true;'/>
 					</td>
 				</tr>
 
@@ -85,7 +88,10 @@
 				</tr>
 				<tr>
 					<td class='holds_cell' align='center' colspan='2'>
+						<!--
 						<button id='holds_submit'>&opac.holds.placeHold;</button>
+						-->
+						<button id='holds_submit'>Update Hold</button>
 						<span style='padding: 20px;'> </span>
 						<button id='holds_cancel'>&common.cancel;</button>
 					</td>

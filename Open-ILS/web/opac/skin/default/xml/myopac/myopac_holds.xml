@@ -11,22 +11,16 @@
 				<td width='30%'>Author</td>
 				<td>Formats</td>
 				<td>Pickup Location</td>
+				<!--
 				<td>Enable Email Notification</td>
 				<td>Enable Phone Notification</td>
 				<td>Notification Phone Number</td>
-				<td>Cancel This Hold</td>
+				-->
+				<td>Edit/Cancel</td>
 			</tr>
 		</thead>
 
 		<tbody id='myopac_holds_tbody'>
-
-			<tr id='myopac_holds_org_row' class='hide_me' style='padding: 6px; border: 3px solid #E0F0E0;'>
-				<td style='padding: 4px;' colspan='10'>
-					<select name='myopac_holds_org_selector'> </select>
-					<input name='myopac_hold_org_update_submit' type='submit' value='Submit'> </input>
-					<input name='myopac_hold_org_update_cancel' type='submit' value='Cancel'> </input>
-				</td>
-			</tr>
 
 			<tr id='myopac_holds_none' class='hide_me'>
 				<td colspan='10'><b>You have no items on hold at this time</b></td>
@@ -45,22 +39,11 @@
 
 				<td name='myopac_holds_formats'> </td>
 
-				<td><a name='myopac_holds_location' class='classic_link'/></td>
+				<td name='myopac_holds_location'></td>
 
-				<td>
-					<input type='checkbox' name='myopac_holds_email_link' onclick='myopacChangeEmailNotify(this);'/>
-				</td>
-
-				<td>
-					<input type='checkbox' name='myopac_holds_enable_phone' 
-						onclick='myopacChangePhoneNotify(this);'/>
-				</td>
-
-				<td name='myopac_holds_phone' class='classic_link'>
-					<a href='javascript:void(0);' name='myopac_holds_phone_link'></a>
-				</td>
-
-				<td name='myopac_holds_cancel'>
+				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
+					<a href='javascript:void(0);' 
+						name='myopac_holds_edit_link' class='classic_link'>Edit</a>
 					<a href='javascript:void(0);' 
 						name='myopac_holds_cancel_link' class='classic_link'>Cancel</a>
 				</td>
@@ -69,8 +52,11 @@
 		</tbody>
 	</table>
 
-	<div class='hide_me' id='myopac_holds_cancel_verify'>Are you sure you wish to cancel the selected hold?</div>
+	<span class='hide_me' id='myopac_holds_cancel_verify'>
+		If you wish to cancel the selected hold, click OK, otherwise click Cancel.
+	</span>
 
+	<!--
 	<span class='hide_me' id='myopac_hold_email_verify'>
 		Are you sure you wish to the email notification setting for this hold?
 	</span>
@@ -92,6 +78,7 @@
 		The selected hold is either in transit or has arrived at the pickup location.
 		The pickup location for this hold cannot be changed.
 	</span>
+	-->
 
 </div>
 

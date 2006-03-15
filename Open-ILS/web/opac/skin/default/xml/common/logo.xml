@@ -1,4 +1,4 @@
 <div id='logo_div'>
 	<script language='javascript'>config.ids.common.top_logo = "top_left_logo";</script>
-	<img src='<!--#echo var="OILS_BASE"-->/images/small_logo.jpg' id='top_left_logo' border='0' class='logo'> </img>
+	<img style='margin-right: 4px;' src='<!--#echo var="OILS_BASE"-->/images/small_logo.jpg' id='top_left_logo' border='0' class='logo'> </img>
 </div>

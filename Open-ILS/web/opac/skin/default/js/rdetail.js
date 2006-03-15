@@ -161,7 +161,7 @@ function rdetailAddBookbags(r) {
 	}
 
 	nextContainerIndex = index;
-	if(!found) insertSelectorVal( selector, 3, "name", "value", 1 );
+	if(!found) insertSelectorVal( selector, index, "name", "value", 1 );
 }
 
 var _actions = {};

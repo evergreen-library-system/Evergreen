@@ -29,6 +29,7 @@
 				</td>
 			</tr>
 
+			<!-- FONT size preference -->
 			<tr>
 				<td>Default Font Size</td>
 				<td>
@@ -39,6 +40,24 @@
 				</td>
 			</tr>
 
+			<!-- default hold notification type -->
+			<tr>
+				<td>
+					<span>Default Hold Notification Style</span>
+					<a class='classic_link' href='javascript:void(0);' 
+						onclick='alert($("myopac_pref_hold_notify_alert").textContent);' >(??)</a>
+				</td>
+				<td>
+					<select id='prefs_hold_notify'>
+						<option value='phone:email' selected='selected'>Use Phone and Email</option>
+						<option value='phone'>Use Phone Only</option>
+						<option value='email'>Use Email Only</option>
+					</select>
+				</td>
+			</tr>
+
+
+			<!-- Save the preferences -->
 			<tr><td colspan='2'><br/></td></tr>
 
 			<tr>
@@ -53,6 +72,11 @@
 
 	<div class='hide_me' id='prefs_update_success'>Preferences successfully updated</div>
 	<div class='hide_me' id='prefs_update_failure'>Preferences update failed!</div>
+	<span class='hide_me' id='myopac_pref_hold_notify_alert'>
+		This setting defines how you will be notified of holds that are ready to be picked up from the library.
+		By default, holds will use the notification style you choose here.  
+		However, you will still have the option to change individual holds regardless of this setting.
+	</span>
 
 </div>
 

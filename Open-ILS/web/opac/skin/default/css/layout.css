@@ -38,7 +38,15 @@ table { border-collapse: collapse; }
 
 
 #loading_div { width: 100%;}
+
+
+/* default to image size to avoid image stretching */
+/*
 .logo { height: 65px; width: 180px; }
+*/
+
+
+
 /*
 .org_tree { height: 500px; padding-left: 2px; padding-right: 2px; }            
 */

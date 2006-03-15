@@ -25,6 +25,10 @@
 					<span style='padding-right: 7px;' class='hide_me' id='rdetail_more_actions'>
 						<select id='rdetail_more_actions_selector' style='max-width: 11em;'>
 							<option value='start'>More Actions...</option>
+							<!--
+							<option value='place_hold' 
+								onclick='holdsDrawWindow(record.doc_id())'>Place a hold on this item</option>
+							-->
 							<option disabled='disabled'>--------------</option>
 							<option disabled='disabled'>Add to Bookbag</option>
 							<option disabled='disabled'>--------------</option>

@@ -331,7 +331,12 @@ function buildSearchLink(type, string, linknode, trunc) {
 function grabUser(ses, force) {
 
 	if(!ses && isXUL()) ses = xulG['authtoken'];
-	if(!ses) ses = cookieManager.read(COOKIE_SES);
+
+	if(!ses) {
+		ses = cookieManager.read(COOKIE_SES);
+		/* https cookies don't show up in http servers.. */
+	}
+
 	if(!ses) return false;
 
 	if(!force) 
@@ -357,7 +362,7 @@ function grabUser(ses, force) {
 	G.user = user;
 	G.user.fleshed = false;
 	G.user.session = ses;
-	cookieManager.write(COOKIE_SES, ses, '+1y');
+	cookieManager.write(COOKIE_SES, ses, '+1d');
 
 	grabUserPrefs();
 	if(G.user.prefs['opac.hits_per_page'])
@@ -367,9 +372,9 @@ function grabUser(ses, force) {
 		setFontSize(G.user.prefs[PREF_DEF_FONT]);
 
 	var at = getAuthtime();
-	if(isXUL()) at = xulG['authtime'];
+	//if(isXUL()) at = xulG['authtime'];
 
-	if(at) new AuthTimer(at).run(); 
+	if(at && !isXUL()) new AuthTimer(at).run(); 
 	return G.user;
 }
 
