@@ -406,7 +406,7 @@ function grabFleshedUser() {
 
 	if(!G.user || G.user.length == 0) { 
 		G.user = null; return false; 
-		cookieManager.remove(COOKIE_SES);
+		cookieManager.write(COOKIE_SES,"");
 	}
 
 	G.user.session = ses;
@@ -533,8 +533,8 @@ function doLogout(noredirect) {
     }
 
 	G.user = null;
-	cookieManager.remove(COOKIE_SES);
-	cookieManager.remove(COOKIE_SKIN);
+	cookieManager.write(COOKIE_SES, "");
+	cookieManager.write(COOKIE_SKIN, "");
 	checkUserSkin("default");
 	COUNT = 10;
 
