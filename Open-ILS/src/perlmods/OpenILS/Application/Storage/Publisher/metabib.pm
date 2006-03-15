@@ -1405,7 +1405,7 @@ sub postfilter_search_multi_class_fts {
 			$metabib_metarecord mr,
 			$metabib_record_descriptor rd
 	  	WHERE	m.metarecord = mr.id
-	  		smrs.metarecord = mr.id
+	  		AND smrs.metarecord = mr.id
   	  		$fts_list
 			$join_table_list
 			AND rd.record = smrs.source
