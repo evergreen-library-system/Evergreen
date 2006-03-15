@@ -1,5 +1,5 @@
 var XML_HTTP_GATEWAY = "gateway";
-var XML_HTTP_SERVER = "dev.gapines.org";
+var XML_HTTP_SERVER = "";
 var XML_HTTP_MAX_TRIES = 3;
 
 //var IAMXUL = false;
@@ -166,7 +166,7 @@ RemoteRequest.prototype.send = function(blocking) {
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
-	if(isXUL()) {
+	if(isXUL() && XML_HTTP_SERVER) {
 		if(this.secure || url.match(/^https:/) )
 			url =	"https://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 		else
