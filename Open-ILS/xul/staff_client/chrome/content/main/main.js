@@ -14,9 +14,22 @@ function grant_perms(url) {
 
 }
 
+function clear_the_cache() {
+	try {
+		var cacheClass 		= Components.classes["@mozilla.org/network/cache-service;1"];
+		var cacheService	= cacheClass.getService(Components.interfaces.nsICacheService);
+		cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);
+		cacheService.evictEntries(Components.interfaces.nsICache.STORE_IN_MEMORY);
+	} catch(E) {
+		dump(E+'\n');alert(E);
+	}
+}
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {
+		clear_the_cache();
+
 		if (typeof JSAN == 'undefined') {
 			throw(
 				"The JSAN library object is missing."
