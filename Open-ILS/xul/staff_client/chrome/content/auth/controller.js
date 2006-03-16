@@ -188,6 +188,7 @@ auth.controller.prototype = {
 					}
 					obj.test_version(url);
 				} catch(E) {
+					obj.controller.view.server_prompt.disabled = false;
 					s.setAttribute('value','There was an error testing this hostname.');
 					s.setAttribute('style','color: red;');
 					obj.error.sdump('D_ERROR',E);
@@ -198,6 +199,7 @@ auth.controller.prototype = {
 			s.setAttribute('value','There was an error testing this hostname.');
 			s.setAttribute('style','color: brown;');
 			obj.error.sdump('D_ERROR',E);
+			obj.controller.view.server_prompt.disabled = false;
 		}
 	},
 
@@ -227,6 +229,7 @@ auth.controller.prototype = {
 					s.setAttribute('value','There was an error checking version support.');
 					s.setAttribute('style','color: red;');
 					obj.error.sdump('D_ERROR',E);
+					obj.controller.view.server_prompt.disabled = false;
 				}
 			}
 			x.send(null);
@@ -234,6 +237,7 @@ auth.controller.prototype = {
 			s.setAttribute('value','There was an error checking version support.');
 			s.setAttribute('style','color: brown;');
 			obj.error.sdump('D_ERROR',E);
+			obj.controller.view.server_prompt.disabled = false;
 		}
 	},
 
@@ -252,13 +256,16 @@ auth.controller.prototype = {
 					} else {
 						alert('This server does not support your version of the staff client.  Please check with your system administrator.');
 					}
+					obj.controller.view.server_prompt.disabled = false;
 				} catch(E) {
 					obj.error.sdump('D_ERROR',E);
+					obj.controller.view.server_prompt.disabled = false;
 				}
 			}
 			x.send(null);
 		} catch(E) {
 			obj.error.sdump('D_ERROR',E);
+			obj.controller.view.server_prompt.disabled = false;
 		}
 	},
 
