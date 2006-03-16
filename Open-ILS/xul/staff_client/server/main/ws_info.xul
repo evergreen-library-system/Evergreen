@@ -52,6 +52,15 @@
 			JSAN.use('util.widgets');
 			JSAN.use('util.functional');
 
+			g.aout_list = g.network.simple_request(
+				'FM_AOUT_RETRIEVE',
+				[ ]
+			);
+			g.aout_hash = {};
+			for (var i = 0; i < g.aout_list.length; i++) {
+				g.aout_hash[ g.aout_list[i].id() ] = g.aout_list[i];
+			}
+
 			g.my_libs = g.network.simple_request(
 				'FM_AOU_RETRIEVE_RELATED_VIA_SESSION',
 				[ xulG.auth.session.key ]
@@ -82,8 +91,13 @@
 			g.ml = util.widgets.make_menulist( 
 				util.functional.map_list( 
 					g.my_libs,
-					function(obj) { return [ obj.shortname(), obj.id() ]; }
-				).sort(),
+					function(obj) { return [ 
+						obj.shortname(), 
+						obj.id(), 
+						( g.aout_hash[ obj.ou_type() ].can_have_users() == 0),
+						( g.aout_hash[ obj.ou_type() ].depth() ),
+					]; }
+				),
 				g.my_lib
 			);
 

@@ -68,9 +68,19 @@ util.widgets.make_menulist = function( items, dvalue ) {
 	var menulist = document.createElement('menulist');
 	var menupopup = document.createElement('menupopup'); menulist.appendChild(menupopup);
 	for (var i = 0; i < items.length; i++) {
+		var label = items[i][0]; var value = items[i][1]; var disabled = items[i][2]; var indent = items[i][3];
+		if (indent) {
+			for (var j = 0; j < Number(indent); j++) {
+				label = ' ' + label;
+			}
+		}
 		var menuitem = document.createElement('menuitem'); menupopup.appendChild(menuitem);
-		menuitem.setAttribute('label',items[i][0]);
-		menuitem.setAttribute('value',items[i][1]);
+		menuitem.setAttribute('label',label);
+		menuitem.setAttribute('value',value);
+		if (disabled) {
+			menuitem.disabled = true;
+			menuitem.setAttribute('disabled','true');
+		}
 	}
 	menulist.setAttribute('value',dvalue);
 	return menulist;
