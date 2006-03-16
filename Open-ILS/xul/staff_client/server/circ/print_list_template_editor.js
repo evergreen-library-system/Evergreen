@@ -37,43 +37,6 @@ circ.print_list_template_editor.prototype = {
 
 			}
 
-			if (typeof obj.data.print_list_templates == 'undefined') {
-				obj.data.print_list_types = [ 'items', 'holds', 'patrons' ];
-				obj.data.print_list_templates = { 
-					'item_status' : {
-						'type' : 'items',
-						'header' : 'You following items were checked:<hr/><ol>',
-						'line_item' : '<li>%title%\r\nBarcode: %barcode%\r\n',
-						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
-					}, 
-					'items_out' : {
-						'type' : 'items',
-						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following items:<hr/><ol>',
-						'line_item' : '<li>%title%\r\nBarcode: %barcode% Due: %due_date%\r\n',
-						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
-					}, 
-					'checkout' : {
-						'type' : 'items',
-						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou checked out the following items:<hr/><ol>',
-						'line_item' : '<li>%title%\r\nBarcode: %barcode% Due: %due_date%\r\n',
-						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
-					}, 
-					'checkin' : {
-						'type' : 'items',
-						'header' : 'You checked in the following items:<hr/><ol>',
-						'line_item' : '<li>%title%\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
-						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
-					}, 
-					'holds' : {
-						'type' : 'holds',
-						'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following titles on hold:<hr/><ol>',
-						'line_item' : '<li>%title%\r\n',
-						'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
-					} 
-				}; 
-
-				obj.data.stash( 'print_list_templates', 'print_list_types' );
-			}
 
 			obj.controller_init();
 			obj.controller.render(); obj.controller.view.template_name_menu.focus();

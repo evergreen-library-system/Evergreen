@@ -91,9 +91,52 @@ OpenILS.data.prototype = {
 		}
 	},
 
+	'print_list_defaults' : function() {
+		var obj = this;
+		if (typeof obj.print_list_templates == 'undefined') {
+			obj.print_list_types = [ 'items', 'holds', 'patrons' ];
+			obj.print_list_templates = { 
+				'item_status' : {
+					'type' : 'items',
+					'header' : 'You following items were checked:<hr/><ol>',
+					'line_item' : '<li>%title%\r\nBarcode: %barcode%\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
+				}, 
+				'items_out' : {
+					'type' : 'items',
+					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following items:<hr/><ol>',
+					'line_item' : '<li>%title%\r\nBarcode: %barcode% Due: %due_date%\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
+				}, 
+				'checkout' : {
+					'type' : 'items',
+					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou checked out the following items:<hr/><ol>',
+					'line_item' : '<li>%title%\r\nBarcode: %barcode% Due: %due_date%\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
+				}, 
+				'checkin' : {
+					'type' : 'items',
+					'header' : 'You checked in the following items:<hr/><ol>',
+					'line_item' : '<li>%title%\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
+				}, 
+				'holds' : {
+					'type' : 'holds',
+					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following titles on hold:<hr/><ol>',
+					'line_item' : '<li>%title%\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
+				} 
+			}; 
+
+			obj.stash( 'print_list_templates', 'print_list_types' );
+		}
+	},
+
 	'network_retrieve' : function() {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
+
+		try { obj.print_list_defaults(); } catch(E) { alert(E); }
 
 		JSAN.use('util.file');
 		JSAN.use('util.functional');
