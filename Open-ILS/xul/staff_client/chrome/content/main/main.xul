@@ -50,9 +50,6 @@
 
 
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
-	<!--
-	<script type="text/javascript" src="http://dev.gapines.org/xul/server/main/lang.js"/>
-	-->
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/main.js"/>
 	<script>
@@ -88,7 +85,7 @@
 				<rows>
 					<row>
 						<label value="Hostname" control="server_prompt" accesskey="H"/>
-						<textbox id="server_prompt" value="dev.gapines.org"/>
+						<textbox id="server_prompt" value="demo.gapines.org"/>
 					</row>
 					<row>
 						<label value="Status"/>
