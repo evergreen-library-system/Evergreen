@@ -77,6 +77,8 @@ function advWizardRun() {
 		arg[PARAM_RTYPE]	= type;
 	}
 
+	if(!arg[PARAM_TERM]) return;
+
 	goTo(buildOPACLink(arg));
 }
 
@@ -117,6 +119,8 @@ function advRefinedRun() {
 	if(author) { blob.author = {}; blob.author.term = author;}
 	if(subject) { blob.subject = {}; blob.subject.term = subject;}
 	if(series) { blob.series = {}; blob.series.term = series; }
+
+	if( !(title || author|| subject|| series) ) return;
 
 	var arg					= {};
 	arg.page					= MRESULT;
