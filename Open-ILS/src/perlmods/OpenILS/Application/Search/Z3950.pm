@@ -150,6 +150,10 @@ sub z39_search_by_string {
 		preferredRecordSyntax	=> $output, 
 	);
 
+	if(!$conn) {
+		$logger->error("Unable to create Z3950 connection: $hst, $prt, $db, $usr, $pw, $output");
+		return OpenILS::Event->new('UNKNOWN'); # XXX needs to be a real event
+	}
 
 	my $rs = $conn->search( $search );
 	return OpenILS::Event->new('Z3950_SEARCH_FAILED') unless $rs;
