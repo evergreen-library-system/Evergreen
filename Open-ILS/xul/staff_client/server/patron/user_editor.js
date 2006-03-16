@@ -769,8 +769,7 @@ function uEditAddGroupsAndPerms(patron) {
 	uEditSetVal( patron, "claims_returned_count", 
 		$('ue_claims_returned'), 'isnum', 'ue_bad_claims_returned');
 
-	if($('ue_alert_message').value) 
-		uEditSetVal(patron, "alert_message", $('ue_alert_message'));
+	patron.alert_message($('ue_alert_message').value);
 }
 
 
