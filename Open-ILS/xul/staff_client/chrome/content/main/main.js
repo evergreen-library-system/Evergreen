@@ -111,6 +111,10 @@ function main_init() {
 		// XML_HTTP_SERVER will get reset to G.auth.controller.view.server_prompt.value
 
 		/////////////////////////////////////////////////////////////////////////////
+
+		var x = document.getElementById('version_label');
+		x.setAttribute('value','Build ID: ' + '/xul/server/'.split(/\//)[2]);
+
 	} catch(E) {
 		var error = "!! This software has encountered an error.  Please tell your friendly " +
 			"system administrator or software developer the following:\n" + E + '\n';

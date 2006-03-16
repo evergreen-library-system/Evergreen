@@ -74,8 +74,7 @@
 	<deck id="main_deck" flex="1">
 	<groupbox id="main_groupbox" flex="1" style="overflow: auto;">
 		<caption id="main_caption" label="Startup"/>
-		<label value="&staff.auth.version;"/>
-		<label value="Development Version 123"/>
+		<label id="version_label"/>
 		<label value=" "/>
 
 		<groupbox flex="1">

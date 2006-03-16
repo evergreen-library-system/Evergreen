@@ -169,6 +169,7 @@ auth.controller.prototype = {
 		if (!url) {
 			s.setAttribute('value','Please enter a server hostname.');
 			s.setAttribute('style','color: red;');
+			obj.controller.view.server_prompt.disabled = false;
 			return;
 		}
 		try {
