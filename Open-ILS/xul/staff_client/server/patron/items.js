@@ -110,6 +110,26 @@ patron.items.prototype = {
 						['command'],
 						function() {
 							dump(js2JSON(obj.list.dump()) + '\n');
+							try {
+								JSAN.use('patron.util');
+								var params = { 
+									'patron' : patron.util.retrieve_au_via_id(obj.session,obj.patron_id), 
+									'lib' : obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ],
+									'staff' : obj.OpenILS.data.list.au[0],
+									'header' : obj.OpenILS.data.print_list_templates.checkout.header,
+									'line_item' : obj.OpenILS.data.print_list_templates.checkout.line_item,
+									'footer' : obj.OpenILS.data.print_list_templates.checkout.footer,
+									'type' : obj.OpenILS.data.print_list_templates.checkout.type,
+									'list' : obj.list.dump(),
+								};
+								JSAN.use('util.print'); var print = new util.print();
+								print.tree_list( params );
+							} catch(E) {
+								this.error.sdump('D_ERROR','preview: ' + E);
+								alert('preview: ' + E);
+							}
+
+
 						}
 					],
 					'cmd_items_claimed_returned' : [

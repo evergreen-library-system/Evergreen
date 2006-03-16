@@ -79,6 +79,7 @@
 
 		function spawn() {
 			try {
+				JSAN.use('util.sound'); var sound = new util.sound(); sound.good();
 				var tb = document.getElementById('barcode_tb');
 				var barcode = tb.value;
 

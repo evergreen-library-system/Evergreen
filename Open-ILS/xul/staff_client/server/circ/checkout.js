@@ -110,12 +110,12 @@ circ.checkout.prototype = {
 							try {
 								var params = { 
 									'patron' : obj.patron, 
-									'lib' : obj.data.hash.aou[ this.data.list.au[0].ws_ou() ],
+									'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
 									'staff' : obj.data.list.au[0],
 									'header' : obj.data.print_list_templates.checkout.header,
 									'line_item' : obj.data.print_list_templates.checkout.line_item,
 									'footer' : obj.data.print_list_templates.checkout.footer,
-									'type' : 'items',
+									'type' : obj.data.print_list_templates.checkout.type,
 									'list' : obj.list.dump(),
 								};
 								JSAN.use('util.print'); var print = new util.print();
@@ -247,6 +247,7 @@ circ.checkout.prototype = {
 			/* Normal case, proceed with checkout */
 			if (permit.ilsevent == 0) {
 
+				JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
 				params.permit_key = permit.payload;
 				check_out( params );
 

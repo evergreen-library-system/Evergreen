@@ -78,8 +78,27 @@ patron.holds.prototype = {
 					'cmd_holds_print' : [
 						['command'],
 						function() {
-							dump( js2JSON( obj.list.dump() ) + '\n');
-							alert( js2JSON( obj.list.dump() ) + '\n');
+							dump(js2JSON(obj.list.dump()) + '\n');
+							try {
+								JSAN.use('patron.util');
+								var params = { 
+									'patron' : patron.util.retrieve_au_via_id(obj.session,obj.patron_id), 
+									'lib' : obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ],
+									'staff' : obj.OpenILS.data.list.au[0],
+									'header' : obj.OpenILS.data.print_list_templates.holds.header,
+									'line_item' : obj.OpenILS.data.print_list_templates.holds.line_item,
+									'footer' : obj.OpenILS.data.print_list_templates.holds.footer,
+									'type' : obj.OpenILS.data.print_list_templates.holds.type,
+									'list' : obj.list.dump(),
+								};
+								JSAN.use('util.print'); var print = new util.print();
+								print.tree_list( params );
+							} catch(E) {
+								this.error.sdump('D_ERROR','preview: ' + E);
+								alert('preview: ' + E);
+							}
+
+
 						}
 					],
 					'cmd_holds_edit' : [
