@@ -885,7 +885,7 @@ function uEditShowSummary() {
 	var win = window.open(
 		"data:application/xhtml+xml," + window.escape('<?xml version="1.0"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [ <!ENTITY nbsp " "> <!-- calendar needs this entity --> ]> <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude"> <head><title>' + $('ue_summary_window').innerHTML + '</title></head><body>' + serializer.serializeToString(table) + '</body></html>'), 
 		$('ue_summary_window').innerHTML,
-		'chrome,resizable');
+		'chrome,resizable,width=700,height=500');
 	//win.document.body.innerHTML = "";
 	//win.document.body.appendChild(table);
 	ERRORS = "";
