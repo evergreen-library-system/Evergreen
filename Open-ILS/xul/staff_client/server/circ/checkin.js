@@ -143,6 +143,9 @@ circ.checkin.prototype = {
 				//I could override map_row_to_column here
 				}
 			);
+
+			JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
+
 			if (typeof obj.on_checkin == 'function') {
 				obj.on_checkin(checkin);
 			}
