@@ -42,6 +42,8 @@ function rresultCollectIds() {
 			break;
 
 		case RTYPE_MRID :
+		case null :
+		case "" :
 		defaut:
 			var form = (getForm() == "all") ? null : getForm();
 			var req = new Request(FETCH_RIDS, getMrid(), form );
