@@ -52,6 +52,9 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_pre_init() for marc.xul');
 
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+				XML_HTTP_SERVER = data.server_unadorned;
+
 				mw.G = {};
 				mw.G.main_test_variable = 'Hello World';
 				g.cgi = new CGI();

@@ -39,6 +39,9 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for util_browser.xul');
 
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+				XML_HTTP_SERVER = data.server_unadorned;
+
 				g.cgi = new CGI();
 				var name = g.cgi.param('tab_name') || g.cgi.param('name') || null;
 				if (!name) {

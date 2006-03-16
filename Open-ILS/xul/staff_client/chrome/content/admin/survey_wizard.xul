@@ -53,6 +53,8 @@
 				JSAN.use('OpenILS.data'); g.OpenILS = {};
 				g.OpenILS.data = new OpenILS.data(); g.OpenILS.data.init({'via':'stash'});
 
+				XML_HTTP_SERVER = g.OpenILS.data.server_unadorned;
+
 				JSAN.use('util.network');
 				g.network = new util.network();
 

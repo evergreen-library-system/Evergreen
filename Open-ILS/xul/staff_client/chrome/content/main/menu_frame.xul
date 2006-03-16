@@ -63,8 +63,8 @@
 
 				JSAN.use('util.window'); g.window = new util.window();
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+				XML_HTTP_SERVER = g.data.server_unadorned;
 
-				// FIXME - Use workstation ou when we get it instead of staff home_ou
 				document.title = g.window.appshell_name_increment() + ': ' 
 					+ g.data.list.au[0].usrname() + ' (' + g.data.ws_name + '@' 
 					+ g.data.hash.aou[ g.data.list.au[0].ws_ou() ].shortname() + ')';
