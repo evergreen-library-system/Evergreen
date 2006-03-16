@@ -1,6 +1,6 @@
 # ILS/Open-ILS/xul/staff_client/Makefile
 
-export STAFF_CLIENT_BUILD_ID = $$(/bin/date +"%Y%m%d.%H%M%S")
+export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 
 all: build 
 	@echo
@@ -47,6 +47,7 @@ build_dir:
 
 stamp: 
 	@echo
+	@/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo ${STAFF_CLIENT_BUILD_ID} > build/BUILD_ID ) ; fi
 	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning" ; echo "none" > build/BUILD_ID ) ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then sed -i s/^Version=.\*/Version=${STAFF_CLIENT_BUILD_ID}/ build/application.ini ; fi
