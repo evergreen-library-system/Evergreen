@@ -19,7 +19,7 @@ use base qw/asset/;
 __PACKAGE__->table( 'asset_call_number' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/record label creator create_date editor
-				   edit_date record label owning_lib/ );
+				   edit_date record label owning_lib deleted/ );
 
 #-------------------------------------------------------------------------------
 package asset::call_number_note;

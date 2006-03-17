@@ -121,6 +121,7 @@ CREATE TABLE asset.call_number (
 	record		bigint				NOT NULL,
 	owning_lib	INT				NOT NULL,
 	label		TEXT				NOT NULL,
+	deleted		BOOL				NOT NULL DEFAULT FALSE,
 	CONSTRAINT asset_call_number_label_once_per_lib UNIQUE (record, owning_lib, label)
 );
 CREATE INDEX asset_call_number_record_idx ON asset.call_number (record);
@@ -128,6 +129,7 @@ CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
 CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
 CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_number_dewey(label));
 CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (upper(label),id,owning_lib);
+CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
 
 INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
