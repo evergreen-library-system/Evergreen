@@ -20,8 +20,10 @@ function mresultDoSearch() {
 
 	if(getOffset() == 0) {
 		swapCanvas($('loading_alt'));
+		/*
 		searchTimer = new Timer('searchTimer',$('loading_alt_span'));
 		searchTimer.start();
+		*/
 	}
 
 	table = G.ui.result.main_table;
