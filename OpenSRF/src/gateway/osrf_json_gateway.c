@@ -86,7 +86,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	service		= apacheGetFirstParamValue( params, "service" );
 	method		= apacheGetFirstParamValue( params, "method" ); 
 	format		= apacheGetFirstParamValue( params, "format" ); 
-	a_l		= apacheGetFirstParamValue( params, "api_level" ); 
+	a_l			= apacheGetFirstParamValue( params, "api_level" ); 
 	mparams		= apacheGetParamValues( params, "param" ); /* free me */
 
 	if (a_l)
@@ -166,8 +166,16 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 			if (isXML)
 				snprintf( buf, l, "<debug>\"%s : %s\"</debug>", statusname, statustext );
-			else
-				snprintf( buf, l, ",\"debug\":\"%s : %s\"", statusname, statustext );
+			else {
+				char bb[l];
+				bzero(bb, l);
+				snprintf(bb, l,  "%s : %s", statusname, statustext);
+				jsonObject* tmp = jsonNewObject(bb);
+				char* j = jsonObjectToJSON(tmp);
+				snprintf( buf, l, ",\"debug\": %s", j);
+				free(j);
+				jsonObjectFree(tmp);
+			}
 
 			ap_rputs(buf, r);
 
