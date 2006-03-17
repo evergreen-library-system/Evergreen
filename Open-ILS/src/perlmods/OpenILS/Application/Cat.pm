@@ -204,8 +204,10 @@ sub _tcn_exists {
 	if(!$tcn) {return 0;}
 
 	my $req = $session->request(      
-		"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic",
-		$tcn );
+		"open-ils.storage.direct.biblio.record_entry.search_where.atomic",
+		{ tcn_value => $tcn, deleted => 'f' } );
+		#"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic",
+
 	my $recs = $req->gather(1);
 
 	if($recs and $recs->[0]) {
@@ -555,8 +557,9 @@ sub orgs_for_title {
 
 	my $vols = $apputils->simple_scalar_request(
 		"open-ils.storage",
-		"open-ils.storage.direct.asset.call_number.search.record.atomic",
-		$record_id );
+		"open-ils.storage.direct.asset.call_number.search_where.atomic",
+		{ record => $record_id, deleted => 'f' });
+		#"open-ils.storage.direct.asset.call_number.search.record.atomic",
 
 	my $orgs = { map {$_->owning_lib => 1 } @$vols };
 	return [ keys %$orgs ];
@@ -623,11 +626,14 @@ sub retrieve_copies {
 sub _build_volume_list {
 	my $search_hash = shift;
 
+	$search_hash->{deleted} = 'f';
+
 	my	$session = OpenSRF::AppSession->create( "open-ils.storage" );
 	
 
 	my $request = $session->request( 
 			"open-ils.storage.direct.asset.call_number.search.atomic", $search_hash );
+			#"open-ils.storage.direct.asset.call_number.search.atomic", $search_hash );
 
 	my $vols = $request->gather(1);
 	my @volumes;
@@ -685,10 +691,10 @@ sub volume_tree_fleshed_update {
 
 		if( $volume->isdeleted) {
 			my $status = _delete_volume($session, $volume, $user_obj);
-			if(!$status) {
-				throw OpenSRF::EX::ERROR
-					("Volume delete failed for volume " . $volume->id);
-			}
+			#if(!$status) {
+				#throw OpenSRF::EX::ERROR
+					#("Volume delete failed for volume " . $volume->id);
+			#}
 			if(UNIVERSAL::isa($status, "Fieldmapper::perm_ex")) { return $status; }
 
 		} elsif( $volume->isnew ) {

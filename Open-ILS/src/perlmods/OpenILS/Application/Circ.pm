@@ -446,7 +446,9 @@ sub note_batch {
 
 	my @copies;
 	my $cns = $U->storagereq(
-		'open-ils.storage.id_list.asset.call_number.search.record.atomic', $titleid );
+		'open-ils.storage.id_list.asset.call_number.search_where.atomic', 
+		{ record => $titleid, deleted => 'f' } );
+		#'open-ils.storage.id_list.asset.call_number.search.record.atomic', $titleid );
 
 	for my $c (@$cns) {
 		my $copyids = $U->storagereq(

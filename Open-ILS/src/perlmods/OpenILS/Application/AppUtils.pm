@@ -930,7 +930,9 @@ sub fetch_call_numbers_by_title {
 	my( $self, $titleid ) = @_;
 	$logger->info("Fetching call numbers by title $titleid");
 	return $self->storagereq(
-		'open-ils.storage.direct.asset.call_number.search.record.atomic', $titleid);
+		'open-ils.storage.direct.asset.call_number.search_where.atomic', 
+		{ record => $titleid, deleted => 'f' });
+		#'open-ils.storage.direct.asset.call_number.search.record.atomic', $titleid);
 }
 
 sub fetch_copies_by_call_number {

@@ -177,7 +177,9 @@ sub biblio_search_tcn {
 
 	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
 	my $request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic", $tcn );
+			"open-ils.storage.direct.biblio.record_entry.search_where.atomic", 
+			{ tcn_value => $tcn, deleted => 'f' } );
+			#"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic", $tcn );
 	my $record_entry = $request->gather(1);
 
 	my @ids;
