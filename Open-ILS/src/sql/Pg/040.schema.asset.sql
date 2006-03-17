@@ -38,7 +38,8 @@ CREATE TABLE asset.copy (
 	circ_as_type	TEXT,
 	dummy_title	TEXT,
 	dummy_author	TEXT,
-	opac_visible	BOOL				NOT NULL DEFAULT TRUE
+	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
+	deleted		BOOL				NOT NULL DEFAULT FALSE
 );
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number) WHERE status = 0;
