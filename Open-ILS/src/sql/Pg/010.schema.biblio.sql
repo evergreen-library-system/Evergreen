@@ -26,6 +26,8 @@ CREATE TABLE biblio.record_entry (
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_source,tcn_value) WHERE deleted IS FALSE;
+CREATE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id;
+
 
 CREATE TABLE biblio.record_note (
 	id		BIGSERIAL	PRIMARY KEY,

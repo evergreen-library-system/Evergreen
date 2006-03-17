@@ -43,6 +43,7 @@ CREATE TABLE asset.copy (
 );
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number) WHERE status = 0;
+CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
 
 CREATE TABLE asset.copy_transparency (
 	id		SERIAL		PRIMARY KEY,
