@@ -275,24 +275,24 @@ function uEditDrawUser(p) {
 	var op = patron.other_phone();
 
 	if(dp) {
-		var daynums = dp.split('-');
-		$('ue_day_phone_area').value		= daynums[0];
-		$('ue_day_phone_prefix').value	= daynums[1];
-		$('ue_day_phone_suffix').value	= daynums[2];
+		var daynums = String(dp).split('-');
+		$('ue_day_phone_area').value		= daynums[0] || '';
+		$('ue_day_phone_prefix').value	= daynums[1] || '';
+		$('ue_day_phone_suffix').value	= daynums[2] || '';
 	}
 
 	if(np) {
-		var nightnums = np.split('-');
-		$('ue_night_phone_area').value	= nightnums[0];
-		$('ue_night_phone_prefix').value	= nightnums[1];
-		$('ue_night_phone_suffix').value	= nightnums[2];
+		var nightnums = String(np).split('-');
+		$('ue_night_phone_area').value	= nightnums[0] || '';
+		$('ue_night_phone_prefix').value	= nightnums[1] || '';
+		$('ue_night_phone_suffix').value	= nightnums[2] || '';
 	}
 
 	if(op) {
-		var othernums = op.split('-');
-		$('ue_other_phone_area').value	= othernums[0];
-		$('ue_other_phone_prefix').value	= othernums[1];
-		$('ue_other_phone_suffix').value	= othernums[2];
+		var othernums = String(op).split('-');
+		$('ue_other_phone_area').value	= othernums[0] || '';
+		$('ue_other_phone_prefix').value	= othernums[1] || '';
+		$('ue_other_phone_suffix').value	= othernums[2] || '';
 	}
 
 
