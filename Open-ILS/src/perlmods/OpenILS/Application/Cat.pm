@@ -563,6 +563,14 @@ sub orgs_for_title {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_copies_",
+	api_name	=> "open-ils.cat.asset.copy_tree.retrieve_");
+
+sub retrieve_copies_ {
+	my( $self, $conn, $authtoken, $docid, $orgs ) = @_;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
@@ -628,7 +636,9 @@ sub _build_volume_list {
 
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
 		my $creq = $session->request(
-			"open-ils.storage.direct.asset.copy.search.call_number.atomic", $volume->id );
+			"open-ils.storage.direct.asset.copy.search_where.atomic", 
+			{ call_number => $volume->id , deleted => 'f' });
+			#"open-ils.storage.direct.asset.copy.search.call_number.atomic", $volume->id );
 
 		my $copies = $creq->gather(1);
 
@@ -741,8 +751,10 @@ sub _delete_volume {
 	warn "Deleting volume " . $volume->id . "\n";
 
 	my $copies = $session->request(
-		"open-ils.storage.direct.asset.copy.search.call_number.atomic",
-		$volume->id )->gather(1);
+		"open-ils.storage.direct.asset.copy.search_where.atomic", 
+		{ call_number => $volume->id, deleted => 'f' } )->gather(1);
+		#"open-ils.storage.direct.asset.copy.search.call_number.atomic",
+
 	if(@$copies) {
 		throw OpenSRF::EX::ERROR 
 			("Cannot remove volume with copies attached");

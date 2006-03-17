@@ -450,7 +450,8 @@ sub note_batch {
 
 	for my $c (@$cns) {
 		my $copyids = $U->storagereq(
-			'open-ils.storage.id_list.asset.copy.search.call_number.atomic', $c);
+			#'open-ils.storage.id_list.asset.copy.search.call_number.atomic', $c);
+			'open-ils.storage.id_list.asset.copy.search_where.atomic', { call_number => $c, deleted => 'f' });
 		push(@copies, @$copyids);
 	}
 

@@ -519,7 +519,8 @@ sub fetch_copy_by_barcode {
 	$logger->debug("Fetching copy by barcode $barcode from storage");
 
 	$copy = $self->simplereq( 'open-ils.storage',
-		'open-ils.storage.direct.asset.copy.search.barcode', $barcode );
+		'open-ils.storage.direct.asset.copy.search_where', { barcode => $barcode, deleted => 'f'} );
+		#'open-ils.storage.direct.asset.copy.search.barcode', $barcode );
 
 	$evt = OpenILS::Event->new('COPY_NOT_FOUND', barcode => $barcode) unless $copy;
 
@@ -936,7 +937,8 @@ sub fetch_copies_by_call_number {
 	my( $self, $cnid ) = @_;
 	$logger->info("Fetching copies by call number $cnid");
 	return $self->storagereq(
-		'open-ils.storage.direct.asset.copy.search.call_number.atomic', $cnid );
+		'open-ils.storage.direct.asset.copy.search_where.atomic', { call_number => $cnid, deleted => 'f' } );
+		#'open-ils.storage.direct.asset.copy.search.call_number.atomic', $cnid );
 }
 
 1;
