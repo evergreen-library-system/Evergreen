@@ -92,6 +92,7 @@ patron.search_result.prototype = {
 	},
 
 	'search' : function(query) {
+		var obj = this;
 		var search_hash = {};
 		for (var i in query) {
 			switch( i ) {
@@ -123,11 +124,24 @@ patron.search_result.prototype = {
 				api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
 				[ this.session, search_hash ]
 			);
+			//this.list.append( { 'retrieve_id' : results[i], 'row' : {} } );
+			var funcs = [];
+
+				function gen_func(r) {
+					return function() {
+						obj.list.append( { 'retrieve_id' : r, 'row' : {} } );
+					}
+				}
+
 			for (var i = 0; i < results.length; i++) {
-				this.list.append( { 'retrieve_id' : results[i], 'row' : {} } );
+				funcs.push( gen_func(results[i]) );
 			}
+			JSAN.use('util.exec'); var exec = new util.exec();
+			exec.chain( funcs );
+
 		} catch(E) {
 			this.error.sdump('D_ERROR','patron.search_result.search: ' + js2JSON(E));
+			alert(E);
 		}
 	}
 
