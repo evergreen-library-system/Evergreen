@@ -1011,7 +1011,7 @@ sub postfilter_search_class_fts {
 	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
 
 	my $SQLstring = join('%',$fts->words);
-	my $REstring = join('\\s+',$fts->words);
+	my $REstring = '^' . join('\s+',$fts->words) . '\W*$';
 	my $first_word = ($fts->words)[0].'%';
 
 	my $fts_where = $fts->sql_where_clause;
@@ -1021,12 +1021,14 @@ sub postfilter_search_class_fts {
 	$bonus{'metabib::keyword_field_entry'} = [ { 'CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END' => $SQLstring } ];
 	$bonus{'metabib::title_field_entry'} =
 		$bonus{'metabib::series_field_entry'} = [
-			[ { 'CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END' => $first_word },
-			  { 'CASE WHEN f.value ~* ? THEN 2 ELSE 1 END' => $REstring },
+			{ 'CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END' => $first_word },
+			{ 'CASE WHEN f.value ~* ? THEN 2 ELSE 1 END' => $REstring },
 			@{ $bonus{'metabib::keyword_field_entry'} }
 		];
 
-	my $bonus_list = join '*', map { keys %$_ } @{ $bonus{$class} };
+	my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$class} };
+	$bonus_list ||= '1';
+
 	my @bonus_values = map { values %$_ } @{ $bonus{$class} };
 
 	my $relevance = join(' + ', @fts_ranks);
