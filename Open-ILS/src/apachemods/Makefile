@@ -1,9 +1,9 @@
 
 LDLIBS	+= -lxml2 -lopensrf -lxslt
 
-all:	mod_xmlbuilder.so mod_ils_rest_gateway.so
+all:	mod_xmlbuilder.so mod_ils_rest_gateway.so mod_xmlent.so
 
-install:	mod_xmlbuilder-install mod_ils_rest_gateway-install libfieldmapper-install
+install:	mod_xmlbuilder-install mod_ils_rest_gateway-install libfieldmapper-install mod_xmlent-install
 
 
 mod_xmlbuilder.o: mod_xmlbuilder.h mod_xmlbuilder.c
@@ -16,6 +16,12 @@ ils_rest_gateway.o:	mod_rest_gateway.c mod_rest_gateway.h
 
 fieldmapper_lookup.c:	
 	./fieldmapper_lookup-gen.pl fieldmapper_lookup.c
+
+
+mod_xmlent.o:	mod_xmlent.c
+mod_xmlent.so: mod_xmlent.o
+	@echo $@
+	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 mod_xmlent.o -lexpat -o $@
 
 
 # ------------------------------------------------------
@@ -61,6 +67,9 @@ mod_ils_rest_gateway-install:
 
 mod_xmlbuilder-install:
 	$(APXS2) -i -a -n xmlbuilder mod_xmlbuilder.so
+
+mod_xmlent-install:
+	$(APXS2) -i -a -n xmlent mod_xmlent.so
 
 
 clean:

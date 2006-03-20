@@ -8,11 +8,11 @@ export INCDIR = "$(INCLUDEDIR)/openils/"
 
 export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
-all: mod_xmlbuilder mod_ils_rest_gateway c_apps client-xul
+all: mod_xmlbuilder mod_ils_rest_gateway c_apps client-xul mod_xmlent
 
 install:	perl-install web-install server-xul string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install 
 
-web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  mod_xmlent-install
 
 circ_rules-install:
 	@echo $@
@@ -31,6 +31,10 @@ mod_ils_rest_gateway-install:
 	make -C apachemods libfieldmapper-install
 	make -C apachemods mod_ils_rest_gateway-install
 
+mod_xmlent:
+	@echo $@
+	make -C apachemods mod_xmlent.so
+
 mod_xmlbuilder:
 	@echo $@
 	make -C apachemods mod_xmlbuilder.so
@@ -46,6 +50,11 @@ oils_cgi-install:
 mod_xmlbuilder-install:
 	@echo $@
 	make -C apachemods mod_xmlbuilder-install
+
+mod_xmlent-install:
+	@echo $@
+	make -C apachemods mod_xmlent-install
+
 
 client-xul:
 	@echo $@

@@ -23,6 +23,12 @@
 #define MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT "text/html"
 #define MODXMLENT_CONFIG_STRIP_PI "XMLEntStripPI"  
 #define MODXMLENT_CONFIG_STRIP_PI_DEFAULT "yes" 
+#define MODXMLENT_CONFIG_DOCTYPE "XMLEntDoctype"
+/*
+#define MODXMLENT_CONFIG_STRIP_DOCTYPE \
+	"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \
+	   "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\""
+		*/
 
 module AP_MODULE_DECLARE_DATA xmlent_module;
 
@@ -34,9 +40,10 @@ typedef struct {
 
 /* our config data */
 typedef struct {
-	int stripComments;  /* should we strip comments on the way out? */
+	int stripComments;	/* should we strip comments on the way out? */
 	int stripPI;			/* should we strip processing instructions on the way out? */
-	char* contentType; /* the content type used to server pages */
+	char* contentType;	/* the content type used to server pages */
+	char* doctype;			/* the doctype header to send before any other data */
 } xmlEntConfig;
 
 
@@ -63,6 +70,13 @@ static const char* xmlEntSetStripComments(cmd_parms *params, void *cfg, const ch
 	return NULL;
 }
 
+/* Get the user defined doctype from the config */
+static const char* xmlEntSetDoctype(cmd_parms *params, void *cfg, const char *arg) {
+	xmlEntConfig* config = (xmlEntConfig*) cfg;
+	config->doctype = (char*) arg;
+	return NULL;
+}
+
 /* Tell apache how to set our config variables */
 static const command_rec xmlEntCommands[] = {
 	AP_INIT_TAKE1( MODXMLENT_CONFIG_STRIP_COMMENTS, 
@@ -71,6 +85,8 @@ static const command_rec xmlEntCommands[] = {
 			xmlEntSetContentType, NULL, ACCESS_CONF, "XMLENT Content Type"),
 	AP_INIT_TAKE1( MODXMLENT_CONFIG_STRIP_PI,
 			xmlEntSetStripPI, NULL, ACCESS_CONF, "XMLENT Strip XML Processing Instructions"),
+	AP_INIT_TAKE1( MODXMLENT_CONFIG_DOCTYPE,
+			xmlEntSetDoctype, NULL, ACCESS_CONF, "XMLENT Doctype Declaration"),
 	{NULL}
 };
 
@@ -85,6 +101,7 @@ static void* xmlEntCreateDirConfig( apr_pool_t* p, char* dir ) {
 		(MODXMLENT_CONFIG_STRIP_PI_DEFAULT && 
 		 !strcasecmp(MODXMLENT_CONFIG_STRIP_PI_DEFAULT, "yes")) ? 1 : 0;
 	config->contentType	= MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT;
+	config->doctype = NULL;
 	return (void*) config;
 }
 
@@ -149,10 +166,6 @@ static void XMLCALL charHandler( void* userData, const XML_Char* s, int len ) {
 }
 
 static void XMLCALL handlePI( void* userData, const XML_Char* target, const XML_Char* data) {
-	/*
-	fprintf(stderr, "target=%s : data=%s\n", target, data);
-	fflush(stderr);
-	*/
 	ap_filter_t* filter = (ap_filter_t*) userData;
 	_fwrite(filter, "<?%s %s?>", target, data);
 }
@@ -185,9 +198,12 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 	/* set the content type based on the config */
 	ap_set_content_type(f->r, config->contentType);
 
+
 	/* create the XML parser */
+	int firstrun = 0;
 	if( parser == NULL ) {
-		parser = XML_ParserCreate(NULL);
+		firstrun = 1;
+		parser = XML_ParserCreate("UTF-8");
 		XML_SetUserData(parser, f);
 		XML_SetElementHandler(parser, startElement, endElement);
 		XML_SetCharacterDataHandler(parser, charHandler);
@@ -201,6 +217,18 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 		ctx->brigade = apr_brigade_create( pool, f->c->bucket_alloc );
 		ctx->parser = parser;
 	}
+
+
+	if(firstrun) { /* we haven't started writing the data to the stream yet */
+
+		/* go ahead and write the doctype out if we have one defined */
+		if(config->doctype) {
+			ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 
+					0, f->r, "XMLENT DOCTYPE => %s", config->doctype);
+			_fwrite(f, "%s\n\n", config->doctype);
+		}
+	}
+
 
 	/* cycle through the buckets in the brigade */
 	while (!APR_BRIGADE_EMPTY(brigade)) {
@@ -262,12 +290,12 @@ static void xmlEntRegisterHook(apr_pool_t *pool) {
 /* Define the module data */
 module AP_MODULE_DECLARE_DATA xmlent_module = {
   STANDARD20_MODULE_STUFF,
-  xmlEntCreateDirConfig,			/* dir config creater */
-  NULL,  /*xmlEntMergeDirConfig,*/       /* dir merger --- default is to override */
-  NULL,					         /* server config */
-  NULL,                       /* merge server config */
-  xmlEntCommands,             /* command apr_table_t */
-  xmlEntRegisterHook				/* register hook */
+  xmlEntCreateDirConfig,	/* dir config creater */
+  NULL,							/* dir merger --- default is to override */
+  NULL,					      /* server config */
+  NULL,                    /* merge server config */
+  xmlEntCommands,          /* command apr_table_t */
+  xmlEntRegisterHook			/* register hook */
 };
 
 
