@@ -93,7 +93,6 @@ To-do list:
 
 	<xsl:template match="atom:feed | rss/channel | rdf:RDF">
 		<xsl:variable name="language" select="(@xml:lang | language)[1]" />
-		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet type="text/xsl" href="</xsl:text><xsl:value-of select="$base_dir" /><xsl:text disable-output-escaping="yes">/html_xsl.xml"?&gt;</xsl:text>
 		<html xml:lang="{$language}" lang="{$language}">
 			<xsl:variable name="query" select="opensearch:Query[@role='request' and @searchTerms][1]/@searchTerms" />
 			<xsl:variable name="statedtitle" select="(atom:title | title | //rss1:channel/rss1:title | //rss9:channel/rss9:title)[1]" />
