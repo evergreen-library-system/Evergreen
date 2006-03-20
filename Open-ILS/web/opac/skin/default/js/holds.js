@@ -177,7 +177,7 @@ function holdsBuildOrgSelector(node) {
 	var type = findOrgType(node.ou_type());
 	var indent = type.depth() - 1;
 	var opt = setSelectorVal( selector, index, node.name(), node.id(), null, indent );
-	if(!type.can_have_vols()) opt.disabled = true;
+	if(!type.can_have_users()) opt.disabled = true;
 	
 	if( node.id() == holdRecipient.home_ou() ) {
 		selector.selectedIndex = index;
