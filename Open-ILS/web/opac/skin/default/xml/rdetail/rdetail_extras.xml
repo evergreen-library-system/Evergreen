@@ -45,6 +45,12 @@
 						class='classic_link'>MARC Record</a>
 				</td>
 
+				<td id='rdetail_cn_details_link' class='hide_me rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("cn_details");' 
+						class='classic_link'>Call Number Details</a>
+				</td>
+
 
 			</tr>
 		</thead>
@@ -80,6 +86,7 @@
 		</div>
 
 		<!--#include virtual="rdetail_notes.xml"-->
+		<!--#include virtual="rdetail_cn_details.xml"-->
 
 	</div>
 </div>

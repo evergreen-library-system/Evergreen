@@ -195,7 +195,7 @@ var rdetailTocFetched		= false;
 var rdetailReviewFetched	= false;
 var rdetailMarcFetched		= false;
 
-function rdetailShowExtra(type) {
+function rdetailShowExtra(type, args) {
 
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
@@ -254,6 +254,63 @@ function rdetailShowExtra(type) {
 		case 'notes':
 			unHideMe($('rdetail_notes_div'));
 			break;
+
+		case 'cn_details':
+			unHideMe($('rdetail_cn_details_div'));
+			unHideMe($('rdetail_cn_details_link'));
+			rdetailShowCNDetails(args);
+			break;
+
+
+	}
+}
+
+var rdetailCNDetailsRow;
+function rdetailShowCNDetails(args) {
+	$('rdetail_cn_details_cn').appendChild(text(args.cn));
+	$('rdetail_cn_details_owner').appendChild(text(findOrgUnit(args.org).name()));
+	var req = new Request(FETCH_VOLUME_BY_INFO, args.cn, record.doc_id(), args.org);
+	req.callback(rdetailShowCNDetails2);
+	req.send();
+}
+
+function rdetailShowCNDetails2(r) {
+	var cn = r.getResultObject();
+	var req = new Request(FETCH_COPIES_FROM_VOLUME, cn.id());
+	req.request._cn = cn;
+	req.callback(rdetailShowCNDetails3);
+	req.send();
+}
+
+function rdetailShowCNDetails3(r) {
+	var copies = r.getResultObject();
+	var cn = r._cn;
+	var tbody = $('rdetail_cn_copies_tbody');
+	if(!rdetailCNDetailsRow)
+		rdetailCNDetailsRow = tbody.removeChild($('rdetail_cn_copies_row'));
+
+	for( var i = 0; i != copies.length; i++ ) {
+		var row = rdetailCNDetailsRow.cloneNode(true);
+		var copyid = copies[i];
+		var req = new Request(FETCH_COPY, copyid);
+		req.callback(rdetailShowCNCopy);
+		req.request._cn = cn;
+		req.request._tbody = tbody;
+		req.request._row = row;
+		req.send();
+		tbody.appendChild(row);
+	}
+}
+
+function rdetailShowCNCopy(r) {
+	var copy = r.getResultObject();
+	var row = r._row;
+	$n(row, 'barcode').appendChild(text(copy.barcode()));
+
+	for( i = 0; i < cp_statuses.length; i++ ) {
+		var c = cp_statuses[i];
+		if( c.id() == copy.status() )
+			$n(row, 'status').appendChild(text(c.name()));
 	}
 }
 
@@ -428,7 +485,7 @@ function _rdetailBuildInfoRows(r) {
 			}
 		}
 		rdetailSetPath( thisOrg, isLocal );
-		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal );
+		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg );
 
 		if( i == summary.length - 1 && !defaultCN) defaultCN = arr[1];
 	}
@@ -484,7 +541,7 @@ function rdetailDrawNotes(r) {
 	if(found) unHideMe($('rdetail_viewnotes_link'));
 }
 
-function rdetailBuildBrowseInfo(row, cn, local) {
+function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 	/* used for building the shelf browser */
 	if(local) {
 		var cache = callnumberCache[cn];
@@ -494,8 +551,15 @@ function rdetailBuildBrowseInfo(row, cn, local) {
 
 	var depth = getDepth();
 	if( !local ) depth = findOrgDepth(globalOrgTree);
+
+	/*
 	var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");' }, cn);
+	*/
+
+	var a = elem("a", {href:'javascript:rdetailShowExtra('+
+		'"cn_details", {cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'"});' }, cn);
 	addCSSClass(a, 'classic_link');
+
 	findNodeByName( row, config.names.rdetail.cn_cell ).appendChild(a);
 }
 

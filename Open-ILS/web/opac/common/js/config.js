@@ -288,6 +288,8 @@ var FETCH_COPY						= 'open-ils.search:open-ils.search.asset.copy.retrieve';
 var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible';
 var UPDATE_HOLD					= 'open-ils.circ:open-ils.circ.hold.update';
 var FETCH_BIBLIO_NOTES			= 'open-ils.circ:open-ils.circ.biblio_notes.public.batch.retrieve';
+var FETCH_COPIES_FROM_VOLUME	= 'open-ils.search:open-ils.search.copies_by_call_number.retrieve';
+var FETCH_VOLUME_BY_INFO		= 'open-ils.search:open-ils.search.call_number.retrieve_by_info'; /* XXX staff method? */
 /* ---------------------------------------------------------------------------- */
 
 

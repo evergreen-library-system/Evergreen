@@ -950,6 +950,42 @@ sub fetch_cn {
 	return $cn;
 }
 
+__PACKAGE__->register_method (
+	method		=> "fetch_copy_by_cn",
+	api_name		=> 'open-ils.search.copies_by_call_number.retrieve',
+	signature	=> q/
+		Returns an array of copy id's by callnumber id
+		@param cnid The callnumber id
+		@return An array of copy ids
+	/
+);
+
+sub fetch_copy_by_cn {
+	my( $self, $conn, $cnid ) = @_;
+	return $U->storagereq(
+		'open-ils.storage.id_list.asset.copy.search_where.atomic', 
+		{ call_number => $cnid, deleted => 'f' } );
+}
+
+__PACKAGE__->register_method (
+	method		=> 'fetch_cn_by_info',
+	api_name		=> 'open-ils.search.call_number.retrieve_by_info',
+	signature	=> q/
+		@param label The callnumber label
+		@param record The record the cn is attached to
+		@param org The owning library of the cn
+		@return The callnumber object
+	/
+);
+
+sub fetch_cn_by_info {
+	my( $self, $conn, $label, $record, $org ) = @_;
+	return $U->storagereq(
+		'open-ils.storage.direct.asset.call_number.search_where',
+		{ label => $label, record => $record, owning_lib => $org, deleted => 'f' });
+}
+		
+
 
 
 
