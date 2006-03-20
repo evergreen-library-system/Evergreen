@@ -1,4 +1,59 @@
-<!ENTITY opac.advanced.wizard.title "Advanced Search">
+<!--	================================================================= 
+		Some generic stuff 
+		================================================================= -->
+<!ENTITY lang.version "remote v1">
+<!ENTITY lang.description "English">
+<!ENTITY lang.author "PINES">
+<!ENTITY common.title "Title">
+<!ENTITY common.author "Author">
+<!ENTITY common.subject "Subject">
+<!ENTITY common.series "Series">
+<!ENTITY common.keyword "Keyword">
+<!ENTITY common.type "Search Type">
+<!ENTITY common.isbn "ISBN">
+<!ENTITY common.format "Format">
+<!ENTITY common.login "Login">
+<!ENTITY common.logout "Log Out">
+<!ENTITY common.at "at">
+<!ENTITY common.of "of">
+<!ENTITY common.cancel "Cancel">
+<!ENTITY common.library "Library">
+<!ENTITY common.username "Username">
+<!ENTITY common.password "Password">
+<!ENTITY common.submit "Submit">
+<!ENTITY common.and "and">
+<!ENTITY common.user_not_found "User not found"><!ENTITY opac.advanced.wizard.title "Advanced Search">
+<!ENTITY common.nowSearching "Now searching ">
+<!ENTITY common.ofAtLeast " of at least ">
+<!ENTITY common.relevancy "Match Score: ">
+<!ENTITY common.tips "Tips:">
+<!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
+<!ENTITY common.tips.tip2 "If you don't find what you want try expanding your search using the range selector at the right of the search bar">
+<!ENTITY common.org.openAll "Expand All">
+<!ENTITY common.org.closeAll "Close All">
+<!ENTITY common.org.cancel "Cancel">
+<!ENTITY common.org.loading "Loading library selector...">
+<!ENTITY common.org.note "Tip:">
+<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a section.">
+<!ENTITY opac.login.login "Login">
+
+
+<!--	================================================================= 
+		Events and Permissions 
+		================================================================= -->
+<!ENTITY ilsevent.0 "Operation Succeeded">
+<!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
+<!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
+<!ENTITY ilsevent.1002 "User was not found in the database">
+<!ENTITY ilsevent.1200 "The given username already exists in the database">
+<!ENTITY ilsevent.5000 "Permission Denied">
+<!ENTITY ilsperm.CREATE_HOLD "User is not allowed to create holds for other users at this location">
+
+
+
+<!--	================================================================= 
+		Advanced Search Page 
+		================================================================= -->
 <!ENTITY opac.advanced.wizard.contains "Selected field contains the following words">
 <!ENTITY opac.advanced.wizard.nocontains "Selected field does <u>not</u> contain the following words">
 <!ENTITY opac.advanced.wizard.exact "Selected field contains the <u>exact</u> phrase">
@@ -21,20 +76,13 @@
 <!ENTITY opac.advanced.quick.title "Quick Search">
 <!ENTITY opac.advanced.quick.isbn "ISBN">
 <!ENTITY opac.advanced.quick.issn "ISSN">
-<!-- Events and Permissions -->
-<!ENTITY ilsevent.0 "Operation Succeeded">
-<!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
-<!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
-<!ENTITY ilsevent.1002 "User was not found in the database">
-<!ENTITY ilsevent.1200 "The given username already exists in the database">
-<!ENTITY ilsevent.5000 "Permission Denied">
-<!ENTITY ilsperm.CREATE_HOLD "User is not allowed to create holds for other users at this location">
 
 
-<!ENTITY opac.session_expiring 
-	"Your login session will timeout in 1 minute unless there is activity.">
+<!-- ================================================================= 
+		More generic stuff 
+		================================================================= -->
+<!ENTITY opac.session_expiring "Your login session will timeout in 1 minute unless there is activity.">
 <!ENTITY opac.session_expired "Your login session has expired">
-
 <!ENTITY navigate.home "Home">
 <!ENTITY navigate.home.title "Go to the Home page">
 <!ENTITY opac.navigate.advanced "Advanced Search">
@@ -53,24 +101,18 @@
 <!ENTITY navigate.titleGroupResults "My Search Results">
 <!ENTITY navigate.titleResults "My Title Results">
 
-<!ENTITY common.nowSearching "Now searching ">
-<!ENTITY common.ofAtLeast " of at least ">
-<!ENTITY common.relevancy "Match Score: ">
-<!ENTITY common.tips "Tips:">
-<!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
-<!ENTITY common.tips.tip2 "If you don't find what you want try expanding your search using the range selector at the right of the search bar">
-<!ENTITY common.org.openAll "Expand All">
-<!ENTITY common.org.closeAll "Close All">
-<!ENTITY common.org.cancel "Cancel">
-<!ENTITY common.org.loading "Loading library selector...">
-<!ENTITY common.org.note "Tip:">
-<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a section.">
 
+<!--	================================================================= 
+		Sidebar 
+		================================================================= -->
 <!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">
 <!ENTITY sidebar.relevantAuthors.headerLabel "Relevant Authors">
 <!ENTITY sidebar.relevantSeries.headerLabel "Relevant Series">
 <!ENTITY sidebar.relevantReviews.headerLabel "Reviews">
 
+<!--	================================================================= 
+		Search formats
+		================================================================= -->
 <!ENTITY opac.search.books "Books">
 <!ENTITY opac.search.allFormats "All Formats">
 <!ENTITY opac.search.largePrint "Large Print Books">
@@ -81,6 +123,9 @@
 <!ENTITY opac.search.nowSearching "Now Searching">
 
 
+<!--	================================================================= 
+		Page Titles
+		================================================================= -->
 <!ENTITY opac.title.home "Evergreen Home">
 <!ENTITY opac.title.mresult "Evergreen Title Groups">
 <!ENTITY opac.title.rresult "Evergreen Titles">
@@ -89,7 +134,8 @@
 <!ENTITY opac.title.advanced "Evergreen Advanced Search">
 <!ENTITY opac.title.reqitems "Evergreen Request Items">
 <!ENTITY opac.title.cnbrowse "Evergreen Call Number Browse">
-<!ENTITY opac.login.login "Login">
+
+
 <!ENTITY opac.holds.forMe "Place this hold for myself">
 <!ENTITY opac.holds.xulRecipient "Enter recipient barcode">
 <!ENTITY opac.holds.recipient "Recipient">

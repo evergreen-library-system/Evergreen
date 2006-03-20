@@ -3,41 +3,14 @@
 <!-- Loads the environment -->
 <!--#include virtual="setenv.xml"-->
 
-<!--#if expr="$safari || !$mozilla"-->
-<!-- Tells the browser to translate the page as HTML --> 
-<?xml-stylesheet type="text/xsl" href="html_xsl.xml"?> 
-<!--#else-->
-<?xml-stylesheet type="text/xsl" href="html_xsl.xml"?> 
-<!--#endif-->
-
-
 <!DOCTYPE html PUBLIC 
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-
-	<!--#include virtual="/opac/locale/${locale}/common.dtd"-->
-	<!--#include virtual="/opac/locale/${locale}/opac_common.dtd"-->
-
-	<!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
-		<!--#include virtual="/opac/locale/${locale}/opac_result.dtd"-->
-	<!--#endif-->
-
-	<!--#if expr="$OILS_PAGE='rdetail.xml'"-->
-		<!--#include virtual="/opac/locale/${locale}/opac_rdetail.dtd"-->
-	<!--#endif-->
-
-	<!--#if expr="$OILS_PAGE='advanced.xml'"-->
-		<!--#include virtual="/opac/locale/${locale}/opac_advanced.dtd"-->
-	<!--#endif-->
-
-	<!--#if expr="$OILS_PAGE!='index.xml'"-->
-		<!--#include virtual="/opac/locale/${locale}/opac_holds.dtd"-->
-	<!--#endif-->
-
+	<!--#include virtual="/opac/locale/${locale}/opac.dtd"-->
 ]>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns='http://www.w3.org/1999/xhtml'>
 	<!--#include virtual="header.xml"-->
 	<!--#if expr="$OILS_PAGE='index.xml'"-->
 		<!--#include virtual="home/index_body.xml"-->
