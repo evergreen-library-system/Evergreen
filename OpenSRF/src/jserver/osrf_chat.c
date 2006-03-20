@@ -216,7 +216,7 @@ void osrfChatHandleData( void* cs,
 
 	if(node) {
 		if( (osrfChatPushData( server, node, data ) == -1) ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Node at socket %d received bad XML, disconnecting...", sockid );
+			osrfLogWarning( OSRF_LOG_MARK, "Node at socket %d received bad XML [%s], disconnecting...", sockid, data );
 			osrfChatSendRaw(  node, OSRF_CHAT_PARSE_ERROR );
 			osrfChatRemoveNode( server, node );
 		}
