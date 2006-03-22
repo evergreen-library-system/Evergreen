@@ -1313,6 +1313,8 @@ sub postfilter_search_multi_class_fts {
 	my $join_table_list = '';
 	my @rank_list;
 
+	my @bonus_lists;
+	my @bonus_values;
 	my $prev_search_class;
 	my $curr_search_class;
 	for my $search_class (sort keys %{$args{searches}}) {
@@ -1333,6 +1335,22 @@ sub postfilter_search_multi_class_fts {
 		my @fts_ranks = $fts->fts_rank;
 
 		my $rank = join(' + ', @fts_ranks);
+
+		my %bonus = ();
+		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.2 ELSE 1 END" => $SQLstring } ];
+		$bonus{'title'} =
+			$bonus{'metabib::series_field_entry'} = [
+				{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
+				{ "CASE WHEN $search_class.value ~* ? THEN 2 ELSE 1 END" => $REstring },
+				@{ $bonus{'keyword'} }
+			];
+
+		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
+		$bonus_list ||= '1';
+
+		push @bonus_lists, $bonus_list;
+		push @bonus_values, map { values %$_ } @{ $bonus{$search_class} };
+
 
 		#---------------------
 
@@ -1355,8 +1373,13 @@ sub postfilter_search_multi_class_fts {
 	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
 
+	if (lc($sort) ne 'pubdate' and lc($sort) ne 'title' and lc($sort) ne 'author') {
+		push @bonus_values, @bonus_values;
+	}
+
+	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
-	$relevance = "SUM( $relevance )";
+	$relevance = "SUM( ($relevance) * ($bonuses) )";
 
 
 	my $rank = $relevance;
@@ -1496,7 +1519,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
 			$select, {},
-			@types, @forms, @types, @forms,  ($self->api_name =~ /staff/o ? (@types, @forms) : () ) );
+			@bonus_values, @types, @forms, @types, @forms,  ($self->api_name =~ /staff/o ? (@types, @forms) : () ) );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
@@ -1524,6 +1547,21 @@ __PACKAGE__->register_method(
 );
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord.staff",
+	method		=> 'postfilter_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.multiclass.search_fts",
+	method		=> 'postfilter_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.multiclass.search_fts.staff",
 	method		=> 'postfilter_search_multi_class_fts',
 	api_level	=> 1,
 	stream		=> 1,
@@ -1883,6 +1921,300 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.biblio.multiclass.search_fts.record',
 	method		=> 'multi_Z_search_full_rec',
+	api_level	=> 0,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+# XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
+sub biblio_search_multi_class_fts {
+	my $self = shift;
+	my $client = shift;
+	my %args = @_;
+	
+	my $sort = $args{'sort'};
+	my $sort_dir = $args{sort_dir} || 'DESC';
+	my $ou = $args{org_unit};
+	my $ou_type = $args{depth};
+	my $limit = $args{limit};
+	my $offset = $args{offset} || 0;
+
+	if (! scalar( keys %{$args{searches}} )) {
+		die "No target organizational unit passed to ".$self->api_name;
+	}
+
+	if (! scalar( keys %{$args{searches}} )) {
+		die "No search arguments were passed to ".$self->api_name;
+	}
+
+	my $outer_limit = 1000;
+
+	my $limit_clause = '';
+	my $offset_clause = '';
+
+	$limit_clause = "LIMIT $outer_limit";
+	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
+
+	my (@types,@forms);
+	my ($t_filter, $f_filter) = ('','');
+	my ($ot_filter, $of_filter) = ('','');
+
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+		if (@types) {
+			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+			$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+		}
+
+		if (@forms) {
+			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+	}
+
+
+
+	my $descendants = defined($ou_type) ?
+				"actor.org_unit_descendants($ou, $ou_type)" :
+				"actor.org_unit_descendants($ou)";
+
+	my $search_table_list = '';
+	my $fts_list = '';
+	my $join_table_list = '';
+	my @rank_list;
+
+
+	my @bonus_lists;
+	my @bonus_values;
+	my $prev_search_class;
+	my $curr_search_class;
+	for my $search_class (sort keys %{$args{searches}}) {
+		$prev_search_class = $curr_search_class if ($curr_search_class);
+
+		$curr_search_class = $search_class;
+
+		my $class = $_cdbi->{$search_class};
+		my $search_table = $class->table;
+
+		my ($index_col) = $class->columns('FTS');
+		$index_col ||= 'value';
+
+		
+		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_class}{term}, $search_class.'.value', "$search_class.$index_col");
+
+		my $fts_where = $fts->sql_where_clause;
+		my @fts_ranks = $fts->fts_rank;
+
+		my $SQLstring = join('%',$fts->words);
+		my $REstring = '^' . join('\s+',$fts->words) . '\W*$';
+		my $first_word = ($fts->words)[0].'%';
+
+		my $rank = join(' + ', @fts_ranks);
+
+		my %bonus = ();
+		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.2 ELSE 1 END" => $SQLstring } ];
+		$bonus{'title'} =
+			$bonus{'metabib::series_field_entry'} = [
+				{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
+				{ "CASE WHEN $search_class.value ~* ? THEN 2 ELSE 1 END" => $REstring },
+				@{ $bonus{'keyword'} }
+			];
+
+		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
+		$bonus_list ||= '1';
+
+		push @bonus_lists, $bonus_list;
+		push @bonus_values, map { values %$_ } @{ $bonus{$search_class} };
+
+		#---------------------
+
+		$search_table_list .= "$search_table $search_class, ";
+		push @rank_list,$rank;
+		$fts_list .= " AND $fts_where AND b.id = $search_class.source";
+
+		if ($prev_search_class) {
+			$join_table_list .= " AND $prev_search_class.source = $curr_search_class.source";
+		}
+	}
+
+	my $metabib_record_descriptor = metabib::record_descriptor->table;
+	my $metabib_full_rec = metabib::full_rec->table;
+	my $metabib_metarecord = metabib::metarecord->table;
+	my $metabib_metarecord_source_map_table = metabib::metarecord_source_map->table;
+	my $asset_call_number_table = asset::call_number->table;
+	my $asset_copy_table = asset::copy->table;
+	my $cs_table = config::copy_status->table;
+	my $cl_table = asset::copy_location->table;
+	my $br_table = biblio::record_entry->table;
+
+	if (lc($sort) ne 'pubdate' and lc($sort) ne 'title' and lc($sort) ne 'author') {
+		push @bonus_values, @bonus_values;
+	}
+
+	my $bonuses = join (' * ', @bonus_lists);
+	my $relevance = join (' + ', @rank_list);
+	$relevance = "SUM( ($relevance) * ($bonuses) )";
+
+
+	my $rank = $relevance;
+	if (lc($sort) eq 'pubdate') {
+		$rank = <<"		RANK";
+			( FIRST ((
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d{4}'),'9999')::INT
+				  FROM	$metabib_full_rec frp
+				  WHERE	frp.record = b.id
+				  	AND frp.tag = '260'
+					AND frp.subfield = 'c'
+				  LIMIT 1
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'title') {
+		$rank = <<"		RANK";
+			( FIRST ((
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				  FROM	$metabib_full_rec frt
+				  WHERE	frt.record = b.id
+				  	AND frt.tag = '245'
+					AND frt.subfield = 'a'
+				  LIMIT 1
+			)) )
+		RANK
+	} elsif (lc($sort) eq 'author') {
+		$rank = <<"		RANK";
+			( FIRST((
+				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				  FROM	$metabib_full_rec fra
+				  WHERE	fra.record = b.id
+				  	AND fra.tag LIKE '1%'
+					AND fra.subfield = 'a'
+				  ORDER BY fra.tag::text::int
+				  LIMIT 1
+			)) )
+		RANK
+	}
+
+
+	my $select = <<"	SQL";
+		SELECT	b.id,
+			$relevance AS rel,
+			$rank AS rank
+  	  	FROM	$search_table_list
+			$metabib_record_descriptor rd,
+			$br_table b
+	  	WHERE	rd.record = b.id
+			AND b.active IS TRUE
+			AND b.deleted IS FALSE
+			$fts_list
+			$join_table_list
+			$t_filter
+			$f_filter
+  	  	GROUP BY b.id
+  	  	ORDER BY 3 $sort_dir
+		LIMIT 10000
+	SQL
+
+	if ($self->api_name !~ /staff/o) {
+		$select = <<"		SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$asset_copy_table cp,
+					$cs_table cs,
+					$cl_table cl,
+					$descendants d
+				  WHERE	cn.record = s.id
+					AND cp.status = cs.id
+					AND cp.location = cl.id
+					AND cn.owning_lib = d.id
+					AND cp.call_number = cn.id
+					AND cp.opac_visible IS TRUE
+					AND cs.holdable IS TRUE
+					AND cl.opac_visible IS TRUE
+					AND cp.deleted IS FALSE
+				  LIMIT 1
+			  	)
+			  ORDER BY 3 $sort_dir
+		SQL
+	} else {
+		$select = <<"		SQL";
+
+			SELECT	DISTINCT s.*
+			  FROM	($select) s
+			  WHERE	EXISTS (
+			  	SELECT	1
+				  FROM	$asset_call_number_table cn,
+					$descendants d
+				  WHERE	cn.record = s.id
+					AND cn.owning_lib = d.id
+				  LIMIT 1
+				)
+				OR NOT EXISTS (
+				SELECT	1
+				  FROM	$asset_call_number_table cn
+				  WHERE	cn.record = s.id
+				  LIMIT 1
+				)
+			  ORDER BY 3 $sort_dir
+		SQL
+	}
+
+
+	$log->debug("Field Search SQL :: [$select]",DEBUG);
+
+	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
+			$select, {},
+			@bonus_values, @types, @forms
+	);
+	
+	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
+
+	my $max = 0;
+	$max = 1 if (!@$recs);
+	for (@$recs) {
+		$max = $$_[1] if ($$_[1] > $max);
+	}
+
+	my $count = scalar(@$recs);
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		next unless ($$rec[0]);
+		my ($mrid,$rank) = @$rec;
+		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $count] );
+	}
+	return undef;
+}
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.search_fts.record",
+	method		=> 'biblio_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.search_fts.record.staff",
+	method		=> 'biblio_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
+
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.search_fts",
+	method		=> 'biblio_search_multi_class_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.search_fts.staff",
+	method		=> 'biblio_search_multi_class_fts',
 	api_level	=> 1,
 	stream		=> 1,
 	cachable	=> 1,
