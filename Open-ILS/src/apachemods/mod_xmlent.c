@@ -24,11 +24,6 @@
 #define MODXMLENT_CONFIG_STRIP_PI "XMLEntStripPI"  
 #define MODXMLENT_CONFIG_STRIP_PI_DEFAULT "yes" 
 #define MODXMLENT_CONFIG_DOCTYPE "XMLEntDoctype"
-/*
-#define MODXMLENT_CONFIG_STRIP_DOCTYPE \
-	"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \
-	   "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\""
-		*/
 
 module AP_MODULE_DECLARE_DATA xmlent_module;
 
@@ -134,6 +129,17 @@ static void _fwrite( ap_filter_t* filter, char* data, ... ) {
 }
 
 
+/** XXX move me to  opensrf/utils.h */
+#define OSRF_UTILS_REPLACE_CHAR(str, o, n)\
+	do {\
+		int i = 0;\
+		while(str[i] != '\0') {\
+			if(str[i] == o)\
+				str[i] = n;\
+			i++;\
+		}\
+	} while(0)
+
 /* cycles through the attributes attached to an element */
 static void printAttr( ap_filter_t* filter, const char** atts ) {
 	if(!atts) return;
@@ -142,17 +148,18 @@ static void printAttr( ap_filter_t* filter, const char** atts ) {
 		const char* name = atts[i];
 		const char* value = atts[i+1];
 		char* escaped = ap_escape_html(filter->r->pool, value); 
+		OSRF_UTILS_REPLACE_CHAR(escaped,'\'','"');
 		_fwrite( filter, " %s='%s'", name, escaped );
 		i++;
 	}
 }
 
-/* Starts and XML element */
+/* Starts an XML element */
 static void XMLCALL startElement(void *userData, const char *name, const char **atts) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
 	_fwrite(filter, "<%s", name );
 	printAttr( filter, atts );
-	_fwrite(filter, ">\n", name );
+	_fwrite(filter, ">", name );
 }
 
 /* Handles the character data */
@@ -162,7 +169,7 @@ static void XMLCALL charHandler( void* userData, const XML_Char* s, int len ) {
 	bzero(data, len+1);
 	memcpy( data, s, len );
 	char* escaped = ap_escape_html(filter->r->pool, data);
-	_fwrite( filter, escaped );
+	_fwrite( filter, "%s", escaped );
 }
 
 static void XMLCALL handlePI( void* userData, const XML_Char* target, const XML_Char* data) {
@@ -173,7 +180,7 @@ static void XMLCALL handlePI( void* userData, const XML_Char* target, const XML_
 /* Ends an XML element */
 static void XMLCALL endElement(void *userData, const char *name) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
-	_fwrite( filter, "</%s>\n", name );
+	_fwrite( filter, "</%s>", name );
 }
 
 
@@ -225,7 +232,7 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 		if(config->doctype) {
 			ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 
 					0, f->r, "XMLENT DOCTYPE => %s", config->doctype);
-			_fwrite(f, "%s\n\n", config->doctype);
+			_fwrite(f, "%s\n", config->doctype);
 		}
 	}
 
