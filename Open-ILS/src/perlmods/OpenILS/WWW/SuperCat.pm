@@ -308,7 +308,7 @@ sub bookbag_feed {
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
-		print "Location: $base/../../../opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
+		print "Location: $root/../en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
 			"\n\n";
 		return Apache2::Const::OK;
@@ -321,19 +321,20 @@ sub bookbag_feed {
 	);
 	$feed->root($root);
 
-	$feed->title("Items in Book Bag #".$bucket->id);
+	$feed->title("Items in Book Bag [".$bucket->name."]");
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(atom => $base . "/bookbag/atom/$id" => 'application/atom+xml');
-	$feed->link(rss2 => $base . "/bookbag/rss2/$id");
-	$feed->link(html => $base . "/bookbag/html/$id" => 'text/html');
+	$feed->link(atom => $base . "/atom/$id" => 'application/atom+xml');
+	$feed->link(rss2 => $base . "/rss2/$id");
+	$feed->link(html => $base . "/html/$id" => 'text/html');
+	$feed->link(unapi => $unapi);
 
 	$feed->link(
 		OPAC =>
 		$root . '../en-US/skin/default/xml/rresult.xml?rt=list&' .
 			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
-		'text/xhtml'
+		'text/html'
 	);
 
 
@@ -450,10 +451,10 @@ sub opensearch_feed {
 	my $limit = $cgi->param('count') || 10;
 	my $lang = $cgi->param('language') || 'en-US';
 
-	$page = 1 if ($page =~ /^{/);
-	$offset = 1 if ($offset =~ /^{/);
-	$limit = 10 if ($limit =~ /^{/);
-	$lang = 'en-US' if ($lang =~ /^{/);
+	$page = 1 if ($page !~ /^\d+$/);
+	$offset = 1 if ($offset =~ /^\d+$/);
+	$limit = 10 if ($limit =~ /^\d+$/); $limit = 25 if ($limit > 25);
+	$lang = 'en-US' if ($lang =~ /^{/ or $lang eq '*');
 
 	if ($page > 1) {
 		$offset = ($page - 1) * $limit;
@@ -500,6 +501,7 @@ sub opensearch_feed {
 		$unapi,
 	);
 	$feed->root($root);
+	$feed->lib($org);
 
 	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
 	$feed->creator($host);
@@ -544,10 +546,7 @@ sub opensearch_feed {
 		'application/opensearch+xml'
 	);
 
-	$feed->link(
-		unapi =>
-		$unapi
-	);
+	$feed->link( unapi => $unapi);
 
 	$feed->link(
 		alternate =>

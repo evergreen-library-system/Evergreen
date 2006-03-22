@@ -35,6 +35,13 @@ sub type {
 	return $self->{type};
 }
 
+sub lib {
+	my $self = shift;
+	my $lib = shift;
+	$self->{lib} = $lib if ($lib);
+	return $self->{lib};
+}
+
 sub base {
 	my $self = shift;
 	my $base = shift;
@@ -402,6 +409,7 @@ sub toString {
 	my $self = shift;
 	my $base = $self->base;
 	my $root = $self->root;
+	my $lib = $self->lib || '-';
 
 	$self->composeDoc;
 
@@ -417,7 +425,7 @@ sub toString {
         # parse the MODS xslt ...
         my $atom2html_xslt = $_xslt->parse_stylesheet( $_parser->parse_file($xslt_file) );
 
-	my $new_doc = $atom2html_xslt->transform($self->{doc}, base_dir => "'$root'");
+	my $new_doc = $atom2html_xslt->transform($self->{doc}, base_dir => "'$root'", lib => "'$lib'");
 	return $new_doc->toString(1); 
 }
 

@@ -59,7 +59,7 @@
 			<xsl:for-each select="marc:datafield[@tag=655]">
 				<category>
 					<xsl:attribute name="term">
-						<xsl:value-of select="."/>
+						<xsl:value-of select="./marc:subfield[@code='a' or @code='v']"/>
 					</xsl:attribute>
 				</category>
 			</xsl:for-each>

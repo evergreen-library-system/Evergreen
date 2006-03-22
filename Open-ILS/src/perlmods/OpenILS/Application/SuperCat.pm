@@ -285,10 +285,7 @@ sub retrieve_metarecord_mods {
 
 	my $id = $mr->id;
 	$recordIdentifier->appendTextNode(
-		sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:biblio-record_entry/$id",
-			$month,
-			$day
-		)
+		sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:metabib-metarecord/$id", $month, $day)
 	);
 
 	$recordInfo->appendChild($recordIdentifier);

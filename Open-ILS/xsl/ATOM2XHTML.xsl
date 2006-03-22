@@ -67,7 +67,7 @@ To-do list:
 	<xsl:variable name="t-untitleditem">(untitled)</xsl:variable> <!-- text of untitled items when the title needs to be shown) -->
 	<xsl:variable name="t-entrylink">view full entry</xsl:variable> <!-- text of the link to the full entry (used with <content src="" /> in atom) -->
 	<xsl:variable name="t-authors">by</xsl:variable> <!-- label before one or more author/contributors (eg the 'by' in 'by Joe'); leave blank to not show authors -->
-	<xsl:variable name="t-categories">categories:</xsl:variable> <!-- label before one or more categories; leave blank to not show categories -->
+	<xsl:variable name="t-categories">Subjects:</xsl:variable> <!-- label before one or more categories; leave blank to not show categories -->
 	<xsl:variable name="t-source">from</xsl:variable> <!-- label of source (e.g. 'from' or 'via' in English); leave blank to not show sources -->
 	<xsl:variable name="t-comments">comments</xsl:variable> <!-- leave blank to not show link to comments -->
 	<xsl:variable name="t-download">download</xsl:variable> <!-- leave this or t-enclosure blank to not show link to enclosures -->
@@ -125,7 +125,7 @@ To-do list:
 					<link rel="shortcut icon" href="{$iconurl}" />
 				</xsl:if>
 				<link rel="stylesheet" type="text/css" title="default" media="screen">
-					<xsl:attribute name="href"><xsl:value-of select="concat($base_dir,'/os.css')"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($base_dir,'os.css')"/></xsl:attribute>
 				</link>
 				<!-- rel links -->
 
@@ -382,9 +382,14 @@ To-do list:
 			</xsl:variable>
 			<xsl:variable name="maybeurl" select="(@domain | @scheme)[1]" />
 			<xsl:variable name="url">
-				<xsl:if test="starts-with($maybeurl, 'http')">
-					<xsl:value-of select="concat($maybeurl, '#', $category)" />
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="starts-with($maybeurl, 'http')">
+						<xsl:value-of select="concat($maybeurl, '#', $category)" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject/', translate(normalize-space($name), ' ,()', '+'))" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:variable>
 			<xsl:choose>
 				<xsl:when test="string-length($url)&gt;0"><a href="{$url}"><xsl:value-of select="$name" /></a></xsl:when>
