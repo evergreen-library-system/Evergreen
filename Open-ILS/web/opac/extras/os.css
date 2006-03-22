@@ -10,6 +10,23 @@ p.nav {
 h1 {
 	font-size: 1.5em;
 	}
+
+input.searchbox {
+	font-size: 0.9em;
+	max-width: 10em;
+}
+
+div#searchdiv {
+	z-index:10;
+	position:absolute;
+	top: 100;
+	right: 0;
+	background-color: lightgray;
+	border:2px solid lightblue;
+	filter: alpha(opacity=50);
+	-moz-opacity: .5;
+}
+
 div#header img {
 	position: absolute;
 	top: 0;

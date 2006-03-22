@@ -35,6 +35,13 @@ sub type {
 	return $self->{type};
 }
 
+sub search {
+	my $self = shift;
+	my $search = shift;
+	$self->{search} = $search if ($search);
+	return $self->{search};
+}
+
 sub lib {
 	my $self = shift;
 	my $lib = shift;
@@ -409,6 +416,7 @@ sub toString {
 	my $self = shift;
 	my $base = $self->base;
 	my $root = $self->root;
+	my $search = $self->search;
 	my $lib = $self->lib || '-';
 
 	$self->composeDoc;
@@ -425,7 +433,13 @@ sub toString {
         # parse the MODS xslt ...
         my $atom2html_xslt = $_xslt->parse_stylesheet( $_parser->parse_file($xslt_file) );
 
-	my $new_doc = $atom2html_xslt->transform($self->{doc}, base_dir => "'$root'", lib => "'$lib'");
+	my $new_doc = $atom2html_xslt->transform(
+		$self->{doc},
+		base_dir => "'$root'",
+		lib => "'$lib'",
+		searchTerms => "'$search'",
+	);
+
 	return $new_doc->toString(1); 
 }
 

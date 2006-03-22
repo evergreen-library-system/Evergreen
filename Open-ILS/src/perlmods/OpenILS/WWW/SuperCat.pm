@@ -452,8 +452,8 @@ sub opensearch_feed {
 	my $lang = $cgi->param('language') || 'en-US';
 
 	$page = 1 if ($page !~ /^\d+$/);
-	$offset = 1 if ($offset =~ /^\d+$/);
-	$limit = 10 if ($limit =~ /^\d+$/); $limit = 25 if ($limit > 25);
+	$offset = 1 if ($offset !~ /^\d+$/);
+	$limit = 10 if ($limit !~ /^\d+$/); $limit = 25 if ($limit > 25);
 	$lang = 'en-US' if ($lang =~ /^{/ or $lang eq '*');
 
 	if ($page > 1) {
@@ -462,7 +462,12 @@ sub opensearch_feed {
 		$offset -= 1;
 	}
 
-	my ($terms,$class,$type,$org,$version) = reverse split '/', $path;
+	my (undef,$version,$org,$type,$class,$terms) = split '/', $path;
+
+	$terms ||= $cgi->param('searchTerms');
+	$class ||= $cgi->param('searchClass') || '-';
+	$type ||= $cgi->param('responseType') || '-';
+	$org ||= $cgi->param('searchOrg') || '-';
 
 	if ($version eq '1.0') {
 		$type = 'rss2';
@@ -502,6 +507,7 @@ sub opensearch_feed {
 	);
 	$feed->root($root);
 	$feed->lib($org);
+	$feed->search($terms);
 
 	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
 	$feed->creator($host);
@@ -530,19 +536,19 @@ sub opensearch_feed {
 
 	$feed->link(
 		next =>
-		$base . $path . "?startIndex=" . int($offset + $limit + 1) . "&count=" . $limit =>
+		$base . "/$version/$org/$type/$class?searchTerms=$terms&startIndex=" . int($offset + $limit + 1) . "&count=" . $limit =>
 		'application/opensearch+xml'
 	) if ($offset + $limit < $recs->{count});
 
 	$feed->link(
 		previous =>
-		$base . $path . "?startIndex=" . int(($offset - $limit) + 1) . "&count=" . $limit =>
+		$base . "/$version/$org/$type/$class?searchTerms=$terms&startIndex=" . int(($offset - $limit) + 1) . "&count=" . $limit =>
 		'application/opensearch+xml'
 	) if ($offset);
 
 	$feed->link(
 		self =>
-		$base . $path =>
+		$base .  "/$version/$org/$type/$class?searchTerms=$terms" =>
 		'application/opensearch+xml'
 	);
 

@@ -176,6 +176,31 @@ To-do list:
 					<xsl:if test="$t-authors and (managingEditor | atom:author | dc:creator | dc:publisher | atom:contributor | dc:contributor)"><p><xsl:value-of select="concat($t-authors,' ')" /><xsl:apply-templates select="managingEditor | atom:author | dc:creator | dc:publisher | atom:contributor | dc:contributor" /></p></xsl:if>
 					<xsl:if test="$t-categories and (atom:category | category)"><xsl:value-of select="concat($t-categories, ' ')" /><p><xsl:apply-templates select="atom:category | category" /></p></xsl:if>
 				</div>
+
+				<div id="searchdiv">
+					<b>Search:</b>
+					<form method="GET">
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/keyword')" /></xsl:attribute>
+						<input class="searchbox" type="text" name="searchTerms" value="keywords" onfocus="this.value='';"/>
+					</form>
+					<form method="GET">
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/title')" /></xsl:attribute>
+						<input class="searchbox" type="text" name="searchTerms" value="titles" onfocus="this.value='';"/>
+					</form>
+					<form method="GET">
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/author')" /></xsl:attribute>
+						<input class="searchbox" type="text" name="searchTerms" value="authors" onfocus="this.value='';"/>
+					</form>
+					<form method="GET">
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject')" /></xsl:attribute>
+						<input class="searchbox" type="text" name="searchTerms" value="subjects" onfocus="this.value='';"/>
+					</form>
+					<form method="GET">
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/series')" /></xsl:attribute>
+						<input class="searchbox" type="text" name="searchTerms" value="series" onfocus="this.value='';"/>
+					</form>
+					<br/>
+				</div>
 				
 				<!-- text input: if present in an opensearch feed, this is probably a search box -->
 				<xsl:if test="textInput | rss1:textinput"><xsl:apply-templates select="(textInput | rss1:textinput)[1]"><xsl:with-param name="query" select="$query" /></xsl:apply-templates></xsl:if>
@@ -387,7 +412,7 @@ To-do list:
 						<xsl:value-of select="concat($maybeurl, '#', $category)" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject/', translate(normalize-space($name), ' ,()', '+'))" />
+						<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject?searchTerms=', $name)" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
