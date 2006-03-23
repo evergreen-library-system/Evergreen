@@ -124,5 +124,5 @@ var urls = {
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
-	'TEST_XUL' : 'chrome://open_ils_staff_client/content/admin/test.xul',
+	'TEST_XUL' : '/xul/server/main/test.xul',
 }
