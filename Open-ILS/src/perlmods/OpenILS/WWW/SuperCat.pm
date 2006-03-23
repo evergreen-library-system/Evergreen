@@ -108,7 +108,7 @@ sub unapi {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				$body .= "<format><name>$type</name><type>application/$type+xml</type>";
+				$body .= "<format><name>$type</name><type>application/xml</type>";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
 					$body .= "<$part>$$h{$type}{$part}</$part>"
@@ -144,7 +144,7 @@ sub unapi {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				print "<format><name>$type</name><type>application/x-$type+xml</type>";
+				print "<format><name>$type</name><type>application/xml</type>";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
 					print "<$part>$$h{$type}{$part}</$part>"
@@ -212,7 +212,7 @@ sub supercat {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				print "<format><name>$type</name><type>application/$type+xml</type>";
+				print "<format><name>$type</name><type>application/xml</type>";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
 					print "<$part>$$h{$type}{$part}</$part>"
@@ -248,7 +248,7 @@ sub supercat {
 
 		for my $h (@$list) {
 			my ($type) = keys %$h;
-			print "<format><name>$type</name><type>application/$type+xml</type>";
+			print "<format><name>$type</name><type>application/xml</type>";
 
 			for my $part ( qw/namespace_uri docs schema_location/ ) {
 				print "<$part>$$h{$type}{$part}</$part>"
@@ -475,8 +475,10 @@ sub opensearch_feed {
 		$type = 'atom';
 	}
 
+
 	$class = 'keyword' if ($class eq '-');
 	$terms =~ s/\+/ /go;
+	$terms =~ s/'//go;
 
 	#warn "searching for $class -> [$terms] via OS $version, response type $type";
 
@@ -554,12 +556,12 @@ sub opensearch_feed {
 
 	$feed->link( unapi => $unapi);
 
-	$feed->link(
-		alternate =>
-		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
-			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
-		'text/html'
-	);
+#	$feed->link(
+#		alternate =>
+#		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
+#			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
+#		'text/html'
+#	);
 
 	$feed->link(
 		opac =>

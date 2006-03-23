@@ -406,7 +406,7 @@ use base 'OpenILS::WWW::SuperCat::Feed::atom';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::new;
-	$self->{type} = 'text/html';
+	$self->type('text/html');
 	return $self;
 }
 
@@ -414,9 +414,9 @@ our ($_parser, $_xslt, $xslt_file);
 
 sub toString {
 	my $self = shift;
-	my $base = $self->base;
-	my $root = $self->root;
-	my $search = $self->search;
+	my $base = $self->base || '';
+	my $root = $self->root || '';
+	my $search = $self->search || '';
 	my $lib = $self->lib || '-';
 
 	$self->composeDoc;
@@ -440,7 +440,7 @@ sub toString {
 		searchTerms => "'$search'",
 	);
 
-	return $new_doc->toString(1); 
+	return $new_doc->toStringHTML(); 
 }
 
 

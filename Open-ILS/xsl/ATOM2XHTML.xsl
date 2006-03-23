@@ -181,23 +181,43 @@ To-do list:
 					<b>Search:</b>
 					<form method="GET">
 						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/keyword')" /></xsl:attribute>
-						<input class="searchbox" type="text" name="searchTerms" value="keywords" onfocus="this.value='';"/>
+						<input class="searchbox"
+							type="text" name="searchTerms"
+							value="keywords"
+							title="keywords"
+							onfocus="if (this.value=='keywords') this.value='{$searchTerms}';"/>
 					</form>
 					<form method="GET">
 						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/title')" /></xsl:attribute>
-						<input class="searchbox" type="text" name="searchTerms" value="titles" onfocus="this.value='';"/>
+						<input class="searchbox"
+							type="text" name="searchTerms"
+							value="titles"
+							title="titles"
+							onfocus="if (this.value=='titles') this.value='{$searchTerms}';"/>
 					</form>
 					<form method="GET">
 						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/author')" /></xsl:attribute>
-						<input class="searchbox" type="text" name="searchTerms" value="authors" onfocus="this.value='';"/>
+						<input class="searchbox"
+							type="text" name="searchTerms"
+							value="authors"
+							title="authors"
+							onfocus="if (this.value=='authors') this.value='{$searchTerms}';"/>
 					</form>
 					<form method="GET">
 						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject')" /></xsl:attribute>
-						<input class="searchbox" type="text" name="searchTerms" value="subjects" onfocus="this.value='';"/>
+						<input class="searchbox"
+							type="text" name="searchTerms"
+							value="subjects"
+							title="subjects"
+							onfocus="if (this.value=='subjects') this.value='{$searchTerms}';"/>
 					</form>
 					<form method="GET">
 						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/series')" /></xsl:attribute>
-						<input class="searchbox" type="text" name="searchTerms" value="series" onfocus="this.value='';"/>
+						<input class="searchbox"
+							type="text" name="searchTerms"
+							value="series"
+							title="series"
+							onfocus="if (this.value=='series') this.value='{$searchTerms}';"/>
 					</form>
 					<br/>
 				</div>
@@ -461,7 +481,14 @@ To-do list:
 		<xsl:if test="string-length($showname)&gt;0">
 			<xsl:choose>
 				<xsl:when test="string-length($showlink)&gt;0"><a href="{$showlink}"><xsl:value-of select="$showname" /></a></xsl:when>
-				<xsl:otherwise><xsl:value-of select="$showname" /></xsl:otherwise>
+				<xsl:otherwise>
+					<a>
+						<xsl:attribute name="href">
+							<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/author?searchTerms=', $showname)" />
+						</xsl:attribute>
+						<xsl:value-of select="$showname" />
+					</a>
+				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>; </xsl:text>
 		</xsl:if>
