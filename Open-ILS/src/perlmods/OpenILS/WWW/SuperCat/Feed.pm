@@ -440,7 +440,7 @@ sub toString {
 		searchTerms => "'$search'",
 	);
 
-	return $new_doc->toStringHTML(); 
+	return $new_doc->toString(1); 
 }
 
 
