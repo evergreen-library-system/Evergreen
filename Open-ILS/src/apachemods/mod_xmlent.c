@@ -18,11 +18,9 @@
 
 /* Define the config defaults here */
 #define MODXMLENT_CONFIG_STRIP_COMMENTS "XMLEntStripComments" 
-#define MODXMLENT_CONFIG_STRIP_COMMENTS_DEFAULT "yes" 
 #define MODXMLENT_CONFIG_CONTENT_TYPE "XMLEntContentType"
 #define MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT "text/html"
 #define MODXMLENT_CONFIG_STRIP_PI "XMLEntStripPI"  
-#define MODXMLENT_CONFIG_STRIP_PI_DEFAULT "yes" 
 #define MODXMLENT_CONFIG_DOCTYPE "XMLEntDoctype"
 
 module AP_MODULE_DECLARE_DATA xmlent_module;
@@ -48,6 +46,7 @@ static const char* xmlEntSetContentType(cmd_parms *params, void *cfg, const char
 	config->contentType = (char*) arg;
 	return NULL;
 }
+
 
 /* get the stip PI flag from the config */
 static const char* xmlEntSetStripPI(cmd_parms *params, void *cfg, const char *arg) {
@@ -89,12 +88,8 @@ static const command_rec xmlEntCommands[] = {
 static void* xmlEntCreateDirConfig( apr_pool_t* p, char* dir ) {
 	xmlEntConfig* config = 
 		(xmlEntConfig*) apr_palloc( p, sizeof(xmlEntConfig) );
-	config->stripComments = 
-		(MODXMLENT_CONFIG_STRIP_COMMENTS_DEFAULT && 
-		 !strcasecmp(MODXMLENT_CONFIG_STRIP_COMMENTS_DEFAULT, "yes")) ? 1 : 0;
-	config->stripPI = 
-		(MODXMLENT_CONFIG_STRIP_PI_DEFAULT && 
-		 !strcasecmp(MODXMLENT_CONFIG_STRIP_PI_DEFAULT, "yes")) ? 1 : 0;
+	config->stripComments = 0;
+	config->stripPI = 0;
 	config->contentType	= MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT;
 	config->doctype = NULL;
 	return (void*) config;
@@ -177,6 +172,11 @@ static void XMLCALL handlePI( void* userData, const XML_Char* target, const XML_
 	_fwrite(filter, "<?%s %s?>", target, data);
 }
 
+static void XMLCALL handleComment( void* userData, const XML_Char* comment ) {
+	ap_filter_t* filter = (ap_filter_t*) userData;
+	_fwrite(filter, "<!-- %s -->", comment);
+}
+
 /* Ends an XML element */
 static void XMLCALL endElement(void *userData, const char *name) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
@@ -200,7 +200,9 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 			f->r->per_dir_config, &xmlent_module );
 
 	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 
-			0, f->r, "XMLENT Content Type = %s", config->contentType);
+			0, f->r, "XMLENT Config: Content Type = %s,"
+			"Strip PI = %d, Strip Comments = %d, Doctype = %s", 
+			config->contentType, config->stripPI, config->stripComments, config->doctype);
 
 	/* set the content type based on the config */
 	ap_set_content_type(f->r, config->contentType);
@@ -216,6 +218,8 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 		XML_SetCharacterDataHandler(parser, charHandler);
 		if(!config->stripPI)
 			XML_SetProcessingInstructionHandler(parser, handlePI);
+		if(!config->stripComments)
+			XML_SetCommentHandler(parser, handleComment);
 	}
 
 	/* create the filter context */
