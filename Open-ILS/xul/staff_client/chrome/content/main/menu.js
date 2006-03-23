@@ -273,8 +273,19 @@ main.menu.prototype = {
 					);
 				}
 			],
-
-
+			'cmd_clear_cache' : [
+				['oncommand'],
+				function clear_the_cache() {
+					try {
+						var cacheClass 		= Components.classes["@mozilla.org/network/cache-service;1"];
+						var cacheService	= cacheClass.getService(Components.interfaces.nsICacheService);
+						cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);
+						cacheService.evictEntries(Components.interfaces.nsICache.STORE_IN_MEMORY);
+					} catch(E) {
+						dump(E+'\n');alert(E);
+					}
+				}
+			],
 		};
 
 		JSAN.use('util.controller');
