@@ -23,6 +23,7 @@ int __osrfChatClientSentDisconnect = 0;
 
 /* shorter version of strcmp */
 static int eq(const char* a, const char* b) { return (a && b && !strcmp(a,b)); }
+//#define eq(a,b) ((a && b && !strcmp(a,b)) ? 1 : 0)
 
 /* gnarly debug function */
 static void chatdbg( osrfChatServer* server ) {
@@ -77,12 +78,12 @@ osrfChatServer* osrfNewChatServer( char* domain, char* secret, int s2sport ) {
 
 	osrfChatServer* server = safe_malloc(sizeof(osrfChatServer));
 
-	server->nodeHash = osrfNewHash();
-	server->nodeList = osrfNewList();
+	server->nodeHash	= osrfNewHash();
+	server->nodeList	= osrfNewList();
 	server->deadNodes = osrfNewList();
 	server->nodeList->freeItem = &osrfChatNodeFree;
-	server->domain = strdup(domain);
-	server->s2sport = s2sport;
+	server->domain		= strdup(domain);
+	server->s2sport	= s2sport;
 
 	server->mgr = safe_malloc(sizeof(socket_manager));
 	server->mgr->data_received = &osrfChatHandleData;
@@ -216,7 +217,9 @@ void osrfChatHandleData( void* cs,
 
 	if(node) {
 		if( (osrfChatPushData( server, node, data ) == -1) ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Node at socket %d received bad XML [%s], disconnecting...", sockid, data );
+			osrfLogError( OSRF_LOG_MARK, 
+					"Node at socket %d with remote address %s and destination %s, "
+					"received bad XML [%s], disconnecting...", sockid, node->remote, node->to, data );
 			osrfChatSendRaw(  node, OSRF_CHAT_PARSE_ERROR );
 			osrfChatRemoveNode( server, node );
 		}
@@ -761,6 +764,8 @@ void osrfChatHandleCharacter( void* blob, const xmlChar *ch, int len) {
 
 		/* do the hash dance again */
 	}
+
+	/* XXX free 'e' and 'key' ?? */
 
 }
 
