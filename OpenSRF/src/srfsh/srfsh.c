@@ -108,7 +108,7 @@ int load_history() {
 	history_file = strdup(fbuf);
 
 	if(!access(history_file, W_OK | R_OK )) {
-		history_length = 999;
+		history_length = 5000;
 		read_history(history_file);
 	}
 	return 1;
