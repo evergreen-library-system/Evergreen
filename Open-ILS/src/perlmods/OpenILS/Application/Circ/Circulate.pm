@@ -424,7 +424,6 @@ sub check_title_hold {
 
 	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
 
-
 	my $org = $U->simplereq(
 		'open-ils.actor', 
 		'open-ils.actor.org_unit.retrieve', 
@@ -571,7 +570,6 @@ sub checkout {
 	( $patron, $evt ) = $U->fetch_user($params->{patron});
 	return $evt if $evt;
 
-
 	# set the circ lib to the home org of the requestor if not specified
 	my $circlib = (defined($params->{circ_lib})) ? 
 		$params->{circ_lib} : $requestor->home_ou;
@@ -610,6 +608,9 @@ sub checkout {
 	return $evt if $evt;
 
 	_build_checkout_circ_object($ctx);
+
+	$evt = _apply_modified_due_date($ctx);
+	return $evt if $evt;
 
 	$evt = _commit_checkout_circ_object($ctx);
 	return $evt if $evt;
@@ -758,24 +759,56 @@ sub _build_checkout_circ_object {
 		$circ->circ_staff($ctx->{requestor}->id);
 	} 
 
+
+	# if the user provided an overiding checkout time, 
+	# (e.g. the checkout really happened several hours ago), then
+	# we apply that here.  Does this need a perm??
+	if( my $ds =  _checkout_time_to_stamp($ctx->{checkout_time})) {
+		$logger->debug("circ setting checkout_time to $ds");
+		$circ->xact_start($ds);
+	}
+
 	# if a patron is renewing, 'requestor' will be the patron
-	$circ->circ_staff( $ctx->{requestor}->id ); 
+	$circ->circ_staff($ctx->{requestor}->id ); 
 	_set_circ_due_date($circ);
 	$ctx->{circ} = $circ;
+}
+
+sub _apply_modified_due_date {
+	my $ctx = shift;
+	my $circ = $ctx->{circ};
+
+	if( $ctx->{due_date} ) {
+
+		my $evt = $U->check_perms(
+			$ctx->{requestor}->id, $ctx->{circ_lib}, 'CIRC_OVERRIDE_DUE_DATE');
+		return $evt if $evt;
+
+		# User provided due date looks like YYYY-MM-DD
+		my ($y, $m, $d) = split(/-/, $ctx->{due_date});
+		my $ds = _create_date_stamp(0,0,0,$d,$m,$y);
+		$logger->debug("circ modifying  due_date to $ds");
+		$circ->due_date($ds);
+
+	}
+	return undef;
+}
+
+sub _create_date_stamp {
+	my ($sec,$min,$hour,$mday,$mon,$year) = @_;
+	my $due_date = sprintf(
+   	'%s-%0.2d-%0.2dT%s:%0.2d:%0.2d-00',
+   	$year, $mon, $mday, $hour, $min, $sec);
+	return $due_date;
 }
 
 sub _create_due_date {
 	my $duration = shift;
 	$U->logmark;
-
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = 
+	my ($sec,$min,$hour,$mday,$mon,$year) = 
 		gmtime(OpenSRF::Utils->interval_to_seconds($duration) + int(time()));
-
 	$year += 1900; $mon += 1;
-	my $due_date = sprintf(
-   	'%s-%0.2d-%0.2dT%s:%0.2d:%0.s2-00',
-   	$year, $mon, $mday, $hour, $min, $sec);
-	return $due_date;
+	return _create_date_stamp($sec,$min,$hour,$mday,$mon,$year);
 }
 
 sub _set_circ_due_date {
@@ -864,6 +897,15 @@ sub _handle_related_holds {
 	return (\@fulfilled, undef);
 }
 
+sub _checkout_time_to_stamp {
+	my $t = shift;
+	return undef unless $t;
+	my @dates = split(/ /, $t);
+	my ($y,$m,$d) = split(/-/, $dates[0]);
+	my ($h,$min,$s) = split(/:/, $dates[1]);
+	return _create_date_stamp($s,$min,$h,$d,$m,$y);
+}
+
 
 sub _checkout_noncat {
 	my ( $key, $requestor, $patron, %params ) = @_;
@@ -875,10 +917,15 @@ sub _checkout_noncat {
 	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
 		unless _check_permit_key($key);
 
-	( $circ, $evt ) = OpenILS::Application::Circ::NonCat::create_non_cat_circ(
-			$requestor->id, $patron->id, $circlib, $params{noncat_type} );
+	my $count = $params{noncat_count} || 1;
+	my $cotime = _checkout_time_to_stamp($params{checkout_time}) || "";
+	$logger->info("circ creating $count noncat circs with checkout time $cotime");
+	for(1..$count) {
+		( $circ, $evt ) = OpenILS::Application::Circ::NonCat::create_non_cat_circ(
+			$requestor->id, $patron->id, $circlib, $params{noncat_type}, $cotime );
+		return $evt if $evt;
+	}
 
-	return $evt if $evt;
 	return OpenILS::Event->new( 
 		'SUCCESS', payload => { noncat_circ => $circ } );
 }
@@ -926,7 +973,9 @@ sub generic_receive {
 	my $copy = $ctx->{copy};
 	$U->unflesh_copy($copy);
 	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
-	$logger->info("Checkin copy called by user ".$requestor->id." for copy ".$copy->id);
+
+	$logger->info("Checkin copy called by user ".
+		$requestor->id." for copy ".$copy->id);
 
 	return $self->checkin_do_receive($connection, $ctx);
 }
@@ -1392,5 +1441,5 @@ sub _run_renew_scripts {
 	
 
 
-666;
+1;
 

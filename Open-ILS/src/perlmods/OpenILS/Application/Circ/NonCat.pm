@@ -16,7 +16,7 @@ sub create_non_cat_circ {
 	my( $staffid, $patronid, $circ_lib, $noncat_type, $circ_time ) = @_;
 
 	my( $id, $nct, $evt );
-	$circ_time |= 'now';
+	$circ_time ||= 'now';
 	my $circ = Fieldmapper::action::non_cataloged_circulation->new;
 
 	$logger->activity("Creating non-cataloged circulation for ".

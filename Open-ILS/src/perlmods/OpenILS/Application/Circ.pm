@@ -207,9 +207,10 @@ sub create_in_house_use {
 	my( $self, $client, $authtoken, $params ) = @_;
 
 	my( $staff, $evt, $copy );
-	my $org		= $params->{location};
-	my $copyid	= $params->{copyid};
-	my $count	= $params->{count} || 1;
+	my $org			= $params->{location};
+	my $copyid		= $params->{copyid};
+	my $count		= $params->{count} || 1;
+	my $use_time	= $params->{use_time} || 'now';
 
 	($staff, $evt) = $U->checkses($authtoken);
 	return $evt if $evt;
@@ -223,6 +224,14 @@ sub create_in_house_use {
 	$logger->activity("User " . $staff->id .
 		" creating $count in-house use(s) for copy $copyid at location $org");
 
+	if( $use_time ne 'now' ) {
+		my @dates		= split(/ /, $use_time);
+		my ($y,$m,$d)	= split(/-/, $dates[0]);
+		my ($h,$min,$s) = split(/:/, $dates[1]);
+		$logger->debug("in_house_use setting use time to $use_time");
+		$use_time = OpenILS::Application::Circ::Circulate::_create_date_stamp($s,$min,$h,$d,$m,$y);
+	}
+
 	my @ids;
 	for(1..$count) {
 		my $ihu = Fieldmapper::action::in_house_use->new;
@@ -230,7 +239,7 @@ sub create_in_house_use {
 		$ihu->item($copyid);
 		$ihu->staff($staff->id);
 		$ihu->org_unit($org);
-		$ihu->use_time('now');
+		$ihu->use_time($use_time);
 
 		my $id = $U->simplereq(
 			'open-ils.storage',
