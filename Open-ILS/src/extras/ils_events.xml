@@ -270,6 +270,22 @@
 		</desc>
 	</event>
 
+	<event code='8000' textcode='OFFLINE_SESSION_ACTIVE'>
+		<desc> An offline session for this location is currently processing </desc>
+	</event>
+	<event code='8001' textcode='OFFLINE_SESSION_FILE_EXISTS'>
+		<desc> An offline file for this workstation exists within this session </desc>
+	</event>
+	<event code='8002' textcode='OFFLINE_FILE_ERROR'>
+		<desc> An offline file or directory could not be created or accessed </desc>
+	</event>
+	<event code='8003' textcode='OFFLINE_PARAM_ERROR'>
+		<desc> Missing params in offline upload </desc>
+	</event>
+	<event code='8003' textcode='OFFLINE_CONFIG_ERROR'>
+		<desc> Offline server is not configured properly </desc>
+	</event>
+
 	<!-- ================================================================ -->
 
 </ils_events>
