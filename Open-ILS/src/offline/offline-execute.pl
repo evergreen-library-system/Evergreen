@@ -34,10 +34,10 @@ sub collect_data {
 	system(("touch",  "$dir/$LOCK_FILE")) == 0 
 		or handle_event(OpenILS::Event->new('OFFLINE_FILE_ERROR'));
 
-	# Load the data from the files
 	my $file;
 	my %data;
 
+	# Load the data from the list of files
 	while( ($file = <$dir/*.log>) ) {
 		$logger->debug("offline: Loading script file $file");
 		open(F, $file) or handle_event(
@@ -60,14 +60,14 @@ sub sort_data {
 
 	$logger->debug("offline: Sorting data");
 	my $meta = read_meta();
-
+	
 	# cycle through the workstations
 	for my $ws (keys %$data) {
 
-		$logger->debug("offline: sorting scripts for WS $ws");
-
 		# find the meta line for this ws.
-		my ($m) = grep { $_->{'workstaion'} eq $ws } @$meta;
+		my ($m) = grep { $_->{workstation} eq $ws } @$meta;
+		
+		$logger->debug("offline: Sorting workstations $ws with a time delta of ".$m->{delta});
 
 		my @scripts = @{$$data{$ws}};
 
@@ -76,11 +76,14 @@ sub sort_data {
 			my $command = JSON->JSON2perl($s);
 			$command->{_workstation} = $ws;
 			$command->{_realtime} = $command->{timestamp} + $m->{delta};
+			$logger->debug("offline: setting realtime to ".
+				$command->{_realtime} . " from timestamp " . $command->{timestamp});
 			push( @parsed, $command );
 
 		}
 	}
 
+	@parsed = sort { $a->{_realtime} <=> $b->{_realtime} } @parsed;
 	return \@parsed;
 }
 
@@ -90,15 +93,92 @@ sub sort_data {
 # --------------------------------------------------------------------
 sub process_data {
 	my $data = shift;
-	my $resp = [];
+	my @resp;
+
 	for my $d (@$data) {
-		$logger->activity("offline: Executing command ".Dumper($d));
+		my $t = $d->{type};
+
+		push( @resp, {command => $d, event => handle_checkin($d)})	if( $t eq 'checkin' );
+		push( @resp, {command => $d, event => handle_inhouse($d)})	if( $t eq 'in_house_use' );
+		push( @resp, {command => $d, event => handle_checkout($d)})	if( $t eq 'checkout' );
+		push( @resp, {command => $d, event => handle_renew($d)})		if( $t eq 'renew' );
+		push( @resp, {command => $d, event => handle_register($d)})	if( $t eq 'register' );
 	}
-	return $resp;
+	return \@resp;
 }
 
+
 # --------------------------------------------------------------------
-# Moves the script files from the pending directory to the archive dir
+# Runs a checkin action
+# --------------------------------------------------------------------
+sub handle_checkin {
+
+	my $command		= shift;
+	my $realtime	= $command->{_realtime};
+	my $ws			= $command->{_workstation};
+	my $barcode		= $command->{barcode};
+	my $backdate	= $command->{backdate} || "";
+
+	$logger->activity("offline: checkin : requestor=". $REQUESTOR->id.
+		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, backdate=$backdate");
+
+	return $U->simplereq(
+		'open-ils.circ', 
+		'open-ils.circ.checkin', $AUTHTOKEN,
+		{ barcode => $barcode, backdate => $backdate } );
+}
+
+
+# --------------------------------------------------------------------
+# Runs an in_house_use action
+# --------------------------------------------------------------------
+sub handle_inhouse {
+
+	my $command		= shift;
+	my $realtime	= $command->{_realtime};
+	my $ws			= $command->{_workstation};
+	my $barcode		= $command->{barcode};
+	my $count		= $command->{count} || 1;
+
+	$logger->activity("offline: in_house_use : requestor=". $REQUESTOR->id.
+		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, count=$count");
+
+	my( $copy, $evt ) = $U->fetch_copy_by_barcode($barcode);
+	return $evt if $evt;
+
+	my $ids = $U->simplereq(
+		'open-ils.circ', 
+		'open-ils.circ.in_house_use.create', $AUTHTOKEN,
+		{ copyid => $copy->id, count => $count, location =>  $ORG} );
+	
+	return OpenILS::Event->new('SUCCESS', payload => $ids) if( ref($ids) eq 'ARRAY' );
+	return $ids;
+}
+
+
+
+sub handle_checkout {
+	my $command = shift;
+	return OpenILS::Event->new('SUCCESS', payload => $command);
+}
+
+
+sub handle_renew {
+	my $command = shift;
+	return OpenILS::Event->new('SUCCESS', payload => $command);
+}
+
+
+sub handle_register {
+	my $command = shift;
+	return OpenILS::Event->new('SUCCESS', payload => $command);
+}
+
+
+
+# --------------------------------------------------------------------
+# Removes the log file and Moves the script files from the pending 
+# directory to the archive dir
 # --------------------------------------------------------------------
 sub archive_files {
 	my $archivedir = create_archive_dir();

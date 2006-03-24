@@ -69,11 +69,25 @@ sub display_upload {
 			<center>
 				<form action='offline-upload.pl' method='post' enctype='multipart/form-data'>
 					<b> - Select an offline file to upload - </b><br/><br/>
-					<table><tbody><tr>
-						<td>File to Upload: <input type='file' name='file'> </input></td>
-						<td>Workstation Name: <input type='text' name='ws' value='$ws'> </input></td>
-						<td><input type='submit' name='Submit' value='Upload'> </input></td>
-					</tr></tbody></table>
+					<table>
+						<tbody>
+							<tr>
+								<td>File to Upload: </td>
+								<td><input type='file' name='file'> </input></td>
+							</tr>
+							<tr>
+								<td>Workstation Name: </td>
+								<td><input type='text' name='ws' value='$ws'> </input></td>
+							</tr>
+							<tr>
+								<td>Time Delta: </td>
+								<td><input type='text' name='delta' value='$TIME_DELTA'> </input></td>
+							</tr>
+							<tr>
+								<td colspan='2' align='center'><input type='submit' name='Submit' value='Upload'> </input></td>
+							</tr>
+						</tbody>
+					</table>
 					<input type='hidden' name='ses' value='$AUTHTOKEN'> </input>
 					<input type='hidden' name='html' value='$PRINT_HTML'> </input>
 				</form>

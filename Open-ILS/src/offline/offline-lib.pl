@@ -7,6 +7,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::EX qw/:try/;
 use JSON;
+use Data::Dumper;
 our $U = "OpenILS::Application::AppUtils";
 
 
@@ -48,7 +49,6 @@ sub initialize {
 	# --------------------------------------------------------------------
 	# Connect to OpenSRF
 	# --------------------------------------------------------------------
-	$logger->debug("offline: bootstrapping client with config $bsconfig");
 	OpenSRF::System->bootstrap_client(config_file => $bsconfig); 
 
 
@@ -74,7 +74,7 @@ sub initialize {
 	($REQUESTOR, $evt) = $U->checkses($AUTHTOKEN);
 	handle_event($evt) if $evt;
 
-	$TIME_DELTA	 = $cgi->param('delta');
+	$TIME_DELTA	 = $cgi->param('delta') || "0";
 }
 
 # --------------------------------------------------------------------
@@ -163,7 +163,6 @@ sub get_pending_dir {
 	my $dir = "$base_dir/pending/$ORG/";
 	system( ('mkdir', '-p', "$dir") ) == 0 
 		or handle_error("Unable to create directory $dir");
-	$logger->debug("offline: created/fetched pending directory $dir");	
 	return $dir;
 }
 
@@ -183,7 +182,6 @@ sub create_archive_dir {
 	my $dir = "$base_dir/archive/$ORG/$year$mon$mday$hour$min/";
 	system( ('mkdir', '-p', "$dir") ) == 0 
 		or handle_error("Unable to create archive directory $dir");
-	$logger->debug("offline: Created archive directory $dir");
 	return $dir;
 }
 
@@ -217,9 +215,8 @@ sub read_meta {
 	my @data = <F>;
 	close(F);
 	my @resp;
-	push @resp, JSON->JSON2perl($_) for @data;
+	push(@resp, JSON->JSON2perl($_)) for @data;
 	@resp = grep { $_ and $_->{'workstation'} } @resp;
-	$logger->debug("offline: Reading metadata from file $mf: @resp");
 	return \@resp;
 }
 
