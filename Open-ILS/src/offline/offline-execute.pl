@@ -139,9 +139,10 @@ sub handle_inhouse {
 	my $ws			= $command->{_workstation};
 	my $barcode		= $command->{barcode};
 	my $count		= $command->{count} || 1;
+	my $use_time	= $command->{use_time} || "";
 
-	$logger->activity("offline: in_house_use : requestor=". $REQUESTOR->id.
-		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, count=$count");
+	$logger->activity("offline: in_house_use : requestor=". $REQUESTOR->id.", realtime=$realtime, ".  
+		"workstation=$ws, barcode=$barcode, count=$count, use_time=$use_time");
 
 	my( $copy, $evt ) = $U->fetch_copy_by_barcode($barcode);
 	return $evt if $evt;
@@ -149,7 +150,7 @@ sub handle_inhouse {
 	my $ids = $U->simplereq(
 		'open-ils.circ', 
 		'open-ils.circ.in_house_use.create', $AUTHTOKEN,
-		{ copyid => $copy->id, count => $count, location =>  $ORG} );
+		{ copyid => $copy->id, count => $count, location => $ORG, use_time => $use_time } );
 	
 	return OpenILS::Event->new('SUCCESS', payload => $ids) if( ref($ids) eq 'ARRAY' );
 	return $ids;
@@ -157,22 +158,88 @@ sub handle_inhouse {
 
 
 
-sub handle_checkout {
+# --------------------------------------------------------------------
+# Pulls the relevant circ args from the command, fetches data where 
+# necessary
+# --------------------------------------------------------------------
+sub circ_args_from_command {
 	my $command = shift;
-	return OpenILS::Event->new('SUCCESS', payload => $command);
+
+	my $type			= $command->{type};
+	my $realtime	= $command->{_realtime};
+	my $ws			= $command->{_workstation};
+	my $barcode		= $command->{barcode} || "";
+	my $cotime		= $command->{checkout_time} || "";
+	my $pbc			= $command->{patron_barcode};
+	my $due_date	= $command->{due_date} || "";
+
+	# find the patron with the given barcode
+	my( $p, $evt ) = $U->fetch_user_by_barcode($pbc);
+	return $evt if $evt;
+	my $patronid = $p->id;
+
+	$logger->activity("offline: $type : requestor=". $REQUESTOR->id.
+		", realtime=$realtime, workstation=$ws, checkout_time=$cotime, ".
+		"patron=$patronid, due_date=$due_date");
+
+	my $args = { 
+		barcode			=> $barcode,		
+		patron			=> $patronid, 
+		checkout_time	=> $cotime, 
+		due_date			=> $due_date };
+
+	if( $command->{noncat} ) {
+		$args->{noncat} = 1;
+		$args->{noncat_type} = $command->{noncat_type};
+		$args->{noncat_count} = $command->{noncat_count};
+	}
+
+	return $args;
 }
 
 
+
+# --------------------------------------------------------------------
+# Performs a checkout action
+# --------------------------------------------------------------------
+sub handle_checkout {
+	my $command	= shift;
+	my $args = circ_args_from_command($command);
+
+	# Fetch the permit key
+	my $resp = $U->simplereq(
+		'open-ils.circ', 'open-ils.circ.checkout.permit', $AUTHTOKEN, $args );
+
+	return $resp unless $resp->{ilsevent} eq "0"; 
+	$args->{permit_key} = $resp->{payload};
+	$logger->info("offline: Recevied checkout permit key ".$args->{permit_key});
+
+	# now run the actual checkout
+	return $U->simplereq(
+		'open-ils.circ', 'open-ils.circ.checkout', $AUTHTOKEN, $args );
+}
+
+
+# --------------------------------------------------------------------
+# Performs the renewal action
+# --------------------------------------------------------------------
 sub handle_renew {
 	my $command = shift;
-	return OpenILS::Event->new('SUCCESS', payload => $command);
+	my $args = circ_args_from_command($command);
+	return $U->simplereq(
+		'open-ils.circ', 'open-ils.circ.renew', $AUTHTOKEN, $args );
 }
 
 
+
+# --------------------------------------------------------------------
+# Registers a new patron
+# --------------------------------------------------------------------
 sub handle_register {
 	my $command = shift;
 	return OpenILS::Event->new('SUCCESS', payload => $command);
 }
+
 
 
 
