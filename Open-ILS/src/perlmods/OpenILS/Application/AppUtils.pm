@@ -943,5 +943,18 @@ sub fetch_copies_by_call_number {
 		#'open-ils.storage.direct.asset.copy.search.call_number.atomic', $cnid );
 }
 
+sub fetch_user_by_barcode {
+	my( $self, $bc ) = @_;
+	my $cardid = $self->storagereq(
+		'open-ils.storage.id_list.actor.card.search.barcode', $bc );
+	return (undef, OpenILS::Event->new('CARD_NOT_FOUND', barcode => $bc)) unless $cardid;
+	my $user = $self->storagereq(
+		'open-ils.storage.direct.actor.user.search.card', $cardid );
+	return (undef, OpenILS::Event->new('USER_NOT_FOUND', card => $cardid)) unless $user;
+	return ($user);
+	
+}
+
+
 1;
 
