@@ -36,9 +36,9 @@
 		label="Edit"
 		command="cmd_items_edit"
 	/>
-	<button id="items_mark_missing"
-		label="Missing"
-		command="cmd_items_mark_missing"
+	<button id="items_mark_lost"
+		label="Lost"
+		command="cmd_items_mark_lost"
 	/>
 	<button id="items_claimed_returned"
 		label="Claims Returned"

@@ -160,7 +160,7 @@ patron.items.prototype = {
 						function() {
 						}
 					],
-					'cmd_items_mark_missing' : [
+					'cmd_items_mark_lost' : [
 						['command'],
 						function() {
 						}
