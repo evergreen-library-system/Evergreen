@@ -31,6 +31,40 @@ GNU General Public License for more details.
 
 #include "md5.h"
 
+#define OSRF_MALLOC(ptr, size) \
+	ptr = (void*) malloc( size ); \
+	if( ptr == NULL ) { \
+		perror("OSRF_MALLOC(): Out of Memory" );\
+		exit(99); \
+	} \
+	memset( ptr, 0, size ); 
+
+
+#define OSRF_BUFFER_ADD(gb, data) \
+	do {\
+		int __tl; \
+		if(gb && data) {\
+			__tl = strlen(data) + gb->n_used;\
+			if( __tl < gb->size ) {\
+				strcat(gb->buf, data);\
+				gb->n_used = __tl; \
+			} else { buffer_add(gb, data); }\
+		}\
+	} while(0)
+
+#define OSRF_BUFFER_ADD_CHAR(gb, c)\
+	do {\
+		if(gb) {\
+			if(gb->n_used < gb->size - 1)\
+				gb->buf[gb->n_used++] = c;\
+			else\
+				buffer_add_char(gb, c);\
+		}\
+	}while(0)
+
+	
+
+
 /* turns a va_list into a string */
 #define VA_LIST_TO_STRING(x) \
 	unsigned long __len = 0;\

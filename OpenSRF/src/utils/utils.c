@@ -138,11 +138,12 @@ growing_buffer* buffer_init(int num_initial_bytes) {
 
 	size_t len = sizeof(growing_buffer);
 
-	growing_buffer* gb = (growing_buffer*) safe_malloc(len);
+	growing_buffer* gb;
+	OSRF_MALLOC(gb, len);
 
 	gb->n_used = 0;/* nothing stored so far */
 	gb->size = num_initial_bytes;
-	gb->buf = (char *) safe_malloc(gb->size + 1);
+	OSRF_MALLOC(gb->buf, gb->size + 1);
 
 	return gb;
 }
@@ -172,30 +173,31 @@ int buffer_fadd(growing_buffer* gb, const char* format, ... ) {
 
 }
 
+
 int buffer_add(growing_buffer* gb, char* data) {
+	if(!(gb && data)) return 0;
 
-
-	if( ! gb || ! data  ) { return 0; }
 	int data_len = strlen( data );
-
-	if( data_len == 0 ) { return 0; }
 	int total_len = data_len + gb->n_used;
 
-	while( total_len >= gb->size ) {
-		gb->size *= 2;
+	if( total_len >= gb->size ) {
+		while( total_len >= gb->size ) {
+			gb->size *= 2;
+		}
+	
+		if( gb->size > BUFFER_MAX_SIZE ) {
+			fprintf(stderr, "Buffer reached MAX_SIZE of %d", BUFFER_MAX_SIZE );
+			buffer_free( gb );
+			return 0;
+		}
+	
+		char* new_data;
+		OSRF_MALLOC(new_data, gb->size );
+	
+		strcpy( new_data, gb->buf );
+		free( gb->buf );
+		gb->buf = new_data;
 	}
-
-	if( gb->size > BUFFER_MAX_SIZE ) {
-		fprintf(stderr, "Buffer reached MAX_SIZE of %d", BUFFER_MAX_SIZE );
-		buffer_free( gb );
-		return 0;
-	}
-
-	char* new_data = (char*) safe_malloc( gb->size );
-
-	strcpy( new_data, gb->buf );
-	free( gb->buf );
-	gb->buf = new_data;
 
 	strcat( gb->buf, data );
 	gb->n_used = total_len;
@@ -223,6 +225,18 @@ char* buffer_data( growing_buffer *gb) {
 	return strdup( gb->buf );
 }
 
+
+/*
+#define OSRF_BUFFER_ADD_CHAR(gb, c)\
+	do {\
+		if(gb) {\
+			if(gb->n_used < gb->size - 1)\
+				gb->buf[gb->n_used++] = c;\
+			else\
+				buffer_add_char(gb, c);\
+		}\
+	}while(0)
+	*/
 
 int buffer_add_char(growing_buffer* gb, char c) {
 	char buf[2];
