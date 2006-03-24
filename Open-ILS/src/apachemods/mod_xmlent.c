@@ -200,9 +200,12 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 			f->r->per_dir_config, &xmlent_module );
 
 	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 
-			0, f->r, "XMLENT Config: Content Type = %s,"
-			"Strip PI = %d, Strip Comments = %d, Doctype = %s", 
-			config->contentType, config->stripPI, config->stripComments, config->doctype);
+			0, f->r, "XMLENT Config:\nContent Type = %s, "
+			"Strip PI = %s, Strip Comments = %s, Doctype = %s", 
+			config->contentType, 
+			(config->stripPI) ? "yes" : "no", 
+			(config->stripComments) ? "yes" : "no",
+			config->doctype);
 
 	/* set the content type based on the config */
 	ap_set_content_type(f->r, config->contentType);
