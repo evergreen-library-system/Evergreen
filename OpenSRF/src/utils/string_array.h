@@ -36,5 +36,6 @@ void osrfStringArrayFree(osrfStringArray*);
 /* total size of all included strings */
 int string_array_get_total_size(osrfStringArray* arr);
 
+void osrfStringArrayRemove( osrfStringArray* arr, char* str);
 
 #endif

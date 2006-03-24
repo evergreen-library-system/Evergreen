@@ -7,6 +7,9 @@
 #define OSRF_LIST_INC_SIZE 256
 #define OSRF_LIST_MAX_SIZE 10240
 
+
+#define OSRF_LIST_GET_INDEX(l, i) (!l || i >= l->size) ? NULL: l->arrlist[i]
+
 /**
   Items are stored as void*'s so it's up to the user to
   manage the data wisely.  Also, if the 'freeItem' callback is defined for the list,

@@ -8,9 +8,16 @@ string_array* init_string_array(int size) {
 	if(size > STRING_ARRAY_MAX_SIZE)
 		osrfLogError( OSRF_LOG_MARK, "init_string_array size is too large");
 
+	/*
 	string_array* arr = 
 		(string_array*) safe_malloc(sizeof(string_array));
-	arr->array = (char**) safe_malloc(size * sizeof(char*));
+		*/
+	string_array* arr;
+	OSRF_MALLOC( arr, sizeof(string_array));
+
+	//arr->array = (char**) safe_malloc(size * sizeof(char*));
+	OSRF_MALLOC(arr->array, size * sizeof(char*));
+
 	arr->size = 0;
 	arr->arr_size = size;
 	return arr;
@@ -33,7 +40,9 @@ void string_array_add(string_array* arr, char* str) {
 	/* if necessary, double capacity */
 	if(arr->size >= arr->arr_size) {
 		arr->arr_size *= 2;
-		char** tmp = (char**) safe_malloc(arr->arr_size * sizeof(char*));
+		//char** tmp = (char**) safe_malloc(arr->arr_size * sizeof(char*));
+		char** tmp;
+		OSRF_MALLOC( tmp, arr->arr_size * sizeof(char*));
 		int i;
 
 		/* copy the string pointers over */
@@ -84,4 +93,24 @@ int osrfStringArrayContains( osrfStringArray* arr, char* string ) {
 
 	return 0;
 }
+
+void osrfStringArrayRemove( osrfStringArray* arr, char* tstr) {
+	if(!(arr && tstr)) return;
+	int i;
+	for( i = 0; i != arr->size; i++ ) {
+		char* str = osrfStringArrayGetString(arr, i);
+		if(str) {
+			if(!strcmp(str, tstr)) {
+				free(arr->array[i]);
+				arr->array[i] = NULL;
+				break;
+			}
+		}
+	}
+	for( ; i != arr->size; i++ ) 
+		arr->array[i] = arr->array[i+1];
+
+	arr->size--;
+}
+
 

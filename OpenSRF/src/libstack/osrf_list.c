@@ -1,20 +1,26 @@
 #include "osrf_list.h"
 
 osrfList* osrfNewList() {
-	osrfList* list = safe_malloc(sizeof(osrfList));
+	//osrfList* list = safe_malloc(sizeof(osrfList));
+	osrfList* list;
+	OSRF_MALLOC(list, sizeof(osrfList));
 	list->size		= 0;
 	list->freeItem = NULL;
 	list->arrsize	= OSRF_LIST_DEFAULT_SIZE;
-	list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
+	//list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
+	OSRF_MALLOC(list->arrlist, list->arrsize * sizeof(void*));
 	return list;
 }
 
 osrfList* osrfNewListSize( unsigned int size ) {
-	osrfList* list = safe_malloc(sizeof(osrfList));
+	//osrfList* list = safe_malloc(sizeof(osrfList));
+	osrfList* list;
+	OSRF_MALLOC(list, sizeof(osrfList));
 	list->size		= 0;
 	list->freeItem = NULL;
 	list->arrsize	= size;
-	list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
+	//list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
+	OSRF_MALLOC( list->arrlist, list->arrsize * sizeof(void*) );
 	return list;
 }
 
@@ -45,7 +51,7 @@ void* osrfListSet( osrfList* list, void* item, unsigned int position ) {
 		newsize += OSRF_LIST_INC_SIZE;
 
 	if( newsize > list->arrsize ) { /* expand the list if necessary */
-		newarr = safe_malloc( newsize * sizeof(void*) );
+		OSRF_MALLOC(newarr, newsize * sizeof(void*));
 		for( i = 0; i < list->arrsize; i++ ) 
 			newarr[i] = list->arrlist[i];
 		free(list->arrlist);
@@ -121,7 +127,9 @@ void* osrfListPop( osrfList* list ) {
 
 osrfListIterator* osrfNewListIterator( osrfList* list ) {
 	if(!list) return NULL;
-	osrfListIterator* itr = safe_malloc(sizeof(osrfListIterator));
+	//osrfListIterator* itr = safe_malloc(sizeof(osrfListIterator));
+	osrfListIterator* itr;
+	OSRF_MALLOC(itr, sizeof(osrfListIterator));
 	itr->list = list;
 	itr->current = 0;
 	return itr;

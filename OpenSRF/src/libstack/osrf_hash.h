@@ -5,16 +5,22 @@
 #include "opensrf/string_array.h"
 #include "osrf_list.h"
 
-#define OSRF_HASH_MAXKEY 256
+/* 0x100 is a good size for small hashes */
+#define OSRF_HASH_LIST_SIZE 0x100  /* size of the main hash list */
 
-#define OSRF_HASH_KEY_MASK 0x7FF  /* hash keys are a maximun of 2047 in size */
-#define OSRF_HASH_KEY_SIZE 2048  /* size of the container list for the keys */
+/* used internally */
+#define OSRF_HASH_NODE_FREE(h, n) \
+	if(h && n) { \
+		if(h->freeItem) h->freeItem(n->key, n->item);\
+		free(n->key); free(n); \
+	}
 
 
 struct __osrfHashStruct {
 	osrfList* hash; /* this hash */
 	void (*freeItem) (char* key, void* item);	/* callback for freeing stored items */
 	unsigned int size;
+	osrfStringArray* keys;
 };
 typedef struct __osrfHashStruct osrfHash;
 
@@ -34,7 +40,7 @@ struct __osrfHashIteratorStruct {
 typedef struct __osrfHashIteratorStruct osrfHashIterator;
 
 osrfHashNode* osrfNewHashNode(char* key, void* item);
-void osrfHashNodeFree(osrfHashNode*);
+void* osrfHashNodeFree(osrfHash*, osrfHashNode*);
 
 /**
   Allocates a new hash object
@@ -68,6 +74,8 @@ void* osrfHashGet( osrfHash* hash, const char* key, ... );
   with osrfStringArrayFree();
   */
 osrfStringArray* osrfHashKeys( osrfHash* hash );
+
+osrfStringArray* osrfHashKeysInc( osrfHash* hash );
 
 /**
   Frees a hash

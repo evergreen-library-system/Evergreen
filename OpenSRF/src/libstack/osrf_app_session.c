@@ -64,7 +64,7 @@ void osrf_app_session_request_finish(
 		osrf_app_session* session, int req_id ){
 
 	if(session == NULL) return;
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, req_id );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, req_id );
 	if(req == NULL) return;
 	osrfListRemove( req->session->request_queue, req->request_id );
 }
@@ -73,7 +73,7 @@ void osrf_app_session_request_finish(
 void osrf_app_session_request_reset_timeout( osrf_app_session* session, int req_id ) {
 	if(session == NULL) return;
 	osrfLogDebug( OSRF_LOG_MARK, "Resetting request timeout %d", req_id );
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, req_id );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, req_id );
 	if(req == NULL) return;
 	req->reset_timeout = 1;
 }
@@ -337,14 +337,14 @@ void osrf_app_session_set_complete( osrf_app_session* session, int request_id ) 
 	if(session == NULL)
 		return;
 
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, request_id );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, request_id );
 	if(req) req->complete = 1;
 }
 
 int osrf_app_session_request_complete( osrf_app_session* session, int request_id ) {
 	if(session == NULL)
 		return 0;
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, request_id );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, request_id );
 	if(req)
 		return req->complete;
 	return 0;
@@ -377,7 +377,7 @@ int osrf_app_session_push_queue(
 		osrf_app_session* session, osrf_message* msg ){
 	if(session == NULL || msg == NULL) return 0;
 
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, msg->thread_trace );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, msg->thread_trace );
 	if(req == NULL) return 0;
 	_osrf_app_request_push_queue( req, msg );
 
@@ -452,7 +452,7 @@ int osrf_app_session_disconnect( osrf_app_session* session){
 }
 
 int osrf_app_session_request_resend( osrf_app_session* session, int req_id ) {
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, req_id );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, req_id );
 	return _osrf_app_request_resend( req );
 }
 
@@ -561,7 +561,7 @@ osrf_message* osrf_app_session_request_recv(
 		osrf_app_session* session, int req_id, int timeout ) {
 	if(req_id < 0 || session == NULL)
 		return NULL;
-	osrf_app_request* req = osrfListGetIndex( session->request_queue, req_id );
+	osrf_app_request* req = OSRF_LIST_GET_INDEX( session->request_queue, req_id );
 	return _osrf_app_request_recv( req, timeout );
 }
 
