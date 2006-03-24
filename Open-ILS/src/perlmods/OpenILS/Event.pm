@@ -31,6 +31,11 @@ sub new {
 	my( $m, $f, $l ) = caller(0);
 	my( $mm, $ff, $ll ) = caller(1);
 
+	$f  ||= "";
+	$l  ||= "";
+	$ff ||= "";
+	$ll ||= "";
+
 	return { 
 		ilsevent		=> $e, 
 		textcode		=> $event, 
@@ -56,5 +61,8 @@ sub _load_events {
 			$node->getAttribute('code');
 	}
 }
+
+
+
 
 1;
