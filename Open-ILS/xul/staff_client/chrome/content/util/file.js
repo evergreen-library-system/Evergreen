@@ -22,15 +22,24 @@ util.file.prototype = {
 	'_input_stream' : null,
 	'_output_stream' : null,
 
-	'get' : function( fname ) {
+	'get' : function( fname, path ) {
 		try {
 			if (!fname) { fname = this.name; } else { this.name = fname; }
 			if (!fname) throw('Must specify a filename.');
 
-			this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );
-			this._file.append(myPackageDir); 
-			this._file.append("content"); 
-			this._file.append("conf"); 
+			switch(path) {
+				case 'profile' :
+					this._file = this.dirService.get( "UChrom",  Components.interfaces.nsIFile );
+					//this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
+				break;
+				case 'chrome' : 
+				default:
+					this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );
+					this._file.append(myPackageDir); 
+					this._file.append("content"); 
+					this._file.append("conf"); 
+				break;
+			}
 			this._file.append(fname);
 	
 			this.error.sdump('D_FILE',this._file.path);
@@ -48,6 +57,8 @@ util.file.prototype = {
 			if (!this._file) throw('Must .get() a file first.');
 			if (this._input_stream) { this._input_stream.close(); this._input_stream = null; }
 			if (this._output_stream) { this._output_stream.close(); this._output_stream = null; }
+			if (this._istream) { this._istream.close(); this._istream = null; }
+			if (this._f) { this._f = null; }
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.file.close(): ' + E);
@@ -55,62 +66,98 @@ util.file.prototype = {
 		}
 	},
 
+	'append_object' : function(obj) {
+		try {
+			this.write_object('append',obj);
+		} catch(E) {
+			this.error.sdump('D_ERROR','util.file.append_object(): ' + E);
+			throw(E);
+		}
+	},
+
 	'set_object' : function(obj) {
 		try {
-			if (!this._file) throw('Must .get() a file first.');
-			if (this._input_stream || this._output_stream) throw('Must .close() first.');
-			if (!obj) throw('Must specify an object.');
-
-			var obj_json; 
-			try { obj_json = js2JSON( obj ); } catch(E) { throw('Could not JSONify the object: ' + E); }
-
-			this._create_output_stream();
-			this._output_stream.write( obj_json, String( obj_json ).length );
+			this.write_object('truncate',obj);
 			this.close();
-
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.file.set_object(): ' + E);
 			throw(E);
 		}
 	},
 
-	'get_object' : function() {
+	'write_object' : function(write_type,obj) {
 		try {
 			if (!this._file) throw('Must .get() a file first.');
-			if (!this._file.exists()) throw('File does not exist.');
-			if (this._input_stream || this._output_stream) throw('Must .close() first.');
-			
-			this._create_input_stream();
-			var data = this._input_stream.read(-1);
-			this.close();
-	
-			var obj; try { obj = JSON2js( data ); } catch(E) { throw('Could not js-ify the JSON: '+E); }
-	
-			return obj;
+			if (!obj) throw('Must specify an object.');
 
+			var obj_json; 
+			try { obj_json = js2JSON( obj ) + '\n'; } catch(E) { throw('Could not JSONify the object: ' + E); }
+
+			this.write_content(write_type,obj_json);
+
+		} catch(E) {
+			this.error.sdump('D_ERROR','util.file.write_object(): ' + E);
+			throw(E);
+		}
+	},
+
+	'write_content' : function(write_type,content) {
+		try {
+			if (!this._output_stream) this._create_output_stream(write_type);
+			this._output_stream.write( content, String( content ).length );
+		} catch(E) {
+			this.error.sdump('D_ERROR','util.file.write_content(): ' + E);
+			throw(E);
+		}
+	},
+
+	'get_object' : function() {
+		try {
+			var data = this.get_content();
+			var obj; try { obj = JSON2js( data ); } catch(E) { throw('Could not js-ify the JSON: '+E); }
+			return obj;
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.file.get_object(): ' + E);
 			throw(E);
 		}
 	},
 
-	'_create_input_stream' : function() {
+	'get_content' : function() {
 		try {
 			if (!this._file) throw('Must .get() a file first.');
-			if (this._input_stream || this._output_stream) throw('Must .close() first.');
 			if (!this._file.exists()) throw('File does not exist.');
-	
-			var f = Components.classes["@mozilla.org/network/file-input-stream;1"]
+			
+			if (!this._input_stream) this._create_input_stream();
+			var data = this._input_stream.read(-1);
+			//var data = {}; this._istream.readLine(data);
+			return data;
+		} catch(E) {
+			this.error.sdump('D_ERROR','util.file.get_content(): ' + E);
+			throw(E);
+		}
+	},
+
+	'_create_input_stream' : function() {
+		try {
+			dump('_create_input_stream()\n');
+			if (!this._file) throw('Must .get() a file first.');
+			if (!this._file.exists()) throw('File does not exist.');
+
+			this._f = Components.classes["@mozilla.org/network/file-input-stream;1"]
 				.createInstance(Components.interfaces.nsIFileInputStream);
-			f.init(this._file, 0x01, 0, 0);
+			this._f.init(this._file, 0x01, 0, 0);
+			/*
+			this._f.QueryInterface(Components.interfaces.nsILineInputStream);
+			this._istream = this._f;
+			*/
 			this._input_stream = Components.classes["@mozilla.org/scriptableinputstream;1"]
 				.createInstance(Components.interfaces.nsIScriptableInputStream);
-			if (f) {
-				this._input_stream.init(f);
-				return this._input_stream;
+			if (this._f) {
+				this._input_stream.init(this._f);
 			} else {
 				throw('Could not instantiate input stream.');
 			}
+			return this._input_stream;
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.file._create_input_stream(): ' + E);
@@ -118,16 +165,24 @@ util.file.prototype = {
 		}
 	},
 
-	'_create_output_stream' : function() {
+	'_create_output_stream' : function(param) {
 		try {
+			dump('_create_output_stream('+param+')\n');
 			if (!this._file) throw('Must .get() a file first.');
-			if (this._input_stream || this._output_stream) throw('Must .close() first.');
 
 			if (! this._file.exists()) this._file.create( 0, 0640 );
 
 			this._output_stream = Components.classes["@mozilla.org/network/file-output-stream;1"]
 				.createInstance(Components.interfaces.nsIFileOutputStream);
-			this._output_stream.init(this._file, 0x02 | 0x08 | 0x20, 0644, 0);
+			switch(param){
+				case 'append' :
+					this._output_stream.init(this._file, 0x02 | 0x08 | 0x10 | 0x40, 0644, 0);
+				break;
+				case 'truncate' :
+				default:
+					this._output_stream.init(this._file, 0x02 | 0x08 | 0x20 | 0x40, 0644, 0);
+				break;
+			}
 
 			return this._output_stream;
 
