@@ -42,6 +42,7 @@ util.date.formatted_date = function (date,format) {
 	} else if (typeof(date) == 'undefined') {
 		date = new Date( parseInt( date + '000' ) );
 	}
+
 	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
 	var dd = date.getDate().toString(); if (dd.length == 1) dd = '0' +dd;
 	var yyyy = date.getFullYear().toString();
@@ -49,6 +50,8 @@ util.date.formatted_date = function (date,format) {
 	var H = date.getHours(); H = H.toString(); if (H.length == 1) H = '0' + H;
 	var I = date.getHours(); if (I > 12) I -= 12; I = I.toString();
 	var M = date.getMinutes(); M = M.toString(); if (M.length == 1) M = '0' + M;
+	var sec = date.getSeconds(); sec = sec.toString(); if (sec.length == 1) sec = '0' + sec;
+
 	var s = format;
 	if (s == '') { s = '%F %H:%M'; }
 	s = s.replace( /%m/g, mm );
@@ -59,6 +62,7 @@ util.date.formatted_date = function (date,format) {
 	s = s.replace( /%H/g, H );
 	s = s.replace( /%I/g, I );
 	s = s.replace( /%M/g, M );
+	s = s.replace( /%s/g, sec );
 	return s;
 }
 
