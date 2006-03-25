@@ -61,6 +61,9 @@
 		<command id="cmd_logoff"/>
 		<command id="cmd_override" />
 		<command id="cmd_close_window"/>
+		<command id="cmd_standalone"/>
+		<command id="cmd_js_console"/>
+		<command id="cmd_clear_cache"/>
 	</commandset>
 
 	<keyset id="auth_keys">
@@ -84,7 +87,7 @@
 				<rows>
 					<row>
 						<label value="Hostname" control="server_prompt" accesskey="H"/>
-						<textbox id="server_prompt" value="demo.gapines.org"/>
+						<textbox id="server_prompt" value="dev.gapines.org"/>
 					</row>
 					<row>
 						<label value="Status"/>
@@ -123,6 +126,17 @@
 			<caption label="Workstation"/>
 			<deck id="ws_deck">
 			</deck>
+		</groupbox>
+
+		<groupbox flex="1">
+			<caption label="Offline Use"/>
+			<button label="Standalone Interface" accesskey="S" command="cmd_standalone"/>
+		</groupbox>
+
+		<groupbox id="debug_gb" flex="1" hidden="true" orient="horizontal">
+			<caption label="Debug Options"/>
+			<button label="Javascript Console" accesskey="J" command="cmd_js_console"/>
+			<button label="Clear Cache" accesskey="C" command="cmd_clear_cache"/>
 		</groupbox>
 
 		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>

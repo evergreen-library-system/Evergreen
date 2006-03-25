@@ -52,8 +52,6 @@ function main_init() {
 		JSAN.use('util.window');
 		G.window = new util.window();
 
-		//G.window.open(urls.XUL_DEBUG_CONSOLE,'testconsole','chrome,resizable');
-
 		JSAN.use('auth.controller');
 		G.auth = new auth.controller( { 'window' : mw } );
 
@@ -67,7 +65,7 @@ function main_init() {
 		G.file = new util.file();
 		try {
 			G.file.get('ws_info');
-			G.ws_info = G.file.get_object();
+			G.ws_info = G.file.get_object(); G.file.close();
 		} catch(E) {
 			G.ws_info = {};
 		}
@@ -107,13 +105,37 @@ function main_init() {
 			}
 		}
 
+		G.auth.on_standalone = function() {
+			G.window.open(urls.XUL_STANDALONE,'Offline','chrome,resizable,modal');
+		}
+
+		G.auth.on_debug = function(action) {
+			switch(action) {
+				case 'js_console' :
+					G.window.open(urls.XUL_DEBUG_CONSOLE,'testconsole','chrome,resizable');
+				break;
+				case 'clear_cache' :
+					clear_the_cache();
+					alert('cache cleared');
+				break;
+				default:
+					alert('debug the debug :D');
+				break;
+			}
+		}
+
 		G.auth.init();
 		// XML_HTTP_SERVER will get reset to G.auth.controller.view.server_prompt.value
 
 		/////////////////////////////////////////////////////////////////////////////
 
 		var x = document.getElementById('version_label');
-		x.setAttribute('value','Build ID: ' + '/xul/server/'.split(/\//)[2]);
+		var version = '/xul/server/'.split(/\//)[2];
+		if (version = 'server') {
+			version = 'versionless debug build';
+			document.getElementById('debug_gb').hidden = false;
+		}
+		x.setAttribute('value','Build ID: ' + version);
 
 	} catch(E) {
 		var error = "!! This software has encountered an error.  Please tell your friendly " +
