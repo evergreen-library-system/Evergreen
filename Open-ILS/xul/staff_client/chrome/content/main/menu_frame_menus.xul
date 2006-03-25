@@ -25,6 +25,7 @@
 	<command id="cmd_public_opac" />
 	<command id="cmd_search_tcn" />
 	<command id="cmd_patron_register" key="patron-register-key" />
+	<command id="cmd_standalone" />
 	<command id="cmd_survey_wizard" />
 	<command id="cmd_stat_cat_edit" />
 	<command id="cmd_non_cat_type_edit" />
@@ -136,6 +137,8 @@
 		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" key="copy-status-key" command="cmd_copy_status"/>
 		<menuitem label="&staff.main.menu.circ.patron_status.label;" accesskey="&staff.main.menu.circ.patron_status.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 		<menuseparator />
+		<menuitem label="Offline Interface" command="cmd_standalone"/>
+		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.key;" key="patron-register-key" command="cmd_patron_register"/>
 	</menupopup>
 </menu>
@@ -190,8 +193,11 @@
 </menu>
 
 <!-- The Help menu on the main menu -->
-<menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="&staff.main.menu.admin.key;">
+<menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="-" old_accesskey="&staff.main.menu.admin.key;">
 	<menupopup id="main.menu.admin.popup">
+		<menuitem label="Upload Offline Transactions" accesskey="O" command="cmd_upload_offline_xacts"/>
+		<menuitem label="Offline Transaction Management" accesskey="T" command="cmd_manage_offline_xacts"/>
+		<menuseparator />
 		<menuitem label="Advanced User Editor" accesskey="U" command="cmd_adv_user_edit"/>
 		<menuitem label="Receipt Template Editor" accesskey="R" command="cmd_print_list_template_edit"/>
 		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
@@ -199,8 +205,9 @@
 		<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>
 		<menuitem label="Copy Location Editor" accesskey="L" command="cmd_copy_location_edit"/>
 		<menuseparator />
+		<menuitem label="For developers..." disabled="true"/>
 		<menuitem label="Public OPAC" command="cmd_public_opac" accesskey="p"/>
-		<menuitem label="Test Module" accesskey="T" command="cmd_test"/>
+		<menuitem label="Test Module" old_accesskey="T" command="cmd_test"/>
 		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
 		<menuitem label="Fieldmapper" accesskey="m" command="cmd_fieldmapper"/>
 		<menuitem label="Javscript Console" accesskey="J" command="cmd_console"/>

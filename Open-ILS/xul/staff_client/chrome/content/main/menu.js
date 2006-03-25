@@ -172,6 +172,13 @@ main.menu.prototype = {
 				}
 			],
 
+			'cmd_standalone' : [
+				['oncommand'],
+				function() { 
+					obj.set_tab(obj.url_prefix(urls.XUL_STANDALONE),{},{});
+				}
+			],
+
 			/* Cataloging Menu */
 			'cmd_z39_50_import' : [
 				['oncommand'],
@@ -181,6 +188,20 @@ main.menu.prototype = {
 			],
 
 			/* Admin menu */
+			'cmd_upload_offline_xacts' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_UPLOAD_OFFLINE_XACTS) + '?session=' + window.escape(session), {}, {});
+				}
+			],
+
+			'cmd_manage_offline_xacts' : [
+				['oncommand'],
+				function() {
+					obj.set_tab(obj.url_prefix(urls.XUL_MANAGE_OFFLINE_XACTS) + '?session=' + window.escape(session), {}, {});
+				}
+			],
+
 			'cmd_adv_user_edit' : [
 				['oncommand'],
 				function() {
