@@ -184,7 +184,7 @@ OpenILS.data.prototype = {
 						/* FIXME -- we're going to revisit caching and do it differently
 						try {
 							var file = new util.file( classname );
-							obj.list[classname] = file.get_object();
+							obj.list[classname] = file.get_object(); file.close();
 							convert();
 						} catch(E) {
 							throw(E);
