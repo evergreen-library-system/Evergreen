@@ -118,6 +118,7 @@ var urls = {
 	'XUL_PRE_CAT' : '/xul/server/circ/pre_cat_fields.xul',
 	'XUL_PRINT_LIST_TEMPLATE_EDITOR' : '/xul/server/circ/print_list_template_editor.xul',
 	'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
+	'XUL_STANDALONE' : 'chrome://open_ils_staff_client/content/circ/offline.xul',
 	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xhtml',
 	'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
 	'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
