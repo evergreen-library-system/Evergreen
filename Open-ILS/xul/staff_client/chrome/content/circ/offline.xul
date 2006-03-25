@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+
+<window id="offline_win" sizemode="maximized"
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('..');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for offline.xul');
+
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
+				}
+
+				g.cgi = new CGI();
+				var session = g.cgi.param('session');
+
+				JSAN.use('circ.offline'); g.offline = new circ.offline();
+
+				g.offline.init();
+
+
+				JSAN.use('util.date');
+				
+				function update_clock() {
+					var today = util.date.formatted_date(new Date(),"%F %H:%M:%s");
+					document.getElementById('today').setAttribute('label',today);
+					setTimeout(update_clock,1);
+				}
+
+				update_clock();
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncirc/offline.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+	]]>
+	</script>
+
+	<groupbox flex="1">
+		<caption label="Evergreen Offline"/>
+		<hbox id="nav">
+			<button id="today" onclick="alert('Not Yet Implemented');" tooltiptext="Estimated Server Time - Click to adjust"/>
+			<spacer flex="1"/>
+			<button id="cmd_checkout" label="Check Out" accesskey="C"/>
+			<button id="cmd_renew" label="Renew" accesskey="r"/>
+			<button id="cmd_in_house_use" label="In House Use" accesskey="h"/>
+			<button id="cmd_checkin" label="Check In" accesskey="i"/>
+			<button id="cmd_register_patron" label="Register Patron" accesskey="p"/>
+			<button id="cmd_print_last_receipt" label="Last Receipt" accesskey="l"/>
+			<button id="cmd_exit" label="Exit" accesskey="x"/>
+		</hbox>
+		<deck id="main" style="border: solid thin red; background-color: #FFAAAA;" flex="1">
+			<vbox flex="1">
+				<spacer flex="1"/>
+				<html:div>
+				<html:span style="font-weight: bold; font-size: x-large;">Use this interface when you have no network connectivity.  Some considerations:</html:span>
+				<html:ul>
+					<html:li><html:span style="font-size: x-large;">You should synchronize with Evergreen as often as possible by logging in when networked.  This updates the offline patron list and the offline clock (the button in the upper left corner).</html:span></html:li>
+					<html:li><html:span style="font-size: x-large;">You should not modify your local system time through your operating system once you have synchronized with Evergreen.  The servers keep track of all time differences between machines and normalizes them when ordering and processing transactions.  However, if the offline clock differs greatly from reality, you may adjust it from within this interface by clicking on the date/time button in the upper left corner.</html:span></html:li>
+					<html:li><html:span style="font-size: x-large;">You may upload offline transactions after you regain network connectivity by logging in and choosing <html:span style="font-weight: bold;">Admin -&gt; Upload Offline Transactions</html:span> from the menubar.  Once all transactions have been uploaded, you may review and process them from <html:span style="font-weight: bold;">Admin -&gt; Offline Transaction Management</html:span>.</html:span></html:li>
+				</html:ul>
+				</html:div>
+				<spacer flex="2"/>
+			</vbox>
+		</deck>
+	</groupbox>
+
+</window>
+
