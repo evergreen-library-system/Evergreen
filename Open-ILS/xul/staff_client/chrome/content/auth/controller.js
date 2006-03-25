@@ -29,6 +29,24 @@ auth.controller.prototype = {
 							obj.login();
 						}
 					],
+					'cmd_standalone' : [
+						['command'],
+						function() {
+							obj.standalone();
+						}
+					],
+					'cmd_clear_cache' : [
+						['command'],
+						function() {
+							obj.debug('clear_cache');
+						}
+					],
+					'cmd_js_console' : [
+						['command'],
+						function() {
+							obj.debug('js_console');
+						}
+					],
 					'cmd_override' : [
 						['command'],
 						function() {
@@ -311,6 +329,32 @@ auth.controller.prototype = {
 			}
 		}
 
+	},
+
+	'standalone' : function() {
+		var obj = this;
+		try {
+			if (typeof this.on_standalone == 'function') {
+				obj.on_standalone();
+			}
+		} catch(E) {
+			var error = '!! ' + E + '\n';
+			obj.error.sdump('D_ERROR',error); 
+			alert(error);
+		}
+	},
+
+	'debug' : function(action) {
+		var obj = this;
+		try {
+			if (typeof this.on_debug == 'function') {
+				obj.on_debug(action);
+			}
+		} catch(E) {
+			var error = '!! ' + E + '\n';
+			obj.error.sdump('D_ERROR',error);
+			alert(error);
+		}
 	},
 
 	'logoff' : function() { 
