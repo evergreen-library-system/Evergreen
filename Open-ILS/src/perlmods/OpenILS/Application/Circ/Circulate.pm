@@ -3,7 +3,6 @@ use base 'OpenSRF::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use Data::Dumper;
-use OpenSRF::Utils;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use OpenILS::Utils::ScriptRunner;
@@ -12,6 +11,9 @@ use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::Transit;
 use OpenILS::Utils::PermitHold;
 use OpenSRF::Utils::Logger qw(:logger);
+use DateTime;
+use DateTime::Format::ISO8601;
+use OpenSRF::Utils qw/:datetime/;
 
 $Data::Dumper::Indent = 0;
 my $apputils	= "OpenILS::Application::AppUtils";
@@ -763,7 +765,7 @@ sub _build_checkout_circ_object {
 	# if the user provided an overiding checkout time, 
 	# (e.g. the checkout really happened several hours ago), then
 	# we apply that here.  Does this need a perm??
-	if( my $ds =  _checkout_time_to_stamp($ctx->{checkout_time})) {
+	if( my $ds = _create_date_stamp($ctx->{checkout_time}) ) {
 		$logger->debug("circ setting checkout_time to $ds");
 		$circ->xact_start($ds);
 	}
@@ -784,9 +786,7 @@ sub _apply_modified_due_date {
 			$ctx->{requestor}->id, $ctx->{circ_lib}, 'CIRC_OVERRIDE_DUE_DATE');
 		return $evt if $evt;
 
-		# User provided due date looks like YYYY-MM-DD
-		my ($y, $m, $d) = split(/-/, $ctx->{due_date});
-		my $ds = _create_date_stamp(0,0,0,$d,$m,$y);
+		my $ds = _create_date_stamp($ctx->{due_date});
 		$logger->debug("circ modifying  due_date to $ds");
 		$circ->due_date($ds);
 
@@ -795,11 +795,12 @@ sub _apply_modified_due_date {
 }
 
 sub _create_date_stamp {
-	my ($sec,$min,$hour,$mday,$mon,$year) = @_;
-	my $due_date = sprintf(
-   	'%s-%0.2d-%0.2dT%s:%0.2d:%0.2d-00',
-   	$year, $mon, $mday, $hour, $min, $sec);
-	return $due_date;
+	my $datestring = shift;
+	return undef unless $datestring;
+	my $parser = DateTime::Format::ISO8601->new;
+	$datestring = $parser->parse_datetime( clense_ISO8601( $datestring ) );
+	$logger->debug("circ created date stamp => $datestring");
+	return $datestring;
 }
 
 sub _create_due_date {
@@ -808,7 +809,10 @@ sub _create_due_date {
 	my ($sec,$min,$hour,$mday,$mon,$year) = 
 		gmtime(OpenSRF::Utils->interval_to_seconds($duration) + int(time()));
 	$year += 1900; $mon += 1;
-	return _create_date_stamp($sec,$min,$hour,$mday,$mon,$year);
+	my $due_date = sprintf(
+   	'%s-%0.2d-%0.2dT%s:%0.2d:%0.2d-00',
+   	$year, $mon, $mday, $hour, $min, $sec);
+	return $due_date;
 }
 
 sub _set_circ_due_date {
@@ -897,16 +901,6 @@ sub _handle_related_holds {
 	return (\@fulfilled, undef);
 }
 
-sub _checkout_time_to_stamp {
-	my $t = shift;
-	return undef unless $t;
-	my @dates = split(/ /, $t);
-	my ($y,$m,$d) = split(/-/, $dates[0]);
-	my ($h,$min,$s) = split(/:/, $dates[1]);
-	return _create_date_stamp($s,$min,$h,$d,$m,$y);
-}
-
-
 sub _checkout_noncat {
 	my ( $key, $requestor, $patron, %params ) = @_;
 	my( $circ, $circlib, $evt );
@@ -918,7 +912,7 @@ sub _checkout_noncat {
 		unless _check_permit_key($key);
 
 	my $count = $params{noncat_count} || 1;
-	my $cotime = _checkout_time_to_stamp($params{checkout_time}) || "";
+	my $cotime = _create_date_stamp($params{checkout_time}) || "";
 	$logger->info("circ creating $count noncat circs with checkout time $cotime");
 	for(1..$count) {
 		( $circ, $evt ) = OpenILS::Application::Circ::NonCat::create_non_cat_circ(

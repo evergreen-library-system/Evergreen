@@ -11,10 +11,13 @@ use OpenILS::Application::Circ::Money;
 use OpenILS::Application::Circ::NonCat;
 use OpenILS::Application::Circ::CopyLocations;
 
+use DateTime;
+use DateTime::Format::ISO8601;
+
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
-use OpenSRF::Utils;
+use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
 use OpenSRF::EX qw(:try);
@@ -225,11 +228,9 @@ sub create_in_house_use {
 		" creating $count in-house use(s) for copy $copyid at location $org");
 
 	if( $use_time ne 'now' ) {
-		my @dates		= split(/ /, $use_time);
-		my ($y,$m,$d)	= split(/-/, $dates[0]);
-		my ($h,$min,$s) = split(/:/, $dates[1]);
+		my $parser = DateTime::Format::ISO8601->new;
+		$use_time = $parser->parse_datetime(clense_ISO8601($use_time));
 		$logger->debug("in_house_use setting use time to $use_time");
-		$use_time = OpenILS::Application::Circ::Circulate::_create_date_stamp($s,$min,$h,$d,$m,$y);
 	}
 
 	my @ids;
