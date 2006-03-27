@@ -215,10 +215,16 @@ sub create_in_house_use {
 	my $count		= $params->{count} || 1;
 	my $use_time	= $params->{use_time} || 'now';
 
+	if(!$copyid) {
+		my $barcode = $params->{barcode};
+		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
+		return $evt if $evt;
+	}
+
 	($staff, $evt) = $U->checkses($authtoken);
 	return $evt if $evt;
 
-	($copy, $evt) = $U->fetch_copy($copyid);
+	($copy, $evt) = $U->fetch_copy($copyid) unless $copy;
 	return $evt if $evt;
 
 	$evt = $U->check_perms($staff->id, $org, 'CREATE_IN_HOUSE_USE');

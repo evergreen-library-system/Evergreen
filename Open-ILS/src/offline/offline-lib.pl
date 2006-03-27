@@ -9,6 +9,7 @@ use OpenSRF::EX qw/:try/;
 use JSON;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
+use Digest::MD5 qw/md5_hex/;
 our $U = "OpenILS::Application::AppUtils";
 
 
@@ -27,6 +28,7 @@ our $AUTHTOKEN; # The login session key
 our $REQUESTOR; # the requestor user object
 our $base_dir; # the base directory for logs
 our $WORKSTATION;
+our $MAX_FILE_SIZE = 104857600; # - define a 100MB file size limit
 
 #do '##CONFIG##/upload-server.pl';
 do 'offline-config.pl';

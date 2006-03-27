@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use strict; use warnings;
+use Time::HiRes;
 
 # --------------------------------------------------------------------
 # Loads the offline script files for a given org, sorts and runs the 
@@ -108,26 +109,6 @@ sub process_data {
 }
 
 
-# --------------------------------------------------------------------
-# Runs a checkin action
-# --------------------------------------------------------------------
-sub handle_checkin {
-
-	my $command		= shift;
-	my $realtime	= $command->{_realtime};
-	my $ws			= $command->{_workstation};
-	my $barcode		= $command->{barcode};
-	my $backdate	= $command->{backdate} || "";
-
-	$logger->activity("offline: checkin : requestor=". $REQUESTOR->id.
-		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, backdate=$backdate");
-
-	return $U->simplereq(
-		'open-ils.circ', 
-		'open-ils.circ.checkin', $AUTHTOKEN,
-		{ barcode => $barcode, backdate => $backdate } );
-}
-
 
 # --------------------------------------------------------------------
 # Runs an in_house_use action
@@ -172,21 +153,18 @@ sub circ_args_from_command {
 	my $cotime		= $command->{checkout_time} || "";
 	my $pbc			= $command->{patron_barcode};
 	my $due_date	= $command->{due_date} || "";
-
-	# find the patron with the given barcode
-	my( $p, $evt ) = $U->fetch_user_by_barcode($pbc);
-	return $evt if $evt;
-	my $patronid = $p->id;
+	my $noncat		= ($command->{noncat}) ? "yes" : "no"; # for logging
 
 	$logger->activity("offline: $type : requestor=". $REQUESTOR->id.
 		", realtime=$realtime, workstation=$ws, checkout_time=$cotime, ".
-		"patron=$patronid, due_date=$due_date");
+		"patron=$pbc, due_date=$due_date, noncat=$noncat");
 
 	my $args = { 
-		barcode			=> $barcode,		
-		patron			=> $patronid, 
-		checkout_time	=> $cotime, 
-		due_date			=> $due_date };
+		permit_override	=> 1, 
+		barcode				=> $barcode,		
+		checkout_time		=> $cotime, 
+		patron_barcode		=> $pbc,
+		due_date				=> $due_date };
 
 	if( $command->{noncat} ) {
 		$args->{noncat} = 1;
@@ -205,16 +183,6 @@ sub circ_args_from_command {
 sub handle_checkout {
 	my $command	= shift;
 	my $args = circ_args_from_command($command);
-
-	# Fetch the permit key
-	my $resp = $U->simplereq(
-		'open-ils.circ', 'open-ils.circ.checkout.permit', $AUTHTOKEN, $args );
-
-	return $resp unless $resp->{ilsevent} eq "0"; 
-	$args->{permit_key} = $resp->{payload};
-	$logger->info("offline: Recevied checkout permit key ".$args->{permit_key});
-
-	# now run the actual checkout
 	return $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.checkout', $AUTHTOKEN, $args );
 }
@@ -226,8 +194,30 @@ sub handle_checkout {
 sub handle_renew {
 	my $command = shift;
 	my $args = circ_args_from_command($command);
+	my $t = time;
 	return $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.renew', $AUTHTOKEN, $args );
+}
+
+
+# --------------------------------------------------------------------
+# Runs a checkin action
+# --------------------------------------------------------------------
+sub handle_checkin {
+
+	my $command		= shift;
+	my $realtime	= $command->{_realtime};
+	my $ws			= $command->{_workstation};
+	my $barcode		= $command->{barcode};
+	my $backdate	= $command->{backdate} || "";
+
+	$logger->activity("offline: checkin : requestor=". $REQUESTOR->id.
+		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, backdate=$backdate");
+
+	return $U->simplereq(
+		'open-ils.circ', 
+		'open-ils.circ.checkin', $AUTHTOKEN,
+		{ barcode => $barcode, backdate => $backdate } );
 }
 
 

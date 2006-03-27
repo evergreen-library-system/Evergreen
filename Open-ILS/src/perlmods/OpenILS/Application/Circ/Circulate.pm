@@ -30,6 +30,8 @@ my $cache_handle;		# - memcache handle
 sub PRECAT_FINE_LEVEL { return 2; }
 sub PRECAT_LOAN_DURATION { return 2; }
 
+my %RECORD_FROM_COPY_CACHE;
+
 
 # for security, this is a process-defined and not
 # a client-defined variable
@@ -171,8 +173,13 @@ sub _ctx_add_copy_objects {
 
 	if( $copy and !$ctx->{title} ) {
 		$logger->debug("Copy status: " . $copy->status);
-		( $ctx->{title}, $evt ) = $U->fetch_record_by_copy( $copy->id );
+
+		my $r = $RECORD_FROM_COPY_CACHE{$copy->id};
+		($r, $evt) = $U->fetch_record_by_copy( $copy->id ) unless $r;
 		return $evt if $evt;
+		$RECORD_FROM_COPY_CACHE{$copy->id} = $r;
+
+		$ctx->{title} = $r;
 		$ctx->{copy} = $copy;
 	}
 
@@ -565,12 +572,17 @@ sub checkout {
 	# have checkout privelages
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
 	( $requestor, $evt ) = $U->checksesperm( $authtoken, 'COPY_CHECKOUT' ) unless $__isrenewal;
+	return $evt if $evt;
 
 	$logger->debug("REQUESTOR event: " . ref($requestor));
 
-	return $evt if $evt;
-	( $patron, $evt ) = $U->fetch_user($params->{patron});
-	return $evt if $evt;
+	if( $params->{patron} ) {
+		( $patron, $evt ) = $U->fetch_user($params->{patron});
+		return $evt if $evt;
+	} else {
+		( $patron, $evt ) = $U->fetch_user_by_barcode($params->{patron_barcode});
+		return $evt if $evt;
+	}
 
 	# set the circ lib to the home org of the requestor if not specified
 	my $circlib = (defined($params->{circ_lib})) ? 
@@ -601,8 +613,16 @@ sub checkout {
 	$ctx->{session} = $U->start_db_session() unless $ctx->{session};
 
 	my $cid = ($params->{precat}) ? -1 : $ctx->{copy}->id;
-	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
-		unless _check_permit_key($key);
+
+	if( $ctx->{permit_override} ) {
+		$evt = $U->check_perms(
+			$requestor->id, $ctx->{copy}->circ_lib->id, 'CIRC_PERMIT_OVERRIDE');
+		return $evt if $evt;
+
+	} else {
+		return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
+			unless _check_permit_key($key);
+	}
 
 	$ctx->{circ_lib} = $circlib;
 
@@ -1335,11 +1355,24 @@ sub renew {
 	my ( $requestor, $patron, $ctx, $evt, $circ, $copy );
 	$__isrenewal = 1;
 
-	# if requesting a renewal for someone else, you must have
-	# renew privelages
-	( $requestor, $patron, $evt ) = $U->checkses_requestor( 
-		$authtoken, $params->{patron}, 'RENEW_CIRC' );
+	# fetch the patron object one way or another
+	if( $params->{patron} ) {
+		( $patron, $evt ) = $U->fetch_user($params->{patron});
+		if($evt) { $__isrenewal = 0; return $evt; }
+	} else {
+		( $patron, $evt ) = $U->fetch_user_by_barcode($params->{patron_barcode});
+		if($evt) { $__isrenewal = 0; return $evt; }
+	}
+
+	# verify our login session
+	($requestor, $evt) = $U->checkses($authtoken);
 	if($evt) { $__isrenewal = 0; return $evt; }
+
+	# make sure we have permission to perform a renewal
+	if( $requestor->id ne $patron->id ) {
+		$evt = $U->check_perms($requestor->id, $patron->home_ou, 'RENEW_CIRC');
+		if($evt) { $__isrenewal = 0; return $evt; }
+	}
 
 
 	# fetch and build the circulation environment
@@ -1389,15 +1422,23 @@ sub renew {
 	$ctx->{renewal_remaining} = $renewals;
 
 	# run the circ permit scripts
-	$evt = $self->permit_circ( $client, $authtoken, $params );
-	if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
-		$ctx->{precat} = 1;
+	if( $ctx->{permit_override} ) {
+		$evt = $U->check_perms(
+			$requestor->id, $ctx->{copy}->circ_lib->id, 'CIRC_PERMIT_OVERRIDE');
+		if($evt) { $__isrenewal = 0; return $evt; }
+
 	} else {
-		if(!$U->event_equals($evt, 'SUCCESS')) {
-			if($evt) { $__isrenewal = 0; return $evt; }
+		$evt = $self->permit_circ( $client, $authtoken, $params );
+		if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
+			$ctx->{precat} = 1;
+
+		} else {
+			if(!$U->event_equals($evt, 'SUCCESS')) {
+				if($evt) { $__isrenewal = 0; return $evt; }
+			}
 		}
+		$params->{permit_key} = $evt->{payload};
 	}
-	$params->{permit_key} = $evt->{payload};
 
 
 	# checkout the item again

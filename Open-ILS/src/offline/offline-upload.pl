@@ -7,7 +7,7 @@ use strict; use warnings;
 #	completed transactions go into $base_dir/archive/<org>/YYYMMDDHHMM/<ws>.log
 # --------------------------------------------------------------------
 
-our ($ORG, $META_FILE, $LOCK_FILE, $TIME_DELTA, $MD5_SUM, $PRINT_HTML,
+our ($ORG, $META_FILE, $LOCK_FILE, $TIME_DELTA, $MD5_SUM, $PRINT_HTML, $MAX_FILE_SIZE,
 	$AUTHTOKEN, $REQUESTOR, $U, %config, $cgi, $base_dir, $logger);
 
 require 'offline-lib.pl';
@@ -42,9 +42,29 @@ sub load_file() {
 	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_FILE_EXISTS')) if( -e $output );
 
 	$logger->debug("offline: Writing log file $output");
+	my $numbytes = 0;
+	my $string = "";
 	open(FILE, ">$output");
-	while( <$filehandle> ) { print FILE; }
+	while( <$filehandle> ) { 
+		$numbytes += length "$_";
+		$string .= "$_";
+
+		if( $numbytes > $MAX_FILE_SIZE ) {
+			close(FILE);
+			unlink($output);
+			&handle_event('OFFLINE_FILE_ERROR');
+		}
+
+		print FILE; 
+	}
 	close(FILE);
+
+	if(my $checksum = $cgi->param('checksum')) {
+		my $md5 = md5_hex($string);
+		$logger->debug("offline: received checksum $checksum, our data shows $md5");
+		&handle_event(OpenILS::Event->new('OFFLINE_CHECKSUM_FAILED')) if( $md5 ne $checksum ) ;
+	}
+
 
 	# Append the metadata for this workstations upload
 	append_meta( {
@@ -62,6 +82,7 @@ sub load_file() {
 # --------------------------------------------------------------------
 sub display_upload {
 	my $ws	= $cgi->param('ws') || "";
+	my $checksum = $cgi->param('checksum') || "";
 
 	print_html(
 		title => "Offline Upload",
@@ -90,6 +111,7 @@ sub display_upload {
 					</table>
 					<input type='hidden' name='ses' value='$AUTHTOKEN'> </input>
 					<input type='hidden' name='html' value='$PRINT_HTML'> </input>
+					<input type='hidden' name='checksum' value='$checksum'> </input>
 				</form>
 			</center>
 		HTML

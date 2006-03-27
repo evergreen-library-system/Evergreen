@@ -319,7 +319,7 @@ sub build_org_tree {
 sub fetch_user {
 	my( $self, $userid ) = @_;
 	my( $user, $evt );
-
+	
 	$logger->debug("Fetching user $userid from storage");
 
 	$user = $self->simplereq(
@@ -671,9 +671,11 @@ sub fetch_callnumber {
 	return ( $cn, $evt );
 }
 
+my %ORG_CACHE; # - these rarely change, so cache them..
 sub fetch_org_unit {
 	my( $self, $id ) = @_;
 	return $id if( ref($id) eq 'Fieldmapper::actor::org_unit' );
+	return $ORG_CACHE{$id} if $ORG_CACHE{$id};
 	$logger->debug("Fetching org unit $id");
 	my $evt = undef;
 
@@ -681,6 +683,7 @@ sub fetch_org_unit {
 		'open-ils.storage', 
 		'open-ils.storage.direct.actor.org_unit.retrieve', $id );
 	$evt = OpenILS::Event->new( 'ORG_UNIT_NOT_FOUND', id => $id ) unless $org;
+	$ORG_CACHE{$id}  = $org;
 
 	return ($org, $evt);
 }

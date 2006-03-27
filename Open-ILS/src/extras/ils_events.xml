@@ -288,7 +288,10 @@
 	<event code='8003' textcode='OFFLINE_PARAM_ERROR'>
 		<desc> Missing params in offline upload </desc>
 	</event>
-	<event code='8003' textcode='OFFLINE_CONFIG_ERROR'>
+	<event code='8004' textcode='OFFLINE_CONFIG_ERROR'>
+		<desc> Offline server is not configured properly </desc>
+	</event>
+	<event code='8005' textcode='OFFLINE_CHECKSUM_FAILED'>
 		<desc> Offline server is not configured properly </desc>
 	</event>
 
