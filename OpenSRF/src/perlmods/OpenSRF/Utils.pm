@@ -29,6 +29,11 @@ use FileHandle;
 #use Storable qw(dclone);
 use Digest::MD5 qw(md5 md5_hex md5_base64);
 use Exporter;
+use DateTime;
+use DateTime::Format::ISO8601;
+use DateTime::TimeZone;
+
+our $date_parser = DateTime::Format::ISO8601->new;
 
 # This turns errors into warnings, so daemons don't die.
 #$Storable::forgive_me = 1;
@@ -355,12 +360,35 @@ sub gmtime_ISO8601 {
 sub clense_ISO8601 {
 	my $self = shift;
 	my $date = shift || $self;
-	if ($date =~ /^\s*(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):(\d{2}):(\d{2})\.?\d*((?:-|\+)[0-9:]{2,5})?\s*$/o) {
-		my $z = $7 || '+00:00';
-		if (length($z) > 3 && $z !~ /:/o) {
-			substr($z,3,0,':');
+	if ($date =~ /^\s*(\d{4})-?(\d{2})-?(\d{2})/o) {
+		my $new_date = "$1-$2-$3";
+
+		if ($date =~/(?:$new_date).(\d{2}):(\d{2}):(\d{2})/o) {
+			$new_date .= "T$1:$2:$3";
+		} else {
+			$new_date .= "T00:00:00";
 		}
-		$date = "$1-$2-$3T$4:$5:$6$z";
+
+		my $z;
+		if ($date =~ /([-+]{1})([0-9]{1,2})(?::?([0-9]{1,2}))*\s*$/o) {
+			$z = sprintf('%s%0.2d%0.2d',$1,$2,$3)
+		} else {
+			$z =  DateTime::TimeZone::offset_as_string(
+				DateTime::TimeZone
+					->new( name => 'local' )
+					->offset_for_datetime(
+						$date_parser->parse_datetime($new_date)
+					)
+			);
+		}
+
+		if (length($z) > 3 && index($z, ':') == -1) {
+			substr($z,3,0) = ':';
+			substr($z,6,0) = ':' if (length($z) > 6);
+		}
+		
+		$new_date .= $z;
+		return $new_date;
 	}
 	return $date;
 }
