@@ -228,8 +228,7 @@ sub create_in_house_use {
 		" creating $count in-house use(s) for copy $copyid at location $org");
 
 	if( $use_time ne 'now' ) {
-		my $parser = DateTime::Format::ISO8601->new;
-		$use_time = $parser->parse_datetime(clense_ISO8601($use_time));
+		$use_time = clense_ISO8601($use_time);
 		$logger->debug("in_house_use setting use time to $use_time");
 	}
 

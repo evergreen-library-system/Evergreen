@@ -8,6 +8,7 @@ use OpenILS::Event;
 use OpenSRF::EX qw/:try/;
 use JSON;
 use Data::Dumper;
+use OpenILS::Utils::Fieldmapper;
 our $U = "OpenILS::Application::AppUtils";
 
 
@@ -62,8 +63,10 @@ sub initialize {
 
 	$ORG = $cgi->param('org') || "";
 	if(!$ORG) {
-		my $ws = fetch_workstation($cgi->param('ws'));
-		$ORG = $ws->owning_lib if $ws;
+		if(my $ws = $cgi->param('ws')) {
+			$ws = fetch_workstation($ws);
+			$ORG = $ws->owning_lib if $ws;
+		}
 	}
 
 	if($ORG) {

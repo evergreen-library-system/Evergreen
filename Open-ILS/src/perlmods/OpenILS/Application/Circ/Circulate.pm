@@ -797,8 +797,7 @@ sub _apply_modified_due_date {
 sub _create_date_stamp {
 	my $datestring = shift;
 	return undef unless $datestring;
-	my $parser = DateTime::Format::ISO8601->new;
-	$datestring = $parser->parse_datetime( clense_ISO8601( $datestring ) );
+	$datestring = clense_ISO8601($datestring);
 	$logger->debug("circ created date stamp => $datestring");
 	return $datestring;
 }

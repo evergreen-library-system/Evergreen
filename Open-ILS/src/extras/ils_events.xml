@@ -66,6 +66,12 @@
 			the circulation was never fully closed properly
 		</desc>
 	</event>
+	<event code='1205' textcode='CARD_EXISTS'>
+		<desc>
+			The given user barcode already exists
+		</desc>
+	</event>
+
 
 
 

@@ -77,7 +77,7 @@ sub display_upload {
 							</tr>
 							<tr>
 								<td>Workstation Name: </td>
-								<td><input type='text' name='ws' value='$ws'> </input></td>
+								<td><input type='text' name='ws' value='$ws'></input></td>
 							</tr>
 							<tr>
 								<td>Time Delta: </td>

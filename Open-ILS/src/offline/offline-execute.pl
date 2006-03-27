@@ -237,7 +237,78 @@ sub handle_renew {
 # --------------------------------------------------------------------
 sub handle_register {
 	my $command = shift;
-	return OpenILS::Event->new('SUCCESS', payload => $command);
+
+	my $barcode = $command->{user}->{card}->{barcode};
+	delete $command->{user}->{card}; 
+
+	$logger->info("offline: creating new user with barcode $barcode");
+
+	# now, create the user
+	my $actor	= Fieldmapper::actor::user->new;
+	my $card		= Fieldmapper::actor::card->new;
+
+
+	# username defaults to the barcode
+	$actor->usrname( ($actor->usrname) ? $actor->usrname : $barcode );
+
+	# Set up all of the virtual IDs, isnew, etc.
+	$actor->isnew(1);
+	$actor->id(-1);
+	$actor->card(-1);
+	$actor->cards([$card]);
+
+	$card->isnew(1);
+	$card->id(-1);
+	$card->usr(-1);
+	$card->barcode($barcode);
+
+	my $billing_address;
+	my $mailing_address;
+
+	# extract the billing address
+	if( my $addr = $command->{user}->{billing_address} ) {
+		$billing_address = Fieldmapper::actor::user_address->new;
+		$billing_address->$_($addr->{$_}) for keys %$addr;
+		$billing_address->isnew(1);
+		$billing_address->id(-1);
+		$billing_address->usr(-1);
+		delete $command->{user}->{billing_address};
+		$logger->debug("offline: read billing address ".$billing_address->street1);
+	}
+
+	# extract the mailing address
+	if( my $addr = $command->{user}->{mailing_address} ) {
+		$mailing_address = Fieldmapper::actor::user_address->new;
+		$mailing_address->$_($addr->{$_}) for keys %$addr;
+		$mailing_address->isnew(1);
+		$mailing_address->id(-2);
+		$mailing_address->usr(-1);
+		delete $command->{user}->{mailing_address};
+		$logger->debug("offline: read mailing address ".$mailing_address->street1);
+	}
+
+	# make sure we have values for both
+	$billing_address ||= $mailing_address;
+	$mailing_address ||= $billing_address;
+
+	$actor->billing_address($billing_address->id);
+	$actor->mailing_address($mailing_address->id);
+	$actor->addresses([$mailing_address]);
+
+	push( @{$actor->addresses}, $billing_address ) 
+		unless $billing_address->id eq $mailing_address->id;
+	
+	# pull all of the rest of the data from the command blob
+	$actor->$_( $command->{user}->{$_} ) for keys %{$command->{user}};
+
+	$logger->debug("offline: creating user object...");
+	$actor = $U->simplereq(
+		'open-ils.actor', 
+		'open-ils.actor.patron.update', $AUTHTOKEN, $actor);
+
+	return $actor if(ref($actor) eq 'HASH'); # an event occurred
+
+	return OpenILS::Event->new('SUCCESS', payload => $actor);
 }
 
 
