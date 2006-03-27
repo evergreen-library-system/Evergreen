@@ -365,29 +365,30 @@ sub clense_ISO8601 {
 
 		if ($date =~/(?:$new_date).(\d{2}):(\d{2}):(\d{2})/o) {
 			$new_date .= "T$1:$2:$3";
+
+			my $z;
+			if ($date =~ /([-+]{1})([0-9]{1,2})(?::?([0-9]{1,2}))*\s*$/o) {
+				$z = sprintf('%s%0.2d%0.2d',$1,$2,$3)
+			} else {
+				$z =  DateTime::TimeZone::offset_as_string(
+					DateTime::TimeZone
+						->new( name => 'local' )
+						->offset_for_datetime(
+							$date_parser->parse_datetime($new_date)
+						)
+				);
+			}
+
+			if (length($z) > 3 && index($z, ':') == -1) {
+				substr($z,3,0) = ':';
+				substr($z,6,0) = ':' if (length($z) > 6);
+			}
+		
+			$new_date .= $z;
 		} else {
 			$new_date .= "T00:00:00";
 		}
 
-		my $z;
-		if ($date =~ /([-+]{1})([0-9]{1,2})(?::?([0-9]{1,2}))*\s*$/o) {
-			$z = sprintf('%s%0.2d%0.2d',$1,$2,$3)
-		} else {
-			$z =  DateTime::TimeZone::offset_as_string(
-				DateTime::TimeZone
-					->new( name => 'local' )
-					->offset_for_datetime(
-						$date_parser->parse_datetime($new_date)
-					)
-			);
-		}
-
-		if (length($z) > 3 && index($z, ':') == -1) {
-			substr($z,3,0) = ':';
-			substr($z,6,0) = ':' if (length($z) > 6);
-		}
-		
-		$new_date .= $z;
 		return $new_date;
 	}
 	return $date;
