@@ -35,15 +35,15 @@ circ.offline.prototype = {
 						],
 						'cmd_renew' : [
 							['command'],
-							function() { alert('Not Yet Implemented'); }
+							function() { obj.deck.set_iframe('offline_renew.xul',{},{}); }
 						],
 						'cmd_in_house_use' : [
 							['command'],
-							function() { alert('Not Yet Implemented'); }
+							function() { obj.deck.set_iframe('offline_in_house_use.xul',{},{}); }
 						],
 						'cmd_checkin' : [
 							['command'],
-							function() { alert('Not Yet Implemented'); }
+							function() { obj.deck.set_iframe('offline_checkin.xul',{},{}); }
 						],
 						'cmd_register_patron' : [
 							['command'],

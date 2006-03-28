@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+
+<window id="offline_checkout_win" sizemode="maximized"
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="offline_checkin.js"/>
+
+	<groupbox flex="1">
+		<caption label="Standalone Check In"/>
+		<hbox flex="1">
+			<vbox flex="1">
+				<hbox>
+					<label value="Step 1)" style="font-weight: bold" />
+					<description>Check today's date above.</description>
+				</hbox>
+				<hbox>
+					<label value="Step 2)" style="font-weight: bold" accesskey="2" control="i_barcode"/>
+					<description>Enter the item barcode:</description>
+				</hbox>
+				<hbox>
+					<spacer flex="1"/>
+					<textbox id="i_barcode"/>
+				</hbox>
+				<hbox>
+					<spacer flex="1"/>
+					<description>Check barcode?</description>
+					<checkbox id="strict_barcode"/>
+				</hbox>
+				<hbox>
+					<label value="Step 3)" style="font-weight: bold"/>
+					<description>Repeat Steps 2 until done.</description>
+				</hbox>
+				<hbox>
+					<label value="Step 6)" style="font-weight: bold"/>
+					<description>Finish</description>
+				</hbox>
+				<hbox>
+					<spacer flex="1"/>
+					<description>Print receipt?</description>
+					<checkbox id="print_receipt"/>
+				</hbox>
+				<hbox>
+					<spacer flex="1"/>
+					<button id="cancel" label="Cancel" />
+					<button id="submit" label="Done" accesskey="D" />
+				</hbox>
+			</vbox>
+			<splitter>
+				<grippy />
+			</splitter>
+			<vbox flex="2">
+				<tree id="checkout_list" flex="1" enableColumnDrag="true"/>
+				<hbox id="checkout_bottom_ui">
+					<spacer flex="1"/>
+					<button id="delete" label="Delete selected transaction"/>
+				</hbox>
+			</vbox>
+		</hbox>
+	</groupbox>
+
+</window>
+
