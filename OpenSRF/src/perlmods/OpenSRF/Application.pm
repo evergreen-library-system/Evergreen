@@ -707,6 +707,22 @@ __PACKAGE__->register_method(
 	},
 );
 
+sub time_method {
+	my( $self, $conn ) = @_;
+	my $t = time;
+	$t =~ s/\..*//og; # - remove milli/microseconds from Time::HiRes (should we strip this?)
+	return $t;
+}
+__PACKAGE__->register_method(
+	method => 'time_method',
+	argc => 0,
+	api_name => 'opensrf.system.time',
+	signature => {
+		desc => q/Returns the current system time as epoch seconds/,
+		return => { desc => q/epoch seconds/ }
+	}
+);
+
 sub make_stream_atomic {
 	my $self = shift;
 	my $req = shift;
