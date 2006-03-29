@@ -27,7 +27,7 @@ sub execute {
 	if( &offline_cgi->param('file') ) { 
 
 		&load_file(); 
-		&handle_event(OpenILS::Event->new('SUCCESS'));
+		&handle_event(OpenILS::Event->new('SUCCESS', payload => &offline_seskey));
 
 	} else {
 		&display_upload(); 

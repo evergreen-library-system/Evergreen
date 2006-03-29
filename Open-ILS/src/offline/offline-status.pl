@@ -14,18 +14,9 @@ require 'offline-lib.pl';
 
 sub execute {
 	my $evt = $U->check_perms(&offline_requestor->id, &offline_org, 'OFFLINE_VIEW');
-
 	handle_event($evt) if $evt;
-	
-	my $html	= &offline_cgi->param('html');
-	my $wslist = &gather_workstations;
-
-	if( $html ) { 
-		&report_html($wslist); 
-
-	} else { 
-		&report_json($wslist); 
-	}
+	&report_json(&gather_workstations) if &offline_cgi->param('detail');
+	&report_json_summary; 
 }
 
 
@@ -42,6 +33,25 @@ sub gather_workstations {
 	return \@files;
 }
 
+
+# --------------------------------------------------------------------
+# Just resturns whether or not the transaction is complete and how
+# many items have been processed
+# --------------------------------------------------------------------
+sub report_json_summary {
+
+	my $complete = 0;
+	my $results = &offline_read_results;
+	if(!$$results[0]) {
+		$results  = &offline_read_archive_results;
+		handle_event(OpenILS::Event->new(
+			'OFFLINE_SESSION_NOT_FOUND')) unless $$results[0];
+		$complete = 1;
+	}
+
+	&offline_handle_json(
+		{complete => $complete, num_complete => scalar(@$results)});
+}
 
 
 # --------------------------------------------------------------------

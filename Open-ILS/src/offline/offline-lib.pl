@@ -151,8 +151,14 @@ sub print_html {
 		</html>
 	HTML
 
-	print "content-type: text/html\n\n";
-	print $html;
+	if( &offline_cgi->param('raw') ) {
+		print "content-type: text/plain\n\n";
+		print $res;	
+
+	} else {
+		print "content-type: text/html\n\n";
+		print $html;
+	}
 
 	exit(0);
 }
