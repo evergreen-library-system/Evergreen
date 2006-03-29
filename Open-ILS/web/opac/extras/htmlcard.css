@@ -1,0 +1,15 @@
+html { font: 9pt Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif; line-height: 1.4em; text-align: left; }
+blockquote { margin-left: 20px; margin-bottom: 1em; }
+body { background: #FFF; margin: 1pc; padding: 0;}
+p.mainheading { font-weight:bold; margin-bottom: 0pt;margin-top:0pt}
+span.title { font-style:italic; text-indent:15pt;}
+span.titlemain { font-style:italic; text-indent:0pt; font-weight:bold;}
+span.counter { font-weight:bold; padding-left:6pt; padding-right:4pt; }
+p.note { font-size:8pt;  margin-bottom:0pt; margin-top:0pt;}
+p.extent { margin-bottom:0pt; margin-top:0pt; text-indent:15pt;}
+span.link { clear:left;}
+span.DDC { margin-left:6pt; font-weight:bold; }
+span.LCCN { font-style:italic; font-family:times;}
+div.cardimage { background: ivory; width:350pt;border:brown solid 1px;padding:10pt;}
+span.oclc {font-family:fixed;}
+span.bottom { display:block; text-align:right;}

@@ -19,12 +19,13 @@ input.searchbox {
 div#searchdiv {
 	z-index:10;
 	position: absolute;
-	top: 100;
+	top: 0;
 	right: 0;
 	width:11em;
 	background-color: lightgray;
 	border:2px solid lightblue;
 	border-right: 0px;
+	border-top: 0px;
 	filter: alpha(opacity=50);
 	-moz-opacity: .5;
 }

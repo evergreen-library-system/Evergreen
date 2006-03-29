@@ -447,4 +447,53 @@ sub toString {
 package OpenILS::WWW::SuperCat::Feed::html::item;
 use base 'OpenILS::WWW::SuperCat::Feed::atom::item';
 
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::htmlcard;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::new;
+	$self->type('text/html');
+	return $self;
+}
+
+our ($_parser, $_xslt, $xslt_file);
+
+sub toString {
+	my $self = shift;
+	my $base = $self->base || '';
+	my $root = $self->root || '';
+	my $search = $self->search || '';
+	my $lib = $self->lib || '-';
+
+	$self->composeDoc;
+
+        $_parser ||= new XML::LibXML;
+        $_xslt ||= new XML::LibXSLT;
+
+	$xslt_file ||=
+                OpenSRF::Utils::SettingsClient
+       	                ->new
+               	        ->config_value( dirs => 'xsl' ).
+                "/MARC21slim2HTMLCard.xsl";
+
+        # parse the MODS xslt ...
+        my $atom2html_xslt = $_xslt->parse_stylesheet( $_parser->parse_file($xslt_file) );
+
+	my $new_doc = $atom2html_xslt->transform(
+		$self->{doc},
+		base_dir => "'$root'",
+		lib => "'$lib'",
+		searchTerms => "'$search'",
+	);
+
+	return $new_doc->toString(1); 
+}
+
+
+package OpenILS::WWW::SuperCat::Feed::htmlcard::item;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
+
 1;

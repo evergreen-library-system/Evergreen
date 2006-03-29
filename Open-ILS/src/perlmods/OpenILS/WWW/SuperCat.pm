@@ -75,18 +75,27 @@ sub unapi {
 	my $apache = shift;
 	return Apache2::Const::DECLINED if (-e $apache->filename);
 
-	print "Content-type: application/xml; charset=utf-8\n";
-	
 	my $cgi = new CGI;
+	my $rel_name = quotemeta($cgi->url(-relative=>1));
+
+	my $add_path = 1;
+	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+
+
+	my $url = $cgi->url(-path_info=>$add_path);
+	my $root = (split 'unapi', $url)[0];
+	my $base = (split 'unapi', $url)[0] . 'unapi';
+
 
 	my $uri = $cgi->param('uri') || '';
-	my $base = $cgi->url;
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
 	my $format = $cgi->param('format');
 	my ($id,$type,$command) = ('','','');
 
 	if (!$format) {
+		print "Content-type: application/xml; charset=utf-8\n";
+	
 		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
 			$id = $2;
 			$type = 'record';
@@ -175,9 +184,43 @@ sub unapi {
 		print "Location: $base/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
+	} elsif ($format =~ /^html/o) {
+		my $feed = create_record_feed(
+			$format => [ $id ],
+			$base,
+		);
+
+		$feed->root($root);
+		$feed->creator($host);
+		$feed->update_ts(gmtime_ISO8601());
+
+		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
+		print entityize($feed->toString) . "\n";
+
+		return Apache2::Const::OK;
 	}
 
-	print "\n" . $supercat->request("open-ils.supercat.$type.$format.$command",$id)->gather(1);
+	my $req = $supercat->request("open-ils.supercat.$type.$format.$command",$id);
+	$req->wait_complete;
+
+	if ($req->failed) {
+		print "Content-type: text/html; charset=utf-8\n\n";
+		$apache->custom_response( 404, <<"		HTML");
+		<html>
+			<head>
+				<title>$type $id not found!</title>
+			</head>
+			<body>
+				<br/>
+				<center>Sorry, we couldn't $command a $type with the id of $id.</center>
+			</body>
+		</html>
+		HTML
+		return 404;
+	}
+
+	print "Content-type: application/xml; charset=utf-8\n\n";
+	print $req->gather(1);
 
 	return Apache2::Const::OK;
 }
@@ -187,16 +230,27 @@ sub supercat {
 	my $apache = shift;
 	return Apache2::Const::DECLINED if (-e $apache->filename);
 
-	my $path = $apache->path_info;
-
 	my $cgi = new CGI;
-	my $base = $cgi->url;
+
+	my $rel_name = quotemeta($cgi->url(-relative=>1));
+
+	my $add_path = 1;
+	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+
+
+	my $url = $cgi->url(-path_info=>$add_path);
+	my $root = (split 'supercat', $url)[0];
+	my $base = (split 'supercat', $url)[0] . 'supercat';
+	my $path = (split 'supercat', $url)[1];
+	my $unapi = (split 'supercat', $url)[0] . 'unapi';
+
+	my $host = $cgi->virtual_host || $cgi->server_name;
 
 	my ($id,$type,$format,$command) = reverse split '/', $path;
 
-	print "Content-type: application/xml; charset=utf-8\n";
 	
 	if ( $path =~ m{^/formats(?:/([^\/]+))?$}o ) {
+		print "Content-type: application/xml; charset=utf-8\n";
 		if ($1) {
 			my $list = $supercat
 				->request("open-ils.supercat.$1.formats")
@@ -270,9 +324,40 @@ sub supercat {
 		print "Location: $base/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
+	} elsif ($format =~ /^html/o) {
+		my $feed = create_record_feed( $format => [ $id ], $unapi,);
+
+		$feed->root($root);
+		$feed->creator($host);
+		$feed->update_ts(gmtime_ISO8601());
+
+		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
+		print entityize($feed->toString) . "\n";
+
+		return Apache2::Const::OK;
 	}
 
-	print "\n" . $supercat->request("open-ils.supercat.$type.$format.$command",$id)->gather(1);
+	my $req = $supercat->request("open-ils.supercat.$type.$format.$command",$id);
+	$req->wait_complete;
+
+	if ($req->failed) {
+		print "Content-type: text/html; charset=utf-8\n\n";
+		$apache->custom_response( 404, <<"		HTML");
+		<html>
+			<head>
+				<title>$type $id not found!</title>
+			</head>
+			<body>
+				<br/>
+				<center>Sorry, we couldn't $command a $type with the id of $id.</center>
+			</body>
+		</html>
+		HTML
+		return 404;
+	}
+
+	print "Content-type: application/xml; charset=utf-8\n\n";
+	print $req->gather(1);
 
 	return Apache2::Const::OK;
 }
@@ -592,6 +677,7 @@ sub create_record_feed {
 	$feed->unapi($unapi);
 
 	$type = 'atom' if ($type eq 'html');
+	$type = 'marcxml' if ($type eq 'htmlcard');
 
 	for my $rec (@$records) {
 		my $item_tag = "tag:$host,$year:biblio-record_entry/" . $rec;
