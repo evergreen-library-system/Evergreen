@@ -709,9 +709,7 @@ __PACKAGE__->register_method(
 
 sub time_method {
 	my( $self, $conn ) = @_;
-	my $t = time;
-	$t =~ s/\..*//og; # - remove milli/microseconds from Time::HiRes (should we strip this?)
-	return $t;
+	return CORE::time;
 }
 __PACKAGE__->register_method(
 	method => 'time_method',
