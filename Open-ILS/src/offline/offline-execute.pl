@@ -113,7 +113,7 @@ sub sort_data {
 	my @parsed;
 
 	$logger->debug("offline: Sorting data");
-	my $meta = read_meta();
+	my $meta = &offline_read_meta;
 	
 	# cycle through the workstations
 	for my $ws (keys %$data) {

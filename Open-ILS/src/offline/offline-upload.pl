@@ -10,7 +10,7 @@ use strict; use warnings;
 
 our $U;
 our $logger;
-my $MAX_FILE_SIZE = 104857600; # - define a 100MB file size limit
+my $MAX_FILE_SIZE = 1000000000; # - roughly 1G upload file size max
 require 'offline-lib.pl';
 
 
@@ -56,11 +56,13 @@ sub load_file() {
 	my $numbytes = 0;
 	my $string = "";
 
+	my $cs = &offline_cgi->param('checksum');
+
 	open(FILE, ">$output");
 
 	while( <$filehandle> ) { 
 		$numbytes += length "$_";
-		$string .= "$_";
+		$string .= "$_" if $cs;
 
 		if( $numbytes > $MAX_FILE_SIZE ) {
 			close(FILE);
@@ -72,10 +74,10 @@ sub load_file() {
 	}
 	close(FILE);
 
-	if(my $checksum = &offline_cgi->param('checksum')) {
+	if($cs) {
 		my $md5 = md5_hex($string);
-		$logger->debug("offline: received checksum $checksum, our data shows $md5");
-		&handle_event(OpenILS::Event->new('OFFLINE_CHECKSUM_FAILED')) if( $md5 ne $checksum ) ;
+		$logger->debug("offline: received checksum $cs, our data shows $md5");
+		&handle_event(OpenILS::Event->new('OFFLINE_CHECKSUM_FAILED')) if( $md5 ne $cs ) ;
 	}
 
 

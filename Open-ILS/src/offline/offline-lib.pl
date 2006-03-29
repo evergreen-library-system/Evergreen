@@ -120,29 +120,31 @@ sub print_html {
 	my $res  = $args{result} || "";
 	my $on	= ($org_unit) ? $org_unit->name : "";
 
+	$authtoken	||= "";
+	$org			||= "";
+	$seskey		||= "";
+
 	my $html = <<"	HTML";
 		<html>
 			<head>
+				<script src='/opac/common/js/JSON.js'> </script>
 				<script>
-					function offline_complete(obj) { 
-						if(!obj) return; 
-						if(obj.payload) 
-							alert('Received ' + obj.payload.length + ' events'); 
-						else 
-							alert('Received event: ' + obj.ilsevent + ' : ' + obj.textcode);
-					}
+					function offline_complete(obj) { if(obj) alert(js2JSON(obj)); }
 				</script>
+				<style> 
+					a { margin: 6px; } 
+					div { margin: 10px; text-align: center; }
+				</style>
 			</head>
 			<body onload='offline_complete($res);'>
-				<div style='text-align: center; border-bottom: 2px solid #E0F0E0; padding: 10px; margin-bottom: 50px;'>
+				<div>
 					<div style='margin: 5px;'><b>$on</b></div>
-					<a style='margin: 6px;' href='offline-upload.pl?ses=$authtoken&org=$org&seskey=$seskey'>Upload More Files</a>
-					<a style='margin: 6px;' href='offline-status.pl?ses=$authtoken&org=$org&seskey=$seskey'>Status Page</a>
-					<a style='margin: 6px;' href='offline-execute.pl?ses=$authtoken&org=$org&seskey=$seskey'>Execute Batch</a>
+					<a href='offline-upload.pl?ses=$authtoken&org=$org&seskey=$seskey'>Upload More Files</a>
+					<a href='offline-status.pl?ses=$authtoken&org=$org&seskey=$seskey'>Status Page</a>
+					<a href='offline-execute.pl?ses=$authtoken&org=$org&seskey=$seskey'>Execute Batch</a>
 				</div>
-				<div style='margin: 10px; text-align: center;'>
-					$body
-				</div>
+				<hr/>
+				<div>$body</div>
 			</body>
 		</html>
 	HTML
@@ -157,16 +159,14 @@ sub print_html {
 # --------------------------------------------------------------------
 # Prints the JSON form of the event out to the client
 # --------------------------------------------------------------------
-sub handle_event {
-	my $evt = shift;
+sub handle_event { &offline_handle_json(@_); }
+
+sub offline_handle_json {
+	my $obj = shift;
 	my $ischild = shift;
-	return unless $evt;
-
-	$logger->info("offline: returning event ".$evt->{textcode});
-
-	# maybe make this smarter
-	print_html( result => JSON->perl2JSON($evt)) unless $ischild;
-	append_result($evt) and exit;
+	return unless $obj;
+	print_html(result => JSON->perl2JSON($obj)) unless $ischild;
+	append_result($obj) and exit;
 }
 
 
@@ -242,7 +242,7 @@ sub append_meta {
 	close(F);
 }
 
-sub read_meta {
+sub offline_read_meta {
 	my $mf = &offline_meta_file;
 	open(F, "$mf") or return [];
 	my @data = <F>;
@@ -252,6 +252,18 @@ sub read_meta {
 	@resp = grep { $_ and $_->{'workstation'} } @resp;
 	return \@resp;
 }
+
+sub offline_read_results {
+	my $file = &offline_result_file;
+	open(F,$file) or return [];
+	my @data = <F>;
+	close(F);
+	my @resp;
+	push(@resp, JSON->JSON2perl($_)) for @data;
+	@resp = grep { $_ and $_->{command} } @resp;
+	return \@resp;
+}
+
 
 sub log_to_wsname {
 	my $log = shift;
