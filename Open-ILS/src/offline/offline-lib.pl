@@ -10,30 +10,55 @@ use JSON;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
+use OpenSRF::Utils qw/:daemon/;
 our $U = "OpenILS::Application::AppUtils";
+our %config;
 
 
 # --------------------------------------------------------------------
 # Load the config options
 # --------------------------------------------------------------------
-our $META_FILE = "meta"; # name of the metadata file
-our $LOCK_FILE = "lock"; # name of the lock file
-our $ORG; # org id
-our $ORG_UNIT; # org unit object
-our $TIME_DELTA; # time offset for the log files
-our %config; # config data
-our $cgi; # our CGI object
-our $PRINT_HTML; # true if access the CGIs via a web browser
-our $AUTHTOKEN; # The login session key
-our $REQUESTOR; # the requestor user object
-our $base_dir; # the base directory for logs
-our $WORKSTATION;
-our $MAX_FILE_SIZE = 104857600; # - define a 100MB file size limit
+my $time_delta;
+my $cgi; 
+my $base_dir; 
+my $requestor; 
+my $workstation;
+my $org;
+my $org_unit;
+my $authtoken;
+my $seskey;
 
+# --------------------------------------------------------------------
+# Define accessors for all of the shared vars
+# --------------------------------------------------------------------
+sub offline_requestor { return $requestor; }
+sub offline_authtoken { return $authtoken; }
+sub offline_workstation { return $workstation; }
+sub offline_org { return $org; }
+sub offline_org_unit { return $org_unit;}
+sub offline_meta_file { return &offline_pending_dir . '/meta'; }
+sub offline_lock_file { return &offline_pending_dir . '/lock'; }
+sub offline_result_file { return &offline_pending_dir . '/results'; }
+sub offline_base_dir { return $base_dir; }
+sub offline_time_delta { return $time_delta; }
+sub offline_config { return %config; }
+sub offline_cgi { return $cgi; }
+sub offline_seskey { return $seskey; }
+
+
+
+# --------------------------------------------------------------------
+# Load the config
+# --------------------------------------------------------------------
 #do '##CONFIG##/upload-server.pl';
 do 'offline-config.pl';
 
+
+# --------------------------------------------------------------------
+# Set everything up
+# --------------------------------------------------------------------
 &initialize();
+
 
 
 
@@ -59,115 +84,118 @@ sub initialize {
 	# Load the required CGI params
 	# --------------------------------------------------------------------
 	$cgi = new CGI;
-	$PRINT_HTML = $cgi->param('html') || "";
-	$AUTHTOKEN	= $cgi->param('ses') 
+
+	$authtoken	= $cgi->param('ses') 
 		or handle_event(OpenILS::Event->new('NO_SESSION'));
 
-	$ORG = $cgi->param('org') || "";
-	if(!$ORG) {
+	$org = $cgi->param('org') || "";
+	if(!$org) {
 		if(my $ws = $cgi->param('ws')) {
-			$ws = fetch_workstation($ws);
-			$ORG = $ws->owning_lib if $ws;
+			$workstation = fetch_workstation($ws);
+			$org = $workstation->owning_lib if $workstation;
 		}
 	}
 
-	if($ORG) {
-		($ORG_UNIT, $evt) = $U->fetch_org_unit($ORG);	
+	if($org) {
+		($org_unit, $evt) = $U->fetch_org_unit($org);	
 		handle_event($evt) if $evt;
 	} 
 
-	($REQUESTOR, $evt) = $U->checkses($AUTHTOKEN);
+	($requestor, $evt) = $U->checkses($authtoken);
 	handle_event($evt) if $evt;
 
-	$TIME_DELTA	 = $cgi->param('delta') || "0";
-}
+	$time_delta	 = $cgi->param('delta') || "0";
 
-# --------------------------------------------------------------------
-# Generic HTML template to provide basic functionality
-# --------------------------------------------------------------------
-my $on = ($ORG_UNIT) ? $ORG_UNIT->name : "";
-my $HTML = <<HTML;
-	<html>
-		<head>
-			<title>{TITLE}</title>
-		</head>
-		<body>
-			<div style='text-align: center; border-bottom: 2px solid #E0F0E0; padding: 10px; margin-bottom: 50px;'>
-				<div style='margin: 5px;'><b>$on</b></div>
-				<a style='margin: 6px;' href='offline-upload.pl?ses=$AUTHTOKEN&org=$ORG&html=1'>Upload More Files</a>
-				<a style='margin: 6px;' href='offline-status.pl?ses=$AUTHTOKEN&org=$ORG&html=1'>Status Page</a>
-				<a style='margin: 6px;' href='offline-execute.pl?ses=$AUTHTOKEN&org=$ORG&html=1'>Execute Batch</a>
-			</div>
-			<div style='text-align: center;'>
-				{BODY}
-			</div>
-		</body>
-	</html>
-HTML
+	$seskey = $cgi->param('seskey') || time . "_$$";
+}
 
 
 # --------------------------------------------------------------------
 # Print out a full HTML page and exits
 # --------------------------------------------------------------------
 sub print_html {
-	my %args		= @_;
-	my $title	= $args{title} || "";
-	my $body		= $args{body} || "";
 
-	if($HTML) {
-		$HTML =~ s/{TITLE}/$title/;
-		$HTML =~ s/{BODY}/$body/;
+	my %args	= @_;
+	my $body	= $args{body} || "";
+	my $res  = $args{result} || "";
+	my $on	= ($org_unit) ? $org_unit->name : "";
 
-	} else { # it can happen..
-		$HTML = "$body"; 
-	}
+	my $html = <<"	HTML";
+		<html>
+			<head>
+				<script>
+					function offline_complete(obj) { 
+						if(!obj) return; 
+						if(obj.payload) 
+							alert('Received ' + obj.payload.length + ' events'); 
+						else 
+							alert('Received event: ' + obj.ilsevent + ' : ' + obj.textcode);
+					}
+				</script>
+			</head>
+			<body onload='offline_complete($res);'>
+				<div style='text-align: center; border-bottom: 2px solid #E0F0E0; padding: 10px; margin-bottom: 50px;'>
+					<div style='margin: 5px;'><b>$on</b></div>
+					<a style='margin: 6px;' href='offline-upload.pl?ses=$authtoken&org=$org&seskey=$seskey'>Upload More Files</a>
+					<a style='margin: 6px;' href='offline-status.pl?ses=$authtoken&org=$org&seskey=$seskey'>Status Page</a>
+					<a style='margin: 6px;' href='offline-execute.pl?ses=$authtoken&org=$org&seskey=$seskey'>Execute Batch</a>
+				</div>
+				<div style='margin: 10px; text-align: center;'>
+					$body
+				</div>
+			</body>
+		</html>
+	HTML
 
 	print "content-type: text/html\n\n";
-	print $HTML;
+	print $html;
+
 	exit(0);
 }
 
-
-# --------------------------------------------------------------------
-# Prints JSON to the client
-# --------------------------------------------------------------------
-sub print_json {
-	my( $obj, $add_header ) = @_;
-	print "content-type: text/html\n\n" if $add_header;
-	print JSON->perl2JSON($obj);
-}
 
 # --------------------------------------------------------------------
 # Prints the JSON form of the event out to the client
 # --------------------------------------------------------------------
 sub handle_event {
 	my $evt = shift;
+	my $ischild = shift;
 	return unless $evt;
 
 	$logger->info("offline: returning event ".$evt->{textcode});
 
-	if( $PRINT_HTML ) {
-
-		# maybe make this smarter
-		print_html(
-			title => 'Offline Event Occurred', 
-			body => JSON->perl2JSON($evt));
-
-	} else {
-		print_json($evt,1);
-
-	}
-	exit(0);
+	# maybe make this smarter
+	print_html( result => JSON->perl2JSON($evt)) unless $ischild;
+	append_result($evt) and exit;
 }
 
 
 # --------------------------------------------------------------------
-# Fetches and creates if necessary the pending directory
+# Appends a result event to the result file
 # --------------------------------------------------------------------
-sub get_pending_dir {
-	my $dir = "$base_dir/pending/$ORG/";
-	system( ('mkdir', '-p', "$dir") ) == 0 
-		or handle_error("Unable to create directory $dir");
+sub append_result {
+	my $evt = JSON->perl2JSON(shift());
+	my $fname = &offline_result_file;
+	open(R, ">>$fname") or die 
+		"Unable to open result file [$fname] for appending: $@\n";
+	print R "$evt\n";
+	close(R);
+}
+
+
+sub handle_error { warn shift() . "\n"; }
+
+
+# --------------------------------------------------------------------
+# Fetches (and creates if necessary) the pending directory
+# --------------------------------------------------------------------
+sub offline_pending_dir {
+	my $dir = "$base_dir/pending/$org/$seskey/";
+
+	if( ! -e $dir ) {
+		qx/mkdir -p $dir/ and handle_error("Unable to create directory $dir");
+	}
+
 	return $dir;
 }
 
@@ -175,18 +203,18 @@ sub get_pending_dir {
 # Fetches and creates if necessary the archive directory
 # --------------------------------------------------------------------
 sub create_archive_dir {
-	my (undef,$min,$hour,$mday,$mon,$year) = localtime(time);
+	#my (undef,$min,$hour,$mday,$mon,$year) = localtime(time);
+	my (undef,undef, undef, $mday,$mon,$year) = localtime(time);
 
 	$mon++;
 	$year		+= 1900;
-	$min		= "0$min"	unless $min		=~ /\d{2}/o;
-	$hour		= "0$hour"	unless $hour	=~ /\d{2}/o;
+#	$min		= "0$min"	unless $min		=~ /\d{2}/o;
+#	$hour		= "0$hour"	unless $hour	=~ /\d{2}/o;
 	$mday		= "0$mday"	unless $mday	=~ /\d{2}/o;
 	$mon		= "0$mon"	unless $mon		=~ /\d{2}/o;
 
-	my $dir = "$base_dir/archive/$ORG/$year$mon$mday$hour$min/";
-	system( ('mkdir', '-p', "$dir") ) == 0 
-		or handle_error("Unable to create archive directory $dir");
+	my $dir = "$base_dir/archive/$org/${year}_${mon}_${mday}/$seskey/";
+	qx/mkdir -p $dir/ and handle_error("Unable to create archive directory $dir");
 	return $dir;
 }
 
@@ -200,14 +228,14 @@ sub fetch_workstation {
 	$logger->debug("offline: Fetching workstation $name");
 	my $ws = $U->storagereq(
 		'open-ils.storage.direct.actor.workstation.search.name', $name);
-	handle_error("Workstation $name does not exists") unless $ws;
+	handle_event(OpenILS::Event->new('WORKSTATION_NOT_FOUND')) unless $ws;
 	return $ws;
 }
 
 sub append_meta {
 	my $data = shift;
 	$data = JSON->perl2JSON($data);
-	my $mf = get_pending_dir($ORG) . "/$META_FILE";
+	my $mf = &offline_meta_file;
 	$logger->debug("offline: Append metadata to file $mf: $data");
 	open(F, ">>$mf") or handle_event(OpenILS::Event->new('OFFLINE_FILE_ERROR', payload => $@));
 	print F "$data\n";
@@ -215,7 +243,7 @@ sub append_meta {
 }
 
 sub read_meta {
-	my $mf = get_pending_dir($ORG) . "/$META_FILE";
+	my $mf = &offline_meta_file;
 	open(F, "$mf") or return [];
 	my @data = <F>;
 	close(F);
@@ -231,3 +259,5 @@ sub log_to_wsname {
 	$log =~ s#/.*/(\w+)#$1#og;
 	return $log
 }
+
+1;

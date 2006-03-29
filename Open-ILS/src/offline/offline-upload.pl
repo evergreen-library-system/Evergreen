@@ -4,47 +4,60 @@ use strict; use warnings;
 # --------------------------------------------------------------------
 #  Uploads offline action files
 #	pending files go into $base_dir/pending/<org>/<ws>.log
-#	completed transactions go into $base_dir/archive/<org>/YYYMMDDHHMM/<ws>.log
+#	completed transactions go into 
+#	$base_dir/archive/<org>/YYYMMDDHHMM/<ws>.log
 # --------------------------------------------------------------------
 
-our ($ORG, $META_FILE, $LOCK_FILE, $TIME_DELTA, $MD5_SUM, $PRINT_HTML, $MAX_FILE_SIZE,
-	$AUTHTOKEN, $REQUESTOR, $U, %config, $cgi, $base_dir, $logger);
-
+our $U;
+our $logger;
+my $MAX_FILE_SIZE = 104857600; # - define a 100MB file size limit
 require 'offline-lib.pl';
 
-if( $cgi->param('file') ) { 
-	&load_file(); 
-	&handle_event(OpenILS::Event->new('SUCCESS'));
-} else {
-	&display_upload(); 
+
+&execute();
+# --------------------------------------------------------------------
+
+
+# --------------------------------------------------------------------
+# If the file is present, load it up, otherwise prompt with a very
+# basic HTML upload form
+# --------------------------------------------------------------------
+sub execute {
+
+	if( &offline_cgi->param('file') ) { 
+
+		&load_file(); 
+		&handle_event(OpenILS::Event->new('SUCCESS'));
+
+	} else {
+		&display_upload(); 
+	}
 }
+
 
 # --------------------------------------------------------------------
 # Loads the POSTed file and writes the contents to disk
 # --------------------------------------------------------------------
 sub load_file() {
 
-	my $wsname	= $cgi->param('ws');
-	my $filehandle = $cgi->upload('file');
-
-	my $ws = fetch_workstation($wsname);
-	$ORG = $ws->owning_lib;
+	my $wsname	= &offline_cgi->param('ws');
+	my $filehandle = &offline_cgi->upload('file');
 
 	# make sure we have upload priveleges
-	my $evt = $U->check_perms($REQUESTOR->id, $ORG, 'OFFLINE_UPLOAD');
+	my $evt = $U->check_perms(&offline_requestor->id, &offline_org, 'OFFLINE_UPLOAD');
 	handle_event($evt) if $evt;
 
-	my $dir = get_pending_dir();
-	my $output = "$dir/$wsname.log";
-	my $lock = "$dir/$LOCK_FILE";
+	my $output = &offline_pending_dir . '/' . "$wsname.log";
 
-	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_ACTIVE')) if( -e $lock );
+	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_ACTIVE')) if( -e &offline_lock_file );
 	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_FILE_EXISTS')) if( -e $output );
 
 	$logger->debug("offline: Writing log file $output");
 	my $numbytes = 0;
 	my $string = "";
+
 	open(FILE, ">$output");
+
 	while( <$filehandle> ) { 
 		$numbytes += length "$_";
 		$string .= "$_";
@@ -59,7 +72,7 @@ sub load_file() {
 	}
 	close(FILE);
 
-	if(my $checksum = $cgi->param('checksum')) {
+	if(my $checksum = &offline_cgi->param('checksum')) {
 		my $md5 = md5_hex($string);
 		$logger->debug("offline: received checksum $checksum, our data shows $md5");
 		&handle_event(OpenILS::Event->new('OFFLINE_CHECKSUM_FAILED')) if( $md5 ne $checksum ) ;
@@ -68,11 +81,11 @@ sub load_file() {
 
 	# Append the metadata for this workstations upload
 	append_meta( {
-		requestor	=> $REQUESTOR->id, 
+		requestor	=> &offline_requestor->id, 
 		timestamp	=> time, 
 		workstation => $wsname,
 		log			=> $output, 
-		delta			=> $TIME_DELTA}, 
+		delta			=> &offline_time_delta}, 
 		);
 }
 
@@ -81,11 +94,13 @@ sub load_file() {
 # Use this for testing manual uploads
 # --------------------------------------------------------------------
 sub display_upload {
-	my $ws	= $cgi->param('ws') || "";
-	my $checksum = $cgi->param('checksum') || "";
+
+	my $ws = &offline_cgi->param('ws') || "";
+	my $cs = &offline_cgi->param('checksum') || "";
+	my $td = &offline_time_delta();
+	my $at = &offline_authtoken();
 
 	print_html(
-		title => "Offline Upload",
 		body => <<"		HTML");
 			<center>
 				<form action='offline-upload.pl' method='post' enctype='multipart/form-data'>
@@ -102,16 +117,15 @@ sub display_upload {
 							</tr>
 							<tr>
 								<td>Time Delta: </td>
-								<td><input type='text' name='delta' value='$TIME_DELTA'> </input></td>
+								<td><input type='text' name='delta' value='$td'> </input></td>
 							</tr>
 							<tr>
 								<td colspan='2' align='center'><input type='submit' name='Submit' value='Upload'> </input></td>
 							</tr>
 						</tbody>
 					</table>
-					<input type='hidden' name='ses' value='$AUTHTOKEN'> </input>
-					<input type='hidden' name='html' value='$PRINT_HTML'> </input>
-					<input type='hidden' name='checksum' value='$checksum'> </input>
+					<input type='hidden' name='ses' value='$at'> </input>
+					<input type='hidden' name='checksum' value='$cs'> </input>
 				</form>
 			</center>
 		HTML
