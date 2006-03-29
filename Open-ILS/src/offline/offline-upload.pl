@@ -47,7 +47,7 @@ sub load_file() {
 	my $evt = $U->check_perms(&offline_requestor->id, &offline_org, 'OFFLINE_UPLOAD');
 	handle_event($evt) if $evt;
 
-	my $output = &offline_pending_dir . '/' . "$wsname.log";
+	my $output = &offline_pending_dir(1) . '/' . "$wsname.log";
 
 	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_ACTIVE')) if( -e &offline_lock_file );
 	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_FILE_EXISTS')) if( -e $output );

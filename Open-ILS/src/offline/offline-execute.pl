@@ -3,6 +3,7 @@ use strict; use warnings;
 use Time::HiRes;
 use OpenSRF::Transport::PeerHandle;
 use OpenSRF::System;
+use OpenSRF::EX qw/:try/;
 
 our $U;
 our $logger;
@@ -65,8 +66,13 @@ sub execute {
 		my %config = &offline_config;
 		OpenSRF::System->bootstrap_client(config_file => $config{bootstrap});
 	
-		&process_data( $data );
-		&archive_files;
+		try {
+			&process_data( $data );
+			&archive_files;
+		} catch Error with {
+			my $e = shift;
+			$logger->error("offline: child process error $e");
+		}
 	}
 }
 
@@ -82,11 +88,12 @@ sub collect_data {
 	my $dir	= &offline_pending_dir;
 	my $lock = &offline_lock_file;
 
+	handle_event(OpenILS::Event->new('OFFLINE_SESSION_NOT_FOUND')) unless  -e $dir;
 	handle_event(OpenILS::Event->new('OFFLINE_PARAM_ERROR')) unless &offline_org;
 	handle_event(OpenILS::Event->new('OFFLINE_SESSION_ACTIVE')) if ( -e $lock );
 
-	qx/touch $lock/ and handle_event(OpenILS::Event->new(
-		'OFFLINE_FILE_ERROR', payload => "cannot touch lock file: $lock"));
+	# - create the lock file
+	qx/touch $lock/;
 
 	my $file;
 	my %data;
@@ -306,6 +313,18 @@ sub handle_register {
 	my $billing_address;
 	my $mailing_address;
 
+	my @sresp;
+	for my $resp (@{$command->{user}->{survey_responses}}) {
+		my $sr = Fieldmapper::action::survey_response->new;
+		$sr->$_( $resp->{$_} ) for keys %$resp;
+		$sr->isnew(1);
+		$sr->usr(-1);
+		push(@sresp, $sr);
+		$logger->debug("offline: created new survey response for survey ".$sr->survey);
+	}
+	delete $command->{user}->{survey_responses};
+	$actor->survey_responses(\@sresp) if @sresp;
+
 	# extract the billing address
 	if( my $addr = $command->{user}->{billing_address} ) {
 		$billing_address = Fieldmapper::actor::user_address->new;
@@ -360,7 +379,7 @@ sub handle_register {
 # directory to the archive dir
 # --------------------------------------------------------------------
 sub archive_files {
-	my $archivedir = &create_archive_dir;
+	my $archivedir = &offline_archive_dir(1);
 	my $pendingdir = &offline_pending_dir;
 
 	my @files = <$pendingdir/*.log>;

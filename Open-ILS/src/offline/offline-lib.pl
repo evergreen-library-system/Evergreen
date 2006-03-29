@@ -39,6 +39,8 @@ sub offline_org_unit { return $org_unit;}
 sub offline_meta_file { return &offline_pending_dir . '/meta'; }
 sub offline_lock_file { return &offline_pending_dir . '/lock'; }
 sub offline_result_file { return &offline_pending_dir . '/results'; }
+sub offline_archive_meta_file { return &offline_archive_dir . '/meta'; }
+sub offline_archive_result_file { return &offline_archive_dir . '/results'; }
 sub offline_base_dir { return $base_dir; }
 sub offline_time_delta { return $time_delta; }
 sub offline_config { return %config; }
@@ -139,7 +141,7 @@ sub print_html {
 			<body onload='offline_complete($res);'>
 				<div>
 					<div style='margin: 5px;'><b>$on</b></div>
-					<a href='offline-upload.pl?ses=$authtoken&org=$org&seskey=$seskey'>Upload More Files</a>
+					<a href='offline-upload.pl?ses=$authtoken&org=$org'>Upload More Files</a>
 					<a href='offline-status.pl?ses=$authtoken&org=$org&seskey=$seskey'>Status Page</a>
 					<a href='offline-execute.pl?ses=$authtoken&org=$org&seskey=$seskey'>Execute Batch</a>
 				</div>
@@ -170,18 +172,6 @@ sub offline_handle_json {
 }
 
 
-# --------------------------------------------------------------------
-# Appends a result event to the result file
-# --------------------------------------------------------------------
-sub append_result {
-	my $evt = JSON->perl2JSON(shift());
-	my $fname = &offline_result_file;
-	open(R, ">>$fname") or die 
-		"Unable to open result file [$fname] for appending: $@\n";
-	print R "$evt\n";
-	close(R);
-}
-
 
 sub handle_error { warn shift() . "\n"; }
 
@@ -190,9 +180,11 @@ sub handle_error { warn shift() . "\n"; }
 # Fetches (and creates if necessary) the pending directory
 # --------------------------------------------------------------------
 sub offline_pending_dir {
+	my $create = shift;
 	my $dir = "$base_dir/pending/$org/$seskey/";
 
-	if( ! -e $dir ) {
+	if( $create and ! -e $dir ) {
+		$logger->debug("offline: creating pending directory $dir");
 		qx/mkdir -p $dir/ and handle_error("Unable to create directory $dir");
 	}
 
@@ -202,19 +194,22 @@ sub offline_pending_dir {
 # --------------------------------------------------------------------
 # Fetches and creates if necessary the archive directory
 # --------------------------------------------------------------------
+sub offline_archive_dir { return create_archive_dir(@_); }
 sub create_archive_dir {
-	#my (undef,$min,$hour,$mday,$mon,$year) = localtime(time);
+
+	my $create = shift;
 	my (undef,undef, undef, $mday,$mon,$year) = localtime(time);
 
-	$mon++;
-	$year		+= 1900;
-#	$min		= "0$min"	unless $min		=~ /\d{2}/o;
-#	$hour		= "0$hour"	unless $hour	=~ /\d{2}/o;
-	$mday		= "0$mday"	unless $mday	=~ /\d{2}/o;
-	$mon		= "0$mon"	unless $mon		=~ /\d{2}/o;
+	$mon++; $year	+= 1900;
+	$mday	= "0$mday" unless $mday =~ /\d{2}/o;
+	$mon	= "0$mon" unless $mon	=~ /\d{2}/o;
 
 	my $dir = "$base_dir/archive/$org/${year}_${mon}_${mday}/$seskey/";
-	qx/mkdir -p $dir/ and handle_error("Unable to create archive directory $dir");
+
+	if( $create and ! -e $dir ) {
+		$logger->debug("offline: creating archive directory $dir");
+		qx/mkdir -p $dir/ and handle_error("Unable to create archive directory $dir");
+	}
 	return $dir;
 }
 
@@ -232,35 +227,38 @@ sub fetch_workstation {
 	return $ws;
 }
 
-sub append_meta {
-	my $data = shift;
-	$data = JSON->perl2JSON($data);
-	my $mf = &offline_meta_file;
-	$logger->debug("offline: Append metadata to file $mf: $data");
-	open(F, ">>$mf") or handle_event(OpenILS::Event->new('OFFLINE_FILE_ERROR', payload => $@));
-	print F "$data\n";
+
+# --------------------------------------------------------------------
+# Read/Write to/from the essential files
+# --------------------------------------------------------------------
+sub append_meta { &_offline_file_append_perl( shift(), &offline_meta_file ); }
+sub append_result { &_offline_file_append_perl( shift(), &offline_result_file ); }
+sub _offline_file_append_perl {
+	my( $obj, $file ) = @_;
+	return unless $obj;
+	$obj = JSON->perl2JSON($obj);
+	open(F, ">>$file") or die
+		"Unable to append data to file: $file [$! $@]\n";
+	print F "$obj\n";
 	close(F);
 }
 
-sub offline_read_meta {
-	my $mf = &offline_meta_file;
-	open(F, "$mf") or return [];
-	my @data = <F>;
-	close(F);
-	my @resp;
-	push(@resp, JSON->JSON2perl($_)) for @data;
-	@resp = grep { $_ and $_->{'workstation'} } @resp;
-	return \@resp;
-}
 
-sub offline_read_results {
-	my $file = &offline_result_file;
+sub offline_read_meta { return &_offline_read_meta(&offline_meta_file); }
+sub offline_read_archive_meta { return &_offline_read_meta(&offline_archive_meta_file); }
+sub _offline_read_meta { return &_offline_file_to_perl(shift(), 'workstation'); }
+sub offline_read_archive_results { return &_offline_read_results(&offline_archive_result_file); }
+sub offline_read_results { return &_offline_read_results(&offline_result_file); }
+sub _offline_read_results { return &_offline_file_to_perl(shift(), 'command'); }
+
+sub _offline_file_to_perl {
+	my( $file, $exist_key ) = @_;
 	open(F,$file) or return [];
 	my @data = <F>;
 	close(F);
 	my @resp;
 	push(@resp, JSON->JSON2perl($_)) for @data;
-	@resp = grep { $_ and $_->{command} } @resp;
+	@resp = grep { $_ and $_->{$exist_key} } @resp;
 	return \@resp;
 }
 
