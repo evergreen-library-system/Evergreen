@@ -43,7 +43,7 @@ go();
 sub build_script {
 	
 	my $json = "";
-	(my $time = time) =~ s/\..*//og; # - remove the milliseconds we get from Time::HiRes
+	my $time = CORE::time;
 
 	for(1..$iterations) {
 
