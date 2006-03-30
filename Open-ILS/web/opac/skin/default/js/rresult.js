@@ -37,6 +37,10 @@ function rresultCollectIds() {
 			rresultDoRecordSearch();
 			break;
 
+		case RTYPE_MULTI:
+			rresultDoRecordMultiSearch();
+			break;
+			
 		case RTYPE_LIST :
 			rresultHandleList();
 			break;
@@ -96,25 +100,44 @@ function rresultLaunchDrawn(id, node) {
 }
 
 
-function rresultDoRecordSearch() {
+function rresultDoRecordSearch() { return _rresultCollectSearchIds(true); }
+function rresultDoRecordMultiSearch() { return _rresultCollectSearchIds(false); }
 
-	var form		= (!getForm() || getForm() == "all") ? null : getForm();
+
+function _rresultCollectSearchIds( type ) {
+
 	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
 	var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
 
-	var req = new Request(FETCH_SEARCH_RIDS, getRtype(), 
-		{	term		: getTerm(), 
-			sort		: sort,
-			sort_dir	: sortdir,
-			org_unit : getLocation(),
-			depth		: getDepth(),
-			limit		: rresultLimit,
-			offset	: getOffset(),
-			format	: form } );
+	var form = parseForm(getForm());
+	var item_type = form.item_type;
+	var item_form = form.item_form;
 
+	var args = {};
+
+	if( type ) {
+		args.searches = {};
+		args.searches[getRtype()] = {};
+		args.searches[getRtype()].term = getTerm();
+	} else {
+		args.searches = JSON2js(getAdvTerm());
+	}
+
+	args.org_unit = getLocation();
+	args.depth    = getDepth();
+	args.limit    = rresultLimit;
+	args.offset   = getOffset();
+
+	if(sort) args.sort = sort;
+	if(sortdir) args.sort_dir = sortdir;
+	if(item_type) args.item_type	= item_type;
+	if(item_form) args.item_form	= item_form;
+
+	var req = new Request(SEARCH_RS, args);
 	req.callback(rresultFilterSearchResults);
 	req.send();
 }
+
 
 function rresultFilterSearchResults(r) {
 	var result = r.getResultObject();

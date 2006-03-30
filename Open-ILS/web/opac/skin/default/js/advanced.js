@@ -23,6 +23,8 @@ function advInit() {
 	$('advanced.wizard.contains').focus();
 	depthSelInit(); 
 
+	if(new CGI().param('advall') ) unHideMe($('adv_combined_search'));
+
 	var wiz = [
 		'advanced.wizard.contains',
 		'advanced.wizard.nocontains',
@@ -134,6 +136,11 @@ function advRefinedRun() {
 	arg[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
 	arg[PARAM_SORT]		= sort;
 	arg[PARAM_SORT_DIR]	= sortdir;
+
+	if( sort == SORT_TYPE_PUBDATE ) {
+		arg.page = RRESULT;
+		arg[PARAM_RTYPE] = RTYPE_MULTI;
+	}
 
 	goTo(buildOPACLink(arg));
 

@@ -87,6 +87,7 @@ var RTYPE_TITLE	= STYPE_TITLE;
 var RTYPE_SERIES	= STYPE_SERIES;
 var RTYPE_KEYWORD	= STYPE_KEYWORD;
 var RTYPE_LIST		= "list";
+var RTYPE_MULTI	= 'multi';
 
 var SORT_TYPE_REL			= "rel";
 var SORT_TYPE_AUTHOR		= STYPE_AUTHOR; 
@@ -231,7 +232,11 @@ config.ids.altcanvas = {};
 	have a staff counterpart and should have ".staff" appended to the method 
 	before the method is called when in XUL mode */
 
+var SEARCH_MRS						= 'open-ils.search:open-ils.search.metabib.multiclass:1';
+var SEARCH_RS						= 'open-ils.search:open-ils.search.biblio.multiclass:1';
+/*
 var FETCH_MRIDS_					= "open-ils.search:open-ils.search.biblio.metabib.class.search:1";
+*/
 var FETCH_SEARCH_RIDS			= "open-ils.search:open-ils.search.biblio.record.class.search:1";
 var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
 var FETCH_MODS_FROM_COPY		= "open-ils.search:open-ils.search.biblio.mods_from_copy";
@@ -268,7 +273,7 @@ var FETCH_REVIEWS					= "open-ils.search:open-ils.search.added_content.review.re
 var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve";
 var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
 var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
-var FETCH_ADV_MRIDS				= "open-ils.search:open-ils.search.biblio.multiclass:1";
+/*var FETCH_ADV_MRIDS				= "open-ils.search:open-ils.search.biblio.multiclass:1";*/
 var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
 var FETCH_ADV_ISBN_MRIDS		= "open-ils.search:open-ils.search.biblio.isbn";
 var FETCH_ADV_ISSN_MRIDS		= "open-ils.search:open-ils.search.biblio.issn";

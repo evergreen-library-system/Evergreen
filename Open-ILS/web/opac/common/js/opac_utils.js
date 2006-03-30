@@ -762,3 +762,28 @@ function buildOrgSel(selector, org, offset) {
 }
 
 
+function parseForm(form) {
+	if(!form) return {};
+
+	var it = form.replace(/-\w+$/,"");
+	var itf = null;
+	var item_form;
+	var item_type;
+
+	if(form.match(/-/)) itf = form.replace(/^\w+-/,"");
+
+	if(it) {
+		item_type = [];
+		for( var i = 0; i < it.length; i++ ) 
+			item_type.push( it.charAt(i) );
+	}
+
+	if(itf) {
+		item_form = [];
+		for( var i = 0; i < itf.length; i++ ) 
+			item_form.push( itf.charAt(i) );
+	}
+
+	return {item_type: item_type, item_form:item_form};
+}
+

@@ -28,7 +28,6 @@ function mresultDoSearch() {
 
 	table = G.ui.result.main_table;
 
-	/* add an extra row so IE and safari won't complain */
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
@@ -63,52 +62,73 @@ function mresultTryCachedSearch() {
 	return false;
 }
 
-function _mresultCollectIds() {
-
-	if( getOffset() == 0 || !mresultTryCachedSearch() ) {
-
-		var form		= (!getForm() || getForm() == "all") ? null : getForm();
-		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
-		var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
-
-		var req = new Request(FETCH_MRIDS_, getStype(), 
-			{	term		: getTerm(), 
-				sort		: sort,
-				sort_dir	: sortdir,
-				org_unit : getLocation(),
-				depth		: getDepth(),
-				limit		: mresultPreCache,
-				offset	: getOffset(),
-				format	: form } );
-
-		req.callback(mresultHandleMRIds);
-		req.send();
+function _mresultParseQuery() {
+	var term = getTerm();
+	var matches = term.match(/(\w+=\w+)/g);
+	var type = true;
+	if( matches ) {
+		var args = {};
+		for( var i = 0; i < matches.length; i++ ) {
+			var search = matches[i];
+			var stype = search.replace(/=\w+/,"");
+			var term = search.replace(/\w+=/,"");
+			args[stype] = { 'term' : term };
+		}
+		 ADVTERM = js2JSON(args);
+		type = false;
 	}
+	return type;
 }
 
+function _mresultCollectIds() { _mresultCollectSearchIds(true); }
+function mresultCollectAdvIds() { _mresultCollectSearchIds(false); }
 
-function mresultCollectAdvIds() {
+function _mresultCollectSearchIds( type ) {
+
+	type = _mresultParseQuery();
 
 	if(getOffset() == 0 || !mresultTryCachedSearch()) {
 
-		var form		= (getForm() == "all") ? null : getForm();
 		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
 		var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
 
-		var req = new Request(FETCH_ADV_MRIDS, 
-			{	sort		: sort,
-				sort_dir	: sortdir,
-				org_unit : getLocation(),
-				depth		: getDepth(),
-				limit		: mresultPreCache,
-				offset	: getOffset(),
-				format	: form,
-				searches	: JSON2js(getAdvTerm()) } );
+		var form = parseForm(getForm());
+		var item_type = form.item_type;
+		var item_form = form.item_form;
 
+		var args = {};
+
+		if( type ) {
+			args.searches = {};
+			args.searches[getStype()] = {};
+			args.searches[getStype()].term = getTerm();
+		} else {
+			args.searches = JSON2js(getAdvTerm());
+		}
+
+		args.org_unit = getLocation();
+		args.depth    = getDepth();
+		args.limit    = mresultPreCache;
+		args.offset   = getOffset();
+
+		if(sort) args.sort = sort;
+		if(sortdir) args.sort_dir = sortdir;
+		if(item_type) args.item_type	= item_type;
+		if(item_form) args.item_form	= item_form;
+
+		/* examples */
+		/*
+		args.language = ['eng'];
+		args.audience = 'j';
+		*/
+
+
+		var req = new Request(SEARCH_MRS, args);
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
 }
+
 
 function mresultCollectAdvMARCIds() {
 	if(!mresultTryCachedSearch()) {
