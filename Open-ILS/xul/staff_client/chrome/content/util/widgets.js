@@ -33,7 +33,7 @@ util.widgets.get = function(e) {
 	}
 }
 
-util.widgets.save_xml = (filename,node) {
+util.widgets.save_xml = function (filename,node) {
 	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 	JSAN.use('util.file'); var file = new util.file(filename);
@@ -105,7 +105,7 @@ util.widgets.make_menulist = function( items, dvalue ) {
 		var menuitem = document.createElement('menuitem'); menupopup.appendChild(menuitem);
 		menuitem.setAttribute('label',label);
 		menuitem.setAttribute('value',value);
-		if (disabled) {
+		if ( (disabled == true) || (disabled == "true") ) {
 			menuitem.disabled = true;
 			menuitem.setAttribute('disabled','true');
 		}
