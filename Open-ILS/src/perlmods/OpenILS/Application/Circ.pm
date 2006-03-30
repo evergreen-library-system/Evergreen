@@ -218,6 +218,7 @@ sub create_in_house_use {
 	if(!$copyid) {
 		my $barcode = $params->{barcode};
 		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
+		$copyid = $copy->id;
 		return $evt if $evt;
 	}
 
