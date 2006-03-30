@@ -34,6 +34,9 @@
 	<command id="cmd_z39_50_import" />
 	<command id="cmd_create_new_marc_book" />
 
+	<command id="cmd_upload_offline_xacts" />
+	<command id="cmd_manage_offline_xacts" />
+
 	<command id="cmd_adv_user_edit" />
 	<command id="cmd_console" />
 	<command id="cmd_shell" />

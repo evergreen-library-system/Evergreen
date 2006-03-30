@@ -121,6 +121,8 @@ var urls = {
 	'XUL_STANDALONE' : 'chrome://open_ils_staff_client/content/circ/offline.xul',
 	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xhtml',
 	'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
+	'XUL_UPLOAD_OFFLINE_XACTS' : '/xul/server/admin/upload_xacts.xhtml',
+	'XUL_MANAGE_OFFLINE_XACTS' : '/~erickson/offline/offline-status.pl',
 	'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',

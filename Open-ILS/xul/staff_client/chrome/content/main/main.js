@@ -1,7 +1,7 @@
 dump('entering main/main.js\n');
 
 function grant_perms(url) {
-	var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead";
+	var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead";
 	dump('Granting ' + perms + ' to ' + url + '\n');
 	var pref = Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefBranch);

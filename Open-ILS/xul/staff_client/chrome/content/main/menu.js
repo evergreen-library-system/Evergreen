@@ -14,6 +14,7 @@ main.menu.prototype = {
 	'url_prefix' : function(url) {
 		if (url.match(/^\//)) url = urls.remote + url;
 		if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
+		dump('url_prefix = ' + url + '\n');
 		return url;
 	},
 
@@ -191,14 +192,26 @@ main.menu.prototype = {
 			'cmd_upload_offline_xacts' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_UPLOAD_OFFLINE_XACTS) + '?session=' + window.escape(session), {}, {});
+					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+					/*obj.set_tab(obj.url_prefix(urls.XUL_UPLOAD_OFFLINE_XACTS) + '?session=' + window.escape(session) + '&ws_name=' + window.escape(data.ws_name) + '&ws_ou=' + window.escape(data.list.au[0].ws_ou()), {}, {});*/
+
+					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
+						+ '?url=' + window.escape( 
+							urls.XUL_UPLOAD_OFFLINE_XACTS 
+							+ '?session=' + window.escape(session) 
+							+ '&ws_name=' + window.escape(data.ws_name) 
+							+ '&ws_ou=' + window.escape(data.list.au[0].ws_ou() )
+						);
+
+					obj.set_tab(loc, {}, { 'show_print_button' : true });
 				}
 			],
 
 			'cmd_manage_offline_xacts' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_MANAGE_OFFLINE_XACTS) + '?session=' + window.escape(session), {}, {});
+					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+					obj.set_tab(obj.url_prefix(urls.XUL_MANAGE_OFFLINE_XACTS) + '?ses=' + window.escape(session) + '&org=' + window.escape(data.list.au[0].ws_ou()) + '&ws=' + window.escape(data.ws_name), {}, {});
 				}
 			],
 
