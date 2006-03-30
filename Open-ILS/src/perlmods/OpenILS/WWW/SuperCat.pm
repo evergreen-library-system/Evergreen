@@ -579,11 +579,11 @@ sub opensearch_feed {
 	}
 
 	my $recs = $search->request(
-		'open-ils.search.biblio.record.class.search' => $class,
-		{ term		=> $terms,
-		  org_unit	=> $org_unit->[0]->id,
-		  limit		=> $limit,
-		  offset	=> $offset,
+		'open-ils.search.biblio.multiclass' => {
+			searches	=> { $class => { term => $terms, }, },
+			org_unit	=> $org_unit->[0]->id,
+			limit		=> $limit,
+			offset		=> $offset,
 		}
 	)->gather(1);
 
