@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Main, Authentication Window -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="gen_offline_menus_win" 
+	onload="try { gen_offline_menus_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
+	<script type="text/javascript" src="/xul/server/main/lang.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function gen_offline_menus_init() {
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+			if (typeof JSAN == 'undefined') {
+				throw(
+					"The JSAN library object is missing."
+				);
+			}
+			/////////////////////////////////////////////////////////////////////////////
+
+			JSAN.errorLevel = "die"; // none, warn, or die
+			JSAN.addRepository('/xul/server/');
+
+			JSAN.use('util.error'); g.error = new util.error();
+			JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+			JSAN.use('util.network'); g.network = new util.network();
+			JSAN.use('util.widgets');
+			JSAN.use('util.functional');
+
+			build_ou_menulist();
+			save_xml('offline_ou_list',$('placeholder'));
+
+			build_pgt_menulist();
+			save_xml('offline_pgt_list',$('placeholder'));
+
+			build_cit_menulist();
+			save_xml('offline_cit_list',$('placeholder'));
+
+			build_cnct_menulist();
+			save_xml('offline_cnct_list',$('placeholder'));
+
+			util.widgets.remove_children('placeholder');
+
+			var label = document.createElement('label');
+			label.setAttribute('value','Offline interface synchronized with server.');
+			$('placeholder').appendChild( label );
+
+		}
+
+		function $(id) {
+			return document.getElementById(id);
+		}
+
+		function save_xml(filename,node) {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			JSAN.use('util.file'); var file = new util.file(filename);
+
+			var serializer = new XMLSerializer();
+			var xml = serializer.serializeToString(node);
+
+			file.write_content('truncate',xml);
+			file.close();
+		}
+
+		function build_ou_menulist() {
+			var x = document.getElementById('placeholder');
+			util.widgets.remove_children( x );
+
+			var ml = util.widgets.make_menulist( 
+				util.functional.map_list( 
+					g.data.list.aou,
+					function(obj) { return [ 
+						obj.name() ? obj.shortname() + ' : ' + obj.name() : obj.shortname(), 
+						obj.id(), 
+						( g.data.hash.aout[ obj.ou_type() ].can_have_users() == 0),
+						( g.data.hash.aout[ obj.ou_type() ].depth() ),
+					]; }
+				),
+				g.data.list.au[0].ws_ou()
+			);
+
+			x.appendChild( ml );
+		}
+
+		function build_pgt_menulist() {
+			var x = document.getElementById('placeholder');
+			util.widgets.remove_children( x );
+
+			var ml = util.widgets.make_menulist( 
+				util.functional.map_list( 
+					g.data.list.pgt,
+					function(obj) { return [ 
+						obj.description() ? obj.name() + ' : ' + obj.description() : obj.name(), 
+						obj.id() 
+					]; }
+				)
+			);
+
+			x.appendChild( ml );
+		}
+
+		function build_cit_menulist() {
+			var x = document.getElementById('placeholder');
+			util.widgets.remove_children( x );
+
+			var ml = util.widgets.make_menulist( 
+				util.functional.map_list( 
+					g.data.list.cit,
+					function(obj) { return [ 
+						obj.name(), 
+						obj.id() 
+					]; }
+				)
+			);
+
+			x.appendChild( ml );
+		}
+
+		function build_cnct_menulist() {
+			var x = document.getElementById('placeholder');
+			util.widgets.remove_children( x );
+
+			var ml = util.widgets.make_menulist( 
+				util.functional.map_list( 
+					g.data.list.cnct,
+					function(obj) { return [ 
+						obj.name(), 
+						'[' + obj.id() + ',' + obj.circ_duration() + ']'
+					]; }
+				)
+			);
+
+			x.appendChild( ml );
+		}
+
+		function build_req_survey_interface() {
+			var x = document.getElementById('placeholder');
+			util.widgets.remove_children( x );
+			/* loop through required surveys */
+			for (var i = 0; i < g.data.list.my_asv; i++) {
+				var survey = g.data.list.my_asv[i];
+				var x_gb = document.createElementById('groupbox');
+				x.appendChild(x_gb);
+				var x_caption = document.createElementById('caption');
+				x_caption.setAttribute('label',survey.name());
+				x_gb.appendChild(x_caption);
+
+				if (survey.description()) {
+					var x_desc = document.createElement('description');
+					x_desc.appendChild(
+						document.createTextNode( survey.description() )
+					);
+					x_gb.appendChild(x_desc);
+				}
+
+				/* loop through survey questions */
+				for (var j = 0; j < survey.questions(); j++) {
+					var question = survey.questions()[j];
+					var x_desc = document.createElement('description');
+					x_desc.appendChild(
+						document.createTextNode(
+							question.question()
+						)
+					);
+					x_gb.appendChild(x_desc);
+					var x_hbox = document.createElement('hbox'); x_hbox.setAttribute('flex','1');
+					x_gb.appendChild(x_hbox);
+					var x_spacer = document.createElement('spacer'); x_spacer.setAttribute('flex','1');
+					x_hbox.appendChild(x_spacer);
+					var x_ml = util.widgets.make_menulist( 
+						[ 'Choose a response...', '' ].concat(
+							util.functional.map_list( 
+								question.answers(),
+								function(obj) { return [ 
+									obj.answer(), 
+									'[' + obj.id() + ',' 
+									+ obj.question() + ',' 
+									+ question.survey() + ']'
+								]; }
+							)
+						)
+					);
+					x_hbox.appendChild(x_ml);
+				}
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1">
+		<hbox id="placeholder"/>
+	</vbox>
+</window>
+
