@@ -51,26 +51,19 @@
 			JSAN.use('util.error'); g.error = new util.error();
 			JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 			JSAN.use('util.network'); g.network = new util.network();
-			JSAN.use('util.widgets');
 			JSAN.use('util.functional');
 
-			build_ou_menulist();
-			save_xml('offline_ou_list',$('placeholder'));
+			save_object('offline_ou_list', build_ou_list());
 
-			build_pgt_menulist();
-			save_xml('offline_pgt_list',$('placeholder'));
+			save_object('offline_pgt_list', build_pgt_list());
 
-			build_cit_menulist();
-			save_xml('offline_cit_list',$('placeholder'));
+			save_object('offline_cit_list', build_cit_list());
 
-			build_cnct_menulist();
-			save_xml('offline_cnct_list',$('placeholder'));
+			save_object('offline_cnct_list', build_cnct_list());
 
-			util.widgets.remove_children('placeholder');
+			save_object('offline_asv_list', build_asv_list());
 
-			var label = document.createElement('label');
-			label.setAttribute('value','Offline interface synchronized with server.');
-			$('placeholder').appendChild( label );
+			$('placeholder').setAttribute('value','Offline interface synchronized with server.');
 
 		}
 
@@ -78,22 +71,14 @@
 			return document.getElementById(id);
 		}
 
-		function save_xml(filename,node) {
+		function save_object(filename,obj) {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			JSAN.use('util.file'); var file = new util.file(filename);
-
-			var serializer = new XMLSerializer();
-			var xml = serializer.serializeToString(node);
-
-			file.write_content('truncate',xml);
-			file.close();
+			file.set_object(obj); file.close();
 		}
 
-		function build_ou_menulist() {
-			var x = document.getElementById('placeholder');
-			util.widgets.remove_children( x );
-
-			var ml = util.widgets.make_menulist( 
+		function build_ou_list() {
+			return [
 				util.functional.map_list( 
 					g.data.list.aou,
 					function(obj) { return [ 
@@ -104,16 +89,11 @@
 					]; }
 				),
 				g.data.list.au[0].ws_ou()
-			);
-
-			x.appendChild( ml );
+			];
 		}
 
-		function build_pgt_menulist() {
-			var x = document.getElementById('placeholder');
-			util.widgets.remove_children( x );
-
-			var ml = util.widgets.make_menulist( 
+		function build_pgt_list() {
+			return [
 				util.functional.map_list( 
 					g.data.list.pgt,
 					function(obj) { return [ 
@@ -121,16 +101,11 @@
 						obj.id() 
 					]; }
 				)
-			);
-
-			x.appendChild( ml );
+			];
 		}
 
-		function build_cit_menulist() {
-			var x = document.getElementById('placeholder');
-			util.widgets.remove_children( x );
-
-			var ml = util.widgets.make_menulist( 
+		function build_cit_list() {
+			return [
 				util.functional.map_list( 
 					g.data.list.cit,
 					function(obj) { return [ 
@@ -138,16 +113,11 @@
 						obj.id() 
 					]; }
 				)
-			);
-
-			x.appendChild( ml );
+			];
 		}
 
-		function build_cnct_menulist() {
-			var x = document.getElementById('placeholder');
-			util.widgets.remove_children( x );
-
-			var ml = util.widgets.make_menulist( 
+		function build_cnct_list() {
+			return [
 				util.functional.map_list( 
 					g.data.list.cnct,
 					function(obj) { return [ 
@@ -155,68 +125,45 @@
 						'[' + obj.id() + ',' + obj.circ_duration() + ']'
 					]; }
 				)
-			);
-
-			x.appendChild( ml );
+			];
 		}
 
-		function build_req_survey_interface() {
-			var x = document.getElementById('placeholder');
-			util.widgets.remove_children( x );
+		function build_asv_list() {
+			var obj = {};
 			/* loop through required surveys */
-			for (var i = 0; i < g.data.list.my_asv; i++) {
+			for (var i = 0; i < g.data.list.my_asv.length; i++) {
+				dump('i = ' + i + '\n');
 				var survey = g.data.list.my_asv[i];
-				var x_gb = document.createElementById('groupbox');
-				x.appendChild(x_gb);
-				var x_caption = document.createElementById('caption');
-				x_caption.setAttribute('label',survey.name());
-				x_gb.appendChild(x_caption);
-
-				if (survey.description()) {
-					var x_desc = document.createElement('description');
-					x_desc.appendChild(
-						document.createTextNode( survey.description() )
-					);
-					x_gb.appendChild(x_desc);
-				}
+				obj[ survey.name() ] = {};
+				obj[ survey.name() ][ 'description' ] = survey.description();
+				obj[ survey.name() ][ 'questions' ] = [];
 
 				/* loop through survey questions */
-				for (var j = 0; j < survey.questions(); j++) {
+				for (var j = 0; j < survey.questions().length; j++) {
+					dump('\tj = ' + j + '\n');
 					var question = survey.questions()[j];
-					var x_desc = document.createElement('description');
-					x_desc.appendChild(
-						document.createTextNode(
-							question.question()
-						)
+					var q = {};
+					q[ 'question' ] = question.question();
+					q[ 'answers' ] = util.functional.map_list( 
+						question.answers(),
+						function(obj) { return [ 
+							obj.answer(), 
+							'[' + obj.id() + ',' 
+							+ obj.question() + ',' 
+							+ question.survey() + ']'
+						]; }
 					);
-					x_gb.appendChild(x_desc);
-					var x_hbox = document.createElement('hbox'); x_hbox.setAttribute('flex','1');
-					x_gb.appendChild(x_hbox);
-					var x_spacer = document.createElement('spacer'); x_spacer.setAttribute('flex','1');
-					x_hbox.appendChild(x_spacer);
-					var x_ml = util.widgets.make_menulist( 
-						[ 'Choose a response...', '' ].concat(
-							util.functional.map_list( 
-								question.answers(),
-								function(obj) { return [ 
-									obj.answer(), 
-									'[' + obj.id() + ',' 
-									+ obj.question() + ',' 
-									+ question.survey() + ']'
-								]; }
-							)
-						)
-					);
-					x_hbox.appendChild(x_ml);
+					obj[ survey.name() ][ 'questions' ].push( q );
 				}
 			}
+			return obj;
 		}
 
 	]]>
 	</script>
 
 	<vbox flex="1">
-		<hbox id="placeholder"/>
+		<label id="placeholder"/>
 	</vbox>
 </window>
 
