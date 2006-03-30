@@ -47,7 +47,7 @@ circ.offline.prototype = {
 						],
 						'cmd_register_patron' : [
 							['command'],
-							function() { alert('Not Yet Implemented'); }
+							function() { obj.deck.set_iframe('offline_register.xul',{},{}); }
 						],
 						'cmd_print_last_receipt' : [
 							['command'],

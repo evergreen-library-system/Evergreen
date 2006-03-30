@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+
+<window id="offline_register_win" sizemode="maximized"
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="offline_register.js"/>
+
+	<groupbox flex="1">
+		<caption label="Standalone Patron Registration"/>
+		<grid>
+			<columns><column/><column/></columns>
+			<rows>
+				<row>
+					<label value="Home Library:"/>
+					<hbox id="x_home_ou"/>
+				</row>
+				<row>
+					<label value="Profile:"/>
+					<hbox id="x_profile"/>
+				</row>
+				<row>
+					<label value=" "/>
+				</row>
+			</rows>
+		</grid>
+		<hbox flex="1">
+			<vbox flex="1">
+				<grid>
+					<columns><column/><column/></columns>
+					<rows>
+						<row>
+							<label value="New Barcode:"/>
+							<textbox id="barcode"/>
+						</row>
+						<row>
+							<label value="New Password:"/>
+							<textbox id="passwd"/>
+						</row>
+						<row><label value=" "/></row>
+						<row>
+							<label value="Last Name:"/>
+							<textbox id="family_name"/>
+						</row>
+						<row>
+							<label value="First Name:"/>
+							<textbox id="first_given_name"/>
+						</row>
+						<row>
+							<label value="Date of Birth:"/>
+							<textbox id="dob"/>
+						</row>
+						<row><label value=" "/></row>
+						<row>
+							<label value="Ident Type:"/>
+							<hbox id="x_ident_type"/>
+						</row>
+						<row>
+							<label value="Ident Value:"/>
+							<textbox id="ident_value"/>
+						</row>
+					</rows>
+				</grid>
+			</vbox>
+			<splitter><grippy/></splitter>
+			<vbox flex="1">
+				<grid>
+					<columns><column/><column/></columns>
+					<rows>
+						<row>
+							<label value="Billing Address"/>
+						</row>
+						<row>
+							<label value="Line 1"/>
+							<textbox id="street1"/>
+						</row>
+						<row>
+							<label value="Line 2"/>
+							<textbox id="street2"/>
+						</row>
+						<row>
+							<label value="City"/>
+							<textbox id="city"/>
+						</row>
+						<row>
+							<label value="State"/>
+							<textbox id="state" value="GA"/>
+						</row>
+						<row>
+							<label value="Postal Code"/>
+							<textbox id="post_code"/>
+						</row>
+						<row hidden="true">
+							<label value="Country"/>
+							<textbox id="country" value="USA"/>
+						</row>
+							
+					</rows>
+				</grid>
+			</vbox>
+		</hbox>
+		<hbox>
+			<spacer flex="1"/>
+			<button id="cancel" label="Cancel" />
+			<button id="submit" label="Done" accesskey="D" />
+		</hbox>
+	</groupbox>
+
+</window>
+
