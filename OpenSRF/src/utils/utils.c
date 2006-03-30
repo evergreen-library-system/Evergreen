@@ -309,41 +309,41 @@ char* uescape( const char* string, int size, int full_escape ) {
 			if(full_escape) {
 				switch(c) {
 					case '"':
-						buffer_add_char(buf, '\\');
-						buffer_add_char(buf, '"');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, '"');
 						break;
 	
 					case '\b':
-						buffer_add_char(buf, '\\');
-						buffer_add_char(buf, 'b');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, 'b');
 						break;
 	
 					case '\f':
-						buffer_add_char(buf, '\\');
-						buffer_add_char(buf, 'f');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, 'f');
 						break;
 	
 					case '\t':
-						buffer_add_char(buf, '\\');
-						buffer_add_char(buf, 't');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, 't');
 						break;
 	
 					case '\n':
-						buffer_add_char(buf, '\\');
-						buffer_add_char(buf, 'n');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, 'n');
 						break;
 	
 					case '\r':
-						buffer_add_char(buf, '\\');
-						buffer_add_char(buf, 'r');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, 'r');
 						break;
 
 					default:
-						buffer_add_char(buf, c);
+						OSRF_BUFFER_ADD_CHAR(buf, c);
 				}
 
 			} else {
-				buffer_add_char(buf, c);
+				OSRF_BUFFER_ADD_CHAR(buf, c);
 			}
 		}
 

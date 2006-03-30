@@ -4,8 +4,6 @@ osrfHash* osrfNewHash() {
 	osrfHash* hash;
 	OSRF_MALLOC(hash, sizeof(osrfHash));
 	hash->hash		= osrfNewList();
-	hash->freeItem = NULL;
-	hash->size		= 0;
 	hash->keys		= osrfNewStringArray(64);
 	return hash;
 }
@@ -13,6 +11,7 @@ osrfHash* osrfNewHash() {
 
 /* algorithm proposed by Donald E. Knuth 
  * in The Art Of Computer Programming Volume 3 (more or less..)*/
+/*
 static unsigned int osrfHashMakeKey(char* str) {
 	if(!str) return 0;
 	unsigned int len = strlen(str);
@@ -22,45 +21,21 @@ static unsigned int osrfHashMakeKey(char* str) {
 		h = ((h << 5) ^ (h >> 27)) ^ (*str);
 	return (h & (OSRF_HASH_LIST_SIZE-1));
 }
+*/
 
 
-/*
-#define OSRF_HASH_MAKE_KEY(str,num)	\
-	do {\
-		unsigned int len = strlen(str); \
-		unsigned int h = len;\
-		unsigned int i = 0;\
-		for(i = 0; i < len; str++, i++)\
-			h = ((h << 5) ^ (h >> 27)) ^ (*str);\
-		*num = (h & (OSRF_HASH_LIST_SIZE-1));\
-	} while(0)
-	*/
+/* macro version of the above function */
+#define OSRF_HASH_MAKE_KEY(str,num) \
+   do {\
+      char* __k = str;\
+      unsigned int __len = strlen(__k); \
+      unsigned int __h = __len;\
+      unsigned int __i = 0;\
+      for(__i = 0; __i < __len; __k++, __i++)\
+         __h = ((__h << 5) ^ (__h >> 27)) ^ (*__k);\
+      num = (__h & (OSRF_HASH_LIST_SIZE-1));\
+   } while(0)
 
-/*
-#define OSRF_HASH_MAKE_KEY(str,num)	\
-	unsigned int ___len = strlen(str);\
-	unsigned int ___h = ___len;\
-	unsigned int ___i = 0;\
-	for(___i = 0; ___i < ___len; str++, ___i++)\
-		___h = ((___h << 5) ^ (___h >> 27)) ^ (*str);\
-	num = (___h & (OSRF_HASH_LIST_SIZE-1));\
-	*/
-
-/*
-#define OSRF_HASH_MAKE_KEY(str,num,len)	\
-	unsigned int __i;\
-	num = len;\
-	for(__i = 0; __i < len; __i++, str++)\
-		num = ((num << 5) ^ (num >> 27)) ^ (*str);\
-	num = (num & (OSRF_HASH_LIST_SIZE-1));\
-	*/
-
-/*
-#define OSRF_HASH_MAKE_KEY(str,num, len)	\
-	num = osrfHashMakeKey(str);\
-	fprintf(stderr, "made num: %d\n", num);
-	*/
-	
 
 
 /* returns the index of the item and points l to the sublist the item
@@ -70,12 +45,8 @@ static unsigned int osrfHashFindItem( osrfHash* hash, char* key, osrfList** l, o
 	if(!(hash && key)) return -1;
 
 
-	int i = osrfHashMakeKey(key);
-
-	/*
-	unsigned int i;
-	OSRF_HASH_MAKE_KEY(key, &i);
-	*/
+	unsigned int i = 0;
+	OSRF_HASH_MAKE_KEY(key,i);
 
 	osrfList* list = OSRF_LIST_GET_INDEX( hash->hash, i );
 	if( !list ) { return -1; }
@@ -122,13 +93,9 @@ void* osrfHashSet( osrfHash* hash, void* item, const char* key, ... ) {
 	VA_LIST_TO_STRING(key);
 	void* olditem = osrfHashRemove( hash, VA_BUF );
 
-	int bucketkey = osrfHashMakeKey(VA_BUF);
-
-	/*
-	unsigned int bucketkey;
-	OSRF_HASH_MAKE_KEY(VA_BUF, &bucketkey);
-	*/
-
+	unsigned int bucketkey = 0;
+	OSRF_HASH_MAKE_KEY(VA_BUF,bucketkey);
+	
 	osrfList* bucket;
 	if( !(bucket = OSRF_LIST_GET_INDEX(hash->hash, bucketkey)) ) {
 		bucket = osrfNewList();
@@ -270,4 +237,6 @@ void osrfHashIteratorReset( osrfHashIterator* itr ) {
 }
 
 
-
+int osrfHashIteratorHasNext( osrfHashIterator* itr ) {
+	return ( itr->currentIdx < itr->keys->size ) ? 1 : 0;
+}

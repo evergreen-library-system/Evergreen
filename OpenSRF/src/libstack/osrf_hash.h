@@ -95,6 +95,8 @@ unsigned long osrfHashGetCount( osrfHash* hash );
   */
 osrfHashIterator* osrfNewHashIterator( osrfHash* hash );
 
+int osrfHashIteratorHasNext( osrfHashIterator* itr );
+
 /**
   Returns the next non-NULL item in the list, return NULL when
   the end of the list has been reached

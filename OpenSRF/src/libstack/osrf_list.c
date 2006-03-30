@@ -1,25 +1,17 @@
 #include "osrf_list.h"
 
 osrfList* osrfNewList() {
-	//osrfList* list = safe_malloc(sizeof(osrfList));
 	osrfList* list;
 	OSRF_MALLOC(list, sizeof(osrfList));
-	list->size		= 0;
-	list->freeItem = NULL;
 	list->arrsize	= OSRF_LIST_DEFAULT_SIZE;
-	//list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
 	OSRF_MALLOC(list->arrlist, list->arrsize * sizeof(void*));
 	return list;
 }
 
 osrfList* osrfNewListSize( unsigned int size ) {
-	//osrfList* list = safe_malloc(sizeof(osrfList));
 	osrfList* list;
 	OSRF_MALLOC(list, sizeof(osrfList));
-	list->size		= 0;
-	list->freeItem = NULL;
 	list->arrsize	= size;
-	//list->arrlist	= safe_malloc( list->arrsize * sizeof(void*) );
 	OSRF_MALLOC( list->arrlist, list->arrsize * sizeof(void*) );
 	return list;
 }
@@ -61,8 +53,8 @@ void* osrfListSet( osrfList* list, void* item, unsigned int position ) {
 
 	void* olditem = osrfListRemove( list, position );
 	list->arrlist[position] = item;
-	if( list->size == 0 || list->size <= position )
-		list->size = position + 1;
+	//if( list->size == 0 || list->size <= position )
+	if( list->size <= position ) list->size = position + 1;
 	return olditem;
 }
 
