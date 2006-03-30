@@ -201,10 +201,11 @@ sub get_all_surveys {
 	my( $self, $client, $user_session ) = @_;
 	
 	my $user_obj = $apputils->check_user_session($user_session); 
+	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.action.survey.all.atomic",
-		$user_obj->home_ou() );
+		$orgid );
 
 	my @fleshed;
 	for my $survey (@$surveys) {
