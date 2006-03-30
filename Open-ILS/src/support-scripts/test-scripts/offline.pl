@@ -31,6 +31,8 @@ my $params; # - CGI params
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
+
+	# raw=1 allows us to receive the raw JSON 
 	$params = "?ses=$authtoken&ws=$station&seskey=$seskey&raw=1";
 	run_scripts();
 	oils_logout();
@@ -127,6 +129,10 @@ sub upload_script {
 }
 
 
+#-----------------------------------------------------------------------------
+# Gets a list of all of the sessions that were either started today or 
+# completed today
+#-----------------------------------------------------------------------------
 sub check_sessions {
 	my $req = GET( "$baseurl/offline-status.pl$params&seslist=1" );
 	my $res = $useragent->request($req);
