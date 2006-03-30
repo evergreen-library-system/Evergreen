@@ -294,6 +294,15 @@
 	<event code='8005' textcode='OFFLINE_CHECKSUM_FAILED'>
 		<desc> Offline server is not configured properly </desc>
 	</event>
+	<event code='8006' textcode='OFFLINE_SESSION_NOT_FOUND'>
+		<desc> Offline server is not configured properly </desc>
+	</event>
+	<event code='8007' textcode='OFFLINE_SESSION_EXISTS'>
+		<desc> A session with the given name already exists </desc>
+	</event>
+	<event code='8008' textcode='OFFLINE_INVALID_SESSION'>
+		<desc> The session name is invalid </desc>
+	</event>
 
 	<!-- ================================================================ -->
 
