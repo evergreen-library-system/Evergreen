@@ -5,6 +5,9 @@ util.widgets = {};
 
 util.widgets.EXPORT_OK	= [ 
 	'get',
+	'save_xml',
+	'serialize_node',
+	'xul_from_string',
 	'store_disable',
 	'restore_disable',
 	'disable',
@@ -28,6 +31,31 @@ util.widgets.get = function(e) {
 	} else {
 		return document.getElementById(e);
 	}
+}
+
+util.widgets.save_xml = (filename,node) {
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+	JSAN.use('util.file'); var file = new util.file(filename);
+
+	node = util.widgets.get(node);
+	var xml = util.widgets.serialize_node(node);
+
+	file.write_content('truncate',xml);
+	file.close();
+}
+
+util.widgets.serialize_node = function(node) {
+	var serializer = new XMLSerializer();
+	var xml = serializer.serializeToString(node);
+	return xml;
+}
+
+util.widgets.xul_from_string = function(xml) {
+	var parser = new DOMParser(); 
+	var doc = parser.parseFromString(xml, "text/xml"); 
+	var node = doc.documentElement;
+	return node;
 }
 
 util.widgets.store_disable = function() {
