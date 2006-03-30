@@ -3,6 +3,8 @@ dump('entering util/file.js\n');
 if (typeof util == 'undefined') util = {};
 util.file = function (fname) {
 
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
+
 	JSAN.use('util.error'); this.error = new util.error();
 
 	this.dirService = Components.classes["@mozilla.org/file/directory_service;1"].
@@ -103,10 +105,13 @@ util.file.prototype = {
 
 	'write_content' : function(write_type,content) {
 		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
 			if (!this._output_stream) this._create_output_stream(write_type);
 			this._output_stream.write( content, String( content ).length );
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.file.write_content(): ' + E);
+			dump('write_type = ' + write_type + '\n');
+			dump('content = ' + content + '\n');
 			throw(E);
 		}
 	},
@@ -124,6 +129,8 @@ util.file.prototype = {
 
 	'get_content' : function() {
 		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
+
 			if (!this._file) throw('Must .get() a file first.');
 			if (!this._file.exists()) throw('File does not exist.');
 			
@@ -140,6 +147,9 @@ util.file.prototype = {
 	'_create_input_stream' : function() {
 		try {
 			dump('_create_input_stream()\n');
+			
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
+
 			if (!this._file) throw('Must .get() a file first.');
 			if (!this._file.exists()) throw('File does not exist.');
 
@@ -168,6 +178,9 @@ util.file.prototype = {
 	'_create_output_stream' : function(param) {
 		try {
 			dump('_create_output_stream('+param+')\n');
+			
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
+
 			if (!this._file) throw('Must .get() a file first.');
 
 			if (! this._file.exists()) this._file.create( 0, 0640 );
