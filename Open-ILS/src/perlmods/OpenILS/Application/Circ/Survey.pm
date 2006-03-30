@@ -148,10 +148,11 @@ sub get_required_surveys {
 	warn "Retrieving required surveys\n";
 
 	my $user_obj = $apputils->check_user_session($user_session); 
+	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.action.survey.required.atomic",
-		$user_obj->home_ou() );
+		$orgid );
 
 	if($surveys) {
 		warn "Retrieved " . scalar(@$surveys)." required surveys\n";
