@@ -35,6 +35,7 @@ var api = {
 	'FM_ASC_BATCH_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.batch' },
 	'FM_ASC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.all' },
 	'FM_ASV_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.create' },
+	'FM_ASV_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.retrieve.all' },
 	'FM_ASV_RETRIEVE_REQUIRED' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.retrieve.required' },
 	'FM_ASVR_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.survey.response.retrieve' },
 	'FM_AU_IDS_RETRIEVE_VIA_HASH' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.search.advanced' },
