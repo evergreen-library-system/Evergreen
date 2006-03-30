@@ -967,9 +967,35 @@ sub postfilter_search_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms);
+	my (@types,@forms,@lang,@aud,@lit_form);
 	my ($t_filter, $f_filter) = ('','');
+	my ($a_filter, $l_filter, $lf_filter) = ('','','');
 	my ($ot_filter, $of_filter) = ('','');
+	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
+
+	if (my $a = $args{audience}) {
+		$a = [$a] if (!ref($a));
+		@aud = @$a;
+			
+		$a_filter = ' AND rd.audience IN ('.join(',',map{'?'}@aud).')';
+		$oa_filter = ' AND ord.audience IN ('.join(',',map{'?'}@aud).')';
+	}
+
+	if (my $l = $args{language}) {
+		$l = [$l] if (!ref($l));
+		@lang = @$l;
+
+		$l_filter = ' AND rd.item_lang IN ('.join(',',map{'?'}@lang).')';
+		$ol_filter = ' AND ord.item_lang IN ('.join(',',map{'?'}@lang).')';
+	}
+
+	if (my $f = $args{lit_form}) {
+		$f = [$f] if (!ref($f));
+		@lit_form = @$f;
+
+		$lf_filter = ' AND rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+		$olf_filter = ' AND ord.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+	}
 
 	if ($args{format}) {
 		my ($t, $f) = split '-', $args{format};
@@ -985,7 +1011,6 @@ sub postfilter_search_class_fts {
 			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 		}
 	}
-
 
 
 	my $descendants = defined($ou_type) ?
@@ -1092,6 +1117,9 @@ sub postfilter_search_class_fts {
 			AND rd.record = smrs.source
 			$t_filter
 			$f_filter
+			$a_filter
+			$l_filter
+			$lf_filter
   	  	GROUP BY m.metarecord
   	  	ORDER BY 4 $sort_dir, MIN(COALESCE(CHAR_LENGTH(f.value),1))
 		LIMIT 10000
@@ -1125,6 +1153,9 @@ sub postfilter_search_class_fts {
 				AND ord.record = mrs.source
 				$ot_filter
 				$of_filter
+				$oa_filter
+				$ol_filter
+				$olf_filter
 			  ORDER BY 4 $sort_dir
 		SQL
 	} elsif ($self->api_name !~ /staff/o) {
@@ -1158,6 +1189,9 @@ sub postfilter_search_class_fts {
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				  LIMIT 1
 				)
 			  ORDER BY 4 $sort_dir
@@ -1183,6 +1217,9 @@ sub postfilter_search_class_fts {
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				  LIMIT 1
 				)
 				OR NOT EXISTS (
@@ -1195,6 +1232,9 @@ sub postfilter_search_class_fts {
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				  LIMIT 1
 				)
 			  ORDER BY 4 $sort_dir
@@ -1208,7 +1248,9 @@ sub postfilter_search_class_fts {
 			$select, {},
 			(@bonus_values > 0 ? @bonus_values : () ),
 			( (!$sort && @bonus_values > 0) ? @bonus_values : () ),
-			@types, @forms, @types, @forms,  ($self->api_name =~ /staff/o ? (@types, @forms) : () ) );
+			@types, @forms, @aud, @lang, @lit_form,
+			@types, @forms, @aud, @lang, @lit_form,
+			($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () ) );
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
@@ -1283,10 +1325,54 @@ sub postfilter_search_multi_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms);
+	my (@types,@forms,@lang,@aud,@lit_form);
 	my ($t_filter, $f_filter) = ('','');
+	my ($a_filter, $l_filter, $lf_filter) = ('','','');
 	my ($ot_filter, $of_filter) = ('','');
+	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
+	if (my $a = $args{audience}) {
+		$a = [$a] if (!ref($a));
+		@aud = @$a;
+			
+		$a_filter = ' AND rd.audience IN ('.join(',',map{'?'}@aud).')';
+		$oa_filter = ' AND ord.audience IN ('.join(',',map{'?'}@aud).')';
+	}
+
+	if (my $l = $args{language}) {
+		$l = [$l] if (!ref($l));
+		@lang = @$l;
+
+		$l_filter = ' AND rd.item_lang IN ('.join(',',map{'?'}@lang).')';
+		$ol_filter = ' AND ord.item_lang IN ('.join(',',map{'?'}@lang).')';
+	}
+
+	if (my $f = $args{lit_form}) {
+		$f = [$f] if (!ref($f));
+		@lit_form = @$f;
+
+		$lf_filter = ' AND rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+		$olf_filter = ' AND ord.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+	}
+
+	if (my $f = $args{item_form}) {
+		$f = [$f] if (!ref($f));
+		@forms = @$f;
+
+		$f_filter = ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		$of_filter = ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
+	}
+
+	if (my $t = $args{item_type}) {
+		$t = [$t] if (!ref($t));
+		@types = @$t;
+
+		$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+	}
+
+
+	# XXX legacy format and item type support
 	if ($args{format}) {
 		my ($t, $f) = split '-', $args{format};
 		@types = split '', $t;
@@ -1437,6 +1523,9 @@ sub postfilter_search_multi_class_fts {
 			AND rd.record = smrs.source
 			$t_filter
 			$f_filter
+			$a_filter
+			$l_filter
+			$lf_filter
   	  	GROUP BY m.metarecord
   	  	ORDER BY 4 $sort_dir
 		LIMIT 10000
@@ -1472,6 +1561,9 @@ sub postfilter_search_multi_class_fts {
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				  LIMIT 1
 			  	)
 			  ORDER BY 4 $sort_dir
@@ -1496,6 +1588,9 @@ sub postfilter_search_multi_class_fts {
 					AND br.deleted IS FALSE
 					$ot_filter
 					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				  LIMIT 1
 				)
 				OR NOT EXISTS (
@@ -1508,6 +1603,9 @@ sub postfilter_search_multi_class_fts {
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				  LIMIT 1
 				)
 			  ORDER BY 4 $sort_dir
@@ -1519,7 +1617,11 @@ sub postfilter_search_multi_class_fts {
 
 	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
 			$select, {},
-			@bonus_values, @types, @forms, @types, @forms,  ($self->api_name =~ /staff/o ? (@types, @forms) : () ) );
+			@bonus_values,
+			@types, @forms, @aud, @lang, @lit_form,
+			@types, @forms, @aud, @lang, @lit_form,
+			($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () )
+	);
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
@@ -1568,7 +1670,7 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
-
+=comment
 
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub postfilter_Z_search_class_fts {
@@ -1792,6 +1894,7 @@ sub postfilter_Z_search_class_fts {
 	return undef;
 }
 
+
 for my $class ( qw/title author subject keyword series/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.Zsearch",
@@ -1926,6 +2029,8 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+=cut
+
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub biblio_search_multi_class_fts {
 	my $self = shift;
@@ -1955,10 +2060,54 @@ sub biblio_search_multi_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms);
+	my (@types,@forms,@lang,@aud,@lit_form);
 	my ($t_filter, $f_filter) = ('','');
+	my ($a_filter, $l_filter, $lf_filter) = ('','','');
 	my ($ot_filter, $of_filter) = ('','');
+	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
+	if (my $a = $args{audience}) {
+		$a = [$a] if (!ref($a));
+		@aud = @$a;
+			
+		$a_filter = ' AND rd.audience IN ('.join(',',map{'?'}@aud).')';
+		$oa_filter = ' AND ord.audience IN ('.join(',',map{'?'}@aud).')';
+	}
+
+	if (my $l = $args{language}) {
+		$l = [$l] if (!ref($l));
+		@lang = @$l;
+
+		$l_filter = ' AND rd.item_lang IN ('.join(',',map{'?'}@lang).')';
+		$ol_filter = ' AND ord.item_lang IN ('.join(',',map{'?'}@lang).')';
+	}
+
+	if (my $f = $args{lit_form}) {
+		$f = [$f] if (!ref($f));
+		@lit_form = @$f;
+
+		$lf_filter = ' AND rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+		$olf_filter = ' AND ord.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+	}
+
+	if (my $f = $args{item_form}) {
+		$f = [$f] if (!ref($f));
+		@forms = @$f;
+
+		$f_filter = ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		$of_filter = ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
+	}
+
+	if (my $t = $args{item_type}) {
+		$t = [$t] if (!ref($t));
+		@types = @$t;
+
+		$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+	}
+
+
+	# XXX legacy format and item type support
 	if ($args{format}) {
 		my ($t, $f) = split '-', $args{format};
 		@types = split '', $t;
@@ -1973,7 +2122,6 @@ sub biblio_search_multi_class_fts {
 			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 		}
 	}
-
 
 
 	my $descendants = defined($ou_type) ?
@@ -2110,6 +2258,9 @@ sub biblio_search_multi_class_fts {
 			$join_table_list
 			$t_filter
 			$f_filter
+			$a_filter
+			$l_filter
+			$lf_filter
   	  	GROUP BY b.id
   	  	ORDER BY 3 $sort_dir
 		LIMIT 10000
@@ -2168,7 +2319,7 @@ sub biblio_search_multi_class_fts {
 
 	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
 			$select, {},
-			@bonus_values, @types, @forms
+			@bonus_values, @types, @forms, @aud, @lang, @lit_form
 	);
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);

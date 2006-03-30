@@ -447,6 +447,25 @@ INSERT INTO config.net_access_level (name) VALUES ('Restricted');
 INSERT INTO config.net_access_level (name) VALUES ('Full');
 INSERT INTO config.net_access_level (name) VALUES ('None');
 
+CREATE TABLE config.audience_map (
+	code		"char"	PRIMARY KEY,
+	value		TEXT	NOT NULL,
+	description	TEXT
+);
+
+COPY config.audience_map FROM STDIN;
+ 	Unknown or unspecified	The target audience for the item not known or not specified.
+a	Preschool	The item is intended for children, approximate ages 0-5 years.
+b	Primary	The item is intended for children, approximate ages 6-8 years.
+c	Pre-adolescent	The item is intended for young people, approximate ages 9-13 years.
+d	Adolescent	The item is intended for young people, approximate ages 14-17 years.
+e	Adult	The item is intended for adults.
+f	Specialized	The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience.
+g	General	The item is of general interest and not aimed at an audience of a particular intellectual level.
+j	Juvenile	The item is intended for children and young people, approximate ages 0-15 years.
+\.
+
+
 CREATE TABLE config.lit_form_map (
 	code		"char"	PRIMARY KEY,
 	value		TEXT	NOT NULL,

@@ -704,6 +704,30 @@
 
 	#-------------------------------------------------------------------------------
 
+	package config::language_map;
+	config::item_form_map->table('config.language_map');
+
+	#-------------------------------------------------------------------------------
+
+	package config::item_form_map;
+	config::item_form_map->table('config.item_form_map');
+
+	#-------------------------------------------------------------------------------
+
+	package config::lit_form_map;
+	config::item_form_map->table('config.lit_form_map');
+
+	#-------------------------------------------------------------------------------
+
+	package config::item_type_map;
+	config::item_form_map->table('config.item_type_map');
+
+	#-------------------------------------------------------------------------------
+	package config::audience_map;
+	config::item_form_map->table('config.audience_map');
+
+	#-------------------------------------------------------------------------------
+
 
 }
 

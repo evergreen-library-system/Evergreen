@@ -83,6 +83,41 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/name/);
 #-------------------------------------------------------------------------------
 
+package config::audience_map;
+use base qw/config/;
+__PACKAGE__->table('config_audience_map');
+__PACKAGE__->columns(Primary => 'code');
+__PACKAGE__->columns(Essential => qw/value description/);
+#-------------------------------------------------------------------------------
+
+package config::lit_form_map;
+use base qw/config/;
+__PACKAGE__->table('config_lit_form_map');
+__PACKAGE__->columns(Primary => 'code');
+__PACKAGE__->columns(Essential => qw/value description/);
+#-------------------------------------------------------------------------------
+
+package config::item_form_map;
+use base qw/config/;
+__PACKAGE__->table('config_lit_form_map');
+__PACKAGE__->columns(Primary => 'code');
+__PACKAGE__->columns(Essential => qw/value/);
+#-------------------------------------------------------------------------------
+
+package config::item_type_map;
+use base qw/config/;
+__PACKAGE__->table('config_lit_form_map');
+__PACKAGE__->columns(Primary => 'code');
+__PACKAGE__->columns(Essential => qw/value/);
+#-------------------------------------------------------------------------------
+
+package config::language_map;
+use base qw/config/;
+__PACKAGE__->table('config_language_map');
+__PACKAGE__->columns(Primary => 'code');
+__PACKAGE__->columns(Essential => qw/value/);
+#-------------------------------------------------------------------------------
+
 
 1;
 
