@@ -46,6 +46,8 @@ sub offline_time_delta { return $time_delta; }
 sub offline_config { return %config; }
 sub offline_cgi { return $cgi; }
 sub offline_seskey { return $seskey; }
+sub offline_base_pending_dir { return $base_dir .'/pending/'; }
+sub offline_base_archive_dir { return $base_dir .'/archive/'; }
 
 
 
@@ -109,6 +111,14 @@ sub initialize {
 	$time_delta	 = $cgi->param('delta') || "0";
 
 	$seskey = $cgi->param('seskey') || time . "_$$";
+	
+	if( $cgi->param('createses') ) {
+		if( -e &offline_pending_dir || -e &offline_archive_dir ) {
+			&handle_event(OpenILS::Event->new('OFFLINE_SESSION_EXISTS'));
+		}
+		handle_event(OpenILS::Event->new('OFFLINE_INVALID_SESSION')) unless $seskey =~ /^\w+$/;
+		&offline_pending_dir(1);
+	}
 }
 
 
@@ -131,7 +141,14 @@ sub print_html {
 			<head>
 				<script src='/opac/common/js/JSON.js'> </script>
 				<script>
-					function offline_complete(obj) { if(obj) alert(js2JSON(obj)); }
+					function offline_complete(obj) { 
+						if(!obj) return;
+						try {
+							xulG.handle_event(obj);
+						} catch(e) {
+							alert(js2JSON(obj)); 
+						}
+					}
 				</script>
 				<style> 
 					a { margin: 6px; } 
@@ -197,19 +214,21 @@ sub offline_pending_dir {
 	return $dir;
 }
 
+sub _offline_date {
+	my (undef,undef, undef, $mday,$mon,$year) = localtime(time);
+	$mon++; $year	+= 1900;
+	$mday	= "0$mday" unless $mday =~ /\d{2}/o;
+	$mon	= "0$mon" unless $mon	=~ /\d{2}/o;
+	return ($year, $mon, $mday);
+}
+
 # --------------------------------------------------------------------
 # Fetches and creates if necessary the archive directory
 # --------------------------------------------------------------------
 sub offline_archive_dir { return create_archive_dir(@_); }
 sub create_archive_dir {
-
 	my $create = shift;
-	my (undef,undef, undef, $mday,$mon,$year) = localtime(time);
-
-	$mon++; $year	+= 1900;
-	$mday	= "0$mday" unless $mday =~ /\d{2}/o;
-	$mon	= "0$mon" unless $mon	=~ /\d{2}/o;
-
+	my( $year, $mon, $mday) = &_offline_date;
 	my $dir = "$base_dir/archive/$org/${year}_${mon}_${mday}/$seskey/";
 
 	if( $create and ! -e $dir ) {
@@ -275,5 +294,41 @@ sub log_to_wsname {
 	$log =~ s#/.*/(\w+)#$1#og;
 	return $log
 }
+
+sub offline_pending_orgs {
+	my $dir = &offline_base_pending_dir;
+	my @org;
+	for my $org (<$dir/*>) {
+		$org =~ s#/.*/(\w+)#$1#og;
+		push @org, $org;
+	}
+	return \@org;
+}
+
+
+# --------------------------------------------------------------------
+# Returns a list of all pending org sessions as well as all complete
+# org sessions for today only as [ $name, $directory ] pairs
+# --------------------------------------------------------------------
+sub offline_org_sessions {
+
+	my $org = shift;
+	my( $year, $mon, $mday) = &_offline_date;
+
+	my $pdir = &offline_base_pending_dir . '/' . &offline_org;
+	my $adir = &offline_base_archive_dir . 
+		'/' . &offline_org . "/${year}_${mon}_${mday}/";
+
+	my @ses;
+	for my $ses (<$pdir/*>, <$adir/*>) {
+		my $name = $ses;
+		$name =~ s#/.*/(\w+)#$1#og;
+		push @ses, [ $name, $ses ];
+	}
+	return \@ses;
+}
+
+
+
 
 1;

@@ -99,8 +99,9 @@ sub display_upload {
 
 	my $ws = &offline_cgi->param('ws') || "";
 	my $cs = &offline_cgi->param('checksum') || "";
-	my $td = &offline_time_delta();
-	my $at = &offline_authtoken();
+	my $td = &offline_time_delta;
+	my $at = &offline_authtoken;
+	my $sk = &offline_seskey;
 
 	print_html(
 		body => <<"		HTML");
@@ -120,6 +121,10 @@ sub display_upload {
 							<tr>
 								<td>Time Delta: </td>
 								<td><input type='text' name='delta' value='$td'> </input></td>
+							</tr>
+							<tr>
+								<td>Session Name: (only letters, numbers, or _'s)</td>
+								<td><input type='text' name='seskey' value='$sk'> </input></td>
 							</tr>
 							<tr>
 								<td colspan='2' align='center'><input type='submit' name='Submit' value='Upload'> </input></td>

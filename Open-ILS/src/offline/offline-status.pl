@@ -16,7 +16,22 @@ sub execute {
 	my $evt = $U->check_perms(&offline_requestor->id, &offline_org, 'OFFLINE_VIEW');
 	handle_event($evt) if $evt;
 	&report_json(&gather_workstations) if &offline_cgi->param('detail');
+	&report_sessions() if &offline_cgi->param('seslist');
 	&report_json_summary; 
+}
+
+
+sub report_sessions {
+	my $sessions = &offline_org_sessions(&offline_org);
+	my $results = [];
+	for my $s (@$sessions) {
+		my $name = $$s[0];
+		my $file = $$s[1];
+		my $meta = &_offline_file_to_perl("$file/meta", 'workstation');
+		my $done = ($file =~ m#/archive/#o) ? 1 : 0;
+		push( @$results, { session => $name, meta => $meta, complete => $done } );
+	}
+	&offline_handle_json($results);
 }
 
 
@@ -41,12 +56,17 @@ sub gather_workstations {
 sub report_json_summary {
 
 	my $complete = 0;
-	my $results = &offline_read_results;
-	if(!$$results[0]) {
+	my $results;
+
+	if( -e &offline_pending_dir ) {
+		$results = &offline_read_results
+
+	} elsif( -e &offline_archive_dir ) {
 		$results  = &offline_read_archive_results;
-		handle_event(OpenILS::Event->new(
-			'OFFLINE_SESSION_NOT_FOUND')) unless $$results[0];
 		$complete = 1;
+
+	} else {
+		handle_event(OpenILS::Event->new('OFFLINE_SESSION_NOT_FOUND'));
 	}
 
 	&offline_handle_json(
