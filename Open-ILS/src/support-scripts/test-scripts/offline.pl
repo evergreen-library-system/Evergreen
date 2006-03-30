@@ -24,12 +24,14 @@ my $barcode		= shift; # - item barcode
 my $iterations	= shift || 1; # - number of iterations
 
 my $useragent = LWP::UserAgent->new; # - HTTP request handler
+my $seskey = "OL_test_" . CORE::time;
 my $params; # - CGI params
 
 
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
+	$params = "?ses=$authtoken&ws=$station&seskey=$seskey&raw=1";
 	run_scripts();
 	oils_logout();
 }
@@ -90,10 +92,10 @@ sub build_script {
 # Run the scripts
 #-----------------------------------------------------------------------------
 sub run_scripts { 
-	my $seskey = upload_script(); 
-	$params = "?ses=$authtoken&ws=$station&seskey=$seskey&raw=1";
-	run_script($seskey);
-	check_script($seskey);
+	upload_script(); 
+	check_sessions();
+	run_script();
+	check_script();
 }
 
 
@@ -107,6 +109,8 @@ sub upload_script {
 		"$baseurl/offline-upload.pl",
 		Content_Type => 'form-data',
 		Content => [
+			seskey => $seskey,
+			createses => 1,
 			raw	=> 1,
 			ses 	=> $authtoken, 
 			ws		=> $station, 
@@ -118,10 +122,24 @@ sub upload_script {
 	# Pass request to the user agent and get a response back
 	my $event = JSON->JSON2perl($res->{_content});
 	oils_event_die($event);
-	print "Upload succeeded...\n";
+	print "Upload succeeded with session name $seskey...\n";
 	return $event->{payload};
 }
 
+
+sub check_sessions {
+	my $req = GET( "$baseurl/offline-status.pl$params&seslist=1" );
+	my $res = $useragent->request($req);
+	my $sessions = JSON->JSON2perl($res->{_content});
+
+	print "-"x60 . "\n";
+	print "Offline sessions for this org include:\n\n";
+	for my $s (@$sessions) { 
+		my $done = ($s->{complete}) ? "yes" : "no";
+		print $s->{session} ." : complete = $done\n";
+	}
+	print "-"x60 . "\n";
+}
 
 
 #-----------------------------------------------------------------------------
