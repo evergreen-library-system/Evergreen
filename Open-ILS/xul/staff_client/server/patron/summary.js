@@ -200,7 +200,7 @@ patron.summary.prototype = {
 								var rows = document.createElement('rows'); grid.appendChild(rows);
 								/*******************************************************************/
 								JSAN.use('util.date'); JSAN.use('util.functional');
-								var surveys = obj.OpenILS.data.list.asv;
+								var surveys = obj.OpenILS.data.list.my_asv;
 								var sr = obj.patron.survey_responses();
 								for (var i  = 0; i < surveys.length; i++) {
 									var survey = surveys[i];
@@ -630,7 +630,7 @@ patron.summary.prototype = {
 			chain.push(
 				function() {
 					try {
-						var surveys = obj.OpenILS.data.list.asv;
+						var surveys = obj.OpenILS.data.list.my_asv;
 						var survey_responses = {};
 						for (var i = 0; i < surveys.length; i++) {
 							var s = obj.network.request(

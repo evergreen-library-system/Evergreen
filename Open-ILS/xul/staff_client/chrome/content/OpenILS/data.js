@@ -227,7 +227,7 @@ OpenILS.data.prototype = {
 			function() {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				var f = gen_fm_retrieval_func(
-					'asv',
+					'my_asv',
 					[
 						api.FM_ASV_RETRIEVE_REQUIRED.app,
 						api.FM_ASV_RETRIEVE_REQUIRED.method,
@@ -247,6 +247,29 @@ OpenILS.data.prototype = {
 			}
 		);
 
+		this.chain.push(
+			function() {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				var f = gen_fm_retrieval_func(
+					'asv',
+					[
+						api.FM_ASV_RETRIEVE.app,
+						api.FM_ASV_RETRIEVE.method,
+						[ obj.session ],
+						true
+					]
+				);
+				try {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					alert(error);
+					throw(E);
+				}
+			}
+		);
 
 		obj.error.sdump('D_DEBUG','_fm_objects = ' + js2JSON(this._fm_objects) + '\n');
 
