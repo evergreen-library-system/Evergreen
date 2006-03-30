@@ -1,0 +1,38 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!ENTITY nbsp " "> <!-- calendar needs this entity -->
+]>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<head>
+	<title>Upload Offline Transactions</title>
+	<link rel="stylesheet" type="text/css" media="all" href="chrome://global/skin/" title="chrome_skin" />
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
+	<script type="text/javascript" src="/xul/server/main/constants.js" />
+
+	<script type="text/javascript" src="/opac/common/js/utils.js" />
+	<script type="text/javascript" src="/opac/common/js/CGI.js" />
+	<script type="text/javascript" src="/opac/common/js/md5.js" />
+	<script type="text/javascript" src="/opac/common/js/JSON.js" />
+	<script type="text/javascript" src="/opac/common/js/fmall.js" />
+	<script type="text/javascript" src="/opac/common/js/fmgen.js" />
+	<script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
+
+	<script type="text/javascript" src="upload_xacts.js" />
+</head>
+<body onload="try{my_init();}catch(E){alert(E);}">
+	<form id="form" action='/~erickson/offline/offline-upload.pl' method='post' enctype='multipart/form-data' style="display: none">
+		<input type='file' id="file" name='file'> </input> 
+		<input type='text' id="ws" name='ws' value=''></input>
+		<input type='text' id="delta" name='delta' value='0'> </input>
+		<input type='submit' id="submit" name='Submit' value='Upload' disabled="true"> </input>
+		<input type='hidden' id="ses" name='ses' value=''> </input>
+		<input type='hidden' name='html' value='1'> </input>
+	</form>
+</body>
+</html>
