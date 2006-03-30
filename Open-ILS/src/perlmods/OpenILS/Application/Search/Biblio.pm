@@ -297,6 +297,72 @@ sub biblio_copy_to_mods {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
+	method		=> 'the_quest_for_knowledge',
+	api_name		=> 'open-ils.search.biblio.multiclass',
+	signature	=> q/
+		Performs a multi class bilbli or metabib search
+		@param searchhash A search object layed out like so:
+			searches : { "$class" : "$value", ...}
+			org_unit : The org id to focus the search at
+			depth		: The org depth
+			limit		: The search limit
+			offset	: The search offset
+			format	: The MARC format
+			sort		: What field to sort the results on [ author | title | pubdate ]
+			sort_dir	: What direction do we sort? [ asc | desc ]
+		@return An object of the form 
+			{ "count" : $count, "ids" : [ [ $id, $relevancy, $total ], ...] }
+	/
+);
+
+__PACKAGE__->register_method(
+	method		=> 'the_quest_for_knowledge',
+	api_name		=> 'open-ils.search.record.multiclass.staff',
+	signature	=> q/@see open-ils.search.biblio.multiclass/);
+__PACKAGE__->register_method(
+	method		=> 'the_quest_for_knowledge',
+	api_name		=> 'open-ils.search.metabib.multiclass',
+	signature	=> q/@see open-ils.search.biblio.multiclass/);
+__PACKAGE__->register_method(
+	method		=> 'the_quest_for_knowledge',
+	api_name		=> 'open-ils.search.metabib.multiclass.staff',
+	signature	=> q/@see open-ils.search.biblio.multiclass/);
+
+
+sub the_quest_for_knowledge {
+	my( $self, $conn, $searchhash ) = @_;
+
+	my $method = 'open-ils.storage.biblio.multiclass.search_fts';
+	my $ismeta = 0;
+	my @recs;
+
+	if($self->api_name =~ /metabib/) {
+		$ismeta = 1;
+		$method =~ s/biblio/metabib/o;
+	}
+
+	$method .= ".staff" if($self->api_name =~ /staff/);
+	$method .= ".atomic";
+
+	for (keys %$searchhash) { 
+		delete $$searchhash{$_} unless defined $$searchhash{$_}; }
+
+	my $result = $U->storagereq( $method, %$searchhash );
+
+	return {count => 0} unless ($result && $$result[0]);
+
+	for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
+	return { ids => \@recs, 
+		count => ($ismeta) ? $result->[0]->[3] : $result->[0]->[2] };
+}
+
+
+
+
+
+# XXX XXX old class search...
+=head old search method
+__PACKAGE__->register_method(
 	method		=> "record_search_class",
 	api_name		=> "open-ils.search.biblio.record.class.search",
 	signature	=> q/
@@ -355,6 +421,7 @@ sub record_search_class {
 	}
 	return { count => 0 };
 }
+=cut
 
 
 
@@ -746,6 +813,7 @@ sub multiclass_search {
 
 
 
+=head comment-1
 __PACKAGE__->register_method(
 	method		=> "multiclass_search",
 	api_name		=> "open-ils.search.biblio.multiclass",
@@ -792,7 +860,15 @@ sub multiclass_search {
 	return { ids => $recs, count => $count };
 }
 
+=cut
 
+
+
+# XXX Fix me.. 
+# request open-ils.storage
+#        open-ils.storage.biblio.full_rec.multi_search.atomic "searches",
+#        [{"term":"harry","restrict": [{"tag":245,"subfield":"a"}]}], "org_unit", 1,
+#        "limit",5,"sort","author","item_type","g"
 
 
 __PACKAGE__->register_method(
