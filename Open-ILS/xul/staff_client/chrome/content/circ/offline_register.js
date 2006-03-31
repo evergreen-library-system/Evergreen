@@ -34,6 +34,7 @@ function my_init() {
 		file = new util.file('offline_asv_list'); list_data = file.get_object(); file.close();
 		render_surveys('x_surveys', list_data);
 
+		$('dob').addEventListener('change',check_date,false);
 		$('barcode').focus();
 
 	} catch(E) {
@@ -45,6 +46,18 @@ function my_init() {
 }
 
 function $(id) { return document.getElementById(id); }
+
+function check_date(ev) {
+	JSAN.use('util.date');
+	try {
+		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw('Invalid Date'); }
+		if (! util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw('Patron needs to be born yesterday.'); }
+		if ( util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw('Happy birthday!  You need to be more than 0 days old.'); }
+	} catch(E) {
+		alert(E);
+		ev.target.value = '';
+	}
+}
 
 function render_surveys(node,obj) {
 	node = util.widgets.get(node);

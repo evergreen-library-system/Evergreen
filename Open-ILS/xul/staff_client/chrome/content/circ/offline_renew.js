@@ -76,6 +76,7 @@ function my_init() {
 		todayPlus = util.date.formatted_date(todayPlus,"%F");
 
 		$('duedate').setAttribute('value',todayPlus);
+		$('duedate').addEventListener('change',check_date,false);
 
 		$('p_barcode').addEventListener('keypress',handle_keypress,false);
 		$('p_barcode').focus();	
@@ -116,7 +117,19 @@ function handle_duedate_menu(ev) {
 	$('duedate').value = todayPlus;
 }
 
-function handle_barcode_menu(ev) {
+function check_date(ev) {
+	JSAN.use('util.date');
+	try {
+		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw('Invalid Date'); }
+		if (util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw('Due date needs to be after today.'); }
+		if ( util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw('Due date needs to be after today.'); }
+	} catch(E) {
+		alert(E);
+		var today = new Date();
+		var todayPlus = new Date(); todayPlus.setTime( today.getTime() + 24*60*60*1000*14 );
+		todayPlus = util.date.formatted_date(todayPlus,"%F");
+		ev.target.value = todayPlus;
+	}
 }
 
 function append_to_list(checkout_type,count) {

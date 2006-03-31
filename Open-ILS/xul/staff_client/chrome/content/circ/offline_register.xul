@@ -71,7 +71,10 @@
 						</row>
 						<row>
 							<label value="Date of Birth:"/>
-							<textbox id="dob"/>
+							<stack>
+								<textbox value="YYYY-MM-DD" style="opacity: 0.3; font-family: monospace;" disabled="true"/>
+								<textbox id="dob" style="font-family: monospace;"/>
+							</stack>
 						</row>
 						<row><label value=" "/></row>
 						<row>

@@ -203,7 +203,14 @@ main.menu.prototype = {
 							+ '&ws_ou=' + window.escape(data.list.au[0].ws_ou() )
 						);
 
-					obj.set_tab(loc, {}, { 'show_print_button' : true });
+					obj.set_tab(loc, {}, { 
+						'show_print_button' : true,
+						'passthru_content_params' : {
+							'handle_event' : function(ev) {
+								alert('sc handling ev: ' + js2JSON(ev));
+							}
+						}
+					});
 				}
 			],
 
