@@ -15,6 +15,7 @@ use OpenILS::Application::Storage::CDBI::config;
 use OpenILS::Application::Storage::CDBI::metabib;
 use OpenILS::Application::Storage::CDBI::money;
 use OpenILS::Application::Storage::CDBI::container;
+use OpenILS::Application::Storage::CDBI::config;
 
 use vars qw/$fieldmap $VERSION/;
 
@@ -195,6 +196,17 @@ sub _init {
 		'Fieldmapper::config::non_cataloged_type'	=> { hint => 'cnct'   },
 		'Fieldmapper::config::standing'			=> { hint => 'cst'   },
 		'Fieldmapper::config::copy_status'		=> { hint => 'ccs'   },
+
+		'Fieldmapper::config::audience_map'		=> { hint	=> 'cam',
+								     readonly	=> 1 },
+		'Fieldmapper::config::language_map'		=> { hint	=> 'clm',
+								     readonly	=> 1 },
+		'Fieldmapper::config::item_form_map'		=> { hint	=> 'cifm',
+								     readonly	=> 1 },
+		'Fieldmapper::config::item_type_map'		=> { hint	=> 'citm',
+								     readonly	=> 1 },
+		'Fieldmapper::config::lit_form_map'		=> { hint	=> 'clfm',
+								     readonly	=> 1 },
 
 		'Fieldmapper::authority::full_rec'		=> { hint => 'afr'  },
 		'Fieldmapper::authority::record_descriptor'	=> { hint => 'ard'  },

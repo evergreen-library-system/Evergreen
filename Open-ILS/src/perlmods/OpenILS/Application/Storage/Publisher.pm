@@ -490,7 +490,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		);
 	}
 
-	if (\&Class::DBI::search_fts) {
+	if (\&Class::DBI::search_fts and $cdbi->columns('FTS')) {
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_fts' ) ) {
 			__PACKAGE__->register_method(
 				api_name	=> $api_prefix.'.search_fts',
@@ -580,7 +580,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				argc		=> 1,
 			);
 		}
-		if (\&Class::DBI::search_fts) {
+		if (\&Class::DBI::search_fts and grep { $field eq $_ } $cdbi->columns('FTS')) {
 			unless ( __PACKAGE__->is_registered( $api_prefix.'.search_fts.'.$field ) ) {
 				__PACKAGE__->register_method(
 					api_name	=> $api_prefix.'.search_fts.'.$field,

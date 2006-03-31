@@ -38,6 +38,7 @@ CREATE TABLE asset.copy (
 	circ_as_type	TEXT,
 	dummy_title	TEXT,
 	dummy_author	TEXT,
+	alert_message	TEXT,
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
 	deleted		BOOL				NOT NULL DEFAULT FALSE
 );
