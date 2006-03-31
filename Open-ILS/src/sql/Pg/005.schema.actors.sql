@@ -133,6 +133,16 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou )
 	VALUES ( 1, 1,'admin', 'open-ils', 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 
+CREATE TABLE actor.usr_note (
+	id		BIGSERIAL			PRIMARY KEY,
+	usr		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	creator		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
+	pub		BOOL				NOT NULL DEFAULT FALSE,
+	title		TEXT				NOT NULL,
+	value		TEXT				NOT NULL
+);
+CREATE INDEX actor_usr_note_usr_idx ON actor.usr_note (usr);
 
 CREATE TABLE actor.usr_standing_penalty (
 	id		SERIAL	PRIMARY KEY,

@@ -21,6 +21,14 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				day_phone evening_phone other_phone mailing_address/ );
 
 #-------------------------------------------------------------------------------
+package actor::usr_note;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_usr_note' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/usr title creator create_date value pub/ );
+
+#-------------------------------------------------------------------------------
 package actor::workstation;
 use base qw/actor/;
 

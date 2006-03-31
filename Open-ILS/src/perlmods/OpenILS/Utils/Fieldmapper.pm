@@ -98,6 +98,7 @@ sub _init {
 								     			     permissions	=> 1,
 								     			     standing_penalties	=> 1,
 								     			     addresses		=> 1 } },
+		'Fieldmapper::actor::usr_note'			=> { hint => 'aun'    },
 		'Fieldmapper::actor::user_setting'		=> { hint => 'aus'    },
 		'Fieldmapper::actor::user_standing_penalty'	=> { hint => 'ausp'    },
 		'Fieldmapper::actor::org_unit_setting'		=> { hint => 'aous'    },

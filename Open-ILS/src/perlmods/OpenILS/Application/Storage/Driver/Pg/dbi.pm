@@ -413,6 +413,12 @@
 	actor::card->sequence( 'actor.card_id_seq' );
 
 	#---------------------------------------------------------------------
+	package actor::usr_note;
+	
+	actor::usr_note->table( 'actor.usr_note' );
+	actor::usr_note->sequence( 'actor.usr_note_id_seq' );
+
+	#---------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
 	package metabib::metarecord;
