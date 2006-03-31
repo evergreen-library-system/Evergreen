@@ -75,11 +75,7 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<menulist>
-						<menupopup>
-							<menuitem label="or select a Non-Barcoded type"/>
-						</menupopup>
-					</menulist>
+					<hbox id="x_noncat_type"/>
 				</hbox>
 
 				<hbox>

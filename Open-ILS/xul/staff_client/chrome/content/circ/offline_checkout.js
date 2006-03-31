@@ -104,6 +104,26 @@ function my_init() {
 
 		$('submit').addEventListener('command',next_patron,false);
 
+		JSAN.use('util.widgets'); JSAN.use('util.file');
+
+		var file; var list_data; var ml;
+
+		file = new util.file('offline_cnct_list'); list_data = file.get_object(); file.close();
+		ml = util.widgets.make_menulist( 
+			[ ['or choose a non-barcoded option...', ''] ].concat(list_data[0]), 
+			list_data[1] 
+		);
+		ml.setAttribute('id','noncat_type_menu'); $('x_noncat_type').appendChild(ml);
+		ml.addEventListener(
+			'command',
+			function(ev) { 
+				var count = window.prompt('Enter the number of items:',1,ml.getAttribute('label'));
+				append_to_list('noncat',count);	
+				ml.value = '';
+			},
+			false
+		);
+
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 			"system administrator or software developer the following:\ncirc/offline_checkout.xul\n" + E + '\n';
@@ -176,13 +196,13 @@ function append_to_list(checkout_type,count) {
 				my.barcode = i_barcode; 
 			break;
 			case 'noncat' :
-				count = ParseInt(count); if (! (count>0) ) {
+				count = parseInt(count); if (! (count>0) ) {
 					alert("Please try again and enter a valid count.");
 					return;
 				}
-				my.barcode = 'noncat label here';
+				my.barcode = $('noncat_type_menu').getAttribute('label');
 				my.noncat = 1;
-				my.noncat_type = $('barcode_menu').value;
+				my.noncat_type = JSON2js($('noncat_type_menu').value)[0];
 				my.noncat_count = count;
 			break;
 			default: alert("Please report that this happened."); break;
