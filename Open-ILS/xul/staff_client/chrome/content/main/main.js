@@ -79,7 +79,9 @@ function main_init() {
 
 			if (! url.match( '^http://' ) ) url = 'http://' + url;
 
-			G.data.server = url; G.data.stash('server'); G.data.stash_retrieve();
+			G.data.server = url; G.data.stash('server'); 
+			G.data.session = G.auth.session.key; G.data.stash('session');
+			G.data.stash_retrieve();
 
 			grant_perms(url);
 
