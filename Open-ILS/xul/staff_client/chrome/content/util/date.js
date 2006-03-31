@@ -13,11 +13,12 @@ util.date.check = function(format,date) {
 	if (date.length != format.length) { return false; }
 	if ((date.substr(4,1) != '-') || (date.substr(7,1) != '-')) { return false; }
 	var yyyy = date.substr(0,4); var mm = date.substr(5,2); var dd = date.substr(8,2);
-	var d = new Date( year, month - 1, day );
+	var d = new Date( yyyy, mm - 1, dd );
 	if (d.toString() == 'Invalid Date') { return false; }
-	if (d.getMonth() != month -1) { return false; }
-	if (d.getFullYear() != year) { return false; }
-	if (d.getDate() != day) { return false; }
+	if (d.getMonth() != mm -1) { return false; }
+	if (d.getFullYear() != yyyy) { return false; }
+	if (dd.substr(0,1)=='0') { dd = dd.substr(1,1); }
+	if (d.getDate() != dd) { return false; }
 	return true;
 }
 
