@@ -303,6 +303,9 @@
 	<event code='8008' textcode='OFFLINE_INVALID_SESSION'>
 		<desc> The session name is invalid </desc>
 	</event>
+	<event code='8009' textcode='OFFLINE_NO_ORG'>
+		<desc> No org id was provided </desc>
+	</event>
 
 	<!-- ================================================================ -->
 

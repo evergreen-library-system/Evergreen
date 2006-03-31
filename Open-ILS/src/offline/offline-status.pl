@@ -29,7 +29,8 @@ sub report_sessions {
 		my $file = $$s[1];
 		my $meta = &_offline_file_to_perl("$file/meta", 'workstation');
 		my $done = ($file =~ m#/archive/#o) ? 1 : 0;
-		push( @$results, { session => $name, meta => $meta, complete => $done } );
+		my $desc = shift @$meta;
+		push( @$results, { session => $name, desc => $desc, meta => $meta, complete => $done } );
 	}
 	&offline_handle_json($results);
 }
@@ -92,11 +93,13 @@ sub report_json {
 		$complete = 1;
 	}
 
+	shift @$meta;
 	for my $ws (@$wslist) {
 		my ($m) = grep { $_ and $_->{'log'} and $_->{'log'} =~ m#/.*/$ws.log# } @$meta;
 		my @res = grep { $_->{command}->{_workstation} eq $ws } @$results;
 		delete $m->{'log'};
-		push( @data, { meta => $m, workstation => $ws, results =>  \@res } );
+		@res = grep { $_->{event}->{ilsevent} ne '0' } @res; # strip all the success events
+		push( @data, { meta => $m, workstation => $ws, results =>  \@res } ) if @res;
 	}
 
 	&offline_handle_json({ complete => $complete, data => \@data});

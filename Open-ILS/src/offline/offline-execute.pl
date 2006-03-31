@@ -121,6 +121,7 @@ sub sort_data {
 
 	$logger->debug("offline: Sorting data");
 	my $meta = &offline_read_meta;
+	shift @$meta;
 	
 	# cycle through the workstations
 	for my $ws (keys %$data) {

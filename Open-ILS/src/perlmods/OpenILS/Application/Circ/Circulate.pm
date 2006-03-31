@@ -597,6 +597,11 @@ sub checkout {
 		$requestor, $circlib, $params ) if $params->{precat};
 	return $evt if $evt;
 
+#	if( $params->{copy}->call_number eq '-1' ) {
+#		return OpenILS::Event->new('ITEM_NOT_CATALOGED');
+#	}
+
+
 	# fetch and build the circulation environment
 	if( !( $ctx = $params->{_ctx}) ) {
 		( $ctx, $evt ) = create_circ_ctx( %$params, 
@@ -611,6 +616,10 @@ sub checkout {
 		return $evt if $evt;
 	}
 	$ctx->{session} = $U->start_db_session() unless $ctx->{session};
+
+	# this happens in permit.. but we need to check here for 'offline' requests
+	($circ) = $U->fetch_open_circulation($ctx->{copy}->id);
+	return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $circ;
 
 	my $cid = ($params->{precat}) ? -1 : $ctx->{copy}->id;
 
@@ -628,6 +637,7 @@ sub checkout {
 
 	$evt = _run_checkout_scripts($ctx);
 	return $evt if $evt;
+
 
 	_build_checkout_circ_object($ctx);
 
@@ -682,7 +692,7 @@ sub _make_precat_copy {
 	$copy->editor($requestor->id);
 	$copy->barcode($params->{barcode});
 	$copy->call_number(-1); #special CN for precat materials
-	$copy->loan_duration(&PRECAT_LOAN_DURATION);  # these two should come from constants
+	$copy->loan_duration(&PRECAT_LOAN_DURATION); 
 	$copy->fine_level(&PRECAT_FINE_LEVEL);
 
 	$copy->dummy_title($params->{dummy_title});

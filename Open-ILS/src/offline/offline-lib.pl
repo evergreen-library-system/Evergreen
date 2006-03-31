@@ -27,6 +27,7 @@ my $org;
 my $org_unit;
 my $authtoken;
 my $seskey;
+my $desc;
 
 # --------------------------------------------------------------------
 # Define accessors for all of the shared vars
@@ -48,6 +49,7 @@ sub offline_cgi { return $cgi; }
 sub offline_seskey { return $seskey; }
 sub offline_base_pending_dir { return $base_dir .'/pending/'; }
 sub offline_base_archive_dir { return $base_dir .'/archive/'; }
+sub offline_description { return $desc; }
 
 
 
@@ -62,7 +64,6 @@ do 'offline-config.pl';
 # Set everything up
 # --------------------------------------------------------------------
 &initialize();
-
 
 
 
@@ -92,21 +93,28 @@ sub initialize {
 	$authtoken	= $cgi->param('ses') 
 		or handle_event(OpenILS::Event->new('NO_SESSION'));
 
+	($requestor, $evt) = $U->checkses($authtoken);
+	handle_event($evt) if $evt;
+
 	$org = $cgi->param('org') || "";
+
 	if(!$org) {
 		if(my $ws = $cgi->param('ws')) {
 			$workstation = fetch_workstation($ws);
 			$org = $workstation->owning_lib if $workstation;
+		} else {
+			$org = $requestor->ws_ou;
+			$logger->debug("offline: fetching org from requestor object: $org");
 		}
 	}
 
 	if($org) {
 		($org_unit, $evt) = $U->fetch_org_unit($org);	
 		handle_event($evt) if $evt;
-	} 
+	} else {
+		handle_event(OpenILS::Event->new('OFFLINE_NO_ORG'));
+	}
 
-	($requestor, $evt) = $U->checkses($authtoken);
-	handle_event($evt) if $evt;
 
 	$time_delta	 = $cgi->param('delta') || "0";
 
@@ -118,6 +126,9 @@ sub initialize {
 		}
 		handle_event(OpenILS::Event->new('OFFLINE_INVALID_SESSION')) unless $seskey =~ /^\w+$/;
 		&offline_pending_dir(1);
+		$desc = $cgi->param('desc') || "Offline Script";
+		&append_meta($desc);
+
 	}
 }
 
@@ -283,7 +294,11 @@ sub _offline_file_to_perl {
 	close(F);
 	my @resp;
 	push(@resp, JSON->JSON2perl($_)) for @data;
-	@resp = grep { $_ and $_->{$exist_key} } @resp;
+	#@resp = grep { $_ and $_->{$exist_key} } @resp;
+
+	# HACK to shoehorn the session description in
+	#$desc = shift @resp if $exist_key eq 'workstation';  
+
 	return \@resp;
 }
 

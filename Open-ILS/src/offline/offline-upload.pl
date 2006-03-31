@@ -47,7 +47,8 @@ sub load_file() {
 	my $evt = $U->check_perms(&offline_requestor->id, &offline_org, 'OFFLINE_UPLOAD');
 	handle_event($evt) if $evt;
 
-	my $output = &offline_pending_dir(1) . '/' . "$wsname.log";
+	&handle_event(OpenILS::Event->new('OFFLINE_INVALID_SESSION')) if( ! -e &offline_pending_dir );
+	my $output = &offline_pending_dir . '/' . "$wsname.log";
 
 	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_ACTIVE')) if( -e &offline_lock_file );
 	&handle_event(OpenILS::Event->new('OFFLINE_SESSION_FILE_EXISTS')) if( -e $output );
@@ -101,7 +102,7 @@ sub display_upload {
 	my $cs = &offline_cgi->param('checksum') || "";
 	my $td = &offline_time_delta;
 	my $at = &offline_authtoken;
-	my $sk = &offline_seskey;
+	my $sk = &offline_description || "";
 
 	print_html(
 		body => <<"		HTML");
@@ -123,8 +124,8 @@ sub display_upload {
 								<td><input type='text' name='delta' value='$td'> </input></td>
 							</tr>
 							<tr>
-								<td>Session Name: (only letters, numbers, or _'s)</td>
-								<td><input type='text' name='seskey' value='$sk'> </input></td>
+								<td>Session Description</td>
+								<td><input type='text' name='desc' value='$sk'> </input></td>
 							</tr>
 							<tr>
 								<td colspan='2' align='center'><input type='submit' name='Submit' value='Upload'> </input></td>
@@ -133,6 +134,7 @@ sub display_upload {
 					</table>
 					<input type='hidden' name='ses' value='$at'> </input>
 					<input type='hidden' name='checksum' value='$cs'> </input>
+					<input type='hidden' name='createses' value='1'> </input>
 				</form>
 			</center>
 		HTML
