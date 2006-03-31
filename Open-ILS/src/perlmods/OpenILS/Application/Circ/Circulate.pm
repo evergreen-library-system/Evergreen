@@ -597,10 +597,6 @@ sub checkout {
 		$requestor, $circlib, $params ) if $params->{precat};
 	return $evt if $evt;
 
-#	if( $params->{copy}->call_number eq '-1' ) {
-#		return OpenILS::Event->new('ITEM_NOT_CATALOGED');
-#	}
-
 
 	# fetch and build the circulation environment
 	if( !( $ctx = $params->{_ctx}) ) {
@@ -616,6 +612,13 @@ sub checkout {
 		return $evt if $evt;
 	}
 	$ctx->{session} = $U->start_db_session() unless $ctx->{session};
+
+	# if the call doesn't know it's not cataloged..
+	if(!$params->{precat}) {
+		if( $ctx->{copy}->call_number eq '-1' ) {
+			return OpenILS::Event->new('ITEM_NOT_CATALOGED');
+		}
+	}
 
 	# this happens in permit.. but we need to check here for 'offline' requests
 	($circ) = $U->fetch_open_circulation($ctx->{copy}->id);
