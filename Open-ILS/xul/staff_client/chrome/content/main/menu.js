@@ -192,33 +192,14 @@ main.menu.prototype = {
 			'cmd_upload_offline_xacts' : [
 				['oncommand'],
 				function() {
-					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-					/*obj.set_tab(obj.url_prefix(urls.XUL_UPLOAD_OFFLINE_XACTS) + '?session=' + window.escape(session) + '&ws_name=' + window.escape(data.ws_name) + '&ws_ou=' + window.escape(data.list.au[0].ws_ou()), {}, {});*/
-
-					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( 
-							urls.XUL_UPLOAD_OFFLINE_XACTS 
-							+ '?session=' + window.escape(session) 
-							+ '&ws_name=' + window.escape(data.ws_name) 
-							+ '&ws_ou=' + window.escape(data.list.au[0].ws_ou() )
-						);
-
-					obj.set_tab(loc, {}, { 
-						'show_print_button' : true,
-						'passthru_content_params' : {
-							'handle_event' : function(ev) {
-								alert('sc handling ev: ' + js2JSON(ev));
-							}
-						}
-					});
+					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_UPLOAD_XACTS), {}, {});
 				}
 			],
 
 			'cmd_manage_offline_xacts' : [
 				['oncommand'],
 				function() {
-					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-					obj.set_tab(obj.url_prefix(urls.XUL_MANAGE_OFFLINE_XACTS) + '?ses=' + window.escape(session) + '&org=' + window.escape(data.list.au[0].ws_ou()) + '&ws=' + window.escape(data.ws_name), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {}, {});
 				}
 			],
 
