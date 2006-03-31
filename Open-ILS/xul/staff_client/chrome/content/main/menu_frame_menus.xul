@@ -34,7 +34,6 @@
 	<command id="cmd_z39_50_import" />
 	<command id="cmd_create_new_marc_book" />
 
-	<command id="cmd_upload_offline_xacts" />
 	<command id="cmd_manage_offline_xacts" />
 
 	<command id="cmd_adv_user_edit" />
@@ -198,7 +197,6 @@
 <!-- The Help menu on the main menu -->
 <menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="-" old_accesskey="&staff.main.menu.admin.key;">
 	<menupopup id="main.menu.admin.popup">
-		<menuitem label="Upload Offline Transactions" accesskey="O" command="cmd_upload_offline_xacts"/>
 		<menuitem label="Offline Transaction Management" accesskey="T" command="cmd_manage_offline_xacts"/>
 		<menuseparator />
 		<menuitem label="Advanced User Editor" accesskey="U" command="cmd_adv_user_edit"/>

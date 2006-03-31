@@ -189,13 +189,6 @@ main.menu.prototype = {
 			],
 
 			/* Admin menu */
-			'cmd_upload_offline_xacts' : [
-				['oncommand'],
-				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_UPLOAD_XACTS), {}, {});
-				}
-			],
-
 			'cmd_manage_offline_xacts' : [
 				['oncommand'],
 				function() {
