@@ -43,7 +43,7 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<textbox id="p_barcode" />
+					<textbox id="p_barcode"/>
 				</hbox>
 				<hbox>
 					<label value="Step 3)" style="font-weight: bold" accesskey="3" control="duedate"/>
@@ -51,7 +51,10 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<textbox id="duedate" />
+					<stack>
+						<textbox value="YYYY-MM-DD" style="opacity: 0.3; font-family: monospace;" disabled="true"/>
+						<textbox id="duedate" style="font-family: monospace;"/>
+					</stack>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
