@@ -7,6 +7,8 @@ function my_init() {
 		JSAN.use('util.error'); g.error = new util.error();
 		g.error.sdump('D_TRACE','my_init() for offline_checkout.xul');
 
+		JSAN.use('util.widgets'); JSAN.use('util.file');
+
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
 		}
@@ -102,9 +104,12 @@ function my_init() {
 
 		$('duedate_menu').addEventListener('command',handle_duedate_menu,false);
 
-		$('submit').addEventListener('command',next_patron,false);
-
-		JSAN.use('util.widgets'); JSAN.use('util.file');
+		$('submit').addEventListener('command',function(ev){
+			save_xacts(); next_patron(); /* kludge */ ev.target.focus(); next_patron();
+		},false);
+		$('cancel').addEventListener('command',function(ev){
+			next_patron(); /* kludge */ ev.target.focus(); next_patron();
+		},false);
 
 		var file; var list_data; var ml;
 
@@ -137,7 +142,7 @@ function $(id) { return document.getElementById(id); }
 function handle_keypress(ev) {
 	if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
 	switch(ev.target) {
-		case $('p_barcode') : $('i_barcode').focus(); break;
+		case $('p_barcode') : $('p_barcode').disabled = true; $('i_barcode').focus(); break;
 		case $('i_barcode') : append_to_list('barcode'); break;
 		default: break;
 	}
@@ -219,27 +224,33 @@ function append_to_list(checkout_type,count) {
 	}
 }
 
+
+function save_xacts() {
+	JSAN.use('util.file'); var file = new util.file('pending_xacts');
+	var rows = g.list.dump_with_keys();
+	for (var i = 0; i < rows.length; i++) {
+		var row = rows[i];
+		if (row.noncat == 1) {
+			delete(row.barcode);
+		} else {
+			delete(row.noncat);
+			delete(row.noncat_type);
+			delete(row.noncat_count);
+		}
+		file.append_object(row);
+	}
+	file.close();
+}
+
 function next_patron() {
 	try {
-		JSAN.use('util.file'); var file = new util.file('pending_xacts');
-		var rows = g.list.dump_with_keys();
-		for (var i = 0; i < rows.length; i++) {
-			var row = rows[i];
-			if (row.noncat == 1) {
-				delete(row.barcode);
-			} else {
-				delete(row.noncat);
-				delete(row.noncat_type);
-				delete(row.noncat_count);
-			}
-			file.append_object(row);
-		}
-		file.close();
 		g.list.clear();
 		
 		var x;
 		x = $('i_barcode'); x.value = '';
-		x = $('p_barcode'); x.value = ''; x.focus();
+		x = $('p_barcode'); x.value = ''; 
+		x.setAttribute('disabled','false'); x.disabled = false; 
+		x.focus();
 
 	} catch(E) {
 		dump(E+'\n'); alert(E);
