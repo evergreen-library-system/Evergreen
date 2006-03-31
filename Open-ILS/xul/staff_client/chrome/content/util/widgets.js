@@ -22,6 +22,7 @@ util.widgets.EXPORT_OK	= [
 	'vertical_tab',
 	'click',
 	'dispatch',
+	'stop_event',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
@@ -265,5 +266,9 @@ util.widgets.vertical_tab = function(node) {
 	}
 }
 
+util.widgets.stop_event = function(ev) {
+	ev.preventDefault();
+	return false;
+}
 
 dump('exiting util/widgets.js\n');

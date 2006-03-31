@@ -4,9 +4,22 @@ if (typeof util == 'undefined') var util = {};
 util.date = {};
 
 util.date.EXPORT_OK	= [ 
-	'timer_init', 'timer_elapsed', 'db_date2Date', 'formatted_date', 'interval_to_seconds'
+	'check', 'timer_init', 'timer_elapsed', 'db_date2Date', 'formatted_date', 'interval_to_seconds'
 ];
 util.date.EXPORT_TAGS	= { ':all' : util.date.EXPORT_OK };
+
+util.date.check = function(format,date) {
+	if (format != 'YYYY-MM-DD') { throw('I only understand YYYY-MM-DD.  Fix me if you want.'); }
+	if (date.length != format.length) { return false; }
+	if ((date.substr(4,1) != '-') || (date.substr(7,1) != '-')) { return false; }
+	var yyyy = date.substr(0,4); var mm = date.substr(5,2); var dd = date.substr(8,2);
+	var d = new Date( year, month - 1, day );
+	if (d.toString() == 'Invalid Date') { return false; }
+	if (d.getMonth() != month -1) { return false; }
+	if (d.getFullYear() != year) { return false; }
+	if (d.getDate() != day) { return false; }
+	return true;
+}
 
 util.date.timer_init = function (id) {
 	if (typeof util.date.timer_init.prototype.timer == 'undefined') {
