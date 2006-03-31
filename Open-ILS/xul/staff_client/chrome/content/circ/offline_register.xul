@@ -117,9 +117,10 @@
 							<label value="Country"/>
 							<textbox id="country" value="USA"/>
 						</row>
-							
+						<row><label value=" "/></row>
 					</rows>
 				</grid>
+				<vbox id="x_surveys" flex="1"/>
 			</vbox>
 		</hbox>
 		<hbox>

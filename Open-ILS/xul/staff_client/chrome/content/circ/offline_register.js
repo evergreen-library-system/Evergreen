@@ -15,20 +15,26 @@ function my_init() {
 		$('submit').addEventListener('command',next_patron,false);
 
 		JSAN.use('util.file');
+		JSAN.use('util.widgets');
 
-		var file; var xml; var parser; var doc; var node;
+		var file; var list_data; var ml;
 
-		file = new util.file('offline_ou_list'); xml = file.get_content(); file.close();
-		parser = new DOMParser(); doc = parser.parseFromString(xml, "text/xml"); node = doc.documentElement;
-		$('x_home_ou').appendChild(node);
+		file = new util.file('offline_ou_list'); list_data = file.get_object(); file.close();
+		ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+		ml.setAttribute('id','home_ou'); $('x_home_ou').appendChild(ml);
 
-		file = new util.file('offline_pgt_list'); xml = file.get_content(); file.close();
-		parser = new DOMParser(); doc = parser.parseFromString(xml, "text/xml"); node = doc.documentElement;
-		$('x_profile').appendChild(node);
+		file = new util.file('offline_pgt_list'); list_data = file.get_object(); file.close();
+		ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+		ml.setAttribute('id','profile'); $('x_profile').appendChild(ml);
 
-		file = new util.file('offline_cit_list'); xml = file.get_content(); file.close();
-		parser = new DOMParser(); doc = parser.parseFromString(xml, "text/xml"); node = doc.documentElement;
-		$('x_ident_type').appendChild(node);
+		file = new util.file('offline_cit_list'); list_data = file.get_object(); file.close();
+		ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+		ml.setAttribute('id','ident_type'); $('x_ident_type').appendChild(ml);
+
+		file = new util.file('offline_asv_list'); list_data = file.get_object(); file.close();
+		render_surveys('x_surveys', list_data);
+
+		$('barcode').focus();
 
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -40,6 +46,32 @@ function my_init() {
 
 function $(id) { return document.getElementById(id); }
 
+function render_surveys(node,obj) {
+	node = util.widgets.get(node);
+	util.widgets.remove_children(node);
+
+	for (var i in obj) {
+		var survey = obj[i];
+		var x_gb = document.createElement('groupbox'); node.appendChild(x_gb);
+		var x_cp = document.createElement('caption'); 
+		x_cp.setAttribute('label',i); x_gb.appendChild(x_cp);
+		var x_d = document.createElement('description');
+		x_d.appendChild( document.createTextNode( survey.description ) ); x_gb.appendChild(x_d);
+		for (var j = 0; j < survey.questions.length; j++) {
+			var question = survey.questions[j];
+			var x_d = document.createElement('description');
+			x_d.appendChild( document.createTextNode( (j+1) + ') ' + question.question ) ); 
+			x_gb.appendChild( x_d );
+			var x_hb = document.createElement('hbox'); x_hb.setAttribute('flex','1'); 
+			x_gb.appendChild(x_hb);
+			var x_spacer = document.createElement('spacer'); x_spacer.setAttribute('flex','1');
+			x_hb.appendChild(x_spacer);
+			var x_ml = util.widgets.make_menulist( [ ['Choose a response...',''] ].concat(question.answers) );
+			x_ml.setAttribute('name','survey'); x_hb.appendChild(x_ml);
+		}
+	}
+}
+
 function handle_keypress(ev) {
 	if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
 	switch(ev.target) {
@@ -50,11 +82,51 @@ function handle_keypress(ev) {
 
 function next_patron() {
 	try {
+		var obj = {}
+		obj.timestamp = new Date().getTime();
+		obj.type = 'register';
+		obj.user = {};
+		obj.user.card = { 'barcode' : $('barcode').value };
+		obj.user.profile = $('profile').value;
+		obj.user.passwd = $('passwd').value;
+		obj.user.ident_type = $('ident_type').value;
+		obj.user.ident_value = $('ident_value').value;
+		obj.user.first_given_name = $('first_given_name').value;
+		obj.user.family_name = $('family_name').value;
+		obj.user.home_ou = $('home_ou').value;
+		obj.user.dob = $('dob').value;
+		obj.user.billing_address = {};
+		obj.user.billing_address.street1 = $('street1').value;
+		obj.user.billing_address.street2 = $('street2').value;
+		obj.user.billing_address.city = $('city').value;
+		obj.user.billing_address.state = $('state').value;
+		obj.user.billing_address.country = $('country').value;
+		obj.user.billing_address.post_code = $('post_code').value;
+		obj.user.survey_responses = [];
+
+		var nl = document.getElementsByAttribute('name','survey');
+		for (var i = 0; i < nl.length; i++) {
+			var value = nl[i].value; if (value == '') continue;
+			var values = JSON2js( value );
+			var response = { 'survey' : values[2], 'question' : values[1], 'answer' : values[0] };
+			obj.user.survey_responses.push( response );
+		}
+
 		JSAN.use('util.file'); var file = new util.file('pending_xacts');
-		file.append_object(row);
+		file.append_object(obj);
 		file.close();
 
-		alert(location.href);
+		alert('Patron Registered');
+
+		$('passwd').value = 1234;
+		$('barcode').value = ''; $('ident_value').value = ''; $('first_given_name').value = '';
+		$('family_name').value = ''; $('dob').value = ''; $('street1').value = '';
+		$('street2').value = '';
+
+		file = new util.file('offline_asv_list'); var list_data = file.get_object(); file.close();
+		render_surveys('x_surveys', list_data);
+
+		$('barcode').focus();
 
 	} catch(E) {
 		dump(E+'\n'); alert(E);
