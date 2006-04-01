@@ -137,7 +137,6 @@ sub ol_create_session {
 			description => $desc,
 			creator		=> $requestor->id,
 			create_time => CORE::time(), 
-			complete		=> 0,
 		} 
 	);
 
@@ -149,28 +148,29 @@ sub ol_create_session {
 # Holds the meta-info for a script file
 # --------------------------------------------------------------------
 sub ol_create_script {
-	my $ws = shift || $wsname;
-	my $sk = shift || $seskey;
+	my $count = shift;
 
-	my $session = ol_find_session($sk);
+	my $session = ol_find_session($seskey);
 	my $delta = $cgi->param('delta') || 0;
 
-	my $script = $session->add_to_scripts( {
-		requestor	=> $requestor->id,
-		timestamp	=> CORE::time,
-		workstation	=> $ws,
-		logfile		=> "$basedir/pending/$org/$sk/$ws.log",
-		time_delta	=> $delta,
-	});
+	my $script = $session->add_to_scripts( 
+		{
+			requestor	=> $requestor->id,
+			create_time	=> CORE::time,
+			workstation	=> $wsname,
+			logfile		=> "$basedir/pending/$org/$seskey/$wsname.log",
+			time_delta	=> $delta,
+			count			=> $count,
+		}
+	);
 }
 
 # --------------------------------------------------------------------
 # Finds the current session in the db
 # --------------------------------------------------------------------
 sub ol_find_session {
-	my $sk = shift || $seskey;
 	my $ses = $SES->retrieve($seskey);
-	ol_handle_event('OFFLINE_INVALID_SESSION', $seskey) unless $ses;
+	ol_handle_event('OFFLINE_INVALID_SESSION', payload => $seskey) unless $ses;
 	return $ses;
 }
 
@@ -197,16 +197,18 @@ sub ol_load {
 	ol_handle_event('OFFLINE_SESSION_ACTIVE') if $session->in_process;
 
 	qx/mkdir -p $outdir/;
+	my $x = 0;
 	open(FILE, ">>$outfile") or ol_handle_event('OFFLINE_FILE_ERROR');
-	while( <$handle> ) { print FILE; }
+	while( <$handle> ) { print FILE; $x++;}
 	close(FILE);
 
-	ol_create_script();
+	ol_create_script($x);
 
 	return undef;
 }
 
 
+# --------------------------------------------------------------------
 sub ol_handle_result {
 	my $obj = shift;
 	my $json = JSON->perl2JSON($obj);
@@ -225,14 +227,16 @@ sub ol_handle_result {
 	exit(0);
 }
 
+# --------------------------------------------------------------------
 sub ol_handle_event {
 	my( $evt, @args ) = @_;
 	ol_handle_result(OpenILS::Event->new($evt, @args));
 }
 
-sub ol_status {
 
-	my $session = ol_find_session();
+# --------------------------------------------------------------------
+sub ol_flesh_session {
+	my $session = shift;
 	my %data;
 
 	map { $data{$_} = $session->$_ } $session->columns;
@@ -241,12 +245,39 @@ sub ol_status {
 	for my $script ($session->scripts) {
 		my %sdata;
 		map { $sdata{$_} = $script->$_ } $script->columns;
+
+		# the client doesn't need this info
+		delete $sdata{session};
+		delete $sdata{id};
+		delete $sdata{logfile};
+
 		push( @{$data{scripts}}, \%sdata );
 	}
 
-	my $type = $cgi->param('status_type');
+	return \%data;
+}
 
-	ol_handle_result(\%data) if( ! $type || $type eq 'scripts' ) 
+
+# --------------------------------------------------------------------
+# Returns various information on the sessions and scripts
+# --------------------------------------------------------------------
+sub ol_status {
+
+	my $type = $cgi->param('status_type') || "scripts";
+
+	if( $type eq 'scripts' ) {
+		my $session = ol_find_session();
+		ol_handle_result(ol_flesh_session($session));
+
+	} elsif( $type eq 'sessions' ) {
+		my @sessions = $SES->search( org => $org );
+
+		# can I do this in the DB without raw SQL?
+		@sessions = sort { $a->create_time <=> $b->create_time } @sessions; 
+		my @data;
+		push( @data, ol_flesh_session($_) ) for @sessions;
+		ol_handle_result(\@data);
+	}
 }
 
 
@@ -258,5 +289,100 @@ sub ol_fetch_workstation {
 	ol_handle_result(OpenILS::Event->new('WORKSTATION_NOT_FOUND')) unless $ws;
 	return $ws;
 }
+
+
+
+
+# --------------------------------------------------------------------
+# Sorts the script commands then forks a child to executes them.
+# --------------------------------------------------------------------
+sub ol_execute {
+
+	my $commands = ol_collect_commands();
+	
+	# --------------------------------------------------------------------
+	# Note that we must disconnect from opensrf before forking or the 
+	# connection will be borked...
+	# --------------------------------------------------------------------
+	my $con = OpenSRF::Transport::PeerHandle->retrieve;
+	$con->disconnect if $con;
+
+
+	if( safe_fork() ) {
+
+		# --------------------------------------------------------------------
+		# Tell the client all is well
+		# --------------------------------------------------------------------
+		ol_handle_event('SUCCESS'); # - this exits
+
+	} else {
+
+		# --------------------------------------------------------------------
+		# close stdout/stderr or apache will wait on the child to finish
+		# --------------------------------------------------------------------
+		close(STDOUT);
+		close(STDERR);
+
+		$logger->debug("offline: child $$ processing data...");
+
+		# --------------------------------------------------------------------
+		# The child re-connects to the opensrf network and processes
+		# the script requests 
+		# --------------------------------------------------------------------
+		OpenSRF::System->bootstrap_client(config_file => $config{bootstrap});
+	
+		try {
+			ol_process_commands( $commands );
+			ol_archive_files();
+
+		} catch Error with {
+			my $e = shift;
+			$logger->error("offline: child process error $e");
+		};
+	}
+}
+
+sub ol_file_to_perl {
+	my $fname = shift;
+	open(F, "$fname") or ol_handle_event('OFFLINE_FILE_ERROR');
+	my @d = <F>;
+	my @p;
+	push(@p, JSON->JSON2perl($_)) for @d;
+	close(F);
+	return \@p;
+}
+
+# collects the commands and sorts them on timestamp+delta
+sub ol_collect_commands {
+	my $ses = ol_find_session();
+	my @commands;
+
+	# cycle through every script loaded to this session
+	for my $script ($ses->scripts) {
+		my $coms = ol_file_to_perl($script->logfile);
+
+		# cycle through all of the commands for this script
+		for my $com (@$coms) {
+			$$com{_worksation} = $script->workstation;
+			$$com{_realtime} = $script->time_delta + $com->{timestamp};
+			push( @commands, $com );
+		}
+	}
+
+	# sort on realtime
+	@commands = sort { $a->{_realtime} <=> $b->{_realtime} } @commands;
+	return \@commands;
+}
+
+sub ol_process_commands {
+	my $commands = shift;
+	$logger->debug("offline: command = " . JSON->perl2JSON($_)) for @$commands;
+}
+
+sub ol_archive_files {
+}
+
+
+
 
 

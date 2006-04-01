@@ -31,8 +31,6 @@ my $params; # - CGI params
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
-
-	# raw=1 allows us to receive the raw JSON 
 	$params = "?ses=$authtoken&ws=$station";
 	run_scripts();
 	oils_logout();
@@ -139,7 +137,6 @@ sub upload_script {
 	my $event = JSON->JSON2perl($res->{_content});
 	oils_event_die($event);
 	print "Upload succeeded to session $seskey...\n";
-	exit;
 }
 
 
@@ -148,16 +145,25 @@ sub upload_script {
 # completed today
 #-----------------------------------------------------------------------------
 sub check_sessions {
-	my $req = GET( "$baseurl/offline-status.pl$params&seslist=1" );
+
+	my $req = GET( "$baseurl/offline.pl$params&action=status&status_type=scripts" );
 	my $res = $useragent->request($req);
-	my $sessions = JSON->JSON2perl($res->{_content});
+	my $ses = JSON->JSON2perl($res->{_content});
+	my $scripts = $ses->{scripts};
+	delete $ses->{scripts};
+
+	$ses->{$_} ||= "" for keys %$ses;
 
 	print "-"x60 . "\n";
-	print "Offline sessions for this org include:\n\n";
-	for my $s (@$sessions) { 
-		my $done = ($s->{complete}) ? "yes" : "no";
-		print $s->{session} ." : complete = $done\n";
+	print "Session Details\n\n";
+	print "$_=".$ses->{$_}."\n" for keys %$ses;
+
+	print "scripts:\n";
+	for my $scr (@$scripts) {
+		$scr->{$_} ||= "" for keys %$scr;
+		print "\t$_=".$scr->{$_}."\n" for keys %$scr;
 	}
+
 	print "-"x60 . "\n";
 }
 
@@ -166,13 +172,14 @@ sub check_sessions {
 # Tells the server to run the script 
 #-----------------------------------------------------------------------------
 sub run_script {
-	my $req = GET( "$baseurl/offline-execute.pl$params" );
+	my $req = GET( "$baseurl/offline.pl$params&action=execute" );
 	
 	print "Executing script...\n";
 
 	my $res = $useragent->request($req);
 	my $event = JSON->JSON2perl($res->{_content});
 	oils_event_die($event);
+	exit;
 }
 
 sub check_script {

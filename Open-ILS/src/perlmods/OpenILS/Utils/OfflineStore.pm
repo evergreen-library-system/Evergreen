@@ -36,7 +36,6 @@ CREATE TABLE session (
 	description	TEXT,
 	creator		INTEGER NOT NULL,
 	create_time	INTEGER NOT NULL,
-	complete		INTEGER NOT NULL DEFAULT 0,
 	in_process	INTEGER NOT NULL DEFAULT 0,
 	start_time	INTEGER,
 	end_time		INTEGER
@@ -50,7 +49,7 @@ CREATE INDEX IF NOT EXISTS session_creation ON session (create_time);
 
 __PACKAGE__->table('session');
 __PACKAGE__->columns( Essential => qw/key org description 
-	creator create_time complete in_process start_time end_time/);
+		creator create_time in_process start_time end_time/);
 __PACKAGE__->has_many(scripts => 'OpenILS::Utils::OfflineStore::Script');
 
 
@@ -65,10 +64,11 @@ CREATE TABLE script (
 	id		INTEGER	UNIQUE PRIMARY KEY AUTOINCREMENT,
 	session		TEXT	NOT NULL,
 	requestor	INTEGER	NOT NULL,
-	timestamp	INTEGER	NOT NULL,
+	create_time	INTEGER	NOT NULL,
 	workstation	TEXT	NOT NULL,
 	logfile		TEXT	NOT NULL,
-	time_delta	INTEGER	NOT NULL DEFAULT 0
+	time_delta	INTEGER	NOT NULL DEFAULT 0,
+	count			INTEGER	NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS script_pkey ON script (id);
 CREATE INDEX IF NOT EXISTS script_ws ON script (workstation);
@@ -78,7 +78,7 @@ CREATE INDEX IF NOT EXISTS script_session ON script (session);
 }
 
 __PACKAGE__->table('script');
-__PACKAGE__->columns( Essential => qw/id session requestor timestamp workstation logfile time_delta/);
+__PACKAGE__->columns( Essential => qw/id session requestor create_time workstation logfile time_delta count/);
 __PACKAGE__->has_a(session => 'OpenILS::Utils::OfflineStore::Session');
 
 
