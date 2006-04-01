@@ -24,7 +24,7 @@ my $barcode		= shift; # - item barcode
 my $iterations	= shift || 1; # - number of iterations
 
 my $useragent = LWP::UserAgent->new; # - HTTP request handler
-my $seskey = "OL_test_" . CORE::time;
+my $seskey;
 my $params; # - CGI params
 
 
@@ -33,7 +33,7 @@ sub go {
 	oils_login($username, $password);
 
 	# raw=1 allows us to receive the raw JSON 
-	$params = "?ses=$authtoken&ws=$station&seskey=$seskey&raw=1";
+	$params = "?ses=$authtoken&ws=$station";
 	run_scripts();
 	oils_logout();
 }
@@ -94,10 +94,25 @@ sub build_script {
 # Run the scripts
 #-----------------------------------------------------------------------------
 sub run_scripts { 
+	create_session();
 	upload_script(); 
 	check_sessions();
 	run_script();
 	check_script();
+}
+
+
+sub create_session {
+
+	my $req = GET( "$baseurl/offline.pl$params&action=create&desc=test_d" );
+	my $res = $useragent->request($req);
+	my $response = JSON->JSON2perl($res->{_content});
+
+	oils_event_die($response);
+	$seskey = $response->{payload};
+	$params = "$params&seskey=$seskey";
+
+	printl("Created new session with key $seskey");
 }
 
 
@@ -108,15 +123,14 @@ sub upload_script {
 	my $script =  build_script();
 
 	my $req = POST( 
-		"$baseurl/offline-upload.pl",
+		"$baseurl/offline.pl",
 		Content_Type => 'form-data',
 		Content => [
-			seskey => $seskey,
-			createses => 1,
-			raw	=> 1,
-			ses 	=> $authtoken, 
-			ws		=> $station, 
-			file	=> [ undef, "offline-test.script", Content_Type => "text/plain", Content => $script ] ]
+			action	=> 'load',
+			seskey	=> $seskey,
+			ses		=> $authtoken, 
+			ws			=> $station, 
+			file		=> [ undef, "offline-test.script", Content_Type => "text/plain", Content => $script ] ]
 		);
 
 	my $res = $useragent->request($req);
@@ -124,8 +138,8 @@ sub upload_script {
 	# Pass request to the user agent and get a response back
 	my $event = JSON->JSON2perl($res->{_content});
 	oils_event_die($event);
-	print "Upload succeeded with session name $seskey...\n";
-	return $event->{payload};
+	print "Upload succeeded to session $seskey...\n";
+	exit;
 }
 
 
