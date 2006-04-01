@@ -180,8 +180,7 @@ sub ol_find_session {
 sub ol_find_script {
 	my $ws = shift || $wsname;
 	my $sk = shift || $seskey;
-	my ($id) = $SCRIPT->search( session => $seskey, workstation => $ws );
-	my ($script) = $SCRIPT->retrieve("$id") if $id;
+	my ($script) = $SCRIPT->search( session => $seskey, workstation => $ws );
 	return $script;
 }
 
