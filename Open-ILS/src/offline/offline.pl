@@ -18,7 +18,7 @@ $DBI::trace = 1;
 my $U = "OpenILS::Application::AppUtils";
 my $DB = "OpenILS::Utils::OfflineStore";
 my $SES = "${DB}::Session";
-my $SCRIPT = "${SES}::Scrtip";
+my $SCRIPT = "OpenILS::Utils::OfflineStore::Script";
 
 our %config;
 
@@ -54,6 +54,10 @@ my $evt;
 # --------------------------------------------------------------------
 sub ol_init {
 
+	my $s = "";
+	$s .= "$_=" . $cgi->param($_) . "\n" for $cgi->param;
+	warn '-'x60 ."\n$s\n" . '-'x60 ."\n";
+
 	$DB->DBFile($config{db});
 	OpenSRF::System->bootstrap_client(config_file => $config{bootstrap} ); 
 }
@@ -72,7 +76,7 @@ sub ol_runtime_init {
 	# try the param, the workstation, and finally the user's ws org
 	if(!$org) { 
 		$wsobj = ol_fetch_workstation($wsname);
-		$org = $wsobj->ws_ou if $wsobj;
+		$org = $wsobj->owning_lib if $wsobj;
 		$org = $requestor->ws_ou unless $org;
 		ol_handle_result(OpenILS::Event->new('OFFLINE_NO_ORG')) unless $org;
 	}
@@ -84,30 +88,34 @@ sub ol_runtime_init {
 # --------------------------------------------------------------------
 sub ol_do_action {
 
+	my $payload;
+
 	if( $action eq 'create' ) {
 		
-		$evt = $U->check_perms($requestor, $org, 'OFFLINE_UPLOAD');
+		$evt = $U->check_perms($requestor->id, $org, 'OFFLINE_UPLOAD');
 		ol_handle_result($evt) if $evt;
-		ol_create_session();
+		$payload = ol_create_session();
 
 	} elsif( $action eq 'load' ) {
 
-		$evt = $U->check_perms($requestor, $org, 'OFFLINE_UPLOAD');
+		$evt = $U->check_perms($requestor->id, $org, 'OFFLINE_UPLOAD');
 		ol_handle_result($evt) if $evt;
-		ol_load();
+		$payload = ol_load();
 
 	} elsif( $action eq 'execute' ) {
 
-		$evt = $U->check_perms($requestor, $org, 'OFFLINE_EXECUTE');
+		$evt = $U->check_perms($requestor->id, $org, 'OFFLINE_EXECUTE');
 		ol_handle_result($evt) if $evt;
-		ol_execute();
+		$payload = ol_execute();
 
 	} elsif( $action eq 'status' ) {
 
-		$evt = $U->check_perms($requestor, $org, 'OFFLINE_VIEW');
+		$evt = $U->check_perms($requestor->id, $org, 'OFFLINE_VIEW');
 		ol_handle_result($evt) if $evt;
-		ol_status();
+		$payload = ol_status();
 	}
+
+	ol_handle_event('SUCCESS', payload => $payload );
 }
 
 
@@ -117,9 +125,9 @@ sub ol_do_action {
 sub ol_create_session {
 
 	my $desc = $cgi->param('desc') || "";
-	$seskey ||=  time . "_${$}_" . rand();
+	$seskey ||=  time . "_${$}_" . int(rand() * 100);
 
-	$logger->offline("offline: user ".$requestor->id.
+	$logger->debug("offline: user ".$requestor->id.
 		" creating new session with key $seskey and description $desc");
 
 	$SES->create(
@@ -132,7 +140,8 @@ sub ol_create_session {
 			complete		=> 0,
 		} 
 	);
-	ol_handle_event('SUCCESS', payload => $seskey );
+
+	return $seskey;
 }
 
 
@@ -143,17 +152,16 @@ sub ol_create_script {
 	my $ws = shift || $wsname;
 	my $sk = shift || $seskey;
 
-	my $session = ol_find_sesion($sk);
+	my $session = ol_find_session($sk);
 	my $delta = $cgi->param('delta') || 0;
 
-	my $script = $session->add_to_scripts(
-		session		=> $sk,
+	my $script = $session->add_to_scripts( {
 		requestor	=> $requestor->id,
 		timestamp	=> CORE::time,
 		workstation	=> $ws,
-		logfile		=> "$basedir/pending/$sk/$ws.log",
+		logfile		=> "$basedir/pending/$org/$sk/$ws.log",
 		time_delta	=> $delta,
-	);
+	});
 }
 
 # --------------------------------------------------------------------
@@ -172,10 +180,10 @@ sub ol_find_session {
 sub ol_find_script {
 	my $ws = shift || $wsname;
 	my $sk = shift || $seskey;
-	my ($script) = $SCRIPT->search( session => $seskey, workstation => $ws );
+	my ($id) = $SCRIPT->search( session => $seskey, workstation => $ws );
+	my ($script) = $SCRIPT->retrieve("$id") if $id;
 	return $script;
 }
-
 
 # --------------------------------------------------------------------
 # Creates a new script in the database and loads the new script file
@@ -183,16 +191,20 @@ sub ol_find_script {
 sub ol_load {
 	my $session = ol_find_session;
 	my $handle	= $cgi->upload('file');
-	my $outfile = "$basedir/pending/$seskey/$wsname.log";
+	my $outdir = "$basedir/pending/$org/$seskey";
+	my $outfile = "$outdir/$wsname.log";
 
 	ol_handl_event('OFFLINE_SESSION_FILE_EXISTS') if ol_find_script();
 	ol_handle_event('OFFLINE_SESSION_ACTIVE') if $session->in_process;
 
+	qx/mkdir -p $outdir/;
 	open(FILE, ">>$outfile") or ol_handle_event('OFFLINE_FILE_ERROR');
 	while( <$handle> ) { print FILE; }
 	close(FILE);
 
 	ol_create_script();
+
+	return undef;
 }
 
 
@@ -220,15 +232,14 @@ sub ol_handle_event {
 }
 
 sub ol_status {
-	my $session = ol_find_session();
-	my $scripts = $session->retrieve_all;
 
+	my $session = ol_find_session();
 	my %data;
 
 	map { $data{$_} = $session->$_ } $session->columns;
 	$data{scripts} = [];
 
-	for my $script ($scripts->columns) {
+	for my $script ($session->scripts) {
 		my %sdata;
 		map { $sdata{$_} = $script->$_ } $script->columns;
 		push( @{$data{scripts}}, \%sdata );
