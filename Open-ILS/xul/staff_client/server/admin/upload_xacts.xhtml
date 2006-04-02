@@ -26,13 +26,16 @@
 	<script type="text/javascript" src="upload_xacts.js" />
 </head>
 <body onload="try{my_init();}catch(E){alert(E);}">
-	<form id="form" action='/~erickson/offline/offline-upload.pl' method='post' enctype='multipart/form-data' style="display: none">
-		<input type='file' id="file" name='file'> </input> 
-		<input type='text' id="ws" name='ws' value=''></input>
-		<input type='text' id="delta" name='delta' value='0'> </input>
+	<h3>Uploading transactions...</h3>
+	<form id="form" method='post' enctype='multipart/form-data' style="display: none">
+		action:<input type='text' id="action" name='action' value='load'></input>
+		ws:<input type='text' id="ws" name='ws' value=''></input>
+		delta:<input type='text' id="delta" name='delta' value='0'> </input>
+		ses:<input type='text' id="ses" name='ses' value=''> </input>
+		seskey:<input type='text' id="seskey" name='seskey' value=''> </input>
+		file:<input type='file' id="file" name='file'> </input> 
+		html:<input type='text' id="html" name='html' value='1'> </input> 
 		<input type='submit' id="submit" name='Submit' value='Upload' disabled="true"> </input>
-		<input type='hidden' id="ses" name='ses' value=''> </input>
-		<input type='hidden' name='html' value='1'> </input>
 	</form>
 </body>
 </html>

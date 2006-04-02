@@ -17,26 +17,35 @@ function my_init() {
 			try { window.xulG.set_tab_name('Upload Offline Transactions'); } catch(E) { alert(E); }
 		}
 
-		JSAN.use('util.file'); g.file = new util.file('pending_xacts');
+		g.cgi = new CGI();
+
+		JSAN.use('util.file'); g.file = new util.file( g.cgi.param('filename') );
 
 		if (g.file._file.exists()) {
 			$('submit').disabled = false;
 			$('file').value = g.file._file.path;
+		} else {
+			alert('No transactions to upload.');
+			return;
 		}
 
-		g.cgi = new CGI();
+		$( 'ws' ).setAttribute('value', g.cgi.param('ws'));
+		$( 'ses' ).setAttribute('value', g.cgi.param('ses'));
+		$( 'seskey' ).setAttribute('value', g.cgi.param('seskey'));
+		$( 'delta' ).setAttribute('value', g.cgi.param('delta'));
 
-		g.session = g.cgi.param('session');
-		$( 'ws' ).setAttribute('value', g.cgi.param('ws_name'));
-		$( 'ses' ).setAttribute('value', g.session);
-		$( 'delta' ).setAttribute('value', 0 );
+		$( 'form' ).setAttribute('action', xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI));
 
-		JSAN.use('util.widgets');
-		util.widgets.click('submit');
+		setTimeout(
+			function() {
+				JSAN.use('util.widgets');
+				util.widgets.click('submit');
+			}, 0
+		);
 
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-			"system administrator or software developer the following:\nmain/test_checkout.html\n" + E + '\n';
+			"system administrator or software developer the following:\nmain/upload_xacts.xhtml\n" + E + '\n';
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}

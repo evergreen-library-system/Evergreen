@@ -9,6 +9,8 @@ admin.offline_manage_xacts = function (params) {
 
 admin.offline_manage_xacts.prototype = {
 
+	'sel_list' : [],
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -18,23 +20,232 @@ admin.offline_manage_xacts.prototype = {
 		JSAN.use('util.list'); obj.list = new util.list('session_tree');
 		obj.list.init( {
 			'columns' : [
-				{ 'id' : 'desc', 'label' : 'Description', 'render' : "my.desc", 'flex' : '2' },
-				{ 'id' : 'count', 'label' : 'Upload Count', 'render' : "my.meta.length", 'flex' : '1' },
-				{ 'id' : 'complete', 'label' : 'Processed?', 'render' : "my.complete == 0 ? 'No' : 'Yes'", 'flex' : '1' },
-				{ 'id' : 'seskey', 'label' : 'Session', 'render' : "my.session", 'hidden' : 'true', 'flex' : '1' },
+				{
+					'id' : 'org', 'hidden' : 'true', 'flex' : '1',
+					'label' : 'Organization',
+					'render' : 'data.hash.aou[ my.org ].shortname()',
+				},
+				{ 
+					'id' : 'description', 'flex' : '2',
+					'label' : 'Description', 
+					'render' : "my.description", 
+				},
+				{
+					'id' : 'create_time', 'flex' : '1',
+					'label' : 'Date Created',
+					'render' : 'if (my.create_time) { var x = new Date(); x.setTime(my.create_time+"000"); util.date.formatted_date(x,"%F %H:%M"); } else { ""; }',
+				},
+				{
+					'id' : 'creator', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Created By',
+					'render' : 'my.creator',
+				},
+				{ 
+					'id' : 'count', 'flex' : '1',
+					'label' : 'Upload Count', 
+					'render' : "my.scripts.length", 
+				},
+				{ 
+					'id' : 'num_complete', 'flex' : '1', 
+					'label' : 'Uploads Processed', 
+					'render' : "my.num_complete", 
+				},
+				{ 
+					'id' : 'in_process', 'flex' : '1',
+					'label' : 'Processing?', 
+					'render' : "if (my.end_time) { 'Completed' } else {my.in_process == 0 ? 'No' : 'Yes'}", 
+				},
+				{
+					'id' : 'start_time', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Date Started',
+					'render' : 'if (my.start_time) {var x = new Date(); x.setTime(my.start_time+"000"); util.date.formatted_date(x,"%F %H:%M");} else { ""; }',
+				},
+				{
+					'id' : 'end_time', 'flex' : '1',
+					'label' : 'Date Completed',
+					'render' : 'if (my.end_time) {var x = new Date(); x.setTime(my.end_time+"000"); util.date.formatted_date(x,"%F %H:%M");} else { ""; }',
+				},
+				{ 
+					'id' : 'key', 'hidden' : 'true', 'flex' : '1', 
+					'label' : 'Session', 
+					'render' : "my.key", 
+				},
 			],
 			'map_row_to_column' : function(row,col) {
+				JSAN.use('util.date');
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 				var my = row; var value;
 				try { value = eval( col.render ); } catch(E) { obj.error.sdump('D_ERROR',E); value = '???'; }
 				return value;
+			},
+			'on_select' : function(ev) {
+				JSAN.use('util.functional');
+				var sel = obj.list.retrieve_selection();
+				obj.sel_list = util.functional.map_list(
+					sel,
+					function(o) { return o.getAttribute('retrieve_id'); }
+				);
+				if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
+					document.getElementById('execute').disabled = false;	
+				}
+				if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
+					document.getElementById('upload').disabled = false;	
+				}
+				if (obj.check_perm(obj.session,'OFFLINE_SESSION_STATUS')) {
+					document.getElementById('status').disabled = false;	
+				}
+				if (obj.check_perm(obj.session,'OFFLINE_SESSION_ERRORS')) {
+					document.getElementById('errors').disabled = false;	
+				}
 			},
 		} );
 
 		obj.retrieve_seslist();
 		obj.render_seslist();
 
-		document.getElementById('create').addEventListener('command',function() { obj.create_ses(); },false);
+		var x = document.getElementById('create');
+		if (obj.check_perm(obj.session,'OFFLINE_CREATE_SESSION')) {
+			x.disabled = false;
+			x.addEventListener('command',function() { try{obj.create_ses();}catch(E){alert(E);} },false);
+		}
 
+		x = document.getElementById('upload');
+		x.addEventListener('command',function() { try{obj.upload();}catch(E){alert(E);} },false);
+
+		x = document.getElementById('status');
+		x.addEventListener('command',function() { try{obj.ses_status();}catch(E){alert(E);} },false);
+
+		x = document.getElementById('refresh');
+		x.addEventListener('command',function() { try{obj.retrieve_seslist();obj.render_seslist();}catch(E){alert(E);} },false);
+
+		x = document.getElementById('execute');
+		x.addEventListener('command',function() { try{obj.execute_ses();}catch(E){alert(E);} },false);
+	},
+
+	'check_perm' : function(ses,perms) {
+		return true; /* FIXME */
+	},
+
+	'execute_ses' : function() {
+	},
+
+	'rename_file' : function() {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var obj = this;
+		JSAN.use('util.file'); 
+		var pending = new util.file('pending_xacts');
+		if ( !pending._file.exists() ) { throw("Can't rename a non-existent file"); }
+		obj.transition_filename = 'pending_xacts_' + new Date().getTime();
+		var count = 0;
+		var file = new util.file(obj.transition_filename);
+		while (file._file.exists()) {
+			obj.transition_filename = 'pending_xacts_' + new Date().getTime();
+			file = new util.file(obj.transition_filename);
+			if (count++>100) throw("Taking too long to find a unique filename.");
+		}
+		pending._file.moveTo(null,obj.transition_filename);
+	},
+
+	'revert_file' : function() {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var obj = this;
+		JSAN.use('util.file');
+		var pending = new util.file('pending_xacts');
+		if (pending._file.exists()) { alert('Something bad happened.  New offline transactions were accumulated during our attempted upload.  Tell your system admin that the file involved is ' + obj.transition_filename); return; }
+		var file = new util.file(obj.transition_filename);
+		file._file.moveTo(null,'pending_xacts');
+	},
+
+	'archive_file' : function() {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var obj = this;
+		JSAN.use('util.file');
+		var file = new util.file(obj.transition_filename);
+		if (file._file.exists()) file._file.moveTo(null,obj.transition_filename + '.complete')
+	},
+
+	'upload' : function() {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var obj = this;
+		if (obj.sel_list.length == 0) { alert('Please select a session to upload to.'); return; }
+		if (obj.sel_list.length > 1) { alert('Please select a single session to upload to.'); return; }
+
+		JSAN.use('util.file');
+
+		var file = new util.file('pending_xacts');
+		if (!file._file.exists()) { alert('No pending transactions to upload.'); return; }
+
+		obj.rename_file();
+
+		obj.data.stash_retrieve();
+		var seskey = obj.sel_list[0];
+		JSAN.use('util.widgets');
+		var xx = document.getElementById('iframe_placeholder'); util.widgets.remove_children(xx);
+		var x = document.createElement('iframe'); xx.appendChild(x); x.flex = 1;
+		x.setAttribute(
+			'src',
+			window.xulG.url_prefix( urls.XUL_REMOTE_BROWSER )
+			+ '?url=' + window.escape(
+				urls.XUL_OFFLINE_UPLOAD_XACTS
+				+ '?ses=' + window.escape(obj.data.session)
+				+ '&seskey=' + window.escape(seskey)
+				+ '&ws=' + window.escape(obj.data.ws_name)
+				+ '&delta=' + window.escape('0')
+				+ '&filename=' + window.escape( obj.transition_filename )
+			)
+		);
+		var newG = { 
+			'url_prefix' : window.xulG.url_prefix, 
+			'passthru_content_params' : {
+				'url_prefix' : window.xulG.url_prefix,
+				'handle_event' : function(robj){
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					try {
+						dump('robj = ' + js2JSON(robj) + '\n');
+						if ( robj.ilsevent != 0 ) {
+							obj.revert_file();
+						} else {
+							obj.archive_file();
+						}
+						obj.retrieve_seslist(); obj.render_seslist();
+						setTimeout(
+							function() {
+								JSAN.use('util.widgets');
+								util.widgets.remove_children('iframe_placeholder');
+							},0
+						);
+					} catch(E) {
+						alert('handle_event error: ' + E);
+					}
+				} 
+			}
+		};
+		x.contentWindow.xulG = newG;
+	},
+
+	'ses_status' : function() {
+		var obj = this;
+
+		obj.data.stash_retrieve();
+
+		for (var i = 0; i < obj.sel_list.length; i++) {
+
+			var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
+				+ "?ses=" + window.escape(obj.data.session)
+				+ "&action=status" 
+				+ "&seskey=" + window.escape(obj.sel_list[i])
+				+ "&ws=" + window.escape(obj.data.ws_name)
+				+ "&status_type=scripts";
+			var x = new XMLHttpRequest();
+			x.open("GET",url,false);
+			x.send(null);
+
+			dump(url + ' = ' + x.responseText + '\n' );
+			var robj = JSON2js(x.responseText);
+
+			alert(js2JSON(robj));
+
+		}
 	},
 
 	'create_ses' : function() {
@@ -42,27 +253,26 @@ admin.offline_manage_xacts.prototype = {
 		var obj = this;
 
 		var desc = window.prompt('Please enter a description:','','Create an Offline Transaction Session');
-		if (desc=='') { return; }
+		if (desc=='' || desc==null) { return; }
 
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
 			+ "?ses=" + window.escape(obj.data.session)
-			+ "&createses=1" 
-			+ "&org=" + window.escape(obj.data.list.au[0].ws_ou())
+			+ "&action=create" 
 			+ "&desc=" + window.escape(desc)
-			+ "&raw=1";
+			+ "&ws=" + window.escape(obj.data.ws_name);
 		var x = new XMLHttpRequest();
 		x.open("GET",url,false);
 		x.send(null);
 
+		dump(url + ' = ' + x.responseText + '\n' );
 		var robj = JSON2js(x.responseText);
 		if (robj.ilsevent == 0) {
 			obj.retrieve_seslist(); obj.render_seslist();
 		} else {
 			alert('Error: ' + x.responseText);
 		}
-
 	},
 
 	'retrieve_seslist' : function() {
@@ -73,15 +283,15 @@ admin.offline_manage_xacts.prototype = {
 
 		var url = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI) 
 			+ "?ses=" + window.escape(obj.data.session)
-			+ "&seslist=1"
+			+ "&action=status"
 			+ "&org=" + window.escape(obj.data.list.au[0].ws_ou())
-			+ "&raw=1";
+			+ "&status_type=sessions";
 		var x = new XMLHttpRequest();
 		x.open("GET",url,false);
 		x.send(null);
 
-		obj.seslist = JSON2js( x.responseText );
 		dump(url + ' = ' + x.responseText + '\n' );
+		obj.seslist = JSON2js( x.responseText );
 	},
 
 	'render_seslist' : function() {
@@ -95,13 +305,19 @@ admin.offline_manage_xacts.prototype = {
 			funcs.push( 
 				function(row){ 
 					return function(){
-						obj.list.append( { 'retrieve_id' : row.session, 'row' : row } );
+						obj.list.append( { 'retrieve_id' : row.key, 'row' : row } );
 					};
 				}(obj.seslist[i]) 
 			);
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
+
+		document.getElementById('execute').disabled = true;
+		document.getElementById('status').disabled = true;
+		document.getElementById('errors').disabled = true;
+		document.getElementById('upload').disabled = true;
+
 	},
 }
 
