@@ -47,7 +47,7 @@ admin.offline_manage_xacts.prototype = {
 				},
 				{ 
 					'id' : 'num_complete', 'flex' : '1', 
-					'label' : 'Uploads Processed', 
+					'label' : 'Transactions Processed', 
 					'render' : "my.num_complete", 
 				},
 				{ 
