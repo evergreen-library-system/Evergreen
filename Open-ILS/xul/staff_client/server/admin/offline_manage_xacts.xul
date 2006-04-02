@@ -66,11 +66,12 @@
 				<button id="create" label="Create" disabled="true"/>
 				<button id="execute" label="Process" disabled="true"/>
 				<spacer flex="1"/>
-				<button id="status" label="Status" disabled="true"/>
 				<button id="errors" label="Errors" disabled="true"/>
 				<button id="upload" label="Upload" disabled="true"/>
 			</hbox>
 			<tree id="session_tree" enableColumnDrag="true" seltype="single" flex="1"/>
+			<splitter><grippy/></splitter>
+			<tree id="script_tree" enableColumnDrag="true" seltype="single" flex="1"/>
 			<hbox id="iframe_placeholder" hidden="false" flex="0"/>
 		</groupbox>
 
