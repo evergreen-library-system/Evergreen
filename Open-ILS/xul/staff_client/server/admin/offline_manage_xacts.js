@@ -10,6 +10,7 @@ admin.offline_manage_xacts = function (params) {
 admin.offline_manage_xacts.prototype = {
 
 	'sel_list' : [],
+	'seslist' : [],
 
 	'init' : function( params ) {
 
@@ -17,7 +18,31 @@ admin.offline_manage_xacts.prototype = {
 
 		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
-		JSAN.use('util.list'); obj.list = new util.list('session_tree');
+		obj.init_list(); obj.init_script_list(); obj.init_error_list();
+
+		obj.retrieve_seslist(); obj.render_seslist();
+
+		var x = document.getElementById('create');
+		if (obj.check_perm(obj.session,'OFFLINE_CREATE_SESSION')) {
+			x.disabled = false;
+			x.addEventListener('command',function() { try{obj.create_ses();}catch(E){alert(E);} },false);
+		}
+
+		x = document.getElementById('upload');
+		x.addEventListener('command',function() { try{obj.upload();}catch(E){alert(E);} },false);
+
+		x = document.getElementById('refresh');
+		x.addEventListener('command',function() { try{obj.retrieve_seslist();obj.render_seslist();}catch(E){alert(E);} },false);
+
+		x = document.getElementById('execute');
+		x.addEventListener('command',function() { try{obj.execute_ses();}catch(E){alert(E);} },false);
+
+		document.getElementById('deck').selectedIndex = 2;
+	},
+
+	'init_list' : function() {
+		var obj = this; JSAN.use('util.list'); 
+		obj.list = new util.list('session_tree');
 		obj.list.init( {
 			'columns' : [
 				{
@@ -79,25 +104,39 @@ admin.offline_manage_xacts.prototype = {
 				return value;
 			},
 			'on_select' : function(ev) {
-				JSAN.use('util.functional');
-				var sel = obj.list.retrieve_selection();
-				obj.sel_list = util.functional.map_list(
-					sel,
-					function(o) { return o.getAttribute('retrieve_id'); }
-				);
-				if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
-					document.getElementById('execute').disabled = false;	
+				try {
+					JSAN.use('util.functional');
+					var sel = obj.list.retrieve_selection();
+					obj.sel_list = util.functional.map_list(
+						sel,
+						function(o) { return o.getAttribute('retrieve_id'); }
+					);
+					if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
+						document.getElementById('execute').disabled = false;	
+					}
+					if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
+						document.getElementById('upload').disabled = false;	
+					}
+					var complete = false;
+					for (var i = 0; i < obj.sel_list.length; i++) { 
+						if (obj.seslist[ obj.sel_list[i] ].end_time) { complete = true; }
+					}
+					if (complete) {
+						obj.render_errorlist();
+					} else {
+						obj.render_scriptlist();
+					}
+				} catch(E) {
+					alert('on_select: ' + E);
 				}
-				if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
-					document.getElementById('upload').disabled = false;	
-				}
-				if (obj.check_perm(obj.session,'OFFLINE_SESSION_ERRORS')) {
-					document.getElementById('errors').disabled = false;	
-				}
-				obj.render_scriptlist();
 			},
 		} );
 
+
+	},
+
+	'init_script_list' : function() {
+		var obj = this; JSAN.use('util.list'); 
 		obj.script_list = new util.list('script_tree');
 		obj.script_list.init( {
 			'columns' : [
@@ -132,26 +171,89 @@ admin.offline_manage_xacts.prototype = {
 		} );
 
 
-		obj.retrieve_seslist();
-		obj.render_seslist();
+	},
 
-		var x = document.getElementById('create');
-		if (obj.check_perm(obj.session,'OFFLINE_CREATE_SESSION')) {
-			x.disabled = false;
-			x.addEventListener('command',function() { try{obj.create_ses();}catch(E){alert(E);} },false);
-		}
+	'init_error_list' : function() {
+		var obj = this; JSAN.use('util.list'); 
+		obj.error_list = new util.list('error_tree');
+		obj.error_list.init( {
+			'columns' : [
+				{
+					'id' : 'workstation', 'flex' : '1',
+					'label' : 'Workstation',
+					'render' : 'my.command._workstation ? my.command._workstation : my.command._worksation',
+				},
+				{
+					'id' : 'timestamp', 'flex' : '1',
+					'label' : 'Timestamp',
+					'render' : 'if (my.command.timestamp) { var x = new Date(); x.setTime(my.command.timestamp+"000"); util.date.formatted_date(x,"%F %H:%M"); } else { my.command._realtime; }',
+				},
+				{
+					'id' : 'type', 'flex' : '1',
+					'label' : 'Type',
+					'render' : 'my.command.type',
+				},
+				{ 
+					'id' : 'ilsevent', 'hidden' : 'true', 'flex' : '1', 
+					'label' : 'Event Code', 
+					'render' : "my.event.ilsevent", 
+				},
+				{ 
+					'id' : 'textcode', 'flex' : '1', 
+					'label' : 'Event Name', 
+					'render' : "my.event.textcode", 
+				},
+				{
+					'id' : 'i_barcode', 'flex' : '1',
+					'label' : 'Item Barcode',
+					'render' : 'my.command.barcode ? my.command.barcode : ""',
+				},
+				{
+					'id' : 'p_barcode', 'flex' : '1',
+					'label' : 'Patron Barcode',
+					'render' : 'if (my.command.patron_barcode) { my.command.patron_barcode; } else { if (my.command.user.card.barcode) { my.command.user.card.barcode; } else { ""; } }',
+				},
+				{
+					'id' : 'duedate', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Due Date',
+					'render' : 'my.command.due_date || ""',
+				},
+				{
+					'id' : 'backdate', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Check In Backdate',
+					'render' : 'my.command.backdate || ""',
+				},
+				{
+					'id' : 'count', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'In House Use Count',
+					'render' : 'my.command.count || ""',
+				},
+				{
+					'id' : 'noncat', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Non-Cataloged?',
+					'render' : 'my.command.noncat == 1 ? "Yes" : "No"',
+				},
+				{
+					'id' : 'noncat_type', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Non-Cataloged Type',
+					'render' : 'data.hash.cnct[ my.command.noncat_type ] ? data.hash.cnct[ my.command.noncat_type ].name() : ""',
+				},
+				{
+					'id' : 'noncat_count', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Non-Cataloged Count',
+					'render' : 'my.command.noncat_count || ""',
+				},
+			],
+			'map_row_to_column' : function(row,col) {
+				JSAN.use('util.date');
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+				var my = row; var value;
+				try { value = eval( col.render ); } catch(E) { obj.error.sdump('D_ERROR',E); value = '???'; }
+				return value;
+			},
+		} );
 
-		x = document.getElementById('upload');
-		x.addEventListener('command',function() { try{obj.upload();}catch(E){alert(E);} },false);
 
-		x = document.getElementById('refresh');
-		x.addEventListener('command',function() { try{obj.retrieve_seslist();obj.render_seslist();}catch(E){alert(E);} },false);
-
-		x = document.getElementById('execute');
-		x.addEventListener('command',function() { try{obj.execute_ses();}catch(E){alert(E);} },false);
-
-		x = document.getElementById('errors');
-		x.addEventListener('command',function() { try{obj.ses_errors();}catch(E){alert(E);} },false);
 	},
 
 	'check_perm' : function(ses,perms) {
@@ -168,7 +270,7 @@ admin.offline_manage_xacts.prototype = {
 			var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
 				+ "?ses=" + window.escape(obj.data.session)
 				+ "&action=execute" 
-				+ "&seskey=" + window.escape(obj.sel_list[i])
+				+ "&seskey=" + window.escape(obj.seslist[obj.sel_list[i]].key)
 				+ "&ws=" + window.escape(obj.data.ws_name);
 			var x = new XMLHttpRequest();
 			x.open("GET",url,false);
@@ -188,24 +290,21 @@ admin.offline_manage_xacts.prototype = {
 
 		obj.data.stash_retrieve();
 
-		for (var i = 0; i < obj.sel_list.length; i++) {
+		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
+			+ "?ses=" + window.escape(obj.data.session)
+			+ "&action=status" 
+			+ "&seskey=" + window.escape(obj.seslist[ obj.sel_list[0] ].key)
+			+ "&ws=" + window.escape(obj.data.ws_name)
+			+ '&status_type=exceptions';
+		var x = new XMLHttpRequest();
+		x.open("GET",url,false);
+		x.send(null);
 
-			var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-				+ "?ses=" + window.escape(obj.data.session)
-				+ "&action=status" 
-				+ "&seskey=" + window.escape(obj.sel_list[i])
-				+ "&ws=" + window.escape(obj.data.ws_name)
-				+ '&status_type=exceptions';
-			var x = new XMLHttpRequest();
-			x.open("GET",url,false);
-			x.send(null);
+		dump(url + ' = ' + x.responseText + '\n' );
+		var robj = JSON2js(x.responseText);
 
-			dump(url + ' = ' + x.responseText + '\n' );
-			var robj = JSON2js(x.responseText);
+		return { 'errors' : robj, 'description' : obj.seslist[ obj.sel_list[0] ].description };
 
-			alert(js2JSON(robj));
-
-		}
 	},
 
 	'rename_file' : function() {
@@ -257,7 +356,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.rename_file();
 
 		obj.data.stash_retrieve();
-		var seskey = obj.sel_list[0];
+		var seskey = obj.seslist[ obj.sel_list[0] ].key;
 		JSAN.use('util.widgets');
 		var xx = document.getElementById('iframe_placeholder'); util.widgets.remove_children(xx);
 		var x = document.createElement('iframe'); xx.appendChild(x); x.flex = 1;
@@ -310,7 +409,7 @@ admin.offline_manage_xacts.prototype = {
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
 			+ "?ses=" + window.escape(obj.data.session)
 			+ "&action=status" 
-			+ "&seskey=" + window.escape(obj.sel_list[0])
+			+ "&seskey=" + window.escape(obj.seslist[obj.sel_list[0]].key)
 			+ "&ws=" + window.escape(obj.data.ws_name)
 			+ "&status_type=scripts";
 		var x = new XMLHttpRequest();
@@ -378,29 +477,35 @@ admin.offline_manage_xacts.prototype = {
 		var funcs = [];
 		for (var i = 0; i < obj.seslist.length; i++) {
 			funcs.push( 
-				function(row){ 
+				function(idx,row){ 
 					return function(){
-						obj.list.append( { 'retrieve_id' : row.key, 'row' : row } );
+						obj.list.append( { 'retrieve_id' : idx, 'row' : row } );
 					};
-				}(obj.seslist[i]) 
+				}(i,obj.seslist[i]) 
 			);
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
 
 		document.getElementById('execute').disabled = true;
-		document.getElementById('errors').disabled = true;
 		document.getElementById('upload').disabled = true;
 
 	},
 
 	'render_scriptlist' : function() {
 
+		dump('render_scriptlist\n');
+
+		document.getElementById('deck').selectedIndex = 0;
+
 		var obj = this;
 
 		obj.script_list.clear();
 
-		var scripts = obj.ses_status().scripts;
+		var status = obj.ses_status();
+		document.getElementById('status_caption').setAttribute('label','Uploaded Transactions for ' + status.description);
+
+		var scripts = status.scripts;
 
 		var funcs = [];
 		for (var i = 0; i < scripts.length; i++) {
@@ -415,6 +520,36 @@ admin.offline_manage_xacts.prototype = {
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
 	},
+	
+	'render_errorlist' : function() {
+
+		dump('render_errorlist\n');
+
+		document.getElementById('deck').selectedIndex = 1;
+
+		var obj = this;
+
+		obj.error_list.clear();
+
+		var error_meta = obj.ses_errors();
+		document.getElementById('errors_caption').setAttribute('label','Exceptions for ' + error_meta.description);
+
+		obj.errors = error_meta.errors;
+
+		var funcs = [];
+		for (var i = 0; i < obj.errors.length; i++) {
+			funcs.push( 
+				function(idx,row){ 
+					return function(){
+						obj.error_list.append( { 'retrieve_id' : idx, 'row' : row } );
+					};
+				}(i,obj.errors[i]) 
+			);
+		}
+		JSAN.use('util.exec'); var exec = new util.exec();
+		exec.chain( funcs );
+	},
+
 }
 
 dump('exiting admin/offline_manage_xacts.js\n');
