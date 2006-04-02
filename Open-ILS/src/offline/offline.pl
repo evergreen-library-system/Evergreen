@@ -171,7 +171,7 @@ sub ol_create_script {
 			requestor	=> $requestor->id,
 			create_time	=> CORE::time,
 			workstation	=> $wsname,
-			logfile		=> "$basedir/pending/$org/$seskey/$wsname.log",
+			logfile		=> "$basedir/pending/$seskey/$wsname.log",
 			time_delta	=> $delta,
 			count			=> $count,
 		}
@@ -203,7 +203,7 @@ sub ol_find_script {
 sub ol_load {
 	my $session = ol_find_session;
 	my $handle	= $cgi->upload('file');
-	my $outdir = "$basedir/pending/$org/$seskey";
+	my $outdir = "$basedir/pending/$seskey";
 	my $outfile = "$outdir/$wsname.log";
 
 	ol_handl_event('OFFLINE_SESSION_FILE_EXISTS') if ol_find_script();
@@ -286,6 +286,7 @@ sub ol_status {
 		my $session = ol_find_session();
 		ol_handle_result(ol_flesh_session($session));
 
+
 	# --------------------------------------------------------------------
 	# Returns all scripts and sessions for the given org
 	# --------------------------------------------------------------------
@@ -297,6 +298,7 @@ sub ol_status {
 		my @data;
 		push( @data, ol_flesh_session($_) ) for @sessions;
 		ol_handle_result(\@data);
+
 
 	# --------------------------------------------------------------------
 	# Returns total commands and completed commands counts
@@ -311,6 +313,23 @@ sub ol_status {
 		$count += $_->count for ($session->scripts);
 		ol_handle_result(
 			{ total => $count, num_complete => $session->num_complete });
+
+
+
+	# --------------------------------------------------------------------
+	# Returns the list of non-SUCCESS events that have occurred so far for 
+	# this set of commands
+	# --------------------------------------------------------------------
+	} elsif( $type eq 'exceptions' ) {
+
+		my $session = ol_find_session();
+		my $resfile = "$basedir/pending/$seskey/results";
+		if( $session->end_time ) {
+			$resfile = "$basedir/archive/$org/$seskey/results";
+		}
+		my $data = ol_file_to_perl($resfile);
+		$data = [ grep { $_->{event}->{ilsevent} ne '0' } @$data ];
+		ol_handle_result($data);
 	}
 }
 
@@ -343,9 +362,7 @@ sub ol_execute {
 	# connection will be borked...
 	# --------------------------------------------------------------------
 	OpenSRF::Transport::PeerHandle->retrieve->disconnect;
-	#$session->in_process("1");
-	#$session->description("test ".CORE::time());
-	#$DB->disconnect;
+	$DB->disconnect;
 
 
 	if( safe_fork() ) {
@@ -356,6 +373,7 @@ sub ol_execute {
 		ol_handle_event('SUCCESS'); # - this exits
 
 	} else {
+
 
 		# --------------------------------------------------------------------
 		# close stdout/stderr or apache will wait on the child to finish
@@ -375,6 +393,9 @@ sub ol_execute {
 
 			#use Class::DBI
 			#Class::DBI->autoupdate(1);
+
+			$DB->autoupdate(1);
+
 			my $sesion = ol_find_session();
 			$session->in_process(1);
 			ol_process_commands($session, $commands);
@@ -428,7 +449,8 @@ sub ol_collect_commands {
 }
 
 sub ol_date {
-	my (undef,undef, undef, $mday,$mon,$year) = localtime(time);
+	my $time = shift || CORE::time;
+	my (undef,undef, undef, $mday,$mon,$year) = localtime($time);
 	$mon++; $year	+= 1900;
 	$mday	= "0$mday" unless $mday =~ /\d{2}/o;
 	$mon	= "0$mon" unless $mon	=~ /\d{2}/o;
@@ -443,8 +465,8 @@ sub ol_date {
 sub ol_archive_files {
 	my ($y, $m, $d) = ol_date();
 
-	my $dir = "$basedir/pending/$org/$seskey";
-	my $archdir = "$basedir/archive/$org/${y}_${m}_${d}/$seskey";
+	my $dir = "$basedir/pending/$seskey";
+	my $archdir = "$basedir/archive/$org/$seskey";
 	$logger->debug("offline: archiving files to $archdir");
 
 	qx/mkdir -p $archdir/;
@@ -465,7 +487,7 @@ sub ol_append_result {
 	$obj = JSON->perl2JSON($obj);
 
 	if(!$rhandle) {
-		open($rhandle, ">>$basedir/pending/$org/$seskey/results") 
+		open($rhandle, ">>$basedir/pending/$seskey/results") 
 			or ol_handle_event('OFFLINE_FILE_ERROR');
 	}
 

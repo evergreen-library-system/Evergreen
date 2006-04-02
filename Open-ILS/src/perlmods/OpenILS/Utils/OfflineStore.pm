@@ -1,4 +1,5 @@
 package OpenILS::Utils::OfflineStore;
+use strict; use warnings;
 use base 'Class::DBI';
 use DBI;
 use OpenSRF::Utils::Config;
@@ -15,12 +16,25 @@ our $_dbh;
 sub db_Main {
 	my $self = shift;
 	return $_dbh if ($_dbh);
-	$_dbh = DBI->connect('dbi:SQLite:dbname='.$self->DBFile,'','');
-	OpenILS::Utils::OfflineStore::Session->_create_table;
-	OpenILS::Utils::OfflineStore::Script->_create_table;
+
+	$_dbh = DBI->connect('dbi:SQLite:dbname='.$self->DBFile,'','', 
+		{
+			RootClass => 'DBIx::ContextualFetch' 
+		}
+	);
+
+	if( -s $self->DBFile < 1 ) { # tables have not been created
+		OpenILS::Utils::OfflineStore::Session->_create_table;
+		OpenILS::Utils::OfflineStore::Script->_create_table;
+	}
 	return $_dbh;
 }
 
+
+sub disconnect {
+	$_dbh->disconnect;
+	$_dbh = undef;
+}
 
 
 package OpenILS::Utils::OfflineStore::Session;
@@ -31,14 +45,15 @@ sub _create_table {
 	$self->db_Main->do( <<"	SQL" );
 
 CREATE TABLE session (
-	key			TEXT	UNIQUE PRIMARY KEY,
-	org			INTEGER	NOT NULL,
-	description	TEXT,
-	creator		INTEGER NOT NULL,
-	create_time	INTEGER NOT NULL,
-	in_process	INTEGER NOT NULL DEFAULT 0,
-	start_time	INTEGER,
-	end_time		INTEGER
+	key				TEXT	UNIQUE PRIMARY KEY,
+	org				INTEGER	NOT NULL,
+	description		TEXT,
+	creator			INTEGER NOT NULL,
+	create_time		INTEGER NOT NULL,
+	in_process		INTEGER NOT NULL DEFAULT 0,
+	start_time		INTEGER,
+	end_time			INTEGER,
+	num_complete	INTEGER NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS session_pkey ON session (key);
 CREATE INDEX IF NOT EXISTS session_org ON session (org);
@@ -49,7 +64,7 @@ CREATE INDEX IF NOT EXISTS session_creation ON session (create_time);
 
 __PACKAGE__->table('session');
 __PACKAGE__->columns( Essential => qw/key org description 
-		creator create_time in_process start_time end_time/);
+		creator create_time in_process start_time end_time num_complete/);
 __PACKAGE__->has_many(scripts => 'OpenILS::Utils::OfflineStore::Script');
 
 

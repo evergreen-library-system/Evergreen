@@ -306,6 +306,9 @@
 	<event code='8009' textcode='OFFLINE_NO_ORG'>
 		<desc> No org id was provided </desc>
 	</event>
+	<event code='8010' textcode='OFFLINE_SESSION_COMPLETE'>
+		<desc> No org id was provided </desc>
+	</event>
 
 	<!-- ================================================================ -->
 

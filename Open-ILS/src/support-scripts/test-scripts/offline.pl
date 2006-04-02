@@ -5,6 +5,7 @@ use strict; use warnings;
 use Time::HiRes qw/time usleep/;
 use LWP::UserAgent;
 use HTTP::Request::Common;
+use Data::Dumper;
 use JSON;
 
 #-----------------------------------------------------------------------------
@@ -102,7 +103,8 @@ sub run_scripts {
 
 sub create_session {
 
-	my $req = GET( "$baseurl/offline.pl$params&action=create&desc=test_d" );
+	my $url = "$baseurl/offline.pl$params&action=create&desc=test_d";
+	my $req = GET( $url );
 	my $res = $useragent->request($req);
 	my $response = JSON->JSON2perl($res->{_content});
 
@@ -146,9 +148,11 @@ sub upload_script {
 #-----------------------------------------------------------------------------
 sub check_sessions {
 
-	my $req = GET( "$baseurl/offline.pl$params&action=status&status_type=scripts" );
+	my $url = "$baseurl/offline.pl$params&action=status&status_type=scripts";
+	my $req = GET( $url );
 	my $res = $useragent->request($req);
 	my $ses = JSON->JSON2perl($res->{_content});
+
 	my $scripts = $ses->{scripts};
 	delete $ses->{scripts};
 
@@ -164,6 +168,8 @@ sub check_sessions {
 		print "\t$_=".$scr->{$_}."\n" for keys %$scr;
 	}
 
+
+
 	print "-"x60 . "\n";
 }
 
@@ -172,14 +178,15 @@ sub check_sessions {
 # Tells the server to run the script 
 #-----------------------------------------------------------------------------
 sub run_script {
-	my $req = GET( "$baseurl/offline.pl$params&action=execute" );
-	
+
 	print "Executing script...\n";
+	my $url = "$baseurl/offline.pl$params&action=execute";
+	my $req = GET( $url );
 
 	my $res = $useragent->request($req);
 	my $event = JSON->JSON2perl($res->{_content});
+
 	oils_event_die($event);
-	exit;
 }
 
 sub check_script {
@@ -189,29 +196,30 @@ sub check_script {
 
 	while(1) {
 
-		my $req = GET( "$baseurl/offline-status.pl$params" );
+		my $url = "$baseurl/offline.pl$params&action=status&status_type=summary";
+		my $req = GET( $url );
 		my $res = $useragent->request($req);
 		my $blob = JSON->JSON2perl($res->{_content});
 
-		$complete = $blob->{complete};
+		my $total = $blob->{total};
 		my $count = $blob->{num_complete} || "0";
+		$complete = ($total == $count) ? 1 : 0;
 
 		print "Completed Transactions: $count\n";
 		last if $complete;
 
-		usleep 500000;
+		sleep 1;
 	}
 
 	my $diff = time - $start;
 
-	my $req = GET( "$baseurl/offline-status.pl$params&detail=1" );
+	my $url = "$baseurl/offline.pl$params&action=status&status_type=exceptions";
+	my $req = GET( $url );
 	my $res = $useragent->request($req);
 	my $blob = JSON->JSON2perl($res->{_content});
 
-	my @results;
 	my @events;
-	push(@results, @{$_->{results}}) for (@{$blob->{data}});
-	push(@events, $_->{event}) for @results;
+	push(@events, $_->{event}) for @$blob;
 
 	print "Received event ".$_->{ilsevent}.' : '.$_->{textcode}."\n" for @events;
 
