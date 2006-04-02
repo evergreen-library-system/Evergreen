@@ -554,7 +554,7 @@ sub ol_handle_inhouse {
 	my $ids = $U->simplereq(
 		'open-ils.circ', 
 		'open-ils.circ.in_house_use.create', $authtoken, 
-		{ barcode => $barcode, count => $count, location => &offline_org, use_time => $use_time } );
+		{ barcode => $barcode, count => $count, location => $org, use_time => $use_time } );
 	
 	return OpenILS::Event->new('SUCCESS', payload => $ids) if( ref($ids) eq 'ARRAY' );
 	return $ids;

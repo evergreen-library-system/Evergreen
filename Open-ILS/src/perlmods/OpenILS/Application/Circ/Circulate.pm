@@ -305,7 +305,8 @@ sub _build_circ_script_runner {
 
 	# circ script result
 	$runner->insert( 'result', {} );
-	$runner->insert( 'result.event', 'SUCCESS' );
+	#$runner->insert( 'result.event', 'SUCCESS' );
+	$runner->insert( 'result.events', [] );
 
 	if($__isrenewal) {
 		$runner->insert('environment.isRenewal', 1);
@@ -488,10 +489,20 @@ sub _run_permit_scripts {
 
 	$runner->load($scripts{circ_permit_patron});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
-	my $evtname = $runner->retrieve('result.event');
-	$logger->activity("circ_permit_patron for user $patronid returned event: $evtname");
 
-	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
+	#my $evtname = $runner->retrieve('result.event');
+
+	# ---------------------------------------------------------------------
+	# Capture all of the patron permit events
+	# ---------------------------------------------------------------------
+	my $patron_events = $runner->retrieve('result.events');
+	$patron_events = [ split(/,/, $patron_events) ]; 
+	#$ctx->{circ_permit_patron_events} = $patron_events;
+
+	#$logger->activity("circ_permit_patron for user $patronid returned event: $evtname");
+	$logger->activity("circ_permit_patron for user $patronid returned events: @$patron_events");
+
+	#return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 
 	my $key = _cache_permit_key();
 
@@ -512,12 +523,30 @@ sub _run_permit_scripts {
 
 	$runner->load($scripts{circ_permit_copy});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
-	$evtname = $runner->retrieve('result.event');
-	$logger->activity("circ_permit_copy for user $patronid ".
-		"and copy $barcode returned event: $evtname");
+	#$evtname = $runner->retrieve('result.event');
+	#$logger->activity("circ_permit_copy for user $patronid ".
+		#"and copy $barcode returned event: $evtname");
 
-	return OpenILS::Event->new($evtname, payload => $key) if( $evtname eq 'SUCCESS' );
-	return OpenILS::Event->new($evtname);
+	# ---------------------------------------------------------------------
+	# Capture all of the copy permit events
+	# ---------------------------------------------------------------------
+	my $copy_events = $runner->retrieve('result.events');
+	$copy_events = [ split(/,/, $copy_events) ]; 
+	$ctx->{circ_permit_copy_events} = $copy_events;
+	$logger->activity("circ_permit_copy for copy $barcode returned events: @$copy_events");
+
+	#return OpenILS::Event->new($evtname, payload => $key) if( $evtname eq 'SUCCESS' );
+	my @allevents;
+	push( @allevents, OpenILS::Event->new($_)) for @$patron_events;
+	push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
+
+	return OpenILS::Event->new('SUCCESS', payload => $key) 
+		unless (@$copy_events or @$patron_events);
+
+	# uniquify the events
+	my %hash = map { ($_->{ilsevent} => $_) } @allevents;
+	@allevents = values %hash;
+	return \@allevents;
 }
 
 # takes copyid, patronid, and requestor id
@@ -573,8 +602,6 @@ sub checkout {
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
 	( $requestor, $evt ) = $U->checksesperm( $authtoken, 'COPY_CHECKOUT' ) unless $__isrenewal;
 	return $evt if $evt;
-
-	$logger->debug("REQUESTOR event: " . ref($requestor));
 
 	if( $params->{patron} ) {
 		( $patron, $evt ) = $U->fetch_user($params->{patron});
@@ -1478,10 +1505,18 @@ sub _run_renew_scripts {
 
 	$runner->load($scripts{circ_permit_renew});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
-	my $evtname = $runner->retrieve('result.event');
-	$logger->activity("circ_permit_renew for user ".$ctx->{patron}->id." returned event: $evtname");
+	#my $evtname = $runner->retrieve('result.event');
+	#$logger->activity("circ_permit_renew for user ".$ctx->{patron}->id." returned event: $evtname");
 
-	return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
+	my $events = $runner->retrieve('result.events');
+	$events = [ split(/,/, $events) ]; 
+	$logger->activity("circ_permit_renew for user ".$ctx->{patron}->id." returned events: @$events");
+
+	my @allevents;
+	push( @allevents, OpenILS::Event->new($_)) for @$events;
+	return \@allevents if  @allevents;
+
+	#return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 	return undef;
 }
 
