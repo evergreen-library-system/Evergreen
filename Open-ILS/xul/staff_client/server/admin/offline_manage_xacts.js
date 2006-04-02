@@ -111,6 +111,7 @@ admin.offline_manage_xacts.prototype = {
 						sel,
 						function(o) { return o.getAttribute('retrieve_id'); }
 					);
+					if (obj.sel_list.length == 0) return;
 					if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
 						document.getElementById('execute').disabled = false;	
 					}
@@ -127,7 +128,7 @@ admin.offline_manage_xacts.prototype = {
 						obj.render_scriptlist();
 					}
 				} catch(E) {
-					alert('on_select: ' + E);
+					alert('on_select:\nobj.seslist.length = ' + obj.seslist.length + '  obj.sel_list.length = ' + obj.sel_list.length + '\nerror: ' + E);
 				}
 			},
 		} );
@@ -382,6 +383,7 @@ admin.offline_manage_xacts.prototype = {
 						dump('robj = ' + js2JSON(robj) + '\n');
 						if ( robj.ilsevent != 0 ) {
 							obj.revert_file();
+							alert('There was an error:\n' + js2JSON(robj));
 						} else {
 							obj.archive_file();
 						}
