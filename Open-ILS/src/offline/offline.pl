@@ -84,7 +84,6 @@ sub ol_runtime_init {
 	($requestor, $evt) = $U->checkses($authtoken);
 	ol_handle_result($evt) if $evt;
 
-
 	# try the param, the workstation, and finally the user's ws org
 	if(!$org) { 
 		$wsobj = ol_fetch_workstation($wsname);
@@ -201,12 +200,13 @@ sub ol_find_script {
 # Creates a new script in the database and loads the new script file
 # --------------------------------------------------------------------
 sub ol_load {
+
 	my $session = ol_find_session;
 	my $handle	= $cgi->upload('file');
-	my $outdir = "$basedir/pending/$seskey";
+	my $outdir	= "$basedir/pending/$seskey";
 	my $outfile = "$outdir/$wsname.log";
 
-	ol_handl_event('OFFLINE_SESSION_FILE_EXISTS') if ol_find_script();
+	ol_handle_event('OFFLINE_SESSION_FILE_EXISTS') if ol_find_script();
 	ol_handle_event('OFFLINE_SESSION_ACTIVE') if $session->in_process;
 	ol_handle_event('OFFLINE_SESSION_COMPLETE') if $session->end_time;
 
@@ -228,7 +228,7 @@ sub ol_handle_result {
 	my $json = JSON->perl2JSON($obj);
 
 	if( $cgi->param('html')) {
-		my $html = "<html><body onload='xulG.handle_event($json)></body></html>";
+		my $html = "<html><body onload='xulG.handle_event($json)'></body></html>";
 		print "content-type: text/html\n\n";
 		print "$html\n";
 
@@ -399,7 +399,7 @@ sub ol_execute {
 			my $sesion = ol_find_session();
 			$session->in_process(1);
 			ol_process_commands($session, $commands);
-			ol_archive_files();
+			ol_archive_files($session);
 
 		} catch Error with {
 			my $e = shift;
@@ -429,7 +429,7 @@ sub ol_collect_commands {
 
 		# cycle through all of the commands for this script
 		for my $com (@$coms) {
-			$$com{_worksation} = $script->workstation;
+			$$com{_workstation} = $script->workstation;
 			$$com{_realtime} = $script->time_delta + $com->{timestamp};
 			push( @commands, $com );
 		}
@@ -463,11 +463,15 @@ sub ol_date {
 # and removes the pending directory
 # --------------------------------------------------------------------
 sub ol_archive_files {
+	my $session = shift;
 	my ($y, $m, $d) = ol_date();
 
 	my $dir = "$basedir/pending/$seskey";
 	my $archdir = "$basedir/archive/$org/$seskey";
 	$logger->debug("offline: archiving files to $archdir");
+
+	# Tell the db the files are moving
+	$_->logfile($archdir.'/'.$_->workstation.'.log') for ($session->scripts);
 
 	qx/mkdir -p $archdir/;
 	qx/mv $_ $archdir/ for <$dir/*>;
