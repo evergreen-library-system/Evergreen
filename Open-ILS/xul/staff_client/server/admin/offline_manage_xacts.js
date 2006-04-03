@@ -32,12 +32,12 @@ admin.offline_manage_xacts.prototype = {
 		x.addEventListener('command',function() { try{obj.upload();}catch(E){alert(E);} },false);
 
 		x = document.getElementById('refresh');
-		x.addEventListener('command',function() { try{obj.retrieve_seslist();obj.render_seslist();}catch(E){alert(E);} },false);
+		x.addEventListener('command',function() { try{$('deck').selectedIndex=0;obj.retrieve_seslist();obj.render_seslist();}catch(E){alert(E);} },false);
 
 		x = document.getElementById('execute');
 		x.addEventListener('command',function() { try{obj.execute_ses();}catch(E){alert(E);} },false);
 
-		document.getElementById('deck').selectedIndex = 2;
+		document.getElementById('deck').selectedIndex = 0;
 	},
 
 	'init_list' : function() {
@@ -105,55 +105,70 @@ admin.offline_manage_xacts.prototype = {
 			},
 			'on_select' : function(ev) {
 				try {
-					JSAN.use('util.functional');
-					var sel = obj.list.retrieve_selection();
-					obj.sel_list = util.functional.map_list(
-						sel,
-						function(o) { return o.getAttribute('retrieve_id'); }
+					$('deck').selectedIndex = 0;
+					$('execute').disabled = true;
+					$('upload').disabled = true;
+					setTimeout(
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var sel = obj.list.retrieve_selection();
+								obj.sel_list = util.functional.map_list(
+									sel,
+									function(o) { return o.getAttribute('retrieve_id'); }
+								);
+								if (obj.sel_list.length == 0) return;
+								{	
+									var upload = true; var process = true;
+
+									if (obj.sel_list.length > 1) upload = false;
+
+									if (obj.seslist[ obj.sel_list[0] ].end_time) {
+										upload = false; process = false;
+									}
+									if (obj.seslist[ obj.sel_list[0] ].in_process == 1) {
+										upload = false; process = false;
+									}
+
+									/* should we really have this next restriction? */
+									for (var i = 0; i < obj.seslist[ obj.sel_list[0] ].scripts.length; i++) {
+										if (obj.seslist[ obj.sel_list[0] ].scripts[i].workstation ==
+											obj.data.ws_name ) upload = false;
+									}
+
+									if (upload) {
+										if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
+											document.getElementById('upload').disabled = false;
+										}
+									} else {
+										document.getElementById('upload').disabled = true;
+									}
+									if (process) {
+										if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
+											document.getElementById('execute').disabled = false;	
+										}
+									} else {
+										document.getElementById('execute').disabled = true;	
+									}
+								}
+								var complete = false;
+								for (var i = 0; i < obj.sel_list.length; i++) { 
+									if (obj.seslist[ obj.sel_list[i] ].end_time) { complete = true; }
+								}
+								if (complete) {
+									obj.render_errorlist();
+								} else {
+									if (obj.seslist[ obj.sel_list[0] ].in_process == 1) {
+										obj.render_status();
+									} else {
+										obj.render_scriptlist();
+									}
+								}
+							} catch(E) {
+								alert('on_select: ' + E);
+							}
+						}, 0
 					);
-					if (obj.sel_list.length == 0) return;
-					{	
-						var upload = true; var process = true;
-
-						if (obj.sel_list.length > 1) upload = false;
-
-						if (obj.seslist[ obj.sel_list[0] ].end_time) {
-							upload = false; process = false;
-						}
-						if (obj.seslist[ obj.sel_list[0] ].in_process == 1) {
-							upload = false; process = false;
-						}
-
-						/* should we really have this next restriction? */
-						for (var i = 0; i < obj.seslist[ obj.sel_list[0] ].scripts.length; i++) {
-							if (obj.seslist[ obj.sel_list[0] ].scripts[i].workstation ==
-								obj.data.ws_name ) upload = false;
-						}
-
-						if (upload) {
-							if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
-								document.getElementById('upload').disabled = false;
-							}
-						} else {
-							document.getElementById('upload').disabled = true;
-						}
-						if (process) {
-							if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
-								document.getElementById('execute').disabled = false;	
-							}
-						} else {
-							document.getElementById('execute').disabled = true;	
-						}
-					}
-					var complete = false;
-					for (var i = 0; i < obj.sel_list.length; i++) { 
-						if (obj.seslist[ obj.sel_list[i] ].end_time) { complete = true; }
-					}
-					if (complete) {
-						obj.render_errorlist();
-					} else {
-						obj.render_scriptlist();
-					}
 				} catch(E) {
 					alert('on_select:\nobj.seslist.length = ' + obj.seslist.length + '  obj.sel_list.length = ' + obj.sel_list.length + '\nerror: ' + E);
 				}
@@ -529,7 +544,7 @@ admin.offline_manage_xacts.prototype = {
 
 		dump('render_scriptlist\n');
 
-		document.getElementById('deck').selectedIndex = 0;
+		document.getElementById('deck').selectedIndex = 1;
 
 		var obj = this;
 
@@ -558,7 +573,7 @@ admin.offline_manage_xacts.prototype = {
 
 		dump('render_errorlist\n');
 
-		document.getElementById('deck').selectedIndex = 1;
+		document.getElementById('deck').selectedIndex = 2;
 
 		var obj = this;
 
@@ -581,6 +596,14 @@ admin.offline_manage_xacts.prototype = {
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
+	},
+
+	'render_status' : function() {
+	
+		dump('render_status\n');
+
+		document.getElementById('deck').selectedIndex = 3;
+
 	},
 
 }

@@ -72,12 +72,19 @@
 		</groupbox>
 			<splitter><grippy/></splitter>
 		<deck flex="1" id="deck">
+			<label value=" "/>
 			<groupbox flex="1">
 				<caption id="status_caption" label="Uploaded Transaction Files"/>
+				<description style="background-color: lightgreen">
+				The transactions from the following workstations have been uploaded, but not processed.  When all expected workstations are present here, use the Process button above.
+				</description>
 				<tree id="script_tree" enableColumnDrag="true" seltype="single" flex="1"/>
 			</groupbox>
 			<groupbox flex="1">
 				<caption id="errors_caption" label="Exceptions"/>
+				<description style="background-color: orange">
+				All transactions from this session have been processed.  The errors, if any, are listed below.
+				</description>
 				<vbox flex="1">
 					<hbox>
 						<spacer flex="1"/>
@@ -88,7 +95,9 @@
 					<tree id="error_tree" enableColumnDrag="true" seltype="single" flex="1"/>
 				</vbox>
 			</groupbox>
-			<label value=" "/>
+			<groupbox flex="1">
+				<caption id="errors_caption" label="Processing Status goes here"/>
+			</groupbox>
 		</deck>
 		<hbox id="iframe_placeholder" hidden="false" flex="0"/>
 
