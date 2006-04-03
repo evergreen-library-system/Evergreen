@@ -25,7 +25,7 @@ var api = {
 	'FM_ACP_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.find_by_barcode' },
 	'FM_ACP_FLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve' },
 	'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
-	'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_location.retrieve.all' },
+	'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.all' },
 	'FM_ACTSC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.all' },
 	'FM_AHR_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
 	'FM_AIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.in_house_use.create' },
