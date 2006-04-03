@@ -23,8 +23,10 @@ add_symlinks:
 	@echo
 	@echo Adding convenience symlinks back into server/ and chrome/
 	ln -s ../chrome/content/util server/util
+	ln -s ../chrome/content/auth server/auth
 	ln -s ../../chrome/content/main/constants.js server/main/constants.js
 	ln -s ../../chrome/content/main/lang.js server/main/lang.js
+	ln -s ../../chrome/content/main/simple_auth.xul server/main/simple_auth.xul
 	ln -s ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
 	(cd build/chrome/content/OpenSRF/; for x in *; do ln -s  ../../../build/chrome/content/OpenSRF/$$x ../../../../chrome/content/OpenSRF/$$x; done)
 	(cd build/chrome/content/OpenILS/util/; for x in *; do if [ $$x != 'fmall.js' ]; then ln -s  ../../../../build/chrome/content/OpenILS/util/$$x ../../../../../chrome/content/OpenILS/util/$$x; fi ; done)
