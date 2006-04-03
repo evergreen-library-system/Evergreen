@@ -876,7 +876,7 @@ sub update_copy {
 	my $meth = 'open-ils.storage.direct.asset.copy.update';
 
 	$s = $session->request( $meth, $copy )->gather(1) if $session;
-	$s = $self->storagereq( $meth, $copy );
+	$s = $self->storagereq( $meth, $copy ) unless $session;
 
 	$logger->debug("Update of copy ".$copy->id." returned: $s");
 
