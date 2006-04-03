@@ -163,7 +163,7 @@ patron.items.prototype = {
 								dump('Mark barcode lost = ' + barcode);
 								var lost = obj.network.simple_request(
 									'MARK_ITEM_LOST', 
-									[ obj.session, barcode: barcode } ]
+									[ obj.session, { barcode: barcode } ]
 								);
 								dump('  result = ' + js2JSON(lost) + '\n');
 							}
@@ -177,18 +177,17 @@ patron.items.prototype = {
 						function() {
 							for (var i = 0; i < obj.retrieve_ids.length; i++) {
 								var barcode = obj.retrieve_ids[i];
+								var backdate = window.prompt('This will be replaced with our generic valdiating popup calendar/date widget','2004-12-12','Claims Returned Date');
 								dump('Mark barcode lost = ' + barcode);
 								var lost = obj.network.simple_request(
 									'MARK_ITEM_CLAIM_RETURNED', 
-									[ obj.session, barcode: barcode } ]
+									[ obj.session, { barcode: barcode, backdate: backdate } ]
 								);
 								dump('  result = ' + js2JSON(lost) + '\n');
 							}
 							if (window.xulG && typeof window.xulG.display_refresh == 'function') {
 								window.xulG.display_refresh();
 							}
-						}
-
 						}
 					],
 					'cmd_items_checkin' : [
