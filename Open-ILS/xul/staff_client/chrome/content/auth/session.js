@@ -1,11 +1,12 @@
 dump('entering auth/session.js\n');
 
 if (typeof auth == 'undefined') auth = {};
-auth.session = function (view) {
+auth.session = function (view,login_type) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
 	this.view = view;
+	this.login_type = login_type || 'staff';
 
 	return this;
 };
@@ -32,11 +33,11 @@ auth.session.prototype = {
 							this.view.password_prompt.value
 						)
 					),
-					'type' : 'opac',
+					'type' : 'temp',
 				};
 
 				if (data.ws_info[ this.view.server_prompt.value ]) {
-					params.type = 'staff';
+					params.type = this.login_type;
 					params.workstation = data.ws_info[ this.view.server_prompt.value ].name;
 					data.ws_name = params.workstation; data.stash('ws_name');
 				}
