@@ -20,11 +20,13 @@ main.menu.prototype = {
 
 	'init' : function( params ) {
 
-		var session = params['session'];
+		/* var session = params['session']; */
 		var authtime = params['authtime'];
 		urls.remote = params['server'];
 
 		var obj = this;
+
+		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
 		var cmd_map = {
 			'cmd_broken' : [
@@ -40,9 +42,10 @@ main.menu.prototype = {
 			'cmd_new_window' : [
 				['oncommand'],
 				function() {
+					obj.data.stash_retrieve();
 					obj.window.open(
 						obj.url_prefix(urls.XUL_MENU_FRAME)
-						+ '?session='+window.escape(session) 
+						+ '?session='+window.escape(obj.data.session) 
 						+ '&authtime='+window.escape(authtime) 
 						+ '&server='+window.escape(urls.remote),
 						'main' + obj.window.window_name_increment(),
@@ -62,8 +65,9 @@ main.menu.prototype = {
 			'cmd_edit_copy_buckets' : [
 				['oncommand'],
 				function() {
+					obj.data.stash_retrieve();
 					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS)
-						+ '?session='+window.escape(session),{'tab_name':'Copy Buckets'},{});
+						+ '?session='+window.escape(obj.data.session),{'tab_name':'Copy Buckets'},{});
 				}
 			],
 
@@ -71,14 +75,16 @@ main.menu.prototype = {
 			'cmd_patron_search' : [
 				['oncommand'],
 				function() {
+					obj.data.stash_retrieve();
 					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_DISPLAY)
-						+ '?session='+window.escape(session),{},{});
+						+ '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 			'cmd_search_opac' : [
 				['oncommand'],
 				function() {
-					var content_params = { 'session' : session, 'authtime' : authtime };
+					obj.data.stash_retrieve();
+					var content_params = { 'session' : obj.data.session, 'authtime' : authtime };
 					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':'Catalog'}, content_params);
 				}
 			],
@@ -98,8 +104,9 @@ main.menu.prototype = {
 							for (var i = 0; i < robj.count; i++) {
 								var id = robj.ids[i];
 								var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
+								obj.data.stash_retrieve();
 								var content_params = { 
-									'session' : session, 
+									'session' : obj.data.session, 
 									'authtime' : authtime,
 									'opac_url' : opac_url,
 								};
@@ -124,8 +131,9 @@ main.menu.prototype = {
 			'cmd_copy_status' : [
 				['oncommand'],
 				function() {
+					obj.data.stash_retrieve();
 					obj.set_tab(obj.url_prefix(urls.XUL_COPY_STATUS)
-						+ '?session='+window.escape(session),{},{});
+						+ '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 
@@ -133,34 +141,39 @@ main.menu.prototype = {
 			'cmd_patron_register' : [
 				['oncommand'],
 				function() {
+					obj.data.stash_retrieve();
 					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( session ) );
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( obj.data.session ) );
 					obj.set_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Register Patron' });
 				}
 			],
 			'cmd_circ_checkin' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 			'cmd_circ_hold_pull_list' : [
 				['oncommand'],
 				function() { 
+					obj.data.stash_retrieve();
 					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
-						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(session)
+						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(obj.data.session)
 					);
 					obj.set_tab( loc, {'tab_name':'On Shelf Pull List'}, { 'show_print_button' : true, } );
 				}
@@ -169,7 +182,8 @@ main.menu.prototype = {
 			'cmd_in_house_use' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 
@@ -184,7 +198,8 @@ main.menu.prototype = {
 			'cmd_z39_50_import' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 
@@ -199,50 +214,58 @@ main.menu.prototype = {
 			'cmd_adv_user_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY) + '?session=' + window.escape(session), {}, {});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY) + '?session=' + window.escape(obj.data.session), {}, {});
 				}
 			],
 			'cmd_print_list_template_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR) + '?session=' + window.escape(session), {}, {});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR) + '?session=' + window.escape(obj.data.session), {}, {});
 				}
 			],
 			'cmd_stat_cat_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(session),{'tab_name':'Stat Cat Editor'},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(obj.data.session),{'tab_name':'Stat Cat Editor'},{});
 				}
 			],
 			'cmd_non_cat_type_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(session),{'tab_name':'Non-Cataloged Type Editor'},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(obj.data.session),{'tab_name':'Non-Cataloged Type Editor'},{});
 				}
 			],
 			'cmd_copy_location_edit' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(session),{'tab_name':'Copy Location Editor'},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(obj.data.session),{'tab_name':'Copy Location Editor'},{});
 				}
 			],
 			'cmd_test' : [
 				['oncommand'],
 				function() {
-					var content_params = { 'session' : session, 'authtime' : authtime };
+					obj.data.stash_retrieve();
+					var content_params = { 'session' : obj.data.session, 'authtime' : authtime };
 					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
 				}
 			],
 			'cmd_test_html' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?session='+window.escape(session),{},{});
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
 			'cmd_console' : [
@@ -272,7 +295,8 @@ main.menu.prototype = {
 			'cmd_survey_wizard' : [
 				['oncommand'],
 				function() {
-					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+window.escape(session),'survey_wizard','chrome'); 
+					obj.data.stash_retrieve();
+					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+window.escape(obj.data.session),'survey_wizard','chrome'); 
 				}
 			],
 			'cmd_public_opac' : [

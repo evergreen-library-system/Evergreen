@@ -56,12 +56,13 @@
 
 				JSAN.use('main.menu'); g.menu = new main.menu();
 				g.menu.init( { 
-					'session' : g.cgi.param('session'), 
+					/* 'session' : g.cgi.param('session'), */
 					'authtime' : g.cgi.param('authtime'),
 					'server' : g.cgi.param('server'),
 				} );
 
 				JSAN.use('util.window'); g.window = new util.window();
+
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 				XML_HTTP_SERVER = g.data.server_unadorned;
 
