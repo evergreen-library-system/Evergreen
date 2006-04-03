@@ -74,7 +74,7 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<textbox id="i_barcode"/>
+					<hbox><textbox id="i_barcode"/><button id="enter" label="Enter" accesskey="E"/></hbox>
 				</hbox>
 
 				<hbox>
@@ -98,7 +98,7 @@
 				<hbox>
 					<spacer flex="1"/>
 					<button id="cancel" label="Cancel" />
-					<button id="submit" label="Done" accesskey="D" />
+					<button id="submit" label="Save these transactions" accesskey="S" />
 				</hbox>
 			</vbox>
 			<splitter>

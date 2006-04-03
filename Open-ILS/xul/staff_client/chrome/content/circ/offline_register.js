@@ -154,7 +154,7 @@ function next_patron() {
 		file.append_object(obj);
 		file.close();
 
-		alert('Patron Registered');
+		alert('Patron Registration Saved');
 
 		$('passwd').value = 1234;
 		$('barcode').value = ''; $('ident_value').value = ''; $('first_given_name').value = '';

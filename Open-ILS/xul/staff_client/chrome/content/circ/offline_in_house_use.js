@@ -65,6 +65,7 @@ function my_init() {
 		} );
 
 		$('i_barcode').addEventListener('keypress',handle_keypress,false);
+		$('enter').addEventListener('command',handle_enter,false);
 		$('submit').addEventListener('command',next_patron,false);
 
 		$('i_barcode').focus();
@@ -85,6 +86,10 @@ function handle_keypress(ev) {
 		case $('i_barcode') : append_to_list(); break;
 		default: break;
 	}
+}
+
+function handle_enter(ev) {
+	append_to_list();
 }
 
 function append_to_list() {

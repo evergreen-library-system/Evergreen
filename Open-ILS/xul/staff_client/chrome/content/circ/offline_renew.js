@@ -82,6 +82,7 @@ function my_init() {
 		$('p_barcode').focus();	
 
 		$('i_barcode').addEventListener('keypress',handle_keypress,false);
+		$('enter').addEventListener('command',handle_enter,false);
 
 		$('duedate_menu').addEventListener('command',handle_duedate_menu,false);
 
@@ -104,6 +105,10 @@ function handle_keypress(ev) {
 		case $('i_barcode') : append_to_list('barcode'); break;
 		default: break;
 	}
+}
+
+function handle_enter(ev) {
+	append_to_list('barcode');
 }
 
 function handle_duedate_menu(ev) {
