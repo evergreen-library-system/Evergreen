@@ -62,6 +62,10 @@
 				g.data.stash('list','hash','tree','temp');
 				g.data._debug_stash();
 
+				document.getElementById('iframe').setAttribute(
+					'src',
+					urls.XUL_OFFLINE_GENERATE_WIDGETS	
+				);
 				xulG.window.open(urls.XUL_MENU_FRAME
 					+ '?session='+window.escape(xulG.auth.session.key)
 					+ '&authtime='+window.escape(xulG.auth.session.authtime)
@@ -76,7 +80,10 @@
 	]]>
 	</script>
 
-	<groupbox id="data_groupbox" flex="1"> <caption label="Loading data..."/> </groupbox>
+	<groupbox id="data_groupbox" flex="1"> 
+		<caption label="Loading data..."/> 
+		<iframe id="iframe" />
+	</groupbox>
 
 </window>
 

@@ -104,6 +104,7 @@ var urls = {
 	'XUL_OFFLINE_UPLOAD_XACTS' : '/xul/server/admin/upload_xacts.xhtml',
 	'XUL_OFFLINE_MANAGE_XACTS' : '/xul/server/admin/offline_manage_xacts.xul',
 	'XUL_OFFLINE_MANAGE_XACTS_CGI' : '/~erickson/offline/offline.pl',
+	'XUL_OFFLINE_GENERATE_WIDGETS' : '/xul/server/main/gen_offline_widgets.xul',
 	'XUL_OPAC_WRAPPER' : 'chrome://open_ils_staff_client/content/cat/opac.xul',
 	'XUL_PATRON_BARCODE_ENTRY' : '/xul/server/patron/barcode_entry.xul',
 	'XUL_PATRON_BILLS' : '/xul/server/patron/bills.xul',
