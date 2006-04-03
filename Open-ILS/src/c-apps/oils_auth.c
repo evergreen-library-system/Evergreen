@@ -13,7 +13,7 @@
 
 #define OILS_AUTH_OPAC "opac"
 #define OILS_AUTH_STAFF "staff"
-#define OILS_AUTH_OVERRIDE "override"
+#define OILS_AUTH_TEMP "temp"
 
 int osrfAppInitialize();
 int osrfAppChildInit();
@@ -42,7 +42,7 @@ int osrfAppInitialize() {
 		"{authtoken : <token>, authtime:<time>}, where authtoken is the login "
 		"tokena and authtime is the number of seconds the session will be active"
 		"PARAMS(username, md5sum( seed + password ), type, org_id ) "
-		"type can be one of 'opac','staff', or 'override' and it defaults to 'staff' "
+		"type can be one of 'opac','staff', or 'temp' and it defaults to 'staff' "
 		"org_id is the location at which the login should be considered "
 		"active for login timeout purposes"	, 1, 0 );
 
@@ -132,7 +132,7 @@ int oilsAuthCheckLoginPerm(
 		char* permissions[] = { "STAFF_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 
-	} else if(!strcasecmp(type, OILS_AUTH_OVERRIDE)) {
+	} else if(!strcasecmp(type, OILS_AUTH_TEMP)) {
 		char* permissions[] = { "STAFF_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 	}
@@ -204,10 +204,10 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 		__oilsAuthOverrideTimeout = 
 			jsonObjectGetNumber( 
 				osrf_settings_host_value_object( 
-					"/apps/open-ils.auth/app_settings/default_timeout/override" ));
+					"/apps/open-ils.auth/app_settings/default_timeout/temp" ));
 
 
-		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timetouts: opac => %d : staff => %d : override => %d",
+		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timetouts: opac => %d : staff => %d : temp => %d",
 				__oilsAuthOPACTimeout, __oilsAuthStaffTimeout, __oilsAuthOverrideTimeout );
 	}
 
@@ -220,8 +220,8 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
 	else if(!strcmp(type, OILS_AUTH_STAFF)) 
 		setting = OILS_ORG_SETTING_STAFF_TIMEOUT;
-	else if(!strcmp(type, OILS_AUTH_OVERRIDE)) 
-		setting = OILS_ORG_SETTING_OVERRIDE_TIMEOUT;
+	else if(!strcmp(type, OILS_AUTH_TEMP)) 
+		setting = OILS_ORG_SETTING_TEMP_TIMEOUT;
 
 	char* timeout = oilsUtilsFetchOrgSetting( orgloc, setting );
 
@@ -233,7 +233,7 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
 		}
 		if(!timeout) {
 			if(!strcmp(type, OILS_AUTH_STAFF)) return __oilsAuthStaffTimeout;
-			if(!strcmp(type, OILS_AUTH_OVERRIDE)) return __oilsAuthOverrideTimeout;
+			if(!strcmp(type, OILS_AUTH_TEMP)) return __oilsAuthOverrideTimeout;
 			return __oilsAuthOPACTimeout;
 		}
 	}
