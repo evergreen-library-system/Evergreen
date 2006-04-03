@@ -47,6 +47,15 @@
 
 				g.cgi = new CGI();
 
+				if (g.cgi.param('desc_brief')) {
+					$('desc').hidden = false;
+					$('desc_brief').appendChild( document.createTextNode( g.cgi.param('desc_brief') ) );
+				}
+				if (g.cgi.param('desc_full')) {
+					$('desc').hidden = false;
+					$('desc_full').appendChild( document.createTextNode( g.cgi.param('desc_full') ) );
+				}
+
 				$('username').focus();
 
 				$('username').addEventListener('keypress',handle_keypress,false);
@@ -105,7 +114,13 @@
 		<command id="cmd_broken" />
 	</commandset>
 
-	<groupbox id="simple_auth_main">
+	<vbox id="simple_auth_main">
+	<groupbox id="desc" hidden="true">
+		<caption label="Error"/>
+		<description id="desc_brief" style="color: red"/>
+		<description id="desc_full"/>
+	</groupbox>
+	<groupbox>
 		<caption label="Authorization"/>
 		<grid>
 			<columns><column /><column /></columns>
@@ -126,5 +141,6 @@
 		</grid>
 		<label id="server" hidden="true"/>
 	</groupbox>
+	</vbox>
 </window>
 

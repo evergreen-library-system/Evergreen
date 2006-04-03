@@ -22,8 +22,17 @@ util.network.prototype = {
 	},
 
 	'request' : function (app,name,params,f) {
+		var request =  this.bare_request(app,name,params,f);
+		if (request) {
+			return request.getResultObject();
+		} else {
+			return null;
+		}
+	},
+
+	'bare_request' : function (app,name,params,f) {
+		var obj = this;
 		try {
-			var obj = this;
 			var sparams = js2JSON(params);
 			obj.error.sdump('D_SES','request '+app+' '+name+' '+sparams.slice(1,sparams.length-1)+
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
@@ -35,20 +44,25 @@ util.network.prototype = {
 			if (f)  {
 				request.setCompleteCallback(
 					function(req) {
-						obj.error.sdump('D_SES_RESULT','asynced result #' + obj.link_id + '\n\n' + 
-							js2JSON(req.getResultObject()));
-							obj.test_session_timeout(req);
-						f(req);
+						try {
+							obj.error.sdump('D_SES_RESULT','asynced result #' 
+								+ obj.link_id + '\n\n' 
+								+ js2JSON(req.getResultObject()));
+							req = obj.rerequest_on_session_timeout(app,name,params,req);
+							f(req);
+						} catch(E) {
+							alert(E);
+						}
 					}
 				);
 				request.send(false);
 				return null;
 			} else {
 				request.send(true);
-				obj.test_session_timeout(request);
+				request = obj.rerequest_on_session_timeout(app,name,params,request);
 				var result = request.getResultObject();
 				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + js2JSON(result));
-				return result;
+				return request;
 			}
 
 		} catch(E) {
@@ -59,15 +73,32 @@ util.network.prototype = {
 		}
 	},
 
-	'test_session_timeout' : function(req) {
+	'rerequest_on_session_timeout' : function(app,name,params,req) {
 		try {
+			var obj = this;
 			var robj = req.getResultObject();
 			if (robj.ilsevent && robj.ilsevent == 1001) {
-				alert("Your session has timed out.  In the future we may give you the ability to log back in without losing your work, but for now, the behavior at this point is undefined and this message will almost certainly be followed by error messages.  Please logout of the staff client and then back in.");
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+				window.open(
+					urls.XUL_AUTH_SIMPLE
+					+ '?login_type=staff'
+					+ '&desc_brief=' + window.escape('Your session has expired')
+					+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and notify your friendly Evergreen developers.'),
+					'simple_auth',
+					'chrome,resizable,modal,width=300,height=300'
+				);
+				JSAN.use('OpenILS.data');
+				var data = new OpenILS.data(); data.init({'via':'stash'});
+				if (data.temporary_session != '') {
+					data.session = data.temporary_session; data.stash('session');
+					params[0] = data.session;
+					req = obj.bare_request(app,name,params);
+				}
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR',E);
 		}
+		return req;
 	}
 }
 
