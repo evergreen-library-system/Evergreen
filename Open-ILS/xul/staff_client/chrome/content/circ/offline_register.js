@@ -59,7 +59,7 @@ function my_init() {
 			location.href = 'about:blank';
 		}
 
-		$('dob').addEventListener('change',check_date,false);
+		$('dob').addEventListener('change',handle_check_date,false);
 		$('barcode').focus();
 
 	} catch(E) {
@@ -72,16 +72,21 @@ function my_init() {
 
 function $(id) { return document.getElementById(id); }
 
-function check_date(ev) {
+function handle_check_date(ev) {
+	ev.target.value = check_date(ev.target.value);
+}
+
+function check_date(value) {
 	JSAN.use('util.date');
 	try {
-		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw('Invalid Date'); }
-		if (! util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw('Patron needs to be born yesterday.'); }
-		if ( util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw('Happy birthday!  You need to be more than 0 days old.'); }
+		if (! util.date.check('YYYY-MM-DD',value) ) { throw('Invalid Date'); }
+		if (! util.date.check_past('YYYY-MM-DD',value) ) { throw('Patron needs to be born yesterday.'); }
+		if ( util.date.formatted_date(new Date(),'%F') == value) { throw('Happy birthday!  You need to be more than 0 days old.'); }
 	} catch(E) {
 		alert(E);
-		ev.target.value = '';
+		value = '';
 	}
+	return value;
 }
 
 function render_surveys(node,obj) {
@@ -118,6 +123,102 @@ function handle_keypress(ev) {
 	}
 }
 
+function check_patron(obj) {
+	var errors = '';
+	if (! obj.user.billing_address.post_code ) {
+		errors += 'Missing Address : Postal Code\n';
+		$('post_code').focus();
+		$('post_code').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('post_code').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.billing_address.state ) {
+		errors += 'Missing Address : State\n';
+		$('state').focus();
+		$('state').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('state').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.billing_address.city ) {
+		errors += 'Missing Address : City\n';
+		$('city').focus();
+		$('city').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('city').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.billing_address.street1 ) {
+		errors += 'Missing Address : Line 1\n';
+		$('street1').focus();
+		$('street1').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('street1').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.ident_value ) {
+		errors += 'Missing Identification Value\n';
+		$('ident_value').focus();
+		$('ident_value').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('ident_value').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.ident_type ) {
+		errors += 'Missing Identification Type\n';
+		$('ident_type').focus();
+		$('ident_type').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('ident_type').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.dob ) {
+		errors += 'Missing Date of Birth\n';
+		$('dob').focus();
+		$('dob').parentNode.parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('dob').parentNode.parentNode.setAttribute('style','');
+	}
+	if (! obj.user.first_given_name ) {
+		errors += 'Missing First Name\n';
+		$('first_given_name').focus();
+		$('first_given_name').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('first_given_name').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.family_name ) {
+		errors += 'Missing Last Name\n';
+		$('family_name').focus();
+		$('family_name').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('family_name').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.passwd ) {
+		errors += 'Missing Password\n';
+		$('passwd').focus();
+		$('passwd').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('passwd').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.card.barcode ) {
+		errors += 'Missing Barcode\n';
+		$('barcode').focus();
+		$('barcode').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('barcode').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.profile ) {
+		errors += 'Missing Profile\n';
+		$('profile').focus();
+		$('profile').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('profile').parentNode.setAttribute('style','');
+	}
+	if (! obj.user.home_ou ) {
+		errors += 'Missing Home Library\n';
+		$('home_ou').focus();
+		$('home_ou').parentNode.setAttribute('style','background-color: red');
+	} else {
+		$('home_ou').parentNode.setAttribute('style','');
+	}
+	if (errors != '') throw(errors);
+}
+
 function next_patron() {
 	try {
 		var obj = {}
@@ -148,6 +249,13 @@ function next_patron() {
 			var values = JSON2js( value );
 			var response = { 'survey' : values[2], 'question' : values[1], 'answer' : values[0] };
 			obj.user.survey_responses.push( response );
+		}
+
+		try {
+			check_patron(obj);
+		} catch(E) {
+			alert('Please fix the following:\n' + E);
+			return;
 		}
 
 		JSAN.use('util.file'); var file = new util.file('pending_xacts');
