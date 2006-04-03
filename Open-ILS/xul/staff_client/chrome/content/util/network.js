@@ -49,6 +49,7 @@ util.network.prototype = {
 								+ obj.link_id + '\n\n' 
 								+ js2JSON(req.getResultObject()));
 							req = obj.rerequest_on_session_timeout(app,name,params,req);
+							req = obj.rerequest_on_perm_failure(app,name,params,req);
 							f(req);
 						} catch(E) {
 							alert(E);
@@ -60,6 +61,7 @@ util.network.prototype = {
 			} else {
 				request.send(true);
 				request = obj.rerequest_on_session_timeout(app,name,params,request);
+				request = obj.rerequest_on_perm_failure(app,name,params,request);
 				var result = request.getResultObject();
 				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + js2JSON(result));
 				return request;
@@ -83,9 +85,9 @@ util.network.prototype = {
 					urls.XUL_AUTH_SIMPLE
 					+ '?login_type=staff'
 					+ '&desc_brief=' + window.escape('Your session has expired')
-					+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and notify your friendly Evergreen developers.'),
+					+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and inform your friendly Evergreen developers of this debug information: ' + name),
 					'simple_auth',
-					'chrome,resizable,modal,width=300,height=300'
+					'chrome,resizable,modal,width=700,height=500'
 				);
 				JSAN.use('OpenILS.data');
 				var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -99,7 +101,35 @@ util.network.prototype = {
 			this.error.sdump('D_ERROR',E);
 		}
 		return req;
-	}
+	},
+	
+	'rerequest_on_perm_failure' : function(app,name,params,req) {
+		try {
+			var obj = this;
+			var robj = req.getResultObject();
+			if (robj.ilsevent && robj.ilsevent == 5000) {
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+				window.open(
+					urls.XUL_AUTH_SIMPLE
+					+ '?login_type=temp'
+					+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
+					+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
+					'simple_auth',
+					'chrome,resizable,modal,width=700,height=500'
+				);
+				JSAN.use('OpenILS.data');
+				var data = new OpenILS.data(); data.init({'via':'stash'});
+				if (data.temporary_session != '') {
+					params[0] = data.temporary_session;
+					req = obj.bare_request(app,name,params);
+				}
+			}
+		} catch(E) {
+			this.error.sdump('D_ERROR',E);
+		}
+		return req;
+	},
+
 }
 
 /*
