@@ -163,6 +163,18 @@ patron.items.prototype = {
 					'cmd_items_mark_lost' : [
 						['command'],
 						function() {
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								var barcode = obj.retrieve_ids[i];
+								dump('Mark barcode lost = ' + barcode);
+								var lost = obj.network.simple_request(
+									'MARK_ITEM_LOST', 
+									[ obj.session, barcode: barcode } ]
+								);
+								dump('  result = ' + js2JSON(lost) + '\n');
+							}
+							if (window.xulG && typeof window.xulG.display_refresh == 'function') {
+								window.xulG.display_refresh();
+							}
 						}
 					],
 					'cmd_items_checkin' : [
@@ -197,7 +209,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_edit.setAttribute('disabled','true');
-		obj.controller.view.cmd_items_mark_missing.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','true');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
@@ -246,7 +258,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_renew.setAttribute('disabled','false');
 		obj.controller.view.cmd_items_checkin.setAttribute('disabled','false');
 		obj.controller.view.cmd_items_edit.setAttribute('disabled','false');
-		obj.controller.view.cmd_items_mark_missing.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 
 		obj.retrieve_ids = list;

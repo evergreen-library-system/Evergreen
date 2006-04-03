@@ -37,7 +37,7 @@
 		command="cmd_items_edit"
 	/>
 	<button id="items_mark_lost"
-		label="Lost"
+		label="Patron Lost"
 		command="cmd_items_mark_lost"
 	/>
 	<button id="items_claimed_returned"

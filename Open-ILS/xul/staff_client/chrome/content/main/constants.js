@@ -59,6 +59,8 @@ var api = {
 	'MARC_HTML_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.html' },
 	'FM_BLOB_RETRIEVE_VIA_Z3950_RAW' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.raw_string' },
 	'FM_BLOB_RETRIEVE_VIA_Z3950_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.tcn' },
+	'MARK_ITEM_LOST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.set_lost' },
+	'MARK_ITEM_CLAIM_RETURNED' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.set_claims_returned' },
 	'MODS_SLIM_METARECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.metarecord.mods_slim.retrieve' },
 	'MODS_SLIM_RECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve' },
 	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy' },
