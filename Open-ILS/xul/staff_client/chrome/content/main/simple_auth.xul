@@ -116,7 +116,7 @@
 
 	<vbox id="simple_auth_main">
 	<groupbox id="desc" hidden="true">
-		<caption label="Error"/>
+		<caption label="Exception"/>
 		<description id="desc_brief" style="color: red"/>
 		<description id="desc_full"/>
 	</groupbox>
