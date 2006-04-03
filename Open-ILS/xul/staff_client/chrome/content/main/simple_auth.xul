@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="simple_auth_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for simple_auth.xul');
+
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+				g.data.temporary_session = ''; g.data.stash('temporary_session');
+
+				$('server').value = g.data.server_unadorned;
+
+				g.cgi = new CGI();
+
+				$('username').focus();
+
+				$('username').addEventListener('keypress',handle_keypress,false);
+				$('password').addEventListener('keypress',handle_keypress,false);
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\nquick_auth.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function $(id) { return document.getElementById(id); }
+
+		function handle_keypress(ev) {
+			if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
+			switch(ev.target) {
+				case $('username') : $('password').focus(); break;
+				case $('password') : authorize(); break;
+				default: break;
+			}
+		}
+
+		function authorize() {
+			try {
+				JSAN.use('auth.session');
+				g.session = new auth.session(
+					{
+						'name_prompt' : $('username'),
+						'password_prompt' : $('password'),
+						'server_prompt' : $('server'),
+					},
+					g.cgi.param('login_type') || 'temp'
+				);
+				g.session.on_init = function() { 
+					g.data.temporary_session = g.session.key;
+					g.data.stash('temporary_session');
+					window.close();
+				}
+				g.session.on_init_error = function() { 
+					$('password').value = '';
+					$('username').focus();
+					$('username').select();
+				 }
+				g.session.init();
+			} catch(E) {
+				alert(E);
+			}
+		}
+
+	]]>
+	</script>
+
+	<commandset id="simple_auth_cmds">
+		<command id="cmd_broken" />
+	</commandset>
+
+	<groupbox id="simple_auth_main">
+		<caption label="Authorization"/>
+		<grid>
+			<columns><column /><column /></columns>
+			<rows>
+				<row>
+					<label value="Username:" control="username" accesskey="U"/>
+					<textbox id="username" />
+				</row>
+				<row>
+					<label value="Password:" control="password" accesskey="P"/>
+					<textbox id="password" type="password"/>
+				</row>
+				<row>
+					<button label="Cancel" accesskey="C" oncommand="window.close()"/>
+					<button label="Authorize" accesskey="A" oncommand="authorize()"/>
+				</row>
+			</rows>
+		</grid>
+		<label id="server" hidden="true"/>
+	</groupbox>
+</window>
+
