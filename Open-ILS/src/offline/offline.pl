@@ -31,8 +31,7 @@ our %config;
 # --------------------------------------------------------------------
 # Load the config
 # --------------------------------------------------------------------
-#do '##CONFIG##/upload-server.pl';
-do 'offline-config.pl';
+do '##CONFIG##/offline-config.pl';
 
 
 my $cgi			= new CGI;

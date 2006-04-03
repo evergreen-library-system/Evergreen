@@ -10,9 +10,9 @@ export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
 all: mod_xmlbuilder mod_ils_rest_gateway c_apps client-xul mod_xmlent
 
-install:	perl-install web-install server-xul string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install 
+install:	perl-install web-install server-xul string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install offline-install
 
-web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  mod_xmlent-install
+web-install:	webcore-install autojs-install  mod_xmlbuilder-install mod_ils_rest_gateway-install  mod_xmlent-install offline-install
 
 circ_rules-install:
 	@echo $@
@@ -136,6 +136,14 @@ reporter-install:
 	cp reporter/widgets.example.xml $(ETCDIR)
 	mkdir -p $(REPORTERDIR)
 	cp -r reporter/templates/* $(REPORTERDIR)
+
+# -----------------------------------------------------------------------------------
+offline-install:
+	@echo "Installing offline CGIs to $(CGIDIR)/offline";
+	mkdir -p $(CGIDIR)/offline;
+	perl -pe "s{##CONFIG##}{$(ETCDIR)}" < offline/offline.pl > $(TMP)/offline.pl;
+	cp offline/offline-config.pl $(ETCDIR)
+	cp $(TMP)/offline.pl $(CGIDIR)/offline/
 
 # -----------------------------------------------------------------------------------
 
