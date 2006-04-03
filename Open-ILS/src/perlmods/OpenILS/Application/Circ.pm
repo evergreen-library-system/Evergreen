@@ -144,7 +144,7 @@ __PACKAGE__->register_method(
 	method	=> "set_circ_lost",
 	api_name	=> "open-ils.circ.circulation.set_lost",
 	NOTES		=> <<"	NOTES");
-	Params are login, circid
+	Params are login, barcode
 	login must have SET_CIRC_LOST perms
 	Sets a circulation to lost
 	NOTES
@@ -153,43 +153,57 @@ __PACKAGE__->register_method(
 	method	=> "set_circ_lost",
 	api_name	=> "open-ils.circ.circulation.set_claims_returned",
 	NOTES		=> <<"	NOTES");
-	Params are login, circid
+	Params are login, barcode
 	login must have SET_CIRC_MISSING perms
 	Sets a circulation to lost
 	NOTES
 
 sub set_circ_lost {
-	my( $self, $client, $login, $circid ) = @_;
-	my( $user, $circ, $evt );
+	my( $self, $client, $login, $barcode ) = @_;
+	my( $user, $circ, $copy, $evt );
 
-	( $user, $evt ) = $apputils->checkses($login);
+	( $user, $evt ) = $U->checkses($login);
 	return $evt if $evt;
 
-	( $circ, $evt ) = $apputils->fetch_circulation( $circid );
+	# Grab the related copy
+	($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
 	return $evt if $evt;
 
-	if($self->api_name =~ /lost/) {
-		if($evt = $apputils->checkperms(
-			$user->id, $circ->circ_lib, "SET_CIRC_LOST")) {
-			return $evt;
+	my $isclaims = $self->api_name =~ /claims_returned/;
+	my $islost = $self->api_name =~ /lost/;
+
+	# if setting to list, update the copy's statua
+	if( $islost ) {
+		my $newstat = $U->copy_status_from_name('lost') if $islost;
+		if( $copy->status ne $newstat->id ) {
+			$copy->status($newstat);
+			$U->update_copy($copy, $user->id);
 		}
+	}
+
+	# grab the circulation
+	( $circ ) = $U->fetch_open_circulation( $copy->id );
+	return 1 unless $circ;
+
+	if($islost) {
+		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_LOST');
+		return $evt if $evt;
 		$circ->stop_fines("LOST");		
 	}
 
-	# XXX Back date the checkin time so the patron has no fines
-	if($self->api_name =~ /claims_returned/) {
-		if($evt = $apputils->checkperms(
-			$user->id, $circ->circ_lib, "SET_CIRC_CLAIMS_RETURNED")) {
-			return $evt;
-		}
+	if($isclaims) {
+		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_CLAIMS_RETURNED');
+		return $evt if $evt;
 		$circ->stop_fines("CLAIMSRETURNED");
 	}
 
-	my $s = $apputils->simplereq(
+	my $s = $U->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.circulation.update", $circ );
 
-	if(!$s) { throw OpenSRF::EX::ERROR ("Error updating circulation with id $circid"); }
+	return $U->DB_UPDATE_FAILED($circ) unless defined($s);
+
+	return 1;
 }
 
 __PACKAGE__->register_method(
