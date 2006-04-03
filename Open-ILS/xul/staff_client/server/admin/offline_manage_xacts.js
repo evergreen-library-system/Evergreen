@@ -520,6 +520,9 @@ admin.offline_manage_xacts.prototype = {
 
 		var obj = this;
 
+		var old_idx = obj.list.node.currentIndex;
+		if (old_idx < 0) old_idx = 0;
+
 		obj.list.clear();
 
 		var funcs = [];
@@ -528,10 +531,12 @@ admin.offline_manage_xacts.prototype = {
 				function(idx,row){ 
 					return function(){
 						obj.list.append( { 'retrieve_id' : idx, 'row' : row } );
+						if (idx == old_idx) obj.list.node.view.selection.select(idx);
 					};
 				}(i,obj.seslist[i]) 
 			);
 		}
+
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
 
