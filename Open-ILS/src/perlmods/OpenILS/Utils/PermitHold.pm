@@ -31,6 +31,7 @@ sub permit_copy_hold {
 
 	# we get the script result from the event 
 	$runner->insert( "result.event",	'SUCCESS' );
+	$runner->insert( "result.events", [] );
 
 	$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
 
@@ -38,7 +39,21 @@ sub permit_copy_hold {
 	$runner->run or throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
 	my $evtname = $runner->retrieve('result.event');
 
-	return 1 if $evtname eq 'SUCCESS';
+
+	# --------------------------------------------------------------
+	# Extract and uniquify the event list
+	# --------------------------------------------------------------
+	my $events = $runner->retrieve('result.events');
+	$events = [ split(/,/, $events) ]; 
+	$logger->activity("circ_permit_hold for user ".$params->{patron}->id." returned events: @$events");
+
+	my @allevents;
+	push( @allevents, OpenILS::Event->new($_)) for @$events;
+	my %hash = map { ($_->{ilsevent} => $_) } @allevents;
+	@allevents = values %hash;
+
+	return \@allevents if $$params{show_event_list};
+	return 1 unless @allevents;
 	return 0;
 }
 
