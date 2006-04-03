@@ -170,7 +170,7 @@ sub ol_create_script {
 			requestor	=> $requestor->id,
 			create_time	=> CORE::time,
 			workstation	=> $wsname,
-			logfile		=> "$basedir/pending/$seskey/$wsname.log",
+			logfile		=> "$basedir/pending/$org/$seskey/$wsname.log",
 			time_delta	=> $delta,
 			count			=> $count,
 		}
@@ -203,7 +203,7 @@ sub ol_load {
 
 	my $session = ol_find_session;
 	my $handle	= $cgi->upload('file');
-	my $outdir	= "$basedir/pending/$seskey";
+	my $outdir	= "$basedir/pending/$org/$seskey";
 	my $outfile = "$outdir/$wsname.log";
 
 	ol_handle_event('OFFLINE_SESSION_FILE_EXISTS') if ol_find_script();
@@ -323,7 +323,7 @@ sub ol_status {
 	} elsif( $type eq 'exceptions' ) {
 
 		my $session = ol_find_session();
-		my $resfile = "$basedir/pending/$seskey/results";
+		my $resfile = "$basedir/pending/$org/$seskey/results";
 		if( $session->end_time ) {
 			$resfile = "$basedir/archive/$org/$seskey/results";
 		}
@@ -466,7 +466,7 @@ sub ol_archive_files {
 	my $session = shift;
 	my ($y, $m, $d) = ol_date();
 
-	my $dir = "$basedir/pending/$seskey";
+	my $dir = "$basedir/pending/$org/$seskey";
 	my $archdir = "$basedir/archive/$org/$seskey";
 	$logger->debug("offline: archiving files to $archdir");
 
@@ -491,7 +491,7 @@ sub ol_append_result {
 	$obj = JSON->perl2JSON($obj);
 
 	if(!$rhandle) {
-		open($rhandle, ">>$basedir/pending/$seskey/results") 
+		open($rhandle, ">>$basedir/pending/$org/$seskey/results") 
 			or ol_handle_event('OFFLINE_FILE_ERROR');
 	}
 
