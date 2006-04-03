@@ -372,6 +372,12 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			free(barcode);
 			return 0;
 		}
+
+	} else {
+		/* otherwise, use the home org as the workstation org on the user */
+		char* orgid = oilsFMGetString(userObj, "home_ou");
+		oilsFMSetString(userObj, "ws_ou", orgid);
+		free(orgid);
 	}
 
 	if( passOK ) {
