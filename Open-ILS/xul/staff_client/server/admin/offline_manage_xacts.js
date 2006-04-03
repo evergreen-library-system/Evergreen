@@ -494,7 +494,11 @@ admin.offline_manage_xacts.prototype = {
 		x.send(null);
 
 		dump(url + ' = ' + x.responseText + '\n' );
-		obj.seslist = JSON2js( x.responseText );
+		obj.seslist = JSON2js( x.responseText ).sort(
+			function(a,b) {
+				return b.create_time - a.create_time;
+			}
+		);
 	},
 
 	'render_seslist' : function() {
