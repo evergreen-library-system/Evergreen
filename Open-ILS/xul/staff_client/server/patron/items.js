@@ -132,11 +132,6 @@ patron.items.prototype = {
 
 						}
 					],
-					'cmd_items_claimed_returned' : [
-						['command'],
-						function() {
-						}
-					],
 					'cmd_items_renew' : [
 						['command'],
 						function() {
@@ -175,6 +170,25 @@ patron.items.prototype = {
 							if (window.xulG && typeof window.xulG.display_refresh == 'function') {
 								window.xulG.display_refresh();
 							}
+						}
+					],
+					'cmd_items_claimed_returned' : [
+						['command'],
+						function() {
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								var barcode = obj.retrieve_ids[i];
+								dump('Mark barcode lost = ' + barcode);
+								var lost = obj.network.simple_request(
+									'MARK_ITEM_CLAIM_RETURNED', 
+									[ obj.session, barcode: barcode } ]
+								);
+								dump('  result = ' + js2JSON(lost) + '\n');
+							}
+							if (window.xulG && typeof window.xulG.display_refresh == 'function') {
+								window.xulG.display_refresh();
+							}
+						}
+
 						}
 					],
 					'cmd_items_checkin' : [
