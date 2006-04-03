@@ -17,22 +17,47 @@ function my_init() {
 		JSAN.use('util.file');
 		JSAN.use('util.widgets');
 
-		var file; var list_data; var ml;
+		var file; var list_data; var ml; var errors = '';
 
-		file = new util.file('offline_ou_list'); list_data = file.get_object(); file.close();
-		ml = util.widgets.make_menulist( list_data[0], list_data[1] );
-		ml.setAttribute('id','home_ou'); $('x_home_ou').appendChild(ml);
+		file = new util.file('offline_ou_list'); 
+		if (file._file.exists()) {
+			list_data = file.get_object(); file.close();
+			ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+			ml.setAttribute('id','home_ou'); $('x_home_ou').appendChild(ml);
+		} else {
+			errors += 'Missing library list.\n';
+		}
 
-		file = new util.file('offline_pgt_list'); list_data = file.get_object(); file.close();
-		ml = util.widgets.make_menulist( list_data[0], list_data[1] );
-		ml.setAttribute('id','profile'); $('x_profile').appendChild(ml);
+		file = new util.file('offline_pgt_list');
+		if (file._file.exists()) {
+			list_data = file.get_object(); file.close();
+			ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+			ml.setAttribute('id','profile'); $('x_profile').appendChild(ml);
+		} else {
+			errors += 'Missing profile list.\n';
+		}
 
-		file = new util.file('offline_cit_list'); list_data = file.get_object(); file.close();
-		ml = util.widgets.make_menulist( list_data[0], list_data[1] );
-		ml.setAttribute('id','ident_type'); $('x_ident_type').appendChild(ml);
+		file = new util.file('offline_cit_list'); 
+		if (file._file.exists()) {
+			list_data = file.get_object(); file.close();
+			ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+			ml.setAttribute('id','ident_type'); $('x_ident_type').appendChild(ml);
+		} else {
+			errors += 'Missing identification type list.\n';
+		}
 
-		file = new util.file('offline_asv_list'); list_data = file.get_object(); file.close();
-		render_surveys('x_surveys', list_data);
+		file = new util.file('offline_asv_list'); 
+		if (file._file.exists()) {
+			list_data = file.get_object(); file.close();
+			render_surveys('x_surveys', list_data);
+		} else {
+			errors += 'Missing required surveys.\n';
+		}
+
+		if (errors != '') {
+			alert('ERROR: Offline patron registration requires some server-generated files.  Please login periodically to retrieve these files.\n' + errors);
+			location.href = 'about:blank';
+		}
 
 		$('dob').addEventListener('change',check_date,false);
 		$('barcode').focus();

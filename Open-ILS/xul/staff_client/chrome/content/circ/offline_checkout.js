@@ -114,21 +114,26 @@ function my_init() {
 
 		var file; var list_data; var ml;
 
-		file = new util.file('offline_cnct_list'); list_data = file.get_object(); file.close();
-		ml = util.widgets.make_menulist( 
-			[ ['or choose a non-barcoded option...', ''] ].concat(list_data[0]), 
-			list_data[1] 
-		);
-		ml.setAttribute('id','noncat_type_menu'); $('x_noncat_type').appendChild(ml);
-		ml.addEventListener(
-			'command',
-			function(ev) { 
-				var count = window.prompt('Enter the number of items:',1,ml.getAttribute('label'));
-				append_to_list('noncat',count);	
-				ml.value = '';
-			},
-			false
-		);
+		file = new util.file('offline_cnct_list'); 
+		if (file._file.exists()) {
+			list_data = file.get_object(); file.close();
+			ml = util.widgets.make_menulist( 
+				[ ['or choose a non-barcoded option...', ''] ].concat(list_data[0]), 
+				list_data[1] 
+			);
+			ml.setAttribute('id','noncat_type_menu'); $('x_noncat_type').appendChild(ml);
+			ml.addEventListener(
+				'command',
+				function(ev) { 
+					var count = window.prompt('Enter the number of items:',1,ml.getAttribute('label'));
+					append_to_list('noncat',count);	
+					ml.value = '';
+				},
+				false
+			);
+		} else {
+			alert('WARNING: The non-barcode types have not been downloaded from the server.  You should log in to retrieve these.');
+		}
 
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
