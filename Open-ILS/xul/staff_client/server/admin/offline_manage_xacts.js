@@ -112,11 +112,38 @@ admin.offline_manage_xacts.prototype = {
 						function(o) { return o.getAttribute('retrieve_id'); }
 					);
 					if (obj.sel_list.length == 0) return;
-					if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
-						document.getElementById('execute').disabled = false;	
-					}
-					if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
-						document.getElementById('upload').disabled = false;	
+					{	
+						var upload = true; var process = true;
+
+						if (obj.sel_list.length > 1) upload = false;
+
+						if (obj.seslist[ obj.sel_list[0] ].end_time) {
+							upload = false; process = false;
+						}
+						if (obj.seslist[ obj.sel_list[0] ].in_process == 1) {
+							upload = false; process = false;
+						}
+
+						/* should we really have this next restriction? */
+						for (var i = 0; i < obj.seslist[ obj.sel_list[0] ].scripts.length; i++) {
+							if (obj.seslist[ obj.sel_list[0] ].scripts[i].workstation ==
+								obj.data.ws_name ) upload = false;
+						}
+
+						if (upload) {
+							if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
+								document.getElementById('upload').disabled = false;
+							}
+						} else {
+							document.getElementById('upload').disabled = true;
+						}
+						if (process) {
+							if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
+								document.getElementById('execute').disabled = false;	
+							}
+						} else {
+							document.getElementById('execute').disabled = true;	
+						}
 					}
 					var complete = false;
 					for (var i = 0; i < obj.sel_list.length; i++) { 
