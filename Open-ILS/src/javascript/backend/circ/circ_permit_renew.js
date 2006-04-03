@@ -17,7 +17,7 @@ var holds = copy.fetchHolds();
 for( var i in holds ) {
 	var hold = holds[i];
 	if( hold && hold.usr != patron.id )
-		return result.event = 'COPY_NEEDED_FOR_HOLD';
+		return result.events.push('COPY_NEEDED_FOR_HOLD');
 }
 
 } go();

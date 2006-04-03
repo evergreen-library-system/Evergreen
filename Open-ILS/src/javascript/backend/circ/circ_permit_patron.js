@@ -25,15 +25,14 @@ log_debug('circ_permit_patron: permit circ on ' +
 	'');
 
 
-
 if( patronStanding != 'good' ) 
-	return result.event = 'PATRON_BAD_STANDING';
+	result.events.push('PATRON_BAD_STANDING');
 
 if( patronProfile == 'patrons' && patronItemsOut > 10 )
-	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
+	result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
 
 if( patronProfile == 'staff' && patronItemsOut > 30 )
-	return result.event = 'PATRON_EXCEEDS_CHECKOUT_COUNT';
+	result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
 
 
 } go();

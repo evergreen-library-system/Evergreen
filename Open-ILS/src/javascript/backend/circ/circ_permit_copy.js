@@ -31,25 +31,16 @@ log_debug('circ_permit_copy: permit circ on ' +
 
 
 if( copy.circulate == '0' ) 
-	return result.event = 'COPY_CIRC_NOT_ALLOWED';
+	result.events.push('COPY_CIRC_NOT_ALLOWED');
 
 if( copy.ref != '0' ) 
-	return result.event = 'COPY_IS_REFERENCE';
+	result.events.push('COPY_IS_REFERENCE');
 
 if(	copyStatus != 'available' && 
 		copyStatus != 'on holds shelf' && 
 		copyStatus != 'reshelving' )
 
-	return result.event = 'COPY_NOT_AVAILABLE';
-
-/* example of handling holds 
-var holds = copy.fetchHold();
-for( var i in holds ) {
-	var hold = holds[i];
-	if( hold && hold.usr != patron.id )
-		return result.event = 'COPY_NEEDED_FOR_HOLD';
-}
-*/
+	result.events.push('COPY_NOT_AVAILABLE');
 
 
 } go();
