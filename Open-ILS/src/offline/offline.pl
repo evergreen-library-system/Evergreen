@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 use strict; use warnings;
 use CGI;
+use JSON;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::EX qw/:try/;
-use JSON;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
@@ -16,26 +16,21 @@ use OpenILS::Utils::OfflineStore;
 use DBI;
 $DBI::trace = 1;
 
-#use Class::DBI;
-#Class::DBI->autoupdate(1);
-#local $OpenILS::Utils::OfflineStore::NO_TRIGGERS = 1;
-
 my $U = "OpenILS::Application::AppUtils";
 my $DB = "OpenILS::Utils::OfflineStore";
 my $SES = "${DB}::Session";
 my $SCRIPT = "OpenILS::Utils::OfflineStore::Script";
-#$DB->autoupdate(1);
-
-our %config;
 
 # --------------------------------------------------------------------
 # Load the config
 # --------------------------------------------------------------------
+our %config;
 do '##CONFIG##/offline-config.pl';
 
 
 my $cgi			= new CGI;
-my $basedir		= $config{base_dir};
+my $basedir		= $config{base_dir} || die "Offline config error: no base_dir defined\n";
+my $bootstrap	= $config{bootstrap} || die "Offline config error: no bootstrap defined\n";
 my $wsname		= $cgi->param('ws');
 my $org			= $cgi->param('org');
 my $authtoken	= $cgi->param('ses') || "";
@@ -58,9 +53,9 @@ my $evt;
 # this is moved to mod_perl
 # --------------------------------------------------------------------
 sub ol_init {
-	_ol_debug_params();
+	#_ol_debug_params();
 	$DB->DBFile($config{db});
-	OpenSRF::System->bootstrap_client(config_file => $config{bootstrap} ); 
+	OpenSRF::System->bootstrap_client(config_file => $bootstrap ); 
 }
 
 
@@ -386,7 +381,7 @@ sub ol_execute {
 		# The child re-connects to the opensrf network and processes
 		# the script requests 
 		# --------------------------------------------------------------------
-		OpenSRF::System->bootstrap_client(config_file => $config{bootstrap});
+		OpenSRF::System->bootstrap_client(config_file => $bootstrap);
 	
 		try {
 
