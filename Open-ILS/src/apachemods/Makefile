@@ -1,12 +1,11 @@
 
 LDLIBS	+= -lxml2 -lopensrf -lxslt
 
-all:	mod_xmlbuilder.so mod_ils_rest_gateway.so mod_xmlent.so
+all:	mod_ils_rest_gateway.so mod_xmlent.so
 
-install:	mod_xmlbuilder-install mod_ils_rest_gateway-install libfieldmapper-install mod_xmlent-install
+install:	mod_ils_rest_gateway-install libfieldmapper-install mod_xmlent-install
 
 
-mod_xmlbuilder.o: mod_xmlbuilder.h mod_xmlbuilder.c
 apachetools.o: 
 	cp ../../../OpenSRF/src/gateway/apachetools.o .
 json_xml.o:	json_xml.c json_xml.h
@@ -25,11 +24,6 @@ mod_xmlent.so: mod_xmlent.o
 
 
 # ------------------------------------------------------
-
-mod_xmlbuilder.so: mod_xmlbuilder.o apachetools.o 
-#mod_xmlbuilder.so: mod_xmlbuilder.o 
-	@echo $@
-	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 apachetools.o mod_xmlbuilder.o -o $@
 
 libfieldmapper.so:	fieldmapper_lookup.o
 	@echo $@
@@ -64,9 +58,6 @@ mod_ils_rest_gateway-install:
 			\nILSRestGatewayConfig <config-file>"
 	echo "-----------------------------------------------";
 	echo ""
-
-mod_xmlbuilder-install:
-	$(APXS2) -i -a -n xmlbuilder mod_xmlbuilder.so
 
 mod_xmlent-install:
 	$(APXS2) -i -a -n xmlent mod_xmlent.so
