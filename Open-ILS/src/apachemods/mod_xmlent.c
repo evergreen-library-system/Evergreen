@@ -22,6 +22,7 @@
 #define MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT "text/html"
 #define MODXMLENT_CONFIG_STRIP_PI "XMLEntStripPI"  
 #define MODXMLENT_CONFIG_DOCTYPE "XMLEntDoctype"
+#define MODXMLENT_CONFIG_STRIP_DOCTYPE "XMLEntStripDoctype"
 
 module AP_MODULE_DECLARE_DATA xmlent_module;
 
@@ -35,6 +36,7 @@ typedef struct {
 typedef struct {
 	int stripComments;	/* should we strip comments on the way out? */
 	int stripPI;			/* should we strip processing instructions on the way out? */
+	int stripDoctype;
 	char* contentType;	/* the content type used to server pages */
 	char* doctype;			/* the doctype header to send before any other data */
 } xmlEntConfig;
@@ -64,6 +66,14 @@ static const char* xmlEntSetStripComments(cmd_parms *params, void *cfg, const ch
 	return NULL;
 }
 
+static const char* xmlEntSetStripDoctype(cmd_parms *params, void *cfg, const char *arg) {
+	xmlEntConfig* config = (xmlEntConfig*) cfg;
+	char* a = (char*) arg;
+	config->stripDoctype = (a && !strcasecmp(a, "yes")) ? 1 : 0;
+	return NULL;
+}
+
+
 /* Get the user defined doctype from the config */
 static const char* xmlEntSetDoctype(cmd_parms *params, void *cfg, const char *arg) {
 	xmlEntConfig* config = (xmlEntConfig*) cfg;
@@ -81,6 +91,8 @@ static const command_rec xmlEntCommands[] = {
 			xmlEntSetStripPI, NULL, ACCESS_CONF, "XMLENT Strip XML Processing Instructions"),
 	AP_INIT_TAKE1( MODXMLENT_CONFIG_DOCTYPE,
 			xmlEntSetDoctype, NULL, ACCESS_CONF, "XMLENT Doctype Declaration"),
+	AP_INIT_TAKE1( MODXMLENT_CONFIG_STRIP_DOCTYPE,
+			xmlEntSetStripDoctype, NULL, ACCESS_CONF, "XMLENT Strip Doctype Declaration"),
 	{NULL}
 };
 
@@ -88,10 +100,13 @@ static const command_rec xmlEntCommands[] = {
 static void* xmlEntCreateDirConfig( apr_pool_t* p, char* dir ) {
 	xmlEntConfig* config = 
 		(xmlEntConfig*) apr_palloc( p, sizeof(xmlEntConfig) );
+
 	config->stripComments = 0;
-	config->stripPI = 0;
-	config->contentType	= MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT;
-	config->doctype = NULL;
+	config->stripPI       = 0;
+	config->stripDoctype  = 0;
+	config->contentType	 = MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT;
+	config->doctype       = NULL;
+
 	return (void*) config;
 }
 
@@ -183,6 +198,15 @@ static void XMLCALL endElement(void *userData, const char *name) {
 	_fwrite( filter, "</%s>", name );
 }
 
+static void XMLCALL doctypeHandler( void* userData, 
+	const char* name, const char* sysid, const char* pubid, int hasinternal ) {
+
+	ap_filter_t* filter = (ap_filter_t*) userData;
+	char* s = (sysid) ? (char*) sysid : "";
+	char* p = (pubid) ? (char*) pubid : "";
+	_fwrite( filter, "<!DOCTYPE %s PUBLIC \"%s\" \"%s\">\n", name, p, s );
+}
+
 
 /* The handler.  Create a new parser and/or filter context where appropriate
  * and parse the chunks of data received from the brigade
@@ -219,6 +243,8 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 		XML_SetUserData(parser, f);
 		XML_SetElementHandler(parser, startElement, endElement);
 		XML_SetCharacterDataHandler(parser, charHandler);
+		if(!config->stripDoctype)
+			XML_SetStartDoctypeDeclHandler( parser, doctypeHandler );
 		if(!config->stripPI)
 			XML_SetProcessingInstructionHandler(parser, handlePI);
 		if(!config->stripComments)
