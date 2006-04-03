@@ -82,6 +82,7 @@ var urls = {
 	'AUDIO_CIRC_BAD_SOUND' : '/xul/server/skin/media/audio/question.wav',
 
 	'XUL_ADV_USER_BARCODE_ENTRY' : '/xul/server/patron/adv_barcode_entry.xul',
+	'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
 	'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
 	'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
 	'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
