@@ -159,8 +159,11 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub set_circ_lost {
-	my( $self, $client, $login, $barcode ) = @_;
+	my( $self, $client, $login, $args ) = @_;
 	my( $user, $circ, $copy, $evt );
+
+	my $barcode		= $$args{barcode};
+	my $backdate	= $$args{backdate};
 
 	( $user, $evt ) = $U->checkses($login);
 	return $evt if $evt;
@@ -169,21 +172,24 @@ sub set_circ_lost {
 	($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
 	return $evt if $evt;
 
-	my $isclaims = $self->api_name =~ /claims_returned/;
-	my $islost = $self->api_name =~ /lost/;
+	my $isclaims	= $self->api_name =~ /claims_returned/;
+	my $islost		= $self->api_name =~ /lost/;
+	my $session		= $U->start_db_session(); 
+
 
 	# if setting to list, update the copy's statua
 	if( $islost ) {
 		my $newstat = $U->copy_status_from_name('lost') if $islost;
 		if( $copy->status ne $newstat->id ) {
 			$copy->status($newstat);
-			$U->update_copy($copy, $user->id);
+			$U->update_copy(copy => $copy, editor => $user->id, session => $session);
 		}
 	}
 
 	# grab the circulation
 	( $circ ) = $U->fetch_open_circulation( $copy->id );
 	return 1 unless $circ;
+
 
 	if($islost) {
 		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_LOST');
@@ -192,16 +198,24 @@ sub set_circ_lost {
 	}
 
 	if($isclaims) {
+
 		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_CLAIMS_RETURNED');
 		return $evt if $evt;
 		$circ->stop_fines("CLAIMSRETURNED");
+
+		# allow the caller to backdate the circulation and void any fines
+		# that occurred after the backdate
+		if($backdate) {
+			OpenILS::Application::Circ::Circulate::_checkin_handle_backdate(
+				$backdate, $circ, $user, $session );
+		}
 	}
 
-	my $s = $U->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.circulation.update", $circ );
+	my $s = $session->request(
+		"open-ils.storage.direct.action.circulation.update", $circ )->gather(1);
 
 	return $U->DB_UPDATE_FAILED($circ) unless defined($s);
+	$U->commit_db_session($session);
 
 	return 1;
 }

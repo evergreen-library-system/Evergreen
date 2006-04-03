@@ -1354,7 +1354,7 @@ sub _checkin_handle_backdate {
 	my( $backdate, $circ, $requestor, $session ) = @_;
 
 	$logger->activity("User ".$requestor->id.
-		" backdating checkin copy [".$circ->target_copy."] to date: $backdate");
+		" backdating circ [".$circ->target_copy."] to date: $backdate");
 
 	$circ->xact_finish($backdate); 
 
