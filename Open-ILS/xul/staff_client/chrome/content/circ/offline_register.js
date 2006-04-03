@@ -59,6 +59,8 @@ function my_init() {
 			location.href = 'about:blank';
 		}
 
+		$('passwd').value = parseInt(Math.random()*8999+1000);
+
 		$('dob').addEventListener('change',handle_check_date,false);
 		$('barcode').focus();
 
@@ -264,7 +266,7 @@ function next_patron() {
 
 		alert('Patron Registration Saved');
 
-		$('passwd').value = 1234;
+		$('passwd').value = parseInt(Math.random()*8999+1000);
 		$('barcode').value = ''; $('ident_value').value = ''; $('first_given_name').value = '';
 		$('family_name').value = ''; $('dob').value = ''; $('street1').value = '';
 		$('street2').value = '';
