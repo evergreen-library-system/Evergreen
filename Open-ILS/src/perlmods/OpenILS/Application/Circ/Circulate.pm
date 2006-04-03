@@ -615,6 +615,19 @@ sub checkout {
 	my $circlib = (defined($params->{circ_lib})) ? 
 		$params->{circ_lib} : $requestor->home_ou;
 
+
+	# Make sure the caller has a valid permit key or is 
+	# overriding the permit can
+	if( $params->{permit_override} ) {
+		$evt = $U->check_perms(
+			$requestor->id, $requestor->ws_ou, 'CIRC_PERMIT_OVERRIDE');
+		return $evt if $evt;
+
+	} else {
+		return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
+			unless _check_permit_key($key);
+	}
+
 	# if this is a non-cataloged item, check it out and return
 	return _checkout_noncat( 
 		$key, $requestor, $patron, %$params ) if $params->{noncat};
@@ -653,15 +666,6 @@ sub checkout {
 
 	my $cid = ($params->{precat}) ? -1 : $ctx->{copy}->id;
 
-	if( $ctx->{permit_override} ) {
-		$evt = $U->check_perms(
-			$requestor->id, $ctx->{copy}->circ_lib->id, 'CIRC_PERMIT_OVERRIDE');
-		return $evt if $evt;
-
-	} else {
-		return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
-			unless _check_permit_key($key);
-	}
 
 	$ctx->{circ_lib} = $circlib;
 
@@ -966,9 +970,6 @@ sub _checkout_noncat {
 	$U->logmark;
 
 	$circlib = $params{noncat_circ_lib} || $requestor->home_ou;
-
-	return OpenILS::Event->new('CIRC_PERMIT_BAD_KEY') 
-		unless _check_permit_key($key);
 
 	my $count = $params{noncat_count} || 1;
 	my $cotime = _create_date_stamp($params{checkout_time}) || "";
