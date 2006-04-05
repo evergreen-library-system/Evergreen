@@ -24,14 +24,7 @@ our %EXPORT_TAGS = ( state => [ qw/CONNECTING INIT_CONNECTED CONNECTED DISCONNEC
 my $logger = "OpenSRF::Utils::Logger";
 
 our %_CACHE;
-our @_CLIENT_CACHE;
 our @_RESEND_QUEUE;
-
-sub kill_client_session_cache {
-	for my $session ( @_CLIENT_CACHE ) {
-		$session->kill_me;
-	}
-}
 
 sub CONNECTING { return 3 };
 sub INIT_CONNECTED { return 4 };
@@ -44,14 +37,6 @@ sub SERVER { return 1 };
 sub find {
 	return undef unless (defined $_[1]);
 	return $_CACHE{$_[1]} if (exists($_CACHE{$_[1]}));
-}
-
-sub find_client {
-	my( $self, $app ) = @_;
-	$logger->debug( "Client Cache contains: " .scalar(@_CLIENT_CACHE), INTERNAL );
-	my ($client) = grep { $_->[0] eq $app and $_->[1] == 1 } @_CLIENT_CACHE;
-	$client->[1] = 0;
-	return $client->[2];
 }
 
 sub transport_connected {
@@ -85,11 +70,6 @@ sub buffer_reset {
 	$self->{peer_handle}->buffer_reset();
 }
 
-
-sub client_cache {
-	my $self = shift;
-	push @_CLIENT_CACHE, [ $self->app, 1, $self ];
-}
 
 # when any incoming data is received, this method is called.
 sub server_build {
@@ -210,7 +190,9 @@ sub get_app_targets {
 
 sub stateless {
 	my $self = shift;
-	if($self) {return $self->{stateless};}
+	my $state = shift;
+	$self->{stateless} = $state if (defined $state);
+	return $self->{stateless};
 }
 
 # When we're a client and we want to connect to a remote service
@@ -222,16 +204,12 @@ sub create {
 	$class = ref($class) || $class;
 
 	my $app = shift;
+        my $api_level = shift;
+	my $quiet = shift;
 
-
-	
-	if( my $thingy = OpenSRF::AppSession->find_client( $app ) ) {
-			$logger->debug( 
-				"AppSession returning existing client session for $app", DEBUG );
-			return $thingy;
-	} else {
-		$logger->debug( "AppSession creating new client session for $app", DEBUG );
-	}
+	$api_level = 1 if (!defined($api_level));
+			        
+	$logger->debug( "AppSession creating new client session for $app", DEBUG );
 
 	my $stateless = 0;
 	my $c = OpenSRF::Utils::SettingsClient->new();
@@ -262,16 +240,22 @@ sub create {
 			   state       => DISCONNECTED,#since we're init'ing
 			   session_id  => $sess_id,
 			   remote_id   => $r_id,
-			   api_level   => 1,
+			   raise_error   => $quiet ? 0 : 1,
+			   api_level   => $api_level,
 			   orig_remote_id   => $r_id,
 				peer_handle => $peer_handle,
 				session_threadTrace => 0,
 				stateless		=> $stateless,
 			 } => $class;
 
-	$self->client_cache();
-	$_CACHE{$sess_id} = $self;
-	return $self->find_client( $app );
+	return $_CACHE{$sess_id} = $self;
+}
+
+sub raise_remote_errors {
+	my $self = shift;
+	my $err = shift;
+	$self->{raise_error} = $err if (defined $err);
+	return $self->{raise_error};
 }
 
 sub api_level {
@@ -318,7 +302,6 @@ sub connect {
 
 	$self = $class->create($app, @_) if (!ref($self));
 
-
 	return undef unless ($self);
 
 	$self->{api_level} = $api_level;
@@ -326,6 +309,7 @@ sub connect {
 	$self->reset;
 	$self->state(CONNECTING);
 	$self->send('CONNECT', "");
+
 
 	# if we want to connect to settings, we may not have 
 	# any data for the settings client to work with...
@@ -354,6 +338,8 @@ sub connect {
 
 	return undef unless($self->state == CONNECTED);
 
+	$self->stateless(0);
+
 	return $self;
 }
 
@@ -361,12 +347,6 @@ sub finish {
 	my $self = shift;
 	if( ! $self->session_id ) {
 		return 0;
-	}
-	#$self->disconnect if ($self->endpoint == CLIENT);
-	for my $ses ( @_CLIENT_CACHE ) {
-		if ($ses->[2]->session_id eq $self->session_id) {
-			$ses->[1] = 1;
-		}
 	}
 }
 
@@ -403,12 +383,6 @@ sub kill_me {
 
 	$self->disconnect;
 	$logger->transport( "AppSession killing self: " . $self->session_id(), DEBUG );
-	my @a;
-	for my $ses ( @_CLIENT_CACHE ) {
-		push @a, $ses 
-			if ($ses->[2]->session_id ne $self->session_id);
-	}
-	@_CLIENT_CACHE = @a;
 	delete $_CACHE{$self->session_id};
 	delete($$self{$_}) for (keys %$self);
 }
@@ -423,12 +397,7 @@ sub disconnect {
 		}
 	}
 
-	if( $self->stateless and $self->state != CONNECTED ) {
-		$self->reset;
-		return;
-	}
-
-	unless( $self->state == DISCONNECTED ) {
+	if ( !$self->stateless and $self->state != DISCONNECTED ) {
 		$self->send('DISCONNECT', "") if ($self->endpoint == CLIENT);
 		$self->state( DISCONNECTED ); 
 	}

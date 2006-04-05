@@ -304,8 +304,10 @@ sub do_client {
 		# This should be changed to check the type of response (is it a connectException?, etc.)
 	}
 
-	if( $self->payload and $self->payload->isa( "OpenSRF::EX" ) ) { 
-		$self->payload->throw();
+	if( $self->payload and $self->payload->isa( "ERROR" ) ) { 
+		if ($session->raise_error) {
+			$self->payload->throw();
+		}
 	}
 
 	$log->debug("oilsMessage passing to Application: " . $self->type." : ".$session->remote_id );
