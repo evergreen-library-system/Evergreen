@@ -689,7 +689,7 @@ sub biblio_record_to_marc_html {
 }
 
 
-
+=head duplicate
 __PACKAGE__->register_method(
 	method	=> "retrieve_all_copy_locations",
 	api_name	=> "open-ils.search.config.copy_location.retrieve.all" );
@@ -704,6 +704,7 @@ sub retrieve_all_copy_locations {
 	}
 	return $shelving_locations;
 }
+=cut
 
 
 
