@@ -31,7 +31,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 
 sub initialize {
 	my $self = shift;
-	OpenILS::Application::Circ::Rules->initialize();
+	#OpenILS::Application::Circ::Rules->initialize();
 	OpenILS::Application::Circ::Circulate->initialize();
 }
 
