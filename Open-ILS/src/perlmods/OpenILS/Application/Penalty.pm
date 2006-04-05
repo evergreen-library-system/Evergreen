@@ -121,11 +121,6 @@ sub patron_penalty {
 
 	$patron = $$args{patron};
 
-	use JSON;
-	$logger->info("penalty: ".JSON->perl2JSON($patron));
-	$logger->info("penalty: ".$patron->profile);
-	$logger->info("penalty: ".$patron->usrname);
-
 	if(!$patron) {
 		( $patron, $evt ) = $U->fetch_user($$args{patronid});
 		return $evt if $evt;
