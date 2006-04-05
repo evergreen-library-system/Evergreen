@@ -258,6 +258,32 @@ For non-core config info, see the inline documentation within this file
 				</unix_config>
 			</opensrf.dbmath>
 
+
+			<!-- penalty server -->
+			<open-ils.penalty> 
+				<keepalive>3</keepalive>
+				<stateless>1</stateless>
+				<language>perl</language>
+				<implementation>OpenILS::Application::Penalty</implementation>
+				<max_requests>99</max_requests>
+				<unix_config>
+					<max_requests>1000</max_requests>
+					<unix_log>open-ils.penalty_unix.log</unix_log>
+					<unix_sock>open-ils.penalty_unix.sock</unix_sock>
+					<unix_pid>open-ils.penalty_unix.pid</unix_pid>
+					<min_children>5</min_children>
+					<max_children>25</max_children>
+					<min_spare_children>2</min_spare_children> 
+					<max_spare_children>5</max_spare_children>
+				</unix_config>
+				<app_settings>
+					<patron_penalty>patron_penalty.js</patron_penalty>
+					<script_path>/openils/var/penalty/</script_path>
+				</app_settings>
+			</open-ils.penalty>
+
+
+
 			<!-- Circulation server -->
 			<open-ils.circ> 
 				<keepalive>3</keepalive>
@@ -373,6 +399,7 @@ For non-core config info, see the inline documentation within this file
 				<appname>open-ils.cat</appname> 
 				<appname>open-ils.search</appname> 
 				<appname>open-ils.circ</appname> 
+				<appname>open-ils.penalty</appname> 
 				<appname>open-ils.actor</appname> 
 				<appname>open-ils.auth</appname> 
 				<appname>open-ils.storage</appname>  
