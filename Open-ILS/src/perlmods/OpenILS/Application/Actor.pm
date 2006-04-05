@@ -704,6 +704,7 @@ sub user_retrieve_by_barcode {
 	my ($user_obj, $evt) = $apputils->checkses($user_session);
 	return $evt if $evt;
 
+
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
 	# find the card with the given barcode
@@ -719,6 +720,10 @@ sub user_retrieve_by_barcode {
 
 	$card = $card->[0];
 	my $user = flesh_user($card->usr(), $session);
+
+	$evt = $U->check_perms($user_obj->id, $user->home_ou, 'VIEW_USER');
+	return $evt if $evt;
+
 	$session->disconnect();
 	if(!$user) { return OpenILS::Event->new( 'USER_NOT_FOUND' ); }
 	return $user;
