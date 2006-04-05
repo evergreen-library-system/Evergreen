@@ -240,7 +240,12 @@ circ.checkout.prototype = {
 			var permit = obj.network.request(
 				api.CHECKOUT_PERMIT.app,
 				api.CHECKOUT_PERMIT.method,
-				[ obj.session, params ]
+				[ obj.session, params ],
+				null,
+				{
+					'title' : 'Override Checkout Failure?',
+					'overridable_events' : [ 7004, 7006 ],
+				}
 			);
 
 			/**********************************************************************************************************************/

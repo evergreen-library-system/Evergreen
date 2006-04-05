@@ -21,8 +21,8 @@ util.network.prototype = {
 		return this.request(api[id].app,api[id].method,params,f);
 	},
 
-	'request' : function (app,name,params,f) {
-		var request =  this.bare_request(app,name,params,f);
+	'request' : function (app,name,params,f,o_params) {
+		var request =  this._request(app,name,params,f,o_params);
 		if (request) {
 			return request.getResultObject();
 		} else {
@@ -30,7 +30,7 @@ util.network.prototype = {
 		}
 	},
 
-	'bare_request' : function (app,name,params,f) {
+	'_request' : function (app,name,params,f,o_params) {
 		var obj = this;
 		try {
 			var sparams = js2JSON(params);
@@ -50,6 +50,9 @@ util.network.prototype = {
 								+ js2JSON(req.getResultObject()));
 							req = obj.rerequest_on_session_timeout(app,name,params,req);
 							req = obj.rerequest_on_perm_failure(app,name,params,req);
+							if (o_params) {
+								req = obj.rerequest_on_override(app,name,params,req,o_params);
+							}
 							f(req);
 						} catch(E) {
 							alert(E);
@@ -62,6 +65,9 @@ util.network.prototype = {
 				request.send(true);
 				request = obj.rerequest_on_session_timeout(app,name,params,request);
 				request = obj.rerequest_on_perm_failure(app,name,params,request);
+				if (o_params) {
+					request = obj.rerequest_on_override(app,name,params,request,o_params);
+				}
 				var result = request.getResultObject();
 				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + js2JSON(result));
 				return request;
@@ -94,7 +100,7 @@ util.network.prototype = {
 				if (data.temporary_session != '') {
 					data.session = data.temporary_session; data.stash('session');
 					params[0] = data.session;
-					req = obj.bare_request(app,name,params);
+					req = obj._request(app,name,params);
 				}
 			}
 		} catch(E) {
@@ -121,7 +127,7 @@ util.network.prototype = {
 				var data = new OpenILS.data(); data.init({'via':'stash'});
 				if (data.temporary_session != '') {
 					params[0] = data.temporary_session;
-					req = obj.bare_request(app,name,params);
+					req = obj._request(app,name,params);
 				}
 			}
 		} catch(E) {
@@ -129,6 +135,56 @@ util.network.prototype = {
 		}
 		return req;
 	},
+
+	'rerequest_on_override' : function (app,name,params,req,o_params) {
+		var obj = this;
+		try {
+			function override(r) {
+				try {
+					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><groupbox><caption label="Exceptions"/><grid><columns><column/><column/><column/></columns><rows>';
+					for (var i = 0; i < r.length; i++) {
+						xml += '<row style="color: red"><description>' + r[i].ilsevent + '</description><description>' + r[i].textcode + '</description><description>' +  (obj.error.get_ilsevent(r[i].ilsevent) ? obj.error.get_ilsevent(r[i].ilsevent) : "") + '</description></row>';
+					}
+					xml += '</rows></grid></groupbox><groupbox><caption label="Override"/><hbox><description>Force this action?</description><button accesskey="C" label="Cancel" name="fancy_cancel"/><button id="override" accesskey="O" label="Override" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
+					window.open(
+						'/xul/server/util/fancy_prompt.xul'
+						+ '?xml=' + window.escape(xml)
+						+ '&title=' + window.escape(o_params.title),
+						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+					);
+					JSAN.use('OpenILS.data');
+					var data = new OpenILS.data(); data.init({'via':'stash'});
+					if (data.fancy_prompt_data != '') {
+						req = obj._request(app,name + '.override',params);
+					}
+					return req;
+				} catch(E) {
+					alert(E);
+				}
+			}
+
+			var result = req.getResultObject();
+			if ( o_params.overridable_events.indexOf(result.ilsevent) != -1 ) {
+				req = override([result]);
+			} else {
+				var found_good = false; var found_bad = false;
+				for (var i = 0; i < result.length; i++) {
+					if (o_params.overridable_events.indexOf(result[i].ilsevent) != -1 ) {
+						found_good = true;
+					} else {
+						found_bad = true;
+					}
+				}
+				if (found_good && (!found_bad)) req = override(result);
+			}
+
+			return req;
+		} catch(E) {
+			throw(E);
+		}
+	},
+
 
 }
 
