@@ -119,8 +119,17 @@ sub patron_penalty {
 
 	$conn->respond_complete(1) if $$args{background};
 
-	( $patron, $evt ) = $U->fetch_user($$args{patronid});
-	return $evt if $evt;
+	$patron = $$args{patron};
+
+	use JSON;
+	$logger->info("penalty: ".JSON->perl2JSON($patron));
+	$logger->info("penalty: ".$patron->profile);
+	$logger->info("penalty: ".$patron->usrname);
+
+	if(!$patron) {
+		( $patron, $evt ) = $U->fetch_user($$args{patronid});
+		return $evt if $evt;
+	}
 
 	( $requestor, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
@@ -149,15 +158,20 @@ sub patron_penalty {
 
 	$logger->info("penalty: script returned fatal events [@fatals] and info events [@infos]");
 
+	$conn->respond_complete(
+		{ fatal_penalties => \@fatals, info_penalties => \@infos });
+
 	# - update the penalty info in the db if necessary
 	$evt = update_patron_penalties( 
 		patron    => $patron, 
 		penalties => $all, 
 		requestor => $requestor ) if $$args{update};
 
-	return $evt if $evt;
+	# - The caller won't know it failed, so log it
+	$logger->error("penalty: Error updating the patron ".
+		"penalties in the database: ".Dumper($evt)) if $evt;
 
-	return { fatal_penalties => \@fatals, info_penalties => \@infos };
+	return undef;
 }
 
 # --------------------------------------------------------------
