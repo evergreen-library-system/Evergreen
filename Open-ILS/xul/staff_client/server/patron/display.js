@@ -112,7 +112,7 @@ patron.display.prototype = {
 									'display_refresh' : function() {
 										obj.refresh_all();
 									},
-									'checkouts' : obj.patron.checkouts()
+									/* 'checkouts' : obj.patron.checkouts() */
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
@@ -129,7 +129,7 @@ patron.display.prototype = {
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									'holds' : obj.patron.hold_requests()
+									/* 'holds' : obj.patron.hold_requests() */
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
@@ -145,16 +145,16 @@ patron.display.prototype = {
 								{},
 								{
 									/* FIXME */
-									'bills' : obj.patron.bills,
+									/* 'bills' : obj.patron.bills, */
 									'display_refresh' : function() {
 										obj.refresh_all();
 									},
 									'on_bill' : function(b) {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										f.contentWindow.xulG.bills = b;
+										/* f.contentWindow.xulG.bills = b; */
 										/* FIXME */
-										obj.patron.bills = b;
-										obj.summary_window.g.summary.patron.bills = b;
+										/* obj.patron.bills = b;
+										obj.summary_window.g.summary.patron.bills = b; */
 										obj.summary_window.g.summary.controller.render('patron_bill');
 									}
 								}
