@@ -47,13 +47,13 @@ util.controller.prototype = {
 		}
 	},
 
-	'render' : function(id) {
+	'render' : function(id,param) {
 		for (var i in this.render_list) {
 			try {
 				if (id) {
-					if (id == this.render_list[i][0]) this.render_list[i][1]();
+					if (id == this.render_list[i][0]) this.render_list[i][1](param);
 				} else {
-					this.render_list[i][1]();
+					this.render_list[i][1](param);
 				}
 			} catch(E) {
 				var error = 'Problem in circ.checkout.render with\n' 
