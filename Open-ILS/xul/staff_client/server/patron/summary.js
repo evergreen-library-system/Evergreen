@@ -66,7 +66,7 @@ patron.summary.prototype = {
 								);
 								e.setAttribute('style','background-color: lime');
 								//FIXME//bills should become a virtual field
-								if (obj.patron.bills.length > 0)
+								if (obj.patron.bills > 0)
 									e.setAttribute('style','background-color: yellow');
 								if (obj.patron.standing() == 2)
 									e.setAttribute('style','background-color: lightred');
@@ -104,7 +104,7 @@ patron.summary.prototype = {
 							return function() { 
 								JSAN.use('util.money');
 								e.setAttribute('value',
-									util.money.cents_as_dollars(
+									util.money.sanitize(
 										obj.patron.credit_forward_balance()
 									)
 								);
@@ -116,15 +116,9 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								JSAN.use('util.money');
-								var total = 0;
 								//FIXME//adjust when .bills becomes a virtual field
-								for (var i = 0; i < obj.patron.bills.length; i++) {
-									total += util.money.dollars_float_to_cents_integer( 
-										obj.patron.bills[i].balance_owed() 
-									);
-								}
 								e.setAttribute('value',
-									util.money.cents_as_dollars( total )
+									util.money.sanitize( obj.patron.bills )
 								);
 							};
 						}
@@ -134,7 +128,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.checkouts().length	
+									obj.patron.checkouts().total	
 								);
 							};
 						}
@@ -143,17 +137,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								//FIXME//Get Bill to do this correctly on server side
-								JSAN.use('util.date');
-								var total = 0;
-								for (var i = 0; i < obj.patron.checkouts().length; i++) {
-									var circ = obj.patron.checkouts()[i];
-									var due_date = circ.due_date();
-									due_date = due_date.substr(0,4) 
-										+ due_date.substr(5,2) + due_date.substr(8,2);
-									var today = util.date.formatted_date( new Date() , '%Y%m%d' );
-									if (today > due_date) total++;
-								}
+								var total = obj.patron.checkouts().overdue;
 								e.setAttribute('value',
 									total
 								);
@@ -165,7 +149,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.hold_requests().length
+									obj.patron.hold_requests().total
 								);
 							};
 						}
@@ -174,76 +158,9 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								var total = 0;
-								for (var i = 0; i < obj.patron.hold_requests().length; i++) {
-									var hold = obj.patron.hold_requests()[i];
-									if (hold.capture_time()) total++;
-								}
 								e.setAttribute('value',
-									total
+									obj.patron.hold_requests().ready
 								);
-							};
-						}
-					],
-					'patron_surveys' : [
-						['render'],
-						function(e) {
-							return function() {
-								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								/*******************************************************************/
-								/* xul */
-								while(e.lastChild){e.removeChild(e.lastChild);} /* empty vbox */
-								var grid = document.createElement('grid'); e.appendChild(grid);
-								var cols = document.createElement('columns'); grid.appendChild(cols);
-								var c1 = document.createElement('column'); cols.appendChild(c1); c1.setAttribute('flex','1');
-								var c2 = document.createElement('column'); cols.appendChild(c2);
-								var rows = document.createElement('rows'); grid.appendChild(rows);
-								/*******************************************************************/
-								JSAN.use('util.date'); JSAN.use('util.functional');
-								var surveys = obj.OpenILS.data.list.my_asv;
-								var sr = obj.patron.survey_responses();
-								for (var i  = 0; i < surveys.length; i++) {
-									var survey = surveys[i];
-									/***********************************************************/
-									/* xul */
-									var row = document.createElement('row'); rows.appendChild(row);
-									row.setAttribute('style','border-bottom: dotted black thin');
-									var sname = document.createElement('label'); row.appendChild(sname);
-									sname.setAttribute('value',survey.name());
-									/***********************************************************/
-									var responses = sr[survey.id()];
-									/***********************************************************/
-									/* xul */
-									var vbox = document.createElement('vbox'); row.appendChild(vbox);
-									var sdate = document.createElement('label'); vbox.appendChild(sdate);
-									sdate.setAttribute('value','Not Taken');
-									/***********************************************************/
-									if (responses && responses.length > 0) {
-										var response = responses.pop(); // last response
-										var date;
-										if (response.effective_date()) {
-											date = util.date.formatted_date( response.effective_date(), '%D' );
-										} else {
-											date = util.date.formatted_date( response.answer_date(), '%D' );
-										}
-										/***************************************************/
-										/* xul */
-										sdate.setAttribute('value',date);
-										/***************************************************/
-										var answer = util.functional.find_id_object_in_list( // first answer
-											util.functional.find_id_object_in_list(
-												survey.questions(),
-												response.question()
-											).answers(),
-											response.answer()
-										).answer();
-										/***************************************************/
-										/* xul */
-										var ans = document.createElement('label'); vbox.appendChild(ans);
-										ans.setAttribute('value',answer);
-										/***************************************************/
-									}
-								}
 							};
 						}
 					],
@@ -529,9 +446,8 @@ patron.summary.prototype = {
 								[ obj.session, obj.barcode ]
 							);
 						} else if (obj.id && obj.id != 'null') {
-							robj = obj.network.request(
-								api.FM_AU_RETRIEVE_VIA_ID.app,
-								api.FM_AU_RETRIEVE_VIA_ID.method,
+							robj = obj.network.simple_request(
+								'FM_AU_RETRIEVE_VIA_ID',
 								[ obj.session, obj.id ]
 							);
 						} else {
@@ -575,9 +491,8 @@ patron.summary.prototype = {
 			chain.push(
 				function() {
 					try {
-						var bills = obj.network.request(
-							api.FM_MOBTS_HAVING_BALANCE.app,
-							api.FM_MOBTS_HAVING_BALANCE.method,
+						var bills = obj.network.simple_request(
+							'FM_MOBTS_TOTAL_HAVING_BALANCE',
 							[ obj.session, obj.patron.id() ]
 						);
 						//FIXME// obj.patron.bills( bills );
@@ -594,9 +509,8 @@ patron.summary.prototype = {
 			chain.push(
 				function() {
 					try {
-						var checkouts = obj.network.request(
-							api.FM_CIRC_RETRIEVE_VIA_USER.app,
-							api.FM_CIRC_RETRIEVE_VIA_USER.method,
+						var checkouts = obj.network.simple_request(
+							'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.checkouts( checkouts );
@@ -612,9 +526,8 @@ patron.summary.prototype = {
 			chain.push(
 				function() {
 					try {
-						var holds = obj.network.request(
-							api.FM_AHR_RETRIEVE.app,
-							api.FM_AHR_RETRIEVE.method,
+						var holds = obj.network.simple_request(
+							'FM_AHR_COUNT_RETRIEVE',
 							[ obj.session, obj.patron.id() ]
 						);
 						obj.patron.hold_requests( holds );
@@ -626,6 +539,7 @@ patron.summary.prototype = {
 				}
 			);
 
+			/*
 			// Retrieve the survey responses for required surveys
 			chain.push(
 				function() {
@@ -648,6 +562,7 @@ patron.summary.prototype = {
 					}
 				}
 			);
+			*/
 
 			// Update the screen
 			chain.push( function() { obj.controller.render(); } );
