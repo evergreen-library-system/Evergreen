@@ -4,7 +4,7 @@ if (typeof util == 'undefined') var util = {};
 util.money = {};
 
 util.money.EXPORT_OK	= [ 
-	'dollars_float_to_cents_integer', 'cents_as_dollars'
+	'sanitize', 'dollars_float_to_cents_integer', 'cents_as_dollars'
 ];
 util.money.EXPORT_TAGS	= { ':all' : util.money.EXPORT_OK };
 
