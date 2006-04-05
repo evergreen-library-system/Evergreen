@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="fancy_prompt_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for fancy_prompt.xul');
+
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+				g.data.fancy_prompt_data = ''; g.data.stash('fancy_prompt_data');
+				g.data.fancy_prompt_data = {};
+
+				g.cgi = new CGI();
+
+				var parser = new DOMParser();
+				var doc = parser.parseFromString( g.cgi.param('xml'), 'text/xml' );
+				var node = doc.documentElement;
+				if (node) document.getElementById('fancy_prompt_main').appendChild(node);
+
+				var nl = document.getElementsByAttribute('name','fancy_submit');
+				for (var i = 0; i < nl.length; i++) {
+					nl[i].addEventListener('command',fancy_save,false);
+				}
+
+				var nl = document.getElementsByAttribute('name','fancy_cancel');
+				for (var i = 0; i < nl.length; i++) {
+					nl[i].addEventListener('command',function(ev) { window.close(); },false);
+				}
+
+				if (g.cgi.param('title')) document.title = g.cgi.param('title');
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\nfancy_prompt.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function fancy_save(ev) {
+			g.data.fancy_prompt_data[ ev.target.id ] = ev.target.value;
+			var nl = document.getElementsByAttribute('name','fancy_data');
+			for (var i = 0; i < nl.length; i++) {
+				g.data.fancy_prompt_data[ nl[i].id ] = nl[i].getAttribute('value');
+			}
+			g.data.stash('fancy_prompt_data');
+			window.close();
+		}
+	]]>
+	</script>
+
+	<vbox id="fancy_prompt_main">
+	</vbox>
+</window>
+
