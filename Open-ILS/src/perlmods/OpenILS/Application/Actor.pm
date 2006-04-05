@@ -1591,7 +1591,7 @@ sub checkedout_count {
 		my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
 		my $due = $due_dt->epoch;
 
-		if ($due < time) {
+		if ($due < DateTime->today->epoch) {
 			push @overdue, $c;
 		}
 	}
