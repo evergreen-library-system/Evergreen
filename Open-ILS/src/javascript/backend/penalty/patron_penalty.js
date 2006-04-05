@@ -1,7 +1,7 @@
 function go() {
 
 /* load the lib script */
-load_lib('circ_lib.js');
+load_lib('../circ/circ_lib.js');
 
 
 /* collect some useful variables */
@@ -26,12 +26,6 @@ if( patronProfile == 'patrons' && patronItemsOut > 10 )
 
 if( patronProfile == 'staff' && patronItemsOut > 30 )
 	result.fatalEvents.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
-
-
-/* test */
-result.fatalEvents.push('TEST_FATAL_EVENT');
-result.infoEvents.push('TEST_INFO_EVENT');
-/* ---- */
 
 
 } go();

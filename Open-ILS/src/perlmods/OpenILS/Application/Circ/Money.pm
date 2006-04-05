@@ -63,7 +63,8 @@ sub make_payments {
 	my $session = $apputils->start_db_session;
 	my $type		= $payments->{payment_type};
 	my $credit	= $payments->{patron_credit};
-	my $drawer	= $payments->{cash_drawer};
+	#my $drawer	= $payments->{cash_drawer};
+	my $drawer	= $user->wsid;
 	my $userid	= $payments->{userid};
 	my $note		= $payments->{note};
 	my $cc_type = $payments->{cc_type} || 'n/a';
@@ -128,9 +129,20 @@ sub make_payments {
 	_update_patron_credit( $session, $userid, $credit );
 
 	$apputils->commit_db_session($session);
-	return 1;
-		
+
+	$client->respond_complete(1);	
+
+	# ------------------------------------------------------------------------------
+	# Update the patron penalty info in the DB
+	# ------------------------------------------------------------------------------
+	$U->update_patron_penalties( 
+		authtoken => $login,
+		patronid  => $userid,
+	);
+
+	return undef;
 }
+
 
 sub _update_patron_credit {
 	my( $session, $userid, $credit ) = @_;

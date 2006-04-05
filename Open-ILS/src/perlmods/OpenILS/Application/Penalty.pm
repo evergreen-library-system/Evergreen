@@ -119,9 +119,11 @@ sub patron_penalty {
 
 	$conn->respond_complete(1) if $$args{background};
 
-	$patron = $$args{patron};
+	if( $patron = $$args{patron} ) { # - unfless if necessary
+		$patron->home_ou( $patron->home_ou->id ) if ref($patron->home_ou);
+		$patron->profile( $patron->profile->id ) if ref($patron->profile);
 
-	if(!$patron) {
+	} else {
 		( $patron, $evt ) = $U->fetch_user($$args{patronid});
 		return $evt if $evt;
 	}
@@ -143,8 +145,8 @@ sub patron_penalty {
 
 	# - Load up the script and run it
 	$runner->add_path($path);
-	$runner->load($script);
-	$runner->run or throw OpenSRF::EX::ERROR ("Patron Penalty Script Died: $@");
+	$runner->run($script) or 
+		throw OpenSRF::EX::ERROR ("Patron Penalty Script Died: $@");
 
 	# array items are returned as a comma-separated list of strings
 	my @fatals = split( /,/, $runner->retrieve($fatal_key) );

@@ -9,12 +9,14 @@ function scratchClear()		{ for( var o in __SCRATCH ) __SCRATCH[o] = null; }
 
 
 /* -- Copy functions ----------------------------------------------------- */
-if( environment.copy ) {
-	environment.copy.fetchHolds = function() {
-		var key = scratchKey();
-		environment.copy.__OILS_FUNC_fetch_hold(scratchPad(key));
-		var val = getScratch(key);
-		return (val) ? val : null;
-	}
-} 
+try {
+	if( environment.copy ) {
+		environment.copy.fetchHolds = function() {
+			var key = scratchKey();
+			environment.copy.__OILS_FUNC_fetch_hold(scratchPad(key));
+			var val = getScratch(key);
+			return (val) ? val : null;
+		}
+	} 
+} catch(e) {}
 

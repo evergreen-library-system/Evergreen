@@ -4,6 +4,7 @@ use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use Data::Dumper;
 use OpenSRF::Utils::Cache;
+use OpenSRF::AppSession;
 use Digest::MD5 qw(md5_hex);
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Application::AppUtils;
@@ -115,12 +116,14 @@ sub _ctx_add_patron_objects {
 	my( $ctx, %params) = @_;
 	$U->logmark;
 
-	if(!defined($cache{patron_standings})) {
-		$cache{patron_standings} = $U->fetch_patron_standings();
-		$cache{group_tree} = $U->fetch_permission_group_tree();
-	}
+	# - patron standings are now handled in the penalty server...
 
-	$ctx->{patron_standings} = $cache{patron_standings};
+	#if(!defined($cache{patron_standings})) {
+	#	$cache{patron_standings} = $U->fetch_patron_standings();
+	#}
+	#$ctx->{patron_standings} = $cache{patron_standings};
+
+	$cache{group_tree} = $U->fetch_permission_group_tree() unless $cache{group_tree};
 	$ctx->{group_tree} = $cache{group_tree};
 
 	$ctx->{patron_circ_summary} = 
@@ -216,14 +219,14 @@ sub _doctor_patron_object {
 	my $patron = $ctx->{patron} || return undef;
 
 	# push the standing object into the patron
-	if(ref($ctx->{patron_standings})) {
-		for my $s (@{$ctx->{patron_standings}}) {
-			if( $s->id eq $ctx->{patron}->standing ) {
-				$patron->standing($s);
-				$logger->debug("Set patron standing to ". $s->value);
-			}
-		}
-	}
+#	if(ref($ctx->{patron_standings})) {
+#		for my $s (@{$ctx->{patron_standings}}) {
+#			if( $s->id eq $ctx->{patron}->standing ) {
+#				$patron->standing($s);
+#				$logger->debug("Set patron standing to ". $s->value);
+#			}
+#		}
+#	}
 
 	# set the patron ptofile to the profile name
 	$patron->profile( _get_patron_profile( 
@@ -327,10 +330,10 @@ sub _build_circ_script_runner {
 		$runner->insert('environment.isNonCat', undef);
 	}
 
-	if(ref($ctx->{patron_circ_summary})) {
-		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
-		$runner->insert( 'environment.patronFines', $ctx->{patron_circ_summary}->[1], 1 );
-	}
+#	if(ref($ctx->{patron_circ_summary})) {
+#		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
+#		$runner->insert( 'environment.patronFines', $ctx->{patron_circ_summary}->[1], 1 );
+#	}
 
 	$ctx->{runner} = $runner;
 	return $runner;
@@ -398,12 +401,14 @@ sub permit_circ {
 			patron							=> $patron, 
 			requestor						=> $requestor, 
 			type								=> 'circ',
-			fetch_patron_circ_summary	=> 1,
+			#fetch_patron_circ_summary	=> 1,
 			fetch_copy_statuses			=> 1, 
 			fetch_copy_locations			=> 1, 
 			);
 		return $evt if $evt;
 	}
+
+	$ctx->{authtoken} = $authtoken;
 
 	if( !$ctx->{ishold} and !$__isrenewal and $ctx->{copy} ) {
 		($circ, $evt) = $U->fetch_open_circulation($ctx->{copy}->id);
@@ -511,35 +516,25 @@ sub check_title_hold {
 }
 
 
-
 # Runs the patron and copy permit scripts
 # if this is a non-cat circulation, the copy permit script 
 # is not run
 sub _run_permit_scripts {
+
 	my $ctx			= shift;
 	my $runner		= $ctx->{runner};
 	my $patronid	= $ctx->{patron}->id;
 	my $barcode		= ($ctx->{copy}) ? $ctx->{copy}->barcode : undef;
 	my $key			= $ctx->{permit_key};
-	$U->logmark;
 
-	$runner->load($scripts{circ_permit_patron});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
+	my $penalties = $U->update_patron_penalties( 
+		authtoken => $ctx->{authtoken}, 
+		patron    => $ctx->{patron} 
+	);
 
-	#my $evtname = $runner->retrieve('result.event');
+	$penalties = $penalties->{fatal_penalties};
 
-	# ---------------------------------------------------------------------
-	# Capture all of the patron permit events
-	# ---------------------------------------------------------------------
-	my $patron_events = $runner->retrieve('result.events');
-	$patron_events = [ split(/,/, $patron_events) ]; 
-	#$ctx->{circ_permit_patron_events} = $patron_events;
-
-	#$logger->activity("circ_permit_patron for user $patronid returned event: $evtname");
-	$logger->activity("circ_permit_patron for user $patronid returned events: @$patron_events");
-
-	#return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
-
+	$logger->info("circ patron penalties user $patronid: @$penalties");
 
 	if( $ctx->{noncat} ) {
 		$logger->debug("Exiting circ permit early because item is a non-cataloged item");
@@ -558,9 +553,6 @@ sub _run_permit_scripts {
 
 	$runner->load($scripts{circ_permit_copy});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
-	#$evtname = $runner->retrieve('result.event');
-	#$logger->activity("circ_permit_copy for user $patronid ".
-		#"and copy $barcode returned event: $evtname");
 
 	# ---------------------------------------------------------------------
 	# Capture all of the copy permit events
@@ -568,15 +560,15 @@ sub _run_permit_scripts {
 	my $copy_events = $runner->retrieve('result.events');
 	$copy_events = [ split(/,/, $copy_events) ]; 
 	$ctx->{circ_permit_copy_events} = $copy_events;
-	$logger->activity("circ_permit_copy for copy $barcode returned events: @$copy_events");
+	$logger->activity("circ_permit_copy for copy ".
+		"$barcode returned events: @$copy_events") if @$copy_events;
 
-	#return OpenILS::Event->new($evtname, payload => $key) if( $evtname eq 'SUCCESS' );
 	my @allevents;
-	push( @allevents, OpenILS::Event->new($_)) for @$patron_events;
+	push( @allevents, OpenILS::Event->new($_)) for @$penalties;
 	push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
 
 	return OpenILS::Event->new('SUCCESS', payload => $key) 
-		unless (@$copy_events or @$patron_events);
+		unless (@$copy_events or @$penalties);
 
 	# uniquify the events
 	my %hash = map { ($_->{ilsevent} => $_) } @allevents;
@@ -680,7 +672,7 @@ sub checkout {
 			requestor						=> $requestor, 
 			session							=> $U->start_db_session(),
 			type								=> 'circ',
-			fetch_patron_circ_summary	=> 1,
+			#fetch_patron_circ_summary	=> 1,
 			fetch_copy_statuses			=> 1, 
 			fetch_copy_locations			=> 1, 
 			);
@@ -724,9 +716,22 @@ sub checkout {
 	return $evt if $evt;
 
 
-	$logger->debug("Checkin committing objects with session thread trace: ".$ctx->{session}->session_id);
+	$logger->debug("Checkout committing objects with session thread trace: ".$ctx->{session}->session_id);
 	$U->commit_db_session($ctx->{session});
 	my $record = $U->record_to_mvr($ctx->{title}) unless $ctx->{precat};
+
+	$logger->activity("user ".$requestor->id." successfully checked out item ".
+		$ctx->{copy}->barcode." to user ".$ctx->{patron}->id );
+
+
+	# ------------------------------------------------------------------------------
+	# Update the patron penalty info in the DB
+	# ------------------------------------------------------------------------------
+	$U->update_patron_penalties( 
+		authtoken => $authtoken, 
+		patron    => $ctx->{patron} ,
+		background	=> 1,
+	);
 
 	return OpenILS::Event->new('SUCCESS', 
 		payload	=> { 
@@ -734,7 +739,8 @@ sub checkout {
 			circ					=> $ctx->{circ},
 			record				=> $record,
 			holds_fulfilled	=> $holds,
-		} );
+		} 
+	)
 }
 
 
@@ -1035,7 +1041,7 @@ __PACKAGE__->register_method(
 );
 
 sub generic_receive {
-	my( $self, $connection, $authtoken, $params ) = @_;
+	my( $self, $conn, $authtoken, $params ) = @_;
 	my( $ctx, $requestor, $evt );
 
 	( $requestor, $evt ) = $U->checkses($authtoken) if $__isrenewal;
@@ -1066,7 +1072,16 @@ sub generic_receive {
 	$logger->info("Checkin copy called by user ".
 		$requestor->id." for copy ".$copy->id);
 
-	return $self->checkin_do_receive($connection, $ctx);
+	# ------------------------------------------------------------------------------
+	# Update the patron penalty info in the DB
+	# ------------------------------------------------------------------------------
+	$U->update_patron_penalties( 
+		authtoken => $authtoken, 
+		patron    => $ctx->{patron},
+		background => 1
+	);
+
+	return $self->checkin_do_receive($conn, $ctx);
 }
 
 sub checkin_do_receive {
@@ -1182,8 +1197,6 @@ sub checkin_do_receive {
 		}
 	}
 
-	$logger->info("Copy checkin finished with event: ".$evt->{textcode});
-
 	if(!$change) {
 
 		$evt = OpenILS::Event->new('NO_CHANGE');
@@ -1194,6 +1207,9 @@ sub checkin_do_receive {
 
 		$U->commit_db_session($session);
 	}
+
+	$logger->activity("checkin by user ".$requestor->id." on item ".
+		$ctx->{copy}->barcode." completed with event ".$evt->{textcode});
 
 	return _checkin_flesh_event($ctx, $evt);
 }
@@ -1234,6 +1250,7 @@ sub _checkin_check_copy_status {
 	my $copy = shift;
 	my $stat = (ref($copy->status)) ? $copy->status->id : $copy->status;
 	my $evt = OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
+	$logger->info("checking copy status id is ".$stat);
 	return $evt if ($stat == $U->copy_status_from_name('lost')->id);
 	return $evt if ($stat == $U->copy_status_from_name('missing')->id);
 	return undef;
@@ -1457,7 +1474,7 @@ sub renew {
 		requestor						=> $requestor, 
 		patron							=> $patron, 
 		type								=> 'circ',
-		fetch_patron_circ_summary	=> 1,
+		#fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		);
@@ -1489,7 +1506,7 @@ sub renew {
 		requestor						=> $requestor, 
 		patron							=> $patron, 
 		type								=> 'circ',
-		fetch_patron_circ_summary	=> 1,
+		#fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		);
@@ -1520,6 +1537,9 @@ sub renew {
 	# checkout the item again
 	$evt = $self->checkout($client, $authtoken, $params );
 
+	$logger->activity("user ".$requestor->id." renewl of item ".
+		$ctx->{copy}->barcode." completed with event ".$evt->{textcode});
+
 	$__isrenewal = 0;
 	return $evt;
 }
@@ -1541,18 +1561,16 @@ sub _run_renew_scripts {
 
 	$runner->load($scripts{circ_permit_renew});
 	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
-	#my $evtname = $runner->retrieve('result.event');
-	#$logger->activity("circ_permit_renew for user ".$ctx->{patron}->id." returned event: $evtname");
 
 	my $events = $runner->retrieve('result.events');
 	$events = [ split(/,/, $events) ]; 
-	$logger->activity("circ_permit_renew for user ".$ctx->{patron}->id." returned events: @$events");
+	$logger->activity("circ_permit_renew for user ".
+		$ctx->{patron}->id." returned events: @$events") if @$events;
 
 	my @allevents;
 	push( @allevents, OpenILS::Event->new($_)) for @$events;
 	return \@allevents if  @allevents;
 
-	#return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 	return undef;
 }
 
