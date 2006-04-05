@@ -371,11 +371,19 @@ __PACKAGE__->register_method(
 		@return The event that occurred during the permit check.  
 	/);
 
+__PACKAGE__->register_method (
+	method		=> 'permit_circ',
+	api_name		=> 'open-ils.circ.checkout.permit.override',
+	signature	=> q/@see open-ils.circ.checkout.permit/,
+);
+
 sub permit_circ {
 	my( $self, $client, $authtoken, $params ) = @_;
 	$U->logmark;
 
 	my ( $requestor, $patron, $ctx, $evt, $circ );
+
+	my $override = ($self->api_name =~ /override/) ? 1 : 0;
 
 	# check permisson of the requestor
 	( $requestor, $patron, $evt ) = 
@@ -402,7 +410,34 @@ sub permit_circ {
 		return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS') if $circ;
 	}
 
-	return _run_permit_scripts($ctx);
+
+	$ctx->{permit_key} = _cache_permit_key();
+	my $events = _run_permit_scripts($ctx);
+
+	if( $override ) {
+		$evt = override_events($requestor, $requestor->ws_ou, $events);
+		return $evt if $evt;
+		return OpenILS::Event->new('SUCCESS', payload => $ctx->{permit_key} );
+	}
+
+	return $events;
+}
+
+sub override_events {
+
+	my( $requestor, $org, $events ) = @_;
+	$events = [ $events ] unless ref($events) eq 'ARRAY';
+	my @failed;
+
+	for my $e (@$events) {
+		my $tc = $e->{textcode};
+		next if $tc eq 'SUCCESS';
+		my $ov = "$tc.override";
+		my $evt = $U->check_perms( $requestor->id, $org, $ov );
+		return $evt if $evt;
+	}
+
+	return undef;
 }
 
 
@@ -485,6 +520,7 @@ sub _run_permit_scripts {
 	my $runner		= $ctx->{runner};
 	my $patronid	= $ctx->{patron}->id;
 	my $barcode		= ($ctx->{copy}) ? $ctx->{copy}->barcode : undef;
+	my $key			= $ctx->{permit_key};
 	$U->logmark;
 
 	$runner->load($scripts{circ_permit_patron});
@@ -504,7 +540,6 @@ sub _run_permit_scripts {
 
 	#return OpenILS::Event->new($evtname) if $evtname ne 'SUCCESS';
 
-	my $key = _cache_permit_key();
 
 	if( $ctx->{noncat} ) {
 		$logger->debug("Exiting circ permit early because item is a non-cataloged item");
