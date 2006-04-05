@@ -398,6 +398,14 @@ sub biblio_multi_search_full_rec {
 				  LIMIT 1
 			)) )
 		RANK
+	} elsif (lc($sort) eq 'create_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT create_date FROM $br_table rbr WHERE rbr.id = f.record)) )
+		RANK
+	} elsif (lc($sort) eq 'edit_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT edit_date FROM $br_table rbr WHERE rbr.id = f.record)) )
+		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
@@ -1009,6 +1017,14 @@ sub postfilter_search_class_fts {
 				  LIMIT 1
 			)) )
 		RANK
+	} elsif (lc($sort) eq 'create_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT create_date FROM $br_table rbr WHERE rbr.id = mr.master_record)) )
+		RANK
+	} elsif (lc($sort) eq 'edit_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT edit_date FROM $br_table rbr WHERE rbr.id = mr.master_record)) )
+		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
@@ -1399,10 +1415,6 @@ sub postfilter_search_multi_class_fts {
 	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
 
-	if (lc($sort) ne 'pubdate' and lc($sort) ne 'title' and lc($sort) ne 'author') {
-		push @bonus_values, @bonus_values;
-	}
-
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
 	$relevance = "SUM( ($relevance) * ($bonuses) )";
@@ -1419,6 +1431,14 @@ sub postfilter_search_multi_class_fts {
 					AND frp.subfield = 'c'
 				  LIMIT 1
 			)) )
+		RANK
+	} elsif (lc($sort) eq 'create_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT create_date FROM $br_table rbr WHERE rbr.id = mr.master_record)) )
+		RANK
+	} elsif (lc($sort) eq 'edit_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT edit_date FROM $br_table rbr WHERE rbr.id = mr.master_record)) )
 		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
@@ -1443,6 +1463,9 @@ sub postfilter_search_multi_class_fts {
 				  LIMIT 1
 			)) )
 		RANK
+	} else {
+		push @bonus_values, @bonus_values;
+		$sort = undef;
 	}
 
 
@@ -1780,9 +1803,6 @@ sub biblio_search_multi_class_fts {
 	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
 
-	if (lc($sort) ne 'pubdate' and lc($sort) ne 'title' and lc($sort) ne 'author') {
-		push @bonus_values, @bonus_values;
-	}
 
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
@@ -1800,6 +1820,14 @@ sub biblio_search_multi_class_fts {
 					AND frp.subfield = 'c'
 				  LIMIT 1
 			)) )
+		RANK
+	} elsif (lc($sort) eq 'create_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT create_date FROM $br_table rbr WHERE rbr.id = b.id)) )
+		RANK
+	} elsif (lc($sort) eq 'edit_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT edit_date FROM $br_table rbr WHERE rbr.id = b.id)) )
 		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
@@ -1824,6 +1852,9 @@ sub biblio_search_multi_class_fts {
 				  LIMIT 1
 			)) )
 		RANK
+	} else {
+		push @bonus_values, @bonus_values;
+		$sort = undef;
 	}
 
 
@@ -2034,6 +2065,14 @@ sub postfilter_Z_search_class_fts {
 				  	AND frp.tag = '260'
 					AND frp.subfield = 'c'
 			)
+		RANK
+	} elsif (lc($sort) eq 'create_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT create_date FROM $br_table rbr WHERE rbr.id = f.source)) )
+		RANK
+	} elsif (lc($sort) eq 'edit_date') {
+		$rank = <<"		RANK";
+			( FIRST (( SELECT edit_date FROM $br_table rbr WHERE rbr.id = f.source)) )
 		RANK
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
