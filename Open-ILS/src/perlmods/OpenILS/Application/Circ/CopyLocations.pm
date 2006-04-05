@@ -23,10 +23,13 @@ __PACKAGE__->register_method(
 		/);
 
 sub cl_retrieve_all {
-	my( $self, $client, $authtoken, $orgId ) = @_;
-	my( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
-	$orgId = defined($orgId) ? $orgId : $requestor->home_ou;
+	my( $self, $client, $orgId ) = @_;
+
+	if(!$orgId) {
+		my $otree = $U->get_org_tree();
+		$orgId = $otree->id;
+	}
+
 	$logger->debug("Fetching ranged copy location set for org $orgId");
 	return $U->storagereq(
 		'open-ils.storage.ranged.asset.copy_location.retrieve.atomic', $orgId);
