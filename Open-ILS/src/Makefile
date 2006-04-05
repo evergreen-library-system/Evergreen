@@ -16,7 +16,10 @@ web-install:	webcore-install autojs-install mod_ils_rest_gateway-install  mod_xm
 
 circ_rules-install:
 	@echo $@
+	mkdir -p $(CIRCRULESDIR)
+	mkdir -p $(PENALTYRULESDIR)
 	cp javascript/backend/circ/*.js $(CIRCRULESDIR)
+	cp javascript/backend/penalty/*.js $(PENALTYRULESDIR)
 
 
 # -----------------------------------------------------------------------------------
