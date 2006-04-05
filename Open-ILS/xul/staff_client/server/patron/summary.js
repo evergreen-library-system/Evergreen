@@ -115,10 +115,18 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								JSAN.use('util.money');
-								//FIXME//adjust when .bills becomes a virtual field
-								e.setAttribute('value',
-									util.money.sanitize( obj.patron.bills )
+								e.setAttribute('value','...');
+								obj.network.simple_request(
+									'FM_MOBTS_TOTAL_HAVING_BALANCE',
+									[ obj.session, obj.patron.id() ],
+									function(req) {
+										JSAN.use('util.money');
+										e.setAttribute('value',
+											util.money.sanitize( 
+												req.getResultObject() 
+											)
+										);
+									}
 								);
 							};
 						}
@@ -127,8 +135,22 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
-									obj.patron.checkouts().total	
+								e.setAttribute('value','...');
+								var e2 = document.getElementById(
+									'patron_overdue'
+								);
+								if (e2) e2.setAttribute('value','...');
+								obj.network.simple_request(
+									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
+									[ obj.session, obj.patron.id() ],
+									function(req) {
+										e.setAttribute('value',
+											req.getResultObject().total	
+										);
+										if (e2) e2.setAttribute('value',
+											req.getResultObject().overdue	
+										);
+									}
 								);
 							};
 						}
@@ -137,10 +159,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								var total = obj.patron.checkouts().overdue;
-								e.setAttribute('value',
-									total
-								);
+								/* handled by 'patron_checkouts' */
 							};
 						}
 					],
@@ -148,8 +167,20 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
-									obj.patron.hold_requests().total
+								e.setAttribute('value','...');
+								var e2 = document.getElementById('patron_holds_available');
+								if (e2) e2.setAttribute('value','...');
+								obj.network.simple_request(
+									'FM_AHR_COUNT_RETRIEVE',
+									[ obj.session, obj.patron.id() ],
+									function(req) {
+										e.setAttribute('value',
+											req.getResultObject().total
+										);
+										if (e2) e2.setAttribute('value',
+											req.getResultObject().ready
+										);
+									}
 								);
 							};
 						}
@@ -158,9 +189,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
-									obj.patron.hold_requests().ready
-								);
+								/* handled by 'patron_holds' */
 							};
 						}
 					],
@@ -479,58 +508,6 @@ patron.summary.prototype = {
 							throw('result == false');
 						}
 
-					} catch(E) {
-						var error = ('patron.summary.retrieve : ' + js2JSON(E));
-						obj.error.sdump('D_ERROR',error);
-						throw(error);
-					}
-				}
-			);
-
-			// Retrieve the bills
-			chain.push(
-				function() {
-					try {
-						var bills = obj.network.simple_request(
-							'FM_MOBTS_TOTAL_HAVING_BALANCE',
-							[ obj.session, obj.patron.id() ]
-						);
-						//FIXME// obj.patron.bills( bills );
-						obj.patron.bills = bills;
-					} catch(E) {
-						var error = ('patron.summary.retrieve : ' + js2JSON(E));
-						obj.error.sdump('D_ERROR',error);
-						throw(error);
-					}
-				}
-			);
-
-			// Retrieve the checkouts
-			chain.push(
-				function() {
-					try {
-						var checkouts = obj.network.simple_request(
-							'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
-							[ obj.session, obj.patron.id() ]
-						);
-						obj.patron.checkouts( checkouts );
-					} catch(E) {
-						var error = ('patron.summary.retrieve : ' + js2JSON(E));
-						obj.error.sdump('D_ERROR',error);
-						throw(error);
-					}
-				}
-			);
-
-			// Retrieve the holds
-			chain.push(
-				function() {
-					try {
-						var holds = obj.network.simple_request(
-							'FM_AHR_COUNT_RETRIEVE',
-							[ obj.session, obj.patron.id() ]
-						);
-						obj.patron.hold_requests( holds );
 					} catch(E) {
 						var error = ('patron.summary.retrieve : ' + js2JSON(E));
 						obj.error.sdump('D_ERROR',error);
