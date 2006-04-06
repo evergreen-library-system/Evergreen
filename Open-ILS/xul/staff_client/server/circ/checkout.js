@@ -93,15 +93,32 @@ circ.checkout.prototype = {
 					'cmd_checkout_submit' : [
 						['command'],
 						function() {
-							var params = {};
+							var params = {}; var count = 1;
 							if (obj.controller.view.checkout_menu.value == 'barcode' ||
 								obj.controller.view.checkout_menu.value == '') {
 								params.barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
 							} else {
 								params.noncat = 1;
 								params.noncat_type = obj.controller.view.checkout_menu.value;
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								var r = window.prompt('Enter the number of ' + obj.data.hash.cnct[ params.noncat_type].name() + ' circulating:','1','Non-cataloged Items');
+								if (r) {
+									count = parseInt(r);
+									if (count > 0) {
+										if (count > 20) {
+											r = obj.error.yns_alert('Are you sure you want to circulate ' + count + ' ' + obj.data.hash.cnct[ params.noncat_type].name() + '?','Non-cataloged Circulation','Yes','No',null,'Check here to confirm this message.');
+											if (r != 0) return;
+										}
+									} else {
+										return;
+									}
+								} else {
+									return;
+								}
 							}
-							obj.checkout( params );
+							for (var i = 0; i < count; i++) {
+								obj.checkout( params );
+							}
 						}
 					],
 					'cmd_checkout_print' : [
