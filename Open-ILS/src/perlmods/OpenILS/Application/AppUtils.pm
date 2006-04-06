@@ -967,7 +967,6 @@ sub update_patron_penalties {
 	return $self->simplereq(
 		'open-ils.penalty',
 		'open-ils.penalty.patron_penalty.calculate', 
-		$args{authtoken}, 
 		{ update => 1, %args }
 	);
 }

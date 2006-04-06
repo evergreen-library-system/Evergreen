@@ -91,8 +91,7 @@ __PACKAGE__->register_method (
 	api_name	 => 'open-ils.penalty.patron_penalty.calculate',
 	signature => q/
 		Calculates the patron's standing penalties
-		@param authtoken The login session key
-		@params args An object of named params including:
+		@param args An object of named params including:
 			patronid The id of the patron
 			update True if this call should update the database
 			background True if this call should return immediately,
@@ -113,9 +112,9 @@ __PACKAGE__->register_method (
 #		know for sure if the call even succeeded. 
 # --------------------------------------------------------------
 sub patron_penalty {
-	my( $self, $conn, $authtoken, $args ) = @_;
+	my( $self, $conn, $args ) = @_;
 	
-	my( $requestor, $patron, $evt );
+	my( $patron, $evt );
 
 	$conn->respond_complete(1) if $$args{background};
 
@@ -127,12 +126,6 @@ sub patron_penalty {
 		( $patron, $evt ) = $U->fetch_user($$args{patronid});
 		return $evt if $evt;
 	}
-
-	( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
-
-	$evt = $U->check_perms( $requestor->id,  $patron->home_ou, 'VIEW_USER');
-	return $evt if $evt;
 
 	# - fetch the circulation summary info for the user
 	my $summary = $U->fetch_patron_circ_summary($patron->id);
@@ -161,8 +154,7 @@ sub patron_penalty {
 	# - update the penalty info in the db if necessary
 	$evt = update_patron_penalties( 
 		patron    => $patron, 
-		penalties => $all, 
-		requestor => $requestor ) if $$args{update};
+		penalties => $all ) if $$args{update};
 
 	# - The caller won't know it failed, so log it
 	$logger->error("penalty: Error updating the patron ".
@@ -181,7 +173,6 @@ sub update_patron_penalties {
 	my %args      = @_;
 	my $patron    = $args{patron};
 	my $penalties = $args{penalties};
-	my $requestor = $args{requestor};
 
 	my $session   = $U->start_db_session();
 
@@ -191,7 +182,6 @@ sub update_patron_penalties {
 		'user_standing_penalty.search.usr.atomic', $patron->id )->gather(1);
 
 	my @deleted;
-	my $reqid = $requestor->id;
 	my $patronid = $patron->id;
 
 	# If an existing penalty is not in the newly generated 
@@ -199,7 +189,7 @@ sub update_patron_penalties {
 	for my $e (@$existing) {
 		if( ! grep { $_ eq $e->penalty_type } @$penalties ) {
 
-			$logger->activity("user $reqid removing user penalty ".
+			$logger->activity("removing user penalty ".
 				$e->penalty_type . " from user $patronid");
 
 			my $s = $session->request(
@@ -212,7 +202,7 @@ sub update_patron_penalties {
 	for my $p (@$penalties) {
 		if( ! grep { $_->penalty_type eq $p } @$existing ) {
 
-			$logger->activity("user $reqid adding user penalty $p to user $patronid");
+			$logger->activity("adding user penalty $p to user $patronid");
 
 			my $newp = Fieldmapper::actor::user_standing_penalty->new;
 			$newp->penalty_type( $p );
