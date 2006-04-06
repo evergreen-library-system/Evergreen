@@ -177,7 +177,7 @@ sub request {
 
 	if ($self->running < $self->request_cap ) {
 		my $index = $self->session_hash_function->($self, $method, @params);
-		my $ses = $self->{sessions}->[($index % $self->session_cap ) - 1]; 
+		my $ses = $self->{sessions}->[$index % $self->session_cap]; 
 
 		#print "Running $method using session ".$ses->session_id."\n";
 
