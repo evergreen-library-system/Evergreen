@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'std_map_row_to_column', 'retrieve_au_via_id'
+	'columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id',
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
