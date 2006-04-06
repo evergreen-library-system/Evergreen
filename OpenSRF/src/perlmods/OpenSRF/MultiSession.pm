@@ -54,9 +54,8 @@ sub new {
 
 sub _dummy_session_hash_function {
 	my $self = shift;
-	$self->{_dummy_hash_counter} = 0 if (!exists($self->{_dummy_hash_counter}));
-	$self->{_dummy_hash_counter}++;
-	return ( $self->{_dummy_hash_counter} % $self->session_cap ) - 1;
+	$self->{_dummy_hash_counter} = 1 if (!exists($self->{_dummy_hash_counter}));
+	return $self->{_dummy_hash_counter}++;
 }
 
 sub connect {
@@ -178,7 +177,7 @@ sub request {
 
 	if ($self->running < $self->request_cap ) {
 		my $index = $self->session_hash_function->($self, $method, @params);
-		my $ses = $self->{sessions}->[$index]; 
+		my $ses = $self->{sessions}->[($index % $self->session_cap ) - 1]; 
 
 		#print "Running $method using session ".$ses->session_id."\n";
 
