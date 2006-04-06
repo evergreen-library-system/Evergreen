@@ -14,36 +14,40 @@
 </box>
 
 <vbox id="patron_info_sidebar" flex="1">
-	<groupbox id="PatronSummaryAlert_groupbox" flex="0" hidden="true">
+	<groupbox id="PatronSummaryAlert_groupbox" flex="0" hidden="true" class="alert">
 		<caption id="psagbc" label="Alert" class="shrinkable_groupbox"/>
 		<description id="patron_alert"/>
 	</groupbox>
-	<groupbox id="PatronSummaryStatus_groupbox" flex="0"/>
+	<groupbox id="PatronSummaryStanding_groupbox" flex="0" hidden="false" class="standing">
+		<caption id="pssgbc" label="Standing" class="shrinkable_groupbox"/>
+		<vbox id="patron_standing_penalties"/>
+	</groupbox>
+	<groupbox id="PatronSummaryStatus_groupbox" flex="0" class="status"/>
 	<!--
 	<groupbox id="PatronSummarySurvey_groupbox" flex="0">
 		<caption id="pdsgbc" label="Surveys" class="shrinkable_groupbox"/>
 		<vbox id="patron_surveys" />
 	</groupbox>
 	-->
-	<groupbox id="PatronSummaryContact_groupbox" flex="0"/>
+	<groupbox id="PatronSummaryContact_groupbox" flex="0" class="contact"/>
 </vbox>
 
 <groupbox id="PatronSummaryStatus_groupbox" orient="vertical">
 	<caption label="&staff.patron_display.status.caption;" class="shrinkable_groupbox"/>
 	<grid><columns><column/><column/></columns><rows>
-		<row>
+		<row hidden="true">
 			<label id="PatronSummaryStatus_standing_label" class="text_right"
 				value="&staff.patron_display.standing.label;" />
 			<label id="patron_standing" />
 		</row>
 		<row id="pdsgr1">
-			<label id="PatronSummaryStatus_profile_label" class="text_right"
+			<label id="PatronSummaryStatus_profile_label" class="text_right profile label"
 				value="&staff.patron_display.profile.label;" />
-			<label id="patron_profile" />
+			<label id="patron_profile" class="profile value"/>
 		</row>
 		<row id="pdsgr5">
-			<label id="pdsgr5l1" class="text_right" value="Home Lib:" />
-			<label id="patron_library" />
+			<label id="pdsgr5l1" value="Home Lib:" class="text_right homelib label" />
+			<label id="patron_library" class="homelib value"/>
 		</row>
 	</rows></grid>
 	<grid id="PatronSummaryStatus_grid" flex="1"/>
@@ -59,28 +63,28 @@
 	</columns>
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr2">
-			<label id="PatronSummaryStatus_credit_label" class="text_right"
+			<label id="PatronSummaryStatus_credit_label" class="text_right credit label"
 				value="&staff.patron_display.credit.label;" />
-			<label id="patron_credit" />
-			<label id="PatronSummaryStatus_bills_label" class="text_right"
+			<label id="patron_credit" class="credit value"/>
+			<label id="PatronSummaryStatus_bills_label" class="text_right bill label"
 				value="&staff.patron_display.bills.label;" />
-			<label id="patron_bill" />
+			<label id="patron_bill" class="bill value"/>
 		</row>
 		<row id="pdsgr3">
-			<label id="PatronSummaryStatus_checkouts_label" class="text_right"
+			<label id="PatronSummaryStatus_checkouts_label" class="text_right items_out label"
 				value="&staff.patron_display.checkouts.label;" />
-			<label id="patron_checkouts" />
-			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right"
+			<label id="patron_checkouts" class="items_out value"/>
+			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right items_overdue label"
 				value="&staff.patron_display.checkouts_overdue.label;" />
-			<label id="patron_overdue" />
+			<label id="patron_overdue" class="items_overdue value"/>
 		</row>
 		<row id="pdsgr4">
-			<label id="PatronSummaryStatus_holds_label" class="text_right"
+			<label id="PatronSummaryStatus_holds_label" class="text_right holds label"
 				value="&staff.patron_display.holds.label;" />
-			<label id="patron_holds" />
-			<label id="PatronSummaryStatus_holds_available_label" class="text_right"
+			<label id="patron_holds" class="holds value"/>
+			<label id="PatronSummaryStatus_holds_available_label" class="text_right holds_ready label"
 				value="&staff.patron_display.holds_available.label;" />
-			<label id="patron_holds_available" />
+			<label id="patron_holds_available" class="holds_ready label"/>
 		</row>
 
 	</rows>
@@ -97,8 +101,8 @@
 		<image id="patron_photo_url" />
 	</hbox>
 	<grid id="PatronSummaryContact_grid_phone" />
-	<groupbox id="PatronSummaryContact_mailing_address" />
-	<groupbox id="PatronSummaryContact_physical_address" />
+	<groupbox id="PatronSummaryContact_mailing_address" class="mailing_address"/>
+	<groupbox id="PatronSummaryContact_physical_address" class="physical_address"/>
 </groupbox>
 
 <grid id="PatronSummaryContact_grid">
@@ -108,30 +112,30 @@
 	</columns>
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr0">
-			<label id="PatronSummaryContact_library_card_label" class="text_right"
+			<label id="PatronSummaryContact_library_card_label" class="text_right card label"
 				value="&staff.patron_display.library_card.label;"/>
-			<label id="patron_card" />
+			<label id="patron_card" class="card value"/>
 		</row>
 		<row id="pdsgr1">
 			<label id="PatronSummaryContact_ident_label" class="text_right"
 				value="&staff.patron_display.ident1.label;"/>
 			<vbox id="pdsgr0h">
-				<label id="patron_ident_type_1" />
-				<label id="patron_ident_value_1" />
+				<label id="patron_ident_type_1" class="ident ident_type ident1 value"/>
+				<label id="patron_ident_value_1" class="ident ident_value ident1 value"/>
 			</vbox>
 		</row>
 		<row id="pdsgr2">
 			<label id="PatronSummaryContact_ident_label2" class="text_right"
 				value="&staff.patron_display.ident2.label;"/>
 			<vbox id="pdsgr0ah">
-				<label id="patron_ident_type_2" />
-				<label id="patron_ident_value_2" />
+				<label id="patron_ident_type_2" class="ident ident_type ident2 value"/>
+				<label id="patron_ident_value_2" class="ident ident_value ident2 value"/>
 			</vbox>
 		</row>
 		<row id="pdsgr3">
-			<label id="PatronSummaryContact_date_of_birth_label" class="text_right"
+			<label id="PatronSummaryContact_date_of_birth_label" class="text_right dob label"
 				value="&staff.patron_display.date_of_birth.label;"/>
-			<label id="patron_date_of_birth" />
+			<label id="patron_date_of_birth" class="dob value"/>
 		</row>
 		<row id="pdsgr4"><label id="pdsgr4l" value=" "/></row>
 	</rows>
@@ -144,30 +148,30 @@
 	</columns>
 	<rows id="pdcgpr" flex="1">
 		<row id="pdcgpr1">
-			<label id="PatronSummaryContact_day_phone_label" class="text_right"
+			<label id="PatronSummaryContact_day_phone_label" class="text_right phone label day_phone"
 				value="&staff.patron_display.day_phone.label;" />
-			<label id="patron_day_phone" /> 
+			<label id="patron_day_phone" class="phone value day_phone"/> 
 		</row>
 		<row id="pdcgpr2">
-			<label id="PatronSummaryContact_evening_phone_label" class="text_right"
+			<label id="PatronSummaryContact_evening_phone_label" class="text_right phone label evening_phone"
 				value="&staff.patron_display.evening_phone.label;" />
-			<label id="patron_evening_phone" />
+			<label id="patron_evening_phone" class="phone value evening_phone"/>
 		</row>
 		<row id="pdcgpr3">
-			<label id="PatronSummaryContact_other_phone_label" class="text_right"
+			<label id="PatronSummaryContact_other_phone_label" class="text_right phone label other_phone"
 				value="&staff.patron_display.other_phone.label;" />
-			<label id="patron_other_phone" /> 
+			<label id="patron_other_phone" class="phone value other_phone"/> 
 		</row>
 		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
 		<row id="pdsgpr4a">
-			<label id="PatronSummaryContact_usrname_label" class="text_right"
+			<label id="PatronSummaryContact_usrname_label" class="text_right usrname label"
 				value="OPAC Login:" />
-			<label id="patron_usrname" />
+			<label id="patron_usrname" class="usrname value"/>
 		</row>
 		<row id="pdcgpr5">
-			<label id="PatronSummaryContact_email_label" class="text_right"
+			<label id="PatronSummaryContact_email_label" class="text_right email label"
 				value="&staff.patron_display.email.label;" />
-			<label id="patron_email" />
+			<label id="patron_email" class="email value"/>
 		</row>
 		<row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
 
@@ -176,23 +180,23 @@
 
 <groupbox id="PatronSummaryContact_mailing_address" orient="vertical">
 	<caption id="pdcmac" label="&staff.patron_display.mailing_address;" class="shrinkable_groupbox"/>
-	<label id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" />
-	<label id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" />
+	<label id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="address street street1 mailing"/>
+	<label id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" class="address street street2 mailing"/>
 	<hbox id="pdcmah">
-		<label id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" />
-		<label id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" />
-		<label id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" />
+		<label id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" class="address city mailing"/>
+		<label id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="address state mailing"/>
+		<label id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="address post_code mailing"/>
 	</hbox>
 </groupbox>
 
 <groupbox id="PatronSummaryContact_physical_address" orient="vertical">
 	<caption id="pdcpac" label="&staff.patron_display.physical_address;" class="shrinkable_groupbox"/>
-	<label id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" />
-	<label id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;" />
+	<label id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" class="address street street1 physical" />
+	<label id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;"  class="address street street2 physical"/>
 	<hbox id="pdcpah">
-		<label id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" />
-		<label id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" />
-		<label id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" />
+		<label id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" class="address city physical"/>
+		<label id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="address state physical"/>
+		<label id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="address post_code physical"/>
 	</hbox>
 </groupbox>
 

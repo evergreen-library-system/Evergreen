@@ -207,8 +207,17 @@ patron.display.prototype = {
 									obj.patron.family_name() + ', ' + obj.patron.first_given_name() + ' ' +
 									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
 								);
-								e.setAttribute('style','background-color: lime');
-								if (obj.summary_window) {
+								addCSSClass(e,'patron_name');
+								switch(obj.patron.standing_penalties().length) {
+									case 0:
+										addCSSClass(e,'NO_PENALTIES');
+									break;
+									case 1: 
+										addCSSClass(e,'ONE_PENALTY');
+									break;
+									default:
+										addCSSClass(e,'MULTIPLE_PENALTIES');
+									break;
 								}
 							};
 						}

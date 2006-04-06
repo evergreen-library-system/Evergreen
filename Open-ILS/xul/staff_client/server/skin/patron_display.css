@@ -4,3 +4,31 @@
 hbox#PatronNotNavBar { border-top: solid thin black; }
 deck#patron_deck { border-left: solid thin black; }
 .patronNameLarge { font-size: large; font-family: bold; }
+
+.NO_PENALTIES { background-color: lime; }
+.ONE_PENALTY { background-color: orange; }
+.MULTIPLE_PENALTIES { background-color: red; }
+
+.TEST label.bill { color: red; }
+.TEST label.bill.label { text-decoration: underline; }
+
+.TEST label.credit { color: red; }
+.TEST label.credit.label { text-decoration: underline; }
+.TEST label.credit.value { }
+
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: red; }
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; }
+.PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.value { }
+
+.TEST label.items_overdue { color: red; }
+.TEST label.items_overdue.label { text-decoration: underline; }
+.TEST label.items_overdue.value { }
+
+.TEST label.holds { color: blue; }
+.TEST label.holds.label { text-decoration: underline; }
+.TEST label.holds.value { }
+
+.TEST label.holds_ready { color: blue; }
+.TEST label.holds_ready.label { text-decoration: underline; }
+.TEST label.holds_ready.value { }
+

@@ -95,6 +95,15 @@ patron.summary.prototype = {
 										obj.patron.standing()
 									].value()
 								);
+								var e2 = document.getElementById('patron_standing_penalties');
+								JSAN.use('util.widgets');
+								util.widgets.remove_children(e2);
+								var penalties = obj.patron.standing_penalties();
+								for (var i = 0; i < penalties.length; i++) {
+									var x = document.createElement('label');
+									x.setAttribute('value',penalties[i].penalty_type());
+									e2.appendChild(x);
+								}
 							};
 						}
 					],
@@ -487,6 +496,8 @@ patron.summary.prototype = {
 							if (instanceOf(robj,au)) {
 
 								obj.patron = robj;
+								JSAN.use('patron.util');
+								patron.util.set_penalty_css(obj.patron);
 
 							} else if (typeof robj.ilsevent != 'undefined') {
 

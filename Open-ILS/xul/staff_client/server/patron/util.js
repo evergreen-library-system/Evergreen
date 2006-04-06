@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id',
+	'columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'set_penalty_css'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -173,7 +173,21 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 		'FM_AU_FLESHED_RETRIEVE_VIA_ID',
 		[ session, id ]
 	);
+	patron.util.set_penalty_css(patron);
 	return patron;
+}
+
+patron.util.set_penalty_css = function(patron) {
+	try {
+		var penalties = patron.standing_penalties();
+		for (var i = 0; i < penalties.length; i++) {
+			/* this comes from /opac/common/js/utils.js */
+			addCSSClass(document.documentElement,penalties[i].penalty_type());
+		}
+	} catch(E) {
+		dump('patron.util.set_penalty_css: ' + E + '\n');
+		alert('patron.util.set_penalty_css: ' + E + '\n');
+	}
 }
 
 
