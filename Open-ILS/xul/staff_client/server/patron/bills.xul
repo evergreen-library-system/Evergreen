@@ -50,7 +50,7 @@
 						'session' : g.cgi.param('session') 
 					} 
 				);
-				window.refresh = function() { g.bills.refresh(); }
+				window.refresh = function(p) { g.bills.refresh(p); }
 
 				document.getElementById('bill_payment_amount').focus();
 	

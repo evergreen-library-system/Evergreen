@@ -26,6 +26,7 @@ patron.bills.prototype = {
 		);
 
 		if (!dont_show_me_the_money) {
+			alert('dont_show_me_the_money = ' + dont_show_me_the_money);
 			if (window.xulG && typeof window.xulG.on_money_change == 'function') {
 				try { window.xulG.on_money_change(obj.bills); } catch(E) { this.error.sdump('D_ERROR',E); }
 			}

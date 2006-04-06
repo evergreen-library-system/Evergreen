@@ -184,8 +184,9 @@ patron.display.prototype = {
 								{},
 								{
 									'on_money_change' : function(b) {
+										alert('test');
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										obj.summary_window.g.summary.retrieve();
+										obj.summary_window.g.summary.retrieve(true);
 									}
 								}
 							);
