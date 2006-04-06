@@ -50,6 +50,7 @@
 						'session' : g.cgi.param('session') 
 					} 
 				);
+				window.refresh = function() { g.holds.retrieve(); }
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

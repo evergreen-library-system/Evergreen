@@ -151,12 +151,18 @@ patron.holds.prototype = {
 			};
 		}
 
+		obj.list.clear();
+
 		JSAN.use('util.exec'); var exec = new util.exec();
 		var rows = [];
 		for (var i in obj.holds) {
 			rows.push( gen_list_append(obj.holds[i]) );
 		}
 		exec.chain( rows );
+		
+		if (window.xulG && typeof window.xulG.on_list_change == 'function') {
+			try { window.xulG.on_list_change(obj.holds); } catch(E) { this.error.sdump('D_ERROR',E); }
+		}
 	},
 }
 

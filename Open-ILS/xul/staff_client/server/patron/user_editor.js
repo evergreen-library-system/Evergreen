@@ -193,6 +193,9 @@ function uEditSaveUser() {
 	if( checkILSEvent(result) ) alert(js2JSON(result));
 	else alert($('ue_success').innerHTML);
 
+	if (window.xulG && typeof window.xulG.save == 'function') {
+		window.xulG.on_save(patron); 
+	}
 }
 
 function uEditCollectData() {

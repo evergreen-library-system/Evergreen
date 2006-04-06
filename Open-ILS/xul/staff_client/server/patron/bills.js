@@ -21,20 +21,15 @@ patron.bills.prototype = {
 
 	'refresh' : function() {
 		var obj = this;
-		/*
-		if (window.xulG && typeof window.xulG.display_refresh == 'function') {
-			try { window.xulG.display_refresh(); } catch(E) { this.error.sdump('D_ERROR',E); }
-		}
-		*/
 		obj.bills = obj.network.request(
 			api.FM_MOBTS_HAVING_BALANCE.app,
 			api.FM_MOBTS_HAVING_BALANCE.method,
 			[ obj.session, obj.patron_id ]
 		);
-		if (window.xulG && typeof window.xulG.on_bill == 'function') {
-			try { window.xulG.on_bill(obj.bills); } catch(E) { this.error.sdump('D_ERROR',E); }
+		if (window.xulG && typeof window.xulG.on_money_change == 'function') {
+			try { window.xulG.on_money_change(obj.bills); } catch(E) { this.error.sdump('D_ERROR',E); }
 		}
-		//location.href = location.href;
+
 		var tbs = document.getElementsByTagName('textbox');
 		for (var i = 0; i < tbs.length; i++) {
 			tbs[i].value = ''; tbs[i].setAttribute('value','');

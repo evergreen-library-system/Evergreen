@@ -220,9 +220,8 @@ circ.checkout.prototype = {
 				if (typeof obj.on_checkout == 'function') {
 					obj.on_checkout(checkout.payload);
 				}
-				if (typeof window.xulG == 'object' && typeof window.xulG.on_checkout == 'function') {
-					obj.error.sdump('D_CIRC','circ.checkout: Calling external .on_checkout()\n');
-					window.xulG.on_checkout(checkout.payload);
+				if (typeof window.xulG == 'object' && typeof window.xulG.on_list_change == 'function') {
+					window.xulG.on_list_change(checkout.payload);
 				} else {
 					obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
 				}

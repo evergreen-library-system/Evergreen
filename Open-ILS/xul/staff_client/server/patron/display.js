@@ -35,20 +35,24 @@ patron.display.prototype = {
 				+ '&patron_id=' + window.escape( obj.patron.id() ),
 				{},
 				{ 
-					'on_checkout' : function(checkout) {
-						/* FIXME -- need to handle this differently, however Bill is going to do
-							it with the opac.  Display is moving to housing just summary info. */
-						/*
-						var c = obj.summary_window.g.summary.patron.checkouts();
-						c.push( checkout.circ );
-						obj.summary_window.g.summary.patron.checkouts( c );
+					'on_list_change' : function(checkout) {
+
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						obj.summary_window.g.summary.controller.render('patron_checkouts');
+						obj.summary_window.g.summary.controller.render('patron_standing');
 						if (obj.items_window) {
-							obj.items_window.xulG.checkouts = c;
-							obj.items_window.g.items.list.clear();
-							obj.items_window.g.items.retrieve();
+							obj.items_window.g.items.list.append(
+								{
+									'row' : {
+										'my' : {
+											'circ' : checkout.circ,
+											'mvr' : checkout.record,
+											'acp' : checkout.copy
+										}
+									}
+								}
+							)
 						}
-						*/
 					}
 				}
 			);
@@ -109,57 +113,16 @@ patron.display.prototype = {
 								+ '&patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									'display_refresh' : function() {
-										obj.refresh_all();
-									},
-									/* 'checkouts' : obj.patron.checkouts() */
+									'on_list_change' : function(b) {
+										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+										obj.summary_window.g.summary.controller.render('patron_checkouts');
+										obj.summary_window.g.summary.controller.render('patron_standing');
+									}
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 							obj.items_window = frame.contentWindow;
-						}
-					],
-					'cmd_patron_holds' : [
-						['command'],
-						function(ev) {
-							obj.right_deck.set_iframe(
-								urls.XUL_PATRON_HOLDS	
-								+ '?session=' + window.escape( obj.session )
-								+ '&patron_id=' + window.escape( obj.patron.id() ),
-								{},
-								{
-									/* 'holds' : obj.patron.hold_requests() */
-								}
-							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
-						}
-					],
-					'cmd_patron_bills' : [
-						['command'],
-						function(ev) {
-							var f = obj.right_deck.set_iframe(
-								urls.XUL_PATRON_BILLS
-								+ '?session=' + window.escape( obj.session )
-								+ '&patron_id=' + window.escape( obj.patron.id() ),
-								{},
-								{
-									/* FIXME */
-									/* 'bills' : obj.patron.bills, */
-									'display_refresh' : function() {
-										obj.refresh_all();
-									},
-									'on_bill' : function(b) {
-										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										/* f.contentWindow.xulG.bills = b; */
-										/* FIXME */
-										/* obj.patron.bills = b;
-										obj.summary_window.g.summary.patron.bills = b; */
-										obj.summary_window.g.summary.controller.render('patron_bill');
-									}
-								}
-							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_edit' : [
@@ -174,6 +137,56 @@ patron.display.prototype = {
 								),
 								{}, {
 									'show_print_button' : true,
+									'passthru_content_params' : {
+										'on_save' : function() {
+											netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+											obj.summary_window.g.summary.retrieve();
+										}
+									}
+								}
+							);
+							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_info' : [
+						['command'],
+						function(ev) {
+							obj.right_deck.set_iframe(urls.XUL_PATRON_INFO);
+							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_holds' : [
+						['command'],
+						function(ev) {
+							obj.right_deck.set_iframe(
+								urls.XUL_PATRON_HOLDS	
+								+ '?session=' + window.escape( obj.session )
+								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{
+									'on_list_change' : function(h) {
+										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+										obj.summary_window.g.summary.controller.render('patron_holds');
+										obj.summary_window.g.summary.controller.render('patron_standing');
+									}
+								}
+							);
+							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
+						}
+					],
+					'cmd_patron_bills' : [
+						['command'],
+						function(ev) {
+							var f = obj.right_deck.set_iframe(
+								urls.XUL_PATRON_BILLS
+								+ '?session=' + window.escape( obj.session )
+								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{
+									'on_money_change' : function(b) {
+										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+										obj.summary_window.g.summary.retrieve();
+									}
 								}
 							);
 							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
@@ -196,13 +209,7 @@ patron.display.prototype = {
 								);
 								e.setAttribute('style','background-color: lime');
 								if (obj.summary_window) {
-									//FIXME//bills should become a virtual field
-									if (obj.summary_window.g.summary.patron.bills.length > 0)
-										e.setAttribute('style','background-color: yellow');
-									if (obj.summary_window.g.summary.patron.standing() == 2)
-										e.setAttribute('style','background-color: lightred');
 								}
-
 							};
 						}
 					],
@@ -355,16 +362,19 @@ patron.display.prototype = {
 
 	'_checkout_spawned' : false,
 
-	'refresh_deck' : function() {
+	'refresh_deck' : function(url) {
 		var obj = this;
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		for (var i = 0; i < obj.right_deck.node.childNodes.length; i++) {
 			try {
-
 				var f = obj.right_deck.node.childNodes[i];
 				var w = f.contentWindow;
-				if (typeof w.refresh == 'function') {
-					w.refresh();
+				if (url) {
+					if (w.location.href == url) w.refresh();
+				} else {
+					if (typeof w.refresh == 'function') {
+						w.refresh();
+					}
 				}
 
 			} catch(E) {
@@ -379,12 +389,6 @@ patron.display.prototype = {
 			'value','Retrieving...'
 		);
 		try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
-		/* summary refresh is async, so you can't rely on its data */
-		try { 
-			obj.items_window.xulG.checkouts = null;
-		} catch(E) { 
-			dump(E + '\n'); 
-		}
 		try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
 	},
 }

@@ -51,7 +51,7 @@
 					} 
 				);
 				
-				window.refresh = function () { g.items.list.clear(); g.items.retrieve(); }
+				window.refresh = function () { g.items.retrieve(); }
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
