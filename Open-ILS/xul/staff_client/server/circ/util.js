@@ -148,8 +148,11 @@ circ.util.columns = function(modify) {
 		{
 			'id' : 'message', 'label' : 'Message', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.message.toString()'
+		},
+		{
+			'id' : 'uses', 'label' : '# of Uses', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.uses'
 		}
-
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {

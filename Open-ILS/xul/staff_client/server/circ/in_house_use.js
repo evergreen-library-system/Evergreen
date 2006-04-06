@@ -25,7 +25,7 @@ circ.in_house_use.prototype = {
 				'status' : { 'hidden' : false },
 				'location' : { 'hidden' : false },
 				'call_number' : { 'hidden' : false },
-				'checkin_text' : { 'hidden' : false, 'flex' : 3 }
+				'uses' : { 'hidden' : false },
 			} 
 		);
 
@@ -63,8 +63,9 @@ circ.in_house_use.prototype = {
 						function(ev) {
 							if (ev.target.nodeName == 'textbox') {
 								try {
-									if (ev.target.value > 0) {
-										/* good value */
+									var value = parseInt(ev.target.value);
+									if (value > 0) {
+										if (value > 99) ev.target.value = 99;
 									} else {
 										ev.target.value = 1;
 									}
@@ -112,10 +113,33 @@ circ.in_house_use.prototype = {
 		var obj = this;
 		try {
 			var barcode = obj.controller.view.in_house_use_barcode_entry_textbox.value;
-			var multiplier = obj.controller.view.in_house_use_multiplier_textbox.value;
+			var multiplier = parseInt( obj.controller.view.in_house_use_multiplier_textbox.value );
+
+			if (barcode == '') {
+				obj.controller.view.in_house_use_barcode_entry_textbox.focus();
+				return; 
+			}
+
+			if (multiplier == 0 || multiplier > 99) {
+				obj.controller.view.in_house_use_multiplier_textbox.focus();
+				obj.controller.view.in_house_use_multiplier_textbox.select();
+				return;
+			}
+
+			if (multiplier > 20) {
+				var r = obj.error.yns_alert('Are you sure you want to mark ' + barcode + ' as having been used ' + multiplier + ' times?','In-House Use Verification', 'Yes', 'No', null, 'Check here to confirm this message.');
+				if (r != 0) {
+					obj.controller.view.in_house_use_multiplier_textbox.focus();
+					obj.controller.view.in_house_use_multiplier_textbox.select();
+					return;
+				}
+			}
+
 			JSAN.use('circ.util');
 
 			var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
+			if (copy.ilsevent) { alert(copy.textcode); return; }
+
 			var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ copy.id() ]);
 			var result = obj.network.simple_request('FM_AIHU_CREATE',
 				[ obj.session, { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
@@ -127,7 +151,7 @@ circ.in_house_use.prototype = {
 						'my' : {
 							'mvr' : mods,
 							'acp' : copy,
-							'text' : result.length + ' uses',
+							'uses' : result.length,
 						}
 					}
 				//I could override map_row_to_column here
