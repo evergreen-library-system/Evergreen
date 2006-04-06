@@ -11,10 +11,9 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth ) 
 	var templateRow = cpdTemplate.cloneNode(true);
 	templateRow.id = 'cpd_row_' + (cpdCounter++);
 
-	/* // this is a little strange.. discuss
-	$n(templateRow, 'anchor').setAttribute('name', templateRow.id);
-	goTo('#'+templateRow.id);
-	*/
+	/* shove a dummy a tag in before the context previous sibling */
+	contextTbody.insertBefore( elem('a',{name:'slot_'+templateRow.id}), contextRow.previousSibling);
+	goTo('#slot_'+templateRow.id);
 
 	unHideMe(templateRow);
 
@@ -62,8 +61,10 @@ function cpdCheckExisting( contextRow ) {
 		if( existingid && o == existingid ) continue;
 		node.visible = false;
 		hideMe(node.templateRow);
+		removeCSSClass(node.templateRow.previousSibling, 'rdetail_context_row');
 	}
 
+	addCSSClass(contextRow, 'rdetail_context_row');
 	if(existingid) return existingid;
 	return null;
 }
@@ -108,9 +109,31 @@ function cpdDrawCopies(r) {
 function cpdDrawCopy(r) {
 	var copy = r.getResultObject();
 	var row  = r.row;
+
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
+	$n(row, 'location').appendChild(text(cpdGetLocation(copy).name()));
+
+	for( i = 0; i < cp_statuses.length; i++ ) {
+		var c = cp_statuses[i];
+		if( c.id() == copy.status() )
+		$n(row, 'status').appendChild(text(c.name()));
+	}
+
 }
 
+
+var copyLocations;
+function cpdGetLocation(copy) {
+
+	if(!copyLocations) {
+		var req = new Request(FETCH_COPY_LOCATIONS);	
+		req.send(true);
+		copyLocations = req.result();
+	}
+
+	return grep(copyLocations, 
+		function(l) { return l.id() == copy.location() } )[0];
+}
 
 
 /*
