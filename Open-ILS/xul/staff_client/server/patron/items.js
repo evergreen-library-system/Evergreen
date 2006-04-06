@@ -225,7 +225,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
-	'retrieve' : function() {
+	'retrieve' : function(dont_show_me_the_list_change) {
 		var obj = this;
 		if (window.xulG && window.xulG.checkouts) {
 			obj.checkouts = window.xulG.checkouts;
@@ -259,9 +259,11 @@ patron.items.prototype = {
 		for (var i in obj.checkouts) {
 			rows.push( gen_list_append(obj.checkouts[i]) );
 		}
-		exec.chain( rows )
-		if (window.xulG && typeof window.xulG.on_list_change == 'function') {
-			try { window.xulG.on_list_change(obj.checkouts); } catch(E) { this.error.sdump('D_ERROR',E); }
+		exec.chain( rows );
+		if (!dont_show_me_the_list_change) {
+			if (window.xulG && typeof window.xulG.on_list_change == 'function') {
+				try { window.xulG.on_list_change(obj.checkouts); } catch(E) { this.error.sdump('D_ERROR',E); }
+			}
 		}
 	},
 

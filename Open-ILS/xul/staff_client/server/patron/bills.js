@@ -15,19 +15,20 @@ patron.bills = function (params) {
 
 patron.bills.prototype = {
 
-	'version' : 'test123',
-
 	'current_payments' : [],
 
-	'refresh' : function() {
+	'refresh' : function(dont_show_me_the_money) {
 		var obj = this;
 		obj.bills = obj.network.request(
 			api.FM_MOBTS_HAVING_BALANCE.app,
 			api.FM_MOBTS_HAVING_BALANCE.method,
 			[ obj.session, obj.patron_id ]
 		);
-		if (window.xulG && typeof window.xulG.on_money_change == 'function') {
-			try { window.xulG.on_money_change(obj.bills); } catch(E) { this.error.sdump('D_ERROR',E); }
+
+		if (!dont_show_me_the_money) {
+			if (window.xulG && typeof window.xulG.on_money_change == 'function') {
+				try { window.xulG.on_money_change(obj.bills); } catch(E) { this.error.sdump('D_ERROR',E); }
+			}
 		}
 
 		var tbs = document.getElementsByTagName('textbox');

@@ -124,7 +124,7 @@ patron.holds.prototype = {
 
 	},
 
-	'retrieve' : function() {
+	'retrieve' : function(dont_show_me_the_list_change) {
 		var obj = this;
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
@@ -159,9 +159,11 @@ patron.holds.prototype = {
 			rows.push( gen_list_append(obj.holds[i]) );
 		}
 		exec.chain( rows );
-		
-		if (window.xulG && typeof window.xulG.on_list_change == 'function') {
-			try { window.xulG.on_list_change(obj.holds); } catch(E) { this.error.sdump('D_ERROR',E); }
+	
+		if (!dont_show_me_the_list_change) {
+			if (window.xulG && typeof window.xulG.on_list_change == 'function') {
+				try { window.xulG.on_list_change(obj.holds); } catch(E) { this.error.sdump('D_ERROR',E); }
+			}
 		}
 	},
 }

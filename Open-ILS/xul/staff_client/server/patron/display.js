@@ -388,10 +388,10 @@ patron.display.prototype = {
 				var f = obj.right_deck.node.childNodes[i];
 				var w = f.contentWindow;
 				if (url) {
-					if (w.location.href == url) w.refresh();
+					if (w.location.href == url) w.refresh(true);
 				} else {
 					if (typeof w.refresh == 'function') {
-						w.refresh();
+						w.refresh(true);
 					}
 				}
 
