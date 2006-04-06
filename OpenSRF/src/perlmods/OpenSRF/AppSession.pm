@@ -543,7 +543,9 @@ sub send {
 		$self->state( DISCONNECTED );
 	}
 
-	return $self->app_request( $tT );
+	my $req = $self->app_request( $tT );
+	$req->{_start} = time;
+	return $req
 }
 
 sub app_request {
@@ -792,6 +794,7 @@ package OpenSRF::AppRequest;
 use base qw/OpenSRF::AppSession/;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
+use Time::HiRes qw/time usleep/;
 
 sub new {
 	my $class = shift;
@@ -846,15 +849,22 @@ sub complete {
 	return $self->{complete} if ($self->{complete});
 	if (defined $complete) {
 		$self->{complete} = $complete;
+		$self->{_duration} = time - $self->{_start} if ($self->{complete});
 	} else {
 		$self->session->queue_wait(0);
 	}
 	return $self->{complete};
 }
 
+sub duration {
+	my $self = shift;
+	$self->wait_complete;
+	return $self->{_duration};
+}
+
 sub wait_complete {
 	my $self = shift;
-	my $timeout = shift || 1;
+	my $timeout = shift || 10;
 	my $time_remaining = $timeout;
 
 	while ( ! $self->complete  and $time_remaining > 0 ) {
