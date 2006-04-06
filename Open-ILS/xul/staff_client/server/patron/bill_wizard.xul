@@ -50,7 +50,7 @@
 				g.patron_id = g.cgi.param('patron_id');
 
 				JSAN.use('patron.util'); 
-				g.au_obj = patron.util.retrieve_au_via_id( g.session, g.patron_id );
+				g.au_obj = patron.util.retrieve_fleshed_au_via_id( g.session, g.patron_id );
 				
 				document.getElementById('patron_name').setAttribute('value',
 					g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );

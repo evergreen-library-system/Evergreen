@@ -166,4 +166,15 @@ patron.util.retrieve_au_via_id = function(session, id) {
 	return patron;
 }
 
+patron.util.retrieve_fleshed_au_via_id = function(session, id) {
+	JSAN.use('util.network');
+	var network = new util.network();
+	var patron = network.simple_request(
+		'FM_AU_FLESHED_RETRIEVE_VIA_ID',
+		[ session, id ]
+	);
+	return patron;
+}
+
+
 dump('exiting patron/util.js\n');
