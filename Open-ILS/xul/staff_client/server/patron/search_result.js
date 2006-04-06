@@ -26,8 +26,8 @@ patron.search_result.prototype = {
 		JSAN.use('patron.util');
 		var columns = patron.util.columns(
 			{
-				'standing' : { 'hidden' : 'false' },
 				'active' : { 'hidden' : 'false' },
+				'barred' : { 'hidden' : 'false' },
 				'family_name' : { 'hidden' : 'false' },
 				'first_given_name' : { 'hidden' : 'false' },
 				'second_given_name' : { 'hidden' : 'false' },

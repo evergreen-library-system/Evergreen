@@ -31,6 +31,10 @@ patron.util.columns = function(modify) {
 			'id' : 'active', 'label' : getString('staff.au_label_active'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : 'my.au.active() ? "Yes" : "No"'
 		},
+		{
+			'id' : 'barred', 'label' : 'Barred', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.au.barred() ? "Yes" : "No"'
+		},
 		{ 
 			'id' : 'id', 'label' : getString('staff.au_label_id'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : 'my.au.id()'
