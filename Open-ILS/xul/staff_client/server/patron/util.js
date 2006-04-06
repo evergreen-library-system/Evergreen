@@ -173,6 +173,8 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 	return patron;
 }
 
+var TIME = { minute : 60, hour : 60*60, day : 60*60*24, year : 60*60*24*365 };
+
 patron.util.set_penalty_css = function(patron) {
 	try {
 		var penalties = patron.standing_penalties();
@@ -180,6 +182,50 @@ patron.util.set_penalty_css = function(patron) {
 			/* this comes from /opac/common/js/utils.js */
 			addCSSClass(document.documentElement,penalties[i].penalty_type());
 		}
+
+		if (patron.alert_message().length > 0) {
+			addCSSClass(document.documentElement,'PATRON_HAS_ALERT');
+		}
+
+		if (patron.barred() > 0) {
+			addCSSClass(document.documentElement,'PATRON_BARRED');
+		}
+
+		if (patron.active() == 0) {
+			addCSSClass(document.documentElement,'PATRON_INACTIVE');
+		}
+
+		var now = new Date();
+		now = now.getTime()/1000;
+
+		var age_parts = patron.dob().split('-');
+		age_parts[1] = age_parts[1] - 1;
+
+		var born = new Date();
+		born.setFullYear(age_parts[0], age_parts[1], age_parts[2]);
+		born = born.getTime()/1000
+
+		var patron_age = now - born;
+		var years_old = parseInt(patron_age / TIME.year);
+
+		addCSSClass(document.documentElement,'PATRON_AGE_IS_' + years_old);
+
+		if ( years_old >= 65 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_65');
+		if ( years_old < 65 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_65');
+		
+		if ( years_old >= 24 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_24');
+		if ( years_old < 24 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_24');
+		
+		if ( years_old >= 21 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_21');
+		if ( years_old < 21 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_21');
+		
+		if ( years_old >= 18 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_18');
+		if ( years_old < 18 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_18');
+		
+		if ( years_old >= 13 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_13');
+		if ( years_old < 13 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_13');
+		
+
 	} catch(E) {
 		dump('patron.util.set_penalty_css: ' + E + '\n');
 		alert('patron.util.set_penalty_css: ' + E + '\n');
