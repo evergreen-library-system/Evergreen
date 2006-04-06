@@ -34,7 +34,8 @@ deck#patron_deck { border-left: solid thin black; }
 
 .PATRON_AGE_LT_18 #PatronSummaryContact_groupbox { border: solid thick green; }
 
-.PATRON_HAS_ALERT .patronNameLarge, #PatronSummaryStatus_groupbox { background-color: yellow; }
-.PATRON_INACTIVE .patronNameLarge, #PatronSummaryStatus_groupbox { background-color: darkgray; }
-.PATRON_BARRED .patronNameLarge, #PatronSummaryStatus_groupbox { background-color: red; }
+.PATRON_HAS_ALERT .patronNameLarge, .PATRON_HAS_ALERT #PatronSummaryStatus_groupbox { background-color: yellow; }
+.PATRON_INACTIVE .patronNameLarge, .PATRON_INACTIVE #PatronSummaryStatus_groupbox { background-color: darkgray; }
+.PATRON_EXPIRED .patronNameLarge, .PATRON_EXPIRED #PatronSummaryStatus_groupbox { background-color: orange; }
+.PATRON_BARRED .patronNameLarge, .PATRON_BARRED #PatronSummaryStatus_groupbox { background-color: red; }
 

@@ -198,6 +198,15 @@ patron.util.set_penalty_css = function(patron) {
 		var now = new Date();
 		now = now.getTime()/1000;
 
+		var expire_parts = patron.expire_date().split('-');
+		expire_parts[1] = expire_parts[1] - 1;
+
+		var expire = new Date();
+		expire.setFullYear(expire_parts[0], expire_parts[1], expire_parts[2]);
+		expire = expire.getTime()/1000
+
+		if (expire < now) addCSSClass(document.documentElement,'PATRON_EXPIRED');
+
 		var age_parts = patron.dob().split('-');
 		age_parts[1] = age_parts[1] - 1;
 
