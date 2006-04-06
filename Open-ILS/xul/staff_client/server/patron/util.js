@@ -183,7 +183,7 @@ patron.util.set_penalty_css = function(patron) {
 			addCSSClass(document.documentElement,penalties[i].penalty_type());
 		}
 
-		if (patron.alert_message().length > 0) {
+		if (patron.alert_message()) {
 			addCSSClass(document.documentElement,'PATRON_HAS_ALERT');
 		}
 
