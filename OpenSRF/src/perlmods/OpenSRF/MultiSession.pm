@@ -16,8 +16,8 @@ sub new {
 		if (!defined($self->{session_hash_function}));
 
 	if ($self->{cap}) {
-		$self->session_cap($self->{cap});
-		$self->request_cap($self->{cap});
+		$self->session_cap($self->{cap}) if (!$self->session_cap);
+		$self->request_cap($self->{cap}) if (!$self->request_cap);
 	}
 
 	if (!$self->session_cap) {
@@ -175,6 +175,7 @@ sub request {
 	my $method = shift;
 	my @params = @_;
 
+	$self->session_reap;
 	if ($self->running < $self->request_cap ) {
 		my $index = $self->session_hash_function->($self, $method, @params);
 		my $ses = $self->{sessions}->[$index % $self->session_cap]; 
@@ -186,8 +187,7 @@ sub request {
 		push @{ $self->{running} },
 			{ req => $req,
 			  meth => $method,
-			  params => [@params],
-			  start => time,
+			  params => [@params]
 			};
 
 		$log->debug("Making request [$method] ".$self->running."...");
@@ -212,7 +212,7 @@ sub session_wait {
 		}
 	} else {
 		while(!$self->session_reap) {
-			usleep 10;
+			usleep 100;
 		}
 	}
 }
@@ -220,16 +220,14 @@ sub session_wait {
 sub session_reap {
 	my $self = shift;
 
-	my $done = 0;
+	my @done;
 	my @running;
 	while ( my $req = shift @{ $self->{running} } ) {
 		if ($req->{req}->complete) {
 			#print "Currently running: ".$self->running."\n";
 
 			$req->{response} = [$req->{req}->recv];
-
-			$req->{end} = time;
-			$req->{duration} = $req->{end} - $req->{start};
+			$req->{duration} = $req->{req}->duration;
 
 			#print "Completed ".$req->{meth}." in session ".$req->{req}->session->session_id." [$req->{duration}]\n";
 
@@ -244,18 +242,21 @@ sub session_reap {
 			$req->{req}->finish;
 			delete $$req{req};
 
-			my $handler = $req->{error} ? $self->failure_handler : $self->success_handler;
+			push @done, $req;
 
-			$handler->($self, $req) if ($handler);
-			
-			$done++;
 		} else {
 			#print "Still running ".$req->{meth}." in session ".$req->{req}->session->session_id."\n";
 			push @running, $req;
 		}
 	}
 	push @{ $self->{running} }, @running;
-	return $done
+
+	for my $req ( @done ) {
+		my $handler = $req->{error} ? $self->failure_handler : $self->success_handler;
+		$handler->($self, $req) if ($handler);
+	}
+
+	return scalar @done;
 }
 
 1;
