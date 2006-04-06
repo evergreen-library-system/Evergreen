@@ -295,7 +295,7 @@ patron.display.prototype = {
 						}
 
 						if (patron.alert_message()) {
-							alert('** FIXME - Use the Confirmation Alert here **\nPatron Alert Message:  ' + patron.alert_message() );
+							obj.error.yns_alert('"' + patron.alert_message() + '"','Alert Message','OK',null,null,'Check here to confirm this message.');
 						}
 					},
 					'on_error' : function(E) {
