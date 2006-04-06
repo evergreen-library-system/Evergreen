@@ -57,23 +57,6 @@ patron.summary.prototype = {
 							};
 						}
 					],
-					'patron_name' : [
-						['render'],
-						function(e) {
-							return function() { 
-								e.setAttribute('value',
-									obj.patron.family_name() + ', ' + obj.patron.first_given_name()
-								);
-								e.setAttribute('style','background-color: lime');
-								//FIXME//bills should become a virtual field
-								if (obj.patron.bills > 0)
-									e.setAttribute('style','background-color: yellow');
-								if (obj.patron.standing() == 2)
-									e.setAttribute('style','background-color: lightred');
-
-							};
-						}
-					],
 					'patron_profile' : [
 						['render'],
 						function(e) {
@@ -485,7 +468,7 @@ patron.summary.prototype = {
 							);
 						} else if (obj.id && obj.id != 'null') {
 							robj = obj.network.simple_request(
-								'FM_AU_RETRIEVE_VIA_ID',
+								'FM_AU_FLESHED_RETRIEVE_VIA_ID',
 								[ obj.session, obj.id ]
 							);
 						} else {

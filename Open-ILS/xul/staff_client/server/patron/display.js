@@ -207,6 +207,9 @@ patron.display.prototype = {
 									obj.patron.family_name() + ', ' + obj.patron.first_given_name() + ' ' +
 									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
 								);
+								removeCSSClass(e,'NO_PENALTIES');
+								removeCSSClass(e,'ONE_PENALTY');
+								removeCSSClass(e,'MULTIPLE_PENALTIES');
 								addCSSClass(e,'patron_name');
 								switch(obj.patron.standing_penalties().length) {
 									case 0:
@@ -253,6 +256,9 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_edit.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
+			removeCSSClass(obj.controller.view.patron_name,'NO_PENALTIES');
+			removeCSSClass(obj.controller.view.patron_name,'ONE_PENALTY');
+			removeCSSClass(obj.controller.view.patron_name,'MULTIPLE_PENALTIES');
 			var frame = obj.left_deck.set_iframe(
 				urls.XUL_PATRON_SUMMARY
 				+'?session=' + window.escape(obj.session)
@@ -333,6 +339,9 @@ patron.display.prototype = {
 									obj.controller.view.cmd_search_form.setAttribute('disabled','false');
 									obj.retrieve_ids = list;
 									obj.controller.view.patron_name.setAttribute('value','Retrieving...');
+									removeCSSClass(obj.controller.view.patron_name,'NO_PENALTIES');
+									removeCSSClass(obj.controller.view.patron_name,'ONE_PENALTY');
+									removeCSSClass(obj.controller.view.patron_name,'MULTIPLE_PENALTIES');
 									setTimeout(
 										function() {
 											var frame = obj.left_deck.set_iframe(
@@ -397,6 +406,9 @@ patron.display.prototype = {
 		obj.controller.view.patron_name.setAttribute(
 			'value','Retrieving...'
 		);
+		removeCSSClass(obj.controller.view.patron_name,'NO_PENALTIES');
+		removeCSSClass(obj.controller.view.patron_name,'ONE_PENALTY');
+		removeCSSClass(obj.controller.view.patron_name,'MULTIPLE_PENALTIES');
 		try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
 		try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
 	},

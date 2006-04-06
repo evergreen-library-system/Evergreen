@@ -24,10 +24,6 @@ patron.util.columns = function(modify) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.au.usrname()'
 		},
 		{ 
-			'id' : 'standing', 'label' : 'Standing', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.cst[ my.au.standing() ].value()'
-		},
-		{ 
 			'id' : 'profile', 'label' : 'Group', 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.pgt[ my.au.profile() ].name()'
 		},
