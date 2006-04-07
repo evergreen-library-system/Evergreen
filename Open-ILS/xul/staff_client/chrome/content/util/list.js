@@ -141,9 +141,21 @@ util.list.prototype = {
 
 		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
 
+		var treechildren_node = this.treechildren;
+
+		if (params.node) { /* if provided, this should be a treeitem */
+			node.setAttribute('container','true'); node.setAttribute('open','true');
+			if (node.lastChild.nodeName == 'treechildren') {
+				treechildren_node = node.lastChild;
+			} else {
+				treechildren_node = document.createElement('treechildren');
+				node.appendChild(treechildren_node);
+			}
+		}
+
 		var treeitem = document.createElement('treeitem');
 		treeitem.setAttribute('retrieve_id',params.retrieve_id);
-		this.treechildren.appendChild( treeitem );
+		treechildren_node.appendChild( treeitem );
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 

@@ -44,11 +44,16 @@ util.functional.find_object = function(obj,f) {
 	return null;
 }
 
-util.functional.walk_tree_preorder = function(node,children_func,f) {
-	f(node);
+util.functional.walk_tree_preorder = function(node,children_func,f,parent_node) {
+	f(node,parent_node);
 	var children = children_func( node );
-	for (var i = 0; i < children.length; i++) {
-		f(children[i]);	
+	if (children) for (var i = 0; i < children.length; i++) {
+		util.functional.walk_tree_preorder(
+			children[i],
+			children_func,
+			f,
+			node
+		);	
 	}
 }
 
