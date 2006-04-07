@@ -33,7 +33,7 @@ sub initialize {
 	$script	= $conf->config_value( @pfx, 'patron_penalty' );
 
 	if(!($path and $script)) {
-		$logger->error("Penalty server config missing script and/or script path");
+		$logger->error("penalty:  server config missing script and/or script path");
 		return 0;
 	}
 
@@ -189,7 +189,7 @@ sub update_patron_penalties {
 	for my $e (@$existing) {
 		if( ! grep { $_ eq $e->penalty_type } @$penalties ) {
 
-			$logger->activity("removing user penalty ".
+			$logger->activity("penalty: removing user penalty ".
 				$e->penalty_type . " from user $patronid");
 
 			my $s = $session->request(
@@ -202,7 +202,7 @@ sub update_patron_penalties {
 	for my $p (@$penalties) {
 		if( ! grep { $_->penalty_type eq $p } @$existing ) {
 
-			$logger->activity("adding user penalty $p to user $patronid");
+			$logger->activity("penalty: adding user penalty $p to user $patronid");
 
 			my $newp = Fieldmapper::actor::user_standing_penalty->new;
 			$newp->penalty_type( $p );
