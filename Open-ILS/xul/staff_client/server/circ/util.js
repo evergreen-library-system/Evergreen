@@ -33,7 +33,12 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (my.acp.call_number() == -1) { "Not Cataloged"; } else { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { x.label(); } }'
+			'primary' : false, 'hidden' : true, 'render' : 'if (my.acp.call_number() == -1) { "Not Cataloged"; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { my.acn = x; x.label(); } } else { my.acn.label(); } }' 
+		},
+		{
+			'id' : 'owning_lib', 'label' : 'Owning Lib', 'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : 'if (Number(my.acn.owning_lib())) obj.data.hash.aou[ my.acn.owning_lib() ].shortname(); else my.acn.owning_lib().shortname();'
 		},
 		{
 			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1,
