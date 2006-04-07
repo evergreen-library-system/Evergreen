@@ -6,7 +6,7 @@ util.functional = {};
 util.functional.EXPORT_OK	= [ 
 	'filter_list', 'filter_object', 'find_list', 'find_object', 'map_list', 'map_flat_list', 
 	'map_object', 'map_object_to_list', 'convert_object_list_to_hash', 'find_id_object_in_list', 
-	'find_attr_object_in_list', 'map_tree_preorder',
+	'find_attr_object_in_list', 'walk_tree_preorder',
 ];
 util.functional.EXPORT_TAGS	= { ':all' : util.functional.EXPORT_OK };
 
@@ -44,7 +44,7 @@ util.functional.find_object = function(obj,f) {
 	return null;
 }
 
-util.functional.map_tree_preorder = function(node,children_func,f) {
+util.functional.walk_tree_preorder = function(node,children_func,f) {
 	f(node);
 	var children = node.children_func();
 	for (var i = 0; i < children.length; i++) {
