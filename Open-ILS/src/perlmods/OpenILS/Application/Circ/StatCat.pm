@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------
-# Copyright (C) 2005  Georgia Public Library Service 
-# Bill Erickson <highfalutin@gmail.com>
+# Copyright (C) 2006  Georgia Public Library Service 
+# Bill Erickson <billserickson@gmail.com>
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ use OpenSRF::Utils::Logger qw($logger);
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 
 
 
@@ -581,6 +582,44 @@ sub _delete_entry {
 	}
 
 	return $session->request($method, $stat_entry)->gather(1);
+}
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_stats_by_copy',
+	api_name	=> 'open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy',
+);
+
+
+sub fetch_stats_by_copy {
+	my( $self, $conn, $args ) = @_;
+
+	my @entries;
+
+	if( $$args{public} ) {
+		my $maps = $U->storagereq(
+			'open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy.atomic', $$args{copyid});
+
+
+		warn "here\n";
+		for my $map (@$maps) {
+
+			warn "map ".$map->id."\n";
+			warn "map ".$map->stat_cat_entry."\n";
+
+			my $entry = $U->storagereq(
+				'open-ils.storage.direct.asset.stat_cat_entry.retrieve', $map->stat_cat_entry);
+
+			warn "Found entry ".$entry->id."\n";
+
+			my $cat = $U->storagereq(
+				'open-ils.storage.direct.asset.stat_cat.retrieve', $entry->stat_cat );
+			$entry->stat_cat( $cat );
+			push( @entries, $entry );
+		}
+	}
+
+	return \@entries;
 }
 
 
