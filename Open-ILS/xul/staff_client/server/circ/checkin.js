@@ -26,6 +26,7 @@ circ.checkin.prototype = {
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
 				'route_to' : { 'hidden' : false },
+				'alert_message' : { 'hidden' : false },
 			} 
 		);
 

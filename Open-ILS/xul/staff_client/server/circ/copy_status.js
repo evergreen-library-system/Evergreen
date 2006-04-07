@@ -26,6 +26,7 @@ circ.copy_status.prototype = {
 				'location' : { 'hidden' : false },
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
+				'alert_message' : { 'hidden' : false },
 			} 
 		);
 

@@ -320,6 +320,13 @@ g.right_pane_field_names = [
 			render: 'fm.editor();',
 		}
 	],
+	[
+		"Alert Message",
+		{
+			render: 'fm.alert_message();',
+			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("alert_message",ev.target.value); }, false);',
+		}
+	],
 	 [
 		"Circulate as Type",	
 		{ 	

@@ -152,7 +152,11 @@ circ.util.columns = function(modify) {
 		{
 			'id' : 'uses', 'label' : '# of Uses', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.uses'
-		}
+		},
+		{
+			'id' : 'alert_message', 'label' : 'Alert Message', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.alert_message()'
+		},
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
