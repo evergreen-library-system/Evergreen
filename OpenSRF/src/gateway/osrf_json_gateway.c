@@ -20,6 +20,7 @@ module AP_MODULE_DECLARE_DATA osrf_json_gateway_module;
 
 char* osrf_json_gateway_config_file = NULL;
 int bootstrapped = 0;
+int numserved = 0;
 
 static const char* osrf_json_gateway_set_config(cmd_parms *parms, void *config, const char *arg) {
 	osrf_json_gateway_config  *cfg;
@@ -68,15 +69,14 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
 
-
 	osrfLogSetAppname("osrf_json_gw");
 
-	char* service				= NULL;	/* service to connect to */
-	char* method				= NULL;	/* method to perform */
-	char* format				= NULL;	/* method to perform */
-	char* a_l				= NULL;	/* request api level */
-	int   isXML				= 0;
-	int   api_level				= 1;
+	char* service		= NULL;	/* service to connect to */
+	char* method		= NULL;	/* method to perform */
+	char* format		= NULL;	/* method to perform */
+	char* a_l			= NULL;	/* request api level */
+	int   isXML			= 0;
+	int   api_level	= 1;
 
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
@@ -166,6 +166,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 			if (isXML)
 				snprintf( buf, l, "<debug>\"%s : %s\"</debug>", statusname, statustext );
+
 			else {
 				char bb[l];
 				bzero(bb, l);
@@ -202,6 +203,8 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		osrf_app_session_destroy(session);
 	}
 
+	osrfLogInfo(OSRF_LOG_MARK, "Completed processing service=%s, method=%s", service, method);
+	osrfLogDebug(OSRF_LOG_MARK, "Gateway served %d requests", ++numserved);
 	string_array_destroy(params);
 	string_array_destroy(mparams);
 

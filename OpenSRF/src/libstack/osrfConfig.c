@@ -116,6 +116,7 @@ int osrfConfigGetValueList(osrfConfig* cfg, osrfStringArray* arr, char* path, ..
 		}
 	}
 
+	jsonObjectFree(obj);
 	return count;
 }
 

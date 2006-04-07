@@ -27,6 +27,11 @@ osrf_app_request* _osrf_app_request_init(
 
 }
 
+
+void osrfAppSessionCleanup() {
+	osrfHashFree(osrfAppSessionCache);	
+}
+
 /** Frees memory used by an app_request object */
 void _osrf_app_request_free( void * req ){
 	if( req == NULL ) return;

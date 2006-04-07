@@ -222,5 +222,7 @@ int osrfAppRequestRespondComplete( osrfAppSession* ses, int requestId, jsonObjec
 
 int osrfAppSessionStatus( osrfAppSession* ses, int type, char* name, int reqId, char* message );
 
+void osrfAppSessionCleanup();
+
 
 #endif

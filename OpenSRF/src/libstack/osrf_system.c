@@ -207,6 +207,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	free(password);
 	free(port);	
 	free(unixpath);
+	free(domain);
 
 	if(__osrfGlobalTransportClient)
 		return 1;
@@ -225,6 +226,8 @@ int osrf_system_shutdown() {
 	osrfConfigCleanup();
 	osrf_system_disconnect_client();
 	osrf_settings_free_host_config(NULL);
+	osrfAppSessionCleanup();
+	osrfLogCleanup();
 	return 1;
 }
 

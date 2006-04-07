@@ -57,6 +57,8 @@ void osrfLogInternal( const char* file, int line, const char* msg, ... );
 /* Log an activity message */
 void osrfLogActivity( const char* file, int line, const char* msg, ... );
 
+void osrfLogCleanup();
+
 /* sets the activity flag */
 void osrfLogSetActivityEnabled( int enabled );
 

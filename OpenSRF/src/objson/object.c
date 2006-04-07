@@ -710,7 +710,8 @@ jsonObject* _jsonObjectFindPathRecurse(const jsonObject* obj, char* root, char* 
          	if(thing->type == JSON_ARRAY) {
             	int i;
 					for( i = 0; i != thing->size; i++ )
-						jsonObjectPush(newarr, jsonObjectGetIndex(thing,i));
+						jsonObjectPush(newarr, jsonObjectClone(jsonObjectGetIndex(thing,i)));
+					jsonObjectFree(thing);
 
 				} else {
 					jsonObjectPush(newarr, thing);

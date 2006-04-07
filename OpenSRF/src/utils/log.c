@@ -9,6 +9,12 @@ int __osrfLogLevel				= OSRF_LOG_INFO;
 int __osrfLogActivityEnabled	= 1;
 
 
+void osrfLogCleanup() {
+	free(__osrfLogAppname);
+	free(__osrfLogFile);
+}
+
+
 void osrfLogInit( int type, const char* appname, int maxlevel ) {
 	osrfLogSetType(type);
 	if(appname) osrfLogSetAppname(appname);
