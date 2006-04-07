@@ -518,11 +518,11 @@ g.render = function() {
 	for (var i in g.summary['Call Number']) {
 		var cn_id = i; var count = g.summary['Call Number'][i];
 		var row = document.createElement('row'); grid.lastChild.appendChild(row);
-		var cn_label = document.createElement('label'); row.appendChild(cn_label);
+		var cn_label = document.createElement('description'); row.appendChild(cn_label);
 		g.special_exception['Call Number']( cn_label, cn_id );
-		var count_label = document.createElement('label'); row.appendChild(count_label);
+		var count_label = document.createElement('description'); row.appendChild(count_label);
 		var unit = count == 1 ? 'copy' : 'copies';
-		count_label.setAttribute('value',count + ' ' + unit);
+		count_label.appendChild( document.createTextNode(count + ' ' + unit) );
 	}
 
 	/******************************************************************************************************/
@@ -531,8 +531,8 @@ g.render = function() {
 	for (var i in g.summary['Barcode']) {
 		var bc = i;
 		var hbox = document.createElement('hbox'); bcs.appendChild(hbox);
-		var bc_label = document.createElement('label'); hbox.appendChild(bc_label);
-		bc_label.setAttribute('value',bc);
+		var bc_label = document.createElement('description'); hbox.appendChild(bc_label);
+		bc_label.appendChild( document.createTextNode(bc) );
 	}
 
 	/******************************************************************************************************/
@@ -558,15 +558,15 @@ g.render = function() {
 			for (var j in g.summary[fn]) {
 				var value = j; var count = g.summary[fn][j];
 				row = document.createElement('row'); rows.appendChild(row);
-				var label1 = document.createElement('label'); row.appendChild(label1);
+				var label1 = document.createElement('description'); row.appendChild(label1);
 				if (g.special_exception[ fn ]) {
 					g.special_exception[ fn ]( label1, value );
 				} else {
-					label1.setAttribute('value',value);
+					label1.appendChild( document.createTextNode(value) );
 				}
-				var label2 = document.createElement('label'); row.appendChild(label2);
+				var label2 = document.createElement('description'); row.appendChild(label2);
 				var unit = count == 1 ? 'copy' : 'copies';
-				label2.setAttribute('value',count + ' ' + unit);
+				label2.appendChild( document.createTextNode(count + ' ' + unit) );
 			}
 			var hbox = document.createElement('hbox'); 
 			vbox.appendChild(hbox);
@@ -633,14 +633,14 @@ g.render = function() {
 				for (var j in g.summary[fn]) {
 					var value = j; var count = g.summary[fn][j];
 					row = document.createElement('row'); rows.appendChild(row);
-					var label0 = document.createElement('label'); row.appendChild(label0);
-					label0.setAttribute('value',fn);
+					var label0 = document.createElement('description'); row.appendChild(label0);
+					label0.appendChild( document.createTextNode(fn) );
 					label0.setAttribute('style','font-weight: bold');
-					var label1 = document.createElement('label'); row.appendChild(label1);
+					var label1 = document.createElement('description'); row.appendChild(label1);
 					if (g.special_exception[ fn ]) {
 						g.special_exception[ fn ]( label1, value );
 					} else {
-						label1.setAttribute('value',value);
+						label1.appendChild( document.createTextNode(value) );
 					}
 
 				}
@@ -689,16 +689,15 @@ g.render = function() {
 				for (var j in g.summary[fn]) {
 					var value = j; var count = g.summary[fn][j];
 					row = document.createElement('row'); rows.appendChild(row);
-					var label1 = document.createElement('label'); row.appendChild(label1);
+					var label1 = document.createElement('description'); row.appendChild(label1);
 					if (g.special_exception[ fn ]) {
 						g.special_exception[ fn ]( label1, value );
 					} else {
-						label1.setAttribute('value',value);
+						label1.appendChild( document.createTextNode(value) );
 					}
-					var label2 = document.createElement('label'); row.appendChild(label2);
+					var label2 = document.createElement('description'); row.appendChild(label2);
 					var unit = count == 1 ? 'copy' : 'copies';
-					label2.setAttribute('value',count + ' ' + unit);
-
+					label2.appendChild( document.createTextNode(count + ' ' + unit) );
 				}
 				var hbox = document.createElement('hbox'); 
 				hbox.setAttribute('id',fn);
