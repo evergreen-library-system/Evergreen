@@ -11,6 +11,10 @@ transport_client* osrfSystemGetTransportClient() {
 	return __osrfGlobalTransportClient;
 }
 
+void osrfSystemIgnoreTransportClient() {
+	__osrfGlobalTransportClient = NULL;
+}
+
 transport_client* osrf_system_get_transport_client() {
 	return __osrfGlobalTransportClient;
 }
@@ -133,6 +137,11 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 }
 
 int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, char* resource ) {
+
+	if(osrfSystemGetTransportClient()) {
+		osrfLogInfo(OSRF_LOG_MARK, "Client is already bootstrapped");
+		return 1; /* we already have a client connection */
+	}
 
 	if( !( config_file && contextnode ) && ! osrfConfigHasDefaultConfig() ) {
 		osrfLogError( OSRF_LOG_MARK, "No Config File Specified\n" );

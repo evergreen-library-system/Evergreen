@@ -46,4 +46,13 @@ int osrf_system_shutdown();
 
 int _osrfSystemInitCache();
 
+
+/* this will clear the global transport client pointer without
+ * actually destroying the socket.  this is useful for allowing
+ * children to have their own socket, even though their parent
+ * already created a socket
+ */
+void osrfSystemIgnoreTransportClient();
+
+
 #endif

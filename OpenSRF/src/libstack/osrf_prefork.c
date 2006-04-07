@@ -112,6 +112,10 @@ void prefork_child_init_hook(prefork_child* child) {
 	osrfLogDebug( OSRF_LOG_MARK, "Child init hook for child %d", child->pid);
 	char* resc = va_list_to_string("%s_drone",child->appname);
 
+	/* we want to remove traces of our parents socket connection 
+	 * so we can have our own */
+	osrfSystemIgnoreTransportClient();
+
 	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) {
 		osrfLogError( OSRF_LOG_MARK, "Unable to bootstrap client for osrf_prefork_run()");
 		free(resc);
