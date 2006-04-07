@@ -216,7 +216,6 @@ sub configure_hook {
 
 sub child_finish_hook {
 	my $self = shift;
-	OpenSRF::AppSession->kill_client_session_cache;
 }
 
 sub child_init_hook { 
