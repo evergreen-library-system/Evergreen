@@ -46,7 +46,7 @@ util.functional.find_object = function(obj,f) {
 
 util.functional.walk_tree_preorder = function(node,children_func,f) {
 	f(node);
-	var children = node.children_func();
+	var children = children_func( node );
 	for (var i = 0; i < children.length; i++) {
 		f(children[i]);	
 	}
