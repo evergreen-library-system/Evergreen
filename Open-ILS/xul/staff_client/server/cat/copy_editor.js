@@ -230,15 +230,14 @@ g.special_exception = {
 	},
 	'Creator' : function(label,value) {
 		if (value == null || value == '' || value == 'null') return;
-		g.network.request(
-			api.FM_AU_RETRIEVE_VIA_ID.app,
-			api.FM_AU_RETRIEVE_VIA_ID.method,
+		g.network.simple_request(
+			'FM_AU_RETRIEVE_VIA_ID',
 			[ g.session, value ],
 			function(req) {
 				var p = '??? id = ' + value;
 				try {
 					p = req.getResultObject();
-					p = p.card().barcode() + ' : ' + p.family_name();
+					p = p.usrname() + ' : ' + p.family_name() + ', ' + p.first_given_name();
 
 				} catch(E) {
 					g.error.sdump('D_ERROR','patron retrieve: ' + E);
@@ -249,15 +248,14 @@ g.special_exception = {
 	},
 	'Last Editor' : function(label,value) {
 		if (value == null || value == '' || value == 'null') return;
-		g.network.request(
-			api.FM_AU_RETRIEVE_VIA_ID.app,
-			api.FM_AU_RETRIEVE_VIA_ID.method,
+		g.network.simple_request(
+			'FM_AU_RETRIEVE_VIA_ID',
 			[ g.session, value ],
 			function(req) {
 				var p = '??? id = ' + value;
 				try {
 					p = req.getResultObject();
-					p = p.card().barcode() + ' : ' + p.family_name();
+					p = p.usrname() + ' : ' + p.family_name() + ', ' + p.first_given_name();
 
 				} catch(E) {
 					g.error.sdump('D_ERROR','patron retrieve: ' + E);
