@@ -47,7 +47,7 @@ sub go {
 		do_checkout($key, $patronid, $barcode, 
 			$precat, $type =~ /noncat/, $nc_type ) unless ($type =~ /permit/);
 	}
-	oils_logout();
+	#oils_logout(); # - this will break the post-method db updates
 }
 
 go();
@@ -67,15 +67,23 @@ sub do_permit {
 	$start = time();
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.checkout.permit', $authtoken, $args );
-	
-	if( oils_event_equals($resp, 'ITEM_NOT_CATALOGED') ) {
-		$precat = 1;
-	} else { oils_event_die($resp); }
+
+	if( ref($resp) eq 'ARRAY' ) { # we received a list of non-success events
+		printl("received event: ".$_->{textcode}) for @$resp;
+
+		#if( oils_event_equals($resp, 'ITEM_NOT_CATALOGED') ) {
+			#$precat = 1;
+		#} else { oils_event_die($resp); }
+		return undef;
+
+	} 
+
+	oils_event_die($resp);	 
 
 	my $e = time() - $start;
 	my $key = $resp->{payload};
 	printl("Permit OK: \n\ttime =\t$e\n\tkey =\t$key" );
-
+	
 	return ( $key, $precat );
 }
 
