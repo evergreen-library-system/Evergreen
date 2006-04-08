@@ -139,17 +139,17 @@ util.list.prototype = {
 
 		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
 
-		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
+		var s = ('util.list.append: params = ' + (params) + '\n');
 
 		var treechildren_node = this.treechildren;
 
-		if (params.node) { /* if provided, this should be a treeitem */
-			node.setAttribute('container','true'); node.setAttribute('open','true');
-			if (node.lastChild.nodeName == 'treechildren') {
-				treechildren_node = node.lastChild;
+		if (params.node && params.node.nodeName == 'treeitem') {
+			params.node.setAttribute('container','true'); /* params.node.setAttribute('open','true'); */
+			if (params.node.lastChild.nodeName == 'treechildren') {
+				treechildren_node = params.node.lastChild;
 			} else {
 				treechildren_node = document.createElement('treechildren');
-				node.appendChild(treechildren_node);
+				params.node.appendChild(treechildren_node);
 			}
 		}
 
@@ -159,7 +159,7 @@ util.list.prototype = {
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 
-		s += ('tree = ' + this.node + '  treechildren = ' + this.treechildren + '\n');
+		s += ('tree = ' + this.node + '  treechildren = ' + treechildren_node + '\n');
 		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
@@ -204,7 +204,7 @@ util.list.prototype = {
 
 		if (typeof params.row == 'undefined') throw('util.list.append: Object must contain a row');
 
-		var s = ('util.list.append: params = ' + js2JSON(params) + '\n');
+		var s = ('util.list.append: params = ' + (params) + '\n');
 
 		var listitem = document.createElement('listitem');
 
