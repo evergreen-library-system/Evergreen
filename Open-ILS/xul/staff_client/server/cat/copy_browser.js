@@ -12,12 +12,15 @@ cat.copy_browser = function (params) {
 
 cat.copy_browser.prototype = {
 
+	'map_tree' : {},
+
 	'init' : function( params ) {
 
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var obj = this;
 
+			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
 				{
@@ -28,7 +31,22 @@ cat.copy_browser.prototype = {
 						],
 						'cmd_test' : [
 							['command'],
-							function() { obj.test(); }
+							function() { 
+								obj.show_my_libs(); 
+							}
+						],
+						'cmd_show_all_libs' : [
+							['command'],
+							function() {
+								obj.show_all_libs();
+							}
+						],
+						'cmd_clear' : [
+							['command'],
+							function() {
+								obj.map_tree = {};
+								obj.list.clear();
+							}
 						],
 					}
 				}
@@ -41,69 +59,200 @@ cat.copy_browser.prototype = {
 		}
 	},
 
-	'test' : function() {
+	'show_my_libs' : function() {
 		var obj = this;
 		try {
+			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+			obj.show_libs( org );
+		
+			var p_org = obj.data.hash.aou[ org.parent_ou() ];
+			if (p_org) {
+				JSAN.use('util.exec'); var exec = new util.exec();
+				var funcs = [];
+				for (var i = 0; i < p_org.children().length; i++) {
+					funcs.push(
+						function(o) {
+							return function() {
+								obj.show_libs( o );
+							}
+						}( p_org.children()[i] )
+					);
+				}
+				exec.chain( funcs );
+			}
+		} catch(E) {
+			alert(E);
+		}
+	},
+
+	'show_all_libs' : function() {
+		var obj = this;
+		try {
+			obj.show_libs( obj.data.tree.aou );
+
+			JSAN.use('util.exec'); var exec = new util.exec();
+			var funcs = [];
+			for (var i = 0; i < obj.data.tree.aou.children().length; i++) {
+				funcs.push(
+					function(o) {
+						return function() {
+							obj.show_libs( o );
+						}
+					}( obj.data.tree.aou.children()[i] )
+				);
+			}
+			exec.chain( funcs );
+		} catch(E) {
+			alert(E);
+		}
+	},
+
+	'show_libs' : function(start_aou) {
+		var obj = this;
+		try {
+			if (!start_aou) throw('show_libs: Need a start_aou');
 			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 			JSAN.use('util.functional'); JSAN.use('util.exec'); var exec = new util.exec();
 
-			obj.list.clear();
-
 			var funcs = [];
 
-			obj.map_tree = {};
+			var parents = [];
+			var temp_aou = start_aou;
+			while ( temp_aou.parent_ou() ) {
+				temp_aou = obj.data.hash.aou[ temp_aou.parent_ou() ];
+				parents.push( temp_aou );
+			}
+			parents.reverse();
 
-			var start_at_this_aou;
-			start_at_this_aou = obj.data.tree.aou;
-			/*
-			start_at_this_aou = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-			if (start_at_this_aou.parent_ou()) start_at_this_aou = obj.data.hash.aou[ start_at_this_aou.parent_ou() ];
-			*/
+			for (var i = 0; i < parents.length; i++) {
+				funcs.push(
+					function(o,p) {
+						return function() { 
+							obj.append_org(o,p,{'container':'true'}); 
+						};
+					}(parents[i], obj.data.hash.aou[ parents[i].parent_ou() ])
+				);
+			}
 
-			util.functional.walk_tree_preorder(
-				start_at_this_aou,
-				function (org) { dump('finding children for ' + org.shortname() + '\n'); return org.children(); },
-				function (org,parent_org) {
-					dump('queueing ' + org.shortname() + '\n');
-					funcs.push(
-						function() {
-							try {
-								var data = {
-									'row' : {
-										'my' : {
-											'aou' : org,
-										}
-									},
-									'render_cols' : [ 0, 1, 2 ]
-								};
-								if ( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) {
-									data.row.my.volume_count = '??';
-									data.row.my.copy_count = '??';
-								} else {
-									data.row.my.volume_count = '';
-									data.row.my.copy_count = '';
-								}
-								if (parent_org) {
-									data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
-								}
-								obj.map_tree[ 'aou_' + org.id() ] = obj.list.append(data);
-								if (parent_org) {
-									if ( obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou() == parent_org.id() ) data.node.setAttribute('open','true');
-								} else {
-									obj.map_tree[ 'aou_' + org.id() ].setAttribute('open','true');
-								}
-							} catch(E) {
-								dump(E+'\n');
-								alert(E);
-							}
+			funcs.push(
+				function(o,p) {
+					return function() { obj.append_org(o,p); };
+				}(start_aou,obj.data.hash.aou[ start_aou.parent_ou() ])
+			);
+
+			funcs.push(
+				function() {
+					if (start_aou.children()) {
+						var x = obj.map_tree[ 'aou_' + start_aou.id() ];
+						x.setAttribute('container','true');
+						//x.setAttribute('open','true');
+						for (var i = 0; i < start_aou.children().length; i++) {
+							funcs.push(
+								function(o,p) {
+									return function() { obj.append_org(o,p); };
+								}( start_aou.children()[i], start_aou )
+							);
 						}
-					);
+					}
 				}
 			);
 
-			exec.chain(funcs);
+			exec.chain( funcs );
 
 		} catch(E) {
+			alert(E);
+		}
+	},
+
+	'on_select' : function(list) {
+		var obj = this;
+		for (var i = 0; i < list.length; i++) {
+			var node = obj.map_tree[ list[i] ];
+			//if (node.lastChild.nodeName == 'treechildren') { continue; } else { alert(node.lastChild.nodeName); }
+			var row_type = list[i].split('_')[0];
+			var id = list[i].split('_')[1];
+			switch(row_type) {
+				case 'aou' : obj.on_select_org(id); break;
+				default: alert('on_select: list[i] = ' + list[i] + ' row_type = ' + row_type + ' id = ' + id); break;
+			}
+		}
+	},
+
+	'on_select_org' : function(org_id) {
+		var obj = this;
+		var org = obj.data.hash.aou[ org_id ];
+		var node = obj.map_tree[ 'org_' + org_id ];
+		if (org.children()) {
+			var funcs = [];
+			for (var i = 0; i < org.children().length; i++) {
+				funcs.push(
+					function(o,p) {
+						return function() {
+							obj.append_org(o,p)
+						}
+					}(org.children()[i],org)
+				);
+			}
+			JSAN.use('util.exec'); var exec = new util.exec();
+			exec.chain( funcs );
+		} else {
+			alert('No Children');
+		}
+	},
+
+	'append_org' : function (org,parent_org,params) {
+		var obj = this;
+		try {
+			if (obj.map_tree[ 'aou_' + org.id() ]) {
+				var x = obj.map_tree[ 'aou_' + org.id() ];
+				if (params) {
+					for (var i in params) {
+						x.setAttribute(i,params[i]);
+					}
+				}
+				return x;
+			}
+
+			var data = {
+				'row' : {
+					'my' : {
+						'aou' : org,
+					}
+				},
+				'retrieve_id' : 'aou_' + org.id(),
+			};
+			if ( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) {
+				data.row.my.volume_count = '??';
+				data.row.my.copy_count = '??';
+			} else {
+				data.row.my.volume_count = '';
+				data.row.my.copy_count = '';
+			}
+			if (parent_org) {
+				data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
+			}
+
+			var node = obj.list.append(data);
+			if (params) {
+				for (var i in params) {
+					node.setAttribute(i,params[i]);
+				}
+			}
+			obj.map_tree[ 'aou_' + org.id() ] = node;
+
+			if (org.children()) {
+				node.setAttribute('container','true');
+			}
+
+			if (parent_org) {
+				if ( obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou() == parent_org.id() ) {
+					data.node.setAttribute('open','true');
+				}
+			} else {
+				obj.map_tree[ 'aou_' + org.id() ].setAttribute('open','true');
+			}
+		} catch(E) {
+			dump(E+'\n');
 			alert(E);
 		}
 	},
@@ -201,6 +350,20 @@ cat.copy_browser.prototype = {
 						exec.chain( funcs );
 
 						return row;
+					},
+					'on_click' : function(ev) {
+						netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
+						var row = {}; var col = {}; var nobj = {};
+						obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj);
+						if ((row.value == -1)||(nobj.value != 'twisty')) { return; }
+						var node = obj.list.node.contentView.getItemAtIndex(row.value);
+						var list = [ node.getAttribute('retrieve_id') ];
+						if (typeof obj.on_select == 'function') {
+							obj.on_select(list);
+						}
+						if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
+							window.xulG.on_select(list);
+						}
 					},
 					'on_select' : function(ev) {
 						JSAN.use('util.functional');
