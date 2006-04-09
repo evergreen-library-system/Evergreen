@@ -70,6 +70,13 @@ util.list.prototype = {
 				false
 			);
 		}
+		if (typeof params.on_click == 'function') {
+			this.node.addEventListener(
+				'click',
+				params.on_click,
+				false
+			);
+		}
 	},
 
 	'_init_listbox' : function (params) {
