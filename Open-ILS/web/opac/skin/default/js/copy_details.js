@@ -7,27 +7,39 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth ) 
 	var i = cpdCheckExisting(contextRow);
 	if(i) return i;
 
+	var counter = cpdCounter++;
+
+	/* yank out all of the template rows */
 	if(!cpdTemplate) cpdTemplate = $('rdetail_volume_details_row');
 	var templateRow = cpdTemplate.cloneNode(true);
-	templateRow.id = 'cpd_row_' + (cpdCounter++);
+	templateRow.id = 'cpd_row_' + counter;
 
 	/* shove a dummy a tag in before the context previous sibling */
-	contextTbody.insertBefore( elem('a',{name:'slot_'+templateRow.id}), contextRow.previousSibling);
+	/*
+	contextTbody.insertBefore( 
+		elem('a',{name:'slot_'+templateRow.id}), contextRow.previousSibling);
 	goTo('#slot_'+templateRow.id);
+	*/
 
 	unHideMe(templateRow);
+
+	var mainTbody = $n(templateRow, 'copies_tbody');
+	var extrasRow = mainTbody.removeChild($n(mainTbody, 'copy_extras_row'));
 
 	var req = new Request(FETCH_VOLUME_BY_INFO, callnumber, record.doc_id(), orgid);
 	req.callback(cpdFetchCopies);
 
 	req.request.args = { 
-		contextTbody	: contextTbody,
-		contextRow		: contextRow,
+		contextTbody	: contextTbody, /* tbody that holds the contextrow */
+		contextRow		: contextRow, /* the row our new row will be inserted after */
 		record			: record,
 		callnumber		: callnumber, 
 		orgid				: orgid,
 		depth				: depth,
-		templateRow		: templateRow,
+		templateRow		: templateRow, /* contains everything */
+		mainTbody		: mainTbody, /* holds the copy rows */
+		extrasRow		: extrasRow, /* wrapper row for all extras */
+		counter			: counter
 	};
 
 	if( contextRow.nextSibling ) 
@@ -72,15 +84,6 @@ function cpdCheckExisting( contextRow ) {
 function cpdFetchCopies(r) {
 	var args = r.args;
 	args.cn	= r.getResultObject();
-
-	/* set up the cn browser launch point */
-	/*
-	var href = 'javascript:rdetailShowCNBrowse("' + 
-			args.callnumber + '", "'+args.depth+'");';
-	$n(args.templateRow, 'launch_shelf_browser').setAttribute('href', href);
-	*/
-
-
 	var req = new Request(FETCH_COPIES_FROM_VOLUME, args.cn.id());
 	req.request.args = args;
 	req.callback(cpdDrawCopies);
@@ -110,15 +113,107 @@ function cpdDrawCopy(r) {
 	var copy = r.getResultObject();
 	var row  = r.row;
 
+	r.args.copy = copy;
+
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'location').appendChild(text(cpdGetLocation(copy).name()));
 
 	for( i = 0; i < cp_statuses.length; i++ ) {
 		var c = cp_statuses[i];
-		if( c.id() == copy.status() )
-		$n(row, 'status').appendChild(text(c.name()));
+		if( c.id() == copy.status() ) {
+			$n(row, 'status').appendChild(text(c.name()));
+			break;
+		}
 	}
 
+	var req = new Request(FETCH_COPY_NOTES, { pub : 1, itemid : copy.id() } );
+	req.request.args = r.args;
+	req.request.args.copyrow = row;
+	req.callback(cpdShowNotes);
+	req.send();
+
+	req = new Request(FETCH_COPY_STAT_CATS, { copyid : copy.id(), "public" : 1 });
+	req.request.args = r.args;
+	req.request.args.copyrow = row;
+	req.callback(cpdShowStats);
+	req.send();
+}
+
+function _cpdExtrasInit(args) {
+
+	var newrid	= 'extras_row_' + args.copy.barcode();
+	var newrow	= $(newrid);
+	if(!newrow) newrow = args.extrasRow.cloneNode(true);
+	var tbody	= $n(newrow, 'extras_tbody');
+	var rowt		= $n(tbody, 'extras_row');
+	newrow.id	= newrid;
+
+	var cr = args.copyrow;
+	var nr = cr.nextSibling;
+	var np = args.mainTbody;
+
+	/* insert the extras row into the main table */
+	if(nr) np.insertBefore( newrow, nr );
+	else np.appendChild(newrow);
+
+	var link = $n(args.copyrow, 'details_link');
+	var link2 = $n(args.copyrow, 'less_details_link');
+	var id = newrow.id;
+	link.id = id + '_morelink';
+	link2.id = id + '_lesslink';
+	unHideMe(link);
+	hideMe(link2);
+
+	link.setAttribute('href', 
+			'javascript:unHideMe($("'+link2.id+'")); hideMe($("'+link.id+'"));unHideMe($("'+newrow.id+'"));');
+
+	link2.setAttribute('href', 
+			'javascript:unHideMe($("'+link.id+'")); hideMe($("'+link2.id+'"));hideMe($("'+newrow.id+'"));');
+
+	return [ tbody, rowt ];
+}
+
+function cpdShowNotes(r) {
+	var notes = r.getResultObject();
+
+	if(notes.length > 0) {
+
+		var a = _cpdExtrasInit(r.args);
+		var tbody = a[0];
+		var rowt = a[1];
+
+		for( var n in notes ) {
+			var note = notes[n];
+			var row = rowt.cloneNode(true);
+			$n(row, 'key').appendChild(text(note.title()));
+			$n(row, 'value').appendChild(text(note.value()));
+			unHideMe($n(row, 'note'));
+			unHideMe(row);
+			tbody.appendChild(row);
+		}
+	}
+}
+
+
+function cpdShowStats(r) {
+	var entries = r.getResultObject();
+
+	if(entries.length > 0) {
+		
+		var a = _cpdExtrasInit(r.args);
+		var tbody = a[0];
+		var rowt = a[1];
+
+		for( var n in entries ) {
+			var entry = entries[n];
+			var row = rowt.cloneNode(true);
+			$n(row, 'key').appendChild(text(entry.stat_cat().name()));
+			$n(row, 'value').appendChild(text(entry.value()));
+			unHideMe($n(row, 'cat'));
+			unHideMe(row);
+			tbody.appendChild(row);
+		}
+	}
 }
 
 
@@ -130,90 +225,10 @@ function cpdGetLocation(copy) {
 		req.send(true);
 		copyLocations = req.result();
 	}
-
 	return grep(copyLocations, 
 		function(l) { return l.id() == copy.location() } )[0];
 }
 
 
-/*
 
-var rdetailCNDetailsRow;
-var rdetailCNDetailContainerRow;
-function rdetailShowCNDetails3(r) {
-
-	var copies = r.getResultObject();
-	var cn = r._cn;
-	var wrapperrow = r._row;
-
-	var parent = $('rdetail_copy_info_tbody');
-	var tbody = $('rdetail_cn_copies_tbody');
-
-	if(!rdetailCNDetailsRow) {
-		rdetailCNDetailsRow = tbody.removeChild($('rdetail_cn_copies_row'));
-		rdetailCNDetailContainerRow = $('rdetail_volume_details_row');
-	}
-	
-	removeChildren(tbody);
-
-	for( var i = 0; i != copies.length; i++ ) {
-		var row = rdetailCNDetailsRow.cloneNode(true);
-		var copyid = copies[i];
-		var req = new Request(FETCH_COPY, copyid);
-		req.callback(rdetailShowCNCopy);
-		req.request._cn = cn;
-		req.request._tbody = tbody;
-		req.request._row = row;
-		req.send();
-		tbody.appendChild(row);
-	}
-
-	var oldrow = $('rdetail_cn_details_div').parentNode.parentNode;
-
-	unHideMe($('rdetail_cn_details_div'));
-	newrow = rdetailCNDetailContainerRow;
-
-	removeCSSClass(newrow.previousSibling, 'rdetail_context_row');
-
-	var td = newrow.getElementsByTagName('td')[0];
-	td.appendChild($('rdetail_cn_details_div'));
-
-	addCSSClass(wrapperrow, 'rdetail_context_row');
-	if( wrapperrow.nextSibling ) 
-		parent.insertBefore( newrow, wrapperrow.nextSibling );
-	else
-		parent.appendChild( newrow );
-}
-
-function rdetailShowCNCopy(r) {
-	var copy = r.getResultObject();
-	var row = r._row;
-	$n(row, 'barcode').appendChild(text(copy.barcode()));
-
-	for( i = 0; i < cp_statuses.length; i++ ) {
-		var c = cp_statuses[i];
-		if( c.id() == copy.status() )
-			$n(row, 'status').appendChild(text(c.name()));
-	}
-
-	rdetailSetCopyLocation( row, copy );
-}
-
-var copyLocations;
-function rdetailSetCopyLocation( row, copy ) {
-
-	if(!copyLocations) {
-		var req = new Request(FETCH_COPY_LOCATIONS);	
-		req.send(true);
-		copyLocations = req.result();
-	}
-
-	var location = grep(copyLocations, 
-		function(l) { return l.id() == copy.location() } )[0];
-
-	$n(row, 'location').appendChild(text(location.name()));
-}
-
-
-*/
 

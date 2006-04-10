@@ -254,40 +254,55 @@ function rdetailShowExtra(type, args) {
 		case 'notes':
 			unHideMe($('rdetail_notes_div'));
 			break;
-
-		case 'cn_details':
-			unHideMe($('rdetail_cn_details_div'));
-			unHideMe($('rdetail_cn_details_link'));
-			rdetailShowCNDetails(args);
-			break;
-
-
 	}
 }
 
-var rdetailCNDetailsRow;
-function rdetailShowCNDetails(args) {
-	$('rdetail_cn_details_cn').appendChild(text(args.cn));
-	$('rdetail_cn_details_owner').appendChild(text(findOrgUnit(args.org).name()));
+function rdetailVolumeDetails(args) {
+
+	
+	var row = $(args.rowid);
+	var tbody = row.parentNode;
+	cpdBuild( tbody, row, record, args.cn, args.org, args.depth );
+	return;
+
+	/*
+	$('cn_details_launch_shelf_browser').setAttribute('href',
+		'javascript:rdetailShowCNBrowse("' + args.cn + '", "'+args.depth+'");');
+
 	var req = new Request(FETCH_VOLUME_BY_INFO, args.cn, record.doc_id(), args.org);
 	req.callback(rdetailShowCNDetails2);
+	req.request._row = $(args.rowid);
 	req.send();
+	*/
 }
 
+/*
 function rdetailShowCNDetails2(r) {
 	var cn = r.getResultObject();
 	var req = new Request(FETCH_COPIES_FROM_VOLUME, cn.id());
 	req.request._cn = cn;
+	req.request._row = r._row;
 	req.callback(rdetailShowCNDetails3);
 	req.send();
 }
 
+var rdetailCNDetailsRow;
+var rdetailCNDetailContainerRow;
 function rdetailShowCNDetails3(r) {
+
 	var copies = r.getResultObject();
 	var cn = r._cn;
+	var wrapperrow = r._row;
+
+	var parent = $('rdetail_copy_info_tbody');
 	var tbody = $('rdetail_cn_copies_tbody');
-	if(!rdetailCNDetailsRow)
+
+	if(!rdetailCNDetailsRow) {
 		rdetailCNDetailsRow = tbody.removeChild($('rdetail_cn_copies_row'));
+		rdetailCNDetailContainerRow = $('rdetail_volume_details_row');
+	}
+	
+	removeChildren(tbody);
 
 	for( var i = 0; i != copies.length; i++ ) {
 		var row = rdetailCNDetailsRow.cloneNode(true);
@@ -300,6 +315,22 @@ function rdetailShowCNDetails3(r) {
 		req.send();
 		tbody.appendChild(row);
 	}
+
+	var oldrow = $('rdetail_cn_details_div').parentNode.parentNode;
+
+	unHideMe($('rdetail_cn_details_div'));
+	newrow = rdetailCNDetailContainerRow;
+
+	removeCSSClass(newrow.previousSibling, 'rdetail_context_row');
+
+	var td = newrow.getElementsByTagName('td')[0];
+	td.appendChild($('rdetail_cn_details_div'));
+
+	addCSSClass(wrapperrow, 'rdetail_context_row');
+	if( wrapperrow.nextSibling ) 
+		parent.insertBefore( newrow, wrapperrow.nextSibling );
+	else
+		parent.appendChild( newrow );
 }
 
 function rdetailShowCNCopy(r) {
@@ -312,7 +343,25 @@ function rdetailShowCNCopy(r) {
 		if( c.id() == copy.status() )
 			$n(row, 'status').appendChild(text(c.name()));
 	}
+
+	rdetailSetCopyLocation( row, copy );
 }
+
+var copyLocations;
+function rdetailSetCopyLocation( row, copy ) {
+
+	if(!copyLocations) {
+		var req = new Request(FETCH_COPY_LOCATIONS);	
+		req.send(true);
+		copyLocations = req.result();
+	}
+
+	var location = grep(copyLocations, 
+		function(l) { return l.id() == copy.location() } )[0];
+
+	$n(row, 'location').appendChild(text(location.name()));
+}
+*/
 
 function rdetailBuildCNList() {
 	var select = $('cn_browse_selector');
@@ -493,9 +542,10 @@ function _rdetailBuildInfoRows(r) {
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
 
 	/* now that we know what CN's we have, grab the associated notes */
-	rdetailFetchNotes();
+	/*rdetailFetchNotes();*/
 }
 
+/*
 function rdetailFetchNotes() {
 	var req = new Request(FETCH_BIBLIO_NOTES, record.doc_id());
 	req.callback(rdetailDrawNotes);
@@ -514,8 +564,6 @@ function rdetailDrawNotes(r) {
 	var found = false;
 	for( var t in notes.titles ) {
 		var note = notes.copies[c];
-		/* these need to go into a title notes 
-		section different from the copy/cn notes (on the title summary?) */
 	}
 
 	for( var v in notes.volumes ) {
@@ -540,8 +588,10 @@ function rdetailDrawNotes(r) {
 
 	if(found) unHideMe($('rdetail_viewnotes_link'));
 }
+*/
 
 function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
+
 	/* used for building the shelf browser */
 	if(local) {
 		var cache = callnumberCache[cn];
@@ -552,12 +602,11 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 	var depth = getDepth();
 	if( !local ) depth = findOrgDepth(globalOrgTree);
 
-	/*
-	var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");' }, cn);
-	*/
+	/* var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");' }, cn); */
 
-	var a = elem("a", {href:'javascript:rdetailShowExtra('+
-		'"cn_details", {cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'"});' }, cn);
+	var a = elem("a", {href:'javascript:rdetailVolumeDetails('+
+		'{rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'"});' }, cn);
+
 	addCSSClass(a, 'classic_link');
 
 	findNodeByName( row, config.names.rdetail.cn_cell ).appendChild(a);

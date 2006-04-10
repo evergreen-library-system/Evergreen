@@ -145,6 +145,11 @@
 							<select multiple='true' size='3' id='adv_global_item_type' class='hide_me'>
 							</select>	
 							<select multiple='true' size='3' id='adv_global_item_type_basic'>
+								<option value='at'>&opac.search.books;</option>
+								<option value='i'>&opac.search.audioBooks;</option>
+								<option value='g'>&opac.search.videoRecordings;</option>
+								<option value='j'>&opac.search.music;</option>
+								<option value='m'>&opac.search.electronic;</option>
 							</select>	
 						</td>
 					</tr>

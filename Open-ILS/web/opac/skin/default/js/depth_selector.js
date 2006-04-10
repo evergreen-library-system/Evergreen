@@ -40,7 +40,9 @@ function _opacHandleLocationTagClick() {
 }
 
 function depthSelGetDepth() {
-	return parseInt(_ds.options[_ds.selectedIndex].value);
+	var depth = parseInt(_ds.options[_ds.selectedIndex].value);
+	if(isNaN(depth)) depth = 0;
+	return depth;
 }
 
 function depthSelectorChanged() {

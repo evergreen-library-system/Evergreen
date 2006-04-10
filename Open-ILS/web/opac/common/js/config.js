@@ -22,6 +22,11 @@ var PARAM_SORT			= "s";
 var PARAM_SORT_DIR	= "sd";
 var PARAM_DEBUG		= "dbg";
 var PARAM_CN			= "cn";
+var PARAM_LITFORM		= 'lf';
+var PARAM_ITEMFORM	= 'if';
+var PARAM_ITEMTYPE	= 'it';
+var PARAM_AUDIENCE	= 'a';
+var PARAM_SEARCHES	= 'ss';
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -46,6 +51,11 @@ var SORT_DIR;
 var RLIST;
 var DEBUG;
 var CALLNUM;
+var LITFORM;
+var ITEMFORM;
+var ITEMTYPE;
+var AUDIENCE;
+var SEARCHES;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -292,9 +302,16 @@ var UPDATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.update';
 var FETCH_COPY						= 'open-ils.search:open-ils.search.asset.copy.retrieve';
 var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible';
 var UPDATE_HOLD					= 'open-ils.circ:open-ils.circ.hold.update';
-var FETCH_BIBLIO_NOTES			= 'open-ils.circ:open-ils.circ.biblio_notes.public.batch.retrieve';
+/*var FETCH_BIBLIO_NOTES			= 'open-ils.circ:open-ils.circ.biblio_notes.public.batch.retrieve';*/
 var FETCH_COPIES_FROM_VOLUME	= 'open-ils.search:open-ils.search.copies_by_call_number.retrieve';
 var FETCH_VOLUME_BY_INFO		= 'open-ils.search:open-ils.search.call_number.retrieve_by_info'; /* XXX staff method? */
+var FETCH_COPY_LOCATIONS		= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
+var FETCH_COPY_NOTES				= 'open-ils.circ:open-ils.circ.copy_note.retrieve.all';
+var FETCH_COPY_STAT_CATS		= 'open-ils.circ:open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy';
+var FETCH_LIT_FORMS				= 'open-ils.search:open-ils.search.biblio.lit_form_map.retrieve.all';
+var FETCH_ITEM_FORMS				= 'open-ils.search:open-ils.search.biblio.item_form_map.retrieve.all';
+var FETCH_ITEM_TYPES				= 'open-ils.search:open-ils.search.biblio.item_type_map.retrieve.all';
+var FETCH_AUDIENCES				= 'open-ils.search:open-ils.search.biblio.audience_map.retrieve.all';
 /* ---------------------------------------------------------------------------- */
 
 

@@ -31,7 +31,7 @@ function mresultDoSearch() {
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
-	if( getAdvTerm() && !getTerm() ) {
+	if( (getSearches() || getAdvTerm()) && !getTerm() ) {
 		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
 		if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
@@ -62,6 +62,7 @@ function mresultTryCachedSearch() {
 	return false;
 }
 
+/*
 function _mresultParseQuery() {
 	var term = getTerm();
 	var matches = term.match(/(\w+=\w+)/g);
@@ -79,55 +80,70 @@ function _mresultParseQuery() {
 	}
 	return type;
 }
+*/
 
+/*
 function _mresultCollectIds() { _mresultCollectSearchIds(true); }
 function mresultCollectAdvIds() { _mresultCollectSearchIds(false); }
+*/
 
+function _mresultCollectIds() { 
+	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
+	resultCollectSearchIds(true, SEARCH_MRS, mresultHandleMRIds ); 
+}
+
+function mresultCollectAdvIds() { 
+	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
+	resultCollectSearchIds(false, SEARCH_MRS, mresultHandleMRIds ); 
+}
+
+/*
 function _mresultCollectSearchIds( type ) {
 
-	type = _mresultParseQuery();
+	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
 
-	if(getOffset() == 0 || !mresultTryCachedSearch()) {
+	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
+	var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
 
-		var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
-		var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
+	var item_type;
+	var item_form;
+	var args = {};
+
+	if( type ) {
+		args.searches = {};
+		args.searches[getStype()] = {};
+		args.searches[getStype()].term = getTerm();
 
 		var form = parseForm(getForm());
-		var item_type = form.item_type;
-		var item_form = form.item_form;
+		item_type = form.item_type;
+		item_form = form.item_form;
 
-		var args = {};
-
-		if( type ) {
-			args.searches = {};
-			args.searches[getStype()] = {};
-			args.searches[getStype()].term = getTerm();
-		} else {
-			args.searches = JSON2js(getAdvTerm());
-		}
-
-		args.org_unit = getLocation();
-		args.depth    = getDepth();
-		args.limit    = mresultPreCache;
-		args.offset   = getOffset();
-
-		if(sort) args.sort = sort;
-		if(sortdir) args.sort_dir = sortdir;
-		if(item_type) args.item_type	= item_type;
-		if(item_form) args.item_form	= item_form;
-
-		/* examples */
-		/*
-		args.language = ['eng'];
-		args.audience = 'j';
-		*/
-
-
-		var req = new Request(SEARCH_MRS, args);
-		req.callback(mresultHandleMRIds);
-		req.send();
+	} else {
+		args.searches = JSON2js(getSearches());
+		item_type = (getItemType()) ? getItemType().split(/,/) : null;
+		item_form = (getItemForm()) ? getItemForm().split(/,/) : null;
 	}
+
+	args.org_unit = getLocation();
+	args.depth    = getDepth();
+	args.limit    = mresultPreCache;
+	args.offset   = getOffset();
+
+	if(sort) args.sort = sort;
+	if(sortdir) args.sort_dir = sortdir;
+	if(item_type) args.item_type	= item_type;
+	if(item_form) args.item_form	= item_form;
+
+	if(getAudience()) args.audience = getAudience().split(/,/);
+	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
+
+	alert(js2JSON(args));
+
+	var req = new Request(SEARCH_MRS, args);
+	req.callback(mresultHandleMRIds);
+	req.send();
 }
+*/
 
 
 function mresultCollectAdvMARCIds() {

@@ -104,6 +104,11 @@ function initParams() {
 	SORT_DIR	= cgi.param(PARAM_SORT_DIR);
 	DEBUG		= cgi.param(PARAM_DEBUG);
 	CALLNUM	= cgi.param(PARAM_CN);
+	LITFORM	= cgi.param(PARAM_LITFORM);
+	ITEMFORM	= cgi.param(PARAM_ITEMFORM);
+	ITEMTYPE	= cgi.param(PARAM_ITEMTYPE);
+	AUDIENCE	= cgi.param(PARAM_AUDIENCE);
+	SEARCHES = cgi.param(PARAM_SEARCHES);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -149,6 +154,11 @@ function getSort(){return SORT;}
 function getSortDir(){return SORT_DIR;}
 function getDebug(){return DEBUG;}
 function getCallnumber() { return CALLNUM; }
+function getLitForm() { return LITFORM; }
+function getItemForm() { return ITEMFORM; }
+function getItemType() { return ITEMTYPE; }
+function getAudience() { return AUDIENCE; }
+function getSearches() { return SEARCHES; }
 
 
 function findBasePath() {
@@ -183,6 +193,8 @@ var consoleService;
 function _debug(str) { 
 	try { dump(str + '\n'); } catch(e) {} 
 
+	/* potentially useful, but usually just annoying */
+	/*
 	if(!IE) {
 		if(!consoleService) {
 			try {
@@ -199,6 +211,7 @@ function _debug(str) {
 			}
 		} catch(e){}
 	}
+	*/
 }
 
 function  buildOPACLink(args, slim, ssl) {
@@ -263,6 +276,16 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(ADVTYPE,	PARAM_ADVTYPE, args, getAdvType, string);
 	if(getRtype())
 		string += _appendParam(RTYPE,		PARAM_RTYPE, args, getRtype, string);
+	if(getItemForm())
+		string += _appendParam(ITEMFORM,	PARAM_ITEMFORM, args, getItemForm, string);
+	if(getItemType())
+		string += _appendParam(ITEMTYPE,	PARAM_ITEMTYPE, args, getItemType, string);
+	if(getLitForm())
+		string += _appendParam(LITFORM,	PARAM_LITFORM, args, getLitForm, string);
+	if(getAudience())
+		string += _appendParam(AUDIENCE,	PARAM_AUDIENCE, args, getAudience, string);
+	if(getSearches())
+		string += _appendParam(SEARCHES,	PARAM_SEARCHES, args, getSearches, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }

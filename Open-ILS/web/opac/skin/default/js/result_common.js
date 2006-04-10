@@ -26,9 +26,78 @@ function resultFinalPageIndex() {
 	return getOffset() + getDisplayCount() - 1;
 }
 
+
+
+
+
+/* generic search method */
+function resultCollectSearchIds( type, method, handler ) {
+
+	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
+	var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
+
+	var item_type;
+	var item_form;
+	var args = {};
+
+	if( type ) {
+		args.searches = {};
+		args.searches[getStype()] = {};
+		args.searches[getStype()].term = getTerm();
+
+		var form = parseForm(getForm());
+		item_type = form.item_type;
+		item_form = form.item_form;
+
+	} else {
+		args.searches = JSON2js(getSearches());
+		item_type = (getItemType()) ? getItemType().split(/,/) : null;
+		item_form = (getItemForm()) ? getItemForm().split(/,/) : null;
+	}
+
+	args.org_unit = getLocation();
+	args.depth    = getDepth();
+	args.limit    = 200;
+	args.offset   = getOffset();
+
+	if(sort) args.sort = sort;
+	if(sortdir) args.sort_dir = sortdir;
+	if(item_type) args.item_type	= item_type;
+	if(item_form) args.item_form	= item_form;
+
+	if(getAudience()) args.audience = getAudience().split(/,/);
+	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
+
+	//alert(js2JSON(args));
+
+	var req = new Request(method, args);
+	req.callback(handler);
+	req.send();
+}
+
+
+
+
+
 /* set the search result info, number of hits, which results we're 
 	displaying, links to the next/prev pages, etc. */
 function resultSetHitInfo() { 
+
+
+	/* tell the user where the results are coming from */
+	var baseorg = findOrgUnit(getLocation());
+	var depth = getDepth();
+	var mydepth = findOrgDepth(baseorg);
+	if( findOrgDepth(baseorg) != depth ) {
+		var tmporg = baseorg;
+		while( mydepth > depth ) {
+			mydepth--;
+			tmporg = findOrgUnit(tmporg.parent_ou());
+		}
+		unHideMe($('including_results_for'));
+		$('including_results_location').appendChild(text(tmporg.name()));
+	}
+
 
 	try{searchTimer.stop()}catch(e){}
 
@@ -253,6 +322,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	recordsCache.push(rec);
 
 	var r = table.rows[pos + 1];
+
 	
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);

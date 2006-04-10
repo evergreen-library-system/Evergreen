@@ -180,7 +180,7 @@ function getSelectorVal( sel ) {
 	if(!sel) return null;
 	var o = sel.options[sel.selectedIndex];
 	var v = o.value; 
-	if(v == null || v == "") v = o.innerHTML;
+	if(v == null) v = o.innerHTML;
 	return v;
 }
 
@@ -435,7 +435,15 @@ function sortWordsIgnoreCase(a, b) {
 }
 
 
-
+function getSelectedList(sel) {
+	if(!sel) return [];
+	var vals = [];
+	for( var i = 0; i != sel.options.length; i++ ) {
+		if(sel.options[i].selected)
+			vals.push(sel.options[i].value);
+	}
+	return vals;
+}
 
 
 function setEnterFunc(node, func) {

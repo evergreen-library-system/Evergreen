@@ -20,11 +20,10 @@ function advTestCookie() {
 
 
 function advInit() { 
-	$('advanced.wizard.contains').focus();
+
 	depthSelInit(); 
 
-	if(new CGI().param('advall') ) unHideMe($('adv_combined_search'));
-
+	/*
 	var wiz = [
 		'advanced.wizard.contains',
 		'advanced.wizard.nocontains',
@@ -46,6 +45,7 @@ function advInit() {
 		'advanced.refined.title_type' ];
 	for( var i in ref ) 
 		setEnterFunc( $(ref[i]), advRefinedRun );
+		*/
 
 	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
@@ -54,6 +54,7 @@ function advInit() {
 }
 
 
+/*
 function advWizardRun() {
 	var contains = $('advanced.wizard.contains').value;
 	var nocontains = $('advanced.wizard.nocontains').value; 
@@ -145,6 +146,7 @@ function advRefinedRun() {
 	goTo(buildOPACLink(arg));
 
 }
+*/
 
 function advISBNRun() {
 	var isbn = $('opac.advanced.quick.isbn').value;
@@ -182,6 +184,7 @@ function advCNRun() {
 }
 
 
+/*
 function advRefinedTerm( type, term ) {
 	var t = getSelectorVal($('advanced.refined.' + type + '_type'));
 	var string;
@@ -192,6 +195,7 @@ function advRefinedTerm( type, term ) {
 
 	return string;
 }
+*/
 
 
 function advAddMARC() {
@@ -204,16 +208,6 @@ function advMARCRun() {
 
 	var t = $('advanced.marc.tbody');
 	var searches = [];
-	/*
-	for( var c in t.childNodes ) {
-		var child = t.childNodes[c];
-		if(child.nodeName == 'tr') {
-			alert("hi");
-			var val = advExtractMARC(child);
-			if(val) searches.push(val);
-		}
-	}
-	*/
 
 	var children = t.getElementsByTagName('tr');
 	for( var c in children ) {

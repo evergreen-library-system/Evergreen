@@ -100,10 +100,12 @@ function rresultLaunchDrawn(id, node) {
 }
 
 
-function rresultDoRecordSearch() { return _rresultCollectSearchIds(true); }
-function rresultDoRecordMultiSearch() { return _rresultCollectSearchIds(false); }
+function rresultDoRecordSearch() { 
+	resultCollectSearchIds(true, SEARCH_RS, rresultFilterSearchResults ); }
+function rresultDoRecordMultiSearch() { 
+	resultCollectSearchIds(false, SEARCH_RS, rresultFilterSearchResults ); }
 
-
+/*
 function _rresultCollectSearchIds( type ) {
 
 	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
@@ -137,6 +139,7 @@ function _rresultCollectSearchIds( type ) {
 	req.callback(rresultFilterSearchResults);
 	req.send();
 }
+*/
 
 
 function rresultFilterSearchResults(r) {
