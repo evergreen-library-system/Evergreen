@@ -62,6 +62,8 @@
 		<command id="cmd_override" />
 		<command id="cmd_close_window"/>
 		<command id="cmd_standalone"/>
+		<command id="cmd_standalone_export"/>
+		<command id="cmd_standalone_import"/>
 		<command id="cmd_js_console"/>
 		<command id="cmd_clear_cache"/>
 	</commandset>
@@ -131,6 +133,8 @@
 		<groupbox flex="1">
 			<caption label="Offline Use"/>
 			<button label="Standalone Interface" accesskey="S" command="cmd_standalone"/>
+			<button label="Export transactions to another staff client" command="cmd_standalone_export"/>
+			<button label="Import transactions from another staff client" command="cmd_standalone_import"/>
 		</groupbox>
 
 		<groupbox id="debug_gb" flex="1" hidden="true" orient="horizontal">

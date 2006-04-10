@@ -25,6 +25,22 @@ function clear_the_cache() {
 	}
 }
 
+function pick_file(mode) {
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
+	fp.init( 
+		window, 
+		mode == 'open' ? "Import Transaction File" : "Save Transaction File As", 
+		mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
+	);
+	fp.appendFilters( nsIFilePicker.filterAll );
+	if ( fp.show( ) == nsIFilePicker.returnOK && fp.file ) {
+		return fp.file;
+	} else {
+		return null;
+	}
+}
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {
@@ -108,7 +124,94 @@ function main_init() {
 		}
 
 		G.auth.on_standalone = function() {
-			G.window.open(urls.XUL_STANDALONE,'Offline','chrome,resizable,modal');
+			try {
+				G.window.open(urls.XUL_STANDALONE,'Offline','chrome,resizable,modal');
+			} catch(E) {
+				alert(E);
+			}
+		}
+
+		G.auth.on_standalone_export = function() {
+			try {
+				JSAN.use('util.file'); var file = new util.file('pending_xacts');
+				if (file._file.exists()) {
+					var f = pick_file('save');
+					if (f) {
+						if (f.exists()) {
+							var r = G.error.yns_alert(
+								'Would you like to overwrite the existing file ' + f.leafName + '?',
+								'Transaction Export Warning',
+								'Yes',
+								'No',
+								null,
+								'Check here to confirm this message'
+							);
+							if (r != 0) { file.close(); return; }
+						}
+						var e_file = new util.file(''); e_file._file = f;
+						e_file.write_content( 'truncate', file.get_content() );
+						e_file.close();
+						var r = G.error.yns_alert(
+							'Your transactions have been successfully exported to file ' + f.leafName + '.\n\nWe strongly recommend that you now purge the transactions from this staff client.  Would you like for us to do this?',
+							'Transaction Export Successful',
+							'Yes',
+							'No',
+							null,
+							'Check here to confirm this message'
+						);
+						if (r == 0) {
+							var count = 0;
+							var filename = 'pending_xacts_exported_' + new Date().getTime();
+							var t_file = new util.file(filename);
+							while (t_file._file.exists()) {
+								filename = 'pending_xacts_' + new Date().getTime() + '.exported';
+								t_file = new util.file(filename);
+								if (count++>100) throw('Error purging transactions:  Taking too long to find a unique filename for archival.');
+							}
+							file._file.moveTo(null,filename);
+						} else {
+							alert('Please note that you now have two sets of identical transactions.  Unless the set you just exported is soley for archival purposes, we run the risk of duplicate transactions being processed on the server.');
+						}
+					} else {
+						alert('No filename chosen.  Or a bug where you tried to overwrite an existing file.');
+					}
+				} else {
+					alert('There are no outstanding transactions to export.');
+				}
+				file.close();
+			} catch(E) {
+				alert(E);
+			}
+		}
+
+		G.auth.on_standalone_import = function() {
+			try {
+				JSAN.use('util.file'); var file = new util.file('pending_xacts');
+				if (file._file.exists()) {
+					alert('There are already outstanding transactions on this staff client.  Upload these first.');
+				} else {
+					var f = pick_file('open');
+					if (f && f.exists()) {
+						var i_file = new util.file(''); i_file._file = f;
+						file.write_content( 'truncate', i_file.get_content() );
+						i_file.close();
+						var r = G.error.yns_alert(
+							'Your transactions have been successfully migrated to this staff client.\n\nWe recommend that you delete the external copy.  Would you like for us to delete ' + f.leafName + '?',
+							'Transaction Import Successful',
+							'Yes',
+							'No',
+							null,
+							'Check here to confirm this message'
+						);
+						if (r == 0) {
+							f.remove(false);
+						}
+					}
+				}
+				file.close();
+			} catch(E) {
+				alert(E);
+			}
 		}
 
 		G.auth.on_debug = function(action) {

@@ -35,6 +35,18 @@ auth.controller.prototype = {
 							obj.standalone();
 						}
 					],
+					'cmd_standalone_import' : [
+						['command'],
+						function() {
+							obj.standalone_import();
+						}
+					],
+					'cmd_standalone_export' : [
+						['command'],
+						function() {
+							obj.standalone_export();
+						}
+					],
 					'cmd_clear_cache' : [
 						['command'],
 						function() {
@@ -336,6 +348,32 @@ auth.controller.prototype = {
 		try {
 			if (typeof this.on_standalone == 'function') {
 				obj.on_standalone();
+			}
+		} catch(E) {
+			var error = '!! ' + E + '\n';
+			obj.error.sdump('D_ERROR',error); 
+			alert(error);
+		}
+	},
+
+	'standalone_import' : function() {
+		var obj = this;
+		try {
+			if (typeof this.on_standalone_import == 'function') {
+				obj.on_standalone_import();
+			}
+		} catch(E) {
+			var error = '!! ' + E + '\n';
+			obj.error.sdump('D_ERROR',error); 
+			alert(error);
+		}
+	},
+
+	'standalone_export' : function() {
+		var obj = this;
+		try {
+			if (typeof this.on_standalone_export == 'function') {
+				obj.on_standalone_export();
 			}
 		} catch(E) {
 			var error = '!! ' + E + '\n';
