@@ -5,10 +5,12 @@
 		<tbody>
 			<tr>
 				<td align='left'>
-					<span> Now searching </span>
 					<b>
 					<span style='padding: 1px; ' id='now_searching_location'>  </span>
 					</b>
+					<i id='including_results_for' class='hide_me'>
+						<span>Including results for</span> <b id='including_results_location'> </b>
+					</i>
 				</td>
 			</tr>
 		</tbody>
