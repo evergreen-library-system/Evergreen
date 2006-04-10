@@ -29,12 +29,8 @@
 	<!--#endif-->
 
 	<div id='loading_alt' class='hide_me non_canvas' style='margin-top: 6px;'>
-		<div style='margin-top: 30px; text-align: center; font-weight: 700;' class='color_3'>
+		<div style='margin-top: 30px; margin-bottom: 30px; text-align: center; font-weight: 700;' class='color_3'>
 			<img src='../../../../images/progressbar_green.gif' style='margin: 5px;'> </img>
-			<br/>
-			<!--
-			<span id='loading_alt_span'> Searching </span>
-			-->
 		</div>
 	</div>
 
