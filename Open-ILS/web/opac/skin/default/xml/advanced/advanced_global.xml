@@ -1,0 +1,283 @@
+<table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
+	<style>
+		#adv_global_search select { width: 14em; }
+		#adv_global_input_table select { width: 7em; }
+		.adv_adv_link { font-size: 8pt; color: red; }
+	</style>
+
+	<script src='../js/adv_global.js'> </script>
+
+	<tr>
+
+		<!-- Contains the user-addable(?) rows to define search class, containment and text -->
+		<td valign='top' width='65%' style='border-right: 1px solid #E0F0E0;'>
+			<table width='100%' id='adv_global_input_table'>
+				<thead>
+					<tr><td colspan='2' align='center'>Search Input</td></tr>
+				</thead>
+				<tbody id='adv_global_tbody'>
+
+
+					<script language='javascript'>
+						config.ids.common.now_searching = 'now_searching_location';
+					</script>
+					<tr>
+						<td align='center' width='100%' nowrap='nowrap'>
+							<b id='now_searching_location'> </b>
+						</td>
+					</tr>
+
+					<tr id='adv_global_trow' type='input'>
+						<td align='center' width='100%' nowrap='nowrap'>
+
+							<!-- select the search class -->
+							<select name='type' style='margin-right: 7px;'>
+								<option value='keyword' selected='selected'>&common.keyword;</option>
+								<option value='title'>&common.title;</option>
+								<option value='author'>&common.author;</option>
+								<option value='subject'>&common.subject;</option>
+								<option value='series'>&common.series;</option>
+							</select>
+				
+							<!-- select how to treat the text -->
+							<select name='contains' style='margin-right: 7px;'>
+								<option value='contains'>&opac.advanced.refined.contains;</option>
+								<option value='nocontains'>&opac.advanced.refined.nocontains;</option>
+								<option value='exact'>&opac.advanced.refined.exact;</option>
+							</select>
+								
+							<!-- search term -->
+							<input type='text' size='22' name='term' style='margin-right: 3px;'> </input>
+
+							<!-- Remove this row -->
+							<input type='submit' value='X'
+								onclick='
+									var row = this.parentNode.parentNode;
+									var tbody = row.parentNode;
+									if( tbody.getElementsByTagName("tr").length > 3 )
+										row.parentNode.removeChild(row);'>
+							</input>
+
+						</td>
+					</tr>
+
+					<!-- add a new row -->
+					<tr id='adv_global_addrow'>
+						<td align='center'>
+							<input type='submit' value='Add a Row'
+								onclick='
+									var tbody = $("adv_global_tbody");
+									var newrow = $("adv_global_trow").cloneNode(true);
+									var input = $n(newrow, "term");
+									tbody.insertBefore(newrow, $("adv_global_addrow"));
+									input.value = "";
+									input.focus();'>
+							</input>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</td>
+		<td>
+			<table with='100%'>
+				<thead>
+					<tr><td colspan='2' align='center'>Filters</td></tr>
+				</thead>
+				<tbody>
+
+					<tr>
+						<td align='right'>Search Range</td>
+						<td aligh='left'>
+							<!--#include virtual="../common/libselect.xml"-->
+						</td>
+					</tr>
+					<tr>
+						<td align='right'>
+							<span>Item Form</span>
+
+							<a id='adv_global_item_form_link_adv' class='classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								hideMe($("adv_global_item_form_basic"));
+								unHideMe($("adv_global_item_form"));
+								hideMe(this);
+								unHideMe($("adv_global_item_form_link_basic"));
+								'>Advanced</a>
+
+							<a id='adv_global_item_form_link_basic' class='hide_me classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								unHideMe($("adv_global_item_form_basic"));
+								hideMe($("adv_global_item_form"));
+								unHideMe($("adv_global_item_form_link_adv"));
+								hideMe(this);
+							'>Basic</a>
+
+						</td>
+						<td aligh='left'>
+							<select multiple='true' size='3' id='adv_global_item_form_basic'>
+							</select>	
+							<select multiple='true' size='3' id='adv_global_item_form' class='hide_me'>
+							</select>	
+						</td>
+					</tr>
+
+					<tr>
+						<td align='right'>
+							<span>Item Type</span>
+							<a id='adv_global_item_type_link_adv' class='classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								hideMe($("adv_global_item_type_basic"));
+								unHideMe($("adv_global_item_type"));
+								hideMe(this);
+								unHideMe($("adv_global_item_type_link_basic"));
+								'>Advanced</a>
+
+							<a id='adv_global_item_type_link_basic' class='hide_me classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								unHideMe($("adv_global_item_type_basic"));
+								hideMe($("adv_global_item_type"));
+								unHideMe($("adv_global_item_type_link_adv"));
+								hideMe(this);
+								'>Basic</a>
+						</td>
+
+						<td aligh='left'>
+							<select multiple='true' size='3' id='adv_global_item_type' class='hide_me'>
+							</select>	
+							<select multiple='true' size='3' id='adv_global_item_type_basic'>
+							</select>	
+						</td>
+					</tr>
+
+					<tr>
+						<td align='right'>
+							<span>Literary&nbsp;Form</span>
+							<a id='adv_global_lit_form_link_adv' class='classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								hideMe($("adv_global_lit_form_basic"));
+								unHideMe($("adv_global_lit_form"));
+								hideMe(this);
+								unHideMe($("adv_global_lit_form_link_basic"));
+								'>Advanced</a>
+
+							<a id='adv_global_lit_form_link_basic' class='hide_me classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								unHideMe($("adv_global_lit_form_basic"));
+								hideMe($("adv_global_lit_form"));
+								unHideMe($("adv_global_lit_form_link_adv"));
+								hideMe(this);
+								'>Basic</a>
+						</td>
+						<td aligh='left'>
+							<select multiple='true' size='3' id='adv_global_lit_form' class='hide_me'>
+							</select>	
+							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
+							</select>	
+						</td>
+					</tr>
+
+
+					<!-- Language selector -->
+					<tr>
+						<td align='right'>
+							<span>Language</span>
+							<a id='adv_global_lang_link_adv' class='classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								hideMe($("adv_global_lang_basic"));
+								unHideMe($("adv_global_lang"));
+								hideMe(this);
+								unHideMe($("adv_global_lang_link_basic"));
+								'>Advanced</a>
+
+							<a id='adv_global_lang_link_basic' class='hide_me classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								unHideMe($("adv_global_lang_basic"));
+								hideMe($("adv_global_lang"));
+								unHideMe($("adv_global_lang_link_adv"));
+								hideMe(this);
+								'>Basic</a>
+						</td>
+
+						<td align='left'>
+							<select multiple='true' size='3' id='adv_global_lang' class='hide_me'>
+							</select>
+							<select multiple='true' size='3' id='adv_global_lang_basic'>
+							</select>
+						</td>
+					</tr>
+
+					<!-- Audience selector -->
+					<tr>
+						<td align='right'>
+							<span>Audience</span>
+							<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								hideMe($("adv_global_audience_basic"));
+								unHideMe($("adv_global_audience"));
+								hideMe(this);
+								unHideMe($("adv_global_audience_link_basic"));
+								'>Advanced</a>
+
+							<a id='adv_global_audience_link_basic' class='hide_me classic_link adv_adv_link'
+								href='javascript:void(0);' onclick='
+								unHideMe($("adv_global_audience_basic"));
+								hideMe($("adv_global_audience"));
+								unHideMe($("adv_global_audience_link_adv"));
+								hideMe(this);
+								'>Basic</a>
+						</td>
+
+						<td align='left'>
+							<select multiple='true' size='3' id='adv_global_audience' class='hide_me'>
+							</select>
+							<select multiple='true' size='3' id='adv_global_audience_basic'>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br/>
+
+			<table with='100%'>
+				<thead>
+					<tr><td align='center' colspan='2'>Sort Criteria</td></tr>
+				</thead>
+				<tbody>
+
+					<!-- Sort by selector -->
+					<tr>
+						<td align='right'><span>Sort By </span></td>
+						<td align='left'>
+							<select id='adv_global_sort_by' 
+								onchange='
+								if(this.selectedIndex == 0) {
+									$("adv_global_sort_dir").disabled = true;
+									$("adv_global_sort_dir").selectedIndex = 0;
+								} else $("adv_global_sort_dir").disabled = false;'>
+								<option value='rel'>Relevance</option>
+								<option value='title'>Title</option>
+								<option value='author'>Author</option>
+								<option value='pubdate'>Publication Date</option>
+							</select>
+						</td>
+					</tr>
+
+					<!-- Sort direction -->
+					<tr>
+						<td align='right'><span>Sort Direction </span></td>
+						<td align='left'>
+							<select id='adv_global_sort_dir' disabled='disabled'>
+								<option value='asc'>Ascending / A to Z</option>
+								<option value='desc'>Descending / Z to A</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+	<tr style='border: 2px solid #E0F0E0;'>
+		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input></td>
+	</tr>
+</table>
