@@ -88,11 +88,11 @@
 				<vbox flex="1">
 					<hbox>
 						<spacer flex="1"/>
-						<button label="Retrieve Item"/>
-						<button label="Retrieve Patron"/>
-						<button label="Details"/>
+						<button id='retrieve_item' label="Retrieve Item" disabled="true"/>
+						<button id='retrieve_patron' label="Retrieve Patron" disabled="true"/>
+						<button id='retrieve_details' label="Details" disabled="true"/>
 					</hbox>
-					<tree id="error_tree" enableColumnDrag="true" seltype="single" flex="1"/>
+					<tree id="error_tree" enableColumnDrag="true" seltype="multiple" flex="1"/>
 				</vbox>
 			</groupbox>
 			<groupbox flex="1">

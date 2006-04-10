@@ -11,6 +11,7 @@ admin.offline_manage_xacts.prototype = {
 
 	'sel_list' : [],
 	'seslist' : [],
+	'sel_errors' : [],
 
 	'init' : function( params ) {
 
@@ -28,17 +29,28 @@ admin.offline_manage_xacts.prototype = {
 			x.addEventListener('command',function() { try{obj.create_ses();}catch(E){alert(E);} },false);
 		}
 
-		x = document.getElementById('upload');
+		x = obj.$('upload');
 		x.addEventListener('command',function() { try{obj.upload();}catch(E){alert(E);} },false);
 
-		x = document.getElementById('refresh');
+		x = obj.$('refresh');
 		x.addEventListener('command',function() { try{$('deck').selectedIndex=0;obj.retrieve_seslist();obj.render_seslist();}catch(E){alert(E);} },false);
 
-		x = document.getElementById('execute');
+		x = obj.$('execute');
 		x.addEventListener('command',function() { try{obj.execute_ses();}catch(E){alert(E);} },false);
 
-		document.getElementById('deck').selectedIndex = 0;
+		x = obj.$('retrieve_item');
+		x.addEventListener('command',function() { try{obj.retrieve_item();}catch(E){alert(E);} },false);
+
+		x = obj.$('retrieve_patron');
+		x.addEventListener('command',function() { try{obj.retrieve_patron();}catch(E){alert(E);} },false);
+
+		x = obj.$('retrieve_details');
+		x.addEventListener('command',function() { try{obj.retrieve_details();}catch(E){alert(E);} },false);
+
+		obj.$('deck').selectedIndex = 0;
 	},
+
+	'$' : function(id) { return document.getElementById(id); },
 
 	'init_list' : function() {
 		var obj = this; JSAN.use('util.list'); 
@@ -294,6 +306,26 @@ admin.offline_manage_xacts.prototype = {
 				try { value = eval( col.render ); } catch(E) { obj.error.sdump('D_ERROR',E); value = '???'; }
 				return value;
 			},
+			'on_select' : function(ev) {
+				try {
+					var sel = obj.error_list.retrieve_selection();
+					obj.sel_errors = util.functional.map_list(
+						sel,
+						function(o) { return o.getAttribute('retrieve_id'); }
+					);
+					if (obj.sel_errors.length > 0) {
+						obj.$('retrieve_item').disabled = false;
+						obj.$('retrieve_patron').disabled = false;
+						obj.$('retrieve_details').disabled = false;
+					} else {
+						obj.$('retrieve_item').disabled = true;
+						obj.$('retrieve_patron').disabled = true;
+						obj.$('retrieve_details').disabled = true;
+					}
+				} catch(E) {
+					alert(E);
+				}
+			}
 		} );
 
 
@@ -611,6 +643,61 @@ admin.offline_manage_xacts.prototype = {
 
 	},
 
+	'retrieve_item' : function() {
+		var obj = this;
+		try {
+			var barcodes = [];
+			for (var i = 0; i < obj.sel_errors.length; i++) {
+				var error = obj.errors[ obj.sel_errors[i] ];
+				if ( ! error.command.barcode ) continue; 
+				if ( [ '', ' ', '???' ].indexOf( error.command.barcode ) != -1 ) continue;
+				barcodes.push( error.command.barcode );
+			}
+			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
+				try {
+					var url = urls.XUL_COPY_STATUS
+						+ '?session=' + window.escape(obj.data.session)
+						+ '&barcodes=' + window.escape( js2JSON(barcodes) );
+					window.xulG.new_tab(
+						url
+					);
+				} catch(E) {
+					alert(E);
+				}
+			}
+		} catch(E) {
+			alert(E);
+		}
+	},
+
+	'retrieve_patron' : function() {
+		var obj = this;
+		try {
+			for (var i = 0; i < obj.sel_errors.length; i++) {
+				var error = obj.errors[ obj.sel_errors[i] ];
+				if ( ! error.command.patron_barcode ) continue; 
+				if ( [ '', ' ', '???' ].indexOf( error.command.patron_barcode ) != -1 ) continue;
+				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
+					try {
+						var url = urls.XUL_PATRON_DISPLAY
+							+ '?session=' + window.escape(obj.data.session)
+							+ '&barcode=' + window.escape( error.command.patron_barcode );
+						window.xulG.new_tab(
+							url
+						);
+					} catch(E) {
+						alert(E);
+					}
+				}
+			}
+		} catch(E) {
+			alert(E);
+		}
+	},
+
+	'retrieve_details' : function() {
+		alert('Not Yet Implemented');
+	},
 }
 
 dump('exiting admin/offline_manage_xacts.js\n');
