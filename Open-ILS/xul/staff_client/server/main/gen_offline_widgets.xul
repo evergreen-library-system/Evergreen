@@ -76,6 +76,8 @@
 				save_object('offline_delta', delta);
 			}
 
+			save_object('print_list_templates',g.data.print_list_templates);
+
 			$('placeholder').setAttribute('value','Offline interface synchronized with server.');
 
 		}
