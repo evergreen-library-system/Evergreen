@@ -183,10 +183,10 @@ circ.copy_status.prototype = {
 
 	},
 
-	'copy_status' : function() {
+	'copy_status' : function(barcode) {
 		var obj = this;
 		try {
-			var barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
+			if (!barcode) barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
 			JSAN.use('circ.util');
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ barcode ]);
 			if (copy == null) {

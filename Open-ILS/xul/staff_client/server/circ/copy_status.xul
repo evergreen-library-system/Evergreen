@@ -49,11 +49,18 @@
 						'session' : g.cgi.param('session') 
 					} 
 				);
-	
+
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 					try { window.xulG.set_tab_name('Copy Status'); } catch(E) { alert(E); }
 				}
 
+				if (g.cgi.param('barcodes')) {
+					var barcodes = JSON2js(g.cgi.param('barcodes'));
+					for (var i = 0; i < barcodes.length; i++) {
+						g.copy_status.copy_status(barcodes[i]);
+					}
+				}
+	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" 
