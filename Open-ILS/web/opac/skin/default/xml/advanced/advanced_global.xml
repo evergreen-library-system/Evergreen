@@ -185,7 +185,7 @@
 							</select>	
 							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
 								<option value='0 '>Non Fiction</option>
-								<option value=''>Fiction</option>
+								<option value='1'>Fiction</option>
 							</select>	
 						</td>
 					</tr>

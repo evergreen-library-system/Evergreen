@@ -7,29 +7,11 @@
 			margin-top: 20px; margin-bottom: 30px; width: 95%; padding: 5px; }
 	</style>
 
-
-	<!--
-	<div class='advanced_div' style='border: 1px solid #000; padding-left: 15px'>
-	</div>
-	-->
-
 	<div class='advanced_div'>
 		<!--#include virtual="advanced/advanced_global.xml"-->
 	</div>
 
 	<hr/>
-
-	<!--
-	<div class='advanced_div'>
-	</div>
-
-	<hr/>
-
-	<div class='advanced_div'>
-	</div>
-
-	<hr/>
-	-->
 
 	<div class='advanced_div'>
 		<!--#include virtual="advanced/advanced_quick.xml"-->
