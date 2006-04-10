@@ -136,6 +136,9 @@ function my_init() {
 			alert('WARNING: The non-barcode types have not been downloaded from the server.  You should log in to retrieve these.');
 		}
 
+		var file = new util.file('offline_delta'); 
+		if (file._file.exists()) { g.delta = file.get_object(); file.close(); } else { g.delta = 0; }
+
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 			"system administrator or software developer the following:\ncirc/offline_checkout.xul\n" + E + '\n';
@@ -252,7 +255,7 @@ function save_xacts() {
 	JSAN.use('util.file'); var file = new util.file('pending_xacts');
 	var rows = g.list.dump_with_keys();
 	for (var i = 0; i < rows.length; i++) {
-		var row = rows[i];
+		var row = rows[i]; row.delta = g.delta;
 		if (row.noncat == 1) {
 			delete(row.barcode);
 		} else {
