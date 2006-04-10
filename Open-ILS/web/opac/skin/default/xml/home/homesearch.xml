@@ -31,10 +31,11 @@
 		<img src='<!--#echo var="OILS_BASE"-->/images/main_logo.jpg' />
 	</div>
 
-
+	<style>.rowpad { height: 20px; }</style>
 
 	<table id='frontsearch_table' height='100%' width='100%' 
 		style='margin-top: 10px; border-collapse: collapse;'>
+
 		<tbody>
 
 			<tr style='background: #E0F6E0'>
@@ -50,7 +51,7 @@
 			</tr>
 
 
-			<tr><td><br/></td></tr>
+			<tr class='rowpad'><td></td></tr>
 
 			<tr>
 				<td nowrap='nowrap' align='center' style='border: 1px solid #D0D0D0;' class='color_1'>
@@ -61,7 +62,7 @@
 				</td>
 			</tr>
 
-			<tr><td><br/></td></tr>
+			<tr class='rowpad'><td></td></tr>
 
 			<tr style='border: 1px solid #D0D0D0; background: #E0F6E0'>
 
@@ -82,7 +83,7 @@
 				</td>
 			</tr>
 
-			<tr><td><br/></td></tr>
+			<tr class='rowpad'><td></td></tr>
 
 			<tr class='color_1' style='border: 1px solid #D0D0D0;'>
 				<td align='center' style='padding: 4px; padding-bottom: 6px;'>
