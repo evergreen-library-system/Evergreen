@@ -94,7 +94,15 @@ OpenILS.data.prototype = {
 	'print_list_defaults' : function() {
 		var obj = this;
 		if (typeof obj.print_list_templates == 'undefined') {
-			obj.print_list_types = [ 'offline', 'items', 'holds', 'patrons' ];
+			obj.print_list_types = [ 
+				'offline_checkout', 
+				'offline_checkin', 
+				'offline_renew', 
+				'offline_inhouse_use', 
+				'items', 
+				'holds', 
+				'patrons' 
+			];
 			obj.print_list_templates = { 
 				'item_status' : {
 					'type' : 'items',
@@ -115,7 +123,7 @@ OpenILS.data.prototype = {
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
 				}, 
 				'offline_checkout' : {
-					'type' : 'offline',
+					'type' : 'offline_checkout',
 					'header' : 'Patron %OFFLINE_PATRON_BARCODE%\r\nYou checked out the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nDue: %OFFLINE_DUE_DATE%\r\n',
 					'footer' : '</ol><hr />%TODAY%',
@@ -127,13 +135,19 @@ OpenILS.data.prototype = {
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
 				}, 
 				'offline_checkin' : {
-					'type' : 'offline',
+					'type' : 'offline_checkin',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\n',
 					'footer' : '</ol><hr />%TODAY%',
 				},
+				'offline_renew' : {
+					'type' : 'offline_renew',
+					'header' : 'You renewed the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\n',
+					'footer' : '</ol><hr />%TODAY%',
+				},
 				'offline_items_used' : {
-					'type' : 'offline',
+					'type' : 'offline_inhouse_use',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
 					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nUses: %COUNT%',
 					'footer' : '</ol><hr />%TODAY%',
