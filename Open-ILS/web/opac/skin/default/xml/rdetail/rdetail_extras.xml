@@ -7,7 +7,7 @@
 				<td id='rdetail_copy_info_link' class='rdetail_extras_td' 
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("copyinfo");' 
-						class='classic_link'>Copy Information</a>
+						class='classic_link'>Copy Summary</a>
 				</td>
 
 				<td id='rdetail_viewcn_link' class='rdetail_extras_td'
@@ -33,22 +33,10 @@
 						class='classic_link'>Annotation</a>
 				</td>
 
-				<td id='rdetail_viewnotes_link' class='hide_me rdetail_extras_td'
-					style='padding-right: 15px; padding-left: 15px;' >
-					<a href='javascript:rdetailShowExtra("notes");' 
-						class='classic_link'>Item Notes</a>
-				</td>
-
 				<td id='rdetail_viewmarc_link' class='rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("marc");' 
 						class='classic_link'>MARC Record</a>
-				</td>
-
-				<td id='rdetail_cn_details_link' class='hide_me rdetail_extras_td'
-					style='padding-right: 15px; padding-left: 15px;' >
-					<a href='javascript:rdetailShowExtra("cn_details");' 
-						class='classic_link'>Call Number Details</a>
 				</td>
 
 
@@ -85,7 +73,6 @@
 			<!--#include virtual="../common/cn_browse.xml"-->
 		</div>
 
-		<!--#include virtual="rdetail_notes.xml"-->
 		<!--#include virtual="rdetail_cn_details.xml"-->
 
 	</div>
