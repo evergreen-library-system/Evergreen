@@ -12,50 +12,10 @@ function my_init() {
 		}
 
 		JSAN.use('util.list'); g.list = new util.list('checkout_list');
+		JSAN.use('circ.util');
 		g.list.init( {
-			'columns' : [
-				{ 
-					'id' : 'timestamp', 
-					'label' : 'Timestamp', 
-					'flex' : 1, 'primary' : false, 'hidden' : true, 
-					'render' : 'my.timestamp' 
-				},
-				{ 
-					'id' : 'backdate', 
-					'label' : 'Back Date', 
-					'flex' : 1, 'primary' : false, 'hidden' : true, 
-					'render' : 'my.backdate' 
-				},
-				{ 
-					'id' : 'type', 
-					'label' : 'Transaction Type', 
-					'flex' : 1, 'primary' : false, 'hidden' : true, 
-					'render' : 'my.type' 
-				},
-				{ 
-					'id' : 'barcode', 
-					'label' : 'Item Barcode', 
-					'flex' : 2, 'primary' : true, 'hidden' : false, 
-					'render' : 'my.barcode' 
-				},
-			],
-			'map_row_to_column' : function(row,col) {
-				// row contains { 'my' : { 'barcode' : xxx, 'duedate' : xxx } }
-				// col contains one of the objects listed above in columns
-
-				var my = row.my;
-				var value;
-				try {
-					value = eval( col.render );
-					if (typeof value == 'undefined') value = '';
-
-				} catch(E) {
-					JSAN.use('util.error'); var error = new util.error();
-					error.sdump('D_WARN','map_row_to_column: ' + E);
-					value = '???';
-				}
-				return value;
-			}
+			'columns' : circ.util.offline_checkin_columns(),
+			'map_row_to_column' : circ.util.std_map_row_to_column(),
 		} );
 
 		JSAN.use('util.date');
@@ -127,6 +87,25 @@ function next_patron() {
 			file.append_object(row);
 		}
 		file.close();
+
+		if ($('print_receipt').checked) {
+			try {
+				JSAN.use('patron.util');
+				var params = {
+					'header' : obj.OpenILS.data.print_list_templates.offline_checkin.header,
+					'line_item' : obj.OpenILS.data.print_list_templates.offline_checkin.line_item,
+					'footer' : obj.OpenILS.data.print_list_templates.offline_checkin.footer,
+					'type' : obj.OpenILS.data.print_list_templates.offline_checkin.type,
+					'list' : obj.list.dump(),
+				};
+				JSAN.use('util.print'); var print = new util.print();
+				print.tree_list( params );
+			} catch(E) {
+				this.error.sdump('D_ERROR','preview: ' + E);
+				alert('preview: ' + E);
+			}
+		}
+
 		g.list.clear();
 		
 		var x;

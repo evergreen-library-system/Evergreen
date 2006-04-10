@@ -12,56 +12,10 @@ function my_init() {
 		}
 
 		JSAN.use('util.list'); g.list = new util.list('checkout_list');
+		JSAN.use('circ.util');
 		g.list.init( {
-			'columns' : [
-				{ 
-					'id' : 'timestamp', 
-					'label' : 'Timestamp', 
-					'flex' : 1, 'primary' : false, 'hidden' : true, 
-					'render' : 'my.timestamp' 
-				},
-				{ 
-					'id' : 'use_time', 
-					'label' : 'Use Time', 
-					'flex' : 1, 'primary' : false, 'hidden' : true, 
-					'render' : 'my.use_time' 
-				},
-				{ 
-					'id' : 'type', 
-					'label' : 'Transaction Type', 
-					'flex' : 1, 'primary' : false, 'hidden' : true, 
-					'render' : 'my.type' 
-				},
-				{
-					'id' : 'count',
-					'label' : 'Count',
-					'flex' : 1, 'primary' : false, 'hidden' : false,
-					'render' : 'my.count'
-				},
-				{ 
-					'id' : 'barcode', 
-					'label' : 'Item Barcode', 
-					'flex' : 2, 'primary' : true, 'hidden' : false, 
-					'render' : 'my.barcode' 
-				},
-			],
-			'map_row_to_column' : function(row,col) {
-				// row contains { 'my' : { 'barcode' : xxx, 'duedate' : xxx } }
-				// col contains one of the objects listed above in columns
-
-				var my = row.my;
-				var value;
-				try {
-					value = eval( col.render );
-					if (typeof value == 'undefined') value = '';
-
-				} catch(E) {
-					JSAN.use('util.error'); var error = new util.error();
-					error.sdump('D_WARN','map_row_to_column: ' + E);
-					value = '???';
-				}
-				return value;
-			}
+			'columns' : circ.util.offline_inhouse_use_columns(),
+			'map_row_to_column' : circ.util.std_map_row_to_column(),
 		} );
 
 		$('i_barcode').addEventListener('keypress',handle_keypress,false);
