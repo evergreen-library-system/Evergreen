@@ -146,7 +146,7 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\n',
 					'footer' : '</ol><hr />%TODAY%',
 				},
-				'offline_items_used' : {
+				'offline_inhouse_use' : {
 					'type' : 'offline_inhouse_use',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
 					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nUses: %COUNT%',
