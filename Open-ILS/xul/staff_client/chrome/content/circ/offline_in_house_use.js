@@ -70,6 +70,7 @@ function my_init() {
 
 		$('i_barcode').focus();
 
+		JSAN.use('util.file');
 		var file = new util.file('offline_delta'); 
 		if (file._file.exists()) { g.delta = file.get_object(); file.close(); } else { g.delta = 0; }
 

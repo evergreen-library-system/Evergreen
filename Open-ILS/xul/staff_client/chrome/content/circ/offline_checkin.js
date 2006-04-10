@@ -67,6 +67,7 @@ function my_init() {
 
 		$('submit').addEventListener('command',next_patron,false);
 
+		JSAN.use('util.file');
 		var file = new util.file('offline_delta'); 
 		if (file._file.exists()) { g.delta = file.get_object(); file.close(); } else { g.delta = 0; }
 
