@@ -33,7 +33,7 @@ circ.util.columns = function(modify) {
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (my.acp.call_number() == -1) { "Not Cataloged"; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { my.acn = x; x.label(); } } else { my.acn.label(); } }' 
+			'primary' : false, 'hidden' : true, 'render' : ' if (my.acp && my.acp.call_number() == -1) { "Not Cataloged"; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { my.acn = x; x.label(); } } else { my.acn.label(); } } ' 
 		},
 		{
 			'id' : 'owning_lib', 'label' : 'Owning Lib', 'flex' : 1,
@@ -296,7 +296,7 @@ circ.util.hold_columns = function(modify) {
 	return c;
 }
 
-circ.util.std_map_row_to_column = function() {
+circ.util.std_map_row_to_column = function(error_value) {
 	return function(row,col) {
 		// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
 		// col contains one of the objects listed above in columns
@@ -313,7 +313,7 @@ circ.util.std_map_row_to_column = function() {
 			value = eval( col.render );
 		} catch(E) {
 			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-			value = '???';
+			if (error_value) value = error_value; else value = '???';
 		}
 		return value;
 	}
