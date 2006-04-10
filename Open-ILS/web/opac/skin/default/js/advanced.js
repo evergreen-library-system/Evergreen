@@ -199,9 +199,11 @@ function advRefinedTerm( type, term ) {
 
 
 function advAddMARC() {
-	$('advanced.marc.tbody').insertBefore(
-		$('advanced.marc.template').cloneNode(true),
-		$('advanced.marc.submit.row'));
+	var newrow = $('advanced.marc.template').cloneNode(true);
+	$n(newrow, 'advanced.marc.tag').value = "";
+	$n(newrow, 'advanced.marc.subfield').value = "";
+	$n(newrow, 'advanced.marc.value').value = "";
+	$('advanced.marc.tbody').insertBefore(newrow, $('advanced.marc.submit.row'));
 }
 
 function advMARCRun() {
@@ -220,13 +222,13 @@ function advMARCRun() {
 	if(searches.length == 0) return;
 
 	var arg = {};
-	arg.page = MRESULT;
+	arg.page = RRESULT;
 	arg[PARAM_FORM] = 'all'
-	arg[PARAM_STYPE] = "";
+	arg[PARAM_RTYPE] = RTYPE_MARC;
 	arg[PARAM_OFFSET] = 0;
 	arg[PARAM_DEPTH]	= depthSelGetDepth();
 	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
-	arg[PARAM_ADVTERM] = js2JSON(searches);
+	arg[PARAM_SEARCHES] = js2JSON(searches);
 	arg[PARAM_ADVTYPE] = ADVTYPE_MARC;
 	arg[PARAM_TERM] = "";
 

@@ -27,6 +27,7 @@ var PARAM_ITEMFORM	= 'if';
 var PARAM_ITEMTYPE	= 'it';
 var PARAM_AUDIENCE	= 'a';
 var PARAM_SEARCHES	= 'ss';
+var PARAM_LANGUAGE	= 'la';
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -56,6 +57,7 @@ var ITEMFORM;
 var ITEMTYPE;
 var AUDIENCE;
 var SEARCHES;
+var LANGUAGE;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -98,6 +100,7 @@ var RTYPE_SERIES	= STYPE_SERIES;
 var RTYPE_KEYWORD	= STYPE_KEYWORD;
 var RTYPE_LIST		= "list";
 var RTYPE_MULTI	= 'multi';
+var RTYPE_MARC		= 'marc';
 
 var SORT_TYPE_REL			= "rel";
 var SORT_TYPE_AUTHOR		= STYPE_AUTHOR; 

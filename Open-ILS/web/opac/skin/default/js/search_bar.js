@@ -51,7 +51,15 @@ function searchBarSubmit() {
 		if(getAdvTerm()){}
 	}
 
-	SORT = ""; /* we don't want this to propogate */
+	/* we don't want these to propogate */
+	SORT		= "";
+	ITEMFORM = "";
+	ITEMTYPE = "";
+	LITFORM	= "";
+	AUDIENCE	= "";
+	LANGUAGE = "";
+	SEARCHES	= "";
+
 
 	if(!text || text == "") return;
 	var d	= (newSearchDepth != null) ?  newSearchDepth : depthSelGetDepth();

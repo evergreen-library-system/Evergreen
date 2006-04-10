@@ -33,6 +33,7 @@
 <!--#set var="OILS_BASE" value="http://${SERVER_NAME}/${OILS_OPAC_BASE}"-->
 <!--#set var="OILS_JS_BASE" value="${OILS_BASE}/common/js"-->
 <!--#set var="OILS_CSS_BASE" value="${OILS_BASE}/common/css"--> 
+<!--#set var="OILS_XML_BASE" value="${OILS_BASE}/common/xml"--> 
 <!--#set var="OILS_THEME_BASE" value="${OILS_BASE}/theme"--> 
 <!--#set var="OILS_SKIN_BASE" value="${OILS_BASE}/skin"--> 
 

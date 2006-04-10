@@ -96,6 +96,7 @@
 						<td align='right'>
 							<span>Item Form</span>
 
+							<!--
 							<a id='adv_global_item_form_link_adv' class='classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
 								hideMe($("adv_global_item_form_basic"));
@@ -111,12 +112,18 @@
 								unHideMe($("adv_global_item_form_link_adv"));
 								hideMe(this);
 							'>Basic</a>
+							-->
 
 						</td>
 						<td aligh='left'>
+							<!--
 							<select multiple='true' size='3' id='adv_global_item_form_basic'>
+								<option value='f'>Braille</option>
+								<option value='d'>Large Print</option>
+								<option value='abcrs'>Other</option>
 							</select>	
-							<select multiple='true' size='3' id='adv_global_item_form' class='hide_me'>
+							-->
+							<select multiple='true' size='3' id='adv_global_item_form'>
 							</select>	
 						</td>
 					</tr>
@@ -177,6 +184,8 @@
 							<select multiple='true' size='3' id='adv_global_lit_form' class='hide_me'>
 							</select>	
 							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
+								<option value='0 '>Non Fiction</option>
+								<option value=''>Fiction</option>
 							</select>	
 						</td>
 					</tr>
@@ -186,6 +195,7 @@
 					<tr>
 						<td align='right'>
 							<span>Language</span>
+							<!--
 							<a id='adv_global_lang_link_adv' class='classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
 								hideMe($("adv_global_lang_basic"));
@@ -201,13 +211,17 @@
 								unHideMe($("adv_global_lang_link_adv"));
 								hideMe(this);
 								'>Basic</a>
+								-->
 						</td>
 
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_lang' class='hide_me'>
+							<select multiple='true' size='3' id='adv_global_lang'>
+								<!--#include virtual="../../../../../common/xml/item_lang_options.xml"-->
 							</select>
+							<!--
 							<select multiple='true' size='3' id='adv_global_lang_basic'>
 							</select>
+							-->
 						</td>
 					</tr>
 
@@ -236,6 +250,9 @@
 							<select multiple='true' size='3' id='adv_global_audience' class='hide_me'>
 							</select>
 							<select multiple='true' size='3' id='adv_global_audience_basic'>
+								<option value='e'>Adult</option>
+								<option value='abcdj'>Juvenile</option>
+								<option value='fg '>General</option>
 							</select>
 						</td>
 					</tr>

@@ -45,6 +45,10 @@ function rresultCollectIds() {
 			rresultHandleList();
 			break;
 
+		case RTYPE_MARC :
+			rresultCollectMARCIds();
+			break;
+
 		case RTYPE_MRID :
 		case null :
 		case "" :
@@ -54,6 +58,20 @@ function rresultCollectIds() {
 			req.callback( rresultHandleRIds );
 			req.send();
 	}
+}
+
+
+function rresultCollectMARCIds() {
+
+	var args			= {};
+	args.searches	= JSON2js(getSearches());
+	args.limit		= 200;
+	args.org_unit	= globalOrgTree.id();
+	args.depth		= 0;
+
+	var req = new Request(FETCH_ADV_MARC_MRIDS, args);
+	req.callback(rresultHandleRIds);
+	req.send();
 }
 
 function rresultHandleList() {

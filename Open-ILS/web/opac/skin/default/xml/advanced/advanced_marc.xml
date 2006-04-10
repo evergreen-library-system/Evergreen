@@ -10,16 +10,6 @@
 				<span>&opac.advanced.marc.tag;: </span>
 				<input name='advanced.marc.tag' maxlength='3' size='3'> </input>
 			</td>
-			<!--
-			<td>
-				<span>&opac.advanced.marc.ind1;: </span>
-				<input name='advanced.marc.ind1' maxlength='1' size='1'> </input>
-			</td>
-			<td>
-				<span>&opac.advanced.marc.ind2;: </span>
-				<input name='advanced.marc.ind2' maxlength='1' size='1'> </input>
-			</td>
-			-->
 			<td>
 				<span>&opac.advanced.marc.subfield;: </span>
 				<input name='advanced.marc.subfield' maxlength='1' size='1'> </input>
@@ -30,13 +20,22 @@
 			</td>
 
 			<td>
-				<input name='advanced.marc.addrow' type='submit' onclick='advAddMARC();'
-					value='&opac.advanced.marc.addrow;'> </input>
+				<input type='submit' value='X' onclick='
+					var row = this.parentNode.parentNode;
+					var tbody = row.parentNode;
+					if(tbody.getElementsByTagName("tr").length > 2)
+						tbody.removeChild(row);
+					'> </input>
 			</td>
 		</tr>
 		<tr id='advanced.marc.submit.row'>
-			<td colspan='6'>
-				<input onclick='advMARCRun();' type='submit' value='&common.submit;'> </input>
+			<td colspan='4' align='center'>
+
+				<input name='advanced.marc.addrow' type='submit' onclick='advAddMARC();'
+					value='&opac.advanced.marc.addrow;'> </input>
+
+				<input style='margin-left: 10px;' 
+					onclick='advMARCRun();' type='submit' value='&common.submit;'> </input>
 			</td>
 		</tr>
 	</tbody>

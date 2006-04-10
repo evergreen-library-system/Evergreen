@@ -28,6 +28,15 @@ function advgInit() {
 function advDrawBibExtras(r) {
 	var data = r.getResultObject();
 	var sel = r.sel;
+
+	data = data.sort( /* sort alphabetically */
+		function(a,b) { 
+			if( a.value() < b.value() ) return -1;
+			if( a.value() > b.value() ) return 1;
+			return 0;
+		}
+	);
+
 	for( var d in data ) {
 		var thing = data[d];
 		var opt = insertSelectorVal( sel, -1, thing.value(), thing.code() );
@@ -55,18 +64,14 @@ function advGetVisSelectorVals(id) {
 
 function advSubmitGlobal() {
 	
-	var litforms;
-	var itemforms;	
-	var itemtypes;
-	var audiences;
-
 	var sortdir = getSelectorVal($('adv_global_sort_dir'));
 	var sortby  = getSelectorVal($('adv_global_sort_by'));
 
-	litforms	 = advGetVisSelectorVals('adv_global_lit_form');
-	itemforms = advGetVisSelectorVals('adv_global_item_form');
-	itemtypes = advGetVisSelectorVals('adv_global_item_type');
-	audiences = advGetVisSelectorVals('adv_global_audience');
+	var litforms  = advGetVisSelectorVals('adv_global_lit_form');
+	var itemforms = advGetVisSelectorVals('adv_global_item_form');
+	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
+	var audiences = advGetVisSelectorVals('adv_global_audience');
+	var languages = advGetVisSelectorVals('adv_global_lang');	
 
 	var searches = advBuildSearchBlob();
 	if(!searches) return;
@@ -77,6 +82,7 @@ function advSubmitGlobal() {
 	args[PARAM_ITEMTYPE] = itemtypes;
 	args[PARAM_LITFORM]	= litforms;
 	args[PARAM_AUDIENCE]	= audiences;
+	args[PARAM_LANGUAGE] = languages;
 	args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
 	args[PARAM_OFFSET]	= 0;
 	args[PARAM_DEPTH]		= depthSelGetDepth();

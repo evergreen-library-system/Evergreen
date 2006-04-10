@@ -813,7 +813,6 @@ sub multiclass_search {
 =cut
 
 
-
 =head comment-1
 __PACKAGE__->register_method(
 	method		=> "multiclass_search",
@@ -865,55 +864,27 @@ sub multiclass_search {
 
 
 
-# XXX Fix me.. 
-# request open-ils.storage
-#        open-ils.storage.biblio.full_rec.multi_search.atomic "searches",
-#        [{"term":"harry","restrict": [{"tag":245,"subfield":"a"}]}], "org_unit", 1,
-#        "limit",5,"sort","author","item_type","g"
-
-
 __PACKAGE__->register_method(
 	method		=> "marc_search",
 	api_name	=> "open-ils.search.biblio.marc",
 	notes 		=> <<"	NOTES");
-		Performs a multiclass search
-		PARAMS( searchBlob, org_unit, format ) 
-		where searchBlob is defined like this:
-		[ 
-			{
-				"term":"shakespeare",
-				"restrict":[{"tag":"245","subfield":"a"}] 
-			}, 
-			{
-				"term":"bloom",
-				"restrict":[{"tag":"100","subfield":"a"}] 
-			} 
-		]
+		Example:
+		open-ils.storage.biblio.full_rec.multi_search.atomic 
+		{ "searches": [{"term":"harry","restrict": [{"tag":245,"subfield":"a"}]}], "org_unit": 1,
+        "limit":5,"sort":"author","item_type":"g"}
 	NOTES
 
-
 sub marc_search {
-	my( $self, $client, $searchBlob, $orgid, $format ) = @_;
-
-	$logger->debug("Performing MARC search with org => $orgid, " .
-		"format => $format and search blob " . Dumper($searchBlob) );
-		
-	my $records =  $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.metabib.full_rec.multi_search.atomic',
-		searches => $searchBlob, org_unit => $orgid, format => $format );
+	my( $self, $conn, $args ) = @_;
+	my $records = $U->storagereq(
+		'open-ils.storage.biblio.full_rec.multi_search.atomic', %$args );
 
 	my $count = 0;
-	my $recs = [];
 
-	if( ref($records) and $records->[0] and 
-		defined($records->[0]->[3])) { $count = $records->[0]->[3];}
+	$count = $records->[0]->[2] if( ref($records) and 
+		$records->[0] and defined($records->[0]->[2]));
 
-	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
-
-	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
-	return { ids => $recs, count => $count };
-
+	return { ids => $records, count => $count };
 }
 
 
@@ -1055,14 +1026,52 @@ __PACKAGE__->register_method (
 	/
 );
 
+
 sub fetch_cn_by_info {
 	my( $self, $conn, $label, $record, $org ) = @_;
 	return $U->storagereq(
 		'open-ils.storage.direct.asset.call_number.search_where',
 		{ label => $label, record => $record, owning_lib => $org, deleted => 'f' });
 }
+
+
 		
 
+
+__PACKAGE__->register_method (
+	method => 'bib_extras',
+	api_name => 'open-ils.search.biblio.lit_form_map.retrieve.all');
+__PACKAGE__->register_method (
+	method => 'bib_extras',
+	api_name => 'open-ils.search.biblio.item_form_map.retrieve.all');
+__PACKAGE__->register_method (
+	method => 'bib_extras',
+	api_name => 'open-ils.search.biblio.item_type_map.retrieve.all');
+__PACKAGE__->register_method (
+	method => 'bib_extras',
+	api_name => 'open-ils.search.biblio.audience_map.retrieve.all');
+
+sub bib_extras {
+	my $self = shift;
+	
+	return $U->storagereq(
+		'open-ils.storage.direct.config.lit_form_map.retrieve.all.atomic')
+			if( $self->api_name =~ /lit_form/ );
+
+	return $U->storagereq(
+		'open-ils.storage.direct.config.item_form_map.retrieve.all.atomic')
+			if( $self->api_name =~ /item_form_map/ );
+
+	return $U->storagereq(
+		'open-ils.storage.direct.config.item_type_map.retrieve.all.atomic')
+			if( $self->api_name =~ /item_type_map/ );
+
+	return $U->storagereq(
+		'open-ils.storage.direct.config.audience_map.retrieve.all.atomic')
+			if( $self->api_name =~ /audience/ );
+
+	return [];
+}
 
 
 

@@ -149,6 +149,7 @@ function _mresultCollectSearchIds( type ) {
 function mresultCollectAdvMARCIds() {
 	if(!mresultTryCachedSearch()) {
 		var form = (getForm() == "all") ? null : getForm();
+		alert(form + ' : ' + getLocation() + " : " + getAdvTerm());
 		var req = new Request(FETCH_ADV_MARC_MRIDS, 
 			JSON2js(getAdvTerm()), getLocation(), form );
 		req.callback(mresultHandleMRIds);

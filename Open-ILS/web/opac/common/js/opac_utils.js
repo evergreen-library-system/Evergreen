@@ -109,6 +109,7 @@ function initParams() {
 	ITEMTYPE	= cgi.param(PARAM_ITEMTYPE);
 	AUDIENCE	= cgi.param(PARAM_AUDIENCE);
 	SEARCHES = cgi.param(PARAM_SEARCHES);
+	LANGUAGE	= cgi.param(PARAM_LANGUAGE);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -159,6 +160,7 @@ function getItemForm() { return ITEMFORM; }
 function getItemType() { return ITEMTYPE; }
 function getAudience() { return AUDIENCE; }
 function getSearches() { return SEARCHES; }
+function getLanguage() { return LANGUAGE; }
 
 
 function findBasePath() {
@@ -286,6 +288,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(AUDIENCE,	PARAM_AUDIENCE, args, getAudience, string);
 	if(getSearches())
 		string += _appendParam(SEARCHES,	PARAM_SEARCHES, args, getSearches, string);
+	if(getLanguage())
+		string += _appendParam(LANGUAGE,	PARAM_LANGUAGE, args, getLanguage, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
