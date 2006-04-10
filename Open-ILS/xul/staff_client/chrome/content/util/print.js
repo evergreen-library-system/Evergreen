@@ -97,6 +97,27 @@ util.print.prototype = {
 		JSAN.use('util.date');
 		var s = msg;
 
+		try{s = s.replace(/%OFFLINE_PATRON_BARCODE%/,params.offline.patron_barcode);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_BARCODE%/,params.offline.barcode);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_BACKDATE%/,params.offline.backdate);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_CHECKOUT_TIME%/,params.offline.checkout_time);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_NONCAT%/,params.offline.noncat);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_NONCAT_TYPE%/,params.offline.noncat_type);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_NONCAT_COUNT%/,params.offline.noncat_count);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_DUE_DATE%/,params.offline.due_date);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_USE_TIME%/,params.offline.use_time);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s = s.replace(/%OFFLINE_COUNT%/,params.offline.count);}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+
 		try{s = s.replace(/%LIBRARY%/,params.lib.name());}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s = s.replace(/%PINES_CODE%/,params.lib.shortname());}
