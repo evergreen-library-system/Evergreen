@@ -1,5 +1,0 @@
-<select id='<!--#echo var="OILS_ADV_CONT_ID"-->'>
-	<option value='contains'>&opac.advanced.refined.contains;</option>
-	<option value='nocontains'>&opac.advanced.refined.nocontains;</option>
-	<option value='exact'>&opac.advanced.refined.exact;</option>
-</select>
