@@ -104,7 +104,7 @@ function append_to_list() {
 		var my = {};
 
 		my.type = 'in_house_use';
-		my.timestamp = parseInt( new Date().getTime() / 1000);
+		my.timestamp = parseInt( new Date().getTime() / 1000) + g.delta;
 		my.use_time = util.date.formatted_date(new Date(),"%F %H:%M:%s");
 
 		var i_barcode = $('i_barcode').value;
