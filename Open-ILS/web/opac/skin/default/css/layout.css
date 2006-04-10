@@ -166,7 +166,7 @@ table { border-collapse: collapse; }
 	padding-top: 8px; padding-bottom: 8px; }
 
 .rdetail_extras_div {
-	border-top: 3px solid #E0E0E0;margin-top: 3px; padding-top: 5px; width: 90%;}
+	border-top: 3px solid #E0E0E0;margin-top: 3px; padding-top: 5px; width: 100%;}
 
 .copy_info_region_row {
 	padding: 6px;
@@ -192,5 +192,7 @@ table { border-collapse: collapse; }
 .cn_browse_loading { width: 95%; padding: 15px; text-align: center; background: #E0F0E0; }
 
 .cn_browse_home_cn { border: 2px solid #E0F0E0; background: green; font-weight: 700;}
+
+.rdetail_context_row { background: #F0E0E0; }
 
 
