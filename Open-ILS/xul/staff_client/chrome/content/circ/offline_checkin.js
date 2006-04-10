@@ -99,7 +99,7 @@ function append_to_list() {
 		var my = {};
 
 		my.type = 'checkin';
-		my.timestamp = new Date().getTime();
+		my.timestamp = parseInt( new Date().getTime() / 1000);
 		my.backdate = util.date.formatted_date(new Date(),"%F %H:%M:%s");
 
 		var i_barcode = $('i_barcode').value;

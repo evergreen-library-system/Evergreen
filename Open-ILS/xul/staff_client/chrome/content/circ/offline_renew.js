@@ -147,7 +147,7 @@ function append_to_list(checkout_type,count) {
 		var my = {};
 
 		my.type = 'renew';
-		my.timestamp = new Date().getTime();
+		my.timestamp = parseInt( new Date().getTime() / 1000);
 		my.checkout_time = util.date.formatted_date(new Date(),"%F %H:%M:%s");
 
 		var p_barcode = $('p_barcode').value;

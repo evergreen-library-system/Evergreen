@@ -227,7 +227,7 @@ function check_patron(obj) {
 function next_patron() {
 	try {
 		var obj = {}
-		obj.timestamp = new Date().getTime();
+		obj.timestamp = parseInt( new Date().getTime() / 1000);
 		obj.type = 'register';
 		obj.user = {};
 		obj.user.card = { 'barcode' : $('barcode').value };
