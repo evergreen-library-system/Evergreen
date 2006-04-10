@@ -66,7 +66,8 @@ cat.copy_browser.prototype = {
 
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
 
-			obj.show_my_libs();
+			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+			obj.show_libs( org );
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.init: ' + E + '\n');
@@ -297,6 +298,7 @@ cat.copy_browser.prototype = {
 						'aou' : org,
 					}
 				},
+				'skip_all_columns_except' : [0,1,2],
 				'retrieve_id' : 'aou_' + org.id(),
 			};
 		
@@ -380,6 +382,7 @@ cat.copy_browser.prototype = {
 						'copy_count' : acn_tree.copies() ? acn_tree.copies().length : '0',
 					}
 				},
+				'skip_all_columns_except' : [0,1,2],
 				'retrieve_id' : 'acn_' + acn_tree.id(),
 				'node' : parent_node,
 			};
@@ -447,13 +450,13 @@ cat.copy_browser.prototype = {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var obj = this;
-
+			
 			JSAN.use('circ.util');
 			var columns = [
 				{
 					'id' : 'tree_location', 'label' : 'Location/Barcode', 'flex' : 1,
 					'primary' : true, 'hidden' : false, 
-					'render' : 'my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.name() : "???"'
+					'render' : 'my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"'
 				},
 				{
 					'id' : 'volume_count', 'label' : 'Volumes', 'flex' : 0,
@@ -468,15 +471,38 @@ cat.copy_browser.prototype = {
 			].concat(
 				circ.util.columns( 
 					{ 
+						'barcode' : { 'hidden' : false },
 						'location' : { 'hidden' : false },
 						'circ_lib' : { 'hidden' : false },
 						'owning_lib' : { 'hidden' : false },
 						'call_number' : { 'hidden' : false },
-						'barcode' : { 'hidden' : false },
-					} 
+					},
+					{
+						'just_these' : [
+							'owning_lib',
+							'circ_lib',
+							'call_number',
+							'copy_number',
+							'location',
+							'barcode',
+							'loan_duration',
+							'fine_level',
+							'circulate',
+							'holdable',
+							'opac_visible',
+							'ref',
+							'deposit',
+							'deposit_amount',
+							'price',
+							'circ_as_type',
+							'circ_modifier',
+							'status',
+							'alert_message',
+							'acp_id',
+						]
+					}
 				)
 			);
-
 			JSAN.use('util.list'); obj.list = new util.list('copy_tree');
 			obj.list.init(
 				{
@@ -571,6 +597,7 @@ cat.copy_browser.prototype = {
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');
+			alert(E);
 		}
 	},
 }
