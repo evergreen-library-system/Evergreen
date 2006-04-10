@@ -272,6 +272,7 @@ function myOPACDrawHolds(r) {
 		unHideMe(row);
 
 		myOPACDrawHoldTitle(h);
+		myOPACDrawHoldStatus(h);
 	}
 }
 
@@ -295,6 +296,28 @@ function myOPACCancelHold(holdid) {
 }
 
 
+function myOPACDrawHoldStatus(hold) {
+	var req = new Request(FETCH_HOLD_STATUS, G.user.session, hold.id() );
+	req.callback(myOShowHoldStatus);
+	req.request.hold = hold;
+	req.send();
+}
+
+function myOShowHoldStatus(r) {
+
+	var hold = r.hold;
+	var status = r.getResultObject();
+	var row = $("myopac_holds_row_" + r.hold.id() + '_' + r.hold.target());
+
+	if( status < 3 )
+		unHideMe($n(row, 'hold_status_waiting'));
+
+	if( status == 3 )
+		unHideMe($n(row, 'hold_status_transit'));
+
+	if( status == 4 )
+		unHideMe($n(row, 'hold_status_available'));
+}
 
 function myOPACDrawHoldTitle(hold) {
 	var method;

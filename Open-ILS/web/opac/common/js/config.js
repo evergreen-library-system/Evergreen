@@ -315,6 +315,7 @@ var FETCH_LIT_FORMS				= 'open-ils.search:open-ils.search.biblio.lit_form_map.re
 var FETCH_ITEM_FORMS				= 'open-ils.search:open-ils.search.biblio.item_form_map.retrieve.all';
 var FETCH_ITEM_TYPES				= 'open-ils.search:open-ils.search.biblio.item_type_map.retrieve.all';
 var FETCH_AUDIENCES				= 'open-ils.search:open-ils.search.biblio.audience_map.retrieve.all';
+var FETCH_HOLD_STATUS			= 'open-ils.circ:open-ils.circ.hold.status.retrieve';
 /* ---------------------------------------------------------------------------- */
 
 

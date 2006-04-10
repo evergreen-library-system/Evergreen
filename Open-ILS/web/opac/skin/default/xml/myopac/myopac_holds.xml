@@ -11,11 +11,7 @@
 				<td width='30%'>Author</td>
 				<td>Formats</td>
 				<td>Pickup Location</td>
-				<!--
-				<td>Enable Email Notification</td>
-				<td>Enable Phone Notification</td>
-				<td>Notification Phone Number</td>
-				-->
+				<td>Status</td>
 				<td>Edit/Cancel</td>
 			</tr>
 		</thead>
@@ -40,6 +36,11 @@
 				<td name='myopac_holds_formats'> </td>
 
 				<td name='myopac_holds_location'></td>
+				<td>
+					<span class='hide_me' name='hold_status_waiting'>Waiting for copy</span>
+					<span class='hide_me' name='hold_status_transit'>In Transit</span>
+					<span class='hide_me' name='hold_status_availbal'>Available</span>
+				</td>
 
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
 					<a href='javascript:void(0);' 
@@ -55,30 +56,6 @@
 	<span class='hide_me' id='myopac_holds_cancel_verify'>
 		If you wish to cancel the selected hold, click OK, otherwise click Cancel.
 	</span>
-
-	<!--
-	<span class='hide_me' id='myopac_hold_email_verify'>
-		Are you sure you wish to the email notification setting for this hold?
-	</span>
-
-	<span class='hide_me' id='myopac_hold_phone_change'>
-		Enter the new hold notification phone number or click 'Cancel' to keep the current phone number.
-		The required format is XXX-YYY-ZZZZ.
-	</span>
-	<span class='hide_me' id='myopac_bad_phone'>
-		The phone number does not have the correct format.  
-		The required format is XXX-YYY-ZZZZ
-	</span>
-
-	<span class='hide_me' id='myopac_hold_phone_verify'>
-		Are you sure you with to disable phone notifications for this hold?
-	</span>
-
-	<span class='hide_me' id='myopac_cannot_change_pickup'>
-		The selected hold is either in transit or has arrived at the pickup location.
-		The pickup location for this hold cannot be changed.
-	</span>
-	-->
 
 </div>
 
