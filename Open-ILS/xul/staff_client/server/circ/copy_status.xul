@@ -56,9 +56,18 @@
 
 				if (g.cgi.param('barcodes')) {
 					var barcodes = JSON2js(g.cgi.param('barcodes'));
+					JSAN.use('util.exec'); var exec = new util.exec();
+					var funcs = [];
 					for (var i = 0; i < barcodes.length; i++) {
-						g.copy_status.copy_status(barcodes[i]);
+						funcs.push(
+							function(b){
+								return function() {
+									g.copy_status.copy_status(b);
+								}
+							}(barcodes[i])
+						);
 					}
+					exec.chain( funcs );
 				}
 	
 			} catch(E) {
