@@ -5,6 +5,7 @@ cat.copy_browser = function (params) {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		JSAN.use('util.error'); this.error = new util.error();
+		this.docid = 278434;
 	} catch(E) {
 		dump('cat.copy_browser: ' + E + '\n');
 	}
@@ -13,6 +14,8 @@ cat.copy_browser = function (params) {
 cat.copy_browser.prototype = {
 
 	'map_tree' : {},
+	'map_acn' : {},
+	'map_acp' : {},
 
 	'init' : function( params ) {
 
@@ -20,6 +23,7 @@ cat.copy_browser.prototype = {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var obj = this;
 
+			JSAN.use('util.network'); obj.network = new util.network();
 			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
@@ -29,7 +33,7 @@ cat.copy_browser.prototype = {
 							['command'],
 							function() { alert('Not Yet Implemented'); }
 						],
-						'cmd_test' : [
+						'cmd_show_my_libs' : [
 							['command'],
 							function() { 
 								obj.show_my_libs(); 
@@ -39,6 +43,12 @@ cat.copy_browser.prototype = {
 							['command'],
 							function() {
 								obj.show_all_libs();
+							}
+						],
+						'cmd_show_libs_with_copies' : [
+							['command'],
+							function() {
+								obj.show_libs_with_copies();
 							}
 						],
 						'cmd_clear' : [
@@ -53,6 +63,10 @@ cat.copy_browser.prototype = {
 			);
 
 			obj.list_init(params);
+
+			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+
+			obj.show_my_libs();
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.init: ' + E + '\n');
@@ -99,6 +113,38 @@ cat.copy_browser.prototype = {
 							obj.show_libs( o );
 						}
 					}( obj.data.tree.aou.children()[i] )
+				);
+			}
+			exec.chain( funcs );
+		} catch(E) {
+			alert(E);
+		}
+	},
+
+	'show_libs_with_copies' : function() {
+		var obj = this;
+		try {
+			JSAN.use('util.exec'); var exec = new util.exec();
+			JSAN.use('util.functional');
+
+			var orgs = util.functional.map_list(
+				obj.org_ids,
+				function(id) { return obj.data.hash.aou[id]; }
+			).sort(
+				function( a, b ) {
+					if (a.shortname() < b.shortname()) return -1;
+					if (a.shortname() > b.shortname()) return 1;
+					return 0;
+				}
+			);
+			var funcs = [];
+			for (var i = 0; i < orgs.length; i++) {
+				funcs.push(
+					function(o) {
+						return function() {
+							obj.show_libs(o);
+						}
+					}( orgs[i] )
 				);
 			}
 			exec.chain( funcs );
@@ -173,17 +219,40 @@ cat.copy_browser.prototype = {
 			var id = list[i].split('_')[1];
 			switch(row_type) {
 				case 'aou' : obj.on_select_org(id); break;
-				default: alert('on_select: list[i] = ' + list[i] + ' row_type = ' + row_type + ' id = ' + id); break;
+				case 'acn' : obj.on_select_acn(id); break;
+				default: break;
 			}
+		}
+	},
+
+	'on_select_acn' : function(acn_id) {
+		var obj = this;
+		try {
+			var acn_tree = obj.map_acp[ 'acn_' + acn_id ];
+			var funcs = [];
+			if (acn_tree.copies()) {
+				for (var i = 0; i < acn_tree.copies().length; i++) {
+					funcs.push(
+						function(c,a) {
+							return function() {
+								obj.append_acp(c,a);
+							}
+						}( acn_tree.copies()[i], acn_tree )
+					)
+				}
+			}
+			JSAN.use('util.exec'); var exec = new util.exec();
+			exec.chain( funcs );
+		} catch(E) {
+			alert(E);
 		}
 	},
 
 	'on_select_org' : function(org_id) {
 		var obj = this;
 		var org = obj.data.hash.aou[ org_id ];
-		var node = obj.map_tree[ 'org_' + org_id ];
+		var funcs = [];
 		if (org.children()) {
-			var funcs = [];
 			for (var i = 0; i < org.children().length; i++) {
 				funcs.push(
 					function(o,p) {
@@ -193,11 +262,20 @@ cat.copy_browser.prototype = {
 					}(org.children()[i],org)
 				);
 			}
-			JSAN.use('util.exec'); var exec = new util.exec();
-			exec.chain( funcs );
-		} else {
-			alert('No Children');
+		} 
+		if (obj.map_acn[ 'aou_' + org_id ]) {
+			for (var i = 0; i < obj.map_acn[ 'aou_' + org_id ].length; i++) {
+				funcs.push(
+					function(o,a) {
+						return function() {
+							obj.append_acn(o,a);
+						}
+					}( org, obj.map_acn[ 'aou_' + org_id ][i] )
+				);
+			}
 		}
+		JSAN.use('util.exec'); var exec = new util.exec();
+		exec.chain( funcs );
 	},
 
 	'append_org' : function (org,parent_org,params) {
@@ -221,12 +299,28 @@ cat.copy_browser.prototype = {
 				},
 				'retrieve_id' : 'aou_' + org.id(),
 			};
-			if ( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) {
-				data.row.my.volume_count = '??';
-				data.row.my.copy_count = '??';
+		
+			var acn_tree_list;
+			if ( obj.org_ids.indexOf( org.id() ) == -1 ) {
+				if ( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) {
+					data.row.my.volume_count = '0';
+					data.row.my.copy_count = '<0>';
+				} else {
+					data.row.my.volume_count = '';
+					data.row.my.copy_count = '';
+				}
 			} else {
-				data.row.my.volume_count = '';
-				data.row.my.copy_count = '';
+				var v_count = 0; var c_count = 0;
+				acn_tree_list = obj.network.simple_request(
+					'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS',
+					[ obj.data.session, obj.docid, [ org.id() ] ]
+				);
+				for (var i = 0; i < acn_tree_list.length; i++) {
+					v_count++;
+					if (acn_tree_list[i].copies()) c_count += acn_tree_list[i].copies().length;
+				}
+				data.row.my.volume_count = v_count;
+				data.row.my.copy_count = '<' + c_count + '>';
 			}
 			if (parent_org) {
 				data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
@@ -251,6 +345,97 @@ cat.copy_browser.prototype = {
 			} else {
 				obj.map_tree[ 'aou_' + org.id() ].setAttribute('open','true');
 			}
+
+			if (acn_tree_list) {
+				obj.map_acn[ 'aou_' + org.id() ] = acn_tree_list;
+				node.setAttribute('container','true');
+			}
+
+		} catch(E) {
+			dump(E+'\n');
+			alert(E);
+		}
+	},
+
+	'append_acn' : function( org, acn_tree, params ) {
+		var obj = this;
+		try {
+			if (obj.map_tree[ 'acn_' + acn_tree.id() ]) {
+				var x = obj.map_tree[ 'acn_' + acn_tree.id() ];
+				if (params) {
+					for (var i in params) {
+						x.setAttribute(i,params[i]);
+					}
+				}
+				return x;
+			}
+
+			var parent_node = obj.map_tree[ 'aou_' + org.id() ];
+			var data = {
+				'row' : {
+					'my' : {
+						'aou' : org,
+						'acn' : acn_tree,
+						'volume_count' : '',
+						'copy_count' : acn_tree.copies() ? acn_tree.copies().length : '0',
+					}
+				},
+				'retrieve_id' : 'acn_' + acn_tree.id(),
+				'node' : parent_node,
+			};
+			var node = obj.list.append(data);
+			obj.map_tree[ 'acn_' + acn_tree.id() ] =  node;
+			if (params) {
+				for (var i in params) {
+					node.setAttribute(i,params[i]);
+				}
+			}
+			if (acn_tree.copies()) {
+				obj.map_acp[ 'acn_' + acn_tree.id() ] = acn_tree;
+				node.setAttribute('container','true');
+			}
+
+		} catch(E) {
+			dump(E+'\n');
+			alert(E);
+		}
+	},
+
+	'append_acp' : function( acp_item, acn_tree, params ) {
+		var obj = this;
+		try {
+			if (obj.map_tree[ 'acp_' + acp_item.id() ]) {
+				var x = obj.map_tree[ 'acp_' + acp_item.id() ];
+				if (params) {
+					for (var i in params) {
+						x.setAttribute(i,params[i]);
+					}
+				}
+				return x;
+			}
+
+			var parent_node = obj.map_tree[ 'acn_' + acn_tree.id() ];
+			var data = {
+				'row' : {
+					'my' : {
+						'aou' : obj.data.hash.aou[ acn_tree.owning_lib() ],
+						'acn' : acn_tree,
+						'acp' : acp_item,
+						'volume_count' : '',
+						'copy_count' : '',
+					}
+				},
+				'retrieve_id' : 'acp_' + acp_item.id(),
+				'node' : parent_node,
+			};
+			var node = obj.list.append(data);
+			obj.map_tree[ 'acp_' + acp_item.id() ] =  node;
+			if (params) {
+				for (var i in params) {
+					node.setAttribute(i,params[i]);
+				}
+			}
+
 		} catch(E) {
 			dump(E+'\n');
 			alert(E);
@@ -287,6 +472,7 @@ cat.copy_browser.prototype = {
 						'circ_lib' : { 'hidden' : false },
 						'owning_lib' : { 'hidden' : false },
 						'call_number' : { 'hidden' : false },
+						'barcode' : { 'hidden' : false },
 					} 
 				)
 			);
