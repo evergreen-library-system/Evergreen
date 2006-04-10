@@ -34,7 +34,10 @@ circ.print_list_template_editor.prototype = {
 				'items' : { 'dump' : function() { return JSON2js('[["1858348","421","268297","31001000418112","AC KRENTZ","1","Stacks","Normal","ARL-ATH","Normal","Yes","Yes","Yes","No","No","0","18","","","2006-02-13 15:31:30.730986-05","","2006-02-27","Deep waters ","Krentz, Jayne Ann.","","0671575236 :","p1997","Simon & Schuster Audio","PIN01074166   ","1","Checked out","???","???"]]'); } },
 				'holds' : { 'dump' : function() { return; } },
 				'patrons' : { 'dump' : function() { return; } },
-				'offline' : { 'dump' : function() { return; } },
+				'offline_checkout' : { 'dump' : function() { return; } },
+				'offline_checkin' : { 'dump' : function() { return; } },
+				'offline_renew' : { 'dump' : function() { return; } },
+				'offline_inhouse_use' : { 'dump' : function() { return; } },
 			}
 
 
