@@ -63,6 +63,19 @@
 
 			save_object('offline_asv_list', build_asv_list());
 
+			var server_time = g.network.request('open-ils.actor','opensrf.system.time',[]);
+			var local_time = parseInt( new Date().getTime() / 1000 );
+
+			var delta = server_time - local_time;
+
+			JSAN.use('util.file'); var file = new util.file('pending_xacts');
+			if (file._file.exists()) {
+				file.close();
+			} else {
+				file.close();
+				save_object('offline_delta', delta);
+			}
+
 			$('placeholder').setAttribute('value','Offline interface synchronized with server.');
 
 		}
