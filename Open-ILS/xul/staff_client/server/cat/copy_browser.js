@@ -471,11 +471,11 @@ cat.copy_browser.prototype = {
 			].concat(
 				circ.util.columns( 
 					{ 
-						'barcode' : { 'hidden' : false },
 						'location' : { 'hidden' : false },
 						'circ_lib' : { 'hidden' : false },
 						'owning_lib' : { 'hidden' : false },
 						'call_number' : { 'hidden' : false },
+						'status' : { 'hidden' : false },
 					},
 					{
 						'just_these' : [
@@ -555,8 +555,8 @@ cat.copy_browser.prototype = {
 
 						JSAN.use('util.exec'); var exec = new util.exec();
 						exec.on_error = function(E) {
-							//var err = 'items chain: ' + js2JSON(E);
-							//obj.error.sdump('D_ERROR',err);
+							var err = 'items chain: ' + js2JSON(E);
+							obj.error.sdump('D_ERROR',err);
 							return true; /* keep going */
 						}
 						exec.chain( funcs );
