@@ -2,151 +2,17 @@
 
 attachEvt("common", "run", advInit);
 
-/* tests the cookie rresult stuff 
-
-function advTestCookie() {
-	var ids = [ 
-		40791, 40792, 40793, 40794, 40795, 40797, 40798, 40799, 362178, 362179, 
-		362180, 362170, 338215, 333398, 329010, 17, 362182, 362183, 362184, 362185 ];
-
-	cookieManager.write(COOKIE_RIDS, js2JSON(ids), '+1h');
-	var a = {};
-	a.page = RRESULT;
-	a[PARAM_RTYPE] = RTYPE_COOKIE;
-	goTo(buildOPACLink(a));
-}
-*/
-
-
-
 function advInit() { 
 
+	/* propogate these? */
+	clearSearchParams();
+
 	depthSelInit(); 
-
-	/*
-	var wiz = [
-		'advanced.wizard.contains',
-		'advanced.wizard.nocontains',
-		'advanced.wizard.exact',
-		'search_type_selector',
-		'advanced.wizard.form_selector' ];
-	for( var node in wiz ) 
-		setEnterFunc( $(wiz[node]), advWizardRun );
-
-	var ref = [
-		'advanced.refined.title_contains',
-		'advanced.refined.author_contains',
-		'advanced.refined.subject_contains',
-		'advanced.refined.series_contains',
-		'advanced.refined.form_selector',
-		'advanced.refined.series_type',
-		'advanced.refined.subject_type',
-		'advanced.refined.author_type',
-		'advanced.refined.title_type' ];
-	for( var i in ref ) 
-		setEnterFunc( $(ref[i]), advRefinedRun );
-		*/
-
 	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
 	setEnterFunc($('opac.advanced.quick.cn'), advCNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 }
-
-
-/*
-function advWizardRun() {
-	var contains = $('advanced.wizard.contains').value;
-	var nocontains = $('advanced.wizard.nocontains').value; 
-	var exact	= $('advanced.wizard.exact').value; 
-	var form		= getSelectorVal($('advanced.wizard.form_selector'));
-	var type		= getSelectorVal($('search_type_selector'));
-	var sort		= getSelectorVal($('advanced.wizard.sort_by'));
-	var sortdir	= getSelectorVal($('advanced.wizard.sort_dir'));
-
-	var arg = {};
-	arg.page = MRESULT;
-	arg[PARAM_FORM]		= form;
-	arg[PARAM_STYPE]		= type;
-	arg[PARAM_OFFSET]		= 0;
-	arg[PARAM_DEPTH]		= depthSelGetDepth();
-	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
-	arg[PARAM_TERM]		= advBuildSearch( contains, nocontains, exact );
-	arg[PARAM_SORT]		= sort;
-	arg[PARAM_SORT_DIR]	= sortdir;
-
-	if( sort == SORT_TYPE_PUBDATE ) {
-		arg.page = RRESULT;
-		arg[PARAM_RTYPE]	= type;
-	}
-
-	if(!arg[PARAM_TERM]) return;
-
-	goTo(buildOPACLink(arg));
-}
-
-function advBuildSearch( contains, nocontains, exact ) {
-	var string = "";
-	if(contains) string = contains;
-
-	if( exact ) {
-		if(exact.indexOf('"') > -1) string += " " + exact;
-		else string += " \"" + exact + "\"";
-	}
-
-	if(nocontains) {
-		var words = nocontains.split(" ");
-		for( var i in words ) 
-			string += " -" + words[i];
-	}
-	return string;
-}
-
-
-function advRefinedRun() {
-	var title	= $('advanced.refined.title_contains').value;
-	var author	= $('advanced.refined.author_contains').value;
-	var subject = $('advanced.refined.subject_contains').value;
-	var series	= $('advanced.refined.series_contains').value;
-	var form = getSelectorVal($('advanced.refined.form_selector'));
-	var sort		= getSelectorVal($('advanced.refined.sort_by'));
-	var sortdir	= getSelectorVal($('advanced.refined.sort_dir'));
-
-	var blob = {};
-	title = advRefinedTerm('title', title);
-	author = advRefinedTerm('author', author);
-	subject = advRefinedTerm('subject', subject);
-	series = advRefinedTerm('series', series);
-
-	if(title) { blob.title = {}; blob.title.term =  title; }
-	if(author) { blob.author = {}; blob.author.term = author;}
-	if(subject) { blob.subject = {}; blob.subject.term = subject;}
-	if(series) { blob.series = {}; blob.series.term = series; }
-
-	if( !(title || author|| subject|| series) ) return;
-
-	var arg					= {};
-	arg.page					= MRESULT;
-	arg[PARAM_FORM]		= form;
-	arg[PARAM_STYPE]		= "";
-	arg[PARAM_TERM]		= "";
-	arg[PARAM_ADVTERM]	= js2JSON(blob);
-	arg[PARAM_DEPTH]		= depthSelGetDepth();
-	arg[PARAM_LOCATION]	= depthSelGetNewLoc();
-	arg[PARAM_OFFSET]		= 0;
-	arg[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
-	arg[PARAM_SORT]		= sort;
-	arg[PARAM_SORT_DIR]	= sortdir;
-
-	if( sort == SORT_TYPE_PUBDATE ) {
-		arg.page = RRESULT;
-		arg[PARAM_RTYPE] = RTYPE_MULTI;
-	}
-
-	goTo(buildOPACLink(arg));
-
-}
-*/
 
 function advISBNRun() {
 	var isbn = $('opac.advanced.quick.isbn').value;
@@ -182,20 +48,6 @@ function advCNRun() {
 	arg[PARAM_CN]	= cn;
 	goTo(buildOPACLink(arg));
 }
-
-
-/*
-function advRefinedTerm( type, term ) {
-	var t = getSelectorVal($('advanced.refined.' + type + '_type'));
-	var string;
-
-	if( t == 'contains' ) string = advBuildSearch( term );
-	else if( t == 'nocontains' ) string = advBuildSearch( null, term );
-	else if( t == 'exact' ) string = advBuildSearch( null, null, term );
-
-	return string;
-}
-*/
 
 
 function advAddMARC() {

@@ -124,6 +124,30 @@ function initParams() {
 	if(ADVTERM==null)		ADVTERM	= "";
 }
 
+function clearSearchParams() {
+	TERM		= null;
+	STYPE		= null;
+	FORM		= null;
+	OFFSET	= 0;
+	HITCOUNT = 0;  
+	ADVTERM  = null;
+	ADVTYPE  = null;
+	MRID		= null;
+	RID		= null;
+	RTYPE		= null;
+	SORT		= null;
+	SORT_DIR = null;
+	RLIST		= null;
+	CALLNUM	= null;
+	LITFORM	= null;
+	ITEMFORM = null;
+	ITEMTYPE = null;
+	AUDIENCE = null;
+	SEARCHES = null;
+	LANGUAGE = null;
+}
+
+
 function initCookies() {
 	FONTSIZE = "regular";
 	var font = cookieManager.read(COOKIE_FONT);
@@ -813,4 +837,5 @@ function parseForm(form) {
 
 	return {item_type: item_type, item_form:item_form};
 }
+
 

@@ -76,6 +76,8 @@ function advSubmitGlobal() {
 	var searches = advBuildSearchBlob();
 	if(!searches) return;
 
+	clearSearchParams();
+
 	var args = {};
 	args.page = MRESULT;
 	args[PARAM_ITEMFORM] = itemforms;
@@ -84,7 +86,6 @@ function advSubmitGlobal() {
 	args[PARAM_AUDIENCE]	= audiences;
 	args[PARAM_LANGUAGE] = languages;
 	args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
-	args[PARAM_OFFSET]	= 0;
 	args[PARAM_DEPTH]		= depthSelGetDepth();
 	args[PARAM_LOCATION]	= depthSelGetNewLoc();
 	args[PARAM_SORT]		= sortby;

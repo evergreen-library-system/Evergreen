@@ -47,19 +47,7 @@ function searchBarSubmit() {
 
 	var text = G.ui.searchbar.text.value;
 
-	if(!text) { /* assume it's an advaned search? */
-		if(getAdvTerm()){}
-	}
-
-	/* we don't want these to propogate */
-	SORT		= "";
-	ITEMFORM = "";
-	ITEMTYPE = "";
-	LITFORM	= "";
-	AUDIENCE	= "";
-	LANGUAGE = "";
-	SEARCHES	= "";
-
+	clearSearchParams();
 
 	if(!text || text == "") return;
 	var d	= (newSearchDepth != null) ?  newSearchDepth : depthSelGetDepth();
@@ -67,7 +55,7 @@ function searchBarSubmit() {
 
 	var args = {};
 	args.page				= MRESULT;
-	args[PARAM_OFFSET]	= 0;
+	//args[PARAM_OFFSET]	= 0;
 	args[PARAM_TERM]		= text;
 	args[PARAM_STYPE]		= _ts.options[_ts.selectedIndex].value;
 	args[PARAM_LOCATION] = depthSelGetNewLoc();
