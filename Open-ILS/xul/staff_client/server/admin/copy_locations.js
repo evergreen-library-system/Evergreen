@@ -37,7 +37,7 @@ function clHoldMsg() {
 }
 
 function clGo() {	
-	var req = new Request(RETRIEVE_CL, SESSION, USER.home_ou());
+	var req = new Request(RETRIEVE_CL, USER.ws_ou());
 	req.callback(clDraw);
 	req.send();
 }
