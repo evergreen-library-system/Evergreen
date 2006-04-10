@@ -8,7 +8,7 @@ circ.util.EXPORT_OK	= [
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
-circ.util.columns = function(modify) {
+circ.util.columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
@@ -170,10 +170,21 @@ circ.util.columns = function(modify) {
 			}
 		}
 	}
+	if (params) {
+		if (params.just_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < params.just_these.length; i++) {
+				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
+				new_c.push( function(y){ return y; }( x ) );
+			}
+			return new_c;
+		}
+	}
 	return c;
 }
 
-circ.util.hold_columns = function(modify) {
+circ.util.hold_columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
@@ -291,6 +302,17 @@ circ.util.hold_columns = function(modify) {
 			for (var j in modify[ c[i].id ]) {
 				c[i][j] = modify[ c[i].id ][j];
 			}
+		}
+	}
+	if (params) {
+		if (params.just_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < params.just_these.length; i++) {
+				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
+				new_c.push( function(y){ return y; }( x ) );
+			}
+			return new_c;
 		}
 	}
 	return c;
