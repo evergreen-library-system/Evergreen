@@ -18,7 +18,8 @@ my @web_hints = qw/ asv asva asvr asvq
 my @web_core = qw/ 
 	aou au perm_ex ex aout 
 	mvr ccs ahr aua ac actscecm cbreb acpl 
-	cbrebi acpn acp acnn acn bren asc asce /;
+	cbrebi acpn acp acnn acn bren asc asce 
+	clfm cifm citm cam /;
 
 my @reports = qw/ perm_ex ex ao aou aout /;
 
