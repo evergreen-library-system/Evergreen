@@ -14,3 +14,9 @@
 <link type='text/css' rel="alternate stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/water/css/colors.css" 
 	title='Water' name='Water' csstype="color" />
 
+<!-- OpenSearch auto discovery -->
+<link rel='search' 
+	 type="application/opensearchdescription+xml"
+    title="Evergreen"
+    href="dev.gapines.org/opac/extras/opensearch/1.1/-/osd.xml"> </link>
+
