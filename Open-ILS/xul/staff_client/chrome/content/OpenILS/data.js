@@ -94,11 +94,11 @@ OpenILS.data.prototype = {
 	'print_list_defaults' : function() {
 		var obj = this;
 		if (typeof obj.print_list_templates == 'undefined') {
-			obj.print_list_types = [ 'items', 'holds', 'patrons' ];
+			obj.print_list_types = [ 'offline', 'items', 'holds', 'patrons' ];
 			obj.print_list_templates = { 
 				'item_status' : {
 					'type' : 'items',
-					'header' : 'You following items were checked:<hr/><ol>',
+					'header' : 'The following items are examined:<hr/><ol>',
 					'line_item' : '<li>%title%\r\nBarcode: %barcode%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
 				}, 
@@ -114,12 +114,30 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>%title%\r\nBarcode: %barcode% Due: %due_date%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\nYou were helped by %STAFF_FIRSTNAME% %STAFF_LASTNAME%',
 				}, 
+				'offline_checkout' : {
+					'type' : 'offline',
+					'header' : 'Patron %OFFLINE_PATRON_BARCODE%\r\nYou checked out the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nDue: %OFFLINE_DUE_DATE%\r\n',
+					'footer' : '</ol><hr />%TODAY%',
+				},
 				'checkin' : {
 					'type' : 'items',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>%title%\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
 				}, 
+				'offline_checkin' : {
+					'type' : 'offline',
+					'header' : 'You checked in the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\n',
+					'footer' : '</ol><hr />%TODAY%',
+				},
+				'offline_items_used' : {
+					'type' : 'offline',
+					'header' : 'You marked the following in-house items used:<hr/><ol>',
+					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nUses: %COUNT%',
+					'footer' : '</ol><hr />%TODAY%',
+				},
 				'holds' : {
 					'type' : 'holds',
 					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!\r\nYou have the following titles on hold:<hr/><ol>',
