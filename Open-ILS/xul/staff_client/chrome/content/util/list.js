@@ -260,7 +260,19 @@ util.list.prototype = {
 		var s = '';
 		for (var i = 0; i < this.columns.length; i++) {
 			var treecell = document.createElement('treecell');
-			var value = '';
+			var label = '';
+			if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
+				treecell.setAttribute('label',label);
+				treerow.appendChild( treecell );
+				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+				continue;
+			}
+			if (params.skip_all_columns_except && (params.skip_all_columns_except.indexOf(i) == -1)) {
+				treecell.setAttribute('label',label);
+				treerow.appendChild( treecell );
+				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+				continue;
+			}
 			if (typeof params.map_row_to_column == 'function')  {
 
 				label = params.map_row_to_column(params.row,this.columns[i]);
