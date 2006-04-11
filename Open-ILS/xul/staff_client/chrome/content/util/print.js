@@ -26,7 +26,7 @@ util.print.prototype = {
 			var silent = false;
 			if (params && params.no_prompt && params.no_prompt == true) silent = true;
 
-			var w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','temp','chrome,resizable');
+			var w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','receipt_temp','chrome,resizable');
 
 			w.minimize();
 
@@ -135,7 +135,7 @@ util.print.prototype = {
 		JSAN.use('util.date');
 		var s = msg;
 
-		try{s = s.replace(/%OFFLINE_PATRON_BARCODE%/,params.patron_barcode);}
+		try{s = s.replace(/%patron_barcode%/,params.patron_barcode);}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
 		try{s = s.replace(/%LIBRARY%/,params.lib.name());}
