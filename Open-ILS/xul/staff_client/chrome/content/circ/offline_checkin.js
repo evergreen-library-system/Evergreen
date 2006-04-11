@@ -11,6 +11,8 @@ function my_init() {
 			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
 		}
 
+		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
 		JSAN.use('util.list'); g.list = new util.list('checkout_list');
 		JSAN.use('circ.util');
 		g.list.init( {
@@ -90,18 +92,17 @@ function next_patron() {
 
 		if ($('print_receipt').checked) {
 			try {
-				JSAN.use('patron.util');
 				var params = {
-					'header' : obj.OpenILS.data.print_list_templates.offline_checkin.header,
-					'line_item' : obj.OpenILS.data.print_list_templates.offline_checkin.line_item,
-					'footer' : obj.OpenILS.data.print_list_templates.offline_checkin.footer,
-					'type' : obj.OpenILS.data.print_list_templates.offline_checkin.type,
-					'list' : obj.list.dump(),
+					'header' : g.data.print_list_templates.offline_checkin.header,
+					'line_item' : g.data.print_list_templates.offline_checkin.line_item,
+					'footer' : g.data.print_list_templates.offline_checkin.footer,
+					'type' : g.data.print_list_templates.offline_checkin.type,
+					'list' : g.list.dump(),
 				};
 				JSAN.use('util.print'); var print = new util.print();
 				print.tree_list( params );
 			} catch(E) {
-				this.error.sdump('D_ERROR','preview: ' + E);
+				g.error.sdump('D_ERROR','preview: ' + E);
 				alert('preview: ' + E);
 			}
 		}

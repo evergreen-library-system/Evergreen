@@ -49,6 +49,44 @@ util.print.prototype = {
 	'tree_list' : function (params) { 
 		var cols;
 		switch(params.type) {
+			case 'offline_checkout' :
+				JSAN.use('circ.util');
+				cols = util.functional.map_list(
+					circ.util.offline_checkout_columns( {} ),
+					function(o) {
+						return '%' + o.id + '%';
+					}
+				);
+
+			break;
+			case 'offline_checkin' :
+				JSAN.use('circ.util');
+				cols = util.functional.map_list(
+					circ.util.offline_checkin_columns( {} ),
+					function(o) {
+						return '%' + o.id + '%';
+					}
+				);
+
+			break;
+			case 'offline_renew' :
+				JSAN.use('circ.util');
+				cols = util.functional.map_list(
+					circ.util.offline_renew_columns( {} ),
+					function(o) {
+						return '%' + o.id + '%';
+					}
+				);
+			break;
+			case 'offline_inhouse_use' :
+				JSAN.use('circ.util');
+				cols = util.functional.map_list(
+					circ.util.offline_inhouse_use_columns( {} ),
+					function(o) {
+						return '%' + o.id + '%';
+					}
+				);
+			break;
 			case 'items':
 				JSAN.use('circ.util');
 				cols = util.functional.map_list(
@@ -97,25 +135,7 @@ util.print.prototype = {
 		JSAN.use('util.date');
 		var s = msg;
 
-		try{s = s.replace(/%OFFLINE_PATRON_BARCODE%/,params.offline.patron_barcode);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_BARCODE%/,params.offline.barcode);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_BACKDATE%/,params.offline.backdate);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_CHECKOUT_TIME%/,params.offline.checkout_time);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_NONCAT%/,params.offline.noncat);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_NONCAT_TYPE%/,params.offline.noncat_type);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_NONCAT_COUNT%/,params.offline.noncat_count);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_DUE_DATE%/,params.offline.due_date);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_USE_TIME%/,params.offline.use_time);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%OFFLINE_COUNT%/,params.offline.count);}
+		try{s = s.replace(/%OFFLINE_PATRON_BARCODE%/,params.patron_barcode);}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
 		try{s = s.replace(/%LIBRARY%/,params.lib.name());}
