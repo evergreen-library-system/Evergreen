@@ -11,6 +11,8 @@ function my_init() {
 			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
 		}
 
+		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
 		JSAN.use('util.list'); g.list = new util.list('checkout_list');
 		JSAN.use('circ.util');
 		g.list.init( {
@@ -155,6 +157,25 @@ function next_patron() {
 			file.append_object(row);
 		}
 		file.close();
+		
+		if ($('print_receipt').checked) {
+			try {
+				var params = {
+					'patron_barcode' : $('p_barcode').value,
+					'header' : g.data.print_list_templates.offline_renew.header,
+					'line_item' : g.data.print_list_templates.offline_renew.line_item,
+					'footer' : g.data.print_list_templates.offline_renew.footer,
+					'type' : g.data.print_list_templates.offline_renew.type,
+					'list' : g.list.dump(),
+				};
+				JSAN.use('util.print'); var print = new util.print();
+				print.tree_list( params );
+			} catch(E) {
+				g.error.sdump('D_ERROR','print: ' + E);
+				alert('print: ' + E);
+			}
+		}
+
 		g.list.clear();
 		
 		var x;

@@ -102,8 +102,8 @@ function next_patron() {
 				JSAN.use('util.print'); var print = new util.print();
 				print.tree_list( params );
 			} catch(E) {
-				g.error.sdump('D_ERROR','preview: ' + E);
-				alert('preview: ' + E);
+				g.error.sdump('D_ERROR','print: ' + E);
+				alert('print: ' + E);
 			}
 		}
 
