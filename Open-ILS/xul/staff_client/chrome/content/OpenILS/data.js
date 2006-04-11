@@ -124,8 +124,8 @@ OpenILS.data.prototype = {
 				}, 
 				'offline_checkout' : {
 					'type' : 'offline_checkout',
-					'header' : 'Patron %OFFLINE_PATRON_BARCODE%\r\nYou checked out the following items:<hr/><ol>',
-					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nDue: %OFFLINE_DUE_DATE%\r\n',
+					'header' : 'Patron %patron_barcode%\r\nYou checked out the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%\r\nDue: %due_date%\r\n',
 					'footer' : '</ol><hr />%TODAY%',
 				},
 				'checkin' : {
@@ -137,19 +137,19 @@ OpenILS.data.prototype = {
 				'offline_checkin' : {
 					'type' : 'offline_checkin',
 					'header' : 'You checked in the following items:<hr/><ol>',
-					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\n',
+					'line_item' : '<li>Barcode: %barcode%\r\n',
 					'footer' : '</ol><hr />%TODAY%',
 				},
 				'offline_renew' : {
 					'type' : 'offline_renew',
 					'header' : 'You renewed the following items:<hr/><ol>',
-					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\n',
+					'line_item' : '<li>Barcode: %barcode%\r\n',
 					'footer' : '</ol><hr />%TODAY%',
 				},
 				'offline_inhouse_use' : {
 					'type' : 'offline_inhouse_use',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
-					'line_item' : '<li>Barcode: %OFFLINE_BARCODE%\r\nUses: %COUNT%',
+					'line_item' : '<li>Barcode: %barcode%\r\nUses: %count%',
 					'footer' : '</ol><hr />%TODAY%',
 				},
 				'holds' : {
