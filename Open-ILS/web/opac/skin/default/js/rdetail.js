@@ -258,112 +258,15 @@ function rdetailShowExtra(type, args) {
 }
 
 function rdetailVolumeDetails(args) {
-
-	
 	var row = $(args.rowid);
 	var tbody = row.parentNode;
 	cpdBuild( tbody, row, record, args.cn, args.org, args.depth );
 	return;
-
-	/*
-	$('cn_details_launch_shelf_browser').setAttribute('href',
-		'javascript:rdetailShowCNBrowse("' + args.cn + '", "'+args.depth+'");');
-
-	var req = new Request(FETCH_VOLUME_BY_INFO, args.cn, record.doc_id(), args.org);
-	req.callback(rdetailShowCNDetails2);
-	req.request._row = $(args.rowid);
-	req.send();
-	*/
 }
 
-/*
-function rdetailShowCNDetails2(r) {
-	var cn = r.getResultObject();
-	var req = new Request(FETCH_COPIES_FROM_VOLUME, cn.id());
-	req.request._cn = cn;
-	req.request._row = r._row;
-	req.callback(rdetailShowCNDetails3);
-	req.send();
-}
-
-var rdetailCNDetailsRow;
-var rdetailCNDetailContainerRow;
-function rdetailShowCNDetails3(r) {
-
-	var copies = r.getResultObject();
-	var cn = r._cn;
-	var wrapperrow = r._row;
-
-	var parent = $('rdetail_copy_info_tbody');
-	var tbody = $('rdetail_cn_copies_tbody');
-
-	if(!rdetailCNDetailsRow) {
-		rdetailCNDetailsRow = tbody.removeChild($('rdetail_cn_copies_row'));
-		rdetailCNDetailContainerRow = $('rdetail_volume_details_row');
-	}
-	
-	removeChildren(tbody);
-
-	for( var i = 0; i != copies.length; i++ ) {
-		var row = rdetailCNDetailsRow.cloneNode(true);
-		var copyid = copies[i];
-		var req = new Request(FETCH_COPY, copyid);
-		req.callback(rdetailShowCNCopy);
-		req.request._cn = cn;
-		req.request._tbody = tbody;
-		req.request._row = row;
-		req.send();
-		tbody.appendChild(row);
-	}
-
-	var oldrow = $('rdetail_cn_details_div').parentNode.parentNode;
-
-	unHideMe($('rdetail_cn_details_div'));
-	newrow = rdetailCNDetailContainerRow;
-
-	removeCSSClass(newrow.previousSibling, 'rdetail_context_row');
-
-	var td = newrow.getElementsByTagName('td')[0];
-	td.appendChild($('rdetail_cn_details_div'));
-
-	addCSSClass(wrapperrow, 'rdetail_context_row');
-	if( wrapperrow.nextSibling ) 
-		parent.insertBefore( newrow, wrapperrow.nextSibling );
-	else
-		parent.appendChild( newrow );
-}
-
-function rdetailShowCNCopy(r) {
-	var copy = r.getResultObject();
-	var row = r._row;
-	$n(row, 'barcode').appendChild(text(copy.barcode()));
-
-	for( i = 0; i < cp_statuses.length; i++ ) {
-		var c = cp_statuses[i];
-		if( c.id() == copy.status() )
-			$n(row, 'status').appendChild(text(c.name()));
-	}
-
-	rdetailSetCopyLocation( row, copy );
-}
-
-var copyLocations;
-function rdetailSetCopyLocation( row, copy ) {
-
-	if(!copyLocations) {
-		var req = new Request(FETCH_COPY_LOCATIONS);	
-		req.send(true);
-		copyLocations = req.result();
-	}
-
-	var location = grep(copyLocations, 
-		function(l) { return l.id() == copy.location() } )[0];
-
-	$n(row, 'location').appendChild(text(location.name()));
-}
-*/
 
 function rdetailBuildCNList() {
+
 	var select = $('cn_browse_selector');
 	var index = 0;
 	var arr = [];
@@ -462,8 +365,9 @@ function _rdetailRows(node) {
 		row.id = "cp_info_" + node.id();
 
 		var libtd = findNodeByName( row, config.names.rdetail.lib_cell );
-		var cntd = findNodeByName( row, config.names.rdetail.cn_cell );
+		var cntd  = findNodeByName( row, config.names.rdetail.cn_cell );
 		var cpctd = findNodeByName( row, config.names.rdetail.cp_count_cell );
+		var actions = $n(row, 'rdetail_actions_cell');
 	
 		libtd.appendChild(text(node.name()));
 		libtd.setAttribute("style", "padding-left: " + ((findOrgDepth(node) - 1)  * 9) + "px;");
@@ -472,9 +376,10 @@ function _rdetailRows(node) {
 
 			row.removeChild(cntd);
 			row.removeChild(cpctd);
+			row.removeChild(actions);
 
-			libtd.setAttribute("colspan", numStatuses + 2 );
-			libtd.colSpan = numStatuses + 2;
+			libtd.setAttribute("colspan", numStatuses + 3 );
+			libtd.colSpan = numStatuses + 3;
 			addCSSClass(row, 'copy_info_region_row');
 		} 
 	
@@ -507,6 +412,8 @@ function _rdetailBuildInfoRows(r) {
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
 
+		_debug('callnumer: ' + arr[1] + ' : lib ' + arr[0]);
+
 		if(rowNode.getAttribute("used")) {
 
 			if( rowNode.nextSibling )
@@ -517,7 +424,9 @@ function _rdetailBuildInfoRows(r) {
 			n.appendChild(text(thisOrg.name()));
 			n.setAttribute("style", "padding-left: " + ((findOrgDepth(thisOrg) - 1)  * 9) + "px;");
 
-		} else rowNode.setAttribute("used", "1");
+		} else {
+			rowNode.setAttribute("used", "1");
+		}
 
 		var cpc_temp = rowNode.removeChild(
 			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
@@ -540,55 +449,8 @@ function _rdetailBuildInfoRows(r) {
 	}
 
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
-
-	/* now that we know what CN's we have, grab the associated notes */
-	/*rdetailFetchNotes();*/
 }
 
-/*
-function rdetailFetchNotes() {
-	var req = new Request(FETCH_BIBLIO_NOTES, record.doc_id());
-	req.callback(rdetailDrawNotes);
-	req.send();
-}
-
-var rdetailNotesTemplate;
-function rdetailDrawNotes(r) {
-	var notes = r.getResultObject();
-	if(!notes) return;
-
-	var tbody = $('rdetail_notes_tbody');
-	if(!rdetailNotesTemplate) 
-		rdetailNotesTemplate = tbody.removeChild($('rdetail_notes_row'));
-
-	var found = false;
-	for( var t in notes.titles ) {
-		var note = notes.copies[c];
-	}
-
-	for( var v in notes.volumes ) {
-		var note = notes.copies[c];
-		var row = rdetailNotesTemplate.cloneNode(true);
-		found = true;
-	}
-
-	for( var c in notes.copies ) {
-		found = true;
-		var copynode = notes.copies[c];
-		var copy = copynode.id;
-		var nts = copynode.notes;
-		for( var n in nts ) {
-			var note = nts[n];
-			var row = rdetailNotesTemplate.cloneNode(true);
-			$n(row, 'rdetail_notes_title').appendChild(text(note.title()));
-			$n(row, 'rdetail_notes_value').appendChild(text(note.value()));
-			tbody.appendChild(row);
-		}
-	}
-
-	if(found) unHideMe($('rdetail_viewnotes_link'));
-}
-*/
 
 function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 
@@ -602,15 +464,17 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 	var depth = getDepth();
 	if( !local ) depth = findOrgDepth(globalOrgTree);
 
-	/* var a = elem("a", {href:'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");' }, cn); */
+	$n(row, 'rdetail_callnumber_cell').appendChild(text(cn));
 
-	var a = elem("a", {href:'javascript:rdetailVolumeDetails('+
-		'{rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'"});' }, cn);
+	var dHref = 'javascript:rdetailVolumeDetails('+
+		'{rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'"});';
 
-	addCSSClass(a, 'classic_link');
+	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");'; 
 
-	findNodeByName( row, config.names.rdetail.cn_cell ).appendChild(a);
+	$n(row, 'details').setAttribute('href', dHref);
+	$n(row, 'browse').setAttribute('href', bHref);
 }
+
 
 /* sets the path to org as 'active' and displays the 
 	path if it's local */
@@ -625,6 +489,11 @@ function rdetailSetPath(org, local) {
 	rdetailSetPath(findOrgUnit(org.parent_ou()), local);
 }
 
+
+
+/**
+ * Append all the statuses for a give summary to the 
+ * copy summary table */
 function rdetailApplyStatuses( row, template, statuses ) {
 	for( var j in _statusPositions ) {
 		var stat = _statusPositions[j];
@@ -640,6 +509,10 @@ function rdetailApplyStatuses( row, template, statuses ) {
 /* --------------------------------------------------------------------- */
 var _statusPositions = {};
 
+/**
+ * Add one td (creating a new column) to the copy summary
+ * table for each holdable copy status
+ */
 function rdetailBuildStatusColumns() {
 
 	rdetailGrabCopyStatuses();

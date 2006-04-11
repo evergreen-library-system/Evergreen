@@ -69,12 +69,10 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		/* again, IE is a turd */
 		if(IE) { if(x++ > 5) break; }
 		else { if(x++ > 7) break; }
-		//if(x++ > 7) break;
 
 		found = true;
 
 		var item = normalize(truncate(items[i], 65));
-		var trunc = 65;
 		var args = {};
 		var href = resultQuickLink( items[i], stype );
 		tree.addNode( stype + "_" + items[i], treeName + 'Root', item, href );
@@ -190,6 +188,7 @@ function resultRenderXRefTree(r) {
 */
 
 
+/* Addes the see-from/see-also entries for this subject item */
 function resultAppendCrossRef(r) {
 	var tree		= r._tree
 	var item		= r._item
@@ -201,19 +200,34 @@ function resultAppendCrossRef(r) {
 
 	var total = 0;
 
-	for( var i = 0; (total++ < 5 && i < froms.length); i++ ) {
-		var string = normalize(truncate(froms[i], 45));
-		if($(stype + '_' + froms[i])) continue;
-		tree.addNode(stype + '_' + froms[i], 
-			stype + '_' + item, string, resultQuickLink(froms[i],stype));
-	}
-	for( var i = 0; (total++ < 10 && i < alsos.length); i++ ) {
-		var string = normalize(truncate(alsos[i], 45));
-		if($(stype + '_' + alsos[i])) continue;
-		tree.addNode(stype + '_' + alsos[i], 
-			stype + '_' + item, string, resultQuickLink(alsos[i],stype));
-	}
+	for( var i = 0; (total++ < 5 && i < froms.length); i++ ) 
+		resultAddXRefItem( tree, item, stype, froms, i );
+
+	for( var i = 0; (total++ < 10 && i < alsos.length); i++ ) 
+		resultAddXRefItem( tree, item, stype, alsos, i );
 }
+
+/**
+ * Adds a single entry into the see-from/also sidebar tree 
+ */
+var collectedStrings = [];
+function resultAddXRefItem(tree, rootItem, stype, arr, idx) {
+
+	var string = normalize(truncate(arr[idx], 45));
+
+	if( string == rootItem ) return;
+
+	if( grep( collectedStrings, 
+		function(a) { return (a == string); }) ) return;
+
+	if($(stype + '_' + arr[idx])) return;
+
+	tree.addNode(stype + '_' + arr[idx], 
+		stype + '_' + rootItem, string, resultQuickLink(arr[idx],stype));
+
+	collectedStrings.push(string);
+}
+
 
 
 

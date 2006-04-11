@@ -217,7 +217,7 @@ function buildExtrasLink(name, ssl) {
 
 var consoleService;
 function _debug(str) { 
-	try { dump(str + '\n'); } catch(e) {} 
+	try { dump('dbg: ' + str + '\n'); } catch(e) {} 
 
 	/* potentially useful, but usually just annoying */
 	/*
