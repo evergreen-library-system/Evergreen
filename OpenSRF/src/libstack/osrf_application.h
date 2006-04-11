@@ -216,3 +216,8 @@ int osrfAppIntrospect( osrfMethodContext* ctx );
 int osrfAppIntrospectAll( osrfMethodContext* ctx );
 
 
+/**
+ * Tells the backend process to run its child init function */
+int osrfAppRunChildInit(char* appname);
+
+

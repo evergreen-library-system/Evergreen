@@ -1,6 +1,7 @@
 #include "osrf_prefork.h"
 #include <signal.h>
 #include "osrf_app_session.h"
+#include "osrf_application.h"
 
 /* true if we just deleted a child.  This will allow us to make sure we're
 	not trying to use freed memory */
@@ -124,6 +125,12 @@ void prefork_child_init_hook(prefork_child* child) {
 
 	free(resc);
 
+	if( ! osrfAppRunChildInit(child->appname) ) {
+		osrfLogDebug(OSRF_LOG_MARK, "Prefork child_init succeeded\n");
+	} else {
+		osrfLogError(OSRF_LOG_MARK, "Prefork child_init failed\n");
+	}
+
 	set_proc_title( "OpenSRF Drone [%s]", child->appname );
 }
 
@@ -161,6 +168,9 @@ prefork_simple*  prefork_simple_init( transport_client* client,
 				max_children, ABS_MAX_CHILDREN );
 		return NULL;
 	}
+
+	osrfLogInfo(OSRF_LOG_MARK, "Prefork launching child with max_request=%d,"
+		"min_children=%d, max_children=%d", max_requests, min_children, max_children );
 
 	/* flesh out the struct */
 	prefork_simple* prefork = (prefork_simple*) safe_malloc(sizeof(prefork_simple));	
@@ -441,7 +451,7 @@ void prefork_child_wait( prefork_child* child ) {
 	char buf[READ_BUFSIZE];
 	memset( buf, 0, READ_BUFSIZE );
 
-	for( i = 0; i!= child->max_requests; i++ ) {
+	for( i = 0; i < child->max_requests; i++ ) {
 
 		n = -1;
 		clr_fl(child->read_data_fd, O_NONBLOCK );
@@ -466,7 +476,7 @@ void prefork_child_wait( prefork_child* child ) {
 		}
 
 		if( n < 0 ) {
-			osrfLogWarning( OSRF_LOG_MARK,  "Child read returned error with errno %d", errno );
+			osrfLogWarning( OSRF_LOG_MARK,  "Prefork child read returned error with errno %d", errno );
 			break;
 		}
 
@@ -476,7 +486,8 @@ void prefork_child_wait( prefork_child* child ) {
 
 	buffer_free(gbuf);
 
-	osrfLogDebug( OSRF_LOG_MARK, "Child exiting...[%d]", getpid() );
+	osrfLogDebug( OSRF_LOG_MARK, "Child with max-requests=%d, num-served=%d exiting...[%d]", 
+			child->max_requests, i, getpid() );
 
 	exit(0);
 }

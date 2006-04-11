@@ -57,6 +57,30 @@ int osrfAppRegisterApplication( char* appName, char* soFile ) {
 	return 0;
 }
 
+int osrfAppRunChildInit(char* appname) {
+	osrfApplication* app = _osrfAppFindApplication(appname);
+	if(!app) return -1;
+
+	char* error;
+	int ret;
+	int (*childInit) (void);
+
+	*(void**) (&childInit) = dlsym(app->handle, "osrfAppChildInit");
+
+	if( (error = dlerror()) != NULL ) {
+		osrfLogInfo( OSRF_LOG_MARK, "No child init defined for app %s : %s", appname, error);
+		return 0;
+	}
+
+	if( (ret = (*childInit)()) ) {
+		osrfLogError(OSRF_LOG_MARK, "App %s child init failed", appname);
+		return -1;
+	}
+
+	osrfLogInfo(OSRF_LOG_MARK, "%s child init succeeded", appname);
+	return 0;
+}
+
 
 int osrfAppRegisterMethod( char* appName, char* methodName, 
 		char* symbolName, char* notes, int argc, int options ) {
