@@ -128,7 +128,13 @@ function _js2JSON(arg) {
 	
 			case 'string':
 			default:
-				return '"' + String(arg).replace(/(["\\])/g, '\\$1') + '"';
+				var s = String(arg);
+				s = s.replace(/\\/g, '\\\\');
+				s = s.replace(/"/g, '\\"');
+				s = s.replace(/\t/g, "\\t");
+				s = s.replace(/\n/g, "\\n");
+				s = s.replace(/\r/g, "\\r");
+				s = s.replace(/\f/g, "\\f");
+				return '"' + s + '"';
 		}
-
 }
