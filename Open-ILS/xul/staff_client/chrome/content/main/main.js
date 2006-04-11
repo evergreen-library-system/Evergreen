@@ -125,7 +125,7 @@ function main_init() {
 
 		G.auth.on_standalone = function() {
 			try {
-				G.window.open(urls.XUL_STANDALONE,'Offline','chrome,resizable,modal');
+				G.window.open(urls.XUL_STANDALONE,'Offline','chrome,resizable');
 			} catch(E) {
 				alert(E);
 			}
