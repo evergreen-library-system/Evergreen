@@ -84,3 +84,26 @@ for my $object (keys %$map) {
 
 print SOURCE "	return -1;\n}\n";
 
+
+
+print SOURCE <<C;
+static osrfList* __fm_classes = NULL;
+osrfList* fm_classes() {
+	if(__fm_classes) return __fm_classes;
+	__fm_classes = osrfNewList();
+C
+
+for my $object (keys %$map) {
+	my $short_name= $map->{$object}->{hint};
+	$object =~ s/Fieldmapper:://o;
+	$object =~ s/::/./og;
+	print SOURCE "\tosrfListPush(__fm_classes, \"$short_name\");\n";
+	print SOURCE "\tosrfListPush(__fm_classes, \"$object\");\n";
+}
+
+print SOURCE <<C;
+	return __fm_classes;
+}
+C
+
+
