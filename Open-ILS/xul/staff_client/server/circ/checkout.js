@@ -303,8 +303,7 @@ circ.checkout.prototype = {
 			}
 
 		} catch(E) {
-			alert('FIXME: need special alert and error handling\n'
-				+ js2JSON(E));
+			obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(E), 'Check Out Failed', 'Ok', null, null, 'Check here to confirm this message' );
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}

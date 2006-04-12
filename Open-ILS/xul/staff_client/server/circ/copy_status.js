@@ -209,8 +209,7 @@ circ.copy_status.prototype = {
 			obj.controller.view.copy_status_barcode_entry_textbox.value = '';
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 		} catch(E) {
-			alert('FIXME: need special alert and error handling\n'
-				+ js2JSON(E));
+			obj.error.yns_alert('FIXME: If you see this message, please inform your friendly Evergreen developers\n' + js2JSON(E), 'FIXME', 'Ok', null, null, 'Check here to confirm this message');
 			obj.controller.view.copy_status_barcode_entry_textbox.select();
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 		}

@@ -523,7 +523,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		JSAN.use('util.error'); var error = new util.error();
 		var msg = E + '\n---\n' + js2JSON(E);
 		error.sdump('D_ERROR',msg);
-		alert(msg);
+		obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + (msg), 'Check In Failed', 'Ok', null, null, 'Check here to confirm this message' );
 		return null;
 	}
 }
@@ -554,7 +554,7 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 		JSAN.use('util.error'); var error = new util.error();
 		var msg = E + '\n---\n' + js2JSON(E);
 		error.sdump('D_ERROR',msg);
-		alert(msg);
+		obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + (msg), 'Check In Failed', 'Ok', null, null, 'Check here to confirm this message' );
 		return null;
 	}
 }

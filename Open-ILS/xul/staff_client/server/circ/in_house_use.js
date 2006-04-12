@@ -138,7 +138,13 @@ circ.in_house_use.prototype = {
 			JSAN.use('circ.util');
 
 			var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
-			if (copy.ilsevent) { alert(copy.textcode); return; }
+			if (copy.ilsevent) { 
+				switch(copy.ilsevent) {
+					case 1502: obj.error.yns_alert(copy.textcode,'In House Use Failed','Ok',null,null,'Check here to confirm this message'); break;
+					default: obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(copy), 'In House Use Failed', 'Ok', null, null, 'Check here to confirm this message' ); break;
+				}
+				return; 
+			}
 
 			var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ copy.id() ]);
 			var result = obj.network.simple_request('FM_AIHU_CREATE',
@@ -168,8 +174,7 @@ circ.in_house_use.prototype = {
 			}
 
 		} catch(E) {
-			alert('FIXME: need special alert and error handling\n'
-				+ js2JSON(E));
+			obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(E), 'In House Use Failed', 'Ok', null, null, 'Check here to confirm this message' );
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
