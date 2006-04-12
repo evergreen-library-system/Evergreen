@@ -482,29 +482,19 @@ patron.summary.prototype = {
 								JSAN.use('patron.util');
 								patron.util.set_penalty_css(obj.patron);
 
-							} else if (typeof robj.ilsevent != 'undefined') {
-
-								if (robj.ilsevent == 0) {
-
-									// are we moving toward a payload here?
-
-								} else {
-									var error = obj.error.get_ilsevent( robj.ilsevent );
-									throw(error);
-								}
 							} else {
 
-								throw('result is not an au fm object');
+								throw(robj);
+
 							}
 						} else {
 
-							throw('result == false');
+							throw(robj);
+
 						}
 
 					} catch(E) {
-						var error = js2JSON(E);
-						obj.error.sdump('D_ERROR',error);
-						throw(error);
+						throw(E);
 					}
 				}
 			);
@@ -554,36 +544,21 @@ patron.summary.prototype = {
 			// Do it
 			JSAN.use('util.exec'); obj.exec = new util.exec();
 			obj.exec.on_error = function(E) {
-				//location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?session=' + window.escape(obj.session);
-				obj.patron = new au();
-					obj.patron.checkouts( [] );
-					obj.patron.hold_requests( [] );
-					obj.patron.bills = [];
-					var home_ou = new aou();
-					obj.patron.home_ou( home_ou );
-					var card = new ac(); card.barcode( obj.barcode );
-					obj.patron.card( card );
-					obj.patron.family_name( 'Could not retrieve patron' );
-				var error = ('Problem with barcode: ' + obj.barcode + '\n' + E);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.on_error == 'function') {
-					obj.error.sdump('D_PATRON_SUMMARY',
-						'patron.summary: Calling external .on_error()\n');
-					window.xulG.on_error(error);
+					window.xulG.on_error(E);
 				} else {
-					obj.error.sdump('D_PATRON_SUMMARY','patron.summary: No external .on_error()\n');
+					alert(js2JSON(E));
 				}
 
 			}
 			this.exec.chain( chain );
 
 		} catch(E) {
-			var error = (js2JSON(E));
-			this.error.sdump('D_ERROR',error);
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_error == 'function') {
-				window.xulG.on_error(error);
+				window.xulG.on_error(E);
 			} else {
-				alert(error);
+				alert(js2JSON(E));
 			}
 		}
 	}

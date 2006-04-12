@@ -147,6 +147,7 @@ circ.checkin.prototype = {
 			var checkin = circ.util.checkin_via_barcode(
 				obj.session, barcode, backdate
 			);
+			if (!checkin) return; /* circ.util.checkin handles errors and returns null currently */
 			obj.list.append(
 				{
 					'row' : {
@@ -176,7 +177,7 @@ circ.checkin.prototype = {
 			}
 
 		} catch(E) {
-			obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(E), 'Check In Failed', 'Ok', null, null, 'Check here to confirm this message' );
+			obj.error.standard_unexpected_error_alert('',E);
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}

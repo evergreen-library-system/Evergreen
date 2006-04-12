@@ -204,6 +204,27 @@ util.error.prototype = {
 		return this.OpenILS.data.entities['ilsevent.'+status];
 	},
 
+	'standard_network_error_alert' : function(msg) {
+		var obj = this;
+		if (!msg) msg = '';
+		obj.yns_alert(
+			'We experienced a network/server communication failure.  Please check your internet connection and try this action again.  Repeated failures may require attention from your local IT staff or your friendly Evergreen developers.\n\n' + msg,
+			'Communication Failure',
+			'Ok', null, null, 'Check here to confirm this message'
+		);
+	},
+
+	'standard_unexpected_error_alert' : function(msg,E) {
+		var obj = this;
+		if (!msg) msg = '';
+		obj.yns_alert(
+			'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + js2JSON(E),
+			'Unhandled Error',
+			'Ok', null, null, 'Check here to confirm this message'
+		);
+	},
+
+
 	'yns_alert' : function (s,title,b1,b2,b3,c) {
 
 		/*

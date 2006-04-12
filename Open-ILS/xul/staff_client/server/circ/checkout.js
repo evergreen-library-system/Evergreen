@@ -305,7 +305,11 @@ circ.checkout.prototype = {
 			}
 
 		} catch(E) {
-			obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(E), 'Check Out Failed', 'Ok', null, null, 'Check here to confirm this message' );
+			if (E.ilsevent && E.ilsevent == -1) {
+				obj.error.standard_network_error_alert('Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
+			} else {
+				obj.error.standard_unexpected_error_alert('Check Out Failed',E);
+			}
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}

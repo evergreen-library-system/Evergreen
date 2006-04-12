@@ -489,6 +489,11 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			);
 		}
 
+		/* NETWORK TIMEOUT */
+		if (check.ilsevent == -1) {
+			error.standard_network_error_alert('Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
+		}
+
 //				case '2': case 2: /* LOST??? */
 //					JSAN.use('patron.util');
 //					var au_obj = patron.util.retrieve_au_via_id( session, check.circ.usr() );
@@ -521,9 +526,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		var msg = E + '\n---\n' + js2JSON(E);
-		error.sdump('D_ERROR',msg);
-		obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + (msg), 'Check In Failed', 'Ok', null, null, 'Check here to confirm this message' );
+		obj.error.standard_unexpected_error_alert('Check In Failed',E);
 		return null;
 	}
 }
@@ -552,9 +555,7 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		var msg = E + '\n---\n' + js2JSON(E);
-		error.sdump('D_ERROR',msg);
-		obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + (msg), 'Check In Failed', 'Ok', null, null, 'Check here to confirm this message' );
+		obj.error.standard_unexpected_error_alert('Hold Capture Failed',E);
 		return null;
 	}
 }

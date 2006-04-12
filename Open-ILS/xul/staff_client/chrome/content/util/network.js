@@ -99,7 +99,7 @@ util.network.prototype = {
 		try {
 			var obj = this;
 			var robj = req.getResultObject();
-			if (robj.ilsevent && robj.ilsevent == 1001) {
+			if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 				window.open(
 					urls.XUL_AUTH_SIMPLE
@@ -127,7 +127,7 @@ util.network.prototype = {
 		try {
 			var obj = this;
 			var robj = req.getResultObject();
-			if (robj.ilsevent && robj.ilsevent == 5000) {
+			if (robj != null && robj.ilsevent && robj.ilsevent == 5000) {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 				window.open(
 					urls.XUL_AUTH_SIMPLE
@@ -179,6 +179,8 @@ util.network.prototype = {
 			}
 
 			var result = req.getResultObject();
+			if (!result) return req;
+
 			if ( o_params.overridable_events.indexOf(result.ilsevent) != -1 ) {
 				req = override([result]);
 			} else {

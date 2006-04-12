@@ -71,7 +71,19 @@
 					try { window.xulG.set_tab_name('Patron Scan'); } catch(E) { alert(E); }
 				}
 
-				if (g.cgi.param('error')) { alert(g.cgi.param('error')); }
+				if (g.cgi.param('error')) { 
+					var error = g.cgi.param('error');
+					var E = JSON2js( error );
+					if (E.ilsevent) {
+						switch(E.ilsevent) {
+							case -1: g.error.standard_network_error_alert(); break;
+							case 1002: alert('No user was found with this barcode.'); break;
+							default: g.error.standard_unexpected_error_alert('',E); break;
+						}
+					} else {
+						g.error.standard_unexpected_error_alert('',E);
+					}
+				}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

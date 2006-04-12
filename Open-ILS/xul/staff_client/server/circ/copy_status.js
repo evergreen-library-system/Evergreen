@@ -190,9 +190,12 @@ circ.copy_status.prototype = {
 			JSAN.use('circ.util');
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ barcode ]);
 			if (copy == null) {
-				throw('COPY NOT FOUND');
+				throw('Something weird happened.  null result');
 			} else if (copy.ilsevent) {
-				throw('COPY NOT FOUND\n' + js2JSON(copy));
+				switch(copy.ilsevent) {
+					case -1: obj.error.standard_network_error_alert(); break;
+					default: throw(copy); break;
+				}
 			} else {
 				obj.list.append(
 					{
@@ -205,11 +208,11 @@ circ.copy_status.prototype = {
 						}
 					}
 				);
+				obj.controller.view.copy_status_barcode_entry_textbox.value = '';
+				obj.controller.view.copy_status_barcode_entry_textbox.focus();
 			}
-			obj.controller.view.copy_status_barcode_entry_textbox.value = '';
-			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 		} catch(E) {
-			obj.error.yns_alert('FIXME: If you see this message, please inform your friendly Evergreen developers\n' + js2JSON(E), 'FIXME', 'Ok', null, null, 'Check here to confirm this message');
+			obj.error.standard_unexpected_error_alert('',E);
 			obj.controller.view.copy_status_barcode_entry_textbox.select();
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 		}

@@ -140,8 +140,9 @@ circ.in_house_use.prototype = {
 			var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
 			if (copy.ilsevent) { 
 				switch(copy.ilsevent) {
+					case -1 : obj.error.standard_network_error_alert('In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface'); break;
 					case 1502: obj.error.yns_alert(copy.textcode,'In House Use Failed','Ok',null,null,'Check here to confirm this message'); break;
-					default: obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(copy), 'In House Use Failed', 'Ok', null, null, 'Check here to confirm this message' ); break;
+					default: throw(copy);
 				}
 				return; 
 			}
@@ -174,7 +175,7 @@ circ.in_house_use.prototype = {
 			}
 
 		} catch(E) {
-			obj.error.yns_alert('FIXME: If you see this alert, please let your friendly Evergreen Developers know.\n' + js2JSON(E), 'In House Use Failed', 'Ok', null, null, 'Check here to confirm this message' );
+			obj.error.standard_unexpected_error_alert('In House Use Failed',E);
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
