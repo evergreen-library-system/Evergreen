@@ -3,6 +3,9 @@
 #include "opensrf/osrf_system.h"
 #include "objson/object.h"
 #include "objson/json2xml.h"
+#include <sys/time.h>
+#include <sys/resource.h>
+
 
 #define MODULE_NAME "osrf_json_gateway_module"
 #define GATEWAY_CONFIG "OSRFGatewayConfig"
@@ -50,17 +53,34 @@ static void osrf_json_gateway_child_init(apr_pool_t *p, server_rec *s) {
 
 	char* cfg = osrf_json_gateway_config_file;
 	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) {
-		ap_log_error( APLOG_MARK, APLOG_ERR, 0, s, "Unable to Bootstrap OpenSRF Client..");
+		ap_log_error( APLOG_MARK, APLOG_ERR, 0, s, 
+			"Unable to Bootstrap OpenSRF Client with config %s..", cfg);
 		return;
 	}
 	bootstrapped = 1;
-	ap_log_error( APLOG_MARK, APLOG_DEBUG, 0, s, "Bootstrapping OpenSRF Client..");
+	osrfLogInfo(OSRF_LOG_MARK, "Bootstrapping gateway child for requests");
+
+
+#ifdef OSRF_GATEWAY_ENABLE_RLIMIT /* emergency measures only */
+	struct rlimit lim = { 536870912, 536870912 }; /* 512MB */
+	setrlimit(RLIMIT_AS, &lim);
+	setrlimit(RLIMIT_MEMLOCK,&lim);
+	setrlimit(RLIMIT_STACK, &lim);
+	setrlimit(RLIMIT_DATA,&lim);
+
+	struct rlimit lim2;
+	getrlimit(RLIMIT_DATA, &lim2);
+	osrfLogDebug(OSRF_LOG_MARK, "rlimit for data set to %d", lim2.rlim_cur);
+#endif
+
 }
 
 static int osrf_json_gateway_method_handler (request_rec *r) {
 
 	/* make sure we're needed first thing*/
 	if (strcmp(r->handler, MODULE_NAME )) return DECLINED;
+
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: entered request handler");
 
 	/* verify we are connected */
 	if( !bootstrapped || !osrf_system_get_transport_client()) {
@@ -81,6 +101,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
 
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: parsing URL params");
 	string_array* mparams	= NULL;
 	string_array* params		= apacheParseParms(r); /* free me */
 	service		= apacheGetFirstParamValue( params, "service" );
@@ -204,16 +225,105 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	}
 
 	osrfLogInfo(OSRF_LOG_MARK, "Completed processing service=%s, method=%s", service, method);
-	osrfLogDebug(OSRF_LOG_MARK, "Gateway served %d requests", ++numserved);
 	string_array_destroy(params);
 	string_array_destroy(mparams);
+
+	osrfLogDebug(OSRF_LOG_MARK, "Gateway served %d requests", ++numserved);
 
 	return OK;
 }
 
+
+/* --------------------------------------------------------------------- */
+/* DEBUG HOOKS */
+static int osrf_dbg_pre_config(apr_pool_t *pconf, apr_pool_t *plog, apr_pool_t *ptemp){
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_pre_config hook");
+	return OK;
+}
+static int osrf_dbg_post_config(apr_pool_t *pconf, apr_pool_t *plog, apr_pool_t *ptemp, server_rec *s) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_post_config hook");
+	return OK;
+}
+static int osrf_dbg_open_logs(apr_pool_t *pconf, apr_pool_t *plog, apr_pool_t *ptemp, server_rec *s) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_open_logs hook");
+	return OK;
+}
+static int osrf_dbg_quick_handler(request_rec *r, int lookup_uri) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_quick_handler hook");
+	return DECLINED;
+}
+static int osrf_dbg_pre_connection(conn_rec *c, void *csd) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_pre_connection hook");
+	return OK;
+}
+static int osrf_dbg_process_connection(conn_rec *c) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_process_connection hook");
+	return DECLINED;
+}
+static int osrf_dbg_post_read_request(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_read_request hook");
+	return DECLINED;
+}
+static int osrf_dbg_logger(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_dbg_logger hook");
+	return DECLINED;
+}
+static int osrf_dbg_translate_handler(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_translate_handler hook");
+	return DECLINED;
+}
+static int osrf_dbg_header_parser_handler(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_header_parser_handler hook");
+	return DECLINED;
+}
+static int osrf_dbg_check_user_id(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_check_user_id hook");
+	return DECLINED;
+}
+static int osrf_dbg_fixer_upper(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_fixer_upper hook");
+	return OK;
+}
+static int osrf_dbg_type_checker(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_type_checker hook");
+	return DECLINED;
+}
+static int osrf_dbg_access_checker(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_access_checker hook");
+	return DECLINED;
+}
+static int osrf_dbg_auth_checker(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_auth_checker hook");
+	return DECLINED;
+}
+static void osrf_dbg_insert_filter(request_rec *r) {
+	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_insert_filter hook");
+}
+/* --------------------------------------------------------------------- */
+
+
 static void osrf_json_gateway_register_hooks (apr_pool_t *p) {
 	ap_hook_handler(osrf_json_gateway_method_handler, NULL, NULL, APR_HOOK_MIDDLE);
 	ap_hook_child_init(osrf_json_gateway_child_init,NULL,NULL,APR_HOOK_MIDDLE);
+
+#ifdef OSRF_GATEWAY_NASTY_DEBUG
+	ap_hook_pre_config(osrf_dbg_pre_config, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_post_config(osrf_dbg_post_config, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_open_logs(osrf_dbg_open_logs, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_quick_handler(osrf_dbg_quick_handler, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_pre_connection(osrf_dbg_pre_connection, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_process_connection(osrf_dbg_process_connection, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_post_read_request(osrf_dbg_post_read_request, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_log_transaction(osrf_dbg_logger, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_translate_name(osrf_dbg_translate_handler, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_header_parser(osrf_dbg_header_parser_handler, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_check_user_id(osrf_dbg_check_user_id, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_fixups(osrf_dbg_fixer_upper, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_type_checker(osrf_dbg_type_checker, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_access_checker(osrf_dbg_access_checker, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_auth_checker(osrf_dbg_auth_checker, NULL, NULL, APR_HOOK_MIDDLE);
+	ap_hook_insert_filter(osrf_dbg_insert_filter, NULL, NULL, APR_HOOK_MIDDLE);
+#endif
 }
 
 
