@@ -18,9 +18,27 @@ var rdetailLocalOnly = true;
 var globalCNCache	= {};
 var localTOC;
 
+
+
 var nextContainerIndex;
 
+function rdetailReload() {
+	var args = {};
+	args[PARAM_LOCATION] = getNewSearchLocation();
+	args[PARAM_DEPTH] = depthSelGetDepth();
+	goTo(buildOPACLink(args));
+}
+
+
 function rdetailDraw() {
+
+	detachAllEvt('common','depthChanged');
+	detachAllEvt('common','locationUpdated');
+	attachEvt('common','depthChanged', rdetailReload);
+	attachEvt('common','locationUpdated', rdetailReload);
+	attachEvt('common','holdUpdated', rdetailReload);
+	attachEvt('common','holdUpdateCanceled', rdetailReload);
+
 	copyRowParent = G.ui.rdetail.cp_info_row.parentNode;
 	copyRow = copyRowParent.removeChild(G.ui.rdetail.cp_info_row);
 	statusRow = G.ui.rdetail.cp_status.parentNode;
@@ -74,11 +92,14 @@ function rdetailShowLocalCopies() {
 	var found = false;
 	var rows = copyRowParent.getElementsByTagName("tr");
 	for( var r in rows ) {
-		if(rows[r].id == "__rdsrow") continue;
-		hideMe(rows[r]);
-		if(rows[r].getAttribute && rows[r].getAttribute("local")) {
-			unHideMe(rows[r]);
+		var row = rows[r];
+		if( row.parentNode != copyRowParent ) continue; /* don't hide copy details sub-rows */
+		if(row.id == "__rdsrow") continue;
+		if(row.getAttribute && row.getAttribute("local")) {
+			unHideMe(row);
 			found = true;
+		} else {
+			hideMe(row);
 		}
 	}
 
@@ -248,7 +269,7 @@ function rdetailShowExtra(type, args) {
 
 		case 'cn':
 			unHideMe($('rdetail_cn_browse_div'));
-			rdetailShowCNBrowse(defaultCN, null, true);
+			rdetailShowCNBrowse(defaultCN, getLocation(), null, true);
 			break;
 
 		case 'notes':
@@ -288,12 +309,12 @@ function rdetailBuildCNList() {
 
 function rdetailGatherCN() {
 	var cn = getSelectorVal($('cn_browse_selector'));
-	rdetailShowCNBrowse( cn, getDepth(), true );
+	rdetailShowCNBrowse( cn, getLocation(), getDepth(), true );
 	setSelector( $('cn_browse_selector'), cn );
 }
 
 
-function rdetailShowCNBrowse( cn, depth, fromOnclick ) {
+function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
 	if(!cn) return;
 	rdetailBuildCNList();
 	setSelector( $('cn_browse_selector'), cn );
@@ -304,7 +325,7 @@ function rdetailShowCNBrowse( cn, depth, fromOnclick ) {
 	unHideMe($('rdetail_cn_browse_div'));
 	unHideMe($('cn_browse'));
 	if( !rdetailLocalOnly && ! fromOnclick ) depth = findOrgDepth(globalOrgTree);
-	cnBrowseGo(cn, depth);
+	cnBrowseGo(cn, loc, depth);
 }
 
 function rdetailHandleAddedContent(r) {
@@ -393,6 +414,7 @@ function _rdetailRows(node) {
 
 /* walk through the copy info and build rows where necessary */
 var localCNFound = false;
+var ctr = 0;
 function _rdetailBuildInfoRows(r) {
 
 	_rdetailRows();
@@ -412,8 +434,6 @@ function _rdetailBuildInfoRows(r) {
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
 
-		_debug('callnumer: ' + arr[1] + ' : lib ' + arr[0]);
-
 		if(rowNode.getAttribute("used")) {
 
 			if( rowNode.nextSibling )
@@ -423,6 +443,7 @@ function _rdetailBuildInfoRows(r) {
 			var n = findNodeByName( rowNode, config.names.rdetail.lib_cell );
 			n.appendChild(text(thisOrg.name()));
 			n.setAttribute("style", "padding-left: " + ((findOrgDepth(thisOrg) - 1)  * 9) + "px;");
+			rowNode.id = "cp_info_" + thisOrg.id() + '_' + (++ctr); /* ensure a unique id */
 
 		} else {
 			rowNode.setAttribute("used", "1");
@@ -442,6 +463,9 @@ function _rdetailBuildInfoRows(r) {
 				defaultCN = arr[1];
 			}
 		}
+
+		if(isLocal) unHideMe(rowNode);
+
 		rdetailSetPath( thisOrg, isLocal );
 		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg );
 
@@ -466,10 +490,12 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 
 	$n(row, 'rdetail_callnumber_cell').appendChild(text(cn));
 
-	var dHref = 'javascript:rdetailVolumeDetails('+
-		'{rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'"});';
+	_debug('setting action clicks for cn ' + cn);
 
-	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", "'+depth+'");'; 
+	var dHref = 'javascript:rdetailVolumeDetails('+
+		'{rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
+
+	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", '+orgNode.id()+', "'+depth+'");'; 
 
 	$n(row, 'details').setAttribute('href', dHref);
 	$n(row, 'browse').setAttribute('href', bHref);

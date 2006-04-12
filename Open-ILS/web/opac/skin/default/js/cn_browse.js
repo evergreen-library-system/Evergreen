@@ -16,7 +16,7 @@ if( findCurrentPage() == CNBROWSE ) {
 
 function cnBrowseLoadSearch() {
 	unHideMe($('cn_browse'));
-	cnBrowseGo(getCallnumber(), getDepth());
+	cnBrowseGo(getCallnumber(), getLocation(), getDepth());
 }
 
 function cnBrowseResubmit() {
@@ -27,12 +27,12 @@ function cnBrowseResubmit() {
 	goTo(buildOPACLink(args));
 }
 
-function cnBrowseGo(cn, depth) { 
+function cnBrowseGo(cn, org, depth) { 
 	if(depth == null) depth = getDepth();
 	cnBrowseDepth = depth;
 	cnBrowseCurrent = cn;
 	var req = new Request( FETCH_CNBROWSE_TARGET, 
-		'org_unit', getLocation(), 
+		'org_unit', org, 
 		'depth', cnBrowseDepth, 
 		'label', cnBrowseCurrent,
 		'page_size', MAX_CN );

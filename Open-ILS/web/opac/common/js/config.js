@@ -373,6 +373,8 @@ createEvt('result', 'zeroHits');
 createEvt('result', 'lowHits');
 createEvt('rdetail', 'recordRetrieved');			/* we are about to draw the rdetail page */
 createEvt('common', 'depthChanged');
+createEvt('common', 'holdUpdated'); 
+createEvt('common', 'holdUpdateCanceled'); 
 
 
 

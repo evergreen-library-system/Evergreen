@@ -13,7 +13,10 @@
 		</span>
 	</div>
 
-	<style>#rdetail_copy_info_table { font-size: 8pt; }</style>
+	<style>
+		#rdetail_copy_info_table { font-size: 8pt; }
+		#rdetail_copy_info_table td { padding: 3px; }
+	</style>
 	<table id='rdetail_copy_info_table' class='data_grid'>
 		<thead>
 
@@ -32,11 +35,11 @@
 				<td name='rdetail_library_cell'> </td>
 				<td name='rdetail_callnumber_cell'> </td>
 				<td name='rdetail_actions_cell'> 
-					<div style='padding-bottom: 3px; border-bottom: 2px solid #E0F0E0;'>
+					<div style='padding-bottom: 1px;'>
 						<a style='font-size: 8pt;'
 							name='details' class='classic_link'>Details</a>
 					</div>
-					<div style='margin-top: 3px;'>
+					<div style='margin-top: 2px;'>
 						<a name='browse' style='font-size: 8pt;'
 							class='classic_link'>Browse</a>
 					</div>

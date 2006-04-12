@@ -149,7 +149,7 @@ function _holdsDrawWindow(recid, type) {
 		}
 	}
 
-	$('holds_cancel').onclick = showCanvas;
+	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
 	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	appendClear($('holds_physical_desc'), text(rec.physical_description()));
 	if(type == 'M') hideMe($('hold_physical_desc_row'));
@@ -177,7 +177,7 @@ function holdsBuildOrgSelector(node) {
 	var type = findOrgType(node.ou_type());
 	var indent = type.depth() - 1;
 	var opt = setSelectorVal( selector, index, node.name(), node.id(), null, indent );
-	if(!type.can_have_users()) opt.disabled = true;
+	if(!type.can_have_vols()) opt.disabled = true;
 	
 	if( node.id() == holdRecipient.home_ou() ) {
 		selector.selectedIndex = index;
@@ -237,6 +237,7 @@ function holdsPlaceHold(hold) {
 	showCanvas();
 	holdRecipient = null;
 	holdRequestor = null;
+	runEvt('common', 'holdUpdated');
 }
 
 function holdsCancel(holdid, user) {
@@ -244,6 +245,7 @@ function holdsCancel(holdid, user) {
 	var req = new Request(CANCEL_HOLD, user.session, holdid);
 	req.send(true);
 	return req.result();
+	runEvt('common', 'holdUpdated');
 }
 
 function holdsUpdate(hold, user) {
@@ -251,6 +253,7 @@ function holdsUpdate(hold, user) {
 	var req = new Request(UPDATE_HOLD, user.session, hold);
 	req.send(true);
 	var x = req.result(); /* cause an exception if there is one */
+	runEvt('common', 'holdUpdated');
 }
 
 

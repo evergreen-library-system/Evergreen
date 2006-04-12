@@ -3,8 +3,7 @@ var cpdCounter = 0;
 var cpdNodes = {};
 
 function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth ) {
-
-	var i = cpdCheckExisting(contextRow);
+var i = cpdCheckExisting(contextRow);
 	if(i) return i;
 
 	var counter = cpdCounter++;
@@ -22,6 +21,10 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth ) 
 	*/
 
 	unHideMe(templateRow);
+
+	var print = $n(templateRow,'print');
+	print.onclick = function() { cpdBuildPrintPane(
+		contextRow, record, callnumber, orgid, depth) };
 
 	var mainTbody = $n(templateRow, 'copies_tbody');
 	var extrasRow = mainTbody.removeChild($n(mainTbody, 'copy_extras_row'));
@@ -48,9 +51,50 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth ) 
 		contextTbody.appendChild( templateRow );
 
 	req.send();
-	cpdNodes[templateRow.id] = { visible : true, templateRow : templateRow };
+	_debug('creating new details row with id ' + templateRow.id);
+	cpdNodes[templateRow.id] = { templateRow : templateRow };
 	return templateRow.id;
 }
+
+/* builds a friendly print window for this CNs data */
+function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
+	var win = window.open('','', 'resizable,width=700,height=500');
+	var div = $('rdetail_print_details').cloneNode(true);
+	div.id = "";
+
+	$n(div, 'lib').appendChild(text(findOrgUnit(orgid).name()));
+	$n(div, 'title').appendChild(text(record.title()));
+	$n(div, 'author').appendChild(text(record.author()));
+	$n(div, 'edition').appendChild(text(record.edition()));
+	$n(div, 'pubdate').appendChild(text(record.pubdate()));
+	$n(div, 'publisher').appendChild(text(record.publisher()));
+	$n(div, 'phys').appendChild(text(record.physical_description()));
+	$n(div, 'cn').appendChild(text(callnumber));
+
+	var subtbody = $n(contextRow.nextSibling, 'copies_tbody');
+	var rows = subtbody.getElementsByTagName('tr');
+
+	for( var r = 0; r < rows.length; r++ ) {
+		var row = rows[r];
+		if(!row) continue;
+		var clone = row.cloneNode(true);
+		var links = clone.getElementsByTagName('a');
+		for( var i = 0; i < links.length; i++ ) 
+			links[i].style.display = 'none';
+
+		$n(div, 'tbody').appendChild(clone);
+	}
+
+	var tds = div.getElementsByTagName('td');
+	for( var i = 0; i < tds.length ; i++ ) {
+		var sty = tds[i].getAttribute('style');
+		if(!sty) sty = "";
+		tds[i].setAttribute('style', sty + 'padding: 2px; border: 1px solid #F0F0E0;');
+	}
+
+	win.document.body.innerHTML = div.innerHTML;
+}
+
 
 
 /* hide any open tables and if we've already 
@@ -62,16 +106,17 @@ function cpdCheckExisting( contextRow ) {
 
 	if( next && next.getAttribute('templateRow') ) {
 		var obj = cpdNodes[next.id];
-		if(obj.visible) hideMe(obj.templateRow);
-		else unHideMe(obj.templateRow);
-		obj.visible = !obj.visible;
+		if(obj.templateRow.className.match(/hide_me/)) 
+			unHideMe(obj.templateRow);
+		else hideMe(obj.templateRow);
 		existingid = next.id;
 	}
+
+	if(existingid) _debug('row exists with id ' + existingid);
 
 	for( var o in cpdNodes ) {
 		var node = cpdNodes[o];
 		if( existingid && o == existingid ) continue;
-		node.visible = false;
 		hideMe(node.templateRow);
 		removeCSSClass(node.templateRow.previousSibling, 'rdetail_context_row');
 	}

@@ -13,7 +13,11 @@
 	<div style='text-align: center; font-weight: bold;' 
 		class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
-	<div style='width: 99%; text-align: center'> <b>My Bookbags</b></div>
+	<div style='width: 99%; text-align: center'> 
+		<b>My Bookbags</b>
+		<a class='classic_link' style='margin-left: 5px; font-size: 8pt;'
+			href='javascript:alert($("myopac_bb_what_are").innerHTML);'>(What are Bookbags?)</a>
+	</div>
 	<br/>
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
@@ -128,6 +132,10 @@
 		have any link between your patron record and a particular item or items,
 		we suggest that you do not place said items in a bookbag or that you 
 		avoid using bookbags all together.  Thank you.
+	</span>
+
+	<span id='myopac_bb_what_are' class='hide_me'>
+		Bookbags are...
 	</span>
 
 </div>
