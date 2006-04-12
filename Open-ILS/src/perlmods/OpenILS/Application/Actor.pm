@@ -1814,5 +1814,48 @@ sub register_workstation {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'fetch_patron_note',
+	api_name		=> 'open-ils.actor.note.retrieve.all',
+	signature	=> q/
+		Returns a list of notes for a given user
+		Requestor must have VIEW_USER permission
+		@param authtoken The login session key
+		@param patronid The patron id
+	/
+);
+
+sub fetch_patron_note {
+	my( $self, $conn, $authtoken, $patronid ) = @_;
+	my( $reqr, $patron, $evt ) = 
+		$U->checkses_requestor($authtoken, $patronid, 'VIEW_USER');
+	return $evt if $evt;
+	return $U->storagereq(
+		'open-ils.storage.direct.actor.usr_note.search.usr.atomic', $patronid );
+}
+
+__PACKAGE__->register_method (
+	method		=> 'create_user_note',
+	api_name		=> 'open-ils.actor.note.create',
+	signature	=> q/
+		Creates a new note for the given user
+		@param authtoken The login session key
+		@param note The note object
+	/
+);
+sub create_user_note {
+	my( $self, $conn, $authtoken, $note ) = @_;
+	my( $reqr, $patron, $evt ) = 
+		$U->checkses_requestor($authtoken, $note->usr, 'UPDATE_USER');
+	$logger->activity("user ".$reqr->id." creating note for ".$note->usr);
+
+	$note->creator($reqr->id);
+	my $id = $U->storagereq(
+		'open-ils.storage.direct.actor.usr_note.create', $note );
+	return $U->DB_UPDATE_FAILED($note) unless $id;
+	return $id;
+}
+
+
 1;
 
