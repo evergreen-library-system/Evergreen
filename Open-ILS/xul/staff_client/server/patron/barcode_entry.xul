@@ -85,6 +85,8 @@
 				var tb = document.getElementById('barcode_tb');
 				var barcode = tb.value;
 
+				if (!barcode) return;
+
 				var loc = urls.XUL_PATRON_DISPLAY + '?session=' + 
 					window.escape(g.cgi.param('session')) + '&barcode=' + window.escape(barcode);
 

@@ -141,6 +141,7 @@ circ.checkin.prototype = {
 		var obj = this;
 		try {
 			var barcode = obj.controller.view.checkin_barcode_entry_textbox.value;
+			if (!barcode) return;
 			var backdate = obj.controller.view.checkin_effective_date_textbox.value;
 			JSAN.use('circ.util');
 			var checkin = circ.util.checkin_via_barcode(

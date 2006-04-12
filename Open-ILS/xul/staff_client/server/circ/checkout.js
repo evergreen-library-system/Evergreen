@@ -110,6 +110,7 @@ circ.checkout.prototype = {
 											if (r != 0) return;
 										}
 									} else {
+										r = obj.error.yns_alert('Error with non-cataloged checkout.  ' + r + ' is not a valid number.','Non-cataloged Circulation','Ok',null,null,'Check here to confirm this message.');
 										return;
 									}
 								} else {
@@ -163,8 +164,9 @@ circ.checkout.prototype = {
 	},
 
 	'checkout' : function(params) {
-		if (!params) params = {};
 		var obj = this;
+
+		if (! (params.barcode||params.noncat)) return;
 
 		/**********************************************************************************************************************/
 		/* This does the actual checkout/renewal, but is called after a permit test further below */
