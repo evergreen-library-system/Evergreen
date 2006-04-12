@@ -337,6 +337,39 @@ main.menu.prototype = {
 		obj.controller.view.panels = obj.controller.view.tabbox.lastChild;
 
 		obj.new_tab(null,{'focus':true},null);
+
+		obj.init_tab_focus_handlers();
+	},
+
+	'init_tab_focus_handlers' : function() {
+		var obj = this;
+		for (var i = 0; i < obj.controller.view.tabs.childNodes.length; i++) {
+			var tab = obj.controller.view.tabs.childNodes[i];
+			var panel = obj.controller.view.panels.childNodes[i];
+			tab.addEventListener(
+				'command',
+				function(p) {
+					return function() {
+						try {
+								if (p
+									&& p.firstChild 
+									&& p.firstChild.nodeName == 'iframe' 
+									&& p.firstChild.contentWindow 
+								) {
+									if (typeof p.firstChild.contentWindow.default_focus == 'function') {
+										p.firstChild.contentWindow.default_focus();
+									} else {
+										//p.firstChild.contentWindow.firstChild.focus();
+									}
+								}
+						} catch(E) {
+							obj.error.sdump('D_ERROR','init_tab_focus_handler: ' + js2JSON(E));
+						}
+					}
+				}(panel),
+				false
+			);
+		}
 	},
 
 	'close_tab' : function () {
