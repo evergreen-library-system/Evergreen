@@ -62,7 +62,7 @@
 		<groupbox flex="1">
 			<caption label="Offline Sessions"/>
 			<hbox>
-				<button id="refresh" label="Refresh" />
+				<button id="refresh" label="Refresh" accesskey="R"/>
 				<button id="create" label="Create" disabled="true"/>
 				<button id="execute" label="Process" disabled="true"/>
 				<spacer flex="1"/>
