@@ -62,7 +62,8 @@ sub retrieve_notes {
 
 	my $notes = simplereq(
 		'open-ils.actor',
-		'open-ils.actor.note.retrieve.all', $authtoken, $patronid );
+		'open-ils.actor.note.retrieve.all', $authtoken, 
+		{ patronid => $patronid} );
 
 	oils_event_die($notes);
 

@@ -1819,17 +1819,37 @@ __PACKAGE__->register_method (
 	api_name		=> 'open-ils.actor.note.retrieve.all',
 	signature	=> q/
 		Returns a list of notes for a given user
-		Requestor must have VIEW_USER permission
+		Requestor must have VIEW_USER permission if pub==false and
 		@param authtoken The login session key
-		@param patronid The patron id
+		@param args Hash of params including
+			patronid : the patron's id
+			pub : true if retrieving only public notes
 	/
 );
 
 sub fetch_patron_note {
-	my( $self, $conn, $authtoken, $patronid ) = @_;
-	my( $reqr, $patron, $evt ) = 
-		$U->checkses_requestor($authtoken, $patronid, 'VIEW_USER');
+	my( $self, $conn, $authtoken, $args ) = @_;
+	my $patronid = $$args{patronid};
+
+	my($reqr, $evt) = $U->checkses($authtoken);
+
+	my $patron;
+	($patron, $evt) = $U->fetch_user($patronid);
 	return $evt if $evt;
+
+	if($$args{pub}) {
+		if( $patronid ne $reqr->id ) {
+			$evt = $U->check_perms($reqr->id, $patron->home_ou, 'VIEW_USER');
+			return $evt if $evt;
+		}
+		return $U->storagereq(
+			'open-ils.storage.direct.actor.usr_note.search_where.atomic', 
+			{ usr => $patronid, pub => 't' } );
+	}
+
+	$evt = $U->check_perms($reqr->id, $patron->home_ou, 'VIEW_USER');
+	return $evt if $evt;
+
 	return $U->storagereq(
 		'open-ils.storage.direct.actor.usr_note.search.usr.atomic', $patronid );
 }
