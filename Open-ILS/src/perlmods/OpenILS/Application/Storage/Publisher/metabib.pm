@@ -900,7 +900,7 @@ sub postfilter_search_class_fts {
 	my $sort_dir = $args{sort_dir} || 'DESC';
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
-	my $limit = $args{limit};
+	my $limit = $args{limit} || 10;
 	my $offset = $args{offset} || 0;
 
 	my $outer_limit = 1000;
@@ -1258,7 +1258,7 @@ sub postfilter_search_multi_class_fts {
 	my $sort_dir = $args{sort_dir} || 'DESC';
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
-	my $limit = $args{limit};
+	my $limit = $args{limit} || 10;;
 	my $offset = $args{offset} || 0;
 
 	if (!$ou) {
@@ -1417,7 +1417,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
-	$relevance = "SUM( ($relevance) * ($bonuses) )";
+	$relevance = "AVG( ($relevance) * ($bonuses) )";
 
 
 	my $rank = $relevance;
@@ -1497,7 +1497,7 @@ sub postfilter_search_multi_class_fts {
 	if ($self->api_name !~ /staff/o) {
 		$select = <<"		SQL";
 
-			SELECT	DISTINCT s.*
+			SELECT	s.*
 			  FROM	($select) s
 			  WHERE	EXISTS (
 			  	SELECT	1
@@ -1534,7 +1534,7 @@ sub postfilter_search_multi_class_fts {
 	} else {
 		$select = <<"		SQL";
 
-			SELECT	DISTINCT s.*
+			SELECT	s.*
 			  FROM	($select) s
 			  WHERE	EXISTS (
 			  	SELECT	1
@@ -1643,7 +1643,7 @@ sub biblio_search_multi_class_fts {
 	my $sort_dir = $args{sort_dir} || 'DESC';
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
-	my $limit = $args{limit};
+	my $limit = $args{limit} || 10;
 	my $offset = $args{offset} || 0;
 
 	if (!$ou) {
@@ -1806,7 +1806,7 @@ sub biblio_search_multi_class_fts {
 
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
-	$relevance = "SUM( ($relevance) * ($bonuses) )";
+	$relevance = "AVG( ($relevance) * ($bonuses) )";
 
 
 	my $rank = $relevance;
@@ -1883,7 +1883,7 @@ sub biblio_search_multi_class_fts {
 	if ($self->api_name !~ /staff/o) {
 		$select = <<"		SQL";
 
-			SELECT	DISTINCT s.*
+			SELECT	s.*
 			  FROM	($select) s
 			  WHERE	EXISTS (
 			  	SELECT	1
@@ -1908,7 +1908,7 @@ sub biblio_search_multi_class_fts {
 	} else {
 		$select = <<"		SQL";
 
-			SELECT	DISTINCT s.*
+			SELECT	s.*
 			  FROM	($select) s
 			  WHERE	EXISTS (
 			  	SELECT	1
