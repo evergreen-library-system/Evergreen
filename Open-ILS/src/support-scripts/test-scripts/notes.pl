@@ -25,6 +25,7 @@ sub go {
 	oils_login($username, $password);
 	create_note();
 	retrieve_notes();
+	delete_notes();
 	oils_logout();
 }
 go();
@@ -34,22 +35,27 @@ go();
 #-----------------------------------------------------------------------------
 # 
 #-----------------------------------------------------------------------------
+my @created_ids;
 sub create_note {
 
-	my $note = Fieldmapper::actor::usr_note->new;
+	for(0..9) {
+		my $note = Fieldmapper::actor::usr_note->new;
+	
+		$note->usr($patronid);
+		$note->title($title);
+		$note->value($text);
+		$note->pub(0);
+	
+		my $id = simplereq(
+			'open-ils.actor', 
+			'open-ils.actor.note.create', $authtoken, $note );
+	
+		oils_event_die($id);
+		printl("created new note $id");
+		push(@created_ids, $id);
+	}
 
-	$note->usr($patronid);
-	$note->title($title);
-	$note->value($text);
-	$note->pub(0);
-
-	my $id = simplereq(
-		'open-ils.actor', 
-		'open-ils.actor.note.create', $authtoken, $note );
-
-	oils_event_die($id);
-	printl("created new note...");
-	return $id;
+	return 1;
 }
 
 sub retrieve_notes {
@@ -68,3 +74,14 @@ sub retrieve_notes {
 		printl("\t". $n->value);
 	}
 }
+
+sub delete_notes {
+	for(@created_ids) {
+		my $stat = simplereq(
+			'open-ils.actor', 
+			'open-ils.actor.note.delete', $authtoken, $_);
+		oils_event_die($stat);
+		printl("deleted note $_");
+	}
+}
+
