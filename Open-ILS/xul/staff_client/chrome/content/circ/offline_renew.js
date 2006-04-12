@@ -124,7 +124,7 @@ function append_to_list(checkout_type,count) {
 				var rows = g.list.dump_with_keys();
 				for (var i = 0; i < rows.length; i++) {
 					if (rows[i].barcode == i_barcode) {
-						alert('This barcode has already been scanned.');
+						g.error.yns_alert('This barcode has already been scanned.','Duplicate Scan','Ok',null,null,'Check here to confirm this message');
 						return;
 					}
 				}

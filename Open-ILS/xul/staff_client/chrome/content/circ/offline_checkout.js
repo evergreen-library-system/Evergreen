@@ -132,7 +132,7 @@ function append_to_list(checkout_type,count) {
 
 		var p_barcode = $('p_barcode').value;
 		if (! p_barcode) {
-			alert('Please enter a patron barcode first.');
+			g.error.yns_alert('Please enter a patron barcode first.','Required Field','Ok',null,null,'Check here to confirm this message');
 			return;
 		} else {
 
@@ -151,7 +151,7 @@ function append_to_list(checkout_type,count) {
 				var rows = g.list.dump_with_keys();
 				for (var i = 0; i < rows.length; i++) {
 					if (rows[i].barcode == i_barcode) {
-						alert('This barcode has already been scanned.');
+						g.error.yns_alert('This barcode has already been scanned.','Duplicate Scan','Ok',null,null,'Check here to confirm this message');
 						return;
 					}
 				}
@@ -160,7 +160,7 @@ function append_to_list(checkout_type,count) {
 			break;
 			case 'noncat' :
 				count = parseInt(count); if (! (count>0) ) {
-					alert("Please try again and enter a valid count.");
+					g.error.yns_alert("Please try again and enter a valid count.",'Required Value','Ok',null,null,'Check here to confirm this message');
 					return;
 				}
 				my.barcode = $('noncat_type_menu').getAttribute('label');

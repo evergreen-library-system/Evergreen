@@ -404,7 +404,7 @@ admin.offline_manage_xacts.prototype = {
 		var obj = this;
 		JSAN.use('util.file');
 		var pending = new util.file('pending_xacts');
-		if (pending._file.exists()) { alert('Something bad happened.  New offline transactions were accumulated during our attempted upload.  Tell your system admin that the file involved is ' + obj.transition_filename); return; }
+		if (pending._file.exists()) { obj.error.yns_alert('Something bad happened.  New offline transactions were accumulated during our attempted upload.  Tell your system admin that the file involved is ' + obj.transition_filename,'Scary Error','Ok',null,null,'Check here to confirm this message'); return; }
 		var file = new util.file(obj.transition_filename);
 		file._file.moveTo(null,'pending_xacts');
 	},
