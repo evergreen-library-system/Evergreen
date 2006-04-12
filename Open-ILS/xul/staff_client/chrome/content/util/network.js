@@ -53,6 +53,7 @@ util.network.prototype = {
 							if (o_params) {
 								req = obj.rerequest_on_override(app,name,params,req,o_params);
 							}
+							req = obj.check_for_offline(req);
 							f(req);
 						} catch(E) {
 							alert(E);
@@ -68,6 +69,7 @@ util.network.prototype = {
 				if (o_params) {
 					request = obj.rerequest_on_override(app,name,params,request,o_params);
 				}
+				request = obj.check_for_offline(request);
 				var result = request.getResultObject();
 				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + js2JSON(result));
 				return request;
@@ -78,6 +80,18 @@ util.network.prototype = {
 				alert('permission exception: ' + js2JSON(E));
 			}
 			throw(E);
+		}
+	},
+
+	'check_for_offline' : function (req) {
+		var result = req.getResultObject();
+		if (result != null) return req;
+		var test = new RemoteRequest( 'open-ils.actor','opensrf.system.time');
+		test.send(true);
+		if (test.getResultObject() == null) { /* opensrf/network problem */
+			return { 'getResultObject' : function() { return { 'ilsevent' : -1, 'textcode' : 'Network/Server Problem' }; } };
+		} else { /* legitimate null result */
+			return req; 
 		}
 	},
 
