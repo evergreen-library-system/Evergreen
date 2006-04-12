@@ -489,8 +489,7 @@ patron.summary.prototype = {
 									// are we moving toward a payload here?
 
 								} else {
-									var error = robj.ilsevent + ' : ' 
-										+ obj.error.get_ilsevent( robj.ilsevent );
+									var error = obj.error.get_ilsevent( robj.ilsevent );
 									throw(error);
 								}
 							} else {
@@ -503,7 +502,7 @@ patron.summary.prototype = {
 						}
 
 					} catch(E) {
-						var error = ('patron.summary.retrieve : ' + js2JSON(E));
+						var error = js2JSON(E);
 						obj.error.sdump('D_ERROR',error);
 						throw(error);
 					}
@@ -565,8 +564,7 @@ patron.summary.prototype = {
 					var card = new ac(); card.barcode( obj.barcode );
 					obj.patron.card( card );
 					obj.patron.family_name( 'Could not retrieve patron' );
-				var error = ('FIXME: Need better alert and error handling.\nProblem with barcode: ' 
-					+ obj.barcode + '\n' + E);
+				var error = ('Problem with barcode: ' + obj.barcode + '\n' + E);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.on_error == 'function') {
 					obj.error.sdump('D_PATRON_SUMMARY',
@@ -580,7 +578,7 @@ patron.summary.prototype = {
 			this.exec.chain( chain );
 
 		} catch(E) {
-			var error = ('patron.summary.retrieve : ' + js2JSON(E));
+			var error = (js2JSON(E));
 			this.error.sdump('D_ERROR',error);
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_error == 'function') {
 				window.xulG.on_error(error);

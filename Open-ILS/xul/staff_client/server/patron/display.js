@@ -300,9 +300,9 @@ patron.display.prototype = {
 						}
 					},
 					'on_error' : function(E) {
-						location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?session='
-							+ window.escape(obj.session);
-						alert(E);
+						location.href = urls.XUL_PATRON_BARCODE_ENTRY 
+							+ '?session=' + window.escape(obj.session)
+							+ '&error=' + window.escape(E);
 					}
 				}
 			);
