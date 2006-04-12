@@ -26,7 +26,9 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
@@ -57,6 +59,22 @@
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
+		}
+
+		function default_focus() {
+			setTimeout(
+				function() {
+					try {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						var node = g.patron.right_deck.node.selectedPanel;
+						if (node && node.contentWindow && typeof node.contentWindow.default_focus == 'function') {
+							node.contentWindow.default_focus();
+						}
+					} catch(E) {
+						g.error.sdump('D_ERROR','default_focus(): ' + js2JSON(E));
+					}
+				}, 0
+			);
 		}
 
 	]]>

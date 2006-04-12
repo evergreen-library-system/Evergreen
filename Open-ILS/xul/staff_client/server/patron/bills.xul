@@ -62,6 +62,13 @@
 			}
 		}
 
+		function default_focus() {
+			try {
+				document.getElementById('bill_payment_amount').focus();
+			} catch(E) {
+				g.error.sdump('D_ERROR','bill default_focus: ' + js2JSON(E));
+			}
+		}
 	]]>
 	</script>
 

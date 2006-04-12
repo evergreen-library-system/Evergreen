@@ -59,6 +59,14 @@
 			}
 		}
 
+		function default_focus() {
+			try {
+				document.getElementById('checkout_barcode_entry_textbox').focus();
+			} catch(E) {
+				g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E));
+			}
+		}
+
 	]]>
 	</script>
 
