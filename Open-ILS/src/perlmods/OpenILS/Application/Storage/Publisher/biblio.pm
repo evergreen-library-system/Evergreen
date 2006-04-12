@@ -335,25 +335,22 @@ sub record_copy_status_count {
 			AND cl.opac_visible IS TRUE
 			AND cp.opac_visible IS TRUE
 			AND cs.holdable
-		  GROUP BY 1,2,3
-		  ORDER BY 1,2,3;
+		  GROUP BY 1,2,3;
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
 	$sth->execute("$rec");
 
-	my ($ou,$cn) = (0,'');
 	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {
-		if ($ou and $ou ne $$row[0]) {
-			my $i = 0;
-			$client->respond( [$ou, $cn, {%data}] );
-			%data = ();
-		}
-		($ou,$cn) = ($$row[0],$$row[1]);
-		$data{$$row[2]} = $$row[3];
+		$data{$$row[0]}{$$row[1]}{$$row[2]} += $$row[3];
 	}
-	return [$ou, $cn, {%data}] if ($ou);
+	
+	for my $ou (keys %data) {
+		for my $cn (keys %{$data{$ou}}) {
+			$client->respond( [$ou, $cn, $data{$ou}{$cn}] );
+		}
+	}
 	return undef;
 }
 __PACKAGE__->register_method(
