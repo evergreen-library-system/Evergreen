@@ -80,11 +80,13 @@ util.list.prototype = {
 				false
 			);
 		}
+		/*
 		this.node.addEventListener(
 			'mousemove',
 			function(ev) { obj.detect_visible(); },
 			false
 		);
+		*/
 		this.node.addEventListener(
 			'keypress',
 			function(ev) { obj.detect_visible(); },
@@ -100,6 +102,7 @@ util.list.prototype = {
 			function(ev) { obj.detect_visible(); },
 			false
 		);
+		obj.detect_visible_polling();	
 	},
 
 	'_init_listbox' : function (params) {
@@ -195,10 +198,12 @@ util.list.prototype = {
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
 			treerow.setAttribute('retrieve_id',params.retrieve_id);
+			var treecell = document.createElement('treecell'); treecell.setAttribute('label','Retrieving...');
+			treerow.appendChild(treecell);
 			treerow.addEventListener(
 				'flesh',
 				function() {
-					dump('fleshing = ' + params.retrieve_id + '\n');
+					//dump('fleshing = ' + params.retrieve_id + '\n');
 					var row;
 
 					params.row_node = treeitem;
@@ -232,10 +237,12 @@ util.list.prototype = {
 			);
 			*/
 		} else {
+			var treecell = document.createElement('treecell'); treecell.setAttribute('label','Retrieving...');
+			treerow.appendChild(treecell);
 			treerow.addEventListener(
 				'flesh',
 				function() {
-					dump('fleshing anon\n');
+					//dump('fleshing anon\n');
 					obj._map_row_to_treecell(params,treerow);
 					treerow.setAttribute('retrieved','true');
 				},
@@ -259,12 +266,12 @@ util.list.prototype = {
 	'detect_visible' : function() {
 		try {
 		var obj = this;
-		dump('detect_visible  obj.node = ' + obj.node + '\n');
+		//dump('detect_visible  obj.node = ' + obj.node + '\n');
 		/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
 		var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
 		var curpos = scrollbar.getAttribute('curpos');
 		var maxpos = scrollbar.getAttribute('maxpos');
-		dump('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
+		//dump('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
 		if ((curpos != obj.curpos) || (maxpos != obj.maxpos)) {
 			obj.auto_retrieve();
 			obj.curpos = curpos; obj.maxpos = maxpos;
@@ -272,20 +279,30 @@ util.list.prototype = {
 		} catch(E) { alert(E); }
 	},
 
+	'detect_visible_polling' : function() {
+		try {
+			var obj = this;
+			obj.detect_visible();
+			setTimeout(function() { obj.detect_visible_polling(); },1);
+		} catch(E) {
+			alert(E);
+		}
+	},
+
 	'auto_retrieve' : function () {
 		try {
-		dump('auto_retrieve\n');
+		//dump('auto_retrieve\n');
 		var obj = this;
 		var startpos = obj.node.treeBoxObject.getFirstVisibleRow();
 		var endpos = obj.node.treeBoxObject.getLastVisibleRow();
 		if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
-		dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
-		for (var i = startpos; i < endpos; i++) {
+		//dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
+		for (var i = startpos; i < endpos + 2; i++) {
 			try {
-				dump('trying index ' + i + '\n');
+				//dump('trying index ' + i + '\n');
 				var item = obj.node.contentView.getItemAtIndex(i).firstChild;
 				if (item && item.getAttribute('retrieved') != 'true' ) {
-					dump('\tgot an item = ' + item + ' = ' + item.nodeName + '\n');
+					//dump('\tgot an unfleshed item = ' + item + ' = ' + item.nodeName + '\n');
 					util.widgets.dispatch('flesh',item);
 				}
 			} catch(E) {
@@ -348,6 +365,7 @@ util.list.prototype = {
 
 	'_map_row_to_treecell' : function(params,treerow) {
 		var s = '';
+		util.widgets.remove_children(treerow);
 		for (var i = 0; i < this.columns.length; i++) {
 			var treecell = document.createElement('treecell');
 			var label = '';
