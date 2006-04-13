@@ -207,8 +207,9 @@ util.error.prototype = {
 	'standard_network_error_alert' : function(msg) {
 		var obj = this;
 		if (!msg) msg = '';
+		var alert_msg = 'We experienced a network/server communication failure.  Please check your internet connection and try this action again.  Repeated failures may require attention from your local IT staff or your friendly Evergreen developers.\n\n' + msg.substr(0,100);
 		obj.yns_alert(
-			'We experienced a network/server communication failure.  Please check your internet connection and try this action again.  Repeated failures may require attention from your local IT staff or your friendly Evergreen developers.\n\n' + msg,
+			alert_msg,	
 			'Communication Failure',
 			'Ok', null, null, 'Check here to confirm this message'
 		);
@@ -217,8 +218,10 @@ util.error.prototype = {
 	'standard_unexpected_error_alert' : function(msg,E) {
 		var obj = this;
 		if (!msg) msg = '';
+		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + js2JSON(E).substr(0,100);
+		obj.sdump('D_ERROR',msg + ' : ' + js2JSON(E));
 		obj.yns_alert(
-			'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + js2JSON(E),
+			alert_msg,	
 			'Unhandled Error',
 			'Ok', null, null, 'Check here to confirm this message'
 		);

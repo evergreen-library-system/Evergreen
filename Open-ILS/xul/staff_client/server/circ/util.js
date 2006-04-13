@@ -526,7 +526,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		obj.error.standard_unexpected_error_alert('Check In Failed',E);
+		error.standard_unexpected_error_alert('Check In Failed',E);
 		return null;
 	}
 }
@@ -555,7 +555,7 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		obj.error.standard_unexpected_error_alert('Hold Capture Failed',E);
+		error.standard_unexpected_error_alert('Hold Capture Failed',E);
 		return null;
 	}
 }
