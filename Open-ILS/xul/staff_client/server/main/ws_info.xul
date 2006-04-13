@@ -82,8 +82,7 @@
 
 			render_menulist();
 
-			g.ml.focus();
-			
+			document.getElementById('wsname').focus();
 		}
 
 		function render_menulist() {
@@ -136,10 +135,12 @@
 	</script>
 
 	<vbox flex="1">
-		<hbox id="placeholder"/>
 		<hbox>
 			<label value="Name" control="wsname"/>
 			<textbox id="wsname" />
+		</hbox>
+		<hbox>
+			<hbox id="placeholder"/>
 			<button label="Register" accesskey="R" oncommand="register();"/>
 		</hbox>
 	</vbox>
