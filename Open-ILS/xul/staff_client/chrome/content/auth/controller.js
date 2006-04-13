@@ -77,7 +77,12 @@ auth.controller.prototype = {
 							obj.close()
 						}
 					],
-
+					'test_server' : [
+						['command'],
+						function() {
+							obj.test_server( obj.controller.view.server_prompt.value );
+						}
+					],
 					'server_prompt' : [
 						['keypress'],
 						handle_keypress

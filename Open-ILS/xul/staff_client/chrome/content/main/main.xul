@@ -16,10 +16,10 @@
 <!-- OVERLAYS -->
 <!--
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+	width="700" height="580"
 -->
 
 <window id="main_win" 
-	width="400" height="550"
 	onload="try { main_init(); } catch(E) { alert(E); }"
 	onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
 	title="&staff.auth.title;"
@@ -66,6 +66,7 @@
 		<command id="cmd_standalone_import"/>
 		<command id="cmd_js_console"/>
 		<command id="cmd_clear_cache"/>
+		<command id="cmd_test_server"/>
 	</commandset>
 
 	<keyset id="auth_keys">
@@ -78,10 +79,14 @@
 	<!-- CONTENT -->
 	<deck id="main_deck" flex="1">
 	<groupbox id="main_groupbox" flex="1" style="overflow: auto;">
-		<caption id="main_caption" label="Startup"/>
+		<caption id="main_caption" label="Startup / Shutdown"/>
 		<label id="version_label"/>
 		<label value=" "/>
 
+<grid flex="1">
+	<columns><column flex="0"/><column flex="1"/></columns>
+	<rows>
+<row>
 		<groupbox flex="1">
 			<caption label="Server"/>
 			<grid>
@@ -89,7 +94,10 @@
 				<rows>
 					<row>
 						<label value="Hostname" control="server_prompt" accesskey="H"/>
-						<textbox id="server_prompt" value="dev.gapines.org"/>
+						<vbox>
+							<textbox id="server_prompt" value="dev.gapines.org"/>
+							<button label="Re-Test Server" id="retest" accesskey="R" command="cmd_test_server"/>
+						</vbox>
 					</row>
 					<row>
 						<label value="Status"/>
@@ -104,47 +112,53 @@
 		</groupbox>
 
 		<groupbox flex="1">
+			<caption label="Workstation"/>
+			<deck id="ws_deck">
+			</deck>
+		</groupbox>
+
+</row>
+<row>
+		<groupbox flex="1">
 			<caption label="Authentication"/>
 			<grid>
 				<columns> <column /> <column /> </columns>
 				<rows>
-					<row>
-						<label value="Username" control="name_prompt" accesskey="U"/>
-						<textbox id="name_prompt" value=""/>
+					<row> <label value="Username" control="name_prompt" accesskey="U"/> <textbox id="name_prompt" value=""/>
 					</row>
 					<row>
 						<label value="Password" control="password_prompt" accesskey="P"/>
 						<textbox id="password_prompt" value="" type="password"/>
 					</row>
 					<row>
-						<button id="submit_button" label="Login" accesskey="L" command="cmd_login" />
-						<button label="&staff.auth.logoff_prompt;" accesskey="f" command="cmd_logoff" />
+						<spacer />
+						<hbox>
+							<button id="submit_button" label="Login" accesskey="L" command="cmd_login" />
+							<button label="&staff.auth.logoff_prompt;" accesskey="f" command="cmd_logoff" />
+						</hbox>
 					</row>
 				</rows>
 			</grid>
 		</groupbox>
 
 		<groupbox flex="1">
-			<caption label="Workstation"/>
-			<deck id="ws_deck">
-			</deck>
-		</groupbox>
-
-		<groupbox flex="1">
 			<caption label="Offline Use"/>
-			<button label="Standalone Interface" accesskey="S" command="cmd_standalone"/>
-			<button label="Export transactions to another staff client" command="cmd_standalone_export"/>
-			<button label="Import transactions from another staff client" command="cmd_standalone_import"/>
+			<hbox><button label="Standalone Interface" accesskey="S" command="cmd_standalone"/></hbox>
+			<hbox><button label="Export Transactions" command="cmd_standalone_export"/></hbox>
+			<hbox><button label="Import Transactions" command="cmd_standalone_import"/></hbox>
 		</groupbox>
-
-		<groupbox id="debug_gb" flex="1" hidden="true" orient="horizontal">
-			<caption label="Debug Options"/>
-			<button label="Javascript Console" accesskey="J" command="cmd_js_console"/>
-			<button label="Clear Cache" accesskey="C" command="cmd_clear_cache"/>
-		</groupbox>
-
-		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
+</row>
+</rows>
+</grid>
 		<progressmeter id="progress_bar" mode="normal" value="0"/>
+		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
+		<groupbox id="debug_gb" flex="1" hidden="true">
+			<caption label="Debug Options"/>
+			<hbox>
+				<button label="Javascript Console" accesskey="J" command="cmd_js_console"/>
+				<button label="Clear Cache" accesskey="C" command="cmd_clear_cache"/>
+			</hbox>
+		</groupbox>
 
 	</groupbox>
 	</deck>

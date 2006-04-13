@@ -236,7 +236,7 @@ function main_init() {
 
 		var x = document.getElementById('version_label');
 		var version = '/xul/server/'.split(/\//)[2];
-		if (version = 'server') {
+		if (version == 'server') {
 			version = 'versionless debug build';
 			document.getElementById('debug_gb').hidden = false;
 		}
