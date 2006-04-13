@@ -256,7 +256,7 @@ util.list.prototype = {
 		}
 		this.error.sdump('D_LIST',s);
 
-		setTimeout( function() { obj.detect_visible(); }, 0 );
+		//setTimeout( function() { obj.detect_visible(); }, 0 );
 
 		return treeitem;
 	},
