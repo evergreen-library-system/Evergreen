@@ -444,8 +444,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			msg += 'HOLD ADDRESSS STREET 2\n';
 			msg += 'HOLD ADDRESSS CITY, STATE, ZIP\n';
 			msg += '\nBarcode: ' + check.payload.copy.barcode() + '\n';
-			msg += 'Title: ' + check.payload.record.title() + '\n';
-			msg += 'Author: ' + check.payload.record.author() + '\n';
+			msg += 'Title: ' + (check.payload.record ? check.payload.record.title() : check.payload.copy.dummy_title() ) + '\n';
+			msg += 'Author: ' + (check.payload.record ? check.payload.record.author() :check.payload.copy.dummy_author()  ) + '\n';
 			if (check.payload.hold) {
 				JSAN.use('patron.util');
 				var au_obj = patron.util.retrieve_au_via_id( session, check.payload.hold.usr() );
