@@ -207,6 +207,41 @@ sub retrieve_holds {
 	return $holds;
 }
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds_by_pickup_lib",
+	api_name	=> "open-ils.circ.holds.retrieve_by_pickup_lib",
+	notes		=> <<NOTE);
+Retrieves all the holds, with hold transits attached, for the specified
+pickup_ou id. 
+NOTE
+
+
+sub retrieve_holds_by_pickup_lib {
+	my($self, $client, $login_session, $ou_id) = @_;
+
+	#FIXME -- put an appropriate permission check here
+	#my( $user, $target, $evt ) = $apputils->checkses_requestor(
+	#	$login_session, $user_id, 'VIEW_HOLD' );
+	#return $evt if $evt;
+
+	my $holds = $apputils->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.action.hold_request.search.atomic",
+		"pickup_lib" =>  $ou_id , fulfillment_time => undef, { order_by => "request_time" });
+	
+	for my $hold ( @$holds ) {
+		$hold->transit(
+			$apputils->simplereq(
+				'open-ils.storage',
+				"open-ils.storage.direct.action.hold_transit_copy.search.hold.atomic" => $hold->id,
+				{ order_by => 'id desc', limit => 1 }
+			)->[0]
+		);
+	}
+
+	return $holds;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "cancel_hold",
