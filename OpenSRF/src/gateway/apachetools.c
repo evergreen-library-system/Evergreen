@@ -14,7 +14,6 @@ string_array* apacheParseParms(request_rec* r) {
 	char* key						= NULL;	/* query item name */
 	char* val						= NULL;	/* query item value */
 
-
 	/* gather the post args and append them to the url query string */
 	if( !strcmp(r->method,"POST") ) {
 
@@ -29,6 +28,14 @@ string_array* apacheParseParms(request_rec* r) {
 			while(ap_get_client_block(r, body, 1024)) {
 				buffer_add( buffer, body );
 				memset(body,0,1025);
+
+				if(buffer->n_used > APACHE_TOOLS_MAX_POST_SIZE) {
+					osrfLogError(OSRF_LOG_MARK, "gateway received POST larger "
+						"than %d bytes. dropping reqeust", APACHE_TOOLS_MAX_POST_SIZE);
+					buffer_free(buffer);
+					arg = NULL;
+				}
+
 			}
 	
 			if(arg && arg[0]) {
@@ -53,6 +60,7 @@ string_array* apacheParseParms(request_rec* r) {
 	}
 
 
+	int sanity = 0;
 	while( arg && (val = ap_getword(p, (const char**) &arg, '&'))) {
 
 		key = ap_getword(r->pool, (const char**) &val, '=');
@@ -65,10 +73,20 @@ string_array* apacheParseParms(request_rec* r) {
 		string_array_add(sarray, key);
 		string_array_add(sarray, val);
 
+		if( sanity++ > 1000 ) {
+			osrfLogError(OSRF_LOG_MARK, 
+				"Parsing URL params failed sanity check: 1000 iterations");
+			string_array_destroy(sarray);
+			return NULL;
+		}
+
 	}
 
-	return sarray;
+	if(sarray)
+		osrfLogDebug(OSRF_LOG_MARK, 
+			"Apache tools parsed %d params key/values", sarray->size / 2 );
 
+	return sarray;
 }
 
 
@@ -77,6 +95,7 @@ string_array* apacheGetParamKeys(string_array* params) {
 	if(params == NULL) return NULL;	
 	string_array* sarray	= init_string_array(12); 
 	int i;
+	osrfLogDebug(OSRF_LOG_MARK, "Fetching URL param keys");
 	for( i = 0; i < params->size; i++ ) 
 		string_array_add(sarray, string_array_get_string(params, i++));	
 	return sarray;
@@ -87,6 +106,7 @@ string_array* apacheGetParamValues(string_array* params, char* key) {
 	if(params == NULL || key == NULL) return NULL;	
 	string_array* sarray	= init_string_array(12); 
 
+	osrfLogDebug(OSRF_LOG_MARK, "Fetching URL values for key %s", key);
 	int i;
 	for( i = 0; i < params->size; i++ ) {
 		char* nkey = string_array_get_string(params, i++);	
@@ -101,6 +121,7 @@ char* apacheGetFirstParamValue(string_array* params, char* key) {
 	if(params == NULL || key == NULL) return NULL;	
 
 	int i;
+	osrfLogDebug(OSRF_LOG_MARK, "Fetching first URL value for key %s", key);
 	for( i = 0; i < params->size; i++ ) {
 		char* nkey = string_array_get_string(params, i++);	
 		if(key && !strcmp(nkey, key)) 

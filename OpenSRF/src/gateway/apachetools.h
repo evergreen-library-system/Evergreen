@@ -10,10 +10,12 @@
 
 #include "opensrf/string_array.h"
 #include "opensrf/utils.h"
-#include "opensrf/utils.h"
+#include "opensrf/log.h"
 
 #ifndef APACHE_TOOLS_H
 #define APACHE_TOOLS_H
+
+#define APACHE_TOOLS_MAX_POST_SIZE 10485760 /* 10 MB */
 
 
 /* parses apache URL params (GET and POST).  
