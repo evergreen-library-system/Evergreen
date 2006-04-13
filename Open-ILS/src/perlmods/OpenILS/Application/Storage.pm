@@ -12,6 +12,7 @@ use OpenILS::Application::Storage::FTS;
 
 # the easy way to get to the logger...
 my $log = "OpenSRF::Utils::Logger";
+our $WRITE = 0;
 
 sub DESTROY {};
 
@@ -79,6 +80,8 @@ sub begin_xaction {
 	my $self = shift;
 	my $client = shift;
 
+	local $WRITE = 1;
+
 	$log->debug(" XACT --> 'BEGIN'ing transaction for session ".$client->session->session_id,DEBUG);
 	try {
 		OpenILS::Application::Storage::CDBI->db_Main->begin_work;
@@ -125,6 +128,8 @@ sub commit_xaction {
 	my $self = shift;
 	my $client = shift;
 
+	local $WRITE = 1;
+
 	try {
 		OpenILS::Application::Storage::CDBI->db_Main->commit;
 		$client->session->session_data( xact_id => '' );
@@ -160,6 +165,8 @@ __PACKAGE__->register_method(
 sub rollback_xaction {
 	my $self = shift;
 	my $client = shift;
+
+	local $WRITE = 1;
 
 	$log->debug(" XACT --> 'ROLLBACK'ing transaction for session ".$client->session->session_id,DEBUG);
 	$client->session->session_data( xact_id => '' );

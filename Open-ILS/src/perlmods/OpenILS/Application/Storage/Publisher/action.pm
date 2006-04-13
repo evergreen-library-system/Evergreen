@@ -81,6 +81,8 @@ sub complete_reshelving {
 	my $client = shift;
 	my $window = shift;
 
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	throw OpenSRF::EX::InvalidArg ("I need an interval of more than 0 seconds!")
 		unless (interval_to_seconds( $window ));
 

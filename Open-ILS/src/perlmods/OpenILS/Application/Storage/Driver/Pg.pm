@@ -93,7 +93,7 @@
 
 	sub db_Main {
 		my $self = shift;
-		return $master_db if ($self->current_xact_session);
+		return $master_db if ($self->current_xact_session || $OpenILS::Application::Storage::WRITE);
 		return $master_db unless (@slave_dbs);
 		return ($master_db, @slave_dbs)[rand(scalar(@slave_dbs))];
 	}

@@ -23,6 +23,8 @@
 		my $self = shift;
 		my $client = shift;
 
+		local $OpenILS::Application::Storage::WRITE = 1;
+
 		if (my $old_xact = $pg->current_xact_session) {
 			if ($pg->current_xact_is_auto) {
 				$log->debug("Commiting old autocommit transaction with Open-ILS XACT-ID [$old_xact]", INFO);
@@ -98,6 +100,8 @@
 	sub pg_commit_xaction {
 		my $self = shift;
 
+		local $OpenILS::Application::Storage::WRITE = 1;
+
 		my $xact_id = $pg->current_xact_id;
 
 		my $success = 1;
@@ -136,6 +140,8 @@
 
 	sub pg_rollback_xaction {
 		my $self = shift;
+
+		local $OpenILS::Application::Storage::WRITE = 1;
 
 		my $xact_id = $pg->current_xact_id;
 
@@ -217,7 +223,9 @@
 		my $client = shift;
 		my @fm_nodes = @_;
 
-		return undef unless ($pg->current_xact_session);
+		local $OpenILS::Application::Storage::WRITE = 1;
+
+		#return undef unless ($pg->current_xact_session);
 
 		my $cdbi = $self->{cdbi};
 

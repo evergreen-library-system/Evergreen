@@ -237,6 +237,8 @@ sub create_node {
 	my $client = shift;
 	my $node = shift;
 
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	my $cdbi = $self->{cdbi};
 
 	my $success;
@@ -255,6 +257,8 @@ sub update_node {
 	my $client = shift;
 	my $node = shift;
 
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	my $cdbi = $self->{cdbi};
 
 	return $cdbi->update($node);
@@ -264,6 +268,8 @@ sub mass_delete {
 	my $self = shift;
 	my $client = shift;
 	my $search = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
 
 	my $where = 'WHERE ';
 
@@ -309,6 +315,8 @@ sub remote_update_node {
 	my $keys = shift;
 	my $vals = shift;
 
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	my $cdbi = $self->{cdbi};
 
 	my $success = 1;
@@ -326,6 +334,8 @@ sub merge_node {
 	my $keys = shift;
 	my $vals = shift;
 
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	my $cdbi = $self->{cdbi};
 
 	my $success = 1;
@@ -341,6 +351,8 @@ sub delete_node {
 	my $self = shift;
 	my $client = shift;
 	my $node = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
 
 	my $cdbi = $self->{cdbi};
 
@@ -379,67 +391,17 @@ sub batch_call {
 	return $insert_total;
 }
 
-OpenILS::Application::Storage::Publisher::actor->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load actor class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load actor class Publisher: $@");
+
+# --------------------- End of generic methods -----------------------
+
+
+for my $pkg ( qw/actor action asset biblio config metabib authority money permission container/ ) {
+	"OpenILS::Application::Storage::Publisher::$pkg"->use;
+	if ($@) {
+		$log->debug("ARG! Couldn't load $pkg class Publisher: $@", ERROR);
+		throw OpenSRF::EX::ERROR ("ARG! Couldn't load $pkg class Publisher: $@");
+	}
 }
-
-OpenILS::Application::Storage::Publisher::action->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load action class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load action class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::asset->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load asset class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load asset class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::biblio->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load biblio class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load biblio class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::config->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load config class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load config class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::metabib->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load metabib class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load metabib class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::authority->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load authority class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load authority class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::money->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load money class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load money class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::permission->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load permission class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load permission class Publisher: $@");
-}
-
-OpenILS::Application::Storage::Publisher::container->use;
-if ($@) {
-	$log->debug("ARG! Couldn't load container class Publisher: $@", ERROR);
-	throw OpenSRF::EX::ERROR ("ARG! Couldn't load container class Publisher: $@");
-}
-
-
 
 for my $fmclass ( (Fieldmapper->classes) ) {
 
