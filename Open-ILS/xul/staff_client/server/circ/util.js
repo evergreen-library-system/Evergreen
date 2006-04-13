@@ -220,7 +220,7 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.acp.barcode()'
+			'primary' : false, 'hidden' : true,  'render' : 'my.acp ? my.acp.barcode() : "No Copy"'
 		},
 		{
 			'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
@@ -268,11 +268,11 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.title()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.title() : "No Title?"'
 		},
 		{
 			'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.author()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.author() : "No Author?"'
 		},
 		{
 			'id' : 'edition', 'label' : 'Edition', 'flex' : 1,

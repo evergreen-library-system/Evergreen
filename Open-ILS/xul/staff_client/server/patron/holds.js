@@ -34,8 +34,8 @@ patron.holds.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_column' : circ.util.std_map_row_to_column(),
-                                'retrieve_row' : function(params) {
-                                        var row = params.row;
+				'retrieve_row' : function(params) {
+					var row = params.row;
 					try {
 						switch(row.my.ahr.hold_type()) {
 							case 'M' :
@@ -51,9 +51,9 @@ patron.holds.prototype = {
 									api.MODS_SLIM_RECORD_RETRIEVE.method,
 									[ row.my.ahr.target() ]
 								);
-								row.my.acp = obj.network.simple_request(
-									'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]
-								);
+								if (row.my.ahr.current_copy()) {
+									row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
+								}
 							break;
 						}
 					} catch(E) {
@@ -62,7 +62,7 @@ patron.holds.prototype = {
 					if (typeof params.on_retrieve == 'function') {
 						params.on_retrieve(row);
 					}
-                                        return row;
+					return row;
 				}
 			}
 		);
@@ -153,7 +153,7 @@ patron.holds.prototype = {
 
 		obj.list.clear();
 
-		JSAN.use('util.exec'); var exec = new util.exec();
+		JSAN.use('util.exec'); var exec = new util.exec(2);
 		var rows = [];
 		for (var i in obj.holds) {
 			rows.push( gen_list_append(obj.holds[i]) );
