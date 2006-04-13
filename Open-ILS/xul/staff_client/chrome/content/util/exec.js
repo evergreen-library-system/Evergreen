@@ -1,8 +1,10 @@
 dump('entering util/exec.js\n');
 
 if (typeof util == 'undefined') var util = {};
-util.exec = function() {
+util.exec = function(chunk_size) {
 	//JSAN.use('util.error'); this.error = new util.error();
+
+	this.chunk_size = chunk_size || 1;
 
 	return this;
 };
@@ -34,25 +36,31 @@ util.exec.prototype = {
 		if (args.length > 0) setTimeout(
 			function() {
 				try {
-					args[0]();
-					if (args.length > 1 ) obj.chain( args.slice(1) );
-				} catch(E) {
-					dump('util.exec.chain error: ' + js2JSON(E) + '\n');
-					var keep_going = false;
-					if (typeof obj.on_error == 'function') {
-						keep_going = obj.on_error(E);
-					}
-					if (keep_going) {
-						dump('chain not broken\n');
+					for (var i = 0; i < obj.chunk_size ; i++) {
 						try {
-							if (args.length > 1 ) obj.chain( args.slice(1) );
-
+							args[i]();
 						} catch(E) {
-							dump('another error: ' + js2JSON(E) + '\n');
+							dump('util.exec.chain error: ' + js2JSON(E) + '\n');
+							var keep_going = false;
+							if (typeof obj.on_error == 'function') {
+								keep_going = obj.on_error(E);
+							}
+							if (keep_going) {
+								dump('chain not broken\n');
+								try {
+									if (args.length > 1 ) obj.chain( args.slice(1) );
+
+								} catch(E) {
+									dump('another error: ' + js2JSON(E) + '\n');
+								}
+							} else {
+								dump('chain broken\n');
+							}
 						}
-					} else {
-						dump('chain broken\n');
 					}
+					if (args.length > obj.chunk_size ) obj.chain( args.slice(obj.chunk_size) );
+				} catch(E) {
+					alert(E);
 				}
 			}, 0
 		);

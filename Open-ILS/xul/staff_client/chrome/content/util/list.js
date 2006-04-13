@@ -198,8 +198,7 @@ util.list.prototype = {
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
 			treerow.setAttribute('retrieve_id',params.retrieve_id);
-			var treecell = document.createElement('treecell'); treecell.setAttribute('label','Retrieving...');
-			treerow.appendChild(treecell);
+			obj.put_retrieving_label(treerow);
 			treerow.addEventListener(
 				'flesh',
 				function() {
@@ -237,8 +236,7 @@ util.list.prototype = {
 			);
 			*/
 		} else {
-			var treecell = document.createElement('treecell'); treecell.setAttribute('label','Retrieving...');
-			treerow.appendChild(treecell);
+			obj.put_retrieving_label(treerow);
 			treerow.addEventListener(
 				'flesh',
 				function() {
@@ -261,6 +259,31 @@ util.list.prototype = {
 		setTimeout( function() { obj.detect_visible(); }, 0 );
 
 		return treeitem;
+	},
+
+	'put_retrieving_label' : function(treerow) {
+		var obj = this;
+		try {
+			/*
+			var cols_idx = 0;
+			dump('put_retrieving_label.  columns = ' + js2JSON(obj.columns) + '\n');
+			while( obj.columns[cols_idx] && obj.columns[cols_idx].hidden && obj.columns[cols_idx].hidden == 'true') {
+				dump('\t' + cols_idx);
+				var treecell = document.createElement('treecell');
+				treerow.appendChild(treecell);
+				cols_idx++;
+			}
+			*/
+			for (var i = 0; i < obj.columns.length; i++) {
+			var treecell = document.createElement('treecell'); treecell.setAttribute('label','Retrieving...');
+			treerow.appendChild(treecell);
+			}
+			/*
+			dump('\t' + cols_idx + '\n');
+			*/
+		} catch(E) {
+			alert(E);
+		}
 	},
 
 	'detect_visible' : function() {

@@ -136,7 +136,7 @@ patron.search_result.prototype = {
 			for (var i = 0; i < results.length; i++) {
 				funcs.push( gen_func(results[i]) );
 			}
-			JSAN.use('util.exec'); var exec = new util.exec();
+			JSAN.use('util.exec'); var exec = new util.exec(4);
 			exec.chain( funcs );
 
 		} catch(E) {
