@@ -404,8 +404,9 @@ sub generate_fines {
 	my $client = shift;
 	my $grace = shift;
 	my $circ = shift;
-	
-	
+
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	my @circs;
 	if ($circ) {
 		push @circs, action::circulation->search_where( { id => $circ, stop_fines => undef } );
@@ -524,6 +525,8 @@ sub new_hold_copy_targeter {
 	my $client = shift;
 	my $check_expire = shift;
 	my $one_hold = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
 
 	my $holds;
 
