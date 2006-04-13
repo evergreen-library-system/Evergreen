@@ -176,9 +176,9 @@ __PACKAGE__->register_method(
 	method	=> "retrieve_holds",
 	api_name	=> "open-ils.circ.holds.retrieve",
 	notes		=> <<NOTE);
-Retrieves all the holds for the specified user id.  The login session
-is the requestor and if the requestor is different from the user, then
-the requestor must have VIEW_HOLD permissions.
+Retrieves all the holds, with hold transits attached, for the specified
+user id.  The login session is the requestor and if the requestor is
+different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
 
@@ -189,10 +189,22 @@ sub retrieve_holds {
 		$login_session, $user_id, 'VIEW_HOLD' );
 	return $evt if $evt;
 
-	return $apputils->simplereq(
+	my $holds = $apputils->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.action.hold_request.search.atomic",
 		"usr" =>  $user_id , fulfillment_time => undef, { order_by => "request_time" });
+	
+	for my $hold ( @$holds ) {
+		$hold->transit(
+			$apputils->simplereq(
+				'open-ils.storage',
+				"open-ils.storage.direct.action.hold_transit_copy.search.hold.atomic" => $hold->id,
+				{ order_by => 'id desc', limit => 1 }
+			)->[0]
+		);
+	}
+
+	return $holds;
 }
 
 
@@ -490,14 +502,15 @@ sub hold_pull_list {
 	my( $reqr, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
 
+	my $org = $reqr->ws_ou || $reqr->home_ou;
 	# the perm locaiton shouldn't really matter here since holds
 	# will exist all over and VIEW_HOLDS should be universal
-	$evt = $U->check_perms($reqr->id, $reqr->home_ou, 'VIEW_HOLD');
+	$evt = $U->check_perms($reqr->id, $org, 'VIEW_HOLD');
 	return $evt if $evt;
 
 	return $U->storagereq(
 		'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
-		$reqr->home_ou, $limit, $offset ); # XXX change to workstation
+		$org, $limit, $offset ); # XXX change to workstation
 }
 
 __PACKAGE__->register_method (
@@ -550,6 +563,7 @@ sub create_hold_notify {
 	($patron, $evt) = $U->fetch_user($hold->usr);
 	return $evt if $evt;
 
+	# XXX perm depth probably doesn't matter here -- should always be consortium level
 	$evt = $U->check_perms($requestor->id, $patron->home_ou, 'CREATE_HOLD_NOTIFICATION');
 	return $evt if $evt;
 
