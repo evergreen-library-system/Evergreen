@@ -23,6 +23,8 @@ util.list.prototype = {
 
 	'init' : function (params) {
 
+		JSAN.use('util.widgets');
+
 		if (typeof params.map_row_to_column == 'function') this.map_row_to_column = params.map_row_to_column;
 		if (typeof params.retrieve_row == 'function') this.retrieve_row = params.retrieve_row;
 
@@ -40,6 +42,7 @@ util.list.prototype = {
 	},
 
 	'_init_tree' : function (params) {
+		var obj = this;
 		if (this.prebuilt) {
 		
 			this.treechildren = this.node.lastChild;	
@@ -77,6 +80,26 @@ util.list.prototype = {
 				false
 			);
 		}
+		this.node.addEventListener(
+			'mousemove',
+			function(ev) { obj.detect_visible(); },
+			false
+		);
+		this.node.addEventListener(
+			'keypress',
+			function(ev) { obj.detect_visible(); },
+			false
+		);
+		this.node.addEventListener(
+			'click',
+			function(ev) { obj.detect_visible(); },
+			false
+		);
+		window.addEventListener(
+			'resize',
+			function(ev) { obj.detect_visible(); },
+			false
+		);
 	},
 
 	'_init_listbox' : function (params) {
@@ -171,10 +194,11 @@ util.list.prototype = {
 
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
-			setTimeout(
+			treerow.setAttribute('retrieve_id',params.retrieve_id);
+			treerow.addEventListener(
+				'flesh',
 				function() {
-					treerow.setAttribute('retrieve_id',params.retrieve_id);
-					//FIXME//Make async and fire when row is visible in list
+					dump('fleshing = ' + params.retrieve_id + '\n');
 					var row;
 
 					params.row_node = treeitem;
@@ -195,14 +219,80 @@ util.list.prototype = {
 
 						}
 					}
+
+					treerow.setAttribute('retrieved','true');
+				},
+				false
+			);
+			/*
+			setTimeout(
+				function() {
+					util.widgets.dispatch('flesh',treerow);
 				}, 0
 			);
+			*/
 		} else {
-			this._map_row_to_treecell(params,treerow);
+			treerow.addEventListener(
+				'flesh',
+				function() {
+					dump('fleshing anon\n');
+					obj._map_row_to_treecell(params,treerow);
+					treerow.setAttribute('retrieved','true');
+				},
+				false
+			);
+			/*
+			setTimeout(
+				function() {
+					util.widgets.dispatch('flesh',treerow);
+				}, 0
+			);
+			*/
 		}
 		this.error.sdump('D_LIST',s);
 
+		setTimeout( function() { obj.detect_visible(); }, 0 );
+
 		return treeitem;
+	},
+
+	'detect_visible' : function() {
+		try {
+		var obj = this;
+		dump('detect_visible  obj.node = ' + obj.node + '\n');
+		/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
+		var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
+		var curpos = scrollbar.getAttribute('curpos');
+		var maxpos = scrollbar.getAttribute('maxpos');
+		dump('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
+		if ((curpos != obj.curpos) || (maxpos != obj.maxpos)) {
+			obj.auto_retrieve();
+			obj.curpos = curpos; obj.maxpos = maxpos;
+		}
+		} catch(E) { alert(E); }
+	},
+
+	'auto_retrieve' : function () {
+		try {
+		dump('auto_retrieve\n');
+		var obj = this;
+		var startpos = obj.node.treeBoxObject.getFirstVisibleRow();
+		var endpos = obj.node.treeBoxObject.getLastVisibleRow();
+		if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
+		dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
+		for (var i = startpos; i < endpos; i++) {
+			try {
+				dump('trying index ' + i + '\n');
+				var item = obj.node.contentView.getItemAtIndex(i).firstChild;
+				if (item && item.getAttribute('retrieved') != 'true' ) {
+					dump('\tgot an item = ' + item + ' = ' + item.nodeName + '\n');
+					util.widgets.dispatch('flesh',item);
+				}
+			} catch(E) {
+				//dump(i + ' : ' + E + '\n');
+			}
+		}
+		} catch(E) { alert(E); }
 	},
 
 	'_append_to_listbox' : function (params) {
