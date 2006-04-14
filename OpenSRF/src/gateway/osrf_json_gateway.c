@@ -234,6 +234,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 }
 
 
+#ifdef OSRF_GATEWAY_NASTY_DEBUG
 /* --------------------------------------------------------------------- */
 /* DEBUG HOOKS */
 static int osrf_dbg_pre_config(apr_pool_t *pconf, apr_pool_t *plog, apr_pool_t *ptemp){
@@ -300,6 +301,7 @@ static void osrf_dbg_insert_filter(request_rec *r) {
 	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: osrf_dbg_insert_filter hook");
 }
 /* --------------------------------------------------------------------- */
+#endif
 
 
 static void osrf_json_gateway_register_hooks (apr_pool_t *p) {

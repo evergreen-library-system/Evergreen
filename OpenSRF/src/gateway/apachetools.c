@@ -17,7 +17,11 @@ string_array* apacheParseParms(request_rec* r) {
 	/* gather the post args and append them to the url query string */
 	if( !strcmp(r->method,"POST") ) {
 
+		osrfLogDebug(OSRF_LOG_MARK, "gateway checking for post data..");
+
 		ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
+		
+		osrfLogDebug(OSRF_LOG_MARK, "gateway reading post data..");
 
 		if(ap_should_client_block(r)) {
 
@@ -25,18 +29,24 @@ string_array* apacheParseParms(request_rec* r) {
 			memset(body,0,1025);
 			buffer = buffer_init(1025);
 	
+			osrfLogDebug(OSRF_LOG_MARK, "gateway entering ap_get_client_block loop");
+
 			while(ap_get_client_block(r, body, 1024)) {
 				buffer_add( buffer, body );
 				memset(body,0,1025);
+
+				osrfLogDebug(OSRF_LOG_MARK, 
+					"gateway read %d bytes of data so far", buffer->n_used);
 
 				if(buffer->n_used > APACHE_TOOLS_MAX_POST_SIZE) {
 					osrfLogError(OSRF_LOG_MARK, "gateway received POST larger "
 						"than %d bytes. dropping reqeust", APACHE_TOOLS_MAX_POST_SIZE);
 					buffer_free(buffer);
-					arg = NULL;
+					return NULL;
 				}
-
 			}
+
+			osrfLogDebug(OSRF_LOG_MARK, "gateway done reading post data");
 	
 			if(arg && arg[0]) {
 
@@ -55,11 +65,14 @@ string_array* apacheParseParms(request_rec* r) {
 	} 
 
 
+	osrfLogDebug(OSRF_LOG_MARK, "gateway done mangling post data");
+
 	if( ! arg || !arg[0] ) { /* we received no request */
 		return NULL;
 	}
 
 
+	osrfLogDebug(OSRF_LOG_MARK, "parsing URL params from post/get request data: %s", arg);
 	int sanity = 0;
 	while( arg && (val = ap_getword(p, (const char**) &arg, '&'))) {
 
@@ -69,6 +82,8 @@ string_array* apacheParseParms(request_rec* r) {
 
 		ap_unescape_url((char*)key);
 		ap_unescape_url((char*)val);
+
+		osrfLogDebug(OSRF_LOG_MARK, "parsed URL params %s=%s", key, val);
 
 		string_array_add(sarray, key);
 		string_array_add(sarray, val);
