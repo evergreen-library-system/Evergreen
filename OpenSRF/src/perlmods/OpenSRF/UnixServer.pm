@@ -12,7 +12,11 @@ use OpenSRF::Utils::SettingsClient;
 use Time::HiRes qw(time);
 use JSON;
 use vars qw/@ISA $app/;
+use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK);
 use Carp;
+
+use IO::Socket::INET;
+use IO::Socket::UNIX;
 
 # XXX Need to add actual logging statements in the code
 my $logger = "OpenSRF::Utils::Logger";
@@ -84,9 +88,19 @@ sub process_request {
 		$logger->debug( "Error closing Unix socket: $!", ERROR );
 	}
 
-
 	my $app = $self->app();
 	$logger->transport( "UnixServer for $app received $data", INTERNAL );
+
+	# --------------------------------------------------------------
+	# Drop all data from the socket before coninuting to process
+	# --------------------------------------------------------------
+	my $ph = OpenSRF::Transport::PeerHandle->retrieve;
+	if(!$ph->flush_socket()) {
+		$logger->error("We received a request ".
+			"and we are no longer connected to the jabber network. ".
+			"We will go away and drop this request: $data");
+		exit;
+	}
 
 	my $app_session = OpenSRF::Transport->handler( $self->app(), $data );
 
@@ -141,8 +155,6 @@ sub process_request {
 	$app_session->kill_me if ($app_session);
 
 	$0 = $orig;
-
-		
 }
 
 
@@ -243,8 +255,8 @@ sub child_init_hook {
 
 	OpenSRF::Application->application_implementation->child_init
 		if (OpenSRF::Application->application_implementation->can('child_init'));
-	return OpenSRF::Transport::PeerHandle->retrieve;
 
+	return OpenSRF::Transport::PeerHandle->retrieve;
 }
 
 1;

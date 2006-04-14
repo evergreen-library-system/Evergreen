@@ -563,4 +563,35 @@ sub process {
 }
 
 
+# --------------------------------------------------------------
+# Sets the socket to O_NONBLOCK, reads all of the data off of
+# the socket, the restores the sockets flags
+# Returns 1 on success, 0 if the socket isn't connected
+# --------------------------------------------------------------
+sub flush_socket {
+
+	my $self = shift;
+	my $socket = $self->{_socket};
+
+	if( $socket and $socket->connected() ) {
+
+		my $buf;
+		my	$flags = fcntl($socket, F_GETFL, 0);
+
+		fcntl($socket, F_SETFL, $flags | O_NONBLOCK);
+		while( my $n = sysread( $socket, $buf, 8192 ) ) {
+			$logger->debug("flush_socket dropped $n bytes of data");
+		}
+		fcntl($socket, F_SETFL, $flags);
+
+		return 1;
+
+	} else {
+
+		return 0;
+	}
+}
+
+
+
 1;
