@@ -408,10 +408,7 @@ int socket_send_timeout( int sock_fd, const char* data, int usecs ) {
 	tv.tv_sec = secs;
 	tv.tv_usec = usecs;
 
-	osrfLogInfo(OSRF_LOG_MARK, "Socket waiting on select before send");
 	int ret = select( sock_fd + 1, NULL, &write_set, NULL, &tv);
-	osrfLogInfo(OSRF_LOG_MARK, "Socket done waiting");
-
 	if( ret > 0 ) return _socket_send( sock_fd, data, 0);
 
 	osrfLogError(OSRF_LOG_MARK, "socket_send_timeout(): "
