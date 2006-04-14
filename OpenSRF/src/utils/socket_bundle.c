@@ -364,30 +364,69 @@ void _socket_print_list(socket_manager* mgr) {
 
 /* sends the given data to the given socket */
 int socket_send(int sock_fd, const char* data) {
-	osrfLogInternal( OSRF_LOG_MARK,  "socket_bundle sending to %d data %s",
-		sock_fd, data);
+	return _socket_send( sock_fd, data, 0);
+}
+
+
+int _socket_send(int sock_fd, const char* data, int flags) {
 
 	signal(SIGPIPE, SIG_IGN); /* in case a unix socket was closed */
-	if( send( sock_fd, data, strlen(data), 0 ) < 0 ) {
-		osrfLogWarning( OSRF_LOG_MARK,  "tcp_server_send(): Error sending data" );
+
+	size_t r = send( sock_fd, data, strlen(data), flags );
+
+	if( r == -1 ) {
+		osrfLogWarning( OSRF_LOG_MARK, "tcp_server_send(): Error sending data with return %d", r );
+		osrfLogWarning( OSRF_LOG_MARK, "Last Sys Error: %s", strerror(errno));
 		return -1;
 	}
 
 	return 0;
 }
 
+
+int socket_send_nowait( int sock_fd, const char* data) {
+	return _socket_send( sock_fd, data, MSG_DONTWAIT);
+}
+
+
+/*
+ * Waits at most usecs microseconds for the send buffer of the given
+ * socket to accept new data.  This does not guarantee that the 
+ * socket will accept all the data we want to give it.
+ */
+int socket_send_timeout( int sock_fd, const char* data, int usecs ) {
+
+	fd_set write_set;
+	FD_ZERO( &write_set );
+	FD_SET( sock_fd, &write_set );
+
+	int mil = 1000000;
+	int secs = (int) usecs / mil;
+	usecs = usecs - (secs * mil);
+
+	struct timeval tv;
+	tv.tv_sec = secs;
+	tv.tv_usec = usecs;
+
+	osrfLogInfo(OSRF_LOG_MARK, "Socket waiting on select before send");
+	int ret = select( sock_fd + 1, NULL, &write_set, NULL, &tv);
+	osrfLogInfo(OSRF_LOG_MARK, "Socket done waiting");
+
+	if( ret > 0 ) return _socket_send( sock_fd, data, 0);
+
+	osrfLogError(OSRF_LOG_MARK, "socket_send_timeout(): "
+		"timed out on send for socket %d after %d secs, %d usecs", sock_fd, secs, usecs );
+
+	return -1;
+}
+
+
 /* disconnects the node with the given sock_fd and removes
 	it from the socket set */
 void socket_disconnect(socket_manager* mgr, int sock_fd) {
-
-	osrfLogDebug( OSRF_LOG_MARK, "Closing socket %d", sock_fd);
-
-	if( close( sock_fd ) == -1 ) 
-		osrfLogWarning( OSRF_LOG_MARK,  "socket_disconnect(): Error closing socket, removing anyway" );
-
-	if(mgr != NULL) 
-		socket_remove_node(mgr, sock_fd);
-	
+	osrfLogInternal( OSRF_LOG_MARK, "Closing socket %d", sock_fd);
+	close( sock_fd );
+	socket_remove_node(mgr, sock_fd);
 }
 
 

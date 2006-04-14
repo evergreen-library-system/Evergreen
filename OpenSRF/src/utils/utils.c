@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "utils.h"
 #include <errno.h>
 
+
 inline void* safe_malloc( int size ) {
 	void* ptr = (void*) malloc( size );
 	if( ptr == NULL ) {

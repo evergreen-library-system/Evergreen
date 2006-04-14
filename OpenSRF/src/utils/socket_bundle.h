@@ -97,6 +97,20 @@ void socket_remove_node(socket_manager*, int sock_fd);
 /* sends the given data to the given socket. returns 0 on success, -1 otherwise */
 int socket_send(int sock_fd, const char* data);
 
+/* utility method */
+int _socket_send(int sock_fd, const char* data, int flags);
+
+
+/* sends the given data to the given socket. 
+ * sets the send flag MSG_DONTWAIT which will allow the 
+ * process to continue even if the socket buffer is full
+ * returns 0 on success, -1 otherwise */
+int socket_send_nowait( int sock_fd, const char* data);
+
+/* waits at most usecs microseconds for the socket buffer to
+ * be available */
+int socket_send_timeout( int sock_fd, const char* data, int usecs );
+
 /* disconnects the node with the given sock_fd and removes
 	it from the socket set */
 void socket_disconnect(socket_manager*, int sock_fd);

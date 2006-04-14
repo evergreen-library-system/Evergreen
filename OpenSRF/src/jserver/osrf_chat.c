@@ -95,10 +95,9 @@ osrfChatServer* osrfNewChatServer( char* domain, char* secret, int s2sport ) {
 }
 
 void osrfChatCleanupClients( osrfChatServer* server ) {
-	if(server) {
-		osrfListFree(server->deadNodes);
-		server->deadNodes = osrfNewList();
-	}
+	if(!server) return;
+	osrfListFree(server->deadNodes);
+	server->deadNodes = osrfNewList();
 }
 
 
@@ -255,11 +254,9 @@ void osrfChatRemoveNode( osrfChatServer* server, osrfChatNode* node ) {
 
 int osrfChatSendRaw( osrfChatNode* node, char* msgXML ) {
 	if(!(node && msgXML)) return -1;
-	return socket_send( node->sockid, msgXML );
+	/* wait at most 3 second for this client to take our data */
+	return socket_send_timeout( node->sockid, msgXML, 3000000 ); 
 }
-
-
-
 
 void osrfChatNodeFinish( osrfChatServer* server, osrfChatNode* node ) {
 	if(!(server && node)) return;
@@ -281,14 +278,33 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 		osrfLogInfo( OSRF_LOG_MARK, "Sending message on local connection\nfrom: %s\nto: %s", fromAddr, toAddr );
 		osrfChatNode* tonode = osrfHashGet(cs->nodeHash, toAddr);
 		if(tonode) {
-			osrfChatSendRaw( tonode, msgXML );
+
+			/* if we can't send to the recipient (recipient is gone or too busy, 
+			 * we drop the recipient and inform the sender that the recipient
+			 * is no more */
+			if( osrfChatSendRaw( tonode, msgXML ) < 0 ) {
+
+				osrfChatRemoveNode( cs, tonode );
+				char* xml = va_list_to_string( OSRF_CHAT_NO_RECIPIENT, toAddr, fromAddr );
+
+				osrfLogError( OSRF_LOG_MARK, "Node failed to function. "
+						"Responding to caller with error: %s", toAddr);
+
+
+				if( osrfChatSendRaw( node, xml ) < 0 ) {
+					osrfLogError(OSRF_LOG_MARK, "Sending node is now gone..removing");
+					osrfChatRemoveNode( cs, node );
+				}
+				free(xml);
+			}
 
 		} else {
 
 			/* send an error message saying we don't have this connection */
 			osrfLogInfo( OSRF_LOG_MARK, "We have no connection for %s", toAddr);
 			char* xml = va_list_to_string( OSRF_CHAT_NO_RECIPIENT, toAddr, fromAddr );
-			osrfChatSendRaw( node, xml );
+			if( osrfChatSendRaw( node, xml ) < 0 ) 
+				osrfChatRemoveNode( cs, node );
 			free(xml);
 		}
 
@@ -298,7 +314,15 @@ int osrfChatSend( osrfChatServer* cs, osrfChatNode* node, char* toAddr, char* fr
 		if(tonode) {
 			if( tonode->state == OSRF_CHAT_STATE_CONNECTED ) {
 				osrfLogDebug( OSRF_LOG_MARK, "Routing message to server %s", dombuf);
-				osrfChatSendRaw( tonode, msgXML );
+
+				if( osrfChatSendRaw( tonode, msgXML ) < 0 ) {
+					osrfLogError( OSRF_LOG_MARK, "Node failed to function: %s", toAddr);
+					char* xml = va_list_to_string( OSRF_CHAT_NO_RECIPIENT, toAddr, fromAddr );
+					if( osrfChatSendRaw( node, xml ) < 0 ) 
+						osrfChatRemoveNode( cs, node );
+					free(xml);
+					osrfChatRemoveNode( cs, tonode );
+				}
 
 			} else {
 				osrfLogInfo( OSRF_LOG_MARK, "Received s2s message and we're still trying to connect...caching");

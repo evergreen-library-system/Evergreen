@@ -117,7 +117,6 @@ struct __osrfChatNodeStruct {
 	char* username;
 
 	char* authkey;		/* when doing any auth negotiation, this is the auth seed hash */
-
 	osrfList* msgs;	/* if we're a server node we may have a pool of messages waiting to be delivered */
 
 	xmlParserCtxtPtr parserCtx; 
@@ -127,11 +126,13 @@ struct __osrfChatNodeStruct {
 };
 typedef struct __osrfChatNodeStruct osrfChatNode;
 
+/*
 struct __osrfChatS2SMessageStruct {
 	char* toAddr;
 	char* msgXML;
 };
 typedef struct __osrfChatS2SMessageStruct osrfChatS2SMessage;
+*/
 
 struct __osrfChatServerStruct {
 	osrfHash* nodeHash; /* sometimes we need hash (remote id) lookup, sometimes we need socket id lookup */
