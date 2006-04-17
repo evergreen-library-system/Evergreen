@@ -971,6 +971,15 @@ sub update_patron_penalties {
 	);
 }
 
+sub fetch_bill {
+	my( $self, $billid ) = @_;
+	$logger->debug("Fetching billing $billid");
+	my $bill = $self->storagereq(
+		'open-ils.storage.direct.money.billing.retrieve', $billid );
+	my $evt = OpenILS::Event->new('BILLING_NOT_FOUND') unless $bill;
+	return($bill, $evt);
+}
+
 
 
 1;

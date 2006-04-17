@@ -1427,6 +1427,26 @@ sub _checkin_handle_backdate {
 }
 
 
+sub _find_patron_from_params {
+	my $params = shift;
+
+	my $patron;
+	my $copy;
+	my $circ;
+	my $evt;
+
+	if(my $barcode = $params->{barcode}) {
+		$logger->debug("circ finding user from params with barcode $barcode");
+		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
+		return (undef, undef, $evt) if $evt;
+		($circ, $evt) = $U->fetch_open_circulation($copy->id);
+		return (undef, undef, $evt) if $evt;
+		($patron, $evt) = $U->fetch_user($circ->usr);
+		return (undef, undef, $evt) if $evt;
+	}
+	return ($patron, $copy);
+}
+
 
 # ------------------------------------------------------------------------------
 
@@ -1452,9 +1472,15 @@ sub renew {
 	if( $params->{patron} ) {
 		( $patron, $evt ) = $U->fetch_user($params->{patron});
 		if($evt) { $__isrenewal = 0; return $evt; }
-	} else {
+
+	} elsif( $params->{patron_barcode} ) {
 		( $patron, $evt ) = $U->fetch_user_by_barcode($params->{patron_barcode});
 		if($evt) { $__isrenewal = 0; return $evt; }
+
+	} else {
+		($patron, $copy, $evt) = _find_patron_from_params($params);
+		return $evt if $evt;
+		$params->{copy} = $copy;
 	}
 
 	# verify our login session
@@ -1535,6 +1561,7 @@ sub renew {
 
 
 	# checkout the item again
+	$params->{patron} = $ctx->{patron}->id;
 	$evt = $self->checkout($client, $authtoken, $params );
 
 	$logger->activity("user ".$requestor->id." renewl of item ".

@@ -181,6 +181,9 @@
 	<event code='1524' textcode='CARD_NOT_FOUND'>
 		<desc> Requested copy note does not exist </desc>
 	</event>
+	<event code='1525' textcode='BILLING_NOT_FOUND'>
+		<desc> Requested copy note does not exist </desc>
+	</event>
 
 
 

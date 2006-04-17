@@ -31,7 +31,6 @@ use OpenSRF::Utils::Logger qw(:logger);
 
 sub initialize {
 	my $self = shift;
-	#OpenILS::Application::Circ::Rules->initialize();
 	OpenILS::Application::Circ::Circulate->initialize();
 }
 
@@ -220,6 +219,39 @@ sub set_circ_lost {
 	return 1;
 }
 
+
+__PACKAGE__->register_method (
+	method		=> 'set_circ_due_date',
+	api_name		=> 'open-ils.circ.circulation.due_date.update',
+	signature	=> q/
+		Updates the due_date on the given circ
+		@param authtoken
+		@param circid The id of the circ to update
+		@param date The timestamp of the new due date
+	/
+);
+
+sub set_circ_due_date {
+	my( $s, $c, $authtoken, $circid, $date ) = @_;
+	my ($circ, $evt) = $U->fetch_circulation($circid);
+	return $evt if $evt;
+
+	my $reqr;
+	($reqr, $evt) = $U->checkses_perms(
+		$authtoken, $circ->circ_lib, 'CIRC_OVERRIDE_DUE_DATE');
+	return $evt if $evt;
+
+	$date = clense_ISO8601($date);
+	$logger->activity("user ".$reqr->id." updating due_date on circ $circid: $date");
+
+	$circ->due_date($date);
+	my $stat = $U->storagereq(
+		'open-ils.storage.action.circulation.update', $circ);
+	return $U->DB_UPDATE_FAILED unless defined $stat;
+	return $stat;
+}
+
+
 __PACKAGE__->register_method(
 	method		=> "create_in_house_use",
 	api_name		=> 'open-ils.circ.in_house_use.create',
@@ -352,6 +384,7 @@ __PACKAGE__->register_method(
 	api_name		=> 'open-ils.circ.title_note.retrieve.all',
 	signature	=> q/@see open-ils.circ.copy_note.retrieve.all/);
 
+
 # NOTE: VIEW_COPY/VOLUME/TITLE_NOTES perms should always be global
 sub fetch_notes {
 	my( $self, $connection, $args ) = @_;
@@ -469,6 +502,7 @@ sub delete_copy_note {
 	return 1;
 }
 
+=head this method is really inefficient - get rid of me
 
 __PACKAGE__->register_method(
 	method		=> 'note_batch',
@@ -542,6 +576,8 @@ sub _note_batch {
 
 	return \%resp;
 }
+
+=cut
 
 
 

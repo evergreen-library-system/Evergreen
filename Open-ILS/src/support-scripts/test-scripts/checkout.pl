@@ -125,7 +125,8 @@ sub do_checkout {
 
 sub do_renew {
 	my( $patronid, $barcode ) = @_;
-	my $args = { patron => $patronid, barcode => $barcode };
+	#my $args = { patron => $patronid, barcode => $barcode };
+	my $args = { barcode => $barcode };
 	my $t = time();
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.renew', $authtoken, $args );

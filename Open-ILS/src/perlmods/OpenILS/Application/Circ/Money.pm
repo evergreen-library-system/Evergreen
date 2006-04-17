@@ -271,11 +271,46 @@ sub billing_items_create {
 	my $id = $session->request(
 		'open-ils.storage.direct.money.billing.create', $billing )->gather(1);
 
-	throw OpenSRF::EX ("Error creating new bill") unless defined $id;
+	return $U->DB_UPDATE_FAILED($billing) unless defined $id;
 
 	$apputils->commit_db_session($session);
 
 	return $id;
+}
+
+__PACKAGE__->register_method(
+	method		=>	'void_bill',
+	api_name		=> 'open-ils.circ.money.billing.void',
+	signature	=> q/
+		Voids a bill
+		@param authtoken Login session key
+		@param billid The id of the bill to void
+		@return 1 on success, Event on error
+	/
+);
+
+sub void_bill {
+	my( $s, $c, $authtoken, $billid ) = @_;
+
+	my $reqr;
+	my( $bill, $evt ) = $U->fetch_bill($billid);
+	return $evt if $evt;
+
+
+	($reqr, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
+	$evt = $U->check_perms($reqr->id, $reqr->ws_ou, 'VOID_BILLING');
+	return $evt if $evt;
+
+	$bill->voided('t');
+	$bill->voider($reqr->id);
+	$bill->void_time('now');
+
+	my $stat = $U->storagereq(
+		'open-ils.storage.direct.money.billing.update', $bill);
+	return $U->DB_UPDATE_FAILED($bill) unless defined $stat;
+
+	return 1;
 }
 
 
