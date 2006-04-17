@@ -243,9 +243,7 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_edit.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
-			removeCSSClass(obj.controller.view.patron_name,'NO_PENALTIES');
-			removeCSSClass(obj.controller.view.patron_name,'ONE_PENALTY');
-			removeCSSClass(obj.controller.view.patron_name,'MULTIPLE_PENALTIES');
+			document.documentElement.setAttribute('class','');
 			var frame = obj.left_deck.set_iframe(
 				urls.XUL_PATRON_SUMMARY
 				+'?session=' + window.escape(obj.session)
@@ -326,9 +324,7 @@ patron.display.prototype = {
 									obj.controller.view.cmd_search_form.setAttribute('disabled','false');
 									obj.retrieve_ids = list;
 									obj.controller.view.patron_name.setAttribute('value','Retrieving...');
-									removeCSSClass(obj.controller.view.patron_name,'NO_PENALTIES');
-									removeCSSClass(obj.controller.view.patron_name,'ONE_PENALTY');
-									removeCSSClass(obj.controller.view.patron_name,'MULTIPLE_PENALTIES');
+									document.documentElement.setAttribute('class','');
 									setTimeout(
 										function() {
 											var frame = obj.left_deck.set_iframe(
@@ -393,9 +389,7 @@ patron.display.prototype = {
 		obj.controller.view.patron_name.setAttribute(
 			'value','Retrieving...'
 		);
-		removeCSSClass(obj.controller.view.patron_name,'NO_PENALTIES');
-		removeCSSClass(obj.controller.view.patron_name,'ONE_PENALTY');
-		removeCSSClass(obj.controller.view.patron_name,'MULTIPLE_PENALTIES');
+		document.documentElement.setAttribute('class','');
 		try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
 		try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
 	},
