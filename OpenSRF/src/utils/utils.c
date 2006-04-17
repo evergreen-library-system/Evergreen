@@ -179,6 +179,9 @@ int buffer_add(growing_buffer* gb, char* data) {
 	if(!(gb && data)) return 0;
 
 	int data_len = strlen( data );
+
+	if(data_len == 0) return 0;
+
 	int total_len = data_len + gb->n_used;
 
 	if( total_len >= gb->size ) {
