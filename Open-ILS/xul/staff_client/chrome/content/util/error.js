@@ -268,6 +268,37 @@ util.error.prototype = {
 		}
 		return rv;
 	},
+
+	'print_tabs' : function(t) {
+		var r = '';
+		for (var j = 0; j < t; j++ ) { r = r + "\t"; }
+		return r;
+	},
+
+	'pretty_print' : function(s) {
+		var r = ''; var t = 0;
+		for (var i in s) {
+			if (s[i] == '{') {
+				r = r + "\n" + this.print_tabs(t) + s[i]; t++;
+				r = r + "\n" + this.print_tabs(t);
+			} else if (s[i] == '[') {
+				r = r + "\n" + this.print_tabs(t) + s[i]; t++;
+				r = r + "\n" + this.print_tabs(t);
+			} else if (s[i] == '}') {
+				t--; r = r + "\n" + this.print_tabs(t) + s[i];
+				r = r + "\n" + this.print_tabs(t);
+			} else if (s[i] == ']') {
+				t--; r = r + "\n" + this.print_tabs(t) + s[i];
+				r = r + "\n" + this.print_tabs(t);
+			} else if (s[i] == ',') {
+				r = r + s[i];
+				r = r + "\n" + this.print_tabs(t);
+			} else {
+				r = r + s[i];
+			}
+		}
+		return r;
+	},
 }
 
 dump('exiting util/error.js\n');

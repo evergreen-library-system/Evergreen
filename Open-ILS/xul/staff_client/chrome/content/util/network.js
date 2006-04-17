@@ -34,7 +34,7 @@ util.network.prototype = {
 		var obj = this;
 		try {
 			var sparams = js2JSON(params);
-			obj.error.sdump('D_SES','request '+app+' '+name+' '+sparams.slice(1,sparams.length-1)+
+			obj.error.sdump('D_SES','request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
 			var request = new RemoteRequest( app, name );
 			for(var index in params) {
@@ -47,7 +47,7 @@ util.network.prototype = {
 						try {
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
-								+ js2JSON(req.getResultObject()));
+								+ obj.error.pretty_print(js2JSON(req.getResultObject())));
 							req = obj.rerequest_on_session_timeout(app,name,params,req);
 							req = obj.rerequest_on_perm_failure(app,name,params,req);
 							if (o_params) {
@@ -71,7 +71,7 @@ util.network.prototype = {
 				}
 				request = obj.check_for_offline(request);
 				var result = request.getResultObject();
-				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + js2JSON(result));
+				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + obj.error.pretty_print(js2JSON(result)));
 				return request;
 			}
 
