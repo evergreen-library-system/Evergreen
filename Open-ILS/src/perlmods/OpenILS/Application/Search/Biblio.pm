@@ -760,9 +760,10 @@ __PACKAGE__->register_method(
 
 sub copy_count_summary {
 	my( $self, $client, $rid ) = @_;
-	my $method = "open-ils.storage.biblio.record_entry.status_copy_count.atomic";
-	return $apputils->simple_scalar_request( "open-ils.storage", $method, $rid );
+	return $U->storagereq(
+		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid );
 }
+
 
 
 =head
