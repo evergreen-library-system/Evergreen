@@ -33,19 +33,19 @@ string_array* apacheParseParms(request_rec* r) {
 
 			long bread;
 			while( (bread = ap_get_client_block(r, body, 1024)) ) {
+
+				if(bread == -1) {
+					osrfLogInfo(OSRF_LOG_MARK, "ap_get_client_block(): returned error, exiting POST reader");
+					break;
+				}
+
 				buffer_add( buffer, body );
 				memset(body,0,1025);
 
 				osrfLogDebug(OSRF_LOG_MARK, 
 					"gateway read %d bytes: %d bytes of data so far", bread, buffer->n_used);
 
-				/* this seems unnecessary since ap_get_client_block is supposed
-				 * to return 0 when no data is read, but somehow we are getting
-				 * here with 0 bytes of data in the buffer */
-				if(buffer->n_used == 0)  {
-					osrfLogInfo(OSRF_LOG_MARK, "buffer->n_used == 0 but we're in the read loop...");
-					break;
-				}
+				if(buffer->n_used == 0) break;
 
 				if(buffer->n_used > APACHE_TOOLS_MAX_POST_SIZE) {
 					osrfLogError(OSRF_LOG_MARK, "gateway received POST larger "
