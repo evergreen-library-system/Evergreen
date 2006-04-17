@@ -209,6 +209,8 @@ patron.search_form.prototype = {
 		);
 
 		obj.controller.render();
+
+		document.getElementById('family_name').focus();
 	},
 
 	'on_submit' : function(q) {
