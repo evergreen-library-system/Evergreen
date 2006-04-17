@@ -1,6 +1,9 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
+*|textarea:focus { background-color: #DDFFDD; }
+*|input:focus { background-color: #DDFFDD; }
+
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
