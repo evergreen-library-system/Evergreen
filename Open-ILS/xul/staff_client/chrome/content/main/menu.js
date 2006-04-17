@@ -374,6 +374,8 @@ main.menu.prototype = {
 
 	'close_tab' : function () {
 		var idx = this.controller.view.tabs.selectedIndex;
+		var tab = this.controller.view.tabs.childNodes[idx];
+		tab.setAttribute('label','Tab ' + (idx+1));
 		if (idx == 0) {
 			try {
 				this.controller.view.tabs.advanceSelectedTab(+1);
