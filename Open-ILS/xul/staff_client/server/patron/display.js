@@ -208,21 +208,7 @@ patron.display.prototype = {
 									obj.patron.family_name() + ', ' + obj.patron.first_given_name() + ' ' +
 									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
 								);
-								removeCSSClass(e,'NO_PENALTIES');
-								removeCSSClass(e,'ONE_PENALTY');
-								removeCSSClass(e,'MULTIPLE_PENALTIES');
-								addCSSClass(e,'patron_name');
-								switch(obj.patron.standing_penalties().length) {
-									case 0:
-										addCSSClass(e,'NO_PENALTIES');
-									break;
-									case 1: 
-										addCSSClass(e,'ONE_PENALTY');
-									break;
-									default:
-										addCSSClass(e,'MULTIPLE_PENALTIES');
-									break;
-								}
+								JSAN.use('patron.util'); patron.util.set_penalty_css(obj.patron);
 							};
 						}
 					],

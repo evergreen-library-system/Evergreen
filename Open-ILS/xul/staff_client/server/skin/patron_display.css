@@ -1,13 +1,15 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
+.hideme { display: none; }
+
 hbox#PatronNotNavBar { border-top: solid thin black; }
 deck#patron_deck { border-left: solid thin black; }
 .patronNameLarge { font-size: large; font-family: bold; }
 
-.NO_PENALTIES { background-color: lime; }
-.ONE_PENALTY { background-color: orange; }
-.MULTIPLE_PENALTIES { background-color: red; }
+.NO_PENALTIES .patronNameLarge { background-color: lime; }
+.ONE_PENALTY .patronNameLarge { background-color: fuchsia; }
+.MULTIPLE_PENALTIES .patronNameLarge { background-color: red; }
 
 .TEST label.bill { color: red; }
 .TEST label.bill.label { text-decoration: underline; }
@@ -32,10 +34,20 @@ deck#patron_deck { border-left: solid thin black; }
 .TEST label.holds_ready.label { text-decoration: underline; }
 .TEST label.holds_ready.value { }
 
-.PATRON_AGE_LT_18 #PatronSummaryContact_groupbox { border: solid thick green; }
+.PATRON_AGE_LT_18 .dob { text-decoration: underline; color: purple; }
+.PATRON_AGE_LT_18 label.juvenille_indicator { display: inline; text-decoration: underline; color: purple; }
 
-.PATRON_HAS_ALERT .patronNameLarge, .PATRON_HAS_ALERT #PatronSummaryStatus_groupbox { background-color: yellow; }
-.PATRON_INACTIVE .patronNameLarge, .PATRON_INACTIVE #PatronSummaryStatus_groupbox { background-color: darkgray; }
-.PATRON_EXPIRED .patronNameLarge, .PATRON_EXPIRED #PatronSummaryStatus_groupbox { background-color: orange; }
-.PATRON_BARRED .patronNameLarge, .PATRON_BARRED #PatronSummaryStatus_groupbox { background-color: red; }
+.PATRON_HAS_ALERT .patronNameLarge, 
+.PATRON_HAS_ALERT groupbox.alert { background-color: yellow; }
+.PATRON_HAS_ALERT label.alert_indicator { display: inline; text-decoration: underline; color: olive }
+
+.PATRON_INACTIVE .patronNameLarge { background-color: gray; }
+.PATRON_INACTIVE label.inactive_indicator { display: inline; text-decoration: underline; color: gray; }
+
+.PATRON_EXPIRED .patronNameLarge { background-color: fuchsia; }
+.PATRON_EXPIRED label.expired_indicator { display: inline; text-decoration: underline; color: fuchsia; }
+
+.PATRON_BARRED .patronNameLarge { background-color: red; }
+.PATRON_BARRED label.barred_indicator { display: inline; text-decoration: underline; color: red; }
+
 

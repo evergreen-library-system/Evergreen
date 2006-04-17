@@ -12,8 +12,15 @@
 <box id="patron_display_main" flex="1" orient="vertical">
 <vbox id="pdm2" flex="1">
 	<hbox id="pdm2hb1">
-		<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" 
-			value="No Patron Selected" flex="1"/>
+		<hbox>
+			<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" 
+				value="No Patron Selected" flex="1"/>
+			<label class="hideme barred_indicator" value="(Barred)"/>
+			<label class="hideme expired_indicator" value="(Expired)"/>
+			<label class="hideme inactive_indicator" value="(In-Active)"/>
+			<label class="hideme juvenille_indicator" value="(Juvenille)"/>
+			<label class="hideme alert_indicator" value="(Alert)"/>
+		</hbox>
 		<deck id="PatronNavBar" flex="1" class="my_overflow"/>
 	</hbox>
 	<hbox id="PatronNotNavBar" flex="1" class="my_bg">
