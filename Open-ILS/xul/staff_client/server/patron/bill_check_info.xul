@@ -22,7 +22,6 @@
 <window id="patron_bill" title="Check Info"
 	orient="vertical" style="overflow: auto"
 	onload="try{info_init();}catch(E){alert(E);}"
-	onunload="try{info_finish();}catch(E){alert(E);}"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -44,13 +43,16 @@
 			g.error.sdump('D_TRACE','my_init() for patron_display.xul');
 			g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
 			g.OpenILS.data.init({'via':'stash'});
-			g.payment_blob = {};
+			g.payment_blob = { 'cancelled' : true };
+			g.OpenILS.data.temp = js2JSON( g.payment_blob );
+			g.OpenILS.data.stash('temp');
 
 			document.getElementById('check_number').focus();
 		}
 
 		function info_finish() {
 			/* FIXME -- need unique temp space name */
+			delete( g.payment_blob.cancelled );
 			g.OpenILS.data.temp = js2JSON( g.payment_blob );
 			g.OpenILS.data.stash('temp');
 		}
@@ -60,7 +62,7 @@
 
 
 	<groupbox>
-		<caption label="Credit Card Info"/>
+		<caption label="Check Info"/>
 		<grid>
 			<columns> <column flex="0" /> <column flex="0" /> </columns>
 			<rows>
@@ -76,8 +78,8 @@
 		</grid>
 		<hbox>
 			<spacer flex="1"/>
-			<button label="Cancel" oncommand="g.payment_blob.cancelled = true; window.close()" accesskey="C"/>
-			<button label="Submit this Info" oncommand="window.close();" accesskey="S"/>
+			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
+			<button label="Submit this Info" oncommand="info_finish(); window.close();" accesskey="S"/>
 		</hbox>
 	</groupbox>
 
