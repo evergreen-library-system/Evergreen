@@ -256,7 +256,7 @@ util.list.prototype = {
 		}
 		this.error.sdump('D_LIST',s);
 
-		//setTimeout( function() { obj.detect_visible(); }, 0 );
+		setTimeout( function() { obj.detect_visible(); }, 0 );
 
 		return treeitem;
 	},
@@ -288,25 +288,27 @@ util.list.prototype = {
 
 	'detect_visible' : function() {
 		try {
-		var obj = this;
-		//dump('detect_visible  obj.node = ' + obj.node + '\n');
-		/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
-		var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
-		var curpos = scrollbar.getAttribute('curpos');
-		var maxpos = scrollbar.getAttribute('maxpos');
-		//dump('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
-		if ((curpos != obj.curpos) || (maxpos != obj.maxpos)) {
-			obj.auto_retrieve();
-			obj.curpos = curpos; obj.maxpos = maxpos;
-		}
+			var obj = this;
+			//dump('detect_visible  obj.node = ' + obj.node + '\n');
+			/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
+			var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
+			var curpos = scrollbar.getAttribute('curpos');
+			var maxpos = scrollbar.getAttribute('maxpos');
+			//alert('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
+			if ((curpos != obj.curpos) || (maxpos != obj.maxpos)) {
+				if ( obj.auto_retrieve() > 0 ) {
+					obj.curpos = curpos; obj.maxpos = maxpos;
+				}
+			}
 		} catch(E) { alert(E); }
 	},
 
 	'detect_visible_polling' : function() {
 		try {
+			//alert('detect_visible_polling');
 			var obj = this;
 			obj.detect_visible();
-			setTimeout(function() { obj.detect_visible_polling(); },1);
+			setTimeout(function() { try { obj.detect_visible_polling(); } catch(E) { alert(E); } },1);
 		} catch(E) {
 			alert(E);
 		}
@@ -314,24 +316,25 @@ util.list.prototype = {
 
 	'auto_retrieve' : function () {
 		try {
-		//dump('auto_retrieve\n');
-		var obj = this;
-		var startpos = obj.node.treeBoxObject.getFirstVisibleRow();
-		var endpos = obj.node.treeBoxObject.getLastVisibleRow();
-		if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
-		//dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
-		for (var i = startpos; i < endpos + 2; i++) {
-			try {
-				//dump('trying index ' + i + '\n');
-				var item = obj.node.contentView.getItemAtIndex(i).firstChild;
-				if (item && item.getAttribute('retrieved') != 'true' ) {
-					//dump('\tgot an unfleshed item = ' + item + ' = ' + item.nodeName + '\n');
-					util.widgets.dispatch('flesh',item);
+				//alert('auto_retrieve\n');
+				var obj = this; var count = 0;
+				var startpos = obj.node.treeBoxObject.getFirstVisibleRow();
+				var endpos = obj.node.treeBoxObject.getLastVisibleRow();
+				if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
+				//dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
+				for (var i = startpos; i < endpos + 2; i++) {
+					try {
+						//dump('trying index ' + i + '\n');
+						var item = obj.node.contentView.getItemAtIndex(i).firstChild;
+						if (item && item.getAttribute('retrieved') != 'true' ) {
+							//dump('\tgot an unfleshed item = ' + item + ' = ' + item.nodeName + '\n');
+							util.widgets.dispatch('flesh',item); count++;
+						}
+					} catch(E) {
+						//dump(i + ' : ' + E + '\n');
+					}
 				}
-			} catch(E) {
-				//dump(i + ' : ' + E + '\n');
-			}
-		}
+				return count;
 		} catch(E) { alert(E); }
 	},
 
