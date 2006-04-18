@@ -52,7 +52,7 @@ util.date.db_date2Date = function (date) {
 	var h  = date.substr(11,2);
 	var mi = date.substr(14,2);
 	var s  = date.substr(17,2);
-	return new Date(y,mo,d,h,mi,s);
+	return new Date(y,mo-1,d,h,mi,s);
 }
 
 util.date.formatted_date = function (date,format) {
