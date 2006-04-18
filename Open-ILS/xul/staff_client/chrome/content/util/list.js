@@ -99,7 +99,7 @@ util.list.prototype = {
 		);
 		window.addEventListener(
 			'resize',
-			function(ev) { obj.detect_visible(); },
+			function(ev) { obj.auto_retrieve(); },
 			false
 		);
 		obj.detect_visible_polling();	
@@ -256,7 +256,7 @@ util.list.prototype = {
 		}
 		this.error.sdump('D_LIST',s);
 
-		setTimeout( function() { obj.detect_visible(); }, 0 );
+		setTimeout( function() { obj.auto_retrieve(); }, 0 );
 
 		return treeitem;
 	},
