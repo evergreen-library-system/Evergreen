@@ -47,7 +47,7 @@
 				g.holds.init( 
 					{ 
 						'patron_id' : g.cgi.param('patron_id'), 
-						'session' : g.cgi.param('session') 
+						'session' : g.cgi.param('session'),
 					} 
 				);
 				window.refresh = function(p) { g.holds.retrieve(p); }

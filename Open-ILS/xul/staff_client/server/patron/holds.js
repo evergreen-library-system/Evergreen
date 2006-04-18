@@ -129,12 +129,15 @@ patron.holds.prototype = {
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
 		} else {
-			obj.holds = obj.network.request(
-				api.FM_AHR_RETRIEVE.app,
-				api.FM_AHR_RETRIEVE.method,
-				[ obj.session, obj.patron_id ]
-			);
-				
+			var method; var id;
+			if (obj.patron_id) {
+				method = 'FM_AHR_RETRIEVE'; 
+				id = obj.patron_id; 
+			} else {
+				method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
+				id = obj.OpenILS.data.list.au[0].ws_ou(); 
+			}
+			obj.holds = obj.network.simple_request( method, [ obj.session, id ]);
 		}
 
 		function gen_list_append(hold) {
