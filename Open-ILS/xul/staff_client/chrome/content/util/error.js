@@ -43,7 +43,7 @@ util.error.prototype = {
 		'D_CLAM' : false, 'D_PAGED_TREE' : false, 'D_GRID_LIST' : false, 'D_HTML_TABLE' : false,
 		'D_TAB' : false, 'D_LIST' : false,
 
-		'D_AUTH' : true, 'D_OPAC' : true, 'D_CAT' : true,
+		'D_AUTH' : true, 'D_OPAC' : true, 'D_CAT' : false,
 
 		'D_PATRON_SEARCH' : false, 'D_PATRON_SEARCH_FORM' : false, 'D_PATRON_SEARCH_RESULTS' : false,
 
