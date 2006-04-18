@@ -107,15 +107,17 @@ cat.copy_buckets.prototype = {
 						function(e) {
 							return function() {
 								JSAN.use('util.widgets'); JSAN.use('util.functional');
-								var items = util.functional.map_list(
-									obj.network.simple_request(
-										'BUCKET_RETRIEVE_VIA_USER',
-										[ obj.session, obj.data.list.au[0].id() ]
-									).copy,
-									function(o) {
-										obj.bucket_id_name_map[ o.id() ] = o.name();
-										return [ o.name(), o.id() ];
-									}
+								var items = [ ['Choose a bucket...',''] ].concat(
+									util.functional.map_list(
+										obj.network.simple_request(
+											'BUCKET_RETRIEVE_VIA_USER',
+											[ obj.session, obj.data.list.au[0].id() ]
+										).copy,
+										function(o) {
+											obj.bucket_id_name_map[ o.id() ] = o.name();
+											return [ o.name(), o.id() ];
+										}
+									)
 								);
 								g.error.sdump('D_TRACE','items = ' + js2JSON(items));
 								util.widgets.remove_children( e );
@@ -128,6 +130,7 @@ cat.copy_buckets.prototype = {
 
 								function change_bucket(ev) {
 									var bucket_id = ev.target.value;
+									if (!bucket_id) return;
 									var bucket = obj.network.simple_request(
 										'BUCKET_FLESH',
 										[ obj.session, 'copy', bucket_id ]
@@ -143,15 +146,12 @@ cat.copy_buckets.prototype = {
 									}
 								}
 
-								ml.addEventListener( 'command', change_bucket , false);
+								ml.addEventListener( 'change_bucket', change_bucket , false);
+								ml.addEventListener( 'command', function() {
+									JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
+								}, false);
 								obj.controller.view.bucket_menulist = ml;
-								change_bucket( 
-									{ 'target' : { 
-										'value' : ml.firstChild.firstChild.getAttribute('value') 
-										} 
-									} 
-								);
-								JSAN.use('util.widgets'); util.widgets.dispatch('command',ml);
+								JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
 							};
 						},
 					],
@@ -279,6 +279,13 @@ cat.copy_buckets.prototype = {
 									if (typeof robj == 'object') throw robj;
 
 									obj.controller.render('copy_buckets_menulist_placeholder');
+									obj.controller.view.bucket_menulist.value = robj;
+									setTimeout(
+										function() {
+											JSAN.use('util.widgets'); 
+											util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+										}, 0
+									);
 								}
 							} catch(E) {
 								alert( js2JSON(E) );
