@@ -69,6 +69,11 @@
 						var node = g.patron.right_deck.node.selectedPanel;
 						if (node && node.contentWindow && typeof node.contentWindow.default_focus == 'function') {
 							node.contentWindow.default_focus();
+						} else {
+							var node = g.patron.left_deck.node.selectedPanel;
+							if (node && node.contentWindow && typeof node.contentWindow.default_focus == 'function') {
+								node.contentWindow.default_focus();
+							}
 						}
 					} catch(E) {
 						g.error.sdump('D_ERROR','default_focus(): ' + js2JSON(E));

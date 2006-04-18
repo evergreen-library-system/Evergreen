@@ -60,6 +60,20 @@
 				alert(err_msg);
 			}
 		}
+		
+		function default_focus() {
+			setTimeout(
+				function() {
+					try {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						document.getElementById('family_name').focus();
+					} catch(E) {
+						g.error.sdump('D_ERROR','default_focus(): ' + js2JSON(E));
+					}
+				}, 0
+			);
+		}
+
 
 	]]>
 	</script>
