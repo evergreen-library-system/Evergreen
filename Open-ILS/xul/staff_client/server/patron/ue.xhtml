@@ -55,23 +55,17 @@
 			.pad { padding-left: 3px; padding-right: 3px; }
 			.no_border td { border: none; }
 			.uedit_table { width: 80% }
-			.address_table { 
-				-moz-border-radius: 4px;
-				border: 4px solid #E0E0F0;
-				padding: 4px;
-				}
-			.address_table td { 
-				border: none; 
-				width: auto; 
-				padding: 1px; 
-				}
+			.address_table { -moz-border-radius: 4px; border: 4px solid #E0E0F0; padding: 4px; }
+			.address_table td { border: none; width: auto; padding: 1px; }
 			.addr_info_checked { -moz-border-radius: 6px; background: #F0E0E0; }
 			.button_row { width: 95%; text-align: center; margin-top: 7px; border: 1px solid #E0E0E0; }
 			.required_field { background: #F0E0E0; }
 			.invalid_value { background: red; }
-			/*
-			input:focus { background: #E0F0E0; }
-			*/
+
+			/* all text inputs that don't have the .invalid_value 
+				class applied and are currently focused */
+			input:focus:not(.invalid_value) { background: #E0F0E0; color: darkblue;}
+
 		</style>
 	</head>
 
@@ -459,14 +453,16 @@
 										<td><input type='checkbox' name='ue_addr_valid_yes' checked='checked'/></td>
 										<td>
 											<div style='width: 100%; -moz-border-radius: 8px;'>
-												<input type='radio' name='ue_addr_mailing_yes' checked='checked'
-													onclick='uEditAddrHighlight(this, "mailing");'/>
+												<input type='radio' name='ue_addr_mailing_yes'
+													onchange='uEditAddrTypeClick(this, "mailing");'
+													onclick='uEditAddrTypeClick(this, "mailing");'/>
 											</div>
 										</td>
 										<td>
 											<div style='width: 100%; -moz-border-radius: 8px;'>
-												<input type='radio' name='ue_addr_billing_yes' checked='checked'
-													onclick='uEditAddrHighlight(this, "billing");'/>
+												<input type='radio' name='ue_addr_billing_yes'
+													onchange='uEditAddrTypeClick(this, "billing");'
+													onclick='uEditAddrTypeClick(this, "billing");'/>
 											</div>
 										</td>
 									</tr>
@@ -474,7 +470,10 @@
 							</table>
 
 							<div class='button_row' style='margin-top: 20px;'>
+								<!--
 								<input type='submit' value='Create a New Address' id='ue_address_new'/>
+								-->
+								<input type='submit' value='Create a New Address' onclick='uEditCreateNewAddr();'/>
 							</div>
 						</div>
 	
@@ -759,7 +758,7 @@
 												</tr>
 												<tr>
 													<td>State</td><td name='state'/>
-													<td>Incorporated</td><td name='incorporated'/>
+													<td>Within City Limits</td><td name='incorporated'/>
 												</tr>
 											</tbody>
 										</table>

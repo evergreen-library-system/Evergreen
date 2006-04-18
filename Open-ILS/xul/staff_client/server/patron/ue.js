@@ -12,18 +12,6 @@ var dataFields;
 var patron;
 var identTypesCache	= {};
 
-/* if they don't have these perms, they shouldn't be here */
-var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
-
-
-/*
-var regexes		= {};
-regexes.phone	= /\d{3}-\d{3}-\d{4}/;
-regexes.email	= /.+\@.+\..+/;
-regexes.date	= /^\d{4}-\d{2}-\d{2}/;
-regexes.isnum	= /^\d+$/;
-*/
-
 
 /* fetch the necessary data to start off */
 function uEditInit() {
@@ -43,7 +31,7 @@ function uEditInit() {
 
 
 function uEditBuild() {
-	fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
+	//fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
 	/* these have to be synchronous */
 	uEditBuildLibSelector();
@@ -134,6 +122,7 @@ function uEditDrawIDTypes(types) {
 
 
 
+
 function uEditDraw(identTypes, groups, statCats, surveys ) {
 
 	hideMe($('uedit_loading'));
@@ -142,34 +131,41 @@ function uEditDraw(identTypes, groups, statCats, surveys ) {
 	uEditDrawIDTypes(identTypes);
 	uEditDefineData(patron, identTypes, groups, statCats, surveys );
 
-	for( var f in dataFields ) {
+	for( var f in dataFields ) 
+		uEditActivateField(dataFields[f]);
+}
 
-		var field = dataFields[f];
 
-		if( field.widget.id ) {
-			field.widget.node = $(field.widget.id);
+/** Applies the event handlers and set the data for the field */
+function uEditActivateField(field) {
 
-		} else {
-			field.widget.node = 
-				$n(field.widget.base, field.widget.name);
-		}
+	if( field.widget.id ) {
+		field.widget.node = $(field.widget.id);
 
-		uEditSetOnchange(field);
-
-		var val = field.object[field.key]();
-		if(val == null) continue;
-
-		if( field.widget.type == 'input' )
-			field.widget.node.value = val;
-
-		if( field.widget.type == 'select' )
-			setSelector(field.widget.node, val);
-
-		if( field.widget.onload ) 
-			field.widget.onload(val);
+	} else {
+		field.widget.node = 
+			$n(field.widget.base, field.widget.name);
 	}
 
+	uEditSetOnchange(field);
+
+	var val = field.object[field.key]();
+	if(val == null) return;
+
+	if( field.widget.type == 'input' )
+		field.widget.node.value = val;
+
+	if( field.widget.type == 'select' )
+		setSelector(field.widget.node, val);
+
+	if( field.widget.type == 'checkbox' )
+		field.widget.node.checked = 
+			(val && val != 'f') ? true : false;
+
+	if( field.widget.onload ) 
+		field.widget.onload(val);
 }
+
 
 function uEditSetOnchange(field) {
 	var func = function() {uEditOnChange( field );}
@@ -180,6 +176,9 @@ function uEditSetOnchange(field) {
 function uEditNodeVal(field) {
 	if(field.widget.type == 'input')
 		return field.widget.node.value;
+
+	if(field.widget.type == 'checkbox')
+		return field.widget.node.checked;
 
 	if(field.widget.type == 'select')
 		return getSelectorVal(field.widget.node);
@@ -193,21 +192,21 @@ function uEditOnChange(field) {
 
 		if(field.widget.regex) { 
 			if(newval.match(field.widget.regex)) 
-				removeCSSClass(field.widget.node, 'invalid_value');
+				removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 			else
-				addCSSClass(field.widget.node, 'invalid_value');
+				addCSSClass(field.widget.node, CSS_INVALID_DATA);
 
 		} else {
-			removeCSSClass(field.widget.node, 'invalid_value');
+			removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 		}
 
 	} else {
 
 		if(field.required) {
-			addCSSClass(field.widget.node, 'invalid_value');
+			addCSSClass(field.widget.node, CSS_INVALID_DATA);
 
 		} else {
-			removeCSSClass(field.widget.node, 'invalid_value');
+			removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 		}
 	}
 

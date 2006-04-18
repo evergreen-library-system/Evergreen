@@ -8,6 +8,8 @@ var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
 var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
 var UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
 var defaultState		= 'GA';
+var defaultCountry	= 'USA';
+var CSS_INVALID_DATA = 'invalid_value';
 
 /* if they don't have these perms, they shouldn't be here */
 var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
@@ -19,6 +21,7 @@ var ssnRegex	= /^\d{3}-\d{2}-\d{4}$/;
 var dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
 var phoneRegex	= /\d{3}-\d{3}-\d{4}/;
 var nonumRegex	= /^\D+$/;
+
 
 
 function uEditDefineData(patron, identTypes, groups, statCats, surveys ) {
@@ -70,9 +73,9 @@ function uEditDefineData(patron, identTypes, groups, statCats, surveys ) {
 					var pw1f = uEditFindFieldByWId('ue_password1');
 					var pw1 = uEditNodeVal(pw1f);
 					if( pw1 == newval ) 
-						removeCSSClass(field.widget.node, 'invalid_value');
+						removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 					else
-						addCSSClass(field.widget.node, 'invalid_value');
+						addCSSClass(field.widget.node, CSS_INVALID_DATA);
 				}
 			}
 		},
@@ -225,22 +228,147 @@ function uEditDefineData(patron, identTypes, groups, statCats, surveys ) {
 	uEditBuildAddrs(patron);
 }
 
+/* Adds all of the addresses attached to the patron object
+	to the fields array */
+var uEditAddrTemplate;
 function uEditBuildAddrs(patron) {
 	var tbody = $('ue_address_tbody');
-	var row = tbody.removeChild($('ue_address_template'));
+	uEditAddrTemplate = 
+		tbody.removeChild($('ue_address_template'));
+	for( var a in patron.addresses() ) 
+		uEditBuildAddrFields( patron, patron.addresses()[a]);
+}
 
-	for( var a in patron.addresses() ) {
-		var newrow = tbody.appendChild(row.cloneNode(true));
-		var fields = uEditBuildAddrFields( 
-			patron, patron.addresses()[a], newrow ); 
 
-		for( var f in fields ) dataFields.push(fields[f]);
+/* Creates a new blank address, adds it to the user
+	and the fields array */
+var uEditVirtualAddrId = -1;
+function uEditCreateNewAddr() {
+	var addr = new aua();
+
+	addr.id(uEditVirtualAddrId--);
+	addr.isnew(1);
+	addr.usr(patron.id());
+	addr.state(defaultState);
+	addr.country(defaultCountry);
+
+	if(patron.addresses().length == 0) {
+		patron.mailing_address(addr);
+		patron.billing_address(addr);
+	}
+
+	uEditBuildAddrFields(patron, addr);
+	patron.addresses().push(addr);
+}
+
+
+
+
+function uEditDeleteAddr( tbody, row, address ) {
+	if(!confirm($('ue_delete_addr_warn').innerHTML)) return;
+	if(address.isnew()) { 
+		patron.addresses(
+			grep( patron.addresses(), 
+				function(i) {
+					return (i.id() != address.id());
+				}
+			)
+		);
+	} else {
+		address.isdeleted(1);
+	}
+	tbody.removeChild(row);
+
+	var bid = patron.billing_address();
+	bid = (typeof bid == 'object') ? bid.id() : bid;
+
+	var mid = patron.mailing_address();
+	mid = (typeof mid == 'object') ? mid.id() : mid;
+
+
+	/* -----------------------------------------------------------------------
+		if we're deleting a billing or mailing address 
+		make sure some other address is automatically
+		assigned as the billing or mailng address 
+		----------------------------------------------------------------------- */
+
+	if( bid == address.id() ) {
+		for( var a in patron.addresses() ) {
+			var addr = patron.addresses()[a];
+			if(!addr.isdeleted()) {
+				var node = uEditFindAddrInput('billing', addr.id());
+				node.checked = true;
+				uEditAddrTypeClick(node, 'billing');
+				break;
+			}
+		}
+	}
+
+	if( mid == address.id() ) {
+		for( var a in patron.addresses() ) {
+			var addr = patron.addresses()[a];
+			if(!addr.isdeleted()) {
+				var node = uEditFindAddrInput('mailing', addr.id());
+				node.checked = true;
+				uEditAddrTypeClick(node, 'mailing');
+				break;
+			}
+		}
 	}
 }
 
-function uEditBuildAddrFields(patron, address, row) {
 
-	return [
+function uEditFindAddrInput(type, id) {
+	var tbody = $('ue_address_tbody');
+	var rows = tbody.getElementsByTagName('tr');
+	for( var r in rows ) {
+		var row = rows[r];
+		if(row.parentNode != tbody) continue;
+		var node = $n(row, 'ue_addr_'+type+'_yes');
+		if( node.getAttribute('address') == id )
+			return node;
+	}
+}
+
+
+function uEditAddrTypeClick(input, type) {
+	var tbody = $('ue_address_tbody');
+	var rows = tbody.getElementsByTagName('tr');
+	for( var r in rows ) {
+		var row = rows[r];
+		if(row.parentNode != tbody) continue;
+		var node = $n(row, 'ue_addr_'+type+'_yes');
+		removeCSSClass(node.parentNode,'addr_info_checked');
+	}
+
+	addCSSClass(input.parentNode,'addr_info_checked');
+	patron[type+'_address'](input.getAttribute('address'));
+	patron.ischanged(1);
+}
+
+
+
+
+/* Creates the field entries for an address object. */
+function uEditBuildAddrFields(patron, address) {
+
+	var tbody = $('ue_address_tbody');
+	var row	= tbody.appendChild(
+		uEditAddrTemplate.cloneNode(true));
+
+	$n(row, 'ue_addr_delete').onclick = 
+		function() { uEditDeleteAddr(tbody, row, address); }
+
+	if( address.id() == patron.billing_address().id() ) 
+		$n(row, 'ue_addr_billing_yes').checked = true;
+
+	if( address.id() == patron.mailing_address().id() ) 
+		$n(row, 'ue_addr_mailing_yes').checked = true;
+
+	$n(row, 'ue_addr_billing_yes').setAttribute('address', address.id());
+	$n(row, 'ue_addr_mailing_yes').setAttribute('address', address.id());
+
+	var fields = [
 		{ 
 			required : false,
 			object	: address, 
@@ -260,8 +388,104 @@ function uEditBuildAddrFields(patron, address, row) {
 				name	: 'ue_addr_street1',
 				type	: 'input',
 			}
+		},
+		{ 
+			required : false,
+			object	: address, 
+			key		: 'street2', 
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_street2',
+				type	: 'input',
+			}
+		},
+		{ 
+			required : false,
+			object	: address, 
+			key		: 'street2', 
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_street2',
+				type	: 'input',
+			}
+		},
+		{ 
+			required : true,
+			object	: address, 
+			key		: 'city', 
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_city',
+				type	: 'input',
+			}
+		},
+		{ 
+			required : false,
+			object	: address, 
+			key		: 'county', 
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_county',
+				type	: 'input',
+			}
+		},
+		{ 
+			required : true,
+			object	: address, 
+			key		: 'state', 
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_state',
+				type	: 'input',
+			}
+		},
+		{ 
+			required : true,
+			object	: address, 
+			key		: 'country', 
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_country',
+				type	: 'input',
+			}
+		},
+		{ 
+			required : true,
+			object	: address, 
+			key		: 'post_code',
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_zip',
+				type	: 'input',
+				regex	: /^\d{5}$/
+			}
+		},
+		{ 
+			required : false,
+			object	: address, 
+			key		: 'within_city_limits',
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_inc_yes',
+				type	: 'checkbox',
+			}
+		},
+		{ 
+			required : false,
+			object	: address, 
+			key		: 'valid',
+			widget	: {
+				base	: row,
+				name	: 'ue_addr_valid_yes',
+				type	: 'checkbox',
+			}
 		}
 	];
+
+	for( var f in fields ) {
+		dataFields.push(fields[f]);
+		uEditActivateField(fields[f]);
+	}
 }
 
 
@@ -312,29 +536,6 @@ function _uEditIdentPostchange(type, field, newval) {
 	$('ue_claims_returned')
 	$('ue_alert_message')
 
-	$('ue_primary_ident_type')
-	$('ue_secondary_ident_type')
-	$('ue_org_selector')
 	$('ue_profile')
-	
-	$('ue_day_phone_area')
-	$('ue_day_phone_prefix')
-	$('ue_day_phone_suffix')
-	$('ue_night_phone_area')
-	$('ue_night_phone_prefix')
-	$('ue_night_phone_suffix')
-	$('ue_other_phone_area')
-	$('ue_other_phone_prefix')
-	$('ue_other_phone_suffix')
-
-
-	$n(row, 'ue_addr_label').value	= addr.address_type();
-	$n(row, 'ue_addr_street1').value	= addr.street1();
-	$n(row, 'ue_addr_street2').value = addr.street2();
-	$n(row, 'ue_addr_city').value		= addr.city();
-	$n(row, 'ue_addr_county').value	= addr.county();
-	$n(row, 'ue_addr_state').value	= addr.state();
-	$n(row, 'ue_addr_zip').value		= addr.post_code();
-	$n(row, 'ue_addr_country').value	= addr.country();
 	*/
 
