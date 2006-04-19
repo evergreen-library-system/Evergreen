@@ -284,9 +284,10 @@ patron.display.prototype = {
 						}
 					},
 					'on_error' : function(E) {
+						var error = js2JSON(E); dump(error + '\n');
 						location.href = urls.XUL_PATRON_BARCODE_ENTRY 
 							+ '?session=' + window.escape(obj.session)
-							+ '&error=' + window.escape(js2JSON(E));
+							+ '&error=' + window.escape(error.substr(0,100));
 					}
 				}
 			);
