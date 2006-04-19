@@ -24,8 +24,9 @@ util.error = function () {
 util.error.prototype = {
 
 	'printDebug' : true,
-	'consoleDump' : true,
+	'consoleDump' : false,
 	'debugDump' : true,
+	'fileDump' : true,
 	'arg_dump_full' : false,
 
 	'debug' : function(e){
@@ -103,6 +104,14 @@ util.error.prototype = {
 				if (this.consoleDump) {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					this.consoleService.logStringMessage(message);
+				}
+				if (this.fileDump) {
+					if (level!='D_FILE') {
+						JSAN.use('util.file'); var master_log = new util.file('log');
+						master_log.write_content('append',message); master_log.close();
+						var specific_log = new util.file('log_'+level);
+						specific_log.write_content('append',message);
+					}
 				}
 			}
 		} catch(E) {
