@@ -296,6 +296,7 @@ function uEditDefineData(patron) {
 		dataFields.push(fields[f]);
 
 	uEditBuildAddrs(patron);
+	uEditBuildPatronSCM(patron);
 }
 
 /* Adds all of the addresses attached to the patron object
@@ -535,6 +536,39 @@ function uEditBuildAddrFields(patron, address) {
 	}
 }
 
+function uEditBuildPatronSCM(patron) {
+	/* get the list of pre-defined maps */
+	var fields = uEditFindFieldsByKey('stat_cat_entry');
+	var map;
+	var newmaps = [];
+
+	/* for each user stat cat, pop it off the list,
+	updated the existing stat map field to match
+	the popped map and shove the existing stat
+	map field onto the user's list of stat maps */
+	while( (map = patron.stat_cat_entries().pop()) ) {
+
+		var field = grep(fields, 
+			function(item) {
+				return (item.object.stat_cat() == map.stat_cat());
+			}
+		);
+
+		if(field) {
+			var val = map.stat_cat_entry();
+			field = field[0];
+			$n(field.widget.base, field.widget.name).value = val;
+			setSelector($n(field.widget.base, 'ue_stat_cat_selector'), val );
+			field.object.stat_cat_entry(val);
+			field.object.id(map.id());
+			newmaps.push(field.object);
+		}
+	}
+
+	for( var m in newmaps ) 
+		patron.stat_cat_entries().push(newmaps[m]);
+}
+
 
 function uEditBuildSCMField(statcat, row) {
 
@@ -561,7 +595,10 @@ function uEditBuildSCMField(statcat, row) {
 					}
 				);
 
-				if(newval) map.isdeleted(0);
+				if(newval) {
+					map.isdeleted(0);
+					setSelector($n(row, 'ue_stat_cat_selector'), newval);
+				}
 
 				if(exists) {
 					if(!newval) {
@@ -579,6 +616,7 @@ function uEditBuildSCMField(statcat, row) {
 
 						} else {
 							map.isdeleted(1);
+							map.ischanged(0);
 						}
 					} 
 

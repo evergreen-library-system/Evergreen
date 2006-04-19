@@ -219,6 +219,12 @@ function uEditFindFieldByKey(key) {
 	return (fields) ? fields[0] : null;
 }
 
+/* find a list of fields by object key */
+function uEditFindFieldsByKey(key) {
+	return grep( dataFields,
+		function(item) { return (item.key == key); });
+}
+
 /* find a field object by widget id */
 function uEditFindFieldByWId(id) {
 	var fields = grep( dataFields,
@@ -230,13 +236,15 @@ function uEditFindFieldByWId(id) {
 /* send the user to the database */
 function uEditSaveUser() {
 
-	var req = new Request(UPDATE_PATRON, SESSION, patron);
-	req.send(true);
-	var result = req.result();
-
+	/*
 	var es = patron.stat_cat_entries();
 	for( var e in es ) alert(js2JSON(es[e]));
 	return;
+	*/
+
+	var req = new Request(UPDATE_PATRON, SESSION, patron);
+	req.send(true);
+	var result = req.result();
 
 	if( checkILSEvent(result) ) 
 		alert(js2JSON(result));
