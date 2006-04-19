@@ -627,26 +627,11 @@
 									<tr name='ue_survey_row'>
 										<td name='ue_survey_question' 
 											style='width: 60%; text-align: left; padding-left: 40px;'/>
-										<td class='hide_me'>
+										<td>
 											<select name='ue_survey_answer'>
 												<option value=''> -- Select One -- </option>
 											</select>
 										</td>
-										<!--
-										<td class='hide_me' name='ue_survey_answer_poll'>
-											<table>
-												<tbody name='ue_survey_answer_poll_tbody'>
-													<tr name='ue_survey_answer_poll_row'>
-														<td>
-															<div class='right' name='ue_survey_answer_poll_radio'>
-															</div>
-														</td>
-														<td><div class='left' name='ue_survey_answer_poll_answer'/></td>
-													</tr>
-												</tbody>
-											</table>
-										</td>
-										-->
 									</tr>
 								</tbody>
 							</table>
@@ -664,7 +649,7 @@
 								</div>
 								<br/>
 								<a style='margin-right: 30px;' id='ue_view_summary' 
-									href='javascript:_uEditShowSummary();'>View Summary</a>
+									href='javascript:uEditShowSummary();'>View Summary</a>
 								<input style='margin-left: 30px;' 
 									type='submit' value='Save User' onclick='uEditSaveUser();'/>
 							</div>

@@ -73,10 +73,8 @@ function uEditBuild() {
 	uEditDraw( 
 		uEditFetchIdentTypes(),
 		uEditFetchGroups(),
-		uEditFetchStatCats());
-		/*
+		uEditFetchStatCats(),
 		uEditFetchSurveys() );
-		*/
 }
 
 
@@ -121,6 +119,7 @@ function uEditDraw(identTypes, groups, statCats, surveys ) {
 	uEditDrawIDTypes(identTypes);
 	uEditDrawGroups(groups);
 	uEditDrawStatCats(statCats);
+	uEditDrawSurveys(surveys);
 	uEditDefineData(patron);
 
 	for( var f in dataFields ) 
@@ -237,7 +236,7 @@ function uEditFindFieldByWId(id) {
 function uEditSaveUser() {
 
 	/*
-	var es = patron.stat_cat_entries();
+	var es = patron.survey_responses();
 	for( var e in es ) alert(js2JSON(es[e]));
 	return;
 	*/
@@ -253,7 +252,14 @@ function uEditSaveUser() {
 
 	if (window.xulG && typeof window.xulG.save == 'function') {
 		window.xulG.on_save(patron); 
+	} else {
+		location.href = location.href;
 	}
 }
+
+function uEditShowSummary() {
+}
+
+
 
 

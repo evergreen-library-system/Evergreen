@@ -175,3 +175,67 @@ function uEditInsertCat( row, cat, idx ) {
 	}
 }
 
+/* draw the surveys */
+function uEditDrawSurveys(surveys) {
+	var div = $('uedit_surveys');
+	var table = div.removeChild($('ue_survey_table'));
+	for( var s in surveys ) {
+		var survey = surveys[s];
+		var clone = table.cloneNode(true);
+		uEditInsertSurvey( div, clone, survey, s );
+		div.appendChild(clone);
+	}
+}
+
+/* insert the servey then insert each of that surveys questions */
+function uEditInsertSurvey( div, table, survey, sidx ) {
+	$n(table, 'ue_survey_name').appendChild(text(survey.name()));
+	$n(table, 'ue_survey_desc').appendChild(text(survey.description()));
+	var tbody = $n(table, 'ue_survey_tbody');
+	var templ = tbody.removeChild($n(table, 'ue_survey_row'));
+
+	for( var q in survey.questions() ) {
+		var row = templ.cloneNode(true);
+		var quest = survey.questions()[q];
+		uEditInsertSurveyQuestion( row, survey, quest );
+		tbody.appendChild(row);
+	}
+}
+
+function uEditInsertSurveyQuestion( row, survey, question ) {
+	var selector = $n(row, 'ue_survey_answer');
+	row.setAttribute('question', question.id());
+	$n(row, 'ue_survey_question').appendChild(text(question.question()));
+	for( var a in question.answers() ) {
+		var answer = question.answers()[a];
+		insertSelectorVal(selector, -1, answer.answer(), answer.id() );
+	}
+
+	selector.onchange = function() {
+
+		/* remove any existing responses for this survey */
+		patron.survey_responses(
+			grep( patron.survey_responses(),
+				function(item) {
+					return (item.survey() != survey.id());
+				}
+			)
+		);
+
+		if(!patron.survey_responses())
+			patron.survey_responses([]);
+
+		var val = getSelectorVal(selector);
+		if(!val) return;
+
+		var resp	= new asvr();
+		resp.isnew(1);
+		resp.survey(survey.id());
+		resp.usr(patron.id());
+		resp.question(row.getAttribute('question'));
+		resp.answer(val);
+		patron.survey_responses().push( resp );
+	}
+}
+
+
