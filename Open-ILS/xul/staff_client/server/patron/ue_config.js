@@ -275,6 +275,26 @@ function uEditDefineData(patron) {
 				id			: 'ue_profile',
 				type		: 'select',
 				regex		: numRegex,
+				onpostchange : function(field, value) {
+					var type			= groupsCache[value];
+					var interval	= type.perm_interval();
+					var intsecs		= parseInt(util.date.interval_to_seconds(interval));
+
+					var expdate		= new Date();
+					var exptime		= expdate.getTime();
+					exptime			+= intsecs * 1000;
+					expdate.setTime(exptime);
+
+					var year			= expdate.getYear() + 1900;
+					var month		= (expdate.getMonth() + 1) + '';
+					var day			= (expdate.getDate() + 1) + '';
+
+					if(!month.match(/\d{2}/)) month = '0' + month;
+					if(!day.match(/\d{2}/)) day = '0' + day;
+
+					var node = $('ue_expire');
+					node.value = year+'-'+month+'-'+day;
+				}
 			}
 		},
 		{

@@ -15,6 +15,7 @@ var statCatsCache				= {};
 var surveysCache				= {};
 var surveyQuestionsCache	= {};
 var surveyAnswersCache		= {};
+var groupsCache				= {};
 
 
 /* fetch the necessary data to start off */
@@ -192,9 +193,6 @@ function uEditNodeVal(field) {
 
 /* update a field value */
 function uEditOnChange(field) {
-	/*
-	uEditCheckValid(field);
-	*/
 
 	var newval = uEditNodeVal(field);
 	field.object[field.key](newval);
@@ -293,6 +291,9 @@ function uEditSaveUser() {
 		uEditAlertErrors();
 		return;
 	}
+
+	alert(patron.ident_type2());
+	alert(patron.ischanged());
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);

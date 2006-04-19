@@ -123,6 +123,7 @@ function uEditDrawGroups(tree, depth, selector) {
 		selector = $('ue_profile');
 		depth = 0;
 	}
+	groupsCache[tree.id()] = tree;
 	insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
 	for( var c in tree.children() ) 
 		uEditDrawGroups( tree.children()[c], depth, selector );

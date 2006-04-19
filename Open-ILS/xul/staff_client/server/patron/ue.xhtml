@@ -26,6 +26,7 @@
 		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
 		<script language='javascript' src='/opac/common/js/init.js'> </script>
 		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='/opac/common/js/date.js'> </script>
 		<script language='javascript' src='../admin/adminlib.js'> </script>
 		<script language='javascript' src='ue_config.js'> </script>
 		<script language='javascript' src='ue_ui.js'> </script>
@@ -90,8 +91,8 @@
 				<tr>
 					<td align='left' width='50%'>
 						<b>
-							<span>Note: required fields are </span>
-							<span class='required_field'>marked with color</span>
+							<span>Note: required or invalid fields are </span>
+							<span style='border-bottom: 2px solid red;'>marked with color</span>
 						</b>
 					</td>
 					<td align='right' width='50%'>
@@ -310,7 +311,7 @@
 										<td><div class='wide right'>Secondary Identification Type</div></td>
 										<td><div class='wide left'>
 												<select id='ue_secondary_ident_type'>
-													<option value=''> -- Select One -- </option>
+													<option value=''> -- None Selected -- </option>
 												</select>
 											</div>
 										</td>
@@ -613,7 +614,7 @@
 										<td>
 											<div class='wide left'>
 												<select name='ue_stat_cat_selector'>
-													<option value=''> -- Select One -- </option>
+													<option value=''> -- None Selected -- </option>
 												</select>
 												<span class='pad'> or </span>
 												<input class='pad' type='text' name='ue_stat_cat_newval'/>
@@ -645,7 +646,7 @@
 											style='width: 60%; text-align: left; padding-left: 40px;'/>
 										<td>
 											<select name='ue_survey_answer'>
-												<option value=''> -- Select One -- </option>
+												<option value=''> -- None Selected -- </option>
 											</select>
 										</td>
 									</tr>
