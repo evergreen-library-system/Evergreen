@@ -27,7 +27,9 @@ var pageFocus = [
 
 
 function uEditNext() {
+	/*
 	if(uEditAlertErrors()) return;
+	*/
 	var i = _findActive();
 	if( i < (pages.length - 1)) uEditShowPage(pages[i+1]);
 }
@@ -38,12 +40,22 @@ function uEditPrev() {
 	if( i > 0 ) uEditShowPage(pages[i-1]);
 }
 
+function uEditCheckErrors() {
+	var errors = uEditGetErrorStrings();
+	if(errors) unHideMe($('ue_errors'));
+	else hideMe($('ue_errors'));
+}
 
+/*
 function uEditFetchError(id) { if($(id)) return $(id).innerHTML + "\n"; return "";}
+*/
 
 function uEditShowPage(id) {
 	if( id == null ) return;
+
+	/*
 	if(uEditAlertErrors()) return;
+	*/
 
 	for( var p in pages ) {
 		var page = pages[p];

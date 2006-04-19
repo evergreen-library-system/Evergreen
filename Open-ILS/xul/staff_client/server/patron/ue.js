@@ -69,13 +69,16 @@ function uEditBuild() {
 
 	uEditBuildLibSelector();
 	patron = fetchFleshedUser(cgi.param('usr'));
-	if(!patron) patron = uEditNewPatron();
+	if(!patron) patron = uEditNewPatron(); 
+
 
 	uEditDraw( 
 		uEditFetchIdentTypes(),
 		uEditFetchGroups(),
 		uEditFetchStatCats(),
 		uEditFetchSurveys() );
+
+	if(patron.isnew()) uEditCreateNewAddr();
 }
 
 
@@ -86,10 +89,13 @@ function uEditNewPatron() {
 	patron.id(-1);
 	card = new ac();
 	card.id(-1);
+	card.isnew(1);
 	patron.card(card);
 	patron.cards([card]);
 	patron.stat_cat_entries([]);
 	patron.survey_responses([]);
+	patron.addresses([]);
+	patron.home_ou(USER.ws_ou());
 	return patron;
 }
 
@@ -108,6 +114,8 @@ function uEditCreateNewAddr() {
 	}
 	uEditBuildAddrFields(patron, addr);
 	patron.addresses().push(addr);
+	uEditIterateFields(function(f) { uEditCheckValid(f); });
+	uEditCheckErrors();
 }
 
 
@@ -123,8 +131,9 @@ function uEditDraw(identTypes, groups, statCats, surveys ) {
 	uEditDrawSurveys(surveys);
 	uEditDefineData(patron);
 
-	for( var f in dataFields ) 
-		uEditActivateField(dataFields[f]);
+	uEditIterateFields(function(f) { uEditActivateField(f) });
+	uEditIterateFields(function(f) { uEditCheckValid(f); });
+	uEditCheckErrors();
 }
 
 
@@ -163,7 +172,9 @@ function uEditActivateField(field) {
 function uEditSetOnchange(field) {
 	var func = function() {uEditOnChange( field );}
 	field.widget.node.onchange = func;
-	field.widget.node.onkeyup = func;
+
+	if(field.widget.type != 'select')
+		field.widget.node.onkeyup = func;
 }
 
 /* find the current value of the field object's widget */
@@ -181,8 +192,24 @@ function uEditNodeVal(field) {
 
 /* update a field value */
 function uEditOnChange(field) {
-	var newval = uEditNodeVal(field);
+	/*
+	uEditCheckValid(field);
+	*/
 
+	var newval = uEditNodeVal(field);
+	field.object[field.key](newval);
+	field.object.ischanged(1);
+
+	if(field.widget.onpostchange)
+		field.widget.onpostchange(field, newval);
+
+	uEditIterateFields(function(f) { uEditCheckValid(f); });
+	uEditCheckErrors();
+}
+
+
+function uEditCheckValid(field) {
+	var newval = uEditNodeVal(field);
 	if(newval) {
 
 		if(field.widget.regex) { 
@@ -204,12 +231,6 @@ function uEditOnChange(field) {
 			removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 		}
 	}
-
-	field.object[field.key](newval);
-	field.object.ischanged(1);
-
-	if(field.widget.onpostchange)
-		field.widget.onpostchange(field, newval);
 }
 
 /* find a field object by object key */
@@ -252,12 +273,14 @@ function uEditGetErrorStrings() {
 			}
 		}
 	);
-	return errors;
+
+	if(errors[0]) return errors;
+	return null;
 }
 
 function uEditAlertErrors() {
 	var errors = uEditGetErrorStrings();
-	if( !errors[0] ) return false;
+	if(!errors) return false;
 	alert(errors.join("\n"));
 	return true;
 }
@@ -265,6 +288,11 @@ function uEditAlertErrors() {
 
 /* send the user to the database */
 function uEditSaveUser() {
+
+	if(uEditGetErrorStrings()) {
+		uEditAlertErrors();
+		return;
+	}
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);

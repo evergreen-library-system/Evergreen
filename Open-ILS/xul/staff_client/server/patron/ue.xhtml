@@ -59,7 +59,7 @@
 			.address_table td { border: none; width: auto; padding: 1px; }
 			.addr_info_checked { -moz-border-radius: 6px; background: #F0E0E0; }
 			.button_row { width: 95%; text-align: center; margin-top: 7px; border: 1px solid #E0E0E0; }
-			.required_field { background: #F0E0E0; }
+			/*.required_field { background: #F0E0E0; }*/
 			.invalid_value { background: red; }
 
 			/* all text inputs that don't have the .invalid_value 
@@ -84,12 +84,25 @@
 		<hr/><br/>
 
 		<div id='main_div_container'>
-		<div style='margin-bottom: 5px; width:100%; text-align: left;'>
-			<b>
-				<span>Note: required fields are </span>
-				<span class='required_field'>marked with color</span>
-			</b>
-		</div>
+
+		<table style='margin-bottom: 5px; width:100%;'>
+			<tbody>
+				<tr>
+					<td align='left' width='50%'>
+						<b>
+							<span>Note: required fields are </span>
+							<span class='required_field'>marked with color</span>
+						</b>
+					</td>
+					<td align='right' width='50%'>
+						<a class='hide_me' id='ue_errors' href='javascript:void(0);' 
+							style='color: red; font-size: 12pt; font-weight: bold' onclick='uEditAlertErrors();'>
+							View Errors
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
 		<table class='main_table'>
 			<tbody>
@@ -653,7 +666,7 @@
 								<br/>
 								<a style='margin-right: 30px;' id='ue_view_summary' 
 									href='javascript:uEditShowSummary();'>View Summary</a>
-								<input style='margin-left: 30px;' 
+								<input style='margin-left: 30px;' id='ue_save'
 									type='submit' value='Save User' onclick='uEditSaveUser();'/>
 							</div>
 						</div>
@@ -834,10 +847,10 @@
 			This will de-activate the existing barcode for this user!  If you wish to continue, 
 			enter the new barcode below.  Otherwise, click the Cancel button.
 		</span>
-		<span id='ue_no_ident'>You must select two types of identification</span>
+		<span id='ue_no_ident'>You must select at least one type of identification</span>
 		<span id='ue_bad_ident_dl'>Invalid drivers license. Should be STATE-NUMBER</span>
 		<span id='ue_bad_ident_ssn'>Invalid social security number.  Format should be 111-22-3333</span>
-		<span id='ue_bad_email'>The email addresses do not match or are invalid</span>
+		<span id='ue_bad_email'>The email addresses is not valid</span>
 		<span id='ue_bad_phone'>An invalid phone number was entered</span>
 		<span id='ue_no_profile'>A profile group must be selected</span>
 		<span id='ue_bad_expire'>The user expiration date is invalid.  We're expecting YYYY-MM-DD</span>

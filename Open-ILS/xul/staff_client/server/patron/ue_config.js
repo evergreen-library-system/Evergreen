@@ -46,12 +46,12 @@ function uEditDefineData(patron) {
 			errkey	: 'ue_bad_username',
 			widget	: {
 				id		: 'ue_username',
-				regex	: nonumRegex,
+				regex	: wordRegex,
 				type	: 'input'
 			}
 		},
 		{
-			required : false,
+			required : (patron.isnew()) ? true : false,
 			object	: patron,
 			key		: 'passwd',
 			errkey	: 'ue_bad_password',
@@ -67,7 +67,7 @@ function uEditDefineData(patron) {
 			}
 		},
 		{
-			required : false,
+			required : (patron.isnew()) ? true : false,
 			object	: patron,
 			key		: 'passwd',
 			errkey	: 'ue_bad_password',
@@ -270,6 +270,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'profile',
+			errkey	: 'ue_no_profile',
 			widget	: {
 				id			: 'ue_profile',
 				type		: 'select',
@@ -673,6 +674,8 @@ function _uEditIdentPostchange(type, field, newval) {
 			vfield.widget.regex = dlRegex;
 			vfield.errkey = 'ue_bad_ident_dl';
 			unHideMe($(type+'_ident_dl_help'));
+			if(!uEditNodeVal(vfield))
+				vfield.widget.node.value = defaultState + '-';
 
 		} else {
 			vfield.widget.regex = null;
