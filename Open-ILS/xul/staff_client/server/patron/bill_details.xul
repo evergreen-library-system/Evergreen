@@ -19,7 +19,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="bill_details_win" 
+<window id="bill_details_win" width="700" height="550"
 	onload="try{ my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -31,6 +31,9 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+
+		function $(id) { return document.getElementById(id); }
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -42,6 +45,7 @@
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
 				JSAN.use('util.money');
+				JSAN.use('patron.util');
 
 				g.error.sdump('D_TRACE','my_init() for bill_details.xul');
 
@@ -50,7 +54,91 @@
 				var mbts_id = g.cgi.param('mbts_id');
 				var session = g.cgi.param('session');
 
-				var rows = document.getElementById('g_rows');
+				g.network.simple_request('FM_MBTS_RETRIEVE',[session,mbts_id],
+					function(req) {
+						try {
+							g.mbts = req.getResultObject();
+							$('mbts_id').value = g.mbts.id();
+							$('mbts_xact_type').value = g.mbts.xact_type();
+							$('mbts_xact_start').value = g.mbts.xact_start();
+							$('mbts_xact_finish').value = g.mbts.xact_finish();
+							$('mbts_total_owed').value = util.money.sanitize( g.mbts.total_owed() );
+							$('mbts_total_paid').value = util.money.sanitize( g.mbts.total_paid() );
+							$('mbts_balance_owed').value = util.money.sanitize( g.mbts.balance_owed() );
+						} catch(E) {
+							g.error.sdump('D_ERROR',E);
+						}
+					}
+				);
+
+				g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ session, mbts_id ],
+					function (req) {
+						var r_circ = req.getResultObject();
+						if (instanceOf(r_circ,circ)) {
+
+							$('title_label').hidden = false;
+							$('checked_out_label').hidden = false;
+							$('due_label').hidden = false;
+							$('checked_in_label').hidden = false;
+							$('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
+							$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
+							$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+
+							g.network.simple_request(
+								'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+								[ r_circ.target_copy() ],
+								function (rreq) {
+									var r_mvr = rreq.getResultObject();
+									if (instanceOf(r_mvr,mvr)) {
+										$('title').appendChild( document.createTextNode( r_mvr.title() ) );
+									} else {
+										obj.network.simple_request(
+											'FM_ACP_RETRIEVE',
+											[ r_circ.target_copy() ],
+											function (rrreq) {
+												var r_acp = rrreq.getResultObject();
+												if (instanceOf(r_acp,acp)) {
+													$('title').appendChild( document.createTextNode( r_acp.dummy_title() ) );
+												}
+											}
+										);
+									}
+								}
+							);
+
+						}
+					}
+				);
+
+				JSAN.use('util.list'); 
+				g.bill_list = new util.list('bill_tree');
+				g.payment_list = new util.list('payment_tree');
+
+				g.bill_list.init( {
+					'columns' : patron.util.mb_columns({}),
+					'map_row_to_column' : patron.util.std_map_row_to_column(),
+					'on_select' : function(ev) {
+						JSAN.use('util.functional');
+						g.bill_list_selection = util.functional.map_list(
+							g.bill_list.retrieve_selection(),
+							function(o) { return o.getAttribute('retrieve_id'); }
+						);
+						$('void').disabled = g.bill_list_selection.length == 0;
+					},
+				} );
+
+				g.payment_list.init( {
+					'columns' : patron.util.mp_columns({}),
+					'map_row_to_column' : patron.util.std_map_row_to_column(),
+					'on_select' : function(ev) {
+						JSAN.use('util.functional');
+						g.payment_list_selection = util.functional.map_list(
+							g.payment_list.retrieve_selection(),
+							function(o) { return o.getAttribute('retrieve_id'); }
+						);
+						$('refund').disabled = g.payment_list_selection.length == 0;
+					},
+				} );
 
 				var mb_list = g.network.request(
 					api.FM_MB_RETRIEVE_VIA_MBTS_ID.app,
@@ -58,34 +146,16 @@
 					[ session, mbts_id ]
 				);
 
+				var mb_funcs = [];
+
+				function gen_mb_func(r) {
+					return function() {
+						g.bill_list.append( { 'retrieve_id' : r.id(), 'row' : { my : { 'mb' : r } } } );
+					}
+				}
+
 				for (var i = 0; i < mb_list.length; i++) {
-
-					var row = document.createElement('row');
-					rows.insertBefore( row, document.getElementById('ref0') );
-
-						var c0 = document.createElement('spacer');
-						row.appendChild(c0);
-
-						var c1 = document.createElement('label');
-						row.appendChild(c1);
-						c1.setAttribute('value', mb_list[i].voided() ? 'Yes' : 'No' );
-
-						var c4 = document.createElement('label');
-						row.appendChild(c4);
-						c4.setAttribute('value', util.money.sanitize( mb_list[i].amount() ) );
-						c4.setAttribute('class','text-right');
-
-						var c3 = document.createElement('label');
-						row.appendChild(c3);
-						c3.setAttribute('value', mb_list[i].billing_type());
-
-						var c2 = document.createElement('label');
-						row.appendChild(c2);
-						c2.setAttribute('value', util.date.formatted_date( mb_list[i].billing_ts(),'' ));
-
-						var c5 = document.createElement('label');
-						row.appendChild(c5);
-						c5.setAttribute('value', mb_list[i].note());
+					mb_funcs.push( gen_mb_func(mb_list[i]) );
 				}
 
 				var mp_list = g.network.request(
@@ -94,37 +164,21 @@
 					[ session, mbts_id ]
 				);
 
-				for (var i = 0; i < mp_list.length; i++) {
+				var mp_funcs = [];
 
-					var row = document.createElement('row');
-					rows.insertBefore( row, document.getElementById('ref1') );
-
-						var c0 = document.createElement('spacer');
-						row.appendChild(c0);
-
-						var c1 = document.createElement('label');
-						row.appendChild(c1);
-						//c1.setAttribute('value', mp_list[i].voided() ? 'Yes' : 'No' );
-						c1.setAttribute('value', 'No' );
-
-						var c4 = document.createElement('label');
-						row.appendChild(c4);
-						c4.setAttribute('value', util.money.sanitize( mp_list[i].amount() ) );
-						c4.setAttribute('class','text-right');
-
-						var c3 = document.createElement('label');
-						row.appendChild(c3);
-						c3.setAttribute('value', mp_list[i].payment_type());
-
-						var c2 = document.createElement('label');
-						row.appendChild(c2);
-						c2.setAttribute('value', util.date.formatted_date( mp_list[i].payment_ts(),'' ));
-
-						var c5 = document.createElement('label');
-						row.appendChild(c5);
-						c5.setAttribute('value', mp_list[i].note());
+				function gen_mp_func(r) {
+					return function() {
+						g.payment_list.append( { 'retrieve_id' : r.id(), 'row' : { my : { 'mp' : r } } } );
+					}
 				}
 
+				for (var i = 0; i < mp_list.length; i++) {
+					mp_funcs.push( gen_mp_func(mp_list[i]) );
+				}
+
+				JSAN.use('util.exec');
+				var mb_exec = new util.exec(4); mb_exec.chain(mb_funcs);
+				var mp_exec = new util.exec(4); mp_exec.chain(mp_funcs);
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -140,36 +194,73 @@
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
 			<caption label="Full Details"/>
-			<grid flex="1">
-				<columns> <column flex="0" /><column flex="1" /> <column flex="1" /> <column flex="1" /> <column flex="1" /> </columns>
-				<rows id="g_rows">
-					<row>
-						<label value="Bills" class="header" style="color: red;" />
-					</row>
-					<row>
-						<spacer />
-						<label value="Voided" class="header" />
-						<label value="Amount" class="header" />
-						<label value="Type" class="header" />
-						<label value="When" class="header" />
-						<label value="Note" class="header" />
-					</row>
-					<row id="ref0">
-						<label value="Payments" class="header" style="color: green;" />
-					</row>
-					<row>
-						<spacer />
-						<label value="Voided" class="header" />
-						<label value="Amount" class="header" />
-						<label value="Type" class="header" />
-						<label value="When" class="header" />
-						<label value="Note" class="header" />
-					</row>
-					<row id="ref1" />
-				</rows>
-			</grid>
+
+			<groupbox orient="vertical" flex="1">
+				<caption label="Summary" />
+				<grid flex="1">
+					<columns>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="2"/>
+					</columns>
+					<rows>
+						<row>
+							<label class="header" value="Bill #"/>
+							<label id="mbts_id" />
+							<label class="header" value="Total Billed"/>
+							<label id="mbts_total_owed" />
+							<label class="header" id="title_label" value="Title" hidden="true"/>
+							<description id="title"/>
+						</row>
+						<row>
+							<label class="header" value="Type"/>
+							<label id="mbts_xact_type"/>
+							<label class="header" value="Total Paid"/>
+							<label id="mbts_total_paid" />
+							<label class="header" id="checked_out_label" value="Checked Out" hidden="true"/>
+							<label id="checked_out"/>
+						</row>
+						<row>
+							<label class="header" value="Start"/>
+							<label id="mbts_xact_start"/>
+							<label class="header" value="Balance Owed"/>
+							<label id="mbts_balance_owed" />
+							<label class="header" id="due_label" value="Due Date" hidden="true"/>
+							<label id="due"/>
+						</row>
+						<row>
+							<label class="header" value="Finish"/>
+							<label id="mbts_xact_finish"/>
+							<label/>
+							<label/>
+							<label class="header" id="checked_in_label" value="Checked In" hidden="true"/>
+							<label id="checked_in"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox orient="vertical" flex="1">
+				<caption label="Bills" style="color: red"/>
+				<tree id="bill_tree" flex="1" enableColumnDrag="true"/>
+				<hbox><spacer flex="1"/><button id="void" label="Void selected billings" disabled="true"/></hbox>
+			</groupbox>
+
+			<groupbox orient="vertical" flex="1">
+				<caption label="Payments" style="color: green"/>
+				<tree id="payment_tree" flex="1" enableColumnDrag="true"/>
+				<hbox><spacer flex="1"/><button id="refund" label="Refund selected payments" disabled="true"/></hbox>
+			</groupbox>
+
 		</groupbox>
-		<button label="Close Window" oncommand="window.close()" accesskey="c"/>
+		<hbox>
+			<button id="opac" label="Show in Catalog" accesskey="S" hidden="true"/>
+			<spacer flex="1"/>
+			<button label="Close Window" oncommand="window.close()" accesskey="c"/>
+		</hbox>
 	</vbox>
 
 
