@@ -275,6 +275,10 @@ sub start_mods_batch {
 
 	my( $self, $master_doc ) = @_;
 
+	if(!$master_doc) {
+		$self->{master_doc} = undef;
+		return;
+	}
 
 	if(!$mods_sheet) {
 		 my $xslt_doc = $parser->parse_file(
@@ -381,6 +385,9 @@ sub init_virtual_record {
 
 sub finish_mods_batch {
 	my $self = shift;
+
+	return undef unless $self->{master_doc};
+
 	my $perl = $self->{master_doc};
 	my $record = init_virtual_record();
 
