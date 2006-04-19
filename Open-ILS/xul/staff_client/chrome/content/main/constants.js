@@ -60,6 +60,7 @@ var api = {
 	'FM_CST_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },
 	'FM_MB_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.create' },
 	'FM_MB_RETRIEVE_VIA_MBTS_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.retrieve.all' },
+	'FM_MBTS_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billable_xact_summary.retrieve' },
 	'FM_MP_RETRIEVE_VIA_MBTS_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment.retrieve.all' },
 	'FM_MG_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.create' },
 	'FM_MOBTS_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
