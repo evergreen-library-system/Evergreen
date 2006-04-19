@@ -26,7 +26,7 @@ util.error.prototype = {
 	'printDebug' : true,
 	'consoleDump' : false,
 	'debugDump' : true,
-	'fileDump' : true,
+	'fileDump' : false,
 	'arg_dump_full' : false,
 
 	'debug' : function(e){
