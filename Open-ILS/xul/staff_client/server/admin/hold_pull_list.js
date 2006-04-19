@@ -1,6 +1,6 @@
 
 var FETCH_HOLD_LIST			= 'open-ils.circ:open-ils.circ.hold_pull_list.retrieve';
-var FETCH_COPY_LOCATIONS	= 'open-ils.search:open-ils.search.config.copy_location.retrieve.all';
+var FETCH_COPY_LOCATIONS	= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
 var FETCH_COPY					= 'open-ils.search:open-ils.search.asset.copy.retrieve';
 var FETCH_USER					= 'open-ils.actor:open-ils.actor.user.fleshed.retrieve';
 var FETCH_VOLUME				= 'open-ils.search:open-ils.search.callnumber.retrieve';
