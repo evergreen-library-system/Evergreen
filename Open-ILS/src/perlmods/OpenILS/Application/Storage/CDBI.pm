@@ -263,9 +263,13 @@ sub create_from_fieldmapper {
 				} grep { $_ ne $primary } $class->columns('Essential');
 
 		if ($class->find_column( 'last_xact_id' )) {
-			my $xact_id = $class->current_xact_id;
-			throw Error unless ($xact_id);
-			$hash{last_xact_id} = $xact_id;
+			if ($OpenILS::Application::Storage::IGNORE_XACT_ID_FAILURE) {
+				$hash{last_xact_id} = 'unknown.'.time.'.'.$$.'.'.rand($$);
+			} else {
+				my $xact_id = $class->current_xact_id;
+				throw Error unless ($xact_id);
+				$hash{last_xact_id} = $xact_id;
+			}
 		}
 
 		return $class->create( \%hash, @params );
@@ -383,10 +387,7 @@ sub modify_from_fieldmapper {
 	my %hash;
 	
 	if (ref($fm) and UNIVERSAL::isa($fm => 'Fieldmapper')) {
-		%hash = map { defined $fm->$_ ?
-				($_ => ''.$fm->$_) :
-				()
-			} grep { $_ ne $primary } $class->columns('Essential');
+		%hash = map { ($_ => ''.$fm->$_) } grep { $_ ne $primary } $class->columns('Essential');
 	} else {
 		%hash = %{$fm};
 	}
