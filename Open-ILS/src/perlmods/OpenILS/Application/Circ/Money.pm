@@ -58,11 +58,11 @@ sub make_payments {
 	$evt = $apputils->check_perms($user->id, $user->home_ou, 'CREATE_PAYMENT');
 	return $evt if $evt;
 
-	$logger->activity("Creating payment objects: " . Dumper($payments) );
+	$logger->info("Creating payment objects: " . Dumper($payments) );
 
 	my $session = $apputils->start_db_session;
 	my $type		= $payments->{payment_type};
-	my $credit	= $payments->{patron_credit};
+	my $credit	= $payments->{patron_credit} || 0;
 	#my $drawer	= $payments->{cash_drawer};
 	my $drawer	= $user->wsid;
 	my $userid	= $payments->{userid};
@@ -86,6 +86,12 @@ sub make_payments {
 				"a different user: " .  $trans->usr . ' for transaction ' . $trans->id  );
 		}
 
+		if($type == 'credit_payment') {
+			$credit -= $amount;
+			$logger->activity("user ".$user->id." reducing patron credit to ".
+				"$credit by making a credit_payment on transaction ".$trans->id);
+		}
+
 		my $payobj = "Fieldmapper::money::$type";
 		$payobj = $payobj->new;
 
@@ -94,6 +100,7 @@ sub make_payments {
 		$payobj->accepting_usr($user->id);
 		$payobj->xact($transid);
 		$payobj->note($note);
+
 		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
 		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
 		if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
@@ -103,7 +110,13 @@ sub make_payments {
 		if ($payobj->has_field('check_number')) { $payobj->check_number($check_number); }
 		
 		# update the transaction if it's done 
-		if( ($trans->balance_owed - $amount) <= 0 ) {
+		if( (my $cred = ($trans->balance_owed - $amount)) <= 0 ) {
+
+			# Any overpay on this transaction goes directly into patron credit 
+			$cred = -$cred;
+			$credit += $cred;
+			$logger->activity("user ".$user->id." applying credit ".
+				"of $cred on transaction ".$trans->id. " because of overpayment");
 
 			$logger->debug("Transactin " . $trans->id . ' is complete');
 			$trans = $session->request(
@@ -118,6 +131,7 @@ sub make_payments {
 					
 		}
 
+
 		$logger->debug("Creating new $payobj for \$$amount\n");
 
 		my $s = $session->request(
@@ -125,6 +139,10 @@ sub make_payments {
 		if(!$s) { throw OpenSRF::EX::ERROR ("Error creating new $type"); }
 
 	}
+
+
+	$logger->activity("user ".$user->id." applying total ".
+		"credit of $credit to user $userid") if $credit;
 
 	_update_patron_credit( $session, $userid, $credit );
 
@@ -146,17 +164,15 @@ sub make_payments {
 
 sub _update_patron_credit {
 	my( $session, $userid, $credit ) = @_;
-	return if $credit <= 0;
+	#return if $credit <= 0;
 
 	my $patron = $session->request( 
 		'open-ils.storage.direct.actor.user.retrieve', $userid )->gather(1);
 
-	$logger->activity( "Adding to patron [$userid] credit: $credit" );
-
 	$patron->credit_forward_balance( 
 		$patron->credit_forward_balance + $credit);
 	
-	$logger->debug("Total patron credit is now " . $patron->credit_forward_balance );
+	$logger->info("Total patron credit for $userid is now " . $patron->credit_forward_balance );
 
 	my $res = $session->request(
 		'open-ils.storage.direct.actor.user.update', $patron )->gather(1);
